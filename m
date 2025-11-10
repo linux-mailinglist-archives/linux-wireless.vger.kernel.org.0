@@ -1,85 +1,95 @@
-Return-Path: <linux-wireless+bounces-28731-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-28732-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 29142C45971
-	for <lists+linux-wireless@lfdr.de>; Mon, 10 Nov 2025 10:19:41 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1538DC45A3A
+	for <lists+linux-wireless@lfdr.de>; Mon, 10 Nov 2025 10:29:58 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 154AA3B6332
-	for <lists+linux-wireless@lfdr.de>; Mon, 10 Nov 2025 09:18:22 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id CD4F83AC23F
+	for <lists+linux-wireless@lfdr.de>; Mon, 10 Nov 2025 09:28:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 64D8A2FE56E;
-	Mon, 10 Nov 2025 09:18:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C2CF32475CF;
+	Mon, 10 Nov 2025 09:28:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=realtek.com header.i=@realtek.com header.b="loDHqRMp"
+	dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b="wz4g0Y0V"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from sipsolutions.net (s3.sipsolutions.net [168.119.38.16])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 647B819C556
-	for <linux-wireless@vger.kernel.org>; Mon, 10 Nov 2025 09:18:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=211.75.126.72
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 454AD15A85A;
+	Mon, 10 Nov 2025 09:28:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=168.119.38.16
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762766298; cv=none; b=ASM1gWW9JhIF6dnMmCBdJ6ntjiXEB1gZUQAD7RAuYRT7KjdZ92dFcNe3QFc583iiaZOCIiRocJTiGNWH/qKIPBRTOdgRKmW/TeMkBuEOHEye4vQWhUUpBwxE/IU0MZscrAZdOzG1hGlWqcnMjhCdHm3FsUSuRgYOSPeZSOpUc24=
+	t=1762766908; cv=none; b=Lr45CPLy0au3DY5iq9y7bPWXGmPOzMxxLmIwZrmm9UAVx9v41ARVABfbNY1SakKWj+M3k8e65BVMXHAZYI0qVG5wghusb9sYHNOm6PfMvU9rg/OXYKlRZ6ozGXYt3kZiylx1TuUg84veScKCFpFmpVU8X0wkprJ46It/FHywOKo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762766298; c=relaxed/simple;
-	bh=KRmkHIbOPP+ISlvM+3x7UmKKSe1qtcnPJLwby6izzKo=;
-	h=From:To:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:MIME-Version; b=Cs4MkKplCHsyFEW6oD2tbfazovuV8OFz3QAaSijVGi4+IELrKro2dhs1PnaT6gtaxOwUR4Cm4rdnJCTNeOpGbWN+uOrFy7qnbVX60Z3ncgx7cj1UV6kzkyGSF1Faz5s+bgxLb5LPiUDswLhAvHpQLZ3pLPWs209jpOU3kbZm114=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com; spf=pass smtp.mailfrom=realtek.com; dkim=pass (2048-bit key) header.d=realtek.com header.i=@realtek.com header.b=loDHqRMp; arc=none smtp.client-ip=211.75.126.72
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=realtek.com
-X-SpamFilter-By: ArmorX SpamTrap 5.80 with qID 5AA9ICZR01455315, This message is accepted by code: ctloc85258
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=realtek.com; s=dkim;
-	t=1762766292; bh=KRmkHIbOPP+ISlvM+3x7UmKKSe1qtcnPJLwby6izzKo=;
-	h=From:To:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:Content-Transfer-Encoding:MIME-Version;
-	b=loDHqRMpGl5ciPH4XprCZ5ypz/CAO0c+tpiVmI3Up2l0qSw5oFDtOHS/zJfBk4yAX
-	 Wvk55UIinKh95oddIvs9mhos3lp2P6dDx2z0kBfxZKfxe/XYSGzGoe3QflgfhnCxcA
-	 +gKeFOYT4FMZTJLRPs/tztBA/jN1SHjQN4NnnhfRzYoTe1pfG26Zedof+UVUmHgBWU
-	 hG/QjtGazwOFndzClz5uBFoQN60/iHdgE1hHAR7Gg35KNv8PgMTjUgZv8N5de2tkbB
-	 /HAUQmI3GIg5LXq2s6wxlkxOineWK0oLpAkB6TA8NySxn3ZLn9+SwHql1BmOd7I1pZ
-	 x+fjSRnUF7Z6g==
-Received: from mail.realtek.com (rtkexhmbs02.realtek.com.tw[172.21.6.41])
-	by rtits2.realtek.com.tw (8.15.2/3.21/5.94) with ESMTPS id 5AA9ICZR01455315
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Mon, 10 Nov 2025 17:18:12 +0800
-Received: from RTKEXHMBS06.realtek.com.tw (10.21.1.56) by
- RTKEXHMBS02.realtek.com.tw (172.21.6.41) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.27; Mon, 10 Nov 2025 17:18:12 +0800
-Received: from RTKEXHMBS06.realtek.com.tw ([::1]) by
- RTKEXHMBS06.realtek.com.tw ([fe80::744:4bc9:832c:9b7e%10]) with mapi id
- 15.02.1544.027; Mon, 10 Nov 2025 17:18:12 +0800
-From: Ping-Ke Shih <pkshih@realtek.com>
-To: Bitterblue Smith <rtl8821cerfe2@gmail.com>,
-        "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>
-Subject: RE: [PATCH rtw-next 6/6] wifi: rtw89: Enable the new rtw89_8852au
- module
-Thread-Topic: [PATCH rtw-next 6/6] wifi: rtw89: Enable the new rtw89_8852au
- module
-Thread-Index: AQHcUAEG60gW869WoUOxzXbG9N6zRrTroCuw
-Date: Mon, 10 Nov 2025 09:18:12 +0000
-Message-ID: <680e023c601f413eb1f88bf4a567459a@realtek.com>
-References: <f0021b8c-efc7-4993-b0a8-8954c682d13b@gmail.com>
- <180a5e77-9297-4ffc-80d5-191dfef47661@gmail.com>
-In-Reply-To: <180a5e77-9297-4ffc-80d5-191dfef47661@gmail.com>
-Accept-Language: en-US, zh-TW
-Content-Language: zh-TW
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+	s=arc-20240116; t=1762766908; c=relaxed/simple;
+	bh=cYaCfAsJLhkAmtsoPU7j9HX96np+0EanIFh/OL3w/G0=;
+	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=AqOpGtqbgf9E96P5uN8fB/m5b7OJ06dF4lHKlCZOh/YRFmEAMu2ES6csaG9r9EqmFWe8AvNTO4hYXn6XjaWhpQ3qLqIpbI0raDsRL6KjKeYsIS6Un6MA5qyf+N1Boz01Q1L/eYQ9rSfuMxj66nlLhVAUpPEdjEKmILIZ5HflakA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net; spf=pass smtp.mailfrom=sipsolutions.net; dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b=wz4g0Y0V; arc=none smtp.client-ip=168.119.38.16
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sipsolutions.net
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=sipsolutions.net; s=mail; h=MIME-Version:Content-Transfer-Encoding:
+	Content-Type:References:In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender
+	:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
+	Resent-Cc:Resent-Message-ID; bh=HnIZWmodhvAsnzAotoOpaQVKuvrcDDgdgIGrbYqiDSY=;
+	t=1762766907; x=1763976507; b=wz4g0Y0VQB+dUxzLrHvDAAoWICzPFexpEgHyUXkvnwWGu3e
+	l1uJqGvI0eLLmEoPxVI9mOZgPK8NzAkRnaZAodcDXFS9G9icemM/lVU69vakdnJnfQjmaZzBujYY5
+	DsLdLfiU/8QN/QUeLJMKMHiC1Wm+cdbeLx+eoUzgF3Ml9hE91de9o5lXFYzdNGfS0iCwZqUuXPEmT
+	XNrdl35RGHEImSqTx7Dq/8HYg4qego8fmwOUsQNdHbHvNeE6B8dhx+HTnyQq0VyA9RNOfS4/zy21+
+	2DZubTPHUeDi6S0/0GZynSQrYbMt4aunQdmSCS4TwTmL1BhcyyKgJf3/1lzMxZ3g==;
+Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
+	(Exim 4.98.2)
+	(envelope-from <johannes@sipsolutions.net>)
+	id 1vIOCG-0000000B9jq-0vLj;
+	Mon, 10 Nov 2025 10:28:24 +0100
+Message-ID: <f3a9797eb23d9c26007652798f14b76330aa1933.camel@sipsolutions.net>
+Subject: Re: [PATCH v2] wifi: cfg80211: Fix uninitialized header access in
+ cfg80211_classify8021d
+From: Johannes Berg <johannes@sipsolutions.net>
+To: Ranganath V N <vnranganath.20@gmail.com>, Dave =?ISO-8859-1?Q?T=E4ht?=
+	 <dave.taht@bufferbloat.net>, "John W. Linville" <linville@tuxdriver.com>
+Cc: linux-wireless@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	skhan@linuxfoundation.org, david.hunter.linux@gmail.com, khalid@kernel.org,
+ 	syzbot+878ddc3962f792e9af59@syzkaller.appspotmail.com
+Date: Mon, 10 Nov 2025 10:28:23 +0100
+In-Reply-To: <20251108-fifth-v2-1-405da01c6684@gmail.com> (sfid-20251107_193312_898584_A71B4CAD)
+References: <20251108-fifth-v2-1-405da01c6684@gmail.com>
+	 (sfid-20251107_193312_898584_A71B4CAD)
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.56.2 (3.56.2-2.fc42) 
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+X-malware-bazaar: not-scanned
 
-Qml0dGVyYmx1ZSBTbWl0aCA8cnRsODgyMWNlcmZlMkBnbWFpbC5jb20+IHdyb3RlOg0KPiBUZXN0
-ZWQgaW4gc3RhdGlvbiBtb2RlIGFuZCBhIGxpdHRsZSBpbiBBUCBtb2RlLg0KPiANCj4gU2lnbmVk
-LW9mZi1ieTogQml0dGVyYmx1ZSBTbWl0aCA8cnRsODgyMWNlcmZlMkBnbWFpbC5jb20+DQoNCkFj
-a2VkLWJ5OiBQaW5nLUtlIFNoaWggPHBrc2hpaEByZWFsdGVrLmNvbT4NCg0KVGhhbmtzIGZvciB5
-b3VyIGdyZWF0IHdvcmshIA0KDQo=
+On Sat, 2025-11-08 at 00:03 +0530, Ranganath V N wrote:
+>=20
+> +++ b/net/wireless/util.c
+> @@ -963,9 +963,13 @@ unsigned int cfg80211_classify8021d(struct sk_buff *=
+skb,
+> =20
+>  	switch (skb->protocol) {
+>  	case htons(ETH_P_IP):
+> +		if (!pskb_may_pull(skb, sizeof(struct iphdr)))
+> +			return 0;
+>  		dscp =3D ipv4_get_dsfield(ip_hdr(skb)) & 0xfc;
+>  		break;
+
+That doesn't seem correct to me, passing only the IP header length to
+pskb_may_pull() call assumes that ip_hdr(skb) =3D=3D sbk->data, which is
+almost certainly not true?
+
+MPLS seems to not have this problem.
+
+And maybe there's a similar issue for the VLAN tag?
+
+johannes
 
