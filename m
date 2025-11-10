@@ -1,59 +1,60 @@
-Return-Path: <linux-wireless+bounces-28720-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-28721-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id 556DCC453A5
-	for <lists+linux-wireless@lfdr.de>; Mon, 10 Nov 2025 08:36:24 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0976CC453E7
+	for <lists+linux-wireless@lfdr.de>; Mon, 10 Nov 2025 08:44:06 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 401244E857E
-	for <lists+linux-wireless@lfdr.de>; Mon, 10 Nov 2025 07:36:23 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BA81F3A9C2D
+	for <lists+linux-wireless@lfdr.de>; Mon, 10 Nov 2025 07:44:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5EE172EBBB4;
-	Mon, 10 Nov 2025 07:36:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CAC7D2EBBB7;
+	Mon, 10 Nov 2025 07:44:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b="FMGw7e+O"
+	dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b="yCUz1Tjx"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from sipsolutions.net (s3.sipsolutions.net [168.119.38.16])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C3AFC2EBB87;
-	Mon, 10 Nov 2025 07:36:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4770F2EBBB2
+	for <linux-wireless@vger.kernel.org>; Mon, 10 Nov 2025 07:44:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=168.119.38.16
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762760180; cv=none; b=cgaGpYPMxocACi6TcUNOeJUyJouk9cN3xqJUg3BxegdTRx2P7dPTGz9L1Iybs426HwgCdzzXXK04TDZc2ZUIirGUh1rjVkVpKtntUY+91q1kqBIjXONFvDZPlV8MyVayb0wSxiz9wWk0MkwclBVKy2eV5aAs9w5qdLJYf1mGF+w=
+	t=1762760642; cv=none; b=VpXhiH7Ti5AkYh9zLhGoOkmYOPwzYCRhbdhQqV4joss18ID1YjkgJ9ojQIShm2FbpeGCXwX/Kk24cse447Xpp66Tu3sLIxu0xdG68QQM/XQcg+4S0uhoSgjq0eKSEd6jNC0aHiXe3y1dPcKocRr2QSEON74vK/e0159MN3ZWHAc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762760180; c=relaxed/simple;
-	bh=nHgdQJhh3qGAN7bMip7XjynVr8WuQqSOo/b0cQJPQDo=;
+	s=arc-20240116; t=1762760642; c=relaxed/simple;
+	bh=4T5cJsyaau6iJSk2BfglEfFO4Gtb6QbZayNFI1Xesk4=;
 	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=T3yn5Wg0lsNtGcnVfZoKvrVtFWb2LimRLO7mjXpk//yESGATg4FZPJiOuyKQnXtXimgf4VAoz9LTlklY9algWx9+4C+CIQ/AciDGMkYToKdUSUorq3V0L9vwPQiW1pWfK4zxTxEjX9GH6F3nofVUIkQsHf8Ompva5o4Xv/lUHGU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net; spf=pass smtp.mailfrom=sipsolutions.net; dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b=FMGw7e+O; arc=none smtp.client-ip=168.119.38.16
+	 Content-Type:MIME-Version; b=dxLBvx+SNxfiWxMMKyq+t5PCGweifeG0b3AIRgIEqw/m+1IPEp8V/QMzqffdqhmf9DAzmeTml0WQJ37986KXNidNCmwjoih3/KZXMWYNnweFeec65y+mmlZTw2tj9+4MWYkPAkA2AoMYgmgeLjt+i6PVDc5VDbEN4LjMkX97TMc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net; spf=pass smtp.mailfrom=sipsolutions.net; dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b=yCUz1Tjx; arc=none smtp.client-ip=168.119.38.16
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sipsolutions.net
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=sipsolutions.net; s=mail; h=MIME-Version:Content-Transfer-Encoding:
 	Content-Type:References:In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender
 	:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
-	Resent-Cc:Resent-Message-ID; bh=VeJSuMmYtYdReQErdsDSeVOQsotd8G6jtSTIcmmRuRw=;
-	t=1762760178; x=1763969778; b=FMGw7e+O7K2qkjWdAEPOMqZO4dE06/GRif5Vh9ztOZLgB/U
-	mt85drLkaRk1oWKgagj5iUrbhglLPoXUetmesbJ5l3MAOHa+3aCpmGy2vIv0SJfsdqzaElmxBTi5v
-	4BFsxqq2SS14/h2P+VLenWc8U8yMpyGxdeQyssqbQnX2wgZlCKPhBn7NU732Idxm78F6XL0fnqSPz
-	gNmWa19Vmog7OIoG4Msm6Z28nGF7c8+mr+QVMY5TBXX2IJCRbxMSocxRAtpNkzTRfozmVDGXDNXUK
-	NvPgemXWdQdtEdMFwojDX4fLR9AW+fgbA8dI1BQ6cP9sZwjkUKzdEglJ4KiYyz4A==;
+	Resent-Cc:Resent-Message-ID; bh=4T5cJsyaau6iJSk2BfglEfFO4Gtb6QbZayNFI1Xesk4=;
+	t=1762760641; x=1763970241; b=yCUz1TjxAy/A3cv7hbF1+frCVSvEGp2OAEF06D77tRl37cA
+	tBsAYia3owunN0hsp6UAm2LOnzVBFzZ4uUYw3levEHtVyMn2dLlvpqsCd+GTyQJrFDLkYJHq1UX/3
+	V+M0iduybxBuBYMfc4ZV8PuPIOGtyirdExzxd98qBIDth3lkn5mrQp1TqLw0eR1uOOwaLjBimVcte
+	qiCBRDF/QKWgG5EJP7jQtKI0LdnioxC8Xz/qTgRLXWB7FI/jxIFlKjEHzmLj4pqi2LPlJaROJLvzr
+	Pdz4r4r8wMh6pFk10LhEhc3zVwNYqc89ftEryPHPbhsfPIpteltsLpVaslj4MsPQ==;
 Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
 	(Exim 4.98.2)
 	(envelope-from <johannes@sipsolutions.net>)
-	id 1vIMRk-0000000AqqQ-0y3r;
-	Mon, 10 Nov 2025 08:36:16 +0100
-Message-ID: <f27e024e442078b51d70ce5cfdbe2beab9b822c4.camel@sipsolutions.net>
-Subject: Re: [PATCH] mac80211: mesh: tolerate missing mesh RMC cache
+	id 1vIMZC-0000000As9O-36Oi;
+	Mon, 10 Nov 2025 08:43:58 +0100
+Message-ID: <f67d8a5ffd57acecda1f2d3bcf53c35135415ef0.camel@sipsolutions.net>
+Subject: Re: [PATCH 6/6] wifi: mac80211: refactor CMAC packet handlers
 From: Johannes Berg <johannes@sipsolutions.net>
-To: Sayooj K Karun <sayooj@aerlync.com>
-Cc: linux-wireless@vger.kernel.org, linux-kernel@vger.kernel.org
-Date: Mon, 10 Nov 2025 08:36:15 +0100
-In-Reply-To: <20251109114321.10120-1-sayooj@aerlync.com>
-References: <20251109114321.10120-1-sayooj@aerlync.com>
+To: Chien Wong <m@xv97.com>
+Cc: linux-wireless@vger.kernel.org
+Date: Mon, 10 Nov 2025 08:43:58 +0100
+In-Reply-To: <20251109140450.118106-7-m@xv97.com>
+References: <20251109140450.118106-1-m@xv97.com>
+	 <20251109140450.118106-7-m@xv97.com>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 User-Agent: Evolution 3.56.2 (3.56.2-2.fc42) 
@@ -65,22 +66,21 @@ List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 X-malware-bazaar: not-scanned
 
-You need to fix the subject.
+On Sun, 2025-11-09 at 22:04 +0800, Chien Wong wrote:
+> Merge CMAC-128 and CMAC-256 handlers since they are almost the same.
+> This removes duplication.
+> All references to the refactored functions in the tree are adapted.
+>=20
+> The comment 'MIC =3D AES-128-CMAC(IGTK, AAD ...' is out-dated since CMAC
+> is also used with BIGTK, as is the comment for CMAC-256. Simply remove
+> the comments.
+>=20
+> Tested-on: mac80211_hwsim
 
 
->  void ieee80211s_init(void)
->  {
-> -	mesh_allocated =3D 1;
->  	rm_cache =3D kmem_cache_create("mesh_rmc", sizeof(struct rmc_entry),
->  				     0, 0, NULL);
-> +	if (!rm_cache) {
-> +		pr_warn("mac80211: failed to allocate mesh RMC cache; duplicate filter=
-ing disabled\n");
-
-A message after an allocation failure is almost always pointless since
-it's already a really big scary warning... Maybe there's a way to
-supress the original warning in this case (not sure) and then have this
-message.
+Oh, I see this now - but your changes affect both RX and TX so you
+should cross-check against another implementation (such as wlantest) I'd
+think. Also, that's a non-standard Qualcomm/ath driver thing :)
 
 johannes
 
