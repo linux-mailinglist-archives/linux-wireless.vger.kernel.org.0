@@ -1,71 +1,70 @@
-Return-Path: <linux-wireless+bounces-28758-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-28759-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 26483C4673B
-	for <lists+linux-wireless@lfdr.de>; Mon, 10 Nov 2025 13:07:09 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 24F39C46738
+	for <lists+linux-wireless@lfdr.de>; Mon, 10 Nov 2025 13:07:05 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id BD715189A614
-	for <lists+linux-wireless@lfdr.de>; Mon, 10 Nov 2025 12:03:27 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2679C3BF604
+	for <lists+linux-wireless@lfdr.de>; Mon, 10 Nov 2025 12:03:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B434F30FC01;
-	Mon, 10 Nov 2025 12:02:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B9A301C5D7D;
+	Mon, 10 Nov 2025 12:03:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="VgQ1WQwO"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="PuL6tvNY"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.19])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B2ACB30E0DC
-	for <linux-wireless@vger.kernel.org>; Mon, 10 Nov 2025 12:02:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.19
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CAB36307AC5
+	for <linux-wireless@vger.kernel.org>; Mon, 10 Nov 2025 12:03:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762776125; cv=none; b=BegpU7ay6JCEWjvrm793r3o6KNCBe4S1kzln/mWaBpizmEJ/+Ni/BANQ2DHGv56klhk8mlZJ2g/aXIfTDx8XJ36Epnlik6JTk51iBHWtCOAcHOhxOwiCDdpKNF203KIwNxEx5Ykl0VSki8c7jaPle3XmHR3QWXFNZ3wrqAurjYc=
+	t=1762776205; cv=none; b=rrQXdcZhwlXQECISj6yU3z5awE02Pn4EoHdpKwijD8cnH3TffizUTEUHm14VvaIWESHg/jkwcv0+e43y2Z6wAUUERnIuwlCFGlmbp82SW/N/HpTte3mYk1mfbTJ0L/MVGsAnXcXAd4HG/fB+2MFaxRb/zRvwxwUyAVP2WBItkzA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762776125; c=relaxed/simple;
-	bh=uCi9fR6gGgL1VRZIMOCZRsPtB1fs8o9cNn6lwh1/aIc=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=EAlYY7rxJTCyU68Exe8mp5Q4k1jlkPJOK3tYnYV/lNJxg+3uW2ZIPKFkmmBu7I2XzEO84eN3ff9ih+AFMhUQ9wRWRWNGmkTlDVCJ9VAxICj9tRXjkuajLVUcGvygiBp6GzvpP1rulJ+XI3xSGty+t24/gwZlzrDOzXGX3Vl8ytU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=VgQ1WQwO; arc=none smtp.client-ip=192.198.163.19
+	s=arc-20240116; t=1762776205; c=relaxed/simple;
+	bh=xsCmInmataWc/e/yd2jqrEbAUcuSSCrngg+CNqylIpk=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=ujDJd3iIlxTjCouvAL1bOfv4LVaJkx4O6SIO8r/mlXPm2mHObKcubJNbwrDMiG9WbZH5GGwtYEdEEXvh1nJVXPIWEdzhsjN2ue5LN0yax2kaiYDKnOqMQ5qNn4M6sAuinHVldAaP3hZJFfYMlGdkJGaMIwxbS2ilUr0eyKYEvYM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=PuL6tvNY; arc=none smtp.client-ip=192.198.163.18
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1762776124; x=1794312124;
+  t=1762776203; x=1794312203;
   h=from:to:cc:subject:date:message-id:mime-version:
    content-transfer-encoding;
-  bh=uCi9fR6gGgL1VRZIMOCZRsPtB1fs8o9cNn6lwh1/aIc=;
-  b=VgQ1WQwOTviaeLZodcFcMoREglERA2zm2tByB9zdRFfbF1ix3mPAOqGm
-   E9ohhYrF8tJLbTa5piaUdiUbJ/Yj23RbY3v/iu9RTfKju04wctZTh0KGu
-   9UpNgEUq6RYWz3Ok65sgpDRae5Li5lupPGJpc/oOR1pGPgSWbRNhUTyp2
-   GgevfonQNGSAQxm4fISCl2ZzUyl7rchVE4RdSW9pfKvCKxF2L/NF+RoCX
-   SgjelDUe9nzIz9Gci5XCtGcltqe9LLDoPUxGE47j0XdBAQzCgyvUyB1uU
-   rcKVPmvikWU/tZnuZhtZucI5+sArYsdk+wwXHdWKp6ZEeByA54OL/tW6q
-   g==;
-X-CSE-ConnectionGUID: erxLRFVDTA+R5htTU/u9nA==
-X-CSE-MsgGUID: +fNMWy5ZRDSUjJaMBUTXVQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11608"; a="63829844"
+  bh=xsCmInmataWc/e/yd2jqrEbAUcuSSCrngg+CNqylIpk=;
+  b=PuL6tvNYCK1007qmi+NfFy+oCSoaJt96VLCeX4/s5+1NdLWi4q96u4d9
+   hmDEq68/5s3ejx8a02Bxx6zE48G48PLFaQIV8Q2icQNRWbbu4QWKAbH9T
+   MUZ8ApEGRxm7uFYKrqxrkHbNKy/RbF/ImGnsq0e0jLaI/bIVmtJasVnqZ
+   yM/sUF3XSTB//H409YEapHEjp6ykdYXKJ6r+HV714QMnZI3sLxVCGgmrs
+   5Fl+mX0mkhqXQJEN1uGDIf1PnIyGzg06IdQkQNixDAemTETryqYnNL5Nx
+   xO3SldDmp6JJKG439cKiP6cIMy4bySWSJTcZaODeO88hBgf2uNkIPBVnC
+   A==;
+X-CSE-ConnectionGUID: oFb6H/u9TDuc8KqxMagkHw==
+X-CSE-MsgGUID: 7PMaSeRdQD6acCV5YexYeA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11608"; a="64031005"
 X-IronPort-AV: E=Sophos;i="6.19,293,1754982000"; 
-   d="scan'208";a="63829844"
-Received: from fmviesa009.fm.intel.com ([10.60.135.149])
-  by fmvoesa113.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Nov 2025 04:02:03 -0800
-X-CSE-ConnectionGUID: 4SSxnq7tQUmMwrgZOxKLpA==
-X-CSE-MsgGUID: SpgUA0GCQB+SKa1P4Bl3hg==
+   d="scan'208";a="64031005"
+Received: from orviesa002.jf.intel.com ([10.64.159.142])
+  by fmvoesa112.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Nov 2025 04:03:23 -0800
+X-CSE-ConnectionGUID: 7GWUuVceTmWkxdcVbGIZQw==
+X-CSE-MsgGUID: jSfJQfIRT+SYZSWGLzWeew==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.19,293,1754982000"; 
-   d="scan'208";a="189097447"
+   d="scan'208";a="219311612"
 Received: from weis0040.iil.intel.com ([10.12.217.108])
-  by fmviesa009-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Nov 2025 04:02:01 -0800
+  by orviesa002-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Nov 2025 04:03:22 -0800
 From: Miri Korenblit <miriam.rachel.korenblit@intel.com>
 To: johannes@sipsolutions.net
 Cc: linux-wireless@vger.kernel.org,
-	Ilan Peer <ilan.peer@intel.com>,
-	Dan Carpenter <dan.carpenter@linaro.org>,
+	Emmanuel Grumbach <emmanuel.grumbach@intel.com>,
 	Johannes Berg <johannes.berg@intel.com>
-Subject: [PATCH wireless] wifi: mac80211_hwsim: Fix possible NULL dereference
-Date: Mon, 10 Nov 2025 14:01:54 +0200
-Message-Id: <20251110140128.ec00ae795a32.I9c65659b52434189d8b2ba06710d482669a3887a@changeid>
+Subject: [PATCH wireless-next] wifi: cfg80211: use a C99 initializer in wiphy_register
+Date: Mon, 10 Nov 2025 14:03:15 +0200
+Message-Id: <20251110140230.f8d4fcb1328b.I87170b1caef04356809838e684c9499f5806e624@changeid>
 X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
@@ -76,59 +75,46 @@ MIME-Version: 1.0
 Organization: Intel Israel (74) Limited
 Content-Transfer-Encoding: 8bit
 
-From: Ilan Peer <ilan.peer@intel.com>
+From: Emmanuel Grumbach <emmanuel.grumbach@intel.com>
 
-The 'vif' pointer in the Tx information might be NULL, e.g., in
-case of injected frames etc. and is not checked in all paths. Fix it.
-While at it, also directly use the local 'vif' pointer.
+struct regulatory request was not fully initialized. While this is not
+really a big deal because nl80211_send_reg_change_event doesn't look at
+the other fields, it still makes sense to zero all the other fields as
+Coverity suggests.
 
-Fixes: a37a6f54439b ("wifi: mac80211_hwsim: Add simulation support for NAN device")
-Signed-off-by: Ilan Peer <ilan.peer@intel.com>
-Reported-by: Dan Carpenter <dan.carpenter@linaro.org>
-Closes: https://lore.kernel.org/linux-wireless/aNJUlyIiSTW9zZdr@stanley.mountain
+Signed-off-by: Emmanuel Grumbach <emmanuel.grumbach@intel.com>
 Reviewed-by: Johannes Berg <johannes.berg@intel.com>
 Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
 ---
- drivers/net/wireless/virtual/mac80211_hwsim.c | 14 ++++++++++----
- 1 file changed, 10 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/net/wireless/virtual/mac80211_hwsim.c b/drivers/net/wireless/virtual/mac80211_hwsim.c
-index d28bf18d57ec..5903d82e1ab1 100644
---- a/drivers/net/wireless/virtual/mac80211_hwsim.c
-+++ b/drivers/net/wireless/virtual/mac80211_hwsim.c
-@@ -2003,8 +2003,14 @@ static void mac80211_hwsim_tx(struct ieee80211_hw *hw,
- 		struct ieee80211_sta *sta = control->sta;
- 		struct ieee80211_bss_conf *bss_conf;
+V2: send to wireless-next and not wireless
+
+ net/wireless/core.c | 12 ++++++------
+ 1 file changed, 6 insertions(+), 6 deletions(-)
+
+diff --git a/net/wireless/core.c b/net/wireless/core.c
+index 56c0e2e4bcb1..c3a7bff6eaf9 100644
+--- a/net/wireless/core.c
++++ b/net/wireless/core.c
+@@ -1067,12 +1067,12 @@ int wiphy_register(struct wiphy *wiphy)
+ 	wiphy_regulatory_register(wiphy);
  
-+		/* This can happen in case of monitor injection */
-+		if (!vif) {
-+			ieee80211_free_txskb(hw, skb);
-+			return;
-+		}
-+
- 		if (link != IEEE80211_LINK_UNSPECIFIED) {
--			bss_conf = rcu_dereference(txi->control.vif->link_conf[link]);
-+			bss_conf = rcu_dereference(vif->link_conf[link]);
- 			if (sta)
- 				link_sta = rcu_dereference(sta->link[link]);
- 		} else {
-@@ -2065,13 +2071,13 @@ static void mac80211_hwsim_tx(struct ieee80211_hw *hw,
- 		return;
+ 	if (wiphy->regulatory_flags & REGULATORY_CUSTOM_REG) {
+-		struct regulatory_request request;
+-
+-		request.wiphy_idx = get_wiphy_idx(wiphy);
+-		request.initiator = NL80211_REGDOM_SET_BY_DRIVER;
+-		request.alpha2[0] = '9';
+-		request.alpha2[1] = '9';
++		struct regulatory_request request = {
++			.wiphy_idx = get_wiphy_idx(wiphy),
++			.initiator = NL80211_REGDOM_SET_BY_DRIVER,
++			.alpha2[0] = '9',
++			.alpha2[1] = '9',
++		};
+ 
+ 		nl80211_send_reg_change_event(&request);
  	}
- 
--	if (txi->control.vif)
--		hwsim_check_magic(txi->control.vif);
-+	if (vif)
-+		hwsim_check_magic(vif);
- 	if (control->sta)
- 		hwsim_check_sta_magic(control->sta);
- 
- 	if (ieee80211_hw_check(hw, SUPPORTS_RC_TABLE))
--		ieee80211_get_tx_rates(txi->control.vif, control->sta, skb,
-+		ieee80211_get_tx_rates(vif, control->sta, skb,
- 				       txi->control.rates,
- 				       ARRAY_SIZE(txi->control.rates));
- 
 -- 
 2.34.1
 
