@@ -1,69 +1,69 @@
-Return-Path: <linux-wireless+bounces-28765-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-28766-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3A1F6C46946
-	for <lists+linux-wireless@lfdr.de>; Mon, 10 Nov 2025 13:26:33 +0100 (CET)
+Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [213.196.21.55])
+	by mail.lfdr.de (Postfix) with ESMTPS id E7E85C46BAD
+	for <lists+linux-wireless@lfdr.de>; Mon, 10 Nov 2025 13:57:23 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id E4AFB4E13DE
-	for <lists+linux-wireless@lfdr.de>; Mon, 10 Nov 2025 12:26:31 +0000 (UTC)
+	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 93BD0341DF9
+	for <lists+linux-wireless@lfdr.de>; Mon, 10 Nov 2025 12:57:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 54FEE18626;
-	Mon, 10 Nov 2025 12:26:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AA15630FC29;
+	Mon, 10 Nov 2025 12:57:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="N/v4xoH6"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="PlmBkFUZ"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.13])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 014252FCC0F
-	for <linux-wireless@vger.kernel.org>; Mon, 10 Nov 2025 12:26:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.13
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 42E5B30F939
+	for <linux-wireless@vger.kernel.org>; Mon, 10 Nov 2025 12:57:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762777590; cv=none; b=DtJTsZIS92NS+0kFtrq6Ik47+ZYHjulJOWOegBUXt6ow6+LGz7JA6e2+bPSsWaMRNJRm1f7Ix72A7LWccEfF3W3IEVnM5ijtRDXwADIqyDe30Jme9fnO42DBf49asyMJKCgnWZA7qcFn2ecYV6GJG13vGqfTWOJLNmw4mMT1Rgw=
+	t=1762779431; cv=none; b=ieoPPSruZdfecQP1Lu6gAjrmsrTZaQgLrVHvNBPhssjuZZwMpr80DZyPgHYAgFLpqbWlxwbyBntxTgNTyjNowOFv33Q/QG6nireL0K4UOrRuOxCbuINc/YjZu273eXI9HXjIGBKtknIzk5cIlj7YgDZ7aNuY6SJgzZQuFvK/pMg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762777590; c=relaxed/simple;
-	bh=DjSeQ8f9CLnoxDSsV9gEL+saXNpfPKk47Ggiflhexo4=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=A37rruVeUZjNBu2C7fvy8RTJuyPHVr9F9noshd/+1P87EKIdvmInvF1o83HM2OAhPUYYvJx6Ib3xHsadJ6xXNATqDZ3YVatbQHXyQ+vYIKyIOCwmc/ZqRJd6cHNB2GsCZypKhNHanrAMxnMxOIotCmyM+v66ezr6YUULP1groQs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=N/v4xoH6; arc=none smtp.client-ip=192.198.163.13
+	s=arc-20240116; t=1762779431; c=relaxed/simple;
+	bh=3+HhfyHE1/JCxC5DZPH3OabnVTA+zHggZgrljW1tiNo=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=DlRvFvBtV5oYAqJNXpv3gTAsyUcW18ExemVn2bNA60FJpiFDprvHjDKtoenyuZ897mQcdhGmyJVp/OxwbZg7uuxOtOcTl3KZcPaHMORt8FvcDgv83B0hpeh97okRv+HIEZ9xpHOdKLBEuM/j0CYKjKRF6HyU8whXYVJnw9IEIsg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=PlmBkFUZ; arc=none smtp.client-ip=198.175.65.18
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1762777588; x=1794313588;
+  t=1762779429; x=1794315429;
   h=from:to:cc:subject:date:message-id:mime-version:
    content-transfer-encoding;
-  bh=DjSeQ8f9CLnoxDSsV9gEL+saXNpfPKk47Ggiflhexo4=;
-  b=N/v4xoH6J6E2N201HcEICEu2uz92j3Ikb6DIkDpiwtJguvYaq6DpdFoS
-   MSNESGFOFyIjNS7tgrQdwHWvzwi3/biGIQUifL4QpPhdtOXAMMqbyA7r3
-   d/5JXeZcbFrEEbz7B5eoLd+mfilSSux8qw0IQmaeIp0jRN10/tK9wiC5G
-   MSRTP12/9cKrw5kz+IBZdjlgCpOEjtmmzKLwvJ4CcauE1acU6kTMjMqAu
-   xAdo1c+oQUoU5P2f+j6xKDOXI2GsihGGPdFhojoHe01ei5sFo3zQSzGbX
-   oOBxpEPSOXS7VhrsJdcetLB8Ex2zDUOPUWbPCY1HJWd/6AN4j6mls/8W+
+  bh=3+HhfyHE1/JCxC5DZPH3OabnVTA+zHggZgrljW1tiNo=;
+  b=PlmBkFUZu73lGCobj07MSjvtLkeQSZnm8W2ZKlC7QeJXs3d11hA7Amc2
+   dPSEIXCLcEpYnieJs5dGHU1pkOJrVikJ1HaHJDQ6Sl7mEkiIGEEhZbwva
+   ehmd7YeYuk1+WXbrUpRn85BUt1xGuRfBxOq/DIanT95sQjx3Yiw+ULlh0
+   VpO1d10scOlJCSHSJraL6sO3S2WPJIKTzX7Ml8Qprxtl86yvMcXUSqrWE
+   S7sfDJJgMZq7MArNi/PE5Uj4B5sIEYT79itU02s0DMPfdqEznuC3UW72N
+   SMi4JirugwU9VtfPLTKm2elRgTBuGiXzBvc/RlMtuJf6jSVR1SF5nXrCf
    g==;
-X-CSE-ConnectionGUID: GQDfPHFNS2+SJfVlJAU+5w==
-X-CSE-MsgGUID: PLSJ3oQsTA+vEfez2JhTfw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11609"; a="67431815"
+X-CSE-ConnectionGUID: vzsfN6kUQHq49kpuBAcLMA==
+X-CSE-MsgGUID: vuz+2VcxTmSTyNwre5wJMQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11609"; a="64868618"
 X-IronPort-AV: E=Sophos;i="6.19,293,1754982000"; 
-   d="scan'208";a="67431815"
-Received: from fmviesa005.fm.intel.com ([10.60.135.145])
-  by fmvoesa107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Nov 2025 04:26:27 -0800
-X-CSE-ConnectionGUID: sKN9fSXdS22VKGINlZe2Tw==
-X-CSE-MsgGUID: WzEOyq7pQFudxhUQBLS47Q==
+   d="scan'208";a="64868618"
+Received: from orviesa004.jf.intel.com ([10.64.159.144])
+  by orvoesa110.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Nov 2025 04:57:09 -0800
+X-CSE-ConnectionGUID: nA/IFPtVTmWW7jHt8TlNng==
+X-CSE-MsgGUID: lWbmn1HbRxybOx0fx+cOWw==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.19,293,1754982000"; 
-   d="scan'208";a="192921259"
+   d="scan'208";a="193050567"
 Received: from weis0040.iil.intel.com ([10.12.217.108])
-  by fmviesa005-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Nov 2025 04:26:26 -0800
+  by orviesa004-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Nov 2025 04:57:07 -0800
 From: Miri Korenblit <miriam.rachel.korenblit@intel.com>
 To: johannes@sipsolutions.net
 Cc: linux-wireless@vger.kernel.org,
-	Benjamin Berg <benjamin.berg@intel.com>
-Subject: [PATCH wireless] wifi: mac80211: skip rate verification for not captured PSDUs
-Date: Mon, 10 Nov 2025 14:26:18 +0200
-Message-Id: <20251110142554.83a2858ee15b.I9f78ce7984872f474722f9278691ae16378f0a3e@changeid>
+	Johannes Berg <johannes.berg@intel.com>
+Subject: [PATCH iwlwifi-fixes] wifi: iwlwifi: mld: always take beacon ies in link grading
+Date: Mon, 10 Nov 2025 14:57:00 +0200
+Message-Id: <20251110145652.b493dbb1853a.I058ba7309c84159f640cc9682d1bda56dd56a536@changeid>
 X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
@@ -74,41 +74,62 @@ MIME-Version: 1.0
 Organization: Intel Israel (74) Limited
 Content-Transfer-Encoding: 8bit
 
-From: Benjamin Berg <benjamin.berg@intel.com>
+One of the factors of a link's grade is the channel load, which is
+calculated from the AP's bss load element.
+The current code takes this element from the beacon for an active link,
+and from bss->ies for an inactive link.
 
-If for example the sniffer did not follow any AIDs in an MU frame, then
-some of the information may not be filled in or is even expected to be
-invalid. As an example, in that case it is expected that Nss is zero.
+bss->ies is set to either the beacon's ies or to the probe response
+ones, with preference to the probe response (meaning that if there was
+even one probe response, the ies of it will be stored in bss->ies and
+won't be overiden by the beacon ies).
 
-Fixes: 2ff5e52e7836 ("radiotap: add 0-length PSDU "not captured" type")
-Signed-off-by: Benjamin Berg <benjamin.berg@intel.com>
+The probe response can be very old, i.e. from the connection time,
+where a beacon is updated before each link selection (which is
+triggered only after a passive scan).
+
+In such case, the bss load element in the probe response will not
+include the channel load caused by the STA, where the beacon will.
+
+This will cause the inactive link to always have a lower channel
+load, and therefore an higher grade than the active link's one.
+
+This causes repeated link switches, causing the throughput to drop.
+
+Fix this by always taking the ies from the beacon, as those are for
+sure new.
+
+Fixes: d1e879ec600f ("wifi: iwlwifi: add iwlmld sub-driver")
+Reviewed-by: Johannes Berg <johannes.berg@intel.com>
 Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
 ---
- net/mac80211/rx.c | 10 +++++++---
- 1 file changed, 7 insertions(+), 3 deletions(-)
+ drivers/net/wireless/intel/iwlwifi/mld/link.c | 7 +------
+ 1 file changed, 1 insertion(+), 6 deletions(-)
 
-diff --git a/net/mac80211/rx.c b/net/mac80211/rx.c
-index 6af43dfefdd6..5b4c3fe9970a 100644
---- a/net/mac80211/rx.c
-+++ b/net/mac80211/rx.c
-@@ -5360,10 +5360,14 @@ void ieee80211_rx_list(struct ieee80211_hw *hw, struct ieee80211_sta *pubsta,
- 	if (WARN_ON(!local->started))
- 		goto drop;
+diff --git a/drivers/net/wireless/intel/iwlwifi/mld/link.c b/drivers/net/wireless/intel/iwlwifi/mld/link.c
+index 960dcd208f00..4db71dcf82e2 100644
+--- a/drivers/net/wireless/intel/iwlwifi/mld/link.c
++++ b/drivers/net/wireless/intel/iwlwifi/mld/link.c
+@@ -698,18 +698,13 @@ static int
+ iwl_mld_get_chan_load_from_element(struct iwl_mld *mld,
+ 				   struct ieee80211_bss_conf *link_conf)
+ {
+-	struct ieee80211_vif *vif = link_conf->vif;
+ 	const struct cfg80211_bss_ies *ies;
+ 	const struct element *bss_load_elem = NULL;
+ 	const struct ieee80211_bss_load_elem *bss_load;
  
--	if (likely(!(status->flag & RX_FLAG_FAILED_PLCP_CRC))) {
-+	if (likely(!(status->flag & RX_FLAG_FAILED_PLCP_CRC) &&
-+		   !(status->flag & RX_FLAG_NO_PSDU &&
-+		     status->zero_length_psdu_type ==
-+		     IEEE80211_RADIOTAP_ZERO_LEN_PSDU_NOT_CAPTURED))) {
- 		/*
--		 * Validate the rate, unless a PLCP error means that
--		 * we probably can't have a valid rate here anyway.
-+		 * Validate the rate, unless there was a PLCP error which may
-+		 * have an invalid rate or the PSDU was not capture and may be
-+		 * missing rate information.
- 		 */
+ 	guard(rcu)();
  
- 		switch (status->encoding) {
+-	if (ieee80211_vif_link_active(vif, link_conf->link_id))
+-		ies = rcu_dereference(link_conf->bss->beacon_ies);
+-	else
+-		ies = rcu_dereference(link_conf->bss->ies);
+-
++	ies = rcu_dereference(link_conf->bss->beacon_ies);
+ 	if (ies)
+ 		bss_load_elem = cfg80211_find_elem(WLAN_EID_QBSS_LOAD,
+ 						   ies->data, ies->len);
 -- 
 2.34.1
 
