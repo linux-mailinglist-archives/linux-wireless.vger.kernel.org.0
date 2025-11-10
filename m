@@ -1,70 +1,71 @@
-Return-Path: <linux-wireless+bounces-28776-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-28777-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3FF60C46BFC
-	for <lists+linux-wireless@lfdr.de>; Mon, 10 Nov 2025 14:03:12 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9AC30C46BF9
+	for <lists+linux-wireless@lfdr.de>; Mon, 10 Nov 2025 14:03:11 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 846CA18817C2
-	for <lists+linux-wireless@lfdr.de>; Mon, 10 Nov 2025 13:03:33 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 5C68D4E6C70
+	for <lists+linux-wireless@lfdr.de>; Mon, 10 Nov 2025 13:03:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5916930E0DC;
-	Mon, 10 Nov 2025 13:02:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 326B91A704B;
+	Mon, 10 Nov 2025 13:02:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="YSSI9hRn"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="UaWuaz1+"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.8])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B32DE1A704B
-	for <linux-wireless@vger.kernel.org>; Mon, 10 Nov 2025 13:02:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 94A4D30EF7D
+	for <linux-wireless@vger.kernel.org>; Mon, 10 Nov 2025 13:02:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.8
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762779767; cv=none; b=sEoFT4JDn02F723fiqRyH0kUlnj9Pk4AgLEelPFZkc1TpSjEs5tYCnMjGioToOeLS5XniWSju76X2Ao+6zYKIf5xNu56WZa8bolZP9+sna+RLixaL4b4y7l3TblV+6bYPigzgGt+gBGvXE6wEnM3rYxLqd9SpZBVm6ZmevXjHxE=
+	t=1762779769; cv=none; b=i427CSIHB87PI8h0NcGAXcjZrds5q+RlyzwzvyplChdgoxVkMiN0rmRXjomUngKkGsmMlgT0f7B5CesfXN7WH4S8Kjol09UWux7ASMnPSJbaRJGuEz09H0twJ88/f4CGD5cbw78+ItF5IXa1/jR/by5Ltrg8LDUqMWYDMQVWhWI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762779767; c=relaxed/simple;
-	bh=Xv6j9dr6LK0VBNraetgCxeWIsc0nni4K7TbS5i+4ft0=;
+	s=arc-20240116; t=1762779769; c=relaxed/simple;
+	bh=swk1MVHmnZ2oWqG5/DRGwaGJq3g/TRGQLfI7J3WhOfw=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=BWBVPIjtEwf0WS1+CKcVjK/NGK9Sl13p1xJULoSQjH5QzBGbDXaZRYynw2bfCpVzDgDNPBmlJAuWGLy0XI1iitlCXDib6KJzyRTywDzfaD4YR2E9xbMIHWepzqk0Zs/mpb/+3Qu6QhPQpXAMyDAXeO4PdHRho6uVnMa3aiJYees=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=YSSI9hRn; arc=none smtp.client-ip=192.198.163.8
+	 MIME-Version; b=GfGRMD0KJb+gIZGyLk/NIlLw4sZlMQLmqJTTsW7WB3YmHQx7BYSnEeIweEYKayoYbjRamG5XCC2hR5pUnEW3IDr/l+JeywfnjKKoK2wlqNr/AX+fXzTEKFEcxwZYlv0Am2ZRCSeYknx9znzElaeuajlgMTvaaZuhTPIiHE+xVxk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=UaWuaz1+; arc=none smtp.client-ip=192.198.163.8
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1762779766; x=1794315766;
+  t=1762779768; x=1794315768;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=Xv6j9dr6LK0VBNraetgCxeWIsc0nni4K7TbS5i+4ft0=;
-  b=YSSI9hRnqmLC1jmeIwDKoKgr4ICzC35DDwwC/Rx+n3mYGCKv4wbWWDdz
-   EfSr0db3XEeunwfc9AzH34SgLhe2tYfn6SiR7fxeFnYGeEtrLo5q2oMIZ
-   vhxzeLcLXuewYtf7vqPTsdD0DCqKh9sQ4ZdkI0+riyJm6zsy6JB5h2Xfm
-   TVdH3Nao1xrAXJsTG2OaRVxhCLE1dl2HrL/qxgJPPbzSwJKPquwKjgX7Z
-   jo+Nwl8bjFm1inTW8ZDLZzyflDY9VZ5ZZRa4yw3RW+rhQcfsYGTb1YT7l
-   4HM7ofnT8lKocFDBLyktPjqdo4+INqyw4w5vqYUmBLqfQjJTp+LpZrE+g
-   w==;
-X-CSE-ConnectionGUID: Tb3V2WNsSXqeBIw5/zcphg==
-X-CSE-MsgGUID: pkTCFM+OSmqImc6h+MxU+g==
-X-IronPort-AV: E=McAfee;i="6800,10657,11609"; a="82454888"
+  bh=swk1MVHmnZ2oWqG5/DRGwaGJq3g/TRGQLfI7J3WhOfw=;
+  b=UaWuaz1+G9eQCN1iJtCmG6KuheB5jr7NKcT7ATNp3pumIhNEyNpCBymf
+   CkvayyVYTiru4HwdckRhHYlP3XBHZ5/4rnTnoskltFFWRTRfBgohGW2LZ
+   Fvdke7c7IIfZd7FIp7SKJL3rnDolkfyrEJPLQzE2NxTLpQpfuFFP2f5tY
+   reeAS6cjSp4KrwDtPFF8TZSZ/OIIWO1HSKxEWM0V9kacDhup9m2QIVVQM
+   s2KcBfwZw+erwtvOoA8+zrUs9+Ca5Ab32j/hmxQHi8TTjxuvqh8j1Gscp
+   bpMB0lNDbQGZY6fXlpG+EriJO1UTkZPHicpvAlHBBdtDPcP9Ae4i1lG+8
+   A==;
+X-CSE-ConnectionGUID: W14kL6SMSRusqeu/5ti18g==
+X-CSE-MsgGUID: rieY7U/KQSmOJk2b6Z25tQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11609"; a="82454890"
 X-IronPort-AV: E=Sophos;i="6.19,293,1754982000"; 
-   d="scan'208";a="82454888"
+   d="scan'208";a="82454890"
 Received: from fmviesa005.fm.intel.com ([10.60.135.145])
-  by fmvoesa102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Nov 2025 05:02:45 -0800
-X-CSE-ConnectionGUID: J8xDb4XrRtyHAvuKcEo+1w==
-X-CSE-MsgGUID: D6q8+yvuRoumWkM5CSu0sg==
+  by fmvoesa102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Nov 2025 05:02:47 -0800
+X-CSE-ConnectionGUID: PTpR31V/RUe9a+aloeWC6Q==
+X-CSE-MsgGUID: f6oh8L2RRYi7K9xvx8hObw==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.19,293,1754982000"; 
-   d="scan'208";a="192928544"
+   d="scan'208";a="192928550"
 Received: from weis0040.iil.intel.com ([10.12.217.108])
-  by fmviesa005-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Nov 2025 05:02:44 -0800
+  by fmviesa005-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Nov 2025 05:02:45 -0800
 From: Miri Korenblit <miriam.rachel.korenblit@intel.com>
 To: johannes@sipsolutions.net
 Cc: linux-wireless@vger.kernel.org,
-	Pagadala Yesu Anjaneyulu <pagadala.yesu.anjaneyulu@intel.com>
-Subject: [PATCH iwlwifi-next 09/15] wifi: iwlwifi: mld: refactor AP power type setting
-Date: Mon, 10 Nov 2025 15:02:20 +0200
-Message-Id: <20251110150012.f3b15566dac8.I31b900ab161fb627158dc1b3e2fc4ab35d84fddf@changeid>
+	Johannes Berg <johannes.berg@intel.com>,
+	Emmanuel Grumbach <emmanuel.grumbach@intel.com>
+Subject: [PATCH iwlwifi-next 10/15] wifi: iwlwifi: adjust LINK context NPCA API
+Date: Mon, 10 Nov 2025 15:02:21 +0200
+Message-Id: <20251110150012.93bd7a454eef.I3d2ce1a363b0d8c3809ec8e729b7acf94efca25b@changeid>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20251110130226.223364-1-miriam.rachel.korenblit@intel.com>
 References: <20251110130226.223364-1-miriam.rachel.korenblit@intel.com>
@@ -77,77 +78,76 @@ MIME-Version: 1.0
 Organization: Intel Israel (74) Limited
 Content-Transfer-Encoding: 8bit
 
-From: Pagadala Yesu Anjaneyulu <pagadala.yesu.anjaneyulu@intel.com>
+From: Johannes Berg <johannes.berg@intel.com>
 
-Fix unsafe power type mapping for iwl_txpower_constraints_cmd
-that breaks if enum values change. Replace "power_type - 1" with
-explicit case handling for each power type.
-While on it, Add debug logging to show configured power type.
+The link context NPCA API was changed in the firmware, adjust
+the driver accordingly.
 
-Signed-off-by: Pagadala Yesu Anjaneyulu <pagadala.yesu.anjaneyulu@intel.com>
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Reviewed-by: Emmanuel Grumbach <emmanuel.grumbach@intel.com>
 Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
 ---
- .../net/wireless/intel/iwlwifi/mld/power.c    | 37 ++++++++++++++++---
- 1 file changed, 31 insertions(+), 6 deletions(-)
+ .../wireless/intel/iwlwifi/fw/api/mac-cfg.h   | 29 ++++++++++++++-----
+ 1 file changed, 22 insertions(+), 7 deletions(-)
 
-diff --git a/drivers/net/wireless/intel/iwlwifi/mld/power.c b/drivers/net/wireless/intel/iwlwifi/mld/power.c
-index f664b277adf7..c3318e84f4a2 100644
---- a/drivers/net/wireless/intel/iwlwifi/mld/power.c
-+++ b/drivers/net/wireless/intel/iwlwifi/mld/power.c
-@@ -328,6 +328,33 @@ iwl_mld_tpe_sta_cmd_data(struct iwl_txpower_constraints_cmd *cmd,
- 				       link->tpe.max_reg_client[0].power[i]);
- }
+diff --git a/drivers/net/wireless/intel/iwlwifi/fw/api/mac-cfg.h b/drivers/net/wireless/intel/iwlwifi/fw/api/mac-cfg.h
+index 628f39917a6f..f260115abc5a 100644
+--- a/drivers/net/wireless/intel/iwlwifi/fw/api/mac-cfg.h
++++ b/drivers/net/wireless/intel/iwlwifi/fw/api/mac-cfg.h
+@@ -503,23 +503,37 @@ enum iwl_link_modify_bandwidth {
+ 	IWL_LINK_MODIFY_BW_320,
+ };
  
-+static int
-+iwl_mld_set_ap_power_type(struct iwl_txpower_constraints_cmd *cmd,
-+			  struct ieee80211_vif *vif,
-+			  struct ieee80211_bss_conf *link)
-+{
-+	if (vif->type == NL80211_IFTYPE_AP) {
-+		cmd->ap_type = cpu_to_le16(IWL_6GHZ_AP_TYPE_VLP);
-+		return 0;
-+	}
++/**
++ * enum iwl_npca_flags - NPCA flags
++ * @IWL_NPCA_FLAG_MAC_HDR_BASED: MAC header based NPCA operation
++ *	permitted in the BSS (MOPLEN)
++ */
++enum iwl_npca_flags {
++	IWL_NPCA_FLAG_MAC_HDR_BASED = BIT(0),
++}; /* NPCA_FLAG_E */
 +
-+	switch (link->power_type) {
-+	case IEEE80211_REG_LPI_AP:
-+		cmd->ap_type = cpu_to_le16(IWL_6GHZ_AP_TYPE_LPI);
-+		break;
-+	case IEEE80211_REG_SP_AP:
-+		cmd->ap_type = cpu_to_le16(IWL_6GHZ_AP_TYPE_SP);
-+		break;
-+	case IEEE80211_REG_VLP_AP:
-+		cmd->ap_type = cpu_to_le16(IWL_6GHZ_AP_TYPE_VLP);
-+		break;
-+	default:
-+		return -EINVAL;
-+	}
-+
-+	return 0;
-+}
-+
- void
- iwl_mld_send_ap_tx_power_constraint_cmd(struct iwl_mld *mld,
- 					struct ieee80211_vif *vif,
-@@ -349,15 +376,13 @@ iwl_mld_send_ap_tx_power_constraint_cmd(struct iwl_mld *mld,
- 	memset(cmd.psd_pwr, DEFAULT_TPE_TX_POWER, sizeof(cmd.psd_pwr));
- 	memset(cmd.eirp_pwr, DEFAULT_TPE_TX_POWER, sizeof(cmd.eirp_pwr));
+ /**
+  * struct iwl_npca_params - NPCA parameters (non-primary channel access)
+  *
++ * @dis_subch_bmap: disabled subchannel bitmap for NPCA
+  * @switch_delay: after switch, delay TX according to destination AP
+  * @switch_back_delay: switch back to control channel before OBSS frame end
++ * @initial_qsrc: Indicates the value that is used to initialize the
++ *	EDCAF QSRC[AC] variables
+  * @min_dur_threshold: minimum PPDU time to switch to the non-primary
+- *	NPCA channel
+- * @flags: NPCA flags - bit 0: puncturing allowed, bit 1: new TX allowed
++ *	NPCA channel (usec)
++ * @flags: NPCA flags, see &enum iwl_npca_flags
+  * @reserved: reserved for alignment purposes
+  */
+ struct iwl_npca_params {
++	__le16 dis_subch_bmap;
+ 	u8 switch_delay;
+ 	u8 switch_back_delay;
+-	__le16 min_dur_threshold;
+-	__le16 flags;
+-	__le16 reserved;
+-} __packed; /* NPCA_PARAM_API_S_VER_1 */
++	u8 initial_qsrc;
++	u8 min_dur_threshold;
++	u8 flags;
++	u8 reserved;
++} __packed; /* NPCA_PARAM_API_S_VER_2 */
  
--	if (vif->type == NL80211_IFTYPE_AP) {
--		cmd.ap_type = cpu_to_le16(IWL_6GHZ_AP_TYPE_VLP);
--	} else if (link->power_type == IEEE80211_REG_UNSET_AP) {
-+	if (iwl_mld_set_ap_power_type(&cmd, vif, link))
- 		return;
--	} else {
--		cmd.ap_type = cpu_to_le16(link->power_type - 1);
-+
-+	if (vif->type != NL80211_IFTYPE_AP)
- 		iwl_mld_tpe_sta_cmd_data(&cmd, link);
--	}
+ /**
+  * struct iwl_link_config_cmd - command structure to configure the LINK context
+@@ -630,7 +644,8 @@ struct iwl_link_config_cmd {
+ 	struct iwl_npca_params npca_params; /* since _VER_7 */
+ 	struct iwl_ac_qos prio_edca_params; /* since _VER_7 */
+ 	__le32 reserved3[4];
+-} __packed; /* LINK_CONTEXT_CONFIG_CMD_API_S_VER_1, _VER_2, _VER_3, _VER_4, _VER_5, _VER_6, _VER_7 */
++} __packed; /* LINK_CONTEXT_CONFIG_CMD_API_S_VER_1, _VER_2, _VER_3, _VER_4,
++	     *				    _VER_5, _VER_6, _VER_7, _VER_8 */
  
-+	IWL_DEBUG_POWER(mld, "AP power type: %d\n", le16_to_cpu(cmd.ap_type));
- 	ret = iwl_mld_send_cmd_pdu(mld,
- 				   WIDE_ID(PHY_OPS_GROUP,
- 					   AP_TX_POWER_CONSTRAINTS_CMD),
+ /* Currently FW supports link ids in the range 0-3 and can have
+  * at most two active links for each vif.
 -- 
 2.34.1
 
