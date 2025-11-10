@@ -1,124 +1,196 @@
-Return-Path: <linux-wireless+bounces-28811-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-28812-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id D57A7C486F3
-	for <lists+linux-wireless@lfdr.de>; Mon, 10 Nov 2025 18:53:31 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id DB367C492D4
+	for <lists+linux-wireless@lfdr.de>; Mon, 10 Nov 2025 21:04:39 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id C75D14E61E2
-	for <lists+linux-wireless@lfdr.de>; Mon, 10 Nov 2025 17:53:30 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id B0DF4188EC03
+	for <lists+linux-wireless@lfdr.de>; Mon, 10 Nov 2025 20:05:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 75E112E6CA6;
-	Mon, 10 Nov 2025 17:53:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 54F5F33556A;
+	Mon, 10 Nov 2025 20:04:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=cse-iitm-ac-in.20230601.gappssmtp.com header.i=@cse-iitm-ac-in.20230601.gappssmtp.com header.b="jmXgRtZV"
+	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="iHZoEb+7";
+	dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b="Z0QGnCEN"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-pf1-f170.google.com (mail-pf1-f170.google.com [209.85.210.170])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D70632E54D3
-	for <linux-wireless@vger.kernel.org>; Mon, 10 Nov 2025 17:53:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.170
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B41DC221F03
+	for <linux-wireless@vger.kernel.org>; Mon, 10 Nov 2025 20:04:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762797208; cv=none; b=pTc9v/D1t+HBP9KB+CSD93QJEsHflDnvF/etxiMMJBVO7ct9cgsR/9oSq9pRFC5P8w8dNypP3FkhkPeHU0gmsPkeCzJx8e+u4xhFex4S0hqF7UDkyEnvbqPS4TacK3rtNR2H7LvSdXaw7GdAKJH9+tQuONb5t7zkkJQSQ7W/kAM=
+	t=1762805076; cv=none; b=X9vGxG00PjcXURUspCQiEpt1OHqsOFi3S8GyKuhrZG2UQohLE4pNDqNn7YiK7q1qN/MKAFkCNktTxj7+398WeX76CI/QRm7mj2UxVzmoEx5EW3+SHnyRUUtIGTcCTPhWF59iuAZyCEqRc2lxxfVty/SdYM7Ysm536KB0HmWDzwk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762797208; c=relaxed/simple;
-	bh=Lt/1CFIZSYE9YGBEOPIRVp2yrsoVFOp/QxdHkcY3gU0=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=mcg6BlaBznfJob+0VGSHRCQKB18G30n5mzcQFVFMbV6KHWXTxHfKM4M+Td9YJ8Jlkvn0zBYDRUQjRYTi2QuCMqS7QL/d6pc+QZgPKPsKK7wsLbjrFoJXvnZ133iz6rsRf/x+EcXBj+95JTW+oQSr/OVE58rTnwRJGlxlSB25r34=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=cse.iitm.ac.in; spf=pass smtp.mailfrom=cse.iitm.ac.in; dkim=pass (2048-bit key) header.d=cse-iitm-ac-in.20230601.gappssmtp.com header.i=@cse-iitm-ac-in.20230601.gappssmtp.com header.b=jmXgRtZV; arc=none smtp.client-ip=209.85.210.170
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=cse.iitm.ac.in
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=cse.iitm.ac.in
-Received: by mail-pf1-f170.google.com with SMTP id d2e1a72fcca58-7afc154e411so1949113b3a.1
-        for <linux-wireless@vger.kernel.org>; Mon, 10 Nov 2025 09:53:25 -0800 (PST)
+	s=arc-20240116; t=1762805076; c=relaxed/simple;
+	bh=Fkcw2qew7eVStl/+jGAeuW+KaRb7Jjz96jXXyII4x7E=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=Qd1cjZhKDKtssV19Y/cCQEw0FDKA92+A6ZVmR2wMypxWSF+Lrmkm6fdR9n6HVPPqeOTRg7V7CzdVESJeUMrnxhoqLzHWRLvlUPkZZEb5Hh4ykXG0mzXIwrkdlr798NI0Y9cfnLBZAH4TaIW/2nw/kXr24PRPDhMIxpojloHm9Ik=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=iHZoEb+7; dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b=Z0QGnCEN; arc=none smtp.client-ip=205.220.168.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
+Received: from pps.filterd (m0279864.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 5AACOJVW2407325
+	for <linux-wireless@vger.kernel.org>; Mon, 10 Nov 2025 20:04:34 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
+	cc:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
+	wywLQuZS84UaCfivN9hBRyvo1mTqLh2yeP1DKGiRq6I=; b=iHZoEb+7rvrtIGQY
+	ZdifNm7zQg6ObBnG36sLNVmkMToc6JglIPMxJy+j4phnAhWq8JdOK3rZqcOuCjsE
+	DiVo5rYj7xi8eg/Un7A7vRRh3TM1+tSH2+nAdhMWS+qF28anMvbdkLpLngazP6wI
+	E+diKjovVkFr9MyuLeBfj3Bei45WdSbnWWoJKu/cK0vruY7q/cX1DJpClJfaiUOh
+	c95agm6xEj3zDG/f3oVL9T6UfIDhxsUFJ8oi6otHx0T0ttsMtMP4LFNPElBZx/MP
+	21YUa7uKEC1qe8PF+x8gaiT8YwV8G/kYqHSFY0UlOInvwhnVsdGaVd/A0146OewZ
+	NO3//g==
+Received: from mail-pg1-f197.google.com (mail-pg1-f197.google.com [209.85.215.197])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4abatdag3r-1
+	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
+	for <linux-wireless@vger.kernel.org>; Mon, 10 Nov 2025 20:04:33 +0000 (GMT)
+Received: by mail-pg1-f197.google.com with SMTP id 41be03b00d2f7-b471737e673so5676154a12.1
+        for <linux-wireless@vger.kernel.org>; Mon, 10 Nov 2025 12:04:33 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=cse-iitm-ac-in.20230601.gappssmtp.com; s=20230601; t=1762797205; x=1763402005; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=XUcDXkPejgMco2JfdbhYSJS3kdJZuowM1tOw4yzk4R0=;
-        b=jmXgRtZVXVmaYY+a9RUmC+LknWuMBbFAh2sD2WP9ZW/VHz+WsoxHoIdJgaI/OJlTcD
-         CxKDQmt4yu/5a/S1fkzzt95PAh9ekm0OqMNGEuuSvnWB4cr7uXPuLBYkmuR0LxWpW66e
-         PFLiSMlSIYveO+b8FyNR8MRIfq0OHkVmTV/MWWXvlJnemetoevEkYcsU+Hdf037gcz8I
-         R0jnW0l9TSXzubmR6elb2a2o3cD4J7d1OexY0X1CG7Ntptr4PPeHN+l6KmSmXrxWR8hb
-         AAQqhQWeqS6cp5kZU64AldF2skHRXqmH/mp4diEVK/uvKwjBXge9yAm9DMRtFUgNgMqD
-         2rlQ==
+        d=oss.qualcomm.com; s=google; t=1762805073; x=1763409873; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:content-language:from
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=wywLQuZS84UaCfivN9hBRyvo1mTqLh2yeP1DKGiRq6I=;
+        b=Z0QGnCENeqnBC1x4msz9V78SSG1mSFNbdjn/kmikSlDnYlnXKm8Aeqhw/9OdMPFs1z
+         iTL1zaCInEyALdqvLpeesmCfr9xuvI2sxrSou8koyUZdfkzGJjm/BYtvXgw/2w9pKgWZ
+         pX0MORfru/gJqioEwgfyADXh3k4s9rdBmzOKiWfImfzBVtGZ0BKvdcSJu38zaJBWJpeN
+         6yZto2mZCne0+LYE8r8QyGACS3KyRgUvpdmOpDnvJ7ZlyvYVLj7mHNJfojwk258c5TGe
+         fhIkb3sNQUgnt9TXeglsBlvsk/yKEEuP/ahqh7Uu4isJZbt857fl1fXo2pVxSQykJrDm
+         GMpQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1762797205; x=1763402005;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=XUcDXkPejgMco2JfdbhYSJS3kdJZuowM1tOw4yzk4R0=;
-        b=idc4sO8KqCJhQqN6Ytv8TpmIJxF93EXOFdZtMEXsT4gpLkWp/mIZMh8Ij6SaFZIQ9p
-         fouwmgKwDjuzHsC3+1WdkOPs5rfJjcan4y1z75+2NeQ26P2ZErTHPzSo8eyB7FpK6JGC
-         FjeGXTwTz6NqEYwguKmRT8ggv+uQZxXui2VdpfUWTH8RcJvfcZ6hDJV2x1dsQrJSubHy
-         OUr0x4kiE7RjB+0v9TyO6uEyZQD+R1Xtv7ChVYH0sif4JE55KkSQ6EC3YqTDYQKiNAPJ
-         5JHJrdSV+p/d5qT4YPxS4dVez1Q7n+HaDz7ZOdqwzDTj2GQ2tTuej2RemlfOPZc2z89C
-         2UOQ==
-X-Gm-Message-State: AOJu0Yx32NZsrMIRUSttwo9IB2IvMvtlmenRbnOpgEfId5elkWP6GhIY
-	hYdM5jY/4g5Xvf9Ip6C/Z93xM4WIaEF4wowkvF8DZu8OO3EEDBuombhJicRB/16OPL/CRss+tRC
-	qzQ0/O7o=
-X-Gm-Gg: ASbGncvgP5KIe9jP3dfZvSu4swx3lNxAkzGwR6LWhF1MLOtKpp8p3w0tRoX9h/JplrC
-	GZlNp4iXxL4K+lbuQZ7p5skyM5HwccPm1P7ADWiTp03FtUVGwlwAv+N+TDWZwRknG68/7AleWS0
-	CYCH1fhcZW1nvvT4QXNyW9j+6sYH2h3Qm/yN+Hc7OOshxrhdQczHHK4egI3MER2f220foXlcIrX
-	eoKjpUllmiIqL1DIQUk7RAj5IposO1gBeRvQxnxK5Gb0koZX6TDbEGCSp7dWNy+eCgkPHegMHZQ
-	Ns29jg2uE1qTjMJUjiwX3iqGjXQDcXzFCHGZCOzdjE6CUjFpsn+QSsf4Wd3nHS7sjtofemhY8Y4
-	hsfjq3GJcio4cKsj7EBHke48p2jEJ5lc1ekYQ+3WH22wN2FdoM8dAM3jjjNzOJE6XVura3JrGKD
-	1BKI9I4ZL0DfVt/OGqsQ2opAbL
-X-Google-Smtp-Source: AGHT+IFoANBS+IaD+50u8WEIs8LTu+6CF+x94Eog59zLa6zFUQ0ovUDXHwdutBc/eywjQzKVHdO8mQ==
-X-Received: by 2002:a05:6a20:430b:b0:352:7cc0:93b7 with SMTP id adf61e73a8af0-353a38596eamr10965577637.40.1762797204710;
-        Mon, 10 Nov 2025 09:53:24 -0800 (PST)
-Received: from localhost.localdomain ([49.37.219.248])
-        by smtp.googlemail.com with ESMTPSA id d2e1a72fcca58-7b0cc17ad4asm12525193b3a.37.2025.11.10.09.53.22
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 10 Nov 2025 09:53:24 -0800 (PST)
-From: Abdun Nihaal <nihaal@cse.iitm.ac.in>
-To: linux-wireless@vger.kernel.org
-Cc: Abdun Nihaal <nihaal@cse.iitm.ac.in>,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH] wifi: cw1200: Fix potential memory leak in cw1200_bh_rx_helper()
-Date: Mon, 10 Nov 2025 23:23:15 +0530
-Message-ID: <20251110175316.106591-1-nihaal@cse.iitm.ac.in>
-X-Mailer: git-send-email 2.43.0
+        d=1e100.net; s=20230601; t=1762805073; x=1763409873;
+        h=content-transfer-encoding:in-reply-to:content-language:from
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=wywLQuZS84UaCfivN9hBRyvo1mTqLh2yeP1DKGiRq6I=;
+        b=NjlGCtHyegLsfaSAWWvKTOhFAcHf2b83lHQHPMnPDmIeF1J/D1YoM56lTffTBPKl51
+         sjcPA6nTrnEnmC2iXI3cqW2DKa/cv4tyxxT6aQDW0de6ssA3jUQcFe5jelGTz/2ECzSu
+         UlvHIjRRFuKoZps4S56Jl0Qw+Gq6QpWQwywYZLi0RzieN44yAJILosjW5aS8kTeg7sQB
+         cmAsgxyGjraUwv4Wc0kv71Qg+/FqeOMSrk8EKnv60SnvpgN8gQRdFGcPm9ZpEF+M8p0v
+         7kFP3G3Gi95KnOAZ1urRagna4quKDMId2olDJWxfh5ZX0jVBurognJkAlpRr/wZ9Bo5B
+         YkIw==
+X-Gm-Message-State: AOJu0YzFI8ggeFH6Nyrx6Qm6P84cr4NKx2fyFBMTGhVwLU8QKtx3avQu
+	DvyMt4KpKM/BMHTfXn5mBqkcfvOW9YbIIdwskf1v37NwyyrIYoyo4gYFLWrueCoNbeFySSaBo2I
+	M9V+ioL1rdGcXu2VntAljQTV4hED0iLFfm8PIMlac6KwoEchTxhT0fU9p/H2PsrGZPvudYg==
+X-Gm-Gg: ASbGncu1SR6tf+feVRa7ckeOPH4cPnllcQhFFsIpE+MmJiKfk5jV/8Uetq1i6NvZNhJ
+	7EDB2J+hT6oZJD7Ex6nnhhwYc89Iv6EZqzjtu7Ta/Y4Jq88n4bzUaycvE+YG+f0sK3EFv3PVOIJ
+	/QZby58UhZDZTM2dWRCxZ49TunR5v0HoouQF30gouDSOc71ytgGBtlhBk5wQYtfD6tMJwk1QX/Q
+	bOG07VKhcJfcjOTXnQ93bEWKT+O/vqxsL6SBiPaPWaBZXkUCYC0DSFxNQixJwuRPu/dLDSj+y8I
+	B4G+SL5+Qr+GtlqIxTTnkjasG+Pm/QnUd/GVB2gBgXrRFhGkxthcxbshrgibH/VGk56KAoXO6Th
+	s+v9QyTL5kdax7rpLWgLM7UWpGtWGVS1MpOdJJsRbdmQ+Ej1VjQ3pJKt4/I/jmIGCsQ==
+X-Received: by 2002:a17:902:c94b:b0:294:9813:4512 with SMTP id d9443c01a7336-297e540dd6fmr127849555ad.3.1762805073087;
+        Mon, 10 Nov 2025 12:04:33 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IGgRlu+QHDT2qRkN8FN4ZfcELPFfekO3p0qsOXqvaypumnws68i1D7DWIV/z8geDOvCYuPmxQ==
+X-Received: by 2002:a17:902:c94b:b0:294:9813:4512 with SMTP id d9443c01a7336-297e540dd6fmr127849065ad.3.1762805072440;
+        Mon, 10 Nov 2025 12:04:32 -0800 (PST)
+Received: from [192.168.1.3] (c-24-130-122-79.hsd1.ca.comcast.net. [24.130.122.79])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-297ed6808ddsm81285505ad.17.2025.11.10.12.04.31
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 10 Nov 2025 12:04:32 -0800 (PST)
+Message-ID: <2b34ceae-5e31-4dba-93e5-3fa35754fab6@oss.qualcomm.com>
+Date: Mon, 10 Nov 2025 12:04:30 -0800
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 0/3] ath10k: Introduce a devicetree quirk to skip host
+ cap QMI requests
+To: david@ixit.cz, Johannes Berg <johannes@sipsolutions.net>,
+        Rob Herring <robh@kernel.org>,
+        Krzysztof Kozlowski <krzk+dt@kernel.org>,
+        Conor Dooley <conor+dt@kernel.org>, Jeff Johnson <jjohnson@kernel.org>,
+        Bjorn Andersson <andersson@kernel.org>,
+        Konrad Dybcio <konradybcio@kernel.org>
+Cc: linux-wireless@vger.kernel.org, devicetree@vger.kernel.org,
+        ath10k@lists.infradead.org, linux-kernel@vger.kernel.org,
+        linux-arm-msm@vger.kernel.org, phone-devel@vger.kernel.org,
+        Amit Pundir <amit.pundir@linaro.org>
+References: <20251110-skip-host-cam-qmi-req-v2-0-0daf485a987a@ixit.cz>
+From: Jeff Johnson <jeff.johnson@oss.qualcomm.com>
+Content-Language: en-US
+In-Reply-To: <20251110-skip-host-cam-qmi-req-v2-0-0daf485a987a@ixit.cz>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Proofpoint-GUID: 8ocws3ezUxTKREE3PhdZd-0JOhaO8aPm
+X-Authority-Analysis: v=2.4 cv=eZowvrEH c=1 sm=1 tr=0 ts=69124551 cx=c_pps
+ a=rz3CxIlbcmazkYymdCej/Q==:117 a=Tg7Z00WN3eLgNEO9NLUKUQ==:17
+ a=IkcTkHD0fZMA:10 a=6UeiqGixMTsA:10 a=s4-Qcg_JpJYA:10
+ a=VkNPw1HP01LnGYTKEx00:22 a=VwQbUJbxAAAA:8 a=p0WdMEafAAAA:8
+ a=V89vUnNgf5GAzAs4dTEA:9 a=QEXdDO2ut3YA:10 a=bFCP_H2QrGi7Okbo017w:22
+ a=poXaRoVlC6wW9_mwW8W4:22 a=pHzHmUro8NiASowvMSCR:22 a=n87TN5wuljxrRezIQYnT:22
+X-Proofpoint-ORIG-GUID: 8ocws3ezUxTKREE3PhdZd-0JOhaO8aPm
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUxMTEwMDE3MCBTYWx0ZWRfX71tsvFb7Fgi3
+ 9lyQkorsmhh5i54Q8w0qE90pctKGsExM+kjbFybp1vapeLGGdABjfkXs2v5MXWfeC7HDaKWBXc9
+ N9HluZb5051pNc0JF4U/R2FzEtkUSgzhqNpC5kPEsiSgHt/EINsHMtKq8frPvxmXl/IiSeNg1qr
+ LNSTrnuXGOW9ZuQBM2jjlI+EP7z8rVOsW05Uro5WpElnlVB+dUYgruDBGlKMfX5YW+sUlXT8evG
+ E0G8zVdoguKOrpmeKWRp6b0m2Pop//JjzyXG9ZKP1hTAhsVKOtPcD4bIZoU42qRsaVc0jYy1d47
+ qL6sCXHuOVAw/0tCy5s060iSJIskFuoZErihKLMgt2oPJ6VDNtiSW2EKO7MdCnQ23Udh4PwnzIP
+ RqADDTBT9WLpm+3PDNatb/l5vxMOlw==
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.9,FMLib:17.12.100.49
+ definitions=2025-11-10_07,2025-11-10_02,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ suspectscore=0 spamscore=0 adultscore=0 impostorscore=0 lowpriorityscore=0
+ clxscore=1015 malwarescore=0 priorityscore=1501 bulkscore=0 phishscore=0
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.22.0-2510240001 definitions=main-2511100170
 
-In one of the error paths, the memory allocated for skb_rx is not freed.
-Fix that by freeing it before returning.
+On 11/10/2025 6:26 AM, David Heidelberg via B4 Relay wrote:
+> This quirk is used so far for Xiaomi Poco F1.
+> 
+> I'm resending it after ~ 4 years since initial send due to Snapdragon
+> 845 being one of best supported platform for mobile phones running
+> Linux, so it would be shame to not have shiny support.
+> 
+> I'm very much open to suggestions how to solve this in a different way,
+> as the original discussion thread got quiet, see
+>   https://lore.kernel.org/all/b796bfee-b753-479a-a8d6-ba1fe3ee6222@ixit.cz/
+> 
+> There could be other devices in need of this quirk, but if they're not,
+> we could make it compatible specific quirk.
+> 
+> Until merged, available also at:
+>   https://gitlab.com/dhxx/linux/-/commits/b4/skip-host-cam-qmi-req
+> 
+> Signed-off-by: David Heidelberg <david@ixit.cz>
+> ---
+> Amit Pundir (3):
+>       dt-bindings: wireless: ath10k: Introduce quirk to skip host cap QMI requests
+>       ath10k: Introduce a devicetree quirk to skip host cap QMI requests
+>       arm64: dts: qcom: sdm845-xiaomi-beryllium: Enable ath10k host-cap skip quirk
+> 
+>  .../devicetree/bindings/net/wireless/qcom,ath10k.yaml       |  6 ++++++
+>  .../arm64/boot/dts/qcom/sdm845-xiaomi-beryllium-common.dtsi |  2 ++
+>  drivers/net/wireless/ath/ath10k/qmi.c                       | 13 ++++++++++---
+>  drivers/net/wireless/ath/ath10k/snoc.c                      |  3 +++
+>  drivers/net/wireless/ath/ath10k/snoc.h                      |  1 +
+>  5 files changed, 22 insertions(+), 3 deletions(-)
+> ---
+> base-commit: ab40c92c74c6b0c611c89516794502b3a3173966
+> change-id: 20251110-skip-host-cam-qmi-req-e155628ebc39
+> 
+> Best regards,
 
-Fixes: a910e4a94f69 ("cw1200: add driver for the ST-E CW1100 & CW1200 WLAN chipsets")
-Signed-off-by: Abdun Nihaal <nihaal@cse.iitm.ac.in>
----
-Compile tested only. Issue found using static analysis.
+The original thread predates me becoming an ath.git maintainer.
+Just for my information, is the firmware and board files for this platform
+available in linux-firmware? Or does it leverage the files already present
+from the original (Android?) installation?
 
- drivers/net/wireless/st/cw1200/bh.c | 6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
+I ask because the alternative solution suggested by Kalle would require
+modification of the board file on the device, and that seems more of a hassle
+than just modifying the DT.
 
-diff --git a/drivers/net/wireless/st/cw1200/bh.c b/drivers/net/wireless/st/cw1200/bh.c
-index 3b4ded2ac801..37232ee22037 100644
---- a/drivers/net/wireless/st/cw1200/bh.c
-+++ b/drivers/net/wireless/st/cw1200/bh.c
-@@ -317,10 +317,12 @@ static int cw1200_bh_rx_helper(struct cw1200_common *priv,
- 
- 	if (wsm_id & 0x0400) {
- 		int rc = wsm_release_tx_buffer(priv, 1);
--		if (WARN_ON(rc < 0))
-+		if (WARN_ON(rc < 0)) {
-+			dev_kfree_skb(skb_rx);
- 			return rc;
--		else if (rc > 0)
-+		} else if (rc > 0) {
- 			*tx = 1;
-+		}
- 	}
- 
- 	/* cw1200_wsm_rx takes care on SKB livetime */
--- 
-2.43.0
+So I'm personally OK with this suggested approach.
 
+/jeff
 
