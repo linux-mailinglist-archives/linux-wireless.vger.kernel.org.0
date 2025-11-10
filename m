@@ -1,109 +1,87 @@
-Return-Path: <linux-wireless+bounces-28722-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-28723-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1EB27C456B4
-	for <lists+linux-wireless@lfdr.de>; Mon, 10 Nov 2025 09:46:58 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
+	by mail.lfdr.de (Postfix) with ESMTPS id 767BFC456CF
+	for <lists+linux-wireless@lfdr.de>; Mon, 10 Nov 2025 09:48:28 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id B7DF6188B57A
-	for <lists+linux-wireless@lfdr.de>; Mon, 10 Nov 2025 08:47:22 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 6760C4E1871
+	for <lists+linux-wireless@lfdr.de>; Mon, 10 Nov 2025 08:48:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6965923BCE4;
-	Mon, 10 Nov 2025 08:46:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 42E8A2FD1C1;
+	Mon, 10 Nov 2025 08:48:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b="G9HyL4Nz"
+	dkim=pass (2048-bit key) header.d=realtek.com header.i=@realtek.com header.b="iSJrw10e"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from sipsolutions.net (s3.sipsolutions.net [168.119.38.16])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B72D12EBBB2
-	for <linux-wireless@vger.kernel.org>; Mon, 10 Nov 2025 08:46:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=168.119.38.16
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1D09F2FCBF7
+	for <linux-wireless@vger.kernel.org>; Mon, 10 Nov 2025 08:48:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=211.75.126.72
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762764410; cv=none; b=CoIKY8oxsxyk6m/Y4l/8WThW2NLq4SYm06ydzrgHuqQmXaiGtiJQNmVM6okUgYbB/tOrxZwrxrC3WzOVc7cmyycTcwS4eOOvT7281JafSEBCKVaoInvDTL6h09BJDL/3bnwf1qa9B/cCW8PRWai/KMQxA+3R6ZNguuQcg2mJ8Ok=
+	t=1762764505; cv=none; b=jDOHUjiSKHDNZhX+5PO9LrCCbu5pD1FNdndkoNjHGJeLl6Q7nfjf9MOd8txwo7TpGG0xrDLzvBzyKZrl0xFdxEFsJs5J3nYs9yLYhrktwh0Gw3gfXZAn5c89mS9SoBoy2leO9+MeUivais5OtePegLDWX/YBWs6zFXCk+C/DuFQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762764410; c=relaxed/simple;
-	bh=M6+JC2cUtKr4kYocp+n07aeMrxS5ZJeLQgvN6AlkiO8=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=jp2PGyP0PQCPAljfYH4Tm2/63dJps+ZG/6lqUDd0EUB4La5iPBT8qWcHEI5CtQT80Z6SkGxqLsgdktA8zx2yaJK7b9w3p+ucGb4ZuZzzekyz54jozvL8tKd8NTBhe+SbBhlbmXbdPQSAAJCB8tEpB+zTOfjKes9tiEVkOC6v7wU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net; spf=pass smtp.mailfrom=sipsolutions.net; dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b=G9HyL4Nz; arc=none smtp.client-ip=168.119.38.16
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sipsolutions.net
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=sipsolutions.net; s=mail; h=MIME-Version:Content-Transfer-Encoding:
-	Content-Type:References:In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender
-	:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
-	Resent-Cc:Resent-Message-ID; bh=1UEuF1BScwUbZXtfBOqlA+in72d87+vj/RTzp41kkbU=;
-	t=1762764408; x=1763974008; b=G9HyL4NzAZZ7A8jPOLZgown5tgT69/G2zK0wz+4lZCgXnDF
-	WlHCK5SkS5UI+bh5v3vBsfljOzYk7mdo177zjvD7/VlwzPaZZt/shPHKphNgF41Dj19eHe3kgDUkY
-	ixyK3ISSZOVRWfVQPqAWlKxqwI+akzaTUuxpCjuLEd57FgWy9NZ5XYeyUS9Sym6/imniDX8jXNnS2
-	HAU6Uf5cxl1Wodf7J+EYmXiNiU4qUJge+CWZSNZSCDxBPd9+jJHiqVuXpLJ0OAvLah90xX47Hw8ro
-	UwMje+OqTNpm2yFjY5qJLkXx17RarINcLkpw6/9ZEU5v7sJBj6Ig9txBlc14RvEw==;
-Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
-	(Exim 4.98.2)
-	(envelope-from <johannes@sipsolutions.net>)
-	id 1vINXx-0000000B2CS-0p7p;
-	Mon, 10 Nov 2025 09:46:45 +0100
-Message-ID: <eeb4d8484a590d39590dbbd71d0924851115b0ac.camel@sipsolutions.net>
-Subject: Re: [RFC v4 wireless-next 1/2] wifi: cfg80211: allow send/recv
- tagged EAPOLs
-From: Johannes Berg <johannes@sipsolutions.net>
-To: Janusz Dziedzic <janusz.dziedzic@gmail.com>, 
-	linux-wireless@vger.kernel.org
-Cc: j@w1.fi
-Date: Mon, 10 Nov 2025 09:46:44 +0100
-In-Reply-To: <20251109193543.2858854-1-janusz.dziedzic@gmail.com> (sfid-20251109_203602_258603_216EF26E)
-References: <20251109193543.2858854-1-janusz.dziedzic@gmail.com>
-	 (sfid-20251109_203602_258603_216EF26E)
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.56.2 (3.56.2-2.fc42) 
+	s=arc-20240116; t=1762764505; c=relaxed/simple;
+	bh=rYHBg55k/wUWXwxcd3rJrmS7WEen2i/NZ59oubrXySA=;
+	h=From:To:Subject:Date:Message-ID:References:In-Reply-To:
+	 Content-Type:MIME-Version; b=CvyQrO3llUFn8ApAVB9kb9ce8UaGIisBq4V00qyF2RFdwxv3vFJ7/lmOcpQCABKzjQtsQYTFl2OcTBLhWly+I9XMf4Pp5RpwUp1lmdK/EKeJObb4X0wOkL36w18FzWQvQ6vRJ+PXReg7OETJMI2sWIMrw8xF2oynVtII+gyh8Gc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com; spf=pass smtp.mailfrom=realtek.com; dkim=pass (2048-bit key) header.d=realtek.com header.i=@realtek.com header.b=iSJrw10e; arc=none smtp.client-ip=211.75.126.72
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=realtek.com
+X-SpamFilter-By: ArmorX SpamTrap 5.80 with qID 5AA8mIJ711403430, This message is accepted by code: ctloc85258
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=realtek.com; s=dkim;
+	t=1762764498; bh=rYHBg55k/wUWXwxcd3rJrmS7WEen2i/NZ59oubrXySA=;
+	h=From:To:Subject:Date:Message-ID:References:In-Reply-To:
+	 Content-Type:Content-Transfer-Encoding:MIME-Version;
+	b=iSJrw10egQsf/P705qr1u6HYsnfctqzZuraaLfCSxld/PmIn7rS7hHzyWPRKzOxDO
+	 DQOODisKx2DkcVQ4I4eYqrayC0bjQq41UX7q8PXL1oWEgvYs9CFcoSYbecOVT52K7M
+	 OxqmfuAuV1TWNEWa0SXU6Hb4rqaATGXf6ENAVYsulDOSGBKvXFn5JmiabnBEZ6U/Hf
+	 bUC0VAOGRrYzlhdLgQ7GiGhZUzDb38AuVjUlCypC8pEowa7Z5Gu04asoPtMQH9QLjx
+	 yL0TrrH0f6rfgtgadxjFj7dNudWAYYiav8v5eli5W4tPo7YOtsWaANOYFg01A/ZTkB
+	 jv5BKKVVaPY1g==
+Received: from mail.realtek.com (rtkexhmbs03.realtek.com.tw[10.21.1.53])
+	by rtits2.realtek.com.tw (8.15.2/3.21/5.94) with ESMTPS id 5AA8mIJ711403430
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Mon, 10 Nov 2025 16:48:18 +0800
+Received: from RTKEXHMBS06.realtek.com.tw (10.21.1.56) by
+ RTKEXHMBS03.realtek.com.tw (10.21.1.53) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1544.27; Mon, 10 Nov 2025 16:48:18 +0800
+Received: from RTKEXHMBS06.realtek.com.tw ([::1]) by
+ RTKEXHMBS06.realtek.com.tw ([fe80::744:4bc9:832c:9b7e%10]) with mapi id
+ 15.02.1544.027; Mon, 10 Nov 2025 16:48:18 +0800
+From: Ping-Ke Shih <pkshih@realtek.com>
+To: Bitterblue Smith <rtl8821cerfe2@gmail.com>,
+        "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>
+Subject: RE: [PATCH rtw-next 1/6] wifi: rtw89: Use the correct power sequences
+ for USB/SDIO
+Thread-Topic: [PATCH rtw-next 1/6] wifi: rtw89: Use the correct power
+ sequences for USB/SDIO
+Thread-Index: AQHcUAB9DhxSP+tuFEacde/UyieqvLTrnWTg
+Date: Mon, 10 Nov 2025 08:48:18 +0000
+Message-ID: <beee9921889e4f1a9d5a231c53e10861@realtek.com>
+References: <f0021b8c-efc7-4993-b0a8-8954c682d13b@gmail.com>
+ <dec13310-06eb-429e-acb8-4c5b62656836@gmail.com>
+In-Reply-To: <dec13310-06eb-429e-acb8-4c5b62656836@gmail.com>
+Accept-Language: en-US, zh-TW
+Content-Language: zh-TW
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-malware-bazaar: not-scanned
 
-On Sun, 2025-11-09 at 20:35 +0100, Janusz Dziedzic wrote:
-> Base on EasyMesh spec and traffic separation we have:
-> "If a Multi-AP Agent configures a Primary VLAN ID, the Multi-AP Agent
-> shall send EtherType 0x888E frames on a Wi-Fi link in a Multi-AP
-> Profile-2 Network Segment with an 802.1Q C-Tag with VLAN ID equal
-> to the Primary VLAN ID."
->=20
-> Add option that extend current control port implementation when
-> NL80211_ATTR_CONTROL_PORT_OVER_NL80211_VLAN used and allow to setup
-> VLAN id for control port frames for both TX/RX direction.
->=20
-> While easy mesh AP could serve both fronthaul + backhaul:
->=20
-> RX accept EAPOL:
->  - with VLAN tag (backhaul STA) - strips tag, forwards to userspace
->  - without VLAN tag (regular client) forwards to userspace as-is
->=20
-> TX (controlled by hostapd per-STA):
->  - For backhaul STA: hostapd sets NL80211_ATTR_VLAN_ID,
->    frame is tagged with Primary VLAN ID
->  - For regular client: hostapd omits NL80211_ATTR_VLAN_ID
->    frame sent without VLAN tag
->=20
-> Signed-off-by: Janusz Dziedzic <janusz.dziedzic@gmail.com>
-> ---
->=20
-
-Having some indication what you changed between the versions would be
-good, I barely remember older versions :)
-
-I do note that on RX you document the "good" but not the "bad" case: the
-VLAN tag should be stripped, but that means userspace cannot distinguish
-if it was present, so I suppose the driver must drop frames that didn't
-have it present? Then again in mac80211 you implement that both are
-accepted, but then it seems userspace should know which one was tagged
-or not?
-
-johannes
+DQpCaXR0ZXJibHVlIFNtaXRoIDxydGw4ODIxY2VyZmUyQGdtYWlsLmNvbT4gd3JvdGU6DQo+IE1h
+a2UgcnR3ODlfbWFjX3B3cl9zZXEoKSBzZWxlY3QgdGhlIHJpZ2h0IHBhcnRzIG9mIHRoZSBwb3dl
+ciBzZXF1ZW5jZXMNCj4gYmFzZWQgb24gdGhlIGludGVyZmFjZSB0eXBlLg0KPiANCj4gVGhpcyBp
+cyBvbmx5IHJlbGV2YW50IGZvciBSVEw4ODUyQS4gVGhlIG90aGVyIGNoaXBzIGRvbid0IHVzZSBw
+b3dlcg0KPiBzZXF1ZW5jZXMuDQo+IA0KPiBTaWduZWQtb2ZmLWJ5OiBCaXR0ZXJibHVlIFNtaXRo
+IDxydGw4ODIxY2VyZmUyQGdtYWlsLmNvbT4NCg0KQWNrZWQtYnk6IFBpbmctS2UgU2hpaCA8cGtz
+aGloQHJlYWx0ZWsuY29tPg0KDQo=
 
