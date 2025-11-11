@@ -1,58 +1,54 @@
-Return-Path: <linux-wireless+bounces-28845-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-28846-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 11A38C4E6E8
-	for <lists+linux-wireless@lfdr.de>; Tue, 11 Nov 2025 15:25:00 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 51391C4E772
+	for <lists+linux-wireless@lfdr.de>; Tue, 11 Nov 2025 15:28:08 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9A4EF189E3EF
-	for <lists+linux-wireless@lfdr.de>; Tue, 11 Nov 2025 14:21:15 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4968E18832DF
+	for <lists+linux-wireless@lfdr.de>; Tue, 11 Nov 2025 14:23:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 72D9C30EF86;
-	Tue, 11 Nov 2025 14:19:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 41CC72C324C;
+	Tue, 11 Nov 2025 14:23:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=xv97.com header.i=m@xv97.com header.b="NG/5p8Rw"
+	dkim=pass (1024-bit key) header.d=ixit.cz header.i=@ixit.cz header.b="i8ayxMi3"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from sender4-op-o15.zoho.com (sender4-op-o15.zoho.com [136.143.188.15])
+Received: from ixit.cz (ip-94-112-25-9.bb.vodafone.cz [94.112.25.9])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7B5D03009F8
-	for <linux-wireless@vger.kernel.org>; Tue, 11 Nov 2025 14:19:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=136.143.188.15
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762870747; cv=pass; b=GltHvHNMifRINppseaF8SbxiYdxeMZPfulnT0vqy1nf6R9OqBmZKBYZU7VW6kU3l2TuLoGS9B8rHEKAZcwI41iYYGUQCI24euNEKC/L6VXF2bHQ+hwuwuzk6lgkjAh9ZRblM65wxeYTgirGfveNT4ziBh7nWmF4a+66sCjJfeRo=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762870747; c=relaxed/simple;
-	bh=L9SXIgay21CGGcOlJyhwIR8ZD5z3q7yf1he7WasNMZs=;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5353C3AA188;
+	Tue, 11 Nov 2025 14:23:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=94.112.25.9
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1762870992; cv=none; b=KJA01hVvX6OEJ4nq7D/Qb4W2mjIHOYNkQAAmD/A7TY0tzAk6uXKSatL92QWbICHMeCXpA0LmrA8zvxqFtg+nmw+48hjwXuAxY3TIdoDO5H/4uxSzZIpDV22lltOoMnIESJ1tm1p9ZfRzf9lH7dqHbT0nEeADhW908mA/2AnUMlA=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1762870992; c=relaxed/simple;
+	bh=JXf8KnlTQnnhWOmDcUTb33mz6JrZoKL/Nq7iglCzVL0=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=lmfzLGEMQauHDJfhSoe0DWLXb4chTbXxmCII0+jKafWwAhqDBZxKJrwn6TgHGQDAZhxvPv38XvtP5FpOOjRMenYQ1aha69qscaW9peYmyF2egyiojuXTacSsHDAeOdEwNCRzrpu6opdE7mCFdrcacKD1Y/Eu+nXe5+nco41eujw=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=xv97.com; spf=pass smtp.mailfrom=xv97.com; dkim=pass (1024-bit key) header.d=xv97.com header.i=m@xv97.com header.b=NG/5p8Rw; arc=pass smtp.client-ip=136.143.188.15
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=xv97.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=xv97.com
-ARC-Seal: i=1; a=rsa-sha256; t=1762870742; cv=none; 
-	d=zohomail.com; s=zohoarc; 
-	b=EQpdlHMNzAd8HW0tbk1VsgfJmcK6eOE/X+L21/pTPk7B85QncmKhJtGtGXS7Fr4/4U1dpL0Xq9iuM37jN+WJSujeqzlWikD4wb06A9c/AkgOgGr/6puGWynuhsCb+4wTrZVQwNLFIdpZVTtO5RYEQ2EA3qZ5SKTBEnmP572LcJ0=
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
-	t=1762870742; h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:References:Subject:Subject:To:To:Message-Id:Reply-To; 
-	bh=dJtJcghwTTM7TXsLg2uN7pGzDohKh+sZC/fi22NJTOk=; 
-	b=WhXZ9FFNqDqcY2ecKa22WUoIBYGlTnItCrxlNWUyz3CEd+wzPdTKhs1QvSEzWxSsAlYmIWvzvJr9p6YVAfWyF3+n0F25Kzq36bRyicvoYhs62KrWihba/aCbWKVHkbpl3DATG76K03l9cRb3s+3gYO4G8NT3qvFK7PbmTDog6U0=
-ARC-Authentication-Results: i=1; mx.zohomail.com;
-	dkim=pass  header.i=xv97.com;
-	spf=pass  smtp.mailfrom=m@xv97.com;
-	dmarc=pass header.from=<m@xv97.com>
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1762870742;
-	s=zmail; d=xv97.com; i=m@xv97.com;
-	h=Message-ID:Date:Date:MIME-Version:Subject:Subject:To:To:Cc:Cc:References:From:From:In-Reply-To:Content-Type:Content-Transfer-Encoding:Message-Id:Reply-To;
-	bh=dJtJcghwTTM7TXsLg2uN7pGzDohKh+sZC/fi22NJTOk=;
-	b=NG/5p8RwUdZYFttSiJ3AhHTxHXC4wBHA1T2LdlZ0yXKZkligQAGIE5GrB6iKb2iH
-	ewTqNYo7rx1Hdj2LfTwZF+eEJPYevIt4zO/2Xv5eJwT9tDwig3f8Av18F2aeE4I/FBS
-	rcyRQ1v85/vZzr4YE+tKBanaqnmZkue01NelkGRc=
-Received: by mx.zohomail.com with SMTPS id 1762870740394993.4916197544973;
-	Tue, 11 Nov 2025 06:19:00 -0800 (PST)
-Message-ID: <c62262bd-8c41-43a6-9f01-dfb73f4b0a24@xv97.com>
-Date: Tue, 11 Nov 2025 22:18:50 +0800
+	 In-Reply-To:Content-Type; b=aJz2NO+GrzJ7BW8Maf6Ij8vxgaRfoUZPmBeFGBF4cIZ0bE2bB3iLKT6hdiAdcskQTgOI06LflReWRMxd2ii8i5NlHzMY6f08TF6ltvV/brF2d3WOxrcOQUT7pw5OdChx7BolAkFQZKH3ig8WH8mutzPdPOFCYzhX3yfxAWeE0rU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ixit.cz; spf=pass smtp.mailfrom=ixit.cz; dkim=pass (1024-bit key) header.d=ixit.cz header.i=@ixit.cz header.b=i8ayxMi3; arc=none smtp.client-ip=94.112.25.9
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ixit.cz
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ixit.cz
+Received: from [10.0.0.200] (unknown [10.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	 key-exchange x25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by ixit.cz (Postfix) with ESMTPSA id 6E2605340EF2;
+	Tue, 11 Nov 2025 15:23:05 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ixit.cz; s=dkim;
+	t=1762870985;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=Fdk0kWYHlnURAj9xQ3vEcSRUSriPwv1YtYVjEkVAE8c=;
+	b=i8ayxMi3ozUSGACtQIvkKQ0trLl18d0PTcM1AX1Ta2WLy6LUDsaRwN9eekEZuaW4YQIs66
+	1XkdTLitNYaZN+2k1C4fIzbMHwWx+V5qsrEyG+nCimi5RuqvnJ7sCnhUgFYlRwWKsxRSNv
+	uu4CgiCPkwp0BgB00328FoZj9G5eh0c=
+Message-ID: <5c6a1434-1f43-4434-b6ed-0c5b98ee8d2b@ixit.cz>
+Date: Tue, 11 Nov 2025 15:23:05 +0100
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
@@ -60,59 +56,111 @@ List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 1/6] wifi: mac80211: remove an unnecessary copy
-To: Johannes Berg <johannes@sipsolutions.net>
-Cc: linux-wireless@vger.kernel.org
-References: <20251110144545.15149-1-m@xv97.com>
- <20251110144545.15149-2-m@xv97.com>
- <ca0cce1b2d4d3d5c920d4d9d300ab175c6691ab6.camel@sipsolutions.net>
+Subject: Re: [PATCH 2/2] arm64: dts: qcom: xiaomi-beryllium: Add firmware-name
+ qualifier to WiFi node
+To: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
+Cc: Jeff Johnson <jjohnson@kernel.org>, Bjorn Andersson
+ <andersson@kernel.org>, Konrad Dybcio <konradybcio@kernel.org>,
+ Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
+ Conor Dooley <conor+dt@kernel.org>, Joel Selvaraj <foss@joelselvaraj.com>,
+ linux-wireless@vger.kernel.org, ath10k@lists.infradead.org,
+ linux-kernel@vger.kernel.org, linux-arm-msm@vger.kernel.org,
+ devicetree@vger.kernel.org, phone-devel@vger.kernel.org
+References: <20251111-xiaomi-beryllium-firmware-v1-0-836b9c51ad86@ixit.cz>
+ <20251111-xiaomi-beryllium-firmware-v1-2-836b9c51ad86@ixit.cz>
+ <wxvtfyfdso3ngqvnhvryeo2w6udoolfp46smv2r3qny2cl7n4o@iawxfnj7qtrw>
 Content-Language: en-US
-From: Chien Wong <m@xv97.com>
-Autocrypt: addr=m@xv97.com; keydata=
- xjMEYrGw+RYJKwYBBAHaRw8BAQdAYXRqCQnACPka63iaZ2Lc9u8qPBNaxew6PdbvpuPvkIXN
- F0NoaWVuIFdvbmcgPG1AeHY5Ny5jb20+wpYEExYIAD4WIQRhWIfCT4U86RkflE5cpYo5+kEi
- rQUCYrGw+QIbAwUJEswDAAULCQgHAgYVCgkICwIEFgIDAQIeAQIXgAAKCRBcpYo5+kEirQtx
- AP4uJuD0ufTDXmEotuOUiI+86qWvc3jNsUhWYW8wHN8zEgD8Dli09jo/TsTlfWIXWjIs/6Pp
- b96j9fho6xNpETu8ZgnOOARisbD5EgorBgEEAZdVAQUBAQdArBbkcgnrIZ6XnmGUAA9XYA+i
- tf8afTv75UGa2c0YkwoDAQgHwn4EGBYIACYWIQRhWIfCT4U86RkflE5cpYo5+kEirQUCYrGw
- +QIbDAUJEswDAAAKCRBcpYo5+kEircrLAQC/yXFAHzoG9bnsw+hsiVfEbYMa04UiDEFkTd9Q
- kA+I2gD/VCzYkTizWTiXsbcGhB05Q+mI5tX+ehhtpcrIAaBxnA8=
-In-Reply-To: <ca0cce1b2d4d3d5c920d4d9d300ab175c6691ab6.camel@sipsolutions.net>
+From: David Heidelberg <david@ixit.cz>
+Autocrypt: addr=david@ixit.cz; keydata=
+ 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
+In-Reply-To: <wxvtfyfdso3ngqvnhvryeo2w6udoolfp46smv2r3qny2cl7n4o@iawxfnj7qtrw>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-ZohoMailClient: External
+Content-Transfer-Encoding: 7bit
 
-On 11/11/25 6:09 PM, Johannes Berg wrote:
-> On Mon, 2025-11-10 at 22:45 +0800, Chien Wong wrote:
->> Using a temporary buffer for saving the CMAC result is useless.
->> With the patch, ieee80211_aes_cmac() just resembles
->> ieee80211_aes_cmac_256().
-> 
-> I guess I could've looked more closely at v1 ...
-> 
->> +++ b/net/mac80211/aes_cmac.c
->> @@ -26,7 +26,6 @@ void ieee80211_aes_cmac(struct crypto_shash *tfm, const u8 *aad,
->>   			const u8 *data, size_t data_len, u8 *mic)
->>   {
->>   	SHASH_DESC_ON_STACK(desc, tfm);
->> -	u8 out[AES_BLOCK_SIZE];
->>   	const __le16 *fc;
+On 11/11/2025 13:46, Dmitry Baryshkov wrote:
+> On Tue, Nov 11, 2025 at 01:34:23PM +0100, David Heidelberg via B4 Relay wrote:
+>> From: David Heidelberg <david@ixit.cz>
+>>
+>> Add firmware-name property to the WiFi device tree node to specify
+>> board-specific lookup directory.
+>>
+>> Signed-off-by: David Heidelberg <david@ixit.cz>
+>> ---
+>>   arch/arm64/boot/dts/qcom/sdm845-xiaomi-beryllium-common.dtsi | 2 ++
+>>   1 file changed, 2 insertions(+)
+>>
+>> diff --git a/arch/arm64/boot/dts/qcom/sdm845-xiaomi-beryllium-common.dtsi b/arch/arm64/boot/dts/qcom/sdm845-xiaomi-beryllium-common.dtsi
+>> index 785006a15e979..9b0b0446f4ad3 100644
+>> --- a/arch/arm64/boot/dts/qcom/sdm845-xiaomi-beryllium-common.dtsi
+>> +++ b/arch/arm64/boot/dts/qcom/sdm845-xiaomi-beryllium-common.dtsi
+>> @@ -631,6 +631,8 @@ &wcd9340 {
+>>   &wifi {
+>>   	status = "okay";
 >>   
->>   	desc->tfm = tfm;
->> @@ -41,9 +40,7 @@ void ieee80211_aes_cmac(struct crypto_shash *tfm, const u8 *aad,
->>   	} else {
->>   		crypto_shash_update(desc, data, data_len - CMAC_TLEN);
->>   	}
->> -	crypto_shash_finup(desc, zero, CMAC_TLEN, out);
->> -
->> -	memcpy(mic, out, CMAC_TLEN);
->> +	crypto_shash_finup(desc, zero, CMAC_TLEN, mic);
+>> +	firmware-name "sdm845/Xiaomi/beryllium";
 > 
-> This seems very wrong, it writes 16 bytes when 'mic' will only have
-> space for CMAC_TLEN==8. AFAICT, the CMAC_TLEN in the function call is
-> the input length (of 'zero'), not the output length.
+> This wasn't build-tested
+
+Sorry, I wanted to send it more like RFC to get initial feedback, I got 
+user with Foco F1 who is willing to test the changes, so I should have 
+new version with T-b until EOD.
+
+David
+
+> 
+>> +
+>>   	vdd-0.8-cx-mx-supply = <&vreg_l5a_0p8>;
+>>   	vdd-1.8-xo-supply = <&vreg_l7a_1p8>;
+>>   	vdd-1.3-rfa-supply = <&vreg_l17a_1p3>;
+>>
+>> -- 
+>> 2.51.0
+>>
+>>
 > 
 
-Sorry, that's completely wrong. Thanks for pointing out the issue—I'll 
-fix it in v3.
+-- 
+David Heidelberg
+
 
