@@ -1,69 +1,69 @@
-Return-Path: <linux-wireless+bounces-28824-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-28825-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id AA3A8C4B351
-	for <lists+linux-wireless@lfdr.de>; Tue, 11 Nov 2025 03:26:00 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5DE4DC4B354
+	for <lists+linux-wireless@lfdr.de>; Tue, 11 Nov 2025 03:26:05 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id AC77E4E3567
-	for <lists+linux-wireless@lfdr.de>; Tue, 11 Nov 2025 02:25:59 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 46F164E5836
+	for <lists+linux-wireless@lfdr.de>; Tue, 11 Nov 2025 02:26:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 05CF6347FEC;
-	Tue, 11 Nov 2025 02:25:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BEDB8347BCA;
+	Tue, 11 Nov 2025 02:26:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=realtek.com header.i=@realtek.com header.b="Goe+IUJ/"
+	dkim=pass (2048-bit key) header.d=realtek.com header.i=@realtek.com header.b="cm6cK08O"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2AA422BCF43
-	for <linux-wireless@vger.kernel.org>; Tue, 11 Nov 2025 02:25:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E6A7E2BCF43
+	for <linux-wireless@vger.kernel.org>; Tue, 11 Nov 2025 02:25:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=211.75.126.72
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762827955; cv=none; b=rnxk6FdvlgDHXbnwIFCPFCzJUtMKjEzLZxVgcwNfTo3q602Ng6XLfIH0yrQdgtC/PYaTjsvGKbhvBbZZmiEoDaeUMuoZ6H2hBnZtQVLUgUqyXA2yk8LW/HukkClrv6LOdoRI1c9DcfsSbpjMUbj9FUlwn+apDLxTfR/NFZ8yYrc=
+	t=1762827962; cv=none; b=rZx3fU2xc0o4vgtYknnsl7ogi/PYiZ4uPo45Xtzaf85CSxM6TFrWjHWw84Mu6qlCIgr9LVJduUsuPXijbNhWkmYR8mUNwL8eRfsgk1KtV7MqqTdODDBcFUVM+eI7UsbJJ85LnvAYPa0FDjTG8GpYvboxL88hg4tQlRhg62e3g1w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762827955; c=relaxed/simple;
-	bh=lNS6hFRd4tOcyqL1hCt7xhJSHOrkp9Q+7tXu0yqx5qc=;
+	s=arc-20240116; t=1762827962; c=relaxed/simple;
+	bh=HZbv/T/F+14LdUQGuhLobcP5E/FMH7dz/cKKBFHs+JI=;
 	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=jNEvUocllQr9Bj9WV2qp+qY0wp5vTZW1Bi1lhTOFYZECjlfK/kpPcJKUJ1yjfjNBb2t0H7KlbPLLgd8BVeT5TcIizceQIGcGEamTBIlMvg7PZFZfI5L1FF/jlgX8zD84j/V63qzyrY94lCKQeEJ0rkCSSMCKrDdhfmt48HNhOmI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com; spf=pass smtp.mailfrom=realtek.com; dkim=pass (2048-bit key) header.d=realtek.com header.i=@realtek.com header.b=Goe+IUJ/; arc=none smtp.client-ip=211.75.126.72
+	 MIME-Version:Content-Type; b=pxf/+JLzMEz+r1G21fT+0vZR2rLYboIF+/VAvp7KGQ6VnH97Kw2buY0+eZuvNn5+/v36GGgdAcd1DyHgsZ7GXEooWGogiJ6YzYzvItJkgRCkujIGprflkP1Y6lQEqap8idyKgaJZcKRcIpAEINQEOsm7F5kQOu9f70rg5d0ACTY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com; spf=pass smtp.mailfrom=realtek.com; dkim=pass (2048-bit key) header.d=realtek.com header.i=@realtek.com header.b=cm6cK08O; arc=none smtp.client-ip=211.75.126.72
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=realtek.com
-X-SpamFilter-By: ArmorX SpamTrap 5.80 with qID 5AB2PqnM62922218, This message is accepted by code: ctloc85258
+X-SpamFilter-By: ArmorX SpamTrap 5.80 with qID 5AB2Pv3N22922223, This message is accepted by code: ctloc85258
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=realtek.com; s=dkim;
-	t=1762827952; bh=6k1f2LEtOZ1s03ijVhYXVkp7RYNOThzcXloOoBFssP4=;
+	t=1762827957; bh=3iv5IVT1f/HyXRy3fKT+yW5eP8CmucEiOITcTPthoOI=;
 	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
 	 MIME-Version:Content-Transfer-Encoding:Content-Type;
-	b=Goe+IUJ/icmAbJKAwN7256hRU0wxYJ+NKVrhoi5zyL+o4gUcsCGOOOV8V3iszGYdj
-	 7BRVOumLR+m4EtQgS8lOa9CakRbbl4XXIAx/NKyNTtMP+Nv+3DF2i8gQjNqbRyYGJc
-	 eZ7kJUqSVhLiQ64yFh3f9a/4LSeuWxOIena5EinbpzbzMKgGIq5ysnXvIhk+Pzgq0b
-	 VlnDIdG/XvaSUgnTEDXVkWSQqq7hJsnPJdz+81lFw+0Xy3gch3v/4CSOgH2u5iMJL2
-	 anD1YBsNwZF5rXQzM+kE+4ZoTTBligUPzCWmx62YjEctuPIWQFOarcT8FDaFSUKXx2
-	 NlPW6yeX+jXCQ==
-Received: from mail.realtek.com (rtkexhmbs03.realtek.com.tw[10.21.1.53])
-	by rtits2.realtek.com.tw (8.15.2/3.21/5.94) with ESMTPS id 5AB2PqnM62922218
+	b=cm6cK08ONVNtTaWSS/3yVRhbDZXZQzlI7hDjH5uUeQt4PYzYxr+mDKMtuP1qOFyDd
+	 MHmldrLt/4N5+xs3BwuPzIcMreku5p9L3iHbWkKNA/uTxOxujgaKRDf6hzoZFG/RN8
+	 3SnQsC1IStUlECOfCmJUgvrjT5ql0vX5hPARDU/9a1OiEbVJEEYKyjDn0grvjdYRiW
+	 qor5iIy5/perxPLn1/BURKI5zj31fVN9YFx7f1vJ+8pOpOr3JtpdCp2dnc1kPQYElD
+	 Hkvntkf8MA6TUM6pGxXKhfjpPXfF80tMWDYavwrsT678tFtpvbx7Yu3s/NnXrcv1PM
+	 dp9qH3EtY0FhQ==
+Received: from mail.realtek.com (rtkexhmbs02.realtek.com.tw[172.21.6.41])
+	by rtits2.realtek.com.tw (8.15.2/3.21/5.94) with ESMTPS id 5AB2Pv3N22922223
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK)
-	for <linux-wireless@vger.kernel.org>; Tue, 11 Nov 2025 10:25:52 +0800
-Received: from RTKEXHMBS06.realtek.com.tw (10.21.1.56) by
- RTKEXHMBS03.realtek.com.tw (10.21.1.53) with Microsoft SMTP Server
+	for <linux-wireless@vger.kernel.org>; Tue, 11 Nov 2025 10:25:57 +0800
+Received: from RTKEXHMBS05.realtek.com.tw (10.21.1.55) by
+ RTKEXHMBS02.realtek.com.tw (172.21.6.41) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.27; Tue, 11 Nov 2025 10:25:52 +0800
-Received: from RTKEXHMBS04.realtek.com.tw (10.21.1.54) by
- RTKEXHMBS06.realtek.com.tw (10.21.1.56) with Microsoft SMTP Server
+ 15.2.1544.27; Tue, 11 Nov 2025 10:25:57 +0800
+Received: from RTKEXHMBS03.realtek.com.tw (10.21.1.53) by
+ RTKEXHMBS05.realtek.com.tw (10.21.1.55) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.27; Tue, 11 Nov 2025 10:25:51 +0800
-Received: from [127.0.1.1] (172.21.69.94) by RTKEXHMBS04.realtek.com.tw
- (10.21.1.54) with Microsoft SMTP Server (version=TLS1_2,
+ 15.2.1544.27; Tue, 11 Nov 2025 10:25:57 +0800
+Received: from [127.0.1.1] (172.21.69.94) by RTKEXHMBS03.realtek.com.tw
+ (10.21.1.53) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.27 via Frontend
- Transport; Tue, 11 Nov 2025 10:25:51 +0800
+ Transport; Tue, 11 Nov 2025 10:25:57 +0800
 From: Ping-Ke Shih <pkshih@realtek.com>
 To: <linux-wireless@vger.kernel.org>
 CC: <damon.chen@realtek.com>
-Subject: [PATCH v2 rtw-next 5/8] wifi: rtw89: phy: fix out-of-bounds access in rtw89_phy_read_txpwr_limit()
-Date: Tue, 11 Nov 2025 10:24:49 +0800
-Message-ID: <20251111022452.28093-6-pkshih@realtek.com>
+Subject: [PATCH v2 rtw-next 6/8] wifi: rtw89: consider data rate/bandwidth/GI for injected packets
+Date: Tue, 11 Nov 2025 10:24:50 +0800
+Message-ID: <20251111022452.28093-7-pkshih@realtek.com>
 X-Mailer: git-send-email 2.25.1
 In-Reply-To: <20251111022452.28093-1-pkshih@realtek.com>
 References: <20251111022452.28093-1-pkshih@realtek.com>
@@ -76,59 +76,141 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Content-Type: text/plain
 
-From: Kuan-Chung Chen <damon.chen@realtek.com>
+To send injected packets with configurable rate/bandwidth/GI, fill TXWD
+fields according to SKB's info->control.rates[0] annotated by mac80211.
 
-Coverity reported a potential out-of-bounds access when 'bw' exceeds the
-valid range for the specified band. Add a helper `rtw89_bw_is_valid()`
-to check bandwidth validity for each band before accessing limit tables.
-
-Addresses-Coverity-ID: 1598844 ("Out-of-bounds access")
-Addresses-Coverity-ID: 1598896 ("Out-of-bounds access")
-
-Signed-off-by: Kuan-Chung Chen <damon.chen@realtek.com>
 Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
 ---
- drivers/net/wireless/realtek/rtw89/phy.c | 20 ++++++++++++++++++++
- 1 file changed, 20 insertions(+)
+ drivers/net/wireless/realtek/rtw89/core.c | 67 +++++++++++++++++++++++
+ drivers/net/wireless/realtek/rtw89/core.h |  2 +
+ 2 files changed, 69 insertions(+)
 
-diff --git a/drivers/net/wireless/realtek/rtw89/phy.c b/drivers/net/wireless/realtek/rtw89/phy.c
-index 23892c1359a5..28e2b15240a7 100644
---- a/drivers/net/wireless/realtek/rtw89/phy.c
-+++ b/drivers/net/wireless/realtek/rtw89/phy.c
-@@ -2376,6 +2376,21 @@ static u8 rtw89_channel_to_idx(struct rtw89_dev *rtwdev, u8 band, u8 channel)
- 	}
+diff --git a/drivers/net/wireless/realtek/rtw89/core.c b/drivers/net/wireless/realtek/rtw89/core.c
+index 1d30ff27bce1..a5c451eed5a7 100644
+--- a/drivers/net/wireless/realtek/rtw89/core.c
++++ b/drivers/net/wireless/realtek/rtw89/core.c
+@@ -321,6 +321,26 @@ static const struct ieee80211_supported_band rtw89_sband_6ghz = {
+ 	.n_bitrates	= ARRAY_SIZE(rtw89_bitrates) - 4,
+ };
+ 
++static const struct rtw89_hw_rate_def {
++	enum rtw89_hw_rate ht;
++	enum rtw89_hw_rate vht[RTW89_NSS_NUM];
++} rtw89_hw_rate[RTW89_CHIP_GEN_NUM] = {
++	[RTW89_CHIP_AX] = {
++		.ht = RTW89_HW_RATE_MCS0,
++		.vht = {RTW89_HW_RATE_VHT_NSS1_MCS0,
++			RTW89_HW_RATE_VHT_NSS2_MCS0,
++			RTW89_HW_RATE_VHT_NSS3_MCS0,
++			RTW89_HW_RATE_VHT_NSS4_MCS0},
++	},
++	[RTW89_CHIP_BE] = {
++		.ht = RTW89_HW_RATE_V1_MCS0,
++		.vht = {RTW89_HW_RATE_V1_VHT_NSS1_MCS0,
++			RTW89_HW_RATE_V1_VHT_NSS2_MCS0,
++			RTW89_HW_RATE_V1_VHT_NSS3_MCS0,
++			RTW89_HW_RATE_V1_VHT_NSS4_MCS0},
++	},
++};
++
+ static void __rtw89_traffic_stats_accu(struct rtw89_traffic_stats *stats,
+ 				       struct sk_buff *skb, bool tx)
+ {
+@@ -1097,6 +1117,44 @@ rtw89_core_tx_wake(struct rtw89_dev *rtwdev,
+ 	rtw89_mac_notify_wake(rtwdev);
  }
  
-+static bool rtw89_phy_validate_txpwr_limit_bw(struct rtw89_dev *rtwdev,
-+					      u8 band, u8 bw)
++static void rtw89_core_tx_update_injection(struct rtw89_dev *rtwdev,
++					   struct rtw89_core_tx_request *tx_req,
++					   struct ieee80211_tx_info *info)
 +{
-+	switch (band) {
-+	case RTW89_BAND_2G:
-+		return bw < RTW89_2G_BW_NUM;
-+	case RTW89_BAND_5G:
-+		return bw < RTW89_5G_BW_NUM;
-+	case RTW89_BAND_6G:
-+		return bw < RTW89_6G_BW_NUM;
-+	default:
-+		return false;
++	const struct rtw89_hw_rate_def *hw_rate = &rtw89_hw_rate[rtwdev->chip->chip_gen];
++	enum mac80211_rate_control_flags flags = info->control.rates[0].flags;
++	struct rtw89_tx_desc_info *desc_info = &tx_req->desc_info;
++	const struct rtw89_chan *chan;
++	u8 idx = info->control.rates[0].idx;
++	u8 nss, mcs;
++
++	desc_info->use_rate = true;
++	desc_info->dis_data_fb = true;
++
++	if (flags & IEEE80211_TX_RC_160_MHZ_WIDTH)
++		desc_info->data_bw = 3;
++	else if (flags & IEEE80211_TX_RC_80_MHZ_WIDTH)
++		desc_info->data_bw = 2;
++	else if (flags & IEEE80211_TX_RC_40_MHZ_WIDTH)
++		desc_info->data_bw = 1;
++
++	if (flags & IEEE80211_TX_RC_SHORT_GI)
++		desc_info->gi_ltf = 1;
++
++	if (flags & IEEE80211_TX_RC_VHT_MCS) {
++		nss = umin(idx >> 4, ARRAY_SIZE(hw_rate->vht) - 1);
++		mcs = idx & 0xf;
++		desc_info->data_rate = hw_rate->vht[nss] + mcs;
++	} else if (flags & IEEE80211_TX_RC_MCS) {
++		desc_info->data_rate = hw_rate->ht + idx;
++	} else {
++		chan = rtw89_chan_get(rtwdev, tx_req->rtwvif_link->chanctx_idx);
++
++		desc_info->data_rate = idx + (chan->band_type == RTW89_BAND_2G ?
++					      RTW89_HW_RATE_CCK1 : RTW89_HW_RATE_OFDM6);
 +	}
 +}
 +
- s8 rtw89_phy_read_txpwr_limit(struct rtw89_dev *rtwdev, u8 band,
- 			      u8 bw, u8 ntx, u8 rs, u8 bf, u8 ch)
- {
-@@ -2400,6 +2415,11 @@ s8 rtw89_phy_read_txpwr_limit(struct rtw89_dev *rtwdev, u8 band,
- 	};
- 	s8 cstr;
- 
-+	if (!rtw89_phy_validate_txpwr_limit_bw(rtwdev, band, bw)) {
-+		rtw89_warn(rtwdev, "invalid band %u bandwidth %u\n", band, bw);
-+		return 0;
-+	}
+ static void
+ rtw89_core_tx_update_desc_info(struct rtw89_dev *rtwdev,
+ 			       struct rtw89_core_tx_request *tx_req)
+@@ -1157,6 +1215,9 @@ rtw89_core_tx_update_desc_info(struct rtw89_dev *rtwdev,
+ 	default:
+ 		break;
+ 	}
 +
- 	switch (band) {
- 	case RTW89_BAND_2G:
- 		if (has_ant_gain)
++	if (unlikely(info->flags & IEEE80211_TX_CTL_INJECTED))
++		rtw89_core_tx_update_injection(rtwdev, tx_req, info);
+ }
+ 
+ static void rtw89_tx_wait_work(struct wiphy *wiphy, struct wiphy_work *work)
+@@ -1385,6 +1446,8 @@ static __le32 rtw89_build_txwd_body5(struct rtw89_tx_desc_info *desc_info)
+ static __le32 rtw89_build_txwd_body7_v1(struct rtw89_tx_desc_info *desc_info)
+ {
+ 	u32 dword = FIELD_PREP(RTW89_TXWD_BODY7_USE_RATE_V1, desc_info->use_rate) |
++		    FIELD_PREP(RTW89_TXWD_BODY7_DATA_BW, desc_info->data_bw) |
++		    FIELD_PREP(RTW89_TXWD_BODY7_GI_LTF, desc_info->gi_ltf) |
+ 		    FIELD_PREP(RTW89_TXWD_BODY7_DATA_RATE, desc_info->data_rate);
+ 
+ 	return cpu_to_le32(dword);
+@@ -1393,6 +1456,8 @@ static __le32 rtw89_build_txwd_body7_v1(struct rtw89_tx_desc_info *desc_info)
+ static __le32 rtw89_build_txwd_info0(struct rtw89_tx_desc_info *desc_info)
+ {
+ 	u32 dword = FIELD_PREP(RTW89_TXWD_INFO0_USE_RATE, desc_info->use_rate) |
++		    FIELD_PREP(RTW89_TXWD_INFO0_DATA_BW, desc_info->data_bw) |
++		    FIELD_PREP(RTW89_TXWD_INFO0_GI_LTF, desc_info->gi_ltf) |
+ 		    FIELD_PREP(RTW89_TXWD_INFO0_DATA_RATE, desc_info->data_rate) |
+ 		    FIELD_PREP(RTW89_TXWD_INFO0_DATA_STBC, desc_info->stbc) |
+ 		    FIELD_PREP(RTW89_TXWD_INFO0_DATA_LDPC, desc_info->ldpc) |
+@@ -1585,6 +1650,8 @@ static __le32 rtw89_build_txwd_body6_v2(struct rtw89_tx_desc_info *desc_info)
+ static __le32 rtw89_build_txwd_body7_v2(struct rtw89_tx_desc_info *desc_info)
+ {
+ 	u32 dword = FIELD_PREP(BE_TXD_BODY7_USERATE_SEL, desc_info->use_rate) |
++		    FIELD_PREP(BE_TXD_BODY7_DATA_BW, desc_info->data_bw) |
++		    FIELD_PREP(BE_TXD_BODY7_GI_LTF, desc_info->gi_ltf) |
+ 		    FIELD_PREP(BE_TXD_BODY7_DATA_ER, desc_info->er_cap) |
+ 		    FIELD_PREP(BE_TXD_BODY7_DATA_BW_ER, 0) |
+ 		    FIELD_PREP(BE_TXD_BODY7_DATARATE, desc_info->data_rate);
+diff --git a/drivers/net/wireless/realtek/rtw89/core.h b/drivers/net/wireless/realtek/rtw89/core.h
+index 34c135269627..4da73153513a 100644
+--- a/drivers/net/wireless/realtek/rtw89/core.h
++++ b/drivers/net/wireless/realtek/rtw89/core.h
+@@ -1182,6 +1182,8 @@ struct rtw89_tx_desc_info {
+ 	u8 sec_seq[6];
+ 	u16 data_rate;
+ 	u16 data_retry_lowest_rate;
++	u8 data_bw;
++	u8 gi_ltf;
+ 	bool fw_dl;
+ 	u16 seq;
+ 	bool a_ctrl_bsr;
 -- 
 2.25.1
 
