@@ -1,137 +1,118 @@
-Return-Path: <linux-wireless+bounces-28844-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-28845-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [IPv6:2a01:60a::1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id 04929C4E4FC
-	for <lists+linux-wireless@lfdr.de>; Tue, 11 Nov 2025 15:11:36 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 11A38C4E6E8
+	for <lists+linux-wireless@lfdr.de>; Tue, 11 Nov 2025 15:25:00 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.mirrors.kernel.org (Postfix) with ESMTPS id A49B434CEA3
-	for <lists+linux-wireless@lfdr.de>; Tue, 11 Nov 2025 14:11:35 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9A4EF189E3EF
+	for <lists+linux-wireless@lfdr.de>; Tue, 11 Nov 2025 14:21:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DDBBD3128AA;
-	Tue, 11 Nov 2025 14:11:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 72D9C30EF86;
+	Tue, 11 Nov 2025 14:19:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="dyVH4sxN"
+	dkim=pass (1024-bit key) header.d=xv97.com header.i=m@xv97.com header.b="NG/5p8Rw"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-oa1-f41.google.com (mail-oa1-f41.google.com [209.85.160.41])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from sender4-op-o15.zoho.com (sender4-op-o15.zoho.com [136.143.188.15])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 44FD43115BD
-	for <linux-wireless@vger.kernel.org>; Tue, 11 Nov 2025 14:11:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.41
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762870263; cv=none; b=WTCuoROkDpC5FCs8uL/LEUzQYFQ+i/jis4LjOcpINVuWI+pzyH6zto1mGA7KnMmRhv7yMQbXNZ6WEbSBjqr/1P8BEC4Gwzyr1oLCwGXQkiU93VSGTf/8jf2ghHV37TUD9yrQoFMMFX7h4RvykxrPkIrRT5Xr6zyye2h2HT9kT9s=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762870263; c=relaxed/simple;
-	bh=Wq9fyBoDFGXqHiJdhh3nryyd8f36FPRsS0VIkxdNrm8=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=TmLfJ65K0LD5ubxNTgcQAkK2hwIvbWWdAhr6Mbe0TKrFIqOLZXE012F1QdF6/A5y5qGCyVEDkN9rzCGb1u0h2BLatSYGNaaBNaqZJY4ubYVeUBwiIawQOg86kgkArk+ihI09sMbhQR6JUHRO5i2c6omSVI2ElCJAOh4vnMvpa1w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=dyVH4sxN; arc=none smtp.client-ip=209.85.160.41
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-oa1-f41.google.com with SMTP id 586e51a60fabf-3d18422565eso2650052fac.1
-        for <linux-wireless@vger.kernel.org>; Tue, 11 Nov 2025 06:11:02 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1762870261; x=1763475061; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=txdEdm40JEr5pC5+2I7HwpHNOaO4GAfSSqE8ztv0UX0=;
-        b=dyVH4sxNdvVGDhKIqApGJKsO7lBd1NrwZRIfdyiRkAUyo4huX7tlI6vRg11Z75Sjiq
-         vOlM+j/lqqx3nR/Ze3tsYnYW9Iog+TAbVrKDteO8ZgipDz5WTG0ipiK4o5vH0OPgDlD9
-         a/26q4JZqEf592zU1tELRIXv8wZKjbbil137jvxuqa8ei5ZWIT8f4TfsB6iMm9y+u4ds
-         r7JmMusGSR1g8cTQkbM/FOQ8YuhXOp0e86BYmCM+kZtFDGWA9R8VgJHlIpNIiBoDP+T0
-         2jQGqp9Ad/TXsFq1QIlR50RHRGuXRNsT/4dpUr80PzASBr68cVETIfhm/rT1MVRg8mAo
-         Rb1w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1762870261; x=1763475061;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=txdEdm40JEr5pC5+2I7HwpHNOaO4GAfSSqE8ztv0UX0=;
-        b=wTZarvapVnzI3Qt/Wt5IhKgEwSOlfwTjgS46a0d7aVoEbD/PqkrZq9zaEgx/Qm+w6t
-         qqXPouEq2DgJiyYltVHwgZwJ/8nXPrcO35zAuPOTcGmwIaYOQJdulF6d5LSfZuMYZgvY
-         BEhZRUTUEkX/69YmBvOcW1TRbQzz2OSjDwe4sdWxqrvc0MxmXX3jYTXZEMzjFV3FIR9S
-         vc1DX/RqYtD0o7KiNwNklGh/3F6eKNFENy/div2JEPNNZoMAg6geFLat/lwOaK6Kc8ZS
-         LmBXYV8GawiGR917plcpBGL3klQdwtrMflJihfdkOuTBJwJ4+QSxngfZezK067KZQATE
-         dhRA==
-X-Forwarded-Encrypted: i=1; AJvYcCXc1slw3RRFD4FvvscnT5+gs/vpvpkpX48vvm/oFQGW561GM9LX+3J0dVf3v3EWi6EhI6Uc/VN2WA6RXXCc8A==@vger.kernel.org
-X-Gm-Message-State: AOJu0YwXsJ2W3h9k2r0f8jFNQ5nPIjZYiSe6/5Jb+TOYgOvUbKKKeU4C
-	uS65LKkpY2d2is5u/Ms+fTpQb4UZzgyfiansFg1+dw+LcmYS2WNc9m1tKEOc3JxwCO1pO97HtDn
-	2e3jBY4616uarHX50Ktif9gQ6e2r56+A=
-X-Gm-Gg: ASbGncv05sxKJYlyPZpVZi+ETbFw8JR7RmoVUM6l4r1v7mLTRbG/jP7IhXMuLpEqCAr
-	5DN0E5Iou8TjfG/9QqfgP3sfeOZZzXLCDYL7DNbvLZN/FB5TglTDZ7tC82Po3K1NUowCbqzhAJr
-	gsKQB2NH2GztnTxSWFLNkDUoZm6CP9qlW/QC1RYIgtPkDkYaLDOxqY1jSogD0MOaIIy3txtUfZX
-	pfsAfkGJSNh8h4+ibELb39Z81YkGfxJRTN2I/SDdCJHhAnnfNHk/99TS3/YH9po7n1tebyB
-X-Google-Smtp-Source: AGHT+IH9NsGeAGXbfrkGaLkI4eT/HyQdZyA7+2QW2Tz3Nh3t6elSCgFx6DzEmvDROMRAAY0dK1BfQ/UaepIHAEj/9uQ=
-X-Received: by 2002:a05:6870:899a:b0:3d4:760f:544b with SMTP id
- 586e51a60fabf-3e7c294ab31mr8000185fac.46.1762870261279; Tue, 11 Nov 2025
- 06:11:01 -0800 (PST)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7B5D03009F8
+	for <linux-wireless@vger.kernel.org>; Tue, 11 Nov 2025 14:19:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=136.143.188.15
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1762870747; cv=pass; b=GltHvHNMifRINppseaF8SbxiYdxeMZPfulnT0vqy1nf6R9OqBmZKBYZU7VW6kU3l2TuLoGS9B8rHEKAZcwI41iYYGUQCI24euNEKC/L6VXF2bHQ+hwuwuzk6lgkjAh9ZRblM65wxeYTgirGfveNT4ziBh7nWmF4a+66sCjJfeRo=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1762870747; c=relaxed/simple;
+	bh=L9SXIgay21CGGcOlJyhwIR8ZD5z3q7yf1he7WasNMZs=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=lmfzLGEMQauHDJfhSoe0DWLXb4chTbXxmCII0+jKafWwAhqDBZxKJrwn6TgHGQDAZhxvPv38XvtP5FpOOjRMenYQ1aha69qscaW9peYmyF2egyiojuXTacSsHDAeOdEwNCRzrpu6opdE7mCFdrcacKD1Y/Eu+nXe5+nco41eujw=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=xv97.com; spf=pass smtp.mailfrom=xv97.com; dkim=pass (1024-bit key) header.d=xv97.com header.i=m@xv97.com header.b=NG/5p8Rw; arc=pass smtp.client-ip=136.143.188.15
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=xv97.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=xv97.com
+ARC-Seal: i=1; a=rsa-sha256; t=1762870742; cv=none; 
+	d=zohomail.com; s=zohoarc; 
+	b=EQpdlHMNzAd8HW0tbk1VsgfJmcK6eOE/X+L21/pTPk7B85QncmKhJtGtGXS7Fr4/4U1dpL0Xq9iuM37jN+WJSujeqzlWikD4wb06A9c/AkgOgGr/6puGWynuhsCb+4wTrZVQwNLFIdpZVTtO5RYEQ2EA3qZ5SKTBEnmP572LcJ0=
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
+	t=1762870742; h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:References:Subject:Subject:To:To:Message-Id:Reply-To; 
+	bh=dJtJcghwTTM7TXsLg2uN7pGzDohKh+sZC/fi22NJTOk=; 
+	b=WhXZ9FFNqDqcY2ecKa22WUoIBYGlTnItCrxlNWUyz3CEd+wzPdTKhs1QvSEzWxSsAlYmIWvzvJr9p6YVAfWyF3+n0F25Kzq36bRyicvoYhs62KrWihba/aCbWKVHkbpl3DATG76K03l9cRb3s+3gYO4G8NT3qvFK7PbmTDog6U0=
+ARC-Authentication-Results: i=1; mx.zohomail.com;
+	dkim=pass  header.i=xv97.com;
+	spf=pass  smtp.mailfrom=m@xv97.com;
+	dmarc=pass header.from=<m@xv97.com>
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1762870742;
+	s=zmail; d=xv97.com; i=m@xv97.com;
+	h=Message-ID:Date:Date:MIME-Version:Subject:Subject:To:To:Cc:Cc:References:From:From:In-Reply-To:Content-Type:Content-Transfer-Encoding:Message-Id:Reply-To;
+	bh=dJtJcghwTTM7TXsLg2uN7pGzDohKh+sZC/fi22NJTOk=;
+	b=NG/5p8RwUdZYFttSiJ3AhHTxHXC4wBHA1T2LdlZ0yXKZkligQAGIE5GrB6iKb2iH
+	ewTqNYo7rx1Hdj2LfTwZF+eEJPYevIt4zO/2Xv5eJwT9tDwig3f8Av18F2aeE4I/FBS
+	rcyRQ1v85/vZzr4YE+tKBanaqnmZkue01NelkGRc=
+Received: by mx.zohomail.com with SMTPS id 1762870740394993.4916197544973;
+	Tue, 11 Nov 2025 06:19:00 -0800 (PST)
+Message-ID: <c62262bd-8c41-43a6-9f01-dfb73f4b0a24@xv97.com>
+Date: Tue, 11 Nov 2025 22:18:50 +0800
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20251111134400.5258-1-sef1548@gmail.com> <aRNBak9Xl_wsBJ6w@lore-desk>
-In-Reply-To: <aRNBak9Xl_wsBJ6w@lore-desk>
-From: Nick Huang <sef1548@gmail.com>
-Date: Tue, 11 Nov 2025 22:10:50 +0800
-X-Gm-Features: AWmQ_bkn9vJFX_qKrlLafWMdsY1_qiyP8xv9zY7kAo8K6GWks1Gw41ZZnCWDwno
-Message-ID: <CABZAGRG-7T2mp3UYRaJ5c7eTi1B4hWybtJrfPwdo2aSEvhcMqg@mail.gmail.com>
-Subject: Re: [PATCH] mt76: connac: remove unused reserved field in gtk rekey
- TLV struct
-To: Lorenzo Bianconi <lorenzo@kernel.org>
-Cc: nbd@nbd.name, ryder.lee@mediatek.com, shayne.chen@mediatek.com, 
-	sean.wang@mediatek.com, linux-wireless@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, linux-mediatek@lists.infradead.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 1/6] wifi: mac80211: remove an unnecessary copy
+To: Johannes Berg <johannes@sipsolutions.net>
+Cc: linux-wireless@vger.kernel.org
+References: <20251110144545.15149-1-m@xv97.com>
+ <20251110144545.15149-2-m@xv97.com>
+ <ca0cce1b2d4d3d5c920d4d9d300ab175c6691ab6.camel@sipsolutions.net>
+Content-Language: en-US
+From: Chien Wong <m@xv97.com>
+Autocrypt: addr=m@xv97.com; keydata=
+ xjMEYrGw+RYJKwYBBAHaRw8BAQdAYXRqCQnACPka63iaZ2Lc9u8qPBNaxew6PdbvpuPvkIXN
+ F0NoaWVuIFdvbmcgPG1AeHY5Ny5jb20+wpYEExYIAD4WIQRhWIfCT4U86RkflE5cpYo5+kEi
+ rQUCYrGw+QIbAwUJEswDAAULCQgHAgYVCgkICwIEFgIDAQIeAQIXgAAKCRBcpYo5+kEirQtx
+ AP4uJuD0ufTDXmEotuOUiI+86qWvc3jNsUhWYW8wHN8zEgD8Dli09jo/TsTlfWIXWjIs/6Pp
+ b96j9fho6xNpETu8ZgnOOARisbD5EgorBgEEAZdVAQUBAQdArBbkcgnrIZ6XnmGUAA9XYA+i
+ tf8afTv75UGa2c0YkwoDAQgHwn4EGBYIACYWIQRhWIfCT4U86RkflE5cpYo5+kEirQUCYrGw
+ +QIbDAUJEswDAAAKCRBcpYo5+kEircrLAQC/yXFAHzoG9bnsw+hsiVfEbYMa04UiDEFkTd9Q
+ kA+I2gD/VCzYkTizWTiXsbcGhB05Q+mI5tX+ehhtpcrIAaBxnA8=
+In-Reply-To: <ca0cce1b2d4d3d5c920d4d9d300ab175c6691ab6.camel@sipsolutions.net>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-ZohoMailClient: External
 
-Lorenzo Bianconi <lorenzo@kernel.org> =E6=96=BC 2025=E5=B9=B411=E6=9C=8811=
-=E6=97=A5 =E9=80=B1=E4=BA=8C =E4=B8=8B=E5=8D=8810:00=E5=AF=AB=E9=81=93=EF=
-=BC=9A
->
-> > The 'reserverd' field in struct mt76_connac_gtk_rekey_tlv was unused
-> > and misspelled. Removing it cleans up the structure definition and
-> > improves code readability.
-> >
-> > Signed-off-by: Nick Huang <sef1548@gmail.com>
-> > ---
-> >  drivers/net/wireless/mediatek/mt76/mt76_connac_mcu.h | 1 -
-> >  1 file changed, 1 deletion(-)
-> >
-> > diff --git a/drivers/net/wireless/mediatek/mt76/mt76_connac_mcu.h b/dri=
-vers/net/wireless/mediatek/mt76/mt76_connac_mcu.h
-> > index 27daf4195..28cf46a5f 100644
-> > --- a/drivers/net/wireless/mediatek/mt76/mt76_connac_mcu.h
-> > +++ b/drivers/net/wireless/mediatek/mt76/mt76_connac_mcu.h
-> > @@ -1681,7 +1681,6 @@ struct mt76_connac_gtk_rekey_tlv {
-> >       __le32 group_cipher;
-> >       __le32 key_mgmt; /* NONE-PSK-IEEE802.1X */
-> >       __le32 mgmt_group_cipher;
-> > -     u8 reserverd[4];
->
-> This field is used to keep the struct size consistent with the fw one so =
-it is
-> expected to not be used.
->
-> Regards,
-> Lorenzo
->
-> >  } __packed;
-> >
-> >  #define MT76_CONNAC_WOW_MASK_MAX_LEN                 16
-> > --
-> > 2.48.1
-> >
-Hi Lorenzo,
+On 11/11/25 6:09 PM, Johannes Berg wrote:
+> On Mon, 2025-11-10 at 22:45 +0800, Chien Wong wrote:
+>> Using a temporary buffer for saving the CMAC result is useless.
+>> With the patch, ieee80211_aes_cmac() just resembles
+>> ieee80211_aes_cmac_256().
+> 
+> I guess I could've looked more closely at v1 ...
+> 
+>> +++ b/net/mac80211/aes_cmac.c
+>> @@ -26,7 +26,6 @@ void ieee80211_aes_cmac(struct crypto_shash *tfm, const u8 *aad,
+>>   			const u8 *data, size_t data_len, u8 *mic)
+>>   {
+>>   	SHASH_DESC_ON_STACK(desc, tfm);
+>> -	u8 out[AES_BLOCK_SIZE];
+>>   	const __le16 *fc;
+>>   
+>>   	desc->tfm = tfm;
+>> @@ -41,9 +40,7 @@ void ieee80211_aes_cmac(struct crypto_shash *tfm, const u8 *aad,
+>>   	} else {
+>>   		crypto_shash_update(desc, data, data_len - CMAC_TLEN);
+>>   	}
+>> -	crypto_shash_finup(desc, zero, CMAC_TLEN, out);
+>> -
+>> -	memcpy(mic, out, CMAC_TLEN);
+>> +	crypto_shash_finup(desc, zero, CMAC_TLEN, mic);
+> 
+> This seems very wrong, it writes 16 bytes when 'mic' will only have
+> space for CMAC_TLEN==8. AFAICT, the CMAC_TLEN in the function call is
+> the input length (of 'zero'), not the output length.
+> 
 
-Got it, thanks for explaining. Makes sense that this field is just for
-size consistency.
-
-Cheers,
-Nick Huang
+Sorry, that's completely wrong. Thanks for pointing out the issue—I'll 
+fix it in v3.
 
