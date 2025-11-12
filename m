@@ -1,33 +1,33 @@
-Return-Path: <linux-wireless+bounces-28866-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-28867-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id AF08FC5215F
-	for <lists+linux-wireless@lfdr.de>; Wed, 12 Nov 2025 12:51:28 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
+	by mail.lfdr.de (Postfix) with ESMTPS id 857EAC521FE
+	for <lists+linux-wireless@lfdr.de>; Wed, 12 Nov 2025 12:56:45 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7D31B188F25D
-	for <lists+linux-wireless@lfdr.de>; Wed, 12 Nov 2025 11:47:30 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 603584F4E91
+	for <lists+linux-wireless@lfdr.de>; Wed, 12 Nov 2025 11:51:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1C83A313537;
-	Wed, 12 Nov 2025 11:46:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9CB03313E0A;
+	Wed, 12 Nov 2025 11:51:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b="OZ6Prb2I"
+	dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b="oetBiFmq"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from sipsolutions.net (s3.sipsolutions.net [168.119.38.16])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5F8762D6E7E;
-	Wed, 12 Nov 2025 11:46:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D45BB2FD684;
+	Wed, 12 Nov 2025 11:51:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=168.119.38.16
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762947991; cv=none; b=puwFANAv8d3UPaS2SJ4OwR+2eWOdCCrxEoJKFkSxs2ZeZPGssgGRcc9wRRKc19ixVpJcws1ThQ+1m8QyNESZEB1JtpZ9sZV9NoQXiSbTXxtiAX4sclTF2qKLB5tcneD04CRNqF199/QOGIihSvuKnLScZx7hKMh8bWbi2sBaxQs=
+	t=1762948292; cv=none; b=hSpmPSRI2KKIHzuLWAKIM6dmH36CBg5f6wOYZAjBIn5p19J4SMEwWIyGH+CciiUvhl1sMT46RrbqsD+MIRfMSBjYhLnWOvvH0614Ua8CzROKppcCNdxp87JAJmwPU4iulFLCQ2TGDWsM5lFQmC6HIChL3WLu63f8zL8WO5LcGtY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762947991; c=relaxed/simple;
-	bh=TKLE4KJ2DnftHA0ZLvrF4UANQmpXCg9qPqzhuwVOhfM=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=LPJ419QQXrdh9FqfPMq1ttgTDQdk9Holv5mxypv+ChCLrgVeT6pOk5t0MTd6ca8/BRLjbtT6/pue9cd9CYxFj334PsNrSOOFuxUoBR/4ApW5k9eBzdg/7dwd52ciwYS/uVXazOj/Kro2w1UB/HYheDdj9jawTJr/O0XFUh5/NhY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net; spf=pass smtp.mailfrom=sipsolutions.net; dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b=OZ6Prb2I; arc=none smtp.client-ip=168.119.38.16
+	s=arc-20240116; t=1762948292; c=relaxed/simple;
+	bh=Y+iMD70VypAUzl02NICb5IqHFNnGm8eBBPfehbkZgw0=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=HkAeOgLp2mRk5qGhgaon080DyH/B7L0lc094DbJVXx3V7UIjp4F6EGE/o+MG8D9u0OZpR3gpRw/56rraR+WMe1LVdW1LCGDOPPCEcNUUFbVdvQN9Lq5BM+dJqC3p3S6YDAksjaa90910e0L2s+j1ttUzeS68KLgpDE/CLOsFuUU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net; spf=pass smtp.mailfrom=sipsolutions.net; dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b=oetBiFmq; arc=none smtp.client-ip=168.119.38.16
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sipsolutions.net
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
@@ -35,23 +35,23 @@ DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	Message-ID:Date:Subject:Cc:To:From:Content-Type:Sender:Reply-To:Content-ID:
 	Content-Description:Resent-Date:Resent-From:Resent-To:Resent-Cc:
 	Resent-Message-ID:In-Reply-To:References;
-	bh=el1H+VwEaoSVHTBYapEN6dATz+Faz5AfCW5KT0gELP8=; t=1762947989; x=1764157589; 
-	b=OZ6Prb2I4ld/+H1lpuyrlsdPpoGlPfGMeDsMv4dvS8EyYO/v3yzZa4tUfbQ43Wp+nMrPGCR/BsA
-	BapEZpFVGgJR662he8kMiEwEalDq6Gla/r8R8VPz6DZiVUt0Un60FsVw9m7CASBwF6M6fQ/uss1ce
-	Dcu1mGYjNsTH0xsl8ENNGJkP71TjFqJrTxVNIfpqKnDb8mkPVr5wbUhcx1b8Ayofhvrh5HIv7nwUI
-	+8lizJQtQ23wDO+I9DoxuS24QsuEBnos6Dp06Q64u2Q9RxXDd8FRrxCXKMK+SWqTik+yhKe2JIplp
-	nOzpphvdfyKpFc9Tdg+RGfT4BAjkjv4/9qAg==;
+	bh=uSqtUxqoSTeI2ScF7umWBQZMcaL6Cd1hNoT1xrRtbIY=; t=1762948290; x=1764157890; 
+	b=oetBiFmqGFvB95wnnJAg1GdBYNeyC6OJ5spGq2j4LteUfC20wH4agZaydzy3hwhWfgAGRsqMHi1
+	ll+aO1UEbdjNsDLfmZ30Nt1I9NQY/9/ktbm2RD8f/vX5JRwhZqAZ5jRqwHjfc40dbNm6cSssVxoWC
+	zzv7K6thQ8Zxm5NI9UITmi+D5Vfet1sRS4ypeBRLxJQr8OiZ4K1YcDawYRAjlZm3oSOT8vxgWallv
+	6C0K+RURipn70mi+rLTBGeWB4M7ZswUuFJyf5hVjZDtvIm7uqlSWYEUnijpEAeTUuI+VEQLIXUc5O
+	kcr4UTEgaYxi87b4b25BFzzDalCTr5FOpNzA==;
 Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
 	(Exim 4.98.2)
 	(envelope-from <johannes@sipsolutions.net>)
-	id 1vJ9Iu-00000001BZW-2AV2;
-	Wed, 12 Nov 2025 12:46:25 +0100
+	id 1vJ9No-00000001CTN-2CPZ;
+	Wed, 12 Nov 2025 12:51:28 +0100
 From: Johannes Berg <johannes@sipsolutions.net>
 To: netdev@vger.kernel.org
 Cc: linux-wireless@vger.kernel.org
-Subject: [GIT PULL] wireless-2025-11-12
-Date: Wed, 12 Nov 2025 12:45:38 +0100
-Message-ID: <20251112114621.15716-5-johannes@sipsolutions.net>
+Subject: [GIT PULL] wireless-next-2025-11-12
+Date: Wed, 12 Nov 2025 12:50:29 +0100
+Message-ID: <20251112115126.16223-4-johannes@sipsolutions.net>
 X-Mailer: git-send-email 2.51.1
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
@@ -63,8 +63,11 @@ Content-Transfer-Encoding: 8bit
 
 Hi,
 
-And we have another set for net/rc6. Basically just
-more driver fixes trickling in, various small issues.
+And a little bit more stuff for -next as well, but
+Jeff informs me that Qualcomm has a lot pending from
+their refactor side-branch that reworks the ath12k
+driver architecture towards their WiFi8 chipsets,
+which will come soon.
 
 Please pull and let us know if there's any problem.
 
@@ -73,62 +76,114 @@ johannes
 
 
 
-The following changes since commit c2c2ccfd4ba72718266a56f3ecc34c989cb5b7a0:
+The following changes since commit 1ec9871fbb80ba7db84f868f6aa40d38bc43f0e0:
 
-  Merge tag 'net-6.18-rc5' of git://git.kernel.org/pub/scm/linux/kernel/git/netdev/net (2025-11-06 08:52:30 -0800)
+  Merge git://git.kernel.org/pub/scm/linux/kernel/git/netdev/net (2025-11-06 09:27:40 -0800)
 
 are available in the Git repository at:
 
-  https://git.kernel.org/pub/scm/linux/kernel/git/wireless/wireless.git tags/wireless-2025-11-12
+  https://git.kernel.org/pub/scm/linux/kernel/git/wireless/wireless-next.git tags/wireless-next-2025-11-12
 
-for you to fetch changes up to a35f64a216ca1c9e3c3f0f91fdb54ef9515a7fe7:
+for you to fetch changes up to 0eb272033b64ef05fffa30288284659c33e17830:
 
-  Merge tag 'iwlwifi-fixes-2025-11-12' of https://git.kernel.org/pub/scm/linux/kernel/git/iwlwifi/iwlwifi-next (2025-11-12 09:51:05 +0100)
-
-----------------------------------------------------------------
-Couple more fixes:
- - mwl8k: work around FW expecting a DSSS element in beacons
- - ath11k: report correct TX status
- - iwlwifi: avoid toggling links due to wrong element use
- - iwlwifi: fix beacon template rate on older devices
- - iwlwifi: fix loop iterator being used after loop
- - mac80211: disallow address changes while using the address
- - mac80211: avoid bad rate warning in monitor/sniffer mode
- - hwsim: fix potential NULL deref (on monitor injection)
+  Merge tag 'ath-next-20251111' of git://git.kernel.org/pub/scm/linux/kernel/git/ath/ath (2025-11-12 09:56:28 +0100)
 
 ----------------------------------------------------------------
-Benjamin Berg (1):
-      wifi: mac80211: skip rate verification for not captured PSDUs
+More -next material, notably:
+ - split ieee80211.h file, it's way too big
+ - mac80211: initial chanctx work towards NAN
+ - mac80211: MU-MIMO sniffer improvements
+ - ath12k: statistics improvements
 
-Ilan Peer (1):
-      wifi: mac80211_hwsim: Fix possible NULL dereference
+----------------------------------------------------------------
+Abdun Nihaal (1):
+      wifi: cw1200: Fix potential memory leak in cw1200_bh_rx_helper()
 
-Johannes Berg (4):
-      wifi: mac80211: reject address change while connecting
-      Merge tag 'ath-current-20251110' of git://git.kernel.org/pub/scm/linux/kernel/git/ath/ath
-      wifi: iwlwifi: mvm: fix beacon template/fixed rate
-      Merge tag 'iwlwifi-fixes-2025-11-12' of https://git.kernel.org/pub/scm/linux/kernel/git/iwlwifi/iwlwifi-next
+Benjamin Berg (2):
+      wifi: mac80211: track MU-MIMO configuration on disabled interfaces
+      wifi: mac80211: make monitor link info check more specific
 
-Junjie Cao (1):
-      wifi: iwlwifi: fix aux ROC time event iterator usage
+Chien Wong (1):
+      wifi: cfg80211: fix doc of struct key_params
 
-Miri Korenblit (1):
-      wifi: iwlwifi: mld: always take beacon ies in link grading
+Emmanuel Grumbach (1):
+      wifi: cfg80211: use a C99 initializer in wiphy_register
 
-Nicolas Escande (1):
-      wifi: ath11k: zero init info->status in wmi_process_mgmt_tx_comp()
+Johannes Berg (18):
+      wifi: ieee80211: split mesh definitions out
+      wifi: ieee80211: split HT definitions out
+      wifi: ieee80211: split VHT definitions out
+      wifi: ieee80211: split HE definitions out
+      wifi: ieee80211: split EHT definitions out
+      wifi: ieee80211: split S1G definitions out
+      wifi: ieee80211: split P2P definitions out
+      wifi: ieee80211: split NAN definitions out
+      wifi: cfg80211: fix EHT typo
+      wifi: mac80211: fix EHT typo
+      wifi: mac80211: make link iteration safe for 'break'
+      wifi: mac80211: remove chanctx to link back-references
+      wifi: mac80211: simplify ieee80211_recalc_chanctx_min_def() API
+      wifi: mac80211: add and use chanctx usage iteration
+      wifi: mac80211: remove "disabling VHT" message
+      wifi: mac80211: pass frame type to element parsing
+      wifi: mac80211: remove unnecessary vlan NULL check
+      Merge tag 'ath-next-20251111' of git://git.kernel.org/pub/scm/linux/kernel/git/ath/ath
 
-Pawel Dembicki (1):
-      wifi: mwl8k: inject DSSS Parameter Set element into beacons if missing
+Manish Dharanenthiran (2):
+      wifi: ath12k: Make firmware stats reset caller-driven
+      wifi: ath12k: Fix timeout error during beacon stats retrieval
 
- drivers/net/wireless/ath/ath11k/wmi.c              |  3 +
- drivers/net/wireless/intel/iwlwifi/mld/link.c      |  7 +--
- drivers/net/wireless/intel/iwlwifi/mvm/mac-ctxt.c  | 13 +---
- .../net/wireless/intel/iwlwifi/mvm/time-event.c    | 14 ++---
- drivers/net/wireless/intel/iwlwifi/mvm/utils.c     | 12 +++-
- drivers/net/wireless/marvell/mwl8k.c               | 71 ++++++++++++++++++++--
- drivers/net/wireless/virtual/mac80211_hwsim.c      | 14 +++--
- net/mac80211/iface.c                               | 14 ++++-
- net/mac80211/rx.c                                  | 10 ++-
- 9 files changed, 117 insertions(+), 41 deletions(-)
+Pagadala Yesu Anjaneyulu (2):
+      wifi: cfg80211/mac80211: clean up duplicate ap_power handling
+      wifi: cfg80211/mac80211: Add fallback mechanism for INDOOR_SP connection
+
+ drivers/net/wireless/ath/ath12k/core.c    |    2 -
+ drivers/net/wireless/ath/ath12k/core.h    |    1 -
+ drivers/net/wireless/ath/ath12k/debugfs.c |    9 +-
+ drivers/net/wireless/ath/ath12k/mac.c     |   15 +-
+ drivers/net/wireless/ath/ath12k/wmi.c     |   12 +-
+ drivers/net/wireless/st/cw1200/bh.c       |    6 +-
+ include/linux/ieee80211-eht.h             | 1182 +++++++++++
+ include/linux/ieee80211-he.h              |  824 +++++++
+ include/linux/ieee80211-ht.h              |  292 +++
+ include/linux/ieee80211-mesh.h            |  230 ++
+ include/linux/ieee80211-nan.h             |   35 +
+ include/linux/ieee80211-p2p.h             |   71 +
+ include/linux/ieee80211-s1g.h             |  575 +++++
+ include/linux/ieee80211-vht.h             |  236 ++
+ include/linux/ieee80211.h                 | 3308 +----------------------------
+ include/net/cfg80211.h                    |   34 +-
+ include/net/mac80211.h                    |    2 +-
+ net/mac80211/agg-rx.c                     |    7 +-
+ net/mac80211/cfg.c                        |   47 +-
+ net/mac80211/chan.c                       |  397 ++--
+ net/mac80211/driver-ops.c                 |    8 +-
+ net/mac80211/he.c                         |    6 +-
+ net/mac80211/ibss.c                       |   14 +-
+ net/mac80211/ieee80211_i.h                |   50 +-
+ net/mac80211/iface.c                      |   46 +-
+ net/mac80211/link.c                       |    5 -
+ net/mac80211/main.c                       |    3 +-
+ net/mac80211/mesh.c                       |   26 +-
+ net/mac80211/mesh_hwmp.c                  |    7 +-
+ net/mac80211/mesh_plink.c                 |    7 +-
+ net/mac80211/mlme.c                       |   71 +-
+ net/mac80211/parse.c                      |   30 +-
+ net/mac80211/scan.c                       |    6 +-
+ net/mac80211/tdls.c                       |   12 +-
+ net/mac80211/tests/elems.c                |    4 +-
+ net/mac80211/util.c                       |   37 +-
+ net/wireless/core.c                       |   12 +-
+ net/wireless/core.h                       |    3 +-
+ net/wireless/nl80211.c                    |    4 +-
+ net/wireless/scan.c                       |   20 +-
+ 40 files changed, 4003 insertions(+), 3653 deletions(-)
+ create mode 100644 include/linux/ieee80211-eht.h
+ create mode 100644 include/linux/ieee80211-he.h
+ create mode 100644 include/linux/ieee80211-ht.h
+ create mode 100644 include/linux/ieee80211-mesh.h
+ create mode 100644 include/linux/ieee80211-nan.h
+ create mode 100644 include/linux/ieee80211-p2p.h
+ create mode 100644 include/linux/ieee80211-s1g.h
+ create mode 100644 include/linux/ieee80211-vht.h
 
