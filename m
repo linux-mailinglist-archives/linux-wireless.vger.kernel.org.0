@@ -1,146 +1,142 @@
-Return-Path: <linux-wireless+bounces-28908-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-28909-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1C11DC57B63
-	for <lists+linux-wireless@lfdr.de>; Thu, 13 Nov 2025 14:38:15 +0100 (CET)
+Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [IPv6:2a01:60a::1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id BACC5C57AAF
+	for <lists+linux-wireless@lfdr.de>; Thu, 13 Nov 2025 14:31:36 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2874050297F
-	for <lists+linux-wireless@lfdr.de>; Thu, 13 Nov 2025 13:25:11 +0000 (UTC)
+	by ams.mirrors.kernel.org (Postfix) with ESMTPS id D2C873436DC
+	for <lists+linux-wireless@lfdr.de>; Thu, 13 Nov 2025 13:30:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1D2BA351FAB;
-	Thu, 13 Nov 2025 13:24:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=xv97.com header.i=m@xv97.com header.b="ss46DMXu"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B51441A26B;
+	Thu, 13 Nov 2025 13:30:52 +0000 (UTC)
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from sender4-op-o15.zoho.com (sender4-op-o15.zoho.com [136.143.188.15])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-vs1-f45.google.com (mail-vs1-f45.google.com [209.85.217.45])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 45A2C35292D
-	for <linux-wireless@vger.kernel.org>; Thu, 13 Nov 2025 13:24:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=136.143.188.15
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763040299; cv=pass; b=ewHkRPDpHv2XrqDrc4FX2GQiDKQ/Q5mngIwlvunzCiTyQQyIx4E5yJs//AiDMM+9PHVG5DPkJy39KX0q31CWIGJcXWY1PbmPFIBYPfIUZmUahhntxNVdmQPJzgJm+knDohMR+LbCCbkg1aANED6S0iM10fwwoVLx6pfmqBHYm54=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763040299; c=relaxed/simple;
-	bh=EvrqCJQHjMxlDRyPcPYA2oTjV2oHrqkMYRgHuJyjRFM=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=WXrq8FgLfxLimn1UE3AGi5jXUq8FP+HC7eKtLeRbNQAkXFapVbaLG3etGDRMjRwvULLhYyonQcFap4xZmI9jjCZz3ff1fiflWdNzpvOy8gkazBGWqLRzVZnUXASeEVIFFl2KE8VWvhOLLk75b0rw14W3iWXEi6nhoKhv3DRpEPY=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=xv97.com; spf=pass smtp.mailfrom=xv97.com; dkim=pass (1024-bit key) header.d=xv97.com header.i=m@xv97.com header.b=ss46DMXu; arc=pass smtp.client-ip=136.143.188.15
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=xv97.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=xv97.com
-ARC-Seal: i=1; a=rsa-sha256; t=1763040294; cv=none; 
-	d=zohomail.com; s=zohoarc; 
-	b=D15IQ54CkUIdPt0tk+fD2TgCKn+afWassOUsRgEBIvCoUJL0Tcuibcy6r/QXP5uuuGhj5yqudt3N7aNaNpONGUT2ySufC7XUNaJK2ZPS4MXi5EY/VSixsIvYNuI5UFN457b/dKBrPmK/n1UJTxKYQ6L2DXLINqEFgy7Rw/b1NLE=
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
-	t=1763040294; h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:References:Subject:Subject:To:To:Message-Id:Reply-To; 
-	bh=0p/D9Hv/2SWUXk4NIfbgaFp2HkMJRzDnEE+qfeDAbzc=; 
-	b=WCPAiSATHopYyWvXxVoAENy1VhpTEe/gfcuDF5YjzH3w211Tb/utEWxhj7/XRGFUSX0He1SWeKVTmF99nSXnPIX3rUuV1aqi1ASWIwVFs4YbV3E36HGriq4JRfnCsnJI8NC3gAVgw7cho4tF3yVfm+hiMwHvUS6z3Sd79AHPkGY=
-ARC-Authentication-Results: i=1; mx.zohomail.com;
-	dkim=pass  header.i=xv97.com;
-	spf=pass  smtp.mailfrom=m@xv97.com;
-	dmarc=pass header.from=<m@xv97.com>
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1763040294;
-	s=zmail; d=xv97.com; i=m@xv97.com;
-	h=Message-ID:Date:Date:MIME-Version:Subject:Subject:To:To:Cc:Cc:References:From:From:In-Reply-To:Content-Type:Content-Transfer-Encoding:Message-Id:Reply-To;
-	bh=0p/D9Hv/2SWUXk4NIfbgaFp2HkMJRzDnEE+qfeDAbzc=;
-	b=ss46DMXunMr6vnK5VdAQZRrP2b7Y/n9Sy7kLutap0uKHd0gFa8SlNd8i9viRkVsR
-	KT/Kem1PzcoGaXeuFvWTwq7/Q+6B8um4aPm1CvE3DVLTYitDDL+aX5dY6dU2PdLCIRw
-	Z2PmrnKcM012zr+zrfQQDBr0kgTv0prV+LpNNG1Q=
-Received: by mx.zohomail.com with SMTPS id 1763040292842845.715490259449;
-	Thu, 13 Nov 2025 05:24:52 -0800 (PST)
-Message-ID: <42040151-af35-4483-aa0e-425af22600e6@xv97.com>
-Date: Thu, 13 Nov 2025 21:24:48 +0800
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9650429CE1
+	for <linux-wireless@vger.kernel.org>; Thu, 13 Nov 2025 13:30:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.217.45
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1763040652; cv=none; b=MeAiPWgTlVWCvx1449P+95LHpk7xIDLYGcGvrf5X8wV5igp4REg449mxPuYHNDjZWlVfunpVWPpjUnMKackIOw2yrQGEKplYEUZMsICtXbRg86PvsQFW5gsYWqgu55X/BkZJNnXCjAfe1oI4hN81/EX5bnwS3Sy51lhKGye6G0I=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1763040652; c=relaxed/simple;
+	bh=edLroLDW6BuSG8ih+IbQOrGbMF6Aj5wue8zpNLndekg=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=hCgTC8G/pWM30bmYjTj37SkXuFPo2LE9t417Giw4mB0QiRvakpGu0LuwmWUPEV4j8tXYNymRx6WRfDLt6RG5FsiDcdvJe7LJYwbs7VV8pd3PQsiO36D+fILJvJdlsLB8seEsz4tz0lsinLqW/AP6p0Uhy/4qZ1onbYBtdjXK6oU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linux-m68k.org; spf=pass smtp.mailfrom=gmail.com; arc=none smtp.client-ip=209.85.217.45
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linux-m68k.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-vs1-f45.google.com with SMTP id ada2fe7eead31-5dfa9e34adbso631426137.0
+        for <linux-wireless@vger.kernel.org>; Thu, 13 Nov 2025 05:30:50 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1763040649; x=1763645449;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=+xLL9o7GE3sjvNnv0gmcUpp0gtXE6Km3k6dzTeJTvuM=;
+        b=jnI3MQn1lX2VvGXUrJqhPqWGbqErjgKpyGAf4UyVqL10Qcnmsg+NI1XW4nNS1iHk0C
+         GyX8keONc+K+HUsrAKVi8pmr02wwf0JhzfNXaCN4J4zzn/XFS1Ai58PED5QmzpO9ruXH
+         xhy2NOm86OYzDIwSXPpGcDbXTmUv5ssslXmKERWOjOpM6mSISxTCv1rAh4zk2jBW508z
+         GzC7VoEca+93hI5L9NZKdPVvlPYlR63kmdQJTEfuSrkeiVuon6+p4lLiHNzkrLlvFs8O
+         qCn9F6qR1CPBt68beJt3K8FO9ulBt14sL3sm/qjp4w7MjaPsk8FhYOAwlNgziPZ/09sA
+         zapQ==
+X-Gm-Message-State: AOJu0YyemngGY/9R1o27s+P3DILEEk3lQXc3+t5P5XjpLZKR2H7FFsg/
+	jWiY0vAGBFdxOs3wm0FXS/XF4SReZB2czw/wZ8qSPtBildvosWe7NYNvwPcWPn09Q3c=
+X-Gm-Gg: ASbGncsPpzKn2E4SC9SRUKG9ft9DvXBfvMkXwe+ijwFR7OcYa0zF1fvJEfOKq13mq3L
+	xcrfJow9QaJ3eQk3nDALWsPl/aFXehMISS8hZTEeWB+37PVkEU1Xo0uc7VNqcR55+BahYlxCaWB
+	byWkkyzvhoIKF3TErDkQNJPA2vjt2UgAWy1+tmVtS1wFMruDrnHweUCUugq2oqRmJVEvTV5yIn+
+	Gc9x7ksDTAT2nyLtpAEf5uTrQV7q6w1KDqM9vFyqBm67wCC/Z30Z2iI/ZdlgHlChfUNY6/MRKCl
+	BeSHO8wVBAX08HLRXiCMOYIieXTPz95FBmX2TQA68qY1xZvQTcl9xGm42SlkdaiPL4rUkjoarTA
+	42eLw2G5Hm+TQEhVu/EfMT8uv5nhdpOCRVax7FZr+7B5Osr24891fOTeX16IYz5WjJV0liChVHt
+	HDzfihllmOvfQIcPhwo6CarQG1FhNxts7yyJRl1Q==
+X-Google-Smtp-Source: AGHT+IFTN3IyYro9PpEG5ht1fPFuBwmMdKJ+HHEGP++5oTLz/UO72+4C0dHryFgpBd8JsWP7ADLyqg==
+X-Received: by 2002:a05:6102:5087:b0:5dd:b2a1:e9a5 with SMTP id ada2fe7eead31-5de07ce480cmr2158447137.5.1763040649103;
+        Thu, 13 Nov 2025 05:30:49 -0800 (PST)
+Received: from mail-vs1-f53.google.com (mail-vs1-f53.google.com. [209.85.217.53])
+        by smtp.gmail.com with ESMTPSA id ada2fe7eead31-5dfb707557esm572369137.1.2025.11.13.05.30.48
+        for <linux-wireless@vger.kernel.org>
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 13 Nov 2025 05:30:48 -0800 (PST)
+Received: by mail-vs1-f53.google.com with SMTP id ada2fe7eead31-5d967b67003so565355137.2
+        for <linux-wireless@vger.kernel.org>; Thu, 13 Nov 2025 05:30:48 -0800 (PST)
+X-Received: by 2002:a05:6102:2ac2:b0:5db:debf:6588 with SMTP id
+ ada2fe7eead31-5de07ceed37mr2334999137.9.1763040648654; Thu, 13 Nov 2025
+ 05:30:48 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 4/5] wifi: mac80211: refactor CMAC crypt functions
-To: Johannes Berg <johannes@sipsolutions.net>
+References: <20251113053459.34995-1-pkshih@realtek.com>
+In-Reply-To: <20251113053459.34995-1-pkshih@realtek.com>
+From: Geert Uytterhoeven <geert@linux-m68k.org>
+Date: Thu, 13 Nov 2025 14:30:36 +0100
+X-Gmail-Original-Message-ID: <CAMuHMdVt+5yOA6tuasX4KQgZud5wtRwu0A15UkEfQJbcd_xvVw@mail.gmail.com>
+X-Gm-Features: AWmQ_bl9-EIG_hqFvxyD3TurlNbXdi7JE26tgKoO_Uh9D7h-E_KCa7Chg2iqLSI
+Message-ID: <CAMuHMdVt+5yOA6tuasX4KQgZud5wtRwu0A15UkEfQJbcd_xvVw@mail.gmail.com>
+Subject: Re: [PATCH rtw-next] wifi: rtw89: use separated function to set RX filter
+To: Ping-Ke Shih <pkshih@realtek.com>
 Cc: linux-wireless@vger.kernel.org
-References: <20251111145759.111691-1-m@xv97.com>
- <20251111145759.111691-5-m@xv97.com>
- <080a729f1b10f767aa1b407f454667b83f5ee917.camel@sipsolutions.net>
-Content-Language: en-US
-From: Chien Wong <m@xv97.com>
-Autocrypt: addr=m@xv97.com; keydata=
- xjMEYrGw+RYJKwYBBAHaRw8BAQdAYXRqCQnACPka63iaZ2Lc9u8qPBNaxew6PdbvpuPvkIXN
- F0NoaWVuIFdvbmcgPG1AeHY5Ny5jb20+wpYEExYIAD4WIQRhWIfCT4U86RkflE5cpYo5+kEi
- rQUCYrGw+QIbAwUJEswDAAULCQgHAgYVCgkICwIEFgIDAQIeAQIXgAAKCRBcpYo5+kEirQtx
- AP4uJuD0ufTDXmEotuOUiI+86qWvc3jNsUhWYW8wHN8zEgD8Dli09jo/TsTlfWIXWjIs/6Pp
- b96j9fho6xNpETu8ZgnOOARisbD5EgorBgEEAZdVAQUBAQdArBbkcgnrIZ6XnmGUAA9XYA+i
- tf8afTv75UGa2c0YkwoDAQgHwn4EGBYIACYWIQRhWIfCT4U86RkflE5cpYo5+kEirQUCYrGw
- +QIbDAUJEswDAAAKCRBcpYo5+kEircrLAQC/yXFAHzoG9bnsw+hsiVfEbYMa04UiDEFkTd9Q
- kA+I2gD/VCzYkTizWTiXsbcGhB05Q+mI5tX+ehhtpcrIAaBxnA8=
-In-Reply-To: <080a729f1b10f767aa1b407f454667b83f5ee917.camel@sipsolutions.net>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-ZohoMailClient: External
+Content-Type: text/plain; charset="UTF-8"
 
-On 11/12/25 9:19 PM, Johannes Berg wrote:
-> On Tue, 2025-11-11 at 22:57 +0800, Chien Wong wrote:
->> ieee80211_aes_cmac() and ieee80211_aes_cmac_256() are almost the same.
->> Merge them. This removes duplication.
->>
->> It should be noted that the refactored ieee80211_aes_cmac() permits
->> 8 bytes output for CMAC-256 and 16 bytes output for CMAC-128. In such
->> cases, it would generate result correctly as expected.
-> 
-> I think you got that the wrong way around? Or I don't understand it.
+Hi Ping-ke,
 
-I mean that the functions do allow caller using in uncommon ways and the 
-behavior is not changed after refactor. Anyway, this is obvious from the 
-code. I'd remove the words.>> All references to the refactored functions 
-in the tree are adapted.
-> 
-> Not sure what that means? You also had that comment in another place? Do
-> you literally mean "I had to change the callers"? That seems obvious?
+On Thu, 13 Nov 2025 at 06:35, Ping-Ke Shih <pkshih@realtek.com> wrote:
+> Normally use rtw89_write32_mask() with a consecutive bit mask, but mask of
+> RX filter B_AX_RX_FLTR_CFG_MASK is bits 31-22 and 15-0, which excludes bits
+> of B_AX_RX_MPDU_MAX_LEN_MASK (bits 21-16).
+>
+> Though the original logic is well to set RX filter, change it to a separate
+> function to avoid the tricky design.
+>
+> Cc: Geert Uytterhoeven <geert@linux-m68k.org>
+> Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
 
-Yes, I mean I have changed the callers. This is obvious and the words 
-should be removed.
->>   int ieee80211_aes_cmac(struct crypto_shash *tfm, const u8 *aad,
->> -		       const u8 *data, size_t data_len, u8 *mic)
->> +		       const u8 *data, size_t data_len, u8 *mic, unsigned int mic_len)
-> 
-> could trivially keep that in 80 cols, and that would even look better :)
-> 
-Sure.>>   {
->>   	int err;
->>   	SHASH_DESC_ON_STACK(desc, tfm);
->> -	u8 out[AES_BLOCK_SIZE];
->>   	const __le16 *fc;
->>   
->> +	if (mic_len != IEEE80211_CMAC_128_MIC_LEN &&
->> +	    mic_len != IEEE80211_CMAC_256_MIC_LEN)
->> +		return -EINVAL;
-> 
-> I guess it's a bit annoying that we need this, but OTOH this is not the
-> optimal path (it's SW crypto...) so I guess doesn't matter.
-> 
+Reviewed-by: Geert Uytterhoeven <geert+renesas@glider.be>
 
-I feel the same. Validating parameters is unnecessary here.
+> I plan to have this change in next release cycle, and then you can send
+> your patches without errors caused by this.
 
->> +	if (mic_len == IEEE80211_CMAC_128_MIC_LEN) {
->> +		u8 out[AES_BLOCK_SIZE];
->>
->> +		err = crypto_shash_finup(desc, zero, mic_len, out);
->>   		if (err)
->>   			goto out;
->> +		memcpy(mic, out, mic_len);
->>   	} else {
->>
->> +		err = crypto_shash_finup(desc, zero, mic_len, mic);
->>   	}
-> 
-> Arguably, since it's a SW fixup path, you could also just always copy,
-> using the mic_len == IEEE80211_CMAC_128_MIC_LEN path (since it copies
-> mic_len).
+I found two more classes of issues:
 
-OK. The little optimization here is unnecessary.
+  1. drivers/net/wireless/realtek/rtw89/rtw8852a_rfk.c has twice:
 
+          rtw89_phy_write32_mask(rtwdev, R_ADC_FIFO, B_ADC_FIFO_RST, 0x0303);
+
+     B_ADC_FIFO_RST is only 8 bits wide, so 0x0303 does not fit.
+     Other call sites write the magic value 0x0303 to B_ADC_FIFO_RXK,
+     so perhaps that field was intended?
+
+         #define B_ADC_FIFO_RST GENMASK(31, 24)
+         #define B_ADC_FIFO_RXK GENMASK(31, 16)
+
+  2. drivers/net/wireless/realtek/rtw89/rtw8851b.c
+     drivers/net/wireless/realtek/rtw89/rtw8852b.c
+     drivers/net/wireless/realtek/rtw89/rtw8852c.c
+
+           __write_ctrl(R_AX_PWR_COEXT_CTRL, B_AX_TXAGC_BT_MASK, val,
+                        B_AX_TXAGC_BT_EN, arg.ctrl_gnt_bt != 0xffff);
+
+     B_AX_TXAGC_BT_MASK and B_AX_TXAGC_BT_EN are combined,
+     thus forming a non-consecutive mask.
+
+         #define B_AX_TXAGC_BT_EN BIT(1)
+         #define B_AX_TXAGC_BT_MASK GENMASK(11, 3)
+
+Thanks!
+
+Gr{oetje,eeting}s,
+
+                        Geert
+
+-- 
+Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
+
+In personal conversations with technical people, I call myself a hacker. But
+when I'm talking to journalists I just say "programmer" or something like that.
+                                -- Linus Torvalds
 
