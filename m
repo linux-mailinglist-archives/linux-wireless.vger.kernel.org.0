@@ -1,366 +1,198 @@
-Return-Path: <linux-wireless+bounces-28918-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-28919-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id D1D36C57E10
-	for <lists+linux-wireless@lfdr.de>; Thu, 13 Nov 2025 15:18:02 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3696FC588A2
+	for <lists+linux-wireless@lfdr.de>; Thu, 13 Nov 2025 16:59:38 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 009D2424C17
-	for <lists+linux-wireless@lfdr.de>; Thu, 13 Nov 2025 14:05:39 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 3E61B4EADD3
+	for <lists+linux-wireless@lfdr.de>; Thu, 13 Nov 2025 15:30:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5505F26F280;
-	Thu, 13 Nov 2025 14:05:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F1F21261393;
+	Thu, 13 Nov 2025 15:20:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=xv97.com header.i=m@xv97.com header.b="IeOug+6K"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="UxvtT01t"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from sender4-op-o15.zoho.com (sender4-op-o15.zoho.com [136.143.188.15])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.11])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5B34B1FBC8C
-	for <linux-wireless@vger.kernel.org>; Thu, 13 Nov 2025 14:05:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=136.143.188.15
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763042734; cv=pass; b=BSsj8GAxU6kVaVUmXUOkOeFV2FTFf7E/0Eoos3uI/XMzieby0P66YWD32z7TuBJuV0yCcdhoWayNocEIBOiiK145bzlkkM6pWLNpcfd1AV6o9vB3+/iHM92Buz7M6uhcin9TZ4vXmkbvblBtsTJ7F0PQH7s9TF5IW6TtPQvO93Y=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763042734; c=relaxed/simple;
-	bh=DWfnNqPBTlWq0NplVZzM3IoySunz6BYfiqmICHRNHvc=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=jyD15QsnMHcNwoWvNQAyaP3B3QAbzqbrK1xwoqk7iqAtvhb/gsUtxzywMm6qj7iZCq9CesuigEy9gG+QWvMj6mfaU0EAI7vGgf3o5akJO71SEGqnGuk4rRvoM4MqjdFCeeDRXjB1Ci03v5HK+AZxS6pIhRZN9B8RJEKdBkhdOcM=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=xv97.com; spf=pass smtp.mailfrom=xv97.com; dkim=pass (1024-bit key) header.d=xv97.com header.i=m@xv97.com header.b=IeOug+6K; arc=pass smtp.client-ip=136.143.188.15
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=xv97.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=xv97.com
-ARC-Seal: i=1; a=rsa-sha256; t=1763042731; cv=none; 
-	d=zohomail.com; s=zohoarc; 
-	b=i1Rb5+VhDTcJ5hAExJVsLt817M/X/va+VPacYyHLbb2R53kbr9+z+P0npA7QPJ36QTxxq4XQHAwyXW5fO4R1V8hTHu3IofsQHP7ran0xF388mgznLR40ctEMH4tmjUuiz9H8HRKIX1+c4RfBezO/xFY8xNnvds70CTR3Ivaa5Lk=
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
-	t=1763042731; h=Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:References:Subject:Subject:To:To:Message-Id:Reply-To; 
-	bh=9EZBSPZRw0aCKzlJnIvUx6dSi/3/XKnGHdr7+Xc1Tgg=; 
-	b=O5dP5fqQz33e02QzvACaQFPYs1Mt4ISaO0/SGMOaQ8quBcLw5BoRX8w7hmdBWk/Vn213+kFWAxDJy2vvHDD02kLlJtt7yma5aJTg8EmlumDGAHc3ObsKLwoSA0ziJOPCbP1UFlEF6+3oggUwbP9mozhbX0Rm3X9yooKcdkizqqM=
-ARC-Authentication-Results: i=1; mx.zohomail.com;
-	dkim=pass  header.i=xv97.com;
-	spf=pass  smtp.mailfrom=m@xv97.com;
-	dmarc=pass header.from=<m@xv97.com>
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1763042731;
-	s=zmail; d=xv97.com; i=m@xv97.com;
-	h=From:From:To:To:Cc:Cc:Subject:Subject:Date:Date:Message-ID:In-Reply-To:References:MIME-Version:Content-Transfer-Encoding:Message-Id:Reply-To;
-	bh=9EZBSPZRw0aCKzlJnIvUx6dSi/3/XKnGHdr7+Xc1Tgg=;
-	b=IeOug+6KH42ph+K0tK6FpJGxR2X7R6lfrbfy4Wdd9zSlxX0bMDzO3ZKXRv+bFQC7
-	N+RrCyqipKKgTYXDWzzuTn/H902EbDfhNtIWvBUel3p5fxSCcTq1Fq5IVsy8HQUbFhc
-	m6VWVnbzE8t4qnJgwg3TQv/a+6144+Sxhj+BPqzU=
-Received: by mx.zohomail.com with SMTPS id 1763042727918866.0399450838696;
-	Thu, 13 Nov 2025 06:05:27 -0800 (PST)
-From: Chien Wong <m@xv97.com>
-To: johannes@sipsolutions.net
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2B2311D9A54
+	for <linux-wireless@vger.kernel.org>; Thu, 13 Nov 2025 15:20:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.11
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1763047229; cv=none; b=A2zkhNUh08OVYEkRC5Idj54f2r/lL9nPX4OdnO4QgGwb5ZJoR96T/CmyfVvq0kJsvUUiW2xtV0pUa2exxnRsx9LqjGPKUEbSroH9XwV26HEZNG4dtUGMyDfigQOc4GTXSIk1v+Kwn8oB68NuDKseHn0UDrKhcLEgDhXhXrS6MU4=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1763047229; c=relaxed/simple;
+	bh=/OesxnN787FNQb+ILL040q4js/Y16xhtbLg3V2INic4=;
+	h=Date:From:To:Cc:Subject:Message-ID; b=ljQf/nuyHbz8A5wV+bSKeQsc1BD4qBWqebW7V+grLCng8A5jxw5yrEK18fTooXvr+7thAYcGHTlh3CvwDYoE7J68B7j5qkRjwvNghrmCBMdW1csjgbpLvU2q2+1UouBu8ZrzUIBAxTtl4aw00vzEn5CjiGdqQv7YKK5IXQqZlmg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=UxvtT01t; arc=none smtp.client-ip=192.198.163.11
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1763047228; x=1794583228;
+  h=date:from:to:cc:subject:message-id;
+  bh=/OesxnN787FNQb+ILL040q4js/Y16xhtbLg3V2INic4=;
+  b=UxvtT01t+0OgCIzEPWSOU6gLTuN58JKHgWpHLZPnIV9be3p4LvQwbcWv
+   OefSFJHRdlrLaCh9EW0gj9XVltfzFEgL6i0LM2wMUs5Qrlo3MoAuI2czN
+   tOHQ0JVDPQUAw3EYcXYrwESFGZ/OVAkZ5pvXe2uZs+gKwozMz2PuQ1EEU
+   B8I9jWrJilYF/On9ALBeh0uFrX+JuF1PwdTiD8I88ss5HQ+oVXluD9dBV
+   BCJnkG4kbyA8jqjtTY4LEydBd036tc1JAl252Mk7fhtNt7dcHDP32ub0R
+   1nCgoNHbEDvUW1i+7Bt0fndGiWMxKCjfrQatfdmKpY2P8/DEos/o9hkaY
+   A==;
+X-CSE-ConnectionGUID: fNFf5np2RW+nD5grC8US9w==
+X-CSE-MsgGUID: NcioteH4TMOeyVgnUmCR1Q==
+X-IronPort-AV: E=McAfee;i="6800,10657,11612"; a="75741052"
+X-IronPort-AV: E=Sophos;i="6.19,302,1754982000"; 
+   d="scan'208";a="75741052"
+Received: from fmviesa008.fm.intel.com ([10.60.135.148])
+  by fmvoesa105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 Nov 2025 07:20:28 -0800
+X-CSE-ConnectionGUID: JQhkzmuRSb+qXcCWpZm2Ew==
+X-CSE-MsgGUID: RsGMsmu5Ql68Lmob15lmfQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.19,302,1754982000"; 
+   d="scan'208";a="189792870"
+Received: from lkp-server01.sh.intel.com (HELO 7b01c990427b) ([10.239.97.150])
+  by fmviesa008.fm.intel.com with ESMTP; 13 Nov 2025 07:20:27 -0800
+Received: from kbuild by 7b01c990427b with local (Exim 4.96)
+	(envelope-from <lkp@intel.com>)
+	id 1vJZ7Y-0005TF-21;
+	Thu, 13 Nov 2025 15:20:24 +0000
+Date: Thu, 13 Nov 2025 23:19:24 +0800
+From: kernel test robot <lkp@intel.com>
+To: Johannes Berg <johannes.berg@intel.com>
 Cc: linux-wireless@vger.kernel.org
-Subject: [PATCH v4 5/5] wifi: mac80211: refactor CMAC packet handlers
-Date: Thu, 13 Nov 2025 22:05:11 +0800
-Message-ID: <20251113140511.48658-6-m@xv97.com>
-X-Mailer: git-send-email 2.51.2
-In-Reply-To: <20251113140511.48658-1-m@xv97.com>
-References: <20251113140511.48658-1-m@xv97.com>
+Subject: [wireless:for-next] BUILD SUCCESS
+ a35f64a216ca1c9e3c3f0f91fdb54ef9515a7fe7
+Message-ID: <202511132319.MhLJ69wT-lkp@intel.com>
+User-Agent: s-nail v14.9.25
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-ZohoMailClient: External
 
-Merge CMAC-128 and CMAC-256 handlers since they are almost the same.
-This removes duplication.
+tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/wireless/wireless.git for-next
+branch HEAD: a35f64a216ca1c9e3c3f0f91fdb54ef9515a7fe7  Merge tag 'iwlwifi-fixes-2025-11-12' of https://git.kernel.org/pub/scm/linux/kernel/git/iwlwifi/iwlwifi-next
 
-The comment 'MIC = AES-128-CMAC(IGTK, AAD ...' is out-dated since CMAC
-is also used with BIGTK, as is the comment for CMAC-256. Simply remove
-the comments.
+elapsed time: 1807m
 
-Tested-on: mac80211_hwsim
+configs tested: 105
+configs skipped: 6
 
-Signed-off-by: Chien Wong <m@xv97.com>
----
- net/mac80211/rx.c  |   6 +-
- net/mac80211/tx.c  |   6 +-
- net/mac80211/wpa.c | 146 ++++++++-------------------------------------
- net/mac80211/wpa.h |  10 ++--
- 4 files changed, 37 insertions(+), 131 deletions(-)
+The following configs have been built successfully.
+More configs may be tested in the coming days.
 
-diff --git a/net/mac80211/rx.c b/net/mac80211/rx.c
-index 80067ed1da2f..4c1b649b844a 100644
---- a/net/mac80211/rx.c
-+++ b/net/mac80211/rx.c
-@@ -2215,10 +2215,12 @@ ieee80211_rx_h_decrypt(struct ieee80211_rx_data *rx)
- 			rx, IEEE80211_CCMP_256_MIC_LEN);
- 		break;
- 	case WLAN_CIPHER_SUITE_AES_CMAC:
--		result = ieee80211_crypto_aes_cmac_decrypt(rx);
-+		result = ieee80211_crypto_aes_cmac_decrypt(
-+			rx, IEEE80211_CMAC_128_MIC_LEN);
- 		break;
- 	case WLAN_CIPHER_SUITE_BIP_CMAC_256:
--		result = ieee80211_crypto_aes_cmac_256_decrypt(rx);
-+		result = ieee80211_crypto_aes_cmac_decrypt(
-+			rx, IEEE80211_CMAC_256_MIC_LEN);
- 		break;
- 	case WLAN_CIPHER_SUITE_BIP_GMAC_128:
- 	case WLAN_CIPHER_SUITE_BIP_GMAC_256:
-diff --git a/net/mac80211/tx.c b/net/mac80211/tx.c
-index e7b141c55f7a..9d8b0a25f73c 100644
---- a/net/mac80211/tx.c
-+++ b/net/mac80211/tx.c
-@@ -1062,9 +1062,11 @@ ieee80211_tx_h_encrypt(struct ieee80211_tx_data *tx)
- 		return ieee80211_crypto_ccmp_encrypt(
- 			tx, IEEE80211_CCMP_256_MIC_LEN);
- 	case WLAN_CIPHER_SUITE_AES_CMAC:
--		return ieee80211_crypto_aes_cmac_encrypt(tx);
-+		return ieee80211_crypto_aes_cmac_encrypt(
-+			tx, IEEE80211_CMAC_128_MIC_LEN);
- 	case WLAN_CIPHER_SUITE_BIP_CMAC_256:
--		return ieee80211_crypto_aes_cmac_256_encrypt(tx);
-+		return ieee80211_crypto_aes_cmac_encrypt(
-+			tx, IEEE80211_CMAC_256_MIC_LEN);
- 	case WLAN_CIPHER_SUITE_BIP_GMAC_128:
- 	case WLAN_CIPHER_SUITE_BIP_GMAC_256:
- 		return ieee80211_crypto_aes_gmac_encrypt(tx);
-diff --git a/net/mac80211/wpa.c b/net/mac80211/wpa.c
-index 7431ccecd17f..4a858112e4ef 100644
---- a/net/mac80211/wpa.c
-+++ b/net/mac80211/wpa.c
-@@ -828,12 +828,14 @@ static inline void bip_ipn_swap(u8 *d, const u8 *s)
- 
- 
- ieee80211_tx_result
--ieee80211_crypto_aes_cmac_encrypt(struct ieee80211_tx_data *tx)
-+ieee80211_crypto_aes_cmac_encrypt(struct ieee80211_tx_data *tx,
-+				  unsigned int mic_len)
- {
- 	struct sk_buff *skb;
- 	struct ieee80211_tx_info *info;
- 	struct ieee80211_key *key = tx->key;
--	struct ieee80211_mmie *mmie;
-+	struct ieee80211_mmie_var *mmie;
-+	size_t mmie_len;
- 	u8 aad[20];
- 	u64 pn64;
- 
-@@ -848,62 +850,14 @@ ieee80211_crypto_aes_cmac_encrypt(struct ieee80211_tx_data *tx)
- 	    !(key->conf.flags & IEEE80211_KEY_FLAG_GENERATE_MMIE))
- 		return TX_CONTINUE;
- 
--	if (WARN_ON(skb_tailroom(skb) < sizeof(*mmie)))
--		return TX_DROP;
--
--	mmie = skb_put(skb, sizeof(*mmie));
--	mmie->element_id = WLAN_EID_MMIE;
--	mmie->length = sizeof(*mmie) - 2;
--	mmie->key_id = cpu_to_le16(key->conf.keyidx);
--
--	/* PN = PN + 1 */
--	pn64 = atomic64_inc_return(&key->conf.tx_pn);
--
--	bip_ipn_set64(mmie->sequence_number, pn64);
--
--	if (info->control.hw_key)
--		return TX_CONTINUE;
--
--	bip_aad(skb, aad);
--
--	/*
--	 * MIC = AES-128-CMAC(IGTK, AAD || Management Frame Body || MMIE, 64)
--	 */
--	if (ieee80211_aes_cmac(key->u.aes_cmac.tfm, aad,
--			       skb->data + 24, skb->len - 24, mmie->mic,
--			       IEEE80211_CMAC_128_MIC_LEN))
--		return TX_DROP;
--
--	return TX_CONTINUE;
--}
-+	mmie_len = sizeof(*mmie) + mic_len;
- 
--ieee80211_tx_result
--ieee80211_crypto_aes_cmac_256_encrypt(struct ieee80211_tx_data *tx)
--{
--	struct sk_buff *skb;
--	struct ieee80211_tx_info *info;
--	struct ieee80211_key *key = tx->key;
--	struct ieee80211_mmie_16 *mmie;
--	u8 aad[20];
--	u64 pn64;
--
--	if (WARN_ON(skb_queue_len(&tx->skbs) != 1))
-+	if (WARN_ON(skb_tailroom(skb) < mmie_len))
- 		return TX_DROP;
- 
--	skb = skb_peek(&tx->skbs);
--
--	info = IEEE80211_SKB_CB(skb);
--
--	if (info->control.hw_key &&
--	    !(key->conf.flags & IEEE80211_KEY_FLAG_GENERATE_MMIE))
--		return TX_CONTINUE;
--
--	if (WARN_ON(skb_tailroom(skb) < sizeof(*mmie)))
--		return TX_DROP;
--
--	mmie = skb_put(skb, sizeof(*mmie));
-+	mmie = skb_put(skb, mmie_len);
- 	mmie->element_id = WLAN_EID_MMIE;
--	mmie->length = sizeof(*mmie) - 2;
-+	mmie->length = mmie_len - 2;
- 	mmie->key_id = cpu_to_le16(key->conf.keyidx);
- 
- 	/* PN = PN + 1 */
-@@ -916,90 +870,40 @@ ieee80211_crypto_aes_cmac_256_encrypt(struct ieee80211_tx_data *tx)
- 
- 	bip_aad(skb, aad);
- 
--	/* MIC = AES-256-CMAC(IGTK, AAD || Management Frame Body || MMIE, 128)
--	 */
- 	if (ieee80211_aes_cmac(key->u.aes_cmac.tfm, aad,
--			       skb->data + 24, skb->len - 24, mmie->mic,
--			       IEEE80211_CMAC_256_MIC_LEN))
-+			       skb->data + 24, skb->len - 24,
-+			       mmie->mic, mic_len))
- 		return TX_DROP;
- 
- 	return TX_CONTINUE;
- }
- 
- ieee80211_rx_result
--ieee80211_crypto_aes_cmac_decrypt(struct ieee80211_rx_data *rx)
-+ieee80211_crypto_aes_cmac_decrypt(struct ieee80211_rx_data *rx,
-+				  unsigned int mic_len)
- {
- 	struct sk_buff *skb = rx->skb;
- 	struct ieee80211_rx_status *status = IEEE80211_SKB_RXCB(skb);
- 	struct ieee80211_key *key = rx->key;
--	struct ieee80211_mmie *mmie;
--	u8 aad[20], mic[8], ipn[6];
-+	struct ieee80211_mmie_var *mmie;
-+	size_t mmie_len;
-+	u8 aad[20], mic[IEEE80211_CMAC_256_MIC_LEN], ipn[6];
- 	struct ieee80211_hdr *hdr = (struct ieee80211_hdr *) skb->data;
- 
- 	if (!ieee80211_is_mgmt(hdr->frame_control))
- 		return RX_CONTINUE;
- 
--	/* management frames are already linear */
--
--	if (skb->len < 24 + sizeof(*mmie))
--		return RX_DROP_U_SHORT_CMAC;
--
--	mmie = (struct ieee80211_mmie *)
--		(skb->data + skb->len - sizeof(*mmie));
--	if (mmie->element_id != WLAN_EID_MMIE ||
--	    mmie->length != sizeof(*mmie) - 2)
--		return RX_DROP_U_BAD_MMIE; /* Invalid MMIE */
--
--	bip_ipn_swap(ipn, mmie->sequence_number);
--
--	if (memcmp(ipn, key->u.aes_cmac.rx_pn, 6) <= 0) {
--		key->u.aes_cmac.replays++;
--		return RX_DROP_U_REPLAY;
--	}
--
--	if (!(status->flag & RX_FLAG_DECRYPTED)) {
--		/* hardware didn't decrypt/verify MIC */
--		bip_aad(skb, aad);
--		if (ieee80211_aes_cmac(key->u.aes_cmac.tfm, aad,
--				       skb->data + 24, skb->len - 24, mic,
--				       IEEE80211_CMAC_128_MIC_LEN))
--			return RX_DROP_U_DECRYPT_FAIL;
--		if (crypto_memneq(mic, mmie->mic, sizeof(mmie->mic))) {
--			key->u.aes_cmac.icverrors++;
--			return RX_DROP_U_MIC_FAIL;
--		}
--	}
--
--	memcpy(key->u.aes_cmac.rx_pn, ipn, 6);
--
--	/* Remove MMIE */
--	skb_trim(skb, skb->len - sizeof(*mmie));
--
--	return RX_CONTINUE;
--}
--
--ieee80211_rx_result
--ieee80211_crypto_aes_cmac_256_decrypt(struct ieee80211_rx_data *rx)
--{
--	struct sk_buff *skb = rx->skb;
--	struct ieee80211_rx_status *status = IEEE80211_SKB_RXCB(skb);
--	struct ieee80211_key *key = rx->key;
--	struct ieee80211_mmie_16 *mmie;
--	u8 aad[20], mic[16], ipn[6];
--	struct ieee80211_hdr *hdr = (struct ieee80211_hdr *)skb->data;
--
--	if (!ieee80211_is_mgmt(hdr->frame_control))
--		return RX_CONTINUE;
-+	mmie_len = sizeof(*mmie) + mic_len;
- 
- 	/* management frames are already linear */
- 
--	if (skb->len < 24 + sizeof(*mmie))
--		return RX_DROP_U_SHORT_CMAC256;
-+	if (skb->len < 24 + mmie_len)
-+		return mic_len == IEEE80211_CMAC_128_MIC_LEN ?
-+			RX_DROP_U_SHORT_CMAC : RX_DROP_U_SHORT_CMAC256;
- 
--	mmie = (struct ieee80211_mmie_16 *)
--		(skb->data + skb->len - sizeof(*mmie));
-+	mmie = (struct ieee80211_mmie_var *)(skb->data + skb->len - mmie_len);
- 	if (mmie->element_id != WLAN_EID_MMIE ||
--	    mmie->length != sizeof(*mmie) - 2)
-+	    mmie->length != mmie_len - 2)
- 		return RX_DROP_U_BAD_MMIE; /* Invalid MMIE */
- 
- 	bip_ipn_swap(ipn, mmie->sequence_number);
-@@ -1013,10 +917,10 @@ ieee80211_crypto_aes_cmac_256_decrypt(struct ieee80211_rx_data *rx)
- 		/* hardware didn't decrypt/verify MIC */
- 		bip_aad(skb, aad);
- 		if (ieee80211_aes_cmac(key->u.aes_cmac.tfm, aad,
--				       skb->data + 24, skb->len - 24, mic,
--				       IEEE80211_CMAC_256_MIC_LEN))
-+				       skb->data + 24, skb->len - 24,
-+				       mic, mic_len))
- 			return RX_DROP_U_DECRYPT_FAIL;
--		if (crypto_memneq(mic, mmie->mic, sizeof(mmie->mic))) {
-+		if (crypto_memneq(mic, mmie->mic, mic_len)) {
- 			key->u.aes_cmac.icverrors++;
- 			return RX_DROP_U_MIC_FAIL;
- 		}
-@@ -1025,7 +929,7 @@ ieee80211_crypto_aes_cmac_256_decrypt(struct ieee80211_rx_data *rx)
- 	memcpy(key->u.aes_cmac.rx_pn, ipn, 6);
- 
- 	/* Remove MMIE */
--	skb_trim(skb, skb->len - sizeof(*mmie));
-+	skb_trim(skb, skb->len - mmie_len);
- 
- 	return RX_CONTINUE;
- }
-diff --git a/net/mac80211/wpa.h b/net/mac80211/wpa.h
-index a9a81abb5479..6e8846dfe710 100644
---- a/net/mac80211/wpa.h
-+++ b/net/mac80211/wpa.h
-@@ -29,13 +29,11 @@ ieee80211_crypto_ccmp_decrypt(struct ieee80211_rx_data *rx,
- 			      unsigned int mic_len);
- 
- ieee80211_tx_result
--ieee80211_crypto_aes_cmac_encrypt(struct ieee80211_tx_data *tx);
--ieee80211_tx_result
--ieee80211_crypto_aes_cmac_256_encrypt(struct ieee80211_tx_data *tx);
--ieee80211_rx_result
--ieee80211_crypto_aes_cmac_decrypt(struct ieee80211_rx_data *rx);
-+ieee80211_crypto_aes_cmac_encrypt(struct ieee80211_tx_data *tx,
-+				  unsigned int mic_len);
- ieee80211_rx_result
--ieee80211_crypto_aes_cmac_256_decrypt(struct ieee80211_rx_data *rx);
-+ieee80211_crypto_aes_cmac_decrypt(struct ieee80211_rx_data *rx,
-+				  unsigned int mic_len);
- ieee80211_tx_result
- ieee80211_crypto_aes_gmac_encrypt(struct ieee80211_tx_data *tx);
- ieee80211_rx_result
--- 
-2.51.2
+tested configs:
+alpha                             allnoconfig    gcc-15.1.0
+arc                              alldefconfig    gcc-15.1.0
+arc                               allnoconfig    gcc-15.1.0
+arc                   randconfig-001-20251113    gcc-8.5.0
+arc                   randconfig-002-20251113    gcc-8.5.0
+arm                               allnoconfig    clang-22
+arm                     am200epdkit_defconfig    gcc-15.1.0
+arm                         lpc18xx_defconfig    clang-22
+arm                         orion5x_defconfig    clang-22
+arm                   randconfig-001-20251113    gcc-10.5.0
+arm                   randconfig-002-20251113    clang-22
+arm                   randconfig-003-20251113    clang-22
+arm                   randconfig-004-20251113    clang-22
+arm                        spear6xx_defconfig    clang-22
+arm64                             allnoconfig    gcc-15.1.0
+arm64                 randconfig-001-20251113    clang-16
+arm64                 randconfig-002-20251113    clang-22
+arm64                 randconfig-003-20251113    gcc-8.5.0
+arm64                 randconfig-004-20251113    clang-22
+csky                              allnoconfig    gcc-15.1.0
+csky                  randconfig-001-20251113    gcc-9.5.0
+csky                  randconfig-002-20251113    gcc-14.3.0
+hexagon                           allnoconfig    clang-22
+hexagon               randconfig-001-20251113    clang-22
+hexagon               randconfig-002-20251113    clang-22
+i386                              allnoconfig    gcc-14
+i386        buildonly-randconfig-001-20251113    clang-20
+i386        buildonly-randconfig-002-20251113    gcc-14
+i386        buildonly-randconfig-003-20251113    gcc-14
+i386        buildonly-randconfig-004-20251113    gcc-12
+i386        buildonly-randconfig-005-20251113    gcc-14
+i386                  randconfig-001-20251113    gcc-14
+i386                  randconfig-002-20251113    clang-20
+i386                  randconfig-003-20251113    clang-20
+i386                  randconfig-004-20251113    gcc-14
+i386                  randconfig-005-20251113    clang-20
+i386                  randconfig-006-20251113    clang-20
+i386                  randconfig-007-20251113    gcc-14
+loongarch                         allnoconfig    clang-22
+loongarch                           defconfig    clang-19
+loongarch             randconfig-001-20251113    gcc-15.1.0
+loongarch             randconfig-002-20251113    clang-22
+m68k                              allnoconfig    gcc-15.1.0
+m68k                                defconfig    gcc-15.1.0
+microblaze                        allnoconfig    gcc-15.1.0
+microblaze                          defconfig    gcc-15.1.0
+microblaze                      mmu_defconfig    gcc-15.1.0
+mips                              allnoconfig    gcc-15.1.0
+nios2                             allnoconfig    gcc-11.5.0
+nios2                               defconfig    gcc-11.5.0
+nios2                 randconfig-001-20251113    gcc-8.5.0
+nios2                 randconfig-002-20251113    gcc-11.5.0
+openrisc                          allnoconfig    gcc-15.1.0
+openrisc                            defconfig    gcc-15.1.0
+parisc                            allnoconfig    gcc-15.1.0
+parisc                              defconfig    gcc-15.1.0
+parisc                randconfig-001-20251113    gcc-8.5.0
+parisc                randconfig-002-20251113    gcc-14.3.0
+parisc64                            defconfig    gcc-15.1.0
+powerpc                           allnoconfig    gcc-15.1.0
+powerpc                     ksi8560_defconfig    gcc-15.1.0
+powerpc                      pmac32_defconfig    clang-22
+powerpc               randconfig-001-20251113    clang-22
+powerpc               randconfig-002-20251113    clang-22
+powerpc64             randconfig-001-20251113    clang-22
+powerpc64             randconfig-002-20251113    clang-22
+riscv                             allnoconfig    gcc-15.1.0
+riscv                               defconfig    clang-22
+riscv                 randconfig-001-20251113    gcc-8.5.0
+riscv                 randconfig-002-20251113    gcc-11.5.0
+s390                              allnoconfig    clang-22
+s390                                defconfig    clang-22
+s390                  randconfig-001-20251113    clang-22
+s390                  randconfig-002-20251113    clang-17
+sh                                allnoconfig    gcc-15.1.0
+sh                                  defconfig    gcc-15.1.0
+sh                               j2_defconfig    gcc-15.1.0
+sh                    randconfig-001-20251113    gcc-15.1.0
+sh                    randconfig-002-20251113    gcc-11.5.0
+sh                        sh7763rdp_defconfig    gcc-15.1.0
+sparc                             allnoconfig    gcc-15.1.0
+sparc                               defconfig    gcc-15.1.0
+sparc                 randconfig-001-20251113    gcc-8.5.0
+sparc                 randconfig-002-20251113    gcc-8.5.0
+sparc64                             defconfig    clang-20
+sparc64               randconfig-001-20251113    clang-20
+sparc64               randconfig-002-20251113    clang-22
+um                                allnoconfig    clang-22
+um                                  defconfig    clang-22
+um                             i386_defconfig    gcc-14
+um                    randconfig-001-20251113    gcc-14
+um                    randconfig-002-20251113    clang-22
+um                           x86_64_defconfig    clang-22
+x86_64                            allnoconfig    clang-20
+x86_64      buildonly-randconfig-001-20251113    gcc-14
+x86_64      buildonly-randconfig-002-20251113    clang-20
+x86_64      buildonly-randconfig-003-20251113    clang-20
+x86_64      buildonly-randconfig-004-20251113    gcc-14
+x86_64      buildonly-randconfig-005-20251113    gcc-12
+x86_64      buildonly-randconfig-006-20251113    gcc-14
+x86_64                              defconfig    gcc-14
+xtensa                            allnoconfig    gcc-15.1.0
+xtensa                randconfig-001-20251113    gcc-15.1.0
+xtensa                randconfig-002-20251113    gcc-13.4.0
+xtensa                    xip_kc705_defconfig    gcc-15.1.0
 
+--
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
 
