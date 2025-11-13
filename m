@@ -1,79 +1,79 @@
-Return-Path: <linux-wireless+bounces-28926-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-28927-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0A56CC58C80
-	for <lists+linux-wireless@lfdr.de>; Thu, 13 Nov 2025 17:39:27 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9DCD3C58CEF
+	for <lists+linux-wireless@lfdr.de>; Thu, 13 Nov 2025 17:44:09 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id A3A7F4FADBF
-	for <lists+linux-wireless@lfdr.de>; Thu, 13 Nov 2025 16:24:02 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 95B804FB6E5
+	for <lists+linux-wireless@lfdr.de>; Thu, 13 Nov 2025 16:24:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 903E135C19C;
-	Thu, 13 Nov 2025 16:13:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6513A35C1B4;
+	Thu, 13 Nov 2025 16:13:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b="VL22SRc3"
+	dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b="fofcCtYu"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-wm1-f52.google.com (mail-wm1-f52.google.com [209.85.128.52])
+Received: from mail-wm1-f46.google.com (mail-wm1-f46.google.com [209.85.128.46])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6A81C35C18C
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3F73D35C191
 	for <linux-wireless@vger.kernel.org>; Thu, 13 Nov 2025 16:12:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.52
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.46
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763050380; cv=none; b=dKAVGYSysSpticC8fkxu2DxHCRwA8NvNfqLQgf6/6iVtbLDek9yoWfN4zClmWRQDBC7pMkEYDQMdJjag5pyTMkla+njxV67ZCh6C6t67UMf4nvpx0WUWSCU4bhtY7m5urlQHNTKEZdkJgis3XBUiz0i0U+T4xAghmldad6ASDTU=
+	t=1763050381; cv=none; b=lbVLr+4cfiV94A08K+UcQQ1WQY3bR59uiYx+G49jgNTzDl4hhqe8EQHmmk7YDLUvoDkho4EGdSPLkMZhrH74NIsuLWv+RxYBjGqBe2qfS3Zo1jnxtv93eZWURylb7JKhgI4kxwB6bicggE578qSEGlJxCvaEGiJaRKuWrh5oO4g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763050380; c=relaxed/simple;
-	bh=5Q6+jx694R5FD9t9uLYyFN92bEi8X+fGwEsS2Iy+wf8=;
+	s=arc-20240116; t=1763050381; c=relaxed/simple;
+	bh=i6/Tdijqg6TUvObXhkp4KVAh++KkLe0kXSMy/xdGERI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=B4HfaDnOrJhXlNjU2N3yecMIxzlzGt5Yje3c7sSWGu9NR3lC/W7tLW1j4p9/OF1aOV50yScilF4E+YNdAB122Dj6MWIy0lUhhCDHcpGBr4ezodDtqBRXwN0AgwdGWRAT7LF6QLK20fL/66mDAdx+SNh4gf0kbGURIcrhwtblA/k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com; spf=pass smtp.mailfrom=suse.com; dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b=VL22SRc3; arc=none smtp.client-ip=209.85.128.52
+	 MIME-Version:Content-Type; b=lWrceyePHcE+XMlWX7uTwAXstXef2sGLMFD4qM3QSlIYCi0Dm9c6IPKzzy7jILl1PJh0z0rj+FzC5BlIr/xVa3oI1ivWubirtBVlDxefo5M5jWi33xiNwVA/rR7EWAGMaxs3bi/p66pRdIvDKu1JzmQbghADs5pnWl0B/svMh6c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com; spf=pass smtp.mailfrom=suse.com; dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b=fofcCtYu; arc=none smtp.client-ip=209.85.128.46
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.com
-Received: by mail-wm1-f52.google.com with SMTP id 5b1f17b1804b1-471191ac79dso11208605e9.3
+Received: by mail-wm1-f46.google.com with SMTP id 5b1f17b1804b1-4774f41628bso11548925e9.0
         for <linux-wireless@vger.kernel.org>; Thu, 13 Nov 2025 08:12:58 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=suse.com; s=google; t=1763050377; x=1763655177; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=UILebnM/hGlC/4mGqUQsEbI9oK9lCHY4NHYgMXAAz80=;
-        b=VL22SRc3bveXeWQP8al03YhU9Lk5cJmBFXv5JHgl1IMEvScRw5aRBCVTauEDu86uuo
-         7R817BC3ym5O2md8nFsaoMjN0cUwMMxHPL/JM4b4fx0J2QsQqwhRWWx7rvAkcEI3HCHt
-         6KHdaTBL4msEbYKem0vtQe9sGEXCai8Ahmf11qH4cF+oMYucntKtDAmgPSyP/i9HvJ6I
-         DVl794A6S0HJA+QaUaDDK2Jmib5Gou5INKy4jwnl2UyS4HMvwaDcv+j2Y2a6Eq6xd1BI
-         I5a+6wiYXaTOAxlAXGgVfdkhoHm6ITmVU5JoQvhpD+7cRk9xfDnPeF6Fw2dzPj/IA+TS
-         U1Yw==
+        bh=m3hl8tY1RLv+K2+Ox9WrDl4hIf6rzuWKqmNX1UuS7YY=;
+        b=fofcCtYu+DIHPIz/4L9a4+0o6Be0uh3jygGeeBaTZhohoJYHvMdCUA752g7JlCBM+m
+         +8OIePTusMBvY+kw3n6RdpXFyEyWgatB9lPs2X4ezutCnBvlpUzJwbcyoC6+872jwb4W
+         cGCpKAk/HSFakqjt2tKBaccU1Tj6VDVwooXJwPX8+r9Ya9weGpi8rTgB8txiVrTFDQCG
+         RRkIs4HZS5ihcRvZDm5DIsS2Foh7cwYhUNgmzc2YeRqEKRun91OHXiXpri5qZI6PhRF/
+         rWC336cxHewKJ9MNzLR8aHtX89Vyb9MSUdkQ9binBDaabBAugu39qofr+CHhAKL6w7ai
+         am2g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20230601; t=1763050377; x=1763655177;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to;
-        bh=UILebnM/hGlC/4mGqUQsEbI9oK9lCHY4NHYgMXAAz80=;
-        b=mzvi++poxsrvEnVUUJhcLTJFFen3lzPtP/ORFxMciuPJWAP0xDc4owj41Ss7CaIRd3
-         DEycv0BsEV2C5rJqNvEywK5VV8Zjqf4VcKz+y6dW87wha7VR5Vrx6JZFCie+70t5Dxde
-         ZEZDY8pxwXLVAMVG2uw1+OXx1JV1EQcgPAEXzKwJsqui/BF8utC8hANiY9AxYwKHHGal
-         awY5dUC1/lTOHRjh9qYdNrDqj14mRJc3zqrr/4Vx2zzjfb1ICZEzZujS0WAhB6SI7/Tm
-         vRlIxtbQhEWl7Ohxd0afzFKg0bckLhrEOkiUfSsnt+9Vn5s5dnLiAqw2wrYoY7YUogVC
-         N4JQ==
-X-Forwarded-Encrypted: i=1; AJvYcCV11muh6p2byl2fquBWW0bGuMmB7UlKNx3hLH17I2ihSpG3UcE309Nfz4kvOzTbHO5mG7BIJMGJUrt914Pi0A==@vger.kernel.org
-X-Gm-Message-State: AOJu0YydTFkYHrtrpK9S0vmajFkmxG8zWaDOkB+AZq2luih72Z7dco2i
-	OXsW2J/O566ai7E8WD7xuek7ktZUmIKbk6COatX8Z5sfmi8KjNhTpZJgUzshSfMYwvk=
-X-Gm-Gg: ASbGncv93+X5zDpaMv2E412SYM28P8TP5zxgZLiGJSS4xMreBP0HKnbBC5ZMtMZ5RWy
-	d5do+mgF0/XfqVYfG0q6MwCU+QPL+08mMOQ3l5BS2vW0OPWGHIpl4/coK7vyO95SWMoI/0IbpR8
-	Z3jI/Cu05o48JES3bvzaG0O5uWe1lUSsuDJYeNyzmnUCQmqY4nXmPKeDS03vnEG/0THJxipmh0S
-	acdhSLj/NUww9yK9vS+gHrA1x6Z8JOk5vo1yz9VJAhVV6W7u0dZTnXoiDxc3DMMQc5qZONmSG2W
-	NiAaIt5U+AYYvfKTsNTlz3/hrLXYP+WbcAU1j+hO5XY08ZspzBZATyCuFJbLhzIbE+afukYifTT
-	+6gA3wAaAfKEU4FrBcXeaFeZyeKJ5K/0ah16HjtlUwWqF7ZXV/MPb1K7E6GK/u2A2KaC06W7gUS
-	1DZ9AD/wgZSL/HNSo48Vw4HUN0
-X-Google-Smtp-Source: AGHT+IGZG84e2i3kH3kF6zGBbD+XTMkE/ONZxFyoZMwtpC/IQYVjSU8HZIKPCelinSkbwEjNjAMHSg==
-X-Received: by 2002:a05:600c:c4a2:b0:471:21:554a with SMTP id 5b1f17b1804b1-4778fe5ee18mr462395e9.13.1763050376577;
-        Thu, 13 Nov 2025 08:12:56 -0800 (PST)
+        bh=m3hl8tY1RLv+K2+Ox9WrDl4hIf6rzuWKqmNX1UuS7YY=;
+        b=b8lXZ5AD4TivUdRu8h1OEiUpQtKkBJGmdLvSrvzS/8QaaIX1/a0f28bTfthHW+Oa7y
+         lf7yN19lBGPwP1kF44pAviR1rBV6AtP8jeupQXN2NetbwhC6AFTYwI0JjIaiv7vOgbuv
+         vlUBx4ZX2sUiSo0z4cUzGkdxpMswFhvyZT3H+Ype9w8SOX80gVhwiDHwfk7gR5PaDGQ8
+         rXxUDx2vgwgkdPQT70TLkuoKXkX6QLfEcYbZN4HCJcZWiZD7g/XboMYAQv+qCDB8CMvO
+         1nBtl/lQ739RkV7sN/gEhUnV3Zux9i/UGP9o2/eADPu6gW58EuVEBx9d0bppCdRGs8D2
+         /dJQ==
+X-Forwarded-Encrypted: i=1; AJvYcCVI/kqnOYOtGqU68jS4yo9EFvudzImAfeePHT5fJzWUuaYKyiPBzTtc0GIZ+9t8gW/sXLpTAXrf9OJnLCu5wQ==@vger.kernel.org
+X-Gm-Message-State: AOJu0YwbGIlifO4Mb1E/Dm/lsu5Dsd/i2OG9bw92kqEc3VCe/EIiXxol
+	JK6/2YO7Zb2Fv5AidmoslMkSQjAAUwWz5XK545aS6J+nKYBOSgtLK2Cls1Yxurvxk/8=
+X-Gm-Gg: ASbGncsmdZrn8TOVzEhfveVB60iST1XF0s5Vf/1rgF7gAHzR81ZTcfvFhNXbOJZwj11
+	P4qA0hLTs3zrpSfhPPiVZ4CWp6yXfcoxzzw8LDePwmPgFycDrbdJCB7YyfGC9XaJFgMcOY+JefJ
+	hcNTHqy5/mktjn5zAwr8KsaiUDbwq4w0gc1mTDLOSoGjRKOwbm1vMlGSl2/REbzS87fFpL4qVam
+	XZxJvRp2p0PzhkKEVjZSpx9sFwa1+pnFPL0yzvhou7mjs/1tlE727TtO6YHxERfmt8d4oz3o88y
+	tekNtuzeVKgFOAQkHfh9zqQEy4tDZWAd+onRCNj4VndOwxLHmvCPfPj+TN023v1uI0usFHztn8F
+	si32msIGMJyuRCqvg9RwEsMdDk8Rqqd9NXzqUkPJB+SCXISDr0NtyQn8GBuh8txYUC5A8a0BfyI
+	eHtJH2jLjkpmAwauEukEUiIY+R
+X-Google-Smtp-Source: AGHT+IENmaUAtcIakh8Mn4zUT3IzBfIjhSaHtJtleCx6qYleuptiYERekZkAHB4z2rUrdoiGfSHzcg==
+X-Received: by 2002:a05:600c:2e0c:b0:46f:b42e:e363 with SMTP id 5b1f17b1804b1-4778bd3c9d3mr22882215e9.20.1763050377491;
+        Thu, 13 Nov 2025 08:12:57 -0800 (PST)
 Received: from localhost.localdomain ([2a00:6d43:105:c401:e307:1a37:2e76:ce91])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4778c850000sm41700085e9.4.2025.11.13.08.12.55
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4778c850000sm41700085e9.4.2025.11.13.08.12.56
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 13 Nov 2025 08:12:56 -0800 (PST)
+        Thu, 13 Nov 2025 08:12:57 -0800 (PST)
 From: Marco Crivellari <marco.crivellari@suse.com>
 To: linux-kernel@vger.kernel.org,
 	linux-wireless@vger.kernel.org
@@ -84,9 +84,9 @@ Cc: Tejun Heo <tj@kernel.org>,
 	Marco Crivellari <marco.crivellari@suse.com>,
 	Michal Hocko <mhocko@suse.com>,
 	Kalle Valo <kvalo@codeaurora.org>
-Subject: [PATCH 1/2] ath6kl: add WQ_PERCPU to alloc_workqueue users
-Date: Thu, 13 Nov 2025 17:12:47 +0100
-Message-ID: <20251113161248.387964-2-marco.crivellari@suse.com>
+Subject: [PATCH 2/2] cw1200: add WQ_PERCPU to alloc_workqueue users
+Date: Thu, 13 Nov 2025 17:12:48 +0100
+Message-ID: <20251113161248.387964-3-marco.crivellari@suse.com>
 X-Mailer: git-send-email 2.51.1
 In-Reply-To: <20251113161248.387964-1-marco.crivellari@suse.com>
 References: <20251113161248.387964-1-marco.crivellari@suse.com>
@@ -104,7 +104,6 @@ used wq is "system_wq" (per-cpu wq) while queue_delayed_work() use
 WORK_CPU_UNBOUND (used when a cpu is not specified). The same applies to
 schedule_work() that is using system_wq and queue_work(), that makes use
 again of WORK_CPU_UNBOUND.
-
 This lack of consistency cannot be addressed without refactoring the API.
 For more details see the Link tag below.
 
@@ -135,22 +134,25 @@ Suggested-by: Tejun Heo <tj@kernel.org>
 Signed-off-by: Marco Crivellari <marco.crivellari@suse.com>
 Link: https://lore.kernel.org/all/20250221112003.1dSuoGyc@linutronix.de/
 ---
- drivers/net/wireless/ath/ath6kl/usb.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/net/wireless/st/cw1200/bh.c | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/net/wireless/ath/ath6kl/usb.c b/drivers/net/wireless/ath/ath6kl/usb.c
-index 38bb501fc553..bfb21725d779 100644
---- a/drivers/net/wireless/ath/ath6kl/usb.c
-+++ b/drivers/net/wireless/ath/ath6kl/usb.c
-@@ -637,7 +637,7 @@ static struct ath6kl_usb *ath6kl_usb_create(struct usb_interface *interface)
- 	ar_usb = kzalloc(sizeof(struct ath6kl_usb), GFP_KERNEL);
- 	if (ar_usb == NULL)
- 		return NULL;
--	ar_usb->wq = alloc_workqueue("ath6kl_wq", 0, 0);
-+	ar_usb->wq = alloc_workqueue("ath6kl_wq", WQ_PERCPU, 0);
- 	if (!ar_usb->wq) {
- 		kfree(ar_usb);
- 		return NULL;
+diff --git a/drivers/net/wireless/st/cw1200/bh.c b/drivers/net/wireless/st/cw1200/bh.c
+index 3b4ded2ac801..bdf7132c5849 100644
+--- a/drivers/net/wireless/st/cw1200/bh.c
++++ b/drivers/net/wireless/st/cw1200/bh.c
+@@ -54,8 +54,9 @@ int cw1200_register_bh(struct cw1200_common *priv)
+ 	int err = 0;
+ 	/* Realtime workqueue */
+ 	priv->bh_workqueue = alloc_workqueue("cw1200_bh",
+-				WQ_MEM_RECLAIM | WQ_HIGHPRI
+-				| WQ_CPU_INTENSIVE, 1);
++				WQ_MEM_RECLAIM | WQ_HIGHPRI |
++				WQ_CPU_INTENSIVE | WQ_PERCPU,
++				1);
+ 
+ 	if (!priv->bh_workqueue)
+ 		return -ENOMEM;
 -- 
 2.51.1
 
