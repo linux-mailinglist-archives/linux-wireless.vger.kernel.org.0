@@ -1,198 +1,154 @@
-Return-Path: <linux-wireless+bounces-28919-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-28920-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3696FC588A2
-	for <lists+linux-wireless@lfdr.de>; Thu, 13 Nov 2025 16:59:38 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
+	by mail.lfdr.de (Postfix) with ESMTPS id CF528C58E76
+	for <lists+linux-wireless@lfdr.de>; Thu, 13 Nov 2025 17:56:22 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 3E61B4EADD3
-	for <lists+linux-wireless@lfdr.de>; Thu, 13 Nov 2025 15:30:31 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id EA733506A15
+	for <lists+linux-wireless@lfdr.de>; Thu, 13 Nov 2025 16:04:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F1F21261393;
-	Thu, 13 Nov 2025 15:20:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AFAA5357A37;
+	Thu, 13 Nov 2025 16:00:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="UxvtT01t"
+	dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b="YixzqTrR"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.11])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ed1-f49.google.com (mail-ed1-f49.google.com [209.85.208.49])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2B2311D9A54
-	for <linux-wireless@vger.kernel.org>; Thu, 13 Nov 2025 15:20:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.11
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7A0AC3587A9
+	for <linux-wireless@vger.kernel.org>; Thu, 13 Nov 2025 16:00:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.49
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763047229; cv=none; b=A2zkhNUh08OVYEkRC5Idj54f2r/lL9nPX4OdnO4QgGwb5ZJoR96T/CmyfVvq0kJsvUUiW2xtV0pUa2exxnRsx9LqjGPKUEbSroH9XwV26HEZNG4dtUGMyDfigQOc4GTXSIk1v+Kwn8oB68NuDKseHn0UDrKhcLEgDhXhXrS6MU4=
+	t=1763049654; cv=none; b=JpO+6EPrBpYReAEvetxOKXpSUWshL7UElhNPg+9/PZRZg7ksv1Y5PqWW4+dm2Hz4GD3/ahEP4Idl/NsuQ3HsL696S3Deto6DwLgviTyPegaIz7DdtMYzCNAC8YnL92kcNZAokTYVn961hFnv/F204ZEWB2KtSBu9vXemvS/5rCQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763047229; c=relaxed/simple;
-	bh=/OesxnN787FNQb+ILL040q4js/Y16xhtbLg3V2INic4=;
-	h=Date:From:To:Cc:Subject:Message-ID; b=ljQf/nuyHbz8A5wV+bSKeQsc1BD4qBWqebW7V+grLCng8A5jxw5yrEK18fTooXvr+7thAYcGHTlh3CvwDYoE7J68B7j5qkRjwvNghrmCBMdW1csjgbpLvU2q2+1UouBu8ZrzUIBAxTtl4aw00vzEn5CjiGdqQv7YKK5IXQqZlmg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=UxvtT01t; arc=none smtp.client-ip=192.198.163.11
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1763047228; x=1794583228;
-  h=date:from:to:cc:subject:message-id;
-  bh=/OesxnN787FNQb+ILL040q4js/Y16xhtbLg3V2INic4=;
-  b=UxvtT01t+0OgCIzEPWSOU6gLTuN58JKHgWpHLZPnIV9be3p4LvQwbcWv
-   OefSFJHRdlrLaCh9EW0gj9XVltfzFEgL6i0LM2wMUs5Qrlo3MoAuI2czN
-   tOHQ0JVDPQUAw3EYcXYrwESFGZ/OVAkZ5pvXe2uZs+gKwozMz2PuQ1EEU
-   B8I9jWrJilYF/On9ALBeh0uFrX+JuF1PwdTiD8I88ss5HQ+oVXluD9dBV
-   BCJnkG4kbyA8jqjtTY4LEydBd036tc1JAl252Mk7fhtNt7dcHDP32ub0R
-   1nCgoNHbEDvUW1i+7Bt0fndGiWMxKCjfrQatfdmKpY2P8/DEos/o9hkaY
-   A==;
-X-CSE-ConnectionGUID: fNFf5np2RW+nD5grC8US9w==
-X-CSE-MsgGUID: NcioteH4TMOeyVgnUmCR1Q==
-X-IronPort-AV: E=McAfee;i="6800,10657,11612"; a="75741052"
-X-IronPort-AV: E=Sophos;i="6.19,302,1754982000"; 
-   d="scan'208";a="75741052"
-Received: from fmviesa008.fm.intel.com ([10.60.135.148])
-  by fmvoesa105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 Nov 2025 07:20:28 -0800
-X-CSE-ConnectionGUID: JQhkzmuRSb+qXcCWpZm2Ew==
-X-CSE-MsgGUID: RsGMsmu5Ql68Lmob15lmfQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.19,302,1754982000"; 
-   d="scan'208";a="189792870"
-Received: from lkp-server01.sh.intel.com (HELO 7b01c990427b) ([10.239.97.150])
-  by fmviesa008.fm.intel.com with ESMTP; 13 Nov 2025 07:20:27 -0800
-Received: from kbuild by 7b01c990427b with local (Exim 4.96)
-	(envelope-from <lkp@intel.com>)
-	id 1vJZ7Y-0005TF-21;
-	Thu, 13 Nov 2025 15:20:24 +0000
-Date: Thu, 13 Nov 2025 23:19:24 +0800
-From: kernel test robot <lkp@intel.com>
-To: Johannes Berg <johannes.berg@intel.com>
-Cc: linux-wireless@vger.kernel.org
-Subject: [wireless:for-next] BUILD SUCCESS
- a35f64a216ca1c9e3c3f0f91fdb54ef9515a7fe7
-Message-ID: <202511132319.MhLJ69wT-lkp@intel.com>
-User-Agent: s-nail v14.9.25
+	s=arc-20240116; t=1763049654; c=relaxed/simple;
+	bh=6Wmz0w28rqLi7irIOJSMbni7pKwlVDgHYwe5FMEfE44=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=pzWf2EbOYGWUj6yZRyGLGbp/ciGZ3h1VwhsETwZfPDhjPSmxKcI8a/luILlb+7MeWpIoJxNkbhdqKGu6bb6FRts4mAFLX1AguYa1VJlMAoy+uR/hZXwa+7dXI6Iiplv95V8vRiFLAeNNrTA1AoFftnOCM6yK3OOBK2lUAgpwixc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com; spf=pass smtp.mailfrom=suse.com; dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b=YixzqTrR; arc=none smtp.client-ip=209.85.208.49
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.com
+Received: by mail-ed1-f49.google.com with SMTP id 4fb4d7f45d1cf-64166a57f3bso1583866a12.1
+        for <linux-wireless@vger.kernel.org>; Thu, 13 Nov 2025 08:00:52 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=suse.com; s=google; t=1763049651; x=1763654451; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=0efUvnW3GMsirNYsN0z07zn/Oqcuhmed27sVsOeyKC4=;
+        b=YixzqTrRhxU6H4bTQoP78/ot3Rd8AnXwGVt4Ow8leH8Sm5uJcWDbTNpX6MCwyq9+wd
+         E8Xq2tkirChTaAE/zkeZVaf4l9NdRWi5RaAX97PKlueVe5CJPVWHmFr2GuTLHNcwgjVx
+         4CELWU0BuFCZSwCkwPmIJVe2HenyYuuX0Awoyw1/jIUhrWJGHOP6xo2KVvjVa0I/4WoT
+         BsJ/4dfdGPnhIPiVCj30o+z6jDbrvCIFG/0G51rR/b/DFD9xeja7dEQBTnVg2gxbStQA
+         UA2KnkiJjTlJ0rdtCnxbZz3zxOtIz0AvLgbPfwoLZuONbh0fwEAyQNPECWEpLCw3a2xI
+         SfLw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1763049651; x=1763654451;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=0efUvnW3GMsirNYsN0z07zn/Oqcuhmed27sVsOeyKC4=;
+        b=qv3vuiB+JOcYft1AYlMT2oUcU/dtIsnjPtMy80ASVjKwWNJ5FmwtDd8IkXOAenVRKy
+         hM7f3YKpkdIQPVtQ0cBBHyMe7cBSy6X2m+iTVRg7RlSVoGbPfejudIV2fdwtzWHP/D6I
+         6OEnn0uspcUO5grcySvhsGsTEFuBpHwmRMLQelqc/yuZ5yJo3RJRWwOjOPZMpP9F+y9Q
+         tU4F8E2Eu06u5yElrF+PfVAzrx2Hkxpa/bkQiCcvEziS1XCu08xKHtiVgdcFZpXZuKib
+         sXYXGDyL5IRHAcYGOV33dEJv8+ZickSZo9cQk2CIhng1cNQ58TRheyHuBdkMOsBcpz57
+         nDsA==
+X-Forwarded-Encrypted: i=1; AJvYcCWVED7/hCH0HSQtncAxNT1uIDJgYOPc016Rj1//7IEd9PhkxDuJklpFghwEL6LDrj/HuTYHR66ymP5BrKpiYA==@vger.kernel.org
+X-Gm-Message-State: AOJu0Yz5PRD1LeFi58kPldd/DzGPSxZf6MHbYQR11BGpXXxo3W8Mbnvb
+	9ECkp6lodyOwnJ6NmsAf0EFZLbMuaWoNgsHy5elyaB7iDWgpDxGa/beMlIB+rib6+Ac=
+X-Gm-Gg: ASbGncvMshEM2JZHFREQYMGx/t6U6hM4o/AKQ5mAhFzaM5TYbau1/4oletmG+zWCMb/
+	bQfVsShrcunl6AtkRp1uY0Q4yNyaJnb1og0mftCNAQhfgTdGOsn8Ar5wO0hGr/E1+uuenaqOsaq
+	D3yEpiX/wufdg4Me6Z00v7xBdtg4WUy2GL+wgJssfqNruimMiW6caPsOPEMWMXbqUcPz4L2muRw
+	HwhBqm4ApHvKGHaUWebnEcgDlg+GzE5cA3Q97EEtC4W4ZrSL2E8y/OMvoo2Zqa/ljKR2ulVajdI
+	vy4a85k9UbF85Ft/w+5UZ5aw/ZnHeEGuZ1TzFiTxRkaesnjyjIKtlTgh6WLZo40WNEyX6YRV3pr
+	H02mF2u6sdzZ/WQd4LM1KQHQufhcUyn3iW5fAC1alSzNeYO+2lZYzYqFiOingzE+I2c5tHLH0Vm
+	HhcXo=
+X-Google-Smtp-Source: AGHT+IHZ/2oxuZtYuT82Lm1zSTq2FAnEZ2rkLS2NxmDXzfnqzCNWyEKaV1Egj/Adc4f35fmvH0TWSQ==
+X-Received: by 2002:a17:907:d0a:b0:b5c:66ce:bfe6 with SMTP id a640c23a62f3a-b7331aec498mr811149066b.55.1763049649244;
+        Thu, 13 Nov 2025 08:00:49 -0800 (PST)
+Received: from linux ([2a00:6d43:105:c401:e307:1a37:2e76:ce91])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-b734fa81275sm191424166b.13.2025.11.13.08.00.48
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 13 Nov 2025 08:00:48 -0800 (PST)
+From: Marco Crivellari <marco.crivellari@suse.com>
+To: linux-kernel@vger.kernel.org,
+	linux-wireless@vger.kernel.org
+Cc: Tejun Heo <tj@kernel.org>,
+	Lai Jiangshan <jiangshanlai@gmail.com>,
+	Frederic Weisbecker <frederic@kernel.org>,
+	Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
+	Marco Crivellari <marco.crivellari@suse.com>,
+	Michal Hocko <mhocko@suse.com>,
+	Igor Mitsyanko <imitsyanko@quantenna.com>,
+	Sergey Matyukevich <geomatsi@gmail.com>
+Subject: [PATCH] wifi: qtnfmac: add WQ_PERCPU to alloc_workqueue users
+Date: Thu, 13 Nov 2025 17:00:35 +0100
+Message-ID: <20251113160035.376524-1-marco.crivellari@suse.com>
+X-Mailer: git-send-email 2.51.1
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 
-tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/wireless/wireless.git for-next
-branch HEAD: a35f64a216ca1c9e3c3f0f91fdb54ef9515a7fe7  Merge tag 'iwlwifi-fixes-2025-11-12' of https://git.kernel.org/pub/scm/linux/kernel/git/iwlwifi/iwlwifi-next
+Currently if a user enqueues a work item using schedule_delayed_work() the
+used wq is "system_wq" (per-cpu wq) while queue_delayed_work() use
+WORK_CPU_UNBOUND (used when a cpu is not specified). The same applies to
+schedule_work() that is using system_wq and queue_work(), that makes use
+again of WORK_CPU_UNBOUND.
+This lack of consistency cannot be addressed without refactoring the API.
+For more details see the Link tag below.
 
-elapsed time: 1807m
+alloc_workqueue() treats all queues as per-CPU by default, while unbound
+workqueues must opt-in via WQ_UNBOUND.
 
-configs tested: 105
-configs skipped: 6
+This default is suboptimal: most workloads benefit from unbound queues,
+allowing the scheduler to place worker threads where they’re needed and
+reducing noise when CPUs are isolated.
 
-The following configs have been built successfully.
-More configs may be tested in the coming days.
+This continues the effort to refactor workqueue APIs, which began with
+the introduction of new workqueues and a new alloc_workqueue flag in:
 
-tested configs:
-alpha                             allnoconfig    gcc-15.1.0
-arc                              alldefconfig    gcc-15.1.0
-arc                               allnoconfig    gcc-15.1.0
-arc                   randconfig-001-20251113    gcc-8.5.0
-arc                   randconfig-002-20251113    gcc-8.5.0
-arm                               allnoconfig    clang-22
-arm                     am200epdkit_defconfig    gcc-15.1.0
-arm                         lpc18xx_defconfig    clang-22
-arm                         orion5x_defconfig    clang-22
-arm                   randconfig-001-20251113    gcc-10.5.0
-arm                   randconfig-002-20251113    clang-22
-arm                   randconfig-003-20251113    clang-22
-arm                   randconfig-004-20251113    clang-22
-arm                        spear6xx_defconfig    clang-22
-arm64                             allnoconfig    gcc-15.1.0
-arm64                 randconfig-001-20251113    clang-16
-arm64                 randconfig-002-20251113    clang-22
-arm64                 randconfig-003-20251113    gcc-8.5.0
-arm64                 randconfig-004-20251113    clang-22
-csky                              allnoconfig    gcc-15.1.0
-csky                  randconfig-001-20251113    gcc-9.5.0
-csky                  randconfig-002-20251113    gcc-14.3.0
-hexagon                           allnoconfig    clang-22
-hexagon               randconfig-001-20251113    clang-22
-hexagon               randconfig-002-20251113    clang-22
-i386                              allnoconfig    gcc-14
-i386        buildonly-randconfig-001-20251113    clang-20
-i386        buildonly-randconfig-002-20251113    gcc-14
-i386        buildonly-randconfig-003-20251113    gcc-14
-i386        buildonly-randconfig-004-20251113    gcc-12
-i386        buildonly-randconfig-005-20251113    gcc-14
-i386                  randconfig-001-20251113    gcc-14
-i386                  randconfig-002-20251113    clang-20
-i386                  randconfig-003-20251113    clang-20
-i386                  randconfig-004-20251113    gcc-14
-i386                  randconfig-005-20251113    clang-20
-i386                  randconfig-006-20251113    clang-20
-i386                  randconfig-007-20251113    gcc-14
-loongarch                         allnoconfig    clang-22
-loongarch                           defconfig    clang-19
-loongarch             randconfig-001-20251113    gcc-15.1.0
-loongarch             randconfig-002-20251113    clang-22
-m68k                              allnoconfig    gcc-15.1.0
-m68k                                defconfig    gcc-15.1.0
-microblaze                        allnoconfig    gcc-15.1.0
-microblaze                          defconfig    gcc-15.1.0
-microblaze                      mmu_defconfig    gcc-15.1.0
-mips                              allnoconfig    gcc-15.1.0
-nios2                             allnoconfig    gcc-11.5.0
-nios2                               defconfig    gcc-11.5.0
-nios2                 randconfig-001-20251113    gcc-8.5.0
-nios2                 randconfig-002-20251113    gcc-11.5.0
-openrisc                          allnoconfig    gcc-15.1.0
-openrisc                            defconfig    gcc-15.1.0
-parisc                            allnoconfig    gcc-15.1.0
-parisc                              defconfig    gcc-15.1.0
-parisc                randconfig-001-20251113    gcc-8.5.0
-parisc                randconfig-002-20251113    gcc-14.3.0
-parisc64                            defconfig    gcc-15.1.0
-powerpc                           allnoconfig    gcc-15.1.0
-powerpc                     ksi8560_defconfig    gcc-15.1.0
-powerpc                      pmac32_defconfig    clang-22
-powerpc               randconfig-001-20251113    clang-22
-powerpc               randconfig-002-20251113    clang-22
-powerpc64             randconfig-001-20251113    clang-22
-powerpc64             randconfig-002-20251113    clang-22
-riscv                             allnoconfig    gcc-15.1.0
-riscv                               defconfig    clang-22
-riscv                 randconfig-001-20251113    gcc-8.5.0
-riscv                 randconfig-002-20251113    gcc-11.5.0
-s390                              allnoconfig    clang-22
-s390                                defconfig    clang-22
-s390                  randconfig-001-20251113    clang-22
-s390                  randconfig-002-20251113    clang-17
-sh                                allnoconfig    gcc-15.1.0
-sh                                  defconfig    gcc-15.1.0
-sh                               j2_defconfig    gcc-15.1.0
-sh                    randconfig-001-20251113    gcc-15.1.0
-sh                    randconfig-002-20251113    gcc-11.5.0
-sh                        sh7763rdp_defconfig    gcc-15.1.0
-sparc                             allnoconfig    gcc-15.1.0
-sparc                               defconfig    gcc-15.1.0
-sparc                 randconfig-001-20251113    gcc-8.5.0
-sparc                 randconfig-002-20251113    gcc-8.5.0
-sparc64                             defconfig    clang-20
-sparc64               randconfig-001-20251113    clang-20
-sparc64               randconfig-002-20251113    clang-22
-um                                allnoconfig    clang-22
-um                                  defconfig    clang-22
-um                             i386_defconfig    gcc-14
-um                    randconfig-001-20251113    gcc-14
-um                    randconfig-002-20251113    clang-22
-um                           x86_64_defconfig    clang-22
-x86_64                            allnoconfig    clang-20
-x86_64      buildonly-randconfig-001-20251113    gcc-14
-x86_64      buildonly-randconfig-002-20251113    clang-20
-x86_64      buildonly-randconfig-003-20251113    clang-20
-x86_64      buildonly-randconfig-004-20251113    gcc-14
-x86_64      buildonly-randconfig-005-20251113    gcc-12
-x86_64      buildonly-randconfig-006-20251113    gcc-14
-x86_64                              defconfig    gcc-14
-xtensa                            allnoconfig    gcc-15.1.0
-xtensa                randconfig-001-20251113    gcc-15.1.0
-xtensa                randconfig-002-20251113    gcc-13.4.0
-xtensa                    xip_kc705_defconfig    gcc-15.1.0
+commit 128ea9f6ccfb ("workqueue: Add system_percpu_wq and system_dfl_wq")
+commit 930c2ea566af ("workqueue: Add new WQ_PERCPU flag")
 
---
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+This change adds a new WQ_PERCPU flag to explicitly request
+alloc_workqueue() to be per-cpu when WQ_UNBOUND has not been specified.
+
+With the introduction of the WQ_PERCPU flag (equivalent to !WQ_UNBOUND),
+any alloc_workqueue() caller that doesn’t explicitly specify WQ_UNBOUND
+must now use WQ_PERCPU.
+
+Once migration is complete, WQ_UNBOUND can be removed and unbound will
+become the implicit default.
+
+Suggested-by: Tejun Heo <tj@kernel.org>
+Signed-off-by: Marco Crivellari <marco.crivellari@suse.com>
+Link: https://lore.kernel.org/all/20250221112003.1dSuoGyc@linutronix.de/
+---
+ drivers/net/wireless/quantenna/qtnfmac/core.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
+
+diff --git a/drivers/net/wireless/quantenna/qtnfmac/core.c b/drivers/net/wireless/quantenna/qtnfmac/core.c
+index 825b05dd3271..38af6cdc2843 100644
+--- a/drivers/net/wireless/quantenna/qtnfmac/core.c
++++ b/drivers/net/wireless/quantenna/qtnfmac/core.c
+@@ -714,7 +714,8 @@ int qtnf_core_attach(struct qtnf_bus *bus)
+ 		goto error;
+ 	}
+ 
+-	bus->hprio_workqueue = alloc_workqueue("QTNF_HPRI", WQ_HIGHPRI, 0);
++	bus->hprio_workqueue = alloc_workqueue("QTNF_HPRI",
++					       WQ_HIGHPRI | WQ_PERCPU, 0);
+ 	if (!bus->hprio_workqueue) {
+ 		pr_err("failed to alloc high prio workqueue\n");
+ 		ret = -ENOMEM;
+-- 
+2.51.1
+
 
