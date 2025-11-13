@@ -1,58 +1,58 @@
-Return-Path: <linux-wireless+bounces-28906-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-28907-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8675AC57AB5
-	for <lists+linux-wireless@lfdr.de>; Thu, 13 Nov 2025 14:32:02 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9AD12C57C95
+	for <lists+linux-wireless@lfdr.de>; Thu, 13 Nov 2025 14:51:56 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id ACC823BF702
-	for <lists+linux-wireless@lfdr.de>; Thu, 13 Nov 2025 13:15:45 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 466E93BF772
+	for <lists+linux-wireless@lfdr.de>; Thu, 13 Nov 2025 13:16:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 06A71351FBA;
-	Thu, 13 Nov 2025 13:15:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4C53134FF6C;
+	Thu, 13 Nov 2025 13:16:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=xv97.com header.i=m@xv97.com header.b="VtcPZZCJ"
+	dkim=pass (1024-bit key) header.d=xv97.com header.i=m@xv97.com header.b="OejTwmmn"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from sender4-op-o15.zoho.com (sender4-op-o15.zoho.com [136.143.188.15])
+Received: from sender3-op-o15.zoho.com (sender3-op-o15.zoho.com [136.143.184.15])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BA0993502B0
-	for <linux-wireless@vger.kernel.org>; Thu, 13 Nov 2025 13:15:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=136.143.188.15
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8A6B92C21D8
+	for <linux-wireless@vger.kernel.org>; Thu, 13 Nov 2025 13:16:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=136.143.184.15
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763039717; cv=pass; b=r3dlaTqrGO/HhrQQAcNlELh8UlHaud0LqU2rpmCTiUGUB3r6fqRCq2RBtJaj4gt7laWpPk3lTcfllDkcpBuP+ODotX1qMJRpaAO5befDc4v91baeak47tgN1NyHjmwauSDspoW8FuAKwvm0rdHM700TiydWynlFJGZruKGfb6Gk=
+	t=1763039790; cv=pass; b=OHBuct4wIN3wrHPa+t7o74YnhET/XakWEwXyJg0QzWGSGVV84Lqb99Vaz3xyWL/OzrJvIkno8un7g3tAG37+ajoMwxLCwbftBcGzko+NpPhCG2+HcWlIdfUNwi3SD2V0SiVkjnWZS8YycGAO4afSALgfNVOWfBYEIODDmNq2sQE=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763039717; c=relaxed/simple;
-	bh=5/uFnpE6MqfEIVfu9vUcAnaaGB5MTWm6uVw0plBVr94=;
+	s=arc-20240116; t=1763039790; c=relaxed/simple;
+	bh=rQ84tW0crj4a57Fq7FDv+e7JPvtYBJviAu0u0PNBKfE=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=CDAyEXhsecOElCJmQ9faPixZmGab1z8zUdMKO4M36hBE/vU/TI0x0uo8eDqwXQev6p42AE+OGqf6R4CPb4HKqCh49xUtctG9kzG19LjBhdarDM9HK3ODd7HemzEFMTPOkqQ6B8Rx6plcJyUfsdDj5oLJHPVl49cPmN/ls3g2gFc=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=xv97.com; spf=pass smtp.mailfrom=xv97.com; dkim=pass (1024-bit key) header.d=xv97.com header.i=m@xv97.com header.b=VtcPZZCJ; arc=pass smtp.client-ip=136.143.188.15
+	 In-Reply-To:Content-Type; b=taW5WRgguXBkjy1KpPqgoX2uYj5YxnkMiV7hA4XcB52I+oFMu51z5fOtPOsivHmO95sdb3O/DCuobD3ioe3hkbZrktBZnfZJHumk6ukxtt+oMa1X4JVwoy/Z/g/H/bcmtmO50bDowq8i9tuhY1cCIfw30meRFd86UmYcLDLADVE=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=xv97.com; spf=pass smtp.mailfrom=xv97.com; dkim=pass (1024-bit key) header.d=xv97.com header.i=m@xv97.com header.b=OejTwmmn; arc=pass smtp.client-ip=136.143.184.15
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=xv97.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=xv97.com
-ARC-Seal: i=1; a=rsa-sha256; t=1763039712; cv=none; 
+ARC-Seal: i=1; a=rsa-sha256; t=1763039786; cv=none; 
 	d=zohomail.com; s=zohoarc; 
-	b=JwJkytp+rPelCHAjns5rKm8cmwkrG8vCKsL1GCgsej3T4bRRiwL00L1QBnRWMF143WCnrZfaRGlqWh6NG5v5R4zxc9pkfFUN+YmPjomN/BzBxT6pJm4s2FbVvYV5Y82USz6a4xE/q/WR+7MAyGP/x69ilnevtxOeGIzWB2Wq/OE=
+	b=RgSxGB8KaQyJv/PZepesXv5Frvj8ZMFCEATEog6QOrOfyA5aMhnnDLCuDLRGzAzW86diQKjjNZaQcDlDrm6I22V12bjT5lQf1mliSlu++iVuHNgUZ6wTZpaE+QDDrifDAfvxRtXpCuLahnQxNpmQIBhlfoxL3Vfs9S3Qa8z+P4c=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
-	t=1763039712; h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:References:Subject:Subject:To:To:Message-Id:Reply-To; 
-	bh=VObLLea6le576NNVSTWxIXZ8D1CpDaBYQu3x8XkWVRk=; 
-	b=dujp2KeSDO8TQ5PwQMw8T8/7+5nkoQuJm0JfMSc8wpWcUDSZ97C3WSf2O9b4Y7JUXrKNp5GVa2EaeS574W9HHTdkNUsSbhccWMg1BR7dbichorjAuFkTsJZM+1QIe8cWcB6UA5668aJ7B4aO+RF4OxnpIzC/UsmfdAdsj1MNZdg=
+	t=1763039786; h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:References:Subject:Subject:To:To:Message-Id:Reply-To; 
+	bh=dKnwmkiJfHg6LtTt1JiGGyQGjM9FAv0Igl4ZImNekoQ=; 
+	b=GhIN2xYhtmb9NS29aYeYmzJR9son1TKXjt1G542FvR9ETN9H8s3u7Qsaf6N/F9nGeOwlhDpRWMx3YGs5Im9TRooVhEB00xjoTApjFjdCYCLdlKY4xZZ2p3T+ycIsODhhW5yhr023F44l+0ld9+Jc0xhVuy6tTA8GkvWq9iNgqlU=
 ARC-Authentication-Results: i=1; mx.zohomail.com;
 	dkim=pass  header.i=xv97.com;
 	spf=pass  smtp.mailfrom=m@xv97.com;
 	dmarc=pass header.from=<m@xv97.com>
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1763039712;
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1763039786;
 	s=zmail; d=xv97.com; i=m@xv97.com;
 	h=Message-ID:Date:Date:MIME-Version:Subject:Subject:To:To:Cc:Cc:References:From:From:In-Reply-To:Content-Type:Content-Transfer-Encoding:Message-Id:Reply-To;
-	bh=VObLLea6le576NNVSTWxIXZ8D1CpDaBYQu3x8XkWVRk=;
-	b=VtcPZZCJy+0EX6CcWzArT8QboDtEWDaSaKN1otUsY4nzfL3yb672RD1FNwh5xkft
-	AxKgDPTFMxEphoZ8WzyycxKshkLuecHsuUGfJDXnKg6Nzonhi7gpBps5jydNvrtNjLg
-	sKNVELbX+1gtqi3V9Hw3RxLb+H+YaqCXxD7zsm/E=
-Received: by mx.zohomail.com with SMTPS id 1763039710584713.3216487969229;
-	Thu, 13 Nov 2025 05:15:10 -0800 (PST)
-Message-ID: <48c01418-12b7-416e-aa48-ca0cc567bbd1@xv97.com>
-Date: Thu, 13 Nov 2025 21:15:03 +0800
+	bh=dKnwmkiJfHg6LtTt1JiGGyQGjM9FAv0Igl4ZImNekoQ=;
+	b=OejTwmmnuXoJaBG+UMgHz5SrEQQCZaLeVBVsNBlvo33zEKfh+2wEGyZH5hTQX0y/
+	p1TynUugB33Q6RnVNfEX8D8PiJyMhE4EavF9oyN81Y9EIifdTxq/mzQ1ry7nnSzdOjp
+	6X8k4e/pTpyuhWnS/SKvmPlEgGr6hsWUJ0ppT0hs=
+Received: by mx.zohomail.com with SMTPS id 17630397833331021.5277630418944;
+	Thu, 13 Nov 2025 05:16:23 -0800 (PST)
+Message-ID: <758ff840-c0ee-410d-b5c7-0c46bcf9ae5d@xv97.com>
+Date: Thu, 13 Nov 2025 21:16:19 +0800
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
@@ -60,13 +60,13 @@ List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 1/5] wifi: mac80211: fix CMAC functions not handling
- errors
+Subject: Re: [PATCH v3 3/5] wifi: mac80211: utilize the newly defined CMAC
+ constants
 To: Johannes Berg <johannes@sipsolutions.net>
 Cc: linux-wireless@vger.kernel.org
 References: <20251111145759.111691-1-m@xv97.com>
- <20251111145759.111691-2-m@xv97.com>
- <8fc455467e9f510e70816df1e676e297defd49b7.camel@sipsolutions.net>
+ <20251111145759.111691-4-m@xv97.com>
+ <0704cd8f81e8cc2bde7957b8134c1bf1fdbaed29.camel@sipsolutions.net>
 Content-Language: en-US
 From: Chien Wong <m@xv97.com>
 Autocrypt: addr=m@xv97.com; keydata=
@@ -78,46 +78,49 @@ Autocrypt: addr=m@xv97.com; keydata=
  tf8afTv75UGa2c0YkwoDAQgHwn4EGBYIACYWIQRhWIfCT4U86RkflE5cpYo5+kEirQUCYrGw
  +QIbDAUJEswDAAAKCRBcpYo5+kEircrLAQC/yXFAHzoG9bnsw+hsiVfEbYMa04UiDEFkTd9Q
  kA+I2gD/VCzYkTizWTiXsbcGhB05Q+mI5tX+ehhtpcrIAaBxnA8=
-In-Reply-To: <8fc455467e9f510e70816df1e676e297defd49b7.camel@sipsolutions.net>
+In-Reply-To: <0704cd8f81e8cc2bde7957b8134c1bf1fdbaed29.camel@sipsolutions.net>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
 X-ZohoMailClient: External
 
-On 11/12/25 9:11 PM, Johannes Berg wrote:
+On 11/12/25 9:12 PM, Johannes Berg wrote:
 > On Tue, 2025-11-11 at 22:57 +0800, Chien Wong wrote:
+>> Make use of the added constants to reduce duplication.
 >>
->> -void ieee80211_aes_cmac(struct crypto_shash *tfm, const u8 *aad,
->> -			const u8 *data, size_t data_len, u8 *mic)
->> +int ieee80211_aes_cmac(struct crypto_shash *tfm, const u8 *aad,
->> +		       const u8 *data, size_t data_len, u8 *mic)
->>   {
->> +	int err;
->>   	SHASH_DESC_ON_STACK(desc, tfm);
->>   	u8 out[AES_BLOCK_SIZE];
->>   	const __le16 *fc;
+>> Signed-off-by: Chien Wong <m@xv97.com>
+>> ---
+>>   net/mac80211/aes_cmac.c | 4 ++--
+>>   net/mac80211/aes_gmac.h | 2 +-
+>>   2 files changed, 3 insertions(+), 3 deletions(-)
+>>
+>> diff --git a/net/mac80211/aes_cmac.c b/net/mac80211/aes_cmac.c
+>> index adce68ea0981..01fb8b6c5dfb 100644
+>> --- a/net/mac80211/aes_cmac.c
+>> +++ b/net/mac80211/aes_cmac.c
+>> @@ -16,8 +16,8 @@
+>>   #include "key.h"
+>>   #include "aes_cmac.h"
 >>   
->>   	desc->tfm = tfm;
+>> -#define CMAC_TLEN 8 /* CMAC TLen = 64 bits (8 octets) */
+>> -#define CMAC_TLEN_256 16 /* CMAC TLen = 128 bits (16 octets) */
+>> +#define CMAC_TLEN IEEE80211_CMAC_128_MIC_LEN
+>> +#define CMAC_TLEN_256 IEEE80211_CMAC_256_MIC_LEN
+>>   #define AAD_LEN 20
 >>   
->> -	crypto_shash_init(desc);
->> -	crypto_shash_update(desc, aad, AAD_LEN);
->> +	err = crypto_shash_init(desc);
->> +	if (err)
->> +		goto out;
->> +	err = crypto_shash_update(desc, aad, AAD_LEN);
->> +	if (err)
->> +		goto out;
+>>   static const u8 zero[CMAC_TLEN_256];
+>> diff --git a/net/mac80211/aes_gmac.h b/net/mac80211/aes_gmac.h
+>> index c739356bae2a..09378e52c7a6 100644
+>> --- a/net/mac80211/aes_gmac.h
+>> +++ b/net/mac80211/aes_gmac.h
+>> @@ -9,7 +9,7 @@
+>>   #include <linux/crypto.h>
+>>   
+>>   #define GMAC_AAD_LEN	20
+>> -#define GMAC_MIC_LEN	16
+>> +#define GMAC_MIC_LEN	IEEE80211_GMAC_MIC_LEN
 > 
-> 
-> Not sure all the 'goto', without
-> 
->> +out:
->> +	return err;
-> 
-> anything other than a return is really better than just returning early?
-> It's not like this code will change soon again and need more error
-> handling ;-)
+> Might really be better to just switch the code to the new ones?
 > 
 > johannes
-
-OK. They will be change into simply returning.
+They will be replaced by direct usage in code.
 
