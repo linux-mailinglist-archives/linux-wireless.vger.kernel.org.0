@@ -1,86 +1,91 @@
-Return-Path: <linux-wireless+bounces-28964-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-28965-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8422BC5C66E
-	for <lists+linux-wireless@lfdr.de>; Fri, 14 Nov 2025 10:56:58 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4A7DBC5C736
+	for <lists+linux-wireless@lfdr.de>; Fri, 14 Nov 2025 11:07:35 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 604144FD5FC
-	for <lists+linux-wireless@lfdr.de>; Fri, 14 Nov 2025 09:46:08 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 5BB0B4F54D8
+	for <lists+linux-wireless@lfdr.de>; Fri, 14 Nov 2025 09:50:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9649E306D52;
-	Fri, 14 Nov 2025 09:45:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AB9EA3090E2;
+	Fri, 14 Nov 2025 09:50:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=cse-iitm-ac-in.20230601.gappssmtp.com header.i=@cse-iitm-ac-in.20230601.gappssmtp.com header.b="nnJEeXPN"
+	dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b="LSot4ffr"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-pl1-f182.google.com (mail-pl1-f182.google.com [209.85.214.182])
+Received: from mail-wr1-f52.google.com (mail-wr1-f52.google.com [209.85.221.52])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 01A7630ACF3
-	for <linux-wireless@vger.kernel.org>; Fri, 14 Nov 2025 09:45:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.182
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 114C1306D3F
+	for <linux-wireless@vger.kernel.org>; Fri, 14 Nov 2025 09:50:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.52
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763113545; cv=none; b=Rp6jzBx4NiMtAd2JPiw6WFOpENzcerAUau8FT9FEZJni1faZyrb9N9Q1pqVSRjs7pf+tasnTjtPFCWxsg8J37xPTUs72J9zAye/HziXfnTEgQo30w7iGAKIhV+4CkIfPXWJzFqU8GIgDX/OI4k/nGw7Y7W48oKIrtlPF0gzqBf0=
+	t=1763113846; cv=none; b=CvU1Bv4AVuA84Ew7+Fqr3/48TlMKCm4fPvH4foFd18zyO+uTyzLTzjVks4R/eBs9RdQWGQkCSdiUT3kPYaTSDy5I2bOuo3hHVV1sJbz4RRPNUX/ZNX8zHKlTJaBmpAx0uTTb2a0c9gwqPgjCgu67xlRpi2EURRghuegNezn/RCk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763113545; c=relaxed/simple;
-	bh=/v95hXtiMNtokXdEjGGjh7v6qZAmq6GB9grj7w5PDjw=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=QLwd/hK5hYutDqbGBiTTMk6rsHZNWBx1l02FQgchEOgKHzSZd+OnGthBCYktnw3Ds3Y/uSm2hNNDp6ZJ3DATvCI+1JVXClt1W8vrBwHe+ZHGLhuDybDz8mWuoS8QF3xpw6ZVtWVs4+1JvRilKZgI0REHJFtvHmJWUhWHZIjtAGw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=cse.iitm.ac.in; spf=pass smtp.mailfrom=cse.iitm.ac.in; dkim=pass (2048-bit key) header.d=cse-iitm-ac-in.20230601.gappssmtp.com header.i=@cse-iitm-ac-in.20230601.gappssmtp.com header.b=nnJEeXPN; arc=none smtp.client-ip=209.85.214.182
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=cse.iitm.ac.in
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=cse.iitm.ac.in
-Received: by mail-pl1-f182.google.com with SMTP id d9443c01a7336-2980d9b7df5so16779215ad.3
-        for <linux-wireless@vger.kernel.org>; Fri, 14 Nov 2025 01:45:41 -0800 (PST)
+	s=arc-20240116; t=1763113846; c=relaxed/simple;
+	bh=PE6VO0uRFn+tr2Xl0ANytSUNsua9pk0mDP1s53cRXBo=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=Ytn75EJa91yRwZA34BvQrUmwbu23gPLyf9nDKl8TO5O9/oeqg5cqDhLMWq5xrhl37nBivHsdCgzV3lj84YzHEVO36zHQTJj8nOmP6DXvtvrm9kRZbMp9O8ojZRqQ2k1+v7OpJRQ6pc25bXl4KwS5/IXEGNNcpeskFjlrSfpXvnc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com; spf=pass smtp.mailfrom=suse.com; dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b=LSot4ffr; arc=none smtp.client-ip=209.85.221.52
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.com
+Received: by mail-wr1-f52.google.com with SMTP id ffacd0b85a97d-42b3c965cc4so907958f8f.0
+        for <linux-wireless@vger.kernel.org>; Fri, 14 Nov 2025 01:50:42 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=cse-iitm-ac-in.20230601.gappssmtp.com; s=20230601; t=1763113541; x=1763718341; darn=vger.kernel.org;
+        d=suse.com; s=google; t=1763113841; x=1763718641; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:message-id:date:subject:cc
          :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=nYdcmg/EanAelwRsGB72V2V0TYhuxD+KsCswGlWW8ZM=;
-        b=nnJEeXPNCmhrpaEBAy6elOMksCMn8xA/HcJDT4QyezdMYOnSos+0dgL+0N0c9Cr+55
-         EIAt+YKfDJgp5QMnjKmjDeHKjxbMFGSltWKRf2qsLf2WJ3f1XupWdlWwcjO2sODS6LAp
-         5iLtZifPI2nVZ90iXvgORO3dc/D3f8fx4mJiGWfMNaSIZTA4+VEMNniuS7MFqw3GNSiC
-         YjQQek2k64iMi6m0NAK3vn23EUQ0jx9XYRQFRmdLddtKoxT1q6EMtKApYb4WEPITvVnF
-         btwosuF2YfcZDVKAWuzVtxI07rwFmVVwcZwfv+uxfcd+vQokaQ+s12vyRVVa1QDlqVyW
-         AMLg==
+        bh=V1DX+q1uR6gc1I05qlwVA/APKBUcVyv5tREJfQ7NRX8=;
+        b=LSot4ffr7zWYNj81nWmS7bp8hKHVFuGPHfWj78EzBfkmrN69hft0/rVA6RCs7Q9Sg7
+         X8FRDMyUa4BUk3OPlxr8RXo1kDwiVnYOCthqpCBRYJ4l4YnXt/Val9bbVO4B/c/cpK6W
+         V/8hhmYcEz65WbGCLz4jlYRvn5ArSqo7DMnIaoHVmivbwBZsKk6G6Tvd2YnWUYKuNlgM
+         Dk2nwjJFe4EeriOrgNolMz/kaHL0xDU1UOSIrQ2LoZkLitVncgXFKn1EQzZhS3B/cfsc
+         en/VyITkbj25C6Rz/yk72DAd1Mrl73+GER0rmA5OzxiOAoy3hylB1lFT5VuDAdisqqmA
+         OkmQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1763113541; x=1763718341;
+        d=1e100.net; s=20230601; t=1763113841; x=1763718641;
         h=content-transfer-encoding:mime-version:message-id:date:subject:cc
          :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=nYdcmg/EanAelwRsGB72V2V0TYhuxD+KsCswGlWW8ZM=;
-        b=GyABcc5vLTV1cq1ktOrMz7in+t/mRX1j7S+p/iMxfcOKWEKH4207Q+0Exhn3tYbnva
-         Qg/tZTjyES2HjLAqtq74UgdYpmrUCAObpsFzIRJlffn1+qBcjyTq5pRtAk/wWreGVMaK
-         h0T6Eg6q1GhVjYfCU9QaHghN4MG8OUr8+/imerT6i7G59zZtzVkylfEXDPSjTywTwlPb
-         rgEQFCl2i6Yob/potbcHGqGEzt58EqUftQVPkirlvhSpEcJTly9SbjuklaqRWn+NiDNM
-         gUaW8WnSlLBr2TrdDQz+ikpH19ZvIZYBBTAg8bi1n+JfoprTdmXw9tjq2PrJSrwyaynp
-         Dckg==
-X-Forwarded-Encrypted: i=1; AJvYcCUHKuOd2yU8pWaXqnCm/P990X5R9beIX7SfvwofSi8DEj6kJKXnTBES4O/Ps8DowbhbvBZOXok/FCPSnO7HDg==@vger.kernel.org
-X-Gm-Message-State: AOJu0YxF8psngb5sz3XR/GwMU8ZV4Lkr4UWulSl9Xqsbl4QFVJOQFz6U
-	KNYkuPT2feRCirfqFaGbsTq2i7qL470ZBuevIdCk9qZKaj4LKGHbpPfTphwsfjENd9E=
-X-Gm-Gg: ASbGnctYY4aFUm3ynLpFskdu4nmzDYK9bafF5HII5bzECh969aRcJ5jek6ANpdst6Ro
-	tWH6EzLfUHsf1QVE0orumB+VqBkreUBtOVh8Nk8ymDixJZzmWvYeIzP8S4IBvTfFjTAEYsERm7Y
-	wQyhPv8iD6/YFB0MJRMZuD5DIvjdyfUpfawlnfEHq4OIXJNFDvlnlE1fi7tjUJWDcOFqe9NSPrL
-	ZbWp+xosGLmXXpqa5Gd7vkS+OWI89lb5hVJpzrzqkBVQM3ccsDrACo6JKKR0juNdWuYgFCOVKwT
-	a1FLFOJcvE/3J4dY5ieVc2DRAiyh0e3DZH/FYmKm6SG/3B8C99COWsHtoOhws6/Cjx4F2R+Flwe
-	1u7PoOsz8NsWT/H4VSdFq/9gqJtnMHBoHppxklUUIntrpNUjtSXzWuvzl7tlrHPgM/CHgdWDyyh
-	eLumWG0tiX3MnWfTZCHVNpgUHAdHkyOX4zvkU=
-X-Google-Smtp-Source: AGHT+IGTHxgQ91mqlnu4ODmMQ4fLQ5T7yFXMw8D7cdVyAgnfmSNyWAX4we6ymVTehkLjKlRgVXG6Cw==
-X-Received: by 2002:a17:903:fad:b0:297:d45b:6d97 with SMTP id d9443c01a7336-2986a6d36a1mr23962645ad.14.1763113541235;
-        Fri, 14 Nov 2025 01:45:41 -0800 (PST)
-Received: from localhost.localdomain ([103.158.43.25])
-        by smtp.googlemail.com with ESMTPSA id d9443c01a7336-2985c234644sm49725305ad.10.2025.11.14.01.45.38
+        bh=V1DX+q1uR6gc1I05qlwVA/APKBUcVyv5tREJfQ7NRX8=;
+        b=SK+OXe+yyC4WQESegbVKUh4N7R9wbBBw63u5lAHR2RF13unQVkyEM7NQmO+xZQjaaV
+         gkpvJKwsxYhp8abPPDPh5xwk5czD6X09TnVpkV4P+cFso4zO1Lhd9MoEcKfrZTRF+tI5
+         NabpRrOvD958gRp2gWiiIO/oHKN7ZafpuIg+XpVJ7ymqfgyWNfmsXAxuYaSMJL5XEENB
+         fqATpiLW7yU63oNqqVCcsv1cddtzqszWed0z0YxeBxjEodSyDMcZX1vRBp6FlFOI69WI
+         ASfVy8+H/RMHFoMU+6PJzGkrESUP3EwOV8+jeE+nIL74fZg0pMFH1713RQ3fnNTfEKHl
+         OUZg==
+X-Forwarded-Encrypted: i=1; AJvYcCVUZY5PRQ7ua763z09DBPqXNuzRRwOplGm0Bw1Lrcx4VZ0ugJWj/rNGDszUo92UfwTrpeBKLenlelDVBool9Q==@vger.kernel.org
+X-Gm-Message-State: AOJu0YwoZmtmsL0HHwnw7iYSvkZQgTzPFkwd19Grw4UtzB2LaJen9OgG
+	2xQ8vBmwd5S9diK1y2bpv2IOtdoIVYB3/c+IzGZcMaeyBTQPzmhaBlLCQL27u2BLO+g=
+X-Gm-Gg: ASbGncst04HgLLaRoh53ChjUp8hLOMnDwRahXopgXokAlZQ5C1NlRal2SY97TrYVAdd
+	ev3+GsniFI/Qdw/JyTDPf8768rg0IRJ9YXIwRQfcmJzViGXL0ROgY9NTTg5b0LGEKeiq0cHPlsj
+	yXMAyszsEQGBcx+zdqHZBt2BfnBrg78bxOmFnAWfwyc/GByC3byXZg4euflRAw97CNV9S6xar9X
+	tYiZ6zZGrL2Vg3pVDLPAB9zRvaLwfcCAissDmrT+dkaKS8u72GXWWM2qnCtely9EpEA6Brgekd8
+	jhfZtUpgdhQQRTkg6ObxpWRpJe3pbIdDk373mrgkWS4LJ6/pVwsEmmrWFA/oyN9rHAHDAnDeaBS
+	mtiFMKF/lv5dy+3cQiyUNyKxRq++EdmN+Utlz5Ql8qve2djWfYxJLvAFJuSsAJRy46AmIGmyQdH
+	e0K51zXOilyeHb7/D5f7R0hxkxj/5qqFtnmvQ=
+X-Google-Smtp-Source: AGHT+IEL2Ofd5biLRPD37kVecsR8CM9XEJnnBSUCg9QHnFbIv+c84JIR54hworNR47DBLUx09+falg==
+X-Received: by 2002:a05:6000:26c6:b0:429:8bb2:d0ce with SMTP id ffacd0b85a97d-42b528147c7mr5981000f8f.18.1763113841316;
+        Fri, 14 Nov 2025 01:50:41 -0800 (PST)
+Received: from localhost.localdomain ([2a00:6d43:105:c401:e307:1a37:2e76:ce91])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-47787e442c2sm143853775e9.7.2025.11.14.01.50.40
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 14 Nov 2025 01:45:40 -0800 (PST)
-From: Abdun Nihaal <nihaal@cse.iitm.ac.in>
-To: Ping-Ke Shih <pkshih@realtek.com>,
+        Fri, 14 Nov 2025 01:50:41 -0800 (PST)
+From: Marco Crivellari <marco.crivellari@suse.com>
+To: linux-kernel@vger.kernel.org,
 	linux-wireless@vger.kernel.org
-Cc: Abdun Nihaal <nihaal@cse.iitm.ac.in>,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH v2] rtl818x_pci: Fix potential memory leaks in rtl8180_init_rx_ring()
-Date: Fri, 14 Nov 2025 15:15:26 +0530
-Message-ID: <20251114094527.79842-1-nihaal@cse.iitm.ac.in>
-X-Mailer: git-send-email 2.43.0
+Cc: Tejun Heo <tj@kernel.org>,
+	Lai Jiangshan <jiangshanlai@gmail.com>,
+	Frederic Weisbecker <frederic@kernel.org>,
+	Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
+	Marco Crivellari <marco.crivellari@suse.com>,
+	Michal Hocko <mhocko@suse.com>,
+	Stanislav Yakovlev <stas.yakovlev@gmail.com>
+Subject: [PATCH] wifi: ipw2x00: replace use of system_unbound_wq with system_dfl_wq
+Date: Fri, 14 Nov 2025 10:50:35 +0100
+Message-ID: <20251114095035.70765-1-marco.crivellari@suse.com>
+X-Mailer: git-send-email 2.51.1
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
@@ -89,72 +94,78 @@ List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-In rtl8180_init_rx_ring(), memory is allocated for skb packets and DMA
-allocations in a loop. When an allocation fails, the previously
-successful allocations are not freed on exit.
+Currently if a user enqueues a work item using schedule_delayed_work() the
+used wq is "system_wq" (per-cpu wq) while queue_delayed_work() use
+WORK_CPU_UNBOUND (used when a cpu is not specified). The same applies to
+schedule_work() that is using system_wq and queue_work(), that makes use
+again of WORK_CPU_UNBOUND.
 
-Fix that by jumping to err_free_rings label on error, which calls
-rtl8180_free_rx_ring() to free the allocations. Remove the free of
-rx_ring in rtl8180_init_rx_ring() error path, and set the freed
-priv->rx_buf entry to null, to avoid double free.
+This lack of consistency cannot be addressed without refactoring the API.
 
-Fixes: f653211197f3 ("Add rtl8180 wireless driver")
-Signed-off-by: Abdun Nihaal <nihaal@cse.iitm.ac.in>
+system_unbound_wq should be the default workqueue so as not to enforce
+locality constraints for random work whenever it's not required.
+
+This continues the effort to refactor workqueue APIs, which began with
+the introduction of new workqueues and a new alloc_workqueue flag in:
+
+commit 128ea9f6ccfb ("workqueue: Add system_percpu_wq and system_dfl_wq")
+commit 930c2ea566af ("workqueue: Add new WQ_PERCPU flag")
+
+Switch to using system_dfl_wq because system_unbound_wq is going away as
+part of a workqueue restructuring.
+
+Suggested-by: Tejun Heo <tj@kernel.org>
+Signed-off-by: Marco Crivellari <marco.crivellari@suse.com>
 ---
+ drivers/net/wireless/intel/ipw2x00/ipw2100.c | 6 +++---
+ drivers/net/wireless/intel/ipw2x00/ipw2200.c | 2 +-
+ 2 files changed, 4 insertions(+), 4 deletions(-)
 
-v1->v2:
-- Use rtl8180_free_rx_ring() to free the buffers by jumping to
-  err_free_rings label, as suggested by Ping-Ke Shih.
-- Remove free of rx_ring and set the freed priv->rx_buf entry to null,
-  in the error path to avoid it getting freed again in 
-  rtl8180_free_rx_ring()
-
-Calling rtl8180_free_rx_ring() directly in rtl8180_init_rx_ring()
-requires moving the free function before (implicit declaration error).
-So in order to minimize the code change, I used the err_free_rings label
-as suggested by Ping-Ke Shih.
-
-Link to v1:
-https://lore.kernel.org/all/20251113165851.39054-1-nihaal@cse.iitm.ac.in/
-
- drivers/net/wireless/realtek/rtl818x/rtl8180/dev.c | 9 ++-------
- 1 file changed, 2 insertions(+), 7 deletions(-)
-
-diff --git a/drivers/net/wireless/realtek/rtl818x/rtl8180/dev.c b/drivers/net/wireless/realtek/rtl818x/rtl8180/dev.c
-index 2905baea6239..070c0431c482 100644
---- a/drivers/net/wireless/realtek/rtl818x/rtl8180/dev.c
-+++ b/drivers/net/wireless/realtek/rtl818x/rtl8180/dev.c
-@@ -1023,9 +1023,6 @@ static int rtl8180_init_rx_ring(struct ieee80211_hw *dev)
- 		dma_addr_t *mapping;
- 		entry = priv->rx_ring + priv->rx_ring_sz*i;
- 		if (!skb) {
--			dma_free_coherent(&priv->pdev->dev,
--					  priv->rx_ring_sz * 32,
--					  priv->rx_ring, priv->rx_ring_dma);
- 			wiphy_err(dev->wiphy, "Cannot allocate RX skb\n");
- 			return -ENOMEM;
- 		}
-@@ -1037,9 +1034,7 @@ static int rtl8180_init_rx_ring(struct ieee80211_hw *dev)
+diff --git a/drivers/net/wireless/intel/ipw2x00/ipw2100.c b/drivers/net/wireless/intel/ipw2x00/ipw2100.c
+index 215814861cbd..c7c5bc0f1650 100644
+--- a/drivers/net/wireless/intel/ipw2x00/ipw2100.c
++++ b/drivers/net/wireless/intel/ipw2x00/ipw2100.c
+@@ -2143,7 +2143,7 @@ static void isr_indicate_rf_kill(struct ipw2100_priv *priv, u32 status)
  
- 		if (dma_mapping_error(&priv->pdev->dev, *mapping)) {
- 			kfree_skb(skb);
--			dma_free_coherent(&priv->pdev->dev,
--					  priv->rx_ring_sz * 32,
--					  priv->rx_ring, priv->rx_ring_dma);
-+			priv->rx_buf[i] = NULL;
- 			wiphy_err(dev->wiphy, "Cannot map DMA for RX skb\n");
- 			return -ENOMEM;
- 		}
-@@ -1130,7 +1125,7 @@ static int rtl8180_start(struct ieee80211_hw *dev)
+ 	/* Make sure the RF Kill check timer is running */
+ 	priv->stop_rf_kill = 0;
+-	mod_delayed_work(system_wq, &priv->rf_kill, round_jiffies_relative(HZ));
++	mod_delayed_work(system_percpu_wq, &priv->rf_kill, round_jiffies_relative(HZ));
+ }
  
- 	ret = rtl8180_init_rx_ring(dev);
- 	if (ret)
--		return ret;
-+		goto err_free_rings;
+ static void ipw2100_scan_event(struct work_struct *work)
+@@ -2170,7 +2170,7 @@ static void isr_scan_complete(struct ipw2100_priv *priv, u32 status)
+ 				      round_jiffies_relative(msecs_to_jiffies(4000)));
+ 	} else {
+ 		priv->user_requested_scan = 0;
+-		mod_delayed_work(system_wq, &priv->scan_event, 0);
++		mod_delayed_work(system_percpu_wq, &priv->scan_event, 0);
+ 	}
+ }
  
- 	for (i = 0; i < (dev->queues + 1); i++)
- 		if ((ret = rtl8180_init_tx_ring(dev, i, 16)))
+@@ -4252,7 +4252,7 @@ static int ipw_radio_kill_sw(struct ipw2100_priv *priv, int disable_radio)
+ 					  "disabled by HW switch\n");
+ 			/* Make sure the RF_KILL check timer is running */
+ 			priv->stop_rf_kill = 0;
+-			mod_delayed_work(system_wq, &priv->rf_kill,
++			mod_delayed_work(system_percpu_wq, &priv->rf_kill,
+ 					 round_jiffies_relative(HZ));
+ 		} else
+ 			schedule_reset(priv);
+diff --git a/drivers/net/wireless/intel/ipw2x00/ipw2200.c b/drivers/net/wireless/intel/ipw2x00/ipw2200.c
+index 24a5624ef207..09035a77e775 100644
+--- a/drivers/net/wireless/intel/ipw2x00/ipw2200.c
++++ b/drivers/net/wireless/intel/ipw2x00/ipw2200.c
+@@ -4415,7 +4415,7 @@ static void handle_scan_event(struct ipw_priv *priv)
+ 				      round_jiffies_relative(msecs_to_jiffies(4000)));
+ 	} else {
+ 		priv->user_requested_scan = 0;
+-		mod_delayed_work(system_wq, &priv->scan_event, 0);
++		mod_delayed_work(system_percpu_wq, &priv->scan_event, 0);
+ 	}
+ }
+ 
 -- 
-2.43.0
+2.51.1
 
 
