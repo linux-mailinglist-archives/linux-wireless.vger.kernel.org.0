@@ -1,100 +1,102 @@
-Return-Path: <linux-wireless+bounces-28966-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-28967-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [213.196.21.55])
-	by mail.lfdr.de (Postfix) with ESMTPS id B42CDC5C930
-	for <lists+linux-wireless@lfdr.de>; Fri, 14 Nov 2025 11:29:21 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
+	by mail.lfdr.de (Postfix) with ESMTPS id B6B72C5C970
+	for <lists+linux-wireless@lfdr.de>; Fri, 14 Nov 2025 11:32:16 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 1560F34FC0D
-	for <lists+linux-wireless@lfdr.de>; Fri, 14 Nov 2025 10:22:39 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 64C634F61C8
+	for <lists+linux-wireless@lfdr.de>; Fri, 14 Nov 2025 10:22:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0820130FC24;
-	Fri, 14 Nov 2025 10:22:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8F20730FF08;
+	Fri, 14 Nov 2025 10:22:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="pGxL+MnQ";
-	dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b="M6FOnSvL"
+	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="pzk/Nxzs";
+	dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b="JptVEdim"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
+Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6F7D230BBA4
-	for <linux-wireless@vger.kernel.org>; Fri, 14 Nov 2025 10:22:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A2ACF30FC24
+	for <linux-wireless@vger.kernel.org>; Fri, 14 Nov 2025 10:22:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763115754; cv=none; b=b1wt8ZN60oL6cXubHLAr3K0nN8U4xOmnasU9dLGQzxSbEEe91hH/aFHUBSpTcRxZX1IDJSMQBcD+X3/nFUvhE1hEXrUcXLM6rqWEyBEzYm89dvbjuAWadVs1yhV1bKlgx99hnZqKmKgu5IVcpaZuZ1PIXpN+Pc/zNJwGJvIbV+g=
+	t=1763115763; cv=none; b=P5ZukfipCG9IwP13V4vQZhVzTaGH2uYsA9Z44uHXTdVR/gX10nxacxdvSQclHTIIQcZBq/evPHEZWJRg36BL+yNBB8TCWqcRhm0wnT+X2mtzs5gL6zdZq79Ma1W3luNXWpA/cTDqIUOt1FBB+RizSMEmbpMBcHdlmR4ovAYWahc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763115754; c=relaxed/simple;
-	bh=j/PKjIKUfk95DiARFEqBQvQIr6HuYNqBqicJ5GkXt/k=;
-	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=SweRBMwcvrRUywf8iBItWooQZ2racHQan9fMPs3rCsSHF+GkJazaIlQrNDUbS9nN5poAJIy3bljsp+f9enjAeeVHN2MvjZRD0CBs5tXs1kpLJ+mnsj7BKMsxYPxwAF/BzGY8b0R854OdwcP5SUG2hhQEo5A78UQ0eEF8cZtu6sk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=pGxL+MnQ; dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b=M6FOnSvL; arc=none smtp.client-ip=205.220.168.131
+	s=arc-20240116; t=1763115763; c=relaxed/simple;
+	bh=cvW46ry7pIu7R0scHAtxGzfzExIsVr93GRnzo1DinzM=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
+	 In-Reply-To:To:Cc; b=JUGhVU5AtkykOZRR4OMePB7QHs+L6054jM364VGuTU8O4W1Tjsb6DVJOMeK1COr4FxUg5zqgrb1RdK3j8TOa3pKwC2WfGS74SusRJz3EoImOReGEQAJJf1qR12nI/bQRauWwY2/gr50xSWgDkOUSnE5VZke3gch1LGetijkOV5c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=pzk/Nxzs; dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b=JptVEdim; arc=none smtp.client-ip=205.220.180.131
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
-Received: from pps.filterd (m0279867.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 5AE7ux8e1699548
-	for <linux-wireless@vger.kernel.org>; Fri, 14 Nov 2025 10:22:32 GMT
+Received: from pps.filterd (m0279871.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 5AE8VVXb1613139
+	for <linux-wireless@vger.kernel.org>; Fri, 14 Nov 2025 10:22:40 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
-	cc:content-transfer-encoding:content-type:date:from:message-id
-	:mime-version:subject:to; s=qcppdkim1; bh=uIlFMtE7+uqEi2dqO5eRBa
-	DzL075sUhviJNTRcYSEtg=; b=pGxL+MnQF/1UYj0MQNAUqKavZKYwCdgzgnnD5L
-	JrYWe7kd9HWeGc7wufPRrNx3RWZSrj+wRFf8ya4vHHI8O74jquUixEC9xRVi9zbz
-	wAh3VnXZHW4CxIqrAZPQ1T9XaPxBZq/lWBMfF1ZS2mPOkb+6eiMbU3gAZw6u3Tfk
-	NBXUgEM8Hh69vl+CXI1x1ogFwbbxLrYkpV/9NErbAzU/ANNo9xP6VUwkflUViRpK
-	ZkG3JdaEavXimsaB8xoqWuEL69FZd1wlDuI5nKDEJydmWeuxnLT5qZInF7GhlXKz
-	1Sp0BvvryDCZd2YDXUjI8eZ1idpghST4ZRbTpvE37jB8glkQ==
-Received: from mail-pl1-f197.google.com (mail-pl1-f197.google.com [209.85.214.197])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4adr9e1tjx-1
+	cc:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
+	UgyTWGbkbQVvLrWWo2qJSUt0tmq/uB9p5M5fSzftSUY=; b=pzk/NxzsthTijrP9
+	WMKucxELmsPsAyRm+UaQbb/CgpgX0T4Btr+EMDa2Rd/DF4XcIo0J1yY9+x0Sg2zF
+	Jg0g2Rzj96G5zISRBgofX+D2ALM9havqbLSbabBvU/L9eLYk6+A4EyBfw1XNp/Sn
+	dghMMScDWMSvCPSPO/zUgWWlxlGX4IMH8ZRXjtXf1RQeTK2MNqTswObqko55qwKl
+	TUbGJGSfo56A+cT8J9kRks2/fx7ytB6dtrdsmidPWzjrDtmKqbhn/nqskN9wGrax
+	JGFW/3fQFBbYmBTYEp1sEan5wnTPlysms2XkWu61W6O15Bpocbwwli74R3brDJ0F
+	nS+8Zg==
+Received: from mail-pl1-f199.google.com (mail-pl1-f199.google.com [209.85.214.199])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4adr9h1sbv-1
 	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
-	for <linux-wireless@vger.kernel.org>; Fri, 14 Nov 2025 10:22:32 +0000 (GMT)
-Received: by mail-pl1-f197.google.com with SMTP id d9443c01a7336-297f48e81b8so35046465ad.0
-        for <linux-wireless@vger.kernel.org>; Fri, 14 Nov 2025 02:22:32 -0800 (PST)
+	for <linux-wireless@vger.kernel.org>; Fri, 14 Nov 2025 10:22:40 +0000 (GMT)
+Received: by mail-pl1-f199.google.com with SMTP id d9443c01a7336-297f3710070so51176705ad.2
+        for <linux-wireless@vger.kernel.org>; Fri, 14 Nov 2025 02:22:40 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=oss.qualcomm.com; s=google; t=1763115752; x=1763720552; darn=vger.kernel.org;
-        h=cc:to:content-transfer-encoding:mime-version:message-id:date
-         :subject:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=uIlFMtE7+uqEi2dqO5eRBaDzL075sUhviJNTRcYSEtg=;
-        b=M6FOnSvLRgh6G3uJMlPWQy+2y3moAfPJMrZLGm3DzRaqI1Rj8xs8Q5BUC4h8NV1BpA
-         Wsmmv9cESIUcXc00GvJ0CXg+rz08Z0kKduwALR+xpdtTNfuLoZ02ygJf12DmBOzu4fV/
-         vLH2hHnB8vke0pxp50lY0fqkoyGCltVLv0Xl14t7AZpUX8rOqtPUstibPdcVDiF8gcib
-         Sz3EBnA4rMxwXwxkAOqIjr43VchRdipldnkOlJ+ImDso7GkGHXQbJvkX5MVuFNHwpaxC
-         U7A5jcLMEQJZgH+YBg68uqGPtnBhleTqS+fGcQb5v+upwNM4MMawkRlHxb9zFC5FMSGx
-         p1Uw==
+        d=oss.qualcomm.com; s=google; t=1763115759; x=1763720559; darn=vger.kernel.org;
+        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
+         :mime-version:subject:date:from:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=UgyTWGbkbQVvLrWWo2qJSUt0tmq/uB9p5M5fSzftSUY=;
+        b=JptVEdimYZ6uk1FLt/8S00YdajjV0Wj1b96MuZoYcT5nSdgGaMjUuNXucInDcdI4co
+         crbRBdV3Q3oMVWhCNegvTF7uSF/iOe8GoWKrhyIXJk1hYTl0364VJF6kRUA5UNAPUha2
+         I+473Dm+DQL8qycL1moNC5LScOOynGgMwoQpcSclT4nlHpKKgSOGUL+IVfAxlaPh0k+U
+         OXWGKSZkXwNPcn2yK1wzFLkZaZ0+fszzuP577t6UBcx/l/ZD/53zbJ6srncfW0jXMnOZ
+         3qSNbhqV5w51r6Rg4cUOBQCtxvA4Nu30/kxGfqF/OpoJC8xHo8J4iolA6n2rx7ja6hmZ
+         Z6nQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1763115752; x=1763720552;
-        h=cc:to:content-transfer-encoding:mime-version:message-id:date
-         :subject:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=uIlFMtE7+uqEi2dqO5eRBaDzL075sUhviJNTRcYSEtg=;
-        b=ngDCWe770viLaELjRFYmuV3p7VTP1CBcW1Moq4Es9BH8n4xSotjA+RjE5prYlHZQAy
-         B/fo76KGndZ+HDwmKbDReFQXDtFAcz1OAyJ2PP1PwjZuW2Q0gumbXKkTrilG4u/6xNDs
-         2eFsDKUx4NERstmeo3x5mJNT2PUSJUM4RtPi7+SvvOV6ibVtBv8L0t8ibrwjVVQ3Q3EE
-         v5Jm7MhJTXKVCnbBg/Jgg/RNmi5EcE5LSC48d9G1oQ/f7lmO2u86HtG9pZqFAwh153wR
-         0Sev23a1ZdeROQzDUXAAhMOZwTt9W+qqR9/cfQlDjzipDOBpEQeZeyWjN2YjkoT+yz0t
-         x0YA==
-X-Gm-Message-State: AOJu0YwgMlV8SGeymKORUUJv/LRzFdG+YMrw+qOYk+9Aqs8nUjwTzBko
-	PQld2pd5e9N3ZYMItK18XemVhD75slJWrJ0Oo1K/VETmXWyJgRCyS1xFL44LDsJeVnshvdCgiK9
-	EYWuqyS4t+oiPOT5AUF0dcT9l7nZqx42endy1BP1W/SVNp1elA//rY0W+DOoQVsAzvHudxg==
-X-Gm-Gg: ASbGncs0J0ffl2q9zJzYXIt11al9PHyx3PZihsFwbuHCdP5P0uWp/OqbAhVx51TZE2X
-	8eHn8hrv5uQOtEMxptxk2NNwYY4VuFeXomYFIVD8hHC68llYfJU4hlGYpw1Sp7/J1qWZEwyjXLL
-	YYT8ysl2aJDzeZuOeJy8LJvzi5v/2/Iy5oK5SNkaEm0iLuIYCokzwRASnbEVUtrqkxuAt3eQ0Cz
-	i8MIZQEF1Sg3G2jkNozdn/MccXUoYnio1j6c3ixb1cgJdpz98PHgx3//EzumfzJPwq9otC4oDoo
-	9/DGPGd6k8WgktWN0bk7Y0JtJvq/1sF1bpNStBhGe4NtCJD9ExAO2H6g62VdbkLSZsG9c274T2k
-	fsFzbLA5ol1nDgiTXQa4CpYoWRnr3
-X-Received: by 2002:a17:902:d48c:b0:297:d764:9866 with SMTP id d9443c01a7336-29867f96635mr38151655ad.18.1763115751671;
-        Fri, 14 Nov 2025 02:22:31 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IGDSKi26tdukeeIUa759YbAGm8in+yeMJs9CiwD9zYXP0yERmgL0JB9clxX4ocd5//gfGhRzQ==
-X-Received: by 2002:a17:902:d48c:b0:297:d764:9866 with SMTP id d9443c01a7336-29867f96635mr38151365ad.18.1763115751169;
-        Fri, 14 Nov 2025 02:22:31 -0800 (PST)
+        d=1e100.net; s=20230601; t=1763115759; x=1763720559;
+        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
+         :mime-version:subject:date:from:x-gm-gg:x-gm-message-state:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=UgyTWGbkbQVvLrWWo2qJSUt0tmq/uB9p5M5fSzftSUY=;
+        b=KkGZ31UJH1bEzFYM7f/0FewPeauL/7QjiU+lG7HtsAaPBh/dwmN13mLP0F7hUf0XRK
+         NKFDffucf+yAbt4A47VPiSLmCRQ3HWePC5YVrsIzjpPlUQPMe5oQxRKfJI7st4Z+K4EA
+         fB1JcYLe6LuvZndf/XVSq0qHDXvxhYTqx98JF1r44RBZ4JF9QTSG086FLSeW7E+Vyoqq
+         Ww8CXo9vv4kpEJSc37KUiBczQznmDiwL3Fm7wpdoo5qsIh5gWOe8AlxGO5rI/LruB1mW
+         d4G3PnpvOIxDMwdL/n3j/tOTY+xP+8edHnD1lFHX64EMcqORcPeW1949fZ2jDaKNoIXr
+         5bhg==
+X-Gm-Message-State: AOJu0YyQMFKIbTinSqwDjz/esT2p03P9dSIfEsjQey35HUdhH3fKIISU
+	ZwuDwebMTZQieGUHKGW6b59kwRcmFE22YdmzYeXIBWtNLY4l9HZdlci6eIpfRRivCYIV+kuwdR8
+	ythk/wCSz8UZqIYocWt0cCqcPb82CcGHtI5KSrC9D8fTArd8TqcGIwb2bPJTd7TsqptylZA==
+X-Gm-Gg: ASbGnctbAXde6bMC2rqrlDoW5bOmUtgL4vgopJSLwO2joTJirIfUhvD6+YeJ4gAifsr
+	WqKvEVBfDNaMkCm0scX7/fGN2qYutg0gqWC/8RAl3K+FF4gLnlXe++dhMqZdSjuWHe24iGlQfTh
+	0xgV8TgpOZIaT9zeQaXF+G8jyjgW/Kl7dB/J8Wy+cbAH+dB0Z5cz9nWgFDJ7Zou8pEQy2f83Hn2
+	sW6vm9+bGqqXZWbNAehNB1oV3XlurzZ0okjuj3Eaop4BgNjcCNB3Qfg6/nn/IOnFe/4Xt8DSsyr
+	pvFUSwNNr7kLR6aIKeTGhbezXVwgr7NdInuoSf/3Kw/g5rIAV1D4f43Qk5px5Keu0cLwS4mXOnu
+	LMupku9DUb868c8BTTe/LwIGxrVOY
+X-Received: by 2002:a17:903:2349:b0:298:5abe:4b1 with SMTP id d9443c01a7336-2986a76bc5fmr26587165ad.52.1763115759364;
+        Fri, 14 Nov 2025 02:22:39 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IG+NJodpENh5gfXKO3wDwpoE6d1mGJnrqIto96tOBNteYm3rrkrIjPNrBF+fIwbuU/gyWQU6w==
+X-Received: by 2002:a17:903:2349:b0:298:5abe:4b1 with SMTP id d9443c01a7336-2986a76bc5fmr26586925ad.52.1763115758812;
+        Fri, 14 Nov 2025 02:22:38 -0800 (PST)
 Received: from [192.168.1.102] ([120.60.77.228])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2985c245edasm50883705ad.27.2025.11.14.02.22.23
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2985c245edasm50883705ad.27.2025.11.14.02.22.31
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 14 Nov 2025 02:22:30 -0800 (PST)
+        Fri, 14 Nov 2025 02:22:38 -0800 (PST)
 From: Manivannan Sadhasivam <manivannan.sadhasivam@oss.qualcomm.com>
-Subject: [PATCH 0/2] wifi: ath: Use static calibration variant table for
+Date: Fri, 14 Nov 2025 15:52:19 +0530
+Subject: [PATCH 1/2] wifi: ath: Use static calibration variant table for
  devicetree platforms
-Date: Fri, 14 Nov 2025 15:52:18 +0530
-Message-Id: <20251114-ath-variant-tbl-v1-0-a9adfc49e3f3@oss.qualcomm.com>
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
@@ -103,10 +105,9 @@ List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-X-B4-Tracking: v=1; b=H4sIANoCF2kC/x3MMQqAMAxA0atIZgM2tCpeRRyiRg1IlbaIIN7d4
- viG/x+IElQidMUDQS6NevgMUxYwbexXQZ2zgSpyxhiLnDa8OCj7hGnckaitnXU1O2ogV2eQRe/
- /2A/v+wETW05hYQAAAA==
-X-Change-ID: 20251114-ath-variant-tbl-22865456a527
+Message-Id: <20251114-ath-variant-tbl-v1-1-a9adfc49e3f3@oss.qualcomm.com>
+References: <20251114-ath-variant-tbl-v1-0-a9adfc49e3f3@oss.qualcomm.com>
+In-Reply-To: <20251114-ath-variant-tbl-v1-0-a9adfc49e3f3@oss.qualcomm.com>
 To: Jeff Johnson <jjohnson@kernel.org>,
         Johannes Berg <johannes@sipsolutions.net>,
         Rob Herring <robh@kernel.org>,
@@ -118,81 +119,246 @@ Cc: linux-wireless@vger.kernel.org, linux-kernel@vger.kernel.org,
         Miaoqing Pan <miaoqing.pan@oss.qualcomm.com>,
         Manivannan Sadhasivam <manivannan.sadhasivam@oss.qualcomm.com>
 X-Mailer: b4 0.14.2
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1980;
+X-Developer-Signature: v=1; a=openpgp-sha256; l=9048;
  i=manivannan.sadhasivam@oss.qualcomm.com; h=from:subject:message-id;
- bh=j/PKjIKUfk95DiARFEqBQvQIr6HuYNqBqicJ5GkXt/k=;
- b=owEBbQGS/pANAwAKAVWfEeb+kc71AcsmYgBpFwLen3xdeGzsMaTDYYCd7OIuj1AlYd42t7QKk
- jD2Kk+Aqo+JATMEAAEKAB0WIQRnpUMqgUjL2KRYJ5dVnxHm/pHO9QUCaRcC3gAKCRBVnxHm/pHO
- 9ewcCACmtiz0Gz3fOX7r5tZ+YWRiRMerLpeJA0jPU8AvfSaLdbbEoWDG9cAIv/KiRadqPFBf9Wp
- qjcSQYo4UVxee3OoblE295aPsQb1bKi1Sz1rqFJYQZljeAsf2w1E0WUBn1ZP+MGFAJj03yOrsTK
- xNUKsvXbOlk5iOrRyoa7rAhS2+O45RSL1zuRzBHkE2I00oBW3utGQr7hHUXtsgQP5qfSo8E0O4L
- AY4s3zF0p41qM8JzBD7nxmiacjE0+cRBpYpeoNvN3ii6LSFIifeTht2foBkbpiHbXLjZGCCu+Mw
- DzX/sLR4afzV46gQxlkwGYjZ6Do5PzAvcS39/jToYCd5Zd/U
+ bh=cvW46ry7pIu7R0scHAtxGzfzExIsVr93GRnzo1DinzM=;
+ b=kA0DAAoBVZ8R5v6RzvUByyZiAGkXAt+gRDO6ct4MnDYCpj+7of6Rlq6JRvQD83YvuFDh1OlCx
+ okBMwQAAQoAHRYhBGelQyqBSMvYpFgnl1WfEeb+kc71BQJpFwLfAAoJEFWfEeb+kc71OnAH/jZj
+ 3GhZiZqzaHqWEyIiui5ye6ykDfO/Nw9NmHENl5f4Iov6+bW3OsekjVmUVUgdSl5K5Z8uymnY4R0
+ UsjaxQ9/Txv6zu+6f+X+Dos5mlm9GQ8fp4vKmi6iWdYokl3GjVrL2w6n7rFuNO/lLeEIkyCljCG
+ MSp5k1PopCLRc939o6GTE0v8owgSqdHy347NiPWwYitvvlCOYu13JMCwSEc6ICUGiBCo+DkZosC
+ UaZRRkWKWyM4nefLEYVPpUmJ26+TMqMWZ/3VVzN9o89usYN/ySs8d42nvgb7pnHPLF2ncGHeux8
+ 15CI1wPpeyLYMf/roAaMAJdnem+4E3Av29NOepc=
 X-Developer-Key: i=manivannan.sadhasivam@oss.qualcomm.com; a=openpgp;
  fpr=C668AEC3C3188E4C611465E7488550E901166008
-X-Proofpoint-ORIG-GUID: _Fe3Rn5Sn-hfX-Xe59XlWMql-JXK0oUD
-X-Authority-Analysis: v=2.4 cv=SvidKfO0 c=1 sm=1 tr=0 ts=691702e8 cx=c_pps
- a=cmESyDAEBpBGqyK7t0alAg==:117 a=9R49FEQIXN7mQozuOwW6cA==:17
+X-Proofpoint-ORIG-GUID: F4HxnBLvishFnslBd31q7y2Vhp59lHyQ
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUxMTE0MDA4MiBTYWx0ZWRfX0XU6Ab6+s3zS
+ U+zJGS9dlXjU0eGqQv/p1TqkOIDnaa6IZFVdBqO8yH6r/SPatZAzNXrUo1s2u/bjob1NbCOA39R
+ 4dMJHTe3cPLoF8sT94KfyylOG5YFe40VpTprdXwPbVOX3H/NsNQT1bcdvAsqQSxgJk2X0DOCs4y
+ +16wtS/RvZvpYZ/Zs6FeGyq5HmgKZsUsWjreVndE2TlfuL3U5UP+at1B2zep79zcQ7WnVXRkCsl
+ 1ElDo3jO1KcCktpPdW4cj4S+e9JUnwnAiZyNoUWUOTpwOnHqCYo7eeEBuX4POk0VzSYLluOk5vH
+ asAJLM12pYQ2foCNnE6kGuTHhuEki52cQHLVL+gyQNk3bdGy8d0YI92O8FmJLd8ZkKecgawYQJf
+ 24aaT6T5A7JCVwuH/+zXtF/pOFo9qQ==
+X-Proofpoint-GUID: F4HxnBLvishFnslBd31q7y2Vhp59lHyQ
+X-Authority-Analysis: v=2.4 cv=V+1wEOni c=1 sm=1 tr=0 ts=691702f0 cx=c_pps
+ a=JL+w9abYAAE89/QcEU+0QA==:117 a=9R49FEQIXN7mQozuOwW6cA==:17
  a=IkcTkHD0fZMA:10 a=6UeiqGixMTsA:10 a=s4-Qcg_JpJYA:10
- a=VkNPw1HP01LnGYTKEx00:22 a=EUspDBNiAAAA:8 a=G88tG2J24DvW8zjn4CkA:9
- a=QEXdDO2ut3YA:10 a=1OuFwYUASf3TG4hYMiVC:22 a=HhbK4dLum7pmb74im6QT:22
-X-Proofpoint-GUID: _Fe3Rn5Sn-hfX-Xe59XlWMql-JXK0oUD
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUxMTE0MDA4MiBTYWx0ZWRfX9OOdy6+Az/iK
- VLFficZ9d4Dm1Y+6pTDTcpau2itaHTweL7HvYKE3fXlKYj4QdfGFbtP1mU9zxAheJXmDLFTqpxf
- cOmYu+rg9CILauw6Q+X5Luu/7r89hUMW0fBN+BvqMEwWpTygYNZSgckJD+Z3cusKI+9wzYkE7H3
- PoLU71M0N2TzHCh8nL1fzxaHksuafJOmUmngyADSG1iOZmnXiM862J10mGypAzObTd3F5idBXJY
- tD44+ShaXB9L7yX7bgrIHkufsmADm7PJGwN6zsP07eluKFrEAJBYngI3qYG3OnQZZn3N7sSb7og
- tgwm+K6DFB6VJ0Jgo41tsJCzYzu4a7ej5lA0hmAAbo84BNRdhCO8f9KXbCFodFUz+R9yzDOsaXG
- X9cdowcqhfpaHmWNwHRVnMtybUbylA==
+ a=VkNPw1HP01LnGYTKEx00:22 a=EUspDBNiAAAA:8 a=u1Wyjy0uBQZ4QtDYgmYA:9
+ a=QEXdDO2ut3YA:10 a=324X-CrmTo6CU4MGRt3R:22
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.9,FMLib:17.12.100.49
  definitions=2025-11-14_02,2025-11-13_02,2025-10-01_01
 X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- priorityscore=1501 suspectscore=0 lowpriorityscore=0 spamscore=0 bulkscore=0
- phishscore=0 adultscore=0 malwarescore=0 impostorscore=0 clxscore=1011
+ lowpriorityscore=0 bulkscore=0 suspectscore=0 phishscore=0 clxscore=1015
+ spamscore=0 priorityscore=1501 impostorscore=0 adultscore=0 malwarescore=0
  classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
  reason=mlx scancount=1 engine=8.22.0-2510240001 definitions=main-2511140082
 
-Hi,
+On devicetree platforms, ath{10k/11k} drivers rely on the presence of the
+'qcom,*calibration-variant' property to select the correct calibration data
+for device variants with colliding IDs.
 
-This series aims to deprecate the usage of "qcom,*calibration-variant"
-devicetree property to select the calibration variant for the WLAN devices. This
-is necessary for WLAN devices connected using PCI bus, as hardcoding the device
-specific information in PCI devicetree node causes the node to be updated every
-time when a new device variant is attached to the PCI slot. This approach is not
-scalable and causes bad user experience.
+But this property based selection has its own downside that it needs to be
+added to the devicetree node of the WLAN device, especially for PCI based
+devices. Currently, the users/vendors are forced to hardcode this property
+in the PCI device node. If a different device need to be attached to the
+slot, then the devicetree node also has to be changed. This approach is not
+scalable and creates a bad user experience.
 
-So to avoid relying on the "qcom,*calibration-variant" property, this series
-introduces a new static calibration variant table based lookup. The newly
-introduced helper, ath_get_calib_variant() will parse the model name from
-devicetree and use it to do the variant lookup during runtime. The
-ath_calib_variant_table[] will hold all the model and calibration variant
-entries for the supported devices.
+To get rid of this requirement, this commit introduces a static calibration
+variant table ath_calib_variant_table[], consisting of the platform model
+and the calibration variant for all upstream supported devices. The entries
+of this table are derived from the upstream DTS files.
 
-Going forward, new entries will be added to this table to support calibration
-variants.
+The newly introduced helper, ath_get_calib_variant() will parse the model
+name from devicetree and use it to do the variant lookup during runtime. If
+the platform model name doesn't match, it will fallback to the devicetree
+property based lookup.
+
+Going forward, the devicetree based lookup will be deprecated and this
+table will be used exclusively for devices connected to the devicetree
+based host platforms.
+
+Tested-on: WCN6750 hw1.0 AHB WLAN.MSL.2.0.c2-00204-QCAMSLSWPLZ-1
 
 Signed-off-by: Manivannan Sadhasivam <manivannan.sadhasivam@oss.qualcomm.com>
 ---
-Manivannan Sadhasivam (2):
-      wifi: ath: Use static calibration variant table for devicetree platforms
-      dt-bindings: wireless: ath: Deprecate 'qcom,calibration-variant' property
+ drivers/net/wireless/ath/ath.h         | 98 ++++++++++++++++++++++++++++++++++
+ drivers/net/wireless/ath/ath10k/core.c |  5 ++
+ drivers/net/wireless/ath/ath11k/core.c |  7 +++
+ 3 files changed, 110 insertions(+)
 
- .../bindings/net/wireless/qcom,ath10k.yaml         |  1 +
- .../bindings/net/wireless/qcom,ath11k-pci.yaml     |  3 +-
- .../bindings/net/wireless/qcom,ath11k.yaml         |  1 +
- .../bindings/net/wireless/qcom,ath12k-wsi.yaml     |  6 +-
- .../bindings/net/wireless/qcom,ipq5332-wifi.yaml   |  2 +-
- drivers/net/wireless/ath/ath.h                     | 98 ++++++++++++++++++++++
- drivers/net/wireless/ath/ath10k/core.c             |  5 ++
- drivers/net/wireless/ath/ath11k/core.c             |  7 ++
- 8 files changed, 115 insertions(+), 8 deletions(-)
----
-base-commit: 3a8660878839faadb4f1a6dd72c3179c1df56787
-change-id: 20251114-ath-variant-tbl-22865456a527
+diff --git a/drivers/net/wireless/ath/ath.h b/drivers/net/wireless/ath/ath.h
+index 34654f710d8a1e63f65a47d4602e2035262a4d9e..d0a12151b7fc13355161c48ba1fb200e4617ed11 100644
+--- a/drivers/net/wireless/ath/ath.h
++++ b/drivers/net/wireless/ath/ath.h
+@@ -21,6 +21,7 @@
+ #include <linux/skbuff.h>
+ #include <linux/if_ether.h>
+ #include <linux/spinlock.h>
++#include <linux/of.h>
+ #include <net/mac80211.h>
+ 
+ /*
+@@ -336,4 +337,101 @@ static inline const char *ath_bus_type_to_string(enum ath_bus_type bustype)
+ 	return ath_bus_type_strings[bustype];
+ }
+ 
++static const struct __ath_calib_variant_table {
++	const char *machine;
++	const char *variant;
++} ath_calib_variant_table[] = {
++	{ "ALFA Network AP120C-AC", "ALFA-Network-AP120C-AC" },
++	{ "8devices Jalapeno", "8devices-Jalapeno" },
++	{ "Google cozmo board", "GO_COZMO" },
++	{ "Google damu board", "GO_DAMU" },
++	{ "Google fennel sku1 board", "GO_FENNEL" },
++	{ "Google fennel sku6 board", "GO_FENNEL" },
++	{ "Google fennel sku7 board", "GO_FENNEL" },
++	{ "Google fennel14 sku2 board", "GO_FENNEL14" },
++	{ "Google fennel14 sku0 board", "GO_FENNEL14" },
++	{ "Google juniper sku16 board", "GO_JUNIPER" },
++	{ "Google makomo sku0 board", "GO_FENNEL14" },
++	{ "Google makomo sku1 board", "GO_FENNEL14" },
++	{ "MediaTek kakadu board sku22", "GO_KAKADU" },
++	{ "MediaTek kakadu board", "GO_KAKADU" },
++	{ "Google katsu board", "GO_KATSU" },
++	{ "Google katsu sku38 board", "GO_KATSU" },
++	{ "MediaTek kodama sku16 board", "GO_KODAMA" },
++	{ "MediaTek kodama sku272 board", "GO_KODAMA" },
++	{ "MediaTek kodama sku288 board", "GO_KODAMA" },
++	{ "MediaTek kodama sku32 board", "GO_KODAMA" },
++	{ "MediaTek krane sku0 board", "LE_Krane" },
++	{ "MediaTek krane sku176 board", "LE_Krane" },
++	{ "Qualcomm Technologies, Inc. Lemans Ride Rev3", "QC_SA8775P_Ride" },
++	{ "Qualcomm Technologies, Inc. Lemans Ride", "QC_SA8775P_Ride" },
++	{ "Qualcomm SA8775P Ride Rev3", "QC_SA8775P_Ride" },
++	{ "Qualcomm SA8775P Ride", "QC_SA8775P_Ride" },
++	{ "Lenovo Miix 630", "Lenovo_Miix630" },
++	{ "Fairphone 5", "Fairphone_5" },
++	{ "Qualcomm Technologies, Inc. QCM6490 IDP", "Qualcomm_qcm6490idp" },
++	{ "SHIFT SHIFTphone 8", "SHIFTphone_8" },
++	{ "Qualcomm Technologies, Inc. QCS615 Ride", "QC_QCS615_Ride" },
++	{ "Qualcomm Technologies, Inc. Robotics RB3gen2", "Qualcomm_rb3gen2" },
++	{ "Qualcomm Technologies, Inc. Robotics RB1", "Thundercomm_RB1" },
++	{ "Qualcomm Technologies, Inc. QRB4210 RB2", "Thundercomm_RB2" },
++	{ "Google Homestar (rev2)", "GO_HOMESTAR" },
++	{ "Google Homestar (rev3)", "GO_HOMESTAR" },
++	{ "Google Homestar (rev4+)", "GO_HOMESTAR" },
++	{ "Google Kingoftown", "GO_KINGOFTOWN" },
++	{ "Google Lazor Limozeen without Touchscreen (rev10+)", "GO_LAZOR" },
++	{ "Google Lazor Limozeen without Touchscreen (rev5 - rev8)", "GO_LAZOR" },
++	{ "Google Lazor Limozeen without Touchscreen (rev9)", "GO_LAZOR" },
++	{ "Google Lazor Limozeen (rev10+)", "GO_LAZOR" },
++	{ "Google Lazor Limozeen (rev4 - rev8)", "GO_LAZOR" },
++	{ "Google Lazor Limozeen (rev9)", "GO_LAZOR" },
++	{ "Google Lazor (rev1 - 2)", "GO_LAZOR" },
++	{ "Google Lazor (rev10+) with KB Backlight", "GO_LAZOR" },
++	{ "Google Lazor (rev10+) with LTE", "GO_LAZOR" },
++	{ "Google Lazor (rev10+)", "GO_LAZOR" },
++	{ "Google Lazor (rev3 - 8) with KB Backlight", "GO_LAZOR" },
++	{ "Google Lazor (rev3 - 8) with LTE", "GO_LAZOR" },
++	{ "Google Lazor (rev3 - 8)", "GO_LAZOR" },
++	{ "Google Lazor (rev9) with KB Backlight", "GO_LAZOR" },
++	{ "Google Lazor (rev9) with LTE", "GO_LAZOR" },
++	{ "Google Lazor (rev9)", "GO_LAZOR" },
++	{ "Google Pazquel (Parade,LTE)", "GO_PAZQUEL360" },
++	{ "Google Pazquel (Parade,WIFI-only)", "GO_PAZQUEL360" },
++	{ "Google Pompom (rev1)", "GO_POMPOM" },
++	{ "Google Pompom (rev2)", "GO_POMPOM" },
++	{ "Google Pompom (rev3+)", "GO_POMPOM" },
++	{ "Google Wormdingler rev1+ (BOE, rt5682s)", "GO_WORMDINGLER" },
++	{ "Google Wormdingler rev1+ BOE panel board", "GO_WORMDINGLER" },
++	{ "Google Wormdingler rev1+ (INX, rt5682s)", "GO_WORMDINGLER" },
++	{ "Google Wormdingler rev1+ INX panel board", "GO_WORMDINGLER" },
++	{ "Qualcomm SC8280XP CRD", "QC_8280XP_CRD" },
++	{ "Lenovo ThinkPad X13s", "LE_X13S" },
++	{ "Microsoft Surface Pro 9 5G", "MS_SP9_5G" },
++	{ "Windows Dev Kit 2023", "MS_Volterra" },
++	{ "Inforce 6560 Single Board Computer", "Inforce_IFC6560" },
++	{ "Thundercomm Dragonboard 845c", "Thundercomm_DB845C" },
++	{ "Qualcomm Technologies, Inc. SDM845 MTP", "Qualcomm_sdm845mtp" },
++	{ "Lenovo Yoga C630", "Lenovo_C630" },
++	{ "F(x)tec Pro1X (QX1050)", "Fxtec_QX1050" },
++	{ "Lenovo Tab P11", "Lenovo_P11" },
++	{ "Qualcomm Technologies, Inc. SM8150 HDK", "Qualcomm_sm8150hdk" },
++	{ "Xiaomi Mi Pad 5 Pro (BOE)", "Xiaomi_Pad_5Pro" },
++	{ "Xiaomi Mi Pad 5 Pro (CSOT)", "Xiaomi_Pad_5Pro" },
++	{ "ASUS Zenbook A14 (UX3407QA)", "UX3407Q" },
++	{ "Google Scarlet", "GO_DUMO" },
++	{ /* Sentinel */ }
++};
++
++static inline const char *ath_get_calib_variant(void)
++{
++	const struct __ath_calib_variant_table *entry = ath_calib_variant_table;
++	struct device_node *root __free(device_node) = of_find_node_by_path("/");
++	const char *model = of_get_property(root, "model", NULL);
++
++	while ((entry->machine) && strcmp(entry->machine, model))
++		entry++;
++
++	return entry->machine ? entry->variant : NULL;
++}
++
+ #endif /* ATH_H */
+diff --git a/drivers/net/wireless/ath/ath10k/core.c b/drivers/net/wireless/ath/ath10k/core.c
+index 6f78f1752cd6ffcf8eb56621ba0e4978ac23e696..099b8592d50bfac37c54dee7b0aa660ac126a410 100644
+--- a/drivers/net/wireless/ath/ath10k/core.c
++++ b/drivers/net/wireless/ath/ath10k/core.c
+@@ -1161,6 +1161,10 @@ int ath10k_core_check_dt(struct ath10k *ar)
+ 	struct device_node *node;
+ 	const char *variant = NULL;
+ 
++	variant = ath_get_calib_variant();
++	if (variant)
++		goto copy_variant;
++
+ 	node = ar->dev->of_node;
+ 	if (!node)
+ 		return -ENOENT;
+@@ -1173,6 +1177,7 @@ int ath10k_core_check_dt(struct ath10k *ar)
+ 	if (!variant)
+ 		return -ENODATA;
+ 
++copy_variant:
+ 	if (strscpy(ar->id.bdf_ext, variant, sizeof(ar->id.bdf_ext)) < 0)
+ 		ath10k_dbg(ar, ATH10K_DBG_BOOT,
+ 			   "bdf variant string is longer than the buffer can accommodate (variant: %s)\n",
+diff --git a/drivers/net/wireless/ath/ath11k/core.c b/drivers/net/wireless/ath/ath11k/core.c
+index 2810752260f2f7eee226f88d5aea7cdabe7e9ed4..2db067d6357c8848ede7384ec4a615ca22282650 100644
+--- a/drivers/net/wireless/ath/ath11k/core.c
++++ b/drivers/net/wireless/ath/ath11k/core.c
+@@ -20,6 +20,8 @@
+ #include "wow.h"
+ #include "fw.h"
+ 
++#include "../ath.h"
++
+ unsigned int ath11k_debug_mask;
+ EXPORT_SYMBOL(ath11k_debug_mask);
+ module_param_named(debug_mask, ath11k_debug_mask, uint, 0644);
+@@ -1362,6 +1364,10 @@ int ath11k_core_check_dt(struct ath11k_base *ab)
+ 	const char *variant = NULL;
+ 	struct device_node *node;
+ 
++	variant = ath_get_calib_variant();
++	if (variant)
++		goto copy_variant;
++
+ 	node = ab->dev->of_node;
+ 	if (!node)
+ 		return -ENOENT;
+@@ -1374,6 +1380,7 @@ int ath11k_core_check_dt(struct ath11k_base *ab)
+ 	if (!variant)
+ 		return -ENODATA;
+ 
++copy_variant:
+ 	if (strscpy(ab->qmi.target.bdf_ext, variant, max_len) < 0)
+ 		ath11k_dbg(ab, ATH11K_DBG_BOOT,
+ 			   "bdf variant string is longer than the buffer can accommodate (variant: %s)\n",
 
-Best regards,
 -- 
-Manivannan Sadhasivam <manivannan.sadhasivam@oss.qualcomm.com>
+2.48.1
 
 
