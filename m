@@ -1,162 +1,185 @@
-Return-Path: <linux-wireless+bounces-28973-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-28974-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [IPv6:2a01:60a::1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id 94EC0C5CAC8
-	for <lists+linux-wireless@lfdr.de>; Fri, 14 Nov 2025 11:50:58 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
+	by mail.lfdr.de (Postfix) with ESMTPS id C3E29C5CB37
+	for <lists+linux-wireless@lfdr.de>; Fri, 14 Nov 2025 11:55:01 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.mirrors.kernel.org (Postfix) with ESMTPS id D06A0342D33
-	for <lists+linux-wireless@lfdr.de>; Fri, 14 Nov 2025 10:43:44 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id BACE44F376B
+	for <lists+linux-wireless@lfdr.de>; Fri, 14 Nov 2025 10:45:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D3AEB3054F5;
-	Fri, 14 Nov 2025 10:43:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B14AB313282;
+	Fri, 14 Nov 2025 10:45:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b="B7f75HON"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="RbPe/J8t"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-ej1-f45.google.com (mail-ej1-f45.google.com [209.85.218.45])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8E5D0309EE1
-	for <linux-wireless@vger.kernel.org>; Fri, 14 Nov 2025 10:43:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.45
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 842AB22258C;
+	Fri, 14 Nov 2025 10:45:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763117020; cv=none; b=irgDX3g6vRxIUFxNq+hazbhzdNxAAy7cvMrcBCljWpc/Ljl/NYvekQcbk6l3xsq5U1St/Yphj0VJOXr8tMxdi3hix7o1TDZWlY0yvuugdtWxjjos6ggpNE1YhAuOgJfH7r6rSk/ObXQ23e/mn4kXa3GWBRobIA5FRGaQC8xqb1o=
+	t=1763117135; cv=none; b=Jt8qwdCCnKjDFTvBdh/BhF+Ldr6wKS/jFHmk8aUXM/KsvPkwUQtEEQMHvbKIp+XGG85azhPARboh+pEKONG50J+eBDyxyFWL5ki9XPnhV0+Tuz7r6ijQURAohCJMVa+xPlNNw8L2zHse5+otK5ro4ISG7KwSi0YscWJhyvTDf/c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763117020; c=relaxed/simple;
-	bh=nh1PjSXmB6B5wtOYvpg8YXOYhC88B0dma/uCjVOY03g=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=iYZtMrXRosYVQ3XDVnQJNZh9gPDA12DTj015J93DnMaCEPPYIu6MTSh1HRBrFPWlKPktg1ParAGpuAUY9ogIzhH4v0X4xtxtTuGVMx8Da/q4mzsBPAj9Mlw1l7KrQ3qIwma4r9UhMeLBYyX7r0tMYwcb4hoxWMcn0KjZyRUxK74=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com; spf=pass smtp.mailfrom=suse.com; dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b=B7f75HON; arc=none smtp.client-ip=209.85.218.45
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.com
-Received: by mail-ej1-f45.google.com with SMTP id a640c23a62f3a-b714b1290aeso272983566b.2
-        for <linux-wireless@vger.kernel.org>; Fri, 14 Nov 2025 02:43:38 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=suse.com; s=google; t=1763117017; x=1763721817; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=5qnf43euh50xAz5oC9jatLweC4/+OTf4gXUuEO+dc9E=;
-        b=B7f75HONJ6VnZW4s2yOYllQVbukKpNLUckRdQABeI6xoEQvr3rLiWvyfvgMa2l+fMQ
-         yfxdZVM3tepPcv/ejP2Zftn6kxrPrwO06WlblqEd7QVWGBHKpgpGCbdDS2rXIUfDPrLP
-         +iclhiUucnUeSYeWWBo50TwXsgXEBfqTlK8iWkmaeTKICTnhYJGEGKF+6k/hkD6qSW1n
-         cqQk9AvNOJWiY/0lXvGPDAlgkOIOlDsYxIPtmcZ4riYGbno9sK8sCrDqtdR5/U2Ni/Wt
-         HuElEdlB8+F1WRTO9ruEMxF7PrlnQaXDvHr3n8+sRsi/UlzgnImur6TDNDcIQjJUEYUH
-         Kh5g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1763117017; x=1763721817;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=5qnf43euh50xAz5oC9jatLweC4/+OTf4gXUuEO+dc9E=;
-        b=cTOhB/wos3s8m8/6uHK/fg4+9tpqUpbqzZtLhAZdtYQDumTt7fFVrkiYSmuKzyuZyw
-         gJwm0iOODxchhFeCQBM7VDLJX62AJFW7ftxpCigoAgjDbBZhxVLa/N0iEanz/Jmp3twA
-         jj7T+qTYAMF8Vv6wsS04RVV/+rJVwaKCw1d3dQ+7wbefySGTec6M9YdmKpwaCvGVF48A
-         M58N7mf7h/yCd6Y23cfjFIORut8jir1Xqc+CPTEVPmnqnsNACYp1DsgrPd6nf8/Ucgts
-         GpSOmCVuoEvcOCUlpB6YB3WSoZZi7lbUGsJgdt6sqqUQ/Do0lA/ghz3gVEuVatgHfxnz
-         dl9w==
-X-Forwarded-Encrypted: i=1; AJvYcCVY7N2/mxlwDyvQi6MhwYLxcMDAbhCHJV5ZKd25SPF/UZBLke73o7SX7pKyx8t/zehPUpRA5V3syDFugHXYAA==@vger.kernel.org
-X-Gm-Message-State: AOJu0Yz0AnuPkpDo4UxcUK0hQfRCVaD3ruhKFbvyVz2ahuTSwNB4ZRJ0
-	c2aeGpACRPdKWs6OrKSrgdouzAVopphNxHhHRIFW+GinJIoCT75z6SjNhpD9KwaU3+4=
-X-Gm-Gg: ASbGncttXZn0TLyA5GzdXHPa9uUe9Vj0zhuvTNBYKMFOHvElEGjLe1VKABvPdI/NESP
-	4xTt3azedzKUlqXc6di60bY3LiqXnXkZ2UCQMDnbY8rmKQBF0+nf3V7pm+RpS93FzetOd2j8AuP
-	or9JyAuOZdc92lkpvWf66hZb03ekVx7oY9sQR99IIwv8fz97SxWYSs/zdvdVlVhoolfpAArqj0e
-	lTuW3t/SjpwEffW4EQkay+kuA3aM1FG9bUi3z8zJM4tgtuT5rPlXYLU3Wek4Wlj2nsOwxzLo1cc
-	sODWZe/rBlSXG/3yK6tsOeCKIWp8U6jq+ftREk+i60mGpVSsT6lQ0Yk7mhIydKqYvOGcgic6A/4
-	9JcGel99Qj3nJQTtCKn+i8tI56r5XcmR3dPUKWMBK+Q7lyQiHOnVe55tWYmjVv7gpVJwxYNpKzO
-	JtI9RJqnaF4Z9ejw==
-X-Google-Smtp-Source: AGHT+IHMVj7O3E/KnHZI4uDJ5+oTdAiz5D+VVC1LG6ki9E2djSVIrRZEi/GgjbF6gY3JvKH3pseNvg==
-X-Received: by 2002:a17:907:2d25:b0:b73:4b56:7a37 with SMTP id a640c23a62f3a-b73678eacabmr241701066b.30.1763117016492;
-        Fri, 14 Nov 2025 02:43:36 -0800 (PST)
-Received: from linux ([2a00:6d43:105:c401:e307:1a37:2e76:ce91])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-b734fad43dfsm360561666b.20.2025.11.14.02.43.35
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 14 Nov 2025 02:43:36 -0800 (PST)
-From: Marco Crivellari <marco.crivellari@suse.com>
-To: linux-kernel@vger.kernel.org,
-	linux-wireless@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org,
-	linux-mediatek@lists.infradead.org
-Cc: Tejun Heo <tj@kernel.org>,
-	Lai Jiangshan <jiangshanlai@gmail.com>,
-	Frederic Weisbecker <frederic@kernel.org>,
-	Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
-	Marco Crivellari <marco.crivellari@suse.com>,
-	Michal Hocko <mhocko@suse.com>,
-	Felix Fietkau <nbd@nbd.name>,
-	Lorenzo Bianconi <lorenzo@kernel.org>,
-	Ryder Lee <ryder.lee@mediatek.com>,
-	Matthias Brugger <matthias.bgg@gmail.com>,
-	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
-Subject: [PATCH v2] wifi: mt76: replace use of system_wq with system_percpu_wq
-Date: Fri, 14 Nov 2025 11:43:25 +0100
-Message-ID: <20251114104325.116471-1-marco.crivellari@suse.com>
-X-Mailer: git-send-email 2.51.1
+	s=arc-20240116; t=1763117135; c=relaxed/simple;
+	bh=4F5PAHalrEVrOe3q+txro3OlvhjyxJ0rxo1kmjSN9uI=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=Aiq42+tI1dmMCOFw8qcK7mSvs5aLFqcCjkK1PtkzokXV+lY+ohajeDIeolX/xVSHUZqJQnvhF34NdkPK5gGtZ8OR6KKAbE7zaRSqsKmdGGppSStAsBJfqXSi/cPOKyIgnDtFWmEZJGPPz9uKV/F6CcNmL6Znjy17sFLXC/UB42I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=RbPe/J8t; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0BE70C4CEF8;
+	Fri, 14 Nov 2025 10:45:31 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1763117135;
+	bh=4F5PAHalrEVrOe3q+txro3OlvhjyxJ0rxo1kmjSN9uI=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=RbPe/J8tJjBa5nk5LniU18FGGaGRbGXCUAdsaPIrakqv5qQkGgfnJEOKwujVzhRDR
+	 O2f2DMR6NEd105A0C+IG8CbudhgKiToaNIHw96+VW/zkwpxCquWsmib7FQyjq80R1b
+	 NtdMIJzWLCzmII4vVAgSg6J9E4Pr2mv96eTStaHMPLhTbSuMWEPvCY1cuyZDtyKsFU
+	 wOVmzs73jIhQ/y/W3vjy9Y17YVxJWCIVIOGFXbpaCsh1AJIOmrxe/eumCBdCxoOpyn
+	 RQLOFgNtsZOvsTPfF0j2z52LuqHzT/utqTpaqdovj7PPtK3xj/9RZNfc5m63j6ilUe
+	 rHlutoplmIhSg==
+Message-ID: <3a951821-14b1-464e-b1da-05a95f4164af@kernel.org>
+Date: Fri, 14 Nov 2025 11:45:30 +0100
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 1/2] wifi: ath: Use static calibration variant table for
+ devicetree platforms
+To: Manivannan Sadhasivam <manivannan.sadhasivam@oss.qualcomm.com>,
+ Jeff Johnson <jjohnson@kernel.org>, Johannes Berg
+ <johannes@sipsolutions.net>, Rob Herring <robh@kernel.org>,
+ Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>
+Cc: linux-wireless@vger.kernel.org, linux-kernel@vger.kernel.org,
+ ath10k@lists.infradead.org, ath11k@lists.infradead.org,
+ devicetree@vger.kernel.org, ath12k@lists.infradead.org,
+ Miaoqing Pan <miaoqing.pan@oss.qualcomm.com>
+References: <20251114-ath-variant-tbl-v1-0-a9adfc49e3f3@oss.qualcomm.com>
+ <20251114-ath-variant-tbl-v1-1-a9adfc49e3f3@oss.qualcomm.com>
+From: Krzysztof Kozlowski <krzk@kernel.org>
+Content-Language: en-US
+Autocrypt: addr=krzk@kernel.org; keydata=
+ xsFNBFVDQq4BEAC6KeLOfFsAvFMBsrCrJ2bCalhPv5+KQF2PS2+iwZI8BpRZoV+Bd5kWvN79
+ cFgcqTTuNHjAvxtUG8pQgGTHAObYs6xeYJtjUH0ZX6ndJ33FJYf5V3yXqqjcZ30FgHzJCFUu
+ JMp7PSyMPzpUXfU12yfcRYVEMQrmplNZssmYhiTeVicuOOypWugZKVLGNm0IweVCaZ/DJDIH
+ gNbpvVwjcKYrx85m9cBVEBUGaQP6AT7qlVCkrf50v8bofSIyVa2xmubbAwwFA1oxoOusjPIE
+ J3iadrwpFvsZjF5uHAKS+7wHLoW9hVzOnLbX6ajk5Hf8Pb1m+VH/E8bPBNNYKkfTtypTDUCj
+ NYcd27tjnXfG+SDs/EXNUAIRefCyvaRG7oRYF3Ec+2RgQDRnmmjCjoQNbFrJvJkFHlPeHaeS
+ BosGY+XWKydnmsfY7SSnjAzLUGAFhLd/XDVpb1Een2XucPpKvt9ORF+48gy12FA5GduRLhQU
+ vK4tU7ojoem/G23PcowM1CwPurC8sAVsQb9KmwTGh7rVz3ks3w/zfGBy3+WmLg++C2Wct6nM
+ Pd8/6CBVjEWqD06/RjI2AnjIq5fSEH/BIfXXfC68nMp9BZoy3So4ZsbOlBmtAPvMYX6U8VwD
+ TNeBxJu5Ex0Izf1NV9CzC3nNaFUYOY8KfN01X5SExAoVTr09ewARAQABzSVLcnp5c3p0b2Yg
+ S296bG93c2tpIDxrcnprQGtlcm5lbC5vcmc+wsGVBBMBCgA/AhsDBgsJCAcDAgYVCAIJCgsE
+ FgIDAQIeAQIXgBYhBJvQfg4MUfjVlne3VBuTQ307QWKbBQJoF1BKBQkWlnSaAAoJEBuTQ307
+ QWKbHukP/3t4tRp/bvDnxJfmNdNVn0gv9ep3L39IntPalBFwRKytqeQkzAju0whYWg+R/rwp
+ +r2I1Fzwt7+PTjsnMFlh1AZxGDmP5MFkzVsMnfX1lGiXhYSOMP97XL6R1QSXxaWOpGNCDaUl
+ ajorB0lJDcC0q3xAdwzRConxYVhlgmTrRiD8oLlSCD5baEAt5Zw17UTNDnDGmZQKR0fqLpWy
+ 786Lm5OScb7DjEgcA2PRm17st4UQ1kF0rQHokVaotxRM74PPDB8bCsunlghJl1DRK9s1aSuN
+ hL1Pv9VD8b4dFNvCo7b4hfAANPU67W40AaaGZ3UAfmw+1MYyo4QuAZGKzaP2ukbdCD/DYnqi
+ tJy88XqWtyb4UQWKNoQqGKzlYXdKsldYqrLHGoMvj1UN9XcRtXHST/IaLn72o7j7/h/Ac5EL
+ 8lSUVIG4TYn59NyxxAXa07Wi6zjVL1U11fTnFmE29ALYQEXKBI3KUO1A3p4sQWzU7uRmbuxn
+ naUmm8RbpMcOfa9JjlXCLmQ5IP7Rr5tYZUCkZz08LIfF8UMXwH7OOEX87Y++EkAB+pzKZNNd
+ hwoXulTAgjSy+OiaLtuCys9VdXLZ3Zy314azaCU3BoWgaMV0eAW/+gprWMXQM1lrlzvwlD/k
+ whyy9wGf0AEPpLssLVt9VVxNjo6BIkt6d1pMg6mHsUEVzsFNBFVDXDQBEADNkrQYSREUL4D3
+ Gws46JEoZ9HEQOKtkrwjrzlw/tCmqVzERRPvz2Xg8n7+HRCrgqnodIYoUh5WsU84N03KlLue
+ MNsWLJBvBaubYN4JuJIdRr4dS4oyF1/fQAQPHh8Thpiz0SAZFx6iWKB7Qrz3OrGCjTPcW6ei
+ OMheesVS5hxietSmlin+SilmIAPZHx7n242u6kdHOh+/SyLImKn/dh9RzatVpUKbv34eP1wA
+ GldWsRxbf3WP9pFNObSzI/Bo3kA89Xx2rO2roC+Gq4LeHvo7ptzcLcrqaHUAcZ3CgFG88CnA
+ 6z6lBZn0WyewEcPOPdcUB2Q7D/NiUY+HDiV99rAYPJztjeTrBSTnHeSBPb+qn5ZZGQwIdUW9
+ YegxWKvXXHTwB5eMzo/RB6vffwqcnHDoe0q7VgzRRZJwpi6aMIXLfeWZ5Wrwaw2zldFuO4Dt
+ 91pFzBSOIpeMtfgb/Pfe/a1WJ/GgaIRIBE+NUqckM+3zJHGmVPqJP/h2Iwv6nw8U+7Yyl6gU
+ BLHFTg2hYnLFJI4Xjg+AX1hHFVKmvl3VBHIsBv0oDcsQWXqY+NaFahT0lRPjYtrTa1v3tem/
+ JoFzZ4B0p27K+qQCF2R96hVvuEyjzBmdq2esyE6zIqftdo4MOJho8uctOiWbwNNq2U9pPWmu
+ 4vXVFBYIGmpyNPYzRm0QPwARAQABwsF8BBgBCgAmAhsMFiEEm9B+DgxR+NWWd7dUG5NDfTtB
+ YpsFAmgXUF8FCRaWWyoACgkQG5NDfTtBYptO0w//dlXJs5/42hAXKsk+PDg3wyEFb4NpyA1v
+ qmx7SfAzk9Hf6lWwU1O6AbqNMbh6PjEwadKUk1m04S7EjdQLsj/MBSgoQtCT3MDmWUUtHZd5
+ RYIPnPq3WVB47GtuO6/u375tsxhtf7vt95QSYJwCB+ZUgo4T+FV4hquZ4AsRkbgavtIzQisg
+ Dgv76tnEv3YHV8Jn9mi/Bu0FURF+5kpdMfgo1sq6RXNQ//TVf8yFgRtTUdXxW/qHjlYURrm2
+ H4kutobVEIxiyu6m05q3e9eZB/TaMMNVORx+1kM3j7f0rwtEYUFzY1ygQfpcMDPl7pRYoJjB
+ dSsm0ZuzDaCwaxg2t8hqQJBzJCezTOIkjHUsWAK+tEbU4Z4SnNpCyM3fBqsgYdJxjyC/tWVT
+ AQ18NRLtPw7tK1rdcwCl0GFQHwSwk5pDpz1NH40e6lU+NcXSeiqkDDRkHlftKPV/dV+lQXiu
+ jWt87ecuHlpL3uuQ0ZZNWqHgZoQLXoqC2ZV5KrtKWb/jyiFX/sxSrodALf0zf+tfHv0FZWT2
+ zHjUqd0t4njD/UOsuIMOQn4Ig0SdivYPfZukb5cdasKJukG1NOpbW7yRNivaCnfZz6dTawXw
+ XRIV/KDsHQiyVxKvN73bThKhONkcX2LWuD928tAR6XMM2G5ovxLe09vuOzzfTWQDsm++9UKF a/A=
+In-Reply-To: <20251114-ath-variant-tbl-v1-1-a9adfc49e3f3@oss.qualcomm.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-Currently if a user enqueue a work item using schedule_delayed_work() the
-used wq is "system_wq" (per-cpu wq) while queue_delayed_work() use
-WORK_CPU_UNBOUND (used when a cpu is not specified). The same applies to
-schedule_work() that is using system_wq and queue_work(), that makes use
-again of WORK_CPU_UNBOUND.
+On 14/11/2025 11:22, Manivannan Sadhasivam wrote:
+> On devicetree platforms, ath{10k/11k} drivers rely on the presence of the
+> 'qcom,*calibration-variant' property to select the correct calibration data
+> for device variants with colliding IDs.
+> 
+> But this property based selection has its own downside that it needs to be
+> added to the devicetree node of the WLAN device, especially for PCI based
+> devices. Currently, the users/vendors are forced to hardcode this property
+> in the PCI device node. If a different device need to be attached to the
+> slot, then the devicetree node also has to be changed. This approach is not
+> scalable and creates a bad user experience.
+> 
+> To get rid of this requirement, this commit introduces a static calibration
+> variant table ath_calib_variant_table[], consisting of the platform model
+> and the calibration variant for all upstream supported devices. The entries
+> of this table are derived from the upstream DTS files.
+> 
+> The newly introduced helper, ath_get_calib_variant() will parse the model
+> name from devicetree and use it to do the variant lookup during runtime. If
+> the platform model name doesn't match, it will fallback to the devicetree
+> property based lookup.
+> 
+> Going forward, the devicetree based lookup will be deprecated and this
+> table will be used exclusively for devices connected to the devicetree
+> based host platforms.
+> 
+> Tested-on: WCN6750 hw1.0 AHB WLAN.MSL.2.0.c2-00204-QCAMSLSWPLZ-1
+> 
+> Signed-off-by: Manivannan Sadhasivam <manivannan.sadhasivam@oss.qualcomm.com>
+> ---
+>  drivers/net/wireless/ath/ath.h         | 98 ++++++++++++++++++++++++++++++++++
+>  drivers/net/wireless/ath/ath10k/core.c |  5 ++
+>  drivers/net/wireless/ath/ath11k/core.c |  7 +++
+>  3 files changed, 110 insertions(+)
+> 
+> diff --git a/drivers/net/wireless/ath/ath.h b/drivers/net/wireless/ath/ath.h
+> index 34654f710d8a1e63f65a47d4602e2035262a4d9e..d0a12151b7fc13355161c48ba1fb200e4617ed11 100644
+> --- a/drivers/net/wireless/ath/ath.h
+> +++ b/drivers/net/wireless/ath/ath.h
+> @@ -21,6 +21,7 @@
+>  #include <linux/skbuff.h>
+>  #include <linux/if_ether.h>
+>  #include <linux/spinlock.h>
+> +#include <linux/of.h>
+>  #include <net/mac80211.h>
+>  
+>  /*
+> @@ -336,4 +337,101 @@ static inline const char *ath_bus_type_to_string(enum ath_bus_type bustype)
+>  	return ath_bus_type_strings[bustype];
+>  }
+>  
+> +static const struct __ath_calib_variant_table {
+> +	const char *machine;
+> +	const char *variant;
+> +} ath_calib_variant_table[] = {
+> +	{ "ALFA Network AP120C-AC", "ALFA-Network-AP120C-AC" },
+> +	{ "8devices Jalapeno", "8devices-Jalapeno" },
+> +	{ "Google cozmo board", "GO_COZMO" },
+> +	{ "Google damu board", "GO_DAMU" },
+> +	{ "Google fennel sku1 board", "GO_FENNEL" },
+> +	{ "Google fennel sku6 board", "GO_FENNEL" },
+> +	{ "Google fennel sku7 board", "GO_FENNEL" },
 
-This lack of consistentcy cannot be addressed without refactoring the API.
-For more details see the Link tag below.
+Are these top-machine models? If so, you cannot use them. The value is
+user-informative, not ABI. If you wanted to use them, you would need to
+document the ABI.
 
-This continues the effort to refactor workqueue APIs, which began with
-the introduction of new workqueues and a new alloc_workqueue flag in:
+Just use compatible, that's the entire point of compatible.
 
-commit 128ea9f6ccfb ("workqueue: Add system_percpu_wq and system_dfl_wq")
-commit 930c2ea566af ("workqueue: Add new WQ_PERCPU flag")
-
-Switch to using system_percpu_wq because system_wq is going away as part of
-a workqueue restructuring.
-
-Suggested-by: Tejun Heo <tj@kernel.org>
-Signed-off-by: Marco Crivellari <marco.crivellari@suse.com>
-Link: https://lore.kernel.org/all/20250221112003.1dSuoGyc@linutronix.de/
-----
-Changs in v2:
-- improved commit log
-- rebased on v6.18-rc5
----
- drivers/net/wireless/mediatek/mt76/mt7921/init.c | 2 +-
- drivers/net/wireless/mediatek/mt76/mt7925/init.c | 2 +-
- 2 files changed, 2 insertions(+), 2 deletions(-)
-
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7921/init.c b/drivers/net/wireless/mediatek/mt76/mt7921/init.c
-index b9098a7331b1..95764b82da39 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7921/init.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7921/init.c
-@@ -343,7 +343,7 @@ int mt7921_register_device(struct mt792x_dev *dev)
- 	dev->mphy.hw->wiphy->available_antennas_rx = dev->mphy.chainmask;
- 	dev->mphy.hw->wiphy->available_antennas_tx = dev->mphy.chainmask;
- 
--	queue_work(system_wq, &dev->init_work);
-+	queue_work(system_percpu_wq, &dev->init_work);
- 
- 	return 0;
- }
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7925/init.c b/drivers/net/wireless/mediatek/mt76/mt7925/init.c
-index d7d5afe365ed..e33ab4849e8a 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7925/init.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7925/init.c
-@@ -420,7 +420,7 @@ int mt7925_register_device(struct mt792x_dev *dev)
- 	dev->mphy.hw->wiphy->available_antennas_rx = dev->mphy.chainmask;
- 	dev->mphy.hw->wiphy->available_antennas_tx = dev->mphy.chainmask;
- 
--	queue_work(system_wq, &dev->init_work);
-+	queue_work(system_percpu_wq, &dev->init_work);
- 
- 	return 0;
- }
--- 
-2.51.1
-
+Best regards,
+Krzysztof
 
