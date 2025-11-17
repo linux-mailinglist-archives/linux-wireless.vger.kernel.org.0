@@ -1,55 +1,67 @@
-Return-Path: <linux-wireless+bounces-29050-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-29051-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 12FB4C63DFE
-	for <lists+linux-wireless@lfdr.de>; Mon, 17 Nov 2025 12:42:23 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0AE59C63ED0
+	for <lists+linux-wireless@lfdr.de>; Mon, 17 Nov 2025 12:51:52 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 41CD13B0EFA
-	for <lists+linux-wireless@lfdr.de>; Mon, 17 Nov 2025 11:36:19 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id BD8724EE197
+	for <lists+linux-wireless@lfdr.de>; Mon, 17 Nov 2025 11:47:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B47CA32B98D;
-	Mon, 17 Nov 2025 11:35:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 955AD32C93D;
+	Mon, 17 Nov 2025 11:47:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=toke.dk header.i=@toke.dk header.b="YhSsoNXq"
+	dkim=pass (2048-bit key) header.d=toke.dk header.i=@toke.dk header.b="OER8VvtA"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from mail.toke.dk (mail.toke.dk [45.145.95.4])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D80E0329C7F;
-	Mon, 17 Nov 2025 11:35:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2108E32B9AE;
+	Mon, 17 Nov 2025 11:47:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.145.95.4
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763379357; cv=none; b=OOGED0sjFufMxRbT/fyysngwVcyQA953PuULCP2W74A5iWpPblmavzryev0TDFKejzWBUlRTa2UvWprLW693ir8Q1wTG350TNSF9caVSeu6gscE1x/c0EY7MmA2ILD2VNzJCqC9n0UPOnSoDTQjOZykNuv3zykUSsuPrUj4EBFw=
+	t=1763380036; cv=none; b=rf5bzaKX71raR0x7fYUM64t9uaw3DKYKeN5+/NjDd6eAGhugBM/tc0L9gpgvt336FsBf3dNnbEf8dDqsNKsSApXexbyzIJPK3bWHmpSk9Znfgt36c0DHNTnkFRqfsHY8RJ6DtZ/sItN0o09Y/njoczSME3OIwlW1dy8ToTz9J94=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763379357; c=relaxed/simple;
-	bh=bDfOKHIDAXusTJCKg/AUDLPIj4fgROrBnKXLmJFnynU=;
+	s=arc-20240116; t=1763380036; c=relaxed/simple;
+	bh=18AThoJ1F5XQlVvAYjRYKKUnjnNDdRj8jhe5/a7p0Ss=;
 	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=ZHphGNAXr277/1jrOOLsWxkrbTCD5dSW5nSEWfM1lZDtY0Cg1SymlNVyEoCZtnBT+29jzqOpJcsebQzIPCXTfoZlbCDSicSB9cRocsiFG//6HmaEO4vghSwoLLVZrL5esulQQHRoUB4f/TuJgnUc8ZyNh7dokqpPSHZEq3325y4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=toke.dk; spf=pass smtp.mailfrom=toke.dk; dkim=pass (2048-bit key) header.d=toke.dk header.i=@toke.dk header.b=YhSsoNXq; arc=none smtp.client-ip=45.145.95.4
+	 MIME-Version:Content-Type; b=fihHClnSu06lbwCCo62Xbt7+OoD3hFTTQQ4IH+bL2cCx4bpESFf/+pz7KtIOHyDNKGPnXwpXHHQM/+U2N9TvX+L8pi48mBLRnwGi+m/W0w3bR7AJnVZgOJ0CM9W/sKP5OfbZUONM9VCprJH3eJUuh1OarZKtHTcWBMG7XOcrWwk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=toke.dk; spf=pass smtp.mailfrom=toke.dk; dkim=pass (2048-bit key) header.d=toke.dk header.i=@toke.dk header.b=OER8VvtA; arc=none smtp.client-ip=45.145.95.4
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=toke.dk
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=toke.dk
 From: Toke =?utf-8?Q?H=C3=B8iland-J=C3=B8rgensen?= <toke@toke.dk>
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=toke.dk; s=20161023;
-	t=1763379344; bh=bDfOKHIDAXusTJCKg/AUDLPIj4fgROrBnKXLmJFnynU=;
+	t=1763380031; bh=18AThoJ1F5XQlVvAYjRYKKUnjnNDdRj8jhe5/a7p0Ss=;
 	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
-	b=YhSsoNXqHGBtqW5WNG4Q3MROeCWbl6qY4BD27WbVy+FcNegP4x7xbnHNRfpIob1Dn
-	 jlYE5efAlCMQEjs8vZ23elJgTbG+aAaQGBiveXag+BYuXCLyoVDVobNLlxMJQpzM8X
-	 +rCK4pMjxZ1UdA+qcaiN/Np5dasbBnf0Wm8Xn31dOn/n0AWDVlMszQG8E4deMu9Soj
-	 kBwViu7enCHK+KyaAoLIwKKx/gFet89vAolXTlNcCQe55HNUdVCteYst1Vhc1ya9UY
-	 ysUrnsPxbRZMnfvnnAg+5JZYxBvJ7JYmjV9AtVxYXqCYm+GPVwOrAjKhstaS34K0l+
-	 QGBxUQp1Rpc6Q==
-To: Randy Dunlap <rdunlap@infradead.org>, netdev@vger.kernel.org
-Cc: Randy Dunlap <rdunlap@infradead.org>, Johannes Berg
- <johannes@sipsolutions.net>, linux-wireless@vger.kernel.org
-Subject: Re: [PATCH] ath9k-common: fix kernel-doc warnings in common-debug.h
-In-Reply-To: <20251117020251.447692-1-rdunlap@infradead.org>
-References: <20251117020251.447692-1-rdunlap@infradead.org>
-Date: Mon, 17 Nov 2025 12:35:43 +0100
+	b=OER8VvtAWTP0L0fklHIXgvMbFN6jQ42q7ikGcR7PT1lfcpE+sk1vaFPlgwmYfxh2u
+	 Pq0y/kJUlVETtENUzSDWBD29nZ2oAwTrefvL8GaBT/YWNG1U5Mjq4+u8N2zaMvWGEW
+	 D0+efZ3KilUrlzGa4RTfgyZqCWS8ZZBaKN5UMhTzrzKUnNddCaSBPAq9WMvcT+Ds69
+	 3092p0XYV87EDLK8QwERXg2JcshEZMZcTB0vts1w1Xkp4t6mwezRfsELFuLCBJODqY
+	 ihba2OAwwWb9Fs/T1FQnHaijPFLuUVe/E+WYicL9bzWdCRfMuTnCXAFDCbIwAZWgF0
+	 sOcUAGdTe3FmA==
+To: pengdonglin <dolinux.peng@gmail.com>, tj@kernel.org,
+ tony.luck@intel.com, jani.nikula@linux.intel.com, ap420073@gmail.com,
+ jv@jvosburgh.net, freude@linux.ibm.com, bcrl@kvack.org,
+ trondmy@kernel.org, longman@redhat.com, kees@kernel.org
+Cc: bigeasy@linutronix.de, hdanton@sina.com, paulmck@kernel.org,
+ linux-kernel@vger.kernel.org, linux-rt-devel@lists.linux.dev,
+ linux-nfs@vger.kernel.org, linux-aio@kvack.org,
+ linux-fsdevel@vger.kernel.org, linux-security-module@vger.kernel.org,
+ netdev@vger.kernel.org, intel-gfx@lists.freedesktop.org,
+ linux-wireless@vger.kernel.org, linux-acpi@vger.kernel.org,
+ linux-s390@vger.kernel.org, cgroups@vger.kernel.org, pengdonglin
+ <dolinux.peng@gmail.com>, Jakub Kicinski <kuba@kernel.org>, pengdonglin
+ <pengdonglin@xiaomi.com>
+Subject: Re: [PATCH v3 14/14] wifi: ath9k: Remove redundant
+ rcu_read_lock/unlock() in spin_lock
+In-Reply-To: <20250916044735.2316171-15-dolinux.peng@gmail.com>
+References: <20250916044735.2316171-1-dolinux.peng@gmail.com>
+ <20250916044735.2316171-15-dolinux.peng@gmail.com>
+Date: Mon, 17 Nov 2025 12:47:07 +0100
 X-Clacks-Overhead: GNU Terry Pratchett
-Message-ID: <87ikf8oprk.fsf@toke.dk>
+Message-ID: <87fracop8k.fsf@toke.dk>
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
@@ -59,23 +71,27 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
 
-Randy Dunlap <rdunlap@infradead.org> writes:
+pengdonglin <dolinux.peng@gmail.com> writes:
 
-> Modify kernel-doc comments in common-debug.h to avoid warnings:
+> From: pengdonglin <pengdonglin@xiaomi.com>
 >
-> Warning: drivers/net/wireless/ath/ath9k/common-debug.h:21 bad line:
->   may have had errors.
-> Warning: ../drivers/net/wireless/ath/ath9k/common-debug.h:23 bad line:
->   may have had errors.
-> Warning: ../drivers/net/wireless/ath/ath9k/common-debug.h:26 bad line:
->   decryption process completed
-> Warning: ../drivers/net/wireless/ath/ath9k/common-debug.h:28 bad line:
->   encountered an error
+> Since commit a8bb74acd8efe ("rcu: Consolidate RCU-sched update-side funct=
+ion definitions")
+> there is no difference between rcu_read_lock(), rcu_read_lock_bh() and
+> rcu_read_lock_sched() in terms of RCU read section and the relevant grace
+> period. That means that spin_lock(), which implies rcu_read_lock_sched(),
+> also implies rcu_read_lock().
 >
-> Fixes: 99c15bf575b1 ("ath9k: Report total tx/rx bytes and packets in debu=
-gfs.")
-> Fixes: 1395d3f00a41 ("ath9k: Add debugfs file for RX errors") (last 2)
-> Signed-off-by: Randy Dunlap <rdunlap@infradead.org>
+> There is no need no explicitly start a RCU read section if one has already
+> been started implicitly by spin_lock().
+>
+> Simplify the code and remove the inner rcu_read_lock() invocation.
+>
+> Cc: "Toke" <toke@toke.dk>
+> Cc: Jakub Kicinski <kuba@kernel.org>
+> Signed-off-by: pengdonglin <pengdonglin@xiaomi.com>
+> Signed-off-by: pengdonglin <dolinux.peng@gmail.com>
 
 Acked-by: Toke H=C3=B8iland-J=C3=B8rgensen <toke@toke.dk>
+
 
