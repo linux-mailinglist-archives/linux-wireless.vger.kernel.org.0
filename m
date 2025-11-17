@@ -1,161 +1,160 @@
-Return-Path: <linux-wireless+bounces-29058-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-29059-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id F3856C65AA6
-	for <lists+linux-wireless@lfdr.de>; Mon, 17 Nov 2025 19:10:59 +0100 (CET)
+Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [IPv6:2a01:60a::1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id 71DABC65BEC
+	for <lists+linux-wireless@lfdr.de>; Mon, 17 Nov 2025 19:39:01 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id A04764E53A3
-	for <lists+linux-wireless@lfdr.de>; Mon, 17 Nov 2025 18:10:57 +0000 (UTC)
+	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 1D02C353609
+	for <lists+linux-wireless@lfdr.de>; Mon, 17 Nov 2025 18:39:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6A375305962;
-	Mon, 17 Nov 2025 18:10:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2525B314B9A;
+	Mon, 17 Nov 2025 18:38:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="YFAXISe5"
+	dkim=pass (2048-bit key) header.d=web.de header.i=markus.elfring@web.de header.b="R8ZCONOF"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-qv1-f49.google.com (mail-qv1-f49.google.com [209.85.219.49])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mout.web.de (mout.web.de [212.227.15.4])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 92AC83016F7
-	for <linux-wireless@vger.kernel.org>; Mon, 17 Nov 2025 18:10:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.49
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 23C61314A8D;
+	Mon, 17 Nov 2025 18:38:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.227.15.4
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763403040; cv=none; b=OWtqV1R8Uq/1sZ63JhDfV7MGlZ1fIaUJ1AeS6SZzXBJ5ICruTvXUu8x4D0ANhiwAyw+6xk7r/2j/X2YQvJEhec4TQ9kUcrMlImG93+ceED3humqEXK4HBSfq0cqNT2e8Criog0Bj5e+IzrgITdLDC5Gklhl/74ELjKoq2lZZ0DA=
+	t=1763404736; cv=none; b=eiDsoLWL0KadqGB+ybFsEVrguYu0G7tcf8AZlofidyS9nUJ8PehrhbW0s3yqUcQp7qmi1AeW2GCUPHt50Q9hExAvm+0ZtXUmxkKX2kMnI28TTBVmmyGrvgBV8L4MDDNEuk5dwFOWlcZe8B0Wu2uvlE94eoN5u5z691RHLnCw9pY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763403040; c=relaxed/simple;
-	bh=a9uJXhk+AJwKISsv20iyfSfymlaY41/HxcHxsS8s4Ws=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=mr+DNlbejeXgvKerF8s9mc25Ejja1zEzPXnOVSuq0R8XP3SkHEv+ideEYr9bas2cN3Jc1SR+fAESP6N2ZjrqkWIxWyj/+o50ZIuOLZM1YocStwzvqJ/QxUDu8hyD/J+m2xaNKFv9uKs3fSLa9EpFFBe5L1uFp4nPi89yIk1dUx4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=YFAXISe5; arc=none smtp.client-ip=209.85.219.49
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-qv1-f49.google.com with SMTP id 6a1803df08f44-8826b83e405so70232356d6.0
-        for <linux-wireless@vger.kernel.org>; Mon, 17 Nov 2025 10:10:38 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1763403037; x=1764007837; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=3WcAzmspmOGoWMLmEdWzg8Yok+8luZgzQGZNM8oLo9Q=;
-        b=YFAXISe5Xj4CMUYeSAeJx46Lf5tvXK7h22kNoK+dxQNDSx10o0wooEP4mBrNswfCu+
-         9k8DYGiGnDwO3AAO844n/lPDNHqhY2xIzqlySQ7/xUkCEHi8ffe/R7h/5EThcyv4B2c/
-         5VPcmfjjI0/muJzdQnalKV86BkpSFgwVixa3lYnzIcqK13paYQieBu1vHZHUMOMUQw8Z
-         R78B3T240qSnPmmsp/f+lGhNNOnkMpZtXoGaMGb4inFfRBlYF6mvaifoPyFErqvSFXvV
-         sqZiz8w4VC2kHggbItw5d/SaWFZVeGGbaCsc9ayH4sxY6J5jArkZ+WdsX6tLeScodXoF
-         Pbfw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1763403037; x=1764007837;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=3WcAzmspmOGoWMLmEdWzg8Yok+8luZgzQGZNM8oLo9Q=;
-        b=GFxJwaepVG2RfoDuoPNZsSJuz7xJZo+eHFMinikfZOnUClJJUlM9jHBiHuCMEVczsK
-         nIV0ec06TFj+1qwSr1vfT80uj4vA4bEqscefXHj96gTByr1Fqk/E6gTDW1lDulrI2lIQ
-         JOPdYAwuT69pl9ZBCggPxu2vDe1v4Q19c/wDLCB/Fq+eE+LbGL7WU/hoFR+EvgGKJsv0
-         BY4eIbcesPk87ml8JDhRkQYTzkXeBjBpqY3rxHRJNmvdpgEThQugmYR/PQqKjHg6n+gn
-         TcOnhMsfut/YNDXZ7aF+5YQV0rEE9EHyw6ves54TdTGgGYVl8Mt02gMe4k/gKiXbwvUJ
-         6t2g==
-X-Forwarded-Encrypted: i=1; AJvYcCXtgu+IwGFJIy7fVMdnHmRvZG+xUdLuK6gkXA/hSrJY5IuPkacm+ex8NyDvaM8ckGddEztpFBTXY2iu9nhJ1g==@vger.kernel.org
-X-Gm-Message-State: AOJu0Yykfs7Ja17J4KbzFnAHHhZ9Iy9xqxeS6aIy3bbfFsye2GZdxvrE
-	Mj2I9jox1FPsdCj7MZSq9f+79yVSSfXLz6yNiClpa+q9Lwi1wvPOGYv3
-X-Gm-Gg: ASbGnctKjtX71zczG8kpYS1YESTVcbtyNFfuS5LTXWZUkDae7gIFitc5gnQuDARAU2F
-	51MnXC2DNAWRJnFJbvcQwJ1NZQbVVWS1yEi9gXrOok8EjW3puvqZg7VXrOdqIVda/2prD9aKaxS
-	th+yjO76juw1LdhcU8bi289jwDjuBhEB1c5fFi724XQAtz3E80kN2O/0GwiQ9JHggcB32fp0JHI
-	9cv1jqOXsQmYtr3uAxYDk2STuVrAdZx4A1crIKnnJx472FhEeGDfCdfTP9DlenuJbyrxSdK3+o4
-	rR1c4NQAeADn36lXSQToPComqN1PlRE4XY6z1LZFSaAu2e4XmQ83MK8aFByBULClNoY/1eIIK8N
-	VspZKFjDyACvVaQwsNdBm6k1nJON0am7URWsOLUewNIlH4ZVvVUeZdyALBSTCBoX5PdQut3nJ3d
-	CCXFj6QT6Y6bIpmbLcytYntAdWvSWAwPCz9/bGkExAoUYH1a9LPYJ5piGe9vrrmDhPOsG4U0QVR
-	mfJllrqwRLdisETuLUrIh42VelO6HXR/idfSQso+A==
-X-Google-Smtp-Source: AGHT+IEUIglhgvo/d5qFkBLi8Fgtj02uQv7ge8aCq9ESXRQHejN8JMAnKSqKiesLLWQ5jVxRlE1jhg==
-X-Received: by 2002:a05:6214:234d:b0:81b:23d:55a8 with SMTP id 6a1803df08f44-882927352f0mr210202906d6.59.1763403037570;
-        Mon, 17 Nov 2025 10:10:37 -0800 (PST)
-Received: from seungjin-HP-ENVY-Desktop-TE02-0xxx.dartmouth.edu ([129.170.197.94])
-        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-8828652ce08sm96795666d6.36.2025.11.17.10.10.36
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 17 Nov 2025 10:10:37 -0800 (PST)
-From: pip-izony <eeodqql09@gmail.com>
-To: Hin-Tak Leung <hintak.leung@gmail.com>
-Cc: Seungjin Bae <eeodqql09@gmail.com>,
-	Kyungtae Kim <Kyungtae.Kim@dartmouth.edu>,
-	linux-wireless@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH v2] rtl8187: Fix potential buffer underflow in rtl8187_rx_cb()
-Date: Mon, 17 Nov 2025 13:09:56 -0500
-Message-ID: <20251117180955.1710801-2-eeodqql09@gmail.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <7012d9a3-821e-44fa-b325-9c4c37c9c26c@RTKEXHMBS03.realtek.com.tw>
-References: <7012d9a3-821e-44fa-b325-9c4c37c9c26c@RTKEXHMBS03.realtek.com.tw>
+	s=arc-20240116; t=1763404736; c=relaxed/simple;
+	bh=lx8eiW5bhr9Hf+rhZP+EsGQ6t7eRjYA+oarSv1YskmU=;
+	h=Message-ID:Date:MIME-Version:To:Cc:References:Subject:From:
+	 In-Reply-To:Content-Type; b=LbypNaSZ9T6UQhBVu9Slt+BYaX/SqPOka4bceKifyvGg7xHz55rqPHssXrKb2vbfkSBgDaPgcwtlM67t63UWW+6sCrM83cfpWPeMp7tBSG9PH6nkg/lqs4gvg63DRv6XuDMmeZrn0JBCuDNKIt8bF0gCM+E/zVk51/jV2iRCzqA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=web.de; spf=pass smtp.mailfrom=web.de; dkim=pass (2048-bit key) header.d=web.de header.i=markus.elfring@web.de header.b=R8ZCONOF; arc=none smtp.client-ip=212.227.15.4
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=web.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=web.de
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=web.de;
+	s=s29768273; t=1763404730; x=1764009530; i=markus.elfring@web.de;
+	bh=lx8eiW5bhr9Hf+rhZP+EsGQ6t7eRjYA+oarSv1YskmU=;
+	h=X-UI-Sender-Class:Message-ID:Date:MIME-Version:To:Cc:References:
+	 Subject:From:In-Reply-To:Content-Type:Content-Transfer-Encoding:
+	 cc:content-transfer-encoding:content-type:date:from:message-id:
+	 mime-version:reply-to:subject:to;
+	b=R8ZCONOF0qDTsfGX05IBuRh9FIcYK1yDJyQlzaA9uJ/zkp4v40N9nCJBBWRAeWf2
+	 2V2wU92bSl1HCou0Etpbb2e4grIJB+oOA8Ear+XWXgE3VJielzFKl9AvUBX83Rus2
+	 kyYEtj0MpXbmFr+ukvHNZJCbIhgO0STULcCXeE4PUAKiEGBiEDIpjnOtN2YrcY3Dd
+	 QUMJ5kIoApqUyI8EeGiJ91VOKDKUP1O+7sdVBykPTUP5gkldxKUilYAJ6L7GPtQbe
+	 CTC+3xE7GemgTB1vzcy94uZodlQGLIEDshMa7TmzYu+gF1mPC4+GqH5wa4wUoxX85
+	 VQDjO2qPQy+tTI9aXA==
+X-UI-Sender-Class: 814a7b36-bfc1-4dae-8640-3722d8ec6cd6
+Received: from [192.168.178.29] ([94.31.92.218]) by smtp.web.de (mrweb005
+ [213.165.67.108]) with ESMTPSA (Nemesis) id 1MUCz1-1vkX5V34h1-00TKU1; Mon, 17
+ Nov 2025 19:38:50 +0100
+Message-ID: <5b954790-e7ed-40bf-b8a1-136bf6c99f98@web.de>
+Date: Mon, 17 Nov 2025 19:38:49 +0100
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla Thunderbird
+To: Seungjin Bae <eeodqql09@gmail.com>, linux-wireless@vger.kernel.org
+Cc: LKML <linux-kernel@vger.kernel.org>,
+ Hin-Tak Leung <hintak.leung@gmail.com>,
+ Kyungtae Kim <Kyungtae.Kim@dartmouth.edu>
+References: <20251117180955.1710801-2-eeodqql09@gmail.com>
+Subject: Re: [PATCH v2] rtl8187: Fix potential buffer underflow in
+ rtl8187_rx_cb()
+Content-Language: en-GB, de-DE
+From: Markus Elfring <Markus.Elfring@web.de>
+In-Reply-To: <20251117180955.1710801-2-eeodqql09@gmail.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
+X-Provags-ID: V03:K1:Xw1fX5EDL1Lyxh1TrEk9huC/rionrDxLULyLx7+3YA6jO3azJAO
+ cHzMUSO3VVBdP1TG8B0M6Pkqt7jKj/qgAUlUBP8FYO4spIGXhIpP9uVhCwb6skuO0LWZ/ro
+ OUjT+gZ2BIPHcqfJaG1SZpTT4AzNGmwk8Fh1/vay6pIGSveckZIWUTcISAYlk0vhWBMxS5Q
+ s0/ETo1yjmk2N3kScMAcw==
+X-Spam-Flag: NO
+UI-OutboundReport: notjunk:1;M01:P0:d3bt44UdNTE=;Yg+j/Kj4Dk55tN3WNxMP+6ozWMr
+ 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
+ hDevnIRmoPLuG3sMM=
 
-From: Seungjin Bae <eeodqql09@gmail.com>
+=E2=80=A6
+> This patch adds length checks for =E2=80=A6
 
-The rtl8187_rx_cb() calculates the rx descriptor header address
-by subtracting its size from the skb tail pointer.
-However, it does not validate if the received packet
-(skb->len from urb->actual_length) is large enough to contain this
-header.
+See also once more:
+https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/Do=
+cumentation/process/submitting-patches.rst?h=3Dv6.18-rc5#n94
 
-If a truncated packet is received, this will lead to a buffer
-underflow, reading memory before the start of the skb data area,
-and causing a kernel panic.
-
-This patch adds length checks for both rtl8187 and rtl8187b descriptor
-headers before attempting to access them, dropping the packet cleanly
-if the check fails.
-
-Fixes: 6f7853f3cbe4 ("rtl8187: change rtl8187_dev.c to support RTL8187B (part 2)")
-Signed-off-by: Seungjin Bae <eeodqql09@gmail.com>
----
- v1 -> v2: Addressing feedback from Ping-Ke Shih
-
- .../net/wireless/realtek/rtl818x/rtl8187/dev.c | 18 ++++++++++++++----
- 1 file changed, 14 insertions(+), 4 deletions(-)
-
-diff --git a/drivers/net/wireless/realtek/rtl818x/rtl8187/dev.c b/drivers/net/wireless/realtek/rtl818x/rtl8187/dev.c
-index 0c5c66401daa..4d0b408b4e33 100644
---- a/drivers/net/wireless/realtek/rtl818x/rtl8187/dev.c
-+++ b/drivers/net/wireless/realtek/rtl818x/rtl8187/dev.c
-@@ -344,8 +344,13 @@ static void rtl8187_rx_cb(struct urb *urb)
- 	}
- 
- 	if (!priv->is_rtl8187b) {
--		struct rtl8187_rx_hdr *hdr =
--			(typeof(hdr))(skb_tail_pointer(skb) - sizeof(*hdr));
-+		struct rtl8187_rx_hdr *hdr;
-+
-+		if (skb->len < sizeof(struct rtl8187_rx_hdr)) {
-+			dev_kfree_skb_irq(skb);
-+			return;
-+		}
-+		hdr = (typeof(hdr))(skb_tail_pointer(skb) - sizeof(*hdr));
- 		flags = le32_to_cpu(hdr->flags);
- 		/* As with the RTL8187B below, the AGC is used to calculate
- 		 * signal strength. In this case, the scaling
-@@ -355,8 +360,13 @@ static void rtl8187_rx_cb(struct urb *urb)
- 		rx_status.antenna = (hdr->signal >> 7) & 1;
- 		rx_status.mactime = le64_to_cpu(hdr->mac_time);
- 	} else {
--		struct rtl8187b_rx_hdr *hdr =
--			(typeof(hdr))(skb_tail_pointer(skb) - sizeof(*hdr));
-+		struct rtl8187b_rx_hdr *hdr;
-+
-+		if (skb->len < sizeof(struct rtl8187b_rx_hdr)) {
-+			dev_kfree_skb_irq(skb);
-+			return;
-+		}
-+		hdr = (typeof(hdr))(skb_tail_pointer(skb) - sizeof(*hdr));
- 		/* The Realtek datasheet for the RTL8187B shows that the RX
- 		 * header contains the following quantities: signal quality,
- 		 * RSSI, AGC, the received power in dB, and the measured SNR.
--- 
-2.43.0
-
+Regards,
+Markus
 
