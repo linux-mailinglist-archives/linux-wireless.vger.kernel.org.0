@@ -1,65 +1,68 @@
-Return-Path: <linux-wireless+bounces-29016-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-29017-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id B7234C623E1
-	for <lists+linux-wireless@lfdr.de>; Mon, 17 Nov 2025 04:30:05 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7FE00C623E4
+	for <lists+linux-wireless@lfdr.de>; Mon, 17 Nov 2025 04:30:08 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 6A0DB4E36F6
-	for <lists+linux-wireless@lfdr.de>; Mon, 17 Nov 2025 03:30:04 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3F7E93B46AA
+	for <lists+linux-wireless@lfdr.de>; Mon, 17 Nov 2025 03:30:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BC2FD313544;
-	Mon, 17 Nov 2025 03:30:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4F0BE314B79;
+	Mon, 17 Nov 2025 03:30:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=realtek.com header.i=@realtek.com header.b="VIruAdFH"
+	dkim=pass (2048-bit key) header.d=realtek.com header.i=@realtek.com header.b="U2VZG+nq"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E0E8D15A864
-	for <linux-wireless@vger.kernel.org>; Mon, 17 Nov 2025 03:29:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B9B3F1B0F23
+	for <linux-wireless@vger.kernel.org>; Mon, 17 Nov 2025 03:29:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=211.75.126.72
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763350201; cv=none; b=rbORhjQjd8Cr6EN75chpm702FKuzeTMQzoQGLsRU+suuWpjR0JSQr4FG/mIY3QZrHReX6Alg5OqyN7KnP141fEZ/pWBNd49oY7IqjSXhxck8ooF/HgmBaGuTECxYlNGmsXq4p+C4J3ZGsSvEINc3mk2Bcrrka/DGzSzlZS41ftM=
+	t=1763350203; cv=none; b=CM8zkt3gH+eQpNtFXf16928TV+fJJqUXmeYYX5eF6cls7+MW19MAn+jhiummNvD9PFNHkOi0M6rLRu/m1gquPfGDuPBB/31owf1hdxHkPpWTim/lNewpxPjtJzdY9weo7ekboJVC87JNF6AhvciVgkBV+5Zem3wdZpDlnbElfq8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763350201; c=relaxed/simple;
-	bh=+4tfmuEHCzDjhO7P+pmy0NIB0Nb4TXn1mmW3OJ37odw=;
-	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=Reqpj8isTTVsH7YLCkesOPSvBTDk63IyuhpOhJKrl8MvqoSvupticgYy9zu0slK/aWkozXmaFAoNyhUnDkg1HjbhSqnYf4nyKVcTRVJBl5a9eJFP5n2K7dTGB5kNX+YQGEYg2Z9ytCVNRoe85tGOPZJGWHUM2CsHg/udIIedzqI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com; spf=pass smtp.mailfrom=realtek.com; dkim=pass (2048-bit key) header.d=realtek.com header.i=@realtek.com header.b=VIruAdFH; arc=none smtp.client-ip=211.75.126.72
+	s=arc-20240116; t=1763350203; c=relaxed/simple;
+	bh=MLJqHrzm7bGU/POiCaS4rGX6lDKruIarxNonLPbcZdw=;
+	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=lRco+tTWXJh9EtUDfgImSIPawqVTbTKO7H8wfBvetDZWDQJLW8dFh5iqPKq2GUV5bgruV95yg6mnDnjqvo6xRjBG6unxx+5DtWXPrngueSuF6QdzLsTTcA55/cm47DFq3CDyUQ6EvPR9KHBbgKU0MuiBJnepzLSBemOLhjO9XPg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com; spf=pass smtp.mailfrom=realtek.com; dkim=pass (2048-bit key) header.d=realtek.com header.i=@realtek.com header.b=U2VZG+nq; arc=none smtp.client-ip=211.75.126.72
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=realtek.com
-X-SpamFilter-By: ArmorX SpamTrap 5.80 with qID 5AH3TmFK22763582, This message is accepted by code: ctloc85258
+X-SpamFilter-By: ArmorX SpamTrap 5.80 with qID 5AH3TsZ422763588, This message is accepted by code: ctloc85258
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=realtek.com; s=dkim;
-	t=1763350188; bh=up6wzSZtcvCTzu8DEipKe9OlItjaYzLYXTWr6IvIPAY=;
-	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:
-	 Content-Transfer-Encoding:Content-Type;
-	b=VIruAdFHPC4IgYIz728H4+0hOg7pO/e9Wn09cOZseNQDALUd3dY/ppRmV/Q4GChid
-	 XbUFPprr6CXtxVqN3Lg2gR5XYpIwQyXOtaGafoRZH6pHjEIEghOmx95E8vlOyQseCz
-	 NF1zlVxvTJ9ec8n6HkpfNBu3T/70IwXfzCK7gbeqLbzhgv6WoAOttHWmvSJLFhKX8Z
-	 OGOKv5XKrAn8rsgy6DhCleQp7k593dG727lULnP/Taa/ZrXE1A51idwxYbSpUPEydQ
-	 UuTOOd1jy3LnGPlRJQbdyM9QxavJ3K+RzzXu2fBJqgiCFJW0AQXZhrno6VyVU3J7lx
-	 BtcGMFzUUAPkg==
-Received: from mail.realtek.com (rtkexhmbs03.realtek.com.tw[10.21.1.53])
-	by rtits2.realtek.com.tw (8.15.2/3.21/5.94) with ESMTPS id 5AH3TmFK22763582
+	t=1763350194; bh=BfTfJGEVJsgjqYUuFXKgQ2Z+U/PMhOn1GOh+6IFcq6Q=;
+	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Transfer-Encoding:Content-Type;
+	b=U2VZG+nq4PYFjtDZ5fz/EXN1Of2IiuF3lBz868axiusQJZ4sXcJ5gpcSRoLawH3jH
+	 BfIpVD9F0dGXb3TDxW34oiEYlLj0W7eISOdEOp8Tk7DTgArml4z5L0+8+pz49DJ6II
+	 Yj/LMz+S8g928oFai5EPR0DMZ+G9uj4v0VBWhVdXZngd6D8Mn5MMna4Wj5yRFF0jLR
+	 q2NhUpc8V1G5o/k5xj08GOOlIhsqqpDneFSmZ7vcDVjQLQJrO/A8bftF+FyQ+kVEdo
+	 0q577T++6ztNrxNctGVi6iEy0sNg4tffK4J7p5u+f8g717SOsL3bGeSb3MFV9pMP5s
+	 +hDZ9BLOWp05Q==
+Received: from mail.realtek.com (rtkexhmbs02.realtek.com.tw[172.21.6.41])
+	by rtits2.realtek.com.tw (8.15.2/3.21/5.94) with ESMTPS id 5AH3TsZ422763588
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Mon, 17 Nov 2025 11:29:48 +0800
-Received: from RTKEXHMBS03.realtek.com.tw (10.21.1.53) by
- RTKEXHMBS03.realtek.com.tw (10.21.1.53) with Microsoft SMTP Server
+	Mon, 17 Nov 2025 11:29:54 +0800
+Received: from RTKEXHMBS04.realtek.com.tw (10.21.1.54) by
+ RTKEXHMBS02.realtek.com.tw (172.21.6.41) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.27; Mon, 17 Nov 2025 11:29:48 +0800
-Received: from [127.0.1.1] (172.21.69.94) by RTKEXHMBS03.realtek.com.tw
- (10.21.1.53) with Microsoft SMTP Server (version=TLS1_2,
+ 15.2.1544.27; Mon, 17 Nov 2025 11:29:54 +0800
+Received: from [127.0.1.1] (172.21.69.94) by RTKEXHMBS04.realtek.com.tw
+ (10.21.1.54) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.27 via Frontend
- Transport; Mon, 17 Nov 2025 11:29:48 +0800
+ Transport; Mon, 17 Nov 2025 11:29:54 +0800
 From: Ping-Ke Shih <pkshih@realtek.com>
 To: <linux-wireless@vger.kernel.org>
 CC: <geert@linux-m68k.org>
-Subject: [PATCH rtw-next 0/2] wifi: rtw89: adjust code to fit coming field_prep()
-Date: Mon, 17 Nov 2025 11:29:08 +0800
-Message-ID: <20251117032910.11224-1-pkshih@realtek.com>
+Subject: [PATCH rtw-next 1/2] wifi: rtw89: 8852a: correct field mask of reset DAC/ADC FIFO
+Date: Mon, 17 Nov 2025 11:29:09 +0800
+Message-ID: <20251117032910.11224-2-pkshih@realtek.com>
 X-Mailer: git-send-email 2.25.1
+In-Reply-To: <20251117032910.11224-1-pkshih@realtek.com>
+References: <20251117032910.11224-1-pkshih@realtek.com>
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
@@ -69,22 +72,44 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Content-Type: text/plain
 
-As Geert mentioned [1], two more tricky cases are pointed out by
-implementation of field_prep(). Change the code to resolve the tricks.
+The field mask should be bits 16-31, but suddenly use wrong bits 24-31,
+rarely causing a little performance degraded if DAC/DAC FIFO stays on
+an unexpected state.
 
-[1] https://lore.kernel.org/linux-wireless/fccadfe07e4244b993f44ac7315d3d52@realtek.com/T/#mbdfd08117f67b39fabb72dd71acb00f4b3c22bd8
+Found this by Geert who works on bit field functions.
 
-Ping-Ke Shih (2):
-  wifi: rtw89: 8852a: correct field mask of reset DAC/ADC FIFO
-  wifi: rtw89: avoid to use not consecutive mask in __write_ctrl()
+Cc: Geert Uytterhoeven <geert@linux-m68k.org>
+Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
+---
+ drivers/net/wireless/realtek/rtw89/rtw8852a_rfk.c | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
- drivers/net/wireless/realtek/rtw89/mac.h      | 20 ++++++++++++++
- drivers/net/wireless/realtek/rtw89/rtw8851b.c | 26 +++++--------------
- .../net/wireless/realtek/rtw89/rtw8852a_rfk.c |  8 +++---
- drivers/net/wireless/realtek/rtw89/rtw8852b.c | 26 +++++--------------
- drivers/net/wireless/realtek/rtw89/rtw8852c.c | 26 +++++--------------
- 5 files changed, 45 insertions(+), 61 deletions(-)
-
+diff --git a/drivers/net/wireless/realtek/rtw89/rtw8852a_rfk.c b/drivers/net/wireless/realtek/rtw89/rtw8852a_rfk.c
+index e74257d19412..463399413318 100644
+--- a/drivers/net/wireless/realtek/rtw89/rtw8852a_rfk.c
++++ b/drivers/net/wireless/realtek/rtw89/rtw8852a_rfk.c
+@@ -756,8 +756,8 @@ static void _iqk_rxk_setting(struct rtw89_dev *rtwdev, u8 path)
+ 	rtw89_phy_write32_mask(rtwdev, R_ANAPAR, B_ANAPAR_FLTRST, 0x1);
+ 	rtw89_phy_write32_mask(rtwdev, R_ANAPAR_PW15, B_ANAPAR_PW15_H2, 0x0);
+ 	udelay(1);
+-	rtw89_phy_write32_mask(rtwdev, R_ADC_FIFO, B_ADC_FIFO_RST, 0x0303);
+-	rtw89_phy_write32_mask(rtwdev, R_ADC_FIFO, B_ADC_FIFO_RST, 0x0000);
++	rtw89_phy_write32_mask(rtwdev, R_ADC_FIFO, B_ADC_FIFO_RXK, 0x0303);
++	rtw89_phy_write32_mask(rtwdev, R_ADC_FIFO, B_ADC_FIFO_RXK, 0x0000);
+ 
+ 	switch (iqk_info->iqk_band[path]) {
+ 	case RTW89_BAND_2G:
+@@ -1239,8 +1239,8 @@ static void _iqk_txk_setting(struct rtw89_dev *rtwdev, u8 path)
+ 	udelay(1);
+ 	rtw89_phy_write32_mask(rtwdev, R_ANAPAR, B_ANAPAR_15, 0x0041);
+ 	udelay(1);
+-	rtw89_phy_write32_mask(rtwdev, R_ADC_FIFO, B_ADC_FIFO_RST, 0x0303);
+-	rtw89_phy_write32_mask(rtwdev, R_ADC_FIFO, B_ADC_FIFO_RST, 0x0000);
++	rtw89_phy_write32_mask(rtwdev, R_ADC_FIFO, B_ADC_FIFO_RXK, 0x0303);
++	rtw89_phy_write32_mask(rtwdev, R_ADC_FIFO, B_ADC_FIFO_RXK, 0x0000);
+ 	switch (iqk_info->iqk_band[path]) {
+ 	case RTW89_BAND_2G:
+ 		rtw89_write_rf(rtwdev, path, RR_XALNA2, RR_XALNA2_SW, 0x00);
 -- 
 2.25.1
 
