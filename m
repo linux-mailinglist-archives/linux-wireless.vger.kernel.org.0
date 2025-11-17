@@ -1,275 +1,96 @@
-Return-Path: <linux-wireless+bounces-29018-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-29019-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6237BC623E7
-	for <lists+linux-wireless@lfdr.de>; Mon, 17 Nov 2025 04:30:16 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7215DC6242C
+	for <lists+linux-wireless@lfdr.de>; Mon, 17 Nov 2025 04:43:41 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 434024E1333
-	for <lists+linux-wireless@lfdr.de>; Mon, 17 Nov 2025 03:30:15 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2FD543ACCD1
+	for <lists+linux-wireless@lfdr.de>; Mon, 17 Nov 2025 03:43:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0006823D7C5;
-	Mon, 17 Nov 2025 03:30:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8635F2367BA;
+	Mon, 17 Nov 2025 03:43:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=realtek.com header.i=@realtek.com header.b="QkaHsP2I"
+	dkim=pass (2048-bit key) header.d=realtek.com header.i=@realtek.com header.b="e51fiP4P"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9833A313E25
-	for <linux-wireless@vger.kernel.org>; Mon, 17 Nov 2025 03:30:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 40259199E94;
+	Mon, 17 Nov 2025 03:43:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=211.75.126.72
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763350212; cv=none; b=MPqYzlPC705Pxm8ycCEZy2fNtbd2+FCHFhNsZF+myNROS84mAkSU4RcMeI9WmE+fTrk+VvFsGkhmQUbITHYeEJKKlZRRhnqVcDe5F99uq2noDRcxdT2zCad+bFNW+V0U7mleZkdfTmu/Em5Zkm+85PMTSghz68r2n04ADGylg20=
+	t=1763351017; cv=none; b=apkk8QaIG82PGsMdrKE3S/BwHUniy+rfbk/qhlNLyj1bVsmE34MP+VrGFw7ZXDHfAQGUm97nOfT27I6pkDRIPcl6fzy4/oS9KNMlzN5EL2AqgInY2+yp0Yv4DIrEvgwc2m/aRHcvvkvh2dET/wmGyXOped1DHlyGmjLw42cVAVM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763350212; c=relaxed/simple;
-	bh=RfVaflTyae87KeEcYA9aN5k3D4q5UaAOEYf/S0765J4=;
-	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=ShvEV4pdpDqX85ttaFSCTkcXhJpdhM+IxRLWDZHFzPgB3qUvR9y4CGpeahuWBfdEsO1pKdkd2T4dC+P00+EHLGjNbY1uFzrXqxpDBLpz1biqgOiCfWI4ziOyZaQO++/87g+CxP7IkcmHNepnXQ5jke6W4mBxlTD2vcWysGp7o4g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com; spf=pass smtp.mailfrom=realtek.com; dkim=pass (2048-bit key) header.d=realtek.com header.i=@realtek.com header.b=QkaHsP2I; arc=none smtp.client-ip=211.75.126.72
+	s=arc-20240116; t=1763351017; c=relaxed/simple;
+	bh=Lq/qydaz902PJ+gMOhbbqTJ/czyAPmVh4KgRXeuo45Q=;
+	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
+	 Content-Type:MIME-Version; b=cAqp1lRRNJVMs3Ooz+mMmKfjuuhilf0I5AvhqqFy+1Qf5CrfJzwiM7S/p+Pp/20SPNgxAUyFR16OD1xf7m0jBX/MGNWS9vV2Q14+w+Sqx6CRzoD5TYFWGvm27OFK9AwKzSpnaNlWgaWU1ben/LSeeVg9CJJHwuZgAxdCZH7zCnE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com; spf=pass smtp.mailfrom=realtek.com; dkim=pass (2048-bit key) header.d=realtek.com header.i=@realtek.com header.b=e51fiP4P; arc=none smtp.client-ip=211.75.126.72
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=realtek.com
-X-SpamFilter-By: ArmorX SpamTrap 5.80 with qID 5AH3Tx2mA2763595, This message is accepted by code: ctloc85258
+X-SpamFilter-By: ArmorX SpamTrap 5.80 with qID 5AH3hTxK52794143, This message is accepted by code: ctloc85258
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=realtek.com; s=dkim;
-	t=1763350199; bh=VzhXkUuL8df6Gj9dJVhLdS6zmhS5OQIYku6cJQMi634=;
-	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Transfer-Encoding:Content-Type;
-	b=QkaHsP2IrKBNdAfuwh/FpDfieaUE3Va1xwr53S5OwWRj8UHXCxs6mzCjnFyLmsm8f
-	 EuRAp/gBHIiF0o7YvU7w/SPnq3dfEYR4pDtHBLMt81ZTv1Bne8lyBf7BSvcHaeU12a
-	 6ss6Va/6qU8/76E4nvxbUdMnScs+uPpmsekM+u0lMTKNQBI2diOdj8h2bqOW93jycl
-	 5jmQgHChBVHE92+ZxxcWSiX6E/xlCiZwN+TPeLNuTCVerZkV2jWgjvEq2gZ3wrfD/G
-	 8TDmLPe6rtulc3OyG9gyaxPMRBxUNTWKZBd0LrIkPVykUdJEBPGUWxw0DVQsDBolSu
-	 GXxMc2jaEB71A==
+	t=1763351009; bh=Lq/qydaz902PJ+gMOhbbqTJ/czyAPmVh4KgRXeuo45Q=;
+	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
+	 Content-Type:Content-Transfer-Encoding:MIME-Version;
+	b=e51fiP4PPCC9Q5axCdpAEvwOIoBHLnPjrEzDkWe+BJ02VKIF/VqQVBT/q6Zj8rDOj
+	 7PBjlSqJy0+5btHF7PK4isDfh73HWsQirMTM6FMvSyJKOWGd+Uk+VvFQNWPe3XdBML
+	 Gt3kpeGJ8wzlmF/VBJYmdmTBn++fUxhq50xZ8+PokYxY9qsTvQp+hlAwfGnBL4f1iw
+	 77uN4XD8L57hhQbkIgaUrcA+HgZRtBLZGbvEAEKFWrl/IrXuV+VVuSL8cEFRoviUBD
+	 tvGdjIev4v6INTEYImwQHu3Td2SiELakKvhw/rwnft+7GsYpVG2xUQK/RPrWuv9z8A
+	 GP5ucYOSymOFg==
 Received: from mail.realtek.com (rtkexhmbs03.realtek.com.tw[10.21.1.53])
-	by rtits2.realtek.com.tw (8.15.2/3.21/5.94) with ESMTPS id 5AH3Tx2mA2763595
+	by rtits2.realtek.com.tw (8.15.2/3.21/5.94) with ESMTPS id 5AH3hTxK52794143
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Mon, 17 Nov 2025 11:29:59 +0800
-Received: from RTKEXHMBS04.realtek.com.tw (10.21.1.54) by
+	Mon, 17 Nov 2025 11:43:29 +0800
+Received: from RTKEXHMBS06.realtek.com.tw (10.21.1.56) by
  RTKEXHMBS03.realtek.com.tw (10.21.1.53) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.27; Mon, 17 Nov 2025 11:30:00 +0800
-Received: from [127.0.1.1] (172.21.69.94) by RTKEXHMBS04.realtek.com.tw
- (10.21.1.54) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.27 via Frontend
- Transport; Mon, 17 Nov 2025 11:30:00 +0800
+ 15.2.1544.27; Mon, 17 Nov 2025 11:43:30 +0800
+Received: from RTKEXHMBS06.realtek.com.tw ([::1]) by
+ RTKEXHMBS06.realtek.com.tw ([fe80::744:4bc9:832c:9b7e%10]) with mapi id
+ 15.02.1544.027; Mon, 17 Nov 2025 11:43:30 +0800
 From: Ping-Ke Shih <pkshih@realtek.com>
-To: <linux-wireless@vger.kernel.org>
-CC: <geert@linux-m68k.org>
-Subject: [PATCH rtw-next 2/2] wifi: rtw89: avoid to use not consecutive mask in __write_ctrl()
-Date: Mon, 17 Nov 2025 11:29:10 +0800
-Message-ID: <20251117032910.11224-3-pkshih@realtek.com>
-X-Mailer: git-send-email 2.25.1
-In-Reply-To: <20251117032910.11224-1-pkshih@realtek.com>
-References: <20251117032910.11224-1-pkshih@realtek.com>
+To: Abdun Nihaal <nihaal@cse.iitm.ac.in>,
+        "linux-wireless@vger.kernel.org"
+	<linux-wireless@vger.kernel.org>
+CC: "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
+Subject: RE: [PATCH v2] rtl818x_pci: Fix potential memory leaks in
+ rtl8180_init_rx_ring()
+Thread-Topic: [PATCH v2] rtl818x_pci: Fix potential memory leaks in
+ rtl8180_init_rx_ring()
+Thread-Index: AQHcVUyVoToSNAKqIECiY7xTT6RaZLT2PfZQ
+Date: Mon, 17 Nov 2025 03:43:29 +0000
+Message-ID: <f952f8cecc294962a724045f62231356@realtek.com>
+References: <20251114094527.79842-1-nihaal@cse.iitm.ac.in>
+In-Reply-To: <20251114094527.79842-1-nihaal@cse.iitm.ac.in>
+Accept-Language: en-US, zh-TW
+Content-Language: zh-TW
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
 
-The power value and enable bit fields can be not consecutive mask, but
-normally we expect mask argument of rtw89_mac_txpwr_write32_mask() is
-consecutive bit mask. Therefore, change the code accordingly.
+Abdun Nihaal <nihaal@cse.iitm.ac.in> wrote:
+> In rtl8180_init_rx_ring(), memory is allocated for skb packets and DMA
+> allocations in a loop. When an allocation fails, the previously
+> successful allocations are not freed on exit.
+>=20
+> Fix that by jumping to err_free_rings label on error, which calls
+> rtl8180_free_rx_ring() to free the allocations. Remove the free of
+> rx_ring in rtl8180_init_rx_ring() error path, and set the freed
+> priv->rx_buf entry to null, to avoid double free.
+>=20
+> Fixes: f653211197f3 ("Add rtl8180 wireless driver")
+> Signed-off-by: Abdun Nihaal <nihaal@cse.iitm.ac.in>
 
-Cc: Geert Uytterhoeven <geert@linux-m68k.org>
-Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
----
- drivers/net/wireless/realtek/rtw89/mac.h      | 20 ++++++++++++++
- drivers/net/wireless/realtek/rtw89/rtw8851b.c | 26 +++++--------------
- drivers/net/wireless/realtek/rtw89/rtw8852b.c | 26 +++++--------------
- drivers/net/wireless/realtek/rtw89/rtw8852c.c | 26 +++++--------------
- 4 files changed, 41 insertions(+), 57 deletions(-)
-
-diff --git a/drivers/net/wireless/realtek/rtw89/mac.h b/drivers/net/wireless/realtek/rtw89/mac.h
-index 3cc97fd0c0ec..01a9fb7c9e31 100644
---- a/drivers/net/wireless/realtek/rtw89/mac.h
-+++ b/drivers/net/wireless/realtek/rtw89/mac.h
-@@ -1456,6 +1456,26 @@ static inline int rtw89_mac_txpwr_write32_mask(struct rtw89_dev *rtwdev,
- 	return 0;
- }
- 
-+static inline
-+void rtw89_mac_write_txpwr_ctrl(struct rtw89_dev *rtwdev, u32 reg, u32 mask, u32 val,
-+				u32 mask_en, bool cond)
-+{
-+	u32 wrt = u32_encode_bits(val, mask);
-+	u32 val32;
-+	int ret;
-+
-+	if (cond)
-+		wrt |= mask_en;
-+
-+	ret = rtw89_mac_txpwr_read32(rtwdev, RTW89_PHY_0, reg, &val32);
-+	if (ret)
-+		return;
-+
-+	val32 &= ~(mask | mask_en);
-+	val32 |= wrt;
-+	rtw89_mac_txpwr_write32(rtwdev, RTW89_PHY_0, reg, val32);
-+}
-+
- static inline void rtw89_mac_ctrl_hci_dma_tx(struct rtw89_dev *rtwdev,
- 					     bool enable)
- {
-diff --git a/drivers/net/wireless/realtek/rtw89/rtw8851b.c b/drivers/net/wireless/realtek/rtw89/rtw8851b.c
-index 2019f6022cbb..1253c4af2fb2 100644
---- a/drivers/net/wireless/realtek/rtw89/rtw8851b.c
-+++ b/drivers/net/wireless/realtek/rtw89/rtw8851b.c
-@@ -2291,18 +2291,6 @@ rtw8851b_btc_set_wl_txpwr_ctrl(struct rtw89_dev *rtwdev, u32 txpwr_val)
- 	union rtw8851b_btc_wl_txpwr_ctrl arg = { .txpwr_val = txpwr_val };
- 	s32 val;
- 
--#define __write_ctrl(_reg, _msk, _val, _en, _cond)		\
--do {								\
--	u32 _wrt = FIELD_PREP(_msk, _val);			\
--	BUILD_BUG_ON(!!(_msk & _en));				\
--	if (_cond)						\
--		_wrt |= _en;					\
--	else							\
--		_wrt &= ~_en;					\
--	rtw89_mac_txpwr_write32_mask(rtwdev, RTW89_PHY_0, _reg,	\
--				     _msk | _en, _wrt);		\
--} while (0)
--
- 	switch (arg.ctrl_all_time) {
- 	case 0xffff:
- 		val = 0;
-@@ -2312,9 +2300,10 @@ do {								\
- 		break;
- 	}
- 
--	__write_ctrl(R_AX_PWR_RATE_CTRL, B_AX_FORCE_PWR_BY_RATE_VALUE_MASK,
--		     val, B_AX_FORCE_PWR_BY_RATE_EN,
--		     arg.ctrl_all_time != 0xffff);
-+	rtw89_mac_write_txpwr_ctrl(rtwdev, R_AX_PWR_RATE_CTRL,
-+				   B_AX_FORCE_PWR_BY_RATE_VALUE_MASK,
-+				   val, B_AX_FORCE_PWR_BY_RATE_EN,
-+				   arg.ctrl_all_time != 0xffff);
- 
- 	switch (arg.ctrl_gnt_bt) {
- 	case 0xffff:
-@@ -2325,10 +2314,9 @@ do {								\
- 		break;
- 	}
- 
--	__write_ctrl(R_AX_PWR_COEXT_CTRL, B_AX_TXAGC_BT_MASK, val,
--		     B_AX_TXAGC_BT_EN, arg.ctrl_gnt_bt != 0xffff);
--
--#undef __write_ctrl
-+	rtw89_mac_write_txpwr_ctrl(rtwdev, R_AX_PWR_COEXT_CTRL,
-+				   B_AX_TXAGC_BT_MASK, val,
-+				   B_AX_TXAGC_BT_EN, arg.ctrl_gnt_bt != 0xffff);
- }
- 
- static
-diff --git a/drivers/net/wireless/realtek/rtw89/rtw8852b.c b/drivers/net/wireless/realtek/rtw89/rtw8852b.c
-index 38cd151f8c3f..de02d52150c1 100644
---- a/drivers/net/wireless/realtek/rtw89/rtw8852b.c
-+++ b/drivers/net/wireless/realtek/rtw89/rtw8852b.c
-@@ -761,18 +761,6 @@ rtw8852b_btc_set_wl_txpwr_ctrl(struct rtw89_dev *rtwdev, u32 txpwr_val)
- 	union rtw8852b_btc_wl_txpwr_ctrl arg = { .txpwr_val = txpwr_val };
- 	s32 val;
- 
--#define __write_ctrl(_reg, _msk, _val, _en, _cond)		\
--do {								\
--	u32 _wrt = FIELD_PREP(_msk, _val);			\
--	BUILD_BUG_ON(!!(_msk & _en));				\
--	if (_cond)						\
--		_wrt |= _en;					\
--	else							\
--		_wrt &= ~_en;					\
--	rtw89_mac_txpwr_write32_mask(rtwdev, RTW89_PHY_0, _reg,	\
--				     _msk | _en, _wrt);		\
--} while (0)
--
- 	switch (arg.ctrl_all_time) {
- 	case 0xffff:
- 		val = 0;
-@@ -782,9 +770,10 @@ do {								\
- 		break;
- 	}
- 
--	__write_ctrl(R_AX_PWR_RATE_CTRL, B_AX_FORCE_PWR_BY_RATE_VALUE_MASK,
--		     val, B_AX_FORCE_PWR_BY_RATE_EN,
--		     arg.ctrl_all_time != 0xffff);
-+	rtw89_mac_write_txpwr_ctrl(rtwdev, R_AX_PWR_RATE_CTRL,
-+				   B_AX_FORCE_PWR_BY_RATE_VALUE_MASK,
-+				   val, B_AX_FORCE_PWR_BY_RATE_EN,
-+				   arg.ctrl_all_time != 0xffff);
- 
- 	switch (arg.ctrl_gnt_bt) {
- 	case 0xffff:
-@@ -795,10 +784,9 @@ do {								\
- 		break;
- 	}
- 
--	__write_ctrl(R_AX_PWR_COEXT_CTRL, B_AX_TXAGC_BT_MASK, val,
--		     B_AX_TXAGC_BT_EN, arg.ctrl_gnt_bt != 0xffff);
--
--#undef __write_ctrl
-+	rtw89_mac_write_txpwr_ctrl(rtwdev, R_AX_PWR_COEXT_CTRL,
-+				   B_AX_TXAGC_BT_MASK, val,
-+				   B_AX_TXAGC_BT_EN, arg.ctrl_gnt_bt != 0xffff);
- }
- 
- static const struct rtw89_chip_ops rtw8852b_chip_ops = {
-diff --git a/drivers/net/wireless/realtek/rtw89/rtw8852c.c b/drivers/net/wireless/realtek/rtw89/rtw8852c.c
-index ee81a6792eee..7fd1485d1eb7 100644
---- a/drivers/net/wireless/realtek/rtw89/rtw8852c.c
-+++ b/drivers/net/wireless/realtek/rtw89/rtw8852c.c
-@@ -2760,18 +2760,6 @@ rtw8852c_btc_set_wl_txpwr_ctrl(struct rtw89_dev *rtwdev, u32 txpwr_val)
- 	union rtw8852c_btc_wl_txpwr_ctrl arg = { .txpwr_val = txpwr_val };
- 	s32 val;
- 
--#define __write_ctrl(_reg, _msk, _val, _en, _cond)		\
--do {								\
--	u32 _wrt = FIELD_PREP(_msk, _val);			\
--	BUILD_BUG_ON((_msk & _en) != 0);			\
--	if (_cond)						\
--		_wrt |= _en;					\
--	else							\
--		_wrt &= ~_en;					\
--	rtw89_mac_txpwr_write32_mask(rtwdev, RTW89_PHY_0, _reg,	\
--				     _msk | _en, _wrt);		\
--} while (0)
--
- 	switch (arg.ctrl_all_time) {
- 	case 0xffff:
- 		val = 0;
-@@ -2781,9 +2769,10 @@ do {								\
- 		break;
- 	}
- 
--	__write_ctrl(R_AX_PWR_RATE_CTRL, B_AX_FORCE_PWR_BY_RATE_VALUE_MASK,
--		     val, B_AX_FORCE_PWR_BY_RATE_EN,
--		     arg.ctrl_all_time != 0xffff);
-+	rtw89_mac_write_txpwr_ctrl(rtwdev, R_AX_PWR_RATE_CTRL,
-+				   B_AX_FORCE_PWR_BY_RATE_VALUE_MASK,
-+				   val, B_AX_FORCE_PWR_BY_RATE_EN,
-+				   arg.ctrl_all_time != 0xffff);
- 
- 	switch (arg.ctrl_gnt_bt) {
- 	case 0xffff:
-@@ -2794,10 +2783,9 @@ do {								\
- 		break;
- 	}
- 
--	__write_ctrl(R_AX_PWR_COEXT_CTRL, B_AX_TXAGC_BT_MASK, val,
--		     B_AX_TXAGC_BT_EN, arg.ctrl_gnt_bt != 0xffff);
--
--#undef __write_ctrl
-+	rtw89_mac_write_txpwr_ctrl(rtwdev, R_AX_PWR_COEXT_CTRL,
-+				   B_AX_TXAGC_BT_MASK, val,
-+				   B_AX_TXAGC_BT_EN, arg.ctrl_gnt_bt != 0xffff);
- }
- 
- static
--- 
-2.25.1
+Reviewed-by: Ping-Ke Shih <pkshih@realtek.com>
 
 
