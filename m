@@ -1,226 +1,161 @@
-Return-Path: <linux-wireless+bounces-29057-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-29058-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [213.196.21.55])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8C3D9C65ABB
-	for <lists+linux-wireless@lfdr.de>; Mon, 17 Nov 2025 19:13:03 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id F3856C65AA6
+	for <lists+linux-wireless@lfdr.de>; Mon, 17 Nov 2025 19:10:59 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 35DEA342D0E
-	for <lists+linux-wireless@lfdr.de>; Mon, 17 Nov 2025 18:09:37 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id A04764E53A3
+	for <lists+linux-wireless@lfdr.de>; Mon, 17 Nov 2025 18:10:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1F1E62FE575;
-	Mon, 17 Nov 2025 18:09:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6A375305962;
+	Mon, 17 Nov 2025 18:10:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="N140kNft"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="YFAXISe5"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from AM0PR02CU008.outbound.protection.outlook.com (mail-westeuropeazon11013033.outbound.protection.outlook.com [52.101.72.33])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-qv1-f49.google.com (mail-qv1-f49.google.com [209.85.219.49])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B38D82C1596;
-	Mon, 17 Nov 2025 18:09:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.72.33
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763402973; cv=fail; b=BMY0jrnnf2617DGMde0B8qG7O06C7ZzqG0hVpvaGQx8yFviy7TH7rctiNymoQYlToJTTosw/oh+b0/X2mtxNj02AkoFR3vYrOguP+Ugw8A3JNL072RF/TRukj8Rf6ErdT7KnjPbLTm7IgnGYOITlt6jJcQc4U41RmcR+oS2g+/8=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763402973; c=relaxed/simple;
-	bh=YMplBRnwV33KMFor3Zh+GDPRwI3DHihmrh+1k0X6/R4=;
-	h=From:Date:To:Cc:Subject:Message-ID:References:Content-Type:
-	 Content-Disposition:In-Reply-To:MIME-Version; b=CYLZ5BXz28uLIbPl45sl11o6/Psw59/CMWFBwqFJXFI1rStWTZDBJkMYwd0wgL8cWUzCq3fKpLI5+EhrIFfWxP/pBIyLBoaE00jHjTrZdLVBSbifUsucWoO5hyy/sNSG9JpFOwZcQB3c0FTOFP1ckLy7QB23ktWGabVO+hSNfnU=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=N140kNft; arc=fail smtp.client-ip=52.101.72.33
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=yQAfGJAz6njEw+/qgvumUfeohtCdSxvUpRCEFD0aH+QuqCbYWkGqxE14BNPrliq9C2j4nPogtg3xoG99dUCU7vJIhonbZYq28CT6gcOJok8W6kXk7yJhktqlpCMkanACblGCi06BjyfqddK6tEgtJJmPc5VbybWyCTCEt0gefZJBeb+Pj7M5aXFgFsPzcUl1EIuIbTbFsatkKaWX43w35E6HBJ4uljRwYbpL0hBtKmkhBJhPJ1vmwlPbLc8HJ3tj+BlyXLqGuNHIhCGYeGanumH8t56Z2oxB9wyMsDX4+J1Z66ZiPXxjJ54xkzl1ZvwobBjQLddmn8FVMgcNLJ1gVA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=/Jl+U6uRtWPvR/kAAgkkKvKmT716k9/YBKRRGW1Odso=;
- b=qiXxcTTSXu1J3uVHAGL19dip6L/jSxJdDVxQDVEQ9EJydT7N5Sksa4Ai9I3aooqeMmvJpLga6p3RoadZ7rpESPX638MYoLYgG3UsOUo/+Mh0hdet96x1BN1Mr+8Cg/YPW+7Qp744YyemoiwLWcUKJ2hhGqAusC3EdKDokTBKiVQgcBB4TbxPv87xJLAm9CI0/oWvQW4rN/vYIZdg6PGDHE+N784HT9FgCvyJVdEVDGO1+8Wx26p1gXTL7d/OPyKWtpO6mffDz6DTILviebQN7uRkNlgUdyILXttYzmhaVG/Y4gee45F+B5njSINrR1ksfymT39eHe9tnYJLv49bIyw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
- header.d=nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=/Jl+U6uRtWPvR/kAAgkkKvKmT716k9/YBKRRGW1Odso=;
- b=N140kNft5inckQPk5qspzkZiEfXpCXHllBmwpa7thXpagUEt6qNkde9ytzq33beVcl7nwpk/7ltz16SqtD3VX+s2O0n67uXhz+IlrMZTLJD1NcS9Ad2Hvs9grOhzbJgG2/83CA59z44mO/RAVJFj89/UpfbyOMlPt7uLH8TdCHy1JXrpOU2dUtSnbxrUPBKFFAo6bQlOa2Jd+B6YCy2SPyPtB4F+hSrMF1jcn5M5J/9yWhJPh7EDa6xGb+x1lB9EhuiWebis1OmTTQgl8Y/T+EATZ5U4wld2+lDORUYecB4UQbAeRrHlIzgEg4uX6e2nBeKrWPE1VDWjD52opjL4hg==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nxp.com;
-Received: from PAXPR04MB9255.eurprd04.prod.outlook.com (2603:10a6:102:2bb::13)
- by PA4PR04MB9639.eurprd04.prod.outlook.com (2603:10a6:102:260::11) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9320.21; Mon, 17 Nov
- 2025 18:09:27 +0000
-Received: from PAXPR04MB9255.eurprd04.prod.outlook.com
- ([fe80::1eb5:3ebc:9f11:f20b]) by PAXPR04MB9255.eurprd04.prod.outlook.com
- ([fe80::1eb5:3ebc:9f11:f20b%2]) with mapi id 15.20.9320.013; Mon, 17 Nov 2025
- 18:09:27 +0000
-From: jeff.chen_1@nxp.com
-Date: Tue, 18 Nov 2025 02:08:34 +0800
-To: Johannes Berg <johannes@sipsolutions.net>
-Cc: linux-wireless@vger.kernel.org, linux-kernel@vger.kernel.org,
-	briannorris@chromium.org, francesco@dolcini.it,
-	tsung-hsien.hsieh@nxp.com, s.hauer@pengutronix.de
-Subject: Re: [PATCH v6 00/22] wifi: nxpwifi: create nxpwifi to support iw61x
-Message-ID: <aRtkooxPeRYTiuJL@nxpwireless-Inspiron-14-Plus-7440>
-References: <20251105104744.2401992-1-jeff.chen_1@nxp.com>
- <4eaa11d66e9b788d9824c5b8ab1f1618791b53f3.camel@sipsolutions.net>
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <4eaa11d66e9b788d9824c5b8ab1f1618791b53f3.camel@sipsolutions.net>
-eFrom: Jeff Chen <jeff.chen_1@nxp.com>
-X-ClientProxiedBy: SG2P153CA0027.APCP153.PROD.OUTLOOK.COM (2603:1096:4:c7::14)
- To PAXPR04MB9255.eurprd04.prod.outlook.com (2603:10a6:102:2bb::13)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 92AC83016F7
+	for <linux-wireless@vger.kernel.org>; Mon, 17 Nov 2025 18:10:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.49
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1763403040; cv=none; b=OWtqV1R8Uq/1sZ63JhDfV7MGlZ1fIaUJ1AeS6SZzXBJ5ICruTvXUu8x4D0ANhiwAyw+6xk7r/2j/X2YQvJEhec4TQ9kUcrMlImG93+ceED3humqEXK4HBSfq0cqNT2e8Criog0Bj5e+IzrgITdLDC5Gklhl/74ELjKoq2lZZ0DA=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1763403040; c=relaxed/simple;
+	bh=a9uJXhk+AJwKISsv20iyfSfymlaY41/HxcHxsS8s4Ws=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=mr+DNlbejeXgvKerF8s9mc25Ejja1zEzPXnOVSuq0R8XP3SkHEv+ideEYr9bas2cN3Jc1SR+fAESP6N2ZjrqkWIxWyj/+o50ZIuOLZM1YocStwzvqJ/QxUDu8hyD/J+m2xaNKFv9uKs3fSLa9EpFFBe5L1uFp4nPi89yIk1dUx4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=YFAXISe5; arc=none smtp.client-ip=209.85.219.49
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-qv1-f49.google.com with SMTP id 6a1803df08f44-8826b83e405so70232356d6.0
+        for <linux-wireless@vger.kernel.org>; Mon, 17 Nov 2025 10:10:38 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1763403037; x=1764007837; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=3WcAzmspmOGoWMLmEdWzg8Yok+8luZgzQGZNM8oLo9Q=;
+        b=YFAXISe5Xj4CMUYeSAeJx46Lf5tvXK7h22kNoK+dxQNDSx10o0wooEP4mBrNswfCu+
+         9k8DYGiGnDwO3AAO844n/lPDNHqhY2xIzqlySQ7/xUkCEHi8ffe/R7h/5EThcyv4B2c/
+         5VPcmfjjI0/muJzdQnalKV86BkpSFgwVixa3lYnzIcqK13paYQieBu1vHZHUMOMUQw8Z
+         R78B3T240qSnPmmsp/f+lGhNNOnkMpZtXoGaMGb4inFfRBlYF6mvaifoPyFErqvSFXvV
+         sqZiz8w4VC2kHggbItw5d/SaWFZVeGGbaCsc9ayH4sxY6J5jArkZ+WdsX6tLeScodXoF
+         Pbfw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1763403037; x=1764007837;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=3WcAzmspmOGoWMLmEdWzg8Yok+8luZgzQGZNM8oLo9Q=;
+        b=GFxJwaepVG2RfoDuoPNZsSJuz7xJZo+eHFMinikfZOnUClJJUlM9jHBiHuCMEVczsK
+         nIV0ec06TFj+1qwSr1vfT80uj4vA4bEqscefXHj96gTByr1Fqk/E6gTDW1lDulrI2lIQ
+         JOPdYAwuT69pl9ZBCggPxu2vDe1v4Q19c/wDLCB/Fq+eE+LbGL7WU/hoFR+EvgGKJsv0
+         BY4eIbcesPk87ml8JDhRkQYTzkXeBjBpqY3rxHRJNmvdpgEThQugmYR/PQqKjHg6n+gn
+         TcOnhMsfut/YNDXZ7aF+5YQV0rEE9EHyw6ves54TdTGgGYVl8Mt02gMe4k/gKiXbwvUJ
+         6t2g==
+X-Forwarded-Encrypted: i=1; AJvYcCXtgu+IwGFJIy7fVMdnHmRvZG+xUdLuK6gkXA/hSrJY5IuPkacm+ex8NyDvaM8ckGddEztpFBTXY2iu9nhJ1g==@vger.kernel.org
+X-Gm-Message-State: AOJu0Yykfs7Ja17J4KbzFnAHHhZ9Iy9xqxeS6aIy3bbfFsye2GZdxvrE
+	Mj2I9jox1FPsdCj7MZSq9f+79yVSSfXLz6yNiClpa+q9Lwi1wvPOGYv3
+X-Gm-Gg: ASbGnctKjtX71zczG8kpYS1YESTVcbtyNFfuS5LTXWZUkDae7gIFitc5gnQuDARAU2F
+	51MnXC2DNAWRJnFJbvcQwJ1NZQbVVWS1yEi9gXrOok8EjW3puvqZg7VXrOdqIVda/2prD9aKaxS
+	th+yjO76juw1LdhcU8bi289jwDjuBhEB1c5fFi724XQAtz3E80kN2O/0GwiQ9JHggcB32fp0JHI
+	9cv1jqOXsQmYtr3uAxYDk2STuVrAdZx4A1crIKnnJx472FhEeGDfCdfTP9DlenuJbyrxSdK3+o4
+	rR1c4NQAeADn36lXSQToPComqN1PlRE4XY6z1LZFSaAu2e4XmQ83MK8aFByBULClNoY/1eIIK8N
+	VspZKFjDyACvVaQwsNdBm6k1nJON0am7URWsOLUewNIlH4ZVvVUeZdyALBSTCBoX5PdQut3nJ3d
+	CCXFj6QT6Y6bIpmbLcytYntAdWvSWAwPCz9/bGkExAoUYH1a9LPYJ5piGe9vrrmDhPOsG4U0QVR
+	mfJllrqwRLdisETuLUrIh42VelO6HXR/idfSQso+A==
+X-Google-Smtp-Source: AGHT+IEUIglhgvo/d5qFkBLi8Fgtj02uQv7ge8aCq9ESXRQHejN8JMAnKSqKiesLLWQ5jVxRlE1jhg==
+X-Received: by 2002:a05:6214:234d:b0:81b:23d:55a8 with SMTP id 6a1803df08f44-882927352f0mr210202906d6.59.1763403037570;
+        Mon, 17 Nov 2025 10:10:37 -0800 (PST)
+Received: from seungjin-HP-ENVY-Desktop-TE02-0xxx.dartmouth.edu ([129.170.197.94])
+        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-8828652ce08sm96795666d6.36.2025.11.17.10.10.36
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 17 Nov 2025 10:10:37 -0800 (PST)
+From: pip-izony <eeodqql09@gmail.com>
+To: Hin-Tak Leung <hintak.leung@gmail.com>
+Cc: Seungjin Bae <eeodqql09@gmail.com>,
+	Kyungtae Kim <Kyungtae.Kim@dartmouth.edu>,
+	linux-wireless@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH v2] rtl8187: Fix potential buffer underflow in rtl8187_rx_cb()
+Date: Mon, 17 Nov 2025 13:09:56 -0500
+Message-ID: <20251117180955.1710801-2-eeodqql09@gmail.com>
+X-Mailer: git-send-email 2.43.0
+In-Reply-To: <7012d9a3-821e-44fa-b325-9c4c37c9c26c@RTKEXHMBS03.realtek.com.tw>
+References: <7012d9a3-821e-44fa-b325-9c4c37c9c26c@RTKEXHMBS03.realtek.com.tw>
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: PAXPR04MB9255:EE_|PA4PR04MB9639:EE_
-X-MS-Office365-Filtering-Correlation-Id: dc981df7-c51c-4033-39ee-08de2604725f
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|19092799006|52116014|376014|366016|1800799024|38350700014;
-X-Microsoft-Antispam-Message-Info:
-	=?utf-8?B?QTdiajNOSmFBajdRdG9Yand6Vll5SzNVMUdGMHQyaVdvVVd5QlhsRWhSOExl?=
- =?utf-8?B?YjNSZE5zeTZ6a0kzcmYyS1pnZkYwbE9pRzV2YW1PdkRYVi9QcWFqNXh5cm56?=
- =?utf-8?B?WEdJc0dLdk5POHlDbVM4MjUxV25mN1poSVlJM0krR3NqeEU2Ung0cGJYVXlS?=
- =?utf-8?B?cWFXTzZDL2ppY0FUMmlNMTlwVGdyUE1HM2E5WGxUWVBkTjQrd3Jvek1OYUta?=
- =?utf-8?B?MWlEd2poLzVkNTJWYlF4dTJNcDhiLytrTWRYVlJ6UDFLNkFWRVJqMFh1eXN1?=
- =?utf-8?B?YjZWVFBmbzlMaXFCbmZUNVYxMmh4dDhDOXdLdFkzNE9mMGExY2Q5ejMvWS93?=
- =?utf-8?B?RFlQdmdBc1prd2g0MmhOMjVCa1FNaXFHOEV6MFZONEt2L2ZMYTVYcjNZYlVD?=
- =?utf-8?B?SXFGdUY3WTFqUzg4c3JaVjZIMUxzVWZ4SkYrbVJqWXNDUzl6TUtMeDdjbkFr?=
- =?utf-8?B?NUxhUHdUV3ZxT2J4dTZ1T2RQdkNXaHRhUWFLcE1XR3p5dEZTUTFuRDV1S1Ay?=
- =?utf-8?B?WUE1bzJKem13L1FMbFo4dDlpcGVCMmZoZ2c5QU5LbklTWnNFT2Q2Tm5yZGk5?=
- =?utf-8?B?VjNVblhOUStJRDQzck9xWjBqUEQ3WUJ1U1pBTVZoN05MYWNtZXg1OVBxSEpB?=
- =?utf-8?B?Nnpud0VPTjZDMVRHcnlsY1dzOW1LYmFsWUNCTUVHNnNpWVhYdndwOWN5MktL?=
- =?utf-8?B?UW5DSGhsc2Z6YnZMQzhBMWxsalQ4ek5NVnJndDJySm1LYm56V3crR2tieWRZ?=
- =?utf-8?B?ZVlDMEFoZFBFZXhaQ0Jpd01xbDRXa3V0dFRadE1QclNFNlRPclpXa3NGK2Nw?=
- =?utf-8?B?aWsrWDViSmFsc2ZsV0JoRzBlU1hCSm5hUytVdFRJc0QyZ1EvUzFKOXBRTnlQ?=
- =?utf-8?B?dGhQNDdobWdka1VyNUpBa1VKUEdoWUNweHQxSk1oMmtDZWlDZ3JKZU1oZElH?=
- =?utf-8?B?WDdEcXArYTFCeURUWnJzMjVobmFjclFod2lrRjBJUFZlbkxBMkpUbW1iRFFa?=
- =?utf-8?B?UTh6WWxSbnhKekhYRCtMZ1ZDM0JvSkczZjBHTThObXhTYUNsdFpneGRPV2Vm?=
- =?utf-8?B?WHVJc3JQSGlpdlU3N2dqYWlLMTUrSWM0U3FzUVZHWjVJR2VTWkxkVE1OMzZ5?=
- =?utf-8?B?aGZYSE50eDFRN2ZRL0dyTzBMV3gybE9XanZVenphaENyTzFwVG1VOTA1VFlY?=
- =?utf-8?B?VWpwbUtjSHVmRy9qOW9Jd1NleTFORDZ0T3lFR1hSM01FdWFRaFpYS0dkQmR2?=
- =?utf-8?B?WVgreC9GTERrQUwzUW5yeUFhSzJ6SmltdDk0am5NSCtHZTdjN0U5MExDS21y?=
- =?utf-8?B?OW5yclJGaW0xYmxveCtIS0plNjFQWkVFKzZ4VG8rSFFnb2pFUjJzWG9vYmVH?=
- =?utf-8?B?NnAza2NsSTBrcFZZNU80RHBlb0MvclIrb2diblo5WGN1S0xMNnRGTS9NcCtw?=
- =?utf-8?B?TjZjeUxwYlMxUGhNQnliSzgrbUg4ME4vRFRuWTdBbDZQOUVocVh5UEhVSWFy?=
- =?utf-8?B?dmhIQ1h1aW81dFVrSEFJMDVjd0RDTndtODlvZEo2RC9FNHdyRkZCTGYwZWFK?=
- =?utf-8?B?T2lwdTBCZW5ERU92aWFJWS95d1NmR3N4NEtmUytYeVZjNUJ0U3BLTm1iTWZv?=
- =?utf-8?B?YlczR0tHSFNQU2lVbzA5UnBIc2hPWVIvTGNLRjVqMUNwL3VqbzZlc080QkF5?=
- =?utf-8?B?bUQ3VzUrRUI0VW9DQnlNWnVCUUNqd3pZM25tWXprbitJL2lOV05zR01wY3Er?=
- =?utf-8?B?NDYyQzA5a1cvcGVqS3dIVEN4YU5SM1c0bzIvSUlQNXNLZERKQ2JsQkYzMWxK?=
- =?utf-8?B?NmE0STc5SWxKWmNsRnNBMEZkZ1FHeEdlYUJEd0EvN3BHN1JKRkVTN3VMaHd1?=
- =?utf-8?B?eHhUVlAveUFhM3FKL0hyblZaUVlEampnTzAxOE5IdXoxa3Q3Nlc5U1A3WlBG?=
- =?utf-8?B?UmtkRTIvNmRnSHhMVTRzbEZBZHRqSnRXU3pJRTh1c2FiQ3A1dTlkOFBDQzJH?=
- =?utf-8?B?SS9NMHZ4NUxhNDV6N1picldUWkl5SmtrRGd5a2tody9QdGFubm9rbHBjY3lY?=
- =?utf-8?Q?ro8LWs?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PAXPR04MB9255.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(19092799006)(52116014)(376014)(366016)(1800799024)(38350700014);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?ZzBqL1VtOE1tSCtuclJ1azdBamNNOGlYZVR0YWtmSEhwb1dDODdjdjlqSHJL?=
- =?utf-8?B?cmFDOThSczF4SXczaVJhYVJ4ZmVDbHJOL2VkTDE1cmR3RmpmeGwvV0pHYnh4?=
- =?utf-8?B?TG9tSEtKVEVVMnAvZlhiN0syNEo2WjNOYVJad1ZGUmF1TVpPUlNBc2lMSzdV?=
- =?utf-8?B?ODFGRjI5Q0x3N3RGQ09LMnNEbEVyTTdIWUV3dE45RU9GWDBDOWpoSExXZjhr?=
- =?utf-8?B?SnB0WjVrK0pWbHVTVXEvQW1LekJXN3UrUFpVTjFSRThJaFpGMVlQcThtN054?=
- =?utf-8?B?cVRlanlCSTBmdFlNWGhsbEJOQlFvbUIzSzhYcUFzM2thR1BZSDh4ZVdPSk5E?=
- =?utf-8?B?RHY3SHcxOWRMdytLb09VbC9ZSlRIanY5cUdtK29WZzl0OGFLbVBidE83aE5F?=
- =?utf-8?B?MVBYNUE2TlZmREZLbWFndDBJTGhKQ09JZTBrR3hmZ0FDT3pXME5LZzhlZFdJ?=
- =?utf-8?B?VDNJRzFqeGFsN2VmdWJjNTFCY2JVSkh2dmRQUlJlK1RvOEp0M0xWdjNRV3RB?=
- =?utf-8?B?cERGUEJkcFd0VzdNR2F2cm0veHNydHVhdG5VWGR3dUVOTVhkQ1FhSzRJalNH?=
- =?utf-8?B?NndyUFR3cG44allRZjVlcGdHbVNHYnI2SldCQTlPV2Y1Z2FKNkhKNm85SE84?=
- =?utf-8?B?SXN4d2FuQ28yNEcxUHQ0c1FwS24yb0ZDOXdGdlBSdTUxNnc5cjFiTXphMVZj?=
- =?utf-8?B?anQwQ1lwNWFVd2llMSthNndUcXE3NitOdHM0b0RMUlc3WmhqY1ZTNlY5dG9H?=
- =?utf-8?B?VkxaZllMOCsxVUI2NVBaM2g3TFRScVJSTG5HN2hJYjVxa2FBN2kwU2o5ejZ2?=
- =?utf-8?B?bmVXOCs1RFJMNlY1akRhUkh3bVkyUDUxcGJTMDZpdkZQUGJFeU95WkxJWm9v?=
- =?utf-8?B?Q3IxZnNEWHNrVWhqTlVkMVpLR25sdEVxdFZNcGNqbW9UZWM1RERFZm0zOTFi?=
- =?utf-8?B?cTVtNG9qOHJlbytvTmMyN0hxVHlnU0Uxa1p3a3grQ2dBaHYyQ0tUSTZYWEZy?=
- =?utf-8?B?dmRtZnVQSGUwdnEyamxOTmk4bjU3ajFvMlJKdXZJVWo2UUFFM1l6c2xGQ1Rt?=
- =?utf-8?B?ajZ2OVQ0a0hscFBiaHNraktOWU0rODMyYWlCUlUwamNTUWpudTlRalR5dFd3?=
- =?utf-8?B?dHBiQVkvdDZ3SHkxemtvN1BySVVZZVQ1bGo5ZlNScU9va2JLM1lMNFlRRmcv?=
- =?utf-8?B?NlJNU1RJMVVZZ1BlamMwa2dZQWhoTnB1YkxKRmcrQXBMSXZxekFHVHExUnhO?=
- =?utf-8?B?bEpnc3EwRVFXd0tETG1LQjNWRkJxTG5RWnhlSHV3VFJreExwanU4R2crU2o4?=
- =?utf-8?B?bGtJUjljMU0zYkk2QXR6OWRMSmhvYzJzMU1GZlhQdFh4blFYbHBwRnpCRkk4?=
- =?utf-8?B?MmE0KzUrdEVXdDF2T2gyZE4weU9oZDBsVmNOYmp6aTg1NmpCUXI5ZnNoV0lv?=
- =?utf-8?B?ZGZyVk0wdDJhY0lac1BaMDVndXFSNnRJUVJPTWV1Smt1NCtYYmhsenNXakUr?=
- =?utf-8?B?QXNBdmxiaE9reGdBOGt6VGhVa09HTzMvRWE1RnkrWVlDcFdHcEgvbzBNMjVu?=
- =?utf-8?B?S2xUTHV6UjFGVFVPOC9yY2gwNkRsbG8vVDZDZVNZNWVkV1E4eFpvcjRXR1Nt?=
- =?utf-8?B?QUNKb01ob1F6TXpqNGlRRm5CeW5XQ2xvSk9UOUhSNzFvZ2c3b0loeXQybEhB?=
- =?utf-8?B?MjY4bjkwUy9nY3lTb01NejZCUlhIYWZkd0toYnBpT0NiWkRoZ0hWWkk0RUhz?=
- =?utf-8?B?L0hlaXBvazlZK0wzRmhMMWg3TjRZajVZVXprUzR0c1dxS2l1Wll2RVZFOEta?=
- =?utf-8?B?d1JpeVNGdnpkeDdsdi9SZXJDRnBXdXhuamQwUjdZM09namQveUdyQ3Z2Rmto?=
- =?utf-8?B?UG1PV0lSQW04SFZnZTZGYkdMdUZ5WGRkeWZyTDk1N2I3UGhMbzhidTFFd3dq?=
- =?utf-8?B?SWg5M1h5MTI3RHI2ckhDT0lNVDZWd3ArdHlQQkJJQU1FejNaZ0FXRm43cmRQ?=
- =?utf-8?B?d3N2MTJ4Ynlub1pmMjhoMkNGTGJHeExOc0Fhb1BXNm5EZWVwaFZLeFIxbm85?=
- =?utf-8?B?b2xOUy9DZ3ZHaEltMlBxMWYwVEVFdjNzRUpHQnozQk9SdFlNYVMxdDNjZDhE?=
- =?utf-8?Q?8XiGn8JOZ9Dd9x8uwOUuh+ekw?=
-X-OriginatorOrg: nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: dc981df7-c51c-4033-39ee-08de2604725f
-X-MS-Exchange-CrossTenant-AuthSource: PAXPR04MB9255.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 17 Nov 2025 18:09:27.5497
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: bTB4bdvNEf2PcIWYo/7QvOD1MrRko5yN6BW5hWzsvzrab/lhYgJ+crySNF+Ss3SvdWbylFwMnrYWDIwMuwtG2A==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: PA4PR04MB9639
+Content-Transfer-Encoding: 8bit
 
-On Tue, Nov 11, 2025 at 11:37:57 AM +0100, Johannes Berg wrote:
-> Hi,
-> 
-> So ... I thought I was just going to pick this up now (removing the
-> 'inline' in patch 4 that shouldn't be there according to the bot), but
-> ... it doesn't build (cleanly) for me.
-> 
-> First:
-> 
->   CC [M]  drivers/net/wireless/nxp/nxpwifi/util.o
-> drivers/net/wireless/nxp/nxpwifi/util.c: In function ‘nxpwifi_rxpdinfo_to_radiotapinfo’:
-> drivers/net/wireless/nxp/nxpwifi/util.c:648:12: error: variable ‘ext_rate_info’ set but not used [-Werror=unused-but-set-variable]
->   648 |         u8 ext_rate_info = 0;
->       |            ^~~~~~~~~~~~~
-> cc1: all warnings being treated as errors
-> 
-> 
-> Fixing that, I not only get a LOT of sparse warnings such as
-> 
->   CHECK   drivers/net/wireless/nxp/nxpwifi/util.c
-> drivers/net/wireless/nxp/nxpwifi/util.c:654:40: warning: restricted __le32 degrades to integer
-> drivers/net/wireless/nxp/nxpwifi/util.c:655:38: warning: restricted __le32 degrades to integer
-> 
-> but also a bunch of sparse _errors_ such as:
-> 
->   CHECK   drivers/net/wireless/nxp/nxpwifi/cfg80211.c
-> drivers/net/wireless/nxp/nxpwifi/cfg80211.c:1043:17: error: typename in expression
-> drivers/net/wireless/nxp/nxpwifi/cfg80211.c:1043:24: error: Expected ; at end of statement
-> drivers/net/wireless/nxp/nxpwifi/cfg80211.c:1043:24: error: got const
-> drivers/net/wireless/nxp/nxpwifi/cfg80211.c:1043:17: error: undefined identifier 'static'
-> drivers/net/wireless/nxp/nxpwifi/cfg80211.c:1058:32: error: undefined identifier 'legacy_rates'
-> drivers/net/wireless/nxp/nxpwifi/cfg80211.c:1058:32: error: undefined identifier 'legacy_rates'
-> drivers/net/wireless/nxp/nxpwifi/cfg80211.c:1059:40: error: undefined identifier 'legacy_rates'
-> 
-> 
-> Can you please take a look at that?
-> 
-> johannes
-> 
+From: Seungjin Bae <eeodqql09@gmail.com>
 
-Hi Johannes,
+The rtl8187_rx_cb() calculates the rx descriptor header address
+by subtracting its size from the skb tail pointer.
+However, it does not validate if the received packet
+(skb->len from urb->actual_length) is large enough to contain this
+header.
 
-Resending to the list for visibility.
+If a truncated packet is received, this will lead to a buffer
+underflow, reading memory before the start of the skb data area,
+and causing a kernel panic.
 
-Thanks for checking. I’ve already posted v7, which fixes the build issues and addresses the Sparse warnings you mentioned, along with several other related fixes.
+This patch adds length checks for both rtl8187 and rtl8187b descriptor
+headers before attempting to access them, dropping the packet cleanly
+if the check fails.
 
-Please let me know if you still see any problems with v7.
+Fixes: 6f7853f3cbe4 ("rtl8187: change rtl8187_dev.c to support RTL8187B (part 2)")
+Signed-off-by: Seungjin Bae <eeodqql09@gmail.com>
+---
+ v1 -> v2: Addressing feedback from Ping-Ke Shih
 
-Jeff
+ .../net/wireless/realtek/rtl818x/rtl8187/dev.c | 18 ++++++++++++++----
+ 1 file changed, 14 insertions(+), 4 deletions(-)
+
+diff --git a/drivers/net/wireless/realtek/rtl818x/rtl8187/dev.c b/drivers/net/wireless/realtek/rtl818x/rtl8187/dev.c
+index 0c5c66401daa..4d0b408b4e33 100644
+--- a/drivers/net/wireless/realtek/rtl818x/rtl8187/dev.c
++++ b/drivers/net/wireless/realtek/rtl818x/rtl8187/dev.c
+@@ -344,8 +344,13 @@ static void rtl8187_rx_cb(struct urb *urb)
+ 	}
+ 
+ 	if (!priv->is_rtl8187b) {
+-		struct rtl8187_rx_hdr *hdr =
+-			(typeof(hdr))(skb_tail_pointer(skb) - sizeof(*hdr));
++		struct rtl8187_rx_hdr *hdr;
++
++		if (skb->len < sizeof(struct rtl8187_rx_hdr)) {
++			dev_kfree_skb_irq(skb);
++			return;
++		}
++		hdr = (typeof(hdr))(skb_tail_pointer(skb) - sizeof(*hdr));
+ 		flags = le32_to_cpu(hdr->flags);
+ 		/* As with the RTL8187B below, the AGC is used to calculate
+ 		 * signal strength. In this case, the scaling
+@@ -355,8 +360,13 @@ static void rtl8187_rx_cb(struct urb *urb)
+ 		rx_status.antenna = (hdr->signal >> 7) & 1;
+ 		rx_status.mactime = le64_to_cpu(hdr->mac_time);
+ 	} else {
+-		struct rtl8187b_rx_hdr *hdr =
+-			(typeof(hdr))(skb_tail_pointer(skb) - sizeof(*hdr));
++		struct rtl8187b_rx_hdr *hdr;
++
++		if (skb->len < sizeof(struct rtl8187b_rx_hdr)) {
++			dev_kfree_skb_irq(skb);
++			return;
++		}
++		hdr = (typeof(hdr))(skb_tail_pointer(skb) - sizeof(*hdr));
+ 		/* The Realtek datasheet for the RTL8187B shows that the RX
+ 		 * header contains the following quantities: signal quality,
+ 		 * RSSI, AGC, the received power in dB, and the measured SNR.
+-- 
+2.43.0
+
 
