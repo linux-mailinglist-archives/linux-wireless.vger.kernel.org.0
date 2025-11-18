@@ -1,60 +1,59 @@
-Return-Path: <linux-wireless+bounces-29088-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-29089-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [213.196.21.55])
-	by mail.lfdr.de (Postfix) with ESMTPS id 518E1C68C0B
-	for <lists+linux-wireless@lfdr.de>; Tue, 18 Nov 2025 11:16:26 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9DA78C68D05
+	for <lists+linux-wireless@lfdr.de>; Tue, 18 Nov 2025 11:25:52 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 40A5C35647F
-	for <lists+linux-wireless@lfdr.de>; Tue, 18 Nov 2025 10:12:49 +0000 (UTC)
+	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 9AE47381D2B
+	for <lists+linux-wireless@lfdr.de>; Tue, 18 Nov 2025 10:19:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 509FA33B6CF;
-	Tue, 18 Nov 2025 10:10:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A8D6E34320F;
+	Tue, 18 Nov 2025 10:17:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=westermo.com header.i=@westermo.com header.b="mdiUyPFB";
-	dkim=pass (1024-bit key) header.d=beijerelectronicsab.onmicrosoft.com header.i=@beijerelectronicsab.onmicrosoft.com header.b="XUdsNHjC"
+	dkim=pass (2048-bit key) header.d=westermo.com header.i=@westermo.com header.b="EpniRAwc";
+	dkim=pass (1024-bit key) header.d=beijerelectronicsab.onmicrosoft.com header.i=@beijerelectronicsab.onmicrosoft.com header.b="OH/L/FW2"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from mx07-0057a101.pphosted.com (mx07-0057a101.pphosted.com [205.220.184.10])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EEC26339B51;
-	Tue, 18 Nov 2025 10:10:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C2CCA340A67;
+	Tue, 18 Nov 2025 10:17:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=205.220.184.10
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763460632; cv=fail; b=ROPG8KsaWZJVu4PN3vgX3yj4HVvimXD/GMkXgUfzKwx4yegNQpSOnIp7hM7B/P18E/ygpdqDmgz9gXb3fqGWUYhDONIu0GkHdDlBgylkTnFNGkjNPSiKQ4BEMlzCTVPlQRWVcD9Ek7au7nTc+3iRgxtrNUfkiDwAc+XeYuQdhrM=
+	t=1763461074; cv=fail; b=HvVwf1EpCv16SIP7Cw7iwN1UAhxCtoloYXphk9I1wyjBsUEjQhWN8im1Dy53RskoVh+ibU4QftmlJ+Mz7O5vj9POkbHohp0mshN568iu6bSeshFNihX6figfbAfW5vbPpQmzKDajtiWK+KHqCK5o0eZMM2nSdev+L6Hv8Xhy0vQ=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763460632; c=relaxed/simple;
-	bh=Aii95n4/u9pF2ey7dNB0EKavOVfbObWG6ckofafZ4ss=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
-	 Content-Disposition:In-Reply-To:MIME-Version; b=rzOmZduYG/yWTcbigBbfF6WJ9k8GM77JZIb5AwS50GSVNAoSJFBhblGRXpuhBixs/W/whl+Mo9uN8foiwdgKlpm986q3tnV7vIhM/ewnt1yvQmp+mGzAIPZ7ZeeGBa0eaotKl9Lv9xI3ciLb9fr5kycpvh2x/luwk9K6XfZ9u1s=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=westermo.com; spf=pass smtp.mailfrom=westermo.com; dkim=pass (2048-bit key) header.d=westermo.com header.i=@westermo.com header.b=mdiUyPFB; dkim=pass (1024-bit key) header.d=beijerelectronicsab.onmicrosoft.com header.i=@beijerelectronicsab.onmicrosoft.com header.b=XUdsNHjC; arc=fail smtp.client-ip=205.220.184.10
+	s=arc-20240116; t=1763461074; c=relaxed/simple;
+	bh=x+grTkDO1anEPsReXAi6sg08vPap79HlJ5hkG33kXcQ=;
+	h=From:To:Cc:Subject:Date:Message-ID:Content-Type:MIME-Version; b=emLXDH8atmXls5rtHaOW9fKHZTtoMap+0QVkHuu92yughOmtzNDgTBKkeacxD9HP4gkmNucpjIYodCXv1QbJN2DZ/0Saw9huuxYWf/w5U5MIOjEUJf2QmEM1oi0JHAN1e2psr8FfT7Vlc8Rha6ID16PB6i9np4vtChxsbYuAu4g=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=westermo.com; spf=pass smtp.mailfrom=westermo.com; dkim=pass (2048-bit key) header.d=westermo.com header.i=@westermo.com header.b=EpniRAwc; dkim=pass (1024-bit key) header.d=beijerelectronicsab.onmicrosoft.com header.i=@beijerelectronicsab.onmicrosoft.com header.b=OH/L/FW2; arc=fail smtp.client-ip=205.220.184.10
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=westermo.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=westermo.com
 Received: from pps.filterd (m0214197.ppops.net [127.0.0.1])
-	by mx07-0057a101.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 5AI5PwwI1657846;
-	Tue, 18 Nov 2025 11:10:03 +0100
+	by mx07-0057a101.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 5AI5Pwwa1657846;
+	Tue, 18 Nov 2025 11:17:27 +0100
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=westermo.com; h=
-	cc:content-type:date:from:in-reply-to:message-id:mime-version
-	:references:subject:to; s=270620241; bh=gEK1wjSaM9tvbj3d338joujQ
-	vUmKQHYxSEhviseRfxk=; b=mdiUyPFBk2MwQJw97FQ9uf+/uaqJ/QsAZ+oVAewL
-	CsRLD4sbfv44zO8n03nzPFysfAiYbo5+MYb0E2SVLamz6Ck8CCLhGB+u7c2V01YU
-	vs/7oOGrbhXRrX7y7t6tybhctXrzze7juy0y4/n9FWVDh/fIAnNvYrezP5fuSsQv
-	VPapX6HKtXZHRjkzLpT844dArdJgtz1dkSKVVtd3IM7wNgg/GThtRSIsObuik1W0
-	Kd/4qMkvVaMaz3wT+jM067xti92tstp4VS4eXy15Ag96yC4SxtV+nbL1eC3FFbYJ
-	DEgqjvoFKUdQeYgNOuc7atqZlZCLoq3fJjQMf+MbaKsOow==
-Received: from osppr02cu001.outbound.protection.outlook.com (mail-norwayeastazon11023091.outbound.protection.outlook.com [40.107.159.91])
-	by mx07-0057a101.pphosted.com (PPS) with ESMTPS id 4aeercb2tm-1
+	cc:content-transfer-encoding:content-type:date:from:message-id
+	:mime-version:subject:to; s=270620241; bh=WepsWoJEDW/+mp/pKknOs1
+	xosOWWEfSKa55JrSVxuJU=; b=EpniRAwcsoJUrq283jFVZE9mtZKdouN9Dmgx+m
+	t6vcdbo5RaiVCXMZsKqYhppwflkxyRcODaN4vvIp8h+ysjlPwhBNBZjz0vawcgka
+	kME0u58A74qNbj6siqx+O5YQNO1OTSJL3b+5CH+xYwS+7WstWsZfDEn09H4Gv26B
+	05gC5vQi8BBJDVSa038wfnEdyi1LfztN2UOh4+sHd8ZfWi4qFbWG/bHhuoBGX1ws
+	AGAZ4NPIeUh55b/+QfyKdAD5hV9hxsSQuoVJ0tunI+yDiUom1EXRm/UdTw0dUmjH
+	xoztE9jFDoip2Qn+3JAOQctYsTblPOFQbsGSxl2HF+F85ndA==
+Received: from duzpr83cu001.outbound.protection.outlook.com (mail-northeuropeazon11022078.outbound.protection.outlook.com [52.101.66.78])
+	by mx07-0057a101.pphosted.com (PPS) with ESMTPS id 4aeercb32t-1
 	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NOT);
-	Tue, 18 Nov 2025 11:10:03 +0100 (CET)
+	Tue, 18 Nov 2025 11:17:27 +0100 (CET)
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=v+vJduEF2tYlMmZJwnR03o7R6OvGJYs4JdDlEiKRYh6mWMMNRkGd0SVxsj+uhr7QcTAPXXMNP3am7cSbBn/jkGswIKMQPnc3cDMCwH1xZJEHZTQ8Oa9MlD7dkaPQJRWabIQ9Yj9+WvdsORy9Loiz/BoG5wniaTrasHIPdjN/yh9DyNUETMzpHlNepn3vY+dhB5YxWNz2NICsXVHSvvxv3L/2gm8jdWXLrR/RSn3vAEOJA+NxbAT7TmsrfM5sdjBqJVKarqZdJNlHJmT46Cjn+QeMZ53pktZ7AAeARrTowcDSM5lodF5JuyNtVl0OZwnySqjB5g3RGbiYqysaxbKg6Q==
+ b=UA+/SOK+KKr95WBq6JCZijNoMNDZW6iUXlfogk/z1E4H+wLfZG8W4/YOqCxHyWzXl0r20y/Xgx58jA4gb0NaOJD9vS0qFFou3uNDaEvM1p+Qn023uMiYrUB7pd99tLDzobGM8fXxb48jJ/0OeOsCpktcYD1lGdOgdxAMIrcHwEjPwI7+h4QBMw6jhT+1orLrJqy0gglaH6XtNvu6m0Tx3VMYs5OU2Z2LqCV2vkgTk9juuZM4WsMyx+vLesTDcByDM6CXgYn4anRFy6UhBZ8p1snFW225/OuDG+0pUHR7KSmwbBGhYAkmJZdQ29fGh8kRj58N8D1Ud7LBxs8aBS10Sg==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=gEK1wjSaM9tvbj3d338joujQvUmKQHYxSEhviseRfxk=;
- b=yis960X4UWsbWhGhlUXME3y7ZemJPnB6MZ8pfbnOADTLrpFxH6+p+a4n3iBHluYjmGzhUTKt8DLOThs/Qy7kkvc53Q+hC1fwmwZS31JEmdz+El6Dm2p6ESwWljiBpmy8DRyPqOGx9IUpDFIKGnh7oZB3VnANq2b4QQuv3ZQ4wS9+vxL/ILdUmIJWACkwQU4ngFqnYyLdnTc2x8k48fFoHd/+NCFEho0zoj29U88228cg95cqMdfgD51x2KtnmCHJMVMK3PZRX7H0L6CvkdPRV2DTbZ351+/AoEb4ZRR4C0WdScu+6Yep40MQoc6io7PaFQjkhS4qpNXP9NnW9P5lgA==
+ bh=WepsWoJEDW/+mp/pKknOs1xosOWWEfSKa55JrSVxuJU=;
+ b=dprqv0xlxWOrubaCjWK+Kf6PnMdm6Ne+BjdMsFAQajVLY0M85NnwA84pvoHYxtWn/1MZ6YBpXGhc9URG7CTjvnWnWxc13vHwDorPp+8iAuylQZJhr/jmEYlyM56MSpfWwAlHj+sJNQJLy6xXXxJgdwX51seigYB1jNv6PHm3Dr3nRSRhozfcMzvOnUHdtjJRJ+zoRCSU5SVxhMZp65uSw6oPx/3JCrp7Duo+G2xtqehWoIUy4Sdzo971619p2fZECBU7HM0/8csoejY3rO8c5gKka6P30NxBg0zcVbIIjsWZF8IKYX3mcY2wN9SuWv11mrwIZCsmpxiPgvkAGRBMDA==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=westermo.com; dmarc=pass action=none header.from=westermo.com;
  dkim=pass header.d=westermo.com; arc=none
@@ -62,35 +61,29 @@ DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=beijerelectronicsab.onmicrosoft.com;
  s=selector1-beijerelectronicsab-onmicrosoft-com;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=gEK1wjSaM9tvbj3d338joujQvUmKQHYxSEhviseRfxk=;
- b=XUdsNHjCIhSdn7mEa1+Di2tjLB3As6PclMwJf9sNKKxKRDu1DVeuf9jj8vPEdMlfWYF5Fi+uxQkpantVSKbwRCeMUWGYW+jQGCtjJDkC3cp8Mn/Uf+8mRzmtCD0tkvkpvhNgK2cLE/EFmim5wWibXEiTXujRUC4aNefvCOiWA0A=
+ bh=WepsWoJEDW/+mp/pKknOs1xosOWWEfSKa55JrSVxuJU=;
+ b=OH/L/FW25/+Ljq9+6IoBPMoJIUXF/8nMEMUzU/ryxkn/o1lumYGpybtPzprRbp/tdMygrLDVjGfFzbL36/54k98LFY1KPmXykbhjTBdj+wI9YcaFhYxeFoHcMhfKLPTRvtK/Xdy6zSTx4mVOs4oYQgBf0Xdo7MHehwDjp2IrrBM=
 Received: from FRWP192MB2997.EURP192.PROD.OUTLOOK.COM (2603:10a6:d10:17c::10)
- by GV1P192MB1905.EURP192.PROD.OUTLOOK.COM (2603:10a6:150:5c::15) with
+ by PA3P192MB2988.EURP192.PROD.OUTLOOK.COM (2603:10a6:102:4d9::7) with
  Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9320.21; Tue, 18 Nov
- 2025 10:09:53 +0000
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9320.20; Tue, 18 Nov
+ 2025 10:17:25 +0000
 Received: from FRWP192MB2997.EURP192.PROD.OUTLOOK.COM
  ([fe80::8e66:c97e:57a6:c2b0]) by FRWP192MB2997.EURP192.PROD.OUTLOOK.COM
  ([fe80::8e66:c97e:57a6:c2b0%5]) with mapi id 15.20.9320.013; Tue, 18 Nov 2025
- 10:09:53 +0000
-Date: Tue, 18 Nov 2025 11:09:45 +0100
+ 10:17:25 +0000
 From: Alexander Wilhelm <alexander.wilhelm@westermo.com>
-To: Baochen Qiang <baochen.qiang@oss.qualcomm.com>
-Cc: Jeff Johnson <jjohnson@kernel.org>, linux-wireless@vger.kernel.org,
-        ath12k@lists.infradead.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] wifi: ath12k: fix endianness handling for SRNG ring
- pointer accesses
-Message-ID: <aRxF6S72ffPclf6n@FUE-ALEWI-WINX>
-References: <20251118072123.19355-1-alexander.wilhelm@westermo.com>
- <5a308d21-d463-4d6f-b5d3-95a0c2ede2c1@oss.qualcomm.com>
- <aRxAa8OYCZqEx7Da@FUE-ALEWI-WINX>
- <ddd31f03-8312-4e42-be97-2d2e1b390c76@oss.qualcomm.com>
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <ddd31f03-8312-4e42-be97-2d2e1b390c76@oss.qualcomm.com>
-User-Agent: Mutt/2.2.12 (2023-09-09)
-X-ClientProxiedBy: GVZP280CA0068.SWEP280.PROD.OUTLOOK.COM
- (2603:10a6:150:270::10) To FRWP192MB2997.EURP192.PROD.OUTLOOK.COM
+To: Jeff Johnson <jjohnson@kernel.org>
+Cc: linux-wireless@vger.kernel.org, ath12k@lists.infradead.org,
+        linux-kernel@vger.kernel.org
+Subject: [PATCH v2] wifi: ath12k: fix endianness handling for SRNG ring pointer accesses
+Date: Tue, 18 Nov 2025 11:17:22 +0100
+Message-ID: <20251118101723.69279-1-alexander.wilhelm@westermo.com>
+X-Mailer: git-send-email 2.43.0
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: GVYP280CA0024.SWEP280.PROD.OUTLOOK.COM
+ (2603:10a6:150:fa::12) To FRWP192MB2997.EURP192.PROD.OUTLOOK.COM
  (2603:10a6:d10:17c::10)
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
@@ -99,82 +92,82 @@ List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: FRWP192MB2997:EE_|GV1P192MB1905:EE_
-X-MS-Office365-Filtering-Correlation-Id: abb6fc8a-2670-4dd6-5491-08de268a9e60
+X-MS-TrafficTypeDiagnostic: FRWP192MB2997:EE_|PA3P192MB2988:EE_
+X-MS-Office365-Filtering-Correlation-Id: 9da67cda-7163-439f-bf26-08de268baba6
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|376014|1800799024|366016;
+X-Microsoft-Antispam: BCL:0;ARA:13230040|366016|1800799024|376014;
 X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?HC6tuzaLBxMTVM2Efcac+kba0SoRxh6nIjYCuINdiPZQcVec6RtNVbnaG4nM?=
- =?us-ascii?Q?8/Ow6aA4/EBh9hNPfUpjQLGfasvXW4J1mKcYnvwgIPL9RvxYPYhFQxEVoNyy?=
- =?us-ascii?Q?VYnTa5w2oxz6ltUqg6BNZJUvcAxbjAeCyFWacTMedo3qV2NioP8UqZaN8DIn?=
- =?us-ascii?Q?K/HIweFBQLsYNojLrxW3pXdGw5Zwz5T8z92QZMR7+WmJa6HfHd0fT2ILXr8H?=
- =?us-ascii?Q?PmG/fbLl2xYy+ywy+GkZTghGOgnvyMjWkcsEelP/k3j0FqTGRr1Bu2fAWppp?=
- =?us-ascii?Q?vAPHwTQtakN6ucmP6nIJA7hJ3i5spa2JErbnXZDVQCZRsLf3hRLGHb4koPU3?=
- =?us-ascii?Q?ERufJ5rCVb/PyjNm9d2ut+TrQBuemNtlwmE730A1tJcEtOb1NnVDl481+4lK?=
- =?us-ascii?Q?On5hNndHfsovHVhFRhcX+SG+LsuX+yfP51L3fSlN1bm7cGCIvUDlBhyNfYAa?=
- =?us-ascii?Q?MaBKaKfAxbVePdBON1xYqSfO79TCRhiuBNySEwYb+RaJ1h3rahuTZ/lprMnH?=
- =?us-ascii?Q?OvhziFXRi6ar8C9Tcox65HWjdumkY4GEN9vefvs0J1fsJok3FHqwXzBcVWh4?=
- =?us-ascii?Q?LLpbhXvD1hApQ0KFI/Dmqx/gdLDXbc/VgnNvOABcVPiiTI1cc7lnnYCIox2z?=
- =?us-ascii?Q?JozGKdh0rySl8AZE7gz0GjnVlCd5lvsWc02B/0D7P+Xo70PvJ58apmRe76sA?=
- =?us-ascii?Q?uHe8PnTxT22V6TkF0wbM7xlsLPr14nzOT2xn05uAWqu/zBD3eeEZF6LK+UxP?=
- =?us-ascii?Q?vd4xaL1JJt6rHNoiB9izcFX0KX2/jTJCRyple6mrnYWTy1OISo5MC+Z+0gwX?=
- =?us-ascii?Q?0CHhmWvohu1bpwminy6gNaLCnzov7F4TWs5eRNv7emCOF/OmYr4MmzO5UHpr?=
- =?us-ascii?Q?/TOBOhFSu9yTx6x6zp8sokGkmZmVzubVWjWRyS6AlLRHLTzFa+EREzl30GOR?=
- =?us-ascii?Q?3rB9Ue3IjxpOkm3k4skS/unf+UvrnUQi94m4FL9N3s84yEfpfr4U1CvaOq6s?=
- =?us-ascii?Q?cW1pDxu37ZMaKeEuXHOQmwHiy2a9Lqot289Wbx+gygLSYZJooWEb8T6hrtAv?=
- =?us-ascii?Q?7Rt1OYiB1ZTwHteCQQcp84rY9HA1JFuRSPfBtO5SFR1NYYE5bfzOVm7FyMEL?=
- =?us-ascii?Q?puTpahQM03lEiPFdg6BXsz8SV7q6VBwWrGSF1ZKi6DH7GbPwO9lTRmWhY21K?=
- =?us-ascii?Q?klWDV/J/5NnCilqtlKFYnMoUJhazyZ2JxGBotvkwJbRVGjI407c6CUsrWvC5?=
- =?us-ascii?Q?IoqedZmkdhUsZKGzn5bh/QIvnZ7vBuGanB3ASj4+f8driaYhvU8+7UB+IBYX?=
- =?us-ascii?Q?oe1wBDgONCWZ6zSUlgTSsKjSfHu+GpzwoE3mEfFt67ui4VpSVSirwPxhkC/T?=
- =?us-ascii?Q?BWDl/KtK7tfTgT0jqkfQ6PkEDpZ3WwQN2IFvBszpZqzl7JgEuNmcEW1BaST/?=
- =?us-ascii?Q?fdQtlU6dcpVfnZf5IiYdpT2QUXFqjEc7?=
+	=?us-ascii?Q?sdU4QUedo0r1Oi8Pjcspa8OVxvmPC6jLDlp1d+U6SIU4aZ/dpcj48CQQwAdJ?=
+ =?us-ascii?Q?xafapRuMcFBqkdyjb+F0/jB5f051l1bsqV0CS429W8rtVI3P6bs4elhLY2Az?=
+ =?us-ascii?Q?FsI6Nn59rtLWU0d9BWchWEGEl+3bGysukAAjM0nI5ZU6+Fek9NZYUjblDUaP?=
+ =?us-ascii?Q?MRM2/DBkBAC2Rqiv8jWoHg+G24uq7Y8npgM5m4NLqb+6Ibbu2V2AlDk1B+rx?=
+ =?us-ascii?Q?5N0nb89L2ef//qbT7DeEY0mQu4Jwm+uMnVfaG9rN5n2w+CF54NB4KlZBTG+I?=
+ =?us-ascii?Q?ql8XpG+jgwcJ8Pzs+aC2C+wehFqcyYP/zGft85hLtRRbmD6jZEJR5IktPKVS?=
+ =?us-ascii?Q?nV3NAcsM0OAMD1dcCbbjv+2PuV49oMiz6ZzUrdiru3UnK3alQ8N7Jj5949gD?=
+ =?us-ascii?Q?TujJnBp0x/iGTNajXmC6WSysxOS9FoRC6is1B5pgj6QnT1/vyC3+O/nb+kF4?=
+ =?us-ascii?Q?X7z9BqcErw/VUwvctZICuDUxY/28JCBBaYThRaHPSY501ihpWSJ1eqaF5gMa?=
+ =?us-ascii?Q?+Y2OghY88JbBr84aRipWZXwHDvZnt2nuwbn7iMSyS6JeYck6ipFL2Ree4J2Y?=
+ =?us-ascii?Q?4n01WjN18zAYOXfrLKr8zENwa+zJsj/7eRIS5M8yRmKAksjxm9qWz/QKMQOi?=
+ =?us-ascii?Q?LSi4qXV1OQPqE4/Alyn3WjsUPnJLu10VGMFYPvk4cpZJLjbFUnBIVOcgR/9P?=
+ =?us-ascii?Q?gw8M2Oz2+khlYS4T0T82kvIx8ull9U/lJ56oRIERPlPGL3cZIMPy9rUBP620?=
+ =?us-ascii?Q?2doCOhxp1jUc4POqYwVQ6S7B85QF+FOsAXuKRXWYGS+nDU0r0mCrJAmpdkYB?=
+ =?us-ascii?Q?R/apG6bIKZ12k/oVgOqY6jS51eR/BgNcpfS3B6M/wqzHkG5V31UDRTNBUsam?=
+ =?us-ascii?Q?ZOL3mOCrTaIDGuggDsvNEwvz01UPvobHcI3G56rtC/7HtRqnI/RN9deiPdcX?=
+ =?us-ascii?Q?ICBZa0Vz+s8ouLHvm/CV2DTLgrTtm79EEtt5gRFhOL+xBJXuVs9tpffyUc+T?=
+ =?us-ascii?Q?78iACjVg4dSVtgjzklhajStPVoq4fZe2x/YRbl/f1ld0cTtAPIoyJ+Bn5cFz?=
+ =?us-ascii?Q?ok70eGWdb0wHEZXR73Mqhz8wY1bt5XaT6Pr+iNRUQMDUlrPCqFA21QXiwqhR?=
+ =?us-ascii?Q?CTZBA1RjWP50U9HaFs1TPeX80wEke8yEbnauuw5nUWJ7d/JH8FrJNVep3iIb?=
+ =?us-ascii?Q?0Go1hISNz4EBqm9WQ6VRBhz/GIwW4B+JT7r/XuGH2e05cp4gKWnVKUcMcjFs?=
+ =?us-ascii?Q?fM3AuGMWiufuI3HingVxpsO1105h3oBrhtfYRRxESquqD0SQAGgGTyxFJDtu?=
+ =?us-ascii?Q?E35uHyWLaBfk6lqwG/kL0xDZWrGe+qGMLrGzvCz1LgURxXIy88Zo5vqfjPYT?=
+ =?us-ascii?Q?fUdo0EFFFrcPusLvU89co5eW9dKXNzsvf/SRo49ByJyfdoRJDHDVT01lSLeM?=
+ =?us-ascii?Q?6V15wfH1Cdy9y0xryLygQwRO9J1LgqXk?=
 X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:FRWP192MB2997.EURP192.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230040)(376014)(1800799024)(366016);DIR:OUT;SFP:1102;
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:FRWP192MB2997.EURP192.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230040)(366016)(1800799024)(376014);DIR:OUT;SFP:1102;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
 X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?Zseglap39Z/nJkPj5bgiCXZE0MxzIadoHWfncZak7p5O9y3lBXi6GJ/lmRfq?=
- =?us-ascii?Q?Ultc/CYNHJ9VNmyVq3mTVudSs4CDQ/WIm+HMH52v8wVzcIwe0IDV4trUm66Q?=
- =?us-ascii?Q?VtThlUjZdhGGh49P93U5RnJ1JE2soE0iIOiRomwwARb4DbBPdiZISQZaa1df?=
- =?us-ascii?Q?vZH5JEzuEidOkLG5Rd0spBpXE47Wo3t7NjJ5CDI91QO/ZzUwXw0KCKYa5W8W?=
- =?us-ascii?Q?Xtc24aqpTCIRQxa5lyyv5wOPQksTFlHxyAj1KyTB3RZYDcgwHhQBgaw/pLbD?=
- =?us-ascii?Q?QcBBqemaH+X5V+TIwj7yJrzpE3gL22ZcUKuaKrEOk2tRswLzb7AsSHI4v1OO?=
- =?us-ascii?Q?g0ryVTRQYq8PBaCV2sSFlPiSk0n/ic116ZG1ES6lohkxr/yOoumwwju19er9?=
- =?us-ascii?Q?4ThcfGzI4n6ht8pggTIifalbZaD0HyumyBxOFwa27msrsq6jz5txX69K8Uio?=
- =?us-ascii?Q?fBPl+rp0cpYZKlRDWazV0+ASPono4rUoahHmy3GrJavhc5fPIe3jzwDvz3W1?=
- =?us-ascii?Q?F7jQbKC+9L9ANuDOheTtcvNoFIVUl6FtuGBJEMuMazrz/HVWewHk5SFzq+3o?=
- =?us-ascii?Q?A04TMViipUcgkkAm6x6m0hK2GIP9qsKAw/LLjijfVnMB9w3NlIZTJNVJsyfj?=
- =?us-ascii?Q?U4i1ytEsPG8VORx4h6eCmWtVbqohLbSkjnfqlp+acdJWcfCj0P8korLu8HmW?=
- =?us-ascii?Q?K0Tk2Q0TmKA9omP+kxA928ev/+thjKKpxFHfrfFhCyKamprVPn5psqkbJGfN?=
- =?us-ascii?Q?2/tmtUH+nkhNCbtqB1RKuorE5I5DTSSnGDk3vFmpMcPs0LVAJ0GLX3+CGPg6?=
- =?us-ascii?Q?NU8HZC2ACsX7aseqayCYsyBf043o/Vl6q/eVPb52ybRPD9zaH9nkArmBsxHQ?=
- =?us-ascii?Q?PkdcobjH9om7t+h2jzk7OXr/HPKPdF7YK45i9BrNtfV1SAzlu4JaunkWx0F9?=
- =?us-ascii?Q?Un52emROpVK+WYqXUfFEaZwcGEumylXiY3Q9OoVZBgKnpWQ7MCqgd0ahu3PE?=
- =?us-ascii?Q?WJufBRU9mDO1nuty6v7o3M+BpD5rufFLGQTwb16w/vmWxF/yUnx8olQ+YV6Y?=
- =?us-ascii?Q?+/LtNFsLlVVW0Fae0gJdFwlB6f/4koblfUDJXpg0qQ42dMqLJxvda1cSk1RB?=
- =?us-ascii?Q?JAFfdJP1WlKjRoYmKpFZvHQo1jyCfH8zhkYeCzTYHPhBP7L9E6q8ugxldtrB?=
- =?us-ascii?Q?kiX+U/QxEcJAH4h8u4yBrHk/4H1CIwCf78mcG6uSoe+GOoolVGqXttsCw+HI?=
- =?us-ascii?Q?tBYgeFWsw8sa4ssEGMlMcpLlfUOHCuPXTae3L1Fyt3UnUzAlXBM2DL1PaYz6?=
- =?us-ascii?Q?EawuWZpfEW8j3q5s+MgDEgzVQjjVLY8GJ9n255nUfc/Y13hEuPIo9awGGroV?=
- =?us-ascii?Q?E0AhaWDEfm9FKUgl0aQAtw4cai+4fIGJ8iNBlWwE018r/JjecVhyQSt7UkZI?=
- =?us-ascii?Q?EhVj9yYKhiDPu7ymzwNs/wYK7rCFdp2c7rIbNkceWeZr8ss0mGhut8OM6MfP?=
- =?us-ascii?Q?GYl09ktnYTt4n6k3ne5hsSf4SFiSjnon/rAuf7NOlER4xBfX/o0Q7uqwfpUm?=
- =?us-ascii?Q?yaWBEZVgUEknp2UnQePFc7fMo/O9L0ZHMdxQYmtT?=
+	=?us-ascii?Q?oMUceHADjN16/G8xa7luS/N/XntSGAu26EaFYnruyewlz4aRIABp4iTYt/hi?=
+ =?us-ascii?Q?kUic+DPEQbzAM/8BPMdBILtEoqp9QzE8phVnvYbo03uOl1jrnJcQi4F1K2Mz?=
+ =?us-ascii?Q?fGnLFtAj+ui0Etzi5s2Lv4LbKmrqrWJRspMByUm9T3+/B/Gn9/s2cuFJ9NHF?=
+ =?us-ascii?Q?qK9MuGywR6jXq4Qj+hf3y/SP3k+HnVhy2vStYi6Q+B0POcbtVfRHwAhxATaz?=
+ =?us-ascii?Q?Zy4RwRUZWzju9FvhX7wv88Pyy1xHR+Bi8OOnHcs3bO7jESdxIyh+EJJtXdJQ?=
+ =?us-ascii?Q?ZxaLgVNiQDzkWT5Vr4xkjInFtRTlDu0td0NomNcSMMobEIHh4DZdLQ9a1sZc?=
+ =?us-ascii?Q?CWLUdgYN7ZuC2egwhf4+URng+myQChkZVgVgjrdSWtTpXrt06p7FrJ2RRPRl?=
+ =?us-ascii?Q?U/ICC/s/jEUIMdsv1PcYTDrZnQpAfF6qKQ4waCsWeNToDjVNii1Ax22XaNiT?=
+ =?us-ascii?Q?zx9UfEV35nzdLyrdyKzbK5TbcTCsNytYCQprXG0MlGjRb3Q2qjeqjfTCZHqT?=
+ =?us-ascii?Q?mJQgDLtniSY8szBe2QDwLuFUdT5bRjIwlCt+WiPU/UucouIhZxEn1Nw0Y4FS?=
+ =?us-ascii?Q?pbXQNNBBU4cRvEykqLoVytVVtDg2Dux878VfMPNfmzVnA4XyHaBHz5fr0YKH?=
+ =?us-ascii?Q?iHX64PaGkmF8oEjk5mdzgBCzu6YevPXZg8th7vbB403ZpMhkCQHgUaPtE5dU?=
+ =?us-ascii?Q?wE71OxQ3fdVPJaGZPo+zydV2UhBOXQNh2+GXJ6ksOrACpCygdCYSTDaCFXM1?=
+ =?us-ascii?Q?poNeN4LFcDO7Cegvb4Pls+vmoSn1MZYFuAcwnbR+lteCN5RASTb96cYRKIfF?=
+ =?us-ascii?Q?OU74C2y5RWVZPzhjyDNdEgLt7N7HvaM3ir5ftQPpFZw5nPBkrqdm0OMEPJc5?=
+ =?us-ascii?Q?ktLxoend2+XXxh5rRSCAePvpLSzGIdMEg1q1mLYPKTJw7NVNxzyv/k8zMieq?=
+ =?us-ascii?Q?qkwyp/hL1DFgffCIvpGscXfmn1abaJSMab+92s/OuKEAs5jNV9KBo9u0BvQl?=
+ =?us-ascii?Q?xwGVoZLzOrWdr+nUBJj2+l4iJqCl2trXoDH83S1agRZcXA6GmZorlJN5P7M4?=
+ =?us-ascii?Q?RxXWLCtAPLMWBMQkktoayHpg36n36deeHrcpzUjGrvm3HgpcHvMGWcbxAP70?=
+ =?us-ascii?Q?utFrAFd1t1xnuyfv4WR0pd7RrPSosWNIOmYQtVlHTR61bckAuPINjyik/HqD?=
+ =?us-ascii?Q?TN7J3s0XfE0nup18QujRJ1hW62ax3saV/+UseKYgnhvP733hfosJzAvw7XPm?=
+ =?us-ascii?Q?utgJRFp56JDmEotkk5dKYHSEmk5ppKQQHGWiDa5/C9R9n9zHnO857x8f7eiO?=
+ =?us-ascii?Q?NY9HFs0m8wjtSRMbgejpRjjSaLzC4fQ17WKZxzTBloAFhqSr6eqh1k16hZKi?=
+ =?us-ascii?Q?3JqVzIVK514DpY0RY1yyWhwTR+yPR6/iRNlstl2PNjrYb29KsXONFxHgVshO?=
+ =?us-ascii?Q?SahrHkzLROX2Y/6K+94BiegFKxpOSQ8NV8GQI1Jtbfafl/48FijqmTynSM0a?=
+ =?us-ascii?Q?Pmw86ZkfI/8vve6payO2IY4AgWNaGdPNb0AwP7Sq/N6aW427EdMu1RhgIeo6?=
+ =?us-ascii?Q?By0kji1iX55Nux0MD9Wb5Eo3COtD2rQ2qSw87mTU?=
 X-MS-Exchange-AntiSpam-ExternalHop-MessageData-ChunkCount: 1
 X-MS-Exchange-AntiSpam-ExternalHop-MessageData-0:
-	WKvwW9Aox9gaYoJQnzxvFoJgnns/McJTjesxjEMXr0QUo9gFOIlm+cQfVVZQip4YJTkfkeC4n5iTDMThGUFejlV5SgVIEdAzvDunFKysTGc7nbOszvpxHS0bTuRL7rlEkl6E1FFI2mFerxaq88wY0HRTl4W3xhLD0wuhPEDUFOaC+2wyYQKFqgtkxr7xRjNhNJfAbI4pF6gLRmBZ5LwfXRbpJdd0VQs8b8i2Mjr4vsamvbCd4Nj8yOMO7QZDARywM8+MSePg+15WqSm3u2XgmvUz6ILDd+9vqYMtFQrQW3FImEJxvUmg8HfFRBLplJaYK4n+W5MBhQWAono11IxphXO1zI3Zm5IqrPHjMzmD+vHpf+bEf5ZYoA9dltTowRWxky/rmPFSZYx+41m0UYx9bbAJH2D3aaSQfzS1honYjw4nU6cJnIrQxgCv++O9qDja46bORNTeMsX2TRePjtLPiKpw9z/PVrO09DuFID69V6cPNYDerXTYm79/Ga+zbLQrAPrAGR/gpyfqsM1EThrkEzdT6oWYU5si4yZDCKTjn4vz+EtFa1iyQJvWw/szo3bLPqLhaxMhyqNGZdnrn9QAgjpmRAVnxQ/QtsYhYkK9WbdyBFcL4LNF/rfVa+M9AWpT
+	A1gcxm9S5r0QLPY8hg8/iGZnBvcEYvChjMPd/V38y7cO0Wf3prnzdbBoamiZo15nHIxIjtMffxK6L0hYnIBhAsduiFVCFwRcse+zUxnDgq9kkOI84LCVUx4ndXUhiMfCLofgrUeEDjfYg9fw90oI3YuPHf22lExgGYx3iRPhcSnzbsE4gBk+kqqYO++H9x1w4UQwfeMnvFYvYoqlJCTZLvugJrdm8g46xVCgc8b1/fVPdt6yn9NE4iCo9I0PaXERw1vw0jHX+wpxqKtHrrF6X7gcI1Nwqo6Pe8Jm1tiFY1xbQlOld7nAGk0i4MGCno5ASCsQXKZg6VUpYwIFmFG4iBO1D1jcUX47Meds1oeZXml280QONKFkyIVMm9HRyBRSNlXsUlf+6dndTa5QGfONdHP8hsyH4XV66276ebLLWc8Qc4DSvRrHj7//AlI3qhnCK0yvVLP/3m1cTInlBowFFC0iT83xYo1nGbrL7va0lEyQF73J/mKo1IM0N7uWqD0AL0E5H/5Ig5ryatzMrnWq8Lj+SLRUAPSeGeJqPq3r9eV/5K60Qt75NbgkzbRoi9UF1OGsRbab7jMBjXd6D9aGfLVB5e7XPOYcQ4qFzzzbTto6tWiJM4rX+YoipLdSYRE3
 X-OriginatorOrg: westermo.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: abb6fc8a-2670-4dd6-5491-08de268a9e60
+X-MS-Exchange-CrossTenant-Network-Message-Id: 9da67cda-7163-439f-bf26-08de268baba6
 X-MS-Exchange-CrossTenant-AuthSource: FRWP192MB2997.EURP192.PROD.OUTLOOK.COM
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 18 Nov 2025 10:09:53.8143
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 18 Nov 2025 10:17:25.5895
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: 4b2e9b91-de77-4ca7-8130-c80faee67059
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: mW/KEjUfDeh3pokOaGkLsyceJs/ZvrF1+Jp1T8i6pRIO6kxp3RwR5wgYN2uTgaPc7AQecy0J3eGiiNKF+2IDkA==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: GV1P192MB1905
+X-MS-Exchange-CrossTenant-UserPrincipalName: 1faJuaFdon7Ssoub7NYZZJZr6DRCORt3jGlZQWbO5yA20NCFFxQColb+HvTOc7d+2WGMm3/7ksk93LpynfMzrQ==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: PA3P192MB2988
 X-MS-Exchange-CrossPremises-AuthSource: FRWP192MB2997.EURP192.PROD.OUTLOOK.COM
 X-MS-Exchange-CrossPremises-AuthAs: Internal
 X-MS-Exchange-CrossPremises-AuthMechanism: 14
@@ -187,68 +180,192 @@ X-MS-Exchange-CrossPremises-Antispam-ScanContext:
 	DIR:Originating;SFV:NSPM;SKIP:0;
 X-MS-Exchange-CrossPremises-SCL: 1
 X-MS-Exchange-CrossPremises-Processed-By-Journaling: Journal Agent
-X-OrganizationHeadersPreserved: GV1P192MB1905.EURP192.PROD.OUTLOOK.COM
-X-Proofpoint-GUID: XUvrQJiYFMw4eLz2pkScRs_AEmiZqdKf
-X-Proofpoint-ORIG-GUID: XUvrQJiYFMw4eLz2pkScRs_AEmiZqdKf
-X-Authority-Analysis: v=2.4 cv=Qflrf8bv c=1 sm=1 tr=0 ts=691c45fb cx=c_pps
- a=e/k6VX1VYAYNZ/0Ig0h4GA==:117 a=6eWqkTHjU83fiwn7nKZWdM+Sl24=:19
+X-OrganizationHeadersPreserved: PA3P192MB2988.EURP192.PROD.OUTLOOK.COM
+X-Proofpoint-GUID: FPOTnkDacVl1Z_emayKOcbvuNZgEWHD2
+X-Proofpoint-ORIG-GUID: FPOTnkDacVl1Z_emayKOcbvuNZgEWHD2
+X-Authority-Analysis: v=2.4 cv=Qflrf8bv c=1 sm=1 tr=0 ts=691c47b7 cx=c_pps
+ a=xTNNa3dkdEHSULvH5VBIfg==:117 a=6eWqkTHjU83fiwn7nKZWdM+Sl24=:19
  a=z/mQ4Ysz8XfWz/Q5cLBRGdckG28=:19 a=lCpzRmAYbLLaTzLvsPZ7Mbvzbb8=:19
- a=xqWC_Br6kY4A:10 a=kj9zAlcOel0A:10 a=6UeiqGixMTsA:10 a=8gLI3H-aZtYA:10
- a=VkNPw1HP01LnGYTKEx00:22 a=N9GNhs4bAAAA:8 a=iqf11OhCi6XAIIoteLkA:9
- a=CjuIK1q_8ugA:10 a=PZhj9NlD-CKO8hVp7yCs:22 a=cPQSjfK2_nFv0Q5t_7PE:22
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUxMTE4MDA4MCBTYWx0ZWRfX3Geuj6q10qiM
- fy0B8GMcGRjIn1W5kdoJRDIvXaPoqWzh51drZdxaXQXkGunUD8fPilasL2rK+CuOAUN9Cx0O0AL
- IBYorfgBXxQgmTHf6LDIaiXGsS4m8dGPw0S87y2+5ZfYMCFOBMPOAIvVKVGYZ9FfjFk0BHSusuo
- 54YdBtfZMFGZGAmmL18k8FrzuTa3evX95sFgIhQ/0pYpVZgA3bte/LKGR20Ho+9czyiTcGeLvb0
- yCt1M/CpEJDloI95ud8b5ENmJIU7K234hDEXqsI/+fzSiuoqG4Cmnzs+CD+aP1LdEPV4GYkAdGW
- wVhXy1uT0aGqMpu+XmWPWDBup/xdTir91w3NvYD688NbZ2v9V+EPEtRVTAhvDDJUSGse8qKQsNU
- /5Fqc8rmjYGTHeY3np/aNhOlA2eYeg==
+ a=xqWC_Br6kY4A:10 a=6UeiqGixMTsA:10 a=8gLI3H-aZtYA:10
+ a=VkNPw1HP01LnGYTKEx00:22 a=N9GNhs4bAAAA:8 a=1rdzW29a38CeVRWDwfcA:9
+ a=PZhj9NlD-CKO8hVp7yCs:22
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUxMTE4MDA4MSBTYWx0ZWRfXx6+VpM9Dx6xT
+ 8cvPSQAxDAit9L+xpMwzdoeF0Uvy/gIY3nZD/ZyTRjTNis4jcMC8PEZ9yi/0qYGQ7tJCSYB8Jc2
+ seqBqGEjQh8V7dlGNpWTW44RA9mZEXQtHF5gHGSKLh5Lx0+drr+NGqw6CU9wzW28BWoHio0mPXa
+ 2E83bJ9Ueb++tMoZM9dTjEK6o6nDJurOv9GIzkcd0lKPG1NJaEGgh2LHOkxyjxgaBoYMmg8NmUV
+ J17qjfEes51CTXRVxIGkHXaQK7FZqbY6fLm4zQV/VhlsL/r9Pe6Il0kJsGNpvobqDA1xC5ZZFRq
+ SXSNVHgy3tzwO6f17n5zadGg19TXQhNT3dLv/K8e95sfl2/FzqmQbGOzuS0DFAwagCc/vu+gZJ2
+ V20WHthhD2uUS6DjTK2ZKb8RKyk98g==
 
-On Tue, Nov 18, 2025 at 05:53:52PM +0800, Baochen Qiang wrote:
-> 
-> 
-> On 11/18/2025 5:46 PM, Alexander Wilhelm wrote:
-> > On Tue, Nov 18, 2025 at 05:35:09PM +0800, Baochen Qiang wrote:
-> >>
-> >>
-> >> On 11/18/2025 3:21 PM, Alexander Wilhelm wrote:
-> >>> The SRNG head and tail ring pointers are stored in device memory as
-> >>> little-endian values. On big-endian systems, direct dereferencing of these
-> >>> pointers leads to incorrect values being read or written, causing ring
-> >>> management issues and potentially breaking data flow.
-> >>>
-> >>> This patch ensures all accesses to SRNG ring pointers use the appropriate
-> >>> endianness conversions. This affects both read and write paths for source
-> >>> and destination rings, as well as debug output. The changes guarantee
-> >>> correct operation on both little- and big-endian architectures.
-> >>>
-> >>> Signed-off-by: Alexander Wilhelm <alexander.wilhelm@westermo.com>
-> >>> ---
-> >>>  drivers/net/wireless/ath/ath12k/hal.c | 35 +++++++++++++++------------
-> >>>  1 file changed, 20 insertions(+), 15 deletions(-)
-> >>>
-> >>> diff --git a/drivers/net/wireless/ath/ath12k/hal.c b/drivers/net/wireless/ath/ath12k/hal.c
-> >>> index 6406fcf5d69f..bd4d1de9eb1a 100644
-> >>> --- a/drivers/net/wireless/ath/ath12k/hal.c
-> >>> +++ b/drivers/net/wireless/ath/ath12k/hal.c
-> >>> @@ -2007,7 +2007,7 @@ int ath12k_hal_srng_dst_num_free(struct ath12k_base *ab, struct hal_srng *srng,
-> >>>  	tp = srng->u.dst_ring.tp;
-> >>>  
-> >>>  	if (sync_hw_ptr) {
-> >>> -		hp = *srng->u.dst_ring.hp_addr;
-> >>> +		hp = le32_to_cpu(*srng->u.dst_ring.hp_addr);
-> >>
-> >> should we also need to change its type to '__le32 *'?
-> > 
-> > I saw that in the 'wifi: ath12k: fix endianness handling while accessing wmi
-> > service bit' patch where '__le32' was used? Which one should I preferably use?
-> 
-> I mean, should hp_addr in hal_srng structure be declared as '__le32 *' ?
+The SRNG head and tail ring pointers are stored in device memory as
+little-endian values. On big-endian systems, direct dereferencing of these
+pointers leads to incorrect values being read or written, causing ring
+management issues and potentially breaking data flow.
 
-Oh, you're right. I'll do that in v2. I'll set '__le32 *' for 'hp_addr/tp_addr'
-for both 'dst_ring' and 'src_ring'. Thank you for the found issue.
+This patch ensures all accesses to SRNG ring pointers use the appropriate
+endianness conversions. This affects both read and write paths for source
+and destination rings, as well as debug output. The changes guarantee
+correct operation on both little- and big-endian architectures.
 
+Signed-off-by: Alexander Wilhelm <alexander.wilhelm@westermo.com>
+---
+Changes in v2:
+- Set '__le32 *' type for 'hp_addr/tp_addr' in both 'dst_ring' and 'src_ring'
+---
+ drivers/net/wireless/ath/ath12k/hal.c | 35 +++++++++++++++------------
+ drivers/net/wireless/ath/ath12k/hal.h |  8 +++---
+ 2 files changed, 24 insertions(+), 19 deletions(-)
 
-Best regards
-Alexander Wilhelm
+diff --git a/drivers/net/wireless/ath/ath12k/hal.c b/drivers/net/wireless/ath/ath12k/hal.c
+index 6406fcf5d69f..bd4d1de9eb1a 100644
+--- a/drivers/net/wireless/ath/ath12k/hal.c
++++ b/drivers/net/wireless/ath/ath12k/hal.c
+@@ -2007,7 +2007,7 @@ int ath12k_hal_srng_dst_num_free(struct ath12k_base *ab, struct hal_srng *srng,
+ 	tp = srng->u.dst_ring.tp;
+ 
+ 	if (sync_hw_ptr) {
+-		hp = *srng->u.dst_ring.hp_addr;
++		hp = le32_to_cpu(*srng->u.dst_ring.hp_addr);
+ 		srng->u.dst_ring.cached_hp = hp;
+ 	} else {
+ 		hp = srng->u.dst_ring.cached_hp;
+@@ -2030,7 +2030,7 @@ int ath12k_hal_srng_src_num_free(struct ath12k_base *ab, struct hal_srng *srng,
+ 	hp = srng->u.src_ring.hp;
+ 
+ 	if (sync_hw_ptr) {
+-		tp = *srng->u.src_ring.tp_addr;
++		tp = le32_to_cpu(*srng->u.src_ring.tp_addr);
+ 		srng->u.src_ring.cached_tp = tp;
+ 	} else {
+ 		tp = srng->u.src_ring.cached_tp;
+@@ -2149,9 +2149,9 @@ void ath12k_hal_srng_access_begin(struct ath12k_base *ab, struct hal_srng *srng)
+ 
+ 	if (srng->ring_dir == HAL_SRNG_DIR_SRC) {
+ 		srng->u.src_ring.cached_tp =
+-			*(volatile u32 *)srng->u.src_ring.tp_addr;
++			le32_to_cpu(*(volatile u32 *)srng->u.src_ring.tp_addr);
+ 	} else {
+-		hp = READ_ONCE(*srng->u.dst_ring.hp_addr);
++		hp = le32_to_cpu(READ_ONCE(*srng->u.dst_ring.hp_addr));
+ 
+ 		if (hp != srng->u.dst_ring.cached_hp) {
+ 			srng->u.dst_ring.cached_hp = hp;
+@@ -2175,25 +2175,28 @@ void ath12k_hal_srng_access_end(struct ath12k_base *ab, struct hal_srng *srng)
+ 		 * hence written to a shared memory location that is read by FW
+ 		 */
+ 		if (srng->ring_dir == HAL_SRNG_DIR_SRC) {
+-			srng->u.src_ring.last_tp =
+-				*(volatile u32 *)srng->u.src_ring.tp_addr;
++			srng->u.src_ring.last_tp = le32_to_cpu(
++				*(volatile u32 *)srng->u.src_ring.tp_addr);
+ 			/* Make sure descriptor is written before updating the
+ 			 * head pointer.
+ 			 */
+ 			dma_wmb();
+-			WRITE_ONCE(*srng->u.src_ring.hp_addr, srng->u.src_ring.hp);
++			WRITE_ONCE(*srng->u.src_ring.hp_addr,
++				   cpu_to_le32(srng->u.src_ring.hp));
+ 		} else {
+-			srng->u.dst_ring.last_hp = *srng->u.dst_ring.hp_addr;
++			srng->u.dst_ring.last_hp =
++				le32_to_cpu(*srng->u.dst_ring.hp_addr);
+ 			/* Make sure descriptor is read before updating the
+ 			 * tail pointer.
+ 			 */
+ 			dma_mb();
+-			WRITE_ONCE(*srng->u.dst_ring.tp_addr, srng->u.dst_ring.tp);
++			WRITE_ONCE(*srng->u.dst_ring.tp_addr,
++				   cpu_to_le32(srng->u.dst_ring.tp));
+ 		}
+ 	} else {
+ 		if (srng->ring_dir == HAL_SRNG_DIR_SRC) {
+-			srng->u.src_ring.last_tp =
+-				*(volatile u32 *)srng->u.src_ring.tp_addr;
++			srng->u.src_ring.last_tp = le32_to_cpu(
++				*(volatile u32 *)srng->u.src_ring.tp_addr);
+ 			/* Assume implementation use an MMIO write accessor
+ 			 * which has the required wmb() so that the descriptor
+ 			 * is written before the updating the head pointer.
+@@ -2203,7 +2206,8 @@ void ath12k_hal_srng_access_end(struct ath12k_base *ab, struct hal_srng *srng)
+ 					   (unsigned long)ab->mem,
+ 					   srng->u.src_ring.hp);
+ 		} else {
+-			srng->u.dst_ring.last_hp = *srng->u.dst_ring.hp_addr;
++			srng->u.dst_ring.last_hp =
++				le32_to_cpu(*srng->u.dst_ring.hp_addr);
+ 			/* Make sure descriptor is read before updating the
+ 			 * tail pointer.
+ 			 */
+@@ -2547,7 +2551,7 @@ void ath12k_hal_srng_shadow_update_hp_tp(struct ath12k_base *ab,
+ 	 * HP only when then ring isn't' empty.
+ 	 */
+ 	if (srng->ring_dir == HAL_SRNG_DIR_SRC &&
+-	    *srng->u.src_ring.tp_addr != srng->u.src_ring.hp)
++	    le32_to_cpu(*srng->u.src_ring.tp_addr) != srng->u.src_ring.hp)
+ 		ath12k_hal_srng_access_end(ab, srng);
+ }
+ 
+@@ -2648,14 +2652,15 @@ void ath12k_hal_dump_srng_stats(struct ath12k_base *ab)
+ 				   "src srng id %u hp %u, reap_hp %u, cur tp %u, cached tp %u last tp %u napi processed before %ums\n",
+ 				   srng->ring_id, srng->u.src_ring.hp,
+ 				   srng->u.src_ring.reap_hp,
+-				   *srng->u.src_ring.tp_addr, srng->u.src_ring.cached_tp,
++				   __le32_to_cpu(*srng->u.src_ring.tp_addr),
++				   srng->u.src_ring.cached_tp,
+ 				   srng->u.src_ring.last_tp,
+ 				   jiffies_to_msecs(jiffies - srng->timestamp));
+ 		else if (srng->ring_dir == HAL_SRNG_DIR_DST)
+ 			ath12k_err(ab,
+ 				   "dst srng id %u tp %u, cur hp %u, cached hp %u last hp %u napi processed before %ums\n",
+ 				   srng->ring_id, srng->u.dst_ring.tp,
+-				   *srng->u.dst_ring.hp_addr,
++				   __le32_to_cpu(*srng->u.dst_ring.hp_addr),
+ 				   srng->u.dst_ring.cached_hp,
+ 				   srng->u.dst_ring.last_hp,
+ 				   jiffies_to_msecs(jiffies - srng->timestamp));
+diff --git a/drivers/net/wireless/ath/ath12k/hal.h b/drivers/net/wireless/ath/ath12k/hal.h
+index efe00e167998..63657d727808 100644
+--- a/drivers/net/wireless/ath/ath12k/hal.h
++++ b/drivers/net/wireless/ath/ath12k/hal.h
+@@ -709,7 +709,7 @@ struct hal_srng {
+ 			u32 tp;
+ 
+ 			/* Shadow head pointer location to be updated by HW */
+-			volatile u32 *hp_addr;
++			volatile __le32 *hp_addr;
+ 
+ 			/* Cached head pointer */
+ 			u32 cached_hp;
+@@ -718,7 +718,7 @@ struct hal_srng {
+ 			 * will be a register address and need not be
+ 			 * accessed through SW structure
+ 			 */
+-			u32 *tp_addr;
++			__le32 *tp_addr;
+ 
+ 			/* Current SW loop cnt */
+ 			u32 loop_cnt;
+@@ -738,7 +738,7 @@ struct hal_srng {
+ 			u32 reap_hp;
+ 
+ 			/* Shadow tail pointer location to be updated by HW */
+-			u32 *tp_addr;
++			__le32 *tp_addr;
+ 
+ 			/* Cached tail pointer */
+ 			u32 cached_tp;
+@@ -747,7 +747,7 @@ struct hal_srng {
+ 			 * will be a register address and need not be accessed
+ 			 * through SW structure
+ 			 */
+-			u32 *hp_addr;
++			__le32 *hp_addr;
+ 
+ 			/* Low threshold - in number of ring entries */
+ 			u32 low_threshold;
+
+base-commit: be83ff7549057d184b693a85cafc10fbd520f3d7
+-- 
+2.43.0
+
 
