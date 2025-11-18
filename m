@@ -1,91 +1,153 @@
-Return-Path: <linux-wireless+bounces-29076-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-29077-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id F27F9C67159
-	for <lists+linux-wireless@lfdr.de>; Tue, 18 Nov 2025 04:02:42 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1F280C67C57
+	for <lists+linux-wireless@lfdr.de>; Tue, 18 Nov 2025 07:47:09 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id C999F4E18E7
-	for <lists+linux-wireless@lfdr.de>; Tue, 18 Nov 2025 03:02:41 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTPS id B716329FF8
+	for <lists+linux-wireless@lfdr.de>; Tue, 18 Nov 2025 06:47:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id ECE6A2FE04A;
-	Tue, 18 Nov 2025 03:02:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6F4252F12A1;
+	Tue, 18 Nov 2025 06:46:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=realtek.com header.i=@realtek.com header.b="o0+cwoFk"
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="o4EXfk9N"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
+Received: from mail-wm1-f49.google.com (mail-wm1-f49.google.com [209.85.128.49])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3A6EB2EC081
-	for <linux-wireless@vger.kernel.org>; Tue, 18 Nov 2025 03:02:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=211.75.126.72
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 734D92F0673
+	for <linux-wireless@vger.kernel.org>; Tue, 18 Nov 2025 06:46:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.49
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763434957; cv=none; b=Gw680d/a35DbXOxb8Mp9BpTHX10zdZ+kMcAkHZI8vm0iwNpqgqtuYJGq2cke2C30vDuCDoJDuTt8YqEC3LtaVbGEEkhE58uqt80czm2RQO9+3oQi/iILeHJJeKJp2B33tOVafubg7iuZBvNUcsbxegjGeTsCMWEp+ocwboCWboM=
+	t=1763448399; cv=none; b=skeI45O332LmbI8HWrLPQgpg3kRSHLrsZimCAMd0w2CubKaESAnLQp/mLJF+svEd0PV+6x5jBjWaoPcMLO+if30tx9PsALf6uZapx/33Pi0GdVpAgc+KboK/5G2TalOGp5rzvwrJLk/HptJMIIC8Fhf7rHjE2lUTfW4S/GBGYh4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763434957; c=relaxed/simple;
-	bh=yDr24AEX3sBPjsTjDuTuvr6v4cbneT8cka2iee/SLds=;
-	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:MIME-Version; b=CTlLe1h4yOSapwalOr5fKCAtoiaiMjDcOjzEZ54eldBGjGhD3OjUbTTLTaNfbyk4Aheodr6xEg2i3i4yyYsqIjTT4mzUozjWw44iC1V28HqRrwyTs8RIYzGh2rnSjyNEDWjAk8AXclme7HbGHZcpyCA1zcA8nzFF8y5JDRbUapk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com; spf=pass smtp.mailfrom=realtek.com; dkim=pass (2048-bit key) header.d=realtek.com header.i=@realtek.com header.b=o0+cwoFk; arc=none smtp.client-ip=211.75.126.72
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=realtek.com
-X-SpamFilter-By: ArmorX SpamTrap 5.80 with qID 5AI32VO80698409, This message is accepted by code: ctloc85258
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=realtek.com; s=dkim;
-	t=1763434951; bh=yDr24AEX3sBPjsTjDuTuvr6v4cbneT8cka2iee/SLds=;
-	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:Content-Transfer-Encoding:MIME-Version;
-	b=o0+cwoFkJmqFfZbleJws83dnzJbhM6KsiS1R7lQhGWA8UzQWy+qDGe3eSOLmDCp3J
-	 Dmy6bjn57TzzwD6/mwzggWsXqvRVMCObb0hdpXPAENEqV1Lgl5YkEeQV5yxmzdeKZ9
-	 uhspbMInYqvGQ/giEaXux+9cxpZbo3e357+S6e00WA3fPs7KbH3Me85ooV8rrekxr/
-	 KAdaqARmoPNn6ZKtnrXjSV0TH8wqu16+fhYEl92QkhiRCQPLaFSnV2VWIuzvl3vn45
-	 jWBr7DUkfjWc1cP/KuJXy4/cwqBhjpD4yng/RYpqGgiXLLr/+o4+lL/MUd0u2ANQdZ
-	 2bUYGdRYQu+1Q==
-Received: from mail.realtek.com (rtkexhmbs02.realtek.com.tw[172.21.6.41])
-	by rtits2.realtek.com.tw (8.15.2/3.21/5.94) with ESMTPS id 5AI32VO80698409
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Tue, 18 Nov 2025 11:02:31 +0800
-Received: from RTKEXHMBS06.realtek.com.tw (10.21.1.56) by
- RTKEXHMBS02.realtek.com.tw (172.21.6.41) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.27; Tue, 18 Nov 2025 11:02:32 +0800
-Received: from RTKEXHMBS06.realtek.com.tw (10.21.1.56) by
- RTKEXHMBS06.realtek.com.tw (10.21.1.56) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.27; Tue, 18 Nov 2025 11:02:31 +0800
-Received: from RTKEXHMBS06.realtek.com.tw ([::1]) by
- RTKEXHMBS06.realtek.com.tw ([fe80::744:4bc9:832c:9b7e%10]) with mapi id
- 15.02.1544.027; Tue, 18 Nov 2025 11:02:31 +0800
-From: Ping-Ke Shih <pkshih@realtek.com>
-To: Bitterblue Smith <rtl8821cerfe2@gmail.com>,
-        "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>
-CC: Jes Sorensen <Jes.Sorensen@gmail.com>
-Subject: RE: [PATCH rtw-next 4/5] wifi: rtl8xxxu: Fix RX channel width
- reported by RTL8192FU
-Thread-Topic: [PATCH rtw-next 4/5] wifi: rtl8xxxu: Fix RX channel width
- reported by RTL8192FU
-Thread-Index: AQHcVzfjMbkwLSTgKEOo+HgLaiSJBLT3v/NAgAAA6yA=
-Date: Tue, 18 Nov 2025 03:02:31 +0000
-Message-ID: <cc6f78a75c2746478191e6fe1537412d@realtek.com>
-References: <b735b9c6-f17f-405a-8972-a7c98f3c89e2@gmail.com>
- <afd60ba6-4af8-4944-a915-4e2b814bbed3@gmail.com>
- <988bfe53bd5b42bbb411745f34114db1@realtek.com>
-In-Reply-To: <988bfe53bd5b42bbb411745f34114db1@realtek.com>
-Accept-Language: en-US, zh-TW
-Content-Language: zh-TW
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+	s=arc-20240116; t=1763448399; c=relaxed/simple;
+	bh=acujsx5P9AhRcG+rLz3vEfDBti6lUvFh4LWYV3tGlm8=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=Vm9VpJGmET6MH20D2VJft+h6EYEn+aZk1JdPsvZzMF78tr1QWGmyRQjT0VayJQThYSGjBb1X8Yi1PYPMPlLo/c7rpclJpNfN3xeAvD5a/35pILEZE+euZWi5UDgE46MPCTonbsO4b0FZ7p2+cdHfbjMHp55VDb2CQsECA3RTGn4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=o4EXfk9N; arc=none smtp.client-ip=209.85.128.49
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+Received: by mail-wm1-f49.google.com with SMTP id 5b1f17b1804b1-47775fb6cb4so36053695e9.0
+        for <linux-wireless@vger.kernel.org>; Mon, 17 Nov 2025 22:46:37 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1763448396; x=1764053196; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=bV81dIpmp2beeLjKl6yrCue5z+eyzcey/0i+ySpQ3bY=;
+        b=o4EXfk9N0TzPjImeauhSC7o07RtfBQLBgPaXzRU9jzye9/Z5UF8NDgW+bpHkfgvRzG
+         OX6podmX7/zDTEDuupHrMynWdvOpiODQUvEZYQ4jtVHqW7cJ2nXUOqC0Jn/0gffcdJk5
+         D00q8jULEUetcIwA+m/EJ60C8YEbkyy5fd3n/Mg1+Bxo7YL5GqgVFEEDu/HzTRJLZRJg
+         iQCKztVaavWTvT03DMjphosMXhE/CPsN8WbmHKHdO1lF0VDEdgw7ASH1uvsqd8gakHRo
+         JVytF+OWdkUn5opfRcAFKs7FdKvX5G5OXi5uELSWBj1QhpVCMZxU1sqSOFkQdiwWtxYN
+         2kIg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1763448396; x=1764053196;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=bV81dIpmp2beeLjKl6yrCue5z+eyzcey/0i+ySpQ3bY=;
+        b=XsKyN8PjFQD8kMwJwVibf2zvSev6ZFk09mEcf08OEQ2tpd7JRMtXhGmntj+L9SkgyI
+         6sG7Pityv7XItw2OQdGk1bIcyaOPdh5QyMJi4BODZh2labCq0FZRQoRJjhutA28fkm60
+         lSLSIn1XR3orJvInrQL0+s0cOq577oep1QNwoqP4HILnN2rRpTtPnj0DCFSrbq4gS4dZ
+         +4+5hB61jZMeEjU7bxry0PYQShRvjlLEhcjzboD2YXz8I0yF7Tu5cyZ1H+8YovkxFqT9
+         cDww3vjFtdnaplqTCYWh2kkhBwauzZRDkdhwiAzkLBANiRrFuF9Dd+wZ9pQV7xvVrHrC
+         82Sg==
+X-Forwarded-Encrypted: i=1; AJvYcCXJCvDQKxPNy4hxAEthmc7O4Z2UZQomt6mEHlA8KzemfL82FxyfB2ejIWB7H42BH6LDo1YnYlzLGRR6jpmPWA==@vger.kernel.org
+X-Gm-Message-State: AOJu0YwP3LNlJ4PAxFA+ixDc0T494daqg3dsYbK/wvUWbYr26zNy7L1X
+	dJVMQ5R2WKlBU1QH4fNou0hgEaE6pdMMhlIPAUGXkPNfGTYaNgbpKRVxXZciW2hJPdY=
+X-Gm-Gg: ASbGnct/FYqxynkEKeTcydNWe3FXEunqTS3sBzTFhhUSF2qaGhqDdUfvFit8FtAsc9t
+	cF3idokdQe7oIPS5kglIOml+fbeBl/Mmwzu7VfvjNFQBKGlbt2fHBtpzMx0KZ/8K8wEJfLS5491
+	B3s4M/sN8Jzw2jYd0CUURpQe41TdbHcQA9RQpl/8cl9AST5P1LzTuhpA5BHzlY27DOXS4sjpdh+
+	132qYviZ4HX8NRstb4Y1MvEOThpTRkCd+bzL+oquzDcY6RRMwbJ/amDe2o26yt2BORUjTH1Hz3y
+	HwdBh5Ykfo1M5U6s3k4l59AZHNBU0vTmgRhYEPd1OjinuStX1HHN2zlJLKaEbRJc205CR39BMkH
+	rOGYFH5PlHcJLQBRCEY/vMf53/ZLK5ZT+1dT2DwfuAyxWdojftHSlc/JsxPS2PDG275ueoLmUVz
+	XuLjOHqw==
+X-Google-Smtp-Source: AGHT+IHq6Tms2Tw4FCmoIgazMAaNdHCOZjsBWCUnSI/7xQlYbP/8sN+ivg/uC6ukSMsCFy3UUZ450Q==
+X-Received: by 2002:a05:600c:4744:b0:45c:4470:271c with SMTP id 5b1f17b1804b1-4778fe6be5fmr138575145e9.18.1763448395731;
+        Mon, 17 Nov 2025 22:46:35 -0800 (PST)
+Received: from localhost ([196.207.164.177])
+        by smtp.gmail.com with UTF8SMTPSA id 5b1f17b1804b1-477a9e19875sm8557925e9.16.2025.11.17.22.46.34
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 17 Nov 2025 22:46:35 -0800 (PST)
+Date: Tue, 18 Nov 2025 09:46:30 +0300
+From: Dan Carpenter <dan.carpenter@linaro.org>
+To: "Korenblit, Miriam Rachel" <miriam.rachel.korenblit@intel.com>
+Cc: Ally Heev <allyheev@gmail.com>,
+	Johannes Berg <johannes@sipsolutions.net>,
+	"linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH v2] net: wireless: fix uninitialized pointers with free
+ attribute
+Message-ID: <aRwWRmOfO5URjacJ@stanley.mountain>
+References: <20251107-aheev-uninitialized-free-attr-wireless-v2-1-674fc3e5c78e@gmail.com>
+ <DM3PPF63A6024A9B5D5C1983918C785DA13A3CEA@DM3PPF63A6024A9.namprd11.prod.outlook.com>
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <DM3PPF63A6024A9B5D5C1983918C785DA13A3CEA@DM3PPF63A6024A9.namprd11.prod.outlook.com>
 
-SGkgQml0dGVyYmx1ZSwNCg0KPiA+ICsNCj4gPiArICAgICAgIGlmIChyeG1jcyA+IERFU0NfUkFU
-RV8xMU0gJiYgcnhtY3MgPCBERVNDX1JBVEVfTUNTMCkNCj4gDQo+IE5pdDogd291bGQgaXQgYmUg
-Y2xlYXIgdGhhdCAnIGlmIChyeG1jcyA+PSBERVNDX1JBVEVfNk0gJiYgcnhtY3MgPD0gREVTQ19S
-QVRFXzU0TSknID8NCj4gDQoNClBsZWFzZSBsZXQgbWUga25vdyB5b3VyIHRob3VnaHQgYWJvdXQg
-dGhpcyBuaXQuIA0KDQo=
+On Mon, Nov 10, 2025 at 01:17:10PM +0000, Korenblit, Miriam Rachel wrote:
+> > Subject: [PATCH v2] net: wireless: fix uninitialized pointers with free attribute
+> 
+> Please send iwlwifi patches to either iwlwifi-next or iwlwifi-fixes ([PATCH iwlwifi-next] wifi: iwlwifi: blah blah )
+> In your case it is not really fixing any bug, since we never return from the functions without initializing the pointers.
+
+I'm not a fan of these subsystem rules.  If you're working over the entire
+kernel then you would have to track over 400 different trees.  This could
+easily be done in the one place on the recieving end in the QC process
+instead of forcing every contributor to write little shell scripts.
+
+Anyway here is the code how I handle that for netdev.  For BPF, which is the
+only other subsystem with this rule, I only send bug reports instead of
+patches because I really want to discourage this kind of rule...
+
+git remote update net
+git remote update net-next
+
+if grep -q netdev $MAIL_FILE && ! grep -q wireless $MAIL_FILE ; then
+    if [ "$FIXES_COMMIT" != "" ] ; then
+        if git merge-base --is-ancestor $FIXES_COMMIT net/main ; then
+            TREE="net"
+        elif git merge-base --is-ancestor $FIXES_COMMIT net-next/main ; then
+            TREE="net-next"
+        else
+            TREE="net-other"
+        fi
+    else
+        TREE="net-next"
+    fi
+fi
+
+So the new iwlwifi code would be (free handed in my email client).
+First add iwlwifi as a remote to your developement tree.
+
+git remote add iwlwifi https://git.kernel.org/pub/scm/linux/kernel/git/iwlwifi/iwlwifi-next.git
+
+git remote update iwlwifi
+
+if grep -q -w /iwlwifi/ $MAIL_FILE ; then
+    if [ "$FIXES_COMMIT" != "" ] ; then
+        if git merge-base --is-ancestor $FIXES_COMMIT iwlwifi/fixes ; then
+            TREE="iwlwifi"
+        elif git merge-base --is-ancestor $FIXES_COMMIT iwlwifi/next ; then
+            TREE="iwlwifi-next"
+        else
+            TREE="iwlwifi-other"
+        fi
+    else
+        TREE="iwlwifi-next"
+    fi
+fi
+
+regards,
+dan carpenter
 
