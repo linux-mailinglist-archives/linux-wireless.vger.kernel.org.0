@@ -1,97 +1,157 @@
-Return-Path: <linux-wireless+bounces-29079-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-29080-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [IPv6:2a01:60a::1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2130EC67F9C
-	for <lists+linux-wireless@lfdr.de>; Tue, 18 Nov 2025 08:34:19 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 553C8C67EED
+	for <lists+linux-wireless@lfdr.de>; Tue, 18 Nov 2025 08:28:21 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 8D7A4383555
-	for <lists+linux-wireless@lfdr.de>; Tue, 18 Nov 2025 07:26:23 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTPS id 43A612A0DE
+	for <lists+linux-wireless@lfdr.de>; Tue, 18 Nov 2025 07:28:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 97B0C302CC3;
-	Tue, 18 Nov 2025 07:24:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 74E6026B75C;
+	Tue, 18 Nov 2025 07:27:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="24QE6ZMl";
-	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="HemVkTlf"
+	dkim=pass (2048-bit key) header.d=kemnade.info header.i=@kemnade.info header.b="9l6AP6L5"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
+Received: from mail.andi.de1.cc (mail.andi.de1.cc [178.238.236.174])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B8FC32FE063;
-	Tue, 18 Nov 2025 07:24:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3A53B26FA4E;
+	Tue, 18 Nov 2025 07:27:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=178.238.236.174
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763450695; cv=none; b=m6d7nErSryawtU4OMg61UuZ5dVBB4BqglwWDQ4aWtftze9QBSaC5OLU99549EKImMtKffHE39JHwhKDtQwN1aXR/+LrTpm17SHEC4yyR0WEPe72sAFFt+mVjFHpK05EsCqWA3E6rqxUPDH5QF0mg4RdbkXhJv6BFNFCW4qk33UY=
+	t=1763450863; cv=none; b=l1FQ5k2n6Fc9RXIw16+9dP05b01dC0EHXctZtt3+edgqDkxXrTjiFvXXXqu81x/A9M3iBkDXDBrHjIyzGQM8hEDY2OHbNjak7VpbD/hMLTtX6x4oZ2nAynlaldXcNCLQEfH31OmbbHoYxvnLAvWjc7L2wADGagMC7bCM/Ve8Csc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763450695; c=relaxed/simple;
-	bh=jrjinFXbeDbMX2dy8EHh/ldqeCkJ7jxk4YEibZJS9Kc=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=HoH1G0nO4PkeQnDKqBZDFO7sglur6hklTh6YiCKWNo2w62HZr7mf24LA5uRQXZBMfjHcz9q1XVSrbPQfx0UdXh96kD/8kdajyV3rM0X9DRRGhJMXBOJxTUA8nvxARGQbTJbjxUZLTQh2hVO9jM44/zcEnd5WhdprF+DpU7996LY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=24QE6ZMl; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=HemVkTlf; arc=none smtp.client-ip=193.142.43.55
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
-Date: Tue, 18 Nov 2025 08:24:49 +0100
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1763450691;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=I9vA6V+bN9GTdLdJJnTr5BmlcMkR802o3dcmS/oJ4PA=;
-	b=24QE6ZMlr+aPw0mCJ5+WZU96Ur1bJED22ECyuR3qc6mknaLzxVccN1eBwGOEHnhDPXViIi
-	vYgzPxjYImC932JHg5SRA4a/U7iRiyXlufjgEKN4WCeGZs0vyBoTiY57FYZhIlaLZIjOYL
-	+alp7QvobezEF44LShBi4xm5QwByUm+lr5oir3v42WJgDcsNA1jjMRsN3D7i9qQlM6SH/w
-	Q7jKWbml/XlgMaWqRO6CbEuEcKtaMflllcFEPJbOfhRueQ9ruRBPn/TM+ku3PXkSxlYXiS
-	tZlF7YYrv2qXgzM7t0CdOvC+IbV/y+85xI811fdS8iBRo5Im02eMP11MJthBmA==
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1763450691;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=I9vA6V+bN9GTdLdJJnTr5BmlcMkR802o3dcmS/oJ4PA=;
-	b=HemVkTlfIKjmIexQaIi7tETka6Ixoo5dyRx/jz0Qu6Db6AH88jYgFE/IZlIzrJ2xfOoL2m
-	0DLyByvQHHJXBSDA==
-From: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
-To: pengdonglin <dolinux.peng@gmail.com>
-Cc: tj@kernel.org, tony.luck@intel.com, jani.nikula@linux.intel.com,
-	ap420073@gmail.com, jv@jvosburgh.net, freude@linux.ibm.com,
-	bcrl@kvack.org, trondmy@kernel.org, longman@redhat.com,
-	kees@kernel.org, hdanton@sina.com, paulmck@kernel.org,
-	linux-kernel@vger.kernel.org, linux-rt-devel@lists.linux.dev,
-	linux-nfs@vger.kernel.org, linux-aio@kvack.org,
-	linux-fsdevel@vger.kernel.org,
-	linux-security-module@vger.kernel.org, netdev@vger.kernel.org,
-	intel-gfx@lists.freedesktop.org, linux-wireless@vger.kernel.org,
-	linux-acpi@vger.kernel.org, linux-s390@vger.kernel.org,
-	cgroups@vger.kernel.org
-Subject: Re: [PATCH v3 00/14] Remove redundant rcu_read_lock/unlock() in
- spin_lock
-Message-ID: <20251118072449.PFe_yjOF@linutronix.de>
-References: <20250916044735.2316171-1-dolinux.peng@gmail.com>
+	s=arc-20240116; t=1763450863; c=relaxed/simple;
+	bh=kfdUWwMVdCt8v+xix914qHO0JwCuom/SCwwjXK/0dl4=;
+	h=From:To:Subject:Date:Message-ID:MIME-Version; b=NuAZyctN7Q5OCYCUQk+HCTve2ZZJt2yuLurUgVg6TG5NqLqE2FlmZQLv7lNxqT3r3TWJtQ4RSquQu1+icfCcPby9B8nXkMIG3+Ji6EWOxTumFe7niu0vPmRjRE6YXDDFXvVqR+oPrVuBrR8p25R7K84d4yZmdpXr+K6DQtVDHqc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=kemnade.info; spf=pass smtp.mailfrom=kemnade.info; dkim=pass (2048-bit key) header.d=kemnade.info header.i=@kemnade.info header.b=9l6AP6L5; arc=none smtp.client-ip=178.238.236.174
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=kemnade.info
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=kemnade.info
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=kemnade.info; s=20220719; h=From:Sender:Reply-To:Cc:Content-ID:
+	Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
+	:Resent-Message-ID:In-Reply-To:References;
+	bh=QyjtY4t8aFYtS2xu/rSUjq+Q4C16yLey9yYnSrlAjN8=; b=9l6AP6L5OQr92Wl73ipb4U/G9R
+	/F463q5RRAtyqLtxkQgRSUVhovtiHIw8M2w0+L3V6X4NewbB4EfXGUs67i+22vvyhFApOy/W1O8TR
+	AUfgmblJhIQSK+kiYGiNlbcOs6sRyWsbHGA9FhaH+V0PzcEHmFQps3bBdoo8kz2AhUoWpX3VpVD4w
+	Xp/kLUqi3FuMZJL8n4oYxbhK7p1+JGhOv1Te+JES4FAOaRFM7J+n5T+R+1udGC0hf46m0BI+dDJyL
+	WvY9UwdGYzwn2VN513GSgvoWyUKOccRWP0dKgapa6HkpgtjT/jcwLAdWzyAy5d77aCzXa5fbrQhld
+	oBS2Fo8Q==;
+From: Andreas Kemnade <andreas@kemnade.info>
+To: briannorris@chromium.org,
+	francesco@dolcini.it,
+	christophe.jaillet@wanadoo.fr,
+	johannes.berg@intel.com,
+	rafael.beims@toradex.com,
+	andreas@kemnade.info,
+	linux-wireless@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	s.hauer@pengutronix.de
+Subject: [RFC PATCH] wifi: mwifiex: try to fix some races with rmmod/modprobe
+Date: Tue, 18 Nov 2025 08:25:26 +0100
+Message-ID: <20251118072527.174375-1-andreas@kemnade.info>
+X-Mailer: git-send-email 2.47.3
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20250916044735.2316171-1-dolinux.peng@gmail.com>
+Content-Transfer-Encoding: 8bit
 
-On 2025-09-16 12:47:21 [+0800], pengdonglin wrote:
-Hi,
+To debug some stability issues, some torture was done with the driver:
+Doing rmmod mwifiex_sdio  and modprobe mwifiex_sdio in a loop
 
-> There is no need no explicitly start a RCU read section if one has already
-> been started implicitly by spin_lock().
-> 
-> Simplify the code and remove the inner rcu_read_lock() invocation.
+this oops appeared:
 
-I'm not going argue if this is a good or not but: If you intend to get
-this merged I suggest you rebase your series (or what is left since I
-think a few patches got merged) on top of current tree and resend them
-individually targeting the relevant tree/ list. Otherwise everyone might
-think someone else is in charge of this big series.
+[ 3261.934299] mwifiex_sdio mmc1:0001:1: PREP_CMD: FW is in bad state
+[ 3261.988412] mwifiex_sdio mmc1:0001:1: info: shutdown mwifiex...
+[ 3261.990081] mwifiex_sdio mmc1:0001:1: PREP_CMD: card is removed
+[ 3262.052407] mwifiex_sdio mmc1:0001:1: ===mwifiex driverinfo dump start===
+[ 3262.052864] mwifiex_sdio mmc1:0001:1: info: MWIFIEX VERSION: mwifiex 1.0 (16.92.21.p119)
+[ 3262.053252] mwifiex_sdio mmc1:0001:1: SDIO register dump start
+[ 3262.084733] mwifiex_sdio mmc1:0001:1: SDIO Func0 (0x0-0x9): 43 03 02 02 00 00 00 02 03 00
+[ 3262.085574] mwifiex_sdio mmc1:0001:1: SDIO Func1 (0x10-0x17): 00 00 00 00 ff ff ff ff
+[ 3262.093544] mwifiex_sdio mmc1:0001:1: SDIO Func1: (0x8) 00 (0x58) 00 (0x5c) 88 (0x5d) 00 (0x60) 07 (0x61) 0c (0x62) 00 (0x64) 10 (0x65) 00 (0x66) 00 (0x68) 00 (0x69) 00 (0x6a) 00
+[ 3262.103543] mwifiex_sdio mmc1:0001:1: SDIO Func1 (0xe8-0xf2): dc fe 54 00 b0 00 1f 2a 24 14 70
+[ 3262.325352] mwifiex_sdio mmc1:0001:1: SDIO Func1 (0xe8-0xf2): dc fe 6d 00 c7 00 1f 2a 24 14 70
+[ 3262.325843] mwifiex_sdio mmc1:0001:1: SDIO register dump end
+[ 3262.326626] mwifiex_sdio mmc1:0001:1: ===mwifiex driverinfo dump end===
+[ 3262.327096] mwifiex_sdio mmc1:0001:1: == mwifiex firmware dump start ==
+[ 3291.379005] mwifiex_sdio mmc1:0001:1: == mwifiex firmware dump end ==
+[ 3291.381143] mwifiex_sdio mmc1:0001:1: == mwifiex dump information to /sys/class/devcoredump start
+[ 3291.382047] mwifiex_sdio mmc1:0001:1: == mwifiex dump information to /sys/class/devcoredump end
+[ 3291.382148] 8<--- cut here ---
+[ 3291.382210] Unable to handle kernel NULL pointer dereference at virtual address 00000064 when read
+[ 3291.382265] [00000064] *pgd=00000000
+[ 3291.382334] Internal error: Oops: 5 [#1] SMP ARM
+[ 3291.426597] Modules linked in: mwifiex_sdio(-) netconsole mwifiex jd9930_regulator imx_sdma btnxpuart crc8 [last unloaded: mwifiex_sdio]
+[ 3291.438980] CPU: 0 UID: 0 PID: 751 Comm: kworker/0:1 Not tainted 6.18.0-rc3-00003-g5a1efae8dc10-dirty #338 VOLUNTARY
+[ 3291.449655] Hardware name: Freescale i.MX6 SoloLite (Device Tree)
+[ 3291.455829] Workqueue: events mwifiex_sdio_work [mwifiex_sdio]
+[ 3291.461749] PC is at mwifiex_sdio_work+0x6d0/0x8ac [mwifiex_sdio]
 
-Sebastian
+card->adapter is NULL and therefore in mwifiex_sdio_card_reset_work
+NULL pointer issues appear. The long execution time of the dumping
+functions increases the probability that card->adapter changes
+in mwifiex_sdio_card_work().
+
+mwifiex_unregister_dev is the place to set card->adapter to NULL.
+So add some NULL pointer checks to work around it a bit.
+But this really smells like missing locking. So the proper solution
+would be to add a mutex and locking. But it is a bit unclear
+how to do that really.
+
+This dirty fix seem to improve things when device is not touched.
+But if it is used, there are other races:
+- calling wiphy_unregister with invalid pointer
+- rkill unregister issues
+- module count going to -1
+
+Signed-off-by: Andreas Kemnade <andreas@kemnade.info>
+---
+ drivers/net/wireless/marvell/mwifiex/sdio.c | 14 ++++++++++++++
+ 1 file changed, 14 insertions(+)
+
+diff --git a/drivers/net/wireless/marvell/mwifiex/sdio.c b/drivers/net/wireless/marvell/mwifiex/sdio.c
+index f039d6f19183..2808cff6fd56 100644
+--- a/drivers/net/wireless/marvell/mwifiex/sdio.c
++++ b/drivers/net/wireless/marvell/mwifiex/sdio.c
+@@ -947,6 +947,10 @@ static void mwifiex_sdio_coredump(struct device *dev)
+ 	struct sdio_mmc_card *card;
+ 
+ 	card = sdio_get_drvdata(func);
++	if (!card->adapter) {
++		dev_err(dev, "adapter is not valid, cannot coredump\n");
++		return;
++	}
+ 	if (!test_and_set_bit(MWIFIEX_IFACE_WORK_DEVICE_DUMP,
+ 			      &card->work_flags))
+ 		schedule_work(&card->work);
+@@ -3019,9 +3023,19 @@ static void mwifiex_sdio_work(struct work_struct *work)
+ 	struct sdio_mmc_card *card =
+ 		container_of(work, struct sdio_mmc_card, work);
+ 
++	if (!card->adapter) {
++		pr_err("sdio_work: no adapter\n");
++		return;
++	}
++
+ 	if (test_and_clear_bit(MWIFIEX_IFACE_WORK_DEVICE_DUMP,
+ 			       &card->work_flags))
+ 		mwifiex_sdio_device_dump_work(card->adapter);
++
++	if (!card->adapter) {
++		pr_err("sdio_work: no adapter to reset\n");
++		return;
++	}
+ 	if (test_and_clear_bit(MWIFIEX_IFACE_WORK_CARD_RESET,
+ 			       &card->work_flags))
+ 		mwifiex_sdio_card_reset_work(card->adapter);
+-- 
+2.47.3
+
 
