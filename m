@@ -1,180 +1,114 @@
-Return-Path: <linux-wireless+bounces-29065-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-29066-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [213.196.21.55])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2D984C66D75
-	for <lists+linux-wireless@lfdr.de>; Tue, 18 Nov 2025 02:34:36 +0100 (CET)
+Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [IPv6:2a01:60a::1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id 83FD8C66E4A
+	for <lists+linux-wireless@lfdr.de>; Tue, 18 Nov 2025 02:54:39 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 02177353EE5
-	for <lists+linux-wireless@lfdr.de>; Tue, 18 Nov 2025 01:33:46 +0000 (UTC)
+	by ams.mirrors.kernel.org (Postfix) with ESMTPS id AF889357DA0
+	for <lists+linux-wireless@lfdr.de>; Tue, 18 Nov 2025 01:54:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2A8F52DD5F3;
-	Tue, 18 Nov 2025 01:33:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7A992309F1B;
+	Tue, 18 Nov 2025 01:54:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="DGsllzeC"
+	dkim=pass (2048-bit key) header.d=realtek.com header.i=@realtek.com header.b="iGBmvwmR"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-qv1-f50.google.com (mail-qv1-f50.google.com [209.85.219.50])
+Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 162202F6593
-	for <linux-wireless@vger.kernel.org>; Tue, 18 Nov 2025 01:33:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.50
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C5EE230FC00
+	for <linux-wireless@vger.kernel.org>; Tue, 18 Nov 2025 01:54:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=211.75.126.72
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763429621; cv=none; b=eT/ixpvmWfr0FetlbBsfq14ZlFp+VrI8EUdqJXXL3HnwCaOGmskXNhDKBpE387Dwc59cROBMES4XW6IsALUhcLaW8UpQX+7ZAZ8vu6eBbbfz9tiBAcQea33dEOMvbeHk5x1HyMP5e4xtzZVZR3vwvwPpkZ5n1vqr2thBxB2CKPs=
+	t=1763430876; cv=none; b=D2Yn/l99VpN5OHCZ7Ffb0uIA3M+npQfDsnEuwrGsyaZmpSLMa6qzy74v1UW1wGhOH7PNl8FyMpILM/u9nwUwo3zTtnIOT0X1aSQKUVcKzaYxuoZYYTenyxPB1JVGac11RAkITY1U94TazvMd7QQni/jPagukbIPCQGUZip2dPMs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763429621; c=relaxed/simple;
-	bh=EaDA7R6DVAC3caD85wSgI0FDHY2jIQ8AA5ESbZa9QP0=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=T0LBFjWxwT0j9OIbsOJ+DH3vcctRfz/g2X2+cINotakNoz7hsHE+7vP8UyPwImcTh8WP/cXMoa/rM5/ZxPzQ9ABWdFS3GzOLbnXQB5Zug+tLH1EGQDbt6+O962AnhEDauFEChr1tzu71FE0/YwQX2DmiPvJ/ks50X2o4XZsdCDE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=DGsllzeC; arc=none smtp.client-ip=209.85.219.50
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-qv1-f50.google.com with SMTP id 6a1803df08f44-8845498be17so2299666d6.3
-        for <linux-wireless@vger.kernel.org>; Mon, 17 Nov 2025 17:33:34 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1763429614; x=1764034414; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=ikdHAo0H0R2rcJjr6KUHCBoyesYlheavNuP3/u1nKGY=;
-        b=DGsllzeCI+LqoDRcV3CbRTJNznR45LZGkAmkAtN5sLFaeCOhL19fa8sB4a3pcF64cj
-         /f/LCjGtsORN4HL70SqUxsBBtxMdi0Wk7p5cogX+V+w9uaOkvFdZ8Blka3lrKOd9pdsg
-         qafgmXFDg9TAE4sM+DDqE9HJNqUl8KqRdnuCcPE+Am92aCXKyGaCxcb1fE2poeLwN/lL
-         jAMu0/tFXVX8e7Puv06TzwrDd7sNtxtgM922Ah8Qn9Lx0MQ3d2qrJIbS9BLmsJz8EBE2
-         80+tFL2A/QjlRRdc7xTcAFLOGhpmdg+aZY9lLGQbosoC0ETY94LxkMvcC2/CMMQJzRLM
-         qSug==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1763429614; x=1764034414;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=ikdHAo0H0R2rcJjr6KUHCBoyesYlheavNuP3/u1nKGY=;
-        b=YPbvffJKMQ0gI9NRO8dTgHusQqH2GQ4ml/VwRaAUyy4hLMzR8jkr3R8vanzyoYxSb6
-         gp64YMqCIb8F7b9Iw4WHx4M0DiFJH4N9of5lzHbUiqPGr5I+YsQ+NRVi9/gUZ3NMubE9
-         o+EfCHXFqoHwv7II6XgCD5Q1WfDtjtuyNw/6wdci9BP8g4PA8gmqO+r9s/GJzj4+gEgI
-         gwog6/0tck96t9LOASDZRmSMmKc32ag9ynw0DLgTiSK/bbrScZVj2oqNyRXtSQ4dOrw2
-         fneEXhB1bglFvWUnRj+8w0cxZ41AEBSazhzmzr6G9oqBsoWBoKHzCorYsmqAnl+Q1xvG
-         wYNA==
-X-Forwarded-Encrypted: i=1; AJvYcCVzvqqVMheoWomvH/EPFBjMR6dQj4zGzUH4tM6fXJvgWGJtXYbAbKoukp5bMh81BQqCXv1vPVGEUC1/pW3YaA==@vger.kernel.org
-X-Gm-Message-State: AOJu0YwZMzkONyZNr6CV2z3+KGSJGqJ7XHBp5qi83gvN6//g80DT2/b7
-	Lok5PY7S1hyDtHP6rYbcaD+QLx/hh+x4B/xs/GdezJUPpR5NyKiMp3wsxtdSmhGL
-X-Gm-Gg: ASbGnctQAKma3vMDQNd1MDRzRxv/fHkvqOOiF2Qu6avzycryJfB8SfhWHNngiLGYBGq
-	cxJdfz5bJcAVio7aUrqz347HmegfAEDlrkK1qJGHg3DuG5Lk9Au/ZD8fNUB5TcOOYDpIJopCouy
-	xZ6G6kINKawSweDKtoiLUHlOD9M0srDGhYFHn4S0AFwk0NxwYcUAKdjkQaqskrex4qMLYES0NL0
-	WzIlwwINbBX2zSQ1ZvfFHZzMpXBbkNTIgeeunc4sqx6R1CCsTqcmTjDPJ1oI9/sLeX7vLSEGjuM
-	VkPfwXHsiG1/Yf/J0PMOZxmx94FUEy9rc09AKsmviroQ651CoBWphIpVUG+L+RDxsU5UnqmL5oV
-	gRuBfmZR2RPXZLdr2SamZ15ZEi0QSuLEwcP0TdGQUesE9YM5xiTbpQvR5m7y/queTBN4nu4Worq
-	2t8kWtZDqyfauQajvz84yRz6s/0kHMfO9ofXu6skanD/pov0Ms+/QI+v2jVwqZTdkxoDfoQ/HFL
-	TUwAoLAPOzDm2wJU2aASYquynj/xF7pS3pUIgn4BQ==
-X-Google-Smtp-Source: AGHT+IHOadgjPaHIj+5EwBNHBV87PTaNQIJ2DMf8yS3mtjD3oroeoRJFO64v1ns0jok8VQkO611hQA==
-X-Received: by 2002:a05:6214:76e:b0:7ef:4bbc:7767 with SMTP id 6a1803df08f44-8829269e0eemr232607936d6.52.1763429613643;
-        Mon, 17 Nov 2025 17:33:33 -0800 (PST)
-Received: from seungjin-HP-ENVY-Desktop-TE02-0xxx.dartmouth.edu ([129.170.197.94])
-        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-88286318333sm104928426d6.24.2025.11.17.17.33.32
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 17 Nov 2025 17:33:33 -0800 (PST)
-From: pip-izony <eeodqql09@gmail.com>
-To: Hin-Tak Leung <hintak.leung@gmail.com>
-Cc: Seungjin Bae <eeodqql09@gmail.com>,
-	Kyungtae Kim <Kyungtae.Kim@dartmouth.edu>,
-	linux-wireless@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH v3] rtl8187: Fix potential buffer underflow in rtl8187_rx_cb()
-Date: Mon, 17 Nov 2025 20:32:59 -0500
-Message-ID: <20251118013258.1789949-2-eeodqql09@gmail.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <aa04fd38-a1df-4d16-bf16-e24a848a00f8@web.de>
-References: <aa04fd38-a1df-4d16-bf16-e24a848a00f8@web.de>
+	s=arc-20240116; t=1763430876; c=relaxed/simple;
+	bh=AKJ4nMQV1pK9UQnuUQijWNtrojD7ITvOFJ3jcU4sJXg=;
+	h=From:To:CC:Subject:In-Reply-To:References:Message-ID:Date:
+	 MIME-Version:Content-Type; b=jTjTXFvmcMEhUyI5irlrhgC56oAMqv87EV1QWhXUe3xMyggtu33FMLhej4szF5YmaKghiA2yPX2mbbfB1h0CXxDfmpugmgC/s41P4TTM77PUwZ340JGa7hj7uhezgkXvCZX7h6lAgK33FAVYML0Rix37/VajyUJnMFPi4D63eds=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com; spf=pass smtp.mailfrom=realtek.com; dkim=pass (2048-bit key) header.d=realtek.com header.i=@realtek.com header.b=iGBmvwmR; arc=none smtp.client-ip=211.75.126.72
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=realtek.com
+X-SpamFilter-By: ArmorX SpamTrap 5.80 with qID 5AI1sUKE1577460, This message is accepted by code: ctloc85258
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=realtek.com; s=dkim;
+	t=1763430870; bh=64VVPznOLBd+xfSjWjpv0O1axlTq4xfivjJCCUBhkEk=;
+	h=From:To:CC:Subject:In-Reply-To:References:Message-ID:Date:
+	 MIME-Version:Content-Type;
+	b=iGBmvwmRNqQNuEc1zc8iYoxx+t6TDfNEcnWYQ754Q/XTggv/kExhEzzo+qp6ahWbc
+	 cuLOeklmcb9zN+6c/XoE6FSTsKxltiV9iGm5GpzFH6mpqw36C88pKG0zngcdBMZl30
+	 b9ybpTt2NcWdEMcLInSGMNVcdxuJiVwqb+ZLQeiGbGq7u3LFxrMkxo+diLhWE5oDWG
+	 VY9xaAln0an4WHy6T+gYqrZTynbUWaL5x2YkCT5pv0uWKABSXqa47nD54lslNeio4Y
+	 ilsZSGAg58rpqHeMxWxX8BYQT0mUYvfke2788Yw8HHft7dCY8dcWn3ZQi4k4Dg+GAM
+	 C8avauZSyITug==
+Received: from mail.realtek.com (rtkexhmbs04.realtek.com.tw[10.21.1.54])
+	by rtits2.realtek.com.tw (8.15.2/3.21/5.94) with ESMTPS id 5AI1sUKE1577460
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK)
+	for <linux-wireless@vger.kernel.org>; Tue, 18 Nov 2025 09:54:30 +0800
+Received: from RTKEXHMBS01.realtek.com.tw (172.21.6.40) by
+ RTKEXHMBS04.realtek.com.tw (10.21.1.54) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1544.27; Tue, 18 Nov 2025 09:54:30 +0800
+Received: from RTKEXHMBS04.realtek.com.tw (10.21.1.54) by
+ RTKEXHMBS01.realtek.com.tw (172.21.6.40) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1544.27; Tue, 18 Nov 2025 09:54:29 +0800
+Received: from [127.0.1.1] (172.21.69.94) by RTKEXHMBS04.realtek.com.tw
+ (10.21.1.54) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.27 via Frontend
+ Transport; Tue, 18 Nov 2025 09:54:29 +0800
+From: Ping-Ke Shih <pkshih@realtek.com>
+To: Ping-Ke Shih <pkshih@realtek.com>, <linux-wireless@vger.kernel.org>
+CC: <gary.chang@realtek.com>
+Subject: Re: [PATCH v2 rtw-next 01/14] wifi: rtw89: flush TX queue before deleting key
+In-Reply-To: <20251114060128.35363-2-pkshih@realtek.com>
+References: <20251114060128.35363-1-pkshih@realtek.com> <20251114060128.35363-2-pkshih@realtek.com>
+Message-ID: <9529871b-d080-4000-bdf7-8922aec13143@RTKEXHMBS04.realtek.com.tw>
+Date: Tue, 18 Nov 2025 09:54:29 +0800
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
 
-From: Seungjin Bae <eeodqql09@gmail.com>
+Ping-Ke Shih <pkshih@realtek.com> wrote:
 
-The rtl8187_rx_cb() calculates the rx descriptor header address
-by subtracting its size from the skb tail pointer.
-However, it does not validate if the received packet
-(skb->len from urb->actual_length) is large enough to contain this
-header.
+> From: Chih-Kang Chang <gary.chang@realtek.com>
+> 
+> In the wpa_supplicant rekey flow, it sends an EAPOL packet 4/4 through
+> nl80211_tx_control_port() and triggers wake_tx_queue() in the driver.
+> Then, it sends nl80211_new_key() to configure a new key in mac80211.
+> However, in wake_tx_queue(), a workqueue is used to process the TX packet,
+> which might cause the driver to process the EAPOL packet later than
+> nl80211_new_key(). This results in the EAPOL packet 4/4 being transmitted
+> with the new key and IV, causing it to be dropped by the AP. Therefore,
+> needs to flush TX queue before deleting the old key to ensure that the
+> EAPOL 4/4 packet is transmitted using the old key.
+> 
+> Signed-off-by: Chih-Kang Chang <gary.chang@realtek.com>
+> Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
 
-If a truncated packet is received, this will lead to a buffer
-underflow, reading memory before the start of the skb data area,
-and causing a kernel panic.
+14 patch(es) applied to rtw-next branch of rtw.git, thanks.
 
-Add length checks for both rtl8187 and rtl8187b descriptor headers
-before attempting to access them, dropping the packet cleanly if the
-check fails.
+3a12581fc292 wifi: rtw89: flush TX queue before deleting key
+92db331de6de wifi: rtw89: fw: part size to download firmware by header info
+a2a64fe23463 wifi: rtw89: mac: separate pre-init code before downloading firmware
+12e84effcb6d wifi: rtw89: phy: calling BB pre-init by chips with/without BB MCU
+d375434cbcea wifi: rtw89: mac: remove undefined bit B_BE_PPDU_MAC_INFO
+7fefea11001d wifi: rtw89: mac: update wcpu_on to download firmware for RTL8922D
+9df55e8d41aa wifi: rtw89: phy: consider type 15 in BB gain table
+5607a141bf28 wifi: rtw89: phy: ignore DCFO if not defined in chip_info
+1c2ada09628b wifi: rtw89: fw: print band and port where beacon update on
+aa8d1a8805bb wifi: rtw89: align RA H2C format v1 for RTL8922A
+239dd70d776c wifi: rtw89: fill addr cam H2C command by struct
+fc2e8c873f46 wifi: rtw89: add addr cam H2C command v1
+9dab26b9fa45 wifi: rtw89: update format of addr cam H2C command
+09afd209a844 wifi: rtw89: correct user macid mask of RX info for RTL8922D
 
-Fixes: 6f7853f3cbe4 ("rtl8187: change rtl8187_dev.c to support RTL8187B (part 2)")
-Signed-off-by: Seungjin Bae <eeodqql09@gmail.com>
 ---
- v1 -> v2: Addressing feedback from Ping-Ke Shih
- v2 -> v3: Address coding style feedback from Markus Elfring
-
- .../wireless/realtek/rtl818x/rtl8187/dev.c    | 27 +++++++++++++------
- 1 file changed, 19 insertions(+), 8 deletions(-)
-
-diff --git a/drivers/net/wireless/realtek/rtl818x/rtl8187/dev.c b/drivers/net/wireless/realtek/rtl818x/rtl8187/dev.c
-index 0c5c66401daa..7aa2da0cd63c 100644
---- a/drivers/net/wireless/realtek/rtl818x/rtl8187/dev.c
-+++ b/drivers/net/wireless/realtek/rtl818x/rtl8187/dev.c
-@@ -338,14 +338,16 @@ static void rtl8187_rx_cb(struct urb *urb)
- 	spin_unlock_irqrestore(&priv->rx_queue.lock, f);
- 	skb_put(skb, urb->actual_length);
- 
--	if (unlikely(urb->status)) {
--		dev_kfree_skb_irq(skb);
--		return;
--	}
-+	if (unlikely(urb->status))
-+		goto free_skb;
- 
- 	if (!priv->is_rtl8187b) {
--		struct rtl8187_rx_hdr *hdr =
--			(typeof(hdr))(skb_tail_pointer(skb) - sizeof(*hdr));
-+		struct rtl8187_rx_hdr *hdr;
-+
-+		if (skb->len < sizeof(struct rtl8187_rx_hdr))
-+			goto free_skb;
-+
-+		hdr = (typeof(hdr))(skb_tail_pointer(skb) - sizeof(*hdr));
- 		flags = le32_to_cpu(hdr->flags);
- 		/* As with the RTL8187B below, the AGC is used to calculate
- 		 * signal strength. In this case, the scaling
-@@ -355,8 +357,12 @@ static void rtl8187_rx_cb(struct urb *urb)
- 		rx_status.antenna = (hdr->signal >> 7) & 1;
- 		rx_status.mactime = le64_to_cpu(hdr->mac_time);
- 	} else {
--		struct rtl8187b_rx_hdr *hdr =
--			(typeof(hdr))(skb_tail_pointer(skb) - sizeof(*hdr));
-+		struct rtl8187b_rx_hdr *hdr;
-+
-+		if (skb->len < sizeof(struct rtl8187b_rx_hdr))
-+			goto free_skb;
-+
-+		hdr = (typeof(hdr))(skb_tail_pointer(skb) - sizeof(*hdr));
- 		/* The Realtek datasheet for the RTL8187B shows that the RX
- 		 * header contains the following quantities: signal quality,
- 		 * RSSI, AGC, the received power in dB, and the measured SNR.
-@@ -409,6 +415,11 @@ static void rtl8187_rx_cb(struct urb *urb)
- 		skb_unlink(skb, &priv->rx_queue);
- 		dev_kfree_skb_irq(skb);
- 	}
-+	return;
-+
-+free_skb:
-+	dev_kfree_skb_irq(skb);
-+	return;
- }
- 
- static int rtl8187_init_urbs(struct ieee80211_hw *dev)
--- 
-2.43.0
+https://github.com/pkshih/rtw.git
 
 
