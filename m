@@ -1,230 +1,235 @@
-Return-Path: <linux-wireless+bounces-29109-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-29110-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [IPv6:2a01:60a::1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id AF5D1C6B8B1
-	for <lists+linux-wireless@lfdr.de>; Tue, 18 Nov 2025 21:15:41 +0100 (CET)
+Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [213.196.21.55])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1BD3FC6BD88
+	for <lists+linux-wireless@lfdr.de>; Tue, 18 Nov 2025 23:22:10 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 3176D3526B1
-	for <lists+linux-wireless@lfdr.de>; Tue, 18 Nov 2025 20:15:41 +0000 (UTC)
+	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 915AF35665E
+	for <lists+linux-wireless@lfdr.de>; Tue, 18 Nov 2025 22:22:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8C275285CB2;
-	Tue, 18 Nov 2025 20:15:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3EFA1306491;
+	Tue, 18 Nov 2025 22:22:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="gwjshZPO"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="V7az9MyL"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.11])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ej1-f52.google.com (mail-ej1-f52.google.com [209.85.218.52])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E50FF2DFA40
-	for <linux-wireless@vger.kernel.org>; Tue, 18 Nov 2025 20:15:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=192.198.163.11
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763496937; cv=fail; b=qwxjU33w4sDpWlMl7DLIalUNAwNQRNBApVH0v8W/zOJM2tW4yqpYDvSoBXFWMc3c+44M5yFP9v0NbeNY9Ck4JWgfLkY0Nzb9otUyQrwOzdWzFq3e6/gdFQfJhnwtlqypsp1LPekrb+WAdslq8hfkuqLEaLEsJbsvLtidMlg5wd4=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763496937; c=relaxed/simple;
-	bh=y0BhEQ53P5cGrP8J+AB6sOyEMFJoc7Vw63/vI+8XayY=;
-	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:MIME-Version; b=gBqV0WIqve1te9z1jt/StXc7k+qck/Zfmqr3kw3yMgMt33MnPXKLJovnRgINgVkbvuJjcNQ29KB19kAn3WHFdWx+Acpj0DKVA4aLBOQANi40woYQBlAcNDuQyMmgDsbBH0dXbuaK8iBa/lsByatrKn+t4Zd+/Eua/ALybc4tsoI=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=gwjshZPO; arc=fail smtp.client-ip=192.198.163.11
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1763496935; x=1795032935;
-  h=from:to:cc:subject:date:message-id:references:
-   in-reply-to:content-transfer-encoding:mime-version;
-  bh=y0BhEQ53P5cGrP8J+AB6sOyEMFJoc7Vw63/vI+8XayY=;
-  b=gwjshZPOHDLR2H6NXxhdZI8JKJMQKAudPRbZzCeWblMnvSZkRXP04Tp3
-   ZiRPgmahAFuSVSHQFweYw9v+vTpsbqj1++KSyZxsc30C19HOpPGf0i/5V
-   PbeQd2kYQoCkx/Ug0GuJuJyAoNV40CX7zzZOU4qG1s6dTT4+akV8x+iMo
-   xMvHw/QO2VfF1BoxAxUvmNMFNwHhpmzIv4KsBZNtJWvIzH5jd32hPIyTL
-   l4iRwUoi17fvtMMHA5jiRPTFsyouBg/vEDxbCLW/TyKgKIHH6XyyVuJlk
-   YQnYludshde5bGR4fIHJ3u0eGVDL2KBvHYes+mt5JxffzkuLT2c1W9jTJ
-   g==;
-X-CSE-ConnectionGUID: 4xQ/4c8BRyivEVCfCFzw+g==
-X-CSE-MsgGUID: R0e5esnPRmGCltUr+CpRZg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11617"; a="76141674"
-X-IronPort-AV: E=Sophos;i="6.19,314,1754982000"; 
-   d="scan'208";a="76141674"
-Received: from orviesa007.jf.intel.com ([10.64.159.147])
-  by fmvoesa105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 18 Nov 2025 12:15:34 -0800
-X-CSE-ConnectionGUID: 1EtKlID9Qj6BEMp/5F5v+w==
-X-CSE-MsgGUID: E6Kw4PSgRNW7EDr0DyXQsg==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.19,314,1754982000"; 
-   d="scan'208";a="190887448"
-Received: from orsmsx902.amr.corp.intel.com ([10.22.229.24])
-  by orviesa007.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 18 Nov 2025 12:15:34 -0800
-Received: from ORSMSX903.amr.corp.intel.com (10.22.229.25) by
- ORSMSX902.amr.corp.intel.com (10.22.229.24) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.27; Tue, 18 Nov 2025 12:15:33 -0800
-Received: from ORSEDG903.ED.cps.intel.com (10.7.248.13) by
- ORSMSX903.amr.corp.intel.com (10.22.229.25) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.27 via Frontend Transport; Tue, 18 Nov 2025 12:15:33 -0800
-Received: from BL0PR03CU003.outbound.protection.outlook.com (52.101.53.19) by
- edgegateway.intel.com (134.134.137.113) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.27; Tue, 18 Nov 2025 12:15:33 -0800
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=hgC0K1FxmqYrse2dLbWEigL4JBDP7eat0fSLRopcbW+Lxs8948UYWUSYmDN2E/4xVVKTAYBnKmrVU9MvRfG8i2qh1fmahrYziQTQLsQUNyuvyhD7HhK2gw69izdHNR7scHSSoeAmHeRDQO7dmVw5S3LFDNTT4gEnnxOyGHszLkxHXxnTgnyDBq+abiA4rjbR7EmQyx/lE+CiwfcezTjP+HMMRfEHUFFJfMgA7bRFIe3yWvciWvWF7meFd0743xb+F/yNYjvqDhrH2NtJPP297IHPU2FWoeM0as5q2vQRQcH6+v1x4URElRgIJGDggzgrOMxByodUZJIyCUuoVBVluw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=y0BhEQ53P5cGrP8J+AB6sOyEMFJoc7Vw63/vI+8XayY=;
- b=PjZPNBwsz0dcS/qcbK7GoBa43/MS7uZCzsSDKdgolL683k15AAbyGXQlqPPFphpPv/Al7rw9BeLJc0vtWpWX4GAZTDTrRaabjlQgZERX3+tsz6Nad0lKwFktyM2U8Jp6wpRNhrCAACm6NIGuNxdMRqnBSy+42ANOPmpapmDIPlRP7sI1JkXJYwOK6JAFDgT6MypaOzyrVmQExErLy+8VjCABQVT3NO00GLHrjnpwv8fLudoOsoVJiv6ExXzZidlEtY219B2AFzGJVlJPcclRD8jl2hBDkoMBNqs4KkCcAcVSnzoQqhdVo4cd51tHLtZiaFxvkxGXaEzupaS3DhaLqQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
- dkim=pass header.d=intel.com; arc=none
-Received: from DM3PPF63A6024A9.namprd11.prod.outlook.com
- (2603:10b6:f:fc00::f27) by DM3PPF195D11F0C.namprd11.prod.outlook.com
- (2603:10b6:f:fc00::f0c) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9343.10; Tue, 18 Nov
- 2025 20:15:31 +0000
-Received: from DM3PPF63A6024A9.namprd11.prod.outlook.com
- ([fe80::eed8:bee8:188e:b09c]) by DM3PPF63A6024A9.namprd11.prod.outlook.com
- ([fe80::eed8:bee8:188e:b09c%8]) with mapi id 15.20.9320.021; Tue, 18 Nov 2025
- 20:15:31 +0000
-From: "Korenblit, Miriam Rachel" <miriam.rachel.korenblit@intel.com>
-To: Ally Heev <allyheev@gmail.com>
-CC: Johannes Berg <johannes@sipsolutions.net>,
-	"linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>, "Dan
- Carpenter" <dan.carpenter@linaro.org>
-Subject: RE: [PATCH iwlwifi-next v3] wifi: iwlwifi: fix uninitialized pointers
- with free attribute
-Thread-Topic: [PATCH iwlwifi-next v3] wifi: iwlwifi: fix uninitialized
- pointers with free attribute
-Thread-Index: AQHcUuJk+q5VR/BuhUedH4g9Twd1JLT46dvA
-Date: Tue, 18 Nov 2025 20:15:31 +0000
-Message-ID: <DM3PPF63A6024A9184DD38E41273FC35C7DA3D6A@DM3PPF63A6024A9.namprd11.prod.outlook.com>
-References: <20251111-aheev-uninitialized-free-attr-wireless-v3-1-26e889d0e7ee@gmail.com>
-In-Reply-To: <20251111-aheev-uninitialized-free-attr-wireless-v3-1-26e889d0e7ee@gmail.com>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach:
-X-MS-TNEF-Correlator:
-authentication-results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=intel.com;
-x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: DM3PPF63A6024A9:EE_|DM3PPF195D11F0C:EE_
-x-ms-office365-filtering-correlation-id: 9fcfe9c7-793f-4af7-e8b1-08de26df3931
-x-ms-exchange-senderadcheck: 1
-x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam: BCL:0;ARA:13230040|366016|376014|1800799024|38070700021;
-x-microsoft-antispam-message-info: =?utf-8?B?MXpjOGVxVkd5ck5Tc3U0a3lXVVpVd3FYaDZKSURCKzhkMDJDZVZnVzJHL1Na?=
- =?utf-8?B?aUdUQWVTcjlBU3A1NWoxNmgxSlRsRzJWVlg5S2ZBaEIzUnNIcWJXajMyamhH?=
- =?utf-8?B?M3dGMUpBNWlSVkpaK08zMHFGVHJQNVFBc0grNzRlM3BDZ3BKR1NUU09vdnBK?=
- =?utf-8?B?UklYczlMWFhQMXVOMU13bU5Hb3owQTAvUWN2RkVBUE5YVGlyQkNhcHNGM2Fm?=
- =?utf-8?B?ZlpQUFdKdXUxbTN6eVFuSU1aZXdKc0JrVk1yZUpIZFVOVFVtREtoeWZPWjRO?=
- =?utf-8?B?ZHFLdGRvMG81dXkwNVdVbENsZytLUzNLRXMzRWxCUTRzOFpZR0gwSVVROEVE?=
- =?utf-8?B?dXgrY3QvWDgreVVrYXlQd25JS25qQ0J0cG5rV3VoOS8wemZaZzZVbjhTa3RL?=
- =?utf-8?B?VXJqTVJWR2tNQ0dvVTliQUcyYWgyc2t5ak1jTHlwbWoxTUNKUlFaOUhPQTI4?=
- =?utf-8?B?cmdSUkVMS0trWmdFUzJzMk9FZjNpblVIRlZzR2xvSVpxMUxsaVBVSjlRVVln?=
- =?utf-8?B?dmRXcURhQi9MV3NvYjVIZjdGWGZQb2NFVklSaEJIMkRWaW1udElHQUNGSDgr?=
- =?utf-8?B?cGV2RENIc1ppUmt4T3dqMkdjY1RXby8yR3lncVNROWFlNUJvV0k3eVpkeWNS?=
- =?utf-8?B?WUZReG1sYm1LYitDQWEwZEVaSm0xb1ZlRmgwalJuQWdmS2FWM3dmbEt4Wll1?=
- =?utf-8?B?QXB5QUJuTEJaNEFRSFp1VkRoZ3psQUdVanIrNnRQenExUE53SHBkMC9KblpG?=
- =?utf-8?B?ang2VnJoMys4SEZ3RHp1SFh6R0ZmcTlTc1BYZ2RJTDZYWFlsdnI1bjBrYnFj?=
- =?utf-8?B?VXFvZmxlZzdXNXNFRGhuRndzRjZ4YnF4Ymh4QjRKdmxMMXR1cVd0eWpuNUdE?=
- =?utf-8?B?QlkyQ20xSkpTYjM5RFZxYWxxRWVKcFU5MmFnRVhYenhKUlMraFNPVWxBOFR4?=
- =?utf-8?B?K2dHN0NZMGlqdWNwU2I2RWxLUHBFYURRMnU3UVFPTzl5UFliQVN2SVZKV2Nm?=
- =?utf-8?B?ZkJCMnNDanNEd2R5OUsvZE1kUEdWU1NjQldOSjFyZko0Y3BISFdieDk0aDJU?=
- =?utf-8?B?WHRRajl3b1Nod1hLbGViS29qcE1sU2o5MjRnYUU2UUZ0RkNmL1haR2lXWUFW?=
- =?utf-8?B?VTIzViszMWsvWXpDazVkR1llemJScEJlb2pXSzc2ZFpEUWlJU0pxeEYrVjB3?=
- =?utf-8?B?eGwzTHZjeTdQTUh2TTJHMG9oaFNYRmY4bngwUE1FSitubU1xbi9YVmEyTlha?=
- =?utf-8?B?RXRRQnovaWtzaW5ZTHdKZzdOU09RdXp3Vk02dVJBa05sV1RKUlhQMk0wMXl6?=
- =?utf-8?B?K1kwVm9lR0ZEdFF2TkRNV25xVjlFU0tMS2UxaGtFMytvSnhrTUwwZm95eHJK?=
- =?utf-8?B?cEhVTW55Sld3aE1TQ2YrNE5rL09Da1lzQ2VXcmVWd0lzYVBxOUdpSytoM3pT?=
- =?utf-8?B?MDNWbVFYc3Qrd2tQeGVBb29QN0N0N2NBQmdmdUdPM28zU0t0bVlpZlVXR0Fq?=
- =?utf-8?B?Vkd1RFhOVVFtaUwvMjlkWWpTWTkxRGxJMTdoSmMyL3UyVnlLblM4SkRKZHJj?=
- =?utf-8?B?TXVsM3NGUHhiMjNCZUlCVEYzSFl4enpCdmgxOHZlM3hNdDRjbUVVR0ZsSDV1?=
- =?utf-8?B?cmtoK2pveFNva1MwR0crTHFSV281WXVwT2p6TmpIaHZvYnN3bVFqRkJoQ203?=
- =?utf-8?B?bGhnMm5zai8xbHZPT0V3SU1JRytKUG8ydVFaekluNTZncU5Sd0pnVCtORkxD?=
- =?utf-8?B?cHJuY2lsNXNZMXVDUFQrak5ZNGIyVEtFU24vWVVTU3pydnVzZnNNNlpLN1ZE?=
- =?utf-8?B?dmlPbk41V1gyeGtrTHZyTW04WUZMOHpRUUN3UWxWeGJIcUZSeUtvSFhlOS9T?=
- =?utf-8?B?dWtjcU1IU0VReG1RZVpIVksxMEFsRHViSkNtbThKUlZtcU82SWJKaW1sbmxq?=
- =?utf-8?B?U3NwS0x1K3VzY2FVNXlwUTFYTmpTaUl0Qm5uZnVCWlFpanVyL3FQZ0V3dkxy?=
- =?utf-8?B?RVdyUTFuRDJKVm92bGF5SGdzNWNGekM2Z2xvNHNkcnN0Vkx2ZVNIWHhsZk45?=
- =?utf-8?Q?hfsAno?=
-x-forefront-antispam-report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DM3PPF63A6024A9.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(376014)(1800799024)(38070700021);DIR:OUT;SFP:1101;
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0: =?utf-8?B?MDMzQ1JubUNFYytLdnJhM2dMLzIvaXEwM2loNVk2eTJyZDFiaWQxcGczS3hJ?=
- =?utf-8?B?VHBwUTYrdHQ5Zm01ekVPL2paMm5TbWJhVTFoSUdrUkRuYkpZU2VYazdGVFlM?=
- =?utf-8?B?SFRGNUhwbHZMWUhaeHptZ0JzUHdLYTJneDZtWENQMVlNSkJCOWhJVTNXZmlW?=
- =?utf-8?B?cHVZTGI0cm1Vd3JTemN0ekJRWVkrTitBem91S2NWYW1uTW5EdnVHb3Q0S0Jr?=
- =?utf-8?B?NEpuY09tdnQzdlR6d05FZ0hINW5DNld4SjlCSFRhVnJSL0NSbnFVT1JzdDlT?=
- =?utf-8?B?Sm5XeUdwNHdKRTh3Q3V1UHIzTGtsaHdzWUEzbjhReDQ0QmdBK1QzNGl6M0l2?=
- =?utf-8?B?UDNHcG5DcHM0Y1lqYUdFcG5qNVJrQld4dmQxQ09md2NEU3VOc0dEL045dGJT?=
- =?utf-8?B?cEZiTHJOazY4WHMzK2s1Ukt1UGJpWkF0SVRodWNTSDc3VlA2RDQzZzhhRnhn?=
- =?utf-8?B?T2dCeXpicFVpL1B5Zkc3U1NXOTJ3MXJuVlJsSGxBWTM5azRHK2d3MW1MY01u?=
- =?utf-8?B?RHhYc0lweDVqYlZHcGZjSmZHejVyVFJPMGkzNG1nZFpjcE9zTWhWMzBnbno4?=
- =?utf-8?B?dE5xYkpaa211UkF5cm1Takk5aFVuM1ZsK1dQZDhXWElXRExiaW51VC9nNkM4?=
- =?utf-8?B?M3lhaDhvNmQzYjJ6TkwzYzJ2YktsZ1BpNkJncE4xb3pyNENPZFhmY3k1aXR5?=
- =?utf-8?B?UmtOQlBjUlI2UklRa2NZeDEwRC9NMzAxS1pPK3Z3NXNzRzdDYmVDZm9vSkJN?=
- =?utf-8?B?ZXVXVUREY0tLQUZDeEplV01TVWx1YjRuSTVNRDJaMC82bUJWTjdqSWlIY0pR?=
- =?utf-8?B?R0xjMmRsTW9nUUdGS2p0UDEraitTL3cyc3FTUEg3Z1I2VzJ2bjBiUG5hNDA0?=
- =?utf-8?B?WUx6TVhMdzIzTHlwOU52aFVNOXlzQll2bTYrWUlxdGZtK1E1c1NxMjdTNmY5?=
- =?utf-8?B?bEhybnd4MW13Z1ZCUHJTN1dpTnRQNCtFZnUxQ2VOT1d6ZVk0VnZyN1RVZ3Y1?=
- =?utf-8?B?N2xlYjYrU3J5dWFQVlJqTWpwdzdwdTZMOFpGZ2srNkdzaWN6K25XZWZ2aTNR?=
- =?utf-8?B?VTVPRmladGwwekZ2QWx3VEVzTDd4VUhXQk5FWTBFSTNEcnk4eXdFZDVjd005?=
- =?utf-8?B?cGt0YlR4TS8xMk44bkhrbnROaGRKSVk1cm5JcjZ4VVZKY0FqZ2RQYVRQUDcz?=
- =?utf-8?B?dzZiRkxHaGpZYkI2QVZSbnNIR1VoY1JXTTl0ZkVBR0R4TnBjKzZRMHdXZWc5?=
- =?utf-8?B?aGR2akRjOEtYaE96Zm4xWFl4UTJORHVnemhaUlBkcG5wNFBPV1duN2dRak0r?=
- =?utf-8?B?eDFBWWpWeG1ZTG40Y3FWcmlZa0FOK0pPL2wvemVLZ2pWZ2JZaVVCM0RUTDlq?=
- =?utf-8?B?K0QzNWZDY0xKZTZLcHFyRWI3MzVqN2JGSldGcDhBQW9oVW0xSThNcnNFZkF4?=
- =?utf-8?B?aU43ZUs3QXlZRmVLdGdQait1OUtQRmIwZlRRYklRMHVJdm5TcVQ1Z1hhSVFi?=
- =?utf-8?B?NlhabzY4MlpIMjZOYlEzM1VHenExdGM4Qk9LeU1JMXQ2M1dWVjlXTis1a1hy?=
- =?utf-8?B?d2pPYkVDd0w0N01nUDhxTmQxRnJZN0x0a0tubXVVNFFmUlVMUFI5Q09yc1Jo?=
- =?utf-8?B?VXNiMjJuTlZOSEcvdU02NytVNWdVaHJXQlRSbXdPajJYNVR3YytDckpKZzBq?=
- =?utf-8?B?NkcwSlMzWk1YRVNqd3RDbW9PVXlHMUltLzdhRVZlY1RPZjdMckF6TzdsaU1m?=
- =?utf-8?B?QlllRHFMeUttWTNFcmhxclIxZVNnWXo2RHFvVHloQU51c3h4ZGI4QjdzYW9v?=
- =?utf-8?B?dUE5Q2RaOXZtR3d2Z2FYa2VMTkt4UUlPMUVrOTFXOE5LTUJDZnVhYnFYeDBl?=
- =?utf-8?B?bjFXU1pJaEMyWXFPelFFdlpRUU9qV3RlY3RzM3EwRTk1dC9CZ05zSklSbDA1?=
- =?utf-8?B?RXY0cDMrYUhxNy9RMXI2QUdLeTNFdE5CSU4zUFo4dXNqZGRIL0R3YUZFMTRV?=
- =?utf-8?B?QXJsZUdWUW9TVDhkbmN6K21sT3R2RUNZK2xsa1l5L21Mc041WXdERzRHMUpN?=
- =?utf-8?B?SVp3bittNFdGTzNNbXFIU2F0d0FRM2c3ME9oZGxFZTZBbWhoSWF1cTR6eEFv?=
- =?utf-8?B?d0p4d3hOUXg0SFZaYUR5L0VyVkkwNnd2M2IvWHpwMU5ieHNhNE1pNy9zbE5j?=
- =?utf-8?B?aGc9PQ==?=
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3B2871FA859
+	for <linux-wireless@vger.kernel.org>; Tue, 18 Nov 2025 22:22:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.52
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1763504524; cv=none; b=Vb7eGs7uOm2mFu937CYQHKyGNdaoYYPT2ziLr1z7ExfGF9JcdaT/j2BAySgNqVYhTPlCEBn+lY5eeai+JycctPL1JEcQ2sHGkM0P/Jw77CZC1k8k7PznwQcTqQjnBrv/8n9Km7V7SVrg8tqVVw9XPdeg7t/49L1TZPnz/rocqkk=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1763504524; c=relaxed/simple;
+	bh=z6yFFwhrHOIxjJWRBkAE7cyvYJWL9aORQeiGelJ5bfs=;
+	h=Message-ID:Date:MIME-Version:From:Subject:To:References:
+	 In-Reply-To:Content-Type; b=OB/pdqGUSfp8U6D/G0o/SjfihNO4u87umdPX3SuOzqjGssWHyqXCmBC9vSUze/6B1OWzfgr3hyGKazGo2Z1Rz7GmOw0QN2k0750+FPlAaMIcba3tQ7MFh5CMaNQGsAyYpj+h+omstOuOFhbxppa0gPTVE+Wsh4mUzcTdq9jlSxE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=V7az9MyL; arc=none smtp.client-ip=209.85.218.52
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-ej1-f52.google.com with SMTP id a640c23a62f3a-b735b7326e5so52350266b.0
+        for <linux-wireless@vger.kernel.org>; Tue, 18 Nov 2025 14:22:02 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1763504520; x=1764109320; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:content-language:references
+         :to:subject:from:user-agent:mime-version:date:message-id:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=vV+Md40IUmCQcjHkc+OBMWNKB5/p6nGJYYGiOm4LLCA=;
+        b=V7az9MyLbEAlU0CnzzhjsCWjjsaU2apG5/wj0ly6jMkuX1ULq6KHxjBeFDt0gY3zMp
+         LRTK8hja5L4jSdzIJY8FOenG9tH8l6o1XgeJ938aO4hx2gylFXGoIwdihEpzoGpkktrY
+         tbXY4CDtgxwXM95vfQIyDFL7rZgSJc6EpARTUhoRTElnySxbVKWDIp8p57emnfT4LcgT
+         8W/ijjho8lC1kNodm7Z4KuLW3xZh44jfeMMM1ax9T87aGCQ12OTOFlaPm716f2XObh4q
+         aiPGMgerQWi4BQMVtzMScWpRm9gXuJhc9k4EMIsqt/Cnvvo7xdJf+SSuKz3z6p0gta49
+         g3Iw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1763504520; x=1764109320;
+        h=content-transfer-encoding:in-reply-to:content-language:references
+         :to:subject:from:user-agent:mime-version:date:message-id:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=vV+Md40IUmCQcjHkc+OBMWNKB5/p6nGJYYGiOm4LLCA=;
+        b=iZEx0YaGWtqxSqweC7CBdWwO2JkOQy9BIV8rNZTMeVbqKDpuZSVPiFKKV0S/cqVoRL
+         +ZdHk+9cNaF6J+W9Tjr92WoMy6+aDJGawwa0MGvn1Gckoi3fIpfOlaYvpRK0beDuwdaM
+         nMGaKNYt6bPIl9JjOQNmWnF88t6pnasa917ZXYp7+tONLuUFXhIzGHwYy4lewfXOOOHc
+         /6wrzfp4KeJWhIOPiZaGXOB7hshzg07kQZ4rA3V2GbZFt7yBpWS/LmezzhhJ08y7Yeog
+         xC0PuagwRw+oHIV8+Xv7XBkskGyBIMsBwL9jqOdlwh4yJKfxjcv8lr2GFuhT1mW/pxwu
+         BSKQ==
+X-Forwarded-Encrypted: i=1; AJvYcCVPlWXEIxpWJzaJSaAVoAThPVM8Qh66jUv3GQ9lkmskrQUdmw0192S2HEl3yZHAVjJxg4cZ50dZqiyW51Eudg==@vger.kernel.org
+X-Gm-Message-State: AOJu0YwspkZkX2ocmj0WCs7CQQ5WSkmwSTb+dMcbPPeN1psxA7Mc0HSV
+	TRwmDQuQ7virbyLK3DI10L1Kd6QEleOAMwu62UQTAj340nuAHKrnIaKi
+X-Gm-Gg: ASbGnctc0zGzldNyVj61WMSady3fnQICD9VIATdfoadInmdVI8Ja3l591QOHG+FX5H5
+	GZlgFmizf/2BWBnB2BouIlU9p0Clh4yqHDfTPhWZhlvgijvj5irbb9aKJfGcMdiunjcSOhdFU0e
+	CzkMMBQR6FpWrq10P9EJLEckBo2WyVvT2KsUsbt9wkBl4ZMF5fPY1yd9KnEdeHkwo0+diWWO1xu
+	y7rpTHeockkWqPWPIlIJv7CWdWBWvpuGGs1IsA8/m45Z80C3nNuAKxUEF9HDGuwgl3DDZSyrblO
+	U+UGSOpOtmxkLFZkVWA8IXsKSaaOQjnNojkM92zE2DdR/PnrbG4ztNB8Fj0WvvKwTluc1R8+h0O
+	0DpO1cXvU7gddUmCGARxfl6QbVpd2k7ZP6SRA8q8iEq2cwfKLs4kijKW31j/ArQPMkkO0fA4A0p
+	6j7yh6RvxIR/vuGJE1f30=
+X-Google-Smtp-Source: AGHT+IFDQ63tlKhcluodzsph2mBr8tR7BTNtLBvzXQ5TqodVtLWFMCvNoqrAYQAPyWDU0pDf2BBRnA==
+X-Received: by 2002:a17:907:97d0:b0:b72:dcda:fe5a with SMTP id a640c23a62f3a-b763810c060mr36605566b.5.1763504520280;
+        Tue, 18 Nov 2025 14:22:00 -0800 (PST)
+Received: from [192.168.1.50] ([79.119.240.59])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-b734fad41f1sm1468489266b.23.2025.11.18.14.21.59
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 18 Nov 2025 14:21:59 -0800 (PST)
+Message-ID: <9e053524-3ab0-4d8f-9c08-1a2d0caa1892@gmail.com>
+Date: Wed, 19 Nov 2025 00:21:57 +0200
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: DM3PPF63A6024A9.namprd11.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 9fcfe9c7-793f-4af7-e8b1-08de26df3931
-X-MS-Exchange-CrossTenant-originalarrivaltime: 18 Nov 2025 20:15:31.2113
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 46c98d88-e344-4ed4-8496-4ed7712e255d
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: OIEt0XgWNBaGBEAUvAGHRVHnHWgww+UPUwQmbU3dNbIamCtmw4V4bwNSg7rY82H4ypi/DfJZPNi1PMK+ydKJmpxKadzoDPCzL8WwnlKo8mdnwoqkSltC2G0Hex2Dmdyv
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DM3PPF195D11F0C
-X-OriginatorOrg: intel.com
+User-Agent: Mozilla Thunderbird
+From: Bitterblue Smith <rtl8821cerfe2@gmail.com>
+Subject: Re: [PATCH rtw] wifi: rtw89: hw_scan: Don't let the operating channel
+ be last
+To: Ping-Ke Shih <pkshih@realtek.com>,
+ "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>
+References: <c1e61744-8db4-4646-867f-241b47d30386@gmail.com>
+ <5b0834f55d91469282a0f42c651d5441@realtek.com>
+Content-Language: en-US
+In-Reply-To: <5b0834f55d91469282a0f42c651d5441@realtek.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-DQoNCj4gLS0tLS1PcmlnaW5hbCBNZXNzYWdlLS0tLS0NCj4gRnJvbTogQWxseSBIZWV2IDxhbGx5
-aGVldkBnbWFpbC5jb20+DQo+IFNlbnQ6IFR1ZXNkYXksIE5vdmVtYmVyIDExLCAyMDI1IDEwOjA4
-IEFNDQo+IFRvOiBLb3JlbmJsaXQsIE1pcmlhbSBSYWNoZWwgPG1pcmlhbS5yYWNoZWwua29yZW5i
-bGl0QGludGVsLmNvbT4NCj4gQ2M6IEpvaGFubmVzIEJlcmcgPGpvaGFubmVzQHNpcHNvbHV0aW9u
-cy5uZXQ+OyBsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmc7DQo+IGxpbnV4LWtlcm5lbEB2
-Z2VyLmtlcm5lbC5vcmc7IERhbiBDYXJwZW50ZXIgPGRhbi5jYXJwZW50ZXJAbGluYXJvLm9yZz47
-IEFsbHkNCj4gSGVldiA8YWxseWhlZXZAZ21haWwuY29tPg0KPiBTdWJqZWN0OiBbUEFUQ0ggaXds
-d2lmaS1uZXh0IHYzXSB3aWZpOiBpd2x3aWZpOiBmaXggdW5pbml0aWFsaXplZCBwb2ludGVycyB3
-aXRoIGZyZWUNCj4gYXR0cmlidXRlDQo+IA0KPiBVbmluaXRpYWxpemVkIHBvaW50ZXJzIHdpdGgg
-YF9fZnJlZWAgYXR0cmlidXRlIGNhbiBjYXVzZSB1bmRlZmluZWQgYmVoYXZpb3IgYXMgdGhlDQo+
-IG1lbW9yeSBhc3NpZ25lZCByYW5kb21seSB0byB0aGUgcG9pbnRlciBpcyBmcmVlZCBhdXRvbWF0
-aWNhbGx5IHdoZW4gdGhlIHBvaW50ZXINCj4gZ29lcyBvdXQgb2Ygc2NvcGUuDQo+IA0KPiBJdCBp
-cyBiZXR0ZXIgdG8gaW5pdGlhbGl6ZSBhbmQgYXNzaWduIHBvaW50ZXJzIHdpdGggYF9fZnJlZWAg
-YXR0cmlidXRlIGluIG9uZSBzdGF0ZW1lbnQNCj4gdG8gZW5zdXJlIHByb3BlciBzY29wZS1iYXNl
-ZCBjbGVhbnVwDQoNCkFzIHRoaXMgaXMgbm93IGluIGRpc2N1c3Npb24gKGh0dHBzOi8vbG9yZS5r
-ZXJuZWwub3JnL2xrbWwvNThmZDQ3OGY0MDhhMzRiNTc4ZWU4ZDk0OWM1YzRiNGRhNGQ0ZjQxZC5j
-YW1lbEBIYW5zZW5QYXJ0bmVyc2hpcC5jb20vKQ0KSSB3aWxsIG5vdCBhcHBseSBpdCBmb3IgdGhl
-IHRpbWUgYmVpbmcuDQoNCk1pcmkNCg0K
+On 18/11/2025 04:17, Ping-Ke Shih wrote:
+> Bitterblue Smith <rtl8821cerfe2@gmail.com> wrote:
+>> Scanning can be offloaded to the firmware. To that end, the driver
+>> prepares a list of channels to scan, including periodic visits back to
+>> the operating channel, and sends the list to the firmware.
+>>
+>> When the channel list is too long to fit in a single H2C message, the
+>> driver splits the list, sends the first part, and tells the firmware to
+>> scan. When the scan is complete, the driver sends the next part of the
+>> list and tells the firmware to scan.
+>>
+>> When the last channel that fit in the H2C message is the operating
+>> channel something seems to go wrong in the firmware. It will
+>> acknowledge receiving the list of channels but apparently it will not
+>> do anything more. The AP can't be pinged anymore. The driver still
+>> receives beacons, though.
+>>
+>> One way to avoid this is to split the list of channels before the
+>> operating channel.
+>>
+>> Affected devices:
+>>
+>> * RTL8851BU with firmware 0.29.41.3
+>> * RTL8832BU with firmware 0.29.29.8
+>> * RTL8852BU with firmware 0.29.29.8
+
+I made a mistake here. It should be:
+
+RTL8851BU
+RTL8832BU
+RTL8852BE
+
+The report about the RTL8852BE came from a user who doesn't have the
+card anymore, unfortunately.
+
+Actually, since I wrote that commit message I acquired RTL8851BE and
+I can reproduce the problem with that.
+
+> 
+> We don't see this problem with the same firmware on RTL8852BE and RTL8852CE,
+> and I'd spend some time to check if this impact scan time. Or could you share?
+> 
+
+I tested with RTL8832AU and RTL8832CU, which work fine even without
+this patch. The scans take about the same time with and without this
+patch.
+
+RTL8832CU without the patch:
+
+[2025-11-18 23:17:37.481439]: wlp3s0f3u4 (phy #17): scan started
+[2025-11-18 23:17:43.965465]: wlp3s0f3u4 (phy #17): scan finished: 2412 2417 2422 2427 2432 2437 2442 2447 2452 2457 2462 2467 2472 5180 5200 5220 5240 5260 5280 5300 5320 5500 5520 5540 5560 5580 5600 5620 5640 5660 5680 5700 5720 5745 5765 5785 5805 5825 5955 5975 5995 6015 6035 6055 6075 6095 6115 6135 6155 6175 6195 6215 6235 6255 6275 6295 6315 6335 6355 6375 6395 6415, ""
+[2025-11-18 23:29:22.624860]: wlp3s0f3u4 (phy #17): scan started
+[2025-11-18 23:29:29.129461]: wlp3s0f3u4 (phy #17): scan finished: 2412 2417 2422 2427 2432 2437 2442 2447 2452 2457 2462 2467 2472 5180 5200 5220 5240 5260 5280 5300 5320 5500 5520 5540 5560 5580 5600 5620 5640 5660 5680 5700 5720 5745 5765 5785 5805 5825 5955 5975 5995 6015 6035 6055 6075 6095 6115 6135 6155 6175 6195 6215 6235 6255 6275 6295 6315 6335 6355 6375 6395 6415, ""
+[2025-11-18 23:31:19.535787]: wlp3s0f3u4 (phy #17): scan started
+[2025-11-18 23:31:26.054462]: wlp3s0f3u4 (phy #17): scan finished: 2412 2417 2422 2427 2432 2437 2442 2447 2452 2457 2462 2467 2472 5180 5200 5220 5240 5260 5280 5300 5320 5500 5520 5540 5560 5580 5600 5620 5640 5660 5680 5700 5720 5745 5765 5785 5805 5825 5955 5975 5995 6015 6035 6055 6075 6095 6115 6135 6155 6175 6195 6215 6235 6255 6275 6295 6315 6335 6355 6375 6395 6415, ""
+
+6.48
+6.50
+6.51 seconds
+
+RTL8832AU without the patch:
+
+[2025-11-18 23:05:47.163418]: wlp3s0f3u4 (phy #15): scan started
+[2025-11-18 23:05:53.690694]: wlp3s0f3u4 (phy #15): scan finished: 2412 2417 2422 2427 2432 2437 2442 2447 2452 2457 2462 2467 2472 5180 5200 5220 5240 5260 5280 5300 5320 5500 5520 5540 5560 5580 5600 5620 5640 5660 5680 5700 5720 5745 5765 5785 5805 5825, ""
+[2025-11-18 23:09:37.668990]: wlp3s0f3u4 (phy #15): scan started
+[2025-11-18 23:09:44.178517]: wlp3s0f3u4 (phy #15): scan finished: 2412 2417 2422 2427 2432 2437 2442 2447 2452 2457 2462 2467 2472 5180 5200 5220 5240 5260 5280 5300 5320 5500 5520 5540 5560 5580 5600 5620 5640 5660 5680 5700 5720 5745 5765 5785 5805 5825, ""
+[2025-11-18 23:10:42.260908]: wlp3s0f3u4 (phy #15): scan started
+[2025-11-18 23:10:48.810650]: wlp3s0f3u4 (phy #15): scan finished: 2412 2417 2422 2427 2432 2437 2442 2447 2452 2457 2462 2467 2472 5180 5200 5220 5240 5260 5280 5300 5320 5500 5520 5540 5560 5580 5600 5620 5640 5660 5680 5700 5720 5745 5765 5785 5805 5825, ""
+
+6.52
+6.50
+6.54 seconds
+
+RTL8832CU with the patch:
+
+[2025-11-18 23:38:50.296919]: wlp3s0f3u4 (phy #18): scan started
+[2025-11-18 23:38:56.822416]: wlp3s0f3u4 (phy #18): scan finished: 2412 2417 2422 2427 2432 2437 2442 2447 2452 2457 2462 2467 2472 5180 5200 5220 5240 5260 5280 5300 5320 5500 5520 5540 5560 5580 5600 5620 5640 5660 5680 5700 5720 5745 5765 5785 5805 5825 5955 5975 5995 6015 6035 6055 6075 6095 6115 6135 6155 6175 6195 6215 6235 6255 6275 6295 6315 6335 6355 6375 6395 6415, ""
+[2025-11-18 23:41:21.157569]: wlp3s0f3u4 (phy #18): scan started
+[2025-11-18 23:41:27.675412]: wlp3s0f3u4 (phy #18): scan finished: 2412 2417 2422 2427 2432 2437 2442 2447 2452 2457 2462 2467 2472 5180 5200 5220 5240 5260 5280 5300 5320 5500 5520 5540 5560 5580 5600 5620 5640 5660 5680 5700 5720 5745 5765 5785 5805 5825 5955 5975 5995 6015 6035 6055 6075 6095 6115 6135 6155 6175 6195 6215 6235 6255 6275 6295 6315 6335 6355 6375 6395 6415, ""
+[2025-11-18 23:45:05.087628]: wlp3s0f3u4 (phy #18): scan started
+[2025-11-18 23:45:11.615630]: wlp3s0f3u4 (phy #18): scan finished: 2412 2417 2422 2427 2432 2437 2442 2447 2452 2457 2462 2467 2472 5180 5200 5220 5240 5260 5280 5300 5320 5500 5520 5540 5560 5580 5600 5620 5640 5660 5680 5700 5720 5745 5765 5785 5805 5825 5955 5975 5995 6015 6035 6055 6075 6095 6115 6135 6155 6175 6195 6215 6235 6255 6275 6295 6315 6335 6355 6375 6395 6415, ""
+
+6.52
+6.51
+6.52 seconds
+
+RTL8832AU with the patch:
+
+[2025-11-19 00:03:04.643389]: wlp3s0f3u4 (phy #20): scan started
+[2025-11-19 00:03:11.183441]: wlp3s0f3u4 (phy #20): scan finished: 2412 2417 2422 2427 2432 2437 2442 2447 2452 2457 2462 2467 2472 5180 5200 5220 5240 5260 5280 5300 5320 5500 5520 5540 5560 5580 5600 5620 5640 5660 5680 5700 5720 5745 5765 5785 5805 5825, ""
+[2025-11-19 00:08:56.944636]: wlp3s0f3u4 (phy #20): scan started
+[2025-11-19 00:09:03.504852]: wlp3s0f3u4 (phy #20): scan finished: 2412 2417 2422 2427 2432 2437 2442 2447 2452 2457 2462 2467 2472 5180 5200 5220 5240 5260 5280 5300 5320 5500 5520 5540 5560 5580 5600 5620 5640 5660 5680 5700 5720 5745 5765 5785 5805 5825, ""
+[2025-11-19 00:10:10.207836]: wlp3s0f3u4 (phy #20): scan started
+[2025-11-19 00:10:16.766985]: wlp3s0f3u4 (phy #20): scan finished: 2412 2417 2422 2427 2432 2437 2442 2447 2452 2457 2462 2467 2472 5180 5200 5220 5240 5260 5280 5300 5320 5500 5520 5540 5560 5580 5600 5620 5640 5660 5680 5700 5720 5745 5765 5785 5805 5825, ""
+
+6.54
+6.56
+6.55 seconds
+
+> Otherwise, it looks good to me, so give my ACK in advance
+> 
+> Acked-by: Ping-Ke Shih <pkshih@realtek.com>
+> 
+> 
+>>
+>> https://lore.kernel.org/linux-wireless/0abbda91-c5c2-4007-84c8-215679e652e1@gmail.com/
+>> Cc: stable@vger.kernel.org
+>> Signed-off-by: Bitterblue Smith <rtl8821cerfe2@gmail.com>
+>> ---
+>> I didn't think a workaround would be needed in the kernel but 6.18
+>> will be out soon and people still have this problem.
+>> ---
+>>  drivers/net/wireless/realtek/rtw89/fw.c | 7 +++++++
+>>  1 file changed, 7 insertions(+)
+>>
+>> diff --git a/drivers/net/wireless/realtek/rtw89/fw.c b/drivers/net/wireless/realtek/rtw89/fw.c
+>> index 96f0463e66d6..c35317abc7f5 100644
+>> --- a/drivers/net/wireless/realtek/rtw89/fw.c
+>> +++ b/drivers/net/wireless/realtek/rtw89/fw.c
+>> @@ -7709,6 +7709,13 @@ int rtw89_hw_scan_add_chan_list_ax(struct rtw89_dev *rtwdev,
+>>         INIT_LIST_HEAD(&list);
+>>
+>>         list_for_each_entry_safe(ch_info, tmp, &scan_info->chan_list, list) {
+>> +               /* The operating channel (tx_null == true) should
+>> +                * not be last in the list, to avoid breaking
+>> +                * RTL8851BU and RTL8832BU.
+>> +                */
+>> +               if (list_len + 1 == RTW89_SCAN_LIST_LIMIT_AX && ch_info->tx_null)
+>> +                       break;
+>> +
+>>                 list_move_tail(&ch_info->list, &list);
+>>
+>>                 list_len++;
+>> --
+>> 2.51.1
+> 
+
 
