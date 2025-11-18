@@ -1,157 +1,176 @@
-Return-Path: <linux-wireless+bounces-29080-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-29082-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 553C8C67EED
-	for <lists+linux-wireless@lfdr.de>; Tue, 18 Nov 2025 08:28:21 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id CD0C8C68723
+	for <lists+linux-wireless@lfdr.de>; Tue, 18 Nov 2025 10:13:08 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by tor.lore.kernel.org (Postfix) with ESMTPS id 43A612A0DE
-	for <lists+linux-wireless@lfdr.de>; Tue, 18 Nov 2025 07:28:20 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTPS id 7D76F2A5CA
+	for <lists+linux-wireless@lfdr.de>; Tue, 18 Nov 2025 09:13:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 74E6026B75C;
-	Tue, 18 Nov 2025 07:27:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kemnade.info header.i=@kemnade.info header.b="9l6AP6L5"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 960AE30FC03;
+	Tue, 18 Nov 2025 09:12:30 +0000 (UTC)
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail.andi.de1.cc (mail.andi.de1.cc [178.238.236.174])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-il1-f208.google.com (mail-il1-f208.google.com [209.85.166.208])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3A53B26FA4E;
-	Tue, 18 Nov 2025 07:27:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=178.238.236.174
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 67CB730F551
+	for <linux-wireless@vger.kernel.org>; Tue, 18 Nov 2025 09:12:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.166.208
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763450863; cv=none; b=l1FQ5k2n6Fc9RXIw16+9dP05b01dC0EHXctZtt3+edgqDkxXrTjiFvXXXqu81x/A9M3iBkDXDBrHjIyzGQM8hEDY2OHbNjak7VpbD/hMLTtX6x4oZ2nAynlaldXcNCLQEfH31OmbbHoYxvnLAvWjc7L2wADGagMC7bCM/Ve8Csc=
+	t=1763457148; cv=none; b=uQGODKtdkQfAQj0URkcaibb4HYdpUkjMdOOLfrKzOLE96sXl10wsStNNo3epHMikJaNjpN9LFCRRFWZI/N2O3np4Kq67ORKHszpD3UU3EAmleGib4IseFghgyX95veTdBtJOXmzhDRLqkjp9GuADN1sPuuMKHHOPZOMiqAUf/WQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763450863; c=relaxed/simple;
-	bh=kfdUWwMVdCt8v+xix914qHO0JwCuom/SCwwjXK/0dl4=;
-	h=From:To:Subject:Date:Message-ID:MIME-Version; b=NuAZyctN7Q5OCYCUQk+HCTve2ZZJt2yuLurUgVg6TG5NqLqE2FlmZQLv7lNxqT3r3TWJtQ4RSquQu1+icfCcPby9B8nXkMIG3+Ji6EWOxTumFe7niu0vPmRjRE6YXDDFXvVqR+oPrVuBrR8p25R7K84d4yZmdpXr+K6DQtVDHqc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=kemnade.info; spf=pass smtp.mailfrom=kemnade.info; dkim=pass (2048-bit key) header.d=kemnade.info header.i=@kemnade.info header.b=9l6AP6L5; arc=none smtp.client-ip=178.238.236.174
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=kemnade.info
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=kemnade.info
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=kemnade.info; s=20220719; h=From:Sender:Reply-To:Cc:Content-ID:
-	Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
-	:Resent-Message-ID:In-Reply-To:References;
-	bh=QyjtY4t8aFYtS2xu/rSUjq+Q4C16yLey9yYnSrlAjN8=; b=9l6AP6L5OQr92Wl73ipb4U/G9R
-	/F463q5RRAtyqLtxkQgRSUVhovtiHIw8M2w0+L3V6X4NewbB4EfXGUs67i+22vvyhFApOy/W1O8TR
-	AUfgmblJhIQSK+kiYGiNlbcOs6sRyWsbHGA9FhaH+V0PzcEHmFQps3bBdoo8kz2AhUoWpX3VpVD4w
-	Xp/kLUqi3FuMZJL8n4oYxbhK7p1+JGhOv1Te+JES4FAOaRFM7J+n5T+R+1udGC0hf46m0BI+dDJyL
-	WvY9UwdGYzwn2VN513GSgvoWyUKOccRWP0dKgapa6HkpgtjT/jcwLAdWzyAy5d77aCzXa5fbrQhld
-	oBS2Fo8Q==;
-From: Andreas Kemnade <andreas@kemnade.info>
-To: briannorris@chromium.org,
-	francesco@dolcini.it,
-	christophe.jaillet@wanadoo.fr,
-	johannes.berg@intel.com,
-	rafael.beims@toradex.com,
-	andreas@kemnade.info,
-	linux-wireless@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	s.hauer@pengutronix.de
-Subject: [RFC PATCH] wifi: mwifiex: try to fix some races with rmmod/modprobe
-Date: Tue, 18 Nov 2025 08:25:26 +0100
-Message-ID: <20251118072527.174375-1-andreas@kemnade.info>
-X-Mailer: git-send-email 2.47.3
+	s=arc-20240116; t=1763457148; c=relaxed/simple;
+	bh=RMHiKfDDZRF4XKtK3FvegO8GyEZ0WcrzD9nGISsyTbI=;
+	h=MIME-Version:Date:Message-ID:Subject:From:To:Content-Type; b=QgklhtOuKEb/b0MiFwGJazKPUnAtvWdp6jiJIOrhnUOra+bFKJH4497O/GUcrB857xIEZ1/Pb2a2BpEUmgOf8Z2g9/9jRqx3oD0YI/j2qMcKMhGO1IfJ58gyALF3Q8aQ4pX/4h/BA9fzdLPHZMkCy7DDZSPVkDrgLQVBvl+oMdQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com; arc=none smtp.client-ip=209.85.166.208
+Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com
+Received: by mail-il1-f208.google.com with SMTP id e9e14a558f8ab-432f8352633so99962775ab.0
+        for <linux-wireless@vger.kernel.org>; Tue, 18 Nov 2025 01:12:25 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1763457144; x=1764061944;
+        h=to:from:subject:message-id:date:mime-version:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=ZCPCBiDseJTYHAymJetqpym/2ftXtJI5iOpKOSwwOu8=;
+        b=JbE1xeQeOQNRiJR7OTMZh3ErdYS5pRDCjg6GVKJcUnhQSmjWok/04nCdFCxR/5Tw6I
+         GiW18qt9fGO3QNfor8dlrHHeG6AgdHAExLUqMdLErAqE10Mvh2dVwQu9PvX2IYGTSBBp
+         Q3FqYAoaq0a1VTWzXyDW2w5IY4AAv9EFLVLMiNs6WBqz2u+HYNO+mVQXcej8II8w1Ge/
+         lwdFpeYjEvkmNmVZM3xbkYEJmFq53RSwtrqmO0F8emG1FjOlBRheMVEMYZ/lZ/UV5cN0
+         g/GtHv91shWrK13hsTqgkA4fHp5uoSewcKqPsiY++tlJ3FDvXL6pLZbbSPn4YJMyyldF
+         htFg==
+X-Forwarded-Encrypted: i=1; AJvYcCUo50+btJZHR9ZWhwfiuDGXRTMRwi7vXM0pxP0zY5k4B467b2yoDnKJhelqZZxgFi54Kyn4hH8x8Q92VKQ7hQ==@vger.kernel.org
+X-Gm-Message-State: AOJu0YwPn+yol8s+ezWLGvAb7Y7F2Q8UeOYEtUVBT30x6XUvEE5vO9c6
+	yJkw0iw/Wc/5VZ6oeMC0HvDQmLWTmFt0jw8cc9Ki5NdV96X3xKxkMHuW79SSfqXrpiTUdfQmqqS
+	SCR4k0QxBwqzG2vCCo5Kk1pyjJT13bZdEs4Pn5pMcNmcTFRdYqaiRXUtJJVg=
+X-Google-Smtp-Source: AGHT+IHbXwBOmPJLm6wPLuoglDX5/xd6oe773wnP4kFD6s8nnbvi1P7vk4tk6PUBU6UeysoSGSqlg9jn7cKoVjP7wvVISevaja92
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+X-Received: by 2002:a05:6e02:b44:b0:433:79a7:8158 with SMTP id
+ e9e14a558f8ab-4348c9334c1mr166286595ab.27.1763457144310; Tue, 18 Nov 2025
+ 01:12:24 -0800 (PST)
+Date: Tue, 18 Nov 2025 01:12:24 -0800
+X-Google-Appengine-App-Id: s~syzkaller
+X-Google-Appengine-App-Id-Alias: syzkaller
+Message-ID: <691c3878.a70a0220.3124cb.00b9.GAE@google.com>
+Subject: [syzbot] [wireless?] WARNING: suspicious RCU usage in
+ ieee80211_mesh_csa_beacon (2)
+From: syzbot <syzbot+b59873f5699e941717ca@syzkaller.appspotmail.com>
+To: johannes@sipsolutions.net, linux-kernel@vger.kernel.org, 
+	linux-wireless@vger.kernel.org, netdev@vger.kernel.org, 
+	syzkaller-bugs@googlegroups.com
+Content-Type: text/plain; charset="UTF-8"
 
-To debug some stability issues, some torture was done with the driver:
-Doing rmmod mwifiex_sdio  and modprobe mwifiex_sdio in a loop
+Hello,
 
-this oops appeared:
+syzbot found the following issue on:
 
-[ 3261.934299] mwifiex_sdio mmc1:0001:1: PREP_CMD: FW is in bad state
-[ 3261.988412] mwifiex_sdio mmc1:0001:1: info: shutdown mwifiex...
-[ 3261.990081] mwifiex_sdio mmc1:0001:1: PREP_CMD: card is removed
-[ 3262.052407] mwifiex_sdio mmc1:0001:1: ===mwifiex driverinfo dump start===
-[ 3262.052864] mwifiex_sdio mmc1:0001:1: info: MWIFIEX VERSION: mwifiex 1.0 (16.92.21.p119)
-[ 3262.053252] mwifiex_sdio mmc1:0001:1: SDIO register dump start
-[ 3262.084733] mwifiex_sdio mmc1:0001:1: SDIO Func0 (0x0-0x9): 43 03 02 02 00 00 00 02 03 00
-[ 3262.085574] mwifiex_sdio mmc1:0001:1: SDIO Func1 (0x10-0x17): 00 00 00 00 ff ff ff ff
-[ 3262.093544] mwifiex_sdio mmc1:0001:1: SDIO Func1: (0x8) 00 (0x58) 00 (0x5c) 88 (0x5d) 00 (0x60) 07 (0x61) 0c (0x62) 00 (0x64) 10 (0x65) 00 (0x66) 00 (0x68) 00 (0x69) 00 (0x6a) 00
-[ 3262.103543] mwifiex_sdio mmc1:0001:1: SDIO Func1 (0xe8-0xf2): dc fe 54 00 b0 00 1f 2a 24 14 70
-[ 3262.325352] mwifiex_sdio mmc1:0001:1: SDIO Func1 (0xe8-0xf2): dc fe 6d 00 c7 00 1f 2a 24 14 70
-[ 3262.325843] mwifiex_sdio mmc1:0001:1: SDIO register dump end
-[ 3262.326626] mwifiex_sdio mmc1:0001:1: ===mwifiex driverinfo dump end===
-[ 3262.327096] mwifiex_sdio mmc1:0001:1: == mwifiex firmware dump start ==
-[ 3291.379005] mwifiex_sdio mmc1:0001:1: == mwifiex firmware dump end ==
-[ 3291.381143] mwifiex_sdio mmc1:0001:1: == mwifiex dump information to /sys/class/devcoredump start
-[ 3291.382047] mwifiex_sdio mmc1:0001:1: == mwifiex dump information to /sys/class/devcoredump end
-[ 3291.382148] 8<--- cut here ---
-[ 3291.382210] Unable to handle kernel NULL pointer dereference at virtual address 00000064 when read
-[ 3291.382265] [00000064] *pgd=00000000
-[ 3291.382334] Internal error: Oops: 5 [#1] SMP ARM
-[ 3291.426597] Modules linked in: mwifiex_sdio(-) netconsole mwifiex jd9930_regulator imx_sdma btnxpuart crc8 [last unloaded: mwifiex_sdio]
-[ 3291.438980] CPU: 0 UID: 0 PID: 751 Comm: kworker/0:1 Not tainted 6.18.0-rc3-00003-g5a1efae8dc10-dirty #338 VOLUNTARY
-[ 3291.449655] Hardware name: Freescale i.MX6 SoloLite (Device Tree)
-[ 3291.455829] Workqueue: events mwifiex_sdio_work [mwifiex_sdio]
-[ 3291.461749] PC is at mwifiex_sdio_work+0x6d0/0x8ac [mwifiex_sdio]
+HEAD commit:    7a0892d2836e Merge tag 'pci-v6.18-fixes-5' of git://git.ke..
+git tree:       upstream
+console output: https://syzkaller.appspot.com/x/log.txt?x=1100a212580000
+kernel config:  https://syzkaller.appspot.com/x/.config?x=929790bc044e87d7
+dashboard link: https://syzkaller.appspot.com/bug?extid=b59873f5699e941717ca
+compiler:       Debian clang version 20.1.8 (++20250708063551+0c9f909b7976-1~exp1~20250708183702.136), Debian LLD 20.1.8
+syz repro:      https://syzkaller.appspot.com/x/repro.syz?x=12656884580000
+C reproducer:   https://syzkaller.appspot.com/x/repro.c?x=15519212580000
 
-card->adapter is NULL and therefore in mwifiex_sdio_card_reset_work
-NULL pointer issues appear. The long execution time of the dumping
-functions increases the probability that card->adapter changes
-in mwifiex_sdio_card_work().
+Downloadable assets:
+disk image (non-bootable): https://storage.googleapis.com/syzbot-assets/d900f083ada3/non_bootable_disk-7a0892d2.raw.xz
+vmlinux: https://storage.googleapis.com/syzbot-assets/a78c5c2efd8d/vmlinux-7a0892d2.xz
+kernel image: https://storage.googleapis.com/syzbot-assets/5a51cc5df960/bzImage-7a0892d2.xz
 
-mwifiex_unregister_dev is the place to set card->adapter to NULL.
-So add some NULL pointer checks to work around it a bit.
-But this really smells like missing locking. So the proper solution
-would be to add a mutex and locking. But it is a bit unclear
-how to do that really.
+IMPORTANT: if you fix the issue, please add the following tag to the commit:
+Reported-by: syzbot+b59873f5699e941717ca@syzkaller.appspotmail.com
 
-This dirty fix seem to improve things when device is not touched.
-But if it is used, there are other races:
-- calling wiphy_unregister with invalid pointer
-- rkill unregister issues
-- module count going to -1
+R10: 0000000000000000 R11: 0000000000000246 R12: 0000000000000002
+R13: 00007f4e229e5fa0 R14: 00007f4e229e5fa0 R15: 0000000000000003
+ </TASK>
+=============================
+WARNING: suspicious RCU usage
+syzkaller #0 Not tainted
+-----------------------------
+net/mac80211/mesh.c:1571 suspicious rcu_dereference_check() usage!
 
-Signed-off-by: Andreas Kemnade <andreas@kemnade.info>
+other info that might help us debug this:
+
+
+rcu_scheduler_active = 2, debug_locks = 1
+2 locks held by syz.0.17/5477:
+ #0: ffffffff8f333750 (cb_lock){++++}-{4:4}, at: genl_rcv+0x19/0x40 net/netlink/genetlink.c:1218
+ #1: ffff888059ba0788 (&rdev->wiphy.mtx){+.+.}-{4:4}, at: wiphy_lock include/net/cfg80211.h:6343 [inline]
+ #1: ffff888059ba0788 (&rdev->wiphy.mtx){+.+.}-{4:4}, at: nl80211_pre_doit+0x281/0x930 net/wireless/nl80211.c:17999
+
+stack backtrace:
+CPU: 0 UID: 0 PID: 5477 Comm: syz.0.17 Not tainted syzkaller #0 PREEMPT(full) 
+Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS 1.16.3-debian-1.16.3-2~bpo12+1 04/01/2014
+Call Trace:
+ <TASK>
+ dump_stack_lvl+0x189/0x250 lib/dump_stack.c:120
+ lockdep_rcu_suspicious+0x140/0x1d0 kernel/locking/lockdep.c:6876
+ ieee80211_mesh_csa_beacon+0x280/0x2c0 net/mac80211/mesh.c:1571
+ ieee80211_set_csa_beacon+0x3cc/0x9a0 net/mac80211/cfg.c:4288
+ __ieee80211_channel_switch net/mac80211/cfg.c:4406 [inline]
+ ieee80211_channel_switch+0x8ef/0xcb0 net/mac80211/cfg.c:4442
+ rdev_channel_switch+0x108/0x290 net/wireless/rdev-ops.h:1116
+ nl80211_channel_switch+0xac9/0xd70 net/wireless/nl80211.c:11475
+ genl_family_rcv_msg_doit+0x215/0x300 net/netlink/genetlink.c:1115
+ genl_family_rcv_msg net/netlink/genetlink.c:1195 [inline]
+ genl_rcv_msg+0x60e/0x790 net/netlink/genetlink.c:1210
+ netlink_rcv_skb+0x208/0x470 net/netlink/af_netlink.c:2552
+ genl_rcv+0x28/0x40 net/netlink/genetlink.c:1219
+ netlink_unicast_kernel net/netlink/af_netlink.c:1320 [inline]
+ netlink_unicast+0x82f/0x9e0 net/netlink/af_netlink.c:1346
+ netlink_sendmsg+0x805/0xb30 net/netlink/af_netlink.c:1896
+ sock_sendmsg_nosec net/socket.c:727 [inline]
+ __sock_sendmsg+0x21c/0x270 net/socket.c:742
+ ____sys_sendmsg+0x505/0x830 net/socket.c:2630
+ ___sys_sendmsg+0x21f/0x2a0 net/socket.c:2684
+ __sys_sendmsg net/socket.c:2716 [inline]
+ __do_sys_sendmsg net/socket.c:2721 [inline]
+ __se_sys_sendmsg net/socket.c:2719 [inline]
+ __x64_sys_sendmsg+0x19b/0x260 net/socket.c:2719
+ do_syscall_x64 arch/x86/entry/syscall_64.c:63 [inline]
+ do_syscall_64+0xfa/0xfa0 arch/x86/entry/syscall_64.c:94
+ entry_SYSCALL_64_after_hwframe+0x77/0x7f
+RIP: 0033:0x7f4e2278f6c9
+Code: ff ff c3 66 2e 0f 1f 84 00 00 00 00 00 0f 1f 40 00 48 89 f8 48 89 f7 48 89 d6 48 89 ca 4d 89 c2 4d 89 c8 4c 8b 4c 24 08 0f 05 <48> 3d 01 f0 ff ff 73 01 c3 48 c7 c1 a8 ff ff ff f7 d8 64 89 01 48
+RSP: 002b:00007ffe9e0535c8 EFLAGS: 00000246 ORIG_RAX: 000000000000002e
+RAX: ffffffffffffffda RBX: 00007f4e229e5fa0 RCX: 00007f4e2278f6c9
+RDX: 0000000000000000 RSI: 0000200000004180 RDI: 0000000000000003
+RBP: 00007ffe9e053620 R08: 0000000000000000 R09: 0000000000000000
+R10: 0000000000000000 R11: 0000000000000246 R12: 0000000000000002
+R13: 00007f4e229e5fa0 R14: 00007f4e229e5fa0 R15: 0000000000000003
+ </TASK>
+
+
 ---
- drivers/net/wireless/marvell/mwifiex/sdio.c | 14 ++++++++++++++
- 1 file changed, 14 insertions(+)
+This report is generated by a bot. It may contain errors.
+See https://goo.gl/tpsmEJ for more information about syzbot.
+syzbot engineers can be reached at syzkaller@googlegroups.com.
 
-diff --git a/drivers/net/wireless/marvell/mwifiex/sdio.c b/drivers/net/wireless/marvell/mwifiex/sdio.c
-index f039d6f19183..2808cff6fd56 100644
---- a/drivers/net/wireless/marvell/mwifiex/sdio.c
-+++ b/drivers/net/wireless/marvell/mwifiex/sdio.c
-@@ -947,6 +947,10 @@ static void mwifiex_sdio_coredump(struct device *dev)
- 	struct sdio_mmc_card *card;
- 
- 	card = sdio_get_drvdata(func);
-+	if (!card->adapter) {
-+		dev_err(dev, "adapter is not valid, cannot coredump\n");
-+		return;
-+	}
- 	if (!test_and_set_bit(MWIFIEX_IFACE_WORK_DEVICE_DUMP,
- 			      &card->work_flags))
- 		schedule_work(&card->work);
-@@ -3019,9 +3023,19 @@ static void mwifiex_sdio_work(struct work_struct *work)
- 	struct sdio_mmc_card *card =
- 		container_of(work, struct sdio_mmc_card, work);
- 
-+	if (!card->adapter) {
-+		pr_err("sdio_work: no adapter\n");
-+		return;
-+	}
-+
- 	if (test_and_clear_bit(MWIFIEX_IFACE_WORK_DEVICE_DUMP,
- 			       &card->work_flags))
- 		mwifiex_sdio_device_dump_work(card->adapter);
-+
-+	if (!card->adapter) {
-+		pr_err("sdio_work: no adapter to reset\n");
-+		return;
-+	}
- 	if (test_and_clear_bit(MWIFIEX_IFACE_WORK_CARD_RESET,
- 			       &card->work_flags))
- 		mwifiex_sdio_card_reset_work(card->adapter);
--- 
-2.47.3
+syzbot will keep track of this issue. See:
+https://goo.gl/tpsmEJ#status for how to communicate with syzbot.
 
+If the report is already addressed, let syzbot know by replying with:
+#syz fix: exact-commit-title
+
+If you want syzbot to run the reproducer, reply with:
+#syz test: git://repo/address.git branch-or-commit-hash
+If you attach or paste a git patch, syzbot will apply it before testing.
+
+If you want to overwrite report's subsystems, reply with:
+#syz set subsystems: new-subsystem
+(See the list of subsystem names on the web dashboard)
+
+If the report is a duplicate of another one, reply with:
+#syz dup: exact-subject-of-another-report
+
+If you want to undo deduplication, reply with:
+#syz undup
 
