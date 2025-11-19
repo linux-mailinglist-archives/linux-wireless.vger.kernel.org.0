@@ -1,127 +1,120 @@
-Return-Path: <linux-wireless+bounces-29125-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-29126-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [IPv6:2a01:60a::1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id 75B06C6D5D0
-	for <lists+linux-wireless@lfdr.de>; Wed, 19 Nov 2025 09:16:56 +0100 (CET)
+Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [213.196.21.55])
+	by mail.lfdr.de (Postfix) with ESMTPS id 236C6C6D767
+	for <lists+linux-wireless@lfdr.de>; Wed, 19 Nov 2025 09:37:54 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.mirrors.kernel.org (Postfix) with ESMTPS id C06C335F1E6
-	for <lists+linux-wireless@lfdr.de>; Wed, 19 Nov 2025 08:10:12 +0000 (UTC)
+	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 27645387F78
+	for <lists+linux-wireless@lfdr.de>; Wed, 19 Nov 2025 08:35:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 148DA280339;
-	Wed, 19 Nov 2025 08:09:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="PJ5sgxj8"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A2BC3303A19;
+	Wed, 19 Nov 2025 08:35:51 +0000 (UTC)
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-pj1-f49.google.com (mail-pj1-f49.google.com [209.85.216.49])
+Received: from mail-vk1-f178.google.com (mail-vk1-f178.google.com [209.85.221.178])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 583FE2EF65B
-	for <linux-wireless@vger.kernel.org>; Wed, 19 Nov 2025 08:09:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.49
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B2D4931ED96
+	for <linux-wireless@vger.kernel.org>; Wed, 19 Nov 2025 08:35:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.178
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763539799; cv=none; b=bK1t1v3A3xsGt7Fdfg2+DBtJUR9sMx+ntoAiuEWrmlmU4JIRnnF134r1xrGo1CbFmVWBlsRuaUEqMpc+Uh5P/kmpOdYnQHlWzzaNsDk7Wy/yLoam/YHOGL7lQhcld8czLNR4kQlGc0sOrUhD+OqslRcaKl0EH1Nkh58xPNnYUoE=
+	t=1763541350; cv=none; b=doCriFx/I2fuO8gK8UeVTLEM3o1Qqp5Gua8irLxaUPVwvTFztaRWj/SUJYXEJnqwGdnjpHUGvhmev7OGHgndpWwCuzgAVPl1I3VeMZMnWrYAWIhSgEo7Gbhk/qBv8BRXIbgw3+HR0+zVBWdXjGOb3OiUic3TqhLxCcy3iueIEn4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763539799; c=relaxed/simple;
-	bh=7KXRYpJkWJZQ9A1K7/LhsK4rygGf/YCjrD0wGLFgJOo=;
-	h=MIME-Version:From:Date:Message-ID:Subject:To:Cc:Content-Type; b=NC/X0MQQuVhI8aC5283ITRyAPFxrF4ILRPNaUBGrAstD9TvVJkFWlBpwa0s3QeqRqahhnW7VrYZC+awPnGv5hNF00huJm5IZGnSs+Iv3B+ayl0v7SKuHi2CA0MKdC6+lNg0nV2RMoDSru5Ak+L3QSb9BtFjBShZi+mvkQbd/GE8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=PJ5sgxj8; arc=none smtp.client-ip=209.85.216.49
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+	s=arc-20240116; t=1763541350; c=relaxed/simple;
+	bh=/AAYc9gvf+ThL6ux8VgRdaoW34DWJYT2SRPZxEzT58I=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=Y7OdF2/dMSQ/NVsT41TqsI90Eu5cyzDKwsqIyeNjAWG5ZsxcNpAQYDgslzticHa6A1QEAa9AdlnHRlEze6Q6lnYsxXUApT4gY327StOOro+qEpoc000WuY/nbu7ApTB97vm4LoRqtQ2V3DJ3HeeJl8a22Hp6wazVfXqprEPD9+A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linux-m68k.org; spf=pass smtp.mailfrom=gmail.com; arc=none smtp.client-ip=209.85.221.178
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linux-m68k.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pj1-f49.google.com with SMTP id 98e67ed59e1d1-343774bd9b4so5943588a91.2
-        for <linux-wireless@vger.kernel.org>; Wed, 19 Nov 2025 00:09:57 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1763539797; x=1764144597; darn=vger.kernel.org;
-        h=cc:to:subject:message-id:date:from:mime-version:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=a39qS9THoZoyW40hqoMxyri1LtTdUt2BE8ZMUdYz3xI=;
-        b=PJ5sgxj8cZBL0rTYmUSNxKwbkZmnnRtEe6VnQqIfFy4oDke/v5bGu00vOZNDvl9LKv
-         Qdqod+tPjwH24y6hGthaXG9RsNTqZePfKYYErXRdsKQPhw4YrGW+AYwySkEkSUI9Vkur
-         L5xn5dY2/mK1NKEwd6FsqwmFjbi5hBLi6jdmAV9h+OSdMc+Db8TiL/hEkq+EncLbQUZA
-         hqylgnpCPI4BysO/lV9XWOu5UUUhH4hHk5brwMuntwJT+d/DW+mhPJi4cDizu65RMncw
-         eS2bzTvCpxF3jHpsuygLiwrT8GZXgUsUyfYV3mt4Q9vLFh6UhNGKU8nsLxMHovFfu3Y+
-         9fjQ==
+Received: by mail-vk1-f178.google.com with SMTP id 71dfb90a1353d-55999cc2a87so888001e0c.0
+        for <linux-wireless@vger.kernel.org>; Wed, 19 Nov 2025 00:35:47 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1763539797; x=1764144597;
-        h=cc:to:subject:message-id:date:from:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=a39qS9THoZoyW40hqoMxyri1LtTdUt2BE8ZMUdYz3xI=;
-        b=oYqCFVEdJKXnS37G1+zfP7AuddGK956xyELiMo2LBsq0ep+lq77zjb7g6toIisflxy
-         /5b05TK/89+mL2A3dWMaWG2qtDfA6LH/Tb9Y5lH3/PrAZ8dpVkr591QhQNRvM8WH/Tiu
-         zx9f71nUTmL8+dqsKTEaA/294sO8V6PzvPUUZ6zSh0pG15MWNiCdQIdoWatAnUyx1rYv
-         +2HLUZh20Cef3c7y/1WRNI+3qSDYqUWTombh4J8u9BYlrG93wkRMYMASJ+c2ig4jTbWL
-         GomDEe4Ym2YM8BG20RPUVBqZ4CCRyA6Vw0eZiaq5yLTxzZHQ873oVUuOIWyDVxEM/U8f
-         213A==
-X-Forwarded-Encrypted: i=1; AJvYcCXfZg3XwnaGlFyS8lWB1hpr/opAhh9Ymy9ftQXhXbRDkl3c5E80uTQfAaWjNKMX18+8WWOlR8KROaX6+MLAag==@vger.kernel.org
-X-Gm-Message-State: AOJu0YwImED1y7PJZq45Rv1wzXP5MU87m6gH/P3ADrLfN7mnEFnyZyKr
-	+jDoVyXwN7RRVZzn+MZkOGJ8HKFC3+zE920HZRC0wbWr6ijV9bYvwOCVS4wlo+qBT5Ga8he51OM
-	0h2hvjRHNLyHxVq7H8Kj2ON2+r7tXWw==
-X-Gm-Gg: ASbGnctLgTkEUC+s+rMRAFfbfiGeYqGTljWTU+nXjrn4AxVNmlJfxRpJbWVsHjf4DXl
-	ZKomYaFVURxcr0WMERzvmVYGZeZVrnpmQNO4NYZmnpgm49JbuUEpUiDj/ro+zVc++0M88NEVgAK
-	ycTEKzDeyXPcGxYL2EnsxCF5RNwCyBoO73qZvWBv80ZzqIfuVPIRlfD8OX+m5/2IB/E4Dfbqt+e
-	PqSn9RdDN56O9e9B2mA2zNWYZ69c4Y9o0cwppnQIIxClIT5ouZ2e4mZjvS+n/HJed4ZyASF4ciS
-	WlY=
-X-Google-Smtp-Source: AGHT+IGRwjPAZWI/LkmCbmFjssIGAPewHIFhCSWpNS3Ld2uk5GBPL1IBVqYl8F3Cww50AryvRZGDWVS+bLrBXzVMrm4=
-X-Received: by 2002:a17:90b:2244:b0:32e:7c34:70cf with SMTP id
- 98e67ed59e1d1-343fa754977mr21837353a91.36.1763539796542; Wed, 19 Nov 2025
- 00:09:56 -0800 (PST)
+        d=1e100.net; s=20230601; t=1763541346; x=1764146146;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=EqOkox6RKDqNU5aWyID9eT/MiXeLwVM1IpXj/iNrSjc=;
+        b=PrexJATxm+sreY+AntTmNSHwn1lQ90CVwhIgZsRpNoG46F8A7+jebBnMSKUbIq3SzA
+         ShA0t0e9swKbLXEjOiVQ/JSf7Md/8XGTd7XuR1oxxdj3MO0KET2lRjLMdmyFMNE2Kpze
+         6bW2yupoyWdFaF78Uq+NwmBadw05rENDafDi9lXK8uTfN1GCjIAyZCjA1G3wiS4s/xk4
+         XNEp7BP/aoWCr/YZnvf8aoiQCNKc6Te1PBcItVZuU2ogwGrfFbFB+uoG6aZjXsC3pqUy
+         18a6c7bEkHJbGmGa60H0HFZCs59wHO1mHVwNpERm0yH8SQrYejUZ34V3k9u6dSSDE5Ng
+         jviA==
+X-Gm-Message-State: AOJu0Yy252+qRPt3UPwXDiiluV7tIh9zEkvc8geJFOYND5eB2Kbc/pIY
+	U+KKBYV3H38QonxpfGLecejKyVICbB62RIVqbOkdSevWczwffDwT3DHWes4a8J0L
+X-Gm-Gg: ASbGncs3OSjFW2C9L+un/li70lOCR30F/9RA/Y9KXlw7LbDe6PHWYAmRZRibTWCGwkj
+	nra4C5YzFKcqreaVMZS3/5kHN1uCW2nhcFBlcVQMqxaizjbAoQRj3BvWa07iDRG4yfkO25fNpRw
+	+lhtg5CjfiknNs0EeSke1j6RGDrTlGskuWIyWT+bQc8szBmBcpr9tr+sVF+r8UmlTWuU9a5xY46
+	cgag3y5tldsTuj4o3HQljwu4j0WGM0qDf+TgDS5cMeb2dvgFx3oXifAivlzdea4AyjFoMe/lVPq
+	uUBtKrwa0XuFPdr1IJ1BONZ4TRSvHsUOmMCvAWcdm+4hmZou8qovrcSgE3GboExypZlu+nc5cPw
+	6vcj51YTrcCkHmcbgpqRsAjVBnZOqvmFW6RVTDMl1siIlZZlRtKz0c2clRWr4E5/YjNDav3LBQx
+	XubnkyyKdhEMry0U9QI5MMaFrGTnEq7ut3/KW6g0aXQPZ/ZbAe3QtQkUCFxOc=
+X-Google-Smtp-Source: AGHT+IFk0zEqJBadtlNgRDG/kdZM7aJwhyiksSgjjrxBeLrHKtO/lm4AQdcYyVF0j0YOzYNRmcHoow==
+X-Received: by 2002:a05:6102:b0b:b0:5df:c34a:5a00 with SMTP id ada2fe7eead31-5dfc554b51bmr7020476137.11.1763541345904;
+        Wed, 19 Nov 2025 00:35:45 -0800 (PST)
+Received: from mail-ua1-f54.google.com (mail-ua1-f54.google.com. [209.85.222.54])
+        by smtp.gmail.com with ESMTPSA id a1e0cc1a2514c-937611bf6fdsm5865822241.12.2025.11.19.00.35.45
+        for <linux-wireless@vger.kernel.org>
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 19 Nov 2025 00:35:45 -0800 (PST)
+Received: by mail-ua1-f54.google.com with SMTP id a1e0cc1a2514c-93723104137so1829411241.3
+        for <linux-wireless@vger.kernel.org>; Wed, 19 Nov 2025 00:35:45 -0800 (PST)
+X-Received: by 2002:a05:6102:5808:b0:5dd:b288:e780 with SMTP id
+ ada2fe7eead31-5dfc533e040mr6950370137.0.1763541345498; Wed, 19 Nov 2025
+ 00:35:45 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-From: =?UTF-8?Q?Pawe=C5=82_Owoc?= <frut3k7@gmail.com>
-Date: Wed, 19 Nov 2025 09:09:44 +0100
-X-Gm-Features: AWmQ_bl44G0Px-nO8xsutIR7OZVzuzXJR2Pttj_Gy95HLVR9iwbtIHW4E_siwJM
-Message-ID: <CAKEyCaD8RMqPvwZOxgwAT4G=h-M94ToxoSdYwCjfvZMiM8mB-g@mail.gmail.com>
-Subject: Re: [PATCH] wifi: ath11k: add support for MU EDCA
-To: quic_yuzha@quicinc.com
-Cc: ath11k@lists.infradead.org, linux-wireless@vger.kernel.org
+References: <20251117032910.11224-1-pkshih@realtek.com> <20251117032910.11224-2-pkshih@realtek.com>
+ <CAMuHMdVuThcAyVuAU=N0FM+vd1xNyk9p4bcDWJUEpsYcmh2J7A@mail.gmail.com> <6268b32ba19b4a1690a944d6093b01e9@realtek.com>
+In-Reply-To: <6268b32ba19b4a1690a944d6093b01e9@realtek.com>
+From: Geert Uytterhoeven <geert@linux-m68k.org>
+Date: Wed, 19 Nov 2025 09:35:32 +0100
+X-Gmail-Original-Message-ID: <CAMuHMdX31GZBUK1dwPNSbfjBK0GHvh3CdCLp145FK=mcgsjqug@mail.gmail.com>
+X-Gm-Features: AWmQ_bm_g4G_ZTJQXeVrux_dle8DBi8_3V131dJp1c7755qw-e02mLKWc_BYCSI
+Message-ID: <CAMuHMdX31GZBUK1dwPNSbfjBK0GHvh3CdCLp145FK=mcgsjqug@mail.gmail.com>
+Subject: Re: [PATCH rtw-next 1/2] wifi: rtw89: 8852a: correct field mask of
+ reset DAC/ADC FIFO
+To: Ping-Ke Shih <pkshih@realtek.com>
+Cc: "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>
 Content-Type: text/plain; charset="UTF-8"
 
-After this change, IPQ8074 crashes in STA mode:
+Hi Ping-Ke,
 
-[  165.110962] qcom-q6v5-wcss-pil cd00000.q6v5_wcss: fatal error received:
-[  165.110962] QC Image Version:
-QC_IMAGE_VERSION_STRING=WLAN.HK.2.9.0.1-02146-QCAHKSWPL_SILICONZ-1
-[  165.110962] Image Variant : IMAGE_VARIANT_STRING=8074.wlanfw.eval_v2Q
-[  165.110962]
-[  165.110962] wal_tx_control.c:823 Assertion 0 failedparam0 :zero,
-param1 :zero, param2 :zero.
-[  165.110962] Thread ID      : 0x00000062  Thread name    : WLAN RT1
-Process ID     : 0
-[  165.110962] Register:
-[  165.110962] SP : 0x4bfd5ce8
-[  165.110962] FP : 0x4bfd5cf0
-[  165.110962] PC : 0x4b107f58
-[  165.110962] SSR : 0x00000008
-[  165.110962] BADVA : 0x00020000
-[  165.110962] LR : 0x4b1076f4
-[  165.110962]
-[  165.110962] Stack Dump
-[  165.110962] from : 0x4bfd5ce8
-[  165.110962] to   : 0x4bfd62c0
-[  165.110962]
-[  165.157843] remoteproc remoteproc0: crash detected in
-cd00000.q6v5_wcss: type fatal error
-[  165.180083] remoteproc remoteproc0: handling crash #1 in cd00000.q6v5_wcss
-[  165.188416] remoteproc remoteproc0: recovering cd00000.q6v5_wcss
-[  165.221076] remoteproc remoteproc0: stopped remote processor
-cd00000.q6v5_wcss
-[  165.485399] ath11k c000000.wifi: failed to send WMI_PEER_SET_PARAM cmd
-[  165.485443] ath11k c000000.wifi: failed to setup peer SMPS for vdev 0: -108
-[  165.490829] ath11k c000000.wifi: Failed to send WMI_TWT_ENABLE_CMDID
-[  165.497736] ath11k c000000.wifi: Failed to send
-WMI_BSS_COLOR_CHANGE_ENABLE_CMDID
-[  165.504283] ath11k c000000.wifi: failed to enable bss color change
-on vdev 0: -108
-[  165.511671] ath11k c000000.wifi: Failed to send
-WMI_OBSS_COLOR_COLLISION_DET_CONFIG_CMDID
-[  165.519136] ath11k c000000.wifi: failed to set bss color collision
-on vdev 0: -108
+On Wed, 19 Nov 2025 at 01:44, Ping-Ke Shih <pkshih@realtek.com> wrote:
+> Geert Uytterhoeven <geert@linux-m68k.org> wrote:
+> > On Mon, 17 Nov 2025 at 04:29, Ping-Ke Shih <pkshih@realtek.com> wrote:
+> > > The field mask should be bits 16-31, but suddenly use wrong bits 24-31,
+> > > rarely causing a little performance degraded if DAC/DAC FIFO stays on
+> > > an unexpected state.
+> > >
+> > > Found this by Geert who works on bit field functions.
+> > >
+> > > Cc: Geert Uytterhoeven <geert@linux-m68k.org>
+> > > Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
+> >
+> > Reported-by: Geert Uytterhoeven <geert@linux-m68k.org>
+>
+> I suppose you meant Reviewed-by, but you also the reporter. I will add
+> these tags by v2.
 
-Regards,
+I did mean Reported-by.
+I cannot review the actual values, as I do not have hardware documentation.
+
+Gr{oetje,eeting}s,
+
+                        Geert
+
+-- 
+Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
+
+In personal conversations with technical people, I call myself a hacker. But
+when I'm talking to journalists I just say "programmer" or something like that.
+                                -- Linus Torvalds
 
