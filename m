@@ -1,130 +1,126 @@
-Return-Path: <linux-wireless+bounces-29118-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-29119-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id CA13BC6CC19
-	for <lists+linux-wireless@lfdr.de>; Wed, 19 Nov 2025 05:37:38 +0100 (CET)
+Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [IPv6:2a01:60a::1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id 41060C6D0A4
+	for <lists+linux-wireless@lfdr.de>; Wed, 19 Nov 2025 08:12:13 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 84B954E8512
-	for <lists+linux-wireless@lfdr.de>; Wed, 19 Nov 2025 04:36:50 +0000 (UTC)
+	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 6D0893522FE
+	for <lists+linux-wireless@lfdr.de>; Wed, 19 Nov 2025 07:12:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CF29F3054CC;
-	Wed, 19 Nov 2025 04:36:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AFE1731813A;
+	Wed, 19 Nov 2025 07:12:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=morsemicro-com.20230601.gappssmtp.com header.i=@morsemicro-com.20230601.gappssmtp.com header.b="dtZavdKc"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="DWzfF13q"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-pl1-f181.google.com (mail-pl1-f181.google.com [209.85.214.181])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E04CE1E98EF
-	for <linux-wireless@vger.kernel.org>; Wed, 19 Nov 2025 04:36:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.181
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7E2D22F2910;
+	Wed, 19 Nov 2025 07:12:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763527008; cv=none; b=Y308tmkmYVGZcGY+woR6l/fvl0qBFs/aJIqzNmlwS92j2PSSwm+Xb5TMtwfLPafuZ1H81fr04VVMUn8BxPN1W0YAHCKOwQjgwULmll9Kvk3ftFlHeTg3zTon3asV7L9JT32Utz56JRZisMkFNt9gWlrDDlwqVDqUUJaaNRueYdA=
+	t=1763536327; cv=none; b=KM6dEVVtTB3moCD/sbJZDxLHodHrOfUlFDA/Uc0eDZ8/84pIsrGhDHOJDdsW+/cSG3AqQcTWYOcdSrFBYtnCTOdQK0hN09ir1sMPphimvpqNF0qtukEVrPuW/wHUbZP1/mSnaBuuVRkuUEvHN6xtfXkPHOocWKHq2Ps8nkHEqe8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763527008; c=relaxed/simple;
-	bh=zZ6Qrgq9gzCDGyW1Gh7kSZvtFakLZ36UgJH9PlqdG6w=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=jaFtKyRnHAlWtswuslz5+dtwaYBeDdl92BEaT1AHmMV2CM9EvwIfAC1wHTR+inA6rYEoPNy8d30EZXabC4OsVa4EJhKDlgeAylRfC8US7GB5czIhdnSrco9V0AinRn0/DphlxOqvGc1LGkpljFil85TQM6Ls+HQ1B7JcVGCQOJw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=morsemicro.com; spf=pass smtp.mailfrom=morsemicro.com; dkim=pass (2048-bit key) header.d=morsemicro-com.20230601.gappssmtp.com header.i=@morsemicro-com.20230601.gappssmtp.com header.b=dtZavdKc; arc=none smtp.client-ip=209.85.214.181
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=morsemicro.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=morsemicro.com
-Received: by mail-pl1-f181.google.com with SMTP id d9443c01a7336-298144fb9bcso66159425ad.0
-        for <linux-wireless@vger.kernel.org>; Tue, 18 Nov 2025 20:36:45 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=morsemicro-com.20230601.gappssmtp.com; s=20230601; t=1763527005; x=1764131805; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=f3kzyI2xZDpof4CAKHtAy/jPjf6L1BRnkv3kMrjz9Gk=;
-        b=dtZavdKc9zEh3CmRK5koPwL6Nfv13W8fI2/GPuG4ttB2X6XHIjfdqs6dEUeQ/5YO/6
-         0CTJUBMpODiuBtppLkuiKnNnd3UAvTMF+G0ucGPth3Lqk8OMEXI+mc2UKqu0WHx+NDMO
-         e4vbv4Gi4gQWkqapoIAH7YX8pvOnnsUtUtbCfUY//97roFMLMfo1FwjNMQG857sMSZUV
-         XLDvP+8QTn+binCkMUaN6M9DlgUUjqUU2Xmd0wrah0et9zLVhi7BKFiY6XjtEBsUQc27
-         JyA4BTDajlN06CuIXuAHRxdLroz/5xHJyjbawT7WQ3gcrJuW2/f7D5PwcupExuq/OOG3
-         gTbA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1763527005; x=1764131805;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=f3kzyI2xZDpof4CAKHtAy/jPjf6L1BRnkv3kMrjz9Gk=;
-        b=BPIBCjWNThFhueDsCfCC97rkEFm7kFA5/YCL+ZngYucexpJarIdv/R3BBiQWeIUG8e
-         9wxDNFnjLRTq0V5z8n7tS734F5oFHdRtPxfsn/IR3G+JMCHuAOSdVUs3XSjvpzOkBbVs
-         fcWTNn+CayFXtORM3NfBQuGCKSaycxz0MhYLF7fuzeUXrG+v4wzz04k+hb2LoOHc4eHm
-         0f8MLPdPPpXJw4UpFp9Dqm0cW/8w/PMl8j/s9JwjXiz4rIdFWwgKgvUXPs1tlYTjuCTE
-         bfFFz9NcvQR3pnS38Xb3Hi1viOVSi7B6D+YpDY8e3Up/4gZpU+wylTEIiVhTJUd38Mba
-         m84g==
-X-Gm-Message-State: AOJu0YycaLT7fAbgjZRJrlGlwRNIaf9JGq7+986i7ttecVc1tbLnwe0f
-	IdhwnCGjwKmcvedInJ5JQWpfA4wH/SEfoDZXcnzjoB3OMH4szwCvvXnuvR9ctZTEJvA=
-X-Gm-Gg: ASbGnctFYRdURE4rfRhwP3S0iYgAB/qrV3nCqDmZ2waPKhL0ocwKIr4bDETLl/H3GNR
-	TtgMQJrAaZq+2FfNm9wPm7GqsMjQhv9GPz1srX5x0g+0rds9Z6MA5PXL1k0GRDAwSV2++puHh/C
-	Rvrv32wtJmPZk8KC79+iWuoYPZJK5se05lbEL6MMo+jTzv+8NhprCZHdD9PAESDvN5r+0tdGYqo
-	5KoReBQptw6EdH62xxeVt7/fmY545C0COpyW/G6mKvuQGs1xx2aYwaatXCjy4FVGKt8DXG4I7ru
-	JjBf9Z8yY+OcQ8iMIi3iJOkNV+cqU3th5Urvkpbm1XttJ9BlPoM8pYi5HZ6BmkvarZBEV5ceLNA
-	h/0T8lGwL7b4kBB+M/CMc0zlhwEp7VpF8d2Q7zvdygrz7Og72D0+v89zjckLHyV/wVZG6rRzir5
-	MR0J+hSEU2TCQct2XTd03zxU7tuJ92WnrsnfOmYMtzQP9HhqPsAndmOI/PgsVMTAfnS1QC2aFjT
-	oonqW3P0sKhDMU3FKiOsal9OvylDvXn
-X-Google-Smtp-Source: AGHT+IECV3IaqRSf23gtM/OTSU2BqpMbHRUmup/t8zznQlt9phzpABscFNYuhNm8RgRqDtIcCust1w==
-X-Received: by 2002:a17:902:ce88:b0:295:2d76:72fe with SMTP id d9443c01a7336-2986a74af25mr227091575ad.45.1763527005136;
-        Tue, 18 Nov 2025 20:36:45 -0800 (PST)
-Received: from localhost (60-242-93-14.static.tpgi.com.au. [60.242.93.14])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2985c2bebe1sm187943545ad.82.2025.11.18.20.36.44
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 18 Nov 2025 20:36:44 -0800 (PST)
-Date: Wed, 19 Nov 2025 15:36:42 +1100
-From: Lachlan Hodges <lachlan.hodges@morsemicro.com>
-To: Johannes Berg <johannes@sipsolutions.net>
-Cc: linux-wireless@vger.kernel.org, arien.judge@morsemicro.com
-Subject: Re: [PATCH wireless-next v2 0/3] wifi: correctly represent S1G
- channels
-Message-ID: <lf22zjgof4ysu4v3blfbt3kv54l75rdbw3pecknlmlq6kmokha@a64bzx2dtrdr>
-References: <20250918051913.500781-1-lachlan.hodges@morsemicro.com>
- <5ec4190eb06c2b3763b8eb9d114a200d07437c11.camel@sipsolutions.net>
+	s=arc-20240116; t=1763536327; c=relaxed/simple;
+	bh=heRLluAsb1fBA0IdSBZn+pz0ZdFL4+ZY2/X2upJQjDI=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=tjnlN5FDnauVEySZYPDDCLEC4iDMqxomK/+54Cyv+DY34B1/EZa4LmGrWlYJ9uIkKCbSJm+0bpktkv2SRwcLxBgpYQ2ISXk4v7zOSbgHLhfoWmYnz92kIIppvi9T1RCwpzXNQgj1gDmUK4OQ7mjiyfenUW+PnhQI+VtiuNxXawc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=DWzfF13q; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5D538C2BC9E;
+	Wed, 19 Nov 2025 07:12:04 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1763536326;
+	bh=heRLluAsb1fBA0IdSBZn+pz0ZdFL4+ZY2/X2upJQjDI=;
+	h=From:To:Cc:Subject:Date:From;
+	b=DWzfF13qeg73czjIp8HxciyZFDrzXB3xnBHNg/ItM/69mxo9elBzjGeY/3AGof9AD
+	 dqnium8MTnVUOm5vSl0PhnUGPSKLVJNePPAJlp5sDvCOOeku0Sqm/nFhPbPPzeNPMw
+	 XCFobJ2W9yTFeNFJGKyEz98412D7g4kuuENqUI/kLV10y5UvJFuPWqK7aM/SHBx31n
+	 5PSAhvnvfgSxKSMxomeFCd/pG41oc7tvZePVxCOd4YuMTiH7PykagsvlbGvXkkydMG
+	 AsWKXRQyMoJqzYBtBE7lZZDT2qhNQlWcfoakZM0rkGXALRpkuEzj5AGGLo4iuNt54F
+	 QQoxg6LnyfyXA==
+From: "Jiri Slaby (SUSE)" <jirislaby@kernel.org>
+To: johannes@sipsolutions.net
+Cc: linux-kernel@vger.kernel.org,
+	"Jiri Slaby (SUSE)" <jirislaby@kernel.org>,
+	Vincent Danjean <vdanjean@debian.org>,
+	1119093@bugs.debian.org,
+	Salvatore Bonaccorso <carnil@debian.org>,
+	Nick Kossifidis <mickflemm@gmail.com>,
+	Luis Chamberlain <mcgrof@kernel.org>,
+	linux-wireless@vger.kernel.org
+Subject: [PATCH] wifi: ath5k: do not access array OOB
+Date: Wed, 19 Nov 2025 08:12:01 +0100
+Message-ID: <20251119071201.792814-1-jirislaby@kernel.org>
+X-Mailer: git-send-email 2.51.1
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <5ec4190eb06c2b3763b8eb9d114a200d07437c11.camel@sipsolutions.net>
+Content-Transfer-Encoding: 8bit
 
-On Tue, Nov 18, 2025 at 05:31:19PM +0100, Johannes Berg wrote:
-> Hi Lachlan,
+Vincent reports:
+> The ath5k driver seems to do an array-index-out-of-bounds access as
+> shown by the UBSAN kernel message:
+> UBSAN: array-index-out-of-bounds in drivers/net/wireless/ath/ath5k/base.c:1741:20
+> index 4 is out of range for type 'ieee80211_tx_rate [4]'
+> ...
+> Call Trace:
+>  <TASK>
+>  dump_stack_lvl+0x5d/0x80
+>  ubsan_epilogue+0x5/0x2b
+>  __ubsan_handle_out_of_bounds.cold+0x46/0x4b
+>  ath5k_tasklet_tx+0x4e0/0x560 [ath5k]
+>  tasklet_action_common+0xb5/0x1c0
 
-Hi Johannes
+It is real. 'ts->ts_final_idx' can be 3 on 5212, so:
+   info->status.rates[ts->ts_final_idx + 1].idx = -1;
+with the array defined as:
+   struct ieee80211_tx_rate rates[IEEE80211_TX_MAX_RATES];
+while the size is:
+   #define IEEE80211_TX_MAX_RATES  4
+is indeed bogus.
 
-> On Thu, 2025-09-18 at 15:19 +1000, Lachlan Hodges wrote:
-> > This patchset correctly supports S1G channels within cfg80211 and mac80211.
-> > Preliminary discussion can be found in [1] and the v1 RFC can be found in [2].
-> 
-> I was just looking at chandef stuff for NPCA (see the other thread), and
-> noticed that S1G isn't really (fully) represented in
-> 
->  - cfg80211_chandef_identical()
+Set this 'idx = -1' sentinel only if the array index is less than the
+array size. As mac80211 will not look at rates beyond the size
+(IEEE80211_TX_MAX_RATES).
 
-Yep can fix this. I actually do recall having this on my TODO as part of this
-patchset but must have forgotten.
+Note: The effect of the OOB write is negligible. It just overwrites the
+next member of info->status, i.e. ack_signal.
 
->  - _cfg80211_chandef_compatible() (not sure about this regarding primary 2mhz)
+Signed-off-by: Jiri Slaby (SUSE) <jirislaby@kernel.org>
+Reported-by: Vincent Danjean <vdanjean@debian.org>
+Link: https://lore.kernel.org/all/aQYUkIaT87ccDCin@eldamar.lan
+Closes: https://bugs.debian.org/1119093
 
-This looks to require a similar S1G specific path like we did within
-_cfg80211_chandef_usable(). Also zooming out a bit, may need some adjustments
-within _ieee80211_change_chanctx(). Additionally would be good to extend the
-unit tests for this.
+---
+Cc: 1119093@bugs.debian.org
+Cc: Salvatore Bonaccorso <carnil@debian.org>
+Cc: Nick Kossifidis <mickflemm@gmail.com>,
+Cc: Luis Chamberlain <mcgrof@kernel.org>
+Cc: linux-wireless@vger.kernel.org
+---
+ drivers/net/wireless/ath/ath5k/base.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-I will do some more research and testing here.
+diff --git a/drivers/net/wireless/ath/ath5k/base.c b/drivers/net/wireless/ath/ath5k/base.c
+index 4d88b02ffa79..917e1b087924 100644
+--- a/drivers/net/wireless/ath/ath5k/base.c
++++ b/drivers/net/wireless/ath/ath5k/base.c
+@@ -1738,7 +1738,8 @@ ath5k_tx_frame_completed(struct ath5k_hw *ah, struct sk_buff *skb,
+ 	}
+ 
+ 	info->status.rates[ts->ts_final_idx].count = ts->ts_final_retry;
+-	info->status.rates[ts->ts_final_idx + 1].idx = -1;
++	if (ts->ts_final_idx + 1 < IEEE80211_TX_MAX_RATES)
++		info->status.rates[ts->ts_final_idx + 1].idx = -1;
+ 
+ 	if (unlikely(ts->ts_status)) {
+ 		ah->stats.ack_fail++;
+-- 
+2.51.1
 
->  - nl80211_send_chandef()
-
-Added to list. Also some wider channel switching logic may be reviewed,
-though probably only once a an S1G driver is available upstream (hopefully
-soon :-))
-
-Will get these done soon, thanks for the reminder.
-
-lachlan
 
