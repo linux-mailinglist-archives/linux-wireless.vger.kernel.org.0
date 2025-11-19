@@ -1,165 +1,147 @@
-Return-Path: <linux-wireless+bounces-29127-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-29128-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id B548AC6D7F1
-	for <lists+linux-wireless@lfdr.de>; Wed, 19 Nov 2025 09:45:39 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 56195C6D82A
+	for <lists+linux-wireless@lfdr.de>; Wed, 19 Nov 2025 09:48:22 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id BDFFE4F2414
-	for <lists+linux-wireless@lfdr.de>; Wed, 19 Nov 2025 08:38:28 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id DBE354EECE1
+	for <lists+linux-wireless@lfdr.de>; Wed, 19 Nov 2025 08:41:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 61CFB31ED71;
-	Wed, 19 Nov 2025 08:38:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 78935329C61;
+	Wed, 19 Nov 2025 08:41:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="lTXcESib"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-vs1-f47.google.com (mail-vs1-f47.google.com [209.85.217.47])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 74E1132AACB
-	for <linux-wireless@vger.kernel.org>; Wed, 19 Nov 2025 08:38:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.217.47
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4BE2E2F49F1;
+	Wed, 19 Nov 2025 08:41:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763541504; cv=none; b=q1X01JtKJcb+iTs/oJDBQ1VpzGAuGLbOQrJWwsmt97gJMab4H7ZrYuWt9acJhZYWSoSS59uAfpBmaKWsX/CsQQuCs2cBK/mIjkuiAJYTezK/Uf034YjcJRFkeH9SBk+jY/lVGXsEvMxh3tBwOt69VcD8m6xF27SzlUQvvBgs81E=
+	t=1763541693; cv=none; b=maF/Zj699SFPpmLRDuPqRyf7Cm3aJORzJz4YQEDx/swWJ5509jdPL/NH8GZwrwGHDT4noAu6fWZgKBFyHYWFigUiyUvegdeVdQNc6/Oyx4kREpS9bfxtZDzVgJWVxkXSeh/KOfJhFj1MYS2pG0LfhTDG8d0r9tR2CKGK0Nhf/a8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763541504; c=relaxed/simple;
-	bh=ny/AnZ++YidC1Sr/qjK3+DbdEu2xRrLYvhhb3wK8dYk=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=bjc7j1P3l4WfvNqWkSK7nNKmb137x442roqi9VDNgA6oGqDYGLz/JFlXxLtQ1HtZCSxGb3djRT5PEfV9lKo47kHY8A1Wt3nC4dq1LdU/01irLnEN96aC9K4o6e6L+/CAimgcpQEnBj2xe3M84MqUpSXbagcFltlROn6vMqoBA08=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linux-m68k.org; spf=pass smtp.mailfrom=gmail.com; arc=none smtp.client-ip=209.85.217.47
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linux-m68k.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-vs1-f47.google.com with SMTP id ada2fe7eead31-5dfcfbcbcc0so1670664137.2
-        for <linux-wireless@vger.kernel.org>; Wed, 19 Nov 2025 00:38:20 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1763541500; x=1764146300;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=3olIEvv46EKoohjt1rvd/ggxwMd7dZjvEB7ssSNXcPA=;
-        b=ns750XhYvIfKEg0XTazTi4AxFBVR1zkdtMr3R67PTF21x1fVBqpPtNN8nbadjFutsb
-         JC/Q9/PysDZWBal/AiSJ1JhAfBy8d7o8GCkzG62fFB3kd/gtkquLWbY7vRv4lt7yEvRY
-         1iMXi9MQ238S3QfJikAKR3Gi6egl7QvfyFwc06KX5oP+4NXztSQto8fJkJEx5WOWITZx
-         WuhAntRss1cX+2yuBjkO0KDdtc4cOMC76VA6ySvdWq0dsH1wh5FEkh1L8j37chMVPUbf
-         0W2G5q5gIOnT+5qZAMN+3Ty7pZ/KCF//bnIibqa8Pr2Wu5rxPCRS5kxVoHaJDWQA0m3f
-         YMmA==
-X-Gm-Message-State: AOJu0YxoN84Cs9tEoXhrdaozmojZ1OGCXngD1lzzVv+O8JbBMuorK642
-	CegE2BxV2cfQCIysOy1Lz+pSxB8p+p17/sYJUFeeD3aCJeX/WE2JUdBhs4i7+0Zu
-X-Gm-Gg: ASbGncuyYG5mNAWGbwiMMSpMYaXqTSYPpyNleVFwAjU2iuet4aD+mqhMCkSsylx/xNh
-	W33cmPPAG61xxgOGeLRp1xDUT0BGRE4QnbO2aG+mmmO3ijdqpRKqbS1ODTmWEX697Kd5D3T1G1T
-	oKUpNKZ/DCDE8gXcMTCXk4mgz8JX4oCwLP5LHrvd+aJUFlfgFPYM0D3ruoFd1TcMGkxP5N3ZRwH
-	rsr7/YCvADTHluoMyTp9iUNwVeJ4kW6Sohmelp4VAAhJirHV0frANBgh8UVZvtCwrWIMdeCQwv5
-	7m9YYU7fmHFICsuGLgZfnFrE3EH7PI++9Hs2K6JHBQSIyfKifnUnXhzX2RdRZQHO9a8b2s9x/1f
-	vA0Ulgu9xeL3SyMHPmPo04FICdNXSqeyYei4yrXC5ZgbKi88qrNHBWEM9q660npihG6QHAmZ0Eu
-	iv5Gv2dkCT7SWOdJ1ooFI/VS5opox2NHBaROiJR0uB15Os22pg
-X-Google-Smtp-Source: AGHT+IH9+odom/IwcpVZk2GiUyyo595+zBfVaxflQzlg9cqz47toP8mrQh+RZ32/64jWTZW9CcELTg==
-X-Received: by 2002:a05:6102:4487:b0:5db:3cda:cc3b with SMTP id ada2fe7eead31-5dfc5a73510mr6483616137.34.1763541499425;
-        Wed, 19 Nov 2025 00:38:19 -0800 (PST)
-Received: from mail-vs1-f49.google.com (mail-vs1-f49.google.com. [209.85.217.49])
-        by smtp.gmail.com with ESMTPSA id a1e0cc1a2514c-939161bab7asm4633525241.14.2025.11.19.00.38.19
-        for <linux-wireless@vger.kernel.org>
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 19 Nov 2025 00:38:19 -0800 (PST)
-Received: by mail-vs1-f49.google.com with SMTP id ada2fe7eead31-5dfcfbcbcc0so1670659137.2
-        for <linux-wireless@vger.kernel.org>; Wed, 19 Nov 2025 00:38:19 -0800 (PST)
-X-Received: by 2002:a05:6102:424b:b0:5db:2b4d:f1ee with SMTP id
- ada2fe7eead31-5dfc55369femr6175703137.17.1763541498769; Wed, 19 Nov 2025
- 00:38:18 -0800 (PST)
+	s=arc-20240116; t=1763541693; c=relaxed/simple;
+	bh=dksIa9QT6oEbWiAmLz25H8n5pzertf8zaOAbLvM1J0k=;
+	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
+	 Content-Disposition; b=IvU+yBduhtjv2M0eRgrchXQfFZBPPH82+RUxw5wS5EBry16gSUJjMSM83nLy0/t4XdWybly6DRiKnADu8H5sI3fUqZ+Wzh5BzWj5LmyCdRZm5Xt+Ia7IMnMWDGWq+97Yhvw9+/LEQEm9RCCM2x72+OuL6KO/QGo8DZsx+QReSLU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=lTXcESib; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id ABC27C4CEF5;
+	Wed, 19 Nov 2025 08:41:30 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1763541692;
+	bh=dksIa9QT6oEbWiAmLz25H8n5pzertf8zaOAbLvM1J0k=;
+	h=Date:From:To:Cc:Subject:From;
+	b=lTXcESiboV/AhVdMwTc5oSQdgg30Hlfpmy4Bk/LRPnoOLlkc8kZSCD6sYk7rRWWc/
+	 ixEyUXceUQt/v2z1ZQkRm7Plvb3pS0DrgXTqG8SaDnImgTq0Uh/3JyNBkFrdc/MqhO
+	 6rQkzUfBnj60A0ZbnaYIhVm0k1sARAz1TorUAJ0wqpIPTzZa7dew1t425adzcTkcpr
+	 o693kk4Cq5/iaesGeMEmBtQqGhPmn3eGQvg0Ak0QLCY3hnDJS1oUCVRzKVuLcdOUo8
+	 H03CpwsWFnIjdqkvjBV9fWqfRI+LO4DxOrA2AfNliRrs6F1YTPZxGzAj/KX4IQb1wG
+	 VomU+Qnr3sDQA==
+Date: Wed, 19 Nov 2025 17:41:26 +0900
+From: "Gustavo A. R. Silva" <gustavoars@kernel.org>
+To: Stanislaw Gruszka <stf_xl@wp.pl>
+Cc: linux-wireless@vger.kernel.org, linux-kernel@vger.kernel.org,
+	"Gustavo A. R. Silva" <gustavoars@kernel.org>,
+	linux-hardening@vger.kernel.org
+Subject: [PATCH][next] iwlegacy: Avoid multiple
+ -Wflex-array-member-not-at-end warnings
+Message-ID: <aR2CtqZI3atH0HmE@kspp>
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20251117032910.11224-1-pkshih@realtek.com> <20251117032910.11224-3-pkshih@realtek.com>
- <CAMuHMdUx6qY66bCcGsm1YHK3=H+=Td6YM_gsXJ=UgjAYJpGo0Q@mail.gmail.com> <c19306a1d41f4946801cf1c5b70c8528@realtek.com>
-In-Reply-To: <c19306a1d41f4946801cf1c5b70c8528@realtek.com>
-From: Geert Uytterhoeven <geert@linux-m68k.org>
-Date: Wed, 19 Nov 2025 09:38:07 +0100
-X-Gmail-Original-Message-ID: <CAMuHMdUu9=4ypfR69_hQpVAuh-mciwtpLsVv0eBa5KX4KTYjxw@mail.gmail.com>
-X-Gm-Features: AWmQ_bkSQliBVZa201E35Dq0KttCSqfm-O946KFCRvI1QzDSJ7Hug8dhTb-oGQM
-Message-ID: <CAMuHMdUu9=4ypfR69_hQpVAuh-mciwtpLsVv0eBa5KX4KTYjxw@mail.gmail.com>
-Subject: Re: [PATCH rtw-next 2/2] wifi: rtw89: avoid to use not consecutive
- mask in __write_ctrl()
-To: Ping-Ke Shih <pkshih@realtek.com>
-Cc: "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
-Hi Ping-Ke,
+-Wflex-array-member-not-at-end was introduced in GCC-14, and we are
+getting ready to enable it, globally.
 
-On Wed, 19 Nov 2025 at 02:15, Ping-Ke Shih <pkshih@realtek.com> wrote:
-> Geert Uytterhoeven <geert@linux-m68k.org> wrote:
-> > On Mon, 17 Nov 2025 at 04:30, Ping-Ke Shih <pkshih@realtek.com> wrote:
-> > > The power value and enable bit fields can be not consecutive mask, but
-> > > normally we expect mask argument of rtw89_mac_txpwr_write32_mask() is
-> > > consecutive bit mask. Therefore, change the code accordingly.
-> > >
-> > > Cc: Geert Uytterhoeven <geert@linux-m68k.org>
-> > > Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
-> >
-> > Thanks for your patch!
-> >
-> > Reviewed-by: Geert Uytterhoeven <geert+renesas@glider.be>
-> >
-> > > --- a/drivers/net/wireless/realtek/rtw89/mac.h
-> > > +++ b/drivers/net/wireless/realtek/rtw89/mac.h
-> > > @@ -1456,6 +1456,26 @@ static inline int rtw89_mac_txpwr_write32_mask(struct rtw89_dev *rtwdev,
-> > >         return 0;
-> > >  }
-> > >
-> > > +static inline
-> > > +void rtw89_mac_write_txpwr_ctrl(struct rtw89_dev *rtwdev, u32 reg, u32 mask, u32 val,
-> > > +                               u32 mask_en, bool cond)
-> > > +{
-> > > +       u32 wrt = u32_encode_bits(val, mask);
-> >
-> > Nit: you could do without this variable...
-> >
-> > > +       u32 val32;
-> > > +       int ret;
-> > > +
-> > > +       if (cond)
-> > > +               wrt |= mask_en;
-> > > +
-> > > +       ret = rtw89_mac_txpwr_read32(rtwdev, RTW89_PHY_0, reg, &val32);
-> > > +       if (ret)
-> > > +               return;
-> > > +
-> > > +       val32 &= ~(mask | mask_en);
-> > > +       val32 |= wrt;
-> >
-> > val32 |= u32_encode_bits(val, mask);
-> > if (cond)
-> >         cal32 |= mask_en;
->
-> With this change, ARCH arm is failed to build (x86 is well):
->
-> In file included from /build/rtw89/core.h:9,
->                  from /build/rtw89/coex.h:8,
->                  from /build/rtw89/rtw8851b.c:5:
-> In function 'field_multiplier',
->     inlined from 'field_mask' at ./include/linux/bitfield.h:170:17,
->     inlined from 'u32_encode_bits' at ./include/linux/bitfield.h:200:1,
->     inlined from 'rtw89_mac_write_txpwr_ctrl' at /build/rtw89/mac.h:1468:11:
-> ./include/linux/bitfield.h:165:17: error: call to '__bad_mask' declared with attribute error: bad bitfield mask
->   165 |                 __bad_mask();
->       |                 ^~~~~~~~~~~~
-> In function 'field_multiplier',
+Move the conflicting declarations (which in a couple of cases happens
+to be in a union, so we're moving the entire unions) to the end of the
+corresponding structures. Notice that `struct il_tx_beacon_cmd`,
+`struct il4965_tx_resp`, and `struct il3945_tx_beacon_cmd` are flexible
+structures, this is structures that contain a flexible-array member.
 
-Hmm...
+With these changes fix the following warnings:
 
-Note that u32_encode_bits() really requires a constant mask, just
-like FIELD_PREP().  So probably the compiler can no longer deduce it
-is called with a constant after restructuring the code...
+11 drivers/net/wireless/intel/iwlegacy/common.h:526:11: warning: structure containing a flexible array member is not at the end of another structure [-Wflex-array-member-not-at-end]
+11 drivers/net/wireless/intel/iwlegacy/commands.h:2667:31: warning: structure containing a flexible array member is not at the end of another structure [-Wflex-array-member-not-at-end]
+4 drivers/net/wireless/intel/iwlegacy/3945.h:131:11: warning: structure containing a flexible array member is not at the end of another structure [-Wflex-array-member-not-at-end]
 
-Gr{oetje,eeting}s,
+Signed-off-by: Gustavo A. R. Silva <gustavoars@kernel.org>
+---
+ drivers/net/wireless/intel/iwlegacy/3945.h     | 4 +++-
+ drivers/net/wireless/intel/iwlegacy/commands.h | 4 +++-
+ drivers/net/wireless/intel/iwlegacy/common.h   | 4 +++-
+ 3 files changed, 9 insertions(+), 3 deletions(-)
 
-                        Geert
-
+diff --git a/drivers/net/wireless/intel/iwlegacy/3945.h b/drivers/net/wireless/intel/iwlegacy/3945.h
+index fb1e33c89d0e..ed63b31fee9a 100644
+--- a/drivers/net/wireless/intel/iwlegacy/3945.h
++++ b/drivers/net/wireless/intel/iwlegacy/3945.h
+@@ -123,13 +123,15 @@ enum il3945_antenna {
+ #define IEEE80211_FRAME_LEN             (IEEE80211_DATA_LEN + IEEE80211_HLEN)
+ 
+ struct il3945_frame {
++	struct list_head list;
++
++	/* Must be last as it ends in a flexible-array member. */
+ 	union {
+ 		struct ieee80211_hdr frame;
+ 		struct il3945_tx_beacon_cmd beacon;
+ 		u8 raw[IEEE80211_FRAME_LEN];
+ 		u8 cmd[360];
+ 	} u;
+-	struct list_head list;
+ };
+ 
+ #define SUP_RATE_11A_MAX_NUM_CHANNELS  8
+diff --git a/drivers/net/wireless/intel/iwlegacy/commands.h b/drivers/net/wireless/intel/iwlegacy/commands.h
+index b61b8f377702..2e665072f6d3 100644
+--- a/drivers/net/wireless/intel/iwlegacy/commands.h
++++ b/drivers/net/wireless/intel/iwlegacy/commands.h
+@@ -2664,10 +2664,12 @@ struct il3945_beacon_notif {
+ } __packed;
+ 
+ struct il4965_beacon_notif {
+-	struct il4965_tx_resp beacon_notify_hdr;
+ 	__le32 low_tsf;
+ 	__le32 high_tsf;
+ 	__le32 ibss_mgr_status;
++
++	/* Must be last as it ends in a flexible-array member. */
++	struct il4965_tx_resp beacon_notify_hdr;
+ } __packed;
+ 
+ /*
+diff --git a/drivers/net/wireless/intel/iwlegacy/common.h b/drivers/net/wireless/intel/iwlegacy/common.h
+index 4c9836ab11dd..21f1c7702add 100644
+--- a/drivers/net/wireless/intel/iwlegacy/common.h
++++ b/drivers/net/wireless/intel/iwlegacy/common.h
+@@ -518,13 +518,15 @@ struct il_channel_info {
+ #define IEEE80211_FRAME_LEN             (IEEE80211_DATA_LEN + IEEE80211_HLEN)
+ 
+ struct il_frame {
++	struct list_head list;
++
++	/* Must be last as it ends in a flexible-array member. */
+ 	union {
+ 		struct ieee80211_hdr frame;
+ 		struct il_tx_beacon_cmd beacon;
+ 		u8 raw[IEEE80211_FRAME_LEN];
+ 		u8 cmd[360];
+ 	} u;
+-	struct list_head list;
+ };
+ 
+ enum {
 -- 
-Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
+2.43.0
 
-In personal conversations with technical people, I call myself a hacker. But
-when I'm talking to journalists I just say "programmer" or something like that.
-                                -- Linus Torvalds
 
