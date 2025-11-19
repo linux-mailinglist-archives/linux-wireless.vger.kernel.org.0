@@ -1,105 +1,127 @@
-Return-Path: <linux-wireless+bounces-29124-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-29125-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [IPv6:2a01:60a::1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id AB745C6D59B
-	for <lists+linux-wireless@lfdr.de>; Wed, 19 Nov 2025 09:15:06 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 75B06C6D5D0
+	for <lists+linux-wireless@lfdr.de>; Wed, 19 Nov 2025 09:16:56 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 4C1793A1734
-	for <lists+linux-wireless@lfdr.de>; Wed, 19 Nov 2025 08:07:03 +0000 (UTC)
+	by ams.mirrors.kernel.org (Postfix) with ESMTPS id C06C335F1E6
+	for <lists+linux-wireless@lfdr.de>; Wed, 19 Nov 2025 08:10:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D9881327219;
-	Wed, 19 Nov 2025 08:03:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 148DA280339;
+	Wed, 19 Nov 2025 08:09:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="huAkSLjK"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="PJ5sgxj8"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pj1-f49.google.com (mail-pj1-f49.google.com [209.85.216.49])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AF9173148C8;
-	Wed, 19 Nov 2025 08:03:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 583FE2EF65B
+	for <linux-wireless@vger.kernel.org>; Wed, 19 Nov 2025 08:09:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.49
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763539428; cv=none; b=joaJBth9+ZHfwSwxHNtBNSGA/m38Vb5i+HdVJWGoU9p6Cm1HOTFyuAV8kRcde0lfcPq5dRqNUpDSEPireBEcfudle7SlgyxQIogVPMVXBH+Q2Sdw3xAeG4iorv5TDGzL6KlmpG3KidcRYd64L3nn4imp/JvJej4v/nj5U5gwCRU=
+	t=1763539799; cv=none; b=bK1t1v3A3xsGt7Fdfg2+DBtJUR9sMx+ntoAiuEWrmlmU4JIRnnF134r1xrGo1CbFmVWBlsRuaUEqMpc+Uh5P/kmpOdYnQHlWzzaNsDk7Wy/yLoam/YHOGL7lQhcld8czLNR4kQlGc0sOrUhD+OqslRcaKl0EH1Nkh58xPNnYUoE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763539428; c=relaxed/simple;
-	bh=1gTHiezWLSTtMUkTEYC4o5k8gdWKfuDR3DU/1XBo5jk=;
-	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
-	 Content-Disposition; b=ZbXMf/fwMKAfw7/pnj4bGM3VgQ3iiVDFUwLwaU6SxralCnBh9QYmQnfSFc2o0rTEPQlgyiLrQ4QfvU8SAbEhITOgoGRWw8N/k5GbCH8LVqEP55v8t9NxLyX9qzyZlwvm/Z78RZWog2rST5yG0sLwMHbtkxb4zKLrdiGwp8KdD8E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=huAkSLjK; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6349FC2BCAF;
-	Wed, 19 Nov 2025 08:03:45 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1763539427;
-	bh=1gTHiezWLSTtMUkTEYC4o5k8gdWKfuDR3DU/1XBo5jk=;
-	h=Date:From:To:Cc:Subject:From;
-	b=huAkSLjKvVAbGIDrRnhGkQwBw1qSs3Tp6AHN6juRDNwzwxALZ4JV3MGxmmWNoIiRG
-	 FFqUDJH8mj/n3i7NbiS+/dfVd1njSO8VKeKWjx1Bp86G+0Azvbc+gV5pa1AUdPY1hk
-	 OuIR+Cpwfp1hzbkb38CHQC5a0uMcf62IEXysrADbwNFr9Q2to9y2G+qtbUpGpFwsUd
-	 undSoc1M383SMzkHex5+5Y0p5TdklfkHfOw3DfUVsSskYdI5rNnkjma7fuGjjZ+e7E
-	 1URaX1d0jQ4SqMGPej+TVnGSbfBimwyAokeUzBEAUlwY6p2T3dP81q68JTbi4B8g6o
-	 ycTNX/zxAw6Lw==
-Date: Wed, 19 Nov 2025 17:03:42 +0900
-From: "Gustavo A. R. Silva" <gustavoars@kernel.org>
-To: Jeff Johnson <jeff.johnson@oss.qualcomm.com>,
-	Kalle Valo <quic_kvalo@quicinc.com>
-Cc: linux-wireless@vger.kernel.org, linux-kernel@vger.kernel.org,
-	"Gustavo A. R. Silva" <gustavoars@kernel.org>,
-	linux-hardening@vger.kernel.org
-Subject: [PATCH][next] ath6kl: wmi: Avoid -Wflex-array-member-not-at-end
- warning
-Message-ID: <aR153k4ExCD-QTMq@kspp>
+	s=arc-20240116; t=1763539799; c=relaxed/simple;
+	bh=7KXRYpJkWJZQ9A1K7/LhsK4rygGf/YCjrD0wGLFgJOo=;
+	h=MIME-Version:From:Date:Message-ID:Subject:To:Cc:Content-Type; b=NC/X0MQQuVhI8aC5283ITRyAPFxrF4ILRPNaUBGrAstD9TvVJkFWlBpwa0s3QeqRqahhnW7VrYZC+awPnGv5hNF00huJm5IZGnSs+Iv3B+ayl0v7SKuHi2CA0MKdC6+lNg0nV2RMoDSru5Ak+L3QSb9BtFjBShZi+mvkQbd/GE8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=PJ5sgxj8; arc=none smtp.client-ip=209.85.216.49
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-pj1-f49.google.com with SMTP id 98e67ed59e1d1-343774bd9b4so5943588a91.2
+        for <linux-wireless@vger.kernel.org>; Wed, 19 Nov 2025 00:09:57 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1763539797; x=1764144597; darn=vger.kernel.org;
+        h=cc:to:subject:message-id:date:from:mime-version:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=a39qS9THoZoyW40hqoMxyri1LtTdUt2BE8ZMUdYz3xI=;
+        b=PJ5sgxj8cZBL0rTYmUSNxKwbkZmnnRtEe6VnQqIfFy4oDke/v5bGu00vOZNDvl9LKv
+         Qdqod+tPjwH24y6hGthaXG9RsNTqZePfKYYErXRdsKQPhw4YrGW+AYwySkEkSUI9Vkur
+         L5xn5dY2/mK1NKEwd6FsqwmFjbi5hBLi6jdmAV9h+OSdMc+Db8TiL/hEkq+EncLbQUZA
+         hqylgnpCPI4BysO/lV9XWOu5UUUhH4hHk5brwMuntwJT+d/DW+mhPJi4cDizu65RMncw
+         eS2bzTvCpxF3jHpsuygLiwrT8GZXgUsUyfYV3mt4Q9vLFh6UhNGKU8nsLxMHovFfu3Y+
+         9fjQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1763539797; x=1764144597;
+        h=cc:to:subject:message-id:date:from:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=a39qS9THoZoyW40hqoMxyri1LtTdUt2BE8ZMUdYz3xI=;
+        b=oYqCFVEdJKXnS37G1+zfP7AuddGK956xyELiMo2LBsq0ep+lq77zjb7g6toIisflxy
+         /5b05TK/89+mL2A3dWMaWG2qtDfA6LH/Tb9Y5lH3/PrAZ8dpVkr591QhQNRvM8WH/Tiu
+         zx9f71nUTmL8+dqsKTEaA/294sO8V6PzvPUUZ6zSh0pG15MWNiCdQIdoWatAnUyx1rYv
+         +2HLUZh20Cef3c7y/1WRNI+3qSDYqUWTombh4J8u9BYlrG93wkRMYMASJ+c2ig4jTbWL
+         GomDEe4Ym2YM8BG20RPUVBqZ4CCRyA6Vw0eZiaq5yLTxzZHQ873oVUuOIWyDVxEM/U8f
+         213A==
+X-Forwarded-Encrypted: i=1; AJvYcCXfZg3XwnaGlFyS8lWB1hpr/opAhh9Ymy9ftQXhXbRDkl3c5E80uTQfAaWjNKMX18+8WWOlR8KROaX6+MLAag==@vger.kernel.org
+X-Gm-Message-State: AOJu0YwImED1y7PJZq45Rv1wzXP5MU87m6gH/P3ADrLfN7mnEFnyZyKr
+	+jDoVyXwN7RRVZzn+MZkOGJ8HKFC3+zE920HZRC0wbWr6ijV9bYvwOCVS4wlo+qBT5Ga8he51OM
+	0h2hvjRHNLyHxVq7H8Kj2ON2+r7tXWw==
+X-Gm-Gg: ASbGnctLgTkEUC+s+rMRAFfbfiGeYqGTljWTU+nXjrn4AxVNmlJfxRpJbWVsHjf4DXl
+	ZKomYaFVURxcr0WMERzvmVYGZeZVrnpmQNO4NYZmnpgm49JbuUEpUiDj/ro+zVc++0M88NEVgAK
+	ycTEKzDeyXPcGxYL2EnsxCF5RNwCyBoO73qZvWBv80ZzqIfuVPIRlfD8OX+m5/2IB/E4Dfbqt+e
+	PqSn9RdDN56O9e9B2mA2zNWYZ69c4Y9o0cwppnQIIxClIT5ouZ2e4mZjvS+n/HJed4ZyASF4ciS
+	WlY=
+X-Google-Smtp-Source: AGHT+IGRwjPAZWI/LkmCbmFjssIGAPewHIFhCSWpNS3Ld2uk5GBPL1IBVqYl8F3Cww50AryvRZGDWVS+bLrBXzVMrm4=
+X-Received: by 2002:a17:90b:2244:b0:32e:7c34:70cf with SMTP id
+ 98e67ed59e1d1-343fa754977mr21837353a91.36.1763539796542; Wed, 19 Nov 2025
+ 00:09:56 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+From: =?UTF-8?Q?Pawe=C5=82_Owoc?= <frut3k7@gmail.com>
+Date: Wed, 19 Nov 2025 09:09:44 +0100
+X-Gm-Features: AWmQ_bl44G0Px-nO8xsutIR7OZVzuzXJR2Pttj_Gy95HLVR9iwbtIHW4E_siwJM
+Message-ID: <CAKEyCaD8RMqPvwZOxgwAT4G=h-M94ToxoSdYwCjfvZMiM8mB-g@mail.gmail.com>
+Subject: Re: [PATCH] wifi: ath11k: add support for MU EDCA
+To: quic_yuzha@quicinc.com
+Cc: ath11k@lists.infradead.org, linux-wireless@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 
--Wflex-array-member-not-at-end was introduced in GCC-14, and we are
-getting ready to enable it, globally.
+After this change, IPQ8074 crashes in STA mode:
 
-Move the conflicting declaration (which happens to be in a union, so
-we're moving the entire union) to the end of the corresponding
-structure. Notice that `struct bss_bias_info` is a flexible structure,
-this is a structure that contains a flexible-array member.
+[  165.110962] qcom-q6v5-wcss-pil cd00000.q6v5_wcss: fatal error received:
+[  165.110962] QC Image Version:
+QC_IMAGE_VERSION_STRING=WLAN.HK.2.9.0.1-02146-QCAHKSWPL_SILICONZ-1
+[  165.110962] Image Variant : IMAGE_VARIANT_STRING=8074.wlanfw.eval_v2Q
+[  165.110962]
+[  165.110962] wal_tx_control.c:823 Assertion 0 failedparam0 :zero,
+param1 :zero, param2 :zero.
+[  165.110962] Thread ID      : 0x00000062  Thread name    : WLAN RT1
+Process ID     : 0
+[  165.110962] Register:
+[  165.110962] SP : 0x4bfd5ce8
+[  165.110962] FP : 0x4bfd5cf0
+[  165.110962] PC : 0x4b107f58
+[  165.110962] SSR : 0x00000008
+[  165.110962] BADVA : 0x00020000
+[  165.110962] LR : 0x4b1076f4
+[  165.110962]
+[  165.110962] Stack Dump
+[  165.110962] from : 0x4bfd5ce8
+[  165.110962] to   : 0x4bfd62c0
+[  165.110962]
+[  165.157843] remoteproc remoteproc0: crash detected in
+cd00000.q6v5_wcss: type fatal error
+[  165.180083] remoteproc remoteproc0: handling crash #1 in cd00000.q6v5_wcss
+[  165.188416] remoteproc remoteproc0: recovering cd00000.q6v5_wcss
+[  165.221076] remoteproc remoteproc0: stopped remote processor
+cd00000.q6v5_wcss
+[  165.485399] ath11k c000000.wifi: failed to send WMI_PEER_SET_PARAM cmd
+[  165.485443] ath11k c000000.wifi: failed to setup peer SMPS for vdev 0: -108
+[  165.490829] ath11k c000000.wifi: Failed to send WMI_TWT_ENABLE_CMDID
+[  165.497736] ath11k c000000.wifi: Failed to send
+WMI_BSS_COLOR_CHANGE_ENABLE_CMDID
+[  165.504283] ath11k c000000.wifi: failed to enable bss color change
+on vdev 0: -108
+[  165.511671] ath11k c000000.wifi: Failed to send
+WMI_OBSS_COLOR_COLLISION_DET_CONFIG_CMDID
+[  165.519136] ath11k c000000.wifi: failed to set bss color collision
+on vdev 0: -108
 
-With these changes fix the following warning:
-
-drivers/net/wireless/ath/ath6kl/wmi.h:1658:20: warning: structure containing a flexible array member is not at the end of another structure [-Wflex-array-member-not-at-end]
-
-Signed-off-by: Gustavo A. R. Silva <gustavoars@kernel.org>
----
- drivers/net/wireless/ath/ath6kl/wmi.h | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
-
-diff --git a/drivers/net/wireless/ath/ath6kl/wmi.h b/drivers/net/wireless/ath/ath6kl/wmi.h
-index 3080d82e25cc..0e7810b9372f 100644
---- a/drivers/net/wireless/ath/ath6kl/wmi.h
-+++ b/drivers/net/wireless/ath/ath6kl/wmi.h
-@@ -1649,6 +1649,9 @@ struct low_rssi_scan_params {
- } __packed;
- 
- struct roam_ctrl_cmd {
-+	u8 roam_ctrl;
-+
-+	/* Must be last as it ends in a flexible-array member. */
- 	union {
- 		u8 bssid[ETH_ALEN]; /* WMI_FORCE_ROAM */
- 		u8 roam_mode; /* WMI_SET_ROAM_MODE */
-@@ -1656,7 +1659,6 @@ struct roam_ctrl_cmd {
- 		struct low_rssi_scan_params params; /* WMI_SET_LRSSI_SCAN_PARAMS
- 						     */
- 	} __packed info;
--	u8 roam_ctrl;
- } __packed;
- 
- struct set_beacon_int_cmd {
--- 
-2.43.0
-
+Regards,
 
