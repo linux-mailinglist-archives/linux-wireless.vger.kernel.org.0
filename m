@@ -1,70 +1,70 @@
-Return-Path: <linux-wireless+bounces-29206-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-29207-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [IPv6:2a01:60a::1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9B834C74F5E
-	for <lists+linux-wireless@lfdr.de>; Thu, 20 Nov 2025 16:29:54 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 56049C74F8E
+	for <lists+linux-wireless@lfdr.de>; Thu, 20 Nov 2025 16:31:09 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.mirrors.kernel.org (Postfix) with ESMTPS id B4F113598C4
-	for <lists+linux-wireless@lfdr.de>; Thu, 20 Nov 2025 15:22:57 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTPS id B48943136E
+	for <lists+linux-wireless@lfdr.de>; Thu, 20 Nov 2025 15:23:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 841EB36C0A4;
-	Thu, 20 Nov 2025 15:14:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9425236E56D;
+	Thu, 20 Nov 2025 15:14:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="pqoML68V"
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="bLi05tq+"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-wr1-f73.google.com (mail-wr1-f73.google.com [209.85.221.73])
+Received: from mail-wr1-f74.google.com (mail-wr1-f74.google.com [209.85.221.74])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EC15636B047
-	for <linux-wireless@vger.kernel.org>; Thu, 20 Nov 2025 15:14:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.73
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5F5A635B125
+	for <linux-wireless@vger.kernel.org>; Thu, 20 Nov 2025 15:14:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.74
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763651687; cv=none; b=pJoN25/zr3Qbm1lFnKib6+3hifkBIBTlOz+EO2yXdGlF6QGwedsOd7kXCX3iqSYmI4zQN+MPSWfEF4l4PS6bGdH0YeehL514YPD67WQRyFHPaWzaFEqS3ycMxNfIcrENSmXpUnFEUFq2Kwp8IJAy+eAyBcYmHEFndEvFpYtvfQk=
+	t=1763651692; cv=none; b=l1z2Ri1bnBI9mnt4jWsXK77todLrSLQyPYK6nxei93f0BxbROndEe1+fbPyns/BFcCsmN0t0Q6YbXOZ3RaYffKFzTa7pytreHEGDpunk+2/ycYXNYnYWkLcWD1Mvsct8vkTZOW7PobxBLgobIkxPjpzX3RE+n6hJSJkEJM4vsoo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763651687; c=relaxed/simple;
-	bh=VJAnDnupr6osGjX7SKazhkLQaNmio3T71ETMJ88MCCs=;
+	s=arc-20240116; t=1763651692; c=relaxed/simple;
+	bh=6YW+vfkhd/mpRT7uuYTC0KMQbCDsf4nYiMWcZd+SpAA=;
 	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=YfelPXSpPUygl0Xkd2yVFrXdpCsY77p8E7E4Xp1txXm41IntDRz6e9uY3F578DhoqSJ+5zJ4yf+HvWnnVYX8uEUsdUqjFbtsiQeJ2jDlHsG+JSrfBZ9fTFN72qrbuQfJOlYuiWgWYBowrPi2DwPbP8F8wS+MHUD4OiCSQxoF2d0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--elver.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=pqoML68V; arc=none smtp.client-ip=209.85.221.73
+	 To:Cc:Content-Type; b=XKHth+g/ZWNVB50FuCU7OYuLrSfFMBzsyTlmX0DCfXQ+jsDz/UbeFfDCSedmzaryyTSm5TvaWXrPn4fNaOJvLPhyq2xkVFhrU3qYxP3uEI/vi27NDGZDeDqN++yH+pQYe9bvZ547xHXugFEX14orN39soF2u1qM4vZj3MNyaseE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--elver.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=bLi05tq+; arc=none smtp.client-ip=209.85.221.74
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--elver.bounces.google.com
-Received: by mail-wr1-f73.google.com with SMTP id ffacd0b85a97d-40cfb98eddbso1027317f8f.0
-        for <linux-wireless@vger.kernel.org>; Thu, 20 Nov 2025 07:14:19 -0800 (PST)
+Received: by mail-wr1-f74.google.com with SMTP id ffacd0b85a97d-429c95fdba8so505500f8f.0
+        for <linux-wireless@vger.kernel.org>; Thu, 20 Nov 2025 07:14:23 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1763651655; x=1764256455; darn=vger.kernel.org;
+        d=google.com; s=20230601; t=1763651660; x=1764256460; darn=vger.kernel.org;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=j4pKPAxAMb/xt3eYfYDMHUG0PZ5TfjoAzjHvbIiVoEA=;
-        b=pqoML68VYvtyKTUKijOSecoCiwlHlqjdL2wDz0FmDLCYF/iTOH7ptaKu3u0zW7IMy9
-         uBUqCaMB4AsJIIQesxVOm16hLF3DPPcebuDv65WbT5xivYAFx3FDeBm5ovUsQMiXYJkB
-         hDjIgzm6tbGxiTE0wjIItGUoVWqPqy0nLrDZUqgELB94fHmFWkCDLrWrgqbb2mtXC8E7
-         w/QFpb7u97Hw1IYTd+Is8d2GEQr+rB2oWnkfjZ9gPXWkbeIQ5Hn+YWFL+M/waHXq+p7T
-         ksoAFVHWTM7YtxNl2unENjIhVWrxtJLByypAvSlBdiKPexSSKkaAg/oD+E/dim9TAox2
-         Vx6A==
+        bh=YGVDTZeKU8HtP6Bp5mRJ8rt3G3nq7YHNLnBPvMXXBAk=;
+        b=bLi05tq+cUghlwIG0ZJFIGRa/ZwW+heDghA/KjZru76B7p2seHi5xclH0RHxeCxNSQ
+         fimFHTEmaSVAXxtvSSGnTJ6Mw8pKSsaMFNyknsnL5KehkC+MEqfFsDC4u4BfuQkOXQn0
+         OVOf3J1K7HeW9xfjxzaXVIu+0CirhFgCA1YZGLXMLAt+XUJ/9o8NhqTdAWFjQ/eHgvZs
+         EzYJygPvxCtnPVVsh3SYbeYqIUAgo/GigVt1D0SgtIveROmwRvEQWHaOnkXRkFa3Zy7x
+         cWsjUnnk0GT0fYmPrSXwckBl7rVDFfLL9g4Iv8UMydg6xCvsu5rr5Pv5n4hgnM4lUZ7U
+         vDZQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1763651655; x=1764256455;
+        d=1e100.net; s=20230601; t=1763651660; x=1764256460;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=j4pKPAxAMb/xt3eYfYDMHUG0PZ5TfjoAzjHvbIiVoEA=;
-        b=TXxbXJMApdg9hfrfK0xwMyq8jp1joa55pms/LpbH289MTt1+X8bddxoh+D4N8j57ZG
-         hOL2LAfjTUiJdEuE/x/3JIEQZAr1na4DrwNTkNuu4ah3kduJzft2/Hk8KSTbgc52JdUz
-         AKpkQf6J+6V6Am1Du53sc7EVTg9JRubewURu8IXK7qVv5dKSkeRYxg9WduRgFfc5FUE1
-         RKWmZVnTgr/sG1GXuG+jXmbc9RMGKueK0ArEiQeZjBgLGxU15qEPbJJaNIWS/+Ip+PMm
-         lsU/CIg2R8QDQE2En0gt/6L/9+ySc8igsGC9tIuy9DECR7tFgr2xCKhhWm1HlSnigr42
-         QIbA==
-X-Forwarded-Encrypted: i=1; AJvYcCU76SXCz+9Kj/xBHX37y+YZrOw+qo1oyceBkNB6CSw+eArC8N4j88lOR++r9/kS+dBrrosD78RVhQKeIaORwg==@vger.kernel.org
-X-Gm-Message-State: AOJu0YxBR3qvzYsxjC6SnP9EJGzPWQPipjdWOkIp4cuzzuofpqwi7nGK
-	Pvly78PiXg8jsUVwGQ4T1FB9YRQArvxnVGN6AHplUQtgdneN5AvI5LX23escKRcDtrm/Pg4XTME
-	QYA==
-X-Google-Smtp-Source: AGHT+IFqcHBKgR0gW0/Eo/3sCwe08l4FABFq65GtQBUvSXkcpOED/X6M6Z0vvwbHQZfiyYHdho6VSOJOWw==
-X-Received: from wrdk8.prod.google.com ([2002:adf:b348:0:b0:42b:30da:e035])
- (user=elver job=prod-delivery.src-stubby-dispatcher) by 2002:adf:e987:0:b0:429:58f:26f
- with SMTP id ffacd0b85a97d-42cba7696b1mr2716676f8f.24.1763651655219; Thu, 20
- Nov 2025 07:14:15 -0800 (PST)
-Date: Thu, 20 Nov 2025 16:09:59 +0100
+        bh=YGVDTZeKU8HtP6Bp5mRJ8rt3G3nq7YHNLnBPvMXXBAk=;
+        b=RTDI/b0ejrDVJI0T1VAby/PNS0wjsn1gK0ZQAhhKTLU54WpsaCxsLUHdLGPjudn2Ah
+         WH4fAIyuRqwS5I+JhxInVwEsnFGmbpU0faGkOooexmhfJP/z4FQElq1Un9kTK0OBPOOl
+         foMTYakyJJZeWU8deKOHIkdQufevG2WE8D/nUuwb0H4PnABs9JMj/9RLqKudkPiPJFai
+         QjgfCgN09rOtsbIF9LKfy7UUOsvyteCbni/JLecARF4H/C2vmI//SIo8lp4S/OM5roSg
+         cp6OzsFwnIVpuIBCxxT5uDEwFefaw3lErvwxS2L+olFO230WoBPG7R9eoxfNI+xz7DXs
+         aN4g==
+X-Forwarded-Encrypted: i=1; AJvYcCUoJ/tu6L6JEnPNPumXgLp/p+YgFwgQbF5/nvkbN19BsbRdKgbvEH7CYm++cV6yqfV5skh3iO/6PJzbygajNw==@vger.kernel.org
+X-Gm-Message-State: AOJu0YwRbYTNA7ODcSioPnEX8l8YbgRQrcpuppAI61tke2vlvujenzj0
+	jhWctIiY+h/WmbK4X2eAvVimw11+tAmfIfC/DxWvr4KJ45FUaQ58p7FK+LLpe+6WqqB+1/Hh9b5
+	zXw==
+X-Google-Smtp-Source: AGHT+IFQTWafreV6PpxtXgnfYqg/qQzIwFP62DiWx3258dQlAUbophifEYpA3WmSJ8qPzpQTnBFvuJ4JAg==
+X-Received: from wrxm13.prod.google.com ([2002:a05:6000:8d:b0:429:c854:2a08])
+ (user=elver job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6000:208a:b0:42b:3aca:5a86
+ with SMTP id ffacd0b85a97d-42cbb2b1e57mr3064595f8f.57.1763651660166; Thu, 20
+ Nov 2025 07:14:20 -0800 (PST)
+Date: Thu, 20 Nov 2025 16:10:00 +0100
 In-Reply-To: <20251120151033.3840508-7-elver@google.com>
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
@@ -74,8 +74,8 @@ List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
 References: <20251120145835.3833031-2-elver@google.com> <20251120151033.3840508-7-elver@google.com>
 X-Mailer: git-send-email 2.52.0.rc1.455.g30608eb744-goog
-Message-ID: <20251120151033.3840508-35-elver@google.com>
-Subject: [PATCH v4 34/35] crypto: Enable context analysis
+Message-ID: <20251120151033.3840508-36-elver@google.com>
+Subject: [PATCH v4 35/35] sched: Enable context analysis for core.c and fair.c
 From: Marco Elver <elver@google.com>
 To: elver@google.com, Peter Zijlstra <peterz@infradead.org>, 
 	Boqun Feng <boqun.feng@gmail.com>, Ingo Molnar <mingo@kernel.org>, Will Deacon <will@kernel.org>
@@ -99,343 +99,836 @@ Cc: "David S. Miller" <davem@davemloft.net>, Luc Van Oostenryck <luc.vanoostenry
 	linux-doc@vger.kernel.org, linux-kbuild@vger.kernel.org, 
 	linux-kernel@vger.kernel.org, linux-mm@kvack.org, 
 	linux-security-module@vger.kernel.org, linux-sparse@vger.kernel.org, 
-	linux-wireless@vger.kernel.org, llvm@lists.linux.dev, rcu@vger.kernel.org
+	linux-wireless@vger.kernel.org, llvm@lists.linux.dev, rcu@vger.kernel.org, 
+	Ingo Molnar <mingo@redhat.com>
 Content-Type: text/plain; charset="UTF-8"
-
-Enable context analysis for crypto subsystem.
 
 This demonstrates a larger conversion to use Clang's context
 analysis. The benefit is additional static checking of locking rules,
 along with better documentation.
 
-Note the use of the __acquire_ret macro how to define an API where a
-function returns a pointer to an object (struct scomp_scratch) with a
-lock held. Additionally, the analysis only resolves aliases where the
-analysis unambiguously sees that a variable was not reassigned after
-initialization, requiring minor code changes.
+Notably, kernel/sched contains sufficiently complex synchronization
+patterns, and application to core.c & fair.c demonstrates that the
+latest Clang version has become powerful enough to start applying this
+to more complex subsystems (with some modest annotations and changes).
 
 Signed-off-by: Marco Elver <elver@google.com>
-Cc: Herbert Xu <herbert@gondor.apana.org.au>
-Cc: "David S. Miller" <davem@davemloft.net>
-Cc: linux-crypto@vger.kernel.org
+Cc: Peter Zijlstra <peterz@infradead.org>
+Cc: Ingo Molnar <mingo@redhat.com>
 ---
 v4:
 * Rename capability -> context analysis.
 
 v3:
-* Rebase - make use of __acquire_ret macro for new functions.
-* Initialize variables once where we want the analysis to recognize aliases.
-
-v2:
 * New patch.
 ---
- crypto/Makefile                     |  2 ++
- crypto/acompress.c                  |  6 +++---
- crypto/algapi.c                     |  2 ++
- crypto/api.c                        |  1 +
- crypto/crypto_engine.c              |  2 +-
- crypto/drbg.c                       |  5 +++++
- crypto/internal.h                   |  2 +-
- crypto/proc.c                       |  3 +++
- crypto/scompress.c                  | 24 ++++++++++++------------
- include/crypto/internal/acompress.h |  7 ++++---
- include/crypto/internal/engine.h    |  2 +-
- 11 files changed, 35 insertions(+), 21 deletions(-)
+ include/linux/sched.h                    |   6 +-
+ include/linux/sched/signal.h             |   4 +-
+ include/linux/sched/task.h               |   5 +-
+ include/linux/sched/wake_q.h             |   3 +
+ kernel/sched/Makefile                    |   3 +
+ kernel/sched/core.c                      |  89 ++++++++++++------
+ kernel/sched/fair.c                      |   9 +-
+ kernel/sched/sched.h                     | 110 +++++++++++++++--------
+ scripts/context-analysis-suppression.txt |   1 +
+ 9 files changed, 162 insertions(+), 68 deletions(-)
 
-diff --git a/crypto/Makefile b/crypto/Makefile
-index e430e6e99b6a..2e2560310e5a 100644
---- a/crypto/Makefile
-+++ b/crypto/Makefile
-@@ -3,6 +3,8 @@
- # Cryptographic API
- #
+diff --git a/include/linux/sched.h b/include/linux/sched.h
+index b469878de25c..9088cbda6915 100644
+--- a/include/linux/sched.h
++++ b/include/linux/sched.h
+@@ -2108,9 +2108,9 @@ static inline int _cond_resched(void)
+ 	_cond_resched();			\
+ })
  
-+CONTEXT_ANALYSIS := y
+-extern int __cond_resched_lock(spinlock_t *lock);
+-extern int __cond_resched_rwlock_read(rwlock_t *lock);
+-extern int __cond_resched_rwlock_write(rwlock_t *lock);
++extern int __cond_resched_lock(spinlock_t *lock) __must_hold(lock);
++extern int __cond_resched_rwlock_read(rwlock_t *lock) __must_hold_shared(lock);
++extern int __cond_resched_rwlock_write(rwlock_t *lock) __must_hold(lock);
+ 
+ #define MIGHT_RESCHED_RCU_SHIFT		8
+ #define MIGHT_RESCHED_PREEMPT_MASK	((1U << MIGHT_RESCHED_RCU_SHIFT) - 1)
+diff --git a/include/linux/sched/signal.h b/include/linux/sched/signal.h
+index a63f65aa5bdd..a22248aebcf9 100644
+--- a/include/linux/sched/signal.h
++++ b/include/linux/sched/signal.h
+@@ -738,10 +738,12 @@ static inline int thread_group_empty(struct task_struct *p)
+ 		(thread_group_leader(p) && !thread_group_empty(p))
+ 
+ extern struct sighand_struct *lock_task_sighand(struct task_struct *task,
+-						unsigned long *flags);
++						unsigned long *flags)
++	__acquires(&task->sighand->siglock);
+ 
+ static inline void unlock_task_sighand(struct task_struct *task,
+ 						unsigned long *flags)
++	__releases(&task->sighand->siglock)
+ {
+ 	spin_unlock_irqrestore(&task->sighand->siglock, *flags);
+ }
+diff --git a/include/linux/sched/task.h b/include/linux/sched/task.h
+index 525aa2a632b2..2acf9e1c4b0b 100644
+--- a/include/linux/sched/task.h
++++ b/include/linux/sched/task.h
+@@ -214,15 +214,18 @@ static inline struct vm_struct *task_stack_vm_area(const struct task_struct *t)
+  * write_lock_irq(&tasklist_lock), neither inside nor outside.
+  */
+ static inline void task_lock(struct task_struct *p)
++	__acquires(&p->alloc_lock)
+ {
+ 	spin_lock(&p->alloc_lock);
+ }
+ 
+ static inline void task_unlock(struct task_struct *p)
++	__releases(&p->alloc_lock)
+ {
+ 	spin_unlock(&p->alloc_lock);
+ }
+ 
+-DEFINE_GUARD(task_lock, struct task_struct *, task_lock(_T), task_unlock(_T))
++DEFINE_LOCK_GUARD_1(task_lock, struct task_struct, task_lock(_T->lock), task_unlock(_T->lock))
++DECLARE_LOCK_GUARD_1_ATTRS(task_lock, __assumes_ctx_guard(_T->alloc_lock), /* */)
+ 
+ #endif /* _LINUX_SCHED_TASK_H */
+diff --git a/include/linux/sched/wake_q.h b/include/linux/sched/wake_q.h
+index 0f28b4623ad4..765bbc3d54be 100644
+--- a/include/linux/sched/wake_q.h
++++ b/include/linux/sched/wake_q.h
+@@ -66,6 +66,7 @@ extern void wake_up_q(struct wake_q_head *head);
+ /* Spin unlock helpers to unlock and call wake_up_q with preempt disabled */
+ static inline
+ void raw_spin_unlock_wake(raw_spinlock_t *lock, struct wake_q_head *wake_q)
++	__releases(lock)
+ {
+ 	guard(preempt)();
+ 	raw_spin_unlock(lock);
+@@ -77,6 +78,7 @@ void raw_spin_unlock_wake(raw_spinlock_t *lock, struct wake_q_head *wake_q)
+ 
+ static inline
+ void raw_spin_unlock_irq_wake(raw_spinlock_t *lock, struct wake_q_head *wake_q)
++	__releases(lock)
+ {
+ 	guard(preempt)();
+ 	raw_spin_unlock_irq(lock);
+@@ -89,6 +91,7 @@ void raw_spin_unlock_irq_wake(raw_spinlock_t *lock, struct wake_q_head *wake_q)
+ static inline
+ void raw_spin_unlock_irqrestore_wake(raw_spinlock_t *lock, unsigned long flags,
+ 				     struct wake_q_head *wake_q)
++	__releases(lock)
+ {
+ 	guard(preempt)();
+ 	raw_spin_unlock_irqrestore(lock, flags);
+diff --git a/kernel/sched/Makefile b/kernel/sched/Makefile
+index 8ae86371ddcd..b1f1a367034f 100644
+--- a/kernel/sched/Makefile
++++ b/kernel/sched/Makefile
+@@ -1,5 +1,8 @@
+ # SPDX-License-Identifier: GPL-2.0
+ 
++CONTEXT_ANALYSIS_core.o := y
++CONTEXT_ANALYSIS_fair.o := y
 +
- obj-$(CONFIG_CRYPTO) += crypto.o
- crypto-y := api.o cipher.o
+ # The compilers are complaining about unused variables inside an if(0) scope
+ # block. This is daft, shut them up.
+ ccflags-y += $(call cc-disable-warning, unused-but-set-variable)
+diff --git a/kernel/sched/core.c b/kernel/sched/core.c
+index f754a60de848..ebfd107d17af 100644
+--- a/kernel/sched/core.c
++++ b/kernel/sched/core.c
+@@ -395,6 +395,8 @@ static atomic_t sched_core_count;
+ static struct cpumask sched_core_mask;
  
-diff --git a/crypto/acompress.c b/crypto/acompress.c
-index be28cbfd22e3..25df368df098 100644
---- a/crypto/acompress.c
-+++ b/crypto/acompress.c
-@@ -449,8 +449,8 @@ int crypto_acomp_alloc_streams(struct crypto_acomp_streams *s)
+ static void sched_core_lock(int cpu, unsigned long *flags)
++	__context_unsafe(/* acquires multiple */)
++	__acquires(&runqueues.__lock) /* overapproximation */
+ {
+ 	const struct cpumask *smt_mask = cpu_smt_mask(cpu);
+ 	int t, i = 0;
+@@ -405,6 +407,8 @@ static void sched_core_lock(int cpu, unsigned long *flags)
  }
- EXPORT_SYMBOL_GPL(crypto_acomp_alloc_streams);
  
--struct crypto_acomp_stream *crypto_acomp_lock_stream_bh(
--	struct crypto_acomp_streams *s) __acquires(stream)
-+struct crypto_acomp_stream *_crypto_acomp_lock_stream_bh(
-+	struct crypto_acomp_streams *s)
+ static void sched_core_unlock(int cpu, unsigned long *flags)
++	__context_unsafe(/* releases multiple */)
++	__releases(&runqueues.__lock) /* overapproximation */
  {
- 	struct crypto_acomp_stream __percpu *streams = s->streams;
- 	int cpu = raw_smp_processor_id();
-@@ -469,7 +469,7 @@ struct crypto_acomp_stream *crypto_acomp_lock_stream_bh(
- 	spin_lock(&ps->lock);
- 	return ps;
- }
--EXPORT_SYMBOL_GPL(crypto_acomp_lock_stream_bh);
-+EXPORT_SYMBOL_GPL(_crypto_acomp_lock_stream_bh);
- 
- void acomp_walk_done_src(struct acomp_walk *walk, int used)
- {
-diff --git a/crypto/algapi.c b/crypto/algapi.c
-index e604d0d8b7b4..abc9333327d4 100644
---- a/crypto/algapi.c
-+++ b/crypto/algapi.c
-@@ -244,6 +244,7 @@ EXPORT_SYMBOL_GPL(crypto_remove_spawns);
- 
- static void crypto_alg_finish_registration(struct crypto_alg *alg,
- 					   struct list_head *algs_to_put)
-+	__must_hold(&crypto_alg_sem)
- {
- 	struct crypto_alg *q;
- 
-@@ -299,6 +300,7 @@ static struct crypto_larval *crypto_alloc_test_larval(struct crypto_alg *alg)
- 
- static struct crypto_larval *
- __crypto_register_alg(struct crypto_alg *alg, struct list_head *algs_to_put)
-+	__must_hold(&crypto_alg_sem)
- {
- 	struct crypto_alg *q;
- 	struct crypto_larval *larval;
-diff --git a/crypto/api.c b/crypto/api.c
-index 5724d62e9d07..05629644a688 100644
---- a/crypto/api.c
-+++ b/crypto/api.c
-@@ -57,6 +57,7 @@ EXPORT_SYMBOL_GPL(crypto_mod_put);
- 
- static struct crypto_alg *__crypto_alg_lookup(const char *name, u32 type,
- 					      u32 mask)
-+	__must_hold_shared(&crypto_alg_sem)
- {
- 	struct crypto_alg *q, *alg = NULL;
- 	int best = -2;
-diff --git a/crypto/crypto_engine.c b/crypto/crypto_engine.c
-index 18e1689efe12..1653a4bf5b31 100644
---- a/crypto/crypto_engine.c
-+++ b/crypto/crypto_engine.c
-@@ -453,8 +453,8 @@ struct crypto_engine *crypto_engine_alloc_init_and_set(struct device *dev,
- 	snprintf(engine->name, sizeof(engine->name),
- 		 "%s-engine", dev_name(dev));
- 
--	crypto_init_queue(&engine->queue, qlen);
- 	spin_lock_init(&engine->queue_lock);
-+	crypto_init_queue(&engine->queue, qlen);
- 
- 	engine->kworker = kthread_run_worker(0, "%s", engine->name);
- 	if (IS_ERR(engine->kworker)) {
-diff --git a/crypto/drbg.c b/crypto/drbg.c
-index dbe4c8bb5ceb..9684d952fdfd 100644
---- a/crypto/drbg.c
-+++ b/crypto/drbg.c
-@@ -231,6 +231,7 @@ static inline unsigned short drbg_sec_strength(drbg_flag_t flags)
+ 	const struct cpumask *smt_mask = cpu_smt_mask(cpu);
+ 	int t;
+@@ -629,6 +633,7 @@ EXPORT_SYMBOL(__trace_set_current_state);
   */
- static int drbg_fips_continuous_test(struct drbg_state *drbg,
- 				     const unsigned char *entropy)
-+	__must_hold(&drbg->drbg_mutex)
+ 
+ void raw_spin_rq_lock_nested(struct rq *rq, int subclass)
++	__context_unsafe()
  {
- 	unsigned short entropylen = drbg_sec_strength(drbg->core->flags);
- 	int ret = 0;
-@@ -1061,6 +1062,7 @@ static inline int __drbg_seed(struct drbg_state *drbg, struct list_head *seed,
- static inline int drbg_get_random_bytes(struct drbg_state *drbg,
- 					unsigned char *entropy,
- 					unsigned int entropylen)
-+	__must_hold(&drbg->drbg_mutex)
+ 	raw_spinlock_t *lock;
+ 
+@@ -654,6 +659,7 @@ void raw_spin_rq_lock_nested(struct rq *rq, int subclass)
+ }
+ 
+ bool raw_spin_rq_trylock(struct rq *rq)
++	__context_unsafe()
  {
+ 	raw_spinlock_t *lock;
+ 	bool ret;
+@@ -695,15 +701,16 @@ void double_rq_lock(struct rq *rq1, struct rq *rq2)
+ 	raw_spin_rq_lock(rq1);
+ 	if (__rq_lockp(rq1) != __rq_lockp(rq2))
+ 		raw_spin_rq_lock_nested(rq2, SINGLE_DEPTH_NESTING);
++	else
++		__acquire_ctx_guard(__rq_lockp(rq2)); /* fake acquire */
+ 
+ 	double_rq_clock_clear_update(rq1, rq2);
+ }
+ 
+ /*
+- * __task_rq_lock - lock the rq @p resides on.
++ * ___task_rq_lock - lock the rq @p resides on.
+  */
+-struct rq *__task_rq_lock(struct task_struct *p, struct rq_flags *rf)
+-	__acquires(rq->lock)
++struct rq *___task_rq_lock(struct task_struct *p, struct rq_flags *rf)
+ {
+ 	struct rq *rq;
+ 
+@@ -726,9 +733,7 @@ struct rq *__task_rq_lock(struct task_struct *p, struct rq_flags *rf)
+ /*
+  * task_rq_lock - lock p->pi_lock and lock the rq @p resides on.
+  */
+-struct rq *task_rq_lock(struct task_struct *p, struct rq_flags *rf)
+-	__acquires(p->pi_lock)
+-	__acquires(rq->lock)
++struct rq *_task_rq_lock(struct task_struct *p, struct rq_flags *rf)
+ {
+ 	struct rq *rq;
+ 
+@@ -2463,6 +2468,7 @@ static inline bool is_cpu_allowed(struct task_struct *p, int cpu)
+  */
+ static struct rq *move_queued_task(struct rq *rq, struct rq_flags *rf,
+ 				   struct task_struct *p, int new_cpu)
++	__must_hold(__rq_lockp(rq))
+ {
+ 	lockdep_assert_rq_held(rq);
+ 
+@@ -2509,6 +2515,7 @@ struct set_affinity_pending {
+  */
+ static struct rq *__migrate_task(struct rq *rq, struct rq_flags *rf,
+ 				 struct task_struct *p, int dest_cpu)
++	__must_hold(__rq_lockp(rq))
+ {
+ 	/* Affinity changed (again). */
+ 	if (!is_cpu_allowed(p, dest_cpu))
+@@ -2545,6 +2552,12 @@ static int migration_cpu_stop(void *data)
+ 	 */
+ 	flush_smp_call_function_queue();
+ 
++	/*
++	 * We may change the underlying rq, but the locks held will
++	 * appropriately be "transferred" when switching.
++	 */
++	context_unsafe_alias(rq);
++
+ 	raw_spin_lock(&p->pi_lock);
+ 	rq_lock(rq, &rf);
+ 
+@@ -2654,6 +2667,8 @@ int push_cpu_stop(void *arg)
+ 	if (!lowest_rq)
+ 		goto out_unlock;
+ 
++	lockdep_assert_rq_held(lowest_rq);
++
+ 	// XXX validate p is still the highest prio task
+ 	if (task_rq(p) == rq) {
+ 		move_queued_task_locked(rq, lowest_rq, p);
+@@ -2899,8 +2914,7 @@ void release_user_cpus_ptr(struct task_struct *p)
+  */
+ static int affine_move_task(struct rq *rq, struct task_struct *p, struct rq_flags *rf,
+ 			    int dest_cpu, unsigned int flags)
+-	__releases(rq->lock)
+-	__releases(p->pi_lock)
++	__releases(__rq_lockp(rq), &p->pi_lock)
+ {
+ 	struct set_affinity_pending my_pending = { }, *pending = NULL;
+ 	bool stop_pending, complete = false;
+@@ -3055,8 +3069,7 @@ static int __set_cpus_allowed_ptr_locked(struct task_struct *p,
+ 					 struct affinity_context *ctx,
+ 					 struct rq *rq,
+ 					 struct rq_flags *rf)
+-	__releases(rq->lock)
+-	__releases(p->pi_lock)
++	__releases(__rq_lockp(rq), &p->pi_lock)
+ {
+ 	const struct cpumask *cpu_allowed_mask = task_cpu_possible_mask(p);
+ 	const struct cpumask *cpu_valid_mask = cpu_active_mask;
+@@ -4348,29 +4361,30 @@ static bool __task_needs_rq_lock(struct task_struct *p)
+  */
+ int task_call_func(struct task_struct *p, task_call_f func, void *arg)
+ {
+-	struct rq *rq = NULL;
+ 	struct rq_flags rf;
  	int ret;
  
-@@ -1075,6 +1077,7 @@ static inline int drbg_get_random_bytes(struct drbg_state *drbg,
- }
+ 	raw_spin_lock_irqsave(&p->pi_lock, rf.flags);
  
- static int drbg_seed_from_random(struct drbg_state *drbg)
-+	__must_hold(&drbg->drbg_mutex)
- {
- 	struct drbg_string data;
- 	LIST_HEAD(seedlist);
-@@ -1132,6 +1135,7 @@ static bool drbg_nopr_reseed_interval_elapsed(struct drbg_state *drbg)
-  */
- static int drbg_seed(struct drbg_state *drbg, struct drbg_string *pers,
- 		     bool reseed)
-+	__must_hold(&drbg->drbg_mutex)
- {
- 	int ret;
- 	unsigned char entropy[((32 + 16) * 2)];
-@@ -1368,6 +1372,7 @@ static inline int drbg_alloc_state(struct drbg_state *drbg)
- static int drbg_generate(struct drbg_state *drbg,
- 			 unsigned char *buf, unsigned int buflen,
- 			 struct drbg_string *addtl)
-+	__must_hold(&drbg->drbg_mutex)
- {
- 	int len = 0;
- 	LIST_HEAD(addtllist);
-diff --git a/crypto/internal.h b/crypto/internal.h
-index b9afd68767c1..8fbe0226d48e 100644
---- a/crypto/internal.h
-+++ b/crypto/internal.h
-@@ -61,8 +61,8 @@ enum {
- /* Maximum number of (rtattr) parameters for each template. */
- #define CRYPTO_MAX_ATTRS 32
+-	if (__task_needs_rq_lock(p))
+-		rq = __task_rq_lock(p, &rf);
++	if (__task_needs_rq_lock(p)) {
++		struct rq *rq = __task_rq_lock(p, &rf);
  
--extern struct list_head crypto_alg_list;
- extern struct rw_semaphore crypto_alg_sem;
-+extern struct list_head crypto_alg_list __guarded_by(&crypto_alg_sem);
- extern struct blocking_notifier_head crypto_chain;
+-	/*
+-	 * At this point the task is pinned; either:
+-	 *  - blocked and we're holding off wakeups	 (pi->lock)
+-	 *  - woken, and we're holding off enqueue	 (rq->lock)
+-	 *  - queued, and we're holding off schedule	 (rq->lock)
+-	 *  - running, and we're holding off de-schedule (rq->lock)
+-	 *
+-	 * The called function (@func) can use: task_curr(), p->on_rq and
+-	 * p->__state to differentiate between these states.
+-	 */
+-	ret = func(p, arg);
++		/*
++		 * At this point the task is pinned; either:
++		 *  - blocked and we're holding off wakeups	 (pi->lock)
++		 *  - woken, and we're holding off enqueue	 (rq->lock)
++		 *  - queued, and we're holding off schedule	 (rq->lock)
++		 *  - running, and we're holding off de-schedule (rq->lock)
++		 *
++		 * The called function (@func) can use: task_curr(), p->on_rq and
++		 * p->__state to differentiate between these states.
++		 */
++		ret = func(p, arg);
  
- int alg_test(const char *driver, const char *alg, u32 type, u32 mask);
-diff --git a/crypto/proc.c b/crypto/proc.c
-index 82f15b967e85..5fb9fe86d023 100644
---- a/crypto/proc.c
-+++ b/crypto/proc.c
-@@ -19,17 +19,20 @@
- #include "internal.h"
+-	if (rq)
+ 		rq_unlock(rq, &rf);
++	} else {
++		ret = func(p, arg);
++	}
  
- static void *c_start(struct seq_file *m, loff_t *pos)
-+	__acquires_shared(&crypto_alg_sem)
- {
- 	down_read(&crypto_alg_sem);
- 	return seq_list_start(&crypto_alg_list, *pos);
- }
- 
- static void *c_next(struct seq_file *m, void *p, loff_t *pos)
-+	__must_hold_shared(&crypto_alg_sem)
- {
- 	return seq_list_next(p, &crypto_alg_list, pos);
- }
- 
- static void c_stop(struct seq_file *m, void *p)
-+	__releases_shared(&crypto_alg_sem)
- {
- 	up_read(&crypto_alg_sem);
- }
-diff --git a/crypto/scompress.c b/crypto/scompress.c
-index 1a7ed8ae65b0..7aee1d50e148 100644
---- a/crypto/scompress.c
-+++ b/crypto/scompress.c
-@@ -28,8 +28,8 @@
- struct scomp_scratch {
- 	spinlock_t	lock;
- 	union {
--		void	*src;
--		unsigned long saddr;
-+		void	*src __guarded_by(&lock);
-+		unsigned long saddr __guarded_by(&lock);
- 	};
- };
- 
-@@ -38,8 +38,8 @@ static DEFINE_PER_CPU(struct scomp_scratch, scomp_scratch) = {
- };
- 
- static const struct crypto_type crypto_scomp_type;
--static int scomp_scratch_users;
- static DEFINE_MUTEX(scomp_lock);
-+static int scomp_scratch_users __guarded_by(&scomp_lock);
- 
- static cpumask_t scomp_scratch_want;
- static void scomp_scratch_workfn(struct work_struct *work);
-@@ -67,6 +67,7 @@ static void crypto_scomp_show(struct seq_file *m, struct crypto_alg *alg)
- }
- 
- static void crypto_scomp_free_scratches(void)
-+	__context_unsafe(/* frees @scratch */)
- {
- 	struct scomp_scratch *scratch;
- 	int i;
-@@ -101,7 +102,7 @@ static void scomp_scratch_workfn(struct work_struct *work)
- 		struct scomp_scratch *scratch;
- 
- 		scratch = per_cpu_ptr(&scomp_scratch, cpu);
--		if (scratch->src)
-+		if (context_unsafe(scratch->src))
- 			continue;
- 		if (scomp_alloc_scratch(scratch, cpu))
- 			break;
-@@ -111,6 +112,7 @@ static void scomp_scratch_workfn(struct work_struct *work)
- }
- 
- static int crypto_scomp_alloc_scratches(void)
-+	__context_unsafe(/* allocates @scratch */)
- {
- 	unsigned int i = cpumask_first(cpu_possible_mask);
- 	struct scomp_scratch *scratch;
-@@ -139,7 +141,8 @@ static int crypto_scomp_init_tfm(struct crypto_tfm *tfm)
+ 	raw_spin_unlock_irqrestore(&p->pi_lock, rf.flags);
  	return ret;
+@@ -5046,6 +5060,8 @@ void balance_callbacks(struct rq *rq, struct balance_callback *head)
+ 
+ static inline void
+ prepare_lock_switch(struct rq *rq, struct task_struct *next, struct rq_flags *rf)
++	__releases(__rq_lockp(rq))
++	__acquires(__rq_lockp(this_rq()))
+ {
+ 	/*
+ 	 * Since the runqueue lock will be released by the next
+@@ -5059,9 +5075,15 @@ prepare_lock_switch(struct rq *rq, struct task_struct *next, struct rq_flags *rf
+ 	/* this is a valid case when another task releases the spinlock */
+ 	rq_lockp(rq)->owner = next;
+ #endif
++	/*
++	 * Model the rq reference switcheroo.
++	 */
++	__release(__rq_lockp(rq));
++	__acquire(__rq_lockp(this_rq()));
  }
  
--static struct scomp_scratch *scomp_lock_scratch(void) __acquires(scratch)
-+#define scomp_lock_scratch(...) __acquire_ret(_scomp_lock_scratch(__VA_ARGS__), &__ret->lock)
-+static struct scomp_scratch *_scomp_lock_scratch(void) __acquires_ret
+ static inline void finish_lock_switch(struct rq *rq)
++	__releases(__rq_lockp(rq))
  {
- 	int cpu = raw_smp_processor_id();
- 	struct scomp_scratch *scratch;
-@@ -159,7 +162,7 @@ static struct scomp_scratch *scomp_lock_scratch(void) __acquires(scratch)
+ 	/*
+ 	 * If we are tracking spinlock dependencies then we have to
+@@ -5117,6 +5139,7 @@ static inline void kmap_local_sched_in(void)
+ static inline void
+ prepare_task_switch(struct rq *rq, struct task_struct *prev,
+ 		    struct task_struct *next)
++	__must_hold(__rq_lockp(rq))
+ {
+ 	kcov_prepare_switch(prev);
+ 	sched_info_switch(rq, prev, next);
+@@ -5148,7 +5171,7 @@ prepare_task_switch(struct rq *rq, struct task_struct *prev,
+  * because prev may have moved to another CPU.
+  */
+ static struct rq *finish_task_switch(struct task_struct *prev)
+-	__releases(rq->lock)
++	__releases(__rq_lockp(this_rq()))
+ {
+ 	struct rq *rq = this_rq();
+ 	struct mm_struct *mm = rq->prev_mm;
+@@ -5236,7 +5259,7 @@ static struct rq *finish_task_switch(struct task_struct *prev)
+  * @prev: the thread we just switched away from.
+  */
+ asmlinkage __visible void schedule_tail(struct task_struct *prev)
+-	__releases(rq->lock)
++	__releases(__rq_lockp(this_rq()))
+ {
+ 	/*
+ 	 * New tasks start with FORK_PREEMPT_COUNT, see there and
+@@ -5268,6 +5291,7 @@ asmlinkage __visible void schedule_tail(struct task_struct *prev)
+ static __always_inline struct rq *
+ context_switch(struct rq *rq, struct task_struct *prev,
+ 	       struct task_struct *next, struct rq_flags *rf)
++	__releases(__rq_lockp(rq))
+ {
+ 	prepare_task_switch(rq, prev, next);
+ 
+@@ -5948,6 +5972,7 @@ static void prev_balance(struct rq *rq, struct task_struct *prev,
+  */
+ static inline struct task_struct *
+ __pick_next_task(struct rq *rq, struct task_struct *prev, struct rq_flags *rf)
++	__must_hold(__rq_lockp(rq))
+ {
+ 	const struct sched_class *class;
+ 	struct task_struct *p;
+@@ -6040,6 +6065,7 @@ static void queue_core_balance(struct rq *rq);
+ 
+ static struct task_struct *
+ pick_next_task(struct rq *rq, struct task_struct *prev, struct rq_flags *rf)
++	__must_hold(__rq_lockp(rq))
+ {
+ 	struct task_struct *next, *p, *max = NULL;
+ 	const struct cpumask *smt_mask;
+@@ -6339,6 +6365,7 @@ static bool steal_cookie_task(int cpu, struct sched_domain *sd)
  }
  
- static inline void scomp_unlock_scratch(struct scomp_scratch *scratch)
--	__releases(scratch)
-+	__releases(&scratch->lock)
+ static void sched_core_balance(struct rq *rq)
++	__must_hold(__rq_lockp(rq))
  {
- 	spin_unlock(&scratch->lock);
+ 	struct sched_domain *sd;
+ 	int cpu = cpu_of(rq);
+@@ -6484,6 +6511,7 @@ static inline void sched_core_cpu_dying(unsigned int cpu) {}
+ 
+ static struct task_struct *
+ pick_next_task(struct rq *rq, struct task_struct *prev, struct rq_flags *rf)
++	__must_hold(__rq_lockp(rq))
+ {
+ 	return __pick_next_task(rq, prev, rf);
  }
-@@ -171,8 +174,6 @@ static int scomp_acomp_comp_decomp(struct acomp_req *req, int dir)
- 	bool src_isvirt = acomp_request_src_isvirt(req);
- 	bool dst_isvirt = acomp_request_dst_isvirt(req);
- 	struct crypto_scomp *scomp = *tfm_ctx;
--	struct crypto_acomp_stream *stream;
--	struct scomp_scratch *scratch;
- 	unsigned int slen = req->slen;
- 	unsigned int dlen = req->dlen;
- 	struct page *spage, *dpage;
-@@ -232,13 +233,12 @@ static int scomp_acomp_comp_decomp(struct acomp_req *req, int dir)
- 		} while (0);
+@@ -8141,6 +8169,12 @@ static int __balance_push_cpu_stop(void *arg)
+ 	struct rq_flags rf;
+ 	int cpu;
+ 
++	/*
++	 * We may change the underlying rq, but the locks held will
++	 * appropriately be "transferred" when switching.
++	 */
++	context_unsafe_alias(rq);
++
+ 	raw_spin_lock_irq(&p->pi_lock);
+ 	rq_lock(rq, &rf);
+ 
+@@ -8168,6 +8202,7 @@ static DEFINE_PER_CPU(struct cpu_stop_work, push_work);
+  * effective when the hotplug motion is down.
+  */
+ static void balance_push(struct rq *rq)
++	__must_hold(__rq_lockp(rq))
+ {
+ 	struct task_struct *push_task = rq->curr;
+ 
+diff --git a/kernel/sched/fair.c b/kernel/sched/fair.c
+index 5b752324270b..b8cebd1f1f4d 100644
+--- a/kernel/sched/fair.c
++++ b/kernel/sched/fair.c
+@@ -2876,6 +2876,7 @@ static int preferred_group_nid(struct task_struct *p, int nid)
+ }
+ 
+ static void task_numa_placement(struct task_struct *p)
++	__context_unsafe(/* conditional locking */)
+ {
+ 	int seq, nid, max_nid = NUMA_NO_NODE;
+ 	unsigned long max_faults = 0;
+@@ -4803,7 +4804,8 @@ static inline unsigned long cfs_rq_load_avg(struct cfs_rq *cfs_rq)
+ 	return cfs_rq->avg.load_avg;
+ }
+ 
+-static int sched_balance_newidle(struct rq *this_rq, struct rq_flags *rf);
++static int sched_balance_newidle(struct rq *this_rq, struct rq_flags *rf)
++	__must_hold(__rq_lockp(this_rq));
+ 
+ static inline unsigned long task_util(struct task_struct *p)
+ {
+@@ -6229,6 +6231,7 @@ static bool distribute_cfs_runtime(struct cfs_bandwidth *cfs_b)
+  * used to track this state.
+  */
+ static int do_sched_cfs_period_timer(struct cfs_bandwidth *cfs_b, int overrun, unsigned long flags)
++	__must_hold(&cfs_b->lock)
+ {
+ 	int throttled;
+ 
+@@ -8714,6 +8717,7 @@ static void set_cpus_allowed_fair(struct task_struct *p, struct affinity_context
+ 
+ static int
+ balance_fair(struct rq *rq, struct task_struct *prev, struct rq_flags *rf)
++	__must_hold(__rq_lockp(rq))
+ {
+ 	if (sched_fair_runnable(rq))
+ 		return 1;
+@@ -8867,6 +8871,7 @@ static void set_next_task_fair(struct rq *rq, struct task_struct *p, bool first)
+ 
+ struct task_struct *
+ pick_next_task_fair(struct rq *rq, struct task_struct *prev, struct rq_flags *rf)
++	__must_hold(__rq_lockp(rq))
+ {
+ 	struct sched_entity *se;
+ 	struct task_struct *p;
+@@ -8953,6 +8958,7 @@ pick_next_task_fair(struct rq *rq, struct task_struct *prev, struct rq_flags *rf
+ }
+ 
+ static struct task_struct *__pick_next_task_fair(struct rq *rq, struct task_struct *prev)
++	__must_hold(__rq_lockp(rq))
+ {
+ 	return pick_next_task_fair(rq, prev, NULL);
+ }
+@@ -12784,6 +12790,7 @@ static inline void nohz_newidle_balance(struct rq *this_rq) { }
+  *   > 0 - success, new (fair) tasks present
+  */
+ static int sched_balance_newidle(struct rq *this_rq, struct rq_flags *rf)
++	__must_hold(__rq_lockp(this_rq))
+ {
+ 	unsigned long next_balance = jiffies + HZ;
+ 	int this_cpu = this_rq->cpu;
+diff --git a/kernel/sched/sched.h b/kernel/sched/sched.h
+index adfb6e3409d7..2d4b9ba30d58 100644
+--- a/kernel/sched/sched.h
++++ b/kernel/sched/sched.h
+@@ -1350,8 +1350,13 @@ static inline bool is_migration_disabled(struct task_struct *p)
+ 
+ DECLARE_PER_CPU_SHARED_ALIGNED(struct rq, runqueues);
+ 
++static __always_inline struct rq *__this_rq(void)
++{
++	return this_cpu_ptr(&runqueues);
++}
++
+ #define cpu_rq(cpu)		(&per_cpu(runqueues, (cpu)))
+-#define this_rq()		this_cpu_ptr(&runqueues)
++#define this_rq()		__this_rq()
+ #define task_rq(p)		cpu_rq(task_cpu(p))
+ #define cpu_curr(cpu)		(cpu_rq(cpu)->curr)
+ #define raw_rq()		raw_cpu_ptr(&runqueues)
+@@ -1396,6 +1401,7 @@ static inline raw_spinlock_t *rq_lockp(struct rq *rq)
+ }
+ 
+ static inline raw_spinlock_t *__rq_lockp(struct rq *rq)
++	__returns_ctx_guard(rq_lockp(rq)) /* alias them */
+ {
+ 	if (rq->core_enabled)
+ 		return &rq->core->__lock;
+@@ -1492,6 +1498,7 @@ static inline raw_spinlock_t *rq_lockp(struct rq *rq)
+ }
+ 
+ static inline raw_spinlock_t *__rq_lockp(struct rq *rq)
++	__returns_ctx_guard(rq_lockp(rq)) /* alias them */
+ {
+ 	return &rq->__lock;
+ }
+@@ -1534,32 +1541,42 @@ static inline bool rt_group_sched_enabled(void)
+ #endif /* !CONFIG_RT_GROUP_SCHED */
+ 
+ static inline void lockdep_assert_rq_held(struct rq *rq)
++	__assumes_ctx_guard(__rq_lockp(rq))
+ {
+ 	lockdep_assert_held(__rq_lockp(rq));
+ }
+ 
+-extern void raw_spin_rq_lock_nested(struct rq *rq, int subclass);
+-extern bool raw_spin_rq_trylock(struct rq *rq);
+-extern void raw_spin_rq_unlock(struct rq *rq);
++extern void raw_spin_rq_lock_nested(struct rq *rq, int subclass)
++	__acquires(__rq_lockp(rq));
++
++extern bool raw_spin_rq_trylock(struct rq *rq)
++	__cond_acquires(true, __rq_lockp(rq));
++
++extern void raw_spin_rq_unlock(struct rq *rq)
++	__releases(__rq_lockp(rq));
+ 
+ static inline void raw_spin_rq_lock(struct rq *rq)
++	__acquires(__rq_lockp(rq))
+ {
+ 	raw_spin_rq_lock_nested(rq, 0);
+ }
+ 
+ static inline void raw_spin_rq_lock_irq(struct rq *rq)
++	__acquires(__rq_lockp(rq))
+ {
+ 	local_irq_disable();
+ 	raw_spin_rq_lock(rq);
+ }
+ 
+ static inline void raw_spin_rq_unlock_irq(struct rq *rq)
++	__releases(__rq_lockp(rq))
+ {
+ 	raw_spin_rq_unlock(rq);
+ 	local_irq_enable();
+ }
+ 
+ static inline unsigned long _raw_spin_rq_lock_irqsave(struct rq *rq)
++	__acquires(__rq_lockp(rq))
+ {
+ 	unsigned long flags;
+ 
+@@ -1570,6 +1587,7 @@ static inline unsigned long _raw_spin_rq_lock_irqsave(struct rq *rq)
+ }
+ 
+ static inline void raw_spin_rq_unlock_irqrestore(struct rq *rq, unsigned long flags)
++	__releases(__rq_lockp(rq))
+ {
+ 	raw_spin_rq_unlock(rq);
+ 	local_irq_restore(flags);
+@@ -1818,17 +1836,15 @@ static inline void rq_repin_lock(struct rq *rq, struct rq_flags *rf)
+ 	rq->clock_update_flags |= rf->clock_update_flags;
+ }
+ 
+-extern
+-struct rq *__task_rq_lock(struct task_struct *p, struct rq_flags *rf)
+-	__acquires(rq->lock);
++#define __task_rq_lock(...) __acquire_ret(___task_rq_lock(__VA_ARGS__), __rq_lockp(__ret))
++extern struct rq *___task_rq_lock(struct task_struct *p, struct rq_flags *rf) __acquires_ret;
+ 
+-extern
+-struct rq *task_rq_lock(struct task_struct *p, struct rq_flags *rf)
+-	__acquires(p->pi_lock)
+-	__acquires(rq->lock);
++#define task_rq_lock(...) __acquire_ret(_task_rq_lock(__VA_ARGS__), __rq_lockp(__ret))
++extern struct rq *_task_rq_lock(struct task_struct *p, struct rq_flags *rf)
++	__acquires(&p->pi_lock) __acquires_ret;
+ 
+ static inline void __task_rq_unlock(struct rq *rq, struct rq_flags *rf)
+-	__releases(rq->lock)
++	__releases(__rq_lockp(rq))
+ {
+ 	rq_unpin_lock(rq, rf);
+ 	raw_spin_rq_unlock(rq);
+@@ -1836,8 +1852,7 @@ static inline void __task_rq_unlock(struct rq *rq, struct rq_flags *rf)
+ 
+ static inline void
+ task_rq_unlock(struct rq *rq, struct task_struct *p, struct rq_flags *rf)
+-	__releases(rq->lock)
+-	__releases(p->pi_lock)
++	__releases(__rq_lockp(rq), &p->pi_lock)
+ {
+ 	rq_unpin_lock(rq, rf);
+ 	raw_spin_rq_unlock(rq);
+@@ -1848,44 +1863,45 @@ DEFINE_LOCK_GUARD_1(task_rq_lock, struct task_struct,
+ 		    _T->rq = task_rq_lock(_T->lock, &_T->rf),
+ 		    task_rq_unlock(_T->rq, _T->lock, &_T->rf),
+ 		    struct rq *rq; struct rq_flags rf)
++DECLARE_LOCK_GUARD_1_ATTRS(task_rq_lock, __assumes_ctx_guard(_T->pi_lock), /* */)
+ 
+ static inline void rq_lock_irqsave(struct rq *rq, struct rq_flags *rf)
+-	__acquires(rq->lock)
++	__acquires(__rq_lockp(rq))
+ {
+ 	raw_spin_rq_lock_irqsave(rq, rf->flags);
+ 	rq_pin_lock(rq, rf);
+ }
+ 
+ static inline void rq_lock_irq(struct rq *rq, struct rq_flags *rf)
+-	__acquires(rq->lock)
++	__acquires(__rq_lockp(rq))
+ {
+ 	raw_spin_rq_lock_irq(rq);
+ 	rq_pin_lock(rq, rf);
+ }
+ 
+ static inline void rq_lock(struct rq *rq, struct rq_flags *rf)
+-	__acquires(rq->lock)
++	__acquires(__rq_lockp(rq))
+ {
+ 	raw_spin_rq_lock(rq);
+ 	rq_pin_lock(rq, rf);
+ }
+ 
+ static inline void rq_unlock_irqrestore(struct rq *rq, struct rq_flags *rf)
+-	__releases(rq->lock)
++	__releases(__rq_lockp(rq))
+ {
+ 	rq_unpin_lock(rq, rf);
+ 	raw_spin_rq_unlock_irqrestore(rq, rf->flags);
+ }
+ 
+ static inline void rq_unlock_irq(struct rq *rq, struct rq_flags *rf)
+-	__releases(rq->lock)
++	__releases(__rq_lockp(rq))
+ {
+ 	rq_unpin_lock(rq, rf);
+ 	raw_spin_rq_unlock_irq(rq);
+ }
+ 
+ static inline void rq_unlock(struct rq *rq, struct rq_flags *rf)
+-	__releases(rq->lock)
++	__releases(__rq_lockp(rq))
+ {
+ 	rq_unpin_lock(rq, rf);
+ 	raw_spin_rq_unlock(rq);
+@@ -1896,18 +1912,24 @@ DEFINE_LOCK_GUARD_1(rq_lock, struct rq,
+ 		    rq_unlock(_T->lock, &_T->rf),
+ 		    struct rq_flags rf)
+ 
++DECLARE_LOCK_GUARD_1_ATTRS(rq_lock, __assumes_ctx_guard(__rq_lockp(_T)), /* */);
++
+ DEFINE_LOCK_GUARD_1(rq_lock_irq, struct rq,
+ 		    rq_lock_irq(_T->lock, &_T->rf),
+ 		    rq_unlock_irq(_T->lock, &_T->rf),
+ 		    struct rq_flags rf)
+ 
++DECLARE_LOCK_GUARD_1_ATTRS(rq_lock_irq, __assumes_ctx_guard(__rq_lockp(_T)), /* */);
++
+ DEFINE_LOCK_GUARD_1(rq_lock_irqsave, struct rq,
+ 		    rq_lock_irqsave(_T->lock, &_T->rf),
+ 		    rq_unlock_irqrestore(_T->lock, &_T->rf),
+ 		    struct rq_flags rf)
+ 
+-static inline struct rq *this_rq_lock_irq(struct rq_flags *rf)
+-	__acquires(rq->lock)
++DECLARE_LOCK_GUARD_1_ATTRS(rq_lock_irqsave, __assumes_ctx_guard(__rq_lockp(_T)), /* */);
++
++#define this_rq_lock_irq(...) __acquire_ret(_this_rq_lock_irq(__VA_ARGS__), __rq_lockp(__ret))
++static inline struct rq *_this_rq_lock_irq(struct rq_flags *rf) __acquires_ret
+ {
+ 	struct rq *rq;
+ 
+@@ -2908,8 +2930,13 @@ static inline void double_rq_clock_clear_update(struct rq *rq1, struct rq *rq2)
+ #define DEFINE_LOCK_GUARD_2(name, type, _lock, _unlock, ...)				\
+ __DEFINE_UNLOCK_GUARD(name, type, _unlock, type *lock2; __VA_ARGS__)			\
+ static inline class_##name##_t class_##name##_constructor(type *lock, type *lock2)	\
++	__no_context_analysis							\
+ { class_##name##_t _t = { .lock = lock, .lock2 = lock2 }, *_T = &_t;			\
+   _lock; return _t; }
++#define DECLARE_LOCK_GUARD_2_ATTRS(_name, _lock, _unlock)				\
++static inline class_##_name##_t class_##_name##_constructor(lock_##_name##_t *_T1,	\
++							    lock_##_name##_t *_T2) _lock; \
++static inline void class_##_name##_destructor(class_##_name##_t *_T) _unlock
+ 
+ static inline bool rq_order_less(struct rq *rq1, struct rq *rq2)
+ {
+@@ -2937,7 +2964,8 @@ static inline bool rq_order_less(struct rq *rq1, struct rq *rq2)
+ 	return rq1->cpu < rq2->cpu;
+ }
+ 
+-extern void double_rq_lock(struct rq *rq1, struct rq *rq2);
++extern void double_rq_lock(struct rq *rq1, struct rq *rq2)
++	__acquires(__rq_lockp(rq1), __rq_lockp(rq2));
+ 
+ #ifdef CONFIG_PREEMPTION
+ 
+@@ -2950,9 +2978,8 @@ extern void double_rq_lock(struct rq *rq1, struct rq *rq2);
+  * also adds more overhead and therefore may reduce throughput.
+  */
+ static inline int _double_lock_balance(struct rq *this_rq, struct rq *busiest)
+-	__releases(this_rq->lock)
+-	__acquires(busiest->lock)
+-	__acquires(this_rq->lock)
++	__must_hold(__rq_lockp(this_rq))
++	__acquires(__rq_lockp(busiest))
+ {
+ 	raw_spin_rq_unlock(this_rq);
+ 	double_rq_lock(this_rq, busiest);
+@@ -2969,12 +2996,16 @@ static inline int _double_lock_balance(struct rq *this_rq, struct rq *busiest)
+  * regardless of entry order into the function.
+  */
+ static inline int _double_lock_balance(struct rq *this_rq, struct rq *busiest)
+-	__releases(this_rq->lock)
+-	__acquires(busiest->lock)
+-	__acquires(this_rq->lock)
++	__must_hold(__rq_lockp(this_rq))
++	__acquires(__rq_lockp(busiest))
+ {
+-	if (__rq_lockp(this_rq) == __rq_lockp(busiest) ||
+-	    likely(raw_spin_rq_trylock(busiest))) {
++	if (__rq_lockp(this_rq) == __rq_lockp(busiest)) {
++		__acquire(__rq_lockp(busiest)); /* already held */
++		double_rq_clock_clear_update(this_rq, busiest);
++		return 0;
++	}
++
++	if (likely(raw_spin_rq_trylock(busiest))) {
+ 		double_rq_clock_clear_update(this_rq, busiest);
+ 		return 0;
  	}
- 
--	stream = crypto_acomp_lock_stream_bh(&crypto_scomp_alg(scomp)->streams);
-+	struct crypto_acomp_stream *stream = crypto_acomp_lock_stream_bh(&crypto_scomp_alg(scomp)->streams);
- 
- 	if (!src_isvirt && !src) {
--		const u8 *src;
-+		struct scomp_scratch *scratch = scomp_lock_scratch();
-+		const u8 *src = scratch->src;
- 
--		scratch = scomp_lock_scratch();
--		src = scratch->src;
- 		memcpy_from_sglist(scratch->src, req->src, 0, slen);
- 
- 		if (dir)
-diff --git a/include/crypto/internal/acompress.h b/include/crypto/internal/acompress.h
-index 2d97440028ff..9a3f28baa804 100644
---- a/include/crypto/internal/acompress.h
-+++ b/include/crypto/internal/acompress.h
-@@ -191,11 +191,12 @@ static inline bool crypto_acomp_req_virt(struct crypto_acomp *tfm)
- void crypto_acomp_free_streams(struct crypto_acomp_streams *s);
- int crypto_acomp_alloc_streams(struct crypto_acomp_streams *s);
- 
--struct crypto_acomp_stream *crypto_acomp_lock_stream_bh(
--	struct crypto_acomp_streams *s) __acquires(stream);
-+#define crypto_acomp_lock_stream_bh(...) __acquire_ret(_crypto_acomp_lock_stream_bh(__VA_ARGS__), &__ret->lock);
-+struct crypto_acomp_stream *_crypto_acomp_lock_stream_bh(
-+		struct crypto_acomp_streams *s) __acquires_ret;
- 
- static inline void crypto_acomp_unlock_stream_bh(
--	struct crypto_acomp_stream *stream) __releases(stream)
-+	struct crypto_acomp_stream *stream) __releases(&stream->lock)
+@@ -2997,6 +3028,8 @@ static inline int _double_lock_balance(struct rq *this_rq, struct rq *busiest)
+  * double_lock_balance - lock the busiest runqueue, this_rq is locked already.
+  */
+ static inline int double_lock_balance(struct rq *this_rq, struct rq *busiest)
++	__must_hold(__rq_lockp(this_rq))
++	__acquires(__rq_lockp(busiest))
  {
- 	spin_unlock_bh(&stream->lock);
+ 	lockdep_assert_irqs_disabled();
+ 
+@@ -3004,14 +3037,17 @@ static inline int double_lock_balance(struct rq *this_rq, struct rq *busiest)
  }
-diff --git a/include/crypto/internal/engine.h b/include/crypto/internal/engine.h
-index f19ef376833f..6a1d27880615 100644
---- a/include/crypto/internal/engine.h
-+++ b/include/crypto/internal/engine.h
-@@ -45,7 +45,7 @@ struct crypto_engine {
  
- 	struct list_head	list;
- 	spinlock_t		queue_lock;
--	struct crypto_queue	queue;
-+	struct crypto_queue	queue __guarded_by(&queue_lock);
- 	struct device		*dev;
+ static inline void double_unlock_balance(struct rq *this_rq, struct rq *busiest)
+-	__releases(busiest->lock)
++	__releases(__rq_lockp(busiest))
+ {
+ 	if (__rq_lockp(this_rq) != __rq_lockp(busiest))
+ 		raw_spin_rq_unlock(busiest);
++	else
++		__release(__rq_lockp(busiest)); /* fake release */
+ 	lock_set_subclass(&__rq_lockp(this_rq)->dep_map, 0, _RET_IP_);
+ }
  
- 	struct kthread_worker           *kworker;
+ static inline void double_lock(spinlock_t *l1, spinlock_t *l2)
++	__acquires(l1, l2)
+ {
+ 	if (l1 > l2)
+ 		swap(l1, l2);
+@@ -3021,6 +3057,7 @@ static inline void double_lock(spinlock_t *l1, spinlock_t *l2)
+ }
+ 
+ static inline void double_lock_irq(spinlock_t *l1, spinlock_t *l2)
++	__acquires(l1, l2)
+ {
+ 	if (l1 > l2)
+ 		swap(l1, l2);
+@@ -3030,6 +3067,7 @@ static inline void double_lock_irq(spinlock_t *l1, spinlock_t *l2)
+ }
+ 
+ static inline void double_raw_lock(raw_spinlock_t *l1, raw_spinlock_t *l2)
++	__acquires(l1, l2)
+ {
+ 	if (l1 > l2)
+ 		swap(l1, l2);
+@@ -3039,6 +3077,7 @@ static inline void double_raw_lock(raw_spinlock_t *l1, raw_spinlock_t *l2)
+ }
+ 
+ static inline void double_raw_unlock(raw_spinlock_t *l1, raw_spinlock_t *l2)
++	__releases(l1, l2)
+ {
+ 	raw_spin_unlock(l1);
+ 	raw_spin_unlock(l2);
+@@ -3048,6 +3087,8 @@ DEFINE_LOCK_GUARD_2(double_raw_spinlock, raw_spinlock_t,
+ 		    double_raw_lock(_T->lock, _T->lock2),
+ 		    double_raw_unlock(_T->lock, _T->lock2))
+ 
++DECLARE_LOCK_GUARD_2_ATTRS(double_raw_spinlock, __assumes_ctx_guard(_T1) __assumes_ctx_guard(_T2), /* */);
++
+ /*
+  * double_rq_unlock - safely unlock two runqueues
+  *
+@@ -3055,13 +3096,12 @@ DEFINE_LOCK_GUARD_2(double_raw_spinlock, raw_spinlock_t,
+  * you need to do so manually after calling.
+  */
+ static inline void double_rq_unlock(struct rq *rq1, struct rq *rq2)
+-	__releases(rq1->lock)
+-	__releases(rq2->lock)
++	__releases(__rq_lockp(rq1), __rq_lockp(rq2))
+ {
+ 	if (__rq_lockp(rq1) != __rq_lockp(rq2))
+ 		raw_spin_rq_unlock(rq2);
+ 	else
+-		__release(rq2->lock);
++		__release(__rq_lockp(rq2)); /* fake release */
+ 	raw_spin_rq_unlock(rq1);
+ }
+ 
+diff --git a/scripts/context-analysis-suppression.txt b/scripts/context-analysis-suppression.txt
+index df25c3d07a5b..fd8951d06706 100644
+--- a/scripts/context-analysis-suppression.txt
++++ b/scripts/context-analysis-suppression.txt
+@@ -26,6 +26,7 @@ src:*include/linux/refcount.h=emit
+ src:*include/linux/rhashtable.h=emit
+ src:*include/linux/rwlock*.h=emit
+ src:*include/linux/rwsem.h=emit
++src:*include/linux/sched*=emit
+ src:*include/linux/seqlock*.h=emit
+ src:*include/linux/spinlock*.h=emit
+ src:*include/linux/srcu*.h=emit
 -- 
 2.52.0.rc1.455.g30608eb744-goog
 
