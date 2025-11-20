@@ -1,115 +1,68 @@
-Return-Path: <linux-wireless+bounces-29209-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-29210-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2BAD5C7533F
-	for <lists+linux-wireless@lfdr.de>; Thu, 20 Nov 2025 17:01:46 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 672DEC75C1D
+	for <lists+linux-wireless@lfdr.de>; Thu, 20 Nov 2025 18:42:52 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sea.lore.kernel.org (Postfix) with ESMTPS id 914B431BF2
-	for <lists+linux-wireless@lfdr.de>; Thu, 20 Nov 2025 16:00:03 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTPS id 0C8D829679
+	for <lists+linux-wireless@lfdr.de>; Thu, 20 Nov 2025 17:42:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AC96936215F;
-	Thu, 20 Nov 2025 15:58:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 693AA2E6CC6;
+	Thu, 20 Nov 2025 17:42:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="rHVvjXqQ"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="gU04EDir"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 859D6376BEF
-	for <linux-wireless@vger.kernel.org>; Thu, 20 Nov 2025 15:58:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 423E7248896;
+	Thu, 20 Nov 2025 17:42:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763654317; cv=none; b=dw1FVR4YYHzPIT/EJNi9pgVKYQUSXmHas6Ylor8QYnqaR4j642rYvS4VVeAHiPC8b9z5qZ4MMl8M4TsrloPSEScLmYg1Apy4jDBF2SArrD8GIB6/Pxvn4cBF4+uUXvsJpp2nYs8++AdK37I5jZZpcKbGTk5XQspDmD9bOQFIgi4=
+	t=1763660556; cv=none; b=U8KyAARfM+MfjI0gqOOIeg6RcV6RkBHl1mzJQ4frGpKCETkCGwwAyjmMHrk82hEct4mOLr1BQMCnUFYHPcUKsTcw9MZF0R2DLRgplPugKVitUHtYPU+MGQ28ADKIn2tMQMa64e3VX1pzqp9FyQAmjGF6zGMOhdU4KUGAS9DufCo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763654317; c=relaxed/simple;
-	bh=WNuap7absK6lAtucjrajzfMyXhK03+dzT1XbMmcXZ24=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=l21IZMrgPzSpC9P02jH0oULfkzrsbRMArsid0L2nsxkP6+jwdLUp6cpzcJgSLwZ2xm+M8gU/VaCTy/RogzY3+7jcATMh03qpTxcN3m/kFL7SnbjcboZwKDK0MLz9Ty9lc/DVnjpy4bkLN+/x7T4OCPqSCwV0Qdef6C/ltKZS7Os=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=rHVvjXqQ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B7E00C4AF0E;
-	Thu, 20 Nov 2025 15:58:35 +0000 (UTC)
+	s=arc-20240116; t=1763660556; c=relaxed/simple;
+	bh=HoNpCchVl9FxkOpbMf4OI4oPnzMOw4ZHwppz7KRzYvo=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=GyxdOFlah+qDdiZ5uTz2HdQBi24Ur8yLVvT4koMhhOoR1vHz268svPwJ6ydbruC3oxmM1PJd1Lt590h75lf0WJIWlLuG/mGxKLd0usuVzEYqPWZtEE/oKaVt5Pi/yO7uCiYzad3IRQunerwHqWD0ou8e9VBIVXMuJbFD5h4Is2I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=gU04EDir; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A3AFAC4CEF1;
+	Thu, 20 Nov 2025 17:42:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1763654316;
-	bh=WNuap7absK6lAtucjrajzfMyXhK03+dzT1XbMmcXZ24=;
-	h=From:To:Cc:Subject:Date:From;
-	b=rHVvjXqQRwxehxusb/zaSyMFzSUvKHvQDdwb97TXCP11xcTnTywmClxRncatwCZz5
-	 IQx/dnMRZPI5oMQeFyaQKC4sErxr8F/fJJOswU7oAewjAydFZD8j+WjBZACUd48al8
-	 c9Dyp4jaVCYsF4+1Ss3j28kZ/jQFODScapoPl7czs9DwwKcrqaawYtkgv1b5NnAm5u
-	 JuoYltiN7T2pZ/0WhZA27e1xKNFd0xw+b8Kh4/ALhZln/UxagFeyzkxzPVEv8w8iel
-	 qaEw8AG8nr+KKvooZv/ip58WEY6uKFlA8gp8et+pegWcZiMa8hBtP3rT8Mjb/zl8m7
-	 H9xvZo1J5mFCw==
-From: "Mario Limonciello (AMD)" <superm1@kernel.org>
-To: mario.limonciello@amd.com,
-	nbd@nbd.name,
-	lorenzo@kernel.org,
-	ryder.lee@mediatek.com,
-	shayne.chen@mediatek.com,
-	sean.wang@mediatek.com,
-	matthias.bgg@gmail.com,
-	angelogioacchino.delregno@collabora.com
-Cc: "Mario Limonciello (AMD)" <superm1@kernel.org>,
-	linux-wireless@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org,
-	linux-mediatek@lists.infradead.org
-Subject: [PATCH] wifi: mt76: Strip whitespace from build ddate
-Date: Thu, 20 Nov 2025 09:58:27 -0600
-Message-ID: <20251120155829.3494747-1-superm1@kernel.org>
-X-Mailer: git-send-email 2.43.0
+	s=k20201202; t=1763660555;
+	bh=HoNpCchVl9FxkOpbMf4OI4oPnzMOw4ZHwppz7KRzYvo=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=gU04EDir8AH2awWzciaF0PDluhnQ/vedijpl9lIAM7C28YGyxdpA40LV+orJspaPi
+	 i5e103pKc6+VLhXQZ2fcj8+TfhgjL0Pj4SlcBtrdGPehPXi0Dg7nE009/GOIJWEwMn
+	 Q/HH3dR+/V+eoPMYafNDEXM8XM+7ar80aDsFLZmkDvOlvaV30wajij1G6RMxzCEDfC
+	 VokQOpBBQSrVuSD9N5BkF14qDB9eDmm11r7Eoqh8rdTqQah1+WGcOjk16rspctMqa3
+	 tyudgoq8NFKiDiu1TMz8kF214NgovA7fYFE+5/9ewBD94WdnjDe/J/oR7kYuyqywv5
+	 409uR/mzNwuVg==
+Date: Thu, 20 Nov 2025 09:42:34 -0800
+From: Jakub Kicinski <kuba@kernel.org>
+To: Johannes Berg <johannes@sipsolutions.net>
+Cc: netdev@vger.kernel.org, linux-wireless@vger.kernel.org
+Subject: Re: [GIT PULL] wireless-2025-11-20
+Message-ID: <20251120094234.26285f93@kernel.org>
+In-Reply-To: <20251120085433.8601-3-johannes@sipsolutions.net>
+References: <20251120085433.8601-3-johannes@sipsolutions.net>
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-On systems I have with mt7925 cards I've been noticing a blank line in my
-kernel logs.  IE:
-```
-[   17.294105] mt7925e 0000:c3:00.0: HW/SW Version: 0x8a108a10, Build Time: 20250721232852a
+On Thu, 20 Nov 2025 09:53:10 +0100 Johannes Berg wrote:
+> Hi,
+> 
+> Looks like things are quieting down, I fear maybe _too_ quiet
+> since we only have a single fix for rtw89 scanning.
 
-[   17.314233] r8169 0000:c4:00.0 enp196s0f0: Link is Down
-```
-
-This is because the build_date from the header has a newline character
-as does the dev_info() print.  As the firmware isn't guaranteed to always
-have a newline but the print is, copy the firmware build date to a
-temporary variable and strip any whitespace from it before showing it in
-the logs.
-
-Signed-off-by: Mario Limonciello (AMD) <superm1@kernel.org>
----
- drivers/net/wireless/mediatek/mt76/mt76_connac_mcu.c | 6 +++++-
- 1 file changed, 5 insertions(+), 1 deletion(-)
-
-diff --git a/drivers/net/wireless/mediatek/mt76/mt76_connac_mcu.c b/drivers/net/wireless/mediatek/mt76/mt76_connac_mcu.c
-index fc3e6728fcfbf..eeba6deb100c1 100644
---- a/drivers/net/wireless/mediatek/mt76/mt76_connac_mcu.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt76_connac_mcu.c
-@@ -3101,6 +3101,7 @@ int mt76_connac2_load_patch(struct mt76_dev *dev, const char *fw_name)
- 	int i, ret, sem, max_len = mt76_is_sdio(dev) ? 2048 : 4096;
- 	const struct mt76_connac2_patch_hdr *hdr;
- 	const struct firmware *fw = NULL;
-+	char build_date[17];
- 
- 	sem = mt76_connac_mcu_patch_sem_ctrl(dev, true);
- 	switch (sem) {
-@@ -3124,8 +3125,11 @@ int mt76_connac2_load_patch(struct mt76_dev *dev, const char *fw_name)
- 	}
- 
- 	hdr = (const void *)fw->data;
-+	strscpy(build_date, hdr->build_date, sizeof(build_date));
-+	build_date[16] = '\0';
-+	strim(build_date);
- 	dev_info(dev->dev, "HW/SW Version: 0x%x, Build Time: %.16s\n",
--		 be32_to_cpu(hdr->hw_sw_ver), hdr->build_date);
-+		 be32_to_cpu(hdr->hw_sw_ver), build_date);
- 
- 	for (i = 0; i < be32_to_cpu(hdr->desc.n_region); i++) {
- 		struct mt76_connac2_patch_sec *sec;
--- 
-2.43.0
-
+Pulled, thanks!
 
