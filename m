@@ -1,77 +1,78 @@
-Return-Path: <linux-wireless+bounces-29161-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-29162-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5BA89C73456
-	for <lists+linux-wireless@lfdr.de>; Thu, 20 Nov 2025 10:45:40 +0100 (CET)
+Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [213.196.21.55])
+	by mail.lfdr.de (Postfix) with ESMTPS id 20EB6C7367B
+	for <lists+linux-wireless@lfdr.de>; Thu, 20 Nov 2025 11:13:31 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sea.lore.kernel.org (Postfix) with ESMTPS id D631D2E8A7
-	for <lists+linux-wireless@lfdr.de>; Thu, 20 Nov 2025 09:45:38 +0000 (UTC)
+	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 08FA83421EA
+	for <lists+linux-wireless@lfdr.de>; Thu, 20 Nov 2025 10:09:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CDC942E2F14;
-	Thu, 20 Nov 2025 09:45:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A34DF30E0F2;
+	Thu, 20 Nov 2025 10:09:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b="WTqg4dzv"
+	dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b="fsVFKf4p"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-wm1-f52.google.com (mail-wm1-f52.google.com [209.85.128.52])
+Received: from mail-wm1-f42.google.com (mail-wm1-f42.google.com [209.85.128.42])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 488C6217F31
-	for <linux-wireless@vger.kernel.org>; Thu, 20 Nov 2025 09:45:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.52
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5DA3525B1D2
+	for <linux-wireless@vger.kernel.org>; Thu, 20 Nov 2025 10:09:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.42
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763631936; cv=none; b=MZsDgEMA7q56g76k/QdPOu11FYrcXt6I98IEDu63PljPPbG8DoXwS9lAfTMKOpYDKtjE0s54aDLVcXBylUCQCmXB1z6RvrxwHUGM9yn5a/XfkLutu1F5g08KGwSxtzF7Yq+nMqtY3M9CHUK922ME6ryEH5GuKuvyJ80XrSlb6qo=
+	t=1763633343; cv=none; b=AWi4M5AxTaBd0guLxlN8BQgJ2OLEn7JvAt29FO87tlFabHWPDvBT59hImoud8QPyytmcu7FzEDBB8nQ5/guWJBSaZc/gO6R82fOPtqgX0uKOG1DV3wq/ltmnpPRPgHScoKtSoTJ3B0hXe2DI5esbJSaLc5MXPSHr0qp0W7Wr7vA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763631936; c=relaxed/simple;
-	bh=5XPPGGBoCbHGefEO+FRoaO6DX20WPtSmcpQHNUj6x+I=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=CXPG1SvZH7GtlFOvcCvZDUGuoz7e0nPWhc67UByF++qb4v029nXQZxa9TCN2Z1TyA0YfOSomikYHXwqqpA5ZCMv5WEGaB/iAge0eWTy3tq6OhEa2S903dy0/qGFq+R4G7l5fwYEDq8VrCslFl5EI8tWUP+7xt7YD5jKO71PJhB4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com; spf=pass smtp.mailfrom=suse.com; dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b=WTqg4dzv; arc=none smtp.client-ip=209.85.128.52
+	s=arc-20240116; t=1763633343; c=relaxed/simple;
+	bh=P34/dtWZ85iwYvVzb40ddAYrunxyeUYqmW3I8Ge+J54=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=mkRIwSOF5vVFgPc7HETRWle8J7X6SQfVQA7guIVT3oNovJ/N+veznkkRN8Rfk3hnz20ieUaJN3mZnYtjAFAaYOO3DK99YKJughlgbaQvCeUzcUaxhhLKs8j655rbxMfbXjQocMHIL/EJecKewBAmkbJyRmazCoVr0eXJhV8IqgQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com; spf=pass smtp.mailfrom=suse.com; dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b=fsVFKf4p; arc=none smtp.client-ip=209.85.128.42
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.com
-Received: by mail-wm1-f52.google.com with SMTP id 5b1f17b1804b1-477b1cc8fb4so4328095e9.1
-        for <linux-wireless@vger.kernel.org>; Thu, 20 Nov 2025 01:45:33 -0800 (PST)
+Received: by mail-wm1-f42.google.com with SMTP id 5b1f17b1804b1-47795f6f5c0so4558025e9.1
+        for <linux-wireless@vger.kernel.org>; Thu, 20 Nov 2025 02:09:01 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=suse.com; s=google; t=1763631932; x=1764236732; darn=vger.kernel.org;
+        d=suse.com; s=google; t=1763633339; x=1764238139; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:message-id:date:subject:cc
          :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=1zjA/VyTqMIsiRf3epsUZxITmAB9n8+/j+Xkg9KSAtk=;
-        b=WTqg4dzvx8+VTV9rYMreSwT4fyBFq8pngHhlTik4A73bwIEgkeBLqL6uLmyWYmqRfE
-         P1HwmvKbbq3p6LC2S57XKlC9DjKKDd0rTfhlAMwWgvuuapatggi6s+64kPTXEr8KUuOB
-         PW1fEiflD2LqPZnAi5SsI1O18ZbqVg4Qj6iFTTKTxUXFyfp+QUtrmzKDJ8nj/As09A2V
-         zdhFhNTzEqJD/x19dNWz5RaQeeDfGyynX1YdlT2+CsdKEASpjlyQuaJnjXla+LStJkTt
-         CjYf++FcSElTtaWC3nJGrpA9qtuv5Ldbf4U0qXuTqYBT3PAlDD3gmedMJqDV0Hr4N+mK
-         X+KA==
+        bh=fGzgvPUJB5ULEnTHX9VsC7izg1nrPGM6c7p2oBs+2LE=;
+        b=fsVFKf4pPJWlVszSY/dq9R6WbyFVPT0+tt3G3W3+v2ItVjwjmI8rYZK7l3p3X2erYs
+         dfUak/MEWgQvjxueD/b73ehNpczQAK6abTyx0W2DdsMfXf4ndGpifaIXLDMIWfbYae+v
+         GPXOxKCeZP3SBPlBpefZgoZNnq0CDA4unSdk6NFYxPenK/WI0DlpiCU4yWHnpBnrXoGp
+         iY9S9zFJ7ORumS5D/Lq23Nyj3uUyGae2IzSra3WxA6ocfOLvc1weFwTjQB3SM+zbTtXE
+         H0xgCStLe5yyo5+zLykZnSCqOdymkjN0moxZ5Ka4dMi4o4xXJLOGo1fjz7Dcv/txcvsQ
+         g3pQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1763631932; x=1764236732;
+        d=1e100.net; s=20230601; t=1763633339; x=1764238139;
         h=content-transfer-encoding:mime-version:message-id:date:subject:cc
          :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=1zjA/VyTqMIsiRf3epsUZxITmAB9n8+/j+Xkg9KSAtk=;
-        b=s/Py2JauyTg3rXQfNvKyekjfyJto1CidsgBbcTZeFJNMkbJSTZ6VcL/r8JMWqGQiAw
-         OpWXViH+srHnuuLzcuSve9TjQxqU17TzntGdVYq6+8qqlgayeBwX08WnmfXxbL4/tNVx
-         hr3kzI7Uuatjbqj92pgEvM5i6pvi3buA95QFFmeKG3aGItmegM1MCPifSzw0UCQgt6pl
-         RA+uF8bYNsqhBUu3in35nB2wKPG67Nuypk99l6WUpc83diUFYht5Ad71rVoXllCy6gT8
-         PMBhnSQmpdH591cUVbGXUSWwUKr2YDY7tXztbwoGczXGCm5oXoCWz3UyINpAWSDcZRx/
-         klfg==
-X-Forwarded-Encrypted: i=1; AJvYcCXZXHaYiJtzHXDD5vmOz6G9CVzXOg/y9npyb21UvUNZ0qDVJyBbZM5D+2K8w/a3VPbgcoSxv1EgU0rvvbw80A==@vger.kernel.org
-X-Gm-Message-State: AOJu0Yy6zk/G43SJI13gyO6j2ceLlGE0+afPsPXV4UN/nCfALav8URIY
-	gcpmpokcuOCkVs5QeimT/jju26nZD1oi6QBCdIhSnzBxBkPNRI0/ZV+h0Bcb1kP4RL4=
-X-Gm-Gg: ASbGnctD6gemPK/76mQM4/itJ7wBsO6y1DAk35jxwwhHtGqFPioyqswcN/WH+xqRaIu
-	XmdBLzvB2NbQ9IC2p9OWmZ1r3ronR+a6sX7NQOHZ+aJx1CrNQQ44UjBSP/EPDLKJBfDq3m332gA
-	P1jfVoXMGKuy6ZWRIKBX+Cn6LwarEkha5DsDMiHCGfvTGWrvx4nDJDlyh6iNhmFX1jk9XxTfvtZ
-	AMahvdpG3gMmPSxVq23Exwbg1hDV2ApUmD5XJbImuSZD18i2hvW6nGTULu3j2V7nvquYZT1tZZK
-	kObPrd+JCwt+LD1pKsXy50mTH9+1ZqzVD1djIg7PPSjmeV4BPnMuca0L2eIhyxCSTBJL2b0ds0H
-	qry28M8ycpZe8vwL/XjFpMdYlLNtwgkgIZd3XKZQ5yTWeCKPvAEZrhR3aDacTL/SK0pB2pb2FLk
-	8tJqalkBPFyItLoBFRVupHl+92iXO3bHATzzc=
-X-Google-Smtp-Source: AGHT+IFhYm/siJFOPAjAq/6cMGu7T/hopEb0oUxkkJZQIc7Xz6aU0nuhBE+FQ85paMwyFHBCDL8XFA==
-X-Received: by 2002:a05:600c:1d20:b0:477:7b30:a6fc with SMTP id 5b1f17b1804b1-477b8aa06f6mr31942855e9.30.1763631932409;
-        Thu, 20 Nov 2025 01:45:32 -0800 (PST)
+        bh=fGzgvPUJB5ULEnTHX9VsC7izg1nrPGM6c7p2oBs+2LE=;
+        b=Egu+Cr1/3Lkq5Mt8JW3J32xwVBdGDjSusMnGuk8Y97AE0uMQgT1q/W+OxVynwCeGVv
+         F5Evstd7DSB2A9jMQXyMXXMF/sveL1dct4hobmZY+zSG/mjRSNBm/i2PPnaA31DVoWI7
+         Myhlf5OAAPEGzNImt6YrjaHz6tNtBmjBO62kC2zeEkeODs/JGtriZ+VtjMgI5Mbtg5zx
+         YTb2ec5lQXIflKWbs5jQ+SVpSt7gnXoNJaTvqfpsolxuEFL09lo/13yXVfmOVvp1LHOZ
+         DGYF+c2xEXYO8rofkzdj3uNpCfW7vOejSKw/P91XVenMFpv5iUXWg/kYKJUIEWWrEYnC
+         Wnvw==
+X-Forwarded-Encrypted: i=1; AJvYcCUr8ZfMncHtDD+po60p9KxUiVGxoo+EWEYnFuQOL9h2eHUOW3smIrvFrPsM8Sg7kFlbBbsQWkoqTJQdRVQmFg==@vger.kernel.org
+X-Gm-Message-State: AOJu0YxNSQ9tzZgnaYAk+jbE6OA32J8opk5rPGJ3EXWYnj9Zou5H8f9k
+	dX5X/GO22t+G//lRhWne9ftWfjG88/EK3sXYk8UxqqVfigcZ5+vIIEg8Reu6dgl9ozH7sQ9S+bl
+	3jOg6
+X-Gm-Gg: ASbGncuEiQG0g8fswzKsUHc2qvVLMEJlHUGXb64YNzWH2DRLLhibZgYMGm5IMv5rCpO
+	LPlPQfrwunrKjIherik2IzGzGbx+uQ2YsNzSSFkHAxxf3B5KAazWVseXr1armF8YQ6MxSQN+7A9
+	7ztX14yeB+F6187enWK8CEP09Lao0iotCtgApqEyN6mMUbl2IsdvFRt7+7kYKlfeAgvtNLMsTSe
+	RsV0WE+OJ3TjJfgC0S+0KbXaix0gynDLou+wMExj0/Ib3W0oIcXxiPiSjDBigXvUNmBENkuNWgU
+	N2V+mDd0QhyKWgUIa+S3hShiCwb4u/0nj07Jp6Akujc5Valn2HzYgUTT/50QjLyBaAgevRtYKby
+	CnIWfGXkie6L9kcHaX06AHpeuIoHd7RC2DCo4Tu6hTkkqtZ+JWHakZuV4wuejWf08eHW7muuDiQ
+	Txvs+zjGzz+uEqqdMCLtQ/qu6ws4RAAEaCkJ8=
+X-Google-Smtp-Source: AGHT+IEIVsuwz31m+0qVQUSp4S609vYuCx16nlGVCdMnWLwnl/vHpXtGGdF6J1wnoMqJbxxq54IzPg==
+X-Received: by 2002:a05:600c:474c:b0:477:7b16:5fa6 with SMTP id 5b1f17b1804b1-477babc2044mr13065855e9.3.1763633339350;
+        Thu, 20 Nov 2025 02:08:59 -0800 (PST)
 Received: from localhost.localdomain ([2a00:6d43:105:c401:e307:1a37:2e76:ce91])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-477a9739964sm63030145e9.1.2025.11.20.01.45.31
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-477a9de46cdsm58914125e9.8.2025.11.20.02.08.58
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 20 Nov 2025 01:45:32 -0800 (PST)
+        Thu, 20 Nov 2025 02:08:58 -0800 (PST)
 From: Marco Crivellari <marco.crivellari@suse.com>
 To: linux-kernel@vger.kernel.org,
 	linux-wireless@vger.kernel.org
@@ -81,10 +82,11 @@ Cc: Tejun Heo <tj@kernel.org>,
 	Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
 	Marco Crivellari <marco.crivellari@suse.com>,
 	Michal Hocko <mhocko@suse.com>,
-	Stanislav Yakovlev <stas.yakovlev@gmail.com>
-Subject: [PATCH v2] wifi: ipw2x00: replace use of system_wq with system_percpu_wq
-Date: Thu, 20 Nov 2025 10:45:24 +0100
-Message-ID: <20251120094524.45264-1-marco.crivellari@suse.com>
+	Miri Korenblit <miriam.rachel.korenblit@intel.com>,
+	Johannes Berg <johannes@sipsolutions.net>
+Subject: [PATCH v2 0/3] Replace uses of system_wq and system_unbound_wq
+Date: Thu, 20 Nov 2025 11:08:47 +0100
+Message-ID: <20251120100850.66192-1-marco.crivellari@suse.com>
 X-Mailer: git-send-email 2.51.1
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
@@ -94,77 +96,73 @@ List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-This patch continues the effort to refactor workqueue APIs, which has begun
-with the changes introducing new workqueues and a new alloc_workqueue flag:
+Hi,
 
-   commit 128ea9f6ccfb ("workqueue: Add system_percpu_wq and system_dfl_wq")
-   commit 930c2ea566af ("workqueue: Add new WQ_PERCPU flag")
+=== Current situation: problems ===
 
-The point of the refactoring is to eventually alter the default behavior of
-workqueues to become unbound by default so that their workload placement is
-optimized by the scheduler.
+Let's consider a nohz_full system with isolated CPUs: wq_unbound_cpumask is
+set to the housekeeping CPUs, for !WQ_UNBOUND the local CPU is selected.
 
-Before that to happen after a careful review and conversion of each individual
-case, workqueue users must be converted to the better named new workqueues with
-no intended behaviour changes:
+This leads to different scenarios if a work item is scheduled on an
+isolated CPU where "delay" value is 0 or greater then 0:
+        schedule_delayed_work(, 0);
 
-   system_wq -> system_percpu_wq
-   system_unbound_wq -> systemd_dfl_wq
+This will be handled by __queue_work() that will queue the work item on the
+current local (isolated) CPU, while:
 
-This way the old obsolete workqueues (system_wq, system_unbound_wq) can be
-removed in the future.
+        schedule_delayed_work(, 1);
 
-Suggested-by: Tejun Heo <tj@kernel.org>
-Signed-off-by: Marco Crivellari <marco.crivellari@suse.com>
+Will move the timer on an housekeeping CPU, and schedule the work there.
+
+Currently if a user enqueue a work item using schedule_delayed_work() the
+used wq is "system_wq" (per-cpu wq) while queue_delayed_work() use
+WORK_CPU_UNBOUND (used when a cpu is not specified). The same applies to
+schedule_work() that is using system_wq and queue_work(), that makes use
+again of WORK_CPU_UNBOUND.
+
+This lack of consistency cannot be addressed without refactoring the API.
+
+=== Recent changes to the WQ API ===
+
+The following, address the recent changes in the Workqueue API:
+
+- commit 128ea9f6ccfb ("workqueue: Add system_percpu_wq and system_dfl_wq")
+- commit 930c2ea566af ("workqueue: Add new WQ_PERCPU flag")
+
+The old workqueues will be removed in a future release cycle.
+
+=== Introduced Changes by this series ===
+
+1) [P 1-2-3]  Replace uses of system_unbound_wq and system_wq
+
+    Switch to using system_dfl_wq and system_percpu_wq  because
+    system_unbound_wq and system_wq are going away
+    as part of a workqueue restructuring.
+
+    No intended behavior changes:
+       system_wq -> system_percpu_wq
+       system_unbound_wq -> system_dfl_wq
+
+Thanks!
+
 ---
- drivers/net/wireless/intel/ipw2x00/ipw2100.c | 6 +++---
- drivers/net/wireless/intel/ipw2x00/ipw2200.c | 2 +-
- 2 files changed, 4 insertions(+), 4 deletions(-)
+Changes in v2:
+- improved commit logs
 
-diff --git a/drivers/net/wireless/intel/ipw2x00/ipw2100.c b/drivers/net/wireless/intel/ipw2x00/ipw2100.c
-index 215814861cbd..c7c5bc0f1650 100644
---- a/drivers/net/wireless/intel/ipw2x00/ipw2100.c
-+++ b/drivers/net/wireless/intel/ipw2x00/ipw2100.c
-@@ -2143,7 +2143,7 @@ static void isr_indicate_rf_kill(struct ipw2100_priv *priv, u32 status)
- 
- 	/* Make sure the RF Kill check timer is running */
- 	priv->stop_rf_kill = 0;
--	mod_delayed_work(system_wq, &priv->rf_kill, round_jiffies_relative(HZ));
-+	mod_delayed_work(system_percpu_wq, &priv->rf_kill, round_jiffies_relative(HZ));
- }
- 
- static void ipw2100_scan_event(struct work_struct *work)
-@@ -2170,7 +2170,7 @@ static void isr_scan_complete(struct ipw2100_priv *priv, u32 status)
- 				      round_jiffies_relative(msecs_to_jiffies(4000)));
- 	} else {
- 		priv->user_requested_scan = 0;
--		mod_delayed_work(system_wq, &priv->scan_event, 0);
-+		mod_delayed_work(system_percpu_wq, &priv->scan_event, 0);
- 	}
- }
- 
-@@ -4252,7 +4252,7 @@ static int ipw_radio_kill_sw(struct ipw2100_priv *priv, int disable_radio)
- 					  "disabled by HW switch\n");
- 			/* Make sure the RF_KILL check timer is running */
- 			priv->stop_rf_kill = 0;
--			mod_delayed_work(system_wq, &priv->rf_kill,
-+			mod_delayed_work(system_percpu_wq, &priv->rf_kill,
- 					 round_jiffies_relative(HZ));
- 		} else
- 			schedule_reset(priv);
-diff --git a/drivers/net/wireless/intel/ipw2x00/ipw2200.c b/drivers/net/wireless/intel/ipw2x00/ipw2200.c
-index 24a5624ef207..09035a77e775 100644
---- a/drivers/net/wireless/intel/ipw2x00/ipw2200.c
-+++ b/drivers/net/wireless/intel/ipw2x00/ipw2200.c
-@@ -4415,7 +4415,7 @@ static void handle_scan_event(struct ipw_priv *priv)
- 				      round_jiffies_relative(msecs_to_jiffies(4000)));
- 	} else {
- 		priv->user_requested_scan = 0;
--		mod_delayed_work(system_wq, &priv->scan_event, 0);
-+		mod_delayed_work(system_percpu_wq, &priv->scan_event, 0);
- 	}
- }
- 
+- P3: wrong commit log was about system_unbound_wq; subject changed with
+  system_wq.
+
+
+Marco Crivellari (3):
+  wifi: iwlwifi: replace use of system_unbound_wq with system_dfl_wq
+  wifi: iwlwifi: fw: replace use of system_unbound_wq with system_dfl_wq
+  wifi: iwlwifi: nvm: replace use of system_wq with system_percpu_wq
+
+ drivers/net/wireless/intel/iwlwifi/fw/dbg.c    | 4 ++--
+ drivers/net/wireless/intel/iwlwifi/iwl-trans.h | 2 +-
+ drivers/net/wireless/intel/iwlwifi/mvm/tdls.c  | 6 +++---
+ 3 files changed, 6 insertions(+), 6 deletions(-)
+
 -- 
 2.51.1
 
