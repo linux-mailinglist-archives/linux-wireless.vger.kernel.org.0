@@ -1,72 +1,66 @@
-Return-Path: <linux-wireless+bounces-29150-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-29151-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [213.196.21.55])
-	by mail.lfdr.de (Postfix) with ESMTPS id B8712C721D1
-	for <lists+linux-wireless@lfdr.de>; Thu, 20 Nov 2025 04:49:58 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id C3B61C72210
+	for <lists+linux-wireless@lfdr.de>; Thu, 20 Nov 2025 05:01:53 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 41C7034D613
-	for <lists+linux-wireless@lfdr.de>; Thu, 20 Nov 2025 03:49:58 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTPS id 99E2128C74
+	for <lists+linux-wireless@lfdr.de>; Thu, 20 Nov 2025 04:01:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 86614DDC5;
-	Thu, 20 Nov 2025 03:49:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 418471A23B1;
+	Thu, 20 Nov 2025 04:01:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=realtek.com header.i=@realtek.com header.b="OnZiOBr2"
+	dkim=pass (2048-bit key) header.d=realtek.com header.i=@realtek.com header.b="u0NKvdzu"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A464B372ACF
-	for <linux-wireless@vger.kernel.org>; Thu, 20 Nov 2025 03:49:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 23AE43FF1
+	for <linux-wireless@vger.kernel.org>; Thu, 20 Nov 2025 04:01:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=211.75.126.72
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763610594; cv=none; b=h0WL2/qMV0gy/ePxFANX0R7eyRFSrysCi/MWOnAOJxDzu0aomRSQAnAIX73qkNWM5Mty+kolfCXMmQV/BkLOE0AKcz8cH3I2AJaRQSdgr4+KApR0+6m/AZ/dyCYAfuZigOWgUnujd5vOfky8OYbJ3tizlNFbpglhnPV+bHcsVa0=
+	t=1763611308; cv=none; b=kzFS0XGFk01PfgZtZXmsj22POWL856E2e+oUsL4wy6gQm63EAO50BhH2zGB7o82LJTXS3AlF0y/oSNYB4IARKhWBN4Y6C5rWMfNKSEulmOXgnXpYMSZkcudCTI+Qy25f5NQuvyxcftKsQyVGt0rqR/01ecNUrAIrfhERp3ssGoI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763610594; c=relaxed/simple;
-	bh=AJwFGnC6/QDf9Uc2vXmj6ct1nS2CBsXWpOXhNssIig8=;
-	h=From:To:CC:Subject:In-Reply-To:References:Message-ID:Date:
-	 MIME-Version:Content-Type; b=gcVTs9SC8VfKYr83Yq86cHUs7FzAqjKeyomCiRdnZE/E/ZSlMJf6Kgc/jPBzSk6+7W076aMHKVN3fqNnzNJw3po8tpwAGq/8ZaAHuHK4e3UFOze3XCKB8M70njwIZN3ynkLjKgTx4SELutJ8V1cSy8YDC9BYZ4l30dhPVsH3+1Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com; spf=pass smtp.mailfrom=realtek.com; dkim=pass (2048-bit key) header.d=realtek.com header.i=@realtek.com header.b=OnZiOBr2; arc=none smtp.client-ip=211.75.126.72
+	s=arc-20240116; t=1763611308; c=relaxed/simple;
+	bh=CGmSftq2V2ybNQyUOVttMzwELymZwL/s39NArF/Bx3I=;
+	h=From:To:Subject:Message-ID:Date:MIME-Version:Content-Type; b=imdRu0CS74Uunx76BPDQEQ9+3K5U9fgPVL8KjInArdarvG6ijxhF9TcKwqF2tULXFcIfh58DXccBJfGggAN5wOogYuIDhKxfimKVr5aXtzdAYe6FE/37P86JZzGoTOA5oUxWWdNlZ4n42eBniGrWVfOrkbzqRybpMNPXOr1hiLQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com; spf=pass smtp.mailfrom=realtek.com; dkim=pass (2048-bit key) header.d=realtek.com header.i=@realtek.com header.b=u0NKvdzu; arc=none smtp.client-ip=211.75.126.72
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=realtek.com
-X-SpamFilter-By: ArmorX SpamTrap 5.80 with qID 5AK3nl3F3757061, This message is accepted by code: ctloc85258
+X-SpamFilter-By: ArmorX SpamTrap 5.80 with qID 5AK41g6Z2767554, This message is accepted by code: ctloc85258
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=realtek.com; s=dkim;
-	t=1763610587; bh=GYKOz2gtUnhki8p5iguRTb5sZ06us+8J4SCmwblPmj0=;
-	h=From:To:CC:Subject:In-Reply-To:References:Message-ID:Date:
-	 MIME-Version:Content-Type;
-	b=OnZiOBr21RIm8rp2+HUrU7vZahmAERVjzzXXvD1EifMinh/Z+ycq0QRlVpdhCyYfc
-	 NIRMWJ8Xn58aG5SaTjotk3ZRHV//00Q9QLdmyf1TI2Wlnhb6JN9ZiWSnspIPAvWVt3
-	 hKTD+sCq7h1/iuQtVCZOSqOLNUyxDkt32DNl6KFye5fbEY+uQlPBkWOJpuKzHTJoYz
-	 ffqL8z23iwrciPVyQgn4uFOY+3YHUQxduysP2EVVw33o83q0vG/x6xakhbNBLRzCJi
-	 yhBbiYWdOEu0nylwMtcncS1qh3rFwJAqitw4/wadMRpJJneBQEl7vwFRgaADbPuZkj
-	 9LaKVbNzLz6NQ==
-Received: from mail.realtek.com (rtkexhmbs04.realtek.com.tw[10.21.1.54])
-	by rtits2.realtek.com.tw (8.15.2/3.21/5.94) with ESMTPS id 5AK3nl3F3757061
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Thu, 20 Nov 2025 11:49:47 +0800
-Received: from RTKEXHMBS05.realtek.com.tw (10.21.1.55) by
- RTKEXHMBS04.realtek.com.tw (10.21.1.54) with Microsoft SMTP Server
+	t=1763611302; bh=NYsHWttQRsvK6pEzs5LUPugiZ3CUlnDYoDWhDqyNnBE=;
+	h=From:To:Subject:Message-ID:Date:MIME-Version:Content-Type;
+	b=u0NKvdzuCSfzLTdqjo9uXucJYmnjOYG9sHJBaU9TzIzp9Np6lU02XeTra1BF+44FC
+	 NYv1LqPx5F8AzYO9qAADFEbLkWeWXMZ4jJgp1yMP+RjsVHBJ5XqIBcL8WYhdh4E95d
+	 I2TLA8b4lEQlyhoPOeg4wNGrVqSxh3SJNYwnh/SUWW2k0D0zNtJXmPIQE4WwJOp6xd
+	 aiooSoapkojKkahycZNeYqlWF1VpbtVpGz8gTXE0i+Ecd9etMyAY++3LxVEbE4sqMu
+	 pdg88ttITltbMF2NAN4H5JLGAUMVoDh6Kx+uuaizT1ZyDWLoz+P/6Yl9s+E/4b81ir
+	 g4InS6ofBDgCw==
+Received: from mail.realtek.com (rtkexhmbs03.realtek.com.tw[10.21.1.53])
+	by rtits2.realtek.com.tw (8.15.2/3.21/5.94) with ESMTPS id 5AK41g6Z2767554
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK)
+	for <linux-wireless@vger.kernel.org>; Thu, 20 Nov 2025 12:01:42 +0800
+Received: from RTKEXHMBS01.realtek.com.tw (172.21.6.40) by
+ RTKEXHMBS03.realtek.com.tw (10.21.1.53) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.27; Thu, 20 Nov 2025 11:49:48 +0800
-Received: from RTKEXHMBS04.realtek.com.tw (10.21.1.54) by
- RTKEXHMBS05.realtek.com.tw (10.21.1.55) with Microsoft SMTP Server
+ 15.2.1544.27; Thu, 20 Nov 2025 12:01:43 +0800
+Received: from RTKEXHMBS03.realtek.com.tw (10.21.1.53) by
+ RTKEXHMBS01.realtek.com.tw (172.21.6.40) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.27; Thu, 20 Nov 2025 11:49:47 +0800
-Received: from [127.0.1.1] (172.21.69.94) by RTKEXHMBS04.realtek.com.tw
- (10.21.1.54) with Microsoft SMTP Server (version=TLS1_2,
+ 15.2.1544.27; Thu, 20 Nov 2025 12:01:43 +0800
+Received: from [127.0.1.1] (172.21.69.94) by RTKEXHMBS03.realtek.com.tw
+ (10.21.1.53) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.27 via Frontend
- Transport; Thu, 20 Nov 2025 11:49:47 +0800
+ Transport; Thu, 20 Nov 2025 12:01:43 +0800
 From: Ping-Ke Shih <pkshih@realtek.com>
-To: Bitterblue Smith <rtl8821cerfe2@gmail.com>,
-        "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>
-CC: Ping-Ke Shih <pkshih@realtek.com>
-Subject: Re: [PATCH rtw] wifi: rtw89: hw_scan: Don't let the operating channel be last
-In-Reply-To: <c1e61744-8db4-4646-867f-241b47d30386@gmail.com>
-References: <c1e61744-8db4-4646-867f-241b47d30386@gmail.com>
-Message-ID: <dfef6ddf-f31b-4811-b18e-4757e4ea72bb@RTKEXHMBS04.realtek.com.tw>
-Date: Thu, 20 Nov 2025 11:49:47 +0800
+To: <linux-wireless@vger.kernel.org>
+Subject: pull-request: rtw-2025-11-20 to v6.18-rc7
+Message-ID: <8217bee0-96c4-44c1-9593-2e9ca12eccc5@RTKEXHMBS03.realtek.com.tw>
+Date: Thu, 20 Nov 2025 12:01:43 +0800
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
@@ -75,42 +69,40 @@ List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain
 
-Bitterblue Smith <rtl8821cerfe2@gmail.com> wrote:
+Hi,
 
-> Scanning can be offloaded to the firmware. To that end, the driver
-> prepares a list of channels to scan, including periodic visits back to
-> the operating channel, and sends the list to the firmware.
-> 
-> When the channel list is too long to fit in a single H2C message, the
-> driver splits the list, sends the first part, and tells the firmware to
-> scan. When the scan is complete, the driver sends the next part of the
-> list and tells the firmware to scan.
-> 
-> When the last channel that fit in the H2C message is the operating
-> channel something seems to go wrong in the firmware. It will
-> acknowledge receiving the list of channels but apparently it will not
-> do anything more. The AP can't be pinged anymore. The driver still
-> receives beacons, though.
-> 
-> One way to avoid this is to split the list of channels before the
-> operating channel.
-> 
-> Affected devices:
-> 
-> * RTL8851BU with firmware 0.29.41.3
-> * RTL8832BU with firmware 0.29.29.8
-> * RTL8852BU with firmware 0.29.29.8
-> 
-> https://lore.kernel.org/linux-wireless/0abbda91-c5c2-4007-84c8-215679e652e1@gmail.com/
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Bitterblue Smith <rtl8821cerfe2@gmail.com>
-> Acked-by: Ping-Ke Shih <pkshih@realtek.com>
+A pull-request of rtw to wireless tree, more info below.
 
-1 patch(es) applied to rtw branch of rtw.git, thanks.
+This is my first time to send pull-request for urgent fixes. Please
+let me know if any problems.
 
-e837b9091b27 wifi: rtw89: hw_scan: Don't let the operating channel be last
+Thanks
+Ping-Ke
 
 ---
-https://github.com/pkshih/rtw.git
 
+The following changes since commit d0309c054362a235077327b46f727bc48878a3bc:
+
+  Merge tag 'net-6.18-rc6' of git://git.kernel.org/pub/scm/linux/kernel/git/netdev/net (2025-11-13 11:20:25 -0800)
+
+are available in the Git repository at:
+
+  https://github.com/pkshih/rtw.git tags/rtw-2025-11-20
+
+for you to fetch changes up to e837b9091b277ae6f309d7e9fc93cb0308cf461f:
+
+  wifi: rtw89: hw_scan: Don't let the operating channel be last (2025-11-20 11:36:01 +0800)
+
+----------------------------------------------------------------
+rtw patches for v6.18-rc7
+
+Fix firmware goes wrong and causes device unusable after scanning. This
+issue presents under certain regulatory domain reported from end users.
+
+----------------------------------------------------------------
+Bitterblue Smith (1):
+      wifi: rtw89: hw_scan: Don't let the operating channel be last
+
+ drivers/net/wireless/realtek/rtw89/fw.c | 7 +++++++
+ 1 file changed, 7 insertions(+)
 
