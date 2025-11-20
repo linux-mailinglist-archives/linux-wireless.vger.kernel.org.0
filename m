@@ -1,284 +1,117 @@
-Return-Path: <linux-wireless+bounces-29139-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-29140-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id DD3F5C71EFC
-	for <lists+linux-wireless@lfdr.de>; Thu, 20 Nov 2025 04:11:52 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 36A59C71F30
+	for <lists+linux-wireless@lfdr.de>; Thu, 20 Nov 2025 04:17:58 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id C0C594E04CB
-	for <lists+linux-wireless@lfdr.de>; Thu, 20 Nov 2025 03:11:51 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id E46864E4899
+	for <lists+linux-wireless@lfdr.de>; Thu, 20 Nov 2025 03:17:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 403EF2F90CD;
-	Thu, 20 Nov 2025 03:11:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 88678256C9E;
+	Thu, 20 Nov 2025 03:17:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=realtek.com header.i=@realtek.com header.b="uPFPXv2/"
+	dkim=pass (2048-bit key) header.d=realtek.com header.i=@realtek.com header.b="OSoPzqG4"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0E2ED2FD7C7
-	for <linux-wireless@vger.kernel.org>; Thu, 20 Nov 2025 03:11:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 20F372BE7DC
+	for <linux-wireless@vger.kernel.org>; Thu, 20 Nov 2025 03:17:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=211.75.126.72
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763608304; cv=none; b=E+UCwQyzuaScesnkEry7JYKtS3aF8SK19/JDAvtDCVZvqinljOJlfcQdYq1/4nO2iIMPyegQN9QwCR7FvCPh+u4zESvWfl+bfEHnlnH4YSJWNfkZqY7Ej0eOCpNxaoEha61/qih+YcXDRIeXNhRHqCF9SAWrbN3mBO28mRfWqoM=
+	t=1763608635; cv=none; b=Eo4saD/CUB3jrbq+d6juSLlvzJrtFlblYjWe4MIesMr8vIHRImSiGf1rnWdeWfwS/nGEqr3aTXcPd11VCWSbHaXQC1JoGuypHRNijQ5E0J/I+CtxE1W5AXlWM2DtjgQ+6crfoKCjtFRoa7HxIY667rrBaM2S3PS4bueGHIjpuUs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763608304; c=relaxed/simple;
-	bh=Or59EsMDY19aZCa9b6n+OeI+SUOOMmgvptGBuSjnLSw=;
-	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=toCbECcFKIYFwtaYXOiUsFQ8lSxbB0IfuEBYxnlm+xQl7CyBNjU+oru/EsnLpQ52wXbzwf3ItdPv1NzB5K2nUZVrHBhv8XtO/WOhmaBd0qyDUVVQvtFGObqQL9RWdLcQuGa1T+GfGlul+fdSownWdQHcBN6i3qbQYNrX/gMRm+g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com; spf=pass smtp.mailfrom=realtek.com; dkim=pass (2048-bit key) header.d=realtek.com header.i=@realtek.com header.b=uPFPXv2/; arc=none smtp.client-ip=211.75.126.72
+	s=arc-20240116; t=1763608635; c=relaxed/simple;
+	bh=vVUKBgh9MCACFqjoMlTt2RrrwRFUpunPd8Yo5TTz00w=;
+	h=From:To:Subject:Date:Message-ID:References:In-Reply-To:
+	 Content-Type:MIME-Version; b=ijDQjRwtbMY35+TfRvXxDEz/lZ0gMNH64PpwCWTf16/zHsuqGpd/eSDgDtxuzmk88m9uaO+uBQmjtAcILd+R08dyZUH14i5eE/yFfJ5Sr6o9FGsiBMzyzz4hdOwrIWjGEYjWmOaSk/XrnSrpMYPj7l17Ju/ACXLZEY+KXt2rUr8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com; spf=pass smtp.mailfrom=realtek.com; dkim=pass (2048-bit key) header.d=realtek.com header.i=@realtek.com header.b=OSoPzqG4; arc=none smtp.client-ip=211.75.126.72
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=realtek.com
-X-SpamFilter-By: ArmorX SpamTrap 5.80 with qID 5AK3BaaM6696591, This message is accepted by code: ctloc85258
+X-SpamFilter-By: ArmorX SpamTrap 5.80 with qID 5AK3H8tcC703062, This message is accepted by code: ctloc85258
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=realtek.com; s=dkim;
-	t=1763608296; bh=2B9UC4jF1/EyJcbCmm87vx8VVnWmVvr6/GM/Rin+UoY=;
-	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Transfer-Encoding:Content-Type;
-	b=uPFPXv2/PN1LoTv7TGKxEJmDcAhK6V/gj8wuXpIRAlNVqURA0M2bGd1PfHgMiNOaj
-	 /3xdW/vA+SkVoHBxAX4tG1aBK/KogSTz1hP70MeNhNgMvDnDGVZZRjeno07TzmVQok
-	 quxnp0DelwiRq/3ZajReaJJgSrPHfqtc9l/jyYwutoQNchNEzSTHCanjZh1mIOqnCk
-	 qnvJzfZl5k6c5me0GVWsYedFMKJO5G9MXCpHGsigPTfP8R6v0BDEldS0G+hM5+XoNQ
-	 Rgbi/lVvOhRoQ96emlo3czI9LdfGjxZ7Rd+7GRS/n5Gxv7VhCA5O/qPrqzh5Aj4ZPs
-	 KzQi7niQvn6sg==
-Received: from mail.realtek.com (rtkexhmbs03.realtek.com.tw[10.21.1.53])
-	by rtits2.realtek.com.tw (8.15.2/3.21/5.94) with ESMTPS id 5AK3BaaM6696591
+	t=1763608628; bh=vVUKBgh9MCACFqjoMlTt2RrrwRFUpunPd8Yo5TTz00w=;
+	h=From:To:Subject:Date:Message-ID:References:In-Reply-To:
+	 Content-Type:Content-Transfer-Encoding:MIME-Version;
+	b=OSoPzqG4viSaZGoWOyeu0a122jwF5dl6hmEmrAOKBs0VDN4Y9zPCAgUER3VdIda83
+	 Lty9acF3D30fbyvBOq9cbLB5w1mzjmInXGEnwgpCrjeGq9CChGg8CecEGmE3VpGwsJ
+	 NFs8Kd1n6wyu0HTL7Gdkj//Vzs2uh8nxosclsf8W23GvaCZXURSTJfAOKLty2Y1XUn
+	 vxGLYrP8mqfx+2vemEbJQW4diKyIZYTskKyTeZcFVEAvte5ezYiwvVTgL2Tm1vWnuL
+	 C+E6e20bcBVogbjHcb4e9ngZ/9PfJW7jdD13Ku9ujUDcA+QNag49HiwtA849H3MW5D
+	 sh1atWrY2Ve7A==
+Received: from mail.realtek.com (rtkexhmbs04.realtek.com.tw[10.21.1.54])
+	by rtits2.realtek.com.tw (8.15.2/3.21/5.94) with ESMTPS id 5AK3H8tcC703062
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Thu, 20 Nov 2025 11:11:36 +0800
-Received: from RTKEXHMBS03.realtek.com.tw (10.21.1.53) by
- RTKEXHMBS03.realtek.com.tw (10.21.1.53) with Microsoft SMTP Server
+	Thu, 20 Nov 2025 11:17:08 +0800
+Received: from RTKEXHMBS01.realtek.com.tw (172.21.6.40) by
+ RTKEXHMBS04.realtek.com.tw (10.21.1.54) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.27; Thu, 20 Nov 2025 11:11:36 +0800
-Received: from [127.0.1.1] (172.21.69.94) by RTKEXHMBS03.realtek.com.tw
- (10.21.1.53) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.27 via Frontend
- Transport; Thu, 20 Nov 2025 11:11:36 +0800
+ 15.2.1544.27; Thu, 20 Nov 2025 11:17:08 +0800
+Received: from RTKEXHMBS06.realtek.com.tw (10.21.1.56) by
+ RTKEXHMBS01.realtek.com.tw (172.21.6.40) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1544.27; Thu, 20 Nov 2025 11:17:08 +0800
+Received: from RTKEXHMBS06.realtek.com.tw ([::1]) by
+ RTKEXHMBS06.realtek.com.tw ([fe80::744:4bc9:832c:9b7e%10]) with mapi id
+ 15.02.1544.027; Thu, 20 Nov 2025 11:17:08 +0800
 From: Ping-Ke Shih <pkshih@realtek.com>
-To: <linux-wireless@vger.kernel.org>
-CC: <geert@linux-m68k.org>
-Subject: [PATCH v2 rtw-next 2/2] wifi: rtw89: avoid to use not consecutive mask in __write_ctrl()
-Date: Thu, 20 Nov 2025 11:10:44 +0800
-Message-ID: <20251120031044.12493-3-pkshih@realtek.com>
-X-Mailer: git-send-email 2.25.1
-In-Reply-To: <20251120031044.12493-1-pkshih@realtek.com>
-References: <20251120031044.12493-1-pkshih@realtek.com>
+To: Bitterblue Smith <rtl8821cerfe2@gmail.com>,
+        "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>
+Subject: RE: [PATCH rtw] wifi: rtw89: hw_scan: Don't let the operating channel
+ be last
+Thread-Topic: [PATCH rtw] wifi: rtw89: hw_scan: Don't let the operating
+ channel be last
+Thread-Index: AQHcVPCJR7vyR3KM2kO33b+/uTOxg7T3tzBQgADMU4CAAmneUA==
+Date: Thu, 20 Nov 2025 03:17:05 +0000
+Message-ID: <a4fa21a5b7494a439075690d7ae2b99b@realtek.com>
+References: <c1e61744-8db4-4646-867f-241b47d30386@gmail.com>
+ <5b0834f55d91469282a0f42c651d5441@realtek.com>
+ <9e053524-3ab0-4d8f-9c08-1a2d0caa1892@gmail.com>
+In-Reply-To: <9e053524-3ab0-4d8f-9c08-1a2d0caa1892@gmail.com>
+Accept-Language: en-US, zh-TW
+Content-Language: zh-TW
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
 
-The power value and enable bit fields can be not consecutive mask, but
-normally we expect mask argument of rtw89_mac_txpwr_write32_mask() is
-consecutive bit mask. Therefore, change the code accordingly.
-
-Cc: Geert Uytterhoeven <geert@linux-m68k.org>
-Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
----
-v2: use a macro to use u32_encode_bits() to generate mask before calling         
-    inline function to prevent __bad_mask() warning.  
----
- drivers/net/wireless/realtek/rtw89/mac.h      | 26 +++++++++++++++++++
- drivers/net/wireless/realtek/rtw89/rtw8851b.c | 26 +++++--------------
- drivers/net/wireless/realtek/rtw89/rtw8852b.c | 26 +++++--------------
- drivers/net/wireless/realtek/rtw89/rtw8852c.c | 26 +++++--------------
- 4 files changed, 47 insertions(+), 57 deletions(-)
-
-diff --git a/drivers/net/wireless/realtek/rtw89/mac.h b/drivers/net/wireless/realtek/rtw89/mac.h
-index 0007229d6753..64a7fd527f3e 100644
---- a/drivers/net/wireless/realtek/rtw89/mac.h
-+++ b/drivers/net/wireless/realtek/rtw89/mac.h
-@@ -1458,6 +1458,32 @@ static inline int rtw89_mac_txpwr_write32_mask(struct rtw89_dev *rtwdev,
- 	return 0;
- }
- 
-+static inline
-+void __rtw89_mac_write_txpwr_ctrl(struct rtw89_dev *rtwdev, u32 reg, u32 mask,
-+				  u32 set, u32 mask_en, bool cond)
-+{
-+	u32 val32;
-+	int ret;
-+
-+	ret = rtw89_mac_txpwr_read32(rtwdev, RTW89_PHY_0, reg, &val32);
-+	if (ret)
-+		return;
-+
-+	val32 &= ~(mask | mask_en);
-+	val32 |= set;
-+
-+	if (cond)
-+		val32 |= mask_en;
-+
-+	rtw89_mac_txpwr_write32(rtwdev, RTW89_PHY_0, reg, val32);
-+}
-+
-+#define rtw89_mac_write_txpwr_ctrl(_rtwdev, _reg, _mask, _val, _mask_en, _cond)    \
-+do {										   \
-+	u32 _set = u32_encode_bits(_val, _mask);				   \
-+	__rtw89_mac_write_txpwr_ctrl(_rtwdev, _reg, _mask, _set, _mask_en, _cond); \
-+} while (0)
-+
- static inline void rtw89_mac_ctrl_hci_dma_tx(struct rtw89_dev *rtwdev,
- 					     bool enable)
- {
-diff --git a/drivers/net/wireless/realtek/rtw89/rtw8851b.c b/drivers/net/wireless/realtek/rtw89/rtw8851b.c
-index 84b628d23882..7134b88ccf76 100644
---- a/drivers/net/wireless/realtek/rtw89/rtw8851b.c
-+++ b/drivers/net/wireless/realtek/rtw89/rtw8851b.c
-@@ -2291,18 +2291,6 @@ rtw8851b_btc_set_wl_txpwr_ctrl(struct rtw89_dev *rtwdev, u32 txpwr_val)
- 	union rtw8851b_btc_wl_txpwr_ctrl arg = { .txpwr_val = txpwr_val };
- 	s32 val;
- 
--#define __write_ctrl(_reg, _msk, _val, _en, _cond)		\
--do {								\
--	u32 _wrt = FIELD_PREP(_msk, _val);			\
--	BUILD_BUG_ON(!!(_msk & _en));				\
--	if (_cond)						\
--		_wrt |= _en;					\
--	else							\
--		_wrt &= ~_en;					\
--	rtw89_mac_txpwr_write32_mask(rtwdev, RTW89_PHY_0, _reg,	\
--				     _msk | _en, _wrt);		\
--} while (0)
--
- 	switch (arg.ctrl_all_time) {
- 	case 0xffff:
- 		val = 0;
-@@ -2312,9 +2300,10 @@ do {								\
- 		break;
- 	}
- 
--	__write_ctrl(R_AX_PWR_RATE_CTRL, B_AX_FORCE_PWR_BY_RATE_VALUE_MASK,
--		     val, B_AX_FORCE_PWR_BY_RATE_EN,
--		     arg.ctrl_all_time != 0xffff);
-+	rtw89_mac_write_txpwr_ctrl(rtwdev, R_AX_PWR_RATE_CTRL,
-+				   B_AX_FORCE_PWR_BY_RATE_VALUE_MASK,
-+				   val, B_AX_FORCE_PWR_BY_RATE_EN,
-+				   arg.ctrl_all_time != 0xffff);
- 
- 	switch (arg.ctrl_gnt_bt) {
- 	case 0xffff:
-@@ -2325,10 +2314,9 @@ do {								\
- 		break;
- 	}
- 
--	__write_ctrl(R_AX_PWR_COEXT_CTRL, B_AX_TXAGC_BT_MASK, val,
--		     B_AX_TXAGC_BT_EN, arg.ctrl_gnt_bt != 0xffff);
--
--#undef __write_ctrl
-+	rtw89_mac_write_txpwr_ctrl(rtwdev, R_AX_PWR_COEXT_CTRL,
-+				   B_AX_TXAGC_BT_MASK, val,
-+				   B_AX_TXAGC_BT_EN, arg.ctrl_gnt_bt != 0xffff);
- }
- 
- static
-diff --git a/drivers/net/wireless/realtek/rtw89/rtw8852b.c b/drivers/net/wireless/realtek/rtw89/rtw8852b.c
-index 70fb05bc5e98..f88af57fac65 100644
---- a/drivers/net/wireless/realtek/rtw89/rtw8852b.c
-+++ b/drivers/net/wireless/realtek/rtw89/rtw8852b.c
-@@ -761,18 +761,6 @@ rtw8852b_btc_set_wl_txpwr_ctrl(struct rtw89_dev *rtwdev, u32 txpwr_val)
- 	union rtw8852b_btc_wl_txpwr_ctrl arg = { .txpwr_val = txpwr_val };
- 	s32 val;
- 
--#define __write_ctrl(_reg, _msk, _val, _en, _cond)		\
--do {								\
--	u32 _wrt = FIELD_PREP(_msk, _val);			\
--	BUILD_BUG_ON(!!(_msk & _en));				\
--	if (_cond)						\
--		_wrt |= _en;					\
--	else							\
--		_wrt &= ~_en;					\
--	rtw89_mac_txpwr_write32_mask(rtwdev, RTW89_PHY_0, _reg,	\
--				     _msk | _en, _wrt);		\
--} while (0)
--
- 	switch (arg.ctrl_all_time) {
- 	case 0xffff:
- 		val = 0;
-@@ -782,9 +770,10 @@ do {								\
- 		break;
- 	}
- 
--	__write_ctrl(R_AX_PWR_RATE_CTRL, B_AX_FORCE_PWR_BY_RATE_VALUE_MASK,
--		     val, B_AX_FORCE_PWR_BY_RATE_EN,
--		     arg.ctrl_all_time != 0xffff);
-+	rtw89_mac_write_txpwr_ctrl(rtwdev, R_AX_PWR_RATE_CTRL,
-+				   B_AX_FORCE_PWR_BY_RATE_VALUE_MASK,
-+				   val, B_AX_FORCE_PWR_BY_RATE_EN,
-+				   arg.ctrl_all_time != 0xffff);
- 
- 	switch (arg.ctrl_gnt_bt) {
- 	case 0xffff:
-@@ -795,10 +784,9 @@ do {								\
- 		break;
- 	}
- 
--	__write_ctrl(R_AX_PWR_COEXT_CTRL, B_AX_TXAGC_BT_MASK, val,
--		     B_AX_TXAGC_BT_EN, arg.ctrl_gnt_bt != 0xffff);
--
--#undef __write_ctrl
-+	rtw89_mac_write_txpwr_ctrl(rtwdev, R_AX_PWR_COEXT_CTRL,
-+				   B_AX_TXAGC_BT_MASK, val,
-+				   B_AX_TXAGC_BT_EN, arg.ctrl_gnt_bt != 0xffff);
- }
- 
- static const struct rtw89_chip_ops rtw8852b_chip_ops = {
-diff --git a/drivers/net/wireless/realtek/rtw89/rtw8852c.c b/drivers/net/wireless/realtek/rtw89/rtw8852c.c
-index db99450e9158..d2a91232ea27 100644
---- a/drivers/net/wireless/realtek/rtw89/rtw8852c.c
-+++ b/drivers/net/wireless/realtek/rtw89/rtw8852c.c
-@@ -2760,18 +2760,6 @@ rtw8852c_btc_set_wl_txpwr_ctrl(struct rtw89_dev *rtwdev, u32 txpwr_val)
- 	union rtw8852c_btc_wl_txpwr_ctrl arg = { .txpwr_val = txpwr_val };
- 	s32 val;
- 
--#define __write_ctrl(_reg, _msk, _val, _en, _cond)		\
--do {								\
--	u32 _wrt = FIELD_PREP(_msk, _val);			\
--	BUILD_BUG_ON((_msk & _en) != 0);			\
--	if (_cond)						\
--		_wrt |= _en;					\
--	else							\
--		_wrt &= ~_en;					\
--	rtw89_mac_txpwr_write32_mask(rtwdev, RTW89_PHY_0, _reg,	\
--				     _msk | _en, _wrt);		\
--} while (0)
--
- 	switch (arg.ctrl_all_time) {
- 	case 0xffff:
- 		val = 0;
-@@ -2781,9 +2769,10 @@ do {								\
- 		break;
- 	}
- 
--	__write_ctrl(R_AX_PWR_RATE_CTRL, B_AX_FORCE_PWR_BY_RATE_VALUE_MASK,
--		     val, B_AX_FORCE_PWR_BY_RATE_EN,
--		     arg.ctrl_all_time != 0xffff);
-+	rtw89_mac_write_txpwr_ctrl(rtwdev, R_AX_PWR_RATE_CTRL,
-+				   B_AX_FORCE_PWR_BY_RATE_VALUE_MASK,
-+				   val, B_AX_FORCE_PWR_BY_RATE_EN,
-+				   arg.ctrl_all_time != 0xffff);
- 
- 	switch (arg.ctrl_gnt_bt) {
- 	case 0xffff:
-@@ -2794,10 +2783,9 @@ do {								\
- 		break;
- 	}
- 
--	__write_ctrl(R_AX_PWR_COEXT_CTRL, B_AX_TXAGC_BT_MASK, val,
--		     B_AX_TXAGC_BT_EN, arg.ctrl_gnt_bt != 0xffff);
--
--#undef __write_ctrl
-+	rtw89_mac_write_txpwr_ctrl(rtwdev, R_AX_PWR_COEXT_CTRL,
-+				   B_AX_TXAGC_BT_MASK, val,
-+				   B_AX_TXAGC_BT_EN, arg.ctrl_gnt_bt != 0xffff);
- }
- 
- static
--- 
-2.25.1
-
+Qml0dGVyYmx1ZSBTbWl0aCA8cnRsODgyMWNlcmZlMkBnbWFpbC5jb20+IHdyb3RlOg0KPiBPbiAx
+OC8xMS8yMDI1IDA0OjE3LCBQaW5nLUtlIFNoaWggd3JvdGU6DQo+ID4gQml0dGVyYmx1ZSBTbWl0
+aCA8cnRsODgyMWNlcmZlMkBnbWFpbC5jb20+IHdyb3RlOg0KPiA+PiBTY2FubmluZyBjYW4gYmUg
+b2ZmbG9hZGVkIHRvIHRoZSBmaXJtd2FyZS4gVG8gdGhhdCBlbmQsIHRoZSBkcml2ZXINCj4gPj4g
+cHJlcGFyZXMgYSBsaXN0IG9mIGNoYW5uZWxzIHRvIHNjYW4sIGluY2x1ZGluZyBwZXJpb2RpYyB2
+aXNpdHMgYmFjayB0bw0KPiA+PiB0aGUgb3BlcmF0aW5nIGNoYW5uZWwsIGFuZCBzZW5kcyB0aGUg
+bGlzdCB0byB0aGUgZmlybXdhcmUuDQo+ID4+DQo+ID4+IFdoZW4gdGhlIGNoYW5uZWwgbGlzdCBp
+cyB0b28gbG9uZyB0byBmaXQgaW4gYSBzaW5nbGUgSDJDIG1lc3NhZ2UsIHRoZQ0KPiA+PiBkcml2
+ZXIgc3BsaXRzIHRoZSBsaXN0LCBzZW5kcyB0aGUgZmlyc3QgcGFydCwgYW5kIHRlbGxzIHRoZSBm
+aXJtd2FyZSB0bw0KPiA+PiBzY2FuLiBXaGVuIHRoZSBzY2FuIGlzIGNvbXBsZXRlLCB0aGUgZHJp
+dmVyIHNlbmRzIHRoZSBuZXh0IHBhcnQgb2YgdGhlDQo+ID4+IGxpc3QgYW5kIHRlbGxzIHRoZSBm
+aXJtd2FyZSB0byBzY2FuLg0KPiA+Pg0KPiA+PiBXaGVuIHRoZSBsYXN0IGNoYW5uZWwgdGhhdCBm
+aXQgaW4gdGhlIEgyQyBtZXNzYWdlIGlzIHRoZSBvcGVyYXRpbmcNCj4gPj4gY2hhbm5lbCBzb21l
+dGhpbmcgc2VlbXMgdG8gZ28gd3JvbmcgaW4gdGhlIGZpcm13YXJlLiBJdCB3aWxsDQo+ID4+IGFj
+a25vd2xlZGdlIHJlY2VpdmluZyB0aGUgbGlzdCBvZiBjaGFubmVscyBidXQgYXBwYXJlbnRseSBp
+dCB3aWxsIG5vdA0KPiA+PiBkbyBhbnl0aGluZyBtb3JlLiBUaGUgQVAgY2FuJ3QgYmUgcGluZ2Vk
+IGFueW1vcmUuIFRoZSBkcml2ZXIgc3RpbGwNCj4gPj4gcmVjZWl2ZXMgYmVhY29ucywgdGhvdWdo
+Lg0KPiA+Pg0KPiA+PiBPbmUgd2F5IHRvIGF2b2lkIHRoaXMgaXMgdG8gc3BsaXQgdGhlIGxpc3Qg
+b2YgY2hhbm5lbHMgYmVmb3JlIHRoZQ0KPiA+PiBvcGVyYXRpbmcgY2hhbm5lbC4NCj4gPj4NCj4g
+Pj4gQWZmZWN0ZWQgZGV2aWNlczoNCj4gPj4NCj4gPj4gKiBSVEw4ODUxQlUgd2l0aCBmaXJtd2Fy
+ZSAwLjI5LjQxLjMNCj4gPj4gKiBSVEw4ODMyQlUgd2l0aCBmaXJtd2FyZSAwLjI5LjI5LjgNCj4g
+Pj4gKiBSVEw4ODUyQlUgd2l0aCBmaXJtd2FyZSAwLjI5LjI5LjgNCj4gDQo+IEkgbWFkZSBhIG1p
+c3Rha2UgaGVyZS4gSXQgc2hvdWxkIGJlOg0KPiANCj4gUlRMODg1MUJVDQo+IFJUTDg4MzJCVQ0K
+PiBSVEw4ODUyQkUNCg0KSSdsbCByZS1zcGluIGNvbW1pdCBtZXNzYWdlIHdpdGggdGhpcyBpbmZv
+cm1hdGlvbi4NCg0KPiANCj4gVGhlIHJlcG9ydCBhYm91dCB0aGUgUlRMODg1MkJFIGNhbWUgZnJv
+bSBhIHVzZXIgd2hvIGRvZXNuJ3QgaGF2ZSB0aGUNCj4gY2FyZCBhbnltb3JlLCB1bmZvcnR1bmF0
+ZWx5Lg0KPiANCj4gQWN0dWFsbHksIHNpbmNlIEkgd3JvdGUgdGhhdCBjb21taXQgbWVzc2FnZSBJ
+IGFjcXVpcmVkIFJUTDg4NTFCRSBhbmQNCj4gSSBjYW4gcmVwcm9kdWNlIHRoZSBwcm9ibGVtIHdp
+dGggdGhhdC4NCj4gDQoNCkkgZG9uJ3Qga25vdyB3aHkgb3VyIHNpdGUgY2FuJ3QgcmVwcm9kdWNl
+IHRoaXMgaXNzdWUuIFNpbmNlIHRoaXMgcGF0Y2gNCmNhbiBoZWxwIHlvdXIgYW5kIG5vIG9idmlv
+dXMgaW5jcmVhc2luZyBzY2FuIHRpbWUsIEkgd2lsbCB0YWtlIHRoaXMNCnBhdGNoIGFuZCBzZW5k
+IHB1bGwtcmVxdWVzdCB0byA2LjE4LXJjNi4NCg0K
 
