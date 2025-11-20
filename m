@@ -1,156 +1,196 @@
-Return-Path: <linux-wireless+bounces-29211-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-29212-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [213.196.21.55])
-	by mail.lfdr.de (Postfix) with ESMTPS id 489C2C75DCD
-	for <lists+linux-wireless@lfdr.de>; Thu, 20 Nov 2025 19:07:31 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0B4C8C75E9A
+	for <lists+linux-wireless@lfdr.de>; Thu, 20 Nov 2025 19:23:00 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 96C2B353E44
-	for <lists+linux-wireless@lfdr.de>; Thu, 20 Nov 2025 18:05:14 +0000 (UTC)
+	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 8246834FFDE
+	for <lists+linux-wireless@lfdr.de>; Thu, 20 Nov 2025 18:22:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E6B933019CD;
-	Thu, 20 Nov 2025 18:05:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 71C9B35A95A;
+	Thu, 20 Nov 2025 18:22:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="iDuwMoq6";
-	dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b="C6g8G2NF"
+	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="J/IkutnX"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-lj1-f178.google.com (mail-lj1-f178.google.com [209.85.208.178])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0DF05333439
-	for <linux-wireless@vger.kernel.org>; Thu, 20 Nov 2025 18:05:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2F832352FA2
+	for <linux-wireless@vger.kernel.org>; Thu, 20 Nov 2025 18:22:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.178
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763661910; cv=none; b=KRYVI0bjp+wR22JO+9g9pRzCXBgioxiaf7NFpW37OtPE4RskuoPmKXXvSHL1kZ0+kwbm1RMmlKPZlrFs5xyb6JkTAe4GxJCx/kcZuq6Yb1DyM15lsQBzvWEVlXLfmS6+XUSVcjBwEr7UAOWvlC6lu9LxapkpJA3bN/kVoBXnozM=
+	t=1763662975; cv=none; b=E6sVFXN+2aN5AWoG9HolWRiEponCvfQu+myAjIDVCE1qvZmyhQoax1C0nJ/x/ZsIluLHqnqryDZWKt1SN1ipCMlQ2P8TFvRaybtq/C3GaWFKpbQEo6FKSDi6tfw8GmTkzaJO+7sPuuST3eV7H1CfhqQuKJUTYtBiYjvdCHxc970=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763661910; c=relaxed/simple;
-	bh=8Nk5GMhwXm9IMfM3G60BkyzEkRskrHYSLEa9yNbb4os=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=cG6KxPJLjM7UnoXRTmJ6KL1M5j9O/oHsxo9c8l0WLbtUPazyRp+ofYacuz18LlDk2y4jqaqkY2wSZn713Dw3/5lOq1bCy4nPGmyppDXfuzP9hjfpCFi0Ej6I9gsTiF9Uibrv/5wdBqt0LO/8aAihefqQ+CaEqiRo+TYWyuJDkr0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=iDuwMoq6; dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b=C6g8G2NF; arc=none smtp.client-ip=205.220.168.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
-Received: from pps.filterd (m0279864.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 5AKC4DV23407793
-	for <linux-wireless@vger.kernel.org>; Thu, 20 Nov 2025 18:05:08 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
-	cc:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
-	JuyQcpZNlll2DkMsFvTsaPoccVC77T3rZPbIJMTs2D4=; b=iDuwMoq60s6wYUco
-	8onsgt1l+VyGDcvr2kc5WJUpFbJaZlpkXaOajVcYXr2wkfcduYf4VMTdNBMvFMcv
-	RsBlnNWdAzN2UEalw76NfUebuJUtY69dNZwWC8fhcVR1x7z9SETZRkfwecKIxWzz
-	9P71m7KY8Bqv+QLpyfM7gyfst17O+OIM+w8TYLmER3srbiJK/RgGv3HGNvixr6YE
-	9DJJB6wxygTYxzhNecdGPN9FvyloUFLu257zi9o+FtOqCLzRD0ewPpO6pM5mteNO
-	loTp5zBAqMGyiIVHIVV44/L3fyQeLYhskeP5skrbK69tc5OkJwL0w8S8Fse93BlC
-	mlu0Vg==
-Received: from mail-oa1-f72.google.com (mail-oa1-f72.google.com [209.85.160.72])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4ahm813tt1-1
-	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
-	for <linux-wireless@vger.kernel.org>; Thu, 20 Nov 2025 18:05:08 +0000 (GMT)
-Received: by mail-oa1-f72.google.com with SMTP id 586e51a60fabf-3e82b0276d4so1715565fac.1
-        for <linux-wireless@vger.kernel.org>; Thu, 20 Nov 2025 10:05:08 -0800 (PST)
+	s=arc-20240116; t=1763662975; c=relaxed/simple;
+	bh=wecZEUleM2pVH/ldG6VyoxAP3Tx+t9JIJBh2fst1eeo=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=ddXM35hduj2GOfduNwZSvnSm6leFSlmtnwwbM18A8bsA84YFsf9mogRihqsO9xYBcEb2hg3FGslRdTtyHvmBoW8+mH77CEu6/RsdFDX7dvSfgMTjSw2QSyOiOfoUoCW7BysYCH3Hy4iGY8lM1bUJ+ohU5pB29ad7TW6Djqe+hTg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linux-foundation.org; spf=pass smtp.mailfrom=linuxfoundation.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=J/IkutnX; arc=none smtp.client-ip=209.85.208.178
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linux-foundation.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linuxfoundation.org
+Received: by mail-lj1-f178.google.com with SMTP id 38308e7fff4ca-37a875e3418so7632131fa.1
+        for <linux-wireless@vger.kernel.org>; Thu, 20 Nov 2025 10:22:52 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=oss.qualcomm.com; s=google; t=1763661907; x=1764266707; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:content-language:from
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=JuyQcpZNlll2DkMsFvTsaPoccVC77T3rZPbIJMTs2D4=;
-        b=C6g8G2NFPWqtvQSvMeiqOOmaxNRB9SwFI9VZqKYbvaG2EbTjBiK24xO1QAKM0rRz2v
-         /dKTrmFSUFbBao8oz8Z0szTY5KNvPeVJ6PalvqxkGznw6u2NqSCgEzd8u9QbSHXLFYPC
-         5xjxZpAx++D9Dtq0PxTSmp3vTkbEHU4ftAT7DAF1kzZUp0g0xCTH21IGFJVk36Igq7bG
-         WuvxAr8FU8JVvnknO8LvtqMaKN93pRaDYmQMHEZfkD99J+GGvYs0Zk+wLV4LVGtEsnCA
-         BolpnRgpZxJuGhiWaIhfk/T0xmsHk4aoF7hD5EWc9mqmXj3jyhFYVd4q1EWYJZcslQ7H
-         TqMA==
+        d=linux-foundation.org; s=google; t=1763662970; x=1764267770; darn=vger.kernel.org;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=+BPfdnrOHpw/8tC+sL0oorkp9gKYtrunKdRWYzTn+GA=;
+        b=J/IkutnX5xh5twoI+/c3+loAYdV5odj/zi2fFt1XB0txraftqyAMH0YbDmXS9RCeKP
+         TZ4BiYtxTr+zNGd4qvxTOz66q4I/PjSc/C2ZiTX4NkCEpm781LiVSh1FCKdv7FZ4k/hG
+         XKPtEn/gAta/Oi23o6o6YEMwCMepQkpMoWZ+A=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1763661907; x=1764266707;
-        h=content-transfer-encoding:in-reply-to:content-language:from
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=JuyQcpZNlll2DkMsFvTsaPoccVC77T3rZPbIJMTs2D4=;
-        b=hj6gpsS0SDY2nqJpR6+SGpqgOWx6j+MVTA9HI22CUeQZJzTCucUUUkbQLtz18WrqxA
-         Fn+f2pCjtgD7GWZO0BIHj9drLPPyPLNrOjG3EfIdjZRXHhCeXxNfOYOIs64/7fcl/PjD
-         bqCXg7ap4iGSBB3PlgQe1/hhvev5dcoXQzSWPtxVwsCkvAJIvGjbxxXfwF9Ho4VrNue+
-         q4Imx3PMFYrL4R+N6nphusQPhdvI0uXEgbwDBfnSy6512VbdANmih9RVqtMZaLHTIv8g
-         KiAyXcabOtX5IaWoOTTVbP8CZ3pdhrMpRIAyYgx55orCLunt14uCtiuuUk6qmHJQ+gPT
-         5avg==
-X-Gm-Message-State: AOJu0YxsveWlRMWoU3wTeVX0bkGEGVVGDdLPRMXOo80AmbZclHP/blr9
-	FnTmd+8q3xY0ATNWwNoQ6TjeXKaEBQlXBisqqCG0qnOa1GnNs+LDRK/s5rM6iFPq9PXD6e8gYhE
-	HsZhG/HSC/V6phkGn64xVXmXoj/e2H5aFZd/NApI2qHpKgfpnltvVZNwcABkTLsYrQiLEaA==
-X-Gm-Gg: ASbGncvEg8HEif3JiaUfm4eSRrdVMo87en61e/4WVvYLZ2oyBscKtKacREkS8HLIXXX
-	Kt+D7XoRFEXlR+0kI78ye7uVjneVob8+0PXxbAn0fKg397s1H+cz5Cl/ws7JsWxutAdjyImznhE
-	EB/Bptl4ZKROcgYPqptb6/m3JykXCddIA00WW5eT1dAWpIjaOiTo22NkH/Wep6TrE1aZbnQd4Pf
-	qxkpPuPM294+i+qJILsXzfRm28vz65o8rSx7U+2bNsAKVtDUAE8kETZY54zJicS6FGEHu7ovtrt
-	SSWUjntj98jUAheNhERp62nuhfPmqW5EDVLV/4F5mDFnAWp7KDnZQW+lJG2WkE6iJfrLD5Es/5u
-	Y2aDmgDZxB1Qs6MnxRAu3jiRjwdZ2FOeELW85eqoShR7ABy9NZTqThbp1L4OhtEIpO4IrsKms1v
-	AW
-X-Received: by 2002:a05:6870:8904:b0:3ec:5ca9:d15d with SMTP id 586e51a60fabf-3ecb81acbebmr179315fac.37.1763661907283;
-        Thu, 20 Nov 2025 10:05:07 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IHEd5oYmMj/INKleQZdyU+i6Z44oEC8iroO08qkoEl/5zRQjjmiIxz5eeEhp1rBkuV3BWRZMQ==
-X-Received: by 2002:a05:6870:8904:b0:3ec:5ca9:d15d with SMTP id 586e51a60fabf-3ecb81acbebmr179281fac.37.1763661906834;
-        Thu, 20 Nov 2025 10:05:06 -0800 (PST)
-Received: from [192.168.1.3] (c-24-130-122-79.hsd1.ca.comcast.net. [24.130.122.79])
-        by smtp.gmail.com with ESMTPSA id 586e51a60fabf-3ec9c2cf16asm1489091fac.5.2025.11.20.10.05.06
+        d=1e100.net; s=20230601; t=1763662970; x=1764267770;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=+BPfdnrOHpw/8tC+sL0oorkp9gKYtrunKdRWYzTn+GA=;
+        b=nyUuCUfy0Og2+9dH1AsZVGhcLAeifbx/0siDeF0T+piQneQ5ec8egbFVC5OlKHobD9
+         4gycibH3z4mtcQ17o31VzEACFvbE55hN/r6GMFYWS0S2zdWreWIisaqkNW+PAQYz/rBL
+         xbrE92iDR/9cLh+4qK3olt5rxvIyns/lOVARX489pyj3EK+SGHUjIpf27ZBTo7z3KJuq
+         ZYCTxdjJWBXXvUOI32kxuyCKrZBIbWeO4KtKyxNf1mhXowmKsJXTWhA31ZVyZeGgtWaM
+         SfmIYbo9xIAiHK+Lu9Stvb6A5Dfdqj4up8KQ7qL0ECrA3wgkyQvrf1Uw9idsWK7d7xkB
+         0L4Q==
+X-Forwarded-Encrypted: i=1; AJvYcCXHBQRwn2EsNFTT6ih3mehqlEgewfTyJN9E6MmTjA1f5jOgaVnFNtn54xmdDGaMv6AB4Sz2C2pRAJhUjvFmXQ==@vger.kernel.org
+X-Gm-Message-State: AOJu0YwPht1ceLeQWrLT3+jF5Q/xvJglrYhqTpUHaVR28pStWxq2fGxy
+	H79fO50VDJI4rR8iHNoIjMZJIQH9gC0UV7mS+jtTxQniHPvTUQYWCbW0YLMHNvqJBBTfvbrLqNS
+	4HAPH/Akn/Q==
+X-Gm-Gg: ASbGncswZt5L7XL14k5XPjToFcjvDchnUJNZWqbb6Lm8LOgOof4gMXdXhGaHgvF3uC9
+	M335jlazPxNTHUnZFdK3XTbB0aF8hbRXIeIiOOFPuxtYHNwKOUO19LnW9OO3gTxtCeW9+A+f93l
+	cKyT0AoHiiLIXneA2IqSuBJdeSjhWAxOi2ImQZX/hkw+S99TzE/6OMun8fIgogedeUIE4H5TC0R
+	P6DLadz8SpamhmvlVQlflut0lSRwFw04iEyK7c8b0diIZ9DRwEnD43VCks3ePJoX4aC9eoqswwx
+	FmzC2zbWKez1QfMxzWqXsqvSq4WyfqqZfym0/La9fQB33FflWOU/0LLOIvtBr/BgQDU+KIq8yVF
+	vGnk/rttUuwCHd2nveIy170Z51z7TCPckznK6pTAbb1eq47SQqrF6npqKzlTt23A8hauyOFbtdD
+	KXXb55VMG9dKKnrswvU20nPiLRc4cW3m709yG9bL9ahp+FYLAY4fSuuLOn3q+7xcIB
+X-Google-Smtp-Source: AGHT+IGejVSpNyrLlPssa6W05r4UcWARqMSkCuWIf50HMTvOe7dUvOQ2ScDuybTd5uTibUOnNlP2UA==
+X-Received: by 2002:a05:651c:4396:20b0:37b:aaf7:f007 with SMTP id 38308e7fff4ca-37cc679edcemr10999981fa.31.1763662969702;
+        Thu, 20 Nov 2025 10:22:49 -0800 (PST)
+Received: from mail-lj1-f181.google.com (mail-lj1-f181.google.com. [209.85.208.181])
+        by smtp.gmail.com with ESMTPSA id 38308e7fff4ca-37cc6b59d3esm6055471fa.14.2025.11.20.10.22.49
+        for <linux-wireless@vger.kernel.org>
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 20 Nov 2025 10:05:06 -0800 (PST)
-Message-ID: <69b2d01e-38f3-4a6a-a7e6-5d94d42fe65a@oss.qualcomm.com>
-Date: Thu, 20 Nov 2025 10:05:05 -0800
+        Thu, 20 Nov 2025 10:22:49 -0800 (PST)
+Received: by mail-lj1-f181.google.com with SMTP id 38308e7fff4ca-37a3d86b773so10737351fa.0
+        for <linux-wireless@vger.kernel.org>; Thu, 20 Nov 2025 10:22:49 -0800 (PST)
+X-Forwarded-Encrypted: i=1; AJvYcCWwT5FP0io++G/AC5Bj1/uZsHEibpIhjBCYRxb8/j6OdTctsglbfswVEGqNIq6kSfAPQU/amflKxhT6evNcXA==@vger.kernel.org
+X-Received: by 2002:a17:907:7f0a:b0:b70:b71a:a5ae with SMTP id
+ a640c23a62f3a-b7654fe9b97mr482177966b.44.1763662490181; Thu, 20 Nov 2025
+ 10:14:50 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [GIT PULL] wireless-2025-11-20
-To: Johannes Berg <johannes@sipsolutions.net>
-Cc: linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
-        "ath12k@lists.infradead.org" <ath12k@lists.infradead.org>
-References: <20251120085433.8601-3-johannes@sipsolutions.net>
-From: Jeff Johnson <jeff.johnson@oss.qualcomm.com>
-Content-Language: en-US
-In-Reply-To: <20251120085433.8601-3-johannes@sipsolutions.net>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Proofpoint-ORIG-GUID: Sfp3kNBjXaYkALgl3tJGjLZ0WW3ueUa3
-X-Proofpoint-GUID: Sfp3kNBjXaYkALgl3tJGjLZ0WW3ueUa3
-X-Authority-Analysis: v=2.4 cv=SJ5PlevH c=1 sm=1 tr=0 ts=691f5854 cx=c_pps
- a=Z3eh007fzM5o9awBa1HkYQ==:117 a=Tg7Z00WN3eLgNEO9NLUKUQ==:17
- a=IkcTkHD0fZMA:10 a=6UeiqGixMTsA:10 a=s4-Qcg_JpJYA:10
- a=VkNPw1HP01LnGYTKEx00:22 a=3vU-vsCiunfMoQw1-XoA:9 a=QEXdDO2ut3YA:10
- a=eBU8X_Hb5SQ8N-bgNfv4:22
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUxMTIwMDEyMyBTYWx0ZWRfX0Z5qC1ZWiS75
- 4Kpfa9xAiAS0LXVACQXXr6FexzrVEmmFzw/KzlFdG1ZtUsAWvxafJsdsTWpKqEt7y8IwrCeJKh4
- TdqSiFsvAYSjTBewLUW75KFNrx0xYfeH0mwAhv8Ica14PVF5VKVv3fH3SCugIO5ox1/Ymmbttxp
- rRAHKRTTwLETFV4Y4RVR+SsjJYnVlxoSplof6no5SDcH7XqhNbIQcGYRRz3PxsD8k8yEqvMa/aK
- MaVwpEOM1ah7GBxip3+0rZNT+25PaKInEBC0jxbsW092vz1h6ACj5dstGcAwPjALMwNZfm3lBB+
- mSAJ5NAc8qas6mjdG9UVXfgiiEOZOJoIk/CmSVZeCVSr1MzSnFGL7R867x4wI8FycZ6JI7LI/xV
- 4So7kzZXWvxkRjZUK+aSZcKnmpcFeA==
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.9,FMLib:17.12.100.49
- definitions=2025-11-20_06,2025-11-20_01,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- impostorscore=0 phishscore=0 bulkscore=0 suspectscore=0 priorityscore=1501
- lowpriorityscore=0 malwarescore=0 adultscore=0 spamscore=0 clxscore=1015
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.22.0-2510240001 definitions=main-2511200123
+References: <20251120145835.3833031-2-elver@google.com> <20251120145835.3833031-4-elver@google.com>
+In-Reply-To: <20251120145835.3833031-4-elver@google.com>
+From: Linus Torvalds <torvalds@linux-foundation.org>
+Date: Thu, 20 Nov 2025 10:14:34 -0800
+X-Gmail-Original-Message-ID: <CAHk-=whyKteNtcLON-gScv6tu8ssvKWdNw-k371ufDrjOv374g@mail.gmail.com>
+X-Gm-Features: AWmQ_bk-my8wSL6P8yRhTUREdDraem8VrQQmjD7uS2S9oN6T2mRX46ftlS1ytQU
+Message-ID: <CAHk-=whyKteNtcLON-gScv6tu8ssvKWdNw-k371ufDrjOv374g@mail.gmail.com>
+Subject: Re: [PATCH v4 02/35] compiler-context-analysis: Add infrastructure
+ for Context Analysis with Clang
+To: Marco Elver <elver@google.com>
+Cc: Peter Zijlstra <peterz@infradead.org>, Boqun Feng <boqun.feng@gmail.com>, 
+	Ingo Molnar <mingo@kernel.org>, Will Deacon <will@kernel.org>, 
+	"David S. Miller" <davem@davemloft.net>, Luc Van Oostenryck <luc.vanoostenryck@gmail.com>, 
+	Chris Li <sparse@chrisli.org>, "Paul E. McKenney" <paulmck@kernel.org>, 
+	Alexander Potapenko <glider@google.com>, Arnd Bergmann <arnd@arndb.de>, Bart Van Assche <bvanassche@acm.org>, 
+	Christoph Hellwig <hch@lst.de>, Dmitry Vyukov <dvyukov@google.com>, Eric Dumazet <edumazet@google.com>, 
+	Frederic Weisbecker <frederic@kernel.org>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
+	Herbert Xu <herbert@gondor.apana.org.au>, Ian Rogers <irogers@google.com>, 
+	Jann Horn <jannh@google.com>, Joel Fernandes <joelagnelf@nvidia.com>, 
+	Johannes Berg <johannes.berg@intel.com>, Jonathan Corbet <corbet@lwn.net>, 
+	Josh Triplett <josh@joshtriplett.org>, Justin Stitt <justinstitt@google.com>, 
+	Kees Cook <kees@kernel.org>, Kentaro Takeda <takedakn@nttdata.co.jp>, 
+	Lukas Bulwahn <lukas.bulwahn@gmail.com>, Mark Rutland <mark.rutland@arm.com>, 
+	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>, Miguel Ojeda <ojeda@kernel.org>, 
+	Nathan Chancellor <nathan@kernel.org>, Neeraj Upadhyay <neeraj.upadhyay@kernel.org>, 
+	Nick Desaulniers <nick.desaulniers+lkml@gmail.com>, Steven Rostedt <rostedt@goodmis.org>, 
+	Tetsuo Handa <penguin-kernel@i-love.sakura.ne.jp>, Thomas Gleixner <tglx@linutronix.de>, 
+	Thomas Graf <tgraf@suug.ch>, Uladzislau Rezki <urezki@gmail.com>, Waiman Long <longman@redhat.com>, 
+	kasan-dev@googlegroups.com, linux-crypto@vger.kernel.org, 
+	linux-doc@vger.kernel.org, linux-kbuild@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, linux-mm@kvack.org, 
+	linux-security-module@vger.kernel.org, linux-sparse@vger.kernel.org, 
+	linux-wireless@vger.kernel.org, llvm@lists.linux.dev, rcu@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 
-On 11/20/2025 12:53 AM, Johannes Berg wrote:
-> Hi,
-> 
-> Looks like things are quieting down, I fear maybe _too_ quiet
-> since we only have a single fix for rtw89 scanning.
+On Thu, 20 Nov 2025 at 07:13, Marco Elver <elver@google.com> wrote:
+>
+> --- a/include/linux/compiler-context-analysis.h
+> +++ b/include/linux/compiler-context-analysis.h
+> @@ -6,27 +6,465 @@
+>  #ifndef _LINUX_COMPILER_CONTEXT_ANALYSIS_H
+>  #define _LINUX_COMPILER_CONTEXT_ANALYSIS_H
+>
+> +#if defined(WARN_CONTEXT_ANALYSIS)
 
-Isn't that the way it is supposed to be heading into -rc7?
-:)
+Note the 400+ added lines to this header...
 
-BTW internally we're finalizing the ath12k-ng => ath-next merge.
-It's a non-trivial merge of around 100 patches on top of around 60 patches
-since the branch point.
+And then note how the header gets used:
 
-Current goal is get it to you next week for the v6.19 merge window.
+> +++ b/scripts/Makefile.context-analysis
+> @@ -0,0 +1,7 @@
+> +# SPDX-License-Identifier: GPL-2.0
+> +
+> +context-analysis-cflags := -DWARN_CONTEXT_ANALYSIS             \
+> +       -fexperimental-late-parse-attributes -Wthread-safety    \
+> +       -Wthread-safety-pointer -Wthread-safety-beta
+> +
+> +export CFLAGS_CONTEXT_ANALYSIS := $(context-analysis-cflags)
 
-/jeff
+Please let's *not* do it this way, where the header contents basically
+get enabled or not based on a compiler flag, but then everybody
+includes this 400+ line file whether they need it or not.
+
+Can we please just make the header file *itself* not have any
+conditionals, and what happens is that the header file is included (or
+not) using a pattern something like
+
+   -include $(srctree)/include/linux/$(context-analysis-header)
+
+instead.
+
+IOW, we'd have three different header files entirely: the "no context
+analysis", the "sparse" and the "clang context analysis" header, and
+instead of having a "-DWARN_CONTEXT_ANALYSIS" define, we'd just
+include the appropriate header automatically.
+
+We already use that "-include" pattern for <linux/kconfig.h> and
+<linux/compiler-version.h>. It's probably what we should have done for
+<linux/compiler.h> and friends too.
+
+The reason I react to things like this is that I've actually seen just
+the parsing of header files being a surprisingly big cost in build
+times. People think that optimizations are expensive, and yes, some of
+them really are, but when a lot of the code we parse is never actually
+*used*, but just hangs out in header files that gets included by
+everybody, the parsing overhead tends to be noticeable. There's a
+reason why most C compilers end up integrating the C pre-processor: it
+avoids parsing and tokenizing things multiple times.
+
+The other reason is that I often use "git grep" for looking up
+definitions of things, and when there are multiple definitions of the
+same thing, I actually find it much more informative when they are in
+two different files than when I see two different definitions (or
+declarations) in the same file and then I have to go look at what the
+#ifdef condition is. In contrast, when it's something where there are
+per-architecture definitions, you *see* that, because the grep results
+come from different header files.
+
+I dunno. This is not a huge deal, but I do think that it would seem to
+be much simpler and more straightforward to treat this as a kind of "N
+different baseline header files" than as "include this one header file
+in everything, and then we'll have #ifdef's for the configuration".
+
+Particularly when that config is not even a global config, but a per-file one.
+
+Hmm? Maybe there's some reason why this suggestion is very
+inconvenient, but please at least consider it.
+
+              Linus
 
