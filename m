@@ -1,126 +1,103 @@
-Return-Path: <linux-wireless+bounces-29231-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-29232-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id CD760C787C3
-	for <lists+linux-wireless@lfdr.de>; Fri, 21 Nov 2025 11:22:29 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 042B8C78921
+	for <lists+linux-wireless@lfdr.de>; Fri, 21 Nov 2025 11:47:24 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by tor.lore.kernel.org (Postfix) with ESMTPS id DF25A2D5B0
-	for <lists+linux-wireless@lfdr.de>; Fri, 21 Nov 2025 10:22:28 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTPS id 82C7733B8B
+	for <lists+linux-wireless@lfdr.de>; Fri, 21 Nov 2025 10:38:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 29A5933B97F;
-	Fri, 21 Nov 2025 10:21:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7D1453446B5;
+	Fri, 21 Nov 2025 10:37:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=fail reason="signature verification failed" (2048-bit key) header.d=embeddedor.com header.i=@embeddedor.com header.b="J5dU9Vq3"
+	dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b="LegJx3MV"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from omta36.uswest2.a.cloudfilter.net (omta36.uswest2.a.cloudfilter.net [35.89.44.35])
+Received: from sipsolutions.net (s3.sipsolutions.net [168.119.38.16])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4F07030F941
-	for <linux-wireless@vger.kernel.org>; Fri, 21 Nov 2025 10:21:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=35.89.44.35
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E4B3A3446CE
+	for <linux-wireless@vger.kernel.org>; Fri, 21 Nov 2025 10:37:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=168.119.38.16
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763720513; cv=none; b=YfeIeCctNHmBqbUEZtH0VJThfyR1YSlThuSUmghmEmiLWqB+PkCG43eUi2Bo1PN5yrN6mKgs0QmJ07hYuPNb4xRgxwbCVInFWop5BrfcDJeUpFlcj53m04MU3m+8TjTuMTjjTX2eA8AFexeNZgcrgkaGi7xi4XSR0mQAx9PrbYE=
+	t=1763721468; cv=none; b=KqajZ2L1su5NJFVOe/bjViR08rJowKPEs8qDG8JfxwaKpbfjC9/bvNz5iCX+O5pJokktogX2txIf1nQZlFTnns5xPhHpEk07WhSfG90Q+NUNEEGpoaLBzy9iGpWgXSpewzHOWGq/yF7CJOWZF1qhkE9Z1LMH04qeu5x1NEQccKg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763720513; c=relaxed/simple;
-	bh=Hc4tJ+sIxxpJNyjCE5vy0Ac+UC4RZ/t+r0ry7v3C8XE=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=qhQq0YVr784GXl4CyHKeO0skPHowcTdMXuMj9pRzfrCyrzxfWWtXfkzDQMOTXZdWbxjfUDycGWg94hb4+6zbYuQPikf65mXRrRwffgWBkP8d32uO1WFn3+BEuuggOy+jVDgQozDqfKJn4VLvjJfXUOslp8UVUHLPXp7ackJNOJQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=embeddedor.com; spf=pass smtp.mailfrom=embeddedor.com; dkim=pass (2048-bit key) header.d=embeddedor.com header.i=@embeddedor.com header.b=J5dU9Vq3; arc=none smtp.client-ip=35.89.44.35
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=embeddedor.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=embeddedor.com
-Received: from eig-obgw-5003b.ext.cloudfilter.net ([10.0.29.155])
-	by cmsmtp with ESMTPS
-	id MD0Wv38C6VCBNMOFTvvnUl; Fri, 21 Nov 2025 10:20:15 +0000
-Received: from gator4166.hostgator.com ([108.167.133.22])
-	by cmsmtp with ESMTPS
-	id MOFSviegZ2l0kMOFTvNoM4; Fri, 21 Nov 2025 10:20:15 +0000
-X-Authority-Analysis: v=2.4 cv=UfRRSLSN c=1 sm=1 tr=0 ts=69203cdf
- a=1YbLdUo/zbTtOZ3uB5T3HA==:117 a=4DtsFWJC70/ZxGj2xnZlig==:17
- a=IkcTkHD0fZMA:10 a=6UeiqGixMTsA:10 a=7T7KSl7uo7wA:10
- a=jEDRzRcZQiSlmEJ3nGUA:9 a=QEXdDO2ut3YA:10 a=xYX6OU9JNrHFPr8prv8u:22
+	s=arc-20240116; t=1763721468; c=relaxed/simple;
+	bh=CPinw/K80wrKRtZCxWDJsw/ufFHpEv2bUtXAV1sg41U=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=SOtfMT0E1IuxyH44zXFNOxGZWgWDLeQIT36IIWTNmnVv2CeP13GJV6xAVvu1dMwrk0XRtt25kwAtshrYLmM5lX77Par4DaBOKRIHA5Q8nglgkGx4cylNmuGLNlzlAjbT4qcWQm04vXWCUG60wmqLvGxl3cfJt9vqhK4j61QqVo8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net; spf=pass smtp.mailfrom=sipsolutions.net; dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b=LegJx3MV; arc=none smtp.client-ip=168.119.38.16
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sipsolutions.net
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=embeddedor.com; s=default; h=Content-Transfer-Encoding:Content-Type:
-	In-Reply-To:From:References:Cc:To:Subject:MIME-Version:Date:Message-ID:Sender
-	:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
-	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:
-	List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
-	bh=1Zi2Rlboat3s++N0jwAAqz4jayQmv+NQPH4dP3X9BSc=; b=J5dU9Vq3+n7f5C0n2POtZJxyy0
-	R5gtKKTbywE65sO1O6dGyL/ngu7LcW4Rtr6EqXCDcE5q+ZxN1zQ2c4U6fp5OM25mW+TzDOa8HXAk8
-	08RGss8lgeCj4C8ejbkslJfQmgK+/f7zUkAKlBbx9H4a8Sga2iWiw/wSN9+VtPYBy8vAuqXo/82aG
-	9fa7nA9FhMETn9uS4tNDWxNOn9l1cg7nvAXrMFnjC8X7o2/dS0/McPsS7zDs4R+j9yFe8If17h0qp
-	tMHlWIS39endc8yhiYU+CjhBdM3WkWAE780zOROBIgv6xkuvVpsg4LKNF8rCAI06PNe/6DT26V0qT
-	bts9O/2A==;
-Received: from softbank126126126075.bbtec.net ([126.126.126.75]:57704 helo=[10.221.86.44])
-	by gator4166.hostgator.com with esmtpsa  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256
-	(Exim 4.98.1)
-	(envelope-from <gustavo@embeddedor.com>)
-	id 1vMOFR-00000001W4P-1mUC;
-	Fri, 21 Nov 2025 04:20:14 -0600
-Message-ID: <ff184c0e-17f2-445f-9339-f4db9943db86@embeddedor.com>
-Date: Fri, 21 Nov 2025 19:19:54 +0900
+	d=sipsolutions.net; s=mail; h=Content-Transfer-Encoding:MIME-Version:
+	Message-ID:Date:Subject:Cc:To:From:Content-Type:Sender:Reply-To:Content-ID:
+	Content-Description:Resent-Date:Resent-From:Resent-To:Resent-Cc:
+	Resent-Message-ID:In-Reply-To:References;
+	bh=ryxZxhJ94MvQR9zcJfKn9XBPgjxv829eudbXebgDvbk=; t=1763721466; x=1764931066; 
+	b=LegJx3MVV3YEWfwAhmfVsBNEC2cBl0dkqhL62QkrG/n9one+/tJ/mSeNPCp8uDVwfliN/jfnzTH
+	IJp6d3HYEcfwQlaLqo3nIHFfn6z1+f3pKJGijkg2z7Vlj4w+e3thdsxC4xFZrVMG1a9U51GHm7E4f
+	bq+2B0ZQUbh7wUtUNLmrfCS7TpT9DtyZeh86VKnLufZcWb43K/DrKeSW+KTPNLSj92UOUMniFabUA
+	zw3LVKcX8t5uLdwvPHb9NVUT2vJzZwJ0CYA8cKvwRwyZ7Q48QT+/N1cKHIHq0IYJMr910iHd0jYUQ
+	48q4bhcPRVmvOjNeplByAHeEb5wuC+C1DdtQ==;
+Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
+	(Exim 4.98.2)
+	(envelope-from <johannes@sipsolutions.net>)
+	id 1vMOWG-0000000BRtO-1sYv;
+	Fri, 21 Nov 2025 11:37:36 +0100
+From: Johannes Berg <johannes@sipsolutions.net>
+To: linux-wireless@vger.kernel.org
+Cc: Johannes Berg <johannes.berg@intel.com>
+Subject: [PATCH] wifi: mac80211: fix channel switching code
+Date: Fri, 21 Nov 2025 11:37:34 +0100
+Message-ID: <20251121113733.7710a58d45eb.Ie9ec010b52b1baed93dbe44f968c2119b6b5d98d@changeid>
+X-Mailer: git-send-email 2.51.1
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH][next] wifi: rtl8xxxu: Avoid
- -Wflex-array-member-not-at-end warnings
-To: Zenm Chen <zenmchen@gmail.com>, gustavoars@kernel.org
-Cc: Jes.Sorensen@gmail.com, linux-hardening@vger.kernel.org,
- linux-kernel@vger.kernel.org, linux-wireless@vger.kernel.org,
- pkshih@realtek.com, rtl8821cerfe2@gmail.com
-References: <aR2I9Sere0W-4VZz@kspp> <20251121100654.9125-1-zenmchen@gmail.com>
-Content-Language: en-US
-From: "Gustavo A. R. Silva" <gustavo@embeddedor.com>
-In-Reply-To: <20251121100654.9125-1-zenmchen@gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
-X-AntiAbuse: Primary Hostname - gator4166.hostgator.com
-X-AntiAbuse: Original Domain - vger.kernel.org
-X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
-X-AntiAbuse: Sender Address Domain - embeddedor.com
-X-BWhitelist: no
-X-Source-IP: 126.126.126.75
-X-Source-L: No
-X-Exim-ID: 1vMOFR-00000001W4P-1mUC
-X-Source: 
-X-Source-Args: 
-X-Source-Dir: 
-X-Source-Sender: softbank126126126075.bbtec.net ([10.221.86.44]) [126.126.126.75]:57704
-X-Source-Auth: gustavo@embeddedor.com
-X-Email-Count: 3
-X-Org: HG=hgshared;ORG=hostgator;
-X-Source-Cap: Z3V6aWRpbmU7Z3V6aWRpbmU7Z2F0b3I0MTY2Lmhvc3RnYXRvci5jb20=
-X-Local-Domain: yes
-X-CMAE-Envelope: MS4xfJQkbqjxuSdBcqCUflaAIeLm6FjkmCBhL7JyUlqahrDVJT7ZVLjKxNNYKnOxolzzejpeyJ/5kEaaL6pYLeh79dGdG2ntDyNdR6sPHSZ9Rz5Ck1KAvev5
- oKBPbCv+mLJNk4GMzPBeXqTT16dYDgIeVulWAa/T+UKOMkM5ZDP1LXf3HFQvfBZB3wfZA09UF+PzdZWC6UoKizAkTPGWCAqC7aVnJGJepYGriXFdQX7fdPp5
+Content-Transfer-Encoding: 8bit
 
-Hi,
+From: Johannes Berg <johannes.berg@intel.com>
 
-On 11/21/25 19:06, Zenm Chen wrote:
-> Dear maintainers,
-> 
-> With this patch applied, my system always freezes right after the rtl8xxxu
-> driver is loaded. is it normal?
+My prior commit here introduced a bug due to copy/paste,
+it was iterating the links assigned to 'ctx->replace_ctx'
+and I replaced it by iterating links assigned to 'ctx' by
+accident, then modified it for the iteration later.
 
-I don't think so... It probably means that struct urb urb; cannot really be
-moved to the end of struct rtl8xxxu_rx_urb or struct rtl8xxxu_tx_urb?
+Fix it to iterate the users of the correct chanctx, i.e.
+'ctx->replace_ctx'.
 
-It'd be great if you could share a log.
+Ultimately, this issue led to a crash in a hwsim test
+(multi_ap_wps_shared_apdev_csa) because it would actually
+do the switch (rather than refuse here) and then later
+have a double-free of the original chanctx, because it
+was still in use by another interface yet freed as part
+of the switching.
 
-Thanks for the report!
--Gustavo
+Fixes: a1dc648aa76d ("wifi: mac80211: remove chanctx to link back-references")
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+---
+ net/mac80211/chan.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-> 
-> OS: Arch Linux
-> kernel: 6.17.8-arch1-1
-> test devices: RTL8192{CU,EU,FU}
-> 
+diff --git a/net/mac80211/chan.c b/net/mac80211/chan.c
+index 6aa305839f53..c8aba4183c9a 100644
+--- a/net/mac80211/chan.c
++++ b/net/mac80211/chan.c
+@@ -1715,7 +1715,7 @@ static int ieee80211_vif_use_reserved_switch(struct ieee80211_local *local)
+ 		n_reserved = 0;
+ 		n_ready = 0;
+ 
+-		for_each_chanctx_user_assigned(local, ctx, &iter) {
++		for_each_chanctx_user_assigned(local, ctx->replace_ctx, &iter) {
+ 			n_assigned++;
+ 			if (iter.link->reserved_chanctx) {
+ 				n_reserved++;
+-- 
+2.51.1
 
 
