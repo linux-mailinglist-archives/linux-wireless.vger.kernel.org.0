@@ -1,201 +1,172 @@
-Return-Path: <linux-wireless+bounces-29246-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-29247-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6EF2CC7BA21
-	for <lists+linux-wireless@lfdr.de>; Fri, 21 Nov 2025 21:26:50 +0100 (CET)
+Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [IPv6:2a01:60a::1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id 65BB9C7BA7E
+	for <lists+linux-wireless@lfdr.de>; Fri, 21 Nov 2025 21:36:55 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 139874E1456
-	for <lists+linux-wireless@lfdr.de>; Fri, 21 Nov 2025 20:26:33 +0000 (UTC)
+	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 70C4F36871D
+	for <lists+linux-wireless@lfdr.de>; Fri, 21 Nov 2025 20:36:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CDD7529AAFD;
-	Fri, 21 Nov 2025 20:26:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 538EA30215E;
+	Fri, 21 Nov 2025 20:35:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="L+zvWL/N"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-io1-f78.google.com (mail-io1-f78.google.com [209.85.166.78])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ED67C1C84A6
-	for <linux-wireless@vger.kernel.org>; Fri, 21 Nov 2025 20:26:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.166.78
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 20B6F2FAC0D
+	for <linux-wireless@vger.kernel.org>; Fri, 21 Nov 2025 20:35:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763756789; cv=none; b=B4EppxWIpFYbQm0wdwECUZYAU99bF6xyfASSIpfQRk6T28yzSA/Gio1zNUrJBL0hAORo1JwKf/kkdFSsrqY/V7jtRld/N1cXimyZbbjPq98YGRh7hJQJ76HcHnGDJGcdBUMQRK1kzVmEP5htK48IppPxIbJcmzwFPfaXJE9tOes=
+	t=1763757359; cv=none; b=AysqEhgiyoITOsXGs416Jajx2PPzaJSOEBpOJDW0fM1V2efgq6NTp8zbFZshEilZ8rWTsoP9sjGeaI+H8Vjphp8zBuaqjj0u7wFndYDneRLFMs/K3P61vTb57f8zvjcHH4kFzSrtdsYnNh3uyRvtZjFmqtQBQx9bfEsUEX0wCUs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763756789; c=relaxed/simple;
-	bh=CVbCQXjcXqmsI8PvgmNhYZ4hJ3PAVBKnVbnfJxC/mGk=;
-	h=MIME-Version:Date:Message-ID:Subject:From:To:Content-Type; b=TIzNdGgm6Qz14i83HPJFp8+/JNQ2JEPQuqVDFngH0lbu8Kc8AkAbVNkzMYj0GQkNoExcFDXq4Xu6lbdXfj0Z+NJOYSv/4kRDMbi7B+Jm0CVOt5Okp7lKYHtes/NnvRwcYEzUIluBkbb0AFJAYsMJTDJn+mxrk9FZUffDnhdeuHU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com; arc=none smtp.client-ip=209.85.166.78
-Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com
-Received: by mail-io1-f78.google.com with SMTP id ca18e2360f4ac-948f6c90813so179929639f.3
-        for <linux-wireless@vger.kernel.org>; Fri, 21 Nov 2025 12:26:27 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1763756787; x=1764361587;
-        h=to:from:subject:message-id:date:mime-version:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=SN7QW5iP4HoHv7vHf/H+25kYWn7ovoYWMwTlKmZ7fkg=;
-        b=TtDi/F9khbpGeui5Ils34EbuL6qL49HWNEaRpNgXChzKcqPDWLVcBVU7HKlrqqgaKU
-         6OhCkllvwAmdrvPnk1mX1MB69MtocHO/sqkY8/Qp7rMZCxSDZvLkBgg9kHR5XlPi4LDW
-         efv8Sxj/0TFTC/SeA67bMS9ME5egJJi5SiGHXQWqVFJdv6gWjLb9vDpTL92wnH3iD8dm
-         SxT3htee5WXIT/MoNnGHoBT2K+0QOzPeu25E8K7bcLR3SeydGuPMu9Z8xU1V+wb46zq2
-         uUNNRVznsAQ8kCyoCkU7l1VAPcPXNkeHWLuIOoku4QZ/OUseUADq0DeOqz0Bzdexawpl
-         ZbDA==
-X-Forwarded-Encrypted: i=1; AJvYcCXtTSq9HoPFIH0OwCagMk/z+kgX93Pb2EjExYONTi0XU9+LfCkZoqWspBGdKtehkyxuN3anwCXqF0MpNnxI6g==@vger.kernel.org
-X-Gm-Message-State: AOJu0Yy9P2XCqUaMQvmbZuyCh6LVEPNMxfNO2ftY8GKm65lpukYAcc/4
-	OqZShLr3lYi2vaLP7H3rDD0I/BfWCIZy/ko/fTuorvAIb8XVF3ofym/7B59R0OTUagAYIbiGIsT
-	Equ3Gz/MbiBobbhuUFF+6g2RQGYyPuSMVaPVrd6abAcrLfHg+6y6Lnw3X1lY=
-X-Google-Smtp-Source: AGHT+IH45HYkobNWM41IaAbsfvUqRvxiVrEN5uCZcQeNjiTEKU4mWuVsc2smGZ3XADFijpVGTUbWTdXlx8r7f4ncFpJWSmGo71a1
+	s=arc-20240116; t=1763757359; c=relaxed/simple;
+	bh=meSktXQNs/zDvTr1rLs7LeQfxQysPHSbGkzQDId9XMY=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=FhUzeFsRFQ5SjwbXfC/is2fZLS/N8aJaURXI5/Ppjs7lSDZRsrNSbNtZoRsNuy8yiFFZSPSxySDVGTB6389Wo++UoNc5Wr1b3CMftoNI5qvG2QUIqRMJgijsyWDAQ/WFCwYt1DmeOCFJolx2MbdjOTCyPiIeHvxcGmfuioGJlyg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=L+zvWL/N; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BD99CC2BC86
+	for <linux-wireless@vger.kernel.org>; Fri, 21 Nov 2025 20:35:58 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1763757358;
+	bh=meSktXQNs/zDvTr1rLs7LeQfxQysPHSbGkzQDId9XMY=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+	b=L+zvWL/Nh94FkM1rZrXcBtTOzgK+mkJwTDosBcBijCdV34X53/cdtFJtiuZ0Md/WM
+	 GcqhqeRjUC0vm45dWjFBz6XmwGZdDlx/1YsRu2QyrzPY+3hCmTjo6+j5LM3zBib4I4
+	 J6tKQx3AUF2IB07P8TFo+IWDzck0Yp3oj5x5qK+1dMshchSxQDW1aIOTW5EmLdVjPD
+	 3zqNL5lRPlgjWSvClhgdnUG+fb4P2UmRkId3/JrLTerz93MIgGIWp8gL3/SUNNbMpt
+	 Z0A6qD2K62qoXRs1K/9ABvtlMFte9d0O1sWFPTl8RY6sAvXTCprA/RgDr/i7m3fD6z
+	 YI+JdDMM/fmQg==
+Received: by mail-oo1-f53.google.com with SMTP id 006d021491bc7-657244ed2c2so521621eaf.1
+        for <linux-wireless@vger.kernel.org>; Fri, 21 Nov 2025 12:35:58 -0800 (PST)
+X-Forwarded-Encrypted: i=1; AJvYcCUbnW+sXm85BgIe8TclCIQw3ipJ6z9DWHZEWkzBvuArlWqn5Ei9ZwvlJkVE33/TyEujbhwxhVEnR3T0YZa44A==@vger.kernel.org
+X-Gm-Message-State: AOJu0Yx6RMLEOjPRk9of4fWcK383qNgs6Rn1vin4mM/JcWHM6kuOmU26
+	Ogs6FmQUHUyTrcLf+Lob0y3TYbk2KguKII470Oxtgej2gNFpPIWnAeK+CnlkQPdFjnIWgGGaxXT
+	ThS+EzZc5c8Dufnn8eM7ueC/gbJHMtG4=
+X-Google-Smtp-Source: AGHT+IEGV1wW0AyQ4uV5rOeWs+mu0pohToH8QfmqGgzcM1nDvWFgodvXp8dfzsS7PUq8QlplylLWmLPmTb2ii+XtGZ8=
+X-Received: by 2002:a05:6820:4d57:10b0:657:7289:b1dc with SMTP id
+ 006d021491bc7-65792596028mr1028369eaf.6.1763757357967; Fri, 21 Nov 2025
+ 12:35:57 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-Received: by 2002:a05:6e02:3499:b0:433:2a9b:165c with SMTP id
- e9e14a558f8ab-435b8e51411mr30073355ab.27.1763756787052; Fri, 21 Nov 2025
- 12:26:27 -0800 (PST)
-Date: Fri, 21 Nov 2025 12:26:27 -0800
-X-Google-Appengine-App-Id: s~syzkaller
-X-Google-Appengine-App-Id-Alias: syzkaller
-Message-ID: <6920caf3.a70a0220.d98e3.004a.GAE@google.com>
-Subject: [syzbot] [wireless?] WARNING in ieee80211_teardown_sdata (2)
-From: syzbot <syzbot+9b98dcd91414ddae4a56@syzkaller.appspotmail.com>
-To: johannes@sipsolutions.net, linux-kernel@vger.kernel.org, 
-	linux-wireless@vger.kernel.org, netdev@vger.kernel.org, 
-	syzkaller-bugs@googlegroups.com
+References: <20251120-thermal-device-v1-0-bbdad594d57a@gmx.de>
+In-Reply-To: <20251120-thermal-device-v1-0-bbdad594d57a@gmx.de>
+From: "Rafael J. Wysocki" <rafael@kernel.org>
+Date: Fri, 21 Nov 2025 21:35:47 +0100
+X-Gmail-Original-Message-ID: <CAJZ5v0jOPrBcozzJMsB1eE12MuZRWDAV-+=jfrhJbi=S0p5J9Q@mail.gmail.com>
+X-Gm-Features: AWmQ_bmY4Rgl1Z4nj5ks6gNTVnBjHocEaNjk9D0MQSLHqvtZo8fqobTCygtTNLc
+Message-ID: <CAJZ5v0jOPrBcozzJMsB1eE12MuZRWDAV-+=jfrhJbi=S0p5J9Q@mail.gmail.com>
+Subject: Re: [PATCH RFC RESEND 0/8] thermal: core: Allow setting the parent
+ device of thermal zone/cooling devices
+To: Armin Wolf <W_Armin@gmx.de>
+Cc: "Rafael J. Wysocki" <rafael@kernel.org>, Daniel Lezcano <daniel.lezcano@linaro.org>, 
+	Zhang Rui <rui.zhang@intel.com>, Lukasz Luba <lukasz.luba@arm.com>, Len Brown <lenb@kernel.org>, 
+	Jonathan Corbet <corbet@lwn.net>, Ido Schimmel <idosch@nvidia.com>, Petr Machata <petrm@nvidia.com>, 
+	linux-pm@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	etnaviv@lists.freedesktop.org, dri-devel@lists.freedesktop.org, 
+	linux-tegra@vger.kernel.org, linux-acpi@vger.kernel.org, 
+	linux-doc@vger.kernel.org, netdev@vger.kernel.org, 
+	linux-wireless@vger.kernel.org, ath10k@lists.infradead.org, 
+	ath11k@lists.infradead.org, linux-arm-kernel@lists.infradead.org, 
+	linux-mediatek@lists.infradead.org, platform-driver-x86@vger.kernel.org, 
+	linux-pci@vger.kernel.org, imx@lists.linux.dev, 
+	linux-renesas-soc@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Hello,
+On Thu, Nov 20, 2025 at 4:41=E2=80=AFAM Armin Wolf <W_Armin@gmx.de> wrote:
+>
+> Drivers registering thermal zone/cooling devices are currently unable
+> to tell the thermal core what parent device the new thermal zone/
+> cooling device should have, potentially causing issues with suspend
+> ordering
 
-syzbot found the following issue on:
+This is one potential class of problems that may arise, but I would
+like to see a real example of this.
 
-HEAD commit:    6a23ae0a96a6 Linux 6.18-rc6
-git tree:       upstream
-console output: https://syzkaller.appspot.com/x/log.txt?x=104e6692580000
-kernel config:  https://syzkaller.appspot.com/x/.config?x=14b6a9313e132a6b
-dashboard link: https://syzkaller.appspot.com/bug?extid=9b98dcd91414ddae4a56
-compiler:       Debian clang version 20.1.8 (++20250708063551+0c9f909b7976-1~exp1~20250708183702.136), Debian LLD 20.1.8
-userspace arch: i386
+As it stands today, thermal_class has no PM callbacks, so there are no
+callback execution ordering issues with devices in that class and what
+other suspend/resume ordering issues are there?
 
-Unfortunately, I don't have any reproducer for this issue yet.
+Also, the suspend and resume of thermal zones is handled via PM
+notifiers.  Is there a problem with this?
 
-Downloadable assets:
-disk image: https://storage.googleapis.com/syzbot-assets/464c2673a9ca/disk-6a23ae0a.raw.xz
-vmlinux: https://storage.googleapis.com/syzbot-assets/c2986bef024f/vmlinux-6a23ae0a.xz
-kernel image: https://storage.googleapis.com/syzbot-assets/4077bdc25422/bzImage-6a23ae0a.xz
+> and making it impossible for user space applications to
+> associate a given thermal zone device with its parent device.
 
-IMPORTANT: if you fix the issue, please add the following tag to the commit:
-Reported-by: syzbot+9b98dcd91414ddae4a56@syzkaller.appspotmail.com
+Why does user space need to know the parent of a given cooling device
+or thermal zone?
 
-bond0: (slave wlan1): Releasing backup interface
-------------[ cut here ]------------
-WARNING: CPU: 0 PID: 10842 at net/mac80211/iface.c:861 ieee80211_teardown_sdata+0xd2/0x140 net/mac80211/iface.c:861
-Modules linked in:
-CPU: 0 UID: 0 PID: 10842 Comm: syz.0.1271 Not tainted syzkaller #0 PREEMPT(full) 
-Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 10/25/2025
-RIP: 0010:ieee80211_teardown_sdata+0xd2/0x140 net/mac80211/iface.c:861
-Code: f7 48 89 df 31 f6 31 d2 e8 0b 9b 00 00 48 81 c3 10 18 00 00 48 89 df 5b 41 5c 41 5e 41 5f 5d e9 94 bb 00 00 e8 3f a5 03 f7 90 <0f> 0b 90 4c 8d bb 30 0a 00 00 4c 89 f8 48 c1 e8 03 42 80 3c 20 00
-RSP: 0018:ffffc9001b87f050 EFLAGS: 00010287
-RAX: ffffffff8abc5ed1 RBX: ffff888059190d80 RCX: 0000000000080000
-RDX: ffffc9000b8c2000 RSI: 000000000001e9e7 RDI: 000000000001e9e8
-RBP: ffffc9001b87f1f0 R08: ffffffff8f7ceb77 R09: 1ffffffff1ef9d6e
-R10: dffffc0000000000 R11: ffffffff8abcbe10 R12: dffffc0000000000
-R13: ffff888059190c18 R14: ffff888059191a08 R15: ffff888059190000
-FS:  0000000000000000(0000) GS:ffff88812613b000(0063) knlGS:00000000f53f6b40
-CS:  0010 DS: 002b ES: 002b CR0: 0000000080050033
-CR2: 000000008057f000 CR3: 00000000591a8000 CR4: 00000000003526f0
-Call Trace:
- <TASK>
- unregister_netdevice_many_notify+0x1cde/0x2390 net/core/dev.c:12305
- unregister_netdevice_many net/core/dev.c:12347 [inline]
- unregister_netdevice_queue+0x33c/0x380 net/core/dev.c:12161
- unregister_netdevice include/linux/netdevice.h:3389 [inline]
- _cfg80211_unregister_wdev+0x165/0x590 net/wireless/core.c:1284
- ieee80211_if_remove+0x256/0x310 net/mac80211/iface.c:2334
- ieee80211_del_iface+0x19/0x30 net/mac80211/cfg.c:237
- rdev_del_virtual_intf net/wireless/rdev-ops.h:62 [inline]
- cfg80211_remove_virtual_intf+0x231/0x3f0 net/wireless/util.c:2928
- genl_family_rcv_msg_doit+0x215/0x300 net/netlink/genetlink.c:1115
- genl_family_rcv_msg net/netlink/genetlink.c:1195 [inline]
- genl_rcv_msg+0x60e/0x790 net/netlink/genetlink.c:1210
- netlink_rcv_skb+0x208/0x470 net/netlink/af_netlink.c:2552
- genl_rcv+0x28/0x40 net/netlink/genetlink.c:1219
- netlink_unicast_kernel net/netlink/af_netlink.c:1320 [inline]
- netlink_unicast+0x82f/0x9e0 net/netlink/af_netlink.c:1346
- netlink_sendmsg+0x805/0xb30 net/netlink/af_netlink.c:1896
- sock_sendmsg_nosec net/socket.c:727 [inline]
- __sock_sendmsg+0x21c/0x270 net/socket.c:742
- ____sys_sendmsg+0x505/0x830 net/socket.c:2630
- ___sys_sendmsg+0x21f/0x2a0 net/socket.c:2684
- __sys_sendmsg+0x164/0x220 net/socket.c:2716
- do_syscall_32_irqs_on arch/x86/entry/syscall_32.c:83 [inline]
- __do_fast_syscall_32+0xb6/0x2b0 arch/x86/entry/syscall_32.c:306
- do_fast_syscall_32+0x34/0x80 arch/x86/entry/syscall_32.c:331
- entry_SYSENTER_compat_after_hwframe+0x84/0x8e
-RIP: 0023:0xf7f02539
-Code: 03 74 b4 01 10 07 03 74 b0 01 10 08 03 74 d8 01 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 51 52 55 89 e5 0f 34 cd 80 <5d> 5a 59 c3 90 90 90 90 90 90 90 90 90 90 90 90 90 90 90 90 90 90
-RSP: 002b:00000000f53f655c EFLAGS: 00000206 ORIG_RAX: 0000000000000172
-RAX: ffffffffffffffda RBX: 0000000000000005 RCX: 0000000080000200
-RDX: 0000000000000000 RSI: 0000000000000000 RDI: 0000000000000000
-RBP: 0000000000000000 R08: 0000000000000000 R09: 0000000000000000
-R10: 0000000000000000 R11: 0000000000000206 R12: 0000000000000000
-R13: 0000000000000000 R14: 0000000000000000 R15: 0000000000000000
- </TASK>
-----------------
-Code disassembly (best guess):
-   0:	03 74 b4 01          	add    0x1(%rsp,%rsi,4),%esi
-   4:	10 07                	adc    %al,(%rdi)
-   6:	03 74 b0 01          	add    0x1(%rax,%rsi,4),%esi
-   a:	10 08                	adc    %cl,(%rax)
-   c:	03 74 d8 01          	add    0x1(%rax,%rbx,8),%esi
-  20:	00 51 52             	add    %dl,0x52(%rcx)
-  23:	55                   	push   %rbp
-  24:	89 e5                	mov    %esp,%ebp
-  26:	0f 34                	sysenter
-  28:	cd 80                	int    $0x80
-* 2a:	5d                   	pop    %rbp <-- trapping instruction
-  2b:	5a                   	pop    %rdx
-  2c:	59                   	pop    %rcx
-  2d:	c3                   	ret
-  2e:	90                   	nop
-  2f:	90                   	nop
-  30:	90                   	nop
-  31:	90                   	nop
-  32:	90                   	nop
-  33:	90                   	nop
-  34:	90                   	nop
-  35:	90                   	nop
-  36:	90                   	nop
-  37:	90                   	nop
-  38:	90                   	nop
-  39:	90                   	nop
-  3a:	90                   	nop
-  3b:	90                   	nop
-  3c:	90                   	nop
-  3d:	90                   	nop
-  3e:	90                   	nop
-  3f:	90                   	nop
+> This patch series aims to fix this issue by extending the functions
+> used to register thermal zone/cooling devices to also accept a parent
+> device pointer. The first six patches convert all functions used for
+> registering cooling devices, while the functions used for registering
+> thermal zone devices are converted by the remaining two patches.
+>
+> I tested this series on various devices containing (among others):
+> - ACPI thermal zones
+> - ACPI processor devices
+> - PCIe cooling devices
+> - Intel Wifi card
+> - Intel powerclamp
+> - Intel TCC cooling
 
+What exactly did you do to test it?
 
----
-This report is generated by a bot. It may contain errors.
-See https://goo.gl/tpsmEJ for more information about syzbot.
-syzbot engineers can be reached at syzkaller@googlegroups.com.
+> I also compile-tested the remaining affected drivers, however i would
+> still be happy if the relevant maintainers (especially those of the
+> mellanox ethernet switch driver) could take a quick glance at the
+> code and verify that i am using the correct device as the parent
+> device.
 
-syzbot will keep track of this issue. See:
-https://goo.gl/tpsmEJ#status for how to communicate with syzbot.
+I think that the above paragraph is not relevant any more?
 
-If the report is already addressed, let syzbot know by replying with:
-#syz fix: exact-commit-title
+> This work is also necessary for extending the ACPI thermal zone driver
+> to support the _TZD ACPI object in the future.
 
-If you want to overwrite report's subsystems, reply with:
-#syz set subsystems: new-subsystem
-(See the list of subsystem names on the web dashboard)
+I'm still unsure why _TZD support requires the ability to set a
+thermal zone parent device.
 
-If the report is a duplicate of another one, reply with:
-#syz dup: exact-subject-of-another-report
+> Signed-off-by: Armin Wolf <W_Armin@gmx.de>
+> ---
+> Armin Wolf (8):
+>       thermal: core: Allow setting the parent device of cooling devices
+>       thermal: core: Set parent device in thermal_of_cooling_device_regis=
+ter()
+>       ACPI: processor: Stop creating "device" sysfs link
 
-If you want to undo deduplication, reply with:
-#syz undup
+That link is not to the cooling devices' parent, but to the ACPI
+device object (a struct acpi_device) that corresponds to the parent.
+The parent of the cooling device should be the processor device, not
+its ACPI companion, so I'm not sure why there would be a conflict.
+
+>       ACPI: fan: Stop creating "device" sysfs link
+>       ACPI: video: Stop creating "device" sysfs link
+
+Analogously in the above two cases AFAICS.
+
+The parent of a cooling device should be a "physical" device object,
+like a platform device or a PCI device or similar, not a struct
+acpi_device (which in fact is not a device even).
+
+>       thermal: core: Set parent device in thermal_cooling_device_register=
+()
+>       ACPI: thermal: Stop creating "device" sysfs link
+
+And this link is to the struct acpi_device representing the thermal zone it=
+self.
+
+>       thermal: core: Allow setting the parent device of thermal zone devi=
+ces
+
+I'm not sure if this is a good idea, at least until it is clear what
+the role of a thermal zone parent device should be.
 
