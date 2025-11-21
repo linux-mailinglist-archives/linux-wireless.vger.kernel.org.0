@@ -1,134 +1,124 @@
-Return-Path: <linux-wireless+bounces-29223-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-29224-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id 23367C77668
-	for <lists+linux-wireless@lfdr.de>; Fri, 21 Nov 2025 06:42:32 +0100 (CET)
+Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [213.196.21.55])
+	by mail.lfdr.de (Postfix) with ESMTPS id AC779C77801
+	for <lists+linux-wireless@lfdr.de>; Fri, 21 Nov 2025 07:05:00 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 9FF884E3D20
-	for <lists+linux-wireless@lfdr.de>; Fri, 21 Nov 2025 05:42:30 +0000 (UTC)
+	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 0314534A451
+	for <lists+linux-wireless@lfdr.de>; Fri, 21 Nov 2025 06:05:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 180242D8367;
-	Fri, 21 Nov 2025 05:42:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9692A26C39F;
+	Fri, 21 Nov 2025 06:04:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=icloud.com header.i=@icloud.com header.b="Ccd7hTV2"
+	dkim=pass (2048-bit key) header.d=realtek.com header.i=@realtek.com header.b="g1ymSDUc"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from outbound.pv.icloud.com (p-west1-cluster2-host11-snip4-10.eps.apple.com [57.103.64.161])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 69E9126FDBF
-	for <linux-wireless@vger.kernel.org>; Fri, 21 Nov 2025 05:42:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=57.103.64.161
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 628B61F5617
+	for <linux-wireless@vger.kernel.org>; Fri, 21 Nov 2025 06:04:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=211.75.126.72
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763703746; cv=none; b=Kg789ZnOJGRX60mx5rLvxuqiirX7UMBxmN4w6wqOivBg0OKYZf2J6RmmrwKH5vkQaQ8nVqVT3T3UeNeoCZf206hFkCYmdeloSTkgk5R+LOodMn1v2qm5YMQKHFEhgzjDeNdjCHnW7MBt4zaPXP8L8GMXK3VoVAAiswOxutszNKU=
+	t=1763705095; cv=none; b=eoCU0XNXnrKM0c8yW1JzBxL9wWkUowwSETK9h6kNnQ1KiP7D1qpJUjd8YSJskxUD0VvHeK+EoSUX2zRvGUnpHSn/x9e2EZhUgZWjk6Zb2qm/ngV9zuZlC69h7V6nKHO+ZBro0OgN3JLNHVwEfonLJ+/yQ50jFobm4QDoor1vYRs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763703746; c=relaxed/simple;
-	bh=wJ2dKMvB9zuLFjL5d1XbmjHOx6q8AmjcNyJf+x7wm3s=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=bKAj34+h4D8pX6CgJipDeVh6oE7/SkonCglknbJRxSt2h60Mv4U4MWCj69NUg+/S0hYbkXpzIokNYbRZw1wlDmZ56NmuxHt+rjqI4e+eP/LEPKQx5DzvKww+16CEZKnml2tfmXHzgHUxCHcIlgUsvnY1s/l9bgWs96euS2tKeiQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=icloud.com; spf=pass smtp.mailfrom=icloud.com; dkim=pass (2048-bit key) header.d=icloud.com header.i=@icloud.com header.b=Ccd7hTV2; arc=none smtp.client-ip=57.103.64.161
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=icloud.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=icloud.com
-Received: from outbound.pv.icloud.com (unknown [127.0.0.2])
-	by p00-icloudmta-asmtp-us-west-1a-100-percent-11 (Postfix) with ESMTPS id E8497180014E;
-	Fri, 21 Nov 2025 05:42:20 +0000 (UTC)
-Dkim-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=icloud.com; s=1a1hai; bh=4Zs9GRvm32PNjZzoA8qlvAE406gaQ36xltOhqAM2veQ=; h=Message-ID:Date:MIME-Version:Subject:To:From:Content-Type:x-icloud-hme; b=Ccd7hTV2ROk7BDrGaaCgAkdal7/2NvRZPmuB6pZRomMoX+gklQEmhrqkTpo5tH67Tolqh8wKIIvWutj21AMzr/DVWryE1n6itXLBtEd3b9NGVEKB+uA3drYh4roAYmGWzqiKOMtBNzpH2q4cBju4GO7LcuiPhr2lvI98JYoWZ2W+7f73su6xbQpx2+lfs1yL3SWJP+cpjI1ZxzUTEKpJytV4dmdVeoIBHcl5ECuYJge0cGKOlJPDkzUEolqiMpEoi3ASGr1Vj7k1MhOuemZ2ofnxF8ju+KdY1qKPZlA8Ocrk1LsAmnz78xK1o9z4ZJ7ClV0vu2LDjPFlCntziqX/BA==
-Received: from [172.31.0.10] (unknown [17.56.9.36])
-	by p00-icloudmta-asmtp-us-west-1a-100-percent-11 (Postfix) with ESMTPSA id EA4A218000A0;
-	Fri, 21 Nov 2025 05:42:19 +0000 (UTC)
-Message-ID: <780b6778-ea0e-4fc9-8f35-83b5cd4940af@icloud.com>
-Date: Thu, 20 Nov 2025 21:42:18 -0800
+	s=arc-20240116; t=1763705095; c=relaxed/simple;
+	bh=ZromAkvc/3V8mgNJyWR2OrHc1vzSS5Fv/EMkcFtHges=;
+	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
+	 Content-Type:MIME-Version; b=E49XdtX3CVKKmrFqWpdSE5jN9z/z+M0cdp4hnlnoelvxEv1McM5cnbUbE57ZE2XuL89vXQYq4Hu42Mmx/B96c6FrSFzyfQIfWtcB8dXeno40anMjQuT2IRYJ/YZnPcMyZlvN5jn28EV4Q4TdeImUEvDsP7PCHntbulLtoIp2qcQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com; spf=pass smtp.mailfrom=realtek.com; dkim=pass (2048-bit key) header.d=realtek.com header.i=@realtek.com header.b=g1ymSDUc; arc=none smtp.client-ip=211.75.126.72
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=realtek.com
+X-SpamFilter-By: ArmorX SpamTrap 5.80 with qID 5AL61swwE3030759, This message is accepted by code: ctloc85258
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=realtek.com; s=dkim;
+	t=1763704914; bh=fsn3yi34vFL6wAN0Oy9EVsb5SXXk0AlVm2ngOvpfyQc=;
+	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
+	 Content-Type:Content-Transfer-Encoding:MIME-Version;
+	b=g1ymSDUc2XnpItiFt1mLtTcVL2qynJILZyNh+cuVceFHQ5NejiT2eFGrMqVKsa7yW
+	 Y63xkKyLwo7dOOgCYQCAEmrJeSluKUd3zfuolXnDP0OCJBL3cs8YcPo3xd7NdszYqa
+	 /UjHIKXErxW50bySB/6PjSNOxfBy0UyfSLRqZwyK2aeDa/79L+uZOUonv2rJ3Olnbq
+	 OLXeTEKgec9RfTrdULOzuFPyOuXopD3BCWudYA0duLSfN3EkbUqL+oz+sCCzt7o/8A
+	 Kb2MW5U4omC7SHveGpNNBBddv5kQA7fnkAjrEwz64GW/vKWql3LaP6IRLcUm2lbhfe
+	 9/OUyDPPOMFpw==
+Received: from mail.realtek.com (rtkexhmbs04.realtek.com.tw[10.21.1.54])
+	by rtits2.realtek.com.tw (8.15.2/3.21/5.94) with ESMTPS id 5AL61swwE3030759
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Fri, 21 Nov 2025 14:01:54 +0800
+Received: from RTKEXHMBS01.realtek.com.tw (172.21.6.40) by
+ RTKEXHMBS04.realtek.com.tw (10.21.1.54) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1544.27; Fri, 21 Nov 2025 14:01:55 +0800
+Received: from RTKEXHMBS06.realtek.com.tw (10.21.1.56) by
+ RTKEXHMBS01.realtek.com.tw (172.21.6.40) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1544.27; Fri, 21 Nov 2025 14:01:50 +0800
+Received: from RTKEXHMBS06.realtek.com.tw ([::1]) by
+ RTKEXHMBS06.realtek.com.tw ([fe80::744:4bc9:832c:9b7e%10]) with mapi id
+ 15.02.1544.027; Fri, 21 Nov 2025 14:01:50 +0800
+From: Ping-Ke Shih <pkshih@realtek.com>
+To: "Mario Limonciello (AMD)" <superm1@kernel.org>,
+        "mario.limonciello@amd.com" <mario.limonciello@amd.com>,
+        "nbd@nbd.name"
+	<nbd@nbd.name>,
+        "lorenzo@kernel.org" <lorenzo@kernel.org>,
+        "ryder.lee@mediatek.com" <ryder.lee@mediatek.com>,
+        "shayne.chen@mediatek.com"
+	<shayne.chen@mediatek.com>,
+        "sean.wang@mediatek.com"
+	<sean.wang@mediatek.com>,
+        "matthias.bgg@gmail.com" <matthias.bgg@gmail.com>,
+        "angelogioacchino.delregno@collabora.com"
+	<angelogioacchino.delregno@collabora.com>
+CC: "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
+        "linux-arm-kernel@lists.infradead.org"
+	<linux-arm-kernel@lists.infradead.org>,
+        "linux-mediatek@lists.infradead.org"
+	<linux-mediatek@lists.infradead.org>
+Subject: RE: [PATCH] wifi: mt76: Strip whitespace from build ddate
+Thread-Topic: [PATCH] wifi: mt76: Strip whitespace from build ddate
+Thread-Index: AQHcWjgzLwwe4dMD8UutouPxvuwR37T8o4bw
+Date: Fri, 21 Nov 2025 06:01:50 +0000
+Message-ID: <a29d737be885490586c30be6262835c8@realtek.com>
+References: <20251120155829.3494747-1-superm1@kernel.org>
+In-Reply-To: <20251120155829.3494747-1-superm1@kernel.org>
+Accept-Language: en-US, zh-TW
+Content-Language: zh-TW
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH mt76 1/2] Revert "wifi: mt76: mt792x: improve monitor
- interface handling"
-To: Fedor Pchelkin <pchelkin@ispras.ru>, Felix Fietkau <nbd@nbd.name>,
- Lorenzo Bianconi <lorenzo@kernel.org>,
- Ming Yen Hsieh <mingyen.hsieh@mediatek.com>
-Cc: Ryder Lee <ryder.lee@mediatek.com>, Shayne Chen
- <shayne.chen@mediatek.com>, Sean Wang <sean.wang@mediatek.com>,
- linux-wireless@vger.kernel.org, linux-kernel@vger.kernel.org,
- linux-mediatek@lists.infradead.org, Matvey Kovalev
- <matvey.kovalev@ispras.ru>, lvc-project@linuxtesting.org
-References: <20251027111843.38975-1-pchelkin@ispras.ru>
-Content-Language: en-US
-From: Alex Gavin <a_gavin@icloud.com>
-In-Reply-To: <20251027111843.38975-1-pchelkin@ispras.ru>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Authority-Info: v=2.4 cv=T/2BjvKQ c=1 sm=1 tr=0 ts=691ffbbe cx=c_apl:c_pps
- a=azHRBMxVc17uSn+fyuI/eg==:117 a=azHRBMxVc17uSn+fyuI/eg==:17
- a=IkcTkHD0fZMA:10 a=6UeiqGixMTsA:10 a=x7bEGLp0ZPQA:10 a=h3XwevFeXowA:10
- a=VkNPw1HP01LnGYTKEx00:22 a=HH5vDtPzAAAA:8 a=xjQjg--fAAAA:8
- a=NfBt78jllEJdnomDNvIA:9 a=QEXdDO2ut3YA:10 a=QM_-zKB-Ew0MsOlNKMB5:22
- a=L4vkcYpMSA5nFlNZ2tk3:22
-X-Proofpoint-ORIG-GUID: xqec2kQ6ReU-W5E9VoidnOuMpYXd7nHv
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUxMTIxMDA0MyBTYWx0ZWRfX/QhFid0JZdY6
- L0yfZxQEOV74tRAzQEamz3rlbMCh7yMr2i+vNLSnvgfnTJREd0y9RiLKrCk8ZlSkFXq/TfWWxRs
- bBkLLUTMx1NlgCQuhyWVQ9axj/0kBSFmeiYKHiMY/RI8KgBYac8bF6zjUjEM903FPqG1FAYkEiB
- iYp7YNU21gcGtw7j6wROw+nEJDlNfPGSJmgMJvJTtNmWeuKI9zt+IEykbUDf5Dce8hAiDsTHffi
- d1KJBOkvlHCDSGXyXgAIst66nTlhIbQWiEZ2YqQClECKTvXDeF7AeUEathI+pQ1dW/Ux+E0pEi8
- 7ytEfPQp9ffmc8nG4za
-X-Proofpoint-GUID: xqec2kQ6ReU-W5E9VoidnOuMpYXd7nHv
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.9,FMLib:17.12.100.49
- definitions=2025-11-21_02,2025-11-20_01,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 adultscore=0
- spamscore=0 clxscore=1011 malwarescore=0 mlxlogscore=999 bulkscore=0
- phishscore=0 mlxscore=0 suspectscore=0 classifier=spam authscore=0 adjust=0
- reason=mlx scancount=1 engine=8.22.0-2510240001 definitions=main-2511210043
-X-JNJ: AAAAAAABmYUlTjxPqxU886FK+jlSf8uaaEDanEEde9JRREjw0e6s1eg9FZO29EPN29zZoyP2kjex7XdZaGP/k5G7Fkm2AYqAr9vAn2k1TWTlS6etMEf1c+A+Jvf7n3gCdX3PIPHQsoWt+qeuwY286Shy+LNqpTDqHsY8qQhDpG1tIidxfbrXZLbvta5PFX86mKl/qkf+FREgRPTWLQG7roYOagcbvWCsTnvnlqNnCr3+d5DHLXFjBkR5EEfWUbJZnxDBvGV6BtlrxxQbx5weNwwQda0NyQylK3gGt+Sj1HuaxFK9GOm6cCaEc4wjR857/JqLPOQ6TGIgzzvH8UAPbqK8fJ78/QwgOGrPqc9oGusWoRd9T0woQB6wxvQP5r4yMmL4m4MvcFgP00/4xMVnOVVz12p6Bem4NT4dVTEYnpXEw6Um1Q52xJ9fJ3dE7fijGbXFyxDpVbBz9OskwvSKw/db01+t0vm0y5N8UIEt5zb+5caxBuFXbpOygdR/SxR4fPnMdBiQKafJcUWsbkVP5JRBPYWnPXt7r9we3oEHktvFTLSRfHkzo6lfHtR93PUfg2Pc/UW2pJk7CpjfG3WTWDYeWa8t8xvBALqh3B+CcoqK3cgyFdbCCIEc8vizSJVcucVn5ggCfS3Sd+AWWnQ3R2ajn4AmclFEIEZLye9GzJuGXA8NAnwl2gWDgFA3YNbiMHq4zvs0vqdvwBPI3rDxvmCExew4Sc3tNxY4Q6/xFRK/HcUrXq2QC0645NfGrrqbl/DvRu1Bxdc2ZUYY2jZNEw9gO9KvANRFjqLNbwckDXfyyy/Ec+HgSs2t3njFXtzijtxSLAk=
 
-On 10/27/25 04:18, Fedor Pchelkin wrote:
-> This reverts commit 55e95ce469d0c61041bae48b2ebb7fcbf6d1ba7f.
-> 
-> mt792x drivers don't seem to support multi-radio devices yet.  At least
-> they don't mess with `struct wiphy_radio` at the moment.
-> 
-> Packet capturing on monitor interface doesn't work after the blamed patch:
-> 
->   tcpdump -i wls6mon -n -vvv
-> 
-> Revert the NO_VIRTUAL_MONITOR feature for now to resolve the issue.
-> 
-> Found by Linux Verification Center (linuxtesting.org).
-> 
-> Fixes: 55e95ce469d0 ("wifi: mt76: mt792x: improve monitor interface handling")
-> Signed-off-by: Fedor Pchelkin <pchelkin@ispras.ru>
-> ---
-> 
-> Can't answer exactly *why* the capturing doesn't work after the patch:
-> probably because the driver is just not prepared for NO_VIRTUAL_MONITOR.
-> The feature isn't too obvious, especially that for some reason it was set
-> in mt792x alongside WANT_MONITOR_VIF.  With a quick glance I might
-> conclude that NO_VIRTUAL_MONITOR overrides WANT_MONITOR_VIF, they don't
-> look compatible.
-> 
->  drivers/net/wireless/mediatek/mt76/mt792x_core.c | 1 -
->  1 file changed, 1 deletion(-)
-> 
-> diff --git a/drivers/net/wireless/mediatek/mt76/mt792x_core.c b/drivers/net/wireless/mediatek/mt76/mt792x_core.c
-> index 5b50bf94996e..f2ed16feb6c1 100644
-> --- a/drivers/net/wireless/mediatek/mt76/mt792x_core.c
-> +++ b/drivers/net/wireless/mediatek/mt76/mt792x_core.c
-> @@ -688,7 +688,6 @@ int mt792x_init_wiphy(struct ieee80211_hw *hw)
->  	ieee80211_hw_set(hw, SUPPORTS_DYNAMIC_PS);
->  	ieee80211_hw_set(hw, SUPPORTS_VHT_EXT_NSS_BW);
->  	ieee80211_hw_set(hw, CONNECTION_MONITOR);
-> -	ieee80211_hw_set(hw, NO_VIRTUAL_MONITOR);
->  	ieee80211_hw_set(hw, SUPPORTS_MULTI_BSSID);
->  	ieee80211_hw_set(hw, SUPPORTS_ONLY_HE_MULTI_BSSID);
->  
+Mario Limonciello (AMD) <superm1@kernel.org> wrote:
+> @@ -3124,8 +3125,11 @@ int mt76_connac2_load_patch(struct mt76_dev *dev, =
+const char *fw_name)
+>         }
+>=20
+>         hdr =3D (const void *)fw->data;
+> +       strscpy(build_date, hdr->build_date, sizeof(build_date));
+> +       build_date[16] =3D '\0';
 
-This patch fixed monitor vif-only packet capture for me when using both mt7921 and mt7921au chipset
-radios. Without it I was only seeing broadcast and multicast traffic I believe. Tested using vanilla
-6.18.0-rc6 as base.
+As comment of strscpy(), NULL terminator always presents.
+
+ * Copy the source string @src, or as much of it as fits, into the
+ * destination @dst buffer. The behavior is undefined if the string
+ * buffers overlap. The destination @dst buffer is always NUL terminated,
+ * unless it's zero-sized.
+
+> +       strim(build_date);
+>         dev_info(dev->dev, "HW/SW Version: 0x%x, Build Time: %.16s\n",
+> -                be32_to_cpu(hdr->hw_sw_ver), hdr->build_date);
+> +                be32_to_cpu(hdr->hw_sw_ver), build_date);
+>=20
+>         for (i =3D 0; i < be32_to_cpu(hdr->desc.n_region); i++) {
+>                 struct mt76_connac2_patch_sec *sec;
+> --
+> 2.43.0
+>=20
 
 
