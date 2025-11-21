@@ -1,72 +1,62 @@
-Return-Path: <linux-wireless+bounces-29225-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-29226-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [IPv6:2a01:60a::1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6ADA0C77828
-	for <lists+linux-wireless@lfdr.de>; Fri, 21 Nov 2025 07:11:39 +0100 (CET)
+Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [213.196.21.55])
+	by mail.lfdr.de (Postfix) with ESMTPS id E8EF1C77946
+	for <lists+linux-wireless@lfdr.de>; Fri, 21 Nov 2025 07:31:36 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.mirrors.kernel.org (Postfix) with ESMTPS id CF37634A662
-	for <lists+linux-wireless@lfdr.de>; Fri, 21 Nov 2025 06:10:12 +0000 (UTC)
+	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 2546A344EC4
+	for <lists+linux-wireless@lfdr.de>; Fri, 21 Nov 2025 06:31:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 16A602DCBF2;
-	Fri, 21 Nov 2025 06:10:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C0D442566F7;
+	Fri, 21 Nov 2025 06:31:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=realtek.com header.i=@realtek.com header.b="Hqik/Qvc"
+	dkim=pass (2048-bit key) header.d=realtek.com header.i=@realtek.com header.b="AznZT5nJ"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 12309824BD;
-	Fri, 21 Nov 2025 06:10:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1D44E32F74F
+	for <linux-wireless@vger.kernel.org>; Fri, 21 Nov 2025 06:31:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=211.75.126.72
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763705406; cv=none; b=PZVmnETjQq7EfSKaDC6RjH1pyr8ws2VZ4XB6/h9qA3zTRM8q2z5tVO1QRBpwGHi1iJFk1LdRsJpP+s+q9LNg9S3AH9lQCs/GG8zR8EAwmSW7ocnN3/W0vxsUwhom/Ulh6hVie1CeMskMQbTai/hdMuUwYYv/dTM9fhP3RY2FXoI=
+	t=1763706694; cv=none; b=L6TEs7IXEdcHPwJMUH9Da+SOGoWhf3tzP8Wo97vXzEx1dO/2EHcoG7+JuNroOhvG/EaDi7RQMfx4XMtYytV/mlHS+/wMFPYH7DX9IiVtVPMmVDgI3SdaGUdWLMNMWsMApJWUvz2Q9z2AEobU4fuBhRpQlNw385aZDiuEEC2Bbuk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763705406; c=relaxed/simple;
-	bh=cVvMv9J7erBcRp6kA5IJc0Jgik/aMRU6KiRRVIGq3tk=;
-	h=From:To:CC:Subject:In-Reply-To:References:Message-ID:Date:
-	 MIME-Version:Content-Type; b=nhMb2uT7t/2Hz6vrnL6H8VSscNu0Fzdf2fhE611qJYEWXOkGqQQKTlXW6Vm5MiVITUW1HpgDHBfRivutvfpWP4tw/rWAwZr4pORtj+vQ0pZz1h/NFrJzzi8yX3EV6pZxwzQAeQKe3QzR5bCjfrnRZzJkp5+Pr5L3BYhrGyG8eco=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com; spf=pass smtp.mailfrom=realtek.com; dkim=pass (2048-bit key) header.d=realtek.com header.i=@realtek.com header.b=Hqik/Qvc; arc=none smtp.client-ip=211.75.126.72
+	s=arc-20240116; t=1763706694; c=relaxed/simple;
+	bh=6oOEN+sYahkBx/+mrwDRDzFkzyfx7VuTroCXRCjrVnc=;
+	h=From:To:Subject:Message-ID:Date:MIME-Version:Content-Type; b=jeNbuF/nv3/PydxlKjg2xtKS+hWKtPVXfJ6HvSj6pDyzZKL4Nr1+X1PY0ZAFTSQv/bYsuq8w3l/Nidi1ogHuyEh4SLaHSu2Ql71bmjadH9Er5NkJ2uB58bLVd6CBII0gYvH0p5fFwAhbduzm0dxuXAL8/tr0cFHkz1FFZU4Fw2o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com; spf=pass smtp.mailfrom=realtek.com; dkim=pass (2048-bit key) header.d=realtek.com header.i=@realtek.com header.b=AznZT5nJ; arc=none smtp.client-ip=211.75.126.72
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=realtek.com
-X-SpamFilter-By: ArmorX SpamTrap 5.80 with qID 5AL69uCT23039169, This message is accepted by code: ctloc85258
+X-SpamFilter-By: ArmorX SpamTrap 5.80 with qID 5AL6VTSW03077241, This message is accepted by code: ctloc85258
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=realtek.com; s=dkim;
-	t=1763705396; bh=WwluALrFamw11xO/dtpTJb5AgQu1/DEMiz2XN2kzNP0=;
-	h=From:To:CC:Subject:In-Reply-To:References:Message-ID:Date:
-	 MIME-Version:Content-Type;
-	b=Hqik/QvcchOS5F9486M4AVfHpkdQmqAZOuKtVmPOQU0zvLzocYHHIBAK2y9MC3O6R
-	 NBYZfFwdagcAF2GIMoYr98TzLI2pIJmpObUj5Gx+yEX9blecvzCHOiGJR2G6Z/e53h
-	 YBCSwCJiptwG8k744M1VT/ndLR5Siu0v9fLorIB2KZy9RmJaEMsFcKtJGS5oggcp2x
-	 vYCxLejVC3Y0rZsIFShD4DkLrVsDJkmscX7q7kOg13NhsaZ5qdo9tvBG9+EohZ6PIf
-	 U6tMPTap9Ral7GeXNiVyg6mMaKODxUYVm5StidvnYQVRVSNCNxOqQhxuSCxXMVWGwS
-	 bFshTtDesHLJA==
+	t=1763706689; bh=Zr01T/Rn3Xf/0BTYsDTT8S1jIbynrrdpTyFET1m1Q2M=;
+	h=From:To:Subject:Message-ID:Date:MIME-Version:Content-Type;
+	b=AznZT5nJIJNUi64/2uBk+R0huJpa0nMTITSi6YonOOKYN/H6//PzRS5z/BCl4k5uw
+	 2mIiQF0wEyIPItq23p3CXrRDIB570GDKvqiOSrBVGOAghiIjtFyAk6rz/m/LmtzJrU
+	 T36D23O6dsPggcRneYqaM8kFNUn85gTQix/WsglEXtXnhguNDM/5LDLsUeJFOFQHaL
+	 o3AMsnptP5l6tRY2qTvtLVuxKXyHmu8wKLRvOalFzQd1egHFp3AN6wfOjB51T/Z98Z
+	 zk37e1QLLhT8fTYEcbi0gqYZZf4xXU99SC1VTv6SMo5JXVvvJ3H6Y08Z2ulbbEOQqY
+	 l8S/K2XoJXWdA==
 Received: from mail.realtek.com (rtkexhmbs03.realtek.com.tw[10.21.1.53])
-	by rtits2.realtek.com.tw (8.15.2/3.21/5.94) with ESMTPS id 5AL69uCT23039169
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Fri, 21 Nov 2025 14:09:56 +0800
+	by rtits2.realtek.com.tw (8.15.2/3.21/5.94) with ESMTPS id 5AL6VTSW03077241
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK)
+	for <linux-wireless@vger.kernel.org>; Fri, 21 Nov 2025 14:31:29 +0800
 Received: from RTKEXHMBS03.realtek.com.tw (10.21.1.53) by
  RTKEXHMBS03.realtek.com.tw (10.21.1.53) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.27; Fri, 21 Nov 2025 14:09:56 +0800
+ 15.2.1544.27; Fri, 21 Nov 2025 14:31:28 +0800
 Received: from [127.0.1.1] (172.21.69.94) by RTKEXHMBS03.realtek.com.tw
  (10.21.1.53) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.27 via Frontend
- Transport; Fri, 21 Nov 2025 14:09:51 +0800
+ Transport; Fri, 21 Nov 2025 14:31:28 +0800
 From: Ping-Ke Shih <pkshih@realtek.com>
-To: "Gustavo A. R. Silva" <gustavoars@kernel.org>,
-        Jes Sorensen
-	<Jes.Sorensen@gmail.com>
-CC: <linux-wireless@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
-        "Gustavo
- A. R. Silva" <gustavoars@kernel.org>,
-        <linux-hardening@vger.kernel.org>
-Subject: Re: [PATCH][next] wifi: rtl8xxxu: Avoid -Wflex-array-member-not-at-end warnings
-In-Reply-To: <aR2I9Sere0W-4VZz@kspp>
-References: <aR2I9Sere0W-4VZz@kspp>
-Message-ID: <379c0915-4355-4ca4-b563-e62352528d1a@RTKEXHMBS03.realtek.com.tw>
-Date: Fri, 21 Nov 2025 14:09:51 +0800
+To: <linux-wireless@vger.kernel.org>
+Subject: pull-request: rtw-next-2025-11-21
+Message-ID: <f3669a13-41b7-452e-90c7-317c9c2ada0d@RTKEXHMBS03.realtek.com.tw>
+Date: Fri, 21 Nov 2025 14:31:28 +0800
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
@@ -75,27 +65,221 @@ List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain
 
-"Gustavo A. R. Silva" <gustavoars@kernel.org> wrote:
+Hi,
 
-> -Wflex-array-member-not-at-end was introduced in GCC-14, and we are
-> getting ready to enable it, globally.
-> 
-> Move the conflicting declarations to the end of the corresponding
-> structures. Notice that `struct urb` is a flexible structure, this
-> is a structure that contains a flexible-array member.
-> 
-> With these changes fix the following warnings:
-> 
-> 9 drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu.h:1951:20: warning: structure containing a flexible array member is not at the end of another structure [-Wflex-array-member-not-at-end]
-> 9 drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu.h:1945:20: warning: structure containing a flexible array member is not at the end of another structure [-Wflex-array-member-not-at-end]
-> 
-> Signed-off-by: Gustavo A. R. Silva <gustavoars@kernel.org>
+A pull-request of rtw-next to wireless-next tree, more info below. Please
+let me know if any problems.
 
-1 patch(es) applied to rtw-next branch of rtw.git, thanks.
-
-68dc70ca4dd4 wifi: rtl8xxxu: Avoid -Wflex-array-member-not-at-end warnings
+Thanks
+Ping-Ke
 
 ---
-https://github.com/pkshih/rtw.git
 
+The following changes since commit 55db64ddd6a12c5157a61419a11a18fc727e8286:
+
+  Merge git://git.kernel.org/pub/scm/linux/kernel/git/netdev/net (2025-10-16 11:06:28 -0700)
+
+are available in the Git repository at:
+
+  https://github.com/pkshih/rtw.git tags/rtw-next-2025-11-21
+
+for you to fetch changes up to 68dc70ca4dd456c1b495aa8adfc4fe597610c400:
+
+  wifi: rtl8xxxu: Avoid -Wflex-array-member-not-at-end warnings (2025-11-21 14:07:19 +0800)
+
+----------------------------------------------------------------
+rtw-next patches for v6.19
+
+Main changes are about rtw89 USB support, which two USB devices are added
+with proper TX status, and other notable items are listed below.
+
+rtl8xxxu:
+
+ - fix 40MHz bandwidth connection
+
+rtw89:
+
+ - support USB devices RTL8852AU and RTL8852CU
+
+ - report TX status from air for USB devices
+
+ - resolve racing between processes of TX and TX report
+
+ - resolve racing of skb queue of C2H events
+
+ - support injected packets with bandwidth and data rate
+
+ - more materials for coming RTL8922DE
+
+----------------------------------------------------------------
+Abdun Nihaal (1):
+      wifi: rtl818x: Fix potential memory leaks in rtl8180_init_rx_ring()
+
+Bitterblue Smith (25):
+      wifi: rtl8xxxu: Report the signal strength only if it's known
+      wifi: rtl8xxxu: Dump the efuse right after reading it
+      wifi: rtl8xxxu: Use correct power off sequence for RTL8192CU
+      wifi: rtw89: Add rtw89_core_get_ch_dma_v2()
+      wifi: rtw89: usb: Move bulk out map to new struct rtw89_usb_info
+      wifi: rtw89: usb: Prepare rtw89_usb_ops_mac_pre_init() for RTL8852CU
+      wifi: rtw89: usb: Prepare rtw89_usb_ops_mac_post_init() for RTL8852CU
+      wifi: rtw89: Fix rtw89_mac_dmac_func_pre_en_ax() for USB/SDIO
+      wifi: rtw89: 8852c: Fix rtw8852c_pwr_{on,off}_func() for USB
+      wifi: rtw89: Add rtw8852c_dle_mem_usb{2,3}
+      wifi: rtw89: Add rtw8852c_hfc_param_ini_usb
+      wifi: rtw89: 8852c: Accept USB devices and load their MAC address
+      wifi: rtw89: Add rtw8852cu.c
+      wifi: rtw89: Enable the new rtw89_8852cu module
+      wifi: rtw89: Use the correct power sequences for USB/SDIO
+      wifi: rtw89: Add rtw8852a_dle_mem_usb
+      wifi: rtw89: Add rtw8852a_hfc_param_ini_usb
+      wifi: rtw89: 8852a: Accept USB devices and load their MAC address
+      wifi: rtw89: Add rtw8852au.c
+      wifi: rtw89: Enable the new rtw89_8852au module
+      wifi: rtl8xxxu: Fix HT40 channel config for RTL8192CU, RTL8723AU
+      wifi: rtl8xxxu: Make RTL8192CU, RTL8723AU TX with 40 MHz width
+      wifi: rtl8xxxu: Fix the 40 MHz subchannel for RTL8192EU, RTL8723BU
+      wifi: rtl8xxxu: Fix RX channel width reported by RTL8192FU
+      wifi: rtl8xxxu: Enable 40 MHz width by default
+
+Chih-Kang Chang (3):
+      wifi: rtw89: flush TX queue before deleting key
+      wifi: rtw89: update format of addr cam H2C command
+      wifi: rtw89: correct user macid mask of RX info for RTL8922D
+
+Chin-Yen Lee (2):
+      wifi: rtw89: restart hardware to recover firmware if power-save becomes abnormal
+      wifi: rtw88: 8822c: use fixed rate and bandwidth to reply CSI packets
+
+Dan Hamik (1):
+      wifi: rtw89: rtw8852bu: Added dev id for ASUS AX57 NANO USB Wifi dongle
+
+Fedor Pchelkin (9):
+      wifi: rtw89: usb: use common error path for skbs in rtw89_usb_rx_handler()
+      wifi: rtw89: usb: fix leak in rtw89_usb_write_port()
+      wifi: rtw89: usb: use ieee80211_free_txskb() where appropriate
+      wifi: rtw89: refine rtw89_core_tx_wait_complete()
+      wifi: rtw89: implement C2H TX report handler
+      wifi: rtw89: usb: anchor TX URBs
+      wifi: rtw89: handle IEEE80211_TX_CTL_REQ_TX_STATUS frames for USB
+      wifi: rtw89: provide TX reports for management frames
+      wifi: rtw89: process TX wait skbs for USB via C2H handler
+
+Gustavo A. R. Silva (1):
+      wifi: rtl8xxxu: Avoid -Wflex-array-member-not-at-end warnings
+
+Hiroaki Yamamoto (1):
+      wifi: rtw88: Add BUFFALO WI-U3-866DHP to the USB ID list
+
+Jui-Peng Tsai (1):
+      wifi: rtw89: improve scan time on 6 GHz band
+
+Kuan-Chung Chen (2):
+      wifi: rtw89: 8852c: fix ADC oscillation in 160MHz affecting RX performance
+      wifi: rtw89: phy: fix out-of-bounds access in rtw89_phy_read_txpwr_limit()
+
+Marco Crivellari (2):
+      wifi: rtlwifi: add WQ_UNBOUND to alloc_workqueue users
+      wifi: rtw88: add WQ_UNBOUND to alloc_workqueue users
+
+Ping-Ke Shih (25):
+      wifi: rtw89: splice C2H events queue to local to prevent racing
+      wifi: rtw89: use skb_dequeue() for queued ROC packets to prevent racing
+      wifi: rtw89: 8832cu: turn off TX partial mode
+      wifi: rtw89: fill TX descriptor of FWCMD in shortcut
+      wifi: rtlwifi: rtl8188ee: correct allstasleep in P2P PS H2C command
+      wifi: rtw89: pci: add to read PCI configuration space from common code
+      wifi: rtw89: fw: parse firmware element of DIAG_MAC
+      wifi: rtw89: debug: add parser to diagnose along DIAG_MAC fw element
+      wifi: rtw89: 8852c: add compensation of thermal value from efuse calibration
+      wifi: rtw89: consider data rate/bandwidth/GI for injected packets
+      wifi: rtw89: do RF calibration once setting channel when running pure monitor mode
+      wifi: rtw89: configure RX antenna if chips can support
+      wifi: rtw89: fw: part size to download firmware by header info
+      wifi: rtw89: mac: separate pre-init code before downloading firmware
+      wifi: rtw89: phy: calling BB pre-init by chips with/without BB MCU
+      wifi: rtw89: mac: remove undefined bit B_BE_PPDU_MAC_INFO
+      wifi: rtw89: mac: update wcpu_on to download firmware for RTL8922D
+      wifi: rtw89: phy: consider type 15 in BB gain table
+      wifi: rtw89: phy: ignore DCFO if not defined in chip_info
+      wifi: rtw89: fw: print band and port where beacon update on
+      wifi: rtw89: align RA H2C format v1 for RTL8922A
+      wifi: rtw89: fill addr cam H2C command by struct
+      wifi: rtw89: add addr cam H2C command v1
+      wifi: rtw89: use separated function to set RX filter
+      wifi: rtw89: 8852a: correct field mask of reset DAC/ADC FIFO
+
+Seungjin Bae (1):
+      wifi: rtl818x: rtl8187: Fix potential buffer underflow in rtl8187_rx_cb()
+
+Yu-Chun Lin (1):
+      wifi: rtw89: Replace hardcoded strings with helper functions
+
+Zenm Chen (3):
+      wifi: rtl8xxxu: Add USB ID 2001:3328 for D-Link AN3U rev. A1
+      wifi: rtw88: Add USB ID 2001:3329 for D-Link AC13U rev. A1
+      wifi: rtw89: Add default ID 0bda:b831 for RTL8831BU
+
+Zong-Zhe Yang (3):
+      wifi: rtw89: mlo: handle needed H2C when link switching is requested by stack
+      wifi: rtw89: support EHT rate pattern via bitrate mask
+      wifi: rtw89: regd: apply ACPI policy even if country code is programmed
+
+ drivers/net/wireless/realtek/rtl818x/rtl8180/dev.c |   9 +-
+ drivers/net/wireless/realtek/rtl818x/rtl8187/dev.c |  27 +-
+ drivers/net/wireless/realtek/rtl8xxxu/8192c.c      |  80 +++-
+ drivers/net/wireless/realtek/rtl8xxxu/8723a.c      | 115 +++++-
+ drivers/net/wireless/realtek/rtl8xxxu/core.c       | 188 ++-------
+ drivers/net/wireless/realtek/rtl8xxxu/regs.h       |   1 +
+ drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu.h   |   9 +-
+ drivers/net/wireless/realtek/rtlwifi/base.c        |   2 +-
+ .../net/wireless/realtek/rtlwifi/rtl8188ee/fw.c    |   2 +-
+ drivers/net/wireless/realtek/rtw88/bf.c            |   8 +-
+ drivers/net/wireless/realtek/rtw88/bf.h            |   7 +
+ drivers/net/wireless/realtek/rtw88/rtw8822bu.c     |   2 +
+ drivers/net/wireless/realtek/rtw88/rtw8822cu.c     |   2 +
+ drivers/net/wireless/realtek/rtw88/usb.c           |   3 +-
+ drivers/net/wireless/realtek/rtw89/Kconfig         |  22 +
+ drivers/net/wireless/realtek/rtw89/Makefile        |   6 +
+ drivers/net/wireless/realtek/rtw89/cam.c           | 173 ++++----
+ drivers/net/wireless/realtek/rtw89/cam.h           | 446 +++++----------------
+ drivers/net/wireless/realtek/rtw89/core.c          | 231 ++++++++---
+ drivers/net/wireless/realtek/rtw89/core.h          | 104 ++++-
+ drivers/net/wireless/realtek/rtw89/debug.c         | 299 ++++++++++++++
+ drivers/net/wireless/realtek/rtw89/fw.c            | 169 +++++---
+ drivers/net/wireless/realtek/rtw89/fw.h            |  67 +++-
+ drivers/net/wireless/realtek/rtw89/mac.c           | 200 ++++++++-
+ drivers/net/wireless/realtek/rtw89/mac.h           | 114 +++++-
+ drivers/net/wireless/realtek/rtw89/mac80211.c      |  89 +++-
+ drivers/net/wireless/realtek/rtw89/mac_be.c        |   9 +-
+ drivers/net/wireless/realtek/rtw89/pci.c           |  18 +-
+ drivers/net/wireless/realtek/rtw89/pci.h           |   4 -
+ drivers/net/wireless/realtek/rtw89/phy.c           |  65 ++-
+ drivers/net/wireless/realtek/rtw89/phy_be.c        |   4 +
+ drivers/net/wireless/realtek/rtw89/ps.c            |  23 +-
+ drivers/net/wireless/realtek/rtw89/reg.h           |  24 +-
+ drivers/net/wireless/realtek/rtw89/regd.c          |  22 +-
+ drivers/net/wireless/realtek/rtw89/rtw8851b.c      |   5 +-
+ drivers/net/wireless/realtek/rtw89/rtw8851b_rfk.c  |   8 +-
+ drivers/net/wireless/realtek/rtw89/rtw8851bu.c     |  24 ++
+ drivers/net/wireless/realtek/rtw89/rtw8852a.c      |  85 +++-
+ drivers/net/wireless/realtek/rtw89/rtw8852a_rfk.c  |  16 +-
+ drivers/net/wireless/realtek/rtw89/rtw8852au.c     |  79 ++++
+ drivers/net/wireless/realtek/rtw89/rtw8852b.c      |   5 +-
+ .../net/wireless/realtek/rtw89/rtw8852b_common.c   |   6 +-
+ drivers/net/wireless/realtek/rtw89/rtw8852b_rfk.c  |   6 +-
+ drivers/net/wireless/realtek/rtw89/rtw8852bt.c     |   5 +-
+ drivers/net/wireless/realtek/rtw89/rtw8852bu.c     |  24 ++
+ drivers/net/wireless/realtek/rtw89/rtw8852c.c      | 170 ++++++--
+ drivers/net/wireless/realtek/rtw89/rtw8852c.h      |   2 +-
+ drivers/net/wireless/realtek/rtw89/rtw8852c_rfk.c  |  69 ++--
+ drivers/net/wireless/realtek/rtw89/rtw8852cu.c     |  69 ++++
+ drivers/net/wireless/realtek/rtw89/rtw8922a.c      |  17 +-
+ drivers/net/wireless/realtek/rtw89/txrx.h          |   7 +-
+ drivers/net/wireless/realtek/rtw89/usb.c           | 115 ++++--
+ drivers/net/wireless/realtek/rtw89/usb.h           |  12 +
+ drivers/net/wireless/realtek/rtw89/wow.c           |   8 +-
+ 54 files changed, 2383 insertions(+), 893 deletions(-)
+ create mode 100644 drivers/net/wireless/realtek/rtw89/rtw8852au.c
+ create mode 100644 drivers/net/wireless/realtek/rtw89/rtw8852cu.c
 
