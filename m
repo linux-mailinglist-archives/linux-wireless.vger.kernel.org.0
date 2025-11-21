@@ -1,103 +1,133 @@
-Return-Path: <linux-wireless+bounces-29232-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-29233-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 042B8C78921
-	for <lists+linux-wireless@lfdr.de>; Fri, 21 Nov 2025 11:47:24 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 98B03C78ABB
+	for <lists+linux-wireless@lfdr.de>; Fri, 21 Nov 2025 12:07:15 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sin.lore.kernel.org (Postfix) with ESMTPS id 82C7733B8B
-	for <lists+linux-wireless@lfdr.de>; Fri, 21 Nov 2025 10:38:11 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTPS id 8072D33B7C
+	for <lists+linux-wireless@lfdr.de>; Fri, 21 Nov 2025 11:05:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7D1453446B5;
-	Fri, 21 Nov 2025 10:37:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 386FE34AB16;
+	Fri, 21 Nov 2025 11:03:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b="LegJx3MV"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="hplU1Cm8"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from sipsolutions.net (s3.sipsolutions.net [168.119.38.16])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E4B3A3446CE
-	for <linux-wireless@vger.kernel.org>; Fri, 21 Nov 2025 10:37:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=168.119.38.16
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1337234AB07
+	for <linux-wireless@vger.kernel.org>; Fri, 21 Nov 2025 11:03:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763721468; cv=none; b=KqajZ2L1su5NJFVOe/bjViR08rJowKPEs8qDG8JfxwaKpbfjC9/bvNz5iCX+O5pJokktogX2txIf1nQZlFTnns5xPhHpEk07WhSfG90Q+NUNEEGpoaLBzy9iGpWgXSpewzHOWGq/yF7CJOWZF1qhkE9Z1LMH04qeu5x1NEQccKg=
+	t=1763723031; cv=none; b=ZJudYziCQD0plK+7iCc0DV5fn7gBbqfCSstvWe4iJmNZv6kESxLICj7WbYLfKg26sr2x6b1JBRljKfS2Hq93y8jB5ZmAguzqEnNxXRLr2HuxfKx7PGz6HTF0s9HcNdQ0RD+6nDv9fV6KzdIbd5KNzA7fPpH5Ovvv5BrjCdkMvOM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763721468; c=relaxed/simple;
-	bh=CPinw/K80wrKRtZCxWDJsw/ufFHpEv2bUtXAV1sg41U=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=SOtfMT0E1IuxyH44zXFNOxGZWgWDLeQIT36IIWTNmnVv2CeP13GJV6xAVvu1dMwrk0XRtt25kwAtshrYLmM5lX77Par4DaBOKRIHA5Q8nglgkGx4cylNmuGLNlzlAjbT4qcWQm04vXWCUG60wmqLvGxl3cfJt9vqhK4j61QqVo8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net; spf=pass smtp.mailfrom=sipsolutions.net; dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b=LegJx3MV; arc=none smtp.client-ip=168.119.38.16
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sipsolutions.net
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=sipsolutions.net; s=mail; h=Content-Transfer-Encoding:MIME-Version:
-	Message-ID:Date:Subject:Cc:To:From:Content-Type:Sender:Reply-To:Content-ID:
-	Content-Description:Resent-Date:Resent-From:Resent-To:Resent-Cc:
-	Resent-Message-ID:In-Reply-To:References;
-	bh=ryxZxhJ94MvQR9zcJfKn9XBPgjxv829eudbXebgDvbk=; t=1763721466; x=1764931066; 
-	b=LegJx3MVV3YEWfwAhmfVsBNEC2cBl0dkqhL62QkrG/n9one+/tJ/mSeNPCp8uDVwfliN/jfnzTH
-	IJp6d3HYEcfwQlaLqo3nIHFfn6z1+f3pKJGijkg2z7Vlj4w+e3thdsxC4xFZrVMG1a9U51GHm7E4f
-	bq+2B0ZQUbh7wUtUNLmrfCS7TpT9DtyZeh86VKnLufZcWb43K/DrKeSW+KTPNLSj92UOUMniFabUA
-	zw3LVKcX8t5uLdwvPHb9NVUT2vJzZwJ0CYA8cKvwRwyZ7Q48QT+/N1cKHIHq0IYJMr910iHd0jYUQ
-	48q4bhcPRVmvOjNeplByAHeEb5wuC+C1DdtQ==;
-Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
-	(Exim 4.98.2)
-	(envelope-from <johannes@sipsolutions.net>)
-	id 1vMOWG-0000000BRtO-1sYv;
-	Fri, 21 Nov 2025 11:37:36 +0100
-From: Johannes Berg <johannes@sipsolutions.net>
-To: linux-wireless@vger.kernel.org
-Cc: Johannes Berg <johannes.berg@intel.com>
-Subject: [PATCH] wifi: mac80211: fix channel switching code
-Date: Fri, 21 Nov 2025 11:37:34 +0100
-Message-ID: <20251121113733.7710a58d45eb.Ie9ec010b52b1baed93dbe44f968c2119b6b5d98d@changeid>
-X-Mailer: git-send-email 2.51.1
+	s=arc-20240116; t=1763723031; c=relaxed/simple;
+	bh=jKe7BHgsupWRT8zF9//LN6lIRpab6XbItrhVbxZ6Aho=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=KBtbbsNRPH68MNXwRIminygmdROXQ12VOJB/FwnmPiNmLnP90HNA16jg3UK+YQ0Hhn3piZKpyTZEbK72SYq75CCDxDfhzNWgA1uHjOAUJ7pw6PL7jmkuF7md/M+VDr8pXTAa2mEC15BshLhv835iXTUia/DQc+yd+IGEBVNkiDo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=hplU1Cm8; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C5BFDC19422
+	for <linux-wireless@vger.kernel.org>; Fri, 21 Nov 2025 11:03:50 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1763723030;
+	bh=jKe7BHgsupWRT8zF9//LN6lIRpab6XbItrhVbxZ6Aho=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+	b=hplU1Cm8gcRCe0Dk9v3G4cp9fKaCn3H/kilV8hRIToh2Ddr5GMq9krEza6JLSwaYD
+	 UPUSZm/er08Ay2zyISxm3i7vp3jzZFbgqLqoOeC3eSI97OIqXGbXw3ycYVnBY9bStu
+	 dVHPcFMhExPeDm5UutWBlXB8mTns5ZiCVi6BfTLYIzpVkAbSnSHM8UUz3qNx842gqQ
+	 ya59WygTbURoKf6u73iRhBKHX/sq3q0gj334yDT/lVKUoYkqTUpCK9rk2yuwBmbkxA
+	 9dhTuoKoPEjUMM/KRX3EAMX8hxKw6FDnhEkc4+DJlZ/13RzbGXiU6wTm+2WGl2wona
+	 ZV9PFYWYnbXoA==
+Received: by mail-lf1-f41.google.com with SMTP id 2adb3069b0e04-5943d20f352so1926612e87.0
+        for <linux-wireless@vger.kernel.org>; Fri, 21 Nov 2025 03:03:50 -0800 (PST)
+X-Forwarded-Encrypted: i=1; AJvYcCX3UwweCnYGyU06nghfYEX5i3c5sfrAe52hpTtjVWJfbhBLkUSHmf5JRMQNt9WTt0R8KD3i0LkX0PCl7GGV2A==@vger.kernel.org
+X-Gm-Message-State: AOJu0YxxSvO/ug/nM8c6zLRFHZ0CQCmYm9gbly9QXgiz3vs33YFuAaJ7
+	/PJ2ENhxdZaF00Vn1EWKg+Gf7pw9IJ0BolMr5/4LzhU6fyKKANn86lrF1QdltxJOCK+zsW3Qv7p
+	RJMPmvTwVUb+K95+Hd0HenSUdGpVUOp8=
+X-Google-Smtp-Source: AGHT+IHrmZs25clhs8UVGUfOKEt/s8CM8NuuTNPBnJADE6pBfKAM2tOoXhXV5hZlWGB+IGOopiydEFsmkLa4SW+J/No=
+X-Received: by 2002:a05:6512:1389:b0:594:253c:20b2 with SMTP id
+ 2adb3069b0e04-596a3e98328mr675359e87.5.1763723029124; Fri, 21 Nov 2025
+ 03:03:49 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <20251120011022.1558674-1-Jason@zx2c4.com>
+In-Reply-To: <20251120011022.1558674-1-Jason@zx2c4.com>
+From: Ard Biesheuvel <ardb@kernel.org>
+Date: Fri, 21 Nov 2025 12:03:37 +0100
+X-Gmail-Original-Message-ID: <CAMj1kXFB8nvDrv2Pz-X12vqxWvLReFVVkXgoGPpjdkGFbQbd=w@mail.gmail.com>
+X-Gm-Features: AWmQ_bkmvVuDn7d2i1HC3zF3BSK0e5JeBoEGmkzt-36Sf9P6xqQjV9duCM6hj6k
+Message-ID: <CAMj1kXFB8nvDrv2Pz-X12vqxWvLReFVVkXgoGPpjdkGFbQbd=w@mail.gmail.com>
+Subject: Re: [PATCH libcrypto v2 1/3] wifi: iwlwifi: trans: rename at_least
+ variable to min_mode
+To: "Jason A. Donenfeld" <Jason@zx2c4.com>
+Cc: Linus Torvalds <torvalds@linux-foundation.org>, Eric Biggers <ebiggers@kernel.org>, 
+	Kees Cook <kees@kernel.org>, linux-crypto@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, 
+	Miri Korenblit <miriam.rachel.korenblit@intel.com>, linux-wireless@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 
-From: Johannes Berg <johannes.berg@intel.com>
+(cc linux-wireless)
 
-My prior commit here introduced a bug due to copy/paste,
-it was iterating the links assigned to 'ctx->replace_ctx'
-and I replaced it by iterating links assigned to 'ctx' by
-accident, then modified it for the iteration later.
+On Thu, 20 Nov 2025 at 02:11, Jason A. Donenfeld <Jason@zx2c4.com> wrote:
+>
+> The subsequent commit is going to add a macro that redefines `at_least`
+> to mean something else. Given that the usage here in iwlwifi is the only
+> use of that identifier in the whole kernel, just rename it to a more
+> fitting name, `min_mode`.
+>
+> Cc: Miri Korenblit <miriam.rachel.korenblit@intel.com>
+> Signed-off-by: Jason A. Donenfeld <Jason@zx2c4.com>
 
-Fix it to iterate the users of the correct chanctx, i.e.
-'ctx->replace_ctx'.
+Acked-by: Ard Biesheuvel <ardb@kernel.org>
 
-Ultimately, this issue led to a crash in a hwsim test
-(multi_ap_wps_shared_apdev_csa) because it would actually
-do the switch (rather than refuse here) and then later
-have a double-free of the original chanctx, because it
-was still in use by another interface yet freed as part
-of the switching.
-
-Fixes: a1dc648aa76d ("wifi: mac80211: remove chanctx to link back-references")
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
----
- net/mac80211/chan.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
-
-diff --git a/net/mac80211/chan.c b/net/mac80211/chan.c
-index 6aa305839f53..c8aba4183c9a 100644
---- a/net/mac80211/chan.c
-+++ b/net/mac80211/chan.c
-@@ -1715,7 +1715,7 @@ static int ieee80211_vif_use_reserved_switch(struct ieee80211_local *local)
- 		n_reserved = 0;
- 		n_ready = 0;
- 
--		for_each_chanctx_user_assigned(local, ctx, &iter) {
-+		for_each_chanctx_user_assigned(local, ctx->replace_ctx, &iter) {
- 			n_assigned++;
- 			if (iter.link->reserved_chanctx) {
- 				n_reserved++;
--- 
-2.51.1
-
+> ---
+>  drivers/net/wireless/intel/iwlwifi/iwl-trans.c | 8 ++++----
+>  1 file changed, 4 insertions(+), 4 deletions(-)
+>
+> diff --git a/drivers/net/wireless/intel/iwlwifi/iwl-trans.c b/drivers/net/wireless/intel/iwlwifi/iwl-trans.c
+> index 5232f66c2d52..cc8a84018f70 100644
+> --- a/drivers/net/wireless/intel/iwlwifi/iwl-trans.c
+> +++ b/drivers/net/wireless/intel/iwlwifi/iwl-trans.c
+> @@ -129,7 +129,7 @@ static enum iwl_reset_mode
+>  iwl_trans_determine_restart_mode(struct iwl_trans *trans)
+>  {
+>         struct iwl_trans_dev_restart_data *data;
+> -       enum iwl_reset_mode at_least = 0;
+> +       enum iwl_reset_mode min_mode = 0;
+>         unsigned int index;
+>         static const enum iwl_reset_mode escalation_list_old[] = {
+>                 IWL_RESET_MODE_SW_RESET,
+> @@ -173,11 +173,11 @@ iwl_trans_determine_restart_mode(struct iwl_trans *trans)
+>         }
+>
+>         if (trans->restart.during_reset)
+> -               at_least = IWL_RESET_MODE_REPROBE;
+> +               min_mode = IWL_RESET_MODE_REPROBE;
+>
+>         data = iwl_trans_get_restart_data(trans->dev);
+>         if (!data)
+> -               return at_least;
+> +               return min_mode;
+>
+>         if (!data->backoff &&
+>             ktime_get_boottime_seconds() - data->last_error >=
+> @@ -194,7 +194,7 @@ iwl_trans_determine_restart_mode(struct iwl_trans *trans)
+>                 data->backoff = false;
+>         }
+>
+> -       return max(at_least, escalation_list[index]);
+> +       return max(min_mode, escalation_list[index]);
+>  }
+>
+>  #define IWL_TRANS_TOP_FOLLOWER_WAIT    180 /* ms */
+> --
+> 2.52.0
+>
 
