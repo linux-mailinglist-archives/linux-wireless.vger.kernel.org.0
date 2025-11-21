@@ -1,124 +1,101 @@
-Return-Path: <linux-wireless+bounces-29224-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-29225-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [213.196.21.55])
-	by mail.lfdr.de (Postfix) with ESMTPS id AC779C77801
-	for <lists+linux-wireless@lfdr.de>; Fri, 21 Nov 2025 07:05:00 +0100 (CET)
+Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [IPv6:2a01:60a::1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6ADA0C77828
+	for <lists+linux-wireless@lfdr.de>; Fri, 21 Nov 2025 07:11:39 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 0314534A451
-	for <lists+linux-wireless@lfdr.de>; Fri, 21 Nov 2025 06:05:00 +0000 (UTC)
+	by ams.mirrors.kernel.org (Postfix) with ESMTPS id CF37634A662
+	for <lists+linux-wireless@lfdr.de>; Fri, 21 Nov 2025 06:10:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9692A26C39F;
-	Fri, 21 Nov 2025 06:04:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 16A602DCBF2;
+	Fri, 21 Nov 2025 06:10:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=realtek.com header.i=@realtek.com header.b="g1ymSDUc"
+	dkim=pass (2048-bit key) header.d=realtek.com header.i=@realtek.com header.b="Hqik/Qvc"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 628B61F5617
-	for <linux-wireless@vger.kernel.org>; Fri, 21 Nov 2025 06:04:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 12309824BD;
+	Fri, 21 Nov 2025 06:10:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=211.75.126.72
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763705095; cv=none; b=eoCU0XNXnrKM0c8yW1JzBxL9wWkUowwSETK9h6kNnQ1KiP7D1qpJUjd8YSJskxUD0VvHeK+EoSUX2zRvGUnpHSn/x9e2EZhUgZWjk6Zb2qm/ngV9zuZlC69h7V6nKHO+ZBro0OgN3JLNHVwEfonLJ+/yQ50jFobm4QDoor1vYRs=
+	t=1763705406; cv=none; b=PZVmnETjQq7EfSKaDC6RjH1pyr8ws2VZ4XB6/h9qA3zTRM8q2z5tVO1QRBpwGHi1iJFk1LdRsJpP+s+q9LNg9S3AH9lQCs/GG8zR8EAwmSW7ocnN3/W0vxsUwhom/Ulh6hVie1CeMskMQbTai/hdMuUwYYv/dTM9fhP3RY2FXoI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763705095; c=relaxed/simple;
-	bh=ZromAkvc/3V8mgNJyWR2OrHc1vzSS5Fv/EMkcFtHges=;
-	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:MIME-Version; b=E49XdtX3CVKKmrFqWpdSE5jN9z/z+M0cdp4hnlnoelvxEv1McM5cnbUbE57ZE2XuL89vXQYq4Hu42Mmx/B96c6FrSFzyfQIfWtcB8dXeno40anMjQuT2IRYJ/YZnPcMyZlvN5jn28EV4Q4TdeImUEvDsP7PCHntbulLtoIp2qcQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com; spf=pass smtp.mailfrom=realtek.com; dkim=pass (2048-bit key) header.d=realtek.com header.i=@realtek.com header.b=g1ymSDUc; arc=none smtp.client-ip=211.75.126.72
+	s=arc-20240116; t=1763705406; c=relaxed/simple;
+	bh=cVvMv9J7erBcRp6kA5IJc0Jgik/aMRU6KiRRVIGq3tk=;
+	h=From:To:CC:Subject:In-Reply-To:References:Message-ID:Date:
+	 MIME-Version:Content-Type; b=nhMb2uT7t/2Hz6vrnL6H8VSscNu0Fzdf2fhE611qJYEWXOkGqQQKTlXW6Vm5MiVITUW1HpgDHBfRivutvfpWP4tw/rWAwZr4pORtj+vQ0pZz1h/NFrJzzi8yX3EV6pZxwzQAeQKe3QzR5bCjfrnRZzJkp5+Pr5L3BYhrGyG8eco=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com; spf=pass smtp.mailfrom=realtek.com; dkim=pass (2048-bit key) header.d=realtek.com header.i=@realtek.com header.b=Hqik/Qvc; arc=none smtp.client-ip=211.75.126.72
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=realtek.com
-X-SpamFilter-By: ArmorX SpamTrap 5.80 with qID 5AL61swwE3030759, This message is accepted by code: ctloc85258
+X-SpamFilter-By: ArmorX SpamTrap 5.80 with qID 5AL69uCT23039169, This message is accepted by code: ctloc85258
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=realtek.com; s=dkim;
-	t=1763704914; bh=fsn3yi34vFL6wAN0Oy9EVsb5SXXk0AlVm2ngOvpfyQc=;
-	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:Content-Transfer-Encoding:MIME-Version;
-	b=g1ymSDUc2XnpItiFt1mLtTcVL2qynJILZyNh+cuVceFHQ5NejiT2eFGrMqVKsa7yW
-	 Y63xkKyLwo7dOOgCYQCAEmrJeSluKUd3zfuolXnDP0OCJBL3cs8YcPo3xd7NdszYqa
-	 /UjHIKXErxW50bySB/6PjSNOxfBy0UyfSLRqZwyK2aeDa/79L+uZOUonv2rJ3Olnbq
-	 OLXeTEKgec9RfTrdULOzuFPyOuXopD3BCWudYA0duLSfN3EkbUqL+oz+sCCzt7o/8A
-	 Kb2MW5U4omC7SHveGpNNBBddv5kQA7fnkAjrEwz64GW/vKWql3LaP6IRLcUm2lbhfe
-	 9/OUyDPPOMFpw==
-Received: from mail.realtek.com (rtkexhmbs04.realtek.com.tw[10.21.1.54])
-	by rtits2.realtek.com.tw (8.15.2/3.21/5.94) with ESMTPS id 5AL61swwE3030759
+	t=1763705396; bh=WwluALrFamw11xO/dtpTJb5AgQu1/DEMiz2XN2kzNP0=;
+	h=From:To:CC:Subject:In-Reply-To:References:Message-ID:Date:
+	 MIME-Version:Content-Type;
+	b=Hqik/QvcchOS5F9486M4AVfHpkdQmqAZOuKtVmPOQU0zvLzocYHHIBAK2y9MC3O6R
+	 NBYZfFwdagcAF2GIMoYr98TzLI2pIJmpObUj5Gx+yEX9blecvzCHOiGJR2G6Z/e53h
+	 YBCSwCJiptwG8k744M1VT/ndLR5Siu0v9fLorIB2KZy9RmJaEMsFcKtJGS5oggcp2x
+	 vYCxLejVC3Y0rZsIFShD4DkLrVsDJkmscX7q7kOg13NhsaZ5qdo9tvBG9+EohZ6PIf
+	 U6tMPTap9Ral7GeXNiVyg6mMaKODxUYVm5StidvnYQVRVSNCNxOqQhxuSCxXMVWGwS
+	 bFshTtDesHLJA==
+Received: from mail.realtek.com (rtkexhmbs03.realtek.com.tw[10.21.1.53])
+	by rtits2.realtek.com.tw (8.15.2/3.21/5.94) with ESMTPS id 5AL69uCT23039169
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Fri, 21 Nov 2025 14:01:54 +0800
-Received: from RTKEXHMBS01.realtek.com.tw (172.21.6.40) by
- RTKEXHMBS04.realtek.com.tw (10.21.1.54) with Microsoft SMTP Server
+	Fri, 21 Nov 2025 14:09:56 +0800
+Received: from RTKEXHMBS03.realtek.com.tw (10.21.1.53) by
+ RTKEXHMBS03.realtek.com.tw (10.21.1.53) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.27; Fri, 21 Nov 2025 14:01:55 +0800
-Received: from RTKEXHMBS06.realtek.com.tw (10.21.1.56) by
- RTKEXHMBS01.realtek.com.tw (172.21.6.40) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.27; Fri, 21 Nov 2025 14:01:50 +0800
-Received: from RTKEXHMBS06.realtek.com.tw ([::1]) by
- RTKEXHMBS06.realtek.com.tw ([fe80::744:4bc9:832c:9b7e%10]) with mapi id
- 15.02.1544.027; Fri, 21 Nov 2025 14:01:50 +0800
+ 15.2.1544.27; Fri, 21 Nov 2025 14:09:56 +0800
+Received: from [127.0.1.1] (172.21.69.94) by RTKEXHMBS03.realtek.com.tw
+ (10.21.1.53) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.27 via Frontend
+ Transport; Fri, 21 Nov 2025 14:09:51 +0800
 From: Ping-Ke Shih <pkshih@realtek.com>
-To: "Mario Limonciello (AMD)" <superm1@kernel.org>,
-        "mario.limonciello@amd.com" <mario.limonciello@amd.com>,
-        "nbd@nbd.name"
-	<nbd@nbd.name>,
-        "lorenzo@kernel.org" <lorenzo@kernel.org>,
-        "ryder.lee@mediatek.com" <ryder.lee@mediatek.com>,
-        "shayne.chen@mediatek.com"
-	<shayne.chen@mediatek.com>,
-        "sean.wang@mediatek.com"
-	<sean.wang@mediatek.com>,
-        "matthias.bgg@gmail.com" <matthias.bgg@gmail.com>,
-        "angelogioacchino.delregno@collabora.com"
-	<angelogioacchino.delregno@collabora.com>
-CC: "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
-        "linux-arm-kernel@lists.infradead.org"
-	<linux-arm-kernel@lists.infradead.org>,
-        "linux-mediatek@lists.infradead.org"
-	<linux-mediatek@lists.infradead.org>
-Subject: RE: [PATCH] wifi: mt76: Strip whitespace from build ddate
-Thread-Topic: [PATCH] wifi: mt76: Strip whitespace from build ddate
-Thread-Index: AQHcWjgzLwwe4dMD8UutouPxvuwR37T8o4bw
-Date: Fri, 21 Nov 2025 06:01:50 +0000
-Message-ID: <a29d737be885490586c30be6262835c8@realtek.com>
-References: <20251120155829.3494747-1-superm1@kernel.org>
-In-Reply-To: <20251120155829.3494747-1-superm1@kernel.org>
-Accept-Language: en-US, zh-TW
-Content-Language: zh-TW
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: quoted-printable
+To: "Gustavo A. R. Silva" <gustavoars@kernel.org>,
+        Jes Sorensen
+	<Jes.Sorensen@gmail.com>
+CC: <linux-wireless@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+        "Gustavo
+ A. R. Silva" <gustavoars@kernel.org>,
+        <linux-hardening@vger.kernel.org>
+Subject: Re: [PATCH][next] wifi: rtl8xxxu: Avoid -Wflex-array-member-not-at-end warnings
+In-Reply-To: <aR2I9Sere0W-4VZz@kspp>
+References: <aR2I9Sere0W-4VZz@kspp>
+Message-ID: <379c0915-4355-4ca4-b563-e62352528d1a@RTKEXHMBS03.realtek.com.tw>
+Date: Fri, 21 Nov 2025 14:09:51 +0800
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain
 
-Mario Limonciello (AMD) <superm1@kernel.org> wrote:
-> @@ -3124,8 +3125,11 @@ int mt76_connac2_load_patch(struct mt76_dev *dev, =
-const char *fw_name)
->         }
->=20
->         hdr =3D (const void *)fw->data;
-> +       strscpy(build_date, hdr->build_date, sizeof(build_date));
-> +       build_date[16] =3D '\0';
+"Gustavo A. R. Silva" <gustavoars@kernel.org> wrote:
 
-As comment of strscpy(), NULL terminator always presents.
+> -Wflex-array-member-not-at-end was introduced in GCC-14, and we are
+> getting ready to enable it, globally.
+> 
+> Move the conflicting declarations to the end of the corresponding
+> structures. Notice that `struct urb` is a flexible structure, this
+> is a structure that contains a flexible-array member.
+> 
+> With these changes fix the following warnings:
+> 
+> 9 drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu.h:1951:20: warning: structure containing a flexible array member is not at the end of another structure [-Wflex-array-member-not-at-end]
+> 9 drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu.h:1945:20: warning: structure containing a flexible array member is not at the end of another structure [-Wflex-array-member-not-at-end]
+> 
+> Signed-off-by: Gustavo A. R. Silva <gustavoars@kernel.org>
 
- * Copy the source string @src, or as much of it as fits, into the
- * destination @dst buffer. The behavior is undefined if the string
- * buffers overlap. The destination @dst buffer is always NUL terminated,
- * unless it's zero-sized.
+1 patch(es) applied to rtw-next branch of rtw.git, thanks.
 
-> +       strim(build_date);
->         dev_info(dev->dev, "HW/SW Version: 0x%x, Build Time: %.16s\n",
-> -                be32_to_cpu(hdr->hw_sw_ver), hdr->build_date);
-> +                be32_to_cpu(hdr->hw_sw_ver), build_date);
->=20
->         for (i =3D 0; i < be32_to_cpu(hdr->desc.n_region); i++) {
->                 struct mt76_connac2_patch_sec *sec;
-> --
-> 2.43.0
->=20
+68dc70ca4dd4 wifi: rtl8xxxu: Avoid -Wflex-array-member-not-at-end warnings
+
+---
+https://github.com/pkshih/rtw.git
 
 
