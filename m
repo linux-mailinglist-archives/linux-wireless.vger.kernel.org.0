@@ -1,202 +1,118 @@
-Return-Path: <linux-wireless+bounces-29243-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-29245-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B3AAAC7A85E
-	for <lists+linux-wireless@lfdr.de>; Fri, 21 Nov 2025 16:25:18 +0100 (CET)
+Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [213.196.21.55])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9FA5DC7AE5F
+	for <lists+linux-wireless@lfdr.de>; Fri, 21 Nov 2025 17:42:14 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 807DE3A2AEC
-	for <lists+linux-wireless@lfdr.de>; Fri, 21 Nov 2025 15:21:12 +0000 (UTC)
+	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 6CCE0368922
+	for <lists+linux-wireless@lfdr.de>; Fri, 21 Nov 2025 16:41:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BE5D3352923;
-	Fri, 21 Nov 2025 15:18:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B64C433B963;
+	Fri, 21 Nov 2025 16:40:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="G9ZJSl8y"
+	dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b="SAbC3Vs5"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.9])
+Received: from sipsolutions.net (s3.sipsolutions.net [168.119.38.16])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E42EC351FD1
-	for <linux-wireless@vger.kernel.org>; Fri, 21 Nov 2025 15:17:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.9
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F20AE2E92D0
+	for <linux-wireless@vger.kernel.org>; Fri, 21 Nov 2025 16:40:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=168.119.38.16
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763738281; cv=none; b=I6mBXywxXfxNV2o7Y8kQB2fXs7I7IjOWTxvGuc/AcfJOYchreN8YRkt3ZiIkWuF7TJ1pKxhqNSdPuztKjhOt72EVqRXJZ73QHYWMyMOAzIOKpGDdlf1IsBR7RKUxB29NRt9ZkNvehhC133BBbP0rjzhTN2eUxhHTuwdfVM6aO8o=
+	t=1763743229; cv=none; b=N9o6d/7bOzd1RRhtjiU5YkVkRqe4SAckSCaccVo/CD08melpRnT8Wn3DZhb2G1qD4TQnSDknN/mtyh5SO2CjQz9W0w5SkV1AQUJHKouH8cLz47BmAq8mg/dDWC3biMDTWQ+TccbyJsufsRZC2m72vkA5nqUyE6/wOlQTIg3yjHc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763738281; c=relaxed/simple;
-	bh=086sNeQT3GswPhN/zyzOuuJeaoWTT7MyOcIz2SJf1Ks=;
-	h=Date:From:To:Cc:Subject:Message-ID; b=pnESJiTvMG8IcgZds8iylVixuIC4pmtsOELQpANo1TxuLNQ8KNQs0G9SyA7IJQGJUzlf/V6h2rr50jOZ2Kd1kF6irxRPNZaZqEwOlzX6kufTX49+wVwayuq3tKgBpTPtJXOo9zVbXQ1oZVkzc38CD6CtmRNLQ6H7gCZNiouoyD8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=G9ZJSl8y; arc=none smtp.client-ip=198.175.65.9
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1763738279; x=1795274279;
-  h=date:from:to:cc:subject:message-id;
-  bh=086sNeQT3GswPhN/zyzOuuJeaoWTT7MyOcIz2SJf1Ks=;
-  b=G9ZJSl8y3S1VUlzfwoIKxIN4xzyBQ4iTT6WV1zw0Wtwx72+M53YGXCE1
-   DjZBDP40FpwP0mGXxRjZqZ/JdLpufAGfMkrk8K7Gcek65/6g50HCOinRW
-   03MbgTCT9lgXN3cNvApMdvKElWQWvSDk3WXrrhjnTKUFQ95Njo1S38kDH
-   LLlMxubHyTrc6LXwZ/azJuzv5O0KzdiKDoiFJyqNJOU20xvmDyJ9ANxKS
-   BXz3j2yMtc2dHcaW4pIkIHc9+QxSaURwTdNnZCzox7S3/pxpDOULxeyP4
-   Ht4nn8HzUp+f1IEixtbMJOXHWHZsWGHw7exwX0eJDjPl0Nscb3YbGw01B
-   A==;
-X-CSE-ConnectionGUID: poKnH/8+S1aRG2g4Ns8arA==
-X-CSE-MsgGUID: MgJb9fjYSpKRcmrmtu/BXQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11620"; a="88485603"
-X-IronPort-AV: E=Sophos;i="6.20,216,1758610800"; 
-   d="scan'208";a="88485603"
-Received: from orviesa004.jf.intel.com ([10.64.159.144])
-  by orvoesa101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 21 Nov 2025 07:17:58 -0800
-X-CSE-ConnectionGUID: 6AT4Cr2zTkqDN3sO1yt+gg==
-X-CSE-MsgGUID: kqk71A4MQPGQU4Cm6ASE7g==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.20,216,1758610800"; 
-   d="scan'208";a="196178007"
-Received: from lkp-server01.sh.intel.com (HELO adf6d29aa8d9) ([10.239.97.150])
-  by orviesa004.jf.intel.com with ESMTP; 21 Nov 2025 07:17:56 -0800
-Received: from kbuild by adf6d29aa8d9 with local (Exim 4.96)
-	(envelope-from <lkp@intel.com>)
-	id 1vMStW-0006Vd-0T;
-	Fri, 21 Nov 2025 15:17:54 +0000
-Date: Fri, 21 Nov 2025 23:17:05 +0800
-From: kernel test robot <lkp@intel.com>
-To: Johannes Berg <johannes.berg@intel.com>
-Cc: linux-wireless@vger.kernel.org
-Subject: [wireless-next:main] BUILD SUCCESS
- b688a9447be360d09c0982234fcd703ac7dd8c15
-Message-ID: <202511212300.fasLPKrb-lkp@intel.com>
-User-Agent: s-nail v14.9.25
+	s=arc-20240116; t=1763743229; c=relaxed/simple;
+	bh=Rm1/7ip/Xfymj7J/7OJ6HrqpXryMsKmbuq4OeZBLkHo=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=dPGsnJ7M8DwG9QGfVcNX/YgYPGDDq58Lp8kfPkTeBpUOLbxWOj4NDTaWn+vGFkRHWybZnIsxDYvHkBRDBTM96pJ5EJXjgweg8+TXNJZ8OJihNlkGz+6Ay0OOW3njaSVrFNoYak+i3sdO29X1FVEictFl828OYiQ3ucL2wy5b+MY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net; spf=pass smtp.mailfrom=sipsolutions.net; dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b=SAbC3Vs5; arc=none smtp.client-ip=168.119.38.16
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sipsolutions.net
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=sipsolutions.net; s=mail; h=Content-Transfer-Encoding:MIME-Version:
+	Message-ID:Date:Subject:Cc:To:From:Content-Type:Sender:Reply-To:Content-ID:
+	Content-Description:Resent-Date:Resent-From:Resent-To:Resent-Cc:
+	Resent-Message-ID:In-Reply-To:References;
+	bh=iJPosBbTDupW54WNtHiaOja9wBd9b2KdAqnKuzFuTvU=; t=1763743228; x=1764952828; 
+	b=SAbC3Vs5jspkBnVMHqlDV2kD0h9RaIzCGsOcOIRzXphk5YU23hwCkOeiAZ2QNSxzJW/Oc7P7Cc1
+	DWiSXZrKNNhZuuHaQmc7R7te2fFiSXwdrr9jkcYqbw3BTthrIE8L3ZmmNtd9/XegbKKf1U1KNyOYm
+	d04Zps0pylTKfY21celq/KXTjVyH3YeA+qa+oaAsHzodsNkeMzzx4Vsr+eaGsH7pG1aHGFHnerFva
+	Vb07b2hBiLHCBCBdeqgS5xxIL8qM1139rOQij4dSfgYefkDLE9N1kkb5Yak4uC6IBPgxTZGrrTCU7
+	4+RcS+mIPDQ+aximCBEhwtgjjI0C4zYNgTyg==;
+Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
+	(Exim 4.98.2)
+	(envelope-from <johannes@sipsolutions.net>)
+	id 1vMUBL-0000000DAuH-3FMv;
+	Fri, 21 Nov 2025 17:40:24 +0100
+From: Johannes Berg <johannes@sipsolutions.net>
+To: linux-wireless@vger.kernel.org
+Cc: Johannes Berg <johannes.berg@intel.com>
+Subject: [PATCH wireless-next 1/2] wifi: cfg80211: use cfg80211_leave() in iftype change
+Date: Fri, 21 Nov 2025 17:40:20 +0100
+Message-ID: <20251121174021.922ef48ce007.I970c8514252ef8a864a7fbdab9591b71031dee03@changeid>
+X-Mailer: git-send-email 2.51.1
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 
-tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/wireless/wireless-next.git main
-branch HEAD: b688a9447be360d09c0982234fcd703ac7dd8c15  wifi: mac80211: refactor CMAC packet handlers
+From: Johannes Berg <johannes.berg@intel.com>
 
-elapsed time: 1497m
+When changing the interface type, all activity on the interface has
+to be stopped first. This was done independent of existing code in
+cfg80211_leave(), so didn't handle e.g. background radar detection.
+Use cfg80211_leave() to handle it the same way.
 
-configs tested: 109
-configs skipped: 7
+Note that cfg80211_leave() behaves slightly differently for IBSS in
+wireless extensions, it won't send an event in that case. We could
+handle that, but since nl80211 was used to change the type, IBSS is
+rare, and wext is already a corner case, it doesn't seem worth it.
 
-The following configs have been built successfully.
-More configs may be tested in the coming days.
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+---
+ net/wireless/util.c | 23 +----------------------
+ 1 file changed, 1 insertion(+), 22 deletions(-)
 
-tested configs:
-alpha                             allnoconfig    gcc-15.1.0
-arc                               allnoconfig    gcc-15.1.0
-arc                            hsdk_defconfig    gcc-15.1.0
-arc                   randconfig-001-20251121    gcc-8.5.0
-arc                   randconfig-002-20251121    gcc-13.4.0
-arm                               allnoconfig    clang-22
-arm                      jornada720_defconfig    clang-22
-arm                   randconfig-001-20251121    gcc-10.5.0
-arm                   randconfig-002-20251121    gcc-11.5.0
-arm                   randconfig-003-20251121    clang-22
-arm                   randconfig-004-20251121    gcc-10.5.0
-arm64                             allnoconfig    gcc-15.1.0
-arm64                 randconfig-001-20251121    gcc-8.5.0
-arm64                 randconfig-002-20251121    clang-22
-arm64                 randconfig-003-20251121    gcc-8.5.0
-arm64                 randconfig-004-20251121    gcc-10.5.0
-csky                              allnoconfig    gcc-15.1.0
-csky                  randconfig-001-20251121    gcc-14.3.0
-csky                  randconfig-002-20251121    gcc-11.5.0
-hexagon                           allnoconfig    clang-22
-hexagon               randconfig-001-20251121    clang-22
-hexagon               randconfig-002-20251121    clang-22
-i386                              allnoconfig    gcc-14
-i386        buildonly-randconfig-001-20251121    gcc-14
-i386        buildonly-randconfig-002-20251121    gcc-14
-i386        buildonly-randconfig-003-20251121    clang-20
-i386        buildonly-randconfig-004-20251121    clang-20
-i386        buildonly-randconfig-005-20251121    clang-20
-i386        buildonly-randconfig-006-20251121    clang-20
-i386                  randconfig-001-20251121    gcc-14
-i386                  randconfig-002-20251121    clang-20
-i386                  randconfig-003-20251121    gcc-14
-i386                  randconfig-004-20251121    clang-20
-i386                  randconfig-005-20251121    clang-20
-i386                  randconfig-006-20251121    gcc-14
-i386                  randconfig-007-20251121    gcc-14
-i386                  randconfig-011-20251121    clang-20
-i386                  randconfig-012-20251121    clang-20
-i386                  randconfig-013-20251121    clang-20
-i386                  randconfig-014-20251121    clang-20
-i386                  randconfig-015-20251121    clang-20
-i386                  randconfig-016-20251121    gcc-14
-i386                  randconfig-017-20251121    gcc-14
-loongarch                         allnoconfig    clang-22
-loongarch             randconfig-001-20251121    gcc-15.1.0
-loongarch             randconfig-002-20251121    clang-22
-m68k                              allnoconfig    gcc-15.1.0
-m68k                        stmark2_defconfig    gcc-15.1.0
-microblaze                        allnoconfig    gcc-15.1.0
-mips                              allnoconfig    gcc-15.1.0
-nios2                             allnoconfig    gcc-11.5.0
-nios2                 randconfig-001-20251121    gcc-11.5.0
-nios2                 randconfig-002-20251121    gcc-8.5.0
-openrisc                          allnoconfig    gcc-15.1.0
-openrisc                            defconfig    gcc-15.1.0
-openrisc                       virt_defconfig    gcc-15.1.0
-parisc                            allnoconfig    gcc-15.1.0
-parisc                              defconfig    gcc-15.1.0
-parisc                randconfig-001-20251121    gcc-12.5.0
-parisc                randconfig-002-20251121    gcc-12.5.0
-powerpc                           allnoconfig    gcc-15.1.0
-powerpc                      arches_defconfig    gcc-15.1.0
-powerpc               randconfig-001-20251121    clang-18
-powerpc               randconfig-002-20251121    gcc-11.5.0
-powerpc64             randconfig-001-20251121    gcc-8.5.0
-powerpc64             randconfig-002-20251121    clang-20
-riscv                             allnoconfig    gcc-15.1.0
-riscv                               defconfig    clang-22
-riscv                 randconfig-001-20251121    gcc-14.3.0
-s390                              allnoconfig    clang-22
-s390                                defconfig    clang-22
-s390                  randconfig-001-20251121    gcc-13.4.0
-s390                  randconfig-002-20251121    clang-19
-sh                                allnoconfig    gcc-15.1.0
-sh                                  defconfig    gcc-15.1.0
-sh                 kfr2r09-romimage_defconfig    gcc-15.1.0
-sh                    randconfig-001-20251121    gcc-10.5.0
-sh                    randconfig-002-20251121    gcc-11.5.0
-sparc                             allnoconfig    gcc-15.1.0
-sparc                               defconfig    gcc-15.1.0
-sparc                 randconfig-001-20251121    gcc-13.4.0
-sparc                 randconfig-002-20251121    gcc-8.5.0
-sparc64                             defconfig    clang-20
-sparc64               randconfig-001-20251121    clang-22
-sparc64               randconfig-002-20251121    clang-22
-um                                allnoconfig    clang-22
-um                                  defconfig    clang-22
-um                             i386_defconfig    gcc-14
-um                    randconfig-001-20251121    clang-22
-um                    randconfig-002-20251121    gcc-14
-um                           x86_64_defconfig    clang-22
-x86_64                            allnoconfig    clang-20
-x86_64      buildonly-randconfig-001-20251121    gcc-14
-x86_64      buildonly-randconfig-002-20251121    gcc-14
-x86_64      buildonly-randconfig-003-20251121    gcc-14
-x86_64      buildonly-randconfig-004-20251121    clang-20
-x86_64      buildonly-randconfig-005-20251121    gcc-14
-x86_64      buildonly-randconfig-006-20251121    clang-20
-x86_64                              defconfig    gcc-14
-x86_64                randconfig-011-20251121    clang-20
-x86_64                randconfig-012-20251121    gcc-14
-x86_64                randconfig-013-20251121    gcc-14
-x86_64                randconfig-014-20251121    gcc-14
-x86_64                randconfig-015-20251121    gcc-14
-x86_64                randconfig-016-20251121    gcc-14
-xtensa                            allnoconfig    gcc-15.1.0
-xtensa                randconfig-001-20251121    gcc-11.5.0
-xtensa                randconfig-002-20251121    gcc-8.5.0
-xtensa                         virt_defconfig    gcc-15.1.0
+diff --git a/net/wireless/util.c b/net/wireless/util.c
+index 97f40c6d1e9d..27e8a2f52f04 100644
+--- a/net/wireless/util.c
++++ b/net/wireless/util.c
+@@ -1203,28 +1203,7 @@ int cfg80211_change_iface(struct cfg80211_registered_device *rdev,
+ 		dev->ieee80211_ptr->use_4addr = false;
+ 		rdev_set_qos_map(rdev, dev, NULL);
+ 
+-		switch (otype) {
+-		case NL80211_IFTYPE_AP:
+-		case NL80211_IFTYPE_P2P_GO:
+-			cfg80211_stop_ap(rdev, dev, -1, true);
+-			break;
+-		case NL80211_IFTYPE_ADHOC:
+-			cfg80211_leave_ibss(rdev, dev, false);
+-			break;
+-		case NL80211_IFTYPE_STATION:
+-		case NL80211_IFTYPE_P2P_CLIENT:
+-			cfg80211_disconnect(rdev, dev,
+-					    WLAN_REASON_DEAUTH_LEAVING, true);
+-			break;
+-		case NL80211_IFTYPE_MESH_POINT:
+-			/* mesh should be handled? */
+-			break;
+-		case NL80211_IFTYPE_OCB:
+-			cfg80211_leave_ocb(rdev, dev);
+-			break;
+-		default:
+-			break;
+-		}
++		cfg80211_leave(rdev, dev->ieee80211_ptr);
+ 
+ 		cfg80211_process_rdev_events(rdev);
+ 		cfg80211_mlme_purge_registrations(dev->ieee80211_ptr);
+-- 
+2.51.1
 
---
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
 
