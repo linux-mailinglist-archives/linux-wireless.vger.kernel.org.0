@@ -1,48 +1,48 @@
-Return-Path: <linux-wireless+bounces-29253-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-29255-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [IPv6:2a01:60a::1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id A762FC7D27C
-	for <lists+linux-wireless@lfdr.de>; Sat, 22 Nov 2025 15:18:28 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
+	by mail.lfdr.de (Postfix) with ESMTPS id BC0D2C7D294
+	for <lists+linux-wireless@lfdr.de>; Sat, 22 Nov 2025 15:20:09 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 53BCB34A811
-	for <lists+linux-wireless@lfdr.de>; Sat, 22 Nov 2025 14:18:28 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id A24F04E1695
+	for <lists+linux-wireless@lfdr.de>; Sat, 22 Nov 2025 14:20:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C2C8D220687;
-	Sat, 22 Nov 2025 14:18:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9768C1F09AD;
+	Sat, 22 Nov 2025 14:20:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="I43rExh/"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="JpKMLALd"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 988E8217F36;
-	Sat, 22 Nov 2025 14:18:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6DA5136D512;
+	Sat, 22 Nov 2025 14:20:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763821103; cv=none; b=Nnw7BHEOG5piNeB0gxWNGfaD8yPgqUE/ZQEHAsxgr2S7W8o2X++hs35/fq+h55ZU5aixCi6PHNWHPJxsAZbhWjzSn0mnwV4DZGIkf8KI9KwobCskr8A6l7wu+LepI0iMgKwIwgNBtpXG+F60gVdAJ0QoNmnD3Ii2vP+LQ4bSLUI=
+	t=1763821206; cv=none; b=c3Mee2IrsIBHmDsMdLpjmgf9HXBiwxttYC3SOwE5AAYGgcP9h9T6BOdcR0ooufLRqvI6wEj/KnhhFtEjX9Vj9TuZXvE8QebxTV3kLr/qYbnLJCjlE1WC03QUU4aFkJn80pwG8r0YCb/VjU+H02D5Ysyf8TVLxz8aha96ZYBmkRo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763821103; c=relaxed/simple;
-	bh=KV9tYIxQM14TEhl6KK98HgFvA2JdX9m+AUWHHcj7A9c=;
+	s=arc-20240116; t=1763821206; c=relaxed/simple;
+	bh=6Up8YavrirliGvNINRljRb264hNljzpay8HvPOvt0qI=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=TF2aJy6hXH9jdvvH8jz/sXhgL4pNIo4C0nvvFtVbW+zKdbMm16/+tIM8oe8853RdHNmXWZUy7CEMam1Gm/5aOt5rtUVH4YaLra1Af4QgHskHgu+/OogHknbqZ3Q6jGdhCBe635XinWo0J5+1DwHveaf8NOdzaqZE+X7w0yHgKIo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=I43rExh/; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 047D2C4CEF5;
-	Sat, 22 Nov 2025 14:18:21 +0000 (UTC)
+	 In-Reply-To:Content-Type; b=r9lrwsaYz38FMD34c9hgP5vwf17igKZRnh0fUitbHvfzoRrBRNEaeDffAOSmVIFOolIwuCwHCUginlbOAWGAVwz+LhCC0Q+L3HaXNsBEUVOKuXzIExDEGMAin/iZPNPN4zAd9lKMQrdPNwFNbCUVta0vnS0ZCgZPYihMo6ifTPM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=JpKMLALd; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 61E4FC4CEF5;
+	Sat, 22 Nov 2025 14:20:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1763821103;
-	bh=KV9tYIxQM14TEhl6KK98HgFvA2JdX9m+AUWHHcj7A9c=;
+	s=k20201202; t=1763821205;
+	bh=6Up8YavrirliGvNINRljRb264hNljzpay8HvPOvt0qI=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=I43rExh/ImDqf7jsmxiI6Hq8Q9azPgm7OB2HyEM2A4teCnuMtVUWeCDN8bitcwPie
-	 5Cs87WMFlf9wDE4b/sdh+csAqD6d2zlJtEpKpozfgpK9sj/tG+31drxuCZKGm+cUUZ
-	 VH3TGP2HUAO1Ajg/8VjNEbK+ztsiPGuGISKovFuAAyab6hj0qOaJ/86CliZKOl840F
-	 /0l73/vid3J0wLSrIlKIbwciO+fElZj5j8jtwxVXGnviH2OgrMy6IPi1e3li73UiUz
-	 pIELoG+T46Du2/OfV7vs7DKkJV2YXcR4YOAwuVdKPyawIO0XkFJ8W29Jk9zM8KTzJ5
-	 AuwDZvK0l+9yQ==
-Message-ID: <a9e12ace-dc0e-4bac-9775-72cd7d477169@kernel.org>
-Date: Sat, 22 Nov 2025 15:18:20 +0100
+	b=JpKMLALdGtn0ZivaEAVk34wknysMhbgcVh2ITyBRGwCCFsySST/MTFqEiGToaBme/
+	 4V+YM55JeilRftwtVfPULFkPHMa08+O5WbosDZpccHDXHwEBjf5WQKc8VvB/VEVGp+
+	 7PorlFP5YYJ1jfMwFkYSPFTATbfLeG3ijfd1WdobJLQMlFedAbtJsQdbI88vIe5aD+
+	 9qT3HW1LEskPi6Swr0pKe/HrosVdhX37C1fgY99MHCVZGI8SvFjGhioUkRE3HVR2KE
+	 06MCOnDQgnNoheJ2G5oRIC4CkYqfg7EgMB2VoVjn1FzOEpzE6erlvjmAIyU25rvZsp
+	 uC10ZTowunyMg==
+Message-ID: <3ef371f6-c296-44d8-87d7-477d6a97dabb@kernel.org>
+Date: Sat, 22 Nov 2025 15:20:02 +0100
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
@@ -50,12 +50,14 @@ List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH RESEND iwlwifi-next] wifi: iwlwifi: mld: remove unused
- variable in d3.c
+Subject: Re: [PATCH iwlwifi-next v4] wifi: iwlwifi: fix uninitialized pointers
+ with free attribute
 To: Ally Heev <allyheev@gmail.com>,
  Miri Korenblit <miriam.rachel.korenblit@intel.com>
-Cc: linux-wireless@vger.kernel.org, linux-kernel@vger.kernel.org
-References: <20251121-aheev-remove-unused-var-old-keys-v1-1-6c2565c77ef7@gmail.com>
+Cc: Johannes Berg <johannes@sipsolutions.net>,
+ linux-wireless@vger.kernel.org, linux-kernel@vger.kernel.org,
+ Dan Carpenter <dan.carpenter@linaro.org>
+References: <20251121-aheev-uninitialized-free-attr-wireless-v4-1-75239da589ef@gmail.com>
 From: Krzysztof Kozlowski <krzk@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=krzk@kernel.org; keydata=
@@ -101,53 +103,60 @@ Autocrypt: addr=krzk@kernel.org; keydata=
  jWt87ecuHlpL3uuQ0ZZNWqHgZoQLXoqC2ZV5KrtKWb/jyiFX/sxSrodALf0zf+tfHv0FZWT2
  zHjUqd0t4njD/UOsuIMOQn4Ig0SdivYPfZukb5cdasKJukG1NOpbW7yRNivaCnfZz6dTawXw
  XRIV/KDsHQiyVxKvN73bThKhONkcX2LWuD928tAR6XMM2G5ovxLe09vuOzzfTWQDsm++9UKF a/A=
-In-Reply-To: <20251121-aheev-remove-unused-var-old-keys-v1-1-6c2565c77ef7@gmail.com>
+In-Reply-To: <20251121-aheev-uninitialized-free-attr-wireless-v4-1-75239da589ef@gmail.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 
-On 21/11/2025 15:27, Ally Heev wrote:
-> remove unused variable `old_keys`
+On 21/11/2025 15:25, Ally Heev wrote:
+> Uninitialized pointers with `__free` attribute can cause undefined
+> behavior as the memory assigned randomly to the pointer is freed
+> automatically when the pointer goes out of scope.
 > 
+> It is better to initialize and assign pointers with `__free` attribute
+> in one statement to ensure proper scope-based cleanup
+> 
+> Reported-by: Dan Carpenter <dan.carpenter@linaro.org>
+> Closes: https://lore.kernel.org/all/aPiG_F5EBQUjZqsl@stanley.mountain/
 > Signed-off-by: Ally Heev <allyheev@gmail.com>
 > ---
->  drivers/net/wireless/intel/iwlwifi/mld/d3.c | 2 --
->  1 file changed, 2 deletions(-)
+> Changes in v4:
+> - moved pointers declaration to where the allocation is
+> - Link to v3: https://lore.kernel.org/r/20251111-aheev-uninitialized-free-attr-wireless-v3-1-26e889d0e7ee@gmail.com
 > 
-> diff --git a/drivers/net/wireless/intel/iwlwifi/mld/d3.c b/drivers/net/wireless/intel/iwlwifi/mld/d3.c
-> index 1d4282a21f09e0f90a52dc02c8287ecc0e0fafe1..fefb4f532a1f9fbb1a4a5cbd2ade817d5c1adb58 100644
-> --- a/drivers/net/wireless/intel/iwlwifi/mld/d3.c
-> +++ b/drivers/net/wireless/intel/iwlwifi/mld/d3.c
-> @@ -996,8 +996,6 @@ static void iwl_mld_mlo_rekey(struct iwl_mld *mld,
->  			      struct iwl_mld_wowlan_status *wowlan_status,
->  			      struct ieee80211_vif *vif)
->  {
-> -	struct iwl_mld_old_mlo_keys *old_keys __free(kfree) = NULL;
-> -
->  	IWL_DEBUG_WOWLAN(mld, "Num of MLO Keys: %d\n", wowlan_status->num_mlo_keys);
->  
->  	if (!wowlan_status->num_mlo_keys)
+> Changes in v3:
+> - fixed commit message to include iwlwifi
+> - reverted unused variable removal. To be done in a different patch
+> - Link to v2: https://lore.kernel.org/r/20251107-aheev-uninitialized-free-attr-wireless-v2-1-674fc3e5c78e@gmail.com
 > 
+> Changes in v2:
+> - fixed style issues
+> - ignore v1 of this patch
+> - Link to v1: https://lore.kernel.org/r/20251105-aheev-uninitialized-free-attr-wireless-v1-1-6c850a4a952a@gmail.com
 > ---
-> base-commit: 4427259cc7f7571a157fbc9b5011e1ef6fe0a4a8
-> change-id: 20251111-aheev-remove-unused-var-old-keys-104ffca9bf62
+>  drivers/net/wireless/intel/iwlwifi/fw/uefi.c | 2 +-
+>  drivers/net/wireless/intel/iwlwifi/mld/d3.c  | 6 +++---
+>  2 files changed, 4 insertions(+), 4 deletions(-)
 > 
+> diff --git a/drivers/net/wireless/intel/iwlwifi/fw/uefi.c b/drivers/net/wireless/intel/iwlwifi/fw/uefi.c
+> index 4ae4d215e633e0d51194d818d479349e7c502201..2fe5f744a81cf42e768cc409f1af8823e204946f 100644
+> --- a/drivers/net/wireless/intel/iwlwifi/fw/uefi.c
+> +++ b/drivers/net/wireless/intel/iwlwifi/fw/uefi.c
+> @@ -818,9 +818,9 @@ int iwl_uefi_get_dsbr(struct iwl_fw_runtime *fwrt, u32 *value)
+>  
+>  int iwl_uefi_get_phy_filters(struct iwl_fw_runtime *fwrt)
+>  {
+> -	struct uefi_cnv_wpfc_data *data __free(kfree);
+>  	struct iwl_phy_specific_cfg *filters = &fwrt->phy_filters;
+>  
+> +	struct uefi_cnv_wpfc_data *data __free(kfree) = NULL;
+>  	data = iwl_uefi_get_verified_variable(fwrt->trans, IWL_UEFI_WPFC_NAME,
+
+This should be one line. Please do not split declaration from
+constructors. If maintainers do not like that syntax, then they should
+not allow to use cleanup.h in their subsystem.
+
 > Best regards,
-> -----BEGIN PGP SIGNATURE-----
-> 
-> iHUEABYKAB0WIQQBFRpOLrIakF7DYvaWPaLUP9d7HAUCaRLyowAKCRCWPaLUP9d7
-> HLG9AQDZmggT93tMLv32pq5myG3e83t12KWON9efOBg//lH4vgD+Ppw3KoTpdYtJ
-> 20VDaWuqUVj9KLqjx9hblfEiB7s9gQw=
-> =A6F+
-> -----END PGP SIGNATURE-----
 
-You should switch to patatt instead, not signing emails. We don't use
-that, I think at all, unlike patatt which is being actively checked by
-toolkit (b4).
-
-Anyway, not a problem, just noise, so:
-
-
-Reviewed-by: Krzysztof Kozlowski <krzk@kernel.org>
 
 Best regards,
 Krzysztof
