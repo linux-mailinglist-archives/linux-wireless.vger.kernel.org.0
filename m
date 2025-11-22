@@ -1,168 +1,122 @@
-Return-Path: <linux-wireless+bounces-29256-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-29257-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id CFDA1C7D433
-	for <lists+linux-wireless@lfdr.de>; Sat, 22 Nov 2025 17:57:49 +0100 (CET)
+Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [IPv6:2a01:60a::1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id 97A3CC7D63C
+	for <lists+linux-wireless@lfdr.de>; Sat, 22 Nov 2025 20:22:31 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id B321B4E1229
-	for <lists+linux-wireless@lfdr.de>; Sat, 22 Nov 2025 16:57:48 +0000 (UTC)
+	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 38C5B3515EA
+	for <lists+linux-wireless@lfdr.de>; Sat, 22 Nov 2025 19:22:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 38F9314F125;
-	Sat, 22 Nov 2025 16:57:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5B2BE2C11C4;
+	Sat, 22 Nov 2025 19:22:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="fXsEmhWD"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="ODwVJJ3V"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-ej1-f42.google.com (mail-ej1-f42.google.com [209.85.218.42])
+Received: from mail-ed1-f41.google.com (mail-ed1-f41.google.com [209.85.208.41])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 566051D63D1
-	for <linux-wireless@vger.kernel.org>; Sat, 22 Nov 2025 16:57:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.42
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D013228727E
+	for <linux-wireless@vger.kernel.org>; Sat, 22 Nov 2025 19:22:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.41
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763830666; cv=none; b=MJNlONsu37yUj9EPdjR1aMHCt7GYddUuzA1t0a2kIZIm5t3u4IhAZnkJNVgXqby5NPTmK+RXaHjQEXUrklLqTUL3FfpSJNPOOcto6i1xfjEDoFTZy7DndbAOcjwgszhcxaY/7MzZKFWmHuyNI0GIzM7296W5mM9mR0cqL3Dkzn8=
+	t=1763839347; cv=none; b=Ef4XQObPWRM1I53QjuxzWohieQOHsUPTNK2sY8zFZjf0mKOETk29yvQP7W7K62EOxK/inTKdDUGcaImtTEbqEp4HD6PNe12lgTLwRYyoIBIz+w9ud/8a69LV8yts7bgwGTTJkNF9dJ61bNZjLsHiTWtYXXMtoApzDUwTrHrnRIE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763830666; c=relaxed/simple;
-	bh=fs2lYtrZNV3KZp6UxTLBsAy379d9ku/fF4PuWVPTvRg=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=C+UpR+ZucftwLhY6vWoFwH8CEJ4w2THHOeNaGawUcY9gVMezPcuVfDXk/5h918vT3hXi/PdcGOJctkhTD59wUuiYtWlQTAjoQ8ICfhBp951bJABS5KrcvSlw7PPnq972aengFSUq25+Qd0tFmpEes/9QMCAuPDDghH4XxyfOdAY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=fXsEmhWD; arc=none smtp.client-ip=209.85.218.42
+	s=arc-20240116; t=1763839347; c=relaxed/simple;
+	bh=vzWYr77Lw4i+lnLPudFWFiHKqe3GTkRNm8Z1R+FZ4BE=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=f1pMmfyR2YBjmPHNK0JQ9xcQ5qo4/iEz/rhiOeTC4CZQKHD41atUsa4Y/fkRW6cxXn0rpvR8jnVs9gp4evJbHOH7Ez7XW0Gv6pgW53PWaXJwedKg3mFkWzKlXzq/+NPOSeZ+CrkRiTuTOMMuW5ahBLINFXuLl+ggpjTiJ4PQdLw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=ODwVJJ3V; arc=none smtp.client-ip=209.85.208.41
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-ej1-f42.google.com with SMTP id a640c23a62f3a-b725ead5800so378157866b.1
-        for <linux-wireless@vger.kernel.org>; Sat, 22 Nov 2025 08:57:44 -0800 (PST)
+Received: by mail-ed1-f41.google.com with SMTP id 4fb4d7f45d1cf-640b06fa959so5179125a12.3
+        for <linux-wireless@vger.kernel.org>; Sat, 22 Nov 2025 11:22:24 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1763830663; x=1764435463; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references
-         :mail-followup-to:message-id:subject:cc:to:from:date:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=+OUGVg+qzpVBZ5O3rUCAbdonkufD8EHD+NzO79QMHoU=;
-        b=fXsEmhWD2XiLpIH11kDYwnJYjHjdzCYtuIdJotQjZJPcCjQFe2i+CaFzMj8WsDrGf+
-         yqlyPgQLfQPwf6osXOmVO8eD2MUMU2i5sRPaAq2gt2DjNp9CYK6yeubPnaebkvigoedE
-         Kh58hsXm4cOQJgRLhNlG88jAFbXbATecsJf7vxyL1Qzh78kW/qnxB8hBinD4UKZp5tyQ
-         ZXK6wDZ1UV6RJQag1TO6vZHhDUIPpX5PjaDjAopZ6IjMlgfOgbaR9L4A/z04hf0eEInJ
-         TruIBMZWjUeJCXQhxuBsMT437hdLgnQ9m9wSt124W4PieCEXJW7qRYCQvRqpbxwp1m4J
-         jrTg==
+        d=gmail.com; s=20230601; t=1763839343; x=1764444143; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=O0hrOV3lyNr6WMG3TksH1+AZYpbZBOorGv+1K1dsn9A=;
+        b=ODwVJJ3VPsb37U82TDt4kiFNMT/i+iqSAYv6ZFeLJyfcVdYM1jCFk97++18mPleFfq
+         GIUy5Vw325HHEjWtTaDCy0z4iSjxMv8aHfgOzhX8t6pyJkS/G1qhiIV3eqbUg+XGc0xd
+         zEwgg6A96TFpqm0YpQ+ymcnCAkURqC9PcY8RTC9mu942LCjbVMJa2IZSAUxEpdPcnjiR
+         Kck4FYDL8oTu0KTWlI0BjYMVnzEg0wSmmu5tgAKAbpIlFnZGggKYZjPI1rjOBZo0tSWc
+         m9ajKy2+r2E63+bKe/sBwGIMP9G+hV/1FxRfWJrKpFtYSRhZ0+K73aHh3zraH3I0RVd2
+         P4Ng==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1763830663; x=1764435463;
-        h=in-reply-to:content-disposition:mime-version:references
-         :mail-followup-to:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=+OUGVg+qzpVBZ5O3rUCAbdonkufD8EHD+NzO79QMHoU=;
-        b=nMfM79wz3fzcUsEa0CmI6z/5OT/zGRy+jRfbq2BiGi9F4AycQn66iyTT+7huq0MN5P
-         +c09hCOcQXW6j41K637QaTF7Be9u1mZP3QVsymJIBVSZEADkxZHbCVaS2nE31mkjfyeY
-         lVKGCEM4K1+1szvT47wwDvCXn1inM28uU9+N5ic81uunGWrdMttp/veHl4jdgeFRz38M
-         DX5bX0qXzwPTxt1W9a4tvOQVbN0DAeBn3I4uDByCygc0QbWdU0hoE1t33H6IYxtGWhrK
-         N6yWg42LV4LMMzdkw7Xwl0MT/ukF1gR7bymC6N7BTcltU5rPhblnBHSFg3dhkr79QfhN
-         q/Iw==
-X-Gm-Message-State: AOJu0YxfQ+dTwI/fULws3xwuaNqzCfNMW78MzueDn+fPmSIlC2Br3ujt
-	Kh2AU/NSme6cAPO7KrkyniH13zRuu6qJ2K+WwAcmbHP1m8CQi1VnglDZZWGAaw==
-X-Gm-Gg: ASbGnctsNvToK5eNA9MnFodADFaqBFulZrRW1ddJDYjjhRvfZga//iA18fS6JnwlXY3
-	QmgA4nYbNBjOJmJ0aVP2YN/d69UAVeRInQ3oMjCcidcFgCRJuE36H/oAEEB59X3+yDI1j9hKhlj
-	RZLVzY3YVFjT24oVnZCkllC9IArkR3BkSeQZ+zATMrXsfJDS4O30w5Ji/y9ujdjTvB31BNhqk7p
-	4x0/H7KajAnDy/x9xipFd0wwIj5jVkAvF0NNy/WVRKVaPAEXfwfBL9ymnlv/ZYLkq3yE0n2Ho8+
-	097nhRkLCdy5rA1/F3hcPWGLasq4utEoh004I4k16EbPipf41NNuVaDlFIM0zl4nv5ByOMxpbG0
-	eHNKIEDmLUVDqtwsfU5Rm+PLPiY/nBRbMTSfn5IHy1W+AiQgS/cwTaWoNBq0S60gl6rLCVjtVLm
-	jc7CgK5FOCI+174ak1
-X-Google-Smtp-Source: AGHT+IGQR2K+8oB9rl4LdszDdgZ1zAbDRGTLWKw8HJ6tmpfxZcxiuNPJ2kqkhKPL+e7MCjq3lfauqA==
-X-Received: by 2002:a17:906:f58f:b0:b76:26bc:f95f with SMTP id a640c23a62f3a-b7671244c1amr573051266b.0.1763830662444;
-        Sat, 22 Nov 2025 08:57:42 -0800 (PST)
-Received: from localhost ([94.19.228.143])
-        by smtp.gmail.com with UTF8SMTPSA id a640c23a62f3a-b7654ff3987sm782530866b.48.2025.11.22.08.57.41
+        d=1e100.net; s=20230601; t=1763839343; x=1764444143;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=O0hrOV3lyNr6WMG3TksH1+AZYpbZBOorGv+1K1dsn9A=;
+        b=EsnqHSYsdvu7keVuhJeAk20IpnlLJLKMqosw9WHMcoMDsbL5oR+L6qhE/DDNN44Ekw
+         bBIy80Z1nebpw15o1Ze9xnM5gELXF7ecqFrlR1f7NgVi2cIkF0hDwc6aN+86CVwqbkhu
+         WOWqvN8tjJekV3dQU3EAmM1UVbdUyAlJTqYjTp6V1uRBm4wfLfmpKwgoA+qgfhtUanIc
+         i7Vrvmy/aeyuYUgWlXZIMKtCfkIrwD6o20drF1E3yX8Ucfaqdf0tJpIwyPe1s2yuKc4b
+         BJI++3KCeUSSF4ygWTHw780UnRF81sclc6zU9sm4STRe2EoNAYoOIDfjVP0INoKOQD5r
+         3xDw==
+X-Gm-Message-State: AOJu0YzqIxY/WcP16MBRG9A1A3uWyFmy4DrjfxMLqyPwlgnqUFVNeEmU
+	QCITrd/5llMcK7s3kxX4ZiVnVMh0tYBDvjt4K8f/3D8n6blwi6egYstfZK2vTtk+
+X-Gm-Gg: ASbGncuxCslXm+m7WEbgd6cYEdR/3pUIhc+97ShSuHEg8fCQDLUJUZI8fUjZBrMwGeo
+	3QiH3YSz8VX4BW3AQz2Xvk1NyLHQaytIz31MAZu6Gd/QC8bnVTDy/Hi97qRUC4xrkIv/u0N28xC
+	BcnGGXVbNU+liWe2clkWMMesdxcCjeQS2wXKog8yJYnWyTtIDdBu51yOUcEo68cgwmts31mNCmP
+	7VXKQqUKi6Y0B67bT64zfxSPKMYzSlm2mHWG4T6bx/srOPIR2onjtTrPPYJltzGG5tfKDD3fGTC
+	yVMPNpcLbByHoV0mPz3QaQ72iUTZ9bKUszYy1TcQ+HBsNsBQSNUjv19yu3Q7iV+sCyuFlL3seEj
+	HcWjIiqy1MubRbEkE9aiIdeaR0peHrTfes1IVS/8dpaaQir8iCEzs7LUDg4sif5tJ/SBIyUCa5X
+	t+4yBK/0jF7y4hP6J6iAXsd0rIKReA7/Om1r6H5TMHm6OOryc084o=
+X-Google-Smtp-Source: AGHT+IHV7obPsWpdJV0FlwZAvQCKxcZbMqOtp99Iu5uznzsA/GEI7KwSupyfF8kH2Dm4tu2+6Hy3lQ==
+X-Received: by 2002:a05:6402:35d0:b0:640:6653:65c1 with SMTP id 4fb4d7f45d1cf-64554322775mr5910313a12.5.1763839342743;
+        Sat, 22 Nov 2025 11:22:22 -0800 (PST)
+Received: from hp.lan (109241135248.swidnica.vectranet.pl. [109.241.135.248])
+        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-6453642d321sm7517378a12.20.2025.11.22.11.22.21
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 22 Nov 2025 08:57:41 -0800 (PST)
-Date: Sat, 22 Nov 2025 19:57:41 +0300
-From: Andrey Skvortsov <andrej.skvortzov@gmail.com>
-To: Ping-Ke Shih <pkshih@realtek.com>
-Cc: linux-wireless@vger.kernel.org, piotr.oniszczuk@gmail.com,
-	rtl8821cerfe2@gmail.com, stable@vger.kernel.org,
-	regressions@lists.linux.dev,
-	Martin Blumenstingl <martin.blumenstingl@googlemail.com>
-Subject: Re: [PATCH rtw-next] wifi: rtw88: sdio: use indirect IO for device
- registers before power-on
-Message-ID: <aSHrhbt29k6GJB8e@skv.local>
-Mail-Followup-To: Andrey Skvortsov <andrej.skvortzov@gmail.com>,
-	Ping-Ke Shih <pkshih@realtek.com>, linux-wireless@vger.kernel.org,
-	piotr.oniszczuk@gmail.com, rtl8821cerfe2@gmail.com,
-	stable@vger.kernel.org, regressions@lists.linux.dev,
-	Martin Blumenstingl <martin.blumenstingl@googlemail.com>
-References: <20250724004815.7043-1-pkshih@realtek.com>
+        Sat, 22 Nov 2025 11:22:22 -0800 (PST)
+From: Janusz Dziedzic <janusz.dziedzic@gmail.com>
+To: linux-wireless@vger.kernel.org
+Cc: johannes@sipsolutions.net,
+	Janusz Dziedzic <janusz.dziedzic@gmail.com>
+Subject: [RFC v4 wireless-next 0/4] background CAC fixes
+Date: Sat, 22 Nov 2025 20:17:02 +0100
+Message-ID: <20251122192204.6866-1-janusz.dziedzic@gmail.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20250724004815.7043-1-pkshih@realtek.com>
+Content-Transfer-Encoding: 8bit
 
-Hi,
+V4:
+1) added proper locking for work queues
+2) Added Fix: description
+3) checkpatch fix (--max-line-length=80)
 
-This patch was recently backported to stable kernels (v6.12.58) and it broke
-wlan on PinePhone, that uses 8723cs SDIO chip. The same problem
-appears of course on latest 6.18-rc6. Reverting this change resolves
-the problem.
+V3:
+1) extended bgCAC cancelation patch to cover more issues detected
+   when tested with hwsim, like skip CAC abort event when radar
+   detected, or clearing lower level bgCAC correctly
+2) Set CAC ongoing, so user mode don't have to guess if CAC ongoing
+   For this one also have iw patch that will extend iw phyX channels
+3) For test purpose extend mac80211_hwsim and report bgCAC support
+  Allow to cancel bgCAC from debugfs or simulater radar when bgCAC.
 
-```
-$ sudo dmesg | grep -i rtw88
-[   24.940551] rtw88_8723cs mmc1:0001:1: WOW Firmware version 11.0.0, H2C version 0
-[   24.953085] rtw88_8723cs mmc1:0001:1: Firmware version 11.0.0, H2C version 0
-[   24.955892] rtw88_8723cs mmc1:0001:1: sdio read32 failed (0xf0): -110
-[   24.973135] rtw88_8723cs mmc1:0001:1: sdio write8 failed (0x1c): -110
-[   24.980673] rtw88_8723cs mmc1:0001:1: sdio read32 failed (0xf0): -110
-...
-[   25.446691] rtw88_8723cs mmc1:0001:1: sdio read8 failed (0x100): -110
-[   25.453569] rtw88_8723cs mmc1:0001:1: mac power on failed
-[   25.459077] rtw88_8723cs mmc1:0001:1: failed to power on mac
-[   25.464841] rtw88_8723cs mmc1:0001:1: failed to setup chip efuse info
-[   25.464856] rtw88_8723cs mmc1:0001:1: failed to setup chip information
-[   25.478341] rtw88_8723cs mmc1:0001:1: probe with driver rtw88_8723cs failed with error -114
-```
+Janusz Dziedzic (4):
+  wifi: cfg80211: fix background CAC
+  wifi: cfg80211: set and report chandef CAC ongoing
+  wifi: cfg80211: events, report background radar
+  wifi: mac80211_hwsim: background CAC support
 
-On 25-07-24 08:48, Ping-Ke Shih wrote:
-> The register REG_SYS_CFG1 is used to determine chip basic information
-> as arguments of following flows, such as download firmware and load PHY
-> parameters, so driver read the value early (before power-on).
-> 
-> However, the direct IO is disallowed before power-on, or it causes wrong
-> values, which driver recognizes a chip as a wrong type RF_1T1R, but
-> actually RF_2T2R, causing driver warns:
-> 
->   rtw88_8822cs mmc1:0001:1: unsupported rf path (1)
-> 
-> Fix it by using indirect IO before power-on.
-> 
-> Reported-by: Piotr Oniszczuk <piotr.oniszczuk@gmail.com>
-> Closes: https://lore.kernel.org/linux-wireless/699C22B4-A3E3-4206-97D0-22AB3348EBF6@gmail.com/T/#t
-> Suggested-by: Bitterblue Smith <rtl8821cerfe2@gmail.com>
-> Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
-> ---
->  drivers/net/wireless/realtek/rtw88/sdio.c | 4 ++++
->  1 file changed, 4 insertions(+)
-> 
-> diff --git a/drivers/net/wireless/realtek/rtw88/sdio.c b/drivers/net/wireless/realtek/rtw88/sdio.c
-> index cc2d4fef3587..99d7c629eac6 100644
-> --- a/drivers/net/wireless/realtek/rtw88/sdio.c
-> +++ b/drivers/net/wireless/realtek/rtw88/sdio.c
-> @@ -144,6 +144,10 @@ static u32 rtw_sdio_to_io_address(struct rtw_dev *rtwdev, u32 addr,
->  
->  static bool rtw_sdio_use_direct_io(struct rtw_dev *rtwdev, u32 addr)
->  {
-> +	if (!test_bit(RTW_FLAG_POWERON, rtwdev->flags) &&
-> +	    !rtw_sdio_is_bus_addr(addr))
-> +		return false;
-> +
->  	return !rtw_sdio_is_sdio30_supported(rtwdev) ||
->  		rtw_sdio_is_bus_addr(addr);
->  }
-> -- 
-> 2.25.1
-> 
+ drivers/net/wireless/virtual/mac80211_hwsim.c | 64 ++++++++++++++++++-
+ include/net/cfg80211.h                        |  3 +
+ include/uapi/linux/nl80211.h                  |  6 ++
+ net/wireless/chan.c                           | 27 ++++++++
+ net/wireless/core.h                           |  4 ++
+ net/wireless/mlme.c                           | 29 ++++++---
+ net/wireless/nl80211.c                        | 14 ++++
+ 7 files changed, 138 insertions(+), 9 deletions(-)
 
 -- 
-Best regards,
-Andrey Skvortsov
+2.43.0
+
 
