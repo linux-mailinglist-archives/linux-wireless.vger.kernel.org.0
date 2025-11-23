@@ -1,221 +1,103 @@
-Return-Path: <linux-wireless+bounces-29261-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-29262-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [IPv6:2a01:60a::1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id 309A7C7D648
-	for <lists+linux-wireless@lfdr.de>; Sat, 22 Nov 2025 20:22:44 +0100 (CET)
+Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [213.196.21.55])
+	by mail.lfdr.de (Postfix) with ESMTPS id C00B1C7E135
+	for <lists+linux-wireless@lfdr.de>; Sun, 23 Nov 2025 14:10:57 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.mirrors.kernel.org (Postfix) with ESMTPS id B28873516A8
-	for <lists+linux-wireless@lfdr.de>; Sat, 22 Nov 2025 19:22:43 +0000 (UTC)
+	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 2C662341510
+	for <lists+linux-wireless@lfdr.de>; Sun, 23 Nov 2025 13:10:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AAB292C178E;
-	Sat, 22 Nov 2025 19:22:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CDB07224245;
+	Sun, 23 Nov 2025 13:10:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="TW3MFJ9a"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="GLeyOcOW"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-ed1-f44.google.com (mail-ed1-f44.google.com [209.85.208.44])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C1C4F272E7C
-	for <linux-wireless@vger.kernel.org>; Sat, 22 Nov 2025 19:22:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.44
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A7CE120ADF8
+	for <linux-wireless@vger.kernel.org>; Sun, 23 Nov 2025 13:10:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763839350; cv=none; b=skTEgbr/ltpegeyiNw0iWVXDStzBsn89f7oZnLKL8mpJG7usvkxny0QtRZjrUgdSkPLK/MI4GgPOFinflONtQlvYYcFY2C7tjM6aQV1PZmIqfqF5cNTIiIinvhAPPAe2U9KpdOkLcskCSJjvjliWw1pUXfizF75/WYZvz+FJCP0=
+	t=1763903452; cv=none; b=IAP1CxvIMroHZcJ8gSsY1hzwv97c6MaHUJYgSCItlEcEhxi07mUlwfZGmuQPEMNYeBbnacn1LRDOeTPERase25kpRb41x6ssp2WSlE4aQDg8BdcqpJpUYeLwmAa099Y+e0484TCSNWk5VeSAPpI5BAYxq+8eXQTYB9iuf0Jc3W8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763839350; c=relaxed/simple;
-	bh=IxYYfWWWZmQM0Acs3cNBaEpYmaCWgughb8FgcDWc7r8=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=SHHiPNj/vHIs9spv+Nu6dt1Wx0DsAEg6kZK25u47kQ7tiyuqGDO1NA5aGbkggNDXv4ORFQM8J0oUiVVmTd4G/daaX+RwrWpDDXoIUP3ie3I5BxgAhfs6ipG1VODRIJ4E+VPF+QqQ/3r2VqKoEQ5omq6tyMs68giMbOKHaa4xKfM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=TW3MFJ9a; arc=none smtp.client-ip=209.85.208.44
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-ed1-f44.google.com with SMTP id 4fb4d7f45d1cf-640ca678745so5147615a12.2
-        for <linux-wireless@vger.kernel.org>; Sat, 22 Nov 2025 11:22:28 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1763839347; x=1764444147; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=wklJ5vVfHT3E/nIil+ZleMDpgskJqV5hs0yPobXgH4U=;
-        b=TW3MFJ9aqOj0oK83bVjZnZYjBgl2XqYjTWKU8FQ+q3Kgn66E+buR3qJ7EwSorOxMAi
-         DrwOHXwknR+2zm96kZpy9asLTzKMk5/QByet2RPpXIQ6S+yE0/B/OPQD5TJ1WITCl+ht
-         F9Xp+nlK9eEH9TftkXXK2YA3kXXGyBg6kpwg9aufMMGk0C+RB0R7eAd8J6SezPKDcaA1
-         F6Ar0qRaIYKYdKECvNGLA1lIkDj1KqL8YogQv2AcnnELP8JrR4tkkvCAvKGLsA/1UgR2
-         iYQNSVauMLmEvwLbPuWwzodaXwA0dk4Zx2oweXnbPetbMobprbcFH1A2SStsRdj9JdbV
-         uqow==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1763839347; x=1764444147;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=wklJ5vVfHT3E/nIil+ZleMDpgskJqV5hs0yPobXgH4U=;
-        b=lawZ1qo6Bv5lXrwNgIOgL+TfRpkdqydnW6DPvt96vPHgTn4jVcmgUc7rub8b/947BU
-         jBjLN2tshasUwArr5sa4292UkIl0pmVaWOQyODNeSgIdidGET2ALwmkj+kKJMpk+UKj8
-         7/mG9waY4kxXa3O3B5BFl4bflGEuqSrFQWFXIwx2Xa3Sw6S37GsHD0FdO8kHnE225Nyk
-         fHKm2b6/9pESIM4bQOYTS6BiQ3sV9pdaoLozEautNZhrazoLnMoFB5MHizQmkuGN5FpX
-         7Nhrh7ef0fZnpwpBtsMg50GVpUGztz+ToSZGU1pOFY56cjPb3M+TgTpY6hSV/2whoEuI
-         rndA==
-X-Gm-Message-State: AOJu0Yz/yxkLS81mGNSajwe1LAE/dCn1ki5aQmE/bG8igyRvGJ1V5xrD
-	8PhXhBPPXXNjmbFIVqEaOwvW2u/KUb5STzIcgZ7Slu9NT8fp3f1Tsx9OjIGvs4GO
-X-Gm-Gg: ASbGncvNWzFYu28qxTkUOZ8NMBzHH4dMz6dOGVOLUWhY2WHGkK0OhrcssdyFuU3OUne
-	CXazSn+RFZL3xZSLtq9HJkK6WRWhdjZwH13f/0cTVe2y2w+FctBNKjzPQkOYzesn8d/xqMrGbg/
-	7CvhjDkilIaQx4AOpWBaXGpDvH5uEROlJGczhGrWnXXTH8vQQu1Ey94GKrxvQE9OGGq3TtaS/yq
-	iy3oe1KSYLbkd3Vaz+oahyPA2agXl318XlKHuWu/EcB/ldbFt6R7RjG9tyfzQoeifxFcIV7I1IE
-	BjIwoMIEr5ilmqK9ddRmzmGN+djDJJFgtM4YG8PPviMQLR9vboqFvCLIQOx+mGUrImlEzUGVe2F
-	BrYP4umGsHkGriOa60KFZmddmlZC2NHkuNLcij66DxJd3lshyoTYWsd2IGTDieKG018dsS/DqzQ
-	Rc2uX/ZoW0Brx31bEkaVdpcNZv1Cv7V05oNW8CX+Wq2nMJmp+hL4Y=
-X-Google-Smtp-Source: AGHT+IFRIcOr9QbRzoVfYBw2/tS4Dr/oox8Ntwb60Jjf//7onoqLb3af1NElz9jau2KG9LYZ+6rTSw==
-X-Received: by 2002:a05:6402:2787:b0:641:2cf3:ec3e with SMTP id 4fb4d7f45d1cf-64555b9819fmr5752918a12.11.1763839346818;
-        Sat, 22 Nov 2025 11:22:26 -0800 (PST)
-Received: from hp.lan (109241135248.swidnica.vectranet.pl. [109.241.135.248])
-        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-6453642d321sm7517378a12.20.2025.11.22.11.22.26
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 22 Nov 2025 11:22:26 -0800 (PST)
-From: Janusz Dziedzic <janusz.dziedzic@gmail.com>
-To: linux-wireless@vger.kernel.org
-Cc: johannes@sipsolutions.net,
-	Janusz Dziedzic <janusz.dziedzic@gmail.com>
-Subject: [RFC v4 wireless-next 4/4] wifi: mac80211_hwsim: background CAC support
-Date: Sat, 22 Nov 2025 20:17:06 +0100
-Message-ID: <20251122192204.6866-5-janusz.dziedzic@gmail.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20251122192204.6866-1-janusz.dziedzic@gmail.com>
-References: <20251122192204.6866-1-janusz.dziedzic@gmail.com>
+	s=arc-20240116; t=1763903452; c=relaxed/simple;
+	bh=tCzm5CbDo44gclV/TPOEMHiNBz2jMCaxD/51uIQiEW0=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=A+ACJAoT464UfHbYymlLpnBTdYmjnzWo9ELaRX+2hlQ4/zNwdf2kRIdQNEo9PLUZIV70kKv7IgMRGAwaR+cGY64BOGN/Syk+93NXWhgLkM4CXpArWK9R3s44SPvFoioV3nfjwuJPnSDB/qYeAp6v2kjk7IJYyWvrLU3/4pVNGaM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=GLeyOcOW; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 32731C113D0;
+	Sun, 23 Nov 2025 13:10:50 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1763903452;
+	bh=tCzm5CbDo44gclV/TPOEMHiNBz2jMCaxD/51uIQiEW0=;
+	h=From:Date:Subject:To:Cc:From;
+	b=GLeyOcOWF0ZHq3xl+eCV/n05OIndaqtkPT2r1BcrCQO//I8pF4m9Fo1ZHXZ6XYr0i
+	 69Idg6APhyYjty9vA4G7Pi/rssut9SU7ptbCDVZkogC/yIy7UoBFQJwg6SxoogH3vN
+	 CFa59vABmbEqf3ziqH9htlJk/dt7vv/RExayhWJY+Pz4c9Bga0prrrLufEy5J5W6NM
+	 ImLznhygM1+4H1+HiLPbenkoXyzc/OpRTgz9mrUpxrekbMAN4+OaDHc1OkESjuUWw+
+	 45BGNBsrvP5akGjuZ41iTlqQP8RHwjokbSsoJoM41GKlQFF8/FhHg50u/V03M7/3Aq
+	 WlEXU6i90IrOQ==
+From: Lorenzo Bianconi <lorenzo@kernel.org>
+Date: Sun, 23 Nov 2025 14:10:16 +0100
+Subject: [PATCH mt76] wifi: mt76: dma: Initialize return value in Q_READ()
+ for NPU
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20251123-mt76-npu-fix-warning-v1-1-455856b1e99d@kernel.org>
+X-B4-Tracking: v=1; b=H4sIAAAAAAAC/x2MywqAIBAAfyX23EIaKfQr0UF0qz20hfaC8N+Tj
+ sMw80KiyJSgr16IdHHiTQqougK/OJkJORQG3ehOKd3ieliDsp848YO3i8Iyo3MmBO+J7OShpHu
+ kov/tMOb8AXrg4wxmAAAA
+X-Change-ID: 20251123-mt76-npu-fix-warning-aa6ddccee7fc
+To: Felix Fietkau <nbd@nbd.name>, Ryder Lee <ryder.lee@mediatek.com>, 
+ Shayne Chen <shayne.chen@mediatek.com>, Sean Wang <sean.wang@mediatek.com>, 
+ Matthias Brugger <matthias.bgg@gmail.com>, 
+ AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+Cc: linux-wireless@vger.kernel.org, linux-arm-kernel@lists.infradead.org, 
+ linux-mediatek@lists.infradead.org, kernel test robot <lkp@intel.com>, 
+ Lorenzo Bianconi <lorenzo@kernel.org>
+X-Mailer: b4 0.14.2
 
-Report background CAC support and add allow
-to cancel background CAC and simulate radar.
+Even if this is just a theoretical issue since NPU queues are
+initialized just if npu pointer is not NULL, fix the sparse warning
+initializing return value in Q_READ macro if CONFIG_MT76_NPU is enabled.
 
-echo cancel > /sys/kernel/debug/ieee80211/phy2/hwsim/dfs_background_cac
-echo radar > /sys/kernel/debug/ieee80211/phy2/hwsim/dfs_background_cac
-
-Signed-off-by: Janusz Dziedzic <janusz.dziedzic@gmail.com>
+Fixes: 62f1347fa5bf6 ("wifi: mt76: Introduce the NPU generic layer")
+Reported-by: kernel test robot <lkp@intel.com>
+Closes: https://lore.kernel.org/oe-kbuild-all/202511231550.NHSRTxxd-lkp@intel.com/
+Signed-off-by: Lorenzo Bianconi <lorenzo@kernel.org>
 ---
- drivers/net/wireless/virtual/mac80211_hwsim.c | 64 ++++++++++++++++++-
- 1 file changed, 63 insertions(+), 1 deletion(-)
+ drivers/net/wireless/mediatek/mt76/dma.h | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/net/wireless/virtual/mac80211_hwsim.c b/drivers/net/wireless/virtual/mac80211_hwsim.c
-index 551f5eb4e747..cca22d46ad05 100644
---- a/drivers/net/wireless/virtual/mac80211_hwsim.c
-+++ b/drivers/net/wireless/virtual/mac80211_hwsim.c
-@@ -715,6 +715,7 @@ struct mac80211_hwsim_data {
- 	} ps;
- 	bool ps_poll_pending;
- 	struct dentry *debugfs;
-+	struct cfg80211_chan_def radar_background_chandef;
+diff --git a/drivers/net/wireless/mediatek/mt76/dma.h b/drivers/net/wireless/mediatek/mt76/dma.h
+index 4fd779e1aa0f8f9c7a465b948e8bcce5f52711cf..4a63de6c5bf5a34cb76f10a427649bc04ebe78b2 100644
+--- a/drivers/net/wireless/mediatek/mt76/dma.h
++++ b/drivers/net/wireless/mediatek/mt76/dma.h
+@@ -74,7 +74,7 @@
  
- 	atomic_t pending_cookie;
- 	struct sk_buff_head pending;	/* packets pending */
-@@ -1164,6 +1165,46 @@ static int hwsim_write_simulate_radar(void *dat, u64 val)
- DEFINE_DEBUGFS_ATTRIBUTE(hwsim_simulate_radar, NULL,
- 			 hwsim_write_simulate_radar, "%llu\n");
- 
-+static ssize_t hwsim_background_cac_write(struct file *file,
-+					  const char __user *user_buf,
-+					  size_t count, loff_t *ppos)
-+{
-+	struct mac80211_hwsim_data *data = file->private_data;
-+	size_t buf_size;
-+	char buf[16];
-+
-+	buf_size = min(count, sizeof(buf) - 1);
-+	if (copy_from_user(buf, user_buf, buf_size))
-+		return -EFAULT;
-+
-+	buf[buf_size] = '\0';
-+
-+	/* Remove trailing newline if present */
-+	if (buf_size > 0 && buf[buf_size - 1] == '\n')
-+		buf[buf_size - 1] = '\0';
-+
-+	/* Check if background radar channel is configured */
-+	if (!data->radar_background_chandef.chan)
-+		return -ENOENT;
-+
-+	if (strcmp(buf, "radar") == 0)
-+		cfg80211_background_radar_event(data->hw->wiphy,
-+						&data->radar_background_chandef,
-+						GFP_KERNEL);
-+	else if (strcmp(buf, "cancel") == 0)
-+		cfg80211_background_cac_abort(data->hw->wiphy);
-+	else
-+		return -EINVAL;
-+
-+	return count;
-+}
-+
-+static const struct file_operations hwsim_background_cac_ops = {
-+	.write = hwsim_background_cac_write,
-+	.open = simple_open,
-+	.llseek = default_llseek,
-+};
-+
- static int hwsim_fops_group_read(void *dat, u64 *val)
- {
- 	struct mac80211_hwsim_data *data = dat;
-@@ -4154,6 +4195,20 @@ static int mac80211_hwsim_change_nan_config(struct ieee80211_hw *hw,
- 	return 0;
- }
- 
-+static int mac80211_hwsim_set_radar_background(struct ieee80211_hw *hw,
-+					       struct cfg80211_chan_def *chan)
-+{
-+	struct mac80211_hwsim_data *data = hw->priv;
-+
-+	if (chan)
-+		data->radar_background_chandef = *chan;
-+	else
-+		memset(&data->radar_background_chandef, 0,
-+		       sizeof(data->radar_background_chandef));
-+
-+	return 0;
-+}
-+
- #ifdef CONFIG_MAC80211_DEBUGFS
- #define HWSIM_DEBUGFS_OPS					\
- 	.link_add_debugfs = mac80211_hwsim_link_add_debugfs,
-@@ -4189,6 +4244,7 @@ static int mac80211_hwsim_change_nan_config(struct ieee80211_hw *hw,
- 	.start_nan = mac80211_hwsim_start_nan,                  \
- 	.stop_nan = mac80211_hwsim_stop_nan,                    \
- 	.nan_change_conf = mac80211_hwsim_change_nan_config,    \
-+	.set_radar_background = mac80211_hwsim_set_radar_background, \
- 	HWSIM_DEBUGFS_OPS
- 
- #define HWSIM_NON_MLO_OPS					\
-@@ -5794,6 +5850,8 @@ static int mac80211_hwsim_new_radio(struct genl_info *info,
- 
- 	wiphy_ext_feature_set(hw->wiphy,
- 			      NL80211_EXT_FEATURE_DFS_CONCURRENT);
-+	wiphy_ext_feature_set(hw->wiphy,
-+			      NL80211_EXT_FEATURE_RADAR_BACKGROUND);
- 
- 	if (param->no_vif)
- 		ieee80211_hw_set(hw, NO_AUTO_VIF);
-@@ -5828,10 +5886,14 @@ static int mac80211_hwsim_new_radio(struct genl_info *info,
- 			    &hwsim_fops_group);
- 	debugfs_create_file("rx_rssi", 0666, data->debugfs, data,
- 			    &hwsim_fops_rx_rssi);
--	if (!data->use_chanctx)
-+	if (!data->use_chanctx) {
- 		debugfs_create_file("dfs_simulate_radar", 0222,
- 				    data->debugfs,
- 				    data, &hwsim_simulate_radar);
-+		debugfs_create_file("dfs_background_cac", 0200,
-+				    data->debugfs,
-+				    data, &hwsim_background_cac_ops);
-+	}
- 
- 	if (param->pmsr_capa) {
- 		data->pmsr_capa = *param->pmsr_capa;
+ #define Q_READ(_q, _field) ({						\
+ 	u32 _offset = offsetof(struct mt76_queue_regs, _field);		\
+-	u32 _val;							\
++	u32 _val = 0;							\
+ 	if ((_q)->flags & MT_QFLAG_NPU) {				\
+ 		struct airoha_npu *npu;					\
+ 									\
+
+---
+base-commit: e1ed98b1836e2bf0aba98f9790be4f3c6bca9d0d
+change-id: 20251123-mt76-npu-fix-warning-aa6ddccee7fc
+
+Best regards,
 -- 
-2.43.0
+Lorenzo Bianconi <lorenzo@kernel.org>
 
 
