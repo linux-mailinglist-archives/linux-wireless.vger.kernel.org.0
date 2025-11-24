@@ -1,177 +1,197 @@
-Return-Path: <linux-wireless+bounces-29285-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-29286-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [213.196.21.55])
-	by mail.lfdr.de (Postfix) with ESMTPS id C4E33C80D5F
-	for <lists+linux-wireless@lfdr.de>; Mon, 24 Nov 2025 14:47:27 +0100 (CET)
+Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [IPv6:2a01:60a::1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id B90E4C80EDB
+	for <lists+linux-wireless@lfdr.de>; Mon, 24 Nov 2025 15:10:39 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 4A65B3436A7
-	for <lists+linux-wireless@lfdr.de>; Mon, 24 Nov 2025 13:47:27 +0000 (UTC)
+	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 39588343E7C
+	for <lists+linux-wireless@lfdr.de>; Mon, 24 Nov 2025 14:10:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B181126FDB2;
-	Mon, 24 Nov 2025 13:47:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 67D3627B349;
+	Mon, 24 Nov 2025 14:10:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="0CaxQpM0";
-	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="FfQkaUVn";
-	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="kPHLtjK/";
-	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="9v2W0yf5"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="dNBdZPMt"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
+Received: from mail-lf1-f45.google.com (mail-lf1-f45.google.com [209.85.167.45])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E319630ACF7
-	for <linux-wireless@vger.kernel.org>; Mon, 24 Nov 2025 13:47:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D37112F7479
+	for <linux-wireless@vger.kernel.org>; Mon, 24 Nov 2025 14:10:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.45
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763992045; cv=none; b=Auip/cg3zphJXSIZ/rvGV3Xu29viNLaLm6b1BUlCvx0/jaGLk2lYjS+PtFTmWi9aNwj5/cb5Og3wl1sl7snA+lTazkIFCRez+KE1phGzVDgvQ4DxY6XjyExjkbxg/45jfPFJSSyHgKw1WGOVX3iocuh4LmxtkGvi09F9uBtj3po=
+	t=1763993435; cv=none; b=IzmK2RC2ql5ciWJLKGrU1nuG+xxgGkNPSa/JNvqgq2iPh4Q6pb9amsfsjulry1cMoxQSPlM4y4d5Jo43SSc7hcbnDyETYhkhbpRLBoAffLYC/zQ44S/VeimS/hvn13wZgNezg+1voVBPVO9lD3YgwRR4IIDp4yqYiF+6VlgkOFM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763992045; c=relaxed/simple;
-	bh=cOvad/9gf8rVRemZVb1jojjqXcVWNWO8KgAbi901na0=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=UqB9/3mpzofrOacIRrRq09tj2vzSfDmWutRIWoEy1AFVQbrgzXcVzm4shz1opAhDu5CBMwcfcIgNnFHphUrN/z345eImkAOHPQhLrzjIYONt8e0zufBBm0EflYqzlHqvy5lcMmECUjYL6NVD9vT8pXDAZdIAbzjhBCiClpR2/zU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de; spf=pass smtp.mailfrom=suse.de; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=0CaxQpM0; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=FfQkaUVn; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=kPHLtjK/; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=9v2W0yf5; arc=none smtp.client-ip=195.135.223.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.de
-Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out2.suse.de (Postfix) with ESMTPS id CFF9D5BFB3;
-	Mon, 24 Nov 2025 13:47:20 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1763992041; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:  content-transfer-encoding:content-transfer-encoding;
-	bh=hu3rqTOV07Z4uALBxeFw7U3onLp/b7eW48Jo3HeMsvE=;
-	b=0CaxQpM02koMa5b4PS1OekRH+mdROL3buPHnI0wApeUO7COvsn2XvpXEu9NunmwRq6Xzu+
-	vSwC34XbS89P6lbwzjCYZ09FgKjzoIIUmwpX1NWn5D6mndOyXRjfPcr/kZ/qnJtmZORluB
-	IZUoZBK2l3ylj2MjHVtOPzBwRtioWnc=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1763992041;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:  content-transfer-encoding:content-transfer-encoding;
-	bh=hu3rqTOV07Z4uALBxeFw7U3onLp/b7eW48Jo3HeMsvE=;
-	b=FfQkaUVnRTyzjRFi2bpKXRgD+XpMBgmueWB+K9wpezt/ZbrJPcW8YiRI8HEcxI3c3+kzDh
-	2UgfbgPJVwIyeBBA==
-Authentication-Results: smtp-out2.suse.de;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b="kPHLtjK/";
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=9v2W0yf5
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1763992040; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:  content-transfer-encoding:content-transfer-encoding;
-	bh=hu3rqTOV07Z4uALBxeFw7U3onLp/b7eW48Jo3HeMsvE=;
-	b=kPHLtjK/OezWf9oFgPin8xQdOJOAn6/XMAMGbTgqdEmusc37ErWsR3AZuiCd6j1gL9zctY
-	DmKdaBSsnTF4gb5GShDgUwVJEoz8298yfVYRZt7YkzeDTOMbrZaHsZVpZaYkmD5XTxhD9+
-	Hi+/Vg0SBxqF4McN2pf/IC+evsDugeg=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1763992040;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:  content-transfer-encoding:content-transfer-encoding;
-	bh=hu3rqTOV07Z4uALBxeFw7U3onLp/b7eW48Jo3HeMsvE=;
-	b=9v2W0yf5XlillUk5K3j+mkEApXQNh0gMHNN527hvJMtDPmPM2gJTTewMseYHL7UnFjXKKp
-	v2izazYKm0M7fLAg==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id A5F1F3EA63;
-	Mon, 24 Nov 2025 13:47:20 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id tUNFJ+hhJGmAaAAAD6G6ig
-	(envelope-from <tiwai@suse.de>); Mon, 24 Nov 2025 13:47:20 +0000
-From: Takashi Iwai <tiwai@suse.de>
-To: Jeff Johnson <jeff.johnson@oss.qualcomm.com>
-Cc: Mark Pearson <mpearson-lenovo@squebb.ca>,
-	linux-wireless@vger.kernel.org,
-	ath11k@lists.infradead.org
-Subject: [PATCH] wifi: ath11k: Add quirk entry for Thinkpad T14s Gen3 AMD
-Date: Mon, 24 Nov 2025 14:47:12 +0100
-Message-ID: <20251124134713.5819-1-tiwai@suse.de>
-X-Mailer: git-send-email 2.52.0
+	s=arc-20240116; t=1763993435; c=relaxed/simple;
+	bh=0UUH9h/HezLYaCwdef0ptqxpBjeLPhVZHVXt8Y3vIik=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=TI52EnxUBZmWPFY+bEXv1TStzvG4zrqY9wRJ3SKx18ehLsMxcnI9LE4Lq4eCsZVSTsXwY/nWDAccMg6dAbiNpFOPfnAHbDzHJBgl86tYiCohrqKuIEKZgqNeRTmz/nVaPBOeisQnabPLqb0nSK+Y5Vblzlb7W/v/uHgXhQXkLao=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=dNBdZPMt; arc=none smtp.client-ip=209.85.167.45
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-lf1-f45.google.com with SMTP id 2adb3069b0e04-59431f57bf6so4622682e87.3
+        for <linux-wireless@vger.kernel.org>; Mon, 24 Nov 2025 06:10:33 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1763993432; x=1764598232; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=0UUH9h/HezLYaCwdef0ptqxpBjeLPhVZHVXt8Y3vIik=;
+        b=dNBdZPMtGRZxg9snwLwQo49Y7q/SXORwiImV0dcKEq7ak9XaHLhCRJyCxtX08q39ft
+         mmXC51GqTDmKBxGGiDlhpiODImt0t635mxgZy0+Fpk48ES1oSJxoH1zjYowSq3+TYbeC
+         7R8abUMu7VIPvUAHcDF/bBD2ZdZpKwhRlxXTSFu7Q6Ot3xI45tHeu2uSIP4V97fG6YvJ
+         FtK9qXJd5knLBOGZAay+DcRKUOO1YGTeUs7veq71SVlrRKy9vBOW0mPxqcinuuskqv8G
+         vKRy8rdlqVcwGL1d5GekZtwpaB1a1nzZFyqmZR/WXxKZ/e7sv/rKNESSuLYUNFkjFF1b
+         5mxw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1763993432; x=1764598232;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=0UUH9h/HezLYaCwdef0ptqxpBjeLPhVZHVXt8Y3vIik=;
+        b=uR7vFicw2kTNqK7ptRwam0HgvRD1fviPB+bD5t4VE45sbS8OyOfL1l9JbHMq0hBNgg
+         hoxy8Mdp7rFNGw/3XKCDp6fh/HqTLgGEbNXDRIdpE3EM/vJZFSvTAnwpaSG9kLdtkunn
+         vPOcXvZW41bIpOID9PzNYenGEn9Y7dCZNODQq1A6D8zvLCZWmYi2hqPfXMUZITs0sOsh
+         aXgoevzZ5vXvfkR6Dxm0l8RM0+UsNq/GrtcXeoapYq7js4u4voj18k13AkNXIEACO6yg
+         wX5eYKIHpCMxbhC5W/HxnG0LNhAW/0kcnLjTwvG0viuxG/jDZBAydMV3UspurGYiYFks
+         hrnw==
+X-Forwarded-Encrypted: i=1; AJvYcCUPBpp6acbuLrEoEOuuR57afSjZZlujVMHaV5rxr8SzJcWDZuTC/oGeHiML/d9NqcVNnZQ5b39De2FwWLuc0A==@vger.kernel.org
+X-Gm-Message-State: AOJu0Yyg6fT+LXRM+iPmFOvPWQXNLyKRrw437D4hVMxA03cRE/ngmmpf
+	Rxcp7VqF+PPr7s/mb1HeifuQhgqudC5fABgu2v4Dbzon3juJgwdurL0vpfOmAg==
+X-Gm-Gg: ASbGncsxQstk82k9NFqHFKGTZYFC/qaRkJSvSHLp0pIwZcHKlJOIAeh9+pV8CnnBt8z
+	5ilezdzTF/f4svIC0s29Tp8hjHbQkTNV3Wo7jg66DpF2RGThvp6upjhNRosrRgZu/o3JGQ0ufQr
+	aXj0lEbPXSeLlf5mpHfA7X4GaOpJp//vvPkrfeORbLUl3wk/AmHVIkZEAsmu6JRb1dA+ACe1Ep4
+	15aNuW2eLTcMC93xfxUAzmgOlpxFVC5PhS53o2DMibNMdvYYDEnaKo7Aui6JTT4GrClYy3vQPWq
+	imik+M16Ua74uvJU7Hh77W6XOy+dlFtdxLpY2h7UbZ6eh8o45WVpVms5BwRIBAPVoZEUOQwE8oB
+	DVM9hQG7BufFKPhNUPtjUQN26K8XXu/uI8PUjF63+0HP5gJ9Y0DvsUZTJ07W8uRZN4274El1VJy
+	f1NpYdSTT2C/VhwOyyOZPJxhT6UhBs3g==
+X-Google-Smtp-Source: AGHT+IE+53nGlLAe2sDQDfpDFGtKmkdL6nuwMgP5ZUa1TZLNamJOFPR/5G38IgV+zx98USsjI9cCDw==
+X-Received: by 2002:a05:6512:31cf:b0:594:2f46:3906 with SMTP id 2adb3069b0e04-596a3efd50amr4302040e87.42.1763993431651;
+        Mon, 24 Nov 2025 06:10:31 -0800 (PST)
+Received: from [192.168.1.50] ([79.119.240.59])
+        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-5969dbc5e07sm4249879e87.83.2025.11.24.06.10.29
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 24 Nov 2025 06:10:31 -0800 (PST)
+Message-ID: <c2360ee8-9fdf-484f-9bfc-cff6f4e0a1e5@gmail.com>
+Date: Mon, 24 Nov 2025 16:10:28 +0200
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spam-Level: 
-X-Spam-Flag: NO
-X-Rspamd-Queue-Id: CFF9D5BFB3
-X-Rspamd-Action: no action
-X-Rspamd-Server: rspamd1.dmz-prg2.suse.org
-X-Spamd-Result: default: False [-3.01 / 50.00];
-	BAYES_HAM(-3.00)[100.00%];
-	MID_CONTAINS_FROM(1.00)[];
-	NEURAL_HAM_LONG(-1.00)[-1.000];
-	R_MISSING_CHARSET(0.50)[];
-	R_DKIM_ALLOW(-0.20)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
-	NEURAL_HAM_SHORT(-0.20)[-1.000];
-	MIME_GOOD(-0.10)[text/plain];
-	MX_GOOD(-0.01)[];
-	TO_MATCH_ENVRCPT_ALL(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	ARC_NA(0.00)[];
-	TO_DN_SOME(0.00)[];
-	DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
-	RBL_SPAMHAUS_BLOCKED_OPENRESOLVER(0.00)[2a07:de40:b281:104:10:150:64:97:from];
-	FUZZY_RATELIMITED(0.00)[rspamd.com];
-	RCVD_TLS_ALL(0.00)[];
-	DKIM_TRACE(0.00)[suse.de:+];
-	RCVD_COUNT_TWO(0.00)[2];
-	FROM_EQ_ENVFROM(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	SPAMHAUS_XBL(0.00)[2a07:de40:b281:104:10:150:64:97:from];
-	DNSWL_BLOCKED(0.00)[2a07:de40:b281:106:10:150:64:167:received,2a07:de40:b281:104:10:150:64:97:from];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	RECEIVED_SPAMHAUS_BLOCKED_OPENRESOLVER(0.00)[2a07:de40:b281:106:10:150:64:167:received];
-	RCPT_COUNT_THREE(0.00)[4];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[suse.com:url,imap1.dmz-prg2.suse.org:rdns,imap1.dmz-prg2.suse.org:helo]
-X-Spam-Score: -3.01
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 1/1] wifi: rtw88: 8822b: disable call trace when write RF
+ mode table fail
+To: Kalle Valo <kvalo@kernel.org>, Chukun Pan <amadeus@jmu.edu.cn>
+Cc: pkshih@realtek.com, linux-kernel@vger.kernel.org,
+ linux-wireless@vger.kernel.org
+References: <8734yff8vr.fsf@kernel.org>
+ <20231022090901.430143-1-amadeus@jmu.edu.cn> <878r7t21gm.fsf@kernel.org>
+Content-Language: en-US
+From: Bitterblue Smith <rtl8821cerfe2@gmail.com>
+In-Reply-To: <878r7t21gm.fsf@kernel.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
 
-The recent kernels showed a regression wrt suspend/resume on Lenovo
-Thinkpad T14s Gen 3 AMD model; it fails to reconnect on resume after a
-long time sleep.  The only workaround was to unload/reload the driver
-(or reboot).
+On 23/10/2023 11:21, Kalle Valo wrote:
+> Chukun Pan <amadeus@jmu.edu.cn> writes:
+>=20
+>>> _Why_ is that warning printed? Are your devices uncalibrated or are t=
+hey
+>>> somehow else special?
+>>
+>> I don't know, but not only my rtl8822be wifi module will have this cal=
+l trace
+>> every time when the driver probes. This can be considered a common pro=
+blem.
+>> So I prefer to disable this call trace and use the driver warning inst=
+ead.
+>=20
+> Why do you say this is a common problem? AFAIK you are the only one
+> reporting this issue, right? It would help to understand _why_ you are
+> seeing this, ie. what's the root cause? Just randomly removing warnings=
 
-It seems that this model also requires the similar quirk with
-ATH11K_PM_WOW which has been done for other Thinkpad models.
+> without understanding the root cause is frowned upon.
+>=20
 
-Link: https://bugzilla.suse.com/show_bug.cgi?id=1254181
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
----
+Finally I got some useful reports about this. Someone added a printk
+that shows the value of RF register 0x33 is 0xaeaea. This is why the
+WARNING is triggered. The value 0xaeaea hints that the chip is powered
+off.
 
-I'm not sure whether this model has another DMI entry, so put Mark to
-Cc.
+Then someone else provided a useful backtrace:
 
-Also, I wonder which Thinkpad models are rather the ones that should
-*not* take the quirk.  Since mine is Gen 3 and I already see Gen 2
-entries, which else remaining...?
+[ 406.705972] ------------[ cut here ]------------
+[ 406.710517] WARNING: CPU: 0 PID: 10287 at backports-6.12.44/drivers/net=
+/wireless/realtek/rtw88/rtw8822b.c:824 rtw8822b_set_antenna+0x3c/0x74 [rt=
+w88_8822b]
+[ 406.724296] write RF mode table fail
+[ 406.727768] Modules linked in: rtw88_8822cu(O) rtw88_8822c(O) rtw88_882=
+2bu(O) rtw88_8822b(O) pppoe ppp_async wireguard rtw88_usb(O) rtw88_core(O=
+) qcserial pppox ppp_generic option nft_fib_inet nf_flow_table_inet mac80=
+211(O) libchacha20poly1305 ipt_REJECT cfg80211(O) xt_time xt_tcpudp xt_tc=
+pmss xt_statistic xt_state xt_recent xt_policy xt_multiport xt_mark xt_ma=
+c xt_limit xt_length xt_hl xt_helper xt_esp xt_ecn xt_dscp xt_conntrack x=
+t_connmark xt_connlimit xt_connbytes xt_comment xt_TCPMSS xt_LOG xt_HL xt=
+_DSCP xt_CT xt_CLASSIFY xfrm_interface usb_wwan slhc rtc_ds1307 rndis_hos=
+t rfcomm qmi_wwan poly1305_arm nft_xfrm nft_reject_ipv6 nft_reject_ipv4 n=
+ft_reject_inet nft_reject_bridge nft_reject nft_redir nft_quota nft_numge=
+n nft_nat nft_meta_bridge nft_masq nft_log nft_limit nft_hash nft_flow_of=
+fload nft_fib_ipv6 nft_fib_ipv4 nft_fib nft_ct nft_compat nft_chain_nat n=
+f_tables nf_reject_ipv4 nf_nat nf_log_syslog nf_flow_table nf_conntrack_b=
+ridge nf_conncount mdio_netlink(O) lm75 libcurve25519_generic libcrc32c i=
+ptable_raw
+[ 406.728658] iptable_mangle iptable_filter ipt_ah ipt_ECN ip_tables hwmo=
+n hidp hci_uart crc_ccitt compat(O) chacha_neon cdc_ether btusb btrtl btm=
+tk btintel bnep bluetooth act_connmark nf_conntrack nf_defrag_ipv6 nf_def=
+rag_ipv4 sch_tbf sch_ingress sch_htb sch_hfsc em_u32 cls_u32 cls_route cl=
+s_matchall cls_fw cls_flow cls_basic act_skbedit act_mirred act_gact conf=
+igs hid ledtrig_pattern ledtrig_oneshot cryptodev(O) xt_set ip_set_list_s=
+et ip_set_hash_netportnet ip_set_hash_netport ip_set_hash_netnet ip_set_h=
+ash_netiface ip_set_hash_net ip_set_hash_mac ip_set_hash_ipportnet ip_set=
+_hash_ipportip ip_set_hash_ipport ip_set_hash_ipmark ip_set_hash_ipmac ip=
+_set_hash_ip ip_set_bitmap_port ip_set_bitmap_ipmac ip_set_bitmap_ip ip_s=
+et nfnetlink ip6table_mangle ip6table_filter ip6_tables ip6t_REJECT x_tab=
+les nf_reject_ipv6 swconfig qmi_wwan_q(O) usbnet cdc_wdm ip6_gre ip_gre g=
+re ifb dummy ip6_vti ip_vti ip6_udp_tunnel udp_tunnel ipcomp6 xfrm6_tunne=
+l esp6 ah6 xfrm4_tunnel ipcomp esp4 ah4 ipip ip6_tunnel tunnel6 tunnel4 i=
+p_tunnel vrf
+[ 406.818527] tun xfrm_user xfrm_ipcomp af_key xfrm_algo ecdh_generic ecc=
+ crypto_user algif_skcipher algif_rng algif_hash algif_aead af_alg sha512=
+_arm sha1_generic sha1_arm md5 kpp echainiv ecb des_generic libdes cmac c=
+bc authencesn authenc gpio_keys_polled ledtrig_transient fsl_mph_dr_of eh=
+ci_platform ehci_fsl microchip mii
+[ 406.937051] CPU: 0 PID: 10287 Comm: iw Tainted: G W O 6.6.104 #0
+[ 406.944163] Hardware name: Atmel SAMA5
+[ 406.947867] unwind_backtrace from show_stack+0x10/0x14
+[ 406.953043] show_stack from dump_stack_lvl+0x24/0x2c
+[ 406.958033] dump_stack_lvl from __warn+0x98/0xc0
+[ 406.962668] __warn from warn_slowpath_fmt+0x68/0x78
+[ 406.967561] warn_slowpath_fmt from rtw8822b_set_antenna+0x3c/0x74 [rtw8=
+8_8822b]
+[ 406.974877] rtw8822b_set_antenna [rtw88_8822b] from rtw_ops_set_antenna=
++0x4c/0x6c [rtw88_core]
+[ 406.983566] rtw_ops_set_antenna [rtw88_core] from ieee80211_set_antenna=
++0x34/0x5c [mac80211]
+[ 406.992524] ieee80211_set_antenna [mac80211] from nl80211_set_wiphy+0x3=
+7c/0x634 [cfg80211]
+[ 407.001418] nl80211_set_wiphy [cfg80211] from genl_rcv_msg+0x24c/0x390
+[ 407.008146] genl_rcv_msg from netlink_rcv_skb+0xb8/0x11c
+[ 407.013465] netlink_rcv_skb from genl_rcv+0x28/0x34
+[ 407.018358] genl_rcv from netlink_unicast+0x220/0x314
+[ 407.023423] netlink_unicast from netlink_sendmsg+0x1cc/0x434
+[ 407.029089] netlink_sendmsg from ____sys_sendmsg+0x1f0/0x284
+[ 407.034758] ____sys_sendmsg from ___sys_sendmsg+0x6c/0xa4
+[ 407.040165] ___sys_sendmsg from sys_sendmsg+0x44/0x74
+[ 407.045230] sys_sendmsg from ret_fast_syscall+0x0/0x54
 
+So I tried to run "iw phy5 set antenna all" on my computer. When the
+interface is UP this command fails with error -95. No WARNING.
 
- drivers/net/wireless/ath/ath11k/core.c | 7 +++++++
- 1 file changed, 7 insertions(+)
-
-diff --git a/drivers/net/wireless/ath/ath11k/core.c b/drivers/net/wireless/ath/ath11k/core.c
-index 812686173ac8..3aa78a39394b 100644
---- a/drivers/net/wireless/ath/ath11k/core.c
-+++ b/drivers/net/wireless/ath/ath11k/core.c
-@@ -924,6 +924,13 @@ static const struct dmi_system_id ath11k_pm_quirk_table[] = {
- 			DMI_MATCH(DMI_PRODUCT_NAME, "21J4"),
- 		},
- 	},
-+	{
-+		.driver_data = (void *)ATH11K_PM_WOW,
-+		.matches = { /* T14s G3 AMD */
-+			DMI_MATCH(DMI_BOARD_VENDOR, "LENOVO"),
-+			DMI_MATCH(DMI_PRODUCT_NAME, "21CR"),
-+		},
-+	},
- 	{
- 		.driver_data = (void *)ATH11K_PM_WOW,
- 		.matches = { /* T14 G4 AMD #1 */
--- 
-2.52.0
-
+When the interface is DOWN this command succeeds but the WARNING
+appears because the chip is powered off.
 
