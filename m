@@ -1,120 +1,194 @@
-Return-Path: <linux-wireless+bounces-29272-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-29273-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [IPv6:2a01:60a::1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id 12061C7F18D
-	for <lists+linux-wireless@lfdr.de>; Mon, 24 Nov 2025 07:37:41 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 44F93C7F2CD
+	for <lists+linux-wireless@lfdr.de>; Mon, 24 Nov 2025 08:29:19 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.mirrors.kernel.org (Postfix) with ESMTPS id B33FD34762C
-	for <lists+linux-wireless@lfdr.de>; Mon, 24 Nov 2025 06:37:40 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id F1EF03A50E0
+	for <lists+linux-wireless@lfdr.de>; Mon, 24 Nov 2025 07:29:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D3D922D97A4;
-	Mon, 24 Nov 2025 06:37:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 773A82E762E;
+	Mon, 24 Nov 2025 07:29:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=realtek.com header.i=@realtek.com header.b="sTKQJ2OS"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="mW3dn1H5"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
+Received: from mail-pl1-f180.google.com (mail-pl1-f180.google.com [209.85.214.180])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 69F0A2D8792;
-	Mon, 24 Nov 2025 06:37:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=211.75.126.72
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DF9592E7622
+	for <linux-wireless@vger.kernel.org>; Mon, 24 Nov 2025 07:29:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.180
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763966255; cv=none; b=iG8i4Y0d81HoOxJFCNsWwRxwaINrULPSsE996Rye3R3tXO1qedPstmIsAk2iII9hUP3oEfTBSSKQTi/j3I9KuEJdYBaG1DHbd0Jrmc8+az4mW1j3njFs7U6d4NHUnn0kqP4uw85apCXCwuSiFlxpTdyU0LdFWznBswZpMH9EFCw=
+	t=1763969354; cv=none; b=ZI89YJ/4FldOlGbsFCYxEqAWFT3JRyQayc8KDtuH8edL5i/j8TpPeH8osHSp5/MaCcc9BHPhpHD9UGhefAcE5m5+5wq/HI1PIb5wFTz4CQiJ5adHH9hLTz+DVyBdIlG7Gk2GFYZRZxq+6/FMoYXnjgfnZvNGwdYL0My/+Z0yGVk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763966255; c=relaxed/simple;
-	bh=6FuPcvgNfsMMJi/137goBH87EKAAbtpVXTVcFYHSgyQ=;
-	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:MIME-Version; b=Rfvzes4AxfiSBafGxG9iYC/rxm8kTCYbdsjQ2BUR/xKz0JeVXyo/qHhQIPOUVZprjuRr/6Ez7yFphKHErZ32XB4I5cvhGE0T3qtqQr2y0OuEkXmbiQc7OKXFkLB5uOOcyKaUODfhJcQtljor71/Onz6I78aG8N8wxMo3wNitzUk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com; spf=pass smtp.mailfrom=realtek.com; dkim=pass (2048-bit key) header.d=realtek.com header.i=@realtek.com header.b=sTKQJ2OS; arc=none smtp.client-ip=211.75.126.72
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=realtek.com
-X-SpamFilter-By: ArmorX SpamTrap 5.80 with qID 5AO6b7Hj9444415, This message is accepted by code: ctloc85258
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=realtek.com; s=dkim;
-	t=1763966227; bh=6FuPcvgNfsMMJi/137goBH87EKAAbtpVXTVcFYHSgyQ=;
-	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:Content-Transfer-Encoding:MIME-Version;
-	b=sTKQJ2OShKtzAo8KiFGXfNQaqUD0aKXMHGrhfrwdU/Gxz2U4+JLdp0icvjZF8r39v
-	 sjwlTIiXgGXUsnuhNcNWprJRNe2wS4syJDQ+3B+XdBbUHrZuFqYvi3jbFqmHlqF8K5
-	 D6ND/G7PuQiX9PcUuxWElUNMgBtWUaiQxkT0kXIdAQhYZCSaDG3IZNhyRXyb0JzvuA
-	 ZVqO2x0U9KFClTglHpkywFVWQ5u+yw1qy7nmLKuyaeqc46P8aXtDAFbpQJXPdeh2II
-	 rfsQsF1fxRFKvGddrL7jQjkP6LkSBjxpWsc80PMjWNkHAr7w5tRjOUn0hdu0pp0fAt
-	 WvoK6ik7+3xEw==
-Received: from mail.realtek.com (rtkexhmbs02.realtek.com.tw[172.21.6.41])
-	by rtits2.realtek.com.tw (8.15.2/3.21/5.94) with ESMTPS id 5AO6b7Hj9444415
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Mon, 24 Nov 2025 14:37:07 +0800
-Received: from RTKEXHMBS06.realtek.com.tw (10.21.1.56) by
- RTKEXHMBS02.realtek.com.tw (172.21.6.41) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.27; Mon, 24 Nov 2025 14:37:08 +0800
-Received: from RTKEXHMBS06.realtek.com.tw (10.21.1.56) by
- RTKEXHMBS06.realtek.com.tw (10.21.1.56) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.27; Mon, 24 Nov 2025 14:37:07 +0800
-Received: from RTKEXHMBS06.realtek.com.tw ([::1]) by
- RTKEXHMBS06.realtek.com.tw ([fe80::744:4bc9:832c:9b7e%10]) with mapi id
- 15.02.1544.027; Mon, 24 Nov 2025 14:37:07 +0800
-From: Ping-Ke Shih <pkshih@realtek.com>
-To: Bitterblue Smith <rtl8821cerfe2@gmail.com>,
-        Zenm Chen
-	<zenmchen@gmail.com>,
-        "gustavo@embeddedor.com" <gustavo@embeddedor.com>
-CC: "Jes.Sorensen@gmail.com" <Jes.Sorensen@gmail.com>,
-        "gustavoars@kernel.org"
-	<gustavoars@kernel.org>,
-        "linux-hardening@vger.kernel.org"
-	<linux-hardening@vger.kernel.org>,
-        "linux-kernel@vger.kernel.org"
-	<linux-kernel@vger.kernel.org>,
-        "linux-wireless@vger.kernel.org"
-	<linux-wireless@vger.kernel.org>
-Subject: RE: [PATCH][next] wifi: rtl8xxxu: Avoid
- -Wflex-array-member-not-at-end warnings
-Thread-Topic: [PATCH][next] wifi: rtl8xxxu: Avoid
- -Wflex-array-member-not-at-end warnings
-Thread-Index: AQHcWTQWm+ekto8gdkOtuZTX88y/HbT8ZJsAgAADogCAAA5sgIADwJWAgAEjHUA=
-Date: Mon, 24 Nov 2025 06:37:07 +0000
-Message-ID: <2823a19f73ef45a0919e48ef42ce636f@realtek.com>
-References: <ff184c0e-17f2-445f-9339-f4db9943db86@embeddedor.com>
- <20251121111132.4435-1-zenmchen@gmail.com>
- <475b4336-eed0-4fae-848f-aae26f109606@gmail.com>
-In-Reply-To: <475b4336-eed0-4fae-848f-aae26f109606@gmail.com>
-Accept-Language: en-US, zh-TW
-Content-Language: zh-TW
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+	s=arc-20240116; t=1763969354; c=relaxed/simple;
+	bh=TMZv6DiI7YTlWL+GWS0yVxHiJdi4ZO3iSpTQ1QqARek=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=skoQnJc/ypMZPLdbNWDV+SRipA2d6StirIWkYXcpbUGivBocNVm+4Xy8jK6rMaxW0Pe1R9XEnrD9oZLxrJK4QjFnxGnjxGuXA3lrmv0BaInD66KZ+77gZebP4nEu/4i6lN0lUlJQuYNKi/EruTL69SuEzP03shzqiunzlMQOLcI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=mW3dn1H5; arc=none smtp.client-ip=209.85.214.180
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-pl1-f180.google.com with SMTP id d9443c01a7336-2955623e6faso46362485ad.1
+        for <linux-wireless@vger.kernel.org>; Sun, 23 Nov 2025 23:29:12 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1763969352; x=1764574152; darn=vger.kernel.org;
+        h=cc:to:message-id:content-transfer-encoding:mime-version:subject
+         :date:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=lL8i4yd9K6cdAsLA9VXTIc7TLjAQjmeneyMWm+Rw4AI=;
+        b=mW3dn1H5UNa+sohK/+O52NWz9p6Y8G4SzpcnJC4gRCvJU3d46LFhlXjDs4BMUjy/ux
+         9vI3CvJYMFprSqmjzuIhj5/ppy0MaVpYBHUU47Xsr0r9kTl0T4ulQYwCco5S1TbNaVsP
+         RWoZKsaJUbUulMdOZTo3tskLzvhygW7eUzooKmxq3pqgXGD2fOtLbCxpdglAgPJXPg/0
+         AxXK4KPHYgP6NVUSNNwsIxcimGWxJjlKktWlF8xtZ3AIu27gIHHeBS8qVnvqd+X8Qa+4
+         Jl6YKnmQ5n9J3wgjOB1tFd1Zdi9HvQuK/Kc2/4t0RL736ByRrT7Hhr+6zPVHTSlKcUHb
+         purw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1763969352; x=1764574152;
+        h=cc:to:message-id:content-transfer-encoding:mime-version:subject
+         :date:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=lL8i4yd9K6cdAsLA9VXTIc7TLjAQjmeneyMWm+Rw4AI=;
+        b=SSvhQoVNFx5L0oEicQsoU9j1MvGiRVfvb7KYGc6xjaXaxwVKktnGUJpRcG/cEGqh3i
+         A3nPBS410Yvy4lDzuCripuhnl6h12wUQy5HOEga8vQNgWlzDYa2Honiui5gj9Dkas29x
+         P9Ume341p6sjiGljPA3TH/ibHLbxGLf+Q3YtaugNLxHenvJo/gIsL3oKckE8SWZxjpsG
+         UCzFkxHHkaaNMstp2ilkZd25uc8iMdJoJ8iUFI3+nqpOsOatjzOqP8W3sdKtmMVm+5kz
+         T2CW1limRY6DozGshbG+Rebi/Ys7AyZ+JlKeRUPEBiaNMFlgGgHgZwyst3gLUgcJ1yLZ
+         angg==
+X-Forwarded-Encrypted: i=1; AJvYcCUHFWakL4dEvNOaofzL5N9yaGC3UHb0+UoqWc99NMEh2XyVRb5+eJTtWeNZprWqEPbW3uNxokJe5Jwi4vlNWA==@vger.kernel.org
+X-Gm-Message-State: AOJu0Yza+rXVCQVRPKfZXx7p0GyRuXVzLUyTc1gOusnpXBC3p+unMzcv
+	RcGV1h4qVm2O6WwMSrz8X1hJR1UAOEkG0zPrE/Eb6K+m0yCcr9t5N7gw
+X-Gm-Gg: ASbGncuLFk7rYgDUhLeF41yMJANDXzxgvLouhPjgt+iVfwWo8bD1TOHKefk8irUFDrF
+	Pw8st+vau0BWDhdFCbZLtuuLVAc+SCYANqjLxT2EwhbpBy3/Tbd6GEdC5RhnqIGbAZNcAiOcOqI
+	ktEdNqgAi8wkTiJsoitf/hEZiMm7WPhxPbRTluCuJ8aW4YLAbPb2BdBJW/h8eFpOK1y72NdcISs
+	2vYPsG/f02JEqowqGNjQ4xpLx0uY3iiU7BMJzRFTIzKAsErZGOBU9wGBj7fC78VeXsaMXHWpdLf
+	ts3y/IFHZpt7WjtDSoMzOKnGiTy+I8z55ORbz2yyKNwR2HF5RWPU1QKQ2ck9nyJGshJEMa+gaCX
+	5j95kXGJjrtddF1FbAYtrglCrzWvtgHC93KXOJ7Wq1Vs24lbATZteUTivHvlj0jgiWqF4zwYVJC
+	pMotn/A755
+X-Google-Smtp-Source: AGHT+IH4F6FBvgyOceTbRcvv+S7rQX9Y/kHRwk75+mymO4QNY5NFT01pdhCppW7LNnQTS6sXJ1p/dg==
+X-Received: by 2002:a17:902:fc43:b0:28d:18fb:bb93 with SMTP id d9443c01a7336-29b6be9394amr122878955ad.7.1763969351969;
+        Sun, 23 Nov 2025 23:29:11 -0800 (PST)
+Received: from aheev.home ([2401:4900:8fce:eb65:99e9:53c:32e6:4996])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-29b5b13a870sm126138035ad.34.2025.11.23.23.29.08
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sun, 23 Nov 2025 23:29:11 -0800 (PST)
+From: Ally Heev <allyheev@gmail.com>
+Date: Mon, 24 Nov 2025 12:59:05 +0530
+Subject: [PATCH iwlwifi-next v5] wifi: iwlwifi: fix uninitialized pointers
+ with free attribute
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20251124-aheev-uninitialized-free-attr-wireless-v5-1-0bd6da692975@gmail.com>
+X-B4-Tracking: v=1; b=H4sIAEAJJGkC/5XOwW6EIBQF0F+ZsC6NIAh21f9oumDgMr7E0QlYn
+ Xbiv5e6Mu3GLm/uy7nvwTISIbOX04MlzJRpHErQTyfmOzdcwCmUzGQltRCV5q4DZv4x0EATuZ6
+ +EHhMAHfTlPhCCT1y5ucA06h4hhWeFeyWEOm+Db0xWvqFIvEB94m9l7ajPI3pc/tiFtvNfwdnw
+ QVvvNWVU67V0r1ero76Zz9et4lZ7llzmJU/rFHR19DeWPxm6x0rxGG2LqxsYG0bKhj8YdWOlcd
+ ZVVijZd0Gp22LuGfXdf0GAgpHp+8BAAA=
+X-Change-ID: 20251105-aheev-uninitialized-free-attr-wireless-bde764fbe81c
+To: Miri Korenblit <miriam.rachel.korenblit@intel.com>
+Cc: Krzysztof Kozlowski <krzk@kernel.org>, 
+ Johannes Berg <johannes@sipsolutions.net>, linux-wireless@vger.kernel.org, 
+ linux-kernel@vger.kernel.org, Dan Carpenter <dan.carpenter@linaro.org>, 
+ Ally Heev <allyheev@gmail.com>
+X-Mailer: b4 0.14.2
+X-Developer-Signature: v=1; a=openpgp-sha256; l=3518; i=allyheev@gmail.com;
+ h=from:subject:message-id; bh=TMZv6DiI7YTlWL+GWS0yVxHiJdi4ZO3iSpTQ1QqARek=;
+ b=owGbwMvMwCU2zXbRFfvr1TKMp9WSGDJVOJ09TLy2/Yv8czhC9KjYRY/K055NcbZGjNcPRzHy9
+ tuX633qKGVhEONikBVTZGEUlfLT2yQ1Ie5w0jeYOaxMIEMYuDgFYCLl8YwM+76qND/8G3elpv3L
+ 1bS0rcXxiUYVng+vybLJ77Au5Fz3gpFhHe8K+wWpa/MKbRoMgiatZbaqUfQNlik0qFs+zVFxjTc
+ nAA==
+X-Developer-Key: i=allyheev@gmail.com; a=openpgp;
+ fpr=01151A4E2EB21A905EC362F6963DA2D43FD77B1C
 
-SGkgQml0dGVyYmx1ZSBhbmQgWmVubSwNCg0KQml0dGVyYmx1ZSBTbWl0aCA8cnRsODgyMWNlcmZl
-MkBnbWFpbC5jb20+IHdyb3RlOg0KPiBPbiAyMS8xMS8yMDI1IDEzOjExLCBaZW5tIENoZW4gd3Jv
-dGU6DQo+ID4gR3VzdGF2byBBLiBSLiBTaWx2YSA8Z3VzdGF2b0BlbWJlZGRlZG9yLmNvbT4g5pa8
-IDIwMjXlubQxMeaciDIx5pelIOmAseS6lCDkuIvljYg2OjIw5a+r6YGT77yaDQo+ID4+DQo+ID4+
-IEhpLA0KPiA+Pg0KPiA+PiBPbiAxMS8yMS8yNSAxOTowNiwgWmVubSBDaGVuIHdyb3RlOg0KPiA+
-Pj4gRGVhciBtYWludGFpbmVycywNCj4gPj4+DQo+ID4+PiBXaXRoIHRoaXMgcGF0Y2ggYXBwbGll
-ZCwgbXkgc3lzdGVtIGFsd2F5cyBmcmVlemVzIHJpZ2h0IGFmdGVyIHRoZSBydGw4eHh4dQ0KPiA+
-Pj4gZHJpdmVyIGlzIGxvYWRlZC4gaXMgaXQgbm9ybWFsPw0KPiA+Pg0KPiA+PiBJIGRvbid0IHRo
-aW5rIHNvLi4uIEl0IHByb2JhYmx5IG1lYW5zIHRoYXQgc3RydWN0IHVyYiB1cmI7IGNhbm5vdCBy
-ZWFsbHkgYmUNCj4gPj4gbW92ZWQgdG8gdGhlIGVuZCBvZiBzdHJ1Y3QgcnRsOHh4eHVfcnhfdXJi
-IG9yIHN0cnVjdCBydGw4eHh4dV90eF91cmI/DQo+ID4+DQo+ID4+IEl0J2QgYmUgZ3JlYXQgaWYg
-eW91IGNvdWxkIHNoYXJlIGEgbG9nLg0KPiA+Pg0KPiA+DQo+ID4gSGksDQo+ID4NCj4gPiBOb3Ro
-aW5nIGhlbHBmdWwgZm91bmQgZnJvbSB0aGUga2VybmVsIGxvZy4gTWF5YmUgUmVhbHRlayBkcml2
-ZXJzIG1haW50YWluZXINCj4gPiBQaW5nLUtlIGNvdWxkIHRha2UgYSBsb29rIHdoYXQgaXMgd3Jv
-bmcgbmV4dCBNb25kYXkuDQo+ID4NCj4gWy4uLl0NCj4gDQo+IEkgZ290IHNvbWV0aGluZy4gSW4g
-bXkgY2FzZSBldmVyeXRoaW5nIHNlZW1lZCBmaW5lIHVudGlsIEkgdW5wbHVnZ2VkIHRoZQ0KPiB3
-aWZpIGFkYXB0ZXIuIEFuZCB0aGVuIHRoZSBzeXN0ZW0gc3RpbGwgd29ya2VkIGZvciBhIGZldyBt
-aW51dGVzIGJlZm9yZQ0KPiBpdCBmcm96ZS4NCg0KQWZ0ZXIgcmV2aWV3aW5nIHVzZXMgb2YgcnRs
-OHh4eHVfcnhfdXJiIGFuZCBydGw4eHh4dV90eF91cmIgYWdhaW4sIEkgY2FuJ3QNCmZpbmQgb2J2
-aW91cyBwcm9ibGVtIHdoeSBpdCBnZXRzIHdyb25nLiANCg0KQ291bGQgeW91IHBsZWFzZSB0cnkg
-b25lIGFwcGx5IHBhcnRpYWwgY2hhbmdlIG9mIHRoaXMgcGF0Y2g/IA0KSSBtZWFuIG9ubHkgYXBw
-bHkgY2hhbmdlcyBvZiBydGw4eHh4dV9yeF91cmIgb3IgcnRsOHh4eHVfdHhfdXJiIHRvIHNlZQ0K
-d2hpY2ggcGFydCBpcyB0aGUgY2F1c2UuIFRoZW4sIHdlIGNhbiBmb2N1cyBvbiB0aGUgcGFydCBk
-ZWVwZXIuIA0KDQoNCg==
+Uninitialized pointers with `__free` attribute can cause undefined
+behavior as the memory assigned randomly to the pointer is freed
+automatically when the pointer goes out of scope.
+
+It is better to initialize and assign pointers with `__free` attribute
+in one statement to ensure proper scope-based cleanup
+
+Reported-by: Dan Carpenter <dan.carpenter@linaro.org>
+Closes: https://lore.kernel.org/all/aPiG_F5EBQUjZqsl@stanley.mountain/
+Signed-off-by: Ally Heev <allyheev@gmail.com>
+---
+Changes in v5:
+- merge declaration and allocation of `data` pointer
+- Link to v4: https://lore.kernel.org/r/20251121-aheev-uninitialized-free-attr-wireless-v4-1-75239da589ef@gmail.com
+
+Changes in v4:
+- moved pointers declaration to where the allocation is
+- Link to v3: https://lore.kernel.org/r/20251111-aheev-uninitialized-free-attr-wireless-v3-1-26e889d0e7ee@gmail.com
+
+Changes in v3:
+- fixed commit message to include iwlwifi
+- reverted unused variable removal. To be done in a different patch
+- Link to v2: https://lore.kernel.org/r/20251107-aheev-uninitialized-free-attr-wireless-v2-1-674fc3e5c78e@gmail.com
+
+Changes in v2:
+- fixed style issues
+- ignore v1 of this patch
+- Link to v1: https://lore.kernel.org/r/20251105-aheev-uninitialized-free-attr-wireless-v1-1-6c850a4a952a@gmail.com
+---
+ drivers/net/wireless/intel/iwlwifi/fw/uefi.c | 7 ++++---
+ drivers/net/wireless/intel/iwlwifi/mld/d3.c  | 6 +++---
+ 2 files changed, 7 insertions(+), 6 deletions(-)
+
+diff --git a/drivers/net/wireless/intel/iwlwifi/fw/uefi.c b/drivers/net/wireless/intel/iwlwifi/fw/uefi.c
+index 4ae4d215e633e0d51194d818d479349e7c502201..a240fd2052bd1f029cbb59abe5edf84c2227b397 100644
+--- a/drivers/net/wireless/intel/iwlwifi/fw/uefi.c
++++ b/drivers/net/wireless/intel/iwlwifi/fw/uefi.c
+@@ -818,11 +818,12 @@ int iwl_uefi_get_dsbr(struct iwl_fw_runtime *fwrt, u32 *value)
+ 
+ int iwl_uefi_get_phy_filters(struct iwl_fw_runtime *fwrt)
+ {
+-	struct uefi_cnv_wpfc_data *data __free(kfree);
+ 	struct iwl_phy_specific_cfg *filters = &fwrt->phy_filters;
+ 
+-	data = iwl_uefi_get_verified_variable(fwrt->trans, IWL_UEFI_WPFC_NAME,
+-					      "WPFC", sizeof(*data), NULL);
++	struct uefi_cnv_wpfc_data *data __free(kfree) =
++		iwl_uefi_get_verified_variable(fwrt->trans, IWL_UEFI_WPFC_NAME,
++					       "WPFC", sizeof(*data), NULL);
++
+ 	if (IS_ERR(data))
+ 		return -EINVAL;
+ 
+diff --git a/drivers/net/wireless/intel/iwlwifi/mld/d3.c b/drivers/net/wireless/intel/iwlwifi/mld/d3.c
+index 1d4282a21f09e0f90a52dc02c8287ecc0e0fafe1..e4e4f35b762a445a98df1c725e053fb9bd07affc 100644
+--- a/drivers/net/wireless/intel/iwlwifi/mld/d3.c
++++ b/drivers/net/wireless/intel/iwlwifi/mld/d3.c
+@@ -1785,15 +1785,15 @@ iwl_mld_send_proto_offload(struct iwl_mld *mld,
+ 			   struct ieee80211_vif *vif,
+ 			   u8 ap_sta_id)
+ {
+-	struct iwl_proto_offload_cmd_v4 *cmd __free(kfree);
+ 	struct iwl_host_cmd hcmd = {
+ 		.id = PROT_OFFLOAD_CONFIG_CMD,
+ 		.dataflags[0] = IWL_HCMD_DFL_NOCOPY,
+-		.len[0] = sizeof(*cmd),
++		.len[0] = sizeof(struct iwl_proto_offload_cmd_v4),
+ 	};
+ 	u32 enabled = 0;
+ 
+-	cmd = kzalloc(hcmd.len[0], GFP_KERNEL);
++	struct iwl_proto_offload_cmd_v4 *cmd __free(kfree) =
++		kzalloc(hcmd.len[0], GFP_KERNEL);
+ 
+ #if IS_ENABLED(CONFIG_IPV6)
+ 	struct iwl_mld_vif *mld_vif = iwl_mld_vif_from_mac80211(vif);
+
+---
+base-commit: c9cfc122f03711a5124b4aafab3211cf4d35a2ac
+change-id: 20251105-aheev-uninitialized-free-attr-wireless-bde764fbe81c
+
+Best regards,
+-- 
+Ally Heev <allyheev@gmail.com>
+
 
