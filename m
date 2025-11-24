@@ -1,121 +1,120 @@
-Return-Path: <linux-wireless+bounces-29271-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-29272-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [213.196.21.55])
-	by mail.lfdr.de (Postfix) with ESMTPS id DC145C7F045
-	for <lists+linux-wireless@lfdr.de>; Mon, 24 Nov 2025 07:11:41 +0100 (CET)
+Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [IPv6:2a01:60a::1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id 12061C7F18D
+	for <lists+linux-wireless@lfdr.de>; Mon, 24 Nov 2025 07:37:41 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 5968F34258E
-	for <lists+linux-wireless@lfdr.de>; Mon, 24 Nov 2025 06:11:41 +0000 (UTC)
+	by ams.mirrors.kernel.org (Postfix) with ESMTPS id B33FD34762C
+	for <lists+linux-wireless@lfdr.de>; Mon, 24 Nov 2025 06:37:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 58997221F39;
-	Mon, 24 Nov 2025 06:11:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D3D922D97A4;
+	Mon, 24 Nov 2025 06:37:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=morsemicro-com.20230601.gappssmtp.com header.i=@morsemicro-com.20230601.gappssmtp.com header.b="hUXpOGbA"
+	dkim=pass (2048-bit key) header.d=realtek.com header.i=@realtek.com header.b="sTKQJ2OS"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-pl1-f170.google.com (mail-pl1-f170.google.com [209.85.214.170])
+Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 77E83217736
-	for <linux-wireless@vger.kernel.org>; Mon, 24 Nov 2025 06:11:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.170
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 69F0A2D8792;
+	Mon, 24 Nov 2025 06:37:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=211.75.126.72
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763964698; cv=none; b=L1mZjBcR9/LOf2yWOrX2h3b0q3vDBF3nIyE85kZqXHg3CheI4r17o2mabkpDi7clWzWMUnByJe8jXNqaUNLMcrVnEGy2+bCp2gxaGTNR5ZrPe3humNZfWtlrNTHAjUbJqkU3MZQDRPDL1Kl2TB0NYucB0tLvr9sfMWT8MRsn0FU=
+	t=1763966255; cv=none; b=iG8i4Y0d81HoOxJFCNsWwRxwaINrULPSsE996Rye3R3tXO1qedPstmIsAk2iII9hUP3oEfTBSSKQTi/j3I9KuEJdYBaG1DHbd0Jrmc8+az4mW1j3njFs7U6d4NHUnn0kqP4uw85apCXCwuSiFlxpTdyU0LdFWznBswZpMH9EFCw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763964698; c=relaxed/simple;
-	bh=+fyIxpYhIo9F/nR5oMTv04MHmHnFSw5Alutm0aDkbag=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=T2yyxTACzU2XlOwGw8LlB30K/BCZs3rYSFeVT9LEifKatYqqhalHdbTLBPKiOF6398KI3+32QgyQyojLtHj3812xThn1jgmnKCV0I+kD69+QS+nZ7oref+/kDwnwlTIZ047A/HbyM5cfqTZeJ6HwUJZ3kbXlhLtRZm6lTO0tDIE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=morsemicro.com; spf=pass smtp.mailfrom=morsemicro.com; dkim=pass (2048-bit key) header.d=morsemicro-com.20230601.gappssmtp.com header.i=@morsemicro-com.20230601.gappssmtp.com header.b=hUXpOGbA; arc=none smtp.client-ip=209.85.214.170
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=morsemicro.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=morsemicro.com
-Received: by mail-pl1-f170.google.com with SMTP id d9443c01a7336-29812589890so46197555ad.3
-        for <linux-wireless@vger.kernel.org>; Sun, 23 Nov 2025 22:11:36 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=morsemicro-com.20230601.gappssmtp.com; s=20230601; t=1763964696; x=1764569496; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=OKejhinRAX5Jri7ceK++2hZuNvpE8bhMRpF+xH5VYJk=;
-        b=hUXpOGbANxcx2uNLZJ+Vh4JFGLqChBgcuS/uraFe0p97zss7zXNzjKKzdBpV2Vnkpg
-         amtQcu0ZjosLcnouxTr7T1vo0VKbMKPYutoHhZfr2nj0Uchz/UQxaY9ANErIl8UjajpH
-         VDXWSljviHzt366qFE5wR0yRqDTRHxTw3bHdY8Q7AjZnx23kn4deOTaFVhBP6tDBFzbd
-         Zdp7zcOTXofHWxWkzYa5XUwrLVrvWD7CV7lWPhAxRjmfzDO3hMMGWJ7baT6EnqsxlK+N
-         eEkm5P8hAw1ViPLKdQVm0lxv9S3oj7rNm4myupgfjV98en7IxzAW4yaNrJMS1VfW2efI
-         gnhA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1763964696; x=1764569496;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=OKejhinRAX5Jri7ceK++2hZuNvpE8bhMRpF+xH5VYJk=;
-        b=f/NBVLxj0qvAu1kbIGLbzGHFNIXvz4QzDe9POAaAUHtZwGcD3qZoqRqxYhnyJX0/ra
-         6ofYLmYYyeSLbByUV/PViblBwEz9Y+SRwCUc9GgkwU6SVisqZL/ihXaqQQea5xSX85vM
-         kZAgtA7mTUgVr80wvNjmGIfRLfPF64pX1UaPB8k1htpieJiaJbD421y5p9B8CCKJMMWz
-         C/SIpAQaXHxb4BxKuKubdynHG2YLdex3oyKccUh3Q/jGIIYx9JR8i2Q2/zFI38Bz0kW/
-         8CX4AVuuqYozBXpIOBfidKkvB1GEaWCMxD8Jey7Br7esWTCC29NNnGkVS2s71t2eK+ml
-         l5Yg==
-X-Gm-Message-State: AOJu0Yzl2Wsm71lUwbdUYpfDsz6t5ijfQYEzXerxcCzh5F1C9RbOOd71
-	TgBwU6HFw4o1NLmyhAlZC8iuJXojBv+cFrsb6uAbue9jeMN/rj6XNWv5D8q0uLyB+g==
-X-Gm-Gg: ASbGncs/XE2mZPNTzSJ4mdBTCvhd3Emxpe0NY759y56Vp8xUtTcKg8lAaW5VT88djrQ
-	aB6sCnvdlyyPGGhK+ZHsvX8U8t1vz+tdgnBG7VNgx78dT1anm3B4E51k8WiPO9XDLvY4wkUsngY
-	NV3YJqH3BVttpCpyJhVPLSGqy/YgyJALS7O6NiA2WzZeRh/ms6clW3Z/qEeKFe1tTG63yURO4Fm
-	kNcM1P8ARPuQpp9rUYSOARISVgTTo7S/vvzp/4rtbBrJ0pTKn6oQaqoBCJRlZvSgJrJrZDgPsNX
-	vOAVEAUn8xOWTvZB5MNWqHCviYoJhQMlMdl5lMUQVyN+8QJ1wOTg2aI/wME9pp2Kx/jjceVDYaK
-	BafNH0RDAOvU02myhqsIdk+SHVz5OeyGHc7Ys/vKznf33fM6A94J0+l8UJkYPxU7F0o4crddo7Q
-	BxHwZaRMggcxkJvk8k4GCea+TJ
-X-Google-Smtp-Source: AGHT+IFOIG95gbQiKXEQigC0yCrYt3Cz3wYI6i+ZcqDXSH3/SA8TzgwIdbqnOHCPYL/UYq6JLqzlQg==
-X-Received: by 2002:a17:90a:d00c:b0:340:e529:5572 with SMTP id 98e67ed59e1d1-34733e6cac7mr9713229a91.8.1763964695670;
-        Sun, 23 Nov 2025 22:11:35 -0800 (PST)
-Received: from 1207.mumbai.mm.lcl ([14.143.244.11])
-        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-bd75e4c73a2sm11801881a12.8.2025.11.23.22.11.33
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 23 Nov 2025 22:11:35 -0800 (PST)
-From: Ria Thomas <ria.thomas@morsemicro.com>
-To: johannes@sipsolutions.net
-Cc: linux-wireless@vger.kernel.org,
-	lachlan.hodges@morsemicro.com,
-	pradeep.reddy@morsemicro.com,
-	simon@morsemicro.com,
-	Ria Thomas <ria.thomas@morsemicro.com>
-Subject: [PATCH wireless] wifi: mac80211: correct FILS status codes
-Date: Mon, 24 Nov 2025 11:41:11 +0530
-Message-Id: <20251124061111.3627341-1-ria.thomas@morsemicro.com>
-X-Mailer: git-send-email 2.25.1
+	s=arc-20240116; t=1763966255; c=relaxed/simple;
+	bh=6FuPcvgNfsMMJi/137goBH87EKAAbtpVXTVcFYHSgyQ=;
+	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
+	 Content-Type:MIME-Version; b=Rfvzes4AxfiSBafGxG9iYC/rxm8kTCYbdsjQ2BUR/xKz0JeVXyo/qHhQIPOUVZprjuRr/6Ez7yFphKHErZ32XB4I5cvhGE0T3qtqQr2y0OuEkXmbiQc7OKXFkLB5uOOcyKaUODfhJcQtljor71/Onz6I78aG8N8wxMo3wNitzUk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com; spf=pass smtp.mailfrom=realtek.com; dkim=pass (2048-bit key) header.d=realtek.com header.i=@realtek.com header.b=sTKQJ2OS; arc=none smtp.client-ip=211.75.126.72
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=realtek.com
+X-SpamFilter-By: ArmorX SpamTrap 5.80 with qID 5AO6b7Hj9444415, This message is accepted by code: ctloc85258
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=realtek.com; s=dkim;
+	t=1763966227; bh=6FuPcvgNfsMMJi/137goBH87EKAAbtpVXTVcFYHSgyQ=;
+	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
+	 Content-Type:Content-Transfer-Encoding:MIME-Version;
+	b=sTKQJ2OShKtzAo8KiFGXfNQaqUD0aKXMHGrhfrwdU/Gxz2U4+JLdp0icvjZF8r39v
+	 sjwlTIiXgGXUsnuhNcNWprJRNe2wS4syJDQ+3B+XdBbUHrZuFqYvi3jbFqmHlqF8K5
+	 D6ND/G7PuQiX9PcUuxWElUNMgBtWUaiQxkT0kXIdAQhYZCSaDG3IZNhyRXyb0JzvuA
+	 ZVqO2x0U9KFClTglHpkywFVWQ5u+yw1qy7nmLKuyaeqc46P8aXtDAFbpQJXPdeh2II
+	 rfsQsF1fxRFKvGddrL7jQjkP6LkSBjxpWsc80PMjWNkHAr7w5tRjOUn0hdu0pp0fAt
+	 WvoK6ik7+3xEw==
+Received: from mail.realtek.com (rtkexhmbs02.realtek.com.tw[172.21.6.41])
+	by rtits2.realtek.com.tw (8.15.2/3.21/5.94) with ESMTPS id 5AO6b7Hj9444415
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Mon, 24 Nov 2025 14:37:07 +0800
+Received: from RTKEXHMBS06.realtek.com.tw (10.21.1.56) by
+ RTKEXHMBS02.realtek.com.tw (172.21.6.41) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1544.27; Mon, 24 Nov 2025 14:37:08 +0800
+Received: from RTKEXHMBS06.realtek.com.tw (10.21.1.56) by
+ RTKEXHMBS06.realtek.com.tw (10.21.1.56) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1544.27; Mon, 24 Nov 2025 14:37:07 +0800
+Received: from RTKEXHMBS06.realtek.com.tw ([::1]) by
+ RTKEXHMBS06.realtek.com.tw ([fe80::744:4bc9:832c:9b7e%10]) with mapi id
+ 15.02.1544.027; Mon, 24 Nov 2025 14:37:07 +0800
+From: Ping-Ke Shih <pkshih@realtek.com>
+To: Bitterblue Smith <rtl8821cerfe2@gmail.com>,
+        Zenm Chen
+	<zenmchen@gmail.com>,
+        "gustavo@embeddedor.com" <gustavo@embeddedor.com>
+CC: "Jes.Sorensen@gmail.com" <Jes.Sorensen@gmail.com>,
+        "gustavoars@kernel.org"
+	<gustavoars@kernel.org>,
+        "linux-hardening@vger.kernel.org"
+	<linux-hardening@vger.kernel.org>,
+        "linux-kernel@vger.kernel.org"
+	<linux-kernel@vger.kernel.org>,
+        "linux-wireless@vger.kernel.org"
+	<linux-wireless@vger.kernel.org>
+Subject: RE: [PATCH][next] wifi: rtl8xxxu: Avoid
+ -Wflex-array-member-not-at-end warnings
+Thread-Topic: [PATCH][next] wifi: rtl8xxxu: Avoid
+ -Wflex-array-member-not-at-end warnings
+Thread-Index: AQHcWTQWm+ekto8gdkOtuZTX88y/HbT8ZJsAgAADogCAAA5sgIADwJWAgAEjHUA=
+Date: Mon, 24 Nov 2025 06:37:07 +0000
+Message-ID: <2823a19f73ef45a0919e48ef42ce636f@realtek.com>
+References: <ff184c0e-17f2-445f-9339-f4db9943db86@embeddedor.com>
+ <20251121111132.4435-1-zenmchen@gmail.com>
+ <475b4336-eed0-4fae-848f-aae26f109606@gmail.com>
+In-Reply-To: <475b4336-eed0-4fae-848f-aae26f109606@gmail.com>
+Accept-Language: en-US, zh-TW
+Content-Language: zh-TW
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
 
-The FILS status codes are set to 108/109, but the IEEE 802.11-2020
-spec defines them as 112/113. Update the enum so it matches the
-specification and keeps mac80211 consistent with standard values.
-
-Fixes: a3caf7440ded ("wifi: mac80211: add corrected FILS status codes")
-Signed-off-by: Ria Thomas <ria.thomas@morsemicro.com>
----
- include/linux/ieee80211.h | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
-
-diff --git a/include/linux/ieee80211.h b/include/linux/ieee80211.h
-index ddff9102f633..1f4679092e69 100644
---- a/include/linux/ieee80211.h
-+++ b/include/linux/ieee80211.h
-@@ -3594,8 +3594,8 @@ enum ieee80211_statuscode {
- 	WLAN_STATUS_DENIED_WITH_SUGGESTED_BAND_AND_CHANNEL = 99,
- 	WLAN_STATUS_DENIED_DUE_TO_SPECTRUM_MANAGEMENT = 103,
- 	/* 802.11ai */
--	WLAN_STATUS_FILS_AUTHENTICATION_FAILURE = 108,
--	WLAN_STATUS_UNKNOWN_AUTHENTICATION_SERVER = 109,
-+	WLAN_STATUS_FILS_AUTHENTICATION_FAILURE = 112,
-+	WLAN_STATUS_UNKNOWN_AUTHENTICATION_SERVER = 113,
- 	WLAN_STATUS_SAE_HASH_TO_ELEMENT = 126,
- 	WLAN_STATUS_SAE_PK = 127,
- 	WLAN_STATUS_DENIED_TID_TO_LINK_MAPPING = 133,
--- 
-2.25.1
-
+SGkgQml0dGVyYmx1ZSBhbmQgWmVubSwNCg0KQml0dGVyYmx1ZSBTbWl0aCA8cnRsODgyMWNlcmZl
+MkBnbWFpbC5jb20+IHdyb3RlOg0KPiBPbiAyMS8xMS8yMDI1IDEzOjExLCBaZW5tIENoZW4gd3Jv
+dGU6DQo+ID4gR3VzdGF2byBBLiBSLiBTaWx2YSA8Z3VzdGF2b0BlbWJlZGRlZG9yLmNvbT4g5pa8
+IDIwMjXlubQxMeaciDIx5pelIOmAseS6lCDkuIvljYg2OjIw5a+r6YGT77yaDQo+ID4+DQo+ID4+
+IEhpLA0KPiA+Pg0KPiA+PiBPbiAxMS8yMS8yNSAxOTowNiwgWmVubSBDaGVuIHdyb3RlOg0KPiA+
+Pj4gRGVhciBtYWludGFpbmVycywNCj4gPj4+DQo+ID4+PiBXaXRoIHRoaXMgcGF0Y2ggYXBwbGll
+ZCwgbXkgc3lzdGVtIGFsd2F5cyBmcmVlemVzIHJpZ2h0IGFmdGVyIHRoZSBydGw4eHh4dQ0KPiA+
+Pj4gZHJpdmVyIGlzIGxvYWRlZC4gaXMgaXQgbm9ybWFsPw0KPiA+Pg0KPiA+PiBJIGRvbid0IHRo
+aW5rIHNvLi4uIEl0IHByb2JhYmx5IG1lYW5zIHRoYXQgc3RydWN0IHVyYiB1cmI7IGNhbm5vdCBy
+ZWFsbHkgYmUNCj4gPj4gbW92ZWQgdG8gdGhlIGVuZCBvZiBzdHJ1Y3QgcnRsOHh4eHVfcnhfdXJi
+IG9yIHN0cnVjdCBydGw4eHh4dV90eF91cmI/DQo+ID4+DQo+ID4+IEl0J2QgYmUgZ3JlYXQgaWYg
+eW91IGNvdWxkIHNoYXJlIGEgbG9nLg0KPiA+Pg0KPiA+DQo+ID4gSGksDQo+ID4NCj4gPiBOb3Ro
+aW5nIGhlbHBmdWwgZm91bmQgZnJvbSB0aGUga2VybmVsIGxvZy4gTWF5YmUgUmVhbHRlayBkcml2
+ZXJzIG1haW50YWluZXINCj4gPiBQaW5nLUtlIGNvdWxkIHRha2UgYSBsb29rIHdoYXQgaXMgd3Jv
+bmcgbmV4dCBNb25kYXkuDQo+ID4NCj4gWy4uLl0NCj4gDQo+IEkgZ290IHNvbWV0aGluZy4gSW4g
+bXkgY2FzZSBldmVyeXRoaW5nIHNlZW1lZCBmaW5lIHVudGlsIEkgdW5wbHVnZ2VkIHRoZQ0KPiB3
+aWZpIGFkYXB0ZXIuIEFuZCB0aGVuIHRoZSBzeXN0ZW0gc3RpbGwgd29ya2VkIGZvciBhIGZldyBt
+aW51dGVzIGJlZm9yZQ0KPiBpdCBmcm96ZS4NCg0KQWZ0ZXIgcmV2aWV3aW5nIHVzZXMgb2YgcnRs
+OHh4eHVfcnhfdXJiIGFuZCBydGw4eHh4dV90eF91cmIgYWdhaW4sIEkgY2FuJ3QNCmZpbmQgb2J2
+aW91cyBwcm9ibGVtIHdoeSBpdCBnZXRzIHdyb25nLiANCg0KQ291bGQgeW91IHBsZWFzZSB0cnkg
+b25lIGFwcGx5IHBhcnRpYWwgY2hhbmdlIG9mIHRoaXMgcGF0Y2g/IA0KSSBtZWFuIG9ubHkgYXBw
+bHkgY2hhbmdlcyBvZiBydGw4eHh4dV9yeF91cmIgb3IgcnRsOHh4eHVfdHhfdXJiIHRvIHNlZQ0K
+d2hpY2ggcGFydCBpcyB0aGUgY2F1c2UuIFRoZW4sIHdlIGNhbiBmb2N1cyBvbiB0aGUgcGFydCBk
+ZWVwZXIuIA0KDQoNCg==
 
