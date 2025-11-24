@@ -1,128 +1,161 @@
-Return-Path: <linux-wireless+bounces-29274-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-29275-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id C961DC7F2EB
-	for <lists+linux-wireless@lfdr.de>; Mon, 24 Nov 2025 08:32:04 +0100 (CET)
+Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [IPv6:2a01:60a::1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id 266CDC7F3A8
+	for <lists+linux-wireless@lfdr.de>; Mon, 24 Nov 2025 08:41:43 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 831A83A3BA1
-	for <lists+linux-wireless@lfdr.de>; Mon, 24 Nov 2025 07:32:03 +0000 (UTC)
+	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 54A8F347267
+	for <lists+linux-wireless@lfdr.de>; Mon, 24 Nov 2025 07:41:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B863C2E7BA7;
-	Mon, 24 Nov 2025 07:32:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 48F302EB86A;
+	Mon, 24 Nov 2025 07:41:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="lXbm0X7z"
+	dkim=pass (2048-bit key) header.d=morsemicro-com.20230601.gappssmtp.com header.i=@morsemicro-com.20230601.gappssmtp.com header.b="yjU5V31X"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pj1-f53.google.com (mail-pj1-f53.google.com [209.85.216.53])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8B5682E0413;
-	Mon, 24 Nov 2025 07:31:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E9C132EB847
+	for <linux-wireless@vger.kernel.org>; Mon, 24 Nov 2025 07:41:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.53
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763969520; cv=none; b=uFsHTbjMxc+yHMBTKf20C5g0cqA+7554rzZZRh+nMM1FXgLnEzvjuUIyhrWhGqVgVllZwB6Kvu70BRtgOrSD1CIKoNFpFOm108AS37MF28cyFKROANDbdCaK5D43COSUo25cNE01aXaZTDNWSChM7KV2moCFTPyWRrCl56cyNZY=
+	t=1763970065; cv=none; b=b17qWNAn402gdsbISmhMAMWHMkS1ll7cXVK3rhloo+hWquNiqMqr8JFCjitFc2qF9KovIKNsXPbXeHJz2a9GAxWwzXGJHwPmIz25OYgElBln55Pxhi9n1DTPx5WiwH4UirifOGlzb3obkmCzwzg8qdsfb2qbHVkFvNFyZCcFwHU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763969520; c=relaxed/simple;
-	bh=iPzxTyhOyGnqzDXMmveht6delxrhHwkGwR+UgCUwcS4=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=srV75smqEZmzh+4WeWuiVrga63d7zYb7C6DvQN9i+0WFOUzbtaO1MCM1zdHiNAU3NfAQPcjgWpO91kilH7PDFlyaWXbs08W2cRWIQJNHg7lF6rP1s4+qpiVZ3q7B8+Oj7jiuWEeb8/necUZnejvcR1VjdwRte65UZrTa5XQqYv4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=lXbm0X7z; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A7FA6C4CEF1;
-	Mon, 24 Nov 2025 07:31:57 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1763969519;
-	bh=iPzxTyhOyGnqzDXMmveht6delxrhHwkGwR+UgCUwcS4=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=lXbm0X7z13wuzRPDg2pSBwP1xxsmf+zBapPoGxDklkdyx7bQN2V4OcA780n157U1+
-	 +DhVZ2ue2pXf9Yd0G2ZLso1JlZVgsVUNN4UoltYBi1xii6SosTYujtrkSs7WZYxKIf
-	 pcWEDJ86noIgSQP9zRNfIrx6SJEwMWZmnLa1g28oR7sMatpT/Hg1EgTH0+uMxVnN73
-	 eG3LGj6YmIjC8x8rrLXFLwoufUGln8/lDAZOm5/py2v7+dY6hfwzFsyigygWFymjUz
-	 2TYo4lyyJ79Iz4rolG0+X3yZk0S5bB+faLtF1vLPBWkR3fetTsOnBpw6imRWvqiuG/
-	 AUERjNfkTbDSw==
-Message-ID: <cb351ab4-2071-4f3b-9bf3-2b049fee0b09@kernel.org>
-Date: Mon, 24 Nov 2025 08:31:55 +0100
+	s=arc-20240116; t=1763970065; c=relaxed/simple;
+	bh=tS9JFXZnHznExIV3KvEVgCd79bIN1HwEFkXwECS9Kzk=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=kLxcty/n8qukGFZwr34/6fZL9iHOCfnjyGlE25pLVcsm/bmYQYXH2dw/JOIhhO+JToug0AIdbqm6Iad2oJ5aZ3wfIIPkDWs9Y4kudtFP7Awe5VySSffKZShr2gced3mdgIfJ+mgOmit6xZvXfF+VPd4RE/Qpn13vndYI/vSyBd4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=morsemicro.com; spf=pass smtp.mailfrom=morsemicro.com; dkim=pass (2048-bit key) header.d=morsemicro-com.20230601.gappssmtp.com header.i=@morsemicro-com.20230601.gappssmtp.com header.b=yjU5V31X; arc=none smtp.client-ip=209.85.216.53
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=morsemicro.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=morsemicro.com
+Received: by mail-pj1-f53.google.com with SMTP id 98e67ed59e1d1-343f35d0f99so3225289a91.0
+        for <linux-wireless@vger.kernel.org>; Sun, 23 Nov 2025 23:41:01 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=morsemicro-com.20230601.gappssmtp.com; s=20230601; t=1763970061; x=1764574861; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=dUo7+ECuH1paZhOXML3GUIN5dmSWOEn94r5f6cvR2n0=;
+        b=yjU5V31XP+vSx8zemr/As2sjVWsFNFm2lWjDuOoLtcK0vLDe4e1uOwV1cMB5iC4stk
+         nItovxMqesXxMBGZ/R83TgckmNiKOejFr4sQSpS8PWZVN/pQwkNkhC6GwhCeo73QHXrX
+         NFi/LXz2081ymeXP4puFz++ejeBP8bLPiY+nJ8gDi05sZ3ICFHzekl6Z60U10v3mTjMs
+         yA3O1u+T4qmoymRCfNcUs2cceEiM6dGD35OtIffJ/t55r83vAmAfuEpsDCy8XH8NBS8y
+         yoV3oJTnYZs+G+fNQlNFPJbjUi9UOCsz04cybgpx8YPKgZTm7GCL4o6+XkuZtQpPAcVt
+         IV4A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1763970061; x=1764574861;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=dUo7+ECuH1paZhOXML3GUIN5dmSWOEn94r5f6cvR2n0=;
+        b=Im9n2HMaQJXTsh83DOIN86sT7ydycn+S+5KwYEroesAQfMyrCkOhvO1UfTxGYooZ8u
+         V/qiMVbfa5Xz297b3LdtmSaVu1Hx1JVNW0xkEXbvtZzNGfQ1ON63RFm1WwmLknubaopn
+         ygCd/YZWXnTXJfKiK7vk6AZBBmidtBecSMhMMKV7aFaYwnV/vZbBQTltJ6F7eBEO4XCc
+         3mpZY8kSfe5QYS63SwILYq8JQSzDGddDDtGwkln4rIIMSgezgxWk2dUIV9wnoZCExt7Y
+         73M9p+TzS87CIwXWIwuGgeiKIck/GXFDfjPnD4YuG5r5F2l6J8HC9OLEzsnafWHhR0JF
+         X7Gw==
+X-Gm-Message-State: AOJu0YyaNb+vdvMlw+FM8SvXjh+KuSa2MuNcq/3MgJtBHH6I7bMjY1Vy
+	p1vg5yLXme2ySNUFuT7dJuWwj6H1EGkBQn6odeQk/ak0RoqNmTK8fRoHufjJJnGew21RfZacJbW
+	gBAOLsJ4=
+X-Gm-Gg: ASbGnctEAa9rRwPMtoRKz+gvXQ/3W1kLMi5Z676jmUbQON6benOEB9+0oEkDHdBq7dK
+	oYFtazhCECm0Sn3EXffXVSH3KLB0ZQrfVVXuxdlj3ZWUcCY0fn1aDil/Jueo/QuHLr1lXm/bSsL
+	dRUSuGvi1cC8vLoLxdkOFuqFf1WxUvLZn0wkp2ITpJEsSWf4tF1G24WCkHTpx2qqQxxQhbgh9IT
+	B53xvVoDgEf8oCEQVTl+hM/LTBTboV4FkO8GHLaIWAYBM1Ri+LNDaDL450lm5NayGq5yGIHrC/i
+	AU8s/smpmsyHLATiGgbL0zDM1D9veaooK5AMJLTFXo8llzYNbcNCkH9uCjfyb/UjqAOBIWC1Flm
+	bDOE9N2kreG70e3egBEIjyW0m1UqHTttcewZbpKHlwKFhEL6eFMkFol9Y3oiW1t2/8h4jwsidgD
+	G5A+ZDTFIlvU0ymNd47HspHIty3Ag64LZPX77ksEieNhF2U9uYJ1mmHJO1/JnJLTs=
+X-Google-Smtp-Source: AGHT+IGNX2/I0lXHos5WbdmrEbTRFIcf7AsBlcWNdiBVU9+qnpP7XRoZlJyzAMCr88uTEo13oK65fw==
+X-Received: by 2002:a17:90b:4c04:b0:340:6f07:fefa with SMTP id 98e67ed59e1d1-34733f19bafmr10363866a91.20.1763970060901;
+        Sun, 23 Nov 2025 23:41:00 -0800 (PST)
+Received: from localhost ([60.227.142.219])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-7c3f0d55b71sm13735336b3a.55.2025.11.23.23.40.59
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sun, 23 Nov 2025 23:41:00 -0800 (PST)
+Date: Mon, 24 Nov 2025 18:40:57 +1100
+From: Lachlan Hodges <lachlan.hodges@morsemicro.com>
+To: Johannes Berg <johannes@sipsolutions.net>
+Cc: linux-wireless@vger.kernel.org, arien.judge@morsemicro.com
+Subject: Re: [PATCH wireless-next v2 0/3] wifi: correctly represent S1G
+ channels
+Message-ID: <tx5ss62hjgfuha57z67cefnbdmxld4wrxjeudghpojxpxkbtab@22b35kctcbti>
+References: <20250918051913.500781-1-lachlan.hodges@morsemicro.com>
+ <5ec4190eb06c2b3763b8eb9d114a200d07437c11.camel@sipsolutions.net>
+ <lf22zjgof4ysu4v3blfbt3kv54l75rdbw3pecknlmlq6kmokha@a64bzx2dtrdr>
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH iwlwifi-next v5] wifi: iwlwifi: fix uninitialized pointers
- with free attribute
-To: Ally Heev <allyheev@gmail.com>,
- Miri Korenblit <miriam.rachel.korenblit@intel.com>
-Cc: Johannes Berg <johannes@sipsolutions.net>,
- linux-wireless@vger.kernel.org, linux-kernel@vger.kernel.org,
- Dan Carpenter <dan.carpenter@linaro.org>
-References: <20251124-aheev-uninitialized-free-attr-wireless-v5-1-0bd6da692975@gmail.com>
-From: Krzysztof Kozlowski <krzk@kernel.org>
-Content-Language: en-US
-Autocrypt: addr=krzk@kernel.org; keydata=
- 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 a/A=
-In-Reply-To: <20251124-aheev-uninitialized-free-attr-wireless-v5-1-0bd6da692975@gmail.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <lf22zjgof4ysu4v3blfbt3kv54l75rdbw3pecknlmlq6kmokha@a64bzx2dtrdr>
 
-On 24/11/2025 08:29, Ally Heev wrote:
-> Uninitialized pointers with `__free` attribute can cause undefined
-> behavior as the memory assigned randomly to the pointer is freed
-> automatically when the pointer goes out of scope.
+> >  - _cfg80211_chandef_compatible() (not sure about this regarding primary 2mhz)
 > 
-> It is better to initialize and assign pointers with `__free` attribute
-> in one statement to ensure proper scope-based cleanup
+> This looks to require a similar S1G specific path like we did within
+> _cfg80211_chandef_usable(). Also zooming out a bit, may need some adjustments
+> within _ieee80211_change_chanctx(). Additionally would be good to extend the
+> unit tests for this.
 > 
-> Reported-by: Dan Carpenter <dan.carpenter@linaro.org>
-> Closes: https://lore.kernel.org/all/aPiG_F5EBQUjZqsl@stanley.mountain/
-> Signed-off-by: Ally Heev <allyheev@gmail.com>
-> ---
+> I will do some more research and testing here.
 
+So, I have been doing some reading here.
 
-Reviewed-by: Krzysztof Kozlowski <krzk@kernel.org>
+Firstly, _cfg80211_chandef_compatible() is not used during the association
+process as S1G doesn't require the same "upgrade" process to parse the
+various HT -> VHT etc. elements and ensure the HT chandef is compatible
+with the VHT chandef and so on. (This is obvious though otherwise S1G wouldn't
+work at all :D)
 
-Best regards,
-Krzysztof
+The next scenario is channel context sharing by interfaces. This again would
+be very similar to non-S1G - where as long as the primaries are shared the
+channel context can be used (among other things of course):
+
+	[...]
+	if (c1->width == NL80211_CHAN_WIDTH_1)
+		return c2;
+
+	ret = check_s1g_chandef_primary_compat(c1, c2, NL80211_CHAN_WIDTH_2);
+	if (ret)
+		return ret;
+
+	ret = check_s1g_chandef_primary_compat(c1, c2, NL80211_CHAN_WIDTH_4);
+	if (ret)
+		return ret;
+
+	ret = check_s1g_chandef_primary_compat(c1, c2, NL80211_CHAN_WIDTH_8);
+	if (ret)
+		return ret;
+	[...]
+
+The above would then be in addition to all the common checks, such that the
+control channel is the same etc.
+
+The problem is, as mentioned previously, adding specific S1G Tx/Rx rate
+flags within link_sta_info / ieee80211_link_sta such that interfaces
+using a subband primary (say 4MHz on 8MHz chanctx) can clamp their
+Tx and Rx is not super nice (This was briefly mentioned in [1])
+
+So essentially I have two ideas / queries:
+
+1) For now, we could simply say unless the chandefs are exactly the same, they
+   aren't compatible for S1G. We don't even test this internally, but we
+   aren't the only users here. This would enable _ieee80211_change_chanctx()
+   to function for S1G, probably through an S1G specific function that we can
+   extend in the future.
+
+2) In the future if / when some basic rate reporting / S1G bandwidths are
+   implemented this could be revisted to mimic VHT. Implementing proper rates
+   for S1G will probably require some time to figure out how to implement
+   it cleanly.
+
+Let me know what you think. I will also send some patches for the
+s1g_primary_2mhz in the chandef sometime this week.
+
+[1] https://patchwork.kernel.org/project/linux-wireless/patch/20251008014006.219605-1-lachlan.hodges@morsemicro.com/
+
+lachlan
 
