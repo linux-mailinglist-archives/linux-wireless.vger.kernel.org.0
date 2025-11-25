@@ -1,217 +1,140 @@
-Return-Path: <linux-wireless+bounces-29341-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-29342-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4210DC85AC7
-	for <lists+linux-wireless@lfdr.de>; Tue, 25 Nov 2025 16:09:38 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7A77EC85DA0
+	for <lists+linux-wireless@lfdr.de>; Tue, 25 Nov 2025 17:00:40 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id B8D324EBAC8
-	for <lists+linux-wireless@lfdr.de>; Tue, 25 Nov 2025 15:04:10 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 39C063B323C
+	for <lists+linux-wireless@lfdr.de>; Tue, 25 Nov 2025 16:00:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 88CC0326949;
-	Tue, 25 Nov 2025 15:04:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 47BA813AA2F;
+	Tue, 25 Nov 2025 16:00:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Y+tKTaSC"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [185.203.201.7])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f171.google.com (mail-pl1-f171.google.com [209.85.214.171])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 824A332549B
-	for <linux-wireless@vger.kernel.org>; Tue, 25 Nov 2025 15:04:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.201.7
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BE7E0347DD
+	for <linux-wireless@vger.kernel.org>; Tue, 25 Nov 2025 16:00:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.171
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764083048; cv=none; b=nZPPBxIXrPpZUIk+dZG6GnN2SlTUpyc8ODAAraIRQ8SBQsFqbOGUQo56w4JHucum9ovRBDd4D0/14WNrj/dGoZzFnQ/RgKXED84XO3UQMxEQLtUTYhYKEDUfuGLUFQDoEaSg/8U9e3cGp/Nq/poZsb8fJR5TvhLeSpcBkYwvAzw=
+	t=1764086437; cv=none; b=K6PpPbX1WhvN4UOK37xTmD87l+S9jGl5zfjd2+whyd4oqRFTd/3w0xAWNUwt/b20H5FtlHKsKRKKxQIzN1CIAMjVNamI90zHGijkkUYYgTdQ2b/oT8tKXMbqtEfOs1zUTJj+lR6CpbElVYRDyKstle/fvxgnAZDFmv13sAE4qGo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764083048; c=relaxed/simple;
-	bh=T39eEVoWk/8Knzyzg7RNdKnNBpSHrK5q19TKCv4sIew=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=knKSYxwIhAmWlOdVltUANFjuuqTgGI5EifXBjAs0VSKugcwGcNQYqiEUYC3oiai0IWbWQAPwJjTsHSYhveQVX2JsMJZB8bHLoJ02By9I0jQ+j1bDMcuNGlSzbXTxaJAizHJIo4Ty5ipByTqmQVj0QXq/Y1i6ohIOGjC8zIrNC4w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.201.7
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
-Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
-	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
-	(Exim 4.92)
-	(envelope-from <sha@pengutronix.de>)
-	id 1vNuaI-0008J6-R8; Tue, 25 Nov 2025 16:04:02 +0100
-Received: from pty.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::c5])
-	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.96)
-	(envelope-from <sha@pengutronix.de>)
-	id 1vNuaI-002Q34-0b;
-	Tue, 25 Nov 2025 16:04:02 +0100
-Received: from sha by pty.whiteo.stw.pengutronix.de with local (Exim 4.96)
-	(envelope-from <sha@pengutronix.de>)
-	id 1vNuaI-005uxX-09;
-	Tue, 25 Nov 2025 16:04:02 +0100
-Date: Tue, 25 Nov 2025 16:04:01 +0100
-From: Sascha Hauer <s.hauer@pengutronix.de>
-To: Jeff Chen <jeff.chen_1@nxp.com>
-Cc: linux-wireless@vger.kernel.org, linux-kernel@vger.kernel.org,
-	briannorris@chromium.org, johannes@sipsolutions.net,
-	francesco@dolcini.it, tsung-hsien.hsieh@nxp.com
-Subject: Re: [PATCH v7 12/22] wifi: nxpwifi: introduce command and event
- handling infrastructure#
-Message-ID: <aSXFYfWo3fade3Dg@pengutronix.de>
-References: <20251117110046.2810811-1-jeff.chen_1@nxp.com>
- <20251117110046.2810811-13-jeff.chen_1@nxp.com>
+	s=arc-20240116; t=1764086437; c=relaxed/simple;
+	bh=9BFD4Msg+qpbpjeNXXts2YAMbYGLrMYUBpH3xOUujUc=;
+	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=ZLszfHigOIxITJo5lAx6gjHs8wRSzLTtz7jI/C9aS8gJ8O2LT7OlR/La+sV594VG9/yCIqVFtDKWgdTaoXwS2q4dvjZbQxLUv8pkOz94JmDv4svsmm4DZpcPfS5k5c4Av9++2eN5oQh5wHbBd7ETCO8JRGu9oZjfaDNgjxkKpN8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Y+tKTaSC; arc=none smtp.client-ip=209.85.214.171
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-pl1-f171.google.com with SMTP id d9443c01a7336-29555415c5fso62986955ad.1
+        for <linux-wireless@vger.kernel.org>; Tue, 25 Nov 2025 08:00:35 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1764086435; x=1764691235; darn=vger.kernel.org;
+        h=mime-version:user-agent:content-transfer-encoding:references
+         :in-reply-to:date:cc:to:from:subject:message-id:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=9BFD4Msg+qpbpjeNXXts2YAMbYGLrMYUBpH3xOUujUc=;
+        b=Y+tKTaSCYmgZ0uh3+8+N/ngjl87A9j9z3kdiETUTcm5XVCV+GTIpPO5xo6enaZJT33
+         llzUnBAZB+TbXcAyCrTMJF3gmk7/XyOgnS02nQVnEx1D7AGGbTNlxR2xZFwcZSv+yYCx
+         T448b35WOrypKbRj3W3Ui2rf+HyoBSKOu4qLig8JE3NJ6i3Tkc9r/2nCFBOCNUisaMzn
+         /t7i4VB53t5/5TQfoHo+u4rbcl+jBbMbPvmk8WmOeJozyYRppt2/xmEwRlahjw/LKqBB
+         9jIvUkIdjr0N+HailS5wDdhgMqIvK77BkO+fbtn03Sn6wsq7SIxA7ArdY//QYcKcQ1pn
+         Nvmg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1764086435; x=1764691235;
+        h=mime-version:user-agent:content-transfer-encoding:references
+         :in-reply-to:date:cc:to:from:subject:message-id:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=9BFD4Msg+qpbpjeNXXts2YAMbYGLrMYUBpH3xOUujUc=;
+        b=YImCKPmxIf/y9FsNtf/GM3+OwKW0re47iMo3IbukqXulWd5xDDj1/jUNKI3Xa8jvBK
+         mi5JqmVakeXVv0caNK6yDzxGX11PXwxHlqKqMWNlrq00QegwPdBevx9GosIq/2u3V3Kl
+         SvbrknGbM5GgJNVy30H2aZntSXPlK+jHuYKZRnKnYc+QS85QpTjWWW/Fb491r1dY953l
+         ATsHfKH2BBNzcWFSoX2QjQb0eHcFVOuhNSMfLpVmlu0GME5sFuaYVmY8+pkSqbcUM2rk
+         bm3hLVMlUsJHuWQW26pV5O6Iv0Ra1JAllqVLePXFpLkznrm1KBFAHQ6rBGKm3y8NWpLA
+         6GMA==
+X-Forwarded-Encrypted: i=1; AJvYcCUbA0IV2bYkA7Nb++/ez21nsxdUdtO1i71Rc3EfLdzdo7m1pmX/pMKDJv9BFEjsT4RBx4MH9IyiACQ9nf7rfg==@vger.kernel.org
+X-Gm-Message-State: AOJu0Yw5CBpkfm912mbSl1c5CrfQlrp1QMKvnm0kJexU5rf2ANrjIjT9
+	nzEx+jb7M2XUW5LXlVDxqZJYi+izNVTZhCtmXpKdKZAbgNTqk3DpENKE
+X-Gm-Gg: ASbGncvXFzqRWVQnKRwBROlZL18t2SNItpgwZ0MapojI8xCZgHGn27x0FpFveZ+wIsQ
+	VynUAe0GirvLAcdA1kuA4qVDv0MdALC9lITXdzxk7wobXfAtrFZ9DzYD/h0bjCPFA7LHp65mhYv
+	n1r6M7DBlrTBy2o03F+prAETkAB8VxodpaSL4wyA4xk4UiwUUWyPRpmHK2rG6IdtY+XygWCCic9
+	J12QWj5JM7NFAxByoSSiCqYWvcjyKQ11/poB6H4mzvSAxi+1A6fp9G5JfUNxtMTGeQvVPuPsZ6M
+	4FqF6O+IsLcpAiUhlzptfXmoVc7FNwb6LNIJ73hcketmFxG4yZIL4OfpVOVqF22bqa5wppZbLtY
+	yoxEKLwo8/Ym3stj8e8I125HlAQ/xeJnmB1HIo8GUyGJEM3r0UJJiaoIGKRe+wbEufTj6u7g3jO
+	nkRXwCtwZP0at/aiFoTR66ANbjndHJjAi8N0nltkDqso/xaoEAYjg=
+X-Google-Smtp-Source: AGHT+IFo0y8QRo77glOyXr1LFVMu5VvwMJ7IW5GrSQooqFcwZfF80Gc7FfZ6LwWpz8xenu+GXlE6cg==
+X-Received: by 2002:a17:90b:4f8a:b0:341:194:5e7a with SMTP id 98e67ed59e1d1-34733f3d3a5mr14125781a91.29.1764086433186;
+        Tue, 25 Nov 2025 08:00:33 -0800 (PST)
+Received: from ?IPv6:2401:4900:8fce:eb65:99e9:53c:32e6:4996? ([2401:4900:8fce:eb65:99e9:53c:32e6:4996])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-34727be33dbsm16995860a91.8.2025.11.25.08.00.28
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 25 Nov 2025 08:00:32 -0800 (PST)
+Message-ID: <e5419ba84c64e9146652864072b1941ef310de4f.camel@gmail.com>
+Subject: Re: [PATCH RESEND iwlwifi-next] wifi: iwlwifi: mld: remove unused
+ variable in d3.c
+From: ally heev <allyheev@gmail.com>
+To: Konstantin Ryabitsev <konstantin@linuxfoundation.org>
+Cc: Krzysztof Kozlowski <krzk@kernel.org>, Miri Korenblit
+	 <miriam.rachel.korenblit@intel.com>, linux-wireless@vger.kernel.org, 
+	linux-kernel@vger.kernel.org
+Date: Tue, 25 Nov 2025 21:30:24 +0530
+In-Reply-To: <20251125-hot-seagull-of-trust-cc4bbe@lemur>
+References: 
+	<20251121-aheev-remove-unused-var-old-keys-v1-1-6c2565c77ef7@gmail.com>
+	 <a9e12ace-dc0e-4bac-9775-72cd7d477169@kernel.org>
+	 <20251124-terrestrial-mule-of-kindness-d8c4f5@lemur>
+	 <5d6e492ee9194b1125340a66fbd878279286e433.camel@gmail.com>
+	 <20251124-encouraging-snobbish-nuthatch-230bcb@lemur>
+	 <89c6d616ed10eadcf41f085c2484560752db82be.camel@gmail.com>
+	 <20251125-hot-seagull-of-trust-cc4bbe@lemur>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.56.2-0+deb13u1 
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20251117110046.2810811-13-jeff.chen_1@nxp.com>
-X-Sent-From: Pengutronix Hildesheim
-X-URL: http://www.pengutronix.de/
-X-Accept-Language: de,en
-X-Accept-Content-Type: text/plain
-X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
-X-SA-Exim-Mail-From: sha@pengutronix.de
-X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
-X-PTX-Original-Recipient: linux-wireless@vger.kernel.org
 
-Hi Jeff,
+On Tue, 2025-11-25 at 08:54 -0500, Konstantin Ryabitsev wrote:
+> On Tue, Nov 25, 2025 at 12:50:44PM +0530, ally heev wrote:
+> > > > Yes, I use b4 for my patches. I work on other open source projects
+> > > > which use Github. So, my global git config commit autosign is set t=
+o
+> >=20
+> > typo: `tag autosign`
+> >=20
+> > > > `true`, hence you have seen PGP signatures.=20
+> > >=20
+> > > Interesting! I've not seen this cause PGP signatures to be added to "=
+git show"
+> > > output before. I've tried to replicate it locally, but even if I have=
+ a signed
+> > > git commit, I can't make the "gpgsig" header to show up in the output=
+ of "git
+> > > show --format=3Demail" (which is what b4 uses). Do you have some loca=
+l git
+> > > configuration changes that make "gpgsig" fields show up in the output=
+ of "git
+> > > show"?
+> > >=20
+> > > -K
+> >=20
+> > I think b4 uses tags for patch series. I have checked old
+> > patches(before disabling autosign) and found that signature is only
+> > added on first(cover-letter) of the patch series
+>=20
+> Oh! Interesting, so this happened on resend? I'll test it out, thanks!
 
-On Mon, Nov 17, 2025 at 07:00:36PM +0800, Jeff Chen wrote:
- +/* This function handles the command response.
-> + *
-> + * After processing, the function cleans the command node and puts
-> + * it back to the command free queue.
-> + */
-> +int nxpwifi_process_cmdresp(struct nxpwifi_adapter *adapter)
-> +{
-> +	struct host_cmd_ds_command *resp;
-> +	struct nxpwifi_private *priv =
-> +		nxpwifi_get_priv(adapter, NXPWIFI_BSS_ROLE_ANY);
-> +	int ret = 0;
-> +	u16 orig_cmdresp_no;
-> +	u16 cmdresp_no;
-> +	u16 cmdresp_result;
-> +
-> +	if (!adapter->curr_cmd || !adapter->curr_cmd->resp_skb) {
-> +		resp = (struct host_cmd_ds_command *)adapter->upld_buf;
-> +		nxpwifi_dbg(adapter, ERROR,
-> +			    "CMD_RESP: NULL curr_cmd, %#x\n",
-> +			    le16_to_cpu(resp->command));
-> +		return -EINVAL;
-> +	}
-> +
-> +	resp = (struct host_cmd_ds_command *)adapter->curr_cmd->resp_skb->data;
-> +	orig_cmdresp_no = le16_to_cpu(resp->command);
-> +	cmdresp_no = (orig_cmdresp_no & HOST_CMD_ID_MASK);
-> +
-> +	if (adapter->curr_cmd->cmd_no != cmdresp_no) {
-> +		nxpwifi_dbg(adapter, ERROR,
-> +			    "cmdresp error: cmd=0x%x cmd_resp=0x%x\n",
-> +			    adapter->curr_cmd->cmd_no, cmdresp_no);
-> +		return -EINVAL;
-> +	}
-> +	/* Now we got response from FW, cancel the command timer */
-> +	timer_delete_sync(&adapter->cmd_timer);
-> +	clear_bit(NXPWIFI_IS_CMD_TIMEDOUT, &adapter->work_flags);
-> +
-> +	if (adapter->curr_cmd->cmd_flag & CMD_F_HOSTCMD) {
-> +		/* Copy original response back to response buffer */
-> +		struct nxpwifi_ds_misc_cmd *hostcmd;
-> +		u16 size = le16_to_cpu(resp->size);
-> +
-> +		nxpwifi_dbg(adapter, INFO,
-> +			    "info: host cmd resp size = %d\n", size);
-> +		size = min_t(u16, size, NXPWIFI_SIZE_OF_CMD_BUFFER);
-> +		if (adapter->curr_cmd->data_buf) {
-> +			hostcmd = adapter->curr_cmd->data_buf;
-> +			hostcmd->len = size;
-> +			memcpy(hostcmd->cmd, resp, size);
-> +		}
-> +	}
-> +
-> +	/* Get BSS number and corresponding priv */
-> +	priv = nxpwifi_get_priv_by_id
-> +	       (adapter, HOST_GET_BSS_NO(le16_to_cpu(resp->seq_num)),
-> +		HOST_GET_BSS_TYPE(le16_to_cpu(resp->seq_num)));
-> +	if (!priv)
-> +		priv = nxpwifi_get_priv(adapter, NXPWIFI_BSS_ROLE_ANY);
-> +	/* Clear RET_BIT from HOST */
-> +	resp->command = cpu_to_le16(orig_cmdresp_no & HOST_CMD_ID_MASK);
-> +
-> +	cmdresp_no = le16_to_cpu(resp->command);
-> +	cmdresp_result = le16_to_cpu(resp->result);
-> +
-> +	/* Save the last command response to debug log */
-> +	adapter->dbg.last_cmd_resp_index =
-> +			(adapter->dbg.last_cmd_resp_index + 1) % DBG_CMD_NUM;
-> +	adapter->dbg.last_cmd_resp_id[adapter->dbg.last_cmd_resp_index] =
-> +								orig_cmdresp_no;
-> +
-> +	nxpwifi_dbg(adapter, CMD,
-> +		    "cmd: CMD_RESP: 0x%x, result %d, len %d, seqno 0x%x\n",
-> +		    orig_cmdresp_no, cmdresp_result,
-> +		    le16_to_cpu(resp->size), le16_to_cpu(resp->seq_num));
-> +	nxpwifi_dbg_dump(adapter, CMD_D, "CMD_RESP buffer:", resp,
-> +			 le16_to_cpu(resp->size));
-> +
-> +	if (!(orig_cmdresp_no & HOST_RET_BIT)) {
-> +		nxpwifi_dbg(adapter, ERROR, "CMD_RESP: invalid cmd resp\n");
-> +		if (adapter->curr_cmd->wait_q_enabled)
-> +			adapter->cmd_wait_q.status = -1;
-> +
-> +		nxpwifi_recycle_cmd_node(adapter, adapter->curr_cmd);
-> +		spin_lock_bh(&adapter->nxpwifi_cmd_lock);
-> +		adapter->curr_cmd = NULL;
-> +		spin_unlock_bh(&adapter->nxpwifi_cmd_lock);
-> +		return -EINVAL;
-> +	}
-> +
-> +	if (adapter->curr_cmd->cmd_flag & CMD_F_HOSTCMD) {
-> +		adapter->curr_cmd->cmd_flag &= ~CMD_F_HOSTCMD;
-> +		if (cmdresp_result == HOST_RESULT_OK &&
-> +		    cmdresp_no == HOST_CMD_802_11_HS_CFG_ENH)
-> +			ret = nxpwifi_ret_802_11_hs_cfg(priv, resp);
-> +	} else {
-> +		if (resp->result != HOST_RESULT_OK) {
-> +			nxpwifi_process_cmdresp_error(priv, resp);
-> +			return -EFAULT;
-> +		}
-> +		if (adapter->curr_cmd->cmd_resp) {
-> +			void *data_buf = adapter->curr_cmd->data_buf;
-> +
-> +			ret = adapter->curr_cmd->cmd_resp(priv, resp,
-> +							  cmdresp_no,
-> +							  data_buf);
-> +		}
-> +	}
-> +
-> +	/* Check init command response */
-> +	if (adapter->hw_status == NXPWIFI_HW_STATUS_INITIALIZING) {
-> +		if (ret) {
-> +			nxpwifi_dbg(adapter, ERROR,
-> +				    "%s: cmd %#x failed during\t"
-> +				    "initialization\n", __func__, cmdresp_no);
-> +			nxpwifi_init_fw_complete(adapter);
-> +			return ret;
-> +		} else if (adapter->last_init_cmd == cmdresp_no) {
-> +			adapter->hw_status = NXPWIFI_HW_STATUS_INIT_DONE;
-> +		}
-> +	}
+I didn't get it. Signature was added to every cover-letter of patch
+series before I disabled `tag autosign`
 
-If this driver now goes upstream could you have a look at the cleanup
-patches I sent for the mwifiex driver and see which ones apply here as
-well?
-
-At least this asynchronous initialization seems entirely unnecessary,
-see:
-
-https://lore.kernel.org/all/20241202-mwifiex-cleanup-1-v3-12-317a6ce0dd5b@pengutronix.de/
-
-Sascha
-
-
--- 
-Pengutronix e.K.                           |                             |
-Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
-31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+>=20
+> -K
 
