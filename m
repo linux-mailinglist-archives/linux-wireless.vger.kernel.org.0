@@ -1,120 +1,243 @@
-Return-Path: <linux-wireless+bounces-29315-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-29316-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [213.196.21.55])
-	by mail.lfdr.de (Postfix) with ESMTPS id D4903C8353D
-	for <lists+linux-wireless@lfdr.de>; Tue, 25 Nov 2025 05:27:09 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 822FCC8397A
+	for <lists+linux-wireless@lfdr.de>; Tue, 25 Nov 2025 07:57:17 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 7EE4C34A477
-	for <lists+linux-wireless@lfdr.de>; Tue, 25 Nov 2025 04:27:09 +0000 (UTC)
+	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 039D8341B36
+	for <lists+linux-wireless@lfdr.de>; Tue, 25 Nov 2025 06:57:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CDDF5284689;
-	Tue, 25 Nov 2025 04:27:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 91E4E27FB34;
+	Tue, 25 Nov 2025 06:57:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=morsemicro-com.20230601.gappssmtp.com header.i=@morsemicro-com.20230601.gappssmtp.com header.b="fWePp824"
+	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="xqYn27Wh";
+	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="H+uRAIAu";
+	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="xqYn27Wh";
+	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="H+uRAIAu"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-pl1-f169.google.com (mail-pl1-f169.google.com [209.85.214.169])
+Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E2DED283FDB
-	for <linux-wireless@vger.kernel.org>; Tue, 25 Nov 2025 04:27:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.169
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6B1132C0286
+	for <linux-wireless@vger.kernel.org>; Tue, 25 Nov 2025 06:57:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.130
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764044826; cv=none; b=RZDXJHDkrvkZTAyug9Ot2enlQ7JuyYQTgacExjd8G4X8YdQt6EaApA2BD/vCtJj1UgJAHgnkeGaLIT8aaiwarvhX4PRZWXMtFa11n0mMRxC0yLSxNQdSagw9pdlUTh/d7TE7+sHX5GnbaXMCGpOApERfMBE1wUDU5UMinA8Atas=
+	t=1764053833; cv=none; b=uwojrlrAp1S88HlffcWdPhKVrnp1cuoVvdBWjF2TDAcMPPzcQP+zW+OVG0GAdyjpWP8fcc+7IIXvQ1PEG+H7leqlAoWSiWjhOdE5BDQG446GHGXPj3Yib0TIOMDguLYQPv7z48fWK60NyIaepc2amUtCiWUbUL2aDtoqNc/eFA4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764044826; c=relaxed/simple;
-	bh=7EetVQsiB20SFtZ7PhaSVdZQDFr0ehMgJgC5Wd+OHXM=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=CamdZ8t3xZyF5qcz5MwYlcBAa6LbXDUg7F9XlA3wpw+Ypt4xpdJSjj7uNmKzhgNsiuWt/a6AkcPJ9D2NzxScuH3xgHx8h/kIDu5kdj/wU3lkrPK1Y7GuU3Bc+3YcJcO5/Ku8woaMxiQEkvxWO78Bo2P9wu/goGHCvMF0/w+Vp4o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=morsemicro.com; spf=pass smtp.mailfrom=morsemicro.com; dkim=pass (2048-bit key) header.d=morsemicro-com.20230601.gappssmtp.com header.i=@morsemicro-com.20230601.gappssmtp.com header.b=fWePp824; arc=none smtp.client-ip=209.85.214.169
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=morsemicro.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=morsemicro.com
-Received: by mail-pl1-f169.google.com with SMTP id d9443c01a7336-2956d816c10so59072985ad.1
-        for <linux-wireless@vger.kernel.org>; Mon, 24 Nov 2025 20:27:04 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=morsemicro-com.20230601.gappssmtp.com; s=20230601; t=1764044824; x=1764649624; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=GokNTQlkTo57Ckl+RTVoVAFTAmeIH8Ju3nmDqOtNMJA=;
-        b=fWePp824bUevPX9IRFyCxyMWHGGk/rSiT2cOEETmpysMXfxu+P92j8ODpdPRSSV2mw
-         mOVV7ltQVKhfC12CYbiUCeoK1689SwUIYoD0JPqLWDKMMNnPCiu8jK9dcvcjJRTlkrl3
-         TS5paaFHb2uzoScGCEl1xNXs0xupk3N5kVLXKQh1HTgf0pcbCetJhYz1P5Rr99KqlT1i
-         VvswyYv7hxLHi1aUtPIlSQtI6bAcWUrJxzcKdm5dL5C9TlsNXjj7KF3sPa42/TgrwxuS
-         jojXCucXneU/JolxyP+t6LxcmbS3fD12PPEc/7Qj2IxxWXbumAX8WflUDvhjoVInMS62
-         X0OA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1764044824; x=1764649624;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=GokNTQlkTo57Ckl+RTVoVAFTAmeIH8Ju3nmDqOtNMJA=;
-        b=pb590n9OiCU60v65FGQKNZlBZD9IbedTV1IuL1CfLmX51Kx5TjDHjr1FVsgnsQUU45
-         RvC8rSvIKZuC44kyJm+GI6wPR54tEMcvEygUAtJtYwricoWHd3kZ7+JTvFozkDy1Kk1R
-         uhP5WCHTamHhZsxksUvjsXbYt+XBJkCX7sx7ePhXvbiGh18uH39/iz4nAP8C9Iv2QK5k
-         1EXk3uuXBLHPXZxz06qPP7ML+5xZlUqkN3sLfcl4yjPiU+gW3lEeoynWsooN0k6ix7uT
-         Wpi7YdwZl7LXAa83VI+FUDVGqn+8eYNLmoY2IZdSmmI/7NobptTBdICHHqJwPqXlHktn
-         MF5w==
-X-Gm-Message-State: AOJu0YxC7BRE4erV500sCkqNHhySq9LsfhtzkEH/f8+l25UEVcb6U8vB
-	FNSpu0F1NEI2tlFuLPqSyr2cocURGAQkGzPA7Uc7KQLfPv5LeItSWzTi+BsQuSlV4ww=
-X-Gm-Gg: ASbGncue3WWD7NUeLSdx4QXHgSY+tdJeZZhGhcUKRfVTmmPfUdCRz5pZA4OUgT5JDDb
-	Y5FhzxnZhdOhpddpaynZ58RpqM1aldOyD+ArE1h1qRB3zi8WffEYJt8+kgtGko9cGmq2oblWYJV
-	Tw+K12F6AuiVzbi0Jfe1vI//+4/W+d5QvUSPPeSyiHcm5FPLue4kjsxB4u7ffGe7lz++6wJOi5c
-	DIke5vZKjuMB29WDAg+b3DeqLBkjE5DGlr+/maGshsl9d+DfoVvKwIIDglS0mn88F59XGRxipEk
-	40fpna4C/89jgZ4zhaDIfiqjSrRmJPyUE2wzAPacN0EleVjkHNSHe8f3qfHYocLgC0j5+KYXKqA
-	v5bQFIdvuiaTAhFt4958xk146IgFZ8HBEtzKr8e8nCvnKM8/BEYMLXnrfTUK7Y+9tRgS2VokLDU
-	XgF6txi2DzhcNDV0GA9ddCaLJ95JNyzGeNJW4r7SCeJ+qrc9OVTN+hGyRhZhwh+73RHkfA8v9ww
-	DaxYSYW3lebaX8RP/Snaw==
-X-Google-Smtp-Source: AGHT+IEPaX7x56/fvJL+tBeltNcH0nD2hadDPe/+UaJdRsjQ/R7KiXpSy2or97HFeM3YI8ENGJpXkw==
-X-Received: by 2002:a17:902:f78d:b0:295:57f6:76b with SMTP id d9443c01a7336-29b6be90a42mr167671995ad.7.1764044824132;
-        Mon, 24 Nov 2025 20:27:04 -0800 (PST)
-Received: from localhost (60-242-93-14.static.tpgi.com.au. [60.242.93.14])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-29b5b25c104sm152034405ad.54.2025.11.24.20.27.03
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 24 Nov 2025 20:27:03 -0800 (PST)
-Date: Tue, 25 Nov 2025 15:27:00 +1100
-From: Lachlan Hodges <lachlan.hodges@morsemicro.com>
-To: johannes@sipsolutions.net
-Cc: linux-wireless@vger.kernel.org, arien.judge@morsemicro.com
-Subject: Re: [PATCH wireless-next 3/3] wifi: mac80211: allow sharing
- identical chanctx for S1G interfaces
-Message-ID: <xlfvt7pu454mthb7nrowheibslqqlxifawkfx7kltaur2mztdh@laxm3mnd64qf>
-References: <20251125025927.245280-1-lachlan.hodges@morsemicro.com>
- <20251125025927.245280-4-lachlan.hodges@morsemicro.com>
+	s=arc-20240116; t=1764053833; c=relaxed/simple;
+	bh=MQhelEQtWQetdgmz3V7nrJotXWBNHOarPrmnYw7/2qE=;
+	h=Date:Message-ID:From:To:Cc:Subject:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=U2lp7agQoYpwVePYs93bDFLm03GUYLcOe+o9oPG0E7mFyYd3iMK9WeLwvXFZgYTP0sZqL26C7y4B9iT7MP3r9LLiJEgZbPxCmDjJIImYrllykyO7YrapRSp0zQA43FGuIUY3LtlMLkpZC20z4tshIKysk2Yg5ElVTpxgrUjYnko=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de; spf=pass smtp.mailfrom=suse.de; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=xqYn27Wh; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=H+uRAIAu; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=xqYn27Wh; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=H+uRAIAu; arc=none smtp.client-ip=195.135.223.130
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.de
+Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out1.suse.de (Postfix) with ESMTPS id 5633F225E7;
+	Tue, 25 Nov 2025 06:57:07 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1764053827; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=tF7oEVPymOKUXjtl1HNvWc8B4h40Zvg8z66G49GIa5A=;
+	b=xqYn27WhKgwBHMBXU7GNbBpKULpEQc9PwaIvj3zyXP58deTPHRFBnKNOOnnB472904gD2y
+	ZkSWDS1pZPAK7vii4/1B0EuZnmJv2X7Cma0p7HWpoL4ChADnfV94kxA23ZCw/iueB9+vKQ
+	KMP0e/1/lePMtOuInXXjyB2ckw3aK2k=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1764053827;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=tF7oEVPymOKUXjtl1HNvWc8B4h40Zvg8z66G49GIa5A=;
+	b=H+uRAIAut+fLa3oFYVBLp71SLR4sJuCUtjKzuQUwBhPUiS5SiuOUqN2biob4PRnzMPKWDg
+	LQYlQEX7zhAofFCA==
+Authentication-Results: smtp-out1.suse.de;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=xqYn27Wh;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=H+uRAIAu
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1764053827; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=tF7oEVPymOKUXjtl1HNvWc8B4h40Zvg8z66G49GIa5A=;
+	b=xqYn27WhKgwBHMBXU7GNbBpKULpEQc9PwaIvj3zyXP58deTPHRFBnKNOOnnB472904gD2y
+	ZkSWDS1pZPAK7vii4/1B0EuZnmJv2X7Cma0p7HWpoL4ChADnfV94kxA23ZCw/iueB9+vKQ
+	KMP0e/1/lePMtOuInXXjyB2ckw3aK2k=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1764053827;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=tF7oEVPymOKUXjtl1HNvWc8B4h40Zvg8z66G49GIa5A=;
+	b=H+uRAIAut+fLa3oFYVBLp71SLR4sJuCUtjKzuQUwBhPUiS5SiuOUqN2biob4PRnzMPKWDg
+	LQYlQEX7zhAofFCA==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 1DCA93EA63;
+	Tue, 25 Nov 2025 06:57:07 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id xXwaBkNTJWmdLAAAD6G6ig
+	(envelope-from <tiwai@suse.de>); Tue, 25 Nov 2025 06:57:07 +0000
+Date: Tue, 25 Nov 2025 07:57:06 +0100
+Message-ID: <87ecpmppkt.wl-tiwai@suse.de>
+From: Takashi Iwai <tiwai@suse.de>
+To: Baochen Qiang <baochen.qiang@oss.qualcomm.com>
+Cc: Takashi Iwai <tiwai@suse.de>,
+	Jeff Johnson <jeff.johnson@oss.qualcomm.com>,
+	Mark Pearson <mpearson-lenovo@squebb.ca>,
+	linux-wireless@vger.kernel.org,
+	ath11k@lists.infradead.org
+Subject: Re: [PATCH] wifi: ath11k: Add quirk entry for Thinkpad T14s Gen3 AMD
+In-Reply-To: <2faa8f4e-cb30-4e91-87d2-853c90458b01@oss.qualcomm.com>
+References: <20251124134713.5819-1-tiwai@suse.de>
+	<2faa8f4e-cb30-4e91-87d2-853c90458b01@oss.qualcomm.com>
+User-Agent: Wanderlust/2.15.9 (Almost Unreal) Emacs/30.1 Mule/6.0
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20251125025927.245280-4-lachlan.hodges@morsemicro.com>
+MIME-Version: 1.0 (generated by SEMI-EPG 1.14.7 - "Harue")
+Content-Type: text/plain; charset=US-ASCII
+X-Rspamd-Queue-Id: 5633F225E7
+X-Rspamd-Server: rspamd2.dmz-prg2.suse.org
+X-Spamd-Result: default: False [-3.51 / 50.00];
+	BAYES_HAM(-3.00)[100.00%];
+	MID_CONTAINS_FROM(1.00)[];
+	NEURAL_HAM_LONG(-1.00)[-1.000];
+	R_DKIM_ALLOW(-0.20)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
+	NEURAL_HAM_SHORT(-0.20)[-1.000];
+	MIME_GOOD(-0.10)[text/plain];
+	MX_GOOD(-0.01)[];
+	FUZZY_RATELIMITED(0.00)[rspamd.com];
+	SPAMHAUS_XBL(0.00)[2a07:de40:b281:104:10:150:64:97:from];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
+	TO_DN_SOME(0.00)[];
+	RBL_SPAMHAUS_BLOCKED_OPENRESOLVER(0.00)[2a07:de40:b281:104:10:150:64:97:from];
+	ARC_NA(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[6];
+	DNSWL_BLOCKED(0.00)[2a07:de40:b281:106:10:150:64:167:received];
+	RCVD_COUNT_TWO(0.00)[2];
+	FROM_EQ_ENVFROM(0.00)[];
+	TO_MATCH_ENVRCPT_ALL(0.00)[];
+	RECEIVED_SPAMHAUS_BLOCKED_OPENRESOLVER(0.00)[2a07:de40:b281:106:10:150:64:167:received];
+	DKIM_TRACE(0.00)[suse.de:+];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	RCVD_TLS_ALL(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[suse.de:email,suse.de:mid,suse.de:dkim,suse.com:url,imap1.dmz-prg2.suse.org:helo,imap1.dmz-prg2.suse.org:rdns]
+X-Rspamd-Action: no action
+X-Spam-Flag: NO
+X-Spam-Score: -3.51
+X-Spam-Level: 
 
->  	switch (chandef->width) {
-> +	case NL80211_CHAN_WIDTH_1:
-> +	case NL80211_CHAN_WIDTH_2:
-> +	case NL80211_CHAN_WIDTH_4:
-> +	case NL80211_CHAN_WIDTH_8:
-> +	case NL80211_CHAN_WIDTH_16:
-> +		/*
-> +		 * mac80211 currently only supports sharing identical
-> +		 * chanctx's for S1G interfaces.
-> +		 */
-> +		if (ieee80211_chanreq_identical(&ctx_req, chanreq))
-> +			return;
-> +		WARN_ON(1);
+On Tue, 25 Nov 2025 03:28:22 +0100,
+Baochen Qiang wrote:
+> 
+> 
+> 
+> On 11/24/2025 9:47 PM, Takashi Iwai wrote:
+> > The recent kernels showed a regression wrt suspend/resume on Lenovo
+> > Thinkpad T14s Gen 3 AMD model; it fails to reconnect on resume after a
+> > long time sleep.  The only workaround was to unload/reload the driver
+> 
+> how long? and with a short suspend you don't see the issue?
 
-The robot not happy with this as I forgot a break / fallthrough.. 
+I can't say exactly, but usually after some hours.  I see it happening
+when the machine is resumed in the morning after an overnight sleep.
+Short suspends can resume mostly, as far as I tested.
 
-	if (ieee80211_chanreq_identical(&ctx_req, chanreq))
-		return;
-	WARN_ON(1);
-	return;
+> > (or reboot).
+> > 
+> > It seems that this model also requires the similar quirk with
+> > ATH11K_PM_WOW which has been done for other Thinkpad models.
+> 
+> the quirk is to workaround the unexpected wakeup issue, which seems not the same with
+> yours. Hence not sure if this is the right fix.
 
-The above looks a bit ugly.. did you have a preference here before I
-send a v2?
+Yes, I wonder that, too.  The whole suspend/resume procedure look
+fairly different with PM WoW quirk, so some of them might matter.
 
-lachlan
+> > Link: https://bugzilla.suse.com/show_bug.cgi?id=1254181
+> > Signed-off-by: Takashi Iwai <tiwai@suse.de>
+> > ---
+> > 
+> > I'm not sure whether this model has another DMI entry, so put Mark to
+> > Cc.
+> > 
+> > Also, I wonder which Thinkpad models are rather the ones that should
+> > *not* take the quirk.  Since mine is Gen 3 and I already see Gen 2
+> > entries, which else remaining...?
+> > 
+> > 
+> >  drivers/net/wireless/ath/ath11k/core.c | 7 +++++++
+> >  1 file changed, 7 insertions(+)
+> > 
+> > diff --git a/drivers/net/wireless/ath/ath11k/core.c b/drivers/net/wireless/ath/ath11k/core.c
+> > index 812686173ac8..3aa78a39394b 100644
+> > --- a/drivers/net/wireless/ath/ath11k/core.c
+> > +++ b/drivers/net/wireless/ath/ath11k/core.c
+> > @@ -924,6 +924,13 @@ static const struct dmi_system_id ath11k_pm_quirk_table[] = {
+> >  			DMI_MATCH(DMI_PRODUCT_NAME, "21J4"),
+> >  		},
+> >  	},
+> > +	{
+> > +		.driver_data = (void *)ATH11K_PM_WOW,
+> > +		.matches = { /* T14s G3 AMD */
+> > +			DMI_MATCH(DMI_BOARD_VENDOR, "LENOVO"),
+> > +			DMI_MATCH(DMI_PRODUCT_NAME, "21CR"),
+> > +		},
+> > +	},
+> 
+> so with the change, the issue is not seen after a __long__ suspend?
+
+Right, the connection gets resumed properly.
+
+> >  	{
+> >  		.driver_data = (void *)ATH11K_PM_WOW,
+> >  		.matches = { /* T14 G4 AMD #1 */
+> 
+> Hmm, I am feeling that we need to dig more to root cause this issue. Can you please help
+> to collect verbose wpa_supplicant/iwd log and kernel log?
+> 
+> wpa_supplicant:
+> 	cd /lib/systemd/system
+> 	diff --git a/wpa_supplicant.service b/wpa_supplicant.service
+> 	index d5c7ef8..69693d0 100644
+> 	--- a/wpa_supplicant.service
+> 	+++ b/wpa_supplicant.service
+> 	@@ -5,7 +5,8 @@ Before=network.target
+> 	 [Service]
+> 	 Type=dbus
+> 	 BusName=fi.epitest.hostap.WPASupplicant
+> 	-ExecStart=/sbin/wpa_supplicant -u -s -O /run/wpa_supplicant
+> 	+ExecStart=/sbin/wpa_supplicant -u -s -t -f/var/log/wpa_supplicant.log -dd -O
+> /run/wpa_supplicant
+> 
+> 
+> IWD:
+> simply add '-d' option when starting it. You may directly add it to the systemd service
+> entry if you like. See
+> 
+> https://archive.kernel.org/oldwiki/iwd.wiki.kernel.org/debugging.html
+
+OK, I'll try to get the log (in tomorrow morning :)
+
+Meanwhile, the PM WoW quirk looks fine for this Thinkpad model, I see
+no other regression with the quirk.  As a stop gap, would it be
+acceptable?  If yes, I'll resubmit with the entry of another Gen 3
+model Mark suggested.
+
+
+thanks,
+
+Takashi
 
