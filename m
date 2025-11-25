@@ -1,87 +1,87 @@
-Return-Path: <linux-wireless+bounces-29304-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-29305-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [IPv6:2a01:60a::1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id CEB3CC8329E
-	for <lists+linux-wireless@lfdr.de>; Tue, 25 Nov 2025 04:00:01 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 62EF2C832A1
+	for <lists+linux-wireless@lfdr.de>; Tue, 25 Nov 2025 04:00:06 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 1CBBD34B5F1
-	for <lists+linux-wireless@lfdr.de>; Tue, 25 Nov 2025 03:00:01 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5B03C3AE162
+	for <lists+linux-wireless@lfdr.de>; Tue, 25 Nov 2025 03:00:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6188E1E2614;
-	Tue, 25 Nov 2025 02:59:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 656D41DE894;
+	Tue, 25 Nov 2025 03:00:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=morsemicro-com.20230601.gappssmtp.com header.i=@morsemicro-com.20230601.gappssmtp.com header.b="XFsCiXx8"
+	dkim=pass (2048-bit key) header.d=morsemicro-com.20230601.gappssmtp.com header.i=@morsemicro-com.20230601.gappssmtp.com header.b="i6NbK2PT"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-pf1-f174.google.com (mail-pf1-f174.google.com [209.85.210.174])
+Received: from mail-pf1-f176.google.com (mail-pf1-f176.google.com [209.85.210.176])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 88B691BBBE5
-	for <linux-wireless@vger.kernel.org>; Tue, 25 Nov 2025 02:59:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.174
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A03CF1BBBE5
+	for <linux-wireless@vger.kernel.org>; Tue, 25 Nov 2025 02:59:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.176
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764039596; cv=none; b=E1vRwlLzO4DtOqXwoTdcnHAa3jtvd8Hska7HxTO35/XdPR2JXQiLQy3SPgYwAAaXvIhFdIxejpbyw8Ad+QfQDOdkB4zM8LwT3TRobKLbl7pZ1JWT1XAbpfPqpfhZvLKMPcyO+Kag6A5nniFq7CErAuaq/K8KAao1r38j2BwgilQ=
+	t=1764039601; cv=none; b=OatvTceRN5oaoracrzZTsYwU1sDMINvO+eR8GBm0rpcMGnAF3n7L7kDVT//crwShz1QhSZpmpLizQGBZsvqYPo5wUQetP4n3fLd59xm2wvOG0fRafqqJ1EP/RMcGQlTE/K0QyqvNihsr7PxEM5d9nyUqpQ6MAmRB8k8znP7N4oE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764039596; c=relaxed/simple;
-	bh=oq9L/G1Ek1MGQ+uEoyV4ozoQvE3zuY2kgFdYJuxAMmE=;
+	s=arc-20240116; t=1764039601; c=relaxed/simple;
+	bh=OgC1jFhMecO8t9DeDVmalxOCA1ImE4au+fc8IcfFIlI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Vim4SPzPzDEvzRKAjhZr5ujqMYF+lLo9bZoTRF6ORHw5TpzIlDlWxuGrY4SRIlvQeNy1wyjfKU3HtCzT9bqCSL8KlF52rzUdrKgLjySlfN41ZwRS0jVqM2vz74k9bTIVwI8H2J/zIO/865PbhV52ZnvTLjjOsHix18UphEUqBws=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=morsemicro.com; spf=pass smtp.mailfrom=morsemicro.com; dkim=pass (2048-bit key) header.d=morsemicro-com.20230601.gappssmtp.com header.i=@morsemicro-com.20230601.gappssmtp.com header.b=XFsCiXx8; arc=none smtp.client-ip=209.85.210.174
+	 MIME-Version; b=eUse8TbfSxu8wrkqb+3VlgsxOuAh4uN3DU3DuoR1d0vi8r/oR+/GkK7LbYdi0wzSBkTpdwU3zRel4BuUZy0vMA3xvmS+TzAGwv0y9qiWERuCW5UO77M0VES7Ciprh0jhbayTuiqxrRteAyY0T5g3BhP4WtWyUxIExh7K6dV0SM4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=morsemicro.com; spf=pass smtp.mailfrom=morsemicro.com; dkim=pass (2048-bit key) header.d=morsemicro-com.20230601.gappssmtp.com header.i=@morsemicro-com.20230601.gappssmtp.com header.b=i6NbK2PT; arc=none smtp.client-ip=209.85.210.176
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=morsemicro.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=morsemicro.com
-Received: by mail-pf1-f174.google.com with SMTP id d2e1a72fcca58-7bb710d1d1dso7600932b3a.1
-        for <linux-wireless@vger.kernel.org>; Mon, 24 Nov 2025 18:59:54 -0800 (PST)
+Received: by mail-pf1-f176.google.com with SMTP id d2e1a72fcca58-794e300e20dso3133531b3a.1
+        for <linux-wireless@vger.kernel.org>; Mon, 24 Nov 2025 18:59:59 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=morsemicro-com.20230601.gappssmtp.com; s=20230601; t=1764039594; x=1764644394; darn=vger.kernel.org;
+        d=morsemicro-com.20230601.gappssmtp.com; s=20230601; t=1764039599; x=1764644399; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=aCrEsVXYPUZFfTFfizE6pFADMcHBfSUlNzC6tJeHeiU=;
-        b=XFsCiXx8MIAS+TEOmpHDpvM+CuscAvtq+MMqCAVDqNEQiFyl/fMg5Id8gL3VeKiv1V
-         ho2/b629vKcqHITjmMUV5K/Cj3iPc5Nu4xMc479ASbtEEoC1ebl4BmY2yEzSTHx44WvE
-         cz2krYpOz6E8R7g2IY0F8xEbJCkz4sMsHW61clI3/EXrl6Qm22mnuaIIwpONSMb2jurM
-         WDZyWP72YwmrXho9TYOAlurPyDdNtcYqiuIM/JH5RAjXHV855r5foi6jxv+qSTieGp56
-         lkfeotfWtLchr8Ry/yi2yDyxdlTL5aRrafRxVhlgB3bua/vMKG+ffdMXrpqLpN4u0D+0
-         5Ejg==
+        bh=LbuJa7samYUY+Tq4OjPTIkmUTu9YkxNs5Fio/oZ7Szo=;
+        b=i6NbK2PTlCk4HPGkmnJdXHeRCbnUCOIPWO8Z2Lb76EgiUMtvRtjyQbNbyUqWn8H7Kt
+         BsL7x8nfPmHUMWKViNUYuLdsCgQ2IqlNfLN6/WGT6mrOqw2VliNPwlpjBAWeT9S395yb
+         UBNtGWklTkG6/a5IwC2vQSi46YXU6kDvsRwLdCqPUXwdfT+0k1cpNvVDwdr9EV4oGhxo
+         MnzKzHkiuVm5wqkScjPCfCKjnSQyhnTblTopm63Qtp1NDT8Gw9JG9qFbGLc/LORBkJWT
+         Sq6KcbkAyvIFg0EjsFqe50g6yzF52U/qZOgCA3auNnxWvUQkErXHTMC+PaW//3sZ64sb
+         lOSg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1764039594; x=1764644394;
+        d=1e100.net; s=20230601; t=1764039599; x=1764644399;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to;
-        bh=aCrEsVXYPUZFfTFfizE6pFADMcHBfSUlNzC6tJeHeiU=;
-        b=eA8N3h7toGodjNPSU2PpV+Mu8GZWpZSHwdZzZdRvoFHAXm4QhNOEYOWcj0Z9Yie6V0
-         gIy2MX5FduU5gzrp1J783gwOhoLmwIgd0z1TjWYLhthkgDjb7NvV3nTBh9awlEB6PArf
-         31oU5040dnFcVTxvNboo33nVC2+QUXkEDOnJrx2rCUfjC9S2Wyhl9JHFNTzLOHQd0/Ca
-         vr0FZvaLypJRHyuu/n894bxDvdAImKz4HXbM91DxD/1B59X/fCLydQSF/Y97DbBQwja4
-         crxqEvx64oRqKXFRecicKHL+Le4VRqDrTm/22CHhGjYsYzJe7LxWakVpgQhF1Lw7HzSW
-         HbEg==
-X-Gm-Message-State: AOJu0YwTToLBYjCIXhb5Sn8DtzQy3apCRWcJZi3VrJM7D1b3p7bqWTeo
-	EyKvE+6SYutq/1NblO33J4FOSEs+J1mGIoVtOS12KA5eJEFW5o2Z9Udu5VflzfrPm8M=
-X-Gm-Gg: ASbGncv/W0yzxZoDTs+jfEXDIhwNrdFNrdTcuVlaV6DptvOKKF0bIJR6R2MfRxzfB0K
-	0PYEkAzpEi9gpMS2HGIEZoT7tgJuW6TD+48MsyBAKBSN8tH8AbP8eX1jHG9RgsOZNuNbuItYQZu
-	X3IaGuchzwXSZlG+d7uGMkviSZ8JtGRIH7wjJGQsETfd3f0uUG6LNkyYHmfXfCjM5YWQhlnKAs/
-	bYG5aXvIK0zt6BMfL2vmjyf8MBj8bRMr47jtiUjZGJ2iz92JCBd8gGoR6mOVEm9aH7xj60Ar25i
-	oxM/3Wa6+roKSSofAtZzlcGw+v7cq5l3MD88yhOvZizzv9iZVXcd/rll2d8oOwBm3+zoR/EKzx6
-	AMUTtAmOPbO569iNbIb05GhJObLpKe2xvI3VY3kIhg1AyqwMD0jT2lUG7iw4qGej13RyLzAkdH8
-	hgXYi/Yj++aSPWnxHoH9nm+Kx7Oisqs7pexP1Q+3MYjuqyiJB777iUsPWlrHcPL5D9W7TAFNm4Z
-	/XtJuABCu6uHfhXVrY=
-X-Google-Smtp-Source: AGHT+IGtwUKKLBuKsANs8h2ZfW3G/29sLkhfj2S7EhYyXMXsl/4R53xw9nFfgH2YPh8gz/EQVXmnSw==
-X-Received: by 2002:a05:6a20:748b:b0:35d:53dc:cb56 with SMTP id adf61e73a8af0-3637deafb4amr1072038637.36.1764039593898;
-        Mon, 24 Nov 2025 18:59:53 -0800 (PST)
+        bh=LbuJa7samYUY+Tq4OjPTIkmUTu9YkxNs5Fio/oZ7Szo=;
+        b=vtMYXdIGl/WkWn0cBil/L/mdEDKR6xUtUusWWdaGlKHnBY01piWqd41GY5yqloIF2V
+         7TWnwvwBu7Guz30IvjRN8EnxIahrN3eUM7A0DiyOOFHMMx806Ye3m7qUrgDdYcWOOOy9
+         Od8/kq+n58ykjk3Wq2/g2BsVCcVg1kfcfSOlgVBwmFZb9VJUIlhJbd1Z4bGeYZSh8q7D
+         6fMocstjEeii0EHbh8kcLQBQd+tH1nNlHU1FgBhBnf1+Q+jPnGmHLNGAFzQnPIBtt4rL
+         /bvXAhdaP8gbhmazHZc8NEoCceJZ0hm60cJn12ljlyFb2np2G6ixsQChe+gi2y2n7UKO
+         fWZQ==
+X-Gm-Message-State: AOJu0YwGLu+gTwUU8u/Vux0hpkWeTV5CfSgRa/Vmb3n/rCpU9ixARob2
+	hNtAcBrDYE/egcEsePd4UYm9AyAk5U6TwtUmhqNSaUPrysUzKlJKF1Ru+oac1NYba9E=
+X-Gm-Gg: ASbGncu9pjL3kTCJxFrbMPlFZcC6/riMepCcvtZO9rM8dWT6NU8KaiWTx3TmBAWb19u
+	JRi1JHsiYnG1X9U5ntcuf5Bg3pNBoHUepQgQpM1Y0hwPn+0QkR7mL6+K7ukxlolTQE8qrygzjun
+	ydWHomrphK/83UuQnLBv1yfHLutOYeNFnh2MYCQrwEBpEPzfQfLH4dXKV2D3tx+YRu+fGuk/Ula
+	DQJfXSXXzp3zZc7HnZEnECBGAKzjQeDbCX/ASqmWj9yhnvjI0wohuDLyntEmGHu64EYJkklj9Kj
+	QIbDCJVVLHe+/OjQ6R7MxIxfo4pl1PCf1dTLiqM66BOPCukSFACGFnu63GEiL54RrNLtMl1Bgg/
+	Ru5KbGDPFoRmCRzj/oaCwfGl9a8UgKdu22vO2TED+zzxkkAqe9irVyvXrfI8llwL2A8SOWBkvy1
+	/IlWh1CS5+Fx8BgbmK8mvo6EPH1Yxro9TL8OESYHWwprNdkJcV/V+T9TYb5KbBVYCYPaOyXo7P4
+	Gg9/Nru2oL6Bgw3IQyvic8aQ2QthA==
+X-Google-Smtp-Source: AGHT+IErP5lyUtGZ17CAjwaSIES6/nWAbs0AJwjMgPE74nmG8ry7BPgbgi9Xka99G4k2kfEEV6vK9Q==
+X-Received: by 2002:a05:6a20:1590:b0:342:a261:e2c9 with SMTP id adf61e73a8af0-3614f2536e8mr15243293637.8.1764039598893;
+        Mon, 24 Nov 2025 18:59:58 -0800 (PST)
 Received: from mma-H9MHD44.lan (60-242-93-14.static.tpgi.com.au. [60.242.93.14])
-        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-bd75e9b1239sm14549915a12.15.2025.11.24.18.59.51
+        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-bd75e9b1239sm14549915a12.15.2025.11.24.18.59.55
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 24 Nov 2025 18:59:53 -0800 (PST)
+        Mon, 24 Nov 2025 18:59:58 -0800 (PST)
 From: Lachlan Hodges <lachlan.hodges@morsemicro.com>
 To: johannes@sipsolutions.net
 Cc: linux-wireless@vger.kernel.org,
 	arien.judge@morsemicro.com,
 	Lachlan Hodges <lachlan.hodges@morsemicro.com>
-Subject: [PATCH wireless-next 2/3] wifi: cfg80211: include s1g_primary_2mhz when comparing chandefs
-Date: Tue, 25 Nov 2025 13:59:26 +1100
-Message-ID: <20251125025927.245280-3-lachlan.hodges@morsemicro.com>
+Subject: [PATCH wireless-next 3/3] wifi: mac80211: allow sharing identical chanctx for S1G interfaces
+Date: Tue, 25 Nov 2025 13:59:27 +1100
+Message-ID: <20251125025927.245280-4-lachlan.hodges@morsemicro.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20251125025927.245280-1-lachlan.hodges@morsemicro.com>
 References: <20251125025927.245280-1-lachlan.hodges@morsemicro.com>
@@ -93,27 +93,71 @@ List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-When comparing chandefs, ensure we include s1g_primary_2mhz.
+Introduce support for sharing identical channel contexts for S1G
+interfaces. Additionally, do not downgrade channel requests for
+S1G interfaces.
 
 Signed-off-by: Lachlan Hodges <lachlan.hodges@morsemicro.com>
 ---
- include/net/cfg80211.h | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/include/net/cfg80211.h b/include/net/cfg80211.h
-index 53490eb04e87..d513a70fad07 100644
---- a/include/net/cfg80211.h
-+++ b/include/net/cfg80211.h
-@@ -975,7 +975,8 @@ cfg80211_chandef_identical(const struct cfg80211_chan_def *chandef1,
- 		chandef1->center_freq1 == chandef2->center_freq1 &&
- 		chandef1->freq1_offset == chandef2->freq1_offset &&
- 		chandef1->center_freq2 == chandef2->center_freq2 &&
--		chandef1->punctured == chandef2->punctured);
-+		chandef1->punctured == chandef2->punctured &&
-+		chandef1->s1g_primary_2mhz == chandef2->s1g_primary_2mhz);
- }
+I've kept the WARN_ON(1) here, though it only *should* be hit if an
+S1G driver advertises num_different_channels > 1 and starts a
+non-identical interface, otherwise the connection will be rejected
+earlier when verifying the iface combinations assuming
+num_different_channels = 1 (should be every S1G driver at this point).
+
+---
+ net/mac80211/chan.c | 14 +++++++++++++-
+ net/mac80211/mlme.c |  9 +++++++--
+ 2 files changed, 20 insertions(+), 3 deletions(-)
+
+diff --git a/net/mac80211/chan.c b/net/mac80211/chan.c
+index 57065714cf8c..f73973096097 100644
+--- a/net/mac80211/chan.c
++++ b/net/mac80211/chan.c
+@@ -530,8 +530,20 @@ static void _ieee80211_change_chanctx(struct ieee80211_local *local,
+ 	};
+ 	u32 changed = 0;
  
- /**
+-	/* expected to handle only 20/40/80/160/320 channel widths */
++	/* 5/10 MHz not handled here */
+ 	switch (chandef->width) {
++	case NL80211_CHAN_WIDTH_1:
++	case NL80211_CHAN_WIDTH_2:
++	case NL80211_CHAN_WIDTH_4:
++	case NL80211_CHAN_WIDTH_8:
++	case NL80211_CHAN_WIDTH_16:
++		/*
++		 * mac80211 currently only supports sharing identical
++		 * chanctx's for S1G interfaces.
++		 */
++		if (ieee80211_chanreq_identical(&ctx_req, chanreq))
++			return;
++		WARN_ON(1);
+ 	case NL80211_CHAN_WIDTH_20_NOHT:
+ 	case NL80211_CHAN_WIDTH_20:
+ 	case NL80211_CHAN_WIDTH_40:
+diff --git a/net/mac80211/mlme.c b/net/mac80211/mlme.c
+index 025210d50405..e4814cb1c181 100644
+--- a/net/mac80211/mlme.c
++++ b/net/mac80211/mlme.c
+@@ -6122,9 +6122,14 @@ static int ieee80211_prep_channel(struct ieee80211_sub_if_data *sdata,
+ 	ret = ieee80211_link_use_channel(link, &chanreq,
+ 					 IEEE80211_CHANCTX_SHARED);
+ 
+-	/* don't downgrade for 5 and 10 MHz channels, though. */
++	/* don't downgrade for 5/10/S1G MHz channels, though. */
+ 	if (chanreq.oper.width == NL80211_CHAN_WIDTH_5 ||
+-	    chanreq.oper.width == NL80211_CHAN_WIDTH_10)
++	    chanreq.oper.width == NL80211_CHAN_WIDTH_10 ||
++	    chanreq.oper.width == NL80211_CHAN_WIDTH_1 ||
++	    chanreq.oper.width == NL80211_CHAN_WIDTH_2 ||
++	    chanreq.oper.width == NL80211_CHAN_WIDTH_4 ||
++	    chanreq.oper.width == NL80211_CHAN_WIDTH_8 ||
++	    chanreq.oper.width == NL80211_CHAN_WIDTH_16)
+ 		return ret;
+ 
+ 	while (ret && chanreq.oper.width != NL80211_CHAN_WIDTH_20_NOHT) {
 -- 
 2.43.0
 
