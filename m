@@ -1,125 +1,339 @@
-Return-Path: <linux-wireless+bounces-29307-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-29309-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id C5A27C83408
-	for <lists+linux-wireless@lfdr.de>; Tue, 25 Nov 2025 04:39:28 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id CD9B5C8343B
+	for <lists+linux-wireless@lfdr.de>; Tue, 25 Nov 2025 04:48:23 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6CD643ACEF4
-	for <lists+linux-wireless@lfdr.de>; Tue, 25 Nov 2025 03:39:27 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 14B1C4E5DCD
+	for <lists+linux-wireless@lfdr.de>; Tue, 25 Nov 2025 03:48:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A79102701B8;
-	Tue, 25 Nov 2025 03:39:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3816627F732;
+	Tue, 25 Nov 2025 03:47:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=morsemicro-com.20230601.gappssmtp.com header.i=@morsemicro-com.20230601.gappssmtp.com header.b="Qe9bleKI"
+	dkim=pass (1024-bit key) header.d=mediatek.com header.i=@mediatek.com header.b="uRfSOxSU"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-pj1-f49.google.com (mail-pj1-f49.google.com [209.85.216.49])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mailgw02.mediatek.com (unknown [210.61.82.184])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CF0CA26F2B6
-	for <linux-wireless@vger.kernel.org>; Tue, 25 Nov 2025 03:39:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.49
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E7569275AFB
+	for <linux-wireless@vger.kernel.org>; Tue, 25 Nov 2025 03:47:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=210.61.82.184
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764041965; cv=none; b=SrX2z7RsDT4eu+5zcTaFYsnyfGFnnSxNnvSEfbuP4t1H7w0COfG/uWc0tdNX2HTTyJcG6vvLYYhLhdhGnzdwoUMgzW9c49qgI0XV5quvdKTTIpvHf2PWBvwvfXG555TqXf5dBSfruPjMqeEAao0yM7RsU61icdysqJS7YfIucsU=
+	t=1764042452; cv=none; b=bz7NVGfwqhArvgEG/4Iy6yrCsZDxDHoC0fku7NIobe/0mbElM+cvMgieGOoi//yNBAa4tNXvPlJmul/xsuYHdaE07pqT8qGbD30WHIA/eB/qN64nhc4L84CVARbyTBa2SoH90OUimnJ1l3TpHRfsr6See/h30OUJFsCAio2u7ck=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764041965; c=relaxed/simple;
-	bh=AzuvWltXU2iR7F8fYMfzIuIHOzh6HjqBp9hNUDMBe7Q=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=kLDikUxLSW9tv59uV+Fk9CDiJvCEbqzRLWVNCQfWncnhs6JfvmNsn2RaJ60/fMBtlF4cpxen0CheNuD0fJpoRygbl0CaajYUCPL2e1uTPaNb63Qu0yQVYhiNJBgym8OK/K1dXCfu6ltTBmxC58cQKy/myntgpA49jXmCf8qaAGg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=morsemicro.com; spf=pass smtp.mailfrom=morsemicro.com; dkim=pass (2048-bit key) header.d=morsemicro-com.20230601.gappssmtp.com header.i=@morsemicro-com.20230601.gappssmtp.com header.b=Qe9bleKI; arc=none smtp.client-ip=209.85.216.49
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=morsemicro.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=morsemicro.com
-Received: by mail-pj1-f49.google.com with SMTP id 98e67ed59e1d1-3436d6ca17bso5032243a91.3
-        for <linux-wireless@vger.kernel.org>; Mon, 24 Nov 2025 19:39:23 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=morsemicro-com.20230601.gappssmtp.com; s=20230601; t=1764041963; x=1764646763; darn=vger.kernel.org;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=DoDDizcvREMZCGmhouhNwiQ5IxgbpdcT6INRYNwCtqc=;
-        b=Qe9bleKIeEDFWuEnrY81jxaZUNXl+PiggW2c+vbpRVlyocbuon2hfnhcfLR5fIeGAX
-         TAH3HoRaYGPg7etAGQ0S/fpJ+PiWuRgUnVW5l6+l61Q7HnjPdMYXyeKUx944+NTBkHbs
-         hUc2vWw69W7zEJS7HwoCTjWPC7nrS4pfTak1jErnaA5Nl/DzX33ZgqMRGZjiIUARNlpF
-         zT+RTA+gN/Io0S9qYBh5v+x5JG3RJk48AF7BBrdC1Icwe6no77sNdmpRH6RVuVHX6iNr
-         FwfLEWrBif27JaSOJUO8URe8IEQzzqmZrR4DxYNHLXJJ++/Bj2V2bYcJ3FfjFmMR/YGj
-         DYFA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1764041963; x=1764646763;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=DoDDizcvREMZCGmhouhNwiQ5IxgbpdcT6INRYNwCtqc=;
-        b=BAPa7Ia0j8hH+kuXZiZYD4/rT/YOUfInivWr/UJxvBnC7HNcBn2dtjgacLvCtee4Ml
-         h46t7FXGeYkBcQmZd3m9nmcRcNj+i3hIPqCFZWvM3ZrSj5RXUmuh9buCj4GF0pUrbWuE
-         bEudaItbRCnheNwdYZfInCPDLMaxHCosKiuncR3y1+wOacreu1ZfUcF0Jm2ifBSe7sf/
-         sBv1R4KLaKYe9ORYzpnt6C2s/PunB6RcPMTMZdnAK+ZrG0QhMzObcajayrxBBFPYnY4z
-         27X5Tn3NwoQhqpyvWaIdYigrAabxgeUzg5IAAiZROcNmdSOHDRYWzpZe4ssCSoigf6kR
-         uEvQ==
-X-Forwarded-Encrypted: i=1; AJvYcCWFNg3xH6t83ICgGEFqizBCUnxr1XM5iTxyKAkfVDTqtDKrAKyzjt6DE2hFawB0BgE9c1QOL0dNUMraf97u8Q==@vger.kernel.org
-X-Gm-Message-State: AOJu0YxPlB7MDCm1RZdXggzIHHSno9oOPmu01PQfEWmSTapIGzrBL+cz
-	wpupSSbSloh+XcN+/tbwMtTqjvrs5u2S2ahxF/kHym/85nQEbgK03bk8CBMEhwu5Iw==
-X-Gm-Gg: ASbGnctFHTFjdNPOWhWa/k77pY81olOOnpkcY64UWoNTgD8RoR0vrzRqVFydzq+iogi
-	iLONrThRm1YG7cupjmjOilkEgybW5bxIFWYn2tu+VjzmdSBm7022cDwPCVQtE88C+KRHUM9Qa4n
-	2UI0kshHGEnYQDLRRAHX2dbLc2P+eFkZ91EEqw3Yj7Mnz8eZnz0bO+oMyD6MoCyPqe3nuxiHoPc
-	0BXfmcE5v1VTldoiVxoDZEpLLhjp8cuoakYeu4CxwpP+yfzPPY27xnCz3hpBxfiXyc7exhoCxtx
-	GRV8Vr7pCHza8Vz5Pon6CFE0wl7gU55SIvhbKQWhY+dM8tKwB2XwhXZlgNFDcLv4OaLxVOhnn/y
-	Ms8o9QB9R+L0bDdOJCFIgX15Pg5YxwX91AF4FI3WaWMzhuyXN5+xSx75AmG5V6W0Gvyf9VIeSyR
-	4K0ev0En25OuB+
-X-Google-Smtp-Source: AGHT+IFcuniyBRG0aDQNuI8BUO7OZfekIdPteK19ZPxYjWNa2gJR5RzujzKyY+Q0twmg045t80RGLg==
-X-Received: by 2002:a17:90b:57ef:b0:340:ff7d:c26 with SMTP id 98e67ed59e1d1-34733e6cabcmr14232385a91.16.1764041963014;
-        Mon, 24 Nov 2025 19:39:23 -0800 (PST)
-Received: from localhost ([14.143.244.11])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-34727be33dbsm14800611a91.8.2025.11.24.19.39.21
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 24 Nov 2025 19:39:22 -0800 (PST)
-Date: Tue, 25 Nov 2025 09:09:15 +0530
-From: Ria Thomas <ria.thomas@morsemicro.com>
-To: Jeff Johnson <jeff.johnson@oss.qualcomm.com>
-Cc: johannes@sipsolutions.net, linux-wireless@vger.kernel.org,
-	lachlan.hodges@morsemicro.com, pradeep.reddy@morsemicro.com,
-	simon@morsemicro.com
-Subject: Re: [PATCH v2] wifi: mac80211: correct FILS status codes
-Message-ID: <20251125033915.3m2uczkde2nqcoya@1207>
-References: <20251124061111.3627341-1-ria.thomas@morsemicro.com>
- <20251124125637.3936154-1-ria.thomas@morsemicro.com>
- <29ebeb55-1528-42b0-a692-11f20097fca8@oss.qualcomm.com>
+	s=arc-20240116; t=1764042452; c=relaxed/simple;
+	bh=ypt7WF0YHDTtk4FNcJ4c4wllgLkcsSwuEyzbCNiRNWc=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=o0W1g/tvarGTku5Vt/kR+VAsbOzPnrwhBtKr11lxdV/jBxoPvtdy2xoAzepBGToaLgMnfdSQgG/uAQx3ihzhR52js+Pift2CSpMxiSlU/Zyy87m25Eua6R5m932hv7tIaxjOLi2uzCTq2wFN0acOIVNgdTtzkOUU/97Oa2XpzGo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=mediatek.com; spf=pass smtp.mailfrom=mediatek.com; dkim=pass (1024-bit key) header.d=mediatek.com header.i=@mediatek.com header.b=uRfSOxSU; arc=none smtp.client-ip=210.61.82.184
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=mediatek.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=mediatek.com
+X-UUID: 74918854c9b111f0b33aeb1e7f16c2b6-20251125
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=mediatek.com; s=dk;
+	h=Content-Type:Content-Transfer-Encoding:MIME-Version:Message-ID:Date:Subject:CC:To:From; bh=+efuKcWtgTDRo9XgQSpQQ2x/P7lFj6YofLZn0vxgKlk=;
+	b=uRfSOxSU0OeCaKIpwVfhenL57v18ofdJ300FMhdNFZpwzu+mn/MWXV2eIYt8qJ/ZT5ojeP/muujyjU/Sl0uq+MQetntGkXclg/i17Ci8KzzxMmrxxPsQoM3IKvPQBwBz2qpgqMqkut6Addaf0pr0JoEngo/8gBvCbncQeK+MOSU=;
+X-CID-P-RULE: Release_Ham
+X-CID-O-INFO: VERSION:1.3.6,REQID:1da1fe49-6545-4fd3-abf7-5b7fc5b9931f,IP:0,UR
+	L:0,TC:0,Content:0,EDM:0,RT:0,SF:0,FILE:0,BULK:0,RULE:Release_Ham,ACTION:r
+	elease,TS:0
+X-CID-META: VersionHash:a9d874c,CLOUDID:32152abb-0c02-41a0-92a3-94dc7dc7eeca,B
+	ulkID:nil,BulkQuantity:0,Recheck:0,SF:102|836|888|898,TC:-5,Content:0|15|5
+	0,EDM:-3,IP:nil,URL:0,File:130,RT:0,Bulk:nil,QS:nil,BEC:nil,COL:0,OSI:0,OS
+	A:0,AV:0,LES:1,SPR:NO,DKR:0,DKP:0,BRR:0,BRE:0,ARC:0
+X-CID-BVR: 2,SSN|SDN
+X-CID-BAS: 2,SSN|SDN,0,_
+X-CID-FACTOR: TF_CID_SPAM_SNR
+X-CID-RHF: D41D8CD98F00B204E9800998ECF8427E
+X-UUID: 74918854c9b111f0b33aeb1e7f16c2b6-20251125
+Received: from mtkmbs09n1.mediatek.inc [(172.21.101.35)] by mailgw02.mediatek.com
+	(envelope-from <shayne.chen@mediatek.com>)
+	(Generic MTA with TLSv1.2 ECDHE-RSA-AES256-GCM-SHA384 256/256)
+	with ESMTP id 207877294; Tue, 25 Nov 2025 11:47:25 +0800
+Received: from mtkmbs13n2.mediatek.inc (172.21.101.108) by
+ MTKMBS14N1.mediatek.inc (172.21.101.75) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1748.26; Tue, 25 Nov 2025 11:47:23 +0800
+Received: from mtksitap99.mediatek.inc (10.233.130.16) by
+ mtkmbs13n2.mediatek.inc (172.21.101.73) with Microsoft SMTP Server id
+ 15.2.1748.26 via Frontend Transport; Tue, 25 Nov 2025 11:47:23 +0800
+From: Shayne Chen <shayne.chen@mediatek.com>
+To: Felix Fietkau <nbd@nbd.name>
+CC: linux-wireless <linux-wireless@vger.kernel.org>, Lorenzo Bianconi
+	<lorenzo@kernel.org>, Ryder Lee <ryder.lee@mediatek.com>, Evelyn Tsai
+	<evelyn.tsai@mediatek.com>, linux-mediatek
+	<linux-mediatek@lists.infradead.org>, Shayne Chen <shayne.chen@mediatek.com>,
+	Peter Chiu <chui-hao.chiu@mediatek.com>, StanleyYP Wang
+	<StanleyYP.Wang@mediatek.com>
+Subject: [PATCH mt76 1/7] wifi: mt76: mt7996: extend CSA and CCA support for MLO
+Date: Tue, 25 Nov 2025 11:46:33 +0800
+Message-ID: <20251125034639.1416214-1-shayne.chen@mediatek.com>
+X-Mailer: git-send-email 2.45.2
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <29ebeb55-1528-42b0-a692-11f20097fca8@oss.qualcomm.com>
+Content-Type: text/plain
+X-MTK: N
 
-On Mon, Nov 24, 2025 at 09:52:31AM -0800, Jeff Johnson wrote:
-> On 11/24/2025 4:56 AM, Ria Thomas wrote:
-> > The FILS status codes are set to 108/109, but the IEEE 802.11-2020
-> 
-> Note that the current version is IEEE Std 802.11-2024, and it would be useful
-> to directly reference Table 9-80.
-Thanks, I've noted that the current revision is 802.11-2024.I cited
-802.11-2020 because it’s the first revision that defines these status
-codes. I can switch to 802.11-2024 if that’s preferred.
-> 
-> This issue was pointed out by IEEE in "Errata to IEEE Std 802.11ai-2016." In
-> addition to this issue, that errata also calls out renumbering the "Category
-> values" in what was then Table 9-47, now Table 9-81, for FILS from 22 to 26.
-> But the current enum ieee80211_category does not have an entry for FILS, so
-> that part of the errata does not need to be applied
-> 
-> But while researching this I see the current category 22 enum is incorrect:
-> 	WLAN_CATEGORY_S1G = 22,
-> 
-> since IEEE Std 802.11-2024, Table 9-81 has:
-> 	22 Unprotected S1G
-> 	23 S1G
-> 
-> So that might also need to be addressed by someone.
->
-Sure, will review the changes and submit the patch separately as S1G related change.
+Use correct link_id to report CSA and CCA countdown events, and also
+modify mt7996_channel_switch_beacon() to set beacon with the correct
+link_id.
+
+Co-developed-by: Peter Chiu <chui-hao.chiu@mediatek.com>
+Signed-off-by: Peter Chiu <chui-hao.chiu@mediatek.com>
+Co-developed-by: StanleyYP Wang <StanleyYP.Wang@mediatek.com>
+Signed-off-by: StanleyYP Wang <StanleyYP.Wang@mediatek.com>
+Signed-off-by: Shayne Chen <shayne.chen@mediatek.com>
+---
+ .../net/wireless/mediatek/mt76/mt7996/main.c  |  23 ++-
+ .../net/wireless/mediatek/mt76/mt7996/mcu.c   | 159 ++++++++++++------
+ .../net/wireless/mediatek/mt76/mt7996/mcu.h   |   8 +-
+ 3 files changed, 131 insertions(+), 59 deletions(-)
+
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7996/main.c b/drivers/net/wireless/mediatek/mt76/mt7996/main.c
+index beed795edb24..9b4bfb071292 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7996/main.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7996/main.c
+@@ -927,9 +927,30 @@ mt7996_channel_switch_beacon(struct ieee80211_hw *hw,
+ 			     struct cfg80211_chan_def *chandef)
+ {
+ 	struct mt7996_dev *dev = mt7996_hw_dev(hw);
++	struct mt7996_phy *phy = mt7996_band_phy(dev, chandef->chan->band);
++	struct ieee80211_bss_conf *link_conf;
++	unsigned int link_id;
+ 
+ 	mutex_lock(&dev->mt76.mutex);
+-	mt7996_mcu_add_beacon(hw, vif, &vif->bss_conf, vif->bss_conf.enable_beacon);
++
++	for_each_vif_active_link(vif, link_conf, link_id) {
++		struct mt7996_vif_link *link =
++			mt7996_vif_link(dev, vif, link_id);
++
++		if (!link || link->phy != phy)
++			continue;
++
++		/* Reset beacon when channel switch triggered during CAC to let
++		 * FW correctly perform CSA countdown
++		 */
++		if (!cfg80211_reg_can_beacon(hw->wiphy, &phy->mt76->chandef,
++					     vif->type))
++			mt7996_mcu_add_beacon(hw, vif, link_conf, false);
++
++		mt7996_mcu_add_beacon(hw, vif, link_conf, true);
++		break;
++	}
++
+ 	mutex_unlock(&dev->mt76.mutex);
+ }
+ 
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7996/mcu.c b/drivers/net/wireless/mediatek/mt76/mt7996/mcu.c
+index 14a88ef79b6c..7be03bbf34d4 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7996/mcu.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7996/mcu.c
+@@ -390,13 +390,117 @@ int mt7996_mcu_wa_cmd(struct mt7996_dev *dev, int cmd, u32 a1, u32 a2, u32 a3)
+ 				 sizeof(req), false);
+ }
+ 
++struct mt7996_mcu_countdown_data {
++	struct mt76_phy *mphy;
++	u8 omac_idx;
++};
++
+ static void
+ mt7996_mcu_csa_finish(void *priv, u8 *mac, struct ieee80211_vif *vif)
+ {
+-	if (!vif->bss_conf.csa_active || vif->type == NL80211_IFTYPE_STATION)
++	struct mt7996_mcu_countdown_data *cdata = (void *)priv;
++	struct mt7996_vif *mvif = (struct mt7996_vif *)vif->drv_priv;
++	struct ieee80211_bss_conf *link_conf = NULL;
++	unsigned long valid_links = vif->valid_links ?: BIT(0);
++	unsigned int link_id;
++
++	if (vif->type == NL80211_IFTYPE_STATION)
++		return;
++
++	for_each_set_bit(link_id, &valid_links, IEEE80211_MLD_MAX_NUM_LINKS) {
++		struct mt76_vif_link *mlink =
++			rcu_dereference(mvif->mt76.link[link_id]);
++
++		if (mlink && mlink->band_idx == cdata->mphy->band_idx &&
++		    mlink->omac_idx == cdata->omac_idx) {
++			link_conf = rcu_dereference(vif->link_conf[link_id]);
++			break;
++		}
++	}
++
++	if (!link_conf || !link_conf->csa_active)
+ 		return;
+ 
+-	ieee80211_csa_finish(vif, 0);
++	ieee80211_csa_finish(vif, link_conf->link_id);
++}
++
++static void
++mt7996_mcu_cca_finish(void *priv, u8 *mac, struct ieee80211_vif *vif)
++{
++	struct mt7996_mcu_countdown_data *cdata = (void *)priv;
++	struct mt7996_vif *mvif = (struct mt7996_vif *)vif->drv_priv;
++	struct ieee80211_bss_conf *link_conf = NULL;
++	unsigned long valid_links = vif->valid_links ?: BIT(0);
++	unsigned int link_id;
++
++	if (vif->type == NL80211_IFTYPE_STATION)
++		return;
++
++	for_each_set_bit(link_id, &valid_links, IEEE80211_MLD_MAX_NUM_LINKS) {
++		struct mt76_vif_link *mlink =
++			rcu_dereference(mvif->mt76.link[link_id]);
++
++		if (mlink && mlink->band_idx == cdata->mphy->band_idx &&
++		    mlink->omac_idx == cdata->omac_idx) {
++			link_conf = rcu_dereference(vif->link_conf[link_id]);
++			break;
++		}
++	}
++
++	if (!link_conf || !link_conf->color_change_active)
++		return;
++
++	ieee80211_color_change_finish(vif, link_conf->link_id);
++}
++
++static void
++mt7996_mcu_ie_countdown(struct mt7996_dev *dev, struct sk_buff *skb)
++{
++#define UNI_EVENT_IE_COUNTDOWN_CSA 0
++#define UNI_EVENT_IE_COUNTDOWN_BCC 1
++	struct header {
++		u8 band;
++		u8 rsv[3];
++	};
++	struct mt7996_mcu_rxd *rxd = (struct mt7996_mcu_rxd *)skb->data;
++	const char *data = (char *)&rxd[1], *tail;
++	struct header *hdr = (struct header *)data;
++	struct tlv *tlv = (struct tlv *)(data + 4);
++	struct mt7996_mcu_countdown_notify *event;
++	struct mt7996_mcu_countdown_data cdata;
++
++	if (hdr->band >= ARRAY_SIZE(dev->mt76.phys))
++		return;
++
++	cdata.mphy = dev->mt76.phys[hdr->band];
++	if (!cdata.mphy)
++		return;
++
++	tail = skb->data + skb->len;
++	data += sizeof(*hdr);
++	while (data + sizeof(*tlv) < tail && le16_to_cpu(tlv->len)) {
++		event = (struct mt7996_mcu_countdown_notify *)tlv->data;
++
++		cdata.omac_idx = event->omac_idx;
++
++		switch (le16_to_cpu(tlv->tag)) {
++		case UNI_EVENT_IE_COUNTDOWN_CSA:
++			ieee80211_iterate_active_interfaces_atomic(mt76_hw(dev),
++					IEEE80211_IFACE_ITER_RESUME_ALL,
++					mt7996_mcu_csa_finish, &cdata);
++			break;
++		case UNI_EVENT_IE_COUNTDOWN_BCC:
++			ieee80211_iterate_active_interfaces_atomic(mt76_hw(dev),
++					IEEE80211_IFACE_ITER_RESUME_ALL,
++					mt7996_mcu_cca_finish, &cdata);
++			break;
++		default:
++			break;
++		}
++
++		data += le16_to_cpu(tlv->len);
++		tlv = (struct tlv *)data;
++	}
+ }
+ 
+ static void
+@@ -476,57 +580,6 @@ mt7996_mcu_rx_log_message(struct mt7996_dev *dev, struct sk_buff *skb)
+ 	wiphy_info(mt76_hw(dev)->wiphy, "%s: %.*s", type, len, data);
+ }
+ 
+-static void
+-mt7996_mcu_cca_finish(void *priv, u8 *mac, struct ieee80211_vif *vif)
+-{
+-	if (!vif->bss_conf.color_change_active || vif->type == NL80211_IFTYPE_STATION)
+-		return;
+-
+-	ieee80211_color_change_finish(vif, 0);
+-}
+-
+-static void
+-mt7996_mcu_ie_countdown(struct mt7996_dev *dev, struct sk_buff *skb)
+-{
+-#define UNI_EVENT_IE_COUNTDOWN_CSA 0
+-#define UNI_EVENT_IE_COUNTDOWN_BCC 1
+-	struct header {
+-		u8 band;
+-		u8 rsv[3];
+-	};
+-	struct mt76_phy *mphy = &dev->mt76.phy;
+-	struct mt7996_mcu_rxd *rxd = (struct mt7996_mcu_rxd *)skb->data;
+-	const char *data = (char *)&rxd[1], *tail;
+-	struct header *hdr = (struct header *)data;
+-	struct tlv *tlv = (struct tlv *)(data + 4);
+-
+-	if (hdr->band >= ARRAY_SIZE(dev->mt76.phys))
+-		return;
+-
+-	if (hdr->band && dev->mt76.phys[hdr->band])
+-		mphy = dev->mt76.phys[hdr->band];
+-
+-	tail = skb->data + skb->len;
+-	data += sizeof(struct header);
+-	while (data + sizeof(struct tlv) < tail && le16_to_cpu(tlv->len)) {
+-		switch (le16_to_cpu(tlv->tag)) {
+-		case UNI_EVENT_IE_COUNTDOWN_CSA:
+-			ieee80211_iterate_active_interfaces_atomic(mphy->hw,
+-					IEEE80211_IFACE_ITER_RESUME_ALL,
+-					mt7996_mcu_csa_finish, mphy->hw);
+-			break;
+-		case UNI_EVENT_IE_COUNTDOWN_BCC:
+-			ieee80211_iterate_active_interfaces_atomic(mphy->hw,
+-					IEEE80211_IFACE_ITER_RESUME_ALL,
+-					mt7996_mcu_cca_finish, mphy->hw);
+-			break;
+-		}
+-
+-		data += le16_to_cpu(tlv->len);
+-		tlv = (struct tlv *)data;
+-	}
+-}
+-
+ static int
+ mt7996_mcu_update_tx_gi(struct rate_info *rate, struct all_sta_trx_rate *mcu_rate)
+ {
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7996/mcu.h b/drivers/net/wireless/mediatek/mt76/mt7996/mcu.h
+index e0b83ac9f5e2..fc8b09e76f01 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7996/mcu.h
++++ b/drivers/net/wireless/mediatek/mt76/mt7996/mcu.h
+@@ -52,12 +52,10 @@ struct mt7996_mcu_thermal_enable {
+ 	u8 rsv[2];
+ } __packed;
+ 
+-struct mt7996_mcu_csa_notify {
+-	struct mt7996_mcu_rxd rxd;
+-
++struct mt7996_mcu_countdown_notify {
+ 	u8 omac_idx;
+-	u8 csa_count;
+-	u8 band_idx;
++	u8 count;
++	u8 csa_failure_reason; /* 0: success, 1: beacon disabled */
+ 	u8 rsv;
+ } __packed;
+ 
+-- 
+2.51.0
+
 
