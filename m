@@ -1,140 +1,160 @@
-Return-Path: <linux-wireless+bounces-29342-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-29343-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7A77EC85DA0
-	for <lists+linux-wireless@lfdr.de>; Tue, 25 Nov 2025 17:00:40 +0100 (CET)
+Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [IPv6:2a01:60a::1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7EAD9C86076
+	for <lists+linux-wireless@lfdr.de>; Tue, 25 Nov 2025 17:48:11 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 39C063B323C
-	for <lists+linux-wireless@lfdr.de>; Tue, 25 Nov 2025 16:00:39 +0000 (UTC)
+	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 9A2C934D445
+	for <lists+linux-wireless@lfdr.de>; Tue, 25 Nov 2025 16:48:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 47BA813AA2F;
-	Tue, 25 Nov 2025 16:00:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C14CF2248A5;
+	Tue, 25 Nov 2025 16:48:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Y+tKTaSC"
+	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="NkyrtaWK";
+	dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b="QaOs8DyH"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-pl1-f171.google.com (mail-pl1-f171.google.com [209.85.214.171])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BE7E0347DD
-	for <linux-wireless@vger.kernel.org>; Tue, 25 Nov 2025 16:00:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.171
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 122341B4F09
+	for <linux-wireless@vger.kernel.org>; Tue, 25 Nov 2025 16:48:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764086437; cv=none; b=K6PpPbX1WhvN4UOK37xTmD87l+S9jGl5zfjd2+whyd4oqRFTd/3w0xAWNUwt/b20H5FtlHKsKRKKxQIzN1CIAMjVNamI90zHGijkkUYYgTdQ2b/oT8tKXMbqtEfOs1zUTJj+lR6CpbElVYRDyKstle/fvxgnAZDFmv13sAE4qGo=
+	t=1764089287; cv=none; b=NlxIRBaCp9awfejoajSuOjjde7A3MloMF+rUfSqOWcY5ekjMq9osgO7iaK/GvoGnC0+M7EGqQv9PMB2q8PofcbMjGaDDOKzOcVtbRAPFPdiYDZoQ+9Yn8EOQcCSLbX8mHzLUatnhvKt+oLFpkl7GZG9WWoU8Bw/Ew0u2NKaiDgo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764086437; c=relaxed/simple;
-	bh=9BFD4Msg+qpbpjeNXXts2YAMbYGLrMYUBpH3xOUujUc=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=ZLszfHigOIxITJo5lAx6gjHs8wRSzLTtz7jI/C9aS8gJ8O2LT7OlR/La+sV594VG9/yCIqVFtDKWgdTaoXwS2q4dvjZbQxLUv8pkOz94JmDv4svsmm4DZpcPfS5k5c4Av9++2eN5oQh5wHbBd7ETCO8JRGu9oZjfaDNgjxkKpN8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Y+tKTaSC; arc=none smtp.client-ip=209.85.214.171
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pl1-f171.google.com with SMTP id d9443c01a7336-29555415c5fso62986955ad.1
-        for <linux-wireless@vger.kernel.org>; Tue, 25 Nov 2025 08:00:35 -0800 (PST)
+	s=arc-20240116; t=1764089287; c=relaxed/simple;
+	bh=r2DFfPpZ2i3kDSKtZaDOyK+wMS9Iax66aLaU3RTMlmw=;
+	h=Message-ID:Date:MIME-Version:Subject:From:To:Cc:References:
+	 In-Reply-To:Content-Type; b=seJf2YYBStE4w3rTEwvH/KCqS1lMS472XcXw2ivetuCYUV9JfMYkSJ84CC6zDDI60OlXchZ6Ao2ZiOOFcfzbdJuD8e+uLVRDbFBl3BufpJ/A9YsfO7lXDFTmlvanvHOjV0e9+D0HFPxlJ05ji6cURGiNqXMJnTviATuXlDlCKTY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=NkyrtaWK; dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b=QaOs8DyH; arc=none smtp.client-ip=205.220.180.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
+Received: from pps.filterd (m0279873.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 5APF7ouK2726963
+	for <linux-wireless@vger.kernel.org>; Tue, 25 Nov 2025 16:48:04 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
+	cc:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
+	owFn4+22Dt9h0dvI5JhAaFVHZpEFy+gIYCPbJTU02SE=; b=NkyrtaWKHf3BksNV
+	co4/ZHHxJhVoEF38sLym/5hqSiUzlEvODNp1Htw0MyKx51h6lriWRYpdBaNEA9qw
+	qfAPLZDkTcLFO00YMIH0tIMpdSyrkTxBQAAc66UZ+9SvkA66g0+Hlmg5F5CVOac4
+	5bwA9HAMGUrTmK4xG5HdZM6gGdOzReCNKyUrldKOkFMgz5O277T5Vqo0K1ZEjHvF
+	OZfMJSSk03Cn0ha/HI52HePRwh84J7R3/QhqJ6cMVyxVrylbjdEQ+sNv4uPpsRxb
+	+x2OIswkstWjmFDvPLSRPD63e1DcGNxoh+YaKvth9MM9Fg4lLJ0OIB3WngbfZyIX
+	DqJUHg==
+Received: from mail-pf1-f198.google.com (mail-pf1-f198.google.com [209.85.210.198])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4an8rvsjun-1
+	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
+	for <linux-wireless@vger.kernel.org>; Tue, 25 Nov 2025 16:48:04 +0000 (GMT)
+Received: by mail-pf1-f198.google.com with SMTP id d2e1a72fcca58-7c7957d978aso2630983b3a.1
+        for <linux-wireless@vger.kernel.org>; Tue, 25 Nov 2025 08:48:04 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1764086435; x=1764691235; darn=vger.kernel.org;
-        h=mime-version:user-agent:content-transfer-encoding:references
-         :in-reply-to:date:cc:to:from:subject:message-id:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=9BFD4Msg+qpbpjeNXXts2YAMbYGLrMYUBpH3xOUujUc=;
-        b=Y+tKTaSCYmgZ0uh3+8+N/ngjl87A9j9z3kdiETUTcm5XVCV+GTIpPO5xo6enaZJT33
-         llzUnBAZB+TbXcAyCrTMJF3gmk7/XyOgnS02nQVnEx1D7AGGbTNlxR2xZFwcZSv+yYCx
-         T448b35WOrypKbRj3W3Ui2rf+HyoBSKOu4qLig8JE3NJ6i3Tkc9r/2nCFBOCNUisaMzn
-         /t7i4VB53t5/5TQfoHo+u4rbcl+jBbMbPvmk8WmOeJozyYRppt2/xmEwRlahjw/LKqBB
-         9jIvUkIdjr0N+HailS5wDdhgMqIvK77BkO+fbtn03Sn6wsq7SIxA7ArdY//QYcKcQ1pn
-         Nvmg==
+        d=oss.qualcomm.com; s=google; t=1764089284; x=1764694084; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:content-language:references
+         :cc:to:from:subject:user-agent:mime-version:date:message-id:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=owFn4+22Dt9h0dvI5JhAaFVHZpEFy+gIYCPbJTU02SE=;
+        b=QaOs8DyHAjFwWRdc61RTtjiKeTwfr4Mr5AdaZf7YTHc8YwdxHqkgqPmITdjkE2irHg
+         TBMLDo9QOkubcwXmPZ2MnBqS5dDJRepGV7imKp6Hgu4Yr7BsRE9/DsWbVz0batYAszay
+         nSqpTKFGP+L4CAJoRHhIXhQjdPyqcA4G1A55c83jICAu1SV5IFgNb9/AjNEKKBC/STSp
+         ECxXi6i1UeFlaJkMWjlRoysdQsVq4I7Ekx6r1fW/OSVrYOE6b0aC/UO83wNwDeZtHvoh
+         CfCuxmY/9DjL2jQQ9FEQNDYEdggt80vcunCXel3QYh6HbjYjB4Nc93vQpyl1yNVOjFSD
+         vYjQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1764086435; x=1764691235;
-        h=mime-version:user-agent:content-transfer-encoding:references
-         :in-reply-to:date:cc:to:from:subject:message-id:x-gm-gg
+        d=1e100.net; s=20230601; t=1764089284; x=1764694084;
+        h=content-transfer-encoding:in-reply-to:content-language:references
+         :cc:to:from:subject:user-agent:mime-version:date:message-id:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=9BFD4Msg+qpbpjeNXXts2YAMbYGLrMYUBpH3xOUujUc=;
-        b=YImCKPmxIf/y9FsNtf/GM3+OwKW0re47iMo3IbukqXulWd5xDDj1/jUNKI3Xa8jvBK
-         mi5JqmVakeXVv0caNK6yDzxGX11PXwxHlqKqMWNlrq00QegwPdBevx9GosIq/2u3V3Kl
-         SvbrknGbM5GgJNVy30H2aZntSXPlK+jHuYKZRnKnYc+QS85QpTjWWW/Fb491r1dY953l
-         ATsHfKH2BBNzcWFSoX2QjQb0eHcFVOuhNSMfLpVmlu0GME5sFuaYVmY8+pkSqbcUM2rk
-         bm3hLVMlUsJHuWQW26pV5O6Iv0Ra1JAllqVLePXFpLkznrm1KBFAHQ6rBGKm3y8NWpLA
-         6GMA==
-X-Forwarded-Encrypted: i=1; AJvYcCUbA0IV2bYkA7Nb++/ez21nsxdUdtO1i71Rc3EfLdzdo7m1pmX/pMKDJv9BFEjsT4RBx4MH9IyiACQ9nf7rfg==@vger.kernel.org
-X-Gm-Message-State: AOJu0Yw5CBpkfm912mbSl1c5CrfQlrp1QMKvnm0kJexU5rf2ANrjIjT9
-	nzEx+jb7M2XUW5LXlVDxqZJYi+izNVTZhCtmXpKdKZAbgNTqk3DpENKE
-X-Gm-Gg: ASbGncvXFzqRWVQnKRwBROlZL18t2SNItpgwZ0MapojI8xCZgHGn27x0FpFveZ+wIsQ
-	VynUAe0GirvLAcdA1kuA4qVDv0MdALC9lITXdzxk7wobXfAtrFZ9DzYD/h0bjCPFA7LHp65mhYv
-	n1r6M7DBlrTBy2o03F+prAETkAB8VxodpaSL4wyA4xk4UiwUUWyPRpmHK2rG6IdtY+XygWCCic9
-	J12QWj5JM7NFAxByoSSiCqYWvcjyKQ11/poB6H4mzvSAxi+1A6fp9G5JfUNxtMTGeQvVPuPsZ6M
-	4FqF6O+IsLcpAiUhlzptfXmoVc7FNwb6LNIJ73hcketmFxG4yZIL4OfpVOVqF22bqa5wppZbLtY
-	yoxEKLwo8/Ym3stj8e8I125HlAQ/xeJnmB1HIo8GUyGJEM3r0UJJiaoIGKRe+wbEufTj6u7g3jO
-	nkRXwCtwZP0at/aiFoTR66ANbjndHJjAi8N0nltkDqso/xaoEAYjg=
-X-Google-Smtp-Source: AGHT+IFo0y8QRo77glOyXr1LFVMu5VvwMJ7IW5GrSQooqFcwZfF80Gc7FfZ6LwWpz8xenu+GXlE6cg==
-X-Received: by 2002:a17:90b:4f8a:b0:341:194:5e7a with SMTP id 98e67ed59e1d1-34733f3d3a5mr14125781a91.29.1764086433186;
-        Tue, 25 Nov 2025 08:00:33 -0800 (PST)
-Received: from ?IPv6:2401:4900:8fce:eb65:99e9:53c:32e6:4996? ([2401:4900:8fce:eb65:99e9:53c:32e6:4996])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-34727be33dbsm16995860a91.8.2025.11.25.08.00.28
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 25 Nov 2025 08:00:32 -0800 (PST)
-Message-ID: <e5419ba84c64e9146652864072b1941ef310de4f.camel@gmail.com>
-Subject: Re: [PATCH RESEND iwlwifi-next] wifi: iwlwifi: mld: remove unused
- variable in d3.c
-From: ally heev <allyheev@gmail.com>
-To: Konstantin Ryabitsev <konstantin@linuxfoundation.org>
-Cc: Krzysztof Kozlowski <krzk@kernel.org>, Miri Korenblit
-	 <miriam.rachel.korenblit@intel.com>, linux-wireless@vger.kernel.org, 
-	linux-kernel@vger.kernel.org
-Date: Tue, 25 Nov 2025 21:30:24 +0530
-In-Reply-To: <20251125-hot-seagull-of-trust-cc4bbe@lemur>
-References: 
-	<20251121-aheev-remove-unused-var-old-keys-v1-1-6c2565c77ef7@gmail.com>
-	 <a9e12ace-dc0e-4bac-9775-72cd7d477169@kernel.org>
-	 <20251124-terrestrial-mule-of-kindness-d8c4f5@lemur>
-	 <5d6e492ee9194b1125340a66fbd878279286e433.camel@gmail.com>
-	 <20251124-encouraging-snobbish-nuthatch-230bcb@lemur>
-	 <89c6d616ed10eadcf41f085c2484560752db82be.camel@gmail.com>
-	 <20251125-hot-seagull-of-trust-cc4bbe@lemur>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.56.2-0+deb13u1 
+        bh=owFn4+22Dt9h0dvI5JhAaFVHZpEFy+gIYCPbJTU02SE=;
+        b=fEKszogs0hbUwWyOBnTQy2Y8fPaT6t0SYrIl3cXUOL7px2kxhNFp6VASRFQQQJHkrL
+         e9NLuDWZVg95uOeMBYv9/y+MBfS1LHFSc7rFgAZdUGycXBjOzd93tzkUhDGSWlUWwDiu
+         fWha57svunQcVnyDTr4TYy1oHy2F+Ltubd5BGM+6wgyKtEbZdyZVE7xOawn42L3E7aH2
+         MMzk93kYLHgf6hahDgVFQTZKu1q6YJ5nOGTEqYN6qexh2vQH1K2Um7TooEUqQ58TgT/+
+         wnjAQTwwQOed9q0mqmO/0GBnn64oUXoBxGpV4dGj/8uLBhFpVWH6QnSKLLwjqOfEaL5C
+         ymuw==
+X-Gm-Message-State: AOJu0YyhL/hZ3hQ8mHOf/+YWZZG8xs/MnIM7KwnMRsphlKOE38q2rNmU
+	f0EOx0XgxGHnlIhRBwVU12Tf9sWujOy7kEBfkZ1QOiVi0bqvRHWlA6NXoViF2V483mISOC6L+ld
+	+F8wziewYeR2wVIZ0Os0rJuM0CCiJwpT/7nh0EOeOVB+m0ddn3yh3/su2s5DPMQadeJZyRw==
+X-Gm-Gg: ASbGncs90t8kSHSOtLYbF+r8S3kH0uI+DJI13h6odxYndwGkeKavp4OyWx8HeUsoExr
+	3VJTtpO7p0v+DzP6cNIk4XqCl6e5fktE/j/tIe7CAaLMfJdEGcFjCnxqb3vvwX8OquOT/8R2mll
+	wOdmfWEesW7jB/FOaw1BzFQqqiPppWKJTOWaFL25xCA/cbF9J7dpckKDvKKiFXuCsa6GJ+pRzgh
+	vq5Wv9R4YrkvbaUiP/U5HGUrawzNKxpDCvLMWeuXaTRgN68/lw+6H6YpuWFBUjshDbrNd4NS7Gp
+	PPHLw04X6z5vRHxMKxF1q2VB+AHxqXW0V7OjfgQSKtdyOO8z+jyRWXzI7uxKIgx+IamsfgYEB9G
+	ivMpp2M7gP7eh+vnFQuvkw2oz9JtD0CDjge8rzt4GXdW7GjfJeOaYHcFuBcIYZDtVVMY83w==
+X-Received: by 2002:a05:6a21:3399:b0:34f:ec32:6a4b with SMTP id adf61e73a8af0-36150ef8195mr16032891637.32.1764089283762;
+        Tue, 25 Nov 2025 08:48:03 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IGPShcOIsEaNc3uW4NqPkq5KubUsXBKSz0C3elunNAPNo63sqiGW9+gfV1cqdAWum0P0h9A5Q==
+X-Received: by 2002:a05:6a21:3399:b0:34f:ec32:6a4b with SMTP id adf61e73a8af0-36150ef8195mr16032862637.32.1764089283269;
+        Tue, 25 Nov 2025 08:48:03 -0800 (PST)
+Received: from [10.227.110.203] (i-global254.qualcomm.com. [199.106.103.254])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-7c3f0d55b71sm18841191b3a.55.2025.11.25.08.48.02
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 25 Nov 2025 08:48:02 -0800 (PST)
+Message-ID: <9627ce3e-9744-4250-9e6b-708771343c89@oss.qualcomm.com>
+Date: Tue, 25 Nov 2025 08:48:01 -0800
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [GIT PULL] wireless-2025-11-20
+From: Jeff Johnson <jeff.johnson@oss.qualcomm.com>
+To: Johannes Berg <johannes@sipsolutions.net>
+Cc: linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
+        "ath12k@lists.infradead.org" <ath12k@lists.infradead.org>
+References: <20251120085433.8601-3-johannes@sipsolutions.net>
+ <69b2d01e-38f3-4a6a-a7e6-5d94d42fe65a@oss.qualcomm.com>
+Content-Language: en-US
+In-Reply-To: <69b2d01e-38f3-4a6a-a7e6-5d94d42fe65a@oss.qualcomm.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Proofpoint-ORIG-GUID: XRbpC_pmkUlrbGSohGzGMZH02XbE1uqz
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUxMTI1MDE0MCBTYWx0ZWRfXxRhGtLsBs7wB
+ pLoVPN5i92zK1JKXxDg8LJF21vyHUMQMZLNKdp6shT7Fnf1MrhFTpAdoXfueGFKs6sfRkZwP9wC
+ s5gppupyoVIsNbxYOHNnD1+J/tLr0NWHqpjeNR9jPZ6tqV/60eTrRIlXrp4gWEPm+Iy5pqmPare
+ RYbm+Xd3cC+6IoALaSQcAqsdkrE7HGWEZEAOwb2htirxJ9QYxxSpZmshD3mBzEvfa0ln/DfG1lx
+ bthmy4TucBeZ63J71NYyk7+8GjBh6ERZmIzU6z1urNahiN73Qzd3dRidFpmxRT/NL5cM1fa7uyb
+ qXhCyGuo34Q/5hs2TPyz6Q2LQas/cum4WqnCPfhj7c0WogTgfi8heqT0WWNSqnskFVb3xk8QLto
+ E+DPwwlMStdsMU/awZsr+PZ7Q/8eAA==
+X-Proofpoint-GUID: XRbpC_pmkUlrbGSohGzGMZH02XbE1uqz
+X-Authority-Analysis: v=2.4 cv=Ushu9uwB c=1 sm=1 tr=0 ts=6925ddc4 cx=c_pps
+ a=m5Vt/hrsBiPMCU0y4gIsQw==:117 a=JYp8KDb2vCoCEuGobkYCKw==:17
+ a=IkcTkHD0fZMA:10 a=6UeiqGixMTsA:10 a=s4-Qcg_JpJYA:10
+ a=VkNPw1HP01LnGYTKEx00:22 a=9x0bo0beFLz6AYJxxT0A:9 a=QEXdDO2ut3YA:10
+ a=IoOABgeZipijB_acs4fv:22
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.9,FMLib:17.12.100.49
+ definitions=2025-11-25_02,2025-11-25_01,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ clxscore=1015 phishscore=0 bulkscore=0 malwarescore=0 spamscore=0
+ suspectscore=0 adultscore=0 lowpriorityscore=0 priorityscore=1501
+ impostorscore=0 classifier=typeunknown authscore=0 authtc= authcc=
+ route=outbound adjust=0 reason=mlx scancount=1 engine=8.22.0-2510240001
+ definitions=main-2511250140
 
-On Tue, 2025-11-25 at 08:54 -0500, Konstantin Ryabitsev wrote:
-> On Tue, Nov 25, 2025 at 12:50:44PM +0530, ally heev wrote:
-> > > > Yes, I use b4 for my patches. I work on other open source projects
-> > > > which use Github. So, my global git config commit autosign is set t=
-o
-> >=20
-> > typo: `tag autosign`
-> >=20
-> > > > `true`, hence you have seen PGP signatures.=20
-> > >=20
-> > > Interesting! I've not seen this cause PGP signatures to be added to "=
-git show"
-> > > output before. I've tried to replicate it locally, but even if I have=
- a signed
-> > > git commit, I can't make the "gpgsig" header to show up in the output=
- of "git
-> > > show --format=3Demail" (which is what b4 uses). Do you have some loca=
-l git
-> > > configuration changes that make "gpgsig" fields show up in the output=
- of "git
-> > > show"?
-> > >=20
-> > > -K
-> >=20
-> > I think b4 uses tags for patch series. I have checked old
-> > patches(before disabling autosign) and found that signature is only
-> > added on first(cover-letter) of the patch series
->=20
-> Oh! Interesting, so this happened on resend? I'll test it out, thanks!
+On 11/20/2025 10:05 AM, Jeff Johnson wrote:
+> On 11/20/2025 12:53 AM, Johannes Berg wrote:
+>> Hi,
+>>
+>> Looks like things are quieting down, I fear maybe _too_ quiet
+>> since we only have a single fix for rtw89 scanning.
+> 
+> Isn't that the way it is supposed to be heading into -rc7?
+> :)
+> 
+> BTW internally we're finalizing the ath12k-ng => ath-next merge.
+> It's a non-trivial merge of around 100 patches on top of around 60 patches
+> since the branch point.
+> 
+> Current goal is get it to you next week for the v6.19 merge window.
 
-I didn't get it. Signature was added to every cover-letter of patch
-series before I disabled `tag autosign`
+Update: We are still validating the merged code and hence we will not be
+issuing a pull request for v6.19 merge window.
 
->=20
-> -K
+/jeff
 
