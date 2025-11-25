@@ -1,61 +1,87 @@
-Return-Path: <linux-wireless+bounces-29301-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-29302-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id C6D98C83196
-	for <lists+linux-wireless@lfdr.de>; Tue, 25 Nov 2025 03:29:19 +0100 (CET)
+Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [213.196.21.55])
+	by mail.lfdr.de (Postfix) with ESMTPS id 469F9C83295
+	for <lists+linux-wireless@lfdr.de>; Tue, 25 Nov 2025 03:59:45 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 44FA74E7F72
-	for <lists+linux-wireless@lfdr.de>; Tue, 25 Nov 2025 02:28:56 +0000 (UTC)
+	by ams.mirrors.kernel.org (Postfix) with ESMTPS id A1BF834A301
+	for <lists+linux-wireless@lfdr.de>; Tue, 25 Nov 2025 02:59:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 570311E7C12;
-	Tue, 25 Nov 2025 02:28:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F13061DE894;
+	Tue, 25 Nov 2025 02:59:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="42fIHAo0"
+	dkim=pass (2048-bit key) header.d=morsemicro-com.20230601.gappssmtp.com header.i=@morsemicro-com.20230601.gappssmtp.com header.b="Nm0V6YdN"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from bombadil.infradead.org (bombadil.infradead.org [198.137.202.133])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f171.google.com (mail-pl1-f171.google.com [209.85.214.171])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C2AA21CEADB;
-	Tue, 25 Nov 2025 02:28:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.137.202.133
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 13EB41BBBE5
+	for <linux-wireless@vger.kernel.org>; Tue, 25 Nov 2025 02:59:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.171
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764037717; cv=none; b=oLNoLOHirIidYTSyoUmWER99y9O8aKJlWNKk7S+Ovli/zIg6cTiziliuyG9CjYK5jcvOsAq2GL3TCQCHWGr/dFDsrHWF/nQX77nCxmdjNxJj/CaSZax8birXB/aekGa5jChb0UafaUMAlLpz6c2yFld78fL4e0ZJY+qAZaoj06c=
+	t=1764039579; cv=none; b=rqKiRxO4vb/hDnQppYz2SuK0d/E13+rvU3fmgeIDWWc40OIZ5eXecxBpAJgxOE0zwdwYjysASuqwVj2rFG9Q8mNEw4jNNaxn0EZZVPnfVqwAW1GN/++bblkZJbe6uNqIuJ9u6ZNjUCEzDLF5fVTO86WLAJblXZNc24thSFgewOg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764037717; c=relaxed/simple;
-	bh=YCYC8JHFaYllYI+ljh4vw+JFM86KvGj1+HAXw2ZzTRs=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=AzK/45VB+NYozFLcmdkru6T6LtvDK6mo9QuVl9/ua5bFw8HXNWxsvQBUEGItaXdNLhYKfoB35CGj0kHuR/PdHpfXBukwWGzMq7Bnjw4nbORFo7lZ/xFkz1dRGeCyj2liHTB2efx8vSXEi9/zTkPhaFlkazfxELm0fE7j5jbmeDI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org; spf=none smtp.mailfrom=infradead.org; dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b=42fIHAo0; arc=none smtp.client-ip=198.137.202.133
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=infradead.org
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=bombadil.20210309; h=Content-Transfer-Encoding:
-	MIME-Version:Message-ID:Date:Subject:Cc:To:From:Sender:Reply-To:Content-Type:
-	Content-ID:Content-Description:In-Reply-To:References;
-	bh=+0Q4hphoJOzk++G8gec0+4d6j9mGaOuQzNXh+obzMPg=; b=42fIHAo0M2OLd29Ta19vutHim2
-	lO/bvuO1+HAZqF2m1nJ0Oa63wVzHNtg4CK7piPXC/lJB7SD9mbMXFAGXnXuEi0zsTiYrz1CRszY+B
-	unkqARTh1tIvJyLfDShH5z3ec6FZNr5//tzUpv0NAVTqfC4EhGB7gVWO34LpmHazTerZmPJBxbJLt
-	GTJ5SSV6/HcMvtzxwi45+Z8JqFccJTcpD/olZK0NRmaMzYpHxIOBk0zNYgL9HV9n7RIxIlhNfNP2i
-	4dBl5ZTJ4WmCbscmx5EkZe2tRA6SGBywJTWF8R0+PBRb2SWIrMG2weePyrakhwFQgkqYARb0rgMF5
-	lZ4nkcJA==;
-Received: from [50.53.43.113] (helo=bombadil.infradead.org)
-	by bombadil.infradead.org with esmtpsa (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1vNinD-0000000CcQh-0XTg;
-	Tue, 25 Nov 2025 02:28:35 +0000
-From: Randy Dunlap <rdunlap@infradead.org>
-To: netdev@vger.kernel.org
-Cc: Randy Dunlap <rdunlap@infradead.org>,
-	Ayala Beker <ayala.beker@intel.com>,
-	Emmanuel Grumbach <emmanuel.grumbach@intel.com>,
-	Johannes Berg <johannes.berg@intel.com>,
-	Johannes Berg <johannes@sipsolutions.net>,
-	linux-wireless@vger.kernel.org
-Subject: [PATCH] nl80211: vendor-cmd: intel: fix a blank kernel-doc line warning
-Date: Mon, 24 Nov 2025 18:28:34 -0800
-Message-ID: <20251125022834.3171742-1-rdunlap@infradead.org>
-X-Mailer: git-send-email 2.52.0
+	s=arc-20240116; t=1764039579; c=relaxed/simple;
+	bh=vEgus/Ydk+oE2/e8w9heDO98Ql/2sVRhh2gSz+9LzRY=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=qGWFo1vrK0d2HIr8Xg+dN59SoWQ0bsDfDgfJDjWe2ZqgP7bBAx/4rtsxD688hs7klrpskSEjOKNwtBJvFOCQ/PnX0Zc4jKxTXI3AcELQJiNsfutd9hdefrq2ezs2kGEVoXrpQ2ZQg7L/VA2gFAqiuIW0IwznvscAZkw4Ie0JDEo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=morsemicro.com; spf=pass smtp.mailfrom=morsemicro.com; dkim=pass (2048-bit key) header.d=morsemicro-com.20230601.gappssmtp.com header.i=@morsemicro-com.20230601.gappssmtp.com header.b=Nm0V6YdN; arc=none smtp.client-ip=209.85.214.171
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=morsemicro.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=morsemicro.com
+Received: by mail-pl1-f171.google.com with SMTP id d9443c01a7336-29806bd47b5so30482765ad.3
+        for <linux-wireless@vger.kernel.org>; Mon, 24 Nov 2025 18:59:37 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=morsemicro-com.20230601.gappssmtp.com; s=20230601; t=1764039577; x=1764644377; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=BVWN5X2t2bWOuYmZxBLnfDFzNWOHtBTSTNiTDLVTE40=;
+        b=Nm0V6YdNdOZET9clgD2govSgq+mHz/8/KUDSk/ZpSLKc5XMTE/ivgmT7BvXQhzKILa
+         vEZKx98a8EX2VWEv9KXwaHd+ECpl7/KmdWV4oUCsawFNyHm8Yoiq1jKGhVTRQ8sqIbeW
+         Bp5Zt7bVS3eWqfCrSZSb3sFgs5jzulrOMnC2RCFBwVMV8GgFGuG5KSorBhmMfE/MEY9b
+         Z8vOCoRlGcAsnUGNprbtugQRuKA9BmLV4iGrJ3KpYOrASs5XeXyXCUgWhZO9Lizj1rNG
+         Yo0qyRZIfshShORRXMNNFaCrJvqa4TI6DzEWkoNTNK4tnnSFd2YxKy5ZAUEADkUNooPD
+         IwHg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1764039577; x=1764644377;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=BVWN5X2t2bWOuYmZxBLnfDFzNWOHtBTSTNiTDLVTE40=;
+        b=D3fkgcmnXWk+Jmz6DqQS7BlrONrCyt0RRskBdIpKtGxqq10DhPYZDauTf59gFoiQj4
+         IH80Lti++X+CFaM5K61JaiYC3VNSRM47bVZ6Ok8iZBXk+XHCcbJ6VdwLPOEEVkHkLH8j
+         mviNP1tE3lwnkMMRvSqn9t05LmN1CGx1Uo++e/v2ZH2/bQT3z7qXzdbpvkIyE6e/9N1y
+         ZkjUtwzvoa2KDItC+KAMpu0NEDYYKZqnv9hE9Md//+3DlvUbksdzoyZ11lGg8jF8gbaO
+         XU1CY0fhBPpR1XyFrWozLWTQzPUqpPP6C81/BWgDMuDQXN1T/1N7boLKt7i/necNSRTM
+         ZcLw==
+X-Gm-Message-State: AOJu0YzkY4NSwYQGIX/fv546sKlSGRblZQYiFQVtfmScUJhmb1saaGWV
+	JLyRGIJ6gsatoUShshBH+sJ9eRN6LoRqtZWRvM49x66Dq+x8hWpnXvjGYLLz5S8X8q41XpBaZdN
+	jHt5tEzQ=
+X-Gm-Gg: ASbGncu8wFALLwI99DHdbSqgFmzkz5vGAyZITzU+/tBU3SvQkTj7ZwU3Iu3RjHoMIDA
+	Pr/txP6jXYBFZ9gWaT86gk6UcUHY/BvPyIoPvdUqQeX2ZZEz9nPmPTDfw7v25qrIdpMEW2UOydH
+	vgFnBf9Ko2cJNNUFImGhDs7hNdfEDRZrMi7tVdYlx16Y+vjC2H1MWn3EP+YuD5Hzt+R8AZFRCgi
+	RyPZu5e8EI8OEsxHq/dIYoom4BshCkarb2aa9gYpnyFJIw2o3jiHqMHC8F8/+CJ8Vs5+JOf4wtG
+	XcBHcbSwfl38ir+SXMIW/2e/oaSfyguQFYcvJF7EznxXpXTQjM6uDsBy7SLWJcvck8FGNieRFkH
+	83oV10Umuu1xOW6a1IiIG9Da9PCNB9j2eoSKYCAYgD/mINbXf9jfz7pHc1XgQ0y5G+bd1V1p8yX
+	NqJKc7bfZC23OCMo0tCunzTBjSIqN7gGOgNpJXKq1XjGuCJQy9ME1fVDsgEWlO5OYVFHhaKiupN
+	7NPsuV4jjpH2fmh/LU=
+X-Google-Smtp-Source: AGHT+IH10rYYhWuY3Kjx/zsBCVaR+sO3IJVcIbuq9Mmj17xqpd+y1ZD/sJOf2u3GqWyJGDikkGiOCA==
+X-Received: by 2002:a17:903:3847:b0:295:24d7:3798 with SMTP id d9443c01a7336-29b6c3e3f31mr154169825ad.14.1764039577262;
+        Mon, 24 Nov 2025 18:59:37 -0800 (PST)
+Received: from mma-H9MHD44.lan (60-242-93-14.static.tpgi.com.au. [60.242.93.14])
+        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-bd75e9b1239sm14549915a12.15.2025.11.24.18.59.34
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 24 Nov 2025 18:59:37 -0800 (PST)
+From: Lachlan Hodges <lachlan.hodges@morsemicro.com>
+To: johannes@sipsolutions.net
+Cc: linux-wireless@vger.kernel.org,
+	arien.judge@morsemicro.com,
+	Lachlan Hodges <lachlan.hodges@morsemicro.com>
+Subject: [PATCH wireless-next 0/3] wifi: misc S1G channel fixups/additions
+Date: Tue, 25 Nov 2025 13:59:24 +1100
+Message-ID: <20251125025927.245280-1-lachlan.hodges@morsemicro.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
@@ -64,31 +90,24 @@ List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-Delete an empty line prevent a kernel-doc warning:
+Some additional information specifically regarding the channel context
+implementation can be found in [1]. For now it's very basic, we only support
+sharing an identical channel context.
 
-Warning: ../include/uapi/linux/nl80211-vnd-intel.h:86 bad line:
+[1] https://lore.kernel.org/linux-wireless/b39b8cb5989fb1744b5c609d4d467b248f217de6.camel@sipsolutions.net/T/#m4cefcd7c644175261f540900defbc7127b3a6364
 
-Fixes: 3d2a2544eae9 ("nl80211: vendor-cmd: add Intel vendor commands for iwlmei usage")
+Lachlan Hodges (3):
+  wifi: cfg80211: include s1g_primary_2mhz when sending chandef
+  wifi: cfg80211: include s1g_primary_2mhz when comparing chandefs
+  wifi: mac80211: allow sharing identical chanctx for S1G interfaces
 
-Signed-off-by: Randy Dunlap <rdunlap@infradead.org>
----
-Cc: Ayala Beker <ayala.beker@intel.com>
-Cc: Emmanuel Grumbach <emmanuel.grumbach@intel.com>
-Cc: Johannes Berg <johannes.berg@intel.com>
-Cc: Johannes Berg <johannes@sipsolutions.net>
-Cc: linux-wireless@vger.kernel.org
----
- include/uapi/linux/nl80211-vnd-intel.h |    1 -
- 1 file changed, 1 deletion(-)
+ include/net/cfg80211.h |  3 ++-
+ net/mac80211/chan.c    | 14 +++++++++++++-
+ net/mac80211/mlme.c    |  9 +++++++--
+ net/wireless/nl80211.c |  3 +++
+ 4 files changed, 25 insertions(+), 4 deletions(-)
 
---- linux-next-20251124.orig/include/uapi/linux/nl80211-vnd-intel.h
-+++ linux-next-20251124/include/uapi/linux/nl80211-vnd-intel.h
-@@ -84,7 +84,6 @@ enum iwl_vendor_auth_akm_mode {
-  *
-  * @NUM_IWL_MVM_VENDOR_ATTR: number of vendor attributes
-  * @MAX_IWL_MVM_VENDOR_ATTR: highest vendor attribute number
--
-  */
- enum iwl_mvm_vendor_attr {
- 	__IWL_MVM_VENDOR_ATTR_INVALID				= 0x00,
+-- 
+2.43.0
+
 
