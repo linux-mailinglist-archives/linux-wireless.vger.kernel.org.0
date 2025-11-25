@@ -1,130 +1,120 @@
-Return-Path: <linux-wireless+bounces-29311-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-29315-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3F28CC83444
-	for <lists+linux-wireless@lfdr.de>; Tue, 25 Nov 2025 04:48:41 +0100 (CET)
+Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [213.196.21.55])
+	by mail.lfdr.de (Postfix) with ESMTPS id D4903C8353D
+	for <lists+linux-wireless@lfdr.de>; Tue, 25 Nov 2025 05:27:09 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 2AAF64E57A6
-	for <lists+linux-wireless@lfdr.de>; Tue, 25 Nov 2025 03:48:40 +0000 (UTC)
+	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 7EE4C34A477
+	for <lists+linux-wireless@lfdr.de>; Tue, 25 Nov 2025 04:27:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 955F22836B5;
-	Tue, 25 Nov 2025 03:47:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CDDF5284689;
+	Tue, 25 Nov 2025 04:27:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=mediatek.com header.i=@mediatek.com header.b="LyMvSIM6"
+	dkim=pass (2048-bit key) header.d=morsemicro-com.20230601.gappssmtp.com header.i=@morsemicro-com.20230601.gappssmtp.com header.b="fWePp824"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mailgw02.mediatek.com (unknown [210.61.82.184])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f169.google.com (mail-pl1-f169.google.com [209.85.214.169])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9321C27FD5B
-	for <linux-wireless@vger.kernel.org>; Tue, 25 Nov 2025 03:47:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=210.61.82.184
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E2DED283FDB
+	for <linux-wireless@vger.kernel.org>; Tue, 25 Nov 2025 04:27:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.169
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764042454; cv=none; b=GCyGGEQEoGuJffiP1q7c22x3dC7tXfisrQnisOh++bAmgS8dGrGp56bNDHLKzNF/EH07GgQujjjGEiCU3T1nNyFLyiFYsJtC0tqoBapmukviKqAz33e8feADMHFiYkqICdbxcCIayj75e4Tzy46hWy3B5UOWoiUhZSXGlJsTQhs=
+	t=1764044826; cv=none; b=RZDXJHDkrvkZTAyug9Ot2enlQ7JuyYQTgacExjd8G4X8YdQt6EaApA2BD/vCtJj1UgJAHgnkeGaLIT8aaiwarvhX4PRZWXMtFa11n0mMRxC0yLSxNQdSagw9pdlUTh/d7TE7+sHX5GnbaXMCGpOApERfMBE1wUDU5UMinA8Atas=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764042454; c=relaxed/simple;
-	bh=hScb14ma+DCZlkV9LDqie/dZiYMt0ZdoLBj12vUssh8=;
-	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=THFrKl/voma5Jp+p0DnTmfZctF8Tw1HNepinDbEBaC1eHY/+iOjDkzThNq5M0fY4KAi9koH8vRHOgE5CrKLdep+NyST8XtpGY9A+z3bZ3+DGosrr352I6WnsTpnrpKVcIztn2hDFmxPbb86YKQBPFHOMcIpZVx/ZnsEWoKYXp5U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=mediatek.com; spf=pass smtp.mailfrom=mediatek.com; dkim=pass (1024-bit key) header.d=mediatek.com header.i=@mediatek.com header.b=LyMvSIM6; arc=none smtp.client-ip=210.61.82.184
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=mediatek.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=mediatek.com
-X-UUID: 7507c500c9b111f0b33aeb1e7f16c2b6-20251125
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=mediatek.com; s=dk;
-	h=Content-Type:Content-Transfer-Encoding:MIME-Version:References:In-Reply-To:Message-ID:Date:Subject:CC:To:From; bh=1KDwG6fc75Su8TgSqt1191uvzmrNQSqxaj1ulrwzJEA=;
-	b=LyMvSIM6Hk3i91p5Tk+jtR67RT8RP/jCxeDFHg7YqOwg6pwldq5yEYf6OlJBIFQkltpD5zzmOBjXoUB/2AR9oSzhZXaWdnO11ZFhsQLpNwT6kDaPJEUaVYkJI1gei1PJK0WA+lhoRiNGCPPookSswQgIxJhIWzxs3bB9fXsIYDA=;
-X-CID-P-RULE: Release_Ham
-X-CID-O-INFO: VERSION:1.3.6,REQID:1e5f330b-7551-4a56-8e83-cacd473fa943,IP:0,UR
-	L:0,TC:0,Content:-25,EDM:-20,RT:0,SF:0,FILE:0,BULK:0,RULE:Release_Ham,ACTI
-	ON:release,TS:-45
-X-CID-META: VersionHash:a9d874c,CLOUDID:64152abb-0c02-41a0-92a3-94dc7dc7eeca,B
-	ulkID:nil,BulkQuantity:0,Recheck:0,SF:81|82|102|836|888|898,TC:-5,Content:
-	0|15|50,EDM:1|19,IP:nil,URL:0,File:130,RT:0,Bulk:nil,QS:nil,BEC:nil,COL:0,
-	OSI:0,OSA:0,AV:0,LES:1,SPR:NO,DKR:0,DKP:0,BRR:0,BRE:0,ARC:0
-X-CID-BVR: 2,SSN|SDN
-X-CID-BAS: 2,SSN|SDN,0,_
-X-CID-FACTOR: TF_CID_SPAM_SNR
-X-CID-RHF: D41D8CD98F00B204E9800998ECF8427E
-X-UUID: 7507c500c9b111f0b33aeb1e7f16c2b6-20251125
-Received: from mtkmbs09n2.mediatek.inc [(172.21.101.94)] by mailgw02.mediatek.com
-	(envelope-from <shayne.chen@mediatek.com>)
-	(Generic MTA with TLSv1.2 ECDHE-RSA-AES256-GCM-SHA384 256/256)
-	with ESMTP id 1276637779; Tue, 25 Nov 2025 11:47:25 +0800
-Received: from mtkmbs13n2.mediatek.inc (172.21.101.108) by
- mtkmbs11n2.mediatek.inc (172.21.101.187) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1748.26; Tue, 25 Nov 2025 11:47:24 +0800
-Received: from mtksitap99.mediatek.inc (10.233.130.16) by
- mtkmbs13n2.mediatek.inc (172.21.101.73) with Microsoft SMTP Server id
- 15.2.1748.26 via Frontend Transport; Tue, 25 Nov 2025 11:47:24 +0800
-From: Shayne Chen <shayne.chen@mediatek.com>
-To: Felix Fietkau <nbd@nbd.name>
-CC: linux-wireless <linux-wireless@vger.kernel.org>, Lorenzo Bianconi
-	<lorenzo@kernel.org>, Ryder Lee <ryder.lee@mediatek.com>, Evelyn Tsai
-	<evelyn.tsai@mediatek.com>, linux-mediatek
-	<linux-mediatek@lists.infradead.org>, Shayne Chen <shayne.chen@mediatek.com>
-Subject: [PATCH mt76 7/7] wifi: mt76: mt7996: fix iface combination for different chipsets
-Date: Tue, 25 Nov 2025 11:46:39 +0800
-Message-ID: <20251125034639.1416214-7-shayne.chen@mediatek.com>
-X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20251125034639.1416214-1-shayne.chen@mediatek.com>
-References: <20251125034639.1416214-1-shayne.chen@mediatek.com>
+	s=arc-20240116; t=1764044826; c=relaxed/simple;
+	bh=7EetVQsiB20SFtZ7PhaSVdZQDFr0ehMgJgC5Wd+OHXM=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=CamdZ8t3xZyF5qcz5MwYlcBAa6LbXDUg7F9XlA3wpw+Ypt4xpdJSjj7uNmKzhgNsiuWt/a6AkcPJ9D2NzxScuH3xgHx8h/kIDu5kdj/wU3lkrPK1Y7GuU3Bc+3YcJcO5/Ku8woaMxiQEkvxWO78Bo2P9wu/goGHCvMF0/w+Vp4o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=morsemicro.com; spf=pass smtp.mailfrom=morsemicro.com; dkim=pass (2048-bit key) header.d=morsemicro-com.20230601.gappssmtp.com header.i=@morsemicro-com.20230601.gappssmtp.com header.b=fWePp824; arc=none smtp.client-ip=209.85.214.169
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=morsemicro.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=morsemicro.com
+Received: by mail-pl1-f169.google.com with SMTP id d9443c01a7336-2956d816c10so59072985ad.1
+        for <linux-wireless@vger.kernel.org>; Mon, 24 Nov 2025 20:27:04 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=morsemicro-com.20230601.gappssmtp.com; s=20230601; t=1764044824; x=1764649624; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=GokNTQlkTo57Ckl+RTVoVAFTAmeIH8Ju3nmDqOtNMJA=;
+        b=fWePp824bUevPX9IRFyCxyMWHGGk/rSiT2cOEETmpysMXfxu+P92j8ODpdPRSSV2mw
+         mOVV7ltQVKhfC12CYbiUCeoK1689SwUIYoD0JPqLWDKMMNnPCiu8jK9dcvcjJRTlkrl3
+         TS5paaFHb2uzoScGCEl1xNXs0xupk3N5kVLXKQh1HTgf0pcbCetJhYz1P5Rr99KqlT1i
+         VvswyYv7hxLHi1aUtPIlSQtI6bAcWUrJxzcKdm5dL5C9TlsNXjj7KF3sPa42/TgrwxuS
+         jojXCucXneU/JolxyP+t6LxcmbS3fD12PPEc/7Qj2IxxWXbumAX8WflUDvhjoVInMS62
+         X0OA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1764044824; x=1764649624;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=GokNTQlkTo57Ckl+RTVoVAFTAmeIH8Ju3nmDqOtNMJA=;
+        b=pb590n9OiCU60v65FGQKNZlBZD9IbedTV1IuL1CfLmX51Kx5TjDHjr1FVsgnsQUU45
+         RvC8rSvIKZuC44kyJm+GI6wPR54tEMcvEygUAtJtYwricoWHd3kZ7+JTvFozkDy1Kk1R
+         uhP5WCHTamHhZsxksUvjsXbYt+XBJkCX7sx7ePhXvbiGh18uH39/iz4nAP8C9Iv2QK5k
+         1EXk3uuXBLHPXZxz06qPP7ML+5xZlUqkN3sLfcl4yjPiU+gW3lEeoynWsooN0k6ix7uT
+         Wpi7YdwZl7LXAa83VI+FUDVGqn+8eYNLmoY2IZdSmmI/7NobptTBdICHHqJwPqXlHktn
+         MF5w==
+X-Gm-Message-State: AOJu0YxC7BRE4erV500sCkqNHhySq9LsfhtzkEH/f8+l25UEVcb6U8vB
+	FNSpu0F1NEI2tlFuLPqSyr2cocURGAQkGzPA7Uc7KQLfPv5LeItSWzTi+BsQuSlV4ww=
+X-Gm-Gg: ASbGncue3WWD7NUeLSdx4QXHgSY+tdJeZZhGhcUKRfVTmmPfUdCRz5pZA4OUgT5JDDb
+	Y5FhzxnZhdOhpddpaynZ58RpqM1aldOyD+ArE1h1qRB3zi8WffEYJt8+kgtGko9cGmq2oblWYJV
+	Tw+K12F6AuiVzbi0Jfe1vI//+4/W+d5QvUSPPeSyiHcm5FPLue4kjsxB4u7ffGe7lz++6wJOi5c
+	DIke5vZKjuMB29WDAg+b3DeqLBkjE5DGlr+/maGshsl9d+DfoVvKwIIDglS0mn88F59XGRxipEk
+	40fpna4C/89jgZ4zhaDIfiqjSrRmJPyUE2wzAPacN0EleVjkHNSHe8f3qfHYocLgC0j5+KYXKqA
+	v5bQFIdvuiaTAhFt4958xk146IgFZ8HBEtzKr8e8nCvnKM8/BEYMLXnrfTUK7Y+9tRgS2VokLDU
+	XgF6txi2DzhcNDV0GA9ddCaLJ95JNyzGeNJW4r7SCeJ+qrc9OVTN+hGyRhZhwh+73RHkfA8v9ww
+	DaxYSYW3lebaX8RP/Snaw==
+X-Google-Smtp-Source: AGHT+IEPaX7x56/fvJL+tBeltNcH0nD2hadDPe/+UaJdRsjQ/R7KiXpSy2or97HFeM3YI8ENGJpXkw==
+X-Received: by 2002:a17:902:f78d:b0:295:57f6:76b with SMTP id d9443c01a7336-29b6be90a42mr167671995ad.7.1764044824132;
+        Mon, 24 Nov 2025 20:27:04 -0800 (PST)
+Received: from localhost (60-242-93-14.static.tpgi.com.au. [60.242.93.14])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-29b5b25c104sm152034405ad.54.2025.11.24.20.27.03
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 24 Nov 2025 20:27:03 -0800 (PST)
+Date: Tue, 25 Nov 2025 15:27:00 +1100
+From: Lachlan Hodges <lachlan.hodges@morsemicro.com>
+To: johannes@sipsolutions.net
+Cc: linux-wireless@vger.kernel.org, arien.judge@morsemicro.com
+Subject: Re: [PATCH wireless-next 3/3] wifi: mac80211: allow sharing
+ identical chanctx for S1G interfaces
+Message-ID: <xlfvt7pu454mthb7nrowheibslqqlxifawkfx7kltaur2mztdh@laxm3mnd64qf>
+References: <20251125025927.245280-1-lachlan.hodges@morsemicro.com>
+ <20251125025927.245280-4-lachlan.hodges@morsemicro.com>
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-MTK: N
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20251125025927.245280-4-lachlan.hodges@morsemicro.com>
 
-MT7992 and MT7990 support up to 19 interfaces per band and 32 in total.
+>  	switch (chandef->width) {
+> +	case NL80211_CHAN_WIDTH_1:
+> +	case NL80211_CHAN_WIDTH_2:
+> +	case NL80211_CHAN_WIDTH_4:
+> +	case NL80211_CHAN_WIDTH_8:
+> +	case NL80211_CHAN_WIDTH_16:
+> +		/*
+> +		 * mac80211 currently only supports sharing identical
+> +		 * chanctx's for S1G interfaces.
+> +		 */
+> +		if (ieee80211_chanreq_identical(&ctx_req, chanreq))
+> +			return;
+> +		WARN_ON(1);
 
-Fixes: 8df63a4bbe3d ("wifi: mt76: mt7996: adjust interface num and wtbl size for mt7992")
-Signed-off-by: Shayne Chen <shayne.chen@mediatek.com>
----
- .../net/wireless/mediatek/mt76/mt7996/init.c    | 17 ++++++++++++++++-
- 1 file changed, 16 insertions(+), 1 deletion(-)
+The robot not happy with this as I forgot a break / fallthrough.. 
 
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7996/init.c b/drivers/net/wireless/mediatek/mt76/mt7996/init.c
-index 7e8bd3b142e7..2e439f0815d4 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7996/init.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7996/init.c
-@@ -34,6 +34,20 @@ static const struct ieee80211_iface_combination if_comb_global = {
- 			       BIT(NL80211_CHAN_WIDTH_40) |
- 			       BIT(NL80211_CHAN_WIDTH_80) |
- 			       BIT(NL80211_CHAN_WIDTH_160),
-+	.beacon_int_min_gcd = 100,
-+};
-+
-+static const struct ieee80211_iface_combination if_comb_global_7992 = {
-+	.limits = &if_limits_global,
-+	.n_limits = 1,
-+	.max_interfaces = 32,
-+	.num_different_channels = MT7996_MAX_RADIOS - 1,
-+	.radar_detect_widths = BIT(NL80211_CHAN_WIDTH_20_NOHT) |
-+			       BIT(NL80211_CHAN_WIDTH_20) |
-+			       BIT(NL80211_CHAN_WIDTH_40) |
-+			       BIT(NL80211_CHAN_WIDTH_80) |
-+			       BIT(NL80211_CHAN_WIDTH_160),
-+	.beacon_int_min_gcd = 100,
- };
- 
- static const struct ieee80211_iface_limit if_limits[] = {
-@@ -485,7 +499,8 @@ mt7996_init_wiphy(struct ieee80211_hw *hw, struct mtk_wed_device *wed)
- 	hw->vif_data_size = sizeof(struct mt7996_vif);
- 	hw->chanctx_data_size = sizeof(struct mt76_chanctx);
- 
--	wiphy->iface_combinations = &if_comb_global;
-+	wiphy->iface_combinations = is_mt7996(&dev->mt76) ? &if_comb_global :
-+							    &if_comb_global_7992;
- 	wiphy->n_iface_combinations = 1;
- 
- 	wiphy->radio = dev->radios;
--- 
-2.51.0
+	if (ieee80211_chanreq_identical(&ctx_req, chanreq))
+		return;
+	WARN_ON(1);
+	return;
 
+The above looks a bit ugly.. did you have a preference here before I
+send a v2?
+
+lachlan
 
