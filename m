@@ -1,137 +1,105 @@
-Return-Path: <linux-wireless+bounces-29322-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-29323-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [IPv6:2a01:60a::1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id 568FEC83B32
-	for <lists+linux-wireless@lfdr.de>; Tue, 25 Nov 2025 08:24:14 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id DCEB2C83B38
+	for <lists+linux-wireless@lfdr.de>; Tue, 25 Nov 2025 08:24:45 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.mirrors.kernel.org (Postfix) with ESMTPS id ED66934A3C8
-	for <lists+linux-wireless@lfdr.de>; Tue, 25 Nov 2025 07:24:13 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9A8EB3AC947
+	for <lists+linux-wireless@lfdr.de>; Tue, 25 Nov 2025 07:24:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7EA23284894;
-	Tue, 25 Nov 2025 07:24:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 03B7C1E5B68;
+	Tue, 25 Nov 2025 07:24:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=realtek.com header.i=@realtek.com header.b="vmY10O2X"
+	dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b="YcEcUDoD"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from sipsolutions.net (s3.sipsolutions.net [168.119.38.16])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ABAF513AA2D;
-	Tue, 25 Nov 2025 07:24:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=211.75.126.72
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2E10413AA2D
+	for <linux-wireless@vger.kernel.org>; Tue, 25 Nov 2025 07:24:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=168.119.38.16
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764055449; cv=none; b=M4uiqpXgux1zy0T41xRbETZg7D6bG5rSe7heIIvtgS87PE3bHPxYOW+wiQ5JYgwJAdmfV/fPk3tAp3V5+B9vdgzQvmMxQTkCaLaM+EPkzVCez5HHLcorD/xdCwmeH1zJflfRoiMjLmEd1q22qjLtQ23edY+z0oU/KNBoShww6nI=
+	t=1764055482; cv=none; b=kGGuWdEniA2C1xR2ZCCf7+Bc154ykwmxzTix0FA9FIxHYYChgSpwXFmPY1SXqez7iqoJ5YLAYBRQG7FcHMrZs2TaEnB5Z5D0tAV84F/Cr9bD47bqE2Z5JODlnOFAQt0Hp1M90OsiKfJUH/vXYVXRgDxb8YIojnTxLa7/ntTPNbY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764055449; c=relaxed/simple;
-	bh=XLlXmeJ1LUJb09T/oebIRw1gWfvcq2vMr0EnQ92Qhio=;
-	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:MIME-Version; b=W7r7mPK9woT65sxk25hreOtKucUE0pmog0ZndLS45uAyiTabXOvAZIJ74hvFbNSkS+UdR8+dVovbmi2YsBKdjQYvTzcWxAxGtjC0UcLA9ChN600tLkobH6mGaLqEEpBAQQO/15hhBUi3ouYv1+okNJLKaTpONkCOyyXEam7C8Bc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com; spf=pass smtp.mailfrom=realtek.com; dkim=pass (2048-bit key) header.d=realtek.com header.i=@realtek.com header.b=vmY10O2X; arc=none smtp.client-ip=211.75.126.72
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=realtek.com
-X-SpamFilter-By: ArmorX SpamTrap 5.80 with qID 5AP7NuHeA2571194, This message is accepted by code: ctloc85258
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=realtek.com; s=dkim;
-	t=1764055436; bh=LzyBNlUlXf9MiuEemrJUFp08WuHt+hsz7WF3YnLP8OU=;
-	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:Content-Transfer-Encoding:MIME-Version;
-	b=vmY10O2XwHXktTQdXzZexB1MAS2//1im+58Ht3W2wfPfDAiBzIPO4f82hWA9N/Gql
-	 L/uLfa21GcRauTRMGPYEEUVRJzz272bOQUz06OmBzr+4+4ikiut4jdl4ywnT0XAIJZ
-	 /8A3lUdU5CBuuvSpCDpPtWDuzuzbJK/Fa2Sw0uJf8xnOUesDwRGq9tHnQkWU6i9GsV
-	 4IjdzJ2ciqTDEkpqkIS37aN3IYMd1/pd3W+VOUWmSyNva4tJMdY/xjew2C6u+tNPhB
-	 PdsnrGg1mN8kY/2i+/JnNP1i0BZqygD4wFBJ+oYh7FTSOxmeRcluTUcIVKInMFAZj+
-	 NxxbCtsPkgqfQ==
-Received: from mail.realtek.com (rtkexhmbs03.realtek.com.tw[10.21.1.53])
-	by rtits2.realtek.com.tw (8.15.2/3.21/5.94) with ESMTPS id 5AP7NuHeA2571194
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Tue, 25 Nov 2025 15:23:56 +0800
-Received: from RTKEXHMBS06.realtek.com.tw (10.21.1.56) by
- RTKEXHMBS03.realtek.com.tw (10.21.1.53) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.27; Tue, 25 Nov 2025 15:23:57 +0800
-Received: from RTKEXHMBS06.realtek.com.tw ([::1]) by
- RTKEXHMBS06.realtek.com.tw ([fe80::744:4bc9:832c:9b7e%10]) with mapi id
- 15.02.1544.027; Tue, 25 Nov 2025 15:23:57 +0800
-From: Ping-Ke Shih <pkshih@realtek.com>
-To: Les Boys <lesboyspp43@outlook.com>
-CC: "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
-Subject: RE: [PATCH v1] realtek/rtlwifi: ensure unicast is reinitialized to
- false in each iteration
-Thread-Topic: [PATCH v1] realtek/rtlwifi: ensure unicast is reinitialized to
- false in each iteration
-Thread-Index: AQHcXdjNdJ4zlsJI6k+HyP/79rWKV7UC+kYQ
-Date: Tue, 25 Nov 2025 07:23:57 +0000
-Message-ID: <d664a966f7754e879948039189aba8e8@realtek.com>
-References: <SA2PR10MB44609AAC5888DC0334D140E0A6D1A@SA2PR10MB4460.namprd10.prod.outlook.com>
-In-Reply-To: <SA2PR10MB44609AAC5888DC0334D140E0A6D1A@SA2PR10MB4460.namprd10.prod.outlook.com>
-Accept-Language: en-US, zh-TW
-Content-Language: zh-TW
-Content-Type: text/plain; charset="us-ascii"
+	s=arc-20240116; t=1764055482; c=relaxed/simple;
+	bh=iKjSUcWY5gQjBgPZ/pqFfuHaFBwhMpMQ9B0CDG8ZnEM=;
+	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=VD8AICmCfC1vHVfBJioRMpdjp61857NDlBWnuRIWv12hq9emmbQfq/O33USEUu3DBJ5RX+oOCJM00c4Kmm345xtI7oyicgeM0eqxVZclay8Wj/ynDASs9/i+auspGi2RhzwcK5nTr1KGp2Je+uo5pUqMNekFrrcwcHcOZ3jmzHI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net; spf=pass smtp.mailfrom=sipsolutions.net; dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b=YcEcUDoD; arc=none smtp.client-ip=168.119.38.16
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sipsolutions.net
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=sipsolutions.net; s=mail; h=MIME-Version:Content-Transfer-Encoding:
+	Content-Type:References:In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender
+	:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
+	Resent-Cc:Resent-Message-ID; bh=heLaO/B4OfZdpc8HIhbcwOstn+r0JN6iwVI//nr1sFQ=;
+	t=1764055481; x=1765265081; b=YcEcUDoDMkfGccb/CmmNg88iWvsALWyz2LML5q928ky1vfT
+	ClSXYG5uUthABKGaSOvzxhHmt1sqS6qMuFqvGTLYVge3QzVBw+3xJWK+BGsmvux/b3Yel6OTdV3Oh
+	TIrKLm354U8lANW/xdmzGCQd971+vODuBvhbb8orBkAecFfIWveiQD8MoCW683VAqDWeLXqQD+EK6
+	Gg3p1a5FRy/daYofoW1qsxL/lkjVfSjV5I7nerx1rK+p7qoXqXTHjgZGdYQu06U7l5BN8kIul7K07
+	WgO5AMj+MCMKRat4hKiqwh6KHTCwFrP3ZzRlc/yHnALncY8/LAq/t87vbnMDZ9EQ==;
+Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
+	(Exim 4.98.2)
+	(envelope-from <johannes@sipsolutions.net>)
+	id 1vNnPc-0000000BLJg-3YkJ;
+	Tue, 25 Nov 2025 08:24:33 +0100
+Message-ID: <7a74b6b380ba05e3822eefc8350deb3cbde3419e.camel@sipsolutions.net>
+Subject: Re: [PATCH wireless-next 3/3] wifi: mac80211: allow sharing
+ identical chanctx for S1G interfaces
+From: Johannes Berg <johannes@sipsolutions.net>
+To: Lachlan Hodges <lachlan.hodges@morsemicro.com>
+Cc: linux-wireless@vger.kernel.org, arien.judge@morsemicro.com
+Date: Tue, 25 Nov 2025 08:24:31 +0100
+In-Reply-To: <xlfvt7pu454mthb7nrowheibslqqlxifawkfx7kltaur2mztdh@laxm3mnd64qf> (sfid-20251125_052707_595491_AD2F2E3B)
+References: <20251125025927.245280-1-lachlan.hodges@morsemicro.com>
+	 <20251125025927.245280-4-lachlan.hodges@morsemicro.com>
+	 <xlfvt7pu454mthb7nrowheibslqqlxifawkfx7kltaur2mztdh@laxm3mnd64qf>
+	 (sfid-20251125_052707_595491_AD2F2E3B)
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.56.2 (3.56.2-2.fc42) 
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+X-malware-bazaar: not-scanned
 
-Les Boys <lesboyspp43@outlook.com> wrote:
-
-Subject should be "[PATCH rtw-next] wifi: rtlwifi: ..."
-
+On Tue, 2025-11-25 at 15:27 +1100, Lachlan Hodges wrote:
+> > =C2=A0	switch (chandef->width) {
+> > +	case NL80211_CHAN_WIDTH_1:
+> > +	case NL80211_CHAN_WIDTH_2:
+> > +	case NL80211_CHAN_WIDTH_4:
+> > +	case NL80211_CHAN_WIDTH_8:
+> > +	case NL80211_CHAN_WIDTH_16:
+> > +		/*
+> > +		 * mac80211 currently only supports sharing identical
+> > +		 * chanctx's for S1G interfaces.
+> > +		 */
+> > +		if (ieee80211_chanreq_identical(&ctx_req, chanreq))
+> > +			return;
+> > +		WARN_ON(1);
 >=20
-> Previously, the unicast variable was only initialized once during the fun=
-ction execution. Therefore, if
-> unicast was set to true in the (n-1)th iteration, it would affect the nth=
- iteration. This patch resolves
-> the issue by reinitializing unicast to false at the start of each iterati=
-on.
-
-75 characters per lines.
-
-Does this affect your use actually?
-
+> The robot not happy with this as I forgot a break / fallthrough..=20
 >=20
-> Signed-off-by: LBLaiSiNanHai <lesboyspp43@outlook.com>
-
-Not sure if this is your real name? And, it should be the same as From fiel=
-d.
-
-> ---
->  drivers/net/wireless/realtek/rtlwifi/pci.c | 2 ++
->  1 file changed, 2 insertions(+)
+> 	if (ieee80211_chanreq_identical(&ctx_req, chanreq))
+> 		return;
+> 	WARN_ON(1);
+> 	return;
 >=20
-> diff --git a/drivers/net/wireless/realtek/rtlwifi/pci.c b/drivers/net/wir=
-eless/realtek/rtlwifi/pci.c
-> index d08046926..fe7140328 100644
-> --- a/drivers/net/wireless/realtek/rtlwifi/pci.c
-> +++ b/drivers/net/wireless/realtek/rtlwifi/pci.c
-> @@ -752,6 +752,8 @@ static void _rtl_pci_rx_interrupt(struct ieee80211_hw=
- *hw)
->                         memcpy(IEEE80211_SKB_RXCB(skb), &rx_status,
->                                sizeof(rx_status));
->=20
-> +      unicast =3D false;
-> +
+> The above looks a bit ugly.. did you have a preference here before I
+> send a v2?
 
-Indentation is weird.
+I guess I'd prefer just
 
-More, initializer of `unicast` can be removed, and here can be
+	WARN_ON(!ieee80211_chanreq_identical(&ctx_req, chanreq));
+	return;
 
-      if (is_unicast_ether_addr(hdr->addr1)) {
-               unicast =3D true;
-               rtlpriv->stats.rxbytesunicast +=3D skb->len;
-      } else {
-               unicast =3D false;
-      }
+?
 
-(I don't think TODO is still useful for now)
-
->                         if (is_broadcast_ether_addr(hdr->addr1)) {
->                                 ;/*TODO*/
->                         } else if (is_multicast_ether_addr(hdr->addr1)) {
-> --
-> 2.44.0
+johannes
 
