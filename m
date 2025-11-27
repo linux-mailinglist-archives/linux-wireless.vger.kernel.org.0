@@ -1,88 +1,107 @@
-Return-Path: <linux-wireless+bounces-29373-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-29374-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id D62E2C8D41E
-	for <lists+linux-wireless@lfdr.de>; Thu, 27 Nov 2025 08:56:09 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1AABFC8D5A5
+	for <lists+linux-wireless@lfdr.de>; Thu, 27 Nov 2025 09:32:53 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 73AAA4E7A42
-	for <lists+linux-wireless@lfdr.de>; Thu, 27 Nov 2025 07:54:24 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id EA5E74E3B1E
+	for <lists+linux-wireless@lfdr.de>; Thu, 27 Nov 2025 08:32:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 63B103242A7;
-	Thu, 27 Nov 2025 07:51:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0E3322609DC;
+	Thu, 27 Nov 2025 08:32:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=realtek.com header.i=@realtek.com header.b="JfZUcVom"
+	dkim=pass (2048-bit key) header.d=realtek.com header.i=@realtek.com header.b="EqPlyIxj"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 40F6C322C7F;
-	Thu, 27 Nov 2025 07:51:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0AA392356A4
+	for <linux-wireless@vger.kernel.org>; Thu, 27 Nov 2025 08:32:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=211.75.126.72
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764229875; cv=none; b=aNywkykKvadtPSc4R3vV4FHXGcZCYr0On7+N9UBqQrte/CISC82QjfJJWLfB3WJWgT05rz41LkEJLfXiEI12F5OfnB91thQAZqfszR2meJa+8gOlJN6ypa66xC2duMokriXptg66MKgoOoPeQkeOKFJBIyXGItL0b8PYT5Lhy5Y=
+	t=1764232369; cv=none; b=bWRnyfg+kc/Sr9Pnlv66N2+K2kYbW80Lc7ZtqXtQouTC2i3WYxt6ie7nZsb2JsUXBgWuzs/2HA9L3HRpVSpfm24Y0B6uyW2fs4HAQ+gBG1o5TrPFjEaHSxsVlmjfN+HZ5Jhwvm7xTmL5+ueEosC0KAC6bv/elZ20A+sxO9zC5og=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764229875; c=relaxed/simple;
-	bh=F+OYe1UVhLgKflH7EaqcQTuyJKI4NI5cEFMUz+aAL1I=;
-	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:MIME-Version; b=RdgU/0pDQK1ZmxC/6ehpo2YAbaBsITnl+8m89PywTko0YhUHEtZYZgHwKcInDvffWi9jVHBsZ1W2C81cDN7PCDVP54S+B6N6b3MdD/W6TD1sZezOeyCYH20R/dF+w9+VEbX6ffOGZ4jbgU/gFw3r+iaumb1m6rWJLekYz5LvguM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com; spf=pass smtp.mailfrom=realtek.com; dkim=pass (2048-bit key) header.d=realtek.com header.i=@realtek.com header.b=JfZUcVom; arc=none smtp.client-ip=211.75.126.72
+	s=arc-20240116; t=1764232369; c=relaxed/simple;
+	bh=qMTGkEdWXpv5Wxu6+ZBc0b6IRWfINNxZwrQEwkZEPGY=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=fpfokGZPI2j5m4cHSRWHyoy1utFO1//S3KKZmB921r2vVhhTtSuBj1NVpdRTrYWhULyzU50FnjtFI7tHpMUwfJqZg8NB+YNNJl+NyVb2uiNBUPoIkQhikk8m59fxiuVxbHJug76IlMIGjfHCr/V4yWFVHtOGBOHlw5Fng/jVXt8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com; spf=pass smtp.mailfrom=realtek.com; dkim=pass (2048-bit key) header.d=realtek.com header.i=@realtek.com header.b=EqPlyIxj; arc=none smtp.client-ip=211.75.126.72
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=realtek.com
-X-SpamFilter-By: ArmorX SpamTrap 5.80 with qID 5AR7oMZR12472947, This message is accepted by code: ctloc85258
+X-SpamFilter-By: ArmorX SpamTrap 5.80 with qID 5AR8WheN62529243, This message is accepted by code: ctloc85258
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=realtek.com; s=dkim;
-	t=1764229822; bh=F+OYe1UVhLgKflH7EaqcQTuyJKI4NI5cEFMUz+aAL1I=;
-	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:Content-Transfer-Encoding:MIME-Version;
-	b=JfZUcVom5s/scrFbAzUqRTWXk4BQkXKMhuFq6EiktqW3dMgdo6nNIBlMmi44e7qYU
-	 fOC1pS1HZVx95vrPrbv4wOJU6pGK4Tea0X4/K73VCa1p2jv8ABpNeel/ANsD7jlLeT
-	 hGpSPqjiVFkRfuTBH69CKjwXYFH0rMMFaP8JiQvHzxAw+PVKh7vK+970Cc+RKFxE5Y
-	 D2iqWBs16Cxo86nzPZpKI3FrRfwx9PdRf8mNxHa4Q+EdqovpCEOK8nwG2x8F4w/Hsh
-	 IiOpPHurVj0wKZqSh+ciM6ikrrJaGRebQA0cQ3IppZdxgPGwP6OcNPnbUgDya37m18
-	 sz4mIaetUSq6Q==
-Received: from mail.realtek.com (rtkexhmbs02.realtek.com.tw[172.21.6.41])
-	by rtits2.realtek.com.tw (8.15.2/3.21/5.94) with ESMTPS id 5AR7oMZR12472947
+	t=1764232363; bh=OKbs8KJgS4PybFK7fBdbHfwJRMxX5OGlhqzCA2Ea73w=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type;
+	b=EqPlyIxjqipekbIY7d2xgiy3JjOzOqk35XcRhOq0yMebgW8jZT6fAdTxbFUqAZa41
+	 J4jG6t5oMLxtOPS4Vy/ppxFuHddayCfj5X72mNKfCXA2H2FjYs/si1jDBWQPDgthq6
+	 X4U6040vGvnH10XRjlNaTKVKpGAWHfzjsGBSrgDDUlwuLWAoJiKNfjN2XDpCD2a7XQ
+	 9Xe/3TmUMejTobZiizYjdxoG5Yj+G2LIzyxj7nlS+VzUBWxKCidMVOTqEbTonz34+v
+	 8TIcfrvV+lm7AjO4/WaG7V4lTmijYWDFjaWQN/0JKQ1JJUZrBU3QNuVwB/uOMnUUf3
+	 o3nUSX9MAJ9Dw==
+Received: from mail.realtek.com (rtkexhmbs03.realtek.com.tw[10.21.1.53])
+	by rtits2.realtek.com.tw (8.15.2/3.21/5.94) with ESMTPS id 5AR8WheN62529243
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Thu, 27 Nov 2025 15:50:22 +0800
-Received: from RTKEXHMBS01.realtek.com.tw (172.21.6.40) by
- RTKEXHMBS02.realtek.com.tw (172.21.6.41) with Microsoft SMTP Server
+	Thu, 27 Nov 2025 16:32:43 +0800
+Received: from RTKEXHMBS05.realtek.com.tw (10.21.1.55) by
+ RTKEXHMBS03.realtek.com.tw (10.21.1.53) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.27; Thu, 27 Nov 2025 15:50:22 +0800
-Received: from RTKEXHMBS06.realtek.com.tw (10.21.1.56) by
- RTKEXHMBS01.realtek.com.tw (172.21.6.40) with Microsoft SMTP Server
+ 15.2.1544.27; Thu, 27 Nov 2025 16:32:43 +0800
+Received: from RTKEXHMBS04.realtek.com.tw (10.21.1.54) by
+ RTKEXHMBS05.realtek.com.tw (10.21.1.55) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.27; Thu, 27 Nov 2025 15:50:22 +0800
-Received: from RTKEXHMBS06.realtek.com.tw ([::1]) by
- RTKEXHMBS06.realtek.com.tw ([fe80::744:4bc9:832c:9b7e%10]) with mapi id
- 15.02.1544.027; Thu, 27 Nov 2025 15:50:22 +0800
+ 15.2.1544.27; Thu, 27 Nov 2025 16:32:42 +0800
+Received: from [127.0.1.1] (172.21.146.58) by RTKEXHMBS04.realtek.com.tw
+ (10.21.1.54) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.27 via Frontend
+ Transport; Thu, 27 Nov 2025 16:32:42 +0800
 From: Ping-Ke Shih <pkshih@realtek.com>
-To: alex bestoso <alexbestoso@bestosotech.com>
-CC: "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
-Subject: RE: Bug Report - Rtlwifi
-Thread-Topic: Bug Report - Rtlwifi
-Thread-Index: AQHcX2aCIrWXMHkLVU+2neUA3tknNrUGEIuQ//+AMoCAAJUHEA==
-Date: Thu, 27 Nov 2025 07:50:22 +0000
-Message-ID: <4e2592fe3ec242ba9a8d380ed4e16cc3@realtek.com>
-References: <85517aee-6e2a-4524-a5e2-6b48d05facbe@bestosotech.com>
- <0b376fdcc68442f7b41268bb26cce73e@realtek.com>
- <fcd02348-804c-459b-aa03-de61931516be@bestosotech.com>
-In-Reply-To: <fcd02348-804c-459b-aa03-de61931516be@bestosotech.com>
-Accept-Language: en-US, zh-TW
-Content-Language: zh-TW
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+To: <linux-wireless@vger.kernel.org>
+CC: <alexbestoso@gmail.com>
+Subject: [PATCH rtw] wifi: rtlwifi: 8192cu: fix tid out of range in rtl92cu_tx_fill_desc()
+Date: Thu, 27 Nov 2025 16:37:08 +0800
+Message-ID: <1764232628-13625-1-git-send-email-pkshih@realtek.com>
+X-Mailer: git-send-email 2.7.4
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain
 
-PiANCj4gTmV2ZXIgbWFkZSBhIHBhdGNoIGJlZm9yZTsgYnV0IEkgYmVsaWV2ZSB0aGF0IHRoaXMg
-aXMgY29ycmVjdCwgbWFkZSB3aXRoIGdpdA0KPiANCj4gU2VudCBhcyBhdHRhY2htZW50IGFuZCBw
-YXN0ZWQgYmVsb3c6DQo+IA0KDQpJIGNhbiBzZW5kIGEgcGF0Y2ggYmFzZWQgb24geW91cnMuDQoN
-Cg==
+From: Morning Star <alexbestoso@gmail.com>
+
+TID getting from ieee80211_get_tid() might be out of range of array size
+of sta_entry->tids[], so check TID is less than MAX_TID_COUNT. Othwerwise,
+UBSAN warn:
+
+ UBSAN: array-index-out-of-bounds in drivers/net/wireless/realtek/rtlwifi/rtl8192cu/trx.c:514:30
+ index 10 is out of range for type 'rtl_tid_data [9]'
+
+Fixes: 8ca4cdef9329 ("wifi: rtlwifi: rtl8192cu: Fix TX aggregation")
+Signed-off-by: Morning Star <alexbestoso@gmail.com>
+Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
+---
+ drivers/net/wireless/realtek/rtlwifi/rtl8192cu/trx.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
+
+diff --git a/drivers/net/wireless/realtek/rtlwifi/rtl8192cu/trx.c b/drivers/net/wireless/realtek/rtlwifi/rtl8192cu/trx.c
+index aa702ba7c9f5..d6c35e8d02a5 100644
+--- a/drivers/net/wireless/realtek/rtlwifi/rtl8192cu/trx.c
++++ b/drivers/net/wireless/realtek/rtlwifi/rtl8192cu/trx.c
+@@ -511,7 +511,8 @@ void rtl92cu_tx_fill_desc(struct ieee80211_hw *hw,
+ 	if (sta) {
+ 		sta_entry = (struct rtl_sta_info *)sta->drv_priv;
+ 		tid = ieee80211_get_tid(hdr);
+-		agg_state = sta_entry->tids[tid].agg.agg_state;
++		if (tid < MAX_TID_COUNT)
++			agg_state = sta_entry->tids[tid].agg.agg_state;
+ 		ampdu_density = sta->deflink.ht_cap.ampdu_density;
+ 	}
+ 
+-- 
+2.25.1
+
 
