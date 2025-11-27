@@ -1,113 +1,127 @@
-Return-Path: <linux-wireless+bounces-29371-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-29372-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 11F55C8D289
-	for <lists+linux-wireless@lfdr.de>; Thu, 27 Nov 2025 08:44:49 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1EE38C8D3F7
+	for <lists+linux-wireless@lfdr.de>; Thu, 27 Nov 2025 08:55:22 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4211D3AF7DC
-	for <lists+linux-wireless@lfdr.de>; Thu, 27 Nov 2025 07:44:47 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 7880D4EABAA
+	for <lists+linux-wireless@lfdr.de>; Thu, 27 Nov 2025 07:53:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CBBCA3203AA;
-	Thu, 27 Nov 2025 07:44:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E4A1A32254E;
+	Thu, 27 Nov 2025 07:49:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=mediatek.com header.i=@mediatek.com header.b="sUPs2Au5"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-io1-f69.google.com (mail-io1-f69.google.com [209.85.166.69])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mailgw01.mediatek.com (unknown [60.244.123.138])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0F58531D735
-	for <linux-wireless@vger.kernel.org>; Thu, 27 Nov 2025 07:44:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.166.69
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 40F8B31985F;
+	Thu, 27 Nov 2025 07:49:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=60.244.123.138
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764229471; cv=none; b=Ahpw2l2qUqHgVdnrEGzPBJBwiQ/9v+SSbMy32g5Kj/UkWQJIScVBra+CJxhKj+h6CjGH9/o7/Ua5H9rOBOU2XPhC94NtIj2PQmf3+WojX0EkVb7W677idBUA+WjNP9qdvGWmV0AExCwHW627ltDC/xEMbJjcOYqaQEhtj6QndIo=
+	t=1764229772; cv=none; b=aWjX3YKfxaJI1VIfKv9xriGFVekLLJ6XREt5667KZQNZFEV5JYR2a+rtxXU0/wu+B4moMk9stZHmJwzqBSerM8cOGrDRhMdEbZscMMGmtGaPeh1Fle86p8rxeIYLTCNTj3oh/toYkrSSvzYUDzbMZZqPCJXbGSaiwai5I8pRu8c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764229471; c=relaxed/simple;
-	bh=IxMWzc3tX4oZvzc9kbMDyFaHzWf7WcpZddgUzdnoHns=;
-	h=MIME-Version:Date:Message-ID:Subject:From:To:Content-Type; b=BoGtoPpeZuKvkB8s4tl/O+e3PfmCz9jxzWg6afLFg/CYnbZjxtZQ2G4gbSSrvAzi6Zh4jLVRUwv3aEsy3e7vVha1Mc7B8zcGJw0GGqQmaLP6/m+yZQhwEJfJa5ZKFZXROa+dkYz7QB49vvdGDC+F72LOW3A8THTwFU8MP8U1fMc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com; arc=none smtp.client-ip=209.85.166.69
-Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com
-Received: by mail-io1-f69.google.com with SMTP id ca18e2360f4ac-9489bfaef15so36315039f.1
-        for <linux-wireless@vger.kernel.org>; Wed, 26 Nov 2025 23:44:29 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1764229469; x=1764834269;
-        h=to:from:subject:message-id:date:mime-version:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=IFrlScuPKAMX9Kds0z3rklBxPhhPHkr6vMqn2nAcZqY=;
-        b=IptxP1bJ4OGcPHOQOFzl5mwXtf2sMMQJjVNj1j4PhsFa85eG0F+UuUlKg42oz2S1Jz
-         AYK2Kt38EHdAWEGNxulBEW96OGBHFUF8Vy7LjUh9BtBUWbfa1aYr7Lx1AxP8QjuNGAfA
-         oDYnu/5iBRthBrLQJDOJQrXvwgYOksVLbS9guBFG4WjOBIzLR4amNdYHS2mpKYu6CBqG
-         FdbyeNZkx9mw1Vasv84WE7hW44qDAOWfDYBPsS6OVfIfyzDw+YR7UU74HDnAamBPtDze
-         PEELcOfWRgmTEPCNyz7h+io3K8X42kxuUef2yAePl/8eL/AiAabRROxknoacXuo/vDYD
-         zD4w==
-X-Forwarded-Encrypted: i=1; AJvYcCV/gcGn8zQswBhl31qJKklt3DIzVmtCnxb0GpBi8+d/KkH05HAH5QtLq8wg44rCKqFeMVDnJFLmIVL4NiFLJQ==@vger.kernel.org
-X-Gm-Message-State: AOJu0YycDi3ao3+699clchaCqYKemG08TXtZ+/eQoVsUNTNtsyu5+DUK
-	MIu1umJEhKBBYTnyOL3bxpbPMI26C1ta6TqhcGFRMdGbyKqDL2C0aMzWevNn+eyKFJpLJdx52nv
-	HRiY8KZPpFfR06hMINfBBSJBoV+NDimBiM2bukaHr6c8+UAeWRPs3t/eatHM=
-X-Google-Smtp-Source: AGHT+IFXAllXbFe5/g0Uxt0e8wcJugknX6XuPgzmtGOPf4LrPeVhXYWz63o2gVbl5RyOyMhWNfoKBWNdHBaebMEMHx/Doq4fg/Ys
+	s=arc-20240116; t=1764229772; c=relaxed/simple;
+	bh=zSZ1f+02kqA59jJK/bRMa8+blQFKDUon9lqMcp/qB50=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=KoM4oOed62RxIPzxASvXfJZp5CMe/8RQ12kFtUUQs2r64FQTlsc8d+H6pQ+fdZ9U4YPkxoKK3uCHAPJ9eQiWCA1AHvz1U83QD+uGH8yUrOnhdsDJtz7JYWE13X2V4SNwdp33YD4izWI6LWwwq743SbDeWDqkupO/5nc1P+VisKg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=mediatek.com; spf=pass smtp.mailfrom=mediatek.com; dkim=pass (1024-bit key) header.d=mediatek.com header.i=@mediatek.com header.b=sUPs2Au5; arc=none smtp.client-ip=60.244.123.138
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=mediatek.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=mediatek.com
+X-UUID: 96636212cb6511f0b2bf0b349165d6e0-20251127
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=mediatek.com; s=dk;
+	h=Content-Type:Content-Transfer-Encoding:MIME-Version:Message-ID:Date:Subject:CC:To:From; bh=hgDKXubw77KdgweCTG67NGe7D1ZsFSC7veEKw8yR7o0=;
+	b=sUPs2Au5U9mHMRX5WAAU0AlOzm/5NXxngYnt5n9fwGaUa6H4VXiQviqj85k1Q2KQeeIj+EuC2uDOvYEA9R7u2/KAMkGAMhlR921XfpQ2WtUB/fRTEaotSD7aDJEGxyvwyczxSPP4UeBDxbUtKlxtNGdtSGdN5/sEw4u8q4/o8/Q=;
+X-CID-P-RULE: Release_Ham
+X-CID-O-INFO: VERSION:1.3.6,REQID:554806dc-3d78-4d3f-96bc-a9a8bbc7950b,IP:0,UR
+	L:0,TC:0,Content:-25,EDM:0,RT:0,SF:0,FILE:0,BULK:0,RULE:Release_Ham,ACTION
+	:release,TS:-25
+X-CID-META: VersionHash:a9d874c,CLOUDID:0feb41bb-0c02-41a0-92a3-94dc7dc7eeca,B
+	ulkID:nil,BulkQuantity:0,Recheck:0,SF:102|836|888|898,TC:-5,Content:0|15|5
+	0,EDM:-3,IP:nil,URL:0,File:130,RT:0,Bulk:nil,QS:nil,BEC:nil,COL:0,OSI:0,OS
+	A:0,AV:0,LES:1,SPR:NO,DKR:0,DKP:0,BRR:0,BRE:0,ARC:0
+X-CID-BVR: 2,SSN|SDN
+X-CID-BAS: 2,SSN|SDN,0,_
+X-CID-FACTOR: TF_CID_SPAM_SNR
+X-CID-RHF: D41D8CD98F00B204E9800998ECF8427E
+X-UUID: 96636212cb6511f0b2bf0b349165d6e0-20251127
+Received: from mtkmbs10n1.mediatek.inc [(172.21.101.34)] by mailgw01.mediatek.com
+	(envelope-from <quan.zhou@mediatek.com>)
+	(Generic MTA with TLSv1.2 ECDHE-RSA-AES256-GCM-SHA384 256/256)
+	with ESMTP id 1137846885; Thu, 27 Nov 2025 15:49:22 +0800
+Received: from mtkmbs11n2.mediatek.inc (172.21.101.187) by
+ mtkmbs13n2.mediatek.inc (172.21.101.108) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1748.26; Thu, 27 Nov 2025 15:49:21 +0800
+Received: from mhfsdcap04.gcn.mediatek.inc (10.17.3.154) by
+ mtkmbs11n2.mediatek.inc (172.21.101.73) with Microsoft SMTP Server id
+ 15.2.1748.26 via Frontend Transport; Thu, 27 Nov 2025 15:49:20 +0800
+From: Quan Zhou <quan.zhou@mediatek.com>
+To: Felix Fietkau <nbd@nbd.name>, Lorenzo Bianconi <lorenzo@kernel.org>
+CC: Sean Wang <sean.wang@mediatek.com>, Deren Wu <Deren.Wu@mediatek.com>,
+	Ryder Lee <ryder.lee@mediatek.com>, Shayne Chen <shayne.chen@mediatek.com>,
+	Leon Yen <Leon.Yen@mediatek.com>, Ming Yen Hsieh
+	<mingyen.hsieh@mediatek.com>, Allan Wang <allan.wang@mediatek.com>, KM Lin
+	<km.lin@mediatek.com>, Posh Sun <posh.sun@mediatek.com>, Shengxi Xu
+	<shengxi.xu@mediatek.com>, Eric-SY Chang <Eric-SY.Chang@mediatek.com>, CH Yeh
+	<ch.yeh@mediatek.com>, Robin Chiu <robin.chiu@mediatek.com>, linux-wireless
+	<linux-wireless@vger.kernel.org>, linux-mediatek
+	<linux-mediatek@lists.infradead.org>, Quan Zhou <quan.zhou@mediatek.com>,
+	<stable@vger.kernel.org>
+Subject: [PATCH v2] wifi: mt76: mt7925: fix AMPDU state handling in mt7925_tx_check_aggr
+Date: Thu, 27 Nov 2025 15:49:11 +0800
+Message-ID: <d5960fbced0beaf33c30203f7f8fb91d0899c87b.1764228973.git.quan.zhou@mediatek.com>
+X-Mailer: git-send-email 2.46.0
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-Received: by 2002:a05:6e02:b2e:b0:434:7d59:cb28 with SMTP id
- e9e14a558f8ab-435dd099317mr76864995ab.17.1764229469223; Wed, 26 Nov 2025
- 23:44:29 -0800 (PST)
-Date: Wed, 26 Nov 2025 23:44:29 -0800
-X-Google-Appengine-App-Id: s~syzkaller
-X-Google-Appengine-App-Id-Alias: syzkaller
-Message-ID: <6928015d.a70a0220.d98e3.00f6.GAE@google.com>
-Subject: [syzbot] Monthly wireless report (Nov 2025)
-From: syzbot <syzbot+listc2c5a1a76da717aa6f55@syzkaller.appspotmail.com>
-To: linux-kernel@vger.kernel.org, linux-wireless@vger.kernel.org, 
-	netdev@vger.kernel.org, syzkaller-bugs@googlegroups.com
-Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-MTK: N
 
-Hello wireless maintainers/developers,
+Previously, the AMPDU state bit for a given TID was set before attempting
+to start a BA session, which could result in the AMPDU state being marked
+active even if ieee80211_start_tx_ba_session() failed. This patch changes
+the logic to only set the AMPDU state bit after successfully starting a BA
+session, ensuring proper synchronization between AMPDU state and BA session
+status.
 
-This is a 31-day syzbot report for the wireless subsystem.
-All related reports/information can be found at:
-https://syzkaller.appspot.com/upstream/s/wireless
+This fixes potential issues with aggregation state tracking and improves
+compatibility with mac80211 BA session management.
 
-During the period, 9 new issues were detected and 0 were fixed.
-In total, 59 issues are still open and 168 have already been fixed.
+Fixes: 44eb173bdd4f ("wifi: mt76: mt7925: add link handling in mt7925_txwi_free")
+Cc: stable@vger.kernel.org
 
-Some of the still happening issues:
-
-Ref  Crashes Repro Title
-<1>  20722   Yes   WARNING in rate_control_rate_init (3)
-                   https://syzkaller.appspot.com/bug?extid=9bdc0c5998ab45b05030
-<2>  10413   Yes   WARNING in __rate_control_send_low (3)
-                   https://syzkaller.appspot.com/bug?extid=34463a129786910405dd
-<3>  6888    Yes   WARNING in __cfg80211_ibss_joined (2)
-                   https://syzkaller.appspot.com/bug?extid=7f064ba1704c2466e36d
-<4>  3179    No    WARNING in kcov_remote_start (6)
-                   https://syzkaller.appspot.com/bug?extid=3f51ad7ac3ae57a6fdcc
-<5>  2772    No    WARNING in drv_unassign_vif_chanctx (3)
-                   https://syzkaller.appspot.com/bug?extid=6506f7abde798179ecc4
-<6>  1226    Yes   WARNING in ieee80211_start_next_roc
-                   https://syzkaller.appspot.com/bug?extid=c3a167b5615df4ccd7fb
-<7>  892     Yes   INFO: task hung in reg_process_self_managed_hints
-                   https://syzkaller.appspot.com/bug?extid=1f16507d9ec05f64210a
-<8>  775     Yes   INFO: task hung in reg_check_chans_work (7)
-                   https://syzkaller.appspot.com/bug?extid=a2de4763f84f61499210
-<9>  652     Yes   INFO: rcu detected stall in ieee80211_handle_queued_frames
-                   https://syzkaller.appspot.com/bug?extid=1c991592da3ef18957c0
-<10> 599     Yes   INFO: task hung in crda_timeout_work (8)
-                   https://syzkaller.appspot.com/bug?extid=d41f74db64598e0b5016
-
+Signed-off-by: Quan Zhou <quan.zhou@mediatek.com>
 ---
-This report is generated by a bot. It may contain errors.
-See https://goo.gl/tpsmEJ for more information about syzbot.
-syzbot engineers can be reached at syzkaller@googlegroups.com.
+v2: modify to avoid weakening atomicity
+---
+ drivers/net/wireless/mediatek/mt76/mt7925/mac.c | 6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
 
-To disable reminders for individual bugs, reply with the following command:
-#syz set <Ref> no-reminders
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7925/mac.c b/drivers/net/wireless/mediatek/mt76/mt7925/mac.c
+index 871b67101976..5e5b1df78633 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7925/mac.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7925/mac.c
+@@ -881,8 +881,10 @@ static void mt7925_tx_check_aggr(struct ieee80211_sta *sta, struct sk_buff *skb,
+ 	else
+ 		mlink = &msta->deflink;
+ 
+-	if (!test_and_set_bit(tid, &mlink->wcid.ampdu_state))
+-		ieee80211_start_tx_ba_session(sta, tid, 0);
++	if (!test_and_set_bit(tid, &mlink->wcid.ampdu_state)) {
++		if (ieee80211_start_tx_ba_session(sta, tid, 0))
++			clear_bit(tid, &mlink->wcid.ampdu_state);
++	}
+ }
+ 
+ static bool
+-- 
+2.45.2
 
-To change bug's subsystems, reply with:
-#syz set <Ref> subsystems: new-subsystem
-
-You may send multiple commands in a single email message.
 
