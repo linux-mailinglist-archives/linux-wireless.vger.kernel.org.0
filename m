@@ -1,102 +1,113 @@
-Return-Path: <linux-wireless+bounces-29370-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-29371-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3B866C8D184
-	for <lists+linux-wireless@lfdr.de>; Thu, 27 Nov 2025 08:29:57 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 11F55C8D289
+	for <lists+linux-wireless@lfdr.de>; Thu, 27 Nov 2025 08:44:49 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 2C81F4E056B
-	for <lists+linux-wireless@lfdr.de>; Thu, 27 Nov 2025 07:29:56 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4211D3AF7DC
+	for <lists+linux-wireless@lfdr.de>; Thu, 27 Nov 2025 07:44:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A1382254AE1;
-	Thu, 27 Nov 2025 07:29:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b="FKS5E4II"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CBBCA3203AA;
+	Thu, 27 Nov 2025 07:44:31 +0000 (UTC)
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-07.mail-europe.com (mail-0701.mail-europe.com [51.83.17.38])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-io1-f69.google.com (mail-io1-f69.google.com [209.85.166.69])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 412BC12B94
-	for <linux-wireless@vger.kernel.org>; Thu, 27 Nov 2025 07:29:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=51.83.17.38
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0F58531D735
+	for <linux-wireless@vger.kernel.org>; Thu, 27 Nov 2025 07:44:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.166.69
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764228592; cv=none; b=mh9uobXiVxc421Hh6FyavlU1KcczbPzZ3rzsb8iip2xY7XNu57JlGsuRdNxMg2sNPvka0llBhLVNvmr9NVjz/o//IrLYVoH6QLw8bZllkezEuKfQYHYOv7YXZF/BrmMk1oZqnuykKzbkC+AEKd2xhi1CwyyEAejyH0T351LHSF8=
+	t=1764229471; cv=none; b=Ahpw2l2qUqHgVdnrEGzPBJBwiQ/9v+SSbMy32g5Kj/UkWQJIScVBra+CJxhKj+h6CjGH9/o7/Ua5H9rOBOU2XPhC94NtIj2PQmf3+WojX0EkVb7W677idBUA+WjNP9qdvGWmV0AExCwHW627ltDC/xEMbJjcOYqaQEhtj6QndIo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764228592; c=relaxed/simple;
-	bh=aeb16qWV6LdNV6A/VkICMjQSqVLaKQ6xPsy7SacqiaE=;
-	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=C9EG9ndLTr5zwq/pTVPjWarKj9zANQZ/acPenzOHHnUf/VV2hamNwKkH/VZErDuewtv307Dw1XYH/NhPHCO4JKzSh5jrHMm8Zo5SyMMZ7HOMeMJXwhpM66FOyp42GsbB//br/eqRGd2iUySLUZdqVJlPFcfDqNrByFrYrTAfafE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me; spf=fail smtp.mailfrom=proton.me; dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b=FKS5E4II; arc=none smtp.client-ip=51.83.17.38
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=proton.me
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=proton.me;
-	s=yequqnhqivgkdmpuiowybaonaa.protonmail; t=1764228581; x=1764487781;
-	bh=aeb16qWV6LdNV6A/VkICMjQSqVLaKQ6xPsy7SacqiaE=;
-	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
-	 Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
-	 Message-ID:BIMI-Selector;
-	b=FKS5E4IIYGHAg2RTVKv7LIM+zEfefzPah0Bee27NEjMq/odVJdqB0YdBTN87xSXcg
-	 B70Tvrt8ZwBIDBEavoPnFiJcfKHg49xQYQMHkxEMgbb9bvd5skBCQ3TCgS0CtzbZxM
-	 s59QPhiudEmv9523B9OEMlOyHgfGnMmgnFkEkZy1vcjl2zSFhDQtXsKGjv4FkAr6zk
-	 aNT89T+z0NzXDROTjey87wjUgM3EcPpf9lcFoVPPMU6uxwaP5JfBl2pCcja5nKw69c
-	 XjkeAg9L9JfY4kKe35Xz8Zz1FlsoFQ/QrZECIEUHvC5p6U8N7UYLorkzMZQOQ2pZT6
-	 wgG+gRXGlkVLg==
-Date: Thu, 27 Nov 2025 07:29:37 +0000
-To: ath12k@lists.infradead.org
-From: Alexander Minchev <adminchev@proton.me>
-Cc: linux-wireless@vger.kernel.org, Alexander Minchev <adminchev@proton.me>, Baochen Qiang <baochen.qiang@oss.qualcomm.com>
-Subject: [PATCH v2] wifi: ath12k: remove redundant pci_set_drvdata() call
-Message-ID: <20251127072839.14167-2-adminchev@proton.me>
-In-Reply-To: <20251127072839.14167-1-adminchev@proton.me>
-References: <20251126170213.27959-1-adminchev@proton.me> <20251127072839.14167-1-adminchev@proton.me>
-Feedback-ID: 99141252:user:proton
-X-Pm-Message-ID: 224bf10dde5090112663872aeb2303fe6d8ab983
+	s=arc-20240116; t=1764229471; c=relaxed/simple;
+	bh=IxMWzc3tX4oZvzc9kbMDyFaHzWf7WcpZddgUzdnoHns=;
+	h=MIME-Version:Date:Message-ID:Subject:From:To:Content-Type; b=BoGtoPpeZuKvkB8s4tl/O+e3PfmCz9jxzWg6afLFg/CYnbZjxtZQ2G4gbSSrvAzi6Zh4jLVRUwv3aEsy3e7vVha1Mc7B8zcGJw0GGqQmaLP6/m+yZQhwEJfJa5ZKFZXROa+dkYz7QB49vvdGDC+F72LOW3A8THTwFU8MP8U1fMc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com; arc=none smtp.client-ip=209.85.166.69
+Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com
+Received: by mail-io1-f69.google.com with SMTP id ca18e2360f4ac-9489bfaef15so36315039f.1
+        for <linux-wireless@vger.kernel.org>; Wed, 26 Nov 2025 23:44:29 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1764229469; x=1764834269;
+        h=to:from:subject:message-id:date:mime-version:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=IFrlScuPKAMX9Kds0z3rklBxPhhPHkr6vMqn2nAcZqY=;
+        b=IptxP1bJ4OGcPHOQOFzl5mwXtf2sMMQJjVNj1j4PhsFa85eG0F+UuUlKg42oz2S1Jz
+         AYK2Kt38EHdAWEGNxulBEW96OGBHFUF8Vy7LjUh9BtBUWbfa1aYr7Lx1AxP8QjuNGAfA
+         oDYnu/5iBRthBrLQJDOJQrXvwgYOksVLbS9guBFG4WjOBIzLR4amNdYHS2mpKYu6CBqG
+         FdbyeNZkx9mw1Vasv84WE7hW44qDAOWfDYBPsS6OVfIfyzDw+YR7UU74HDnAamBPtDze
+         PEELcOfWRgmTEPCNyz7h+io3K8X42kxuUef2yAePl/8eL/AiAabRROxknoacXuo/vDYD
+         zD4w==
+X-Forwarded-Encrypted: i=1; AJvYcCV/gcGn8zQswBhl31qJKklt3DIzVmtCnxb0GpBi8+d/KkH05HAH5QtLq8wg44rCKqFeMVDnJFLmIVL4NiFLJQ==@vger.kernel.org
+X-Gm-Message-State: AOJu0YycDi3ao3+699clchaCqYKemG08TXtZ+/eQoVsUNTNtsyu5+DUK
+	MIu1umJEhKBBYTnyOL3bxpbPMI26C1ta6TqhcGFRMdGbyKqDL2C0aMzWevNn+eyKFJpLJdx52nv
+	HRiY8KZPpFfR06hMINfBBSJBoV+NDimBiM2bukaHr6c8+UAeWRPs3t/eatHM=
+X-Google-Smtp-Source: AGHT+IFXAllXbFe5/g0Uxt0e8wcJugknX6XuPgzmtGOPf4LrPeVhXYWz63o2gVbl5RyOyMhWNfoKBWNdHBaebMEMHx/Doq4fg/Ys
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+X-Received: by 2002:a05:6e02:b2e:b0:434:7d59:cb28 with SMTP id
+ e9e14a558f8ab-435dd099317mr76864995ab.17.1764229469223; Wed, 26 Nov 2025
+ 23:44:29 -0800 (PST)
+Date: Wed, 26 Nov 2025 23:44:29 -0800
+X-Google-Appengine-App-Id: s~syzkaller
+X-Google-Appengine-App-Id-Alias: syzkaller
+Message-ID: <6928015d.a70a0220.d98e3.00f6.GAE@google.com>
+Subject: [syzbot] Monthly wireless report (Nov 2025)
+From: syzbot <syzbot+listc2c5a1a76da717aa6f55@syzkaller.appspotmail.com>
+To: linux-kernel@vger.kernel.org, linux-wireless@vger.kernel.org, 
+	netdev@vger.kernel.org, syzkaller-bugs@googlegroups.com
+Content-Type: text/plain; charset="UTF-8"
 
-pci_set_drvdata() is called twice in ath12k_pci_probe() with the
-same pointer. Remove the earlier call so drvdata is set after
-ath12k_base and ath12k_pci initialization is complete.
+Hello wireless maintainers/developers,
 
-Having two calls might suggest that drvdata needs to be set early for
-some reason, even though it is not used until after the 'ab' struct
-ath12k_base is fully populated. Even though exact placement is
-not critical, keeping a single pci_set_drvdata() at the end of
-the initialization makes it clearer that drvdata points to a
-fully initialized structure and avoids confusion for future changes.
+This is a 31-day syzbot report for the wireless subsystem.
+All related reports/information can be found at:
+https://syzkaller.appspot.com/upstream/s/wireless
 
-Tested on: WCN7850 hw2.0 PCI WLAN.HMT.1.1.c5-00302-QCAHMTSWPL_V1.0_V2.0_SIL=
-ICONZ-1.115823.3
+During the period, 9 new issues were detected and 0 were fixed.
+In total, 59 issues are still open and 168 have already been fixed.
 
-Reviewed-by: Baochen Qiang <baochen.qiang@oss.qualcomm.com>
-Signed-off-by: Alexander Minchev <adminchev@proton.me>
+Some of the still happening issues:
+
+Ref  Crashes Repro Title
+<1>  20722   Yes   WARNING in rate_control_rate_init (3)
+                   https://syzkaller.appspot.com/bug?extid=9bdc0c5998ab45b05030
+<2>  10413   Yes   WARNING in __rate_control_send_low (3)
+                   https://syzkaller.appspot.com/bug?extid=34463a129786910405dd
+<3>  6888    Yes   WARNING in __cfg80211_ibss_joined (2)
+                   https://syzkaller.appspot.com/bug?extid=7f064ba1704c2466e36d
+<4>  3179    No    WARNING in kcov_remote_start (6)
+                   https://syzkaller.appspot.com/bug?extid=3f51ad7ac3ae57a6fdcc
+<5>  2772    No    WARNING in drv_unassign_vif_chanctx (3)
+                   https://syzkaller.appspot.com/bug?extid=6506f7abde798179ecc4
+<6>  1226    Yes   WARNING in ieee80211_start_next_roc
+                   https://syzkaller.appspot.com/bug?extid=c3a167b5615df4ccd7fb
+<7>  892     Yes   INFO: task hung in reg_process_self_managed_hints
+                   https://syzkaller.appspot.com/bug?extid=1f16507d9ec05f64210a
+<8>  775     Yes   INFO: task hung in reg_check_chans_work (7)
+                   https://syzkaller.appspot.com/bug?extid=a2de4763f84f61499210
+<9>  652     Yes   INFO: rcu detected stall in ieee80211_handle_queued_frames
+                   https://syzkaller.appspot.com/bug?extid=1c991592da3ef18957c0
+<10> 599     Yes   INFO: task hung in crda_timeout_work (8)
+                   https://syzkaller.appspot.com/bug?extid=d41f74db64598e0b5016
+
 ---
- drivers/net/wireless/ath/ath12k/pci.c | 1 -
- 1 file changed, 1 deletion(-)
+This report is generated by a bot. It may contain errors.
+See https://goo.gl/tpsmEJ for more information about syzbot.
+syzbot engineers can be reached at syzkaller@googlegroups.com.
 
-diff --git a/drivers/net/wireless/ath/ath12k/pci.c b/drivers/net/wireless/a=
-th/ath12k/pci.c
-index a12c8379cb46..7bf98618ac1e 100644
---- a/drivers/net/wireless/ath/ath12k/pci.c
-+++ b/drivers/net/wireless/ath/ath12k/pci.c
-@@ -1580,7 +1580,6 @@ static int ath12k_pci_probe(struct pci_dev *pdev,
- =09}
-=20
- =09ab->dev =3D &pdev->dev;
--=09pci_set_drvdata(pdev, ab);
- =09ab_pci =3D ath12k_pci_priv(ab);
- =09ab_pci->dev_id =3D pci_dev->device;
- =09ab_pci->ab =3D ab;
---=20
-2.52.0
+To disable reminders for individual bugs, reply with the following command:
+#syz set <Ref> no-reminders
 
+To change bug's subsystems, reply with:
+#syz set <Ref> subsystems: new-subsystem
 
+You may send multiple commands in a single email message.
 
