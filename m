@@ -1,448 +1,313 @@
-Return-Path: <linux-wireless+bounces-29387-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-29388-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 15E85C8F828
-	for <lists+linux-wireless@lfdr.de>; Thu, 27 Nov 2025 17:28:42 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 907E6C8FBAC
+	for <lists+linux-wireless@lfdr.de>; Thu, 27 Nov 2025 18:41:31 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C074C3AC323
-	for <lists+linux-wireless@lfdr.de>; Thu, 27 Nov 2025 16:28:40 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7CFD43ABA9F
+	for <lists+linux-wireless@lfdr.de>; Thu, 27 Nov 2025 17:41:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A3DAE2D3EDE;
-	Thu, 27 Nov 2025 16:28:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3195F2EF65F;
+	Thu, 27 Nov 2025 17:41:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=fail reason="signature verification failed" (2048-bit key) header.d=smtpservice.net header.i=@smtpservice.net header.b="3djT5vcG";
-	dkim=pass (2048-bit key) header.d=orellazri.com header.i=@orellazri.com header.b="IFx/UepS"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="GQo4zWhW"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from e2i340.smtp2go.com (e2i340.smtp2go.com [103.2.141.84])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8FACB1AF0BB
-	for <linux-wireless@vger.kernel.org>; Thu, 27 Nov 2025 16:28:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=103.2.141.84
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0B88F2ED853
+	for <linux-wireless@vger.kernel.org>; Thu, 27 Nov 2025 17:41:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764260918; cv=none; b=RQ9lQ5JqAn0pqAg69jMiLgJ/Dh2EWWGeUJbP8hEzFElTDAax6fJac/rXM6fiDKWvXkpXMPv8f2JMOVkMAfQne/DYyHsB87O8QSRivhiSK2bAqG326ZwKPPBVYFdKeKPFjoSTYJpp38jhXGJK+/aLGP2PPqYIk6rehyVAGMuaLtI=
+	t=1764265283; cv=none; b=Pq0+25ot7aRF1ByhHreZS8urv5GlQhbcbja4//QkCMjnNO5jc8kW4vhUDNXxokqrqIP9BHFR0HVwxc3+HSaZKaOAmyH0ez6cG9Zw0u93s7Ypm6flM3/0R3XMsu7K3SIiU1SymOgPh/ZkvvdYww7GVg9bk+FjEFn0EIz3DexF8pU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764260918; c=relaxed/simple;
-	bh=4HmYJFf1BdlxB2TpQ7zdwaaSkIVGzlIxx3rFy1xKLwY=;
-	h=Content-Type:Message-ID:Date:MIME-Version:To:Cc:From:Subject; b=fDZktWKkdYZYrztQd8vtpr8rFlasrXUiHIfXWJAvzRXCuW3ruVwMETcGhPpaUX5EXjLS9Z08IBB2yyGiY1HLHizCFaww6yu4aTYPctRgvb/c9cCOruSwFDYBVlEnVSg00VxXq17WW+a4t5NXx4PgTSA2BHXzpcwI8tOC9vBhXeU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=orellazri.com; spf=pass smtp.mailfrom=em696689.orellazri.com; dkim=pass (2048-bit key) header.d=smtpservice.net header.i=@smtpservice.net header.b=3djT5vcG; dkim=pass (2048-bit key) header.d=orellazri.com header.i=@orellazri.com header.b=IFx/UepS; arc=none smtp.client-ip=103.2.141.84
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=orellazri.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=em696689.orellazri.com
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=smtpservice.net; s=mexkh0.a1-4.dyn; x=1764261814; h=Feedback-ID:
-	X-Smtpcorp-Track:Subject:From:To:Date:Message-ID:Reply-To:Sender:
-	List-Unsubscribe:List-Unsubscribe-Post;
-	bh=LLUbudBeNXyTn1oLWBxgnwiBSywPxYvu9JZKE9oxgOE=; b=3djT5vcG/5qY7brI0fKa4jInxp
-	SQuJB5KkIaZDY9Kyal3mRUg8o5griKLJir8KrPKcN+pE/E3nlk+p/m2RGZCWguwjpBsnYnde1p7Ji
-	oL9sipfWwHi55e3j7QVxL1SKp/sFr2FZzs/iCAdaz28Ib47MkK4XAWheFBKJMCXkED24ILBVmdEo6
-	xAuS7NXGvBAdDuX2AFfnDmDKFQcmy0u5JORmhUZrI7dr1W7H+qL/OWI1XXy5CWT2TDyG/pNhUTPki
-	BXv4PNfuw6TMCwrW2fQs33Qr0orD8HnwArNU6lN4C7FQab24wOjemblm0uJMuCJ3MGxyZ1O47BPdO
-	VLY6Ua/w==;
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=orellazri.com;
- i=@orellazri.com; q=dns/txt; s=s696689; t=1764260914; h=from : subject
- : to : message-id : date;
- bh=LLUbudBeNXyTn1oLWBxgnwiBSywPxYvu9JZKE9oxgOE=;
- b=IFx/UepS77okjXgzD6rgwA04XSj+BfR4ARFwku9HsUqo1PzEeCgYSMwmDbrPQ9gi8kPVQ
- icj4Pvot+WaEJQAmpJ+3JX3MUXqQ0hgpJ0y5Z+chSPy3gshhIX0d3/6GHiPdSkn7ZLSYoSl
- CBKM550YAe0qjV49YVa1iapLdhBkgUG7swdyjX3gPGtbvd6zJBaR1n5Ym9YreHsbDaAuhvF
- QakXQWQd9eq2DTu56bNLPTXo8wp+uNZtidt4Yzhic4NVimJte8nJ75g3hE1MK5lW8rdkhVu
- IewTQre20wtXXQMElqqPk13aCkDmxPzRHmXE9e/1vu2/YaJTyTIjDOymZU6w==
-Received: from [10.172.234.246] (helo=SmtpCorp) by smtpcorp.com with esmtpsa
- (TLS1.3:ECDHE_SECP256R1__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
- (Exim 4.94.2-S2G) (envelope-from <hi@orellazri.com>)
- id 1vOer4-TRk7Db-M1; Thu, 27 Nov 2025 16:28:26 +0000
-Received: from [10.237.241.87] (helo=[192.168.1.202])
- by smtpcorp.com with esmtpsa
- (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_128_GCM:128)
- (Exim 4.98.1-S2G) (envelope-from <hi@orellazri.com>)
- id 1vOer2-AIkwcC8iaON-59SA; Thu, 27 Nov 2025 16:28:24 +0000
-Content-Type: multipart/mixed; boundary="------------ceu0x00K0XdiRZeVPni3WB56"
-Message-ID: <8c32f4e8-b5fb-4c3e-ba2f-06c03d826fe8@orellazri.com>
-Date: Thu, 27 Nov 2025 18:28:20 +0200
+	s=arc-20240116; t=1764265283; c=relaxed/simple;
+	bh=YRwpnmivmIGfSil+ZD1aGlxCYo+UU/QzrOBg9t1fcoE=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=d+jRwnCnVVvQlhZe1OoaVm4Zj7A6H7ZP/xH3BlaFGG+WH4u331wlyZF5HL4FIGlB12XxV9xZMoyBHpuKDxxCERZYlDj2ybrdl6MbE4ExySFHIVNtCVbuGlg15fnen6yO4Dp9oIFUFp5mcY5OzCsAdfaOK39F1HEIP2dXrx3cHuY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=GQo4zWhW; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AE36CC2BCB3
+	for <linux-wireless@vger.kernel.org>; Thu, 27 Nov 2025 17:41:22 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1764265282;
+	bh=YRwpnmivmIGfSil+ZD1aGlxCYo+UU/QzrOBg9t1fcoE=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+	b=GQo4zWhWFwuM7yaQm/G6MoYrO1sGCe63LiivwvpbJXTuD4bpwtx7vVrjJq/jO3yNT
+	 /glPNOmTyEyuQgFnjW09IwIDuzYIhIp82Bq5tDcMxZ2FYvQimg6WzJuHjpMmBtLdRC
+	 7UHkgkhDXiAZGbYaljkVGuyQaHao2d5pJkHVYaTTRtcd/n5x9+u6+lZm+cbLEo/yUI
+	 r91c8vZQfOXME3t0aQ3s8j0vLUmV7g0L5ZqU6BMJPCG7P1VcW7pspVtnA3oNfQZt9a
+	 wFzr4/a6G8flzMAgfLEhY9Cq1WfAqIZxQ26MOBUnGa6tT8wSG9PPUc+wOdGDq10Lp1
+	 5jvmWmWflox3A==
+Received: by mail-ot1-f43.google.com with SMTP id 46e09a7af769-7c730af8d69so633868a34.1
+        for <linux-wireless@vger.kernel.org>; Thu, 27 Nov 2025 09:41:22 -0800 (PST)
+X-Forwarded-Encrypted: i=1; AJvYcCXOJxVO0iswltJB9pxFKeTEAOrYjEyHTeOSVd6uOn0S4pMghgiX6HMuRkzSNO84lgkLRgEPAgvChPTdEMxc9Q==@vger.kernel.org
+X-Gm-Message-State: AOJu0Yy36zb1kb3dRbzz0RiuEwoa3QB+ev5UnrJDwfZ7Qs/LQMqgm4Ud
+	892kzhcu68DY+VWE4rDg1Koy47P/oeULXzZYf3+V0nF7HdkSIctUIap4pWVs4Fcc1RxyONFbFSR
+	xDUksXXdhCc9V2ftiLmONfwR8wZyp9W0=
+X-Google-Smtp-Source: AGHT+IHbfQ5CxJ+BeKUIRbyKYrpAVhmzQHngDVOs0E2Nv7PPmdkB/EPrjv3dEJtB2ATSYwuHhVrLlp/6B/DbEuYhyUY=
+X-Received: by 2002:a05:6808:14d3:b0:450:d7fb:85c2 with SMTP id
+ 5614622812f47-4514e6e1593mr4705868b6e.19.1764265281611; Thu, 27 Nov 2025
+ 09:41:21 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Content-Language: en-US
-To: pkshih@realtek.com
-Cc: linux-wireless@vger.kernel.org
-From: Orel Lazri <hi@orellazri.com>
-Subject: Bug Report: System slow down and hang with rtw89 driver under load
-X-Smtpcorp-Track: ejNNRxEAtTo3.U1sJPaed8sQv.o1hxXgb_FVp
-Feedback-ID: 696689m:696689aj8JB4V:696689sb4fJNGqj7
-X-Report-Abuse: Please forward a copy of this message, including all headers,
- to <abuse-report@smtp2go.com>
+References: <20251120-thermal-device-v1-0-bbdad594d57a@gmx.de>
+ <CAJZ5v0jOPrBcozzJMsB1eE12MuZRWDAV-+=jfrhJbi=S0p5J9Q@mail.gmail.com> <5f3ef610-4024-4ca0-a934-2649f5d25f40@gmx.de>
+In-Reply-To: <5f3ef610-4024-4ca0-a934-2649f5d25f40@gmx.de>
+From: "Rafael J. Wysocki" <rafael@kernel.org>
+Date: Thu, 27 Nov 2025 18:41:10 +0100
+X-Gmail-Original-Message-ID: <CAJZ5v0iJVV=kf-aJBx8F8dtGfaZpGVyhfi6DBWEg4j3c_nH8_A@mail.gmail.com>
+X-Gm-Features: AWmQ_bnNFzjNLr4ZD-k1rd8sHstOmmRzRHvS_v-U6yiSpHx7MBaeEIqIodGMGBQ
+Message-ID: <CAJZ5v0iJVV=kf-aJBx8F8dtGfaZpGVyhfi6DBWEg4j3c_nH8_A@mail.gmail.com>
+Subject: Re: [PATCH RFC RESEND 0/8] thermal: core: Allow setting the parent
+ device of thermal zone/cooling devices
+To: Armin Wolf <W_Armin@gmx.de>
+Cc: "Rafael J. Wysocki" <rafael@kernel.org>, Daniel Lezcano <daniel.lezcano@linaro.org>, 
+	Zhang Rui <rui.zhang@intel.com>, Lukasz Luba <lukasz.luba@arm.com>, Len Brown <lenb@kernel.org>, 
+	Jonathan Corbet <corbet@lwn.net>, Ido Schimmel <idosch@nvidia.com>, Petr Machata <petrm@nvidia.com>, 
+	linux-pm@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	etnaviv@lists.freedesktop.org, dri-devel@lists.freedesktop.org, 
+	linux-tegra@vger.kernel.org, linux-acpi@vger.kernel.org, 
+	linux-doc@vger.kernel.org, netdev@vger.kernel.org, 
+	linux-wireless@vger.kernel.org, ath10k@lists.infradead.org, 
+	ath11k@lists.infradead.org, linux-arm-kernel@lists.infradead.org, 
+	linux-mediatek@lists.infradead.org, platform-driver-x86@vger.kernel.org, 
+	linux-pci@vger.kernel.org, imx@lists.linux.dev, 
+	linux-renesas-soc@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-This is a multi-part message in MIME format.
---------------ceu0x00K0XdiRZeVPni3WB56
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+On Sat, Nov 22, 2025 at 3:18=E2=80=AFPM Armin Wolf <W_Armin@gmx.de> wrote:
+>
+> Am 21.11.25 um 21:35 schrieb Rafael J. Wysocki:
+>
+> > On Thu, Nov 20, 2025 at 4:41=E2=80=AFAM Armin Wolf <W_Armin@gmx.de> wro=
+te:
+> >> Drivers registering thermal zone/cooling devices are currently unable
+> >> to tell the thermal core what parent device the new thermal zone/
+> >> cooling device should have, potentially causing issues with suspend
+> >> ordering
+> > This is one potential class of problems that may arise, but I would
+> > like to see a real example of this.
+> >
+> > As it stands today, thermal_class has no PM callbacks, so there are no
+> > callback execution ordering issues with devices in that class and what
+> > other suspend/resume ordering issues are there?
+>
+> Correct, that is why i said "potentially".
+>
+> >
+> > Also, the suspend and resume of thermal zones is handled via PM
+> > notifiers.  Is there a problem with this?
+>
+> The problem with PM notifiers is that thermal zones stop working even bef=
+ore
+> user space is frozen. Freezing user space might take a lot of time, so ha=
+ving
+> no thermal management during this period is less than ideal.
 
-Dear Ping-Ke Shih,
+This can be addressed by doing thermal zone suspend after freezing
+tasks and before starting to suspend devices.  Accordingly, thermal
+zones could be resumed after resuming devices and before thawing
+tasks.  That should not be an overly complex change to make.
 
-I am encountering an unpredictable bug with the Realtek rtw89 wireless 
-driver (rtw89_8922ae) on my system. Sometimes, especially when 
-downloading files or under heavier network load, my system slows down 
-significantly and eventually hangs.
+> This problem would not occur when using dev_pm_ops, as thermal zones woul=
+d be
+> suspended after user space has been frozen successfully. Additionally, wh=
+en using
+> dev_pm_ops we can get rid of thermal_pm_suspended, as the device core alr=
+eady mandates
+> that no new devices (including thermal zones and cooling devices) be regi=
+stered during
+> a suspend/resume cycle.
+>
+> Replacing the PM notifiers with dev_pm_ops would of course be a optimizat=
+ion with
+> its own patch series.
 
-In the kernel log (dmesg), I observe repeated lines like these looping 
-continuously:
+Honestly, I don't see much benefit from using dev_pm_ops for thermal
+zone devices and cooling devices.  Moreover, I actually think that
+they could be "no PM" devices that are not even put on the
+suspend-resume device list.  Technically, they are just interfaces on
+top of some other devices allowing the user space to interact with the
+latter and combining different pieces described by the platform
+firmware.  They by themselves have no PM capabilities.
 
-Nov 27 18:06:22 desktop kernel: rtw89_8922ae 0000:07:00.0: no tx fwcmd 
-resource
-Nov 27 18:06:22 desktop kernel: rtw89_8922ae 0000:07:00.0: failed to 
-send h2c
+> >> and making it impossible for user space applications to
+> >> associate a given thermal zone device with its parent device.
+> > Why does user space need to know the parent of a given cooling device
+> > or thermal zone?
+>
+> Lets say that we have two thermal zones registered by two instances of th=
+e
+> Intel Wifi driver. User space is currently unable to find out which therm=
+al zone
+> belongs to which Wifi adapter, as both thermal zones have the (nearly) sa=
+me type string ("iwlwifi[0-X]").
 
-I have attached a snippet of the dmesg log that includes these and other 
-relevant lines for your reference, along with the output of the 
-ver_linux script and some more potentially useful information.
+But the "belong" part is not quite well defined here.  I think that
+what user space needs to know is what devices are located in a given
+thermal zone, isn't it?  Knowing the parent doesn't necessarily
+address this.
 
-I'm running on kernel release "6.17.8-arch1-1", and this is the wireless 
-NIC in my motherboard:
+> This problem would be solved once we populate the parent device pointer i=
+nside the thermal zone
+> device, as user space can simply look at the "device" symlink to determin=
+e the parent device behind
+> a given thermal zone device.
 
-07:00.0 Network controller [0280]: Realtek Semiconductor Co., Ltd. 
-RTL8922AE 802.11be PCIe Wireless Network Adapter [10ec:8922] (rev 01)
-         Subsystem: Realtek Semiconductor Co., Ltd. RTL8922AE 802.11be 
-PCIe Wireless Network Adapter [10ec:8922]
-         Kernel driver in use: rtw89_8922ae
-         Kernel modules: rtw89_8922a
+I'm not convinced about this.
 
-Please let me know if you need any additional information or if I can 
-help test potential fixes.
+> Additionally, being able to access the acpi_handle of the parent device w=
+ill be necessary for the
+> ACPI thermal zone driver to support cooling devices other than ACPI fans =
+and ACPI processors.
 
-Thank you for your attention,
+I guess by the "parent" you mean the device represented in the ACPI
+namespace by a ThermalZone object, right?  But this is not the same as
+the "parent" in the Wifi driver context, is it?
 
-Orel Lazri
+> >> This patch series aims to fix this issue by extending the functions
+> >> used to register thermal zone/cooling devices to also accept a parent
+> >> device pointer. The first six patches convert all functions used for
+> >> registering cooling devices, while the functions used for registering
+> >> thermal zone devices are converted by the remaining two patches.
+> >>
+> >> I tested this series on various devices containing (among others):
+> >> - ACPI thermal zones
+> >> - ACPI processor devices
+> >> - PCIe cooling devices
+> >> - Intel Wifi card
+> >> - Intel powerclamp
+> >> - Intel TCC cooling
+> > What exactly did you do to test it?
+>
+> I tested:
+> - the thermal zone temperature readout
+> - correctness of the new sysfs links
+> - suspend/resume
+>
+> I also verified that ACPI thermal zones still bind with the ACPI fans.
 
---------------ceu0x00K0XdiRZeVPni3WB56
-Content-Type: text/plain; charset=UTF-8; name="dmesg.txt"
-Content-Disposition: attachment; filename="dmesg.txt"
-Content-Transfer-Encoding: base64
+I see, thanks.
 
-Tm92IDI3IDE4OjA1OjI3IGRlc2t0b3Aga2VybmVsOiBydHc4OV84OTIyYWUgMDAwMDowNzow
-MC4wOiBGVyBzdGF0dXMgPSAweGJhMDAxMTAwCk5vdiAyNyAxODowNToyNyBkZXNrdG9wIGtl
-cm5lbDogcnR3ODlfODkyMmFlIDAwMDA6MDc6MDAuMDogRlcgQkFEQUREUiA9IDB4MTAwMApO
-b3YgMjcgMTg6MDU6MjcgZGVza3RvcCBrZXJuZWw6IHJ0dzg5Xzg5MjJhZSAwMDAwOjA3OjAw
-LjA6IEZXIEVQQy9SQSA9IDB4MApOb3YgMjcgMTg6MDU6MjcgZGVza3RvcCBrZXJuZWw6IHJ0
-dzg5Xzg5MjJhZSAwMDAwOjA3OjAwLjA6IEZXIE1JU0MgPSAweDEwMzAwMDAKTm92IDI3IDE4
-OjA1OjI3IGRlc2t0b3Aga2VybmVsOiBydHc4OV84OTIyYWUgMDAwMDowNzowMC4wOiBSX0FY
-X0hBTFRfQzJIID0gMHg5OTkKTm92IDI3IDE4OjA1OjI3IGRlc2t0b3Aga2VybmVsOiBydHc4
-OV84OTIyYWUgMDAwMDowNzowMC4wOiBSX0FYX1NFUl9EQkdfSU5GTyA9IDB4ZjEwMDAwMGIK
-Tm92IDI3IDE4OjA1OjI3IGRlc2t0b3Aga2VybmVsOiBydHc4OV84OTIyYWUgMDAwMDowNzow
-MC4wOiBbRVJSXWZ3IFBDID0gMHgyMDAyNjQ2OApOb3YgMjcgMTg6MDU6MjcgZGVza3RvcCBr
-ZXJuZWw6IHJ0dzg5Xzg5MjJhZSAwMDAwOjA3OjAwLjA6IFtFUlJdZncgUEMgPSAweDIwMTQ4
-ZDg0Ck5vdiAyNyAxODowNToyNyBkZXNrdG9wIGtlcm5lbDogcnR3ODlfODkyMmFlIDAwMDA6
-MDc6MDAuMDogW0VSUl1mdyBQQyA9IDB4MjAwMmM5YzQKTm92IDI3IDE4OjA1OjI3IGRlc2t0
-b3Aga2VybmVsOiBydHc4OV84OTIyYWUgMDAwMDowNzowMC4wOiBbRVJSXWZ3IFBDID0gMHgy
-MDAyYzk4YwpOb3YgMjcgMTg6MDU6MjcgZGVza3RvcCBrZXJuZWw6IHJ0dzg5Xzg5MjJhZSAw
-MDAwOjA3OjAwLjA6IFtFUlJdZncgUEMgPSAweDIwMTI2ZjcyCk5vdiAyNyAxODowNToyNyBk
-ZXNrdG9wIGtlcm5lbDogcnR3ODlfODkyMmFlIDAwMDA6MDc6MDAuMDogW0VSUl1mdyBQQyA9
-IDB4MjAwMmJhNDgKTm92IDI3IDE4OjA1OjI3IGRlc2t0b3Aga2VybmVsOiBydHc4OV84OTIy
-YWUgMDAwMDowNzowMC4wOiBbRVJSXWZ3IFBDID0gMHgyMDAyYmFiZQpOb3YgMjcgMTg6MDU6
-MjcgZGVza3RvcCBrZXJuZWw6IHJ0dzg5Xzg5MjJhZSAwMDAwOjA3OjAwLjA6IFtFUlJdZncg
-UEMgPSAweDIwMTI3MGRjCk5vdiAyNyAxODowNToyNyBkZXNrdG9wIGtlcm5lbDogcnR3ODlf
-ODkyMmFlIDAwMDA6MDc6MDAuMDogW0VSUl1mdyBQQyA9IDB4MjAwMmJhYjAKTm92IDI3IDE4
-OjA1OjI3IGRlc2t0b3Aga2VybmVsOiBydHc4OV84OTIyYWUgMDAwMDowNzowMC4wOiBbRVJS
-XWZ3IFBDID0gMHgyMDAyYzlhMApOb3YgMjcgMTg6MDU6MjcgZGVza3RvcCBrZXJuZWw6IHJ0
-dzg5Xzg5MjJhZSAwMDAwOjA3OjAwLjA6IFtFUlJdZncgUEMgPSAweDIwMTQ2YTdlCk5vdiAy
-NyAxODowNToyNyBkZXNrdG9wIGtlcm5lbDogcnR3ODlfODkyMmFlIDAwMDA6MDc6MDAuMDog
-W0VSUl1mdyBQQyA9IDB4MjAwMmM5ZDQKTm92IDI3IDE4OjA1OjI3IGRlc2t0b3Aga2VybmVs
-OiBydHc4OV84OTIyYWUgMDAwMDowNzowMC4wOiBbRVJSXWZ3IFBDID0gMHgyMDAyYmE2MApO
-b3YgMjcgMTg6MDU6MjcgZGVza3RvcCBrZXJuZWw6IHJ0dzg5Xzg5MjJhZSAwMDAwOjA3OjAw
-LjA6IFtFUlJdZncgUEMgPSAweDIwMTU3NDJjCk5vdiAyNyAxODowNToyNyBkZXNrdG9wIGtl
-cm5lbDogcnR3ODlfODkyMmFlIDAwMDA6MDc6MDAuMDogW0VSUl1mdyBQQyA9IDB4MjAwMmJh
-Y2EKTm92IDI3IDE4OjA1OjI3IGRlc2t0b3Aga2VybmVsOiBydHc4OV84OTIyYWUgMDAwMDow
-NzowMC4wOiBTRVIgY2F0Y2hlcyBlcnJvcjogMHg5OTkKTm92IDI3IDE4OjA1OjI3IGRlc2t0
-b3Aga2VybmVsOiBydHc4OV84OTIyYWUgMDAwMDowNzowMC4wOiBGVyBzdGF0dXMgPSAweGJh
-MDAxMTAwCk5vdiAyNyAxODowNToyNyBkZXNrdG9wIGtlcm5lbDogcnR3ODlfODkyMmFlIDAw
-MDA6MDc6MDAuMDogRlcgQkFEQUREUiA9IDB4MTAwMApOb3YgMjcgMTg6MDU6MjcgZGVza3Rv
-cCBrZXJuZWw6IHJ0dzg5Xzg5MjJhZSAwMDAwOjA3OjAwLjA6IEZXIEVQQy9SQSA9IDB4MApO
-b3YgMjcgMTg6MDU6MjcgZGVza3RvcCBrZXJuZWw6IHJ0dzg5Xzg5MjJhZSAwMDAwOjA3OjAw
-LjA6IEZXIE1JU0MgPSAweDIwNzAwMDAKTm92IDI3IDE4OjA1OjI3IGRlc2t0b3Aga2VybmVs
-OiBydHc4OV84OTIyYWUgMDAwMDowNzowMC4wOiBSX0FYX0hBTFRfQzJIID0gMHgxMDAwCk5v
-diAyNyAxODowNToyNyBkZXNrdG9wIGtlcm5lbDogcnR3ODlfODkyMmFlIDAwMDA6MDc6MDAu
-MDogUl9BWF9TRVJfREJHX0lORk8gPSAweGYxMDAwMDBiCk5vdiAyNyAxODowNToyNyBkZXNr
-dG9wIGtlcm5lbDogcnR3ODlfODkyMmFlIDAwMDA6MDc6MDAuMDogW0VSUl1mdyBQQyA9IDB4
-MjAwMWRiMGEKTm92IDI3IDE4OjA1OjI3IGRlc2t0b3Aga2VybmVsOiBydHc4OV84OTIyYWUg
-MDAwMDowNzowMC4wOiBbRVJSXWZ3IFBDID0gMHgyMDAxZGIwZQpOb3YgMjcgMTg6MDU6Mjcg
-ZGVza3RvcCBrZXJuZWw6IHJ0dzg5Xzg5MjJhZSAwMDAwOjA3OjAwLjA6IFtFUlJdZncgUEMg
-PSAweDIwMDFkYjBhCk5vdiAyNyAxODowNToyNyBkZXNrdG9wIGtlcm5lbDogcnR3ODlfODky
-MmFlIDAwMDA6MDc6MDAuMDogW0VSUl1mdyBQQyA9IDB4MjAwMWRiMGUKTm92IDI3IDE4OjA1
-OjI3IGRlc2t0b3Aga2VybmVsOiBydHc4OV84OTIyYWUgMDAwMDowNzowMC4wOiBbRVJSXWZ3
-IFBDID0gMHgyMDEyNmY3MgpOb3YgMjcgMTg6MDU6MjcgZGVza3RvcCBrZXJuZWw6IHJ0dzg5
-Xzg5MjJhZSAwMDAwOjA3OjAwLjA6IFtFUlJdZncgUEMgPSAweDIwMTI2ZjcyCk5vdiAyNyAx
-ODowNToyNyBkZXNrdG9wIGtlcm5lbDogcnR3ODlfODkyMmFlIDAwMDA6MDc6MDAuMDogW0VS
-Ul1mdyBQQyA9IDB4MjAxMjZmNzIKTm92IDI3IDE4OjA1OjI3IGRlc2t0b3Aga2VybmVsOiBy
-dHc4OV84OTIyYWUgMDAwMDowNzowMC4wOiBbRVJSXWZ3IFBDID0gMHgyMDEyNmY3MgpOb3Yg
-MjcgMTg6MDU6MjcgZGVza3RvcCBrZXJuZWw6IHJ0dzg5Xzg5MjJhZSAwMDAwOjA3OjAwLjA6
-IFtFUlJdZncgUEMgPSAweDIwMTI2ZjcyCk5vdiAyNyAxODowNToyNyBkZXNrdG9wIGtlcm5l
-bDogcnR3ODlfODkyMmFlIDAwMDA6MDc6MDAuMDogW0VSUl1mdyBQQyA9IDB4MjAxMjZmNzIK
-Tm92IDI3IDE4OjA1OjI3IGRlc2t0b3Aga2VybmVsOiBydHc4OV84OTIyYWUgMDAwMDowNzow
-MC4wOiBbRVJSXWZ3IFBDID0gMHgyMDEyNmY3MgpOb3YgMjcgMTg6MDU6MjcgZGVza3RvcCBr
-ZXJuZWw6IHJ0dzg5Xzg5MjJhZSAwMDAwOjA3OjAwLjA6IFtFUlJdZncgUEMgPSAweDIwMTI2
-ZjcyCk5vdiAyNyAxODowNToyNyBkZXNrdG9wIGtlcm5lbDogcnR3ODlfODkyMmFlIDAwMDA6
-MDc6MDAuMDogW0VSUl1mdyBQQyA9IDB4MjAxMjZmNzIKTm92IDI3IDE4OjA1OjI3IGRlc2t0
-b3Aga2VybmVsOiBydHc4OV84OTIyYWUgMDAwMDowNzowMC4wOiBbRVJSXWZ3IFBDID0gMHgy
-MDEyNmY3MgpOb3YgMjcgMTg6MDU6MjcgZGVza3RvcCBrZXJuZWw6IHJ0dzg5Xzg5MjJhZSAw
-MDAwOjA3OjAwLjA6IFtFUlJdZncgUEMgPSAweDIwMTI2ZjcyCk5vdiAyNyAxODowNToyNyBk
-ZXNrdG9wIGtlcm5lbDogcnR3ODlfODkyMmFlIDAwMDA6MDc6MDAuMDogLS0tPgpOb3YgMjcg
-MTg6MDU6MjcgZGVza3RvcCBrZXJuZWw6IHJ0dzg5Xzg5MjJhZSAwMDAwOjA3OjAwLjA6IFJf
-QkVfU0VSX0RCR19JTkZPPTB4ZjEwMDAwMGIKTm92IDI3IDE4OjA1OjI3IGRlc2t0b3Aga2Vy
-bmVsOiBydHc4OV84OTIyYWUgMDAwMDowNzowMC4wOiBSX0JFX1NFUl9MMF9EQkdfQ05UPTB4
-MDAwMDBhMDkKTm92IDI3IDE4OjA1OjI3IGRlc2t0b3Aga2VybmVsOiBydHc4OV84OTIyYWUg
-MDAwMDowNzowMC4wOiBSX0JFX1NFUl9MMF9EQkdfQ05UMT0weDAwMDEwMDAwCk5vdiAyNyAx
-ODowNToyNyBkZXNrdG9wIGtlcm5lbDogcnR3ODlfODkyMmFlIDAwMDA6MDc6MDAuMDogUl9C
-RV9TRVJfTDBfREJHX0NOVDI9MHgwMDAwMDAwMApOb3YgMjcgMTg6MDU6MjcgZGVza3RvcCBr
-ZXJuZWw6IHJ0dzg5Xzg5MjJhZSAwMDAwOjA3OjAwLjA6IFJfQkVfU0VSX0wwX0RCR19DTlQz
-PTB4MDAwMDAwMDAKTm92IDI3IDE4OjA1OjI3IGRlc2t0b3Aga2VybmVsOiBydHc4OV84OTIy
-YWUgMDAwMDowNzowMC4wOiBSX0JFX1NFUl9MMF9EQkdfQ05UX0MxPTB4MDAwMDAwMDAKTm92
-IDI3IDE4OjA1OjI3IGRlc2t0b3Aga2VybmVsOiBydHc4OV84OTIyYWUgMDAwMDowNzowMC4w
-OiBSX0JFX1NFUl9MMF9EQkdfQ05UMV9DMT0weDAwMDAwMDAwCk5vdiAyNyAxODowNToyNyBk
-ZXNrdG9wIGtlcm5lbDogcnR3ODlfODkyMmFlIDAwMDA6MDc6MDAuMDogUl9CRV9TRVJfTDFf
-REJHX0NOVF8wPTB4MDAwMDAwMDAKTm92IDI3IDE4OjA1OjI3IGRlc2t0b3Aga2VybmVsOiBy
-dHc4OV84OTIyYWUgMDAwMDowNzowMC4wOiBSX0JFX1NFUl9MMV9EQkdfQ05UXzE9MHgwMDAx
-MDAwMApOb3YgMjcgMTg6MDU6MjcgZGVza3RvcCBrZXJuZWw6IHJ0dzg5Xzg5MjJhZSAwMDAw
-OjA3OjAwLjA6IFJfQkVfU0VSX0wxX0RCR19DTlRfMj0weDAwMDAwMDAwCk5vdiAyNyAxODow
-NToyNyBkZXNrdG9wIGtlcm5lbDogcnR3ODlfODkyMmFlIDAwMDA6MDc6MDAuMDogUl9CRV9T
-RVJfTDFfREJHX0NOVF8zPTB4MDAwMDAwMDAKTm92IDI3IDE4OjA1OjI3IGRlc2t0b3Aga2Vy
-bmVsOiBydHc4OV84OTIyYWUgMDAwMDowNzowMC4wOiBSX0JFX1NFUl9MMV9EQkdfQ05UXzQ9
-MHgwMDAwMDAwMApOb3YgMjcgMTg6MDU6MjcgZGVza3RvcCBrZXJuZWw6IHJ0dzg5Xzg5MjJh
-ZSAwMDAwOjA3OjAwLjA6IFJfQkVfU0VSX0wxX0RCR19DTlRfNT0weDAwMDAwMDAwCk5vdiAy
-NyAxODowNToyNyBkZXNrdG9wIGtlcm5lbDogcnR3ODlfODkyMmFlIDAwMDA6MDc6MDAuMDog
-Ul9CRV9TRVJfTDFfREJHX0NOVF82PTB4MDAwMDAwMDAKTm92IDI3IDE4OjA1OjI3IGRlc2t0
-b3Aga2VybmVsOiBydHc4OV84OTIyYWUgMDAwMDowNzowMC4wOiBSX0JFX1NFUl9MMV9EQkdf
-Q05UXzc9MHgwMDAwMDAwMApOb3YgMjcgMTg6MDU6MjcgZGVza3RvcCBrZXJuZWw6IHJ0dzg5
-Xzg5MjJhZSAwMDAwOjA3OjAwLjA6IFJfQVhfRE1BQ19FUlJfSVNSPTB4MDAwMDAwMjAKTm92
-IDI3IDE4OjA1OjI3IGRlc2t0b3Aga2VybmVsOiBydHc4OV84OTIyYWUgMDAwMDowNzowMC4w
-OiBSX0FYX0RNQUNfRVJSX0lNUj0weDAwMDAwMDAwCk5vdiAyNyAxODowNToyNyBkZXNrdG9w
-IGtlcm5lbDogcnR3ODlfODkyMmFlIDAwMDA6MDc6MDAuMDogUl9BWF9XREVfRVJSX0ZMQUdf
-Q0ZHPTB4MDAwMDAwMDAKTm92IDI3IDE4OjA1OjI3IGRlc2t0b3Aga2VybmVsOiBydHc4OV84
-OTIyYWUgMDAwMDowNzowMC4wOiBSX0FYX1BMRV9FUlJfRkxBR19DRkc9MHgwMDAwMDAwMApO
-b3YgMjcgMTg6MDU6MjcgZGVza3RvcCBrZXJuZWw6IHJ0dzg5Xzg5MjJhZSAwMDAwOjA3OjAw
-LjA6IFJfQVhfVFhQS1RDVExfQjBfRVJSRkxBR19JTVI9MHgwMGZmZmZmZgpOb3YgMjcgMTg6
-MDU6MjcgZGVza3RvcCBrZXJuZWw6IHJ0dzg5Xzg5MjJhZSAwMDAwOjA3OjAwLjA6IFJfQVhf
-VFhQS1RDVExfQjBfRVJSRkxBR19JU1I9MHgwMDAwMDEwMApOb3YgMjcgMTg6MDU6MjcgZGVz
-a3RvcCBrZXJuZWw6IHJ0dzg5Xzg5MjJhZSAwMDAwOjA3OjAwLjA6IFJfQVhfVFhQS1RDVExf
-QjFfRVJSRkxBR19JTVI9MHgwMGZmZmZmZgpOb3YgMjcgMTg6MDU6MjcgZGVza3RvcCBrZXJu
-ZWw6IHJ0dzg5Xzg5MjJhZSAwMDAwOjA3OjAwLjA6IFJfQVhfVFhQS1RDVExfQjFfRVJSRkxB
-R19JU1I9MHgwMDAwMDAwMApOb3YgMjcgMTg6MDU6MjcgZGVza3RvcCBrZXJuZWw6IHJ0dzg5
-Xzg5MjJhZSAwMDAwOjA3OjAwLjA6IFJfQkVfQ01BQ19FUlJfSVNSIFswXT0weDAwMDAwMDAw
-Ck5vdiAyNyAxODowNToyNyBkZXNrdG9wIGtlcm5lbDogcnR3ODlfODkyMmFlIDAwMDA6MDc6
-MDAuMDogUl9CRV9DTUFDX0ZVTkNfRU4gWzBdPTB4ZjAwMDAxZmYKTm92IDI3IDE4OjA1OjI3
-IGRlc2t0b3Aga2VybmVsOiBydHc4OV84OTIyYWUgMDAwMDowNzowMC4wOiBSX0JFX0NLX0VO
-IFswXT0weDQwMDBmZmZmCk5vdiAyNyAxODowNToyNyBkZXNrdG9wIGtlcm5lbDogcnR3ODlf
-ODkyMmFlIDAwMDA6MDc6MDAuMDogUl9CRV9DTUFDX0VSUl9JTVIgWzBdPTB4MDAwMDAwMDAK
-Tm92IDI3IDE4OjA1OjI3IGRlc2t0b3Aga2VybmVsOiBydHc4OV84OTIyYWUgMDAwMDowNzow
-MC4wOiBSX0JFX0NNQUNfRVJSX0lTUiBbMV09MHgwMDAwMDAwMApOb3YgMjcgMTg6MDU6Mjcg
-ZGVza3RvcCBrZXJuZWw6IHJ0dzg5Xzg5MjJhZSAwMDAwOjA3OjAwLjA6IFJfQkVfQ01BQ19G
-VU5DX0VOIFsxXT0weGYwMDAwMWZmCk5vdiAyNyAxODowNToyNyBkZXNrdG9wIGtlcm5lbDog
-cnR3ODlfODkyMmFlIDAwMDA6MDc6MDAuMDogUl9CRV9DS19FTiBbMV09MHg0MDAwZmZmZgpO
-b3YgMjcgMTg6MDU6MjcgZGVza3RvcCBrZXJuZWw6IHJ0dzg5Xzg5MjJhZSAwMDAwOjA3OjAw
-LjA6IFJfQkVfQ01BQ19FUlJfSU1SIFsxXT0weDAwMDAwMDAwCk5vdiAyNyAxODowNToyNyBk
-ZXNrdG9wIGtlcm5lbDogcnR3ODlfODkyMmFlIDAwMDA6MDc6MDAuMDogPC0tLQpOb3YgMjcg
-MTg6MDU6MjcgZGVza3RvcCBrZXJuZWw6IHJ0dzg5Xzg5MjJhZSAwMDAwOjA3OjAwLjA6IFNF
-UiBjYXRjaGVzIGVycm9yOiAweDEwMDAKTm92IDI3IDE4OjA1OjI3IGRlc2t0b3Aga2VybmVs
-OiBydHc4OV84OTIyYWUgMDAwMDowNzowMC4wOiBGVyBzdGF0dXMgPSAweGJhMDAxMTAwCk5v
-diAyNyAxODowNToyNyBkZXNrdG9wIGtlcm5lbDogcnR3ODlfODkyMmFlIDAwMDA6MDc6MDAu
-MDogRlcgQkFEQUREUiA9IDB4MTAwMApOb3YgMjcgMTg6MDU6MjcgZGVza3RvcCBrZXJuZWw6
-IHJ0dzg5Xzg5MjJhZSAwMDAwOjA3OjAwLjA6IEZXIEVQQy9SQSA9IDB4MApOb3YgMjcgMTg6
-MDU6MjcgZGVza3RvcCBrZXJuZWw6IHJ0dzg5Xzg5MjJhZSAwMDAwOjA3OjAwLjA6IEZXIE1J
-U0MgPSAweDMxZjAwMDAKTm92IDI3IDE4OjA1OjI3IGRlc2t0b3Aga2VybmVsOiBydHc4OV84
-OTIyYWUgMDAwMDowNzowMC4wOiBSX0FYX0hBTFRfQzJIID0gMHgxMDAxCk5vdiAyNyAxODow
-NToyNyBkZXNrdG9wIGtlcm5lbDogcnR3ODlfODkyMmFlIDAwMDA6MDc6MDAuMDogUl9BWF9T
-RVJfREJHX0lORk8gPSAweGYxMDAwMDBiCk5vdiAyNyAxODowNToyNyBkZXNrdG9wIGtlcm5l
-bDogcnR3ODlfODkyMmFlIDAwMDA6MDc6MDAuMDogW0VSUl1mdyBQQyA9IDB4MjAwMWRiOWEK
-Tm92IDI3IDE4OjA1OjI3IGRlc2t0b3Aga2VybmVsOiBydHc4OV84OTIyYWUgMDAwMDowNzow
-MC4wOiBbRVJSXWZ3IFBDID0gMHgyMDAxZGIwYQpOb3YgMjcgMTg6MDU6MjcgZGVza3RvcCBr
-ZXJuZWw6IHJ0dzg5Xzg5MjJhZSAwMDAwOjA3OjAwLjA6IFtFUlJdZncgUEMgPSAweDIwMDFk
-YjBhCk5vdiAyNyAxODowNToyNyBkZXNrdG9wIGtlcm5lbDogcnR3ODlfODkyMmFlIDAwMDA6
-MDc6MDAuMDogW0VSUl1mdyBQQyA9IDB4MjAwMWRiMGEKTm92IDI3IDE4OjA1OjI3IGRlc2t0
-b3Aga2VybmVsOiBydHc4OV84OTIyYWUgMDAwMDowNzowMC4wOiBbRVJSXWZ3IFBDID0gMHgy
-MDAxZGIxMApOb3YgMjcgMTg6MDU6MjcgZGVza3RvcCBrZXJuZWw6IHJ0dzg5Xzg5MjJhZSAw
-MDAwOjA3OjAwLjA6IFtFUlJdZncgUEMgPSAweDIwMTI2ZjcyCk5vdiAyNyAxODowNToyNyBk
-ZXNrdG9wIGtlcm5lbDogcnR3ODlfODkyMmFlIDAwMDA6MDc6MDAuMDogW0VSUl1mdyBQQyA9
-IDB4MjAxMjZmNzIKTm92IDI3IDE4OjA1OjI3IGRlc2t0b3Aga2VybmVsOiBydHc4OV84OTIy
-YWUgMDAwMDowNzowMC4wOiBbRVJSXWZ3IFBDID0gMHgyMDEyNmY3MgpOb3YgMjcgMTg6MDU6
-MjcgZGVza3RvcCBrZXJuZWw6IHJ0dzg5Xzg5MjJhZSAwMDAwOjA3OjAwLjA6IFtFUlJdZncg
-UEMgPSAweDIwMTI2ZjcyCk5vdiAyNyAxODowNToyNyBkZXNrdG9wIGtlcm5lbDogcnR3ODlf
-ODkyMmFlIDAwMDA6MDc6MDAuMDogW0VSUl1mdyBQQyA9IDB4MjAxMjZmNzIKTm92IDI3IDE4
-OjA1OjI3IGRlc2t0b3Aga2VybmVsOiBydHc4OV84OTIyYWUgMDAwMDowNzowMC4wOiBbRVJS
-XWZ3IFBDID0gMHgyMDEyNmY3MgpOb3YgMjcgMTg6MDU6MjcgZGVza3RvcCBrZXJuZWw6IHJ0
-dzg5Xzg5MjJhZSAwMDAwOjA3OjAwLjA6IFtFUlJdZncgUEMgPSAweDIwMTI2ZjcyCk5vdiAy
-NyAxODowNToyNyBkZXNrdG9wIGtlcm5lbDogcnR3ODlfODkyMmFlIDAwMDA6MDc6MDAuMDog
-W0VSUl1mdyBQQyA9IDB4MjAxMjZmNzIKTm92IDI3IDE4OjA1OjI3IGRlc2t0b3Aga2VybmVs
-OiBydHc4OV84OTIyYWUgMDAwMDowNzowMC4wOiBbRVJSXWZ3IFBDID0gMHgyMDEyNmY3MgpO
-b3YgMjcgMTg6MDU6MjcgZGVza3RvcCBrZXJuZWw6IHJ0dzg5Xzg5MjJhZSAwMDAwOjA3OjAw
-LjA6IFtFUlJdZncgUEMgPSAweDIwMTI2ZjcyCk5vdiAyNyAxODowNToyNyBkZXNrdG9wIGtl
-cm5lbDogcnR3ODlfODkyMmFlIDAwMDA6MDc6MDAuMDogU0VSIGNhdGNoZXMgZXJyb3I6IDB4
-MTAwMQpOb3YgMjcgMTg6MDU6MjcgZGVza3RvcCBrZXJuZWw6IHJ0dzg5Xzg5MjJhZSAwMDAw
-OjA3OjAwLjA6IEZXIHN0YXR1cyA9IDB4YmEwMDgxMDAKTm92IDI3IDE4OjA1OjI3IGRlc2t0
-b3Aga2VybmVsOiBydHc4OV84OTIyYWUgMDAwMDowNzowMC4wOiBGVyBCQURBRERSID0gMHgx
-MDAwCk5vdiAyNyAxODowNToyNyBkZXNrdG9wIGtlcm5lbDogcnR3ODlfODkyMmFlIDAwMDA6
-MDc6MDAuMDogRlcgRVBDL1JBID0gMHgwCk5vdiAyNyAxODowNToyNyBkZXNrdG9wIGtlcm5l
-bDogcnR3ODlfODkyMmFlIDAwMDA6MDc6MDAuMDogRlcgTUlTQyA9IDB4ZmYwMDAwCk5vdiAy
-NyAxODowNToyNyBkZXNrdG9wIGtlcm5lbDogcnR3ODlfODkyMmFlIDAwMDA6MDc6MDAuMDog
-Ul9BWF9IQUxUX0MySCA9IDB4MTAwMgpOb3YgMjcgMTg6MDU6MjcgZGVza3RvcCBrZXJuZWw6
-IHJ0dzg5Xzg5MjJhZSAwMDAwOjA3OjAwLjA6IFJfQVhfU0VSX0RCR19JTkZPID0gMHhmMTAw
-MDAwYgpOb3YgMjcgMTg6MDU6MjcgZGVza3RvcCBrZXJuZWw6IHJ0dzg5Xzg5MjJhZSAwMDAw
-OjA3OjAwLjA6IFtFUlJdZncgUEMgPSAweDIwMTIyNWE4Ck5vdiAyNyAxODowNToyNyBkZXNr
-dG9wIGtlcm5lbDogcnR3ODlfODkyMmFlIDAwMDA6MDc6MDAuMDogW0VSUl1mdyBQQyA9IDB4
-MjAwMmJiMjYKTm92IDI3IDE4OjA1OjI3IGRlc2t0b3Aga2VybmVsOiBydHc4OV84OTIyYWUg
-MDAwMDowNzowMC4wOiBbRVJSXWZ3IFBDID0gMHgyMDAyYmE4OApOb3YgMjcgMTg6MDU6Mjcg
-ZGVza3RvcCBrZXJuZWw6IHJ0dzg5Xzg5MjJhZSAwMDAwOjA3OjAwLjA6IFtFUlJdZncgUEMg
-PSAweDIwMDIwNGJhCk5vdiAyNyAxODowNToyNyBkZXNrdG9wIGtlcm5lbDogcnR3ODlfODky
-MmFlIDAwMDA6MDc6MDAuMDogW0VSUl1mdyBQQyA9IDB4MjAwMmM5ZDgKTm92IDI3IDE4OjA1
-OjI3IGRlc2t0b3Aga2VybmVsOiBydHc4OV84OTIyYWUgMDAwMDowNzowMC4wOiBbRVJSXWZ3
-IFBDID0gMHgyMDAyYmE1MgpOb3YgMjcgMTg6MDU6MjcgZGVza3RvcCBrZXJuZWw6IHJ0dzg5
-Xzg5MjJhZSAwMDAwOjA3OjAwLjA6IFtFUlJdZncgUEMgPSAweDIwMDJiYWFlCk5vdiAyNyAx
-ODowNToyNyBkZXNrdG9wIGtlcm5lbDogcnR3ODlfODkyMmFlIDAwMDA6MDc6MDAuMDogW0VS
-Ul1mdyBQQyA9IDB4MjAwMmJhYzAKTm92IDI3IDE4OjA1OjI3IGRlc2t0b3Aga2VybmVsOiBy
-dHc4OV84OTIyYWUgMDAwMDowNzowMC4wOiBbRVJSXWZ3IFBDID0gMHgyMDAyYmFiNgpOb3Yg
-MjcgMTg6MDU6MjcgZGVza3RvcCBrZXJuZWw6IHJ0dzg5Xzg5MjJhZSAwMDAwOjA3OjAwLjA6
-IFtFUlJdZncgUEMgPSAweDIwMTU3M2NlCk5vdiAyNyAxODowNToyNyBkZXNrdG9wIGtlcm5l
-bDogcnR3ODlfODkyMmFlIDAwMDA6MDc6MDAuMDogW0VSUl1mdyBQQyA9IDB4MjAwMmM5ODIK
-Tm92IDI3IDE4OjA1OjI3IGRlc2t0b3Aga2VybmVsOiBydHc4OV84OTIyYWUgMDAwMDowNzow
-MC4wOiBbRVJSXWZ3IFBDID0gMHgyMDAyYmFhNgpOb3YgMjcgMTg6MDU6MjcgZGVza3RvcCBr
-ZXJuZWw6IHJ0dzg5Xzg5MjJhZSAwMDAwOjA3OjAwLjA6IFtFUlJdZncgUEMgPSAweDIwMTQ4
-ZDkyCk5vdiAyNyAxODowNToyNyBkZXNrdG9wIGtlcm5lbDogcnR3ODlfODkyMmFlIDAwMDA6
-MDc6MDAuMDogW0VSUl1mdyBQQyA9IDB4MjAxNTZkMDIKTm92IDI3IDE4OjA1OjI3IGRlc2t0
-b3Aga2VybmVsOiBydHc4OV84OTIyYWUgMDAwMDowNzowMC4wOiBbRVJSXWZ3IFBDID0gMHgy
-MDAyYmE4ZQpOb3YgMjcgMTg6MDU6MjcgZGVza3RvcCBrZXJuZWw6IHJ0dzg5Xzg5MjJhZSAw
-MDAwOjA3OjAwLjA6IFNFUiBjYXRjaGVzIGVycm9yOiAweDEwMDIKTm92IDI3IDE4OjA1OjI3
-IGRlc2t0b3Aga2VybmVsOiBydHc4OV84OTIyYWUgMDAwMDowNzowMC4wOiBoMmNfbHBzX21s
-X2Ntbl9pbmZvIGRvbmUgcG9sbGluZyB0aW1lb3V0Ck5vdiAyNyAxODowNTozMiBkZXNrdG9w
-IGtlcm5lbDogcnR3ODlfODkyMmFlIDAwMDA6MDc6MDAuMDogYzJoIHJlZyB0aW1lb3V0Ck5v
-diAyNyAxODowNTozMiBkZXNrdG9wIGtlcm5lbDogcnR3ODlfODkyMmFlIDAwMDA6MDc6MDAu
-MDogaDJjX2xwc19tbF9jbW5faW5mbyBkb25lIHBvbGxpbmcgdGltZW91dApOb3YgMjcgMTg6
-MDU6MzUgZGVza3RvcCBrZXJuZWw6IHJ0dzg5Xzg5MjJhZSAwMDAwOjA3OjAwLjA6IGMyaCBy
-ZWcgdGltZW91dApOb3YgMjcgMTg6MDU6MzUgZGVza3RvcCBrZXJuZWw6IHJ0dzg5Xzg5MjJh
-ZSAwMDAwOjA3OjAwLjA6IGgyY19scHNfbWxfY21uX2luZm8gZG9uZSBwb2xsaW5nIHRpbWVv
-dXQKTm92IDI3IDE4OjA1OjM4IGRlc2t0b3Aga2VybmVsOiBydHc4OV84OTIyYWUgMDAwMDow
-NzowMC4wOiBjMmggcmVnIHRpbWVvdXQKTm92IDI3IDE4OjA1OjM4IGRlc2t0b3Aga2VybmVs
-OiBydHc4OV84OTIyYWUgMDAwMDowNzowMC4wOiBoMmNfbHBzX21sX2Ntbl9pbmZvIGRvbmUg
-cG9sbGluZyB0aW1lb3V0Ck5vdiAyNyAxODowNTo0MSBkZXNrdG9wIGtlcm5lbDogcnR3ODlf
-ODkyMmFlIDAwMDA6MDc6MDAuMDogYzJoIHJlZyB0aW1lb3V0Ck5vdiAyNyAxODowNTo0MSBk
-ZXNrdG9wIGtlcm5lbDogcnR3ODlfODkyMmFlIDAwMDA6MDc6MDAuMDogaDJjX2xwc19tbF9j
-bW5faW5mbyBkb25lIHBvbGxpbmcgdGltZW91dApOb3YgMjcgMTg6MDU6NDQgZGVza3RvcCBr
-ZXJuZWw6IHJ0dzg5Xzg5MjJhZSAwMDAwOjA3OjAwLjA6IGMyaCByZWcgdGltZW91dApOb3Yg
-MjcgMTg6MDU6NDQgZGVza3RvcCBrZXJuZWw6IHJ0dzg5Xzg5MjJhZSAwMDAwOjA3OjAwLjA6
-IGgyY19scHNfbWxfY21uX2luZm8gZG9uZSBwb2xsaW5nIHRpbWVvdXQKTm92IDI3IDE4OjA1
-OjQ3IGRlc2t0b3Aga2VybmVsOiBydHc4OV84OTIyYWUgMDAwMDowNzowMC4wOiBjMmggcmVn
-IHRpbWVvdXQKTm92IDI3IDE4OjA1OjQ3IGRlc2t0b3Aga2VybmVsOiBydHc4OV84OTIyYWUg
-MDAwMDowNzowMC4wOiBoMmNfbHBzX21sX2Ntbl9pbmZvIGRvbmUgcG9sbGluZyB0aW1lb3V0
-Ck5vdiAyNyAxODowNTo1MCBkZXNrdG9wIGtlcm5lbDogcnR3ODlfODkyMmFlIDAwMDA6MDc6
-MDAuMDogYzJoIHJlZyB0aW1lb3V0Ck5vdiAyNyAxODowNTo1MCBkZXNrdG9wIGtlcm5lbDog
-cnR3ODlfODkyMmFlIDAwMDA6MDc6MDAuMDogaDJjX2xwc19tbF9jbW5faW5mbyBkb25lIHBv
-bGxpbmcgdGltZW91dApOb3YgMjcgMTg6MDU6NTMgZGVza3RvcCBrZXJuZWw6IHJ0dzg5Xzg5
-MjJhZSAwMDAwOjA3OjAwLjA6IGMyaCByZWcgdGltZW91dApOb3YgMjcgMTg6MDU6NTMgZGVz
-a3RvcCBrZXJuZWw6IHJ0dzg5Xzg5MjJhZSAwMDAwOjA3OjAwLjA6IGgyY19scHNfbWxfY21u
-X2luZm8gZG9uZSBwb2xsaW5nIHRpbWVvdXQKTm92IDI3IDE4OjA1OjU2IGRlc2t0b3Aga2Vy
-bmVsOiBydHc4OV84OTIyYWUgMDAwMDowNzowMC4wOiBjMmggcmVnIHRpbWVvdXQKTm92IDI3
-IDE4OjA1OjU2IGRlc2t0b3Aga2VybmVsOiBydHc4OV84OTIyYWUgMDAwMDowNzowMC4wOiBo
-MmNfbHBzX21sX2Ntbl9pbmZvIGRvbmUgcG9sbGluZyB0aW1lb3V0Ck5vdiAyNyAxODowNTo1
-OSBkZXNrdG9wIGtlcm5lbDogcnR3ODlfODkyMmFlIDAwMDA6MDc6MDAuMDogYzJoIHJlZyB0
-aW1lb3V0Ck5vdiAyNyAxODowNTo1OSBkZXNrdG9wIGtlcm5lbDogcnR3ODlfODkyMmFlIDAw
-MDA6MDc6MDAuMDogaDJjX2xwc19tbF9jbW5faW5mbyBkb25lIHBvbGxpbmcgdGltZW91dApO
-b3YgMjcgMTg6MDY6MDIgZGVza3RvcCBrZXJuZWw6IHJ0dzg5Xzg5MjJhZSAwMDAwOjA3OjAw
-LjA6IGMyaCByZWcgdGltZW91dApOb3YgMjcgMTg6MDY6MDIgZGVza3RvcCBrZXJuZWw6IHJ0
-dzg5Xzg5MjJhZSAwMDAwOjA3OjAwLjA6IGgyY19scHNfbWxfY21uX2luZm8gZG9uZSBwb2xs
-aW5nIHRpbWVvdXQKTm92IDI3IDE4OjA2OjA0IGRlc2t0b3Aga2VybmVsOiBydHc4OV84OTIy
-YWUgMDAwMDowNzowMC4wOiBjMmggcmVnIHRpbWVvdXQKTm92IDI3IDE4OjA2OjA0IGRlc2t0
-b3Aga2VybmVsOiBydHc4OV84OTIyYWUgMDAwMDowNzowMC4wOiBoMmNfbHBzX21sX2Ntbl9p
-bmZvIGRvbmUgcG9sbGluZyB0aW1lb3V0Ck5vdiAyNyAxODowNjowNyBkZXNrdG9wIGtlcm5l
-bDogcnR3ODlfODkyMmFlIDAwMDA6MDc6MDAuMDogYzJoIHJlZyB0aW1lb3V0Ck5vdiAyNyAx
-ODowNjowNyBkZXNrdG9wIGtlcm5lbDogcnR3ODlfODkyMmFlIDAwMDA6MDc6MDAuMDogaDJj
-X2xwc19tbF9jbW5faW5mbyBkb25lIHBvbGxpbmcgdGltZW91dApOb3YgMjcgMTg6MDY6MTAg
-ZGVza3RvcCBrZXJuZWw6IHJ0dzg5Xzg5MjJhZSAwMDAwOjA3OjAwLjA6IGMyaCByZWcgdGlt
-ZW91dApOb3YgMjcgMTg6MDY6MTAgZGVza3RvcCBrZXJuZWw6IHJ0dzg5Xzg5MjJhZSAwMDAw
-OjA3OjAwLjA6IGgyY19scHNfbWxfY21uX2luZm8gZG9uZSBwb2xsaW5nIHRpbWVvdXQKTm92
-IDI3IDE4OjA2OjEzIGRlc2t0b3Aga2VybmVsOiBydHc4OV84OTIyYWUgMDAwMDowNzowMC4w
-OiBjMmggcmVnIHRpbWVvdXQKTm92IDI3IDE4OjA2OjEzIGRlc2t0b3Aga2VybmVsOiBydHc4
-OV84OTIyYWUgMDAwMDowNzowMC4wOiBoMmNfbHBzX21sX2Ntbl9pbmZvIGRvbmUgcG9sbGlu
-ZyB0aW1lb3V0Ck5vdiAyNyAxODowNjoxNiBkZXNrdG9wIGtlcm5lbDogcnR3ODlfODkyMmFl
-IDAwMDA6MDc6MDAuMDogYzJoIHJlZyB0aW1lb3V0Ck5vdiAyNyAxODowNjoxNiBkZXNrdG9w
-IGtlcm5lbDogcnR3ODlfODkyMmFlIDAwMDA6MDc6MDAuMDogaDJjX2xwc19tbF9jbW5faW5m
-byBkb25lIHBvbGxpbmcgdGltZW91dApOb3YgMjcgMTg6MDY6MTkgZGVza3RvcCBrZXJuZWw6
-IHJ0dzg5Xzg5MjJhZSAwMDAwOjA3OjAwLjA6IGMyaCByZWcgdGltZW91dApOb3YgMjcgMTg6
-MDY6MTkgZGVza3RvcCBrZXJuZWw6IHJ0dzg5Xzg5MjJhZSAwMDAwOjA3OjAwLjA6IGgyY19s
-cHNfbWxfY21uX2luZm8gZG9uZSBwb2xsaW5nIHRpbWVvdXQKTm92IDI3IDE4OjA2OjIyIGRl
-c2t0b3Aga2VybmVsOiBydHc4OV84OTIyYWUgMDAwMDowNzowMC4wOiBjMmggcmVnIHRpbWVv
-dXQKTm92IDI3IDE4OjA2OjIyIGRlc2t0b3Aga2VybmVsOiBydHc4OV84OTIyYWUgMDAwMDow
-NzowMC4wOiBubyB0eCBmd2NtZCByZXNvdXJjZQpOb3YgMjcgMTg6MDY6MjIgZGVza3RvcCBr
-ZXJuZWw6IHJ0dzg5Xzg5MjJhZSAwMDAwOjA3OjAwLjA6IGZhaWxlZCB0byBzZW5kIGgyYwpO
-b3YgMjcgMTg6MDY6MjIgZGVza3RvcCBrZXJuZWw6IHJ0dzg5Xzg5MjJhZSAwMDAwOjA3OjAw
-LjA6IG5vIHR4IGZ3Y21kIHJlc291cmNlCk5vdiAyNyAxODowNjoyMiBkZXNrdG9wIGtlcm5l
-bDogcnR3ODlfODkyMmFlIDAwMDA6MDc6MDAuMDogZmFpbGVkIHRvIHNlbmQgaDJjCk5vdiAy
-NyAxODowNjoyMiBkZXNrdG9wIGtlcm5lbDogcnR3ODlfODkyMmFlIDAwMDA6MDc6MDAuMDog
-bm8gdHggZndjbWQgcmVzb3VyY2UKTm92IDI3IDE4OjA2OjIyIGRlc2t0b3Aga2VybmVsOiBy
-dHc4OV84OTIyYWUgMDAwMDowNzowMC4wOiBmYWlsZWQgdG8gc2VuZCBoMmMKTm92IDI3IDE4
-OjA2OjIyIGRlc2t0b3Aga2VybmVsOiBydHc4OV84OTIyYWUgMDAwMDowNzowMC4wOiBubyB0
-eCBmd2NtZCByZXNvdXJjZQpOb3YgMjcgMTg6MDY6MjIgZGVza3RvcCBrZXJuZWw6IHJ0dzg5
-Xzg5MjJhZSAwMDAwOjA3OjAwLjA6IGZhaWxlZCB0byBzZW5kIGgyYwpOb3YgMjcgMTg6MDY6
-MjIgZGVza3RvcCBrZXJuZWw6IHJ0dzg5Xzg5MjJhZSAwMDAwOjA3OjAwLjA6IG5vIHR4IGZ3
-Y21kIHJlc291cmNlCk5vdiAyNyAxODowNjoyMiBkZXNrdG9wIGtlcm5lbDogcnR3ODlfODky
-MmFlIDAwMDA6MDc6MDAuMDogZmFpbGVkIHRvIHNlbmQgaDJjCk5vdiAyNyAxODowNjoyMiBk
-ZXNrdG9wIGtlcm5lbDogcnR3ODlfODkyMmFlIDAwMDA6MDc6MDAuMDogbm8gdHggZndjbWQg
-cmVzb3VyY2UKTm92IDI3IDE4OjA2OjIyIGRlc2t0b3Aga2VybmVsOiBydHc4OV84OTIyYWUg
-MDAwMDowNzowMC4wOiBmYWlsZWQgdG8gc2VuZCBoMmMKTm92IDI3IDE4OjA2OjIyIGRlc2t0
-b3Aga2VybmVsOiBydHc4OV84OTIyYWUgMDAwMDowNzowMC4wOiBubyB0eCBmd2NtZCByZXNv
-dXJjZQpOb3YgMjcgMTg6MDY6MjIgZGVza3RvcCBrZXJuZWw6IHJ0dzg5Xzg5MjJhZSAwMDAw
-OjA3OjAwLjA6IGZhaWxlZCB0byBzZW5kIGgyYwpOb3YgMjcgMTg6MDY6MjIgZGVza3RvcCBr
-ZXJuZWw6IHJ0dzg5Xzg5MjJhZSAwMDAwOjA3OjAwLjA6IG5vIHR4IGZ3Y21kIHJlc291cmNl
-Ck5vdiAyNyAxODowNjoyMiBkZXNrdG9wIGtlcm5lbDogcnR3ODlfODkyMmFlIDAwMDA6MDc6
-MDAuMDogZmFpbGVkIHRvIHNlbmQgaDJjCg==
---------------ceu0x00K0XdiRZeVPni3WB56
-Content-Type: text/plain; charset=UTF-8; name="ver_linux.txt"
-Content-Disposition: attachment; filename="ver_linux.txt"
-Content-Transfer-Encoding: base64
+> >> I also compile-tested the remaining affected drivers, however i would
+> >> still be happy if the relevant maintainers (especially those of the
+> >> mellanox ethernet switch driver) could take a quick glance at the
+> >> code and verify that i am using the correct device as the parent
+> >> device.
+> > I think that the above paragraph is not relevant any more?
+>
+> You are right, however i originally meant to CC the mellanox maintainers =
+as
+> i was a bit unsure about the changes i made to their driver. I will rewor=
+k
+> this section in the next revision and CC the mellanox maintainers.
+>
+> >
+> >> This work is also necessary for extending the ACPI thermal zone driver
+> >> to support the _TZD ACPI object in the future.
+> > I'm still unsure why _TZD support requires the ability to set a
+> > thermal zone parent device.
+>
+> _TZD allows the ACPI thermal zone to bind to cooling devices other than A=
+CPI fans
+> and ACPI processors, like ACPI batteries.
 
-SWYgc29tZSBmaWVsZHMgYXJlIGVtcHR5IG9yIGxvb2sgdW51c3VhbCB5b3UgbWF5IGhhdmUg
-YW4gb2xkIHZlcnNpb24uCkNvbXBhcmUgdG8gdGhlIGN1cnJlbnQgbWluaW1hbCByZXF1aXJl
-bWVudHMgaW4gRG9jdW1lbnRhdGlvbi9DaGFuZ2VzLgoKTGludXggZGVza3RvcCA2LjE3Ljgt
-YXJjaDEtMSAjMSBTTVAgUFJFRU1QVF9EWU5BTUlDIEZyaSwgMTQgTm92IDIwMjUgMDY6NTQ6
-MjAgKzAwMDAgeDg2XzY0IEdOVS9MaW51eAoKR05VIEMgICAgICAgICAgICAgICAJMTUuMi4x
-CkdOVSBNYWtlICAgICAgICAgICAgCTQuNC4xCkJpbnV0aWxzICAgICAgICAgICAgCTIuNDUu
-MQpVdGlsLWxpbnV4ICAgICAgICAgIAkyLjQxLjIKTW91bnQgICAgICAgICAgICAgICAJMi40
-MS4yCk1vZHVsZS1pbml0LXRvb2xzICAgCTM0LjIKRTJmc3Byb2dzICAgICAgICAgICAJMS40
-Ny4zClBQUCAgICAgICAgICAgICAgICAgCTIuNS4yCkJpc29uICAgICAgICAgICAgICAgCTMu
-OC4yCkZsZXggICAgICAgICAgICAgICAgCTIuNi40CkxpbnV4IEMrKyBMaWJyYXJ5ICAgCTYu
-MC4zNApEeW5hbWljIGxpbmtlciAobGRkKQkyLjQyClByb2NwcyAgICAgICAgICAgICAgCTQu
-MC41CktiZCAgICAgICAgICAgICAgICAgCTIuOS4wCkNvbnNvbGUtdG9vbHMgICAgICAgCTIu
-OS4wClNoLXV0aWxzICAgICAgICAgICAgCTkuOQpVZGV2ICAgICAgICAgICAgICAgIAkyNTgK
-V2lyZWxlc3MtdG9vbHMgICAgICAJMzAKTW9kdWxlcyBMb2FkZWQgICAgICAJODQyX2NvbXBy
-ZXNzIDg0Ml9kZWNvbXByZXNzIGFjcGlfcGFkIGFlc25pX2ludGVsIGFmX2FsZyBhbGdpZl9o
-YXNoIGFsZ2lmX3NrY2lwaGVyIGFtZF9hdGwgYW1kZ3B1IGFtZHhjcCBibHVldG9vdGggYm5l
-cCBidGJjbSBidGludGVsIGJ0bXRrIGJ0cnRsIGJ0dXNiIGNjbSBjY3AgY2VjIGNmZzgwMjEx
-IGNtYWMgY3J5cHRvX3VzZXIgZG1fbW9kIGRybV9idWRkeSBkcm1fZGlzcGxheV9oZWxwZXIg
-ZHJtX2V4ZWMgZHJtX3BhbmVsX2JhY2tsaWdodF9xdWlya3MgZHJtX3N1YmFsbG9jX2hlbHBl
-ciBkcm1fdHRtX2hlbHBlciBmYXQgZmZfbWVtbGVzcyBnaGFzaF9jbG11bG5pX2ludGVsIGdp
-Z2FieXRlX3dtaSBncHVfc2NoZWQgaGlkX2xvZ2l0ZWNoX2RqIGhpZF9sb2dpdGVjaF9oaWRw
-cCBoaWRfcGxheXN0YXRpb24gaTJjX2FsZ29fYml0IGkyY19kZXYgaTJjX3BpaXg0IGkyY19z
-bWJ1cyBpbnRlbF9yYXBsX2NvbW1vbiBpbnRlbF9yYXBsX21zciBpcDZ0YWJsZV9maWx0ZXIg
-aXA2dGFibGVfbmF0IGlwNl90YWJsZXMgaXB0YWJsZV9maWx0ZXIgaXB0YWJsZV9uYXQgaXBf
-dGFibGVzIGlycWJ5cGFzcyBqb3lkZXYgazEwdGVtcCBrdm0ga3ZtX2FtZCBsZWRfY2xhc3Nf
-bXVsdGljb2xvciBsaWJhcmM0IGxpYnBoeSBsb29wIGx6NF9jb21wcmVzcyBsejRoY19jb21w
-cmVzcyBtYWM4MDIxMSBtYWNfaGlkIG1jIG1kaW9fYnVzIG1kaW9fZGV2cmVzIG1vdXNlZGV2
-IG5mX2Nvbm50cmFjayBuZl9kZWZyYWdfaXB2NCBuZl9kZWZyYWdfaXB2NiBuZl9uYXQgbmZu
-ZXRsaW5rIG5mX3RhYmxlcyBudHN5bmMgbnZpZGlhIG52aWRpYV9kcm0gbnZpZGlhX21vZGVz
-ZXQgbnZpZGlhX3V2bSBudm1lIG52bWVfYXV0aCBudm1lX2NvcmUgbnZtZV9rZXlyaW5nIHBj
-c3BrciBwa2NzOF9rZXlfcGFyc2VyIHBvbHl2YWxfY2xtdWxuaSByODE2OSByYXBsIHJlYWx0
-ZWsgcmZjb21tIHJma2lsbCBydHc4OV84OTIyYSBydHc4OV84OTIyYWUgcnR3ODlfY29yZSBy
-dHc4OV9wY2kgc25kIHNuZF9oZGFfY29kZWMgc25kX2hkYV9jb2RlY19hbGM2NjIgc25kX2hk
-YV9jb2RlY19hdGloZG1pIHNuZF9oZGFfY29kZWNfZ2VuZXJpYyBzbmRfaGRhX2NvZGVjX2hk
-bWkgc25kX2hkYV9jb2RlY19udmhkbWkgc25kX2hkYV9jb2RlY19yZWFsdGVrX2xpYiBzbmRf
-aGRhX2NvcmUgc25kX2hkYV9pbnRlbCBzbmRfaHJ0aW1lciBzbmRfaHdkZXAgc25kX2ludGVs
-X2RzcGNmZyBzbmRfaW50ZWxfc2R3X2FjcGkgc25kX3BjbSBzbmRfcmF3bWlkaSBzbmRfc2Vx
-IHNuZF9zZXFfZGV2aWNlIHNuZF9zZXFfZHVtbXkgc25kX3RpbWVyIHNuZF91bXAgc25kX3Vz
-Yl9hdWRpbyBzbmRfdXNibWlkaV9saWIgc291bmRjb3JlIHNwNTEwMF90Y28gdHRtIHR1biB1
-aGlkIHVpbnB1dCB2ZmF0IHZpZGVvIHdtaSB3bWlfYm1vZiB4X3RhYmxlcyB4dF9tYXJrIHh0
-X01BU1FVRVJBREUgeHRfdGNwdWRwIHpyYW0K
+No, it is not for cooling devices if my reading of the specification
+is correct.  It says:
 
---------------ceu0x00K0XdiRZeVPni3WB56--
+"_TZD (Thermal Zone Devices)
+
+This optional object evaluates to a package of device names. Each name
+corresponds to a device in the ACPI namespace that is associated with
+the thermal zone. The temperature reported by the thermal zone is
+roughly correspondent to that of each of the devices."
+
+And then
+
+"The list of devices returned by the control method need not be a
+complete and absolute list of devices affected by the thermal zone.
+However, the package should at least contain the devices that would
+uniquely identify where this thermal zone is located in the machine.
+For example, a thermal zone in a docking station should include a
+device in the docking station, a thermal zone for the CD-ROM bay,
+should include the CD-ROM."
+
+So IIUC this is a list of devices allowing the location of the thermal
+zone to be figured out.  There's nothing about cooling in this
+definition.
+
+> This however will currently not work as
+> the ACPI thermal zone driver uses the private drvdata of the cooling devi=
+ce to
+> determine if said cooling device should bind. This only works for ACPI fa=
+ns and
+> processors due to the fact that those drivers store a ACPI device pointer=
+ inside
+> drvdata, something the ACPI thermal zone expects.
+
+I'm not sure I understand the above.
+
+There is a list of ACPI device handles per trip point, as returned by
+either _PSL or _ALx.  Devices whose handles are in that list will be
+bound to the thermal zone, so long as there are struct acpi_device
+objects representing them which is verified with the help of the
+devdata field in struct thermal_cooling_device.
+
+IOW, cooling device drivers that create struct thermal_cooling_device
+objects representing them are expected to set devdata in those objects
+to point to struct acpi_device objects corresponding to their ACPI
+handles, but in principle acpi_thermal_should_bind_cdev() might as
+well just use the handles themselves.  It just needs to know that
+there is a cooling driver on the other side of the ACPI handle.
+
+The point is that a cooling device to be bound to an ACPI thermal zone
+needs an ACPI handle in the first place to be listed in _PSL or _ALx.
+
+> As we cannot require all cooling devices to store an ACPI device pointer =
+inside
+> their drvdata field in order to support ACPI,
+
+Cooling devices don't store ACPI device pointers in struct
+thermal_cooling_device objects, ACPI cooling drivers do, and there are
+two reasons to do that: (1) to associate a given struct
+thermal_cooling_device with an ACPI handle and (2) to let
+acpi_thermal_should_bind_cdev() know that the cooling device is
+present and functional.
+
+This can be changed to store an ACPI handle in struct
+thermal_cooling_device and acpi_thermal_should_bind_cdev() may just
+verify that the device is there by itself.
+
+> we must use a more generic approach.
+
+I'm not sure what use case you are talking about.
+
+Surely, devices with no representation in the ACPI namespace cannot be
+bound to ACPI thermal zones.  For devices that have a representation
+in the ACPI namespace, storing an ACPI handle in devdata should not be
+a problem.
+
+> I was thinking about using the acpi_handle of the parent device instead o=
+f messing
+> with the drvdata field, but this only works if the parent device pointer =
+of the
+> cooling device is populated.
+>
+> (Cooling devices without a parent device would then be ignored by the ACP=
+I thermal
+> zone driver, as such cooling devices cannot be linked to ACPI).
+
+It can be arranged this way, but what's the practical difference?
+Anyone who creates a struct thermal_cooling_device and can set its
+parent pointer to a device with an ACPI companion, may as well set its
+devdata to point to that companion directly - or to its ACPI handle if
+that's preferred.
 
