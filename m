@@ -1,115 +1,115 @@
-Return-Path: <linux-wireless+bounces-29397-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-29398-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id 769C2C9064B
-	for <lists+linux-wireless@lfdr.de>; Fri, 28 Nov 2025 01:22:38 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4D757C90778
+	for <lists+linux-wireless@lfdr.de>; Fri, 28 Nov 2025 02:04:14 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 52BD14E1051
-	for <lists+linux-wireless@lfdr.de>; Fri, 28 Nov 2025 00:22:37 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id ECED13AA135
+	for <lists+linux-wireless@lfdr.de>; Fri, 28 Nov 2025 01:04:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CE9EC149C7B;
-	Fri, 28 Nov 2025 00:22:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C53C42192F5;
+	Fri, 28 Nov 2025 01:04:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=realtek.com header.i=@realtek.com header.b="MhffCCAJ"
+	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="r2uPPnlp"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from bombadil.infradead.org (bombadil.infradead.org [198.137.202.133])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BE7931E3DDE
-	for <linux-wireless@vger.kernel.org>; Fri, 28 Nov 2025 00:22:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=211.75.126.72
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B1B551B87EB;
+	Fri, 28 Nov 2025 01:04:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.137.202.133
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764289355; cv=none; b=fgXvtodc1K3YLIZYS4btvrb/2EMAYjbzME2V9EA/b2Q8Mj5sjrr6dlgsQiUukC6c7YiC3S/13SnijQ+7kLEDP3/m85+Zk8jIKI/9I8GejnmsHbaeyymK/cT3WxQJLLlp0UipeKjnmmX29JOEbiFGVyrCJa1LuPjJvHcenxPK3L4=
+	t=1764291850; cv=none; b=C0hX2jkAA7TLrtyFvKugXteONEYK98la8kRCsSgwqOD66sbDQNrmyb+wLYtdlNn7wUkWSmWe33GtwPWQhsxSlQOMbkqwm0uQKE87pau64j9GR/rHhV20BjML3FeGTtYPvd2iM+A2kc6Y0tgn5yv/UvDSFL3LWVrsfWicRPeVWzI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764289355; c=relaxed/simple;
-	bh=WBLXsoPzr/NlT/dN6dn+Bh7OxXuyRJDGJsYGAbEznII=;
-	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:MIME-Version; b=PtKQVuRUrd7QNXGLa7gOxQxm4pCDlADOV8DPcHm181fwRjBpxEMrzfAvN43LRbTjhSCrVjz0vXJFiVY/cCS2wuE/wkQlXxGa2VbMsnAfKIfV60OlK88CC1eSOOSkNhVy9aqOp7MEPnowbtCBtPaWWGupW4byRUFUuHGKfoha3EM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com; spf=pass smtp.mailfrom=realtek.com; dkim=pass (2048-bit key) header.d=realtek.com header.i=@realtek.com header.b=MhffCCAJ; arc=none smtp.client-ip=211.75.126.72
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=realtek.com
-X-SpamFilter-By: ArmorX SpamTrap 5.80 with qID 5AS0MCDS03836677, This message is accepted by code: ctloc85258
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=realtek.com; s=dkim;
-	t=1764289332; bh=WBLXsoPzr/NlT/dN6dn+Bh7OxXuyRJDGJsYGAbEznII=;
-	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:Content-Transfer-Encoding:MIME-Version;
-	b=MhffCCAJ4Hli2z00f5zvNOxls+IfvYfuDhVgQ1zC85bb+zEI3FB6S1XDSB5B/DwZq
-	 oSGUTaFJeg8BVmbm77lEJpTR303TWNj1gEVgUYYsfj/CU/c63auCz4/+BkFaYZVAuh
-	 pwgljEGH1U79tD/0YZ6MBuaS+PMoZhHkMIBBxxQENEjGvK4AlFTccGiHPioIDMAXWJ
-	 zzXuYgu+XOyUnvzSWdG5GVzuCne6a9FfLllpX+WFsixaOy429oUwXzPLGJ1lcja+M9
-	 mLowSh6ocUgz7GsNbJrKrAhXRY1aj8xybi8ZLfit49FrRMFsQp+/hslLfY+o0mW8JT
-	 2zlwjfaEaGprQ==
-Received: from mail.realtek.com (rtkexhmbs04.realtek.com.tw[10.21.1.54])
-	by rtits2.realtek.com.tw (8.15.2/3.21/5.94) with ESMTPS id 5AS0MCDS03836677
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Fri, 28 Nov 2025 08:22:12 +0800
-Received: from RTKEXHMBS06.realtek.com.tw (10.21.1.56) by
- RTKEXHMBS04.realtek.com.tw (10.21.1.54) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.27; Fri, 28 Nov 2025 08:22:12 +0800
-Received: from RTKEXHMBS06.realtek.com.tw ([::1]) by
- RTKEXHMBS06.realtek.com.tw ([fe80::744:4bc9:832c:9b7e%10]) with mapi id
- 15.02.1544.027; Fri, 28 Nov 2025 08:22:12 +0800
-From: Ping-Ke Shih <pkshih@realtek.com>
-To: Orel Lazri <hi@orellazri.com>
-CC: "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>
-Subject: RE: Bug Report: System slow down and hang with rtw89 driver under
- load
-Thread-Topic: Bug Report: System slow down and hang with rtw89 driver under
- load
-Thread-Index: AQHcX8HlIEuXB6oQwE6RUwoYRLsI7bUHN14A
-Date: Fri, 28 Nov 2025 00:22:12 +0000
-Message-ID: <84497c2d6b2941b4b664ae122a7be48a@realtek.com>
-References: <8c32f4e8-b5fb-4c3e-ba2f-06c03d826fe8@orellazri.com>
-In-Reply-To: <8c32f4e8-b5fb-4c3e-ba2f-06c03d826fe8@orellazri.com>
-Accept-Language: en-US, zh-TW
-Content-Language: zh-TW
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+	s=arc-20240116; t=1764291850; c=relaxed/simple;
+	bh=u1DLrAR42ZJoXkwxYCBzYk/hzRVwcFcfj0mxEl0ya80=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=jc79krp+BzFsq44bc5te5B0mpAXvwS0mpBih7uyCEyQ3NcUNUr6GTMMYlI7JWm8XtZInGxB1EhB1seGk0uaw7K2cbZ29REuBaQfGaK5+G5K0y9/2gQk3Q6xcGHawmvwWrH+dz3HnUxOGmOBLvNPlAKgOc+VPdgm+YlnZ21v8PAY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org; spf=none smtp.mailfrom=infradead.org; dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b=r2uPPnlp; arc=none smtp.client-ip=198.137.202.133
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=infradead.org
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=bombadil.20210309; h=Content-Transfer-Encoding:
+	MIME-Version:Message-ID:Date:Subject:Cc:To:From:Sender:Reply-To:Content-Type:
+	Content-ID:Content-Description:In-Reply-To:References;
+	bh=UEOCDML1vgJ6otyKocfjE2Jgo6ba+jFiMjqlYw0GOP0=; b=r2uPPnlpjMQ8lwJadGjCByKLlt
+	jrhkjKRCkJoiP3y16e2WLuMNt+s5khmMYlV+KKYOyLhswONkQAzh5HNbvj2qYGUq809om0UG4V2gY
+	2n9F0lAEYDmIETyvqZ7gjvJhZMfobMax7Vr5uIGOhd6HZ6yFHZgnWh6DJnT0XJr7kJSPQHKV0Mgr9
+	V/QUSA/3uphNHf7Fns6UoxXvNS5OR46TBQJ3xtXQjysM+AtWho9G8PhQu5Qo+YQFbPWW9j9A/oClF
+	93+uKqdeHUm/sHo2LqeOrrz+WVVShnOn2iupje7tkXPtKhpKZqLsxrjZ0B/Ry+Mm/e1eZJ5Jn7ftd
+	qMCLlCDw==;
+Received: from [50.53.43.113] (helo=bombadil.infradead.org)
+	by bombadil.infradead.org with esmtpsa (Exim 4.98.2 #2 (Red Hat Linux))
+	id 1vOmu2-0000000HNDq-17oM;
+	Fri, 28 Nov 2025 01:04:02 +0000
+From: Randy Dunlap <rdunlap@infradead.org>
+To: netdev@vger.kernel.org
+Cc: Randy Dunlap <rdunlap@infradead.org>,
+	Jiri Slaby <jirislaby@kernel.org>,
+	Nick Kossifidis <mickflemm@gmail.com>,
+	Luis Chamberlain <mcgrof@kernel.org>,
+	Johannes Berg <johannes@sipsolutions.net>,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	linux-wireless@vger.kernel.org
+Subject: [PATCH net-next] ath5k: debug.h: fix enum ath5k_debug_level kernel-doc
+Date: Thu, 27 Nov 2025 17:04:01 -0800
+Message-ID: <20251128010401.546506-1-rdunlap@infradead.org>
+X-Mailer: git-send-email 2.52.0
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 
-T3JlbCBMYXpyaSA8aGlAb3JlbGxhenJpLmNvbT4gd3JvdGU6DQo+IERlYXIgUGluZy1LZSBTaGlo
-LA0KPiANCj4gSSBhbSBlbmNvdW50ZXJpbmcgYW4gdW5wcmVkaWN0YWJsZSBidWcgd2l0aCB0aGUg
-UmVhbHRlayBydHc4OSB3aXJlbGVzcw0KPiBkcml2ZXIgKHJ0dzg5Xzg5MjJhZSkgb24gbXkgc3lz
-dGVtLiBTb21ldGltZXMsIGVzcGVjaWFsbHkgd2hlbg0KPiBkb3dubG9hZGluZyBmaWxlcyBvciB1
-bmRlciBoZWF2aWVyIG5ldHdvcmsgbG9hZCwgbXkgc3lzdGVtIHNsb3dzIGRvd24NCj4gc2lnbmlm
-aWNhbnRseSBhbmQgZXZlbnR1YWxseSBoYW5ncy4NCg0KSG93IGhlYXZ5IGlzIHRoZSBuZXR3b3Jr
-IGxvYWQ/DQoNCiJzeXN0ZW0gc2xvd3MgZG93biIgbWVhbnMgd2hvbGUgc3lzdGVtIGJlY29tZSBs
-YWc/IE9yIG5ldHdvcmsgc2xvd3M/DQoiaGFuZ3MiIHJlZmVycyB0byBuZXR3b3JrIChXaUZpKT8g
-b3Igc3lzdGVtPw0KDQo+IA0KPiBJbiB0aGUga2VybmVsIGxvZyAoZG1lc2cpLCBJIG9ic2VydmUg
-cmVwZWF0ZWQgbGluZXMgbGlrZSB0aGVzZSBsb29waW5nDQo+IGNvbnRpbnVvdXNseToNCj4gDQo+
-IE5vdiAyNyAxODowNjoyMiBkZXNrdG9wIGtlcm5lbDogcnR3ODlfODkyMmFlIDAwMDA6MDc6MDAu
-MDogbm8gdHggZndjbWQNCj4gcmVzb3VyY2UNCj4gTm92IDI3IDE4OjA2OjIyIGRlc2t0b3Aga2Vy
-bmVsOiBydHc4OV84OTIyYWUgMDAwMDowNzowMC4wOiBmYWlsZWQgdG8NCj4gc2VuZCBoMmMNCg0K
-Tm9ybWFsbHksIHRoaXMgaXMgYmVjYXVzZSBvZiBmaXJtd2FyZSBzdG9wcGVkLiANCg0KPiANCj4g
-SSBoYXZlIGF0dGFjaGVkIGEgc25pcHBldCBvZiB0aGUgZG1lc2cgbG9nIHRoYXQgaW5jbHVkZXMg
-dGhlc2UgYW5kIG90aGVyDQo+IHJlbGV2YW50IGxpbmVzIGZvciB5b3VyIHJlZmVyZW5jZSwgYWxv
-bmcgd2l0aCB0aGUgb3V0cHV0IG9mIHRoZQ0KPiB2ZXJfbGludXggc2NyaXB0IGFuZCBzb21lIG1v
-cmUgcG90ZW50aWFsbHkgdXNlZnVsIGluZm9ybWF0aW9uLg0KPiANCj4gSSdtIHJ1bm5pbmcgb24g
-a2VybmVsIHJlbGVhc2UgIjYuMTcuOC1hcmNoMS0xIiwgYW5kIHRoaXMgaXMgdGhlIHdpcmVsZXNz
-DQo+IE5JQyBpbiBteSBtb3RoZXJib2FyZDoNCj4gDQo+IDA3OjAwLjAgTmV0d29yayBjb250cm9s
-bGVyIFswMjgwXTogUmVhbHRlayBTZW1pY29uZHVjdG9yIENvLiwgTHRkLg0KPiBSVEw4OTIyQUUg
-ODAyLjExYmUgUENJZSBXaXJlbGVzcyBOZXR3b3JrIEFkYXB0ZXIgWzEwZWM6ODkyMl0gKHJldiAw
-MSkNCj4gICAgICAgICAgU3Vic3lzdGVtOiBSZWFsdGVrIFNlbWljb25kdWN0b3IgQ28uLCBMdGQu
-IFJUTDg5MjJBRSA4MDIuMTFiZQ0KPiBQQ0llIFdpcmVsZXNzIE5ldHdvcmsgQWRhcHRlciBbMTBl
-Yzo4OTIyXQ0KPiAgICAgICAgICBLZXJuZWwgZHJpdmVyIGluIHVzZTogcnR3ODlfODkyMmFlDQo+
-ICAgICAgICAgIEtlcm5lbCBtb2R1bGVzOiBydHc4OV84OTIyYQ0KPiANCj4gUGxlYXNlIGxldCBt
-ZSBrbm93IGlmIHlvdSBuZWVkIGFueSBhZGRpdGlvbmFsIGluZm9ybWF0aW9uIG9yIGlmIEkgY2Fu
-DQo+IGhlbHAgdGVzdCBwb3RlbnRpYWwgZml4ZXMuDQoNClNvbWUgcXVlc3Rpb25zIGFuZCBhY3Rp
-b25zOg0KMS4gV2hhdCdzIHRoZSBmaXJtd2FyZSB2ZXJzaW9uIHlvdSBhcmUgdXNpbmc/IA0KICAg
-KHNlZSBrZXJuZWwgbG9nIHdoZW4gaXQgcHJvYmVzIFJUTDg5MjJBRSkNCjIuIFRoZSBhdHRhY2ht
-ZW50IHNob3dzIHRoYXQgU0VSIGhhcHBlbmVkLiBUaGF0IG1lYW5zIGhhcmR3YXJlIG9yIGZpcm13
-YXJlDQogICBnZXRzIGFibm9ybWFsLiBQbGVhc2UgY29sbGVjdCBtb3JlIGluc3RhbnRzIGZvciB1
-cy4NCjMuIFR1cm5pbmcgb2ZmIFdpRmkgcG93ZXIgc2F2ZSBjb3VsZCBoZWxwPyANCiAgIHN1ZG8g
-aXcgd2xhbjAgc2V0IHBvd2VyX3NhdmUgb2ZmDQo0LiBUdXJuaW5nIG9mZiBBU1BNIGZvbGxvd3Mg
-TGFycnkncyBSRUFETUUgWzFdLg0KDQpbMV0gaHR0cHM6Ly9naXRodWIuY29tL2x3ZmluZ2VyL3J0
-dzg5ICBmaWxlOiA3MC1ydHc4OS5jb25mDQoNCg0KDQoNCg0K
+Add a description for ATH5K_DEBUG_ANI and delete the descriptions for
+3 undefined enum descriptions to prevent these warnings:
+
+Warning: drivers/net/wireless/ath/ath5k/debug.h:111 Enum value
+ 'ATH5K_DEBUG_ANI' not described in enum 'ath5k_debug_level'
+Warning: drivers/net/wireless/ath/ath5k/debug.h:111 Excess enum value
+ '%ATH5K_DEBUG_DUMP_RX' description in 'ath5k_debug_level'
+Warning: drivers/net/wireless/ath/ath5k/debug.h:111 Excess enum value
+ '%ATH5K_DEBUG_DUMP_TX' description in 'ath5k_debug_level'
+Warning: drivers/net/wireless/ath/ath5k/debug.h:111 Excess enum value
+ '%ATH5K_DEBUG_TRACE' description in 'ath5k_debug_level'
+
+Signed-off-by: Randy Dunlap <rdunlap@infradead.org>
+---
+Cc: Jiri Slaby <jirislaby@kernel.org>
+Cc: Nick Kossifidis <mickflemm@gmail.com>
+Cc: Luis Chamberlain <mcgrof@kernel.org>
+Cc: Johannes Berg <johannes@sipsolutions.net>
+Cc: Andrew Lunn <andrew+netdev@lunn.ch>
+Cc: "David S. Miller" <davem@davemloft.net>
+Cc: Eric Dumazet <edumazet@google.com>
+Cc: Jakub Kicinski <kuba@kernel.org>
+Cc: Paolo Abeni <pabeni@redhat.com>
+Cc: linux-wireless@vger.kernel.org
+---
+ drivers/net/wireless/ath/ath5k/debug.h |    4 +---
+ 1 file changed, 1 insertion(+), 3 deletions(-)
+
+--- linux-next-20251127.orig/drivers/net/wireless/ath/ath5k/debug.h
++++ linux-next-20251127/drivers/net/wireless/ath/ath5k/debug.h
+@@ -80,11 +80,9 @@ struct ath5k_dbg_info {
+  * @ATH5K_DEBUG_CALIBRATE: periodic calibration
+  * @ATH5K_DEBUG_TXPOWER: transmit power setting
+  * @ATH5K_DEBUG_LED: led management
+- * @ATH5K_DEBUG_DUMP_RX: print received skb content
+- * @ATH5K_DEBUG_DUMP_TX: print transmit skb content
+  * @ATH5K_DEBUG_DUMPBANDS: dump bands
+  * @ATH5K_DEBUG_DMA: debug dma start/stop
+- * @ATH5K_DEBUG_TRACE: trace function calls
++ * @ATH5K_DEBUG_ANI: debug Adaptive Noise Immunity
+  * @ATH5K_DEBUG_DESC: descriptor setup
+  * @ATH5K_DEBUG_ANY: show at any debug level
+  *
 
