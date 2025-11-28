@@ -1,57 +1,57 @@
-Return-Path: <linux-wireless+bounces-29411-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-29412-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id 73D53C92513
-	for <lists+linux-wireless@lfdr.de>; Fri, 28 Nov 2025 15:26:10 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 45589C92516
+	for <lists+linux-wireless@lfdr.de>; Fri, 28 Nov 2025 15:26:14 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 29A5A4EB583
-	for <lists+linux-wireless@lfdr.de>; Fri, 28 Nov 2025 14:22:56 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id BC9A34EB685
+	for <lists+linux-wireless@lfdr.de>; Fri, 28 Nov 2025 14:22:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DEF7933120D;
-	Fri, 28 Nov 2025 14:21:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8B5BD30ACF0;
+	Fri, 28 Nov 2025 14:21:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b="r6GOkjAC"
+	dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b="m+3pV8gI"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from sipsolutions.net (s3.sipsolutions.net [168.119.38.16])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1931624DCE5
-	for <linux-wireless@vger.kernel.org>; Fri, 28 Nov 2025 14:21:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 117C323C512
+	for <linux-wireless@vger.kernel.org>; Fri, 28 Nov 2025 14:21:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=168.119.38.16
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764339677; cv=none; b=QLhKTK1t+D14uNgxDznVRmyuj6RXteGGlKQI00GM9mbujEIWftCYlxhqcFsRSBesiJPKEAMp4rlbjshOiAgeyB83FMgiaF9mKgnfp3X93ZCLDWQfVJzy4q2Qv9NPSqruKgkydOHgS9+XheBQk7/zGqrSHkhwIiIlIYsI9gSBaM0=
+	t=1764339679; cv=none; b=iyKWERGzdMO9USH1FFtHuvVirP4aQSZnhqv7qGdcn+SX4l89bfXREEMJyv8qP6Do3NWOLs/CDKgUryh9EoXAPajqAOeFvwdEzY7klpluJ8nF3EAWy/jLE3j18bbtpvTseKoxRwZhHqeQzElKurCF2Q6EdVadRNJi7hAfL4Xf8C8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764339677; c=relaxed/simple;
-	bh=+6lYwG3ZAVTWpjlYJTwxFvxgPOiydo9XrWgaixQ/0DQ=;
+	s=arc-20240116; t=1764339679; c=relaxed/simple;
+	bh=+6kJWpRytFiHy3MT0cByOTKASXpWnqOfvtkeoDnAYmk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=qcBCAQgfTynUQ2tEGwbBf2YAxbnKEvLsAbN4uBVekLIY88wXl27Xt0dhDEF27B9vcpXyOktmLe8cNnL1VJeHIILyd15RqSFKVALxbFeTOzBlHreqfOMECVUq5gCBpocJqfJEw5dN941FgEnJUAB2LN8l+B13sEvWlVlvB4ZnNJI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net; spf=pass smtp.mailfrom=sipsolutions.net; dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b=r6GOkjAC; arc=none smtp.client-ip=168.119.38.16
+	 MIME-Version; b=iyKGbps/yP7LIP7FL3R3s3AIoHNHser2om2X/d954kDn00SfQzhcQ6Xm2oBo150Qu0dbbjLt8u/Ww8+TOZ10F2tIOn54+dsV/Qk+2ttPx6FNW4xoQxQpbMzk859xUE+IzS8kARLh7GdCOPnuQ5sqKk8qY0ssApwIzh+rKpNnGnU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net; spf=pass smtp.mailfrom=sipsolutions.net; dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b=m+3pV8gI; arc=none smtp.client-ip=168.119.38.16
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sipsolutions.net
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=sipsolutions.net; s=mail; h=Content-Transfer-Encoding:MIME-Version:
 	References:In-Reply-To:Message-ID:Date:Subject:Cc:To:From:Content-Type:Sender
 	:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
-	Resent-Cc:Resent-Message-ID; bh=P3gIj+zlpr4q8SVIpVQNii2aQXN79SCxXFa8lz3ivjA=;
-	t=1764339676; x=1765549276; b=r6GOkjACUpWI323c+rj1r1DttCcayvWyMpaPdzoCwV2rMKi
-	fO/19JQMs0tcywwMTEYv+SRHNH9JcFJ0/dxgFD6yF6oPTO2k1nI2LI3Ubh7M13fdG8/tqqY0wlDnB
-	HKX2xg7viA2peoQQJgUeNhs9o0k7lIZcKSrh+Pk2LIzRkMIehejW31+hgSoMehew4V+AJBLzOqhzU
-	20XgLDoczhaF3uUKC9yxECdV2RXo0pETUAlAitLxONnbi6ESCCY6JuMvp4YAka1M/gVBJG9OGD7Km
-	onNFpzoGb7REAvZ6qApscNl3E7EV6AocWHsN6OtsGtwsTui/M1/n7AXoNSEizjnw==;
+	Resent-Cc:Resent-Message-ID; bh=arTCf76PI2C/mExXUmxMzjob7QF44d/FJaXEQ476/qk=;
+	t=1764339677; x=1765549277; b=m+3pV8gIsrHGrAfFRkoHaT+F3XyFY6vZ7UXYWgpoWg88ZJX
+	WCVYko34K5dg8GT9XHp0CZ+gWS/T4iXtvj7hVB6oVjY/Ipt7MzkNPfNtj8C9vTmeSwI4Eb6NEmDVO
+	4XgU7VG7GHPfbw/nKTu9Xub1k51uQpM5+iJk4Rl1WE5hy9MhEBOnQl8BbHLFP4uJT3F3ecO6Mv9w2
+	aquWx3q4LFIslHMKOKq3Y56VSvNm5D8INqTPsopAJBo+ueKpwz+zQGOEGlay2nMeExO8JV9iQUsLk
+	f/KdSnZPdWxyjlYA1MxrUIXDekXamfe3o/fyr9JZjlTp1QaHxI8W+efB7bsiyd7g==;
 Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
 	(Exim 4.98.2)
 	(envelope-from <benjamin@sipsolutions.net>)
-	id 1vOzLU-00000003926-2ilL;
-	Fri, 28 Nov 2025 15:21:13 +0100
+	id 1vOzLW-00000003926-0l4N;
+	Fri, 28 Nov 2025 15:21:14 +0100
 From: Benjamin Berg <benjamin@sipsolutions.net>
 To: linux-wireless@vger.kernel.org
 Cc: Benjamin Berg <benjamin.berg@intel.com>
-Subject: [PATCH wireless-next 11/18] wifi: mac80211: add a TXQ for management frames on NAN devices
-Date: Fri, 28 Nov 2025 15:15:49 +0100
-Message-ID: <20251128151537.82334ed58b34.Iee95758287c276155fbd7779d3f263339308e083@changeid>
+Subject: [PATCH wireless-next 12/18] wifi: mac80211_hwsim: limit TX of frames to the NAN DW
+Date: Fri, 28 Nov 2025 15:15:50 +0100
+Message-ID: <20251128151537.082e5e0b59fc.Id6780e2f7f7cab03264299b7d696ba5b1269e451@changeid>
 X-Mailer: git-send-email 2.51.1
 In-Reply-To: <20251128141537.287627-20-benjamin@sipsolutions.net>
 References: <20251128141537.287627-20-benjamin@sipsolutions.net>
@@ -65,201 +65,208 @@ Content-Transfer-Encoding: 8bit
 
 From: Benjamin Berg <benjamin.berg@intel.com>
 
-Currently there is no TXQ for non-data frames. Add a new txq_mgmt for
-this purpose and create one of these on NAN devices. On NAN devices,
-these frames may only be transmitted during the discovery window and it
-is therefore helpful to schedule them using a queue.
+Frames submitted on the NAN device interface should only be transmitted
+during one of the discovery windows (DWs). It is assumed that software
+submits frames from the DW end notifications for the next DW period.
 
-type=feature
-ticket=none
+Simulate this behaviour by checking that we are currently in a DW before
+transmitting from ieee80211_hwsim_wake_tx_queue. As frames will be
+queued up at the start of a DW, wake the management TX queue every time
+a DW is started. Do so with a randomized offset just to avoid every
+client transmitting at the same time.
 
 Signed-off-by: Benjamin Berg <benjamin.berg@intel.com>
 ---
- include/net/mac80211.h |  2 ++
- net/mac80211/iface.c   | 28 ++++++++++++++++++++++++++--
- net/mac80211/tx.c      | 16 +++++++++++++---
- net/mac80211/util.c    | 33 +++++++++++++++++++++++++--------
- 4 files changed, 66 insertions(+), 13 deletions(-)
+ .../net/wireless/virtual/mac80211_hwsim_i.h   |  3 +
+ .../wireless/virtual/mac80211_hwsim_main.c    | 11 ++-
+ .../net/wireless/virtual/mac80211_hwsim_nan.c | 79 +++++++++++++++++++
+ .../net/wireless/virtual/mac80211_hwsim_nan.h |  6 ++
+ 4 files changed, 97 insertions(+), 2 deletions(-)
 
-diff --git a/include/net/mac80211.h b/include/net/mac80211.h
-index c2e49542626c..8874e5eeae7d 100644
---- a/include/net/mac80211.h
-+++ b/include/net/mac80211.h
-@@ -2034,6 +2034,7 @@ enum ieee80211_neg_ttlm_res {
-  * @drv_priv: data area for driver use, will always be aligned to
-  *	sizeof(void \*).
-  * @txq: the multicast data TX queue
-+ * @txq_mgmt: the mgmt frame TX queue, currently only exists for NAN devices
-  * @offload_flags: 802.3 -> 802.11 enapsulation offload flags, see
-  *	&enum ieee80211_offload_flags.
-  */
-@@ -2052,6 +2053,7 @@ struct ieee80211_vif {
- 	u8 hw_queue[IEEE80211_NUM_ACS];
+diff --git a/drivers/net/wireless/virtual/mac80211_hwsim_i.h b/drivers/net/wireless/virtual/mac80211_hwsim_i.h
+index 890bf8ac064a..0cc87205554e 100644
+--- a/drivers/net/wireless/virtual/mac80211_hwsim_i.h
++++ b/drivers/net/wireless/virtual/mac80211_hwsim_i.h
+@@ -135,4 +135,7 @@ u64 mac80211_hwsim_boottime_to_tsf(struct mac80211_hwsim_data *data,
+ u64 mac80211_hwsim_get_tsf(struct ieee80211_hw *hw,
+ 			   struct ieee80211_vif *vif);
  
- 	struct ieee80211_txq *txq;
-+	struct ieee80211_txq *txq_mgmt;
- 
- 	netdev_features_t netdev_features;
- 	u32 driver_flags;
-diff --git a/net/mac80211/iface.c b/net/mac80211/iface.c
-index 4f04d95c19d4..764f8acaacd8 100644
---- a/net/mac80211/iface.c
-+++ b/net/mac80211/iface.c
-@@ -678,6 +678,10 @@ static void ieee80211_do_stop(struct ieee80211_sub_if_data *sdata, bool going_do
- 	if (sdata->vif.txq)
- 		ieee80211_txq_purge(sdata->local, to_txq_info(sdata->vif.txq));
- 
-+	if (sdata->vif.txq_mgmt)
-+		ieee80211_txq_purge(sdata->local,
-+				    to_txq_info(sdata->vif.txq_mgmt));
++void ieee80211_hwsim_wake_tx_queue(struct ieee80211_hw *hw,
++				   struct ieee80211_txq *txq);
 +
- 	sdata->bss = NULL;
+ #endif /* __MAC80211_HWSIM_I_H */
+diff --git a/drivers/net/wireless/virtual/mac80211_hwsim_main.c b/drivers/net/wireless/virtual/mac80211_hwsim_main.c
+index 8bfd6f984f1c..0f8769ccfd9a 100644
+--- a/drivers/net/wireless/virtual/mac80211_hwsim_main.c
++++ b/drivers/net/wireless/virtual/mac80211_hwsim_main.c
+@@ -2062,14 +2062,18 @@ static void mac80211_hwsim_tx(struct ieee80211_hw *hw,
+ 	ieee80211_tx_status_irqsafe(hw, skb);
+ }
  
- 	if (local->open_count == 0)
-@@ -2200,10 +2204,16 @@ int ieee80211_if_add(struct ieee80211_local *local, const char *name,
- 	lockdep_assert_wiphy(local->hw.wiphy);
+-static void ieee80211_hwsim_wake_tx_queue(struct ieee80211_hw *hw,
+-					  struct ieee80211_txq *txq)
++void ieee80211_hwsim_wake_tx_queue(struct ieee80211_hw *hw,
++				   struct ieee80211_txq *txq)
+ {
+ 	struct ieee80211_tx_control control = {
+ 		.sta = txq->sta,
+ 	};
+ 	struct sk_buff *skb;
  
- 	if (type == NL80211_IFTYPE_P2P_DEVICE || type == NL80211_IFTYPE_NAN) {
-+		int size = ALIGN(sizeof(*sdata) + local->hw.vif_data_size,
-+				 sizeof(void *));
- 		struct wireless_dev *wdev;
-+		int txq_size = 0;
++	if (txq->vif->type == NL80211_IFTYPE_NAN &&
++	    !mac80211_hwsim_nan_txq_transmitting(hw, txq))
++		return;
 +
-+		if (type == NL80211_IFTYPE_NAN)
-+			txq_size = sizeof(struct txq_info) +
-+				   local->hw.txq_data_size;
- 
--		sdata = kzalloc(sizeof(*sdata) + local->hw.vif_data_size,
--				GFP_KERNEL);
-+		sdata = kzalloc(size + txq_size, GFP_KERNEL);
- 		if (!sdata)
- 			return -ENOMEM;
- 		wdev = &sdata->wdev;
-@@ -2213,6 +2223,16 @@ int ieee80211_if_add(struct ieee80211_local *local, const char *name,
- 		ieee80211_assign_perm_addr(local, wdev->address, type);
- 		memcpy(sdata->vif.addr, wdev->address, ETH_ALEN);
- 		ether_addr_copy(sdata->vif.bss_conf.addr, sdata->vif.addr);
-+
-+		/*
-+		 * Add a management TXQ for NAN devices which includes frames
-+		 * that will only be transmitted during discovery windows (DWs)
-+		 */
-+		if (type == NL80211_IFTYPE_NAN) {
-+			txqi = (struct txq_info *)((unsigned long)sdata + size);
-+			ieee80211_txq_init(sdata, NULL, txqi,
-+					   IEEE80211_NUM_TIDS);
-+		}
- 	} else {
- 		int size = ALIGN(sizeof(*sdata) + local->hw.vif_data_size,
- 				 sizeof(void *));
-@@ -2363,6 +2383,10 @@ void ieee80211_if_remove(struct ieee80211_sub_if_data *sdata)
- 	if (sdata->vif.txq)
- 		ieee80211_txq_purge(sdata->local, to_txq_info(sdata->vif.txq));
- 
-+	if (sdata->vif.txq_mgmt)
-+		ieee80211_txq_purge(sdata->local,
-+				    to_txq_info(sdata->vif.txq_mgmt));
-+
- 	synchronize_rcu();
- 
- 	cfg80211_unregister_wdev(&sdata->wdev);
-diff --git a/net/mac80211/tx.c b/net/mac80211/tx.c
-index 9d8b0a25f73c..99b4fd51e28c 100644
---- a/net/mac80211/tx.c
-+++ b/net/mac80211/tx.c
-@@ -1321,6 +1321,10 @@ static struct txq_info *ieee80211_get_txq(struct ieee80211_local *local,
- 			 * opt-in hardware flag.
- 			 */
- 			txq = sta->sta.txq[IEEE80211_NUM_TIDS];
-+		} else if ((!ieee80211_is_mgmt(hdr->frame_control) ||
-+			    ieee80211_is_bufferable_mmpdu(skb)) &&
-+			   !sta) {
-+			txq = vif->txq_mgmt;
- 		}
- 	} else if (sta) {
- 		u8 tid = skb->priority & IEEE80211_QOS_CTL_TID_MASK;
-@@ -1513,9 +1517,15 @@ void ieee80211_txq_init(struct ieee80211_sub_if_data *sdata,
- 	txqi->txq.vif = &sdata->vif;
- 
- 	if (!sta) {
--		sdata->vif.txq = &txqi->txq;
--		txqi->txq.tid = 0;
--		txqi->txq.ac = IEEE80211_AC_BE;
-+		txqi->txq.tid = tid;
-+
-+		if (tid == IEEE80211_NUM_TIDS) {
-+			sdata->vif.txq_mgmt = &txqi->txq;
-+			txqi->txq.ac = IEEE80211_AC_VO;
-+		} else {
-+			sdata->vif.txq = &txqi->txq;
-+			txqi->txq.ac = IEEE80211_AC_BE;
-+		}
- 
- 		return;
- 	}
-diff --git a/net/mac80211/util.c b/net/mac80211/util.c
-index 0c46009a3d63..ef7ea78da736 100644
---- a/net/mac80211/util.c
-+++ b/net/mac80211/util.c
-@@ -326,7 +326,7 @@ static void __ieee80211_wake_txqs(struct ieee80211_sub_if_data *sdata, int ac)
- 	struct ieee80211_vif *vif = &sdata->vif;
- 	struct fq *fq = &local->fq;
- 	struct ps_data *ps = NULL;
--	struct txq_info *txqi;
-+	struct txq_info *to_wake[2] = {};
- 	struct sta_info *sta;
- 	int i;
- 
-@@ -345,6 +345,7 @@ static void __ieee80211_wake_txqs(struct ieee80211_sub_if_data *sdata, int ac)
- 
- 		for (i = 0; i < ARRAY_SIZE(sta->sta.txq); i++) {
- 			struct ieee80211_txq *txq = sta->sta.txq[i];
-+			struct txq_info *txqi;
- 
- 			if (!txq)
- 				continue;
-@@ -364,18 +365,34 @@ static void __ieee80211_wake_txqs(struct ieee80211_sub_if_data *sdata, int ac)
- 		}
+ 	while ((skb = ieee80211_tx_dequeue(hw, txq)))
+ 		mac80211_hwsim_tx(hw, &control, skb);
+ }
+@@ -5263,6 +5267,9 @@ static int mac80211_hwsim_new_radio(struct genl_info *info,
+ 		hrtimer_setup(&data->nan.slot_timer,
+ 			      mac80211_hwsim_nan_slot_timer,
+ 			      CLOCK_BOOTTIME, HRTIMER_MODE_ABS_SOFT);
++		hrtimer_setup(&data->nan.resume_txqs_timer,
++			      mac80211_hwsim_nan_resume_txqs_timer,
++			      CLOCK_BOOTTIME, HRTIMER_MODE_ABS_SOFT);
  	}
  
--	if (!vif->txq)
--		goto out;
-+	if (vif->txq) {
-+		struct txq_info *txqi;
+ 	data->if_combination.radar_detect_widths =
+diff --git a/drivers/net/wireless/virtual/mac80211_hwsim_nan.c b/drivers/net/wireless/virtual/mac80211_hwsim_nan.c
+index f4191954ca9d..029499bf965f 100644
+--- a/drivers/net/wireless/virtual/mac80211_hwsim_nan.c
++++ b/drivers/net/wireless/virtual/mac80211_hwsim_nan.c
+@@ -26,8 +26,13 @@
+ static_assert(16 * DWST_TU * 1024 == 8192 * 1024);
+ static_assert(DW0_TSF_MASK + 1 == 8192 * 1024);
  
--	txqi = to_txq_info(vif->txq);
-+		txqi = to_txq_info(vif->txq);
++/* Quiet time at the end of each slot where TX is suppressed */
++#define NAN_CHAN_SWITCH_TIME_US		256
++
+ static u8 hwsim_nan_cluster_id[ETH_ALEN];
  
--	if (!test_and_clear_bit(IEEE80211_TXQ_DIRTY, &txqi->flags) ||
--	    (ps && atomic_read(&ps->num_sta_ps)) || ac != vif->txq->ac)
--		goto out;
-+		if (test_and_clear_bit(IEEE80211_TXQ_DIRTY, &txqi->flags) &&
-+		    !(ps && atomic_read(&ps->num_sta_ps)) &&
-+		    ac == vif->txq->ac)
-+			to_wake[0] = txqi;
++static void mac80211_hwsim_nan_resume_txqs(struct mac80211_hwsim_data *data);
++
+ static u64 hwsim_nan_get_timer_tsf(struct mac80211_hwsim_data *data)
+ {
+ 	ktime_t expires = hrtimer_get_expires(&data->nan.slot_timer);
+@@ -130,6 +135,8 @@ mac80211_hwsim_nan_slot_timer(struct hrtimer *timer)
+ 		cfg80211_next_nan_dw_notif(wdev, notify_dw_chan, GFP_ATOMIC);
+ 	}
+ 
++	mac80211_hwsim_nan_resume_txqs(data);
++
+ 	mac80211_hwsim_nan_schedule_slot(data, slot + 1);
+ 
+ 	return HRTIMER_RESTART;
+@@ -190,6 +197,7 @@ int mac80211_hwsim_nan_stop(struct ieee80211_hw *hw,
+ 		return -EINVAL;
+ 
+ 	hrtimer_cancel(&data->nan.slot_timer);
++	hrtimer_cancel(&data->nan.resume_txqs_timer);
+ 	data->nan.device_vif = NULL;
+ 
+ 	spin_lock_bh(&hwsim_radio_lock);
+@@ -231,3 +239,74 @@ int mac80211_hwsim_nan_change_config(struct ieee80211_hw *hw,
+ 
+ 	return 0;
+ }
++
++static void mac80211_hwsim_nan_resume_txqs(struct mac80211_hwsim_data *data)
++{
++	u32 timeout_ns;
++
++	/* Nothing to do if we are not in a DW */
++	if (!mac80211_hwsim_nan_txq_transmitting(data->hw,
++						 data->nan.device_vif->txq_mgmt))
++		return;
++
++	/*
++	 * Wait a bit and also randomize things so that not everyone is TXing
++	 * at the same time. Each slot is 16 TU long, this waits between 100 us
++	 * and 5 ms before starting to TX (unless a new frame arrives).
++	 */
++	timeout_ns = get_random_u32_inclusive(100 * NSEC_PER_USEC,
++					      5 * NSEC_PER_MSEC);
++
++	hrtimer_start(&data->nan.resume_txqs_timer,
++		      ns_to_ktime(timeout_ns),
++		      HRTIMER_MODE_REL_SOFT);
++}
++
++enum hrtimer_restart
++mac80211_hwsim_nan_resume_txqs_timer(struct hrtimer *timer)
++{
++	struct mac80211_hwsim_data *data =
++		container_of(timer, struct mac80211_hwsim_data,
++			     nan.resume_txqs_timer);
++
++	guard(rcu)();
++
++	/* Wake TX queue for management frames on the NAN device interface */
++	if (mac80211_hwsim_nan_txq_transmitting(data->hw,
++						data->nan.device_vif->txq_mgmt))
++		ieee80211_hwsim_wake_tx_queue(data->hw,
++					      data->nan.device_vif->txq_mgmt);
++
++	return HRTIMER_NORESTART;
++}
++
++bool mac80211_hwsim_nan_txq_transmitting(struct ieee80211_hw *hw,
++					 struct ieee80211_txq *txq)
++{
++	struct mac80211_hwsim_data *data = hw->priv;
++	u64 tsf;
++	u8 slot;
++
++	if (WARN_ON_ONCE(!data->nan.device_vif))
++		return true;
++
++	tsf = mac80211_hwsim_get_tsf(hw, data->nan.device_vif);
++	slot = hwsim_nan_slot_from_tsf(tsf);
++
++	/* Enforce a maximum channel switch time and guard against TX delays */
++	if (slot != hwsim_nan_slot_from_tsf(tsf + NAN_CHAN_SWITCH_TIME_US))
++		return false;
++
++	/* Check NAN device interface management frame transmission */
++	if (!txq->sta) {
++		/* Only transmit these during one of the DWs */
++		if (slot == SLOT_24GHZ_DW ||
++		    (slot == SLOT_5GHZ_DW &&
++		     (data->nan.bands & BIT(NL80211_BAND_5GHZ))))
++			return true;
++
++		return false;
 +	}
 +
-+	if (vif->txq_mgmt) {
-+		struct txq_info *txqi;
-+
-+		txqi = to_txq_info(vif->txq_mgmt);
-+
-+		if (test_and_clear_bit(IEEE80211_TXQ_DIRTY, &txqi->flags) &&
-+		    ac == vif->txq->ac)
-+			to_wake[1] = txqi;
-+	}
++	return true;
++}
+diff --git a/drivers/net/wireless/virtual/mac80211_hwsim_nan.h b/drivers/net/wireless/virtual/mac80211_hwsim_nan.h
+index e86e7f9e9a3c..6a0780797273 100644
+--- a/drivers/net/wireless/virtual/mac80211_hwsim_nan.h
++++ b/drivers/net/wireless/virtual/mac80211_hwsim_nan.h
+@@ -15,11 +15,14 @@ struct mac80211_hwsim_nan_data {
+ 	struct ieee80211_channel *channel;
  
- 	spin_unlock(&fq->lock);
+ 	struct hrtimer slot_timer;
++	struct hrtimer resume_txqs_timer;
+ 	bool notify_dw;
+ };
  
--	drv_wake_tx_queue(local, txqi);
-+	if (to_wake[0])
-+		drv_wake_tx_queue(local, to_wake[0]);
-+	if (to_wake[1])
-+		drv_wake_tx_queue(local, to_wake[0]);
+ enum hrtimer_restart
+ mac80211_hwsim_nan_slot_timer(struct hrtimer *timer);
++enum hrtimer_restart
++mac80211_hwsim_nan_resume_txqs_timer(struct hrtimer *timer);
+ 
+ int mac80211_hwsim_nan_start(struct ieee80211_hw *hw,
+ 			     struct ieee80211_vif *vif,
+@@ -33,4 +36,7 @@ int mac80211_hwsim_nan_change_config(struct ieee80211_hw *hw,
+ 				     struct cfg80211_nan_conf *conf,
+ 				     u32 changes);
+ 
++bool mac80211_hwsim_nan_txq_transmitting(struct ieee80211_hw *hw,
++					 struct ieee80211_txq *txq);
 +
- 	local_bh_enable();
- 	return;
- out:
+ #endif /* __MAC80211_HWSIM_NAN_H */
 -- 
 2.51.1
 
