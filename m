@@ -1,59 +1,50 @@
-Return-Path: <linux-wireless+bounces-29423-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-29424-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [213.196.21.55])
-	by mail.lfdr.de (Postfix) with ESMTPS id 52369C936E3
-	for <lists+linux-wireless@lfdr.de>; Sat, 29 Nov 2025 03:45:14 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8DD0FC9379C
+	for <lists+linux-wireless@lfdr.de>; Sat, 29 Nov 2025 04:54:52 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.mirrors.kernel.org (Postfix) with ESMTPS id F06513414CE
-	for <lists+linux-wireless@lfdr.de>; Sat, 29 Nov 2025 02:45:13 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 88D684E1BFB
+	for <lists+linux-wireless@lfdr.de>; Sat, 29 Nov 2025 03:54:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C466218CBE1;
-	Sat, 29 Nov 2025 02:45:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2DDED224B1B;
+	Sat, 29 Nov 2025 03:54:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (4096-bit key) header.d=david-bauer.net header.i=@david-bauer.net header.b="ZyuQ4RBJ"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="WX6+hAph"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mailgate01.uberspace.is (mailgate01.uberspace.is [95.143.172.20])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B93BD1EB1AA
-	for <linux-wireless@vger.kernel.org>; Sat, 29 Nov 2025 02:45:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.143.172.20
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 05433223DDF;
+	Sat, 29 Nov 2025 03:54:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764384310; cv=none; b=THNZvpuSD6bs4WPPmJ+xfsm7316d6H9H7I66Piq8qQoAoq5BErQo8K1h6BOVZ5VoKW/VyESooS/cJj0ogtezPkLN4PkrDTt8LgJdRRogV7BCCi8Cj7iJ8aiR1FGwnxQ5RZkKFltlZCc0IOVsLAl6kDl7ObxkmE1x2J/vPC/EzA0=
+	t=1764388486; cv=none; b=WMJrl9El6w3UsEuJn/RQE1uibDzidBPXxUdOMaMMJgok8qq6lfI/CJWHnE6sUM1BcJHQHc8Y2URQeTtjlChM+qhuQqjvQUcsRJkwnk8Nlb+DPoJoO47wanRRv/Oa5ueEF7Zfk8ZguoxngwagZTLXCqD2F+BeTxHclXivheccwfs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764384310; c=relaxed/simple;
-	bh=r+TbYhbumj1LE8b1/7eJFLcgqdgfk2pwXQgbmKsupuw=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=Qp0PKRsHN8qugAEwUms2LM8uJNIXwcBuJQ4is8auHcxYomfaD2Z4JUpU29fvQSE4Gz6tUp6Dl0yOJLVvBu4iDWfgO+O9iN6wkVOecg6vUYj3gRz5Z/igNVXvuc+4ilxwwUv/v3kXRrIfZU80qQaho2yYts9FnaGlUNSCat5dwrU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=david-bauer.net; spf=pass smtp.mailfrom=david-bauer.net; dkim=pass (4096-bit key) header.d=david-bauer.net header.i=@david-bauer.net header.b=ZyuQ4RBJ; arc=none smtp.client-ip=95.143.172.20
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=david-bauer.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=david-bauer.net
-Received: from perseus.uberspace.de (perseus.uberspace.de [95.143.172.134])
-	by mailgate01.uberspace.is (Postfix) with ESMTPS id 200A360B9E
-	for <linux-wireless@vger.kernel.org>; Sat, 29 Nov 2025 03:39:14 +0100 (CET)
-Received: (qmail 7459 invoked by uid 988); 29 Nov 2025 02:39:14 -0000
-Authentication-Results: perseus.uberspace.de;
-	auth=pass (plain)
-Received: from unknown (HELO unkown) (::1)
-	by perseus.uberspace.de (Haraka/3.0.1) with ESMTPSA; Sat, 29 Nov 2025 03:39:13 +0100
-From: David Bauer <mail@david-bauer.net>
-To: Felix Fietkau <nbd@nbd.name>,
-	Lorenzo Bianconi <lorenzo@kernel.org>,
-	Ryder Lee <ryder.lee@mediatek.com>,
-	Shayne Chen <shayne.chen@mediatek.com>,
-	Sean Wang <sean.wang@mediatek.com>,
-	Matthias Brugger <matthias.bgg@gmail.com>,
-	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
-Cc: linux-wireless@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org,
-	linux-mediatek@lists.infradead.org
-Subject: [PATCH mt76] wifi: mt76: mt76x02: wake queues after reconfig
-Date: Sat, 29 Nov 2025 03:39:02 +0100
-Message-ID: <20251129023904.288484-1-mail@david-bauer.net>
-X-Mailer: git-send-email 2.51.0
+	s=arc-20240116; t=1764388486; c=relaxed/simple;
+	bh=77HRNdF8D4LKvIclapdeM8Vo9pj/eFMsHHNtPWDBX5A=;
+	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
+	 In-Reply-To:To:Cc; b=QhEuktNfQksFJEKiQhKEJ7CmnEZ3JWXSs7NXsIgotZ9IYZX+1lTCwwqEwSmaNveTSbTgXLdqogAVMA0JAC95xF1t1+oxxkaiTahK/6p4l+aPFldPUC/PT2SjBzYsc2IjAo11xC0h2XMAuTqoMd7S+qyjwAHW4PTGt60MmSfiEPQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=WX6+hAph; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D8473C116D0;
+	Sat, 29 Nov 2025 03:54:45 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1764388485;
+	bh=77HRNdF8D4LKvIclapdeM8Vo9pj/eFMsHHNtPWDBX5A=;
+	h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
+	b=WX6+hAphbtAcMKDh01tRwKbTVGNPCnl6J/nd40Z/Nz+kVgY8wd4Lb2XeVMBHAOZ0/
+	 Jcyem9hGdcnePbBEZO9scWhanWCViI6qwixgSqadgpQRjQmpQccDvHdCHShbTnR1LD
+	 nA3YCjSBdlqFFuHk8welPBUB/UhxobYXb+TNf3OGSWNGEEd0fha6Coq2b6Yny2GMIJ
+	 DbeSX4Zl4A3msL5PmpmRlMMJLs3FVJGgtB6e8MsFPe/ugqM2PSNiRXVGqsIXms10dS
+	 7jIGFJx7o3UOAROMnNQIyYtgTYphUQmFulHYllvoYP15dAk8cKrP8GbRPxJwdWd779
+	 bYwHSSGNE3cvg==
+Received: from [10.30.226.235] (localhost [IPv6:::1])
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id B5923380692B;
+	Sat, 29 Nov 2025 03:51:48 +0000 (UTC)
+Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
@@ -61,52 +52,39 @@ List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Bar: /
-X-Rspamd-Report: SUSPICIOUS_RECIPS(1.5) BAYES_HAM(-2.999999) MID_CONTAINS_FROM(1) MIME_GOOD(-0.1) R_MISSING_CHARSET(0.5)
-X-Rspamd-Score: -0.099999
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-	d=david-bauer.net; s=uberspace;
-	h=from:to:cc:subject:date;
-	bh=r+TbYhbumj1LE8b1/7eJFLcgqdgfk2pwXQgbmKsupuw=;
-	b=ZyuQ4RBJKyUA52XzcpBJ26EPkdMekw9p6Bem8sCEckOnqLoU5lOpVspUv5jatMkVYaLf2nfCzd
-	rfPgNtHA3ihFfsc+fRXrieV+Co2ZgOJ9ahaP369qXv5z2bA/UXKOsAh3lLu53WdidtKShM8WznPz
-	WwFGhVyza0nuZdbOgQ9wXX7ZmI8AHOAXuLg1yaPniWOGXq5vTA+VI71XiEqssDmPjnc4YXbe58aj
-	1pKocbb9eH1VX5cF8oQutygWasZFPB+v0jxD0qeZN5GFujDPWihlegGkIRQ5NJ9X3YXWS/L0crd5
-	DYfvTDtFXgfAE+C/8g5PzHnN5Ra40Cz9lkGxnW/ishU/4QWYrugGCwt5CcvaXY9AmoNRqj2lQAYU
-	jFcgtjcqcDN36CEGQKfDctVyCQgeZL9sLpejrUPLAAFJJCluj8NHGNwbI2ezTMOIJ4NKnjelwH0/
-	f76XnovaeViSjESw00+6jlJ4pUjqsE65RI76wjMVewCf37o9XloKN3O+CHSYWtr3Qv59Sz2Di0kb
-	9XxMdx7WDJ3fIy/nrR5LLzqoo+0eI61QDQYGXgZk01khhTPjqaP/PAINiWpo590fdOQrFRIs0eki
-	OooHEtIqMY2wHvyfrSBBOG3RgOjWAh1agyv2Hw0Tfzi+paYgJfFQW92CI4qxVhu9YjeJJwwpsaE1
-	U=
+Subject: Re: [GIT PULL] wireless-next-2025-11-27
+From: patchwork-bot+netdevbpf@kernel.org
+Message-Id: 
+ <176438830728.886304.14636673300598102002.git-patchwork-notify@kernel.org>
+Date: Sat, 29 Nov 2025 03:51:47 +0000
+References: <20251127103806.17776-3-johannes@sipsolutions.net>
+In-Reply-To: <20251127103806.17776-3-johannes@sipsolutions.net>
+To: Johannes Berg <johannes@sipsolutions.net>
+Cc: netdev@vger.kernel.org, linux-wireless@vger.kernel.org
 
-The shared reset procedure of MT7610 and MT7612 stop all queues before
-starting the reset sequence.
+Hello:
 
-They however never restart these like other supported mt76 chips
-do in the reconfig_complete call. This leads to TX not continuing
-after the reset.
+This pull request was applied to netdev/net-next.git (main)
+by Jakub Kicinski <kuba@kernel.org>:
 
-Restart queues in the reconfig_complete callback to restore
-functionality after the reset.
+On Thu, 27 Nov 2025 11:37:09 +0100 you wrote:
+> Hi,
+> 
+> So Qualcomm said they're still validating their architecture
+> changes and prefer pushing that to a later release, so for
+> the last changes we have it's mostly Mediatek and Realtek
+> drivers.
+> 
+> [...]
 
-Signed-off-by: David Bauer <mail@david-bauer.net>
----
- drivers/net/wireless/mediatek/mt76/mt76x02_mmio.c | 1 +
- 1 file changed, 1 insertion(+)
+Here is the summary with links:
+  - [GIT,PULL] wireless-next-2025-11-27
+    https://git.kernel.org/netdev/net-next/c/2c80116b5032
 
-diff --git a/drivers/net/wireless/mediatek/mt76/mt76x02_mmio.c b/drivers/net/wireless/mediatek/mt76/mt76x02_mmio.c
-index dd71c1c95cc9b..dc7c03d231238 100644
---- a/drivers/net/wireless/mediatek/mt76/mt76x02_mmio.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt76x02_mmio.c
-@@ -534,6 +534,7 @@ void mt76x02_reconfig_complete(struct ieee80211_hw *hw,
- 		return;
- 
- 	clear_bit(MT76_RESTART, &dev->mphy.state);
-+	ieee80211_wake_queues(hw);
- }
- EXPORT_SYMBOL_GPL(mt76x02_reconfig_complete);
- 
+You are awesome, thank you!
 -- 
-2.51.0
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/patchwork/pwbot.html
+
 
 
