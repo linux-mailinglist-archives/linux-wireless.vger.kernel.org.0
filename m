@@ -1,138 +1,159 @@
-Return-Path: <linux-wireless+bounces-29438-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-29439-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id 83422C9604E
-	for <lists+linux-wireless@lfdr.de>; Mon, 01 Dec 2025 08:34:37 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 60F7EC964F8
+	for <lists+linux-wireless@lfdr.de>; Mon, 01 Dec 2025 10:03:59 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 4C74A4E07D1
-	for <lists+linux-wireless@lfdr.de>; Mon,  1 Dec 2025 07:34:36 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 2B8934E13FC
+	for <lists+linux-wireless@lfdr.de>; Mon,  1 Dec 2025 09:03:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6983828C864;
-	Mon,  1 Dec 2025 07:34:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A58682EC0B0;
+	Mon,  1 Dec 2025 09:03:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="NNGdLHm9"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="cNSHxVaB"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wr1-f52.google.com (mail-wr1-f52.google.com [209.85.221.52])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3C5E41E868;
-	Mon,  1 Dec 2025 07:34:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C57232FF15D
+	for <linux-wireless@vger.kernel.org>; Mon,  1 Dec 2025 09:03:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.52
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764574471; cv=none; b=RU+by1E+VkekkmhUB+ifQGEQ5LUHQmFd7FE282B79CcsbaflK+sfvfP4hOw8mo+qOiSPTA1Dczl3S/86tq0q6ysYb4Cy3bdcVKxW1V6kY5akDDil/pICXwIvB36VKiro0aPR+MunKClvG8zsaq75IdOH8Hh+jjI8V+rh7MPcgws=
+	t=1764579824; cv=none; b=LjOtxskUGexdeRGTzlzRh6nrs0QbWxqnLuQvXwTzXIgHHh194YZuL3r4CIsuZzeSw702HTX+vovGqxKwdFOUYEugFEmAhRUcSRwdqo2vBDPnWDmx07lyis2bIUInGeSwJD/rkXHAFnvnePT80DMEff/z8ahJXJWSVB509sHmjFQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764574471; c=relaxed/simple;
-	bh=tFF6SSDcRqDZl4UXjOH5y0MCMKb9bpHMhVhoEcMceVQ=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=KjUiZE3uBXflSXV05fzGmZcldBMeNHzqj2sr2lvD/lWrwfftHuWgTQqubGdf10fNVUc6BfO/czTMQ7Hd460cYqy8i2B2msF8LLLckDUAg/NLJl7gkXVgoQxweuIaaJODxCwWsKRO8IZqdKAObjAKtVb7sHAkMkKLSV62AtQYpNs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=NNGdLHm9; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1A80FC4CEF1;
-	Mon,  1 Dec 2025 07:34:27 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1764574470;
-	bh=tFF6SSDcRqDZl4UXjOH5y0MCMKb9bpHMhVhoEcMceVQ=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=NNGdLHm9lGWWlxSTX5pp7BJDPzNKEZcVLLMW6uRyqXK0riU8V9tHRiI6/3SxiF3+g
-	 e4kvB6w4/cqUpUtnBctJkiUKe+t90KJgS0u6XgMH3aobxVMBE849olur/y5PUdRS5A
-	 qRCx7JAa19Z7dPy0JD25r3pFUMw26CUoRa4IhigD7P0RDhwqbE3CMxgftPOqLHKJB7
-	 OUsK54Y/cMsBnpFvv+TJj59L6KtehFg5Qndk8DcfXRG3TppFTOuNng4kWk4muEKLvm
-	 DxgFNsQ/+Ir4tixadDn7fft3eFsPVLTQBFozOvNnXeVVMls8lV6H71IcFt1NyOLeRq
-	 cdzR/Rpat9cBw==
-Message-ID: <7ea43ef2-b453-46cf-a35e-ea11ca1dbe24@kernel.org>
-Date: Mon, 1 Dec 2025 08:34:26 +0100
+	s=arc-20240116; t=1764579824; c=relaxed/simple;
+	bh=OENUUPVsybzTfsmwczvXbu6dAmQzUDri4hyNFGmPrF4=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=OEQmt/+//r8pZyaY1bc5cPuZoxUwQsZT3sh08srjyEsBi17F7tYoh3F2eNPNDoD8KJ5vX3HGQnmpxtfpfavotv3MNjdvBZIih+wmwYL020MV4b9lkKbPuBPqpLqFZUc08PSD9rYrh/0s3yWg51xiF8yH4uQ88I1HmlXLCmga68E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=cNSHxVaB; arc=none smtp.client-ip=209.85.221.52
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-wr1-f52.google.com with SMTP id ffacd0b85a97d-42e2e671521so656728f8f.1
+        for <linux-wireless@vger.kernel.org>; Mon, 01 Dec 2025 01:03:42 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1764579821; x=1765184621; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=N8ah7K9QBZgVHJunjh/RbCQgoXUT9r/YcIZqeujeIYI=;
+        b=cNSHxVaBlQNXG7PlbsWVcCW6swfsGSmRBXsAKzxJAsmzaUfQ8dTn0gdsYzirRGz/Sd
+         l9yjkmLvejsy56FFT7mS4vePx9zRvQ6OmX2mG9v+sw+CoDSU10HFa5o333M8CLWIDWrq
+         x7RZqWTTolBKvsCWdcUyUsA024xoUXaSnefQSP8D3NRQMo861krQmWDmts2u136hqzjq
+         x+jhUG5xChZJbuYEIg5IYrgwCZv9P3XAebvLBrrIgTOeEvqb0HZBqERrKWri3ihVfyeL
+         1UFDSkca4NFWuki1hI+Leh62n6VAqQAwmHtjVsEpWQs5ERJZhxCG6j/vF28+3k9Y62bZ
+         oWlw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1764579821; x=1765184621;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=N8ah7K9QBZgVHJunjh/RbCQgoXUT9r/YcIZqeujeIYI=;
+        b=lZme/QPYooTa0xFvf8QWeOLnPoeA73Yg7gIrxs/yuaw/zeuXgnFZCDdZELMBLeEnDQ
+         gJVc4FwbVZG5x4Ry11Nn1V1VNUe8aPBT/mR/NahtY97CgjgKWN+osyTxenOZp+O0jyGo
+         fGG2Fq3NETyc8WHavTeBy4p/IF+gsBVKhapsohIaZL/lkzRxMbyPUSCW4ax8QxWrtu/d
+         tAWwLbFxORrH2vMaC8t/Kd5DAilABnQz/OfjSOeOdQ+jxPtPE8L9+9duwFp1dJbrYdjY
+         dcauCYu23vV09MN7fa8scTzpKTPYVoFSsX9lWnQoPeJpcjD+ZGuHeGLNLWypvHuJP0Z/
+         7nqg==
+X-Forwarded-Encrypted: i=1; AJvYcCWk0K5QyjhywcNM90gg+lNrPJwhX5hkQ9zhqQyKgsn8HY998HZ3f1/ZTTz5uil6UmAFIW5gJ0NGQeW0X/lK/w==@vger.kernel.org
+X-Gm-Message-State: AOJu0Yy4TpZF8vF4Xn+Fp96yd/HqMd6iYGsPjfSISUKMSAdrjZswLZpk
+	vVTuo+EJ5Iryxd8N/R4S/7iLwOgUePq+V6n3d3jICxNa/Y3TvA9KP666
+X-Gm-Gg: ASbGncuXT27kWiosONnxSNb9ClnGJFjOgvezQqr8+s4oBapTiW6EyYI4Fb55Y1gCMSR
+	HTJfOcLkVEVLbrqoWpeqsY99NVPY9Qwje5RnXtviVYAcb3LhUaS5hMLYz1UyjvQc/CxbBp1hsGr
+	fhThuxLUD5VrreYqjmsO8Q8VqRvX2ARAtX934U6aqVue7t6+++2SHiwHdwa3LNOAqdqsTzXYA9V
+	zVlYhozaDfBUnTkhwV89P45fFLJpt6ux/K3xGzD1PcMPHygkXMw4l/+stPf2fOBLCTGw9kTunuv
+	i/jZfoou+HO/opfCm+eZ9741NSN/MCoZHA+k0Ev51IxxlJWbACnfHUX8ZmwB4nZoF2xQvWXAA/u
+	xApDXQcGIojUWotQoMY+junFHhpQVTGyGwFYQjna2S8Zx8usDwOqSgYVGglRcdMknkGiy6lqcfj
+	4N/5hD0mgJ5tx98HA=
+X-Google-Smtp-Source: AGHT+IEcydTcIwCjbQRB0nGuzNXPZzp8lCn4+RYJcX/cAtCDjD/66keOoi6DpdWSWTOQpt+wcZtEcg==
+X-Received: by 2002:a05:6000:186a:b0:429:ee71:2ff0 with SMTP id ffacd0b85a97d-42e0f362435mr27273212f8f.53.1764579820669;
+        Mon, 01 Dec 2025 01:03:40 -0800 (PST)
+Received: from toolbox.. ([87.200.95.144])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-42e1c5d607csm25334499f8f.15.2025.12.01.01.03.38
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 01 Dec 2025 01:03:40 -0800 (PST)
+From: Christian Hewitt <christianshewitt@gmail.com>
+To: Jakub Kicinski <kuba@kernel.org>,
+	Matthias Brugger <matthias.bgg@gmail.com>,
+	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
+	linux-wireless@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org,
+	linux-mediatek@lists.infradead.org
+Cc: Daniel Golle <daniel@makrotopia.org>
+Subject: [PATCH] wifi: mt7601u: check multiple firmware paths
+Date: Mon,  1 Dec 2025 09:03:36 +0000
+Message-Id: <20251201090336.1157193-1-christianshewitt@gmail.com>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 6/8] dt-bindings: wireless: ath12k: Add disable-rfkill
- property
-To: Dale Whinham <daleyo@gmail.com>, Johannes Berg
- <johannes@sipsolutions.net>, Rob Herring <robh@kernel.org>,
- Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
- <conor+dt@kernel.org>, Jeff Johnson <jjohnson@kernel.org>
-Cc: =?UTF-8?Q?J=C3=A9r=C3=B4me_de_Bretagne?= <jerome.debretagne@gmail.com>,
- Jeff Johnson <jeff.johnson@oss.qualcomm.com>,
- linux-wireless@vger.kernel.org, devicetree@vger.kernel.org,
- ath12k@lists.infradead.org, linux-kernel@vger.kernel.org
-References: <20251201011457.17422-1-daleyo@gmail.com>
- <20251201011457.17422-7-daleyo@gmail.com>
-From: Krzysztof Kozlowski <krzk@kernel.org>
-Content-Language: en-US
-Autocrypt: addr=krzk@kernel.org; keydata=
- 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 a/A=
-In-Reply-To: <20251201011457.17422-7-daleyo@gmail.com>
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-On 01/12/2025 02:14, Dale Whinham wrote:
-> From: Jérôme de Bretagne <jerome.debretagne@gmail.com>
-> 
-> rfkill should be disabled according to the Surface Pro 11's DSDT.
-> 
-> https://lore.kernel.org/all/20250113074810.29729-3-quic_lingbok@quicinc.com/
-> has added support to read the ACPI bitflag when ACPI is supported.
+The linux-firmware repo moved mt7601u.bin from the root folder to
+the mediatek sub-folder some time ago, but not all distros create
+symlinks to the old location the driver checks. Update the driver
+to check for firmware in both old and new locations.
 
-It wasn't merged. If it was, reference commits, not random emails.
+With firmware in /usr/lib/firmware/mediatek/mt7601u.bin):
 
-> 
-> Document the disable-rfkill property to expose one specific feature
-> (DISABLE_RFKILL_BIT) for devices described with a DT, so that the
-> feature can be disabled.
+kernel: mt7601u 1-1.3:1.0: ASIC revision: 76010001 MAC revision: 76010500
+kernel: mt7601u 1-1.3:1.0: Direct firmware load for mt7601u.bin failed with error -2
+kernel: mt7601u 1-1.3:1.0: probe with driver mt7601u failed with error -2
 
-This is just a circular logic. Add property to have property in DT so
-that you can use feature.
+And with the patch:
 
-No, describe the hardware or actual problem instead.
+kernel: mt7601u 1-1.3:1.0: ASIC revision: 76010001 MAC revision: 76010500
+kernel: mt7601u 1-1.3:1.0: Firmware Version: 0.1.00 Build: 7640 Build time: 201302052146
+kernel: mt7601u 1-1.3:1.0: EEPROM ver:0c fae:00
 
-You still need to answer Rob's questions.
+Signed-off-by: Christian Hewitt <christianshewitt@gmail.com>
+---
+The firmware was moved in [0]. Changes were requested to a previous
+patch [1] but I wasn't able to find a follow-up submission from the
+original author. So here's my novice attempt at the improvement.
 
-Best regards,
-Krzysztof
+[0] https://git.kernel.org/pub/scm/linux/kernel/git/firmware/linux-firmware.git/commit/?id=8451c2b1d529dc1a49328ac9235d3cf5bb8a8fcb
+[1] https://patchwork.kernel.org/project/linux-wireless/patch/fefcbf36f13873ae0d97438a0156b87e7e1ae64e.1684191377.git.daniel@makrotopia.org/
+
+ drivers/net/wireless/mediatek/mt7601u/mcu.c | 14 +++++++++++++-
+ 1 file changed, 13 insertions(+), 1 deletion(-)
+
+diff --git a/drivers/net/wireless/mediatek/mt7601u/mcu.c b/drivers/net/wireless/mediatek/mt7601u/mcu.c
+index 1b5cc271a9e1..c771bbf7952c 100644
+--- a/drivers/net/wireless/mediatek/mt7601u/mcu.c
++++ b/drivers/net/wireless/mediatek/mt7601u/mcu.c
+@@ -409,6 +409,11 @@ static int mt7601u_load_firmware(struct mt7601u_dev *dev)
+ 	const struct mt76_fw_header *hdr;
+ 	int len, ret;
+ 	u32 val;
++	const char *fw_paths[] = {
++		"mediatek/" MT7601U_FIRMWARE,
++		MT7601U_FIRMWARE,
++	};
++	int i;
+ 
+ 	mt7601u_wr(dev, MT_USB_DMA_CFG, (MT_USB_DMA_CFG_RX_BULK_EN |
+ 					 MT_USB_DMA_CFG_TX_BULK_EN));
+@@ -416,7 +421,14 @@ static int mt7601u_load_firmware(struct mt7601u_dev *dev)
+ 	if (firmware_running(dev))
+ 		return firmware_request_cache(dev->dev, MT7601U_FIRMWARE);
+ 
+-	ret = request_firmware(&fw, MT7601U_FIRMWARE, dev->dev);
++	/* Try loading firmware from multiple locations */
++	fw = NULL;
++	for (i = 0; i < ARRAY_SIZE(fw_paths); i++) {
++		ret = request_firmware(&fw, fw_paths[i], dev->dev);
++		if (ret == 0)
++			break;
++	}
++
+ 	if (ret)
+ 		return ret;
+ 
+-- 
+2.34.1
 
