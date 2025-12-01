@@ -1,185 +1,131 @@
-Return-Path: <linux-wireless+bounces-29447-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-29448-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5F779C97E71
-	for <lists+linux-wireless@lfdr.de>; Mon, 01 Dec 2025 15:50:01 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 04F6BC983C4
+	for <lists+linux-wireless@lfdr.de>; Mon, 01 Dec 2025 17:26:59 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 4E5E74E159A
-	for <lists+linux-wireless@lfdr.de>; Mon,  1 Dec 2025 14:50:00 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 864A94E1EE6
+	for <lists+linux-wireless@lfdr.de>; Mon,  1 Dec 2025 16:26:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2878B314B88;
-	Mon,  1 Dec 2025 14:49:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C875333469D;
+	Mon,  1 Dec 2025 16:26:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=temperror (0-bit key) header.d=dev.tdt.de header.i=@dev.tdt.de header.b="pB/VkOnf"
+	dkim=pass (2048-bit key) header.d=mff.cuni.cz header.i=@mff.cuni.cz header.b="Wh7fwvhJ"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mxout70.expurgate.net (mxout70.expurgate.net [194.37.255.70])
+Received: from smtp1.ms.mff.cuni.cz (smtp-in1.ms.mff.cuni.cz [195.113.20.234])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D0F7A23D7C2;
-	Mon,  1 Dec 2025 14:49:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=194.37.255.70
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D277E33343E;
+	Mon,  1 Dec 2025 16:26:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.113.20.234
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764600597; cv=none; b=of86UyGn4f7dca0JbfkGb2EQtSOUSmUgLETLrHYnn9gZ7zwvLNblJ/UGUMo0EKmxydZQEJnYl25ObOoE/YAF2xtY7VgoIgrQUb+wJljpxjnmmw6ii3C2DWtw85FpWnbKtQW93UAWt85+1DepQgsFPrqzr6199fYg2rtaDrM1wbU=
+	t=1764606411; cv=none; b=kBu2A//J8p9OT++q91Ix1ZXyezkwy7UVhfXCEZCQ+iH5VHYIwkvAL2NsmlzaZ/iD8WgMpN/NWMqFRgE8Pkl1kjUZHOujSDcf5OawveN/IXfCv7252FWopdS1Sjqq4s+s7XrdswsIkbfbxoT0L4J4VgRX6xtl+2aVfOSDxyKdQio=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764600597; c=relaxed/simple;
-	bh=7RZAnM0u/6Lq6J6wVPRlV/t5KSNgEJuY0qeQpWU0Ms0=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=ZUzs+wo8wOKCVj57Uye47ocY1rEsUEN6xlFxxY3Vprl30PJ8xU9LtxGY9HROTQ7xYYQOCdqUOhVCbRTBQoEJceQQhGt7PZznw3wft5XW0wUmr6rKle3+APhbagsmUB1OqEE8ph7tni1U2eoz4BqfysXS5x0iA/M8MPDIJZHWuAY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=dev.tdt.de; spf=pass smtp.mailfrom=dev.tdt.de; dkim=temperror (0-bit key) header.d=dev.tdt.de header.i=@dev.tdt.de header.b=pB/VkOnf; arc=none smtp.client-ip=194.37.255.70
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=dev.tdt.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=dev.tdt.de
-Received: from [194.37.255.9] (helo=mxout.expurgate.net)
-	by relay.expurgate.net with smtp (Exim 4.92)
-	(envelope-from <prvs=144439612d=os@dev.tdt.de>)
-	id 1vQ4yK-007EZZ-PB; Mon, 01 Dec 2025 15:33:48 +0100
-Received: from [195.243.126.94] (helo=securemail.tdt.de)
-	by relay.expurgate.net with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
-	(Exim 4.92)
-	(envelope-from <os@dev.tdt.de>)
-	id 1vQ4yJ-007SVb-Bx; Mon, 01 Dec 2025 15:33:47 +0100
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=dev.tdt.de;
-	s=z1-selector1; t=1764599625;
-	bh=9I8JJfsEgB/9wcRxt2JdeIQlFusUaFYKdjq8kR3UnK4=;
-	h=From:To:Cc:Subject:Date:From;
-	b=pB/VkOnfHNPBcLV3L8l2MGMtPL00jDUWM+rF8V6SQORz7MywM3f8Eka9/cS8Teyni
-	 r14s6g8fh1ap1kXChEdonQmW9zMHPCsS+tqc6y2nddOQuKEbSC5frUncUoH3yljyI5
-	 QGk+Q0BhF1J0syEGsB8aN1WqIoKS5iuR2mE0SP1hzhxVEo2XFGdRC2ceG/jTfqo8+k
-	 IVC86+Xy6buVECj3Ch4koMOmk/CnI9qffLYOjG/5isazYkUiA7N5d2N9QaBjzA9N34
-	 pTBhhbIziDraX8I64FmhUE3LqI8+XLEKpfJw9c4ztwwzW+LuuHh8EfYDBQkUkbgRvs
-	 Q5cZ3/PbMEPlw==
-Received: from securemail.tdt.de (localhost [127.0.0.1])
-	by securemail.tdt.de (Postfix) with ESMTP id 98EF3240040;
-	Mon,  1 Dec 2025 15:33:45 +0100 (CET)
-Received: from mail.dev.tdt.de (unknown [10.2.4.42])
-	by securemail.tdt.de (Postfix) with ESMTP id 89540240036;
-	Mon,  1 Dec 2025 15:33:45 +0100 (CET)
-Received: from osedlbauer1.dev.tdt.de (unknown [10.2.3.165])
-	by mail.dev.tdt.de (Postfix) with ESMTPSA id F1F3120F9D;
-	Mon,  1 Dec 2025 15:33:44 +0100 (CET)
-From: Oliver Sedlbauer <os@dev.tdt.de>
-To: stable@vger.kernel.org
-Cc: Sarika Sharma <quic_sarishar@quicinc.com>,
-	Vasanthakumar Thiagarajan <vasanthakumar.thiagarajan@oss.qualcomm.com>,
-	Jeff Johnson <jeff.johnson@oss.qualcomm.com>,
-	Oliver Sedlbauer <os@dev.tdt.de>, Kalle Valo <kvalo@kernel.org>,
-	Jeff Johnson <jjohnson@kernel.org>, linux-wireless@vger.kernel.org,
-	ath12k@lists.infradead.org, linux-kernel@vger.kernel.org
-Subject: [PATCH] wifi: ath12k: correctly handle mcast packets for clients
-Date: Mon,  1 Dec 2025 15:33:16 +0100
-Message-ID: <20251201143316.198269-1-os@dev.tdt.de>
-X-Mailer: git-send-email 2.39.5
+	s=arc-20240116; t=1764606411; c=relaxed/simple;
+	bh=xYjd7tbJoh2y06N1DtuzIzlxdeNR0195+Wn0hvKR0ic=;
+	h=Mime-Version:Content-Type:Date:Message-Id:Cc:Subject:To:From:
+	 References:In-Reply-To; b=baJ5BqxWqHS12SLcOALJF9eeefBER0/W6W+OvylMYYKK+JQWBAhukw5jJvHaUwQJam7IlKqsplGOFRG5DUw3IPfbv7zpDiFkrkRJXfsBbkvlDYEnuMDea6ky3cXJhuzUinFsKZiA00eJZbMUAsS4b8DuKcnzJ5zHJbwgYJ0x22Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=matfyz.cz; spf=pass smtp.mailfrom=matfyz.cz; dkim=pass (2048-bit key) header.d=mff.cuni.cz header.i=@mff.cuni.cz header.b=Wh7fwvhJ; arc=none smtp.client-ip=195.113.20.234
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=matfyz.cz
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=matfyz.cz
+X-SubmittedBy: id balejk@matfyz.cz subject /postalCode=110+2000/O=Univerzita+20Karlova/street=Ovocn+5CxC3+5CxBD+20trh+20560+5C/5/ST=Praha,+20Hlavn+5CxC3+5CxAD+20m+5CxC4+5Cx9Bsto/C=CZ/CN=Karel+20Balej/emailAddress=balejk@matfyz.cz
+	serial F5FD910E8FE2121B897F7E55B84E351D
+	issued by /C=NL/O=GEANT+20Vereniging/CN=GEANT+20Personal+20CA+204
+	auth type TLS.CUNI
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=mff.cuni.cz;
+	s=submission; t=1764606330; x=1765906330;
+	bh=xYjd7tbJoh2y06N1DtuzIzlxdeNR0195+Wn0hvKR0ic=; h=From;
+	b=Wh7fwvhJEouVlTgDON3WupDZPYB7g4nvZwcCpS58k42c0vTl077ww5vK8jNWPhvEZ
+	 yZXxieNs7zDu7Gzwwfrq5qOcG5gse/vVohNJBOtHzbBNm6Kad04k/nsZdTtE7h7Ugg
+	 8yUk59ho8+vq2HHB5E6Z5LG4ZOKu2R4py1wYupLEusmu/8DA4nTUfuBHYoEO9BGTXe
+	 OKU0IeE3kFJw1EMdCiZF4YGtrztWrQkkIiXiQv11x42DZg9WTwi4RbT5Ju4KO6QLrc
+	 P/BMYHBe4f3B/+XU2wJvwvH6ZDba+5wrrKnB2WHf7sGW/AvnqRKkG8LozFOlwA85WB
+	 jF+cuEvPP8OEg==
+Received: from localhost (internet5.mraknet.com [185.200.108.250])
+	(authenticated)
+	by smtp1.ms.mff.cuni.cz (8.18.1/8.18.1) with ESMTPS id 5B1GPSs0006348
+	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=OK);
+	Mon, 1 Dec 2025 17:25:29 +0100 (CET)
+	(envelope-from balejk@matfyz.cz)
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
+Mime-Version: 1.0
 Content-Transfer-Encoding: quoted-printable
-X-purgate: clean
-X-purgate-type: clean
-X-purgate-ID: 151534::1764599628-04C2CCC1-FC92CC53/0/0
+Content-Type: text/plain; charset=UTF-8
+Date: Mon, 01 Dec 2025 17:25:27 +0100
+Message-Id: <DEN0QJT6O8BU.3INUCXH1I0P0F@matfyz.cz>
+Cc: "Johannes Berg" <johannes@sipsolutions.net>,
+        "Rob Herring"
+ <robh@kernel.org>,
+        "Krzysztof Kozlowski" <krzk+dt@kernel.org>,
+        "Conor
+ Dooley" <conor+dt@kernel.org>,
+        =?utf-8?q?Duje_Mihanovi=C4=87?=
+ <duje@dujemihanovic.xyz>,
+        "Andrew Lunn" <andrew@lunn.ch>,
+        "Gregory Clement"
+ <gregory.clement@bootlin.com>,
+        "Sebastian Hesselbarth"
+ <sebastian.hesselbarth@gmail.com>,
+        "Brian Norris"
+ <briannorris@chromium.org>,
+        "Ulf Hansson" <ulf.hansson@linaro.org>, "Frank
+ Li" <Frank.Li@nxp.com>,
+        <linux-wireless@vger.kernel.org>, <devicetree@vger.kernel.org>,
+        <linux-kernel@vger.kernel.org>, <linux-arm-kernel@lists.infradead.org>,
+        <linux-mmc@vger.kernel.org>, <~postmarketos/upstreaming@lists.sr.ht>,
+        <phone-devel@vger.kernel.org>, "Jeff Chen" <jeff.chen_1@nxp.com>,
+        "Peng Fan" <peng.fan@nxp.com>, <david@ixit.cz>
+Subject: Re: [DONOTAPPLY RFC PATCH v2 0/4] WiFi support for
+ samsung,coreprimevelte
+To: "Francesco Dolcini" <francesco@dolcini.it>
+From: "Karel Balej" <balejk@matfyz.cz>
+References: <20251026182602.26464-1-balejk@matfyz.cz>
+ <DEJL1ATTQMVE.120JV9YW59I27@matfyz.cz>
+ <aSnWYS2g5slVFaSk@gaggiata.pivistrello.it>
+In-Reply-To: <aSnWYS2g5slVFaSk@gaggiata.pivistrello.it>
+X-Spam-Level: ****
 
-From: Sarika Sharma <quic_sarishar@quicinc.com>
+Hello, Francesco,
 
-[ Upstream commit 4541b0c8c3c1b85564971d497224e57cf8076a02 ]
+Francesco Dolcini, 2025-11-28T18:05:37+01:00:
+> On Thu, Nov 27, 2025 at 04:29:12PM +0100, Karel Balej wrote:
+>> To reiterate, the firmware is generally available but is not part of
+>> linux-firmware and the entire process of upstreaming the chipset support=
+ is
+>> stuck on that.
+>
+> I'll try to see if any of my contact in NXP Wi-Fi group is able to help. =
+Give
+> me a few days.
 
-Currently, RX is_mcbc bit is set for packets sent from client as
-destination address (DA) is multicast/broadcast address, but packets
-are actually unicast as receiver address (RA) is not multicast address.
-Hence, packets are not handled properly due to this is_mcbc bit.
+that's great, thank you very much!
 
-Therefore, reset the is_mcbc bit if interface type is AP.
+I have received a reply from Jeff in the meantime who has discussed the
+matter with his managers and unfortunately, they are not interested in
+supporting this chip as it's considered outdated and would pose
+maintainance burden.
 
-Tested-on: QCN9274 hw2.0 PCI WLAN.WBE.1.4.1-00199-QCAHKSWPL_SILICONZ-1
+Jeff however thinks that you as their customer may perhaps have more
+luck when talking to them.
 
-Signed-off-by: Sarika Sharma <quic_sarishar@quicinc.com>
-Reviewed-by: Vasanthakumar Thiagarajan <vasanthakumar.thiagarajan@oss.qua=
-lcomm.com>
-Link: https://patch.msgid.link/20250411061523.859387-3-quic_sarishar@quic=
-inc.com
-Signed-off-by: Jeff Johnson <jeff.johnson@oss.qualcomm.com>
-[ Adjust context ]
-Signed-off-by: Oliver Sedlbauer <os@dev.tdt.de>
----
-Context:
-The issue was introduced in 6.12.y by the backport of commit f66971c608c4
-("wifi: ath12k: using msdu end descriptor to check for rx multicast packe=
-ts"),
-which was part of a patchset:
-https://lore.kernel.org/all/20250411061523.859387-1-quic_sarishar@quicinc=
-.com/
+I am also still trying to find out whether upstreaming the old firmware
+version (available as part of the stock Android) would be an acceptable
+compromise for them - I never really intended for this to be supported
+officially and I wasn't too hopeful about getting an up to date version
+of the firmware either (although it would be very useful as it would
+likely solve the issue I'm hacking around in the third patch of this
+series), I mainly just want to upstream the support for the chipset as
+far as possible.
 
-That commit, without this follow-up patch, causes mac80211 to drop encryp=
-ted
-ARP request frames.
-As a result, ARP resolution fails, and connectivity from a station to an =
-AP does
-not work reliably until traffic is initiated by the AP.
+Please let me know when you have some news.
 
-This follow-up commit is necessary to restore correct network functionali=
-ty for
-ath12k clients on 6.12.y.
-
-Note:
-The patch has been modified to apply cleanly, including adjustments for
-API changes.
-The copyright header change has been omitted.
-
-
- drivers/net/wireless/ath/ath12k/dp_rx.c | 5 +++++
- drivers/net/wireless/ath/ath12k/peer.c  | 3 +++
- drivers/net/wireless/ath/ath12k/peer.h  | 2 ++
- 3 files changed, 10 insertions(+)
-
-diff --git a/drivers/net/wireless/ath/ath12k/dp_rx.c b/drivers/net/wirele=
-ss/ath/ath12k/dp_rx.c
-index eebdcc16e8fc..1c0d796ffc7a 100644
---- a/drivers/net/wireless/ath/ath12k/dp_rx.c
-+++ b/drivers/net/wireless/ath/ath12k/dp_rx.c
-@@ -2214,6 +2214,11 @@ static void ath12k_dp_rx_h_mpdu(struct ath12k *ar,
- 	spin_lock_bh(&ar->ab->base_lock);
- 	peer =3D ath12k_dp_rx_h_find_peer(ar->ab, msdu);
- 	if (peer) {
-+		/* resetting mcbc bit because mcbc packets are unicast
-+		 * packets only for AP as STA sends unicast packets.
-+		 */
-+		rxcb->is_mcbc =3D rxcb->is_mcbc && !peer->ucast_ra_only;
-+
- 		if (rxcb->is_mcbc)
- 			enctype =3D peer->sec_type_grp;
- 		else
-diff --git a/drivers/net/wireless/ath/ath12k/peer.c b/drivers/net/wireles=
-s/ath/ath12k/peer.c
-index 19c0626fbff1..461749b0f732 100644
---- a/drivers/net/wireless/ath/ath12k/peer.c
-+++ b/drivers/net/wireless/ath/ath12k/peer.c
-@@ -331,6 +331,9 @@ int ath12k_peer_create(struct ath12k *ar, struct ath1=
-2k_vif *arvif,
- 		arvif->ast_idx =3D peer->hw_peer_id;
- 	}
-
-+	if (arvif->vif->type =3D=3D NL80211_IFTYPE_AP)
-+		peer->ucast_ra_only =3D true;
-+
- 	peer->sec_type =3D HAL_ENCRYPT_TYPE_OPEN;
- 	peer->sec_type_grp =3D HAL_ENCRYPT_TYPE_OPEN;
-
-diff --git a/drivers/net/wireless/ath/ath12k/peer.h b/drivers/net/wireles=
-s/ath/ath12k/peer.h
-index 7b3500b5c8c2..05d4fdd3f82d 100644
---- a/drivers/net/wireless/ath/ath12k/peer.h
-+++ b/drivers/net/wireless/ath/ath12k/peer.h
-@@ -47,6 +47,8 @@ struct ath12k_peer {
-
- 	/* protected by ab->data_lock */
- 	bool dp_setup_done;
-+
-+	bool ucast_ra_only;
- };
-
- void ath12k_peer_unmap_event(struct ath12k_base *ab, u16 peer_id);
---
-2.39.5
+Thanks again and best regards,
+K. B.
 
