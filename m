@@ -1,95 +1,89 @@
-Return-Path: <linux-wireless+bounces-29435-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-29436-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [IPv6:2a01:60a::1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id BF099C957BD
-	for <lists+linux-wireless@lfdr.de>; Mon, 01 Dec 2025 02:16:44 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id E6010C957C3
+	for <lists+linux-wireless@lfdr.de>; Mon, 01 Dec 2025 02:16:56 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 7001E341CD2
-	for <lists+linux-wireless@lfdr.de>; Mon,  1 Dec 2025 01:16:42 +0000 (UTC)
+	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 6798B341B5E
+	for <lists+linux-wireless@lfdr.de>; Mon,  1 Dec 2025 01:16:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E899E41C63;
-	Mon,  1 Dec 2025 01:16:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 58E861E5B94;
+	Mon,  1 Dec 2025 01:16:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="braBkDvA"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="FpwWlrgb"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-wm1-f49.google.com (mail-wm1-f49.google.com [209.85.128.49])
+Received: from mail-wm1-f53.google.com (mail-wm1-f53.google.com [209.85.128.53])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4AD778248C
-	for <linux-wireless@vger.kernel.org>; Mon,  1 Dec 2025 01:16:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.49
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7D0507E110
+	for <linux-wireless@vger.kernel.org>; Mon,  1 Dec 2025 01:16:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.53
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764551761; cv=none; b=Bns0135sp2nr605gjFlSKq0PiLai5mDF6Q1Af16TeUxKhOgks2f30kzbWOvSR2ejhFAz0DrIiWvdSM9yCEpOKIbA6JjCkfnLrsBWEgRyEPCx4CGoHprKpRMUp2H/GaLQY8SVRo/ojjTlmpZQ6nibOy9PLvhUpr2zCz+/vkPLH8w=
+	t=1764551763; cv=none; b=Qb+NfF3BIYj6EAiLe2HLkry/I/VUnB0AYiR3H97KhzVtHRGCesznlt3/Kua0cFVaYBpmXITrdB5/LiV3MwKjYtiFlQls73vqRKetaPn+FpYlfzfl9N2/XUJ0+LjrjQWOGpGCCniuIzeZVU3oGjINW5KbDIZpudLSNW8bk8ULe0c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764551761; c=relaxed/simple;
-	bh=DQZX0aUN3deUMYMHSt3awIN0HT0UN+IAtGAYEYKj0VQ=;
+	s=arc-20240116; t=1764551763; c=relaxed/simple;
+	bh=kL8pNkspxY32oK4P0WLuxKf2uxEIHREei2L7z0gtL1o=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=WEDgwUfp8bQhGcnnDJKfeNMyzGVFAVmeMJ77VV3HWxB7fcJ0Q5S5mcdqp/4b/UPMWBMWUDTBTpxKkj700tz48XR5+eCSC0fehBT6msTlli75RQD0wvOLjDO7DSrkzW5zpiKBWDUDa6VtS1xJ8rmInJJVL4HLluTuBETSG5apd5g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=braBkDvA; arc=none smtp.client-ip=209.85.128.49
+	 MIME-Version:Content-Type; b=PaINlZKgpOxB7S5XlEMseaqrNrDWKzqFdmvc3pXd0+x0VKXX2RXzlFuwYSkIoAEmJ/l49t314QjX1CL0AuCmEpcNyoeLDujWqiE9WjOl2bqIt91F56sZ1HAwkhdP1VagbipibfxAMRwKtmnhGZJzjaOyBZh45tSVdZYXPfT0Vns=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=FpwWlrgb; arc=none smtp.client-ip=209.85.128.53
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-wm1-f49.google.com with SMTP id 5b1f17b1804b1-477b91680f8so31124565e9.0
-        for <linux-wireless@vger.kernel.org>; Sun, 30 Nov 2025 17:16:00 -0800 (PST)
+Received: by mail-wm1-f53.google.com with SMTP id 5b1f17b1804b1-477aa218f20so22748145e9.0
+        for <linux-wireless@vger.kernel.org>; Sun, 30 Nov 2025 17:16:01 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1764551759; x=1765156559; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1764551760; x=1765156560; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=/vBWJ3jPxPdxJcqHzl2HAKyWXdjwinH4jPFuqseBeF4=;
-        b=braBkDvA/sZjIRDpvf9C03Emab5eKXMJhN3NKbFpw+Dpk0idMAC3wahAiIRlaax76y
-         Lj2AmB7KfAWonjkm6/emTjk4p1cw/vv9N47Cb1eVvTrmRmt7yMnZbw0Glu+8x3beRqXJ
-         FmePu7hoHbrzu2GUT46NOlmI8iCOtqP4Qx8V9MBlBzt0LgKYr+08pSavu9P5Rht/LlJh
-         2buZOga+5RtWIJI9CBWcgULquhlcFkzG9RSlo19rGZa+p+vb4ZNS4jT3w1SMw5JHNDMY
-         kTx2YjnWV9lYlR/a18JQh8jMPVO1txh8/IGlct6HPJJAxctYIWYFjQXk1fnnSuq2OFqF
-         UHzw==
+        bh=Mo4q7JKeuUk4aiyRFRdMebz2WrMLhSzb/XBqsXZtV5s=;
+        b=FpwWlrgb1NK+V4xlebIacjrffG+K7cxx4Wl85nlpZiTHoQpTWSMb38ZvXvOXW0/8DM
+         UMaOrD0M2njM4PBCbZetcxcL5b4Qcn0mdjz1WMjt5UkMpKbkFJKJCshTeM9HEADvYDug
+         8Z8gWz2IWFutDXRNNrAPrquPkr2d/YCR27okvc21xeNH36yKWeoldF4sLZvkN6EKKMMI
+         m6jVkq0+Xnbe0+FG9gG2lADinoCKAJn2TmerOavym67PrDYraipT/nZ9SFbrXu4U+Xz/
+         YM305YvbmGOlyjrA8PIuowLeHtNls6o1lwg6I9rNoUPJAu4MDg3NqrE0/6VRBDGTkMNJ
+         6HyQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1764551759; x=1765156559;
+        d=1e100.net; s=20230601; t=1764551760; x=1765156560;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to;
-        bh=/vBWJ3jPxPdxJcqHzl2HAKyWXdjwinH4jPFuqseBeF4=;
-        b=VmYAB+CFxNlPbcEikKpq5KA5y7kH8rJIw0FJ/z2Ce57YgyidvRIvl59z8VL+RFPwxr
-         t3hMC8k3S3ASn0MQ7Pp4gKGUjAKXy3AI27uERGfdpnjlQvDe6D7fm07eypvUzODP8ogy
-         wkvEAy1ObhpbCMmcbL9v3M1EYzIxFKaDJk57yC8P9d0VORsC3Lrmhf91NJRSSoGmJAXh
-         CJxE38YKjoc9SboR7YIqU09Czuyq3iVWa/d+DuRy0LwSgmV3q9DZk+fV7A60zgfXW8sG
-         Qvw84E7989QSWZvTp77umyoItkxPYZ1z6x/G1KpCbjwlr7XuK1WsUveD0swVnY7sECSY
-         jkwQ==
-X-Forwarded-Encrypted: i=1; AJvYcCX+6PWcKm5jNfjaMG7LcLAWj7moPwYLpDeOltcsa9MpbVWqQ0gaixvY9Z9Tu+/+GSQC4VA8DrdkHsENw0QljQ==@vger.kernel.org
-X-Gm-Message-State: AOJu0YwOjZHNlHWCJAgTIPK6CJTIFXYwdyQ5iG3GxaV1lZwXGjOx/+/X
-	8P/mLOC8ULq7Sq92EGse2YjhltFdPJf1brMgeeAnMYVoEQz6Icd4WbbQ
-X-Gm-Gg: ASbGncuTVKNh42F+TqCnLN2m+ffcN2Drkv2TSJo61v4AxY9fvohySa/Q4nl2Pq/haH1
-	pFjzoU+otY0jNsFsCKhfrlI8TtSwFEH9a3gZ6YBPpuF6qe5z/wIGlZ7JtucNjXV502/YSxJq/p9
-	OzNN8Zm8+4U+GWap4pipVuDjE7IG93xUoM8zkCTR3ZiNgK9U2vCNaXU9BU5N7iLD9AvP2KYx80i
-	mQ7bDfmvkK/yNGGDZGfvvc6a7ImQdYrAzY+4ce3j8lITMejoMCkYmnHlgr2KUlr/tmQc8oyFiac
-	8kVurj8k5Bf2PW0kUILGhXUByfoWmmTGdzXWqByZRDedC9hc1qsWJAhKa0+sPALUlmKULqi88Fg
-	g1NDBj+3zMTazL0KiaSe+jU/dL0ifrT5kLrIwRQWyosTJtTdzQL9q5gWLnqU1PDYETndHcDW2fm
-	XrY9g0nKxg+vbSrwR/Dijor/Vwyo1uQbv5Ivm9bbQsd1xc5XfrWKBqCQ==
-X-Google-Smtp-Source: AGHT+IHPudKEEX4VAjuHNzkSbk45c8iSpRbQfuQpSIb3ohjq0wxflc5C6EoWRIJcTjRDZbjpyIxAHA==
-X-Received: by 2002:a05:600c:8b35:b0:475:d8b3:a9d5 with SMTP id 5b1f17b1804b1-477c10d6fdamr360907655e9.10.1764551758470;
-        Sun, 30 Nov 2025 17:15:58 -0800 (PST)
+        bh=Mo4q7JKeuUk4aiyRFRdMebz2WrMLhSzb/XBqsXZtV5s=;
+        b=iP6tV+IYc2e1H6m49ciqu5GSNBSv3U+5EvgX3oiSOO+u9pooUVbn21dWX9aeDpU1OC
+         up9ypaerMRkXwHLB1O2bXxlrww/ykS8yE9yuPzcFiiFJ3xfp8CtDp01ZSe8qbDWjxSjU
+         t+M8Vn6tL1WlIv566McZFiKVLMzN6SUt9bF3RjXR1To2r+rtAYUs6ieL38yQojJl9qoU
+         U8vEjTlHUmUvL64f7Qho3olsiagJNimweqUIrG4Lu32krhsGDbTtreiTEcjIFfJm6rHM
+         H+5O1yMT7Gge4abiC6J/FeOwzWgCJCCN7D/g2dEm4ktM/RgkyqHSuWr8lmJ4fIwemUG0
+         aIIw==
+X-Forwarded-Encrypted: i=1; AJvYcCWaEvi+ICK8zjq/k9h1Vw3QiXWCEHSs9Q9Pof9y5CAG4DOqGIGVrriCg2eJg8mbrvoEpdw1K7dyj7T0H2jpKw==@vger.kernel.org
+X-Gm-Message-State: AOJu0Yy26VF22tur0BR6u43YIGXjJxjswR0SKLJ/AyWhK/asF+q1sCF8
+	HcJ2taMKGtq2EuAmOtCVamOQl9BAkq1YeI8dmibWoRIXEmb/BQf1Tiyh
+X-Gm-Gg: ASbGnctvPBMkO6HPUHqQgKFZxNQaMScvzGWDKn0oYgljqcbZWG1TtMHPH76N9l2LsZ7
+	U8wPPSF3hCj8ala+N5VSnZtyZGfbclnU2kgHz++GktKyN2h8O+Mj3xnvxTbboTz2D8cBf/BKWrK
+	f2O4y59sJmQHGFQ9/fgBrgvt1T0PVp4Or+ewZ72hh2Wbx4GP60N2mKwUqQQjWUakWO+lK1Ew4TY
+	YUL5BoNQTqEohEB1C+qYaYvUfNw+nlcBqNdoRqx/CTzEfmYV3dU9kCVWpe4kR+W4ePcSZP6jY0G
+	YLv3ehoQo0JXu8V15xa8BYkfxzScdEQ6SMeMDFJXdro2gy7CUPXsVtvR6vOa7dpQXhHf1KFvO+u
+	4iPlgQ+vle2zQ1CH6SLd+vEaoRaCSlrgMBiYj9fBM/gYyln+wbItVeY/HAbAkIv0MHBzRcSZndb
+	NT+2zdKtC3EbnXlp40laLKpf067Mea5c1uxJFued+mF4fuyBHG24Rwzw==
+X-Google-Smtp-Source: AGHT+IH5rUuYD4eqKwAK50niTL5lsEFRsaD9OQ4iOSbw+TFAzVIVsM+nWiZuPk0ZntcRHhpGuzcYRQ==
+X-Received: by 2002:a05:600c:450f:b0:46d:ba6d:65bb with SMTP id 5b1f17b1804b1-477c01eb9bdmr404432425e9.31.1764551759501;
+        Sun, 30 Nov 2025 17:15:59 -0800 (PST)
 Received: from alarm (92.40.200.0.threembb.co.uk. [92.40.200.0])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-479110b6da9sm216152305e9.0.2025.11.30.17.15.57
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-479110b6da9sm216152305e9.0.2025.11.30.17.15.58
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 30 Nov 2025 17:15:58 -0800 (PST)
+        Sun, 30 Nov 2025 17:15:59 -0800 (PST)
 From: Dale Whinham <daleyo@gmail.com>
-To: Johannes Berg <johannes@sipsolutions.net>,
-	Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Jeff Johnson <jjohnson@kernel.org>
+To: Jeff Johnson <jjohnson@kernel.org>
 Cc: =?UTF-8?q?J=C3=A9r=C3=B4me=20de=20Bretagne?= <jerome.debretagne@gmail.com>,
 	Dale Whinham <daleyo@gmail.com>,
-	Jeff Johnson <jeff.johnson@oss.qualcomm.com>,
 	linux-wireless@vger.kernel.org,
-	devicetree@vger.kernel.org,
 	ath12k@lists.infradead.org,
 	linux-kernel@vger.kernel.org
-Subject: [PATCH v2 6/8] dt-bindings: wireless: ath12k: Add disable-rfkill property
-Date: Mon,  1 Dec 2025 01:14:47 +0000
-Message-ID: <20251201011457.17422-7-daleyo@gmail.com>
+Subject: [PATCH v2 7/8] wifi: ath12k: Add support for disabling rfkill via devicetree
+Date: Mon,  1 Dec 2025 01:14:48 +0000
+Message-ID: <20251201011457.17422-8-daleyo@gmail.com>
 X-Mailer: git-send-email 2.52.0
 In-Reply-To: <20251201011457.17422-1-daleyo@gmail.com>
 References: <20251201011457.17422-1-daleyo@gmail.com>
@@ -102,37 +96,35 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-From: Jérôme de Bretagne <jerome.debretagne@gmail.com>
+Some devices (e.g. Microsoft Surface Pro 11) indicate that the rfkill
+feature should be disabled by means of an ACPI bitflag.
 
-rfkill should be disabled according to the Surface Pro 11's DSDT.
+If ACPI is not being used (i.e. booting using a devicetree) then this
+property will not be read and therefore rfkill may be enabled and
+the ath12k will be hard-blocked with no way to disable it.
 
-https://lore.kernel.org/all/20250113074810.29729-3-quic_lingbok@quicinc.com/
-has added support to read the ACPI bitflag when ACPI is supported.
+Add a devicetree property that allows us to disable the rfkill feature.
 
-Document the disable-rfkill property to expose one specific feature
-(DISABLE_RFKILL_BIT) for devices described with a DT, so that the
-feature can be disabled.
-
-Signed-off-by: Jérôme de Bretagne <jerome.debretagne@gmail.com>
+Tested-by: Jérôme de Bretagne <jerome.debretagne@gmail.com>
 Signed-off-by: Dale Whinham <daleyo@gmail.com>
 ---
- .../devicetree/bindings/net/wireless/qcom,ath12k.yaml          | 3 +++
+ drivers/net/wireless/ath/ath12k/core.c | 3 +++
  1 file changed, 3 insertions(+)
 
-diff --git a/Documentation/devicetree/bindings/net/wireless/qcom,ath12k.yaml b/Documentation/devicetree/bindings/net/wireless/qcom,ath12k.yaml
-index dc68dd59988f..be44b1495ecc 100644
---- a/Documentation/devicetree/bindings/net/wireless/qcom,ath12k.yaml
-+++ b/Documentation/devicetree/bindings/net/wireless/qcom,ath12k.yaml
-@@ -54,6 +54,9 @@ properties:
-   vddpcie1p8-supply:
-     description: VDD_PCIE_1P8 supply regulator handle
+diff --git a/drivers/net/wireless/ath/ath12k/core.c b/drivers/net/wireless/ath/ath12k/core.c
+index 5d494c5cdc0d..954028495ea6 100644
+--- a/drivers/net/wireless/ath/ath12k/core.c
++++ b/drivers/net/wireless/ath/ath12k/core.c
+@@ -78,6 +78,9 @@ static int ath12k_core_rfkill_config(struct ath12k_base *ab)
+ 	if (ath12k_acpi_get_disable_rfkill(ab))
+ 		return 0;
  
-+  disable-rfkill:
-+    type: boolean
++	if (of_property_read_bool(ab->dev->of_node, "disable-rfkill"))
++		return 0;
 +
- required:
-   - compatible
-   - reg
+ 	for (i = 0; i < ab->num_radios; i++) {
+ 		ar = ab->pdevs[i].ar;
+ 
 -- 
 2.52.0
 
