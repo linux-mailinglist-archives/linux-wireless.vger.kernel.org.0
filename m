@@ -1,179 +1,187 @@
-Return-Path: <linux-wireless+bounces-29476-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-29477-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id C00E0CA126C
-	for <lists+linux-wireless@lfdr.de>; Wed, 03 Dec 2025 19:49:52 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id EB5F4CA0B17
+	for <lists+linux-wireless@lfdr.de>; Wed, 03 Dec 2025 18:57:52 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 424BC307928F
-	for <lists+linux-wireless@lfdr.de>; Wed,  3 Dec 2025 18:04:37 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id EA50F30022B3
+	for <lists+linux-wireless@lfdr.de>; Wed,  3 Dec 2025 17:57:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3CE0233C1BC;
-	Wed,  3 Dec 2025 17:54:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2702532ED3B;
+	Wed,  3 Dec 2025 17:57:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="dAaCfuV/"
+	dkim=pass (2048-bit key) header.d=web.de header.i=rolf.reintjes@web.de header.b="vSlt/Zf0"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-pf1-f181.google.com (mail-pf1-f181.google.com [209.85.210.181])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mout.web.de (mout.web.de [212.227.15.3])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B093233C1B7
-	for <linux-wireless@vger.kernel.org>; Wed,  3 Dec 2025 17:54:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.181
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7447C3074AA;
+	Wed,  3 Dec 2025 17:57:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.227.15.3
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764784471; cv=none; b=Vc7R8+0wWrZ3OELYUtb3zflV74V7MY+7TCarEKSAHjpMruOdDeNvFQcpf5W9w7ghKJSNa83Mt8kU7jW8UzqOON7NwpLqTssEG+LTnVsHdFNwGxX1We0S8qCqvKLSrBsP7Dq3xTgF9m1a/Di6ueHg9WQcYmiE/oC/xuNaAFbVmvw=
+	t=1764784671; cv=none; b=aWn8Ic+Fp054Wx3nRwEwjZ3rBmNBdqTzmlKDmca3sE8OKiymu0AuyV/i4aHk25h9BB9WTwky323EbDB4SXj+37pqzZt4tsF9n9NmNYKfHI/Eh1O27ji33YoDjtjR7m1QC2AbqKFZN75BO1VITIuSI91gZm1C9C95rCmuOVy4ov8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764784471; c=relaxed/simple;
-	bh=b91PGNq6T4tIoUSb/5X5OlWyd9aKsFVmz28tvWrofAc=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=H3azy4XbStuClgzMsX6LHqUFQoHMO3/RCZXoEOM7zqWubsniQ7OLK61Ly5TupR6Y1pRNSheZsYIREgZhzucuhOZ7LUt32PIKOy1bDkRlHmppvaCQ/Ml09eWdsx26UBjSrB+E+CzLqRu8tBkpIZKrND8Z9ymbFiXwRTAS9AHs/4U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=dAaCfuV/; arc=none smtp.client-ip=209.85.210.181
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pf1-f181.google.com with SMTP id d2e1a72fcca58-7ab689d3fa0so688103b3a.0
-        for <linux-wireless@vger.kernel.org>; Wed, 03 Dec 2025 09:54:29 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1764784469; x=1765389269; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=3HLDU+yegVwP+uuF0zgG8lx8TsPWfyKI9wCQhdsW6y0=;
-        b=dAaCfuV/1EBi8KPtbj3iDJRunyg0ZXyKcxJc16YMv+5Cqfdpzmw943Wz2BmBp3+TL3
-         15sl2D+uhaNf7DbdLTjbOEM2RVAny4Bk3Yo69jo2bLzG9IXYNlAyAOZ58xZYAFzFym8q
-         zCbBFXMwq4+Z2cYvefc+87iejR7+WnaKD2xpaAPRxE8QPiKzH/qpEA69HpcLNb1ixs6o
-         EIsTmT9NjWf7PHYiuh11f6ONxIRpG5J2XDCDYttzulV58PqgENuG9u8AIDW5gRCEVAHy
-         erxIt6Sq3rqxJQMMVcgXC5OpcAyrHgXU5GV4OvwOfq9Y4SGKi9omY3fYxjR0v0xMvCV1
-         j6rw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1764784469; x=1765389269;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=3HLDU+yegVwP+uuF0zgG8lx8TsPWfyKI9wCQhdsW6y0=;
-        b=NuLORgd7AmFumXwB5ZRJ/5GByduD/w9WWoUX86S5ky1bT1iIsjAR5kMn9cJhE5dEAS
-         broO5FihBL6duByatPU04OmqDTG5cm8qrGv8pnu6N0BbWG7r/rMiAb7QwGy6hx6RACmH
-         oQ/Qe4dUDXqvrcgbXvME3Y3zgk8g6dNTRKboj1kiS0YoTECNOUET0S9eOvRS2/ZQLVgi
-         LCZs8gfvRuM2bQqm7eqa2zAWNCD+Opj3aHv4prJzGKgVB+m5Sqw/DDHEp4PZKXnQCI3h
-         n7JcJ2o3mGAj9Z5vcX17JxZRXs1nx/3+BYo4m619eCvHk/c1S8SF0y4mQn3Er4AElEK/
-         k+gA==
-X-Gm-Message-State: AOJu0YwDR5m2l8iz+UzZ6cP6mtXdBMUMCjC3rBej4ukdE/B07PYp8m69
-	mAFjMl3cDttvLy5+nponGkvwtKD82/4D0j4ScJFIEl5coUnW4AUin+Qz
-X-Gm-Gg: ASbGncuj40MREKm22gLyI4Cb/iZvpwxZfNnXod1d0QhFnx+IOwZ+dJxRF/GzAUQKUfC
-	d5n7CaPHHDhWiPN9WT9X0AcRLeaKcl4wLiIh3MbLGmFcbeSfLRj9zrjpNQewLpivqJ6minLPNte
-	u43NyqQWyxNfyymAp2er3WctfG1OkbuyfaGc9N7OxMsEjXFgz/UWSeK6Hvmr1ZF5CLpsvPE4UH/
-	9yVrQFFqhYPyjS/n+7dCPEhxV+1e+zw58Q1WDAuQMgOuV6WG59HrBLq1WcBEQJ7jSapdGIp8OjE
-	D4qL9xPsR4d4QmT85MA/0TbZWNYK++4PbtbbVbYzPgUNwvd5bULSENpswkctcGpNMhYvZRxutby
-	Zb5LK+zTksuYgJAuSEHA2jL3flf8nqDKL5EAo9srnc5ospuedVHnZlOT9Sa9tPSBiaxEGsEuYqn
-	cAktk8Itb1lM09KwJ0h7RhrGwKFwLRjiI77Wbu9sNyOV+lRBJDF6uOy+zPdEREAuY=
-X-Google-Smtp-Source: AGHT+IHw8VdPPDLj9+iy/A58qr6HpfyuHNLvSW4h3LRgbid0GpF3mArdhHwkoIDjnnxwFs4to3nraw==
-X-Received: by 2002:a05:6a00:a46b:b0:7e1:898e:4851 with SMTP id d2e1a72fcca58-7e1898e4b17mr664591b3a.0.1764784468610;
-        Wed, 03 Dec 2025 09:54:28 -0800 (PST)
-Received: from ranganath.. ([2406:7400:10c:791c:e184:5a58:9ede:99f7])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-7d1516f6c47sm20914247b3a.18.2025.12.03.09.54.25
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 03 Dec 2025 09:54:28 -0800 (PST)
-From: Ranganath V N <vnranganath.20@gmail.com>
-To: johannes@sipsolutions.net,
-	dave.taht@bufferbloat.net,
-	linville@tuxdriver.com
-Cc: linux-wireless@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	skhan@linuxfoundation.org,
-	david.hunter.linux@gmail.com,
-	khalid@kernel.org,
-	Ranganath V N <vnranganath.20@gmail.com>,
-	syzbot+878ddc3962f792e9af59@syzkaller.appspotmail.com
-Subject: [PATCH v4] wifi: cfg80211: Fix uninitialized header access in cfg80211_classify8021d
-Date: Wed,  3 Dec 2025 23:24:18 +0530
-Message-ID: <20251203175418.6623-1-vnranganath.20@gmail.com>
-X-Mailer: git-send-email 2.43.0
+	s=arc-20240116; t=1764784671; c=relaxed/simple;
+	bh=X1OSOWOFVJCki8b/Hei0b1WQPdBVrwZG7Jx4oalEfCA=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=LKoGvfAYmZv7Tq+nbfpL5Nn7UUeMJUsLdXNm3KxgGQOH1/CrCaJVy72GUzkobHHoqaF6gFfcRTfIXovlJ52iOzLFWovCyLgDEqlXMX1SUOthxQTdWek7T8P/oOiwUwWF7+hk2smkqEDgJwgB4vilqXt+GWcYrd4oqDiGv3TNjHk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=web.de; spf=pass smtp.mailfrom=web.de; dkim=pass (2048-bit key) header.d=web.de header.i=rolf.reintjes@web.de header.b=vSlt/Zf0; arc=none smtp.client-ip=212.227.15.3
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=web.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=web.de
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=web.de;
+	s=s29768273; t=1764784661; x=1765389461; i=rolf.reintjes@web.de;
+	bh=OM53+Ni+UBk3+g8JiNhNXxz32Fx+ZFG6wNLxJ1ENG5I=;
+	h=X-UI-Sender-Class:Message-ID:Date:MIME-Version:Subject:To:Cc:
+	 References:From:In-Reply-To:Content-Type:
+	 Content-Transfer-Encoding:cc:content-transfer-encoding:
+	 content-type:date:from:message-id:mime-version:reply-to:subject:
+	 to;
+	b=vSlt/Zf05X2MHc6B+1Oy4i6BudlEh85pYNM2F31IwUPt7XxbZSRfZpVGjgD+tzHc
+	 iq/Ylnoj7/lxBPbBuaoCT1cr6BPunJQfwyeVUrFivMv7B5HOVX7zadLk/R7SgcWNy
+	 1dSOFF2PasQu6cT3spcpPZ6g6PLTWyM/eD1sq0jqAK3tHmeMuD21g03AvvvwRShVG
+	 6fat3cT/Xf8y0nIroKqTJVVNqtWgVsT9gv4mOPbbCj3rXyxpoiW/0nPPM6Ci+pEIm
+	 6nnb4bEOv4zom0fO9QLzuypBib0IceuOKLkAfxmKwkNHvgmJqc7kh43zhBG/kmS7i
+	 oQQzaPGSHSTzo2NUdQ==
+X-UI-Sender-Class: 814a7b36-bfc1-4dae-8640-3722d8ec6cd6
+Received: from [192.168.188.20] ([94.31.68.51]) by smtp.web.de (mrweb006
+ [213.165.67.108]) with ESMTPSA (Nemesis) id 1MxHYK-1wFUon1AFM-014eXN; Wed, 03
+ Dec 2025 18:57:41 +0100
+Message-ID: <3204ebc0-4432-467c-81fe-9f09427b1671@web.de>
+Date: Wed, 3 Dec 2025 18:57:42 +0100
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] wifi: cfg80211: sme: store capped length in
+ __cfg80211_connect_result()
+To: Dan Carpenter <dan.carpenter@linaro.org>, qgeniecore@qualcomm.com
+Cc: Johannes Berg <johannes@sipsolutions.net>,
+ linux-wireless@vger.kernel.org, linux-kernel@vger.kernel.org,
+ kernel-janitors@vger.kernel.org
+References: <aTAbp5RleyH_lnZE@stanley.mountain>
+From: Rolf Reintjes <rolf.reintjes@web.de>
+In-Reply-To: <aTAbp5RleyH_lnZE@stanley.mountain>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: quoted-printable
+X-Provags-ID: V03:K1:0ULe0Ehm38uUVNXqaBQ25r2SKlMO5jYZ5qAz9CQieZ/l//PHEsS
+ 0Hw4GWDoWKBwzsRNx0/1fj7YVQAImQ2WT7KzGTbT9CNVcH30ok1Pc5eG1sf4WYimdmOm0ws
+ XE57uJ55HVRguhtQbGlOQhqYsQZOBJ+qu2HN9etxyTk1mtjNlf/P/QhcvaAx9un5ad8edU/
+ xACi+gfoP5YCzn2fFLzNg==
+X-Spam-Flag: NO
+UI-OutboundReport: notjunk:1;M01:P0:AOAoNnvEVSE=;Psfcvy7vzScXF51qDR/zJ8BbqU3
+ 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
 
-Fix an issue detected by  syzbot with KMSAN
-BUG: KMSAN: uninit-value in cfg80211_classify8021d+0x99d/0x12b0
-net/wireless/util.c:1027
+Hello Dan,
 
-The function accessed DSCP fields from IP and IPv6 headers without first
-verifying that sufficient header data was present in the skb. When a
-packet reaches this path, the header dereference could access
-uninitialized memory, as reported by KMSAN under fuzzing with syzkaller.
+Am 03.12.2025 um 12:14 schrieb Dan Carpenter:
+> The QGenie AI code review tool
 
-Add explicit skb_header_pointer() checks for both IPv4 and IPv6 headers to
-ensure that the required header data is available before extracting the
-DSCP field. This prevents uninitialized memory reads while preserving
-existing behavior for valid packets
+Could you tell us more about this tool? Is there a web page of this=20
+tool, how do you use this tool?
 
-This fix has been tested and validated by syzbot. This patch closes the
-bug reported at the following syzkaller link.Fixes the uninitialized
-header access.
+I found https://qgenie.ai/ but this is not a code review tool.
 
-Reported-by: syzbot+878ddc3962f792e9af59@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com./bug?extid=878ddc3962f792e9af59
-Tested-by: syzbot+878ddc3962f792e9af59@syzkaller.appspotmail.com
-Fixes: b156579b1404 ("wireless: Treat IPv6 diffserv the same as IPv4 for 802.11e")
-Signed-off-by: Ranganath V N <vnranganath.20@gmail.com>
----
-validate header before DSCP read in cfg80211_classify8021d().
-skb_header_pointer() checks before accessing header structures to ensure
-safe and fully initialized data access.
+Rolf
 
-Changes in v4:
-- Corrected the code by using the pulled data to read the dscp.
-- Link to v3: https://lore.kernel.org/all/20251118150524.7973-1-vnranganath.20@gmail.com/
-
-Changes in v3:
-- Corrected the code by using the correct offset  past the header.
-  similar to the existing MPLs handling logic.
-- Link to v2:https://lore.kernel.org/all/20251108-fifth-v2-1-405da01c6684@gmail.com
-
-Changes in v2:
-- Corrected the commit subject and Fixes tag.
-- Link to v1: https://lore.kernel.org/r/20251103-fifth-v1-1-4a221737ddfe@gmail.com
----
- net/wireless/util.c | 24 ++++++++++++++++++++----
- 1 file changed, 20 insertions(+), 4 deletions(-)
-
-diff --git a/net/wireless/util.c b/net/wireless/util.c
-index 56724b33af04..c403e2be18e9 100644
---- a/net/wireless/util.c
-+++ b/net/wireless/util.c
-@@ -962,12 +962,28 @@ unsigned int cfg80211_classify8021d(struct sk_buff *skb,
- 	}
- 
- 	switch (skb->protocol) {
--	case htons(ETH_P_IP):
--		dscp = ipv4_get_dsfield(ip_hdr(skb)) & 0xfc;
-+	case htons(ETH_P_IP): {
-+		struct iphdr iph, *ip;
-+
-+		ip = skb_header_pointer(skb, sizeof(struct ethhdr),
-+					sizeof(*ip), &iph);
-+		if (!ip)
-+			return 0;
-+
-+		dscp = ipv4_get_dsfield(ip) & 0xfc;
- 		break;
--	case htons(ETH_P_IPV6):
--		dscp = ipv6_get_dsfield(ipv6_hdr(skb)) & 0xfc;
-+	}
-+	case htons(ETH_P_IPV6): {
-+		struct ipv6hdr ip6h, *ip6;
-+
-+		ip6 = skb_header_pointer(skb, sizeof(struct ethhdr),
-+					 sizeof(*ip6), &ip6h);
-+		if (!ip6)
-+			return 0;
-+
-+		dscp = ipv6_get_dsfield(ip6) & 0xfc;
- 		break;
-+	}
- 	case htons(ETH_P_MPLS_UC):
- 	case htons(ETH_P_MPLS_MC): {
- 		struct mpls_label mpls_tmp, *mpls;
--- 
-2.43.0
+> says we should store the capped length to
+> wdev->u.client.ssid_len.  The AI is correct.
+>=20
+> Fixes: 62b635dcd69c ("wifi: cfg80211: sme: cap SSID length in __cfg80211=
+_connect_result()")
+> Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
+> ---
+>   net/wireless/sme.c | 2 +-
+>   1 file changed, 1 insertion(+), 1 deletion(-)
+>=20
+> diff --git a/net/wireless/sme.c b/net/wireless/sme.c
+> index 3a028ff287fb..4e629ca305bc 100644
+> --- a/net/wireless/sme.c
+> +++ b/net/wireless/sme.c
+> @@ -910,7 +910,7 @@ void __cfg80211_connect_result(struct net_device *de=
+v,
+>  =20
+>   			ssid_len =3D min(ssid->datalen, IEEE80211_MAX_SSID_LEN);
+>   			memcpy(wdev->u.client.ssid, ssid->data, ssid_len);
+> -			wdev->u.client.ssid_len =3D ssid->datalen;
+> +			wdev->u.client.ssid_len =3D ssid_len;
+>   			break;
+>   		}
+>   		rcu_read_unlock();
 
 
