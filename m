@@ -1,137 +1,120 @@
-Return-Path: <linux-wireless+bounces-29471-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-29472-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id B81E7C9EAA2
-	for <lists+linux-wireless@lfdr.de>; Wed, 03 Dec 2025 11:13:55 +0100 (CET)
+Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [IPv6:2a01:60a::1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id EDC08C9ED29
+	for <lists+linux-wireless@lfdr.de>; Wed, 03 Dec 2025 12:15:01 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 203D94E26E7
-	for <lists+linux-wireless@lfdr.de>; Wed,  3 Dec 2025 10:13:42 +0000 (UTC)
+	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 16600347CE0
+	for <lists+linux-wireless@lfdr.de>; Wed,  3 Dec 2025 11:15:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E7C6F2E7F1C;
-	Wed,  3 Dec 2025 10:13:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A0F762F362B;
+	Wed,  3 Dec 2025 11:14:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=uniontech.com header.i=@uniontech.com header.b="VwLlUnkP"
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="kFrm2sag"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from smtpbgsg1.qq.com (smtpbgsg1.qq.com [54.254.200.92])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f49.google.com (mail-wm1-f49.google.com [209.85.128.49])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C18E52E888C;
-	Wed,  3 Dec 2025 10:13:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=54.254.200.92
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C61AE2F291D
+	for <linux-wireless@vger.kernel.org>; Wed,  3 Dec 2025 11:14:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.49
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764756820; cv=none; b=XfROR2a2L6CQ20j4st2DjKxhtH+zwTe+GqgUKlabjJJh2AQjSl9hn3lo7BBjFlm/I6rNEQfKzWPBSDvIWeYmauW5pMG59PpSbpnW3IqrHj+esGXzx3pMC8krgJ5JFdon+gVEeofA3gaLef1qQAsyTedJFQk94Nq8AYKhVtt629s=
+	t=1764760495; cv=none; b=Y9KftFkBGHTHML/XF2YqbglCQy1//uVdLtao6OA57vrm+Zv8vhZnlJgN7Tg/KknQhgqYPElB0sI3oMMxYlGKCzXa1MrSMNMbLczn2EQhr+9SRe6AY4qgZQun5uQPnrmhjnq6fAqxi9Cw9hnknWlmzaAWSONbhF19b0DoSFdaJgI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764756820; c=relaxed/simple;
-	bh=NTM1KmWbQdARk4K5AKsKvddVwmZZIFFrjw78YXGgnqM=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=IE9kY9ROzoY0jN+5n7JK6IuEgKI18KUJb/RW8cid3yEI0Ktj+BctF5Q3DAuZIzbLM3nNOzedExxivHdeL172WBv884YqZuTdhrWCWNtqu8Nmj8YR02d2pU+T7EFrLUXqzXIM8fECwPkYst7sVksq8FZ6MYfE5R6RPx5+ZtXOs5I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=uniontech.com; spf=pass smtp.mailfrom=uniontech.com; dkim=pass (1024-bit key) header.d=uniontech.com header.i=@uniontech.com header.b=VwLlUnkP; arc=none smtp.client-ip=54.254.200.92
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=uniontech.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=uniontech.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=uniontech.com;
-	s=onoh2408; t=1764756777;
-	bh=5VfsePXfK/pS5Ytd8Ld+IYlJCYn/zYPgRIqaDjm44iM=;
-	h=From:To:Subject:Date:Message-ID:MIME-Version;
-	b=VwLlUnkPZaSh7FUBg4+FeXamLgy7MIPGXmOvtWXSDDfd2KzXtEFbyS0OizVl4W8uK
-	 ZfcsV6RcKh4FebU3bLRhnXzG45zg0MZgmnBon1mgnlO1ivy+euSf+GLADvHwsal1PD
-	 6P7EqJ6NVO3jYBhD6jTnMrsk29Y+5cGVEYoM++bU=
-X-QQ-mid: zesmtpgz8t1764756771taa55a6ec
-X-QQ-Originating-IP: Mv4Rdtrjlzh+bSyWSRT5cms7a5Dr17o1KqrZ630EHys=
-Received: from aosc-cryolitia ( [61.242.135.10])
-	by bizesmtp.qq.com (ESMTP) with 
-	id ; Wed, 03 Dec 2025 18:12:49 +0800 (CST)
-X-QQ-SSF: 0000000000000000000000000000000
-X-QQ-GoodBg: 1
-X-BIZMAIL-ID: 18005684337878457378
-EX-QQ-RecipientCnt: 7
-From: Cryolitia PukNgae <cryolitia@uniontech.com>
-To: rtl8821cerfe2@gmail.com
-Cc: he.zhenang@bedmex.com,
-	johannes@sipsolutions.net,
-	linux-wireless@vger.kernel.org,
-	netdev@vger.kernel.org,
-	yt@radxa.com,
-	Cryolitia PukNgae <cryolitia@uniontech.com>
-Subject: Re: [PATCH v1 6.14] wireless: aic8800: add support for AIC8800 WiFi chipset
-Date: Wed,  3 Dec 2025 18:12:29 +0800
-Message-ID: <1B7E52A5DC7D1CFE+20251203101229.91783-1-cryolitia@uniontech.com>
-X-Mailer: git-send-email 2.52.0
-In-Reply-To: <0d807f54-7579-43a2-99c7-2a19cf715ec3@gmail.com>
-References: <0d807f54-7579-43a2-99c7-2a19cf715ec3@gmail.com>
+	s=arc-20240116; t=1764760495; c=relaxed/simple;
+	bh=FVTaTUHkj0hCiF/8oDz0IRLJk2VFfDYMXcQ5TgtXHuU=;
+	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
+	 Content-Disposition; b=aD/0RHYW3f82uPJNSaaCRPFNVIMqLYqT1+IE6ZvFZ3ddsl4l14a5qV/ayhRYHjWQ+1k7TJmmJ+gHWkIa8lmGnLUo99TDJhRuEIZQFWA9reO4GJo6Xkqfdi+gVspViLo8yQ3XD3Gx8wnV4Eqnw2As65+2nNUy8FeE7hObbRyL8EY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=kFrm2sag; arc=none smtp.client-ip=209.85.128.49
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+Received: by mail-wm1-f49.google.com with SMTP id 5b1f17b1804b1-4779a4fc95aso5614895e9.1
+        for <linux-wireless@vger.kernel.org>; Wed, 03 Dec 2025 03:14:52 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1764760491; x=1765365291; darn=vger.kernel.org;
+        h=content-disposition:mime-version:message-id:subject:cc:to:from:date
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=PQuU8GXO4td5lpFMJSEuUSNKl2naOb+LA1iRC4+QgDE=;
+        b=kFrm2sagbDxhNjqHenQQgXdwOYRol2V95Ma+rx8SCQzHc99psuBEwzuACRECl/sLno
+         hTqt/p0bolW+OY9i3PqVGG56Kl56WufaDzGuw7aIoDVBez6BFH4VoGP/6poWeMv76LXS
+         /VYYwmx5GZm7e5aTZ4bD/wCTvoSrdVkx8M+91eNmqhBs6jcNOXYnnyWBUFuzSu4/9e67
+         1wugbaTd8T+/KLARBOP9GUyOies7G7jPdFAoDqEyxGnmKH3isvO7MrfSRm6Sbj0B/oQC
+         nXVa2ceYrxmzPhfFmcIr2YXd9/20+s1H5Jsw22LnrzuvtRL+GerDzzMDo5LCC6vfecDZ
+         gAFA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1764760491; x=1765365291;
+        h=content-disposition:mime-version:message-id:subject:cc:to:from:date
+         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=PQuU8GXO4td5lpFMJSEuUSNKl2naOb+LA1iRC4+QgDE=;
+        b=Vd08RNX7Bxy0vcclYcRJlw/BecN0FOqOl+XuwwH6qhDfbudCn8HI/x+Z63c6t/w/eS
+         lD4YH54P7iiZ6yRk1GlOgz8gciYKi1vXddh/YaCAMMEFLm6OQPsLgNKQtfuhjJq7Tgm+
+         Nrn/h8DRbZE90PgjwIeeUqVk2R+h+9DKNhoj5m3OjXw1898KDEoRiQ7zIa/E7H4y2MZs
+         XD9V/gmY6snpXmpiWowLNlM0T51OlegGkMSFPGuxf/u1Ekd1EyInBCX7KrE3i8kFZocm
+         9rsXbftzUAwjkvAJ9FbcnNw/oHvIToSokVUHljR5deLXzDAH6xJYZlGqDypbYsVnS5uN
+         pihQ==
+X-Forwarded-Encrypted: i=1; AJvYcCWM1R9P9ufS1VWAkMcrLOoOZysA9RtpJa4+u9N21KLTmNavb80vhU63PsTjoKxvfVZs6run6Kq0MahC1pUZGQ==@vger.kernel.org
+X-Gm-Message-State: AOJu0Yy+wei9FUQy5jQd1hQszN8bHY8PugKVTZKVhTqySDKFeLXvtNtA
+	BYwYLPfTS/fWsaaW4Y6PksGowcDbT1+gFmJpbtIEWgV/Ex6KlVkukEDW6KI6RHvIHj0=
+X-Gm-Gg: ASbGncv6boZap2ovovXQAsQaQKj+SO1OWU+rlU51XTduBnjelEj1OWa5qVLUwLFgqIC
+	K31dJAXt4+HNI1lcVrsKJqnvkp09vmME1v6SaXDizrCiv2bgr9G2csDxry+gL9WtSpeLRFYyY0I
+	Dhi69+4j8ccMj6XYQiaIPmSAItqTCA07/b99RrKgdnwRB+m9oVR25BfkI6bDNXI+W3yUpMRRrON
+	ZxC4Wy76OmzX4myOXljTr18uic9aM8DKgcCm/QdM52QwCetZdS3y/dV41K1ZT9NcTA5X5x7AXkZ
+	YvxJK/DEoD469RfLMzgG1dn4r9UDHfjwhH2LsgzOF4DbmmgVhslFlAUbNzciDFP4Tdg2nFzGGPy
+	LOrpqNLML9XZJhLhIXD1Za5gERcFMIQKKKMg2X90xqsIrfLYdc+IYRlEfeKf1fUDeCHmPN+1FzP
+	6Og49hFRXGkrP7u9i7
+X-Google-Smtp-Source: AGHT+IFvxMW0hrVy7sS2LWr2Mu2vPFg5Y67EUhHisjMmxypFuUsGFVIcK/2jhTXExouZzHZBW8uIaw==
+X-Received: by 2002:a05:600c:4fcc:b0:477:a289:d854 with SMTP id 5b1f17b1804b1-4792aeed1b5mr21815965e9.5.1764760491023;
+        Wed, 03 Dec 2025 03:14:51 -0800 (PST)
+Received: from localhost ([196.207.164.177])
+        by smtp.gmail.com with UTF8SMTPSA id 5b1f17b1804b1-4792a79ed9asm41687785e9.6.2025.12.03.03.14.50
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 03 Dec 2025 03:14:50 -0800 (PST)
+Date: Wed, 3 Dec 2025 14:14:47 +0300
+From: Dan Carpenter <dan.carpenter@linaro.org>
+To: qgeniecore@qualcomm.com
+Cc: Johannes Berg <johannes@sipsolutions.net>,
+	linux-wireless@vger.kernel.org, linux-kernel@vger.kernel.org,
+	kernel-janitors@vger.kernel.org
+Subject: [PATCH] wifi: cfg80211: sme: store capped length in
+ __cfg80211_connect_result()
+Message-ID: <aTAbp5RleyH_lnZE@stanley.mountain>
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-QQ-SENDSIZE: 520
-Feedback-ID: zesmtpgz:uniontech.com:qybglogicsvrgz:qybglogicsvrgz3a-1
-X-QQ-XMAILINFO: OKKvvo6f47/bsgkYmdYt3XTxuRUNnjfH3Y9mGaydEfeu68gnhU4LViBb
-	HP8EvxGGJQEeZ8pTNTxlbKMuT+tLlizp4rTPhEEAE6p3kAeMFtUHONdlpwDwFMLSFy7ysJc
-	IpZ/wJoPqyDuyiKDN60DLwL9QPa8gDqLtbcfqC9r/McHZmmqEHize4K7vTtzfyQVaTSwtc5
-	OJe/nMXif+ebkj7mdxvxUv6/A0HYcFpmcB/qMYlL/EreHGFcGTPMyJHoh+ZZCDbxC6e1Ojg
-	ZKpsqUuU81PopEu+kv/hLE0IAuqemwmvEbR6VCtar3xVprxnLzaAqMoSNUM9i7gcreDxh/b
-	ilOC7ojXxxWKQYMqDaAxlprsVKcdy76i5ctQyhcc6jS73YAL/GbiGPA3XV/3jGlGe2jkspE
-	+mwtwSYcF6YQBfC2YkwboNYePuIoxpfCiFMKmBmIy0Q/rMc8AMkpKXoQOULgjpKqh4JrXd9
-	SdLguEDWmhS9zRLjIa/Rv3Dr+6YA7rhJ1UyPPw+/7kmT1ZIq9WmSRap1nEb/TkXnz6auQkJ
-	n3qmrOOyxNWI/zb/NBMRoqCK+HRdre1MiID3JXdc+VRqoqsVqp+UMNn82JUcnNQObDho7F0
-	RfUBF1dPN6alMFWsWsUl3M9m8GsrWVNnPlXwoRjqbdP8t3XOpEtLoKs3Tkdn6gXLQUiFro+
-	xVrAPtX9/jYv7TYH+O75pDElWzhyvTh+1oKVaXOeO948YgV7F6G4ZVlIzfTyqxDHXF7RS90
-	vTwoYNtE+iW0vUZCNluPV7/a+JZjYFCX6XovPi7pWQwllskLH4AzYmY7vmue7/udjTLCdQ+
-	wgxip/vNYXh/VORUPzMPS9Acc8/rq52HXSbQXyz15qX15BiNp/T5n6rMMh1iRU+IL6Mz5G7
-	OTI72gI6JIU3U2wcdQ6/mESYLAZnnrvGAxoHLLbN5jLD0s6tQkIzbm9yEjEdFfhi0nMENpO
-	feT128Ckzi5bUQLL/a0n7lSRqjtr/DfRwnKPZtdH6qSqmya4mxFGHGKPd2c3jrff7vsKsOE
-	F6MwZjDgwXQ0F3HyCO3xTJ4UTrinTRiVLKAITYpmUpATiKZia/
-X-QQ-XMRINFO: M/715EihBoGSf6IYSX1iLFg=
-X-QQ-RECHKSPAM: 0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+X-Mailer: git-send-email haha only kidding
 
-On Tue, 21 Oct 2025 00:27:21 +0300, Bitterblue Smith wrote:
->On 20/10/2025 12:21, he.zhenang wrote:
->> Add driver support for the AIC8800 WiFi chipset family.
->> 
->> Driver features:
->> - Supports 802.11ax (Wi-Fi 6) and backward compatible modes
->> - PCIe/USB/SDIO interface support
->>- Hardware encryption offload (WPA3 support)
->>- Enhanced power management for mobile devices
->>- Integrated Bluetooth coexistence (if applicable)
->> 
->> Signed-off-by: he.zhenang <he.zhenang@bedmex.com>
->
->I have two USB adapters from Brostrend with AIC chips. It's
->nice to see someone try to add support. However, there are some
->problems with this patch.
->
->1) Where did the source code come from? The driver provided by
->Brostrend doesn't have any license information in it. Only the
->files aic_br_ext.{c,h} have a license header, and that's because
->they were copied from a Realtek driver. Presumably Brostrend got
->the code from AIC. So then I wonder who added the license headers
->we can see in this patch, and did AIC agree to that? They did
->write MODULE_LICENSE("GPL"); but is that enough? Also, a good
->chunk of the code published by Brostrend is actually Copyright
->(C) RivieraWaves, not AIC.
+The QGenie AI code review tool says we should store the capped length to
+wdev->u.client.ssid_len.  The AI is correct.
 
-Leaving aside Realtek's involvement, Radxa, one of AIC's downstream
-vendors, claims that AIC clarified to them that the entire AIC8800
-driver is licensed under GPLv2.[1]
+Fixes: 62b635dcd69c ("wifi: cfg80211: sme: cap SSID length in __cfg80211_connect_result()")
+Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
+---
+ net/wireless/sme.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-We (deepin) and several downstream vendors are working to clarify the
-redistribution license for the AIC8800 firmware, and this remains
-unclear to date.
+diff --git a/net/wireless/sme.c b/net/wireless/sme.c
+index 3a028ff287fb..4e629ca305bc 100644
+--- a/net/wireless/sme.c
++++ b/net/wireless/sme.c
+@@ -910,7 +910,7 @@ void __cfg80211_connect_result(struct net_device *dev,
+ 
+ 			ssid_len = min(ssid->datalen, IEEE80211_MAX_SSID_LEN);
+ 			memcpy(wdev->u.client.ssid, ssid->data, ssid_len);
+-			wdev->u.client.ssid_len = ssid->datalen;
++			wdev->u.client.ssid_len = ssid_len;
+ 			break;
+ 		}
+ 		rcu_read_unlock();
+-- 
+2.51.0
 
-1. https://github.com/radxa-pkg/aic8800/issues/54
-
->https://linux.brostrend.com/aic8800-dkms.deb
->
->2) Who will maintain this new driver?
->
->3) AIC has several chips. Which ones did you test?
-
-Best regards,
-Cryolitia PukNgae
 
