@@ -1,120 +1,157 @@
-Return-Path: <linux-wireless+bounces-29472-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-29473-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [IPv6:2a01:60a::1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id EDC08C9ED29
-	for <lists+linux-wireless@lfdr.de>; Wed, 03 Dec 2025 12:15:01 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 356E9C9EF50
+	for <lists+linux-wireless@lfdr.de>; Wed, 03 Dec 2025 13:18:15 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 16600347CE0
-	for <lists+linux-wireless@lfdr.de>; Wed,  3 Dec 2025 11:15:01 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id EFD9A3A25A5
+	for <lists+linux-wireless@lfdr.de>; Wed,  3 Dec 2025 12:18:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A0F762F362B;
-	Wed,  3 Dec 2025 11:14:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 574A8C8F0;
+	Wed,  3 Dec 2025 12:18:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="kFrm2sag"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="RmJayr0b"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-wm1-f49.google.com (mail-wm1-f49.google.com [209.85.128.49])
+Received: from mail-oi1-f178.google.com (mail-oi1-f178.google.com [209.85.167.178])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C61AE2F291D
-	for <linux-wireless@vger.kernel.org>; Wed,  3 Dec 2025 11:14:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.49
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BE0EB274FC1
+	for <linux-wireless@vger.kernel.org>; Wed,  3 Dec 2025 12:18:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.178
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764760495; cv=none; b=Y9KftFkBGHTHML/XF2YqbglCQy1//uVdLtao6OA57vrm+Zv8vhZnlJgN7Tg/KknQhgqYPElB0sI3oMMxYlGKCzXa1MrSMNMbLczn2EQhr+9SRe6AY4qgZQun5uQPnrmhjnq6fAqxi9Cw9hnknWlmzaAWSONbhF19b0DoSFdaJgI=
+	t=1764764291; cv=none; b=TW8WXvO2d8+dla0SqBa26V0I3bQrW50ZtEGSYmUxlS2rVzYNgbGYAkbN75SWivbg1A+/8az2Wj5luYZSJBQu2dbrLFh7gnfM3XXe69tByMhLkFODTmLUihH0CtEL7B3SrStrJxQByyVu6X4g/+JSdtWwhrnFSQSC3yXFVpXH0YA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764760495; c=relaxed/simple;
-	bh=FVTaTUHkj0hCiF/8oDz0IRLJk2VFfDYMXcQ5TgtXHuU=;
-	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
-	 Content-Disposition; b=aD/0RHYW3f82uPJNSaaCRPFNVIMqLYqT1+IE6ZvFZ3ddsl4l14a5qV/ayhRYHjWQ+1k7TJmmJ+gHWkIa8lmGnLUo99TDJhRuEIZQFWA9reO4GJo6Xkqfdi+gVspViLo8yQ3XD3Gx8wnV4Eqnw2As65+2nNUy8FeE7hObbRyL8EY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=kFrm2sag; arc=none smtp.client-ip=209.85.128.49
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
-Received: by mail-wm1-f49.google.com with SMTP id 5b1f17b1804b1-4779a4fc95aso5614895e9.1
-        for <linux-wireless@vger.kernel.org>; Wed, 03 Dec 2025 03:14:52 -0800 (PST)
+	s=arc-20240116; t=1764764291; c=relaxed/simple;
+	bh=6ahSk7F+VUUFUUWYIqIDsEp37P1fLGYCx5xNtRNPC+E=;
+	h=MIME-Version:From:Date:Message-ID:Subject:To:Content-Type; b=b04UcPiO2T21L3hgF+6VTV82o2X7SL2bq0sk59CJcxwS3xwcJ8q3UkPIW55hRA/mXML7WG0o3hkpmvHZ/GNPVlnx6EWood51H7zcizsmZf6Hhza2oBujYtW7PrqjIHLNSvQHlQZ8L5DeSesnQUTZX+0cOV7V5F10cCCZuh9CfDs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=RmJayr0b; arc=none smtp.client-ip=209.85.167.178
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-oi1-f178.google.com with SMTP id 5614622812f47-45330fe6e1bso2652636b6e.2
+        for <linux-wireless@vger.kernel.org>; Wed, 03 Dec 2025 04:18:09 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1764760491; x=1765365291; darn=vger.kernel.org;
-        h=content-disposition:mime-version:message-id:subject:cc:to:from:date
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=PQuU8GXO4td5lpFMJSEuUSNKl2naOb+LA1iRC4+QgDE=;
-        b=kFrm2sagbDxhNjqHenQQgXdwOYRol2V95Ma+rx8SCQzHc99psuBEwzuACRECl/sLno
-         hTqt/p0bolW+OY9i3PqVGG56Kl56WufaDzGuw7aIoDVBez6BFH4VoGP/6poWeMv76LXS
-         /VYYwmx5GZm7e5aTZ4bD/wCTvoSrdVkx8M+91eNmqhBs6jcNOXYnnyWBUFuzSu4/9e67
-         1wugbaTd8T+/KLARBOP9GUyOies7G7jPdFAoDqEyxGnmKH3isvO7MrfSRm6Sbj0B/oQC
-         nXVa2ceYrxmzPhfFmcIr2YXd9/20+s1H5Jsw22LnrzuvtRL+GerDzzMDo5LCC6vfecDZ
-         gAFA==
+        d=gmail.com; s=20230601; t=1764764288; x=1765369088; darn=vger.kernel.org;
+        h=to:subject:message-id:date:from:mime-version:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=6ahSk7F+VUUFUUWYIqIDsEp37P1fLGYCx5xNtRNPC+E=;
+        b=RmJayr0bdm5CdWXWZZ89xc5KViBpNkRzIx8R8TmSWOW/GGB9BOcmBhorO94i7PIc61
+         ksm5lm+3wxdVKXsDjNMRpcV7adKmSzEOFU+ab3eECGzzYV1mzem2pjxGsh2oSOPu5g18
+         tZ/pWnn4r1Rti07Sj5D35OViGQgVqcuFWlF0jUpPVU1XzurOR7ZIOXA90Zf3LF+FjNBy
+         nI+HURAIfhrM3ccDJdTWd6O77yGBkeT/jwfHIHmz+pyjJZuh+culMo1Ja+n+neSFvEeG
+         vkG8Ss01Ms0WUAWD6foorqPmlZ6WKOvBScyLfa960cCevapDTmXUaeyEG4WGxENxmh+T
+         R9pQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1764760491; x=1765365291;
-        h=content-disposition:mime-version:message-id:subject:cc:to:from:date
-         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=PQuU8GXO4td5lpFMJSEuUSNKl2naOb+LA1iRC4+QgDE=;
-        b=Vd08RNX7Bxy0vcclYcRJlw/BecN0FOqOl+XuwwH6qhDfbudCn8HI/x+Z63c6t/w/eS
-         lD4YH54P7iiZ6yRk1GlOgz8gciYKi1vXddh/YaCAMMEFLm6OQPsLgNKQtfuhjJq7Tgm+
-         Nrn/h8DRbZE90PgjwIeeUqVk2R+h+9DKNhoj5m3OjXw1898KDEoRiQ7zIa/E7H4y2MZs
-         XD9V/gmY6snpXmpiWowLNlM0T51OlegGkMSFPGuxf/u1Ekd1EyInBCX7KrE3i8kFZocm
-         9rsXbftzUAwjkvAJ9FbcnNw/oHvIToSokVUHljR5deLXzDAH6xJYZlGqDypbYsVnS5uN
-         pihQ==
-X-Forwarded-Encrypted: i=1; AJvYcCWM1R9P9ufS1VWAkMcrLOoOZysA9RtpJa4+u9N21KLTmNavb80vhU63PsTjoKxvfVZs6run6Kq0MahC1pUZGQ==@vger.kernel.org
-X-Gm-Message-State: AOJu0Yy+wei9FUQy5jQd1hQszN8bHY8PugKVTZKVhTqySDKFeLXvtNtA
-	BYwYLPfTS/fWsaaW4Y6PksGowcDbT1+gFmJpbtIEWgV/Ex6KlVkukEDW6KI6RHvIHj0=
-X-Gm-Gg: ASbGncv6boZap2ovovXQAsQaQKj+SO1OWU+rlU51XTduBnjelEj1OWa5qVLUwLFgqIC
-	K31dJAXt4+HNI1lcVrsKJqnvkp09vmME1v6SaXDizrCiv2bgr9G2csDxry+gL9WtSpeLRFYyY0I
-	Dhi69+4j8ccMj6XYQiaIPmSAItqTCA07/b99RrKgdnwRB+m9oVR25BfkI6bDNXI+W3yUpMRRrON
-	ZxC4Wy76OmzX4myOXljTr18uic9aM8DKgcCm/QdM52QwCetZdS3y/dV41K1ZT9NcTA5X5x7AXkZ
-	YvxJK/DEoD469RfLMzgG1dn4r9UDHfjwhH2LsgzOF4DbmmgVhslFlAUbNzciDFP4Tdg2nFzGGPy
-	LOrpqNLML9XZJhLhIXD1Za5gERcFMIQKKKMg2X90xqsIrfLYdc+IYRlEfeKf1fUDeCHmPN+1FzP
-	6Og49hFRXGkrP7u9i7
-X-Google-Smtp-Source: AGHT+IFvxMW0hrVy7sS2LWr2Mu2vPFg5Y67EUhHisjMmxypFuUsGFVIcK/2jhTXExouZzHZBW8uIaw==
-X-Received: by 2002:a05:600c:4fcc:b0:477:a289:d854 with SMTP id 5b1f17b1804b1-4792aeed1b5mr21815965e9.5.1764760491023;
-        Wed, 03 Dec 2025 03:14:51 -0800 (PST)
-Received: from localhost ([196.207.164.177])
-        by smtp.gmail.com with UTF8SMTPSA id 5b1f17b1804b1-4792a79ed9asm41687785e9.6.2025.12.03.03.14.50
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 03 Dec 2025 03:14:50 -0800 (PST)
-Date: Wed, 3 Dec 2025 14:14:47 +0300
-From: Dan Carpenter <dan.carpenter@linaro.org>
-To: qgeniecore@qualcomm.com
-Cc: Johannes Berg <johannes@sipsolutions.net>,
-	linux-wireless@vger.kernel.org, linux-kernel@vger.kernel.org,
-	kernel-janitors@vger.kernel.org
-Subject: [PATCH] wifi: cfg80211: sme: store capped length in
- __cfg80211_connect_result()
-Message-ID: <aTAbp5RleyH_lnZE@stanley.mountain>
+        d=1e100.net; s=20230601; t=1764764288; x=1765369088;
+        h=to:subject:message-id:date:from:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=6ahSk7F+VUUFUUWYIqIDsEp37P1fLGYCx5xNtRNPC+E=;
+        b=tRu1abS0cCe9Kvce8VefkJYMth2mNDk3gfPEpjyLkiZC3BX2O6EXkcAU6aYW9uQRGf
+         NFy5gLsH8S7KtnBLuNOddet7iin9UrKcGdMrTPJVnROJCtnGPEBIs3K0BHErpSZiT8sX
+         qJtIYqlxx8+J4tDDcpZ7DJ1mjTATqbO9rGLhtfYZr1Vs0Vd2/7JxWaHON31Ik6Dsrr+q
+         Yi6dytVqH3IS+n8nemGaAgDprjzoN1QOffnWpN0LtV/luV0T7IKqEmIEGiqEgKU7UfAH
+         HHZ9TVgOi/2Ibf5YnULd2nRGO45SJM6T8W6S8d8BaaioYkPgYPpHYl5qT1ZJq7yF6vRr
+         LmUA==
+X-Gm-Message-State: AOJu0YyiyA+IaXVQru2avVg8yOP1E9CGNK1wDUJQ9QJdhlD/bR6TO61U
+	8iKvimyaCN1zshN7jEtAhMXMmnh7dFF5Ap39FhtO05ogDmPuJh7aPWgr+pT+asu3isNFiidnlJC
+	IXflmIXE8EHJ+zQtLOPfsNgvWxdctVTSVQnwVV/aTMA==
+X-Gm-Gg: ASbGncvUUQe88Aqx1CPDYG3eVhuXuPfeb0oiTBTYWFgfLA+l656oKjsMsNiA1ON0Tx0
+	MBtIEP5F694oFHvzqidOl1IxIGKnMLgiZykoAY/XNht2ayGhOEEOds4Y2awU8mk7m6f9qWGsLbt
+	u3KH8f26roBiIkSddZPElfd1yblLvjfvH5jD9bh9L5PFiplSHfQeAq3FqbjbBsojmPS4tCJuBr/
+	roMyBVgZ3m3rmpH+kbyKccsUl5AYanu9LGC4THXx2lmoA/HjYXlfVr9osOZrezYf+I7ryHy
+X-Google-Smtp-Source: AGHT+IFK3WCIlmPOoFpjIsTUSF1acBi1n8Z2Jj9navKfNB9gNYV2RQoGieMMnlAjicyP1ytL9DQuWu6aQHor/Ryfz6Y=
+X-Received: by 2002:a05:6808:4705:b0:44d:badf:f449 with SMTP id
+ 5614622812f47-4536e3af612mr954070b6e.1.1764764287714; Wed, 03 Dec 2025
+ 04:18:07 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-X-Mailer: git-send-email haha only kidding
+From: Muhammad Firgani <muhammadfirgan50@gmail.com>
+Date: Wed, 3 Dec 2025 19:17:56 +0700
+X-Gm-Features: AWmQ_bnSku0MzmI1mbMVRyfg2j16w4Z24dFc7IEdMNhZLV9m2scCaqtwm27_oI8
+Message-ID: <CAFa2iMbgyA8Zgcncw2qgdrKpam5XoRzLqQ6SPq18wq58LCwi0g@mail.gmail.com>
+Subject: [BUG] MEDIATEK MT7902 (14c3:7902) detected but no interface created
+ on ASUS laptop
+To: linux-wireless@vger.kernel.org
+Content-Type: multipart/mixed; boundary="0000000000007b994406450b34a7"
 
-The QGenie AI code review tool says we should store the capped length to
-wdev->u.client.ssid_len.  The AI is correct.
+--0000000000007b994406450b34a7
+Content-Type: multipart/alternative; boundary="0000000000007b994306450b34a5"
 
-Fixes: 62b635dcd69c ("wifi: cfg80211: sme: cap SSID length in __cfg80211_connect_result()")
-Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
----
- net/wireless/sme.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+--0000000000007b994306450b34a5
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-diff --git a/net/wireless/sme.c b/net/wireless/sme.c
-index 3a028ff287fb..4e629ca305bc 100644
---- a/net/wireless/sme.c
-+++ b/net/wireless/sme.c
-@@ -910,7 +910,7 @@ void __cfg80211_connect_result(struct net_device *dev,
- 
- 			ssid_len = min(ssid->datalen, IEEE80211_MAX_SSID_LEN);
- 			memcpy(wdev->u.client.ssid, ssid->data, ssid_len);
--			wdev->u.client.ssid_len = ssid->datalen;
-+			wdev->u.client.ssid_len = ssid_len;
- 			break;
- 		}
- 		rcu_read_unlock();
--- 
-2.51.0
+Hello,
 
+I have a MEDIATEK MT7902 (PCI ID 14c3:7902) Wi-Fi adapter on an ASUS laptop=
+.
+The device is detected by the kernel (appears in lspci), and firmware files
+are present,
+but no wlan0 interface is created =E2=80=94 even with kernel 6.17.9 and mt7=
+6-dkms
+installed.
+
+Driver modules (mt76, mt7921e) load without error, but there is no
+initialization log in dmesg.
+
+I have disabled Secure Boot, performed cold reboots, and removed pci=3Dnocr=
+s.
+
+Attached is a full diagnostic log.
+
+Thank you for your work on Linux wireless support.
+
+Best regards,
+Muhammad Firgan
+
+--0000000000007b994306450b34a5
+Content-Type: text/html; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+
+<div dir=3D"ltr"><div>Hello,<br><br>I have a MEDIATEK MT7902 (PCI ID 14c3:7=
+902) Wi-Fi adapter on an ASUS laptop.<br>The device is detected by the kern=
+el (appears in lspci), and firmware files are present,<br>but no wlan0 inte=
+rface is created =E2=80=94 even with kernel 6.17.9 and mt76-dkms installed.=
+<br><br>Driver modules (mt76, mt7921e) load without error, but there is no =
+initialization log in dmesg.<br><br>I have disabled Secure Boot, performed =
+cold reboots, and removed pci=3Dnocrs.<br><br>Attached is a full diagnostic=
+ log.<br><br>Thank you for your work on Linux wireless support.<br><br>Best=
+ regards,<br></div>Muhammad Firgan</div>
+
+--0000000000007b994306450b34a5--
+--0000000000007b994406450b34a7
+Content-Type: text/plain; charset="US-ASCII"; name="mt7902-report.txt"
+Content-Disposition: attachment; filename="mt7902-report.txt"
+Content-Transfer-Encoding: base64
+Content-ID: <f_mipz2mng0>
+X-Attachment-Id: f_mipz2mng0
+
+PT09IEtlcm5lbCB2ZXJzaW9uID09PQo2LjE3LjktYXJjaDEtMQoKPT09IGxzcGNpIC1ubmsgKE1U
+NzkwMikgPT09CjAyOjAwLjAgTmV0d29yayBjb250cm9sbGVyIFswMjgwXTogTUVESUFURUsgQ29y
+cC4gTVQ3OTAyIDgwMi4xMWF4IFBDSWUgV2lyZWxlc3MgTmV0d29yayBBZGFwdGVyIFtGaWxvZ2lj
+IDMxMF0gWzE0YzM6NzkwMl0KCVN1YnN5c3RlbTogQXp1cmVXYXZlIERldmljZSBbMWEzYjo1NTIw
+XQoJS2VybmVsIG1vZHVsZXM6IG10NzkyMWUKCj09PSBsc21vZCAobXQ3NiBtb2R1bGVzKSA9PT0K
+bXQ3OTIxZSAgICAgICAgICAgICAgICAyODY3MiAgMAptdDc5MjFfY29tbW9uICAgICAgICAgIDk4
+MzA0ICAxIG10NzkyMWUKbXQ3OTJ4X2xpYiAgICAgICAgICAgICA2OTYzMiAgMiBtdDc5MjFlLG10
+NzkyMV9jb21tb24KbXQ3Nl9jb25uYWNfbGliICAgICAgICA5ODMwNCAgMyBtdDc5MnhfbGliLG10
+NzkyMWUsbXQ3OTIxX2NvbW1vbgptdDc2ICAgICAgICAgICAgICAgICAgMTUxNTUyICA0IG10Nzky
+eF9saWIsbXQ3OTIxZSxtdDc5MjFfY29tbW9uLG10NzZfY29ubmFjX2xpYgptYWM4MDIxMSAgICAg
+ICAgICAgICAxNjc5MzYwICA0IG10NzkyeF9saWIsbXQ3NixtdDc5MjFfY29tbW9uLG10NzZfY29u
+bmFjX2xpYgpjZmc4MDIxMSAgICAgICAgICAgICAxNDI1NDA4ICA0IG10NzYsbWFjODAyMTEsbXQ3
+OTIxX2NvbW1vbixtdDc2X2Nvbm5hY19saWIKcmZraWxsICAgICAgICAgICAgICAgICA0NTA1NiAg
+MTAgbXQ3OTIxZSxhc3VzX3dtaSxibHVldG9vdGgsY2ZnODAyMTEKCj09PSBkbWVzZyAoYm9vdCAr
+IG10NzkpID09PQpbICAgIDAuMzgwODc3XSBwY2kgMDAwMDowMjowMC4wOiBbMTRjMzo3OTAyXSB0
+eXBlIDAwIGNsYXNzIDB4MDI4MDAwIFBDSWUgRW5kcG9pbnQKWyAgICAxLjgyMTAwMF0gdXNiIDEt
+Mi40OiBNYW51ZmFjdHVyZXI6IE1lZGlhVGVrIEluYy4KCj09PSBGaXJtd2FyZSBmaWxlcyA9PT0K
+LXJ3LXItLXItLSAxIHJvb3Qgcm9vdCAwIERlYyAgMyAxNzoxMyAvdXNyL2xpYi9maXJtd2FyZS9t
+ZWRpYXRlay9tdDc5MjFwcjJoLmJpbgotcnctci0tci0tIDEgcm9vdCByb290IDAgRGVjICAzIDE3
+OjEzIC91c3IvbGliL2Zpcm13YXJlL21lZGlhdGVrL210NzkyMV9yb21fcGF0Y2guYmluCgo9PT0g
+TGFwdG9wIG1vZGVsIChpZiBrbm93bikgPT09ClZpdm9ib29rIEdvIEUxNDA0RkFfRTE0MDRGQQo=
+--0000000000007b994406450b34a7--
 
