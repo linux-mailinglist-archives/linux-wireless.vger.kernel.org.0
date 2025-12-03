@@ -1,89 +1,95 @@
-Return-Path: <linux-wireless+bounces-29465-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-29468-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [IPv6:2a01:60a::1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id C4C9CC9E1E2
-	for <lists+linux-wireless@lfdr.de>; Wed, 03 Dec 2025 09:03:30 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8B7A7C9E984
+	for <lists+linux-wireless@lfdr.de>; Wed, 03 Dec 2025 10:53:15 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 6F8B53430BE
-	for <lists+linux-wireless@lfdr.de>; Wed,  3 Dec 2025 08:03:30 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 5DA124E04ED
+	for <lists+linux-wireless@lfdr.de>; Wed,  3 Dec 2025 09:53:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5D75828CF52;
-	Wed,  3 Dec 2025 08:03:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D68482E0924;
+	Wed,  3 Dec 2025 09:53:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="GIAfSWtg"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail.lysator.liu.se (mail.lysator.liu.se [130.236.254.3])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6BE5423AB81
-	for <linux-wireless@vger.kernel.org>; Wed,  3 Dec 2025 08:03:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=130.236.254.3
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6DDB32DFA5B
+	for <linux-wireless@vger.kernel.org>; Wed,  3 Dec 2025 09:53:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764749006; cv=none; b=aACWpu+s1vHkAI93MV8mdc8AmB1hGm/gmoa+J9ACTfObPnlaHfh893gK7pITSfEuMSPWUdcQDsGuvPmwc3dokxIFeSamUFe0TojYm/KVLrf+rj7BnOYAgBcn0QB736jh1b71KRDzjg5tp0XqXNTbHLPOELt7c5XbldAw7dQTAfM=
+	t=1764755587; cv=none; b=WMS7w5Efv00eAzb3B+D5gaOxXMwHl3zW5iSUSCuoSXAP1KlDmlTtx9Ymlmii0T+ISiMTvkf6day2CExWpnt835sYWVu2eESds4QWZUAMhR4POCs/3CYCmCZjAC7kKKUnQ7eZzHxkCNF/Q1V05/PhMPsBvc3yMp7I9AS5Mfq40BM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764749006; c=relaxed/simple;
-	bh=tdPme/ThRxECWR8P8pMIEkM6u+EOQIn6IVsS+g9RfJ4=;
-	h=Date:From:To:Subject:Message-ID:MIME-Version:Content-Type; b=d3hmDb5von4lOJb6duo74pjrJPccPTSLQlSJWeSXwJ3OFu30lXmv7IszybpAD2+ohXefqQSv9QBCIJoz+UEXh7xw51g995Law/4GNpV2ffIvnuWoKHTUL1LHdptJDd1uuUscXHqlOQA9S5Bq2fH3Sbtxaz3ijgLaOtSbIsmRZ4k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lysator.liu.se; spf=pass smtp.mailfrom=lysator.liu.se; arc=none smtp.client-ip=130.236.254.3
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lysator.liu.se
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lysator.liu.se
-Received: from mail.lysator.liu.se (localhost [127.0.0.1])
-	by mail.lysator.liu.se (Postfix) with ESMTP id 4C0F536E7
-	for <linux-wireless@vger.kernel.org>; Wed,  3 Dec 2025 08:57:10 +0100 (CET)
-Received: by mail.lysator.liu.se (Postfix, from userid 1004)
-	id 400F73669; Wed,  3 Dec 2025 08:57:10 +0100 (CET)
-X-Spam-Level: 
-X-Spam-Score: -1.0
-Received: from sara (h-62-63-215-216.A163.priv.bahnhof.se [62.63.215.216])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
-	(No client certificate requested)
-	by mail.lysator.liu.se (Postfix) with ESMTPSA id 174523668
-	for <linux-wireless@vger.kernel.org>; Wed,  3 Dec 2025 08:57:09 +0100 (CET)
-Date: Wed, 3 Dec 2025 08:57:08 +0100 (CET)
-From: =?UTF-8?Q?Peter_=C3=85strand?= <astrand@lysator.liu.se>
-To: linux-wireless@vger.kernel.org
-Subject: [PATCH] wifi: wlcore: ensure skb headroom before skb_push
-Message-ID: <097bd417-e1d7-acd4-be05-47b199075013@lysator.liu.se>
+	s=arc-20240116; t=1764755587; c=relaxed/simple;
+	bh=LThXZQu5eGePBeSXgBmiedkpjQ/NBge+UcGDliLIYzM=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=dvVkpbk3Ysm7XXCsy9QswpwEfWMRR1DAr/4cgEqQiNtHJsX++0G2O0GScjK18WL53wgvMOnhKuog72+fjMzbdXXLG/yeczAXPFSddwdnhSa371SrxvyEkXONQDmNtYdusadDMhEwbtkxQ/CYJpDEUh4iBusTHMF5r1j9g05pOqE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=GIAfSWtg; arc=none smtp.client-ip=192.198.163.18
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1764755586; x=1796291586;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=LThXZQu5eGePBeSXgBmiedkpjQ/NBge+UcGDliLIYzM=;
+  b=GIAfSWtgylxFKfp1Fg23bby+Yofqc+PDzMzdbBU51a7tC+YIhLKltMTN
+   KH+IL7J/QQo2eAi9Ae7GUcYYJ0YECFlvJmmZ967hXlwp2sEfVxemXPvNr
+   toCQMcjWtsdlQwHrChjRxVifpd65fDRK82/hb1RkKoaiVmFv0ZLb3a9oK
+   CHreGL6XxPv1iATEtLXJxIbGxxJ7fqYHiLbLHfw8n6LmJOJz9wbZeIcWU
+   BDFobk4tzx3nw45mDeW0wGa5JT6ULeBt6Mym08uzMKNkWY8tuwqQg6y7C
+   XJsFb8ZEVhi0SBSOozGc+tSMWO2bExCyrPJdbRAvWTwWWy6KC69O5YMKT
+   g==;
+X-CSE-ConnectionGUID: Dji/JjgEROiidPsBLGrtvQ==
+X-CSE-MsgGUID: LSHLGSdkRGSPLWRDN6zJbA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11631"; a="65931519"
+X-IronPort-AV: E=Sophos;i="6.20,245,1758610800"; 
+   d="scan'208";a="65931519"
+Received: from orviesa010.jf.intel.com ([10.64.159.150])
+  by fmvoesa112.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 03 Dec 2025 01:53:00 -0800
+X-CSE-ConnectionGUID: zFlJpAKDTDKD5GCYNhOtxw==
+X-CSE-MsgGUID: /KDRYNICT8iUvivtHaDQcw==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.20,245,1758610800"; 
+   d="scan'208";a="193916134"
+Received: from weis0040.iil.intel.com ([10.12.217.108])
+  by orviesa010-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 03 Dec 2025 01:52:59 -0800
+From: Miri Korenblit <miriam.rachel.korenblit@intel.com>
+To: johannes@sipsolutions.net
+Cc: linux-wireless@vger.kernel.org
+Subject: [RFC wireless-next 0/4] wifi: nl80211/cfg80211: non-EDCA ranging support enhancements
+Date: Wed,  3 Dec 2025 11:52:34 +0200
+Message-Id: <20251203095238.3121859-1-miriam.rachel.korenblit@intel.com>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-X-Virus-Scanned: ClamAV using ClamSMTP
+Organization: Intel Israel (74) Limited
+Content-Transfer-Encoding: 8bit
 
+This series adds several enhancements to non-EDCA ranging:         
+Reporting of more capabilities, periodic ranging and RSTA operaion.
 
-This avoids occasional skb_under_panic Oops from wl1271_tx_work. In this case, headroom is
-less than needed (typically 110 - 94 = 16 bytes).
+Avraham Stern (4):
+  wifi: nl80211/cfg80211: add new FTM capabilities
+  wifi: nl80211/cfg80211: clarify periodic FTM parameters for non-EDCA
+    based ranging
+  wifi: nl80211/cfg80211: add negotiated burst period to FTM result
+  wifi: nl80211/cfg80211: support operating as RSTA in PMSR FTM request
 
-Signed-off-by: Peter Astrand <astrand@lysator.liu.se>
----
- drivers/net/wireless/ti/wlcore/tx.c | 5 +++++
- 1 file changed, 5 insertions(+)
+ include/net/cfg80211.h       | 33 ++++++++++++++++++++---
+ include/uapi/linux/nl80211.h | 51 ++++++++++++++++++++++++++++++++++--
+ net/wireless/nl80211.c       | 27 +++++++++++++++++++
+ net/wireless/pmsr.c          | 27 +++++++++++++++----
+ 4 files changed, 128 insertions(+), 10 deletions(-)
 
-diff --git a/drivers/net/wireless/ti/wlcore/tx.c b/drivers/net/wireless/ti/wlcore/tx.c
-index f76087be2f75..6241866d39df 100644
---- a/drivers/net/wireless/ti/wlcore/tx.c
-+++ b/drivers/net/wireless/ti/wlcore/tx.c
-@@ -207,6 +207,11 @@ static int wl1271_tx_allocate(struct wl1271 *wl, struct wl12xx_vif *wlvif,
- 	total_blocks = wlcore_hw_calc_tx_blocks(wl, total_len, spare_blocks);
- 
- 	if (total_blocks <= wl->tx_blocks_available) {
-+		if (skb_headroom(skb) < (total_len - skb->len) &&
-+		    pskb_expand_head(skb, (total_len - skb->len), 0, GFP_ATOMIC)) {
-+			wl1271_free_tx_id(wl, id);
-+			return -EAGAIN;
-+		}
- 		desc = skb_push(skb, total_len - skb->len);
- 
- 		wlcore_hw_set_tx_desc_blocks(wl, desc, total_blocks,
 -- 
-2.30.2
+2.34.1
 
-
-Br,
-Peter Astrand
 
