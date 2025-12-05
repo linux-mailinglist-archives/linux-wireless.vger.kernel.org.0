@@ -1,140 +1,173 @@
-Return-Path: <linux-wireless+bounces-29546-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-29547-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 954CBCA853A
-	for <lists+linux-wireless@lfdr.de>; Fri, 05 Dec 2025 17:12:41 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7332ACA8670
+	for <lists+linux-wireless@lfdr.de>; Fri, 05 Dec 2025 17:37:57 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 25CE33013EAE
-	for <lists+linux-wireless@lfdr.de>; Fri,  5 Dec 2025 16:12:34 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 195C830F3025
+	for <lists+linux-wireless@lfdr.de>; Fri,  5 Dec 2025 16:30:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E73243396E6;
-	Fri,  5 Dec 2025 16:12:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 08526312810;
+	Fri,  5 Dec 2025 16:30:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="IkYB7uSh"
+	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="AmewZFZu";
+	dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b="Jqegb3Xf"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-lf1-f48.google.com (mail-lf1-f48.google.com [209.85.167.48])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8464933B6C5
-	for <linux-wireless@vger.kernel.org>; Fri,  5 Dec 2025 16:12:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.48
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 291EE313535
+	for <linux-wireless@vger.kernel.org>; Fri,  5 Dec 2025 16:30:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764951151; cv=none; b=JYWXWy+0kUN1gdtGPGFq5Om/mCvcK4bWwh+M09KgtgGYJ1MRvAVd9K7HEDleFQxjSHXcpVS56mUpV+2WBE5oIvVnOzrU91Pj/OzcPYK4gW40Pqg5YItEpxbfbt3UrTPgarMg9M4zecaFvhcSwZeBWB302ok0zDqgbLZCZVsC9hk=
+	t=1764952218; cv=none; b=GA+UHozdNtNIeLX8gKh3P3qt+0hSqboOt6WsKJbMYqXH0k0YrvLgyJL3yJeGBQy0rknGdZJxAnIRe6sRL6ssYuD3w/4BjSGkcJIhMAzlPnwx1Gdc+wA5cd+ct4io6ilT4bL+RfkNFH7d7LnWNZv/QszqF/blfPHJDzTJmqFyiaA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764951151; c=relaxed/simple;
-	bh=+Uij/c+hhRUh7KNHXiyStM+eLLPbLJJe16gbEXkk+T0=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=RuySPPpXPqKJOhskid6kZlvUBQ4sF91EIaJMGIk1mYjuBo0ci0rsWGAVrShUuWGXF8WNqZ6V8HNJsdJvcx/Mcd/WCPnLzfJPTrSQaMBMiJtxk3IscF8WAfWxrhB64OGW8+i1K6a0w/JuoiuXhnq77/C+dM7O6FauJWvYbg5TzwM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=IkYB7uSh; arc=none smtp.client-ip=209.85.167.48
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-lf1-f48.google.com with SMTP id 2adb3069b0e04-59581e32163so2933744e87.1
-        for <linux-wireless@vger.kernel.org>; Fri, 05 Dec 2025 08:12:27 -0800 (PST)
+	s=arc-20240116; t=1764952218; c=relaxed/simple;
+	bh=1RH1+qqbjkHrUYlnfXTxT1ospjs33xMDkwAJRXvqUmk=;
+	h=Message-ID:Date:MIME-Version:To:Cc:Subject:From:Content-Type; b=WnAVGdb/KsmcmXSLW4gC28CO98KOWn7ge8IrriI7RzxnmnVnY0q3s082bUBuUIgyH2OgPPkVpwtdeSBk7gYqCYPWPXQykMML5T9Z4nYfydHq4aRAR5XV4gzvwXSRAugp8qBu8UKrrJpd+ySTKrJp4OhV2pqDtWtst2alyTuxqjw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=AmewZFZu; dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b=Jqegb3Xf; arc=none smtp.client-ip=205.220.180.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
+Received: from pps.filterd (m0279872.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 5B5FBPe71028324
+	for <linux-wireless@vger.kernel.org>; Fri, 5 Dec 2025 16:30:05 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
+	cc:content-transfer-encoding:content-type:date:from:message-id
+	:mime-version:subject:to; s=qcppdkim1; bh=uY/zz/FmTheKinzMsruxPA
+	eAFgeFSh6MXrbrP2Vw8Ck=; b=AmewZFZuTpnfOwXbHKGEFposUfJyFi+9L/sM1r
+	dSP3z8QBY0s66WGN4QyK0LiJWmXsSTQKVNyoVvL4s1MnLL1Rhj7gRAT4lNs2nURK
+	dXHXbwhxGEmkvjv8VHTbYeo1HDmUf46r0p770SoRRFiX5mGiFt+xObRaXGrpEgo/
+	CnIpWfQmW+Sgv/N5Ch4PPntC5ALF1km241FZ0pnT1Mk+k1E3nLSOj1W54UjHiUhv
+	6wxXjP38eeyJj3JO2sFOcSCJadq8QQECu5O9iFXzot9W7jffAsdqNyk0UiBmYzZh
+	gqmSJhtxjEUoF3w2O17fdLobl4KIkCGudqsdbL45Ahy+TH2Q==
+Received: from mail-pl1-f200.google.com (mail-pl1-f200.google.com [209.85.214.200])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4auj7n2u7q-1
+	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
+	for <linux-wireless@vger.kernel.org>; Fri, 05 Dec 2025 16:30:05 +0000 (GMT)
+Received: by mail-pl1-f200.google.com with SMTP id d9443c01a7336-2958a134514so33253725ad.2
+        for <linux-wireless@vger.kernel.org>; Fri, 05 Dec 2025 08:30:05 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1764951146; x=1765555946; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+        d=oss.qualcomm.com; s=google; t=1764952204; x=1765557004; darn=vger.kernel.org;
+        h=content-transfer-encoding:from:content-language:subject:cc:to
+         :user-agent:mime-version:date:message-id:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=yRu3vn/L5SRaR0SSwrxKoGLCPSzcYT0aQdaJ5FnQFyM=;
-        b=IkYB7uShocAhmJ7P5qSUjQiXXB5V/BjB5XNHNdEd4ViMoYfPtXkeZznACaGotyTCPd
-         fEo3I9f4SGuxLOI40RPCDf0Tvo0loW2XgT3scDlD6zo+r17OqrnUfVdZNwnrG1sd+w+b
-         F64hcHCLfSjyQT+03ealjZj4fhYOxd1UF9iR09nhozM9lWSn3kjTP3Bppxixz5TpaZ47
-         oF9XsclvOreCr6pSZEO+OKFOemO3ntu+HTm+7UFFTqDUm4qzQRrwILOOHan/oCs6LfYD
-         IBtGr6phoV83IHD1xvgngCF/tdDLWw89bn38MnBw0NaWVE6XaUxfn2AZx8+g2q/wvUvG
-         SrKw==
+        bh=uY/zz/FmTheKinzMsruxPAeAFgeFSh6MXrbrP2Vw8Ck=;
+        b=Jqegb3XfcIXVgaL93SzccPHy3/rUGqPpnVxMS1AfkAl3nKUPRrb6+9KGQMb7opodXY
+         1eZ2n9r1/mPXz5X/rb2hFh+CluQJdz/PWks9CDbzMleogoRx7kaLyXJsgo6/r8bRGWKJ
+         KY6O9AsMpgKU8rbYm0UVwttbJe1KhjoibCV2HlTfoGnsWh1AcymO382MvT4mH0+9PL3u
+         RG0bkLZ4toYFf6RHc+ZMFGMKa2axi4ravKc80yJMiD+ML4m8dEwQte+sR3tez7JI9qEV
+         Dk2Gdn30syX7BDpM8uQKhkfpF9MqbRtJAT3x6ue/1sodj32zqjjL6DWAQjJZ1Q0uG9xR
+         EZ8Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1764951146; x=1765555946;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=yRu3vn/L5SRaR0SSwrxKoGLCPSzcYT0aQdaJ5FnQFyM=;
-        b=XHyD5xlLVF+S5utGabY0l6fJfXQqMGgiCT5AbltCnDX3Y69GDxnHglMTW0RsEYfXv/
-         mlcAIorPFVqg5r9a8gmb5RKFZTPWFAnSlpUlLTlFldNovSHBI6FbNP6TjhzQNUDY5d3V
-         Eoz/z3XxFxbv7QY8GtPhJj3GgsN/IbbbhRib2YJ4l3kB3/XBKSpNKRzC5wrpx0F5Pww/
-         Kz1IT/R4CsS6QXunbzEDZdzKQrCfqZr7zP4A+5X52lVD0wKKF0RDh383hYogifRhI06z
-         rXdTyFgEg+ogpjw90WjqKJmdd+SL4pkNeBc0M4WooGnEVuKHRvIePLnF/9wld0FHFzRG
-         +WHw==
-X-Forwarded-Encrypted: i=1; AJvYcCX1M9u98830WYg8XAUO9J2y68t13cRXJ4TvneZN9LCCYd8SeSD9vf8LZsJlzyYUHQTOYZnlYE95XEMPZ3t9Nw==@vger.kernel.org
-X-Gm-Message-State: AOJu0YxMxotmnQafL4Cd6n0RXYtvMcGUxzFpGK7B6eh80fmt4qsChmQC
-	8Ie8gwnHo/trvZx0T5BC81D2w0j1mmgcvy8mqtnQ5G1sgs4G9w2FjIkw
-X-Gm-Gg: ASbGncum5UsBJT5RkYx6KA8+/ZTAetpx1mVkBNsiVEVj2ea1bweDsGR0q4cylbyy34z
-	8AE2Crdt7TCpnZ0cIZ/CvehPX2uBnOW1zIV/X9EyRsKNaqEOaWjomVsnLUg+x2/da6WePptilps
-	ULPGE+rMGandbIr5HfrRjUBqphxAULac7kPxyiO/Xf6nFyDqB9Nyg001VOADGc2TFjsq8X6UA1v
-	eoeTVdcvO4wtmxMEhPh0RKvhBInkIkdbwUVk2999tFKQcGtSy8gssw10HI9jlOhZiASPSMS0Svq
-	ZAUOxRDmf8S8E4qNTuTFsh7m8yWVy+EuKSVDa0pcgS0PhEHAVMjaKCTIl99MlP65rNNBIrId5nT
-	U2oYJaSV8jCph0BSxI6BwTKX2z2oLZWcK/9gt5OBnFT36tpx8aoSMkoGeWI3YUahHtVqYQhzgBP
-	S1yVpBy+O+vmC8Q1mWJKBpLg==
-X-Google-Smtp-Source: AGHT+IFIv8sNT85tAoTM0JCKoOGi4DeHIdsW4Qkp4uPPjvN5cusGwlRPEBYBIrgPH3hNnQEFUHZHvw==
-X-Received: by 2002:a05:6512:39d2:b0:594:b2be:f3a with SMTP id 2adb3069b0e04-597d66c816amr2685904e87.25.1764951145521;
-        Fri, 05 Dec 2025 08:12:25 -0800 (PST)
-Received: from localhost ([188.234.148.119])
-        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-597d7b1a920sm1654026e87.12.2025.12.05.08.12.24
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 05 Dec 2025 08:12:24 -0800 (PST)
-From: Mikhail Gavrilov <mikhail.v.gavrilov@gmail.com>
-To: Mario Limonciello <superm1@kernel.org>
-Cc: Felix Fietkau <nbd@nbd.name>,
-	Lorenzo Bianconi <lorenzo@kernel.org>,
-	linux-wireless@vger.kernel.org,
-	linux-mediatek@lists.infradead.org,
-	linux-kernel@vger.kernel.org,
-	Mikhail Gavrilov <mikhail.v.gavrilov@gmail.com>
-Subject: [PATCH v2] wifi: mt76: Fix strscpy buffer overflow in mt76_connac2_load_patch
-Date: Fri,  5 Dec 2025 21:12:02 +0500
-Message-ID: <20251205161202.48409-1-mikhail.v.gavrilov@gmail.com>
-X-Mailer: git-send-email 2.52.0
-In-Reply-To: <CABXGCsMeAZyNJ-Axt_CUCXgyieWPV3rrcLpWsveMPT8R0YPGnQ@mail.gmail.com>
-References: <CABXGCsMeAZyNJ-Axt_CUCXgyieWPV3rrcLpWsveMPT8R0YPGnQ@mail.gmail.com>
+        d=1e100.net; s=20230601; t=1764952204; x=1765557004;
+        h=content-transfer-encoding:from:content-language:subject:cc:to
+         :user-agent:mime-version:date:message-id:x-gm-gg:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=uY/zz/FmTheKinzMsruxPAeAFgeFSh6MXrbrP2Vw8Ck=;
+        b=w6wCBO3HkuH4RL6zRvqRZyhpDRt0kUId/X+OgvTi7lwwF8U6Y8ly2WKMwbvbbV4C5m
+         Eo9Muna9riNm1lGqw9o/q96aRkoRnc3XyBT6EqlDAKvnj68pemf+3aR4E+lHcR6EXIVY
+         ckxZ0azrinvsTXMS5bVQmfLCVtfKq6qJelqEAeBfPqTYhg19rL20amRjYxj3gs+mDKoT
+         LO0GWzNYqS/CMRHEJBMNamK/7tnuooncIEa0LlW9Jc0ZI9h2MT5ipv/vI+OoKRtAgU/T
+         McO0T0SKAsE2KVLTi6bNpF6brTo8BgcVblqLlaS3QwD/Hh455HaFOyOgfO5Oo4GxyhlV
+         IIEw==
+X-Gm-Message-State: AOJu0YxEjbwd5mAesK6Pn+xt9qwO9MukvvRBwACA2jHzUI1pezCC8qWR
+	SaxCoIdA5o7vT0lxbTo01kotSzMUnjXnp1TYLIf4KShUwZabIngry05VQg59yBc+7Cw1gnjApk0
+	DMtIgSZ8AwLQ6peBL+MWjFf1B4900nQYRqU5LAELIl5sJpI4gRxlmJr/e+mzr6eRW64Qvow==
+X-Gm-Gg: ASbGnctBXndmwO2sEdLyMrqw39gqsJNiNtydn8zlUpk5nXZ7oqtDADE+SDj6Ai+wQGW
+	nHXHd+a3h9f0Iy8QYt05FgDEW7B+D9KL02Rc1fNOQ8h42YH/R4UZhKRwyRbugbwRHWN6RwD3rKz
+	SduKu0wbZ6Ms3HnpZrCKjnZZlYcwLtWlOLCiIj/oI2QxGPVRz6+0tc2/H6XaV1tKnLkxM6Jy5wx
+	KQ9ko8wcI8XAScMnxgwUwfNJVkJBiP4IKCJnrsuG0ZuKi0HZ+XBNwQaxr6XjoVfUuLPsdzNX8xs
+	Zmk5HHra3R79bmcVr7W4IIN3MFaGtHSfDYLOos0Ax9oDGzInvtRf5/txrOYtNixgdV24aqY8yQL
+	P5uY7eVIqdsEqkckxWyXWWaHw5TWGSBP8gxWywJMRYUW9Mw==
+X-Received: by 2002:a17:903:1b28:b0:294:ccc6:cd30 with SMTP id d9443c01a7336-29d9fb6eb47mr88186835ad.17.1764952204100;
+        Fri, 05 Dec 2025 08:30:04 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IFoqCm17nT0SnoxUP5EoDhHux+tD0gpH6iUAYDqqKgBNd2YHlT+I8Pl/pJ4QXlhgtjs1gu46A==
+X-Received: by 2002:a17:903:1b28:b0:294:ccc6:cd30 with SMTP id d9443c01a7336-29d9fb6eb47mr88186545ad.17.1764952203564;
+        Fri, 05 Dec 2025 08:30:03 -0800 (PST)
+Received: from [10.81.24.74] (Global_NAT1.qualcomm.com. [129.46.96.20])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-29dae33c2e2sm53266725ad.0.2025.12.05.08.30.02
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Fri, 05 Dec 2025 08:30:03 -0800 (PST)
+Message-ID: <f4e1e95f-672d-418c-9f3a-e47d01a1fe91@oss.qualcomm.com>
+Date: Fri, 5 Dec 2025 08:30:02 -0800
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla Thunderbird
+To: linux-firmware@kernel.org
+Cc: linux-wireless@vger.kernel.org, ath10k@lists.infradead.org,
+        ath11k@lists.infradead.org, ath12k@lists.infradead.org,
+        jjohnson@kernel.org
+Subject: [PULL linux-firmware] ath10k, ath11k and ath12k firmware ath-20251205
+Content-Language: en-US
+From: Jeff Johnson <jeff.johnson@oss.qualcomm.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Authority-Analysis: v=2.4 cv=DOSCIiNb c=1 sm=1 tr=0 ts=6933088d cx=c_pps
+ a=IZJwPbhc+fLeJZngyXXI0A==:117 a=ouPCqIW2jiPt+lZRy3xVPw==:17
+ a=IkcTkHD0fZMA:10 a=wP3pNCr1ah4A:10 a=s4-Qcg_JpJYA:10
+ a=VkNPw1HP01LnGYTKEx00:22 a=VwQbUJbxAAAA:8 a=81yDGmwx11_j3xA_CzoA:9
+ a=QEXdDO2ut3YA:10 a=uG9DUKGECoFWVXl0Dc02:22
+X-Proofpoint-ORIG-GUID: WjzjOwPbasQNuACN5h9Qeq0T331bShZG
+X-Proofpoint-GUID: WjzjOwPbasQNuACN5h9Qeq0T331bShZG
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUxMjA1MDEyMCBTYWx0ZWRfXwfzH52zYvbNd
+ OSLQNvtd3rNjxE1nXwk9+cyWVapG2DztNszOuBnGgA6i7htEz8z6C3MurSviA2zZsbDe/poTdDl
+ 7hPzlXQtHTNZOQJkkEECkQRbgwiIxfPUAdzPi2RmO+NqJqQlsbnI+aTf5cFrNfoIFoDbm7qbUju
+ d7N903rshtGmz16NUl0xwLG9QgB1HwJILJvK7Dkyg7f1KHDmSBIiNXmhONSTgkh9trZQrl0lbE+
+ RaowSZruZaU4B+3XYDy+O044V0m1rAhH7xh4DHrgQJZa+04nADx0XD+Bgpk/vLh9cLBsUJRRRSZ
+ paRWKpu9fvkbz0D05D4952lYkqP8rLZ3nSR+8HssGcQUjuV524hEWI7dgkpRMqiBXORNuvfJy+u
+ oo47AYZZbJNSEgQbQQEna8oBvKsqEA==
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.9,FMLib:17.12.100.49
+ definitions=2025-12-05_06,2025-12-04_04,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ lowpriorityscore=0 bulkscore=0 clxscore=1015 priorityscore=1501
+ suspectscore=0 spamscore=0 phishscore=0 impostorscore=0 malwarescore=0
+ adultscore=0 classifier=typeunknown authscore=0 authtc= authcc=
+ route=outbound adjust=0 reason=mlx scancount=1 engine=8.22.0-2510240001
+ definitions=main-2512050120
 
-Commit f804a5895eba ("wifi: mt76: Strip whitespace from build ddate") introduced
-a kernel panic/WARN on systems using MediaTek MT7921e (and potentially others
-using mt76_connac_lib) due to an incorrect buffer size calculation.
+Hi,
+Here's a new pull request for ath10k, ath11k and ath12k.
 
-The error logged is:
-"strnlen: detected buffer overflow: 17 byte read of buffer size 16"
+Only ath10k board files are included this cycle:
+QCA4019 hw1.0: Add Netgear LBR20 specific BDFs
+QCA4019 hw1.0: Add Meraki MR30H specific BDFs
+QCA4019 hw1.0: Add Meraki "underdog" specific BDFs
+QCA9888 hw2.0: Add Netgear LBR20 specific BDFs
+WCN3990 hw1.0: Add board file for the Arduino Imola (UNO-Q)
+WCN3990 hw1.0: Add Xiaomi Redmi K20 Pro/ Xiaomi Mi 9T Pro specific BDFs
+WCN3990 hw1.0: Add board file for Huawei MateBook E 2019
 
-This occurs because the field 'hdr->build_date' is a fixed-size array of 16 bytes.
-The patch allocated a 17-byte local buffer 'build_date' but used 'sizeof(build_date)'
-(17) as the read limit for strscpy, causing Fortify Source to correctly detect
-an attempt to read 17 bytes from the 16-byte source field.
+Please let me know if there are any problems.
 
-To fix this, replace strscpy with memcpy, which is appropriate for raw data
-copying, and explicitly use the size of the source field (sizeof(hdr->build_date) = 16)
-to limit the read, followed by manual null termination.
+Thanks,
+/jeff
 
-Fixes: f804a5895eba ("wifi: mt76: Strip whitespace from build ddate")
-Signed-off-by: Mikhail Gavrilov <mikhail.v.gavrilov@gmail.com>
----
- drivers/net/wireless/mediatek/mt76/mt76_connac_mcu.c | 7 +++++--
- 1 file changed, 5 insertions(+), 2 deletions(-)
+The following changes since commit a0f0e52138e5f77fb0f358ff952447623ae0a7c4:
 
-diff --git a/drivers/net/wireless/mediatek/mt76/mt76_connac_mcu.c b/drivers/net/wireless/mediatek/mt76/mt76_connac_mcu.c
-index ea99167765b0..d2c4c65ec464 100644
---- a/drivers/net/wireless/mediatek/mt76/mt76_connac_mcu.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt76_connac_mcu.c
-@@ -3125,8 +3125,11 @@ int mt76_connac2_load_patch(struct mt76_dev *dev, const char *fw_name)
- 	}
- 
- 	hdr = (const void *)fw->data;
--	strscpy(build_date, hdr->build_date, sizeof(build_date));
--	build_date[16] = '\0';
-+	/* hdr->build_date is 16 bytes. Copy exactly 16 bytes to the 17-byte buffer,
-+	 * and then add the null terminator at index 16.
-+	 */
-+	memcpy(build_date, hdr->build_date, sizeof(hdr->build_date));
-+	build_date[sizeof(hdr->build_date)] = '\0';
- 	strim(build_date);
- 	dev_info(dev->dev, "HW/SW Version: 0x%x, Build Time: %.16s\n",
- 		 be32_to_cpu(hdr->hw_sw_ver), build_date);
--- 
-2.52.0
+  Merge branch 'amd-staging' into 'main' (2025-12-03 21:05:40 +0000)
 
+are available in the Git repository at:
+
+  git://git.kernel.org/pub/scm/linux/kernel/git/ath/linux-firmware.git ath-20251205
+
+for you to fetch changes up to 05c97f71a5336854054db1dd4acdaf68c5b7c144:
+
+  ath10k: WCN3990 hw1.0: update board-2.bin (2025-12-05 08:20:14 -0800)
+
+----------------------------------------------------------------
+Jeff Johnson (3):
+      ath10k: QCA4019 hw1.0: update board-2.bin
+      ath10k: QCA9888 hw2.0: update board-2.bin
+      ath10k: WCN3990 hw1.0: update board-2.bin
+
+ ath10k/QCA4019/hw1.0/board-2.bin | Bin 1822336 -> 1895232 bytes
+ ath10k/QCA9888/hw2.0/board-2.bin | Bin 218596 -> 230744 bytes
+ ath10k/WCN3990/hw1.0/board-2.bin | Bin 670116 -> 742192 bytes
+ 3 files changed, 0 insertions(+), 0 deletions(-)
 
