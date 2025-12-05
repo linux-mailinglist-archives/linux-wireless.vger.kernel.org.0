@@ -1,500 +1,231 @@
-Return-Path: <linux-wireless+bounces-29533-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-29534-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id C910ACA6EC1
-	for <lists+linux-wireless@lfdr.de>; Fri, 05 Dec 2025 10:31:56 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6D306CA704D
+	for <lists+linux-wireless@lfdr.de>; Fri, 05 Dec 2025 10:55:02 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 39D0B38554B0
-	for <lists+linux-wireless@lfdr.de>; Fri,  5 Dec 2025 08:25:06 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 4BBA83989616
+	for <lists+linux-wireless@lfdr.de>; Fri,  5 Dec 2025 08:39:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D8B8D33B94B;
-	Fri,  5 Dec 2025 07:51:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 803F930B515;
+	Fri,  5 Dec 2025 08:13:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="RaqgXVMj"
+	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="EXkYFKHm"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from AS8PR04CU009.outbound.protection.outlook.com (mail-westeuropeazon11011067.outbound.protection.outlook.com [52.101.70.67])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 45EE0625;
-	Fri,  5 Dec 2025 07:51:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764921078; cv=none; b=E9m782YDUbt+WApeAkpx+Urg+tS5P9/9ZX5Ike+PGAknXKebDygOJGG7LePP1AwUFYfI2AxpfWp1UxA44eYuLaoSbWhbDuOHnsRaQB+y2fnY5+ez8fEQq/5tg+rVhNhN8sGeexSSdMgsm8gMdHjd4XS+pSKBf+RAFiknqhcigiQ=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764921078; c=relaxed/simple;
-	bh=CTSofv76r4jELqFk3u2+hZKnZtJcVlyf263aVxEg7io=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=Bej/GtkW+OLu6z1TFmvuhN/0swVKoQXQ6vRGNrMRiE/Clwe0s1dsiHyv3SUPLYZKfuPq2ulvW27mQ3TWY1RK3KehtvOjcuEQ3473j/+U4tO4dOCcjw9DPrA2DPOZkw5orcPFF088AIcHvKgrd5854LlfhkSl4imqNwlKEZjOQKw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=RaqgXVMj; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7CDE2C4CEF1;
-	Fri,  5 Dec 2025 07:51:15 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1764921077;
-	bh=CTSofv76r4jELqFk3u2+hZKnZtJcVlyf263aVxEg7io=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=RaqgXVMjZd9LPrf6pVlBeuOauBGteRN8bEoYlnh7PqD56+EyFytbxRKOI+fCyoOpB
-	 Z6RXe/wmGb9hn+7lGmT+0qHRUXaRES/zzK5ymdWRS4a1i/Szj4GPqs2S/l5laGe4gm
-	 eUD5qOLTqyxd/7VVNWJk3jz2lAXSPSLafSRSV+BlnF5fWAjVOssOwlQfYtseeysgb2
-	 ykoQch2BjGaxNSPkPrsMba3OWd580ZtN4AHEH6uAvoUAbHGN01vmCihDzCeoY96qcN
-	 aMPj2H0TmQczb0L+zQByT+2o1GHFQ8gpfrLyuO9owDW4Ebkh6irDq1i2DuEDC2Bz1c
-	 GR+J/0m08jR4Q==
-Message-ID: <3fc73b5d-1de7-41bb-b9ca-2878f311c6fc@kernel.org>
-Date: Fri, 5 Dec 2025 08:51:12 +0100
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DE7882F747B;
+	Fri,  5 Dec 2025 08:13:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.70.67
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1764922428; cv=fail; b=SZqojqhCQPzVNNlYNa76C6vLHkGQcluUaC/oGUIC6cRnRXjkEnoMr9BJDB0yr+NOfCrMggB+Ic6lmxv8b3fOcTMtm6VXSmksJSSDUYDwOzKFIpUEEjh7pCXvEb2ZeKz4oCdmAgjs7UWHbCQD7VYsLnJ+0zrDA/SlbA1Em7EYfSs=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1764922428; c=relaxed/simple;
+	bh=Sduw6mfKVfhqB/iEBDTLItZn6BqhX9McsNCPEB+OCgo=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
+	 Content-Disposition:In-Reply-To:MIME-Version; b=ZE02Z6lA39x7PKSo4uTMnFeNi8dbNbBJzPyNLRPzTE/j+AinhIxrqs1X3jPKNS38/OniMGJfbT+d7JiBdo0Kr9sUuFaTmArHFem1TuffOcFM/aARR8/tYfC588dFetVLyoOiPmVlhjN5uUhdcnBhNqW3+/KMszuIu95PUhk/deg=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=EXkYFKHm; arc=fail smtp.client-ip=52.101.70.67
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=a9Z9yAXOyNwjJ2c3j8y9cct1UXU3cTFS81RFjsZRYuN12QsEe1uv807EUrSqP8Zw6O0/SnRnabhs4t671rS8ONzMKIYwHLQQ2o83BOAUSf94WpR05CLg6ZJxStNh/WzJxy0drEFcYwtzJQ7sv6hUVVyDaEyGP2RBFHr6tBwOd8hxShTbTaIe4nuQBNW8zzdehECwaQlPcCxWO6T7Kiv7rQJAIL38yCNij5k52nHJaebHp+a+lGFIl8zrqqT2eImf0HxWqudTTzCMD1ELm9bBnncG1CUS703v8ddzja+s53YhEdAW4HkNUJXMVNw3Qv/yoptNoL97KXoJQh3eAsUmZw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=Qtp2tcPw9fsCobr847siRdeyHTEq6JRv2cU3HUGodv4=;
+ b=miqe+tyYUHd0cRXsQFBcV4GfvpfAwQYBSwwt39aj6n8sAaKdmPGC8Jq4ZBVU84E81x+4yhSEi0MxKLAYfEJV3FWYEqoxLmNRaL2tSYOkQNVZzwg/j9I0gsCEzRgK15fAyvmhGOW7qI5zRWvZ4st0xKtLC5lMr+LHkOGIQoxbH9nyBDknbQXDUaFiYgwlLpj4B3JmEGT6JohYwAIkillEAsQ3DUIRdWB4EQzhCxg2oNazU7L2oUC3CNoP5lAL4UYHUNaepmpT1dnwV+/Ni+N6J1XF0yp7DVGAho8KKhONDffiWg/atRJdwh+Urw4cQgxfsecAgX0CXdsMpi7DbsIl8Q==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
+ header.d=nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=Qtp2tcPw9fsCobr847siRdeyHTEq6JRv2cU3HUGodv4=;
+ b=EXkYFKHmCqdp0r/KqsANfOmuzFmj+Eiz7lcKaU4BQmdq4rMkTx5j4KQ18Nm657kHGwFEWeksdYt9DxBKIr7x2IMh9P0GBoi89wFHFSGDCHpKDKccA+bnN2gLPeZmaRkZ9FpUprpZCw5zhb927YMg15otUTZ0eLCHecs3d3wYo3+o4qaZD8otctku2Xc2UaDJVIzuMRREp6nb6DBYMjzSnSDnGMtJLG67kcyc/bBhxPVHL1BCqVnIsEb30P9xzixBGj9OMP9Vu11i9uRmDQFL2NWK0n7vu04RGF9EWGF8HYggDmEInFTDnq7tVtpE2VKr0IWBVFooK0jvUYYyOlceYg==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nxp.com;
+Received: from PAXPR04MB9255.eurprd04.prod.outlook.com (2603:10a6:102:2bb::13)
+ by GVXPR04MB10874.eurprd04.prod.outlook.com (2603:10a6:150:215::11) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9366.17; Fri, 5 Dec
+ 2025 08:13:31 +0000
+Received: from PAXPR04MB9255.eurprd04.prod.outlook.com
+ ([fe80::1eb5:3ebc:9f11:f20b]) by PAXPR04MB9255.eurprd04.prod.outlook.com
+ ([fe80::1eb5:3ebc:9f11:f20b%2]) with mapi id 15.20.9388.009; Fri, 5 Dec 2025
+ 08:13:31 +0000
+Date: Fri, 5 Dec 2025 16:12:25 +0800
+From: Jeff Chen <jeff.chen_1@nxp.com>
+To: Jeff Johnson <jeff.johnson@oss.qualcomm.com>
+Cc: linux-wireless@vger.kernel.org, linux-kernel@vger.kernel.org,
+	briannorris@chromium.org, johannes@sipsolutions.net,
+	francesco@dolcini.it, tsung-hsien.hsieh@nxp.com,
+	s.hauer@pengutronix.de
+Subject: Re: [PATCH v7 00/22] wifi: nxpwifi: create nxpwifi to support iw61x
+Message-ID: <aTKT6RcWecQh1/CL@nxpwireless-Inspiron-14-Plus-7440>
+References: <20251117110046.2810811-1-jeff.chen_1@nxp.com>
+ <fe78857f-956c-439e-a1a7-95ea19c8e932@oss.qualcomm.com>
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <fe78857f-956c-439e-a1a7-95ea19c8e932@oss.qualcomm.com>
+X-ClientProxiedBy: AS4P190CA0023.EURP190.PROD.OUTLOOK.COM
+ (2603:10a6:20b:5d0::9) To PAXPR04MB9255.eurprd04.prod.outlook.com
+ (2603:10a6:102:2bb::13)
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v8 19/22] wifi: nxpwifi: add initial SDIO bus driver
- support
-To: Jeff Chen <jeff.chen_1@nxp.com>, linux-wireless@vger.kernel.org
-Cc: linux-kernel@vger.kernel.org, briannorris@chromium.org,
- johannes@sipsolutions.net, francesco@dolcini.it, tsung-hsien.hsieh@nxp.com,
- s.hauer@pengutronix.de
-References: <20251205065545.3325032-1-jeff.chen_1@nxp.com>
- <20251205065545.3325032-20-jeff.chen_1@nxp.com>
-From: Krzysztof Kozlowski <krzk@kernel.org>
-Content-Language: en-US
-Autocrypt: addr=krzk@kernel.org; keydata=
- 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 a/A=
-In-Reply-To: <20251205065545.3325032-20-jeff.chen_1@nxp.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: PAXPR04MB9255:EE_|GVXPR04MB10874:EE_
+X-MS-Office365-Filtering-Correlation-Id: 751f9aa4-78bb-4024-fdd2-08de33d62cc2
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|366016|1800799024|19092799006|376014|52116014|38350700014;
+X-Microsoft-Antispam-Message-Info:
+	=?utf-8?B?alUwU1FOM3FmekRKeSswRVhDTUFyYU9oOVhVZkI4eDJXZmVnYVg1SjNrUGZa?=
+ =?utf-8?B?b2VMOWV3NmNZZHIvKzI4b0xnMlhOTHVzRjFsTnlUem0wUVF6ZjRlY2NHQXZa?=
+ =?utf-8?B?WjJaQnZVNURnRDNKdHRYbHlSL0MwSHdYRzhwbFhUcHNtWDdOVnhkOTVsbjlD?=
+ =?utf-8?B?K2RCR3dIUGp2S3FaM055S2czY1pFM3dzYVArNDBCRHVZR05uSU4zTGdsYjhY?=
+ =?utf-8?B?Wk9DdEhUaEJ2QkwybVBUSktHeTJWUE5NSlJxK29wL2xDQzd0aTY4KytEbDJn?=
+ =?utf-8?B?bFgybUxRWVpZWGw3WjBSTk9TTjk5S3NwK2hYYmpKOXdUYTBqVGpER0FhV2Zj?=
+ =?utf-8?B?d1JEUEMzeW56VTAyN0MwaFpTNHdzWG5zanl4Ky9OREs5SWNLT3Nyc2RrNk04?=
+ =?utf-8?B?cndDNUtXRWxxWVVXYXM2YUpVbFpBamNJZFBYR3RYS2lLdW53YnA5emhETTdk?=
+ =?utf-8?B?dk8rSlNEdk41aEh2SEZvakhVNTdZQkpESWhFNFQ3SXExdjVjRFdPZmp4eHVy?=
+ =?utf-8?B?Rm1VcFdhUXNrN2JWZjZkRTd4dTgxRnlDdTJZSXpXdElkR3JSaFFWbzJZWi9y?=
+ =?utf-8?B?bGFIcjhSQ0xJaTc3eGE4enlKblNQQmZTdVpsT2hkQmFsbFhvaTdPcFcxY3Fr?=
+ =?utf-8?B?Z2dkUHVCdThWSWU0QjdmbWQwdmo3STh2ZklNcW52NDg0OHMzeURGQ2lRVDl2?=
+ =?utf-8?B?Zml0Vm9DTmxUSmpKTE8xWENEWlJLQXdkUGNxaXlSc0ttM1BTZXVsS2ZkZi9E?=
+ =?utf-8?B?VWhyTndPL1pqd0NDT3dtQ0g5SFc1aGtYeVQ4ZC9UQWVuc0RPcTBXYS9WbjFU?=
+ =?utf-8?B?ZWtqbkdCS3lvRUE5V1NtOW9JeHlQMXJ1TmUzRmVsS0VuYzFtODF1UTBjckE3?=
+ =?utf-8?B?eEJIWGFXYjhENHhqNlZvL1FzMDdmS2VTNUI2QjJVVTE3VjhLSU1CUTlRL2xh?=
+ =?utf-8?B?OVEwUW1OMUFUNXE3dFlqa1gwaDJrdERncCtyMEgwZXpmY1Zpd1l2TTZFZlEz?=
+ =?utf-8?B?U2tQcndBNWNwdGVmd0w5cHhwQmo2WHI4UTRKNmJTZ2U1QWMrSjlTQWdDbUtR?=
+ =?utf-8?B?a05vSUNPazl1dGZEM3JETWwwYks3Vk4yM1hwaG1RZmR0SGlZejdqcDdwNTVT?=
+ =?utf-8?B?c3ovYW1HN3BxdCtsMllGbk5xV3ArN25IS21XRC9CcG5PMXNXcENVTGtDbi95?=
+ =?utf-8?B?Njc2d2tNOGxLUkxWUnpSSGI3U0lrajM3VFJDS0U0UWpXaVBCVWJ2aGxXV1hk?=
+ =?utf-8?B?S3Bnb2VjRUpxZTU1NTdpN2lGN0F6bFQ1bWhFcmUrS0l1R0FXWlgvQ1duK2Ir?=
+ =?utf-8?B?QldHV09XMXNIQytuMGpveHl4Y3ZTa3NPSk95TTduTEw4cFpjMnpDREJDb2Iw?=
+ =?utf-8?B?YnJxRWkyM0VKaUdJZE5YZUwzTUhBZVh3dnBkK1JtQmEvWUNnUGhEbGh1bmdN?=
+ =?utf-8?B?cjRBMG1YVmNldjlUcWg5dmNNckNONlRzQ0I1c0NhVHc1Nkc4NlpxK0NCZmN2?=
+ =?utf-8?B?MVRYbGZHRS9BUTJxOWhGcVVMNFhjaVVibGZSSzB5czR0NXl5anZNZGR3WHBV?=
+ =?utf-8?B?aTFqRytRblVsa3RHS0RycnVoNWR5VGZBZWFhbW1LQVQ2bENTUHBJT1pIbkMy?=
+ =?utf-8?B?clpTbFJySkNLK2xSbitJY2gvUjFDcHM2WEMvU2hqOE42bUQxdnZ3MkpUM2dp?=
+ =?utf-8?B?K0tua1BlakE0ZXk1QUxKbE4vcWxxcHlENjRKazNDRkY4TWdDVDhkeGwzL2ly?=
+ =?utf-8?B?ekpHOEVJQldrUngwOHlBKy9nRDFYcTFmVVlZQVdaeXRDOVgrRkl5S2R0Sy9s?=
+ =?utf-8?B?QW1XYjkxK3VHaE9MclBnZmJBUHdxMHk5TFZ0VkR2YTdnQWZxSFNoWnMyeFRI?=
+ =?utf-8?B?a1dWSDdXL3pMelFpWEJ1V0FRRDFoMW1LMVN3OExjSDFKVWV1aU5sVTE5aGxy?=
+ =?utf-8?B?Q1RMaENaUi9RTlY2NFJ6SWtzcmR3RUVkSDZCWWtzUk5MazJTWTJzbkpSRmZh?=
+ =?utf-8?B?Z21oVmxxRGV2TW5NUWlzUHRreU5uZElicmdaU240MzRRVFZMcU1tM2J2VVNi?=
+ =?utf-8?Q?+I6W9x?=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PAXPR04MB9255.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(1800799024)(19092799006)(376014)(52116014)(38350700014);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?NkxJYVFzSEs1SS82SlQ2cUZ3Z1pWOTBVYklWNzhXTEFORElwOGtwaUxtUTha?=
+ =?utf-8?B?dDJabHBqU05YNjFIQnRFL2pBMHBMRlQ2RHZqUGRHd1QraGhCRUNlUG40dkFq?=
+ =?utf-8?B?YXpvK3ZDY0g4emprVGN1cGwzOWltbUFrMjJuc29udVVYbkxmNUdudURKWXBE?=
+ =?utf-8?B?NW1MN1VwSzVaME16NzZ2em4wMlBuTUFBWTZWd05qVEtJVVI3VnVrYWtqQmQ2?=
+ =?utf-8?B?WE5MYWIzVVZDRTJXYUVrUjZmMmw3b3VFNVhnQmZHTTU3d1IrV2QycXFjTHIw?=
+ =?utf-8?B?TXdONEY0UWtPTGFRcTRKUmdLSGZqTjh1V1c1bWtBUG42aGkxL2htWUFQU1A0?=
+ =?utf-8?B?QzNHdk1mQ2I5M01qcnp2Q2RZeFJzaEtGSUhlczVadS85MEVacFI0dnBwbG9t?=
+ =?utf-8?B?ZERiNXVtWTFwZzdHT3JRa0YyUlNldldyV2pocndiM3Y4K05WUEF4VFJvWisz?=
+ =?utf-8?B?cGlEUnVDdVBCQXRCaU1tTFhiWk42VHZlWWNPYUZvbG1RMnQrc29mbndQVXRt?=
+ =?utf-8?B?V3g4R2pTNm9Hd3BsRXM0M0NqcUx1TWpObEJVdmxWYlpCV0p2Wm5IL3k2MHFk?=
+ =?utf-8?B?SkYvVnhJdGlGc25CVStpVWg1cUdXOXU1T2EvYzYwajAxaTkwbEhETXBzbkhy?=
+ =?utf-8?B?b1ZmNlBFWitGT0NscDBpKytDenpqQlN1MHJSem1ueWk0dXJ2bXhMWmI0N0FX?=
+ =?utf-8?B?VDRqLzh5VFdJK0NFTXphYVp4aFR3S1puMFExczZ0V3hTTzd0SWlFbjFyYzdW?=
+ =?utf-8?B?SW9hNDJ3anhTRVI3RDFYM21zSzZLT3F5TDZGRHhJTmJ0U2ZPclRobUxhTzJK?=
+ =?utf-8?B?SVROamptU2RjWWlhbjhEUGIxQ0wxcWFuV1Nmbm94VzFGM0NIeGg3OXB1byt2?=
+ =?utf-8?B?VWRGdHZnVlpSRVRaNW1NWlhkK1lIL3hQT2FFLzNXVjlGbThoaFliVzdMSVlz?=
+ =?utf-8?B?cWREQjFCV3VabFMwU1p3NURvNDAzK2NoMlhJMXNkTWtJMmNPNnEyTWFpVHpt?=
+ =?utf-8?B?a1R1VGdOemhqQXkzZGRGZkdKcVE1ZS95RGdSUndObHpzeTBmYTgyNE5RSjlF?=
+ =?utf-8?B?NldDcTRpb2dMcldZSDZzdmxhaU5UMW5vM3pBTUkvWHhGak03RStxSWdTNmdE?=
+ =?utf-8?B?SVRwbzJ3UVNpSmRjS09PZ2k3bGZvaGMzTVZTbld0YWVYM1FuaHREREZXNkVX?=
+ =?utf-8?B?S2JLajMxMi9pTXdQL1RSQlAvOEo0VDd4a3JVbHpEVzdjc0VRU0ZkUHFON1c1?=
+ =?utf-8?B?dDNkd3E4NlUxemNJUWMxTk84MVR2S1hkV1FSRjVWZkdqVlg5SkdWamZOTzRl?=
+ =?utf-8?B?MXVwWmlPQlVLV3RKOExhQXdFaW9vYnZDNWdDZEhqNzh0SmNXWm5vU25nRFdo?=
+ =?utf-8?B?OUtzZ0FsV05PR3phWHVZcDdocXpobzE2bFZHbFBqK2M1aS9jSk5TSjJsQmZW?=
+ =?utf-8?B?SE9lTlFNNEVHTlhaMXQ0bGdwTGlUcitaV0t0S0x3MGtScFNNbkdpUEtPTnA2?=
+ =?utf-8?B?dFdlY3ZUZVNuaGJtM3VuSkRLSk04UjFBNlExL3orajMyVStBMzlZVTYvV0xQ?=
+ =?utf-8?B?OTJvU0xPN3lqSjh1a1pOQnNKd09tRDJiN0N2QnJ3YjFaOTlNc0hNbUpycVcw?=
+ =?utf-8?B?eG16Y0h2b1N2YWE0VXFybTdZSnFNZExQcmc1VDRscWxzUnVVa25kakt0aHRJ?=
+ =?utf-8?B?cE9LVjU0cEVCRkZNSXR6K3hsQWtFdW1qRWhMYTV0S09IT1B4dFk2M3paVkVG?=
+ =?utf-8?B?QkZnOGV4dlZ1aUxuMk5MM0U1enp4UzZoVWlOWnpXTDZUTWdTVXJ3SnRzMG1a?=
+ =?utf-8?B?NzJ6c0J3OUpUWXFNRVAwS214VTd0cUVRMFNRWVZ0SUR4b1FNOFA2dTIvSWRt?=
+ =?utf-8?B?aE04OEtOem9OTE85d1VzeEl2dnI0U0hDYVUzVTlMZDg4UmdSUFIzbWxHR1U2?=
+ =?utf-8?B?ejFTK0xjWUpkelV0ZmVXa0xaMk1Eci9LNTVxOXMxcHJwbzU0V1FNeE05Z1NF?=
+ =?utf-8?B?K1IxOXNyeHg0K0YvYUttbzNUSmZQVmdjMVc1MnptakozWkxxYlQ2NUZNOVFH?=
+ =?utf-8?B?Wi9MY1EvV2g0VkFoVWlHWkpHN2VWUEZoUlQxdXBiMXFQcnRjLzVBTFRRbWJa?=
+ =?utf-8?Q?k6ZYynxc8L3AG/yX9m1Tenr9A?=
+X-OriginatorOrg: nxp.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 751f9aa4-78bb-4024-fdd2-08de33d62cc2
+X-MS-Exchange-CrossTenant-AuthSource: PAXPR04MB9255.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 05 Dec 2025 08:13:31.4831
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: dldvUSTj2hv1S0CGwt8zFmtuWTCqLv73/tzRMqKtUz8FGC7OSwLZhrub+QRuqYPYKxZusR5mtQW26AmyH9Fn/w==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: GVXPR04MB10874
 
-On 05/12/2025 07:55, Jeff Chen wrote:
-> +static const struct of_device_id nxpwifi_sdio_of_match_table[] __maybe_unused = {
-> +	{ .compatible = "nxp,iw61x" },
-> +	{ }
-> +};
-> +
-> +/*
-> + * This function parse device tree node using mmc subnode devicetree API.
-> + * The device node is saved in card->plt_of_node.
-> + * if the device tree node exist and include interrupts attributes, this
-> + * function will also request platform specific wakeup interrupt.
-> + */
-> +static int nxpwifi_sdio_probe_of(struct device *dev)
-> +{
-> +	if (!of_match_node(nxpwifi_sdio_of_match_table, dev->of_node)) {
-> +		dev_err(dev, "required compatible string missing\n");
+On Mon, Nov 17, 2025 at 11:10:24 AM -0800, Jeff Johnson wrote:
+> So that this series would have an additional set of eyes I ran this through
+> the automation I use for ath.git.
+> 
+> It reports multiple instances of using the now obsolete networking multi-line
+> comment style.
+> Starting from the first patch:
+> +/* Fills HT capability information field, AMPDU Parameters field, HT extended
+> +/* This function returns the pointer to an entry in BA Stream
+> +/* This function handles the command response of delete a block
+> ...
+> 
+> Current guidance is to use the standard multi-line comment style
+> /*
+>  * first line of comment
+>  * [more lines of comment]
+>  * last line of commnt
+>  */
+> 
+> It also flagged one incorrect use of kernel-doc comment style:
+> +       /** rate for LG pkt, RATE flag will be present, it shows datarate in
+> 
+> There are also numerous spelling issues reported by checkpatch.pl --codespell
+> TYPO_SPELLING: 'interation' may be misspelled - perhaps 'iteration'?
+> TYPO_SPELLING: 'Dimentions' may be misspelled - perhaps 'Dimensions'?
+> TYPO_SPELLING: 'interfacces' may be misspelled - perhaps 'interfaces'?
+> TYPO_SPELLING: 'formate' may be misspelled - perhaps 'format'?
+> TYPO_SPELLING: 'verion' may be misspelled - perhaps 'version'?
+> TYPO_SPELLING: 'Timstamp' may be misspelled - perhaps 'Timestamp'?
+> TYPO_SPELLING: 'intializes' may be misspelled - perhaps 'initializes'?
+> TYPO_SPELLING: 'statistc' may be misspelled - perhaps 'statistic'?
 
-What? How did you probe otherwise?
+Hi Jeff,
 
-> +		return -EINVAL;
-> +	}
-> +
-> +	return 0;
-> +}
-> +
-> +/*
-> + * SDIO probe.
-> + *
-> + * This function probes an nxpwifi device and registers it. It allocates
-> + * the card structure, enables SDIO function number and initiates the
-> + * device registration and initialization procedure by adding a logical
-> + * interface.
-> + */
-> +static int
-> +nxpwifi_sdio_probe(struct sdio_func *func, const struct sdio_device_id *id)
-> +{
-> +	int ret;
-> +	struct sdio_mmc_card *card = NULL;
-> +
-> +	pr_debug("info: vendor=0x%4.04X device=0x%4.04X class=%d function=%d\n",
-> +		 func->vendor, func->device, func->class, func->num);
+Thanks for running the series through your automation and sharing the feedback.
+I’ve addressed these points in nxpwifi v8.
 
-NAK. Don't post such code. Look how drivers are supposed to use debug
-functions.
+> Also "wifi: nxpwifi: add initial SDIO bus driver support" reports
+> UNDOCUMENTED_DT_STRING: DT compatible string "nxp,iw61x" appears un-documented
+> -- check ./Documentation/devicetree/bindings/
+> 
+> Is there an associated DT patch out there?
+> 
+> The MAINTAINERS patch reports multiple instances of:
+> MAINTAINERS_STYLE: MAINTAINERS entries use one tab after TYPE:
 
-And entrance to probe IS NEVER, NEVER debugged.
+In nxpwifi v8, I added the Device Tree binding for "nxp,iw61x". However, I received
+some negative feedback on that patch, mainly about the description focusing on the
+driver instead of the hardware and missing proper CC and subject prefix. I’ll address
+these issues in the next revision.
 
-> +
-> +	card = devm_kzalloc(&func->dev, sizeof(*card), GFP_KERNEL);
-> +	if (!card)
-> +		return -ENOMEM;
-> +
-> +	init_completion(&card->fw_done);
-> +
-> +	card->func = func;
-> +
-> +	func->card->quirks |= MMC_QUIRK_BLKSZ_FOR_BYTE_MODE;
-> +
-> +	if (id->driver_data) {
-> +		struct nxpwifi_sdio_device *data = (void *)id->driver_data;
-> +
-> +		card->firmware = data->firmware;
-> +		card->firmware_sdiouart = data->firmware_sdiouart;
-> +		card->reg = data->reg;
-> +		card->max_ports = data->max_ports;
-> +		card->mp_agg_pkt_limit = data->mp_agg_pkt_limit;
-> +		card->tx_buf_size = data->tx_buf_size;
-> +		card->mp_tx_agg_buf_size = data->mp_tx_agg_buf_size;
-> +		card->mp_rx_agg_buf_size = data->mp_rx_agg_buf_size;
-> +		card->can_dump_fw = data->can_dump_fw;
-> +		card->fw_dump_enh = data->fw_dump_enh;
-> +		card->can_ext_scan = data->can_ext_scan;
-> +		INIT_WORK(&card->work, nxpwifi_sdio_work);
-> +	}
-> +
-> +	sdio_claim_host(func);
-> +	ret = sdio_enable_func(func);
-> +	sdio_release_host(func);
-> +
-> +	if (ret) {
-> +		dev_err(&func->dev, "failed to enable function\n");
-> +		return ret;
-> +	}
-> +
-> +	/* device tree node parsing and platform specific configuration*/
-> +	if (func->dev.of_node) {
-> +		ret = nxpwifi_sdio_probe_of(&func->dev);
-> +		if (ret)
-> +			goto err_disable;
-> +	}
-> +
-> +	ret = nxpwifi_add_card(card, &card->fw_done, &sdio_ops,
-> +			       NXPWIFI_SDIO, &func->dev);
-> +	if (ret) {
-> +		dev_err(&func->dev, "add card failed\n");
-> +		goto err_disable;
-> +	}
-> +
-> +	return 0;
-> +
-> +err_disable:
-> +	sdio_claim_host(func);
-> +	sdio_disable_func(func);
-> +	sdio_release_host(func);
-> +
-> +	return ret;
-> +}
-> +
-> +/*
-> + * SDIO resume.
-> + *
-> + * Kernel needs to suspend all functions separately. Therefore all
-> + * registered functions must have drivers with suspend and resume
-> + * methods. Failing that the kernel simply removes the whole card.
-> + *
-> + * If already not resumed, this function turns on the traffic and
-> + * sends a host sleep cancel request to the firmware.
-> + */
-> +static int nxpwifi_sdio_resume(struct device *dev)
-> +{
-> +	struct sdio_func *func = dev_to_sdio_func(dev);
-> +	struct sdio_mmc_card *card;
-> +	struct nxpwifi_adapter *adapter;
-> +
-> +	card = sdio_get_drvdata(func);
-> +	if (!card || !card->adapter) {
-> +		nxpwifi_dbg(adapter, ERROR, "resume: invalid card or adapter\n");
-> +		return 0;
-> +	}
-> +
-> +	adapter = card->adapter;
-> +
-> +	if (!test_bit(NXPWIFI_IS_SUSPENDED, &adapter->work_flags)) {
-> +		nxpwifi_dbg(adapter, WARN,
-> +			    "device already resumed\n");
-> +		return 0;
-> +	}
-> +
-> +	clear_bit(NXPWIFI_IS_SUSPENDED, &adapter->work_flags);
-> +
-> +	/* Disable Host Sleep */
-> +	nxpwifi_cancel_hs(nxpwifi_get_priv(adapter, NXPWIFI_BSS_ROLE_STA),
-> +			  NXPWIFI_SYNC_CMD);
-> +
-> +	nxpwifi_disable_wake(adapter);
-> +
-> +	return 0;
-> +}
-> +
-> +/* Write data into SDIO card register. Caller claims SDIO device. */
-> +static int
-> +nxpwifi_write_reg_locked(struct sdio_func *func, u32 reg, u8 data)
-> +{
-> +	int ret;
-> +
-> +	sdio_writeb(func, data, reg, &ret);
-> +	return ret;
-> +}
-> +
-> +/* This function writes data into SDIO card register.
-> + */
-> +static int
-> +nxpwifi_write_reg(struct nxpwifi_adapter *adapter, u32 reg, u8 data)
-> +{
-> +	struct sdio_mmc_card *card = adapter->card;
-> +	int ret;
-> +
-> +	sdio_claim_host(card->func);
-> +	ret = nxpwifi_write_reg_locked(card->func, reg, data);
-> +	sdio_release_host(card->func);
-> +
-> +	return ret;
-> +}
-> +
-> +/* This function reads data from SDIO card register.
-> + */
-> +static int
-> +nxpwifi_read_reg(struct nxpwifi_adapter *adapter, u32 reg, u8 *data)
-> +{
-> +	struct sdio_mmc_card *card = adapter->card;
-> +	int ret;
-> +	u8 val;
-> +
-> +	sdio_claim_host(card->func);
-> +	val = sdio_readb(card->func, reg, &ret);
-> +	sdio_release_host(card->func);
-> +
-> +	*data = val;
-> +
-> +	return ret;
-> +}
-> +
-> +/*
-> + * This function writes multiple data into SDIO card memory.
-> + *
-> + * This does not work in suspended mode.
-> + */
-> +static int
-> +nxpwifi_write_data_sync(struct nxpwifi_adapter *adapter,
-> +			u8 *buffer, u32 pkt_len, u32 port)
-> +{
-> +	struct sdio_mmc_card *card = adapter->card;
-> +	int ret;
-> +	u8 blk_mode =
-> +		(port & NXPWIFI_SDIO_BYTE_MODE_MASK) ? BYTE_MODE : BLOCK_MODE;
-> +	u32 blk_size = (blk_mode == BLOCK_MODE) ? NXPWIFI_SDIO_BLOCK_SIZE : 1;
-> +	u32 blk_cnt =
-> +		(blk_mode ==
-> +		 BLOCK_MODE) ? (pkt_len /
-> +				NXPWIFI_SDIO_BLOCK_SIZE) : pkt_len;
-> +	u32 ioport = (port & NXPWIFI_SDIO_IO_PORT_MASK);
-> +
-> +	if (test_bit(NXPWIFI_IS_SUSPENDED, &adapter->work_flags)) {
-> +		nxpwifi_dbg(adapter, ERROR,
-> +			    "%s: not allowed while suspended\n", __func__);
-> +		return -EPERM;
-> +	}
-> +
-> +	sdio_claim_host(card->func);
-> +
-> +	ret = sdio_writesb(card->func, ioport, buffer, blk_cnt * blk_size);
-> +
-> +	sdio_release_host(card->func);
-> +
-> +	return ret;
-> +}
-> +
-> +/* This function reads multiple data from SDIO card memory.
-> + */
-> +static int nxpwifi_read_data_sync(struct nxpwifi_adapter *adapter, u8 *buffer,
-> +				  u32 len, u32 port, u8 claim)
-> +{
-> +	struct sdio_mmc_card *card = adapter->card;
-> +	int ret;
-> +	u8 blk_mode = (port & NXPWIFI_SDIO_BYTE_MODE_MASK) ? BYTE_MODE
-> +		       : BLOCK_MODE;
-> +	u32 blk_size = (blk_mode == BLOCK_MODE) ? NXPWIFI_SDIO_BLOCK_SIZE : 1;
-> +	u32 blk_cnt = (blk_mode == BLOCK_MODE) ? (len / NXPWIFI_SDIO_BLOCK_SIZE)
-> +			: len;
-> +	u32 ioport = (port & NXPWIFI_SDIO_IO_PORT_MASK);
-> +
-> +	if (claim)
-> +		sdio_claim_host(card->func);
-> +
-> +	ret = sdio_readsb(card->func, buffer, ioport, blk_cnt * blk_size);
-> +
-> +	if (claim)
-> +		sdio_release_host(card->func);
-> +
-> +	return ret;
-> +}
-> +
-> +/* This function reads the firmware status.
-> + */
-> +static int
-> +nxpwifi_sdio_read_fw_status(struct nxpwifi_adapter *adapter, u16 *dat)
-> +{
-> +	struct sdio_mmc_card *card = adapter->card;
-> +	const struct nxpwifi_sdio_card_reg *reg = card->reg;
-> +	u8 fws0, fws1;
-> +	int ret;
-> +
-> +	ret = nxpwifi_read_reg(adapter, reg->status_reg_0, &fws0);
-> +	if (ret)
-> +		return ret;
-> +
-> +	ret = nxpwifi_read_reg(adapter, reg->status_reg_1, &fws1);
-> +	if (ret)
-> +		return ret;
-> +
-> +	*dat = (u16)((fws1 << 8) | fws0);
-> +	return ret;
-> +}
-> +
-> +/* This function checks the firmware status in card.
-> + */
-> +static int nxpwifi_check_fw_status(struct nxpwifi_adapter *adapter,
-> +				   u32 poll_num)
-> +{
-> +	int ret = 0;
-> +	u16 firmware_stat = 0;
-> +	u32 tries;
-> +
-> +	for (tries = 0; tries < poll_num; tries++) {
-> +		ret = nxpwifi_sdio_read_fw_status(adapter, &firmware_stat);
-> +		if (ret)
-> +			continue;
-> +		if (firmware_stat == FIRMWARE_READY_SDIO) {
-> +			ret = 0;
-> +			break;
-> +		}
-> +
-> +		msleep(100);
-> +		ret = -EPERM;
-> +	}
-> +
-> +	if (firmware_stat == FIRMWARE_READY_SDIO)
-> +		/*
-> +		 * firmware might pretend to be ready, when it's not.
-> +		 * Wait a little bit more as a workaround.
-> +		 */
-> +		msleep(100);
-> +
-> +	return ret;
-> +}
-> +
-> +/* This function checks if WLAN is the winner.
-> + */
-> +static int nxpwifi_check_winner_status(struct nxpwifi_adapter *adapter)
-> +{
-> +	int ret;
-> +	u8 winner = 0;
-> +	struct sdio_mmc_card *card = adapter->card;
-> +
-> +	ret = nxpwifi_read_reg(adapter, card->reg->status_reg_0, &winner);
-> +	if (ret)
-> +		return ret;
-> +
-> +	if (winner)
-> +		adapter->winner = 0;
-> +	else
-> +		adapter->winner = 1;
-> +
-> +	return ret;
-> +}
-> +
-> +/*
-> + * SDIO remove.
-> + *
-> + * This function removes the interface and frees up the card structure.
-> + */
-> +static void
-> +nxpwifi_sdio_remove(struct sdio_func *func)
-> +{
-> +	struct sdio_mmc_card *card;
-> +	struct nxpwifi_adapter *adapter;
-> +	struct nxpwifi_private *priv;
-> +	int ret = 0;
-> +	u16 firmware_stat;
-> +
-> +	card = sdio_get_drvdata(func);
-> +	if (!card)
-> +		return;
-> +
-> +	wait_for_completion(&card->fw_done);
-> +
-> +	adapter = card->adapter;
-> +	if (!adapter || !adapter->priv_num)
-> +		return;
-> +
-> +	nxpwifi_dbg(adapter, INFO, "info: SDIO func num=%d\n", func->num);
-
-This does not look like useful printk message. Drivers should be silent
-on success:
-https://elixir.bootlin.com/linux/v6.15-rc7/source/Documentation/process/coding-style.rst#L913
-https://elixir.bootlin.com/linux/v6.15-rc7/source/Documentation/process/debugging/driver_development_debugging_guide.rst#L79
-
-Debug messages for entry/exit are really useless.
-
-> +
-
-
-
-> +
-> +static struct sdio_driver nxpwifi_sdio = {
-> +	.name = "nxpwifi_sdio",
-> +	.id_table = nxpwifi_ids,
-> +	.probe = nxpwifi_sdio_probe,
-> +	.remove = nxpwifi_sdio_remove,
-> +	.drv = {
-> +		.owner = THIS_MODULE,
-
-Why are you upstreaming 12-13 years old code?
-
-No, drop all this old stuff and create your code from the scratch, based
-on latest reviewed driver. Otherwise you just duplicated all issues we
-fixed past 12 years!
-
-> +		.coredump = nxpwifi_sdio_coredump,
-> +		.pm = &nxpwifi_sdio_pm_ops,
-> +	}
-> +};
-> +
-> +/*
-> + * This function wakes up the card.
-
-Really usesless way of commenting code. Can you look at existing source
-code to learn how comments are supposed to be written?
-
-
-Best regards,
-Krzysztof
+> So suggest you use all options to checkpatch.pl on your series
+> 
+> /jeff
+> 
 
