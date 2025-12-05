@@ -1,104 +1,91 @@
-Return-Path: <linux-wireless+bounces-29544-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-29545-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 60850CA8441
-	for <lists+linux-wireless@lfdr.de>; Fri, 05 Dec 2025 16:53:37 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0B9A2CA84B0
+	for <lists+linux-wireless@lfdr.de>; Fri, 05 Dec 2025 17:01:16 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 4792B3046BA6
-	for <lists+linux-wireless@lfdr.de>; Fri,  5 Dec 2025 15:53:36 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id BAEAC30295C7
+	for <lists+linux-wireless@lfdr.de>; Fri,  5 Dec 2025 16:00:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8D8B03148DB;
-	Fri,  5 Dec 2025 15:36:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7BF11326955;
+	Fri,  5 Dec 2025 15:45:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="LggYav23";
-	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="Pz3n5XlB"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="gKWQKEM6"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-lf1-f45.google.com (mail-lf1-f45.google.com [209.85.167.45])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 362212877D4
-	for <linux-wireless@vger.kernel.org>; Fri,  5 Dec 2025 15:35:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 12DEA320A04
+	for <linux-wireless@vger.kernel.org>; Fri,  5 Dec 2025 15:45:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.45
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764948962; cv=none; b=vA4bpAPQJ2T0KIgIoMYbFVJn3nwMdpOxALLbVdFOqqTdnMa05N0VtcwLrzYiGTY9TRF10vBsRlICwMgg7ewXh/Pq5iRZTlkReSybuxZGK2Lb2m3WsC0eeF5aqJo8VqmP2KrgiegBko7TMZhPqELGbqfgcK7RAFUQuf8ZFrccFFc=
+	t=1764949548; cv=none; b=ZLl+VpP5Tb+4zWUs39gn5xk/V27oaRAycCmtciecAKPZR44KI3WC6E0h09WRAs8ke6y2XbDRgTlS7UZf/WowguOvI4T8s1SgBJGAxERb8mdusLN30eTQtOU73dDC4NjmaDKMZVgsSIyExbfZJlmrUGJSPVtfXheCtBrfM9uhegM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764948962; c=relaxed/simple;
-	bh=STzMJwI116rmgDpdpGII/++01lS4bYjJuQi2WMakzRM=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=s8EezYBK4xEX4WIjzq+F/LzYYAYLD+XuLgLjB/8qFeecYI9vSeJutzsneGAnIHDgY+3buLWEXlBXS/q8JG4/0NsGG2NMq3HxNUx5RL9pVSEG01UWj/2swAKK3pvnM5nuP6hziTTkoy7KIpsXKKvxZ86V2LB20x2p9ohP5+Lys90=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=LggYav23; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=Pz3n5XlB; arc=none smtp.client-ip=170.10.129.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1764948954;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=JNWJCQXgH5bvny3UA4Fk9m23vdbcsYt/2+E6QHsu8TY=;
-	b=LggYav23fr2/4Kk0oGQv0y6dP7huO5jJeG3MjIqXkmF1B5PnQlGtfEUK+CRoQHqUxktvs5
-	KShfZyCRhYQi0rwY7gDPXbif3I52QTF2Tw/fZOdng4t3eVvxAs5aViVWZNIpGhR3ad19So
-	NPQPOrsTgzF0S8We2tCmiWwaqDtZNvY=
-Received: from mail-pf1-f197.google.com (mail-pf1-f197.google.com
- [209.85.210.197]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-75-LSO-oVAjPnKkA82VzLshxA-1; Fri, 05 Dec 2025 10:35:53 -0500
-X-MC-Unique: LSO-oVAjPnKkA82VzLshxA-1
-X-Mimecast-MFC-AGG-ID: LSO-oVAjPnKkA82VzLshxA_1764948953
-Received: by mail-pf1-f197.google.com with SMTP id d2e1a72fcca58-7d24bbb9278so4613484b3a.0
-        for <linux-wireless@vger.kernel.org>; Fri, 05 Dec 2025 07:35:53 -0800 (PST)
+	s=arc-20240116; t=1764949548; c=relaxed/simple;
+	bh=+Uij/c+hhRUh7KNHXiyStM+eLLPbLJJe16gbEXkk+T0=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=R8QEi7MIL7TOerT548/dY0XVdoXdPvC5BJu8drnhSWyjOuaVs+A4FWBkPqgEQEg31oO3QMvCMwCFgctbOdlWCvh1xsQPTO8v3OPD1YR4FFMg8nwSACAZB62SgL535PhlnqlZBxKLzNQ+wLKrz5w1AkQ9BbZrCpcz0Qo+V0VwQMs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=gKWQKEM6; arc=none smtp.client-ip=209.85.167.45
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-lf1-f45.google.com with SMTP id 2adb3069b0e04-59578e38613so2577467e87.2
+        for <linux-wireless@vger.kernel.org>; Fri, 05 Dec 2025 07:45:40 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=redhat.com; s=google; t=1764948952; x=1765553752; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=JNWJCQXgH5bvny3UA4Fk9m23vdbcsYt/2+E6QHsu8TY=;
-        b=Pz3n5XlBb601ClnJxXwg/UdTEYmZY9QErH3gGhw/F9uHOugxryVNHmA5EWQ9D+w1X7
-         z3wZ0/mtGgXbfpAdtu73d0E7sqwT+nF3YJAMz6m0Kjx2aCeCjLRa3WOlgjxCxQEryLjn
-         8rGtTJLeRzUOfVC4DS2Z9PDgSUnilBB6Fv+oBhdgP48gmirhJ4wdHW3QbDmnIw+QDDq+
-         Sj0F+fru73jahpboD352M1T2jPyxU4RlmRQ/s0sMePrtn0cjgFqrBHo7Nfn9g30c3ASI
-         MGzcVBF2Ew0CuFxsYGjHLu4HXtrwaKiWtZoicPa8oWLz7lDOrmuIuncWhMmB7t+rKkEG
-         wFIQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1764948952; x=1765553752;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+        d=gmail.com; s=20230601; t=1764949537; x=1765554337; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=JNWJCQXgH5bvny3UA4Fk9m23vdbcsYt/2+E6QHsu8TY=;
-        b=qqLegJNOFJCFD8bDrdFAGqTeXn+xAaSfOsxykChNHjGYoncx43J8GyKJ519fgl3pI8
-         S3PV+kMKEpOkdmNNWouqRQL+PWemzvYVSUBi5XYingbEJ2BNkGn3N+lBmZTiKkDZ1iOP
-         2pW/vXOKiNUS2YiZhEf2gcMb+tvc6YYh6TURULBeHpuJDr8RZe/vfXsJX9T+vPgCOtD8
-         5RlZNRhTd0St4Y4qo/q+BMyXaqfJbTZkAxcXxXvbLVnjYCFC9/0YvWL09iO5yXUYBBGP
-         Pjlh0ydQag8CimAHrix70rIF2VP41rh92nCMK6ogfoQgtIaIh11fz1uQvw2Si4GcHszh
-         H0Wg==
-X-Forwarded-Encrypted: i=1; AJvYcCVu7m/Mj1288DJdh4urA7N3z84N+EyeH2mTw97lWYoDc0QcGaH4y5borO5QhyqrT6BCFJkUaJ5vk8cwR3/6BQ==@vger.kernel.org
-X-Gm-Message-State: AOJu0YxyWz6lQHyD9dD+8Jf0j3/OtlxFO0eRPv8yvNgcaKlvj1TCrTrK
-	rrpFeOd8E6mS033OkvHi4U/P4BloCcI7jL0BdFa5A52FISFWbe/d61Xb+hyYtsohS59xlnwTvSM
-	KBCXZ8dr5KXVpxv8dn8DgwePYK8aEu4bNyEws1+wNP3XbUhEweVpVTNsJxCO9xUF0Zyg=
-X-Gm-Gg: ASbGncs05YjUwUT3c+K7cNfSkHtq9YbbMg/iOC4jLcwJFtfLoGnpI/KiMrWPRk139he
-	YN50CZCoEBegDx4pEjZfncoYkImbeGK1otMVcI2+yIqOYngmFSSo/lNe6umemjVJvUq+HVR+8y2
-	ccvp4FIGwRVPteTX+zyilGV7STAwBAjcAB3q4ziE3xoh/HqXwFEoT6yXgJ//c/KvPdAk23jfXFX
-	KGVP0jKq2niptw2XFuth4hlU7WzWTLk+1HN3Rf4TlzL8b7KOA3ohVpEOlWOvRHTmuzG41jgonQ+
-	EVG4uzFXoMUdG15+tSzqxXYa9apDPIPvcxTxaZPbJnO7YGBTbemb2vR7AXJaxGLlFpAKEP1PIkL
-	ilq1yXWky00+chrth3inaLQM24Zm6zECyF2rA7A==
-X-Received: by 2002:a05:6a00:1d16:b0:7e8:43f5:bd30 with SMTP id d2e1a72fcca58-7e843f5c53fmr442939b3a.69.1764948952612;
-        Fri, 05 Dec 2025 07:35:52 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IGibYUsuTvgSXgBChTk0AFwQw2BX4f9n6aUflTsFibE6nucBaMW0HHA+YsiEu06MWKun2Rnog==
-X-Received: by 2002:a05:6a00:1d16:b0:7e8:43f5:bd30 with SMTP id d2e1a72fcca58-7e843f5c53fmr442914b3a.69.1764948952222;
-        Fri, 05 Dec 2025 07:35:52 -0800 (PST)
-Received: from dkarn-thinkpadp16vgen1.punetw6.csb ([2402:e280:3e0d:a45:3861:8b7f:6ae1:6229])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-7e2a07213b6sm5641875b3a.26.2025.12.05.07.35.49
+        bh=yRu3vn/L5SRaR0SSwrxKoGLCPSzcYT0aQdaJ5FnQFyM=;
+        b=gKWQKEM6j5UY2Q/0gu4oFV/7Kid1gMnllhrO89TqqTPW5T/6lbt+Ys1RexUx7Ck9r7
+         M7yAtFTHw4x7LSEOM1in8LrwVDe3Z8TlSDzVCjSUDiIJWjViw0VCpVVTO+tPvDx1a5L4
+         KIhDqPL/XTDXBU6A0NB5DNpKuaZycwb1Rgn7aByuVPBcH6QvbT3dfZRuKjiAnzO9f501
+         /kIyxDAmWEi1qaCTR++wIkBbNGFaO2EPyxFJMKMiPXg4GSK8A7xaolgbqz3gLNQmQp42
+         +eKBpNQXCel4Y/jxgWnFqeyllQ2o52XDSFrPLkk27t1N0dSTX+IwzVRMLYj1V5LkMNCm
+         aT2A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1764949537; x=1765554337;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=yRu3vn/L5SRaR0SSwrxKoGLCPSzcYT0aQdaJ5FnQFyM=;
+        b=sBh6dFV04fgesQra0Nw+dwQ9uCg/U9oC1RifC9E2vMJI06ndI4Gxxen95KYr3XhJ9w
+         kN9eIKPWjrIDs9IQwf+s1P4o229+3wS/m2WnQTGsSNMStjtVSUd2iuMhVQKxU+trkIAD
+         LzdaG2Cys3RzgC9lfcRJ1Swuudg6uA0YAQGaB329SgfXyD9FXxQmDjL3c1/g2Ld02zpc
+         hnuSjSRTEyri8MG3B8Kx3qxuapePwt0Z8fYRE7Q+3C+UUdg69xVmya36igeXpPdSU9Ea
+         /OW1cBpjmL/AxMPgwE3G+UDsrjKuQT15yqXH7kY7VLX9qKc3ZCz/rrBEGh+WyTCW6BLq
+         CJXQ==
+X-Forwarded-Encrypted: i=1; AJvYcCVh8ockMc3B9APDdiOidVz5DdwcuAZT7zYe2+1NAKdHKIh8chSVw/EjUsuRbc956E5gIWwOGgzvDl/Q0SAzAw==@vger.kernel.org
+X-Gm-Message-State: AOJu0Yw0z+mWioa+Rqgxgac6Sqz3TDGHG2Yh1mKjz0+TGJDXBVAoAsua
+	LrNA7RuZ30QmsiMsxxp3Mqhgz9jnRcTj/mIEVqrhCfW1AgRW6htufMKD
+X-Gm-Gg: ASbGnctjN/AnHpKD/eb6l5/HcnO3Qk1Zn+m3W7hQIbS5FKJmmbtA3JEpF8kP6UDaz1u
+	yTfo0C+fvIbShKL39h7v5PFsFbZh/d6B4G0N0qIr+WVO6u+3GDL+eDY/KYCB+9whSzjWoPQ1WPC
+	29t3i1VDSvPjOrV7TP/MPkso+kDgpUweXecTh0WtUCK5sQ/2ptQQak5ZyGehKOTJDW8czoLE0kv
+	StdXwJLkiuzucoZFGoTA+Ss8jzrWfgjBaRQT8h6tPtOGHkb1zMf9UEY7YE4gasXQgNoi8OIt3t1
+	92bMD9abVc2q3RdEnSG1um18SAyai5pgBC2AZTy0oFMFXotcBM+hF+4Yj6zSTsheK1C22PuATVZ
+	KrOmpmLODF8AaeAyuOI7ZCEg2rBGMLT87V+P40lvIvKRDeLeJfevBLzvZlRT7SPacuyKPGo6HF6
+	7FfBHMD/pNZ/NRkObku+5UaA==
+X-Google-Smtp-Source: AGHT+IEuOdjJ6eVJfcxdzeuAE6q+1nDIVgt3bm5mPBvJGVsrRtI1D3I0YRQqf1Y/gNOXYRySnPP9ng==
+X-Received: by 2002:a05:6512:3b9d:b0:594:55ab:5800 with SMTP id 2adb3069b0e04-597d66c8175mr2515414e87.30.1764949537099;
+        Fri, 05 Dec 2025 07:45:37 -0800 (PST)
+Received: from localhost ([188.234.148.119])
+        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-597d7c2e93esm1624775e87.97.2025.12.05.07.45.35
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 05 Dec 2025 07:35:51 -0800 (PST)
-From: Deepakkumar Karn <dkarn@redhat.com>
-To: Johannes Berg <johannes@sipsolutions.net>
-Cc: Shaul Triebitz <shaul.triebitz@intel.com>,
+        Fri, 05 Dec 2025 07:45:35 -0800 (PST)
+From: Mikhail Gavrilov <mikhail.v.gavrilov@gmail.com>
+To: Mario Limonciello <superm1@kernel.org>
+Cc: Felix Fietkau <nbd@nbd.name>,
+	Lorenzo Bianconi <lorenzo@kernel.org>,
 	linux-wireless@vger.kernel.org,
+	linux-mediatek@lists.infradead.org,
 	linux-kernel@vger.kernel.org,
-	Deepakkumar Karn <dkarn@redhat.com>,
-	syzbot+5bb5f06f99924ea0cf86@syzkaller.appspotmail.com
-Subject: [PATCH] mac80211_hwsim: fix divide error in mac80211_hwsim_link_info_changed
-Date: Fri,  5 Dec 2025 21:05:02 +0530
-Message-ID: <20251205153502.273426-1-dkarn@redhat.com>
+	Mikhail Gavrilov <mikhail.v.gavrilov@gmail.com>
+Subject: [PATCH] [PATCH] wifi: mt76: Fix strscpy buffer overflow in mt76_connac2_load_patch
+Date: Fri,  5 Dec 2025 20:45:32 +0500
+Message-ID: <20251205154532.27704-1-mikhail.v.gavrilov@gmail.com>
 X-Mailer: git-send-email 2.52.0
+In-Reply-To: <CABXGCsMeAZyNJ-Axt_CUCXgyieWPV3rrcLpWsveMPT8R0YPGnQ@mail.gmail.com>
+References: <CABXGCsMeAZyNJ-Axt_CUCXgyieWPV3rrcLpWsveMPT8R0YPGnQ@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
@@ -107,45 +94,47 @@ List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-Prevent a division by zero crash when userspace provides a zero beacon
-interval value. The crash occurs in the beacon timer setup code path when
-info->beacon_int is 0, causing bcn_int to be 0 and triggering a divide
-error in the do_div() macro.The issue can be triggered from userspace via
-nl80211/cfg80211 when configuring a virtual interface in AP mode with an
-invalid beacon interval.
+Commit f804a5895eba ("wifi: mt76: Strip whitespace from build ddate") introduced
+a kernel panic/WARN on systems using MediaTek MT7921e (and potentially others
+using mt76_connac_lib) due to an incorrect buffer size calculation.
 
-Fixes: e57f8a489c29 ("wifi: mac80211_hwsim: send a beacon per link")
-Reported-by: syzbot+5bb5f06f99924ea0cf86@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=5bb5f06f99924ea0cf86
-Signed-off-by: Deepakkumar Karn <dkarn@redhat.com>
+The error logged is:
+"strnlen: detected buffer overflow: 17 byte read of buffer size 16"
+
+This occurs because the field 'hdr->build_date' is a fixed-size array of 16 bytes.
+The patch allocated a 17-byte local buffer 'build_date' but used 'sizeof(build_date)'
+(17) as the read limit for strscpy, causing Fortify Source to correctly detect
+an attempt to read 17 bytes from the 16-byte source field.
+
+To fix this, replace strscpy with memcpy, which is appropriate for raw data
+copying, and explicitly use the size of the source field (sizeof(hdr->build_date) = 16)
+to limit the read, followed by manual null termination.
+
+Fixes: f804a5895eba ("wifi: mt76: Strip whitespace from build ddate")
+Signed-off-by: Mikhail Gavrilov <mikhail.v.gavrilov@gmail.com>
 ---
- drivers/net/wireless/virtual/mac80211_hwsim.c | 11 +++++++----
- 1 file changed, 7 insertions(+), 4 deletions(-)
+ drivers/net/wireless/mediatek/mt76/mt76_connac_mcu.c | 7 +++++--
+ 1 file changed, 5 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/net/wireless/virtual/mac80211_hwsim.c b/drivers/net/wireless/virtual/mac80211_hwsim.c
-index 5903d82e1ab1..e67e2c989ea6 100644
---- a/drivers/net/wireless/virtual/mac80211_hwsim.c
-+++ b/drivers/net/wireless/virtual/mac80211_hwsim.c
-@@ -2595,11 +2595,14 @@ static void mac80211_hwsim_link_info_changed(struct ieee80211_hw *hw,
- 			link_data->beacon_int = info->beacon_int * 1024;
- 			tsf = mac80211_hwsim_get_tsf(hw, vif);
- 			bcn_int = link_data->beacon_int;
--			until_tbtt = bcn_int - do_div(tsf, bcn_int);
-+			/* Proceed only when bcn_int != 0 */
-+			if (bcn_int) {
-+				until_tbtt = bcn_int - do_div(tsf, bcn_int);
+diff --git a/drivers/net/wireless/mediatek/mt76/mt76_connac_mcu.c b/drivers/net/wireless/mediatek/mt76/mt76_connac_mcu.c
+index ea99167765b0..d2c4c65ec464 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt76_connac_mcu.c
++++ b/drivers/net/wireless/mediatek/mt76/mt76_connac_mcu.c
+@@ -3125,8 +3125,11 @@ int mt76_connac2_load_patch(struct mt76_dev *dev, const char *fw_name)
+ 	}
  
--			hrtimer_start(&link_data->beacon_timer,
--				      ns_to_ktime(until_tbtt * NSEC_PER_USEC),
--				      HRTIMER_MODE_REL_SOFT);
-+				hrtimer_start(&link_data->beacon_timer,
-+					      ns_to_ktime(until_tbtt * NSEC_PER_USEC),
-+					      HRTIMER_MODE_REL_SOFT);
-+			}
- 		} else if (!info->enable_beacon) {
- 			unsigned int count = 0;
- 			ieee80211_iterate_active_interfaces_atomic(
+ 	hdr = (const void *)fw->data;
+-	strscpy(build_date, hdr->build_date, sizeof(build_date));
+-	build_date[16] = '\0';
++	/* hdr->build_date is 16 bytes. Copy exactly 16 bytes to the 17-byte buffer,
++	 * and then add the null terminator at index 16.
++	 */
++	memcpy(build_date, hdr->build_date, sizeof(hdr->build_date));
++	build_date[sizeof(hdr->build_date)] = '\0';
+ 	strim(build_date);
+ 	dev_info(dev->dev, "HW/SW Version: 0x%x, Build Time: %.16s\n",
+ 		 be32_to_cpu(hdr->hw_sw_ver), build_date);
 -- 
-2.51.1
+2.52.0
 
 
