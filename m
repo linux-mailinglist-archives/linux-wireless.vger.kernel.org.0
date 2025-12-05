@@ -1,162 +1,111 @@
-Return-Path: <linux-wireless+bounces-29505-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-29506-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id D111FCA3BE1
-	for <lists+linux-wireless@lfdr.de>; Thu, 04 Dec 2025 14:14:16 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6B4DBCA5BF9
+	for <lists+linux-wireless@lfdr.de>; Fri, 05 Dec 2025 01:33:21 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id B976D300BFA6
-	for <lists+linux-wireless@lfdr.de>; Thu,  4 Dec 2025 13:13:56 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 808E23105621
+	for <lists+linux-wireless@lfdr.de>; Fri,  5 Dec 2025 00:33:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F38D7342C80;
-	Thu,  4 Dec 2025 13:13:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C9A1418FDBE;
+	Fri,  5 Dec 2025 00:33:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="mO4nD5tP"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="JbQdndZ8"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pf1-f173.google.com (mail-pf1-f173.google.com [209.85.210.173])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BB26433B6FF
-	for <linux-wireless@vger.kernel.org>; Thu,  4 Dec 2025 13:13:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 55F4B16DEB0
+	for <linux-wireless@vger.kernel.org>; Fri,  5 Dec 2025 00:33:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.173
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764854035; cv=none; b=lZA9oPiYt8zuqlAMcK4TpUBtTi9mqrP5IC2XtUSnof4Y2qqINEA7ApPvfHi/iKBn8qF88fKYHue9X/G5qRyJkw1oJ2NNBRYHJD6DY0iPz3KQjJ6GiAzRut0sRntyppspyt928BS6dlLjiyjlJWXqNh+IIdElAk1NFxsh1oLUsFI=
+	t=1764894798; cv=none; b=moxqmodNlgBbREPHhNF+T4iVD4qDxRmCKYmAa4kEUAjNpanGNFIJU0YjP6y4ZpdSeOVY1XWgfBVAmzat/LHh2UmqXKiANaAgyo67fBFCViZnXiI5Y6uHeksBs+twArqZ+A2pI6AXOmjf1gIIEtb1JxyYDfHVaWg4j1fPNYdu51s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764854035; c=relaxed/simple;
-	bh=RfEto5ZhzzmOQyTL3lH3OKGraSwXsCAmzi9q4NcxOKw=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=RCuAoqkpaid88w+iDnhysIIN7SbJiztwYH5JRAUbouE1543ZwAE1xLzu2GwGygZ+BDyHy16K1LMjxxYrNUMDu6KcSBNdKy9BdFhLyXxoirf0j3hyDv51B2sm4z/FwWpVmSY76jVrHUyXJJ5Sm6zgoRRelVzvEXkiNy+8rZmB9ZY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=mO4nD5tP; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 436D4C113D0;
-	Thu,  4 Dec 2025 13:13:55 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1764854035;
-	bh=RfEto5ZhzzmOQyTL3lH3OKGraSwXsCAmzi9q4NcxOKw=;
-	h=From:Date:Subject:References:In-Reply-To:To:Cc:From;
-	b=mO4nD5tPms/n1SRcoVWXidSmJheoCCSJ1tsCACG9A/EI4l5ea0XrTQJYCdsH5ttYG
-	 GdBxptd8opD0C6A6mWbETT5G25PynSPJl+7NwRXKlE1wh1YEcrrjQuN64yseRZoSTA
-	 jE8I75h5/HVBI1AWr42+BGa3Vlw5olITa5Lw3nY8HCyZcYf7LsUtK1mGkSx6EJLXtm
-	 diUHbDj180YJ4SEZKIQ9VvrJi/pHTmTurGgDyulEaQgx5kM8EJT6tibdTOe7NVJxX8
-	 XfHjFcoSUTjvfJ0idqQzrTgYakjRfJW5whYya0/mdfXfYEfjaQO5PKJF62M26m3oHo
-	 BwmHpyCfQDM9g==
-From: Lorenzo Bianconi <lorenzo@kernel.org>
-Date: Thu, 04 Dec 2025 14:13:30 +0100
-Subject: [PATCH mt76 3/3] wifi: mt76: mt7996: Switch to the secondary link
- if the default one is removed
+	s=arc-20240116; t=1764894798; c=relaxed/simple;
+	bh=QbPZipajEq0/83jfjCQehmX2C4Z5zNxc8erPR/a/IGE=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=Ooi+DO0f0HfcVYaoifhqG1BWvPP6t5YqBlb4/h7mM9IrKb/Si5a/9Hg3alWaFClp413J+zmeqA3+bKKlTGGRPdUUbS+2M+UDOpbqQG+fRqzlcTN96xfpg0QO6DL7NvW7hQvqyyinED+8sX99ZC9xnPvk4huW5MS9JbuScG/shxc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=JbQdndZ8; arc=none smtp.client-ip=209.85.210.173
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-pf1-f173.google.com with SMTP id d2e1a72fcca58-7ba49f92362so975135b3a.1
+        for <linux-wireless@vger.kernel.org>; Thu, 04 Dec 2025 16:33:17 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1764894796; x=1765499596; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=JxloJdhlr8dfIXQBTNyveaWRibzvvrHbjdiZXjpwUKc=;
+        b=JbQdndZ8jKmOVUuPMHLHfF27ubsiKfFrRBOhegZwCP6mtbZoJd2UujwJc236m684rE
+         7RYnauLvQO/LfYaF0Y7o0bEU2+jbAQLUp0k7cMzA8McTO91/eMcgj2/ezzXlIMQ/YhEs
+         KbQBXY0CODNIQ3rgQog6s2E+cPOLPqUXgi+Yz2MPVd8Rya9bKbBzpZmRmwXP01bYxt9x
+         t27VtHwZiqAqXk94TiibHj1fhNDDD36hn9oDvuwM76u5bBJh3dN2UiIiswsoept5b0LG
+         ePxWg8ERYxTu3z1CNtsAD5zBxscoxq/cqq9DGmQeQcKvLfC/jKk74FE9j4WNWI8SobLO
+         i5kQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1764894796; x=1765499596;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=JxloJdhlr8dfIXQBTNyveaWRibzvvrHbjdiZXjpwUKc=;
+        b=n3k6fg/bR0xVZjKdQaiT5iqVmVaWArNzJ4XQ9EK3iLF3Cxjgn64Cm6/rC2SaAoC9Pd
+         sVSjoR4gMbVwzzAMbX4JmzATo8t2b4DVJj9KmUIc0ObiDyuJTLs/lKhB25dIwo9ZycyI
+         W1uG6Sgj/rnPz5zmSXhix0+0Idgpat0iOHm62x7ix8hv6TKwgtWUSD+MdnrtCgLxwNMO
+         VBY6RVL29X7+yWKP5SJKAaU7JNNRM13NbOmwyNFL/yemJXOuCHoqzF0LJqbXtpTM+z9V
+         B6dgrINdsnmC2/kMBQ1zGyW8nrvZ2iNZp+X0XnMn91paT9deJ6q93qVyMeTmymU0YBwo
+         vNBw==
+X-Gm-Message-State: AOJu0YyBGfG8K02icwSomJuRaKyay8MsGnk/dXEp4ar+xHZm3jvIvlBD
+	6Zu193wRHuC9Di9rFvd3rc6D3fsNNfABR4AjyhmEp1b7NzoWtiSUySATYvtLDIJn+6lRKw==
+X-Gm-Gg: ASbGnct+oRVQps9fZHQzSLrvtnlnlDGIEpC+1bJi/TJyqu3hmsMWKQSqRTM2MSw3zWt
+	rD8a8RLbxMKBUv6r9ipoC4B22Na4a9KYQmw5zizhnbcRhDddLTEqb4LkIzQvr7ev/iYbZzUwJKn
+	rt3YEbhkyi0OX11MMSu5SA3iGgWbHGXPirZQ50sxOsOAlzmFMEDYOC5ba7YvcqEA3i0O6s+pe8I
+	HfzlVLbEtKPh4evXC2XAR8FMFVPFGzR2ac05bc3FdmUv8LajiuCPJha67Imdp9M+rvZAmnjRDuc
+	6tuN7Ugb5zH0uFrB/urgpajCzHus5KlBmquGwuaujWFsyR/HB5RlPjzBOENq+JmXVArzcTjEWNP
+	eTLBbFZn/42WbDtAue0DNhE3rPTaqYl3PfBPTRPDUfR3qXIOHacltm+BubbGSaOoGDmjvx9pBkI
+	dMkZP8lDbCwCipF/N+WvvIiJ3esiEFbsF4G/1qbOa2X0Zvzo/6YX6e
+X-Google-Smtp-Source: AGHT+IH/iErVDsXSgs50po60+tfSTX3zhT1mgws1ixT5tItR5b3E0qYJRdQG8vLS9DYI1ncLboOsgA==
+X-Received: by 2002:a05:6a00:2292:b0:776:19f6:5d2f with SMTP id d2e1a72fcca58-7e206c626bfmr5285558b3a.11.1764894796339;
+        Thu, 04 Dec 2025 16:33:16 -0800 (PST)
+Received: from bill-manjaro (27-53-114-138.adsl.fetnet.net. [27.53.114.138])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-7e29f2ed000sm3345075b3a.1.2025.12.04.16.33.14
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 04 Dec 2025 16:33:15 -0800 (PST)
+From: Hsiu-Ming Chang <cges30901@gmail.com>
+To: linux-wireless@vger.kernel.org
+Cc: pkshih@realtek.com,
+	cges30901@gmail.com
+Subject: [PATCH RESEND] wifi: rtw88: rtw8821cu: Add ID for Mercusys MU6H
+Date: Fri,  5 Dec 2025 08:32:04 +0800
+Message-ID: <20251205003245.5762-1-cges30901@gmail.com>
+X-Mailer: git-send-email 2.52.0
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20251204-mt76-txq-wicd-fix-v1-3-1f4b2f2b3b2c@kernel.org>
-References: <20251204-mt76-txq-wicd-fix-v1-0-1f4b2f2b3b2c@kernel.org>
-In-Reply-To: <20251204-mt76-txq-wicd-fix-v1-0-1f4b2f2b3b2c@kernel.org>
-To: Felix Fietkau <nbd@nbd.name>, Ryder Lee <ryder.lee@mediatek.com>, 
- Shayne Chen <shayne.chen@mediatek.com>, Sean Wang <sean.wang@mediatek.com>, 
- Matthias Brugger <matthias.bgg@gmail.com>, 
- AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>, 
- Lorenzo Bianconi <lorenzo@kernel.org>
-Cc: linux-wireless@vger.kernel.org, linux-arm-kernel@lists.infradead.org, 
- linux-mediatek@lists.infradead.org
-X-Mailer: b4 0.14.2
+Content-Transfer-Encoding: 8bit
 
-Switch to the secondary link if available in mt7996_mac_sta_remove_links
-routine if the primary one is removed.
-Moreover reset secondary link index for single link scenario.
+Add support for Mercusys MU6H AC650 High Gain Wireless Dual Band USB Adapter
+V1.30. It is based on RTL8811CU, usb device ID is 2c4e:0105.
 
-Fixes: 85cd5534a3f2e ("wifi: mt76: mt7996: use correct link_id when filling TXD and TXP")
-Signed-off-by: Lorenzo Bianconi <lorenzo@kernel.org>
+Signed-off-by: Hsiu-Ming Chang <cges30901@gmail.com>
 ---
- drivers/net/wireless/mediatek/mt76/mt7996/main.c | 52 ++++++++++++++++--------
- 1 file changed, 36 insertions(+), 16 deletions(-)
+ drivers/net/wireless/realtek/rtw88/rtw8821cu.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7996/main.c b/drivers/net/wireless/mediatek/mt76/mt7996/main.c
-index 8bf85a9beee7dc8c6741568af5b36cf89f0c1a88..1baace971ec3511dba3e8a64c236a2b55f9dbd36 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7996/main.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7996/main.c
-@@ -945,6 +945,22 @@ mt7996_channel_switch_beacon(struct ieee80211_hw *hw,
- 	mutex_unlock(&dev->mt76.mutex);
- }
- 
-+static void
-+mt7996_sta_init_txq_wcid(struct ieee80211_sta *sta, int idx)
-+{
-+	int i;
-+
-+	for (i = 0; i < ARRAY_SIZE(sta->txq); i++) {
-+		struct mt76_txq *mtxq;
-+
-+		if (!sta->txq[i])
-+			continue;
-+
-+		mtxq = (struct mt76_txq *)sta->txq[i]->drv_priv;
-+		mtxq->wcid = idx;
-+	}
-+}
-+
- static int
- mt7996_mac_sta_init_link(struct mt7996_dev *dev,
- 			 struct ieee80211_bss_conf *link_conf,
-@@ -962,21 +978,10 @@ mt7996_mac_sta_init_link(struct mt7996_dev *dev,
- 		return -ENOSPC;
- 
- 	if (msta->deflink_id == IEEE80211_LINK_UNSPECIFIED) {
--		int i;
--
- 		msta_link = &msta->deflink;
- 		msta->deflink_id = link_id;
- 		msta->seclink_id = msta->deflink_id;
--
--		for (i = 0; i < ARRAY_SIZE(sta->txq); i++) {
--			struct mt76_txq *mtxq;
--
--			if (!sta->txq[i])
--				continue;
--
--			mtxq = (struct mt76_txq *)sta->txq[i]->drv_priv;
--			mtxq->wcid = idx;
--		}
-+		mt7996_sta_init_txq_wcid(sta, idx);
- 	} else {
- 		msta_link = kzalloc(sizeof(*msta_link), GFP_KERNEL);
- 		if (!msta_link)
-@@ -1058,13 +1063,28 @@ mt7996_mac_sta_remove_links(struct mt7996_dev *dev, struct ieee80211_vif *vif,
- 
- 		mphy->num_sta--;
- 		if (msta->deflink_id == link_id) {
--			msta->deflink_id = IEEE80211_LINK_UNSPECIFIED;
--			continue;
-+			if (msta->seclink_id == msta->deflink_id) {
-+				/* no secondary link available */
-+				msta->deflink_id = IEEE80211_LINK_UNSPECIFIED;
-+				msta->seclink_id = msta->deflink_id;
-+			} else {
-+				struct mt7996_sta_link *msta_seclink;
-+
-+				/* switch to the secondary link */
-+				msta->deflink_id = msta->seclink_id;
-+				msta_seclink = mt76_dereference(
-+						msta->link[msta->seclink_id],
-+						mdev);
-+				if (msta_seclink)
-+					mt7996_sta_init_txq_wcid(sta,
-+						msta_seclink->wcid.idx);
-+			}
- 		} else if (msta->seclink_id == link_id) {
--			msta->seclink_id = IEEE80211_LINK_UNSPECIFIED;
-+			msta->seclink_id = msta->deflink_id;
- 		}
- 
--		kfree_rcu(msta_link, rcu_head);
-+		if (msta_link != &msta->deflink)
-+			kfree_rcu(msta_link, rcu_head);
- 	}
- }
- 
-
+diff --git a/drivers/net/wireless/realtek/rtw88/rtw8821cu.c b/drivers/net/wireless/realtek/rtw88/rtw8821cu.c
+index 7a0fffc35..8cd09d666 100644
+--- a/drivers/net/wireless/realtek/rtw88/rtw8821cu.c
++++ b/drivers/net/wireless/realtek/rtw88/rtw8821cu.c
+@@ -37,6 +37,8 @@ static const struct usb_device_id rtw_8821cu_id_table[] = {
+ 	  .driver_info = (kernel_ulong_t)&(rtw8821c_hw_spec) }, /* Edimax */
+ 	{ USB_DEVICE_AND_INTERFACE_INFO(0x7392, 0xd811, 0xff, 0xff, 0xff),
+ 	  .driver_info = (kernel_ulong_t)&(rtw8821c_hw_spec) }, /* Edimax */
++	{ USB_DEVICE_AND_INTERFACE_INFO(0x2c4e, 0x0105, 0xff, 0xff, 0xff),
++	  .driver_info = (kernel_ulong_t)&(rtw8821c_hw_spec) }, /* Mercusys */
+ 	{},
+ };
+ MODULE_DEVICE_TABLE(usb, rtw_8821cu_id_table);
 -- 
 2.52.0
 
