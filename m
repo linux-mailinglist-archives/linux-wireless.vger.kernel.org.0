@@ -1,55 +1,54 @@
-Return-Path: <linux-wireless+bounces-29554-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-29555-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 64458CAA7D4
-	for <lists+linux-wireless@lfdr.de>; Sat, 06 Dec 2025 15:04:07 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id AEBE0CAA7EF
+	for <lists+linux-wireless@lfdr.de>; Sat, 06 Dec 2025 15:05:35 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 3B92430BFD70
-	for <lists+linux-wireless@lfdr.de>; Sat,  6 Dec 2025 14:03:11 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id A833B31BC993
+	for <lists+linux-wireless@lfdr.de>; Sat,  6 Dec 2025 14:03:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EFF682FE574;
-	Sat,  6 Dec 2025 14:03:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 78F3F2FF153;
+	Sat,  6 Dec 2025 14:03:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="YM2h0uiJ"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="gSJqw7C9"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 838C1218EB1;
-	Sat,  6 Dec 2025 14:03:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4024B2FE59A;
+	Sat,  6 Dec 2025 14:03:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765029789; cv=none; b=D9x7F0oSLHw9U82L2SjPlascyiwSaKf9Nqv7ZhxUlRJwTI2rvapy0weyV5QQ2n5bkPdJALr+cuzew7dSE+7Ukf8U9JA7Vrr3MmWjJCHdP//J5Uza+Xqd7OUhnpYJtISr/JE70XgGJbEcrvXiQcpsgMO6BLFExuiYKvOHcO0IJcU=
+	t=1765029796; cv=none; b=P7uxNk0Fb3rYdwlHOYF8El+en9Gp185pIGD6xqAKKhxXdE/zexSdUg4zA3lE1d7+rCqaMDBTHPWLTLZiJx10VD1+4QiagkDeewnKysPz66j9fHJfWtHI6S4bhDi77a7yh56KbySqnluHuvzQN9rGSy2iNq9GhrM0D+eTLc/usDg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765029789; c=relaxed/simple;
-	bh=30B2IC5tghGWMMCtTTZEzIXfgSO6xlHFtZfDadBtLYQ=;
+	s=arc-20240116; t=1765029796; c=relaxed/simple;
+	bh=fRKZRaHkp8aMg8Nr3JzmFLHVN7MSCkbgKjCqGU+7OEk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=tXUkKNfiX1SwEIrNdjl7p0CFxGYPNgu/Z/ixgrx2+5CLcUPJJKCCe69eIkdFa9eYI/T73nzuRWPYpDDy/tHefG3Ga1Prd9ofq6hA12t2oZhfh2ohFzhvaEiU17IxLrrALGdfB8Q+rUplDbJEBP2Gg2keTWEH5ralj57g8ybl+VI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=YM2h0uiJ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A098DC116D0;
-	Sat,  6 Dec 2025 14:03:07 +0000 (UTC)
+	 MIME-Version; b=CndDP4j7odrvkmEKwLemNp8QgAwX0SQngWd4DYy6GjDCbCz9owQ5Wl0F5lSInvlP9IDzIPkXaOzvE2O1B6B6vkGTxL9iLAIRcSEllD/10NglAnsShKlUdxOtMaLomCeq4cdCwW1C5e5NcVx2Avbo2vhDyMotAhHpmLYcol5yd8o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=gSJqw7C9; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DDC77C4CEF5;
+	Sat,  6 Dec 2025 14:03:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1765029788;
-	bh=30B2IC5tghGWMMCtTTZEzIXfgSO6xlHFtZfDadBtLYQ=;
+	s=k20201202; t=1765029796;
+	bh=fRKZRaHkp8aMg8Nr3JzmFLHVN7MSCkbgKjCqGU+7OEk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=YM2h0uiJtuW/pu+WxOXtXdQKhQWHGtJvIWQkAbekvRmQq5vezOTvJwCCfEO4bzkZQ
-	 l07271RxAomMESCk4orgWCoXyucYk+H2h04Q0zbZAY65PEgwWZxlU/ozasnmQm6ZYf
-	 3Qok2EOn7w8SlOPdDHsvOiVgCibiISiCpu/HREzDM0EpRaYlvXOuW8sgQkmyLWpUDK
-	 bP3b06QLFZ/3zgS5npqqoOpjrovNcs3wmrSkhK572no45mE2P+7419GpAhPixl8i+J
-	 kFXR4SR+PtgE/yviof5GmC4xUd/iaD2Lm+5jaHqRgu/lTVg2UrKzgrrkl6lZw/2eSR
-	 keppT8pmiuXlA==
+	b=gSJqw7C9laszPiLKamkwjmy6QIRZ4oELO7ewIO1KP6EnvG4q2Lpuqh2oT6tjms9tI
+	 aBxxDpsFw3FR5PgFqoXD/WQnTninkN03+4cnqsqKMK0Nl0iuPR3bqNzyCpu+tH54O9
+	 M5pbX7/ZVHlyeFqvsW8TKJXEiFhjqmfEh+GkMBu0sQyprHAIDQ39Y8N23ho/BFasqJ
+	 ZT+/BdriVgvFB0k8aQZtphGMLgH5zvVTyxUquXMyzgv4/StndfxKU670P3xAVSqi8l
+	 YiT7ZHEjtopwU1+3RE8QMJhUoGgCgN+3f8mVr6P3o9qSkucxATEkoucG7lp+xuvXoy
+	 6da3obmFbyMsw==
 From: Sasha Levin <sashal@kernel.org>
 To: patches@lists.linux.dev,
 	stable@vger.kernel.org
-Cc: Bitterblue Smith <rtl8821cerfe2@gmail.com>,
-	Ping-Ke Shih <pkshih@realtek.com>,
+Cc: Johannes Berg <johannes.berg@intel.com>,
 	Sasha Levin <sashal@kernel.org>,
-	Jes.Sorensen@gmail.com,
+	johannes@sipsolutions.net,
 	linux-wireless@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.18-6.12] wifi: rtl8xxxu: Fix HT40 channel config for RTL8192CU, RTL8723AU
-Date: Sat,  6 Dec 2025 09:02:13 -0500
-Message-ID: <20251206140252.645973-8-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 6.18-6.12] wifi: cfg80211: use cfg80211_leave() in iftype change
+Date: Sat,  6 Dec 2025 09:02:16 -0500
+Message-ID: <20251206140252.645973-11-sashal@kernel.org>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20251206140252.645973-1-sashal@kernel.org>
 References: <20251206140252.645973-1-sashal@kernel.org>
@@ -64,196 +63,153 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.18
 Content-Transfer-Encoding: 8bit
 
-From: Bitterblue Smith <rtl8821cerfe2@gmail.com>
+From: Johannes Berg <johannes.berg@intel.com>
 
-[ Upstream commit 5511ba3de434892e5ef3594d6eabbd12b1629356 ]
+[ Upstream commit 7a27b73943a70ee226fa125327101fb18e94701d ]
 
-Flip the response rate subchannel. It was backwards, causing low
-speeds when using 40 MHz channel width. "iw dev ... station dump"
-showed a low RX rate, 11M or less.
+When changing the interface type, all activity on the interface has
+to be stopped first. This was done independent of existing code in
+cfg80211_leave(), so didn't handle e.g. background radar detection.
+Use cfg80211_leave() to handle it the same way.
 
-Also fix the channel width field of RF6052_REG_MODE_AG.
+Note that cfg80211_leave() behaves slightly differently for IBSS in
+wireless extensions, it won't send an event in that case. We could
+handle that, but since nl80211 was used to change the type, IBSS is
+rare, and wext is already a corner case, it doesn't seem worth it.
 
-Tested only with RTL8192CU, but these settings are identical for
-RTL8723AU.
-
-Signed-off-by: Bitterblue Smith <rtl8821cerfe2@gmail.com>
-Reviewed-by: Ping-Ke Shih <pkshih@realtek.com>
-Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
-Link: https://patch.msgid.link/1f46571d-855b-43e1-8bfc-abacceb96043@gmail.com
+Link: https://patch.msgid.link/20251121174021.922ef48ce007.I970c8514252ef8a864a7fbdab9591b71031dee03@changeid
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
 
 LLM Generated explanations, may be completely bogus:
 
-## COMPREHENSIVE ANALYSIS
+## 2. CODE CHANGE ANALYSIS
 
-### 1. COMMIT MESSAGE ANALYSIS
+Looking at the diff and comparing with `cfg80211_leave()`:
 
-**Subject:** "wifi: rtl8xxxu: Fix HT40 channel config for RTL8192CU,
-RTL8723AU"
+**Original inline switch did:**
+- AP/P2P_GO: `cfg80211_stop_ap()`
+- ADHOC: `cfg80211_leave_ibss(rdev, dev, false)` - note the `false`
+  parameter
+- STATION/P2P_CLIENT: `cfg80211_disconnect()`
+- MESH_POINT: **nothing** (just a comment "mesh should be handled?")
+- OCB: `cfg80211_leave_ocb()`
 
-- Contains "Fix" keyword indicating a bug fix
-- Describes specific affected hardware: RTL8192CU, RTL8723AU USB WiFi
-  adapters
-- Explains user-visible symptom: "low speeds when using 40 MHz channel
-  width"
-- Provides diagnostic evidence: "`iw dev ... station dump` showed a low
-  RX rate, 11M or less"
-- **No** "Cc: stable@vger.kernel.org" tag
-- **No** "Fixes:" tag pointing to the original buggy commit
-- **Has** "Reviewed-by: Ping-Ke Shih" (Realtek's kernel maintainer)
-- **Has** "Tested only with RTL8192CU" - real-world testing performed
+**`cfg80211_leave()` additionally does:**
+1. `cfg80211_pmsr_wdev_down(wdev)` - **new cleanup**
+2. `cfg80211_stop_background_radar_detection(wdev)` - **mentioned bug
+   fix**
+3. For ADHOC: uses `true` instead of `false` (changes wext event
+   behavior)
+4. For STATION/P2P_CLIENT: stops scheduled scans + wext cleanup
+5. For MESH_POINT: `cfg80211_leave_mesh()` - **fixes the TODO bug**
 
-### 2. CODE CHANGE ANALYSIS
+## 3. CLASSIFICATION
 
-**Two distinct bugs are fixed:**
+This is primarily a **code refactoring/consolidation** that:
+- Fixes bugs: background radar detection not stopped, MESH_POINT not
+  handled
+- Changes behavior: IBSS wext event, additional scheduled scan cleanup,
+  pmsr cleanup
+- The author explicitly acknowledges behavioral differences but
+  considers them "not worth" fixing
 
-**Bug #1: RSR (Response Rate Set) subchannel configuration (lines
-1255-1258):**
-```c
-// BEFORE (buggy):
-if (sec_ch_above)
-    rsr |= RSR_RSC_UPPER_SUB_CHANNEL;
-else
-    rsr |= RSR_RSC_LOWER_SUB_CHANNEL;
+## 4. SCOPE AND RISK ASSESSMENT
 
-// AFTER (fixed):
-if (!sec_ch_above)
-    rsr |= RSR_RSC_UPPER_SUB_CHANNEL;
-else
-    rsr |= RSR_RSC_LOWER_SUB_CHANNEL;
-```
-The logic was inverted - when secondary channel is above, LOWER should
-be set, not UPPER. Comparison with RTL8188E driver (8188e.c:462-465)
-confirms the fix matches the correct pattern.
+- **Lines:** Removes ~20 lines, replaces with single function call (net
+  negative)
+- **Files:** 1 file (net/wireless/util.c)
+- **Risk:** Medium - introduces behavioral changes beyond the stated bug
+  fixes
 
-**Bug #2: RF6052_REG_MODE_AG bandwidth configuration (lines
-1322-1328):**
-```c
-// BEFORE (buggy):
-if (hw->conf.chandef.width == NL80211_CHAN_WIDTH_40)
-    val32 &= ~MODE_AG_CHANNEL_20MHZ;
-else
-    val32 |= MODE_AG_CHANNEL_20MHZ;
+The behavioral differences acknowledged by the author are concerning for
+stable:
+- IBSS with wext will behave differently (no event sent)
+- Additional cleanup operations are now performed
 
-// AFTER (fixed):
-val32 &= ~MODE_AG_BW_MASK;  // Clear both bits 10 and 11
-if (hw->conf.chandef.width != NL80211_CHAN_WIDTH_40)
-    val32 |= MODE_AG_CHANNEL_20MHZ;
-```
-Two issues: (1) Only cleared bit 10, not the full bandwidth mask (bits
-10-11), and (2) the logic flow was awkward - proper pattern is to clear
-mask first, then set appropriate bit only when needed.
+## 5. USER IMPACT
 
-The gen2 driver (`rtl8xxxu_gen2_config_channel` at line 1446) already
-uses `MODE_AG_BW_MASK` correctly, confirming this is the right approach.
+The bugs fixed (background radar detection, mesh point handling) are
+real but:
+- Not crashes or security issues
+- More like "incomplete state cleanup" issues
+- Impact is limited to users changing interface types
 
-### 3. CLASSIFICATION
+## 6. STABILITY INDICATORS
 
-- **Bug Type:** Logic error causing severe performance degradation
-- **NOT a feature:** No new functionality added
-- **NOT a quirk/workaround:** This is fixing incorrect code logic
-- **Hardware affected:** RTL8192CU, RTL8723AU (older but still commonly
-  used USB WiFi adapters)
+**Missing stable signals:**
+- No `Cc: stable@vger.kernel.org` tag
+- No `Fixes:` tag pointing to when bug was introduced
+- Author explicitly noted behavioral differences but chose not to
+  address them
 
-### 4. SCOPE AND RISK ASSESSMENT
+## 7. DEPENDENCY CHECK
 
-- **Lines changed:** ~8 lines modified
-- **Files touched:** 1 file (core.c)
-- **Complexity:** LOW - simple logic inversions and proper mask usage
-- **Scope:** Confined to `rtl8xxxu_gen1_config_channel()` function, only
-  affects 40MHz mode
-- **Risk of regression:** LOW - brings gen1 config in line with gen2 and
-  8188e implementations
-- **Dependencies:** `MODE_AG_BW_MASK` exists since 2016 (commit
-  c3f9506f2374), present in all stable kernels
+The change depends on `cfg80211_leave()` having the current
+implementation with all the necessary handlers.
 
-### 5. USER IMPACT
+## Summary
 
-- **Affected users:** Anyone using RTL8192CU or RTL8723AU USB WiFi
-  adapters with 40MHz channels
-- **Severity:** MODERATE-HIGH - WiFi functional but severely degraded
-  speeds (capped at 11M vs expected 40MHz HT speeds which could be
-  150-300Mbps)
-- **Impact scope:** These are common, inexpensive USB WiFi adapters;
-  many users in production environments
-- **Visibility:** Users would notice unusably slow WiFi and might
-  mistakenly blame their router or network
+While this commit does fix real issues (background radar detection not
+stopped, MESH_POINT not handled), it's fundamentally a **code
+consolidation** that:
 
-### 6. STABILITY INDICATORS
+1. **Introduces behavioral changes** beyond the bug fixes (IBSS wext
+   events, additional cleanup operations)
+2. **Lacks explicit stable request** from the maintainer (Johannes Berg)
+3. **Author acknowledged** behavioral differences but chose not to fix
+   them
+4. The bugs fixed are **not crashes, security issues, or data
+   corruption** - they're incomplete state cleanup issues
 
-- Reviewed by Realtek's Linux kernel maintainer (Ping-Ke Shih)
-- Tested on actual hardware (RTL8192CU)
-- Consistent with how other chip variants in the same driver family
-  handle this
-- Small, surgical changes with clear correctness rationale
+The maintainer deliberately did not add a `Cc: stable` or `Fixes:` tag,
+suggesting this wasn't intended for backporting. The behavioral changes
+(IBSS wext, scheduled scan cleanup, pmsr cleanup) go beyond the stated
+bug fixes and could introduce unexpected regressions in stable trees.
 
-### 7. DEPENDENCY CHECK
+This is code cleanup/improvement material, not targeted stable-critical
+bug fix material.
 
-- `MODE_AG_BW_MASK` macro is defined in regs.h since 2016
-- No other commits needed for this fix to work
-- The affected function `rtl8xxxu_gen1_config_channel()` exists in all
-  stable kernels that have the rtl8xxxu driver
+**NO**
 
-### VERDICT
+ net/wireless/util.c | 23 +----------------------
+ 1 file changed, 1 insertion(+), 22 deletions(-)
 
-**Positive factors:**
-- Fixes a real, user-visible performance bug (severely degraded WiFi
-  speeds)
-- Small, contained changes (8 lines)
-- Low regression risk - aligns with established patterns in related code
-- Reviewed and tested
-- No dependencies on other commits
-- Affects real hardware that users own
-
-**Negative factors:**
-- No explicit "Cc: stable@" tag from maintainer
-- No "Fixes:" tag to trace original bug introduction
-
-**Risk vs Benefit:**
-- Benefit: Restores proper HT40 performance for RTL8192CU/RTL8723AU
-  users
-- Risk: Very low - logic corrections that match other implementations in
-  the same driver
-
-This is a clear bug fix for user-visible performance degradation. The
-changes are minimal, well-understood, properly reviewed, and consistent
-with how other chip variants in the same driver family handle channel
-configuration. The lack of explicit stable tags appears to be an
-oversight rather than an intentional exclusion. Users with these common
-USB WiFi adapters would benefit significantly from this fix.
-
-**YES**
-
- drivers/net/wireless/realtek/rtl8xxxu/core.c | 7 +++----
- 1 file changed, 3 insertions(+), 4 deletions(-)
-
-diff --git a/drivers/net/wireless/realtek/rtl8xxxu/core.c b/drivers/net/wireless/realtek/rtl8xxxu/core.c
-index 3ded5952729fc..d2d3bbac2861f 100644
---- a/drivers/net/wireless/realtek/rtl8xxxu/core.c
-+++ b/drivers/net/wireless/realtek/rtl8xxxu/core.c
-@@ -1252,7 +1252,7 @@ void rtl8xxxu_gen1_config_channel(struct ieee80211_hw *hw)
- 		opmode &= ~BW_OPMODE_20MHZ;
- 		rtl8xxxu_write8(priv, REG_BW_OPMODE, opmode);
- 		rsr &= ~RSR_RSC_BANDWIDTH_40M;
--		if (sec_ch_above)
-+		if (!sec_ch_above)
- 			rsr |= RSR_RSC_UPPER_SUB_CHANNEL;
- 		else
- 			rsr |= RSR_RSC_LOWER_SUB_CHANNEL;
-@@ -1321,9 +1321,8 @@ void rtl8xxxu_gen1_config_channel(struct ieee80211_hw *hw)
+diff --git a/net/wireless/util.c b/net/wireless/util.c
+index 56724b33af045..4eb028ad16836 100644
+--- a/net/wireless/util.c
++++ b/net/wireless/util.c
+@@ -1203,28 +1203,7 @@ int cfg80211_change_iface(struct cfg80211_registered_device *rdev,
+ 		dev->ieee80211_ptr->use_4addr = false;
+ 		rdev_set_qos_map(rdev, dev, NULL);
  
- 	for (i = RF_A; i < priv->rf_paths; i++) {
- 		val32 = rtl8xxxu_read_rfreg(priv, i, RF6052_REG_MODE_AG);
--		if (hw->conf.chandef.width == NL80211_CHAN_WIDTH_40)
--			val32 &= ~MODE_AG_CHANNEL_20MHZ;
--		else
-+		val32 &= ~MODE_AG_BW_MASK;
-+		if (hw->conf.chandef.width != NL80211_CHAN_WIDTH_40)
- 			val32 |= MODE_AG_CHANNEL_20MHZ;
- 		rtl8xxxu_write_rfreg(priv, i, RF6052_REG_MODE_AG, val32);
- 	}
+-		switch (otype) {
+-		case NL80211_IFTYPE_AP:
+-		case NL80211_IFTYPE_P2P_GO:
+-			cfg80211_stop_ap(rdev, dev, -1, true);
+-			break;
+-		case NL80211_IFTYPE_ADHOC:
+-			cfg80211_leave_ibss(rdev, dev, false);
+-			break;
+-		case NL80211_IFTYPE_STATION:
+-		case NL80211_IFTYPE_P2P_CLIENT:
+-			cfg80211_disconnect(rdev, dev,
+-					    WLAN_REASON_DEAUTH_LEAVING, true);
+-			break;
+-		case NL80211_IFTYPE_MESH_POINT:
+-			/* mesh should be handled? */
+-			break;
+-		case NL80211_IFTYPE_OCB:
+-			cfg80211_leave_ocb(rdev, dev);
+-			break;
+-		default:
+-			break;
+-		}
++		cfg80211_leave(rdev, dev->ieee80211_ptr);
+ 
+ 		cfg80211_process_rdev_events(rdev);
+ 		cfg80211_mlme_purge_registrations(dev->ieee80211_ptr);
 -- 
 2.51.0
 
