@@ -1,44 +1,44 @@
-Return-Path: <linux-wireless+bounces-29555-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-29556-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id AEBE0CAA7EF
-	for <lists+linux-wireless@lfdr.de>; Sat, 06 Dec 2025 15:05:35 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id B3FC2CAA825
+	for <lists+linux-wireless@lfdr.de>; Sat, 06 Dec 2025 15:09:18 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id A833B31BC993
-	for <lists+linux-wireless@lfdr.de>; Sat,  6 Dec 2025 14:03:18 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 6827C30BAD46
+	for <lists+linux-wireless@lfdr.de>; Sat,  6 Dec 2025 14:04:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 78F3F2FF153;
-	Sat,  6 Dec 2025 14:03:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6D86D2FE573;
+	Sat,  6 Dec 2025 14:03:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="gSJqw7C9"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="b/1IPNcC"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4024B2FE59A;
-	Sat,  6 Dec 2025 14:03:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 435F92FE56B;
+	Sat,  6 Dec 2025 14:03:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765029796; cv=none; b=P7uxNk0Fb3rYdwlHOYF8El+en9Gp185pIGD6xqAKKhxXdE/zexSdUg4zA3lE1d7+rCqaMDBTHPWLTLZiJx10VD1+4QiagkDeewnKysPz66j9fHJfWtHI6S4bhDi77a7yh56KbySqnluHuvzQN9rGSy2iNq9GhrM0D+eTLc/usDg=
+	t=1765029832; cv=none; b=GCO6pbggUPlOgwXxGQquoVkCFT4wA32Tfk3+K6k3RT6DaX6LUVi/iuOjp29l/qBzd10pM74lyiWdlKTEhUYzivNwEjW2z1yk6Dahb+sGIYRq3C8T3xbVIjkc2StT3Zdi8f8Rnf6dlAY/S4zlSdq53MYelkBZUbaCHMsDt3MShAk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765029796; c=relaxed/simple;
-	bh=fRKZRaHkp8aMg8Nr3JzmFLHVN7MSCkbgKjCqGU+7OEk=;
+	s=arc-20240116; t=1765029832; c=relaxed/simple;
+	bh=EiKt/ZDPWmg3g7Z7DO4WMYfttGaNdqNZbbYR7m5egzs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=CndDP4j7odrvkmEKwLemNp8QgAwX0SQngWd4DYy6GjDCbCz9owQ5Wl0F5lSInvlP9IDzIPkXaOzvE2O1B6B6vkGTxL9iLAIRcSEllD/10NglAnsShKlUdxOtMaLomCeq4cdCwW1C5e5NcVx2Avbo2vhDyMotAhHpmLYcol5yd8o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=gSJqw7C9; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DDC77C4CEF5;
-	Sat,  6 Dec 2025 14:03:14 +0000 (UTC)
+	 MIME-Version; b=DeVGJGOmYQm20pUQdLMwxS5xRm0thQCRTMUl/cy+76FAY2sCwKIcBgxr3IDjzUesru/07d0xjAlNGaKK1lMS0tgKXivdo2DsUEYgfdWZKiOB6hHMTBki51jUIy7MkLn8ruQKTqeJQkDZsaYx+R1BRVwKEBqqunYwc45w304yXWc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=b/1IPNcC; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 12AEFC113D0;
+	Sat,  6 Dec 2025 14:03:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1765029796;
-	bh=fRKZRaHkp8aMg8Nr3JzmFLHVN7MSCkbgKjCqGU+7OEk=;
+	s=k20201202; t=1765029832;
+	bh=EiKt/ZDPWmg3g7Z7DO4WMYfttGaNdqNZbbYR7m5egzs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=gSJqw7C9laszPiLKamkwjmy6QIRZ4oELO7ewIO1KP6EnvG4q2Lpuqh2oT6tjms9tI
-	 aBxxDpsFw3FR5PgFqoXD/WQnTninkN03+4cnqsqKMK0Nl0iuPR3bqNzyCpu+tH54O9
-	 M5pbX7/ZVHlyeFqvsW8TKJXEiFhjqmfEh+GkMBu0sQyprHAIDQ39Y8N23ho/BFasqJ
-	 ZT+/BdriVgvFB0k8aQZtphGMLgH5zvVTyxUquXMyzgv4/StndfxKU670P3xAVSqi8l
-	 YiT7ZHEjtopwU1+3RE8QMJhUoGgCgN+3f8mVr6P3o9qSkucxATEkoucG7lp+xuvXoy
-	 6da3obmFbyMsw==
+	b=b/1IPNcCHCIotYdcYPDXkX2+vtJDlDMaK2zBth5zo6NX417xxLlkMcjLRva1mMQTU
+	 u4ioHMh0aExpCpkaGaFEmmA+p4EdRgqJtCe80fIll0ckZs2dXa4uIBWSfcQSxNgE6+
+	 mlU9AcBTZ1ylE94MXFFxOPG1QWJUktIthlWSgp1R/TDWiwpkdgdmSrWKGCD/v+qRCm
+	 /LQ7DHfwiGfQPQEzOBvftDBNZgchBxKgIiPJEcsPls3xrsx7XDtnLw2jY+/ziuUZkS
+	 VmZQALd6ZOrYcqASJMl8qii92n87QKZt+1cMfDXfohiAm0fKJNCGE+HHpL2tlmpIdl
+	 KFxPIynUGWVvA==
 From: Sasha Levin <sashal@kernel.org>
 To: patches@lists.linux.dev,
 	stable@vger.kernel.org
@@ -46,9 +46,9 @@ Cc: Johannes Berg <johannes.berg@intel.com>,
 	Sasha Levin <sashal@kernel.org>,
 	johannes@sipsolutions.net,
 	linux-wireless@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.18-6.12] wifi: cfg80211: use cfg80211_leave() in iftype change
-Date: Sat,  6 Dec 2025 09:02:16 -0500
-Message-ID: <20251206140252.645973-11-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 6.18-6.12] wifi: cfg80211: stop radar detection in cfg80211_leave()
+Date: Sat,  6 Dec 2025 09:02:31 -0500
+Message-ID: <20251206140252.645973-26-sashal@kernel.org>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20251206140252.645973-1-sashal@kernel.org>
 References: <20251206140252.645973-1-sashal@kernel.org>
@@ -65,151 +65,147 @@ Content-Transfer-Encoding: 8bit
 
 From: Johannes Berg <johannes.berg@intel.com>
 
-[ Upstream commit 7a27b73943a70ee226fa125327101fb18e94701d ]
+[ Upstream commit 9f33477b9a31a1edfe2df9f1a0359cccb0e16b4c ]
 
-When changing the interface type, all activity on the interface has
-to be stopped first. This was done independent of existing code in
-cfg80211_leave(), so didn't handle e.g. background radar detection.
-Use cfg80211_leave() to handle it the same way.
+If an interface is set down or, per the previous patch, changes
+type, radar detection for it should be cancelled. This is done
+for AP mode in mac80211 (somewhat needlessly, since cfg80211 can
+do it, but didn't until now), but wasn't handled for mesh, so if
+radar detection was started and then the interface set down or
+its type switched (the latter sometimes happning in the hwsim
+test 'mesh_peer_connected_dfs'), radar detection would be around
+with the interface unknown to the driver, later leading to some
+warnings around chanctx usage.
 
-Note that cfg80211_leave() behaves slightly differently for IBSS in
-wireless extensions, it won't send an event in that case. We could
-handle that, but since nl80211 was used to change the type, IBSS is
-rare, and wext is already a corner case, it doesn't seem worth it.
-
-Link: https://patch.msgid.link/20251121174021.922ef48ce007.I970c8514252ef8a864a7fbdab9591b71031dee03@changeid
+Link: https://patch.msgid.link/20251121174021.290120e419e3.I2a5650c9062e29c988992dd8ce0d8eb570d23267@changeid
 Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
 
 LLM Generated explanations, may be completely bogus:
 
-## 2. CODE CHANGE ANALYSIS
+## Summary and Analysis
 
-Looking at the diff and comparing with `cfg80211_leave()`:
+### What the Bug Fixes
+This commit fixes a cleanup issue where radar detection (DFS CAC) was
+not properly stopped when a mesh interface was brought down or changed
+type. This left residual radar detection state that caused warnings
+about chanctx (channel context) usage, since the driver thought radar
+detection was still active for an interface that no longer existed.
 
-**Original inline switch did:**
-- AP/P2P_GO: `cfg80211_stop_ap()`
-- ADHOC: `cfg80211_leave_ibss(rdev, dev, false)` - note the `false`
-  parameter
-- STATION/P2P_CLIENT: `cfg80211_disconnect()`
-- MESH_POINT: **nothing** (just a comment "mesh should be handled?")
-- OCB: `cfg80211_leave_ocb()`
+### Technical Details
+The fix:
+1. Adds a new `cfg80211_stop_radar_detection()` function in `mlme.c`
+   that iterates through all valid links, ends CAC via `rdev_end_cac()`,
+   and sends `NL80211_RADAR_CAC_ABORTED` notification
+2. Calls this new function in `cfg80211_leave()` (the cleanup path when
+   interfaces go down)
 
-**`cfg80211_leave()` additionally does:**
-1. `cfg80211_pmsr_wdev_down(wdev)` - **new cleanup**
-2. `cfg80211_stop_background_radar_detection(wdev)` - **mentioned bug
-   fix**
-3. For ADHOC: uses `true` instead of `false` (changes wext event
-   behavior)
-4. For STATION/P2P_CLIENT: stops scheduled scans + wext cleanup
-5. For MESH_POINT: `cfg80211_leave_mesh()` - **fixes the TODO bug**
+### Critical Dependencies
+The code uses **per-link DFS infrastructure** that was introduced in:
+- **Commit 62c16f219a73c** ("wifi: cfg80211: move DFS related members to
+  links[] in wireless_dev") - September 2024, **first in v6.12**
 
-## 3. CLASSIFICATION
+This commit accesses `wdev->links[link_id].cac_started` - this structure
+only exists in 6.12+. In older kernels (6.11 and earlier), `cac_started`
+was a simple top-level member of `wireless_dev`, not per-link.
 
-This is primarily a **code refactoring/consolidation** that:
-- Fixes bugs: background radar detection not stopped, MESH_POINT not
-  handled
-- Changes behavior: IBSS wext event, additional scheduled scan cleanup,
-  pmsr cleanup
-- The author explicitly acknowledges behavioral differences but
-  considers them "not worth" fixing
+### Stable Backport Assessment
 
-## 4. SCOPE AND RISK ASSESSMENT
+**Against backporting:**
+1. **No `Cc: stable@vger.kernel.org`** - The maintainer (Johannes Berg)
+   did not request stable backporting
+2. **No `Fixes:` tag** - No specific commit is identified as introducing
+   the bug
+3. **Dependencies on recent code** - The per-link DFS infrastructure
+   only exists in kernel 6.12+
+4. **Cannot apply to LTS trees** - Would require substantial rework for
+   6.6.y, 6.1.y, 5.15.y, etc.
+5. **Not critical severity** - The bug causes kernel warnings, not
+   crashes, security issues, or data corruption
+6. **Niche use case** - Mesh networking combined with DFS channels is
+   relatively uncommon
+7. **Very new feature** - The affected MLO/per-link DFS code is only one
+   release old
 
-- **Lines:** Removes ~20 lines, replaces with single function call (net
-  negative)
-- **Files:** 1 file (net/wireless/util.c)
-- **Risk:** Medium - introduces behavioral changes beyond the stated bug
-  fixes
+**Supporting backporting:**
+- Does fix a real bug that causes warnings
+- Small, localized change (~25 lines)
+- From a known/trusted maintainer
 
-The behavioral differences acknowledged by the author are concerning for
-stable:
-- IBSS with wext will behave differently (no event sent)
-- Additional cleanup operations are now performed
+### Conclusion
 
-## 5. USER IMPACT
-
-The bugs fixed (background radar detection, mesh point handling) are
-real but:
-- Not crashes or security issues
-- More like "incomplete state cleanup" issues
-- Impact is limited to users changing interface types
-
-## 6. STABILITY INDICATORS
-
-**Missing stable signals:**
-- No `Cc: stable@vger.kernel.org` tag
-- No `Fixes:` tag pointing to when bug was introduced
-- Author explicitly noted behavioral differences but chose not to
-  address them
-
-## 7. DEPENDENCY CHECK
-
-The change depends on `cfg80211_leave()` having the current
-implementation with all the necessary handlers.
-
-## Summary
-
-While this commit does fix real issues (background radar detection not
-stopped, MESH_POINT not handled), it's fundamentally a **code
-consolidation** that:
-
-1. **Introduces behavioral changes** beyond the bug fixes (IBSS wext
-   events, additional cleanup operations)
-2. **Lacks explicit stable request** from the maintainer (Johannes Berg)
-3. **Author acknowledged** behavioral differences but chose not to fix
-   them
-4. The bugs fixed are **not crashes, security issues, or data
-   corruption** - they're incomplete state cleanup issues
-
-The maintainer deliberately did not add a `Cc: stable` or `Fixes:` tag,
-suggesting this wasn't intended for backporting. The behavioral changes
-(IBSS wext, scheduled scan cleanup, pmsr cleanup) go beyond the stated
-bug fixes and could introduce unexpected regressions in stable trees.
-
-This is code cleanup/improvement material, not targeted stable-critical
-bug fix material.
+This commit fixes a legitimate bug but does **not** meet stable kernel
+criteria:
+- The maintainer did not request stable backporting
+- The affected code only exists in kernel 6.12+, making it only relevant
+  to the most recent stable branch if any
+- The bug severity (warnings, not crashes/corruption/security) does not
+  warrant the backporting effort
+- It cannot be cleanly applied to most stable trees due to structural
+  code differences
 
 **NO**
 
- net/wireless/util.c | 23 +----------------------
- 1 file changed, 1 insertion(+), 22 deletions(-)
+ net/wireless/core.c |  1 +
+ net/wireless/core.h |  1 +
+ net/wireless/mlme.c | 19 +++++++++++++++++++
+ 3 files changed, 21 insertions(+)
 
-diff --git a/net/wireless/util.c b/net/wireless/util.c
-index 56724b33af045..4eb028ad16836 100644
---- a/net/wireless/util.c
-+++ b/net/wireless/util.c
-@@ -1203,28 +1203,7 @@ int cfg80211_change_iface(struct cfg80211_registered_device *rdev,
- 		dev->ieee80211_ptr->use_4addr = false;
- 		rdev_set_qos_map(rdev, dev, NULL);
+diff --git a/net/wireless/core.c b/net/wireless/core.c
+index 54a34d8d356e0..5e5c1bc380a89 100644
+--- a/net/wireless/core.c
++++ b/net/wireless/core.c
+@@ -1365,6 +1365,7 @@ void cfg80211_leave(struct cfg80211_registered_device *rdev,
  
--		switch (otype) {
--		case NL80211_IFTYPE_AP:
--		case NL80211_IFTYPE_P2P_GO:
--			cfg80211_stop_ap(rdev, dev, -1, true);
--			break;
--		case NL80211_IFTYPE_ADHOC:
--			cfg80211_leave_ibss(rdev, dev, false);
--			break;
--		case NL80211_IFTYPE_STATION:
--		case NL80211_IFTYPE_P2P_CLIENT:
--			cfg80211_disconnect(rdev, dev,
--					    WLAN_REASON_DEAUTH_LEAVING, true);
--			break;
--		case NL80211_IFTYPE_MESH_POINT:
--			/* mesh should be handled? */
--			break;
--		case NL80211_IFTYPE_OCB:
--			cfg80211_leave_ocb(rdev, dev);
--			break;
--		default:
--			break;
--		}
-+		cfg80211_leave(rdev, dev->ieee80211_ptr);
+ 	cfg80211_pmsr_wdev_down(wdev);
  
- 		cfg80211_process_rdev_events(rdev);
- 		cfg80211_mlme_purge_registrations(dev->ieee80211_ptr);
++	cfg80211_stop_radar_detection(wdev);
+ 	cfg80211_stop_background_radar_detection(wdev);
+ 
+ 	switch (wdev->iftype) {
+diff --git a/net/wireless/core.h b/net/wireless/core.h
+index b6bd7f4d6385a..d5d78752227af 100644
+--- a/net/wireless/core.h
++++ b/net/wireless/core.h
+@@ -489,6 +489,7 @@ cfg80211_start_background_radar_detection(struct cfg80211_registered_device *rde
+ 					  struct wireless_dev *wdev,
+ 					  struct cfg80211_chan_def *chandef);
+ 
++void cfg80211_stop_radar_detection(struct wireless_dev *wdev);
+ void cfg80211_stop_background_radar_detection(struct wireless_dev *wdev);
+ 
+ void cfg80211_background_cac_done_wk(struct work_struct *work);
+diff --git a/net/wireless/mlme.c b/net/wireless/mlme.c
+index 46394eb2086f6..3fc175f9f8686 100644
+--- a/net/wireless/mlme.c
++++ b/net/wireless/mlme.c
+@@ -1295,6 +1295,25 @@ cfg80211_start_background_radar_detection(struct cfg80211_registered_device *rde
+ 	return 0;
+ }
+ 
++void cfg80211_stop_radar_detection(struct wireless_dev *wdev)
++{
++	struct wiphy *wiphy = wdev->wiphy;
++	struct cfg80211_registered_device *rdev = wiphy_to_rdev(wiphy);
++	int link_id;
++
++	for_each_valid_link(wdev, link_id) {
++		struct cfg80211_chan_def chandef;
++
++		if (!wdev->links[link_id].cac_started)
++			continue;
++
++		chandef = *wdev_chandef(wdev, link_id);
++		rdev_end_cac(rdev, wdev->netdev, link_id);
++		nl80211_radar_notify(rdev, &chandef, NL80211_RADAR_CAC_ABORTED,
++				     wdev->netdev, GFP_KERNEL);
++	}
++}
++
+ void cfg80211_stop_background_radar_detection(struct wireless_dev *wdev)
+ {
+ 	struct wiphy *wiphy = wdev->wiphy;
 -- 
 2.51.0
 
