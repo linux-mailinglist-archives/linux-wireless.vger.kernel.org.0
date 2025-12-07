@@ -1,157 +1,112 @@
-Return-Path: <linux-wireless+bounces-29568-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-29569-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id C6E77CAB29C
-	for <lists+linux-wireless@lfdr.de>; Sun, 07 Dec 2025 09:05:17 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id D0FA3CAB2EF
+	for <lists+linux-wireless@lfdr.de>; Sun, 07 Dec 2025 10:07:06 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id B8EF330052A6
-	for <lists+linux-wireless@lfdr.de>; Sun,  7 Dec 2025 08:05:11 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 10058303BE2E
+	for <lists+linux-wireless@lfdr.de>; Sun,  7 Dec 2025 09:06:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6AA15271469;
-	Sun,  7 Dec 2025 08:05:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5C1C32D2496;
+	Sun,  7 Dec 2025 09:06:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="G5osyJex"
+	dkim=pass (2048-bit key) header.d=fitzsimons.org header.i=@fitzsimons.org header.b="k0+vexUG"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-ej1-f46.google.com (mail-ej1-f46.google.com [209.85.218.46])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from outbound.st.icloud.com (p-east2-cluster6-host8-snip4-7.eps.apple.com [57.103.76.168])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 994CE1EDA03
-	for <linux-wireless@vger.kernel.org>; Sun,  7 Dec 2025 08:05:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.46
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 03AF12BE64A
+	for <linux-wireless@vger.kernel.org>; Sun,  7 Dec 2025 09:06:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=57.103.76.168
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765094709; cv=none; b=mI9gn6NTKC5xiD0q9f9WwcBnBngUzwtpLTOlmTp1BcNF+BXic2gYAIMzUx1oLK7EeDMWxEKd9noedBkUfdomC4bnqYkT02PTlCEAFguDZJ5m6egBpnFR4WjclYHwvndFA0NjAQ0b2YVw4hQV6Pze5mWYCxcRTg7poBSK5hy4k9I=
+	t=1765098405; cv=none; b=oO+HrqH4n5zintACudcJFNwF0ygV5HIPqlOXal8LZ8QdwZg/WnzbRRZVmgbedqVZj2yFW9EgdDCktDhQubvFzc3p6WZ6FOkxfRzhlgOFr3FbM33D5ECr9D+SlsyO2CSVAyXwJWPXJPBKZMnOGn/ZdmydKoBkU0wzGx/flwtecdE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765094709; c=relaxed/simple;
-	bh=u3VBf7nZ7V6oWtVB4N88DTum6HAok9ZrSwVvYxFRdys=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=oQMjQjeCgpUGWnXQMvfP38D/Kc33lkD0MpHlhuL5C5l7cKr8jUOln/mYoqxI2/5a6fwP/9yvd/xSSp84LnazUVyKnBfEw9TqJOy1aAR2GBiweoaUxSfVdNtNojF5a9Dc/ryZmINQyVS9wa6lvVJyuwkrLwB+mZfqK5rD9whF0ng=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=G5osyJex; arc=none smtp.client-ip=209.85.218.46
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-ej1-f46.google.com with SMTP id a640c23a62f3a-b735e278fa1so590803666b.0
-        for <linux-wireless@vger.kernel.org>; Sun, 07 Dec 2025 00:05:07 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1765094706; x=1765699506; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:subject:cc:to:from:date:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=C5q5Xq0sGlEaLAo2BW6b3E5rJGoYi1LAD4X7rgAhzhM=;
-        b=G5osyJexw7WwXiGvu0sfCaSe5yndcLGVFG8gjNy7xMoRVyJEa1VQ6JlLTBATW49SVX
-         VldfplwuzCb+yRSSE+huJ20l0EMLg1FGBoGr3PdBP42U+uu+Zfqq0vjTQukFmIvuIXAN
-         cA8mhRAD8S4IU33q00G+AgSy96LGKpF7G4bVxHwHiWxh7djyPVefDEbUuPrmPH0sFAyf
-         GDlTY6yJzset+iTHbh83w5K3qA/SWEfNbBXO6CLcS3j6JyUGs5v6l7TOHI3rhW2Xxz15
-         +iulWeNbpRi5bHOzORc/87XbIpLi08iRuGUnDJ8qtfde6MMI0A1hE2eWlkh6/DMD1Aqx
-         lv9Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1765094706; x=1765699506;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=C5q5Xq0sGlEaLAo2BW6b3E5rJGoYi1LAD4X7rgAhzhM=;
-        b=RZeGdh2uDv7nDxRK/O5Vq4LwDOcsH8Bys4LoSNf7iZqaPeE/WU7akdbkHREEoqdDD0
-         Rwu7bpTrqOxOcOFVb+vnaQSKxB1IQ/+X68dtRJkKVo75iPfEjAF1EMbspbb3dGUMUTdJ
-         dpukGKySgWUqyc2UpJJ3mhC/2uV7ov1GK77dw4BdcmqleLuhDoZbAMc1DNSJrhUC0WKd
-         W6cjGW/qXb4oO1PutROeaVNnn9cIjIysyjSJTrKeu139ZPi7ofMbS7jVX6hzuYJfBc4F
-         yfLLH5F0M5BX0xZL3qOmBvVHEHwSwGXbFkVzo2euMb7CaRFQfKGBBz2UtNtEPydGhIgp
-         4XcQ==
-X-Forwarded-Encrypted: i=1; AJvYcCUbIcLThkdteHtsYYu7bolF+zjPqZL85PrXCm5Q8OD3GmeHSCKnLO6egV0Krg1GOYjncSQTvOGpjZpkT6WPug==@vger.kernel.org
-X-Gm-Message-State: AOJu0YwEBkv212iFigScpy2jq5jqcs1sjUx94z+B41tO23CO0ptqJkPj
-	3oQ5bqaCM97wtN2SysVoLYs2erUwtAnlo8stQbgTlTzJ6g+nR34HumPpPaN7Uw==
-X-Gm-Gg: ASbGnctCzmy1xKF3T1FC9GgxUTVYqvy6gsXszcrp0d/5p/sf5ToNYQp4G4vecbroksS
-	HX7uWkHl4bBowr9kizIKW+NYU7VyIUI7lKRSw7Aa2qgvWKzZP+DSatWsUyMYXgw8UlV7+KxaKm/
-	C09NkGD6vhRVjCo4N13lWbb45kYjtd04vZ2ECn2WZr355O4wPrMsgPmLuyqmwxs+EUAZ/0Rnuqc
-	lE28wu9vQ+ZKXYW2WMW5gowGSZkF5FNQ128s9050KlOqkB4rxbHpYJy7E34CDF/MfdS91bgBzMi
-	9bQxYfLyYeTLqkuxhp6lxRZ61iNjRkT9rVABczdz0hEb3s4kTAac8sh+2OlRqdM3SGZBNCFSzdc
-	T6ZKwBCRFZ696CwvCob45CmoQZY9cXKvrNoI/uNMP1qrkm1EY65hxTgrHti1hkdIR4UYMrOvicu
-	zKuppgd67OLCSQLJVeTJGH12U=
-X-Google-Smtp-Source: AGHT+IG3Fb6sFELWMDgiQ9Jhbis9xCT1Vxpk4srIFV8hPtA69hlwDRkseJRO10ljQ/uXJfKJ+qudEA==
-X-Received: by 2002:a17:907:3e11:b0:b73:6e0d:4f6b with SMTP id a640c23a62f3a-b7a2476f945mr396070366b.36.1765094705602;
-        Sun, 07 Dec 2025 00:05:05 -0800 (PST)
-Received: from foxbook (bfg212.neoplus.adsl.tpnet.pl. [83.28.44.212])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-b79f4976c43sm813393666b.42.2025.12.07.00.05.04
-        (version=TLS1_2 cipher=AES128-SHA bits=128/128);
-        Sun, 07 Dec 2025 00:05:05 -0800 (PST)
-Date: Sun, 7 Dec 2025 09:05:01 +0100
-From: Michal Pecio <michal.pecio@gmail.com>
-To: Greg KH <greg@kroah.com>
-Cc: Bitterblue Smith <rtl8821cerfe2@gmail.com>, Ping-Ke Shih
- <pkshih@realtek.com>, Zenm Chen <zenmchen@gmail.com>,
- "gustavo@embeddedor.com" <gustavo@embeddedor.com>, "Jes.Sorensen@gmail.com"
- <Jes.Sorensen@gmail.com>, "gustavoars@kernel.org" <gustavoars@kernel.org>,
- "linux-hardening@vger.kernel.org" <linux-hardening@vger.kernel.org>,
- "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
- "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
- linux-usb@vger.kernel.org
-Subject: Re: [PATCH][next] wifi: rtl8xxxu: Avoid
- -Wflex-array-member-not-at-end warnings
-Message-ID: <20251207090501.41980a50.michal.pecio@gmail.com>
-In-Reply-To: <2025120716-sway-hypnotic-8cb6@gregkh>
-References: <ff184c0e-17f2-445f-9339-f4db9943db86@embeddedor.com>
-	<20251121111132.4435-1-zenmchen@gmail.com>
-	<475b4336-eed0-4fae-848f-aae26f109606@gmail.com>
-	<c0d187d6fead4e5387db2a14129be96c@realtek.com>
-	<44c9c325-14a8-4391-adce-4bbe8c68b446@gmail.com>
-	<20251207001608.1f6940bf.michal.pecio@gmail.com>
-	<2025120716-sway-hypnotic-8cb6@gregkh>
+	s=arc-20240116; t=1765098405; c=relaxed/simple;
+	bh=nhKRfSiTuHFmVZTemuR4DkqvKJdceChAwp7TaE1vHEw=;
+	h=From:Content-Type:Mime-Version:Subject:Message-Id:Date:Cc:To; b=OSeAgLGaXMZXi4BWCuL8DI/iUx9jkJFiq507lWefQZ35DZB/rBLQLqT9RG7g3vgN2DRcMn7wo5zjqaMkST7VGZyd6ZTyIgtCiucR/ZtM4hCklIn4TBMRE/l4SJZgu2V+N1yinBrDyDByAyxgrZKvZlUTFw72uh3Brc7I/GJihCw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=fitzsimons.org; spf=pass smtp.mailfrom=fitzsimons.org; dkim=pass (2048-bit key) header.d=fitzsimons.org header.i=@fitzsimons.org header.b=k0+vexUG; arc=none smtp.client-ip=57.103.76.168
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=fitzsimons.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=fitzsimons.org
+Received: from outbound.st.icloud.com (unknown [127.0.0.2])
+	by p00-icloudmta-asmtp-us-east-1a-20-percent-0 (Postfix) with ESMTPS id CBA691800847;
+	Sun,  7 Dec 2025 09:06:39 +0000 (UTC)
+Dkim-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=fitzsimons.org; s=sig1; bh=XAwaXzA72i2OABbnVn/1OPV8ALoYBoEA85sTcU8ejAQ=; h=From:Content-Type:Mime-Version:Subject:Message-Id:Date:To:x-icloud-hme; b=k0+vexUG6Gbh/Il1Oh8EFCBLJb5Xd+ZEga7UmZ4DoftEYF1QbUQT2NNM8X00nKHlTmZmlEe7b2K6PWSHrHJuGsLNLAKQ3WQihDGxNBSQdjBdFhopjRXaQ/vAl8I+rQvLRjTjcNhSA2ZGFMWer9P7ECXECH4yzMTAI8dBLzc3UvKteOQzDU5W1DLZ2kwZKQnrQBON+/I2Be5EQwBL9AFfB5oNz5DDf7qSBmJNwAlbcAQY0+qFVOZItuMht8eP1y4W0GUiCe4L3wzQhOq2PYnEzlsugsYCmUF0kD/LlCSypNzNaFHxazjO/7Id1+d3lsNTL3gMOg4omDgjmg+vzuGrWw==
+mail-alias-created-date: 1311470795000
+Received: from smtpclient.apple (unknown [17.42.251.67])
+	by p00-icloudmta-asmtp-us-east-1a-20-percent-0 (Postfix) with ESMTPSA id 390921800841;
+	Sun,  7 Dec 2025 09:06:38 +0000 (UTC)
+From: bruce@fitzsimons.org
+Content-Type: text/plain;
+	charset=us-ascii
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3864.200.81.1.6\))
+Subject: [PATCH] wireless-regdb: Update Australia (AU) 6 GHz band to 6585 MHz
+Message-Id: <C9C14F68-BFFF-4BF6-A8AA-60E5EB445F4E@fitzsimons.org>
+Date: Sun, 7 Dec 2025 20:06:24 +1100
+Cc: wireless-regdb@lists.infradead.org
+To: linux-wireless@vger.kernel.org
+X-Mailer: Apple Mail (2.3864.200.81.1.6)
+X-Proofpoint-ORIG-GUID: u2L9pU0s9iWJxRCOk36IeA8Ezo43O-rS
+X-Authority-Info: v=2.4 cv=U4ufzOru c=1 sm=1 tr=0 ts=693543a0 cx=c_apl:c_pps
+ a=YrL12D//S6tul8v/L+6tKg==:117 a=YrL12D//S6tul8v/L+6tKg==:17
+ a=kj9zAlcOel0A:10 a=wP3pNCr1ah4A:10 a=VkNPw1HP01LnGYTKEx00:22
+ a=wQCEfU45AAAA:8 a=eimVCs3WAAAA:8 a=W57TY44-DrvBiHQ3VEYA:9 a=CjuIK1q_8ugA:10
+ a=Oo_Imr1wRfQDNlTC4xgs:22 a=uDxkDUTIKcfgtb66RLhl:22
+X-Proofpoint-GUID: u2L9pU0s9iWJxRCOk36IeA8Ezo43O-rS
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUxMjA3MDA4MCBTYWx0ZWRfXyFkPFhei6xn4
+ jdBH526e4OIhPoelTiWhMgNine5gF3rxkNkdRzoZ2Jz4Wl8aUFExwTWwgotZzEbIDi9tta7LKII
+ qgsNz8rUrESxNwnY0t01HkA+aRVdZgUjU90tEzsTKhM/rGOGFHFvMFol3u5XZ0luXBW13+i1U76
+ rA7pg8nNbMI/7qcMWSUv1YhntUFZGUADFbi8++ZmeGHYVFsPyJrHk11brtcdZEkSn2FtUQ2ni/W
+ 7hnA6zO8d45Sdk/4NbIDKhbgepVbw1dTT12U8L8SCDtWwmw3SE06ci1y0uuxIA+XgZahKKnlPZp
+ p7wD42GAd0fCojOMkMx
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.9,FMLib:17.12.100.49
+ definitions=2025-12-06_02,2025-12-04_04,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 adultscore=0
+ mlxlogscore=898 mlxscore=0 spamscore=0 suspectscore=0 clxscore=1030
+ phishscore=0 bulkscore=0 malwarescore=0 classifier=spam authscore=0 adjust=0
+ reason=mlx scancount=1 engine=8.22.0-2510240001 definitions=main-2512070080
+X-JNJ: AAAAAAAB4rpRfKeJ8UIGI47zFpUzvQepYU12/QJMg0B5LpJY3ugBEPnhgPOj6/8YOPLYKUnN3+aFFbldKXH3oPIgoe5AqxJwbGh3WkMJ+OVDhjVLFdeTx0k/C1+yJfVyibf2r3oe+Byx3+s7gHKEtMguy5W6P7xKTrKAUu7OPqB1DpykggqLxPOtDHKQac810BNNIa4iC42ZVIydaZKSUJprjrE88pTLVuXMNRAT3D1A4J6eDJ8nPIpvWAltQWsczZbUnXJ4gMQ7Fs89XlL4Pi9hybOBJiBjmQ9sXKiOTwOQEHQJtrE35KI49HrhL7VfwTzsTk7Ybor65BCCKr8OCJOf0r6vicygofl09qxmFvcrFKoUmY2IJh1BifXinPkwnw396P0/qFjxw8BYlVA59ScBzNMCkEggHKdYPgnB/ljAud+oH5OWOFIF/93stgGJmo1asm1j61NKxxXRKODkwrRKed57k+tb7VxiDNKZLznq6wLB0gdvr/F1kWi2evJzIukQWi3yUnw3A/kjXazaqDmnDzwVPnJFv1ZX+tx9o1dpD6dXaD0XdQRf83bMP+gdFhfvdZVAILy2ZsuKAgZtmStGCcAOe5/g/nyQckXH7Ou6QaYqE8N7a0vwVWFOAPLjbMau5glJ+AP9Hg==
 
-On Sun, 7 Dec 2025 08:55:59 +0900, Greg KH wrote:
-> On Sun, Dec 07, 2025 at 12:16:08AM +0100, Michal Pecio wrote:
-> > Hi,
-> >   
-> > > >> I got something. In my case everything seemed fine until I
-> > > >> unplugged the wifi adapter. And then the system still worked
-> > > >> for a few minutes before it froze.  
-> > 
-> > Sounds like memory corruption.
-> >   
-> > > > Zenm and I tested below changes which can also reproduce the
-> > > > symptom, so I wonder driver might assume urb is the first
-> > > > member of struct, but unfortunately I can't find that.  
-> > 
-> > That's what it seems to be doing, because it uses usb_init_urb()
-> > on urbs embedded in some struct and then usb_free_urb().
-> > 
-> > If you look what usb_free_urb() does, it decrements refcount and
-> > attempts to free urb. But here urb is a member of a larger struct,
-> > so I guess the whole struct is freed (and this was either
-> > intentional or a bug that didn't happen to blow up yet).  
-> 
-> That's not ok at all, it's amazing this is working today.  urbs need
-> to be "stand alone" structures and never embedded into anything else.
 
-Is it though?
+Extend the 6 GHz band allocation for Australia from 5925-6425 MHz
+to 5925-6585 MHz, adding 160 MHz of additional spectrum.
 
-usb_init_urb() is exported and documented as below. Neither of which
-suggests that the function must not be used by drivers.
+This change reflects the Australian Radiofrequency Spectrum Plan
+Variation 2025 (No. 1), which took effect on 1 October 2025.
 
-/**
- * usb_init_urb - initializes a urb so that it can be used by a USB driver
- * @urb: pointer to the urb to initialize
- *
- * Initializes a urb so that the USB subsystem can use it properly.
- *
- * If a urb is created with a call to usb_alloc_urb() it is not
- * necessary to call this function.  Only use this if you allocate the
- * space for a struct urb on your own.  If you call this function, be
- * careful when freeing the memory for your urb that it is no longer in
- * use by the USB core.
- *
- * Only use this function if you _really_ understand what you are doing.
- */
+References:
+- ACMA Outcomes Paper: Future use of the upper 6 GHz band (December =
+2024)
+  =
+https://www.acma.gov.au/sites/default/files/2024-12/Outcomes%20paper%20-%2=
+0Future%20use%20of%20the%20upper%206%20GHz%20band_0.pdf
 
-I see that there are some sound drivers which embed URBs in larger
-structures too, so if this is some tree-wide campaign there is a risk
-of breaking them too.
+Signed-off-by: Bruce Fitzsimons <bruce@fitzsimons.org>
+---
+db.txt | 3 ++-
+1 file changed, 2 insertions(+), 1 deletion(-)
 
-Regards,
-Michal
+diff --git a/db.txt b/db.txt
+index fdc2c13..7eac515 100644
+--- a/db.txt
++++ b/db.txt
+@@ -159,7 +159,8 @@ country AU: DFS-ETSI
+(5850 - 5875 @ 20), (25 mW), AUTO-BW
+
+# Item 63AA (25 mW if outdoors)
+- (5925 - 6425 @ 160), (250 mW), NO-OUTDOOR
++ # Extended to 6585 MHz as of 1 October 2025
++ (5925 - 6585 @ 160), (250 mW), NO-OUTDOOR
+
+# Item 65
+(57000 - 71000 @ 2160), (20000 mW), NO-OUTDOOR
+--=20
+2.43.0=
 
