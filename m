@@ -1,146 +1,143 @@
-Return-Path: <linux-wireless+bounces-29571-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-29572-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 856EDCAB8A2
-	for <lists+linux-wireless@lfdr.de>; Sun, 07 Dec 2025 19:05:48 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id EBA74CAB95E
+	for <lists+linux-wireless@lfdr.de>; Sun, 07 Dec 2025 20:29:15 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 1F27130141EB
-	for <lists+linux-wireless@lfdr.de>; Sun,  7 Dec 2025 18:05:47 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id BBD2F30111BA
+	for <lists+linux-wireless@lfdr.de>; Sun,  7 Dec 2025 19:29:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 288862D3A9E;
-	Sun,  7 Dec 2025 18:05:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 822312D8DCA;
+	Sun,  7 Dec 2025 19:29:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=permerror (0-bit key) header.d=sapience.com header.i=@sapience.com header.b="SeFbERYr";
-	dkim=pass (2048-bit key) header.d=sapience.com header.i=@sapience.com header.b="kzn0TRak"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="l9/nvL03"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from s1.sapience.com (s1.sapience.com [72.84.236.66])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-qv1-f53.google.com (mail-qv1-f53.google.com [209.85.219.53])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B61A62E092E;
-	Sun,  7 Dec 2025 18:05:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=72.84.236.66
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765130745; cv=fail; b=lHR+9UHPGmTDPNTlVefIQn9txyJdjekvQjbnsp9Oq1u+WHklGmrsjApLC9G0YyCwGkxRZVWvwrLuOXRInSe7mObqDOJ97SoGld67hBoThaSmA1BurtBTQvNADOi42xWBaSWR95E5TK9pNwTeVLwavRDPIAJMqXg2eZ+CKWS/Z+I=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765130745; c=relaxed/simple;
-	bh=Q++gC+3ioqzZHPSBkqfCwWrV7HrOUBqS/RobES8vUtw=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=uALjX1B77Ep0xKoshFRNS+CUgQ7VJ5dz7EM5QYRUvZ4dVV2XRLzu1JdInynFwZ68lvNxlRuwLEJAggVRN+M1tMa4xxB6gLddscE4huUXfiI4HYgm7gfxMKUX/mKz4cqCH1QhB7RDcGL2Xax6GZxUZnOPWV4EbNHy8/ZeJkH6dl4=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=sapience.com; spf=pass smtp.mailfrom=sapience.com; dkim=permerror (0-bit key) header.d=sapience.com header.i=@sapience.com header.b=SeFbERYr; dkim=pass (2048-bit key) header.d=sapience.com header.i=@sapience.com header.b=kzn0TRak; arc=fail smtp.client-ip=72.84.236.66
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=sapience.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sapience.com
-Authentication-Results: dkim-srvy7; dkim=pass (Good ed25519-sha256 
-   signature) header.d=sapience.com header.i=@sapience.com 
-   header.a=ed25519-sha256; dkim=pass (Good 2048 bit rsa-sha256 signature) 
-   header.d=sapience.com header.i=@sapience.com header.a=rsa-sha256
-Received: from smtp.sapience.com (srv8.prv.sapience.com [10.164.28.13])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange x25519 server-signature ECDSA (secp384r1) server-digest SHA384)
-	(No client certificate requested)
-	by s1.sapience.com (Postfix) with ESMTPS id 2F30B480A68;
-	Sun, 07 Dec 2025 12:58:21 -0500 (EST)
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=sapience.com;
- i=@sapience.com; q=dns/txt; s=dk-ed25519-220413; t=1765130301;
- h=message-id : subject : from : to : cc : date : in-reply-to :
- references : content-type : mime-version : from;
- bh=Q++gC+3ioqzZHPSBkqfCwWrV7HrOUBqS/RobES8vUtw=;
- b=SeFbERYr2xyYSQpb2h+gTObRiInm7JYJEtctSO276cdreZn1+n134WiUYMxdiOJETKHPQ
- wUUy/7sJzzo1fAMDw==
-ARC-Seal: i=1; a=rsa-sha256; d=sapience.com; s=arc6-rsa-220412; t=1765130301;
-	cv=none; b=ichWZYnPFBbjKFGDSk+edyXaBZLDvY/X4BZJh/lfA/3Gb1OLEs4cQrPRVqSL4gEJmAI7rQGscB1gJbIHgF8Dtdlr4WxqLWozi3eFyW/lcu2XAt/IDKG5o9P2IkDWyoSXQVrrDHqHZwMLRP/XRQCgS3s1FMMPsgXfG6OEXckypzZvbfbRXprVNwO/ue5ZFuXFI+Af0qqfeZRzH5Q6TuNEUBEpVIFeh3vyxaDDQas3ClHoyMOdXo9qMnWJ9h0DYQ6XD2NZzDo5SJPl4CL0k67qe+SNtxhfOdM5TfVfiQ7eLUdpa2pdYKhc0hU0qkyGqwvdErRhdWycc14htYPNtM7hmQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; d=sapience.com; s=arc6-rsa-220412;
-	t=1765130301; c=relaxed/simple;
-	bh=Q++gC+3ioqzZHPSBkqfCwWrV7HrOUBqS/RobES8vUtw=;
-	h=DKIM-Signature:DKIM-Signature:Message-ID:Subject:From:To:Cc:Date:
-	 In-Reply-To:References:Autocrypt:Content-Type:User-Agent:
-	 MIME-Version; b=N/TODJGFJr0hhKvJSL1CnyItQLGwkELJaIK97gzqYXyXJeKe+njoMS+SPjaHZufFgVhCjG/JHUaekGFHx5PCYu157KOFTSe2PuoHWkOncR/X+moLNrHdMsd0Y64hAU4xH+7bTIhyDbw78vV7OEWsjbhqnRB4BUIRDz1+jJ+FxFsTQAyhmNYszWTlwdesqZh88Zx1tHNoIkJ0qnaIYIIJC4qFTe2eZgJn0LQpVqdovT6RhdSO48CzIvA4u6Nxulhw1TeYOVPSA79qr1qLFhByfMzFFof3ABDfapB247WKDzKCwB9uHNv71lQxaE3y06ECbpw+Toj+L9eRXxiLcwlRWA==
-ARC-Authentication-Results: i=1; arc-srv8.sapience.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=sapience.com;
- i=@sapience.com; q=dns/txt; s=dk-rsa-220413; t=1765130301;
- h=message-id : subject : from : to : cc : date : in-reply-to :
- references : content-type : mime-version : from;
- bh=Q++gC+3ioqzZHPSBkqfCwWrV7HrOUBqS/RobES8vUtw=;
- b=kzn0TRakhac1V/51AOKNQHNv/0mM89YIuL2Wj4eJNn23PNzbO1f1g+KxS9FpT5PVXUDb3
- LQ9hPI35RTsK7NhnnGOB51xy2ORqG+S+lzRwvBtkMcFLUSaau+pthZPZ7I0w5sH/buVraIN
- guo1ykik7FpfAIfeBlqXo0rPAIDuKuXTsX26mad98Xh5psbb+FA+MVG0p8TtNqQMPdRXObl
- HVqO83dmw6FZiljvCkNw6olrBSbCbzj/axMih0AB5Lxo7dDRT8CSbVqhRnP/vPWYdmz8NPt
- Z+ZF9LdK2fdcfq/UMPaVJ2Rd/MUHYInTNSA3SFadksZYXYCH/lcEkmqSXntA==
-Received: by smtp.sapience.com (Postfix) id C1C732801F9;
-	Sun, 07 Dec 2025 12:58:21 -0500 (EST)
-Message-ID: <2cc00d49014047ec83df3d4d4815b240949ffffa.camel@sapience.com>
-Subject: Re: [PATCH iwlwifi-fixes] wifi: iwlwifi: Implement settime64 as
- stub for MVM/MLD PTP
-From: Genes Lists <lists@sapience.com>
-To: Yao Zi <ziyao@disroot.org>, Miri Korenblit	
- <miriam.rachel.korenblit@intel.com>, Richard Cochran
- <richardcochran@gmail.com>,  Johannes Berg <johannes.berg@intel.com>,
- Anjaneyulu <pagadala.yesu.anjaneyulu@intel.com>, Daniel Gabay	
- <daniel.gabay@intel.com>
-Cc: linux-wireless@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	netdev@vger.kernel.org, Mingcong Bai <jeffbai@aosc.io>, Kexy Biscuit
-	 <kexybiscuit@aosc.io>, Nathan Chancellor <nathan@kernel.org>
-Date: Sun, 07 Dec 2025 12:58:21 -0500
-In-Reply-To: <20251204123204.9316-1-ziyao@disroot.org>
-References: <20251204123204.9316-1-ziyao@disroot.org>
-Autocrypt: addr=lists@sapience.com; prefer-encrypt=mutual;
- keydata=mDMEXSY9GRYJKwYBBAHaRw8BAQdAwzFfmp+m0ldl2vgmbtPC/XN7/k5vscpADq3BmRy5R
- 7y0LU1haWwgTGlzdHMgKEwwIDIwMTkwNzEwKSA8bGlzdHNAc2FwaWVuY2UuY29tPoiWBBMWCAA+Ah
- sBBQsJCAcCBhUKCQgLAgQWAgMBAh4BAheAFiEE5YMoUxcbEgQOvOMKc+dlCv6PxQAFAmPJfooFCRl
- vRHEACgkQc+dlCv6PxQAc/wEA/Dbmg91DOGXll0OW1GKaZQGQDl7fHibMOKRGC6X/emoA+wQR5FIz
- BnV/PrXbao8LS/h0tSkeXgPsYxrzvfZInIAC
-Content-Type: multipart/signed; micalg="pgp-sha384";
-	protocol="application/pgp-signature"; boundary="=-YtdT4vGRfRO4/TJUbSKH"
-User-Agent: Evolution 3.58.2 
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E5CEF270552
+	for <linux-wireless@vger.kernel.org>; Sun,  7 Dec 2025 19:29:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.53
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1765135752; cv=none; b=kjF/qMCEfF+eBQjZ6hilLn5DGu9A9516LwMsZJ4f/0n6ZkyQhS4hQuOFPPqW7/XpLJVEHSruZZ8dWISZ6leurjYsYW0i5/txTwQqxmE8DOd+W1f4ztI+u6Xwr1JmgvCr0SmuDA5VRrZNrVC9D+SW3nZnmp/QEBR8JqYc2Y5jgWs=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1765135752; c=relaxed/simple;
+	bh=Opu2+OL/DwS9JbMvMpOEdTVE51EH8OVgiRsdsv9c8zI=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=qp1aruB8rajJGtMG9ECTfktbAmFZeUxqZVoXbxQB+2xvEEUZSJnPTiyZQytT/0gisiE7DZAFjJE5GGvljHYiBY9tfBwvWZXUA+EZ/HiiFpJ3Gr6R8LwaqKSSKljYyGQ8jUvkiE/oAyax6I+aWRDpyhPId9Vx6tdL/C9X2PhkOlg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=l9/nvL03; arc=none smtp.client-ip=209.85.219.53
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-qv1-f53.google.com with SMTP id 6a1803df08f44-8823e39c581so55405046d6.3
+        for <linux-wireless@vger.kernel.org>; Sun, 07 Dec 2025 11:29:10 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1765135750; x=1765740550; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=Opu2+OL/DwS9JbMvMpOEdTVE51EH8OVgiRsdsv9c8zI=;
+        b=l9/nvL03OlUjc+W8pHAGIewQZ3hmxaw+QOPxfLip2V3rf8BJWOo34iNYq8+QBhWpke
+         TR9rjcbXvNtbeEixSuhR0a8gdbRPPg0TcOjdPxTfm/hsLZsC/IDfQxYwl+41LniKd/x/
+         d0OtEbhJ8HyqxJCZ1Bsi0pb0ow+dNyafzOqB0bU9edgmsnN22rEHvvCtt8q7AAzTiupD
+         ivZLmusT/n2iDiIfZhM5IJ4+nSRdVVQ2UrPsUkQ20HDw1dQljH61yT9pSMkaR8NGQyBU
+         TOPn4fSrjMfbyrsFehKCcudazqMYAWUurTrCR5OxwPA3pUwYJdWvITl/nWKJaAw/5mKr
+         UM1Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1765135750; x=1765740550;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=Opu2+OL/DwS9JbMvMpOEdTVE51EH8OVgiRsdsv9c8zI=;
+        b=DmoylLMoZfwZ1kryrFcDkNDO4qqg/SvyyIPZ6VkrCySJetDmBW0FN7B1esx1MTEj/2
+         RyWz49+0DSH/fKVcoAG8H/7sZP1XIrs2qWQpgzuMhgovCyCSitBj9VWJCQF1jrjRiE0V
+         oJMLI3joK2CqDLQqdrd8uMWkIGR7km2XbzIzIeF2h1nMmRx0f19M8c8Z3JcBL2xFfc4d
+         Qudmro5AwJYrkNJK6hbo2+0VGso3iiWzXSKr9qJyAScyd/OoD8l4Qchrcb2Djr99fxge
+         WPQfMbISCALzfY5UHmIl8+EiIm88gN4Gp6oir4In25JOEd4RSdoP4bsAI3/O4awS89NZ
+         zJLA==
+X-Forwarded-Encrypted: i=1; AJvYcCXAN93cOVEFcFiLgjNviaj6oD6oPUkwxqIhj04p1XtLO7axUu+ZK0OtbRPthI2hIa8IMMVyPtr+E8dFUK2Jnw==@vger.kernel.org
+X-Gm-Message-State: AOJu0YzKyc8bwGOor6tkgAOMNcS444P+41kvOuAvyCgf9QeMDTHCMGQ9
+	uy0wSv9tu8hoMjbmKkAHCGD1Ow3z5U4qwQT/a8SBT/A4DP8whp9SwYxqcG5NPc7EFkY2TMJaW1i
+	uLxIs7a11K2UB5mcuavU91y2YSlzOYg==
+X-Gm-Gg: ASbGncsv5SAJAJTtydproOOCPRW+Nlg8r3zOKZa+MqaMOjJ8CbB7dn4zPMY59cs8hca
+	MjRzuB3tcVwuDDHXj2wa90nAYZPcRzXGj5PUnKVPrcHp6VV37qZto3+mD2WiaywJj+IEEhLsIbz
+	T9RyGJiwBQo8e4LcENQApRUfTdcX2CLQGkiXvz8UbHXmLax9BnDxKbucuCCf6Z9JkrZPT6Jt7WH
+	7aJ8xHMT7ospTGPpCQOUuHi/Bc6Mr21tEqw/Iv9oWZOb9b3rwtfk3Bskf4ONxfVT59zcPg+z/EE
+	1FuhieyXws9RhHjJVVbtvlMO7R0=
+X-Google-Smtp-Source: AGHT+IHjR3mLmPnj9fRaa7D59Q5OP/l7CbN+/RdhM+PjFVUL8+kj6fWBqmoyD4tFOMFEsNhTEVep7TjIbtGOzuXKODA=
+X-Received: by 2002:ad4:5ba5:0:b0:880:4ec0:417a with SMTP id
+ 6a1803df08f44-8883dc4c363mr100694556d6.55.1765135749856; Sun, 07 Dec 2025
+ 11:29:09 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-
-
---=-YtdT4vGRfRO4/TJUbSKH
+References: <20251201011457.17422-1-daleyo@gmail.com> <20251201011457.17422-7-daleyo@gmail.com>
+ <7ea43ef2-b453-46cf-a35e-ea11ca1dbe24@kernel.org>
+In-Reply-To: <7ea43ef2-b453-46cf-a35e-ea11ca1dbe24@kernel.org>
+From: =?UTF-8?B?SsOpcsO0bWUgZGUgQnJldGFnbmU=?= <jerome.debretagne@gmail.com>
+Date: Sun, 7 Dec 2025 20:28:33 +0100
+X-Gm-Features: AQt7F2oFhC8Mb-l4_CfaR4BEBfSn1QIKcrxVG9maohU2gcvVq5WClxflVEf0V1E
+Message-ID: <CA+kEDGEjR7cGA0zZfuKkYg37mJZs3Fn7eKbgkB6hdjDLtGxjRQ@mail.gmail.com>
+Subject: Re: [PATCH v2 6/8] dt-bindings: wireless: ath12k: Add disable-rfkill property
+To: Krzysztof Kozlowski <krzk@kernel.org>, Rob Herring <robh@kernel.org>, 
+	Lorenzo Bianconi <lorenzo@kernel.org>
+Cc: Dale Whinham <daleyo@gmail.com>, Johannes Berg <johannes@sipsolutions.net>, 
+	Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, 
+	Jeff Johnson <jjohnson@kernel.org>, Jeff Johnson <jeff.johnson@oss.qualcomm.com>, 
+	linux-wireless@vger.kernel.org, devicetree@vger.kernel.org, 
+	ath12k@lists.infradead.org, linux-kernel@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Thu, 2025-12-04 at 12:32 +0000, Yao Zi wrote:
-> Since commit dfb073d32cac ("ptp: Return -EINVAL on ptp_clock_register
-> if
-> required ops are NULL"), PTP clock registered through
-> ptp_clock_register
-> is required to have ptp_clock_info.settime64 set, however, neither
-> MVM
-> nor MLD's PTP clock implementation sets it, resulting in warnings
-> when
-> the interface starts up, like
->=20
-> WARNING: drivers/ptp/ptp_clock.c:325 at
-> ptp_clock_register+0x2c8/0x6b8, CPU#1: wpa_supplicant/469
+Le lun. 1 d=C3=A9c. 2025 =C3=A0 08:34, Krzysztof Kozlowski <krzk@kernel.org=
+> a =C3=A9crit :
+>
+> On 01/12/2025 02:14, Dale Whinham wrote:
+> > From: J=C3=A9r=C3=B4me de Bretagne <jerome.debretagne@gmail.com>
+> >
+> > rfkill should be disabled according to the Surface Pro 11's DSDT.
+> >
+> > https://lore.kernel.org/all/20250113074810.29729-3-quic_lingbok@quicinc=
+.com/
+> > has added support to read the ACPI bitflag when ACPI is supported.
+>
+> It wasn't merged. If it was, reference commits, not random emails.
 
-I do see this warning at boot (mainline kernel), =C2=A0but you noted, it al=
-l
-works fine nonetheless.
-I didn't see this in next or mainline yet.
+Good catch, It was merged in commit c6a7c0b09d5f, we will reference
+this commit instead.
 
-Do you know when this might find it's way to mainline?
+> > Document the disable-rfkill property to expose one specific feature
+> > (DISABLE_RFKILL_BIT) for devices described with a DT, so that the
+> > feature can be disabled.
+>
+> This is just a circular logic. Add property to have property in DT so
+> that you can use feature.
+>
+> No, describe the hardware or actual problem instead.
 
-thanks
+Point taken. Would something like the following be better?
 
---=20
-Gene
+"For some devices, Wi-Fi is entirely hard blocked by default making
+the Wi-Fi radio unusable, except if rfkill is disabled as described
+by an ACPI bitflag on those models. Add the disable-rfkill property
+to expose the DISABLE_RFKILL_BIT feature for devices described
+by a devicetree."
 
---=-YtdT4vGRfRO4/TJUbSKH
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: This is a digitally signed message part
+> You still need to answer Rob's questions.
 
------BEGIN PGP SIGNATURE-----
+Indeed, we didn't answer another question, sorry. Here it is for
+reference:
 
-iHUEABYJAB0WIQRByXNdQO2KDRJ2iXo5BdB0L6Ze2wUCaTXAPQAKCRA5BdB0L6Ze
-279ZAP45H4PAf6etDK7xqIby8qcbWAhpzzeSzz/PT+xKlytXigD/T6IgKfuAYlUY
-O8iWd5ZVcmEN0I5iS8ZpSxWxwSYpsQk=
-=H1KP
------END PGP SIGNATURE-----
+> [Rob] Assuming it belongs in DT, why is this ath12k specific? Could be
+> for any wireless chip...
 
---=-YtdT4vGRfRO4/TJUbSKH--
+Agree, it could be applicable to any wireless chip, it should be moved
+somewhere else. Would ieee80211.yaml be the right target file for
+this property? Or any other file suggestion instead? Thank you.
+
+Best regards,
+J=C3=A9r=C3=B4me
 
