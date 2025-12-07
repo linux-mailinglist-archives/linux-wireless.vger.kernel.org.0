@@ -1,226 +1,157 @@
-Return-Path: <linux-wireless+bounces-29567-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-29568-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id DC3C3CAB287
-	for <lists+linux-wireless@lfdr.de>; Sun, 07 Dec 2025 08:28:20 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id C6E77CAB29C
+	for <lists+linux-wireless@lfdr.de>; Sun, 07 Dec 2025 09:05:17 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id CAA3030262BD
-	for <lists+linux-wireless@lfdr.de>; Sun,  7 Dec 2025 07:28:18 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id B8EF330052A6
+	for <lists+linux-wireless@lfdr.de>; Sun,  7 Dec 2025 08:05:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 42CF52165EA;
-	Sun,  7 Dec 2025 07:28:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6AA15271469;
+	Sun,  7 Dec 2025 08:05:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="eTMU09FJ"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="G5osyJex"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ej1-f46.google.com (mail-ej1-f46.google.com [209.85.218.46])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3E1B317BA2
-	for <linux-wireless@vger.kernel.org>; Sun,  7 Dec 2025 07:28:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 994CE1EDA03
+	for <linux-wireless@vger.kernel.org>; Sun,  7 Dec 2025 08:05:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.46
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765092498; cv=none; b=b1cKun45S0GBsIroShk4jQcF/ucX7NhvsmlZ8w0EX8Y6ZKByywShJqSYjSIJz8RfSfRdN0GYw1t+ffFuGmdrtjVXvYVAXes7If5N/Q4r9hAGqpuZSGtl+uj7BTr38j+ef9VxqHTiqSCn46gZRkmlH2TdCRdch/jVPy+558d76oI=
+	t=1765094709; cv=none; b=mI9gn6NTKC5xiD0q9f9WwcBnBngUzwtpLTOlmTp1BcNF+BXic2gYAIMzUx1oLK7EeDMWxEKd9noedBkUfdomC4bnqYkT02PTlCEAFguDZJ5m6egBpnFR4WjclYHwvndFA0NjAQ0b2YVw4hQV6Pze5mWYCxcRTg7poBSK5hy4k9I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765092498; c=relaxed/simple;
-	bh=2MKvP5KVjLR5/jcMCNMtxch3FtB7Xj7EvVp7VfGaFa8=;
-	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=Eg+bno+2Xm0DLUJvw2PlaSoT4KW1wxr+Gyk/Jw9z7bnvzXwVyF7HxQLXUyuvN3k2SwdvoMEnnKTJEp+M430rLfyKmGa9dks2M2XQrLKQy+OfstmfnyJo2ruRAO8MfyOROmvFVZzfmPi8U7nJpHr2rtVAMbtDUbnksecISZwGrDU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=eTMU09FJ; arc=none smtp.client-ip=205.220.180.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
-Received: from pps.filterd (m0279868.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 5B72s2tp950701;
-	Sun, 7 Dec 2025 07:28:04 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
-	cc:content-transfer-encoding:content-type:date:from:message-id
-	:mime-version:subject:to; s=qcppdkim1; bh=tu1DR8dtdPHs8QCR0wAB9L
-	bfGycgG0Ld/Qas8hKG2vU=; b=eTMU09FJcHxCyVovzdsV6hd33dLW/P+AwBIg0i
-	WtZ7H0fiQ4CbL3+43tdYxawbhlbP5Dxf36tpfjX87FU3MKx5hFijOHkryv3cfQdw
-	3zIc2eRlXeG8L59N8RbE7Z3p2/Zz8rhtxwoQ7nnkcFtO90hHJ786MVdLTo0JHIYW
-	ae0dHuStqHgMf95hfYU4K4SvvD59tT67YO5cH+Y3a6zctBkzk4exiKa8GR41bFnc
-	2I4MJ4RAwbiouOGpPBR9j4vHc0V4kX633cb9wO9RX98B9J9TMFxm0ZEgKu6HVYUr
-	R6dx9j+SJy8dSrahoXSKAvPcB6XWTlhiQuMTvM3DsyL729Ng==
-Received: from nalasppmta04.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4avcndt38h-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Sun, 07 Dec 2025 07:28:04 +0000 (GMT)
-Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com [10.47.209.196])
-	by NALASPPMTA04.qualcomm.com (8.18.1.2/8.18.1.2) with ESMTPS id 5B77S3UV004176
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Sun, 7 Dec 2025 07:28:03 GMT
-Received: from hu-rdeuri-blr.qualcomm.com (10.80.80.8) by
- nalasex01a.na.qualcomm.com (10.47.209.196) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.17; Sat, 6 Dec 2025 23:28:02 -0800
-From: Ripan Deuri <quic_rdeuri@quicinc.com>
-To: <ath12k@lists.infradead.org>
-CC: <linux-wireless@vger.kernel.org>
-Subject: [PATCH ath12k-ng] wifi: ath12k: Skip DP peer creation for scan vdev
-Date: Sun, 7 Dec 2025 12:57:17 +0530
-Message-ID: <20251207072717.95542-1-quic_rdeuri@quicinc.com>
-X-Mailer: git-send-email 2.34.1
+	s=arc-20240116; t=1765094709; c=relaxed/simple;
+	bh=u3VBf7nZ7V6oWtVB4N88DTum6HAok9ZrSwVvYxFRdys=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=oQMjQjeCgpUGWnXQMvfP38D/Kc33lkD0MpHlhuL5C5l7cKr8jUOln/mYoqxI2/5a6fwP/9yvd/xSSp84LnazUVyKnBfEw9TqJOy1aAR2GBiweoaUxSfVdNtNojF5a9Dc/ryZmINQyVS9wa6lvVJyuwkrLwB+mZfqK5rD9whF0ng=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=G5osyJex; arc=none smtp.client-ip=209.85.218.46
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-ej1-f46.google.com with SMTP id a640c23a62f3a-b735e278fa1so590803666b.0
+        for <linux-wireless@vger.kernel.org>; Sun, 07 Dec 2025 00:05:07 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1765094706; x=1765699506; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:subject:cc:to:from:date:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=C5q5Xq0sGlEaLAo2BW6b3E5rJGoYi1LAD4X7rgAhzhM=;
+        b=G5osyJexw7WwXiGvu0sfCaSe5yndcLGVFG8gjNy7xMoRVyJEa1VQ6JlLTBATW49SVX
+         VldfplwuzCb+yRSSE+huJ20l0EMLg1FGBoGr3PdBP42U+uu+Zfqq0vjTQukFmIvuIXAN
+         cA8mhRAD8S4IU33q00G+AgSy96LGKpF7G4bVxHwHiWxh7djyPVefDEbUuPrmPH0sFAyf
+         GDlTY6yJzset+iTHbh83w5K3qA/SWEfNbBXO6CLcS3j6JyUGs5v6l7TOHI3rhW2Xxz15
+         +iulWeNbpRi5bHOzORc/87XbIpLi08iRuGUnDJ8qtfde6MMI0A1hE2eWlkh6/DMD1Aqx
+         lv9Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1765094706; x=1765699506;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=C5q5Xq0sGlEaLAo2BW6b3E5rJGoYi1LAD4X7rgAhzhM=;
+        b=RZeGdh2uDv7nDxRK/O5Vq4LwDOcsH8Bys4LoSNf7iZqaPeE/WU7akdbkHREEoqdDD0
+         Rwu7bpTrqOxOcOFVb+vnaQSKxB1IQ/+X68dtRJkKVo75iPfEjAF1EMbspbb3dGUMUTdJ
+         dpukGKySgWUqyc2UpJJ3mhC/2uV7ov1GK77dw4BdcmqleLuhDoZbAMc1DNSJrhUC0WKd
+         W6cjGW/qXb4oO1PutROeaVNnn9cIjIysyjSJTrKeu139ZPi7ofMbS7jVX6hzuYJfBc4F
+         yfLLH5F0M5BX0xZL3qOmBvVHEHwSwGXbFkVzo2euMb7CaRFQfKGBBz2UtNtEPydGhIgp
+         4XcQ==
+X-Forwarded-Encrypted: i=1; AJvYcCUbIcLThkdteHtsYYu7bolF+zjPqZL85PrXCm5Q8OD3GmeHSCKnLO6egV0Krg1GOYjncSQTvOGpjZpkT6WPug==@vger.kernel.org
+X-Gm-Message-State: AOJu0YwEBkv212iFigScpy2jq5jqcs1sjUx94z+B41tO23CO0ptqJkPj
+	3oQ5bqaCM97wtN2SysVoLYs2erUwtAnlo8stQbgTlTzJ6g+nR34HumPpPaN7Uw==
+X-Gm-Gg: ASbGnctCzmy1xKF3T1FC9GgxUTVYqvy6gsXszcrp0d/5p/sf5ToNYQp4G4vecbroksS
+	HX7uWkHl4bBowr9kizIKW+NYU7VyIUI7lKRSw7Aa2qgvWKzZP+DSatWsUyMYXgw8UlV7+KxaKm/
+	C09NkGD6vhRVjCo4N13lWbb45kYjtd04vZ2ECn2WZr355O4wPrMsgPmLuyqmwxs+EUAZ/0Rnuqc
+	lE28wu9vQ+ZKXYW2WMW5gowGSZkF5FNQ128s9050KlOqkB4rxbHpYJy7E34CDF/MfdS91bgBzMi
+	9bQxYfLyYeTLqkuxhp6lxRZ61iNjRkT9rVABczdz0hEb3s4kTAac8sh+2OlRqdM3SGZBNCFSzdc
+	T6ZKwBCRFZ696CwvCob45CmoQZY9cXKvrNoI/uNMP1qrkm1EY65hxTgrHti1hkdIR4UYMrOvicu
+	zKuppgd67OLCSQLJVeTJGH12U=
+X-Google-Smtp-Source: AGHT+IG3Fb6sFELWMDgiQ9Jhbis9xCT1Vxpk4srIFV8hPtA69hlwDRkseJRO10ljQ/uXJfKJ+qudEA==
+X-Received: by 2002:a17:907:3e11:b0:b73:6e0d:4f6b with SMTP id a640c23a62f3a-b7a2476f945mr396070366b.36.1765094705602;
+        Sun, 07 Dec 2025 00:05:05 -0800 (PST)
+Received: from foxbook (bfg212.neoplus.adsl.tpnet.pl. [83.28.44.212])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-b79f4976c43sm813393666b.42.2025.12.07.00.05.04
+        (version=TLS1_2 cipher=AES128-SHA bits=128/128);
+        Sun, 07 Dec 2025 00:05:05 -0800 (PST)
+Date: Sun, 7 Dec 2025 09:05:01 +0100
+From: Michal Pecio <michal.pecio@gmail.com>
+To: Greg KH <greg@kroah.com>
+Cc: Bitterblue Smith <rtl8821cerfe2@gmail.com>, Ping-Ke Shih
+ <pkshih@realtek.com>, Zenm Chen <zenmchen@gmail.com>,
+ "gustavo@embeddedor.com" <gustavo@embeddedor.com>, "Jes.Sorensen@gmail.com"
+ <Jes.Sorensen@gmail.com>, "gustavoars@kernel.org" <gustavoars@kernel.org>,
+ "linux-hardening@vger.kernel.org" <linux-hardening@vger.kernel.org>,
+ "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+ "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
+ linux-usb@vger.kernel.org
+Subject: Re: [PATCH][next] wifi: rtl8xxxu: Avoid
+ -Wflex-array-member-not-at-end warnings
+Message-ID: <20251207090501.41980a50.michal.pecio@gmail.com>
+In-Reply-To: <2025120716-sway-hypnotic-8cb6@gregkh>
+References: <ff184c0e-17f2-445f-9339-f4db9943db86@embeddedor.com>
+	<20251121111132.4435-1-zenmchen@gmail.com>
+	<475b4336-eed0-4fae-848f-aae26f109606@gmail.com>
+	<c0d187d6fead4e5387db2a14129be96c@realtek.com>
+	<44c9c325-14a8-4391-adce-4bbe8c68b446@gmail.com>
+	<20251207001608.1f6940bf.michal.pecio@gmail.com>
+	<2025120716-sway-hypnotic-8cb6@gregkh>
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: nasanex01b.na.qualcomm.com (10.46.141.250) To
- nalasex01a.na.qualcomm.com (10.47.209.196)
-X-QCInternal: smtphost
-X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
-X-Proofpoint-ORIG-GUID: Zce2ZoTNgt17XqMNl_AMO9zfzqIurapD
-X-Authority-Analysis: v=2.4 cv=baJmkePB c=1 sm=1 tr=0 ts=69352c84 cx=c_pps
- a=ouPCqIW2jiPt+lZRy3xVPw==:117 a=ouPCqIW2jiPt+lZRy3xVPw==:17
- a=GEpy-HfZoHoA:10 a=wP3pNCr1ah4A:10 a=VkNPw1HP01LnGYTKEx00:22
- a=COk6AnOGAAAA:8 a=wIFjEMXumgJnCK9oOwUA:9 a=TjNXssC_j7lpFel5tvFf:22
-X-Proofpoint-GUID: Zce2ZoTNgt17XqMNl_AMO9zfzqIurapD
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUxMjA3MDA2NSBTYWx0ZWRfX2HSXzExcV3th
- BYQwwON6bRR6AhrC/gplBQSE28a0Ufvdx8bXX00aDrc3A4M7U4Y0TAU3n3GW97LYupVD1FC+mt4
- zdNcRPUqAWuyAHWguyuRHdRWi7XTGJAjMAJ9C+2JP4+bfLZv9RUE6DXYumcNmL2mQyK8GVE37Mf
- zXWgIWVGNXQ3XTQLFPVPigqVRjVNNtWzZQixCBrvTwPe4p8u6dyU/9fzKmst8k8FOtnUaFld8+E
- DP/1qwVvOs9OCL84DFxHUygJuuxak9TN6+qeo+0v2W2F2d/CcFTvOMx0wAOgJcerYvycg61rDLd
- 4AOF1/wGKkKgHwy7wlh59dFvJgmFANNqsG+bTJWfXNPH0eDxNLcAO2q+CChn136c+p334EDEEod
- t2sspGIgwOGswAKOvabg8Klwujt8Pg==
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.9,FMLib:17.12.100.49
- definitions=2025-12-06_02,2025-12-04_04,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- lowpriorityscore=0 phishscore=0 malwarescore=0 priorityscore=1501
- impostorscore=0 spamscore=0 bulkscore=0 suspectscore=0 clxscore=1015
- adultscore=0 classifier=typeunknown authscore=0 authtc= authcc=
- route=outbound adjust=0 reason=mlx scancount=1 engine=8.22.0-2510240001
- definitions=main-2512070065
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-Consider a multi-link AP configuration:
+On Sun, 7 Dec 2025 08:55:59 +0900, Greg KH wrote:
+> On Sun, Dec 07, 2025 at 12:16:08AM +0100, Michal Pecio wrote:
+> > Hi,
+> >   
+> > > >> I got something. In my case everything seemed fine until I
+> > > >> unplugged the wifi adapter. And then the system still worked
+> > > >> for a few minutes before it froze.  
+> > 
+> > Sounds like memory corruption.
+> >   
+> > > > Zenm and I tested below changes which can also reproduce the
+> > > > symptom, so I wonder driver might assume urb is the first
+> > > > member of struct, but unfortunately I can't find that.  
+> > 
+> > That's what it seems to be doing, because it uses usb_init_urb()
+> > on urbs embedded in some struct and then usb_free_urb().
+> > 
+> > If you look what usb_free_urb() does, it decrements refcount and
+> > attempts to free urb. But here urb is a member of a larger struct,
+> > so I guess the whole struct is freed (and this was either
+> > intentional or a bug that didn't happen to blow up yet).  
+> 
+> That's not ok at all, it's amazing this is working today.  urbs need
+> to be "stand alone" structures and never embedded into anything else.
 
-    MLD vif (MAC addr: aa:bb)
-        |-- 2.4 GHz link (BSSID: aa:bb)
-        |-- 5 GHz link   (BSSID: cc:dd)
+Is it though?
 
-For AP vdevs, ath12k creates a DP peer using the arvif's BSSID and stores
-it in dp_hw->dp_peers_list. During scan operations, the driver assigns an
-arvif to the scan vdev and uses the vif's MAC address as its BSSID. In
-the above scenario, the scan vdev MAC address (aa:bb) matches the BSSID
-of the 2.4 GHz AP link, causing a duplicate entry in dp_hw->dp_peers_list
-and leading to scan vdev creation failure.
+usb_init_urb() is exported and documented as below. Neither of which
+suggests that the function must not be used by drivers.
 
-Failure in vif bringup sequence:
-1. Create AP vdev for 2.4 GHz link:
-   - Assign arvif with BSSID = aa:bb and link_id = 0.
-   - Create DP peer with address aa:bb and add to dp_hw->dp_peers_list.
+/**
+ * usb_init_urb - initializes a urb so that it can be used by a USB driver
+ * @urb: pointer to the urb to initialize
+ *
+ * Initializes a urb so that the USB subsystem can use it properly.
+ *
+ * If a urb is created with a call to usb_alloc_urb() it is not
+ * necessary to call this function.  Only use this if you allocate the
+ * space for a struct urb on your own.  If you call this function, be
+ * careful when freeing the memory for your urb that it is no longer in
+ * use by the USB core.
+ *
+ * Only use this function if you _really_ understand what you are doing.
+ */
 
-2. Create scan vdev for 5 GHz link:
-   - Assign arvif with BSSID = aa:bb (same as vif MAC address) and
-     link_id = 15.
-   - Attempt to create another DP peer with address aa:bb.
-   - Operation fails because aa:bb already exists in dp_hw->dp_peers_list,
-     resulting in duplicate entry conflict.
+I see that there are some sound drivers which embed URBs in larger
+structures too, so if this is some tree-wide campaign there is a risk
+of breaking them too.
 
-3. Delete scan vdev for 5 GHz link.
-4. Create AP vdev for 5 GHz link.
-
-Since DP peer is not needed for scan operations, identify scan vdev using
-arvif->link_id >= IEEE80211_MLD_MAX_NUM_LINKS and skip DP peer creation
-and deletion.
-
-Tested-on: QCN9274 hw2.0 PCI WLAN.WBE.1.5-01651-QCAHKSWPL_SILICONZ-1
-
-Signed-off-by: Ripan Deuri <quic_rdeuri@quicinc.com>
----
- drivers/net/wireless/ath/ath12k/mac.c  | 22 ++++++++++++++--------
- drivers/net/wireless/ath/ath12k/peer.c | 12 +++++++-----
- 2 files changed, 21 insertions(+), 13 deletions(-)
-
-diff --git a/drivers/net/wireless/ath/ath12k/mac.c b/drivers/net/wireless/ath/ath12k/mac.c
-index 3649f58fef84..42e750376926 100644
---- a/drivers/net/wireless/ath/ath12k/mac.c
-+++ b/drivers/net/wireless/ath/ath12k/mac.c
-@@ -1229,7 +1229,8 @@ void ath12k_mac_peer_cleanup_all(struct ath12k *ar)
- 
- 	/* Delete all the self dp_peers on asserted radio */
- 	list_for_each_entry_safe_reverse(arvif, tmp_vif, &ar->arvifs, list) {
--		if (arvif->ahvif->vdev_type == WMI_VDEV_TYPE_AP) {
-+		if ((arvif->ahvif->vdev_type == WMI_VDEV_TYPE_AP) &&
-+		    (arvif->link_id < IEEE80211_MLD_MAX_NUM_LINKS)) {
- 			ath12k_dp_peer_delete(dp_hw, arvif->bssid, NULL);
- 			arvif->num_stations = 0;
- 		}
-@@ -4031,7 +4032,8 @@ static void ath12k_mac_remove_link_interface(struct ieee80211_hw *hw,
- 			ath12k_warn(ar->ab, "failed to submit AP self-peer removal on vdev %d link id %d: %d",
- 				    arvif->vdev_id, arvif->link_id, ret);
- 
--		ath12k_dp_peer_delete(&ah->dp_hw, arvif->bssid, NULL);
-+		if (arvif->link_id < IEEE80211_MLD_MAX_NUM_LINKS)
-+			ath12k_dp_peer_delete(&ah->dp_hw, arvif->bssid, NULL);
- 	}
- 	ath12k_mac_vdev_delete(ar, arvif);
- }
-@@ -9720,6 +9722,7 @@ int ath12k_mac_vdev_create(struct ath12k *ar, struct ath12k_link_vif *arvif)
- 	u8 link_id;
- 	struct ath12k_dp_link_vif *dp_link_vif = NULL;
- 	struct ath12k_dp_peer_create_params params = {};
-+	bool dp_peer_created = false;
- 
- 	lockdep_assert_wiphy(hw->wiphy);
- 
-@@ -9805,11 +9808,14 @@ int ath12k_mac_vdev_create(struct ath12k *ar, struct ath12k_link_vif *arvif)
- 	case WMI_VDEV_TYPE_AP:
- 		params.ucast_ra_only = true;
- 
--		ret = ath12k_dp_peer_create(&ah->dp_hw, arvif->bssid, &params);
--		if (ret) {
--			ath12k_warn(ab, "failed to vdev %d create dp_peer for AP: %d\n",
--				    arvif->vdev_id, ret);
--			goto err_vdev_del;
-+		if (arvif->link_id < IEEE80211_MLD_MAX_NUM_LINKS) {
-+			ret = ath12k_dp_peer_create(&ah->dp_hw, arvif->bssid, &params);
-+			if (ret) {
-+				ath12k_warn(ab, "failed to vdev %d create dp_peer for AP: %d\n",
-+					    arvif->vdev_id, ret);
-+				goto err_vdev_del;
-+			}
-+			dp_peer_created = true;
- 		}
- 
- 		peer_param.vdev_id = arvif->vdev_id;
-@@ -9925,7 +9931,7 @@ int ath12k_mac_vdev_create(struct ath12k *ar, struct ath12k_link_vif *arvif)
- 	}
- 
- err_dp_peer_del:
--	if (ahvif->vdev_type == WMI_VDEV_TYPE_AP)
-+	if (dp_peer_created)
- 		ath12k_dp_peer_delete(&ah->dp_hw, arvif->bssid, NULL);
- 
- err_vdev_del:
-diff --git a/drivers/net/wireless/ath/ath12k/peer.c b/drivers/net/wireless/ath/ath12k/peer.c
-index c2fb5bbd6cea..5f3bd3b9a3e9 100644
---- a/drivers/net/wireless/ath/ath12k/peer.c
-+++ b/drivers/net/wireless/ath/ath12k/peer.c
-@@ -241,11 +241,13 @@ int ath12k_peer_create(struct ath12k *ar, struct ath12k_link_vif *arvif,
- 
- 	spin_unlock_bh(&dp->dp_lock);
- 
--	ret = ath12k_dp_link_peer_assign(ath12k_ab_to_dp(ar->ab),
--					 &(ath12k_ar_to_ah(ar)->dp_hw),
--					 arvif->vdev_id, sta,
--					 (u8 *)arg->peer_addr, link_id,
--					 ar->hw_link_id);
-+	if (arvif->link_id < IEEE80211_MLD_MAX_NUM_LINKS) {
-+		ret = ath12k_dp_link_peer_assign(ath12k_ab_to_dp(ar->ab),
-+						 &(ath12k_ar_to_ah(ar)->dp_hw),
-+						 arvif->vdev_id, sta,
-+						 (u8 *)arg->peer_addr, link_id,
-+						 ar->hw_link_id);
-+	}
- 
- 	return ret;
- }
-
-base-commit: a1e19289932aeef26085feb97597d624da6302ab
--- 
-2.34.1
-
+Regards,
+Michal
 
