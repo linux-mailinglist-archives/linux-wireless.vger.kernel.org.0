@@ -1,45 +1,45 @@
-Return-Path: <linux-wireless+bounces-29594-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-29595-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id A99F7CAD813
-	for <lists+linux-wireless@lfdr.de>; Mon, 08 Dec 2025 15:57:34 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 429F5CAD81C
+	for <lists+linux-wireless@lfdr.de>; Mon, 08 Dec 2025 15:57:41 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id B1B3730210F1
-	for <lists+linux-wireless@lfdr.de>; Mon,  8 Dec 2025 14:57:24 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id D7CB9300765F
+	for <lists+linux-wireless@lfdr.de>; Mon,  8 Dec 2025 14:57:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0C014328275;
-	Mon,  8 Dec 2025 14:18:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2769B32936B;
+	Mon,  8 Dec 2025 14:19:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="iugpJget"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="qgBoVz7F"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DC1022E336F
-	for <linux-wireless@vger.kernel.org>; Mon,  8 Dec 2025 14:18:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 02D00329369
+	for <linux-wireless@vger.kernel.org>; Mon,  8 Dec 2025 14:19:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765203516; cv=none; b=aiyhxMkRPw9FmTWTKTrsfkoCZ33W2LjTYnhhl0JjFedfId4ZHivpowADqYavjk8eG2uGktAU4BlNZpDGCowT/PgmOyQMvv+gG1VqMIV6v81F5Fx6iFsEIo1ufGcwcaVRGkvp0kd1ophFJPkQkqhE4D16lNn78vWDFneUmt8mvdE=
+	t=1765203579; cv=none; b=RlKGwmp45Ghnz0Pu+/G06Ucxx2X+NWdCXldkmlnJPiFaHUO6LMOapZpcnkYrxB2DFYPRyPGEZr0VkY2m7/FJ/nB67ySX7d1ZWnmbg/RCiSGSf0aVNCMOi3h/tA8Oxpb/EsVkQhtYgCp3NCwBWF3Xyt5jKDkAdP7Pqpsfgs5f0Pg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765203516; c=relaxed/simple;
-	bh=SjQTmjRaxoAZEdS9VaHUthT3W5NWzBYP22Q6Yz5xYTU=;
+	s=arc-20240116; t=1765203579; c=relaxed/simple;
+	bh=vC4ZLDTOkG6dsh62qPT9eyeu/t9BABENkfkivMFbs88=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=u4NI4ZmvEwOZrOQu0GJhOX9XcD6J+I+h9zBccuBwfjAEIVR/xYj6CVbjZGXC7DVuZrrwvcPDZHd8ARx5qYRBThG3o0YiOFa2aFCl8m8qPl0Nq72vfw/FSE5tbkvUZ3Lu5ULUiAVv8GnXdr0j8mTLC7b9g6fvm70BmMqqaEHIeVo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=iugpJget; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 12FCCC113D0;
-	Mon,  8 Dec 2025 14:18:35 +0000 (UTC)
+	 Content-Type:Content-Disposition:In-Reply-To; b=SzENITPKTLQoclr+E1shtPJcBM9dk2PrGAX2nh93wswr3yPGeMLntNkALLpEwvr54rU5y5NpTA07prKT4kws33vPY0aqfBYPdJThSQFKzuuB0/vc+rf7sqg1wPhIFj+zchcDB7u6DKsgGX8sbUS9ne9gOR3J37uu6TFkvstfXt8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=qgBoVz7F; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CF226C4CEF1;
+	Mon,  8 Dec 2025 14:19:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1765203516;
-	bh=SjQTmjRaxoAZEdS9VaHUthT3W5NWzBYP22Q6Yz5xYTU=;
+	s=k20201202; t=1765203578;
+	bh=vC4ZLDTOkG6dsh62qPT9eyeu/t9BABENkfkivMFbs88=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=iugpJget+ITa0hSKukq/g6oTbAbGtomuNJqpaE9VStyQu/aM2dsgFkFqwoukGrqxL
-	 7//6qOSL1aB2OrHcbUgjc5OTk85gEFsNvy+CVjpJlwdfasSxCZpAInaq8udDl1Btmn
-	 pRsXpoE9Qn1YoxiynN9BlfOhO9bX85YlpLiUEGEhxDR1F4Jvd+E2WwLJ6J8GVYNCsi
-	 Alajq+EwL9OO3UZcgRok7bhAPIAUZngyOzPOu2wahc1+ds/+hhjqXydNa2THRsbMJW
-	 VQLyzMrX2Lk4g75BX7oba+Zdo/wEJ9nT6QqnzH1Le/xboKfgUhsWqInJpk0KxA9hto
-	 SZAJtYQ9w6hMg==
-Date: Mon, 8 Dec 2025 15:18:33 +0100
+	b=qgBoVz7FwY3umYMF1PV4DvUgxrFkznPJynYuzD9CLq/lJmTvCWdYdAB+WSJPoMFBf
+	 tj60zu7fkalhoeIGv/H6QRsuBkVHLV9+/jX/s2yPRUBUETtVHXAhgtnMpb/QYTJpPJ
+	 WzeEwRQHhMt7EfNjpXdIBAqomIrxUB64uMPJL5gOUnc281U2TycXr6o4U59pPv0TOi
+	 rNH6NxU/FOBFa82Qwh1iMhf70CA+4XJV9d9Ijxw7/92kyq+8iiCUEUEAgPI72ahrVf
+	 3gToh4Aj4FRKeIqnAMDVyv0ZPERsc/j175JYMcRr735PHQpKYACrxR/5UhBBoZh5Ql
+	 7bzmDmJ9PMYaQ==
+Date: Mon, 8 Dec 2025 15:19:35 +0100
 From: Lorenzo Bianconi <lorenzo@kernel.org>
 To: Chad Monroe <chad@monroe.io>
 Cc: Felix Fietkau <nbd@nbd.name>, Johannes Berg <johannes.berg@intel.com>,
@@ -48,9 +48,9 @@ Cc: Felix Fietkau <nbd@nbd.name>, Johannes Berg <johannes.berg@intel.com>,
 	Evelyn Tsai <evelyn.tsai@mediatek.com>,
 	Ryder Lee <ryder.lee@mediatek.com>, linux-wireless@vger.kernel.org,
 	linux-mediatek@lists.infradead.org
-Subject: Re: [PATCH] mt76: mt7996: reset device after MCU message timeout
-Message-ID: <aTbeOResfSpMk6hZ@lore-desk>
-References: <27bebda195599b55d097f4586a034dddce5d2cc0.1765202889.git.chad@monroe.io>
+Subject: Re: [PATCH] wifi: mt76: fix deadlock in remain-on-channel
+Message-ID: <aTbed-BC8vEmwpzD@lore-desk>
+References: <3fceebb12dcb672cfae11f993a373b457a35e228.1765198130.git.chad@monroe.io>
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
@@ -58,92 +58,93 @@ List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="ZgBOj1SGc4qFoWQM"
+	protocol="application/pgp-signature"; boundary="7le5LWZSIXz4geqy"
 Content-Disposition: inline
-In-Reply-To: <27bebda195599b55d097f4586a034dddce5d2cc0.1765202889.git.chad@monroe.io>
+In-Reply-To: <3fceebb12dcb672cfae11f993a373b457a35e228.1765198130.git.chad@monroe.io>
 
 
---ZgBOj1SGc4qFoWQM
+--7le5LWZSIXz4geqy
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 Content-Transfer-Encoding: quoted-printable
 
-> Trigger a full reset after MCU message timeout.
+> mt76_remain_on_channel() and mt76_roc_complete() call mt76_set_channel()
+> while already holding dev->mutex. Since mt76_set_channel() also acquires
+> dev->mutex, this results in a deadlock.
 >=20
-> Signed-off-by: Chad Monroe <chad@monroe.io>
-> ---
->  drivers/net/wireless/mediatek/mt76/mt7996/mac.c | 5 +++++
->  drivers/net/wireless/mediatek/mt76/mt7996/mcu.c | 9 +++++++++
->  2 files changed, 14 insertions(+)
->=20
-> diff --git a/drivers/net/wireless/mediatek/mt76/mt7996/mac.c b/drivers/ne=
-t/wireless/mediatek/mt76/mt7996/mac.c
-> index 2560e2f46e89..07b0a694c1bb 100644
-> --- a/drivers/net/wireless/mediatek/mt76/mt7996/mac.c
-> +++ b/drivers/net/wireless/mediatek/mt76/mt7996/mac.c
-> @@ -2736,6 +2736,11 @@ void mt7996_reset(struct mt7996_dev *dev)
->  		return;
->  	}
-> =20
-> +	if ((READ_ONCE(dev->recovery.state) & MT_MCU_CMD_STOP_DMA)) {
+> Use __mt76_set_channel() instead of mt76_set_channel().
+> Add cancel_delayed_work_sync() for mac_work before acquiring the mutex
+> in mt76_remain_on_channel() to prevent a secondary deadlock with the
+> mac_work workqueue.
 
-nit: you do not need double brackets here.
+I think we need a Fixes tag here.
 
 Regards,
 Lorenzo
 
-> +		set_bit(MT76_MCU_RESET, &dev->mphy.state);
-> +		wake_up(&dev->mt76.mcu.wait);
-> +	}
-> +
->  	queue_work(dev->mt76.wq, &dev->reset_work);
->  	wake_up(&dev->reset_wait);
->  }
-> diff --git a/drivers/net/wireless/mediatek/mt76/mt7996/mcu.c b/drivers/ne=
-t/wireless/mediatek/mt76/mt7996/mcu.c
-> index 14a88ef79b6c..40ebda9a3f12 100644
-> --- a/drivers/net/wireless/mediatek/mt76/mt7996/mcu.c
-> +++ b/drivers/net/wireless/mediatek/mt76/mt7996/mcu.c
-> @@ -209,6 +209,7 @@ static int
->  mt7996_mcu_parse_response(struct mt76_dev *mdev, int cmd,
->  			  struct sk_buff *skb, int seq)
->  {
-> +	struct mt7996_dev *dev =3D container_of(mdev, struct mt7996_dev, mt76);
->  	struct mt7996_mcu_rxd *rxd;
->  	struct mt7996_mcu_uni_event *event;
->  	int mcu_cmd =3D FIELD_GET(__MCU_CMD_FIELD_ID, cmd);
-> @@ -217,6 +218,14 @@ mt7996_mcu_parse_response(struct mt76_dev *mdev, int=
- cmd,
->  	if (!skb) {
->  		dev_err(mdev->dev, "Message %08x (seq %d) timeout\n",
->  			cmd, seq);
-> +
-> +		if (!test_and_set_bit(MT76_MCU_RESET, &dev->mphy.state)) {
-> +			dev->recovery.restart =3D true;
-> +			wake_up(&dev->mt76.mcu.wait);
-> +			queue_work(dev->mt76.wq, &dev->reset_work);
-> +			wake_up(&dev->reset_wait);
-> +		}
-> +
->  		return -ETIMEDOUT;
->  	}
+>=20
+> Signed-off-by: Chad Monroe <chad@monroe.io>
+> ---
+>  drivers/net/wireless/mediatek/mt76/channel.c | 13 +++++++++++--
+>  1 file changed, 11 insertions(+), 2 deletions(-)
+>=20
+> diff --git a/drivers/net/wireless/mediatek/mt76/channel.c b/drivers/net/w=
+ireless/mediatek/mt76/channel.c
+> index 2b705bdb7993..d9f8529db7ed 100644
+> --- a/drivers/net/wireless/mediatek/mt76/channel.c
+> +++ b/drivers/net/wireless/mediatek/mt76/channel.c
+> @@ -326,7 +326,7 @@ void mt76_roc_complete(struct mt76_phy *phy)
+>  		mlink->mvif->roc_phy =3D NULL;
+>  	if (phy->main_chandef.chan &&
+>  	    !test_bit(MT76_MCU_RESET, &dev->phy.state))
+> -		mt76_set_channel(phy, &phy->main_chandef, false);
+> +		__mt76_set_channel(phy, &phy->main_chandef, false);
+>  	mt76_put_vif_phy_link(phy, phy->roc_vif, phy->roc_link);
+>  	phy->roc_vif =3D NULL;
+>  	phy->roc_link =3D NULL;
+> @@ -370,6 +370,8 @@ int mt76_remain_on_channel(struct ieee80211_hw *hw, s=
+truct ieee80211_vif *vif,
+>  	if (!phy)
+>  		return -EINVAL;
 > =20
+> +	cancel_delayed_work_sync(&phy->mac_work);
+> +
+>  	mutex_lock(&dev->mutex);
+> =20
+>  	if (phy->roc_vif || dev->scan.phy =3D=3D phy ||
+> @@ -388,7 +390,14 @@ int mt76_remain_on_channel(struct ieee80211_hw *hw, =
+struct ieee80211_vif *vif,
+>  	phy->roc_vif =3D vif;
+>  	phy->roc_link =3D mlink;
+>  	cfg80211_chandef_create(&chandef, chan, NL80211_CHAN_HT20);
+> -	mt76_set_channel(phy, &chandef, true);
+> +	ret =3D __mt76_set_channel(phy, &chandef, true);
+> +	if (ret) {
+> +		mlink->mvif->roc_phy =3D NULL;
+> +		phy->roc_vif =3D NULL;
+> +		phy->roc_link =3D NULL;
+> +		mt76_put_vif_phy_link(phy, vif, mlink);
+> +		goto out;
+> +	}
+>  	ieee80211_ready_on_channel(hw);
+>  	ieee80211_queue_delayed_work(phy->hw, &phy->roc_work,
+>  				     msecs_to_jiffies(duration));
 > --=20
 > 2.47.3
 >=20
 >=20
 >=20
 
---ZgBOj1SGc4qFoWQM
+--7le5LWZSIXz4geqy
 Content-Type: application/pgp-signature; name=signature.asc
 
 -----BEGIN PGP SIGNATURE-----
 
-iHUEABYKAB0WIQTquNwa3Txd3rGGn7Y6cBh0uS2trAUCaTbeOQAKCRA6cBh0uS2t
-rBRdAQDpgmkK6Zsh1t0kzKkUl6bsh9G75hBe3VMQu7d4a3Og3wD9EPrcYUfL8DOz
-xSiHjYwGb+3+Gg59nWWN757fWR6jAg8=
-=LKrR
+iHUEABYKAB0WIQTquNwa3Txd3rGGn7Y6cBh0uS2trAUCaTbedwAKCRA6cBh0uS2t
+rPnbAQCQLkt1ogkYrYOvbFfy7fnwAMGuqg8FvgG+qKg9LpuSMgD/dIWDKL8FZ3tI
+ishi71jr9T+1xXEqsLCGivoIsl/zowc=
+=x/pD
 -----END PGP SIGNATURE-----
 
---ZgBOj1SGc4qFoWQM--
+--7le5LWZSIXz4geqy--
 
