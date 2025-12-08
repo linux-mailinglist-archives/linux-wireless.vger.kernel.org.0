@@ -1,126 +1,179 @@
-Return-Path: <linux-wireless+bounces-29589-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-29590-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3106DCACE1E
-	for <lists+linux-wireless@lfdr.de>; Mon, 08 Dec 2025 11:32:34 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id BA344CACFBB
+	for <lists+linux-wireless@lfdr.de>; Mon, 08 Dec 2025 12:23:34 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 601AB300E3C8
-	for <lists+linux-wireless@lfdr.de>; Mon,  8 Dec 2025 10:32:32 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 7109C30480BF
+	for <lists+linux-wireless@lfdr.de>; Mon,  8 Dec 2025 11:23:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C2B662E972B;
-	Mon,  8 Dec 2025 10:32:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A621E31062D;
+	Mon,  8 Dec 2025 11:23:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=temperror (0-bit key) header.d=dev.tdt.de header.i=@dev.tdt.de header.b="NDJzF6Sh"
+	dkim=pass (2048-bit key) header.d=riscv-rocks.de header.i=@riscv-rocks.de header.b="tIcOA9St";
+	dkim=pass (1024-bit key) header.d=amazonses.com header.i=@amazonses.com header.b="CSAXktCx"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mxout70.expurgate.net (mxout70.expurgate.net [194.37.255.70])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from b224-17.smtp-out.eu-central-1.amazonses.com (b224-17.smtp-out.eu-central-1.amazonses.com [69.169.224.17])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B47622DF125;
-	Mon,  8 Dec 2025 10:32:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=194.37.255.70
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0B3291F75A6;
+	Mon,  8 Dec 2025 11:23:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=69.169.224.17
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765189950; cv=none; b=Vy+UotTW1Q/tHHrHBXlXIMgZ4G8yzyA67GYnBbB/G7vuPsYnAbV3/xi2HxdH4HIOYtumg775P2JsdMFzl81JY3r3/mnqxDFgG9T9aYRFcLtT+oagrnnMUmwh0NIZLEy9qWky8MZbPiLfvHx7fX9zojoz/+6JyrJ8G2hJ5drO3to=
+	t=1765193008; cv=none; b=V67qu97Zzfc+gPbnMkWZ6AP3gteSwjzTeeVNO40M/S1o0deLnsbP0vgSmf9Pd8XSaTEKZhEBRdXdaAYDnBSG3YZZEVzvkspRIVPxIwgX2reyS7hfudNhiMFJKuE5T112OhlQwOHs9OMY2paZmKnVRNuLNML0v+BTG0Zc+G/Gnw4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765189950; c=relaxed/simple;
-	bh=r+2jMQFzU9+NoNZmLEzpEBGBeob89jC8EU4XtkCLq78=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=u6Yu9OOaBu7tZbpk4VA1M/fncKzqL8unLiY+1jmwQpuw2RM9K/4YxsxYNmeWqDjYx9z7h64nvw68C8WvHLBeWSSZ5PKj0dwxZdwwXYWXi6JOFVnre2VmRN4efy7GTwqtIiVSyu+Oc0q0KIj1iq5Y0Q3XKTUj6H94/dEPFl2zYts=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=dev.tdt.de; spf=pass smtp.mailfrom=dev.tdt.de; dkim=temperror (0-bit key) header.d=dev.tdt.de header.i=@dev.tdt.de header.b=NDJzF6Sh; arc=none smtp.client-ip=194.37.255.70
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=dev.tdt.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=dev.tdt.de
-Received: from [194.37.255.9] (helo=mxout.expurgate.net)
-	by relay.expurgate.net with smtp (Exim 4.92)
-	(envelope-from <prvs=145192da8d=os@dev.tdt.de>)
-	id 1vSYXL-00EEcV-7c; Mon, 08 Dec 2025 11:32:11 +0100
-Received: from [195.243.126.94] (helo=securemail.tdt.de)
-	by relay.expurgate.net with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
-	(Exim 4.92)
-	(envelope-from <os@dev.tdt.de>)
-	id 1vSYXJ-00DfeR-SF; Mon, 08 Dec 2025 11:32:09 +0100
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=dev.tdt.de;
-	s=z1-selector1; t=1765189929;
-	bh=V2LuImD69vBgHSzkMExG2GJJ4r6pVKhCiiWXxSYDJBM=;
-	h=From:To:Cc:Subject:Date:From;
-	b=NDJzF6ShOuTsWdFh433cFknxb8sDj2TU/2Z6Dr0zQUDR+uRxFpl5mz65hop2gavNo
-	 gCASGNlPQ282V1shzC6B6zj9xoriIPaXVr9vgZP5gvM98OjpavNULE47iIKMH2o5Gr
-	 0x6ZjonLMFBbZqXCMMUKQb5rDI4Sib3oBcfJN61sdTd2o63CuzLRWMI+gpzb2XkwA6
-	 895zPZcCTUX3pDIWTHdjT1T/rI027hFmJVcwLfGObKuDhFq5R3U+wxcYzwPOs32laX
-	 NFkgl0ixssUP2hmWmuSIRqz4m26/G3RAy5t6NFszYEvhPJ1xUoVnqsktn2mbb9LDV8
-	 tPJX3oGiO8s2g==
-Received: from securemail.tdt.de (localhost [127.0.0.1])
-	by securemail.tdt.de (Postfix) with ESMTP id 5974F240040;
-	Mon,  8 Dec 2025 11:32:09 +0100 (CET)
-Received: from mail.dev.tdt.de (unknown [10.2.4.42])
-	by securemail.tdt.de (Postfix) with ESMTP id 53377240036;
-	Mon,  8 Dec 2025 11:32:09 +0100 (CET)
-Received: from osedlbauer1.dev.tdt.de (unknown [10.2.3.165])
-	by mail.dev.tdt.de (Postfix) with ESMTPSA id 1FCAA215E8;
-	Mon,  8 Dec 2025 11:32:05 +0100 (CET)
-From: Oliver Sedlbauer <os@dev.tdt.de>
-To: stable@vger.kernel.org
-Cc: quic_rajkbhag@quicinc.com, Oliver Sedlbauer <os@dev.tdt.de>,
-	Kalle Valo <kvalo@kernel.org>, Jeff Johnson <jjohnson@kernel.org>,
-	Sasha Levin <sashal@kernel.org>,
-	Vasanthakumar Thiagarajan <vasanthakumar.thiagarajan@oss.qualcomm.com>,
-	linux-wireless@vger.kernel.org, ath12k@lists.infradead.org,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH] Revert "wifi: ath12k: Enable REO queue lookup table feature on QCN9274 hw2.0"
-Date: Mon,  8 Dec 2025 11:31:52 +0100
-Message-ID: <20251208103152.236840-1-os@dev.tdt.de>
-X-Mailer: git-send-email 2.39.5
+	s=arc-20240116; t=1765193008; c=relaxed/simple;
+	bh=F5wfrZANXxGmJc/i+SvOOxZPxzGKSsElzv4HXsCxneE=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=DZ0JtjQwnauWKwPJc3fZuMw1UEYWbnEB/Q0S3/Ff+yqCpDB5iaBlzJBm9XXJHPvZm3i0BiwNSMF28r8H2e/97s+WONcE9YwgFPeMz3FgPithQCwhN4tvzG/lD43eu4PuCjOZMnRKJgtp2lndqxI0yJorb4Z7BOPZQwAQqv3wQ6c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=riscv-rocks.de; spf=pass smtp.mailfrom=mail.riscv-rocks.de; dkim=pass (2048-bit key) header.d=riscv-rocks.de header.i=@riscv-rocks.de header.b=tIcOA9St; dkim=pass (1024-bit key) header.d=amazonses.com header.i=@amazonses.com header.b=CSAXktCx; arc=none smtp.client-ip=69.169.224.17
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=riscv-rocks.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=mail.riscv-rocks.de
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/simple;
+	s=fauymlwecxgqgzkqidylh22coownfvju; d=riscv-rocks.de; t=1765193004;
+	h=Date:From:To:Cc:Subject:Message-ID:Reply-To:References:MIME-Version:Content-Type:In-Reply-To;
+	bh=F5wfrZANXxGmJc/i+SvOOxZPxzGKSsElzv4HXsCxneE=;
+	b=tIcOA9StOoj6wVYFOuRYeJ+o/DzoSeeng6mb7NAzpIjOuWl8d962LCYjRrYSfmMM
+	CUgjzmfadDZcqRKZGbnnXXszFfBLUhZdHGrYcmN/FHUi4gulTbDSTXDTXQK+61oe1rw
+	U7yc97wCDrYY3gm15Ovdhxu08RwjmmMEGjGKQ45pihqu/lWgqZMt8xrbqH/EQGAq9T/
+	nxP0Lzf+M1pBhS80qzKVOxfNz851ILicZFU2U5/VS6LykD3Oey0dP/kco99T11dGK/k
+	YgKo/m1a4CXz9hD83NixGFEs/j4izbx4ZfVbvDeMKiqLtqtSfOpIecFWAxpenlZxvS/
+	RR4fRIr0nQ==
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/simple;
+	s=sokbgaaqhfgd6qjht2wmdajpuuanpimv; d=amazonses.com; t=1765193004;
+	h=Date:From:To:Cc:Subject:Message-ID:Reply-To:References:MIME-Version:Content-Type:In-Reply-To:Feedback-ID;
+	bh=F5wfrZANXxGmJc/i+SvOOxZPxzGKSsElzv4HXsCxneE=;
+	b=CSAXktCxYaJ4rpMZVD2snpmxPif2R1rInhOuGpPDafraDJVozoLjqUYmEYgscbuR
+	ZLhyWjiSAggNb3lB7T3QB3Kilcp2uiUmUSjeE3tk/CwVvoAizcWL5cgx33ElsTB+IQC
+	6EK5J1cITV6ROA9p0qoIYFGaTlU9VXwUwJBwhd4I=
+Date: Mon, 8 Dec 2025 11:23:24 +0000
+From: Damian Tometzki <damian@riscv-rocks.de>
+To: Yao Zi <ziyao@disroot.org>
+Cc: Miri Korenblit <miriam.rachel.korenblit@intel.com>, 
+	Richard Cochran <richardcochran@gmail.com>, 
+	Johannes Berg <johannes.berg@intel.com>, 
+	Anjaneyulu <pagadala.yesu.anjaneyulu@intel.com>, 
+	Daniel Gabay <daniel.gabay@intel.com>, 
+	linux-wireless@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	netdev@vger.kernel.org, Mingcong Bai <jeffbai@aosc.io>, 
+	Kexy Biscuit <kexybiscuit@aosc.io>, 
+	Nathan Chancellor <nathan@kernel.org>
+Subject: Re: [PATCH iwlwifi-fixes] wifi: iwlwifi: Implement settime64 as stub
+ for MVM/MLD PTP
+Message-ID: <0107019afdb3b3ec-dcd55bb0-3d78-4cd3-8d82-d005dd945b67-000000@eu-central-1.amazonses.com>
+Reply-To: Damian Tometzki <damian@riscv-rocks.de>
+Mail-Followup-To: Yao Zi <ziyao@disroot.org>,
+	Miri Korenblit <miriam.rachel.korenblit@intel.com>,
+	Richard Cochran <richardcochran@gmail.com>,
+	Johannes Berg <johannes.berg@intel.com>,
+	Anjaneyulu <pagadala.yesu.anjaneyulu@intel.com>,
+	Daniel Gabay <daniel.gabay@intel.com>,
+	linux-wireless@vger.kernel.org, linux-kernel@vger.kernel.org,
+	netdev@vger.kernel.org, Mingcong Bai <jeffbai@aosc.io>,
+	Kexy Biscuit <kexybiscuit@aosc.io>,
+	Nathan Chancellor <nathan@kernel.org>
+References: <20251204123204.9316-1-ziyao@disroot.org>
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-X-purgate-ID: 151534::1765189930-3B70406F-E4D17473/0/0
-X-purgate: clean
-X-purgate-type: clean
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20251204123204.9316-1-ziyao@disroot.org>
+User-Agent: Mutt
+X-Operating-System: Linux Fedora release 43 (Forty Three) (Kernel 6.18.0)
+Organization: Linux hacker
+Feedback-ID: ::1.eu-central-1.yMcBPu/jK26Vj3HVmCFyFk75QMsS8V3QY5HbXP/Qrys=:AmazonSES
+X-SES-Outgoing: 2025.12.08-69.169.224.17
 
-This reverts commit 3b5e5185881edf4ee5a1af575e3aedac4a38a764.
+On Thu, 04. Dec 12:32, Yao Zi wrote:
+> Since commit dfb073d32cac ("ptp: Return -EINVAL on ptp_clock_register if
+> required ops are NULL"), PTP clock registered through ptp_clock_register
+> is required to have ptp_clock_info.settime64 set, however, neither MVM
+> nor MLD's PTP clock implementation sets it, resulting in warnings when
+> the interface starts up, like
+> 
+> WARNING: drivers/ptp/ptp_clock.c:325 at ptp_clock_register+0x2c8/0x6b8, CPU#1: wpa_supplicant/469
+> CPU: 1 UID: 0 PID: 469 Comm: wpa_supplicant Not tainted 6.18.0+ #101 PREEMPT(full)
+> ra: ffff800002732cd4 iwl_mvm_ptp_init+0x114/0x188 [iwlmvm]
+> ERA: 9000000002fdc468 ptp_clock_register+0x2c8/0x6b8
+> iwlwifi 0000:01:00.0: Failed to register PHC clock (-22)
+> 
+> I don't find an appropriate firmware interface to implement settime64()
+> for iwlwifi MLD/MVM, thus instead create a stub that returns
+> -EOPTNOTSUPP only, suppressing the warning and allowing the PTP clock to
+> be registered.
+> 
+> Reported-by: Nathan Chancellor <nathan@kernel.org>
+> Closes: https://lore.kernel.org/all/20251108044822.GA3262936@ax162/
+> Signed-off-by: Yao Zi <ziyao@disroot.org>
+> ---
+>  drivers/net/wireless/intel/iwlwifi/mld/ptp.c | 7 +++++++
+>  drivers/net/wireless/intel/iwlwifi/mvm/ptp.c | 7 +++++++
+>  2 files changed, 14 insertions(+)
+> 
+> diff --git a/drivers/net/wireless/intel/iwlwifi/mld/ptp.c b/drivers/net/wireless/intel/iwlwifi/mld/ptp.c
+> index ffeb37a7f830..231920425c06 100644
+> --- a/drivers/net/wireless/intel/iwlwifi/mld/ptp.c
+> +++ b/drivers/net/wireless/intel/iwlwifi/mld/ptp.c
+> @@ -121,6 +121,12 @@ static int iwl_mld_ptp_gettime(struct ptp_clock_info *ptp,
+>  	return 0;
+>  }
+>  
+> +static int iwl_mld_ptp_settime(struct ptp_clock_info *ptp,
+> +			       const struct timespec64 *ts)
+> +{
+> +	return -EOPNOTSUPP;
+> +}
+> +
+>  static int iwl_mld_ptp_adjtime(struct ptp_clock_info *ptp, s64 delta)
+>  {
+>  	struct iwl_mld *mld = container_of(ptp, struct iwl_mld,
+> @@ -279,6 +285,7 @@ void iwl_mld_ptp_init(struct iwl_mld *mld)
+>  
+>  	mld->ptp_data.ptp_clock_info.owner = THIS_MODULE;
+>  	mld->ptp_data.ptp_clock_info.gettime64 = iwl_mld_ptp_gettime;
+> +	mld->ptp_data.ptp_clock_info.settime64 = iwl_mld_ptp_settime;
+>  	mld->ptp_data.ptp_clock_info.max_adj = 0x7fffffff;
+>  	mld->ptp_data.ptp_clock_info.adjtime = iwl_mld_ptp_adjtime;
+>  	mld->ptp_data.ptp_clock_info.adjfine = iwl_mld_ptp_adjfine;
+> diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/ptp.c b/drivers/net/wireless/intel/iwlwifi/mvm/ptp.c
+> index 06a4c9f74797..ad156b82eaa9 100644
+> --- a/drivers/net/wireless/intel/iwlwifi/mvm/ptp.c
+> +++ b/drivers/net/wireless/intel/iwlwifi/mvm/ptp.c
+> @@ -220,6 +220,12 @@ static int iwl_mvm_ptp_gettime(struct ptp_clock_info *ptp,
+>  	return 0;
+>  }
+>  
+> +static int iwl_mvm_ptp_settime(struct ptp_clock_info *ptp,
+> +			       const struct timespec64 *ts)
+> +{
+> +	return -EOPNOTSUPP;
+> +}
+> +
+>  static int iwl_mvm_ptp_adjtime(struct ptp_clock_info *ptp, s64 delta)
+>  {
+>  	struct iwl_mvm *mvm = container_of(ptp, struct iwl_mvm,
+> @@ -281,6 +287,7 @@ void iwl_mvm_ptp_init(struct iwl_mvm *mvm)
+>  	mvm->ptp_data.ptp_clock_info.adjfine = iwl_mvm_ptp_adjfine;
+>  	mvm->ptp_data.ptp_clock_info.adjtime = iwl_mvm_ptp_adjtime;
+>  	mvm->ptp_data.ptp_clock_info.gettime64 = iwl_mvm_ptp_gettime;
+> +	mvm->ptp_data.ptp_clock_info.settime64 = iwl_mvm_ptp_settime;
+>  	mvm->ptp_data.scaled_freq = SCALE_FACTOR;
+>  
+>  	/* Give a short 'friendly name' to identify the PHC clock */
+> -- 
+> 2.51.2
+> 
+Hi,
 
-The REO queue lookup table feature was enabled in 6.12.y due to an
-upstream backport, but it causes severe RX performance degradation on
-QCN9274 hw2.0 devices.
+the patch solved my issue too. 
 
-With this feature enabled, the vast majority of received packets are
-dropped, reducing throughput drastically and making the device nearly
-unusable.
-
-Reverting this change restores full RX performance.
-
-Tested-on: QCN9274 hw2.0 PCI WLAN.WBE.1.5-01651-QCAHKSWPL_SILICONZ-1
-
-Fixes: 3b5e5185881e ("wifi: ath12k: Enable REO queue lookup table feature=
- on QCN9274 hw2.0")
-Signed-off-by: Oliver Sedlbauer <os@dev.tdt.de>
----
-Note:
-This commit reverts a backport that was not a fix. The backported change
-breaks previously working behavior on QCN9274 hw2.0 devices and should
-not have been applied to the 6.12.y stable kernel.
-
- drivers/net/wireless/ath/ath12k/hw.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
-
-diff --git a/drivers/net/wireless/ath/ath12k/hw.c b/drivers/net/wireless/=
-ath/ath12k/hw.c
-index 057ef2d282b2..e3eb22bb9e1c 100644
---- a/drivers/net/wireless/ath/ath12k/hw.c
-+++ b/drivers/net/wireless/ath/ath12k/hw.c
-@@ -1084,7 +1084,7 @@ static const struct ath12k_hw_params ath12k_hw_para=
-ms[] =3D {
- 		.download_calib =3D true,
- 		.supports_suspend =3D false,
- 		.tcl_ring_retry =3D true,
--		.reoq_lut_support =3D true,
-+		.reoq_lut_support =3D false,
- 		.supports_shadow_regs =3D false,
-=20
- 		.num_tcl_banks =3D 48,
---=20
-2.39.5
-
+tested-by: damian Tometzki damian@riscv-rocks.de
+-- 
+VG
+Damian Tometzki
 
