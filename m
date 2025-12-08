@@ -1,165 +1,130 @@
-Return-Path: <linux-wireless+bounces-29577-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-29578-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4BADCCABD6A
-	for <lists+linux-wireless@lfdr.de>; Mon, 08 Dec 2025 03:22:46 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6B4ACCABF3F
+	for <lists+linux-wireless@lfdr.de>; Mon, 08 Dec 2025 04:20:42 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id E23B2300940E
-	for <lists+linux-wireless@lfdr.de>; Mon,  8 Dec 2025 02:20:48 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 218063009FA4
+	for <lists+linux-wireless@lfdr.de>; Mon,  8 Dec 2025 03:20:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A33BF22333B;
-	Mon,  8 Dec 2025 02:20:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 714ED2309AA;
+	Mon,  8 Dec 2025 03:20:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="RI65BHMo"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="gl4Gx8XJ"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pf1-f177.google.com (mail-pf1-f177.google.com [209.85.210.177])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 555021F12F8;
-	Mon,  8 Dec 2025 02:20:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EAA3F18C008
+	for <linux-wireless@vger.kernel.org>; Mon,  8 Dec 2025 03:20:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.177
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765160447; cv=none; b=PQOtpNwdDjZI6VJXX5KIQFD05jggrh295GiL0xSy9oy6tdzOTWl8E1JOfBtYcvJuTFQOa/MqQmHB4ZZI/pJbHkQfXG9ccerEl0vz/UisOyUrHJUiyLu1n+La9Zm45fZ71LqtiJEQl1JiTp6BECO4IuGKQh9680t1hAvOWCl/gJU=
+	t=1765164040; cv=none; b=g9Gb1iT85MINktD2PeJBeG4zFIfvKDry6aX1IL7c4aArwLffTCJhyGkCMGL9VQxxRzeCSuQaUgE7+jTyjlcpHQV0A/EAQ2PNrtdKhfoTYQrrnB0y37r2C+PqbNTLopo1e6bItB1k9fnLTzrbXbeT0CEegZ7CKDKwQOq0aSXj+7o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765160447; c=relaxed/simple;
-	bh=TAKQ1BejKaRZJjBshOAo3jq/BYcYSUoEANnrwmHTPqg=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=JrSHzvYoUP/q38BKqxwULfPf/ozUWDTuf2/C4XKZ3cUcSDHOsvU+Q7u8eciFqBXdQ0Bjzb+WWpatGFoiltYOeOeyxSn47s9hlDKinigHF+3krIyEyTZrmztzGB+ZdD70H/Say6Lc1rdjisqrEeJ79+XGaoV7V1IkuqoRuNP3avA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=RI65BHMo; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CE7F4C4CEFB;
-	Mon,  8 Dec 2025 02:20:43 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1765160447;
-	bh=TAKQ1BejKaRZJjBshOAo3jq/BYcYSUoEANnrwmHTPqg=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=RI65BHMoNBJncsbWuTsTKsrmiPi8D4zLMYxbFWPqm6zIIqoez3U4WCyGO4Bba9mtF
-	 0Jz3xUd+WKgvfz6MjExCa9pfoY/HVyDmzMswl4zzos39LssUlcZjz20ccm0rJFeurh
-	 AZDbhDWdb7kNNkteH4z0/NHRy5HLrJHuFHIbjoAVbBrN4FQ5XCIPd16/S90wQsslFG
-	 2b1YJ/AKtIHjTO7a1blolbsRqnTgtv4jeWHyCAWcEyhs6j/rUVOJGHnU1xhLzq0F8e
-	 /qUrj7RBnCeyTfzybQtlG88avHQ+SUH5YcT8HFwnSRYUq9KSuB5zLqVFzRnaNL9+dI
-	 2h40bx5Ge2xuw==
-Message-ID: <40ab3a19-01b5-461e-aaf9-c3d8142fc926@kernel.org>
-Date: Mon, 8 Dec 2025 03:20:38 +0100
+	s=arc-20240116; t=1765164040; c=relaxed/simple;
+	bh=GZWn3Qjd8GHmDIN1qQuNEfkRZnC9rmKwEa7GmK6s4bw=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=ExYSMQPGc/+8+L6w9zqumzK7reUWINSVUfA6bnPwM/qC2CsvKQMUgIW+CZdTG3GvhwjaDXKDjb8393LddbiN3G1mj9ZSKAaDagoDLLgKxD84R1O4Z7GLFm6BrWWUlnOirW0Q6oPOllI3pO/RiBYiJgtsGJ5bURmH/NP6VhHqXn8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=gl4Gx8XJ; arc=none smtp.client-ip=209.85.210.177
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-pf1-f177.google.com with SMTP id d2e1a72fcca58-7b8e49d8b35so4802542b3a.3
+        for <linux-wireless@vger.kernel.org>; Sun, 07 Dec 2025 19:20:38 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1765164038; x=1765768838; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=pthQxy69h+U/5CTCNbJzI0/oY5Mp3d9cLENgacgD6Cs=;
+        b=gl4Gx8XJLAHTDNqQGGwbDaouTl90i955Ji7FtL2YsMVrc9J9WtSJN7iOGXr0T5+Rz8
+         8KgXN0/haBDI7Ieq3+43wRpF3pH5oOXKJ4sBYT3/+1ICjsvn/H3hhOud8+OtClhOB2A0
+         pJ45Vo0hOrTSR60Ao2ys2YvH2Cs48KFl6l8F1OlEHP5Be6B1vuQ/zwRsQTRKfjN4hOpi
+         G82uK43AWXvtILhAhhvY2QBQnBXoOORCCNL87h+beMkcWWnbHBy/6NN5o0vFetewUY0O
+         sVqGA+Ncv5ydhTOH2BH3s3x3y6AhnLailpHEPGAUwPWRMnzyaTPUTFeTJfL5Pip0TFtB
+         BNTg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1765164038; x=1765768838;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=pthQxy69h+U/5CTCNbJzI0/oY5Mp3d9cLENgacgD6Cs=;
+        b=Hzt64m68ArB8TyxX7o/U0lOafSWhJG1DOuAp6t85bqjkjm6Ftl8RE1ARVCm0pcE+9t
+         lDtCe0+xUeP7JFehzFhwpbYRU8N9gBtksGlz/sLAJiYaqva3votReJGSoSRshDoMxOAJ
+         I3XECRo2abgYR93jcycvp4iLJovq2tm8LsMqD6iRWCBu/O4cMjKm/v+PIi9CURAtJZuc
+         I7WGrB/So6Xo9EmEWBLAChH2kV+SE29A7s5v7Mpe7or0UCYLZTB1Q69diUXZEQpX+T9p
+         WWeqvUXJ2Lr5CFVWN1TqDtuoM9RTgbh4bBi0xKWCpUrmkOQr1jFQMMq3QipzSt9Aw1eg
+         lhSw==
+X-Gm-Message-State: AOJu0YyfZ9Bb9ES6QTfCb40/PjT8n8cdoRY77fbh6Mk+CrHt/ZFSr2t0
+	X1u5c3z1TrjgjSD4dZ+ujvl56i5pcib6X3OgSi8SKy3C8zqLaU8DoQsQLJI7URUb
+X-Gm-Gg: ASbGncs1QrCpG0jMU07LZRBXHh1EQ36vJzmpI+jEX/iO+X1YCI3wsjYscYROTeOAudp
+	kvZTZ5f0GP4OHwVi8q1ad/YvYXGljR84lzhPrYc+VMJlnwcyzXLkzS3gcN8YSR+NHIaS5In9kCL
+	5w4SFx0skFnKFXHLdzEIcyvL/Zj+tAUREsmpfQ6XVbPDvFJPXgUzzZb1iQI2UQ08Yl94c4xu7wd
+	+o9AUFTtB6ov1Hob9uTB/L/DGWFWrXXmftHOEqnfXiZCXyoEZ5OeqyZXObTZZzpH+n9l29++cuE
+	IL0qWRxA1o5eJH7MEDqz41nJZf21VxqRnyaDS7xAS7c2cwc5vsZ8bhY4ZD0Sm48opmj+8I6do8Y
+	WNwED+tUzb7NF4u4tjaibO/YdtFQx8AS31Ha2uj6gsdSVpe68OOMoz+7G9OHVmoV93l3QP8BOea
+	V1F3GS1sZjBSfZy+vSuAKCzdSPBhGN4K2bjhJ4coEuLThONScLi+Qp
+X-Google-Smtp-Source: AGHT+IFvZcDGotRgp2akcPilSnlmLuKURxDRJIWM/KAl2/617n4tkXWj8jm3EHpF5OMAlL6a+Kf6KA==
+X-Received: by 2002:a05:6a00:3a14:b0:7a9:c21a:55b4 with SMTP id d2e1a72fcca58-7e8c1c30fbcmr5979281b3a.28.1765164038220;
+        Sun, 07 Dec 2025 19:20:38 -0800 (PST)
+Received: from BM5220 (118-232-8-190.dynamic.kbronet.com.tw. [118.232.8.190])
+        by smtp.googlemail.com with ESMTPSA id d2e1a72fcca58-7e29f2ed000sm11551934b3a.1.2025.12.07.19.20.36
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sun, 07 Dec 2025 19:20:37 -0800 (PST)
+From: Zenm Chen <zenmchen@gmail.com>
+To: pkshih@realtek.com
+Cc: linux-wireless@vger.kernel.org,
+	marco.crivellari@suse.com,
+	rtl8821cerfe2@gmail.com,
+	zenmchen@gmail.com
+Subject: RE: [PATCH rtw-next] Revert "wifi: rtw88: add WQ_UNBOUND to alloc_workqueue users"
+Date: Mon,  8 Dec 2025 11:20:32 +0800
+Message-ID: <20251208032033.5793-1-zenmchen@gmail.com>
+X-Mailer: git-send-email 2.52.0
+In-Reply-To: <c5ea34777592402caeb7fb83af7d6f07@realtek.com>
+References: <c5ea34777592402caeb7fb83af7d6f07@realtek.com>
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 6/8] dt-bindings: wireless: ath12k: Add disable-rfkill
- property
-To: =?UTF-8?Q?J=C3=A9r=C3=B4me_de_Bretagne?= <jerome.debretagne@gmail.com>,
- Rob Herring <robh@kernel.org>, Lorenzo Bianconi <lorenzo@kernel.org>
-Cc: Dale Whinham <daleyo@gmail.com>, Johannes Berg
- <johannes@sipsolutions.net>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
- Conor Dooley <conor+dt@kernel.org>, Jeff Johnson <jjohnson@kernel.org>,
- Jeff Johnson <jeff.johnson@oss.qualcomm.com>,
- linux-wireless@vger.kernel.org, devicetree@vger.kernel.org,
- ath12k@lists.infradead.org, linux-kernel@vger.kernel.org
-References: <20251201011457.17422-1-daleyo@gmail.com>
- <20251201011457.17422-7-daleyo@gmail.com>
- <7ea43ef2-b453-46cf-a35e-ea11ca1dbe24@kernel.org>
- <CA+kEDGEjR7cGA0zZfuKkYg37mJZs3Fn7eKbgkB6hdjDLtGxjRQ@mail.gmail.com>
-From: Krzysztof Kozlowski <krzk@kernel.org>
-Content-Language: en-US
-Autocrypt: addr=krzk@kernel.org; keydata=
- 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 a/A=
-In-Reply-To: <CA+kEDGEjR7cGA0zZfuKkYg37mJZs3Fn7eKbgkB6hdjDLtGxjRQ@mail.gmail.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-On 07/12/2025 20:28, Jérôme de Bretagne wrote:
-> Le lun. 1 déc. 2025 à 08:34, Krzysztof Kozlowski <krzk@kernel.org> a écrit :
->>
->> On 01/12/2025 02:14, Dale Whinham wrote:
->>> From: Jérôme de Bretagne <jerome.debretagne@gmail.com>
->>>
->>> rfkill should be disabled according to the Surface Pro 11's DSDT.
->>>
->>> https://lore.kernel.org/all/20250113074810.29729-3-quic_lingbok@quicinc.com/
->>> has added support to read the ACPI bitflag when ACPI is supported.
->>
->> It wasn't merged. If it was, reference commits, not random emails.
-> 
-> Good catch, It was merged in commit c6a7c0b09d5f, we will reference
-> this commit instead.
-> 
->>> Document the disable-rfkill property to expose one specific feature
->>> (DISABLE_RFKILL_BIT) for devices described with a DT, so that the
->>> feature can be disabled.
->>
->> This is just a circular logic. Add property to have property in DT so
->> that you can use feature.
->>
->> No, describe the hardware or actual problem instead.
-> 
-> Point taken. Would something like the following be better?
-> 
-> "For some devices, Wi-Fi is entirely hard blocked by default making
-> the Wi-Fi radio unusable, except if rfkill is disabled as described
-> by an ACPI bitflag on those models. Add the disable-rfkill property
-> to expose the DISABLE_RFKILL_BIT feature for devices described
-> by a devicetree."
-> 
->> You still need to answer Rob's questions.
-> 
-> Indeed, we didn't answer another question, sorry. Here it is for
-> reference:
-> 
->> [Rob] Assuming it belongs in DT, why is this ath12k specific? Could be
->> for any wireless chip...
-> 
-> Agree, it could be applicable to any wireless chip, it should be moved
-> somewhere else. Would ieee80211.yaml be the right target file for
-> this property? Or any other file suggestion instead? Thank you.
+Hi Ping-Ke,
 
-Yes, then place it please in above iee80211.yaml common file, with some
-sort of bigger picture explanation.
+Ping-Ke Shih <pkshih@realtek.com> 於 2025年12月8日週一 上午10:11寫道：
+>
+> Hi Zenm,
+>
+> Zenm Chen <zenmchen@gmail.com>
+> > Hi,
+> >
+> > Last weekend I tried applying the v1 [1] to the kernel 6.17.9, but that one didn't work, either.
+> >
+> > [1]
+> > https://patchwork.kernel.org/project/linux-wireless/patch/20251113160605.381777-3-marco.crivellari@sus
+> > e.com/
+> >
+> > [  306.035759] usb 3-2: new high-speed USB device number 5 using ehci-pci
+> > [  306.162258] usb 3-2: New USB device found, idVendor=0bda, idProduct=b82c, bcdDevice= 2.10
+> > [  306.162272] usb 3-2: New USB device strings: Mfr=1, Product=2, SerialNumber=3
+> > [  306.162278] usb 3-2: Product: 802.11ac NIC
+> > [  306.162282] usb 3-2: Manufacturer: Realtek
+> > [  306.162286] usb 3-2: SerialNumber: 123456
+> > [  306.239143] ------------[ cut here ]------------
+> > [  306.239148] WARNING: CPU: 3 PID: 2886 at kernel/workqueue.c:5667 alloc_workqueue_noprof+0x676/0x770
+>
+> I think this is because kernel 6.17.9 defines:
+>
+> __WQ_BH_ALLOWS          = WQ_BH | WQ_HIGHPRI,
+>
+> and the latest is:
+>
+> __WQ_BH_ALLOWS          = WQ_BH | WQ_HIGHPRI | WQ_PERCPU,
+>
 
-
-Best regards,
-Krzysztof
+Thank you for pointing out this. Have confirmed the patch v1 does work on
+Arch Linux with kernel 6.18.0-1-mainline.
 
