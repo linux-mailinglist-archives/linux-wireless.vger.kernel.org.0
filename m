@@ -1,118 +1,165 @@
-Return-Path: <linux-wireless+bounces-29576-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-29577-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id A84EDCABD09
-	for <lists+linux-wireless@lfdr.de>; Mon, 08 Dec 2025 03:11:54 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4BADCCABD6A
+	for <lists+linux-wireless@lfdr.de>; Mon, 08 Dec 2025 03:22:46 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id C6DE93004F49
-	for <lists+linux-wireless@lfdr.de>; Mon,  8 Dec 2025 02:11:30 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id E23B2300940E
+	for <lists+linux-wireless@lfdr.de>; Mon,  8 Dec 2025 02:20:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 04C1C2F547C;
-	Mon,  8 Dec 2025 02:11:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A33BF22333B;
+	Mon,  8 Dec 2025 02:20:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=realtek.com header.i=@realtek.com header.b="pJuGW456"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="RI65BHMo"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DB3502DC77A
-	for <linux-wireless@vger.kernel.org>; Mon,  8 Dec 2025 02:11:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=211.75.126.72
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 555021F12F8;
+	Mon,  8 Dec 2025 02:20:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765159889; cv=none; b=g8ttjQn9iOmdqwhDE6bIQehSjpO500Fx0SrrTPXtxNOFmfngFwUwMyoUSzOe+E6mh6iO4fcgQgwHg3wgvMludKB/SCpoK2tSF9bp4TyrCaxp9c8zRhQZXP4Y1cf3Tx2hk/SKtvMh/UrLF2qA+Kf7uHv+iQWmLw3VRxd+EtGxEMQ=
+	t=1765160447; cv=none; b=PQOtpNwdDjZI6VJXX5KIQFD05jggrh295GiL0xSy9oy6tdzOTWl8E1JOfBtYcvJuTFQOa/MqQmHB4ZZI/pJbHkQfXG9ccerEl0vz/UisOyUrHJUiyLu1n+La9Zm45fZ71LqtiJEQl1JiTp6BECO4IuGKQh9680t1hAvOWCl/gJU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765159889; c=relaxed/simple;
-	bh=P91gzKjNx/qscbzhdgcXMWFWaJ5RgHgJMRYiz0PEMPI=;
-	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:MIME-Version; b=KZTj3irCLI990kHhtPDlX8BcWnwqa+OurnVzoN33fmpOAOfnE+v/lEPX9NLyDM2ttDAoyTzSVSmfiaLDgHZPgqQVdi/FjMppmkTfGoGnOG0CvFrB+rUKjDpZqamW9xhr/7Ykst+uKYc9VrL2B9g0mxeTlKvWRHKHksU/hxqKjiE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com; spf=pass smtp.mailfrom=realtek.com; dkim=pass (2048-bit key) header.d=realtek.com header.i=@realtek.com header.b=pJuGW456; arc=none smtp.client-ip=211.75.126.72
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=realtek.com
-X-SpamFilter-By: ArmorX SpamTrap 5.80 with qID 5B82BIgE43107765, This message is accepted by code: ctloc85258
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=realtek.com; s=dkim;
-	t=1765159878; bh=HySL71KNUlMtePGvxwL12dcF5klNYuPKp29w0QsYODE=;
-	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:Content-Transfer-Encoding:MIME-Version;
-	b=pJuGW456yjiYVOfsSV49NJnFyU9Hkfeq7asQMlWwrYkwlv7ZTjRWrGrg0wI06r7nJ
-	 tJtl+P5fAtUoJPiGZuWSkSuvn67afe6F/un2wUxpkQQUEkFjuSW9uiydqoWQFnlUK/
-	 xcWCZqfbXsZbwpWHS1blM+3dNP4JHHlh+LGtxCVSLOj1e+JW3UuK/4TZGhSYeVQ+xZ
-	 AQIbplmykeQ75UkSUo18MRiGn6HSFnVV8gSujf9OkdgX7lr8Ljcn1LXGTV/oQoxWfk
-	 ge4QCmfvJyu/dG7lLA2gfOz7r/kIbDf/hoMy8/T0mltZHfS6fcMeOCyeFnDGtbD6q+
-	 lGCaOcnJB9j/w==
-Received: from mail.realtek.com (rtkexhmbs04.realtek.com.tw[10.21.1.54])
-	by rtits2.realtek.com.tw (8.15.2/3.21/5.94) with ESMTPS id 5B82BIgE43107765
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Mon, 8 Dec 2025 10:11:18 +0800
-Received: from RTKEXHMBS01.realtek.com.tw (172.21.6.40) by
- RTKEXHMBS04.realtek.com.tw (10.21.1.54) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.27; Mon, 8 Dec 2025 10:11:18 +0800
-Received: from RTKEXHMBS06.realtek.com.tw (10.21.1.56) by
- RTKEXHMBS01.realtek.com.tw (172.21.6.40) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1748.10; Mon, 8 Dec 2025 10:11:18 +0800
-Received: from RTKEXHMBS06.realtek.com.tw ([::1]) by
- RTKEXHMBS06.realtek.com.tw ([fe80::2fa5:eccb:34ee:7bb%10]) with mapi id
- 15.02.1544.027; Mon, 8 Dec 2025 10:11:18 +0800
-From: Ping-Ke Shih <pkshih@realtek.com>
-To: Zenm Chen <zenmchen@gmail.com>
-CC: "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
-        "marco.crivellari@suse.com" <marco.crivellari@suse.com>,
-        "rtl8821cerfe2@gmail.com" <rtl8821cerfe2@gmail.com>
-Subject: RE: [PATCH rtw-next] Revert "wifi: rtw88: add WQ_UNBOUND to
- alloc_workqueue users"
-Thread-Topic: [PATCH rtw-next] Revert "wifi: rtw88: add WQ_UNBOUND to
- alloc_workqueue users"
-Thread-Index: AQHcZt66JkU/0qBLKkWq0rXfVDO7QLUW53QQ//+MloCAAI1Y8A==
-Date: Mon, 8 Dec 2025 02:11:17 +0000
-Message-ID: <c5ea34777592402caeb7fb83af7d6f07@realtek.com>
-References: <dcf31afec1614ce0b5e6c6d7f8cd2cb9@realtek.com>
- <20251208014243.3512-1-zenmchen@gmail.com>
-In-Reply-To: <20251208014243.3512-1-zenmchen@gmail.com>
-Accept-Language: en-US, zh-TW
-Content-Language: zh-TW
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: quoted-printable
+	s=arc-20240116; t=1765160447; c=relaxed/simple;
+	bh=TAKQ1BejKaRZJjBshOAo3jq/BYcYSUoEANnrwmHTPqg=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=JrSHzvYoUP/q38BKqxwULfPf/ozUWDTuf2/C4XKZ3cUcSDHOsvU+Q7u8eciFqBXdQ0Bjzb+WWpatGFoiltYOeOeyxSn47s9hlDKinigHF+3krIyEyTZrmztzGB+ZdD70H/Say6Lc1rdjisqrEeJ79+XGaoV7V1IkuqoRuNP3avA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=RI65BHMo; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CE7F4C4CEFB;
+	Mon,  8 Dec 2025 02:20:43 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1765160447;
+	bh=TAKQ1BejKaRZJjBshOAo3jq/BYcYSUoEANnrwmHTPqg=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=RI65BHMoNBJncsbWuTsTKsrmiPi8D4zLMYxbFWPqm6zIIqoez3U4WCyGO4Bba9mtF
+	 0Jz3xUd+WKgvfz6MjExCa9pfoY/HVyDmzMswl4zzos39LssUlcZjz20ccm0rJFeurh
+	 AZDbhDWdb7kNNkteH4z0/NHRy5HLrJHuFHIbjoAVbBrN4FQ5XCIPd16/S90wQsslFG
+	 2b1YJ/AKtIHjTO7a1blolbsRqnTgtv4jeWHyCAWcEyhs6j/rUVOJGHnU1xhLzq0F8e
+	 /qUrj7RBnCeyTfzybQtlG88avHQ+SUH5YcT8HFwnSRYUq9KSuB5zLqVFzRnaNL9+dI
+	 2h40bx5Ge2xuw==
+Message-ID: <40ab3a19-01b5-461e-aaf9-c3d8142fc926@kernel.org>
+Date: Mon, 8 Dec 2025 03:20:38 +0100
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 6/8] dt-bindings: wireless: ath12k: Add disable-rfkill
+ property
+To: =?UTF-8?Q?J=C3=A9r=C3=B4me_de_Bretagne?= <jerome.debretagne@gmail.com>,
+ Rob Herring <robh@kernel.org>, Lorenzo Bianconi <lorenzo@kernel.org>
+Cc: Dale Whinham <daleyo@gmail.com>, Johannes Berg
+ <johannes@sipsolutions.net>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
+ Conor Dooley <conor+dt@kernel.org>, Jeff Johnson <jjohnson@kernel.org>,
+ Jeff Johnson <jeff.johnson@oss.qualcomm.com>,
+ linux-wireless@vger.kernel.org, devicetree@vger.kernel.org,
+ ath12k@lists.infradead.org, linux-kernel@vger.kernel.org
+References: <20251201011457.17422-1-daleyo@gmail.com>
+ <20251201011457.17422-7-daleyo@gmail.com>
+ <7ea43ef2-b453-46cf-a35e-ea11ca1dbe24@kernel.org>
+ <CA+kEDGEjR7cGA0zZfuKkYg37mJZs3Fn7eKbgkB6hdjDLtGxjRQ@mail.gmail.com>
+From: Krzysztof Kozlowski <krzk@kernel.org>
+Content-Language: en-US
+Autocrypt: addr=krzk@kernel.org; keydata=
+ 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 a/A=
+In-Reply-To: <CA+kEDGEjR7cGA0zZfuKkYg37mJZs3Fn7eKbgkB6hdjDLtGxjRQ@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 
-Hi Zenm,
+On 07/12/2025 20:28, Jérôme de Bretagne wrote:
+> Le lun. 1 déc. 2025 à 08:34, Krzysztof Kozlowski <krzk@kernel.org> a écrit :
+>>
+>> On 01/12/2025 02:14, Dale Whinham wrote:
+>>> From: Jérôme de Bretagne <jerome.debretagne@gmail.com>
+>>>
+>>> rfkill should be disabled according to the Surface Pro 11's DSDT.
+>>>
+>>> https://lore.kernel.org/all/20250113074810.29729-3-quic_lingbok@quicinc.com/
+>>> has added support to read the ACPI bitflag when ACPI is supported.
+>>
+>> It wasn't merged. If it was, reference commits, not random emails.
+> 
+> Good catch, It was merged in commit c6a7c0b09d5f, we will reference
+> this commit instead.
+> 
+>>> Document the disable-rfkill property to expose one specific feature
+>>> (DISABLE_RFKILL_BIT) for devices described with a DT, so that the
+>>> feature can be disabled.
+>>
+>> This is just a circular logic. Add property to have property in DT so
+>> that you can use feature.
+>>
+>> No, describe the hardware or actual problem instead.
+> 
+> Point taken. Would something like the following be better?
+> 
+> "For some devices, Wi-Fi is entirely hard blocked by default making
+> the Wi-Fi radio unusable, except if rfkill is disabled as described
+> by an ACPI bitflag on those models. Add the disable-rfkill property
+> to expose the DISABLE_RFKILL_BIT feature for devices described
+> by a devicetree."
+> 
+>> You still need to answer Rob's questions.
+> 
+> Indeed, we didn't answer another question, sorry. Here it is for
+> reference:
+> 
+>> [Rob] Assuming it belongs in DT, why is this ath12k specific? Could be
+>> for any wireless chip...
+> 
+> Agree, it could be applicable to any wireless chip, it should be moved
+> somewhere else. Would ieee80211.yaml be the right target file for
+> this property? Or any other file suggestion instead? Thank you.
 
-Zenm Chen <zenmchen@gmail.com>
-> Hi,
->=20
-> Last weekend I tried applying the v1 [1] to the kernel 6.17.9, but that o=
-ne didn't work, either.
->=20
-> [1]
-> https://patchwork.kernel.org/project/linux-wireless/patch/20251113160605.=
-381777-3-marco.crivellari@sus
-> e.com/
->=20
-> [  306.035759] usb 3-2: new high-speed USB device number 5 using ehci-pci
-> [  306.162258] usb 3-2: New USB device found, idVendor=3D0bda, idProduct=
-=3Db82c, bcdDevice=3D 2.10
-> [  306.162272] usb 3-2: New USB device strings: Mfr=3D1, Product=3D2, Ser=
-ialNumber=3D3
-> [  306.162278] usb 3-2: Product: 802.11ac NIC
-> [  306.162282] usb 3-2: Manufacturer: Realtek
-> [  306.162286] usb 3-2: SerialNumber: 123456
-> [  306.239143] ------------[ cut here ]------------
-> [  306.239148] WARNING: CPU: 3 PID: 2886 at kernel/workqueue.c:5667 alloc=
-_workqueue_noprof+0x676/0x770
-
-I think this is because kernel 6.17.9 defines:
-
-__WQ_BH_ALLOWS          =3D WQ_BH | WQ_HIGHPRI,
-
-and the latest is:
-
-__WQ_BH_ALLOWS          =3D WQ_BH | WQ_HIGHPRI | WQ_PERCPU,
+Yes, then place it please in above iee80211.yaml common file, with some
+sort of bigger picture explanation.
 
 
+Best regards,
+Krzysztof
 
