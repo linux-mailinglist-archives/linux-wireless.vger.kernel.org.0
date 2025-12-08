@@ -1,140 +1,179 @@
-Return-Path: <linux-wireless+bounces-29598-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-29599-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 45A7CCAD889
-	for <lists+linux-wireless@lfdr.de>; Mon, 08 Dec 2025 16:08:03 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6A925CADB92
+	for <lists+linux-wireless@lfdr.de>; Mon, 08 Dec 2025 17:17:51 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id E7F413010CF9
-	for <lists+linux-wireless@lfdr.de>; Mon,  8 Dec 2025 15:07:26 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 3712530542E5
+	for <lists+linux-wireless@lfdr.de>; Mon,  8 Dec 2025 16:16:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D01B615CD7E;
-	Mon,  8 Dec 2025 15:07:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 74E92231836;
+	Mon,  8 Dec 2025 16:16:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="ViFWu2vm"
+	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="A3kHbwKr";
+	dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b="d38u30Dq"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-yx1-f45.google.com (mail-yx1-f45.google.com [74.125.224.45])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4583C7082F
-	for <linux-wireless@vger.kernel.org>; Mon,  8 Dec 2025 15:07:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.224.45
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D1E7A243964
+	for <linux-wireless@vger.kernel.org>; Mon,  8 Dec 2025 16:16:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765206445; cv=none; b=hxDHIsTtlnn/yHeEYMN39ZOyM1tvqnut2OU9T4W2TZ68+Eq/z5IFg0QUp/lqjh0EDb3/hswA4diceVLjSZvwbGr3a+Mvu4wXtjF9QgXptaEjf4nfbw/IPj2qadXCLyuhuTrvdz2DDMfnY7kfO/KPqfA7q/o8Z/ED4YKG9SGwH3I=
+	t=1765210603; cv=none; b=T781EgepCnvUBVVed5rFc/BouLCS2+vy0RycrrfN/C6Q0WkEvNAbyv2IaT+lnnFbkBpLrCtS6WFsdglBDGoBRzmoeXZkLzWh++6J0VhwA/ugSuDwPtIrzRaNUXxk9cWwY4De/ytEnlEJk0p95GogWImyeVBsxdrIPKiRd4GDwbM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765206445; c=relaxed/simple;
-	bh=0N8qr2tR/Jmwr9AJe8Nvx1QR8bewMp0AM660+pCBOHM=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=n/OqL122I63Cc7Q/1+m31kk2s5Me7jHMbnnHIdPNXzUM2PLwh7gywzN/ZR2VawR/mzqKS9UlidtlmXfC/gCvr3RTwR7YJkuzCBU1+Z6atNIypEgDMKcsQugTu3qq6z3027lxquKniwmfeY12q9WLpZh7O7thIcjALJ4VzKHy1z0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=ViFWu2vm; arc=none smtp.client-ip=74.125.224.45
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-yx1-f45.google.com with SMTP id 956f58d0204a3-6443bc360bdso3743871d50.0
-        for <linux-wireless@vger.kernel.org>; Mon, 08 Dec 2025 07:07:24 -0800 (PST)
+	s=arc-20240116; t=1765210603; c=relaxed/simple;
+	bh=xtRYUN4Ez6YFGF3U9PfDbnTN9Yi0vdzap2wcAyCRo+E=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=RiHKaKFvoHJKHDUCvLgjwFhIoczhEsT8EbPDz/ICWIfr8p4rTy1pk7iriPdyfFtpS5RgO6Ul3WdIVhxR1sbxG9TnDbd/OiX/BrlhsYQOh3X/5rrt4EUb0gM7X/jbrNXImoeSW8qK0KGPQlAkTm8LYH6tQdPsOd6DAt/OveyHcdY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=A3kHbwKr; dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b=d38u30Dq; arc=none smtp.client-ip=205.220.180.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
+Received: from pps.filterd (m0279868.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 5B8ChYKk850710
+	for <linux-wireless@vger.kernel.org>; Mon, 8 Dec 2025 16:16:40 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
+	cc:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
+	ud7NNLBAJQWMt/PynCDg/O4Z5GATNvwyimSU4/I4np4=; b=A3kHbwKrWTMWOSRh
+	jUvtaggQbWLZQqvATFE55y/sf2tko7azdbthNSZxgAJixbol5HaQ087BPy21Npxy
+	S+Yjj9Uj7ZF/wi+xxGr+NdiUsi3XaoRdYIthqAkWtHHVFJYQ0hF+auz7EGw3EX3t
+	bZpdxghmC+Po0eh8G2mBWoG1KzAgNfrp4JyIMWuTD5SbpoEKKUEcn0vHhhoyz/qu
+	1r4jpbohd3VqoGBQTZ3eCckwAVwj5V2rZSww10uGw4ykJphFB74pkAW5Zea2A+i1
+	XwVL8yuU2nbXagbxGysKczSKC4UdmZtT6jTK6QfJiC1gPJnMIUNNf8aGH+POJkFH
+	yY8CKg==
+Received: from mail-pj1-f72.google.com (mail-pj1-f72.google.com [209.85.216.72])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4awxxc0mb6-1
+	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
+	for <linux-wireless@vger.kernel.org>; Mon, 08 Dec 2025 16:16:40 +0000 (GMT)
+Received: by mail-pj1-f72.google.com with SMTP id 98e67ed59e1d1-349a2f509acso3831854a91.1
+        for <linux-wireless@vger.kernel.org>; Mon, 08 Dec 2025 08:16:40 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1765206443; x=1765811243; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=koYXwoTEJsoPLyEPiz9nEdjQYdWChY6O9/DUrMalYaU=;
-        b=ViFWu2vmoAy8p3QtMUQ5HAbefoMri5pw4V/WilUGggyq1XKJGfvKRB1p83eDyGjiOc
-         ELMhCm5W2ALg3ws/lCyKSKyV0ky4WIRMjxcLsxrk7plAEal4hDCc9ZDyEofwmv3X4fnO
-         fY8y7nxtY0OL7fQfKQ7fQwkvObDx5AHBRr3CMNOMQsKmspFHON/83Y31FfJhvVmIuQ7c
-         54WkcgG9uBXfaPhJuOZIbWqkhUBG3hVI4h9cB7VC76h4W1sxG9Go9U6DxL33ZdI0x2H5
-         LWw9P2vOzLbxbJzYJAVDxhObhQMzNUbVSJkYneNb1GJCsZJAcC005wQqoWCpJVT73kax
-         AApQ==
+        d=oss.qualcomm.com; s=google; t=1765210599; x=1765815399; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=ud7NNLBAJQWMt/PynCDg/O4Z5GATNvwyimSU4/I4np4=;
+        b=d38u30Dqb3BO/tW+AoWqOthheJGao8tWHQvzyLn76xhmS141cY4cFkP06DCIOy6Psz
+         K2ITrCzQY6dzCXR1xLNW55fyCP3et1okJhgeyHMaryU0bZjUnNzRjDMkRTxePf8cpYq9
+         U9HBHu6unsnOBmQprs554YYkCD22yxIxYiP9K/rzhTnib2zHMoUp+wJXd1w7L2aIl5bF
+         NpD0wl47YxvMiyqzPBFHNUCqrKEdcqgdDkn9DpXOzjrnMipPfyjXEHWmVm1C8HkkZ1fT
+         mDu1K/y8HQYb/OZR287DS9377K1L4ta8MsDgmWBLVTUHpHb0axjrxWsm0czRVpYnXYxX
+         RHAg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1765206443; x=1765811243;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=koYXwoTEJsoPLyEPiz9nEdjQYdWChY6O9/DUrMalYaU=;
-        b=Q6UXueUzWzA+Oxtw/4nRxaNiqT4Ofe+KTzJpn6/iaJSfJgQ+DuSavC3vDurMIjlqh9
-         YlWyT07HVfIhgahDchg8gVjEYBA2a0sh0gFt3o+4jsMgnd0QOoYDIMPNFzR1Oy0Ndt3Z
-         ZYOYRXD+W1I37pA7P2OZxThkNbLsDLCw0JFTQDegbUxa05UlEgbsM5ADG8+MQ/MUb+XW
-         U5GR9z4w3Qif1s/2WPrVK1qGexAgj/48/o6xQ3ZDJf31T4cvu89cz0q3FfmnYldA2IHk
-         flj/aKkbUFarXixzRJzz2kQrv79tg1bLI7fI3/OOKvmZHvKhtpjsVMO6ZY++4ROE7aMo
-         qPfA==
-X-Forwarded-Encrypted: i=1; AJvYcCVzEhSMpc8R5f3PJk1hlAcwu3ZxIgsOoSUUutPPfzaWNi51+4s7STfVmSJ/PG2z3HwT0tYlRS36Ulwu+CGrog==@vger.kernel.org
-X-Gm-Message-State: AOJu0Ywrrxu5nT+wK8uREvPKr7yV9VX/icKKzfvq6Gx6jMk8IuVJ/Hwh
-	KRdZ59RhIoZVnX8u5vGdq84WwMOKY3QklT8i5R/sruGV3biPCqrayXYFW0c8tJLznzT37fLb+Nt
-	QDpZB8Dd01EdUJgDxpDTpRKvCBgeLl8I=
-X-Gm-Gg: ASbGncvnARKywtFOUhzzWpH2MMcDaeaMmm6Swy6EiiEeMIM28EWvcO4lY/xoKfz9KR2
-	xn/YsKtsx1EDI2t8aprZzmFaPM5OJVALMzUAZ9S2VzgQ4CcvOBBlvplcIzRDN9LLbOV9clvP3T0
-	5aLHJP1WaCBUTQFs2faVq25xd7HlRrFbqKOnH0sznntxm814cvV7cXjSq5T6cBQbdfqpLNeg3qp
-	mcBo1apdTRm8JwNAHiEa2gs2YBOsirZoXRelaIs3N8ZugZzsOmvENn5v6Bh9kWbEIOUVQniMQ==
-X-Google-Smtp-Source: AGHT+IGYRXraUxNnTs25uPKI9qFKKJh9msu75YD1kNeHN+uqbvLo7zPFytcHo2xWkyYJWdyrK6Tt95u9MkZVGc/NOaA=
-X-Received: by 2002:a05:690c:46c1:b0:78c:24d2:8e46 with SMTP id
- 00721157ae682-78c33b641a6mr128823087b3.23.1765206442917; Mon, 08 Dec 2025
- 07:07:22 -0800 (PST)
+        d=1e100.net; s=20230601; t=1765210599; x=1765815399;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=ud7NNLBAJQWMt/PynCDg/O4Z5GATNvwyimSU4/I4np4=;
+        b=MZ4FamT+2P7tpfYfr/ag1PHeQuSq6u9tWpy63im6PGkgX5/oVS3QZG5pPt2inXizoo
+         Q5hiOAFRZHbr+LLcZqeC/mONdZPWQssoXCtdJyKlJcD4RcU5Yj1uzRc4VCl3yydYiSsi
+         ndrry9dNed0+ZOFuPifg808eBUfakBJOZZlpyN0aPpGSaNdBBgmb6hW1m0PzGjZBFOat
+         g3DeC1IQg++UlHO+nLHtf4rG3z3gGC//6x+UbPm6IHScRfyXDLum7mDaSqOI40LM/nix
+         mMUWStsGT6Aex1OD5s9pKtS6xZ8AgSbpKWQTIM/cU92lhsNX359b1jkJ30S14+Xru1ua
+         pZ4A==
+X-Gm-Message-State: AOJu0YxTTzBPQtX+tWVCfD5vkiVbTKATDylPVODaJr679adkizwG+u7J
+	0TbdBp+Y8d/OuvAIEIvfLhdyCPrO7Q21uer1aO9uEAas8DZ488oWA23+cHN57Okm/9KxkVU9Vju
+	2N+dBG4GNok+sx0g6rPKiBlMMyXwRpezmt0BRIg1AWZhRyU0NpDP9gOgJ3lrSdX/cfF85qg==
+X-Gm-Gg: ASbGncum0iY6FgQt1Dg/KP3x3cX9hInpB8sXz0jicdUAlO/S4NdyJlmp80zM+bACORL
+	AufyJcT/zD9T3s5PfOd6epYi8tApzWABoQE/qRshdawJn+dXcAhhj2yVMDBFt+SHwhhT7rMXU9B
+	3Z5xjJWpdcJMqt/2LVUlZ3pFiamStgwsZlmeTdEamvAcJA0gNfzvqqMzAuGy+8JHG13zUUsfUYZ
+	F51s6YegM2sH5RcO2MfCFjL6oeuA208WExT5DPiBhAz4EhYr9MEYHYblqDs14A1FBz/DHwLGwGI
+	g1DAX5HYOpqhT6rIrz1ZbBwPTBctlWy82aFpd8Y+zBzrqw4wP8Za+sWJXFIV9Wi+bt4ySj58MMD
+	089ejMiV65IIv4LlKqhuds9VFdLC/9DDr9oqq7pORsCCUU6VAp5VUZBEVcCWevg==
+X-Received: by 2002:a17:90b:562d:b0:340:c4dc:4b8b with SMTP id 98e67ed59e1d1-349a24f21f1mr6514413a91.10.1765210599556;
+        Mon, 08 Dec 2025 08:16:39 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IGpRBnZEduK9iwcFFoWaJY87xaBpkeyCAnHea2DdIuaFEzyWsnMJduL/ggt7hO7EqfqSSWJTw==
+X-Received: by 2002:a17:90b:562d:b0:340:c4dc:4b8b with SMTP id 98e67ed59e1d1-349a24f21f1mr6514395a91.10.1765210599060;
+        Mon, 08 Dec 2025 08:16:39 -0800 (PST)
+Received: from [192.168.225.142] ([157.49.252.206])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-34a23270e5dsm898569a91.4.2025.12.08.08.16.37
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 08 Dec 2025 08:16:38 -0800 (PST)
+Message-ID: <c030f82d-75af-9a70-68fb-64c96d7f210e@oss.qualcomm.com>
+Date: Mon, 8 Dec 2025 21:46:34 +0530
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20251207123447.93233-1-madhurkumar004@gmail.com>
-In-Reply-To: <20251207123447.93233-1-madhurkumar004@gmail.com>
-From: Jonas Gorski <jonas.gorski@gmail.com>
-Date: Mon, 8 Dec 2025 16:07:11 +0100
-X-Gm-Features: AQt7F2pKE5CQRUA_xL32Yk7vUOwJ69Im78h8OWjd5vaMan4AvHfoEZP3-zr1coc
-Message-ID: <CAOiHx=n8osZ=b=MVNsxAKEtxDvNgt1ESohLNMWoz43c9RwNfOA@mail.gmail.com>
-Subject: Re: [PATCH] drivers: net: wireless: Replace deprecated PCI function
-To: Madhur Kumar <madhurkumar004@gmail.com>
-Cc: nbd@nbd.name, lorenzo@kernel.or, ryder.lee@mediatek.com, 
-	shayne.chen@mediatek.com, sean.wang@mediatek.co, matthias.bgg@gmail.com, 
-	angelogioacchino.delregno@collabora.com, linux-wireless@vger.kernel.org, 
-	linux-arm-kernel@lists.infradead.org, linux-mediatek@lists.infradead.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:102.0) Gecko/20100101
+ Thunderbird/102.15.1
+Subject: Re: [PATCH ath12k-ng] wifi: ath12k: Skip DP peer creation for scan
+ vdev
+Content-Language: en-US
+To: Ripan Deuri <quic_rdeuri@quicinc.com>, ath12k@lists.infradead.org
+Cc: linux-wireless@vger.kernel.org
+References: <20251207072717.95542-1-quic_rdeuri@quicinc.com>
+From: Vasanthakumar Thiagarajan <vasanthakumar.thiagarajan@oss.qualcomm.com>
+In-Reply-To: <20251207072717.95542-1-quic_rdeuri@quicinc.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Proofpoint-GUID: 1dvb2fPEG8TUES5rfl3efafp0y_MZ5AI
+X-Proofpoint-ORIG-GUID: 1dvb2fPEG8TUES5rfl3efafp0y_MZ5AI
+X-Authority-Analysis: v=2.4 cv=AKf9OaRj c=1 sm=1 tr=0 ts=6936f9e8 cx=c_pps
+ a=RP+M6JBNLl+fLTcSJhASfg==:117 a=wFAAa1VAB0ePzTpIHxh7fw==:17
+ a=IkcTkHD0fZMA:10 a=wP3pNCr1ah4A:10 a=s4-Qcg_JpJYA:10
+ a=VkNPw1HP01LnGYTKEx00:22 a=COk6AnOGAAAA:8 a=EUspDBNiAAAA:8
+ a=bzijrYIIVt2SdmEy8ygA:9 a=QEXdDO2ut3YA:10 a=iS9zxrgQBfv6-_F4QbHw:22
+ a=TjNXssC_j7lpFel5tvFf:22
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUxMjA4MDEzOCBTYWx0ZWRfX/ArvJdQHgtyI
+ sBkkMAEszNPKo4hx3bP+e07ZL/f+UpLVgOHt6OIgenaSHNX9L5/ifvlFFbHQv4hkNYIoaJsdXIM
+ fh3ktXLm5cmA/2sE4nu+roZ9llnuVUbALCSoBSOhLIoNvQmCBObdVdVkupBNmPYbeWm16B1Pe+u
+ urq2MLtiwYwwYlRe1fspCKbxo2PxzEDW257yJYFG1vuchxW2ohoZdYcgZQ0if6X3SJFZRwMokOn
+ e8Euz+zEP704YTooCVPwdIswvB0bT+0KiGdBcT3uYX4OlaKyVLd2qTetmDZl1U17jZUXvnT7n3K
+ XFRZIf3h/nVXygUEKcYFRl38LaPBM5lFoB2tZAa2SwmhDT4zC7VW2n+uyqTtqPtRlNg0XvWy54P
+ /FoCMB5ccnLmg8M7cBDTUYXUa2DFTw==
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.9,FMLib:17.12.100.49
+ definitions=2025-12-06_02,2025-12-04_04,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ malwarescore=0 spamscore=0 lowpriorityscore=0 adultscore=0 suspectscore=0
+ clxscore=1015 impostorscore=0 phishscore=0 bulkscore=0 priorityscore=1501
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.22.0-2510240001 definitions=main-2512080138
 
-Hi,
 
-On Sun, Dec 7, 2025 at 1:35=E2=80=AFPM Madhur Kumar <madhurkumar004@gmail.c=
-om> wrote:
->
-> pcim_iomap_table() and pcim_iomap_regions() have been
-> deprecated.
-> Replace them with pcim_iomap_region().
 
-The patch subject is wrong, please read
-https://wireless.docs.kernel.org/en/latest/en/developers/documentation/subm=
-ittingpatches.html
+On 12/7/2025 12:57 PM, Ripan Deuri wrote:
+> Consider a multi-link AP configuration:
+> 
+>      MLD vif (MAC addr: aa:bb)
+>          |-- 2.4 GHz link (BSSID: aa:bb)
+>          |-- 5 GHz link   (BSSID: cc:dd)
+> 
+> For AP vdevs, ath12k creates a DP peer using the arvif's BSSID and stores
+> it in dp_hw->dp_peers_list. During scan operations, the driver assigns an
+> arvif to the scan vdev and uses the vif's MAC address as its BSSID. In
+> the above scenario, the scan vdev MAC address (aa:bb) matches the BSSID
+> of the 2.4 GHz AP link, causing a duplicate entry in dp_hw->dp_peers_list
+> and leading to scan vdev creation failure.
+> 
+> Failure in vif bringup sequence:
+> 1. Create AP vdev for 2.4 GHz link:
+>     - Assign arvif with BSSID = aa:bb and link_id = 0.
+>     - Create DP peer with address aa:bb and add to dp_hw->dp_peers_list.
+> 
+> 2. Create scan vdev for 5 GHz link:
+>     - Assign arvif with BSSID = aa:bb (same as vif MAC address) and
+>       link_id = 15.
+>     - Attempt to create another DP peer with address aa:bb.
+>     - Operation fails because aa:bb already exists in dp_hw->dp_peers_list,
+>       resulting in duplicate entry conflict.
+> 
+> 3. Delete scan vdev for 5 GHz link.
+> 4. Create AP vdev for 5 GHz link.
+> 
+> Since DP peer is not needed for scan operations, identify scan vdev using
+> arvif->link_id >= IEEE80211_MLD_MAX_NUM_LINKS and skip DP peer creation
+> and deletion.
+> 
+> Tested-on: QCN9274 hw2.0 PCI WLAN.WBE.1.5-01651-QCAHKSWPL_SILICONZ-1
+> 
+> Signed-off-by: Ripan Deuri <quic_rdeuri@quicinc.com>
 
->
-> Signed-off-by: Madhur Kumar <madhurkumar004@gmail.com>
-> ---
->  drivers/net/wireless/mediatek/mt76/mt7921/pci.c | 6 +-----
->  1 file changed, 1 insertion(+), 5 deletions(-)
->
-> diff --git a/drivers/net/wireless/mediatek/mt76/mt7921/pci.c b/drivers/ne=
-t/wireless/mediatek/mt76/mt7921/pci.c
-> index ec9686183251..5a82c3bf471f 100644
-> --- a/drivers/net/wireless/mediatek/mt76/mt7921/pci.c
-> +++ b/drivers/net/wireless/mediatek/mt76/mt7921/pci.c
-> @@ -284,10 +284,6 @@ static int mt7921_pci_probe(struct pci_dev *pdev,
->         if (ret)
->                 return ret;
->
-> -       ret =3D pcim_iomap_regions(pdev, BIT(0), pci_name(pdev));
-> -       if (ret)
-> -               return ret;
-> -
->         pci_read_config_word(pdev, PCI_COMMAND, &cmd);
->         if (!(cmd & PCI_COMMAND_MEMORY)) {
->                 cmd |=3D PCI_COMMAND_MEMORY;
-> @@ -325,7 +321,7 @@ static int mt7921_pci_probe(struct pci_dev *pdev,
->         dev->fw_features =3D features;
->         dev->hif_ops =3D &mt7921_pcie_ops;
->         dev->irq_map =3D &irq_map;
-> -       mt76_mmio_init(&dev->mt76, pcim_iomap_table(pdev)[0]);
-> +       mt76_mmio_init(&dev->mt76, pcim_iomap_region(pdev, 0, pci_name(pd=
-ev)));
-
-You are effectively removing the error checking by directly passing
-the result of pcim_iomap_region() to mt76_mmio_init(). You need to
-first make sure that pcim_iomap_region() succeeded.
-
-Best regards,
-Jonas
+Reviewed-by: Vasanthakumar Thiagarajan <vasanthakumar.thiagarajan@oss.qualcomm.com>
 
