@@ -1,130 +1,173 @@
-Return-Path: <linux-wireless+bounces-29578-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-29579-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6B4ACCABF3F
-	for <lists+linux-wireless@lfdr.de>; Mon, 08 Dec 2025 04:20:42 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6F3F5CABF93
+	for <lists+linux-wireless@lfdr.de>; Mon, 08 Dec 2025 04:40:12 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 218063009FA4
-	for <lists+linux-wireless@lfdr.de>; Mon,  8 Dec 2025 03:20:41 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 55EF03004F7F
+	for <lists+linux-wireless@lfdr.de>; Mon,  8 Dec 2025 03:40:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 714ED2309AA;
-	Mon,  8 Dec 2025 03:20:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8FE7B23D7FB;
+	Mon,  8 Dec 2025 03:40:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="gl4Gx8XJ"
+	dkim=pass (2048-bit key) header.d=morsemicro-com.20230601.gappssmtp.com header.i=@morsemicro-com.20230601.gappssmtp.com header.b="neMZQP8D"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-pf1-f177.google.com (mail-pf1-f177.google.com [209.85.210.177])
+Received: from mail-pj1-f47.google.com (mail-pj1-f47.google.com [209.85.216.47])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EAA3F18C008
-	for <linux-wireless@vger.kernel.org>; Mon,  8 Dec 2025 03:20:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.177
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9BAA9233704
+	for <linux-wireless@vger.kernel.org>; Mon,  8 Dec 2025 03:40:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.47
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765164040; cv=none; b=g9Gb1iT85MINktD2PeJBeG4zFIfvKDry6aX1IL7c4aArwLffTCJhyGkCMGL9VQxxRzeCSuQaUgE7+jTyjlcpHQV0A/EAQ2PNrtdKhfoTYQrrnB0y37r2C+PqbNTLopo1e6bItB1k9fnLTzrbXbeT0CEegZ7CKDKwQOq0aSXj+7o=
+	t=1765165209; cv=none; b=ZPJ98y9N6pSL0HtTC42yD4Ka7B24bdRYXx7mVfE7IAS72PT40lK6yTBFBrMaXcnSv2uxBlqLDUEwt6a04mf94mkQCAFh/kEMiYk484i8qlK/v22Sv1v9sWJ64KS2jae/DrFBbTOl2X62NjLgtMDceJmeAgXlvzNaj1OxbVFEpxo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765164040; c=relaxed/simple;
-	bh=GZWn3Qjd8GHmDIN1qQuNEfkRZnC9rmKwEa7GmK6s4bw=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=ExYSMQPGc/+8+L6w9zqumzK7reUWINSVUfA6bnPwM/qC2CsvKQMUgIW+CZdTG3GvhwjaDXKDjb8393LddbiN3G1mj9ZSKAaDagoDLLgKxD84R1O4Z7GLFm6BrWWUlnOirW0Q6oPOllI3pO/RiBYiJgtsGJ5bURmH/NP6VhHqXn8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=gl4Gx8XJ; arc=none smtp.client-ip=209.85.210.177
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pf1-f177.google.com with SMTP id d2e1a72fcca58-7b8e49d8b35so4802542b3a.3
-        for <linux-wireless@vger.kernel.org>; Sun, 07 Dec 2025 19:20:38 -0800 (PST)
+	s=arc-20240116; t=1765165209; c=relaxed/simple;
+	bh=MdzpobkfwNX50HpHb61DHI/lrhQ5aIRi4gZEf8QVqc4=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=OoELrHpIfz5ZGxs5rP9K9mbY7/bXoBKc104506NjmAjGNrf8xIXxUgJGK5FSpMqpihU/BuesMmJhXSTNYVRoK0QCNEY51vZ37Cbveiw2urkl89xcCZo3Gk1IcjJw43WwYF1wqK+AdJNEACYXLLvtcadv7o2vX+fjNshJlhmL/bc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=morsemicro.com; spf=pass smtp.mailfrom=morsemicro.com; dkim=pass (2048-bit key) header.d=morsemicro-com.20230601.gappssmtp.com header.i=@morsemicro-com.20230601.gappssmtp.com header.b=neMZQP8D; arc=none smtp.client-ip=209.85.216.47
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=morsemicro.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=morsemicro.com
+Received: by mail-pj1-f47.google.com with SMTP id 98e67ed59e1d1-343ea89896eso3626044a91.2
+        for <linux-wireless@vger.kernel.org>; Sun, 07 Dec 2025 19:40:07 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1765164038; x=1765768838; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=pthQxy69h+U/5CTCNbJzI0/oY5Mp3d9cLENgacgD6Cs=;
-        b=gl4Gx8XJLAHTDNqQGGwbDaouTl90i955Ji7FtL2YsMVrc9J9WtSJN7iOGXr0T5+Rz8
-         8KgXN0/haBDI7Ieq3+43wRpF3pH5oOXKJ4sBYT3/+1ICjsvn/H3hhOud8+OtClhOB2A0
-         pJ45Vo0hOrTSR60Ao2ys2YvH2Cs48KFl6l8F1OlEHP5Be6B1vuQ/zwRsQTRKfjN4hOpi
-         G82uK43AWXvtILhAhhvY2QBQnBXoOORCCNL87h+beMkcWWnbHBy/6NN5o0vFetewUY0O
-         sVqGA+Ncv5ydhTOH2BH3s3x3y6AhnLailpHEPGAUwPWRMnzyaTPUTFeTJfL5Pip0TFtB
-         BNTg==
+        d=morsemicro-com.20230601.gappssmtp.com; s=20230601; t=1765165207; x=1765770007; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=p4lHY+nRzrTmxWclCC8siYd2+AI57YQwsqJAJhziLYE=;
+        b=neMZQP8Dtl3zEu5Gq7BYhJXiNK4o8i5uKLB0ow8NcIAT/Ms2MebZGnfd4KGdh/kq8z
+         mqAmOVNqSUj/wIy7Ln7MhBcbgnK540hL6ppxYzXFjblK8Nf4LGHOBOySQmq8DGsq3Y0R
+         ysn+mjLtzGrbdkHaodVsGXjtlMzrgO9RuR1MWMQWmRBqNRjFcqiRpPqgSmrmRvuEVPO1
+         ad61R/3Dk0iLZSEBFAFeWIYhq/ZOUmlIZDRtcMNtAO40IdyRGq+fa8DRchO5UDILVlgB
+         9rrIncU/AlThCTc0Km4APR8OSR9kliXbuKH2R0ZZTyMDiw/yAd7HBXlaWmOANhDTD8mz
+         ds0g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1765164038; x=1765768838;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=pthQxy69h+U/5CTCNbJzI0/oY5Mp3d9cLENgacgD6Cs=;
-        b=Hzt64m68ArB8TyxX7o/U0lOafSWhJG1DOuAp6t85bqjkjm6Ftl8RE1ARVCm0pcE+9t
-         lDtCe0+xUeP7JFehzFhwpbYRU8N9gBtksGlz/sLAJiYaqva3votReJGSoSRshDoMxOAJ
-         I3XECRo2abgYR93jcycvp4iLJovq2tm8LsMqD6iRWCBu/O4cMjKm/v+PIi9CURAtJZuc
-         I7WGrB/So6Xo9EmEWBLAChH2kV+SE29A7s5v7Mpe7or0UCYLZTB1Q69diUXZEQpX+T9p
-         WWeqvUXJ2Lr5CFVWN1TqDtuoM9RTgbh4bBi0xKWCpUrmkOQr1jFQMMq3QipzSt9Aw1eg
-         lhSw==
-X-Gm-Message-State: AOJu0YyfZ9Bb9ES6QTfCb40/PjT8n8cdoRY77fbh6Mk+CrHt/ZFSr2t0
-	X1u5c3z1TrjgjSD4dZ+ujvl56i5pcib6X3OgSi8SKy3C8zqLaU8DoQsQLJI7URUb
-X-Gm-Gg: ASbGncs1QrCpG0jMU07LZRBXHh1EQ36vJzmpI+jEX/iO+X1YCI3wsjYscYROTeOAudp
-	kvZTZ5f0GP4OHwVi8q1ad/YvYXGljR84lzhPrYc+VMJlnwcyzXLkzS3gcN8YSR+NHIaS5In9kCL
-	5w4SFx0skFnKFXHLdzEIcyvL/Zj+tAUREsmpfQ6XVbPDvFJPXgUzzZb1iQI2UQ08Yl94c4xu7wd
-	+o9AUFTtB6ov1Hob9uTB/L/DGWFWrXXmftHOEqnfXiZCXyoEZ5OeqyZXObTZZzpH+n9l29++cuE
-	IL0qWRxA1o5eJH7MEDqz41nJZf21VxqRnyaDS7xAS7c2cwc5vsZ8bhY4ZD0Sm48opmj+8I6do8Y
-	WNwED+tUzb7NF4u4tjaibO/YdtFQx8AS31Ha2uj6gsdSVpe68OOMoz+7G9OHVmoV93l3QP8BOea
-	V1F3GS1sZjBSfZy+vSuAKCzdSPBhGN4K2bjhJ4coEuLThONScLi+Qp
-X-Google-Smtp-Source: AGHT+IFvZcDGotRgp2akcPilSnlmLuKURxDRJIWM/KAl2/617n4tkXWj8jm3EHpF5OMAlL6a+Kf6KA==
-X-Received: by 2002:a05:6a00:3a14:b0:7a9:c21a:55b4 with SMTP id d2e1a72fcca58-7e8c1c30fbcmr5979281b3a.28.1765164038220;
-        Sun, 07 Dec 2025 19:20:38 -0800 (PST)
-Received: from BM5220 (118-232-8-190.dynamic.kbronet.com.tw. [118.232.8.190])
-        by smtp.googlemail.com with ESMTPSA id d2e1a72fcca58-7e29f2ed000sm11551934b3a.1.2025.12.07.19.20.36
+        d=1e100.net; s=20230601; t=1765165207; x=1765770007;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=p4lHY+nRzrTmxWclCC8siYd2+AI57YQwsqJAJhziLYE=;
+        b=J4NX0NNMKM889Y3VN2qJbcn7u079FDL/134mlEy8e1ihcGlx47dCf2vaN/MHZVzCX7
+         Qfc9CRXGUcLpItA3tk3xxSHxsNIBp0Qcfyewv1XNiY7zvYDgjCCd4cj+Qhb+hPnk3IfF
+         Y/v1VEgrvfL3qk61Li360FY5Pz9jjjE0pDe/qTvmyHZPZsVycVYLWMUAPA3/yKdRuo5s
+         WDF2erW1RpF4iRhqfPxyt/Rxdnhs0CIlho13alTxuRrwsYm+50VDIzSIDkDsp93+7SQx
+         KvMEOwP396WFvDF4X2L/MnrEpsaExnnK/O2CEt29jcVSQPOJr1jEA3BJup7W5pwQ36V/
+         +Hfg==
+X-Gm-Message-State: AOJu0YxqTUIQnDH941rMi1pZLtKXnEtK9Kec+VcMwv/uUrgOANlb07jW
+	rRikqru3CMIuZazMhw8/mzHKw/8vDUXF9/qqEwkIk1ULDAPn9ZxkGPwJKxB3OY2GkZb/nHvpws6
+	8GxhNvw==
+X-Gm-Gg: ASbGncvCVGcY9Puj65V4hWEWwwG8pdHvm+I8dSokAn4+JsKmiuIqudzOGljduATfNP9
+	ToW09lC050UMIymlhFMZ45vm43K4Uq3a+C4qakMQXq5tkXR23Hq/PE62LQoMyb7pUDNe4KwwpFS
+	9bQ4mI1YqxrmOkbOyk1XT0P7bf938y62l1n5a6vNh6Fhxytq2nIxRmqU0mhzOSpvAGO/VfCrO6+
+	iQfIzcfYm9TyEYMtXnX0fDOXEmS0wSBftwxT/y58Aefe+10bPYx6S15DKZYDfPVhwv4p14C0S0D
+	ShVRbC95RjZ3t7hZhZ5//CBieGQ6CFSXRHgts1HgaqGAwVd4cTVqiqXFmGQE/lNc8I0HwFbbtUP
+	p7WYA6G4SttyxgXzaW+gUDXJ221AQMfSmxRLxFaq8PON0+ZF980cSpzvcOTSIlZ9IFxddajiVVo
+	kOtF/fYvj+uwnWHmKdzc7d+q/q
+X-Google-Smtp-Source: AGHT+IGyJSQ26tVWqwFX87md84D/inNK+bYs/Gx0w4Tp6C3bxoXZKFlusHMfQwBt6X1IDAgiAMZYMw==
+X-Received: by 2002:a17:90b:2691:b0:32b:df0e:9283 with SMTP id 98e67ed59e1d1-349a260b134mr4618290a91.34.1765165206844;
+        Sun, 07 Dec 2025 19:40:06 -0800 (PST)
+Received: from 1207.mumbai.mm.lcl ([14.143.244.11])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3494ea899desm10383209a91.17.2025.12.07.19.40.03
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 07 Dec 2025 19:20:37 -0800 (PST)
-From: Zenm Chen <zenmchen@gmail.com>
-To: pkshih@realtek.com
+        Sun, 07 Dec 2025 19:40:06 -0800 (PST)
+From: Ria Thomas <ria.thomas@morsemicro.com>
+To: johannes@sipsolutions.net
 Cc: linux-wireless@vger.kernel.org,
-	marco.crivellari@suse.com,
-	rtl8821cerfe2@gmail.com,
-	zenmchen@gmail.com
-Subject: RE: [PATCH rtw-next] Revert "wifi: rtw88: add WQ_UNBOUND to alloc_workqueue users"
-Date: Mon,  8 Dec 2025 11:20:32 +0800
-Message-ID: <20251208032033.5793-1-zenmchen@gmail.com>
-X-Mailer: git-send-email 2.52.0
-In-Reply-To: <c5ea34777592402caeb7fb83af7d6f07@realtek.com>
-References: <c5ea34777592402caeb7fb83af7d6f07@realtek.com>
+	lachlan.hodges@morsemicro.com,
+	pradeep.reddy@morsemicro.com,
+	simon@morsemicro.com,
+	arien.judge@morsemicro.com,
+	Ria Thomas <ria.thomas@morsemicro.com>
+Subject: [PATCH wireless-next 0/3] wifi: add S1G response indication configuration with NDP BA support
+Date: Mon,  8 Dec 2025 09:09:36 +0530
+Message-Id: <20251208033939.3005700-1-ria.thomas@morsemicro.com>
+X-Mailer: git-send-email 2.25.1
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-Hi Ping-Ke,
+This patchset adds support for S1G Response Indication configuration; 
+section 10.3.2.17 and NDP ADDBA/DELBA negotiations; section 11.5.2.2 (b),
+in accordance with IEEE 802.11-2024.
 
-Ping-Ke Shih <pkshih@realtek.com> 於 2025年12月8日週一 上午10:11寫道：
->
-> Hi Zenm,
->
-> Zenm Chen <zenmchen@gmail.com>
-> > Hi,
-> >
-> > Last weekend I tried applying the v1 [1] to the kernel 6.17.9, but that one didn't work, either.
-> >
-> > [1]
-> > https://patchwork.kernel.org/project/linux-wireless/patch/20251113160605.381777-3-marco.crivellari@sus
-> > e.com/
-> >
-> > [  306.035759] usb 3-2: new high-speed USB device number 5 using ehci-pci
-> > [  306.162258] usb 3-2: New USB device found, idVendor=0bda, idProduct=b82c, bcdDevice= 2.10
-> > [  306.162272] usb 3-2: New USB device strings: Mfr=1, Product=2, SerialNumber=3
-> > [  306.162278] usb 3-2: Product: 802.11ac NIC
-> > [  306.162282] usb 3-2: Manufacturer: Realtek
-> > [  306.162286] usb 3-2: SerialNumber: 123456
-> > [  306.239143] ------------[ cut here ]------------
-> > [  306.239148] WARNING: CPU: 3 PID: 2886 at kernel/workqueue.c:5667 alloc_workqueue_noprof+0x676/0x770
->
-> I think this is because kernel 6.17.9 defines:
->
-> __WQ_BH_ALLOWS          = WQ_BH | WQ_HIGHPRI,
->
-> and the latest is:
->
-> __WQ_BH_ALLOWS          = WQ_BH | WQ_HIGHPRI | WQ_PERCPU,
->
+The Response Indication (RI) mechanism is unique to S1G and is used to
+explicitly signal which type of response frame is expected at SIFS following
+an eliciting frame. The RI is signaled in management and action frames and
+must be tracked across session setup, which is very much required in
+context of Block Ack negotiation.
+The NDP-based Block Ack mechanism allows aggregation setup using null data
+frames, avoiding legacy ADDBA/DELBA exchanges. When negotiation fails due to
+mismatched support, the responder returns a status code indicating NDP
+Block Ack is suggested (REJECTED_NDP_BLOCK_ACK_SUGGESTED), as
+specified in IEEE 802.11-2024.
 
-Thank you for pointing out this. Have confirmed the patch v1 does work on
-Arch Linux with kernel 6.18.0-1-mainline.
+Trace sample:
+
+IEEE 802.11 Wireless Management
+    Fixed parameters
+        Category code: Block Ack (3)
+        Action code: NDP ADDBA Request (0x80)
+        Dialog token: 0x01
+        Block Ack Parameters: 0x1003, A-MSDUs, Block Ack Policy
+            .... .... .... ...1 = A-MSDUs: Permitted in QoS Data MPDUs
+            .... .... .... ..1. = Block Ack Policy: Immediate Block Ack
+            .... .... ..00 00.. = Traffic Identifier: 0x0
+            0001 0000 00.. .... = Number of Buffers (1 Buffer = 2304 Bytes): 64
+        Block Ack Timeout: 0x0000
+        Block Ack Starting Sequence Control (SSC): 0x0010
+            .... .... .... 0000 = Fragment: 0
+            0000 0000 0001 .... = Starting Sequence Number: 1
+
+IEEE 802.11 Wireless Management
+    Fixed parameters
+        Category code: Block Ack (3)
+        Action code: NDP ADDBA Response (0x81)
+        Dialog token: 0x02
+        Status code: BlockAck negotiation refused because, due to buffer constraints and other unspecified reasons, the recipient prefers to generate only NDP BlockAck frames (0x006d)
+        Block Ack Parameters: 0x1002, Block Ack Policy
+            .... .... .... ...0 = A-MSDUs: Not Permitted
+            .... .... .... ..1. = Block Ack Policy: Immediate Block Ack
+            .... .... ..00 00.. = Traffic Identifier: 0x0
+            0001 0000 00.. .... = Number of Buffers (1 Buffer = 2304 Bytes): 64
+        Block Ack Timeout: 0x0000
+
+This patchset has been tested on S1G capable Morse Micro hardware and
+verifies correct RI signaling and NDP Block Ack negotiation during
+association and data exchange.
+
+Ria Thomas (3):
+  wifi: cfg80211: Add support for S1G Response Indication Configuration
+  wifi: mac80211: track S1G Response Indication (RI) and notify drivers
+  wifi: mac80211: add support for NDP ADDBA/DELBA for S1G
+
+ include/linux/ieee80211-ht.h  |  3 +++
+ include/linux/ieee80211-s1g.h | 14 +++++++++++++
+ include/linux/ieee80211.h     |  2 ++
+ include/net/cfg80211.h        |  2 ++
+ include/net/mac80211.h        |  6 ++++++
+ include/uapi/linux/nl80211.h  | 14 +++++++++++++
+ net/mac80211/agg-rx.c         | 37 ++++++++++++++++++++++++++++++++---
+ net/mac80211/agg-tx.c         | 22 +++++++++++++++++----
+ net/mac80211/cfg.c            | 18 +++++++++++++++++
+ net/mac80211/debugfs.c        |  1 +
+ net/mac80211/ht.c             |  8 +++++---
+ net/mac80211/ieee80211_i.h    |  9 ++++++++-
+ net/mac80211/iface.c          |  3 +++
+ net/mac80211/link.c           |  1 +
+ net/mac80211/rx.c             | 11 +++++++++--
+ net/mac80211/s1g.c            | 23 ++++++++++++++++++++++
+ net/mac80211/sta_info.h       |  2 ++
+ net/mac80211/util.c           |  3 +++
+ net/wireless/nl80211.c        | 24 +++++++++++++++++++++++
+ net/wireless/rdev-ops.h       | 14 +++++++++++++
+ net/wireless/trace.h          | 18 +++++++++++++++++
+ 21 files changed, 222 insertions(+), 13 deletions(-)
+
+-- 
+2.25.1
+
 
