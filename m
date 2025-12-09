@@ -1,56 +1,61 @@
-Return-Path: <linux-wireless+bounces-29606-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-29607-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 74476CAE782
-	for <lists+linux-wireless@lfdr.de>; Tue, 09 Dec 2025 01:16:55 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id E5CCACAE7BF
+	for <lists+linux-wireless@lfdr.de>; Tue, 09 Dec 2025 01:18:42 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id D7DBC301EFF1
-	for <lists+linux-wireless@lfdr.de>; Tue,  9 Dec 2025 00:16:53 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 0C7B1306C67C
+	for <lists+linux-wireless@lfdr.de>; Tue,  9 Dec 2025 00:17:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5D48F21B9C0;
-	Tue,  9 Dec 2025 00:16:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8C25E21ADC7;
+	Tue,  9 Dec 2025 00:16:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="nuyPzK+6"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ZT0wrQAd"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 318EE2153FB;
-	Tue,  9 Dec 2025 00:16:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5D7E51FF5E3;
+	Tue,  9 Dec 2025 00:16:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765239413; cv=none; b=TClSJnlONc4KGclrutW8HslcQg/G3frAxT3xak5khZR4+QoARYMXt2swZTevXUCldPNgeJe5jJxsRishNnixK6nKFKe14055S4BBUTKHMun25FQzc4OipY4sEhgzu27ZIdgcKcvzhzm3IUS5q/Kxq3kgSJ7p8vMinRuNgA8jY8E=
+	t=1765239418; cv=none; b=Bf1SBhu4bGKczMWal3TvNPGWaHP8/RIxb3fdNI0UTPV6H24Y4T08+odd9al3VBWs5bcr4xl+Z2weNCTqZrQF9LI3OfM/3CRTqaqtw5SKRtNKk+RjABMmSPBYsa12Q0UWL92Dym1qXhpe2jBxcg5zMoSi/hW4T5dfBO5DwQSKbIw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765239413; c=relaxed/simple;
-	bh=QPRP10VucOT7diTQb7MQ7N+PgDBlIwD51s7XelWZoGc=;
+	s=arc-20240116; t=1765239418; c=relaxed/simple;
+	bh=CcoOduBaJKs+Vjdxjvqz8sl0XCzaN235phou1vX6Q7E=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=di+uV+nm75Y23nIa1caxBFQiEq+0OqEUtVfTqqkf8LBCuzc2ToZfhJEhm9Kn87vseEH5B1O9G7uUzPyj9YUWLYsMBAMyJhs5HWdmovQoYtjON/EeGWi4xSNMCrUoYOc90ya9WgGX987d4RJ3NKiOqepUj5zdoqUM/SYTHrTms2o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=nuyPzK+6; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A43D7C19421;
-	Tue,  9 Dec 2025 00:16:51 +0000 (UTC)
+	 MIME-Version:Content-Type; b=tZBA6S78DqSBmk+XuziIJa7eB857L4RNMzRECxD5y3w+6OIZOP/uAAp1XFhWZxWWCoDYab2VzLe+qMLx+CP+0AFJjUBx4XVKzQKmC7VKOQ1//H/TJE4HBw1LMV8SU9LpJV8eTFNX7Fgb1se4/ewCQIPvl0ppxXizRE2O34Sab6o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ZT0wrQAd; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D13CDC113D0;
+	Tue,  9 Dec 2025 00:16:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1765239413;
-	bh=QPRP10VucOT7diTQb7MQ7N+PgDBlIwD51s7XelWZoGc=;
+	s=k20201202; t=1765239417;
+	bh=CcoOduBaJKs+Vjdxjvqz8sl0XCzaN235phou1vX6Q7E=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=nuyPzK+6aqOKF5XAjX1uf10V2q162IiOCtxncUw5cBOSOm4AHkHwVomi8NY2YWq+Y
-	 y5cEyTFkf5vts90LRpHHQxf5tfHFKbq2/r9PX+mKXdXkYcCfLm/Q3rdNnPJKQrnd0F
-	 bERjhZDhnl9dnGUMBrHJ1psh0byAuMHV1mj179cxyEkizluEtRrxp/5DRf3Dj7AuM3
-	 /F0rhwknjdeiP5BvhEyKWPvIGkONvMHjdIEupvnCNyzn4sRdi1gHckUW2gvQSQOdXF
-	 cEcIzppqehU2ggjkieXpPuFEJP99NBYSzcwbE33iVVDIrH9mh3JgC2T58/+LXxHywP
-	 c//bqYZeEKEiw==
+	b=ZT0wrQAdlZg68BobiE6NmgGOvL0AYRawmqvssGrtTPwrbIxbHIW1cqe8Y1ajTOC2l
+	 z1RRJiwp25q3phSIkLGZjhKNAY7X1xPpoqr5o7WoHrz3loizZiSvz59yoc4WVy7NW6
+	 GmdoyTvlP2k7i2zF+wwgHynrQx1YwMEPHPOzRfs+7N2O2kBqug7THD2UihnbwuwKlF
+	 94bDAwsLJDBWKu1u/4xFKGSiYmK4JV0sakphOlwn/Ppm4UewRj6ld30liKdyutpkWW
+	 NbmO2lGoS6J7Vl404zaK3l9Uap8Tpb1Qf0/N7Ds7BF6bUMVSZGF2wL7WkMNUw4mVZF
+	 VIjdKki0s56Hw==
 From: Sasha Levin <sashal@kernel.org>
 To: patches@lists.linux.dev,
 	stable@vger.kernel.org
-Cc: Johannes Berg <johannes.berg@intel.com>,
-	Emmanuel Grumbach <emmanuel.grumbach@intel.com>,
-	Miri Korenblit <miriam.rachel.korenblit@intel.com>,
+Cc: Caleb James DeLisle <cjd@cjdns.fr>,
+	Felix Fietkau <nbd@nbd.name>,
 	Sasha Levin <sashal@kernel.org>,
-	johannes@sipsolutions.net,
-	linux-wireless@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.18-6.12] wifi: mac80211: reset CRC valid after CSA
-Date: Mon,  8 Dec 2025 19:15:02 -0500
-Message-ID: <20251209001610.611575-10-sashal@kernel.org>
+	lorenzo@kernel.org,
+	ryder.lee@mediatek.com,
+	matthias.bgg@gmail.com,
+	angelogioacchino.delregno@collabora.com,
+	linux-wireless@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org,
+	linux-mediatek@lists.infradead.org
+Subject: [PATCH AUTOSEL 6.18-5.10] wifi: mt76: mmio_*_copy fix byte order and alignment
+Date: Mon,  8 Dec 2025 19:15:04 -0500
+Message-ID: <20251209001610.611575-12-sashal@kernel.org>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20251209001610.611575-1-sashal@kernel.org>
 References: <20251209001610.611575-1-sashal@kernel.org>
@@ -66,203 +71,199 @@ X-stable-base: Linux 6.18
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-From: Johannes Berg <johannes.berg@intel.com>
+From: Caleb James DeLisle <cjd@cjdns.fr>
 
-[ Upstream commit 8f24be708829854560e1db9f765c51305b046183 ]
+[ Upstream commit 2df00805f7dbaa46b60c682aad0d76270b7ba266 ]
 
-While waiting for a beacon after CSA, reset the CRC valid
-so that the next beacon is handled even if it happens to
-be identical the last one on the old channel. This is an
-AP bug either way, but it's better to disconnect cleanly
-than to have lingering CSA state.
+Update functions which copy to and from MMIO to load bytes as Little
+Endian, and also support unaligned buffers.
 
-In the iwlwifi instantiation of this problem, mac80211 is
-ignoring the beacon but the firmware creates a new CSA,
-and then crashes later because mac80211/driver didn't do
-anything about it.
+PCI devices almost universally use Little Endian ordering for MMIO
+registers, mt76 is no exception. PCI hardware that is designed to work
+with Big Endian CPUs often (but not always) "helps" by transparently
+byte-swapping MMIO reads and writes on the wire. If this is enabled
+then it cannot be turned off for a single write. On hardware which does
+not support this, writel() does the swap in software. When we are
+transferring arbitrary bytes to MMIO space, we need them to arrive in
+the same order they were in memory, so when the hardware swaps them
+this is a problem. Rather than care about how our PCI host controller
+works, we instead load bytes as Little Endian - so on a Big Endian
+machine this will reverse them, then we use writel() which will put
+them back in the right order again. This way we do not make it our
+business whether the swapping is done in software or hardware.
 
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
-Reviewed-by: Emmanuel Grumbach <emmanuel.grumbach@intel.com>
-Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
-Link: https://patch.msgid.link/20251019115024.521ad9c6b87d.I86376900df3d3423185b75bf63358c29f33a5eb6@changeid
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Furthermore, inspection of the code shows that these functions are
+often called with stack-allocated u8 arrays which have no alignment
+guarantees so we now use (get|put)_unaligned_le32().
+
+Fixes this issue:
+mt76x2e 0000:02:00.0: ROM patch build: 20141115060606a
+mt76x2e 0000:02:00.0: Firmware Version: 0.0.00
+mt76x2e 0000:02:00.0: Build: 1
+mt76x2e 0000:02:00.0: Build Time: 201607111443____
+mt76x2e 0000:02:00.0: Firmware failed to start
+mt76x2e 0000:02:00.0: probe with driver mt76x2e failed with error -145
+
+Tested on:
+SmartFiber XP8421-B (Big Endian MIPS 34Kc)
+  - MT7612 -> 5g / ap / psk2
+  - MT7603 -> 2g / sta / psk2
+  - MT7603 -> 2g / ap / psk2
+TpLink Archer v1200v-v2 (Big Endian MIPS 34Kc)
+  - MT7613 -> 5g / ap / psk2
+  - MT7603 -> 2g / sta / psk2
+
+Signed-off-by: Caleb James DeLisle <cjd@cjdns.fr>
+Link: https://patch.msgid.link/20251029184143.3991388-1-cjd@cjdns.fr
+Signed-off-by: Felix Fietkau <nbd@nbd.name>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
 
 LLM Generated explanations, may be completely bogus:
 
-Now I understand the full picture! Let me put together the final
-analysis:
-
-## Summary Analysis
+## ANALYSIS SUMMARY
 
 ### 1. COMMIT MESSAGE ANALYSIS
 
-**Subject:** "wifi: mac80211: reset CRC valid after CSA"
+**Bug Description:** The commit fixes two issues in mt76 WiFi driver's
+MMIO copy functions:
+1. **Byte order issue on Big Endian systems:** The original code uses
+   `__iowrite32_copy()` and `__ioread32_copy()` which internally use
+   `__raw_writel()`/`__raw_readl()` - these do NOT perform byte swapping
+2. **Unaligned buffer issue:** Stack-allocated u8 arrays may not be
+   4-byte aligned
 
-**Key points from commit message:**
-- Fixes a bug where the beacon CRC matching causes the first beacon
-  after CSA to be ignored
-- This happens when an AP (like Asus AXE11000) sends an identical beacon
-  after CSA
-- When ignored, mac80211 doesn't complete the CSA cleanup properly
-- In iwlwifi, this causes firmware to create a new CSA and eventually
-  crash
+**User-visible failure:** Complete driver probe failure with "Firmware
+failed to start" error -145 on Big Endian systems. WiFi is totally non-
+functional.
 
-**Tags:**
-- **NO** `Cc: stable@vger.kernel.org` tag - The maintainer did NOT
-  explicitly request stable backport
-- **NO** `Fixes:` tag - There's no explicit reference to a buggy commit
+**Testing:** Tested on real hardware - multiple MT76 devices on Big
+Endian MIPS platforms (SmartFiber, TP-Link Archer).
+
+**Notable:** No `Fixes:` or `Cc: stable` tags present.
 
 ### 2. CODE CHANGE ANALYSIS
 
-The fix is extremely small - just **1 line of actual code** plus a
-**9-line comment**:
+**Root cause:** The generic `__iowrite32_copy()` function (in
+`lib/iomap_copy.c:20-28`) uses `__raw_writel()` which writes bytes in
+host order without endian conversion. On Big Endian systems, bytes
+arrive at the PCI device in the wrong order.
 
-```c
-link->u.mgd.beacon_crc_valid = false;
-```
+**The fix:**
+- Replaces `__iowrite32_copy()` with explicit loop using `writel()` +
+  `get_unaligned_le32()`
+- Replaces `__ioread32_copy()` with explicit loop using `readl()` +
+  `put_unaligned_le32()`
 
-This line is added at line 2509 in `ieee80211_csa_switch_work()`, right
-after:
-```c
-link->u.mgd.csa.waiting_bcn = true;
-```
+**Why it's correct:**
+1. `get_unaligned_le32()` reads 4 bytes interpreting them as little-
+   endian (safe for unaligned access)
+2. `writel()` handles endian conversion (host→LE for PCI wire format)
+3. Combined: bytes arrive at hardware in correct order regardless of
+   host endianness
+4. On Little Endian systems: behavior is functionally equivalent (no
+   regression risk)
 
-**Technical mechanism:**
-1. mac80211 uses a CRC mechanism to skip processing beacons that haven't
-   changed
-2. After CSA, the code sets `waiting_bcn = true` to wait for the first
-   beacon on the new channel
-3. The first beacon should normally be different (CSA IE removed), but
-   some buggy APs send identical beacons
-4. If the beacon CRC matches the last beacon on the old channel and
-   `beacon_crc_valid` is still true, mac80211 skips processing
-5. This leaves the CSA in a "waiting" state indefinitely
-6. The iwlwifi firmware sees the beacon, detects CSA state, and creates
-   a new CSA event, eventually crashing
+**Header dependency:** `<linux/unaligned.h>` is included transitively
+via `mac80211.h` → `mt76.h` → `mmio.c`
 
-**Root cause:** The `beacon_crc_valid` flag wasn't reset when entering
-the CSA waiting state.
-
-### 3. HISTORICAL CONTEXT
-
-This is a **regression fix** from commit `f3dee30c6791e` "wifi:
-mac80211: mlme: unify CSA handling" (introduced in v6.9):
-- That commit removed `beacon_crc_valid = false` from
-  `ieee80211_chswitch_post_beacon()`
-- The rationale was "the CRC will change due to CSA/ECSA elements"
-- But this assumption was wrong for some buggy APs
-
-The original fix `d6843d1ee2831` "mac80211: clear the beacon's CRC after
-channel switch" (2021) recognized this need but was in a different
-location in the old code structure.
-
-### 4. CLASSIFICATION
+### 3. CLASSIFICATION
 
 - **Type:** Bug fix (not a feature)
-- **Category:** Crash fix / firmware hang fix
-- **Exception categories:** None (this is a pure bug fix)
-- **Security:** No CVE mentioned, not a security issue
+- **Severity:** HIGH - Complete driver failure on affected systems
+- **Scope:** mt76 WiFi devices on Big Endian architectures (MIPS
+  routers, embedded systems)
+- **Security:** Not a security issue
 
-### 5. SCOPE AND RISK ASSESSMENT
+### 4. SCOPE AND RISK ASSESSMENT
 
-- **Lines changed:** ~10 lines (1 functional, 9 comment)
-- **Files touched:** 1 (net/mac80211/mlme.c)
-- **Complexity:** Very low - single boolean assignment
-- **Risk:** Very low - the change is conservative (invalidating CRC
-  forces re-processing)
-- **Worst case if fix is wrong:** Slightly more beacon processing work
-  (negligible)
-- **Subsystem:** WiFi mac80211 - mature, well-tested
+| Factor | Assessment |
+|--------|------------|
+| Lines changed | ~10 lines (very small) |
+| Files affected | 1 file (mmio.c) |
+| Complexity | Low - uses standard kernel APIs |
+| Risk of regression | Low - functionally equivalent on LE systems |
+| Self-contained | Yes - no dependencies on other commits |
 
-### 6. USER IMPACT
+### 5. USER IMPACT
 
-- **Who is affected:** Users with Intel WiFi (iwlwifi) connecting to
-  certain APs (like Asus AXE11000)
-- **Severity:** HIGH - causes firmware crash
-- **Reproducibility:** Specific AP behavior needed, but real-world bug
-- **Trigger:** CSA (Channel Switch Announcement) - common in enterprise
-  environments
+- **Affected users:** Big Endian systems with mt76 WiFi (OpenWrt
+  routers, embedded MIPS devices)
+- **Impact severity:** CRITICAL for affected users - WiFi doesn't work
+  at all
+- **Impact scope:** Minority use case (BE systems are uncommon)
 
-### 7. STABILITY INDICATORS
+### 6. STABILITY INDICATORS
 
-- **Tested-by:** Not present
-- **Reviewed-by:** Emmanuel Grumbach (Intel WiFi maintainer) ✓
-- **Author:** Johannes Berg (mac80211 maintainer) - highly trusted
-- **Time in mainline:** Recent (Oct 2025) - not much soak time
+- ✅ Signed off by subsystem maintainer (Felix Fietkau)
+- ✅ Tested on multiple real hardware platforms
+- ✅ Uses well-established kernel primitives
+- ⚠️ No Reviewed-by tags from others
+- ⚠️ No explicit stable request
 
-### 8. DEPENDENCY CHECK
+### 7. DEPENDENCY CHECK
 
-**CRITICAL:** This fix requires commit `f3dee30c6791e` "wifi: mac80211:
-mlme: unify CSA handling" which:
-- Is present in v6.9+
-- Is present in stable/linux-6.9.y, 6.10.y, 6.11.y, 6.12.y, etc.
-- Is **NOT** present in stable/linux-6.6.y (LTS) or stable/linux-6.1.y
-  (LTS)
+- ✅ Self-contained patch
+- ✅ No prerequisite commits needed
+- ✅ Code path exists in all stable trees with mt76 (since 2019)
 
-For older stable trees (6.6.y, 6.1.y), this fix doesn't apply because:
-1. The code structure is completely different
-2. The original `beacon_crc_valid = false` is still in
-   `ieee80211_chswitch_post_beacon()`
-3. The bug was introduced by `f3dee30c6791e` which isn't in those trees
-
-### VERDICT
+## VERDICT
 
 **Arguments FOR backporting:**
-1. Fixes a real firmware crash that affects users
-2. Small, surgical fix - single line of actual code
-3. Low risk - conservative change (invalidating CRC is safe)
-4. Written by mac80211 maintainer, reviewed by iwlwifi maintainer
-5. Fixes a regression from `f3dee30c6791e`
+- Fixes a complete driver failure that makes WiFi unusable on Big Endian
+  systems
+- Small, surgical fix (~10 lines) with well-defined scope
+- Uses standard, well-tested kernel APIs (`writel`,
+  `get_unaligned_le32`)
+- Self-contained with no dependencies
+- Accepted by maintainer
+- Functionally equivalent on Little Endian systems (no regression risk)
 
 **Arguments AGAINST backporting:**
-1. No `Cc: stable` tag - maintainer didn't request it
-2. No `Fixes:` tag
-3. Only applies to kernels 6.9+ (those with the prerequisite commit)
-4. Relatively new commit (limited soak time)
-5. Requires specific buggy AP to trigger
+- No explicit `Cc: stable` tag from maintainer
+- No `Fixes:` tag indicating when bug was introduced
+- Big Endian systems are a minority use case
 
-**Risk vs Benefit:**
-- Risk: Very low (trivial change, conservative behavior)
-- Benefit: Medium-high (prevents firmware crashes for users with
-  affected APs)
-
-The commit fixes a real crash scenario in iwlwifi with certain APs, is
-extremely small and low-risk, and was reviewed by the relevant
-maintainers. The lack of `Cc: stable` tag might be an oversight given
-the fix's nature. However, it only applies to kernels 6.9+ where the
-prerequisite CSA refactoring exists.
-
-For stable trees 6.9+, 6.10+, 6.11+, 6.12+, this should be backported as
-it fixes a real user-visible crash with very low risk.
+**Conclusion:** Despite the lack of explicit stable tagging, this commit
+fixes a severe, user-visible bug (complete driver failure) with a small,
+obviously correct fix using standard kernel patterns. The risk is low
+and the benefit is high for affected users. Big Endian MIPS platforms
+with mt76 WiFi (common in OpenWrt/embedded space) deserve working WiFi
+support.
 
 **YES**
 
- net/mac80211/mlme.c | 10 ++++++++++
- 1 file changed, 10 insertions(+)
+ drivers/net/wireless/mediatek/mt76/mmio.c | 12 ++++++++++--
+ 1 file changed, 10 insertions(+), 2 deletions(-)
 
-diff --git a/net/mac80211/mlme.c b/net/mac80211/mlme.c
-index f3138d1585353..a231e8661e39d 100644
---- a/net/mac80211/mlme.c
-+++ b/net/mac80211/mlme.c
-@@ -2508,6 +2508,16 @@ static void ieee80211_csa_switch_work(struct wiphy *wiphy,
- 
- 	link->u.mgd.csa.waiting_bcn = true;
- 
-+	/*
-+	 * The next beacon really should always be different, so this should
-+	 * have no effect whatsoever. However, some APs (we observed this in
-+	 * an Asus AXE11000), the beacon after the CSA might be identical to
-+	 * the last beacon on the old channel - in this case we'd ignore it.
-+	 * Resetting the CRC will lead us to handle it better (albeit with a
-+	 * disconnect, but clearly the AP is broken.)
-+	 */
-+	link->u.mgd.beacon_crc_valid = false;
+diff --git a/drivers/net/wireless/mediatek/mt76/mmio.c b/drivers/net/wireless/mediatek/mt76/mmio.c
+index cd2e9737c3bf9..865ec910f05a4 100644
+--- a/drivers/net/wireless/mediatek/mt76/mmio.c
++++ b/drivers/net/wireless/mediatek/mt76/mmio.c
+@@ -33,13 +33,21 @@ static u32 mt76_mmio_rmw(struct mt76_dev *dev, u32 offset, u32 mask, u32 val)
+ static void mt76_mmio_write_copy(struct mt76_dev *dev, u32 offset,
+ 				 const void *data, int len)
+ {
+-	__iowrite32_copy(dev->mmio.regs + offset, data, DIV_ROUND_UP(len, 4));
++	int i;
 +
- 	/* apply new TPE restrictions immediately on the new channel */
- 	if (link->u.mgd.csa.ap_chandef.chan->band == NL80211_BAND_6GHZ &&
- 	    link->u.mgd.conn.mode >= IEEE80211_CONN_MODE_HE) {
++	for (i = 0; i < ALIGN(len, 4); i += 4)
++		writel(get_unaligned_le32(data + i),
++		       dev->mmio.regs + offset + i);
+ }
+ 
+ static void mt76_mmio_read_copy(struct mt76_dev *dev, u32 offset,
+ 				void *data, int len)
+ {
+-	__ioread32_copy(data, dev->mmio.regs + offset, DIV_ROUND_UP(len, 4));
++	int i;
++
++	for (i = 0; i < ALIGN(len, 4); i += 4)
++		put_unaligned_le32(readl(dev->mmio.regs + offset + i),
++				   data + i);
+ }
+ 
+ static int mt76_mmio_wr_rp(struct mt76_dev *dev, u32 base,
 -- 
 2.51.0
 
