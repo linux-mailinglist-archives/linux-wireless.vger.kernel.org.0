@@ -1,61 +1,55 @@
-Return-Path: <linux-wireless+bounces-29607-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-29608-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id E5CCACAE7BF
-	for <lists+linux-wireless@lfdr.de>; Tue, 09 Dec 2025 01:18:42 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 38B37CAE792
+	for <lists+linux-wireless@lfdr.de>; Tue, 09 Dec 2025 01:17:09 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 0C7B1306C67C
-	for <lists+linux-wireless@lfdr.de>; Tue,  9 Dec 2025 00:17:00 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id E0ED83024986
+	for <lists+linux-wireless@lfdr.de>; Tue,  9 Dec 2025 00:17:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8C25E21ADC7;
-	Tue,  9 Dec 2025 00:16:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A321221ADC7;
+	Tue,  9 Dec 2025 00:17:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ZT0wrQAd"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="RxRG0Ig8"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5D7E51FF5E3;
-	Tue,  9 Dec 2025 00:16:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 76C0F1FF5E3;
+	Tue,  9 Dec 2025 00:17:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765239418; cv=none; b=Bf1SBhu4bGKczMWal3TvNPGWaHP8/RIxb3fdNI0UTPV6H24Y4T08+odd9al3VBWs5bcr4xl+Z2weNCTqZrQF9LI3OfM/3CRTqaqtw5SKRtNKk+RjABMmSPBYsa12Q0UWL92Dym1qXhpe2jBxcg5zMoSi/hW4T5dfBO5DwQSKbIw=
+	t=1765239424; cv=none; b=Hg/lziWwXA/kBcsMQ170fycv/qcSmEywY+H92cdrydr1jAB3Q8hIHPhvbJ/q/6BYBhoBUuQQvh9lq9q0RJFMP9HyRfpy3GYumuSbhBkZ+hO3tGsUzo4SU19EIZOdF2vIoMZHyulPPpAMSlQBmCFwv2f9Yn5L/MTCN490puZVpjk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765239418; c=relaxed/simple;
-	bh=CcoOduBaJKs+Vjdxjvqz8sl0XCzaN235phou1vX6Q7E=;
+	s=arc-20240116; t=1765239424; c=relaxed/simple;
+	bh=30B2IC5tghGWMMCtTTZEzIXfgSO6xlHFtZfDadBtLYQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=tZBA6S78DqSBmk+XuziIJa7eB857L4RNMzRECxD5y3w+6OIZOP/uAAp1XFhWZxWWCoDYab2VzLe+qMLx+CP+0AFJjUBx4XVKzQKmC7VKOQ1//H/TJE4HBw1LMV8SU9LpJV8eTFNX7Fgb1se4/ewCQIPvl0ppxXizRE2O34Sab6o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ZT0wrQAd; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D13CDC113D0;
-	Tue,  9 Dec 2025 00:16:55 +0000 (UTC)
+	 MIME-Version; b=osLbmwVdvRKn4id+uHACElNPluOixtsVkllKQ2GiSxe/groErDtAESTj34bf9lXSx6qxjzHOsAr9juWZjDcBtnpqWJUcah8ni2AeWpym4v3wnM0/L7GZkDGVkHX1V484PqZjyAJ05ywzmpHtFgKtNm+sjDRL7ypuA3HOcy63oJA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=RxRG0Ig8; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1AA42C19422;
+	Tue,  9 Dec 2025 00:17:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1765239417;
-	bh=CcoOduBaJKs+Vjdxjvqz8sl0XCzaN235phou1vX6Q7E=;
+	s=k20201202; t=1765239424;
+	bh=30B2IC5tghGWMMCtTTZEzIXfgSO6xlHFtZfDadBtLYQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ZT0wrQAdlZg68BobiE6NmgGOvL0AYRawmqvssGrtTPwrbIxbHIW1cqe8Y1ajTOC2l
-	 z1RRJiwp25q3phSIkLGZjhKNAY7X1xPpoqr5o7WoHrz3loizZiSvz59yoc4WVy7NW6
-	 GmdoyTvlP2k7i2zF+wwgHynrQx1YwMEPHPOzRfs+7N2O2kBqug7THD2UihnbwuwKlF
-	 94bDAwsLJDBWKu1u/4xFKGSiYmK4JV0sakphOlwn/Ppm4UewRj6ld30liKdyutpkWW
-	 NbmO2lGoS6J7Vl404zaK3l9Uap8Tpb1Qf0/N7Ds7BF6bUMVSZGF2wL7WkMNUw4mVZF
-	 VIjdKki0s56Hw==
+	b=RxRG0Ig8ZNkoQHnHUIhv0jPEFQf5Ji5fGcpYcTbHMTjr5bB9DZiRpmB0J7f3BR6VH
+	 8zI8MwQWDvNDs+WvpAtcoJNi6IziDIaxkNb6/VJY6FMQtzP2W3ul1PHwdpJ2vgz1uu
+	 R0nx3N3Brxoi4A3RGYNia6sC2oM0sJGOV+60q5j3MBAGCyZ5jhjjLFsCUBnuIZqj8C
+	 u/uDJjLZ2Beai7BSfMtGlCZpvvLFa4HZUbQ/nFJSfGg08LdV0nn2NxtxlvtcIqOLAV
+	 dZSCRKPt70t/GRKhdtFXAcysCju6Wv6i2dsy1CqujKXeNDQyDZwERBRxDndtVG+I+E
+	 fvp50ALCBm+Rg==
 From: Sasha Levin <sashal@kernel.org>
 To: patches@lists.linux.dev,
 	stable@vger.kernel.org
-Cc: Caleb James DeLisle <cjd@cjdns.fr>,
-	Felix Fietkau <nbd@nbd.name>,
+Cc: Bitterblue Smith <rtl8821cerfe2@gmail.com>,
+	Ping-Ke Shih <pkshih@realtek.com>,
 	Sasha Levin <sashal@kernel.org>,
-	lorenzo@kernel.org,
-	ryder.lee@mediatek.com,
-	matthias.bgg@gmail.com,
-	angelogioacchino.delregno@collabora.com,
-	linux-wireless@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org,
-	linux-mediatek@lists.infradead.org
-Subject: [PATCH AUTOSEL 6.18-5.10] wifi: mt76: mmio_*_copy fix byte order and alignment
-Date: Mon,  8 Dec 2025 19:15:04 -0500
-Message-ID: <20251209001610.611575-12-sashal@kernel.org>
+	Jes.Sorensen@gmail.com,
+	linux-wireless@vger.kernel.org
+Subject: [PATCH AUTOSEL 6.18-6.12] wifi: rtl8xxxu: Fix HT40 channel config for RTL8192CU, RTL8723AU
+Date: Mon,  8 Dec 2025 19:15:07 -0500
+Message-ID: <20251209001610.611575-15-sashal@kernel.org>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20251209001610.611575-1-sashal@kernel.org>
 References: <20251209001610.611575-1-sashal@kernel.org>
@@ -68,202 +62,198 @@ MIME-Version: 1.0
 X-stable: review
 X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.18
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-From: Caleb James DeLisle <cjd@cjdns.fr>
+From: Bitterblue Smith <rtl8821cerfe2@gmail.com>
 
-[ Upstream commit 2df00805f7dbaa46b60c682aad0d76270b7ba266 ]
+[ Upstream commit 5511ba3de434892e5ef3594d6eabbd12b1629356 ]
 
-Update functions which copy to and from MMIO to load bytes as Little
-Endian, and also support unaligned buffers.
+Flip the response rate subchannel. It was backwards, causing low
+speeds when using 40 MHz channel width. "iw dev ... station dump"
+showed a low RX rate, 11M or less.
 
-PCI devices almost universally use Little Endian ordering for MMIO
-registers, mt76 is no exception. PCI hardware that is designed to work
-with Big Endian CPUs often (but not always) "helps" by transparently
-byte-swapping MMIO reads and writes on the wire. If this is enabled
-then it cannot be turned off for a single write. On hardware which does
-not support this, writel() does the swap in software. When we are
-transferring arbitrary bytes to MMIO space, we need them to arrive in
-the same order they were in memory, so when the hardware swaps them
-this is a problem. Rather than care about how our PCI host controller
-works, we instead load bytes as Little Endian - so on a Big Endian
-machine this will reverse them, then we use writel() which will put
-them back in the right order again. This way we do not make it our
-business whether the swapping is done in software or hardware.
+Also fix the channel width field of RF6052_REG_MODE_AG.
 
-Furthermore, inspection of the code shows that these functions are
-often called with stack-allocated u8 arrays which have no alignment
-guarantees so we now use (get|put)_unaligned_le32().
+Tested only with RTL8192CU, but these settings are identical for
+RTL8723AU.
 
-Fixes this issue:
-mt76x2e 0000:02:00.0: ROM patch build: 20141115060606a
-mt76x2e 0000:02:00.0: Firmware Version: 0.0.00
-mt76x2e 0000:02:00.0: Build: 1
-mt76x2e 0000:02:00.0: Build Time: 201607111443____
-mt76x2e 0000:02:00.0: Firmware failed to start
-mt76x2e 0000:02:00.0: probe with driver mt76x2e failed with error -145
-
-Tested on:
-SmartFiber XP8421-B (Big Endian MIPS 34Kc)
-  - MT7612 -> 5g / ap / psk2
-  - MT7603 -> 2g / sta / psk2
-  - MT7603 -> 2g / ap / psk2
-TpLink Archer v1200v-v2 (Big Endian MIPS 34Kc)
-  - MT7613 -> 5g / ap / psk2
-  - MT7603 -> 2g / sta / psk2
-
-Signed-off-by: Caleb James DeLisle <cjd@cjdns.fr>
-Link: https://patch.msgid.link/20251029184143.3991388-1-cjd@cjdns.fr
-Signed-off-by: Felix Fietkau <nbd@nbd.name>
+Signed-off-by: Bitterblue Smith <rtl8821cerfe2@gmail.com>
+Reviewed-by: Ping-Ke Shih <pkshih@realtek.com>
+Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
+Link: https://patch.msgid.link/1f46571d-855b-43e1-8bfc-abacceb96043@gmail.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
 
 LLM Generated explanations, may be completely bogus:
 
-## ANALYSIS SUMMARY
+## COMPREHENSIVE ANALYSIS
 
 ### 1. COMMIT MESSAGE ANALYSIS
 
-**Bug Description:** The commit fixes two issues in mt76 WiFi driver's
-MMIO copy functions:
-1. **Byte order issue on Big Endian systems:** The original code uses
-   `__iowrite32_copy()` and `__ioread32_copy()` which internally use
-   `__raw_writel()`/`__raw_readl()` - these do NOT perform byte swapping
-2. **Unaligned buffer issue:** Stack-allocated u8 arrays may not be
-   4-byte aligned
+**Subject:** "wifi: rtl8xxxu: Fix HT40 channel config for RTL8192CU,
+RTL8723AU"
 
-**User-visible failure:** Complete driver probe failure with "Firmware
-failed to start" error -145 on Big Endian systems. WiFi is totally non-
-functional.
-
-**Testing:** Tested on real hardware - multiple MT76 devices on Big
-Endian MIPS platforms (SmartFiber, TP-Link Archer).
-
-**Notable:** No `Fixes:` or `Cc: stable` tags present.
+- Contains "Fix" keyword indicating a bug fix
+- Describes specific affected hardware: RTL8192CU, RTL8723AU USB WiFi
+  adapters
+- Explains user-visible symptom: "low speeds when using 40 MHz channel
+  width"
+- Provides diagnostic evidence: "`iw dev ... station dump` showed a low
+  RX rate, 11M or less"
+- **No** "Cc: stable@vger.kernel.org" tag
+- **No** "Fixes:" tag pointing to the original buggy commit
+- **Has** "Reviewed-by: Ping-Ke Shih" (Realtek's kernel maintainer)
+- **Has** "Tested only with RTL8192CU" - real-world testing performed
 
 ### 2. CODE CHANGE ANALYSIS
 
-**Root cause:** The generic `__iowrite32_copy()` function (in
-`lib/iomap_copy.c:20-28`) uses `__raw_writel()` which writes bytes in
-host order without endian conversion. On Big Endian systems, bytes
-arrive at the PCI device in the wrong order.
+**Two distinct bugs are fixed:**
 
-**The fix:**
-- Replaces `__iowrite32_copy()` with explicit loop using `writel()` +
-  `get_unaligned_le32()`
-- Replaces `__ioread32_copy()` with explicit loop using `readl()` +
-  `put_unaligned_le32()`
+**Bug #1: RSR (Response Rate Set) subchannel configuration (lines
+1255-1258):**
+```c
+// BEFORE (buggy):
+if (sec_ch_above)
+    rsr |= RSR_RSC_UPPER_SUB_CHANNEL;
+else
+    rsr |= RSR_RSC_LOWER_SUB_CHANNEL;
 
-**Why it's correct:**
-1. `get_unaligned_le32()` reads 4 bytes interpreting them as little-
-   endian (safe for unaligned access)
-2. `writel()` handles endian conversion (host→LE for PCI wire format)
-3. Combined: bytes arrive at hardware in correct order regardless of
-   host endianness
-4. On Little Endian systems: behavior is functionally equivalent (no
-   regression risk)
+// AFTER (fixed):
+if (!sec_ch_above)
+    rsr |= RSR_RSC_UPPER_SUB_CHANNEL;
+else
+    rsr |= RSR_RSC_LOWER_SUB_CHANNEL;
+```
+The logic was inverted - when secondary channel is above, LOWER should
+be set, not UPPER. Comparison with RTL8188E driver (8188e.c:462-465)
+confirms the fix matches the correct pattern.
 
-**Header dependency:** `<linux/unaligned.h>` is included transitively
-via `mac80211.h` → `mt76.h` → `mmio.c`
+**Bug #2: RF6052_REG_MODE_AG bandwidth configuration (lines
+1322-1328):**
+```c
+// BEFORE (buggy):
+if (hw->conf.chandef.width == NL80211_CHAN_WIDTH_40)
+    val32 &= ~MODE_AG_CHANNEL_20MHZ;
+else
+    val32 |= MODE_AG_CHANNEL_20MHZ;
+
+// AFTER (fixed):
+val32 &= ~MODE_AG_BW_MASK;  // Clear both bits 10 and 11
+if (hw->conf.chandef.width != NL80211_CHAN_WIDTH_40)
+    val32 |= MODE_AG_CHANNEL_20MHZ;
+```
+Two issues: (1) Only cleared bit 10, not the full bandwidth mask (bits
+10-11), and (2) the logic flow was awkward - proper pattern is to clear
+mask first, then set appropriate bit only when needed.
+
+The gen2 driver (`rtl8xxxu_gen2_config_channel` at line 1446) already
+uses `MODE_AG_BW_MASK` correctly, confirming this is the right approach.
 
 ### 3. CLASSIFICATION
 
-- **Type:** Bug fix (not a feature)
-- **Severity:** HIGH - Complete driver failure on affected systems
-- **Scope:** mt76 WiFi devices on Big Endian architectures (MIPS
-  routers, embedded systems)
-- **Security:** Not a security issue
+- **Bug Type:** Logic error causing severe performance degradation
+- **NOT a feature:** No new functionality added
+- **NOT a quirk/workaround:** This is fixing incorrect code logic
+- **Hardware affected:** RTL8192CU, RTL8723AU (older but still commonly
+  used USB WiFi adapters)
 
 ### 4. SCOPE AND RISK ASSESSMENT
 
-| Factor | Assessment |
-|--------|------------|
-| Lines changed | ~10 lines (very small) |
-| Files affected | 1 file (mmio.c) |
-| Complexity | Low - uses standard kernel APIs |
-| Risk of regression | Low - functionally equivalent on LE systems |
-| Self-contained | Yes - no dependencies on other commits |
+- **Lines changed:** ~8 lines modified
+- **Files touched:** 1 file (core.c)
+- **Complexity:** LOW - simple logic inversions and proper mask usage
+- **Scope:** Confined to `rtl8xxxu_gen1_config_channel()` function, only
+  affects 40MHz mode
+- **Risk of regression:** LOW - brings gen1 config in line with gen2 and
+  8188e implementations
+- **Dependencies:** `MODE_AG_BW_MASK` exists since 2016 (commit
+  c3f9506f2374), present in all stable kernels
 
 ### 5. USER IMPACT
 
-- **Affected users:** Big Endian systems with mt76 WiFi (OpenWrt
-  routers, embedded MIPS devices)
-- **Impact severity:** CRITICAL for affected users - WiFi doesn't work
-  at all
-- **Impact scope:** Minority use case (BE systems are uncommon)
+- **Affected users:** Anyone using RTL8192CU or RTL8723AU USB WiFi
+  adapters with 40MHz channels
+- **Severity:** MODERATE-HIGH - WiFi functional but severely degraded
+  speeds (capped at 11M vs expected 40MHz HT speeds which could be
+  150-300Mbps)
+- **Impact scope:** These are common, inexpensive USB WiFi adapters;
+  many users in production environments
+- **Visibility:** Users would notice unusably slow WiFi and might
+  mistakenly blame their router or network
 
 ### 6. STABILITY INDICATORS
 
-- ✅ Signed off by subsystem maintainer (Felix Fietkau)
-- ✅ Tested on multiple real hardware platforms
-- ✅ Uses well-established kernel primitives
-- ⚠️ No Reviewed-by tags from others
-- ⚠️ No explicit stable request
+- Reviewed by Realtek's Linux kernel maintainer (Ping-Ke Shih)
+- Tested on actual hardware (RTL8192CU)
+- Consistent with how other chip variants in the same driver family
+  handle this
+- Small, surgical changes with clear correctness rationale
 
 ### 7. DEPENDENCY CHECK
 
-- ✅ Self-contained patch
-- ✅ No prerequisite commits needed
-- ✅ Code path exists in all stable trees with mt76 (since 2019)
+- `MODE_AG_BW_MASK` macro is defined in regs.h since 2016
+- No other commits needed for this fix to work
+- The affected function `rtl8xxxu_gen1_config_channel()` exists in all
+  stable kernels that have the rtl8xxxu driver
 
-## VERDICT
+### VERDICT
 
-**Arguments FOR backporting:**
-- Fixes a complete driver failure that makes WiFi unusable on Big Endian
-  systems
-- Small, surgical fix (~10 lines) with well-defined scope
-- Uses standard, well-tested kernel APIs (`writel`,
-  `get_unaligned_le32`)
-- Self-contained with no dependencies
-- Accepted by maintainer
-- Functionally equivalent on Little Endian systems (no regression risk)
+**Positive factors:**
+- Fixes a real, user-visible performance bug (severely degraded WiFi
+  speeds)
+- Small, contained changes (8 lines)
+- Low regression risk - aligns with established patterns in related code
+- Reviewed and tested
+- No dependencies on other commits
+- Affects real hardware that users own
 
-**Arguments AGAINST backporting:**
-- No explicit `Cc: stable` tag from maintainer
-- No `Fixes:` tag indicating when bug was introduced
-- Big Endian systems are a minority use case
+**Negative factors:**
+- No explicit "Cc: stable@" tag from maintainer
+- No "Fixes:" tag to trace original bug introduction
 
-**Conclusion:** Despite the lack of explicit stable tagging, this commit
-fixes a severe, user-visible bug (complete driver failure) with a small,
-obviously correct fix using standard kernel patterns. The risk is low
-and the benefit is high for affected users. Big Endian MIPS platforms
-with mt76 WiFi (common in OpenWrt/embedded space) deserve working WiFi
-support.
+**Risk vs Benefit:**
+- Benefit: Restores proper HT40 performance for RTL8192CU/RTL8723AU
+  users
+- Risk: Very low - logic corrections that match other implementations in
+  the same driver
+
+This is a clear bug fix for user-visible performance degradation. The
+changes are minimal, well-understood, properly reviewed, and consistent
+with how other chip variants in the same driver family handle channel
+configuration. The lack of explicit stable tags appears to be an
+oversight rather than an intentional exclusion. Users with these common
+USB WiFi adapters would benefit significantly from this fix.
 
 **YES**
 
- drivers/net/wireless/mediatek/mt76/mmio.c | 12 ++++++++++--
- 1 file changed, 10 insertions(+), 2 deletions(-)
+ drivers/net/wireless/realtek/rtl8xxxu/core.c | 7 +++----
+ 1 file changed, 3 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/net/wireless/mediatek/mt76/mmio.c b/drivers/net/wireless/mediatek/mt76/mmio.c
-index cd2e9737c3bf9..865ec910f05a4 100644
---- a/drivers/net/wireless/mediatek/mt76/mmio.c
-+++ b/drivers/net/wireless/mediatek/mt76/mmio.c
-@@ -33,13 +33,21 @@ static u32 mt76_mmio_rmw(struct mt76_dev *dev, u32 offset, u32 mask, u32 val)
- static void mt76_mmio_write_copy(struct mt76_dev *dev, u32 offset,
- 				 const void *data, int len)
- {
--	__iowrite32_copy(dev->mmio.regs + offset, data, DIV_ROUND_UP(len, 4));
-+	int i;
-+
-+	for (i = 0; i < ALIGN(len, 4); i += 4)
-+		writel(get_unaligned_le32(data + i),
-+		       dev->mmio.regs + offset + i);
- }
+diff --git a/drivers/net/wireless/realtek/rtl8xxxu/core.c b/drivers/net/wireless/realtek/rtl8xxxu/core.c
+index 3ded5952729fc..d2d3bbac2861f 100644
+--- a/drivers/net/wireless/realtek/rtl8xxxu/core.c
++++ b/drivers/net/wireless/realtek/rtl8xxxu/core.c
+@@ -1252,7 +1252,7 @@ void rtl8xxxu_gen1_config_channel(struct ieee80211_hw *hw)
+ 		opmode &= ~BW_OPMODE_20MHZ;
+ 		rtl8xxxu_write8(priv, REG_BW_OPMODE, opmode);
+ 		rsr &= ~RSR_RSC_BANDWIDTH_40M;
+-		if (sec_ch_above)
++		if (!sec_ch_above)
+ 			rsr |= RSR_RSC_UPPER_SUB_CHANNEL;
+ 		else
+ 			rsr |= RSR_RSC_LOWER_SUB_CHANNEL;
+@@ -1321,9 +1321,8 @@ void rtl8xxxu_gen1_config_channel(struct ieee80211_hw *hw)
  
- static void mt76_mmio_read_copy(struct mt76_dev *dev, u32 offset,
- 				void *data, int len)
- {
--	__ioread32_copy(data, dev->mmio.regs + offset, DIV_ROUND_UP(len, 4));
-+	int i;
-+
-+	for (i = 0; i < ALIGN(len, 4); i += 4)
-+		put_unaligned_le32(readl(dev->mmio.regs + offset + i),
-+				   data + i);
- }
- 
- static int mt76_mmio_wr_rp(struct mt76_dev *dev, u32 base,
+ 	for (i = RF_A; i < priv->rf_paths; i++) {
+ 		val32 = rtl8xxxu_read_rfreg(priv, i, RF6052_REG_MODE_AG);
+-		if (hw->conf.chandef.width == NL80211_CHAN_WIDTH_40)
+-			val32 &= ~MODE_AG_CHANNEL_20MHZ;
+-		else
++		val32 &= ~MODE_AG_BW_MASK;
++		if (hw->conf.chandef.width != NL80211_CHAN_WIDTH_40)
+ 			val32 |= MODE_AG_CHANNEL_20MHZ;
+ 		rtl8xxxu_write_rfreg(priv, i, RF6052_REG_MODE_AG, val32);
+ 	}
 -- 
 2.51.0
 
