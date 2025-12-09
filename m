@@ -1,53 +1,56 @@
-Return-Path: <linux-wireless+bounces-29605-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-29606-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id E1E66CAE770
-	for <lists+linux-wireless@lfdr.de>; Tue, 09 Dec 2025 01:16:37 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 74476CAE782
+	for <lists+linux-wireless@lfdr.de>; Tue, 09 Dec 2025 01:16:55 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id D00E9301CD8C
-	for <lists+linux-wireless@lfdr.de>; Tue,  9 Dec 2025 00:16:36 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id D7DBC301EFF1
+	for <lists+linux-wireless@lfdr.de>; Tue,  9 Dec 2025 00:16:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 949BE21ABAA;
-	Tue,  9 Dec 2025 00:16:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5D48F21B9C0;
+	Tue,  9 Dec 2025 00:16:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="e1L6WM0c"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="nuyPzK+6"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 696231A9B46;
-	Tue,  9 Dec 2025 00:16:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 318EE2153FB;
+	Tue,  9 Dec 2025 00:16:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765239396; cv=none; b=Uz0YU6grXmLqo5RjBGamlcI611UHLwTFnmRQVYuP9ppP4umgVWWW7H0N2XPWuhkYd/i0Pu8+JyuGwa3je6PPABpDSvJNeSlI8I0fBCDg78NSXn16tyKaxJpbHI64kL26Q+kfKrG4Ht4i5Xo+nGqqfAAxoIP2PtJlIqqZDBylKxw=
+	t=1765239413; cv=none; b=TClSJnlONc4KGclrutW8HslcQg/G3frAxT3xak5khZR4+QoARYMXt2swZTevXUCldPNgeJe5jJxsRishNnixK6nKFKe14055S4BBUTKHMun25FQzc4OipY4sEhgzu27ZIdgcKcvzhzm3IUS5q/Kxq3kgSJ7p8vMinRuNgA8jY8E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765239396; c=relaxed/simple;
-	bh=3WeGAEZa8Aq5I0z4SfJDUYehCDb10tX39TFwjnnYEI8=;
+	s=arc-20240116; t=1765239413; c=relaxed/simple;
+	bh=QPRP10VucOT7diTQb7MQ7N+PgDBlIwD51s7XelWZoGc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=eAmuIECFUo4W7Vc9CH9cXDqLNdjkhpxHxGBUNG2xSi6jskr6rhW6I26ZEvJEmSt/ieDHZuQCl21LIGtRJ4fzCenUphws1O7ZAAaboAx0gOK/3xH/bk5RMdNx0YiSUeorjvY5+WIuwJkQBTo95HuF3mRnYefSYE8v35bUq/ikT4c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=e1L6WM0c; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D68FFC19421;
-	Tue,  9 Dec 2025 00:16:34 +0000 (UTC)
+	 MIME-Version:Content-Type; b=di+uV+nm75Y23nIa1caxBFQiEq+0OqEUtVfTqqkf8LBCuzc2ToZfhJEhm9Kn87vseEH5B1O9G7uUzPyj9YUWLYsMBAMyJhs5HWdmovQoYtjON/EeGWi4xSNMCrUoYOc90ya9WgGX987d4RJ3NKiOqepUj5zdoqUM/SYTHrTms2o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=nuyPzK+6; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A43D7C19421;
+	Tue,  9 Dec 2025 00:16:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1765239395;
-	bh=3WeGAEZa8Aq5I0z4SfJDUYehCDb10tX39TFwjnnYEI8=;
+	s=k20201202; t=1765239413;
+	bh=QPRP10VucOT7diTQb7MQ7N+PgDBlIwD51s7XelWZoGc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=e1L6WM0cIQ/OXkTqSofiCQjCyHzWj+nu2R9iPOlOdqzBddM8eag1BfBGq9m2SqPGZ
-	 T/xBzFD+LpKwqhwkjFHcjp3ZKAeryPi0PTPc7fCIsts0E2r9sysn70cBuUMbV92ILt
-	 Xmnde/cs+vC1p7Blv+MAAyBzo2AvYLmdgtK5DQu053rIc009fmJrXKAdq8f5p1D10N
-	 9DbciOay0aBWEkCst2hrMBgg+8ovYlPZFWx60TAkNhzERRnwKJZ3KnJSE5PphwjVLV
-	 vVP5GVLZ+BMMzN7YHwUbzZZ3cwKZkjKR/mHQ4zWF9P58hIzkObosqqDu0ZZGZYOFNA
-	 CzMyp2OYEtIFg==
+	b=nuyPzK+6aqOKF5XAjX1uf10V2q162IiOCtxncUw5cBOSOm4AHkHwVomi8NY2YWq+Y
+	 y5cEyTFkf5vts90LRpHHQxf5tfHFKbq2/r9PX+mKXdXkYcCfLm/Q3rdNnPJKQrnd0F
+	 bERjhZDhnl9dnGUMBrHJ1psh0byAuMHV1mj179cxyEkizluEtRrxp/5DRf3Dj7AuM3
+	 /F0rhwknjdeiP5BvhEyKWPvIGkONvMHjdIEupvnCNyzn4sRdi1gHckUW2gvQSQOdXF
+	 cEcIzppqehU2ggjkieXpPuFEJP99NBYSzcwbE33iVVDIrH9mh3JgC2T58/+LXxHywP
+	 c//bqYZeEKEiw==
 From: Sasha Levin <sashal@kernel.org>
 To: patches@lists.linux.dev,
 	stable@vger.kernel.org
-Cc: Ping-Ke Shih <pkshih@realtek.com>,
+Cc: Johannes Berg <johannes.berg@intel.com>,
+	Emmanuel Grumbach <emmanuel.grumbach@intel.com>,
+	Miri Korenblit <miriam.rachel.korenblit@intel.com>,
 	Sasha Levin <sashal@kernel.org>,
+	johannes@sipsolutions.net,
 	linux-wireless@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.18-6.17] wifi: rtw89: use skb_dequeue() for queued ROC packets to prevent racing
-Date: Mon,  8 Dec 2025 19:14:54 -0500
-Message-ID: <20251209001610.611575-2-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 6.18-6.12] wifi: mac80211: reset CRC valid after CSA
+Date: Mon,  8 Dec 2025 19:15:02 -0500
+Message-ID: <20251209001610.611575-10-sashal@kernel.org>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20251209001610.611575-1-sashal@kernel.org>
 References: <20251209001610.611575-1-sashal@kernel.org>
@@ -60,97 +63,206 @@ MIME-Version: 1.0
 X-stable: review
 X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.18
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-From: Ping-Ke Shih <pkshih@realtek.com>
+From: Johannes Berg <johannes.berg@intel.com>
 
-[ Upstream commit f44a9b14a78f1e2e2c57dbc1f1e93889ad2f6ac0 ]
+[ Upstream commit 8f24be708829854560e1db9f765c51305b046183 ]
 
-TX task can enqueue ROC skb, but other tasks dequeue the skb. Using
-skb_queue_walk_safe() without locking will cause potential racing.
-Use skb_dequeue() with lock instead.
+While waiting for a beacon after CSA, reset the CRC valid
+so that the next beacon is handled even if it happens to
+be identical the last one on the old channel. This is an
+AP bug either way, but it's better to disconnect cleanly
+than to have lingering CSA state.
 
-Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
-Link: https://patch.msgid.link/20251021133402.15467-3-pkshih@realtek.com
+In the iwlwifi instantiation of this problem, mac80211 is
+ignoring the beacon but the firmware creates a new CSA,
+and then crashes later because mac80211/driver didn't do
+anything about it.
+
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Reviewed-by: Emmanuel Grumbach <emmanuel.grumbach@intel.com>
+Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
+Link: https://patch.msgid.link/20251019115024.521ad9c6b87d.I86376900df3d3423185b75bf63358c29f33a5eb6@changeid
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
 
 LLM Generated explanations, may be completely bogus:
 
-## Conclusion
+Now I understand the full picture! Let me put together the final
+analysis:
 
-This commit is a **legitimate bug fix** for a race condition in the
-rtw89 WiFi driver's ROC (Remain On Channel) packet handling. The race
-occurs because `skb_queue_walk_safe()` traverses the queue without
-holding the queue's internal lock, while concurrently the TX task may
-add packets via `skb_queue_tail()`.
+## Summary Analysis
 
-**The fix:**
-- Replaces the unlocked iteration + separate unlink pattern with atomic
-  `skb_dequeue()`
-- Is small (net -8 lines), contained, and obviously correct
-- Uses standard kernel idioms that are well-tested
-- Has minimal regression risk
+### 1. COMMIT MESSAGE ANALYSIS
 
-**Stable tree applicability:**
-- Applies to kernel versions 6.4+ where the ROC functionality exists
-- Does NOT apply to 6.1.y LTS (code doesn't exist)
-- Code is identical in 6.6.y LTS and later versions
+**Subject:** "wifi: mac80211: reset CRC valid after CSA"
 
-**Why YES despite missing stable tags:**
-The fix meets all the technical criteria for stable backporting: it
-fixes a real bug (race condition that could cause crashes), is small and
-surgical, doesn't add features, and has very low regression risk. While
-the maintainer didn't explicitly request stable backport, the bug is
-clearly real and the fix is clearly correct. The absence of a `Cc:
-stable` tag may simply indicate it wasn't considered urgent, not that it
-shouldn't be backported.
+**Key points from commit message:**
+- Fixes a bug where the beacon CRC matching causes the first beacon
+  after CSA to be ignored
+- This happens when an AP (like Asus AXE11000) sends an identical beacon
+  after CSA
+- When ignored, mac80211 doesn't complete the CSA cleanup properly
+- In iwlwifi, this causes firmware to create a new CSA and eventually
+  crash
+
+**Tags:**
+- **NO** `Cc: stable@vger.kernel.org` tag - The maintainer did NOT
+  explicitly request stable backport
+- **NO** `Fixes:` tag - There's no explicit reference to a buggy commit
+
+### 2. CODE CHANGE ANALYSIS
+
+The fix is extremely small - just **1 line of actual code** plus a
+**9-line comment**:
+
+```c
+link->u.mgd.beacon_crc_valid = false;
+```
+
+This line is added at line 2509 in `ieee80211_csa_switch_work()`, right
+after:
+```c
+link->u.mgd.csa.waiting_bcn = true;
+```
+
+**Technical mechanism:**
+1. mac80211 uses a CRC mechanism to skip processing beacons that haven't
+   changed
+2. After CSA, the code sets `waiting_bcn = true` to wait for the first
+   beacon on the new channel
+3. The first beacon should normally be different (CSA IE removed), but
+   some buggy APs send identical beacons
+4. If the beacon CRC matches the last beacon on the old channel and
+   `beacon_crc_valid` is still true, mac80211 skips processing
+5. This leaves the CSA in a "waiting" state indefinitely
+6. The iwlwifi firmware sees the beacon, detects CSA state, and creates
+   a new CSA event, eventually crashing
+
+**Root cause:** The `beacon_crc_valid` flag wasn't reset when entering
+the CSA waiting state.
+
+### 3. HISTORICAL CONTEXT
+
+This is a **regression fix** from commit `f3dee30c6791e` "wifi:
+mac80211: mlme: unify CSA handling" (introduced in v6.9):
+- That commit removed `beacon_crc_valid = false` from
+  `ieee80211_chswitch_post_beacon()`
+- The rationale was "the CRC will change due to CSA/ECSA elements"
+- But this assumption was wrong for some buggy APs
+
+The original fix `d6843d1ee2831` "mac80211: clear the beacon's CRC after
+channel switch" (2021) recognized this need but was in a different
+location in the old code structure.
+
+### 4. CLASSIFICATION
+
+- **Type:** Bug fix (not a feature)
+- **Category:** Crash fix / firmware hang fix
+- **Exception categories:** None (this is a pure bug fix)
+- **Security:** No CVE mentioned, not a security issue
+
+### 5. SCOPE AND RISK ASSESSMENT
+
+- **Lines changed:** ~10 lines (1 functional, 9 comment)
+- **Files touched:** 1 (net/mac80211/mlme.c)
+- **Complexity:** Very low - single boolean assignment
+- **Risk:** Very low - the change is conservative (invalidating CRC
+  forces re-processing)
+- **Worst case if fix is wrong:** Slightly more beacon processing work
+  (negligible)
+- **Subsystem:** WiFi mac80211 - mature, well-tested
+
+### 6. USER IMPACT
+
+- **Who is affected:** Users with Intel WiFi (iwlwifi) connecting to
+  certain APs (like Asus AXE11000)
+- **Severity:** HIGH - causes firmware crash
+- **Reproducibility:** Specific AP behavior needed, but real-world bug
+- **Trigger:** CSA (Channel Switch Announcement) - common in enterprise
+  environments
+
+### 7. STABILITY INDICATORS
+
+- **Tested-by:** Not present
+- **Reviewed-by:** Emmanuel Grumbach (Intel WiFi maintainer) ✓
+- **Author:** Johannes Berg (mac80211 maintainer) - highly trusted
+- **Time in mainline:** Recent (Oct 2025) - not much soak time
+
+### 8. DEPENDENCY CHECK
+
+**CRITICAL:** This fix requires commit `f3dee30c6791e` "wifi: mac80211:
+mlme: unify CSA handling" which:
+- Is present in v6.9+
+- Is present in stable/linux-6.9.y, 6.10.y, 6.11.y, 6.12.y, etc.
+- Is **NOT** present in stable/linux-6.6.y (LTS) or stable/linux-6.1.y
+  (LTS)
+
+For older stable trees (6.6.y, 6.1.y), this fix doesn't apply because:
+1. The code structure is completely different
+2. The original `beacon_crc_valid = false` is still in
+   `ieee80211_chswitch_post_beacon()`
+3. The bug was introduced by `f3dee30c6791e` which isn't in those trees
+
+### VERDICT
+
+**Arguments FOR backporting:**
+1. Fixes a real firmware crash that affects users
+2. Small, surgical fix - single line of actual code
+3. Low risk - conservative change (invalidating CRC is safe)
+4. Written by mac80211 maintainer, reviewed by iwlwifi maintainer
+5. Fixes a regression from `f3dee30c6791e`
+
+**Arguments AGAINST backporting:**
+1. No `Cc: stable` tag - maintainer didn't request it
+2. No `Fixes:` tag
+3. Only applies to kernels 6.9+ (those with the prerequisite commit)
+4. Relatively new commit (limited soak time)
+5. Requires specific buggy AP to trigger
+
+**Risk vs Benefit:**
+- Risk: Very low (trivial change, conservative behavior)
+- Benefit: Medium-high (prevents firmware crashes for users with
+  affected APs)
+
+The commit fixes a real crash scenario in iwlwifi with certain APs, is
+extremely small and low-risk, and was reviewed by the relevant
+maintainers. The lack of `Cc: stable` tag might be an oversight given
+the fix's nature. However, it only applies to kernels 6.9+ where the
+prerequisite CSA refactoring exists.
+
+For stable trees 6.9+, 6.10+, 6.11+, 6.12+, this should be backported as
+it fixes a real user-visible crash with very low risk.
 
 **YES**
 
- drivers/net/wireless/realtek/rtw89/core.c | 12 ++++--------
- 1 file changed, 4 insertions(+), 8 deletions(-)
+ net/mac80211/mlme.c | 10 ++++++++++
+ 1 file changed, 10 insertions(+)
 
-diff --git a/drivers/net/wireless/realtek/rtw89/core.c b/drivers/net/wireless/realtek/rtw89/core.c
-index 917b2adede61d..8b40cada4149e 100644
---- a/drivers/net/wireless/realtek/rtw89/core.c
-+++ b/drivers/net/wireless/realtek/rtw89/core.c
-@@ -3632,12 +3632,10 @@ void rtw89_core_free_sta_pending_roc_tx(struct rtw89_dev *rtwdev,
- 					struct ieee80211_sta *sta)
- {
- 	struct rtw89_sta *rtwsta = sta_to_rtwsta(sta);
--	struct sk_buff *skb, *tmp;
-+	struct sk_buff *skb;
+diff --git a/net/mac80211/mlme.c b/net/mac80211/mlme.c
+index f3138d1585353..a231e8661e39d 100644
+--- a/net/mac80211/mlme.c
++++ b/net/mac80211/mlme.c
+@@ -2508,6 +2508,16 @@ static void ieee80211_csa_switch_work(struct wiphy *wiphy,
  
--	skb_queue_walk_safe(&rtwsta->roc_queue, skb, tmp) {
--		skb_unlink(skb, &rtwsta->roc_queue);
-+	while ((skb = skb_dequeue(&rtwsta->roc_queue)))
- 		dev_kfree_skb_any(skb);
--	}
- }
+ 	link->u.mgd.csa.waiting_bcn = true;
  
- static void rtw89_core_stop_tx_ba_session(struct rtw89_dev *rtwdev,
-@@ -3881,8 +3879,8 @@ static void rtw89_core_sta_pending_tx_iter(void *data,
- 	struct ieee80211_vif *vif = rtwvif_to_vif(rtwvif);
- 	struct rtw89_vif_link *target = data;
- 	struct rtw89_vif_link *rtwvif_link;
--	struct sk_buff *skb, *tmp;
- 	unsigned int link_id;
-+	struct sk_buff *skb;
- 	int qsel, ret;
- 
- 	rtw89_vif_for_each_link(rtwvif, rtwvif_link, link_id)
-@@ -3895,9 +3893,7 @@ static void rtw89_core_sta_pending_tx_iter(void *data,
- 	if (skb_queue_len(&rtwsta->roc_queue) == 0)
- 		return;
- 
--	skb_queue_walk_safe(&rtwsta->roc_queue, skb, tmp) {
--		skb_unlink(skb, &rtwsta->roc_queue);
--
-+	while ((skb = skb_dequeue(&rtwsta->roc_queue))) {
- 		ret = rtw89_core_tx_write(rtwdev, vif, sta, skb, &qsel);
- 		if (ret) {
- 			rtw89_warn(rtwdev, "pending tx failed with %d\n", ret);
++	/*
++	 * The next beacon really should always be different, so this should
++	 * have no effect whatsoever. However, some APs (we observed this in
++	 * an Asus AXE11000), the beacon after the CSA might be identical to
++	 * the last beacon on the old channel - in this case we'd ignore it.
++	 * Resetting the CRC will lead us to handle it better (albeit with a
++	 * disconnect, but clearly the AP is broken.)
++	 */
++	link->u.mgd.beacon_crc_valid = false;
++
+ 	/* apply new TPE restrictions immediately on the new channel */
+ 	if (link->u.mgd.csa.ap_chandef.chan->band == NL80211_BAND_6GHZ &&
+ 	    link->u.mgd.conn.mode >= IEEE80211_CONN_MODE_HE) {
 -- 
 2.51.0
 
