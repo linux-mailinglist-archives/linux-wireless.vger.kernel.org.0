@@ -1,160 +1,156 @@
-Return-Path: <linux-wireless+bounces-29604-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-29605-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 58F92CAE213
-	for <lists+linux-wireless@lfdr.de>; Mon, 08 Dec 2025 21:05:00 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id E1E66CAE770
+	for <lists+linux-wireless@lfdr.de>; Tue, 09 Dec 2025 01:16:37 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 806423026ACE
-	for <lists+linux-wireless@lfdr.de>; Mon,  8 Dec 2025 20:04:55 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id D00E9301CD8C
+	for <lists+linux-wireless@lfdr.de>; Tue,  9 Dec 2025 00:16:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A3E333D76;
-	Mon,  8 Dec 2025 20:04:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 949BE21ABAA;
+	Tue,  9 Dec 2025 00:16:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="MeEIS0G7"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="e1L6WM0c"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-wm1-f49.google.com (mail-wm1-f49.google.com [209.85.128.49])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CC5A020298D
-	for <linux-wireless@vger.kernel.org>; Mon,  8 Dec 2025 20:04:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.49
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 696231A9B46;
+	Tue,  9 Dec 2025 00:16:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765224294; cv=none; b=bR7UVJ3mGx+7FwP5eKqq2AvYzAWZUSFSS1H17OxkZ2VI6oxJZQWpmgJ8HcVT5RUNpNxccJ/lPXHGIyUWX8Wu5GMNKs2fKoYJlYod+acH1l7Arr1zY7kiqbM06g5LsGwsvmpQk9Pd/rRzz7m/t0fh7if6fTrfg1rMuf+qvfZwYUU=
+	t=1765239396; cv=none; b=Uz0YU6grXmLqo5RjBGamlcI611UHLwTFnmRQVYuP9ppP4umgVWWW7H0N2XPWuhkYd/i0Pu8+JyuGwa3je6PPABpDSvJNeSlI8I0fBCDg78NSXn16tyKaxJpbHI64kL26Q+kfKrG4Ht4i5Xo+nGqqfAAxoIP2PtJlIqqZDBylKxw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765224294; c=relaxed/simple;
-	bh=skKjEfBaMU6Lqt5vjsIobNng9NkDUQtxDFU5ZUjwvRo=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=SvwpyaI23Xl2k3Zlw/Hd1tRQM3n+AFsHG0GKS25pChvfZ0gXU+jaiVkBooZbAEOx1jbbGUruuqMC8tuwjSq7TvsBHcVhVtF/UptO4ibgMfzvFzr/S+TuQivG3rYvcqHy60K9piTe2vH9xGqGxz+fRllTxija6ik8gU1ZaNVQG78=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=MeEIS0G7; arc=none smtp.client-ip=209.85.128.49
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-wm1-f49.google.com with SMTP id 5b1f17b1804b1-4775e891b5eso24311405e9.2
-        for <linux-wireless@vger.kernel.org>; Mon, 08 Dec 2025 12:04:52 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1765224291; x=1765829091; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=d9WaSQQ0PkGqeHp9LL2kJRaAe2H4lpRnuEoZ98r23rw=;
-        b=MeEIS0G7PiMgjbTOTLGE6XhhpJGtxjfb37lIXHx8l1yWXKyfcRu7DTqlNUR6T225Vk
-         vOjbrWKOfZPeUSIr+mbYGZbRAUlCJUoo1SWWZHm2CjpAYUMXy/HDI1wK+3m5pfKqSzLZ
-         kYmPGgsTku7Q8Yf3Lr2YOT9yhIE2pbqVzrpX+zjLlkt8Xw08+30/muL3qx8adXiTcpxv
-         f9NYz7iIFI0CYwicFBCarscDQyM4CZ/Vk+DkRdygPDIKorAym6JtXna46bgjEyyudtHY
-         I/u9EVhO+Q7o6mb6v2+LWmfw72JI95MLKyBag2tD/nZOWYWEK4Hs6R8MBTIwpdKBrPQL
-         nxGg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1765224291; x=1765829091;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=d9WaSQQ0PkGqeHp9LL2kJRaAe2H4lpRnuEoZ98r23rw=;
-        b=c80idKMaqomoC/taJ88v5/n23YpVWW7X43qrA1OFBGVc6ZHgzvuisOHe4Ww5AuUWeh
-         yc4geM0rbFJdNtc98pQ5DCyprSGvzO84XA6Y3yVfDRd++GsLIZ7DMBAD079Z1+SKKcHA
-         /KuUeIPXR0C3bCaeI1NkAcFsixc7tqzu86GN4jNs0LfaiQCUhPDsmVT1N4leJBlAUztb
-         GqdskCyFR4MnpXeAEqShYFajubwEz0a5WbygTs3Yd2z3bO2KZkiS6UPdv3cyPhg2/5d4
-         rNvLANjam9LCPH78zTKsVUE4HuVg6bXx4RHV4oI+1VgnIIVD7NqvjXyyBaiL8TNmemr8
-         2RAQ==
-X-Forwarded-Encrypted: i=1; AJvYcCWHAxjgfA07SoDPI7BuSdOwiyRCkT09OvrX9DTAhvNrqXrC2QXLxA/NnYSGDgde06Uv25MHIEVnDJeTO5U+5w==@vger.kernel.org
-X-Gm-Message-State: AOJu0YxFoWl0K0KV2SZ+QI5UcQiBE8aB+eCg9z2RzmTlB++Uw/8JFaWJ
-	A90KrLadBaMNwNn2R0Pk2uu5SGXXe14/qwgqfUZLv5xyuSa/oDjqQ4+O
-X-Gm-Gg: ASbGnctkATfAOlypCMeVxhWvBt0A/+NkXWpYxfsaQSJVZNHXGxBzC5Vqe9xRvUK8TqI
-	8CFPEjv13sYxP4upDUYOZtFmO+/0zFqivDpGezt5Ex6ZtvYZXCU1hB6/xfVpaC+q6zmaqYcPijf
-	+vFaqeGVdYDam5MAoMP4C2Lr/lEpIiYD6iSE/6QDqXTrvRDIB+yxYzYnTny1iQwlB+ahk2ndrht
-	uau5peZpnBmI86P+IzuOjEzmF/hRMU2G9ReEhBjdgZ+82HpucEM4w+EiD2RiQRgzjXHj0Aaeu1+
-	CrirHptCJLIuUWQPRysyARRI6WKUD0puWIDlhIDOITuvFklGLNDiix1lRvPoqf9dAgXBoQMND0x
-	BdCaydWay53y15Y0CxirOoyKD4ng2rYcFwYk+O1MRZXbFm/eiYvyKmKU72lWpzOqDIgkBFezLrv
-	LjjwDPW4/sCmNXx0Jp0/f2BcakqY7oqjvbuGaHcsMGexxgkvX3fH4=
-X-Google-Smtp-Source: AGHT+IELJ4QWyLI18G+CslWw8CT4fzH53HDJS5AGtq1akWXecKkPf5nz0AOnRqyw1ggDtLTR6UltQg==
-X-Received: by 2002:a05:600c:3b8b:b0:477:af07:dd17 with SMTP id 5b1f17b1804b1-47939e3897cmr134757755e9.24.1765224290994;
-        Mon, 08 Dec 2025 12:04:50 -0800 (PST)
-Received: from Ansuel-XPS24 (93-34-88-81.ip49.fastwebnet.it. [93.34.88.81])
-        by smtp.googlemail.com with ESMTPSA id 5b1f17b1804b1-47a7d6eb1f1sm1906885e9.2.2025.12.08.12.04.50
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 08 Dec 2025 12:04:50 -0800 (PST)
-From: Christian Marangi <ansuelsmth@gmail.com>
-To: Jeff Johnson <jjohnson@kernel.org>,
-	Vasanthakumar Thiagarajan <vasanthakumar.thiagarajan@oss.qualcomm.com>,
-	"Rob Herring (Arm)" <robh@kernel.org>,
-	linux-wireless@vger.kernel.org,
-	ath11k@lists.infradead.org,
-	linux-kernel@vger.kernel.org
-Cc: Christian Marangi <ansuelsmth@gmail.com>,
-	stable@vger.kernel.org,
-	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>
-Subject: [net PATCH] wifi: ath11k: fix wrong usage of resource_size() causing firmware panic
-Date: Mon,  8 Dec 2025 21:04:32 +0100
-Message-ID: <20251208200437.14199-1-ansuelsmth@gmail.com>
+	s=arc-20240116; t=1765239396; c=relaxed/simple;
+	bh=3WeGAEZa8Aq5I0z4SfJDUYehCDb10tX39TFwjnnYEI8=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=eAmuIECFUo4W7Vc9CH9cXDqLNdjkhpxHxGBUNG2xSi6jskr6rhW6I26ZEvJEmSt/ieDHZuQCl21LIGtRJ4fzCenUphws1O7ZAAaboAx0gOK/3xH/bk5RMdNx0YiSUeorjvY5+WIuwJkQBTo95HuF3mRnYefSYE8v35bUq/ikT4c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=e1L6WM0c; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D68FFC19421;
+	Tue,  9 Dec 2025 00:16:34 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1765239395;
+	bh=3WeGAEZa8Aq5I0z4SfJDUYehCDb10tX39TFwjnnYEI8=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=e1L6WM0cIQ/OXkTqSofiCQjCyHzWj+nu2R9iPOlOdqzBddM8eag1BfBGq9m2SqPGZ
+	 T/xBzFD+LpKwqhwkjFHcjp3ZKAeryPi0PTPc7fCIsts0E2r9sysn70cBuUMbV92ILt
+	 Xmnde/cs+vC1p7Blv+MAAyBzo2AvYLmdgtK5DQu053rIc009fmJrXKAdq8f5p1D10N
+	 9DbciOay0aBWEkCst2hrMBgg+8ovYlPZFWx60TAkNhzERRnwKJZ3KnJSE5PphwjVLV
+	 vVP5GVLZ+BMMzN7YHwUbzZZ3cwKZkjKR/mHQ4zWF9P58hIzkObosqqDu0ZZGZYOFNA
+	 CzMyp2OYEtIFg==
+From: Sasha Levin <sashal@kernel.org>
+To: patches@lists.linux.dev,
+	stable@vger.kernel.org
+Cc: Ping-Ke Shih <pkshih@realtek.com>,
+	Sasha Levin <sashal@kernel.org>,
+	linux-wireless@vger.kernel.org
+Subject: [PATCH AUTOSEL 6.18-6.17] wifi: rtw89: use skb_dequeue() for queued ROC packets to prevent racing
+Date: Mon,  8 Dec 2025 19:14:54 -0500
+Message-ID: <20251209001610.611575-2-sashal@kernel.org>
 X-Mailer: git-send-email 2.51.0
+In-Reply-To: <20251209001610.611575-1-sashal@kernel.org>
+References: <20251209001610.611575-1-sashal@kernel.org>
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
+X-stable: review
+X-Patchwork-Hint: Ignore
+X-stable-base: Linux 6.18
 Content-Transfer-Encoding: 8bit
 
-On converting to the of_reserved_mem_region_to_resource() helper with
-commit 900730dc4705 ("wifi: ath: Use
-of_reserved_mem_region_to_resource() for "memory-region"") a logic error
-was introduced in the ath11k_core_coldboot_cal_support() if condition.
+From: Ping-Ke Shih <pkshih@realtek.com>
 
-The original code checked for hremote_node presence and skipped
-ath11k_core_coldboot_cal_support() in the other switch case but now
-everything is driven entirely on the values of the resource struct.
+[ Upstream commit f44a9b14a78f1e2e2c57dbc1f1e93889ad2f6ac0 ]
 
-resource_size() (in this case) is wrongly assumed to return a size of
-zero if the passed resource struct is init to zero. This is not the case
-as a resource struct should be always init with correct values (or at
-best set the end value to -1 to signal it's not configured)
-(the return value of resource_size() for a resource struct with start
-and end set to zero is 1)
+TX task can enqueue ROC skb, but other tasks dequeue the skb. Using
+skb_queue_walk_safe() without locking will cause potential racing.
+Use skb_dequeue() with lock instead.
 
-On top of this, using resource_size() to check if a resource struct is
-initialized or not is generally wrong and other measure should be used
-instead.
-
-To better handle this, use the DEFINE_RES macro to initialize the
-resource struct and set the IORESOURCE_UNSET flag by default.
-
-Replace the resource_size() check with checking for the resource struct
-flags and check if it's IORESOURCE_UNSET.
-
-This change effectively restore the original logic and restore correct
-loading of the ath11k firmware (restoring correct functionality of
-Wi-Fi)
-
-Cc: stable@vger.kernel.org
-Fixes: 900730dc4705 ("wifi: ath: Use of_reserved_mem_region_to_resource() for "memory-region"")
-Link: https://lore.kernel.org/all/20251207215359.28895-1-ansuelsmth@gmail.com/T/#m990492684913c5a158ff0e5fc90697d8ad95351b
-Cc: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
-Signed-off-by: Christian Marangi <ansuelsmth@gmail.com>
+Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
+Link: https://patch.msgid.link/20251021133402.15467-3-pkshih@realtek.com
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/ath/ath11k/qmi.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/net/wireless/ath/ath11k/qmi.c b/drivers/net/wireless/ath/ath11k/qmi.c
-index ff6a97e328b8..afa663c00620 100644
---- a/drivers/net/wireless/ath/ath11k/qmi.c
-+++ b/drivers/net/wireless/ath/ath11k/qmi.c
-@@ -2039,8 +2039,8 @@ static int ath11k_qmi_alloc_target_mem_chunk(struct ath11k_base *ab)
- 
- static int ath11k_qmi_assign_target_mem_chunk(struct ath11k_base *ab)
+LLM Generated explanations, may be completely bogus:
+
+## Conclusion
+
+This commit is a **legitimate bug fix** for a race condition in the
+rtw89 WiFi driver's ROC (Remain On Channel) packet handling. The race
+occurs because `skb_queue_walk_safe()` traverses the queue without
+holding the queue's internal lock, while concurrently the TX task may
+add packets via `skb_queue_tail()`.
+
+**The fix:**
+- Replaces the unlocked iteration + separate unlink pattern with atomic
+  `skb_dequeue()`
+- Is small (net -8 lines), contained, and obviously correct
+- Uses standard kernel idioms that are well-tested
+- Has minimal regression risk
+
+**Stable tree applicability:**
+- Applies to kernel versions 6.4+ where the ROC functionality exists
+- Does NOT apply to 6.1.y LTS (code doesn't exist)
+- Code is identical in 6.6.y LTS and later versions
+
+**Why YES despite missing stable tags:**
+The fix meets all the technical criteria for stable backporting: it
+fixes a real bug (race condition that could cause crashes), is small and
+surgical, doesn't add features, and has very low regression risk. While
+the maintainer didn't explicitly request stable backport, the bug is
+clearly real and the fix is clearly correct. The absence of a `Cc:
+stable` tag may simply indicate it wasn't considered urgent, not that it
+shouldn't be backported.
+
+**YES**
+
+ drivers/net/wireless/realtek/rtw89/core.c | 12 ++++--------
+ 1 file changed, 4 insertions(+), 8 deletions(-)
+
+diff --git a/drivers/net/wireless/realtek/rtw89/core.c b/drivers/net/wireless/realtek/rtw89/core.c
+index 917b2adede61d..8b40cada4149e 100644
+--- a/drivers/net/wireless/realtek/rtw89/core.c
++++ b/drivers/net/wireless/realtek/rtw89/core.c
+@@ -3632,12 +3632,10 @@ void rtw89_core_free_sta_pending_roc_tx(struct rtw89_dev *rtwdev,
+ 					struct ieee80211_sta *sta)
  {
-+	struct resource res = DEFINE_RES(0, 0, IORESOURCE_UNSET);
- 	struct device *dev = ab->dev;
--	struct resource res = {};
- 	u32 host_ddr_sz;
- 	int i, idx, ret;
+ 	struct rtw89_sta *rtwsta = sta_to_rtwsta(sta);
+-	struct sk_buff *skb, *tmp;
++	struct sk_buff *skb;
  
-@@ -2086,7 +2086,7 @@ static int ath11k_qmi_assign_target_mem_chunk(struct ath11k_base *ab)
- 			}
+-	skb_queue_walk_safe(&rtwsta->roc_queue, skb, tmp) {
+-		skb_unlink(skb, &rtwsta->roc_queue);
++	while ((skb = skb_dequeue(&rtwsta->roc_queue)))
+ 		dev_kfree_skb_any(skb);
+-	}
+ }
  
- 			if (ath11k_core_coldboot_cal_support(ab)) {
--				if (resource_size(&res)) {
-+				if (res.flags != IORESOURCE_UNSET) {
- 					ab->qmi.target_mem[idx].paddr =
- 							res.start + host_ddr_sz;
- 					ab->qmi.target_mem[idx].iaddr =
+ static void rtw89_core_stop_tx_ba_session(struct rtw89_dev *rtwdev,
+@@ -3881,8 +3879,8 @@ static void rtw89_core_sta_pending_tx_iter(void *data,
+ 	struct ieee80211_vif *vif = rtwvif_to_vif(rtwvif);
+ 	struct rtw89_vif_link *target = data;
+ 	struct rtw89_vif_link *rtwvif_link;
+-	struct sk_buff *skb, *tmp;
+ 	unsigned int link_id;
++	struct sk_buff *skb;
+ 	int qsel, ret;
+ 
+ 	rtw89_vif_for_each_link(rtwvif, rtwvif_link, link_id)
+@@ -3895,9 +3893,7 @@ static void rtw89_core_sta_pending_tx_iter(void *data,
+ 	if (skb_queue_len(&rtwsta->roc_queue) == 0)
+ 		return;
+ 
+-	skb_queue_walk_safe(&rtwsta->roc_queue, skb, tmp) {
+-		skb_unlink(skb, &rtwsta->roc_queue);
+-
++	while ((skb = skb_dequeue(&rtwsta->roc_queue))) {
+ 		ret = rtw89_core_tx_write(rtwdev, vif, sta, skb, &qsel);
+ 		if (ret) {
+ 			rtw89_warn(rtwdev, "pending tx failed with %d\n", ret);
 -- 
 2.51.0
 
