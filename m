@@ -1,54 +1,54 @@
-Return-Path: <linux-wireless+bounces-29610-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-29611-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 72883CAE888
-	for <lists+linux-wireless@lfdr.de>; Tue, 09 Dec 2025 01:31:47 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0DC89CAE8B2
+	for <lists+linux-wireless@lfdr.de>; Tue, 09 Dec 2025 01:32:55 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id C80D530F703E
-	for <lists+linux-wireless@lfdr.de>; Tue,  9 Dec 2025 00:27:32 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 02D4B3086CF7
+	for <lists+linux-wireless@lfdr.de>; Tue,  9 Dec 2025 00:27:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8C4D82C235D;
-	Tue,  9 Dec 2025 00:18:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A81772E5402;
+	Tue,  9 Dec 2025 00:18:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="nG3JJTL4"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="kD9LfDi+"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 62DDE2C21DB;
-	Tue,  9 Dec 2025 00:18:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7E28D2E370E;
+	Tue,  9 Dec 2025 00:18:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765239481; cv=none; b=EdcMurZ9yu9RTUIr3lpVBjHiIOcq9UIncejAOm8l/N52OE4aoV6JHd7wN7IGF8+LVCtqEIQ9VAEpYEIS/D1wNVcmDabqvfIxpojZNuENgKrZJ5LkUZDfb6Y2fJ/t10Az52lp1QQSzDeXQjQi/uEz1nd1jC0vtwunXraRFJxfVr0=
+	t=1765239487; cv=none; b=L5GIVAXfutHJLBG3UDumvjeTJ4OXSTmVqxTZfiyN3h/28VS7k8PCkIjiyB8++bQSdULHKU9R8OrjScEPArM5Su5pjyrwqTOimwOxkaTUgrUBKxJLbsekdQHzwe0HUKOqrhdEdRBgrBRHqt9MiDFH1coVnizQltVqF289eKL2XFA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765239481; c=relaxed/simple;
-	bh=CSQMfTQPXZLjqMWRtHe8dfSMfidZ/+gtOgF3qxo6FzM=;
+	s=arc-20240116; t=1765239487; c=relaxed/simple;
+	bh=1E52SU0XhxhmH0LjX9ze5vyc45B8H7RL6W44/GdTtww=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=qqXnTmUt/Y1Rt7/RUE/RR/ZQp1fEW3TK7ANklI72nElvOOEnvE088ZIdHmS64mqrPsh9VTPeogmAT/QlXXJFpmSWfz8OIl2TZjD+x7CGLU+Gu3lAlj2sVI02+YGMIhizIQfDH+ND0HfiR0WXuAIGQZjEUuysUgdNSpKoVm/hUAU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=nG3JJTL4; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9C754C4CEF1;
-	Tue,  9 Dec 2025 00:17:59 +0000 (UTC)
+	 MIME-Version; b=ZcTpxttDv4fucfN4YCRedi3MJCG9RkAjFCw1+J1iDQZ1dyDBX02PDfovJ6S8Yt0AkdAr+7BT0MZCWeL/D0JrSReeD3EjJUu33HtNuqEALM9p8IDUrkp9aL9+P8M7oXaFX8/cRT+gLJBui/nub0kZHwW8EVS1krW2t+tt5DOMV9g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=kD9LfDi+; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4AA4FC19421;
+	Tue,  9 Dec 2025 00:18:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1765239480;
-	bh=CSQMfTQPXZLjqMWRtHe8dfSMfidZ/+gtOgF3qxo6FzM=;
+	s=k20201202; t=1765239487;
+	bh=1E52SU0XhxhmH0LjX9ze5vyc45B8H7RL6W44/GdTtww=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=nG3JJTL4xmaZO/AhB6QrXH8lgOZG92QS8ZBLZhOatRqxvxGQQ0Lr7N84gbJnTqmKl
-	 t89np7AM387R5MGvHnTVP8dJxkX58yPJfN+HnU99Qnru1gCl+z2abTX3auC+Kt1tmi
-	 kGJB3LLndN+3n6A1MbZAoD30nBgqCNNAxorekWxldYhL0eP6lBqnqEuI0IuuWkvO64
-	 fPmAwmeW8LyxAd5ryldv3LBczQtF9lxPN+OErw3X8gVxYez/Id/jwcUqCfnOMvg8K2
-	 d7rvGl0jiLsgOSWxj4VFPsqujWuRMibNpAOg9yI8UpDLgf1WySReFPUibCTYy9acha
-	 r3rO5X7avEw3Q==
+	b=kD9LfDi++dWHhMcJbPhseMz577o4fZIhMtmgbP8mi+NsYhCJLwViFJqj9hMoFLAPE
+	 n9xrz5tdFho8tCIU+e/d0KimIqaJWa9UDE9zHbg71tp7t8MTJgwsz2f7GvqsjI2BbI
+	 LCflxMFIQ18u/M/UNNY4efIeeuh9Jzqr9OSOqJnNA9p59nz72pMeq0EvBma9mW3ne4
+	 PUiTHQHifr+rr8b5gEfgy7ellhS9X2Me6R6QvCHXlDUfL86AW6/Y+Y90kxukcfZutf
+	 RxnNJZC8bAN6mU3KyrRabmet120V4YFumoSDMyybvgooLvXhXrHyo1nAFnQKGX3Tf9
+	 iRSHtwXLKhKIA==
 From: Sasha Levin <sashal@kernel.org>
 To: patches@lists.linux.dev,
 	stable@vger.kernel.org
-Cc: Hiroaki Yamamoto <hrak1529@gmail.com>,
+Cc: Kuan-Chung Chen <damon.chen@realtek.com>,
 	Ping-Ke Shih <pkshih@realtek.com>,
 	Sasha Levin <sashal@kernel.org>,
 	linux-wireless@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.18-6.17] wifi: rtw88: Add BUFFALO WI-U3-866DHP to the USB ID list
-Date: Mon,  8 Dec 2025 19:15:27 -0500
-Message-ID: <20251209001610.611575-35-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 6.18-6.1] wifi: rtw89: phy: fix out-of-bounds access in rtw89_phy_read_txpwr_limit()
+Date: Mon,  8 Dec 2025 19:15:30 -0500
+Message-ID: <20251209001610.611575-38-sashal@kernel.org>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20251209001610.611575-1-sashal@kernel.org>
 References: <20251209001610.611575-1-sashal@kernel.org>
@@ -63,238 +63,176 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.18
 Content-Transfer-Encoding: 8bit
 
-From: Hiroaki Yamamoto <hrak1529@gmail.com>
+From: Kuan-Chung Chen <damon.chen@realtek.com>
 
-[ Upstream commit 8adb609f645b42148c14989066a971bbb5f3587e ]
+[ Upstream commit 1dd7e743dd37361c8c1ac89355a8da738e2b81fb ]
 
-BUFFALO WI-U3-866DHP (0411:03d0) is based on rtl8812bu. I locally tested
-this patch with a retail sample and it worked fine.
+Coverity reported a potential out-of-bounds access when 'bw' exceeds the
+valid range for the specified band. Add a helper `rtw89_bw_is_valid()`
+to check bandwidth validity for each band before accessing limit tables.
 
-Signed-off-by: Hiroaki Yamamoto <hrak1529@gmail.com>
-Acked-by: Ping-Ke Shih <pkshih@realtek.com>
+Addresses-Coverity-ID: 1598844 ("Out-of-bounds access")
+Addresses-Coverity-ID: 1598896 ("Out-of-bounds access")
+
+Signed-off-by: Kuan-Chung Chen <damon.chen@realtek.com>
 Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
-Link: https://patch.msgid.link/20251031111641.33653-1-hrak1529@gmail.com
+Link: https://patch.msgid.link/20251111022452.28093-6-pkshih@realtek.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
 
 LLM Generated explanations, may be completely bogus:
 
-Now I have a complete picture. Let me provide my thorough analysis:
-
----
-
-## Comprehensive Analysis
+## Analysis of Commit for Stable Backport
 
 ### 1. COMMIT MESSAGE ANALYSIS
 
-**Subject:** `wifi: rtw88: Add BUFFALO WI-U3-866DHP to the USB ID list`
-
-**Body:**
-- States the device USB VID/PID: `0411:03d0` (BUFFALO is vendor 0x0411)
-- Claims the device is "based on rtl8812bu" (RTL8822B chipset)
-- Author tested with a retail sample and confirms it works
-
-**Tags:**
-- `Signed-off-by: Hiroaki Yamamoto` (author/contributor)
-- `Acked-by: Ping-Ke Shih` (Realtek driver maintainer)
-- `Signed-off-by: Ping-Ke Shih` (committed by maintainer)
-- **NO `Cc: stable@vger.kernel.org` tag**
-- **NO `Fixes:` tag**
+- **Subject:** Clearly indicates a bug fix - "fix out-of-bounds access"
+- **Bug Type:** Out-of-bounds array access (memory safety issue)
+- **Source:** Coverity static analysis (IDs 1598844, 1598896)
+- **No "Cc: stable@vger.kernel.org"** tag present
+- **No "Fixes:" tag** pointing to original buggy commit
 
 ### 2. CODE CHANGE ANALYSIS
 
-The commit is **extremely simple and surgical**:
-
+**The Bug:**
+The function `rtw89_phy_read_txpwr_limit()` uses the `bw` (bandwidth)
+parameter as an array index in expressions like:
 ```c
-+       { USB_DEVICE_AND_INTERFACE_INFO(0x0411, 0x03d0, 0xff, 0xff,
-0xff),
-+         .driver_info = (kernel_ulong_t)&(rtw8822b_hw_spec) }, /*
-BUFFALO WI-U3-866DHP */
+da_lmt = (*rule_da_2ghz->lmt)[bw][ntx][rs][bf][regd][ch_idx];
+lmt = (*rule_2ghz->lmt)[bw][ntx][rs][bf][regd][ch_idx];
 ```
 
-**What it does:**
-- Adds a single USB device ID entry to the `rtw_8822bu_id_table[]` array
-- Uses `USB_DEVICE_AND_INTERFACE_INFO()` macro with:
-  - VID: `0x0411` (BUFFALO Inc.)
-  - PID: `0x03d0` (WI-U3-866DHP specific)
-  - Interface class/subclass/protocol: `0xff, 0xff, 0xff` (vendor-
-    specific)
-- Associates with `rtw8822b_hw_spec` - the existing chip specification
-  structure
+Different bands (2G, 5G, 6G) have different valid bandwidth ranges
+(`RTW89_2G_BW_NUM`, `RTW89_5G_BW_NUM`, `RTW89_6G_BW_NUM`). If `bw`
+exceeds the valid range for the specified band, an out-of-bounds array
+read occurs.
 
-**Why it's correct:**
-- The pattern is identical to 34 other devices already in this table
-- The `rtw8822b_hw_spec` structure already supports this chipset
-- All device-specific handling is already implemented in the driver
-- No new code paths are introduced - only the USB subsystem can now
-  recognize and bind this device
+**The Fix:**
+1. Adds a new helper function `rtw89_phy_validate_txpwr_limit_bw()` that
+   validates bandwidth against band-specific limits
+2. Adds a validation check at the beginning of
+   `rtw89_phy_read_txpwr_limit()` that returns 0 (safe default) if
+   validation fails
+
+**Technical Correctness:**
+The fix is straightforward - validate input before using it as array
+index. This is a defensive programming pattern that prevents OOB access.
 
 ### 3. CLASSIFICATION
 
-**Category: NEW DEVICE ID ADDITION**
-
-This falls squarely into the "NEW DEVICE IDs" exception category that IS
-allowed in stable:
-- Adding USB VID/PID to an existing, working driver
-- One-line addition that enables hardware support
-- Device uses identical chip (RTL8822B) as many other supported devices
-- No new functionality, APIs, or driver changes
-
-This is NOT:
-- A new driver (driver already exists since v6.2)
-- A new feature
-- A bug fix (though users without support might consider it a bug)
-- A security fix
-- A quirk/workaround
+- **Bug fix:** Yes - fixes memory safety bug (OOB read)
+- **Feature addition:** No
+- **Security relevant:** Potentially - OOB access can cause crashes,
+  kernel panics, or information leaks
 
 ### 4. SCOPE AND RISK ASSESSMENT
 
-**Lines changed:** 2 lines (one USB_DEVICE entry + comment)
-**Files touched:** 1 file (`rtw8822bu.c`)
-**Complexity:** Trivial - just data table addition
+| Factor | Assessment |
+|--------|------------|
+| Lines changed | ~20 lines added |
+| Files touched | 1 file (phy.c) |
+| Complexity | Low - simple validation check |
+| Regression risk | Very low - only adds validation, no behavioral
+change for valid inputs |
+| Subsystem | rtw89 WiFi driver (Realtek 802.11ax) |
 
-**Subsystem:** WiFi/Realtek rtw88 driver
-- The rtw88 driver is mature (mainline since v5.2 for PCIe, v6.2 for
-  USB)
-- USB support is well-tested with 34+ devices in the table
-
-**Risk of regression:** **EXTREMELY LOW**
-- The change only affects users who plug in this specific BUFFALO device
-- No existing functionality is modified
-- No code paths change for other devices
-- If the device ID is somehow wrong, worst case is the device doesn't
-  work
-- Cannot break any existing hardware
+The change is **small and surgical**. It only adds bounds checking and
+returns a safe default (0) for invalid inputs. Normal operation is
+completely unaffected.
 
 ### 5. USER IMPACT
 
-**Who is affected:**
-- Users with BUFFALO WI-U3-866DHP USB WiFi adapter
-- This appears to be a retail device from BUFFALO (Japanese networking
-  company)
-- Without this patch, users would need to manually bind the device using
-  sysfs or build custom kernels
-
-**Severity:**
-- Not a crash/security/data corruption issue
-- This is a hardware enablement issue - device simply won't be
-  recognized
-- Users who buy this device expect it to work with Linux
-
-**Market context:**
-- BUFFALO is a major Japanese networking brand
-- The WI-U3-866DHP is a USB 3.0 802.11ac adapter
-- Similar to WI-U2-866DM (0411:03d1) which was added in b7f0cc647e522
+- **Affected users:** Users with Realtek rtw89 WiFi hardware
+- **Severity if triggered:** Kernel crash/oops or potential information
+  leak
+- **Trigger conditions:** Invalid `bw` value exceeding band-specific
+  limits
+- **Real-world likelihood:** Uncertain - could be triggered by malformed
+  firmware/hardware responses or bugs elsewhere in the driver
 
 ### 6. STABILITY INDICATORS
 
-**Positive signals:**
-- Acked by Ping-Ke Shih (Realtek maintainer)
-- Author claims personal testing with retail hardware
-- Follows exact same pattern as 34 other working device entries
-
-**Negative signals:**
-- No `Cc: stable@vger.kernel.org` tag
-- No external testing reports (Tested-by)
-- No Reviewed-by from other developers
+- Signed-off by Realtek engineers (maintainer-level confidence)
+- No explicit tested-by or reviewed-by tags visible
+- Has proper patch link for traceability
 
 ### 7. DEPENDENCY CHECK
 
-**Dependencies:** None
-- This change only adds data to an array
-- No other commits required
-- No API changes needed
+The fix uses existing constants (`RTW89_*_BW_NUM`) that should exist in
+any stable kernel with the rtw89 driver. The rtw89 driver was introduced
+in kernel 5.16, so this applies to 6.1.y, 6.6.y, and newer stable
+branches.
 
-**Stable tree compatibility:**
-- The rtw8822bu driver exists in stable kernels from v6.2 onwards
-- The file structure is compatible (USB ID table is at same location)
-- May require minor adjustment if backporting to older stable trees
-  where some context lines differ due to fewer USB IDs in the table
+### DECISION RATIONALE
 
-### 8. COMPARISON WITH SIMILAR COMMITS
+**For backporting:**
+- Fixes a genuine memory safety bug (OOB array access)
+- Small, self-contained fix with minimal regression risk
+- Defensive in nature - only affects invalid input handling
+- OOB access bugs can have security implications
 
-Looking at recent USB ID additions to rtw88:
+**Against backporting:**
+- No explicit "Cc: stable" tag from maintainers
+- Coverity-found vs user-reported (no evidence of actual crashes in the
+  wild)
+- No "Fixes:" tag to identify the original buggy commit
 
-| Commit | Description | Stable Tag? | Backported? |
-|--------|-------------|-------------|-------------|
-| `b8a62478f3b14` | Add missing VID/PIDs for 8811CU/8821CU | **YES**
-(`Cc: stable`) | YES (6.10+) |
-| `7b5ce65d90187` | 8821au additional devices | NO | NO |
-| `d4c4903508f9e` | Additional USB IDs for RTL8812BU | NO | NO |
-| `80c4668d024ff` | Mercusys MA30N, D-Link DWA-T185 | NO | NO |
-| `b7f0cc647e522` | BUFFALO WI-U2-866DM | NO | NO |
-| **This commit** | BUFFALO WI-U3-866DHP | NO | ? |
+**Verdict:**
+Despite the lack of explicit stable tags, this is a legitimate memory
+safety fix that:
+1. Is obviously correct and small
+2. Fixes a real bug (OOB access)
+3. Has no risk of regression for valid code paths
+4. Could prevent crashes or security issues
 
-The pattern shows that USB ID additions WITHOUT explicit stable tags are
-typically NOT backported, while those WITH the tag ARE backported.
-
----
-
-## FINAL ASSESSMENT
-
-### Arguments FOR backporting:
-1. **Falls under "NEW DEVICE IDs" exception** - USB ID additions to
-   existing drivers are explicitly allowed in stable
-2. **Trivial change** - 2 lines of data, zero code changes
-3. **Zero regression risk** - Only affects this specific device
-4. **Enables real hardware** - Users with this device can use their
-   hardware
-5. **Well-tested pattern** - Identical to 34 other entries in the same
-   driver
-6. **Driver is mature** - rtw8822bu has been in mainline since v6.2
-
-### Arguments AGAINST backporting:
-1. **No explicit stable tag** - The maintainer did NOT add `Cc:
-   stable@vger.kernel.org`
-2. **Not fixing a bug** - This is enablement, not a fix
-3. **No Fixes: tag** - Not tied to any bug
-4. **Precedent** - Similar commits without stable tags were not
-   backported
-5. **Maintainer choice** - If Ping-Ke Shih wanted it in stable, they
-   would have added the tag
-
-### Risk vs Benefit:
-- **Risk:** Essentially zero - worst case is the device doesn't work on
-  one specific hardware configuration
-- **Benefit:** Moderate - enables hardware support for users with this
-  specific BUFFALO adapter
-
-### Decision Reasoning:
-
-While this commit is technically safe to backport (it's a trivial USB ID
-addition with no risk), the kernel's stable tree process respects
-maintainer intent. The absence of a `Cc: stable@vger.kernel.org` tag
-indicates the maintainer did not consider this critical enough for
-stable trees. Looking at the pattern of similar commits, those without
-stable tags are consistently not backported.
-
-Additionally, USB device ID additions for "new" hardware (devices that
-weren't recognized before) are generally seen as enablement rather than
-bug fixes. The stable kernel rules emphasize fixing bugs that affect
-users, not adding hardware support.
-
-The conservative approach for stable trees is to follow maintainer
-intent. If the maintainer wanted this in stable, they would have tagged
-it.
+The fix meets stable kernel criteria: it's a small, self-contained bug
+fix that addresses a real memory safety issue without changing normal
+behavior. Out-of-bounds access bugs are the type of issues stable trees
+should protect against.
 
 **YES**
 
- drivers/net/wireless/realtek/rtw88/rtw8822bu.c | 2 ++
- 1 file changed, 2 insertions(+)
+ drivers/net/wireless/realtek/rtw89/phy.c | 20 ++++++++++++++++++++
+ 1 file changed, 20 insertions(+)
 
-diff --git a/drivers/net/wireless/realtek/rtw88/rtw8822bu.c b/drivers/net/wireless/realtek/rtw88/rtw8822bu.c
-index 44e28e583964c..2769b86ce1b2a 100644
---- a/drivers/net/wireless/realtek/rtw88/rtw8822bu.c
-+++ b/drivers/net/wireless/realtek/rtw88/rtw8822bu.c
-@@ -79,6 +79,8 @@ static const struct usb_device_id rtw_8822bu_id_table[] = {
- 	  .driver_info = (kernel_ulong_t)&(rtw8822b_hw_spec) }, /* D-Link DWA-T185 rev. A1 */
- 	{ USB_DEVICE_AND_INTERFACE_INFO(0x0411, 0x03d1, 0xff, 0xff, 0xff),
- 	  .driver_info = (kernel_ulong_t)&(rtw8822b_hw_spec) }, /* BUFFALO WI-U2-866DM */
-+	{ USB_DEVICE_AND_INTERFACE_INFO(0x0411, 0x03d0, 0xff, 0xff, 0xff),
-+	  .driver_info = (kernel_ulong_t)&(rtw8822b_hw_spec) }, /* BUFFALO WI-U3-866DHP */
- 	{},
- };
- MODULE_DEVICE_TABLE(usb, rtw_8822bu_id_table);
+diff --git a/drivers/net/wireless/realtek/rtw89/phy.c b/drivers/net/wireless/realtek/rtw89/phy.c
+index ba7feadd75828..e8960fbcb72db 100644
+--- a/drivers/net/wireless/realtek/rtw89/phy.c
++++ b/drivers/net/wireless/realtek/rtw89/phy.c
+@@ -2339,6 +2339,21 @@ static u8 rtw89_channel_to_idx(struct rtw89_dev *rtwdev, u8 band, u8 channel)
+ 	}
+ }
+ 
++static bool rtw89_phy_validate_txpwr_limit_bw(struct rtw89_dev *rtwdev,
++					      u8 band, u8 bw)
++{
++	switch (band) {
++	case RTW89_BAND_2G:
++		return bw < RTW89_2G_BW_NUM;
++	case RTW89_BAND_5G:
++		return bw < RTW89_5G_BW_NUM;
++	case RTW89_BAND_6G:
++		return bw < RTW89_6G_BW_NUM;
++	default:
++		return false;
++	}
++}
++
+ s8 rtw89_phy_read_txpwr_limit(struct rtw89_dev *rtwdev, u8 band,
+ 			      u8 bw, u8 ntx, u8 rs, u8 bf, u8 ch)
+ {
+@@ -2363,6 +2378,11 @@ s8 rtw89_phy_read_txpwr_limit(struct rtw89_dev *rtwdev, u8 band,
+ 	};
+ 	s8 cstr;
+ 
++	if (!rtw89_phy_validate_txpwr_limit_bw(rtwdev, band, bw)) {
++		rtw89_warn(rtwdev, "invalid band %u bandwidth %u\n", band, bw);
++		return 0;
++	}
++
+ 	switch (band) {
+ 	case RTW89_BAND_2G:
+ 		if (has_ant_gain)
 -- 
 2.51.0
 
