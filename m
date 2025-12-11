@@ -1,104 +1,104 @@
-Return-Path: <linux-wireless+bounces-29655-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-29656-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3E100CB5E8B
-	for <lists+linux-wireless@lfdr.de>; Thu, 11 Dec 2025 13:41:44 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id E1C8ACB5E91
+	for <lists+linux-wireless@lfdr.de>; Thu, 11 Dec 2025 13:41:53 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 98374303BE0D
-	for <lists+linux-wireless@lfdr.de>; Thu, 11 Dec 2025 12:41:22 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 9D0E5304067C
+	for <lists+linux-wireless@lfdr.de>; Thu, 11 Dec 2025 12:41:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2F69630FF36;
-	Thu, 11 Dec 2025 12:41:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6EA0D30FF39;
+	Thu, 11 Dec 2025 12:41:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="OvRq6ysF";
-	dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b="ZlEcPP1Y"
+	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="PIO9BMnG";
+	dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b="M0uCRBnA"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 90E8730FF37
-	for <linux-wireless@vger.kernel.org>; Thu, 11 Dec 2025 12:41:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 74DCF30FF37
+	for <linux-wireless@vger.kernel.org>; Thu, 11 Dec 2025 12:41:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765456880; cv=none; b=CUpiHEV3nMj9j5s3cGSvy1ot7mgJ8+QwDZiK8kRVMBsaZ7JwjQmbLS9QQSi3R/GuAaA3hlgqPrqCSbyGrk7MCZfH2qOMxVAsWxxID0d5LS85Qud8PtWkA7BdEX1S+F3BVIFx0ZAslWe9b5aOZ64Rai58h/ij86HRgtkjApRk3Bc=
+	t=1765456883; cv=none; b=prEtsCsYE7OEJZ3w66T3b0Y1o4bmos6mhr2+x9BIPX9xaZNRNFVVJbUJykAlN5nqGn1yG3R6ndUMnXsRChhHotXxeFmT83+KIEsPc2g7MqwYJHUQ4K63V5MaD/5rTAwjM5tEgR49vH+JaoWFAnsofMANVt2ZzWaGexjESwgvgc8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765456880; c=relaxed/simple;
-	bh=raXni5S7+bRpLIi0rRw6+21JQx2u8/5sQGGyGEtG2vg=;
+	s=arc-20240116; t=1765456883; c=relaxed/simple;
+	bh=FPqqg1w2Ss/OTdmgugTC7DkxJEGCnJFs2UCfpUelWmw=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=HPNuulD0X9t2qQ55pbWlqr+D0N8Dl3xgyBZfeVYDS6zP4lx2CWGYclOwmI2mZCN5RT08dgTIKucxILju5bIvUcspSUzwxjXa1OKHPFARR2XtwNsg8hsIFU8nKWSvzaa9VTPf4yZeRQAk7M3tgCuBGI+GfAWDVIL5is3njgSjtNk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=OvRq6ysF; dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b=ZlEcPP1Y; arc=none smtp.client-ip=205.220.180.131
+	 MIME-Version:Content-Type; b=gSawJVGAukYr0ZPswvOzEqiBaj768ETNB9Q+UL2Cn8w5MwZdNHjlHiwkvMJK/4lSOKMT28aSf0IF/zXR/A6wxUwe8Huw0Kyr+kEC7bzWCyflgvxZ721N53+N0G5k8QV1x6LWG1XklLIOxvQ9Z9q6WYQcvCa6T/xO60uaaxn2nKs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=PIO9BMnG; dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b=M0uCRBnA; arc=none smtp.client-ip=205.220.180.131
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
-Received: from pps.filterd (m0279870.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 5BBAXpc11597454
-	for <linux-wireless@vger.kernel.org>; Thu, 11 Dec 2025 12:41:17 GMT
+Received: from pps.filterd (m0279871.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 5BBAXwUX1775361
+	for <linux-wireless@vger.kernel.org>; Thu, 11 Dec 2025 12:41:20 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
-	cc:content-transfer-encoding:date:from:in-reply-to:message-id
-	:mime-version:references:subject:to; s=qcppdkim1; bh=8+azEMPAyac
-	CuRvwmN0IXUit231R2OkPV71Pb8Yo7To=; b=OvRq6ysF2V3zpaTMkg2kafE6MBe
-	7Y8yjO2MO+yEvsCQUaSpHZB6FfCwSAoBe0pwsMpM1I+jrP+q/jZauAJSLvUSFPsH
-	2Sr5m4INcxEvzvH8SMbudc17B+xn/GVYZp3+xMfogsang7AgW+0B1RMRKMq0irUR
-	RvKC3/1P8zRc3FylALRGPEK8KkM7DKWLhfshrYi+LLrIAMM/NeaM6bbcQn1v1Gc6
-	Ys7J7AVVWkS7BGKn4p5yTP2Aj8b2qT/7HEchIot7al5BhbULOqyI00qP+N+uDTxd
-	HrFRzZtPX1Yo7uolnmKgxOLE1lvuPuZ8rPPovqZpG6vKo95oVgaIMczzKJw==
-Received: from mail-pg1-f197.google.com (mail-pg1-f197.google.com [209.85.215.197])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4aybhpbmp4-1
+	cc:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
+	9Px2e48C8iW39eYr4GuJNxpxfMMBtS0/4HT52dkaAsQ=; b=PIO9BMnGrKAYVqA/
+	UxRFUTlVAYuSRlXYMoBbFTjMhUpyE+ERdiNjfwAe8RqVymZ3Id3yyPiukf0Kpbi3
+	HUN+oX1xIpRBpEwlIuyCcgO4PC8SXSrEFFSDMLsYuEzypGFU6pd+GSTRrruSIjSg
+	7n17KZOWmXMF1nGSb4qFKkmRPhq0tl1la7M5dd2CbXFCF88qTww8fbja3eUdTULc
+	IbO5TOPOIPRv7QBjM33fOOgm0Er5IOcRrnc2q3xacr3K7+gxjfByyAg8VrO/JXLL
+	DU4weVtGEA8lifGi+CiChq9qY9bA2JCjUXrZjono0nKjbJ9CLILK6UkeLLYA+JXQ
+	g9ZZtg==
+Received: from mail-pl1-f199.google.com (mail-pl1-f199.google.com [209.85.214.199])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4ayt708uy6-1
 	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
-	for <linux-wireless@vger.kernel.org>; Thu, 11 Dec 2025 12:41:17 +0000 (GMT)
-Received: by mail-pg1-f197.google.com with SMTP id 41be03b00d2f7-bf222e5b54dso13181a12.1
-        for <linux-wireless@vger.kernel.org>; Thu, 11 Dec 2025 04:41:17 -0800 (PST)
+	for <linux-wireless@vger.kernel.org>; Thu, 11 Dec 2025 12:41:20 +0000 (GMT)
+Received: by mail-pl1-f199.google.com with SMTP id d9443c01a7336-297fbfb4e53so721235ad.1
+        for <linux-wireless@vger.kernel.org>; Thu, 11 Dec 2025 04:41:20 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=oss.qualcomm.com; s=google; t=1765456876; x=1766061676; darn=vger.kernel.org;
+        d=oss.qualcomm.com; s=google; t=1765456879; x=1766061679; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=8+azEMPAyacCuRvwmN0IXUit231R2OkPV71Pb8Yo7To=;
-        b=ZlEcPP1YxYBUBtz7yKSxCZc6tiZFrgqdTGWsDRQGTo/xeii8E+pZsVCMZhIZxpFjsu
-         m8i1txoZ1drQLHOOZ/XZ8ydD/t9Dphxn5ugQuetIIlhzGLt3Z+twuOTgGH/s20U6nbUt
-         iVuAdP6mjuTRIIhOGMRfnEWG5ucs9ANUtQw2yLypP81Q41WzoQ+5ZNc3boR5Dnr7Ddcm
-         rfyESanAxyJ6CjtDwFrMdRq0b5frv21R9S6WRc6qu4mDwpPhHJW+TMVBkJ6XIODKSZ/8
-         BsGIDfYt5c0/WhR6wITMIqS4VvoRsOl7d75B6jLiruHEEKThJYqprVAYgexdZtxR9KsK
-         Fw9g==
+        bh=9Px2e48C8iW39eYr4GuJNxpxfMMBtS0/4HT52dkaAsQ=;
+        b=M0uCRBnAlKtQQ7x9DJ3Kmshkj/QaMRJZKOwlVkCvRhRwSCHIpHkFYzMvt/SCleeoPX
+         8mjHy8kg7et3Q/u0xQTd49pvROTpah98YU1EPs8YgsRQJm6SZg0JP+uuGnkj7ozUvnrb
+         8gN+vCwCRRDrkeQjnpMsE/wQPF9jMcHslXDMKoOLgL+BXzU1clyx3Dv+8wA2BMxJZpAL
+         UlFSJ7J/TM3Kz02Ag+ZmqilOk8zm0YBqrUThiSiV1p8JWQt4O5ZedQ7twAFkxmjteiMn
+         pTGo4sIbJHiaEUx4cz+Y+9VpIQHA0B0HISMtiDTiu18nl1Hd+ujSUNeQN6ZKCwqSj2tw
+         5OkQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1765456876; x=1766061676;
+        d=1e100.net; s=20230601; t=1765456879; x=1766061679;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to;
-        bh=8+azEMPAyacCuRvwmN0IXUit231R2OkPV71Pb8Yo7To=;
-        b=m7VDi6u87OZZM9kWhJnjLyXD6KiG0LpnFfKYHZAPOTbsHQQDBY/x4WwOx9Tb7xuAKn
-         YHZB36kh4iyLkIdTi+mrM1f9Xhv4L47nxNGFt0onIZV6+fdB8llPoF3V+rwoPG+MH701
-         IV2brZRy01toFo+yLzXgB6B6AgOuS6BEdsxQ1dPrivAk9+5+Q/4zB4ywZIqSRoewksXT
-         gp9d+EYHlHWF2n2bLC9Pv/wWGVHZ4asybshppzR4qKCRvGuyj84+APxZGttC0LZ2+2D8
-         6kwrVW8M31tLDf6wRqp/970w+JiuJZ0ZrJIjBzAbu0UNx09AGu03uCfTgLCTBVS0jTGZ
-         kNfw==
-X-Gm-Message-State: AOJu0YxSJCSO+UpNKlG+zjrgC4R5FFC5v1zXAympWIgjgfjX+ATNAuiM
-	De3ynQSQzJmvWaHTNNFO1/rGziB/He9+Z4AhVjZPqyzULbFxoASeeZmpOUIJvpxhJMcR1LRpBRn
-	xjRxqOWq/RXnG36PrG+2BUxnutYzNY2QhzJ6WlWq36kIB9pYCpd0V6uCnMgCCPEh5EZLFL8STg3
-	84gA==
-X-Gm-Gg: AY/fxX7e2Ly3wvM+2YIuBHIsd9pTdwBe6G5lMrzEp/bcZRXAyQCo+RO0rV+avkifRTU
-	JBo7lnj65NmanvVSgZ+QRPXgklroIqApjjr/WkDqilwirRs37TufCmJyjrTrd2J+Qx6HEI9GdpC
-	NZru0MqlzX7cBjgmgMPhiNyBQtgS1OLMd/e97G0aZsZOc2BP0SfLeb+jPvZGB040K3QXXbS7VOw
-	yC+MT0xs7CsEI8H3syjrDVGuiarekGGIzz5Qqrsh53RPoAHhwNng+6g1EYRvk/Yxam3y425/iNx
-	WKwSWDmxyXTc7oqxstGt65O7BNw5T/46SlJ4gAu0b7NxJJzUHFBGOW2preqJyjP3L44r9GFop8A
-	iR1G9zSfKCIFTdMFqMxJR9oFqRxLNJD7kx42A9KOIBw==
-X-Received: by 2002:a05:6a20:a128:b0:366:57e1:3919 with SMTP id adf61e73a8af0-3685f33ca67mr1947616637.26.1765456876304;
-        Thu, 11 Dec 2025 04:41:16 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IEF+WQCRDMgOHeavNI0quPHoQs0R4+dsDYlWkqHe7w1CxcJOcX7DczUBK+XxIJQi1N68dn9SQ==
-X-Received: by 2002:a05:6a20:a128:b0:366:57e1:3919 with SMTP id adf61e73a8af0-3685f33ca67mr1947559637.26.1765456875205;
-        Thu, 11 Dec 2025 04:41:15 -0800 (PST)
+        bh=9Px2e48C8iW39eYr4GuJNxpxfMMBtS0/4HT52dkaAsQ=;
+        b=ZkpUBFy6lwQ1IxNZlo8ipTYxOdPH0Mah8QfBW21bss3CiQGPvg+MP54CXtE4OIS18P
+         vHs1nNmRKYMjZQHy+3wi67YVkY7ds9KpFVFasBUVnNEqFNvBCArizf5BzCL/szY8jOMK
+         896hSb8xmmpBDsaiPYBNk1vLSbi2am9JJ+7Sv1DzC991wkaWRtjZctjva3qGW1WCb++8
+         7ubLPr+1awVlY1ykmKwdfZHJF04N+82l2ZJ2ugXTwuoPKaizr6h5BkaTg0jVed52Aumu
+         4+xPIjVhHE4A8TT8LPW42i30nutnhe4kpMMMh9uIPwpxP/sgNWGzsZBeA2ktNSQtRoy1
+         Qykw==
+X-Gm-Message-State: AOJu0YxYofkkBgPvuA634r5vd93DnObNOGvFbgF9UO5ZHbefv8dtvf6c
+	6bMVwjM37SOTtD3/yemyf7nQneUpiMVJ76E12S7brKtreURPluKktZbQ3K31iK5HXszC8azf3Um
+	WxHWFaiR3QcNChtqjQL8xBtW7hxYtMgJLjQf6fTG1p6hPezZaLv4pGJ4Iw/IpwBA06qHC4w==
+X-Gm-Gg: AY/fxX4kZu1T/GrFHv9sD9x2PSNq1e4wIZH8wDIucARZqKg9fB0OV422CrDLP0igfMn
+	J5MNUiBd6lcvQ7ve/0vDNa2gAR2yeHFELfRRDbWEkd0IhWgeRFORo7N4MYRpmHsmfebJPEkOA5g
+	NxzAmXfH1PrUdn8/pFc3CdQMtI1p/DRefyCBGWUpJmAtcs84mVxP2iWFmLl0p5aSMRqQcQ8CcTx
+	jaZJdeHhh5yVfLOkcDvGbROwvPPCErocqK1njOrTxw7SNDKzGjjmA3o/3TvLWgrjgewnlTIXgDa
+	ERdBfJYilt9T+RfdCWnFQUcT+d6swfr2yV80fnEH3Men64Oqag8MNlRwO/p2H19G5f7aAsef/Vj
+	WCJclh8+Glso2+CLiVbse8B11CBBsewyyMmOAPvbxhg==
+X-Received: by 2002:a05:6300:506:10b0:366:14b2:313 with SMTP id adf61e73a8af0-366e34c5fa2mr4553314637.70.1765456879217;
+        Thu, 11 Dec 2025 04:41:19 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IFJDl57ETSnfyV8PqNOaO/pqU9jNjAc6UWgdeZV3TB/q/AJcidd6fhDPXnbhBDJGqz55E4u+w==
+X-Received: by 2002:a05:6300:506:10b0:366:14b2:313 with SMTP id adf61e73a8af0-366e34c5fa2mr4553284637.70.1765456878382;
+        Thu, 11 Dec 2025 04:41:18 -0800 (PST)
 Received: from hu-kkavita-hyd.qualcomm.com ([202.46.22.19])
-        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-c0c2ae4e163sm2272297a12.20.2025.12.11.04.41.13
+        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-c0c2ae4e163sm2272297a12.20.2025.12.11.04.41.16
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 11 Dec 2025 04:41:14 -0800 (PST)
+        Thu, 11 Dec 2025 04:41:18 -0800 (PST)
 From: Kavita Kavita <kavita.kavita@oss.qualcomm.com>
 To: johannes@sipsolutions.net
 Cc: linux-wireless@vger.kernel.org, kavita.kavita@oss.qualcomm.com,
         ainy.kumari@oss.qualcomm.com, sai.magam@oss.qualcomm.com,
         quic_drohan@quicinc.com
-Subject: [PATCH wireless-next 01/14] wifi: ieee80211: Add missing AKM suite selector definitions
-Date: Thu, 11 Dec 2025 18:10:38 +0530
-Message-Id: <20251211124051.3094878-2-kavita.kavita@oss.qualcomm.com>
+Subject: [PATCH wireless-next 02/14] wifi: cfg80211: add support for EPPKE Authentication Protocol
+Date: Thu, 11 Dec 2025 18:10:39 +0530
+Message-Id: <20251211124051.3094878-3-kavita.kavita@oss.qualcomm.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20251211124051.3094878-1-kavita.kavita@oss.qualcomm.com>
 References: <20251211124051.3094878-1-kavita.kavita@oss.qualcomm.com>
@@ -108,56 +108,422 @@ List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUxMjExMDA5OSBTYWx0ZWRfX871xWOaKn7hB
- y1rZNiSYt7SOIq39O0CJ9MoPY77MiqcOgq6VoClY6MbZWXYnvLOq2bYunA5j1ssTu1s9RHE9jst
- UEr3IPOQrqgH/lxk39xZcH1B5mofV0X11zW+tREH/Cz9MHJqvh5FmbvL69MqcPFH4jqhVmCoOmz
- gDLcFKRRlJidJmkzz+maccJEPb/Cjpk99iDISPl8kGqJDS2Idz//b53fopKSFVv6SQqiqyXpYzw
- AgINfPBqS7Sr0AV2Q27D2LtJULzLZ+4hT/kpJR01h1LRKb/uWv9b+J7eAchYO6561ZrUZw0v2kr
- gqyn/y1f7J5sp/FHfwV6lyCx7HM5gV6qfmZGs5bnFZnm0lkjb89qtPE+Jl6oBmoLmMHMVFOOseK
- c0AJ2cAV3li94drz6iyPdNGFX2c2sA==
-X-Proofpoint-ORIG-GUID: 9Uf9wyR1Fzm9s7HrDKU_yk-IbwNWa3a2
-X-Proofpoint-GUID: 9Uf9wyR1Fzm9s7HrDKU_yk-IbwNWa3a2
-X-Authority-Analysis: v=2.4 cv=LJ9rgZW9 c=1 sm=1 tr=0 ts=693abbed cx=c_pps
- a=rz3CxIlbcmazkYymdCej/Q==:117 a=fChuTYTh2wq5r3m49p7fHw==:17
- a=wP3pNCr1ah4A:10 a=s4-Qcg_JpJYA:10 a=VkNPw1HP01LnGYTKEx00:22
- a=EUspDBNiAAAA:8 a=A-uAeEEKJvxK9as7tjEA:9 a=bFCP_H2QrGi7Okbo017w:22
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUxMjExMDA5OSBTYWx0ZWRfXzbXr/EdvfaDl
+ tRfT0u2dtujUPIUmWbKLAE0Hcwn99xV/iDfiNhYwkGyY+gKiuWBgziBMmdYKl0Pyrarfu114lZP
+ IU+DcTwYNHIzNM66BRCBlKAz9myP+22h4IC2PBREpIZKrobdUSHBT6yYFqXQPsCHXcQucZYx3iS
+ fqHQAhmU2SpvfobOv0cZnFIJLNY/96p8FmbyL9+HXnpNE0tKSPj4InsG0cPybAUDdieWlmbYQyp
+ mBoiYsTGKVeJu8y6j5zcptmy84Kuropg5UYrJx8PnQFdFTVmS9pMzgPyyZNx4nyvNUHMbw4z87r
+ ZDb8hqSFytkNrWggHExvCdwNQUQ1glrMMOUyx/AamKmvcgV8AkoIoUS7nUDgvsMcy746X0fnKsm
+ +hmKP7iulSPPq0BV6kw4uVBd+cKf2g==
+X-Authority-Analysis: v=2.4 cv=WYIBqkhX c=1 sm=1 tr=0 ts=693abbf0 cx=c_pps
+ a=JL+w9abYAAE89/QcEU+0QA==:117 a=fChuTYTh2wq5r3m49p7fHw==:17
+ a=IkcTkHD0fZMA:10 a=wP3pNCr1ah4A:10 a=s4-Qcg_JpJYA:10
+ a=VkNPw1HP01LnGYTKEx00:22 a=EUspDBNiAAAA:8 a=zcJngYgtL91L9PFnZ2QA:9
+ a=3ZKOabzyN94A:10 a=QEXdDO2ut3YA:10 a=324X-CrmTo6CU4MGRt3R:22
+X-Proofpoint-GUID: X3c1vYHjWaj_pQgBZBSkTlkPNmyrtMEB
+X-Proofpoint-ORIG-GUID: X3c1vYHjWaj_pQgBZBSkTlkPNmyrtMEB
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.9,FMLib:17.12.100.49
  definitions=2025-12-11_01,2025-12-09_03,2025-10-01_01
 X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- phishscore=0 spamscore=0 clxscore=1011 priorityscore=1501 suspectscore=0
- lowpriorityscore=0 bulkscore=0 malwarescore=0 adultscore=0 impostorscore=0
+ phishscore=0 suspectscore=0 priorityscore=1501 adultscore=0 impostorscore=0
+ spamscore=0 bulkscore=0 lowpriorityscore=0 malwarescore=0 clxscore=1011
  classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
  reason=mlx scancount=1 engine=8.22.0-2510240001 definitions=main-2512110099
 
-Add the definitions for missing AKM selectors defined in
-IEEE Std 802.11-2024 and IEEE Std 802.11bh-2024, table 9-190.
-These definitions will be used by various drivers that support
-these new AKM suites.
+From: Ainy Kumari <ainy.kumari@oss.qualcomm.com>
 
+Add an extended feature flag NL80211_EXT_FEATURE_EPPKE to allow a
+driver to indicate support for the Enhanced Privacy Protection Key
+Exchange (EPPKE) authentication protocol in non‑AP STA mode, as
+defined in "IEEE P802.11bi/D3.0, 12.16.9".
+
+In case of SME in userspace, the Authentication frame body is prepared
+in userspace while the driver finalizes the Authentication frame once
+it receives the required fields and elements. The driver indicates
+support for EPPKE using the extended feature flag so that userspace
+can initiate EPPKE authentication.
+
+When the feature flag is set, process EPPKE Authentication frames from
+userspace in non-AP STA mode. If the flag is not set, reject EPPKE
+Authentication frames.
+
+Define a new authentication type NL80211_AUTHTYPE_EPPKE for EPPKE.
+Add support to validate the EPPKE base AKM suite in RSNE and reject
+EPPKE Authentication frames if the base AKM suite is not present.
+
+Signed-off-by: Ainy Kumari <ainy.kumari@oss.qualcomm.com>
+Co-developed-by: Kavita Kavita <kavita.kavita@oss.qualcomm.com>
 Signed-off-by: Kavita Kavita <kavita.kavita@oss.qualcomm.com>
 ---
- include/linux/ieee80211.h | 6 ++++++
- 1 file changed, 6 insertions(+)
+ include/linux/ieee80211.h    |   1 +
+ include/net/cfg80211.h       |  55 +++++++++++++++
+ include/uapi/linux/nl80211.h |   7 ++
+ net/wireless/core.h          |   2 +
+ net/wireless/nl80211.c       |  59 +++++++++++++++-
+ net/wireless/util.c          | 126 +++++++++++++++++++++++++++++++++++
+ 6 files changed, 248 insertions(+), 2 deletions(-)
 
 diff --git a/include/linux/ieee80211.h b/include/linux/ieee80211.h
-index 96439de55f07..9d36695e1468 100644
+index 9d36695e1468..b3bf98a317b2 100644
 --- a/include/linux/ieee80211.h
 +++ b/include/linux/ieee80211.h
-@@ -2218,6 +2218,12 @@ struct ieee80211_multiple_bssid_configuration {
- #define WLAN_AKM_SUITE_OWE			SUITE(0x000FAC, 18)
- #define WLAN_AKM_SUITE_FT_PSK_SHA384		SUITE(0x000FAC, 19)
- #define WLAN_AKM_SUITE_PSK_SHA384		SUITE(0x000FAC, 20)
-+#define WLAN_AKM_SUITE_PASN			SUITE(0x000FAC, 21)
-+#define WLAN_AKM_SUITE_FT_IEEE8021X_SHA384	SUITE(0x000FAC, 22)
-+#define WLAN_AKM_SUITE_IEEE8021X_SHA384	SUITE(0x000FAC, 23)
-+#define WLAN_AKM_SUITE_SAE_EXT_KEY		SUITE(0x000FAC, 24)
-+#define WLAN_AKM_SUITE_FT_SAE_EXT_KEY		SUITE(0x000FAC, 25)
-+#define WLAN_AKM_SUITE_PASN_KEY_WRAP		SUITE(0x000FAC, 26)
+@@ -1351,6 +1351,7 @@ struct ieee80211_tdls_data {
+ #define WLAN_AUTH_FILS_SK 4
+ #define WLAN_AUTH_FILS_SK_PFS 5
+ #define WLAN_AUTH_FILS_PK 6
++#define WLAN_AUTH_EPPKE 9
+ #define WLAN_AUTH_LEAP 128
  
- #define WLAN_AKM_SUITE_WFA_DPP			SUITE(WLAN_OUI_WFA, 2)
+ #define WLAN_AUTH_CHALLENGE_LEN 128
+diff --git a/include/net/cfg80211.h b/include/net/cfg80211.h
+index 899f267b7cf9..38d201d4e676 100644
+--- a/include/net/cfg80211.h
++++ b/include/net/cfg80211.h
+@@ -10376,4 +10376,59 @@ cfg80211_s1g_get_primary_sibling(struct wiphy *wiphy,
+ 	return ieee80211_get_channel_khz(wiphy, sibling_1mhz_khz);
+ }
  
++/**
++ * struct rsne - RSN element (RSNE)
++ * @version: RSN version field (must be 1 for valid RSNE).
++ * @group_data_cipher_suite: group data cipher suite selector.
++ * @pairwise_cipher_suite_count: number of pairwise cipher suites.
++ * @pairwise_cipher_suite_list: list of pairwise cipher suite selectors.
++ * @akm_suite_count: number of AKM suites.
++ * @akm_suite_list: list of AKM suite selectors.
++ * @capabilities: RSN capabilities bitfield.
++ * @pmkid_count: (optional) number of PMKIDs.
++ * @pmkid_list: (optional) list of PMKIDs.
++ * @group_mgmt_cipher_suite: (optional) group management cipher suite selector.
++ *
++ * Represents the RSN element defined in "IEEE Std 802.11-2020, 9.4.2.24"
++ * so that cfg80211/mac80211 can parse and access its fields.
++ */
++struct rsne {
++	u16 version;
++	u32 group_data_cipher_suite;
++	u16 pairwise_cipher_suite_count;
++	const u8 *pairwise_cipher_suite_list;
++
++	u16 akm_suite_count;
++	const u8 *akm_suite_list;
++
++	u16 capabilities;
++
++	u16 pmkid_count;
++	const u8 *pmkid_list;
++
++	u32 group_mgmt_cipher_suite;
++};
++
++/**
++ * cfg80211_parse_rsne - Parse an RSN element (RSNE)
++ * @rsne: pointer to RSNE buffer.
++ * @elem: pointer to struct rsne to fill.
++ *
++ * Parse the RSN element as defined in "IEEE Std 802.11-2020, 9.4.2.24".
++ *
++ * Return: 0 on success, -EINVAL on failure.
++ */
++int cfg80211_parse_rsne(const u8 *rsne, struct rsne *elem);
++
++/**
++ * cfg80211_rsne_get_akm_list - Parse RSNE and return AKM suite list
++ * @rsne: pointer to RSNE buffer.
++ * @count: pointer to store number of AKM suites.
++ *
++ * Parse the RSN element and return a pointer to the AKM suite list.
++ *
++ * Return: pointer to list, or NULL if parsing fails or inputs are invalid.
++ */
++const u8 *cfg80211_rsne_get_akm_list(const u8 *rsne, u16 *count);
++
+ #endif /* __NET_CFG80211_H */
+diff --git a/include/uapi/linux/nl80211.h b/include/uapi/linux/nl80211.h
+index 8134f10e4e6c..371249a2f0b0 100644
+--- a/include/uapi/linux/nl80211.h
++++ b/include/uapi/linux/nl80211.h
+@@ -5425,6 +5425,7 @@ enum nl80211_bss_status {
+  * @NL80211_AUTHTYPE_FILS_SK: Fast Initial Link Setup shared key
+  * @NL80211_AUTHTYPE_FILS_SK_PFS: Fast Initial Link Setup shared key with PFS
+  * @NL80211_AUTHTYPE_FILS_PK: Fast Initial Link Setup public key
++ * @NL80211_AUTHTYPE_EPPKE: Enhanced Privacy Protection Key Exchange
+  * @__NL80211_AUTHTYPE_NUM: internal
+  * @NL80211_AUTHTYPE_MAX: maximum valid auth algorithm
+  * @NL80211_AUTHTYPE_AUTOMATIC: determine automatically (if necessary by
+@@ -5440,6 +5441,7 @@ enum nl80211_auth_type {
+ 	NL80211_AUTHTYPE_FILS_SK,
+ 	NL80211_AUTHTYPE_FILS_SK_PFS,
+ 	NL80211_AUTHTYPE_FILS_PK,
++	NL80211_AUTHTYPE_EPPKE,
+ 
+ 	/* keep last */
+ 	__NL80211_AUTHTYPE_NUM,
+@@ -6744,6 +6746,10 @@ enum nl80211_feature_flags {
+  * @NL80211_EXT_FEATURE_BEACON_RATE_EHT: Driver supports beacon rate
+  *	configuration (AP/mesh) with EHT rates.
+  *
++ * @NL80211_EXT_FEATURE_EPPKE: Driver supports Enhanced Privacy Protection
++ *	Key Exchange (EPPKE) with user space SME (NL80211_CMD_AUTHENTICATE)
++ *	in non-AP STA mode.
++ *
+  * @NUM_NL80211_EXT_FEATURES: number of extended features.
+  * @MAX_NL80211_EXT_FEATURES: highest extended feature index.
+  */
+@@ -6820,6 +6826,7 @@ enum nl80211_ext_feature_index {
+ 	NL80211_EXT_FEATURE_DFS_CONCURRENT,
+ 	NL80211_EXT_FEATURE_SPP_AMSDU_SUPPORT,
+ 	NL80211_EXT_FEATURE_BEACON_RATE_EHT,
++	NL80211_EXT_FEATURE_EPPKE,
+ 
+ 	/* add new features before the definition below */
+ 	NUM_NL80211_EXT_FEATURES,
+diff --git a/net/wireless/core.h b/net/wireless/core.h
+index 63dcf315dba7..134c8841a24d 100644
+--- a/net/wireless/core.h
++++ b/net/wireless/core.h
+@@ -579,6 +579,8 @@ int cfg80211_assoc_ml_reconf(struct cfg80211_registered_device *rdev,
+ 			     struct net_device *dev,
+ 			     struct cfg80211_ml_reconf_req *req);
+ 
++bool cfg80211_is_sae_akmp(u32 akm_suite);
++
+ /**
+  * struct cfg80211_colocated_ap - colocated AP information
+  *
+diff --git a/net/wireless/nl80211.c b/net/wireless/nl80211.c
+index c961cd42a832..d7151fc5cf0e 100644
+--- a/net/wireless/nl80211.c
++++ b/net/wireless/nl80211.c
+@@ -6470,6 +6470,10 @@ static bool nl80211_valid_auth_type(struct cfg80211_registered_device *rdev,
+ 		     auth_type == NL80211_AUTHTYPE_FILS_SK_PFS ||
+ 		     auth_type == NL80211_AUTHTYPE_FILS_PK))
+ 			return false;
++		if (!wiphy_ext_feature_isset(&rdev->wiphy,
++					     NL80211_EXT_FEATURE_EPPKE) &&
++		    auth_type == NL80211_AUTHTYPE_EPPKE)
++			return false;
+ 		return true;
+ 	case NL80211_CMD_CONNECT:
+ 		if (!(rdev->wiphy.features & NL80211_FEATURE_SAE) &&
+@@ -6487,6 +6491,10 @@ static bool nl80211_valid_auth_type(struct cfg80211_registered_device *rdev,
+ 			    NL80211_EXT_FEATURE_FILS_SK_OFFLOAD) &&
+ 		    auth_type == NL80211_AUTHTYPE_FILS_SK)
+ 			return false;
++		if (!wiphy_ext_feature_isset(&rdev->wiphy,
++					     NL80211_EXT_FEATURE_EPPKE) &&
++		    auth_type == NL80211_AUTHTYPE_EPPKE)
++			return false;
+ 		return true;
+ 	case NL80211_CMD_START_AP:
+ 		if (!wiphy_ext_feature_isset(&rdev->wiphy,
+@@ -11953,7 +11961,8 @@ static int nl80211_authenticate(struct sk_buff *skb, struct genl_info *info)
+ 	if ((auth_type == NL80211_AUTHTYPE_SAE ||
+ 	     auth_type == NL80211_AUTHTYPE_FILS_SK ||
+ 	     auth_type == NL80211_AUTHTYPE_FILS_SK_PFS ||
+-	     auth_type == NL80211_AUTHTYPE_FILS_PK) &&
++	     auth_type == NL80211_AUTHTYPE_FILS_PK ||
++	     auth_type == NL80211_AUTHTYPE_EPPKE) &&
+ 	    !info->attrs[NL80211_ATTR_AUTH_DATA])
+ 		return -EINVAL;
+ 
+@@ -11961,12 +11970,58 @@ static int nl80211_authenticate(struct sk_buff *skb, struct genl_info *info)
+ 		if (auth_type != NL80211_AUTHTYPE_SAE &&
+ 		    auth_type != NL80211_AUTHTYPE_FILS_SK &&
+ 		    auth_type != NL80211_AUTHTYPE_FILS_SK_PFS &&
+-		    auth_type != NL80211_AUTHTYPE_FILS_PK)
++		    auth_type != NL80211_AUTHTYPE_FILS_PK &&
++		    auth_type != NL80211_AUTHTYPE_EPPKE)
+ 			return -EINVAL;
+ 		req.auth_data = nla_data(info->attrs[NL80211_ATTR_AUTH_DATA]);
+ 		req.auth_data_len = nla_len(info->attrs[NL80211_ATTR_AUTH_DATA]);
+ 	}
+ 
++	if (auth_type == NL80211_AUTHTYPE_EPPKE) {
++		u16 auth_trans;
++		__le16 *pos;
++
++		/*
++		 * Validate auth_data length for Authentication
++		 * Transaction Sequence Number and Status Code.
++		 */
++		if (req.auth_data_len <= 4)
++			return -EINVAL;
++
++		pos = (__le16 *)req.auth_data;
++		auth_trans = le16_to_cpu(*pos);
++
++		if (auth_trans == 1) {
++			const u8 *rsne, *akm_list;
++			u16 akm_count;
++			u32 akm_suite;
++
++			rsne = cfg80211_find_ie(WLAN_EID_RSN,
++						req.auth_data + 4,
++						req.auth_data_len - 4);
++
++			akm_list = cfg80211_rsne_get_akm_list(rsne, &akm_count);
++
++			/*
++			 * Validate AKMP from RSNE for EPPKE Authentication:
++			 * EPPKE uses PASN with SAE AKMPs as Base AKMP as
++			 * mentioned in "IEEE P802.11bi/D3.0, 12.16.9".
++			 * Valid AKMPs: SAE (00-0F-AC:8), FT-SAE (00-0F-AC:9),
++			 * SAE-EXT (00-0F-AC:24), FT-SAE-EXT (00-0F-AC:25).
++			 *
++			 * If RSNE has none or multiple Base AKMPs, reject the
++			 * Authentication frame as mentioned in
++			 * "IEEE Std 802.11‑2024, 12.13.3.2".
++			 */
++			if (akm_count != 1 || !akm_list)
++				return -EINVAL;
++
++			akm_suite = get_unaligned_be32(akm_list);
++			if (!cfg80211_is_sae_akmp(akm_suite))
++				return -EINVAL;
++		}
++	}
++
+ 	local_state_change = !!info->attrs[NL80211_ATTR_LOCAL_STATE_CHANGE];
+ 
+ 	/*
+diff --git a/net/wireless/util.c b/net/wireless/util.c
+index 27e8a2f52f04..cc09769fa25f 100644
+--- a/net/wireless/util.c
++++ b/net/wireless/util.c
+@@ -2984,3 +2984,129 @@ bool cfg80211_wdev_channel_allowed(struct wireless_dev *wdev,
+ 	return false;
+ }
+ EXPORT_SYMBOL(cfg80211_wdev_channel_allowed);
++
++int cfg80211_parse_rsne(const u8 *rsne, struct rsne *elem)
++{
++	u16 len, cnt, field_len;
++
++	if (!rsne)
++		return -EINVAL;
++
++	memset(elem, 0, sizeof(*elem));
++
++	/* Version present? */
++	if (rsne[1] < 2)
++		return -EINVAL;
++
++	elem->version = get_unaligned_le16(rsne + 2);
++	if (elem->version != 1)
++		return -EINVAL;
++
++	len = rsne[1] - 2;
++	rsne += 4;
++
++	/* Group Data Cipher Suite present? */
++	if (len >= 4) {
++		elem->group_data_cipher_suite = get_unaligned_be32(rsne);
++		rsne += 4;
++		len -= 4;
++	} else if (len > 0) {
++		return -EINVAL;
++	}
++
++	/* Pairwise Cipher Suite Count present? */
++	if (len >= 2) {
++		cnt = get_unaligned_le16(rsne);
++		field_len = 2 + cnt * 4;
++
++		if (len < field_len)
++			return -EINVAL;
++
++		elem->pairwise_cipher_suite_count = cnt;
++		elem->pairwise_cipher_suite_list = rsne + 2;
++
++		rsne += field_len;
++		len -= field_len;
++	} else if (len == 1) {
++		return -EINVAL;
++	}
++
++	/* AKM Suite Count present? */
++	if (len >= 2) {
++		cnt = get_unaligned_le16(rsne);
++		field_len = 2 + cnt * 4;
++
++		if (len < field_len)
++			return -EINVAL;
++
++		elem->akm_suite_count = cnt;
++		elem->akm_suite_list = rsne + 2;
++
++		rsne += field_len;
++		len  -= field_len;
++	} else if (len == 1) {
++		return -EINVAL;
++	}
++
++	/* RSN Capabilities present? */
++	if (len >= 2) {
++		elem->capabilities = get_unaligned_le16(rsne);
++		rsne += 2;
++		len -= 2;
++	}
++
++	/* PMKID Count present? */
++	if (len >= 2) {
++		cnt = get_unaligned_le16(rsne);
++		field_len = 2 + cnt * 16;
++
++		if (len < field_len)
++			return -EINVAL;
++
++		elem->pmkid_count = cnt;
++		elem->pmkid_list = rsne + 2;
++
++		rsne += field_len;
++		len -= field_len;
++	}
++
++	/* Group Management Cipher Suite present? */
++	if (len >= 4) {
++		elem->group_mgmt_cipher_suite = get_unaligned_be32(rsne);
++		rsne += 4;
++		len -= 4;
++	}
++
++	return 0;
++}
++EXPORT_SYMBOL_GPL(cfg80211_parse_rsne);
++
++const u8 *cfg80211_rsne_get_akm_list(const u8 *rsne, u16 *count)
++{
++	struct rsne elem;
++	int ret;
++
++	if (!rsne || !count)
++		return NULL;
++
++	ret = cfg80211_parse_rsne(rsne, &elem);
++	if (ret)
++		return NULL;
++
++	*count = elem.akm_suite_count;
++
++	return elem.akm_suite_list;
++}
++
++bool cfg80211_is_sae_akmp(u32 akm_suite)
++{
++	switch (akm_suite) {
++	case WLAN_AKM_SUITE_SAE:
++	case WLAN_AKM_SUITE_FT_OVER_SAE:
++	case WLAN_AKM_SUITE_SAE_EXT_KEY:
++	case WLAN_AKM_SUITE_FT_SAE_EXT_KEY:
++		return true;
++	default:
++		return false;
++	}
++}
 -- 
 2.34.1
 
