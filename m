@@ -1,174 +1,161 @@
-Return-Path: <linux-wireless+bounces-29674-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-29675-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 15940CB6101
-	for <lists+linux-wireless@lfdr.de>; Thu, 11 Dec 2025 14:41:30 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 611B0CB61B6
+	for <lists+linux-wireless@lfdr.de>; Thu, 11 Dec 2025 14:55:56 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 14FD03015002
-	for <lists+linux-wireless@lfdr.de>; Thu, 11 Dec 2025 13:41:29 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id C892A30358D0
+	for <lists+linux-wireless@lfdr.de>; Thu, 11 Dec 2025 13:54:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F39BA313529;
-	Thu, 11 Dec 2025 13:41:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 246202C0F7D;
+	Thu, 11 Dec 2025 13:54:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="uDYj/hL7"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-oo1-f78.google.com (mail-oo1-f78.google.com [209.85.161.78])
+Received: from mail-pf1-f169.google.com (mail-pf1-f169.google.com [209.85.210.169])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0DB443126C6
-	for <linux-wireless@vger.kernel.org>; Thu, 11 Dec 2025 13:41:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.161.78
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7E08C280324
+	for <linux-wireless@vger.kernel.org>; Thu, 11 Dec 2025 13:54:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.169
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765460486; cv=none; b=DstBofTb30/Uok3B+RJK9TGtuiVEBNzO1ITiGl9D35878cbXx9VPxMLVHonojR3YkEsdzcNBp+L7mp9QIEASDwHy6vu35fftBl+UKG/FxoHUjYUYUj03XBjxwIF3NDVE9cC8T2GCqZISOA9d4B7sK7n0Aso/765vQOCi7vRapaM=
+	t=1765461287; cv=none; b=BGcZmgK/d6UEImTfUJfUS63OjOHvxzjDxRqQEfJanpB+ynz45lHY7DM9abQpaNbN6XrwacCCaPY4JNlOBg57kQpg58OW4q78ijb31ii8sxqZ+R9/619MnztADCj9nI5f7Xqk74LIM0b76pEFJzYqUcqzpOfaHwo479ocRqevcp8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765460486; c=relaxed/simple;
-	bh=CDE1ttNTa5AMSgjBBmBwDvE2XcaWTCNIO92rjWyj8sE=;
-	h=MIME-Version:Date:Message-ID:Subject:From:To:Content-Type; b=ah4CWjRjg1YAs1hptY0MK4tJSfJ0jbKpkRYfZjdxsumsFDrItEiD9LPwpMxs9yNWvxSgTiJ2vX151jsoyO+4ashUKSvqcVTs61oAU+Q/ttbcMA74eenJpK7mpTaeWuGNe9fl4RkT7VcGOT6efe23acx7TzC1jQqNre0aAKTthrM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com; arc=none smtp.client-ip=209.85.161.78
-Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com
-Received: by mail-oo1-f78.google.com with SMTP id 006d021491bc7-65b2cd67cceso124953eaf.0
-        for <linux-wireless@vger.kernel.org>; Thu, 11 Dec 2025 05:41:24 -0800 (PST)
+	s=arc-20240116; t=1765461287; c=relaxed/simple;
+	bh=asjipvlumTAG9LX/ZrgSM7qOg2tY3hiQLpH2JweZG4Y=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=IKa6fhKTu3pcnjaVsozylrHYHU11L7cO4hoLplwldwi15Nfbz+bK0zIjFybqkIBDT6FgsQK8noR40dndCMkBYVDhRIc+hk8ZsHmSF7ODEwHagaC6r50C1ZjWP0egyZW5ZKGPnh6SwQK6SaUa7K5Joh0AFgqNWotxldPonWY5OgU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=uDYj/hL7; arc=none smtp.client-ip=209.85.210.169
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+Received: by mail-pf1-f169.google.com with SMTP id d2e1a72fcca58-7b8bbf16b71so106239b3a.2
+        for <linux-wireless@vger.kernel.org>; Thu, 11 Dec 2025 05:54:45 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1765461285; x=1766066085; darn=vger.kernel.org;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=aWRPRAJ89lgq7qGLYK1gyasHO8BcBnTXm3hkZRbZKOw=;
+        b=uDYj/hL7oGwh2XUzc1hqD9+sdZ/Sx2Sq2KIskqtRR/WRmu2isIV04TAqo6JOKiX4kF
+         NCpsGtZjwJuX40Ngt1BNK/SQaQ2XpxVQUmNG0btiWJ2i0K4XwxIlSK8GOLCMHLZZhDWN
+         WwjUXaxR3Abzxj6Dcz0KKvvpDorVhHMUBws/PgXonrmgS/0ghFX/2ApTrYXWqPZn6utb
+         dD/vbXSKFO6Yi5HxsWNMKFQNDEVQRC/xUBmSXlp5CmOLIAyyLDUr+XUKig6XSeGgXovr
+         0TEArh7ZcaNENoq1epGedgYRQErJdCKsp57ZQPTUpjmd0nyjiuCtg+KRrEgd72Q3Y6cn
+         cRQg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1765460484; x=1766065284;
-        h=to:from:subject:message-id:date:mime-version:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=ZdhV1m8aeGU2YokLDtNvPFAfeUluHSpx/80Pd07MRPc=;
-        b=EQfmqiY9Kd0SWU+zQRpj3GIDzrTcBFhkajnWo3rQh8Dzxu3YieMOcqwH76xX6LrsFN
-         MoulQHuECDZhIfVKDGyYiUBd9z6Hk2cNWuBNySqW3L5EgG5aN3HQP3Nw/X6N4JjSMOSj
-         d+jJvUQGHF4c7Wx4lPW0IyRJ5WuazgdLhzFy73LbTckoz4Tb2VbY5YFORfcJkUBh/ZjC
-         ZgqNGuMst+GmOBDI9B9hxFeDehYEODHgKiv2Cu4p3PrpdiZKOZcEU6qzXFL18P5pxOEj
-         pkDjhRuj5JI28bdgl6B5xa/iol7R1MfD8KzC4xzOYddH68aYA7DlAW35SAduxKvP59xY
-         av4A==
-X-Forwarded-Encrypted: i=1; AJvYcCVTnIbsVmFf54Gm85vFTqn7MxVhZ8pUFeLtN0pXvKUo+238UsH17xuD8yrt4py4yb0j1TbprER+lmebUpQR/A==@vger.kernel.org
-X-Gm-Message-State: AOJu0YzVESWdFNGdcE7xZ9qay14wqJF5xYaAFghvsJJe4K1hmfCYpE1K
-	qv75ifegAGy1/p380xj7kgMYy38IICzkT2RPtNABP19Vc0k6d2O1rd+41MY2QtZfCtVnCudU0iV
-	F2OYpBApUlJkDIb+COQvAHXy+DpCncIM1ubbBAOXjmklMq2nujk3HfrxwoQU=
-X-Google-Smtp-Source: AGHT+IGNnZYJRKkVKEoqr1aOebOWcitP/eJc29wiPAqSj9kqrQC8LVU+8N0bc9k787UTSjA5rJaWEWXkMS8eEhLrT67SHYwSjOZO
+        d=1e100.net; s=20230601; t=1765461285; x=1766066085;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=aWRPRAJ89lgq7qGLYK1gyasHO8BcBnTXm3hkZRbZKOw=;
+        b=GI8hjN137T12LuC6TpU7dnwmVpGOJIc+ZNK2n3lcEa9M8ExsrKaVkeGxDFX8JpU6c5
+         cS2zacRWe0tF8CStta2wiL/RUOH56LJAxFrGRERRf4doIulMpSidh86gX78p962tDW6A
+         NoXjFd5Cj6JMNPWwp69Fn7No6jJc2G2bg7foE9uQLBCqVXkEBqYE0vze1ZpEfnrjNWBU
+         vVTBI5lZfdzISRfE2wwlMLLDOeIrVy9euMCad7ntasVSvokMLFI1fQcCL5W60XEyKoL9
+         37dA5ipwMHsmdlexRltE1T9AIEbAQ8qN0Fzw7c0G9ZqPxk+7Rlr6C96acUj8ZwkDOnLj
+         yz2A==
+X-Forwarded-Encrypted: i=1; AJvYcCWD6E4IRGyZC5y3Lw7V9ioXajW5oLp3ByI/DKEI88cAlDiajhAhIXGVMsxvifTM8f+0UWoLGPVXDf2bxAC4sA==@vger.kernel.org
+X-Gm-Message-State: AOJu0Yy7fSwPNSEX7FLol/TvSPsOvg+Dkbr83EfUgK1dBk6OlG+jl+Oe
+	dE10gvHSb/e7NtoATeMIIlfDh8d1g1JB/J0TzrBAVdVClf5KULSsNG/kaPKmTpeACa1HX3SSCnp
+	sijDorvrYpGCdBlpw/OlQGxLC73o8NeRTp3D1G+7Z
+X-Gm-Gg: AY/fxX5BuhulT1H3zhC+lZMyLzYvinBt4bwWcvBQ6Sj428JwadlGwdmFlP73ufe69Qv
+	t08AQHnomY8FHsn43H/Dt0/vTA3NUBlpA501E4Q4N+mqSrLV5lCX5RGnLT7lrfD9qN6bF8rdE+k
+	O3/ZeeML+bkrpU5wSLE0fv6628lqM66lWhAl0XFQYnjoLAko8ZtEaMdSDYdpydf1GRMGDkIOUnE
+	LH1qUcpm0rGKLMmZcTod0zK95xdXbqoPzkobdZR5GA9Re3aTUZ9mw6aVXfx+sqMJRB7ZqjIHY6g
+	QmfZ5DMgvB4dpNBJqtihCea6
+X-Google-Smtp-Source: AGHT+IEaaruplzdVpdnApdH4OVSrHUz40RptUVIyI3MxrgnCoT6vGrQB2vef/vIeMxQHfT2Nk7cub+UMnQmlsyGPvik=
+X-Received: by 2002:a05:7022:2219:b0:11b:bf3f:5208 with SMTP id
+ a92af1059eb24-11f296558d9mr5045780c88.1.1765461284380; Thu, 11 Dec 2025
+ 05:54:44 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-Received: by 2002:a05:6820:3084:b0:659:9a49:8ff5 with SMTP id
- 006d021491bc7-65b2accaa61mr3088477eaf.34.1765460484238; Thu, 11 Dec 2025
- 05:41:24 -0800 (PST)
-Date: Thu, 11 Dec 2025 05:41:24 -0800
-X-Google-Appengine-App-Id: s~syzkaller
-X-Google-Appengine-App-Id-Alias: syzkaller
-Message-ID: <693aca04.050a0220.4004e.0346.GAE@google.com>
-Subject: [syzbot] [wireless?] WARNING in __alloc_workqueue
-From: syzbot <syzbot+392a2c3f461094707435@syzkaller.appspotmail.com>
-To: linux-kernel@vger.kernel.org, linux-usb@vger.kernel.org, 
-	linux-wireless@vger.kernel.org, netdev@vger.kernel.org, pkshih@realtek.com, 
-	syzkaller-bugs@googlegroups.com
+References: <20251120145835.3833031-2-elver@google.com> <20251120151033.3840508-7-elver@google.com>
+ <20251120151033.3840508-17-elver@google.com> <20251211122636.GI3911114@noisy.programming.kicks-ass.net>
+In-Reply-To: <20251211122636.GI3911114@noisy.programming.kicks-ass.net>
+From: Marco Elver <elver@google.com>
+Date: Thu, 11 Dec 2025 14:54:06 +0100
+X-Gm-Features: AQt7F2oz75av79IX-Fsq5GL2dibuf0pX45-76DYGUr2aahssaITkwrN9Ju3gYq8
+Message-ID: <CANpmjNN+zafzhvUBBmjyy+TL1ecqJUHQNRX3bo9fBJi2nFUt=A@mail.gmail.com>
+Subject: Re: [PATCH v4 16/35] kref: Add context-analysis annotations
+To: Peter Zijlstra <peterz@infradead.org>
+Cc: Boqun Feng <boqun.feng@gmail.com>, Ingo Molnar <mingo@kernel.org>, 
+	Will Deacon <will@kernel.org>, "David S. Miller" <davem@davemloft.net>, 
+	Luc Van Oostenryck <luc.vanoostenryck@gmail.com>, Chris Li <sparse@chrisli.org>, 
+	"Paul E. McKenney" <paulmck@kernel.org>, Alexander Potapenko <glider@google.com>, Arnd Bergmann <arnd@arndb.de>, 
+	Bart Van Assche <bvanassche@acm.org>, Christoph Hellwig <hch@lst.de>, Dmitry Vyukov <dvyukov@google.com>, 
+	Eric Dumazet <edumazet@google.com>, Frederic Weisbecker <frederic@kernel.org>, 
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Herbert Xu <herbert@gondor.apana.org.au>, 
+	Ian Rogers <irogers@google.com>, Jann Horn <jannh@google.com>, 
+	Joel Fernandes <joelagnelf@nvidia.com>, Johannes Berg <johannes.berg@intel.com>, 
+	Jonathan Corbet <corbet@lwn.net>, Josh Triplett <josh@joshtriplett.org>, 
+	Justin Stitt <justinstitt@google.com>, Kees Cook <kees@kernel.org>, 
+	Kentaro Takeda <takedakn@nttdata.co.jp>, Lukas Bulwahn <lukas.bulwahn@gmail.com>, 
+	Mark Rutland <mark.rutland@arm.com>, Mathieu Desnoyers <mathieu.desnoyers@efficios.com>, 
+	Miguel Ojeda <ojeda@kernel.org>, Nathan Chancellor <nathan@kernel.org>, 
+	Neeraj Upadhyay <neeraj.upadhyay@kernel.org>, 
+	Nick Desaulniers <nick.desaulniers+lkml@gmail.com>, Steven Rostedt <rostedt@goodmis.org>, 
+	Tetsuo Handa <penguin-kernel@i-love.sakura.ne.jp>, Thomas Gleixner <tglx@linutronix.de>, 
+	Thomas Graf <tgraf@suug.ch>, Uladzislau Rezki <urezki@gmail.com>, Waiman Long <longman@redhat.com>, 
+	kasan-dev@googlegroups.com, linux-crypto@vger.kernel.org, 
+	linux-doc@vger.kernel.org, linux-kbuild@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, linux-mm@kvack.org, 
+	linux-security-module@vger.kernel.org, linux-sparse@vger.kernel.org, 
+	linux-wireless@vger.kernel.org, llvm@lists.linux.dev, rcu@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
 
-Hello,
+On Thu, 11 Dec 2025 at 13:26, Peter Zijlstra <peterz@infradead.org> wrote:
+>
+> On Thu, Nov 20, 2025 at 04:09:41PM +0100, Marco Elver wrote:
+> > Mark functions that conditionally acquire the passed lock.
+> >
+> > Signed-off-by: Marco Elver <elver@google.com>
+> > ---
+> >  include/linux/kref.h | 2 ++
+> >  1 file changed, 2 insertions(+)
+> >
+> > diff --git a/include/linux/kref.h b/include/linux/kref.h
+> > index 88e82ab1367c..9bc6abe57572 100644
+> > --- a/include/linux/kref.h
+> > +++ b/include/linux/kref.h
+> > @@ -81,6 +81,7 @@ static inline int kref_put(struct kref *kref, void (*release)(struct kref *kref)
+> >  static inline int kref_put_mutex(struct kref *kref,
+> >                                void (*release)(struct kref *kref),
+> >                                struct mutex *mutex)
+> > +     __cond_acquires(true, mutex)
+> >  {
+> >       if (refcount_dec_and_mutex_lock(&kref->refcount, mutex)) {
+> >               release(kref);
+> > @@ -102,6 +103,7 @@ static inline int kref_put_mutex(struct kref *kref,
+> >  static inline int kref_put_lock(struct kref *kref,
+> >                               void (*release)(struct kref *kref),
+> >                               spinlock_t *lock)
+> > +     __cond_acquires(true, lock)
+> >  {
+> >       if (refcount_dec_and_lock(&kref->refcount, lock)) {
+> >               release(kref);
+> > --
+> > 2.52.0.rc1.455.g30608eb744-goog
+> >
+>
+> Note that both use the underlying refcount_dec_and_*lock() functions.
+> Its a bit sad that annotation those isn't sufficient. These are inline
+> functions after all, the compiler should be able to see through all that.
 
-syzbot found the following issue on:
+Wrappers will need their own annotations; for this kind of static
+analysis (built-in warning diagnostic), inferring things like
+__cond_acquires(true, lock) is far too complex (requires
+intra-procedural control-flow analysis), and would likely be
+incomplete too.
 
-HEAD commit:    37bb2e7217b0 Merge tag 'staging-6.19-rc1' of git://git.ker..
-git tree:       https://git.kernel.org/pub/scm/linux/kernel/git/gregkh/usb.git usb-testing
-console output: https://syzkaller.appspot.com/x/log.txt?x=125bceb4580000
-kernel config:  https://syzkaller.appspot.com/x/.config?x=e79f218bc0cd167b
-dashboard link: https://syzkaller.appspot.com/bug?extid=392a2c3f461094707435
-compiler:       gcc (Debian 12.2.0-14+deb12u1) 12.2.0, GNU ld (GNU Binutils for Debian) 2.40
-syz repro:      https://syzkaller.appspot.com/x/repro.syz?x=1046f21a580000
-C reproducer:   https://syzkaller.appspot.com/x/repro.c?x=12b9521a580000
+It might also be reasonable to argue that the explicit annotation is
+good for documentation.
 
-Downloadable assets:
-disk image: https://storage.googleapis.com/syzbot-assets/26124775173b/disk-37bb2e72.raw.xz
-vmlinux: https://storage.googleapis.com/syzbot-assets/bd4182168b83/vmlinux-37bb2e72.xz
-kernel image: https://storage.googleapis.com/syzbot-assets/a78be0ee345d/bzImage-37bb2e72.xz
-
-IMPORTANT: if you fix the issue, please add the following tag to the commit:
-Reported-by: syzbot+392a2c3f461094707435@syzkaller.appspotmail.com
-
-usb 3-1: SerialNumber: syz
-usb 3-1: config 0 descriptor??
-------------[ cut here ]------------
-WARNING: kernel/workqueue.c:5701 at __alloc_workqueue+0x114c/0x1810 kernel/workqueue.c:5701, CPU#0: kworker/0:2/121
-Modules linked in:
-CPU: 0 UID: 0 PID: 121 Comm: kworker/0:2 Not tainted syzkaller #0 PREEMPT(voluntary) 
-Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 10/25/2025
-Workqueue: usb_hub_wq hub_event
-RIP: 0010:__alloc_workqueue+0x114c/0x1810 kernel/workqueue.c:5701
-Code: e9 de fc ff ff 48 c7 44 24 08 e8 55 e8 88 e9 8f f6 ff ff 41 be 08 00 00 00 41 bd 00 04 00 00 e9 53 f1 ff ff e8 a5 9a 34 00 90 <0f> 0b 90 31 ed e9 af fc ff ff e8 95 9a 34 00 90 0f 0b 90 31 ed e9
-RSP: 0018:ffffc900014aedf8 EFLAGS: 00010293
-RAX: 0000000000000000 RBX: 0000000000000002 RCX: ffffffff814b4179
-RDX: ffff88810caa9d40 RSI: ffffffff814b527b RDI: 0000000000000005
-RBP: ffffc900014aef60 R08: 0000000000000005 R09: 0000000000000000
-R10: 0000000000000002 R11: ffff88810caaa7e8 R12: 0000000000000003
-R13: 0000000000000000 R14: ffffffff87e3cc20 R15: ffffc900014aeea0
-FS:  0000000000000000(0000) GS:ffff888268bf5000(0000) knlGS:0000000000000000
-CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-CR2: 00007f8d89852a60 CR3: 0000000117746000 CR4: 00000000003506f0
-Call Trace:
- <TASK>
- alloc_workqueue_noprof+0xd2/0x200 kernel/workqueue.c:5820
- rtw_usb_init_rx drivers/net/wireless/realtek/rtw88/usb.c:968 [inline]
- rtw_usb_probe+0x13bf/0x2d10 drivers/net/wireless/realtek/rtw88/usb.c:1295
- usb_probe_interface+0x303/0xa80 drivers/usb/core/driver.c:396
- call_driver_probe drivers/base/dd.c:581 [inline]
- really_probe+0x241/0xb20 drivers/base/dd.c:659
- __driver_probe_device+0x1de/0x470 drivers/base/dd.c:801
- driver_probe_device+0x4c/0x1b0 drivers/base/dd.c:831
- __device_attach_driver+0x1df/0x350 drivers/base/dd.c:959
- bus_for_each_drv+0x159/0x1e0 drivers/base/bus.c:500
- __device_attach+0x1e4/0x4e0 drivers/base/dd.c:1031
- device_initial_probe+0xaa/0xc0 drivers/base/dd.c:1086
- bus_probe_device+0x64/0x150 drivers/base/bus.c:574
- device_add+0x116e/0x1980 drivers/base/core.c:3689
- usb_set_configuration+0x1187/0x1e50 drivers/usb/core/message.c:2210
- usb_generic_driver_probe+0xb1/0x110 drivers/usb/core/generic.c:250
- usb_probe_device+0xef/0x400 drivers/usb/core/driver.c:291
- call_driver_probe drivers/base/dd.c:581 [inline]
- really_probe+0x241/0xb20 drivers/base/dd.c:659
- __driver_probe_device+0x1de/0x470 drivers/base/dd.c:801
- driver_probe_device+0x4c/0x1b0 drivers/base/dd.c:831
- __device_attach_driver+0x1df/0x350 drivers/base/dd.c:959
- bus_for_each_drv+0x159/0x1e0 drivers/base/bus.c:500
- __device_attach+0x1e4/0x4e0 drivers/base/dd.c:1031
- device_initial_probe+0xaa/0xc0 drivers/base/dd.c:1086
- bus_probe_device+0x64/0x150 drivers/base/bus.c:574
- device_add+0x116e/0x1980 drivers/base/core.c:3689
- usb_new_device+0xd07/0x1a90 drivers/usb/core/hub.c:2695
- hub_port_connect drivers/usb/core/hub.c:5567 [inline]
- hub_port_connect_change drivers/usb/core/hub.c:5707 [inline]
- port_event drivers/usb/core/hub.c:5871 [inline]
- hub_event+0x31bf/0x5420 drivers/usb/core/hub.c:5953
- process_one_work+0x9ba/0x1b20 kernel/workqueue.c:3257
- process_scheduled_works kernel/workqueue.c:3340 [inline]
- worker_thread+0x6c8/0xf10 kernel/workqueue.c:3421
- kthread+0x3c5/0x780 kernel/kthread.c:463
- ret_from_fork+0x74f/0xa30 arch/x86/kernel/process.c:158
- ret_from_fork_asm+0x1a/0x30 arch/x86/entry/entry_64.S:246
- </TASK>
-
-
----
-This report is generated by a bot. It may contain errors.
-See https://goo.gl/tpsmEJ for more information about syzbot.
-syzbot engineers can be reached at syzkaller@googlegroups.com.
-
-syzbot will keep track of this issue. See:
-https://goo.gl/tpsmEJ#status for how to communicate with syzbot.
-
-If the report is already addressed, let syzbot know by replying with:
-#syz fix: exact-commit-title
-
-If you want syzbot to run the reproducer, reply with:
-#syz test: git://repo/address.git branch-or-commit-hash
-If you attach or paste a git patch, syzbot will apply it before testing.
-
-If you want to overwrite report's subsystems, reply with:
-#syz set subsystems: new-subsystem
-(See the list of subsystem names on the web dashboard)
-
-If the report is a duplicate of another one, reply with:
-#syz dup: exact-subject-of-another-report
-
-If you want to undo deduplication, reply with:
-#syz undup
+Aside: There's other static analysis tooling, like clang-analyzer that
+can afford to do more complex flow-sensitive intra-procedural
+analysis. But that has its own limitations, requires separate
+invocation, and is pretty slow in comparison.
 
