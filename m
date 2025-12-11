@@ -1,87 +1,86 @@
-Return-Path: <linux-wireless+bounces-29671-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-29672-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id 19202CB5FB3
-	for <lists+linux-wireless@lfdr.de>; Thu, 11 Dec 2025 14:13:07 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4A65DCB5FF3
+	for <lists+linux-wireless@lfdr.de>; Thu, 11 Dec 2025 14:20:36 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 7EA693001E08
-	for <lists+linux-wireless@lfdr.de>; Thu, 11 Dec 2025 13:13:02 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 9D63F301F8C7
+	for <lists+linux-wireless@lfdr.de>; Thu, 11 Dec 2025 13:20:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C247F312838;
-	Thu, 11 Dec 2025 13:13:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 35334313266;
+	Thu, 11 Dec 2025 13:20:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="f+P7Ofz5"
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="HflTkvn8"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-pj1-f46.google.com (mail-pj1-f46.google.com [209.85.216.46])
+Received: from mail-yw1-f179.google.com (mail-yw1-f179.google.com [209.85.128.179])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 50AB13128B7
-	for <linux-wireless@vger.kernel.org>; Thu, 11 Dec 2025 13:12:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.46
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 10CF431065B
+	for <linux-wireless@vger.kernel.org>; Thu, 11 Dec 2025 13:20:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.179
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765458780; cv=none; b=IllmoKSDbIahI2KP4JXmS0k8AdiMgzM3yESkCZRXKj6xfFJIg3j9fv2fGgJ6TLcQeMoYFTr4uOvz7pEw94jZXehNRJmTEadFZicFN7BPlF3NIyCwrHNWMOaLbFAAyfrJYYtPuZCZgg2KcmkteLtFjByIjq3hHWZ8jIA0vEZk0Gs=
+	t=1765459210; cv=none; b=ki5PIiayvvvBVbask+t+rmMhMuqxl5ND9GGxa9VzTjDqSm936XMCnMuCKX8WjscKITiN3r2yN30O5n9SO7Vsrl7rSJliMlCX+GHTlIWZKYQUNkYCLR6DbZ/tVAZKAAyu3yZkL9J/GNb85Gr/Gm8t0TF7W/F5sjYgi8LbApMHRmg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765458780; c=relaxed/simple;
-	bh=v+ZQdnBsG3Jds4SOxdBrDPR7IaFiwIcDFZln0Uu2MNI=;
+	s=arc-20240116; t=1765459210; c=relaxed/simple;
+	bh=xRpDisg42q3mlm2OwRhnv/Ng4aisbLnak6Lk2WbPerY=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=ZTPbBl2Vk2be4GsmUuvC9Eg4TRGqtAfLQq9GmndPRX9IQDvO4/NKvvFop08hotHfSb9w17BK0ztYOH1jvyplLVyV8iX4TIH1eo0fTTX5t4NufDoRk5ihS9NuJpPgbqrSYXSs5C/mIf4nlgzv8XIf6L+8z5B+KMX7IClglKtCVe8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=f+P7Ofz5; arc=none smtp.client-ip=209.85.216.46
+	 To:Cc:Content-Type; b=JU9/QgHe8DHaYfbJfWZUHpk7KhwWX50WNqsLi6SURy7I/Aq98wA1vbCfUXK2Sv7xt5V44Lr1DgSbyru/u9fTy2ofJH2z8y7BKJtijK54d50YzgquNxmS8inwiV6eNnNVrTM1bVbZw3PGxe8kEIXxO3yhAh+6UxxyMspK8t6Bzj4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=HflTkvn8; arc=none smtp.client-ip=209.85.128.179
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
-Received: by mail-pj1-f46.google.com with SMTP id 98e67ed59e1d1-34a2acb736eso41236a91.1
-        for <linux-wireless@vger.kernel.org>; Thu, 11 Dec 2025 05:12:58 -0800 (PST)
+Received: by mail-yw1-f179.google.com with SMTP id 00721157ae682-78c5b5c1eccso1098437b3.1
+        for <linux-wireless@vger.kernel.org>; Thu, 11 Dec 2025 05:20:07 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1765458777; x=1766063577; darn=vger.kernel.org;
+        d=google.com; s=20230601; t=1765459207; x=1766064007; darn=vger.kernel.org;
         h=cc:to:subject:message-id:date:from:in-reply-to:references
          :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=aSAWeLhswH6DwjvXpmjx7xXAiszMCLjSPlHn40Ul7IQ=;
-        b=f+P7Ofz5GvNDqM11PpoM73HtcOSq+PXPnz1Wn4vDScEqJAf0blvok2y+9qhtzuGGol
-         g3+2lLtll5Tb9cGXC8R9v6zYlWmrY25cxLGr4IH1k/t8/PgtrAkCwyeXqsbcnIcbjMPs
-         Eq3n4uIZ2rc57yVIjhUaW47rj7UYk/v8LtDQdbzto6SrolDCFxrbO912J5QyZleZjvoT
-         B+sXSjiWLOW2hIrm2jQFWW7+irMgNRudUcExYjlDdWX/iIzIaXV0pvdARMoYg4ZCDIeI
-         zaPYn8ZAKUkvqTGnZeIfqtjwGMGSq5hLaVGt3aGhDWxXgmKFW7Urv7I7OQghOXagcbCu
-         G6Xw==
+        bh=aINMqpJxr1DSJJ7CC9TS1ttoat4qqoJbgL8dBerwdo8=;
+        b=HflTkvn8hEQ5fY2RqhhszTXvTmLEvYgLZxCMcnDSLfuaLZuIErpFKXRxgf+UuHaC0O
+         ZWeKNTs7qu+FT9MSt5UmeiYJQKzWSBhC49Im5iu+3YkzkxQJhXdRdqpSfKuiJ0WxI64c
+         kPOlp4Q3bHCs0CYCUUh/Qt6ROZppFoOT9wu966KN8irGVJ58lhvNKcFIWsNtE19V++73
+         OzRACFkmqDfIBaa2T9UEy6OzZdNiqJoxxuSB3FFZjmsiv7nibC0FHtgSTm4nffmNRTv/
+         M/Dgzvj4OkQWQV3C3r/DSGsRc6QP/dXuVQAJsTnrvMWXM2YYqklOjG4eMkTYB2TDgvWU
+         Ghlw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1765458777; x=1766063577;
+        d=1e100.net; s=20230601; t=1765459207; x=1766064007;
         h=cc:to:subject:message-id:date:from:in-reply-to:references
          :mime-version:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=aSAWeLhswH6DwjvXpmjx7xXAiszMCLjSPlHn40Ul7IQ=;
-        b=rEU1ReeujNmI9bsdpQUShp5y9o5mcvRfR4P54Xz3K5OcVhBb/AZG7hXFNAE5RggVBU
-         tKXIh5RWwXXrhM2bgRrqy4LB3OoWBKhzXWPuqgRlZB2Ag3c4uKqgY/aOCB1xCzJB8FLj
-         1OEt+nC7t30spRamACr5mXlpbzEfchr1TJDLQfwsOsrxXW+I+inEvtdOT2NomlPkOPqP
-         IB+gGuRSw8+O2cPps2VVmr1nivkYwOnpRKBlpE1Q8MiG3WRS55Zq3I6fHcVENRa8NkXd
-         FYl3tbTJ7SdjJ9Sq5+GfBixqoBCjAz6wfo6sTMLcJvCQkzFxxCvybdWLARqP0lHj7zgA
-         JBvg==
-X-Forwarded-Encrypted: i=1; AJvYcCXg5dZZ1t1G5msMiYzE+4UvgJ+6oUwnKiTqoFArRvuL0Qp/IoWay1i6n2L7VVtswfikyI74cTmJKLyOHNCgHw==@vger.kernel.org
-X-Gm-Message-State: AOJu0YwySr5SWEYQhv7lJpr94ROe11w0ffePngpyHA7oJHEcUPEdC1AD
-	zS+1ysVRAnVpSRGJ3LF/z751TugjjhAaE43vOa4+NhCHSGnre3zP+hp6+68PE2UMWN7KG5N/e+v
-	7qOzBKOAlFcpvr6LSXisfajaHOS2xGdCeM3zt75k0
-X-Gm-Gg: AY/fxX6v/V0zjxZhq8QQjX9qeNOhBmX7NRt+4qzzsPYnZL3IP4SGLmBRhLqGYdrG7XL
-	OoMvwwLFP+KJLbEUTsfH8qHl6yg/dmfvbg+0iOJTN+Qpk9bBdPeQmz8VqOuZZZwIK8o6DGZ1DzF
-	Ks4PFbmmUvaHEgmJjak7CA+14ZhnzeLdu2GvOg3x9P6IVgTJVAxXpEoIM8E35InuKyAvzAajE3z
-	MLsdqSqvbHMJvrXK7Jw2nZzCaRWkh6FpdD5BYkTuos+LEabcEN/6U6QXQ+UkppCNoKWxRDR2ihU
-	VqaVM0rmqHmj0a5ZpiRgdNPO
-X-Google-Smtp-Source: AGHT+IFKUTpUZDJYgmni8n60xNJbrbAVNuDkEgVCtA4vIsV0NrU5sPU9y26HNSVsbHocOOsMdXB5E5HCLF6JNhBBnMQ=
-X-Received: by 2002:a05:7022:685:b0:11a:5065:8763 with SMTP id
- a92af1059eb24-11f2966a3c7mr5044765c88.5.1765458776836; Thu, 11 Dec 2025
- 05:12:56 -0800 (PST)
+        bh=aINMqpJxr1DSJJ7CC9TS1ttoat4qqoJbgL8dBerwdo8=;
+        b=X6P5Lyr29w58OX6MgOFK8M9pI0uWoGxMbEozOuy+iX1IXYP+HPPpB+N+fgru0gU8XD
+         136qAEuVY/0STrEwvyOuIrz2G6sJ6iOeArvDU9FZhC2gny+xVNNfEA3U7BVSk6xpoOWz
+         53w74muo6MqOpvclBR+0PMLVlj1O1uA/WFIc97BPUzUwnOg1Cblb7LMPfY1cTuU/pqAX
+         5j4tagFkoWM2fKAnSbOfS479Tu9Mxj3yVHxmbgOucLiiSNjiXbP/1lpwgBSpNPWk61/k
+         dMrHwWa6ZK+rZXW1488xPlc5qkkEpFjVgGTGZAA/Jh+vJwOz8K+MknPiJuMvtTWKfpJW
+         r6bg==
+X-Forwarded-Encrypted: i=1; AJvYcCUKEB0Zkg4axRQAc81gwNWxL/kg0LM1A5f8le2iHIRIzLf90t09jZuPTgg2HElzUfg2mjm28WzOxYxGTXu/RQ==@vger.kernel.org
+X-Gm-Message-State: AOJu0YzeWcraDHleq/TyyNiis/ZAIsWoxUoDGX/N2rwdOUSk+hmHrGVM
+	NepG0qyDcJr6RhRNu76c81DcE9a9YcUVUYsUo8X81yZSas1L2XTNuX4YSiccrh+89CT1zXVRlU1
+	XEMqxCoIu3aeWuMhPoYNkVhg952/bk5qkHOuYwhxF
+X-Gm-Gg: AY/fxX7xB55H0mLPSAXlISIJfKnPf0yI0AKQO3Y1i8hgFAjkbI0TTP95nUI6VFszl/A
+	qp0e3jrbCl5HtHvxsGIir89P8t2eu/tLDWwYuFzW7+9wnafcXl5OFJCbJFf9vhHB4cKFK843SxJ
+	9o732aGEONmjGyHYSA6Tkh+BS9d3rMI1haIQXkcSsnOZviQlE4LjUhDxBwxV9HPftvjRQs9d3Rm
+	rm48U6UeUttFvOknQ98CkuijuIxI5SrpMjjhVeozaJMf44so7HViSrziQsIki/AP0gYBxodN3P1
+	CyOEPm4ls6kBRkDTX5B95RYZks/9y5Cwdsw=
+X-Google-Smtp-Source: AGHT+IGU9q+gRj8IYb1h4AykO50aa48oSg8Xgu9uuuuWfwfeI68H5yAO2hlPZXd3hwVQKsk/WdTiuzJsjMsANS/WvBA=
+X-Received: by 2002:a05:690c:14:b0:78c:3835:496a with SMTP id
+ 00721157ae682-78d6dfa0ba0mr18429857b3.24.1765459206488; Thu, 11 Dec 2025
+ 05:20:06 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20251120145835.3833031-2-elver@google.com> <20251120145835.3833031-4-elver@google.com>
- <20251211120441.GG3911114@noisy.programming.kicks-ass.net>
-In-Reply-To: <20251211120441.GG3911114@noisy.programming.kicks-ass.net>
+References: <20251120145835.3833031-2-elver@google.com> <20251120151033.3840508-7-elver@google.com>
+ <20251211121659.GH3911114@noisy.programming.kicks-ass.net>
+In-Reply-To: <20251211121659.GH3911114@noisy.programming.kicks-ass.net>
 From: Marco Elver <elver@google.com>
-Date: Thu, 11 Dec 2025 14:12:19 +0100
-X-Gm-Features: AQt7F2ok29a5Gxu0w202jEvGPrWPxaH5LVi0EBv48F585MyX9KePj1tDpUehhNc
-Message-ID: <CANpmjNOyDW7-G5Op5nw722ecPEv=Ys5TPbJnVBB1_WGiM2LeWQ@mail.gmail.com>
-Subject: Re: [PATCH v4 02/35] compiler-context-analysis: Add infrastructure
- for Context Analysis with Clang
+Date: Thu, 11 Dec 2025 14:19:28 +0100
+X-Gm-Features: AQt7F2pfFUoFUVEdkJ6Nswms767xMhA__DttYAE1PqX0AgFhiN8dcasmhdnfxEw
+Message-ID: <CANpmjNOmAYFj518rH0FdPp=cqK8EeKEgh1ok_zFUwHU5Fu92=w@mail.gmail.com>
+Subject: Re: [PATCH v4 06/35] cleanup: Basic compatibility with context analysis
 To: Peter Zijlstra <peterz@infradead.org>
 Cc: Boqun Feng <boqun.feng@gmail.com>, Ingo Molnar <mingo@kernel.org>, 
 	Will Deacon <will@kernel.org>, "David S. Miller" <davem@davemloft.net>, 
@@ -108,89 +107,65 @@ Cc: Boqun Feng <boqun.feng@gmail.com>, Ingo Molnar <mingo@kernel.org>,
 	linux-wireless@vger.kernel.org, llvm@lists.linux.dev, rcu@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
 
-On Thu, 11 Dec 2025 at 13:04, Peter Zijlstra <peterz@infradead.org> wrote:
+On Thu, 11 Dec 2025 at 13:17, Peter Zijlstra <peterz@infradead.org> wrote:
 >
-> On Thu, Nov 20, 2025 at 03:49:04PM +0100, Marco Elver wrote:
+> On Thu, Nov 20, 2025 at 04:09:31PM +0100, Marco Elver wrote:
+> > Introduce basic compatibility with cleanup.h infrastructure: introduce
+> > DECLARE_LOCK_GUARD_*_ATTRS() helpers to add attributes to constructors
+> > and destructors respectively.
+> >
+> > Note: Due to the scoped cleanup helpers used for lock guards wrapping
+> > acquire and release around their own constructors/destructors that store
+> > pointers to the passed locks in a separate struct, we currently cannot
+> > accurately annotate *destructors* which lock was released. While it's
+> > possible to annotate the constructor to say which lock was acquired,
+> > that alone would result in false positives claiming the lock was not
+> > released on function return.
+> >
+> > Instead, to avoid false positives, we can claim that the constructor
+> > "assumes" that the taken lock is held via __assumes_ctx_guard().
+
+
+> Moo, so the alias analysis didn't help here?
+
+Unfortunately no, because intra-procedural alias analysis for these
+kinds of diagnostics is infeasible. The compiler can only safely
+perform alias analysis for local variables that do not escape the
+function. The layers of wrapping here make this a bit tricky.
+
+The compiler (unlike before) is now able to deal with things like:
+{
+    spinlock_t *lock_scope __attribute__((cleanup(spin_unlock))) = &lock;
+    spin_lock(&lock);  // lock through &lock
+    ... critical section ...
+}  // unlock through lock_scope (alias -> &lock)
+
+> What is the scope of this __assumes_ctx stuff? The way it is used in the
+> lock initializes seems to suggest it escapes scope. But then something
+> like:
+
+It escapes scope.
+
+>         scoped_guard (mutex, &foo) {
+>                 ...
+>         }
+>         // context analysis would still assume foo held
 >
-> > +/**
-> > + * context_guard_struct() - declare or define a context guard struct
-> > + * @name: struct name
-> > + *
-> > + * Helper to declare or define a struct type that is also a context guard.
-> > + *
-> > + * .. code-block:: c
-> > + *
-> > + *   context_guard_struct(my_handle) {
-> > + *           int foo;
-> > + *           long bar;
-> > + *   };
-> > + *
-> > + *   struct some_state {
-> > + *           ...
-> > + *   };
-> > + *   // ... declared elsewhere ...
-> > + *   context_guard_struct(some_state);
-> > + *
-> > + * Note: The implementation defines several helper functions that can acquire
-> > + * and release the context guard.
-> > + */
-> > +# define context_guard_struct(name, ...)                                                             \
-> > +     struct __ctx_guard_type(name) __VA_ARGS__ name;                                                 \
-> > +     static __always_inline void __acquire_ctx_guard(const struct name *var)                         \
-> > +             __attribute__((overloadable)) __no_context_analysis __acquires_ctx_guard(var) { }       \
-> > +     static __always_inline void __acquire_shared_ctx_guard(const struct name *var)                  \
-> > +             __attribute__((overloadable)) __no_context_analysis __acquires_shared_ctx_guard(var) { } \
-> > +     static __always_inline bool __try_acquire_ctx_guard(const struct name *var, bool ret)           \
-> > +             __attribute__((overloadable)) __no_context_analysis __try_acquires_ctx_guard(1, var)    \
-> > +     { return ret; }                                                                                 \
-> > +     static __always_inline bool __try_acquire_shared_ctx_guard(const struct name *var, bool ret)    \
-> > +             __attribute__((overloadable)) __no_context_analysis __try_acquires_shared_ctx_guard(1, var) \
-> > +     { return ret; }                                                                                 \
-> > +     static __always_inline void __release_ctx_guard(const struct name *var)                         \
-> > +             __attribute__((overloadable)) __no_context_analysis __releases_ctx_guard(var) { }       \
-> > +     static __always_inline void __release_shared_ctx_guard(const struct name *var)                  \
-> > +             __attribute__((overloadable)) __no_context_analysis __releases_shared_ctx_guard(var) { } \
-> > +     static __always_inline void __assume_ctx_guard(const struct name *var)                          \
-> > +             __attribute__((overloadable)) __assumes_ctx_guard(var) { }                              \
-> > +     static __always_inline void __assume_shared_ctx_guard(const struct name *var)                   \
-> > +             __attribute__((overloadable)) __assumes_shared_ctx_guard(var) { }                       \
-> > +     struct name
+> is somewhat sub-optimal, no?
+
+Correct. We're trading false negatives over false positives at this
+point, just to get things to compile cleanly.
+
+> > Better support for Linux's scoped guard design could be added in
+> > future if deemed critical.
 >
-> -typedef struct {
-> +context_guard_struct(rwlock) {
->         struct rwbase_rt        rwbase;
->         atomic_t                readers;
->  #ifdef CONFIG_DEBUG_LOCK_ALLOC
->         struct lockdep_map      dep_map;
->  #endif
-> -} rwlock_t;
-> +};
-> +typedef struct rwlock rwlock_t;
->
->
-> I must say I find the 'guard' naming here somewhat confusing. This is
-> not a guard, but an actual lock type.
+> I would think so, per the above I don't think this is 'right'.
 
-The switch to "context analysis" required us coming up with a name for
-the actual objects (previously: "capability") that "guard" those
-contexts.
-
-The reasoning was that these are guards for entering a particular
-context. The lock guards the given context, but the context itself !=
-lock. Clang's naming of "capability" was a lot clearer in isolation,
-but the problem that Linus raised is that "capability" is already
-overloaded in the kernel.
-
-The fact it overlaps in naming with the other guard(..) infrastructure
-is not entirely coincidental, but I see the confusion.
-
-What's a better name?
-
-context_lock_struct -> and call it "context lock" rather than "context
-guard"; it might work also for things like RCU, PREEMPT, BH, etc. that
-aren't normal "locks", but could claim they are "context locks".
-
-context_handle_struct -> "context handle" ...
-
-?
+It's not sound, but we'll avoid false positives for the time being.
+Maybe we can wrangle the jigsaw of macros to let it correctly acquire
+and then release (via a 2nd cleanup function), it might be as simple
+as marking the 'constructor' with the right __acquires(..), and then
+have a 2nd __attribute__((cleanup)) variable that just does a no-op
+release via __release(..) so we get the already supported pattern
+above.
 
