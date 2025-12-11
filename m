@@ -1,51 +1,51 @@
-Return-Path: <linux-wireless+bounces-29649-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-29650-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 14FD4CB5B47
-	for <lists+linux-wireless@lfdr.de>; Thu, 11 Dec 2025 12:52:03 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id B3AC0CB5C28
+	for <lists+linux-wireless@lfdr.de>; Thu, 11 Dec 2025 13:09:08 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 6DFF1301A193
-	for <lists+linux-wireless@lfdr.de>; Thu, 11 Dec 2025 11:51:56 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 26099302BD14
+	for <lists+linux-wireless@lfdr.de>; Thu, 11 Dec 2025 12:04:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E072C30B538;
-	Thu, 11 Dec 2025 11:51:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CA7AB30BBBF;
+	Thu, 11 Dec 2025 12:04:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="YCtHfTx7"
+	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="Cm3yzuQq"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from desiato.infradead.org (desiato.infradead.org [90.155.92.199])
+Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D912930B524;
-	Thu, 11 Dec 2025 11:51:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=90.155.92.199
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CB95C2BE7DD;
+	Thu, 11 Dec 2025 12:04:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=90.155.50.34
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765453914; cv=none; b=hmUpUNexiwRCMfrzB1BSt3KikHtTtXhwg6k1T+ds/+C0HweErk8JEc9WGuI4MSu3Ve/E2vqUAXLMnzA6tQkb6BTSV6jTbOgnyb6Fm/WqNvMAUCFDpr6eMm0URGHOvf58Ol0ie/fwCU2LODAVVLZ8vRFu+xDP/KfK8DJHbJt8YAQ=
+	t=1765454696; cv=none; b=kb7DUC55m61FDK59JzlWWaQNHgRmCrKmv4iTOBtEZVWvmM7cZ2BQjUJsXjCRtJe/N680/NEAHS9F+SNB7yOWD+XLc/yFHS1S2BP86aco0+vHNCTyxN2f6LUW9KDMMH8KzUNtzEpfD9FpmtlNx+/4DT78dd78oDZzZLKTsMKePuk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765453914; c=relaxed/simple;
-	bh=WpIi3NiHt72rCR9TsNfja5edDw64OCPZ8812Jd4nQUE=;
+	s=arc-20240116; t=1765454696; c=relaxed/simple;
+	bh=xYB9CZGFY7AgTnKdWBr89d3ngY1+Ue3cetPJG6t6F4k=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=V03kRAFjOqEE65RT/NKoOt0PlFEmZtQtlkYim0yyuQ04uRJGbX7zTY051PJg3A3F0nmNIwZQp0DNgiJW73LvkxAHXtnlW0vAz5u/KB2Q9HHTxkSfani/yjP/QZ429lHQiQn9Anu2A77VQ5cTiXh4PX8JvoSvuF3tdkBbmgA8kwA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org; spf=none smtp.mailfrom=infradead.org; dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b=YCtHfTx7; arc=none smtp.client-ip=90.155.92.199
+	 Content-Type:Content-Disposition:In-Reply-To; b=P+EEF7MJuAR5GrwfDDW4T/pl6EeC2+R0xR3UKCLYxowc0c3OfFHmdgJTgPH4nx2VLn4PmAKAHmmysaqp4N2jnjt7TG3isphh+RBMkBV1zmWp2g5+/j1dxo8RrYjNG3siAvlz4sKwQfALecLc5l8TMdeIkSGntdXww+1CqyPU1/I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org; spf=none smtp.mailfrom=infradead.org; dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b=Cm3yzuQq; arc=none smtp.client-ip=90.155.50.34
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org
 Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=infradead.org
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=desiato.20200630; h=In-Reply-To:Content-Type:MIME-Version:
+	d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
 	References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
 	Content-Transfer-Encoding:Content-ID:Content-Description;
-	bh=+ruouxJOUh2d+f+e8HHYpqnGoZEuPo3luh7bn7bAHeI=; b=YCtHfTx7RoM+FUijwKYs4TN7la
-	V38IiN6UXEJqoevDxSusV4xIKVmpUvu7bxeHyT1ebhxYje8Y8ewjpnUYe/AwPBWps727+uIgDIxGh
-	gHylwobYVFURCe1AhaSiscraq4UreJJ8qzq798CHWb/cBBob/1iZKF377N3zfzcIJ0TOPZsrSel9n
-	6sEuHcwYOL0ArmngL2gHZ2LsDyvZyXXzu1RFeIcoPmnUV1UOXv6jd2LeqmWmL1Yf8zM1kQcwdf6KN
-	3gr5k3gALYgZb+dCe5b//7iQ82XTD18jysr8AvEqOPt1OtNyHnlF7O1kL1V4e/6nZWZZvwAcoAjKU
-	8Sg8GQrA==;
-Received: from 77-249-17-252.cable.dynamic.v4.ziggo.nl ([77.249.17.252] helo=noisy.programming.kicks-ass.net)
-	by desiato.infradead.org with esmtpsa (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1vTeLL-0000000ErCa-0UbQ;
-	Thu, 11 Dec 2025 10:56:19 +0000
+	bh=J5QYsGE2XyUV8dMJUaGHOZ/s846nES10yHj06SSwiHE=; b=Cm3yzuQqYooIj2GZtZDWYEC3ZO
+	S0fg9hzc4Z19Hv5Bc4P16q2CjNQ573CovUIuUpZEbXu9poIjw8goKrUxsrAu3j7Caix5SEmi3eHJ5
+	ty2o3ZeXS3kqUORWQHfUhEXRPllWuKhXfU6FuRy+jNCn3CPiuhwnM6hD6rLf9Bd5pxh4A4qnGsqmd
+	YA26rLCiywQY1V7BWRwKwRpg85biCy2lzMbTYkXrqgHkp9M0BmSuJ+nlBxwZvhjzGyyfDW1rDJahM
+	onQMIaTpJMWn2CJQspzPC2bN0ZBuwOi8vBCFsSztBk6L098HJ6Am/lBaLXUiYdMTHDu2proPsv+AW
+	SRG+MwEw==;
+Received: from 2001-1c00-8d85-5700-266e-96ff-fe07-7dcc.cable.dynamic.v6.ziggo.nl ([2001:1c00:8d85:5700:266e:96ff:fe07:7dcc] helo=noisy.programming.kicks-ass.net)
+	by casper.infradead.org with esmtpsa (Exim 4.98.2 #2 (Red Hat Linux))
+	id 1vTfPW-0000000ECYb-0fah;
+	Thu, 11 Dec 2025 12:04:42 +0000
 Received: by noisy.programming.kicks-ass.net (Postfix, from userid 1000)
-	id 3748730301A; Thu, 11 Dec 2025 12:51:35 +0100 (CET)
-Date: Thu, 11 Dec 2025 12:51:35 +0100
+	id 803F130301A; Thu, 11 Dec 2025 13:04:41 +0100 (CET)
+Date: Thu, 11 Dec 2025 13:04:41 +0100
 From: Peter Zijlstra <peterz@infradead.org>
 To: Marco Elver <elver@google.com>
 Cc: Boqun Feng <boqun.feng@gmail.com>, Ingo Molnar <mingo@kernel.org>,
@@ -85,11 +85,11 @@ Cc: Boqun Feng <boqun.feng@gmail.com>, Ingo Molnar <mingo@kernel.org>,
 	linux-mm@kvack.org, linux-security-module@vger.kernel.org,
 	linux-sparse@vger.kernel.org, linux-wireless@vger.kernel.org,
 	llvm@lists.linux.dev, rcu@vger.kernel.org
-Subject: Re: [PATCH v4 06/35] cleanup: Basic compatibility with context
- analysis
-Message-ID: <20251211115135.GF3911114@noisy.programming.kicks-ass.net>
+Subject: Re: [PATCH v4 02/35] compiler-context-analysis: Add infrastructure
+ for Context Analysis with Clang
+Message-ID: <20251211120441.GG3911114@noisy.programming.kicks-ass.net>
 References: <20251120145835.3833031-2-elver@google.com>
- <20251120151033.3840508-7-elver@google.com>
+ <20251120145835.3833031-4-elver@google.com>
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
@@ -98,18 +98,66 @@ List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20251120151033.3840508-7-elver@google.com>
+In-Reply-To: <20251120145835.3833031-4-elver@google.com>
 
-On Thu, Nov 20, 2025 at 04:09:31PM +0100, Marco Elver wrote:
-> +#define DECLARE_LOCK_GUARD_0_ATTRS(_name, _lock, _unlock)		\
-> +static inline class_##_name##_t class_##_name##_constructor(void) _lock;\
-> +static inline void class_##_name##_destructor(class_##_name##_t *_T) _unlock;
-> +
-> +#define DECLARE_LOCK_GUARD_1_ATTRS(_name, _lock, _unlock)		\
-> +static inline class_##_name##_t class_##_name##_constructor(lock_##_name##_t *_T) _lock;\
-> +static inline void class_##_name##_destructor(class_##_name##_t *_T) _unlock;
+On Thu, Nov 20, 2025 at 03:49:04PM +0100, Marco Elver wrote:
 
-When you rebase this series; you'll find cleanup.h moved to
-__always_inline (because compilers are weird) and these should probably
-also switch.
+> +/**
+> + * context_guard_struct() - declare or define a context guard struct
+> + * @name: struct name
+> + *
+> + * Helper to declare or define a struct type that is also a context guard.
+> + *
+> + * .. code-block:: c
+> + *
+> + *	context_guard_struct(my_handle) {
+> + *		int foo;
+> + *		long bar;
+> + *	};
+> + *
+> + *	struct some_state {
+> + *		...
+> + *	};
+> + *	// ... declared elsewhere ...
+> + *	context_guard_struct(some_state);
+> + *
+> + * Note: The implementation defines several helper functions that can acquire
+> + * and release the context guard.
+> + */
+> +# define context_guard_struct(name, ...)								\
+> +	struct __ctx_guard_type(name) __VA_ARGS__ name;							\
+> +	static __always_inline void __acquire_ctx_guard(const struct name *var)				\
+> +		__attribute__((overloadable)) __no_context_analysis __acquires_ctx_guard(var) { }	\
+> +	static __always_inline void __acquire_shared_ctx_guard(const struct name *var)			\
+> +		__attribute__((overloadable)) __no_context_analysis __acquires_shared_ctx_guard(var) { } \
+> +	static __always_inline bool __try_acquire_ctx_guard(const struct name *var, bool ret)		\
+> +		__attribute__((overloadable)) __no_context_analysis __try_acquires_ctx_guard(1, var)	\
+> +	{ return ret; }											\
+> +	static __always_inline bool __try_acquire_shared_ctx_guard(const struct name *var, bool ret)	\
+> +		__attribute__((overloadable)) __no_context_analysis __try_acquires_shared_ctx_guard(1, var) \
+> +	{ return ret; }											\
+> +	static __always_inline void __release_ctx_guard(const struct name *var)				\
+> +		__attribute__((overloadable)) __no_context_analysis __releases_ctx_guard(var) { }	\
+> +	static __always_inline void __release_shared_ctx_guard(const struct name *var)			\
+> +		__attribute__((overloadable)) __no_context_analysis __releases_shared_ctx_guard(var) { } \
+> +	static __always_inline void __assume_ctx_guard(const struct name *var)				\
+> +		__attribute__((overloadable)) __assumes_ctx_guard(var) { }				\
+> +	static __always_inline void __assume_shared_ctx_guard(const struct name *var)			\
+> +		__attribute__((overloadable)) __assumes_shared_ctx_guard(var) { }			\
+> +	struct name
+
+-typedef struct {
++context_guard_struct(rwlock) {
+        struct rwbase_rt        rwbase;
+        atomic_t                readers;
+ #ifdef CONFIG_DEBUG_LOCK_ALLOC
+        struct lockdep_map      dep_map;
+ #endif
+-} rwlock_t;
++};
++typedef struct rwlock rwlock_t;
+
+
+I must say I find the 'guard' naming here somewhat confusing. This is
+not a guard, but an actual lock type.
 
