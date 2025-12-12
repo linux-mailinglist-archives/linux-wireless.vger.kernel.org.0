@@ -1,152 +1,165 @@
-Return-Path: <linux-wireless+bounces-29710-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-29711-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 018F6CB8A50
-	for <lists+linux-wireless@lfdr.de>; Fri, 12 Dec 2025 11:49:13 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id A1D43CB8AB1
+	for <lists+linux-wireless@lfdr.de>; Fri, 12 Dec 2025 12:09:59 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id B3C53305A13A
-	for <lists+linux-wireless@lfdr.de>; Fri, 12 Dec 2025 10:49:11 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 1A2193069575
+	for <lists+linux-wireless@lfdr.de>; Fri, 12 Dec 2025 11:09:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3387E3191CE;
-	Fri, 12 Dec 2025 10:49:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D3BB63168E0;
+	Fri, 12 Dec 2025 11:09:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="thRUkRx0"
+	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="h0RqJPJB"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-pg1-f175.google.com (mail-pg1-f175.google.com [209.85.215.175])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from desiato.infradead.org (desiato.infradead.org [90.155.92.199])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5261C2C21C9
-	for <linux-wireless@vger.kernel.org>; Fri, 12 Dec 2025 10:49:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.175
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B04C11E4BE;
+	Fri, 12 Dec 2025 11:09:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=90.155.92.199
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765536550; cv=none; b=qD8T1Fdopz/a2qyr1BLZa4eq/uPDbXT57uwouuCTkLh5niJtK5Pe8PjNtp7qOMUyh7kMh4oWyIyusnsK78AFScnrWYT0U66zS4cheG6yrkuD0YZy2BnRH07sBR2aZkmNs020pq3myrVi70f1oVUbjAINFz66K8/ZgpB4UUGQLq8=
+	t=1765537793; cv=none; b=CvZ5qFE/LKt3GAyn6wQtI14CWjhDh6Vm3qj04XltygyyVLgmD2UmHKOm0SY8KebCn4bVYqODdeRLpJfUCtB8Odxwm2ASZAEiNwjuSunC4KKwLhWyV2O4f3Dwk5tTGDqJl5KVyudQzBgFBgGfY4lhP7gDbseW86mMSrN1jN9Rt7I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765536550; c=relaxed/simple;
-	bh=av9hKN2hbVjrZk+A7S1PV353SLAqNrjc7QnZ5XIVFLo=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=Cf9d6QjchQ/EwTf4FT4C9JDHpS2sMXRTyH0uyMqEnfMSTm55dpgT87EeVo3/pVmXXqTlPHCvIN1qu1okPcGBcjwjskgrjEZmapcp9NaDlLtwagITuH60im/ppHj6SRqBPqWVcWPPQufN8NpPqKJyMI7ZLLmNjiabR0VU0BI6pso=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=thRUkRx0; arc=none smtp.client-ip=209.85.215.175
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
-Received: by mail-pg1-f175.google.com with SMTP id 41be03b00d2f7-bfe88eeaa65so744887a12.1
-        for <linux-wireless@vger.kernel.org>; Fri, 12 Dec 2025 02:49:08 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1765536548; x=1766141348; darn=vger.kernel.org;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=SA48npp6esm0XDSNny8uE3VVilMK0KzCGLSxi6mYbKY=;
-        b=thRUkRx0uXjqWLwLYTxYGwAZyyoDS3T9uB/c4Lz5Qa3InFtQsgHEoLl52TEwSpTLlP
-         uRjzZVhgD0M/asCP3+KcbDWNG7KdhW3NC+KLHM+GW6wJnhpqVD4ggvKDkNMZXnjTX/HR
-         os9eyPjV4jWYDL5KB6YOGe614ciEIhrjEeI2xIpR4UihZuhvrYTjS8Wwu9mb8AFZXQ9v
-         t5GJNx8PYH4Dr6v9xIYzLZLYtzEJLpMdKOpeFbVQc7NzAQ1ep/a3bmczB3HrJqFBuA9r
-         Wz6B8HSizDzGuTzA56W8X40Zdw5ntj/g0B6LheZVQMfcAQVXjB3X3WrxRApQQrYax4Yn
-         FJww==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1765536548; x=1766141348;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=SA48npp6esm0XDSNny8uE3VVilMK0KzCGLSxi6mYbKY=;
-        b=kt8Ln2Zfq2nkXEhq7NVd2QSyibKYAi6iLxGlR6sYa+4L4cmVFjmAhV725MoJE1aPzx
-         JboVlDeQxfzgox2PGE8ga6H/fOD7VS1EgplwQesqLtsdItQObCQnHyOhMIGq46s6hBVW
-         18zeguD9U85u/Wr4peOxm8qgbPGnn317mkVN9wVRajE/DJpJDEcjmztUXyuWOdgrE54K
-         uedY9CSaiScTMQ2b7cmFXTM4GoKjKNjJ4l/6u78ayJlgGHeLPsIisFDFF86u+nKBW/Nd
-         AcriMnpsLJ7iKkGMpeY0RMQemiJRikBplRPx9zsvrjSYj4mxWUFEUX5AOT6/xxZom002
-         cNgA==
-X-Forwarded-Encrypted: i=1; AJvYcCUVAN4yTd+FWZCHTl6zQlFqtTMmqR8hg8XoBGdAtClIUUmdLyGJquqUjGLbXoi/WtilL/Tbw4DaFurR9Qxv/w==@vger.kernel.org
-X-Gm-Message-State: AOJu0YwdY6bWZ5ks/kKIfp8LkQifuDkOvZ7LEBrEZBKnnAQj14pp8rxK
-	ucf8KlUrbwS8qqpWOovqtceHtVZ08lecHkW7AubI1rXr9bQyX4CYTWyzkV0/zKCxBdnE7tHlIfs
-	2Jjm/2+3aa1v7RjPdFv2xZLKHo4+vhpAnPNbs7WEs
-X-Gm-Gg: AY/fxX67cyKgD7GQj8l1yvnSz7UHlhEjQTxxeFYmRpBZX3LpM0FziM55TZNni0w/XP9
-	4el0k/ebyGnjH14khAlEFcFoTkei5tILkPm4w0Bol7qSYc3wQmaoAX6hE8qt1lcf2G7/7TrZ/PJ
-	6UhcjADhr2UU3kqB8XzcmPMV6i/6r5jaxw99oZTULUfgPfFlJoTT2ZaX+EM6kn+Tk+S+yGUJivh
-	BT7X1GI00RY9iA1CjNPMFGJ9g7kzIkXionQdLYXj4Hr3mYHcJKiv4CrOPd7kCle3Qbh6xfongmq
-	MqUQLwVb4vEUK3PgRzYUuifH9vA=
-X-Google-Smtp-Source: AGHT+IEmwt/cYGSRMcLEQwRoz4IOBPZmG6ZdFUXvSQgttHHtD3I/ZoiZY45lTyY+63ShMc7m2jk9oXMIHs1yDaFc4yU=
-X-Received: by 2002:a05:7301:6781:b0:2ac:2e93:29bf with SMTP id
- 5a478bee46e88-2ac300f946dmr1219192eec.22.1765536547134; Fri, 12 Dec 2025
- 02:49:07 -0800 (PST)
+	s=arc-20240116; t=1765537793; c=relaxed/simple;
+	bh=NJWANmLDFLgh9uv0VNdg/DhT7Pjr8ENeFuaRLEpVcLg=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=BKv0vZnZEzj8XcvwWQjvVkx8JF5hw+sHxCBymbWc6XoU5+K0s7y3j6fxoYDumQrg0Cv1qpg/zY3a4Mg24Go4IWW5QIsjSRxfJ9aQIly/NLrYAldLIDFpfY8L0DFVixUNnvxfVBd/G/ybHChrE3ohYHM6t5K7xWbvfbac2KYoxGw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org; spf=none smtp.mailfrom=infradead.org; dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b=h0RqJPJB; arc=none smtp.client-ip=90.155.92.199
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=infradead.org
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=desiato.20200630; h=In-Reply-To:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description;
+	bh=sAhBWDHUpHF5PVStWIyQEDmT8IbGgPASZMaiPzih1nU=; b=h0RqJPJB3EslZXH+NrQY8Oawml
+	xVZKoRMlILjKuWofLcV230Ra6sSrB2+xJvvgUEbp5EFV/Ksdl7n8uO/wv7F0hgMeWOXRU+OD2v1g6
+	YTKEG10gwSh9bsJkLhxckP/d9wbsNQ6ayLlXDhf9hOmuRnj+WLStfaeCkHyhmMouC5a1H04FluZox
+	r6CS1zDV7kB+xQmqonG5Xik2CYfRMXdrWt5KAW/Un4rc/os3/oSKhHMXr/E94yHUZ9ZNmv3taEqmo
+	3yjzq0lkadR8xVmJOPsHrod0+96Cr641yagkt0pGVO0wgWglc8UyMpb3Fhnw4TDxwjAf9cwJOj3Ec
+	NuZNKjag==;
+Received: from 77-249-17-252.cable.dynamic.v4.ziggo.nl ([77.249.17.252] helo=noisy.programming.kicks-ass.net)
+	by desiato.infradead.org with esmtpsa (Exim 4.98.2 #2 (Red Hat Linux))
+	id 1vU0A9-0000000GVlg-2EQb;
+	Fri, 12 Dec 2025 10:14:13 +0000
+Received: by noisy.programming.kicks-ass.net (Postfix, from userid 1000)
+	id C422A30057C; Fri, 12 Dec 2025 12:09:28 +0100 (CET)
+Date: Fri, 12 Dec 2025 12:09:28 +0100
+From: Peter Zijlstra <peterz@infradead.org>
+To: Marco Elver <elver@google.com>
+Cc: Boqun Feng <boqun.feng@gmail.com>, Ingo Molnar <mingo@kernel.org>,
+	Will Deacon <will@kernel.org>,
+	"David S. Miller" <davem@davemloft.net>,
+	Luc Van Oostenryck <luc.vanoostenryck@gmail.com>,
+	Chris Li <sparse@chrisli.org>,
+	"Paul E. McKenney" <paulmck@kernel.org>,
+	Alexander Potapenko <glider@google.com>,
+	Arnd Bergmann <arnd@arndb.de>, Bart Van Assche <bvanassche@acm.org>,
+	Christoph Hellwig <hch@lst.de>, Dmitry Vyukov <dvyukov@google.com>,
+	Eric Dumazet <edumazet@google.com>,
+	Frederic Weisbecker <frederic@kernel.org>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	Herbert Xu <herbert@gondor.apana.org.au>,
+	Ian Rogers <irogers@google.com>, Jann Horn <jannh@google.com>,
+	Joel Fernandes <joelagnelf@nvidia.com>,
+	Johannes Berg <johannes.berg@intel.com>,
+	Jonathan Corbet <corbet@lwn.net>,
+	Josh Triplett <josh@joshtriplett.org>,
+	Justin Stitt <justinstitt@google.com>, Kees Cook <kees@kernel.org>,
+	Kentaro Takeda <takedakn@nttdata.co.jp>,
+	Lukas Bulwahn <lukas.bulwahn@gmail.com>,
+	Mark Rutland <mark.rutland@arm.com>,
+	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
+	Miguel Ojeda <ojeda@kernel.org>,
+	Nathan Chancellor <nathan@kernel.org>,
+	Neeraj Upadhyay <neeraj.upadhyay@kernel.org>,
+	Nick Desaulniers <nick.desaulniers+lkml@gmail.com>,
+	Steven Rostedt <rostedt@goodmis.org>,
+	Tetsuo Handa <penguin-kernel@i-love.sakura.ne.jp>,
+	Thomas Gleixner <tglx@linutronix.de>, Thomas Graf <tgraf@suug.ch>,
+	Uladzislau Rezki <urezki@gmail.com>,
+	Waiman Long <longman@redhat.com>, kasan-dev@googlegroups.com,
+	linux-crypto@vger.kernel.org, linux-doc@vger.kernel.org,
+	linux-kbuild@vger.kernel.org, linux-kernel@vger.kernel.org,
+	linux-mm@kvack.org, linux-security-module@vger.kernel.org,
+	linux-sparse@vger.kernel.org, linux-wireless@vger.kernel.org,
+	llvm@lists.linux.dev, rcu@vger.kernel.org
+Subject: Re: [PATCH v4 06/35] cleanup: Basic compatibility with context
+ analysis
+Message-ID: <20251212110928.GP3911114@noisy.programming.kicks-ass.net>
+References: <20251120145835.3833031-2-elver@google.com>
+ <20251120151033.3840508-7-elver@google.com>
+ <20251211121659.GH3911114@noisy.programming.kicks-ass.net>
+ <CANpmjNOmAYFj518rH0FdPp=cqK8EeKEgh1ok_zFUwHU5Fu92=w@mail.gmail.com>
+ <20251212094352.GL3911114@noisy.programming.kicks-ass.net>
+ <CANpmjNP=s33L6LgYWHygEuLtWTq-s2n4yFDvvGcF3HjbGH+hqw@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20251120145835.3833031-2-elver@google.com> <20251120151033.3840508-7-elver@google.com>
- <20251120151033.3840508-8-elver@google.com> <20251211114302.GC3911114@noisy.programming.kicks-ass.net>
- <CANpmjNObaGarY1_niCkgEXMNm2bLAVwKwQsLVYekE=Ce6y3ehQ@mail.gmail.com> <20251212095943.GM3911114@noisy.programming.kicks-ass.net>
-In-Reply-To: <20251212095943.GM3911114@noisy.programming.kicks-ass.net>
-From: Marco Elver <elver@google.com>
-Date: Fri, 12 Dec 2025 11:48:29 +0100
-X-Gm-Features: AQt7F2qCLUKQusRsTOkfVyHaXl__KgFtQ_SoVZmDpwKuRXcKmzXhASdee3aZVrU
-Message-ID: <CANpmjNMY55ytuWPh15O-tTe5zEQx3AN6LqrvB9NJ6dm6BsPnsA@mail.gmail.com>
-Subject: Re: [PATCH v4 07/35] lockdep: Annotate lockdep assertions for context analysis
-To: Peter Zijlstra <peterz@infradead.org>
-Cc: Boqun Feng <boqun.feng@gmail.com>, Ingo Molnar <mingo@kernel.org>, 
-	Will Deacon <will@kernel.org>, "David S. Miller" <davem@davemloft.net>, 
-	Luc Van Oostenryck <luc.vanoostenryck@gmail.com>, Chris Li <sparse@chrisli.org>, 
-	"Paul E. McKenney" <paulmck@kernel.org>, Alexander Potapenko <glider@google.com>, Arnd Bergmann <arnd@arndb.de>, 
-	Bart Van Assche <bvanassche@acm.org>, Christoph Hellwig <hch@lst.de>, Dmitry Vyukov <dvyukov@google.com>, 
-	Eric Dumazet <edumazet@google.com>, Frederic Weisbecker <frederic@kernel.org>, 
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Herbert Xu <herbert@gondor.apana.org.au>, 
-	Ian Rogers <irogers@google.com>, Jann Horn <jannh@google.com>, 
-	Joel Fernandes <joelagnelf@nvidia.com>, Johannes Berg <johannes.berg@intel.com>, 
-	Jonathan Corbet <corbet@lwn.net>, Josh Triplett <josh@joshtriplett.org>, 
-	Justin Stitt <justinstitt@google.com>, Kees Cook <kees@kernel.org>, 
-	Kentaro Takeda <takedakn@nttdata.co.jp>, Lukas Bulwahn <lukas.bulwahn@gmail.com>, 
-	Mark Rutland <mark.rutland@arm.com>, Mathieu Desnoyers <mathieu.desnoyers@efficios.com>, 
-	Miguel Ojeda <ojeda@kernel.org>, Nathan Chancellor <nathan@kernel.org>, 
-	Neeraj Upadhyay <neeraj.upadhyay@kernel.org>, 
-	Nick Desaulniers <nick.desaulniers+lkml@gmail.com>, Steven Rostedt <rostedt@goodmis.org>, 
-	Tetsuo Handa <penguin-kernel@i-love.sakura.ne.jp>, Thomas Gleixner <tglx@linutronix.de>, 
-	Thomas Graf <tgraf@suug.ch>, Uladzislau Rezki <urezki@gmail.com>, Waiman Long <longman@redhat.com>, 
-	kasan-dev@googlegroups.com, linux-crypto@vger.kernel.org, 
-	linux-doc@vger.kernel.org, linux-kbuild@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, linux-mm@kvack.org, 
-	linux-security-module@vger.kernel.org, linux-sparse@vger.kernel.org, 
-	linux-wireless@vger.kernel.org, llvm@lists.linux.dev, rcu@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <CANpmjNP=s33L6LgYWHygEuLtWTq-s2n4yFDvvGcF3HjbGH+hqw@mail.gmail.com>
 
-On Fri, 12 Dec 2025 at 10:59, Peter Zijlstra <peterz@infradead.org> wrote:
->
-> On Thu, Dec 11, 2025 at 02:24:57PM +0100, Marco Elver wrote:
->
-> > > It is *NOT* (as the clang naming suggests) an assertion of holding the
-> > > lock (which is requires_ctx), but rather an annotation that forces the
-> > > ctx to be considered held.
+On Fri, Dec 12, 2025 at 11:15:29AM +0100, Marco Elver wrote:
+> On Fri, 12 Dec 2025 at 10:43, Peter Zijlstra <peterz@infradead.org> wrote:
+> [..]
+> > > Correct. We're trading false negatives over false positives at this
+> > > point, just to get things to compile cleanly.
 > >
-> > Noted. I'll add some appropriate wording above the
-> > __assumes_ctx_guard() attribute, so this is not lost in the commit
-> > logs.
->
-> On IRC you stated:
->
-> <melver> peterz: 'assume' just forces the compiler to think something is
->   held, whether or not it is then becomes the programmer's problem. we
->   need it in 2 places at least: for the runtime assertions (to help
->   patterns beyond the compiler's static reasoning abilities), and for
->   initialization (so we can access guarded variables right after
->   initialization; nobody should hold the lock yet)
->
-> I'm really not much a fan of that init hack either ;-)
->
-> Once we get the scope crap working sanely, I would much rather we move
-> to something like:
->
->         scoped_guard (spinlock_init, &foo->lock) {
->                 // init foo fields
->         }
->
-> or perhaps:
->
->         guard(mutex_init)(&bar->lock);
->         // init until end of current scope
->
-> Where this latter form is very similar to the current semantics where
-> mutex_init() will implicitly 'leak' the holding of the lock. But the
-> former gives more control where we need it.
+> > Right, and this all 'works' right up to the point someone sticks a
+> > must_not_hold somewhere.
+> >
+> > > > > Better support for Linux's scoped guard design could be added in
+> > > > > future if deemed critical.
+> > > >
+> > > > I would think so, per the above I don't think this is 'right'.
+> > >
+> > > It's not sound, but we'll avoid false positives for the time being.
+> > > Maybe we can wrangle the jigsaw of macros to let it correctly acquire
+> > > and then release (via a 2nd cleanup function), it might be as simple
+> > > as marking the 'constructor' with the right __acquires(..), and then
+> > > have a 2nd __attribute__((cleanup)) variable that just does a no-op
+> > > release via __release(..) so we get the already supported pattern
+> > > above.
+> >
+> > Right, like I mentioned in my previous email; it would be lovely if at
+> > the very least __always_inline would get a *very* early pass such that
+> > the above could be resolved without inter-procedural bits. I really
+> > don't consider an __always_inline as another procedure.
+> >
+> > Because as I already noted yesterday, cleanup is now all
+> > __always_inline, and as such *should* all end up in the one function.
+> >
+> > But yes, if we can get a magical mash-up of __cleanup and __release (let
+> > it be knows as __release_on_cleanup ?) that might also work I suppose.
+> > But I vastly prefer __always_inline actually 'working' ;-)
+> 
+> The truth is that __always_inline working in this way is currently
+> infeasible. Clang and LLVM's architecture simply disallow this today:
+> the semantic analysis that -Wthread-safety does happens over the AST,
+> whereas always_inline is processed by early passes in the middle-end
+> already within LLVM's pipeline, well after semantic analysis. There's
+> a complexity budget limit for semantic analysis (type checking,
+> warnings, assorted other errors), and path-sensitive &
+> intra-procedural analysis over the plain AST is outside that budget.
+> Which is why tools like clang-analyzer exist (symbolic execution),
+> where it's possible to afford that complexity since that's not
+> something that runs for a normal compile.
+> 
+> I think I've pushed the current version of Clang's -Wthread-safety
+> already far beyond what folks were thinking is possible (a variant of
+> alias analysis), but even my healthy disregard for the impossible
+> tells me that making path-sensitive intra-procedural analysis even if
+> just for __always_inline functions is quite possibly a fool's errand.
 
-I like it. It would also more clearly denote where initialization
-start+ends if not confined to a dedicated function.
+Well, I had to propose it. Gotta push the envelope :-)
+
+> So either we get it to work with what we have, or give up.
+
+So I think as is, we can start. But I really do want the cleanup thing
+sorted, even if just with that __release_on_cleanup mashup or so.
 
