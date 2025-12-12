@@ -1,68 +1,68 @@
-Return-Path: <linux-wireless+bounces-29696-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-29699-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8207DCB7BBE
-	for <lists+linux-wireless@lfdr.de>; Fri, 12 Dec 2025 04:14:44 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 39304CB7BC2
+	for <lists+linux-wireless@lfdr.de>; Fri, 12 Dec 2025 04:14:56 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 9AC693005025
-	for <lists+linux-wireless@lfdr.de>; Fri, 12 Dec 2025 03:14:41 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 13C7B301274B
+	for <lists+linux-wireless@lfdr.de>; Fri, 12 Dec 2025 03:14:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 711622512C8;
-	Fri, 12 Dec 2025 03:14:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EAD9026A1B9;
+	Fri, 12 Dec 2025 03:14:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=realtek.com header.i=@realtek.com header.b="rzwEIRN3"
+	dkim=pass (2048-bit key) header.d=realtek.com header.i=@realtek.com header.b="ptoi+035"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BD23321E091
-	for <linux-wireless@vger.kernel.org>; Fri, 12 Dec 2025 03:14:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1BEC925F7BF
+	for <linux-wireless@vger.kernel.org>; Fri, 12 Dec 2025 03:14:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=211.75.126.72
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765509280; cv=none; b=fhAnL2s5M08Rujak/zoX9ffy+WJzR8cQdUSK56jwJ2jU07FhFQNPdcpvRu9uQH01qXuzwH9DB6sKz07/VgcyosJO9YUpNNsTq6X4lOE+2/lxWNX3xryDnXZqBuNn918e/d0Him+qDh4GdFsAZZKFr4/duSxA3DvEARJUGbghRg4=
+	t=1765509293; cv=none; b=D43AlOdS0ym5CDnmU7F/R2u4hgneWhvcCUWNzPaU1p49zvvXZ4XOl1wfFLOY7hGZRWSfAHVO8BqrJhEJ/bYGpZWnzNL1/coVhdFOiGgo8jk5hOmCcYWnYSQOUls3Jqvw/yq3DcnUZxZxFoQHTD5lCkPSve8BcD9q099QH9rK7Io=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765509280; c=relaxed/simple;
-	bh=lDbhx/rz7tRV3/ITtZ7IiDrIYfk2GsAMqr9hdBD64XI=;
+	s=arc-20240116; t=1765509293; c=relaxed/simple;
+	bh=ZFYgiUbHjpNL4WLUrs4b8dW5cOWN4JmRvEQQBms63+0=;
 	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=CJZJFrMmqb2FdSZ+5O1pFYFL82DGF4ml0jRCYHXyaV2VxmGluDcPYl6Cz3h1dDsW5MOVspqlwvW1bqckRj75wArsJYH3x7UqOEvK0GBy8Qd1P9ZA/X/F7ehxYu72GFeIq6qljLlRXFHUW1t96L2x5NRS96rxSaVo1DHJ45mC7Bc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com; spf=pass smtp.mailfrom=realtek.com; dkim=pass (2048-bit key) header.d=realtek.com header.i=@realtek.com header.b=rzwEIRN3; arc=none smtp.client-ip=211.75.126.72
+	 MIME-Version:Content-Type; b=u2p17BI0RD9u3I3nqY9YqgxggJbLuc3HRV5t/ZNkHa6GjtdKzS554APozGJWjgRVwMKE0s30c9ymoW/5AcSSSH4eXT5g5MGWr7V3Jp6clmtHue1MMLMoWdIJXHeqlE4nehGwIAFGwYK1t2zE4+c0aNV4ndUoVB6mPua3H85zlxc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com; spf=pass smtp.mailfrom=realtek.com; dkim=pass (2048-bit key) header.d=realtek.com header.i=@realtek.com header.b=ptoi+035; arc=none smtp.client-ip=211.75.126.72
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=realtek.com
-X-SpamFilter-By: ArmorX SpamTrap 5.80 with qID 5BC3EaGZ23508822, This message is accepted by code: ctloc85258
+X-SpamFilter-By: ArmorX SpamTrap 5.80 with qID 5BC3EnPH23508894, This message is accepted by code: ctloc85258
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=realtek.com; s=dkim;
-	t=1765509276; bh=r4OAP7wjMvGqWHi6q5hoGHiTSiECXKon/4rSyUchoC8=;
+	t=1765509289; bh=5qbRA4TrIVMF1KLVn9mYImR7myN7WzuD4JpUcVeECeA=;
 	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
 	 MIME-Version:Content-Transfer-Encoding:Content-Type;
-	b=rzwEIRN3QJ2hInxO8m5lTwfi6YkU9mVgJlPqXnwzD+Ow7e1Eg3AF79DIXRyvXlfqo
-	 b8z48Rwi7z11kwvGt5O5LgMOSPobXOxJAowFoimF0fwcV+afCMOvS1ajt4aQP3wyTw
-	 ZZeLeblvbBA2b45ArHP3HUXuHlougf+uCcQf7oUR1F8F7gEqDSYetKeQHPwe1eE7kf
-	 RYY8ozarVsroLevlsL6JK3nl5spnLZ1IpMEVKwa2rCg0XIQDrVvJ1ldo9KIxFMoeVL
-	 gaO6wszFodCoTU0TxTqqENICB8F6Ir4MhXdmowjQ/Bqz0jZwUr8VWkGWNX80aqcKJx
-	 mEVh/0LIffWTw==
-Received: from mail.realtek.com (rtkexhmbs04.realtek.com.tw[10.21.1.54])
-	by rtits2.realtek.com.tw (8.15.2/3.21/5.94) with ESMTPS id 5BC3EaGZ23508822
+	b=ptoi+035HcoNW6BgAhOsuOTusv4CftuD04aNoyEmvQAdRGbwHmgD0AL0ON6nrQdTj
+	 3v9RFgSHQUntMgHQNZZL+TQOJefijowONKH23U8DaziU6aPfWe1wpXGSSFfWY6/p7O
+	 wxPM+FMNWLhEaDBEVC0OPhPDne05eZdm8bD9jb7MZ2VPGo3Bp2Bm4hlThdcggi1gLk
+	 rG5t8+9c/c0b69F+X7F8UV7q+fJX3oOpN/LcBPyq2Gt11a3WxhX7yqv03Lt19E3bVs
+	 M/Hkv9eKAfr0tqDx/bAMMc+rn1AvaRjB2ZPEnOKjJVeU5Pq88Y0xRnH1m02E5ieUR1
+	 Kwvb5xt/JYTiw==
+Received: from mail.realtek.com (rtkexhmbs03.realtek.com.tw[10.21.1.53])
+	by rtits2.realtek.com.tw (8.15.2/3.21/5.94) with ESMTPS id 5BC3EnPH23508894
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK)
-	for <linux-wireless@vger.kernel.org>; Fri, 12 Dec 2025 11:14:36 +0800
-Received: from RTKEXHMBS06.realtek.com.tw (10.21.1.56) by
- RTKEXHMBS04.realtek.com.tw (10.21.1.54) with Microsoft SMTP Server
+	for <linux-wireless@vger.kernel.org>; Fri, 12 Dec 2025 11:14:49 +0800
+Received: from RTKEXHMBS05.realtek.com.tw (10.21.1.55) by
+ RTKEXHMBS03.realtek.com.tw (10.21.1.53) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.27; Fri, 12 Dec 2025 11:14:37 +0800
+ 15.2.1748.10; Fri, 12 Dec 2025 11:14:42 +0800
 Received: from RTKEXHMBS04.realtek.com.tw (10.21.1.54) by
- RTKEXHMBS06.realtek.com.tw (10.21.1.56) with Microsoft SMTP Server
+ RTKEXHMBS05.realtek.com.tw (10.21.1.55) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.27; Fri, 12 Dec 2025 11:14:33 +0800
+ 15.2.1748.10; Fri, 12 Dec 2025 11:14:39 +0800
 Received: from [127.0.1.1] (172.21.40.75) by RTKEXHMBS04.realtek.com.tw
  (10.21.1.54) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.27 via Frontend
- Transport; Fri, 12 Dec 2025 11:14:33 +0800
+ Transport; Fri, 12 Dec 2025 11:14:38 +0800
 From: Ping-Ke Shih <pkshih@realtek.com>
 To: <linux-wireless@vger.kernel.org>
 CC: <gary.chang@realtek.com>, <damon.chen@realtek.com>,
         <kevin_yang@realtek.com>
-Subject: [PATCH rtw-next 09/12] wifi: rtw89: refine C2H reg event polling timeout for LPS
-Date: Fri, 12 Dec 2025 11:13:00 +0800
-Message-ID: <20251212031303.19882-10-pkshih@realtek.com>
+Subject: [PATCH rtw-next 10/12] wifi: rtw89: warn unexpected polling value of XTAL SI
+Date: Fri, 12 Dec 2025 11:13:01 +0800
+Message-ID: <20251212031303.19882-11-pkshih@realtek.com>
 X-Mailer: git-send-email 2.25.1
 In-Reply-To: <20251212031303.19882-1-pkshih@realtek.com>
 References: <20251212031303.19882-1-pkshih@realtek.com>
@@ -75,60 +75,77 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Content-Type: text/plain
 
-From: Chih-Kang Chang <gary.chang@realtek.com>
+XTAL SI is an indirect serial interface to access registers in another
+hardware domain. When BT driver initializes UART interface, firmware might
+rarely control XTAL SI at the same time causing access racing.
 
-The each of C2H reg event have different polling timeout. Refine the
-LPS C2H reg event polling timeout. Otherwise, during SER, the FW has
-already crashed, the leave LPS check will wait until timeout expires,
-causing the SER recovery to take too long.
+Current is to adjust initialization flow to avoid the racing. To make
+the racing visible if it still presents, add a message to address this.
 
-Signed-off-by: Chih-Kang Chang <gary.chang@realtek.com>
 Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
 ---
- drivers/net/wireless/realtek/rtw89/fw.c | 3 +++
- drivers/net/wireless/realtek/rtw89/fw.h | 1 +
- drivers/net/wireless/realtek/rtw89/ps.c | 2 +-
- 3 files changed, 5 insertions(+), 1 deletion(-)
+ drivers/net/wireless/realtek/rtw89/mac.c    | 11 ++++++++++-
+ drivers/net/wireless/realtek/rtw89/mac_be.c | 11 ++++++++++-
+ 2 files changed, 20 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/net/wireless/realtek/rtw89/fw.c b/drivers/net/wireless/realtek/rtw89/fw.c
-index 4e51ffb5be21..fd49e651aeed 100644
---- a/drivers/net/wireless/realtek/rtw89/fw.c
-+++ b/drivers/net/wireless/realtek/rtw89/fw.c
-@@ -7053,6 +7053,9 @@ static int rtw89_fw_read_c2h_reg(struct rtw89_dev *rtwdev,
- 	else
- 		timeout = RTW89_C2H_TIMEOUT;
+diff --git a/drivers/net/wireless/realtek/rtw89/mac.c b/drivers/net/wireless/realtek/rtw89/mac.c
+index cf36be167162..066c99f3e53a 100644
+--- a/drivers/net/wireless/realtek/rtw89/mac.c
++++ b/drivers/net/wireless/realtek/rtw89/mac.c
+@@ -7023,6 +7023,11 @@ int rtw89_mac_write_xtal_si_ax(struct rtw89_dev *rtwdev, u8 offset, u8 val, u8 m
+ 		return ret;
+ 	}
  
-+	if (info->timeout)
-+		timeout = info->timeout;
++	if (u32_get_bits(val32, B_AX_WL_XTAL_SI_ADDR_MASK) != offset ||
++	    u32_get_bits(val32, B_AX_WL_XTAL_SI_DATA_MASK) != val)
++		rtw89_warn(rtwdev, "xtal si write: offset=%x val=%x poll=%x\n",
++			   offset, val, val32);
 +
- 	ret = read_poll_timeout_atomic(rtw89_read8, val, val, 1,
- 				       timeout, false, rtwdev,
- 				       chip->c2h_ctrl_reg);
-diff --git a/drivers/net/wireless/realtek/rtw89/fw.h b/drivers/net/wireless/realtek/rtw89/fw.h
-index cedb4a47a769..dfae652686cd 100644
---- a/drivers/net/wireless/realtek/rtw89/fw.h
-+++ b/drivers/net/wireless/realtek/rtw89/fw.h
-@@ -120,6 +120,7 @@ struct rtw89_h2creg_sch_tx_en {
- struct rtw89_mac_c2h_info {
- 	u8 id;
- 	u8 content_len;
-+	u32 timeout;
- 	union {
- 		u32 c2hreg[RTW89_C2HREG_MAX];
- 		struct rtw89_c2hreg_hdr hdr;
-diff --git a/drivers/net/wireless/realtek/rtw89/ps.c b/drivers/net/wireless/realtek/rtw89/ps.c
-index 3f69dd4361c3..abd8aee02b47 100644
---- a/drivers/net/wireless/realtek/rtw89/ps.c
-+++ b/drivers/net/wireless/realtek/rtw89/ps.c
-@@ -16,7 +16,7 @@
+ 	return 0;
+ }
  
- static int rtw89_fw_receive_lps_h2c_check(struct rtw89_dev *rtwdev, u8 macid)
- {
--	struct rtw89_mac_c2h_info c2h_info = {};
-+	struct rtw89_mac_c2h_info c2h_info = {.timeout = 5000};
- 	u16 c2hreg_macid;
- 	u32 c2hreg_ret;
- 	int ret;
+@@ -7046,7 +7051,11 @@ int rtw89_mac_read_xtal_si_ax(struct rtw89_dev *rtwdev, u8 offset, u8 *val)
+ 		return ret;
+ 	}
+ 
+-	*val = rtw89_read8(rtwdev, R_AX_WLAN_XTAL_SI_CTRL + 1);
++	if (u32_get_bits(val32, B_AX_WL_XTAL_SI_ADDR_MASK) != offset)
++		rtw89_warn(rtwdev, "xtal si read: offset=%x poll=%x\n",
++			   offset, val32);
++
++	*val = u32_get_bits(val32, B_AX_WL_XTAL_SI_DATA_MASK);
+ 
+ 	return 0;
+ }
+diff --git a/drivers/net/wireless/realtek/rtw89/mac_be.c b/drivers/net/wireless/realtek/rtw89/mac_be.c
+index 2bc329c13443..d75c55cc34b8 100644
+--- a/drivers/net/wireless/realtek/rtw89/mac_be.c
++++ b/drivers/net/wireless/realtek/rtw89/mac_be.c
+@@ -396,6 +396,11 @@ int rtw89_mac_write_xtal_si_be(struct rtw89_dev *rtwdev, u8 offset, u8 val, u8 m
+ 		return ret;
+ 	}
+ 
++	if (u32_get_bits(val32, B_BE_WL_XTAL_SI_ADDR_MASK) != offset ||
++	    u32_get_bits(val32, B_BE_WL_XTAL_SI_DATA_MASK) != val)
++		rtw89_warn(rtwdev, "xtal si write: offset=%x val=%x poll=%x\n",
++			   offset, val, val32);
++
+ 	return 0;
+ }
+ 
+@@ -420,7 +425,11 @@ int rtw89_mac_read_xtal_si_be(struct rtw89_dev *rtwdev, u8 offset, u8 *val)
+ 		return ret;
+ 	}
+ 
+-	*val = rtw89_read8(rtwdev, R_BE_WLAN_XTAL_SI_CTRL + 1);
++	if (u32_get_bits(val32, B_BE_WL_XTAL_SI_ADDR_MASK) != offset)
++		rtw89_warn(rtwdev, "xtal si read: offset=%x poll=%x\n",
++			   offset, val32);
++
++	*val = u32_get_bits(val32, B_BE_WL_XTAL_SI_DATA_MASK);
+ 
+ 	return 0;
+ }
 -- 
 2.25.1
 
