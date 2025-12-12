@@ -1,95 +1,136 @@
-Return-Path: <linux-wireless+bounces-29718-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-29719-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8118CCB8D38
-	for <lists+linux-wireless@lfdr.de>; Fri, 12 Dec 2025 13:47:32 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0822ECB912D
+	for <lists+linux-wireless@lfdr.de>; Fri, 12 Dec 2025 16:12:53 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 50C4430A6010
-	for <lists+linux-wireless@lfdr.de>; Fri, 12 Dec 2025 12:46:00 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id EB86E30076B0
+	for <lists+linux-wireless@lfdr.de>; Fri, 12 Dec 2025 15:12:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8389B1DC9B3;
-	Fri, 12 Dec 2025 12:45:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 12DDE3112B0;
+	Fri, 12 Dec 2025 15:12:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b="reg1v19K"
+	dkim=pass (2048-bit key) header.d=dujemihanovic.xyz header.i=@dujemihanovic.xyz header.b="lKqb0Eww"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from sipsolutions.net (s3.sipsolutions.net [168.119.38.16])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mx.olsak.net (mx.olsak.net [37.205.8.231])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 05CD529A2
-	for <linux-wireless@vger.kernel.org>; Fri, 12 Dec 2025 12:45:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=168.119.38.16
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3D8F8224B15;
+	Fri, 12 Dec 2025 15:12:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=37.205.8.231
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765543559; cv=none; b=BpkujV5J/pZr8V3/ggdkX99lrxQxI91dvCRkZ9WKsxqd75iXWeeRVRfOdbDux64y4GZpevYAhLccIB5l2SJxAgwCrx9R2KTyObf3UJAMoRv/N31gQBKB17LTYgRfowCw9c+3ug9FjItCklbDl7pm5cSnzkh5xoj87nFS56NbFG8=
+	t=1765552371; cv=none; b=HJ2rHESDbgYnmgCpvMfBeEurq4+82KbXP56qYy0h/x+0spQBTuRI9q3tkuzTh1O66I4yeW0S0Yb2AY0+9prmjgqs3lmfOt979fwZCUY3cn4s5tFlINYlcxWMrgDinlg/L6DG0heaNw3yZIhCYw2tvI4wH0KlK+2XCEinIjvvEo8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765543559; c=relaxed/simple;
-	bh=AO1qSdiEH1qAnJxtcc1BLVcI/8G8WcBJV3GT9JV/ik4=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=C07QU+0fmdVX/Y57DR4+y4lPMc6eCt/iH1oWpIVgwbh3TTz1UNUAxoMRloi5erjxJLBFCfH/gMDu4XVBViGz0s6UPP1x2Up0HjBE6v6OP9gBfqWUL52/3vIpMQqAKKachF4s9Z1VFDVwVT6hU5rUci2fO7EFqT5mFN251jncqlw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net; spf=pass smtp.mailfrom=sipsolutions.net; dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b=reg1v19K; arc=none smtp.client-ip=168.119.38.16
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sipsolutions.net
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=sipsolutions.net; s=mail; h=MIME-Version:Content-Transfer-Encoding:
-	Content-Type:References:In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender
-	:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
-	Resent-Cc:Resent-Message-ID; bh=AO1qSdiEH1qAnJxtcc1BLVcI/8G8WcBJV3GT9JV/ik4=;
-	t=1765543558; x=1766753158; b=reg1v19KG67dwYefDGiWg+mHAhDo6W2nNog+Ib7VFmudsA3
-	kIrLYnj8pc0GkmViO4N1Su/7qlgcYI6ZvLLxSbDCGGRU1XMK4kIwWalIQc/HxO6ER5YoePhKdiyUD
-	05dZHSxpDN7UtOKsAOdgNtYyTQG3zvYgD8tZRXxMBniG445rhYz1JvEMnufAmfemh4GsiAlAtCoXB
-	/xf7y+ta6fQJhfjfqELtg4t+lWWVmdnF471vnmcUAVeV423zKBYNHEtf3bYBeJ1XyJOseeXvxvDuk
-	ABr05LU80ktpnvHfRslFk0/+9BB1EiyQ+cUgqRN10/rSHwNyC026CH7EK8h557Sw==;
-Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
-	(Exim 4.98.2)
-	(envelope-from <johannes@sipsolutions.net>)
-	id 1vU2Wv-00000003Une-3egr;
-	Fri, 12 Dec 2025 13:45:54 +0100
-Message-ID: <ae7514eb20734bacba9e617791978b1b891f3ee1.camel@sipsolutions.net>
-Subject: Re: [PATCH wireless-next 11/14] wifi: nl80211: Add new NL
- attributes to support (Re)Association frame encryption
-From: Johannes Berg <johannes@sipsolutions.net>
-To: Kavita Kavita <kavita.kavita@oss.qualcomm.com>
-Cc: linux-wireless@vger.kernel.org, ainy.kumari@oss.qualcomm.com, 
-	sai.magam@oss.qualcomm.com, quic_drohan@quicinc.com
-Date: Fri, 12 Dec 2025 13:45:53 +0100
-In-Reply-To: <20251211124051.3094878-12-kavita.kavita@oss.qualcomm.com>
-References: <20251211124051.3094878-1-kavita.kavita@oss.qualcomm.com>
-	 <20251211124051.3094878-12-kavita.kavita@oss.qualcomm.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.56.2 (3.56.2-2.fc42) 
+	s=arc-20240116; t=1765552371; c=relaxed/simple;
+	bh=Au2bq/uT4hQqmVRhmRu0GZSkECIowsydK5IBDoeqVls=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=rh2oYhqq/i4yOZjpwfZRByYo653aQM93GjJWdfXE4bbchnVfIdLMz6zHaIiA23Weh7itv1NgE00qhmogO3BbY9WdckDLSNXfl+yQh1it6SQodnZKuWW5pTA1iJM8IFE25lJhJkeIixQlVG8YfFM7hTdiNSfoyXqDYr+ePY7Jylc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=dujemihanovic.xyz; spf=pass smtp.mailfrom=dujemihanovic.xyz; dkim=pass (2048-bit key) header.d=dujemihanovic.xyz header.i=@dujemihanovic.xyz header.b=lKqb0Eww; arc=none smtp.client-ip=37.205.8.231
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=dujemihanovic.xyz
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=dujemihanovic.xyz
+DKIM-Signature: a=rsa-sha256; bh=4ws6w/h+ocGHgXoKslH3aTkpzb0iw8aDky8/QSNIKFA=;
+ c=relaxed/relaxed; d=dujemihanovic.xyz;
+ h=Subject:Subject:Sender:To:To:Cc:Cc:From:From:Date:Date:MIME-Version:MIME-Version:Content-Type:Content-Type:Content-Transfer-Encoding:Content-Transfer-Encoding:Reply-To:In-Reply-To:In-Reply-To:Message-Id:Message-Id:References:References:Autocrypt:Openpgp;
+ i=@dujemihanovic.xyz; s=default; t=1765551350; v=1; x=1765983350;
+ b=lKqb0Ewwk2P9x7xWmAco6D6Vb4U9a1BhGCwrhdQoau5rmSp1f9sM8gPW/vc/YBZPrrfS275F
+ 1PD8w92z8zLgtq6cN30ya1uSfWBPLl7CGMJSQQgm0DJ06i/pOtDzo+uAcihfukJZi4o01bpOFi7
+ 5RzQhGIDEaS/cUlWYnE6tDrFnptw1HL1mJbnEgqPX4WIyqVPwxf0TnF/SxSojUFbIS2ZAlQ3AlB
+ CeWMlwkgKY/Ayrd3Nu36IaC+73iA6NKkxCIAJWwD+hvqgrqv5p7QAy48y+tFk3zxLrv8J+RiwOY
+ ZzOXpaf34kuaxdLkfUBuVBMDLk10Z28DFPTWFenpUc9PA==
+Received: by mx.olsak.net (envelope-sender <duje@dujemihanovic.xyz>) with
+ ESMTPS id 97b39aec; Fri, 12 Dec 2025 15:55:50 +0100
+Message-ID: <b92172f3-10f4-470f-b90a-121ff7fea988@dujemihanovic.xyz>
+Date: Fri, 12 Dec 2025 15:55:48 +0100
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-malware-bazaar: not-scanned
+User-Agent: Mozilla Thunderbird
+Subject: Re: [DONOTAPPLY RFC PATCH v2 4/4] arm64: dts: samsung,coreprimevelte:
+ add wifi node
+To: Karel Balej <balejk@matfyz.cz>, Brian Norris <briannorris@chromium.org>
+Cc: Johannes Berg <johannes@sipsolutions.net>, Rob Herring <robh@kernel.org>,
+ Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
+ <conor+dt@kernel.org>, Andrew Lunn <andrew@lunn.ch>,
+ Gregory Clement <gregory.clement@bootlin.com>,
+ Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>,
+ Francesco Dolcini <francesco@dolcini.it>,
+ Ulf Hansson <ulf.hansson@linaro.org>, Frank Li <Frank.Li@nxp.com>,
+ linux-wireless@vger.kernel.org, devicetree@vger.kernel.org,
+ linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+ linux-mmc@vger.kernel.org, ~postmarketos/upstreaming@lists.sr.ht,
+ phone-devel@vger.kernel.org, Jeff Chen <jeff.chen_1@nxp.com>,
+ Peng Fan <peng.fan@nxp.com>
+References: <20251026182602.26464-1-balejk@matfyz.cz>
+ <20251026182602.26464-5-balejk@matfyz.cz> <aTCv75hjdX5XvgCh@google.com>
+ <DEW3NQVZ84JU.22G38WMULFZJG@matfyz.cz>
+Content-Language: en-US
+From: =?UTF-8?Q?Duje_Mihanovi=C4=87?= <duje@dujemihanovic.xyz>
+In-Reply-To: <DEW3NQVZ84JU.22G38WMULFZJG@matfyz.cz>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-On Thu, 2025-12-11 at 18:10 +0530, Kavita Kavita wrote:
-> From: Sai Pratyusha Magam <quic_smagam@quicinc.com>
->=20
-> Introduce new netlink attributes for the userspace to indicate
-> following to the driver in AP mode:
->=20
-> A new netlink attribute NL80211_ATTR_EPP_PEER for NL80211_CMD_NEW_STA
-> and NL80211_CMD_ADD_LINK_STA to indicate that it is an
-> Enhanced Privacy Protection (EPP) peer.
+On 12/12/25 09:36, Karel Balej wrote:
+> Brian Norris, 2025-12-03T13:47:27-08:00:
+>>
+>> Do we have a min/max voltage for this regulator?
+> 
+> The downstream node is defined with the same values as the above ldo14,
+> they however are however only defined in the PMIC dtsi and correspond to
+> the actual physical limits of the regulator specified also in the
+> driver, so this doesn't really give any specific constraints for the
+> board itself.
+> 
+> The downstream code enabling WiFi seems to force it to 3300000 (which
+> also seems to be the startup value) unconditionally, so I suppose I will
+> just set the both limits to this value?
 
-Seems reasonable.
+This sounds reasonable to me.
 
-> A new netlink attribute NL80211_ATTR_EPP_FLAGS for
-> NL80211_CMD_SET_STATION to indicate the negotiated EPP capabilities of
-> an EPP AP and an EPP non-AP STA
+>>
+>>> +			};
+>>>   		};
+>>>   	};
+>>>   };
+>>> @@ -523,6 +531,13 @@ &sdh1 {
+>>>   	pinctrl-1 = <&sdh1_fast_pins_0 &sdh1_fast_pins_1 &sdh1_pins_2>;
+>>>   	bus-width = <4>;
+>>>   	non-removable;
+>>> +	#address-cells = <1>;
+>>> +	#size-cells = <0>;
+>>
+>> I wonder if this should have:
+>>
+>> 	vmmc-supply = <&ldo16>;
+>>
+>> rather than regulator-always-on above.
+> 
+> You mean ldo15 right?
+> 
+> Not having any board schematics, I don't really know what exactly the
+> regulator's purpose is. As I mentioned in the commit message, the
+> communication with the chipset seems to work even if this is disabled
+> (e. g. FW loads, networks can be scanned for,...) which doesn't seem
+> like it should be the case if this was a main power supply for the bus,
+> only actual connecting to networks doesn't work (gives
+> CONNECT_ERR_ASSOC_ERR_TIMEOUT errors).
 
-You don't use that.
+To me, this strongly suggests that the regulator powers the WiFi 
+transmitter or at least a part of it (such as the RF amp).
 
-> The Extended RSN capabilities for EPP that an EPP AP and an EPP
-> non-AP STA can negotiate are as per "IEEE P802.11bi/D3.0, 9.4.2.240"
-> (RSNXE), few of which are driver dependent, hence need them to be
-> communicated from userspace for later use.
+> So this didn't seem too fitting for either vmmc nor vqmmc as far as I
+> understand their semantics, so I went with the regulator-always-on
+> approach to be safe.
 
-Don't follow?
+Considering the above, I'd reckon it'd be good to have the option to 
+toggle it for rfkill if anything. I'm however not sure what would be the 
+right way to do so, nor how rfkill even works, if at all, with mwifiex 
+(from what I see, the driver does not use the API).
 
-johannes
+Regards,
+--
+Duje
 
