@@ -1,131 +1,104 @@
-Return-Path: <linux-wireless+bounces-29680-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-29681-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3B96BCB76B2
-	for <lists+linux-wireless@lfdr.de>; Fri, 12 Dec 2025 00:47:38 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1E2F3CB7700
+	for <lists+linux-wireless@lfdr.de>; Fri, 12 Dec 2025 01:16:30 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 277C4300106A
-	for <lists+linux-wireless@lfdr.de>; Thu, 11 Dec 2025 23:47:37 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id C55EB3013EB6
+	for <lists+linux-wireless@lfdr.de>; Fri, 12 Dec 2025 00:16:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3ACA72C3256;
-	Thu, 11 Dec 2025 23:47:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 26F8F85C4A;
+	Fri, 12 Dec 2025 00:16:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="SNkUhi0v"
+	dkim=pass (2048-bit key) header.d=realtek.com header.i=@realtek.com header.b="noXVOjck"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 154301FF1B5
-	for <linux-wireless@vger.kernel.org>; Thu, 11 Dec 2025 23:47:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E2FAA883F;
+	Fri, 12 Dec 2025 00:16:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=211.75.126.72
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765496853; cv=none; b=j6LAGqkIj4+Cw1qZSRI2YtnPx6Cs41QvvJ5/RW19iZ7roEwEI86eI60BzKn7AVXtSzQeo7hzjSw4IExqZwf138lS1RVUDNoJA49limnvqI3UYe0kTqAAb+Q1eNA6Ln8iCXraoyLW7e2k6HmJFsf5Pk4HFyk3Cf7l80zdTWu8w4k=
+	t=1765498587; cv=none; b=U+Hog/lqikdpAy7SMgRL6oD8S4s/oatDZNFU0pDOL9ePXX7z8kX2iJi0+Itwh6T/zD0Q5R9qL0Zy3YzuJkliGAdhEJR0esLu1tTiRyChwlG+YoGHkvURmbEOPIRs31Rkw13w1eml7bZAfZKDjK3m860+lz+l6el6BLQgJOmZAyo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765496853; c=relaxed/simple;
-	bh=bje5S2tO81LcR3oEMnuyNXK8MCzYbRCVPpr/63ZWRy4=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=L4A/Ig7I5rUZUw2oKTX67H39QQa553P7iNnCdNOyUxIg7zZHvYj+wMB4bpwDzrnESHM1i4dWKSt8IUBeMoIi5t51gPkQJQDPdUN+A1SDmDxBS4rcSiF0jWdk+FeDgJDek3JtfPh0H7wPO7k8feMO+Bb5cUGVQzpH2tXFon8Mres=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=SNkUhi0v; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A37F0C19425
-	for <linux-wireless@vger.kernel.org>; Thu, 11 Dec 2025 23:47:32 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1765496852;
-	bh=bje5S2tO81LcR3oEMnuyNXK8MCzYbRCVPpr/63ZWRy4=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=SNkUhi0vsFDkEFIDfZxCrKAjqVeRqvOyZSo6pxD6CVg4rMq9qSAIbjSxD/ITtWyaM
-	 EnJL3KBqMXuSrWqNE0bMN9U/+DOL8qiD+UbrOQArKHhgFEtCUKkAJX3roHiqkPHEpN
-	 TEjdNMHc0bp0xqBPZuWzfYMxBeeD3UDoYcX8ZJZ0b+mfH9IKqQERdsJHLRW+XB2z+B
-	 6iQAfzob7H0O5MBgwxrH65b6FRP/vlx3DQ+2R+G2zfFhmfKMArhF8Wyr2Hdawq3mAs
-	 FSdoRFpsuyJwX4YiJQcQkdL7XAvsYra4dii4cDafnR5MpMSAnVnw+6pqQSUQUK5St4
-	 RAQ6O/vZs+/AA==
-Received: by mail-lf1-f41.google.com with SMTP id 2adb3069b0e04-59431f57bf6so737775e87.3
-        for <linux-wireless@vger.kernel.org>; Thu, 11 Dec 2025 15:47:32 -0800 (PST)
-X-Forwarded-Encrypted: i=1; AJvYcCVhPJAiQW26T+HpdmkZBoMHZBZj2h+3RSMR+8IXRu2qyekxXl6QsHjyMJ0g6UbPqRfUTtC5CKWqY49T7/CNvw==@vger.kernel.org
-X-Gm-Message-State: AOJu0Yz4YbygPyaCNUGrm5Hnn/2q5LSimZC8LP0fBjsARkFJVHvEhpqE
-	+xcbFfOtq3FwAmwYu676fy92ZmuNCU4G7UpHLECYkNlbgGJx2vem+AeA3CUK6aJ/uH0UEPD7o4j
-	KCSu22kgbmPZPfAV4lpOeA8vJQ4mkpWU=
-X-Google-Smtp-Source: AGHT+IG+tynJrEuFVmI9CGQVNWs1wGZ9mj2gwDEXwVEvTcf/I9XnBHIRwne+P0Qk/JsMpdmNrWEUtWaXp3jTSpSY9bs=
-X-Received: by 2002:a05:6512:3da8:b0:598:853e:72fa with SMTP id
- 2adb3069b0e04-598faa996cemr6981e87.52.1765496850964; Thu, 11 Dec 2025
- 15:47:30 -0800 (PST)
+	s=arc-20240116; t=1765498587; c=relaxed/simple;
+	bh=WMxuKgG4jk6HzUaiJMzrCxajmsELEf8vUmNJk9jIs0I=;
+	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
+	 Content-Type:MIME-Version; b=hRtzf/0ws+hVRNE4kOdkIP3/j3d3IAKhCBO46hFhXSEl1ig7B8CUAqzuDw7v5sg0G5e3/WE8h02KxvWZd3bkIZMRtM4FmFw9RKUJZrhbhlUkqmb+J0an1HoMqhZOmAE+Lxq4o/s4DorUa78XDTmkkuXZY+DHDm2ZkI2X1GQW1+A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com; spf=pass smtp.mailfrom=realtek.com; dkim=pass (2048-bit key) header.d=realtek.com header.i=@realtek.com header.b=noXVOjck; arc=none smtp.client-ip=211.75.126.72
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=realtek.com
+X-SpamFilter-By: ArmorX SpamTrap 5.80 with qID 5BC0GJovC3201556, This message is accepted by code: ctloc85258
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=realtek.com; s=dkim;
+	t=1765498579; bh=WMxuKgG4jk6HzUaiJMzrCxajmsELEf8vUmNJk9jIs0I=;
+	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
+	 Content-Type:Content-Transfer-Encoding:MIME-Version;
+	b=noXVOjckJmvjPRH8E0R/7JFrqJ/sVF6P0eCt1s5NaivP4pZGUKEig0OQ4mcyuw1gX
+	 I6oH8tEC7sJVdsXsOMaKcr3V8NiEiX/+09sCb0DU2XyfFvN2rs4VSuJvf0s55+7Mj2
+	 h+cl/4l304CSrm4q5zDuIdgl40U7WCD1hkbd+BaBRK72rz8sFXmcxhFwUzAENY73BT
+	 /k0nXyo2G3AfeyBzhIIQs3IYVgz2bR/m0NkYUFCmSpQaH6Z+kbH1cu26s0tHQgg0KI
+	 eLT6PaH0O5vXqU2wkRsy7m6SwuEyy6spr8tMZS/40dZ9sBnQ7P/plCkHxZzVnIU/Kc
+	 FeY6xMOZOSEVQ==
+Received: from mail.realtek.com (rtkexhmbs02.realtek.com.tw[172.21.6.41])
+	by rtits2.realtek.com.tw (8.15.2/3.21/5.94) with ESMTPS id 5BC0GJovC3201556
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Fri, 12 Dec 2025 08:16:19 +0800
+Received: from RTKEXHMBS06.realtek.com.tw (10.21.1.56) by
+ RTKEXHMBS02.realtek.com.tw (172.21.6.41) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1748.10; Fri, 12 Dec 2025 08:16:20 +0800
+Received: from RTKEXHMBS06.realtek.com.tw (10.21.1.56) by
+ RTKEXHMBS06.realtek.com.tw (10.21.1.56) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1544.27; Fri, 12 Dec 2025 08:16:19 +0800
+Received: from RTKEXHMBS06.realtek.com.tw ([::1]) by
+ RTKEXHMBS06.realtek.com.tw ([fe80::2fa5:eccb:34ee:7bb%10]) with mapi id
+ 15.02.1544.027; Fri, 12 Dec 2025 08:16:19 +0800
+From: Ping-Ke Shih <pkshih@realtek.com>
+To: "chourasiarohit27@gmail.com" <chourasiarohit27@gmail.com>
+CC: "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
+Subject: =?utf-8?B?UkU6IFtQQVRDSF0gcnRsd2lmaTogZml4IHR5cG8gaW4gY29tbWVudCAocmVjaWV2ZWQg4oaSIHJlY2VpdmVkKQ==?=
+Thread-Topic: =?utf-8?B?W1BBVENIXSBydGx3aWZpOiBmaXggdHlwbyBpbiBjb21tZW50IChyZWNpZXZl?=
+ =?utf-8?B?ZCDihpIgcmVjZWl2ZWQp?=
+Thread-Index: AQHcarnosttdweOZjEyt8Kt5PsyTKLUdIlmA
+Date: Fri, 12 Dec 2025 00:16:19 +0000
+Message-ID: <22e408c8b0b54d8eaada13fbc20784ad@realtek.com>
+References: <20251211161911.30611-1-chourasiarohit27@gmail.com>
+In-Reply-To: <20251211161911.30611-1-chourasiarohit27@gmail.com>
+Accept-Language: en-US, zh-TW
+Content-Language: zh-TW
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <d5960fbced0beaf33c30203f7f8fb91d0899c87b.1764228973.git.quan.zhou@mediatek.com>
-In-Reply-To: <d5960fbced0beaf33c30203f7f8fb91d0899c87b.1764228973.git.quan.zhou@mediatek.com>
-From: Sean Wang <sean.wang@kernel.org>
-Date: Thu, 11 Dec 2025 17:47:19 -0600
-X-Gmail-Original-Message-ID: <CAGp9LzrvD+Go=StCU=iU4KERyXfK5VB_xvonHNFkGxDyy7p6mg@mail.gmail.com>
-X-Gm-Features: AQt7F2rPOclLMuFQPaVaug5PVxJnxqf4ihQeSo3tetqH5UXKLK7pgKOl-k9a8rM
-Message-ID: <CAGp9LzrvD+Go=StCU=iU4KERyXfK5VB_xvonHNFkGxDyy7p6mg@mail.gmail.com>
-Subject: Re: [PATCH v2] wifi: mt76: mt7925: fix AMPDU state handling in mt7925_tx_check_aggr
-To: Quan Zhou <quan.zhou@mediatek.com>
-Cc: Felix Fietkau <nbd@nbd.name>, Lorenzo Bianconi <lorenzo@kernel.org>, Sean Wang <sean.wang@mediatek.com>, 
-	Deren Wu <Deren.Wu@mediatek.com>, Ryder Lee <ryder.lee@mediatek.com>, 
-	Shayne Chen <shayne.chen@mediatek.com>, Leon Yen <Leon.Yen@mediatek.com>, 
-	Ming Yen Hsieh <mingyen.hsieh@mediatek.com>, Allan Wang <allan.wang@mediatek.com>, 
-	KM Lin <km.lin@mediatek.com>, Posh Sun <posh.sun@mediatek.com>, 
-	Shengxi Xu <shengxi.xu@mediatek.com>, Eric-SY Chang <Eric-SY.Chang@mediatek.com>, 
-	CH Yeh <ch.yeh@mediatek.com>, Robin Chiu <robin.chiu@mediatek.com>, 
-	linux-wireless <linux-wireless@vger.kernel.org>, 
-	linux-mediatek <linux-mediatek@lists.infradead.org>, stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
 
-On Thu, Nov 27, 2025 at 1:55=E2=80=AFAM Quan Zhou <quan.zhou@mediatek.com> =
-wrote:
->
-> Previously, the AMPDU state bit for a given TID was set before attempting
-> to start a BA session, which could result in the AMPDU state being marked
-> active even if ieee80211_start_tx_ba_session() failed. This patch changes
-> the logic to only set the AMPDU state bit after successfully starting a B=
-A
-> session, ensuring proper synchronization between AMPDU state and BA sessi=
-on
-> status.
->
-> This fixes potential issues with aggregation state tracking and improves
-> compatibility with mac80211 BA session management.
->
-> Fixes: 44eb173bdd4f ("wifi: mt76: mt7925: add link handling in mt7925_txw=
-i_free")
-> Cc: stable@vger.kernel.org
->
-> Signed-off-by: Quan Zhou <quan.zhou@mediatek.com>
-> ---
-> v2: modify to avoid weakening atomicity
-> ---
->  drivers/net/wireless/mediatek/mt76/mt7925/mac.c | 6 ++++--
->  1 file changed, 4 insertions(+), 2 deletions(-)
->
-> diff --git a/drivers/net/wireless/mediatek/mt76/mt7925/mac.c b/drivers/ne=
-t/wireless/mediatek/mt76/mt7925/mac.c
-> index 871b67101976..5e5b1df78633 100644
-> --- a/drivers/net/wireless/mediatek/mt76/mt7925/mac.c
-> +++ b/drivers/net/wireless/mediatek/mt76/mt7925/mac.c
-> @@ -881,8 +881,10 @@ static void mt7925_tx_check_aggr(struct ieee80211_st=
-a *sta, struct sk_buff *skb,
->         else
->                 mlink =3D &msta->deflink;
->
-> -       if (!test_and_set_bit(tid, &mlink->wcid.ampdu_state))
-> -               ieee80211_start_tx_ba_session(sta, tid, 0);
-> +       if (!test_and_set_bit(tid, &mlink->wcid.ampdu_state)) {
-> +               if (ieee80211_start_tx_ba_session(sta, tid, 0))
-> +                       clear_bit(tid, &mlink->wcid.ampdu_state);
-> +       }
->  }
->
-
-Reviewed-by: Sean Wang <sean.wang@mediatek.com>
-
->  static bool
-> --
-> 2.45.2
->
->
+Y2hvdXJhc2lhcm9oaXQyN0BnbWFpbC5jb20gPGNob3VyYXNpYXJvaGl0MjdAZ21haWwuY29tPiB3
+cm90ZToNCj4gRnJvbTogUm9oaXQgQ2hvdXJhc2lhIDxjaG91cmFzaWFyb2hpdDI3QGdtYWlsLmNv
+bT4NCg0KU3ViamVjdCBwcmVmaXggc2hvdWxkIGJlICJ3aWZpOiBydGx3aWZpOiAuLi4iLg0KSSB3
+aWxsIGNoYW5nZSBpdCB0byAid2lmaTogcnRsd2lmaTogZml4IHR5cG8gb2YgJ3JlY2VpdmVkJyBp
+biBjb21tZW50Ig0KZHVyaW5nIGdldHRpbmcgbWVyZ2VkLiBBbHNvLCBJIHdpbGwgYWRkIHNvbWUg
+dHJpdmlhbCBjb21taXQgbWVzc2FnZXMuDQoNCiAgRml4IHR5cG8gcmVjZWl2ZWQgLT4gcmVjZWl2
+ZWQgYnkgcmV2aWV3Lg0KDQo+IA0KPiBTaWduZWQtb2ZmLWJ5OiBSb2hpdCBDaG91cmFzaWEgPGNo
+b3VyYXNpYXJvaGl0MjdAZ21haWwuY29tPg0KDQpBY2tlZC1ieTogUGluZy1LZSBTaGloIDxwa3No
+aWhAcmVhbHRlay5jb20+DQoNCj4gLS0tDQo+ICBkcml2ZXJzL25ldC93aXJlbGVzcy9yZWFsdGVr
+L3J0bHdpZmkvcmVnZC5jIHwgMiArLQ0KPiAgMSBmaWxlIGNoYW5nZWQsIDEgaW5zZXJ0aW9uKCsp
+LCAxIGRlbGV0aW9uKC0pDQo+IA0KPiBkaWZmIC0tZ2l0IGEvZHJpdmVycy9uZXQvd2lyZWxlc3Mv
+cmVhbHRlay9ydGx3aWZpL3JlZ2QuYyBiL2RyaXZlcnMvbmV0L3dpcmVsZXNzL3JlYWx0ZWsvcnRs
+d2lmaS9yZWdkLmMNCj4gaW5kZXggMGJjNGFmYTRmZGEzLi5mZDk2NzAwNmIzZTEgMTAwNjQ0DQo+
+IC0tLSBhL2RyaXZlcnMvbmV0L3dpcmVsZXNzL3JlYWx0ZWsvcnRsd2lmaS9yZWdkLmMNCj4gKysr
+IGIvZHJpdmVycy9uZXQvd2lyZWxlc3MvcmVhbHRlay9ydGx3aWZpL3JlZ2QuYw0KPiBAQCAtMjA2
+LDcgKzIwNiw3IEBAIHN0YXRpYyB2b2lkIF9ydGxfcmVnX2FwcGx5X2FjdGl2ZV9zY2FuX2ZsYWdz
+KHN0cnVjdCB3aXBoeSAqd2lwaHksDQo+ICAgICAgICAgfQ0KPiANCj4gICAgICAgICAvKg0KPiAt
+ICAgICAgICAqSWYgYSBjb3VudHJ5IElFIGhhcyBiZWVuIHJlY2lldmVkIGNoZWNrIGl0cyBydWxl
+IGZvciB0aGlzDQo+ICsgICAgICAgICpJZiBhIGNvdW50cnkgSUUgaGFzIGJlZW4gcmVjZWl2ZWQg
+Y2hlY2sgaXRzIHJ1bGUgZm9yIHRoaXMNCj4gICAgICAgICAgKmNoYW5uZWwgZmlyc3QgYmVmb3Jl
+IGVuYWJsaW5nIGFjdGl2ZSBzY2FuLiBUaGUgcGFzc2l2ZSBzY2FuDQo+ICAgICAgICAgICp3b3Vs
+ZCBoYXZlIGJlZW4gZW5mb3JjZWQgYnkgdGhlIGluaXRpYWwgcHJvY2Vzc2luZyBvZiBvdXINCj4g
+ICAgICAgICAgKmN1c3RvbSByZWd1bGF0b3J5IGRvbWFpbi4NCj4gLS0NCj4gMi4yNS4xDQoNCg==
 
