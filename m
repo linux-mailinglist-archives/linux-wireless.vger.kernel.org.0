@@ -1,88 +1,87 @@
-Return-Path: <linux-wireless+bounces-29709-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-29710-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 90733CB8A17
-	for <lists+linux-wireless@lfdr.de>; Fri, 12 Dec 2025 11:38:34 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 018F6CB8A50
+	for <lists+linux-wireless@lfdr.de>; Fri, 12 Dec 2025 11:49:13 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 02638300FB3A
-	for <lists+linux-wireless@lfdr.de>; Fri, 12 Dec 2025 10:38:34 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id B3C53305A13A
+	for <lists+linux-wireless@lfdr.de>; Fri, 12 Dec 2025 10:49:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 017EF315D46;
-	Fri, 12 Dec 2025 10:38:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3387E3191CE;
+	Fri, 12 Dec 2025 10:49:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="ZWBV45nA"
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="thRUkRx0"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-pj1-f46.google.com (mail-pj1-f46.google.com [209.85.216.46])
+Received: from mail-pg1-f175.google.com (mail-pg1-f175.google.com [209.85.215.175])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2BEBF3002DF
-	for <linux-wireless@vger.kernel.org>; Fri, 12 Dec 2025 10:38:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.46
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5261C2C21C9
+	for <linux-wireless@vger.kernel.org>; Fri, 12 Dec 2025 10:49:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.175
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765535912; cv=none; b=tGFwmlYVtIPhu4lkwTu0d1eIQCJ08QhfdkO7T47wBpTlbn7vxR02ucxdmFg4u3DLq3VCXD7xuEvEIYU6nuq+gpMrckjRSgiQS7JpI5nbDuuQ/LogN7irEAd2Pw5DQ5W7vsrgNwdOHwT5ocm0k0pmD2vB9TXjrA6iwOdCdRMhLuA=
+	t=1765536550; cv=none; b=qD8T1Fdopz/a2qyr1BLZa4eq/uPDbXT57uwouuCTkLh5niJtK5Pe8PjNtp7qOMUyh7kMh4oWyIyusnsK78AFScnrWYT0U66zS4cheG6yrkuD0YZy2BnRH07sBR2aZkmNs020pq3myrVi70f1oVUbjAINFz66K8/ZgpB4UUGQLq8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765535912; c=relaxed/simple;
-	bh=nctQCqtW4QYyeaejz8PEb38w/v2g7uc6tb41WntjKNI=;
+	s=arc-20240116; t=1765536550; c=relaxed/simple;
+	bh=av9hKN2hbVjrZk+A7S1PV353SLAqNrjc7QnZ5XIVFLo=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=IMcWALfm/s1SN+cgIuUO63eWE3Q+t8rHCvi15zjWeI15ltJib99TONld/3NhAQcIzrff18TZMLxFfAn5lz4og8fslFHf6MBrbeZP5yuXqMg9AWgVdF24SnB9IIUuBao+Z5daoXgfbG9XUx+fWZ7LrK9/HXuD7Ro3MmYfTLh30CI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=ZWBV45nA; arc=none smtp.client-ip=209.85.216.46
+	 To:Cc:Content-Type; b=Cf9d6QjchQ/EwTf4FT4C9JDHpS2sMXRTyH0uyMqEnfMSTm55dpgT87EeVo3/pVmXXqTlPHCvIN1qu1okPcGBcjwjskgrjEZmapcp9NaDlLtwagITuH60im/ppHj6SRqBPqWVcWPPQufN8NpPqKJyMI7ZLLmNjiabR0VU0BI6pso=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=thRUkRx0; arc=none smtp.client-ip=209.85.215.175
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
-Received: by mail-pj1-f46.google.com with SMTP id 98e67ed59e1d1-349bb6f9c86so1469716a91.0
-        for <linux-wireless@vger.kernel.org>; Fri, 12 Dec 2025 02:38:31 -0800 (PST)
+Received: by mail-pg1-f175.google.com with SMTP id 41be03b00d2f7-bfe88eeaa65so744887a12.1
+        for <linux-wireless@vger.kernel.org>; Fri, 12 Dec 2025 02:49:08 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1765535910; x=1766140710; darn=vger.kernel.org;
+        d=google.com; s=20230601; t=1765536548; x=1766141348; darn=vger.kernel.org;
         h=cc:to:subject:message-id:date:from:in-reply-to:references
          :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=nctQCqtW4QYyeaejz8PEb38w/v2g7uc6tb41WntjKNI=;
-        b=ZWBV45nAwslwXNgSHG024c/Oy1RmaBreP/JPthjPK6Jn3HbrFhY/wFxrZTcGlUl/y1
-         IS6CYLqUB1OtkjBoyRT7ra/01FbS2V1xFEGhQDGLun2iMirwgFf/D/bJ5Y3H6aKsjHJm
-         bxk7aQuwkLRdpQ+JQgvYpMrvbsNQSQ91mBr94ywIb5UfQAUGOo75ot/0ykpD1NCrivgb
-         Fsd/G8OtIM18F+PuPayPs4TkVif9WU0Mn5tXO6rLkdQ9bvpbkl+pVoGuSF9m8Z6obSID
-         +7sWGc4mEzKG3LIAhrR0ynh93NV6ssWdE3dJW6XZLRzv4RvHHFFoIPDwwHs5uHOaPCzu
-         Q9kg==
+        bh=SA48npp6esm0XDSNny8uE3VVilMK0KzCGLSxi6mYbKY=;
+        b=thRUkRx0uXjqWLwLYTxYGwAZyyoDS3T9uB/c4Lz5Qa3InFtQsgHEoLl52TEwSpTLlP
+         uRjzZVhgD0M/asCP3+KcbDWNG7KdhW3NC+KLHM+GW6wJnhpqVD4ggvKDkNMZXnjTX/HR
+         os9eyPjV4jWYDL5KB6YOGe614ciEIhrjEeI2xIpR4UihZuhvrYTjS8Wwu9mb8AFZXQ9v
+         t5GJNx8PYH4Dr6v9xIYzLZLYtzEJLpMdKOpeFbVQc7NzAQ1ep/a3bmczB3HrJqFBuA9r
+         Wz6B8HSizDzGuTzA56W8X40Zdw5ntj/g0B6LheZVQMfcAQVXjB3X3WrxRApQQrYax4Yn
+         FJww==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1765535910; x=1766140710;
+        d=1e100.net; s=20230601; t=1765536548; x=1766141348;
         h=cc:to:subject:message-id:date:from:in-reply-to:references
          :mime-version:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=nctQCqtW4QYyeaejz8PEb38w/v2g7uc6tb41WntjKNI=;
-        b=MlzycfKeWyZ0/WVmndloP9bLYNmIwK514hHbY7YGpp1RaDvF626chMsJjVkGAMREvn
-         3q/fWMcaci6h+LWscDQvpQP/CLyG31eIH65KFn/s+j672qwUyEwpVVofaaM+qWhUWTnY
-         tlgHrIg2EtQK3tKGm/19HPEnIXFh8u51c23tacRrekciPTieYOYlI7P1Wv4gCMMfHRNP
-         Xjsciy8v+fei8zFrf0BeJnM7tdyMJ9FqTW+AOI2/ZO+mJo0Lu2YfLYmAH/iPf8mpZkq2
-         +jL1DhJyMfI7zwwbq285LQ3VQa5pADoZSuKtNN865COzw0bZDxH/vFYQ5mjGcApgEgXP
-         rnlA==
-X-Forwarded-Encrypted: i=1; AJvYcCXdX5ZM7VM5mCIq5P8sLLUZ9ubjXFpLNRPSVDBHrV5rjggtUt/jLa7lrLtmd3WjWBTn9VwUogNh8z3Et8cW1g==@vger.kernel.org
-X-Gm-Message-State: AOJu0Yz7ZVyjlNVaUL2iJVbmr3L7N59zj3v8yW0AoHg+bhXKfVNJToXI
-	L5OG4YsOOcLV76CfNgMlbj2POS1MWoTSdNaqYXRMHWi9P8qR/BpOOHOKQ3GSSgLlZqPxNtba1yZ
-	JpNoTRSAIM7Z7YUqCblOKOzqWczXLOsu5bOHJ5Wen
-X-Gm-Gg: AY/fxX5OfgZQapDa9PvManmbUtlx+QxZx1HPLCPGuSKqjVUv0dgFojL3elTYGMMdSNX
-	NfTBxLPNtQSbW+DhwvKhbzI1Jt1h08JBr29cy+CVx8fwNrNgy83i4C9mzu4qVNFqetpMMG2ObJr
-	J23rCyrJw1kqYkI06LqOpae4fHJ5SAr5chtozYF1mdMYvb6hRwMxUoYyCYtqkpZMhIp6szFAwj0
-	HyllquDRXr7/p6DR87j13G8ADvv3JRiQWjBsQoPG/QWWxl6bJpxMQ+VdbT9JhAAW9DUSz0GnQiz
-	lY1+tznghHgIb+vz3LeIZWzgYFg=
-X-Google-Smtp-Source: AGHT+IHEQqbAgYefprbsSuiVLt7KDiCECxoW496oPYm+Bj8DbPCCV7ccSZXk9zoE7kqarbEHot35Mb+a9uphNkvnkwk=
-X-Received: by 2002:a05:701b:2719:b0:11d:c86c:652e with SMTP id
- a92af1059eb24-11f34ac540dmr1125346c88.5.1765535910093; Fri, 12 Dec 2025
- 02:38:30 -0800 (PST)
+        bh=SA48npp6esm0XDSNny8uE3VVilMK0KzCGLSxi6mYbKY=;
+        b=kt8Ln2Zfq2nkXEhq7NVd2QSyibKYAi6iLxGlR6sYa+4L4cmVFjmAhV725MoJE1aPzx
+         JboVlDeQxfzgox2PGE8ga6H/fOD7VS1EgplwQesqLtsdItQObCQnHyOhMIGq46s6hBVW
+         18zeguD9U85u/Wr4peOxm8qgbPGnn317mkVN9wVRajE/DJpJDEcjmztUXyuWOdgrE54K
+         uedY9CSaiScTMQ2b7cmFXTM4GoKjKNjJ4l/6u78ayJlgGHeLPsIisFDFF86u+nKBW/Nd
+         AcriMnpsLJ7iKkGMpeY0RMQemiJRikBplRPx9zsvrjSYj4mxWUFEUX5AOT6/xxZom002
+         cNgA==
+X-Forwarded-Encrypted: i=1; AJvYcCUVAN4yTd+FWZCHTl6zQlFqtTMmqR8hg8XoBGdAtClIUUmdLyGJquqUjGLbXoi/WtilL/Tbw4DaFurR9Qxv/w==@vger.kernel.org
+X-Gm-Message-State: AOJu0YwdY6bWZ5ks/kKIfp8LkQifuDkOvZ7LEBrEZBKnnAQj14pp8rxK
+	ucf8KlUrbwS8qqpWOovqtceHtVZ08lecHkW7AubI1rXr9bQyX4CYTWyzkV0/zKCxBdnE7tHlIfs
+	2Jjm/2+3aa1v7RjPdFv2xZLKHo4+vhpAnPNbs7WEs
+X-Gm-Gg: AY/fxX67cyKgD7GQj8l1yvnSz7UHlhEjQTxxeFYmRpBZX3LpM0FziM55TZNni0w/XP9
+	4el0k/ebyGnjH14khAlEFcFoTkei5tILkPm4w0Bol7qSYc3wQmaoAX6hE8qt1lcf2G7/7TrZ/PJ
+	6UhcjADhr2UU3kqB8XzcmPMV6i/6r5jaxw99oZTULUfgPfFlJoTT2ZaX+EM6kn+Tk+S+yGUJivh
+	BT7X1GI00RY9iA1CjNPMFGJ9g7kzIkXionQdLYXj4Hr3mYHcJKiv4CrOPd7kCle3Qbh6xfongmq
+	MqUQLwVb4vEUK3PgRzYUuifH9vA=
+X-Google-Smtp-Source: AGHT+IEmwt/cYGSRMcLEQwRoz4IOBPZmG6ZdFUXvSQgttHHtD3I/ZoiZY45lTyY+63ShMc7m2jk9oXMIHs1yDaFc4yU=
+X-Received: by 2002:a05:7301:6781:b0:2ac:2e93:29bf with SMTP id
+ 5a478bee46e88-2ac300f946dmr1219192eec.22.1765536547134; Fri, 12 Dec 2025
+ 02:49:07 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20251120145835.3833031-2-elver@google.com> <20251120145835.3833031-4-elver@google.com>
- <20251211120441.GG3911114@noisy.programming.kicks-ass.net>
- <CANpmjNOyDW7-G5Op5nw722ecPEv=Ys5TPbJnVBB1_WGiM2LeWQ@mail.gmail.com> <20251212093149.GJ3911114@noisy.programming.kicks-ass.net>
-In-Reply-To: <20251212093149.GJ3911114@noisy.programming.kicks-ass.net>
+References: <20251120145835.3833031-2-elver@google.com> <20251120151033.3840508-7-elver@google.com>
+ <20251120151033.3840508-8-elver@google.com> <20251211114302.GC3911114@noisy.programming.kicks-ass.net>
+ <CANpmjNObaGarY1_niCkgEXMNm2bLAVwKwQsLVYekE=Ce6y3ehQ@mail.gmail.com> <20251212095943.GM3911114@noisy.programming.kicks-ass.net>
+In-Reply-To: <20251212095943.GM3911114@noisy.programming.kicks-ass.net>
 From: Marco Elver <elver@google.com>
-Date: Fri, 12 Dec 2025 11:37:51 +0100
-X-Gm-Features: AQt7F2qnWyV-H6zf6AeMnZTuFb_nb7UwLLraoghpFqSJ0q6RecRlENqaq0woPuo
-Message-ID: <CANpmjNPcw5AnpLpaFvyRee7mH12Ym-NKTx331xXEusK5zpiscA@mail.gmail.com>
-Subject: Re: [PATCH v4 02/35] compiler-context-analysis: Add infrastructure
- for Context Analysis with Clang
+Date: Fri, 12 Dec 2025 11:48:29 +0100
+X-Gm-Features: AQt7F2qCLUKQusRsTOkfVyHaXl__KgFtQ_SoVZmDpwKuRXcKmzXhASdee3aZVrU
+Message-ID: <CANpmjNMY55ytuWPh15O-tTe5zEQx3AN6LqrvB9NJ6dm6BsPnsA@mail.gmail.com>
+Subject: Re: [PATCH v4 07/35] lockdep: Annotate lockdep assertions for context analysis
 To: Peter Zijlstra <peterz@infradead.org>
 Cc: Boqun Feng <boqun.feng@gmail.com>, Ingo Molnar <mingo@kernel.org>, 
 	Will Deacon <will@kernel.org>, "David S. Miller" <davem@davemloft.net>, 
@@ -109,35 +108,45 @@ Cc: Boqun Feng <boqun.feng@gmail.com>, Ingo Molnar <mingo@kernel.org>,
 	linux-wireless@vger.kernel.org, llvm@lists.linux.dev, rcu@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
 
-On Fri, 12 Dec 2025 at 10:32, Peter Zijlstra <peterz@infradead.org> wrote:
-> On Thu, Dec 11, 2025 at 02:12:19PM +0100, Marco Elver wrote:
+On Fri, 12 Dec 2025 at 10:59, Peter Zijlstra <peterz@infradead.org> wrote:
 >
-> > What's a better name?
+> On Thu, Dec 11, 2025 at 02:24:57PM +0100, Marco Elver wrote:
 >
-> That must be the hardest question in programming; screw this P-vs-NP
-> debate :-)
->
-> > context_lock_struct -> and call it "context lock" rather than "context
-> > guard"; it might work also for things like RCU, PREEMPT, BH, etc. that
-> > aren't normal "locks", but could claim they are "context locks".
+> > > It is *NOT* (as the clang naming suggests) an assertion of holding the
+> > > lock (which is requires_ctx), but rather an annotation that forces the
+> > > ctx to be considered held.
 > >
-> > context_handle_struct -> "context handle" ...
+> > Noted. I'll add some appropriate wording above the
+> > __assumes_ctx_guard() attribute, so this is not lost in the commit
+> > logs.
 >
-> Both work for me I suppose, although I think I have a slight preference
-> to the former: 'context_lock_struct'.
+> On IRC you stated:
 >
-> One other possibility is wrapping things like so:
+> <melver> peterz: 'assume' just forces the compiler to think something is
+>   held, whether or not it is then becomes the programmer's problem. we
+>   need it in 2 places at least: for the runtime assertions (to help
+>   patterns beyond the compiler's static reasoning abilities), and for
+>   initialization (so we can access guarded variables right after
+>   initialization; nobody should hold the lock yet)
 >
-> #define define_context_struct(name) ... // the big thing
+> I'm really not much a fan of that init hack either ;-)
 >
-> #define define_lock_struct(name) define_context_struct(name)
+> Once we get the scope crap working sanely, I would much rather we move
+> to something like:
+>
+>         scoped_guard (spinlock_init, &foo->lock) {
+>                 // init foo fields
+>         }
+>
+> or perhaps:
+>
+>         guard(mutex_init)(&bar->lock);
+>         // init until end of current scope
+>
+> Where this latter form is very similar to the current semantics where
+> mutex_init() will implicitly 'leak' the holding of the lock. But the
+> former gives more control where we need it.
 
-Note that 'context_lock_struct' (assuming that's the new name) can be
-used to just forward declare structs, too, so 'define' in the name is
-probably incorrect. And to avoid more levels of indirection I'd just
-stick with one name; if 'context_lock_struct' isn't too offensive to
-anyone, that'd be the name for the next version.
-
-Thanks,
--- Marco
+I like it. It would also more clearly denote where initialization
+start+ends if not confined to a dedicated function.
 
