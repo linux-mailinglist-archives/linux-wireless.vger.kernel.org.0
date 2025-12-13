@@ -1,121 +1,111 @@
-Return-Path: <linux-wireless+bounces-29721-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-29722-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1AE78CB9FAA
-	for <lists+linux-wireless@lfdr.de>; Fri, 12 Dec 2025 23:45:01 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 69E3BCBA360
+	for <lists+linux-wireless@lfdr.de>; Sat, 13 Dec 2025 03:35:49 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id D6AA53009C3D
-	for <lists+linux-wireless@lfdr.de>; Fri, 12 Dec 2025 22:44:59 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id ED3F53028FEA
+	for <lists+linux-wireless@lfdr.de>; Sat, 13 Dec 2025 02:35:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A7B412DCF70;
-	Fri, 12 Dec 2025 22:44:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0440A2E0405;
+	Sat, 13 Dec 2025 02:35:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=dujemihanovic.xyz header.i=@dujemihanovic.xyz header.b="WbJJCdHM"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="XuoChyv5"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mx.olsak.net (mx.olsak.net [37.205.8.231])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CAA0B2874FB;
-	Fri, 12 Dec 2025 22:44:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=37.205.8.231
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AFDF22DEA98;
+	Sat, 13 Dec 2025 02:35:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765579498; cv=none; b=RDVGJuvtwWnB50OLfFa2KgXmtmZzNE1VYmYsWlf+v9QZxA1rVHykk1kGhZ3YvSPe+nBx2m+wEcboRfVuEpGzckw1SwaP7SXvCHEL4rs1IdLFCikqaYJtcSYl8y9p6fjHqi9gqDEW+nH2fDL8BwWXElt95SCxKk3O3wwtldtVXiQ=
+	t=1765593346; cv=none; b=CoXxvvg6MWKgMfheo0sf6LjofnSyU7pHgrOIRBkSR8G5UcHkfI29IXplUh2o3nm0rhZZtfIVQN4m3KYBUdJ1IdK0Kr3aD0rrKHVbrdYut9/LbS9U2KEm32AEemqPOhgESB4kB8llRghdV1W/LQ+bN9Uq9Ly6mYXqf2Yfrr5EQ70=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765579498; c=relaxed/simple;
-	bh=OIyVM6E2jjnCI4e64mE50nhFMC8YY4mZA0yBwdNNHOc=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=FNnpXr6mOyRy6EOC5TvCaDtN7ChnXzwhVyPyaWsJTp+LBlGUlMQTyWWLljboXaialN8HqKUbv733XsMcwI+vO9ofcwSUXksgqJztnydlC+Qwuj+JCjXasffYA0mEErq/pg+faHezixUTNfzk97c0roFdWDD33xnDGBs54Pnevsw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=dujemihanovic.xyz; spf=pass smtp.mailfrom=dujemihanovic.xyz; dkim=pass (2048-bit key) header.d=dujemihanovic.xyz header.i=@dujemihanovic.xyz header.b=WbJJCdHM; arc=none smtp.client-ip=37.205.8.231
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=dujemihanovic.xyz
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=dujemihanovic.xyz
-DKIM-Signature: a=rsa-sha256; bh=OIyVM6E2jjnCI4e64mE50nhFMC8YY4mZA0yBwdNNHOc=;
- c=relaxed/relaxed; d=dujemihanovic.xyz;
- h=Subject:Subject:Sender:To:To:Cc:Cc:From:From:Date:Date:MIME-Version:MIME-Version:Content-Type:Content-Type:Content-Transfer-Encoding:Content-Transfer-Encoding:Reply-To:In-Reply-To:In-Reply-To:Message-Id:Message-Id:References:References:Autocrypt:Autocrypt:Openpgp;
- i=@dujemihanovic.xyz; s=default; t=1765579474; v=1; x=1766011474;
- b=WbJJCdHMhCtEBqknfMmY9TjyDu897IeEWZqEGa/stAH3HmI5/tfv0itmwSExzYNagE4GNg1U
- ZxUlNxN9Yii8R2LnBm0frkGyj/FOJNLlapSmBlLlvOuFJgq7U+iioQ+xYJIZ6hsm//6m2fJLI3T
- 0Am7Kwixs/rDWXPgM6pOSqBBsGWcTqSv2f4AcYIwOztzuPJ/D6ccc0BCci05j2bHyWRshz1wGQY
- NaWUVl4mYnzjUmWzSF0eUgPXoHu6we5QxAcAO6B+TZcsFTnx+d+aLkp9DS3ntJEwntr3tGrxfMY
- mQ1l8nPzPkVlFs81ZzO7cizmtHGPueIKENEIJMi8929Rg==
-Received: by mx.olsak.net (envelope-sender <duje@dujemihanovic.xyz>) with
- ESMTPS id 8bfa23d1; Fri, 12 Dec 2025 23:44:34 +0100
-From: Duje =?UTF-8?B?TWloYW5vdmnEhw==?= <duje@dujemihanovic.xyz>
-To: Brian Norris <briannorris@chromium.org>, Karel Balej <balejk@matfyz.cz>
-Cc: Johannes Berg <johannes@sipsolutions.net>, Rob Herring <robh@kernel.org>,
- Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>,
- Andrew Lunn <andrew@lunn.ch>, Gregory Clement <gregory.clement@bootlin.com>,
- Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>,
- Francesco Dolcini <francesco@dolcini.it>,
- Ulf Hansson <ulf.hansson@linaro.org>, Frank Li <Frank.Li@nxp.com>,
- linux-wireless@vger.kernel.org, devicetree@vger.kernel.org,
- linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
- linux-mmc@vger.kernel.org, ~postmarketos/upstreaming@lists.sr.ht,
- phone-devel@vger.kernel.org, Jeff Chen <jeff.chen_1@nxp.com>,
- Peng Fan <peng.fan@nxp.com>
-Subject:
- Re: [DONOTAPPLY RFC PATCH v2 4/4] arm64: dts: samsung,coreprimevelte: add
- wifi node
-Date: Fri, 12 Dec 2025 23:44:33 +0100
-Message-ID: <5962754.DvuYhMxLoT@radijator>
-In-Reply-To: <DEWJTWZ6Q51B.13HQYMDJZRFWA@matfyz.cz>
-References:
- <20251026182602.26464-1-balejk@matfyz.cz>
- <b92172f3-10f4-470f-b90a-121ff7fea988@dujemihanovic.xyz>
- <DEWJTWZ6Q51B.13HQYMDJZRFWA@matfyz.cz>
+	s=arc-20240116; t=1765593346; c=relaxed/simple;
+	bh=hR43q9+HkHjR+LZRB0QtBbOiMrh52IpHxBRNvie6MiA=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=M0MmhZmMLhaI73JGXcAvZkb3MkX5c/A0gl37lB5v8jDt4SPH36o/B9tZw+B9XX34ktId/Ab5YSEcgqqoe9lErDaOW7Y+FTmdVKrJRT4NzDi9Dmpi++gSMvf0FhZJd7k6HacOxHIkx/e393+cl1EAFRXHF0OZxBEGgGXkyhaH1JI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=XuoChyv5; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 99793C4CEF1;
+	Sat, 13 Dec 2025 02:35:45 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1765593345;
+	bh=hR43q9+HkHjR+LZRB0QtBbOiMrh52IpHxBRNvie6MiA=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=XuoChyv5ovIuvuFd9n6ukkQbS7RE0sPBst+U2nDFzXoydZhTieSP2kiPs153KYdmp
+	 NCh/YJTSz9ikyn7AkXisXZ4Q9pAwETFum/3agIiHl2c8frW2987jeYnwrR/suroCwe
+	 hOueackFgCc26Alz8KsMv8WrBb2SHex5QAvlE/IwH0uSNGv6RzeDxGdPnCe+DLcXRW
+	 agrwtptNt9BQf+gwcICNmUJ5PIjRy5Kmrbzfo+o13A5Pf0CtpT0tX8RLGlu15ZZRWw
+	 9E0lqQrtEP2kOMA/pDUdX63KFebZbAwqZL+Q6eGH/FF9rmiWVrVLmRWha/Qzh/OKxU
+	 hvsGiaEChn0ww==
+Date: Fri, 12 Dec 2025 18:35:39 -0800
+From: Eric Biggers <ebiggers@kernel.org>
+To: Mikhail Gavrilov <mikhail.v.gavrilov@gmail.com>
+Cc: Mario Limonciello <superm1@kernel.org>, Felix Fietkau <nbd@nbd.name>,
+	Lorenzo Bianconi <lorenzo@kernel.org>,
+	linux-wireless@vger.kernel.org, linux-mediatek@lists.infradead.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v2] wifi: mt76: Fix strscpy buffer overflow in
+ mt76_connac2_load_patch
+Message-ID: <20251213023539.GC71695@sol>
+References: <CABXGCsMeAZyNJ-Axt_CUCXgyieWPV3rrcLpWsveMPT8R0YPGnQ@mail.gmail.com>
+ <20251205161202.48409-1-mikhail.v.gavrilov@gmail.com>
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Autocrypt: addr=duje@dujemihanovic.xyz;
- keydata=
- mDMEZokhzhYJKwYBBAHaRw8BAQdAWJZ0hsI/ytTqHGFV8x6tzd5sB596cTeeDB4CQsTf+wC0KUR
- 1amUgTWloYW5vdmnEhyA8ZHVqZS5taWhhbm92aWNAc2tvbGUuaHI+iJkEMBYKAEEWIQRt/0HWDf
- MUtbdrpjCtMZNSRY+tAwUCaJ5XkSMdIEFkZHJlc3MgYm91bmNlcyBhcyBvZiB+MzEvMDgvMjAyN
- QAKCRCtMZNSRY+tA/N/AQDth3Xl3wNcETvWPqqfYfyw4BFqbOD05A/W0/G0ZIjFzgD+PZVts3sN
- p5WuEwIxUrWxwavWJQBJwhXeWdru5ol82gmImQQTFgoAQRYhBG3/QdYN8xS1t2umMK0xk1JFj60
- DBQJmiSH/AhsDBQkJZgGABQsJCAcCAiICBhUKCQgLAgQWAgMBAh4HAheAAAoJEK0xk1JFj60Dlw
- 8A/i4lPOL7NaYoYePDql8MaJaR9qoUi+D+HtD3t0Koi7ztAQCdizXbuqP3AVNxy5Gpb1ozgp9Xq
- h2MRcNmJCHA1YhWAbQoRHVqZSBNaWhhbm92acSHIDxkdWplQGR1amVtaWhhbm92aWMueHl6PoiZ
- BBMWCgBBFiEEbf9B1g3zFLW3a6YwrTGTUkWPrQMFAmaJIc4CGwMFCQlmAYAFCwkIBwICIgIGFQo
- JCAsCBBYCAwECHgcCF4AACgkQrTGTUkWPrQPUYAEAlVKitl0w6Wun+hC0JIf8bnc0TnrH8kcDxV
- f5lAF38fcA/j8RxR/p558NTFUyHZt2Sa5AqxVkaA4aJekySytWe1YGuDgEZokhzhIKKwYBBAGXV
- QEFAQEHQMRz0l4Dnk6Vl9YqC+ZGDDpr8SkFDyYOXqdBMGad3VccAwEIB4h+BBgWCgAmFiEEbf9B
- 1g3zFLW3a6YwrTGTUkWPrQMFAmaJIc4CGwwFCQlmAYAACgkQrTGTUkWPrQMbkwD+K6jiXYYMRnV
- l/5dpL//wXB1cM72ceR9tXYweMXg1lfABAOugzMF0xypW9zwYAEWVNOAaPsqtEPPYfBY3IXxl6m
- sB
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset="utf-8"
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20251205161202.48409-1-mikhail.v.gavrilov@gmail.com>
 
-On Friday, 12 December 2025 22:17:12 Central European Standard Time Karel=20
-Balej wrote:
-> Duje Mihanovi=C4=87, 2025-12-12T15:55:48+01:00:
-> > On 12/12/25 09:36, Karel Balej wrote:
-> >> Not having any board schematics, I don't really know what exactly the
-> >> regulator's purpose is. As I mentioned in the commit message, the
-> >> communication with the chipset seems to work even if this is disabled
-> >> (e. g. FW loads, networks can be scanned for,...) which doesn't seem
-> >> like it should be the case if this was a main power supply for the bus,
-> >> only actual connecting to networks doesn't work (gives
-> >> CONNECT_ERR_ASSOC_ERR_TIMEOUT errors).
-> >=20
-> > To me, this strongly suggests that the regulator powers the WiFi
-> > transmitter or at least a part of it (such as the RF amp).
->=20
-> Something like this occurred to me too but would the chip even see the
-> networks if this was the case? Although you are right that it could only
-> power some specific part of the radio.
+On Fri, Dec 05, 2025 at 09:12:02PM +0500, Mikhail Gavrilov wrote:
+> Commit f804a5895eba ("wifi: mt76: Strip whitespace from build ddate") introduced
+> a kernel panic/WARN on systems using MediaTek MT7921e (and potentially others
+> using mt76_connac_lib) due to an incorrect buffer size calculation.
+> 
+> The error logged is:
+> "strnlen: detected buffer overflow: 17 byte read of buffer size 16"
+> 
+> This occurs because the field 'hdr->build_date' is a fixed-size array of 16 bytes.
+> The patch allocated a 17-byte local buffer 'build_date' but used 'sizeof(build_date)'
+> (17) as the read limit for strscpy, causing Fortify Source to correctly detect
+> an attempt to read 17 bytes from the 16-byte source field.
+> 
+> To fix this, replace strscpy with memcpy, which is appropriate for raw data
+> copying, and explicitly use the size of the source field (sizeof(hdr->build_date) = 16)
+> to limit the read, followed by manual null termination.
+> 
+> Fixes: f804a5895eba ("wifi: mt76: Strip whitespace from build ddate")
+> Signed-off-by: Mikhail Gavrilov <mikhail.v.gavrilov@gmail.com>
+> ---
+>  drivers/net/wireless/mediatek/mt76/mt76_connac_mcu.c | 7 +++++--
+>  1 file changed, 5 insertions(+), 2 deletions(-)
+> 
+> diff --git a/drivers/net/wireless/mediatek/mt76/mt76_connac_mcu.c b/drivers/net/wireless/mediatek/mt76/mt76_connac_mcu.c
+> index ea99167765b0..d2c4c65ec464 100644
+> --- a/drivers/net/wireless/mediatek/mt76/mt76_connac_mcu.c
+> +++ b/drivers/net/wireless/mediatek/mt76/mt76_connac_mcu.c
+> @@ -3125,8 +3125,11 @@ int mt76_connac2_load_patch(struct mt76_dev *dev, const char *fw_name)
+>  	}
+>  
+>  	hdr = (const void *)fw->data;
+> -	strscpy(build_date, hdr->build_date, sizeof(build_date));
+> -	build_date[16] = '\0';
+> +	/* hdr->build_date is 16 bytes. Copy exactly 16 bytes to the 17-byte buffer,
+> +	 * and then add the null terminator at index 16.
+> +	 */
+> +	memcpy(build_date, hdr->build_date, sizeof(hdr->build_date));
+> +	build_date[sizeof(hdr->build_date)] = '\0';
+>  	strim(build_date);
+>  	dev_info(dev->dev, "HW/SW Version: 0x%x, Build Time: %.16s\n",
+>  		 be32_to_cpu(hdr->hw_sw_ver), build_date);
 
-AFAIK you don't need the transmitter to capture and parse beacon frames. Of=
-=20
-course, connecting to networks is a completely different story.
+Tested-by: Eric Biggers <ebiggers@kernel.org>
 
-Regards,
-=2D-
-Duje
+Can this be sent upstream soon?
 
-
-
+- Eric
 
