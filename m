@@ -1,105 +1,109 @@
-Return-Path: <linux-wireless+bounces-29733-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-29734-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 30DE4CBB928
-	for <lists+linux-wireless@lfdr.de>; Sun, 14 Dec 2025 10:56:00 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9FC32CBB937
+	for <lists+linux-wireless@lfdr.de>; Sun, 14 Dec 2025 11:14:14 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 323FA300797A
-	for <lists+linux-wireless@lfdr.de>; Sun, 14 Dec 2025 09:55:58 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id BEF263007942
+	for <lists+linux-wireless@lfdr.de>; Sun, 14 Dec 2025 10:14:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AA9BF3B8D7D;
-	Sun, 14 Dec 2025 09:55:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 367AD295DA6;
+	Sun, 14 Dec 2025 10:14:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Sy/FOe8i"
+	dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b="P1Kx3/iD"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from m16.mail.163.com (m16.mail.163.com [117.135.210.2])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 862521B81CA
-	for <linux-wireless@vger.kernel.org>; Sun, 14 Dec 2025 09:55:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 145C6287505;
+	Sun, 14 Dec 2025 10:14:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=117.135.210.2
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765706157; cv=none; b=bqorEUg+QYuNKFvzw+lADeQj854szP+IB8al8LHLydazJeI7uFR6yyQL1yc++gqmlsMX2RiTUbq6fDvhMIh4XneHaVg+G+S14+C8ZggDlYocndKeNJOOURjiXMglAxElW4DVyhbgV19F4zGlLc5Q9ox+Booh93cdTnE7nirRM5A=
+	t=1765707249; cv=none; b=lLs6pdRYZZvZ+7sXWXHMdOAAwsJDq/Qob9/M6bUq7okJku5o2zL0OGm3YpPhb/F3kC0eA3vSo+tgXGylo/GVFvYWhfjU0MEiZsk9qp+mIQ2e9CckPQ6vPQ0gB2Bc0cQY1Gqo1HMQm1s3UKCZFEX/TxBr6B7SYcXaOx65rpdZJag=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765706157; c=relaxed/simple;
-	bh=RJIBcQRuLuoNlPhpOTksAxpYrDzA6I7s1hgACVIci7g=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=ggLNCbXVCma4POCte1SQ2R8AgyBTpmJWhxAK8YimQTTg/zpElrKfn2KHadrzyz4KFxIeQSAe68FrYPURhN8GMiwqLngpC3PsCqMOj1TmRM/Yl0ut07rIFFB6pDpACqZTau/VlsECjmCzRhxJ4FxNp0ESr5x9jk0ygJWjmlvi2F8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Sy/FOe8i; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9B732C4CEF1;
-	Sun, 14 Dec 2025 09:55:56 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1765706157;
-	bh=RJIBcQRuLuoNlPhpOTksAxpYrDzA6I7s1hgACVIci7g=;
-	h=From:Date:Subject:To:Cc:From;
-	b=Sy/FOe8iVA6Dzvy1X8G+7jrlk/OkGh8QXuXRFwpM0A/d/XwVRQN4nRO2duwyZgI50
-	 USqGlPOQ2Y5ApW+3/sE02QUXs/irJDr99nHe9EsJAbcVUPCwA1ITNy1Xh6dt0/I0CS
-	 BOoPo5xb0V4c73Ti2QeVYrGgqFDi2k1EOOYcpehJ843VNWJFsjmh0CL1wu8PqXl3dU
-	 RuuVA5pPKjnCj+kYcwC7iHabc9lhVI0KvSNfF2nwOFsxLA9vn9nOUnnSf0k3d7FO/K
-	 pEqrwKr7l/C51W2GluJIuuNnJ4GI8OU/DUJ2KCgtPpwxBYnmcMTlqvYowCwLF5/ofI
-	 pp9+kmoMy5JmA==
-From: Lorenzo Bianconi <lorenzo@kernel.org>
-Date: Sun, 14 Dec 2025 10:55:30 +0100
-Subject: [PATCH mt76] wifi: mt76: mt7996: Reset ampdu_state state in case
- of failure in mt7996_tx_check_aggr()
+	s=arc-20240116; t=1765707249; c=relaxed/simple;
+	bh=XlSU56szVhQgrcQeRl+5gH1+exER6ztV8KCHTdNmhOA=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=RsRS5v51xpeFsLFkpXAEylcSZOFhtPBWLnW73pQbQ73QKSkmY3LtZRDsw2EpbAbkFzqc9YqufAcWUBOxlgTJHT1vQSyIP/qM/eVHgCS6DM8yjEdRo/8TElnpQmjiaKkfcKuur0EgKrSci35z6lfTnhXAgw60QPpqrc3inXiYxgE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com; spf=pass smtp.mailfrom=163.com; dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b=P1Kx3/iD; arc=none smtp.client-ip=117.135.210.2
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=163.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
+	s=s110527; h=From:To:Subject:Date:Message-ID:MIME-Version; bh=kb
+	i/ttDQOId+XDKOmaeNna6XQhSMKUgACh/eiMz2aTA=; b=P1Kx3/iDO+ByQIDRyz
+	i2+d6lXZO6uhWVSKVV+BwZBPv+naPOjJ38Pmv5870gMdQeUUvXIUi4XZiDYtoiTR
+	vP5G6F2yPsKS6eRFQxb8N+koUj5odZciXPFGoPQaEPMXvywGojB7Beh6267Updks
+	bb0tIiwc3+YT3cIgXCVJoGmg8=
+Received: from localhost.localdomain (unknown [])
+	by gzga-smtp-mtada-g1-2 (Coremail) with SMTP id _____wAXpgapjT5p7CRRAQ--.14065S4;
+	Sun, 14 Dec 2025 18:13:13 +0800 (CST)
+From: David Wang <00107082@163.com>
+To: ziyao@disroot.org,
+	thostet@google.com
+Cc: daniel.gabay@intel.com,
+	jeffbai@aosc.io,
+	johannes.berg@intel.com,
+	kexybiscuit@aosc.io,
+	linux-kernel@vger.kernel.org,
+	linux-wireless@vger.kernel.org,
+	miriam.rachel.korenblit@intel.com,
+	nathan@kernel.org,
+	netdev@vger.kernel.org,
+	pagadala.yesu.anjaneyulu@intel.com,
+	richardcochran@gmail.com
+Subject: Re: [PATCH iwlwifi-fixes] wifi: iwlwifi: Implement settime64 as stub for MVM/MLD PTP
+Date: Sun, 14 Dec 2025 18:12:57 +0800
+Message-ID: <20251214101257.4190-1-00107082@163.com>
+X-Mailer: git-send-email 2.47.3
+In-Reply-To: <20251204123204.9316-1-ziyao@disroot.org>
+References: <20251204123204.9316-1-ziyao@disroot.org>
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20251214-mt7996-aggr-check-fix-v1-1-33a8b62ec0fc@kernel.org>
-X-B4-Tracking: v=1; b=H4sIAAAAAAAC/x2M0QpAMBRAf0X32S2bMfMr8sBcc5PRJin5d8vjO
- XXOA5ECU4Q2eyDQxZF3n0DkGdhl8I6Qp8QgC1kJKRRupzamxsG5gHYhu+LMNzalNnWpZjNWClJ
- 7BEr6/3b9+36Ms0i6ZwAAAA==
-X-Change-ID: 20251214-mt7996-aggr-check-fix-8379634f9b54
-To: Felix Fietkau <nbd@nbd.name>, Ryder Lee <ryder.lee@mediatek.com>, 
- Shayne Chen <shayne.chen@mediatek.com>, Sean Wang <sean.wang@mediatek.com>, 
- Matthias Brugger <matthias.bgg@gmail.com>, 
- AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>, 
- StanleyYP Wang <StanleyYP.Wang@mediatek.com>, 
- Peter Chiu <chui-hao.chiu@mediatek.com>, 
- Money Wang <Money.Wang@mediatek.com>, 
- MeiChia Chiu <meichia.chiu@mediatek.com>
-Cc: Howard Hsu <howard-yh.hsu@mediatek.com>, Bo Jiao <Bo.Jiao@mediatek.com>, 
- linux-wireless@vger.kernel.org, linux-arm-kernel@lists.infradead.org, 
- linux-mediatek@lists.infradead.org, Lorenzo Bianconi <lorenzo@kernel.org>
-X-Mailer: b4 0.14.2
+Content-Transfer-Encoding: 8bit
+X-CM-TRANSID:_____wAXpgapjT5p7CRRAQ--.14065S4
+X-Coremail-Antispam: 1Uf129KBjvJXoW7WFy7uw18CrW3Zr1xAr18Zrb_yoW8XFyxpa
+	yfGwn8Ar40qFWruFsrta17uas5Gwn3GF42vr1xJwn8Z3WUuFZFga10yrWakasrGws5Aw13
+	XrnF9a1jva1qyw7anT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x0zRoKZZUUUUU=
+X-CM-SenderInfo: qqqrilqqysqiywtou0bp/xtbC7ht7Jmk+jbtW9QAA3q
 
-Reset the ampdu_state configured state if ieee80211_start_tx_ba_session
-routine fails in mt7996_tx_check_aggr()
+On Thu, Dec 04, 2025 at 12:32:04PM +0000, Yao Zi wrote:
+> Since commit dfb073d32cac ("ptp: Return -EINVAL on ptp_clock_register if
+> required ops are NULL"), PTP clock registered through ptp_clock_register
+> is required to have ptp_clock_info.settime64 set, however, neither MVM
+> nor MLD's PTP clock implementation sets it, resulting in warnings when
+> the interface starts up, like
+> 
+> WARNING: drivers/ptp/ptp_clock.c:325 at ptp_clock_register+0x2c8/0x6b8, CPU#1: wpa_supplicant/469
+> CPU: 1 UID: 0 PID: 469 Comm: wpa_supplicant Not tainted 6.18.0+ #101 PREEMPT(full)
+> ra: ffff800002732cd4 iwl_mvm_ptp_init+0x114/0x188 [iwlmvm]
+> ERA: 9000000002fdc468 ptp_clock_register+0x2c8/0x6b8
+> iwlwifi 0000:01:00.0: Failed to register PHC clock (-22)
+> 
+> I don't find an appropriate firmware interface to implement settime64()
+> for iwlwifi MLD/MVM, thus instead create a stub that returns
+> -EOPTNOTSUPP only, suppressing the warning and allowing the PTP clock to
+> be registered.
 
-Fixes: 98686cd21624c ("wifi: mt76: mt7996: add driver for MediaTek Wi-Fi 7 (802.11be) devices")
-Signed-off-by: Lorenzo Bianconi <lorenzo@kernel.org>
----
- drivers/net/wireless/mediatek/mt76/mt7996/mac.c | 5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
+This seems disturbing....If a null settime64 deserve a kernel WARN dump, so should
+a settime64 which returns error.
 
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7996/mac.c b/drivers/net/wireless/mediatek/mt76/mt7996/mac.c
-index 2560e2f46e89a4bc46e21d796fca80b7decefa5c..b265a96c3e925233d1c410a26315efe56bde73b1 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7996/mac.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7996/mac.c
-@@ -1269,8 +1269,9 @@ mt7996_tx_check_aggr(struct ieee80211_link_sta *link_sta,
- 	if (unlikely(fc != (IEEE80211_FTYPE_DATA | IEEE80211_STYPE_QOS_DATA)))
- 		return;
- 
--	if (!test_and_set_bit(tid, &wcid->ampdu_state))
--		ieee80211_start_tx_ba_session(link_sta->sta, tid, 0);
-+	if (!test_and_set_bit(tid, &wcid->ampdu_state) &&
-+	    ieee80211_start_tx_ba_session(link_sta->sta, tid, 0))
-+		clear_bit(tid, &wcid->ampdu_state);
- }
- 
- static void
+Before fixing the warning, the expected behavior of settime64 should be specified clearly,
+hence why the dfb073d32cac ("ptp: Return -EINVAL on ptp_clock_register if required ops are NULL")?
 
----
-base-commit: 53d1548612670aa8b5d89745116cc33d9d172863
-change-id: 20251214-mt7996-aggr-check-fix-8379634f9b54
 
-Best regards,
--- 
-Lorenzo Bianconi <lorenzo@kernel.org>
+
+David
+
+> 
+> Reported-by: Nathan Chancellor <nathan@kernel.org>
+> Closes: https://lore.kernel.org/all/20251108044822.GA3262936@ax162/
+> Signed-off-by: Yao Zi <ziyao@disroot.org>
+> ---
 
 
