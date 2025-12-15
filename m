@@ -1,145 +1,166 @@
-Return-Path: <linux-wireless+bounces-29739-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-29740-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0E326CBC6FC
-	for <lists+linux-wireless@lfdr.de>; Mon, 15 Dec 2025 05:03:08 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9DB01CBC738
+	for <lists+linux-wireless@lfdr.de>; Mon, 15 Dec 2025 05:10:02 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 96183301C0AF
-	for <lists+linux-wireless@lfdr.de>; Mon, 15 Dec 2025 04:02:06 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id E47D5302AF88
+	for <lists+linux-wireless@lfdr.de>; Mon, 15 Dec 2025 04:03:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1B9E731ED78;
-	Mon, 15 Dec 2025 03:51:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=ziyao.cc header.i=@ziyao.cc header.b="SpArnzPt"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2C4C22D8371;
+	Mon, 15 Dec 2025 04:03:42 +0000 (UTC)
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail66.out.titan.email (mail66.out.titan.email [3.216.99.48])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-oa1-f78.google.com (mail-oa1-f78.google.com [209.85.160.78])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4694931ED72
-	for <linux-wireless@vger.kernel.org>; Mon, 15 Dec 2025 03:51:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=3.216.99.48
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3E6BB2BEC2B
+	for <linux-wireless@vger.kernel.org>; Mon, 15 Dec 2025 04:03:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.78
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765770672; cv=none; b=jwhJi0+QSlZo++39Y7zm4WDIplE7CxCviZvLjYIPuXl3VUqY2ksxQNFARC4McJ4SAI4tGeUHWTZAfwxZ2WVuPvLjCSpqic9WvdKG+sPgmHxVRz9SPsAktDnLVhH2Pe7tlmHx+wj1VS8GN64IIyFnut+2tF5ji5IhgUVA7MiLbFI=
+	t=1765771422; cv=none; b=GMXq99xLj/W7x9PYjuOX+/hq4utobVBr5HkYGAiBeK5ZAqIW13uYVCfhqQ+GVSPiTZtndg42NuqsYKSLyX23eW6YYLye06Cgg02rmrBw2pd7R/+5FIkvWh55k53DWk6IN97Q0xuCYQs74IespmYEiJiVxnQ4SifEmHbzRI41D7Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765770672; c=relaxed/simple;
-	bh=J18Jw5H9RPUchSnE0svQUKBZBIqeUdP4PUjtGE7O8Wg=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=KR58pmTeTTUHS28RDFypR6ZIehsoDMRDs2xYfwk3Gm1zuiYM3YqFcEGSl6qAWp+wXV+7Vzk1bHSm06IuOQPWG6TRO1i0OL0BuyNl1Gsi8rccfsKDwvK3c4Xxp+3jl3UCvvTQDC2iwW9SVRAQ880VMaa1Eh/q4K3+Pp3XrgMBIGU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ziyao.cc; spf=pass smtp.mailfrom=ziyao.cc; dkim=pass (1024-bit key) header.d=ziyao.cc header.i=@ziyao.cc header.b=SpArnzPt; arc=none smtp.client-ip=3.216.99.48
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ziyao.cc
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ziyao.cc
-Received: from localhost (localhost [127.0.0.1])
-	by smtp-out.flockmail.com (Postfix) with ESMTP id 4dV5VF1n63z2xBK;
-	Mon, 15 Dec 2025 03:42:29 +0000 (UTC)
-DKIM-Signature: a=rsa-sha256; bh=bKCrOiA7/P+MZsTh36bLrFTi2l+0P02csnPywnMu9Xg=;
-	c=relaxed/relaxed; d=ziyao.cc;
-	h=from:cc:message-id:to:in-reply-to:date:references:subject:mime-version:from:to:cc:subject:date:message-id:in-reply-to:references:reply-to;
-	q=dns/txt; s=titan1; t=1765770149; v=1;
-	b=SpArnzPtGR+gmQFp9upU0+tvZNQLhbhEhkIHW65IPvqideBGFZeY6JqgmPNywozHVBiOrjJh
-	deVfVmvu+zVYhu3g5X7f/e+4GvBMf/EykstgPEEvJ9xXoRuMRXoC4WAv9hQEjZIJ4nyvwQQwqgv
-	YHSonP3FxumyFpYuQsYVcNI8=
-Received: from pie (unknown [117.171.66.90])
-	by smtp-out.flockmail.com (Postfix) with ESMTPA id 4dV5V874j5z2x9X;
-	Mon, 15 Dec 2025 03:42:24 +0000 (UTC)
-Date: Mon, 15 Dec 2025 03:42:17 +0000
-Feedback-ID: :me@ziyao.cc:ziyao.cc:flockmailId
-From: Yao Zi <me@ziyao.cc>
-To: David Wang <00107082@163.com>, thostet@google.com
-Cc: daniel.gabay@intel.com, jeffbai@aosc.io, johannes.berg@intel.com,
-	kexybiscuit@aosc.io, linux-kernel@vger.kernel.org,
-	linux-wireless@vger.kernel.org, miriam.rachel.korenblit@intel.com,
-	nathan@kernel.org, netdev@vger.kernel.org,
-	pagadala.yesu.anjaneyulu@intel.com, richardcochran@gmail.com,
-	Kuniyuki Iwashima <kuniyu@google.com>
-Subject: Re: [PATCH iwlwifi-fixes] wifi: iwlwifi: Implement settime64 as stub
- for MVM/MLD PTP
-Message-ID: <aT-DmZTh_8I13Mg1@pie>
-References: <20251204123204.9316-1-ziyao@disroot.org>
- <20251214101257.4190-1-00107082@163.com>
+	s=arc-20240116; t=1765771422; c=relaxed/simple;
+	bh=rwoF+WpieHw/5tdj/KlFRevZ/13XeLEp1pLGyDW7534=;
+	h=MIME-Version:Date:Message-ID:Subject:From:To:Content-Type; b=BiWUtpAEtv5jePx/Wp+by2rp6r17Lub3PbQKYQJ0jVj49BhtZ2nxFBYxX2SZBnVE9FQG7E4WU9OuP9341RlbB56HH2O9Jyqta94vECziePlllP0K7Zha+/QdH6FFjZn0F3AuyENFuM49WCsmFC1Qcj6/tzDAJEeyg76eQaJgBkI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com; arc=none smtp.client-ip=209.85.160.78
+Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com
+Received: by mail-oa1-f78.google.com with SMTP id 586e51a60fabf-3e7f9f1d0a1so2178774fac.0
+        for <linux-wireless@vger.kernel.org>; Sun, 14 Dec 2025 20:03:40 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1765771419; x=1766376219;
+        h=to:from:subject:message-id:date:mime-version:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=MmfiToVqYEdoGnP02QZ7kBOEjbLn+XKul7lu1OSqyBE=;
+        b=RhLTJw96nKsMsT3Ms9BIj3HrPKrcLASHU0yutFUr4c2trv9uf7TlGbs4ZLNQmTbE2v
+         koq/Yty8g0Toyk3W9M4++rj774BWOra4N/7zEgde5NTXJsX93XiidCT9F2em5oQR5WFh
+         s2kbsyoF/0HSPFpRVZ+RCHd6epEzq6uWa+bIymRMeyfjIcepwTKDcu3yf5il6+GRGBnu
+         fAI5ygRVJzLRKUbYHLmWn0AEBz/ok8L2USIVtGuH5cD2hubMkMgslwn620ws0G5KRSeO
+         JuFghDm3xYXd+s+Zzzn39ZXJoG1OfFgTzw9Bq73u72AnWXoy7HaX/al6Wbi0clvtgj+m
+         8HGg==
+X-Forwarded-Encrypted: i=1; AJvYcCWji2Hjmpa4WJOzjp9jZrEY78BG9DdLgMNtnsT61lVR4ITimOWhgu8qiA2b0PVgFxtYQ/zknvisgrSKQBdFQQ==@vger.kernel.org
+X-Gm-Message-State: AOJu0YwVpF9v0V3pIGrgnDSrH5Awbk1SNchTGrmRmOyAIGq7cyqm0uML
+	Vulsvs6ecirEeB9WVArDdDA1vb6SyQ8PXLeQvgoosw4w8H2f3O8jW/oTLMpNYBmeed3CAKgog/Z
+	8vNmg8vFYwYhZmzfJQV4HXfkPXqRODc7eMfmkRIAa3vAyylkQxX3FgAKky3I=
+X-Google-Smtp-Source: AGHT+IF2vR0wcOITyycAoR9eiF3AvPDKMTzvhSTJ47P//qdt0ubo+nngiXW/6EmPeDnCg5LEquFKztzjePggC4UjwsKLqnuS7io0
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20251214101257.4190-1-00107082@163.com>
-X-F-Verdict: SPFVALID
-X-Titan-Src-Out: 1765770149083250194.27573.1538939435451385954@prod-use1-smtp-out1001.
-X-CMAE-Score: 0
-X-CMAE-Analysis: v=2.4 cv=TPG/S0la c=1 sm=1 tr=0 ts=693f83a5
-	a=rBp+3XZz9uO5KTvnfbZ58A==:117 a=rBp+3XZz9uO5KTvnfbZ58A==:17
-	a=kj9zAlcOel0A:10 a=MKtGQD3n3ToA:10 a=CEWIc4RMnpUA:10 a=VwQbUJbxAAAA:8
-	a=QyXUC8HyAAAA:8 a=LpNgXrTXAAAA:8 a=SYGaFrxvNFvLGzGqgu4A:9
-	a=CjuIK1q_8ugA:10 a=LqOpv0_-CX5VL_7kjZO3:22 a=3z85VNIBY5UIEeAh_hcH:22
-	a=NWVoK91CQySWRX1oVYDe:22
+X-Received: by 2002:a05:6820:22a1:b0:659:9a49:8dec with SMTP id
+ 006d021491bc7-65b45225e82mr4312883eaf.46.1765771419323; Sun, 14 Dec 2025
+ 20:03:39 -0800 (PST)
+Date: Sun, 14 Dec 2025 20:03:39 -0800
+X-Google-Appengine-App-Id: s~syzkaller
+X-Google-Appengine-App-Id-Alias: syzkaller
+Message-ID: <693f889b.a70a0220.104cf0.0333.GAE@google.com>
+Subject: [syzbot] [libertas?] [usb?] WARNING in usb_tx_block
+From: syzbot <syzbot+67969ab6a2551c27f71b@syzkaller.appspotmail.com>
+To: libertas-dev@lists.infradead.org, linux-kernel@vger.kernel.org, 
+	linux-usb@vger.kernel.org, linux-wireless@vger.kernel.org, 
+	netdev@vger.kernel.org, syzkaller-bugs@googlegroups.com
+Content-Type: text/plain; charset="UTF-8"
 
-On Sun, Dec 14, 2025 at 06:12:57PM +0800, David Wang wrote:
-> On Thu, Dec 04, 2025 at 12:32:04PM +0000, Yao Zi wrote:
-> > Since commit dfb073d32cac ("ptp: Return -EINVAL on ptp_clock_register if
-> > required ops are NULL"), PTP clock registered through ptp_clock_register
-> > is required to have ptp_clock_info.settime64 set, however, neither MVM
-> > nor MLD's PTP clock implementation sets it, resulting in warnings when
-> > the interface starts up, like
-> > 
-> > WARNING: drivers/ptp/ptp_clock.c:325 at ptp_clock_register+0x2c8/0x6b8, CPU#1: wpa_supplicant/469
-> > CPU: 1 UID: 0 PID: 469 Comm: wpa_supplicant Not tainted 6.18.0+ #101 PREEMPT(full)
-> > ra: ffff800002732cd4 iwl_mvm_ptp_init+0x114/0x188 [iwlmvm]
-> > ERA: 9000000002fdc468 ptp_clock_register+0x2c8/0x6b8
-> > iwlwifi 0000:01:00.0: Failed to register PHC clock (-22)
-> > 
-> > I don't find an appropriate firmware interface to implement settime64()
-> > for iwlwifi MLD/MVM, thus instead create a stub that returns
-> > -EOPTNOTSUPP only, suppressing the warning and allowing the PTP clock to
-> > be registered.
-> 
-> This seems disturbing....If a null settime64 deserve a kernel WARN dump, so should
-> a settime64 which returns error.
+Hello,
 
-They're separate things. A ptp clock implementing not provinding
-settime64() or gettime64()/gettimex64() callback will crash when
-userspace tries to call clock_gettime()/clock_settime() on it, since
-either ptp_clock_settime() or ptp_clock_gettime() invokes these
-callbacks unconditionally.
+syzbot found the following issue on:
 
-However, failing with -ENOTSUPP/-EOPNOTSUPP when clock_settime() isn't
-supported by a dynamic POSIX clock device is a documented behavior, see
-man-page clock_getres(2).
+HEAD commit:    d358e5254674 Merge tag 'for-6.19/dm-changes' of git://git...
+git tree:       https://git.kernel.org/pub/scm/linux/kernel/git/gregkh/usb.git usb-testing
+console output: https://syzkaller.appspot.com/x/log.txt?x=116b511a580000
+kernel config:  https://syzkaller.appspot.com/x/.config?x=53f37db573e619b
+dashboard link: https://syzkaller.appspot.com/bug?extid=67969ab6a2551c27f71b
+compiler:       gcc (Debian 12.2.0-14+deb12u1) 12.2.0, GNU ld (GNU Binutils for Debian) 2.40
+syz repro:      https://syzkaller.appspot.com/x/repro.syz?x=156b511a580000
+C reproducer:   https://syzkaller.appspot.com/x/repro.c?x=17278d92580000
 
-> Before fixing the warning, the expected behavior of settime64 should be specified clearly,
+Downloadable assets:
+disk image: https://storage.googleapis.com/syzbot-assets/584561f65dc7/disk-d358e525.raw.xz
+vmlinux: https://storage.googleapis.com/syzbot-assets/6b9b8f5af8d1/vmlinux-d358e525.xz
+kernel image: https://storage.googleapis.com/syzbot-assets/b2313fb12366/bzImage-d358e525.xz
 
-I think failing with -EOPNOTSUPP (which is the same as -ENOTSUPP on
-Linux) when the operation isn't supported is well-documented, and is
-suitable for this case.
+IMPORTANT: if you fix the issue, please add the following tag to the commit:
+Reported-by: syzbot+67969ab6a2551c27f71b@syzkaller.appspotmail.com
 
-One may argue that it'd be helpful for ptp_clock_register() to provide
-a default implementation of settime64() that always fails with
--EOPNOTSUPP when the driver doesn't provide one.
+------------[ cut here ]------------
+URB ffff888114e55c00 submitted while active
+WARNING: drivers/usb/core/urb.c:380 at 0x0, CPU#0: kworker/0:1/10
+Modules linked in:
+CPU: 0 UID: 0 PID: 10 Comm: kworker/0:1 Not tainted syzkaller #0 PREEMPT(voluntary) 
+Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 10/25/2025
+Workqueue: events request_firmware_work_func
+RIP: 0010:usb_submit_urb+0x15a3/0x1970 drivers/usb/core/urb.c:380
+Code: 4b 03 00 00 48 8b 04 24 48 8b 90 b0 00 00 00 eb 91 bb ed ff ff ff e9 07 f3 ff ff e8 97 f5 c5 fc 48 8d 3d 50 45 f0 05 48 89 de <67> 48 0f b9 3a bb f0 ff ff ff e9 e9 f2 ff ff e8 79 f5 c5 fc 0f 1f
+RSP: 0018:ffffc900000af8d0 EFLAGS: 00010293
+RAX: 0000000000000000 RBX: ffff888114e55c00 RCX: ffffffff8427b986
+RDX: ffff888101ab1d40 RSI: ffff888114e55c00 RDI: ffffffff8aaa3c30
+RBP: ffff888114e55c00 R08: 0000000000000001 R09: 0000000000000000
+R10: 0000000000000000 R11: ffff888101ab27e8 R12: 00000000c0030300
+R13: 0000000000000010 R14: ffff888105a92000 R15: ffff88811ecda000
+FS:  0000000000000000(0000) GS:ffff888268bf5000(0000) knlGS:0000000000000000
+CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+CR2: 000056311e50a970 CR3: 0000000114500000 CR4: 00000000003506f0
+Call Trace:
+ <TASK>
+ usb_tx_block+0x241/0x2e0 drivers/net/wireless/marvell/libertas/if_usb.c:436
+ if_usb_issue_boot_command drivers/net/wireless/marvell/libertas/if_usb.c:766 [inline]
+ if_usb_prog_firmware+0x570/0x10c0 drivers/net/wireless/marvell/libertas/if_usb.c:859
+ lbs_fw_loaded drivers/net/wireless/marvell/libertas/firmware.c:23 [inline]
+ helper_firmware_cb drivers/net/wireless/marvell/libertas/firmware.c:80 [inline]
+ helper_firmware_cb+0x1f8/0x2e0 drivers/net/wireless/marvell/libertas/firmware.c:64
+ request_firmware_work_func+0x13c/0x250 drivers/base/firmware_loader/main.c:1152
+ process_one_work+0x9ba/0x1b20 kernel/workqueue.c:3257
+ process_scheduled_works kernel/workqueue.c:3340 [inline]
+ worker_thread+0x6c8/0xf10 kernel/workqueue.c:3421
+ kthread+0x3c5/0x780 kernel/kthread.c:463
+ ret_from_fork+0x74f/0xa30 arch/x86/kernel/process.c:158
+ ret_from_fork_asm+0x1a/0x30 arch/x86/entry/entry_64.S:246
+ </TASK>
+----------------
+Code disassembly (best guess):
+   0:	4b 03 00             	rex.WXB add (%r8),%rax
+   3:	00 48 8b             	add    %cl,-0x75(%rax)
+   6:	04 24                	add    $0x24,%al
+   8:	48 8b 90 b0 00 00 00 	mov    0xb0(%rax),%rdx
+   f:	eb 91                	jmp    0xffffffa2
+  11:	bb ed ff ff ff       	mov    $0xffffffed,%ebx
+  16:	e9 07 f3 ff ff       	jmp    0xfffff322
+  1b:	e8 97 f5 c5 fc       	call   0xfcc5f5b7
+  20:	48 8d 3d 50 45 f0 05 	lea    0x5f04550(%rip),%rdi        # 0x5f04577
+  27:	48 89 de             	mov    %rbx,%rsi
+* 2a:	67 48 0f b9 3a       	ud1    (%edx),%rdi <-- trapping instruction
+  2f:	bb f0 ff ff ff       	mov    $0xfffffff0,%ebx
+  34:	e9 e9 f2 ff ff       	jmp    0xfffff322
+  39:	e8 79 f5 c5 fc       	call   0xfcc5f5b7
+  3e:	0f                   	.byte 0xf
+  3f:	1f                   	(bad)
 
-However, it's likely a programming bug when gettime64()/settime64() is
-missing, so the current behavior of warning sounds reasonable to me.
 
-> hence why the dfb073d32cac ("ptp: Return -EINVAL on ptp_clock_register if required ops are NULL")?
+---
+This report is generated by a bot. It may contain errors.
+See https://goo.gl/tpsmEJ for more information about syzbot.
+syzbot engineers can be reached at syzkaller@googlegroups.com.
 
-You may be interested in the original series[1] where the idea of
-warning for missing settime64/gettime64/gettimex64 callbacks came up.
+syzbot will keep track of this issue. See:
+https://goo.gl/tpsmEJ#status for how to communicate with syzbot.
 
-Also cc Kuniyuki, in case that I missed something or got it wrong.
+If the report is already addressed, let syzbot know by replying with:
+#syz fix: exact-commit-title
 
-> 
-> David
+If you want syzbot to run the reproducer, reply with:
+#syz test: git://repo/address.git branch-or-commit-hash
+If you attach or paste a git patch, syzbot will apply it before testing.
 
-Best regards,
-Yao Zi
+If you want to overwrite report's subsystems, reply with:
+#syz set subsystems: new-subsystem
+(See the list of subsystem names on the web dashboard)
 
-> > 
-> > Reported-by: Nathan Chancellor <nathan@kernel.org>
-> > Closes: https://lore.kernel.org/all/20251108044822.GA3262936@ax162/
-> > Signed-off-by: Yao Zi <ziyao@disroot.org>
-> > ---
-> 
+If the report is a duplicate of another one, reply with:
+#syz dup: exact-subject-of-another-report
 
-[1]: https://lore.kernel.org/all/20251028095143.396385-1-junjie.cao@intel.com/
+If you want to undo deduplication, reply with:
+#syz undup
 
