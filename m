@@ -1,65 +1,69 @@
-Return-Path: <linux-wireless+bounces-29749-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-29750-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id E7400CBD09E
-	for <lists+linux-wireless@lfdr.de>; Mon, 15 Dec 2025 09:53:19 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3B37CCBD151
+	for <lists+linux-wireless@lfdr.de>; Mon, 15 Dec 2025 10:01:47 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id C2F4A303C2A9
-	for <lists+linux-wireless@lfdr.de>; Mon, 15 Dec 2025 08:50:48 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 16DCE3015155
+	for <lists+linux-wireless@lfdr.de>; Mon, 15 Dec 2025 08:55:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 56AF0329383;
-	Mon, 15 Dec 2025 08:42:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4A8BB33033B;
+	Mon, 15 Dec 2025 08:46:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=realtek.com header.i=@realtek.com header.b="eUL7bRL1"
+	dkim=pass (2048-bit key) header.d=realtek.com header.i=@realtek.com header.b="ZHtUnMGU"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 51C5441C72
-	for <linux-wireless@vger.kernel.org>; Mon, 15 Dec 2025 08:42:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 62CCE330328
+	for <linux-wireless@vger.kernel.org>; Mon, 15 Dec 2025 08:46:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=211.75.126.72
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765788178; cv=none; b=T+vpvWc7IIc966J/HeIM+NNrEScNrpdYqTaJHBFHI8WlkYlUMJVXYcHN7WDTCJFS5Z09rCICDcUdeKeT2gnAiyHxYvVt32mliGjy9cWFw7VwjwBHW/Jbm64aZhIJftHi3W6Y7m/iwizOMHp84qvu9ZfxGPfcBopxPMVu88dI+qk=
+	t=1765788386; cv=none; b=R2NkZ8eN4wswI/6MpeVeSDMVXcqlMUKcXQqipMh902ZFW/Ys/YgYPRDurjxGo1G7SlZyC/x90DhmeYLdsVfdo6K6JdzBWKos3LJFKdcQgAhdYMwLy5dNENxmN15b9JGOqpNwMuXT4uQQY9TcEjKvkEkdSHM3IHov3kFemyYA6Ic=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765788178; c=relaxed/simple;
-	bh=vTTP/fV8gnQczaaWPR9r9rPIMbQstK305O/WufEolnY=;
+	s=arc-20240116; t=1765788386; c=relaxed/simple;
+	bh=iga33Yn5y5FJ9DFZKQpY3XudqCyVaSmZf7yOmV9Vihk=;
 	h=From:To:CC:Subject:In-Reply-To:References:Message-ID:Date:
-	 MIME-Version:Content-Type; b=GCGHXdYum4rjpcLSgwOGvXna6Btb89zWwl3n7SipZjSZ4t4UxeMWE2Jj/BjaJceveBZt1qoe/vWczBP9mjiiWFTnj5ZEGbl3bnWLMzWJ/Temx8gecbIyVPf43XCA0Inkj94tl9GvtCt7v5roQFWTyD8VI8JGgJUpvWYehGBQsv0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com; spf=pass smtp.mailfrom=realtek.com; dkim=pass (2048-bit key) header.d=realtek.com header.i=@realtek.com header.b=eUL7bRL1; arc=none smtp.client-ip=211.75.126.72
+	 MIME-Version:Content-Type; b=st7Lnzxl7943s1dwHRyMGsZsKh/hE5xSdFYJh8jhX8D5OgD4XoHfYQQ3QMhCoD8Ib8zQTOpz7xGrnMEYzezqewKH3gDIDbF9M4AOgbIOpvD+OuI1E5/fcWQIvJGAy74btnLbQ3K8aunnOWw6FYdtPzietsnH48eIvwdiVJHYX0A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com; spf=pass smtp.mailfrom=realtek.com; dkim=pass (2048-bit key) header.d=realtek.com header.i=@realtek.com header.b=ZHtUnMGU; arc=none smtp.client-ip=211.75.126.72
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=realtek.com
-X-SpamFilter-By: ArmorX SpamTrap 5.80 with qID 5BF8gqZmB1493449, This message is accepted by code: ctloc85258
+X-SpamFilter-By: ArmorX SpamTrap 5.80 with qID 5BF8kJg151497534, This message is accepted by code: ctloc85258
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=realtek.com; s=dkim;
-	t=1765788172; bh=ZPLgK3k2qEGb+/mu2RkaC6ZPlywTdkOO0SYvdTf7YHA=;
+	t=1765788379; bh=lz46eXKUqjO6Trjyv/GSAq4av62fZXaKcsmAANGPFLs=;
 	h=From:To:CC:Subject:In-Reply-To:References:Message-ID:Date:
 	 MIME-Version:Content-Type;
-	b=eUL7bRL14c7xI7h9IISr/QLt/X1QiM4TGO6lC9ve+gXrFqK8FQPPEBCxhGrbQpOBv
-	 fdKlIqWwrkTIYcHE4i1FhEQnM8yJIIqSEcL+jEaXGqAcRsyUBWqJOvcftvA4EZykpn
-	 7j2YHS7f3ao18V26NL9lVZP3XTpfaBzFG0pShonhFWOtB5moAiYvsESzyqhrU6GYmX
-	 628wHE/t0AJwUcU5b5QtgzOkCXZx2L4KLMbdc41VNE3swCOyebEfFJwT9nOmHgzJuE
-	 AkFLviedseUvblrzb4Qk5cEg1O3fwgwHypa2EkLsG5sVdAy46BOvIdrUyglM1OmlYS
-	 JU2HplEzOX2tQ==
-Received: from mail.realtek.com (rtkexhmbs04.realtek.com.tw[10.21.1.54])
-	by rtits2.realtek.com.tw (8.15.2/3.21/5.94) with ESMTPS id 5BF8gqZmB1493449
+	b=ZHtUnMGU40lED7BBKgxhHCH1vGeCeyUt7GkINRRgU523ZGbr7H2vW0h0ywG3N48oo
+	 MFgR2Xor9g3dBxZX1oftnXL65/+PapFmjVlICfi4J0MvnQlWBtJmnDIz1Iwqt7JPpq
+	 2FnhRrlKx2G4eckxVP5J0RACUveAEGPmMud3ATlO/+9/zO3e1jFu3OC9eDMmawWihH
+	 F9l9J4zhHjJLuBahTtiuzFMnQEHJFv+fFDsXbmRpRU03oBvDILcXF50nnoY+qjONuJ
+	 AsNZZ1pcCYzdKsbyin57S6JF13cuC+KA9jLHOyB7y8i7tYXHkC+fD1j5E20o0WndiL
+	 //dZMkIIg8Gvg==
+Received: from mail.realtek.com (rtkexhmbs03.realtek.com.tw[10.21.1.53])
+	by rtits2.realtek.com.tw (8.15.2/3.21/5.94) with ESMTPS id 5BF8kJg151497534
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Mon, 15 Dec 2025 16:42:52 +0800
-Received: from RTKEXHMBS03.realtek.com.tw (10.21.1.53) by
- RTKEXHMBS04.realtek.com.tw (10.21.1.54) with Microsoft SMTP Server
+	Mon, 15 Dec 2025 16:46:19 +0800
+Received: from RTKEXHMBS01.realtek.com.tw (172.21.6.40) by
+ RTKEXHMBS03.realtek.com.tw (10.21.1.53) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.27; Mon, 15 Dec 2025 16:42:52 +0800
+ 15.2.1748.10; Mon, 15 Dec 2025 16:46:20 +0800
+Received: from RTKEXHMBS03.realtek.com.tw (10.21.1.53) by
+ RTKEXHMBS01.realtek.com.tw (172.21.6.40) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1748.10; Mon, 15 Dec 2025 16:46:19 +0800
 Received: from [127.0.1.1] (172.21.40.75) by RTKEXHMBS03.realtek.com.tw
  (10.21.1.53) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1748.10 via Frontend
- Transport; Mon, 15 Dec 2025 16:42:52 +0800
+ Transport; Mon, 15 Dec 2025 16:46:19 +0800
 From: Ping-Ke Shih <pkshih@realtek.com>
 To: Ping-Ke Shih <pkshih@realtek.com>, <linux-wireless@vger.kernel.org>
-CC: <andrej.skvortzov@gmail.com>
-Subject: Re: [PATCH rtw] wifi: rtw88: limit indirect IO under powered off for RTL8822CS
-In-Reply-To: <1764034729-1251-1-git-send-email-pkshih@realtek.com>
-References: <1764034729-1251-1-git-send-email-pkshih@realtek.com>
-Message-ID: <651c3c3e-1587-446e-8d22-f966075bb618@RTKEXHMBS03.realtek.com.tw>
-Date: Mon, 15 Dec 2025 16:42:52 +0800
+CC: <alexbestoso@gmail.com>
+Subject: Re: [PATCH rtw] wifi: rtlwifi: 8192cu: fix tid out of range in rtl92cu_tx_fill_desc()
+In-Reply-To: <1764232628-13625-1-git-send-email-pkshih@realtek.com>
+References: <1764232628-13625-1-git-send-email-pkshih@realtek.com>
+Message-ID: <5953ce3f-95a2-4a63-a2eb-7e8d6a71e807@RTKEXHMBS03.realtek.com.tw>
+Date: Mon, 15 Dec 2025 16:46:19 +0800
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
@@ -70,27 +74,22 @@ Content-Type: text/plain
 
 Ping-Ke Shih <pkshih@realtek.com> wrote:
 
-> The indirect IO is necessary for RTL8822CS, but not necessary for other
-> chips. Otherwiese, it throws errors and becomes unusable.
+> From: Morning Star <alexbestoso@gmail.com>
 > 
->  rtw88_8723cs mmc1:0001:1: WOW Firmware version 11.0.0, H2C version 0
->  rtw88_8723cs mmc1:0001:1: Firmware version 11.0.0, H2C version 0
->  rtw88_8723cs mmc1:0001:1: sdio read32 failed (0xf0): -110
->  rtw88_8723cs mmc1:0001:1: sdio write8 failed (0x1c): -110
->  rtw88_8723cs mmc1:0001:1: sdio read32 failed (0xf0): -110
+> TID getting from ieee80211_get_tid() might be out of range of array size
+> of sta_entry->tids[], so check TID is less than MAX_TID_COUNT. Othwerwise,
+> UBSAN warn:
 > 
-> By vendor driver, only RTL8822CS and RTL8822ES need indirect IO, but
-> RTL8822ES isn't supported yet. Therefore, limit it to RTL8822CS only.
+>  UBSAN: array-index-out-of-bounds in drivers/net/wireless/realtek/rtlwifi/rtl8192cu/trx.c:514:30
+>  index 10 is out of range for type 'rtl_tid_data [9]'
 > 
-> Reported-by: Andrey Skvortsov <andrej.skvortzov@gmail.com>
-> Closes: https://lore.kernel.org/linux-wireless/07a32e2d6c764eb1bd9415b5a921a652@realtek.com/T/#m997b4522f7209ba629561c776bfd1d13ab24c1d4
-> Fixes: 58de1f91e033 ("wifi: rtw88: sdio: use indirect IO for device registers before power-on")
+> Fixes: 8ca4cdef9329 ("wifi: rtlwifi: rtl8192cu: Fix TX aggregation")
+> Signed-off-by: Morning Star <alexbestoso@gmail.com>
 > Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
-> Tested-by: Andrey Skvortsov <andrej.skvortzov@gmail.com>
 
 1 patch(es) applied to rtw branch of rtw.git, thanks.
 
-f3ccdfda345c wifi: rtw88: limit indirect IO under powered off for RTL8822CS
+dd39edb445f0 wifi: rtlwifi: 8192cu: fix tid out of range in rtl92cu_tx_fill_desc()
 
 ---
 https://github.com/pkshih/rtw.git
