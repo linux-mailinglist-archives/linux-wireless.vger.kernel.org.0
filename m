@@ -1,197 +1,144 @@
-Return-Path: <linux-wireless+bounces-29736-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-29737-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id BCC66CBC139
-	for <lists+linux-wireless@lfdr.de>; Sun, 14 Dec 2025 23:32:12 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 46382CBC2EF
+	for <lists+linux-wireless@lfdr.de>; Mon, 15 Dec 2025 02:24:31 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 7E8393004520
-	for <lists+linux-wireless@lfdr.de>; Sun, 14 Dec 2025 22:32:11 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 6D8B53007AB1
+	for <lists+linux-wireless@lfdr.de>; Mon, 15 Dec 2025 01:24:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 425172494FE;
-	Sun, 14 Dec 2025 22:32:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EDA9026E175;
+	Mon, 15 Dec 2025 01:24:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="AtqhApte"
+	dkim=pass (2048-bit key) header.d=realtek.com header.i=@realtek.com header.b="Co3ZwOR9"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-wm1-f48.google.com (mail-wm1-f48.google.com [209.85.128.48])
+Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 692EC25A359
-	for <linux-wireless@vger.kernel.org>; Sun, 14 Dec 2025 22:32:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.48
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B1497EEAB
+	for <linux-wireless@vger.kernel.org>; Mon, 15 Dec 2025 01:24:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=211.75.126.72
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765751530; cv=none; b=PbhQfgN3oOmnqCYsKH9JsrK1QX6F3lSucFe6fPWrS5PWO8h5F3Zilgkh8IlPYxz21m2wAHCot5/ovg41s+EcOAw3OwACFrTZM/77/1M5fC3BvoZyJnzrUuH78+L16qY3ERY2BEmflS2di/TsdvWinUP2GHD3wJILsUd8fU6P6Mc=
+	t=1765761868; cv=none; b=k+NvIkgyvhlFTBU4ScvZces4kQLdsRykNwTuzHeITNdnaue7BYqiJUNB3MdUgKr5wGfid9qCbnXM5BkJ/yfHlQ+SFbfNb4id6xTHks1e36e19tYJrpRxU35ejzVRJi65ddFZBlpWezYT0vuzfqcFp8eQhEXl9o6knoLe/wx1n1k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765751530; c=relaxed/simple;
-	bh=XWRN9Lu5HkG56t12j0inScxWHR33I+1yBiScjTM7es0=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=stmwjOHwwcyIW/QoRUJJp+oLdn2ywUp7nQg1SzhuOyzo6p96Xxm69mu+86MJ1pFQoexXKJjPI3/ViLOebWWAw1stAmutqWx2mGbPvFt1G04J+OUFsR1+cbOZbpFh1jLhZlNGv82Ny+/ZMux+WwyfrwFER4knqJVofP9nxptd/EE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=AtqhApte; arc=none smtp.client-ip=209.85.128.48
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-wm1-f48.google.com with SMTP id 5b1f17b1804b1-4779ce2a624so32314725e9.2
-        for <linux-wireless@vger.kernel.org>; Sun, 14 Dec 2025 14:32:08 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1765751527; x=1766356327; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=METaqTSgSoom9qZ9BplLmwb9BKc7d/+64iFqrjJD6ao=;
-        b=AtqhAptePL1/R9HgAic81W2ZsKBdytR74VnDlH4EAjvmBimN11dmc3A1gJ1Qxt/BTK
-         7ATFOiFKg8WCWhNeJkuBFcnHNcDlWAzGLviyFljELWZIDNV2F8nQkwUa9ZyLFIEBpVLm
-         lbJbC6fiyxZBUTd9h/H0CwnAtFoWFhN90Qd0IW+KTwpOFHaZmVWSijs6/jd6F9/GLnj4
-         pWKZpe2jvk0C5sGrumCUve5LHUquCmA4g9vHRi2ft0mbTbHfSdbJWC06yGKeiK+5yH+j
-         q+NLz2hWgZ4jFXO7HEzVDzsW1LXp3K/BsOQL5uZoyt6YVLeHnzGxDpSBBRJ5Y/vXzaHB
-         lPQA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1765751527; x=1766356327;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=METaqTSgSoom9qZ9BplLmwb9BKc7d/+64iFqrjJD6ao=;
-        b=reB00eqRVBtIAsEX6rjFOyXtAdUqOTDr9BjnOiDhpV3SVa51Et4avTCeTWOPOo92qu
-         Mp2RccHiqiguBgWxdiIRDKASqEMAtV06i+VlEQ34Ju/ducqSht/rfWgLoVqF+wA6bcYL
-         V09apA4aroUFnsb8e2tjRXjrZmxY1IUmEAHZOizXr+VnhmPl+8KhMNF0SamHZYax0TSH
-         7FJPvCR9NpFauU26gFrxuWwOoAMz3ITWFRu1UQYuGjgN003EiX5vp9H04AmozHo7YDe4
-         wxKpUQzbNZaza1whgL3732bPhxx7bJqGuSrk+WYy3lKx+zcZmyRcMr5gkS/VOx3VhcC6
-         VqhA==
-X-Forwarded-Encrypted: i=1; AJvYcCUEt5xNX5FmyxucbNzTJ7FLwsBd8WVM4nc2zzkHmkWG8wsvtkONnwD6iz6SX4uyC/J318vm1Nol28Mkmw5YvQ==@vger.kernel.org
-X-Gm-Message-State: AOJu0YxAV1SFoYcQREg1CaWgl5OPIieoYaR++dEEndKIs8UxF++OkjKR
-	89NFWx+Lrn+OpDhpzkedxdtTojWOVcme1epX+BTZodqpTJuIguBwF/Aj
-X-Gm-Gg: AY/fxX4duSnxj6DM5oNIgzYjkNdEp6ul0AQgWaUGsHJuXBVKUvt4yObTHExtvkE361M
-	oLIJsBkILLsEYzQhqPgSaIuOzoR8siDf7a7lqds43XnEbP8/MRxPyEVERyeXeYQ91pMKj+eGz4s
-	GUb1WIrVwX2lQYPUU81f/IT2mlraW+0xLqqD/w4BNXK5F5qfCGiyYEvi3SMJ6GuCbIKlqGeOhTb
-	z9L0Yc9grcZsjdoSvtrH0hyV5JskWRTlsTKj/Yq88FxBASbSgqQIpbhZricPHK0A540ZL4n4sZR
-	+jTAqNbUvZvg2YNz1cocB6o2rKA/qMooYiuBS14mxT1ETQgPWmVssTUGM5P2uktXILs1RGOY3JA
-	YjY8dB0OkFnYiShd8LYjj3KVrxmOfFC2ub+fOnkIqwWZ+PUzI8Gbja/0StS0eGxyclyYeqFFWYw
-	wNP/Ul9FYrYSp4x5sPNM1W
-X-Google-Smtp-Source: AGHT+IHdO7wexURdZxqfdAecf1uwBbN3T0FiVjZcWpRkDtre+VqW1u1OAE5uVA6pCIP08Hj7uKuOAw==
-X-Received: by 2002:a05:600c:530c:b0:477:7c7d:d9b2 with SMTP id 5b1f17b1804b1-47a8f91289emr110717115e9.32.1765751526596;
-        Sun, 14 Dec 2025 14:32:06 -0800 (PST)
-Received: from [192.168.1.50] ([79.119.240.187])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-47a8f8d9d63sm154490325e9.9.2025.12.14.14.32.05
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Sun, 14 Dec 2025 14:32:06 -0800 (PST)
-Message-ID: <fffdce20-1cc0-4e51-babf-2a759ed37444@gmail.com>
-Date: Mon, 15 Dec 2025 00:32:04 +0200
+	s=arc-20240116; t=1765761868; c=relaxed/simple;
+	bh=BiOqj2DZzPhJhdevlWsbdiPfE/N5fPTzrlin6pTWY9g=;
+	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
+	 Content-Type:MIME-Version; b=TC638+LwSyDt4SWbPf+2ecAkIoRGiA4e6EC/Ap2rzDN7TPMBeR3YhJjE/bbzp79vsPvHaHktF31A4dq69iCqms7uT6HtIna3M4xILdb9UHFJTCsiSY9Ywgl8HG2YX+oOzFa5G7VpjQESMRM+VI392XGr/Oem9ahTvAKlPpqd/yA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com; spf=pass smtp.mailfrom=realtek.com; dkim=pass (2048-bit key) header.d=realtek.com header.i=@realtek.com header.b=Co3ZwOR9; arc=none smtp.client-ip=211.75.126.72
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=realtek.com
+X-SpamFilter-By: ArmorX SpamTrap 5.80 with qID 5BF1OLEp8780227, This message is accepted by code: ctloc85258
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=realtek.com; s=dkim;
+	t=1765761861; bh=BiOqj2DZzPhJhdevlWsbdiPfE/N5fPTzrlin6pTWY9g=;
+	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
+	 Content-Type:Content-Transfer-Encoding:MIME-Version;
+	b=Co3ZwOR9erzcu35LAdtYuoFoZ8iou8cocB3wmnO+9TfSnwNSLMBcx8v1vtQZB6J7e
+	 xe7kjKQ2KCNy7zEh6ViUe31ylmnxXWhBWRgVrCoLJMRRsu+vezK3+F2L+9/3gQArLl
+	 ttiz5cGnDrlq9C9qfitXIMPh3bSAxPhJ0GV139vwtoYv0V+Urr/gXCL8xNyaNeKbnr
+	 G/jgtNwmLP8DBg/EQ4qzbVDXmAw/TY9k4nRe5lm6zhFHNCyhJHWj0fd7T2aeMpmGhn
+	 DtcWigHLZrIPrpn1wPbZOPXdKRCUuZC72QhV2rMbaH2G47Q1gzdWp2m7rfy3nhFJHJ
+	 OQ4M42DL2tTbg==
+Received: from mail.realtek.com (rtkexhmbs03.realtek.com.tw[10.21.1.53])
+	by rtits2.realtek.com.tw (8.15.2/3.21/5.94) with ESMTPS id 5BF1OLEp8780227
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Mon, 15 Dec 2025 09:24:21 +0800
+Received: from RTKEXHMBS06.realtek.com.tw (10.21.1.56) by
+ RTKEXHMBS03.realtek.com.tw (10.21.1.53) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1748.10; Mon, 15 Dec 2025 09:24:22 +0800
+Received: from RTKEXHMBS06.realtek.com.tw ([::1]) by
+ RTKEXHMBS06.realtek.com.tw ([fe80::2fa5:eccb:34ee:7bb%10]) with mapi id
+ 15.02.1544.027; Mon, 15 Dec 2025 09:24:22 +0800
+From: Ping-Ke Shih <pkshih@realtek.com>
+To: Bitterblue Smith <rtl8821cerfe2@gmail.com>,
+        "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>
+CC: Gary Chang <gary.chang@realtek.com>, Damon Chen <damon.chen@realtek.com>,
+        Zong-Zhe Yang <kevin_yang@realtek.com>
+Subject: RE: [PATCH rtw-next 10/12] wifi: rtw89: warn unexpected polling value
+ of XTAL SI
+Thread-Topic: [PATCH rtw-next 10/12] wifi: rtw89: warn unexpected polling
+ value of XTAL SI
+Thread-Index: AQHcaxWAgztgMSLCWEKtOs/EGPvJcbUhNqoAgACxpqA=
+Date: Mon, 15 Dec 2025 01:24:22 +0000
+Message-ID: <37be87bfd5c64af1b0631071d09bf297@realtek.com>
+References: <20251212031303.19882-1-pkshih@realtek.com>
+ <20251212031303.19882-11-pkshih@realtek.com>
+ <fffdce20-1cc0-4e51-babf-2a759ed37444@gmail.com>
+In-Reply-To: <fffdce20-1cc0-4e51-babf-2a759ed37444@gmail.com>
+Accept-Language: en-US, zh-TW
+Content-Language: zh-TW
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH rtw-next 10/12] wifi: rtw89: warn unexpected polling value
- of XTAL SI
-To: Ping-Ke Shih <pkshih@realtek.com>, linux-wireless@vger.kernel.org
-Cc: gary.chang@realtek.com, damon.chen@realtek.com, kevin_yang@realtek.com
-References: <20251212031303.19882-1-pkshih@realtek.com>
- <20251212031303.19882-11-pkshih@realtek.com>
-Content-Language: en-US
-From: Bitterblue Smith <rtl8821cerfe2@gmail.com>
-In-Reply-To: <20251212031303.19882-11-pkshih@realtek.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
 
-On 12/12/2025 05:13, Ping-Ke Shih wrote:
-> XTAL SI is an indirect serial interface to access registers in another
-> hardware domain. When BT driver initializes UART interface, firmware might
-> rarely control XTAL SI at the same time causing access racing.
-> 
-> Current is to adjust initialization flow to avoid the racing. To make
-> the racing visible if it still presents, add a message to address this.
-> 
-> Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
-> ---
->  drivers/net/wireless/realtek/rtw89/mac.c    | 11 ++++++++++-
->  drivers/net/wireless/realtek/rtw89/mac_be.c | 11 ++++++++++-
->  2 files changed, 20 insertions(+), 2 deletions(-)
-> 
-> diff --git a/drivers/net/wireless/realtek/rtw89/mac.c b/drivers/net/wireless/realtek/rtw89/mac.c
-> index cf36be167162..066c99f3e53a 100644
-> --- a/drivers/net/wireless/realtek/rtw89/mac.c
-> +++ b/drivers/net/wireless/realtek/rtw89/mac.c
-> @@ -7023,6 +7023,11 @@ int rtw89_mac_write_xtal_si_ax(struct rtw89_dev *rtwdev, u8 offset, u8 val, u8 m
->  		return ret;
->  	}
->  
-> +	if (u32_get_bits(val32, B_AX_WL_XTAL_SI_ADDR_MASK) != offset ||
-> +	    u32_get_bits(val32, B_AX_WL_XTAL_SI_DATA_MASK) != val)
-> +		rtw89_warn(rtwdev, "xtal si write: offset=%x val=%x poll=%x\n",
-> +			   offset, val, val32);
-> +
-
-This message appears several times after I unplug a USB adapter:
-
-[  +0.834445] rtw89_8851bu 1-2:1.2: xtal si write: offset=90 val=10 poll=0
-[  +0.000015] rtw89_8851bu 1-2:1.2: xtal si write: offset=90 val=0 poll=0
-[  +0.000007] rtw89_8851bu 1-2:1.2: xtal si write: offset=90 val=0 poll=0
-[  +0.000004] rtw89_8851bu 1-2:1.2: xtal si write: offset=80 val=0 poll=0
-[  +0.000005] rtw89_8851bu 1-2:1.2: xtal si write: offset=90 val=80 poll=0
-[  +0.000005] rtw89_8851bu 1-2:1.2: xtal si write: offset=90 val=0 poll=0
-[  +0.000004] rtw89_8851bu 1-2:1.2: xtal si write: offset=90 val=0 poll=0
-
->  	return 0;
->  }
->  
-> @@ -7046,7 +7051,11 @@ int rtw89_mac_read_xtal_si_ax(struct rtw89_dev *rtwdev, u8 offset, u8 *val)
->  		return ret;
->  	}
->  
-> -	*val = rtw89_read8(rtwdev, R_AX_WLAN_XTAL_SI_CTRL + 1);
-> +	if (u32_get_bits(val32, B_AX_WL_XTAL_SI_ADDR_MASK) != offset)
-> +		rtw89_warn(rtwdev, "xtal si read: offset=%x poll=%x\n",
-> +			   offset, val32);
-> +
-> +	*val = u32_get_bits(val32, B_AX_WL_XTAL_SI_DATA_MASK);
->  
->  	return 0;
->  }
-> diff --git a/drivers/net/wireless/realtek/rtw89/mac_be.c b/drivers/net/wireless/realtek/rtw89/mac_be.c
-> index 2bc329c13443..d75c55cc34b8 100644
-> --- a/drivers/net/wireless/realtek/rtw89/mac_be.c
-> +++ b/drivers/net/wireless/realtek/rtw89/mac_be.c
-> @@ -396,6 +396,11 @@ int rtw89_mac_write_xtal_si_be(struct rtw89_dev *rtwdev, u8 offset, u8 val, u8 m
->  		return ret;
->  	}
->  
-> +	if (u32_get_bits(val32, B_BE_WL_XTAL_SI_ADDR_MASK) != offset ||
-> +	    u32_get_bits(val32, B_BE_WL_XTAL_SI_DATA_MASK) != val)
-> +		rtw89_warn(rtwdev, "xtal si write: offset=%x val=%x poll=%x\n",
-> +			   offset, val, val32);
-> +
-
-Same here:
-
-[Dec14 18:42] rtw89_8922au 2-4:1.0: xtal si write: offset=90 val=10 poll=0
-[  +0.000009] rtw89_8922au 2-4:1.0: xtal si write: offset=90 val=0 poll=0 
-[  +0.000005] rtw89_8922au 2-4:1.0: xtal si write: offset=90 val=0 poll=0 
-[  +0.000005] rtw89_8922au 2-4:1.0: xtal si write: offset=80 val=c6 poll=0
-[  +0.000004] rtw89_8922au 2-4:1.0: xtal si write: offset=81 val=c6 poll=0
-[  +0.000005] rtw89_8922au 2-4:1.0: xtal si write: offset=90 val=80 poll=0
-[  +0.000005] rtw89_8922au 2-4:1.0: xtal si write: offset=90 val=0 poll=0 
-[  +0.000003] rtw89_8922au 2-4:1.0: xtal si write: offset=90 val=0 poll=0 
-[  +0.000004] rtw89_8922au 2-4:1.0: xtal si write: offset=e0 val=2 poll=0 
-[  +0.000003] rtw89_8922au 2-4:1.0: xtal si write: offset=e0 val=0 poll=0 
-[  +0.000004] rtw89_8922au 2-4:1.0: xtal si write: offset=90 val=0 poll=0 
-[  +0.000003] rtw89_8922au 2-4:1.0: xtal si write: offset=90 val=0 poll=0 
-
->  	return 0;
->  }
->  
-> @@ -420,7 +425,11 @@ int rtw89_mac_read_xtal_si_be(struct rtw89_dev *rtwdev, u8 offset, u8 *val)
->  		return ret;
->  	}
->  
-> -	*val = rtw89_read8(rtwdev, R_BE_WLAN_XTAL_SI_CTRL + 1);
-> +	if (u32_get_bits(val32, B_BE_WL_XTAL_SI_ADDR_MASK) != offset)
-> +		rtw89_warn(rtwdev, "xtal si read: offset=%x poll=%x\n",
-> +			   offset, val32);
-> +
-> +	*val = u32_get_bits(val32, B_BE_WL_XTAL_SI_DATA_MASK);
->  
->  	return 0;
->  }
-
+Qml0dGVyYmx1ZSBTbWl0aCA8cnRsODgyMWNlcmZlMkBnbWFpbC5jb20+IHdyb3RlOg0KPiBPbiAx
+Mi8xMi8yMDI1IDA1OjEzLCBQaW5nLUtlIFNoaWggd3JvdGU6DQo+ID4gWFRBTCBTSSBpcyBhbiBp
+bmRpcmVjdCBzZXJpYWwgaW50ZXJmYWNlIHRvIGFjY2VzcyByZWdpc3RlcnMgaW4gYW5vdGhlcg0K
+PiA+IGhhcmR3YXJlIGRvbWFpbi4gV2hlbiBCVCBkcml2ZXIgaW5pdGlhbGl6ZXMgVUFSVCBpbnRl
+cmZhY2UsIGZpcm13YXJlIG1pZ2h0DQo+ID4gcmFyZWx5IGNvbnRyb2wgWFRBTCBTSSBhdCB0aGUg
+c2FtZSB0aW1lIGNhdXNpbmcgYWNjZXNzIHJhY2luZy4NCj4gPg0KPiA+IEN1cnJlbnQgaXMgdG8g
+YWRqdXN0IGluaXRpYWxpemF0aW9uIGZsb3cgdG8gYXZvaWQgdGhlIHJhY2luZy4gVG8gbWFrZQ0K
+PiA+IHRoZSByYWNpbmcgdmlzaWJsZSBpZiBpdCBzdGlsbCBwcmVzZW50cywgYWRkIGEgbWVzc2Fn
+ZSB0byBhZGRyZXNzIHRoaXMuDQo+ID4NCj4gPiBTaWduZWQtb2ZmLWJ5OiBQaW5nLUtlIFNoaWgg
+PHBrc2hpaEByZWFsdGVrLmNvbT4NCj4gPiAtLS0NCj4gPiAgZHJpdmVycy9uZXQvd2lyZWxlc3Mv
+cmVhbHRlay9ydHc4OS9tYWMuYyAgICB8IDExICsrKysrKysrKystDQo+ID4gIGRyaXZlcnMvbmV0
+L3dpcmVsZXNzL3JlYWx0ZWsvcnR3ODkvbWFjX2JlLmMgfCAxMSArKysrKysrKysrLQ0KPiA+ICAy
+IGZpbGVzIGNoYW5nZWQsIDIwIGluc2VydGlvbnMoKyksIDIgZGVsZXRpb25zKC0pDQo+ID4NCj4g
+PiBkaWZmIC0tZ2l0IGEvZHJpdmVycy9uZXQvd2lyZWxlc3MvcmVhbHRlay9ydHc4OS9tYWMuYyBi
+L2RyaXZlcnMvbmV0L3dpcmVsZXNzL3JlYWx0ZWsvcnR3ODkvbWFjLmMNCj4gPiBpbmRleCBjZjM2
+YmUxNjcxNjIuLjA2NmM5OWYzZTUzYSAxMDA2NDQNCj4gPiAtLS0gYS9kcml2ZXJzL25ldC93aXJl
+bGVzcy9yZWFsdGVrL3J0dzg5L21hYy5jDQo+ID4gKysrIGIvZHJpdmVycy9uZXQvd2lyZWxlc3Mv
+cmVhbHRlay9ydHc4OS9tYWMuYw0KPiA+IEBAIC03MDIzLDYgKzcwMjMsMTEgQEAgaW50IHJ0dzg5
+X21hY193cml0ZV94dGFsX3NpX2F4KHN0cnVjdCBydHc4OV9kZXYgKnJ0d2RldiwgdTggb2Zmc2V0
+LCB1OCB2YWwsIHU4DQo+IG0NCj4gPiAgICAgICAgICAgICAgIHJldHVybiByZXQ7DQo+ID4gICAg
+ICAgfQ0KPiA+DQo+ID4gKyAgICAgaWYgKHUzMl9nZXRfYml0cyh2YWwzMiwgQl9BWF9XTF9YVEFM
+X1NJX0FERFJfTUFTSykgIT0gb2Zmc2V0IHx8DQo+ID4gKyAgICAgICAgIHUzMl9nZXRfYml0cyh2
+YWwzMiwgQl9BWF9XTF9YVEFMX1NJX0RBVEFfTUFTSykgIT0gdmFsKQ0KPiA+ICsgICAgICAgICAg
+ICAgcnR3ODlfd2FybihydHdkZXYsICJ4dGFsIHNpIHdyaXRlOiBvZmZzZXQ9JXggdmFsPSV4IHBv
+bGw9JXhcbiIsDQo+ID4gKyAgICAgICAgICAgICAgICAgICAgICAgIG9mZnNldCwgdmFsLCB2YWwz
+Mik7DQo+ID4gKw0KPiANCj4gVGhpcyBtZXNzYWdlIGFwcGVhcnMgc2V2ZXJhbCB0aW1lcyBhZnRl
+ciBJIHVucGx1ZyBhIFVTQiBhZGFwdGVyOg0KPiANCj4gWyAgKzAuODM0NDQ1XSBydHc4OV84ODUx
+YnUgMS0yOjEuMjogeHRhbCBzaSB3cml0ZTogb2Zmc2V0PTkwIHZhbD0xMCBwb2xsPTANCj4gWyAg
+KzAuMDAwMDE1XSBydHc4OV84ODUxYnUgMS0yOjEuMjogeHRhbCBzaSB3cml0ZTogb2Zmc2V0PTkw
+IHZhbD0wIHBvbGw9MA0KPiBbICArMC4wMDAwMDddIHJ0dzg5Xzg4NTFidSAxLTI6MS4yOiB4dGFs
+IHNpIHdyaXRlOiBvZmZzZXQ9OTAgdmFsPTAgcG9sbD0wDQo+IFsgICswLjAwMDAwNF0gcnR3ODlf
+ODg1MWJ1IDEtMjoxLjI6IHh0YWwgc2kgd3JpdGU6IG9mZnNldD04MCB2YWw9MCBwb2xsPTANCj4g
+WyAgKzAuMDAwMDA1XSBydHc4OV84ODUxYnUgMS0yOjEuMjogeHRhbCBzaSB3cml0ZTogb2Zmc2V0
+PTkwIHZhbD04MCBwb2xsPTANCj4gWyAgKzAuMDAwMDA1XSBydHc4OV84ODUxYnUgMS0yOjEuMjog
+eHRhbCBzaSB3cml0ZTogb2Zmc2V0PTkwIHZhbD0wIHBvbGw9MA0KPiBbICArMC4wMDAwMDRdIHJ0
+dzg5Xzg4NTFidSAxLTI6MS4yOiB4dGFsIHNpIHdyaXRlOiBvZmZzZXQ9OTAgdmFsPTAgcG9sbD0w
+DQo+IA0KDQpJIHRoaW5rIHRoaXMgaXMgYmVjYXVzZSBpdCBjYWxscyB0aGlzIGZ1bmN0aW9uIGR1
+cmluZyBwb3dlci1vZmYuDQoNCldpdGggYWRkaXRpb25hbCBjaGFuZ2VzIGJlbG93LCB3aWxsIGl0
+IGF2b2lkIHdhcm5pbmcgaW4geW91ciBzaWRlPw0KDQpkaWZmIC0tZ2l0IGEvZHJpdmVycy9uZXQv
+d2lyZWxlc3MvcmVhbHRlay9ydHc4OS9tYWMuYyBiL2RyaXZlcnMvbmV0L3dpcmVsZXNzL3JlYWx0
+ZWsvcnR3ODkvbWFjLmMNCmluZGV4IDdmZmIwMzllN2QxYi4uOTExM2VmZTAwYTk0IDEwMDY0NA0K
+LS0tIGEvZHJpdmVycy9uZXQvd2lyZWxlc3MvcmVhbHRlay9ydHc4OS9tYWMuYw0KKysrIGIvZHJp
+dmVycy9uZXQvd2lyZWxlc3MvcmVhbHRlay9ydHc4OS9tYWMuYw0KQEAgLTE0ODMsNiArMTQ4Mywx
+MSBAQCBzdGF0aWMgdm9pZCBydHc4OV9tYWNfcG93ZXJfc3dpdGNoX2Jvb3RfbW9kZShzdHJ1Y3Qg
+cnR3ODlfZGV2ICpydHdkZXYpDQogICAgICAgIHJ0dzg5X3dyaXRlMzJfY2xyKHJ0d2RldiwgUl9B
+WF9SU1ZfQ1RSTCwgQl9BWF9SX0RJU19QUlNUKTsNCiB9DQoNCitzdGF0aWMgaW50IHJ0dzg5X21h
+Y19wd3Jfb2ZmX2Z1bmNfZm9yX3VucGx1Z2dlZChzdHJ1Y3QgcnR3ODlfZGV2ICpydHdkZXYpDQor
+ew0KKyAgICAgICByZXR1cm4gMDsNCit9DQorDQogc3RhdGljIGludCBydHc4OV9tYWNfcG93ZXJf
+c3dpdGNoKHN0cnVjdCBydHc4OV9kZXYgKnJ0d2RldiwgYm9vbCBvbikNCiB7DQogICAgICAgIGNv
+bnN0IHN0cnVjdCBydHc4OV9tYWNfZ2VuX2RlZiAqbWFjID0gcnR3ZGV2LT5jaGlwLT5tYWNfZGVm
+Ow0KQEAgLTE0OTcsOCArMTUwMiwxMyBAQCBzdGF0aWMgaW50IHJ0dzg5X21hY19wb3dlcl9zd2l0
+Y2goc3RydWN0IHJ0dzg5X2RldiAqcnR3ZGV2LCBib29sIG9uKQ0KICAgICAgICAgICAgICAgIGNm
+Z19zZXEgPSBjaGlwLT5wd3Jfb25fc2VxOw0KICAgICAgICAgICAgICAgIGNmZ19mdW5jID0gY2hp
+cC0+b3BzLT5wd3Jfb25fZnVuYzsNCiAgICAgICAgfSBlbHNlIHsNCi0gICAgICAgICAgICAgICBj
+Zmdfc2VxID0gY2hpcC0+cHdyX29mZl9zZXE7DQotICAgICAgICAgICAgICAgY2ZnX2Z1bmMgPSBj
+aGlwLT5vcHMtPnB3cl9vZmZfZnVuYzsNCisgICAgICAgICAgICAgICBpZiAodGVzdF9iaXQoUlRX
+ODlfRkxBR19VTlBMVUdHRUQsIHJ0d2Rldi0+ZmxhZ3MpKSB7DQorICAgICAgICAgICAgICAgICAg
+ICAgICBjZmdfc2VxID0gTlVMTDsNCisgICAgICAgICAgICAgICAgICAgICAgIGNmZ19mdW5jID0g
+cnR3ODlfbWFjX3B3cl9vZmZfZnVuY19mb3JfdW5wbHVnZ2VkOw0KKyAgICAgICAgICAgICAgIH0g
+ZWxzZSB7DQorICAgICAgICAgICAgICAgICAgICAgICBjZmdfc2VxID0gY2hpcC0+cHdyX29mZl9z
+ZXE7DQorICAgICAgICAgICAgICAgICAgICAgICBjZmdfZnVuYyA9IGNoaXAtPm9wcy0+cHdyX29m
+Zl9mdW5jOw0KKyAgICAgICAgICAgICAgIH0NCiAgICAgICAgfQ0KDQogICAgICAgIGlmICh0ZXN0
+X2JpdChSVFc4OV9GTEFHX0ZXX1JEWSwgcnR3ZGV2LT5mbGFncykpDQoNCg0KDQoNCg==
 
