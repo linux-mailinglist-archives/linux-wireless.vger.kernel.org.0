@@ -1,175 +1,211 @@
-Return-Path: <linux-wireless+bounces-29759-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-29760-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7BA0ECBE99D
-	for <lists+linux-wireless@lfdr.de>; Mon, 15 Dec 2025 16:21:31 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 25B7DCBECDC
+	for <lists+linux-wireless@lfdr.de>; Mon, 15 Dec 2025 16:58:39 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id B68FB3079243
-	for <lists+linux-wireless@lfdr.de>; Mon, 15 Dec 2025 15:13:59 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 8C19E30194F5
+	for <lists+linux-wireless@lfdr.de>; Mon, 15 Dec 2025 15:53:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5503730BBB3;
-	Mon, 15 Dec 2025 15:11:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A08D814A60C;
+	Mon, 15 Dec 2025 15:53:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="GLk1U8Cd";
-	dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b="daWlrqK0"
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="3L4zw4AE"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pj1-f51.google.com (mail-pj1-f51.google.com [209.85.216.51])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0C98A30EF7F
-	for <linux-wireless@vger.kernel.org>; Mon, 15 Dec 2025 15:11:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7F1512749D6
+	for <linux-wireless@vger.kernel.org>; Mon, 15 Dec 2025 15:53:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.51
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765811510; cv=none; b=ltuncI2nC8Gnl8jOzWQsngQMwrudbhD0HSUtvFeVtV9BglA89bX5fHdax/r7rQvKAcOQ7+2VmzLQDTzz8KduU8hAjqk8GSALd8N4rLd4NcHx+/rKr30U0UaF9zk1wAe0xLYz9C1lx2LObqXYxNbzwE8jYGQiho1LHHL190oiyIA=
+	t=1765814038; cv=none; b=iwgPQM5u9hEhuf29QIrakV3zQzE3t15pLVOBfoYijv7Ld1Z9TtLH08xjLy4cwLM2JB6Qpkuul2t9viK2wUkAea97T0/+45maYaC9vwRukSu/QrOmASxrS6uvaha9qv5TjBF44BSxO21jZQeP0WX6ijOEhpbfq+HEcJ0QaSeKGl4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765811510; c=relaxed/simple;
-	bh=nFswQCCXv6LBLb4DJ/i7f/SyWwcSSCKCe+7oLtWL8GM=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=TCOTnmKPTDaMl3rPEnbhSYAwLgR1Sn4EqSgXK0ELtcjegx401neIljEMCFZ8YWrRU5XAbnnYWfS/u95ByaZgcv7XyEQootIkMudKjOm8HwK1n0g6/BZZyDkg7xeew4/k4y/Fq6FjjWOANG8a2KuXqF9YmLz2RqMkZtdNYDitGYA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=GLk1U8Cd; dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b=daWlrqK0; arc=none smtp.client-ip=205.220.180.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
-Received: from pps.filterd (m0279869.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 5BFANrP7985021
-	for <linux-wireless@vger.kernel.org>; Mon, 15 Dec 2025 15:11:46 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
-	cc:content-transfer-encoding:date:from:message-id:mime-version
-	:subject:to; s=qcppdkim1; bh=eUbWHFvU7FR/0Fy1jqHfKqKPbImUVZ4OGOn
-	1w6YbVxY=; b=GLk1U8CdivxkGgwfiF6TdamdBd5Jb+HRTZR+R/zE/r64pZDpLYP
-	WHUdAHn+lOoy1tpPG6YAkqaik/dKRDg5a3d5rgY9C6KJXtt/D4JaLVcJloJRrFqm
-	qweacOtkVydxklD2pP1MeQXHj0C6LKmOStjnF2gdBrGZ9BIIgUTH63zQB6uAqYgb
-	db+A1ERCl/xHFIq8IiXriEwPAILHiwRqYmOtdQhfBOuJzaIF/rK06MHBelRVU1HF
-	9n2W2nmVPYqy5SZp5bXmIJRU/WpJqEYgpG6sZmF8kB/4S8+XE85Q23p9QXPFQFc1
-	8MLM5FafRJG3w/HYA5eb212rm6GrR2qyTjw==
-Received: from mail-vs1-f71.google.com (mail-vs1-f71.google.com [209.85.217.71])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4b11a7vyye-1
-	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
-	for <linux-wireless@vger.kernel.org>; Mon, 15 Dec 2025 15:11:46 +0000 (GMT)
-Received: by mail-vs1-f71.google.com with SMTP id ada2fe7eead31-5dfaa434109so5841082137.0
-        for <linux-wireless@vger.kernel.org>; Mon, 15 Dec 2025 07:11:46 -0800 (PST)
+	s=arc-20240116; t=1765814038; c=relaxed/simple;
+	bh=ROScw7LkVEobmMJDTvBXmeogZcMVtVRNIb25XYU/aOk=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=ag1jcYGljOjDY+BeaislgflhuWjln7b5opnFsKYtTkvXOHnji+kJiUBlcoARpgDnpGyd1gjD4qgmlMb89G+5CHfPnwgSGRQ4DlK3WqjIZYti2AvFOc+SHbOYfebWWxcvCGKOaLaK4fRwHBMbYr20RAOI1A6hFb4UXM76i6URuek=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=3L4zw4AE; arc=none smtp.client-ip=209.85.216.51
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+Received: by mail-pj1-f51.google.com with SMTP id 98e67ed59e1d1-34c84dc332cso1384590a91.0
+        for <linux-wireless@vger.kernel.org>; Mon, 15 Dec 2025 07:53:56 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=oss.qualcomm.com; s=google; t=1765811506; x=1766416306; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=eUbWHFvU7FR/0Fy1jqHfKqKPbImUVZ4OGOn1w6YbVxY=;
-        b=daWlrqK0KiJbmX4c4GVdIetkhmWv3nltjm6YcGMqtyXWy+41XkijanHPQZwLjQXeuC
-         HTAlaTHsQlkwYDGwXWwUyVjddIBSSUyQC0zB3ajrFTVwNjjUPaNU28YcBaxTVRehYIYI
-         qjhwqQzWf+pqY3gAl/TW4QcFZN7AysOg9vVJdbc6LZbXl2EJYRlOk4k3nEH3pxQm+2kh
-         PgngUFqavLk0r4XkHUc2Nz3hUf/gaIStNgzS8REvWfZLuQ1oT/DOwt01V+rnc64sVuln
-         0N/bp6fOKI2DhZRsEP8jznp8QBVQgKStsEj5pOEpIN9du1l6TbMz04zx0+jv80/eJQum
-         m1QQ==
+        d=google.com; s=20230601; t=1765814036; x=1766418836; darn=vger.kernel.org;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=ROScw7LkVEobmMJDTvBXmeogZcMVtVRNIb25XYU/aOk=;
+        b=3L4zw4AEmfn/f/fNDRUYPZSuvtKzrwsroubw/hms++Iru0bPAOg4yCPRvuxfWa0kxn
+         3fNefrdGFKRIlUWQCUEDTq/W/V7bjx6CYgrCX35l+YptIuyKMon+1fvuXGctfm1+lOBn
+         Ue9aWoONOHB5HcsqyhG0YscCV8fqmMSPJhd8yBv9uc3XwX4DiHnKBzKicSklSfvlzv0t
+         DON641wNsDKGmA7Pz9d0PVSUKYJXNKfFjcEyrVEb7w9IkSmvWKWRGSOQ9Ex1bU4u4zk1
+         S6cDpe2SOGW5EwQ81vbEb8qrwt2GsOSDMc4HJ33uAyswTmhkliTz7zb7NdAZ5e/1MfFw
+         BG3Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1765811506; x=1766416306;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+        d=1e100.net; s=20230601; t=1765814036; x=1766418836;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=eUbWHFvU7FR/0Fy1jqHfKqKPbImUVZ4OGOn1w6YbVxY=;
-        b=kAOG5urGJJfoQWW055gHTBHUbNCmms1nkzqjGSwF8l8gEMJYbCmpQG1SSxZka1KQYR
-         sTtDFQtSuWkGo9Tq3ekomkvn5c+5G0gbt+eWgYqUsQ81HEXfaLEGasGwMc2FQEw0kFJu
-         l/rApSJqVPh7QkazmqvnC3vlEmDo4UCwDL1Vq6HcZ6viHcReD0WALQqMFrd8aZjYG1/B
-         Rz0x3xHV4CW+y9HQSBFNVitsYZVB50dAUbjJv9BGH05TgPNS4fZUImeURpsulPkn6sLA
-         JJXXke178s30vnZqF1CAKMAUzFp1/h8xidppQCahpB/bUG80IBRW9rXxK9gvP9d243Fv
-         IplQ==
-X-Gm-Message-State: AOJu0Ywu6JHk537uaxtwwC3xmXpcgKqNpLApdS0SxXeoN+Byg0570NDc
-	WKdb/Mjwdb+E3Rid/R7Tpxs+IKQTiFwYOo8ff6G6YXlFh40uApt424qcwTePQZiGeZ7WClMemHn
-	spBAihMPDQcsddGlGLUqXA9dfN9RnI01A8+7b8A27bDlwYIOtdAVSjbS0XjVfh8+dblIxlg==
-X-Gm-Gg: AY/fxX7eNLYGfh0Py7f2iVJbrese97i2SJnTsMSvm8VgFCN1oR+M7793hr1V3YSMY0U
-	cGVXSKNPNj2hJkL10J/kP5reOcxLtaCPwnukHZwq/s3av/EwIXL2akPOXFk5+3PtbfGSCRHmk8P
-	t2MKIh64SQpa3axpjplgBLnr5WWMxBXOZdUvH8UNcLOMjdWXHvz7N+kTlbME0hc6ATYUIzaMQml
-	2jlgtUZWKYLf3Jn3iIwsGXmZXAwJpfNC/ZS02pkrhOyLffeUmYd+OwSYbwZ19/0NcBn5JOL4ZE8
-	jxgJS5Uxcii4Hqcr/6tqIP/3WItRQd2yjKsYUQlucjqfU+xulPiJ2vZ3AJwn9NDmHmdXjPcU4w9
-	V1GwZgiz37tUAesyNBgw1MfHBRAKydcPmwuQw
-X-Received: by 2002:a05:6102:f0d:b0:5db:f897:59f0 with SMTP id ada2fe7eead31-5e8116f5526mr5136263137.11.1765811505637;
-        Mon, 15 Dec 2025 07:11:45 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IHfQPzRMDy79X95Om0UjDNXy36Aq/16ODIbLX0C1hqSYuFRkR6HPNM1Z1sdLtSRg5l+AtIn+w==
-X-Received: by 2002:a05:6102:f0d:b0:5db:f897:59f0 with SMTP id ada2fe7eead31-5e8116f5526mr5136225137.11.1765811505176;
-        Mon, 15 Dec 2025 07:11:45 -0800 (PST)
-Received: from jouni.oss.qualcomm.com ([83.245.230.71])
-        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-598f3194dcesm5543209e87.79.2025.12.15.07.11.44
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 15 Dec 2025 07:11:44 -0800 (PST)
-From: Jouni Malinen <jouni.malinen@oss.qualcomm.com>
-To: Johannes Berg <johannes@sipsolutions.net>
-Cc: linux-wireless@vger.kernel.org
-Subject: [PATCH] wifi: mac80211: Discard Beacon frames to non-broadcast address
-Date: Mon, 15 Dec 2025 17:11:34 +0200
-Message-ID: <20251215151134.104501-1-jouni.malinen@oss.qualcomm.com>
-X-Mailer: git-send-email 2.43.0
+        bh=ROScw7LkVEobmMJDTvBXmeogZcMVtVRNIb25XYU/aOk=;
+        b=rohvBLTjBYu/boFkR7f58EJVXOanoTilfNz4toJFJzMJD1PAeCJQ+d4LEC07AqQJas
+         Y43JiEes8tZYk49Yr56kpvK0zP4EevwDP4d0QdaJpvCGNpoXR5+cDdWqF+dNAwTRhMwv
+         iu3wSo7XjKI4Psjmkco99IZHhDjgpzaSGEJZvvxxCpba7R43kbsE5qBAPyNTnxu+i8Du
+         /4jn9AydCNs3qkXgChiw/J2qJvSQUfgs6Si7Lp5uBZaf3TuyxX9T0riaSHJoFFoQslJ1
+         wYeyjG6AqurBkpSaPUdiiJo0sm7fi9rbIPL+r/xXILTGmPoHeSOlure0yNO7X+ZhwPXF
+         KT4w==
+X-Forwarded-Encrypted: i=1; AJvYcCVasK4FGiQ+ZcQYddYI2IFRkkzBt9ebH14LK7OqQiwT9M7d87JaAbIgdbvw+lnrEfzyGYcGhtQflWQBRtyWRw==@vger.kernel.org
+X-Gm-Message-State: AOJu0YwaY4iIn68YvYdqwzk38rvyN08ZryLw7q0/451QR0V7pWtxhZwh
+	9I2EvLaQ4Tts/VtMg3jJKwOCjEFCrn1FBehtHNRD9+h2cKwhp05DtKwpMWIadn+ZbA3oD53sx7w
+	N7Ob6QwkX0PTc969lW2X1A1txLjy6PTWXM82zDpqW
+X-Gm-Gg: AY/fxX7ytqIkq6xDf5fc+xCry1yNblXDUxuGdbj9XqzGZzx6QZHNorqTy4NjTngu7Uw
+	rYWKg4jHgMFZ7IvUxBZoNXXjiTb9tHxFf7zuiJ6u9he9EIvyCoEd0CsLG9SlGxQP+iegJrCuQIj
+	go74IQyTcRY/FmbDUOkJwc0lVhbjeabY2JL7ZKcbQulvNbyuKNUdUHFGJXefiE33JxJyAdpiyPM
+	ToTsT/TuAomK9VMV7r/XcwganOHFVlRlOLfIKpybg93Y0xHvKhBLN+/SMKUZbmhMEdmWpA1+r5p
+	iYpGO4SrfxTUdsmtNHUnaTrZ5w==
+X-Google-Smtp-Source: AGHT+IEqHtbIkXeCrxZ7N2Is3Z0BKjAm77k3VHnhb//Mc2q6P3kqxs3MPR3a7KluXzGQE7f0g+lEq90Z0zzfwOCm1e4=
+X-Received: by 2002:a05:7022:1b0c:b0:11a:3483:4a87 with SMTP id
+ a92af1059eb24-11f34be9ca7mr8171406c88.13.1765814035105; Mon, 15 Dec 2025
+ 07:53:55 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUxMjE1MDEzMiBTYWx0ZWRfX5V8Fr6RotSCp
- NJTYTHTbSs/rh8dCo78i+prbKeNSJTNvNk8MY1BIJBVSvyT8bA7O+MChOfWbtuIZLGZPXSNaTu/
- dwsjCdx1Q6wvUfbU0SPes0GC8AhP6RC13ZOkhtSREYB92g1y87A/Z08CfDYinHixUoSUfVltv0+
- 5ezS0rBCIPxF8TWoihpq9Nz+m8RV4Sim4EAqdcSzdoB1s1ePh412LfO9/T1HNzhtFaLpexqtgnt
- r72zqgelIaF/8HLaThjx0rZZkx30695COMbhkAqGi00piNYQUYxPokxYUde6WOt6NBhDdCTMJ9B
- dLFCi5Y8HK4ueIG7m7i8bJbnvETYe2Ob79h02yG/p1UMBCQWD25MWbcIY2WGzwj00cvCilefBmj
- YaV91Xd1kZ2ci2WJBqVzfvPACn6Nhw==
-X-Proofpoint-ORIG-GUID: 9g5xkUpQEhnQXfTF6hgaSgToXImLtLpF
-X-Proofpoint-GUID: 9g5xkUpQEhnQXfTF6hgaSgToXImLtLpF
-X-Authority-Analysis: v=2.4 cv=aOf9aL9m c=1 sm=1 tr=0 ts=69402532 cx=c_pps
- a=P2rfLEam3zuxRRdjJWA2cw==:117 a=X4Mu7yV/aqFzOGIJAjKMGg==:17
- a=wP3pNCr1ah4A:10 a=s4-Qcg_JpJYA:10 a=VkNPw1HP01LnGYTKEx00:22
- a=EUspDBNiAAAA:8 a=OxrFBiIj5yLKQ55hnisA:9 a=ODZdjJIeia2B_SHc_B0f:22
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.9,FMLib:17.12.100.49
- definitions=2025-12-15_03,2025-12-15_02,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- priorityscore=1501 malwarescore=0 impostorscore=0 adultscore=0 bulkscore=0
- clxscore=1011 phishscore=0 lowpriorityscore=0 suspectscore=0 spamscore=0
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.22.0-2510240001 definitions=main-2512150132
+References: <20251120145835.3833031-2-elver@google.com> <20251120151033.3840508-7-elver@google.com>
+ <20251211121659.GH3911114@noisy.programming.kicks-ass.net>
+ <CANpmjNOmAYFj518rH0FdPp=cqK8EeKEgh1ok_zFUwHU5Fu92=w@mail.gmail.com>
+ <20251212094352.GL3911114@noisy.programming.kicks-ass.net>
+ <CANpmjNP=s33L6LgYWHygEuLtWTq-s2n4yFDvvGcF3HjbGH+hqw@mail.gmail.com>
+ <20251212110928.GP3911114@noisy.programming.kicks-ass.net> <aUAPbFJSv0alh_ix@elver.google.com>
+In-Reply-To: <aUAPbFJSv0alh_ix@elver.google.com>
+From: Marco Elver <elver@google.com>
+Date: Mon, 15 Dec 2025 16:53:18 +0100
+X-Gm-Features: AQt7F2oxzebZt0rcTkreaKMT4PDBgj_kZoo-YwczNEo1aa0S6zPi6Xbs61JFiQg
+Message-ID: <CANpmjNNm-kbTw46Wh1BJudynHOeLn-Oxew8VuAnCppvV_WtyBw@mail.gmail.com>
+Subject: Re: [PATCH v4 06/35] cleanup: Basic compatibility with context analysis
+To: Peter Zijlstra <peterz@infradead.org>
+Cc: Boqun Feng <boqun.feng@gmail.com>, Ingo Molnar <mingo@kernel.org>, 
+	Will Deacon <will@kernel.org>, "David S. Miller" <davem@davemloft.net>, 
+	Luc Van Oostenryck <luc.vanoostenryck@gmail.com>, Chris Li <sparse@chrisli.org>, 
+	"Paul E. McKenney" <paulmck@kernel.org>, Alexander Potapenko <glider@google.com>, Arnd Bergmann <arnd@arndb.de>, 
+	Bart Van Assche <bvanassche@acm.org>, Christoph Hellwig <hch@lst.de>, Dmitry Vyukov <dvyukov@google.com>, 
+	Eric Dumazet <edumazet@google.com>, Frederic Weisbecker <frederic@kernel.org>, 
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Herbert Xu <herbert@gondor.apana.org.au>, 
+	Ian Rogers <irogers@google.com>, Jann Horn <jannh@google.com>, 
+	Joel Fernandes <joelagnelf@nvidia.com>, Johannes Berg <johannes.berg@intel.com>, 
+	Jonathan Corbet <corbet@lwn.net>, Josh Triplett <josh@joshtriplett.org>, 
+	Justin Stitt <justinstitt@google.com>, Kees Cook <kees@kernel.org>, 
+	Kentaro Takeda <takedakn@nttdata.co.jp>, Lukas Bulwahn <lukas.bulwahn@gmail.com>, 
+	Mark Rutland <mark.rutland@arm.com>, Mathieu Desnoyers <mathieu.desnoyers@efficios.com>, 
+	Miguel Ojeda <ojeda@kernel.org>, Nathan Chancellor <nathan@kernel.org>, 
+	Neeraj Upadhyay <neeraj.upadhyay@kernel.org>, 
+	Nick Desaulniers <nick.desaulniers+lkml@gmail.com>, Steven Rostedt <rostedt@goodmis.org>, 
+	Tetsuo Handa <penguin-kernel@i-love.sakura.ne.jp>, Thomas Gleixner <tglx@linutronix.de>, 
+	Thomas Graf <tgraf@suug.ch>, Uladzislau Rezki <urezki@gmail.com>, Waiman Long <longman@redhat.com>, 
+	kasan-dev@googlegroups.com, linux-crypto@vger.kernel.org, 
+	linux-doc@vger.kernel.org, linux-kbuild@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, linux-mm@kvack.org, 
+	linux-security-module@vger.kernel.org, linux-sparse@vger.kernel.org, 
+	linux-wireless@vger.kernel.org, llvm@lists.linux.dev, rcu@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 
-Beacon frames are required to be sent to the broadcast address, see IEEE
-Std 802.11-2020, 11.1.3.1 ("The Address 1 field of the Beacon .. frame
-shall be set to the broadcast address"). A unicast Beacon frame might be
-used as a targeted attack to get one of the associated STAs to do
-something (e.g., using CSA to move it to another channel). As such, it
-is better have strict filtering for this on the received side and
-discard all Beacon frames that are sent to an unexpected address.
+On Mon, 15 Dec 2025 at 14:38, Marco Elver <elver@google.com> wrote:
+>
+> On Fri, Dec 12, 2025 at 12:09PM +0100, Peter Zijlstra wrote:
+> > On Fri, Dec 12, 2025 at 11:15:29AM +0100, Marco Elver wrote:
+> > > On Fri, 12 Dec 2025 at 10:43, Peter Zijlstra <peterz@infradead.org> wrote:
+> > > [..]
+> > > > > Correct. We're trading false negatives over false positives at this
+> > > > > point, just to get things to compile cleanly.
+> > > >
+> > > > Right, and this all 'works' right up to the point someone sticks a
+> > > > must_not_hold somewhere.
+> > > >
+> > > > > > > Better support for Linux's scoped guard design could be added in
+> > > > > > > future if deemed critical.
+> > > > > >
+> > > > > > I would think so, per the above I don't think this is 'right'.
+> > > > >
+> > > > > It's not sound, but we'll avoid false positives for the time being.
+> > > > > Maybe we can wrangle the jigsaw of macros to let it correctly acquire
+> > > > > and then release (via a 2nd cleanup function), it might be as simple
+> > > > > as marking the 'constructor' with the right __acquires(..), and then
+> > > > > have a 2nd __attribute__((cleanup)) variable that just does a no-op
+> > > > > release via __release(..) so we get the already supported pattern
+> > > > > above.
+> > > >
+> > > > Right, like I mentioned in my previous email; it would be lovely if at
+> > > > the very least __always_inline would get a *very* early pass such that
+> > > > the above could be resolved without inter-procedural bits. I really
+> > > > don't consider an __always_inline as another procedure.
+> > > >
+> > > > Because as I already noted yesterday, cleanup is now all
+> > > > __always_inline, and as such *should* all end up in the one function.
+> > > >
+> > > > But yes, if we can get a magical mash-up of __cleanup and __release (let
+> > > > it be knows as __release_on_cleanup ?) that might also work I suppose.
+> > > > But I vastly prefer __always_inline actually 'working' ;-)
+> > >
+> > > The truth is that __always_inline working in this way is currently
+> > > infeasible. Clang and LLVM's architecture simply disallow this today:
+> > > the semantic analysis that -Wthread-safety does happens over the AST,
+> > > whereas always_inline is processed by early passes in the middle-end
+> > > already within LLVM's pipeline, well after semantic analysis. There's
+> > > a complexity budget limit for semantic analysis (type checking,
+> > > warnings, assorted other errors), and path-sensitive &
+> > > intra-procedural analysis over the plain AST is outside that budget.
+> > > Which is why tools like clang-analyzer exist (symbolic execution),
+> > > where it's possible to afford that complexity since that's not
+> > > something that runs for a normal compile.
+> > >
+> > > I think I've pushed the current version of Clang's -Wthread-safety
+> > > already far beyond what folks were thinking is possible (a variant of
+> > > alias analysis), but even my healthy disregard for the impossible
+> > > tells me that making path-sensitive intra-procedural analysis even if
+> > > just for __always_inline functions is quite possibly a fool's errand.
+> >
+> > Well, I had to propose it. Gotta push the envelope :-)
+> >
+> > > So either we get it to work with what we have, or give up.
+> >
+> > So I think as is, we can start. But I really do want the cleanup thing
+> > sorted, even if just with that __release_on_cleanup mashup or so.
+>
+> Working on rebasing this to v6.19-rc1 and saw this new scoped seqlock
+> abstraction. For that one I was able to make it work like I thought we
+> could (below). Some awkwardness is required to make it work in
+> for-loops, which only let you define variables with the same type.
+>
+> For <linux/cleanup.h> it needs some more thought due to extra levels of
+> indirection.
 
-This is even more important for cases where beacon protection is used.
-The current implementation in mac80211 is correctly discarding unicast
-Beacon frames if the Protected Frame bit in the Frame Control field is
-set to 0. However, if that bit is set to 1, the logic used for checking
-for configured BIGTK(s) does not actually work. If the driver does not
-have logic for dropping unicast Beacon frames with Protected Frame bit
-1, these frames would be accepted in mac80211 processing as valid Beacon
-frames even though they are not protected. This would allow beacon
-protection to be bypassed. While the logic for checking beacon
-protection could be extended to cover this corner case, a more generic
-check for discard all Beacon frames based on A1=unicast address covers
-this without needing additional changes.
+For cleanup.h, the problem is that to instantiate we use
+"guard(class)(args..)". If it had been designed as "guard(class,
+args...)", i.e. just use __VA_ARGS__ explicitly instead of the
+implicit 'args...', it might have been possible to add a second
+cleanup variable to do the same (with some additional magic to extract
+the first arg if one exists). Unfortunately, the use of the current
+guard()() idiom has become so pervasive that this is a bigger
+refactor. I'm going to leave cleanup.h as-is for now, if we think we
+want to give this a go in the current state.
 
-Address all these issues by dropping received Beacon frames if they are
-sent to a non-broadcast address.
+One observation from the rebase: Generally synchronization primitives
+do not change much and the annotations are relatively stable, but e.g.
+RCU & sched (latter is optional and depends on the sched-enablement
+patch) receive disproportionally more changes, and while new
+annotations required for v6.19-rc1 were trivial, it does require
+compiling with a Clang version that does produce the warnings to
+notice.
+While Clang 22-dev is being tested on CI, I doubt maintainers already
+use it, so it's possible we'll see some late warnings due to missing
+annotations when things hit -next. This might be an acceptable churn
+cost, if we think the outcome is worthwhile. Things should get better
+when Clang 22 is released properly, but until then things might be a
+little bumpy if there are large changes across the core
+synchronization primitives.
 
-Signed-off-by: Jouni Malinen <jouni.malinen@oss.qualcomm.com>
----
- net/mac80211/rx.c | 5 +++++
- 1 file changed, 5 insertions(+)
-
-diff --git a/net/mac80211/rx.c b/net/mac80211/rx.c
-index 6a1899512d07..e0ccd9749853 100644
---- a/net/mac80211/rx.c
-+++ b/net/mac80211/rx.c
-@@ -3511,6 +3511,11 @@ ieee80211_rx_h_mgmt_check(struct ieee80211_rx_data *rx)
- 	    rx->skb->len < IEEE80211_MIN_ACTION_SIZE)
- 		return RX_DROP_U_RUNT_ACTION;
- 
-+	/* Drop non-broadcast Beacon frames */
-+	if (ieee80211_is_beacon(mgmt->frame_control) &&
-+	    !is_broadcast_ether_addr(mgmt->da))
-+		return RX_DROP;
-+
- 	if (rx->sdata->vif.type == NL80211_IFTYPE_AP &&
- 	    ieee80211_is_beacon(mgmt->frame_control) &&
- 	    !(rx->flags & IEEE80211_RX_BEACON_REPORTED)) {
--- 
-2.43.0
-
+Thanks,
+-- Marco
 
