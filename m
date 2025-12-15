@@ -1,51 +1,73 @@
-Return-Path: <linux-wireless+bounces-29755-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-29756-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0FF19CBDCCC
-	for <lists+linux-wireless@lfdr.de>; Mon, 15 Dec 2025 13:29:08 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id D8A41CBDCCF
+	for <lists+linux-wireless@lfdr.de>; Mon, 15 Dec 2025 13:29:11 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id AF93030334C7
-	for <lists+linux-wireless@lfdr.de>; Mon, 15 Dec 2025 12:21:05 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 9A5B4301874D
+	for <lists+linux-wireless@lfdr.de>; Mon, 15 Dec 2025 12:24:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2DA831A256E;
-	Mon, 15 Dec 2025 12:21:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4E4362989B5;
+	Mon, 15 Dec 2025 12:24:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="cLz7lVcn"
+	dkim=pass (1024-bit key) header.d=mediatek.com header.i=@mediatek.com header.b="codP5FRs"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from out-176.mta1.migadu.com (out-176.mta1.migadu.com [95.215.58.176])
+Received: from mailgw02.mediatek.com (unknown [210.61.82.184])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 528C618DB1E
-	for <linux-wireless@vger.kernel.org>; Mon, 15 Dec 2025 12:21:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.215.58.176
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 31B91265CA8
+	for <linux-wireless@vger.kernel.org>; Mon, 15 Dec 2025 12:23:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=210.61.82.184
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765801264; cv=none; b=YIGYqWQd/Jjgso1Sr7qsG0F8JfAlrhFFjbt6a4+8yvZVQp+oIxNFECiwoBQ8A/Q4+JM+tp2LKqqqyDTsjZOp1/WSbJ2sU5+RQJ1Yifcm19TPuCgCpbtzIHp34HZ1l3h5SWicEZmAVuP/3XFJYxjz1vUbbzDXDLYAyH0Q5fwydL8=
+	t=1765801441; cv=none; b=nNxdNqtYOeJYHTVRaArdPt5q3roli8DP8pvDPS86mAN6wSjCxB7Ul1s+9xhi3MS9wwM6qFL2hwRrK/PEsdJeWvw39m1SFDENhGuja53/Xn32AzzqOJzJqQkuBzwDIkXYkjBdfK/xBHeEYBWGTbgznt94R5T+q4ijO9L8D+ckYuU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765801264; c=relaxed/simple;
-	bh=tGtZFWJZWVieQAfbdvhspv4bnWH397mqfaAyuWKdKCo=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=p7UvVIwqtxQvSvS6jXgutGejksNjAdK0cMTNlhae66dt1OMq+2gERP6YmznG2hbElfxwlWb+H+cj3gw8RDyHnmHzb5qVh9M4YkHM62tGWGz7c7va6hU0Hg1hB202IArgw+pP2dENY38dyjZAy932Jsc3QXOvXkXfzeroDKCC6Y0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=cLz7lVcn; arc=none smtp.client-ip=95.215.58.176
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1765801260;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=kuuh4h814MG9F8RlFOMcprDr38lqFWabL2fokFxEL8A=;
-	b=cLz7lVcnpKV5OzwgZIxw0/aWGA02m/Y1GJ1M2JmgTwCdkRb6ErZd/DMyREsTRXPmavJXbv
-	Sb7XpJCTdiIX6vniUBqse6R+QQGXNt4LZFAusW0/WFS9y60ScBzjlaT7UOBx5u/8zVUqxt
-	Ig/9re6rPlt+aSRQN7rIddBKmL8Gq48=
-From: Thorsten Blum <thorsten.blum@linux.dev>
-To: Johannes Berg <johannes@sipsolutions.net>
-Cc: Thorsten Blum <thorsten.blum@linux.dev>,
-	linux-wireless@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH net-next] net: rfkill: Replace strcpy with memcpy to improve rfkill_alloc
-Date: Mon, 15 Dec 2025 13:20:36 +0100
-Message-ID: <20251215122036.379322-2-thorsten.blum@linux.dev>
+	s=arc-20240116; t=1765801441; c=relaxed/simple;
+	bh=8g4nYYrcJMsKd/AcAueumsmuvDfVls/lGP0k3T5Sccw=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=O5/FwPxlDsrnh24wkx4pxqHqwpNMbJkl+i9hK3zLunHyBU6M5pMsqYngQ0kBO1R02Khpyf6hOcorb1H3j+gX0dTAKw/wSkuYIw2kXguar54GEZKQuA/gX/W76B3B5F5tpw9pCyUiX6a1orkWsCAKa6dfqnFuR+LnZEW0VMcczyo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=mediatek.com; spf=pass smtp.mailfrom=mediatek.com; dkim=pass (1024-bit key) header.d=mediatek.com header.i=@mediatek.com header.b=codP5FRs; arc=none smtp.client-ip=210.61.82.184
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=mediatek.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=mediatek.com
+X-UUID: ea581210d9b011f0b33aeb1e7f16c2b6-20251215
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=mediatek.com; s=dk;
+	h=Content-Type:Content-Transfer-Encoding:MIME-Version:Message-ID:Date:Subject:CC:To:From; bh=DfpaJEkerBrqfTqE/r1TRmtVSWOUMTlHDDSSj6YOrlQ=;
+	b=codP5FRs/1smgszJAdqGd8oXBf2FWzD4SfBPt8yIk9H8SHIIQLdnOCjNgJ1N3SWA0mO7ECDogxRwLHs++vpLIB+p+fqBVnqNnpOzOJ9fkDjL7XTaLqHO9furi9y3HSdlgWRB1idPV/O8VDnGAwbQqmZ8ajC9V5M7VLtwh4DeZc4=;
+X-CID-P-RULE: Release_Ham
+X-CID-O-INFO: VERSION:1.3.6,REQID:aee98ec9-396e-468f-9111-228d160a8923,IP:0,UR
+	L:0,TC:0,Content:0,EDM:0,RT:0,SF:0,FILE:0,BULK:0,RULE:Release_Ham,ACTION:r
+	elease,TS:0
+X-CID-META: VersionHash:a9d874c,CLOUDID:6d7e75c6-8a73-4871-aac2-7b886d064f36,B
+	ulkID:nil,BulkQuantity:0,Recheck:0,SF:102|836|888|898,TC:-5,Content:0|15|5
+	0,EDM:-3,IP:nil,URL:0,File:130,RT:0,Bulk:nil,QS:nil,BEC:nil,COL:0,OSI:0,OS
+	A:0,AV:0,LES:1,SPR:NO,DKR:0,DKP:0,BRR:0,BRE:0,ARC:0
+X-CID-BVR: 2,SSN|SDN
+X-CID-BAS: 2,SSN|SDN,0,_
+X-CID-FACTOR: TF_CID_SPAM_SNR
+X-CID-RHF: D41D8CD98F00B204E9800998ECF8427E
+X-UUID: ea581210d9b011f0b33aeb1e7f16c2b6-20251215
+Received: from mtkmbs14n2.mediatek.inc [(172.21.101.76)] by mailgw02.mediatek.com
+	(envelope-from <leon.yen@mediatek.com>)
+	(Generic MTA with TLSv1.2 ECDHE-RSA-AES256-GCM-SHA384 256/256)
+	with ESMTP id 1108337038; Mon, 15 Dec 2025 20:23:51 +0800
+Received: from mtkmbs11n1.mediatek.inc (172.21.101.185) by
+ mtkmbs13n2.mediatek.inc (172.21.101.108) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.29; Mon, 15 Dec 2025 20:23:50 +0800
+Received: from mtksitap99.mediatek.inc (10.233.130.16) by
+ mtkmbs11n1.mediatek.inc (172.21.101.73) with Microsoft SMTP Server id
+ 15.2.2562.29 via Frontend Transport; Mon, 15 Dec 2025 20:23:50 +0800
+From: Leon Yen <leon.yen@mediatek.com>
+To: <nbd@nbd.name>, <lorenzo@kernel.org>
+CC: <linux-wireless@vger.kernel.org>, <linux-mediatek@lists.infradead.org>,
+	<deren.wu@mediatek.com>, <sean.wang@mediatek.com>,
+	<mingyen.hsieh@mediatek.com>, <michael.lo@mediatek.com>,
+	<allan.wang@mediatek.com>, <quan.zhou@mediatek.com>,
+	<sarick.jiang@mediatek.com>, <ryder.lee@mediatek.com>,
+	<shayne.chen@mediatek.com>, <leon.yen@mediatek.com>
+Subject: [PATCH v2] wifi: mt76: mt792x: Fix a potential deadlock in high-load situations
+Date: Mon, 15 Dec 2025 20:22:31 +0800
+Message-ID: <20251215122231.3180648-1-leon.yen@mediatek.com>
+X-Mailer: git-send-email 2.45.2
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
@@ -53,54 +75,44 @@ List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Migadu-Flow: FLOW_OUT
+Content-Type: text/plain
 
-strcpy() is deprecated [1] and uses an additional strlen() internally;
-use memcpy() directly since we already know the length of 'name' and
-that it is guaranteed to be NUL-terminated.
+A deadlock may occur between two works, ps_work and mac_work, if their work
+functions run simultaneously as they attempt to cancel each other by
+calling cancel_delayed_work_sync().
 
-Use struct_size(), which provides additional compile-time checks for
-structures with flexible array members (e.g., __must_be_array()), to
-determine the allocation size for a new 'struct rfkill'.
+mt792x_mac_work() ->   ...  -> cancel_delayed_work_sync(&pm->ps_work);
+mt792x_pm_power_save_work() -> cancel_delayed_work_sync(&mphy->mac_work);
 
-Link: https://www.kernel.org/doc/html/latest/process/deprecated.html#strcpy [1]
-Signed-off-by: Thorsten Blum <thorsten.blum@linux.dev>
+In high-load situations, they are queued but may not have chance to be
+executed until the CPUs are released. Once the CPUs are available, there
+is a high possibility that the ps_work function and mac_work function will
+be executed simultaneously, resulting in a possible deadlock.
+
+This patch replaces cancel_delayed_work_sync() with cancel_delayed_work()
+in ps_work to eliminate the deadlock and make the code easier to maintain.
+
+Signed-off-by: Leon Yen <leon.yen@mediatek.com>
 ---
- net/rfkill/core.c | 6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
+v2: Modify the solution to make it simpler and easier to maintain
+---
+ drivers/net/wireless/mediatek/mt76/mt792x_mac.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/net/rfkill/core.c b/net/rfkill/core.c
-index 7d3e82e4c2fc..db1260acb182 100644
---- a/net/rfkill/core.c
-+++ b/net/rfkill/core.c
-@@ -986,6 +986,7 @@ struct rfkill * __must_check rfkill_alloc(const char *name,
- {
- 	struct rfkill *rfkill;
- 	struct device *dev;
-+	size_t name_sz;
+diff --git a/drivers/net/wireless/mediatek/mt76/mt792x_mac.c b/drivers/net/wireless/mediatek/mt76/mt792x_mac.c
+index 71dec93094eb..888e5a505673 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt792x_mac.c
++++ b/drivers/net/wireless/mediatek/mt76/mt792x_mac.c
+@@ -375,7 +375,7 @@ void mt792x_pm_power_save_work(struct work_struct *work)
+ 	}
  
- 	if (WARN_ON(!ops))
- 		return NULL;
-@@ -999,14 +1000,15 @@ struct rfkill * __must_check rfkill_alloc(const char *name,
- 	if (WARN_ON(type == RFKILL_TYPE_ALL || type >= NUM_RFKILL_TYPES))
- 		return NULL;
- 
--	rfkill = kzalloc(sizeof(*rfkill) + strlen(name) + 1, GFP_KERNEL);
-+	name_sz = strlen(name) + 1;
-+	rfkill = kzalloc(struct_size(rfkill, name, name_sz), GFP_KERNEL);
- 	if (!rfkill)
- 		return NULL;
- 
- 	spin_lock_init(&rfkill->lock);
- 	INIT_LIST_HEAD(&rfkill->node);
- 	rfkill->type = type;
--	strcpy(rfkill->name, name);
-+	memcpy(rfkill->name, name, name_sz);
- 	rfkill->ops = ops;
- 	rfkill->data = ops_data;
- 
+ 	if (!mt792x_mcu_fw_pmctrl(dev)) {
+-		cancel_delayed_work_sync(&mphy->mac_work);
++		cancel_delayed_work(&mphy->mac_work);
+ 		return;
+ 	}
+ out:
 -- 
-Thorsten Blum <thorsten.blum@linux.dev>
-GPG: 1D60 735E 8AEF 3BE4 73B6  9D84 7336 78FD 8DFE EAD4
+2.45.2
 
 
