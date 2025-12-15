@@ -1,189 +1,317 @@
-Return-Path: <linux-wireless+bounces-29762-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-29763-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 572A3CBF497
-	for <lists+linux-wireless@lfdr.de>; Mon, 15 Dec 2025 18:47:07 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5D65BCBF5DD
+	for <lists+linux-wireless@lfdr.de>; Mon, 15 Dec 2025 19:14:13 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 5526E300EDEF
-	for <lists+linux-wireless@lfdr.de>; Mon, 15 Dec 2025 17:47:06 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 95EB83027E0B
+	for <lists+linux-wireless@lfdr.de>; Mon, 15 Dec 2025 18:06:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0BFEE2EA147;
-	Mon, 15 Dec 2025 17:47:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B47313376B0;
+	Mon, 15 Dec 2025 18:06:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="B3gtKez4";
-	dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b="CNHx2Auz"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="mnkXfI5d"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wr1-f45.google.com (mail-wr1-f45.google.com [209.85.221.45])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 31E0F163
-	for <linux-wireless@vger.kernel.org>; Mon, 15 Dec 2025 17:47:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 95D853385BC
+	for <linux-wireless@vger.kernel.org>; Mon, 15 Dec 2025 18:06:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.45
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765820824; cv=none; b=Bjc8ye6pYw8OFJJ2jmRPaIePjE9xjS2274vkVlHW39jpytPzFb7jdTmobUZUuz7eRZ3emEkqm62v1U8buHM2WVKkGKLpTL8Ko6SQxlKkwtUD76ly1FapFhRWkI5Uyc7xwLRNWSalgL1Zw86oFdUeyRyzQAhcrxzkptl4PKpRTCg=
+	t=1765821968; cv=none; b=hz5AuAOA06qjJiChPl4j6sPmhyIXn0dc69Vy33jCcPjMUnIGeYTa7TZz9Y7ZLLRhxluwZB/mhEvqoVm6njtU5Nlw54r3iUgGN/MORyDSLSs/NP539oD2lTibK21r81WeVG9KDGYMn4GxJ7LkqdO/VvVgIP6XJLVu4GtakUBvmjc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765820824; c=relaxed/simple;
-	bh=urh5BNGOWHg3YgDjTnD5L5O40nKliaQCPwFu77sdSEk=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=t3vufg9zWCsXTP9/v9XCD/RV9yUUh5v3LMYIpcxnIZdMywBLOE4yAx7MBXlNZ2tkl00HjnFhHavpUkEGuQhZ2+289swMQt9XqeWgt84yJp986heTX8BhyJMM9FCva1i+dd7rzxHFhG/ZyBoWAw9CKpQirSPAu9b6I5/DLVUXJ+0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=B3gtKez4; dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b=CNHx2Auz; arc=none smtp.client-ip=205.220.180.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
-Received: from pps.filterd (m0279872.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 5BFGP3Qn1398907
-	for <linux-wireless@vger.kernel.org>; Mon, 15 Dec 2025 17:47:02 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
-	cc:content-transfer-encoding:date:from:in-reply-to:message-id
-	:mime-version:references:subject:to; s=qcppdkim1; bh=mjywauGPl/c
-	vb6dLJp353HVopnmfVfwVKvSc1nY8c68=; b=B3gtKez4yFxwRU8/72FzPvqLCXn
-	EIapaDwGKRuyNpXCx4VUWHoDGKaxoXoktl/ZHy4s9X0UNA1pZMBmzlx+cN+uIg8k
-	FvlpAPoRgxmVQAXEOUsFUK3PGtWSSFkkyh/ZcATEvCJnMR1R0gjOivLcjZ8RiyTz
-	ZFVC1Xn8xArv6b0daYCUe+LITdFgvCRQZjBVoncXQ3nt1G6EPCzEK+ToOIPwHocC
-	dMAQoJkl7E7jncMddw32M7Zw18NPQ3Iy5Olcc819pJJyDMxCcNsB8rvMGRd5YZzP
-	po9uw7vZQIOLXg9qiDHj89Hs4uBrJAzXwAGjsuuTPd1zOVxTdMdyatHn/CA==
-Received: from mail-pl1-f199.google.com (mail-pl1-f199.google.com [209.85.214.199])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4b2nu1g7t4-1
-	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
-	for <linux-wireless@vger.kernel.org>; Mon, 15 Dec 2025 17:47:01 +0000 (GMT)
-Received: by mail-pl1-f199.google.com with SMTP id d9443c01a7336-29f13989cd3so110912555ad.1
-        for <linux-wireless@vger.kernel.org>; Mon, 15 Dec 2025 09:47:01 -0800 (PST)
+	s=arc-20240116; t=1765821968; c=relaxed/simple;
+	bh=9x3KEWl4wQ0zOq66NyRuWasQhNFnyj+B4rAG9m8gQTs=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=boLHTX3gBkdOuQAaATsQz9S5iF/8ss9tGT9QsK09uyf+p3agMq+1WVKc/ZMszbiKrsU7CviIHIoo2QrdQT0wpSYCxk2MUzCf4Eu7GuNrKFuqoq4++3C8Sl2tdnQbye8FRWrHXrGUZSHT3z+Bqf47fnGcpTOTEkXWmSglLItxIeE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=mnkXfI5d; arc=none smtp.client-ip=209.85.221.45
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-wr1-f45.google.com with SMTP id ffacd0b85a97d-42b3c5defb2so2265519f8f.2
+        for <linux-wireless@vger.kernel.org>; Mon, 15 Dec 2025 10:06:06 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=oss.qualcomm.com; s=google; t=1765820821; x=1766425621; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=mjywauGPl/cvb6dLJp353HVopnmfVfwVKvSc1nY8c68=;
-        b=CNHx2Auzg8JjW9aINhviVNz4KB//xbJhnJUrpc3GSax5L6AOCDUoGt31/ZFBY0yJSa
-         RkHUHtZMboXH1wOLx/tcftt2K7dXt1FyhRqOROQQGMqndZDgF2UCOzj1WeqIBXgsjtP9
-         +9RtAdZtBQZP7lEtX4n0drQTY7QHzbZMln1/Opj+twPuoURbHJ081mLEQFbg3cjH+jgF
-         9tW6UkfS7iTUnzFK8v8UwrlJ+ndr32GBPi+4OcHOk9eZPqlXxmVeejiz5jqJe76qSyC4
-         jgTgdrcTmgJiQtB9PLYlU9O4nLmfQIG1Hzj2Ph2QrYMsm1+cQ86cSu3dTX+ijmhwa9su
-         UmPg==
+        d=gmail.com; s=20230601; t=1765821965; x=1766426765; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=WW3VOmJ5UjcME6Ji+nprtb6mqIdDBLQbx6sMGQfZYAI=;
+        b=mnkXfI5dihQhQcN1Mr0ySMi1R4gQiabKINvuwn8gFwxZmK7GzD5aFaz+IvDf1uAcib
+         n7Y5zBXMZyY/OQtAyeBNn64rgELxcuVTSrNrkueVfUHd9Y1qcY4Xa26fO5G49EJIcq2N
+         U7VDF43G0wyzZGP4DQ3Z0VCtqPMBCEeGIqsw/DN0fKG7ep/J5IsUF7sNJhVBGme+iGdK
+         UWn+j3OJMiURIF/0K08/e7+sE6BWL0xOhgPY0urktqs5IkfBN8N2JorRG/q0jtMjipx/
+         aJXXtZz9Op8Pin+ZJo/uXfC2nz0tcQlJz0rCF8gVDTYj+dUerP8m7GOx4D3b0GNZ9W7r
+         9iog==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1765820821; x=1766425621;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=mjywauGPl/cvb6dLJp353HVopnmfVfwVKvSc1nY8c68=;
-        b=c82CTqRU0srgrNRoAdo1fDBI1xcOF52Nya9jyMsUh1n/nq53d38kxhmZK4phzog3Ip
-         j1G7hkp5IsUEyY/RmVUr5hQHbWPBPUWnd6HZVOXaytYpVnZRomoUrcmQopZ+7nzITiRr
-         ZY3dyGkIz0JVRQEgfhwLzDZLdIC7babGsak7613U0Zhzk2JzkuUVEXhM6jSk3peCSLfM
-         TgHyeuR7jMvIw/IE+if9dabFdhW/A5Ss5w+5KpVvfFAlzdVQIFUiqiv2Cgaqtlbsc76E
-         AvWDceUDRYPFLgwsseVthr91f/yJHj7Vy6PCqot0IfHREOuW3RPWG7lXb6iYKTrmWD50
-         7ajw==
-X-Forwarded-Encrypted: i=1; AJvYcCUTp7vEGM3WW7oh3NGv/SWlyc1EFp99yngPaMNmoP4yjkM3jgS43rHbnixp4cz+/aHORincKYXQhL3tDFlk7w==@vger.kernel.org
-X-Gm-Message-State: AOJu0YwCsaEWq+3tNH8ibli9si2gyWWT5663vrSryNqUdtU8aVXFjuNj
-	yrHNEPwPQ5xVEP+jTM3l/W5jpgVv3BQDkQU5jA8HFDiAEvSM5MLzVlxHTSD887DxNorz4MT/LW9
-	qbmeC1sSy6WSzN+jFp4m2u1Tf3rJM/5vpvISFrCLcz1EjkjYIks2U33wSG57Tj9pU6YqtbA==
-X-Gm-Gg: AY/fxX4l7fT0nYgx/m/fkY1mZBM620F11viOK0i1fRJETi0N8/PZBUwcM9gXTJ/yjYF
-	FKEFkakeg5aVo9QxOW+O+CxLen/YAqM1Q4eXPAjnrCI2KU1A1HefZu9kUzm5+yG0+PDu/t0+d3Q
-	pOMk39hDaHloY2hdtx0OcJAbpCiAZ5iJ+nMNN5yEsXwiGSuKHtCdxkEwVDTh4VyzCOt9NMb+EQI
-	Cn2XJpSeOQCvBF8nG93H0UcG3MigAna9f63zFtfEBmWUbjbEvGsHa1Cqx0621ZVq6tuzXO+iKiX
-	xKIQSdgPZGSk9l+fahK6uHS/zqQ9emzJXBiyKxOtKNo7s/L3kZLY2P33APUJEkRIIMa3Acbjj3t
-	R4pZw5kDGsc1irbt/MQmHRhObHZvelVhEl9SVzaOuFIp0WEf4MuX/Hh5reSZRlNIP
-X-Received: by 2002:a17:903:2cd:b0:29e:e925:1abb with SMTP id d9443c01a7336-29f23b6832dmr106183435ad.27.1765820820969;
-        Mon, 15 Dec 2025 09:47:00 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IFrT3B1/aPYsV5z2bRJvRs8srXT9lTqfWDUjd8ksM613EHNqRSkWTOcJscRIXRpp/3RCay14A==
-X-Received: by 2002:a17:903:2cd:b0:29e:e925:1abb with SMTP id d9443c01a7336-29f23b6832dmr106183265ad.27.1765820820480;
-        Mon, 15 Dec 2025 09:47:00 -0800 (PST)
-Received: from alokad-linux.qualcomm.com (i-global254.qualcomm.com. [199.106.103.254])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2a094398eedsm78650325ad.37.2025.12.15.09.46.59
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 15 Dec 2025 09:47:00 -0800 (PST)
-From: Aloka Dixit <aloka.dixit@oss.qualcomm.com>
-To: johannes@sipsolutions.net, linux-wireless@vger.kernel.org
-Cc: Aloka Dixit <aloka.dixit@oss.qualcomm.com>
-Subject: [PATCH wireless 1/1] wifi: mac80211: do not use old MBSSID elements
-Date: Mon, 15 Dec 2025 09:46:56 -0800
-Message-Id: <20251215174656.2866319-2-aloka.dixit@oss.qualcomm.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20251215174656.2866319-1-aloka.dixit@oss.qualcomm.com>
-References: <20251215174656.2866319-1-aloka.dixit@oss.qualcomm.com>
+        d=1e100.net; s=20230601; t=1765821965; x=1766426765;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=WW3VOmJ5UjcME6Ji+nprtb6mqIdDBLQbx6sMGQfZYAI=;
+        b=CsoeoFCFPNXwJ5NejV5QdUXm4LQfu8naItGYDvr8sOcsXaBc3VQ/CGxNITjYm23+Fp
+         AiH7T6YQ6mTcx5A0u9EByzuxUAUIjy/U1sMZhFhu7Wcf9azGRElJpPUxLYCCySkS7YtF
+         jmzNupWrGF+SEVRJHGu75kN0nXvffmYfVCtmIzBsxprbMnTgNo6AE4P8KCxZ1RCYQzA/
+         0vPm1F4gNj7se2bok48VbJyPpGjbkt+zzAnQbuhyr5xxv31mciKDw6iaTWQWf+H5sMbG
+         zddbc6/i/M+QQbmOOuPymObeYNmYxYhKbnFM5bV7briV80xfvJxlk9h2dVNJST6+k4CL
+         MtQw==
+X-Forwarded-Encrypted: i=1; AJvYcCVVKr58ewqpEjgf4QjFTsxEQPf/T65V5oF9XrmRO9dfAkyTJOo+UCauCXICN6BpSclNrXt7UEYiBTh657XRbQ==@vger.kernel.org
+X-Gm-Message-State: AOJu0Yyfj5rP5D1YqRbLqQj94f9GqLXehMi/hyES0nCuvVr8sFflQP+F
+	n05g4O7pKO9X/41aSmwAXJNfye6jZUGi31Ri4qUn85upBr3ngdPfniwd
+X-Gm-Gg: AY/fxX4oAPJd1NNTQBRv8Ho7leO4A/CBTkMCBccxc4TWYMdfhZMjDM6+e6t4tJ+VRLF
+	EkubEsI7r8L3RD9NZYcHMJ/398ocjb6XjFs0dkJELNsXLxt6j84PYZn8fsYY8ez627l56JmjwWO
+	0tP6TB7e9PXfOq7ERGyWaS9Wlk4TiaNV109O0rR3wsr2GqLHsZG/byO1emJNEGNE4YVEjRXG7WF
+	17rst5ScArSpDL4Aiv0JT4sgF6Loc+u7t8iNUSfCJmTA7SfCSwfi/vCOvAK7jehNHeyx5fnAWPR
+	PCAJ8UK8ogBEgkSSj7Amg+MZbAtnZ0fxGAP7eRs7i2+9WRDFn6UQU/aBhqaJhqwpFt30P357o1z
+	KviNTsMNteYYGiA7NXliCtelpxPVZojCXlxDbNNXxSTAAxtUcqGxD8zSz8ESfY5qW+LTzj7laRA
+	u64Hy9qmHwwHoS4qVgWHoWvLeptUwIOH0=
+X-Google-Smtp-Source: AGHT+IGvsOxksPIgeNwip/4cDAxFY5tbbBdwRJTaPuya9RfheriGRugoswJ6WQ7vBSWZeVF4jLqkiw==
+X-Received: by 2002:a05:6000:420e:b0:430:f241:a11f with SMTP id ffacd0b85a97d-430f241a3cfmr10102142f8f.30.1765821964508;
+        Mon, 15 Dec 2025 10:06:04 -0800 (PST)
+Received: from [192.168.1.50] ([79.119.240.187])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-42fbbeb5298sm19346619f8f.20.2025.12.15.10.06.02
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 15 Dec 2025 10:06:04 -0800 (PST)
+Message-ID: <13ea776b-8ae7-468c-baed-ae0b5adb2a5f@gmail.com>
+Date: Mon, 15 Dec 2025 20:06:01 +0200
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Proofpoint-ORIG-GUID: wvC_6fIo5Rfcz3CL_UG4MgRiFvXaMWu6
-X-Proofpoint-GUID: wvC_6fIo5Rfcz3CL_UG4MgRiFvXaMWu6
-X-Authority-Analysis: v=2.4 cv=AOuEbwt4 c=1 sm=1 tr=0 ts=69404996 cx=c_pps
- a=JL+w9abYAAE89/QcEU+0QA==:117 a=JYp8KDb2vCoCEuGobkYCKw==:17
- a=wP3pNCr1ah4A:10 a=s4-Qcg_JpJYA:10 a=VkNPw1HP01LnGYTKEx00:22
- a=EUspDBNiAAAA:8 a=xidHEXp7qheXSHX85acA:9 a=324X-CrmTo6CU4MGRt3R:22
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUxMjE1MDE1NCBTYWx0ZWRfX5VXuWi1jpTsZ
- KaVMHihSIHkXUUMj49pNVF9QLFOPMW2kp/UaRUWkmEijlPEOMNYvtfhLyU0tffOuUvAOJhe6bcS
- TlAwItc2WAoUPlzasW8BU2CZma22QMswgBvuHVmS+m+38b4Evi4ocB3yCGKK+e9f8/BrWD42tdh
- w5e0U2mzMQbjryjg0XMBUpu7MqwOfDVvdFR62N5KpkShbZ91kBKjLcY50pFEPrpyrjnnY9mSZYp
- DpFo45sm8LXnIKRpc+JzuuHWFMAqJSlRB+50rHG3sylVsuAf23Le3o3G+Z4BYGVI4n+PCbitxFs
- fObgolUDtwZXLLzno/jpLb66c2VEMorW1qtMWzm7wyVbz8XEF2giiEQBcOTixdLgfKWvhFX0Wap
- wUD/mTnD+mSt2NpUD4JxoySEtrZfpA==
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.9,FMLib:17.12.100.49
- definitions=2025-12-15_04,2025-12-15_02,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- spamscore=0 suspectscore=0 bulkscore=0 phishscore=0 malwarescore=0
- priorityscore=1501 adultscore=0 impostorscore=0 lowpriorityscore=0
- clxscore=1011 classifier=typeunknown authscore=0 authtc= authcc=
- route=outbound adjust=0 reason=mlx scancount=1 engine=8.22.0-2510240001
- definitions=main-2512150154
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH rtw-next 04/12] wifi: rtw89: mac: reset power state before
+ switching to power on
+To: Ping-Ke Shih <pkshih@realtek.com>,
+ "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>
+Cc: Gary Chang <gary.chang@realtek.com>, Damon Chen <damon.chen@realtek.com>,
+ Zong-Zhe Yang <kevin_yang@realtek.com>
+References: <20251212031303.19882-1-pkshih@realtek.com>
+ <20251212031303.19882-5-pkshih@realtek.com>
+ <efc58c87-d391-4970-b9af-abdef9861342@gmail.com>
+ <05f1a2bbc0d344ea8c37481f9e1d26d4@realtek.com>
+Content-Language: en-US
+From: Bitterblue Smith <rtl8821cerfe2@gmail.com>
+In-Reply-To: <05f1a2bbc0d344ea8c37481f9e1d26d4@realtek.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-When userspace brings down and deletes a non-transmitted profile,
-it is expected to send a new updated Beacon template for the
-transmitted profile of that multiple BSSID (MBSSID) group which
-does not include the removed profile in MBSSID element. This
-update comes via NL80211_CMD_SET_BEACON.
+On 15/12/2025 04:05, Ping-Ke Shih wrote:
+> Bitterblue Smith <rtl8821cerfe2@gmail.com> wrote;
+>> On 12/12/2025 05:12, Ping-Ke Shih wrote:
+>>> To run power on function properly, reset power states (off/on/PS) to
+>>> initial state. Otherwise, it might be unusable due to fail to power on.
+>>>
+>>> Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
+>>> ---
+>>>  drivers/net/wireless/realtek/rtw89/mac.c    |  89 ++++++++++++--
+>>>  drivers/net/wireless/realtek/rtw89/mac.h    |   1 +
+>>>  drivers/net/wireless/realtek/rtw89/mac_be.c | 130 ++++++++++++++++++++
+>>>  drivers/net/wireless/realtek/rtw89/reg.h    |  27 ++++
+>>>  4 files changed, 240 insertions(+), 7 deletions(-)
+>>>
+>>> diff --git a/drivers/net/wireless/realtek/rtw89/mac.c b/drivers/net/wireless/realtek/rtw89/mac.c
+>>> index d78fbe73e365..ba4344a640f5 100644
+>>> --- a/drivers/net/wireless/realtek/rtw89/mac.c
+>>> +++ b/drivers/net/wireless/realtek/rtw89/mac.c
+>>> @@ -1478,13 +1478,11 @@ static void rtw89_mac_power_switch_boot_mode(struct rtw89_dev *rtwdev)
+>>>
+>>>  static int rtw89_mac_power_switch(struct rtw89_dev *rtwdev, bool on)
+>>>  {
+>>> -#define PWR_ACT 1
+>>>       const struct rtw89_mac_gen_def *mac = rtwdev->chip->mac_def;
+>>>       const struct rtw89_chip_info *chip = rtwdev->chip;
+>>>       const struct rtw89_pwr_cfg * const *cfg_seq;
+>>>       int (*cfg_func)(struct rtw89_dev *rtwdev);
+>>>       int ret;
+>>> -     u8 val;
+>>>
+>>>       rtw89_mac_power_switch_boot_mode(rtwdev);
+>>>
+>>> @@ -1499,10 +1497,10 @@ static int rtw89_mac_power_switch(struct rtw89_dev *rtwdev, bool on)
+>>>       if (test_bit(RTW89_FLAG_FW_RDY, rtwdev->flags))
+>>>               __rtw89_leave_ps_mode(rtwdev);
+>>>
+>>> -     val = rtw89_read32_mask(rtwdev, R_AX_IC_PWR_STATE, B_AX_WLMAC_PWR_STE_MASK);
+>>> -     if (on && val == PWR_ACT) {
+>>> -             rtw89_err(rtwdev, "MAC has already powered on\n");
+>>> -             return -EBUSY;
+>>> +     if (on) {
+>>> +             ret = mac->reset_pwr_state(rtwdev);
+>>> +             if (ret)
+>>> +                     return ret;
+>>>       }
+>>>
+>>>       ret = cfg_func ? cfg_func(rtwdev) : rtw89_mac_pwr_seq(rtwdev, cfg_seq);
+>>> @@ -1529,7 +1527,6 @@ static int rtw89_mac_power_switch(struct rtw89_dev *rtwdev, bool on)
+>>>       }
+>>>
+>>>       return 0;
+>>> -#undef PWR_ACT
+>>>  }
+>>>
+>>>  int rtw89_mac_pwr_on(struct rtw89_dev *rtwdev)
+>>> @@ -3931,6 +3928,83 @@ static int rtw89_mac_feat_init(struct rtw89_dev *rtwdev)
+>>>       return 0;
+>>>  }
+>>>
+>>> +static int rtw89_mac_reset_pwr_state_ax(struct rtw89_dev *rtwdev)
+>>> +{
+>>> +     enum rtw89_core_chip_id chip_id = rtwdev->chip->chip_id;
+>>> +     u32 val32;
+>>> +     int ret;
+>>> +
+>>> +     val32 = rtw89_read32(rtwdev, R_AX_SYSON_FSM_MON);
+>>> +     val32 &= WLAN_FSM_MASK;
+>>> +     val32 |= WLAN_FSM_SET;
+>>> +     rtw89_write32(rtwdev, R_AX_SYSON_FSM_MON, val32);
+>>> +
+>>> +     ret = read_poll_timeout(rtw89_read32_mask, val32, val32 == WLAN_FSM_IDLE,
+>>> +                             1000, 2000000, false,
+>>> +                             rtwdev, R_AX_SYSON_FSM_MON, WLAN_FSM_STATE_MASK);
+>>> +     if (ret) {
+>>> +             rtw89_err(rtwdev, "[ERR]Polling WLAN PMC timeout= %X\n", val32);
+>>> +             return ret;
+>>> +     }
+>>
+>> I get this error message with every AX chip the first time
+>> rtw89_mac_pwr_on() is called:
+>>
+>> [  +0.007286] rtw89_8852bu 2-4:1.0: loaded firmware rtw89/rtw8852b_fw-1.bin
+>> [  +2.001260] rtw89_8852bu 2-4:1.0: [ERR]Polling WLAN PMC timeout= 100
+>>
+>> They still work, because the second attempt in rtw89_mac_pwr_on()
+>> succeeds.
+>>
+>> Before this patch, the message was "MAC has already powered on".
+>> The new message says it's an error, so it will confuse people.
+> 
+> I borrow a 8852AU and a 8852CU that both don't have error messages.
+> The "first time" you meant is just to plug the USB adapter?
+> If so, I have not idea about the difference between yours and mine.
+> 
 
-Such updates work well as long as the group continues to have at
-least one non-transmitted profile as NL80211_ATTR_MBSSID_ELEMS
-is included in the new Beacon template.
+Yes, the error only appears right after the adapter is plugged in.
+I put a message at the top of rtw89_mac_power_switch():
 
-But when the last non-trasmitted profile is removed, it still
-gets included in Beacon templates sent to driver. This happens
-because when no MBSSID elements are sent by the userspace,
-ieee80211_assign_beacon() ends up using the element stored from
-earlier Beacon template.
+[  +0.721188] usb 1-4: new high-speed USB device number 8 using xhci_hcd
+[  +0.126425] usb 1-4: New USB device found, idVendor=0bda, idProduct=8832, bcdDevice= 0.00
+[  +0.000014] usb 1-4: New USB device strings: Mfr=1, Product=2, SerialNumber=3
+[  +0.000005] usb 1-4: Product: 802.11ac WLAN Adapter
+[  +0.000004] usb 1-4: Manufacturer: Realtek
+[  +0.000003] usb 1-4: SerialNumber: 00e04c000001
+[  +0.007757] rtw89_8852au 1-4:1.0: loaded firmware rtw89/rtw8852a_fw.bin
+[  +0.000338] rtw89_mac_power_switch enter, on 1
+[  +2.005000] rtw89_8852au 1-4:1.0: [ERR]Polling WLAN PMC timeout= 100
+[  +0.000010] rtw89_mac_power_switch enter, on 0
+[  +0.007867] rtw89_mac_power_switch enter, on 1
+[  +0.020254] rtw89_8852au 1-4:1.0: Firmware version 0.13.36.2 (52acc807), cmd version 0, type 1
+[  +0.000010] rtw89_8852au 1-4:1.0: Firmware version 0.13.36.2 (52acc807), cmd version 0, type 3
+[  +0.963868] rtw89_8852au 1-4:1.0: chip rfe_type is 1
+[  +0.103131] rtw89_mac_power_switch enter, on 0
+[  +0.011027] rtw89_8852au 1-4:1.0: rfkill hardware state changed to enable
+[  +0.051507] rtw89_8852au 1-4:1.0 wlp3s0f3u4: renamed from wlan0
+[  +0.020062] rtw89_mac_power_switch enter, on 1
 
-Do not copy old MBSSID elements, instead userspace should always
-include these when applicable.
+>>
+>> Is it possible this code related to R_AX_SYSON_FSM_MON is not
+>> applicable to USB? My adapters still work if I delete it.
+> 
+> I'm checking internal experts. Quickly checking vendor driver, I don't see
+> it avoids calling this because of USB devices. 
+> 
+> If you delete code related to R_AX_SYSON_FSM_MON, will it show below messages
+> under the case 'val32 == MAC_AX_MAC_ON'?
+> 
+>    "[ERR]Polling MAC state timeout= %X\n"
+> 
 
-Fixes: 2b3171c6fe0a ("mac80211: MBSSID beacon handling in AP...")
-Signed-off-by: Aloka Dixit <aloka.dixit@oss.qualcomm.com>
----
- net/mac80211/cfg.c | 10 ----------
- 1 file changed, 10 deletions(-)
+No, I never see that error. I checked the value of R_AX_IC_PWR_STATE.
+My RTL8832BU with the Windows driver onboard:
 
-diff --git a/net/mac80211/cfg.c b/net/mac80211/cfg.c
-index b51c2c8584ae..c81091a5cc3a 100644
---- a/net/mac80211/cfg.c
-+++ b/net/mac80211/cfg.c
-@@ -1345,7 +1345,6 @@ ieee80211_assign_beacon(struct ieee80211_sub_if_data *sdata,
- 
- 	size = sizeof(*new) + new_head_len + new_tail_len;
- 
--	/* new or old multiple BSSID elements? */
- 	if (params->mbssid_ies) {
- 		mbssid = params->mbssid_ies;
- 		size += struct_size(new->mbssid_ies, elem, mbssid->cnt);
-@@ -1355,15 +1354,6 @@ ieee80211_assign_beacon(struct ieee80211_sub_if_data *sdata,
- 		}
- 		size += ieee80211_get_mbssid_beacon_len(mbssid, rnr,
- 							mbssid->cnt);
--	} else if (old && old->mbssid_ies) {
--		mbssid = old->mbssid_ies;
--		size += struct_size(new->mbssid_ies, elem, mbssid->cnt);
--		if (old && old->rnr_ies) {
--			rnr = old->rnr_ies;
--			size += struct_size(new->rnr_ies, elem, rnr->cnt);
--		}
--		size += ieee80211_get_mbssid_beacon_len(mbssid, rnr,
--							mbssid->cnt);
- 	}
- 
- 	new = kzalloc(size, GFP_KERNEL);
--- 
-2.34.1
+[  +4.566707] usb 1-4: new high-speed USB device number 20 using xhci_hcd
+[  +0.125152] usb 1-4: New USB device found, idVendor=0bda, idProduct=1a2b, bcdDevice= 0.00
+[  +0.000008] usb 1-4: New USB device strings: Mfr=1, Product=2, SerialNumber=0
+[  +0.000002] usb 1-4: Product: DISK
+[  +0.000002] usb 1-4: Manufacturer: Realtek
+[  +0.000544] usb-storage 1-4:1.0: USB Mass Storage device detected
+[  +0.000160] usb-storage 1-4:1.0: device ignored
+[  +0.629850] usb 1-4: USB disconnect, device number 20
+[  +0.723342] usb 1-4: new high-speed USB device number 21 using xhci_hcd
+[  +0.125493] usb 1-4: New USB device found, idVendor=0bda, idProduct=b832, bcdDevice= 0.00
+[  +0.000013] usb 1-4: New USB device strings: Mfr=1, Product=2, SerialNumber=3
+[  +0.000005] usb 1-4: Product: 802.11ac WLAN Adapter
+[  +0.000004] usb 1-4: Manufacturer: Realtek
+[  +0.000004] usb 1-4: SerialNumber: 00e04c000001
+[  +0.007910] rtw89_8852bu 1-4:1.0: loaded firmware rtw89/rtw8852b_fw-1.bin
+[  +0.005682] rtw89_mac_reset_pwr_state_ax R_AX_IC_PWR_STATE=0x2200104
+[  +2.000406] rtw89_8852bu 1-4:1.0: [ERR]Polling WLAN PMC timeout= 100
+[  +0.017635] rtw89_mac_reset_pwr_state_ax R_AX_IC_PWR_STATE=0x2200004
+[  +0.043991] rtw89_8852bu 1-4:1.0: Firmware version 0.29.128.0 (418a672d), cmd version 0, type 5
+[  +0.000009] rtw89_8852bu 1-4:1.0: Firmware version 0.29.128.0 (418a672d), cmd version 0, type 3
+[  +1.462646] rtw89_8852bu 1-4:1.0: chip rfe_type is 1
+[  +0.135147] rtw89_8852bu 1-4:1.0: rfkill hardware state changed to enable
+[  +0.045006] rtw89_8852bu 1-4:1.0 wlp3s0f3u4: renamed from wlan0
+[  +0.016726] rtw89_mac_reset_pwr_state_ax R_AX_IC_PWR_STATE=0x2200004
+
+And another RTL8832BU without a Windows driver onboard:
+
+[Dec15 19:46] usb 1-4: new high-speed USB device number 22 using xhci_hcd
+[  +0.125532] usb 1-4: New USB device found, idVendor=0bda, idProduct=b832, bcdDevice= 0.00
+[  +0.000010] usb 1-4: New USB device strings: Mfr=1, Product=2, SerialNumber=3
+[  +0.000003] usb 1-4: Product: 802.11ax WLAN Adapter
+[  +0.000003] usb 1-4: Manufacturer: Realtek
+[  +0.000002] usb 1-4: SerialNumber: 00e04c000001
+[  +0.007667] rtw89_8852bu 1-4:1.0: loaded firmware rtw89/rtw8852b_fw-1.bin
+[  +0.002684] rtw89_mac_reset_pwr_state_ax R_AX_IC_PWR_STATE=0x2200004
+[  +0.045258] rtw89_8852bu 1-4:1.0: Firmware version 0.29.128.0 (418a672d), cmd version 0, type 5
+[  +0.000015] rtw89_8852bu 1-4:1.0: Firmware version 0.29.128.0 (418a672d), cmd version 0, type 3
+[  +1.462130] rtw89_8852bu 1-4:1.0: chip rfe_type is 1
+[  +0.133511] rtw89_8852bu 1-4:1.0: rfkill hardware state changed to enable
+[  +0.043307] rtw89_8852bu 1-4:1.0 wlp3s0f3u4: renamed from wlan0
+[  +0.017936] rtw89_mac_reset_pwr_state_ax R_AX_IC_PWR_STATE=0x2200004
+
+Maybe your borrowed adapters don't have the Windows drivers onboard either?
+
+>>
+>> (I don't get the error with RTL8912AU.)
+>>
+> 
+> I'm adding this patch for WiFi 7 chips mainly, and this seems to be expected.
+> 
+
+My RTL8912AU does have the Windows driver onboard, but no error:
+
+[  +5.365639] usb 1-4: new high-speed USB device number 25 using xhci_hcd                                                                                                  
+[  +0.124722] usb 1-4: New USB device found, idVendor=0bda, idProduct=1a2b, bcdDevice= 0.00                                                                                
+[  +0.000007] usb 1-4: New USB device strings: Mfr=1, Product=2, SerialNumber=0
+[  +0.000002] usb 1-4: Product: DISK                                                 
+[  +0.000002] usb 1-4: Manufacturer: Realtek 
+[  +0.000540] usb-storage 1-4:1.0: USB Mass Storage device detected
+[  +0.000143] usb-storage 1-4:1.0: device ignored
+[  +0.629713] usb 1-4: USB disconnect, device number 25
+[  +0.420492] usb 1-4: new high-speed USB device number 26 using xhci_hcd
+[  +0.125490] usb 1-4: New USB device found, idVendor=0bda, idProduct=8912, bcdDevice= 0.00
+[  +0.000009] usb 1-4: New USB device strings: Mfr=1, Product=2, SerialNumber=3
+[  +0.000002] usb 1-4: Product: 802.11be WLAN Adapter                 
+[  +0.000002] usb 1-4: Manufacturer: Realtek 
+[  +0.000002] usb 1-4: SerialNumber: 00e04c000001
+[  +0.008039] rtw89_8922au 1-4:1.0: loaded firmware rtw89/rtw8922a_fw-4.bin
+[  +0.005192] rtw89_mac_reset_pwr_state_be R_AX_IC_PWR_STATE=0x2200104
+[  +0.055131] rtw89_8922au 1-4:1.0: Firmware version 0.35.80.3 (8ef4f0cf), cmd version 1, type 1
+[  +0.000009] rtw89_8922au 1-4:1.0: Firmware version 0.35.80.3 (8ef4f0cf), cmd version 1, type 3
+[  +1.419275] rtw89_8922au 1-4:1.0: chip rfe_type is 1 
+[  +0.042634] rtw89_8922au 1-4:1.0: Firmware version 0.1.0.0 (7b393818), cmd version 0, type 64
+[  +0.000012] rtw89_8922au 1-4:1.0: Firmware element BB version: 00 49 00 00
+[  +0.000014] rtw89_8922au 1-4:1.0: Firmware element radio A version: 00 33 00 00
+[  +0.000015] rtw89_8922au 1-4:1.0: Firmware element NCTL version: 00 0f 00 00
+[  +0.000118] rtw89_8922au 1-4:1.0: Firmware element TXPWR version: 00 40 00 00
+[  +0.000005] rtw89_8922au 1-4:1.0: Firmware element PWR_TRK version: 00 33 00 00
+[  +0.000010] rtw89_8922au 1-4:1.0: Firmware element REGD version: 00 48 00 06
+[  +0.024441] rtw89_8922au 1-4:1.0: rfkill hardware state changed to enable
+[  +0.042643] rtw89_8922au 1-4:1.0 wlp3s0f3u4: renamed from wlan0
+[  +0.012737] rtw89_mac_reset_pwr_state_be R_AX_IC_PWR_STATE=0x2200004
 
 
