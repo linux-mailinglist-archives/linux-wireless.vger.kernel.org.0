@@ -1,61 +1,59 @@
-Return-Path: <linux-wireless+bounces-29794-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-29795-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0211DCC1CCB
-	for <lists+linux-wireless@lfdr.de>; Tue, 16 Dec 2025 10:32:17 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 060EFCC1D01
+	for <lists+linux-wireless@lfdr.de>; Tue, 16 Dec 2025 10:34:41 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id C426D303E032
-	for <lists+linux-wireless@lfdr.de>; Tue, 16 Dec 2025 09:28:42 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 6C59E300F309
+	for <lists+linux-wireless@lfdr.de>; Tue, 16 Dec 2025 09:32:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DEEE41A08AF;
-	Tue, 16 Dec 2025 09:28:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2CEB03148BB;
+	Tue, 16 Dec 2025 09:32:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b="g/hafZod"
+	dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b="VdU80iRo"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from sipsolutions.net (s3.sipsolutions.net [168.119.38.16])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2FBD8207A38;
-	Tue, 16 Dec 2025 09:28:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B4AE82F1FDD
+	for <linux-wireless@vger.kernel.org>; Tue, 16 Dec 2025 09:32:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=168.119.38.16
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765877321; cv=none; b=CU1yfm6tbyFejK25+30NFTUPuDmjZNuV/q52ac5Hh+gPgk3OS5Dn7iP5OMsEKvJfv7wfq5aRJ1sRkXyECfRWJQDFxCxhoC0QkKusAO9rQCNw7YKHJcUscUIuOj330pt5gXKtwx1Vs177vetNrfXM3D+CUTPz4n2G/ikq1O3xQmY=
+	t=1765877556; cv=none; b=pSwQKi94XbLYfLxI+eBN/LbvnZXr9lm6PIMAhmL2Wxpjw92ZWM0pkOb40Ckr+3MnrsFH/2v4s5bqxYKqvzi2NJUAih40OneRa9T7FsIiDkXOtDe2muWhlOl1YKIa2lEMBHZUzTXdNGUKHkif7guO467EX8rW4tIw4NWKMn0iUzg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765877321; c=relaxed/simple;
-	bh=1LuOpQEN25sxsMS0zJBQsfa0xGGW4EGRIf+/FQSLj8Q=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=NZMPNOr6nOuRVa4X2ZB96dOA/IOIrFmcGETPEh/SzvLyuRhAwH8ewO6QcYbuwLgrpVHE2zrXLq1gO27BbQ9dt1mUcgkMj9ZJFT9o316aNtjM3Qf8GoaC13TN0Sp9qIyf5L6nXK+CWgTT62nGIzggLvh83jhDOXylK6KU8D9WPKA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net; spf=pass smtp.mailfrom=sipsolutions.net; dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b=g/hafZod; arc=none smtp.client-ip=168.119.38.16
+	s=arc-20240116; t=1765877556; c=relaxed/simple;
+	bh=YecxrQ/nonzJG081sHzj5C5Sc+lzmTNjyBqh7z4YCRM=;
+	h=Message-ID:Subject:From:To:Date:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=Ou8k/sbeaVLvMGMXHJeYa4vitSZuZAF5ARfgcWIXR7/HyL+FjayKdhL2bVH7VjfFGaQoMt+hgMfqj3jQHzZeDafB+LSk8VnkRCWHQzZcKqKUR0EbJr7zNB4iGgFTCHHHUpdr/zxJUhILtwy9NCzP0yzpapfHeSrpju2gCzrpZAw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net; spf=pass smtp.mailfrom=sipsolutions.net; dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b=VdU80iRo; arc=none smtp.client-ip=168.119.38.16
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sipsolutions.net
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=sipsolutions.net; s=mail; h=MIME-Version:Content-Transfer-Encoding:
-	Content-Type:References:In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender
-	:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
-	Resent-Cc:Resent-Message-ID; bh=866IzXU9pRNgcPp61o3S7I4p3rHWFGMSgmCQlhu7ZNM=;
-	t=1765877320; x=1767086920; b=g/hafZodTFLHHXjtIghlvhwveVTM7JTFmiSv6oSUPQBDGDt
-	YU7SGtWMvbst4xaeZlHHCRDVJ7XN0AiLmZrD5qaPPBhmI+Y5KsU6eKKZYOecRonMJihS9FI88nPjW
-	ztO6pzbTGplGxN/A6vzWNQ5CsnfOwQ86f2GwxiUwapGdl3KekaI1Q+EuLnxCXIFeiCYI/IOFfo5cW
-	hHoj5q9a3I9GutrUaooorDlJY7GL9b1EdLBadfFNrF+52Kc/I62rL76EEq9ktV2FNVvEaJdO78IYk
-	vG4pFmm6q771HDjKsDZsHwV7LjOy11rYtJhIL89eYpChTWcys5mM/Pwngj+8jJJA==;
+	Content-Type:References:In-Reply-To:Date:To:From:Subject:Message-ID:Sender:
+	Reply-To:Cc:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
+	Resent-Cc:Resent-Message-ID; bh=cRYw3mypmVvhdkMLh1V3Wf51QswQPLV2wGAKbQaHOfE=;
+	t=1765877554; x=1767087154; b=VdU80iRoNqSIkwuIkPwrCeTI//NY6b6aZBDfJ4Zca7+9CDC
+	urwHUK2ks5wDcJ6C8/KssYMw87nXb9yHa7QOeW9DvAuUDEa9WEBQfK2Qb3im/qjooBPomYLfHNE1T
+	JWx61QrNWif9uo9uhIs3nG9va593+PoP5d0NfMsmM8ubKhjXaHuHQ7lZtyQBdLzfD1M/rW09wB/VN
+	GZrSUnCevfQlR0TNF76+54SGgeFZ3cGiFxi7BsNGJWLpbg6ODJb9FhetFqyiFzXNiV0P/8a/Xn76p
+	nqyivKPLsoWOhg1fbQ4HtZRqlpSTpw7wUnn/cELsrNDUUBPSkfIwZ6/U+pUEetyA==;
 Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
 	(Exim 4.98.2)
 	(envelope-from <johannes@sipsolutions.net>)
-	id 1vVRMD-0000000AFR8-02Bn;
-	Tue, 16 Dec 2025 10:28:37 +0100
-Message-ID: <7723c9b1b370f9f23f70285560dad9362e9ab37a.camel@sipsolutions.net>
-Subject: Re: [PATCH v4] wifi: cfg80211: Fix uninitialized header access in
- cfg80211_classify8021d
+	id 1vVRPz-0000000AFb5-2QSF;
+	Tue, 16 Dec 2025 10:32:31 +0100
+Message-ID: <da89d1394d19915a389f19f8773a028956562a6c.camel@sipsolutions.net>
+Subject: Re: [PATCH wireless 1/1] wifi: mac80211: do not use old MBSSID
+ elements
 From: Johannes Berg <johannes@sipsolutions.net>
-To: Ranganath V N <vnranganath.20@gmail.com>
-Cc: linux-wireless@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	skhan@linuxfoundation.org, david.hunter.linux@gmail.com, khalid@kernel.org,
- 	syzbot+878ddc3962f792e9af59@syzkaller.appspotmail.com
-Date: Tue, 16 Dec 2025 10:28:36 +0100
-In-Reply-To: <20251203175418.6623-1-vnranganath.20@gmail.com> (sfid-20251203_185432_410465_2AE88914)
-References: <20251203175418.6623-1-vnranganath.20@gmail.com>
-	 (sfid-20251203_185432_410465_2AE88914)
+To: Aloka Dixit <aloka.dixit@oss.qualcomm.com>, 
+	linux-wireless@vger.kernel.org
+Date: Tue, 16 Dec 2025 10:32:30 +0100
+In-Reply-To: <20251215174656.2866319-2-aloka.dixit@oss.qualcomm.com>
+References: <20251215174656.2866319-1-aloka.dixit@oss.qualcomm.com>
+	 <20251215174656.2866319-2-aloka.dixit@oss.qualcomm.com>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 User-Agent: Evolution 3.56.2 (3.56.2-2.fc42) 
@@ -67,27 +65,27 @@ List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 X-malware-bazaar: not-scanned
 
-On Wed, 2025-12-03 at 23:24 +0530, Ranganath V N wrote:
+On Mon, 2025-12-15 at 09:46 -0800, Aloka Dixit wrote:
 >=20
-> +++ b/net/wireless/util.c
-> @@ -962,12 +962,28 @@ unsigned int cfg80211_classify8021d(struct sk_buff =
-*skb,
->  	}
-> =20
->  	switch (skb->protocol) {
-> -	case htons(ETH_P_IP):
-> -		dscp =3D ipv4_get_dsfield(ip_hdr(skb)) & 0xfc;
-> +	case htons(ETH_P_IP): {
-> +		struct iphdr iph, *ip;
-> +
-> +		ip =3D skb_header_pointer(skb, sizeof(struct ethhdr),
-> +					sizeof(*ip), &iph);
+> Fixes: 2b3171c6fe0a ("mac80211: MBSSID beacon handling in AP...")
 
-The sizeof(struct ethhdr) is probably a *correct* assumption, but
-wouldn't skb->network_header make more sense?
+I'll fix this, but please just literally copy the subject.
 
-Please try to understand the code in question before reposting this
-patch *again*, I'm not interested in coding by remote-control.
+I have an alias:
+
+$ git fixes 2b3171c6fe0a
+Fixes: 2b3171c6fe0a ("mac80211: MBSSID beacon handling in AP mode")
+
+$ cat ~/.gitconfig
+...
+[core]
+	abbrev =3D 12
+[pretty]
+	fixes =3D Fixes: %h (\"%s\")
+[alias]
+	fixes =3D show -q --format=3Dfixes
+...
+
 
 johannes
 
