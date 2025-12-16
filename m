@@ -1,87 +1,101 @@
-Return-Path: <linux-wireless+bounces-29773-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-29774-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 41171CC0E98
-	for <lists+linux-wireless@lfdr.de>; Tue, 16 Dec 2025 05:36:15 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 356B0CC125A
+	for <lists+linux-wireless@lfdr.de>; Tue, 16 Dec 2025 07:41:11 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 3744F30215D7
-	for <lists+linux-wireless@lfdr.de>; Tue, 16 Dec 2025 04:36:14 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 6EC13307FC26
+	for <lists+linux-wireless@lfdr.de>; Tue, 16 Dec 2025 06:36:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 162E1332EA7;
-	Tue, 16 Dec 2025 04:36:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 60D0A342534;
+	Tue, 16 Dec 2025 06:27:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="GNd9sYwQ"
+	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="O6MMY0Zx";
+	dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b="WIW+9rdL"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-oo1-f43.google.com (mail-oo1-f43.google.com [209.85.161.43])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6552B331223
-	for <linux-wireless@vger.kernel.org>; Tue, 16 Dec 2025 04:36:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.161.43
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 61FEF342529
+	for <linux-wireless@vger.kernel.org>; Tue, 16 Dec 2025 06:27:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765859772; cv=none; b=Bi4gOcf1lTh+zxhQUlwdIW6+GCNxsoPDzTThtSAN7ziknkTTdACoyqybXqsl2GQuwdwWN5kgpzJjsDnYKS2PUQNQnwVc22d5KKB369ajIJ9mTAygX3Wp6qPAIoqExirQmlsd0b7Rsv1HHwkWcCyDYaC695mUlcLBR8y1IvO6sGg=
+	t=1765866445; cv=none; b=roK8Z5EqQyAdYapgwPtoNCwLWI7DWXjm44uP7gBQE+oqYJvLCAnD9A6L0N60cIFUhh5WKhXJXQxVq5FhjuEb79Wn8pe2z8EhgEFXvdSnAsr8Ya074+aVWatgJDuGJN4TJzTG1YLV6GHNIGWN+95EMwYgw2Uml3HUSZG3Exw7O0M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765859772; c=relaxed/simple;
-	bh=Hs1exUeSzwg2t2C/V9bP5kzbgTCR9I09qV2Wslv8HpM=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=LWTgqibBeNzMmvpudpc7baKjdtPMykIbe+u6SYqITQImvmCH7eCdHhjyaEM7NVim4+IiH7G6lHmnlfPlEkXKqPhmeo9vN/SO4UN313B0af/uWUuB3l0tEJhotgC4RQ6rTnxXfMVh4f0lz3rEZjG4BhRv3s0hTWKt6k5OBPcoKXE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=GNd9sYwQ; arc=none smtp.client-ip=209.85.161.43
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-oo1-f43.google.com with SMTP id 006d021491bc7-65b68c8c649so902776eaf.1
-        for <linux-wireless@vger.kernel.org>; Mon, 15 Dec 2025 20:36:03 -0800 (PST)
+	s=arc-20240116; t=1765866445; c=relaxed/simple;
+	bh=Sdau5XwEwwu40JGGAZdE0wRGF9t4OaAFTV4e4X6UUhw=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=JwUbxUI2AxgSUnb+SpAyFEaBSh+rLeVUteBWRBy0YAZH0xY1Ha1XnkmAfFLDOqzH1PybJGjsEc/RfWRm6myDAvDhbsZwVmIMa0ki2HShlAtoP9I7J1bgJ2a87neO3z2gdadfqBnrib43smdLv1Vzcndoif8yZad6aUpiIunAFXs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=O6MMY0Zx; dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b=WIW+9rdL; arc=none smtp.client-ip=205.220.180.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
+Received: from pps.filterd (m0279872.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 5BG1pGa31396476
+	for <linux-wireless@vger.kernel.org>; Tue, 16 Dec 2025 06:27:16 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
+	cc:content-transfer-encoding:date:from:message-id:mime-version
+	:subject:to; s=qcppdkim1; bh=9yRtVNvotwOm81nqTsUioBrQTDEgivMUyK9
+	QrYaIlTI=; b=O6MMY0ZxoQBeL9dNCiTRdmGLZzrdXrY52tG8+/NqXGVau8nDmbl
+	/QW/13T4RgxqpI6irJTHQ24a9vmYDl8xJrUjwMEWCOhRU2Kz9tNFX9B3zbu92kwf
+	I0o7VmWToTpSya/ors+vyx5uw+LjcvhCy7ZOfjhCLftJHqBiHMOVUm96/nASfVu5
+	sOb3fLw1pB3jRNE4B9BuwLWW0ZydiX2Vzos6yYDKwU9dwxoMDcOyvKrDLfyege4C
+	ZZAleslpvSpAvUSmSDLf7X3t3xTqG0E0RyVbghLJnd5vefR1Md66OcAIntMJKO8H
+	MC/VyQ2pbv+fTq58Q0UBCJcjzHuLPDiYI0w==
+Received: from mail-pl1-f197.google.com (mail-pl1-f197.google.com [209.85.214.197])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4b2nu1jkxp-1
+	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
+	for <linux-wireless@vger.kernel.org>; Tue, 16 Dec 2025 06:27:15 +0000 (GMT)
+Received: by mail-pl1-f197.google.com with SMTP id d9443c01a7336-2a0f4822f77so51014765ad.2
+        for <linux-wireless@vger.kernel.org>; Mon, 15 Dec 2025 22:27:15 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1765859759; x=1766464559; darn=vger.kernel.org;
+        d=oss.qualcomm.com; s=google; t=1765866435; x=1766471235; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:message-id:date:subject:cc
          :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=T7VGHKNtM1JC0CBVAGFFnYSWZgu9YXfXL47IE3gej6I=;
-        b=GNd9sYwQut4XIbXU0KfSimOXexBPF0OJapfALj4PsUFImA0hFu8gtCXLqfMIf1M6+7
-         hLmZ8uSQuV7x+LsxEFimMRGAvK/EbpOxgK6ylwk1Okh7u0bLwm2OemDYrLXoRtLsZgru
-         VkOgvbApUYCVWkC66MQGiuCR+yf8Uc18+WVdh3wZZ9Fm6ZkofaG0BJy2Fn8L0AHRmQXf
-         JhBskyatFRNJeiw1jTX6N86l23knL50fxA38vEHtweuhFxXWBnCD6jQCJtfwh0+JLLZL
-         cyLUnd64PL1ROr75iI+rYGU9/AKQd+nAkxvLg6v7BjErze4ex5zqn6BTfE0YtplC1ypd
-         DotA==
+        bh=9yRtVNvotwOm81nqTsUioBrQTDEgivMUyK9QrYaIlTI=;
+        b=WIW+9rdLchQZr3t/LpXAojiJkcVmqHgy12vwGi2ByIxwTP6hdKYgHpu1bZSPBThVu5
+         iTr0UmDjZ+B5eLrklIshCZmoDehDxAv6urUGwwoeIrRzSukPyTbniWECATsgfeQ9AP2H
+         V5jW2w6sItlJi/nUtMLbEvUMLXtlWqRL9Vm42kc/0cS7mbS5adihkG7fzxsu+64SEN1D
+         xT+ribO2zITtf8vI8cRNrqZFCUR8hK612TS2NARKWyTJojvOVFq9frZdiTgmhoKHbOf6
+         ya28+B5ovWqQG6c72UXlYi97tnVDuQuX88KPJu9/NzpG6gVVXr7kNzfmVwbZ2ivuE5rc
+         lHNA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1765859759; x=1766464559;
+        d=1e100.net; s=20230601; t=1765866435; x=1766471235;
         h=content-transfer-encoding:mime-version:message-id:date:subject:cc
          :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=T7VGHKNtM1JC0CBVAGFFnYSWZgu9YXfXL47IE3gej6I=;
-        b=Ky2sXCEC9MXhVnTtU7GJe3GDbYuLnka8KfPB7+QfkmW2kctVuMPQCiyJW95KDhoky2
-         Xflvdb/ej9owBlF73NKWlkuVVKtxeCcmS+Rf8D2NZsPluv///5qOi/TF2H8MZoexZLZP
-         S9K/CTHqOVkbtSl3s4v3ooUw7VWznJVO65LwyS6DXXMcHeoqDiXHkzS6/lPWCrFQK/7F
-         S4JVnul8b74S8FJxxpOL5egcogTCKK/2g+IqUPOrge98cA0WSgED2PYWt0Tt6SYoJGqe
-         O9AwE3sCYf13g59iXNqiC9XNqpNDx2CKH0zI1pxI6avCuRZdhiOU/zD+BC5nbyP5sRWH
-         A0OQ==
-X-Forwarded-Encrypted: i=1; AJvYcCU3CLoWxeZ2IDRjHMoLuDGYuIGnkRvCGZbI9bzA9aJhzq/KlfRvX8r4xM0BRnhC+TD4rHwEfYKqdtzP98bkUw==@vger.kernel.org
-X-Gm-Message-State: AOJu0YwIpC8x5WnfKWJIqm672EpzQMkk7qsZtX2jN1Arjhd3gMnDmXcX
-	3/ldDWMrlOOfEJNbbl2XAIyru5qRo2UMzy5H7T/ul1uxvA6HyZ1GWZSY
-X-Gm-Gg: AY/fxX5CttC8h0mz95OHcTb0JMpQHLlXyD2X/IhEWM6mDmxRu8wCvaxuE/iCK92Xd/t
-	sdH12KIY+RumV78Ysh8dhFTXzl7PxCCECCN45I3ke/RIEPzppHwWOyzI7YChU484yfmJEwhwlYI
-	nyOquAStu26d0aOT0xTev4Crnd2gadK4SGOX7OXrykEkRP219EuYm46s8LsKuKS21K6lJYnxjuV
-	NDvCFiO5bF37FdDDoWuOb2FAKhg9/zQipLCIWrQJM/x7fW0bBJar/qAdXCuF/6ox1qP4Rcdi+qB
-	UnWYMojw224Z64Sum8pYdTyNhhL3Z/4e1Im142GnpzQGlFCjdhg7359AiX3UtHAioXw/Yi4ipeZ
-	cEZk4Wyd66BDM70q+p37eh/vvt8u5regon1W2PjghaRXVcxar/0nHZzDUJ9oWW6vjhs2zm07UOz
-	qQcHm8YWr1x2nXdbg0LOhEQrhPxVavg6Jq6S8YGMOOnGnzKmp6rjZZcPooDhhWFagZ2b3RTxRCW
-	IrFRCuo2jNGmNBJoXz1HyNsvRuP
-X-Google-Smtp-Source: AGHT+IH+TqIPuUN/dMFCU97t7Q8gftaVx3eoTbjPNaDmHr9yxJL5QssQktaf3+BhVZjdlEzRjDOxmQ==
-X-Received: by 2002:a05:6820:16a6:b0:659:9a49:8eda with SMTP id 006d021491bc7-65b451879f5mr5787893eaf.14.1765859759054;
-        Mon, 15 Dec 2025 20:35:59 -0800 (PST)
-Received: from nukework.lan (c-98-57-15-22.hsd1.tx.comcast.net. [98.57.15.22])
-        by smtp.gmail.com with ESMTPSA id 006d021491bc7-65b35f2b1e5sm8948353eaf.3.2025.12.15.20.35.57
+        bh=9yRtVNvotwOm81nqTsUioBrQTDEgivMUyK9QrYaIlTI=;
+        b=HZ4N0A7fCKZS+EWB/cTt0+gRlmHABOyPBSChgI00EtszOnYngextHK9FTWBa3egwiQ
+         wk3QmKBT70x3vQYgdwjUQsaKjMEASbBy8pfkSjU/QOO68h7D0lyMwM1CBqyi6B+c3NUB
+         QNXzKe7q+9sPBIs07+vOVPTM4L/NWqzYrqK19aR/FTYgY1xLZoBa/qucCAKlU6xhIbvb
+         4pYAEuiLwb2HT+lVbQCinwGsuku/Sw+5l8F7fM2FaLoOIarUIxf7mOYU41AHe2RtZEQq
+         0CRntthatGMC9UZJq/Flkhp41Qts/MrjpPD9AKXVZ+iiB3tgYYVcRv5afdgs3SI6zpbN
+         ewzQ==
+X-Gm-Message-State: AOJu0Yxis3pQQTPPwQXMJmqKW0eH28dCkCVjGUU3wpQ9zCbNzkL352Ct
+	Lr61lYyoElz8kR+FvaNTtlSM13UtWU3mpTPuVUeC98XWKJ8cTMymG/AltbmpATmnGy7LiG0ioKR
+	t77tlujXuj8N0Z8mdBngbCMpj0155lfMpb100RjLtTyg6PD2/IjnQvY7BOhAGhz8jL0tVkA==
+X-Gm-Gg: AY/fxX4A8nuqiI5b4mjMcsMy9E0HgWF1ZT/b8otRfHvQ6G7gkYkIcgiOKfQuZKt7Ql5
+	8vxISHVUfC3VxmlAaLzXrXpOpu0Rkmj66CHuBeh1F0UX6iILaJ+Wt7Gzt+vB0udJNVaqd9EKRtb
+	r4tjzYt86r8sIHV1SGQbnOL37pg3PG5VJ0IynggifYPR/xN09gPoV/BKsBmcmkYX0WFIo6WO5kJ
+	LqJY/pm+7dOTcJT8xlr/BGaQOhhawshX7No4YMHqFDkMHEakPBjhXtsV3VEPS5BPQQjl7c58zUa
+	Oj0HHwaa2DaOv0QGT/9jWt2TyAGBjC3icCsFnSYt9C0c1jOfStobwDpM5iaAhc+kLpp59wibonD
+	BBEhsWRVp8QoEDLPP1QEH9n/PyFsQ5H7Tc4arjCf04wVZ5xxrJz6T9Q==
+X-Received: by 2002:a17:903:120f:b0:2a0:b62e:e012 with SMTP id d9443c01a7336-2a0b62ee090mr77067505ad.38.1765866434761;
+        Mon, 15 Dec 2025 22:27:14 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IH0ZG+taiBml2NcUWRO29VFmeVAelqH+Cetk+5JP1dyeVFSCLx1wS7xiRoZDOHkaDjX0yetSQ==
+X-Received: by 2002:a17:903:120f:b0:2a0:b62e:e012 with SMTP id d9443c01a7336-2a0b62ee090mr77067265ad.38.1765866434268;
+        Mon, 15 Dec 2025 22:27:14 -0800 (PST)
+Received: from hu-kathirve-hyd.qualcomm.com ([202.46.22.19])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-29f4d27f833sm106478015ad.45.2025.12.15.22.27.12
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 15 Dec 2025 20:35:57 -0800 (PST)
-From: Alexandru Gagniuc <mr.nuke.me@gmail.com>
-To: ath11k@lists.infradead.org,
-	Jeff Johnson <jjohnson@kernel.org>
-Cc: baochen.qiang@oss.qualcomm.com,
-	Alexandru Gagniuc <mr.nuke.me@gmail.com>,
-	linux-wireless@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH v2] wifi: ath11k: move .max_tx_ring to struct ath11k_hw_hal_params
-Date: Mon, 15 Dec 2025 22:35:52 -0600
-Message-ID: <20251216043555.628296-1-mr.nuke.me@gmail.com>
-X-Mailer: git-send-email 2.45.1
+        Mon, 15 Dec 2025 22:27:13 -0800 (PST)
+From: Karthikeyan Kathirvel <karthikeyan.kathirvel@oss.qualcomm.com>
+To: johannes@sipsolutions.net
+Cc: linux-wireless@vger.kernel.org,
+        Karthikeyan Kathirvel <karthikeyan.kathirvel@oss.qualcomm.com>
+Subject: [PATCH RFC wireless-next 00/13] wifi: ieee80211/cfg80211: Add UHR (802.11bn) Capability and Operation support
+Date: Tue, 16 Dec 2025 11:56:43 +0530
+Message-Id: <20251216062656.1738022-1-karthikeyan.kathirvel@oss.qualcomm.com>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
@@ -89,350 +103,116 @@ List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+X-Proofpoint-ORIG-GUID: MNJFBXGSgvEPUo9rBQnXJNNK872faofk
+X-Proofpoint-GUID: MNJFBXGSgvEPUo9rBQnXJNNK872faofk
+X-Authority-Analysis: v=2.4 cv=AOuEbwt4 c=1 sm=1 tr=0 ts=6940fbc4 cx=c_pps
+ a=cmESyDAEBpBGqyK7t0alAg==:117 a=fChuTYTh2wq5r3m49p7fHw==:17
+ a=wP3pNCr1ah4A:10 a=s4-Qcg_JpJYA:10 a=VkNPw1HP01LnGYTKEx00:22
+ a=MUOQkJ1lgydsUBY8deoA:9 a=1OuFwYUASf3TG4hYMiVC:22
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUxMjE2MDA1MSBTYWx0ZWRfX/vV0Lvc+2BB3
+ UJLzB0vPYlUKHiS1j1ccGpHs262QRksKPADtb95I7nRyarLoRDL6sXBMj77OarLZyFI+clsD4wz
+ IEH+NqnjzUZzKAtMPv2zDUc5nMAdfoTYAKPsiwptF+rI3Wk9w4vEZxlGLhc4F1YQfHFZF2ujFyN
+ KzMB1lwl0wmfI/ILoNU7xZf9NoD+rolheh9+6J8F/hDWPS0b1vCez93Q8Eytyc5nGcHL59RSrOu
+ FFnETS4bJ1KzUJc62SecBZo3wUvrzb8F2FT+0dxlHVX67O1WMB1GwwlwS2mVlME911L42IELVSE
+ WFKhpPlzAg3y/Z15X8Ie86gSPfVvJetNruTkkiWdVZHg1pioUDtcDHBzndxi8bW2qFj5HfAVT0u
+ ybFB7o89672O67SCy8ycJ1ujt/ebeg==
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.9,FMLib:17.12.100.49
+ definitions=2025-12-16_01,2025-12-15_03,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ spamscore=0 suspectscore=0 bulkscore=0 phishscore=0 malwarescore=0
+ priorityscore=1501 adultscore=0 impostorscore=0 lowpriorityscore=0
+ clxscore=1011 classifier=typeunknown authscore=0 authtc= authcc=
+ route=outbound adjust=0 reason=mlx scancount=1 engine=8.22.0-2510240001
+ definitions=main-2512160051
 
-".max_tx_ring" is an upper bounds to indexing ".tcl2wbm_rbm_map". It
-is initialized in, core.c, a different file than the array. This
-spaghetti-like relation is fragile and not obvious. Accidentally
-setting ".max_tx_ring" too high leads to a hard to track out-of-
-bounds access and memory corruption.
+This series covers support for UHR capability and operation (11bn)
+advertisement in AP and STA mode. The objective here is to give an
+idea of basic changes needed for UHR in cfg80211/nl80211/mac80211.
 
-There is a small ambiguity on the meaning of "max_tx_ring":
- - The highest ring, max=3 implies there are 4 rings (0, 1, 2, 3)
- - The highest number to use for array indexing (there are 3 rings)
+The code changes are based on the IEEE 802.11bn Draft P802.11bn/D1.0.
+There may be changes in the code to adopt upcoming 11bn spec changes.
 
-Clarify this dependency by moving ".max_tx_ring" adjacent to the array
-".tcl2wbm_rbm_map", and name it "num_tx_rings". Use ARRAY_SIZE()
-instead of #defines to initialize the length field.
+Here are the high level summary,
 
-The ath11k_hw_hal_params_qca6390 uses fewer num_tx_rings than its map,
-so use a constant to express the correct value. Add a static_assert()
-to fail compilation if the constant is accidentally set too high.
+cfg80211:
 
-The intent is to make the code easier to understand rather than fix
-an existing bug.
+The below patches defines and declares UHR definitions and its
+Capabilities,
 
-Signed-off-by: Alexandru Gagniuc <mr.nuke.me@gmail.com>
+  wifi: ieee80211: Add UHR (802.11bn) definitions
+  wifi: cfg80211: Add data structures to capture UHR capabilities
+  wifi: cfg80211: add an API to return the UHR interface capabilities
+  wifi: cfg80211: Support configuration of station UHR capabilities
+  wifi: nl80211: retrieve UHR related elements in AP mode
+  wifi: nl80211/reg: add no-UHR regulatory flag
+  wifi: cfg80211: support disabling UHR mode
+
+mac80211:
+
+The below patches handles MLME of UHR for AP and STA mode,
+
+  wifi: mac80211: Support parsing UHR elements
+  wifi: mac80211: Add UHR capabilities to association/probe request for
+    STA mode
+  wifi: mac80211: Handle station association response with UHR
+  wifi: mac80211: set UHR support flag in AP mode
+
+TODOs:
+- DBE info on UHR MAC capabilities are yet to properly positioned
+  expecting upcomming versions of spec will have details on that.
+
+Validated below things in AP Mode:
+1) AP mode bring up in 11bn
+2) UHR Operation IE in Beacon advertisement
+3) Probe and Assoc response with UHR Cap and Operation IEs
+
+Validated below things in STA Mode:
+1) STA candidate selection
+2) STA association with UHR Caps
+3) Probe and Assoc response with UHR Cap IEs
+
+Pending testcase
+1) Integrate with hostapd changes "[RFC PATCH] initial UHR support"
+2) Disabling the 11bn code
+3) Stats code testing
+4) Channel switch in UHR mode
+5) Other test cases may be covered in future
+
+Karthikeyan Kathirvel (13):
+  wifi: mac80211_hwsim: Add UHR capabilities in driver.
+  wifi: cfg80211: support disabling UHR mode
+  wifi: mac80211: set UHR support flag in AP mode
+  wifi: mac80211: Handle station association response with UHR
+  wifi: mac80211: Add UHR capabilities to association/probe request for STA mode
+  wifi: mac80211: Support parsing UHR elements
+  wifi: nl80211/reg: add no-UHR regulatory flag
+  wifi: nl80211: retrieve UHR related elements in AP mode
+  wifi: cfg80211: Support configuration of station UHR capabilities
+  wifi: nl80211: reduce multiple deference of link_sta_params
+  wifi: cfg80211: add an API to return the UHR interface capabilities
+  wifi: cfg80211: Add data structures to capture UHR capabilities
+  wifi: ieee80211: Add UHR (802.11bn) definitions
 ---
+ include/linux/ieee80211.h              | 100 +++++++++++++++++++
+ include/net/cfg80211.h                 |  49 +++++++++
+ include/net/mac80211.h                 |  18 ++++
+ include/uapi/linux/nl80211.h           |  29 ++++++
+ net/mac80211/Makefile                  |   3 +-
+ net/mac80211/cfg.c                     |   8 ++
+ net/mac80211/ieee80211_i.h             |  14 +++
+ net/mac80211/main.c                    |  12 ++-
+ net/mac80211/mlme.c                    |  46 ++++++++-
+ net/mac80211/parse.c                   |  11 +++
+ net/mac80211/uhr.c                     |  33 +++++++
+ net/mac80211/util.c                    |  44 ++++++++-
+ net/wireless/nl80211.c                 |  86 ++++++++++++++--
+ net/wireless/reg.c                     |   2 +
+ 20 files changed, 633 insertions(+), 15 deletions(-)
+ create mode 100644 net/mac80211/uhr.c
 
-I am trying to make ath11k work on IPQ9574. My device uses a IPQ9570
-with a QCN5024 as the 2.4 GHz wifi.
-
-I spent a few days tracking a memory corruption bug caused by
-erroneously setting ".max_tx_ring" too high. I think I would not have
-made this mistake if the initializations of .max_tx_ring and
-.tcl2wbm_rbm_map were right next to each other.
-
-Changes since v1:
- - use "num_tx_rings" name instead of "map_len"
- - make sure debugfs.c is correctly updated
- - add a static_assert for ath11k_hw_hal_params_qca6390 special case
-
- drivers/net/wireless/ath/ath11k/core.c    | 12 +-----------
- drivers/net/wireless/ath/ath11k/debugfs.c |  2 +-
- drivers/net/wireless/ath/ath11k/dp.c      | 12 ++++++------
- drivers/net/wireless/ath/ath11k/dp_tx.c   |  9 +++++----
- drivers/net/wireless/ath/ath11k/hw.c      | 19 +++++++++++++++++++
- drivers/net/wireless/ath/ath11k/hw.h      |  3 ++-
- drivers/net/wireless/ath/ath11k/mac.c     |  2 +-
- 7 files changed, 35 insertions(+), 24 deletions(-)
-
-diff --git a/drivers/net/wireless/ath/ath11k/core.c b/drivers/net/wireless/ath/ath11k/core.c
-index 812686173ac8a..07199ceecbeb4 100644
---- a/drivers/net/wireless/ath/ath11k/core.c
-+++ b/drivers/net/wireless/ath/ath11k/core.c
-@@ -100,7 +100,6 @@ static const struct ath11k_hw_params ath11k_hw_params[] = {
- 		.supports_regdb = false,
- 		.fix_l1ss = true,
- 		.credit_flow = false,
--		.max_tx_ring = DP_TCL_NUM_RING_MAX,
- 		.hal_params = &ath11k_hw_hal_params_ipq8074,
- 		.supports_dynamic_smps_6ghz = false,
- 		.alloc_cacheable_memory = true,
-@@ -184,7 +183,6 @@ static const struct ath11k_hw_params ath11k_hw_params[] = {
- 		.supports_regdb = false,
- 		.fix_l1ss = true,
- 		.credit_flow = false,
--		.max_tx_ring = DP_TCL_NUM_RING_MAX,
- 		.hal_params = &ath11k_hw_hal_params_ipq8074,
- 		.supports_dynamic_smps_6ghz = false,
- 		.alloc_cacheable_memory = true,
-@@ -271,7 +269,6 @@ static const struct ath11k_hw_params ath11k_hw_params[] = {
- 		.supports_regdb = false,
- 		.fix_l1ss = true,
- 		.credit_flow = true,
--		.max_tx_ring = DP_TCL_NUM_RING_MAX_QCA6390,
- 		.hal_params = &ath11k_hw_hal_params_qca6390,
- 		.supports_dynamic_smps_6ghz = false,
- 		.alloc_cacheable_memory = false,
-@@ -358,7 +355,6 @@ static const struct ath11k_hw_params ath11k_hw_params[] = {
- 		.supports_regdb = false,
- 		.fix_l1ss = true,
- 		.credit_flow = false,
--		.max_tx_ring = DP_TCL_NUM_RING_MAX,
- 		.hal_params = &ath11k_hw_hal_params_ipq8074,
- 		.supports_dynamic_smps_6ghz = true,
- 		.alloc_cacheable_memory = true,
-@@ -445,7 +441,6 @@ static const struct ath11k_hw_params ath11k_hw_params[] = {
- 		.supports_regdb = true,
- 		.fix_l1ss = false,
- 		.credit_flow = true,
--		.max_tx_ring = DP_TCL_NUM_RING_MAX_QCA6390,
- 		.hal_params = &ath11k_hw_hal_params_qca6390,
- 		.supports_dynamic_smps_6ghz = false,
- 		.alloc_cacheable_memory = false,
-@@ -533,7 +528,6 @@ static const struct ath11k_hw_params ath11k_hw_params[] = {
- 		.supports_regdb = true,
- 		.fix_l1ss = false,
- 		.credit_flow = true,
--		.max_tx_ring = DP_TCL_NUM_RING_MAX_QCA6390,
- 		.hal_params = &ath11k_hw_hal_params_qca6390,
- 		.supports_dynamic_smps_6ghz = false,
- 		.alloc_cacheable_memory = false,
-@@ -619,7 +613,6 @@ static const struct ath11k_hw_params ath11k_hw_params[] = {
- 		.supports_regdb = true,
- 		.fix_l1ss = false,
- 		.credit_flow = true,
--		.max_tx_ring = DP_TCL_NUM_RING_MAX,
- 		.hal_params = &ath11k_hw_hal_params_wcn6750,
- 		.supports_dynamic_smps_6ghz = false,
- 		.alloc_cacheable_memory = false,
-@@ -662,7 +655,6 @@ static const struct ath11k_hw_params ath11k_hw_params[] = {
- 		.qmi_service_ins_id = ATH11K_QMI_WLFW_SERVICE_INS_ID_V01_IPQ8074,
- 		.ring_mask = &ath11k_hw_ring_mask_ipq8074,
- 		.credit_flow = false,
--		.max_tx_ring = 1,
- 		.spectral = {
- 			.fft_sz = 2,
- 			.fft_pad_sz = 0,
-@@ -698,7 +690,7 @@ static const struct ath11k_hw_params ath11k_hw_params[] = {
- 		.supports_regdb = false,
- 		.idle_ps = false,
- 		.supports_suspend = false,
--		.hal_params = &ath11k_hw_hal_params_ipq8074,
-+		.hal_params = &ath11k_hw_hal_params_ipq5018,
- 		.single_pdev_only = false,
- 		.coldboot_cal_mm = true,
- 		.coldboot_cal_ftm = true,
-@@ -789,7 +781,6 @@ static const struct ath11k_hw_params ath11k_hw_params[] = {
- 		.supports_regdb = true,
- 		.fix_l1ss = false,
- 		.credit_flow = true,
--		.max_tx_ring = DP_TCL_NUM_RING_MAX_QCA6390,
- 		.hal_params = &ath11k_hw_hal_params_qca6390,
- 		.supports_dynamic_smps_6ghz = false,
- 		.alloc_cacheable_memory = false,
-@@ -876,7 +867,6 @@ static const struct ath11k_hw_params ath11k_hw_params[] = {
- 		.supports_regdb = true,
- 		.fix_l1ss = false,
- 		.credit_flow = true,
--		.max_tx_ring = DP_TCL_NUM_RING_MAX_QCA6390,
- 		.hal_params = &ath11k_hw_hal_params_qca6390,
- 		.supports_dynamic_smps_6ghz = false,
- 		.alloc_cacheable_memory = false,
-diff --git a/drivers/net/wireless/ath/ath11k/debugfs.c b/drivers/net/wireless/ath/ath11k/debugfs.c
-index 977f945b6e669..50f344803e8fd 100644
---- a/drivers/net/wireless/ath/ath11k/debugfs.c
-+++ b/drivers/net/wireless/ath/ath11k/debugfs.c
-@@ -707,7 +707,7 @@ static ssize_t ath11k_debugfs_dump_soc_dp_stats(struct file *file,
- 	len += scnprintf(buf + len, size - len, "\nSOC TX STATS:\n");
- 	len += scnprintf(buf + len, size - len, "\nTCL Ring Full Failures:\n");
- 
--	for (i = 0; i < ab->hw_params.max_tx_ring; i++)
-+	for (i = 0; i < ab->hw_params.hal_params->num_tx_rings; i++)
- 		len += scnprintf(buf + len, size - len, "ring%d: %u\n",
- 				 i, soc_stats->tx_err.desc_na[i]);
- 
-diff --git a/drivers/net/wireless/ath/ath11k/dp.c b/drivers/net/wireless/ath/ath11k/dp.c
-index 56b1a657e0b0f..c940de285276d 100644
---- a/drivers/net/wireless/ath/ath11k/dp.c
-+++ b/drivers/net/wireless/ath/ath11k/dp.c
-@@ -344,7 +344,7 @@ void ath11k_dp_stop_shadow_timers(struct ath11k_base *ab)
- 	if (!ab->hw_params.supports_shadow_regs)
- 		return;
- 
--	for (i = 0; i < ab->hw_params.max_tx_ring; i++)
-+	for (i = 0; i < ab->hw_params.hal_params->num_tx_rings; i++)
- 		ath11k_dp_shadow_stop_timer(ab, &ab->dp.tx_ring_timer[i]);
- 
- 	ath11k_dp_shadow_stop_timer(ab, &ab->dp.reo_cmd_timer);
-@@ -359,7 +359,7 @@ static void ath11k_dp_srng_common_cleanup(struct ath11k_base *ab)
- 	ath11k_dp_srng_cleanup(ab, &dp->wbm_desc_rel_ring);
- 	ath11k_dp_srng_cleanup(ab, &dp->tcl_cmd_ring);
- 	ath11k_dp_srng_cleanup(ab, &dp->tcl_status_ring);
--	for (i = 0; i < ab->hw_params.max_tx_ring; i++) {
-+	for (i = 0; i < ab->hw_params.hal_params->num_tx_rings; i++) {
- 		ath11k_dp_srng_cleanup(ab, &dp->tx_ring[i].tcl_data_ring);
- 		ath11k_dp_srng_cleanup(ab, &dp->tx_ring[i].tcl_comp_ring);
- 	}
-@@ -400,7 +400,7 @@ static int ath11k_dp_srng_common_setup(struct ath11k_base *ab)
- 		goto err;
- 	}
- 
--	for (i = 0; i < ab->hw_params.max_tx_ring; i++) {
-+	for (i = 0; i < ab->hw_params.hal_params->num_tx_rings; i++) {
- 		tcl_num = ab->hw_params.hal_params->tcl2wbm_rbm_map[i].tcl_ring_num;
- 		wbm_num = ab->hw_params.hal_params->tcl2wbm_rbm_map[i].wbm_ring_num;
- 
-@@ -782,7 +782,7 @@ int ath11k_dp_service_srng(struct ath11k_base *ab,
- 	int i, j;
- 	int tot_work_done = 0;
- 
--	for (i = 0; i < ab->hw_params.max_tx_ring; i++) {
-+	for (i = 0; i < ab->hw_params.hal_params->num_tx_rings; i++) {
- 		if (BIT(ab->hw_params.hal_params->tcl2wbm_rbm_map[i].wbm_ring_num) &
- 		    ab->hw_params.ring_mask->tx[grp_id])
- 			ath11k_dp_tx_completion_handler(ab, i);
-@@ -1035,7 +1035,7 @@ void ath11k_dp_free(struct ath11k_base *ab)
- 
- 	ath11k_dp_reo_cmd_list_cleanup(ab);
- 
--	for (i = 0; i < ab->hw_params.max_tx_ring; i++) {
-+	for (i = 0; i < ab->hw_params.hal_params->num_tx_rings; i++) {
- 		spin_lock_bh(&dp->tx_ring[i].tx_idr_lock);
- 		idr_for_each(&dp->tx_ring[i].txbuf_idr,
- 			     ath11k_dp_tx_pending_cleanup, ab);
-@@ -1086,7 +1086,7 @@ int ath11k_dp_alloc(struct ath11k_base *ab)
- 
- 	size = sizeof(struct hal_wbm_release_ring) * DP_TX_COMP_RING_SIZE;
- 
--	for (i = 0; i < ab->hw_params.max_tx_ring; i++) {
-+	for (i = 0; i < ab->hw_params.hal_params->num_tx_rings; i++) {
- 		idr_init(&dp->tx_ring[i].txbuf_idr);
- 		spin_lock_init(&dp->tx_ring[i].tx_idr_lock);
- 		dp->tx_ring[i].tcl_data_ring_id = i;
-diff --git a/drivers/net/wireless/ath/ath11k/dp_tx.c b/drivers/net/wireless/ath/ath11k/dp_tx.c
-index 562aba66582f3..86e1e6c27b36c 100644
---- a/drivers/net/wireless/ath/ath11k/dp_tx.c
-+++ b/drivers/net/wireless/ath/ath11k/dp_tx.c
-@@ -91,6 +91,7 @@ int ath11k_dp_tx(struct ath11k *ar, struct ath11k_vif *arvif,
- 	struct hal_srng *tcl_ring;
- 	struct ieee80211_hdr *hdr = (void *)skb->data;
- 	struct dp_tx_ring *tx_ring;
-+	size_t num_tx_rings = ab->hw_params.hal_params->num_tx_rings;
- 	void *hal_tcl_desc;
- 	u8 pool_id;
- 	u8 hal_ring_id;
-@@ -113,7 +114,7 @@ int ath11k_dp_tx(struct ath11k *ar, struct ath11k_vif *arvif,
- tcl_ring_sel:
- 	tcl_ring_retry = false;
- 
--	ti.ring_id = ring_selector % ab->hw_params.max_tx_ring;
-+	ti.ring_id = ring_selector % num_tx_rings;
- 	ti.rbm_id = ab->hw_params.hal_params->tcl2wbm_rbm_map[ti.ring_id].rbm_id;
- 
- 	ring_map |= BIT(ti.ring_id);
-@@ -126,7 +127,7 @@ int ath11k_dp_tx(struct ath11k *ar, struct ath11k_vif *arvif,
- 	spin_unlock_bh(&tx_ring->tx_idr_lock);
- 
- 	if (unlikely(ret < 0)) {
--		if (ring_map == (BIT(ab->hw_params.max_tx_ring) - 1) ||
-+		if (ring_map == (BIT(num_tx_rings) - 1) ||
- 		    !ab->hw_params.tcl_ring_retry) {
- 			atomic_inc(&ab->soc_stats.tx_err.misc_fail);
- 			return -ENOSPC;
-@@ -244,8 +245,8 @@ int ath11k_dp_tx(struct ath11k *ar, struct ath11k_vif *arvif,
- 		 * checking this ring earlier for each pkt tx.
- 		 * Restart ring selection if some rings are not checked yet.
- 		 */
--		if (unlikely(ring_map != (BIT(ab->hw_params.max_tx_ring)) - 1) &&
--		    ab->hw_params.tcl_ring_retry && ab->hw_params.max_tx_ring > 1) {
-+		if (unlikely(ring_map != (BIT(num_tx_rings)) - 1) &&
-+		    ab->hw_params.tcl_ring_retry && num_tx_rings > 1) {
- 			tcl_ring_retry = true;
- 			ring_selector++;
- 		}
-diff --git a/drivers/net/wireless/ath/ath11k/hw.c b/drivers/net/wireless/ath/ath11k/hw.c
-index caa6dc12a790b..bbaacdf76af0a 100644
---- a/drivers/net/wireless/ath/ath11k/hw.c
-+++ b/drivers/net/wireless/ath/ath11k/hw.c
-@@ -2707,6 +2707,14 @@ const struct ath11k_hw_regs wcn6750_regs = {
- 	.hal_reo1_misc_ctl = 0x000005d8,
- };
- 
-+static const struct ath11k_hw_tcl2wbm_rbm_map ath11k_hw_tcl2wbm_rbm_map_ipq5018[] = {
-+	{
-+		.tcl_ring_num = 0,
-+		.wbm_ring_num = 0,
-+		.rbm_id = HAL_RX_BUF_RBM_SW0_BM,
-+	},
-+};
-+
- static const struct ath11k_hw_tcl2wbm_rbm_map ath11k_hw_tcl2wbm_rbm_map_ipq8074[] = {
- 	{
- 		.tcl_ring_num = 0,
-@@ -2822,19 +2830,30 @@ const struct ath11k_hw_regs ipq5018_regs = {
- 	.hal_wbm1_release_ring_base_lsb = 0x0000097c,
- };
- 
-+const struct ath11k_hw_hal_params ath11k_hw_hal_params_ipq5018 = {
-+	.rx_buf_rbm = HAL_RX_BUF_RBM_SW3_BM,
-+	.tcl2wbm_rbm_map = ath11k_hw_tcl2wbm_rbm_map_ipq5018,
-+	.num_tx_rings = ARRAY_SIZE(ath11k_hw_tcl2wbm_rbm_map_ipq5018),
-+};
-+
- const struct ath11k_hw_hal_params ath11k_hw_hal_params_ipq8074 = {
- 	.rx_buf_rbm = HAL_RX_BUF_RBM_SW3_BM,
- 	.tcl2wbm_rbm_map = ath11k_hw_tcl2wbm_rbm_map_ipq8074,
-+	.num_tx_rings = ARRAY_SIZE(ath11k_hw_tcl2wbm_rbm_map_ipq8074),
- };
- 
- const struct ath11k_hw_hal_params ath11k_hw_hal_params_qca6390 = {
- 	.rx_buf_rbm = HAL_RX_BUF_RBM_SW1_BM,
- 	.tcl2wbm_rbm_map = ath11k_hw_tcl2wbm_rbm_map_ipq8074,
-+	.num_tx_rings = DP_TCL_NUM_RING_MAX_QCA6390,
- };
- 
-+static_assert(ARRAY_SIZE(ath11k_hw_tcl2wbm_rbm_map_ipq8074) >= DP_TCL_NUM_RING_MAX_QCA6390);
-+
- const struct ath11k_hw_hal_params ath11k_hw_hal_params_wcn6750 = {
- 	.rx_buf_rbm = HAL_RX_BUF_RBM_SW1_BM,
- 	.tcl2wbm_rbm_map = ath11k_hw_tcl2wbm_rbm_map_wcn6750,
-+	.num_tx_rings = ARRAY_SIZE(ath11k_hw_tcl2wbm_rbm_map_wcn6750),
- };
- 
- static const struct cfg80211_sar_freq_ranges ath11k_hw_sar_freq_ranges_wcn6855[] = {
-diff --git a/drivers/net/wireless/ath/ath11k/hw.h b/drivers/net/wireless/ath/ath11k/hw.h
-index 52d9f4c13b136..9db984ac4321c 100644
---- a/drivers/net/wireless/ath/ath11k/hw.h
-+++ b/drivers/net/wireless/ath/ath11k/hw.h
-@@ -134,6 +134,7 @@ struct ath11k_hw_tcl2wbm_rbm_map {
- struct ath11k_hw_hal_params {
- 	enum hal_rx_buf_return_buf_manager rx_buf_rbm;
- 	const struct ath11k_hw_tcl2wbm_rbm_map *tcl2wbm_rbm_map;
-+	size_t num_tx_rings;
- };
- 
- struct ath11k_hw_params {
-@@ -198,7 +199,6 @@ struct ath11k_hw_params {
- 	bool supports_regdb;
- 	bool fix_l1ss;
- 	bool credit_flow;
--	u8 max_tx_ring;
- 	const struct ath11k_hw_hal_params *hal_params;
- 	bool supports_dynamic_smps_6ghz;
- 	bool alloc_cacheable_memory;
-@@ -291,6 +291,7 @@ extern const struct ce_ie_addr ath11k_ce_ie_addr_ipq5018;
- 
- extern const struct ce_remap ath11k_ce_remap_ipq5018;
- 
-+extern const struct ath11k_hw_hal_params ath11k_hw_hal_params_ipq5018;
- extern const struct ath11k_hw_hal_params ath11k_hw_hal_params_ipq8074;
- extern const struct ath11k_hw_hal_params ath11k_hw_hal_params_qca6390;
- extern const struct ath11k_hw_hal_params ath11k_hw_hal_params_wcn6750;
-diff --git a/drivers/net/wireless/ath/ath11k/mac.c b/drivers/net/wireless/ath/ath11k/mac.c
-index 3276fe443502f..33ebe03380114 100644
---- a/drivers/net/wireless/ath/ath11k/mac.c
-+++ b/drivers/net/wireless/ath/ath11k/mac.c
-@@ -7392,7 +7392,7 @@ static void ath11k_mac_op_remove_interface(struct ieee80211_hw *hw,
- 	idr_for_each(&ar->txmgmt_idr,
- 		     ath11k_mac_vif_txmgmt_idr_remove, vif);
- 
--	for (i = 0; i < ab->hw_params.max_tx_ring; i++) {
-+	for (i = 0; i < ab->hw_params.hal_params->num_tx_rings; i++) {
- 		spin_lock_bh(&ab->dp.tx_ring[i].tx_idr_lock);
- 		idr_for_each(&ab->dp.tx_ring[i].txbuf_idr,
- 			     ath11k_mac_vif_unref, vif);
+base-commit: f9e788c5fd3a23edecd808ebb354e2cb1aef87c3
 -- 
-2.45.1
+2.34.1
 
 
