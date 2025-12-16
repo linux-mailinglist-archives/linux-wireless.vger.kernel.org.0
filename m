@@ -1,103 +1,102 @@
-Return-Path: <linux-wireless+bounces-29777-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-29779-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6E738CC1254
-	for <lists+linux-wireless@lfdr.de>; Tue, 16 Dec 2025 07:40:41 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 37059CC123C
+	for <lists+linux-wireless@lfdr.de>; Tue, 16 Dec 2025 07:39:25 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 9D21B302B77E
-	for <lists+linux-wireless@lfdr.de>; Tue, 16 Dec 2025 06:36:14 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 6C98E3064517
+	for <lists+linux-wireless@lfdr.de>; Tue, 16 Dec 2025 06:35:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 262FC343207;
-	Tue, 16 Dec 2025 06:27:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5177D34251F;
+	Tue, 16 Dec 2025 06:27:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="dW9Jdetz";
-	dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b="iqA31NUH"
+	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="YMuOP9nk";
+	dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b="jiP0jVKe"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E56AA341ACC
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E577634251C
 	for <linux-wireless@vger.kernel.org>; Tue, 16 Dec 2025 06:27:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765866454; cv=none; b=hh4eLzPwfvsFiaathOJj3Motu+uCe6ZFjoKgvFgJI7pnG1J9ajb4OhK7/Ysi7wcEOxc+VlFtOmnblcah+0Xi1mMxjiCIiTbfj6XdC4Dyzn/xbrTUMpVzGE8MLMFQ8r3jJ5XQumMxBjZyTdCcAkcfcfosNLakLTL7r/MCfNdyLO0=
+	t=1765866456; cv=none; b=BrOjDny3XUOr/yLB0MXsBdEQpMQp7I25ljFHExXRNLwJC0qCh9QGLe0w8NXmjup0d3r9eWkiChV3n1Xhx8y3E3Enp5vilb0FYj+kpyOvKSTDhZQ/utbhqHERaHtLJlboWMEWLa6XPO81686/1FH8lAWXN9Xa0TMjZU9BC4UW6O8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765866454; c=relaxed/simple;
-	bh=wKgZrGnMTdxRajpOpry0LtXKbdY6p1JF2w+QraCyc2k=;
+	s=arc-20240116; t=1765866456; c=relaxed/simple;
+	bh=Jw9mpvW3mjP90268PjPUkKKGlkRVlh0NzItssokHANY=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=j14i1DidCGmR/Ss4MqsdGnz6wrQEN5EkkwyQaq9XxYj0xUNQFbhu8XHHX2xFTD/25fQT8+cpvqzbUm3gU3sPbs48nR4TNpIFYPj9vD1fvyW94rxZ0rvSL+YHPm8twtK+rVIQvIa5kBx1ZI7Zo41wYfc7wb/SMMuZccS3QjZPLeA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=dW9Jdetz; dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b=iqA31NUH; arc=none smtp.client-ip=205.220.180.131
+	 MIME-Version; b=F4N8UMyHzBnzRku3G4OysHfRgX91Dxc4m4AXr6mE2oFzCFgOuXofb5eX4N8wbXK/9S7I4kKYLF+785RROjsyKhNM0P8A1Bv3Xdo18MG18gN6BrOu1+7Wqq/Stg9uhfjyXic7ZXruLLmE4uNjVWhxHu8j/UIorFpcxOSfXnheoMs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=YMuOP9nk; dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b=jiP0jVKe; arc=none smtp.client-ip=205.220.180.131
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
-Received: from pps.filterd (m0279871.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 5BG2bRm81756137
-	for <linux-wireless@vger.kernel.org>; Tue, 16 Dec 2025 06:27:22 GMT
+Received: from pps.filterd (m0279869.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 5BG2SCd51825473
+	for <linux-wireless@vger.kernel.org>; Tue, 16 Dec 2025 06:27:24 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
 	cc:content-transfer-encoding:date:from:in-reply-to:message-id
-	:mime-version:references:subject:to; s=qcppdkim1; bh=w7rtXsnBhR1
-	yxHkGWkamVfhKWOyjTemCSrlEADgYB4o=; b=dW9Jdetz/lKj4pkv6o5/fQCrbA1
-	HJ1j75QsgxgbXm2s/4cTB4kLo+KKWxrJfN0P2QVyjiZt0KbaZVr+TttimngZZ5eu
-	R523a9AfpriI8fB3N89cBoNQPimcY78rTzqHNeuxzYKXAQqYiaOgV6gff86PM9F4
-	ynlX88FGjAUH2AzfMTxtHR1KL3t3w0jmLWc4ysaC4nIrCsdd9FCMmc4u259+ouP4
-	/vvCzMTgYCJF20aA6qqm3zwayfxG7dv29f4nQKniRdnKwnXCRo45Hw/iyfV6j39O
-	Ww6OtLa6K5NOElaZKcy/Sre40unlRLx7OSDnkMa2WwknpnLwn0gKEBUnY8A==
-Received: from mail-pl1-f198.google.com (mail-pl1-f198.google.com [209.85.214.198])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4b2peract1-1
+	:mime-version:references:subject:to; s=qcppdkim1; bh=3t0Yf9SXf8V
+	Y19f/unDHMnvFRUrL7lvitLF2NWS7myQ=; b=YMuOP9nk+JLqno86kwNTElzNf51
+	e0bMvLy9nY/t4mUeWHCoNFYhnGJ9SDuxUDzEuNU8go6ARspj9VhR0UNKIxWAua4G
+	D6xzlW1e/PfcaaX8FsjtGSoXwQI9OWoecth9+W5uKp73v5K7RBpAx847eCX04f8a
+	bUv3LG7PilXthcORtlOyPKsC3vraHZBg0w1xwiuzcORJK65RyQDVVdzEPuNrQW2t
+	Yd4ekv1PMGt6kKhLhL6GmwQnrATETLwjvYHDAusLSJSPUE6JRkAGAH8R424tdHS1
+	mR8DVayUWQT0iDN5YWVeEhyJS4NCMSWi4GOCqXkFlWPaMs7wRUdjLb4uPgg==
+Received: from mail-pl1-f199.google.com (mail-pl1-f199.google.com [209.85.214.199])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4b2p4f2dyq-1
 	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
-	for <linux-wireless@vger.kernel.org>; Tue, 16 Dec 2025 06:27:22 +0000 (GMT)
-Received: by mail-pl1-f198.google.com with SMTP id d9443c01a7336-29f8e6a5de4so38373695ad.2
-        for <linux-wireless@vger.kernel.org>; Mon, 15 Dec 2025 22:27:22 -0800 (PST)
+	for <linux-wireless@vger.kernel.org>; Tue, 16 Dec 2025 06:27:24 +0000 (GMT)
+Received: by mail-pl1-f199.google.com with SMTP id d9443c01a7336-29f8e6a5de4so38374025ad.2
+        for <linux-wireless@vger.kernel.org>; Mon, 15 Dec 2025 22:27:24 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=oss.qualcomm.com; s=google; t=1765866441; x=1766471241; darn=vger.kernel.org;
+        d=oss.qualcomm.com; s=google; t=1765866443; x=1766471243; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=w7rtXsnBhR1yxHkGWkamVfhKWOyjTemCSrlEADgYB4o=;
-        b=iqA31NUHr2FyuASJ+mm8JlowK9wFzohqAfhT6n9Hu667RZviVH/NI0fFghqGxPKFO6
-         +xX00tJ+QRIbsAY6NN5EOmtqF49NgzEHAfCmAlYjZZdq6zqs58JmIo2uFE3X2g7MQe1b
-         MhRnSuRsJZd3Luf6TwvBWvk10D+uu/u0U4ghiEuQs0/iM+8nosbvsGO6TddgqxS2bNsF
-         LyAJ3fMH6tfRSfCWB2261DPWOe/G/R/YS05smTbcXFJ0r7AoyglQGoOWsDsovHgxeLsB
-         2BYn8wnsxSZbPShShmfj6PI6cia4Iv0bkG2EeVmO1F/bBzFAgcWBctmJNnuYosKwkWIR
-         X8Lg==
+        bh=3t0Yf9SXf8VY19f/unDHMnvFRUrL7lvitLF2NWS7myQ=;
+        b=jiP0jVKe30Rvf6Pm/dUcmeN3vO2OlllZtYK9lX8boy0qB6mYo0BL3/V5MalyaFqsxj
+         qDwayjxFasmLCQT0Urqt0YOiONiFu+y5nIOAEzPyJxks8zgd8pu0cbT01rIro0DlBIUD
+         IXrRn+zFmk+Tr4pr1OOYxHE5Z/FFVqvLpDlygzQCu/bxdT1z4gQgoe9MQU2rPYQ1o+S0
+         cksRuG3+/qcWVS0f903OKmaaW1dfoiz/85CecENNEzmU8yWwErRXe4W2p5tmtjRetoJq
+         fyhS+p6eRGHYCmutRUYzGeEGVTQMUtIks2QKFx0dZrKEAAsb2IeddRGBRZJ275uYkjHB
+         qomg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1765866441; x=1766471241;
+        d=1e100.net; s=20230601; t=1765866443; x=1766471243;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to;
-        bh=w7rtXsnBhR1yxHkGWkamVfhKWOyjTemCSrlEADgYB4o=;
-        b=vASDySLFvxVg20shnpUtr/6/X/qicj/Hk8eRE925XiysMSVXbsB0ndRDHbK1QDw8qM
-         DdlNntXtPqWk8VQkGVUHAwTSSqTyv+bHE++YWHDzWhUqpGjgq60sSE2U0e0Keb5fvxss
-         XT7k8AAQgZD7Gh4/FFCRvT6lYVXq61RHk+Y79Ols2RhpJFbufnlNKckN1EyrPMU98v74
-         TB89a42j45qrFHT7/rUT3mE4lz6jYNhbstiTq4RIo1mJjs6OpJcUSYwFfK5yTzYwFnz+
-         f2D8NruwYMGe0XA7wB3/L3bJrgHDVs4WZ3L+emyhjN7uq0dI8PCZ+//4cdrtwAT0xlt+
-         LAdQ==
-X-Gm-Message-State: AOJu0YwC/bZkPb57cDgququI4PpqffzS0KvAoCalSKztEUkPDBpmpb4e
-	IxqEO2ReXLhdpG08czlEuzsolJA3C8FoFoiIPYrinizdPxWobx433XzwemggDOZ3Dt3VCWTGuc6
-	4pkXcQZqZ79auYtMvZKg7utErQLlJlBS0YZ3H4r7cOrYTKsEWYxzNHu+TxHvAkvL3CkgXlpVZGS
-	fzIg==
-X-Gm-Gg: AY/fxX4TG6dqt44RqAMcwjWOO1/CAglUEA/X/XRXrEAqc1vV8SdoJpUAWWDVDHE9+Fb
-	Z2Ag6rwIAKVEsCPT5dnc3JWVQZRGQffittvsauBxkls0QtTK7kF7xygq7itB4ooTf+ClEwZnZkS
-	Si2bXFx6xN0CUBYswKIrMoC3e6B5aSK6MOKt0YVx5HpLhsDEy2TknhHQzfAQ9HItGojxUVFjn2i
-	ostfGLnE4tXUm0DVibOzeJM7pIZ/jEnymty5FZ0JjzGVP8HQA7cNJH86OIv7HHZIg/A9xYQbSOG
-	dlcYrYHsbvqeLzvu1Cthi0Ri35/Z3JufrxCvtTXXnY40qvmGR5wgEFU3OjON8oIzyuN5U/lAznu
-	6OK/weWCFbjZ6/4DGxdu/93QKQt4/REno/6O814arMHr5djAXTjayXg==
-X-Received: by 2002:a17:902:da8c:b0:2a0:b02b:210a with SMTP id d9443c01a7336-2a0b02b2272mr92262425ad.37.1765866441190;
-        Mon, 15 Dec 2025 22:27:21 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IENyghWeRsZ0OrszPyO6c2o/1P5aia5CcIfLrt8PaKljpp2VGpdKJRdQWFeyh7uKAOMntJ85w==
-X-Received: by 2002:a17:902:da8c:b0:2a0:b02b:210a with SMTP id d9443c01a7336-2a0b02b2272mr92262045ad.37.1765866440693;
-        Mon, 15 Dec 2025 22:27:20 -0800 (PST)
+        bh=3t0Yf9SXf8VY19f/unDHMnvFRUrL7lvitLF2NWS7myQ=;
+        b=m9wux81nR6Ik1QdO0Wg/1mWR8u3b870+4NrQn+h6nsa1yHcNxVwohZkyva2HwYAR4c
+         uLraeCHBZTDJpmd2dctEcIiHCeHhzwCCzmxA0mJfgLO995ih/JNBxLrIGv7I9tj7w4zZ
+         5kowv/J0UNJUK9wnf4EH3p53QarR9yLK9LJ9qhZE5JR8pJOdOQOuR09JXnZ4E8XljkDW
+         iTs26fczg6lz5ulgtrpvPwffEWi7RrI0qVgtxmKdf1VFbJuzgd8KzsXBGA/qWTQP6yzZ
+         Bi4CPMof69AbruNZ4fE9Z3WeoFgwPVS5AXuUZIGTu/vU9z4RC1rtItl85Q07V4K37tI3
+         bO/Q==
+X-Gm-Message-State: AOJu0Yxv4HKH5aOrDqgy0r42MDhf4LBU1zofzHX1IjAv6Hq1NfOB3HIR
+	HnqiMR5M0FJanlrN6v97f9fTro4QxdMCDAKFnSASALYBhFn6mKBniaFSwoSffzjwa4FvrZaGI69
+	mPqkzWOBfo7r5a2C+Yx26+HvwUVMim4a7wuv7KeUIWMaUi+UBqJbHFJBpyKZuMYN2H3mupA==
+X-Gm-Gg: AY/fxX5m74lI3tXMKpKj6ToBycP2+YhqNTeKhvDYMUYhu3lY6atpLGTpU1UYEv1FT3x
+	C5YOp4l4sAL/Dm17grR0ZA5g7ZtZJnftxGaGP66sInaZpHr1V1N0FK5IGVzGISLD8+DhKfIpRpa
+	9grPy9tTzcIO4AeXRVrN/LjjVx8VNVXHWgay2TrQ9YfMwCrGDgu1+24ui83OdoGE7OLzJZmsBhN
+	zZFiJTltIODPib92MZnNKcCDQzM+rXbrZBUSlfG2z2pMEfN6XCftBW6u75qJwsJOMS/3XLMLKqm
+	gpnV8v8HbLySbO11FXtl9Vgon01+ygr/fPpTNuxKYex2rj5TikDx0Y/o3D+6yU1+dYc1mGzfyKO
+	95JXxDeUr+EdrdB0KsyrPTBOWOYJBq0F2F66HiNrkIxmE79KIEY0N3w==
+X-Received: by 2002:a17:903:1ac3:b0:297:d4c4:4d99 with SMTP id d9443c01a7336-29f23de4aacmr167126725ad.6.1765866443377;
+        Mon, 15 Dec 2025 22:27:23 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IHA4EBslV/5zVimjIqTf9kW/cKR3PkV+I3cbsFaU9WdxxEOojfbqEI5cSrC+n03HqBs4UyH+g==
+X-Received: by 2002:a17:903:1ac3:b0:297:d4c4:4d99 with SMTP id d9443c01a7336-29f23de4aacmr167126455ad.6.1765866442917;
+        Mon, 15 Dec 2025 22:27:22 -0800 (PST)
 Received: from hu-kathirve-hyd.qualcomm.com ([202.46.22.19])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-29f4d27f833sm106478015ad.45.2025.12.15.22.27.19
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-29f4d27f833sm106478015ad.45.2025.12.15.22.27.21
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 15 Dec 2025 22:27:20 -0800 (PST)
+        Mon, 15 Dec 2025 22:27:22 -0800 (PST)
 From: Karthikeyan Kathirvel <karthikeyan.kathirvel@oss.qualcomm.com>
 To: johannes@sipsolutions.net
 Cc: linux-wireless@vger.kernel.org,
         Karthikeyan Kathirvel <karthikeyan.kathirvel@oss.qualcomm.com>
-Subject: [PATCH RFC wireless-next 03/13] wifi: cfg80211: Add data structures to capture UHR capabilities
-Date: Tue, 16 Dec 2025 11:56:46 +0530
-Message-Id: <20251216062656.1738022-4-karthikeyan.kathirvel@oss.qualcomm.com>
+Subject: [PATCH RFC wireless-next 04/13] wifi: cfg80211: add a helper function to return the UHR interface capabilities
+Date: Tue, 16 Dec 2025 11:56:47 +0530
+Message-Id: <20251216062656.1738022-5-karthikeyan.kathirvel@oss.qualcomm.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20251216062656.1738022-1-karthikeyan.kathirvel@oss.qualcomm.com>
 References: <20251216062656.1738022-1-karthikeyan.kathirvel@oss.qualcomm.com>
@@ -108,133 +107,68 @@ List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Proofpoint-ORIG-GUID: eNwEghM8e_xc2qFgXTZquOtIw0ZgmwGr
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUxMjE2MDA1MSBTYWx0ZWRfX/PRuj6xjcw2Z
- uyJl87mjkVONo8M5Bm1H1ZGwWQJhWE7ltoTsxSr8cqKCiT27KijmQAj4SG34vHuYQD7g+kTdvJ4
- V6sxdzeUmgzq3FSvKxGgsoqknyhsW/1n/RHPZnDlIGvLHha5WtqiRJaBGBwKfQTsO2PyaABUDs/
- ZSc9N+xoxLeB9329OOtSEUUfMwfpbLU77Bz5RV+X/OsG9HJI7GB9Dp0uuqln3uY9wM4F0AqxMZT
- S0KXhgU+4Xd/ZZNkCgI1dGMF9b9GmUYDiEsdzu5xSD/0Tv+y0b2Pbnf2WSNEo9pSEjuHQdKKtok
- QFBQyVmdULtNUu2my6jF4ATSbptkTo/qKZs0WSnCeHhC7lXs5pmpDjKww9VTxGh94A+9vLhRaKx
- 4lEfX7nrIMjyyXD0Osgb2E2q2uwx4g==
-X-Proofpoint-GUID: eNwEghM8e_xc2qFgXTZquOtIw0ZgmwGr
-X-Authority-Analysis: v=2.4 cv=PYHyRyhd c=1 sm=1 tr=0 ts=6940fbca cx=c_pps
- a=MTSHoo12Qbhz2p7MsH1ifg==:117 a=fChuTYTh2wq5r3m49p7fHw==:17
+X-Proofpoint-GUID: _YQxIG5ERNnCWGApQizcAeW2zeH4LRtL
+X-Authority-Analysis: v=2.4 cv=OK8qHCaB c=1 sm=1 tr=0 ts=6940fbcc cx=c_pps
+ a=JL+w9abYAAE89/QcEU+0QA==:117 a=fChuTYTh2wq5r3m49p7fHw==:17
  a=wP3pNCr1ah4A:10 a=s4-Qcg_JpJYA:10 a=VkNPw1HP01LnGYTKEx00:22
- a=EUspDBNiAAAA:8 a=SNSM3LDD58Q2ToA1RzUA:9 a=GvdueXVYPmCkWapjIL-Q:22
+ a=EUspDBNiAAAA:8 a=JsFJZuvHzJIkGu2yJvAA:9 a=324X-CrmTo6CU4MGRt3R:22
+X-Proofpoint-ORIG-GUID: _YQxIG5ERNnCWGApQizcAeW2zeH4LRtL
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUxMjE2MDA1MSBTYWx0ZWRfX1sw1qqaKJ5iX
+ 0I7hd+9aQz/O2YsvZZlgtnl9+AzZBoFNWsFkgC+4tzrePmLrOBOUdtWZFmbuTI9aPtKH1hS/FOH
+ ZdLuQAgil5Gi9guTtmd/pGb/Mv8Y2IThj+3Bm/vWxfBvDxov5rB8DNnmW/mvZ5sw53/eNs4uBvJ
+ OgFYF6wc+qfTWHV1k7xx6jLsh110uLXpYvkoo3ofVCEUUtI0BqZROAysF2LKS8nfCOL0ktGpEkl
+ rkYO0CxVWh4C0F9zxkywRnItQPGfAXUEqzNoUNLC2zTlCoTw9K/POwSm6CvHnYDW/elDhfM9X/F
+ cP7xtRRPFaLhdpC28Vyakf/xxKl//1GtEf+/XautJ9ljrHbohIBC9w5bt0s2PvCj0DyYafCxlKT
+ n4M5XkojTbkV3e8zIUqpS0+eVuFfNw==
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.9,FMLib:17.12.100.49
  definitions=2025-12-16_01,2025-12-15_03,2025-10-01_01
 X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- spamscore=0 adultscore=0 phishscore=0 impostorscore=0 suspectscore=0
- lowpriorityscore=0 clxscore=1011 malwarescore=0 priorityscore=1501
- bulkscore=0 classifier=typeunknown authscore=0 authtc= authcc= route=outbound
+ priorityscore=1501 adultscore=0 malwarescore=0 suspectscore=0
+ lowpriorityscore=0 phishscore=0 impostorscore=0 clxscore=1011 bulkscore=0
+ spamscore=0 classifier=typeunknown authscore=0 authtc= authcc= route=outbound
  adjust=0 reason=mlx scancount=1 engine=8.22.0-2510240001
  definitions=main-2512160051
 
-Add data structures to capture UHR capabilities and advertise UHR
-capabilities to user space when supported via NL attributes.
+Introduce a helper function which returns the UHR capabilities based on the
+interface type.
 
 Signed-off-by: Karthikeyan Kathirvel <karthikeyan.kathirvel@oss.qualcomm.com>
 ---
- include/net/cfg80211.h       | 16 ++++++++++++++++
- include/uapi/linux/nl80211.h |  6 ++++++
- net/wireless/nl80211.c       | 11 +++++++++++
- 3 files changed, 33 insertions(+)
+ include/net/cfg80211.h | 20 ++++++++++++++++++++
+ 1 file changed, 20 insertions(+)
 
 diff --git a/include/net/cfg80211.h b/include/net/cfg80211.h
-index 899f267b7cf9..378fd54c282c 100644
+index 378fd54c282c..7964dd1ee691 100644
 --- a/include/net/cfg80211.h
 +++ b/include/net/cfg80211.h
-@@ -429,6 +429,20 @@ struct ieee80211_sta_eht_cap {
- 	u8 eht_ppe_thres[IEEE80211_EHT_PPE_THRES_MAX_LEN];
- };
+@@ -720,6 +720,26 @@ ieee80211_get_eht_iftype_cap(const struct ieee80211_supported_band *sband,
+ 	return NULL;
+ }
  
 +/**
-+ * struct ieee80211_sta_uhr_cap - STA's UHR capabilities
++ * ieee80211_get_uhr_iftype_cap - return UHR capabilities for an sband's iftype
++ * @sband: the sband to search for the iftype on
++ * @iftype: enum nl80211_iftype
 + *
-+ * This structure describes most essential parameters needed
-+ * to describe 802.11bn UHR capabilities for a STA.
-+ *
-+ * @has_uhr: true if UHR data is valid.
-+ * @uhr_cap_elem: Fixed portion of the uhr capabilities element.
++ * Return: pointer to the struct ieee80211_sta_uhr_cap, or NULL if none found
 + */
-+struct ieee80211_sta_uhr_cap {
-+	bool has_uhr;
-+	struct ieee80211_uhr_cap_elem_fixed uhr_cap_elem;
-+};
++static inline const struct ieee80211_sta_uhr_cap *
++ieee80211_get_uhr_iftype_cap(const struct ieee80211_supported_band *sband,
++			     enum nl80211_iftype iftype)
++{
++	const struct ieee80211_sband_iftype_data *data =
++		ieee80211_get_sband_iftype_data(sband, iftype);
 +
- /* sparse defines __CHECKER__; see Documentation/dev-tools/sparse.rst */
- #ifdef __CHECKER__
- /*
-@@ -454,6 +468,7 @@ struct ieee80211_sta_eht_cap {
-  * @he_6ghz_capa: HE 6 GHz capabilities, must be filled in for a
-  *	6 GHz band channel (and 0 may be valid value).
-  * @eht_cap: STA's EHT capabilities
-+ * @uhr_cap: STA's UHR capabilities
-  * @vendor_elems: vendor element(s) to advertise
-  * @vendor_elems.data: vendor element(s) data
-  * @vendor_elems.len: vendor element(s) length
-@@ -463,6 +478,7 @@ struct ieee80211_sband_iftype_data {
- 	struct ieee80211_sta_he_cap he_cap;
- 	struct ieee80211_he_6ghz_capa he_6ghz_capa;
- 	struct ieee80211_sta_eht_cap eht_cap;
-+	struct ieee80211_sta_uhr_cap uhr_cap;
- 	struct {
- 		const u8 *data;
- 		unsigned int len;
-diff --git a/include/uapi/linux/nl80211.h b/include/uapi/linux/nl80211.h
-index 8134f10e4e6c..8d9038ba1208 100644
---- a/include/uapi/linux/nl80211.h
-+++ b/include/uapi/linux/nl80211.h
-@@ -4248,6 +4248,10 @@ enum nl80211_mpath_info {
-  *	capabilities element
-  * @NL80211_BAND_IFTYPE_ATTR_EHT_CAP_PPE: EHT PPE thresholds information as
-  *	defined in EHT capabilities element
-+ * @NL80211_BAND_IFTYPE_ATTR_UHR_CAP_MAC: UHR MAC capabilities as in UHR
-+ *	capabilities element
-+ * @NL80211_BAND_IFTYPE_ATTR_UHR_CAP_PHY: UHR PHY capabilities as in UHR
-+ *	capabilities element
-  * @__NL80211_BAND_IFTYPE_ATTR_AFTER_LAST: internal use
-  * @NL80211_BAND_IFTYPE_ATTR_MAX: highest band attribute currently defined
-  */
-@@ -4265,6 +4269,8 @@ enum nl80211_band_iftype_attr {
- 	NL80211_BAND_IFTYPE_ATTR_EHT_CAP_PHY,
- 	NL80211_BAND_IFTYPE_ATTR_EHT_CAP_MCS_SET,
- 	NL80211_BAND_IFTYPE_ATTR_EHT_CAP_PPE,
-+	NL80211_BAND_IFTYPE_ATTR_UHR_CAP_MAC,
-+	NL80211_BAND_IFTYPE_ATTR_UHR_CAP_PHY,
- 
- 	/* keep last */
- 	__NL80211_BAND_IFTYPE_ATTR_AFTER_LAST,
-diff --git a/net/wireless/nl80211.c b/net/wireless/nl80211.c
-index 6b99416862a4..d05d098c4dc7 100644
---- a/net/wireless/nl80211.c
-+++ b/net/wireless/nl80211.c
-@@ -1947,6 +1947,7 @@ nl80211_send_iftype_data(struct sk_buff *msg,
- {
- 	const struct ieee80211_sta_he_cap *he_cap = &iftdata->he_cap;
- 	const struct ieee80211_sta_eht_cap *eht_cap = &iftdata->eht_cap;
-+	const struct ieee80211_sta_uhr_cap *uhr_cap = &iftdata->uhr_cap;
- 
- 	if (nl80211_put_iftypes(msg, NL80211_BAND_IFTYPE_ATTR_IFTYPES,
- 				iftdata->types_mask))
-@@ -2004,6 +2005,16 @@ nl80211_send_iftype_data(struct sk_buff *msg,
- 		    &iftdata->he_6ghz_capa))
- 		return -ENOBUFS;
- 
-+	if (uhr_cap->has_uhr && eht_cap->has_eht && he_cap->has_he) {
-+		if (nla_put(msg, NL80211_BAND_IFTYPE_ATTR_UHR_CAP_MAC,
-+			    sizeof(uhr_cap->uhr_cap_elem.mac_cap_info),
-+			    uhr_cap->uhr_cap_elem.mac_cap_info) ||
-+		    nla_put(msg, NL80211_BAND_IFTYPE_ATTR_UHR_CAP_PHY,
-+			    sizeof(uhr_cap->uhr_cap_elem.phy_cap_info),
-+			    uhr_cap->uhr_cap_elem.phy_cap_info))
-+			return -ENOBUFS;
-+	}
++	if (data && data->uhr_cap.has_uhr)
++		return &data->uhr_cap;
 +
- 	if (iftdata->vendor_elems.data && iftdata->vendor_elems.len &&
- 	    nla_put(msg, NL80211_BAND_IFTYPE_ATTR_VENDOR_ELEMS,
- 		    iftdata->vendor_elems.len, iftdata->vendor_elems.data))
++	return NULL;
++}
++
+ /**
+  * wiphy_read_of_freq_limits - read frequency limits from device tree
+  *
 -- 
 2.34.1
 
