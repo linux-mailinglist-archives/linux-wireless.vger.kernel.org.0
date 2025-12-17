@@ -1,79 +1,101 @@
-Return-Path: <linux-wireless+bounces-29844-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-29845-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id D232ECC939A
-	for <lists+linux-wireless@lfdr.de>; Wed, 17 Dec 2025 19:12:06 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id C593BCC9425
+	for <lists+linux-wireless@lfdr.de>; Wed, 17 Dec 2025 19:18:54 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 91A6031415C0
-	for <lists+linux-wireless@lfdr.de>; Wed, 17 Dec 2025 18:05:46 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 95748300CD5F
+	for <lists+linux-wireless@lfdr.de>; Wed, 17 Dec 2025 18:18:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 201D41B81CA;
-	Wed, 17 Dec 2025 18:05:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 23BF32C21D3;
+	Wed, 17 Dec 2025 18:18:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="cZBU4HUI"
+	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="XX0FTlGh";
+	dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b="dnHvZqcR"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-wm1-f52.google.com (mail-wm1-f52.google.com [209.85.128.52])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 22F441C84DC
-	for <linux-wireless@vger.kernel.org>; Wed, 17 Dec 2025 18:05:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.52
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5297E2D2498
+	for <linux-wireless@vger.kernel.org>; Wed, 17 Dec 2025 18:18:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765994729; cv=none; b=IS8/I7NijXxvpnrwNLT95VKt+bnZtUgfpfTWrRYp3EV7mimTEsjRet7X8m6nVKixcIz82Xqj7vo0WMI7D0aIdRmBrj3Ohm+06n9aM3XgwFdkduu+MoMftUbk8PFYf+Fndq/nI4y01c15I5GTT/5/QNU8Niv40DZA9sp0PD+UE70=
+	t=1765995529; cv=none; b=m3X7B2zYmKmXKc4qjpObVz8Qy7yVHNFKn8L3PNhV+os1bPTnLZpPB0x9mpdmu8Mp9orxfJWV1A8FVO/sojWY5GJRbyKJ2rCPIp2kmkBAb7YHenc/Up0i7aIW6LwJP+g1YjAS04ddpvR9OsM/rt6RYl13D9obNMn5dtl2YcW72Fw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765994729; c=relaxed/simple;
-	bh=ve1HPG9Bq+IyB9yVbbU5KPub7vVKWwj9j8t6Y1qJ1B4=;
-	h=Message-ID:Date:MIME-Version:From:Subject:To:Cc:References:
-	 In-Reply-To:Content-Type; b=XRMF+X4v7GTtL+iTc3YWRs9qpjLB02rmJ8npiic8aPgW0lNor1oHd/pqkqgTBvIrh0QzQZg+Ogw6gJqYQq0576HXVfzynb9lb3ZaBTvsySXkP8thhNsqXDs+hsw0AsqdhIU8w1Qt3FNspx8+UQFI6VEoD22L38/TubrmItI//Rw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=cZBU4HUI; arc=none smtp.client-ip=209.85.128.52
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-wm1-f52.google.com with SMTP id 5b1f17b1804b1-47775fb6cb4so42724175e9.0
-        for <linux-wireless@vger.kernel.org>; Wed, 17 Dec 2025 10:05:26 -0800 (PST)
+	s=arc-20240116; t=1765995529; c=relaxed/simple;
+	bh=KPCoPks2Y2/j+fWOc0DjbN2flfAgVDX5MiFdzCmlPxI=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=Goi8jO9gpPhojCM4xXLkO2nQDrUtlBO8ZJNHx3qhWjHIzZLE2lTAMxhcwP460AuPX6OhAvQlMeBVJk+DGf5zsvUINRr4n0lE5zNc9HtrV1jEAc0vOCwMQbkYOuHcfcTheQzbDihcxjQpj02bRlHFXWicJdNhkB+vCTWPLrgaL48=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=XX0FTlGh; dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b=dnHvZqcR; arc=none smtp.client-ip=205.220.168.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
+Received: from pps.filterd (m0279865.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 5BHCKrYY2673983
+	for <linux-wireless@vger.kernel.org>; Wed, 17 Dec 2025 18:18:38 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
+	cc:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
+	wBmu9AzZ9xdbtIOjudSzxPBr2BE5g0gg/z6YBjxDbIE=; b=XX0FTlGhGcl0GgQl
+	ByTU7cTPlDPk/BXambHGMBBrAFNZaJfIcs6xA6ew4ZJ9tR7UJQS+gqePcy3CuHsP
+	vAotqv37mohmAfVk+eAvIYj7rZG2V0YacO0NNdP0m9w3yE0WWFoEoPEvo6maf4xs
+	6DWw+J4IIVBayH2jAWjYTnjijGyHuVPMpR0JkPMA9P0/h03K2SoFh/RKObvRsWpV
+	eE00BccsGUxbyFdW7MIQrXSXW3cfy70VmIAoj7vErrMdAHU142riKXQR00XrVdgA
+	bnC0PryPEaCZPZzqHVwAwn49yCO1jVtKSjP0r7hhODK19mvYysQxYak3xA0We1cb
+	FKeYhQ==
+Received: from mail-pg1-f197.google.com (mail-pg1-f197.google.com [209.85.215.197])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4b3myj2qn4-1
+	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
+	for <linux-wireless@vger.kernel.org>; Wed, 17 Dec 2025 18:18:38 +0000 (GMT)
+Received: by mail-pg1-f197.google.com with SMTP id 41be03b00d2f7-b98e6ff908aso15574687a12.2
+        for <linux-wireless@vger.kernel.org>; Wed, 17 Dec 2025 10:18:38 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1765994725; x=1766599525; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:content-language:references
-         :cc:to:subject:from:user-agent:mime-version:date:message-id:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=b7Y9r+eCzEycQEAphE7b2tW5RfD8ATfVg+SxYtep590=;
-        b=cZBU4HUIing4xgDebc+HPJ9atUpYE3DjzoxTnTkXv9EEJJcAuhRieYD69tTn0xNHQV
-         jyta8VKLYMbjvTwFjlfcss5+q8s6pzBryVULqBR7LXQMRxs02rTgdi68K2AZp9rObh1x
-         iPovEuhq1qd78rFVb+bKXkg8T69LGU91rERZVUz4DNnRcBHgiOr3Gi5XbaUdo5oTs1Qo
-         LKaASdHiuhnkiSqONodovot45sZDSzdUJIpvyU7nAHiUIvQGXFAHUallzY3qwAySeoOd
-         OkGHbSI3roEChswqrQZf9ow0fgUyiPthhyp9aKbPAyBkhrGvqub64yeg0WK8wS17txG7
-         PB/g==
+        d=oss.qualcomm.com; s=google; t=1765995517; x=1766600317; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:content-language:from
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=wBmu9AzZ9xdbtIOjudSzxPBr2BE5g0gg/z6YBjxDbIE=;
+        b=dnHvZqcRtWDUre1eSfogviBxCN1JzyHdKmapu2M1qOVC3dThbDQ2E46ZVgFM8YO8co
+         cnHlKpe30HIkVhPSD9wk/hsMp7B1QkWxRU19JFcDyyIEzwYb/ZIAijsxKCuCW7fxxnqf
+         H9TdxfWDcUZ21KsJEqIsUeHy3o7IW9H17uzg8Zet2kh9fuOoeTaHjx7WngyiYzksfqyy
+         vco0eLOEwX2L3/1Nph1uWmmQ/tK47ynkdnS9Orq8mVDCZK/eaQpSg8H5Um57U23qJsua
+         uWPp/Zo9/eMIL7nV83cZ87zQ+ybvd9sjX+wf1Kh/XvKANbAXYDIRumejZZVbL7vshHdZ
+         T0Tw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1765994725; x=1766599525;
-        h=content-transfer-encoding:in-reply-to:content-language:references
-         :cc:to:subject:from:user-agent:mime-version:date:message-id:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=b7Y9r+eCzEycQEAphE7b2tW5RfD8ATfVg+SxYtep590=;
-        b=cVgpxyWExoBQ2Q1ZBKGd4c32aZ/3aFHoh9MjEx/BaQ0Pu8denU7CD1e+FVVU2eJcVn
-         q7ZVXDlcoRs8wCam6zxWJM5kcWG/QRcLI6HIfngK5LB0fQqKuhYLcChz29FqjGwtjMU6
-         W8MDHj3NfwtmavaPnc/ZztKYHS2D/6eXd/eT3rqyz4J3bsN1pWLXnDRrJxJ5c4vYV6uB
-         X2HiH28IPM/oZrUTcegEIjJ7EOH8GhiLX+mU0R7QjaaAUelj9KgBYah0JOQEz9jmrPOf
-         w1TzgfDYFyr/qspR8+q2dVLAYF3ttF7kiDwwQxyn124Gp6mgRtP84BeeHx5M8XMK78TY
-         qzsQ==
-X-Forwarded-Encrypted: i=1; AJvYcCVAQfxPtRWjBswkupPnTGurn/BBLgzitik9chXPrI7k8kiHIvlJOSwJJoNAR1hrEmVzjqdaWr+p2s8rgnu14Q==@vger.kernel.org
-X-Gm-Message-State: AOJu0Yym+rZzVqO/pxxYT9yNH6iA8sZeXfmZsCQbj7yd6TY6wwT9QE11
-	AVQZPIZYG9LGAo6srJ8lAiGvPopRY6UotOSwoCYvpxGy8fOs9/HiVyYM
-X-Gm-Gg: AY/fxX42hCOqNrmhijKI/n5K1tmtPDqghKvGuxZTw42n+5mf8ALDgq2KYXQdf3a3fZz
-	aOczmjqMSTUDbHRXf3fFx+Uv7M4ZhtC7piM3vVcEY4gmDoKOcxWZMfa4lXV2TnjHR9gNzRG+paj
-	CaVKJv/pbYqKnP29oLK/pFt83LGoFD+MX/JJspg/1jfSUmAOcprElpuzVuFgqIxS4ZvQ8fWqjpA
-	BrPjKrBT6O6KWmz8Ea1edV2Si7sbhw9BaK2ewQDhFb9b6UMLujq1oE2EO+ucspCOeEOvZx5vuyU
-	B11x884LYxAJRn3CSStzNRjpO7pJcG6HyGW51GvseM8TyS21/WU+rXk3ar55UJgEARay2yxlqum
-	+KPpCteJFJ5bbeCSo9d72Q5p0cbB12aWY9Xs4gtwhxXUo61lDBcDoBJx387e6R34MybUEY1xMQE
-	/WC6gkt9iShAIdCqTWAqQx
-X-Google-Smtp-Source: AGHT+IHLNIhwq/1HIZQsWXm+M1iVUte/mg++zlLRylGScOVkm3Qn5StjEM36y+cNexCmcEBCKQaVCg==
-X-Received: by 2002:a05:600c:4f90:b0:477:b0b8:4dd0 with SMTP id 5b1f17b1804b1-47a8f905680mr199242605e9.17.1765994724902;
-        Wed, 17 Dec 2025 10:05:24 -0800 (PST)
-Received: from [192.168.1.50] ([79.119.240.187])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-47be2720ca7sm4967045e9.2.2025.12.17.10.05.23
+        d=1e100.net; s=20230601; t=1765995517; x=1766600317;
+        h=content-transfer-encoding:in-reply-to:content-language:from
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=wBmu9AzZ9xdbtIOjudSzxPBr2BE5g0gg/z6YBjxDbIE=;
+        b=BL44rtUceBovQn9xcSBeJ9pIrFHi4yLHtMArnqXKeuEuwmFj/q4HOLLiCkdVEYKgBD
+         9JvQ8Gu0I8jvqiRys9PohMR+X+rtqZnNUJ2VTjUk5GyVSLpE4wnWGl+F9oYVH7QqWzXy
+         M2NLK25j4YPXecVhmeF0dW3LlZabS89CZMTCv3g0o4Lq7tIAlmqqqrGtCy5qx+fnc5wA
+         0rnYznKSqqHGMk/wDPicEbqYRA9o9i44GHx814cOpuItfkXhWYdKSybPckMQju3L2SL+
+         wKVIq94VV80pSdrp8HcTQ/9gtC5deJHZx9bj8z4x+uEnktGKhAqbIQqwuPtCS6oik7tN
+         saxQ==
+X-Forwarded-Encrypted: i=1; AJvYcCVS69oGQREcMkkAZyC6F8xtO59pNH9WDwJnQ89ydje6MOZNvdoGw0+ryHmrATN1DaoDoFmRTXGf1FrjAQED7g==@vger.kernel.org
+X-Gm-Message-State: AOJu0Yyw7mbcFTaJP0PsHy4tLM14e/DqSy+N94+LfbVg3vyNYeavjG1B
+	MwxM58Vs/8Y8VwfsqBRcLWVCFpY8aX0Ff/m6qEPRxkut6/iH7xECuxH+DGfRCpfxREOFrdIPGS3
+	A1QVZYOvr+9jijQf9Qpg5puRUi8jXyXj05A2GL9zQlD8DOuE+PgdbUsXDf87EYaE3edYpztfXUf
+	5Faw==
+X-Gm-Gg: AY/fxX4y7G5zklmQlkBAJ9PHtGux5/olKyOvwr13zqj69hktSu1h4D6dvQr+VprvVQN
+	OLjJGOoUVtEGNGwHuA/AC/PTreK1+YHIXaMs8MYjc9Q6DCNk3IkDQ2NLdGzWW3B9WB7GAHq3s39
+	PqjoY3nsaGHziq28GAFyD140vFoHwKftjH6w9N03FnOCzYj3hy45uD9grl0xfBnZARv0AhGfnRU
+	r+zSvyvSAR4qDMKeS3024k3b4bgq/xPTga0zhqnIeg4pDHEhN/NAwUOlnbAwxEU+ODZrMHKio8F
+	tq4uFazLKTie6vbMxmsoAvw9pkZT3V52ezRXZVWR43Ve/ApUJifqEOWh66v/XSuiiDEdEm7piTb
+	EDvpHRtj6Wyi1Rp7c0AsYYtMafeY6CrTXhgGOPYKE9/KodkVoE7Kef4u8t2x7Avn3k8nEdg==
+X-Received: by 2002:a05:7301:182:b0:2a4:3592:cf83 with SMTP id 5a478bee46e88-2ac303958camr10594094eec.39.1765995517159;
+        Wed, 17 Dec 2025 10:18:37 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IH6ScF6p2dbGaIAlfPTuofAf2/eZTtk6ONOKBGl/Qm27pAQp9ttnZa9kTtvsKTJrPW0AuH8SQ==
+X-Received: by 2002:a05:7301:182:b0:2a4:3592:cf83 with SMTP id 5a478bee46e88-2ac303958camr10594041eec.39.1765995516561;
+        Wed, 17 Dec 2025 10:18:36 -0800 (PST)
+Received: from [10.227.110.203] (i-global254.qualcomm.com. [199.106.103.254])
+        by smtp.gmail.com with ESMTPSA id a92af1059eb24-12061a93616sm517453c88.14.2025.12.17.10.18.35
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 17 Dec 2025 10:05:24 -0800 (PST)
-Message-ID: <b9a20503-b599-4667-96ab-e7d4f058fc19@gmail.com>
-Date: Wed, 17 Dec 2025 20:05:22 +0200
+        Wed, 17 Dec 2025 10:18:36 -0800 (PST)
+Message-ID: <5e568034-20a3-4ed5-a8e0-c010e5aa7b82@oss.qualcomm.com>
+Date: Wed, 17 Dec 2025 10:18:34 -0800
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
@@ -81,276 +103,95 @@ List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-From: Bitterblue Smith <rtl8821cerfe2@gmail.com>
-Subject: Re: [PATCH rtw-next 04/12] wifi: rtw89: mac: reset power state before
- switching to power on
-To: Ping-Ke Shih <pkshih@realtek.com>,
- "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>
-Cc: Gary Chang <gary.chang@realtek.com>, Damon Chen <damon.chen@realtek.com>,
- Zong-Zhe Yang <kevin_yang@realtek.com>
-References: <20251212031303.19882-1-pkshih@realtek.com>
- <20251212031303.19882-5-pkshih@realtek.com>
- <efc58c87-d391-4970-b9af-abdef9861342@gmail.com>
- <05f1a2bbc0d344ea8c37481f9e1d26d4@realtek.com>
- <13ea776b-8ae7-468c-baed-ae0b5adb2a5f@gmail.com>
- <816a7eda797445ccbd5b6d8d6a5ea0b8@realtek.com>
- <6ed5e59b4aa4498687030244404dc3f6@realtek.com>
+Subject: Re: [PATCH 1/2] net: qrtr: Drop the MHI auto_queue feature for IPCR
+ DL channels
+To: manivannan.sadhasivam@oss.qualcomm.com,
+        Jeff Hugo <jeff.hugo@oss.qualcomm.com>,
+        Carl Vanderlip <carl.vanderlip@oss.qualcomm.com>,
+        Oded Gabbay <ogabbay@kernel.org>,
+        Manivannan Sadhasivam <mani@kernel.org>,
+        Jeff Johnson <jjohnson@kernel.org>,
+        "David S. Miller" <davem@davemloft.net>,
+        Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>,
+        Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Loic Poulain <loic.poulain@oss.qualcomm.com>,
+        Maxim Kochetkov <fido_max@inbox.ru>
+Cc: linux-arm-msm@vger.kernel.org, dri-devel@lists.freedesktop.org,
+        linux-kernel@vger.kernel.org, mhi@lists.linux.dev,
+        linux-wireless@vger.kernel.org, ath11k@lists.infradead.org,
+        ath12k@lists.infradead.org, netdev@vger.kernel.org,
+        Bjorn Andersson <andersson@kernel.org>,
+        Johan Hovold <johan@kernel.org>, Chris Lew <quic_clew@quicinc.com>,
+        stable@vger.kernel.org
+References: <20251217-qrtr-fix-v1-0-f6142a3ec9d8@oss.qualcomm.com>
+ <20251217-qrtr-fix-v1-1-f6142a3ec9d8@oss.qualcomm.com>
+From: Jeff Johnson <jeff.johnson@oss.qualcomm.com>
 Content-Language: en-US
-In-Reply-To: <6ed5e59b4aa4498687030244404dc3f6@realtek.com>
+In-Reply-To: <20251217-qrtr-fix-v1-1-f6142a3ec9d8@oss.qualcomm.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUxMjE3MDE0NSBTYWx0ZWRfX4OIE9em1LPAk
+ 9kIPjXNTDnr/z6qy0vZpEVQAwzlmrli8Eykd8se5oPNLuoHyibrwacIo5bS9T0uz/3UGHF7HS8b
+ MRlFBOyJbEnGZAcsvZpQ4PZ7V7oMt6S4HV+F3QVLn5/VFH+PvETTdwM6nXmEQg1kWEx7LuD0/Gd
+ po+YYqpbIyRRJ2rZxva0sNUdquSb/h3oCv+nnsbU+sfHi5kb4Gf9V+lqdJH8ujITF2YE3dT0/l2
+ 9MCbWDr4xN4iknpJbOWq4pNmeIQ/BeV3bn5+DPVgVWCEo3/FxQWH5pmQCrC4V4oGhleABpS8cHT
+ pZ4nK7PkgcHcmPcZmCgnot2g2T2DhddECQFQmEOqJMvR6fs2UMDBsoN6Azp19FIS+ZpYDxwkKuH
+ BY7H8AKEFdhAkkh1gSm8+E5C98tCCQ==
+X-Proofpoint-ORIG-GUID: XC3lNkU-lJaPE8x7U14WeMO1oQCILrWd
+X-Authority-Analysis: v=2.4 cv=CtOys34D c=1 sm=1 tr=0 ts=6942f3fe cx=c_pps
+ a=rz3CxIlbcmazkYymdCej/Q==:117 a=JYp8KDb2vCoCEuGobkYCKw==:17
+ a=IkcTkHD0fZMA:10 a=wP3pNCr1ah4A:10 a=s4-Qcg_JpJYA:10
+ a=VkNPw1HP01LnGYTKEx00:22 a=VwQbUJbxAAAA:8 a=zitRP-D0AAAA:8 a=EUspDBNiAAAA:8
+ a=COk6AnOGAAAA:8 a=isMaZ9OHK7bkWVW8W2QA:9 a=QEXdDO2ut3YA:10
+ a=bFCP_H2QrGi7Okbo017w:22 a=xwnAI6pc5liRhupp6brZ:22 a=TjNXssC_j7lpFel5tvFf:22
+X-Proofpoint-GUID: XC3lNkU-lJaPE8x7U14WeMO1oQCILrWd
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.9,FMLib:17.12.100.49
+ definitions=2025-12-17_03,2025-12-16_05,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ adultscore=0 clxscore=1015 impostorscore=0 spamscore=0 phishscore=0
+ priorityscore=1501 bulkscore=0 lowpriorityscore=0 suspectscore=0
+ malwarescore=0 classifier=typeunknown authscore=0 authtc= authcc=
+ route=outbound adjust=0 reason=mlx scancount=1 engine=8.22.0-2510240001
+ definitions=main-2512170145
 
-On 16/12/2025 11:06, Ping-Ke Shih wrote:
-> Hi Bitterblue,
+On 12/17/2025 9:16 AM, Manivannan Sadhasivam via B4 Relay wrote:
+> From: Manivannan Sadhasivam <manivannan.sadhasivam@oss.qualcomm.com>
 > 
-> Ping-Ke Shih wrote:
->> Bitterblue Smith <rtl8821cerfe2@gmail.com> wrote:
->>> On 15/12/2025 04:05, Ping-Ke Shih wrote:
->>>> Bitterblue Smith <rtl8821cerfe2@gmail.com> wrote;
->>>>> On 12/12/2025 05:12, Ping-Ke Shih wrote:
->>>>>> To run power on function properly, reset power states (off/on/PS) to
->>>>>> initial state. Otherwise, it might be unusable due to fail to power on.
->>>>>>
->>>>>> Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
->>>>>> ---
->>>>>>  drivers/net/wireless/realtek/rtw89/mac.c    |  89 ++++++++++++--
->>>>>>  drivers/net/wireless/realtek/rtw89/mac.h    |   1 +
->>>>>>  drivers/net/wireless/realtek/rtw89/mac_be.c | 130 ++++++++++++++++++++
->>>>>>  drivers/net/wireless/realtek/rtw89/reg.h    |  27 ++++
->>>>>>  4 files changed, 240 insertions(+), 7 deletions(-)
->>>>>>
->>>>>> diff --git a/drivers/net/wireless/realtek/rtw89/mac.c b/drivers/net/wireless/realtek/rtw89/mac.c
->>>>>> index d78fbe73e365..ba4344a640f5 100644
->>>>>> --- a/drivers/net/wireless/realtek/rtw89/mac.c
->>>>>> +++ b/drivers/net/wireless/realtek/rtw89/mac.c
->>>>>> @@ -1478,13 +1478,11 @@ static void rtw89_mac_power_switch_boot_mode(struct rtw89_dev *rtwdev)
->>>>>>
->>>>>>  static int rtw89_mac_power_switch(struct rtw89_dev *rtwdev, bool on)
->>>>>>  {
->>>>>> -#define PWR_ACT 1
->>>>>>       const struct rtw89_mac_gen_def *mac = rtwdev->chip->mac_def;
->>>>>>       const struct rtw89_chip_info *chip = rtwdev->chip;
->>>>>>       const struct rtw89_pwr_cfg * const *cfg_seq;
->>>>>>       int (*cfg_func)(struct rtw89_dev *rtwdev);
->>>>>>       int ret;
->>>>>> -     u8 val;
->>>>>>
->>>>>>       rtw89_mac_power_switch_boot_mode(rtwdev);
->>>>>>
->>>>>> @@ -1499,10 +1497,10 @@ static int rtw89_mac_power_switch(struct rtw89_dev *rtwdev, bool on)
->>>>>>       if (test_bit(RTW89_FLAG_FW_RDY, rtwdev->flags))
->>>>>>               __rtw89_leave_ps_mode(rtwdev);
->>>>>>
->>>>>> -     val = rtw89_read32_mask(rtwdev, R_AX_IC_PWR_STATE, B_AX_WLMAC_PWR_STE_MASK);
->>>>>> -     if (on && val == PWR_ACT) {
->>>>>> -             rtw89_err(rtwdev, "MAC has already powered on\n");
->>>>>> -             return -EBUSY;
->>>>>> +     if (on) {
->>>>>> +             ret = mac->reset_pwr_state(rtwdev);
->>>>>> +             if (ret)
->>>>>> +                     return ret;
->>>>>>       }
->>>>>>
->>>>>>       ret = cfg_func ? cfg_func(rtwdev) : rtw89_mac_pwr_seq(rtwdev, cfg_seq);
->>>>>> @@ -1529,7 +1527,6 @@ static int rtw89_mac_power_switch(struct rtw89_dev *rtwdev, bool on)
->>>>>>       }
->>>>>>
->>>>>>       return 0;
->>>>>> -#undef PWR_ACT
->>>>>>  }
->>>>>>
->>>>>>  int rtw89_mac_pwr_on(struct rtw89_dev *rtwdev)
->>>>>> @@ -3931,6 +3928,83 @@ static int rtw89_mac_feat_init(struct rtw89_dev *rtwdev)
->>>>>>       return 0;
->>>>>>  }
->>>>>>
->>>>>> +static int rtw89_mac_reset_pwr_state_ax(struct rtw89_dev *rtwdev)
->>>>>> +{
->>>>>> +     enum rtw89_core_chip_id chip_id = rtwdev->chip->chip_id;
->>>>>> +     u32 val32;
->>>>>> +     int ret;
->>>>>> +
->>>>>> +     val32 = rtw89_read32(rtwdev, R_AX_SYSON_FSM_MON);
->>>>>> +     val32 &= WLAN_FSM_MASK;
->>>>>> +     val32 |= WLAN_FSM_SET;
->>>>>> +     rtw89_write32(rtwdev, R_AX_SYSON_FSM_MON, val32);
->>>>>> +
->>>>>> +     ret = read_poll_timeout(rtw89_read32_mask, val32, val32 == WLAN_FSM_IDLE,
->>>>>> +                             1000, 2000000, false,
->>>>>> +                             rtwdev, R_AX_SYSON_FSM_MON, WLAN_FSM_STATE_MASK);
->>>>>> +     if (ret) {
->>>>>> +             rtw89_err(rtwdev, "[ERR]Polling WLAN PMC timeout= %X\n", val32);
->>>>>> +             return ret;
->>>>>> +     }
->>>>>
->>>>> I get this error message with every AX chip the first time
->>>>> rtw89_mac_pwr_on() is called:
->>>>>
->>>>> [  +0.007286] rtw89_8852bu 2-4:1.0: loaded firmware rtw89/rtw8852b_fw-1.bin
->>>>> [  +2.001260] rtw89_8852bu 2-4:1.0: [ERR]Polling WLAN PMC timeout= 100
->>>>>
->>>>> They still work, because the second attempt in rtw89_mac_pwr_on()
->>>>> succeeds.
->>>>>
->>>>> Before this patch, the message was "MAC has already powered on".
->>>>> The new message says it's an error, so it will confuse people.
->>>>
->>>> I borrow a 8852AU and a 8852CU that both don't have error messages.
->>>> The "first time" you meant is just to plug the USB adapter?
->>>> If so, I have not idea about the difference between yours and mine.
->>>>
->>>
->>> Yes, the error only appears right after the adapter is plugged in.
->>> I put a message at the top of rtw89_mac_power_switch():
->>>
->>> [  +0.721188] usb 1-4: new high-speed USB device number 8 using xhci_hcd
->>> [  +0.126425] usb 1-4: New USB device found, idVendor=0bda, idProduct=8832, bcdDevice= 0.00
->>> [  +0.000014] usb 1-4: New USB device strings: Mfr=1, Product=2, SerialNumber=3
->>> [  +0.000005] usb 1-4: Product: 802.11ac WLAN Adapter
->>> [  +0.000004] usb 1-4: Manufacturer: Realtek
->>> [  +0.000003] usb 1-4: SerialNumber: 00e04c000001
->>> [  +0.007757] rtw89_8852au 1-4:1.0: loaded firmware rtw89/rtw8852a_fw.bin
->>> [  +0.000338] rtw89_mac_power_switch enter, on 1
->>> [  +2.005000] rtw89_8852au 1-4:1.0: [ERR]Polling WLAN PMC timeout= 100
->>> [  +0.000010] rtw89_mac_power_switch enter, on 0
->>> [  +0.007867] rtw89_mac_power_switch enter, on 1
->>> [  +0.020254] rtw89_8852au 1-4:1.0: Firmware version 0.13.36.2 (52acc807), cmd version 0, type 1
->>> [  +0.000010] rtw89_8852au 1-4:1.0: Firmware version 0.13.36.2 (52acc807), cmd version 0, type 3
->>> [  +0.963868] rtw89_8852au 1-4:1.0: chip rfe_type is 1
->>> [  +0.103131] rtw89_mac_power_switch enter, on 0
->>> [  +0.011027] rtw89_8852au 1-4:1.0: rfkill hardware state changed to enable
->>> [  +0.051507] rtw89_8852au 1-4:1.0 wlp3s0f3u4: renamed from wlan0
->>> [  +0.020062] rtw89_mac_power_switch enter, on 1
->>>
->>>>>
->>>>> Is it possible this code related to R_AX_SYSON_FSM_MON is not
->>>>> applicable to USB? My adapters still work if I delete it.
->>>>
->>>> I'm checking internal experts. Quickly checking vendor driver, I don't see
->>>> it avoids calling this because of USB devices.
->>>>
->>>> If you delete code related to R_AX_SYSON_FSM_MON, will it show below messages
->>>> under the case 'val32 == MAC_AX_MAC_ON'?
->>>>
->>>>    "[ERR]Polling MAC state timeout= %X\n"
->>>>
->>>
->>> No, I never see that error. I checked the value of R_AX_IC_PWR_STATE.
->>> My RTL8832BU with the Windows driver onboard:
->>>
->>> [  +4.566707] usb 1-4: new high-speed USB device number 20 using xhci_hcd
->>> [  +0.125152] usb 1-4: New USB device found, idVendor=0bda, idProduct=1a2b, bcdDevice= 0.00
->>> [  +0.000008] usb 1-4: New USB device strings: Mfr=1, Product=2, SerialNumber=0
->>> [  +0.000002] usb 1-4: Product: DISK
->>> [  +0.000002] usb 1-4: Manufacturer: Realtek
->>> [  +0.000544] usb-storage 1-4:1.0: USB Mass Storage device detected
->>> [  +0.000160] usb-storage 1-4:1.0: device ignored
->>> [  +0.629850] usb 1-4: USB disconnect, device number 20
->>> [  +0.723342] usb 1-4: new high-speed USB device number 21 using xhci_hcd
->>> [  +0.125493] usb 1-4: New USB device found, idVendor=0bda, idProduct=b832, bcdDevice= 0.00
->>> [  +0.000013] usb 1-4: New USB device strings: Mfr=1, Product=2, SerialNumber=3
->>> [  +0.000005] usb 1-4: Product: 802.11ac WLAN Adapter
->>> [  +0.000004] usb 1-4: Manufacturer: Realtek
->>> [  +0.000004] usb 1-4: SerialNumber: 00e04c000001
->>> [  +0.007910] rtw89_8852bu 1-4:1.0: loaded firmware rtw89/rtw8852b_fw-1.bin
->>> [  +0.005682] rtw89_mac_reset_pwr_state_ax R_AX_IC_PWR_STATE=0x2200104
->>> [  +2.000406] rtw89_8852bu 1-4:1.0: [ERR]Polling WLAN PMC timeout= 100
->>> [  +0.017635] rtw89_mac_reset_pwr_state_ax R_AX_IC_PWR_STATE=0x2200004
->>> [  +0.043991] rtw89_8852bu 1-4:1.0: Firmware version 0.29.128.0 (418a672d), cmd version 0, type 5
->>> [  +0.000009] rtw89_8852bu 1-4:1.0: Firmware version 0.29.128.0 (418a672d), cmd version 0, type 3
->>> [  +1.462646] rtw89_8852bu 1-4:1.0: chip rfe_type is 1
->>> [  +0.135147] rtw89_8852bu 1-4:1.0: rfkill hardware state changed to enable
->>> [  +0.045006] rtw89_8852bu 1-4:1.0 wlp3s0f3u4: renamed from wlan0
->>> [  +0.016726] rtw89_mac_reset_pwr_state_ax R_AX_IC_PWR_STATE=0x2200004
->>>
->>> And another RTL8832BU without a Windows driver onboard:
->>>
->>> [Dec15 19:46] usb 1-4: new high-speed USB device number 22 using xhci_hcd
->>> [  +0.125532] usb 1-4: New USB device found, idVendor=0bda, idProduct=b832, bcdDevice= 0.00
->>> [  +0.000010] usb 1-4: New USB device strings: Mfr=1, Product=2, SerialNumber=3
->>> [  +0.000003] usb 1-4: Product: 802.11ax WLAN Adapter
->>> [  +0.000003] usb 1-4: Manufacturer: Realtek
->>> [  +0.000002] usb 1-4: SerialNumber: 00e04c000001
->>> [  +0.007667] rtw89_8852bu 1-4:1.0: loaded firmware rtw89/rtw8852b_fw-1.bin
->>> [  +0.002684] rtw89_mac_reset_pwr_state_ax R_AX_IC_PWR_STATE=0x2200004
->>> [  +0.045258] rtw89_8852bu 1-4:1.0: Firmware version 0.29.128.0 (418a672d), cmd version 0, type 5
->>> [  +0.000015] rtw89_8852bu 1-4:1.0: Firmware version 0.29.128.0 (418a672d), cmd version 0, type 3
->>> [  +1.462130] rtw89_8852bu 1-4:1.0: chip rfe_type is 1
->>> [  +0.133511] rtw89_8852bu 1-4:1.0: rfkill hardware state changed to enable
->>> [  +0.043307] rtw89_8852bu 1-4:1.0 wlp3s0f3u4: renamed from wlan0
->>> [  +0.017936] rtw89_mac_reset_pwr_state_ax R_AX_IC_PWR_STATE=0x2200004
->>>
->>> Maybe your borrowed adapters don't have the Windows drivers onboard either?
->>
->> Yes, the adapters I borrowed are just pure WiFi adapters, no Windows drivers onboard.
->>
->> I will share these information to internal experts to see how I can handle
->> this kind of adapters.
->>
->>>
->>>>>
->>>>> (I don't get the error with RTL8912AU.)
->>>>>
->>>>
->>>> I'm adding this patch for WiFi 7 chips mainly, and this seems to be expected.
->>>>
->>>
->>> My RTL8912AU does have the Windows driver onboard, but no error:
->>>
->>> [  +5.365639] usb 1-4: new high-speed USB device number 25 using xhci_hcd
->>> [  +0.124722] usb 1-4: New USB device found, idVendor=0bda, idProduct=1a2b, bcdDevice= 0.00
->>> [  +0.000007] usb 1-4: New USB device strings: Mfr=1, Product=2, SerialNumber=0
->>> [  +0.000002] usb 1-4: Product: DISK
->>> [  +0.000002] usb 1-4: Manufacturer: Realtek
->>> [  +0.000540] usb-storage 1-4:1.0: USB Mass Storage device detected
->>> [  +0.000143] usb-storage 1-4:1.0: device ignored
->>> [  +0.629713] usb 1-4: USB disconnect, device number 25
->>> [  +0.420492] usb 1-4: new high-speed USB device number 26 using xhci_hcd
->>> [  +0.125490] usb 1-4: New USB device found, idVendor=0bda, idProduct=8912, bcdDevice= 0.00
->>> [  +0.000009] usb 1-4: New USB device strings: Mfr=1, Product=2, SerialNumber=3
->>> [  +0.000002] usb 1-4: Product: 802.11be WLAN Adapter
->>> [  +0.000002] usb 1-4: Manufacturer: Realtek
->>> [  +0.000002] usb 1-4: SerialNumber: 00e04c000001
->>> [  +0.008039] rtw89_8922au 1-4:1.0: loaded firmware rtw89/rtw8922a_fw-4.bin
->>> [  +0.005192] rtw89_mac_reset_pwr_state_be R_AX_IC_PWR_STATE=0x2200104
->>> [  +0.055131] rtw89_8922au 1-4:1.0: Firmware version 0.35.80.3 (8ef4f0cf), cmd version 1, type 1
->>> [  +0.000009] rtw89_8922au 1-4:1.0: Firmware version 0.35.80.3 (8ef4f0cf), cmd version 1, type 3
->>> [  +1.419275] rtw89_8922au 1-4:1.0: chip rfe_type is 1
->>> [  +0.042634] rtw89_8922au 1-4:1.0: Firmware version 0.1.0.0 (7b393818), cmd version 0, type 64
->>> [  +0.000012] rtw89_8922au 1-4:1.0: Firmware element BB version: 00 49 00 00
->>> [  +0.000014] rtw89_8922au 1-4:1.0: Firmware element radio A version: 00 33 00 00
->>> [  +0.000015] rtw89_8922au 1-4:1.0: Firmware element NCTL version: 00 0f 00 00
->>> [  +0.000118] rtw89_8922au 1-4:1.0: Firmware element TXPWR version: 00 40 00 00
->>> [  +0.000005] rtw89_8922au 1-4:1.0: Firmware element PWR_TRK version: 00 33 00 00
->>> [  +0.000010] rtw89_8922au 1-4:1.0: Firmware element REGD version: 00 48 00 06
->>> [  +0.024441] rtw89_8922au 1-4:1.0: rfkill hardware state changed to enable
->>> [  +0.042643] rtw89_8922au 1-4:1.0 wlp3s0f3u4: renamed from wlan0
->>> [  +0.012737] rtw89_mac_reset_pwr_state_be R_AX_IC_PWR_STATE=0x2200004
+> MHI stack offers the 'auto_queue' feature, which allows the MHI stack to
+> auto queue the buffers for the RX path (DL channel). Though this feature
+> simplifies the client driver design, it introduces race between the client
+> drivers and the MHI stack. For instance, with auto_queue, the 'dl_callback'
+> for the DL channel may get called before the client driver is fully probed.
+> This means, by the time the dl_callback gets called, the client driver's
+> structures might not be initialized, leading to NULL ptr dereference.
 > 
-> Could you apply below to my original patchset to see if it can silence warning?
+> Currently, the drivers have to workaround this issue by initializing the
+> internal structures before calling mhi_prepare_for_transfer_autoqueue().
+> But even so, there is a chance that the client driver's internal code path
+> may call the MHI queue APIs before mhi_prepare_for_transfer_autoqueue() is
+> called, leading to similar NULL ptr dereference. This issue has been
+> reported on the Qcom X1E80100 CRD machines affecting boot.
 > 
-> diff --git a/drivers/net/wireless/realtek/rtw89/mac.c b/drivers/net/wireless/realtek/rtw89/mac.c
-> index 7ffb039e7d1b..1f9f21040adc 100644
-> --- a/drivers/net/wireless/realtek/rtw89/mac.c
-> +++ b/drivers/net/wireless/realtek/rtw89/mac.c
-> @@ -3950,6 +3950,16 @@ static int rtw89_mac_reset_pwr_state_ax(struct rtw89_dev *rtwdev)
->                                 1000, 2000000, false,
->                                 rtwdev, R_AX_SYSON_FSM_MON, WLAN_FSM_STATE_MASK);
->         if (ret) {
-> +               /*
-> +                * A USB adapter might play as USB mass storage with driver and
-> +                * then switch to WiFi adapter, causing it stays on power-on
-> +                * state when doing WiFi USB probe. Return EAGAIN to caller to
-> +                * power-off and power-on again to reset the state.
-> +                */
-> +               if (rtwdev->hci.type == RTW89_HCI_TYPE_USB &&
-> +                   !test_bit(RTW89_FLAG_PROBE_DONE, rtwdev->flags))
-> +                       return -EAGAIN;
-> +
->                 rtw89_err(rtwdev, "[ERR]Polling WLAN PMC timeout= %X\n", val32);
->                 return ret;
->         }
+> So to properly fix all these races, drop the MHI 'auto_queue' feature
+> altogether and let the client driver (QRTR) manage the RX buffers manually.
+> In the QRTR driver, queue the RX buffers based on the ring length during
+> probe and recycle the buffers in 'dl_callback' once they are consumed. This
+> also warrants removing the setting of 'auto_queue' flag from controller
+> drivers.
 > 
+> Currently, this 'auto_queue' feature is only enabled for IPCR DL channel.
+> So only the QRTR client driver requires the modification.
+> 
+> Cc: stable@vger.kernel.org
+> Fixes: 227fee5fc99e ("bus: mhi: core: Add an API for auto queueing buffers for DL channel")
+> Fixes: 68a838b84eff ("net: qrtr: start MHI channel after endpoit creation")
+> Reported-by: Johan Hovold <johan@kernel.org>
+> Closes: https://lore.kernel.org/linux-arm-msm/ZyTtVdkCCES0lkl4@hovoldconsulting.com
+> Suggested-by: Chris Lew <quic_clew@quicinc.com>
+> Signed-off-by: Manivannan Sadhasivam <manivannan.sadhasivam@oss.qualcomm.com>
 
-Yes, that silences the warning.
+Acked-by: Jeff Johnson <jjohnson@kernel.org> # drivers/net/wireless/ath/...
+
 
