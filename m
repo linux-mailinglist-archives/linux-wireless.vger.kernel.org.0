@@ -1,318 +1,312 @@
-Return-Path: <linux-wireless+bounces-29850-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-29851-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1BC21CC9863
-	for <lists+linux-wireless@lfdr.de>; Wed, 17 Dec 2025 21:55:19 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 45F3FCC9B40
+	for <lists+linux-wireless@lfdr.de>; Wed, 17 Dec 2025 23:27:30 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 9FDAE300D4B3
-	for <lists+linux-wireless@lfdr.de>; Wed, 17 Dec 2025 20:55:17 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 69D1C3051EAF
+	for <lists+linux-wireless@lfdr.de>; Wed, 17 Dec 2025 22:26:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CD7FB2F12DB;
-	Wed, 17 Dec 2025 20:55:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 018CE311C13;
+	Wed, 17 Dec 2025 22:26:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="frgUq2na";
-	dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b="daVOfudq"
+	dkim=pass (2048-bit key) header.d=web.de header.i=spasswolf@web.de header.b="UMMHGDKx"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
+Received: from mout.web.de (mout.web.de [212.227.17.12])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 00B1223F429
-	for <linux-wireless@vger.kernel.org>; Wed, 17 Dec 2025 20:55:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7A01A2ED860;
+	Wed, 17 Dec 2025 22:26:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.227.17.12
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1766004916; cv=none; b=RPO7hyKpWJzAbca6qvHXViMEOfXEoAtirgxfzLo2SHylQjrJzntQyxAXKddVfpUqlPLNwYodIteLP3qwQ7GA4Cpo6yWL+lLURt4eoV4XN0e62wbgm08weDXDDKB8koF0a1HQdFXXhE0xjXunF2HN0wBf6ACx/BKtpuKUPLga0S8=
+	t=1766010395; cv=none; b=EyQdxy0bcvhWkcnNIH5apPoEFyMd8SYig2hW8sjamYeg31OP7CMMzTuiTRKE/VBqI8V2LjZGkTPB9d9utj88l0f3acylWZBFf7cA6F3ztH/4huaW+cNztMq/mFLTfcgMmgQjiy+uSaX0bf5ysqOwcPnF0G1SBWP6nfRSBFIM3Qk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1766004916; c=relaxed/simple;
-	bh=ZcCopzOY7izL11ae5HCSHWlmhMGLhCXPDvIU4yKWWi4=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=ptz1/+rWuwwmzTyHCCttCLgCOX8jEFD+48CXKAuM0fX1S44RIR1lz23elnWzwU9P9tv21m4acMObWrmeW5YPWljZ1B+0sJBWhlYcJ2Xd4Tby0/ybrzW399ZD/aqdoTtdznfvFvuIyQwabjyskWweiGCS3xoxNa/fGXOBhUkhFl0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=frgUq2na; dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b=daVOfudq; arc=none smtp.client-ip=205.220.180.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
-Received: from pps.filterd (m0279869.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 5BHJBKCF019642
-	for <linux-wireless@vger.kernel.org>; Wed, 17 Dec 2025 20:55:14 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
-	cc:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
-	HgMaZiIuQy5vybIqaOL5aswqYfbddufKQttDrC14/fE=; b=frgUq2naW/f3Z10b
-	qhlkzoQG/bBIkMHs9pjkrJlAllgM/1Sc8QGkpXI0tnnN+20I24C9vY0ZESuahSd8
-	+c2gk+U75SLx+IRGoOEweVFcWESkD3fiLfgKC1hm9Y8egrFQ/Mi0Xdip193OAkCg
-	7v1UmOWgOcmGdD4PW1Lm4wGYJH6gJZYTZwpb7jlBzBF114KKcH8doXizoAbDjYYV
-	tphoXAuxeMwhhpY3ZVi5ZYvA7KY36al6VVmCEDkTMCC/xFQCvLyKlRhSBolJlziI
-	GXjGfORKUacLpAJRIPFOp6VL1+8oYjTPpTAzoExAjN2x/4H0DnksSMj+EMIk2RNJ
-	2fgYPQ==
-Received: from mail-qt1-f199.google.com (mail-qt1-f199.google.com [209.85.160.199])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4b40v78hm7-1
-	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
-	for <linux-wireless@vger.kernel.org>; Wed, 17 Dec 2025 20:55:13 +0000 (GMT)
-Received: by mail-qt1-f199.google.com with SMTP id d75a77b69052e-4f1b39d7ed2so130412971cf.2
-        for <linux-wireless@vger.kernel.org>; Wed, 17 Dec 2025 12:55:13 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=oss.qualcomm.com; s=google; t=1766004913; x=1766609713; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=HgMaZiIuQy5vybIqaOL5aswqYfbddufKQttDrC14/fE=;
-        b=daVOfudqydBn1MB/VCPyJtcRV7upY0gJQSgVESv3yDcsyBk6nxm9azsx9ZL6br4ESK
-         /s4j1a8y8h/PP80QYQ7TmIKjsHb1WgYRF8WUCbde/+YOIO45hVOws6PB4o0EhO88ov8i
-         ipeivsq8XvRs7SGwrmfuPtKeL+oGYyP3Lg9z0acf+beiHPfUKSjQsTq2u2sV3yMCs7V1
-         mStQf8J3HhhmlnrKmKf4J35qvsyjhBvD29BaJCZiC2TAqa7QeICILPe3CFGfQsk1xfyM
-         rcJlQerOTpHGTaCgqW/T2FvwWkqqn1RdKQl1MNrPtXZRAWAA2sAnL6cPQePxiVrtjwG8
-         SOxg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1766004913; x=1766609713;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=HgMaZiIuQy5vybIqaOL5aswqYfbddufKQttDrC14/fE=;
-        b=sst6vRqrarAA2cuMoBmZjZOum2IcDxbIR94muJ06xCy3O/HLS3ft8hK9lvd/rw45RR
-         OEqr4d1ZQFZzwEPBd4shNCqEF2pH+fLKPTUorsjwTsDFcpln20FE8ESYNXUschDbKUEF
-         9oqVa+klCyri0lynJvCpwoo3g2AvJsTXyp8CfehbSRmWesjAoTNgk+GJQmgpaLWICCCo
-         X3XNGYTtkXVLE8umujEanqmUaR4OlBKo+205sFLZHE480f/MvgOChNXfAjZh7TFnAv3s
-         oDWXyQg+pIRImwnwu3EXTW7rHw1zuLrwMqsXp9wMAUVUWWN7fcixE70X6nyej0TK7TfH
-         ++cA==
-X-Forwarded-Encrypted: i=1; AJvYcCXTH1LDhKCptfYsnyQ2QjUYLV09k1iClmgQHGK1TdhTwY3r85U2M7vLs29s/Y2WhH94l2eGFFBYgEKokSNJ3w==@vger.kernel.org
-X-Gm-Message-State: AOJu0Yx9FCRO7XbB0U+lK/ZJztkDNMp2dO4c8RBl/+Wj/ulezIheIzc7
-	PFyWprwMeCRgysktv57Xfe94x+wkBtnP2d8fDFbb5jaaOkHJp/MdQNPI67gPVYFnCtxfU756ROp
-	BX2ngfTwSpAEOHE77p12lWlzCNdiaL42v9dyHi7qSuI5mqZqeHiU6LgK9taBTFu7rzNDWAOQkYs
-	wrsUpyA3+B0W5vhk/mRGMvligPLsZyeZvkPGuQ5EX0UdcM
-X-Gm-Gg: AY/fxX6NmLWFoTSS/1d+p1b2nUgyd5AolKUk80mgo9mTmc5BD5Kl0HFp9Yf3cRAvQMr
-	sWFYUQV8GrKyNItaK2o8H/N5fcJ5wDvPnRLfYpBdWYVcANKSRpWnXj7DCw9npQk4QYesRSuZhVE
-	DZu95LIWqVYRdN5KcqV72AE6Cdkc0iY/8I6sdUX34unnloX6za3n1dFgE3rtOrFH4zyvZEjbHIM
-	V6lqHdoOLd5fYiRKGFzt2MqTNg=
-X-Received: by 2002:a05:622a:1f8d:b0:4e8:aff9:a7a8 with SMTP id d75a77b69052e-4f1d059e6demr255486181cf.52.1766004913116;
-        Wed, 17 Dec 2025 12:55:13 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IEIxV8yAj25Ai89Xzbv01C4M56wH08D8F+HimFkmmUMgUnz2y/j/qSKVn3Br5Bb5T4cygsAlkkPPFEOhhJoBLc=
-X-Received: by 2002:a05:622a:1f8d:b0:4e8:aff9:a7a8 with SMTP id
- d75a77b69052e-4f1d059e6demr255485861cf.52.1766004912714; Wed, 17 Dec 2025
- 12:55:12 -0800 (PST)
+	s=arc-20240116; t=1766010395; c=relaxed/simple;
+	bh=RF0p7ViyrufOFNlFS5uKp06FGHIWxDLylpIw0ubumXM=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=cPNWo+GlojXOkvtk+4MgOyIrvE1RvNnGjCRxLazXIb+1/lzTmsAHqvZhrr4KykAlNB3HkIoknoelEAny6C7qm4g/Zmb8xkDnCroKa8Ol60aw/GdlIoPl6Ux4qiX0iuC6iEWbLPFniEdYBI3ojaMeU0EF72BHeBLN5iDuLzp9fZ8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=web.de; spf=pass smtp.mailfrom=web.de; dkim=pass (2048-bit key) header.d=web.de header.i=spasswolf@web.de header.b=UMMHGDKx; arc=none smtp.client-ip=212.227.17.12
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=web.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=web.de
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=web.de;
+	s=s29768273; t=1766010384; x=1766615184; i=spasswolf@web.de;
+	bh=FdIDGnLdInZs3EAQj5Cac1NPy8HAJp7MV1NeTSFIY1A=;
+	h=X-UI-Sender-Class:From:To:Cc:Subject:Date:Message-ID:
+	 MIME-Version:Content-Transfer-Encoding:cc:
+	 content-transfer-encoding:content-type:date:from:message-id:
+	 mime-version:reply-to:subject:to;
+	b=UMMHGDKxFLNuWqeelGRbWjAsfkwn+ow2xg/DB8MWrbKjkmQlk/8nVy7N0nfDMffe
+	 CvhZjL/TNxYRsC99mjXFX5aCFQ6U1Fkyl14Uxk1P9cSfRIflQD+gOlO2Xb6Kka4lH
+	 jrOLfBhrc/DRj7usDrFsOIWduaIpKt5IeDTJN+Ad6hTIA9TAODvK3ZjJZ5LG1c+Kq
+	 kTKUyiRLl6yUY+H6JP3MBYPF/vDHBp8wmdAevpqB+RAb+vqBHCUL1ch3Ku4ijNNnd
+	 Blu+K1Ow/7Bdo9aplcFTZFXUbJcrPfuzFTnAxZsdNoAI0FV+YnxeLG54C7UNEev3m
+	 mGaemBWJYJOycFFLkg==
+X-UI-Sender-Class: 814a7b36-bfc1-4dae-8640-3722d8ec6cd6
+Received: from localhost.localdomain ([95.223.134.88]) by smtp.web.de
+ (mrweb105 [213.165.67.124]) with ESMTPSA (Nemesis) id
+ 1MNOQy-1vKWbF4BUA-00YQVk; Wed, 17 Dec 2025 23:26:24 +0100
+From: Bert Karwatzki <spasswolf@web.de>
+To: Mario Limonciello <superm1@kernel.org>
+Cc: Bert Karwatzki <spasswolf@web.de>,
+	Felix Fietkau <nbd@nbd.name>,
+	linux-kernel@vger.kernel.org,
+	linux-wireless@vger.kernel.org,
+	linux-next@vger.kernel.org
+Subject: [PATCH] wifi: mt76: connac: fix out of bounds read in mt76_connac2_load_patch()
+Date: Wed, 17 Dec 2025 23:26:20 +0100
+Message-ID: <20251217222622.8161-1-spasswolf@web.de>
+X-Mailer: git-send-email 2.47.3
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20251217-qrtr-fix-v1-0-f6142a3ec9d8@oss.qualcomm.com> <20251217-qrtr-fix-v1-1-f6142a3ec9d8@oss.qualcomm.com>
-In-Reply-To: <20251217-qrtr-fix-v1-1-f6142a3ec9d8@oss.qualcomm.com>
-From: Loic Poulain <loic.poulain@oss.qualcomm.com>
-Date: Wed, 17 Dec 2025 21:55:01 +0100
-X-Gm-Features: AQt7F2oMGXyRcd9Myafrtktq7XvNVC31AVGxMw8-BPcHboXB0o1yL4pAKjFRRZ0
-Message-ID: <CAFEp6-0iuJNDM9hdU3rWns=Vst6Ev1iyNim1ngRH3Z44CHwTAg@mail.gmail.com>
-Subject: Re: [PATCH 1/2] net: qrtr: Drop the MHI auto_queue feature for IPCR
- DL channels
-To: manivannan.sadhasivam@oss.qualcomm.com
-Cc: Jeff Hugo <jeff.hugo@oss.qualcomm.com>,
-        Carl Vanderlip <carl.vanderlip@oss.qualcomm.com>,
-        Oded Gabbay <ogabbay@kernel.org>,
-        Manivannan Sadhasivam <mani@kernel.org>,
-        Jeff Johnson <jjohnson@kernel.org>,
-        "David S. Miller" <davem@davemloft.net>,
-        Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>,
-        Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Maxim Kochetkov <fido_max@inbox.ru>, linux-arm-msm@vger.kernel.org,
-        dri-devel@lists.freedesktop.org, linux-kernel@vger.kernel.org,
-        mhi@lists.linux.dev, linux-wireless@vger.kernel.org,
-        ath11k@lists.infradead.org, ath12k@lists.infradead.org,
-        netdev@vger.kernel.org, Bjorn Andersson <andersson@kernel.org>,
-        Johan Hovold <johan@kernel.org>, Chris Lew <quic_clew@quicinc.com>,
-        stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-X-Proofpoint-ORIG-GUID: 57QXDz1Ovqwnq21qD77HOSqKjBimjBnC
-X-Proofpoint-GUID: 57QXDz1Ovqwnq21qD77HOSqKjBimjBnC
-X-Authority-Analysis: v=2.4 cv=f8JFxeyM c=1 sm=1 tr=0 ts=694318b1 cx=c_pps
- a=WeENfcodrlLV9YRTxbY/uA==:117 a=IkcTkHD0fZMA:10 a=wP3pNCr1ah4A:10
- a=s4-Qcg_JpJYA:10 a=VkNPw1HP01LnGYTKEx00:22 a=VwQbUJbxAAAA:8 a=zitRP-D0AAAA:8
- a=EUspDBNiAAAA:8 a=COk6AnOGAAAA:8 a=b7YbY6zhk6ih5Eb82B4A:9 a=QEXdDO2ut3YA:10
- a=kacYvNCVWA4VmyqE58fU:22 a=xwnAI6pc5liRhupp6brZ:22 a=TjNXssC_j7lpFel5tvFf:22
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUxMjE3MDE2NiBTYWx0ZWRfX5HfGf/pQYbZl
- UU4Z0qSZs/vjz7k+nvJT8Fn4+31Otht15078Pq1lVFtlC9hIeGwDEWTrva7pMYtxmIq3kfVLbfW
- oBGsb5NZsVNu9C7eMjmivuDUI5we6Jy6oy8ACEapKNnpBR2o3JpYsAonKB0nE4WYeSxPXnPPy1P
- eUv53hBfDe+3Foc8v6JfAD+xRzvIj/Wlv7QaZfeVdo35KwChY9MFCmQa+xfm6BpoKzrhIO7z7Zz
- SEog++x+SN3OWNS+vn+gpZTfZBwo7d3svA1qORfsQKzAw+TSqVPI4N//6uxxWrAT8PyPm+fHgcg
- sSsnMT6gyxXP6/QIH/xNg9EmSSIWmkZp9EYblBgRfH25EI/NBY1aKnC/Tc5+WigXA39Pjh2ijDp
- iKHm3R7gYjiyLd7Xd/NNJSGanWKD6w==
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.9,FMLib:17.12.100.49
- definitions=2025-12-17_03,2025-12-17_02,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- lowpriorityscore=0 adultscore=0 clxscore=1015 suspectscore=0 phishscore=0
- impostorscore=0 bulkscore=0 malwarescore=0 priorityscore=1501 spamscore=0
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.22.0-2510240001 definitions=main-2512170166
+X-Provags-ID: V03:K1:hXJjnfa21WvwBilRTrqjIT7H19MAZcnup10hZEFCEEZW8sPGXEI
+ Sj6Uctar1nyvJV56PoCCE/TmOaq23uMGh/160eCHO8y2EVIpPNoRb3SwUk2mbjSxBFi9/Mm
+ K5wSYdxxjOWU3o970rqhgZ45EsjCSh9ZzExwhJHI9V2rLRl4Kxdyn5IaQoq5aTGiMh8aGY8
+ 2GegYaquvlz1awPsvOPkQ==
+X-Spam-Flag: NO
+UI-OutboundReport: notjunk:1;M01:P0:FYrGrZ9neLs=;nyCHnjSmxq+Ft/Lcs0NESTNkmAO
+ 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
 
-Hi Mani,
+As sizeof(hdr->build_date) is 16 we reading 17 bytes (sizeof(build_date))
+result in the following error:
 
-On Wed, Dec 17, 2025 at 6:17=E2=80=AFPM Manivannan Sadhasivam via B4 Relay
-<devnull+manivannan.sadhasivam.oss.qualcomm.com@kernel.org> wrote:
->
-> From: Manivannan Sadhasivam <manivannan.sadhasivam@oss.qualcomm.com>
->
-> MHI stack offers the 'auto_queue' feature, which allows the MHI stack to
-> auto queue the buffers for the RX path (DL channel). Though this feature
-> simplifies the client driver design, it introduces race between the clien=
-t
-> drivers and the MHI stack. For instance, with auto_queue, the 'dl_callbac=
-k'
-> for the DL channel may get called before the client driver is fully probe=
-d.
-> This means, by the time the dl_callback gets called, the client driver's
-> structures might not be initialized, leading to NULL ptr dereference.
->
-> Currently, the drivers have to workaround this issue by initializing the
-> internal structures before calling mhi_prepare_for_transfer_autoqueue().
-> But even so, there is a chance that the client driver's internal code pat=
-h
-> may call the MHI queue APIs before mhi_prepare_for_transfer_autoqueue() i=
-s
-> called, leading to similar NULL ptr dereference. This issue has been
-> reported on the Qcom X1E80100 CRD machines affecting boot.
->
-> So to properly fix all these races, drop the MHI 'auto_queue' feature
-> altogether and let the client driver (QRTR) manage the RX buffers manuall=
-y.
-> In the QRTR driver, queue the RX buffers based on the ring length during
-> probe and recycle the buffers in 'dl_callback' once they are consumed. Th=
-is
-> also warrants removing the setting of 'auto_queue' flag from controller
-> drivers.
->
-> Currently, this 'auto_queue' feature is only enabled for IPCR DL channel.
-> So only the QRTR client driver requires the modification.
->
-> Cc: stable@vger.kernel.org
-> Fixes: 227fee5fc99e ("bus: mhi: core: Add an API for auto queueing buffer=
-s for DL channel")
-> Fixes: 68a838b84eff ("net: qrtr: start MHI channel after endpoit creation=
-")
-> Reported-by: Johan Hovold <johan@kernel.org>
-> Closes: https://lore.kernel.org/linux-arm-msm/ZyTtVdkCCES0lkl4@hovoldcons=
-ulting.com
-> Suggested-by: Chris Lew <quic_clew@quicinc.com>
-> Signed-off-by: Manivannan Sadhasivam <manivannan.sadhasivam@oss.qualcomm.=
-com>
-> ---
->  drivers/accel/qaic/mhi_controller.c   | 44 -----------------------
->  drivers/bus/mhi/host/pci_generic.c    | 20 ++---------
->  drivers/net/wireless/ath/ath11k/mhi.c |  4 ---
->  drivers/net/wireless/ath/ath12k/mhi.c |  4 ---
->  net/qrtr/mhi.c                        | 67 +++++++++++++++++++++++++++++=
-------
->  5 files changed, 58 insertions(+), 81 deletions(-)
+[    T378] ------------[ cut here ]------------
+[    T378] strnlen: detected buffer overflow: 17 byte read of buffer size =
+16
+[    T378] WARNING: lib/string_helpers.c:1036 at __fortify_report+0x3e/0x5=
+0, CPU#15: kworker/15:1/378
 [...]
-> diff --git a/net/qrtr/mhi.c b/net/qrtr/mhi.c
-> index 69f53625a049..0b4d181ea747 100644
-> --- a/net/qrtr/mhi.c
-> +++ b/net/qrtr/mhi.c
-> @@ -24,13 +24,25 @@ static void qcom_mhi_qrtr_dl_callback(struct mhi_devi=
-ce *mhi_dev,
->         struct qrtr_mhi_dev *qdev =3D dev_get_drvdata(&mhi_dev->dev);
->         int rc;
->
-> -       if (!qdev || mhi_res->transaction_status)
-> +       if (!qdev || (mhi_res->transaction_status && mhi_res->transaction=
-_status !=3D -ENOTCONN))
->                 return;
->
-> +       /* Channel got reset. So just free the buffer */
-> +       if (mhi_res->transaction_status =3D=3D -ENOTCONN) {
-> +               devm_kfree(&mhi_dev->dev, mhi_res->buf_addr);
-> +               return;
-> +       }
-> +
->         rc =3D qrtr_endpoint_post(&qdev->ep, mhi_res->buf_addr,
->                                 mhi_res->bytes_xferd);
->         if (rc =3D=3D -EINVAL)
->                 dev_err(qdev->dev, "invalid ipcrouter packet\n");
-> +
-> +       /* Done with the buffer, now recycle it for future use */
-> +       rc =3D mhi_queue_buf(mhi_dev, DMA_FROM_DEVICE, mhi_res->buf_addr,
-> +                          mhi_dev->mhi_cntrl->buffer_len, MHI_EOT);
-> +       if (rc)
-> +               dev_err(&mhi_dev->dev, "Failed to recycle the buffer: %d\=
-n", rc);
->  }
->
->  /* From QRTR to MHI */
-> @@ -72,6 +84,27 @@ static int qcom_mhi_qrtr_send(struct qrtr_endpoint *ep=
-, struct sk_buff *skb)
->         return rc;
->  }
->
-> +static int qcom_mhi_qrtr_queue_dl_buffers(struct mhi_device *mhi_dev)
-> +{
-> +       void *buf;
-> +       int ret;
-> +
-> +       while (!mhi_queue_is_full(mhi_dev, DMA_FROM_DEVICE)) {
+[    T378]  mt76_connac2_load_patch.cold+0x2a/0x313 [mt76_connac_lib]
+[    T378]  mt792x_load_firmware+0x31/0x140 [mt792x_lib]
 
-This approach might be a bit racy, since a buffer could complete
-before the alloc+queue loop finishes. That could e.g lead to recycle
-error in a concurrent DL callback. It might be simpler to just queue
-the number of descriptors returned by mhi_get_free_desc_count().
+Fixes: f804a5895eba ("wifi: mt76: Strip whitespace from build ddate")
 
-> +               buf =3D devm_kmalloc(&mhi_dev->dev, mhi_dev->mhi_cntrl->b=
-uffer_len, GFP_KERNEL);
-> +               if (!buf)
-> +                       return -ENOMEM;
-> +
-> +               ret =3D mhi_queue_buf(mhi_dev, DMA_FROM_DEVICE, buf, mhi_=
-dev->mhi_cntrl->buffer_len,
-> +                                   MHI_EOT);
-> +               if (ret) {
-> +                       dev_err(&mhi_dev->dev, "Failed to queue buffer: %=
-d\n", ret);
-> +                       return ret;
-> +               }
-> +       }
-> +
-> +       return 0;
-> +}
-> +
->  static int qcom_mhi_qrtr_probe(struct mhi_device *mhi_dev,
->                                const struct mhi_device_id *id)
->  {
-> @@ -87,20 +120,30 @@ static int qcom_mhi_qrtr_probe(struct mhi_device *mh=
-i_dev,
->         qdev->ep.xmit =3D qcom_mhi_qrtr_send;
->
->         dev_set_drvdata(&mhi_dev->dev, qdev);
-> -       rc =3D qrtr_endpoint_register(&qdev->ep, QRTR_EP_NID_AUTO);
-> -       if (rc)
-> -               return rc;
->
->         /* start channels */
-> -       rc =3D mhi_prepare_for_transfer_autoqueue(mhi_dev);
-> -       if (rc) {
-> -               qrtr_endpoint_unregister(&qdev->ep);
-> +       rc =3D mhi_prepare_for_transfer(mhi_dev);
-> +       if (rc)
->                 return rc;
-> -       }
-> +
-> +       rc =3D qrtr_endpoint_register(&qdev->ep, QRTR_EP_NID_AUTO);
-> +       if (rc)
-> +               goto err_unprepare;
-> +
-> +       rc =3D qcom_mhi_qrtr_queue_dl_buffers(mhi_dev);
-> +       if (rc)
-> +               goto err_unregister;
->
->         dev_dbg(qdev->dev, "Qualcomm MHI QRTR driver probed\n");
->
->         return 0;
-> +
-> +err_unregister:
-> +       qrtr_endpoint_unregister(&qdev->ep);
-> +err_unprepare:
-> +       mhi_unprepare_from_transfer(mhi_dev);
-> +
-> +       return rc;
->  }
+Signed-off-by: Bert Karwatzki <spasswolf@web.de>
+=2D--
+ drivers/net/wireless/mediatek/mt76/mt76_connac_mcu.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-Regards,
-Loic
+diff --git a/drivers/net/wireless/mediatek/mt76/mt76_connac_mcu.c b/driver=
+s/net/wireless/mediatek/mt76/mt76_connac_mcu.c
+index ea99167765b0..aca3d7870dce 100644
+=2D-- a/drivers/net/wireless/mediatek/mt76/mt76_connac_mcu.c
++++ b/drivers/net/wireless/mediatek/mt76/mt76_connac_mcu.c
+@@ -3125,7 +3125,7 @@ int mt76_connac2_load_patch(struct mt76_dev *dev, co=
+nst char *fw_name)
+ 	}
+=20
+ 	hdr =3D (const void *)fw->data;
+-	strscpy(build_date, hdr->build_date, sizeof(build_date));
++	strscpy(build_date, hdr->build_date, sizeof(hdr->build_date));
+ 	build_date[16] =3D '\0';
+ 	strim(build_date);
+ 	dev_info(dev->dev, "HW/SW Version: 0x%x, Build Time: %.16s\n",
+=2D-=20
+2.47.3
+
+In linux-next-20251217 I noticed the following error during boot:
+
+[    T378] ------------[ cut here ]------------
+[    T378] strnlen: detected buffer overflow: 17 byte read of buffer size =
+16
+[    T378] WARNING: lib/string_helpers.c:1036 at __fortify_report+0x3e/0x5=
+0, CPU#15: kworker/15:1/378
+[    T378] Modules linked in: mt7921e mt7921_common mt792x_lib mt76_connac=
+_lib mt76 mac80211 libarc4 cfg80211 rfkill msr fuse nvme_fabrics configfs =
+efi_pstore efivarfs autofs4 ext4 mbcache jbd2 amdgpu usbhid drm_client_lib=
+ i2c_algo_bit drm_ttm_helper ttm drm_exec drm_suballoc_helper drm_buddy xh=
+ci_pci drm_panel_backlight_quirks gpu_sched amdxcp xhci_hcd hid_sensor_hub=
+ drm_display_helper mfd_core hid_multitouch hid_generic psmouse usbcore nv=
+me drm_kms_helper i2c_hid_acpi amd_sfh i2c_hid hid serio_raw nvme_core cec=
+ i2c_piix4 r8169 i2c_smbus usb_common crc16 i2c_designware_platform i2c_de=
+signware_core
+[    T378] CPU: 15 UID: 0 PID: 378 Comm: kworker/15:1 Not tainted 6.19.0-r=
+c1-next-20251217-master #262 PREEMPT_{RT,(full)}=20
+[    T378] Hardware name: Micro-Star International Co., Ltd. Alpha 15 B5EE=
+K/MS-158L, BIOS E158LAMS.10F 11/11/2024
+[    T378] Workqueue: events mt7921_init_work [mt7921_common]
+[    T378] RIP: 0010:__fortify_report+0x3e/0x50
+[    T378] Code: 39 c8 48 0f 47 c1 83 e7 01 48 c7 c1 29 ac 54 95 48 8b 34 =
+c5 e0 d5 26 95 48 c7 c0 8c 8f 54 95 48 0f 44 c8 48 8d 3d 42 ba c7 00 <67> =
+48 0f b9 3a e9 d3 aa a5 ff 0f 1f 84 00 00 00 00 00 f3 0f 1e fa
+[    T378] RSP: 0018:ffffb015823a7d18 EFLAGS: 00010246
+[    T378] RAX: ffffffff95548f8c RBX: 0000000000000000 RCX: ffffffff95548f=
+8c
+[    T378] RDX: 0000000000000011 RSI: ffffffff955319d6 RDI: ffffffff959250=
+70
+[    T378] RBP: ffff8ebf90f22560 R08: 0000000000000010 R09: ffffb01581f8d0=
+00
+[    T378] R10: ffff8ebf80042700 R11: ffff8ec23a7e5930 R12: 00000000000000=
+00
+[    T378] R13: ffffb01581f8d000 R14: 0000000000001000 R15: 00000000000000=
+00
+[    T378] FS:  0000000000000000(0000) GS:ffff8ec2a49de000(0000) knlGS:000=
+0000000000000
+[    T378] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+[    T378] CR2: 00007f861de85114 CR3: 0000000025222000 CR4: 0000000000750e=
+f0
+[    T378] PKRU: 55555554
+[    T378] Call Trace:
+[    T378]  <TASK>
+[    T378]  __fortify_panic+0xd/0xf
+[    T378]  mt76_connac2_load_patch.cold+0x2a/0x313 [mt76_connac_lib]
+[    T378]  mt792x_load_firmware+0x31/0x140 [mt792x_lib]
+[    T378]  mt7921_run_firmware+0x27/0x490 [mt7921_common]
+[    T378]  ? srso_alias_return_thunk+0x5/0xfbef5
+[    T378]  ? srso_alias_return_thunk+0x5/0xfbef5
+[    T378]  ? ____mt76_poll_msec+0x70/0xb0 [mt76]
+[    T378]  mt7921e_mcu_init+0x47/0x75 [mt7921e]
+[    T378]  mt7921_init_work+0x4c/0x190 [mt7921_common]
+[    T378]  process_one_work+0x17b/0x290
+[    T378]  worker_thread+0x17d/0x2e0
+[    T378]  ? bh_worker+0x1c0/0x1c0
+[    T378]  kthread+0xe9/0x1e0
+[    T378]  ? kthreads_online_cpu+0x100/0x100
+[    T378]  ? kthreads_online_cpu+0x100/0x100
+[    T378]  ret_from_fork+0x23e/0x270
+[    T378]  ? kthreads_online_cpu+0x100/0x100
+[    T378]  ret_from_fork_asm+0x11/0x20
+[    T378]  </TASK>
+[    T378] ---[ end trace 0000000000000000 ]---
+[    T378] ------------[ cut here ]------------
+[    T378] kernel BUG at lib/string_helpers.c:1044!
+[    T378] Oops: invalid opcode: 0000 [#1] SMP NOPTI
+[    T378] CPU: 15 UID: 0 PID: 378 Comm: kworker/15:1 Tainted: G        W =
+          6.19.0-rc1-next-20251217-master #262 PREEMPT_{RT,(full)}=20
+[    T378] Tainted: [W]=3DWARN
+[    T378] Hardware name: Micro-Star International Co., Ltd. Alpha 15 B5EE=
+K/MS-158L, BIOS E158LAMS.10F 11/11/2024
+[    T378] Workqueue: events mt7921_init_work [mt7921_common]
+[    T378] RIP: 0010:__fortify_panic+0xd/0xf
+[    T378] Code: d6 e8 57 e6 fe ff 48 89 df e8 7f 5c 23 00 e9 21 80 48 00 =
+66 2e 0f 1f 84 00 00 00 00 00 f3 0f 1e fa 40 0f b6 ff e8 53 c1 48 00 <0f> =
+0b 48 8b 54 24 08 48 8b 34 24 4c 8d 44 24 1d 4c 89 e9 48 c7 c7
+[    T378] RSP: 0018:ffffb015823a7d20 EFLAGS: 00010246
+[    T378] RAX: ffffffff95548f8c RBX: 0000000000000000 RCX: ffffffff95548f=
+8c
+[    T378] RDX: 0000000000000011 RSI: ffffffff955319d6 RDI: ffffffff959250=
+70
+[    T378] RBP: ffff8ebf90f22560 R08: 0000000000000010 R09: ffffb01581f8d0=
+00
+[    T378] R10: ffff8ebf80042700 R11: ffff8ec23a7e5930 R12: 00000000000000=
+00
+[    T378] R13: ffffb01581f8d000 R14: 0000000000001000 R15: 00000000000000=
+00
+[    T378] FS:  0000000000000000(0000) GS:ffff8ec2a49de000(0000) knlGS:000=
+0000000000000
+[    T378] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+[    T378] CR2: 00007f861de85114 CR3: 0000000025222000 CR4: 0000000000750e=
+f0
+[    T378] PKRU: 55555554
+[    T378] Call Trace:
+[    T378]  <TASK>
+[    T378]  mt76_connac2_load_patch.cold+0x2a/0x313 [mt76_connac_lib]
+[    T378]  mt792x_load_firmware+0x31/0x140 [mt792x_lib]
+[    T378]  mt7921_run_firmware+0x27/0x490 [mt7921_common]
+[    T378]  ? srso_alias_return_thunk+0x5/0xfbef5
+[    T378]  ? srso_alias_return_thunk+0x5/0xfbef5
+[    T378]  ? ____mt76_poll_msec+0x70/0xb0 [mt76]
+[    T378]  mt7921e_mcu_init+0x47/0x75 [mt7921e]
+[    T378]  mt7921_init_work+0x4c/0x190 [mt7921_common]
+[    T378]  process_one_work+0x17b/0x290
+[    T378]  worker_thread+0x17d/0x2e0
+[    T378]  ? bh_worker+0x1c0/0x1c0
+[    T378]  kthread+0xe9/0x1e0
+[    T378]  ? kthreads_online_cpu+0x100/0x100
+[    T378]  ? kthreads_online_cpu+0x100/0x100
+[    T378]  ret_from_fork+0x23e/0x270
+[    T378]  ? kthreads_online_cpu+0x100/0x100
+[    T378]  ret_from_fork_asm+0x11/0x20
+[    T378]  </TASK>
+[    T378] Modules linked in: mt7921e mt7921_common mt792x_lib mt76_connac=
+_lib mt76 mac80211 libarc4 cfg80211 rfkill msr fuse nvme_fabrics configfs =
+efi_pstore efivarfs autofs4 ext4 mbcache jbd2 amdgpu usbhid drm_client_lib=
+ i2c_algo_bit drm_ttm_helper ttm drm_exec drm_suballoc_helper drm_buddy xh=
+ci_pci drm_panel_backlight_quirks gpu_sched amdxcp xhci_hcd hid_sensor_hub=
+ drm_display_helper mfd_core hid_multitouch hid_generic psmouse usbcore nv=
+me drm_kms_helper i2c_hid_acpi amd_sfh i2c_hid hid serio_raw nvme_core cec=
+ i2c_piix4 r8169 i2c_smbus usb_common crc16 i2c_designware_platform i2c_de=
+signware_core
+[    T378] ---[ end trace 0000000000000000 ]---
+
+The result of this is that my wireless card doesn't work. The patch
+above fixes the issue.
+
+Bert Karwatzki
 
