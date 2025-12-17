@@ -1,156 +1,109 @@
-Return-Path: <linux-wireless+bounces-29837-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-29838-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 63FF6CC7F4E
-	for <lists+linux-wireless@lfdr.de>; Wed, 17 Dec 2025 14:49:42 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id B335ACC7CAD
+	for <lists+linux-wireless@lfdr.de>; Wed, 17 Dec 2025 14:20:30 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 8A37D306B6E9
-	for <lists+linux-wireless@lfdr.de>; Wed, 17 Dec 2025 13:46:15 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 590C6308A950
+	for <lists+linux-wireless@lfdr.de>; Wed, 17 Dec 2025 13:15:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A00D52868AD;
-	Wed, 17 Dec 2025 12:56:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4EC0334F27B;
+	Wed, 17 Dec 2025 13:06:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="osvYTbGD";
-	dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b="RWLUF4hL"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="W3Z8mZkc"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4310C33D500
-	for <linux-wireless@vger.kernel.org>; Wed, 17 Dec 2025 12:56:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DA9EA34BA3B;
+	Wed, 17 Dec 2025 13:06:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765976219; cv=none; b=aRJtiD5pNhlw3SwKsLcgCdeosWbkv1byXuAg6Mn8geU2b1uia+2TueFnv0zjC/nlvZ/JxD3mar+0yNFgRF/Ijs9vdSde/89O1p0ByBO2JWW0bsIl28uXZNqBPld3weEjwrttoFjrN5tF24CvVHdlAtiGvoKi60LiODBdyi07ByQ=
+	t=1765976766; cv=none; b=nR8KjEicr84CLiS1u4UtylGqUkEnO3+R4rZaYjLyzZTqgQZwO7U/DvWazaB3R5WZC3gIlfDAfiNcv5frnMWss1PRTdfp4xqexx/XqH/8rr0nF0fWGU4AMnzCrHrTxxz6b8HUQZWeDwksJz6IqEPxy9yPgw6TR1JkrhfsS9Cgkfk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765976219; c=relaxed/simple;
-	bh=L9BDz9z47G6lKG/Vwunk88nwpahY36vzfB45Wh3dYkw=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=Li3/TR6ID4kIAc4qxPnE0CAkweJRpyh7j6J66Du76lEDX7CXLwjZ1l7zrgDugBTie27yTz5keAl6ukXBUjD2HBypvcroFOQHllj7YW4Yz/C1pJWQt5TpXwH+/0yw7fFkrsWX593UcTo5xiEFdaq6N/O3t3GHqtTZdkqxJNAnQ5o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=osvYTbGD; dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b=RWLUF4hL; arc=none smtp.client-ip=205.220.168.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
-Received: from pps.filterd (m0279865.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 5BHCL9UC2675128
-	for <linux-wireless@vger.kernel.org>; Wed, 17 Dec 2025 12:56:57 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
-	cc:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
-	pvo6Cizk5EUSn33xSF/fCZ+HVksEktFzfs/Oq8Dk7UE=; b=osvYTbGDES5SRSz7
-	N/vLk7xQ1HPjKBINmZeTm2UCBQZTltYUX+GVqBqzOCqjLXFlNdn3iS6kWVUEEn7v
-	kRSFmCbaGROv9ET1x5sV5BhuWCEu2PK2ITu7Q/Vdnae8cPbpnOaz8z4Aks8rfkTn
-	meoKVAOt+gOpClkSLZL+cl+xamWFMf1MKO13w2zrhpiCvpn2GZeVRP1xWRV4dOFf
-	PcNt3Z2/0uayRKADiaeAA0Y750mp3GsisKozWN0RB2TBWUOuvFDMThZwg8Ppo8AJ
-	wZOV0/MXgWVVfTI5Pxq/lMV8FGXdqpzCTHTtEDJJhipQGnKTozh73CvECTGkLaIF
-	S0t6hg==
-Received: from mail-pl1-f197.google.com (mail-pl1-f197.google.com [209.85.214.197])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4b3myj1mum-1
-	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
-	for <linux-wireless@vger.kernel.org>; Wed, 17 Dec 2025 12:56:57 +0000 (GMT)
-Received: by mail-pl1-f197.google.com with SMTP id d9443c01a7336-2a13be531b2so37567555ad.2
-        for <linux-wireless@vger.kernel.org>; Wed, 17 Dec 2025 04:56:57 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=oss.qualcomm.com; s=google; t=1765976217; x=1766581017; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=pvo6Cizk5EUSn33xSF/fCZ+HVksEktFzfs/Oq8Dk7UE=;
-        b=RWLUF4hLcHLunUvcge/xg5bt7UbqEVrLQaUA+U1DaO0uGdy67VburHO07Z633FEEq7
-         Iu8/TdRvn9oLW4cD/qZq1sW8fISpRoTSpJQ0ClP7UMpPdRE5v9FH7roikyJ2ChttWub7
-         xJm/uJVtWiLSeenVDwMS+5fv4Ftncz2Nak/iESnawf3DrC++qxEjGvyjyPFf2Vs6mJpD
-         e2GkzT+dObcobBdTh6NTYwLw0ge7UnVe3L3VOuQ5WmNCeMRyIQT8Bvq3rJksKM/TG3uA
-         2ELrnDom5NoX+ntEBObYrpOWE1cGUKE39dXwJxiMxrWZ3DaWF0+kztCnTa7n+Mljxr4h
-         1AIA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1765976217; x=1766581017;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=pvo6Cizk5EUSn33xSF/fCZ+HVksEktFzfs/Oq8Dk7UE=;
-        b=IxGzop6SmdyZO5keNc14rH0nqrNLoaHsPQQpCWJTwQxR3IGrIi7+cwGabpU+cqoDAs
-         N0SITlo9kLGQvVE0WOoW1BLoFc5xgQ4GFomo4jzt/44i0CNMhuKVdPd2fWc7IeXRSEvq
-         +GCyRMhMo3qpfBAjGHXw927xne1JMT8Qn1L/ZCKK2d2BmO7n/d85b/kvJALlpPHvuX8q
-         cIHct8PsLJL+oW1an4teDJlZVzuxzZmIqFH6lqtjCSrLd2LWhw65yrxZKjPkzBcIDS7w
-         XknM5pFY2zZLFIONlIbh1lRFQh84yhDeJOs4Fhm7vBIEbH9FSNZxZGX2Y9pVJTaCu1PK
-         DeQA==
-X-Gm-Message-State: AOJu0YzPKLPpA+j6Si0j/GUtrMBXt63s8uSqsoUbgfxJLRM/8AO+AY91
-	MX7hgvbpYww6zA/FMTGTklW4vzRyxqSBcZkntDiDyqErfWen3FS+9x3PcrmvrZT6IGSNxFrtZVo
-	HdqLu2ZfpG+vSll1yICV0XMy4kADSrkppN6Ln/rQi3S3lFhwY7x0SWdSeWAgFqamJGgs4ug==
-X-Gm-Gg: AY/fxX67MfIXGJtwe51ui9oSNZGAKjJdfIl21sjxF4WNbHyV0dNSyKv1Ooq2fTn7fLB
-	rsZXNJVPAvQIpUiM14cI2FlBUw2oA7cg8Q+NLUL8OICJUkhHB5Vlz9xip+8oO/lYPyMFdrXX8JX
-	+I+SP5NmafMvskTmjec8W3Ox7EMFALFaD7RrAz+EWeymu0xVLeTEZ6tN318pij3dnLeFZaC6uxy
-	wWyy5g68zanJBHHFCUJZbViTpeqpryFQm3xvBGqBFn1BP24AapnFsuQNWbWG+dgB5D1cbmgMVZ/
-	eEdfw1YxJODxe3XPEw9L5PH3jDmZeJzOlXi6CUni8tnVXJ3PS+Prwoi4VYmKLpuBUGVCU5utc2i
-	SBlT1ath+adzwAWFAqxeGexy/Z9T50cBv+NyfSBcmX00aM517l5Q=
-X-Received: by 2002:a17:902:ea0c:b0:2a1:325b:2cba with SMTP id d9443c01a7336-2a1325b2e27mr67785735ad.53.1765976216524;
-        Wed, 17 Dec 2025 04:56:56 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IHzT3avEdYZxEyN9Zpoq4Q1UF1p2k2oALPt2iXnJlw3WLVeXAM7s1moIXioTtaDt+y2Q7ZPww==
-X-Received: by 2002:a17:902:ea0c:b0:2a1:325b:2cba with SMTP id d9443c01a7336-2a1325b2e27mr67785605ad.53.1765976215902;
-        Wed, 17 Dec 2025 04:56:55 -0800 (PST)
-Received: from [10.151.41.188] ([202.46.23.19])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-29eea01723bsm199757875ad.62.2025.12.17.04.56.54
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 17 Dec 2025 04:56:55 -0800 (PST)
-Message-ID: <49dc8567-d1af-4067-b0aa-5833414c61a0@oss.qualcomm.com>
-Date: Wed, 17 Dec 2025 18:26:52 +0530
+	s=arc-20240116; t=1765976766; c=relaxed/simple;
+	bh=GycZoFSVTVbrHlD1wd/rzxe+nBR0S43CqCvhbhMByDI=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=I/AZ+6kmb5uOXxOqm8ifFh0wetkwbmPr5NWXGsprcnCauQ/WQQ6dSUMgmDbKPw36yk5sc5n82cUO1gAhuW5XaxZGxhqt0vyNW2+60CzBr6TTpSjdQ2KZbwzllJIpbyaQY94rEOne1yelQ48FPjU0MKxPRcpcBd3XGqzREmcEFDs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=W3Z8mZkc; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E72A9C113D0;
+	Wed, 17 Dec 2025 13:06:04 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1765976765;
+	bh=GycZoFSVTVbrHlD1wd/rzxe+nBR0S43CqCvhbhMByDI=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=W3Z8mZkcIHD1VrOtUfS2a0Dr+sfZwyGqLdir5ssoWH7+/V85r4v7Spk1PVhMgP4ya
+	 jLJ8HnIhlHYiJKmN/BCzw47a6H0S/b+Qozkst832negKR4Bn2QwBxiOCMUW0gkrOrL
+	 CgmI+PAzJXClEOTj1e0gLeqBGrqjmNjOjDtT2HUY=
+Date: Wed, 17 Dec 2025 14:06:02 +0100
+From: Greg KH <gregkh@linuxfoundation.org>
+To: cjz <guagua210311@qq.com>
+Cc: linux-staging@vger.kernel.org, linux-wireless@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] rtl8723bs: Add kernel-doc comment for
+ rtw_reset_continual_io_error in rtw_io.c
+Message-ID: <2025121757-crowbar-junkman-a96a@gregkh>
+References: <tencent_BAB546E9C29DF17A0E3BCE8EAE1428D88206@qq.com>
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH RFC wireless-next 02/13] wifi: ieee80211: Add UHR
- (802.11bn) definitions
-To: Johannes Berg <johannes@sipsolutions.net>
-Cc: linux-wireless@vger.kernel.org
-References: <20251216062656.1738022-1-karthikeyan.kathirvel@oss.qualcomm.com>
- <20251216062656.1738022-3-karthikeyan.kathirvel@oss.qualcomm.com>
- <94411a1f601b3b4cbc09cb780c37df9013f3b6bb.camel@sipsolutions.net>
- <3b58cd19-d522-4df3-880a-13fc26ebc642@oss.qualcomm.com>
- <c74d5c2c9327b265ed6cb48ebfdad3f687a2fa71.camel@sipsolutions.net>
-Content-Language: en-US
-From: Karthikeyan Kathirvel <karthikeyan.kathirvel@oss.qualcomm.com>
-In-Reply-To: <c74d5c2c9327b265ed6cb48ebfdad3f687a2fa71.camel@sipsolutions.net>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUxMjE3MDEwMCBTYWx0ZWRfX/p06zDcgYcKx
- 1PW5ET6UswU1gUz1vu5Pu/vI2vnWys1aqcKuqwfU/z7+kIXm45b67HeKgcqz3SajMKLTAwi4iD2
- tgmxCmUeZwIlR8rKbUj5Oinchod3ETmG9jWc9DoABvd7EWscfPsYGgfyg4w1JIhJndg4sLeiAql
- 1Xw01DbGdR1jsvzpnYtz6l1L6B8AwWb3fHdRALrFZ7kj1Wg6UcQPsGg1HVKtRNwZRJsTIFEIKwr
- VvMG7fFIcZyCLiNxyeoDcKnYC55UycwzI6nA3oTPuFuq0+CSEEUWWS7xhcI5l87E+zDR18WkVCN
- JlGoPjCQ1vPZucVJEwlYm7tD/ztGPvkz4EqtBhI+0HnZGSvDo0QPCIKKtEXAidrizbcM8zBpmuv
- ApnvMPK284YJIzkLUe+yStOwovh3Hg==
-X-Proofpoint-ORIG-GUID: xXeFV3cTKXS0yZnYh6bCh0R_q-skcsL4
-X-Authority-Analysis: v=2.4 cv=CtOys34D c=1 sm=1 tr=0 ts=6942a899 cx=c_pps
- a=cmESyDAEBpBGqyK7t0alAg==:117 a=j4ogTh8yFefVWWEFDRgCtg==:17
- a=IkcTkHD0fZMA:10 a=wP3pNCr1ah4A:10 a=s4-Qcg_JpJYA:10
- a=VkNPw1HP01LnGYTKEx00:22 a=d-QtcCtjiyddJGp_kzUA:9 a=QEXdDO2ut3YA:10
- a=QYH75iMubAgA:10 a=1OuFwYUASf3TG4hYMiVC:22
-X-Proofpoint-GUID: xXeFV3cTKXS0yZnYh6bCh0R_q-skcsL4
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.9,FMLib:17.12.100.49
- definitions=2025-12-17_01,2025-12-16_05,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- adultscore=0 clxscore=1015 impostorscore=0 spamscore=0 phishscore=0
- priorityscore=1501 bulkscore=0 lowpriorityscore=0 suspectscore=0
- malwarescore=0 classifier=typeunknown authscore=0 authtc= authcc=
- route=outbound adjust=0 reason=mlx scancount=1 engine=8.22.0-2510240001
- definitions=main-2512170100
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <tencent_BAB546E9C29DF17A0E3BCE8EAE1428D88206@qq.com>
 
-
-
-On 12/17/2025 6:25 PM, Johannes Berg wrote:
-> On Wed, 2025-12-17 at 18:24 +0530, Karthikeyan Kathirvel wrote:
->>>
->> Sure, I will change it to hex format. Last bit mask is fine right it is
->> from B32 - B55, what is wrong here ?
+On Sun, Dec 14, 2025 at 02:16:59PM +0800, cjz wrote:
+> From: changjunzheng <guagua210311@qq.com>
 > 
-> You'd need GENMASK_ULL()
+> rtw_reset_continual_io_error lacks a standard kernel-doc comment and has an incorrect
+> parameter name (dvobjprive vs dvobj) in the existing comment, which causes gcc W=1
+> warning and reduces code readability.
 > 
-> johannes
-Oops Sorry, thanks for pointing out :)
+> This change replaces the non-standard comment with a complete English kernel-doc comment,
+> fixes the parameter name error, and keeps all functional logic unchanged.
+> 
+> Signed-off-by: changjunzheng <guagua210311@qq.com>
+> ---
+>  drivers/staging/rtl8723bs/core/rtw_io.c | 10 +++++++++-
+>  1 file changed, 9 insertions(+), 1 deletion(-)
+> 
+> diff --git a/drivers/staging/rtl8723bs/core/rtw_io.c b/drivers/staging/rtl8723bs/core/rtw_io.c
+> index fe9f94001eed..358a16b25a20 100644
+> --- a/drivers/staging/rtl8723bs/core/rtw_io.c
+> +++ b/drivers/staging/rtl8723bs/core/rtw_io.c
+> @@ -147,7 +147,15 @@ int rtw_inc_and_chk_continual_io_error(struct dvobj_priv *dvobj)
+>  	return false;
+>  }
+>  
+> -/* Set the continual_io_error of this @param dvobjprive to 0 */
+> +/**
+> + * rtw_reset_continual_io_error - Reset the continual IO error counter to zero
+> + * @dvobj: Pointer to the device object private data structure
+> + *
+> + * Atomically set the 'continual_io_error' atomic counter in the dvobj private data
+> + * structure to zero, resetting the state of consecutive IO error counting for the device.
+> + *
+> + * Return: None
+> + */
+>  void rtw_reset_continual_io_error(struct dvobj_priv *dvobj)
+>  {
+>  	atomic_set(&dvobj->continual_io_error, 0);
+> -- 
+> 2.43.0
+> 
 
-/KK
+None of the functions in this file are in kernel doc format, so why do
+it for just this one?  Does it get added to the kernel documentation
+output when it is generated?  If not, I wouldn't worry about it at all.
+
+
+Also, an atomic variable is a huge hint that maybe this function is
+doing something wrong, why does this need to be an atomic at all?
+
+thanks,
+
+greg k-h
 
