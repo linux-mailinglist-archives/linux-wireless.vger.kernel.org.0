@@ -1,86 +1,86 @@
-Return-Path: <linux-wireless+bounces-29830-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-29831-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 856D8CC747F
-	for <lists+linux-wireless@lfdr.de>; Wed, 17 Dec 2025 12:16:35 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2CA6BCC7417
+	for <lists+linux-wireless@lfdr.de>; Wed, 17 Dec 2025 12:11:33 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 9A97A30E9743
-	for <lists+linux-wireless@lfdr.de>; Wed, 17 Dec 2025 11:09:55 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id AFEA6304AB40
+	for <lists+linux-wireless@lfdr.de>; Wed, 17 Dec 2025 11:10:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 17C3033D4F0;
-	Wed, 17 Dec 2025 11:09:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 739C634847A;
+	Wed, 17 Dec 2025 11:09:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="zhYbuAzs"
+	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="oQzQ6cNJ"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-ej1-f48.google.com (mail-ej1-f48.google.com [209.85.218.48])
+Received: from mail-ed1-f48.google.com (mail-ed1-f48.google.com [209.85.208.48])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9527B342500
-	for <linux-wireless@vger.kernel.org>; Wed, 17 Dec 2025 11:09:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.48
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2D2D8341050
+	for <linux-wireless@vger.kernel.org>; Wed, 17 Dec 2025 11:09:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.48
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765969788; cv=none; b=RDddPxamOxf9EtCSjt0sX+UeFttQzjH4CQYJbIbGaLxX4tuCZdO1E6tQLTc75Hd50LlCQDw2Nbtzzyt1uy8dRehH9w6i2vlYks7owOsEpLfiBFjXFysKJ9o1YiETDKEn9wciEtKR1fhRBRU9HUIysj3UoLzCGOUSVbBUtiiOwBQ=
+	t=1765969790; cv=none; b=YiD78vFBJLDBsA35fKziI11fot4KIOHxpykJZ2rpCV3HRqR2ykxhLyArrlSAo0tfGlqrSvoPYBQmGt7RHTHEH1Q2OhBHkuOjrNwm9IR2xBf6QwrPFoZUFouSNaLzokG8K49dQ0xGgvFGeroe4Rcbe6kITTzAAu+RDnrYtuWcxI0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765969788; c=relaxed/simple;
-	bh=dkyXLuLg+7eYiSQma7cNLg4NKd9rhkvKdGkZMgOE4QY=;
+	s=arc-20240116; t=1765969790; c=relaxed/simple;
+	bh=nVg8/dPMXpd837fVnH+nSt0ymYJC3P/GUTRjjIQmYt4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=kDah3KRXw0jCiESKScEZmvB3EfH2Hx6D4DoIbNrR4pJurK1Ut4SQejpKcU7I6w5s30B0L7Cv7r8DM4KwopFjVj35ozBtXfat2KMKUratwjbVUnhNsrUAKputpxh1s0RsavnXn59xaJz7pnQeKsxqqvWc8IwnzTC/Ue16mGyZALw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=zhYbuAzs; arc=none smtp.client-ip=209.85.218.48
+	 MIME-Version:Content-Type; b=D9Q9o20HKSnUGYcaUDk/VsY0fa+1v8zR+9GMOAasEXega24MrQDsWV78Rr2QJJpCGCaMQdO1OEvTmKsTNRCJOK9DZjvP5CvUX+R+5pJGKqnwyJNWEqI4fTktCdkS8daPRjLD8NWdOJOAg0htw/mPPQ6ARIBOQ5AX0j7xYrttwHE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=oQzQ6cNJ; arc=none smtp.client-ip=209.85.208.48
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
-Received: by mail-ej1-f48.google.com with SMTP id a640c23a62f3a-b8018eba13cso20316466b.1
-        for <linux-wireless@vger.kernel.org>; Wed, 17 Dec 2025 03:09:45 -0800 (PST)
+Received: by mail-ed1-f48.google.com with SMTP id 4fb4d7f45d1cf-6492e78ce07so7353945a12.3
+        for <linux-wireless@vger.kernel.org>; Wed, 17 Dec 2025 03:09:46 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1765969784; x=1766574584; darn=vger.kernel.org;
+        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1765969785; x=1766574585; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=QVXfFEnyomZ7n1+faa+96lpi1G7Z02nuAcgJTrKE1/w=;
-        b=zhYbuAzs8SLIplAIzXqbO80XdbI7uy37F61fvSV158Hz1N7WuU3ldMFFLjpFl+Rpmc
-         jHf2V90JExRXfgc/xK561V/76sin0QVkQ9iMlVKkThl60scEC6sgkyx7YEoTEwjolBwo
-         tl2VouMR6+6y+akf4SO7MdbE98VEG7akylLXOw3WLAebMbIzWXA0SRRqaJw6+Xxvp9LU
-         Nn/aGQQwOETn0o3d1rOKfKCxnvIujTaUPOh33dmrRVN4s8zCWZnKcDlry+6jZz5paaHb
-         xg0kNRNhhaWnn3U9z8fFnjQh9me2DUGN7ufmQZTkoKQkIFOjEHx+ssePHuHcI+REamvt
-         +9VQ==
+        bh=p2SwmfjF77+ak5KfsorzokdI/DV+t+DAcXlk3P8v6RY=;
+        b=oQzQ6cNJ1SSixAVxQ0zuOHOKeR+QiTCMfvlUtxNQs7eYV3gjFFxxNxj327I3V9iAdc
+         mWAOu1xfqKiUxJRncTsz6NbwvKxXHfMoSmwAJOT0vkrK1ewneUmsrPp7Q72n2eLYKJ0L
+         46aALrm0d1i3RGOulqFdrZ/MpRKetN6bOqtOMgyESxtxzERlTJegwYaaTAz9aEAESm+m
+         PJ86L/zyuAB3G3ZRabrN9oN883VGgxZJ6fs+ukA3icPn+aqHuK7MROwfm5IXvNn9o9Cq
+         Bti7mAth70NntrqiTAuxqSPRjVoQOj2VpJYILkdNbbKkjyxcuXkvIY3qEv/skU5Lt7dK
+         ektg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1765969784; x=1766574584;
+        d=1e100.net; s=20230601; t=1765969785; x=1766574585;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to;
-        bh=QVXfFEnyomZ7n1+faa+96lpi1G7Z02nuAcgJTrKE1/w=;
-        b=Mc4VCy6MCHV1CAk6iXHMLA1z90jV37BcrHnPc6pW6aOojgs9okwBXi55NO1dOmLISp
-         tPAmUVDmNckn0iC9bcC/vRp7OoLDHV1zha/aA2dBY8/bWo66FFsefGOZACtwQ1d6NF2C
-         K5hVxqFapDI+mATcDHXL4o7RRtPf/l7SyTc9Ye4MMA0OqgC2dD7YdEZ3oZ+3mtNL5kuR
-         IKS94+g7XfuWvtJfdYAZCAsnahftxDJLjgsFAA06ed4I/0zJUwu5m5b8o/idnZe+rogR
-         xbL7Qh8tjHqT9FuBD1sYKa24V/RcbztHZ944tv0NS+Og7Mb3v5tQeeJVAbJpR3qlsXKX
-         d+Cg==
-X-Forwarded-Encrypted: i=1; AJvYcCXiYW5qR1Gio8x2HfjISFsnnhCO2KZlN3CE2axbvtNcx4KGqxv59hG1HJ/G/XRBQiIxm9uxDXfc4th8eAySiw==@vger.kernel.org
-X-Gm-Message-State: AOJu0YyUnn/mZ9rgYfYztRMPA/hgKPoJX4tvSkG6XgzBK6IBza6uvgwJ
-	p0Dj8bUS4E7VkT+DK17iF5KQxN9W+c4HBHXgDMhPZYZKPlxi2uUAl4wP5mO6lv5hjYkYTwC2PZg
-	J9fLh
-X-Gm-Gg: AY/fxX6U/2vvrq3Ky6IwHZ+X1tzBQZ1s0jrJtgo12mvvALvkc6u2cct8rHgfQla7wUu
-	eS4Pe/ckokqNO4dcdEfC7FZcGut3S/V8P15cpb9aAkUUdoT0r0PZ4ujDVPCzGqFooS43RUZEUJ3
-	k5+NmnDNz4dmQmc4+XeTtCFN8TA991rBEqT4V5o9wuecfsqPXMD0QUGXpNYjI5vdeJUqQvmB0Vw
-	4puyxyxyNPrVPcnMj1Osi6Y++irEtdABG6d6iP4ILlrr0u5Ed+8OrdqIpdicgzdTV46vxarvXb4
-	fkLqIjYREFSPknvKFeEzxClYQOQymg6Zyk1SLXEaWrhzgFVUQyUVRbfLJDVnKljD7SVnjoTDrI1
-	LFaNEeTXO8j3qEYOtx9d9e0PYC1ny90dsLKpredkHyC2D1INNXP4YFZz+cN3/RwGW+ZE6CmaZQI
-	BEzaLxLHYcsvILZNHJ
-X-Google-Smtp-Source: AGHT+IG02+mlmUp75Y8aN15AB3fqyEtjlYTbsKkWc4VXMQLd8E1R2A0XY8IFh9I/XNFQRNEDDaYuBw==
-X-Received: by 2002:a17:907:6e9f:b0:b73:6c97:af49 with SMTP id a640c23a62f3a-b7d23a972c5mr1808467566b.30.1765969783886;
-        Wed, 17 Dec 2025 03:09:43 -0800 (PST)
+        bh=p2SwmfjF77+ak5KfsorzokdI/DV+t+DAcXlk3P8v6RY=;
+        b=pYMdmFgSI2Ik4fifWMrHI2MfUT29syztRU22FqANPOoeSt957mDmkUYe8u+Dhaci+d
+         iuaMCqfXuJ6buk5bZbi7bPuQqCo0FXchR3ehMZVC+5HTULliayI90vqZvT8vjqvL+O8G
+         mi98HvYKSbNcuMKOVUJRvV0dadkNAiTgHPx0y6riGMa/Jl0AI29OYLS2p2rpbWyvo4GT
+         GsZ1xoFO1XyCacAtzHXqxN4njs7+Dl2jUNVWiz2ywSkTW3Qnlao4S0BRha6p96pODncG
+         Sn9RuKvJLKKN6dmdn9IY6+hReYmIrkUlBr+do9NgU1dwlEg3mX2jmhj0kro9m6EqsbIR
+         aZzQ==
+X-Forwarded-Encrypted: i=1; AJvYcCXsjPBXg8QqhqMcJ2WlV3uqHSlAQ804hJ+RHtY9cEVynNB1CsMW/aUE3WgejT2GncJWSQBZ8U03D+EdlyVzeA==@vger.kernel.org
+X-Gm-Message-State: AOJu0YzEvdrQOxzibXvlwT57UvxgPa2o9F4K28L+EzhAMsdYsUphEZuv
+	KKNFIJX5fUpEveKcuic3+6fQ3cCOcYp4tIyQ8SYjKV/AF3NYVKkbMNbbhQIh9GoAYQm2UwV58Vg
+	LRiPK
+X-Gm-Gg: AY/fxX6I44ZMCyiKB1mqC3O0+fvFX6YX9QuUo0Mvh0p1BDa312qIZp+w+wdzHGV9i3w
+	eOOad91TZ3cexKvJxA61cW4ee5fDxsZol1ypdM48s2jq7slx7bb5w+dqwyHPAMjF4Q6K13rvbz0
+	+SZj/OIZionsKzBhKaEAS57KWTgEVLysJT/5fY7T64l9rNij3PgqkAp7uPyAVciD//6zLRzmeAM
+	X8bV3BCnrwRx2HEy5UEAQDlYh5Ai6pDal/dk9PIFcfBzZGIBn9VKszQn+8ZlAHRaMdo6enisapU
+	SHo70fdIPXoNZgxz0WoCRqjNUWvKECgM19iYAUMDpNM5A6qeVQ1YPSEzGHooi1XdlqISNWvoHHO
+	AUygGxuartSAcvc4z0ZseVh8HE9ZQk3VofO3VaSg6N4zQB8xWh/0v+P7nmV3MtSrwymi8mGWKE6
+	Yx+L776Wwhvoq0E50U
+X-Google-Smtp-Source: AGHT+IFplUWO89lh2aiL5iam7o05siy3yB+bol9YYYWazAW0/qp1x2HCivhkkPaRZ9Jt16WUujSU5w==
+X-Received: by 2002:a17:907:3f88:b0:b73:870f:fa37 with SMTP id a640c23a62f3a-b7d2376d4abmr1839041166b.17.1765969785523;
+        Wed, 17 Dec 2025 03:09:45 -0800 (PST)
 Received: from localhost ([2a02:8071:b783:6940:1d24:d58d:2b65:c291])
-        by smtp.gmail.com with UTF8SMTPSA id a640c23a62f3a-b7cfa2ebafcsm1939736266b.28.2025.12.17.03.09.43
+        by smtp.gmail.com with UTF8SMTPSA id 4fb4d7f45d1cf-64b3f4ea67esm2187104a12.7.2025.12.17.03.09.44
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 17 Dec 2025 03:09:43 -0800 (PST)
+        Wed, 17 Dec 2025 03:09:45 -0800 (PST)
 From: =?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig@baylibre.com>
 To: Ulf Hansson <ulf.hansson@linaro.org>
 Cc: linux-mmc@vger.kernel.org,
 	linux-wireless@vger.kernel.org,
 	linux-kernel@vger.kernel.org
-Subject: [PATCH v1 2/4] wifi: rsi: sdio: Reduce use of #ifdef for CONFIG_PM
-Date: Wed, 17 Dec 2025 12:09:24 +0100
-Message-ID:  <f291cca2741f6ac994b2bde1fb9d21194fec4d3e.1765968841.git.ukleinek@kernel.org>
+Subject: [PATCH v1 3/4] wifi: rsi: sdio: Migrate to use sdio specific shutdown function
+Date: Wed, 17 Dec 2025 12:09:25 +0100
+Message-ID:  <53a46d554faed2f28ac0c0e981ae12badf020cab.1765968841.git.ukleinek@kernel.org>
 X-Mailer: git-send-email 2.47.3
 In-Reply-To: <cover.1765968841.git.ukleinek@kernel.org>
 References: <cover.1765968841.git.ukleinek@kernel.org>
@@ -91,55 +91,45 @@ List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1529; i=u.kleine-koenig@baylibre.com; h=from:subject:message-id; bh=dkyXLuLg+7eYiSQma7cNLg4NKd9rhkvKdGkZMgOE4QY=; b=owEBbQGS/pANAwAKAY+A+1h9Ev5OAcsmYgBpQo9nGdmxPZIIu7N/pwilj9mRvyvv5BXVkckRa 2AS6RJGwcKJATMEAAEKAB0WIQQ/gaxpOnoeWYmt/tOPgPtYfRL+TgUCaUKPZwAKCRCPgPtYfRL+ Tj7vB/4h44YpCoZWZ3nsb90FGI3e04zfgPviKqmXaBoofMxTHX8kvhuiVW6F5dF0uaw1lqnOOeP +FFPqthr5lT396O8SnCeY2/m9Po3sMCQc8L8z42wwrWi4+1xzhvGZIvFrpCJBJuQ4TC1o7KplNu Lk2D+CWBFdTnjn+cJAk4YK7y3Tkp+CF9V+kkvtgUlGkY0qdK53shaKTQ/D/B4ngV2g1FAlm9FKY T9ZwZD2mYwEZ4v9Zu7/KBVznsaIOrY+76NGS3SBqWPyLzviCui/APNfw5bEj0/6roQUECMWMHzC w61S+QQ/YpQ77CdfBgm3FPFPPx5KKNGUJoB4/OLbHuIKOWAF
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1313; i=u.kleine-koenig@baylibre.com; h=from:subject:message-id; bh=nVg8/dPMXpd837fVnH+nSt0ymYJC3P/GUTRjjIQmYt4=; b=owEBbQGS/pANAwAKAY+A+1h9Ev5OAcsmYgBpQo9p2+yijRwC6XFA9QuHYJCtpCFALJmLX5G9w /koL3Kvs9qJATMEAAEKAB0WIQQ/gaxpOnoeWYmt/tOPgPtYfRL+TgUCaUKPaQAKCRCPgPtYfRL+ ThenB/9LkYKkq3huDqcvTI5BmhmEVUvbrvh56Hn+9R8lMBNooYjjmlGSqUVH9MicnLk1HUj/pun iq1NhUx18isDq9UrUdoMs0lDPJYBoneQlAp6Yrk6tf0bgAJ+q6GwvZgbwsCcM2e9L+Tl3unSfvx 6qnbfs6OOI3YJkJ8YYCralNhNIDSXVqXcMmgxmwNaQla+SCC/BfybpkDszHfuUkfCEioI0LYyUk 7p7I15Udpx2NBk1IVUQ215tRcW/ef38DHV5NWV7hCob+CtmUN8MtWRKLyL6GmRlNKGlc6/I4OYy 6BSKzrkSnsaIPLSoDfp6+I5yPTRtEapHphn1RVVpN7/w5Rmx
 X-Developer-Key: i=u.kleine-koenig@baylibre.com; a=openpgp; fpr=0D2511F322BFAB1C1580266BE2DCDD9132669BD6
 Content-Transfer-Encoding: 8bit
 
-This drops two #ifdefs (which is good because they are ugly) without
-changing semantics. This also improves compile coverage because all the
-code in the first #ifdef block is now compiled even for configurations
-without CONFIG_PM (and then thrown away).
+This saves a cast in the driver. The motivation is stop using the callback
+.shutdown in rsi_driver.drv to make it possible to drop that.
 
 Signed-off-by: Uwe Kleine-König <u.kleine-koenig@baylibre.com>
 ---
- drivers/net/wireless/rsi/rsi_91x_sdio.c | 8 ++------
- 1 file changed, 2 insertions(+), 6 deletions(-)
+ drivers/net/wireless/rsi/rsi_91x_sdio.c | 5 ++---
+ 1 file changed, 2 insertions(+), 3 deletions(-)
 
 diff --git a/drivers/net/wireless/rsi/rsi_91x_sdio.c b/drivers/net/wireless/rsi/rsi_91x_sdio.c
-index 1e578533e473..c2b2d09b616f 100644
+index c2b2d09b616f..a1376847ac85 100644
 --- a/drivers/net/wireless/rsi/rsi_91x_sdio.c
 +++ b/drivers/net/wireless/rsi/rsi_91x_sdio.c
-@@ -1243,7 +1243,6 @@ static void rsi_disconnect(struct sdio_func *pfunction)
- 
+@@ -1442,9 +1442,8 @@ static int rsi_thaw(struct device *dev)
+ 	return 0;
  }
  
--#ifdef CONFIG_PM
- static int rsi_set_sdio_pm_caps(struct rsi_hw *adapter)
+-static void rsi_shutdown(struct device *dev)
++static void rsi_shutdown(struct sdio_func *pfunction)
  {
- 	struct rsi_91x_sdiodev *dev = adapter->rsi_dev;
-@@ -1499,7 +1498,6 @@ static const struct dev_pm_ops rsi_pm_ops = {
- 	.thaw = rsi_thaw,
- 	.restore = rsi_restore,
- };
--#endif
- 
- static const struct sdio_device_id rsi_dev_table[] =  {
- 	{ SDIO_DEVICE(SDIO_VENDOR_ID_RSI, SDIO_DEVICE_ID_RSI_9113) },
-@@ -1512,12 +1510,10 @@ static struct sdio_driver rsi_driver = {
+-	struct sdio_func *pfunction = dev_to_sdio_func(dev);
+ 	struct rsi_hw *adapter = sdio_get_drvdata(pfunction);
+ 	struct rsi_91x_sdiodev *sdev = adapter->rsi_dev;
+ 	struct ieee80211_hw *hw = adapter->hw;
+@@ -1509,10 +1508,10 @@ static struct sdio_driver rsi_driver = {
+ 	.name       = "RSI-SDIO WLAN",
  	.probe      = rsi_probe,
  	.remove     = rsi_disconnect,
++	.shutdown   = pm_ptr(rsi_shutdown),
  	.id_table   = rsi_dev_table,
--#ifdef CONFIG_PM
  	.drv = {
--		.pm = &rsi_pm_ops,
--		.shutdown   = rsi_shutdown,
-+		.pm = pm_ptr(&rsi_pm_ops),
-+		.shutdown = pm_ptr(rsi_shutdown),
+ 		.pm = pm_ptr(&rsi_pm_ops),
+-		.shutdown = pm_ptr(rsi_shutdown),
  	}
--#endif
  };
  module_sdio_driver(rsi_driver);
- 
 -- 
 2.47.3
 
