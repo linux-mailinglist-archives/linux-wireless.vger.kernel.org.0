@@ -1,141 +1,164 @@
-Return-Path: <linux-wireless+bounces-29827-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-29828-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id C574BCC65A9
-	for <lists+linux-wireless@lfdr.de>; Wed, 17 Dec 2025 08:27:08 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id C87E2CC6F64
+	for <lists+linux-wireless@lfdr.de>; Wed, 17 Dec 2025 11:05:48 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 71E2230124E4
-	for <lists+linux-wireless@lfdr.de>; Wed, 17 Dec 2025 07:27:07 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 18BB53019F81
+	for <lists+linux-wireless@lfdr.de>; Wed, 17 Dec 2025 10:05:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D052F274FD3;
-	Wed, 17 Dec 2025 07:27:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 88579346E62;
+	Wed, 17 Dec 2025 10:05:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=realtek.com header.i=@realtek.com header.b="IgftKyhj"
+	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="YdE3QKBE";
+	dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b="K6OtC42K"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8A947244675
-	for <linux-wireless@vger.kernel.org>; Wed, 17 Dec 2025 07:27:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=211.75.126.72
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 01E3834AB1B
+	for <linux-wireless@vger.kernel.org>; Wed, 17 Dec 2025 10:05:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765956426; cv=none; b=bkYnZ649F7YZxT2fHHe1OEU6Px2iL3DUWlZNEXPlMNnG4rUzTUds3B3xUbeTyctUCMQbHaRLMfPMEsS9sd9bsVz3TakObQLwStKFGr7L9vHpw2Ko09/QvFegtfKzbmYPFslvYAOE7Dpw+vD7H5AHkg87RJNuhn+0Qohm1xdaYRw=
+	t=1765965942; cv=none; b=VCEuf+0VXWe/m+UpdfLyeqiV2yd36x02oBZwyj44hXgv8YXOQw10tU7fCZV3kDqKvYHeYpfLtZdGWshofuN1ge5WL5RNObfK/WEGb9B5RST/uW2fU7AQ4advbiF9z0WKhvI5IbO33XuBA6pFTVNta1F0UrXYT2OJjRuwpqh2iBY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765956426; c=relaxed/simple;
-	bh=619vzv00/HK/OzTqk3zXMUKOUGrtjgX5qvtSIYObHLk=;
-	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=bX7AmqgH8NVJusdWmv1Perpv+s/+fGknT7BiKujiVCw7IbQoC3vEq4NNT3mWopP+SH0ssvBm2/R7u2Y3r7yJDS+iHLC/HPk1GRysP3LHWxNgQIl4ScIMojXssXsQdd7Jt44d4FpDGfIp3Bh9hYT/N0SEJuEb4BD/j96mnTJFAV0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com; spf=pass smtp.mailfrom=realtek.com; dkim=pass (2048-bit key) header.d=realtek.com header.i=@realtek.com header.b=IgftKyhj; arc=none smtp.client-ip=211.75.126.72
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=realtek.com
-X-SpamFilter-By: ArmorX SpamTrap 5.80 with qID 5BH7Qpi561360982, This message is accepted by code: ctloc85258
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=realtek.com; s=dkim;
-	t=1765956411; bh=NEGu7lnaZzhpb6Cp6z0PiO2TrLbMGh3eGjocJ55+Bb4=;
-	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:
-	 Content-Transfer-Encoding:Content-Type;
-	b=IgftKyhjIf1P3txWyjqIJ1SPWGoc6z68sBtLLSu8yB28TPHprpAzU7bB+Y9JPYyd3
-	 xobeHwE9Ang4naVOOoHIZp6Kbj5J9EBy3lWg6FaKvAlMk9hTxohpzNcqc2I3samcsC
-	 AsRMtpyM45xnPD+L9S6s6bKSPmvdMbzKfHMqeUxddj6aBYgqJOXKHr9bPgAM2MLLP9
-	 p3twOVk0bne1JIEx/Kf2p7WCvepwS5zkrb7pOkR9VBkVA2MJy89gcdxxEaZkYMnRPo
-	 Kw2JsjPFSBqlrNbM6IH8bl8ZI0y7ikajgk0Oy6Cj9tq6TnmmQppkF+uUUini9hfDjb
-	 iPxbKwAx3akzg==
-Received: from mail.realtek.com (rtkexhmbs02.realtek.com.tw[172.21.6.41])
-	by rtits2.realtek.com.tw (8.15.2/3.21/5.94) with ESMTPS id 5BH7Qpi561360982
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Wed, 17 Dec 2025 15:26:51 +0800
-Received: from RTKEXHMBS06.realtek.com.tw (10.21.1.56) by
- RTKEXHMBS02.realtek.com.tw (172.21.6.41) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1748.10; Wed, 17 Dec 2025 15:26:52 +0800
-Received: from RTKEXHMBS03.realtek.com.tw (10.21.1.53) by
- RTKEXHMBS06.realtek.com.tw (10.21.1.56) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.27; Wed, 17 Dec 2025 15:26:51 +0800
-Received: from [127.0.1.1] (172.21.40.75) by RTKEXHMBS03.realtek.com.tw
- (10.21.1.53) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1748.10 via Frontend
- Transport; Wed, 17 Dec 2025 15:26:51 +0800
-From: Ping-Ke Shih <pkshih@realtek.com>
-To: <linux-wireless@vger.kernel.org>
-CC: <pchelkin@ispras.ru>
-Subject: [PATCH rtw-next] wifi: rtw89: correct use sequence of driver_data in skb->info
-Date: Wed, 17 Dec 2025 15:26:46 +0800
-Message-ID: <20251217072646.43209-1-pkshih@realtek.com>
-X-Mailer: git-send-email 2.25.1
+	s=arc-20240116; t=1765965942; c=relaxed/simple;
+	bh=f1qCjRx8D0CmvVA41ZgcMgNV5AgdcAse3ZuAJWDTYRE=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=NYQK7aV6HomtaGrCsGjxA6/zxcYB1De1VIgjBuSmBCR/heUUXQ3g32z9Z3jtMt0BvUItBHVC1vf6iU6FFkkvFJ05XwRoVIcsIAaq6PDg2SNrC+xgWnTrAsnAkymX4YHR1MR4MJ9uy7TnTdUig2QKFxI8ZXTBEQ0PHjZSkjf9C9w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=YdE3QKBE; dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b=K6OtC42K; arc=none smtp.client-ip=205.220.168.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
+Received: from pps.filterd (m0279866.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 5BH3F13B869291
+	for <linux-wireless@vger.kernel.org>; Wed, 17 Dec 2025 10:05:38 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
+	cc:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
+	ql3B6eIngyYQ3p88fa9kSZYb4RV9fdSUXwNMcosHnBE=; b=YdE3QKBEGqgb5fR0
+	8bjFFfgWUy/2JmYxCoYTRQHPIgKHm5gHYwagYgxlgtmYehSTJXCSkPZzUztcwLRp
+	BwycFczHaw+DMc743clJlyUlm2aV5mVyogZnXxMTGFjwjt9Sako4887CXGTaNjYr
+	4nJPw32rSwSFmWFWKHDUHMPFeHIzrYTM8EwkCUJB9e7y/usc8Ok8pnt3ihbfNDfj
+	DqXsbrMBR+JXc6Yd8GkCFX2WNqxB4GbYDbf+gouOpglh5+x7la3OFWVXW9XHke1R
+	xJ6oE8rCmhtnuJg1b51+khK1BTCjryvycNWLdT6hwIPF97HkqDiK2KOp85E4RmBG
+	xJphtA==
+Received: from mail-pf1-f198.google.com (mail-pf1-f198.google.com [209.85.210.198])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4b3fj1t09y-1
+	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
+	for <linux-wireless@vger.kernel.org>; Wed, 17 Dec 2025 10:05:37 +0000 (GMT)
+Received: by mail-pf1-f198.google.com with SMTP id d2e1a72fcca58-7b90740249dso9369327b3a.0
+        for <linux-wireless@vger.kernel.org>; Wed, 17 Dec 2025 02:05:37 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=oss.qualcomm.com; s=google; t=1765965937; x=1766570737; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=ql3B6eIngyYQ3p88fa9kSZYb4RV9fdSUXwNMcosHnBE=;
+        b=K6OtC42KiMAs5gRmUbhZOOpHKoERgpJz7Kkhg8eRH1nGzShKiBAb0NN4kBuuWeuSDs
+         oRasS1A/Tepp1zDkXeB9FIsipQGXpZeEGilO4TkqCn5uSuplr0KEiXXf1cyTDB649QTt
+         i0KsdRwnMAs9Tuc99VA7rRCtp7sLl/wPbGLBeBZ4uS8W5M/nNcQcalt+FOKH3PWny1yf
+         Z2rM2nLOCl8rE0OkaAlRS75YdIh4xHZLcnbcIstNaK3sRcJQn1nBa51FBujwDE+5pyPz
+         9MUXLhqs4PwLwavX3qDtZhv9XbIXmr8qYUOWBxx5E0GLEr2qhVU/YeDh/+le12M1Jv7N
+         eX3Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1765965937; x=1766570737;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=ql3B6eIngyYQ3p88fa9kSZYb4RV9fdSUXwNMcosHnBE=;
+        b=mcAQLb7SbYx7pYxRHDlAKYeNeUz7uwd5ZBk3YFjuOoE/LGQ3omHCc3qp8hGc5Q+QJ3
+         q7YU5V9ze81Bs1wTLAn8E81EeUy/siHqzaNw3sBNh/94YHSqSbb23m38gwYPyc70ohWM
+         X/+4KPbFzMOaJLyxQ3KIUyjOgkTYVkolVjkc6vpZgg5z/t/Xud7+XGRwEzFQgdkUVmtP
+         yjtAj8DFsfRfHh/lAXwUm4b3JH/W0ySMLXldBWDO2pwb+mzU0BNBIHEu2WJDusWPnvvi
+         sqqln+OtTzqDznS/TS59TnhUXSt08nQbKKcflPBoR3En497ZVpgwSmUVtyaZb3RHjASE
+         2i3A==
+X-Gm-Message-State: AOJu0YxN7o5t4daJQVPfSNmW7Nc0uyP01udzspB7g1dYtmhrZ+8JH/d+
+	l/KYs04MRv0o3nPEwL8U4iUe8l58Zt1jWDKYJ12qBJGyF7kfWOJvRI5HloRi3uHZMPcHRva+wK3
+	QX75fYz/7K1XTRBiVULf4FgiIZWzq0RwPdwvkzfu6DrooVNPSQGitee5kSypCYNrsN9Q2FA==
+X-Gm-Gg: AY/fxX7+zEgAqZjnatcbqCB6j40BvJxILqTPDZBOPotS/Ql2zwwTAjqMDhMDMPYvUmW
+	b20czlwIznOsiag5M/JOSpVesSedLH+hb5LyWI6YI4mKcn0oKYXA+SHsWbepOvshzEc44KNQeer
+	0dvlWUViSlkhrJfyC3Fm2Nmj8rG4IsMBVf19gBjVaxNHtf4XoaUsS2rPhCOf2Ew9S/qhfCLIT6o
+	7b2sbsJW/6w7KXqM/T+a2A0syWlxB7dSKTB+4/4y7WVUxSDdFg9FNcPpTSeOvqbJuzkRvY3PIau
+	nuWqdcs7z2a+D3tQj7Onhone8oHIpeb9Xnphy58SuFSsUY5CbX/CZU8W2quirlqKqYXd3KaZaew
+	yc/xxPOhIdJV6WM73Th+8I9I6RxJufSeokl3Mb41ohSVDaw9gafs=
+X-Received: by 2002:a05:6a00:f88:b0:7ad:df61:e686 with SMTP id d2e1a72fcca58-7f66fddf683mr14536596b3a.16.1765965937310;
+        Wed, 17 Dec 2025 02:05:37 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IFzMkblHygabQCF5vnXe7LAfu7bXE2uhwJhO9D32fXuz6Nc8QbB49k6guEuUsQHtzMc+EcszQ==
+X-Received: by 2002:a05:6a00:f88:b0:7ad:df61:e686 with SMTP id d2e1a72fcca58-7f66fddf683mr14536571b3a.16.1765965936757;
+        Wed, 17 Dec 2025 02:05:36 -0800 (PST)
+Received: from [10.151.41.188] ([202.46.23.19])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-7fcb8742a33sm2242989b3a.1.2025.12.17.02.05.35
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 17 Dec 2025 02:05:36 -0800 (PST)
+Message-ID: <910a50de-b00c-4bf6-9682-1c73826635d9@oss.qualcomm.com>
+Date: Wed, 17 Dec 2025 15:35:33 +0530
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH RFC wireless-next 00/13] wifi: ieee80211/cfg80211: Add UHR
+ (802.11bn) Capability and Operation support
+To: Johannes Berg <johannes@sipsolutions.net>
+Cc: linux-wireless@vger.kernel.org
+References: <20251216062656.1738022-1-karthikeyan.kathirvel@oss.qualcomm.com>
+ <07cab823d7695b20aa7ddb1b3698e5eb88ff2c9c.camel@sipsolutions.net>
+ <feb431cdbe7581e4e961f2033606bb6fe4d90199.camel@sipsolutions.net>
+Content-Language: en-US
+From: Karthikeyan Kathirvel <karthikeyan.kathirvel@oss.qualcomm.com>
+In-Reply-To: <feb431cdbe7581e4e961f2033606bb6fe4d90199.camel@sipsolutions.net>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUxMjE3MDA4MCBTYWx0ZWRfX2keBoov5ImkK
+ W2bVmXhhB09GRJmKMuuwvVII1By7WRbYfSYO/b23zVd3MygICaE93ReMD1/bL+fZ6Ve1NTpBQcN
+ jOyd8XkNbqmL2yZJplufrZttvM2tW/RFBPyP1zPC0S2irWSJnJzXC+hpLYNLF2m5J58yzfIzIGD
+ 0CXxqm9heBdkUOps6LSGPC21UXaUyvgb2YJ+mXAo/a1kzv7Y/IfexfxS3gkyP0KGCoYDlHmlK/z
+ eXBZkwg/zaG7inYN60pQSsXUU9ao6YpUiIfzhJ/lkVLlioIWUNrFQL2UVGUoa6XIpy57hJb2CxS
+ 6Z2au9nNmrIVs3vUkEHAZZO2SEr74QvBYPCWdmi/iPR/6rH/HTTXne9g/KmNRRteS1maQ89QGvs
+ p5YRaxjGyIwLCZh9XZ+7u4y4J+vdHA==
+X-Proofpoint-ORIG-GUID: 63CFe9UDdV1ajY8O_d4NjNLuGO0EngLt
+X-Proofpoint-GUID: 63CFe9UDdV1ajY8O_d4NjNLuGO0EngLt
+X-Authority-Analysis: v=2.4 cv=edgwvrEH c=1 sm=1 tr=0 ts=69428072 cx=c_pps
+ a=m5Vt/hrsBiPMCU0y4gIsQw==:117 a=j4ogTh8yFefVWWEFDRgCtg==:17
+ a=IkcTkHD0fZMA:10 a=wP3pNCr1ah4A:10 a=s4-Qcg_JpJYA:10
+ a=VkNPw1HP01LnGYTKEx00:22 a=5NhkCEYWh_9PesseEUkA:9 a=QEXdDO2ut3YA:10
+ a=IoOABgeZipijB_acs4fv:22
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.9,FMLib:17.12.100.49
+ definitions=2025-12-17_01,2025-12-16_05,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ suspectscore=0 spamscore=0 lowpriorityscore=0 clxscore=1015 impostorscore=0
+ adultscore=0 priorityscore=1501 phishscore=0 bulkscore=0 malwarescore=0
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.22.0-2510240001 definitions=main-2512170080
 
-As ieee80211_tx_info is used to assist filling TX descriptor, and layout of
-IEEE80211_SKB_CB(skb)->driver_data (accessing by RTW89_TX_SKB_CB()) is
-union, so driver_data must be used by/after rtw89_hci_tx_write() or just
-before calling rtw89_hci_tx_write(). Otherwise, ieee80211_tx_info::control
-data is overwritten.
 
-Found this by using injected packets which uses ieee80211_tx_info::control,
-but always sending incorrect data rate.
 
-Cc: Fedor Pchelkin <pchelkin@ispras.ru>
-Fixes: d5da3d9fb05f ("wifi: rtw89: process TX wait skbs for USB via C2H handler")
-Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
----
-I'd let this patch go via rtw-next tree, because this change is conflict
-with coming rtw-next patches, and actually this affects injected packets
-function only which I'd consider as a debug function.
----
- drivers/net/wireless/realtek/rtw89/core.c | 6 ++++--
- drivers/net/wireless/realtek/rtw89/core.h | 2 ++
- 2 files changed, 6 insertions(+), 2 deletions(-)
+On 12/16/2025 2:42 PM, Johannes Berg wrote:
+> On Tue, 2025-12-16 at 10:04 +0100, Johannes Berg wrote:
+>> On Tue, 2025-12-16 at 11:56 +0530, Karthikeyan Kathirvel wrote:
+>>> This series covers support for UHR capability and operation (11bn)
+>>> advertisement in AP and STA mode. The objective here is to give an
+>>> idea of basic changes needed for UHR in cfg80211/nl80211/mac80211.
+>>
+>> Huh. I never posted my version, sorry about that! I'll see if I can do
+>> that soon so we can compare notes, but I'll also go over yours quickly.
+> 
+> For what you have, mine was pretty similar, not all the naming
+> (obviously), and you also have a few more definitions for DBE etc. that
+> I didn't add since some were still broken.
+> 
+> I also had the rate calculation and more ELR stuff, IIRC.
+> 
+> Anyway, I'll post it soon and we can see that we arrive at a good
+> combination.
+> 
+> johannes
 
-diff --git a/drivers/net/wireless/realtek/rtw89/core.c b/drivers/net/wireless/realtek/rtw89/core.c
-index 0824940c91ae..53d32f3137eb 100644
---- a/drivers/net/wireless/realtek/rtw89/core.c
-+++ b/drivers/net/wireless/realtek/rtw89/core.c
-@@ -1207,7 +1207,7 @@ rtw89_core_tx_update_desc_info(struct rtw89_dev *rtwdev,
- 	if (addr_cam->valid && desc_info->mlo)
- 		upd_wlan_hdr = true;
- 
--	if (rtw89_is_tx_rpt_skb(rtwdev, tx_req->skb))
-+	if (info->flags & IEEE80211_TX_CTL_REQ_TX_STATUS || tx_req->with_wait)
- 		rtw89_tx_rpt_init(rtwdev, tx_req);
- 
- 	is_bmc = (is_broadcast_ether_addr(hdr->addr1) ||
-@@ -1342,13 +1342,15 @@ static int rtw89_core_tx_write_link(struct rtw89_dev *rtwdev,
- 	tx_req.rtwvif_link = rtwvif_link;
- 	tx_req.rtwsta_link = rtwsta_link;
- 	tx_req.desc_info.sw_mld = sw_mld;
--	rcu_assign_pointer(skb_data->wait, wait);
-+	tx_req.with_wait = !!wait;
- 
- 	rtw89_traffic_stats_accu(rtwdev, rtwvif, skb, true, true);
- 	rtw89_wow_parse_akm(rtwdev, skb);
- 	rtw89_core_tx_update_desc_info(rtwdev, &tx_req);
- 	rtw89_core_tx_wake(rtwdev, &tx_req);
- 
-+	rcu_assign_pointer(skb_data->wait, wait);
-+
- 	ret = rtw89_hci_tx_write(rtwdev, &tx_req);
- 	if (ret) {
- 		rtw89_err(rtwdev, "failed to transmit skb to HCI\n");
-diff --git a/drivers/net/wireless/realtek/rtw89/core.h b/drivers/net/wireless/realtek/rtw89/core.h
-index a9cb47ea0b93..92636cfc5ca5 100644
---- a/drivers/net/wireless/realtek/rtw89/core.h
-+++ b/drivers/net/wireless/realtek/rtw89/core.h
-@@ -1211,6 +1211,8 @@ struct rtw89_core_tx_request {
- 	struct rtw89_vif_link *rtwvif_link;
- 	struct rtw89_sta_link *rtwsta_link;
- 	struct rtw89_tx_desc_info desc_info;
-+
-+	bool with_wait;
- };
- 
- struct rtw89_txq {
--- 
-2.25.1
-
+I received your version, I will review the gaps between both of our 
+patches and get back.
 
