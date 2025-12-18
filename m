@@ -1,211 +1,232 @@
-Return-Path: <linux-wireless+bounces-29860-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-29861-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 139B0CC9DC8
-	for <lists+linux-wireless@lfdr.de>; Thu, 18 Dec 2025 01:07:59 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 306EFCCA024
+	for <lists+linux-wireless@lfdr.de>; Thu, 18 Dec 2025 02:55:11 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 42F1B301E5B2
-	for <lists+linux-wireless@lfdr.de>; Thu, 18 Dec 2025 00:07:18 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 0E4DA3019BD8
+	for <lists+linux-wireless@lfdr.de>; Thu, 18 Dec 2025 01:55:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7E3FA18B0F;
-	Thu, 18 Dec 2025 00:07:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3E7C326E6F0;
+	Thu, 18 Dec 2025 01:55:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="XnhpDrrh";
-	dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b="VrMzGrst"
+	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="XkSSbHII";
+	dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b="aU0HGALm"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D6518DF59
-	for <linux-wireless@vger.kernel.org>; Thu, 18 Dec 2025 00:07:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7974526F296
+	for <linux-wireless@vger.kernel.org>; Thu, 18 Dec 2025 01:55:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1766016436; cv=none; b=jkd6IncYIVCP03XAUp5jFFVwt/fE5rJVTqOtnvGjYhpz3vFZHEbVqvwjRaLTTmBRvnC8GJNzt+/4lOz1f4gCNXKq7i72ryCx2B1tYd00tjKmkXCelFxP+wQu9dI8iLufUmweKKcZjATXgMOyCXwNNxPYZaHJVzmQ4rNRIZMzqiI=
+	t=1766022908; cv=none; b=iOQKEKpjPVxctxQc2nijRc/HFEpK4mJMsTccvW8g4R6EuTg9iXigT2KDwDySyhL3+S9hb/tafh6TisR/N0J97/vapTAvuyg6GJpxZZP1lB5POAQ5on9TcPcZ/LLdQbsJJerxJGwVVBN4cl+mzn9bmF4H20W8vtAYLqsJ5dBerLU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1766016436; c=relaxed/simple;
-	bh=MkZFiW8PVfEXC9iEw+RiF1rkp6MiXEJyjsZ/QWm8WpA=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Ds0aC4uOJmy6OPRY+jXnsbAFWQIfdJhTKDc5f14YCKhZ+Fr1y6HN7dEtq2sKyzRTxnjb/FF5HT9xzBO/yzFMUg87KLGbjF+OYVNpK/HBX3OVeXp8Nom+pUwgWpJp+XPp/Y6IfqIGM1wLDabD0S+lk+dM4KLymlJmPi2FpWRzbz4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=XnhpDrrh; dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b=VrMzGrst; arc=none smtp.client-ip=205.220.180.131
+	s=arc-20240116; t=1766022908; c=relaxed/simple;
+	bh=m15RzCYwzK2m4zGAWd8wlqq0ArcI1Ou20ZCANbdd7dY=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=tSMx42FZEi9CzZs5I01dQKa2FDIZ24Clk1xJjuilK+ey/6H1bCDpXLZPKOHc5+/J1FahLUzJd8pZxehF7nlBxjwuQ9xf4diEvky60h1mVWECWASzqlZMqvnPR7Ecx896hMbptbvslNUOberudBpMu6424JT7YJK9lQzov4mMNQA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=XkSSbHII; dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b=aU0HGALm; arc=none smtp.client-ip=205.220.180.131
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
-Received: from pps.filterd (m0279872.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 5BHJBY8l3888811
-	for <linux-wireless@vger.kernel.org>; Thu, 18 Dec 2025 00:07:13 GMT
+Received: from pps.filterd (m0279869.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 5BI1Yc4C813839
+	for <linux-wireless@vger.kernel.org>; Thu, 18 Dec 2025 01:55:05 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
-	cc:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
-	+6X2ksbSDC2ya8H3LtEZEvp5I4IfOZ3iAR1V5pLfhRE=; b=XnhpDrrhKEMqop6K
-	ZJxFdaUizCFjoYmS6Rm2/mPPWnuGlZYv2J9PnMpWNmwAf2HgWh8m642pU56Mfacd
-	AHH0PdEGeZLU+7lun5fMhLro4ANvHO4McJst2HoGPpiAwos0qsEqqXv76EZiUDuu
-	Zj0eFh4AQjjqYWOP8X6ISk+7UUNajlZZGZ3GWK7238Pi5ultBuKCgsy9ea8UpmX+
-	oHlAwwB4ZQQNIGLKR61LztS2qWcWi2TBcQWxwXPokWxSL8Yi4UrULot63nwox0zY
-	vBR/05yeaJnLdq2hXVu6qTL16Na3RUy8BCnU7LfreSbZsn0HFPpPGZUtIWUPfbcX
-	aneM+g==
-Received: from mail-qt1-f197.google.com (mail-qt1-f197.google.com [209.85.160.197])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4b3n333g8n-1
+	cc:content-transfer-encoding:content-type:date:from:message-id
+	:mime-version:subject:to; s=qcppdkim1; bh=56+P8TT/sBZjFdakJ5P8iK
+	zWiVSHZkQF3LbiBlms2v4=; b=XkSSbHII1Mb1MwFmlob+2oVBsiw1qo5La9gyeq
+	N0aCcBWpCpR6MVyv0LwtT6BRouwv1GuGe6uuZLeoPFDvcjHEdyScSNzddlhnauow
+	TD4rfAJZ4AU785g/AqTShBQ9BQPocGV4+CtrkT/sXP3A96qMifBOjtK1lHUMhAiW
+	SsYf73keMX+lbC5DrJzmo2R2EQsbrEtIboL8sYnRH3COAX8ZqKUQaFze9hc1n9V7
+	l04uzJs0L8wrjhfy9YmV6H4dC10BZgYk1uCitkET+Q+pYEKN4Q7Tjk0DvtDfzNt/
+	Ardfud8Hy9LKNt0XW5urmjWEe3U3bwh87jGgSOJ3MBi4n8eA==
+Received: from mail-pl1-f200.google.com (mail-pl1-f200.google.com [209.85.214.200])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4b40v796tj-1
 	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
-	for <linux-wireless@vger.kernel.org>; Thu, 18 Dec 2025 00:07:13 +0000 (GMT)
-Received: by mail-qt1-f197.google.com with SMTP id d75a77b69052e-4edad69b4e8so1449341cf.1
-        for <linux-wireless@vger.kernel.org>; Wed, 17 Dec 2025 16:07:13 -0800 (PST)
+	for <linux-wireless@vger.kernel.org>; Thu, 18 Dec 2025 01:55:05 +0000 (GMT)
+Received: by mail-pl1-f200.google.com with SMTP id d9443c01a7336-2a0d058fc56so1980915ad.3
+        for <linux-wireless@vger.kernel.org>; Wed, 17 Dec 2025 17:55:04 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=oss.qualcomm.com; s=google; t=1766016433; x=1766621233; darn=vger.kernel.org;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=+6X2ksbSDC2ya8H3LtEZEvp5I4IfOZ3iAR1V5pLfhRE=;
-        b=VrMzGrstwYuwqKB4LgYwOaVP5BbGAct7hlDGhtWzqLJ801lRTL0rr28/EDgQtuXGHY
-         HTTfErxvL9WpUQgHT7SJqhOm8weNq2Wttwx9M7FFqUV04sHQhxHh4vmRJO7w76D1CCwR
-         Hw5rOFCvg619BlYoLpIDtPG1e37qvKoi2FoPcg1hyT7MAD6d+eSkKfr4GkXc6pxiSyNF
-         2Zh2lIaQXhNmo55ZPukLlmaZcXuvgc7Y37UDOCmwqpDVelUpLQW2nTGUkWPL16UZ9Lh9
-         haMhCg+B04P2bSbof8OtDL3oTno+bYlHOU+ODvMEis9q7AvU8E4P3BFlptUu4zV323jN
-         psTA==
+        d=oss.qualcomm.com; s=google; t=1766022904; x=1766627704; darn=vger.kernel.org;
+        h=cc:to:content-transfer-encoding:mime-version:message-id:date
+         :subject:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=56+P8TT/sBZjFdakJ5P8iKzWiVSHZkQF3LbiBlms2v4=;
+        b=aU0HGALmgJYOa6sYdBhH/wDpXLADlNESMQx6x+Zszl7JXzU990s9kR+lFMIUaKkNk7
+         ShZpu0i07UBc/9JqxUmEKbtf1Q9ZwPBGlphw+PnZykyree803z6YiymXbdjuMmPMVLC7
+         9FqB0d2Srk9ftyWTbjRv8g9SjActhPfXxKrEvvCrDtqVAOTlNtWdlhqWxzzI4Rxtw+/8
+         zNK2ydr6rCE28fzA+5dfQuXHIozDTJdmWKwS+4hEEjAOhxD8+tHwu4dHGI0zdXb08S7H
+         RY+i/5/S6Q1JL/RRT+Xenhn8OPFqUY7xqEWI95zjMHUtaEVlDgWtsHKzbDUcELi2Fl7S
+         m3EQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1766016433; x=1766621233;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=+6X2ksbSDC2ya8H3LtEZEvp5I4IfOZ3iAR1V5pLfhRE=;
-        b=ZnM3e0MTajij/oT/Q/QGeFpK5DiFstsGFlj3sAY9BrRkvHo7+FcJNfxWUZ0HhZhwJ+
-         5qPuN2NVdelLPneAQ4sxVy56kdxSLbMZcKEYZmuPBuv3ugPvoLvyvSHSmOKZbEkj/7z0
-         0lZ7fo+HO8wsu4g/Y0hk9ma5plJlzh6mazeO0o9761GZc+je+cNb6QWCXxIi2+2QMFpj
-         MRv6Hd9Dwxc+ezoYzdIXoyUMcOtOz32Io+hMdIXxP2huFWUhJ9gt/npgwAGG8waZJQmg
-         wq70ZrQwK3qnLfGvSS0bpWcGHot+DLSyBB6jXHfG9YtbjG4WbF0gPL1JOb2Yakl7H1zG
-         8/oA==
-X-Forwarded-Encrypted: i=1; AJvYcCWl3D6UpPyU2WFoz1zvY+Ph7Fl1GWpgXGBezYA1vfulo2VowWr2jXty9+xnplsbpNh8xYdaSLlTVT4c5hopXA==@vger.kernel.org
-X-Gm-Message-State: AOJu0Yz787tIzNT9qFcfG3PVtGfjZoQlKEpXk9JCm8C+JMGTsn2Ik1vb
-	Os/1nqCVqPHUp/rnyvOgdLbyCb8p/iuHg/t3m0SBZiI7Wtbp5KWMTYslHYDqejoMpUioI1j4jWM
-	fpjvPbsEySgo+1AHLptAaCBknh/+DbATPqY4CdaGyRQSPJWqXp3ohSE2aYu13xl1i4Ie/eRNL19
-	b2Ng==
-X-Gm-Gg: AY/fxX7cqiFtg47wUcuf/FoMPSv/qDaEU+l084lkJqIuOjKUsTQZrRSKDz6HA6XivIU
-	BQMV7ruEAA14dvXKdGRJ43x7Y5fcISjmut1NIGtFc5YfWwLrUDjVGkXQBjyfApz4W/LCYpHHn1N
-	6vqnttSKwABFhoZ5prW1prytlmOnZNVAliJeeruKc6XJPk8bHQtRX0UYiV8lcMhjPc8RydsVto4
-	tgkzZKfhQha3XUvdClO6VYsyByGdk13FF7EAaIIN9UZFgKE208tDDJaZ0XRrgKWPUO1tevC1RaN
-	vV9V+2+xe1VbApSvoDYVIun3aW4OCCoro+HqPrO1EDGWr4uYksJhZG4JVNRDNUShpkiiJnzZo4B
-	Mxfq4UrerZLzp6BnOibkDTKAhy5swXAO2VRzE9JH44Cqp2eHDKE17Bhmdia4Sufx4XU+mJPRYy6
-	6xqB4iuJoPawgRBn3hnh302eU=
-X-Received: by 2002:a05:622a:2d2:b0:4ed:a2dc:9e51 with SMTP id d75a77b69052e-4f35f43ab71mr22024321cf.21.1766016431935;
-        Wed, 17 Dec 2025 16:07:11 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IF7r9ikBXTn9EQK+HDVKOPnuyMaSvuztty6xD+BwyGt1UHdgEs/NzHIQGQgsKy4i7SuFf+65A==
-X-Received: by 2002:a05:622a:2d2:b0:4ed:a2dc:9e51 with SMTP id d75a77b69052e-4f35f43ab71mr22023971cf.21.1766016431146;
-        Wed, 17 Dec 2025 16:07:11 -0800 (PST)
-Received: from umbar.lan (2001-14ba-a073-af00-264b-feff-fe8b-be8a.rev.dnainternet.fi. [2001:14ba:a073:af00:264b:feff:fe8b:be8a])
-        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-59a132cb5f7sm321357e87.4.2025.12.17.16.07.07
+        d=1e100.net; s=20230601; t=1766022904; x=1766627704;
+        h=cc:to:content-transfer-encoding:mime-version:message-id:date
+         :subject:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=56+P8TT/sBZjFdakJ5P8iKzWiVSHZkQF3LbiBlms2v4=;
+        b=j0sKHlMyhgqLGAj3DRTzEoHJw3KL5GOu8413p0ssYh5ZkSB1W/ga0fGzVijOZ85cWN
+         7dZslqPEeizb+yBUcAA92PzI4BJjzbIGBEaCvBAG8+984cuZm0vPqMeiEjts1CcFtmD1
+         lXiWdcCmBeEuBGBaO9SuUYO8hmtqF04aeR2DevTWZHGeD8LVYWVB2JFVVxCDOGUh53rL
+         xz7uUC5YWECEhGBVjCSM5R5a/4RdqRo/VYSTz50MpCEKHaN2vbi8lyQXns+Bb9Iw6kW3
+         Qm3zthgfBm387D9df5WRQltY+NGzEFJn1xh9kEQQfoHOQ3our2eWTsLYOdVlqfiU4q3d
+         g7qQ==
+X-Gm-Message-State: AOJu0Yzdj0yvgrKCeCgXylqXowc3EOlld0va1QHBoXw7QDYAdD0cZFwM
+	GqBbFcffo4Q7m1a6r1k//gpv32txYMutU/axFxMwLtOVRxpUwlJpZrzHi0y+UPxyBMcgWJ+Ubkq
+	buCTDsfZwPm4V0eHGCthm4RxQ+GIeMbRyS5d6N1NBPxpfwOX/27PGqU3bBdYgKPvn+1kUNg==
+X-Gm-Gg: AY/fxX7RKfJX47VS7AmeD0SJXbXN/fchw+PuqoKnbv01YAdWnhsxsCCGyXiV2+d/WAX
+	5nqbcfSIFjyVMhZRgyOrN9bEU/q1AHxoDphgnzKNCDcEV5X9AS+FBP9f4yZAPEAq8ZwrPNU7Jk6
+	uirXA7DYnRIY0/TSI4wsIDy3EHuR24jaXBZrjvnPOFTVRPYd3EPHOSqIis6hpmcq39H3VNjHYRd
+	U8M84uuWv/d/inbtfXi0IwkKuEEUwwQnFJPhgzCNMSgwzwd4VXkKPh2yjGpMdWv/h+OoBo2i+5E
+	0rLF/bjH3BleqS6bAljPmv8PWHlEN8O1JJkrm7tF9dDJtYpXuxC7a8fNArYarS03Dd2BnVPjJfI
+	RZ9RurNWOaXxSSSC/FWH9V4OVNOyAH2aE8lUrMYHclzfCQa4s4PEavJdWJvTKxc8=
+X-Received: by 2002:a17:902:f70a:b0:2a0:9d01:c3c1 with SMTP id d9443c01a7336-2a09d01d4a9mr144258595ad.1.1766022903891;
+        Wed, 17 Dec 2025 17:55:03 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IEKnYFo7nzNiGaFBO1ovUKSxvb/HPdgXi09iy3bNpOGLudh+RHcD0KFDvEu7VzUuwmb+O5uMg==
+X-Received: by 2002:a17:902:f70a:b0:2a0:9d01:c3c1 with SMTP id d9443c01a7336-2a09d01d4a9mr144258405ad.1.1766022903376;
+        Wed, 17 Dec 2025 17:55:03 -0800 (PST)
+Received: from [127.0.1.1] (tpe-colo-wan-fw-bordernet.qualcomm.com. [103.229.16.4])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2a2d087c812sm6548175ad.15.2025.12.17.17.55.01
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 17 Dec 2025 16:07:09 -0800 (PST)
-Date: Thu, 18 Dec 2025 02:07:06 +0200
-From: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
-To: jerome.debretagne@gmail.com
-Cc: Bjorn Andersson <andersson@kernel.org>,
-        Konrad Dybcio <konradybcio@kernel.org>, Rob Herring <robh@kernel.org>,
-        Krzysztof Kozlowski <krzk+dt@kernel.org>,
-        Conor Dooley <conor+dt@kernel.org>,
-        Johannes Berg <johannes@sipsolutions.net>,
-        Lorenzo Bianconi <lorenzo@kernel.org>,
-        Maximilian Luz <luzmaximilian@gmail.com>,
-        Hans de Goede <hansg@kernel.org>,
-        Ilpo =?utf-8?B?SsOkcnZpbmVu?= <ilpo.jarvinen@linux.intel.com>,
-        Jeff Johnson <jjohnson@kernel.org>, linux-arm-msm@vger.kernel.org,
-        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-wireless@vger.kernel.org, platform-driver-x86@vger.kernel.org,
-        ath12k@lists.infradead.org, Dale Whinham <daleyo@gmail.com>
-Subject: Re: [PATCH v3 4/6] platform/surface: aggregator_registry: Add
- Surface Pro 11
-Message-ID: <s45ki2ckgw7fu25h5wd6mb3mc4kzs6qq5eitv56asqf2suxh6l@s5tbqce7gz3f>
-References: <20251218-surface-sp11-for-next-v3-0-875afc7bd3b7@gmail.com>
- <20251218-surface-sp11-for-next-v3-4-875afc7bd3b7@gmail.com>
+        Wed, 17 Dec 2025 17:55:03 -0800 (PST)
+From: Baochen Qiang <baochen.qiang@oss.qualcomm.com>
+Subject: [PATCH ath-next 00/19] wifi: ath12k: add support for QCC2072
+Date: Thu, 18 Dec 2025 09:54:14 +0800
+Message-Id: <20251218-ath12k-support-qcc2072-v1-0-87928cf8e547@oss.qualcomm.com>
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20251218-surface-sp11-for-next-v3-4-875afc7bd3b7@gmail.com>
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUxMjE3MDE5NCBTYWx0ZWRfXwTfqHdOVV0+e
- SGBp+inL9QA0abWbBylN/olTNOF8wGR9bgutkXgsU97JM7Et/KNy0q1ugJVTaCqtakJ4HeVCSYB
- nY81lnqzX8tFnsgA37j538zCcC54lK7NYLM1+ZHzismEOWEEObyQXCXcoqXF1OOrbottGcErvH2
- 0aXg5pPGo+TeDMyl3sW2WApganzwhpRwEpCnX3zBVRPQaqgqr5f83hVHebq2tWwlSFHMmhALTui
- 0NZWlpBuE7r5+ytAdtaV8ZibmP/hxiqMYr21kyeDVEC1mSFpcv8uMtwzlJ8i+UDa1gFAfYn1V+3
- TdnOfpb/F/yB0bagkl3hWhGv6irAHbyAK1B2iUEoPLQZWvxScs/Y2gbB3GLxdGc/vuPJInhVckR
- 2+XPSU8mhG4+HHWjsFQZEz+p7WF5kw==
-X-Proofpoint-GUID: Jnsb2we0V6Wyr0X8dFTS7SXQK8Tz86iM
-X-Proofpoint-ORIG-GUID: Jnsb2we0V6Wyr0X8dFTS7SXQK8Tz86iM
-X-Authority-Analysis: v=2.4 cv=U82fzOru c=1 sm=1 tr=0 ts=694345b1 cx=c_pps
- a=EVbN6Ke/fEF3bsl7X48z0g==:117 a=xqWC_Br6kY4A:10 a=8nJEP1OIZ-IA:10
- a=wP3pNCr1ah4A:10 a=s4-Qcg_JpJYA:10 a=VkNPw1HP01LnGYTKEx00:22
- a=pGLkceISAAAA:8 a=27tkrN_41n3i1SKUIiEA:9 a=3ZKOabzyN94A:10 a=wPNLvfGTeEIA:10
- a=a_PwQJl-kcHnX1M80qC6:22
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAMdeQ2kC/43P207DMAwG4FeZck2mOOftivdAqEpSh0WshzVdG
+ Zr27qQFiUlQwU0k2/L3O1eScUiYyX5zJQNOKaeuLQU8bEg4uPYFaapLTTjjCoBp6sYD8Feaz33
+ fDSM9hcCZ4TQKphGk8t5HUpb7AWO6LPATKTu0xctInj8nA57OJWn8GjeYs1uS9pslhzOgb0fXV
+ qkp/erYubrKr6mv1Bw9CQrUY+2V3FmnrHvsct6ezu4YuqbZlmc+wLuMdG6ksagqWiFijBbq5Yh
+ DymM3vC/fnvhyxV8/nDhlVEsPKgajUMHP2FmexLfGmV3VRNFCjcIGYxwzYUWTdxqoVU0WrXYBP
+ TIpA8YVTd1rZlVTRePawk76WhvAFU3/T9NFc7touA1CS+C/aLfb7QMSFMeMigIAAA==
+X-Change-ID: 20251106-ath12k-support-qcc2072-f306e145bbbf
+To: Jeff Johnson <jjohnson@kernel.org>
+Cc: linux-wireless@vger.kernel.org, ath12k@lists.infradead.org,
+        20251201-wlan_image_load_skip_512k-v3-1-bedb5498a58a@oss.qualcomm.com,
+        Baochen Qiang <baochen.qiang@oss.qualcomm.com>,
+        Miaoqing Pan <miaoqing.pan@oss.qualcomm.com>
+X-Mailer: b4 0.14.3
+X-Proofpoint-ORIG-GUID: PimN-goRGdHqHwqvOF0hSOcObzkepFcK
+X-Proofpoint-GUID: PimN-goRGdHqHwqvOF0hSOcObzkepFcK
+X-Authority-Analysis: v=2.4 cv=f8JFxeyM c=1 sm=1 tr=0 ts=69435ef9 cx=c_pps
+ a=IZJwPbhc+fLeJZngyXXI0A==:117 a=nuhDOHQX5FNHPW3J6Bj6AA==:17
+ a=IkcTkHD0fZMA:10 a=wP3pNCr1ah4A:10 a=s4-Qcg_JpJYA:10
+ a=VkNPw1HP01LnGYTKEx00:22 a=EUspDBNiAAAA:8 a=55-7P0Cx6h0GZh4B0BcA:9
+ a=QEXdDO2ut3YA:10 a=uG9DUKGECoFWVXl0Dc02:22
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUxMjE4MDAxMyBTYWx0ZWRfX7Ggn1+jopXu9
+ yla4GWfHa50OK0MqiaHGClIqfcflMa25pHQHTP8wOZt/Hh9Rw5UvsjpMhF3QukIHiu69ya8tP6r
+ /NO5PJMoyzgAL9ULMWWq7dVJFqm2mQYIl+NQZTrg1tHEtRqRLHTF89JiJ4Blt8jgM67r4VSXJzv
+ pbZvM+yCTrs2xx5j6IfRKOjAzXkwxBkrfM7nQMXvJT1hMK+A4N0SKVkiOpGzYVM96DXgl9/DCaQ
+ OjtVy4ECbK6k1z57LyYrh98eC8s97UFZy/RKuE+OQ6+VNhUpwovQ4jR+zZaKmS9vzFQdkmKVLXr
+ 3hmBw7FvVmHZ4kVnNrbaN5Ykkf8UUr+xgpuwpFjXWM0V/qi4WQHSPkFxgcG6JcwY/Fg4xRcfadQ
+ zjzqwMAoHcmrUvTOpLW5TOn6f9jurA==
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.9,FMLib:17.12.100.49
- definitions=2025-12-17_03,2025-12-17_02,2025-10-01_01
+ definitions=2025-12-18_01,2025-12-17_02,2025-10-01_01
 X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- phishscore=0 bulkscore=0 impostorscore=0 malwarescore=0 priorityscore=1501
- adultscore=0 clxscore=1015 spamscore=0 lowpriorityscore=0 suspectscore=0
+ lowpriorityscore=0 adultscore=0 clxscore=1015 suspectscore=0 phishscore=0
+ impostorscore=0 bulkscore=0 malwarescore=0 priorityscore=1501 spamscore=0
  classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.22.0-2510240001 definitions=main-2512170194
+ reason=mlx scancount=1 engine=8.22.0-2510240001 definitions=main-2512180013
 
-On Thu, Dec 18, 2025 at 12:56:40AM +0100, Jérôme de Bretagne via B4 Relay wrote:
-> From: Dale Whinham <daleyo@gmail.com>
-> 
-> This enables support for the X1-based Surface Pro 11.
-> 
-> Signed-off-by: Dale Whinham <daleyo@gmail.com>
-> Signed-off-by: Jérôme de Bretagne <jerome.debretagne@gmail.com>
-> Reviewed-by: Maximilian Luz <luzmaximilian@gmail.com>
-> ---
->  drivers/platform/surface/surface_aggregator_registry.c | 18 ++++++++++++++++++
->  1 file changed, 18 insertions(+)
-> 
-> diff --git a/drivers/platform/surface/surface_aggregator_registry.c b/drivers/platform/surface/surface_aggregator_registry.c
-> index 78ac3a8fbb736384f7e50f1888a71297a892a7c3..c18d991afc8b0a0bbb26966351b75b8ea01097a4 100644
-> --- a/drivers/platform/surface/surface_aggregator_registry.c
-> +++ b/drivers/platform/surface/surface_aggregator_registry.c
-> @@ -406,6 +406,22 @@ static const struct software_node *ssam_node_group_sp9_5g[] = {
->  	NULL,
->  };
->  
-> +/* Devices for Surface Pro 11 (ARM/QCOM) */
-> +static const struct software_node *ssam_node_group_sp11[] = {
-> +	&ssam_node_root,
-> +	&ssam_node_hub_kip,
-> +	&ssam_node_bat_ac,
-> +	&ssam_node_bat_main,
-> +	&ssam_node_tmp_sensors,
-> +	&ssam_node_hid_kip_keyboard,
-> +	&ssam_node_hid_kip_penstash,
-> +	&ssam_node_hid_kip_touchpad,
-> +	&ssam_node_hid_kip_fwupd,
-> +	&ssam_node_hid_sam_sensors,
-> +	&ssam_node_kip_tablet_switch,
-> +	NULL,
-> +};
-> +
->  /* -- SSAM platform/meta-hub driver. ---------------------------------------- */
->  
->  static const struct acpi_device_id ssam_platform_hub_acpi_match[] = {
-> @@ -485,6 +501,8 @@ static const struct of_device_id ssam_platform_hub_of_match[] __maybe_unused = {
->  	/* Surface Laptop 7 */
->  	{ .compatible = "microsoft,romulus13", (void *)ssam_node_group_sl7 },
->  	{ .compatible = "microsoft,romulus15", (void *)ssam_node_group_sl7 },
-> +	/* Surface Pro 11 */
-> +	{ .compatible = "microsoft,denali", (void *)ssam_node_group_sp11 },
+QCC2072 is a PCI based device that is very much like WCN7850, the major
+difference is that QCC2072 has only one phy hence does not support DBS.
+Due to such similarity, lots of existing WCN7850 code can be leveraged.
+While to handle the difference, separate operation is added, necessary
+configuration is changed.
 
-Please keep it sorted. arcata < denali < romulus
+Overview:
+- The first 6 patches refactor/fix current code base to prepare for QCC2072
+  support.
+- Patches [7,8/19] add hardware registers and parameters for QCC2072.
+- Patches [9,10,11/19] add support for new QMI memory type, new firmware
+  download etc, these are specific to QCC2072 hence necessary configs are
+  added to make sure other chips are not affected.
+- Patches [12,13/19] add new callbacks for QCC2072. These callbacks are
+  actually taken from WCN7850, with modifications due to the different
+  HAL descriptors.
+- Patches [14,15/19] add 32 bits variants for QCC2072 REO CMD/status ring
+  handling, as existing 64 bits functions don't work with QCC2072.
+- Patches [16,17/19] contains changes required by QCC2072, but those
+  changes are made common to all chips. They are not expected to cause
+  any regression.
+- Patch [18/19] add QRTR node id register such that QCC2072 can work when
+  firmware-2.bin image is used.
+- The last patch enables QCC2072 support.
 
->  	{ },
->  };
->  
-> 
-> -- 
-> 2.47.3
-> 
-> 
+Depends-on: 20251201-wlan_image_load_skip_512k-v3-1-bedb5498a58a@oss.qualcomm.com
 
+Signed-off-by: Baochen Qiang <baochen.qiang@oss.qualcomm.com>
+---
+Baochen Qiang (18):
+      wifi: ath12k: refactor PCI window register access
+      wifi: ath12k: refactor REO CMD ring handling
+      wifi: ath12k: refactor REO status ring handling
+      wifi: ath12k: fix preferred hardware mode calculation
+      wifi: ath12k: refactor 320 MHz bandwidth support parsing
+      wifi: ath12k: fix mac phy capability parsing
+      wifi: ath12k: add hardware registers for QCC2072
+      wifi: ath12k: add hardware parameters for QCC2072
+      wifi: ath12k: advertise standard ELF image format for QCC2072
+      wifi: ath12k: support LPASS_SHARED target memory type
+      wifi: ath12k: support downloading auxiliary ucode image for QCC2072
+      wifi: ath12k: add HAL descriptor and ops for QCC2072
+      wifi: ath12k: add hardware ops support for QCC2072
+      wifi: ath12k: handle REO CMD ring for QCC2072
+      wifi: ath12k: handle REO status ring for QCC2072
+      wifi: ath12k: limit number of channels per WMI command
+      wifi: ath12k: send peer meta data version to firmware
+      wifi: ath12k: enable QCC2072 support
+
+Miaoqing Pan (1):
+      wifi: ath12k: fix PCIE_LOCAL_REG_QRTR_NODE_ID definition for QCC2072
+
+ drivers/net/wireless/ath/ath12k/core.h             |   3 +
+ drivers/net/wireless/ath/ath12k/fw.c               |  10 +-
+ drivers/net/wireless/ath/ath12k/fw.h               |   3 +-
+ drivers/net/wireless/ath/ath12k/hal.c              |  46 ++
+ drivers/net/wireless/ath/ath12k/hal.h              |  34 ++
+ drivers/net/wireless/ath/ath12k/hw.h               |   3 +
+ drivers/net/wireless/ath/ath12k/mhi.c              |  10 +-
+ drivers/net/wireless/ath/ath12k/pci.c              |  17 +-
+ drivers/net/wireless/ath/ath12k/pci.h              |   7 +
+ drivers/net/wireless/ath/ath12k/qmi.c              | 180 +++++++-
+ drivers/net/wireless/ath/ath12k/qmi.h              |  16 +
+ drivers/net/wireless/ath/ath12k/wifi7/Makefile     |   3 +-
+ drivers/net/wireless/ath/ath12k/wifi7/dp_rx.c      |  62 ++-
+ drivers/net/wireless/ath/ath12k/wifi7/dp_rx.h      |   1 +
+ drivers/net/wireless/ath/ath12k/wifi7/hal.c        |   8 +
+ drivers/net/wireless/ath/ath12k/wifi7/hal.h        |   3 -
+ drivers/net/wireless/ath/ath12k/wifi7/hal_desc.h   |  33 +-
+ .../net/wireless/ath/ath12k/wifi7/hal_qcc2072.c    | 503 +++++++++++++++++++++
+ .../net/wireless/ath/ath12k/wifi7/hal_qcc2072.h    |  13 +
+ .../net/wireless/ath/ath12k/wifi7/hal_qcn9274.c    |   8 +-
+ drivers/net/wireless/ath/ath12k/wifi7/hal_rx.c     |  97 ++--
+ drivers/net/wireless/ath/ath12k/wifi7/hal_rx.h     |  30 +-
+ .../net/wireless/ath/ath12k/wifi7/hal_rx_desc.h    |  17 +
+ .../net/wireless/ath/ath12k/wifi7/hal_wcn7850.c    |   8 +-
+ .../net/wireless/ath/ath12k/wifi7/hal_wcn7850.h    |   1 +
+ drivers/net/wireless/ath/ath12k/wifi7/hw.c         | 106 +++++
+ drivers/net/wireless/ath/ath12k/wifi7/pci.c        |  26 +-
+ drivers/net/wireless/ath/ath12k/wifi7/wmi.c        |   5 +
+ drivers/net/wireless/ath/ath12k/wmi.c              |  54 ++-
+ drivers/net/wireless/ath/ath12k/wmi.h              |   7 +
+ 30 files changed, 1174 insertions(+), 140 deletions(-)
+---
+base-commit: 25f833fff81de4fbb9b5382806860b63768567e8
+change-id: 20251106-ath12k-support-qcc2072-f306e145bbbf
+prerequisite-message-id: 20251201-wlan_image_load_skip_512k-v3-1-bedb5498a58a@oss.qualcomm.com
+prerequisite-patch-id: d5a84e00e749b9332179b8ed7d2736b42d33fde2
+
+Best regards,
 -- 
-With best wishes
-Dmitry
+Baochen Qiang <baochen.qiang@oss.qualcomm.com>
+
 
