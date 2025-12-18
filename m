@@ -1,64 +1,68 @@
-Return-Path: <linux-wireless+bounces-29887-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-29888-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id 99CC8CCA80F
-	for <lists+linux-wireless@lfdr.de>; Thu, 18 Dec 2025 07:40:34 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id D3C4CCCA7C1
+	for <lists+linux-wireless@lfdr.de>; Thu, 18 Dec 2025 07:35:35 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id E04753016D8F
-	for <lists+linux-wireless@lfdr.de>; Thu, 18 Dec 2025 06:40:28 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 8A0773061EAF
+	for <lists+linux-wireless@lfdr.de>; Thu, 18 Dec 2025 06:32:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8B3513242C2;
-	Thu, 18 Dec 2025 06:32:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8B730163;
+	Thu, 18 Dec 2025 06:32:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=realtek.com header.i=@realtek.com header.b="o7occ/YF"
+	dkim=pass (2048-bit key) header.d=realtek.com header.i=@realtek.com header.b="L0d72egy"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E03CE326D77
-	for <linux-wireless@vger.kernel.org>; Thu, 18 Dec 2025 06:32:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8476F327BF1
+	for <linux-wireless@vger.kernel.org>; Thu, 18 Dec 2025 06:32:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=211.75.126.72
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1766039536; cv=none; b=HIyRFuhlG7M4d4P0pGer0RKAZCAbWH17Wq8XPiyxY7JRNuF5oyShTHqD/Y6scqvcMyspgRm6j12ADKpkU2IrlhZVUYH7iYTTRtlPSh0jIrEPwXjgj7Ss6u8Cl1sY3kcZIRvTNHcs4p4PR1Q4Ip3m+36SDDMooFEDtkNmMLHfI6U=
+	t=1766039539; cv=none; b=aQlafLEGzw2zg25UTRc0mV9ftT6tQxPKT5+8NZOWzV+2Pf+0DPIByGVEuZDrdHUJDAUGmE+J0sV+tGplNuICIrWLmKq3chw6iOgJLXGISJCodVWZmW93jdHVt8rWtvn0lnhnIiht9ldH66NXeBMP3BtU0GiZvaLjA/Z7c4Lqskk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1766039536; c=relaxed/simple;
-	bh=2maNEKh/VopgoegrtQ/ZK7odVt088ims/0FieQoN4Xk=;
+	s=arc-20240116; t=1766039539; c=relaxed/simple;
+	bh=QCYcYLSF7k7k+3PWkSm3wBDYXVSzOjWD3b/96wyyMd8=;
 	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=F9QQC6jxkC225TlmPR5H0XARKW0nx4qEZ+reXGz2qmORrrrGi9bRv6iGtzKR1LWO2qXZ4HO060mdjvGZZQDSdzfL2j5TPf1YSqCJdPMTlxcCQv9B9QMUiYUufZYLDKzih8yUUm0qsrTP+IWDsMW02ndpvXcNr1raEr1awx427VU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com; spf=pass smtp.mailfrom=realtek.com; dkim=pass (2048-bit key) header.d=realtek.com header.i=@realtek.com header.b=o7occ/YF; arc=none smtp.client-ip=211.75.126.72
+	 MIME-Version:Content-Type; b=gjSYiIRmUde/zo5rhEAoELk+Ui7RR9krU3G8q15p0+qhO/XPOWnVeIqqNTv71PH2NmongGhbatpZ/A79q8gW29uirLNZqNYZtCa2UVAmfTXUqyc9RpCnnUtDOQ88GyU0bazboCk0iQaJyU8kT8JgfmMfEOH703hhtHm62ZTQ7Z0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com; spf=pass smtp.mailfrom=realtek.com; dkim=pass (2048-bit key) header.d=realtek.com header.i=@realtek.com header.b=L0d72egy; arc=none smtp.client-ip=211.75.126.72
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=realtek.com
-X-SpamFilter-By: ArmorX SpamTrap 5.80 with qID 5BI6W9tL43329919, This message is accepted by code: ctloc85258
+X-SpamFilter-By: ArmorX SpamTrap 5.80 with qID 5BI6WFV303333871, This message is accepted by code: ctloc85258
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=realtek.com; s=dkim;
-	t=1766039529; bh=BV1XuFenjPBxz6DGdBaXdBaLcaxqcRJHVK3YvHv78YU=;
+	t=1766039535; bh=o50e1uQhEmpLi03u5on1Xwq+jZqfHp47WGgs3Uoj8Qw=;
 	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
 	 MIME-Version:Content-Transfer-Encoding:Content-Type;
-	b=o7occ/YFrEcgdnsdVR2909Ae8XC/MvaK6cJaoKz3c7u1WfpW1NR++0RM/mnDSLtNN
-	 ksdb2crd/R6tmaFqLOD1Azy4w3F1PyG6cQvRONpm7z6wIdfvYcuACT5sm7v126ylsz
-	 qvt043QIzce71KeYCk94QUex5dK2QgQN4m2YuLZYXTfpQnjiaGDj+LuCQk8/ysRKsE
-	 sa/SVJ+iNSdeCACUldnAmZKJknIFc8SimhGY0GY3WWqTXqoppm+eaugqEEe7SME4w4
-	 zBiheWvxkoGaXnMR449H8dg5oXv8tsbfniD1kAEEesQANwhw3/K5NC52JFEka/3eBa
-	 eWNlWmhotHsEg==
-Received: from mail.realtek.com (rtkexhmbs03.realtek.com.tw[10.21.1.53])
-	by rtits2.realtek.com.tw (8.15.2/3.21/5.94) with ESMTPS id 5BI6W9tL43329919
+	b=L0d72egy+0uXuz/lVJ8JlN8VjIpSlZeJYuh9pI0K0qG9qjn8Okew0SvKFHz4QBEIS
+	 ++r/ZSkJFvEDB4Sq1qs7L5DBqPfAOT63lFEAtJ/QDIP3uRzJPkR4Hvyo0MsgwTrgTx
+	 mPvRk0P3h+TPiYG1bAjPPYg5XspuCTvlQliBPIn9Liaf/++XTWhwkqlDDJ7IJlXnAI
+	 StLr5YRrUgCXCG+Z2eKVovBnBGTK2GlXb29COSt5CUhaxrTNhcOrXi0gSpQumqkmmo
+	 Iu2P8yGRhiUVa85QTb7D7WEI/zh6Va2iiZ+4LwA7AwZQ2mUZGiWwXutBJPaw2Hgwe0
+	 hr6AgF2f8D1vg==
+Received: from mail.realtek.com (rtkexhmbs04.realtek.com.tw[10.21.1.54])
+	by rtits2.realtek.com.tw (8.15.2/3.21/5.94) with ESMTPS id 5BI6WFV303333871
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK)
-	for <linux-wireless@vger.kernel.org>; Thu, 18 Dec 2025 14:32:09 +0800
-Received: from RTKEXHMBS04.realtek.com.tw (10.21.1.54) by
- RTKEXHMBS03.realtek.com.tw (10.21.1.53) with Microsoft SMTP Server
+	for <linux-wireless@vger.kernel.org>; Thu, 18 Dec 2025 14:32:15 +0800
+Received: from RTKEXHMBS01.realtek.com.tw (172.21.6.40) by
+ RTKEXHMBS04.realtek.com.tw (10.21.1.54) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1748.10; Thu, 18 Dec 2025 14:32:09 +0800
+ 15.2.1748.10; Thu, 18 Dec 2025 14:32:15 +0800
+Received: from RTKEXHMBS04.realtek.com.tw (10.21.1.54) by
+ RTKEXHMBS01.realtek.com.tw (172.21.6.40) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1748.10; Thu, 18 Dec 2025 14:32:14 +0800
 Received: from [127.0.1.1] (172.21.40.75) by RTKEXHMBS04.realtek.com.tw
  (10.21.1.54) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1748.10 via Frontend
- Transport; Thu, 18 Dec 2025 14:32:09 +0800
+ Transport; Thu, 18 Dec 2025 14:32:14 +0800
 From: Ping-Ke Shih <pkshih@realtek.com>
 To: <linux-wireless@vger.kernel.org>
 CC: <gary.chang@realtek.com>, <damon.chen@realtek.com>,
         <kevin_yang@realtek.com>
-Subject: [PATCH rtw-next v2 06/12] wifi: rtw89: ser: L1 skip polling status if FW runs event mode
-Date: Thu, 18 Dec 2025 14:31:11 +0800
-Message-ID: <20251218063117.26278-7-pkshih@realtek.com>
+Subject: [PATCH rtw-next v2 07/12] wifi: rtw89: debug: add ser_counters dbgfs
+Date: Thu, 18 Dec 2025 14:31:12 +0800
+Message-ID: <20251218063117.26278-8-pkshih@realtek.com>
 X-Mailer: git-send-email 2.25.1
 In-Reply-To: <20251218063117.26278-1-pkshih@realtek.com>
 References: <20251218063117.26278-1-pkshih@realtek.com>
@@ -73,104 +77,127 @@ Content-Type: text/plain
 
 From: Zong-Zhe Yang <kevin_yang@realtek.com>
 
-Originally, polling FW status was required during recovering from L1.
-Now, because newer FW support event mode, the polling can be skipped.
-Add a FW feature flag and configure the supported chips.
+Dump counters of SER (system error recoery) L0/L1 related cases.
 
 Signed-off-by: Zong-Zhe Yang <kevin_yang@realtek.com>
 Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
 ---
- drivers/net/wireless/realtek/rtw89/core.h |  1 +
- drivers/net/wireless/realtek/rtw89/fw.c   |  4 ++++
- drivers/net/wireless/realtek/rtw89/mac.c  | 11 +++++++++--
- 3 files changed, 14 insertions(+), 2 deletions(-)
+ drivers/net/wireless/realtek/rtw89/debug.c | 57 ++++++++++++++++++++++
+ drivers/net/wireless/realtek/rtw89/reg.h   |  5 +-
+ 2 files changed, 61 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/wireless/realtek/rtw89/core.h b/drivers/net/wireless/realtek/rtw89/core.h
-index 92636cfc5ca5..4c35b968ac36 100644
---- a/drivers/net/wireless/realtek/rtw89/core.h
-+++ b/drivers/net/wireless/realtek/rtw89/core.h
-@@ -4682,6 +4682,7 @@ enum rtw89_fw_feature {
- 	RTW89_FW_FEATURE_LPS_DACK_BY_C2H_REG,
- 	RTW89_FW_FEATURE_BEACON_TRACKING,
- 	RTW89_FW_FEATURE_ADDR_CAM_V0,
-+	RTW89_FW_FEATURE_SER_L1_BY_EVENT,
- };
+diff --git a/drivers/net/wireless/realtek/rtw89/debug.c b/drivers/net/wireless/realtek/rtw89/debug.c
+index 1264c2f82600..0d9a158f6df1 100644
+--- a/drivers/net/wireless/realtek/rtw89/debug.c
++++ b/drivers/net/wireless/realtek/rtw89/debug.c
+@@ -79,6 +79,7 @@ struct rtw89_debugfs {
+ 	struct rtw89_debugfs_priv send_h2c;
+ 	struct rtw89_debugfs_priv early_h2c;
+ 	struct rtw89_debugfs_priv fw_crash;
++	struct rtw89_debugfs_priv ser_counters;
+ 	struct rtw89_debugfs_priv btc_info;
+ 	struct rtw89_debugfs_priv btc_manual;
+ 	struct rtw89_debugfs_priv fw_log_manual;
+@@ -3680,6 +3681,60 @@ rtw89_debug_priv_fw_crash_set(struct rtw89_dev *rtwdev,
+ 	return count;
+ }
  
- struct rtw89_fw_suit {
-diff --git a/drivers/net/wireless/realtek/rtw89/fw.c b/drivers/net/wireless/realtek/rtw89/fw.c
-index 0f278476d55b..7150892a6274 100644
---- a/drivers/net/wireless/realtek/rtw89/fw.c
-+++ b/drivers/net/wireless/realtek/rtw89/fw.c
-@@ -826,6 +826,7 @@ static const struct __fw_feat_cfg fw_feat_tbl[] = {
- 	__CFG_FW_FEAT(RTL8851B, ge, 0, 29, 37, 1, TX_WAKE),
- 	__CFG_FW_FEAT(RTL8851B, ge, 0, 29, 37, 1, SCAN_OFFLOAD),
- 	__CFG_FW_FEAT(RTL8851B, ge, 0, 29, 41, 0, CRASH_TRIGGER_TYPE_0),
-+	__CFG_FW_FEAT(RTL8851B, ge, 0, 29, 127, 0, SER_L1_BY_EVENT),
- 	__CFG_FW_FEAT(RTL8852A, le, 0, 13, 29, 0, OLD_HT_RA_FORMAT),
- 	__CFG_FW_FEAT(RTL8852A, ge, 0, 13, 35, 0, SCAN_OFFLOAD),
- 	__CFG_FW_FEAT(RTL8852A, ge, 0, 13, 35, 0, TX_WAKE),
-@@ -840,6 +841,7 @@ static const struct __fw_feat_cfg fw_feat_tbl[] = {
- 	__CFG_FW_FEAT(RTL8852B, ge, 0, 29, 29, 15, BEACON_LOSS_COUNT_V1),
- 	__CFG_FW_FEAT(RTL8852B, lt, 0, 29, 30, 0, NO_WOW_CPU_IO_RX),
- 	__CFG_FW_FEAT(RTL8852B, ge, 0, 29, 127, 0, LPS_DACK_BY_C2H_REG),
-+	__CFG_FW_FEAT(RTL8852B, ge, 0, 29, 127, 0, SER_L1_BY_EVENT),
- 	__CFG_FW_FEAT(RTL8852B, ge, 0, 29, 128, 0, CRASH_TRIGGER_TYPE_1),
- 	__CFG_FW_FEAT(RTL8852B, ge, 0, 29, 128, 0, SCAN_OFFLOAD_EXTRA_OP),
- 	__CFG_FW_FEAT(RTL8852B, ge, 0, 29, 128, 0, BEACON_TRACKING),
-@@ -852,6 +854,7 @@ static const struct __fw_feat_cfg fw_feat_tbl[] = {
- 	__CFG_FW_FEAT(RTL8852BT, ge, 0, 29, 127, 0, SCAN_OFFLOAD_EXTRA_OP),
- 	__CFG_FW_FEAT(RTL8852BT, ge, 0, 29, 127, 0, LPS_DACK_BY_C2H_REG),
- 	__CFG_FW_FEAT(RTL8852BT, ge, 0, 29, 127, 0, CRASH_TRIGGER_TYPE_1),
-+	__CFG_FW_FEAT(RTL8852BT, ge, 0, 29, 127, 0, SER_L1_BY_EVENT),
- 	__CFG_FW_FEAT(RTL8852C, le, 0, 27, 33, 0, NO_DEEP_PS),
- 	__CFG_FW_FEAT(RTL8852C, ge, 0, 0, 0, 0, RFK_NTFY_MCC_V0),
- 	__CFG_FW_FEAT(RTL8852C, ge, 0, 27, 34, 0, TX_WAKE),
-@@ -863,6 +866,7 @@ static const struct __fw_feat_cfg fw_feat_tbl[] = {
- 	__CFG_FW_FEAT(RTL8852C, ge, 0, 27, 128, 0, LPS_DACK_BY_C2H_REG),
- 	__CFG_FW_FEAT(RTL8852C, ge, 0, 27, 128, 0, CRASH_TRIGGER_TYPE_1),
- 	__CFG_FW_FEAT(RTL8852C, ge, 0, 27, 129, 1, BEACON_TRACKING),
-+	__CFG_FW_FEAT(RTL8852C, ge, 0, 29, 94, 0, SER_L1_BY_EVENT),
- 	__CFG_FW_FEAT(RTL8922A, ge, 0, 34, 30, 0, CRASH_TRIGGER_TYPE_0),
- 	__CFG_FW_FEAT(RTL8922A, ge, 0, 34, 11, 0, MACID_PAUSE_SLEEP),
- 	__CFG_FW_FEAT(RTL8922A, ge, 0, 34, 35, 0, SCAN_OFFLOAD),
-diff --git a/drivers/net/wireless/realtek/rtw89/mac.c b/drivers/net/wireless/realtek/rtw89/mac.c
-index e0c4503c4ec2..e5f2fa3b2b37 100644
---- a/drivers/net/wireless/realtek/rtw89/mac.c
-+++ b/drivers/net/wireless/realtek/rtw89/mac.c
-@@ -848,6 +848,7 @@ EXPORT_SYMBOL(rtw89_mac_get_err_status);
- int rtw89_mac_set_err_status(struct rtw89_dev *rtwdev, u32 err)
- {
- 	struct rtw89_ser *ser = &rtwdev->ser;
-+	bool ser_l1_hdl = false;
- 	u32 halt;
- 	int ret = 0;
- 
-@@ -856,6 +857,12 @@ int rtw89_mac_set_err_status(struct rtw89_dev *rtwdev, u32 err)
- 		return -EINVAL;
- 	}
- 
-+	if (err == MAC_AX_ERR_L1_DISABLE_EN || err == MAC_AX_ERR_L1_RCVY_EN)
-+		ser_l1_hdl = true;
++struct rtw89_dbg_ser_counters {
++	unsigned int l0;
++	unsigned int l1;
++	unsigned int l0_to_l1;
++};
 +
-+	if (RTW89_CHK_FW_FEATURE(SER_L1_BY_EVENT, &rtwdev->fw) && ser_l1_hdl)
-+		goto set;
++static void rtw89_dbg_get_ser_counters_ax(struct rtw89_dev *rtwdev,
++					  struct rtw89_dbg_ser_counters *cnt)
++{
++	const u32 val = rtw89_read32(rtwdev, R_AX_SER_DBG_INFO);
 +
- 	ret = read_poll_timeout(rtw89_read32, halt, (halt == 0x0), 1000,
- 				100000, false, rtwdev, R_AX_HALT_H2C_CTRL);
- 	if (ret) {
-@@ -863,10 +870,10 @@ int rtw89_mac_set_err_status(struct rtw89_dev *rtwdev, u32 err)
- 		return -EFAULT;
- 	}
++	cnt->l0 = u32_get_bits(val, B_AX_SER_L0_COUNTER_MASK);
++	cnt->l1 = u32_get_bits(val, B_AX_SER_L1_COUNTER_MASK);
++	cnt->l0_to_l1 = u32_get_bits(val, B_AX_L0_TO_L1_EVENT_MASK);
++}
++
++static void rtw89_dbg_get_ser_counters_be(struct rtw89_dev *rtwdev,
++					  struct rtw89_dbg_ser_counters *cnt)
++{
++	const u32 val = rtw89_read32(rtwdev, R_BE_SER_DBG_INFO);
++
++	cnt->l0 = u32_get_bits(val, B_BE_SER_L0_COUNTER_MASK);
++	cnt->l1 = u32_get_bits(val, B_BE_SER_L1_COUNTER_MASK);
++	cnt->l0_to_l1 = u32_get_bits(val, B_BE_SER_L0_PROMOTE_L1_EVENT_MASK);
++}
++
++static ssize_t rtw89_debug_priv_ser_counters_get(struct rtw89_dev *rtwdev,
++						 struct rtw89_debugfs_priv *debugfs_priv,
++						 char *buf, size_t bufsz)
++{
++	const struct rtw89_chip_info *chip = rtwdev->chip;
++	struct rtw89_dbg_ser_counters cnt = {};
++	char *p = buf, *end = buf + bufsz;
++
++	rtw89_leave_ps_mode(rtwdev);
++
++	switch (chip->chip_gen) {
++	case RTW89_CHIP_AX:
++		rtw89_dbg_get_ser_counters_ax(rtwdev, &cnt);
++		break;
++	case RTW89_CHIP_BE:
++		rtw89_dbg_get_ser_counters_be(rtwdev, &cnt);
++		break;
++	default:
++		return -EOPNOTSUPP;
++	}
++
++	p += scnprintf(p, end - p, "SER L0 Count: %d\n", cnt.l0);
++	p += scnprintf(p, end - p, "SER L1 Count: %d\n", cnt.l1);
++	p += scnprintf(p, end - p, "SER L0 promote event: %d\n", cnt.l0_to_l1);
++
++	return p - buf;
++}
++
+ static ssize_t rtw89_debug_priv_btc_info_get(struct rtw89_dev *rtwdev,
+ 					     struct rtw89_debugfs_priv *debugfs_priv,
+ 					     char *buf, size_t bufsz)
+@@ -4767,6 +4822,7 @@ static const struct rtw89_debugfs rtw89_debugfs_templ = {
+ 	.send_h2c = rtw89_debug_priv_set(send_h2c),
+ 	.early_h2c = rtw89_debug_priv_set_and_get(early_h2c, RWLOCK),
+ 	.fw_crash = rtw89_debug_priv_set_and_get(fw_crash, WLOCK),
++	.ser_counters = rtw89_debug_priv_get(ser_counters, RLOCK),
+ 	.btc_info = rtw89_debug_priv_get(btc_info, RSIZE_12K),
+ 	.btc_manual = rtw89_debug_priv_set(btc_manual),
+ 	.fw_log_manual = rtw89_debug_priv_set(fw_log_manual, WLOCK),
+@@ -4814,6 +4870,7 @@ void rtw89_debugfs_add_sec1(struct rtw89_dev *rtwdev, struct dentry *debugfs_top
+ 	rtw89_debugfs_add_w(send_h2c);
+ 	rtw89_debugfs_add_rw(early_h2c);
+ 	rtw89_debugfs_add_rw(fw_crash);
++	rtw89_debugfs_add_r(ser_counters);
+ 	rtw89_debugfs_add_r(btc_info);
+ 	rtw89_debugfs_add_w(btc_manual);
+ 	rtw89_debugfs_add_w(fw_log_manual);
+diff --git a/drivers/net/wireless/realtek/rtw89/reg.h b/drivers/net/wireless/realtek/rtw89/reg.h
+index fb641cefa4c9..28ceab7726c6 100644
+--- a/drivers/net/wireless/realtek/rtw89/reg.h
++++ b/drivers/net/wireless/realtek/rtw89/reg.h
+@@ -607,6 +607,9 @@
  
-+set:
- 	rtw89_write32(rtwdev, R_AX_HALT_H2C, err);
+ #define R_AX_SER_DBG_INFO 0x8424
+ #define B_AX_L0_TO_L1_EVENT_MASK GENMASK(31, 28)
++#define B_AX_SER_L1_COUNTER_MASK GENMASK(27, 24)
++#define B_AX_RMAC_PPDU_HANG_CNT_MASK GENMASK(23, 16)
++#define B_AX_SER_L0_COUNTER_MASK GENMASK(7, 0)
  
--	if (ser->prehandle_l1 &&
--	    (err == MAC_AX_ERR_L1_DISABLE_EN || err == MAC_AX_ERR_L1_RCVY_EN))
-+	if (ser->prehandle_l1 && ser_l1_hdl)
- 		return 0;
+ #define R_AX_DLE_EMPTY0 0x8430
+ #define B_AX_PLE_EMPTY_QTA_DMAC_CPUIO BIT(26)
+@@ -4731,7 +4734,7 @@
+ #define B_BE_SER_L0_PROMOTE_L1_EVENT_MASK GENMASK(31, 28)
+ #define B_BE_SER_L1_COUNTER_MASK GENMASK(27, 24)
+ #define B_BE_RMAC_PPDU_HANG_CNT_MASK GENMASK(23, 16)
+-#define B_BE_SER_L0_COUNTER_MASK GENMASK(8, 0)
++#define B_BE_SER_L0_COUNTER_MASK GENMASK(7, 0)
  
- 	rtw89_write32(rtwdev, R_AX_HALT_H2C_CTRL, B_AX_HALT_H2C_TRIGGER);
+ #define R_BE_DMAC_SYS_CR32B 0x842C
+ #define B_BE_DMAC_BB_PHY1_MASK GENMASK(31, 16)
 -- 
 2.25.1
 
