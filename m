@@ -1,50 +1,51 @@
-Return-Path: <linux-wireless+bounces-29910-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-29909-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 76494CCDC90
-	for <lists+linux-wireless@lfdr.de>; Thu, 18 Dec 2025 23:22:55 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 96ECFCCDC9C
+	for <lists+linux-wireless@lfdr.de>; Thu, 18 Dec 2025 23:23:01 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 886D1301E188
-	for <lists+linux-wireless@lfdr.de>; Thu, 18 Dec 2025 22:22:15 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 9ED9D30393E3
+	for <lists+linux-wireless@lfdr.de>; Thu, 18 Dec 2025 22:22:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 520982F0C7E;
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 523472F39A9;
 	Thu, 18 Dec 2025 22:22:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="OT59e+CW"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="NNGmKXMv"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 155DD2E091C;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 155672D97B7;
 	Thu, 18 Dec 2025 22:22:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1766096534; cv=none; b=tIExsm7qmHX8meDa4z29GdXRiyB2MXLRqizC/w1HL2dNnAuxjFlzAPtNOLk14ejC6ZByoiVdEbMDzNZ4u8Fn82HIOWJ4O2BYiZim4jME2owG2fj6XjjE2/gjei8gVC9os9oWj6olht124csaVQZbFfDJXGgCgwfN2WxWcA8tYhU=
+	t=1766096534; cv=none; b=Lz+JWXeLNw4B4IeHtaurdwTCgzdgg6kGC02rbqb6ld/r8cQPmSoN8mvcJEjEiUYKRXaELNnz2z3KLVGndJBtcGlI82jkkXzlhIcNgkUDSAavyb6WMYBqoX8IMJSb90Q6+hDXWK6SqdLCUx4/qTtvEwt3uSud6qyyjjw8RMJ68/o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1766096534; c=relaxed/simple;
-	bh=+nZ/RachHicljKBPQvfPhRbpQ1Keo1pBWg9oFhJ+I6k=;
-	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=rXRCeLRpgHbKDYmuS3R1T3+TZUUrt9W1/j+faa59lpm1HXeMfGMOCEGuPoVDoQjOk+weXGUNZXJUXS+xpcqmU1i5g031EuWkZCOeYgNwBzgb08HoIYLiC4YDoA5An/qeb3vFtT3TjNbW63CNGazq6w5Bt/fIJ29l2mJkuec3RHQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=OT59e+CW; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPS id A0D96C4CEFB;
+	bh=XhLZIJ1aGNsOa6zR/7FJFBDE32GVcpBkjhLN7XTCseA=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
+	 In-Reply-To:To:Cc; b=V9znfLeuJMOL1GWFDKhwZ3ObSzCSlGoOsVwXqReO9m+pAJnvdPtOIYSYvWlwZN1W692r1pVPoG+Jl+e4bnzPK81MR6lhHYWXepLlzkIqBr5ZK36nBFML1zgR/6kL5IJ20O5YTNB0PEKzu7IiFSPQN29QGFFAWu0lAc10nW4CtuU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=NNGmKXMv; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPS id AE3CBC113D0;
 	Thu, 18 Dec 2025 22:22:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
 	s=k20201202; t=1766096533;
-	bh=+nZ/RachHicljKBPQvfPhRbpQ1Keo1pBWg9oFhJ+I6k=;
-	h=From:Subject:Date:To:Cc:Reply-To:From;
-	b=OT59e+CWQ355G20qB8xy9EP9tqNJ5i6Dwpruo/LGX/1VnFMlY1d2Nn4xYBw94JQYu
-	 oL2J8UTT6YW53Y4p5ztUksht1GdQ8JKZDaIX/znGn+MWifXtug15GNS6L31zNPUjTY
-	 s/jUlUDck0mzuiQiTVKdOc2vX93zeXIk/blbO5wH/FKq1Fi9nFVdXnsAlKaqdZHV1b
-	 mmkjMeZ2hVq5ZqxyaFT/ZWn5VuKsF/uZ/0naqAaogr23DiDcYuN42PoYqhQXA51q5i
-	 SIg7iLGkatGTHhNDB7+NTzYg/xJr5Af9KAi0KIo+H/K70DAaxytdxV+HCnN8IyG/0+
-	 RLZoFmDmjeSVA==
+	bh=XhLZIJ1aGNsOa6zR/7FJFBDE32GVcpBkjhLN7XTCseA=;
+	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To:From;
+	b=NNGmKXMvkK97gBmx6jjXbDK/gHvSeNyOk1vzCaOv6KgA6Mfb3SKvbvgFI5qiOYMIu
+	 bFBzsOnE7DPNKwGZ/G0jeE/6/6OtplaPHC8SoOEG4oOxVZd6xFhn/uto+gOsiXSRhY
+	 hgiUMbysQXpFAnboY96/1MzdACYgZVRb+TBR1zQCKU07ekFIY8mC7796eVHcJNrOA6
+	 LZdfpL7qs/yxcN+liN9jOfUslencR0hm/zVSrtL/tjgscheV9CTORTmDLQZX9piEtf
+	 b7f/lVvvU2nl+lwu9eDhiwMu98VUh2GyFc9nSjD1xLZwlEXflQAu+E/5j/4wCSoEoR
+	 0g3rfvUerc8Dg==
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 8BC9CD6E2B7;
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 9D91CD6E2AE;
 	Thu, 18 Dec 2025 22:22:13 +0000 (UTC)
 From: =?utf-8?q?J=C3=A9r=C3=B4me_de_Bretagne_via_B4_Relay?= <devnull+jerome.debretagne.gmail.com@kernel.org>
-Subject: [PATCH v4 0/6] Microsoft Surface Pro 11 support
-Date: Thu, 18 Dec 2025 23:22:06 +0100
-Message-Id: <20251218-surface-sp11-for-next-v4-0-7bcf83c1504a@gmail.com>
+Date: Thu, 18 Dec 2025 23:22:07 +0100
+Subject: [PATCH v4 1/6] dt-bindings: arm: qcom: Document Microsoft Surface
+ Pro 11
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
@@ -53,11 +54,9 @@ List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
-X-B4-Tracking: v=1; b=H4sIAI9+RGkC/4WNQQ6CMBBFr0Jm7RjaCiWuvIdhUcoUJhFKWmwwh
- LtbuYDL95L//g6RAlOEe7FDoMSR/ZzhdinAjmYeCLnPDLKUlZCiwfgOzljCuAiBzgecaVuxljU
- pqZ3ulIK8XQI53s7us808clx9+Jw3Sf3sv2JSWGKjK+Os7nrV6ccwGX5drZ+gPY7jC6au+WO6A
- AAA
-X-Change-ID: 20251218-surface-sp11-for-next-626e327f7b33
+Message-Id: <20251218-surface-sp11-for-next-v4-1-7bcf83c1504a@gmail.com>
+References: <20251218-surface-sp11-for-next-v4-0-7bcf83c1504a@gmail.com>
+In-Reply-To: <20251218-surface-sp11-for-next-v4-0-7bcf83c1504a@gmail.com>
 To: Bjorn Andersson <andersson@kernel.org>, 
  Konrad Dybcio <konradybcio@kernel.org>, Rob Herring <robh@kernel.org>, 
  Krzysztof Kozlowski <krzk+dt@kernel.org>, 
@@ -71,15 +70,13 @@ Cc: linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org,
  linux-kernel@vger.kernel.org, linux-wireless@vger.kernel.org, 
  platform-driver-x86@vger.kernel.org, ath12k@lists.infradead.org, 
  Dale Whinham <daleyo@gmail.com>, 
- =?utf-8?q?J=C3=A9r=C3=B4me_de_Bretagne?= <jerome.debretagne@gmail.com>, 
- Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>, 
- Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
+ =?utf-8?q?J=C3=A9r=C3=B4me_de_Bretagne?= <jerome.debretagne@gmail.com>
 X-Mailer: b4 0.14.2
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1766096532; l=3671;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1766096532; l=1443;
  i=jerome.debretagne@gmail.com; s=20251217; h=from:subject:message-id;
- bh=+nZ/RachHicljKBPQvfPhRbpQ1Keo1pBWg9oFhJ+I6k=;
- b=Ts8DMmqKv+jQy8DyxyYinIrcMYNaz8nT0TpG0iLgYoj+NlrG2OsZVKdbeyO0oAvzARhBH3bRr
- WsqU3KjfNncDLsT9kNq3mEM7vUF6RRr5U3n+Nrc/icdyvNneV1AX1MC
+ bh=ODLaLlEkMG2kK+0djUMjgpeCyxYtB1rpe7QmWVeQ38w=;
+ b=eapOBwWELgT98JYZhKAFUjAKdIgtUMS8sccAXttnQQdPnFEJhY7bwjbBpP1t0DnYlJLBkb5mt
+ 89OUwlWY6lLDb0zxIoJUrrX6sG3qYmmn9OgQTwsON0kwgm/HN5nvwIl
 X-Developer-Key: i=jerome.debretagne@gmail.com; a=ed25519;
  pk=DcPD9n3oDMsPkt+12tU96swmGb5H86cxt+yiEVcUEGk=
 X-Endpoint-Received: by B4 Relay for jerome.debretagne@gmail.com/20251217
@@ -87,74 +84,48 @@ X-Endpoint-Received: by B4 Relay for jerome.debretagne@gmail.com/20251217
 X-Original-From: =?utf-8?q?J=C3=A9r=C3=B4me_de_Bretagne?= <jerome.debretagne@gmail.com>
 Reply-To: jerome.debretagne@gmail.com
 
-This series brings support for the Qualcomm-based Microsoft Surface
-Pro 11 covering both the OLED and LCD variants.
+From: Jérôme de Bretagne <jerome.debretagne@gmail.com>
 
-Signed-off-by: Dale Whinham <daleyo@gmail.com>
+Add the compatibles for the Qualcomm-based Microsoft Surface Pro 11,
+using its Denali codename.
+
+The LCD models are using the Qualcomm Snapdragon X1 Plus (X1P64100),
+the OLED ones are using the Qualcomm Snapdragon X1 Elite (X1E80100).
+
+Due to the difference in how the built-in panel is being handled
+between the OLED variant and LCD one, it is required to have two
+separate DTBs, so document the compatible string for both variants.
+
 Signed-off-by: Jérôme de Bretagne <jerome.debretagne@gmail.com>
 ---
-Changes in v4:
-- Re-order the denali entry in the aggregator_registry acpi_match table [Dmitry]
-- Improve the bindings by splitting the LCD and OLED variants into 2 entries [Konrad]
-- Enable i2c4 to make it accessible through i2c-tools [Konrad]
-- Document the addresses for i2c0 and i2c4 like in romulus.dtsi [Konrad]
-- Fix the clock-frequency for i2c0 based on DSDT/SSDT
-- Drop i2c5 which is not found in the DSDT after double-checking
-- Add the R-b: tag from Konrad for the SP11 device trees
-- Link to v3: https://lore.kernel.org/r/20251218-surface-sp11-for-next-v3-0-875afc7bd3b7@gmail.com
+ Documentation/devicetree/bindings/arm/qcom.yaml | 11 +++++++++++
+ 1 file changed, 11 insertions(+)
 
-Changes in v3:
-- Update the compatible strings to document both the OLED and LCD variants
-- Move the disable-rfkill property into ieee80211.yaml [Rob,Krzysztof]
-- Reference commit c6a7c0b09d5f and detail the disable-rfkill patch description [Rob,Krzysztof]
-- Switch to the renamed hamoa.dtsi and hamoa-pmics.dtsi [Dale]
-- Improve the comments describing the 2 USB Type-C port location
-- Update the speaker definition to describe only 2-speakers [Konrad]
-- Drop output-low from the speaker definition [Konrad]
-- Enable i2c0 to make it accessible through i2c-tools [Konrad]
-- Delete a non-applicable comment about removable WLAN card [Konrad]
-- Re-order a few nodes and fix indentation issues [Konrad]
-- Squash one of the patches as suggested [Krzysztof]
-- Drop the NAKed patch patch about a dpcd link rate quirk [Dmitry]
-- Include the Reviewed-by: tags
-- Link to v2: https://lore.kernel.org/all/20251201011457.17422-1-daleyo@gmail.com/
+diff --git a/Documentation/devicetree/bindings/arm/qcom.yaml b/Documentation/devicetree/bindings/arm/qcom.yaml
+index d84bd3bca2010508a8225b9549d8c634efa06531..3685330344c0bf621125fc3d2f9c04082d6de144 100644
+--- a/Documentation/devicetree/bindings/arm/qcom.yaml
++++ b/Documentation/devicetree/bindings/arm/qcom.yaml
+@@ -1067,6 +1067,17 @@ properties:
+           - const: qcom,x1e78100
+           - const: qcom,x1e80100
+ 
++      - items:
++          - const: microsoft,denali-lcd
++          - const: microsoft,denali
++          - const: qcom,x1p64100
++          - const: qcom,x1e80100
++
++      - items:
++          - const: microsoft,denali-oled
++          - const: microsoft,denali
++          - const: qcom,x1e80100
++
+       - items:
+           - enum:
+               - asus,vivobook-s15
 
-Changes in v2:
-  - Dropped ATNA30DW01 patch as it was merged.
-  - Split device tree into x1e (OLED)/x1p (LCD) specific *.dts files and move common code into x1-microsoft-denali.dtsi (patch 4).
-  - Device tree now enables higher external monitor refresh rates/resolutions (patch 4).
-  - Device tree now enables partially working audio output; requires alsa-ucm-conf and audioreach-topology definitions in userspace (patch 4).
-  - Replaced 'Work around bogus maximum link rate' with a quirk-based approach (patch 5).
-  - Improve the commit message about the disable-rfkill property in response to feedback (patch 6).
-
----
-Dale Whinham (4):
-      firmware: qcom: scm: allow QSEECOM on Surface Pro 11
-      platform/surface: aggregator_registry: Add Surface Pro 11 (QCOM)
-      arm64: dts: qcom: Add support for Surface Pro 11
-      wifi: ath12k: Add support for disabling rfkill via devicetree
-
-Jérôme de Bretagne (2):
-      dt-bindings: arm: qcom: Document Microsoft Surface Pro 11
-      dt-bindings: wireless: ieee80211: Add disable-rfkill property
-
- Documentation/devicetree/bindings/arm/qcom.yaml    |   11 +
- .../bindings/net/wireless/ieee80211.yaml           |    6 +
- arch/arm64/boot/dts/qcom/Makefile                  |    4 +
- arch/arm64/boot/dts/qcom/x1-microsoft-denali.dtsi  | 1324 ++++++++++++++++++++
- .../dts/qcom/x1e80100-microsoft-denali-oled.dts    |   20 +
- .../boot/dts/qcom/x1p64100-microsoft-denali.dts    |   16 +
- drivers/firmware/qcom/qcom_scm.c                   |    1 +
- drivers/net/wireless/ath/ath12k/core.c             |    3 +
- .../platform/surface/surface_aggregator_registry.c |   18 +
- 9 files changed, 1403 insertions(+)
----
-base-commit: 8f0b4cce4481fb22653697cced8d0d04027cb1e8
-change-id: 20251218-surface-sp11-for-next-626e327f7b33
-
-Best regards,
 -- 
-Jérôme de Bretagne <jerome.debretagne@gmail.com>
+2.47.3
 
 
 
