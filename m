@@ -1,235 +1,167 @@
-Return-Path: <linux-wireless+bounces-29902-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-29903-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id DC269CCCD00
-	for <lists+linux-wireless@lfdr.de>; Thu, 18 Dec 2025 17:36:53 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3F8C9CCCD4B
+	for <lists+linux-wireless@lfdr.de>; Thu, 18 Dec 2025 17:42:21 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 18AA330D1B06
-	for <lists+linux-wireless@lfdr.de>; Thu, 18 Dec 2025 16:32:03 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 9D738304F687
+	for <lists+linux-wireless@lfdr.de>; Thu, 18 Dec 2025 16:42:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 27433345CAE;
-	Thu, 18 Dec 2025 16:24:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3A25434F46D;
+	Thu, 18 Dec 2025 16:35:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="CpB9Qjfx"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="fS8M2XgM"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-qv1-f53.google.com (mail-qv1-f53.google.com [209.85.219.53])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D9CF43451B2;
-	Thu, 18 Dec 2025 16:24:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B325134F26F
+	for <linux-wireless@vger.kernel.org>; Thu, 18 Dec 2025 16:35:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.53
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1766075058; cv=none; b=JTRDtUOZObYUf3CzZVgGjKUDqFnWUzkVrxQA+uShYEzV/T9lxDLilPqPh2cH1UMyVUpTcXfFT/qQzV8vl1zupIAbj4LItY4wLH8GaAhZ7hFxZqjkriVazIu/Je7B7rThbzZFvyDcxAdq2ryx+rjnRBgFTkSqPUl1V6idmoH3KvU=
+	t=1766075744; cv=none; b=cnv39v+m04GKTCaDCx5aooBKLhKHpB/ImsmYZVFGXY6RcRokx55lsO9ctNanuHyDli82ErS1jQpZZdbHIVlUXdKXpu6pjwj/K1PaJ708+d/Abq+skS5b3dvMHRHvpEOBgEA9wjXIfdUAZl7j1oy0n9OHFiVagzzp3YPl8gO9YDg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1766075058; c=relaxed/simple;
-	bh=X5gSMMJxTpeVSLwt9c3VGpJBP7cA+dKBFUTwA1R/8Mk=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=AyjJ0+9OpXbh7IbIbaF0QNgwcjnyWdfsiWsHyXdfsJ22ofp45tVv0FUMZ4d0Q+7IxRomHNhMBgBx9JEd/OsmvSIC1Muj7Ps1TyFlQ9bjGg6HpAcqWTMqhpZ+7Xq5liy01k8paP94YnigN4iBTlDc3ZnLDUeHzkVYTYJAGJF+038=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=CpB9Qjfx; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 742D1C4CEFB;
-	Thu, 18 Dec 2025 16:24:10 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1766075057;
-	bh=X5gSMMJxTpeVSLwt9c3VGpJBP7cA+dKBFUTwA1R/8Mk=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=CpB9QjfxUGu7QHeL+Ttl3LbAbI0T6PGcte3cn+vIPi7DalYPSikxLc4VNjs+cpLMU
-	 wAHm/NDnq3/9kUW0LDoX3+13AOelp2GqKXTYjoe50BFg7vDy3SO6luvKjh1dbx8+uX
-	 esRJC+w0UZsPyGsE4IuZLrx1NXnDPaAPK7noFXUR3Sfa757BmSMq29w2iuXqHYK48p
-	 MZaE4rqXx9iMTl7GFQzcqkHRmumgpFlPwZofAGeWpTNAx1AKVTt+Di4Upt2U7lFyTc
-	 1X3wPqiVCqHD+JYpbvtv5JKyX0UGO6Mxcto4/3HoJJkrHjbEJkKYjYI8YoSW//pXSP
-	 XLtDOMNb4Xjqg==
-Date: Thu, 18 Dec 2025 21:54:07 +0530
-From: Manivannan Sadhasivam <mani@kernel.org>
-To: Loic Poulain <loic.poulain@oss.qualcomm.com>
-Cc: manivannan.sadhasivam@oss.qualcomm.com, 
-	Jeff Hugo <jeff.hugo@oss.qualcomm.com>, Carl Vanderlip <carl.vanderlip@oss.qualcomm.com>, 
-	Oded Gabbay <ogabbay@kernel.org>, Jeff Johnson <jjohnson@kernel.org>, 
-	"David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, 
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Maxim Kochetkov <fido_max@inbox.ru>, 
-	linux-arm-msm@vger.kernel.org, dri-devel@lists.freedesktop.org, linux-kernel@vger.kernel.org, 
-	mhi@lists.linux.dev, linux-wireless@vger.kernel.org, ath11k@lists.infradead.org, 
-	ath12k@lists.infradead.org, netdev@vger.kernel.org, Bjorn Andersson <andersson@kernel.org>, 
-	Johan Hovold <johan@kernel.org>, Chris Lew <quic_clew@quicinc.com>, stable@vger.kernel.org
-Subject: Re: [PATCH 1/2] net: qrtr: Drop the MHI auto_queue feature for IPCR
- DL channels
-Message-ID: <pm5amorzm2bvjrvswd4phwiic7wsmitxtzwdvtwqflepxkukjf@esikj32tds7o>
-References: <20251217-qrtr-fix-v1-0-f6142a3ec9d8@oss.qualcomm.com>
- <20251217-qrtr-fix-v1-1-f6142a3ec9d8@oss.qualcomm.com>
- <CAFEp6-0iuJNDM9hdU3rWns=Vst6Ev1iyNim1ngRH3Z44CHwTAg@mail.gmail.com>
+	s=arc-20240116; t=1766075744; c=relaxed/simple;
+	bh=Qxt65n4062GAtyCItZG91W6WkPx1gldCA6LORPhoKy4=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=olDyTqQAZ7e2rzjamQarv/VZnuapDcdtEm3pf80KjJ0pn771Xt0b5X87QOT14QzkBxuppZ8TJNS1L5vsadTWaYE+V+2olelgQQsWD12+OlqdwVr8/YOlHnZMINb+5tZnUxiO9mosnShN2sNPG8Kq1xtCjWRqGJT0b97DVaWn/lc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=fS8M2XgM; arc=none smtp.client-ip=209.85.219.53
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-qv1-f53.google.com with SMTP id 6a1803df08f44-8885aae52b1so7067106d6.0
+        for <linux-wireless@vger.kernel.org>; Thu, 18 Dec 2025 08:35:40 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1766075738; x=1766680538; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=vthX8EZ69SmXta9bEKt82uOMLThl45XqVhRz116/j3k=;
+        b=fS8M2XgM7KnCat7J5+hkeiZHM2H5asJJOL1xpI9tNyAodAFqTCrDUBjEfo4pDvJxwS
+         lplvz3Wdnh+EujNVeIRLOO/zDL4eGe8kLsOw+uY/skCW/l3T7sDumyN2NPpdvvip7YP0
+         asY5aN0vS859pTDX9xwTv9nnmsaL6qFCkWHhQ1Nde+tcjr+Bx/WycZQ7vxNV8xPnaGYV
+         9EfbnqEqpmxhDiHaRvNsiIqTw8bRfUTSHMaycVRM1NAgJeIv1wVhVFOdWjz8bzLeYR2H
+         n6z47w7xJde5v81fkDYvfu9PIfrN7nN1fKCBPK9m/CLIZoMxgzEOWPlsgogprWW4Hk1G
+         GmkA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1766075738; x=1766680538;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=vthX8EZ69SmXta9bEKt82uOMLThl45XqVhRz116/j3k=;
+        b=Wxsoo9S6GGu8+9WUfTCIs4P9NXzS08QeTRs0ur7928sMEtK8hs+lvY3BOKdXTSmOVR
+         5uGNxv4jl/SdBEhuPxi5cCzXjTbMaB0kajY5EXgqrJPvgJgWpI/2On02CMr6bv9Y7nGz
+         E5L47djV8Mrp7nHSYtxUk4M2rS+oF+0YDA6T+dH7R/hyT+bgG+PTa9b57Masw3L100gw
+         zYwgn4O/c9ZnmcM6r9sQ+GMw/VC0DgqjJ2qeuIjmXI5wZpM7ufu/jmJkHLa4YoiSxAmu
+         7IVQohQa5I/Ta5QcQmWqPhjq0ScLEEr9tqOtOGKxe4IdhORBUSwg2Cu0747YM4yfG1c2
+         XniQ==
+X-Forwarded-Encrypted: i=1; AJvYcCXopAHYPCP4o1Qf6w4IG+BwBCUgGurQMu8JqU60y9wtYMsBc+8BnvUYNNE11rwLsQBHaxLZhaijir7lXxs60g==@vger.kernel.org
+X-Gm-Message-State: AOJu0YwmOSbJ7OOW+qxt0y2rCrOLyYC5DLUWsociAmHADJ0z1zRtSQ7Z
+	rXtCs6/PEW/7hXkVTTu0baeo63VkSJ2xQ+41O5JItGPjC40rnGeIMYvdJK+x0Rsgf/soQ1/ZZPQ
+	EMGJ0a+WrNRdfaJSR5OQfeLRow+mzZw==
+X-Gm-Gg: AY/fxX7ZsgdihO1D63hay9uC3iHN8BGl7ff4W65DSK8RgZzb5qtmPaslrzyAYTuFcg3
+	s4lkzojOXHNhwIKGBjOjGQbW2AMlf6ALgtD5KiZBBHXod+rYUABs4co68l4xF8jdnvjJEF4NmIA
+	08ShiLQ1/e7TmLItFrez+3UsO/N9zCmJZZHkC9vpR5qGkH5kyEtP/nbZkHrp3LFN3KCBLFzNITG
+	gQbobfgEQvhRnPCyhuitZ3xStEVVswWlDZnRfFo84D/KCGGYOLE8b13dR5a4/kIlvZ60OUYhyjc
+	THDGud5gUh+johvrk+f8bEHefR4=
+X-Google-Smtp-Source: AGHT+IE9/ZCMCiyjrmPyCIsxYsQHia6PO/5OA2ZJrCLu8tQ8JQjcXci/gveKRp2q1MLBH7jp/9tKHDC2qJ1c5+HtAN0=
+X-Received: by 2002:a05:6214:598e:b0:888:7e41:a9a with SMTP id
+ 6a1803df08f44-88d87be8db8mr2888306d6.46.1766075738235; Thu, 18 Dec 2025
+ 08:35:38 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <CAFEp6-0iuJNDM9hdU3rWns=Vst6Ev1iyNim1ngRH3Z44CHwTAg@mail.gmail.com>
+References: <20251218-surface-sp11-for-next-v3-0-875afc7bd3b7@gmail.com>
+ <20251218-surface-sp11-for-next-v3-1-875afc7bd3b7@gmail.com> <438a352e-5174-4361-b6e5-6ff5fe1ce0c0@oss.qualcomm.com>
+In-Reply-To: <438a352e-5174-4361-b6e5-6ff5fe1ce0c0@oss.qualcomm.com>
+From: =?UTF-8?B?SsOpcsO0bWUgZGUgQnJldGFnbmU=?= <jerome.debretagne@gmail.com>
+Date: Thu, 18 Dec 2025 17:35:03 +0100
+X-Gm-Features: AQt7F2rTRoXMF5xHMqmkLERUjvS2qI4aUT26N8INWGtmOaD17Y8RxpKD_isxRH0
+Message-ID: <CA+kEDGE42HhaWZy1o9DjpwcjPiJcqvq52o-_g+auOkp26ukULg@mail.gmail.com>
+Subject: Re: [PATCH v3 1/6] dt-bindings: arm: qcom: Document Microsoft Surface
+ Pro 11
+To: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
+Cc: Bjorn Andersson <andersson@kernel.org>, Konrad Dybcio <konradybcio@kernel.org>, 
+	Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, 
+	Johannes Berg <johannes@sipsolutions.net>, Lorenzo Bianconi <lorenzo@kernel.org>, 
+	Maximilian Luz <luzmaximilian@gmail.com>, Hans de Goede <hansg@kernel.org>, 
+	=?UTF-8?Q?Ilpo_J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>, 
+	Jeff Johnson <jjohnson@kernel.org>, linux-arm-msm@vger.kernel.org, 
+	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	linux-wireless@vger.kernel.org, platform-driver-x86@vger.kernel.org, 
+	ath12k@lists.infradead.org, Dale Whinham <daleyo@gmail.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Wed, Dec 17, 2025 at 09:55:01PM +0100, Loic Poulain wrote:
-> Hi Mani,
-> 
-> On Wed, Dec 17, 2025 at 6:17 PM Manivannan Sadhasivam via B4 Relay
-> <devnull+manivannan.sadhasivam.oss.qualcomm.com@kernel.org> wrote:
+Le jeu. 18 d=C3=A9c. 2025 =C3=A0 15:15, Konrad Dybcio
+<konrad.dybcio@oss.qualcomm.com> a =C3=A9crit :
+>
+> On 12/18/25 12:56 AM, J=C3=A9r=C3=B4me de Bretagne via B4 Relay wrote:
+> > From: J=C3=A9r=C3=B4me de Bretagne <jerome.debretagne@gmail.com>
 > >
-> > From: Manivannan Sadhasivam <manivannan.sadhasivam@oss.qualcomm.com>
+> > Add the compatibles for the Qualcomm-based Microsoft Surface Pro 11,
+> > using its Denali codename.
 > >
-> > MHI stack offers the 'auto_queue' feature, which allows the MHI stack to
-> > auto queue the buffers for the RX path (DL channel). Though this feature
-> > simplifies the client driver design, it introduces race between the client
-> > drivers and the MHI stack. For instance, with auto_queue, the 'dl_callback'
-> > for the DL channel may get called before the client driver is fully probed.
-> > This means, by the time the dl_callback gets called, the client driver's
-> > structures might not be initialized, leading to NULL ptr dereference.
+> > The LCD models are using the Qualcomm Snapdragon X1 Plus (X1P64100),
+> > the OLED ones are using the Qualcomm Snapdragon X1 Elite (X1E80100).
 > >
-> > Currently, the drivers have to workaround this issue by initializing the
-> > internal structures before calling mhi_prepare_for_transfer_autoqueue().
-> > But even so, there is a chance that the client driver's internal code path
-> > may call the MHI queue APIs before mhi_prepare_for_transfer_autoqueue() is
-> > called, leading to similar NULL ptr dereference. This issue has been
-> > reported on the Qcom X1E80100 CRD machines affecting boot.
+> > Due to the difference in how the built-in panel is being handled
+> > between the OLED variant and LCD one, it is required to have two
+> > separate DTBs, so document the compatible string for both variants.
 > >
-> > So to properly fix all these races, drop the MHI 'auto_queue' feature
-> > altogether and let the client driver (QRTR) manage the RX buffers manually.
-> > In the QRTR driver, queue the RX buffers based on the ring length during
-> > probe and recycle the buffers in 'dl_callback' once they are consumed. This
-> > also warrants removing the setting of 'auto_queue' flag from controller
-> > drivers.
-> >
-> > Currently, this 'auto_queue' feature is only enabled for IPCR DL channel.
-> > So only the QRTR client driver requires the modification.
-> >
-> > Cc: stable@vger.kernel.org
-> > Fixes: 227fee5fc99e ("bus: mhi: core: Add an API for auto queueing buffers for DL channel")
-> > Fixes: 68a838b84eff ("net: qrtr: start MHI channel after endpoit creation")
-> > Reported-by: Johan Hovold <johan@kernel.org>
-> > Closes: https://lore.kernel.org/linux-arm-msm/ZyTtVdkCCES0lkl4@hovoldconsulting.com
-> > Suggested-by: Chris Lew <quic_clew@quicinc.com>
-> > Signed-off-by: Manivannan Sadhasivam <manivannan.sadhasivam@oss.qualcomm.com>
+> > Signed-off-by: J=C3=A9r=C3=B4me de Bretagne <jerome.debretagne@gmail.co=
+m>
 > > ---
-> >  drivers/accel/qaic/mhi_controller.c   | 44 -----------------------
-> >  drivers/bus/mhi/host/pci_generic.c    | 20 ++---------
-> >  drivers/net/wireless/ath/ath11k/mhi.c |  4 ---
-> >  drivers/net/wireless/ath/ath12k/mhi.c |  4 ---
-> >  net/qrtr/mhi.c                        | 67 +++++++++++++++++++++++++++++------
-> >  5 files changed, 58 insertions(+), 81 deletions(-)
-> [...]
-> > diff --git a/net/qrtr/mhi.c b/net/qrtr/mhi.c
-> > index 69f53625a049..0b4d181ea747 100644
-> > --- a/net/qrtr/mhi.c
-> > +++ b/net/qrtr/mhi.c
-> > @@ -24,13 +24,25 @@ static void qcom_mhi_qrtr_dl_callback(struct mhi_device *mhi_dev,
-> >         struct qrtr_mhi_dev *qdev = dev_get_drvdata(&mhi_dev->dev);
-> >         int rc;
+> >  Documentation/devicetree/bindings/arm/qcom.yaml | 8 ++++++++
+> >  1 file changed, 8 insertions(+)
 > >
-> > -       if (!qdev || mhi_res->transaction_status)
-> > +       if (!qdev || (mhi_res->transaction_status && mhi_res->transaction_status != -ENOTCONN))
-> >                 return;
+> > diff --git a/Documentation/devicetree/bindings/arm/qcom.yaml b/Document=
+ation/devicetree/bindings/arm/qcom.yaml
+> > index d84bd3bca2010508a8225b9549d8c634efa06531..7c99bc0d3aae3dc6e9c08fe=
+f0a535e114a3297a8 100644
+> > --- a/Documentation/devicetree/bindings/arm/qcom.yaml
+> > +++ b/Documentation/devicetree/bindings/arm/qcom.yaml
+> > @@ -1067,6 +1067,14 @@ properties:
+> >            - const: qcom,x1e78100
+> >            - const: qcom,x1e80100
 > >
-> > +       /* Channel got reset. So just free the buffer */
-> > +       if (mhi_res->transaction_status == -ENOTCONN) {
-> > +               devm_kfree(&mhi_dev->dev, mhi_res->buf_addr);
-> > +               return;
-> > +       }
-> > +
-> >         rc = qrtr_endpoint_post(&qdev->ep, mhi_res->buf_addr,
-> >                                 mhi_res->bytes_xferd);
-> >         if (rc == -EINVAL)
-> >                 dev_err(qdev->dev, "invalid ipcrouter packet\n");
-> > +
-> > +       /* Done with the buffer, now recycle it for future use */
-> > +       rc = mhi_queue_buf(mhi_dev, DMA_FROM_DEVICE, mhi_res->buf_addr,
-> > +                          mhi_dev->mhi_cntrl->buffer_len, MHI_EOT);
-> > +       if (rc)
-> > +               dev_err(&mhi_dev->dev, "Failed to recycle the buffer: %d\n", rc);
-> >  }
-> >
-> >  /* From QRTR to MHI */
-> > @@ -72,6 +84,27 @@ static int qcom_mhi_qrtr_send(struct qrtr_endpoint *ep, struct sk_buff *skb)
-> >         return rc;
-> >  }
-> >
-> > +static int qcom_mhi_qrtr_queue_dl_buffers(struct mhi_device *mhi_dev)
-> > +{
-> > +       void *buf;
-> > +       int ret;
-> > +
-> > +       while (!mhi_queue_is_full(mhi_dev, DMA_FROM_DEVICE)) {
-> 
-> This approach might be a bit racy, since a buffer could complete
-> before the alloc+queue loop finishes. That could e.g lead to recycle
-> error in a concurrent DL callback.
+> > +      - items:
+> > +          - enum:
+> > +              - microsoft,denali-lcd
+> > +              - microsoft,denali-oled
+> > +          - const: microsoft,denali
+> > +          - const: qcom,x1p64100
+> > +          - const: qcom,x1e80100
+>
+> As the bot pointed out, this is valid, but not what you want:
+>
+> This expects
+>
+> "microsoft,denali-(lcd/oled)", "microsoft,denali", "qcom,x1p64100",
+> "qcom,x1e80100"
+>
+> whereas you're looking for 2 entries:
+>
+> - items:
+>         const: microsoft,denali-lcd
+>         const: microsoft,denali
+>         const: qcom,x1p64100
+>         const: qcom,x1e80100
+>
+> - items:
+>         const: microsoft,denali-oled
+>         const: microsoft,denali
+>         const: qcom,x1e80100
 
-I don't think the race is possible as we just queue the buffers during probe and
-resume. But I get your point, using mhi_get_free_desc_count() is more
-straightforward.
+I was trying to group the 2 variants together, as they are very much
+related. Your description captures the 2 variants way more precisely,
+I will switch to 2 distinct entries in v4.
 
-- Mani
+> Konrad
 
-> It might be simpler to just queue
-> the number of descriptors returned by mhi_get_free_desc_count().
-> 
-> > +               buf = devm_kmalloc(&mhi_dev->dev, mhi_dev->mhi_cntrl->buffer_len, GFP_KERNEL);
-> > +               if (!buf)
-> > +                       return -ENOMEM;
-> > +
-> > +               ret = mhi_queue_buf(mhi_dev, DMA_FROM_DEVICE, buf, mhi_dev->mhi_cntrl->buffer_len,
-> > +                                   MHI_EOT);
-> > +               if (ret) {
-> > +                       dev_err(&mhi_dev->dev, "Failed to queue buffer: %d\n", ret);
-> > +                       return ret;
-> > +               }
-> > +       }
-> > +
-> > +       return 0;
-> > +}
-> > +
-> >  static int qcom_mhi_qrtr_probe(struct mhi_device *mhi_dev,
-> >                                const struct mhi_device_id *id)
-> >  {
-> > @@ -87,20 +120,30 @@ static int qcom_mhi_qrtr_probe(struct mhi_device *mhi_dev,
-> >         qdev->ep.xmit = qcom_mhi_qrtr_send;
-> >
-> >         dev_set_drvdata(&mhi_dev->dev, qdev);
-> > -       rc = qrtr_endpoint_register(&qdev->ep, QRTR_EP_NID_AUTO);
-> > -       if (rc)
-> > -               return rc;
-> >
-> >         /* start channels */
-> > -       rc = mhi_prepare_for_transfer_autoqueue(mhi_dev);
-> > -       if (rc) {
-> > -               qrtr_endpoint_unregister(&qdev->ep);
-> > +       rc = mhi_prepare_for_transfer(mhi_dev);
-> > +       if (rc)
-> >                 return rc;
-> > -       }
-> > +
-> > +       rc = qrtr_endpoint_register(&qdev->ep, QRTR_EP_NID_AUTO);
-> > +       if (rc)
-> > +               goto err_unprepare;
-> > +
-> > +       rc = qcom_mhi_qrtr_queue_dl_buffers(mhi_dev);
-> > +       if (rc)
-> > +               goto err_unregister;
-> >
-> >         dev_dbg(qdev->dev, "Qualcomm MHI QRTR driver probed\n");
-> >
-> >         return 0;
-> > +
-> > +err_unregister:
-> > +       qrtr_endpoint_unregister(&qdev->ep);
-> > +err_unprepare:
-> > +       mhi_unprepare_from_transfer(mhi_dev);
-> > +
-> > +       return rc;
-> >  }
-> 
-> Regards,
-> Loic
-
--- 
-மணிவண்ணன் சதாசிவம்
+Thanks again for your review,
+J=C3=A9r=C3=B4me
 
