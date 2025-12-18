@@ -1,167 +1,149 @@
-Return-Path: <linux-wireless+bounces-29903-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-29905-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3F8C9CCCD4B
-	for <lists+linux-wireless@lfdr.de>; Thu, 18 Dec 2025 17:42:21 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id A69F9CCCDF9
+	for <lists+linux-wireless@lfdr.de>; Thu, 18 Dec 2025 17:52:40 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 9D738304F687
-	for <lists+linux-wireless@lfdr.de>; Thu, 18 Dec 2025 16:42:10 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 2FD59302C5FF
+	for <lists+linux-wireless@lfdr.de>; Thu, 18 Dec 2025 16:52:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3A25434F46D;
-	Thu, 18 Dec 2025 16:35:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C59A0327BE0;
+	Thu, 18 Dec 2025 16:51:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="fS8M2XgM"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="dt4gPY4Q"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-qv1-f53.google.com (mail-qv1-f53.google.com [209.85.219.53])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B325134F26F
-	for <linux-wireless@vger.kernel.org>; Thu, 18 Dec 2025 16:35:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.53
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EBC6833984F;
+	Thu, 18 Dec 2025 16:51:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1766075744; cv=none; b=cnv39v+m04GKTCaDCx5aooBKLhKHpB/ImsmYZVFGXY6RcRokx55lsO9ctNanuHyDli82ErS1jQpZZdbHIVlUXdKXpu6pjwj/K1PaJ708+d/Abq+skS5b3dvMHRHvpEOBgEA9wjXIfdUAZl7j1oy0n9OHFiVagzzp3YPl8gO9YDg=
+	t=1766076709; cv=none; b=VgYOEHMgj1CHe+Q6uj79VVkhH1GItJ/vf+CcSY/LbPzOteJbvaYEbIyOKvXarl0mZhRq7B4iiNgcEAz+krIgO+N6OismX+wKG4xz/nzIFiOhzRHQuUlPHuovtXdQ3V7J0XnGRKTE92mNmas6zddjE7yGufNkqyXfKOjDgEkAM3E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1766075744; c=relaxed/simple;
-	bh=Qxt65n4062GAtyCItZG91W6WkPx1gldCA6LORPhoKy4=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=olDyTqQAZ7e2rzjamQarv/VZnuapDcdtEm3pf80KjJ0pn771Xt0b5X87QOT14QzkBxuppZ8TJNS1L5vsadTWaYE+V+2olelgQQsWD12+OlqdwVr8/YOlHnZMINb+5tZnUxiO9mosnShN2sNPG8Kq1xtCjWRqGJT0b97DVaWn/lc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=fS8M2XgM; arc=none smtp.client-ip=209.85.219.53
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-qv1-f53.google.com with SMTP id 6a1803df08f44-8885aae52b1so7067106d6.0
-        for <linux-wireless@vger.kernel.org>; Thu, 18 Dec 2025 08:35:40 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1766075738; x=1766680538; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=vthX8EZ69SmXta9bEKt82uOMLThl45XqVhRz116/j3k=;
-        b=fS8M2XgM7KnCat7J5+hkeiZHM2H5asJJOL1xpI9tNyAodAFqTCrDUBjEfo4pDvJxwS
-         lplvz3Wdnh+EujNVeIRLOO/zDL4eGe8kLsOw+uY/skCW/l3T7sDumyN2NPpdvvip7YP0
-         asY5aN0vS859pTDX9xwTv9nnmsaL6qFCkWHhQ1Nde+tcjr+Bx/WycZQ7vxNV8xPnaGYV
-         9EfbnqEqpmxhDiHaRvNsiIqTw8bRfUTSHMaycVRM1NAgJeIv1wVhVFOdWjz8bzLeYR2H
-         n6z47w7xJde5v81fkDYvfu9PIfrN7nN1fKCBPK9m/CLIZoMxgzEOWPlsgogprWW4Hk1G
-         GmkA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1766075738; x=1766680538;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=vthX8EZ69SmXta9bEKt82uOMLThl45XqVhRz116/j3k=;
-        b=Wxsoo9S6GGu8+9WUfTCIs4P9NXzS08QeTRs0ur7928sMEtK8hs+lvY3BOKdXTSmOVR
-         5uGNxv4jl/SdBEhuPxi5cCzXjTbMaB0kajY5EXgqrJPvgJgWpI/2On02CMr6bv9Y7nGz
-         E5L47djV8Mrp7nHSYtxUk4M2rS+oF+0YDA6T+dH7R/hyT+bgG+PTa9b57Masw3L100gw
-         zYwgn4O/c9ZnmcM6r9sQ+GMw/VC0DgqjJ2qeuIjmXI5wZpM7ufu/jmJkHLa4YoiSxAmu
-         7IVQohQa5I/Ta5QcQmWqPhjq0ScLEEr9tqOtOGKxe4IdhORBUSwg2Cu0747YM4yfG1c2
-         XniQ==
-X-Forwarded-Encrypted: i=1; AJvYcCXopAHYPCP4o1Qf6w4IG+BwBCUgGurQMu8JqU60y9wtYMsBc+8BnvUYNNE11rwLsQBHaxLZhaijir7lXxs60g==@vger.kernel.org
-X-Gm-Message-State: AOJu0YwmOSbJ7OOW+qxt0y2rCrOLyYC5DLUWsociAmHADJ0z1zRtSQ7Z
-	rXtCs6/PEW/7hXkVTTu0baeo63VkSJ2xQ+41O5JItGPjC40rnGeIMYvdJK+x0Rsgf/soQ1/ZZPQ
-	EMGJ0a+WrNRdfaJSR5OQfeLRow+mzZw==
-X-Gm-Gg: AY/fxX7ZsgdihO1D63hay9uC3iHN8BGl7ff4W65DSK8RgZzb5qtmPaslrzyAYTuFcg3
-	s4lkzojOXHNhwIKGBjOjGQbW2AMlf6ALgtD5KiZBBHXod+rYUABs4co68l4xF8jdnvjJEF4NmIA
-	08ShiLQ1/e7TmLItFrez+3UsO/N9zCmJZZHkC9vpR5qGkH5kyEtP/nbZkHrp3LFN3KCBLFzNITG
-	gQbobfgEQvhRnPCyhuitZ3xStEVVswWlDZnRfFo84D/KCGGYOLE8b13dR5a4/kIlvZ60OUYhyjc
-	THDGud5gUh+johvrk+f8bEHefR4=
-X-Google-Smtp-Source: AGHT+IE9/ZCMCiyjrmPyCIsxYsQHia6PO/5OA2ZJrCLu8tQ8JQjcXci/gveKRp2q1MLBH7jp/9tKHDC2qJ1c5+HtAN0=
-X-Received: by 2002:a05:6214:598e:b0:888:7e41:a9a with SMTP id
- 6a1803df08f44-88d87be8db8mr2888306d6.46.1766075738235; Thu, 18 Dec 2025
- 08:35:38 -0800 (PST)
+	s=arc-20240116; t=1766076709; c=relaxed/simple;
+	bh=NWdJvH9yOqg1eTTYzzMYejBHNkyExdCjfVBKS/HDM44=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=EQwh1jSJGxjhS9kv2RVXuEthquFt4x+Mn5qlwtTFusznetwpGekxSMbkmv+mlwqEv5dLU4Xjmn6uu/zHzvLddJgVCp97RXB+st4YDHls+fjIE8+6ZFYF1dgQztfrmTp0umBwEyrb3BzLEhc0OejsaXPG3AwnyShOibpB3ApT228=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=dt4gPY4Q; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPS id 5E7C6C4CEFB;
+	Thu, 18 Dec 2025 16:51:48 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1766076708;
+	bh=NWdJvH9yOqg1eTTYzzMYejBHNkyExdCjfVBKS/HDM44=;
+	h=From:Subject:Date:To:Cc:Reply-To:From;
+	b=dt4gPY4QoL+iquIEKaMU8FXDPaXWNEPoR76qyDRHf8BHEABOmmGqtldjowawYsjxR
+	 SfbmUrNxL0bSRyi70P4EZ6VZ21E8aaqF9juKg/aGPGjIv3uKE5OkphBJ+Ft/cgHlI8
+	 nCX+083XK2NvLNffoypKwGZF1KMWhz4ZP/D1vyvnoopUTLd7y5p1cxigFS8xImbp5O
+	 2TVzL3mGpf2FGU7b4uyMvuBffHeZSE7gfkY+/yJchtnFkTvEkmgWTh0eF0wulIRahs
+	 YpVJtAsI9LsXJxdTg9nA/ewkkOn67614r/CHh5inurQ1zuS9diPae1+Sm4fCzoKoFX
+	 cppHZOlVDrNsQ==
+Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 4A7FDD6ACF9;
+	Thu, 18 Dec 2025 16:51:48 +0000 (UTC)
+From: Manivannan Sadhasivam via B4 Relay <devnull+manivannan.sadhasivam.oss.qualcomm.com@kernel.org>
+Subject: [PATCH v2 0/2] net: qrtr: Drop the MHI 'auto_queue' feature
+Date: Thu, 18 Dec 2025 22:21:43 +0530
+Message-Id: <20251218-qrtr-fix-v2-0-c7499bfcfbe0@oss.qualcomm.com>
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20251218-surface-sp11-for-next-v3-0-875afc7bd3b7@gmail.com>
- <20251218-surface-sp11-for-next-v3-1-875afc7bd3b7@gmail.com> <438a352e-5174-4361-b6e5-6ff5fe1ce0c0@oss.qualcomm.com>
-In-Reply-To: <438a352e-5174-4361-b6e5-6ff5fe1ce0c0@oss.qualcomm.com>
-From: =?UTF-8?B?SsOpcsO0bWUgZGUgQnJldGFnbmU=?= <jerome.debretagne@gmail.com>
-Date: Thu, 18 Dec 2025 17:35:03 +0100
-X-Gm-Features: AQt7F2rTRoXMF5xHMqmkLERUjvS2qI4aUT26N8INWGtmOaD17Y8RxpKD_isxRH0
-Message-ID: <CA+kEDGE42HhaWZy1o9DjpwcjPiJcqvq52o-_g+auOkp26ukULg@mail.gmail.com>
-Subject: Re: [PATCH v3 1/6] dt-bindings: arm: qcom: Document Microsoft Surface
- Pro 11
-To: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
-Cc: Bjorn Andersson <andersson@kernel.org>, Konrad Dybcio <konradybcio@kernel.org>, 
-	Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, 
-	Johannes Berg <johannes@sipsolutions.net>, Lorenzo Bianconi <lorenzo@kernel.org>, 
-	Maximilian Luz <luzmaximilian@gmail.com>, Hans de Goede <hansg@kernel.org>, 
-	=?UTF-8?Q?Ilpo_J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>, 
-	Jeff Johnson <jjohnson@kernel.org>, linux-arm-msm@vger.kernel.org, 
-	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	linux-wireless@vger.kernel.org, platform-driver-x86@vger.kernel.org, 
-	ath12k@lists.infradead.org, Dale Whinham <daleyo@gmail.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAB8xRGkC/22MQQ6CMBBFr0Jm7ZBOFa2uvIdh0bSDNBEqLRIN6
+ d0dWbv5yXv5eStkToEzXKoVEi8hhzgK6F0FrrfjnTF4YdBKN6TphFOaE3bhjU41Rpw3nizI/Zl
+ Y9Ja6tcJ9yHNMn6280M/+iSyECrsjHbTdszt7c40519PLPlwchloG2lLKFxUi2w6nAAAA
+X-Change-ID: 20251217-qrtr-fix-c058251d8d1a
+To: Jeff Hugo <jeff.hugo@oss.qualcomm.com>, 
+ Carl Vanderlip <carl.vanderlip@oss.qualcomm.com>, 
+ Oded Gabbay <ogabbay@kernel.org>, Manivannan Sadhasivam <mani@kernel.org>, 
+ Jeff Johnson <jjohnson@kernel.org>, "David S. Miller" <davem@davemloft.net>, 
+ Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, 
+ Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, 
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
+ Loic Poulain <loic.poulain@oss.qualcomm.com>, 
+ Maxim Kochetkov <fido_max@inbox.ru>
+Cc: linux-arm-msm@vger.kernel.org, dri-devel@lists.freedesktop.org, 
+ linux-kernel@vger.kernel.org, mhi@lists.linux.dev, 
+ linux-wireless@vger.kernel.org, ath11k@lists.infradead.org, 
+ ath12k@lists.infradead.org, netdev@vger.kernel.org, 
+ Bjorn Andersson <andersson@kernel.org>, Johan Hovold <johan@kernel.org>, 
+ Chris Lew <quic_clew@quicinc.com>, 
+ Manivannan Sadhasivam <manivannan.sadhasivam@oss.qualcomm.com>, 
+ stable@vger.kernel.org
+X-Mailer: b4 0.14.3
+X-Developer-Signature: v=1; a=openpgp-sha256; l=2023;
+ i=manivannan.sadhasivam@oss.qualcomm.com; h=from:subject:message-id;
+ bh=NWdJvH9yOqg1eTTYzzMYejBHNkyExdCjfVBKS/HDM44=;
+ b=owEBbQGS/pANAwAKAVWfEeb+kc71AcsmYgBpRDEi+Khc2ZOmm08ikV3hNuslUf4Bh48CandeI
+ RWNP6g/wIqJATMEAAEKAB0WIQRnpUMqgUjL2KRYJ5dVnxHm/pHO9QUCaUQxIgAKCRBVnxHm/pHO
+ 9cemB/4vwlTSkc1bcE9+WVu8UZBpxkiHP576YpiTakv5EZxlkFChtASnSg5UjtwhIOXzyOgFQy2
+ pEEenMNY623MJgBh7dLPRFliZcUk5vqRoynw9xyZoFq0N6+a/Wl9StpbTruRRUlKCZjV45RTnF5
+ DPEocovrNLBl0IOuhO2IaNLl28iwB47Rijj/8/14ZY5n7SuWdm6C+s/SX72/nLlSvghNYhlikR/
+ GoWwVOwRzqgutCV9wESS0ljwkenQpfx+gNiQv4hbEG7rCIPWPNwzOROxvllQTFCimCsVVbthY/h
+ etHKiqG93rCOK9WO1mHhSY/l8rE53ViVBptce8Tt1ed0goJG
+X-Developer-Key: i=manivannan.sadhasivam@oss.qualcomm.com; a=openpgp;
+ fpr=C668AEC3C3188E4C611465E7488550E901166008
+X-Endpoint-Received: by B4 Relay for
+ manivannan.sadhasivam@oss.qualcomm.com/default with auth_id=461
+X-Original-From: Manivannan Sadhasivam <manivannan.sadhasivam@oss.qualcomm.com>
+Reply-To: manivannan.sadhasivam@oss.qualcomm.com
 
-Le jeu. 18 d=C3=A9c. 2025 =C3=A0 15:15, Konrad Dybcio
-<konrad.dybcio@oss.qualcomm.com> a =C3=A9crit :
->
-> On 12/18/25 12:56 AM, J=C3=A9r=C3=B4me de Bretagne via B4 Relay wrote:
-> > From: J=C3=A9r=C3=B4me de Bretagne <jerome.debretagne@gmail.com>
-> >
-> > Add the compatibles for the Qualcomm-based Microsoft Surface Pro 11,
-> > using its Denali codename.
-> >
-> > The LCD models are using the Qualcomm Snapdragon X1 Plus (X1P64100),
-> > the OLED ones are using the Qualcomm Snapdragon X1 Elite (X1E80100).
-> >
-> > Due to the difference in how the built-in panel is being handled
-> > between the OLED variant and LCD one, it is required to have two
-> > separate DTBs, so document the compatible string for both variants.
-> >
-> > Signed-off-by: J=C3=A9r=C3=B4me de Bretagne <jerome.debretagne@gmail.co=
-m>
-> > ---
-> >  Documentation/devicetree/bindings/arm/qcom.yaml | 8 ++++++++
-> >  1 file changed, 8 insertions(+)
-> >
-> > diff --git a/Documentation/devicetree/bindings/arm/qcom.yaml b/Document=
-ation/devicetree/bindings/arm/qcom.yaml
-> > index d84bd3bca2010508a8225b9549d8c634efa06531..7c99bc0d3aae3dc6e9c08fe=
-f0a535e114a3297a8 100644
-> > --- a/Documentation/devicetree/bindings/arm/qcom.yaml
-> > +++ b/Documentation/devicetree/bindings/arm/qcom.yaml
-> > @@ -1067,6 +1067,14 @@ properties:
-> >            - const: qcom,x1e78100
-> >            - const: qcom,x1e80100
-> >
-> > +      - items:
-> > +          - enum:
-> > +              - microsoft,denali-lcd
-> > +              - microsoft,denali-oled
-> > +          - const: microsoft,denali
-> > +          - const: qcom,x1p64100
-> > +          - const: qcom,x1e80100
->
-> As the bot pointed out, this is valid, but not what you want:
->
-> This expects
->
-> "microsoft,denali-(lcd/oled)", "microsoft,denali", "qcom,x1p64100",
-> "qcom,x1e80100"
->
-> whereas you're looking for 2 entries:
->
-> - items:
->         const: microsoft,denali-lcd
->         const: microsoft,denali
->         const: qcom,x1p64100
->         const: qcom,x1e80100
->
-> - items:
->         const: microsoft,denali-oled
->         const: microsoft,denali
->         const: qcom,x1e80100
+Hi,
 
-I was trying to group the 2 variants together, as they are very much
-related. Your description captures the 2 variants way more precisely,
-I will switch to 2 distinct entries in v4.
+This series intends to fix the race between the MHI stack and the MHI client
+drivers due to the MHI 'auto_queue' feature. As it turns out often, the best
+way to fix an issue in a feature is to drop the feature itself and this series
+does exactly that.
 
-> Konrad
+There is no real benefit in having the 'auto_queue' feature in the MHI stack,
+other than saving a few lines of code in the client drivers. Since the QRTR is
+the only client driver which makes use of this feature, this series reworks the
+QRTR driver to manage the buffer on its own.
 
-Thanks again for your review,
-J=C3=A9r=C3=B4me
+Testing
+=======
+
+Tested on Qcom X1E based Lenovo Thinkpad T14s laptop with WLAN device.
+
+Merge Strategy
+==============
+
+Since this series modifies many subsystem drivers, I'd like to get acks from
+relevant subsystem maintainers and take the series through MHI tree.
+
+Signed-off-by: Manivannan Sadhasivam <manivannan.sadhasivam@oss.qualcomm.com>
+---
+Changes in v2:
+- Used mhi_get_free_desc_count() to queue the buffers
+- Collected tags
+- Link to v1: https://lore.kernel.org/r/20251217-qrtr-fix-v1-0-f6142a3ec9d8@oss.qualcomm.com
+
+---
+Manivannan Sadhasivam (2):
+      net: qrtr: Drop the MHI auto_queue feature for IPCR DL channels
+      bus: mhi: host: Drop the auto_queue support
+
+ drivers/accel/qaic/mhi_controller.c   | 44 -------------------
+ drivers/bus/mhi/host/init.c           | 10 -----
+ drivers/bus/mhi/host/internal.h       |  3 --
+ drivers/bus/mhi/host/main.c           | 81 +----------------------------------
+ drivers/bus/mhi/host/pci_generic.c    | 20 +--------
+ drivers/net/wireless/ath/ath11k/mhi.c |  4 --
+ drivers/net/wireless/ath/ath12k/mhi.c |  4 --
+ include/linux/mhi.h                   | 14 ------
+ net/qrtr/mhi.c                        | 69 ++++++++++++++++++++++++-----
+ 9 files changed, 62 insertions(+), 187 deletions(-)
+---
+base-commit: 8f0b4cce4481fb22653697cced8d0d04027cb1e8
+change-id: 20251217-qrtr-fix-c058251d8d1a
+
+Best regards,
+-- 
+Manivannan Sadhasivam <manivannan.sadhasivam@oss.qualcomm.com>
+
+
 
