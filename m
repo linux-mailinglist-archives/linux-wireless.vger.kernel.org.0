@@ -1,159 +1,119 @@
-Return-Path: <linux-wireless+bounces-29894-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-29895-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 09EE6CCA95A
-	for <lists+linux-wireless@lfdr.de>; Thu, 18 Dec 2025 08:07:51 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3A72ACCAB6E
+	for <lists+linux-wireless@lfdr.de>; Thu, 18 Dec 2025 08:44:31 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 411BE303EF74
-	for <lists+linux-wireless@lfdr.de>; Thu, 18 Dec 2025 07:05:46 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id D7297300761C
+	for <lists+linux-wireless@lfdr.de>; Thu, 18 Dec 2025 07:44:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 43B7B21D3E6;
-	Thu, 18 Dec 2025 07:05:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9637720FAB2;
+	Thu, 18 Dec 2025 07:44:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (4096-bit key) header.d=canonical.com header.i=@canonical.com header.b="b+x9aYVE"
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="KfEbjCUD"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from smtp-relay-internal-1.canonical.com (smtp-relay-internal-1.canonical.com [185.125.188.123])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f66.google.com (mail-wm1-f66.google.com [209.85.128.66])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3571017B425
-	for <linux-wireless@vger.kernel.org>; Thu, 18 Dec 2025 07:05:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.125.188.123
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A820B298CC0
+	for <linux-wireless@vger.kernel.org>; Thu, 18 Dec 2025 07:44:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.66
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1766041545; cv=none; b=Ept/YGHQeiYX9s6JIWUhW6HcdHFL8i26dDanCPVer8utll9LTLcC6TftbD7WjfTsPi02HQvk7tPj/JXw6vCCQoWQrvu3kw/zXVyuRMWK0a49P/z0jWf4eM/LZ4UepGXOANMX0YbJALGeChnctWE9Lus4ldh6q1c92vsp0qLv0Hs=
+	t=1766043868; cv=none; b=MpjBZqHv7QssWlfwyQi1fZwMblaoJEpstZ3jXNAe/gCxPUfn+xXpUSNYnKj5rE4mHUwa7KHE3ghTN8qoq+cUDPxDnC5HD08Hej2oHsVXZfJ3yJjjOH66DIuspMODlpElWfPIMYsJGuo0cwt79CFFO7rhsOp4tVEtAQNz6hcNYS0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1766041545; c=relaxed/simple;
-	bh=WkaZwMv2JvPKYzx1x5YJKcKMa/ycX1CuZmm0Ujjv7D0=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=aPvPBB5Z2EqJZsv0REZQlzOYQ4bL0TKPcFm3l1pNLQjF4YQheKPGouoTraFHwbJzLdiVklmJwX7oX31dszeJLAC7qdobZC/Z3QQnnmrIQIZjHuS6Yfy6+i5p1IdiLgnGTrgMDYDwGJi1zXD9Pore1bl2viFiHFPcrxoYhwpz38w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=canonical.com; spf=pass smtp.mailfrom=canonical.com; dkim=pass (4096-bit key) header.d=canonical.com header.i=@canonical.com header.b=b+x9aYVE; arc=none smtp.client-ip=185.125.188.123
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=canonical.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=canonical.com
-Received: from mail-ej1-f70.google.com (mail-ej1-f70.google.com [209.85.218.70])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-relay-internal-1.canonical.com (Postfix) with ESMTPS id 822993F82B
-	for <linux-wireless@vger.kernel.org>; Thu, 18 Dec 2025 07:05:40 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=canonical.com;
-	s=20251003; t=1766041540;
-	bh=c7S7hlyro8bVLPaUshenPuh/zyDvp4ao0uVsdHOsDEM=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type;
-	b=b+x9aYVE8DWnw9M4Xk3LXKWB4AxNPbR4yPGAV5qT9mRLujSAn3+jZ4wVLWVm25SyV
-	 zVwQCKSOEBwj5Qa44loAOzLUdwYO69ROndaTk50ieXfnAlMTGGi5kklGjblg69VhrU
-	 92rjjPVpcmdXo0LAHqm4uDDpgajFtDY/LM0yu4yK/LDO2EXB4x5OOwk4vq5kwLx61M
-	 nSI+n/xifQ4oQGbvsNuG/1UmplXwed+yBouWNE87quDiLrgHCh0+xTV6Ajz9WSR8W2
-	 SEM2qQS4aL/KNFsDQPjDKRK1t1fcqDtI4iPp4/k8Jpf6/Xp8RJ+UzfM5PWEA8YJRxt
-	 AlgIN0KxUT9pWD56uLS3ilrpOhV60X+u/jYn4izPuZrbc+vPG3OugLCpjLDc6MsVzK
-	 vAQTMQHGDFrr+cHgGTnS/qiII5oraUeo893N0WkK4LSxXy2zBTsIwmYtjd4FIoMP9Y
-	 5HfRPMPsRA4o1YSOAbUZR+khRsYDX+RDfLdv8Ivnkfn+byryVy8FgUksoPKdK2sKGm
-	 mu/1HMeKWQq7NICNhlDwB2UxaxaSqj+rA/LLsfxmtMpu98plJYhm2prV2Ev9plUZZr
-	 hj97mY56zJ2YwWnbk0rkNeXKEZ9mpRdA4IHcAoQ5zcGmkj5be4WutqGOTXV15+rIgR
-	 RkCz+PVb+A6VsLDeLMAIN4eM=
-Received: by mail-ej1-f70.google.com with SMTP id a640c23a62f3a-b771bfe9802so20875166b.1
-        for <linux-wireless@vger.kernel.org>; Wed, 17 Dec 2025 23:05:40 -0800 (PST)
+	s=arc-20240116; t=1766043868; c=relaxed/simple;
+	bh=XbnMB/v37ZvTMnfVrio95/zDhdVKRpunW29/ufxDUwE=;
+	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
+	 Content-Disposition; b=V0D0eEhlfqH2MnkuSdcky8y0ZYRDQ6PvPudK2ug9P7IiLbORdBP+a/48JbW/LUdRedV+bHRI18iTfAvCjwiY5rPgSupY0+Icxi84aX9u3DEuCSxsaMJaGU7Yx7itaed+v9j2cvtzB0vEATMhIO2md7lw49UYJ5vTPZ+8jOI4Nw0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=KfEbjCUD; arc=none smtp.client-ip=209.85.128.66
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+Received: by mail-wm1-f66.google.com with SMTP id 5b1f17b1804b1-477632d9326so1815475e9.1
+        for <linux-wireless@vger.kernel.org>; Wed, 17 Dec 2025 23:44:26 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1766043865; x=1766648665; darn=vger.kernel.org;
+        h=content-disposition:mime-version:message-id:subject:cc:to:from:date
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=hmBu8zFR/klecwYr2D2QZWbIrMNrDUPX/mNk79sUoPA=;
+        b=KfEbjCUDjlxbQpbNyOPUXqcyclaeCmeKPHFMJeXC9Tci9Ie5ZZtwV5u8AeaXrNjK1/
+         b1Z/ZQHN6nMOGYIoCYsK19OtVUBbDq7rO70T6tEllFjqjajAipMjx7hRF0JpoWk9ahi3
+         4Q//rZdrtGHF5Y2Pm0Th9Mz/t9CqglFp9GmQecKwVVNunkEf5C491U3jJv//OQfAr1rV
+         3pyxzRxR9sWsOiNTA13mvHVP0rAnjfSA4t1LuDgq2mF4Cyzn8NELqKB51j9LuOQSUwqR
+         4nLWYbSMOvXV2xhq9cQh4r0hdlff+LOr+J71cuSQwhtTHS3TDSxAQXsvzxlS3r9Nh99+
+         98Sg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1766041540; x=1766646340;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=c7S7hlyro8bVLPaUshenPuh/zyDvp4ao0uVsdHOsDEM=;
-        b=P+gREcDamlZh6MkYZMFAvEftGg6Uj8zRKH9sCNFLldi+PYY6ET+CB+JamZCG+jFK1Z
-         TxcXtkN7Tj1uEKnTJiYu/Yi37h0PD4ZrXcyBr04ditXWp9kdaYgPuD2nBK2Y13Pk1vau
-         5eXn9s3ztqPW4YOABbB3G4oTUIGK5ILR33avN1d6fbDp4YWdrLwrhhRDnl4W8F0wnWr6
-         qzfAo78Uvh5DK+So8Clc6LC6FLAdAIisqA0UJcwBuAbo3Nv1+iECUKf0D3nkj0MDRu2N
-         jydFTZX/tk/pzsPZqkyiUuxy3dU9rnCyXA6xxFdS6vvulM/BDmbgBMoS/OS44Ecta/7i
-         g7Ww==
-X-Forwarded-Encrypted: i=1; AJvYcCWdJVWm2A3nu20Nw/5ZTPu2L9mc5X9QlJ3skBvV2kSUi/Rptla3rL7jxFz/spLRYT0pDdzFsl7+zwj/oaB+aA==@vger.kernel.org
-X-Gm-Message-State: AOJu0YxGbBe8hAaQSFb2jBQvDMlT34WaZ/xtJUg1UCQK6EpHVw1BXv8i
-	6D/xsyB73d/6o/eg+LklfIPaR7Voa033+0ymApG+SH3q0sCWPTNWun14ewLGTQOai5xDXp6OnNw
-	aX4DclVdTIj1PLJ/SgXZ/1TT/IT2gjbO7XRcYxUiOuyxSY7JB4RV1bRfuUHGzSXaC0fTuAdYcL1
-	TlPKT83FO7/3Ovj/av+91jOgg/RL6pq5u3KE6eJ0e8K0AxDLruENIMjARXSCw=
-X-Gm-Gg: AY/fxX4j1/doJOWB5289BTuavF5/Nz3c+cWVW2rKXGfGraOkAr/ejrbS4yQHsPCcLkW
-	FcFmpr4K0LHge6Fb35v2cnZfh1GGT/+3vcYeSPOUHrc+qGz4kD8zFbUDC3CZsJGyvQtoCjSbXxR
-	EHqkXiZcnFdhCeyeMwxZY5BsO90X72vEpP3t9/c9yR/mYXGm/6QYV8C5+pNSOLJqmB2xhX3hVvW
-	95e2/Pu9YayUw==
-X-Received: by 2002:a17:907:9282:b0:b7c:e5d6:2462 with SMTP id a640c23a62f3a-b7d236c1aa1mr2440553166b.28.1766041539962;
-        Wed, 17 Dec 2025 23:05:39 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IHYGGDlGR8ADZeTuf+I2EP8DPreDJKDZDO7LRoTEnfNBskKW5KUZhOxrJXIujTLMPLzLh8TI5+4XZpPWPsKGLg=
-X-Received: by 2002:a17:907:9282:b0:b7c:e5d6:2462 with SMTP id
- a640c23a62f3a-b7d236c1aa1mr2440549866b.28.1766041539543; Wed, 17 Dec 2025
- 23:05:39 -0800 (PST)
+        d=1e100.net; s=20230601; t=1766043865; x=1766648665;
+        h=content-disposition:mime-version:message-id:subject:cc:to:from:date
+         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=hmBu8zFR/klecwYr2D2QZWbIrMNrDUPX/mNk79sUoPA=;
+        b=Dh2rYS7fe7oeHFzvndawzBwkj6PAzuWCViGIQ1gCf4WZlWx12XGPtWyopbFixeysPC
+         p1PlZ0aTDI9s7FkvpgMXmhbqdSXMO1ZNrkOemglFNghuPNAjdHqKM6zOhGrsdhlZkT+H
+         D7pPx7BPQzIb0d7+Tr8LB36nLlr1fsyyr+hLns54SBhvYuK3MEdvB0L/YOFIUVEEJRav
+         PecZfO+WaOinB2wX0yVMwwaTK6GtSr5/pw2xecsI50/KjAvB9j1leUpA5PN9nUAt8Ez5
+         pVIo6X+iHHSjmefvH5sFNZSHOCJ3XaXCVAt6LMNkBG5MALWasBMHF25D50WBoScN6dyJ
+         PQlQ==
+X-Forwarded-Encrypted: i=1; AJvYcCWKv7yNLdDK67LFM9jnR6mlHF9bsicQj26zhMws82Zape1aOmSzBi0Tx5GAC/TvVBr4QsaXEQKUGIjUYiu/lA==@vger.kernel.org
+X-Gm-Message-State: AOJu0YzKf5k99igC5nCVX7Zvprh+8vLbfWPLg3KSNlb6NisCHITlXsOO
+	hqUrDfKwMK1Zas0bac1pRCLBLq5ENl9B2RSHKX2LClyI+fOEvBb7Tx3JtNrjXVcIVNU=
+X-Gm-Gg: AY/fxX7l9025RlAYLXlxQvpHcpT23O1sxZZP6mK2SigjWPzb73uj9lPGAbDnUMr6GF2
+	zLjDiJHoLwmq+hz7i7pg0L/qpa5ygfjm4FxoMiy2Bd2IyPpozFA86J325FHO08dMHJDi/eDCH1V
+	NvZZAhlX0h3AZWuJto8mIitcFEZqLjY/WG7kcGi59N1RZIBIxdRfVDSp5VpZh3bYv/B4d3GEsUt
+	VWKA8iKh+AAnMBHYMWTeHjX8Ge2Ot2VDLCZ4xjZKoZEnjkrgQkHddU08WrTaa1w/ZHMIqt2LY80
+	jTeOxQxin0gmYOOBNtdAMRSC2pH9s5wEcbVJ2fV/Fyxn+S97RdbL93+YcIldPAFyMLEtlT39YOc
+	Z3Dq/44L104ogHAx0xhIhauXSQJ5NcNKfRw+oM5SgahMZCDx1HwGt1xj7Yny8+1C/mOuMzgcJOD
+	4UjnHIwDyt3VKUsHcX
+X-Google-Smtp-Source: AGHT+IHeT5UtBHWPRMxU9FR3aTP1+g1lAhxDtBjVewu9mYYmBR2tXxoSh9w6+3wkstsmfDdqt5pgvg==
+X-Received: by 2002:a05:600d:14:b0:475:da1a:5418 with SMTP id 5b1f17b1804b1-47a8f9a825amr168231755e9.1.1766043864798;
+        Wed, 17 Dec 2025 23:44:24 -0800 (PST)
+Received: from localhost ([196.207.164.177])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-47be27b28a7sm29116925e9.12.2025.12.17.23.44.23
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 17 Dec 2025 23:44:24 -0800 (PST)
+Date: Thu, 18 Dec 2025 10:44:20 +0300
+From: Dan Carpenter <dan.carpenter@linaro.org>
+To: Harsh Kumar Bijlani <quic_hbijlani@quicinc.com>
+Cc: Jeff Johnson <jjohnson@kernel.org>,
+	Ripan Deuri <quic_rdeuri@quicinc.com>,
+	Vasanthakumar Thiagarajan <vasanthakumar.thiagarajan@oss.qualcomm.com>,
+	Baochen Qiang <baochen.qiang@oss.qualcomm.com>,
+	linux-wireless@vger.kernel.org, ath12k@lists.infradead.org,
+	linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org
+Subject: [PATCH next] wifi: ath12k: clean up on error in ath12k_dp_setup()
+Message-ID: <aUOw1J0TU4VgeXj6@stanley.mountain>
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20251215122231.3180648-1-leon.yen@mediatek.com>
-In-Reply-To: <20251215122231.3180648-1-leon.yen@mediatek.com>
-From: AceLan Kao <acelan.kao@canonical.com>
-Date: Thu, 18 Dec 2025 15:05:27 +0800
-X-Gm-Features: AQt7F2rFCwU_nFN8zxCPmULe9M1cSOrOTgxx5yt49VcbBl8x2h-eJIE_P-DiYM4
-Message-ID: <CAFv23QnPqdw8v4_k2_sbxhb7p7ZR7fuDJ0CRij=9aX6EC3-4Mg@mail.gmail.com>
-Subject: Re: [PATCH v2] wifi: mt76: mt792x: Fix a potential deadlock in
- high-load situations
-To: Leon Yen <leon.yen@mediatek.com>
-Cc: nbd@nbd.name, lorenzo@kernel.org, linux-wireless@vger.kernel.org, 
-	linux-mediatek@lists.infradead.org, deren.wu@mediatek.com, 
-	sean.wang@mediatek.com, mingyen.hsieh@mediatek.com, michael.lo@mediatek.com, 
-	allan.wang@mediatek.com, quan.zhou@mediatek.com, sarick.jiang@mediatek.com, 
-	ryder.lee@mediatek.com, shayne.chen@mediatek.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+X-Mailer: git-send-email haha only kidding
 
-Leon Yen <leon.yen@mediatek.com> =E6=96=BC 2025=E5=B9=B412=E6=9C=8815=E6=97=
-=A5=E9=80=B1=E4=B8=80 =E4=B8=8B=E5=8D=888:24=E5=AF=AB=E9=81=93=EF=BC=9A
->
-> A deadlock may occur between two works, ps_work and mac_work, if their wo=
-rk
-> functions run simultaneously as they attempt to cancel each other by
-> calling cancel_delayed_work_sync().
->
-> mt792x_mac_work() ->   ...  -> cancel_delayed_work_sync(&pm->ps_work);
-> mt792x_pm_power_save_work() -> cancel_delayed_work_sync(&mphy->mac_work);
->
-> In high-load situations, they are queued but may not have chance to be
-> executed until the CPUs are released. Once the CPUs are available, there
-> is a high possibility that the ps_work function and mac_work function wil=
-l
-> be executed simultaneously, resulting in a possible deadlock.
->
-> This patch replaces cancel_delayed_work_sync() with cancel_delayed_work()
-> in ps_work to eliminate the deadlock and make the code easier to maintain=
-.
->
-> Signed-off-by: Leon Yen <leon.yen@mediatek.com>
-Tested-by: Chia-Lin Kao (AceLan) <acelan.kao@canonical.com>
+Destroy the rhash_tbl before returning the error code.
 
-Without the patch, the system may hang during stress tests.
-And now I can't reproduce the hang issue with this patch.
-Thanks.
+Fixes: a88cf5f71adf ("wifi: ath12k: Add hash table for ath12k_dp_link_peer")
+Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
+---
+ drivers/net/wireless/ath/ath12k/dp.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-> ---
-> v2: Modify the solution to make it simpler and easier to maintain
-> ---
->  drivers/net/wireless/mediatek/mt76/mt792x_mac.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
->
-> diff --git a/drivers/net/wireless/mediatek/mt76/mt792x_mac.c b/drivers/ne=
-t/wireless/mediatek/mt76/mt792x_mac.c
-> index 71dec93094eb..888e5a505673 100644
-> --- a/drivers/net/wireless/mediatek/mt76/mt792x_mac.c
-> +++ b/drivers/net/wireless/mediatek/mt76/mt792x_mac.c
-> @@ -375,7 +375,7 @@ void mt792x_pm_power_save_work(struct work_struct *wo=
-rk)
->         }
->
->         if (!mt792x_mcu_fw_pmctrl(dev)) {
-> -               cancel_delayed_work_sync(&mphy->mac_work);
-> +               cancel_delayed_work(&mphy->mac_work);
->                 return;
->         }
->  out:
-> --
-> 2.45.2
->
->
+diff --git a/drivers/net/wireless/ath/ath12k/dp.c b/drivers/net/wireless/ath/ath12k/dp.c
+index 9f05eea6695a..ab54c8a84d3e 100644
+--- a/drivers/net/wireless/ath/ath12k/dp.c
++++ b/drivers/net/wireless/ath/ath12k/dp.c
+@@ -1513,7 +1513,7 @@ static int ath12k_dp_setup(struct ath12k_base *ab)
+ 					HAL_WBM_IDLE_LINK, srng, n_link_desc);
+ 	if (ret) {
+ 		ath12k_warn(ab, "failed to setup link desc: %d\n", ret);
+-		return ret;
++		goto rhash_destroy;
+ 	}
+ 
+ 	ret = ath12k_dp_cc_init(ab);
+-- 
+2.51.0
+
 
