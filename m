@@ -1,99 +1,100 @@
-Return-Path: <linux-wireless+bounces-29863-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-29864-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id DD011CCA02A
-	for <lists+linux-wireless@lfdr.de>; Thu, 18 Dec 2025 02:55:19 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 84493CCA02D
+	for <lists+linux-wireless@lfdr.de>; Thu, 18 Dec 2025 02:55:25 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 21C3F301CE8F
-	for <lists+linux-wireless@lfdr.de>; Thu, 18 Dec 2025 01:55:13 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 6D55D3019BF3
+	for <lists+linux-wireless@lfdr.de>; Thu, 18 Dec 2025 01:55:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AACBE26E6F0;
-	Thu, 18 Dec 2025 01:55:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CD4ED26F2B8;
+	Thu, 18 Dec 2025 01:55:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="jH0RBl1b";
-	dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b="Q0GAPmro"
+	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="KprRR0R2";
+	dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b="I3X2J4rc"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
+Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B13FE26ED59
-	for <linux-wireless@vger.kernel.org>; Thu, 18 Dec 2025 01:55:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AE05C26E6F4
+	for <linux-wireless@vger.kernel.org>; Thu, 18 Dec 2025 01:55:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1766022912; cv=none; b=GudnhRw52oQJ4UZiPGPVmDopnG7BPV7Me7wCdIKSJ6VY9jCePK9hKjtzDsUOkBMYzobeR3QV3jeCiwpYXaAL9dLlzOAQ1rQu4sxWXoEbNP4KDoZRQ8UuUrCicW4Fek3Lz4gzM06t2T+kukYhOlcuZeI7CbiB6taal5H1p9NNhcs=
+	t=1766022915; cv=none; b=cSsPddw/D1P5FzIjgdFsHQrbTrnb5HW6NaMcWCZpJJABG8ikS6z9gJ60xhyzIKbfVDA2qiH1ttiJaL43CDyuO9+KXPvDdzYDc8cfYSZ2hQX0Z1mzwVQAuqKc7+pliVSe/rvg7J0xDgIlR+0rzaJ1s9t8VDeIun76+RoTA9wHWAc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1766022912; c=relaxed/simple;
-	bh=1b950sAUDfPiIfZ83dpfIEmqG9IF027rMf8yl64kq0M=;
+	s=arc-20240116; t=1766022915; c=relaxed/simple;
+	bh=oOYjLQ5+u4ui1H2sag+gIA6h0X8aCtfAGAj4TCL1230=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=oRbhNHWM5irdg/4q18YfB/GkUwt4dzgdqaRYTW9I3rsKriH0EeNDWBW0SfhABFWBMQcN3zo+LCiuxoUidzshJsnV35m4A+H9Nl5+Tlb0exD9q22hPjgsZciLqSLeW66xuXtlMaXlYW/Xx83Hqvd6OtcpxYlOynw+Ab6/5fViop4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=jH0RBl1b; dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b=Q0GAPmro; arc=none smtp.client-ip=205.220.168.131
+	 In-Reply-To:To:Cc; b=YufA3clmcX0TuCmSEpqCvZGnnLZ/JAZ1imR3a30MzLYDvC5OPM+LCZo4rDHnit7hhnWHRq7vFXZhZw2xoIKATDBJ7D5UQE5cyBTTL0I4gZgjI45krmqoCUnpyObh8Iwb64FQqg/D67yW/jRp6g2Imfcb1bAIIWy5L24hubpvcHo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=KprRR0R2; dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b=I3X2J4rc; arc=none smtp.client-ip=205.220.180.131
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
-Received: from pps.filterd (m0279866.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 5BI1Yim13717065
-	for <linux-wireless@vger.kernel.org>; Thu, 18 Dec 2025 01:55:10 GMT
+Received: from pps.filterd (m0279869.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 5BI1YbGB813789
+	for <linux-wireless@vger.kernel.org>; Thu, 18 Dec 2025 01:55:12 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
 	cc:content-transfer-encoding:content-type:date:from:in-reply-to
 	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
-	xO/Z8OTWEryPFUqXFceT9Nx46ORhtkGydwhL3x4O9+Q=; b=jH0RBl1buQK0ans5
-	5bglJZVts1Q4oGXYDHpkBTDc4aBKBzqfmsL5wVGM+kCGZYLfYQjnUOBcNpYsyPBL
-	3n6pbf6p6Gt51Tyt765XEOZ2Y/UrNmFIZJ+vpaj/niqaylDi77VBgoJMkTUfwkQR
-	H0QY/xSMZW/npeD3/DjcAv0U9W2IOXj/AezRT1HEDeB1cYvogQ0/H7BZxVa1TM08
-	PLTGLubHMdt9ReoqTk8WvA5rPZhvUDvRprd0QRDfjQ2zyXexgOLmyNVTGehBORIu
-	6ylb9ZcU/VTgDu0ZDBMin6LYMcEz9lPS5Ltx3C1guVsmznuwuyrPZPXz+zl/puy+
-	cQyYIg==
+	tJk3Q0+MS5u8Oi6Z4LN2M/8NwLLBO3cAu0s+bHFvby8=; b=KprRR0R20S3BXHy6
+	0mk4EFZD8YIl35D6Vj+2oUfoC84SSolyFLcWTqCtnoHNNBKBuxenFGwqftmWRrEV
+	9gwXeRun5AZqEAqH4RB3vxHm0xdLmwZ2kyLQhd3TXMAZMNK3OzzNCjVQa2OY6aGQ
+	oQQn6RcJFE5+mkqV6xtPtbcl2Pj5j8StnqcWnS3L1Cvj+7AGAqwb1lJhC2zP4DrL
+	lKXMUnFjzvEurkG366X2gtvhAqLmQrAeNxIp5s5H7gt/mzeIImmdxsfPbpOYU2Cg
+	Ly5hToRbyAc2nNJPe1RdHxtqblSHn76v7mEPd8AFYIEXGR+00S0FllHedsfAv+oP
+	XpUHZw==
 Received: from mail-pl1-f199.google.com (mail-pl1-f199.google.com [209.85.214.199])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4b40n79arx-1
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4b40v796u5-1
 	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
-	for <linux-wireless@vger.kernel.org>; Thu, 18 Dec 2025 01:55:09 +0000 (GMT)
-Received: by mail-pl1-f199.google.com with SMTP id d9443c01a7336-29f1f69eec6so1817295ad.1
-        for <linux-wireless@vger.kernel.org>; Wed, 17 Dec 2025 17:55:09 -0800 (PST)
+	for <linux-wireless@vger.kernel.org>; Thu, 18 Dec 2025 01:55:12 +0000 (GMT)
+Received: by mail-pl1-f199.google.com with SMTP id d9443c01a7336-29e6b269686so3301905ad.1
+        for <linux-wireless@vger.kernel.org>; Wed, 17 Dec 2025 17:55:12 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=oss.qualcomm.com; s=google; t=1766022909; x=1766627709; darn=vger.kernel.org;
+        d=oss.qualcomm.com; s=google; t=1766022911; x=1766627711; darn=vger.kernel.org;
         h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
          :mime-version:subject:date:from:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=xO/Z8OTWEryPFUqXFceT9Nx46ORhtkGydwhL3x4O9+Q=;
-        b=Q0GAPmroZyXTlAWwal5NKW65/LvQ+kFGRetjY2Km7J7f049V+AOYU0aAZBX37UzjdI
-         u7JDw+UVLy1q4tp7JG4BVepZ+1oDrqXliahyWmEAp8hekEWK+Y2X530GhFNdCx19tAu/
-         oOoU8fj+dX/udMoxkYGv3m/QI+O6B5zIkak9nzqCeNFn7a+xWB5G/PoVmk8Q1iltW1cU
-         95DPsDAgkjohgPh6Xn6AacMSCR5CL0CanUwvsM2WJPA1URQOZfjQyyUOcpnDZ3foYz35
-         gamCZq6wsSrkddqg1OZVFbuKB/7G3Dn56Ug81NIvlgJP87pC5CDZ43QFKawvWWBWTYPI
-         rLzA==
+        bh=tJk3Q0+MS5u8Oi6Z4LN2M/8NwLLBO3cAu0s+bHFvby8=;
+        b=I3X2J4rcZLbhZ+ohHS2iF5I18boMtdqq8LjaRjuOZ93YGzOXEnswNme0q6YpbnnnPL
+         H3Ok/F2dFpXK4epyxRgmolctOlZoQyR9bjfKEghYP8TS/TVVEBn3xVOSqQRvECW2lQgN
+         HlTwRMSwt0Qw/MdjN+BACaeeP06s4/3c4g+WEWqYg/KGK5aWFUhxd0KmJgm/zymQ0YVK
+         p0TXlxpm6qijWr2vuOLf013gy7PASHBATyMjOdDCHJv8/7uXuCfZcN/Fs1GnrCMjC/Yk
+         rwLlFKrybcfFjIrSx6asUocEU2Q3bmK9f2npah2oxod6vhoSJNLUbJLYCKRXeaUjLMlD
+         yvdg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1766022909; x=1766627709;
+        d=1e100.net; s=20230601; t=1766022911; x=1766627711;
         h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
          :mime-version:subject:date:from:x-gm-gg:x-gm-message-state:from:to
          :cc:subject:date:message-id:reply-to;
-        bh=xO/Z8OTWEryPFUqXFceT9Nx46ORhtkGydwhL3x4O9+Q=;
-        b=uaHjrFnuua8cWeRBW9EJ/ArLcRybzxcX0DKbjpmZrNR3xm+gTVhYUbOAXDTayW0E01
-         NSUy60sl8K5sVm97CoXgDdZhKBH6T6B9O67r3Z6QmCEB6M0DB9rg3NgbesYLP+cdG7lw
-         7PaL5MQErNtLnsVKpebiFZs6tGUKQBAtgdedF78A6Aut4Vaq5CctpDRySNYDm6KytT0N
-         QbNzZughEwwjPUAeXq/UZfShe6INEYG3YyA8JwcHkIAlPLaLI/OEQSLEAGyR5rRHiqql
-         zfYnjiWXoquOL1RPKSn4Hl2nZYI+gd3BV8T4CDkzn3ybhIlIvHHzQWCxYMPAyjI7a3VO
-         MkUQ==
-X-Gm-Message-State: AOJu0YyYhhtA8F/VybZPaHH1RdSvhmGGFjtPl25cLUrYRWxDFS/Hbl6f
-	tnHKAae0hOifejlPwbco78PGddfllq6Pp3TFcuPAbHlKPrLFOOyRkn0hVDWfheEVuCsihgHyv6L
-	Q9pY4KaEPx439CvDxp58YaEs3gky4K8mDScp8tBoipIHheIfoXueaXDwtBcLRqN5LoV2hBA==
-X-Gm-Gg: AY/fxX7O78+8TW678FT935anB2lihcUyJiQTvVZnhC0XY3/mysXeAryZudV3E6BXQhJ
-	ETLh0WrF/yHmiRE0IsB+v0jWF5Fvvx64n5xncHD5he8AleeJhimGC44Q+ql1WuJ8yfG8Jj6u/hH
-	PWvEUufVy1KSxVYIv0oTTPTUTHkLKn2qMVOgHYhvh/WpXxXAiGR65gOOOEaE9HvHajdKZyx/WMk
-	qfjE6SeQWWIM1Fsapg1WRGirDGY4ETboAmw1gXYEslQ4nEzL5zTq79S1Jpd1EPzxZHmLmUpq05/
-	gFEvFMg/t0VCFxibyvuI+iySrWEo7LNxWssdcvYjTZJvlizCOwczEFe+uhkBvIuEuUNxihWiuwJ
-	bF+tYv+9l5zBPn7HRem1VKbpViMZKPgqtynm12xyRdacfWMO9NDvzwF7XV+yTZSM=
-X-Received: by 2002:a17:903:3843:b0:2a0:d629:903f with SMTP id d9443c01a7336-2a0d6299386mr110161055ad.9.1766022908995;
-        Wed, 17 Dec 2025 17:55:08 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IGLFkPskK3UxU2NlNOh1xNwyPH5m6dKFSekMOkjDUjCPJgtW6g8xoDb/VwCMhtkGyOa7YlT8g==
-X-Received: by 2002:a17:903:3843:b0:2a0:d629:903f with SMTP id d9443c01a7336-2a0d6299386mr110160875ad.9.1766022908433;
-        Wed, 17 Dec 2025 17:55:08 -0800 (PST)
+        bh=tJk3Q0+MS5u8Oi6Z4LN2M/8NwLLBO3cAu0s+bHFvby8=;
+        b=lxRkHcnkGSzerIIEBjHMwkSoR2/zmE6RbYSSgeBzxgfGDKb9Zm63MFE+vG0cUuo7tp
+         9AktDHtsX9mxFaec83wkEy23dYOaEMv6vKL2Wdh+UrlDZlUq34ljiulfCY4xrm+GyIyu
+         polBip5NJ00mkrdy8/XAKiGTWcL6OJdcbeD+NtiS2PitwfMcCcSaFub9o/MVT07r8MMG
+         DjTYsgb+miuJx7xxswQMcXGirWRAbQiG0kPzgLg0bz0E9lyWTQE6opCHwGtFTRvtn/I4
+         9TsT9KLzxtHob/AfFe4xdovv+Z32gA2Y9hzndJM2wwAQoEi2r86+fjOum5Pe0som6akf
+         Rf3Q==
+X-Gm-Message-State: AOJu0YzC1hhfvgDdFp0DusUEC+9y9KWuvBnDuZhGJBvsKL1sPpacfyyN
+	lHmCZiJi6IkMjedOu2GgUV7iFm6upyOpATgyKKut4/XBvKXa2tRbBaYQYLkQ4T4pFVl039ogRhr
+	rND3I2DtEiOybtiviUVRMKOCPCPkPa6E3JnnwskprEDK6G+/cstfLjJS0cg8yNEmnZek0okXwUU
+	Nb9MCb
+X-Gm-Gg: AY/fxX5UeOot8ORd9lA9KXXJwi1ZYYkF9YJ2cW6w2H2ysikxV98oi7kX5QOCgPeKqF6
+	0fTMh5jJ5Buc/CFcdlGJfnDN1DfTxIenK0jhw+bndULv2c2bhMa6URiCHeaOG57WsI0Wdk8Nw0c
+	+d9b2UetH7GINOL2PAT14uHzImivpizNqoL2QzT6qJGLSm2B+Mkfo5sYUzPwTE9EzSg/iO660XE
+	0KxN0nsXUbj8dutqLRuP4LpifKpeEMrmwJBCveAyz+gRqd02P1YoECyP1iWZINfNsnZYM9BNkiu
+	JOVYMnVb9c/qvA2WrWV8P522UuYXDEUuC47KjrnHNWv+bAePAB6zu0HCOd/gBWDE0WSiCt1ZtCt
+	VL4yLrHFJ6vxOyhKv8yrw4hYqrhnKLEpl01T2vMAsbKu4t7yF4yk8dw1hkOe7ooQ=
+X-Received: by 2002:a17:902:f70a:b0:2a0:9d01:c3c1 with SMTP id d9443c01a7336-2a09d01d4a9mr144260795ad.1.1766022911088;
+        Wed, 17 Dec 2025 17:55:11 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IFtEwZOODi5YePTeyR18dM99buf73OyxwH3M4KmZIvfMi2TAtXZlCwwuWKTxnTw0RTh+nmkcg==
+X-Received: by 2002:a17:902:f70a:b0:2a0:9d01:c3c1 with SMTP id d9443c01a7336-2a09d01d4a9mr144260595ad.1.1766022910544;
+        Wed, 17 Dec 2025 17:55:10 -0800 (PST)
 Received: from [127.0.1.1] (tpe-colo-wan-fw-bordernet.qualcomm.com. [103.229.16.4])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2a2d087c812sm6548175ad.15.2025.12.17.17.55.06
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2a2d087c812sm6548175ad.15.2025.12.17.17.55.08
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 17 Dec 2025 17:55:08 -0800 (PST)
+        Wed, 17 Dec 2025 17:55:10 -0800 (PST)
 From: Baochen Qiang <baochen.qiang@oss.qualcomm.com>
-Date: Thu, 18 Dec 2025 09:54:16 +0800
-Subject: [PATCH ath-next 02/19] wifi: ath12k: refactor REO CMD ring
+Date: Thu, 18 Dec 2025 09:54:17 +0800
+Subject: [PATCH ath-next 03/19] wifi: ath12k: refactor REO status ring
  handling
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
@@ -103,7 +104,7 @@ List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20251218-ath12k-support-qcc2072-v1-2-87928cf8e547@oss.qualcomm.com>
+Message-Id: <20251218-ath12k-support-qcc2072-v1-3-87928cf8e547@oss.qualcomm.com>
 References: <20251218-ath12k-support-qcc2072-v1-0-87928cf8e547@oss.qualcomm.com>
 In-Reply-To: <20251218-ath12k-support-qcc2072-v1-0-87928cf8e547@oss.qualcomm.com>
 To: Jeff Johnson <jjohnson@kernel.org>
@@ -111,311 +112,350 @@ Cc: linux-wireless@vger.kernel.org, ath12k@lists.infradead.org,
         20251201-wlan_image_load_skip_512k-v3-1-bedb5498a58a@oss.qualcomm.com,
         Baochen Qiang <baochen.qiang@oss.qualcomm.com>
 X-Mailer: b4 0.14.3
-X-Proofpoint-GUID: O7apzdyaiJ1DgMmcFoVA9KGREJLXZIzB
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUxMjE4MDAxMyBTYWx0ZWRfX+m9XhcmaWpBD
- U4mNbqiSKnt71r58pmSEjizFGhHzSGSyLbF5hoL6AG5Mj3qjwOuE11jshxSLjNJkgTwMR0JuEPX
- m6iVrseWwYmTWi+Gwqn3Uzo95vFMxumPzZHZEUMk30iB3aup+nB8sRZsbzEwwAi+cUo1EjjlXs3
- CAgHupME0b4vk49oRKQ30uv7f9N7lehE+J2b0+nMtuVVf+IvWqghWyEKy9WhL65hHKf3h5lpvCf
- GVNgY5VPuYoeiorZ1VO1f4ajHcckpNIHl3OdNZXWGyfVaUCxp3ZJSL7z/Z3SPVQmx+yyDkhhX6Z
- Tzoz8FQAEpQfqpPK2Zi6rhkKX8mM+4K7TPbnJQCip6sT/i/+ge8xjK5csmHY578uV6bSyNMTgkG
- uxw9lZfEprVTHKsF8BQsGxFdmPuNGA==
-X-Authority-Analysis: v=2.4 cv=TZebdBQh c=1 sm=1 tr=0 ts=69435efd cx=c_pps
+X-Proofpoint-ORIG-GUID: H0UKLl-1gGVzEtfn85yr3jmOhIiMk9ch
+X-Proofpoint-GUID: H0UKLl-1gGVzEtfn85yr3jmOhIiMk9ch
+X-Authority-Analysis: v=2.4 cv=f8JFxeyM c=1 sm=1 tr=0 ts=69435f00 cx=c_pps
  a=JL+w9abYAAE89/QcEU+0QA==:117 a=nuhDOHQX5FNHPW3J6Bj6AA==:17
  a=IkcTkHD0fZMA:10 a=wP3pNCr1ah4A:10 a=s4-Qcg_JpJYA:10
- a=VkNPw1HP01LnGYTKEx00:22 a=EUspDBNiAAAA:8 a=N_EWgtucFCvFHXU7mioA:9
+ a=VkNPw1HP01LnGYTKEx00:22 a=EUspDBNiAAAA:8 a=PMNv47187FcU-8MNZ6AA:9
  a=QEXdDO2ut3YA:10 a=324X-CrmTo6CU4MGRt3R:22
-X-Proofpoint-ORIG-GUID: O7apzdyaiJ1DgMmcFoVA9KGREJLXZIzB
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUxMjE4MDAxMyBTYWx0ZWRfXwBciPYU9oCeL
+ pBGf/utImGegqzxrJFCh5tdnD8WDJul0eI0AWzoznyzglK3IiQHlIu4oGT8ydHmJsg+cEimkQ05
+ 1IoemFNDb1p5dW0dWIJDefnHvkojjZxwLbN3GEfUQlbulVtHufiFSB6ppRuC5l+hWKGm+CCFopg
+ b4OVawhRE+FtILt3F9VgEdQRzc0ecTVlL7TlsbnKA9EVIUmthenaXYdbgUfOfO7BTwMuXikKOz3
+ FxgOuzpNhQWhihAP/X+Nj5BmuYqLmIbAwCFXtqTg9uBgi6u1UM6Zx/qftC7CoaREDkaZ2cNhkJ6
+ OdMGePfM3zFbLVrmUbw9JbgabMzg/buzy1efdqwZOX3gIHIs0eRSkITmzEjCVvmt7XSGyZ6e1KJ
+ EH2jb4GV8OWR8lX/wKZlp+I/O+elIg==
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.9,FMLib:17.12.100.49
  definitions=2025-12-18_01,2025-12-17_02,2025-10-01_01
 X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- suspectscore=0 phishscore=0 lowpriorityscore=0 bulkscore=0 malwarescore=0
- spamscore=0 priorityscore=1501 clxscore=1015 impostorscore=0 adultscore=0
+ lowpriorityscore=0 adultscore=0 clxscore=1015 suspectscore=0 phishscore=0
+ impostorscore=0 bulkscore=0 malwarescore=0 priorityscore=1501 spamscore=0
  classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
  reason=mlx scancount=1 engine=8.22.0-2510240001 definitions=main-2512180013
 
-The entry of REO CMD ring of existing chips has a 64 bit TLV header, hence
-below functions take a 64 bit TLV assumption by default
+The entry of REO status ring of existing chips has a 64 bit TLV header,
+hence below functions take a 64 bit TLV assumption by default
 
-        ath12k_wifi7_hal_reo_init_cmd_ring()
-        ath12k_wifi7_hal_reo_cmd_queue_stats()
-        ath12k_wifi7_hal_reo_cmd_flush_cache()
-        ath12k_wifi7_hal_reo_cmd_update_rx_queue()
+        ath12k_wifi7_dp_rx_process_reo_status()
+        ath12k_wifi7_hal_reo_status_queue_stats()
+        ath12k_wifi7_hal_reo_flush_queue_status()
+        ath12k_wifi7_hal_reo_flush_cache_status()
+        ath12k_wifi7_hal_reo_unblk_cache_status()
+        ath12k_wifi7_hal_reo_flush_timeout_list_status()
+        ath12k_wifi7_hal_reo_desc_thresh_reached_status()
+        ath12k_wifi7_hal_reo_update_rx_reo_queue_status()
 
-However this is not the case for QCC2072 of which the TLV is 32 bit,
-meaning above functions don't work for it.
+However this is not the case for QCC2072 of which the TLV is 32 bit.
 
-Rename/refactor above functions to prepare for QCC2072 support:
+Refactor above functions to prepare for QCC2072 support, this is done by
+removing TLV length assumption and offloading TLV decoding work to a newly
+added callback _reo_status_dec_tlv_hdr. This way each chip can register
+its own handler hence can do the work accordingly.
 
-Rename the first one to ath12k_wifi7_hal_reo_init_cmd_ring_tlv64() to
-better reflect what it is doing. There will be a 32 bit variant when
-QCC2072 support is in place.
-
-For the last ones, remove TLV length assumption and offload TLV encoding
-work to a newly added callback _reo_cmd_enc_tlv_hdr. This way each chip
-can register its own handler hence can do the work accordingly.
-
-Tested-on: WCN7850 hw2.0 PCI WLAN.HMT.1.1.c5-00302-QCAHMTSWPL_V1.0_V2.0_SILICONZ-1.115823.3
+Tested-on: WCN7850 hw2.0 PCI WLAN.HMT.1.1.c5-00302-QCAHMTSWPL_V1.0_V2.0_SILICONZ-1.115823
 
 Signed-off-by: Baochen Qiang <baochen.qiang@oss.qualcomm.com>
 ---
- drivers/net/wireless/ath/ath12k/hal.c              | 11 ++++++
- drivers/net/wireless/ath/ath12k/hal.h              | 23 +++++++++++++
- drivers/net/wireless/ath/ath12k/wifi7/hal_desc.h   | 21 ------------
- .../net/wireless/ath/ath12k/wifi7/hal_qcn9274.c    |  3 +-
- drivers/net/wireless/ath/ath12k/wifi7/hal_rx.c     | 39 +++++++++-------------
- drivers/net/wireless/ath/ath12k/wifi7/hal_rx.h     |  4 +--
- .../net/wireless/ath/ath12k/wifi7/hal_wcn7850.c    |  3 +-
- 7 files changed, 56 insertions(+), 48 deletions(-)
+ drivers/net/wireless/ath/ath12k/hal.c              | 12 ++++++++
+ drivers/net/wireless/ath/ath12k/hal.h              |  5 ++++
+ drivers/net/wireless/ath/ath12k/wifi7/dp_rx.c      | 18 ++++++------
+ drivers/net/wireless/ath/ath12k/wifi7/hal.h        |  3 --
+ .../net/wireless/ath/ath12k/wifi7/hal_qcn9274.c    |  1 +
+ drivers/net/wireless/ath/ath12k/wifi7/hal_rx.c     | 33 +++++-----------------
+ drivers/net/wireless/ath/ath12k/wifi7/hal_rx.h     | 24 ++++++++--------
+ .../net/wireless/ath/ath12k/wifi7/hal_wcn7850.c    |  1 +
+ 8 files changed, 48 insertions(+), 49 deletions(-)
 
 diff --git a/drivers/net/wireless/ath/ath12k/hal.c b/drivers/net/wireless/ath/ath12k/hal.c
-index c7a152490fa0..b19bec8ea082 100644
+index b19bec8ea082..bafb49ab5475 100644
 --- a/drivers/net/wireless/ath/ath12k/hal.c
 +++ b/drivers/net/wireless/ath/ath12k/hal.c
-@@ -823,3 +823,14 @@ void ath12k_hal_dump_srng_stats(struct ath12k_base *ab)
- 				   jiffies_to_msecs(jiffies - srng->timestamp));
- 	}
+@@ -834,3 +834,15 @@ void *ath12k_hal_encode_tlv64_hdr(void *tlv, u64 tag, u64 len)
+ 	return tlv64->value;
  }
+ EXPORT_SYMBOL(ath12k_hal_encode_tlv64_hdr);
 +
-+void *ath12k_hal_encode_tlv64_hdr(void *tlv, u64 tag, u64 len)
++u16 ath12k_hal_decode_tlv64_hdr(void *tlv, void **desc)
 +{
 +	struct hal_tlv_64_hdr *tlv64 = tlv;
++	u16 tag;
 +
-+	tlv64->tl = le64_encode_bits(tag, HAL_TLV_HDR_TAG) |
-+		    le64_encode_bits(len, HAL_TLV_HDR_LEN);
++	tag = le64_get_bits(tlv64->tl, HAL_SRNG_TLV_HDR_TAG);
++	*desc = tlv64->value;
 +
-+	return tlv64->value;
++	return tag;
 +}
-+EXPORT_SYMBOL(ath12k_hal_encode_tlv64_hdr);
++EXPORT_SYMBOL(ath12k_hal_decode_tlv64_hdr);
 diff --git a/drivers/net/wireless/ath/ath12k/hal.h b/drivers/net/wireless/ath/ath12k/hal.h
-index f23ba1f9eaac..595e49046471 100644
+index 595e49046471..81b0cb002b38 100644
 --- a/drivers/net/wireless/ath/ath12k/hal.h
 +++ b/drivers/net/wireless/ath/ath12k/hal.h
-@@ -1426,8 +1426,30 @@ struct hal_ops {
- 					 u32 *sw_cookie,
+@@ -1427,6 +1427,7 @@ struct hal_ops {
  					 struct ath12k_buffer_addr **pp_buf_addr,
  					 u8 *rbm, u32 *msdu_cnt);
-+	void *(*reo_cmd_enc_tlv_hdr)(void *tlv, u64 tag, u64 len);
+ 	void *(*reo_cmd_enc_tlv_hdr)(void *tlv, u64 tag, u64 len);
++	u16 (*reo_status_dec_tlv_hdr)(void *tlv, void **desc);
  };
  
-+#define HAL_TLV_HDR_TAG		GENMASK(9, 1)
-+#define HAL_TLV_HDR_LEN		GENMASK(25, 10)
-+#define HAL_TLV_USR_ID		GENMASK(31, 26)
-+
-+#define HAL_TLV_ALIGN	4
-+
-+struct hal_tlv_hdr {
-+	__le32 tl;
-+	u8 value[];
-+} __packed;
-+
-+#define HAL_TLV_64_HDR_TAG		GENMASK(9, 1)
-+#define HAL_TLV_64_HDR_LEN		GENMASK(21, 10)
-+#define HAL_TLV_64_USR_ID		GENMASK(31, 26)
-+#define HAL_TLV_64_ALIGN		8
-+
-+struct hal_tlv_64_hdr {
-+	__le64 tl;
-+	u8 value[];
-+} __packed;
+ #define HAL_TLV_HDR_TAG		GENMASK(9, 1)
+@@ -1450,6 +1451,9 @@ struct hal_tlv_64_hdr {
+ 	u8 value[];
+ } __packed;
+ 
++#define HAL_SRNG_TLV_HDR_TAG		GENMASK(9, 1)
++#define HAL_SRNG_TLV_HDR_LEN		GENMASK(25, 10)
 +
  dma_addr_t ath12k_hal_srng_get_tp_addr(struct ath12k_base *ab,
  				       struct hal_srng *srng);
  dma_addr_t ath12k_hal_srng_get_hp_addr(struct ath12k_base *ab,
-@@ -1515,4 +1537,5 @@ void ath12k_hal_rx_reo_ent_buf_paddr_get(struct ath12k_hal *hal, void *rx_desc,
- 					 dma_addr_t *paddr, u32 *sw_cookie,
+@@ -1538,4 +1542,5 @@ void ath12k_hal_rx_reo_ent_buf_paddr_get(struct ath12k_hal *hal, void *rx_desc,
  					 struct ath12k_buffer_addr **pp_buf_addr,
  					 u8 *rbm, u32 *msdu_cnt);
-+void *ath12k_hal_encode_tlv64_hdr(void *tlv, u64 tag, u64 len);
+ void *ath12k_hal_encode_tlv64_hdr(void *tlv, u64 tag, u64 len);
++u16 ath12k_hal_decode_tlv64_hdr(void *tlv, void **desc);
  #endif
-diff --git a/drivers/net/wireless/ath/ath12k/wifi7/hal_desc.h b/drivers/net/wireless/ath/ath12k/wifi7/hal_desc.h
-index 9dad8f7ca9f2..cdcf24b1d6eb 100644
---- a/drivers/net/wireless/ath/ath12k/wifi7/hal_desc.h
-+++ b/drivers/net/wireless/ath/ath12k/wifi7/hal_desc.h
-@@ -487,27 +487,6 @@ enum hal_tlv_tag {
- 	HAL_TLV_BASE						= 511 /* 0x1ff */,
- };
+diff --git a/drivers/net/wireless/ath/ath12k/wifi7/dp_rx.c b/drivers/net/wireless/ath/ath12k/wifi7/dp_rx.c
+index a1ca55fe51c0..dc8d72aeca45 100644
+--- a/drivers/net/wireless/ath/ath12k/wifi7/dp_rx.c
++++ b/drivers/net/wireless/ath/ath12k/wifi7/dp_rx.c
+@@ -2114,12 +2114,12 @@ void ath12k_wifi7_dp_rx_process_reo_status(struct ath12k_dp *dp)
+ {
+ 	struct ath12k_base *ab = dp->ab;
+ 	struct ath12k_hal *hal = dp->hal;
+-	struct hal_tlv_64_hdr *hdr;
+ 	struct hal_srng *srng;
+ 	struct ath12k_dp_rx_reo_cmd *cmd, *tmp;
+ 	bool found = false;
+ 	u16 tag;
+ 	struct hal_reo_status reo_status;
++	void *hdr, *desc;
  
--#define HAL_TLV_HDR_TAG		GENMASK(9, 1)
--#define HAL_TLV_HDR_LEN		GENMASK(25, 10)
--#define HAL_TLV_USR_ID          GENMASK(31, 26)
+ 	srng = &hal->srng_list[dp->reo_status_ring.ring_id];
+ 
+@@ -2130,35 +2130,35 @@ void ath12k_wifi7_dp_rx_process_reo_status(struct ath12k_dp *dp)
+ 	ath12k_hal_srng_access_begin(ab, srng);
+ 
+ 	while ((hdr = ath12k_hal_srng_dst_get_next_entry(ab, srng))) {
+-		tag = le64_get_bits(hdr->tl, HAL_SRNG_TLV_HDR_TAG);
++		tag = hal->ops->reo_status_dec_tlv_hdr(hdr, &desc);
+ 
+ 		switch (tag) {
+ 		case HAL_REO_GET_QUEUE_STATS_STATUS:
+-			ath12k_wifi7_hal_reo_status_queue_stats(ab, hdr,
++			ath12k_wifi7_hal_reo_status_queue_stats(ab, desc,
+ 								&reo_status);
+ 			break;
+ 		case HAL_REO_FLUSH_QUEUE_STATUS:
+-			ath12k_wifi7_hal_reo_flush_queue_status(ab, hdr,
++			ath12k_wifi7_hal_reo_flush_queue_status(ab, desc,
+ 								&reo_status);
+ 			break;
+ 		case HAL_REO_FLUSH_CACHE_STATUS:
+-			ath12k_wifi7_hal_reo_flush_cache_status(ab, hdr,
++			ath12k_wifi7_hal_reo_flush_cache_status(ab, desc,
+ 								&reo_status);
+ 			break;
+ 		case HAL_REO_UNBLOCK_CACHE_STATUS:
+-			ath12k_wifi7_hal_reo_unblk_cache_status(ab, hdr,
++			ath12k_wifi7_hal_reo_unblk_cache_status(ab, desc,
+ 								&reo_status);
+ 			break;
+ 		case HAL_REO_FLUSH_TIMEOUT_LIST_STATUS:
+-			ath12k_wifi7_hal_reo_flush_timeout_list_status(ab, hdr,
++			ath12k_wifi7_hal_reo_flush_timeout_list_status(ab, desc,
+ 								       &reo_status);
+ 			break;
+ 		case HAL_REO_DESCRIPTOR_THRESHOLD_REACHED_STATUS:
+-			ath12k_wifi7_hal_reo_desc_thresh_reached_status(ab, hdr,
++			ath12k_wifi7_hal_reo_desc_thresh_reached_status(ab, desc,
+ 									&reo_status);
+ 			break;
+ 		case HAL_REO_UPDATE_RX_REO_QUEUE_STATUS:
+-			ath12k_wifi7_hal_reo_update_rx_reo_queue_status(ab, hdr,
++			ath12k_wifi7_hal_reo_update_rx_reo_queue_status(ab, desc,
+ 									&reo_status);
+ 			break;
+ 		default:
+diff --git a/drivers/net/wireless/ath/ath12k/wifi7/hal.h b/drivers/net/wireless/ath/ath12k/wifi7/hal.h
+index 7d65b82c61f2..9337225a5253 100644
+--- a/drivers/net/wireless/ath/ath12k/wifi7/hal.h
++++ b/drivers/net/wireless/ath/ath12k/wifi7/hal.h
+@@ -369,9 +369,6 @@
+ #define HAL_DEFAULT_BE_BK_VI_REO_TIMEOUT_USEC	(100 * 1000)
+ #define HAL_DEFAULT_VO_REO_TIMEOUT_USEC		(40 * 1000)
+ 
+-#define HAL_SRNG_TLV_HDR_TAG		GENMASK(9, 1)
+-#define HAL_SRNG_TLV_HDR_LEN		GENMASK(25, 10)
 -
--#define HAL_TLV_ALIGN	4
--
--struct hal_tlv_hdr {
--	__le32 tl;
--	u8 value[];
--} __packed;
--
--#define HAL_TLV_64_HDR_TAG		GENMASK(9, 1)
--#define HAL_TLV_64_HDR_LEN		GENMASK(21, 10)
--#define HAL_TLV_64_USR_ID		GENMASK(31, 26)
--#define HAL_TLV_64_ALIGN		8
--
--struct hal_tlv_64_hdr {
--	__le64 tl;
--	u8 value[];
--} __packed;
--
- #define RX_MPDU_DESC_INFO0_MSDU_COUNT		GENMASK(7, 0)
- #define RX_MPDU_DESC_INFO0_FRAG_FLAG		BIT(8)
- #define RX_MPDU_DESC_INFO0_MPDU_RETRY		BIT(9)
+ #define HAL_SRNG_DESC_LOOP_CNT		0xf0000000
+ 
+ #define HAL_REO_CMD_FLG_NEED_STATUS		BIT(0)
 diff --git a/drivers/net/wireless/ath/ath12k/wifi7/hal_qcn9274.c b/drivers/net/wireless/ath/ath12k/wifi7/hal_qcn9274.c
-index c129e937132b..ff26e9684e9e 100644
+index ff26e9684e9e..95850e6dc6c7 100644
 --- a/drivers/net/wireless/ath/ath12k/wifi7/hal_qcn9274.c
 +++ b/drivers/net/wireless/ath/ath12k/wifi7/hal_qcn9274.c
-@@ -1020,7 +1020,7 @@ const struct hal_ops hal_qcn9274_ops = {
- 	.write_reoq_lut_addr = ath12k_wifi7_hal_write_reoq_lut_addr,
- 	.write_ml_reoq_lut_addr = ath12k_wifi7_hal_write_ml_reoq_lut_addr,
- 	.setup_link_idle_list = ath12k_wifi7_hal_setup_link_idle_list,
--	.reo_init_cmd_ring = ath12k_wifi7_hal_reo_init_cmd_ring,
-+	.reo_init_cmd_ring = ath12k_wifi7_hal_reo_init_cmd_ring_tlv64,
- 	.reo_hw_setup = ath12k_wifi7_hal_reo_hw_setup,
- 	.reo_shared_qaddr_cache_clear = ath12k_wifi7_hal_reo_shared_qaddr_cache_clear,
- 	.rx_buf_addr_info_set = ath12k_wifi7_hal_rx_buf_addr_info_set,
-@@ -1029,4 +1029,5 @@ const struct hal_ops hal_qcn9274_ops = {
- 	.get_idle_link_rbm = ath12k_wifi7_hal_get_idle_link_rbm,
+@@ -1030,4 +1030,5 @@ const struct hal_ops hal_qcn9274_ops = {
  	.rx_msdu_list_get = ath12k_wifi7_hal_rx_msdu_list_get,
  	.rx_reo_ent_buf_paddr_get = ath12k_wifi7_hal_rx_reo_ent_buf_paddr_get,
-+	.reo_cmd_enc_tlv_hdr = ath12k_hal_encode_tlv64_hdr,
+ 	.reo_cmd_enc_tlv_hdr = ath12k_hal_encode_tlv64_hdr,
++	.reo_status_dec_tlv_hdr = ath12k_hal_decode_tlv64_hdr,
  };
 diff --git a/drivers/net/wireless/ath/ath12k/wifi7/hal_rx.c b/drivers/net/wireless/ath/ath12k/wifi7/hal_rx.c
-index 903fb52a03bf..3b8710a3b6ad 100644
+index 3b8710a3b6ad..a88ef126aada 100644
 --- a/drivers/net/wireless/ath/ath12k/wifi7/hal_rx.c
 +++ b/drivers/net/wireless/ath/ath12k/wifi7/hal_rx.c
-@@ -23,15 +23,13 @@ void ath12k_wifi7_hal_reo_set_desc_hdr(struct hal_desc_header *hdr,
- 	hdr->info0 |= le32_encode_bits(magic, HAL_DESC_HDR_INFO0_DBG_RESERVED);
+@@ -543,12 +543,9 @@ ath12k_wifi7_hal_rx_msdu_link_desc_set(struct ath12k_base *ab,
  }
  
--static int ath12k_wifi7_hal_reo_cmd_queue_stats(struct hal_tlv_64_hdr *tlv,
-+static int ath12k_wifi7_hal_reo_cmd_queue_stats(struct ath12k_hal *hal, void *tlv,
- 						struct ath12k_hal_reo_cmd *cmd)
+ void ath12k_wifi7_hal_reo_status_queue_stats(struct ath12k_base *ab,
+-					     struct hal_tlv_64_hdr *tlv,
++					     struct hal_reo_get_queue_stats_status *desc,
+ 					     struct hal_reo_status *status)
  {
- 	struct hal_reo_get_queue_stats *desc;
- 
--	tlv->tl = le64_encode_bits(HAL_REO_GET_QUEUE_STATS, HAL_TLV_HDR_TAG) |
--		  le64_encode_bits(sizeof(*desc), HAL_TLV_HDR_LEN);
+-	struct hal_reo_get_queue_stats_status *desc =
+-		(struct hal_reo_get_queue_stats_status *)tlv->value;
 -
--	desc = (struct hal_reo_get_queue_stats *)tlv->value;
-+	desc = hal->ops->reo_cmd_enc_tlv_hdr(tlv, HAL_REO_GET_QUEUE_STATS,
-+					     sizeof(*desc));
- 	memset_startat(desc, 0, queue_addr_lo);
- 
- 	desc->cmd.info0 &= ~cpu_to_le32(HAL_REO_CMD_HDR_INFO0_STATUS_REQUIRED);
-@@ -47,8 +45,7 @@ static int ath12k_wifi7_hal_reo_cmd_queue_stats(struct hal_tlv_64_hdr *tlv,
- 	return le32_get_bits(desc->cmd.info0, HAL_REO_CMD_HDR_INFO0_CMD_NUMBER);
+ 	status->uniform_hdr.cmd_num =
+ 				le32_get_bits(desc->hdr.info0,
+ 					      HAL_REO_STATUS_HDR_INFO0_STATUS_NUM);
+@@ -607,12 +604,9 @@ void ath12k_wifi7_hal_reo_status_queue_stats(struct ath12k_base *ab,
  }
  
--static int ath12k_wifi7_hal_reo_cmd_flush_cache(struct ath12k_hal *hal,
+ void ath12k_wifi7_hal_reo_flush_queue_status(struct ath12k_base *ab,
+-					     struct hal_tlv_64_hdr *tlv,
++					     struct hal_reo_flush_queue_status *desc,
+ 					     struct hal_reo_status *status)
+ {
+-	struct hal_reo_flush_queue_status *desc =
+-		(struct hal_reo_flush_queue_status *)tlv->value;
+-
+ 	status->uniform_hdr.cmd_num =
+ 			le32_get_bits(desc->hdr.info0,
+ 				      HAL_REO_STATUS_HDR_INFO0_STATUS_NUM);
+@@ -626,12 +620,10 @@ void ath12k_wifi7_hal_reo_flush_queue_status(struct ath12k_base *ab,
+ 
+ void
+ ath12k_wifi7_hal_reo_flush_cache_status(struct ath12k_base *ab,
+-					struct hal_tlv_64_hdr *tlv,
++					struct hal_reo_flush_cache_status *desc,
+ 					struct hal_reo_status *status)
+ {
+ 	struct ath12k_hal *hal = &ab->hal;
+-	struct hal_reo_flush_cache_status *desc =
+-		(struct hal_reo_flush_cache_status *)tlv->value;
+ 
+ 	status->uniform_hdr.cmd_num =
+ 			le32_get_bits(desc->hdr.info0,
+@@ -668,12 +660,10 @@ ath12k_wifi7_hal_reo_flush_cache_status(struct ath12k_base *ab,
+ }
+ 
+ void ath12k_wifi7_hal_reo_unblk_cache_status(struct ath12k_base *ab,
+-					     struct hal_tlv_64_hdr *tlv,
++					     struct hal_reo_unblock_cache_status *desc,
+ 					     struct hal_reo_status *status)
+ {
+ 	struct ath12k_hal *hal = &ab->hal;
+-	struct hal_reo_unblock_cache_status *desc =
+-		(struct hal_reo_unblock_cache_status *)tlv->value;
+ 
+ 	status->uniform_hdr.cmd_num =
+ 			le32_get_bits(desc->hdr.info0,
+@@ -697,12 +687,9 @@ void ath12k_wifi7_hal_reo_unblk_cache_status(struct ath12k_base *ab,
+ 
+ void
+ ath12k_wifi7_hal_reo_flush_timeout_list_status(struct ath12k_base *ab,
+-					       struct hal_tlv_64_hdr *tlv,
++					       struct hal_reo_flush_timeout_list_status *desc,
+ 					       struct hal_reo_status *status)
+ {
+-	struct hal_reo_flush_timeout_list_status *desc =
+-		(struct hal_reo_flush_timeout_list_status *)tlv->value;
+-
+ 	status->uniform_hdr.cmd_num =
+ 			le32_get_bits(desc->hdr.info0,
+ 				      HAL_REO_STATUS_HDR_INFO0_STATUS_NUM);
+@@ -727,12 +714,9 @@ ath12k_wifi7_hal_reo_flush_timeout_list_status(struct ath12k_base *ab,
+ 
+ void
+ ath12k_wifi7_hal_reo_desc_thresh_reached_status(struct ath12k_base *ab,
 -						struct hal_tlv_64_hdr *tlv,
-+static int ath12k_wifi7_hal_reo_cmd_flush_cache(struct ath12k_hal *hal, void *tlv,
- 						struct ath12k_hal_reo_cmd *cmd)
++						struct hal_reo_desc_thresh_reached_status *desc,
+ 						struct hal_reo_status *status)
  {
- 	struct hal_reo_flush_cache *desc;
-@@ -61,10 +58,8 @@ static int ath12k_wifi7_hal_reo_cmd_flush_cache(struct ath12k_hal *hal,
- 		hal->current_blk_index = avail_slot;
- 	}
- 
--	tlv->tl = le64_encode_bits(HAL_REO_FLUSH_CACHE, HAL_TLV_HDR_TAG) |
--		  le64_encode_bits(sizeof(*desc), HAL_TLV_HDR_LEN);
+-	struct hal_reo_desc_thresh_reached_status *desc =
+-		(struct hal_reo_desc_thresh_reached_status *)tlv->value;
 -
--	desc = (struct hal_reo_flush_cache *)tlv->value;
-+	desc = hal->ops->reo_cmd_enc_tlv_hdr(tlv, HAL_REO_FLUSH_CACHE,
-+					     sizeof(*desc));
- 	memset_startat(desc, 0, cache_addr_lo);
- 
- 	desc->cmd.info0 &= ~cpu_to_le32(HAL_REO_CMD_HDR_INFO0_STATUS_REQUIRED);
-@@ -98,15 +93,13 @@ static int ath12k_wifi7_hal_reo_cmd_flush_cache(struct ath12k_hal *hal,
+ 	status->uniform_hdr.cmd_num =
+ 			le32_get_bits(desc->hdr.info0,
+ 				      HAL_REO_STATUS_HDR_INFO0_STATUS_NUM);
+@@ -762,12 +746,9 @@ ath12k_wifi7_hal_reo_desc_thresh_reached_status(struct ath12k_base *ab,
  }
  
- static int
--ath12k_wifi7_hal_reo_cmd_update_rx_queue(struct hal_tlv_64_hdr *tlv,
-+ath12k_wifi7_hal_reo_cmd_update_rx_queue(struct ath12k_hal *hal, void *tlv,
- 					 struct ath12k_hal_reo_cmd *cmd)
+ void ath12k_wifi7_hal_reo_update_rx_reo_queue_status(struct ath12k_base *ab,
+-						     struct hal_tlv_64_hdr *tlv,
++						     struct hal_reo_status_hdr *desc,
+ 						     struct hal_reo_status *status)
  {
- 	struct hal_reo_update_rx_queue *desc;
- 
--	tlv->tl = le64_encode_bits(HAL_REO_UPDATE_RX_REO_QUEUE, HAL_TLV_HDR_TAG) |
--		  le64_encode_bits(sizeof(*desc), HAL_TLV_HDR_LEN);
+-	struct hal_reo_status_hdr *desc =
+-		(struct hal_reo_status_hdr *)tlv->value;
 -
--	desc = (struct hal_reo_update_rx_queue *)tlv->value;
-+	desc = hal->ops->reo_cmd_enc_tlv_hdr(tlv, HAL_REO_UPDATE_RX_REO_QUEUE,
-+					     sizeof(*desc));
- 	memset_startat(desc, 0, queue_addr_lo);
- 
- 	desc->cmd.info0 &= ~cpu_to_le32(HAL_REO_CMD_HDR_INFO0_STATUS_REQUIRED);
-@@ -227,7 +220,8 @@ int ath12k_wifi7_hal_reo_cmd_send(struct ath12k_base *ab, struct hal_srng *srng,
- 				  enum hal_reo_cmd_type type,
- 				  struct ath12k_hal_reo_cmd *cmd)
- {
--	struct hal_tlv_64_hdr *reo_desc;
-+	struct ath12k_hal *hal = &ab->hal;
-+	void *reo_desc;
- 	int ret;
- 
- 	spin_lock_bh(&srng->lock);
-@@ -241,14 +235,13 @@ int ath12k_wifi7_hal_reo_cmd_send(struct ath12k_base *ab, struct hal_srng *srng,
- 
- 	switch (type) {
- 	case HAL_REO_CMD_GET_QUEUE_STATS:
--		ret = ath12k_wifi7_hal_reo_cmd_queue_stats(reo_desc, cmd);
-+		ret = ath12k_wifi7_hal_reo_cmd_queue_stats(hal, reo_desc, cmd);
- 		break;
- 	case HAL_REO_CMD_FLUSH_CACHE:
--		ret = ath12k_wifi7_hal_reo_cmd_flush_cache(&ab->hal, reo_desc,
--							   cmd);
-+		ret = ath12k_wifi7_hal_reo_cmd_flush_cache(hal, reo_desc, cmd);
- 		break;
- 	case HAL_REO_CMD_UPDATE_RX_QUEUE:
--		ret = ath12k_wifi7_hal_reo_cmd_update_rx_queue(reo_desc, cmd);
-+		ret = ath12k_wifi7_hal_reo_cmd_update_rx_queue(hal, reo_desc, cmd);
- 		break;
- 	case HAL_REO_CMD_FLUSH_QUEUE:
- 	case HAL_REO_CMD_UNBLOCK_CACHE:
-@@ -891,8 +884,8 @@ void ath12k_wifi7_hal_reo_qdesc_setup(struct hal_rx_reo_queue *qdesc,
- 					  REO_QUEUE_DESC_MAGIC_DEBUG_PATTERN_3);
- }
- 
--void ath12k_wifi7_hal_reo_init_cmd_ring(struct ath12k_base *ab,
--					struct hal_srng *srng)
-+void ath12k_wifi7_hal_reo_init_cmd_ring_tlv64(struct ath12k_base *ab,
-+					      struct hal_srng *srng)
- {
- 	struct hal_srng_params params;
- 	struct hal_tlv_64_hdr *tlv;
+ 	status->uniform_hdr.cmd_num =
+ 			le32_get_bits(desc->info0,
+ 				      HAL_REO_STATUS_HDR_INFO0_STATUS_NUM);
 diff --git a/drivers/net/wireless/ath/ath12k/wifi7/hal_rx.h b/drivers/net/wireless/ath/ath12k/wifi7/hal_rx.h
-index 8a0f4a781d8a..aa1bca813955 100644
+index aa1bca813955..95f5595b30ad 100644
 --- a/drivers/net/wireless/ath/ath12k/wifi7/hal_rx.h
 +++ b/drivers/net/wireless/ath/ath12k/wifi7/hal_rx.h
-@@ -860,8 +860,8 @@ void ath12k_wifi7_hal_rx_msdu_list_get(struct ath12k *ar,
- 				       void *link_desc,
- 				       void *msdu_list_opaque,
- 				       u16 *num_msdus);
--void ath12k_wifi7_hal_reo_init_cmd_ring(struct ath12k_base *ab,
--					struct hal_srng *srng);
-+void ath12k_wifi7_hal_reo_init_cmd_ring_tlv64(struct ath12k_base *ab,
-+					      struct hal_srng *srng);
- void ath12k_wifi7_hal_reo_shared_qaddr_cache_clear(struct ath12k_base *ab);
- void ath12k_wifi7_hal_reo_hw_setup(struct ath12k_base *ab, u32 ring_hash_map);
- void ath12k_wifi7_hal_reo_qdesc_setup(struct hal_rx_reo_queue *qdesc,
+@@ -813,25 +813,27 @@ enum hal_mon_reception_type {
+ 			(HAL_RU(ru_per80, num_80mhz, ru_idx_per80mhz))
+ 
+ void ath12k_wifi7_hal_reo_status_queue_stats(struct ath12k_base *ab,
+-					     struct hal_tlv_64_hdr *tlv,
++					     struct hal_reo_get_queue_stats_status *desc,
+ 					     struct hal_reo_status *status);
+ void ath12k_wifi7_hal_reo_flush_queue_status(struct ath12k_base *ab,
+-					     struct hal_tlv_64_hdr *tlv,
++					     struct hal_reo_flush_queue_status *desc,
+ 					     struct hal_reo_status *status);
+ void ath12k_wifi7_hal_reo_flush_cache_status(struct ath12k_base *ab,
+-					     struct hal_tlv_64_hdr *tlv,
++					     struct hal_reo_flush_cache_status *desc,
+ 					     struct hal_reo_status *status);
+ void ath12k_wifi7_hal_reo_unblk_cache_status(struct ath12k_base *ab,
+-					     struct hal_tlv_64_hdr *tlv,
++					     struct hal_reo_unblock_cache_status *desc,
+ 					     struct hal_reo_status *status);
+-void ath12k_wifi7_hal_reo_flush_timeout_list_status(struct ath12k_base *ab,
+-						    struct hal_tlv_64_hdr *tlv,
+-						    struct hal_reo_status *status);
+-void ath12k_wifi7_hal_reo_desc_thresh_reached_status(struct ath12k_base *ab,
+-						     struct hal_tlv_64_hdr *tlv,
+-						     struct hal_reo_status *status);
++void
++ath12k_wifi7_hal_reo_flush_timeout_list_status(struct ath12k_base *ab,
++					       struct hal_reo_flush_timeout_list_status *desc,
++					       struct hal_reo_status *status);
++void
++ath12k_wifi7_hal_reo_desc_thresh_reached_status(struct ath12k_base *ab,
++						struct hal_reo_desc_thresh_reached_status *desc,
++						struct hal_reo_status *status);
+ void ath12k_wifi7_hal_reo_update_rx_reo_queue_status(struct ath12k_base *ab,
+-						     struct hal_tlv_64_hdr *tlv,
++						     struct hal_reo_status_hdr *desc,
+ 						     struct hal_reo_status *status);
+ void ath12k_wifi7_hal_rx_msdu_link_info_get(struct hal_rx_msdu_link *link, u32 *num_msdus,
+ 					    u32 *msdu_cookies,
 diff --git a/drivers/net/wireless/ath/ath12k/wifi7/hal_wcn7850.c b/drivers/net/wireless/ath/ath12k/wifi7/hal_wcn7850.c
-index 7108cc41536d..49c45431c0c7 100644
+index 49c45431c0c7..c3093c01af87 100644
 --- a/drivers/net/wireless/ath/ath12k/wifi7/hal_wcn7850.c
 +++ b/drivers/net/wireless/ath/ath12k/wifi7/hal_wcn7850.c
-@@ -793,7 +793,7 @@ const struct hal_ops hal_wcn7850_ops = {
- 	.write_reoq_lut_addr = ath12k_wifi7_hal_write_reoq_lut_addr,
- 	.write_ml_reoq_lut_addr = ath12k_wifi7_hal_write_ml_reoq_lut_addr,
- 	.setup_link_idle_list = ath12k_wifi7_hal_setup_link_idle_list,
--	.reo_init_cmd_ring = ath12k_wifi7_hal_reo_init_cmd_ring,
-+	.reo_init_cmd_ring = ath12k_wifi7_hal_reo_init_cmd_ring_tlv64,
- 	.reo_shared_qaddr_cache_clear = ath12k_wifi7_hal_reo_shared_qaddr_cache_clear,
- 	.reo_hw_setup = ath12k_wifi7_hal_reo_hw_setup,
- 	.rx_buf_addr_info_set = ath12k_wifi7_hal_rx_buf_addr_info_set,
-@@ -802,4 +802,5 @@ const struct hal_ops hal_wcn7850_ops = {
- 	.get_idle_link_rbm = ath12k_wifi7_hal_get_idle_link_rbm,
+@@ -803,4 +803,5 @@ const struct hal_ops hal_wcn7850_ops = {
  	.rx_msdu_list_get = ath12k_wifi7_hal_rx_msdu_list_get,
  	.rx_reo_ent_buf_paddr_get = ath12k_wifi7_hal_rx_reo_ent_buf_paddr_get,
-+	.reo_cmd_enc_tlv_hdr = ath12k_hal_encode_tlv64_hdr,
+ 	.reo_cmd_enc_tlv_hdr = ath12k_hal_encode_tlv64_hdr,
++	.reo_status_dec_tlv_hdr = ath12k_hal_decode_tlv64_hdr,
  };
 
 -- 
