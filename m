@@ -1,61 +1,61 @@
-Return-Path: <linux-wireless+bounces-29984-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-29985-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 258AECD1CC6
-	for <lists+linux-wireless@lfdr.de>; Fri, 19 Dec 2025 21:40:42 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1EA71CD1DA4
+	for <lists+linux-wireless@lfdr.de>; Fri, 19 Dec 2025 21:53:03 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 90252307A201
-	for <lists+linux-wireless@lfdr.de>; Fri, 19 Dec 2025 20:38:56 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id E8202310F6F9
+	for <lists+linux-wireless@lfdr.de>; Fri, 19 Dec 2025 20:48:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5531D2D9792;
-	Fri, 19 Dec 2025 20:38:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3EE97338595;
+	Fri, 19 Dec 2025 20:48:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=acm.org header.i=@acm.org header.b="23ejbMoW"
+	dkim=pass (2048-bit key) header.d=acm.org header.i=@acm.org header.b="yvRF6QOZ"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from 013.lax.mailroute.net (013.lax.mailroute.net [199.89.1.16])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E59D62D6E67;
-	Fri, 19 Dec 2025 20:38:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4EC313242B1;
+	Fri, 19 Dec 2025 20:48:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=199.89.1.16
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1766176735; cv=none; b=WY8dvnsMs3B5N7bo4s8RJsfmwWRLE6RYeII8E8cIwmiikuv3nJvIl2Axdg8x4XJjAAgdI6QH4P3Iz2uLq0GgYwWE3IJWkVTLofSXnRZ0JEfICoZbWCriPW5eL5N+ZrEJ+uHESmVvV5a/JqCh0C5Ub63jiaRkXbooVj50RjMh3U8=
+	t=1766177285; cv=none; b=TBKfFUWSZJHw/oTBwOEGxgaR11MnmGStJnvwF1G6r1UEtGhRmDxX77AeFvR8CEzEGoDBq8i9HEvYlyoGiSB8q9eAqF6LsNpCV7Xzi35tOO9I8bDmx3k2o+f/EQgriacMHCluNXPvT+rMz+LykyVGxuAeT0Q9f39BWKTIxUx72iE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1766176735; c=relaxed/simple;
-	bh=CZxWxdGzalfuaJeqiULERsX6sGBwBWd6pLNQFv3wUGA=;
+	s=arc-20240116; t=1766177285; c=relaxed/simple;
+	bh=RpTDLGmqmvX91HRlulscWF8eEEmxcYbVfxnBODEf7Fc=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=qaV3EHPrkoMN5CCoA3JSnK/7l+rfPDrQ/AzPU/qUxh4T7/kRZJ2Dgfrrr+aIGbxDQXGQpTqKRczY9W5IQOOH+dXXn8F9yvfndK3C+9g5xrYHDatFm47U7M9om46/BZXwlfX0w+oIlXc9MQpYAgllIA5LfLwEC9C721ObUFpkkv0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=acm.org; spf=pass smtp.mailfrom=acm.org; dkim=pass (2048-bit key) header.d=acm.org header.i=@acm.org header.b=23ejbMoW; arc=none smtp.client-ip=199.89.1.16
+	 In-Reply-To:Content-Type; b=AaHpgrQ2MjREuDeQNYsgWnyWjTx4G2u4L5DMf1XBZhsu/G1qM8IxQ5NsHN+8m0TwMwawDXOHTJPubNYJDYfy1lK5QafIfCe0qjwnN7m+sGBOHnqQaUHEv/IhM/a/GdOPW6MqKWmFjDdkxsSoLMPIDHOEh0/5fX71hS1FpX0M7nk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=acm.org; spf=pass smtp.mailfrom=acm.org; dkim=pass (2048-bit key) header.d=acm.org header.i=@acm.org header.b=yvRF6QOZ; arc=none smtp.client-ip=199.89.1.16
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=acm.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=acm.org
 Received: from localhost (localhost [127.0.0.1])
-	by 013.lax.mailroute.net (Postfix) with ESMTP id 4dXzs815rqzlwqPy;
-	Fri, 19 Dec 2025 20:38:52 +0000 (UTC)
+	by 013.lax.mailroute.net (Postfix) with ESMTP id 4dY03k3PBFzlqfwx;
+	Fri, 19 Dec 2025 20:48:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=acm.org; h=
 	content-transfer-encoding:content-type:content-type:in-reply-to
 	:from:from:content-language:references:subject:subject
 	:user-agent:mime-version:date:date:message-id:received:received;
-	 s=mr01; t=1766176724; x=1768768725; bh=M2FKNH25BsSSupvqYh8XNhuf
-	T7PJPLlufiLItK/K4/Q=; b=23ejbMoWSMGXSBFPZlmUzRtGna4H5HROcPKMbUup
-	V/WdRBWbup4GDNoX4ZzYi/+9a2QxQyjFpfuEdRS5ewl/8ts1Xxp1RTcZSs54u6Ol
-	V4+ys1ry+a515MDuanbl0Ud7DP9g1ofFdkwrrR83EYCeIoXuBBDi8v0Mx6Otj3WI
-	eXu2aS2vAeC+/lTfWViepaxFvMNipVgj+00o7/6Ytj/CfDmAbV43JA319Vk62LAg
-	y8BnF8cLm6gyyRXsKaD6m8R0XZAZMGGmDVyQ2i904nnISBAr0ieu6hnDNx9oLGke
-	a0C4gG35l9QIBTC0Lq9pBQ+IlBmqQe7BkmR8IZhBjfK2WA==
+	 s=mr01; t=1766177275; x=1768769276; bh=RpTDLGmqmvX91HRlulscWF8e
+	EEmxcYbVfxnBODEf7Fc=; b=yvRF6QOZG6UHkzlDEI+784Z3F6GrQK/qbhDhyH/q
+	M0VmZ1z5qrHfAYDtPV8Dk/4in6+gahQxa1lbZ1Jo6c9wtCyIYJGMKW//Odp+W+WN
+	kP75zw9/8DlRJ+zhV6IQnwokulJ8QNP5RFHBufnRbn7Bu+UomFMF1zl0CcA6lGHQ
+	qNkHLoupGo+gAFxdviBTwFsmv7lpmbSZGX3B0nYorvFBAjGXtIEDutsEekW/XB+L
+	aBqbyKoEpOUB/D4Xqjq9vrPvyll5guVFPGo5cn7XZCahnqCDjsHt/bWPsvysAyBk
+	i+SiyJwUkfkxqvnCbKDjxUarusC1UNbaLpXOezGEXmcqGQ==
 X-Virus-Scanned: by MailRoute
 Received: from 013.lax.mailroute.net ([127.0.0.1])
  by localhost (013.lax [127.0.0.1]) (mroute_mailscanner, port 10029) with LMTP
- id MkJHsfOVfhWT; Fri, 19 Dec 2025 20:38:44 +0000 (UTC)
+ id RwSAk9NGYx7Z; Fri, 19 Dec 2025 20:47:55 +0000 (UTC)
 Received: from [100.119.48.131] (unknown [104.135.180.219])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
 	(Authenticated sender: bvanassche@acm.org)
-	by 013.lax.mailroute.net (Postfix) with ESMTPSA id 4dXzrm6hBtzlwqPY;
-	Fri, 19 Dec 2025 20:38:32 +0000 (UTC)
-Message-ID: <61037092-ddfb-4504-9351-7f6a3e5e4616@acm.org>
-Date: Fri, 19 Dec 2025 12:38:32 -0800
+	by 013.lax.mailroute.net (Postfix) with ESMTPSA id 4dY03N45hpzlvrT5;
+	Fri, 19 Dec 2025 20:47:44 +0000 (UTC)
+Message-ID: <3b070057-5fda-410e-a047-d9061d56a82f@acm.org>
+Date: Fri, 19 Dec 2025 12:47:43 -0800
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
@@ -63,7 +63,7 @@ List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v5 12/36] bit_spinlock: Include missing <asm/processor.h>
+Subject: Re: [PATCH v5 13/36] bit_spinlock: Support Clang's context analysis
 To: Marco Elver <elver@google.com>, Peter Zijlstra <peterz@infradead.org>,
  Boqun Feng <boqun.feng@gmail.com>, Ingo Molnar <mingo@kernel.org>,
  Will Deacon <will@kernel.org>
@@ -95,46 +95,28 @@ Cc: "David S. Miller" <davem@davemloft.net>,
  linux-security-module@vger.kernel.org, linux-sparse@vger.kernel.org,
  linux-wireless@vger.kernel.org, llvm@lists.linux.dev, rcu@vger.kernel.org
 References: <20251219154418.3592607-1-elver@google.com>
- <20251219154418.3592607-13-elver@google.com>
+ <20251219154418.3592607-14-elver@google.com>
 Content-Language: en-US
 From: Bart Van Assche <bvanassche@acm.org>
-In-Reply-To: <20251219154418.3592607-13-elver@google.com>
+In-Reply-To: <20251219154418.3592607-14-elver@google.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
 
 On 12/19/25 7:40 AM, Marco Elver wrote:
-> Including <linux/bit_spinlock.h> into an empty TU will result in the
-> compiler complaining:
-> 
-> ./include/linux/bit_spinlock.h:34:4: error: call to undeclared function 'cpu_relax'; <...>
->     34 |                         cpu_relax();
->        |                         ^
-> 1 error generated.
-> 
-> Include <asm/processor.h> to allow including bit_spinlock.h where
-> <asm/processor.h> is not otherwise included.
-> 
-> Signed-off-by: Marco Elver <elver@google.com>
-> ---
->   include/linux/bit_spinlock.h | 2 ++
->   1 file changed, 2 insertions(+)
-> 
-> diff --git a/include/linux/bit_spinlock.h b/include/linux/bit_spinlock.h
-> index c0989b5b0407..59e345f74b0e 100644
-> --- a/include/linux/bit_spinlock.h
-> +++ b/include/linux/bit_spinlock.h
-> @@ -7,6 +7,8 @@
->   #include <linux/atomic.h>
->   #include <linux/bug.h>
->   
-> +#include <asm/processor.h>  /* for cpu_relax() */
-> +
->   /*
->    *  bit-based spin_lock()
->    *
+> +/*
+> + * For static context analysis, we need a unique token for each possible bit
+> + * that can be used as a bit_spinlock. The easiest way to do that is to create a
+> + * fake context that we can cast to with the __bitlock(bitnum, addr) macro
+> + * below, which will give us unique instances for each (bit, addr) pair that the
+> + * static analysis can use.
+> + */
+> +context_lock_struct(__context_bitlock) { };
+> +#define __bitlock(bitnum, addr) (struct __context_bitlock *)(bitnum + (addr))
 
-The abbreviation "TU" is uncommon so it's probably a good idea to expand
-it. Anyway:
+Will this cause static analyzers to complain about out-of-bounds
+accesses for (bitnum + (addr)), which is equivalent to &(addr)[bitnum]?
 
-Reviewed-by: Bart Van Assche <bvanassche@acm.org>
+Thanks,
+
+Bart.
 
