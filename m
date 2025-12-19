@@ -1,99 +1,80 @@
-Return-Path: <linux-wireless+bounces-29923-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-29924-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 92892CCF783
-	for <lists+linux-wireless@lfdr.de>; Fri, 19 Dec 2025 11:51:19 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id D72DECCF7DA
+	for <lists+linux-wireless@lfdr.de>; Fri, 19 Dec 2025 11:56:35 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 621033078E96
-	for <lists+linux-wireless@lfdr.de>; Fri, 19 Dec 2025 10:47:41 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 57C1C30813CE
+	for <lists+linux-wireless@lfdr.de>; Fri, 19 Dec 2025 10:51:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E9EC030100B;
-	Fri, 19 Dec 2025 10:47:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id ED0EE25DB12;
+	Fri, 19 Dec 2025 10:51:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="Sve/ih0V";
-	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="oPe70/SG"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="LYJ0Iay9"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f53.google.com (mail-wm1-f53.google.com [209.85.128.53])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 285611DA60F
-	for <linux-wireless@vger.kernel.org>; Fri, 19 Dec 2025 10:47:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1BB581F7916
+	for <linux-wireless@vger.kernel.org>; Fri, 19 Dec 2025 10:51:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.53
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1766141258; cv=none; b=TGa0eIcXmNz+bx1TRdJN+OTnsl+JBmYio30Tt/V3Uc1be3Ht5lXhcVgbOrXhh7z6FyZlKfpOAQLZekZmHkz57jUoHxSbX1G1Y0Vo64zNDsRO5VPk0lzYiZPvidDLnZ4QuoDk4tRSab15SwPbMYByThOR8CcLzAvhINUyiw57yy8=
+	t=1766141503; cv=none; b=PTqq+zo9h9CJ6bEWC4PJzuHIKGT+Q0LJEesx8H62g29wLY0oVGRyVFzqZIFjboCHyA6+YL6pJo71zdIttspansN+wciyrXXma7Sq+ks1ozT6G9MxhP3+EBfm2SDQIgufzGhC7tNBEVAZnZshKLM9cbxrPd51bUdWxY84crXLyek=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1766141258; c=relaxed/simple;
-	bh=jcSLquhQd9vs3yycLTlkV962wYyg0ao0gWX1c4mC+3s=;
+	s=arc-20240116; t=1766141503; c=relaxed/simple;
+	bh=V6cSyOIwwDNhIwGrK7ZuWBTVzM3V18BgdnFx4GP2A94=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=qtfG+uQsEhDyqiJwq86xwbWmotNBTthYakY48zXpVNDQymt3JNbz8F+078STvltwZcCZxsAr8tbCQBlFicSQs/b1qKX6agM3cDyAqO6ulsLypByX9ryPxCBx9rt6sGptGnSSqgQtDiyzGaJthEac1AB97BQPVMp6NEM907OgSTw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=Sve/ih0V; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=oPe70/SG; arc=none smtp.client-ip=170.10.133.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1766141256;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=ohuBcRpV8beJcWGlYizxYN54dm2bkbetXdev9n84fy4=;
-	b=Sve/ih0Vw2pVgKU0cGxjC3YsYfV9holvWWuJlg/revcx8CfzIvcMUi/ywNmmlSAuYMq2Pp
-	GQRvLKqerzc/NAvbDZTb8LeTAuaN7P97flqqApfMR3xw6WXoPvx8bGF5VnSwow7w46bb+0
-	hs3HqLFdX4YTE35qoLDHrmEi6Cjo7gs=
-Received: from mail-wm1-f70.google.com (mail-wm1-f70.google.com
- [209.85.128.70]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-630-xWbqXgMYP22DF8_qKwDdJg-1; Fri, 19 Dec 2025 05:47:33 -0500
-X-MC-Unique: xWbqXgMYP22DF8_qKwDdJg-1
-X-Mimecast-MFC-AGG-ID: xWbqXgMYP22DF8_qKwDdJg_1766141252
-Received: by mail-wm1-f70.google.com with SMTP id 5b1f17b1804b1-477a1e2b372so12108265e9.2
-        for <linux-wireless@vger.kernel.org>; Fri, 19 Dec 2025 02:47:33 -0800 (PST)
+	 In-Reply-To:Content-Type; b=hI/WVTkJWcd9NMD6xSUkqgEuq7e3cHdTfGVzbztY99xLAp9wjr09TZZPpDNVvSvEOMmgoXuMfpAydAPsuiQtkTvteoKVWdNwti5rZVTt7tlKO2mb9K5lkilT3ZGsSP2b2PY8PqOrWZ+/n6xc5S5qTukR+XtNp64CvpvbdnVNMwI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=LYJ0Iay9; arc=none smtp.client-ip=209.85.128.53
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-wm1-f53.google.com with SMTP id 5b1f17b1804b1-477770019e4so14004645e9.3
+        for <linux-wireless@vger.kernel.org>; Fri, 19 Dec 2025 02:51:41 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=redhat.com; s=google; t=1766141252; x=1766746052; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1766141500; x=1766746300; darn=vger.kernel.org;
         h=content-transfer-encoding:in-reply-to:from:content-language
          :references:cc:to:subject:user-agent:mime-version:date:message-id
          :from:to:cc:subject:date:message-id:reply-to;
-        bh=ohuBcRpV8beJcWGlYizxYN54dm2bkbetXdev9n84fy4=;
-        b=oPe70/SGbEnIO1GuIo0AHGvbShooriHLnEi3edlRDk+bhgLoBfBUKQTQAG9LfwZ5yK
-         QIc8ZJD+eQOHgpLxYuBqRIbB9Hym14r99iWTpwFuoA+6hxr8bQa4sYG3w3rdpLEdYP9T
-         eOfd9bhjP1R2Itslw2R4MJNnvtQDtRNKRfqrzjQLEmWlZXV09sth9LL+zsZe//Pq0QTy
-         7tUjavN8S96ZVVz/30WhRP3YJjaKsWe/D/1BD3GvpcngDS/pFtgrk3UEefjRDsoO6vuN
-         JW2xnVsFLSPuxsq4GgdvueEpmLlG0eExwfijF80WDZikEKnn31UleMrS6FS2SDRAo2Qn
-         4TgQ==
+        bh=2aEntp+H3t0PC3zZlw72YZZBufJ6vmr1LZ/xhhZ9ago=;
+        b=LYJ0Iay9ZX5xnu3v+uEEHM8R4YfrOsKY+YNgrxZGmiatnjiTB+fT8QmZu+xYt+TYfU
+         uZ6XkLoQ5koj5kkM9bWDcThjj/TJlswkaahnIyPMut8eYExAm+9waEERbk8wEU1hjQch
+         DLM47kQpU5p5jm2+vL99CUykgo8hEt9f9ANZ5nW2A+4ulsIk6kX9ZJlm/4/sGHCjtVCA
+         sCjBVtvRkpdBbRd65wPCVhpsFTdBvwC3XkjBd2P+w9CiDaHhYSnIJnJQcS66Fa1ObwG3
+         DXeS8E7TIBTWC9ITGeDeK1agPyYMK+aGY81jh/taA32QIAM6pZ95bXo6/gGLZi7EoLSY
+         2MLQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1766141252; x=1766746052;
+        d=1e100.net; s=20230601; t=1766141500; x=1766746300;
         h=content-transfer-encoding:in-reply-to:from:content-language
          :references:cc:to:subject:user-agent:mime-version:date:message-id
          :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=ohuBcRpV8beJcWGlYizxYN54dm2bkbetXdev9n84fy4=;
-        b=RSWiO3OCFq+YAWhR5GKYSInPGE6VueYqFaMZN5KNI+R85HcCdtWMevWZG/K7gn8oLM
-         yWvsaLbLNmMioW3JnIy5/9M/6SCdHOoqdHXqbFolY9QzCilk6vgnt/wfExA7xVhC8xYA
-         4J8LN81Jr54hVS+MRUBv6RFeLRjhoHW3xj9AxuRs7dAZ63gRP7EZbqbPTGw8f0zcyLjq
-         zuS2/HZvagmPneva23EqgRerPt/kuFe+G52dDBxJY9GysC8AVy/yv7ziqpwKUtNSYPxT
-         BbQ54XX3iUCehRu91xSFBOcTNt7VePOkJsb9o4WWazIikNUKDf7c8K8X0eeDvntlfzwj
-         HeHQ==
-X-Forwarded-Encrypted: i=1; AJvYcCVwRuMf37D7SMmjetGDN/uvZaDY0GZLvEgNVE0gPKYD8z7WUhrjv2cUHzU1OSJpemOj38qW0F7D68zEfwDoyQ==@vger.kernel.org
-X-Gm-Message-State: AOJu0YwAWoPc+ME56LXv5v9TcPQwk4MBSA/kkKUIqFKVZirxnDD1TzsR
-	JFoxckSRmGSS4ikEFpF6MVO07YaAUGz5MgcHxoKgdSCbhGbckZKrvJ/XypGlZROMwY2B0MLHYjP
-	+iYBZSvMJsAQWzQOSzPok7SEOAlFqyiTaupAyJPNGsOhALrn0ogPF3yiTc0R0FlziXs5Q
-X-Gm-Gg: AY/fxX4E/tqT1bhbMsB6YfcXXLNjkAMdojMLu3T/NB360tUijGztkNQtIWVZ/K5FZ/r
-	1dT7RTYXgxYsBo/gh4/q6NddKkENgqmLPCY1rsN6xkjPTmKA7NhirqtOqnBzv8a4rbK5tAZOu21
-	ZA2U7XVIa6OAq1anhRit6mL5YZgAX+6z3/yg/+E9aokZci+yq+GRlzWtAiUJevu2/FVv8EUDIC5
-	aDHYX7HwduRYQ3zLG/8alGwzB1HIzXaNQcK8uRoHxf40Ie4qsT7+4voe9TlcIg1HM1zcLIcR7w0
-	X1NKwCwl1YB3+TWdc7FKnClZgrFM7XYuQMu5XQZHucYPQv+pQAsUBr7+pw+MdOGsf/QHlaUeenU
-	8c4Jps85Q2KML
-X-Received: by 2002:a05:600c:6812:b0:477:63b5:7148 with SMTP id 5b1f17b1804b1-47d1955b97cmr21387505e9.6.1766141252222;
-        Fri, 19 Dec 2025 02:47:32 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IG0haeKdz6e1wVUfU68PetlUVJ262uD0U3xuzOT7CFHMjUWuxjHWC2bHGvwH3+5rKwg5RCnYg==
-X-Received: by 2002:a05:600c:6812:b0:477:63b5:7148 with SMTP id 5b1f17b1804b1-47d1955b97cmr21387045e9.6.1766141251798;
-        Fri, 19 Dec 2025 02:47:31 -0800 (PST)
-Received: from [192.168.88.32] ([216.128.11.227])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-47be273f147sm92155575e9.7.2025.12.19.02.47.29
+        bh=2aEntp+H3t0PC3zZlw72YZZBufJ6vmr1LZ/xhhZ9ago=;
+        b=FbgmRgAQwIGVrgL8XDWb1tzSyczifumbUFTqJ0S7sZFVRBVdKPulbGFa6HboLOGRsV
+         YLwoDlnfKBCAUGgbI5XP505WQau2Jb3Se5OOG5lYqu01+HDv960jsbBPU6X1V8z/SDd7
+         0JCH7UW2IBRBPuQiMPJWX4doBaZyI+wQjzdyXRRzOpSxwVhz9Mb58AzGbAz09Aykc0ZA
+         A8IiXofIFIw8wNlLTpzumkkRHJp9+jDRXBgzuKc4eH6I/rrTDJQgIRiA90qec35Xi6+t
+         pUGUid9uU5rE+bfGGYDsM8E3dgQFo8mSUfRPeZA9YEGVdOvqmB0tY/XYefpwh7Y7SQyC
+         c6iw==
+X-Forwarded-Encrypted: i=1; AJvYcCXuNstCrGdyzFRwWp9QgVMLUi0GlJM6caOlicqoJ08MiPasoLDTXEPotCzpoB2FOL8+IuTRevqOk4+kw8jP2Q==@vger.kernel.org
+X-Gm-Message-State: AOJu0YzyINsPrNnA5GdwcBZ+vuA3+A6DoBypSHkzfq7IBsV8J5V4uzAb
+	xP5DKoDILPIICgRhdi0Sh5o6S5Qm6E5iGDj+8vHtK9A+3zo3rQ2P/eXfKTcaqg==
+X-Gm-Gg: AY/fxX7PSLTgKavmTeOhTsD4FGbN7wiB8qXTJsU/Q17VXIdMJL2dN8Hdjer5h85HkRT
+	BscVJra+kmZWOR4sEbHTRcUw38NdgyijDYVoD7FXsAVjH+hxbSO8NhvjGWNPLclAxC1dwYvZAAU
+	GERFuqLu5N8DlLcB8krZhmmWrHuIRcyp4Bf/oOOq/AJl3xXmQMGJ/+yUWOVTlTmjxO38QiGpESR
+	6jQvy7+Ws7AFXXIKAuarLfYH2UDP0wi0AsSzr04IQ+zS4HpXlgymWHG2W6cOukkkkHhFvF+6m5D
+	Ps2THnBJEG/gUVQ0OM5FX6/4LKYf6dLkIJPGSM7plKYQ3wfFZdnrSG2mr8BuggVnFMCWkmO/ypR
+	zuQmLZFud4iGpaPhpZFutCNrKwmzLYSFi1vqpcLZZyLoh8OhbrBdTenxZZMw4b6WhVv1Cvb4ycD
+	mL6AYefYmRiQknCp9GIXch
+X-Google-Smtp-Source: AGHT+IFtOx2HIRN2DYZr+pupZ1v36n/dgywPF9qEqRGrnzCrPjgeMPDPsedf/iJSj2O28BhdhNs5wQ==
+X-Received: by 2002:a05:600c:4fce:b0:47a:935f:61a0 with SMTP id 5b1f17b1804b1-47d194c659emr21375595e9.0.1766141500105;
+        Fri, 19 Dec 2025 02:51:40 -0800 (PST)
+Received: from [192.168.1.50] ([79.119.240.187])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-47d193e329asm38101855e9.15.2025.12.19.02.51.38
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 19 Dec 2025 02:47:31 -0800 (PST)
-Message-ID: <b547252f-9893-4c23-8b17-9808c8bdd0c9@redhat.com>
-Date: Fri, 19 Dec 2025 11:47:28 +0100
+        Fri, 19 Dec 2025 02:51:39 -0800 (PST)
+Message-ID: <fd0e0d09-e220-4465-a80a-b26974602fa9@gmail.com>
+Date: Fri, 19 Dec 2025 12:51:37 +0200
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
@@ -101,75 +82,133 @@ List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 1/2] net: qrtr: Drop the MHI auto_queue feature for
- IPCR DL channels
-To: manivannan.sadhasivam@oss.qualcomm.com,
- Jeff Hugo <jeff.hugo@oss.qualcomm.com>,
- Carl Vanderlip <carl.vanderlip@oss.qualcomm.com>,
- Oded Gabbay <ogabbay@kernel.org>, Manivannan Sadhasivam <mani@kernel.org>,
- Jeff Johnson <jjohnson@kernel.org>, "David S. Miller" <davem@davemloft.net>,
- Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>,
- Simon Horman <horms@kernel.org>,
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
- Loic Poulain <loic.poulain@oss.qualcomm.com>,
- Maxim Kochetkov <fido_max@inbox.ru>
-Cc: linux-arm-msm@vger.kernel.org, dri-devel@lists.freedesktop.org,
- linux-kernel@vger.kernel.org, mhi@lists.linux.dev,
- linux-wireless@vger.kernel.org, ath11k@lists.infradead.org,
- ath12k@lists.infradead.org, netdev@vger.kernel.org,
- Bjorn Andersson <andersson@kernel.org>, Johan Hovold <johan@kernel.org>,
- Chris Lew <quic_clew@quicinc.com>, stable@vger.kernel.org
-References: <20251218-qrtr-fix-v2-0-c7499bfcfbe0@oss.qualcomm.com>
- <20251218-qrtr-fix-v2-1-c7499bfcfbe0@oss.qualcomm.com>
+Subject: Re: [PATCH rtw-next v2 10/12] wifi: rtw89: warn unexpected polling
+ value of XTAL SI
+To: Ping-Ke Shih <pkshih@realtek.com>, linux-wireless@vger.kernel.org
+Cc: gary.chang@realtek.com, damon.chen@realtek.com, kevin_yang@realtek.com
+References: <20251218063117.26278-1-pkshih@realtek.com>
+ <20251218063117.26278-11-pkshih@realtek.com>
 Content-Language: en-US
-From: Paolo Abeni <pabeni@redhat.com>
-In-Reply-To: <20251218-qrtr-fix-v2-1-c7499bfcfbe0@oss.qualcomm.com>
+From: Bitterblue Smith <rtl8821cerfe2@gmail.com>
+In-Reply-To: <20251218063117.26278-11-pkshih@realtek.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 
-On 12/18/25 5:51 PM, Manivannan Sadhasivam via B4 Relay wrote:
-> From: Manivannan Sadhasivam <manivannan.sadhasivam@oss.qualcomm.com>
+On 18/12/2025 08:31, Ping-Ke Shih wrote:
+> XTAL SI is an indirect serial interface to access registers in another
+> hardware domain. When BT driver initializes UART interface, firmware might
+> rarely control XTAL SI at the same time causing access racing.
 > 
-> MHI stack offers the 'auto_queue' feature, which allows the MHI stack to
-> auto queue the buffers for the RX path (DL channel). Though this feature
-> simplifies the client driver design, it introduces race between the client
-> drivers and the MHI stack. For instance, with auto_queue, the 'dl_callback'
-> for the DL channel may get called before the client driver is fully probed.
-> This means, by the time the dl_callback gets called, the client driver's
-> structures might not be initialized, leading to NULL ptr dereference.
+> Current is to adjust initialization flow to avoid the racing. To make
+> the racing visible if it still presents, add a message to address this.
 > 
-> Currently, the drivers have to workaround this issue by initializing the
-> internal structures before calling mhi_prepare_for_transfer_autoqueue().
-> But even so, there is a chance that the client driver's internal code path
-> may call the MHI queue APIs before mhi_prepare_for_transfer_autoqueue() is
-> called, leading to similar NULL ptr dereference. This issue has been
-> reported on the Qcom X1E80100 CRD machines affecting boot.
+> USB adapters might be unplugged suddenly, causing flooding messages. Check
+> RTW89_FLAG_UNPLUGGED flag to avoid them.
 > 
-> So to properly fix all these races, drop the MHI 'auto_queue' feature
-> altogether and let the client driver (QRTR) manage the RX buffers manually.
-> In the QRTR driver, queue the RX buffers based on the ring length during
-> probe and recycle the buffers in 'dl_callback' once they are consumed. This
-> also warrants removing the setting of 'auto_queue' flag from controller
-> drivers.
+> Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
+> ---
+> v2: handle USB being unplugged case to avoid warnings.
+> ---
+>  drivers/net/wireless/realtek/rtw89/mac.c    | 31 +++++++++++++++++++--
+>  drivers/net/wireless/realtek/rtw89/mac_be.c | 13 ++++++++-
+>  2 files changed, 40 insertions(+), 4 deletions(-)
 > 
-> Currently, this 'auto_queue' feature is only enabled for IPCR DL channel.
-> So only the QRTR client driver requires the modification.
-> 
-> Fixes: 227fee5fc99e ("bus: mhi: core: Add an API for auto queueing buffers for DL channel")
-> Fixes: 68a838b84eff ("net: qrtr: start MHI channel after endpoit creation")
-> Reported-by: Johan Hovold <johan@kernel.org>
-> Closes: https://lore.kernel.org/linux-arm-msm/ZyTtVdkCCES0lkl4@hovoldconsulting.com
-> Suggested-by: Chris Lew <quic_clew@quicinc.com>
-> Acked-by: Jeff Johnson <jjohnson@kernel.org> # drivers/net/wireless/ath/...
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Manivannan Sadhasivam <manivannan.sadhasivam@oss.qualcomm.com>
+> diff --git a/drivers/net/wireless/realtek/rtw89/mac.c b/drivers/net/wireless/realtek/rtw89/mac.c
+> index e5f2fa3b2b37..8987077bf756 100644
+> --- a/drivers/net/wireless/realtek/rtw89/mac.c
+> +++ b/drivers/net/wireless/realtek/rtw89/mac.c
+> @@ -1483,6 +1483,15 @@ static void rtw89_mac_power_switch_boot_mode(struct rtw89_dev *rtwdev)
+>  	rtw89_write32_clr(rtwdev, R_AX_RSV_CTRL, B_AX_R_DIS_PRST);
+>  }
+>  
+> +static int rtw89_mac_pwr_off_func_for_unplugged(struct rtw89_dev *rtwdev)
+> +{
+> +	/*
+> +	 * Avoid accessing IO for unplugged power-off to prevent warnings,
+> +	 * especially XTAL SI.
+> +	 */
+> +	return 0;
+> +}
+> +
+>  static int rtw89_mac_power_switch(struct rtw89_dev *rtwdev, bool on)
+>  {
+>  	const struct rtw89_mac_gen_def *mac = rtwdev->chip->mac_def;
+> @@ -1497,8 +1506,13 @@ static int rtw89_mac_power_switch(struct rtw89_dev *rtwdev, bool on)
+>  		cfg_seq = chip->pwr_on_seq;
+>  		cfg_func = chip->ops->pwr_on_func;
+>  	} else {
+> -		cfg_seq = chip->pwr_off_seq;
+> -		cfg_func = chip->ops->pwr_off_func;
+> +		if (test_bit(RTW89_FLAG_UNPLUGGED, rtwdev->flags)) {
+> +			cfg_seq = NULL;
 
-For net/...
+I just realised, this NULL will be dereferenced in rtw89_mac_pwr_seq().
 
-Acked-by: Paolo Abeni <pabeni@redhat.com>
-
-even if I don't see anything network specific there.
-
-/P
+> +			cfg_func = rtw89_mac_pwr_off_func_for_unplugged;
+> +		} else {
+> +			cfg_seq = chip->pwr_off_seq;
+> +			cfg_func = chip->ops->pwr_off_func;
+> +		}
+>  	}
+>  
+>  	if (test_bit(RTW89_FLAG_FW_RDY, rtwdev->flags))
+> @@ -7033,6 +7047,12 @@ int rtw89_mac_write_xtal_si_ax(struct rtw89_dev *rtwdev, u8 offset, u8 val, u8 m
+>  		return ret;
+>  	}
+>  
+> +	if (!test_bit(RTW89_FLAG_UNPLUGGED, rtwdev->flags) &&
+> +	    (u32_get_bits(val32, B_AX_WL_XTAL_SI_ADDR_MASK) != offset ||
+> +	     u32_get_bits(val32, B_AX_WL_XTAL_SI_DATA_MASK) != val))
+> +		rtw89_warn(rtwdev, "xtal si write: offset=%x val=%x poll=%x\n",
+> +			   offset, val, val32);
+> +
+>  	return 0;
+>  }
+>  
+> @@ -7056,7 +7076,12 @@ int rtw89_mac_read_xtal_si_ax(struct rtw89_dev *rtwdev, u8 offset, u8 *val)
+>  		return ret;
+>  	}
+>  
+> -	*val = rtw89_read8(rtwdev, R_AX_WLAN_XTAL_SI_CTRL + 1);
+> +	if (!test_bit(RTW89_FLAG_UNPLUGGED, rtwdev->flags) &&
+> +	    u32_get_bits(val32, B_AX_WL_XTAL_SI_ADDR_MASK) != offset)
+> +		rtw89_warn(rtwdev, "xtal si read: offset=%x poll=%x\n",
+> +			   offset, val32);
+> +
+> +	*val = u32_get_bits(val32, B_AX_WL_XTAL_SI_DATA_MASK);
+>  
+>  	return 0;
+>  }
+> diff --git a/drivers/net/wireless/realtek/rtw89/mac_be.c b/drivers/net/wireless/realtek/rtw89/mac_be.c
+> index 2bc329c13443..c0204e68c172 100644
+> --- a/drivers/net/wireless/realtek/rtw89/mac_be.c
+> +++ b/drivers/net/wireless/realtek/rtw89/mac_be.c
+> @@ -396,6 +396,12 @@ int rtw89_mac_write_xtal_si_be(struct rtw89_dev *rtwdev, u8 offset, u8 val, u8 m
+>  		return ret;
+>  	}
+>  
+> +	if (!test_bit(RTW89_FLAG_UNPLUGGED, rtwdev->flags) &&
+> +	    (u32_get_bits(val32, B_BE_WL_XTAL_SI_ADDR_MASK) != offset ||
+> +	     u32_get_bits(val32, B_BE_WL_XTAL_SI_DATA_MASK) != val))
+> +		rtw89_warn(rtwdev, "xtal si write: offset=%x val=%x poll=%x\n",
+> +			   offset, val, val32);
+> +
+>  	return 0;
+>  }
+>  
+> @@ -420,7 +426,12 @@ int rtw89_mac_read_xtal_si_be(struct rtw89_dev *rtwdev, u8 offset, u8 *val)
+>  		return ret;
+>  	}
+>  
+> -	*val = rtw89_read8(rtwdev, R_BE_WLAN_XTAL_SI_CTRL + 1);
+> +	if (!test_bit(RTW89_FLAG_UNPLUGGED, rtwdev->flags) &&
+> +	    u32_get_bits(val32, B_BE_WL_XTAL_SI_ADDR_MASK) != offset)
+> +		rtw89_warn(rtwdev, "xtal si read: offset=%x poll=%x\n",
+> +			   offset, val32);
+> +
+> +	*val = u32_get_bits(val32, B_BE_WL_XTAL_SI_DATA_MASK);
+>  
+>  	return 0;
+>  }
 
 
