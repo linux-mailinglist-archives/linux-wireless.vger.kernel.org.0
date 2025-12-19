@@ -1,46 +1,46 @@
-Return-Path: <linux-wireless+bounces-29972-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-29973-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id EC67FCD1325
-	for <lists+linux-wireless@lfdr.de>; Fri, 19 Dec 2025 18:42:20 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5C267CD13DC
+	for <lists+linux-wireless@lfdr.de>; Fri, 19 Dec 2025 18:54:54 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 037063006A89
-	for <lists+linux-wireless@lfdr.de>; Fri, 19 Dec 2025 17:40:12 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id B8E7630B942D
+	for <lists+linux-wireless@lfdr.de>; Fri, 19 Dec 2025 17:51:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 926FF288C34;
-	Fri, 19 Dec 2025 17:40:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4A82A34F473;
+	Fri, 19 Dec 2025 17:44:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="nMZrqzht"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Dwev8mAE"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5BADA168BD;
-	Fri, 19 Dec 2025 17:40:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1540634F46D;
+	Fri, 19 Dec 2025 17:44:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1766166010; cv=none; b=S2XEGYCffXBVCBQXh+2z3hSTP7pJL1mmmfRbsbpDDDvQSQMxfrV+uvNCRbijaFeMLWoNDtd0DVf3Trwv0UOLqWIRd6QwAIPaFjr3YOCK1q9keAnJZ86fzv/SXaPtrBUjNEzJYdVts+9iAr0hM2yiwZHCemTblx+VTFKWOY1safU=
+	t=1766166273; cv=none; b=qLFCHjYHlAXuFh3xRbJobcWyzXCMyJbQMVhTurpEt1m87djZqT1RdVk722thm9/DqwA+aYjr+Bm417umJgwUureXMtXNH3dcp7Br7FSMplGDkKpyX0do3rli7TiktfLWuOcAt9pLrJ3smWJN5eBOpEGahc4ghCLq2eAmUToeb3Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1766166010; c=relaxed/simple;
-	bh=ZsjdqJpJJXC5C6gH4t4wg63JhIEf5NEbR9uPdpyc89Y=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=kwDZOlQA0P8uCuf+r+Qq5jXcuvw93UcwzyAIly/Qv8QhtGLiNxtqHsQ76u3K92znLU58kzn3LpqHJMsm+FMhawf2mL2AEQvHSxqfFYalyRFpFghFyGHEj4Ueok42dMIXmBk/H9Gsr091uB4DUQ2vMjNMkE2PQSB2n+C5XqWh5jI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=nMZrqzht; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1F046C4CEF1;
-	Fri, 19 Dec 2025 17:40:02 +0000 (UTC)
+	s=arc-20240116; t=1766166273; c=relaxed/simple;
+	bh=B143e+Ju3bRtF4GT1ksPT6m8+p2ynbOEY/ZzNFaOuHQ=;
+	h=Message-ID:Date:MIME-Version:Subject:From:To:Cc:References:
+	 In-Reply-To:Content-Type; b=sj7m027Mul7wt/J/WDj+DB04prZKCxMT66ygx0RM+MZ6naU9qq4jeg9Img30LK389kJJcaWG6TYPrcLtxhFV8frXdG4x8aVLzgZgqhRaJ4gU+fT8q4Wee5RwV9nJ9NBRI1MKMS1gO4kXbVWG+K0vX23ApWSW79h6K7RQ82XBFdc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Dwev8mAE; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 76440C116B1;
+	Fri, 19 Dec 2025 17:44:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1766166009;
-	bh=ZsjdqJpJJXC5C6gH4t4wg63JhIEf5NEbR9uPdpyc89Y=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=nMZrqzhtgHrlm3GrbWHY4c89HOWa1fddvvSDV9QwN4+Bm7c4P+cK9wVnpU0j7lClz
-	 kXqey3sBt01kGODW4wW+3PL9Sm3tMzeSO4eA2hMgxZd6H3mVC/1TVbM+QwflxP7Bbl
-	 +oJaR2l76kIgpmQxNn7nJWncJxD0oi9Q24XlGQJM6lxSCVFXZWsJ0N4HDFox1qpJjr
-	 O8XcNKsrNGYP+Chq9uhMzps24Dx7BzTZcbhuMF2MnKLZAY/Jy17HPGbO9TKNPI7vqE
-	 l94ImrpbFz/GPEGY4Muv01Qi+HooNo7iA+HvsaOMgJP6uUkkZaPLXboUmcjXfC9Tl6
-	 MqUM0WjDzcptA==
-Message-ID: <4d167792-cc62-422b-bf65-3ce101377d46@kernel.org>
-Date: Fri, 19 Dec 2025 18:40:00 +0100
+	s=k20201202; t=1766166272;
+	bh=B143e+Ju3bRtF4GT1ksPT6m8+p2ynbOEY/ZzNFaOuHQ=;
+	h=Date:Subject:From:To:Cc:References:In-Reply-To:From;
+	b=Dwev8mAE2Gsd6ghQywmqm5YFJxMXNwZmVGqeEljG5eJt4mif0qYcGOWq4IZGn0u7B
+	 X+MXQNKz4URgboKJI2N4kIkp1jt3jmWiKKGjrBrZpKiqN603qFHrmXHrs1F89cAzuy
+	 15ridlIq+xvXurxOO1ZqubB+A0OAllC4yPpH9KvFdm1xs61MFrkY0rrhO0d2W8n1+u
+	 z2qi3frRPmbqgK1yLTBb85jzj5xqToSqhj3akGYd/6paFLnzpecY4Wcx2FiEbzjn/C
+	 f+CwRj0BQUehBUuZto7Q1F57Ugqo569Dt/fHGjGutGYLomACkTho4xv8yCXlAqs5gM
+	 e+dUW1bvadahQ==
+Message-ID: <fe4148ec-9dbd-4418-9c36-f4a0b9fd2c24@kernel.org>
+Date: Fri, 19 Dec 2025 18:44:23 +0100
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
@@ -50,6 +50,7 @@ MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
 Subject: Re: [PATCH v4 1/6] dt-bindings: arm: qcom: Document Microsoft Surface
  Pro 11
+From: Krzysztof Kozlowski <krzk@kernel.org>
 To: jerome.debretagne@gmail.com, Bjorn Andersson <andersson@kernel.org>,
  Konrad Dybcio <konradybcio@kernel.org>, Rob Herring <robh@kernel.org>,
  Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
@@ -64,7 +65,7 @@ Cc: linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org,
  Dale Whinham <daleyo@gmail.com>
 References: <20251218-surface-sp11-for-next-v4-0-7bcf83c1504a@gmail.com>
  <20251218-surface-sp11-for-next-v4-1-7bcf83c1504a@gmail.com>
-From: Krzysztof Kozlowski <krzk@kernel.org>
+ <4d167792-cc62-422b-bf65-3ce101377d46@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=krzk@kernel.org; keydata=
  xsFNBFVDQq4BEAC6KeLOfFsAvFMBsrCrJ2bCalhPv5+KQF2PS2+iwZI8BpRZoV+Bd5kWvN79
@@ -109,57 +110,66 @@ Autocrypt: addr=krzk@kernel.org; keydata=
  jWt87ecuHlpL3uuQ0ZZNWqHgZoQLXoqC2ZV5KrtKWb/jyiFX/sxSrodALf0zf+tfHv0FZWT2
  zHjUqd0t4njD/UOsuIMOQn4Ig0SdivYPfZukb5cdasKJukG1NOpbW7yRNivaCnfZz6dTawXw
  XRIV/KDsHQiyVxKvN73bThKhONkcX2LWuD928tAR6XMM2G5ovxLe09vuOzzfTWQDsm++9UKF a/A=
-In-Reply-To: <20251218-surface-sp11-for-next-v4-1-7bcf83c1504a@gmail.com>
+In-Reply-To: <4d167792-cc62-422b-bf65-3ce101377d46@kernel.org>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-On 18/12/2025 23:22, Jérôme de Bretagne via B4 Relay wrote:
-> From: Jérôme de Bretagne <jerome.debretagne@gmail.com>
+On 19/12/2025 18:40, Krzysztof Kozlowski wrote:
+> On 18/12/2025 23:22, Jérôme de Bretagne via B4 Relay wrote:
+>> From: Jérôme de Bretagne <jerome.debretagne@gmail.com>
+>>
+>> Add the compatibles for the Qualcomm-based Microsoft Surface Pro 11,
+>> using its Denali codename.
+>>
+>> The LCD models are using the Qualcomm Snapdragon X1 Plus (X1P64100),
+>> the OLED ones are using the Qualcomm Snapdragon X1 Elite (X1E80100).
+>>
+>> Due to the difference in how the built-in panel is being handled
+>> between the OLED variant and LCD one, it is required to have two
+>> separate DTBs, so document the compatible string for both variants.
+>>
+>> Signed-off-by: Jérôme de Bretagne <jerome.debretagne@gmail.com>
+>> ---
+>>  Documentation/devicetree/bindings/arm/qcom.yaml | 11 +++++++++++
+>>  1 file changed, 11 insertions(+)
+>>
+>> diff --git a/Documentation/devicetree/bindings/arm/qcom.yaml b/Documentation/devicetree/bindings/arm/qcom.yaml
+>> index d84bd3bca2010508a8225b9549d8c634efa06531..3685330344c0bf621125fc3d2f9c04082d6de144 100644
+>> --- a/Documentation/devicetree/bindings/arm/qcom.yaml
+>> +++ b/Documentation/devicetree/bindings/arm/qcom.yaml
+>> @@ -1067,6 +1067,17 @@ properties:
+>>            - const: qcom,x1e78100
+>>            - const: qcom,x1e80100
+>>  
+>> +      - items:
+>> +          - const: microsoft,denali-lcd
+>> +          - const: microsoft,denali
+>> +          - const: qcom,x1p64100
 > 
-> Add the compatibles for the Qualcomm-based Microsoft Surface Pro 11,
-> using its Denali codename.
-> 
-> The LCD models are using the Qualcomm Snapdragon X1 Plus (X1P64100),
-> the OLED ones are using the Qualcomm Snapdragon X1 Elite (X1E80100).
-> 
-> Due to the difference in how the built-in panel is being handled
-> between the OLED variant and LCD one, it is required to have two
-> separate DTBs, so document the compatible string for both variants.
-> 
-> Signed-off-by: Jérôme de Bretagne <jerome.debretagne@gmail.com>
-> ---
->  Documentation/devicetree/bindings/arm/qcom.yaml | 11 +++++++++++
->  1 file changed, 11 insertions(+)
-> 
-> diff --git a/Documentation/devicetree/bindings/arm/qcom.yaml b/Documentation/devicetree/bindings/arm/qcom.yaml
-> index d84bd3bca2010508a8225b9549d8c634efa06531..3685330344c0bf621125fc3d2f9c04082d6de144 100644
-> --- a/Documentation/devicetree/bindings/arm/qcom.yaml
-> +++ b/Documentation/devicetree/bindings/arm/qcom.yaml
-> @@ -1067,6 +1067,17 @@ properties:
->            - const: qcom,x1e78100
->            - const: qcom,x1e80100
->  
-> +      - items:
-> +          - const: microsoft,denali-lcd
-> +          - const: microsoft,denali
-> +          - const: qcom,x1p64100
+> 64 < 78, so this should be placed after devkit list.
 
-64 < 78, so this should be placed after devkit list.
+No, I missed this is x1p, not x1e. This is placed correct, but the oled
+should be moved as I suggested.
 
-> +          - const: qcom,x1e80100
-> +
-> +      - items:
-> +          - const: microsoft,denali-oled
-> +          - const: microsoft,denali
-
-So this goes after hamoa list, to keep somehow logical order.
-
-> +          - const: qcom,x1e80100
-> +
->        - items:
->            - enum:
->                - asus,vivobook-s15
 > 
+>> +          - const: qcom,x1e80100
+>> +
+>> +      - items:
+>> +          - const: microsoft,denali-oled
+>> +          - const: microsoft,denali
+> 
+> So this goes after hamoa list, to keep somehow logical order.
+> 
+>> +          - const: qcom,x1e80100
+>> +
+>>        - items:
+>>            - enum:
+>>                - asus,vivobook-s15
+>>
+> 
+> 
+> Best regards,
+> Krzysztof
 
 
 Best regards,
