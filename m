@@ -1,80 +1,99 @@
-Return-Path: <linux-wireless+bounces-29928-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-29929-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1B3BBCD047D
-	for <lists+linux-wireless@lfdr.de>; Fri, 19 Dec 2025 15:33:38 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id B3447CD07BE
+	for <lists+linux-wireless@lfdr.de>; Fri, 19 Dec 2025 16:22:10 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id C3C76300913A
-	for <lists+linux-wireless@lfdr.de>; Fri, 19 Dec 2025 14:33:30 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 05D1630322A2
+	for <lists+linux-wireless@lfdr.de>; Fri, 19 Dec 2025 15:21:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6366B302140;
-	Fri, 19 Dec 2025 14:33:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 415AB33BBA9;
+	Fri, 19 Dec 2025 15:12:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="XBPwua8d"
+	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="XAIIUyll";
+	dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b="HI8HIX9t"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-wm1-f51.google.com (mail-wm1-f51.google.com [209.85.128.51])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9A5BC339701
-	for <linux-wireless@vger.kernel.org>; Fri, 19 Dec 2025 14:33:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.51
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 38AF133B6FD
+	for <linux-wireless@vger.kernel.org>; Fri, 19 Dec 2025 15:12:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1766154810; cv=none; b=qAXtaOM0nmjQGRP0Oi9dVb/zuzimylJqnp2fMzRVvgDSCDl9vlI4pORJjrP/9jWP29qzewMJ/a6MIzR97D48Y3PQRJf7Lc1LXF3XCSPwhGWfNSqskdxcPJJU8n3MzijmOBGJd5AdEtkMypkpU0OYyLJJaGYKXguR1Vi0iPc+4tg=
+	t=1766157159; cv=none; b=VVETVzbrJBOzKdUpy/b/OvMbnWh58pyT8CJ4X52/bHEwIQTMbdiWtgic3XYzVB5fmj21RD7O1STnSideffIH1hIXggjjEgDq1/GTrqoDfOFe50O8yBdpeX2TFCZZegIqw+I4BNEGqR0nbiNPZkMk2Jq+JBWHueANNRppZrcIImI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1766154810; c=relaxed/simple;
-	bh=zNTyBY0thjdT/VJ83BykN1lP+V+qyOXUAmAHADfPA3Q=;
+	s=arc-20240116; t=1766157159; c=relaxed/simple;
+	bh=/JuuJ80/2JmzLdAERQXscK3usPl8e3+MS+OHtghLXZU=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=Rre2KVulX6YNSAwvfWYiAUlMv/pWJ4NypkNgR10RF2x1VmcsWevkWrntz2EZC6G9s66rOPUmZijc1v+xxbPTcHshdiJFhQ4G1biGFCO7E5MxUTPQ4NDYOpWPuapfbMJDq7yrw0bJFaoLG/cnLMvlEXJefDPfAWxDSat+3ybjKp4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=XBPwua8d; arc=none smtp.client-ip=209.85.128.51
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-wm1-f51.google.com with SMTP id 5b1f17b1804b1-4779adb38d3so12809295e9.2
-        for <linux-wireless@vger.kernel.org>; Fri, 19 Dec 2025 06:33:26 -0800 (PST)
+	 In-Reply-To:Content-Type; b=cFmOL2nCfxxdbsS33fYmGSJfgBrinO+ebOnTc7Zw25CfspAVQ2VIkCCafrt6eMXAoGrJ5xu3v7ro2K0u/lgtr94GXlzup67Z29dWKLXvw6gaXOP4pYcUTVo5AQ3mmtFBnilV01z83jnofBZ2WBXQ/kjAfnngn9kXNf5OMZHhS1M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=XAIIUyll; dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b=HI8HIX9t; arc=none smtp.client-ip=205.220.168.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
+Received: from pps.filterd (m0279864.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 5BJBl1ds1772623
+	for <linux-wireless@vger.kernel.org>; Fri, 19 Dec 2025 15:12:34 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
+	cc:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
+	Bx22M6CNp92NOPWcL8dLNXSRkv/cXb7NVqM7jST7eB0=; b=XAIIUyllsyu2sTCd
+	nwSai7RADuUT17NsQCVYC3KLTpUdRiNr/cM6ArBb7BM/oyuVznsDlsHg9tOxA3O+
+	UU7drEtMoBs6eghsoHo2pJfr7zj7CQNAv4YvkrqObmRtwOjgEJh692IXCbGc8egV
+	2aRy4g1vWcD+Yl9w4n5FB4bhNzEnHOTeebgfV5tNTip/zrWGcM4rqLSOp0ZZzZBj
+	uTvKDsiRF81LmJWXHWGSSsjqn58qK49T1oOrYUmX3o0fhIPZw7OJ5lXyTHIbfdMY
+	fz8PgrJHLDdpJbgqQPR2HLcZ5E1F4GqFR26DUc8cqKaoPegQo5WTWl7SNFRSg7de
+	FWDbZQ==
+Received: from mail-pg1-f198.google.com (mail-pg1-f198.google.com [209.85.215.198])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4b4r2bk2cm-1
+	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
+	for <linux-wireless@vger.kernel.org>; Fri, 19 Dec 2025 15:12:33 +0000 (GMT)
+Received: by mail-pg1-f198.google.com with SMTP id 41be03b00d2f7-b62da7602a0so2026370a12.2
+        for <linux-wireless@vger.kernel.org>; Fri, 19 Dec 2025 07:12:33 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1766154805; x=1766759605; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
+        d=oss.qualcomm.com; s=google; t=1766157153; x=1766761953; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:content-language:from
          :references:cc:to:subject:user-agent:mime-version:date:message-id
          :from:to:cc:subject:date:message-id:reply-to;
-        bh=s+wQ/Wi0f7yjr9An/5DGy0nteWDVX9DJq0xQd5+X65E=;
-        b=XBPwua8dSGRSbyMLgzF1fzoL2kEYAAFnbz/RBQWzSgHMQ/HMODAsKKDpfYexAg8iZi
-         e6f+ZSqThNSNy3qIp1UuFBRx98cZeE7YskPdFgVNv/6ykJQ8hR/2MmeBbnJJzbeL/pkf
-         99OXypJDwZxJBzefOaEYrQJSVgTP0OKYiR4QWaf60DyfrKXleHNyt64jXtTYE4zGU35E
-         9YbNcSP/JHHfDsPuqeF9P1mnvDSSPF1MpwB20L3/QfVso2OX97Uzqj1r4dEi5fYknCza
-         zmIduhADOx7EGFnc8eeCbh1mTeS431n66lSqFWEl86MUrKNg8GdzJTqsXGiaeokze6SC
-         IAaw==
+        bh=Bx22M6CNp92NOPWcL8dLNXSRkv/cXb7NVqM7jST7eB0=;
+        b=HI8HIX9t2Pq+Kyakyo0bu6x4CydVPp4WYW5fFtiXy4uzceq+PYmRGAxMOM/iIAu/ya
+         pqx/4k5sG5pK3GCBYXTf7MOPA4U4irMAA0Luu10M5XxbCvTNSuhzaPG7qmLGStNMWdJE
+         7Ui/uODVhuaqtTn9k6dH1/1MPiCO1sBtfR6zAcEoYY0Y34lsVS55aAR1XLcj5elczsoC
+         JeIb6tfUHMvb/Xq2JMhBQKpIHTsTu5Gly3mudidL8VmCzEG+09VorB7WpI2RxCLzIdwC
+         29LmdjgKze7lftotKk3kRHFtzA+p2f38sRzXcAdLJNMLPcmmabY9bxwz+VvxMhQbL/G9
+         7H9g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1766154805; x=1766759605;
-        h=content-transfer-encoding:in-reply-to:from:content-language
+        d=1e100.net; s=20230601; t=1766157153; x=1766761953;
+        h=content-transfer-encoding:in-reply-to:content-language:from
          :references:cc:to:subject:user-agent:mime-version:date:message-id
          :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=s+wQ/Wi0f7yjr9An/5DGy0nteWDVX9DJq0xQd5+X65E=;
-        b=Mh3NtryOlKybO4lipN+Mn49UCpYyn1Fh+tspjgXxHIbHxlG/UrmF96TKF6Qyd5soKC
-         nmXS8IhgKhy63wa9EIE86vu8/hM+AImcqcqkvt7l3cUk+QCd/vsMcmftfkFaXny3x37r
-         62hbt0KLtUSIEs0BX7w/2g3jzasYq1COwFDjCFbNILMv9p6MYPnUlvhc7OgIP+FuUoGX
-         urTTFt7j3eKA8n3j08FGhedi4n/4j9teKgQLOoaEuaal+5G/cli0aFPXD5bGao478+e0
-         wf4lKaBUVjWPXZstn+hoAGDM/QHeGuLRm4j1aKf2aLN543VoG2cR8wVr5k8pnfzmnh7M
-         aXrw==
-X-Forwarded-Encrypted: i=1; AJvYcCWOkj2HtG3TAOjtjsoTRqTIuZ57gEJqrTmzmbbsaORcjD34IXpxHdHYKfE9vd5Uhz1q5eCFt5D1xCQdzBXwHA==@vger.kernel.org
-X-Gm-Message-State: AOJu0YxqSdpFifoeGt/Zs/foAEhpZVTDMfUxD6OagQ5oJfg9Yy4jDLPN
-	NV6jwRged+bVck22W2Ygxqyzm6t3yJ63sFFow53aO1BbkGmG7xtueHe6
-X-Gm-Gg: AY/fxX550GG5rcb+n6LC9QGzpwXnHzysO4VD8lAsTXgGDI1Z4a5pIOb9GS4Ngj35Jym
-	nkZ50A+b0XCFJJWMzRCc5jwTtW6vhsdsPFkEz34Dhg/0TLSjyQDvlH0Ik7b+GGTpZyF7s7lQ9Ob
-	XjCYRGvxbIBExZtdzN8muficsDMHfoXyAoSz4eVhuB7fBTMg72gFwfRp4Glb7KbySQNLDtBBgSQ
-	QraT+OMWVPjTtZGisMmNcPwN9vE0PeJo3GozXl0p5k/sGjPTFtNbAZHq6JUYjsP0LEkwg2bqMmF
-	26f4W7iqY0Wc+CqrzQ6EYC5I+o834vpUCvpwFBsBvUpHG1HKnKA0BQj8qzj2SjQk2RY+c6K9y1u
-	u8KlQJT9A7NejUsOZ3jFpsy2GEO0v82PjjRd+YltzfAonQ/Cg1qKWg3XBUGX05gU7w7K2UMIS9d
-	iM7yr8+PTG78Y4/MJPydx8haBSpOdfcZ4=
-X-Google-Smtp-Source: AGHT+IF/s8ujOm93tcd15TKcDVFrMsCraCeMpO8XeU4CD7sKcPO/wyk8wssoQWTwaGxKyR0ZOnLrqQ==
-X-Received: by 2002:a05:600c:64c7:b0:477:73e9:dc17 with SMTP id 5b1f17b1804b1-47d195a4a14mr27000255e9.35.1766154804557;
-        Fri, 19 Dec 2025 06:33:24 -0800 (PST)
-Received: from [192.168.1.50] ([79.119.240.187])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-47d193522cdsm45144665e9.4.2025.12.19.06.33.23
+        bh=Bx22M6CNp92NOPWcL8dLNXSRkv/cXb7NVqM7jST7eB0=;
+        b=EiRYqL8/2iDw0Aq+rWFGr/ucyI0MaMQPVnsT1lZxSFeLtN9ViH0u2sIjTq2oS8H9hG
+         /CsT/nviNVaMw+WhRgdZYSN4gkPrU1PjaAWTdqyKUl+lKzbR/NUb331GzaVrh5Ak51Cu
+         CY9NmYuBAeKmpJGidxYygsZBsuucLfqu7AHA4wIeTRjRsr/0vcIaAG/Ug0HGvxE2N9GI
+         ix66WKrYslE+X8G1y7mFDEU8rhLtPm669j8wL3ZpnYLr07dZCIYwAzBB8hskp86kPlNA
+         l4okLINS2f1ZVTfN7QhqT6qR4hTxQ/D/QPDsYZhy3e+IFm5JH/yNrHVyXlr2W7foscH9
+         wH6w==
+X-Gm-Message-State: AOJu0YyegmRljTwIQrGC16JzOYX9Z3/oot9EXxzIoawYrBrGEvdmy75h
+	Gn1fAoeQURgZCJXl8aUNd+Wm42caJPfdaLuJ1LzbgCf8j+eVvB41nIt0h4KpC8eXWhNSqdnsPnH
+	ZY4y9zQKzT3/XT2vlVFiQ89Gkt/Zyne5wrBAY8gRCv62nvGmIbfOsZXf1/E3q6aQ9HlmQ/w==
+X-Gm-Gg: AY/fxX6nE+P3id5CdPuz20EE7nz1/GoEf7bqngw1hXFjy18QNtN9A++nzv5L9bIunWf
+	4+46PjHnMWWvK6lQRFFsGmopMEXRW05x0vJEjpHlQwrb+2HeronRv8u1VafZDlXU9ITspr8BXK3
+	zPN62VBRCl/vuc59UozFLlD8GaRsiyKXYZBc8o9pCfmJdzBk55v+Ig5/Eq/B5QOiUFNdpCCeGaz
+	f6Qv+DolcizLqlIL2h2nSzjnGgqKrzmD2dhmWY+zLl1dbxcRHa2F59tfveD9016dwtLvlbw5/Xn
+	+pdHjhY2LS4kvUjSif2xxBXU/6r+YHSQLLYkiaj9RjOCuoD1mDNVZuHKWxYs3Xs4twr2pYHXILY
+	MbB0bbopG2/wyheAjfs/Vy1yoJaDX1YRldQsiMBOw5ba1+yqzystR6eweFQjW8iYn9vaTpA==
+X-Received: by 2002:a05:7022:5f1c:b0:11b:99a2:9082 with SMTP id a92af1059eb24-121722ab1eemr2157095c88.15.1766157152908;
+        Fri, 19 Dec 2025 07:12:32 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IE3KNdKC5rw4p+eO5yo5suj6yGyxYbcXm7RK3HyaksW4UV/ZbKlcbBL/BPML/WSS5sJ1rIbzg==
+X-Received: by 2002:a05:7022:5f1c:b0:11b:99a2:9082 with SMTP id a92af1059eb24-121722ab1eemr2157077c88.15.1766157152330;
+        Fri, 19 Dec 2025 07:12:32 -0800 (PST)
+Received: from [10.227.110.203] (i-global254.qualcomm.com. [199.106.103.254])
+        by smtp.gmail.com with ESMTPSA id a92af1059eb24-121724dd7f5sm9323370c88.5.2025.12.19.07.12.31
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 19 Dec 2025 06:33:24 -0800 (PST)
-Message-ID: <79dd0a91-1a3f-469e-ae7f-3691e9277340@gmail.com>
-Date: Fri, 19 Dec 2025 16:33:22 +0200
+        Fri, 19 Dec 2025 07:12:32 -0800 (PST)
+Message-ID: <72d6e9fa-fa28-4079-851e-00905a7b0dda@oss.qualcomm.com>
+Date: Fri, 19 Dec 2025 07:12:30 -0800
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
@@ -82,94 +101,106 @@ List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH rtw-next v2 10/12] wifi: rtw89: warn unexpected polling
- value of XTAL SI
-To: Ping-Ke Shih <pkshih@realtek.com>,
- "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>
-Cc: Gary Chang <gary.chang@realtek.com>, Damon Chen <damon.chen@realtek.com>,
- Zong-Zhe Yang <kevin_yang@realtek.com>
-References: <20251218063117.26278-1-pkshih@realtek.com>
- <20251218063117.26278-11-pkshih@realtek.com>
- <fd0e0d09-e220-4465-a80a-b26974602fa9@gmail.com>
- <7482605222b747afbf9658170cc29b6b@realtek.com>
+Subject: Re: [PATCH wifi-next] wifi: ath10k: sdio: Use pm_sleep_ptr instead of
+ #ifdef CONFIG_PM_SLEEP
+To: Baochen Qiang <baochen.qiang@oss.qualcomm.com>,
+        =?UTF-8?Q?Uwe_Kleine-K=C3=B6nig?= <u.kleine-koenig@baylibre.com>,
+        Jeff Johnson <jjohnson@kernel.org>
+Cc: linux-wireless@vger.kernel.org, ath10k@lists.infradead.org
+References: <20251217111951.3309170-4-u.kleine-koenig@baylibre.com>
+ <dcd0c9e1-66ae-473b-ad37-5d028dc1bc16@oss.qualcomm.com>
+From: Jeff Johnson <jeff.johnson@oss.qualcomm.com>
 Content-Language: en-US
-From: Bitterblue Smith <rtl8821cerfe2@gmail.com>
-In-Reply-To: <7482605222b747afbf9658170cc29b6b@realtek.com>
+In-Reply-To: <dcd0c9e1-66ae-473b-ad37-5d028dc1bc16@oss.qualcomm.com>
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
+X-Proofpoint-GUID: I4bPM2lV-3hoAcvX0SIpU2ghAI6Tc1jY
+X-Proofpoint-ORIG-GUID: I4bPM2lV-3hoAcvX0SIpU2ghAI6Tc1jY
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUxMjE5MDEyNyBTYWx0ZWRfX8sTNfzUCxm3n
+ RyBzFWdpsHJqHLd2e/12IckIHAiybutge6gjBvwsvmtrHdfgVl5ixLh+iOE83olboGBxKTzJxwI
+ HmyhFnoH9M2wse5133KXXVIpez5wdZ87/6pXTcPrH3Qt6W8xUKEMSoFx7NfLV1U0s0cHJsOl7aC
+ pQLNSBdJvI/V+A7tISRv3uUptHFZ7MWPInpwgZRTClx5CVxK8biUqHkdTIrgvSXSP6Xb2fJC3Gr
+ 5NYXmu2SArCUbMSSArJlVhP2wmbGgI3vQBG7jqBcEx4qMwFYXGMiOuF3ENzViRELVNXsPhtPnMc
+ qPVgUI+L3rOJD7yjc2Um2G58WG/EcyJWDr8Y2rOTx5D9l+RzoNCmoWBAZShqGGXYccTLuyheBBu
+ b4MXn9xtjAYZMhoOAgJn5fOHESUyBcwC0hbKaPLP0NBKiHjPSKrp7NuuAh/xWh6BQv8I9DSauli
+ s2oirqLIS103geJxpMw==
+X-Authority-Analysis: v=2.4 cv=WYwBqkhX c=1 sm=1 tr=0 ts=69456b61 cx=c_pps
+ a=Qgeoaf8Lrialg5Z894R3/Q==:117 a=JYp8KDb2vCoCEuGobkYCKw==:17
+ a=IkcTkHD0fZMA:10 a=wP3pNCr1ah4A:10 a=s4-Qcg_JpJYA:10
+ a=VkNPw1HP01LnGYTKEx00:22 a=IpJZQVW2AAAA:8 a=UX4oRcM6ZsYirrnbdSkA:9
+ a=3ZKOabzyN94A:10 a=QEXdDO2ut3YA:10 a=x9snwWr2DeNwDh03kgHS:22
+ a=IawgGOuG5U0WyFbmm1f5:22
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.9,FMLib:17.12.100.49
+ definitions=2025-12-19_05,2025-12-17_02,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ lowpriorityscore=0 bulkscore=0 impostorscore=0 priorityscore=1501
+ clxscore=1015 phishscore=0 adultscore=0 suspectscore=0 spamscore=0
+ malwarescore=0 classifier=typeunknown authscore=0 authtc= authcc=
+ route=outbound adjust=0 reason=mlx scancount=1 engine=8.22.0-2512120000
+ definitions=main-2512190127
 
-On 19/12/2025 15:21, Ping-Ke Shih wrote:
+On 12/19/2025 2:32 AM, Baochen Qiang wrote:
 > 
-> From: Bitterblue Smith <rtl8821cerfe2@gmail.com>
+> 
+> On 12/17/2025 7:19 PM, Uwe Kleine-König wrote:
+>> This increases build coverage and removes an ugly #ifdef block.
 >>
->> On 18/12/2025 08:31, Ping-Ke Shih wrote:
->>> XTAL SI is an indirect serial interface to access registers in another
->>> hardware domain. When BT driver initializes UART interface, firmware might
->>> rarely control XTAL SI at the same time causing access racing.
->>>
->>> Current is to adjust initialization flow to avoid the racing. To make
->>> the racing visible if it still presents, add a message to address this.
->>>
->>> USB adapters might be unplugged suddenly, causing flooding messages. Check
->>> RTW89_FLAG_UNPLUGGED flag to avoid them.
->>>
->>> Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
->>> ---
->>> v2: handle USB being unplugged case to avoid warnings.
->>> ---
->>>  drivers/net/wireless/realtek/rtw89/mac.c    | 31 +++++++++++++++++++--
->>>  drivers/net/wireless/realtek/rtw89/mac_be.c | 13 ++++++++-
->>>  2 files changed, 40 insertions(+), 4 deletions(-)
->>>
->>> diff --git a/drivers/net/wireless/realtek/rtw89/mac.c b/drivers/net/wireless/realtek/rtw89/mac.c
->>> index e5f2fa3b2b37..8987077bf756 100644
->>> --- a/drivers/net/wireless/realtek/rtw89/mac.c
->>> +++ b/drivers/net/wireless/realtek/rtw89/mac.c
->>> @@ -1483,6 +1483,15 @@ static void rtw89_mac_power_switch_boot_mode(struct rtw89_dev *rtwdev)
->>>       rtw89_write32_clr(rtwdev, R_AX_RSV_CTRL, B_AX_R_DIS_PRST);
->>>  }
->>>
->>> +static int rtw89_mac_pwr_off_func_for_unplugged(struct rtw89_dev *rtwdev)
->>> +{
->>> +     /*
->>> +      * Avoid accessing IO for unplugged power-off to prevent warnings,
->>> +      * especially XTAL SI.
->>> +      */
->>> +     return 0;
->>> +}
->>> +
->>>  static int rtw89_mac_power_switch(struct rtw89_dev *rtwdev, bool on)
->>>  {
->>>       const struct rtw89_mac_gen_def *mac = rtwdev->chip->mac_def;
->>> @@ -1497,8 +1506,13 @@ static int rtw89_mac_power_switch(struct rtw89_dev *rtwdev, bool on)
->>>               cfg_seq = chip->pwr_on_seq;
->>>               cfg_func = chip->ops->pwr_on_func;
->>>       } else {
->>> -             cfg_seq = chip->pwr_off_seq;
->>> -             cfg_func = chip->ops->pwr_off_func;
->>> +             if (test_bit(RTW89_FLAG_UNPLUGGED, rtwdev->flags)) {
->>> +                     cfg_seq = NULL;
+>> Signed-off-by: Uwe Kleine-König <u.kleine-koenig@baylibre.com>
+>> ---
+>> Hello,
 >>
->> I just realised, this NULL will be dereferenced in rtw89_mac_pwr_seq(). 
+>> I found the patch opportunity while looking in this driver for a different
+>> reason.
+>>
+>> Best regards
+>> Uwe
+>>
+>>  drivers/net/wireless/ath/ath10k/sdio.c | 12 +-----------
+>>  1 file changed, 1 insertion(+), 11 deletions(-)
+>>
+>> diff --git a/drivers/net/wireless/ath/ath10k/sdio.c b/drivers/net/wireless/ath/ath10k/sdio.c
+>> index c06d50db40b8..3efe744c0c96 100644
+>> --- a/drivers/net/wireless/ath/ath10k/sdio.c
+>> +++ b/drivers/net/wireless/ath/ath10k/sdio.c
+>> @@ -2136,8 +2136,6 @@ static const struct ath10k_hif_ops ath10k_sdio_hif_ops = {
+>>  #endif
+>>  };
+>>  
+>> -#ifdef CONFIG_PM_SLEEP
+>> -
+>>  /* Empty handlers so that mmc subsystem doesn't remove us entirely during
+>>   * suspend. We instead follow cfg80211 suspend/resume handlers.
+>>   */
+>> @@ -2175,14 +2173,6 @@ static int ath10k_sdio_pm_resume(struct device *device)
+>>  static SIMPLE_DEV_PM_OPS(ath10k_sdio_pm_ops, ath10k_sdio_pm_suspend,
+>>  			 ath10k_sdio_pm_resume);
+>>  
+>> -#define ATH10K_SDIO_PM_OPS (&ath10k_sdio_pm_ops)
+>> -
+>> -#else
+>> -
+>> -#define ATH10K_SDIO_PM_OPS NULL
+>> -
+>> -#endif /* CONFIG_PM_SLEEP */
+>> -
+>>  static int ath10k_sdio_napi_poll(struct napi_struct *ctx, int budget)
+>>  {
+>>  	struct ath10k *ar = container_of(ctx, struct ath10k, napi);
+>> @@ -2668,7 +2658,7 @@ static struct sdio_driver ath10k_sdio_driver = {
+>>  	.probe = ath10k_sdio_probe,
+>>  	.remove = ath10k_sdio_remove,
+>>  	.drv = {
+>> -		.pm = ATH10K_SDIO_PM_OPS,
+>> +		.pm = pm_sleep_ptr(&ath10k_sdio_pm_ops),
+>>  	},
+>>  };
+>>  module_sdio_driver(ath10k_sdio_driver);
+>>
 > 
-> Did you mean this statement?
->    ret = cfg_func ? cfg_func(rtwdev) : rtw89_mac_pwr_seq(rtwdev, cfg_seq);
-> 
-> In this case cfg_func is rtw89_mac_pwr_off_func_for_unplugged (not NULL),
-> so not possible to run rtw89_mac_pwr_seq(), no?
-> 
+> won't this cause defined-but-not-used warnings if CONFIG_PM_SLEEP not enabled?
 
-Oh, right. I didn't consider that.
+no because SIMPLE_DEV_PM_OPS() adds __maybe_unused to the dev_pm_ops
 
->    
->>
->>> +                     cfg_func = rtw89_mac_pwr_off_func_for_unplugged;
->>> +             } else {
->>> +                     cfg_seq = chip->pwr_off_seq;
->>> +                     cfg_func = chip->ops->pwr_off_func;
->>> +             }
->>>       }
->>>
->>>       if (test_bit(RTW89_FLAG_FW_RDY, rtwdev->flags))
 
 
