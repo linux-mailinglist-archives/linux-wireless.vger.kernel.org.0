@@ -1,154 +1,146 @@
-Return-Path: <linux-wireless+bounces-29970-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-29971-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 050FCCD128C
-	for <lists+linux-wireless@lfdr.de>; Fri, 19 Dec 2025 18:32:32 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 816E4CD12DD
+	for <lists+linux-wireless@lfdr.de>; Fri, 19 Dec 2025 18:38:12 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 1C483302D13C
-	for <lists+linux-wireless@lfdr.de>; Fri, 19 Dec 2025 17:32:31 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id C1C513017042
+	for <lists+linux-wireless@lfdr.de>; Fri, 19 Dec 2025 17:38:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C33124A35;
-	Fri, 19 Dec 2025 17:32:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0EAB0328263;
+	Fri, 19 Dec 2025 17:38:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="z8Omkiow"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="D79qIPI4"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-wr1-f51.google.com (mail-wr1-f51.google.com [209.85.221.51])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BE5F1243954
-	for <linux-wireless@vger.kernel.org>; Fri, 19 Dec 2025 17:32:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.51
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CD6EE27E1A1;
+	Fri, 19 Dec 2025 17:38:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1766165549; cv=none; b=Stssa0i00Ako18TSnDI7I1woJ38rLcM3C/tLPphc+BzMngOEfw12SQpRIoqyp1Egm/yjMpMz4l7eXu+sr69ye7CUtyUBzJXbiPc30y05223pN/7wO4AW4we8xF7v7WOfVaueUrrP/L0FbJFqvl1kN8qCkO/KHonfkDZGqsSMgK0=
+	t=1766165889; cv=none; b=rwdlO17gE0jWYD9KXBDMDe7tgBb/uFZaEShWUiazt4mOCCXFnCbKrLSVNfBRieA8mhEp7HZZX2d1CzzUWNb6YGuZFg9blbdku5I2YvRSETbbhEZ5bDh4rLBbuxJ499FdvCuPBDMLOxxUgzZj0/vdEClqN2maFXYJdPpmUjr8Two=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1766165549; c=relaxed/simple;
-	bh=rt0lFEmXebBaMS9sI6UDyRbyWki904m2XSOx26JxHEI=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=qbeOrmC/GBykHQTlggJDu8HS1WofXcQb8svlyH/0sSyMoWaB1nMudBJr5oeC5eTJp7CNyjHbJyv84nVJWnX1ddHlRoJJfWjsDODezwF/QxLGoPNd5t7GURRFbkqjl9D0xgrndjZzhqHuWm9IBf4in6EhcMNOn0Tdhxmoh8oeQBo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=z8Omkiow; arc=none smtp.client-ip=209.85.221.51
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
-Received: by mail-wr1-f51.google.com with SMTP id ffacd0b85a97d-42fbc544b09so1417331f8f.1
-        for <linux-wireless@vger.kernel.org>; Fri, 19 Dec 2025 09:32:26 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1766165545; x=1766770345; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=UwHoRYN0ckLey3iJ1nZsSnX6RQ3ya+uPXkQh6TLApt0=;
-        b=z8OmkiowqkAfgTbYi0SfuGuzSJ6pVWyUMH/LlukFkt2NRiXZ9wORlwd3ohF02fF+Um
-         mrPGVhUYas1/1wcN09qq1xuA7m1Sy3FU81hYvl03bsbBLZdy4fHc0qjNS5BsgoBzb5/d
-         tN2mgGyT1zGhpHK2eLRR8ZL92Uanq6nuIoJhbdZXtN/R2hTof3/7v/66fLshBs+AtL0F
-         zp4bfozwPeauIf+UX/fOE6fjsy6E9PuFu8yS0e3wW9V2g8kNu/5SXq6IR2cFKIQte+Ah
-         Un3I6hPSSQk915VvpuTY3HT+VrZ/GhMtUHhptvhViogO5PrEvNUKHDbdCoFWCxWR6812
-         4WyA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1766165545; x=1766770345;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=UwHoRYN0ckLey3iJ1nZsSnX6RQ3ya+uPXkQh6TLApt0=;
-        b=hC0kB6pBFkm36SunL0JoaOT8Jxx9LRWOMNKUAbqOJnQe/Rdr3GdOkHUnnEwVlRkigz
-         J+tMP6cA6qQkcJezhIm8XwghMIJgwSxDVMOWtXI9vs7NLRSNgTRndqkuRAYElobN4ceL
-         Ccwc7iYrE5NRcOxTOkpPK8lW4Aqd2aLXI3A4xkTiEsLGMkcdVEFGAmO/z21dIFxXMI96
-         muaSpVi/EBqULQgkrF6PS49mNr0mY5wcJzd1pAUEDEM7o6DbM3Xkv3/PBkKapCwDlRZm
-         Iub7vXGljkbV9svPk+GNCxlQLDr7bjiQXLKtOo3WIu4IP7Wt+tUClW37BevPSbhIxfvX
-         LWZg==
-X-Gm-Message-State: AOJu0YzS7/52b+i1pkqZFqg9d8Ud4hi/rI7zcIdbABNSpCUCVkisnCv3
-	EWg8dIe+L5CFVwHfAyIiCkx49lmSIwIvd8/5Wki5eAy+pZpCTDjTvZ64CBxOAWwCUXjXtICOq5k
-	OEFpE
-X-Gm-Gg: AY/fxX5Rs5Pb67hSVNfh0MC3x5Air0/GD5OTeWFoRPG364CMNS206e/7aTcAQM2v1b6
-	Gzo9yNF/DItwsn5egT5IGK59KsOkfsPfhgKLmaFx2IOK/XktRTR0x4NycKQMD2oEApi7bdhJVJz
-	vJTyp57hcqCAUmqZhoYeyxxhokx4sHycn0vffL8MA3bAxTQmv4/SjJUB5cobV8Yn9bhT9CPD1eN
-	3tXddix9+4vczbzvsame9T4PB2CFLqUvEuS4RKjL+ydt8IkoiQC8layCAqlrZVzq1H28iXqjVVw
-	V7pG2Rkt99mc8leM/MJAGm20oOb7+81rECVcx7EoLaKUD0rSf2IBNHEsqNlcdujmid1YDnliNWx
-	wotFSQva+EMfsI+V8BQtQbWzNM8ByNNTt+kLcsb2nrzkFQC9PtDnexdWH7wFUsJGuHuo8nx/a6D
-	hVjz4dSlb05XT8VosLxXqbe3xviKpAxpg09t6Eqhzoc7AePLrspYzXFQnlA7YHszMEozE0BuoiX
-	TI=
-X-Google-Smtp-Source: AGHT+IEg4pPUc8/Q170AaZf7FYqcz8uROUOSAycDgkICbrJRTuPymfOwn98l5/ziSfJUCccINtj5Xg==
-X-Received: by 2002:a5d:5f96:0:b0:430:f1e8:ed98 with SMTP id ffacd0b85a97d-4324e4cb8efmr4074083f8f.17.1766165544689;
-        Fri, 19 Dec 2025 09:32:24 -0800 (PST)
-Received: from localhost (p200300f65f006608b2d9668c60491dc9.dip0.t-ipconnect.de. [2003:f6:5f00:6608:b2d9:668c:6049:1dc9])
-        by smtp.gmail.com with UTF8SMTPSA id ffacd0b85a97d-4324ea227casm6129410f8f.15.2025.12.19.09.32.24
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 19 Dec 2025 09:32:24 -0800 (PST)
-From: =?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig@baylibre.com>
-To: Jeff Johnson <jjohnson@kernel.org>
-Cc: linux-wireless@vger.kernel.org,
-	ath10k@lists.infradead.org,
-	Baochen Qiang <baochen.qiang@oss.qualcomm.com>
-Subject: [PATCH v2] wifi: ath10k: sdio: Use pm_sleep_ptr instead of #ifdef CONFIG_PM_SLEEP
-Date: Fri, 19 Dec 2025 18:32:18 +0100
-Message-ID: <20251219173217.768713-2-u.kleine-koenig@baylibre.com>
-X-Mailer: git-send-email 2.47.3
+	s=arc-20240116; t=1766165889; c=relaxed/simple;
+	bh=9f3YvNsVwBuh6p/VEDY9wyCOrCSWtk1to9ClwHaPrzE=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=NpSYOhBsDcyStGJ+fJSyfsWguwlFLhco5u3ZYSNogTmvayutVSd6T4bQFAJPUCxnUqJqHfzlFbPOypAMawnFPBLZWuEji8zcdmJZUQdzt6XYbbdQ3u7MPG/myjfEIyeCfFTs4nCBGSZ7X4XZqgfccENaLDDt+LYp3UhaTrtRN5U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=D79qIPI4; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F26A9C4CEF1;
+	Fri, 19 Dec 2025 17:38:02 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1766165889;
+	bh=9f3YvNsVwBuh6p/VEDY9wyCOrCSWtk1to9ClwHaPrzE=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=D79qIPI4Uap789XICMivlywjmQC+k691Lr9A6ZKwQ5Bj37pOGxRSb+9BKeKLIKIJS
+	 jzA/u89L6W24TMBAjhwgrhHPQ5YmEoZp4oZh6Pg96qlEwISlm81BXflkUY/4ihgppY
+	 O3pcDb2JVc5NVphrrST9F874Ed+ZozlMSyQUSrxveJHSRLSzdAJZasZXTMLQ6IWHd9
+	 ROBsoSHPNleFV4Pb+Pro+Jy0K4wzIt3nTnQkUicQ76cA6AhNt9cM4PnSg0b5lTsii7
+	 DVapUaqmZs47sZxuDp7zE4mqXZk+LoZWkwDqRJUBVi2zj+SDu/d/PHJ415ah6Z9jwM
+	 hr1yFILNpqwkA==
+Message-ID: <9c7115b2-9f31-49e1-a2cd-2071b84fb85d@kernel.org>
+Date: Fri, 19 Dec 2025 18:38:00 +0100
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v4 2/6] dt-bindings: wireless: ieee80211: Add
+ disable-rfkill property
+To: jerome.debretagne@gmail.com, Bjorn Andersson <andersson@kernel.org>,
+ Konrad Dybcio <konradybcio@kernel.org>, Rob Herring <robh@kernel.org>,
+ Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
+ <conor+dt@kernel.org>, Johannes Berg <johannes@sipsolutions.net>,
+ Lorenzo Bianconi <lorenzo@kernel.org>,
+ Maximilian Luz <luzmaximilian@gmail.com>, Hans de Goede <hansg@kernel.org>,
+ =?UTF-8?Q?Ilpo_J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
+ Jeff Johnson <jjohnson@kernel.org>
+Cc: linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org,
+ linux-kernel@vger.kernel.org, linux-wireless@vger.kernel.org,
+ platform-driver-x86@vger.kernel.org, ath12k@lists.infradead.org,
+ Dale Whinham <daleyo@gmail.com>
+References: <20251218-surface-sp11-for-next-v4-0-7bcf83c1504a@gmail.com>
+ <20251218-surface-sp11-for-next-v4-2-7bcf83c1504a@gmail.com>
+From: Krzysztof Kozlowski <krzk@kernel.org>
+Content-Language: en-US
+Autocrypt: addr=krzk@kernel.org; keydata=
+ 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 a/A=
+In-Reply-To: <20251218-surface-sp11-for-next-v4-2-7bcf83c1504a@gmail.com>
 Content-Type: text/plain; charset=UTF-8
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1880; i=u.kleine-koenig@baylibre.com; h=from:subject; bh=rt0lFEmXebBaMS9sI6UDyRbyWki904m2XSOx26JxHEI=; b=owEBbQGS/pANAwAKAY+A+1h9Ev5OAcsmYgBpRYwhcJLnvpIJtU0AMygZlE7lT2uiPwCN+n6tn MRr/ee4e4qJATMEAAEKAB0WIQQ/gaxpOnoeWYmt/tOPgPtYfRL+TgUCaUWMIQAKCRCPgPtYfRL+ TnIlCACDhfva2bnNvWGJqTs+RYgiGpn0toEFs+gQ1UlKiMDN8PStPMVR3+5oS77nVCBWSItIeQ6 iS0B9Z209X6nlZaX+ZRJ65cJuNPQzvwuogR0gjtTGlx2EkQ4Nz3RdDxWgl4MbpKk2pIoCjHGvYQ Ol8tPBOnUIgV1Y9prpQnrvkzvo6E2gugxsd1Fl5wsNKHg4H89TvQbS4vIaBJ+pK3dbuwrBq+bXt Sy61GVjTAzn0TKtypqyJhcU8uLrYofEIeuB/X2d15SHsG+pEiRGBaMLTHdUa0dpsg9AmMlzimOp tcdaC2oVfT3DxFQoE4KeUPgmdKhcOHApbytw3myjOXtWQPXJ
-X-Developer-Key: i=u.kleine-koenig@baylibre.com; a=openpgp; fpr=0D2511F322BFAB1C1580266BE2DCDD9132669BD6
 Content-Transfer-Encoding: 8bit
 
-This increases build coverage and removes an ugly #ifdef block.
+On 18/12/2025 23:22, Jérôme de Bretagne via B4 Relay wrote:
+> From: Jérôme de Bretagne <jerome.debretagne@gmail.com>
+> 
+> For some devices, Wi-Fi is entirely hard blocked by default making
+> the Wi-Fi radio unusable, except if rfkill is disabled as expected
+> on those models.
+> 
+> Commit c6a7c0b09d5f ("wifi: ath12k: Add Support for enabling or
+> disabling specific features based on ACPI bitflag") added a way to
+> support features set via ACPI, including the DISABLE_RFKILL bit.
+> 
+> Add a disable-rfkill property to expose the DISABLE_RFKILL bit
+> equivalent for devices described by a Devicetree instead of ACPI.
+> 
+> Tested-by: Dale Whinham <daleyo@gmail.com>
 
-To prevent "defined but not used" warnings use
-DEFINE_SIMPLE_DEV_PM_OPS() instead of the deprecated
-SIMPLE_DEV_PM_OPS().
+You cannot test a binding. Building and other make-steps are not testing.
 
-Signed-off-by: Uwe Kleine-König <u.kleine-koenig@baylibre.com>
----
-Changes since (implicit) v1: Switch to DEFINE_SIMPLE_DEV_PM_OPS() to
-prevent warnings. Thanks to Baochen Qiang for the hint.
+I don't even get how this appeared - wasn't here before and there is no
+trace on the mailing lists. Can you point to the mailing where this was
+given?
 
- drivers/net/wireless/ath/ath10k/sdio.c | 16 +++-------------
- 1 file changed, 3 insertions(+), 13 deletions(-)
 
-diff --git a/drivers/net/wireless/ath/ath10k/sdio.c b/drivers/net/wireless/ath/ath10k/sdio.c
-index c06d50db40b8..2e58fb1d2ca3 100644
---- a/drivers/net/wireless/ath/ath10k/sdio.c
-+++ b/drivers/net/wireless/ath/ath10k/sdio.c
-@@ -2136,8 +2136,6 @@ static const struct ath10k_hif_ops ath10k_sdio_hif_ops = {
- #endif
- };
- 
--#ifdef CONFIG_PM_SLEEP
--
- /* Empty handlers so that mmc subsystem doesn't remove us entirely during
-  * suspend. We instead follow cfg80211 suspend/resume handlers.
-  */
-@@ -2172,16 +2170,8 @@ static int ath10k_sdio_pm_resume(struct device *device)
- 	return 0;
- }
- 
--static SIMPLE_DEV_PM_OPS(ath10k_sdio_pm_ops, ath10k_sdio_pm_suspend,
--			 ath10k_sdio_pm_resume);
--
--#define ATH10K_SDIO_PM_OPS (&ath10k_sdio_pm_ops)
--
--#else
--
--#define ATH10K_SDIO_PM_OPS NULL
--
--#endif /* CONFIG_PM_SLEEP */
-+static DEFINE_SIMPLE_DEV_PM_OPS(ath10k_sdio_pm_ops, ath10k_sdio_pm_suspend,
-+				ath10k_sdio_pm_resume);
- 
- static int ath10k_sdio_napi_poll(struct napi_struct *ctx, int budget)
- {
-@@ -2668,7 +2658,7 @@ static struct sdio_driver ath10k_sdio_driver = {
- 	.probe = ath10k_sdio_probe,
- 	.remove = ath10k_sdio_remove,
- 	.drv = {
--		.pm = ATH10K_SDIO_PM_OPS,
-+		.pm = pm_sleep_ptr(&ath10k_sdio_pm_ops),
- 	},
- };
- module_sdio_driver(ath10k_sdio_driver);
-
-base-commit: 8f0b4cce4481fb22653697cced8d0d04027cb1e8
--- 
-2.47.3
-
+> Signed-off-by: Jérôme de Bretagne <jerome.debretagne@gmail.com>
+> ---
+>  Documentation/devicetree/bindings/net/wireless/ieee80211.yaml | 6 ++++++
+>  1 file changed, 6 insertions(+)
+> 
+Best regards,
+Krzysztof
 
