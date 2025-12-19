@@ -1,128 +1,211 @@
-Return-Path: <linux-wireless+bounces-29920-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-29921-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 59713CCEDF9
-	for <lists+linux-wireless@lfdr.de>; Fri, 19 Dec 2025 09:03:43 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id B506DCCF309
+	for <lists+linux-wireless@lfdr.de>; Fri, 19 Dec 2025 10:46:45 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 2FAE33013737
-	for <lists+linux-wireless@lfdr.de>; Fri, 19 Dec 2025 08:03:32 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 24F5630161F2
+	for <lists+linux-wireless@lfdr.de>; Fri, 19 Dec 2025 09:46:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4EEEC25A2DE;
-	Fri, 19 Dec 2025 08:03:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5533D1F30A9;
+	Fri, 19 Dec 2025 09:40:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="iLmpEgbr"
+	dkim=pass (1024-bit key) header.d=qq.com header.i=@qq.com header.b="Hnvmkk/o"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-wr1-f50.google.com (mail-wr1-f50.google.com [209.85.221.50])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from out203-205-221-240.mail.qq.com (out203-205-221-240.mail.qq.com [203.205.221.240])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 615E6261B9B
-	for <linux-wireless@vger.kernel.org>; Fri, 19 Dec 2025 08:03:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.50
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5895772617;
+	Fri, 19 Dec 2025 09:39:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=203.205.221.240
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1766131411; cv=none; b=oDhjHMdt36G1uqNzcXaouBxQ/TXAgbEd24mGI1lSJ7K3vOCM3RaoyOX28kIowYBrYJwG0LHu6zE+baAy93Q43867gFZKMvOu9O8CxEMRzBcLSyK71jWuAk6eQcrUCTU5jSqvw1wR77Pr1Ydh+KW2SJoqRvh4HVlKlBgzo9cQQFU=
+	t=1766137203; cv=none; b=WLbYdEpb6RD+LMJUTk9kwDx7koF8Rv+r0ZhAjaMRgo+oiGzbl6UkpYcHV/vfCSfvvWM/pEvCEhgDFCur5UzHoxkOiNVnvZF1i57aTaUXx9qZPs/ov3xUsDf6sTvX05xO1ZpoEUUXZxQJc5tH46EfwKzz7/jOZuyzX4b4LZqVy9E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1766131411; c=relaxed/simple;
-	bh=/bGIY46cuc38cb1abi/sHCeSyn+CEKg0h0yfcmVi7wM=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=PmrZhZxTT6Ixb349cCZzMKB7j6WuT09Xdj5/5d89h9CT3JPlvBbbYXn+x2eCD1EkPVxJ1oQnNgu8JFN1Yq82k2FQUtQOL4Lrzp2NCJC/XvNLVLd1bo9atTUknmP9YuqJKe1e1CLyD7VAwHmhB8628y/estJxByimS8+yGl7uP+o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=iLmpEgbr; arc=none smtp.client-ip=209.85.221.50
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
-Received: by mail-wr1-f50.google.com with SMTP id ffacd0b85a97d-42fbc305552so1079573f8f.0
-        for <linux-wireless@vger.kernel.org>; Fri, 19 Dec 2025 00:03:29 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1766131408; x=1766736208; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=J+/ZRMSQfz2Pe5W3+kCSEEPyZ++ydw0qjFUACnxc7Hc=;
-        b=iLmpEgbrNkqpJeLCyEr9TjVU+3Jd3Tf/BfK6tpxbTLl0EFjGPuuIFWWF4DM8I209KD
-         Y36n73zfJ2AcLx7QWIqk0y2EQh70ls8vhkZJiecwfTON/TwATsW/x6B75KKUl4ojMwnD
-         JwEqH1HkDuYf5RhndIQTQ2yyVBdt6SxnGpxZHnNJBIMFjfl4eXNggDN+hjZ1kVN0YuwA
-         8u37BLy1JNLPQ5MLFNT5rYS+cTjbq6wM2KSTy2YK1a0AWi1EP6imoZTLNCj+6imfImaX
-         FtzE9SRZl1MabzIX+jIJr0Yt/sUJYbX84TR3fKb4MvqcHI+cJil0CN+1U1YmmrlqLtJZ
-         z48A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1766131408; x=1766736208;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=J+/ZRMSQfz2Pe5W3+kCSEEPyZ++ydw0qjFUACnxc7Hc=;
-        b=MxxwLNiMJXbAJ85z81XcDOTxf4F4ADX51hZZoVw6/GraxxCEJ+d2xBXX9rl8bldGw3
-         rLt9nqL84Yqa/ihni1sHEPwEt4xOy92Bz5dnY1qzvPnpO144w+w42626Fg5wGV9jYEfQ
-         jGkqkJOm3WQiR62OfvybJ+BH1N0SqBLE/42QFfb86GJn/noFCSxY0ozOi1apcvOF67MJ
-         K1QYwod4FDcIk6JYgr1J4irqB2YhvUcxkPfk3fqACnYuepyHZ/BrALZfva9R5DBGDnif
-         wiVyI8shAFbpGgrLdD9t/O/0mr9qUaBK/nMQgETiSmVfRV638GnJBpm4nbOU27KLqFpN
-         KRcw==
-X-Forwarded-Encrypted: i=1; AJvYcCXJSJByI277QsRMoPY6WwSfTZcEEdOURsA1W5WCe5YWDsluSgbLDi1BzwO/8tbwlXa3I3Q5EKP2prmtemIVrg==@vger.kernel.org
-X-Gm-Message-State: AOJu0Yx1QTcEgijoNPRaVENLRcp0q9I8EHMMGLvk75btqe6JExn2d6R3
-	R+psv0ep6M+/s5Y/iTmjorFrILHgvYejifHEpUnkTlrEIkiIRIrmcRlimM7HnvJkfw8=
-X-Gm-Gg: AY/fxX5DOPbd+XWhwa//6Yl2VHdbfweBkpOlykrI8LN1Nzd7A+teSkAsu3rtAA04Pge
-	SyiC3vt3mX8D0yoKBGZS5qHZGLeDGkxy+R1sT4OIHJNeZP85MNGcArJrC1bcCERNgxYngmZM9NF
-	53gnwRYhR7PUjRvEAKPmqsUE9RI1I7MfFKI8GTFLHC4Bla9OwVMvPZkpdD+jw2Kmp7o9Ih6QtnA
-	1nh71PpSjKJoZtWvKzteStrvo6LJkpBU5Y2mRpnY8UFqTPSSLL+z//q+Rlshb7PRU1/XKjzpn6W
-	WIpdeYx1S8qA7nMhlQNBrOqWdbVbsC+V8dPw994QTYdsVC+P247FS1j3ef2hC1QvtlTbkurT/6q
-	BOWOxXXKzit6xdt5S5Nx+Ao6am4bXm89R9wBrarpbA8b40d9eXQm7hKpX00/TB4DQ6KkdJcYxVU
-	+xaQXYadskn6oLb6c7
-X-Google-Smtp-Source: AGHT+IF2eEWgioDzK9v88hc7zvDgUmt9tMsxScJV1o/NErRD5qEO8zTzXYks9Hy32CtcRV+DzuDAtw==
-X-Received: by 2002:a05:6000:2303:b0:431:342:ad42 with SMTP id ffacd0b85a97d-4324e50d6d7mr2001778f8f.44.1766131407550;
-        Fri, 19 Dec 2025 00:03:27 -0800 (PST)
-Received: from localhost ([196.207.164.177])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-4324ea1af2bsm3644036f8f.1.2025.12.19.00.03.26
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 19 Dec 2025 00:03:27 -0800 (PST)
-Date: Fri, 19 Dec 2025 11:03:24 +0300
-From: Dan Carpenter <dan.carpenter@linaro.org>
-To: Vasanthakumar Thiagarajan <vasanthakumar.thiagarajan@oss.qualcomm.com>
-Cc: Harsh Kumar Bijlani <quic_hbijlani@quicinc.com>,
-	Jeff Johnson <jjohnson@kernel.org>,
-	Ripan Deuri <quic_rdeuri@quicinc.com>,
-	Baochen Qiang <baochen.qiang@oss.qualcomm.com>,
-	linux-wireless@vger.kernel.org, ath12k@lists.infradead.org,
-	linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org
-Subject: Re: [PATCH next] wifi: ath12k: clean up on error in ath12k_dp_setup()
-Message-ID: <aUUGzCA-M-D3VFj9@stanley.mountain>
-References: <aUOw1J0TU4VgeXj6@stanley.mountain>
- <1fa108fc-a06d-a9cf-a56a-c905e4982b41@oss.qualcomm.com>
- <aUT8KrV36wF8ITIK@stanley.mountain>
+	s=arc-20240116; t=1766137203; c=relaxed/simple;
+	bh=EaGsMmGh8afXN0RrgpirEyzfpNhWyWB7pfofVN/283c=;
+	h=Message-ID:From:To:Cc:Subject:Date:MIME-Version; b=VtbMRxI6Zoe8rh8JGbeOLtcd43Ypxlhh9QR0GvAW4EWiX5sHbQe9WgkOc1QlptR1kWqUmzaRjIB212QK/wKY7ovMgSY56kwo795SnBIYm3kYYvDFhLXToCsyDm6GAGX7itDoF8PPfugLn76J6OtjuJaghRvIVUvFWcbfUaMD3tM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=qq.com; spf=pass smtp.mailfrom=qq.com; dkim=pass (1024-bit key) header.d=qq.com header.i=@qq.com header.b=Hnvmkk/o; arc=none smtp.client-ip=203.205.221.240
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=qq.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=qq.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qq.com; s=s201512;
+	t=1766137191; bh=2y73VA5cXJe+4Lot4NWVltV/hJepyyy5hX6CFDZpdqA=;
+	h=From:To:Cc:Subject:Date;
+	b=Hnvmkk/oRjVjSkXJsXVNmdA0Fhjb/lpfNLUUTBdyO2WGaqxurCAcjRx/xpnwEeYtR
+	 ICtabuD2F/P+wJeBrhGFQEhf3Oh3si/TOQbxhy8O6dRf80wGPTAbX0BJauf0Rb5u0D
+	 Mp1yFZrBLEAgUEweVzcVAz3o+t/snM+aJFcAPmHE=
+Received: from cjz-VMware-Virtual-Platform.localdomain ([110.176.34.249])
+	by newxmesmtplogicsvrsza63-0.qq.com (NewEsmtp) with SMTP
+	id 9F0B74EE; Fri, 19 Dec 2025 17:39:48 +0800
+X-QQ-mid: xmsmtpt1766137188tshbie9dl
+Message-ID: <tencent_453BB45207600CD663A5957789EB5CEC1608@qq.com>
+X-QQ-XMAILINFO: OG1iVxY1YfV2xtC71cfpqorHl6ho0nA0SztC6gwNH64mejTy8rSKeS/2qA8lBm
+	 hYAbw/7R1pYcmoI/5u8hHJ5E4hifYFXK+jSDvHOuzqh+SnbL4j6dqA/bujCpJ6cYgo8qE2H6ue/4
+	 HJSaR8ct0O3MemwSkYCLGkOn75V2EqvKiRFEyaNJ+jY1vlPbSpT5S/PFyVZTWhKdC4z0d94c4/KI
+	 w3Ty2U5XYJTZ9CD3PhStJweDtA/9RTxWSz5iqVDoesoMiTWxezOHnXy+LBiNKMkp2mqaBKBg9C2Q
+	 mydPpdOk1lrs1XSrwKcSRrv/ssQkHHD1V6DajAJhtMJZu/ce9q3iFCMxGDy9FXzakK/wfoa8jzEy
+	 CINdnzNk5L1krtOOHKkihRzhnBpalAzpLM2S3zXZuINGeaRZwVHVcHfap3Ak2ZKK4vtpYckUV8XQ
+	 57V6+zdZiLwZHZ0rXjcGcTjgkjcF1FVWPFDWjdTOez9Fs1LYgBIz9+udL3ajXUCgEFcSF5czFIq/
+	 PFIRrJivm1r09cRDi0y39T6Za0EUtasoHMLvw72zuLdLrzHiJC+F7pbh7GBjKJNiYvrnwkEnP2SZ
+	 D4U8PMgAVszNK5FIrrafyjunZO4uVLQ7mL6phSmmYCk9lclxqcP1cbDSUEKHoqXt51L2Yg509siw
+	 4/4eJHuJqkqr73LzHkzj5wbEYp7Wb9GBMiBDIQXRAXZSnKe8IKKdqyBoFcCit9AklFIh3sCFAeAh
+	 C4FSNhnO00xVlGEEDTlyW0X+PaElDaH4fYIni4yWX8AKQ4wVLVPTzOTDysgqx/6s/vq4Tn1c3CBn
+	 lU4zYEb2KmdWpm0fTz7tFM3VvFScnBUQwFxLLdNAueWdRAf174EUinnFpAEBdUGqCQ2iS5UHcOXn
+	 CrsO7Ni/zaiwHwsPI6jE7t22tr7vuoD59p/7MDoARm9D+8pyCd5AHoRUvEsLh/QFnOJ4AuNINkLN
+	 hP9FYSSz7+/3yeekQL37ximDhc/+j3
+X-QQ-XMRINFO: OWPUhxQsoeAVDbp3OJHYyFg=
+From: cjz <guagua210311@qq.com>
+To: linux-staging@vger.kernel.org
+Cc: gregkh@linuxfoundation.org,
+	linux-wireless@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	changjunzheng <guagua210311@qq.com>
+Subject: [PATCH v3] rtl8723bs: v3 - Remove global continual_io_error, use local count
+Date: Fri, 19 Dec 2025 17:39:47 +0800
+X-OQ-MSGID: <20251219093947.22068-1-guagua210311@qq.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <aUT8KrV36wF8ITIK@stanley.mountain>
+Content-Transfer-Encoding: 8bit
 
-On Fri, Dec 19, 2025 at 10:18:02AM +0300, Dan Carpenter wrote:
-> On Fri, Dec 19, 2025 at 10:54:03AM +0530, Vasanthakumar Thiagarajan wrote:
-> > 
-> > 
-> > On 12/18/2025 1:14 PM, Dan Carpenter wrote:
-> > > Destroy the rhash_tbl before returning the error code.
-> > > 
-> > > Fixes: a88cf5f71adf ("wifi: ath12k: Add hash table for ath12k_dp_link_peer")
-> > > Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
-> > 
-> > nit: The next branch in ath is actually ath-next.
-> 
-> I'm working with over 400 different branches, right?  I can't keep track
-> of them all so I just put "next" if it's in linux-next and leave it
-> blanke if it's in Linus's tree.  It's automated.
+From: changjunzheng <guagua210311@qq.com>
 
-For automated QC, it's really easy to automate on the recieving side.
-In some ways, since there is only one place which recieves code and
-does QC and a hundred different people sending patches, then it makes
-more sense to do it on the recieving side.
+1. Remove global 'continual_io_error' variable from struct dvobj_priv (eliminate cross-function dependency)
+2. Replace global count logic with local 'error_count' in sd_read32/sd_write32
+3. Delete redundant rtw_inc_and_chk/rtw_reset_continual_io_error functions
+4. Add independent bool rtw_check_continual_io_error() (single responsibility)
+5. Comply with kernel coding style (whitespace, indentation, variable declaration)
 
-This rule started with Dave Miller.  He was handling a hundred patches
-a day.  Everything in networking except for wireless.  Also Sparc and
-ata.  This was before I invented the Fixes tag, so that wasn't an
-option.  Greg and Andrew still handle that level of traffic but they
-just use Fixes tags to automate their process.
+Signed-off-by: changjunzheng <guagua210311@qq.com>
+---
+ drivers/staging/rtl8723bs/core/rtw_io.c         | 17 ++---------------
+ drivers/staging/rtl8723bs/include/drv_types.h   |  1 -
+ drivers/staging/rtl8723bs/include/rtw_io.h      |  3 +--
+ .../staging/rtl8723bs/os_dep/sdio_ops_linux.c   | 16 +++++++++-------
+ 4 files changed, 12 insertions(+), 25 deletions(-)
 
-regards,
-dan carpenter
+diff --git a/drivers/staging/rtl8723bs/core/rtw_io.c b/drivers/staging/rtl8723bs/core/rtw_io.c
+index 0f52710e6d3a..33023ae45196 100644
+--- a/drivers/staging/rtl8723bs/core/rtw_io.c
++++ b/drivers/staging/rtl8723bs/core/rtw_io.c
+@@ -131,20 +131,7 @@ int rtw_init_io_priv(struct adapter *padapter, void (*set_intf_ops)(struct adapt
+ 
+ 	return _SUCCESS;
+ }
+-
+-/*
+- * Increase and check if the continual_io_error of this @param dvobjprive is larger than MAX_CONTINUAL_IO_ERR
+- * @return true:
+- * @return false:
+- */
+-int rtw_inc_and_chk_continual_io_error(struct dvobj_priv *dvobj)
+-{
+-	dvobj->continual_io_error++;
+-	return (dvobj->continual_io_error > MAX_CONTINUAL_IO_ERR);
+-}
+-
+-/* Set the continual_io_error of this @param dvobjprive to 0 */
+-void rtw_reset_continual_io_error(struct dvobj_priv *dvobj)
++bool rtw_check_continual_io_error(int error_count)
+ {
+-	dvobj->continual_io_error = 0;
++    return (error_count > MAX_CONTINUAL_IO_ERR) ? true : false;
+ }
+diff --git a/drivers/staging/rtl8723bs/include/drv_types.h b/drivers/staging/rtl8723bs/include/drv_types.h
+index bd7bb5828d56..de4bec961671 100644
+--- a/drivers/staging/rtl8723bs/include/drv_types.h
++++ b/drivers/staging/rtl8723bs/include/drv_types.h
+@@ -279,7 +279,6 @@ struct dvobj_priv {
+ 	u8 Queue2Pipe[HW_QUEUE_ENTRY];/* for out pipe mapping */
+ 
+ 	u8 irq_alloc;
+-	int continual_io_error;
+ 
+ 	atomic_t disable_func;
+ 
+diff --git a/drivers/staging/rtl8723bs/include/rtw_io.h b/drivers/staging/rtl8723bs/include/rtw_io.h
+index adf1de4d7924..8ae8849f5fd9 100644
+--- a/drivers/staging/rtl8723bs/include/rtw_io.h
++++ b/drivers/staging/rtl8723bs/include/rtw_io.h
+@@ -48,8 +48,6 @@ struct	intf_hdl {
+ #define SD_IO_TRY_CNT (8)
+ #define MAX_CONTINUAL_IO_ERR SD_IO_TRY_CNT
+ 
+-int rtw_inc_and_chk_continual_io_error(struct dvobj_priv *dvobj);
+-void rtw_reset_continual_io_error(struct dvobj_priv *dvobj);
+ 
+ struct io_priv {
+ 
+@@ -70,5 +68,6 @@ extern int rtw_write32(struct adapter *adapter, u32 addr, u32 val);
+ extern u32 rtw_write_port(struct adapter *adapter, u32 addr, u32 cnt, u8 *pmem);
+ 
+ int rtw_init_io_priv(struct adapter *padapter, void (*set_intf_ops)(struct adapter *padapter, struct _io_ops *pops));
++bool rtw_check_continual_io_error(int error_count);
+ 
+ #endif	/* _RTL8711_IO_H_ */
+diff --git a/drivers/staging/rtl8723bs/os_dep/sdio_ops_linux.c b/drivers/staging/rtl8723bs/os_dep/sdio_ops_linux.c
+index 5dc00e9117ae..571a2c6fc37a 100644
+--- a/drivers/staging/rtl8723bs/os_dep/sdio_ops_linux.c
++++ b/drivers/staging/rtl8723bs/os_dep/sdio_ops_linux.c
+@@ -207,7 +207,7 @@ u32 sd_read32(struct intf_hdl *pintfhdl, u32 addr, s32 *err)
+ 
+ 	if (err && *err) {
+ 		int i;
+-
++		int error_count = 0;
+ 		*err = 0;
+ 		for (i = 0; i < SD_IO_TRY_CNT; i++) {
+ 			if (claim_needed)
+@@ -217,13 +217,13 @@ u32 sd_read32(struct intf_hdl *pintfhdl, u32 addr, s32 *err)
+ 				sdio_release_host(func);
+ 
+ 			if (*err == 0) {
+-				rtw_reset_continual_io_error(psdiodev);
++				error_count=0;
+ 				break;
+ 			} else {
+ 				if ((-ESHUTDOWN == *err) || (-ENODEV == *err))
+ 					padapter->bSurpriseRemoved = true;
+-
+-				if (rtw_inc_and_chk_continual_io_error(psdiodev) == true) {
++				error_count++; 
++				if (rtw_check_continual_io_error(error_count) == true) {
+ 					padapter->bSurpriseRemoved = true;
+ 					break;
+ 				}
+@@ -284,7 +284,7 @@ void sd_write32(struct intf_hdl *pintfhdl, u32 addr, u32 v, s32 *err)
+ 
+ 	if (err && *err) {
+ 		int i;
+-
++		int error_count = 0; 
+ 		*err = 0;
+ 		for (i = 0; i < SD_IO_TRY_CNT; i++) {
+ 			if (claim_needed)
+@@ -292,14 +292,16 @@ void sd_write32(struct intf_hdl *pintfhdl, u32 addr, u32 v, s32 *err)
+ 			sdio_writel(func, v, addr, err);
+ 			if (claim_needed)
+ 				sdio_release_host(func);
++
+ 			if (*err == 0) {
+-				rtw_reset_continual_io_error(psdiodev);
++				error_count = 0; 
+ 				break;
+ 			} else {
+ 				if ((-ESHUTDOWN == *err) || (-ENODEV == *err))
+ 					padapter->bSurpriseRemoved = true;
+ 
+-				if (rtw_inc_and_chk_continual_io_error(psdiodev) == true) {
++				error_count++; 
++				if (rtw_check_continual_io_error(error_count) == true) { 
+ 					padapter->bSurpriseRemoved = true;
+ 					break;
+ 				}
+-- 
+2.43.0
 
 
