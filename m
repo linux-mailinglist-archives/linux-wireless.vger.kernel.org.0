@@ -1,121 +1,225 @@
-Return-Path: <linux-wireless+bounces-29995-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-29996-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4C09ACD1E6E
-	for <lists+linux-wireless@lfdr.de>; Fri, 19 Dec 2025 22:02:59 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 67131CD1E83
+	for <lists+linux-wireless@lfdr.de>; Fri, 19 Dec 2025 22:03:40 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 7ADFA3014AE2
-	for <lists+linux-wireless@lfdr.de>; Fri, 19 Dec 2025 21:01:51 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 36AFD3011A76
+	for <lists+linux-wireless@lfdr.de>; Fri, 19 Dec 2025 21:03:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4E3922D660E;
-	Fri, 19 Dec 2025 21:01:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 644052D5A01;
+	Fri, 19 Dec 2025 21:03:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=acm.org header.i=@acm.org header.b="s9OJBwkd"
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="B99HG+hi"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from 013.lax.mailroute.net (013.lax.mailroute.net [199.89.1.16])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pg1-f179.google.com (mail-pg1-f179.google.com [209.85.215.179])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9ADF12D5A01;
-	Fri, 19 Dec 2025 21:01:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=199.89.1.16
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B5D1C21ABC9
+	for <linux-wireless@vger.kernel.org>; Fri, 19 Dec 2025 21:03:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.179
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1766178110; cv=none; b=Xoxla2zGVGNvUqtLWzK/vvP9qbLkTtQj0Wf9/MqDGCuLUZjLC8mciBn6CW088iNJ78XqT7OeqjGk+cy/M1PG/D9s8a6bUjbYYRHK8oHt35aXPoRc3mQ/Dlu7AHq2ZRvpB7p3ROZkEV5w6oG2TJA94SvSPmlM+q0yvAs1nhcz4po=
+	t=1766178218; cv=none; b=rK2JqkEvbvk1vTDH2NgUv/4nvOINrAm0OC9deWhIKCe1HqA0VqVhNSCGxfnYBe0glzAbbaTD3RUjtoX5p+Xfc2zw6ZIJAcozy5JAN+1cClkOMF+0GxtYB+05UX3jguLpJeEIMVLaaXCh5J+Krz+CQRyRrB4aXqtcP2J4HlL6HfI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1766178110; c=relaxed/simple;
-	bh=MkDUjQNs27Lw1dXpmCJjBTZs8R/jJJRn5FiTSdyMBac=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=qE9Q8Tt1X9+TopPETHkbvkQU1LVkXAv9f0YWj27iYn3hNcT0ewk/OcLdjeuX21G4y22ujiG9v8n1hPP82Z1FK3URngG20K/Aetb2WlYBSaIhiWXUoBqCL0c9xskze+uowzG0txbMfaViI1ihIEGv/lsEaWIgmuYhHZOECcFZHP0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=acm.org; spf=pass smtp.mailfrom=acm.org; dkim=pass (2048-bit key) header.d=acm.org header.i=@acm.org header.b=s9OJBwkd; arc=none smtp.client-ip=199.89.1.16
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=acm.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=acm.org
-Received: from localhost (localhost [127.0.0.1])
-	by 013.lax.mailroute.net (Postfix) with ESMTP id 4dY0Mb6PP5zlxr5f;
-	Fri, 19 Dec 2025 21:01:47 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=acm.org; h=
-	content-transfer-encoding:content-type:content-type:in-reply-to
-	:from:from:content-language:references:subject:subject
-	:user-agent:mime-version:date:date:message-id:received:received;
-	 s=mr01; t=1766178100; x=1768770101; bh=9KjTqulqtSqtlYJ8kiScMrzE
-	zgfg45JI8uubNScSnWY=; b=s9OJBwkdhoRjw1wT9W38EQGW90jCfITJQ4Dj5Ydm
-	WkQeHjsl/TckZ0nDw8xfVOYGZw5litIkS9f3OXuZwzO3hTtugFky8jXGfceKpZDV
-	U1wEoqDkAkOMwveLyjPBCCVL2v2gxTQ7x/fhl18iwptJc48fGOosD/Ijsbi7r/ca
-	rtNB5lMYdEKIxVGwaqn1+m/eMvK94sr4xGOge9D31/73d4nxhOva8PPSQvnMQRHF
-	+dGUczfKiOfUUVvzbKqIDczdov8eJDoRYazYFGQ2jKTEyiBdQxt7MumMuAFABlVU
-	GcwDY+4yUv4P2PoxCQif8fbXLJcwS0c/QHyFDMfcdKDinA==
-X-Virus-Scanned: by MailRoute
-Received: from 013.lax.mailroute.net ([127.0.0.1])
- by localhost (013.lax [127.0.0.1]) (mroute_mailscanner, port 10029) with LMTP
- id IXqnKxjTN97r; Fri, 19 Dec 2025 21:01:40 +0000 (UTC)
-Received: from [100.119.48.131] (unknown [104.135.180.219])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	(Authenticated sender: bvanassche@acm.org)
-	by 013.lax.mailroute.net (Postfix) with ESMTPSA id 4dY0Ly622Wzlxr5b;
-	Fri, 19 Dec 2025 21:01:13 +0000 (UTC)
-Message-ID: <a62c731f-7ff5-48a0-8700-b62cd163f369@acm.org>
-Date: Fri, 19 Dec 2025 13:01:13 -0800
+	s=arc-20240116; t=1766178218; c=relaxed/simple;
+	bh=Gv0sx2crcIg2ojZmxyqSmjTC12L5Iz95jTVidDAOXEw=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=RG3uXahLzjIRbuwZpd21H0t06CKkYL734AGeDroWB/QMnbwqz9RxgiTcjHSCwsfSWheEgUxQcBGXq6nNTu4jjATOV5TgD+XHTqaCt+CTe9d3+sZNZ/4BZCoWvOI/tsnPwBx3Nd965BWfmX/sxXZ5f020hXS3BP8OiXkdAk/4cf0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=B99HG+hi; arc=none smtp.client-ip=209.85.215.179
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+Received: by mail-pg1-f179.google.com with SMTP id 41be03b00d2f7-bf5ac50827dso1389832a12.2
+        for <linux-wireless@vger.kernel.org>; Fri, 19 Dec 2025 13:03:35 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1766178214; x=1766783014; darn=vger.kernel.org;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=de8pCxnipY54b0+yxIRceTprHyPFDweXvtkEVQB+6ZQ=;
+        b=B99HG+hiCogXcUIsi1bSDeJY1RehHhF6CMoJ2UNn+9nmpcR3hF2A96mHhUP4T6ptgY
+         S0AcaD3j3DlHvJ+Wq7mdDG3lLeFwR292pkWiCz7l05dT/8XB2IL6vMGor/hagC0d92qX
+         9Nb6xwfVzfVZI1kyATwZlELdw0xtCb20q/AFYc4XGYjXLXCj0uNvjePhNK23877wyYlV
+         iDpKD0jDasZ4E7wOFSUcUZIKwRmUA7tX2RfJ/j3kJbDVCT3mNehQ9LKEgpigjjJq0/0U
+         +YTqntdEaRTuX8INyZ0o3qFpXPp2k8pJFXTEPO4rbHZebyqBG0MU7dx2EzvUXo9KQwNU
+         50fQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1766178214; x=1766783014;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=de8pCxnipY54b0+yxIRceTprHyPFDweXvtkEVQB+6ZQ=;
+        b=iTeB7ARRrF1fa1mBf8xbI9zy8wzpyiJOAhqtSUTpHF/kfn+NCOuhSd7yZ/3/5gsg/f
+         eSuLEbdVrirdvmFd+7L77TlfcYmgQO4IsdS5jMVkQopDqMmoPTMhspAssSiAcdtM4eVc
+         TB2YNWkvGQ4umh3dq/pqPw+bvy4yzKaL2LPyVFyLF1nUrPwFu2PH94O3iTByAHSLmA3g
+         OX5Nz4M98N9f4LUkiiVdVqLzeKz0Tb7nAnF1nrdL1NOYCGYMgUnaZOvNM9RD7ytZmDHT
+         w+iimzL3sHno9FXJXp4mLRc5nSSYReII/8WoVT3QPoLNvnt+xbxRAKOurSONhfmAbQHg
+         MqbA==
+X-Forwarded-Encrypted: i=1; AJvYcCXp/NPSKDu3MdGoGOzxD2GX6F6g+BAc5mAOLkeI/SoF5zPuzqR7b817KTGaqXPIIaZ3L1UazlTv7Ux+pJQ+AA==@vger.kernel.org
+X-Gm-Message-State: AOJu0Yz0RlTRdHllmFHUG0E+D5i4/gtm39fXLn5T/B9aeAlaLiX/3nFs
+	RLNV7Av/d1vyHt0zCUNpvLcduqpo0SBqxrpDNMukyWG6a3v4pfvYxtzfn9fn415w+9dhScHm1Q+
+	UwGlOr2gsYJcCkHbUlL2wOtXAdafEjnV5+er0e3Id
+X-Gm-Gg: AY/fxX6SoYbVJc/vXV/wM0/Kc6cWnB3z5jhl8rH5GhFKMD/jOUNLrezV3gimzGQ0aFO
+	yKz+/TJ1CEQLUIoT+pJr0dYckjuT8QFT3dswzePO29LRLjcT7rfU10Qr38HeElSgUv6I3FjgW1a
+	j8G1MzHWQpX5XmLXdpefDSkccZ/+P1+8HJhv+UC9sIugbBi5F8yk8ll50kZyO72wzKo1dqk4mb4
+	YDdK1SW9fC8+hNr9RJm5XAK9XEky4mX/55Y62YGfD8Mc/1VS/85vawl5hZU/XL7LkWpAsQRZdK0
+	ExECS1d40GtaNe5nogqXfRwLToY=
+X-Google-Smtp-Source: AGHT+IFg+H7bSZfFX25VI1D2TcRvhiMGdeLrAoERYZ7E84os+Kz9RUi2WSmTBrf46N46WhW85ro17M8H8dzWFnHpZdU=
+X-Received: by 2002:a05:7022:150d:b0:11c:e661:2590 with SMTP id
+ a92af1059eb24-121722ba459mr3928518c88.20.1766178213442; Fri, 19 Dec 2025
+ 13:03:33 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v5 21/36] debugfs: Make debugfs_cancellation a context
- lock struct
-To: Marco Elver <elver@google.com>, Peter Zijlstra <peterz@infradead.org>,
- Boqun Feng <boqun.feng@gmail.com>, Ingo Molnar <mingo@kernel.org>,
- Will Deacon <will@kernel.org>
-Cc: "David S. Miller" <davem@davemloft.net>,
- Luc Van Oostenryck <luc.vanoostenryck@gmail.com>,
- Chris Li <sparse@chrisli.org>, "Paul E. McKenney" <paulmck@kernel.org>,
- Alexander Potapenko <glider@google.com>, Arnd Bergmann <arnd@arndb.de>,
- Christoph Hellwig <hch@lst.de>, Dmitry Vyukov <dvyukov@google.com>,
- Eric Dumazet <edumazet@google.com>, Frederic Weisbecker
- <frederic@kernel.org>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
- Herbert Xu <herbert@gondor.apana.org.au>, Ian Rogers <irogers@google.com>,
- Jann Horn <jannh@google.com>, Joel Fernandes <joelagnelf@nvidia.com>,
- Johannes Berg <johannes.berg@intel.com>, Jonathan Corbet <corbet@lwn.net>,
- Josh Triplett <josh@joshtriplett.org>, Justin Stitt
- <justinstitt@google.com>, Kees Cook <kees@kernel.org>,
- Kentaro Takeda <takedakn@nttdata.co.jp>,
- Lukas Bulwahn <lukas.bulwahn@gmail.com>, Mark Rutland
- <mark.rutland@arm.com>, Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
- Miguel Ojeda <ojeda@kernel.org>, Nathan Chancellor <nathan@kernel.org>,
- Neeraj Upadhyay <neeraj.upadhyay@kernel.org>,
- Nick Desaulniers <nick.desaulniers+lkml@gmail.com>,
- Steven Rostedt <rostedt@goodmis.org>,
- Tetsuo Handa <penguin-kernel@I-love.SAKURA.ne.jp>,
- Thomas Gleixner <tglx@linutronix.de>, Thomas Graf <tgraf@suug.ch>,
- Uladzislau Rezki <urezki@gmail.com>, Waiman Long <longman@redhat.com>,
- kasan-dev@googlegroups.com, linux-crypto@vger.kernel.org,
- linux-doc@vger.kernel.org, linux-kbuild@vger.kernel.org,
- linux-kernel@vger.kernel.org, linux-mm@kvack.org,
- linux-security-module@vger.kernel.org, linux-sparse@vger.kernel.org,
- linux-wireless@vger.kernel.org, llvm@lists.linux.dev, rcu@vger.kernel.org
-References: <20251219154418.3592607-1-elver@google.com>
- <20251219154418.3592607-22-elver@google.com>
-Content-Language: en-US
-From: Bart Van Assche <bvanassche@acm.org>
-In-Reply-To: <20251219154418.3592607-22-elver@google.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+References: <20251219154418.3592607-1-elver@google.com> <20251219154418.3592607-9-elver@google.com>
+ <17723ae6-9611-4731-905c-60dab9fb7102@acm.org>
+In-Reply-To: <17723ae6-9611-4731-905c-60dab9fb7102@acm.org>
+From: Marco Elver <elver@google.com>
+Date: Fri, 19 Dec 2025 22:02:57 +0100
+X-Gm-Features: AQt7F2r1zeH05SJ6k_ASDq36JbXz12zcm_odE6qCh7vpVVaB3K5VKsjzaangmPo
+Message-ID: <CANpmjNO0B_BBse12kAobCRBK0D2pKkSu7pKa5LQAbdzBZa2xcw@mail.gmail.com>
+Subject: Re: [PATCH v5 08/36] locking/rwlock, spinlock: Support Clang's
+ context analysis
+To: Bart Van Assche <bvanassche@acm.org>
+Cc: Peter Zijlstra <peterz@infradead.org>, Boqun Feng <boqun.feng@gmail.com>, 
+	Ingo Molnar <mingo@kernel.org>, Will Deacon <will@kernel.org>, 
+	"David S. Miller" <davem@davemloft.net>, Luc Van Oostenryck <luc.vanoostenryck@gmail.com>, 
+	Chris Li <sparse@chrisli.org>, "Paul E. McKenney" <paulmck@kernel.org>, 
+	Alexander Potapenko <glider@google.com>, Arnd Bergmann <arnd@arndb.de>, Christoph Hellwig <hch@lst.de>, 
+	Dmitry Vyukov <dvyukov@google.com>, Eric Dumazet <edumazet@google.com>, 
+	Frederic Weisbecker <frederic@kernel.org>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
+	Herbert Xu <herbert@gondor.apana.org.au>, Ian Rogers <irogers@google.com>, 
+	Jann Horn <jannh@google.com>, Joel Fernandes <joelagnelf@nvidia.com>, 
+	Johannes Berg <johannes.berg@intel.com>, Jonathan Corbet <corbet@lwn.net>, 
+	Josh Triplett <josh@joshtriplett.org>, Justin Stitt <justinstitt@google.com>, 
+	Kees Cook <kees@kernel.org>, Kentaro Takeda <takedakn@nttdata.co.jp>, 
+	Lukas Bulwahn <lukas.bulwahn@gmail.com>, Mark Rutland <mark.rutland@arm.com>, 
+	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>, Miguel Ojeda <ojeda@kernel.org>, 
+	Nathan Chancellor <nathan@kernel.org>, Neeraj Upadhyay <neeraj.upadhyay@kernel.org>, 
+	Nick Desaulniers <nick.desaulniers+lkml@gmail.com>, Steven Rostedt <rostedt@goodmis.org>, 
+	Tetsuo Handa <penguin-kernel@i-love.sakura.ne.jp>, Thomas Gleixner <tglx@linutronix.de>, 
+	Thomas Graf <tgraf@suug.ch>, Uladzislau Rezki <urezki@gmail.com>, Waiman Long <longman@redhat.com>, 
+	kasan-dev@googlegroups.com, linux-crypto@vger.kernel.org, 
+	linux-doc@vger.kernel.org, linux-kbuild@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, linux-mm@kvack.org, 
+	linux-security-module@vger.kernel.org, linux-sparse@vger.kernel.org, 
+	linux-wireless@vger.kernel.org, llvm@lists.linux.dev, rcu@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 
-On 12/19/25 7:40 AM, Marco Elver wrote:
-> When compiling include/linux/debugfs.h with CONTEXT_ANALYSIS enabled, we
-> can see this error:
-> 
-> ./include/linux/debugfs.h:239:17: error: use of undeclared identifier 'cancellation'
->    239 | void __acquires(cancellation)
-> 
-> Move the __acquires(..) attribute after the declaration, so that the
-> compiler can see the cancellation function argument, as well as making
-> struct debugfs_cancellation a real context lock to benefit from Clang's
-> context analysis.
-> 
-> This change is a preparatory change to allow enabling context analysis
-> in subsystems that include the above header.
-Reviewed-by: Bart Van Assche <bvanassche@acm.org>
+On Fri, 19 Dec 2025 at 21:26, Bart Van Assche <bvanassche@acm.org> wrote:
+> On 12/19/25 7:39 AM, Marco Elver wrote:
+> > - extern void do_raw_read_lock(rwlock_t *lock) __acquires(lock);
+> > + extern void do_raw_read_lock(rwlock_t *lock) __acquires_shared(lock);
+>
+> Given the "one change per patch" rule, shouldn't the annotation fixes
+> for rwlock operations be moved into a separate patch?
+>
+> > -typedef struct {
+> > +context_lock_struct(rwlock) {
+> >       arch_rwlock_t raw_lock;
+> >   #ifdef CONFIG_DEBUG_SPINLOCK
+> >       unsigned int magic, owner_cpu;
+> > @@ -31,7 +31,8 @@ typedef struct {
+> >   #ifdef CONFIG_DEBUG_LOCK_ALLOC
+> >       struct lockdep_map dep_map;
+> >   #endif
+> > -} rwlock_t;
+> > +};
+> > +typedef struct rwlock rwlock_t;
+>
+> This change introduces a new globally visible "struct rwlock". Although
+> I haven't found any existing "struct rwlock" definitions, maybe it's a
+> good idea to use a more unique name instead.
+
+This doesn't actually introduce a new globally visible "struct
+rwlock", it's already the case before.
+An inlined struct definition in a typedef is available by its struct
+name, so this is not introducing a new name
+(https://godbolt.org/z/Y1jf66e1M).
+
+> > diff --git a/include/linux/spinlock_api_up.h b/include/linux/spinlock_api_up.h
+> > index 819aeba1c87e..018f5aabc1be 100644
+> > --- a/include/linux/spinlock_api_up.h
+> > +++ b/include/linux/spinlock_api_up.h
+> > @@ -24,68 +24,77 @@
+> >    * flags straight, to suppress compiler warnings of unused lock
+> >    * variables, and to add the proper checker annotations:
+> >    */
+> > -#define ___LOCK(lock) \
+> > -  do { __acquire(lock); (void)(lock); } while (0)
+> > +#define ___LOCK_void(lock) \
+> > +  do { (void)(lock); } while (0)
+>
+> Instead of introducing a new macro ___LOCK_void(), please expand this
+> macro where it is used ((void)(lock)). I think this will make the code
+> in this header file easier to read.
+
+If I recall right, we needed this to generalize __LOCK(),
+__LOCK_IRQ(), etc. which do preempt_disable(), local_irq_disable() in
+the right way, but then need to make sure we call the right
+acquire/release helper, which require different cases depending on the
+lock kind. Obviously we could just expand all the macros below, but
+the current pattern tried to not rewrite this altogether.
+
+There's probably a way this can all be simplified for UP, but maybe a
+separate patch. I'd leave it to the locking maintainers which way they
+prefer to go.
+
+>     > -#define __LOCK(lock) \
+> > -  do { preempt_disable(); ___LOCK(lock); } while (0)
+> > +#define ___LOCK_(lock) \
+> > +  do { __acquire(lock); ___LOCK_void(lock); } while (0)
+>
+> Is the macro ___LOCK_() used anywhere? If not, can it be left out?
+
+Yes, it's the default case if __VA_ARGS__ is empty.
+
+> > -#define __LOCK_BH(lock) \
+> > -  do { __local_bh_disable_ip(_THIS_IP_, SOFTIRQ_LOCK_OFFSET); ___LOCK(lock); } while (0)
+> > +#define ___LOCK_shared(lock) \
+> > +  do { __acquire_shared(lock); ___LOCK_void(lock); } while (0)
+>
+> The introduction of the new macros in this header file make the changes
+> hard to follow. Please consider splitting the changes for this header
+> file as follows:
+> * A first patch that splits ___LOCK() into ___LOCK_exclusive() and
+>    ___LOCK_shared().
+> * A second patch with the thread-safety annotation changes
+>    (__acquire() -> __acquire_shared()).
+
+I've wrangled with this maze of interdependent macros and definitions
+for days (though that was earlier in the year), believe me when I say
+I tried to split it up. I think the commit message hints at this:
+
+> Add support for Clang's context analysis for raw_spinlock_t,
+> spinlock_t, and rwlock. This wholesale conversion is required because
+> all three of them are interdependent.
+
+It's like a carefully crafted house of cards: you take one away, the
+whole thing breaks apart. If I recall correctly, the main problem was
+that as soon as you make one of these a context lock type, and because
+they are all interdependent, the compiler will just complain endlessly
+about either wrong attributes or incorrectly acquired/released locks
+until they are all precisely in the way you see them here.
+
+> >   /* Non PREEMPT_RT kernels map spinlock to raw_spinlock */
+> > -typedef struct spinlock {
+> > +context_lock_struct(spinlock) {
+> >       union {
+> >               struct raw_spinlock rlock;
+> >
+> > @@ -26,7 +26,8 @@ typedef struct spinlock {
+> >               };
+> >   #endif
+> >       };
+> > -} spinlock_t;
+> > +};
+> > +typedef struct spinlock spinlock_t;
+>
+> Also here, a new global struct name is introduced (spinlock). Maybe the
+> name of this new struct should be made more unique?
+
+As above.
 
