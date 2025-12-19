@@ -1,108 +1,183 @@
-Return-Path: <linux-wireless+bounces-29986-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-29987-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id F0229CD1D56
-	for <lists+linux-wireless@lfdr.de>; Fri, 19 Dec 2025 21:50:06 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id B3C85CD1DC5
+	for <lists+linux-wireless@lfdr.de>; Fri, 19 Dec 2025 21:54:53 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 78A763003B20
-	for <lists+linux-wireless@lfdr.de>; Fri, 19 Dec 2025 20:49:57 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 32A1930C542E
+	for <lists+linux-wireless@lfdr.de>; Fri, 19 Dec 2025 20:50:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AEDB8281368;
-	Fri, 19 Dec 2025 20:49:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D792F338595;
+	Fri, 19 Dec 2025 20:50:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=acm.org header.i=@acm.org header.b="AywLvfsv"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="dHv6XO5f"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from 011.lax.mailroute.net (011.lax.mailroute.net [199.89.1.14])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-qt1-f177.google.com (mail-qt1-f177.google.com [209.85.160.177])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 331731AF0AF;
-	Fri, 19 Dec 2025 20:49:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=199.89.1.14
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F365534104C
+	for <linux-wireless@vger.kernel.org>; Fri, 19 Dec 2025 20:50:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.177
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1766177396; cv=none; b=sRvqCaARSColSIfFlLIm7QWDqZ6I+RErbpZ1JZnBHOk4P9n6XHPA6hPvtjwSvURoa5a1ZGhslgBhBF2AjPDx+P52ShkVTZytj7IX/8jiL+yO3WtJyUlMMZqCWS12Idt88nN1LepfK7yAE02SdmrV4has4sfbiFP24zSY0MooOYw=
+	t=1766177412; cv=none; b=Pd/3GnE8ceB8NfDf8StlFo6eGbiiexdx5nV6MsNUGD6AozrWfeih7JV3c/sJeLz1BCURrSfknTKlpHF12X/K4cYdo/I++8MhBrD9PCdaORdVNdAFtZFPcB/adid/U12eRKrVCxqPg1wpjatKnUPnG2VAWbsvSrqY6LshtTLkZQU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1766177396; c=relaxed/simple;
-	bh=rM/P2MMDWg56fhUQ0iWC3oQCnvFdb3z2dk9Gbl198tE=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=iP04Io6R3gaq8auov4S1e1VTuhzZuiO981JaFWa/l89f+velIPlmZZ9Omw+kWUPXVUmmk83qT7Gqj3uWj/psSVNEoiGECWeXd39xwA7BJ502Lw3+7nLUwl3RQzmNlhyPTsDIVprINwlLqmicDy7TkO0rt2OdXqSx7IqKBLgGf1s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=acm.org; spf=pass smtp.mailfrom=acm.org; dkim=pass (2048-bit key) header.d=acm.org header.i=@acm.org header.b=AywLvfsv; arc=none smtp.client-ip=199.89.1.14
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=acm.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=acm.org
-Received: from localhost (localhost [127.0.0.1])
-	by 011.lax.mailroute.net (Postfix) with ESMTP id 4dY05t3Kwcz1XM6Jk;
-	Fri, 19 Dec 2025 20:49:54 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=acm.org; h=
-	content-transfer-encoding:content-type:content-type:in-reply-to
-	:from:from:content-language:references:subject:subject
-	:user-agent:mime-version:date:date:message-id:received:received;
-	 s=mr01; t=1766177387; x=1768769388; bh=rM/P2MMDWg56fhUQ0iWC3oQC
-	nvFdb3z2dk9Gbl198tE=; b=AywLvfsvVLx/i9HVA554oOttiBclTTktfo8LV6uY
-	KH2pYANUiLBah4PvzKlrzruwMuc1XpaO56swS1WExytL6MULjFVfxZsQbBajFwgp
-	zW0qmXouKxO5n01EHKjv9GJGuJQKgRMEcgB5t1a1AUpnYRlS1AxBkebt96jnYCPv
-	byD+Pb6L33rxcWeqx6MQ6lTl1244BPYjsUlYWoFuJJG436/ET2zvmSUnHlaliZWH
-	tk2S6maSDZXH+YLWrbEdlElDgYD3GKbaVnIKSn0V6n9rcYU4mXNzl+JSU0bb7hDg
-	bDs/34sNoKeOu+ohplnNqaSFvhaFbHTV0CPd5Pcdj1hTcw==
-X-Virus-Scanned: by MailRoute
-Received: from 011.lax.mailroute.net ([127.0.0.1])
- by localhost (011.lax [127.0.0.1]) (mroute_mailscanner, port 10029) with LMTP
- id oFKrgFOoi46b; Fri, 19 Dec 2025 20:49:47 +0000 (UTC)
-Received: from [100.119.48.131] (unknown [104.135.180.219])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	(Authenticated sender: bvanassche@acm.org)
-	by 011.lax.mailroute.net (Postfix) with ESMTPSA id 4dY05T54J7z1XM0pZ;
-	Fri, 19 Dec 2025 20:49:33 +0000 (UTC)
-Message-ID: <3fb5a98d-d44e-4edc-8220-149d411c1ab6@acm.org>
-Date: Fri, 19 Dec 2025 12:49:32 -0800
+	s=arc-20240116; t=1766177412; c=relaxed/simple;
+	bh=qK0aX9ex4MVXzE2y/hhCxHObw7qjjH4KOguPRtU7gc4=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=mDsBQwAKi0JXSrFKKAQpXUwFyehuM0ygWM3HxU019MU14hNUqiOjY9YKHdYVEZTvKtrQj0CY/dCMdobQQ9jq/7rDuErqyZwVdolE6QK4do53RbnMhP9U8jzVHw2ShKfQ7ZtAQsBuUNLg82l2pMgl1uBNc/TC+XSoR8IcIz+gICQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=dHv6XO5f; arc=none smtp.client-ip=209.85.160.177
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-qt1-f177.google.com with SMTP id d75a77b69052e-4f1b212ba25so18388381cf.2
+        for <linux-wireless@vger.kernel.org>; Fri, 19 Dec 2025 12:50:09 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1766177409; x=1766782209; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=E/s7YcuiJpwKoMYsi7MmSYzjmyYOegw0fzBHdgiPFOM=;
+        b=dHv6XO5ftk4Lmf+KDT8Wsgo4ETQTW8Jw1U4XqyoNEDh3SzQ00yYsLysNn1rTQm08fK
+         8FSwgQZEUWj3Navyv9tE8HYJHu2rSA3gZWGeB829zll/eLZYm1R1OUDwwe+agtSXoivr
+         xuqqdiiVxyUNyFE0AAJKv39y3Q5Jqd+dJgqPd8z1cHH2Ghjq5A+TofkOU8TMvw2ii4ZU
+         vnlFsOfG6Dz7jdoNX4iu5ylP4wYhha641M9g3F2DQ3HSpjSz2LwelfFZaycPQ8qvYUQ5
+         kHwfdg2sPlTy8t+eOPcr4GOWjKAvdBSga3Yro4Q7DrglK75MQCuu0Mo/93zmfBpWceYT
+         aZDA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1766177409; x=1766782209;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=E/s7YcuiJpwKoMYsi7MmSYzjmyYOegw0fzBHdgiPFOM=;
+        b=AGkrDu9uy2+2LAWBUXhbEtEIKVIh4Bi3hFIbssdGIHj8l1Aox9RvObCC8JG3Sh9aSA
+         80PQzkrPbFbGYUbY0FuYqO4sDKkMO7ExN5/UiPo6NEnYx7glFGT4XACcQNjSMBDsXxEQ
+         oqnN8csO8Tl9STtNZbEAUgQOG2RMUKRblw7CJ4cP5b4QY/ozk9Ysspd2TEcYCTR6orTn
+         GRq50C+y+KV5Jk/M+WNP7d/XSKsd5694CaOC1zLoowDeXhbgouI07aCa46xZtxpRyicE
+         k11Xbqrk2LzTpOELg0k9uBImaHr1MgrqfCMFBUR4NTAGsCXPiGPIkM8mGbtrRC42MIvR
+         F0mw==
+X-Forwarded-Encrypted: i=1; AJvYcCXE/G8UULFWCWCp6T+qQCjORr/LIto9V/Ba2t5t0i39gdXYYGDv4l8tThfouvKVTx4NZXK8Uq8WTznpNKWQDg==@vger.kernel.org
+X-Gm-Message-State: AOJu0Ywi4XzIdQFSalXl6+WbxzSy+PzzSggN3KzPAPtfJw7s3VJKMVYw
+	OXP+oeU2NHLo/ruA6uMUEDLZQsCU+xGa0m++w0r+pexPJ/u+kw29JUZvpGjPI4dIoIOpd2Qwqj4
+	0+yE2o1EZWC9ejwKKxAapMI5frs5uAw==
+X-Gm-Gg: AY/fxX6ttQnIwkX8kP41XyF/2WzJkNNetu14uA1bbpIhAw2+IQPUv0Pt1iKUznjeX23
+	BS0L+qkwzBxIN87LVRSy/562okuOxadkoV2Yl9Apue4sSX28f5e/j9roq+HkKiBeE1dtbkgUjNU
+	WxzzEMenNL3ThF9U+c2OPQs8Aqt8EdFdg5xTik2iMxphgVmM5xpIw4Re0iyqvbf8HYlb1SAlInU
+	hgmJ3n1Yx85R/KirA605eZn5Yvaxz8xUX70fsNtp6NqTATMTowa07xy8iDqs7kbhcDCmECCbevy
+	t0im09Cef3YKXAucpJphd6nZeXE=
+X-Google-Smtp-Source: AGHT+IE42yv7FIsrWMR9yjYwFTyqReRn26jbbdEMiBw0u/y/uO6l059x2jBMuDoxTGPi0k5VPly4SKVeRcBZYLHomSo=
+X-Received: by 2002:a05:622a:400e:b0:4ee:d6:7a51 with SMTP id
+ d75a77b69052e-4f4abcceef9mr71345351cf.12.1766177408683; Fri, 19 Dec 2025
+ 12:50:08 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v5 16/36] kref: Add context-analysis annotations
-To: Marco Elver <elver@google.com>, Peter Zijlstra <peterz@infradead.org>,
- Boqun Feng <boqun.feng@gmail.com>, Ingo Molnar <mingo@kernel.org>,
- Will Deacon <will@kernel.org>
-Cc: "David S. Miller" <davem@davemloft.net>,
- Luc Van Oostenryck <luc.vanoostenryck@gmail.com>,
- Chris Li <sparse@chrisli.org>, "Paul E. McKenney" <paulmck@kernel.org>,
- Alexander Potapenko <glider@google.com>, Arnd Bergmann <arnd@arndb.de>,
- Christoph Hellwig <hch@lst.de>, Dmitry Vyukov <dvyukov@google.com>,
- Eric Dumazet <edumazet@google.com>, Frederic Weisbecker
- <frederic@kernel.org>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
- Herbert Xu <herbert@gondor.apana.org.au>, Ian Rogers <irogers@google.com>,
- Jann Horn <jannh@google.com>, Joel Fernandes <joelagnelf@nvidia.com>,
- Johannes Berg <johannes.berg@intel.com>, Jonathan Corbet <corbet@lwn.net>,
- Josh Triplett <josh@joshtriplett.org>, Justin Stitt
- <justinstitt@google.com>, Kees Cook <kees@kernel.org>,
- Kentaro Takeda <takedakn@nttdata.co.jp>,
- Lukas Bulwahn <lukas.bulwahn@gmail.com>, Mark Rutland
- <mark.rutland@arm.com>, Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
- Miguel Ojeda <ojeda@kernel.org>, Nathan Chancellor <nathan@kernel.org>,
- Neeraj Upadhyay <neeraj.upadhyay@kernel.org>,
- Nick Desaulniers <nick.desaulniers+lkml@gmail.com>,
- Steven Rostedt <rostedt@goodmis.org>,
- Tetsuo Handa <penguin-kernel@I-love.SAKURA.ne.jp>,
- Thomas Gleixner <tglx@linutronix.de>, Thomas Graf <tgraf@suug.ch>,
- Uladzislau Rezki <urezki@gmail.com>, Waiman Long <longman@redhat.com>,
- kasan-dev@googlegroups.com, linux-crypto@vger.kernel.org,
- linux-doc@vger.kernel.org, linux-kbuild@vger.kernel.org,
- linux-kernel@vger.kernel.org, linux-mm@kvack.org,
- linux-security-module@vger.kernel.org, linux-sparse@vger.kernel.org,
- linux-wireless@vger.kernel.org, llvm@lists.linux.dev, rcu@vger.kernel.org
-References: <20251219154418.3592607-1-elver@google.com>
- <20251219154418.3592607-17-elver@google.com>
-Content-Language: en-US
-From: Bart Van Assche <bvanassche@acm.org>
-In-Reply-To: <20251219154418.3592607-17-elver@google.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+References: <20251218-surface-sp11-for-next-v4-0-7bcf83c1504a@gmail.com>
+ <20251218-surface-sp11-for-next-v4-5-7bcf83c1504a@gmail.com> <de00f21e-7fc7-4caa-93ec-afbcc5d9e12d@kernel.org>
+In-Reply-To: <de00f21e-7fc7-4caa-93ec-afbcc5d9e12d@kernel.org>
+From: =?UTF-8?B?SsOpcsO0bWUgZGUgQnJldGFnbmU=?= <jerome.debretagne@gmail.com>
+Date: Fri, 19 Dec 2025 21:49:32 +0100
+X-Gm-Features: AQt7F2pcZUitjZSQNg2PzbbA2oie2fjwh-55TuTLVMXOnU3tEdVckxLHObxjFK0
+Message-ID: <CA+kEDGHL0A=KYhp79_08sx=dUyvpDOuHXEuvgsOU+61PshtN3w@mail.gmail.com>
+Subject: Re: [PATCH v4 5/6] arm64: dts: qcom: Add support for Surface Pro 11
+To: Krzysztof Kozlowski <krzk@kernel.org>
+Cc: Bjorn Andersson <andersson@kernel.org>, Konrad Dybcio <konradybcio@kernel.org>, 
+	Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, 
+	Johannes Berg <johannes@sipsolutions.net>, Lorenzo Bianconi <lorenzo@kernel.org>, 
+	Maximilian Luz <luzmaximilian@gmail.com>, Hans de Goede <hansg@kernel.org>, 
+	=?UTF-8?Q?Ilpo_J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>, 
+	Jeff Johnson <jjohnson@kernel.org>, linux-arm-msm@vger.kernel.org, 
+	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	linux-wireless@vger.kernel.org, platform-driver-x86@vger.kernel.org, 
+	ath12k@lists.infradead.org, Dale Whinham <daleyo@gmail.com>, 
+	Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On 12/19/25 7:40 AM, Marco Elver wrote:
-> Mark functions that conditionally acquire the passed lock.
-Reviewed-by: Bart Van Assche <bvanassche@acm.org>
+Le ven. 19 d=C3=A9c. 2025 =C3=A0 18:47, Krzysztof Kozlowski <krzk@kernel.or=
+g> a =C3=A9crit :
+>
+> On 18/12/2025 23:22, J=C3=A9r=C3=B4me de Bretagne via B4 Relay wrote:
+> > From: Dale Whinham <daleyo@gmail.com>
+> >
+> > Add device trees for the Qualcomm X1E and X1P-based Microsoft Surface
+> > Pro 11 machines (codenamed 'Denali').
+> >
+> > This device is very similar to the Surface Laptop 7 ('Romulus').
+> >
+> > Use a similar strategy to x1-asus-zenbook-a14.dtsi so that we can creat=
+e
+> > x1e and x1p-specific flavors of the device tree without too much code
+> > duplication.
+> >
+> > Hardware support is similar to other X1 machines. The most notable
+> > missing features are:
+> >
+> > - Touchscreen and pen
+> > - Cameras (and status LEDs)
+> >
+> > Signed-off-by: Dale Whinham <daleyo@gmail.com>
+> > Tested-by: Dale Whinham <daleyo@gmail.com>
+>
+> Drop, authorship implies this. Otherwise this suggest none of other
+> authors test their code before sending.
+
+Sure, I will remove this line in v5.
+
+> > Signed-off-by: J=C3=A9r=C3=B4me de Bretagne <jerome.debretagne@gmail.co=
+m>
+> > Reviewed-by: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
+> > ---
+> >  arch/arm64/boot/dts/qcom/Makefile                  |    4 +
+> >  arch/arm64/boot/dts/qcom/x1-microsoft-denali.dtsi  | 1324 ++++++++++++=
+++++++++
+> >  .../dts/qcom/x1e80100-microsoft-denali-oled.dts    |   20 +
+> >  .../boot/dts/qcom/x1p64100-microsoft-denali.dts    |   16 +
+> >  4 files changed, 1364 insertions(+)
+> >
+>
+> This DTS fails dtbs_check.
+
+Indeed, this has regressed when moving disable-rfkill into
+ieee80211.yaml, we need to reference the moved property
+from qcom,ath12k.yaml also now, I will fix this in v5.
+
+> > diff --git a/arch/arm64/boot/dts/qcom/x1p64100-microsoft-denali.dts b/a=
+rch/arm64/boot/dts/qcom/x1p64100-microsoft-denali.dts
+> > new file mode 100644
+> > index 0000000000000000000000000000000000000000..93f1620ad8c71c6cf36ba3e=
+c34b9eebc47bf3f18
+> > --- /dev/null
+> > +++ b/arch/arm64/boot/dts/qcom/x1p64100-microsoft-denali.dts
+> > @@ -0,0 +1,16 @@
+> > +// SPDX-License-Identifier: BSD-3-Clause
+> > +/*
+> > + * Copyright (c) 2024 Qualcomm Innovation Center, Inc. All rights rese=
+rved.
+>
+> How exactly is this copyrighted by Qualcomm? I don't think Qualcomm ever
+> prepared DTS for this, so can you point us to the original work?
+> > + * Copyright (c) 2025 Dale Whinham <daleyo@gmail.com>
+> > + */
+> > +
+> > +/dts-v1/;
+> > +
+> > +#include "hamoa.dtsi"
+> > +#include "x1-microsoft-denali.dtsi"
+> > +
+> > +/ {
+> > +     model =3D "Microsoft Surface Pro 11th Edition (LCD)";
+> > +     compatible =3D "microsoft,denali-lcd", "microsoft,denali",
+> > +                  "qcom,x1p64100", "qcom,x1e80100";
+> > +};
+> >
+>
+>
+> Best regards,
+> Krzysztof
+
+Thank you for the review,
+J=C3=A9r=C3=B4me
 
