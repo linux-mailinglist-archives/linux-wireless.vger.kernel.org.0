@@ -1,153 +1,211 @@
-Return-Path: <linux-wireless+bounces-29979-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-29980-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1E8DACD189D
-	for <lists+linux-wireless@lfdr.de>; Fri, 19 Dec 2025 20:06:50 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id C3605CD18F4
+	for <lists+linux-wireless@lfdr.de>; Fri, 19 Dec 2025 20:12:15 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 3C82130402D2
-	for <lists+linux-wireless@lfdr.de>; Fri, 19 Dec 2025 19:05:17 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 37E92301D0E6
+	for <lists+linux-wireless@lfdr.de>; Fri, 19 Dec 2025 19:12:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5F28C2FF653;
-	Fri, 19 Dec 2025 19:05:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8503433B6E9;
+	Fri, 19 Dec 2025 19:12:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=acm.org header.i=@acm.org header.b="boeNGRJs"
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="ahqGziDC"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from 013.lax.mailroute.net (013.lax.mailroute.net [199.89.1.16])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f68.google.com (mail-wm1-f68.google.com [209.85.128.68])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A90582C0F93;
-	Fri, 19 Dec 2025 19:05:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=199.89.1.16
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3859832A3CC
+	for <linux-wireless@vger.kernel.org>; Fri, 19 Dec 2025 19:12:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.68
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1766171116; cv=none; b=TcLXQK7UhwZ+lpGPJNHVpkYzsHQAag3zEpMkHlWAFzL8AjkxzYQ02gwMBEtyQblKSSvURkx5DAFlfYZaeoBXyxFNfjZ1jtoLWDJCQKpsl4zdgun9GsewwD9cUzeH+R7taz8NcwzTEoDkyWylTVORHLTBjom2rbbpE79jWUMmo/E=
+	t=1766171531; cv=none; b=HIwZ9EfaUeqDHXBRdU39mviT36sjg/1d824Qh0S4cL/9HMiCFR4r6sCDg9RM/C/3BOPDSLJC7XFhg7bVvDCuSyzBw/XfxpenzZogrdCpp4klMuNsSx+e9dQ4uks6vJQ4lqTTP9qQFvQHkJ5s8li9JgVsl1xkWOvFuy5td1QPI+Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1766171116; c=relaxed/simple;
-	bh=GUlTKYNsj0V7yELs8AVES3ATXpfeypJWX6tHxwY0zQQ=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=d65ULC6Reb9mtGUHyRYNO06zmMfiHTf157HjOYVrpEpR4gwp9nO38nSMFzHdfUSh9fHN+dFB1bQbHKjIehAb0EEot/icMGTtg4mRZQEjaSS809u0mamPqTZsgLkPiI4m+7HThGSfJPzPRTf/6sROf+g+Iffy5rXScCfvGr0k8K4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=acm.org; spf=pass smtp.mailfrom=acm.org; dkim=pass (2048-bit key) header.d=acm.org header.i=@acm.org header.b=boeNGRJs; arc=none smtp.client-ip=199.89.1.16
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=acm.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=acm.org
-Received: from localhost (localhost [127.0.0.1])
-	by 013.lax.mailroute.net (Postfix) with ESMTP id 4dXxn46t8hzlwmGt;
-	Fri, 19 Dec 2025 19:05:12 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=acm.org; h=
-	content-transfer-encoding:content-type:content-type:in-reply-to
-	:from:from:content-language:references:subject:subject
-	:user-agent:mime-version:date:date:message-id:received:received;
-	 s=mr01; t=1766171105; x=1768763106; bh=eV7MMJjNh+GgBWpC1KWI4e80
-	gQbcoqCCVdMqswFoyR0=; b=boeNGRJsgKlp3hLFPG9KwlpxMPgC9GvTxoYtra57
-	fDZ5/Bqc/iY9il04qGlocz0VkE3ZY0ptfRFx06N+FIezk1JtMZ3yKWbIFU5PSGIk
-	UkPJ9FseM/A0PwzH7CpKNEDAubZI78GvBdRyUYqj2Qo7RYbpuEPQ9TQYF3ijUtlQ
-	9tbrbv7L8aAiJLNzhrDWlnR8Ny4jKU8I7gAcKMVaLEN66MDjRYS80V/oKh1jBmmz
-	PXK8NOKIrEfnkpeqJRkA+METSqRvisYP2/Jc4prbjyHvgvE0WRWMxCSCoRrM2jEm
-	DxjjdTfH0hiFBN/vWp9lz2GI2eF7GRfL8o5zH83z5GTa5A==
-X-Virus-Scanned: by MailRoute
-Received: from 013.lax.mailroute.net ([127.0.0.1])
- by localhost (013.lax [127.0.0.1]) (mroute_mailscanner, port 10029) with LMTP
- id Pu13yLEvt3U6; Fri, 19 Dec 2025 19:05:05 +0000 (UTC)
-Received: from [100.119.48.131] (unknown [104.135.180.219])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	(Authenticated sender: bvanassche@acm.org)
-	by 013.lax.mailroute.net (Postfix) with ESMTPSA id 4dXxmf0ZcWzlvwXX;
-	Fri, 19 Dec 2025 19:04:49 +0000 (UTC)
-Message-ID: <2f0c27eb-eca5-4a7f-8035-71c6b0c84e30@acm.org>
-Date: Fri, 19 Dec 2025 11:04:49 -0800
+	s=arc-20240116; t=1766171531; c=relaxed/simple;
+	bh=UocQTd03vlm/TCD4q+onIixekG5jfPJUbAZfFLkbKEE=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=nBqGl1mOtW6D0VZxwiemofJLl7aSv+qyiaNeXKQODnLIbA5NwK4/Z6aEDZ8GuebCERqVIq2XYUHZwk+MndOReQQ2mDCaBNTlVISpidvUQH2cz0dTiUi5/w/G1EBBqSwLP411Rvo1pw9cH4SnXIdXy8vHJMUmwN0WTB8308QwgpQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=ahqGziDC; arc=none smtp.client-ip=209.85.128.68
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+Received: by mail-wm1-f68.google.com with SMTP id 5b1f17b1804b1-477ba2c1ca2so21152795e9.2
+        for <linux-wireless@vger.kernel.org>; Fri, 19 Dec 2025 11:12:08 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1766171527; x=1766776327; darn=vger.kernel.org;
+        h=user-agent:in-reply-to:content-disposition:mime-version:references
+         :message-id:subject:cc:to:from:date:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=xBMt69sCffmrONEUk9HcTp6E3Zeeun0qAoojziALA+o=;
+        b=ahqGziDC3myGZk6tugmwclXX1yxrNy14VTeaJXwYwhVJ2ZF0Hq5XfdUOFojeh0nq9G
+         MJ48oY1tuSmGMMRj9c79E3aETH9HxmgZUvT+bTbCQDaVX+ZZcE5oSA2amD6PhlTLlTNh
+         nzekfvFZ2OX+zXZLOZtvQz8n9DrgAjMqO8RvPlFgzlftfHI5Ofps/ax5wO3HNr3j6PJX
+         orSNHO1qfj+xYyv7tS2zVdmvE8Hr16hI2gLeDKosV+NVy+OwYKseEVGqN7PcL3MZSh1l
+         qIw1AanlNH9wUK4ood1oOkTTSwzYC03tJl4G37nrXDKAcxKIG+NEHrdj6AUM2q1iYNu5
+         kHuA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1766171527; x=1766776327;
+        h=user-agent:in-reply-to:content-disposition:mime-version:references
+         :message-id:subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=xBMt69sCffmrONEUk9HcTp6E3Zeeun0qAoojziALA+o=;
+        b=qZieOpk0NCuYz53YhWNXA6Gcg+frwVXcC9VJKu+C1Qo4k5UudgFtiG/OZ85d6Cp8rP
+         LUkvnWZxoGxalLgiahg+QizS5upQ6ohphllCPpetph4Qr2P3TQlPgBMkt9s5SdVmk/TK
+         7/aaX2u32q+DGkfWu6jUy/Io41ueTN+jxnQisafKvOvu7EjAfQeJohSpfy6/yTBzxGQk
+         +lWuPGlIIrE4hDaxhrGVG5oDLcy8er5P56S1/x3jC04nzJz1NObOIapoU11pmjkwGHcq
+         Y+45EG+m0MwIAuWDM2vaX3Fr6z0te3+4aPUqZyTqebHFhMS+JwE6ZLFr2sfTpVn+aOBF
+         jNjg==
+X-Forwarded-Encrypted: i=1; AJvYcCWBP0n7Wm51e2/Roo45TFZMICQGhaFfUkIoE6FmO548gmf0gN/IemGzvP9qx8NkL7GJcZfyw4yUwAtNdyOhvQ==@vger.kernel.org
+X-Gm-Message-State: AOJu0YyyQ0R7nV/dnOhV1pHExV1wPDomzVXUrjwx3Zg6AEm5COfmvMzZ
+	0f4WL4x8G6zX3A+9vzMtY7sPqJz/WdrYVN3lV1CGJ4V90KghECkOwogzLjvjv+wqtQ==
+X-Gm-Gg: AY/fxX6yiQ8GT2TrJ9KS09NXTEgiSmPpy5zEXX0YXXzlgNkCmk28ZD3abR97+g05i3V
+	Zkohgi+rx0G0jqtXD26sZHkq67ZEzY8Cjd1kag/7B9NZrJkCD1vg2dcOOhWF2gJMZ9Bi4/IPO4R
+	XmJqesLHcae7BMZvRD/aEC9T2FwB7aTIJPBRIsAPoN55yr2YCEyahFiBiDDbJFFXN7BLasdqIyz
+	Ep8i7BSiUcFQxbp350grjBKnz3Ekfd16oGqwQNRUe2MYBmKn2lv5RTn6kT9QbQAYWFzS4kvESOi
+	s2/RcfPqxft/9wjpH0/fF5YAiPTNtJbaWruZUig+1B1ciP/0RH2HWJqyqYIuZdjDlCPuNDG6XOE
+	rjmwiHKZaFCBzaoro9IhwGY9oN43Onw9S/IcLalHbbpON2Ngytgktxz0Z61KTQFsuyLHQVWQUNn
+	4+P+qpIURlY7+VIauJnhMrcyMwhIu/wmzp4jqFOVvZGLM4PjW1VypS8kqmhS8=
+X-Google-Smtp-Source: AGHT+IH9HIskBRHlFIQr/Osyy9yIUKVMwuoBBZxTrb8MCYHFqdOsUtEusA5GjiNqRLtoiyidJxfWVw==
+X-Received: by 2002:a05:600c:3506:b0:477:a246:8398 with SMTP id 5b1f17b1804b1-47d1953b774mr34567195e9.2.1766171527309;
+        Fri, 19 Dec 2025 11:12:07 -0800 (PST)
+Received: from elver.google.com ([2a00:79e0:2834:9:f7c5:1bb4:fb06:fd5e])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-4324eaa2bdfsm6628486f8f.32.2025.12.19.11.12.04
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 19 Dec 2025 11:12:06 -0800 (PST)
+Date: Fri, 19 Dec 2025 20:11:59 +0100
+From: Marco Elver <elver@google.com>
+To: Bart Van Assche <bvanassche@acm.org>
+Cc: Peter Zijlstra <peterz@infradead.org>,
+	Boqun Feng <boqun.feng@gmail.com>, Ingo Molnar <mingo@kernel.org>,
+	Will Deacon <will@kernel.org>,
+	"David S. Miller" <davem@davemloft.net>,
+	Luc Van Oostenryck <luc.vanoostenryck@gmail.com>,
+	Chris Li <sparse@chrisli.org>,
+	"Paul E. McKenney" <paulmck@kernel.org>,
+	Alexander Potapenko <glider@google.com>,
+	Arnd Bergmann <arnd@arndb.de>, Christoph Hellwig <hch@lst.de>,
+	Dmitry Vyukov <dvyukov@google.com>,
+	Eric Dumazet <edumazet@google.com>,
+	Frederic Weisbecker <frederic@kernel.org>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	Herbert Xu <herbert@gondor.apana.org.au>,
+	Ian Rogers <irogers@google.com>, Jann Horn <jannh@google.com>,
+	Joel Fernandes <joelagnelf@nvidia.com>,
+	Johannes Berg <johannes.berg@intel.com>,
+	Jonathan Corbet <corbet@lwn.net>,
+	Josh Triplett <josh@joshtriplett.org>,
+	Justin Stitt <justinstitt@google.com>, Kees Cook <kees@kernel.org>,
+	Kentaro Takeda <takedakn@nttdata.co.jp>,
+	Lukas Bulwahn <lukas.bulwahn@gmail.com>,
+	Mark Rutland <mark.rutland@arm.com>,
+	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
+	Miguel Ojeda <ojeda@kernel.org>,
+	Nathan Chancellor <nathan@kernel.org>,
+	Neeraj Upadhyay <neeraj.upadhyay@kernel.org>,
+	Nick Desaulniers <nick.desaulniers+lkml@gmail.com>,
+	Steven Rostedt <rostedt@goodmis.org>,
+	Tetsuo Handa <penguin-kernel@i-love.sakura.ne.jp>,
+	Thomas Gleixner <tglx@linutronix.de>, Thomas Graf <tgraf@suug.ch>,
+	Uladzislau Rezki <urezki@gmail.com>,
+	Waiman Long <longman@redhat.com>, kasan-dev@googlegroups.com,
+	linux-crypto@vger.kernel.org, linux-doc@vger.kernel.org,
+	linux-kbuild@vger.kernel.org, linux-kernel@vger.kernel.org,
+	linux-mm@kvack.org, linux-security-module@vger.kernel.org,
+	linux-sparse@vger.kernel.org, linux-wireless@vger.kernel.org,
+	llvm@lists.linux.dev, rcu@vger.kernel.org
+Subject: Re: [PATCH v5 02/36] compiler-context-analysis: Add infrastructure
+ for Context Analysis with Clang
+Message-ID: <aUWjfxQ1fIZdxd-C@elver.google.com>
+References: <20251219154418.3592607-1-elver@google.com>
+ <20251219154418.3592607-3-elver@google.com>
+ <97e832b7-04a9-49cb-973a-bf9870c21c2f@acm.org>
+ <CANpmjNM=4baTiSWGOiSWLfQV2YqMt6qkdV__uj+QtD4zAY8Weg@mail.gmail.com>
+ <2f0c27eb-eca5-4a7f-8035-71c6b0c84e30@acm.org>
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v5 02/36] compiler-context-analysis: Add infrastructure
- for Context Analysis with Clang
-To: Marco Elver <elver@google.com>
-Cc: Peter Zijlstra <peterz@infradead.org>, Boqun Feng <boqun.feng@gmail.com>,
- Ingo Molnar <mingo@kernel.org>, Will Deacon <will@kernel.org>,
- "David S. Miller" <davem@davemloft.net>,
- Luc Van Oostenryck <luc.vanoostenryck@gmail.com>,
- Chris Li <sparse@chrisli.org>, "Paul E. McKenney" <paulmck@kernel.org>,
- Alexander Potapenko <glider@google.com>, Arnd Bergmann <arnd@arndb.de>,
- Christoph Hellwig <hch@lst.de>, Dmitry Vyukov <dvyukov@google.com>,
- Eric Dumazet <edumazet@google.com>, Frederic Weisbecker
- <frederic@kernel.org>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
- Herbert Xu <herbert@gondor.apana.org.au>, Ian Rogers <irogers@google.com>,
- Jann Horn <jannh@google.com>, Joel Fernandes <joelagnelf@nvidia.com>,
- Johannes Berg <johannes.berg@intel.com>, Jonathan Corbet <corbet@lwn.net>,
- Josh Triplett <josh@joshtriplett.org>, Justin Stitt
- <justinstitt@google.com>, Kees Cook <kees@kernel.org>,
- Kentaro Takeda <takedakn@nttdata.co.jp>,
- Lukas Bulwahn <lukas.bulwahn@gmail.com>, Mark Rutland
- <mark.rutland@arm.com>, Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
- Miguel Ojeda <ojeda@kernel.org>, Nathan Chancellor <nathan@kernel.org>,
- Neeraj Upadhyay <neeraj.upadhyay@kernel.org>,
- Nick Desaulniers <nick.desaulniers+lkml@gmail.com>,
- Steven Rostedt <rostedt@goodmis.org>,
- Tetsuo Handa <penguin-kernel@i-love.sakura.ne.jp>,
- Thomas Gleixner <tglx@linutronix.de>, Thomas Graf <tgraf@suug.ch>,
- Uladzislau Rezki <urezki@gmail.com>, Waiman Long <longman@redhat.com>,
- kasan-dev@googlegroups.com, linux-crypto@vger.kernel.org,
- linux-doc@vger.kernel.org, linux-kbuild@vger.kernel.org,
- linux-kernel@vger.kernel.org, linux-mm@kvack.org,
- linux-security-module@vger.kernel.org, linux-sparse@vger.kernel.org,
- linux-wireless@vger.kernel.org, llvm@lists.linux.dev, rcu@vger.kernel.org
-References: <20251219154418.3592607-1-elver@google.com>
- <20251219154418.3592607-3-elver@google.com>
- <97e832b7-04a9-49cb-973a-bf9870c21c2f@acm.org>
- <CANpmjNM=4baTiSWGOiSWLfQV2YqMt6qkdV__uj+QtD4zAY8Weg@mail.gmail.com>
-Content-Language: en-US
-From: Bart Van Assche <bvanassche@acm.org>
-In-Reply-To: <CANpmjNM=4baTiSWGOiSWLfQV2YqMt6qkdV__uj+QtD4zAY8Weg@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <2f0c27eb-eca5-4a7f-8035-71c6b0c84e30@acm.org>
+User-Agent: Mutt/2.2.13 (2024-03-09)
 
-On 12/19/25 10:59 AM, Marco Elver wrote:
-> On Fri, 19 Dec 2025 at 19:39, 'Bart Van Assche' via kasan-dev
-> <kasan-dev@googlegroups.com> wrote:
->> I'm concerned that the context_lock_struct() macro will make code harder
->> to read. Anyone who encounters the context_lock_struct() macro will have
->> to look up its definition to learn what it does. I propose to split this
->> macro into two macros:
->> * One macro that expands into "__ctx_lock_type(name)".
->> * A second macro that expands into the rest of the above macro.
->>
->> In other words, instead of having to write
->> context_lock_struct(struct_name, { ... }); developers will have to write
->>
->> struct context_lock_type struct_name {
->>       ...;
->> };
->> context_struct_helper_functions(struct_name);
-> 
-> This doesn't necessarily help with not having to look up its
-> definition to learn what it does.
-> 
-> If this is the common pattern, it will blindly be repeated, and this
-> adds 1 more line and makes this a bit more verbose. Maybe the helper
-> functions aren't always needed, but I also think that context lock
-> types should remain relatively few.  For all synchronization
-> primitives that were enabled in this series, the helpers are required.
-> 
-> The current usage is simply:
-> 
-> context_lock_struct(name) {
->     ... struct goes here ...
-> };  // note no awkward ) brace
-> 
-> I don't know which way the current kernel style is leaning towards,
-> but if we take <linux/cleanup.h> as an example, a simple programming
-> model / API is actually preferred.
-Many kernel developers are used to look up the definition of a data
-structure either by using ctags, etags or a similar tool or by using
-grep and a pattern like "${struct_name} {\$". Breaking the tools kernel
-developer use today to look up data structure definitions might cause
-considerable frustration and hence shouldn't be done lightly.
+On Fri, Dec 19, 2025 at 11:04AM -0800, 'Bart Van Assche' via kasan-dev wrote:
+> On 12/19/25 10:59 AM, Marco Elver wrote:
+> > On Fri, 19 Dec 2025 at 19:39, 'Bart Van Assche' via kasan-dev
+> > <kasan-dev@googlegroups.com> wrote:
+> > > I'm concerned that the context_lock_struct() macro will make code harder
+> > > to read. Anyone who encounters the context_lock_struct() macro will have
+> > > to look up its definition to learn what it does. I propose to split this
+> > > macro into two macros:
+> > > * One macro that expands into "__ctx_lock_type(name)".
+> > > * A second macro that expands into the rest of the above macro.
+> > > 
+> > > In other words, instead of having to write
+> > > context_lock_struct(struct_name, { ... }); developers will have to write
+> > > 
+> > > struct context_lock_type struct_name {
+> > >       ...;
+> > > };
+> > > context_struct_helper_functions(struct_name);
+> > 
+> > This doesn't necessarily help with not having to look up its
+> > definition to learn what it does.
+> > 
+> > If this is the common pattern, it will blindly be repeated, and this
+> > adds 1 more line and makes this a bit more verbose. Maybe the helper
+> > functions aren't always needed, but I also think that context lock
+> > types should remain relatively few.  For all synchronization
+> > primitives that were enabled in this series, the helpers are required.
+> > 
+> > The current usage is simply:
+> > 
+> > context_lock_struct(name) {
+> >     ... struct goes here ...
+> > };  // note no awkward ) brace
+> > 
+> > I don't know which way the current kernel style is leaning towards,
+> > but if we take <linux/cleanup.h> as an example, a simple programming
+> > model / API is actually preferred.
+> Many kernel developers are used to look up the definition of a data
+> structure either by using ctags, etags or a similar tool or by using
+> grep and a pattern like "${struct_name} {\$". Breaking the tools kernel
+> developer use today to look up data structure definitions might cause
+> considerable frustration and hence shouldn't be done lightly.
 
-Thanks,
+Fair point. In fact, it's as simple as e.g. (just tested with mutex) as
+this:
 
-Bart.
+diff --git a/include/linux/mutex_types.h b/include/linux/mutex_types.h
+index 80975935ec48..63ab9e65bb48 100644
+--- a/include/linux/mutex_types.h
++++ b/include/linux/mutex_types.h
+@@ -38,7 +38,8 @@
+  * - detects multi-task circular deadlocks and prints out all affected
+  *   locks and tasks (and only those tasks)
+  */
+-context_lock_struct(mutex) {
++context_lock_struct(mutex);
++struct mutex {
+ 	atomic_long_t		owner;
+ 	raw_spinlock_t		wait_lock;
+ #ifdef CONFIG_MUTEX_SPIN_ON_OWNER
+@@ -59,7 +60,8 @@ context_lock_struct(mutex) {
+  */
+ #include <linux/rtmutex.h>
+ 
+-context_lock_struct(mutex) {
++context_lock_struct(mutex);
++struct mutex {
+ 	struct rt_mutex_base	rtmutex;
+ #ifdef CONFIG_DEBUG_LOCK_ALLOC
+ 	struct lockdep_map	dep_map;
+
+So the existing macro does support both use-cases as-is. I suppose we
+could force the above use pattern.
+
+The reason it works, is because it forward-declares the struct anyway to
+define the helper functions.
 
