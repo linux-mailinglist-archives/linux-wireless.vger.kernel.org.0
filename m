@@ -1,142 +1,130 @@
-Return-Path: <linux-wireless+bounces-30022-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-30023-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id C71D9CD2F16
-	for <lists+linux-wireless@lfdr.de>; Sat, 20 Dec 2025 13:53:39 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id DCDC2CD2F69
+	for <lists+linux-wireless@lfdr.de>; Sat, 20 Dec 2025 13:58:19 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 71DA33014ADC
-	for <lists+linux-wireless@lfdr.de>; Sat, 20 Dec 2025 12:52:55 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 174CF3005A8B
+	for <lists+linux-wireless@lfdr.de>; Sat, 20 Dec 2025 12:58:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E549123A9B3;
-	Sat, 20 Dec 2025 12:52:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 333151B81CA;
+	Sat, 20 Dec 2025 12:58:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="bPzgDfq9"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="dYn8Wvzh"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-pl1-f171.google.com (mail-pl1-f171.google.com [209.85.214.171])
+Received: from mail-wr1-f47.google.com (mail-wr1-f47.google.com [209.85.221.47])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 280EC2868B5
-	for <linux-wireless@vger.kernel.org>; Sat, 20 Dec 2025 12:52:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.171
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6287D1F1534
+	for <linux-wireless@vger.kernel.org>; Sat, 20 Dec 2025 12:58:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.47
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1766235172; cv=none; b=IpuUMuVt6jOj5fLNoyD7/L8Y5D91DXhtW+H6bWFTKaM8m+qYGUQDYO0KO6kCk4djaUShglTLb2rC6ry8N48hfEFCebVcMx/jWaodezYzbuvmO5UOqkgcRYmS/GiaspkXSKJWNhtdgQMDPber+jbVVHAlRC4ZGDAX2YvhP5uDgf8=
+	t=1766235495; cv=none; b=efHTcuWJ4mfgdjdTH4DxP0cFC/f1lD9XtjIimsDkXWWLf7eVT6LLNAOVSIuRaFIL/zsUjzCWDXWh3kh2CyVN4FTzZg7P8tY0UwZd4c86WHK9lKy86hs7qZj7LSEm7pN1MdFDZD7ZObIN99qbFE5rK+j+hKNbEb5INn4vm4Mn5sc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1766235172; c=relaxed/simple;
-	bh=mfOXg447RAZ1jn16CEUFd8WZttm8IVc21yuyK4Wgy4k=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=bPjdSBYpHkt8Kw3+bsnFR/KEiZwVOed1mJ8Thwa+q7gn1qEDarEGhroYHd1QdB+baH/YQFrqfNHr7+VUwnGhfjp3pDYfXoUkwRAG+tw4kvonBBtBBY+puMpBLn1Smg67aoAJO2XKqIJ/fFWS9qm+KVPFS54igpBjT7K+eO/mg2s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=bPzgDfq9; arc=none smtp.client-ip=209.85.214.171
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
-Received: by mail-pl1-f171.google.com with SMTP id d9443c01a7336-29f2676bb21so33212465ad.0
-        for <linux-wireless@vger.kernel.org>; Sat, 20 Dec 2025 04:52:50 -0800 (PST)
+	s=arc-20240116; t=1766235495; c=relaxed/simple;
+	bh=CoSwDue9y1H/F/vUts+yj+gxAmOEHWrSz90fwPrEs5U=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=qM9wNibgb+IY2Gz60Vl5lV5INgKG8FLOlQYx6VNUJYoIvsvusRDVbT7l4wnqjbvO0NQhYwlcH0mSnx9cuhqD5rPULo8EwwX23RI7bBePKtP+xvGC931mCiBOGPOB0bxqock/o5TJkI3cGttYCmzO8PMWZTZUCfJqXPvJhK+JBx0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=dYn8Wvzh; arc=none smtp.client-ip=209.85.221.47
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-wr1-f47.google.com with SMTP id ffacd0b85a97d-42e2d02a3c9so1686164f8f.3
+        for <linux-wireless@vger.kernel.org>; Sat, 20 Dec 2025 04:58:12 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1766235170; x=1766839970; darn=vger.kernel.org;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=mbJUZ0xTndCf3VdowDat4Wdfn4Fu9I8D0dKSNYqhcFE=;
-        b=bPzgDfq9fMDn8+Wn6skuS1G73sQ7mE/xuR3bGKFzGvscKj8iRm0krkBQC4xdEiAPxV
-         ZgEPCvrPT2Arb/NySSwQ8QY7P/pNlxxsZ39TCWDGVlX0JAfv2rMtl7PXOfFmE3N3wUGi
-         SD+OdfZIgvaxPIXDF2CL862Vj6b4GgMJZW5jW5BYu5yxJMW1ehcAPXSv73kkyTPQolwA
-         XjvfeSm9iU/cCN1Bqf04WXgqf6kZtWVfMNLWto5sjqhp1BB/ksyKF7nwz/oaBh80+Eqg
-         suwEhsZ3pfiPNoO8lC3KPrBhJqFsIdRNnSdloBwNQtZSLmZJuoWdwljVoUg/gdhozOh1
-         WhLg==
+        d=gmail.com; s=20230601; t=1766235490; x=1766840290; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=QxyGw0P2QuelYRORTGFdIi9GvCTSJIG1aR1GB4FdJRU=;
+        b=dYn8WvzhqokTK3nmPiGTlULBZhV7q4dOPUMHVJE6XdqaSy5IKULyP+7QZEQfF2gPJF
+         zZPFqo7+oOxrSvUKr86tOlxKbtw/eAthuluATrCr6wbnNdZn2scmud6y+tkH2TadN0wU
+         EE1YVBRpXkV/d1l/oSg6JTMjHg/fUD3ApMe3I63Q/ZrvjU7ldX6f2oa4/1b0mGy9o0ON
+         UT3vAUbJzll9fhQFHehmCxY5/omvjnrWiN599SEgX9HlzRMu0Ke2cT14NsPabWEl6Upg
+         Riu0dLocFYzBPoR+xuiZ4kIRvXLg+OaveLTOPz5lgYE7TypKDTPrTv7GSKiOiYUii3mf
+         068A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1766235170; x=1766839970;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+        d=1e100.net; s=20230601; t=1766235490; x=1766840290;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=mbJUZ0xTndCf3VdowDat4Wdfn4Fu9I8D0dKSNYqhcFE=;
-        b=sESIKzfCTUQs4aKHSxT5E/Fn3F5pIENWRlc/aNnT3QR1c3BuT4NEPWMNm+9qusdPTS
-         nse8rFuAJdAEJX2vEmMtbzfS0UFUOwepLAALbStMrp+x/Q4XEEiwBpv7m/8SRH5j/1cx
-         ZDGle9Sc72OqxPdjX/UgunrmAYzlLeus27/AwyPDKmgpOW2Vc2eeH/kekB97/5ug2Bri
-         r/2A4VXGPuOLT+zDnVqkVJ7kM+tbBaCe/Oppt0AG9H/77/SCuJGXsYxxcnreqSXYgBB+
-         l/73Uw/VIyKuD3Ji+0tq8OTneC7rK6BiHcm6fr9+iO6vnCA+wCVkGoIDTs8OniqceyHk
-         p0Vw==
-X-Forwarded-Encrypted: i=1; AJvYcCUhH1Xrm/hUD5S8+gJyeN5EaU3lX25hn1wYO+4obSSZq6X5Sq8R16i8mbsmyRv00dwtKVuqzZ0Qb5JHth2lKQ==@vger.kernel.org
-X-Gm-Message-State: AOJu0Yy88yX4eOWzVbRHQHKQGph1LU8JW9qzx1fWMINGH7J4nBzv0Qjo
-	J8VyF40LiyoHzIh1xVQlhbbP+31MMuxaI9MQkQHGeMN9fL/5lUOS4m9oLDcJ5gT4GuKoRTNHkiF
-	dyalm/VcBhA8CylrP9bTD/52mTxiejnUDRnuhA5xu
-X-Gm-Gg: AY/fxX5Jn8GM/Y4S1bctt7knsooGMqZEEIPikLQ+vtMI2xDOwdsifdRp5RmwdDvA3WC
-	0d0Bm1FKzkqeaX3xEqJaYVMy6DxDhE+cmchwxn7+E0TXQ5oQQJzAJnATM6qzCtf7fZ8Tca5I5wq
-	R04pObYhvwJovs51cgTIEzDVhpGdEnO9zR4Je3MhbotqOYr9f32d/F9X32wuQxLUF3AIKiamV2N
-	DFWsAQe+rRmgyLxnvzwAlyIdLZfQJvbcD3wH00UKog0gbNqYUf28yG3eqxCKWX0ufRtvf6XGPQi
-	A2C17vUTzqBQHfXf9QAsz854ZEw=
-X-Google-Smtp-Source: AGHT+IETmgOAcDHbF6MqcLCKTf5epOZwA9tGllY35Ia+ZmQjsZsBscMmnIOEXdoPmuZFimi3nJyivgIHK6DMRk5k25A=
-X-Received: by 2002:a05:7022:6722:b0:119:e569:f626 with SMTP id
- a92af1059eb24-121722e0444mr6670285c88.31.1766235169708; Sat, 20 Dec 2025
- 04:52:49 -0800 (PST)
+        bh=QxyGw0P2QuelYRORTGFdIi9GvCTSJIG1aR1GB4FdJRU=;
+        b=v9ZfNNBE41wPbUiVgNfyd526CQLlol4dQ1eBBIJiNt70sbpbI+T9KRY6KOZTkE5yBo
+         0ivhpIkuGd7ucoAatgsAjtFZqK5ZL18MZj+uXRw/Ehzz7QyCPLBfNI2YiIXDkn80Yttg
+         6kZL1XxqryjpUtHfgbG+BGwWj/NFMSAY+7MFSorrGXfzFvO0GMMbMk5OQekCuRaAE+0d
+         n8uiIITIksz309WWdnOdlHrokm79h/74Pir9n7YluD/PXbbcsOziQPuOA9X/5ESHOJ7k
+         Dt99QWtwoiFYIMF2cKkwfaGStccOmYEZarHF8VCkHq+V6wCVSCmTyfucZbd0p+YEvgsh
+         zoSg==
+X-Gm-Message-State: AOJu0Yw4ssphQO+hKTyVIvB7gTmr62jJ2KFpSbuOXra1czFtgSOUCzKP
+	wNkdwaEWgJgXx1Cbgx47RCjofp/XH1YEtCM7Kqm5JkQa4QVMS9DaHfFL/5ml4Oxq
+X-Gm-Gg: AY/fxX5fxyviDdcGNgKg59wVIYBh8B/smBYDfIZfra9wGmGJMJ9sHgyZwg/Fi/x10Yo
+	4z2iWd932/ScO9AOpmZeMJT/aFhbp1CWcH59y0DGgdcZPNSq2c5JCxnvDBoTnwmwf989PXYf11v
+	AOvdv2ICVGhg22wQqlZR8xjkRWby3ztO2vDJdSeXI53AgiiziI2fZvG2JQCE9nVERMWLQgRPbey
+	tdCiVusPHIXfk0mtYGl4Y4icypbeqFyldMcH0XfvR2Rkj6nvt7IoeaH+A8cgN4i2dlxzhY8Psjw
+	WGMJe6+zP/OOHgmEQIktVCXqoVr+NCvWXI5f0yQKTC9Dw+8FL7nCSh+c6CUQiEYDcvPA9BWgilu
+	e6K2ziZtRrHAkmlK+EmjvlwGvvGjSiLyr52ogEZa9Q8KYzEdIExoH83XUrYnFe1KGGXyduXrH71
+	4VLBqQ3oD9KlZtMiJqic/nKJ6gttlPxyYBGB3IExrMpbA+RnvKukP7OID7rnFn71xRWrTns46P
+X-Google-Smtp-Source: AGHT+IF/Ml1lNB3fH8/HbCNIZb4ASinWXjpBUi4AdrQVUET/dle/odD9OsdmeKmNHTZryReeit9ZOw==
+X-Received: by 2002:a05:6000:2889:b0:430:fb00:108f with SMTP id ffacd0b85a97d-4324e4c9eefmr6368977f8f.18.1766235490122;
+        Sat, 20 Dec 2025 04:58:10 -0800 (PST)
+Received: from cachyos-x8664 ([2a0c:5a80:3b12:c900:31e4:8778:bf5:9080])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-4324ea82c5csm10417688f8f.21.2025.12.20.04.58.09
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sat, 20 Dec 2025 04:58:09 -0800 (PST)
+From: l33tm4st3r <fransm@gmail.com>
+To: linux-wireless@vger.kernel.org
+Cc: Fix mt7925e Buffer Overflow <bugfix@example.com>
+Subject: [PATCH] mt76: fix buffer overflow in mt76_connac2_load_patch()
+Date: Sat, 20 Dec 2025 13:57:56 +0100
+Message-ID: <20251220125756.254355-1-fransm@gmail.com>
+X-Mailer: git-send-email 2.52.0
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20251219154418.3592607-1-elver@google.com> <20251219154418.3592607-18-elver@google.com>
- <81d2defc-8980-4022-a464-3d285aff199c@acm.org>
-In-Reply-To: <81d2defc-8980-4022-a464-3d285aff199c@acm.org>
-From: Marco Elver <elver@google.com>
-Date: Sat, 20 Dec 2025 13:52:13 +0100
-X-Gm-Features: AQt7F2oG2tk1HNWJ4txFgkKVTgQOAoxLExF81nhreitjIuVCBm-zQmVADhDjpfw
-Message-ID: <CANpmjNMAGYeFK-jYafSihmA+T7wi3zC8Sb4fJ+ZjzDK5jGuMvQ@mail.gmail.com>
-Subject: Re: [PATCH v5 17/36] locking/rwsem: Support Clang's context analysis
-To: Bart Van Assche <bvanassche@acm.org>
-Cc: Peter Zijlstra <peterz@infradead.org>, Boqun Feng <boqun.feng@gmail.com>, 
-	Ingo Molnar <mingo@kernel.org>, Will Deacon <will@kernel.org>, 
-	"David S. Miller" <davem@davemloft.net>, Luc Van Oostenryck <luc.vanoostenryck@gmail.com>, 
-	Chris Li <sparse@chrisli.org>, "Paul E. McKenney" <paulmck@kernel.org>, 
-	Alexander Potapenko <glider@google.com>, Arnd Bergmann <arnd@arndb.de>, Christoph Hellwig <hch@lst.de>, 
-	Dmitry Vyukov <dvyukov@google.com>, Eric Dumazet <edumazet@google.com>, 
-	Frederic Weisbecker <frederic@kernel.org>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
-	Herbert Xu <herbert@gondor.apana.org.au>, Ian Rogers <irogers@google.com>, 
-	Jann Horn <jannh@google.com>, Joel Fernandes <joelagnelf@nvidia.com>, 
-	Johannes Berg <johannes.berg@intel.com>, Jonathan Corbet <corbet@lwn.net>, 
-	Josh Triplett <josh@joshtriplett.org>, Justin Stitt <justinstitt@google.com>, 
-	Kees Cook <kees@kernel.org>, Kentaro Takeda <takedakn@nttdata.co.jp>, 
-	Lukas Bulwahn <lukas.bulwahn@gmail.com>, Mark Rutland <mark.rutland@arm.com>, 
-	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>, Miguel Ojeda <ojeda@kernel.org>, 
-	Nathan Chancellor <nathan@kernel.org>, Neeraj Upadhyay <neeraj.upadhyay@kernel.org>, 
-	Nick Desaulniers <nick.desaulniers+lkml@gmail.com>, Steven Rostedt <rostedt@goodmis.org>, 
-	Tetsuo Handa <penguin-kernel@i-love.sakura.ne.jp>, Thomas Gleixner <tglx@linutronix.de>, 
-	Thomas Graf <tgraf@suug.ch>, Uladzislau Rezki <urezki@gmail.com>, Waiman Long <longman@redhat.com>, 
-	kasan-dev@googlegroups.com, linux-crypto@vger.kernel.org, 
-	linux-doc@vger.kernel.org, linux-kbuild@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, linux-mm@kvack.org, 
-	linux-security-module@vger.kernel.org, linux-sparse@vger.kernel.org, 
-	linux-wireless@vger.kernel.org, llvm@lists.linux.dev, rcu@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
 
-On Fri, 19 Dec 2025 at 21:55, 'Bart Van Assche' via kasan-dev
-<kasan-dev@googlegroups.com> wrote:
->
-> On 12/19/25 7:40 AM, Marco Elver wrote:
-> >   static inline void rwsem_assert_held_nolockdep(const struct rw_semaphore *sem)
-> > +     __assumes_ctx_lock(sem)
-> >   {
-> >       WARN_ON(atomic_long_read(&sem->count) == RWSEM_UNLOCKED_VALUE);
-> >   }
-> >
-> >   static inline void rwsem_assert_held_write_nolockdep(const struct rw_semaphore *sem)
-> > +     __assumes_ctx_lock(sem)
-> >   {
-> >       WARN_ON(!(atomic_long_read(&sem->count) & RWSEM_WRITER_LOCKED));
-> >   }
-> > @@ -119,6 +121,7 @@ do {                                                              \
-> >       static struct lock_class_key __key;                     \
-> >                                                               \
-> >       __init_rwsem((sem), #sem, &__key);                      \
-> > +     __assume_ctx_lock(sem);                                 \
-> >   } while (0)
->
-> Just like as for lockdep.h, I think that the above annotations should be
-> changed into __must_hold().
+From: Fix mt7925e Buffer Overflow <bugfix@example.com>
 
-My point is the same: we use it to delegate to dynamic analysis where
-we reach the limits of static analysis, to avoid false positives [1].
-Code should apply __must_hold() or __guarded_by() to called or
-protected variables respectively, which is both cleaner and the
-idiomatic way to use all this.
+Fix strnlen buffer overflow detected in the mt76_connac2_load_patch() function
+when loading firmware for MediaTek MT7925 WiFi chipset on kernel 6.19.0-rc1.
 
-[1] https://lore.kernel.org/all/CANpmjNPp6Gkz3rdaD0V7EkPrm60sA5tPpw+m8Xg3u8MTXuc2mg@mail.gmail.com/
+The issue is in line 3128 where dev_info() uses format specifier %.16s on a
+16-byte buffer (mt76_connac2_patch_hdr.build_date[16]), which can cause the
+fortified strnlen to read beyond buffer bounds if the string is not properly
+null-terminated within the buffer.
+
+The fix changes the format specifier from %.16s to %.15s, consistent with the
+similar mt76_connac2_fw_trailer structure which has a 15-byte build_date field
+and uses %.15s format in mt76_connac2_load_ram().
+
+Error message fixed:
+  strnlen: detected buffer overflow: 17 byte read of buffer size 16
+  kernel BUG at lib/string_helpers.c:1043!
+
+Kernel: 6.19.0-rc1-1-cachyos-rc
+Device: MediaTek MT7925 (mt7925e driver)
+
+Fixes: regression in 6.19.0-rc1 (works in 6.18.2)
+Reported-by: CachyOS Bug Report
+
+---
+ mt76_connac_mcu.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/mt76_connac_mcu.c b/mt76_connac_mcu.c
+index fba7025f..c284ad7f 100644
+--- a/mt76_connac_mcu.c
++++ b/mt76_connac_mcu.c
+@@ -3124,7 +3124,7 @@ int mt76_connac2_load_patch(struct mt76_dev *dev, const char *fw_name)
+ 	}
+ 
+ 	hdr = (const void *)fw->data;
+-	dev_info(dev->dev, "HW/SW Version: 0x%x, Build Time: %.16s\n",
++	dev_info(dev->dev, "HW/SW Version: 0x%x, Build Time: %.15s\n",
+ 		 be32_to_cpu(hdr->hw_sw_ver), hdr->build_date);
+ 
+ 	for (i = 0; i < be32_to_cpu(hdr->desc.n_region); i++) {
+--
+2.40.0
 
