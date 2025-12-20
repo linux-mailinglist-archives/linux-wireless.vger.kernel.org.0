@@ -1,34 +1,46 @@
-Return-Path: <linux-wireless+bounces-30015-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-30016-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id D8039CD285F
-	for <lists+linux-wireless@lfdr.de>; Sat, 20 Dec 2025 07:04:09 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 91993CD2878
+	for <lists+linux-wireless@lfdr.de>; Sat, 20 Dec 2025 07:08:00 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id C425130164FA
-	for <lists+linux-wireless@lfdr.de>; Sat, 20 Dec 2025 06:04:08 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 089C93018D71
+	for <lists+linux-wireless@lfdr.de>; Sat, 20 Dec 2025 06:07:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C3F9A2BEC4A;
-	Sat, 20 Dec 2025 06:04:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DBDEF2F25F8;
+	Sat, 20 Dec 2025 06:07:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="DIKl6yP1"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 96F071547E7;
-	Sat, 20 Dec 2025 06:04:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A1A361F131A;
+	Sat, 20 Dec 2025 06:07:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1766210647; cv=none; b=mVCSolNj5rR8256VeTrexZLEMMzqfP9vo/CGrl78mE+T8HjB8kJv8WmXC6QZmJo7adRLZz4OfErUbZHGH9S17zqkRA3VVP7+pTX5Lj7nXkjzSWaCr1c8x2+msmGajNn6jXfihsoTuitvbdYDUFkVUqPA1A9lvsk0pk9Fg0rIZCQ=
+	t=1766210875; cv=none; b=pvSBcKaVY0V0rr2cp77j9h04DJ76TKPrM3SXePQB0C07Gwfau+bbDkXtnGk9jsFqi9S+H/PQpF2E5+zUXtYN63791V90hor20xI8snOBWwqx+yf2C9v53gR15UkLF43VnIw/n2Rj0JMCpgwmTJTb1C9pAUUnmnWAsyPnV/HeR6Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1766210647; c=relaxed/simple;
-	bh=JhhZKgbhQDuIZvY+tywjTM/+EOuhlgXcOjO3AWdtoY4=;
+	s=arc-20240116; t=1766210875; c=relaxed/simple;
+	bh=VX0dE+JZYIwLPwmtZYo3MjEeyWBbD/TEvkAunGo1edE=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=uIZGMM67EvuPlE0MHCI2Il8+b/k3UgOFHcYdkX8ubymvuqAOrT+79p7FOP1Idjo/RNLguhX9ZIonLI78qbvD45YIyYMev14saqxnJTgTsHOrOzEzbmfrzvMa090RzmCzfgCo2iAWaTf9OfLq2wCYAIcppfj7E1lovDuoVhGSSc0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0FDAEC4CEF5;
-	Sat, 20 Dec 2025 06:04:01 +0000 (UTC)
-Message-ID: <e0e9e690-c56e-4b56-90f9-2af46a7feaf3@nxsw.ie>
-Date: Sat, 20 Dec 2025 06:04:00 +0000
+	 In-Reply-To:Content-Type; b=coI4ZIk3CNjpcgngn+sb7D9UDKyQCIJdxbNoKKd26qeQgpsisg4uF+PYnW/cf02ZI4vChZsg10wFkjDWxWzV688ZS2haLNtem44thjpt6Z2xphcP8YJDQXx7LI8QlexPToAzv2F3dmxjyK2wNzxpksy6k4W87DaPYjhXaP/SoBU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=DIKl6yP1; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 39EFEC4CEF5;
+	Sat, 20 Dec 2025 06:07:51 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1766210875;
+	bh=VX0dE+JZYIwLPwmtZYo3MjEeyWBbD/TEvkAunGo1edE=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=DIKl6yP1ICX3q2p7ewS25HLugEAtwBK0udFePyVqZqLFEjdjPmpM3VrvaOxUoWQl/
+	 ne3Az7vvEsSPVYVWVPH9kbWZ4wXauVhttJuoQ2BwRCX0Ms9VtFIvoS1JOo+QWi0+5K
+	 H9w2qVj5/8dztmVvhtFSnwmHmiPXP3KMPySNveeFFCq3B1cdBFpxEsrzrKMWqG/F0A
+	 xPUtzEngVul7KtFHPB8trk1WA64KyciQNwvonO9ZF7pHXqBZUhizpE8qSmbY7GC2Z2
+	 4N3P2txnfhyVcBtOrHO3iQkjEzucZsgyz/FzQT2oOjed1Csvf0j3fnwv/WuMwRfSZz
+	 4PvxZJFtTju0g==
+Message-ID: <37b947bc-ae54-49ef-bac6-1ec13772d03f@kernel.org>
+Date: Sat, 20 Dec 2025 06:07:49 +0000
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
@@ -36,8 +48,8 @@ List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v5 2/7] dt-bindings: wireless: ieee80211: Add
- disable-rfkill property
+Subject: Re: [PATCH v5 7/7] wifi: ath12k: Add support for disabling rfkill via
+ devicetree
 To: jerome.debretagne@gmail.com, Bjorn Andersson <andersson@kernel.org>,
  Konrad Dybcio <konradybcio@kernel.org>, Rob Herring <robh@kernel.org>,
  Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
@@ -51,50 +63,47 @@ Cc: linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org,
  platform-driver-x86@vger.kernel.org, ath12k@lists.infradead.org,
  Jeff Johnson <jeff.johnson@oss.qualcomm.com>, Dale Whinham <daleyo@gmail.com>
 References: <20251220-surface-sp11-for-next-v5-0-16065bef8ef3@gmail.com>
- <M7kfFb5fz-WB43U_xCUwgxpmBJ4TNdp4jE6yFu6HmemIcDx5tXO6H4xnW_pEQz6DMkKm-3POdB9hIdB092zhGQ==@protonmail.internalid>
- <20251220-surface-sp11-for-next-v5-2-16065bef8ef3@gmail.com>
-From: Bryan O'Donoghue <bod.linux@nxsw.ie>
+ <L8oRgLxJXJOSFskrI_YHusMp-Hx1nToNTGzEAuYfFmvK_uyJ0tJiJbXOQTcwHMbWOHTKcRws9ehpNIEZhAfWng==@protonmail.internalid>
+ <20251220-surface-sp11-for-next-v5-7-16065bef8ef3@gmail.com>
+From: Bryan O'Donoghue <bod@kernel.org>
 Content-Language: en-US
-In-Reply-To: <20251220-surface-sp11-for-next-v5-2-16065bef8ef3@gmail.com>
+In-Reply-To: <20251220-surface-sp11-for-next-v5-7-16065bef8ef3@gmail.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
 
-On 20/12/2025 00:21, Jérôme de Bretagne via B4 Relay wrote:
-> From: Jérôme de Bretagne <jerome.debretagne@gmail.com>
+On 20/12/2025 00:22, Jérôme de Bretagne via B4 Relay wrote:
+> From: Dale Whinham <daleyo@gmail.com>
 > 
-> For some devices, Wi-Fi is entirely hard blocked by default making
-> the Wi-Fi radio unusable, except if rfkill is disabled as expected
-> on those models.
+> Some devices (e.g. Microsoft Surface Pro 11) indicate that the rfkill
+> feature should be disabled by means of an ACPI bitflag.
 > 
-> Commit c6a7c0b09d5f ("wifi: ath12k: Add Support for enabling or
-> disabling specific features based on ACPI bitflag") added a way to
-> support features set via ACPI, including the DISABLE_RFKILL bit.
+> If ACPI is not being used (i.e. booting using a devicetree) then this
+> property will not be read and therefore rfkill may be enabled and
+> the ath12k will be hard-blocked with no way to disable it.
 > 
-> Add a disable-rfkill property to expose the DISABLE_RFKILL bit
-> equivalent for devices described by a Devicetree instead of ACPI.
+> Add a devicetree property that allows to disable the rfkill feature.
 > 
+> Signed-off-by: Dale Whinham <daleyo@gmail.com>
+> Tested-by: Jérôme de Bretagne <jerome.debretagne@gmail.com>
 > Signed-off-by: Jérôme de Bretagne <jerome.debretagne@gmail.com>
 > ---
->   Documentation/devicetree/bindings/net/wireless/ieee80211.yaml | 6 ++++++
->   1 file changed, 6 insertions(+)
+>   drivers/net/wireless/ath/ath12k/core.c | 3 +++
+>   1 file changed, 3 insertions(+)
 > 
-> diff --git a/Documentation/devicetree/bindings/net/wireless/ieee80211.yaml b/Documentation/devicetree/bindings/net/wireless/ieee80211.yaml
-> index d89f7a3f88a71d45d6f4ab2ae909eae09cbcaf9a..c10a4675640be947cd0b5eaec2c7ff367fd93945 100644
-> --- a/Documentation/devicetree/bindings/net/wireless/ieee80211.yaml
-> +++ b/Documentation/devicetree/bindings/net/wireless/ieee80211.yaml
-> @@ -29,6 +29,12 @@ properties:
->         different 5 GHz subbands. Using them incorrectly could not work or
->         decrease performance noticeably
+> diff --git a/drivers/net/wireless/ath/ath12k/core.c b/drivers/net/wireless/ath/ath12k/core.c
+> index cc352eef1939937ce902bee2fbd9737ca3ab5993..e10073bb975cfd2e9ee418edcc49d0d51cf93de1 100644
+> --- a/drivers/net/wireless/ath/ath12k/core.c
+> +++ b/drivers/net/wireless/ath/ath12k/core.c
+> @@ -77,6 +77,9 @@ static int ath12k_core_rfkill_config(struct ath12k_base *ab)
+>   	if (ath12k_acpi_get_disable_rfkill(ab))
+>   		return 0;
 > 
-> +  disable-rfkill:
-> +    type: boolean
-> +    description:
-> +      Disable rfkill for some devices on which Wi-Fi would be entirely hard
-> +      blocked by default otherwise
+> +	if (of_property_read_bool(ab->dev->of_node, "disable-rfkill"))
+> +		return 0;
 > +
->   additionalProperties: true
+>   	for (i = 0; i < ab->num_radios; i++) {
+>   		ar = ab->pdevs[i].ar;
 > 
->   examples:
 > 
 > --
 > 2.47.3
@@ -102,19 +111,8 @@ On 20/12/2025 00:21, Jérôme de Bretagne via B4 Relay wrote:
 > 
 > 
 
-Is this really a hardware description though ?
-
-Its really more of a logical/functional description. It tells the 
-runtime what todo, not what the hardware is.
-
-You could also have a list of quirks in ath12k for this or have a 
-user-space utility look for the appropriate platform device string name 
-and disable rfkill.
-
-I think this logic belongs in drivers/net/wireless/ath/ath12k/ 
-triggering on a compat string.
-
-Should be achievable.
+Just maintain a list of devices with the quirk. disable-rfkill won't fly 
+because it doesn't describe hardware and DT != ACPI that way.
 
 ---
 bod
