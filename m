@@ -1,152 +1,172 @@
-Return-Path: <linux-wireless+bounces-30005-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-30007-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8FD1FCD20D8
-	for <lists+linux-wireless@lfdr.de>; Fri, 19 Dec 2025 22:50:11 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2F9FACD23AF
+	for <lists+linux-wireless@lfdr.de>; Sat, 20 Dec 2025 01:22:41 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id A183E305A3F4
-	for <lists+linux-wireless@lfdr.de>; Fri, 19 Dec 2025 21:49:17 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id CB9113018F6A
+	for <lists+linux-wireless@lfdr.de>; Sat, 20 Dec 2025 00:22:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 377442C235E;
-	Fri, 19 Dec 2025 21:49:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6CABD1B424F;
+	Sat, 20 Dec 2025 00:22:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="wxzxqX9N"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="VpJgqIzY"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-pj1-f54.google.com (mail-pj1-f54.google.com [209.85.216.54])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2D36029C321
-	for <linux-wireless@vger.kernel.org>; Fri, 19 Dec 2025 21:49:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.54
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 30C811ADC7E;
+	Sat, 20 Dec 2025 00:22:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1766180956; cv=none; b=psb/UH7zv6N94G8z2nW2R9SDgc9o2r/syOSsR+G0M/KjuL2dgedNId2yM84knqMI22iH85cQkbylM9OK7AmkOVh5sZQGaY9QECWpQ88UKSKKruh5yiOddflXMa+QvcCQAqSqdnJxkzOdvY6oPmlXAI8iGNhiJ2NOj3TgrYXTLVI=
+	t=1766190157; cv=none; b=KoWAewZLTmgwlRv8DEEtL4W8cYny2ALBaV9glcMWnOB6p+UI72DoxwclJEvseeRlOqaJ8eE4boJKCvOQIlvCtdha+xi273dnyUhBcnXQLDec4BEOTkHc05fAr1k+iyPMYMlWjRheHUp0B4ub0Ob/+OVHdEnAkDRWGsbubVl8xEQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1766180956; c=relaxed/simple;
-	bh=k9J0WFzlkYtCk1RXVJs8ICS2UcS46vYMNi/KF0RXH0A=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=n1wPkLEFhgxk0ySEdVCIkvT9PFrSIXPC/fd+NY6U38kGZBS+11yfN8oSVLCkZUibgZQDN6+xy4eMfFLzMVz3Rb2hMCW9Gwc183MGn79Y0bU59y+gqR1l5yeAmPke2tNyZEJdpGco3bM86JG9En8q09OiFuUUIkhEwaj5e7+zvv0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=wxzxqX9N; arc=none smtp.client-ip=209.85.216.54
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
-Received: by mail-pj1-f54.google.com with SMTP id 98e67ed59e1d1-34c363eb612so2140787a91.0
-        for <linux-wireless@vger.kernel.org>; Fri, 19 Dec 2025 13:49:12 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1766180952; x=1766785752; darn=vger.kernel.org;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=NzDuEDjTM8ZWLDMfL/9YFXqkNSYfSWOUAvfjFgQokA0=;
-        b=wxzxqX9NTO+ux5QSAcxOM6N4IFypnQhbKmPscGrkLhB0JOtlA75xFwJBn3T/ndKGFF
-         dGu73fTDFG1w7J7q09Rt2RIg0RiPTxdyLZAi9Yo7VnX4CCGDbs+Al8VT5I+bWlMi2RSa
-         2FbFx4vLCJK8j0nAmNQv4ZuhoB8LqGTKjzRN5XBCWHSTJLbQiVTuCIkipaAoML/6gSY1
-         JVw//ZcP0nWpjLQ/CeXnGTPTOumpHJ4dU8U8gMyF3aTjQe321HLJGcUCIclL0o8h2+BZ
-         7p+xcyKOMxVFgvpAYQBtWCVrv8RzLkh0A5kz4oHK0cAt/eZmsHmkQgBgG6tbS+FLp400
-         uL7A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1766180952; x=1766785752;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=NzDuEDjTM8ZWLDMfL/9YFXqkNSYfSWOUAvfjFgQokA0=;
-        b=WsimjdK85lXEqaSis72fDFfeCcpthxzAkAzOOEYXGVpLGPQ/DSknBLxE6ZUev+62a/
-         bu4KgwigsGq61kpbyAtUvheDpdLRZkO3h2VS1D7MB9tMjXSm1nIJGEz0hMB60n0OJhtN
-         VjuV36tExZyL5+WUOrgGql4a/haU7uHE9FFeyd61etjtYjLhkNqQRiCmeM1QmU9Y/emr
-         7Ozj/w6bVZ8Mk0pCG8o5Y6+bgItEvpA2PYAdBAT1ehcOO0pfZ+QWItugFhB1UEnwRTvu
-         v8D66v5TKxhcAndo3ULIcZ0UBfDNpEmswySrP09+JugYVBJmOe6ZxK8Uj0ZOmbGSmyEv
-         O3WA==
-X-Forwarded-Encrypted: i=1; AJvYcCV4ND6Vx6tNrAMCnRDE9bX2a4RnGO/aSDJ2qnprq3eDcz0eS4uZsTh3ZWUg9tpLeih/JxQ1d7DLWLlMKyfUDA==@vger.kernel.org
-X-Gm-Message-State: AOJu0Yzvs0wOskn7dCCWpI00Vy2g02yK1Luv9dMj5pLMO7Rp2A/oUD18
-	s9bnqPOVEgLhUOmQ56UIr1GRKktpPwCbVvkKU4OwehVCOsXMfvtdQgy9SVgyL3Kv7xFjqhB4X2q
-	M+y1QeE5MEmc87lltJRfk69SiueAZL8RUp2kKiO1Q
-X-Gm-Gg: AY/fxX4in9L9heRwpiWXvAcec079EgWLpRECXGtHwMtRQBVYsmjycsGyCqG3WgYkckH
-	Ld3GKeOr4wWkDSdzdpjBzU4aFfHZYAdaUTz3V/Uyk1DMc2hd1reSaaaPlRaI08GgWiFvE5X93ht
-	vcEXEwInhCCkphP8ds/EKsob3Fisu2qRSIPlMfohPOfFIV+a6yBgvKF2keL+mrXP5hZCQFhQS0H
-	RhckXRs6582Q3vlZKDghCHRlaDiAxxUk6LgAHfnCuRrkoABUGQm8SZr59jsBBW85UUunohb7nOg
-	tvbhpi9h/rrMYg+PMKh1YC33m9g=
-X-Google-Smtp-Source: AGHT+IH1wb+RKJ6da97DpXPpqA5MRT8qx5b7FDx5k2pjduqaEcwfYWMMGR5Rn4FLqe1i8Vtg4dzqeBXKvhP326Y4ZH8=
-X-Received: by 2002:a05:7022:213:b0:11a:4016:44a5 with SMTP id
- a92af1059eb24-121722de1e1mr5781198c88.24.1766180951816; Fri, 19 Dec 2025
- 13:49:11 -0800 (PST)
+	s=arc-20240116; t=1766190157; c=relaxed/simple;
+	bh=+CciBVMmXK8RVQ3AsM9uUz7HTD5wQc1eKok9OBg5Eag=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=QU5JHrqrgqS4HiESAypO9KBm2yPYJt44fdQ3qRJE0A0PAw3rKt9i+gWc9JKMTqwFPM1RgZChrVNnAhaNsU6mPYwtSE7lbTUpPOQDj+iXHiuIJ3Imr6bNS4awa4mgGCpKKKBxKE1Re7YOJ68LaQt2TPcqdtQqVl9HmDWWQ1cW4pQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=VpJgqIzY; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPS id E3C9FC4CEF1;
+	Sat, 20 Dec 2025 00:22:36 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1766190157;
+	bh=+CciBVMmXK8RVQ3AsM9uUz7HTD5wQc1eKok9OBg5Eag=;
+	h=From:Subject:Date:To:Cc:Reply-To:From;
+	b=VpJgqIzYs0waSnJAUP4Vgzqvec2wIq6oS9JDG450NGFV2/LS9dUW7b0zmo+0O3qgw
+	 lNdpaiOwJfMvUOL8BlG7y+Ytbwq5vrtVZBvAnpvRlVilp7mbC0+24NNTl5xSDkLqhP
+	 50ga+qz9RWBcTt9/zj35pFnlL+IxsmnSUXHe5KDC1s4GFuSKlGncx3c/lA6eYFOzAE
+	 qeKMDWOdRHaU1qu8xZcFaa+QKcc4gd5MLo6Pk0sjLjp1J1shqdJYmOM5qbX4tREd9X
+	 E+FPQllXRd1XbWHNnjdkzZTtaSkV9U67sYkt+ovnjNjZ0p3R5mXiPtWRcd+pZK8xHw
+	 YFzHOmL8Wi50A==
+Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
+	by smtp.lore.kernel.org (Postfix) with ESMTP id CEEA2E668A7;
+	Sat, 20 Dec 2025 00:22:36 +0000 (UTC)
+From: =?utf-8?q?J=C3=A9r=C3=B4me_de_Bretagne_via_B4_Relay?= <devnull+jerome.debretagne.gmail.com@kernel.org>
+Subject: [PATCH v5 0/7] Microsoft Surface Pro 11 support
+Date: Sat, 20 Dec 2025 01:21:57 +0100
+Message-Id: <20251220-surface-sp11-for-next-v5-0-16065bef8ef3@gmail.com>
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20251219154418.3592607-1-elver@google.com> <20251219154418.3592607-9-elver@google.com>
- <17723ae6-9611-4731-905c-60dab9fb7102@acm.org> <CANpmjNO0B_BBse12kAobCRBK0D2pKkSu7pKa5LQAbdzBZa2xcw@mail.gmail.com>
- <0088cc8c-b395-4659-854f-a6cc5df626ed@gmail.com>
-In-Reply-To: <0088cc8c-b395-4659-854f-a6cc5df626ed@gmail.com>
-From: Marco Elver <elver@google.com>
-Date: Fri, 19 Dec 2025 22:48:35 +0100
-X-Gm-Features: AQt7F2rGv_yg31bAGJRVSa1c9k6UbjL-L12dGmORxx_mEF1TxDypAURYmp5bQlk
-Message-ID: <CANpmjNN4JNG1OSWfGd2fAqTyYQ+Re7Czn796WD-47TwmuECxaQ@mail.gmail.com>
-Subject: Re: [PATCH v5 08/36] locking/rwlock, spinlock: Support Clang's
- context analysis
-To: Bart Van Assche <bart.vanassche@gmail.com>
-Cc: Peter Zijlstra <peterz@infradead.org>, Boqun Feng <boqun.feng@gmail.com>, 
-	Ingo Molnar <mingo@kernel.org>, Will Deacon <will@kernel.org>, 
-	"David S. Miller" <davem@davemloft.net>, Luc Van Oostenryck <luc.vanoostenryck@gmail.com>, 
-	Chris Li <sparse@chrisli.org>, "Paul E. McKenney" <paulmck@kernel.org>, 
-	Alexander Potapenko <glider@google.com>, Arnd Bergmann <arnd@arndb.de>, Christoph Hellwig <hch@lst.de>, 
-	Dmitry Vyukov <dvyukov@google.com>, Eric Dumazet <edumazet@google.com>, 
-	Frederic Weisbecker <frederic@kernel.org>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
-	Herbert Xu <herbert@gondor.apana.org.au>, Ian Rogers <irogers@google.com>, 
-	Jann Horn <jannh@google.com>, Joel Fernandes <joelagnelf@nvidia.com>, 
-	Johannes Berg <johannes.berg@intel.com>, Jonathan Corbet <corbet@lwn.net>, 
-	Josh Triplett <josh@joshtriplett.org>, Justin Stitt <justinstitt@google.com>, 
-	Kees Cook <kees@kernel.org>, Kentaro Takeda <takedakn@nttdata.co.jp>, 
-	Lukas Bulwahn <lukas.bulwahn@gmail.com>, Mark Rutland <mark.rutland@arm.com>, 
-	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>, Miguel Ojeda <ojeda@kernel.org>, 
-	Nathan Chancellor <nathan@kernel.org>, Neeraj Upadhyay <neeraj.upadhyay@kernel.org>, 
-	Nick Desaulniers <nick.desaulniers+lkml@gmail.com>, Steven Rostedt <rostedt@goodmis.org>, 
-	Tetsuo Handa <penguin-kernel@i-love.sakura.ne.jp>, Thomas Gleixner <tglx@linutronix.de>, 
-	Thomas Graf <tgraf@suug.ch>, Uladzislau Rezki <urezki@gmail.com>, Waiman Long <longman@redhat.com>, 
-	kasan-dev@googlegroups.com, linux-crypto@vger.kernel.org, 
-	linux-doc@vger.kernel.org, linux-kbuild@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, linux-mm@kvack.org, 
-	linux-security-module@vger.kernel.org, linux-sparse@vger.kernel.org, 
-	linux-wireless@vger.kernel.org, llvm@lists.linux.dev, rcu@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
+X-B4-Tracking: v=1; b=H4sIACXsRWkC/43NQQ6DIBCF4asY1p1GQMR05T2aLgAHJaliwBIb4
+ 92Lrrprl/9L5puNRAwOI7kVGwmYXHR+yiEuBTGDmnoE1+UmrGSCMtpAfAWrDEKcKQXrA0y4LlC
+ zGjmTVmrOSb6dA1q3nu79kXtwcfHhfb5J/Fh/iYlDCY0UyhqpO65l24/KPa/Gj+QQU/WXUmVFa
+ mMbbqgoK/Wt7Pv+ASKZ4nwAAQAA
+X-Change-ID: 20251218-surface-sp11-for-next-626e327f7b33
+To: Bjorn Andersson <andersson@kernel.org>, 
+ Konrad Dybcio <konradybcio@kernel.org>, Rob Herring <robh@kernel.org>, 
+ Krzysztof Kozlowski <krzk+dt@kernel.org>, 
+ Conor Dooley <conor+dt@kernel.org>, 
+ Johannes Berg <johannes@sipsolutions.net>, 
+ Lorenzo Bianconi <lorenzo@kernel.org>, 
+ Maximilian Luz <luzmaximilian@gmail.com>, Hans de Goede <hansg@kernel.org>, 
+ =?utf-8?q?Ilpo_J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>, 
+ Jeff Johnson <jjohnson@kernel.org>
+Cc: linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org, 
+ linux-kernel@vger.kernel.org, linux-wireless@vger.kernel.org, 
+ platform-driver-x86@vger.kernel.org, ath12k@lists.infradead.org, 
+ Jeff Johnson <jeff.johnson@oss.qualcomm.com>, 
+ Dale Whinham <daleyo@gmail.com>, 
+ =?utf-8?q?J=C3=A9r=C3=B4me_de_Bretagne?= <jerome.debretagne@gmail.com>, 
+ Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>, 
+ Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
+X-Mailer: b4 0.14.2
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1766190155; l=4338;
+ i=jerome.debretagne@gmail.com; s=20251217; h=from:subject:message-id;
+ bh=+CciBVMmXK8RVQ3AsM9uUz7HTD5wQc1eKok9OBg5Eag=;
+ b=u52ZKVtftt6PJMa6RlrN2Rjw0LqP83qxxnBf5Xuj14MIz4kx2Z7tM/MqtWKT+v1XrscZFilnq
+ 8O1h0JG1//zAsRXUuKz0MOBqJf8XYL99eblXKqZJmYlRB1DJqsILoKO
+X-Developer-Key: i=jerome.debretagne@gmail.com; a=ed25519;
+ pk=DcPD9n3oDMsPkt+12tU96swmGb5H86cxt+yiEVcUEGk=
+X-Endpoint-Received: by B4 Relay for jerome.debretagne@gmail.com/20251217
+ with auth_id=580
+X-Original-From: =?utf-8?q?J=C3=A9r=C3=B4me_de_Bretagne?= <jerome.debretagne@gmail.com>
+Reply-To: jerome.debretagne@gmail.com
 
-On Fri, 19 Dec 2025 at 22:34, Bart Van Assche <bart.vanassche@gmail.com> wrote:
->
-> On 12/19/25 2:02 PM, Marco Elver wrote:
-> > On Fri, 19 Dec 2025 at 21:26, Bart Van Assche <bvanassche@acm.org> wrote:
-> >> On 12/19/25 7:39 AM, Marco Elver wrote:
-> >>> - extern void do_raw_read_lock(rwlock_t *lock) __acquires(lock);
-> >>> + extern void do_raw_read_lock(rwlock_t *lock) __acquires_shared(lock);
-> >>
-> >> Given the "one change per patch" rule, shouldn't the annotation fixes
-> >> for rwlock operations be moved into a separate patch?
-> >>
-> >>> -typedef struct {
-> >>> +context_lock_struct(rwlock) {
-> >>>        arch_rwlock_t raw_lock;
-> >>>    #ifdef CONFIG_DEBUG_SPINLOCK
-> >>>        unsigned int magic, owner_cpu;
-> >>> @@ -31,7 +31,8 @@ typedef struct {
-> >>>    #ifdef CONFIG_DEBUG_LOCK_ALLOC
-> >>>        struct lockdep_map dep_map;
-> >>>    #endif
-> >>> -} rwlock_t;
-> >>> +};
-> >>> +typedef struct rwlock rwlock_t;
-> >>
-> >> This change introduces a new globally visible "struct rwlock". Although
-> >> I haven't found any existing "struct rwlock" definitions, maybe it's a
-> >> good idea to use a more unique name instead.
-> >
-> > This doesn't actually introduce a new globally visible "struct
-> > rwlock", it's already the case before.
-> > An inlined struct definition in a typedef is available by its struct
-> > name, so this is not introducing a new name
-> > (https://godbolt.org/z/Y1jf66e1M).
->
-> Please take another look. The godbolt example follows the pattern
-> "typedef struct name { ... } name_t;". The "name" part is missing from
-> the rwlock_t definition. This is why I wrote that the above code
-> introduces a new global struct name.
+This series brings support for the Qualcomm-based Microsoft Surface
+Pro 11 covering both the OLED and LCD variants.
 
-You're right. My point only applies to "typedef struct spinlock ..."
+Signed-off-by: Dale Whinham <daleyo@gmail.com>
+Signed-off-by: Jérôme de Bretagne <jerome.debretagne@gmail.com>
+---
+Changes in v5:
+- Move the OLED variant description to keep the logical order [Krzysztof]
+- Remove a T-b: tag as not applicable for a binding [Krzysztof]
+- Remove another T-b: tag already covered by authorship [Krzysztof]
+- Reference disable-rfkill in qcom,ath12k.yaml to fix dtbs_check failure [Krzysztof]
+- Remove erroneously copied Copyright lines [Krzysztof]
+- Add the R-b: tag from Dmitry for the aggregator_registry patch
+- Link to v4: https://lore.kernel.org/r/20251218-surface-sp11-for-next-v4-0-7bcf83c1504a@gmail.com
+
+Changes in v4:
+- Re-order the denali entry in the aggregator_registry acpi_match table [Dmitry]
+- Improve the bindings by splitting the LCD and OLED variants into 2 entries [Konrad]
+- Enable i2c4 to make it accessible through i2c-tools [Konrad]
+- Document the addresses for i2c0 and i2c4 like in romulus.dtsi [Konrad]
+- Fix the clock-frequency for i2c0 based on DSDT/SSDT
+- Drop i2c5 which is not found in the DSDT after double-checking
+- Add the R-b: tag from Konrad for the SP11 device trees
+- Link to v3: https://lore.kernel.org/r/20251218-surface-sp11-for-next-v3-0-875afc7bd3b7@gmail.com
+
+Changes in v3:
+- Update the compatible strings to document both the OLED and LCD variants
+- Move the disable-rfkill property into ieee80211.yaml [Rob,Krzysztof]
+- Reference commit c6a7c0b09d5f and detail the disable-rfkill patch description [Rob,Krzysztof]
+- Switch to the renamed hamoa.dtsi and hamoa-pmics.dtsi [Dale]
+- Improve the comments describing the 2 USB Type-C port location
+- Update the speaker definition to describe only 2-speakers [Konrad]
+- Drop output-low from the speaker definition [Konrad]
+- Enable i2c0 to make it accessible through i2c-tools [Konrad]
+- Delete a non-applicable comment about removable WLAN card [Konrad]
+- Re-order a few nodes and fix indentation issues [Konrad]
+- Squash one of the patches as suggested [Krzysztof]
+- Drop the NAKed patch patch about a dpcd link rate quirk [Dmitry]
+- Include the Reviewed-by: tags
+- Link to v2: https://lore.kernel.org/all/20251201011457.17422-1-daleyo@gmail.com/
+
+Changes in v2:
+  - Dropped ATNA30DW01 patch as it was merged.
+  - Split device tree into x1e (OLED)/x1p (LCD) specific *.dts files and move common code into x1-microsoft-denali.dtsi (patch 4).
+  - Device tree now enables higher external monitor refresh rates/resolutions (patch 4).
+  - Device tree now enables partially working audio output; requires alsa-ucm-conf and audioreach-topology definitions in userspace (patch 4).
+  - Replaced 'Work around bogus maximum link rate' with a quirk-based approach (patch 5).
+  - Improve the commit message about the disable-rfkill property in response to feedback (patch 6).
+
+---
+Dale Whinham (4):
+      firmware: qcom: scm: allow QSEECOM on Surface Pro 11
+      platform/surface: aggregator_registry: Add Surface Pro 11 (QCOM)
+      arm64: dts: qcom: Add support for Surface Pro 11
+      wifi: ath12k: Add support for disabling rfkill via devicetree
+
+Jérôme de Bretagne (3):
+      dt-bindings: arm: qcom: Document Microsoft Surface Pro 11
+      dt-bindings: wireless: ieee80211: Add disable-rfkill property
+      dt-bindings: wireless: ath12k: Allow disable-rfkill property
+
+ Documentation/devicetree/bindings/arm/qcom.yaml    |   11 +
+ .../bindings/net/wireless/ieee80211.yaml           |    6 +
+ .../bindings/net/wireless/qcom,ath12k.yaml         |    5 +
+ arch/arm64/boot/dts/qcom/Makefile                  |    4 +
+ arch/arm64/boot/dts/qcom/x1-microsoft-denali.dtsi  | 1324 ++++++++++++++++++++
+ .../dts/qcom/x1e80100-microsoft-denali-oled.dts    |   19 +
+ .../boot/dts/qcom/x1p64100-microsoft-denali.dts    |   15 +
+ drivers/firmware/qcom/qcom_scm.c                   |    1 +
+ drivers/net/wireless/ath/ath12k/core.c             |    3 +
+ .../platform/surface/surface_aggregator_registry.c |   18 +
+ 10 files changed, 1406 insertions(+)
+---
+base-commit: 8f0b4cce4481fb22653697cced8d0d04027cb1e8
+change-id: 20251218-surface-sp11-for-next-626e327f7b33
+
+Best regards,
+-- 
+Jérôme de Bretagne <jerome.debretagne@gmail.com>
+
+
 
