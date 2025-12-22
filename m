@@ -1,152 +1,159 @@
-Return-Path: <linux-wireless+bounces-30045-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-30046-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9A7A7CD59DD
-	for <lists+linux-wireless@lfdr.de>; Mon, 22 Dec 2025 11:37:11 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 515C8CD5A44
+	for <lists+linux-wireless@lfdr.de>; Mon, 22 Dec 2025 11:43:50 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 0A68130341DD
-	for <lists+linux-wireless@lfdr.de>; Mon, 22 Dec 2025 10:36:45 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 151233017EC5
+	for <lists+linux-wireless@lfdr.de>; Mon, 22 Dec 2025 10:43:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B601233D6D9;
-	Mon, 22 Dec 2025 10:25:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 11C9532C92A;
+	Mon, 22 Dec 2025 10:43:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="EXUGH507"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="Z1kJCwEt";
+	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="H9vmOakL"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.14])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B6B1832ED23;
-	Mon, 22 Dec 2025 10:25:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.14
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5B6E732C922
+	for <linux-wireless@vger.kernel.org>; Mon, 22 Dec 2025 10:43:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1766399158; cv=none; b=HOp0xiApUNpKBcwzWfNthe4K4IAxCHz6d70h8EfbEKiHaRfEF0xtl7ZJc8kLtMa5N9+vngnCkSdhcrnZb6YTZ7dAjYcSixwfllEmNbexJWAry9v9gcucxZl3DMChErz7lROXazG3IB5xqU7hdfDLlxLRZkJVlOXJi1oNxXwRrOU=
+	t=1766400228; cv=none; b=o4oZYTS0nLvZlJkWKXjNBoMfZe/Bm0u2lReDCqszqesZe3SC9QqkNr/gx5UFtvW2NCdTgvUQqIWgduhVvcwcwD49iNKKzwSnOqtjZdCm1iKb4sdPP4McLSvanb35iLkcdgVjfzPbqiw/GvpRgPh/jaOo8qjCbg7aZ5toYgr7OU0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1766399158; c=relaxed/simple;
-	bh=62taOR2EI0MqLH+HSIMWwZvEtr5H5VJiNu+vI3TqvDE=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=npIqfe68igHTQQ6ZmiTJTfoLh1F1cUVB27OxCxI9u/gYIDOXaOMqqckJKUk7MBd++mSjCMj/zB2DGOzTRbBc9e6OTW9pyL3n4gQfQ8nkNSSM11kWtE+b+MLE6DPWF/zp/QMoKzLwaloPGFQE8lAHxs3CG+ajNAKHFLiJ7yOUpg8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=EXUGH507; arc=none smtp.client-ip=192.198.163.14
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1766399155; x=1797935155;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=62taOR2EI0MqLH+HSIMWwZvEtr5H5VJiNu+vI3TqvDE=;
-  b=EXUGH507ssVqSGPykHptYrKegQItq23E6Lfz35yDRQiFdg1PnXV24++k
-   bbGL7PPWNEgnQQCcW/wtVdqaNOr0m9HpgTGRqGJ+XFqy35fWoexIcjxiN
-   0+xECN1xOIqO7J8LCI3Aea+FbZnXYjCHbtoC+y2Y4GZWKtbKHdYN6Z2Ut
-   y1eJzJGPXIHZa7GoyViVTHsQBAnErC2XeGI2Fd/pOU4BPVadqXIIAiLYt
-   d50aZv7KkCyABQCpSjr2+KPHuAhrpUIMRRhNSc4JkmkbSJ2thabP6AUKl
-   Zwwg82CeR3kwtATporDY7ZsCr/5yQefXjQNMoxDuPDmCkrjsS8ycFYi1j
-   A==;
-X-CSE-ConnectionGUID: RW42BWYrRGKuHX5EjJH5kA==
-X-CSE-MsgGUID: ULpzyhL6RvKapPtdtin1zA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11649"; a="68297226"
-X-IronPort-AV: E=Sophos;i="6.21,167,1763452800"; 
-   d="scan'208";a="68297226"
-Received: from fmviesa003.fm.intel.com ([10.60.135.143])
-  by fmvoesa108.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 22 Dec 2025 02:25:54 -0800
-X-CSE-ConnectionGUID: fAWCdZUaR5q2u7vr4ATdJQ==
-X-CSE-MsgGUID: 5u0tkOQdRAmhs1RBOjgFlQ==
-X-ExtLoop1: 1
-Received: from lkp-server02.sh.intel.com (HELO dd3453e2b682) ([10.239.97.151])
-  by fmviesa003.fm.intel.com with ESMTP; 22 Dec 2025 02:25:51 -0800
-Received: from kbuild by dd3453e2b682 with local (Exim 4.98.2)
-	(envelope-from <lkp@intel.com>)
-	id 1vXd6L-000000000Nt-051A;
-	Mon, 22 Dec 2025 10:25:34 +0000
-Date: Mon, 22 Dec 2025 18:25:04 +0800
-From: kernel test robot <lkp@intel.com>
-To: Dan Carpenter <error27@gmail.com>,
-	Harsh Kumar Bijlani <quic_hbijlani@quicinc.com>
-Cc: llvm@lists.linux.dev, oe-kbuild-all@lists.linux.dev,
-	Jeff Johnson <jjohnson@kernel.org>,
-	Ripan Deuri <quic_rdeuri@quicinc.com>,
-	Vasanthakumar Thiagarajan <vasanthakumar.thiagarajan@oss.qualcomm.com>,
-	Baochen Qiang <baochen.qiang@oss.qualcomm.com>,
-	linux-wireless@vger.kernel.org, ath12k@lists.infradead.org,
-	linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org
-Subject: Re: [PATCH next] wifi: ath12k: clean up on error in ath12k_dp_setup()
-Message-ID: <202512221824.sz1jZjhH-lkp@intel.com>
-References: <aUOw1J0TU4VgeXj6@stanley.mountain>
+	s=arc-20240116; t=1766400228; c=relaxed/simple;
+	bh=jTs07bqTgYv7erFfBZUMsAp4XHND0kph1dtWWouAIqQ=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=tCKjEsILd41cDPg43K0DEV9je3QyTLSE77vHe0aRg9XDoXshjbEUZtlOXW8AWuinLtNzH9LYU4KO1aZZQlnCOe0GVN6ao6s2Hf1vaxJjtt4pPFs09/baZNibcyvJTF166xN/H9zpnDCVssjWvP3dHkQdS+hIqNN/rrDZ99T0q7A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=Z1kJCwEt; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=H9vmOakL; arc=none smtp.client-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1766400225;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=2jriSitIljjr+kWzTnD12aRVC8oF8L8pmUuavzP5imQ=;
+	b=Z1kJCwEtZtGJYxZtjk9GMSlCd4NsXaCFM0pR8HmWQF1zcKYpQeAAJggjOnr08VZ1MTjNcP
+	PCsyfn9EKIS7Evd4P3HOumRm6BVM0QknxFTGMYQMWpOHrlWFvSrBfAYc8rFJvFY1XzL/bg
+	fXemFhhdHYpWEevVvpssUO8q8GFBOhI=
+Received: from mail-wm1-f72.google.com (mail-wm1-f72.google.com
+ [209.85.128.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-92-r-0u5ysyMIu7xOSIkHECuQ-1; Mon, 22 Dec 2025 05:43:43 -0500
+X-MC-Unique: r-0u5ysyMIu7xOSIkHECuQ-1
+X-Mimecast-MFC-AGG-ID: r-0u5ysyMIu7xOSIkHECuQ_1766400222
+Received: by mail-wm1-f72.google.com with SMTP id 5b1f17b1804b1-477563e531cso26291695e9.1
+        for <linux-wireless@vger.kernel.org>; Mon, 22 Dec 2025 02:43:43 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=redhat.com; s=google; t=1766400222; x=1767005022; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=2jriSitIljjr+kWzTnD12aRVC8oF8L8pmUuavzP5imQ=;
+        b=H9vmOakLBbekofEfiIqVWf/a5qslq0b/1KbebCkNYD3EoBshlBSboiDKbhG3TIBgWk
+         bftcjiH2JvrpbadVznwQDSAImWKZNoxa4VvRZ/ndLRZFFzVtVOnI82mAI6v6F257vr1y
+         HVlwPwEViD3kjF/cC7zM4hTNTZ5e/ppjU/uqQ3/dPHynDDmbUM9YdzYbyYUNhA5pnTGh
+         WcCaWpxVgfWOQetje/hFT5COanmGYNRG0VWUAkbRoLY1JuMIzT29q/WNNLDbS2Yb45ZL
+         HabjXrB6syVNvOdMSts+OczNnqUIkEkgn/jeid7n7RjfCqFWqQAGCPt5OWOtJGrHKvgh
+         lZVg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1766400222; x=1767005022;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=2jriSitIljjr+kWzTnD12aRVC8oF8L8pmUuavzP5imQ=;
+        b=TMJuXGDqNAJzx5l2ypwn5HyttMKApxKAJfxRRlq5OPBEd+QNpbf4GW4iEuKU1rIwt9
+         KOOsT11S5ETHBnjO5HvVdyyxIH6UXVKdqFEihB7L/9/+t2LgSeAF16HY3+nVB2nOXQ4E
+         2banC/Y/brAbQv7KwNTExdZ0tOxk9ywpu+6KcTFLsyIYXj0gtWhw5+fUVaagsXBxGj8S
+         SEAfEUJT+Nbpa7h+HyILxvI1d6bjecdQf1VcEwvAGmJ3TSmpfvzhV0lR2Uj/TT4pd9l1
+         PGbeP7Yyj95IqwFEGP5GWXTeYDOMQZoRwMwA5vdii6s+85PV6lGoSS/fQsDjYEIfTM+U
+         r0vA==
+X-Gm-Message-State: AOJu0YxzEPIMKBcLiMWLEqBcao7lmlcutlY7zsyBeZ5IpBZIXgcWQOFj
+	hKIRowz394P4ROtMMO5GLlyYbOyr5UsYOGmctP60HJB6nBa3d+gYMz4Fb8spNxhAAWLT3p11ODD
+	IWWtzEGP4KOjeHbNILxx2FOqxaCisONzN1Lc7nsKy7CK5FYBhjhypd6LHXnNnqFuziMC0
+X-Gm-Gg: AY/fxX7SeDuCkRJvGpHG8+POUnMosBYU8kGUYUlII/jX0SMGaGZrp+T2fHJ45BiVPPQ
+	WAfkvam+Dh/PdlSClp+Bl3i+ZubKpU4kMUkCEw/4oKZmgpDoaCGtfootR41f5eFSMM9PAQyo8AA
+	TtgWFw8aZJdxKWyGRkZtFlmXTPTn+IgiSUb1OqsUjbIIKxJeoFpCmKlhmshRqWAndBpibASuIQL
+	01IzJJzETY5YtTdwjuOkwHIZkLZHVPUZV5uE3sVo66G0Ai8bD0GeeAY1i3yebWqfpBBvFE4u9Y2
+	rJhtGaRON2lJLQn0N4Vrbb/lt4ObO0aptuOuMVdxjlFTNh2CgvTukyMEiyc/lL+qeGBmqXM9DNX
+	ZWZZgKz38MnXz
+X-Received: by 2002:a05:600c:4fcf:b0:477:9650:3175 with SMTP id 5b1f17b1804b1-47d194d17a8mr100201665e9.0.1766400222452;
+        Mon, 22 Dec 2025 02:43:42 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IHwziqKZWoCLSZ7WKnLHPBxd4RYK2XEWC3BMRdRlq9go0z1AzGbZJP7+juAwSjJEOUFpkihoQ==
+X-Received: by 2002:a05:600c:4fcf:b0:477:9650:3175 with SMTP id 5b1f17b1804b1-47d194d17a8mr100201465e9.0.1766400222016;
+        Mon, 22 Dec 2025 02:43:42 -0800 (PST)
+Received: from [192.168.88.32] ([216.128.11.164])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-47be396c909sm92216295e9.0.2025.12.22.02.43.40
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 22 Dec 2025 02:43:41 -0800 (PST)
+Message-ID: <9280406b-d21a-47e7-a404-f494a0419431@redhat.com>
+Date: Mon, 22 Dec 2025 11:43:39 +0100
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <aUOw1J0TU4VgeXj6@stanley.mountain>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH iwlwifi-fixes] wifi: iwlwifi: Implement settime64 as stub
+ for MVM/MLD PTP
+To: Johannes Berg <johannes.berg@intel.com>
+Cc: linux-wireless@vger.kernel.org, linux-kernel@vger.kernel.org,
+ netdev@vger.kernel.org, Mingcong Bai <jeffbai@aosc.io>,
+ Kexy Biscuit <kexybiscuit@aosc.io>, Nathan Chancellor <nathan@kernel.org>,
+ Yao Zi <ziyao@disroot.org>, Richard Cochran <richardcochran@gmail.com>,
+ Miri Korenblit <miriam.rachel.korenblit@intel.com>,
+ Anjaneyulu <pagadala.yesu.anjaneyulu@intel.com>,
+ Daniel Gabay <daniel.gabay@intel.com>
+References: <20251204123204.9316-1-ziyao@disroot.org>
+Content-Language: en-US
+From: Paolo Abeni <pabeni@redhat.com>
+In-Reply-To: <20251204123204.9316-1-ziyao@disroot.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-Hi Dan,
+On 12/4/25 1:32 PM, Yao Zi wrote:
+> Since commit dfb073d32cac ("ptp: Return -EINVAL on ptp_clock_register if
+> required ops are NULL"), PTP clock registered through ptp_clock_register
+> is required to have ptp_clock_info.settime64 set, however, neither MVM
+> nor MLD's PTP clock implementation sets it, resulting in warnings when
+> the interface starts up, like
+> 
+> WARNING: drivers/ptp/ptp_clock.c:325 at ptp_clock_register+0x2c8/0x6b8, CPU#1: wpa_supplicant/469
+> CPU: 1 UID: 0 PID: 469 Comm: wpa_supplicant Not tainted 6.18.0+ #101 PREEMPT(full)
+> ra: ffff800002732cd4 iwl_mvm_ptp_init+0x114/0x188 [iwlmvm]
+> ERA: 9000000002fdc468 ptp_clock_register+0x2c8/0x6b8
+> iwlwifi 0000:01:00.0: Failed to register PHC clock (-22)
+> 
+> I don't find an appropriate firmware interface to implement settime64()
+> for iwlwifi MLD/MVM, thus instead create a stub that returns
+> -EOPTNOTSUPP only, suppressing the warning and allowing the PTP clock to
+> be registered.
+> 
+> Reported-by: Nathan Chancellor <nathan@kernel.org>
+> Closes: https://lore.kernel.org/all/20251108044822.GA3262936@ax162/
+> Signed-off-by: Yao Zi <ziyao@disroot.org>
 
-kernel test robot noticed the following build errors:
+@Johannes: I think this patch is already in your tree, if so, can you
+please share a PR with it? there are a few notable users hit by such
+warning:
 
-[auto build test ERROR on next-20251217]
+https://lore.kernel.org/
+netdev/221ba5ce-8652-4bc4-8d4a-6fc379e32ef8@hartkopp.net/T/
+#m3e671c8c9a482d90a6fa81e953af723af5546118
 
-url:    https://github.com/intel-lab-lkp/linux/commits/Dan-Carpenter/wifi-ath12k-clean-up-on-error-in-ath12k_dp_setup/20251218-154554
-base:   next-20251217
-patch link:    https://lore.kernel.org/r/aUOw1J0TU4VgeXj6%40stanley.mountain
-patch subject: [PATCH next] wifi: ath12k: clean up on error in ath12k_dp_setup()
-config: riscv-allyesconfig (https://download.01.org/0day-ci/archive/20251222/202512221824.sz1jZjhH-lkp@intel.com/config)
-compiler: clang version 16.0.6 (https://github.com/llvm/llvm-project 7cbf1a2591520c2491aa35339f227775f4d3adf6)
-reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20251222/202512221824.sz1jZjhH-lkp@intel.com/reproduce)
+Otherwise I could directly apply the patch to 'net' before the next PR
+to Linus (on ~30 Dec).
 
-If you fix the issue in a separate patch/commit (i.e. not just a new version of
-the same patch/commit), kindly add following tags
-| Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202512221824.sz1jZjhH-lkp@intel.com/
+Please LMK!
 
-All errors (new ones prefixed by >>):
+Thanks,
 
->> drivers/net/wireless/ath/ath12k/dp.c:1767:8: error: use of undeclared label 'rhash_destroy'
-                   goto rhash_destroy;
-                        ^
-   1 error generated.
+Paolo
 
-
-vim +/rhash_destroy +1767 drivers/net/wireless/ath/ath12k/dp.c
-
-  1734	
-  1735	int ath12k_dp_alloc(struct ath12k_base *ab)
-  1736	{
-  1737		struct ath12k_dp *dp = &ab->dp;
-  1738		struct hal_srng *srng = NULL;
-  1739		size_t size = 0;
-  1740		u32 n_link_desc = 0;
-  1741		int ret;
-  1742		int i;
-  1743	
-  1744		dp->ab = ab;
-  1745	
-  1746		INIT_LIST_HEAD(&dp->reo_cmd_list);
-  1747		INIT_LIST_HEAD(&dp->reo_cmd_cache_flush_list);
-  1748		INIT_LIST_HEAD(&dp->reo_cmd_update_rx_queue_list);
-  1749		spin_lock_init(&dp->reo_cmd_lock);
-  1750		spin_lock_init(&dp->reo_rxq_flush_lock);
-  1751	
-  1752		dp->reo_cmd_cache_flush_count = 0;
-  1753		dp->idle_link_rbm = ath12k_dp_get_idle_link_rbm(ab);
-  1754	
-  1755		ret = ath12k_wbm_idle_ring_setup(ab, &n_link_desc);
-  1756		if (ret) {
-  1757			ath12k_warn(ab, "failed to setup wbm_idle_ring: %d\n", ret);
-  1758			return ret;
-  1759		}
-  1760	
-  1761		srng = &ab->hal.srng_list[dp->wbm_idle_ring.ring_id];
-  1762	
-  1763		ret = ath12k_dp_link_desc_setup(ab, dp->link_desc_banks,
-  1764						HAL_WBM_IDLE_LINK, srng, n_link_desc);
-  1765		if (ret) {
-  1766			ath12k_warn(ab, "failed to setup link desc: %d\n", ret);
-> 1767			goto rhash_destroy;
-
--- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
 
