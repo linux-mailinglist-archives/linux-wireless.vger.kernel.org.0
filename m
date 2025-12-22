@@ -1,175 +1,152 @@
-Return-Path: <linux-wireless+bounces-30044-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-30045-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0E42DCD595C
-	for <lists+linux-wireless@lfdr.de>; Mon, 22 Dec 2025 11:27:45 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9A7A7CD59DD
+	for <lists+linux-wireless@lfdr.de>; Mon, 22 Dec 2025 11:37:11 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id DFB643015AB2
-	for <lists+linux-wireless@lfdr.de>; Mon, 22 Dec 2025 10:23:25 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 0A68130341DD
+	for <lists+linux-wireless@lfdr.de>; Mon, 22 Dec 2025 10:36:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9352D32AAA5;
-	Mon, 22 Dec 2025 10:23:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B601233D6D9;
+	Mon, 22 Dec 2025 10:25:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="W6sC2Icn"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="EXUGH507"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.14])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 60269329E65;
-	Mon, 22 Dec 2025 10:23:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B6B1832ED23;
+	Mon, 22 Dec 2025 10:25:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.14
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1766399005; cv=none; b=gmpR8UYaEMq9iEt3qn4jB0+xiLWNr89z9Xef6cFDdsUrZk04gQ02sCSZwWshD51GnKoRhiKV7OPDaH+M3qnsA1sVb5EVmrxOzl4P0BluEx+D+oecuWKQ/UjVVfUTln77fAyP77JQJ5MwTom5C2c33lEGgH066WECEEvS7uQpfBc=
+	t=1766399158; cv=none; b=HOp0xiApUNpKBcwzWfNthe4K4IAxCHz6d70h8EfbEKiHaRfEF0xtl7ZJc8kLtMa5N9+vngnCkSdhcrnZb6YTZ7dAjYcSixwfllEmNbexJWAry9v9gcucxZl3DMChErz7lROXazG3IB5xqU7hdfDLlxLRZkJVlOXJi1oNxXwRrOU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1766399005; c=relaxed/simple;
-	bh=FWAzzIL1x1PVb5pw3WRq7KOwgjGFCl6UQKfwo1uVKc0=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=cdrR8MQlK9c/ECFCElPXdu7TTJH1qanbDLGmcE56ktnwWURBkYZgaUUqtU+0+4iW7lSfzrUPGXlKJ5IZhUMUBfBrm3zXQrjh0glW0tlZzCxPB2HXymv0e6shjL5wFkkWCHUQC82naNJubwKfgla5g3Xv6A6+RUJnBLW63qSZRKU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=W6sC2Icn; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 06207C4CEF1;
-	Mon, 22 Dec 2025 10:23:20 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1766399005;
-	bh=FWAzzIL1x1PVb5pw3WRq7KOwgjGFCl6UQKfwo1uVKc0=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=W6sC2IcnGt71ZuEzFn7MTJ1rEEbh9mKgXHqAPPCWUdldtNqvlcVWixNcjVm5Eik0F
-	 eSXvXLLEciWBV8hJYFtCVePMBiFkkhYWC/bkDYyeW7RghoZH0nJBsWTISXH4VNAOYF
-	 yOTYfti6RyDab3wgQwkyy4SIMNB5MJeZseAuvsyM3rZoh5UIVlgTCjqSxFHkmRt+gH
-	 G93m47K3btiYtzavzG0INPh7iU7fGO9XMazOuYPMQW8ZEzzxkEmA54utKlvC19keww
-	 oAXOZ3ILDjmAimwFm7PiFfqFVAE3gQ3v0ox4gy50qkWFWHzlV3ru5gXR+2Ui9k/7Gi
-	 POjGFbhai9UPA==
-Message-ID: <c29de60c-c7c6-45d7-8d90-616df23df01c@kernel.org>
-Date: Mon, 22 Dec 2025 11:23:18 +0100
+	s=arc-20240116; t=1766399158; c=relaxed/simple;
+	bh=62taOR2EI0MqLH+HSIMWwZvEtr5H5VJiNu+vI3TqvDE=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=npIqfe68igHTQQ6ZmiTJTfoLh1F1cUVB27OxCxI9u/gYIDOXaOMqqckJKUk7MBd++mSjCMj/zB2DGOzTRbBc9e6OTW9pyL3n4gQfQ8nkNSSM11kWtE+b+MLE6DPWF/zp/QMoKzLwaloPGFQE8lAHxs3CG+ajNAKHFLiJ7yOUpg8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=EXUGH507; arc=none smtp.client-ip=192.198.163.14
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1766399155; x=1797935155;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=62taOR2EI0MqLH+HSIMWwZvEtr5H5VJiNu+vI3TqvDE=;
+  b=EXUGH507ssVqSGPykHptYrKegQItq23E6Lfz35yDRQiFdg1PnXV24++k
+   bbGL7PPWNEgnQQCcW/wtVdqaNOr0m9HpgTGRqGJ+XFqy35fWoexIcjxiN
+   0+xECN1xOIqO7J8LCI3Aea+FbZnXYjCHbtoC+y2Y4GZWKtbKHdYN6Z2Ut
+   y1eJzJGPXIHZa7GoyViVTHsQBAnErC2XeGI2Fd/pOU4BPVadqXIIAiLYt
+   d50aZv7KkCyABQCpSjr2+KPHuAhrpUIMRRhNSc4JkmkbSJ2thabP6AUKl
+   Zwwg82CeR3kwtATporDY7ZsCr/5yQefXjQNMoxDuPDmCkrjsS8ycFYi1j
+   A==;
+X-CSE-ConnectionGUID: RW42BWYrRGKuHX5EjJH5kA==
+X-CSE-MsgGUID: ULpzyhL6RvKapPtdtin1zA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11649"; a="68297226"
+X-IronPort-AV: E=Sophos;i="6.21,167,1763452800"; 
+   d="scan'208";a="68297226"
+Received: from fmviesa003.fm.intel.com ([10.60.135.143])
+  by fmvoesa108.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 22 Dec 2025 02:25:54 -0800
+X-CSE-ConnectionGUID: fAWCdZUaR5q2u7vr4ATdJQ==
+X-CSE-MsgGUID: 5u0tkOQdRAmhs1RBOjgFlQ==
+X-ExtLoop1: 1
+Received: from lkp-server02.sh.intel.com (HELO dd3453e2b682) ([10.239.97.151])
+  by fmviesa003.fm.intel.com with ESMTP; 22 Dec 2025 02:25:51 -0800
+Received: from kbuild by dd3453e2b682 with local (Exim 4.98.2)
+	(envelope-from <lkp@intel.com>)
+	id 1vXd6L-000000000Nt-051A;
+	Mon, 22 Dec 2025 10:25:34 +0000
+Date: Mon, 22 Dec 2025 18:25:04 +0800
+From: kernel test robot <lkp@intel.com>
+To: Dan Carpenter <error27@gmail.com>,
+	Harsh Kumar Bijlani <quic_hbijlani@quicinc.com>
+Cc: llvm@lists.linux.dev, oe-kbuild-all@lists.linux.dev,
+	Jeff Johnson <jjohnson@kernel.org>,
+	Ripan Deuri <quic_rdeuri@quicinc.com>,
+	Vasanthakumar Thiagarajan <vasanthakumar.thiagarajan@oss.qualcomm.com>,
+	Baochen Qiang <baochen.qiang@oss.qualcomm.com>,
+	linux-wireless@vger.kernel.org, ath12k@lists.infradead.org,
+	linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org
+Subject: Re: [PATCH next] wifi: ath12k: clean up on error in ath12k_dp_setup()
+Message-ID: <202512221824.sz1jZjhH-lkp@intel.com>
+References: <aUOw1J0TU4VgeXj6@stanley.mountain>
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v5 2/7] dt-bindings: wireless: ieee80211: Add
- disable-rfkill property
-To: Bryan O'Donoghue <bod.linux@nxsw.ie>, jerome.debretagne@gmail.com,
- Bjorn Andersson <andersson@kernel.org>,
- Konrad Dybcio <konradybcio@kernel.org>, Rob Herring <robh@kernel.org>,
- Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
- <conor+dt@kernel.org>, Johannes Berg <johannes@sipsolutions.net>,
- Lorenzo Bianconi <lorenzo@kernel.org>,
- Maximilian Luz <luzmaximilian@gmail.com>,
- =?UTF-8?Q?Ilpo_J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
- Jeff Johnson <jjohnson@kernel.org>, Manivannan Sadhasivam <mani@kernel.org>
-Cc: linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org,
- linux-kernel@vger.kernel.org, linux-wireless@vger.kernel.org,
- platform-driver-x86@vger.kernel.org, ath12k@lists.infradead.org,
- Jeff Johnson <jeff.johnson@oss.qualcomm.com>, Dale Whinham <daleyo@gmail.com>
-References: <20251220-surface-sp11-for-next-v5-0-16065bef8ef3@gmail.com>
- <M7kfFb5fz-WB43U_xCUwgxpmBJ4TNdp4jE6yFu6HmemIcDx5tXO6H4xnW_pEQz6DMkKm-3POdB9hIdB092zhGQ==@protonmail.internalid>
- <20251220-surface-sp11-for-next-v5-2-16065bef8ef3@gmail.com>
- <e0e9e690-c56e-4b56-90f9-2af46a7feaf3@nxsw.ie>
-From: Hans de Goede <hansg@kernel.org>
-Content-Language: en-US, nl
-In-Reply-To: <e0e9e690-c56e-4b56-90f9-2af46a7feaf3@nxsw.ie>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <aUOw1J0TU4VgeXj6@stanley.mountain>
 
-+Cc Mani
+Hi Dan,
 
-Hi,
+kernel test robot noticed the following build errors:
 
-On 20-Dec-25 07:04, Bryan O'Donoghue wrote:
-> On 20/12/2025 00:21, Jérôme de Bretagne via B4 Relay wrote:
->> From: Jérôme de Bretagne <jerome.debretagne@gmail.com>
->>
->> For some devices, Wi-Fi is entirely hard blocked by default making
->> the Wi-Fi radio unusable, except if rfkill is disabled as expected
->> on those models.
->>
->> Commit c6a7c0b09d5f ("wifi: ath12k: Add Support for enabling or
->> disabling specific features based on ACPI bitflag") added a way to
->> support features set via ACPI, including the DISABLE_RFKILL bit.
->>
->> Add a disable-rfkill property to expose the DISABLE_RFKILL bit
->> equivalent for devices described by a Devicetree instead of ACPI.
->>
->> Signed-off-by: Jérôme de Bretagne <jerome.debretagne@gmail.com>
->> ---
->>   Documentation/devicetree/bindings/net/wireless/ieee80211.yaml | 6 ++++++
->>   1 file changed, 6 insertions(+)
->>
->> diff --git a/Documentation/devicetree/bindings/net/wireless/ieee80211.yaml b/Documentation/devicetree/bindings/net/wireless/ieee80211.yaml
->> index d89f7a3f88a71d45d6f4ab2ae909eae09cbcaf9a..c10a4675640be947cd0b5eaec2c7ff367fd93945 100644
->> --- a/Documentation/devicetree/bindings/net/wireless/ieee80211.yaml
->> +++ b/Documentation/devicetree/bindings/net/wireless/ieee80211.yaml
->> @@ -29,6 +29,12 @@ properties:
->>         different 5 GHz subbands. Using them incorrectly could not work or
->>         decrease performance noticeably
->>
->> +  disable-rfkill:
->> +    type: boolean
->> +    description:
->> +      Disable rfkill for some devices on which Wi-Fi would be entirely hard
->> +      blocked by default otherwise
->> +
->>   additionalProperties: true
->>
->>   examples:
->>
->> -- 
->> 2.47.3
->>
->>
->>
-> 
-> Is this really a hardware description though ?
+[auto build test ERROR on next-20251217]
 
-I would say yes it is. The wifi chip has an rfkill input pin and
-things will be broken when that pin is hardwired to a fixed value
-rather then being actually connected to a GPIO from say
-the embedded controller.
+url:    https://github.com/intel-lab-lkp/linux/commits/Dan-Carpenter/wifi-ath12k-clean-up-on-error-in-ath12k_dp_setup/20251218-154554
+base:   next-20251217
+patch link:    https://lore.kernel.org/r/aUOw1J0TU4VgeXj6%40stanley.mountain
+patch subject: [PATCH next] wifi: ath12k: clean up on error in ath12k_dp_setup()
+config: riscv-allyesconfig (https://download.01.org/0day-ci/archive/20251222/202512221824.sz1jZjhH-lkp@intel.com/config)
+compiler: clang version 16.0.6 (https://github.com/llvm/llvm-project 7cbf1a2591520c2491aa35339f227775f4d3adf6)
+reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20251222/202512221824.sz1jZjhH-lkp@intel.com/reproduce)
 
-So I think that we would need here is not a disable-rfkill property
-but some way to indicate in the DT-node that the rfkill input pin
-is not connected and thus should be ignored.
+If you fix the issue in a separate patch/commit (i.e. not just a new version of
+the same patch/commit), kindly add following tags
+| Reported-by: kernel test robot <lkp@intel.com>
+| Closes: https://lore.kernel.org/oe-kbuild-all/202512221824.sz1jZjhH-lkp@intel.com/
 
-This (the rfkill input pin being not-connected) IMHO very much
-is hw-description.
+All errors (new ones prefixed by >>):
 
-Also see the
-"[PATCH 0/9] Add support for handling PCIe M.2 Key E connectors in devicetree"
-series and then specifically:
-
-https://lore.kernel.org/platform-driver-x86/20251112-pci-m2-e-v1-7-97413d6bf824@oss.qualcomm.com/
-
-Which adds:
-
-+  w_disable1-gpios:
-+    description: GPIO controlled connection to W_DISABLE1# signal. This signal
-+      is used by the system to disable WiFi radio in the M.2 card. Refer, PCI
-+      Express M.2 Specification r4.0, sec 3.1.12.3 for more details.
-+    maxItems: 1
-
-What if there is no such GPIO, because the W_DISABLE1# signal is hardwired
-in a specific implementation of the M.2 slot ?
-
-In that case we will also need some way to propagate that info to the wifi
-driver, having some sort of generic devicetree property for wifi-cards
-which can be injected as a software-node property in the PCI-device being
-instantiated for the WIFI card to let the driver no not to honor to
-W_DISABLE1# signal will be useful here too and this is as hardware-description
-as hardware-description can get.
-
-So how about: "w_disable1-not-connected" + "w_disable2-not-connected" boolean
-properties in a generic WIFI devicetree binding and also use that here?
-
-> I think this logic belongs in drivers/net/wireless/ath/ath12k/ triggering on a compat string.
-
-See above, I do not believe that abusing compat-strings for this is the way
-to go.
-
-Regards,
-
-Hans
+>> drivers/net/wireless/ath/ath12k/dp.c:1767:8: error: use of undeclared label 'rhash_destroy'
+                   goto rhash_destroy;
+                        ^
+   1 error generated.
 
 
+vim +/rhash_destroy +1767 drivers/net/wireless/ath/ath12k/dp.c
+
+  1734	
+  1735	int ath12k_dp_alloc(struct ath12k_base *ab)
+  1736	{
+  1737		struct ath12k_dp *dp = &ab->dp;
+  1738		struct hal_srng *srng = NULL;
+  1739		size_t size = 0;
+  1740		u32 n_link_desc = 0;
+  1741		int ret;
+  1742		int i;
+  1743	
+  1744		dp->ab = ab;
+  1745	
+  1746		INIT_LIST_HEAD(&dp->reo_cmd_list);
+  1747		INIT_LIST_HEAD(&dp->reo_cmd_cache_flush_list);
+  1748		INIT_LIST_HEAD(&dp->reo_cmd_update_rx_queue_list);
+  1749		spin_lock_init(&dp->reo_cmd_lock);
+  1750		spin_lock_init(&dp->reo_rxq_flush_lock);
+  1751	
+  1752		dp->reo_cmd_cache_flush_count = 0;
+  1753		dp->idle_link_rbm = ath12k_dp_get_idle_link_rbm(ab);
+  1754	
+  1755		ret = ath12k_wbm_idle_ring_setup(ab, &n_link_desc);
+  1756		if (ret) {
+  1757			ath12k_warn(ab, "failed to setup wbm_idle_ring: %d\n", ret);
+  1758			return ret;
+  1759		}
+  1760	
+  1761		srng = &ab->hal.srng_list[dp->wbm_idle_ring.ring_id];
+  1762	
+  1763		ret = ath12k_dp_link_desc_setup(ab, dp->link_desc_banks,
+  1764						HAL_WBM_IDLE_LINK, srng, n_link_desc);
+  1765		if (ret) {
+  1766			ath12k_warn(ab, "failed to setup link desc: %d\n", ret);
+> 1767			goto rhash_destroy;
+
+-- 
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
 
