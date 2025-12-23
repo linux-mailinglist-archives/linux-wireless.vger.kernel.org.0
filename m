@@ -1,65 +1,70 @@
-Return-Path: <linux-wireless+bounces-30076-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-30077-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2E084CD8050
-	for <lists+linux-wireless@lfdr.de>; Tue, 23 Dec 2025 05:04:28 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id E4B64CD81E5
+	for <lists+linux-wireless@lfdr.de>; Tue, 23 Dec 2025 06:22:01 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 955A13000B00
-	for <lists+linux-wireless@lfdr.de>; Tue, 23 Dec 2025 04:04:27 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 8AFD63018D68
+	for <lists+linux-wireless@lfdr.de>; Tue, 23 Dec 2025 05:22:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 927851FD4;
-	Tue, 23 Dec 2025 04:04:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 47D9E2D6E4B;
+	Tue, 23 Dec 2025 05:21:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=realtek.com header.i=@realtek.com header.b="TSycL6Cy"
+	dkim=pass (2048-bit key) header.d=realtek.com header.i=@realtek.com header.b="AWFS3JX/"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 921755661
-	for <linux-wireless@vger.kernel.org>; Tue, 23 Dec 2025 04:04:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 285FD26C3A2;
+	Tue, 23 Dec 2025 05:21:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=211.75.126.72
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1766462665; cv=none; b=mbjQdq+5t29GqVLQwlwiszY1B2tKvN9QVlDC+lKLHgLZ7AqnG3OpELqn0NuU8Jpl7PvOe1gsQajmOvcPZ3jJqctDt/CRyesmQqanqwd578+nmfcWQeMFwsdHWd+QT3lmvSHwSyPeXVph3IzVd6zY3AxpIB/JRpShIvSCQU3xMZU=
+	t=1766467319; cv=none; b=FQ55z/cFDaQ1XF7sNG+C/J406XodL9cMKc4qgrxDTpSQakXPgup40T2T3TEEGyJRVB2XDeGEtQmXSje2oy9UgP6uRrNctxDJrubQVscTS4VDno0C9Vwt+Fc2wi9a5JEHl4QhEKhkMH9rohDSyxkURLI/Tg0nkB63+/DxQajnW40=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1766462665; c=relaxed/simple;
-	bh=xxETDOFB8FnbVfm9pqoVxIiYJVOa2BOuRCUKVKp9zBM=;
+	s=arc-20240116; t=1766467319; c=relaxed/simple;
+	bh=53GiWNyuPYeyWrRR1V7qF4xiiNrXc2xMVlR0ZqCEFk0=;
 	h=From:To:CC:Subject:In-Reply-To:References:Message-ID:Date:
-	 MIME-Version:Content-Type; b=KNmiMf+RQb493QyM/zGlSZa5f4ShOeMuoLKCsYqxRoUrXl4QtjcEP3WFNJRXzII0Up0Xszmny5MFr61V01ZQpiX6QAsuzxDhae9MSZ/MhZuJn9WidAAVbYGwUGCHLhJ1xTFpmKQz4A66Ja9gk7GB36xgk1WmDlnGVU5+doHG5o8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com; spf=pass smtp.mailfrom=realtek.com; dkim=pass (2048-bit key) header.d=realtek.com header.i=@realtek.com header.b=TSycL6Cy; arc=none smtp.client-ip=211.75.126.72
+	 MIME-Version:Content-Type; b=tTidJvnw/0DSxeELLUOC29ez+K6Ng37A+C3sLseGSpC3uOqFpqWlPbhtYPeEpTNwf91MYIo91sWjWGVRfxfEVK5YU4ShMDeOojaLdAdgG9OGOL3cXarMKSz5UasX5qe0pS17IfTByYoRcFGaQ6tBAMLZvR4qGm8Cbecxqd31m80=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com; spf=pass smtp.mailfrom=realtek.com; dkim=pass (2048-bit key) header.d=realtek.com header.i=@realtek.com header.b=AWFS3JX/; arc=none smtp.client-ip=211.75.126.72
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=realtek.com
-X-SpamFilter-By: ArmorX SpamTrap 5.80 with qID 5BN4497Y0646466, This message is accepted by code: ctloc85258
+X-SpamFilter-By: ArmorX SpamTrap 5.80 with qID 5BN5LokpE750607, This message is accepted by code: ctloc85258
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=realtek.com; s=dkim;
-	t=1766462649; bh=ukL1kDttKEXxil4lJL7M8xDXuAbbtINti49C894yc9g=;
+	t=1766467310; bh=Gg96kcePPYmpnaTmkdreIgfCH5aIgwRFgk89iNk7DBo=;
 	h=From:To:CC:Subject:In-Reply-To:References:Message-ID:Date:
 	 MIME-Version:Content-Type;
-	b=TSycL6CyBzrrSo/uS1zoETrNzqKUa/W+PKm81yyogEewGDEhkHvkprlbhpsM+r00r
-	 9p2/28uxIG3sV4hY8AQe3vhROeaQXKAxYApdsK6Zu7xnhtMFkuf268/7ptI8vDoy2Q
-	 Pnvq9EPie84HVNjr8Zg+W6kPvbrzHGNKntBWG+GcStaofFD+c6JIKiwuTRTUM54JkW
-	 ZFldg21B3oIWSgsKa6xgovno+q6wd5djhQrSjhsR70fljgosOP20YLgTUufvk1YCpn
-	 NUYLqY8shw2ANeJaDo/Ngj0TvP/Rhdoo7JAjI9nHufTW8OWgldD8PVtHxsrwyhmohy
-	 DzyVbjx+7BkPg==
+	b=AWFS3JX/lV5kXcqLrbCdO2KZvRE2gZgVBM/QkheNC9qo1pjCmNIX2lXv3RlPEFtTu
+	 Yx9Rsr+ZJRoXBIstjkKUXEqYDEfWenzForLcodsMdkIqGGBcK8Gl5OZv0BVEjhynuV
+	 SjEp7CD9xp6Kfn4QB2vIofipKWagA+sn9l2JsHn/gbSbrkw8A/eeeKNQaori+EGDGO
+	 zp4hWEt+0CCOruVXLGVchyX6lbjTixMSfdIyxxYIMb4X0MFYkZx6W3BMrZhXK83gTY
+	 rtuvzo6Ffg9LdZn1lUzo4B497gQ16m9QAXeh5nddDZ/JaZI/cgntNLMq4zWo1JfV6h
+	 02LytZjMOV9MQ==
 Received: from mail.realtek.com (rtkexhmbs04.realtek.com.tw[10.21.1.54])
-	by rtits2.realtek.com.tw (8.15.2/3.21/5.94) with ESMTPS id 5BN4497Y0646466
+	by rtits2.realtek.com.tw (8.15.2/3.21/5.94) with ESMTPS id 5BN5LokpE750607
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Tue, 23 Dec 2025 12:04:09 +0800
-Received: from RTKEXHMBS03.realtek.com.tw (10.21.1.53) by
+	Tue, 23 Dec 2025 13:21:50 +0800
+Received: from RTKEXHMBS05.realtek.com.tw (10.21.1.55) by
  RTKEXHMBS04.realtek.com.tw (10.21.1.54) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1748.10; Tue, 23 Dec 2025 12:04:10 +0800
-Received: from [127.0.1.1] (172.21.40.75) by RTKEXHMBS03.realtek.com.tw
- (10.21.1.53) with Microsoft SMTP Server (version=TLS1_2,
+ 15.2.1748.10; Tue, 23 Dec 2025 13:21:49 +0800
+Received: from RTKEXHMBS04.realtek.com.tw (10.21.1.54) by
+ RTKEXHMBS05.realtek.com.tw (10.21.1.55) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1748.10; Tue, 23 Dec 2025 13:21:48 +0800
+Received: from [127.0.1.1] (172.21.40.75) by RTKEXHMBS04.realtek.com.tw
+ (10.21.1.54) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1748.10 via Frontend
- Transport; Tue, 23 Dec 2025 12:04:10 +0800
+ Transport; Tue, 23 Dec 2025 13:21:48 +0800
 From: Ping-Ke Shih <pkshih@realtek.com>
-To: Ping-Ke Shih <pkshih@realtek.com>, <linux-wireless@vger.kernel.org>
-CC: <pchelkin@ispras.ru>
-Subject: Re: [PATCH rtw-next] wifi: rtw89: correct use sequence of driver_data in skb->info
-In-Reply-To: <20251217072646.43209-1-pkshih@realtek.com>
-References: <20251217072646.43209-1-pkshih@realtek.com>
-Message-ID: <e4a5de60-84f4-48ca-aa72-e7977c9585af@RTKEXHMBS03.realtek.com.tw>
-Date: Tue, 23 Dec 2025 12:04:10 +0800
+To: Les Boys <lesboyspp43@outlook.com>, Ping-Ke Shih <pkshih@realtek.com>
+CC: "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>
+Subject: Re: [PATCH rtw-next v5] realtek: rtlwifi: remove dead code and ensure unicast is always set explicitly in every iteration
+In-Reply-To: <SA2PR10MB4460B6485B1104727C02701BA6DEA@SA2PR10MB4460.namprd10.prod.outlook.com>
+References: <SA2PR10MB44609AAC5888DC0334D140E0A6D1A@SA2PR10MB4460.namprd10.prod.outlook.com> <d664a966f7754e879948039189aba8e8@realtek.com> <SA2PR10MB44605A853386FE1BB7174498A6D1A@SA2PR10MB4460.namprd10.prod.outlook.com> <SA2PR10MB4460861A8224AA99EE5ACF6BA6D1A@SA2PR10MB4460.namprd10.prod.outlook.com> <731806e542f245b3b3ae6d2429c499e5@realtek.com> <SA2PR10MB44606485C05B0FC57402C40FA6D1A@SA2PR10MB4460.namprd10.prod.outlook.com> <ab5c8bb1f6f443c9a08882be5a1ba24d@realtek.com> <SA2PR10MB4460E7C842251428DB9D253EA6DEA@SA2PR10MB4460.namprd10.prod.outlook.com> <77827732646345698e1bf133bbc87494@realtek.com>  <SA2PR10MB4460B6485B1104727C02701BA6DEA@SA2PR10MB4460.namprd10.prod.outlook.com>
+Message-ID: <9970ffba-d3b3-4df1-bc2a-06730549fb01@RTKEXHMBS04.realtek.com.tw>
+Date: Tue, 23 Dec 2025 13:21:48 +0800
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
@@ -68,25 +73,25 @@ List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain
 
-Ping-Ke Shih <pkshih@realtek.com> wrote:
+Les Boys <lesboyspp43@outlook.com> wrote:
 
-> As ieee80211_tx_info is used to assist filling TX descriptor, and layout of
-> IEEE80211_SKB_CB(skb)->driver_data (accessing by RTW89_TX_SKB_CB()) is
-> union, so driver_data must be used by/after rtw89_hci_tx_write() or just
-> before calling rtw89_hci_tx_write(). Otherwise, ieee80211_tx_info::control
-> data is overwritten.
+> Removed dead code and ensured unicast is always set explicitly in every
+> iteration to ensure the unicast of (n-1)th iteration will not apply to nth
+> iteration, the previous code checked multicast and broadcast but no any
+> logic if the state is multicast or broadcast, this patch removed them and
+> check it is unicast or not only, and removed the initalizer of unicast
+> because all possible path will set unicast.
 > 
-> Found this by using injected packets which uses ieee80211_tx_info::control,
-> but always sending incorrect data rate.
-> 
-> Cc: Fedor Pchelkin <pchelkin@ispras.ru>
-> Fixes: d5da3d9fb05f ("wifi: rtw89: process TX wait skbs for USB via C2H handler")
-> Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
-> Tested-by: Fedor Pchelkin <pchelkin@ispras.ru>
+> Signed-off-by: Les Boys <lesboyspp43@outlook.com>
+> Acked-by: Ping-Ke Shih <pkshih@realtek.com>
 
-1 patch(es) applied to rtw-next branch of rtw.git, thanks.
+I can't apply this patch because of subject encoding and patch context
+(might converted from tab to spaces). Please resend this patch by
+'git send-email' to avoid format problem.
 
-d3a9e132a4c6 wifi: rtw89: correct use sequence of driver_data in skb->info
+Set patchset state to Changes Requested
+
+[PATCH rtw-next v5] realtek: rtlwifi: remove dead code and ensure unicast is always set explicitly in every iteration
 
 ---
 https://github.com/pkshih/rtw.git
