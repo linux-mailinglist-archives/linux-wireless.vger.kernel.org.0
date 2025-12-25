@@ -1,100 +1,101 @@
-Return-Path: <linux-wireless+bounces-30106-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-30107-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 69076CDD9FA
-	for <lists+linux-wireless@lfdr.de>; Thu, 25 Dec 2025 10:54:00 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id ECB1BCDDA1B
+	for <lists+linux-wireless@lfdr.de>; Thu, 25 Dec 2025 11:05:50 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id F1F6F3015E00
-	for <lists+linux-wireless@lfdr.de>; Thu, 25 Dec 2025 09:53:58 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id EFB4F3013E95
+	for <lists+linux-wireless@lfdr.de>; Thu, 25 Dec 2025 10:05:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C4127314B71;
-	Thu, 25 Dec 2025 09:53:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3955423D7EC;
+	Thu, 25 Dec 2025 10:05:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="TE2v60XH";
-	dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b="ZUpqWAU+"
+	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="eHokdcIF";
+	dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b="IhLDGdIL"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
+Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3AA6219C54E
-	for <linux-wireless@vger.kernel.org>; Thu, 25 Dec 2025 09:53:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9320B8460
+	for <linux-wireless@vger.kernel.org>; Thu, 25 Dec 2025 10:05:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1766656436; cv=none; b=hStZnT7jhqK4kGF92qwhijfe7hngKAQHeZgxYcH9lLAcVXWpvM1fJBzJD44I9ZO3zIE5o1es5voghv83GGrwwv+C6bb0X45vob8YTR6myC03KJc8AWNKvU6YE3Ehxpt8FVohTj05Sz1g/AR75j3FJP/otW39gQmZD5H4ipXnMo0=
+	t=1766657147; cv=none; b=V069Gb6FsZQB+/vdPEgwAmoRoPHeGqzCoeKEzVL4KPWhBn8dRycJSgJwihdIAdJHuQGYTyW36c8Di0avzJFT3vc+/8I9kg3RdfKv/QujIsir90ixM+yi4IE5G5BcQVHGU5mkewu2iuvhrUFZm157MP8LLHX9dCvLfLy33qmhmTk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1766656436; c=relaxed/simple;
-	bh=Hu6JmXaFBBhngoQGu0uCotbTjGGxHGrYRZUtuF79D7Q=;
+	s=arc-20240116; t=1766657147; c=relaxed/simple;
+	bh=pWv+I4TWZVeHJAEzrNmur8jCZ9wfV0HlczZFC4K/rXo=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=dAqn8InLAwB/vkNpvDJ6yb6KeHpY2iq+cY4PlJwRdlO+LeNND76j1hNxWQjolPzvaRKlt65FtQImaT3eRqeQodgr8cxQj4K0IcowxxFsPj4mu9uOIHhwPGOS03UKoVGQ45fvyfFsIMOrRhmAx+XJlOLm1+NsavzSrqMd650PNp8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=TE2v60XH; dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b=ZUpqWAU+; arc=none smtp.client-ip=205.220.180.131
+	 In-Reply-To:Content-Type; b=L3eVjNsZuE2xKeNs1cxIfR9lA9YziTdjiAokXcxdfsm5LjC5Ehjk74WWfK0E80ciKZ12HcaaMXMJHJaEBuV8m0LeOZOrwTwce5Y6cQ6wO67XTyp4PdEI3+beEMoQ5sl8Ai+I9wjcemuqQLC8eyHOYERroIUe54x5YCdjBUIFPNY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=eHokdcIF; dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b=IhLDGdIL; arc=none smtp.client-ip=205.220.168.131
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
-Received: from pps.filterd (m0279869.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 5BP8bRnE2064237
-	for <linux-wireless@vger.kernel.org>; Thu, 25 Dec 2025 09:53:54 GMT
+Received: from pps.filterd (m0279865.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 5BP8bQTN2059034
+	for <linux-wireless@vger.kernel.org>; Thu, 25 Dec 2025 10:05:44 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
 	cc:content-transfer-encoding:content-type:date:from:in-reply-to
 	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
-	zPoJzn5MnVIeCWCGvk2Bfp5U8ncISIr0hUiVXJGS/dE=; b=TE2v60XH1FUKvUz3
-	ds+7IcAvHSq65cJ0C35k87Gp8aDp48NolclJFd/lBbOiq9iGHNOrssSL2LqItN5L
-	Ugk0+q9nPkW7+E/N8d9WqFJZs4C7z1aZh+xgTpoCARlr9sBFjS31NGHFnjwDcabF
-	77V7B0bTDGroLypC63r+t5r12ll80ftsTLkfl+3RbfXxdfCS3uG3tljs0NsEwrkA
-	O+3OrFOdnOXBU1YjeSyulD0sqUNC7UWiQapwc7XLECC4r6BIna8o4zMrFPFrrIAf
-	qCV+LvmYBExL6+dTk9vRceXcRS2ghVWra9M0XQnJtB5vNytpAFql96vYEhjWT5iN
-	jL5vEw==
-Received: from mail-pf1-f198.google.com (mail-pf1-f198.google.com [209.85.210.198])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4b8p49156c-1
+	fpQR5MhthxNYS5X1B4rXC7O41ZaJ8gH+dbtsDtAc7Lg=; b=eHokdcIF4YJP56la
+	BGteIpjyXQKlQ4e57sPQq4hY1McvZPSnAynfqqmT70dudKiQtaqPV4/8xRmnh77n
+	XDmZX3Hfh/i45/KPE+nJwIcLcvd639eRQnRYuQY2zyuhhOSSnOzabChDvKJ7KA43
+	f9TiqL/fi9nnFN98uZEnpEmILEkILc6X+k5VfcKO2OQ3aMD6hS0JPnYvsmIUHvXz
+	0s1+mQLipd9bqVhSxwmeY5Xik8LMFHsqZgWBZoD5NoOIhBS5kZGFHLmUrnTcisj9
+	wjxxEVyJjzrs43sYqqacBlRgaLWIjjFdHiVsFasLAoBHHX6owU+Dux0M8yzPpEmx
+	t/idiQ==
+Received: from mail-pg1-f197.google.com (mail-pg1-f197.google.com [209.85.215.197])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4b8kbusgaj-1
 	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
-	for <linux-wireless@vger.kernel.org>; Thu, 25 Dec 2025 09:53:53 +0000 (GMT)
-Received: by mail-pf1-f198.google.com with SMTP id d2e1a72fcca58-7d24bbb9278so12940500b3a.0
-        for <linux-wireless@vger.kernel.org>; Thu, 25 Dec 2025 01:53:53 -0800 (PST)
+	for <linux-wireless@vger.kernel.org>; Thu, 25 Dec 2025 10:05:44 +0000 (GMT)
+Received: by mail-pg1-f197.google.com with SMTP id 41be03b00d2f7-b6ce1b57b9cso6527698a12.1
+        for <linux-wireless@vger.kernel.org>; Thu, 25 Dec 2025 02:05:44 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=oss.qualcomm.com; s=google; t=1766656433; x=1767261233; darn=vger.kernel.org;
+        d=oss.qualcomm.com; s=google; t=1766657144; x=1767261944; darn=vger.kernel.org;
         h=content-transfer-encoding:in-reply-to:content-language:from
          :references:cc:to:subject:user-agent:mime-version:date:message-id
          :from:to:cc:subject:date:message-id:reply-to;
-        bh=zPoJzn5MnVIeCWCGvk2Bfp5U8ncISIr0hUiVXJGS/dE=;
-        b=ZUpqWAU+iFKqOjm5fyEPWLtz59ja0tQlqHjc9iHPiVQLC+LFeZdDVp7aiRDEIsmQFd
-         iSCn1+C9pLMEJn7k9f/6VlRrt7hjOajpFRPgLobFZcNZinPIOfC8FB4c4xCMXgcXdid+
-         zcZAfkg6i+xhX3yHjDCAc1IgUMXKv8SerGmk5KUTqeNEaUhHZuTtOe3Inz7arYYl4jgC
-         ok3AZgeLkr53QNa7F1dxOTNYdfmZYdkye2GorK8y/a7AC1lx/YSkYWcN0wMKLrQHEVG7
-         lsjRrZoF1lS3GdVTvN2zG/ZMZPT0ATx713Fnt4dLrSg33gBi/LMTrw3LODMnK6HM4Qem
-         vBXg==
+        bh=fpQR5MhthxNYS5X1B4rXC7O41ZaJ8gH+dbtsDtAc7Lg=;
+        b=IhLDGdIL5zG/FS7q8FLiKEa6UzluPQjlSF/KFjdVKO6Mn+yjbJs6piDen+GG7TGBU5
+         e7ZgJ5aAknVAEWsFIiVX6G8FJqbQBD9WxnrwoQllUriMNal8hQPUUcDrEgYbkCVTxxmW
+         9sKOGlAH5x53Csvwn6uCUXRVJl8GBslGS8XH+oH/f9ZuhO0Fp8cCB0Z/PIug570LZxqG
+         PjYsSKrI9N66SIgiaiZfUzYJ6vvroJHBokqL4rDKRcIXWtKM9TfhuB9EtqxWl5FHvLVB
+         nBMG+f6vq6Zal8OlDTkCyT8ODvpgStxC+cnwCQByr2tRbxrh/dfR9QP6fIPllP3skK9V
+         ylIg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1766656433; x=1767261233;
+        d=1e100.net; s=20230601; t=1766657144; x=1767261944;
         h=content-transfer-encoding:in-reply-to:content-language:from
          :references:cc:to:subject:user-agent:mime-version:date:message-id
          :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=zPoJzn5MnVIeCWCGvk2Bfp5U8ncISIr0hUiVXJGS/dE=;
-        b=bpGBF8FOY7WLd03zmrRJwfmDDb6/9ImAI2DxedfYZcvxLkssbijsLUxgID7ykf9U3/
-         hUNeGv+/mOzPlrroE7Ey44zOJsSQ1ykPu46o6B22qa4CKcahs+tfLcDv5Gi3PxdJPlUm
-         QEVVUAao4xECOXGvI9QupWLxplhMZ3sKC7+3RVOyU1fHwUKI2C2NNZu/1zH74eqcPMQq
-         QQeldrSqgE8GsR8fegYTI1U+13dforPpuSYFT0kB8RqOkG+Wnl5w/Psvw1c2HIiGVz/i
-         VeaAaUwPVCZJGZ4Q1pSpYbBU8QW0mBeNl7BED8Iry+5RsbwPCkudfDNBXVk+bnAzk3DC
-         KQVg==
-X-Gm-Message-State: AOJu0YzuOc7ZtHXbwt75jjBZA34XdstsGfqtI7tsQ3pN9WoonIvnbgod
-	tYmYhFlmMuTEBCvCP0HitRY3kEJree+ZEmSBd4T42S4RIDtqDBcZYYS9KLU95r909t+G3SDuHA4
-	7LgKJYlQqAV32KEjOcm+C38HrujX4z7N5MGg3eLWG/HRhvBIp6bPzE/atktr9c9azQ9KHKw==
-X-Gm-Gg: AY/fxX4mfOkU3dawtCq8pwpOBeOoOHWKZ2tteYt6ZUO8aLPM+ssJRvcxHPwPLq0ejPx
-	ZKs2/l+UueaFbVShEWz5HSXVcLeL5cbtsvL2aK+13x2fYIu8cAt2VQT7JBSHozaJecpFsrIKC93
-	mFY6cKaO0xNsTKcXcglUcKZAUJ0yEXgWbUuiNdDfx7v7NJ66ezTvKEVphaMdXmH7BjnAcXbpFxE
-	jXS8NBOSUooWdZrJU+i+lDnU4fe1EDu/sAlE+Nlx+5Y6u+0Of43A+OUR7bX4nf25i87vQNUawNE
-	m3g22ZSj6crZVs0CyG1794zD6VD+lQWEOW0Pf03J/UBn28Yt153Ujpu9b/GD/NyLlQeyF3BJdBv
-	dI6mFXIP9MDZiy43h3RPrJ7PxoWIX/Jv1lzPFn8vLpGq+8XLsoyWpTaH7Eu8CTSuKCinN5fWVDw
-	3XnFycMg==
-X-Received: by 2002:a05:6a00:328a:b0:7f7:27dd:7b1c with SMTP id d2e1a72fcca58-7ff657a3052mr16843307b3a.15.1766656432908;
-        Thu, 25 Dec 2025 01:53:52 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IGn1qJlipakub6W2N58VGWbfUbPN3Zr60Q60P+PGYZNJMcFTv/ySGDvrx6wsHfo/9FhATfXyw==
-X-Received: by 2002:a05:6a00:328a:b0:7f7:27dd:7b1c with SMTP id d2e1a72fcca58-7ff657a3052mr16843294b3a.15.1766656432497;
-        Thu, 25 Dec 2025 01:53:52 -0800 (PST)
+        bh=fpQR5MhthxNYS5X1B4rXC7O41ZaJ8gH+dbtsDtAc7Lg=;
+        b=pUUHVqQgiyt7NLRRzYMaN+cGPgt28xADftLV+zdXh0XtpxgE5//0wxDTF+WTHk9EkP
+         y7pqijrCP0o2ustI+j9Uji0P8UKddFXcCJeghN7vAE8LAcFk1vTuMaf1Oz3KMdtnrKBA
+         3LHgX1ezWwjN04xUH73y7ju4wBrRsegpT8vunobFCT5VZwAA7WKfZkmmYeofojv342sf
+         c4+4wIUU71zO02PTM71n5rAqPf50L5LjltMlzQG9Bs0DhxpSz8NasAGWSUIMHeXh7XgN
+         2UNJLCwUldTEK6Sc58VWqzJlbWOfgiU7dOfCiDugBoYcAqLvYWS7DcbAEeVQojnisAsP
+         jktA==
+X-Forwarded-Encrypted: i=1; AJvYcCWJ63ueQdckOuyhMRKRDWlPmqnk5AUaZoJ6eQn3FYLk0BFSWtb8zGe9aU1KsqeUYtMnoGd51cAvL0RtKFQ48g==@vger.kernel.org
+X-Gm-Message-State: AOJu0YwOS3pYgVTImeo3VZVke72slA6dmoxqiSnOeghEsWMP27YWryGi
+	bTDLsc12DOb4fETzfwEVYC6mqRtXqrXuMUs80eeHLUVSC95oQ+4s8ta2rlUWHGrF+kWd9hiLoap
+	C4YecOJ+67kkcK+KDMZSyHQnF7eq/ZaxKb0jO8Z0F+N/AX32UcLZSS+5aN2KjRsn4sKc8RA==
+X-Gm-Gg: AY/fxX5jMlWKhHU+2K1C34h7Ti2SNvSlFsaS8V8R0dxzgyo3/5NLhzvdHYjhnj3FxLf
+	bEGo1kpDiR6c1vMOOogU0BPBUD1u3qfKf7dfY1JkwKepUi3delP1Kg5gGEmDiOkb8QRSCVhmNY9
+	RXoBTToUY8SQRtcxDaNwPQNb1iw+f9zU/15T+Ch5djpWXn+pkkIsa9yvEUK74Ksp3pdQkUdWaW+
+	7Rc3D6fyrkK/VhEK6KKKTEQOhZNgX+6zw7YmjIiN76sDDgWFbz1Z4/BZVzqC9xZRghWmedjka3N
+	NUI68zJW2yKR6ebxxfgI+I8nVAqnWhueOfSEE9ZpmptBJHQ9IQPSYh4BTCFoPuqAQzz33DezH5M
+	/f49ZNBIlnEMUcmscrqB+Bke5OS/gKwTJf+CChCw9qfmDh2/Ak1Ov4pVUblkf3hJTWNQLmjZUaK
+	I3B01jHA==
+X-Received: by 2002:a05:6a00:1f06:b0:7ae:d1d:d500 with SMTP id d2e1a72fcca58-7ff641193d9mr18300391b3a.4.1766657143926;
+        Thu, 25 Dec 2025 02:05:43 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IGHAFIEoFagy2scNUKwIjJ20L5wmLpWPL/hZajeM9dLT/f6lWLYsRJMfgEduMnI8hA2d3pDWw==
+X-Received: by 2002:a05:6a00:1f06:b0:7ae:d1d:d500 with SMTP id d2e1a72fcca58-7ff641193d9mr18300372b3a.4.1766657143406;
+        Thu, 25 Dec 2025 02:05:43 -0800 (PST)
 Received: from [10.133.33.27] (tpe-colo-wan-fw-bordernet.qualcomm.com. [103.229.16.4])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-7ff7e792b65sm19218679b3a.58.2025.12.25.01.53.50
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-7ff7e48cffesm18764071b3a.49.2025.12.25.02.05.40
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 25 Dec 2025 01:53:52 -0800 (PST)
-Message-ID: <566f4d26-8a36-415b-9ec7-3dc5082acb2b@oss.qualcomm.com>
-Date: Thu, 25 Dec 2025 17:53:46 +0800
+        Thu, 25 Dec 2025 02:05:42 -0800 (PST)
+Message-ID: <e63d61c6-a35b-421a-820c-91262f3b11a4@oss.qualcomm.com>
+Date: Thu, 25 Dec 2025 18:05:36 +0800
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
@@ -102,58 +103,123 @@ List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2] wifi: ath11k: move .max_tx_ring to struct
- ath11k_hw_hal_params
-To: "Alex G." <mr.nuke.me@gmail.com>, ath11k@lists.infradead.org,
-        Jeff Johnson <jjohnson@kernel.org>
-Cc: linux-wireless@vger.kernel.org, linux-kernel@vger.kernel.org
-References: <20251216043555.628296-1-mr.nuke.me@gmail.com>
- <83c5bb41-ac0f-4f01-be38-ba536dc8b977@oss.qualcomm.com>
- <3484871.yKVeVyVuyW@nukework.gtech>
+Subject: Re: [PATCH] wifi: ath11k: fix qmi memory allocation logic for CALDB
+ region
+To: "Alex G." <mr.nuke.me@gmail.com>, jjohnson@kernel.org,
+        ath11k@lists.infradead.org,
+        Vasanthakumar Thiagarajan <vasanthakumar.thiagarajan@oss.qualcomm.com>
+Cc: "Rob Herring (Arm)" <robh@kernel.org>, linux-wireless@vger.kernel.org,
+        linux-kernel@vger.kernel.org, stable@vger.kernel.org,
+        Jeff Johnson <jeff.johnson@oss.qualcomm.com>
+References: <20251206175829.2573256-1-mr.nuke.me@gmail.com>
+ <7ef46837-7799-4ede-9f5e-88a010d5d1d4@oss.qualcomm.com>
+ <884758381.0ifERbkFSE@nukework.gtech>
 From: Baochen Qiang <baochen.qiang@oss.qualcomm.com>
 Content-Language: en-US
-In-Reply-To: <3484871.yKVeVyVuyW@nukework.gtech>
+In-Reply-To: <884758381.0ifERbkFSE@nukework.gtech>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-Proofpoint-ORIG-GUID: lPjVqUV0DdNuKxBrqU3kzrKoJRwUkgtU
-X-Authority-Analysis: v=2.4 cv=esbSD4pX c=1 sm=1 tr=0 ts=694d09b2 cx=c_pps
- a=m5Vt/hrsBiPMCU0y4gIsQw==:117 a=nuhDOHQX5FNHPW3J6Bj6AA==:17
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUxMjI1MDA5NSBTYWx0ZWRfX+THEPTmpwJzE
+ sqvHh5BiX21pzimuIYCkHTUhZg94CWL1eLYo9gZUJuy0ZzLi/MqVk6xy8O5v0jseF7D3vQ/tn5U
+ gcQXqVtOeCjBXgtqsKDQpeC+mmgCeYQMw6FXi/Jb5049GFeYP3TTVo2KqeKmI7pQmDxYTqNZZwY
+ JBapTfaEOSJAMxFz8n77AqFOiL6WvnL23wRLxqZBhSqF1Yuxbi+wAdd1nJsXirvAJj6JtkAdSI1
+ KTKtEV/aBKUTDqQ7IDOHUJpBAOuGvLgSZR1jZR1NU3Hmnwr19nBEkJTbcqh7bOIs7x4BrQwvghp
+ u6+iEHebMTPVjtKbbiqpZHYOLjDXBlINeXsWt3/vkwuvKzrQE1zCyLUu1wX2WlhKGx1e69QQMnj
+ EIJbH5914G7AyMq7jb47p1edHKnDVfEUN5uIirXWVxhpt/aKoD1HoVganLh+Ws/DUXICcdTD2wW
+ IWdeequNNqFOCggIYOA==
+X-Authority-Analysis: v=2.4 cv=Vtguwu2n c=1 sm=1 tr=0 ts=694d0c78 cx=c_pps
+ a=rz3CxIlbcmazkYymdCej/Q==:117 a=nuhDOHQX5FNHPW3J6Bj6AA==:17
  a=IkcTkHD0fZMA:10 a=wP3pNCr1ah4A:10 a=s4-Qcg_JpJYA:10
- a=VkNPw1HP01LnGYTKEx00:22 a=Z-jVJAX58Zs0z9JWT1YA:9 a=QEXdDO2ut3YA:10
- a=IoOABgeZipijB_acs4fv:22
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUxMjI1MDA5MyBTYWx0ZWRfXz7joWScXDDjY
- HCRXYECXqvK+bbg5cyVH/SL6VuiXWr5P9tsr33SwUDCEvT/8JKruS6Xb+sdWP+8RGVJRlmPxPHJ
- Cq3tc5/Y7ZmsEXa7s96t/z7ppP4FrM0/IuxR3Mia3e0jJFp0aF7QUeIICb1Nbs5Vq5bHD11NxeL
- ZRytOB7xsUKaSvHniIoVLxi7m/dIIZYh2JEtxnrWWy6k6JNqGAFhiCDJQ0QOpFufpQJ93sU/wn6
- /l/uikwVOzeBj0+bZqVGXmDngOkWGApUNU4tjDBT61/a/He1d7O+wtaWxl4Dm9gBQzUvHDUezI9
- dOXie4EOzpxKip2Cu2LfLipJeB8NvAbNdCQkD8WOlTUrfG3SIJi8urq6PXEgeq1AxoGZUH/hbCR
- wLX14Im4fpRgFNPFix50jDnliXWSpbKm35u+9sk6Wk+MmqTpSFGUTYgtW6TvCuGmSrwqXyJJO5b
- RbJd+s+9yJrnhFdOnsg==
-X-Proofpoint-GUID: lPjVqUV0DdNuKxBrqU3kzrKoJRwUkgtU
+ a=VkNPw1HP01LnGYTKEx00:22 a=yXKDi3_BjhFrakrclucA:9 a=QEXdDO2ut3YA:10
+ a=bFCP_H2QrGi7Okbo017w:22
+X-Proofpoint-ORIG-GUID: NSZKgo43SDHgvQAMauDU8WW-oBpAOnC4
+X-Proofpoint-GUID: NSZKgo43SDHgvQAMauDU8WW-oBpAOnC4
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.9,FMLib:17.12.100.49
  definitions=2025-12-24_04,2025-12-22_01,2025-10-01_01
 X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- lowpriorityscore=0 spamscore=0 bulkscore=0 impostorscore=0 adultscore=0
- malwarescore=0 clxscore=1015 suspectscore=0 priorityscore=1501 phishscore=0
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.22.0-2512120000 definitions=main-2512250093
+ priorityscore=1501 suspectscore=0 lowpriorityscore=0 impostorscore=0
+ clxscore=1015 spamscore=0 bulkscore=0 phishscore=0 adultscore=0
+ malwarescore=0 classifier=typeunknown authscore=0 authtc= authcc=
+ route=outbound adjust=0 reason=mlx scancount=1 engine=8.22.0-2512120000
+ definitions=main-2512250095
 
 
 
-On 12/25/2025 5:53 AM, Alex G. wrote:
+On 12/25/2025 5:47 AM, Alex G. wrote:
+> On Monday, December 8, 2025 4:23:46 AM CST Baochen Qiang wrote:
+>> On 12/7/2025 1:58 AM, Alexandru Gagniuc wrote:
+>>> Memory region assignment in ath11k_qmi_assign_target_mem_chunk()
+>>>
+>>> assumes that:
+>>>   1. firmware will make a HOST_DDR_REGION_TYPE request, and
+>>>   2. this request is processed before CALDB_MEM_REGION_TYPE
+>>>
+>>> In this case CALDB_MEM_REGION_TYPE, can safely be assigned immediately
+>>> after the host region.
+>>>
+>>> However, if the HOST_DDR_REGION_TYPE request is not made, or the
+>>> reserved-memory node is not present, then res.start and res.end are 0,
+>>> and host_ddr_sz remains uninitialized. The physical address should
+>>> fall back to ATH11K_QMI_CALDB_ADDRESS. That doesn't happen:
+>>>
+>>> resource_size(&res) returns 1 for an empty resource, and thus the if
+>>> clause never takes the fallback path. ab->qmi.target_mem[idx].paddr
+>>> is assigned the uninitialized value of host_ddr_sz + 0 (res.start).
+>>>
+>>> Use "if (res.end > res.start)" for the predicate, which correctly
+>>> falls back to ATH11K_QMI_CALDB_ADDRESS.
+> 
+> I am ready to submit the IPQ9574 support. This patch is a dependency. Should I 
+> include this change in the series that adds IPQ9574?
+
+Better not, first reason is for track purpose. And the second, since the patch is fixing a
+broken commit, IMO being standalone makes it easy for stable team to do backport work.
 
 > 
-> Sure, I will do it this way.
+>> In addition, does it make sense to do of_reserved_mem_region_to_resource()
+>> before the loop, which may give CALDB_MEM_REGION_TYPE a chance even
+>> HOST_DDR_REGION_TYPE request is not made?
 > 
-> I am ready to submit the IPQ9574 support, and this patch is a dependency. 
-> Should I include v3 of this patch in the IPQ9574 series, or submit v3 
-> independently?
+> I'm sorry that I initially missed this question. I don't think we should move 
+> &res initialization outside the loop. We also need host_ddr_sz to be 
+> initialized by a HOST_DDR_REGION_TYPE (1) request. On IPQ9574, the firmware 
+> doesn't make that request, so host_ddr_sz remains uninitialized. Since &res 
+> and host_ddr_sz are used together, I think it's better to initialize them, 
+> together.
+
+fine then
+
+> 
+> 
+> Without patch:
+> 
+>     ath11k c000000.wifi: qmi firmware request memory request
+>     ath11k c000000.wifi: qmi mem seg type 4 size 409600
+>     ath11k c000000.wifi: qmi mem seg type 2 size 262144
+>     ath11k c000000.wifi: qmi mem seg type 3 size 1048576
+>     ...
+>     ath11k c000000.wifi: failed to assign qmi target memory: -5
+> 
+> 
+> 
+> With patch:
+> 
+>     ath11k c000000.wifi: qmi firmware request memory request
+>     ath11k c000000.wifi: qmi mem seg type 4 size 409600
+>     ath11k c000000.wifi: qmi mem seg type 2 size 262144
+>     ath11k c000000.wifi: qmi mem seg type 3 size 1048576
+>     ath11k c000000.wifi: qmi ignore invalid mem req type 3
+>     ath11k c000000.wifi: qmi req mem_seg[0] 0x000000004ba00000 409600 4
+>     ath11k c000000.wifi: qmi req mem_seg[1] 0x000000004b700000 262144 2
+> 
+> 
+> Tested on : WLAN.HK.2.9.0.1-01890-QCAHKSWPL_SILICONZ-1
 > 
 > Alex
 > 
-
-I would suggest a v3 for track purpose. Another reason is that this patch is more of an
-optimization benefiting all chips, rather than being specific to your new chip.
+> 
+> 
+> 
 
 
