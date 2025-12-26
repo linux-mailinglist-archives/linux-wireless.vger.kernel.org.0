@@ -1,72 +1,69 @@
-Return-Path: <linux-wireless+bounces-30110-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-30111-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 43B91CDE336
-	for <lists+linux-wireless@lfdr.de>; Fri, 26 Dec 2025 02:38:00 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8C860CDE339
+	for <lists+linux-wireless@lfdr.de>; Fri, 26 Dec 2025 02:40:40 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 024B93006A72
-	for <lists+linux-wireless@lfdr.de>; Fri, 26 Dec 2025 01:37:59 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id C77E63000B2A
+	for <lists+linux-wireless@lfdr.de>; Fri, 26 Dec 2025 01:40:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9DC44155C97;
-	Fri, 26 Dec 2025 01:37:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8855B1C862E;
+	Fri, 26 Dec 2025 01:40:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=realtek.com header.i=@realtek.com header.b="CBeEoNlr"
+	dkim=pass (2048-bit key) header.d=realtek.com header.i=@realtek.com header.b="m2HSdLRP"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5A5661C862E
-	for <linux-wireless@vger.kernel.org>; Fri, 26 Dec 2025 01:37:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E7ADE155C97
+	for <linux-wireless@vger.kernel.org>; Fri, 26 Dec 2025 01:40:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=211.75.126.72
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1766713076; cv=none; b=hCwscsDI8kxx8Go0MLWnKTxgHCHRltIAaB7wHfTmnUZuVLrzVYKYvUi1UREUNsMRhZzasQv2XBhcejVaXhcFZQ0A2DtIUqyFAshlRda60Ly4v7fQv/Y3B5nFr9eCdhMYYiGqx23WEhAeAdrBSEsORTdaFE0N3QRjHkx8G2Go/F4=
+	t=1766713238; cv=none; b=BYxJRx7UtBPmrVEuZqm2lwTrfIpCg4eDi9VdNaYe8osO8mH+BYN8v+4PoDSnGJFs9Yl0j5RyXvgC1+7lqL3iN8gSA5oyOVD8WsSUzySQ88mwBxtiuWQBwt4APYoyBRzGmrZ7dTQJtQLxPP0nSwTgyNvxEQ4psyM0jpMy/Kva/nw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1766713076; c=relaxed/simple;
-	bh=0hCZV0viRWGyRJbvey9qJjt88juel0rCK7NMa6h3bUw=;
+	s=arc-20240116; t=1766713238; c=relaxed/simple;
+	bh=frX7YMwBHI5goR7X0yYJoBA3AJTCYOCD1fFHsOjX3Qc=;
 	h=From:To:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:MIME-Version; b=txejHcekW/fDs1ICNJfmxx57/rsfQiE1Hy9FeNDarBa8mDZq0zf+jlOixuq/U9OjJ3LZgjD467wmnujahXpc7/ZefV6JW39K2yfb+aMzRry+m0Cb6JEVDi5Ww2mBWcGZz6FhiE0GGBRDMZw0rv5TB57T4CDCN98dDdfaNxAJHL0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com; spf=pass smtp.mailfrom=realtek.com; dkim=pass (2048-bit key) header.d=realtek.com header.i=@realtek.com header.b=CBeEoNlr; arc=none smtp.client-ip=211.75.126.72
+	 Content-Type:MIME-Version; b=f6Ll6a6MKkg4x1QajPGenXNEVezX6FNB1Vx9Qe3JfEgFHelvgZU0jY/Q0mjwfLf/TbhRjK6+iUM+e5DlmCKNVGj06YowzbDOausWxUVqEUS5PZEljyJRvV70EnrXCuG7ev/RZG9NatoyOuzhDPEoxFRXacmmJszP238/eSDi1Pg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com; spf=pass smtp.mailfrom=realtek.com; dkim=pass (2048-bit key) header.d=realtek.com header.i=@realtek.com header.b=m2HSdLRP; arc=none smtp.client-ip=211.75.126.72
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=realtek.com
-X-SpamFilter-By: ArmorX SpamTrap 5.80 with qID 5BQ1bobY72659349, This message is accepted by code: ctloc85258
+X-SpamFilter-By: ArmorX SpamTrap 5.80 with qID 5BQ1eXhgD2663691, This message is accepted by code: ctloc85258
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=realtek.com; s=dkim;
-	t=1766713070; bh=0hCZV0viRWGyRJbvey9qJjt88juel0rCK7NMa6h3bUw=;
+	t=1766713233; bh=frX7YMwBHI5goR7X0yYJoBA3AJTCYOCD1fFHsOjX3Qc=;
 	h=From:To:Subject:Date:Message-ID:References:In-Reply-To:
 	 Content-Type:Content-Transfer-Encoding:MIME-Version;
-	b=CBeEoNlrmjrdNsXO2aV0OzdnFqZ5hfHsQhbQiUeDaB23DObM9sI8nUNKbwo6UPz6X
-	 cyb6/G74ItPIP0jHg5LbJvG07dnnypivVIP6yLwCkojtZYD6jj2LN3ZlXDTldHykMC
-	 oDTTsF/xxFUO8nU9mTx1KOZjlaTUWKBZ9RTAujf9/eavcjoNxUIxFVSuwndk19vDZy
-	 M9BuTGUOqYGuZ8H251bltlM82lT3B81JM+FPKd3ZxhjH6qbYkoBgeYOvG/RDr0YYIJ
-	 wxqshXESwo1fFvcobxZN3qHWTaXf5U84J6TPyrKts+qzccRR4WI6goZEO5/B0h3vYY
-	 g1SI/KVL9Kcow==
+	b=m2HSdLRPqWAE5+V72HOd5+/5PsijrPoI7iOcNOZZGFLSCIgqY3j/JDOaoF2589412
+	 T6IEfdKuMz6KNoR/8p8mUwv5OHqLcBAuwVxn+xJbn3ef1wBxR20GKFWv+pnEjwKhBI
+	 7fnVQp/tusBW1vTHyN6LUMv/H1Jv6wd9t94HKvD8llin6TySvqp/TPjCQ4cPftPyBw
+	 BKP0gxxE8nxvqGkcwPpntCdtEZWMrXMlhWzbMLJsntIQZ4udSRjaGavEDVAXp+NlUL
+	 cTMwvn23xQ9zpj/isMm+boiWGp6tRk1wts5baIWrX5QUcrizKCag3c254HPuvTuntm
+	 pL9fizurOcRcg==
 Received: from mail.realtek.com (rtkexhmbs03.realtek.com.tw[10.21.1.53])
-	by rtits2.realtek.com.tw (8.15.2/3.21/5.94) with ESMTPS id 5BQ1bobY72659349
+	by rtits2.realtek.com.tw (8.15.2/3.21/5.94) with ESMTPS id 5BQ1eXhgD2663691
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Fri, 26 Dec 2025 09:37:50 +0800
+	Fri, 26 Dec 2025 09:40:33 +0800
 Received: from RTKEXHMBS06.realtek.com.tw (10.21.1.56) by
  RTKEXHMBS03.realtek.com.tw (10.21.1.53) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1748.10; Fri, 26 Dec 2025 09:37:50 +0800
-Received: from RTKEXHMBS06.realtek.com.tw (10.21.1.56) by
- RTKEXHMBS06.realtek.com.tw (10.21.1.56) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1748.10; Fri, 26 Dec 2025 09:37:49 +0800
+ 15.2.1748.10; Fri, 26 Dec 2025 09:40:33 +0800
 Received: from RTKEXHMBS06.realtek.com.tw ([fe80::4cbd:6c6c:b92b:3913]) by
  RTKEXHMBS06.realtek.com.tw ([fe80::4cbd:6c6c:b92b:3913%10]) with mapi id
- 15.02.1748.010; Fri, 26 Dec 2025 09:37:49 +0800
+ 15.02.1748.010; Fri, 26 Dec 2025 09:40:33 +0800
 From: Ping-Ke Shih <pkshih@realtek.com>
 To: Bitterblue Smith <rtl8821cerfe2@gmail.com>,
         "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>
-Subject: RE: [PATCH rtw-next 1/3] wifi: rtw88: Fix alignment fault in
- rtw_core_enable_beacon()
-Thread-Topic: [PATCH rtw-next 1/3] wifi: rtw88: Fix alignment fault in
- rtw_core_enable_beacon()
-Thread-Index: AQHcdGNIBa8KiU+GHkKeNQSwOLw8RLUzJ43Q
-Date: Fri, 26 Dec 2025 01:37:49 +0000
-Message-ID: <13771f1cdeea49679af1fbc7c12f0246@realtek.com>
+Subject: RE: [PATCH rtw-next 2/3] wifi: rtw88: Use devm_kmemdup() in
+ rtw_set_supported_band()
+Thread-Topic: [PATCH rtw-next 2/3] wifi: rtw88: Use devm_kmemdup() in
+ rtw_set_supported_band()
+Thread-Index: AQHcdGNyNNYhNkN5XEuXGcajh5+COrUzKF9w
+Date: Fri, 26 Dec 2025 01:40:33 +0000
+Message-ID: <26231032df514e0b931fc1c047d0829b@realtek.com>
 References: <6345300d-8c93-464c-9b05-d0d9af3c97ad@gmail.com>
-In-Reply-To: <6345300d-8c93-464c-9b05-d0d9af3c97ad@gmail.com>
+ <1aa7fdef-2d5b-4a31-a4e9-fac8257ed30d@gmail.com>
+In-Reply-To: <1aa7fdef-2d5b-4a31-a4e9-fac8257ed30d@gmail.com>
 Accept-Language: en-US, zh-TW
 Content-Language: zh-TW
 Content-Type: text/plain; charset="utf-8"
@@ -78,53 +75,13 @@ List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 
-Qml0dGVyYmx1ZSBTbWl0aCA8cnRsODgyMWNlcmZlMkBnbWFpbC5jb20+IHdyb3RlOg0KPiBydHdf
-Y29yZV9lbmFibGVfYmVhY29uKCkgcmVhZHMgNCBieXRlcyBmcm9tIGFuIGFkZHJlc3MgdGhhdCBp
-cyBub3QgYQ0KPiBtdWx0aXBsZSBvZiA0LiBUaGlzIHJlc3VsdHMgaW4gYSBjcmFzaCBvbiBzb21l
-IHN5c3RlbXMuDQo+IA0KPiBEbyAxIGJ5dGUgcmVhZHMvd3JpdGVzIGluc3RlYWQuDQo+IA0KPiBV
-bmFibGUgdG8gaGFuZGxlIGtlcm5lbCBwYWdpbmcgcmVxdWVzdCBhdCB2aXJ0dWFsIGFkZHJlc3Mg
-ZmZmZjgwMDA4MjdlMDUyMg0KPiBNZW0gYWJvcnQgaW5mbzoNCj4gICBFU1IgPSAweDAwMDAwMDAw
-OTYwMDAwMjENCj4gICBFQyA9IDB4MjU6IERBQlQgKGN1cnJlbnQgRUwpLCBJTCA9IDMyIGJpdHMN
-Cj4gICBTRVQgPSAwLCBGblYgPSAwDQo+ICAgRUEgPSAwLCBTMVBUVyA9IDANCj4gICBGU0MgPSAw
-eDIxOiBhbGlnbm1lbnQgZmF1bHQNCj4gRGF0YSBhYm9ydCBpbmZvOg0KPiAgIElTViA9IDAsIElT
-UyA9IDB4MDAwMDAwMjEsIElTUzIgPSAweDAwMDAwMDAwDQo+ICAgQ00gPSAwLCBXblIgPSAwLCBU
-bkQgPSAwLCBUYWdBY2Nlc3MgPSAwDQo+ICAgR0NTID0gMCwgT3ZlcmxheSA9IDAsIERpcnR5Qml0
-ID0gMCwgWHMgPSAwDQo+IHN3YXBwZXIgcGd0YWJsZTogNGsgcGFnZXMsIDQ4LWJpdCBWQXMsIHBn
-ZHA9MDAwMDAwMDAwNTQ5MjAwMA0KPiBbZmZmZjgwMDA4MjdlMDUyMl0gcGdkPTAwMDAwMDAwMDAw
-MDAwMDAsIHA0ZD0xMDAwMDAwMTAyMWQ5NDAzLCBwdWQ9MTAwMDAwMDEwMjFkYTQwMywNCj4gcG1k
-PTEwMDAwMDAxMTA2MWM0MDMsIHB0ZT0wMDc4MDAwMGYzMjAwZjEzDQo+IEludGVybmFsIGVycm9y
-OiBPb3BzOiAwMDAwMDAwMDk2MDAwMDIxIFsjMV0gIFNNUA0KPiBNb2R1bGVzIGxpbmtlZCBpbjog
-Wy4uLl0gcnR3ODhfODgyMmNlIHJ0dzg4Xzg4MjJjIHJ0dzg4X3BjaSBydHc4OF9jb3JlIFsuLi5d
-DQo+IENQVTogMCBVSUQ6IDAgUElEOiA3MyBDb21tOiBrd29ya2VyL3UzMjoyIFRhaW50ZWQ6IEcg
-ICAgICAgIFcgICAgICAgICAgIDYuMTcuOSAjMS1OaXhPUyBWT0xVTlRBUlkNCj4gVGFpbnRlZDog
-W1ddPVdBUk4NCj4gSGFyZHdhcmUgbmFtZTogRnJpZW5kbHlFbGVjIE5hbm9QQy1UNiBMVFMgKERU
-KQ0KPiBXb3JrcXVldWU6IHBoeTAgcnR3X2MyaF93b3JrIFtydHc4OF9jb3JlXQ0KPiBwc3RhdGU6
-IDYwNDAwMDA5IChuWkN2IGRhaWYgK1BBTiAtVUFPIC1UQ08gLURJVCAtU1NCUyBCVFlQRT0tLSkN
-Cj4gcGMgOiBydHdfcGNpX3JlYWQzMisweDE4LzB4NDAgW3J0dzg4X3BjaV0NCj4gbHIgOiBydHdf
-Y29yZV9lbmFibGVfYmVhY29uKzB4ZTAvMHgxNDggW3J0dzg4X2NvcmVdDQo+IHNwIDogZmZmZjgw
-MDA4MGNjM2NhMA0KPiB4Mjk6IGZmZmY4MDAwODBjYzNjYTAgeDI4OiBmZmZmMDAwMTAzMWZjMjQw
-IHgyNzogZmZmZjAwMDEwMjEwMDgyOA0KPiB4MjY6IGZmZmZkMmNiN2M5YjQwODggeDI1OiBmZmZm
-MDAwMTAzMWZjMmMwIHgyNDogZmZmZjAwMDExMmZkZWYwMA0KPiB4MjM6IGZmZmYwMDAxMTJmZGVm
-MTggeDIyOiBmZmZmMDAwMTExYzI5OTcwIHgyMTogMDAwMDAwMDAwMDAwMDAwMQ0KPiB4MjA6IDAw
-MDAwMDAwMDAwMDAwMDEgeDE5OiBmZmZmMDAwMTExYzIyMDQwIHgxODogMDAwMDAwMDAwMDAwMDAw
-MA0KPiB4MTc6IDAwMDAwMDAwMDAwMDAwMDAgeDE2OiAwMDAwMDAwMDAwMDAwMDAwIHgxNTogMDAw
-MDAwMDAwMDAwMDAwMA0KPiB4MTQ6IDAwMDAwMDAwMDAwMDAwMDAgeDEzOiAwMDAwMDAwMDAwMDAw
-MDAwIHgxMjogMDAwMDAwMDAwMDAwMDAwMA0KPiB4MTE6IDAwMDAwMDAwMDAwMDAwMDAgeDEwOiAw
-MDAwMDAwMDAwMDAwMDAwIHg5IDogZmZmZmQyY2I2NTA3YzA5MA0KPiB4OCA6IDAwMDAwMDAwMDAw
-MDAwMDAgeDcgOiAwMDAwMDAwMDAwMDAwMDAwIHg2IDogMDAwMDAwMDAwMDAwMDAwMA0KPiB4NSA6
-IDAwMDAwMDAwMDAwMDAwMDAgeDQgOiAwMDAwMDAwMDAwMDAwMDAwIHgzIDogMDAwMDAwMDAwMDAw
-MDAwMA0KPiB4MiA6IDAwMDAwMDAwMDAwMDdmMTAgeDEgOiAwMDAwMDAwMDAwMDAwNTIyIHgwIDog
-ZmZmZjgwMDA4MjdlMDUyMg0KPiBDYWxsIHRyYWNlOg0KPiAgcnR3X3BjaV9yZWFkMzIrMHgxOC8w
-eDQwIFtydHc4OF9wY2ldIChQKQ0KPiAgcnR3X2h3X3NjYW5fY2hhbl9zd2l0Y2grMHgxMjQvMHgx
-YTggW3J0dzg4X2NvcmVdDQo+ICBydHdfZndfYzJoX2NtZF9oYW5kbGUrMHgyNTQvMHgyOTAgW3J0
-dzg4X2NvcmVdDQo+ICBydHdfYzJoX3dvcmsrMHg1MC8weDk4IFtydHc4OF9jb3JlXQ0KPiAgcHJv
-Y2Vzc19vbmVfd29yaysweDE3OC8weDNmOA0KPiAgd29ya2VyX3RocmVhZCsweDIwOC8weDQxOA0K
-PiAga3RocmVhZCsweDEyMC8weDIyMA0KPiAgcmV0X2Zyb21fZm9yaysweDEwLzB4MjANCj4gQ29k
-ZTogZDI4ZmUyMDIgOGIwMjAwMDAgZjk1MjQ0MDAgOGIyMTQwMDAgKGI5NDAwMDAwKQ0KPiAtLS1b
-IGVuZCB0cmFjZSAwMDAwMDAwMDAwMDAwMDAwIF0tLS0NCj4gDQo+IEZpeGVzOiBhZDY3NDFiMWUw
-NDQgKCJ3aWZpOiBydHc4ODogU3RvcCBoaWdoIHF1ZXVlIGR1cmluZyBzY2FuIikNCj4gQ2M6IHN0
-YWJsZUB2Z2VyLmtlcm5lbC5vcmcNCj4gQ2xvc2VzOiBodHRwczovL2dpdGh1Yi5jb20vbHdmaW5n
-ZXIvcnR3ODgvaXNzdWVzLzQxOA0KPiBTaWduZWQtb2ZmLWJ5OiBCaXR0ZXJibHVlIFNtaXRoIDxy
-dGw4ODIxY2VyZmUyQGdtYWlsLmNvbT4NCg0KQWNrZWQtYnk6IFBpbmctS2UgU2hpaCA8cGtzaGlo
-QHJlYWx0ZWsuY29tPg0KDQoNCg==
+Qml0dGVyYmx1ZSBTbWl0aCA8cnRsODgyMWNlcmZlMkBnbWFpbC5jb20+IHdyb3RlOg0KPiBTaW1w
+bGlmeSB0aGUgY29kZSBieSB1c2luZyBkZXZpY2UgbWFuYWdlZCBtZW1vcnkgYWxsb2NhdGlvbnMu
+DQo+IA0KPiBUaGlzIGFsc28gZml4ZXMgYSBtZW1vcnkgbGVhayBpbiBydHdfcmVnaXN0ZXJfaHco
+KS4gVGhlIHN1cHBvcnRlZCBiYW5kcw0KPiB3ZXJlIG5vdCBmcmVlZCBpbiB0aGUgZXJyb3IgcGF0
+aC4NCj4gDQo+IENvcGllZCBmcm9tIGNvbW1pdCAxNDVkZjUyYTg2NzEgKCJ3aWZpOiBydHc4OTog
+Q29udmVydA0KPiBydHc4OV9jb3JlX3NldF9zdXBwb3J0ZWRfYmFuZCB0byB1c2UgZGV2bV8qIiku
+DQo+IA0KPiBTaWduZWQtb2ZmLWJ5OiBCaXR0ZXJibHVlIFNtaXRoIDxydGw4ODIxY2VyZmUyQGdt
+YWlsLmNvbT4NCg0KQWNrZWQtYnk6IFBpbmctS2UgU2hpaCA8cGtzaGloQHJlYWx0ZWsuY29tPg0K
+DQo=
 
