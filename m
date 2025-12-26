@@ -1,132 +1,90 @@
-Return-Path: <linux-wireless+bounces-30108-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-30109-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7C8D0CDDB96
-	for <lists+linux-wireless@lfdr.de>; Thu, 25 Dec 2025 12:55:10 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6C91BCDE32D
+	for <lists+linux-wireless@lfdr.de>; Fri, 26 Dec 2025 02:34:57 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id E35783015E01
-	for <lists+linux-wireless@lfdr.de>; Thu, 25 Dec 2025 11:55:05 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 304793006A64
+	for <lists+linux-wireless@lfdr.de>; Fri, 26 Dec 2025 01:34:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2830531B822;
-	Thu, 25 Dec 2025 11:55:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7E8781C862E;
+	Fri, 26 Dec 2025 01:34:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="UYrSDPsI"
+	dkim=pass (2048-bit key) header.d=realtek.com header.i=@realtek.com header.b="V5xKFREb"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-wr1-f67.google.com (mail-wr1-f67.google.com [209.85.221.67])
+Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5393B186E2E
-	for <linux-wireless@vger.kernel.org>; Thu, 25 Dec 2025 11:55:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.67
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8F1D8155C97
+	for <linux-wireless@vger.kernel.org>; Fri, 26 Dec 2025 01:34:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=211.75.126.72
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1766663704; cv=none; b=q/6TMGpo5SfWrBp1q9RygJol4hbZHx5d8TTu6/9/wXut4//sittBNHNi/ijeyWIDlGlSOzDrrSbExmLQyemSOVhCF0eGXofIeVUoCKE5RT01RnisGDAZBuak4RreAC2V9IIgS+pyY8fLpcmatoUNBAyZaNxCMko/2HVyiVhu4+E=
+	t=1766712895; cv=none; b=mjtsTW4KgWS3JlF5oM+h3U1P12q11qResl3lNg0+p4Tqr3IcuwTz1h4ZT+kjKjdwnMNR44XUXkYzGP6XpmayU5DatcrYWmC8plAuXWeA/foCcIoxYS2RWAGHTDva49C7KPnC+POin9CniIpqMDRq1TsmCUxvjAIW42r3k2mFj74=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1766663704; c=relaxed/simple;
-	bh=26jbtWO1gui1Tg4M2KXsYQt7Cc6dhgtAwRsKPEv+q0o=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=utaAjstOBKc+JABSWg8P2OFmgTDc2RddTo/Xa0JFhR9jvupKvZ2C4+Kc5JZa4AFcrviyQnSz+z6rwiPoiJx45u/zKORu/Bu7/UR57mvvWE6zKEWBusGqB8PDltMY8/hwrBizl91SvKMzrn+OCy74KcXsppFGiFCfJhxOviqpQKw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=UYrSDPsI; arc=none smtp.client-ip=209.85.221.67
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-wr1-f67.google.com with SMTP id ffacd0b85a97d-42b3b0d76fcso3912085f8f.3
-        for <linux-wireless@vger.kernel.org>; Thu, 25 Dec 2025 03:55:01 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1766663700; x=1767268500; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=/1F0wCtq3gcx/BwLH3t1r9Kcjr/HuK/9IXAdL1YRX6k=;
-        b=UYrSDPsIOk2yH5GzSgPjaP0uWSExvmdA0BWj2gh4Ec06KVeGFvIwymW4GGRFKswncl
-         9/EbpMhn98fDPigNYKW8FDZYRuy2EIOpYYdtmhZFFvGgRRF1hyesMdfMquwlcslrNSZ4
-         Qan+knk8xzIeeXcXGtFzMcY4tmWjbc33spgn4h5ydzGrSgC+dwSgVMutqZitOlraSlio
-         7Faoi3XLXT+wPShtr2V84KGwE9RQglBAoJOWYkE4RIa8YzKj5+B4BH4x6tJ5IIj1ojk7
-         gl7vrx0jY5CnGJlyFypczi47dVdHioXWGFuTOdqmbvJy369mVRwOwMOyb1U+Jr9NUfHk
-         MydA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1766663700; x=1767268500;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=/1F0wCtq3gcx/BwLH3t1r9Kcjr/HuK/9IXAdL1YRX6k=;
-        b=mFFO5fjbdj1jeVjv38/r//Pme1ANSjj1FkRj+T9N2J2qHMyGhcW9QmVwEiQuJPjWPJ
-         ueShJUMOgcHELEoojcxeF1TMiEyrEC10wmASrLnr0wl0GJiC6xUxarDsBZe0v1rPqJo+
-         N0/3/S22RDlyicQ6EFQy6PyWClYMxuYrEfA615d3OtpmtE0CqcoeOnNUOKa0zm8+cbwD
-         jGURvBAH8m2ipTsCMNV/lbIsSG4faxMXahjmIPAMCAIRYnxaDg4e+BsO51qhO8Bk3+Gr
-         092/vI5ntnBiDg+0sQdhMWOWq0Px8AMo81yQxllwzFQJX2cl+5cJVkHhWU4sAE51fpya
-         OH2Q==
-X-Gm-Message-State: AOJu0Yw+8GGmarEF3YrMjLYpJ33SCbYb5GtrcRc5iD7HIUFi8NS4vb+5
-	bHqerwM9V2/15AwXxkAcvZ2z2MFZ/LG4SLedJsMuJpf0mDGEc7BkKHll
-X-Gm-Gg: AY/fxX6/Fr93Zk2j6ApKWT8Ah/rE0OrT2c2E9PuRtUh6K3mRWad9k9VeHIw9f87vpuf
-	UcpHPr+kxgrJEm4hl7Mzvu/YM9fzqNVDksSAtQveHmwaaLVo2uGEAQ4PNvdwuMLVL5glxfEq/3F
-	NKk+sJSdma8ZVCvzRJEjUfx8PIai4eZzT0/OP3Ivl8ASnnoPSXv11gVtWAvC3bU1B/JTYT7vGEm
-	maWkdR+l/ISAPMwJst6IlKG1Me8RPudH7Z3I9HHa+SLpFHF+TLu8iiW5SusuMuLxLw/ODEZxLMV
-	epiJjza/1eZhd5lqik7fIPMCQ5RHLSLwJJ7fa10PHsdzWQSD0kVD3Vb0FwlSHbhE+o6U+0kEgwD
-	dIzXZYE3rPpKB9dq+fmitAoSs465AmDTrIuLTO+IFFtw5tA+hvwvxqhLCQDA/rETeckS9ibg=
-X-Google-Smtp-Source: AGHT+IHugqS8KlGEruk1RYHem/ONDjxOPQtNAOoiwifvCDUQycnoRBKbn+/i8CRTpf+IcmvGYK5Qyg==
-X-Received: by 2002:a5d:588c:0:b0:42b:2a09:2e55 with SMTP id ffacd0b85a97d-4324e45d3famr19833686f8f.0.1766663699468;
-        Thu, 25 Dec 2025 03:54:59 -0800 (PST)
-Received: from ubuntu.. ([2400:adc5:19e:d700::3])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-4324eaa0908sm39022593f8f.31.2025.12.25.03.54.57
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 25 Dec 2025 03:54:59 -0800 (PST)
-From: Ali Tariq <alitariq45892@gmail.com>
-To: Jes.Sorensen@gmail.com
-Cc: linux-wireless@vger.kernel.org,
-	netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org,
-	Ali Tariq <alitariq45892@gmail.com>
-Subject: [PATCH] rtl8xxxu: fix slab-out-of-bounds in rtl8xxxu_sta_add
-Date: Thu, 25 Dec 2025 11:54:29 +0000
-Message-ID: <20251225115430.13011-1-alitariq45892@gmail.com>
-X-Mailer: git-send-email 2.43.0
+	s=arc-20240116; t=1766712895; c=relaxed/simple;
+	bh=hcseJR18FlJ9sHfGkW8fel0i+HCGJ+Fr8j5bsVp7Dks=;
+	h=From:To:Subject:Date:Message-ID:References:In-Reply-To:
+	 Content-Type:MIME-Version; b=imEoAZaXHexnyScWLBe1qDaWomi12/fLbYCyelErfyB+H0poA2IqA+Wt9FeEgMdbHGwb0pfHhcqwS8DxSkl+kBJPpnGdTUrYViuYJo+HOEtwWEiOnfg9VhSyyJjfku+p1hiK9IKfzhCGgPf3zEj9o0pmHJAOe8pRBDqJjKKy0Kc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com; spf=pass smtp.mailfrom=realtek.com; dkim=pass (2048-bit key) header.d=realtek.com header.i=@realtek.com header.b=V5xKFREb; arc=none smtp.client-ip=211.75.126.72
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=realtek.com
+X-SpamFilter-By: ArmorX SpamTrap 5.80 with qID 5BQ1YnuxE2653426, This message is accepted by code: ctloc85258
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=realtek.com; s=dkim;
+	t=1766712889; bh=hcseJR18FlJ9sHfGkW8fel0i+HCGJ+Fr8j5bsVp7Dks=;
+	h=From:To:Subject:Date:Message-ID:References:In-Reply-To:
+	 Content-Type:Content-Transfer-Encoding:MIME-Version;
+	b=V5xKFREbagncVg3hXHR1QMB/bxFbDMWr2j/yWBwyC9p/DlSaDsbuXfu8HHZ/xREC0
+	 qsMVnM1uVMl1fAFGfjd1lYCXCIOFDCw2wkOmsup3gE2TzpG7p6olbszuN8yARWBreU
+	 2LzAdrM+q+DJEtBuWfQnchvu6HFP9f5o/8XLAfLvfHVCxLJjr5uw9xVPSxQNsjqu15
+	 DFu3aIzdwVzhk6O/q4HEAlYNrjWUUpb53atYZUlFZcpUr2iPfwGn4w9MTb31yVg9pE
+	 YE8KPnL8+vKOyR+sWRm+uekSNHAj5j3NogbuiC6iVR1Ee842XgztUigMyPwqS/iBt9
+	 /2o+l7NzjKiMQ==
+Received: from mail.realtek.com (rtkexhmbs02.realtek.com.tw[172.21.6.41])
+	by rtits2.realtek.com.tw (8.15.2/3.21/5.94) with ESMTPS id 5BQ1YnuxE2653426
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Fri, 26 Dec 2025 09:34:49 +0800
+Received: from RTKEXHMBS06.realtek.com.tw (10.21.1.56) by
+ RTKEXHMBS02.realtek.com.tw (172.21.6.41) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1748.10; Fri, 26 Dec 2025 09:34:49 +0800
+Received: from RTKEXHMBS06.realtek.com.tw ([fe80::4cbd:6c6c:b92b:3913]) by
+ RTKEXHMBS06.realtek.com.tw ([fe80::4cbd:6c6c:b92b:3913%10]) with mapi id
+ 15.02.1748.010; Fri, 26 Dec 2025 09:34:49 +0800
+From: Ping-Ke Shih <pkshih@realtek.com>
+To: Bitterblue Smith <rtl8821cerfe2@gmail.com>,
+        "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>
+Subject: RE: [PATCH rtw-next] wifi: rtw88: Increase the RX gain before
+ scanning
+Thread-Topic: [PATCH rtw-next] wifi: rtw88: Increase the RX gain before
+ scanning
+Thread-Index: AQHcdGKJJfjlHzX5XkmiZluwXG+txbUzJr8g
+Date: Fri, 26 Dec 2025 01:34:49 +0000
+Message-ID: <1daba5383bd046f2a4f02e9baadc652b@realtek.com>
+References: <c2e72aff-190d-4f59-9914-2588de756385@gmail.com>
+In-Reply-To: <c2e72aff-190d-4f59-9914-2588de756385@gmail.com>
+Accept-Language: en-US, zh-TW
+Content-Language: zh-TW
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
 
-The driver does not set hw->sta_data_size, which causes mac80211 to
-allocate insufficient space for driver private station data in
-__sta_info_alloc(). When rtl8xxxu_sta_add() accesses members of
-struct rtl8xxxu_sta_info through sta->drv_priv, this results in a
-slab-out-of-bounds write.
-
-KASAN report on RISC-V (VisionFive 2) with RTL8192EU adapter:
-
-  BUG: KASAN: slab-out-of-bounds in rtl8xxxu_sta_add+0x31c/0x346
-  Write of size 8 at addr ffffffd6d3e9ae88 by task kworker/u16:0/12
-
-Set hw->sta_data_size to sizeof(struct rtl8xxxu_sta_info) during
-probe, similar to how hw->vif_data_size is configured. This ensures
-mac80211 allocates sufficient space for the driver's per-station
-private data.
-
-Tested on StarFive VisionFive 2 v1.2A board.
-
-Fixes: eef55f1545c9 ("wifi: rtl8xxxu: support multiple interfaces in {add,remove}_interface()")
-
-Cc: stable@vger.kernel.org
-
-Signed-off-by: Ali Tariq <alitariq45892@gmail.com>
----
- drivers/net/wireless/realtek/rtl8xxxu/core.c | 1 +
- 1 file changed, 1 insertion(+)
-
-diff --git a/drivers/net/wireless/realtek/rtl8xxxu/core.c b/drivers/net/wireless/realtek/rtl8xxxu/core.c
-index c06ad064f37c..f9a527f6a175 100644
---- a/drivers/net/wireless/realtek/rtl8xxxu/core.c
-+++ b/drivers/net/wireless/realtek/rtl8xxxu/core.c
-@@ -7826,6 +7826,7 @@ static int rtl8xxxu_probe(struct usb_interface *interface,
- 		goto err_set_intfdata;
- 
- 	hw->vif_data_size = sizeof(struct rtl8xxxu_vif);
-+	hw->sta_data_size = sizeof(struct rtl8xxxu_sta_info);
- 
- 	hw->wiphy->max_scan_ssids = 1;
- 	hw->wiphy->max_scan_ie_len = IEEE80211_MAX_DATA_LEN;
--- 
-2.43.0
-
+Qml0dGVyYmx1ZSBTbWl0aCA8cnRsODgyMWNlcmZlMkBnbWFpbC5jb20+IHdyb3RlOg0KPiBGcm9t
+OiBNYXJ0aW4gSHLFr3phIDxtYXJ0aW4uaHJ1emExMjNAZ21haWwuY29tPg0KPiANCj4gVGhlIGRy
+aXZlciByZWR1Y2VzIHRoZSBSWCBnYWluIHdoaWxlIGNvbm5lY3RlZCB0byBhIG5ldHdvcmsgbG9j
+YXRlZA0KPiBjbG9zZSBieS4gSW4gdGhpcyBjb25kaXRpb24gc2NhbnMgcmV0dXJuIGZldyByZXN1
+bHRzIGJlY2F1c2UgdGhlIG1vcmUNCj4gZGlzdGFudCBuZXR3b3JrcyBjYW4ndCBiZSBoZWFyZC4N
+Cj4gDQo+IFRlbXBvcmFyaWx5IGluY3JlYXNlIHRoZSBSWCBnYWluIGJlZm9yZSBzY2FubmluZyBp
+biBvcmRlciB0byBkZXRlY3QNCj4gYWxsIGF2YWlsYWJsZSBuZXR3b3Jrcy4gUmVzZXQgdGhlIFJY
+IGdhaW4gYmFjayB0byB0aGUgbGFzdCByZWNvcmRlZA0KPiB2YWx1ZSBvbmNlIHRoZSBzY2FuIGZp
+bmlzaGVzLg0KPiANCj4gTGluazogaHR0cHM6Ly9naXRodWIuY29tL2x3ZmluZ2VyL3J0dzg4L2lz
+c3Vlcy8zMzcNCj4gU2lnbmVkLW9mZi1ieTogTWFydGluIEhyxa96YSA8bWFydGluLmhydXphMTIz
+QGdtYWlsLmNvbT4NCj4gU2lnbmVkLW9mZi1ieTogQml0dGVyYmx1ZSBTbWl0aCA8cnRsODgyMWNl
+cmZlMkBnbWFpbC5jb20+DQoNCkFja2VkLWJ5OiBQaW5nLUtlIFNoaWggPHBrc2hpaEByZWFsdGVr
+LmNvbT4NCg0K
 
