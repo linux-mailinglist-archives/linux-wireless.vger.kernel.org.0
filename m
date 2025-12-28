@@ -1,145 +1,138 @@
-Return-Path: <linux-wireless+bounces-30144-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-30141-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id BB8E7CE5297
-	for <lists+linux-wireless@lfdr.de>; Sun, 28 Dec 2025 17:04:32 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 11BFFCE5267
+	for <lists+linux-wireless@lfdr.de>; Sun, 28 Dec 2025 16:59:04 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 56B523008D40
-	for <lists+linux-wireless@lfdr.de>; Sun, 28 Dec 2025 16:04:28 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id BC0683005E87
+	for <lists+linux-wireless@lfdr.de>; Sun, 28 Dec 2025 15:59:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BACAB211A14;
-	Sun, 28 Dec 2025 16:04:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 731B62D46B2;
+	Sun, 28 Dec 2025 15:59:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="i4kIyy1O"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail.lysator.liu.se (mail.lysator.liu.se [130.236.254.3])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ot1-f53.google.com (mail-ot1-f53.google.com [209.85.210.53])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 72A3521CC79
-	for <linux-wireless@vger.kernel.org>; Sun, 28 Dec 2025 16:04:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=130.236.254.3
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C9A2F185B48
+	for <linux-wireless@vger.kernel.org>; Sun, 28 Dec 2025 15:58:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.53
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1766937866; cv=none; b=chsFSNoM3988urXLV0szMwKTltIcHdZpsGasnNdyY7s1HxIqNLB5Pv3ais7aFXxZNBxU7iRPkVZPXIQLBXsuHEJuOsEP87YS5Me0shECQaAX/MxPliwhOmfchFF/IuXVB5Kvg2bWQNnX0YsXGBKM6hRkVZqXdGQCB7Kv2No3pP4=
+	t=1766937541; cv=none; b=tVvfFFpe2OW/rd2q4dEEUACjXdbQNBY3DJdrDiucbGRpZ/LE2KYSb1nPHY05VLt9X7Y5tWS+TsyAIrlFSnJixnaIp6u6UarslwquRECObtA81GkAq/MJ0Hz+3H7e4phLY+qzW5+vaLZEDukTHM+eBySwnCmeDhPv+0XWq8Z5emE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1766937866; c=relaxed/simple;
-	bh=WdKXvbrW7989w8Ls4d6QL4BI3AXUZfJgkIGw0BGWBYw=;
-	h=Date:From:To:Subject:Message-ID:MIME-Version:Content-Type; b=W89I4g6vihGbstK47ypfwJqT4AxXPd6ZKP6rZLrot7WopwA6w/n8ei47AHZrWYV2PUNZGFlw1kS5olGEDsFbh5oKSaXwKj/bRGsHlpzO5pP2yK9YqyBAhTdXc2FUeowmlThRa2z2FgrhhTJHzQZZY52cGZydQEwza2sQbsYMjMs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lysator.liu.se; spf=pass smtp.mailfrom=lysator.liu.se; arc=none smtp.client-ip=130.236.254.3
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lysator.liu.se
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lysator.liu.se
-Received: from mail.lysator.liu.se (localhost [127.0.0.1])
-	by mail.lysator.liu.se (Postfix) with ESMTP id B4701B97E
-	for <linux-wireless@vger.kernel.org>; Sun, 28 Dec 2025 16:54:28 +0100 (CET)
-Received: by mail.lysator.liu.se (Postfix, from userid 1004)
-	id A82A4B97D; Sun, 28 Dec 2025 16:54:28 +0100 (CET)
-X-Spam-Level: 
-X-Spam-Score: -1.0
-Received: from sara (h-62-63-215-216.A163.priv.bahnhof.se [62.63.215.216])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
-	(No client certificate requested)
-	by mail.lysator.liu.se (Postfix) with ESMTPSA id 3D09ABAD2
-	for <linux-wireless@vger.kernel.org>; Sun, 28 Dec 2025 16:54:26 +0100 (CET)
-Date: Sun, 28 Dec 2025 16:54:25 +0100 (CET)
-From: =?UTF-8?Q?Peter_=C3=85strand?= <astrand@lysator.liu.se>
-To: linux-wireless@vger.kernel.org
-Subject: [RFC PATCH] wifi: wlcore: allocated packets tracking mechanism may
- get broken
-Message-ID: <476e02ce-4592-b08a-fcc9-c1b151500bb9@lysator.liu.se>
+	s=arc-20240116; t=1766937541; c=relaxed/simple;
+	bh=sOs+xxjOAth5SinqEDNTW5BavAEqES60CIzgUrc5z8o=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=Es9Aqzpi4RmUegwXs4S134NBTMF7M7vDmR478/gYs3FYGvdEaSc74U3b3lsUa59EF/zN+XMAVz7oIc+nkxM0iW/9MGi9eMYCLCsP5+Ojmd+JAMRs0o14OsbEG0yHBCTKjXZiK0p+d4MFWUgcw2jj2pfAQQhldgqzPQnYP8v9244=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=i4kIyy1O; arc=none smtp.client-ip=209.85.210.53
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-ot1-f53.google.com with SMTP id 46e09a7af769-7c75fc222c3so3933162a34.0
+        for <linux-wireless@vger.kernel.org>; Sun, 28 Dec 2025 07:58:59 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1766937539; x=1767542339; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=Apfn0KmQlrxsfwtcbU9O/5I4jLFTnnC953VYvTwKvak=;
+        b=i4kIyy1O9q+xVPl+fM3ITmhjamjf0wx+V3wIF1BBRaMWkh2E/O4oqdmSJ03ROI9wD+
+         e+oJ4fjLnHd7sMlU01taVK/EfNuuO6PYWWqv5pd9AL2U6IhN9Wigkwx5vG9c9qicFjXP
+         8AmcErzFQrRdnrk6R893wotDi/c8bpoyJU3Bhh1gqmCuwnXxcPYpr/pLUkd7Az8WM0I1
+         JJCesn/K595XG8NItMo61NFwcZU02FND9auOJDq+Jhsm7YBhu68pnGucCGh2vjnknSFj
+         J3CiPAiGit0QXIPnT430eLqFv753VuzinlsmTEzTWSsAg6XbM68aiFC8lu2pKONeVLk+
+         UAlA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1766937539; x=1767542339;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=Apfn0KmQlrxsfwtcbU9O/5I4jLFTnnC953VYvTwKvak=;
+        b=EG3jouGhDvxecRMOseOTAIO60lqYEa81DPtCgQeIsh59LY5Rt0ha/8IUr5nBegQZjW
+         EMoqLUihyoK4d1dLoH+ATwS7yf+RPWe6cVbKlKM0RsZX+B/HnP1V35Ly44wbjxizy5e7
+         OccMCP1Prt6bgbnYJZ/6Im7LBwOgTu3vW7iWP3cJLrwWrLHQNrs2IxAsEZDMDdYjvR/o
+         WTJkXDZ38nvy/HV6mjaLYl+N/zIAYRmndLsQfQAJNA7Qu1UqYQFRXc9liU8yrvtcmM+m
+         pt1E12oDEzvvjEl49o4XSq5Z2t8OY2YIB5Yn1YzpJZ+ZVjdzsgA69BYl1yEcelUlavyn
+         H9BA==
+X-Forwarded-Encrypted: i=1; AJvYcCWBvHKY8F3W6JrIaEnopqZlQ1FO9OeIEcxIL9bPSthjpKGRH885BN5z6isHE85cwBToC8JyMowGfY8/66dnrA==@vger.kernel.org
+X-Gm-Message-State: AOJu0YxZEyxDj4OS+QZfxeUh+QjWjjfsCN24ulO4EHSG1y+yt3dsR1sF
+	N3F/wwYA5AiNVgZOq1RFZNAmzj99a5ERaXuPGxfUuEf+iCZbj8ZajSEn
+X-Gm-Gg: AY/fxX7VGw60UZI7O4S/VzLIpB1WeyTrQt6oMVsuIeouaxLHMKIkRozObgMJJe1QCkG
+	uVXjugrXIaxP2zsOY2pAhUryjH+lhOeV0gNi3v5r74GGz4gey2WoZlzV1el2sPYSkL9+1laQ3Ok
+	OpgGgGHCB88PAHd2cpd1N7FTgawwKt2rOn66S7QvK4B+C4S8VDau7/82TLyRexhnAY2tejLmkIc
+	r4Km6zbE4EpT98P+xEp527/mzSEpDus2SEHt34NSeSbQYt9IfPkrjooiL0cJC4MfL/LZv8qMuZW
+	dT0byypJJfQafmgXI3U3K2G2wNqUjvoFUVcCAwlalBnuXrdM8GCFu0o3+ejzYQrdUx98DjiRaIl
+	FkaCDWREAhck1Cgws1oEwxtLs5qXah8G3tob6ZNdn8HK/K0gTEqPWjXmiRRCKKq3JxMZkWERo0T
+	+VD18xLX2NvldhBYcAwZQfDWTKUkkxQzzaPZTJQsdXa88znp1/j7pTU8fIe1v/oPx6WrU70ScVu
+	ibe3Z9wArxw+JQFkBRbL44CwCRsoQx5aRbv/zo=
+X-Google-Smtp-Source: AGHT+IEPnuAVgrQlyTcCck/1MSYHWZ1binnrypX4kIGAcjnHnqwbQcKWspQ2QoMzsrmBQt4uFsy7cw==
+X-Received: by 2002:a9d:4798:0:b0:7ca:f4e0:9ca1 with SMTP id 46e09a7af769-7cc668e14bbmr12009180a34.14.1766937538664;
+        Sun, 28 Dec 2025 07:58:58 -0800 (PST)
+Received: from nukework.lan (c-98-57-15-22.hsd1.tx.comcast.net. [98.57.15.22])
+        by smtp.gmail.com with ESMTPSA id 46e09a7af769-7cc667ecd6esm19004434a34.25.2025.12.28.07.58.57
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sun, 28 Dec 2025 07:58:58 -0800 (PST)
+From: Alexandru Gagniuc <mr.nuke.me@gmail.com>
+To: robh@kernel.org,
+	krzk+dt@kernel.org,
+	conor+dt@kernel.org,
+	jjohnson@kernel.org,
+	ath11k@lists.infradead.org
+Cc: johannes@sipsolutions.net,
+	linux-wireless@vger.kernel.org,
+	devicetree@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Alexandru Gagniuc <mr.nuke.me@gmail.com>
+Subject: [PATCH 0/2] ath11k: support IPQ9574
+Date: Sun, 28 Dec 2025 09:58:50 -0600
+Message-ID: <20251228155855.2118792-1-mr.nuke.me@gmail.com>
+X-Mailer: git-send-email 2.45.1
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/mixed; BOUNDARY="8323329-1130933901-1766936024=:180263"
-Content-ID: <a0fda3d8-1e2a-70ae-2121-87da0d9bd1b4@lysator.liu.se>
-X-Virus-Scanned: ClamAV using ClamSMTP
+Content-Transfer-Encoding: 8bit
 
-  This message is in MIME format.  The first part should be readable text,
-  while the remaining parts are likely unreadable without MIME-aware tools.
+Hi,
 
---8323329-1130933901-1766936024=:180263
-Content-Type: text/plain; CHARSET=UTF-8
-Content-Transfer-Encoding: 8BIT
-Content-ID: <a6f5863d-825f-1735-a874-344abc7ea85c@lysator.liu.se>
+This is my attempt to make ath11k work on IPQ9574. IPQ9574 is intended
+for wifi-7 devices, so it seems the exception rather than the rule to
+pair it with a wifi-6 chip. That's exactly what my Archer BE550 does.
+
+This consists of a wifi-6 (QCN5024) chip connected via PCIe to the
+SoC, but exposed to the OS via AHB. The Q6 firmware [4] requires
+remoteproc support introduced in a separate series [3]. The QMI
+firmware interface is very similar to IPQ6018, such that almost no
+new code is needed.
+
+I am not including the wifi@c000000 devicetree node in this series, as
+it depends on nodes from the remoteproc series [3].
+
+I have been successfully doogfooding this for a few of weeks in AP mode.
+There dependencies to this series. [2] is a compile-time dependency,
+whereas [1] and [3] are needed for full functionality. I was adivsed to
+leave [1] and [2] as separate patches and not add them to this series.
 
 
-According to 
-https://git.ti.com/cgit/wilink8-wlan/build-utilites/commit/?h=r8.9&id=a2ee50aa5190ed3b334373d6cd09b1bff56ffcf7 
-the patch below should be used with firmware 8.9.1.0.2 . Does it make 
-sense to include this in upstream kernel? I cannot really say if it 
-improves stability or not: I don't have the possibility to run WFA test 
-5.2.27, and I am still seing issues with firmware 8.9.1.0.2 and 6.6 kernel 
-(with all 80211 fixes). Testing of this patch with older wl18xx firmware 
-is ongoing. 
+[1] https://lore.kernel.org/ath11k/20251206175829.2573256-1-mr.nuke.me@gmail.com/
+[2] https://lore.kernel.org/ath11k/20251228151408.2116108-1-mr.nuke.me@gmail.com/
+[3] https://lore.kernel.org/linux-remoteproc/20251219043425.888585-1-mr.nuke.me@gmail.com/
+[4] https://github.com/quic/upstream-wifi-fw
 
+Alexandru Gagniuc (2):
+  dt: bindings: net: ath11k: add IPQ9574 compatible
+  wifi: ath11k: support ipq9574
 
-From ac0695f9bf6810ae91cd0e441199102f0c16e507 Mon Sep 17 00:00:00 2001
-From: Itzhak <shlomii@ti.com>
-Date: Thu, 28 Dec 2023 08:47:58 +0200
-Subject: [PATCH 25/27] allocated packets tracking mechanism may get broken
+ .../bindings/net/wireless/qcom,ath11k.yaml    |  3 +
+ drivers/net/wireless/ath/ath11k/ahb.c         |  4 +
+ drivers/net/wireless/ath/ath11k/core.c        | 82 +++++++++++++++++++
+ drivers/net/wireless/ath/ath11k/core.h        |  1 +
+ drivers/net/wireless/ath/ath11k/hw.c          | 51 ++++++++++++
+ drivers/net/wireless/ath/ath11k/hw.h          |  1 +
+ 6 files changed, 142 insertions(+)
 
- It is observed that at some scenarios, the best effort queue
- that should always show positive or 0 count, may show negative. This cause
- the best effort queue to look full to the network stack and thus causing the
- network stack to push less packets than to other QoS queues. It would cause
- specific WFA tests like 5.2.27 to fail.
-
-Signed-off-by: Itzhak <shlomii@ti.com>
----
- drivers/net/wireless/ti/wlcore/tx.c | 25 +++++++++++++++++++++++++
- 1 file changed, 25 insertions(+)
-
-diff --git a/drivers/net/wireless/ti/wlcore/tx.c b/drivers/net/wireless/ti/wlcore/tx.c
-index b6e19c2d66b0..02727bb9bc50 100644
---- a/drivers/net/wireless/ti/wlcore/tx.c
-+++ b/drivers/net/wireless/ti/wlcore/tx.c
-@@ -27,6 +27,19 @@
-  */
- #include "../wl12xx/reg.h"
- 
-+/* mapping tid to AC queue
-+ */
-+static const int ieee802_tid_to_ac[8] = {
-+	CONF_TX_AC_BE,
-+	CONF_TX_AC_BK,
-+	CONF_TX_AC_BK,
-+	CONF_TX_AC_BE,
-+	CONF_TX_AC_VI,
-+	CONF_TX_AC_VI,
-+	CONF_TX_AC_VO,
-+	CONF_TX_AC_VO
-+};
-+
- static int wl1271_set_default_wep_key(struct wl1271 *wl,
- 				      struct wl12xx_vif *wlvif, u8 id)
- {
-@@ -287,6 +300,18 @@ static void wl1271_tx_fill_hdr(struct wl1271 *wl, struct wl12xx_vif *wlvif,
- 	/* queue */
- 	ac = wl1271_tx_get_queue(skb_get_queue_mapping(skb));
- 	desc->tid = skb->priority;
-+	
-+	/* check that tid is aligned with ac, if not, align with ac */
-+	if ( (desc->tid >= 0) && (desc->tid <= 7) && (ieee802_tid_to_ac[desc->tid] != ac) )
-+	{
-+		/* decrement the wrong allocated ac and increment according to tid */
-+		wl->tx_allocated_pkts[ac]--;
-+		wl->tx_allocated_pkts[ieee802_tid_to_ac[desc->tid]]++;
-+		
-+		wl1271_debug(DEBUG_TX,
-+			     "tx_fill_hdr: tid: %d. ac: %d",
-+			     desc->tid, ac);
-+	}
- 
- 	if (is_dummy) {
- 		/*
 -- 
-2.25.0.windows.1
+2.45.1
 
-
-
-
-Br,
-Peter Åstrand
---8323329-1130933901-1766936024=:180263--
 
