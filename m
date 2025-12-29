@@ -1,69 +1,69 @@
-Return-Path: <linux-wireless+bounces-30158-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-30159-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4DF63CE5C7C
-	for <lists+linux-wireless@lfdr.de>; Mon, 29 Dec 2025 04:10:50 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 40DDACE5C7F
+	for <lists+linux-wireless@lfdr.de>; Mon, 29 Dec 2025 04:11:06 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 2859D30006E0
-	for <lists+linux-wireless@lfdr.de>; Mon, 29 Dec 2025 03:10:47 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 116E530081A8
+	for <lists+linux-wireless@lfdr.de>; Mon, 29 Dec 2025 03:10:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B2E781FBEB0;
-	Mon, 29 Dec 2025 03:10:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A5C12204C36;
+	Mon, 29 Dec 2025 03:10:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=realtek.com header.i=@realtek.com header.b="iwAfcHrR"
+	dkim=pass (2048-bit key) header.d=realtek.com header.i=@realtek.com header.b="AukcTIUX"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 31DBC224F3
-	for <linux-wireless@vger.kernel.org>; Mon, 29 Dec 2025 03:10:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E73C7230D35
+	for <linux-wireless@vger.kernel.org>; Mon, 29 Dec 2025 03:10:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=211.75.126.72
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1766977845; cv=none; b=sM1ylYKWrTwskiJ863NSIauuGu3Tl8mRRRdndKGNhOWpqkai2+fq5K754jFa6eJVjWQlfYuEHyP8LCN1xRMZFi2vE7g5CP7obj7lKBffwdrotlzgQb6Az1zO853MqMDGjEcuOke1PQ5eBQgvZWF3m50ruA9RH144KMJlHtVc4TM=
+	t=1766977850; cv=none; b=R0iZLuwVLi3tZMQ3iyt/AEI4eEMZfNTm4gVfe+qN230JIejDaSJr3MBU8qanX0FEhCsIuJ2S4eBlfioluGwxp48Ci86RUTvtPgmzD2F+1TlLtHMIpmZ33o93HHa1EpLlx/0ic46V8W3zDJmxLgaA2CqXTskLh4ibUp/3DCoLVGk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1766977845; c=relaxed/simple;
-	bh=Xzuk3FilAuDDNOVLNRuBjODlNF9IAmBLuF6Zrzvb8JM=;
+	s=arc-20240116; t=1766977850; c=relaxed/simple;
+	bh=Tc+0YR6TK49pflaIWAzhtXFS29I7DbKVFZQyOL+F/ks=;
 	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=gvqctMfY2kgHBWy1lYQxrvvI9FKou0PD5pGuFQfse2Aow1QropjqAjpy3Z2Sbs8oaiZ2AKDCCAU1xM2fkO6ScHvP84/COiMEt5w83uW3WN9XJIIoGyWJpqaifPveUMaOqQSLsXMKOsdRIpWdTOKlQHRDnxzZKLWlWRe6ps4PP+4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com; spf=pass smtp.mailfrom=realtek.com; dkim=pass (2048-bit key) header.d=realtek.com header.i=@realtek.com header.b=iwAfcHrR; arc=none smtp.client-ip=211.75.126.72
+	 MIME-Version:Content-Type; b=jKQBSgtBXC9a5iQ/xjzGMrHBglBbIu0v9pgJ06L4g3vy/lJ1V/3zfDN3yz6rqAFkJLX4nV1G1pTnsA06RYnzKsr1b/cFXPG5emU48DeTqk4w4hJawYDkL/7Mb1n+DeYmkdCI4rARzPTclzDPYKoNAb28XzyxB9NMFaEe36dRMQQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com; spf=pass smtp.mailfrom=realtek.com; dkim=pass (2048-bit key) header.d=realtek.com header.i=@realtek.com header.b=AukcTIUX; arc=none smtp.client-ip=211.75.126.72
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=realtek.com
-X-SpamFilter-By: ArmorX SpamTrap 5.80 with qID 5BT3Afs36283527, This message is accepted by code: ctloc85258
+X-SpamFilter-By: ArmorX SpamTrap 5.80 with qID 5BT3AkRkA283555, This message is accepted by code: ctloc85258
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=realtek.com; s=dkim;
-	t=1766977841; bh=drtJUr522fQ3G4WNkDSNcRdtJdc/t31cD5V1Yu+Aw0M=;
+	t=1766977846; bh=cNA0Vj5FLpUFzLrhzKi5br5VvjH37+SgOkLvMlTwD2w=;
 	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
 	 MIME-Version:Content-Transfer-Encoding:Content-Type;
-	b=iwAfcHrRTgd++IldBl2ks4IcAWQFH7i8p7oxTTnWbv5WytVJTSpelR+EokSp9J8rK
-	 mHFRecrX5RHSzzlZrF82UDQtC96Wktx50cI6jS0NObIeF6aPT/9KIu8Hm4C/+Zq4WI
-	 +LUe111OgrN7XXv5ApIL/IyPnrbD5qqrs22YIk0EI3HlOIL4Vz21BXLSnzp9zP1osW
-	 4+lD27NO4f6vJzwJhCmOIj0y2TyFg4p/CCSX/AtRKqOYurwcKAsNSsl/lkGGQuLpLQ
-	 sdpCjwgQyNWyLsjlP0Gtk2n4U43XJqG2SetMw+XxRMz45L9QByeZqyw0uKG9HEs0DW
-	 drfB/i9we8cPw==
-Received: from mail.realtek.com (rtkexhmbs03.realtek.com.tw[10.21.1.53])
-	by rtits2.realtek.com.tw (8.15.2/3.21/5.94) with ESMTPS id 5BT3Afs36283527
+	b=AukcTIUX6vvO5JM5JgEV94w2jQSjWQy4UWKXwUuFFSAEMhGyoxaIqAixtbN4TJ69/
+	 Yk+EoL3d8wcYBf3ajrfqhds6fFAOSvByg01XZBNLFeo97x7/taOL3tT5mfdSg8BSsC
+	 tSsEABzwNxXnP4N2t5enIWli07troE/s5gcdXiAIiVD/YF3CRTyVY8QYiXpmltNIL7
+	 +x+qbBVpgfb9TQiX8R23dL5Jac385kHdeRvWBs/8WiV6gwcHwTHz1m9/TW5799Xd4+
+	 wuZ0mRc8f1VfQr9DS5j6c1AuZS4Ub+54+gA3ril/2tSNhgZkFAjXOPF9po8NdokDdZ
+	 h7p7gZBxoK6mQ==
+Received: from mail.realtek.com (rtkexhmbs02.realtek.com.tw[172.21.6.41])
+	by rtits2.realtek.com.tw (8.15.2/3.21/5.94) with ESMTPS id 5BT3AkRkA283555
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK)
-	for <linux-wireless@vger.kernel.org>; Mon, 29 Dec 2025 11:10:41 +0800
-Received: from RTKEXHMBS01.realtek.com.tw (172.21.6.40) by
- RTKEXHMBS03.realtek.com.tw (10.21.1.53) with Microsoft SMTP Server
+	for <linux-wireless@vger.kernel.org>; Mon, 29 Dec 2025 11:10:46 +0800
+Received: from RTKEXHMBS06.realtek.com.tw (10.21.1.56) by
+ RTKEXHMBS02.realtek.com.tw (172.21.6.41) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1748.10; Mon, 29 Dec 2025 11:10:42 +0800
+ 15.2.1748.10; Mon, 29 Dec 2025 11:10:47 +0800
 Received: from RTKEXHMBS03.realtek.com.tw (10.21.1.53) by
- RTKEXHMBS01.realtek.com.tw (172.21.6.40) with Microsoft SMTP Server
+ RTKEXHMBS06.realtek.com.tw (10.21.1.56) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1748.10; Mon, 29 Dec 2025 11:10:41 +0800
+ 15.2.1748.10; Mon, 29 Dec 2025 11:10:46 +0800
 Received: from [127.0.1.1] (172.21.40.75) by RTKEXHMBS03.realtek.com.tw
  (10.21.1.53) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1748.10 via Frontend
- Transport; Mon, 29 Dec 2025 11:10:41 +0800
+ Transport; Mon, 29 Dec 2025 11:10:46 +0800
 From: Ping-Ke Shih <pkshih@realtek.com>
 To: <linux-wireless@vger.kernel.org>
 CC: <gary.chang@realtek.com>, <timlee@realtek.com>,
         <dian_syuan0116@realtek.com>, <damon.chen@realtek.com>,
         <kevin_yang@realtek.com>
-Subject: [PATCH rtw-next v2 11/12] wifi: rtw89: regd: 6 GHz power type marks default when inactive
-Date: Mon, 29 Dec 2025 11:09:25 +0800
-Message-ID: <20251229030926.27004-12-pkshih@realtek.com>
+Subject: [PATCH rtw-next v2 12/12] wifi: rtw89: enhance connection stability when triggering beacon loss
+Date: Mon, 29 Dec 2025 11:09:26 +0800
+Message-ID: <20251229030926.27004-13-pkshih@realtek.com>
 X-Mailer: git-send-email 2.25.1
 In-Reply-To: <20251229030926.27004-1-pkshih@realtek.com>
 References: <20251229030926.27004-1-pkshih@realtek.com>
@@ -76,33 +76,38 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Content-Type: text/plain
 
-From: Zong-Zhe Yang <kevin_yang@realtek.com>
+From: Dian-Syuan Yang <dian_syuan0116@realtek.com>
 
-When inactive, 6 GHz power type has been assigned to the default one,
-but missed to mark the local control variable, dflt, true. Then, this
-might let some 6 GHz power info of disconnected APs keep being taken
-into account under certain cases.
+If the driver supports ack status reports of TX frames, mac80211 allows it
+to detect AP if it's alive and determine whether the client can maintain
+the connection by sending null-data. Therefore, refine the flow to let
+driver inform mac80211 to enable beacon loss work to track AP's status
+upon receiving beacon loss event.
 
-So, mark default when inactive.
-
-Signed-off-by: Zong-Zhe Yang <kevin_yang@realtek.com>
+Signed-off-by: Dian-Syuan Yang <dian_syuan0116@realtek.com>
 Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
 ---
- drivers/net/wireless/realtek/rtw89/regd.c | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/net/wireless/realtek/rtw89/mac.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/net/wireless/realtek/rtw89/regd.c b/drivers/net/wireless/realtek/rtw89/regd.c
-index 209d84909f88..c3425ed44732 100644
---- a/drivers/net/wireless/realtek/rtw89/regd.c
-+++ b/drivers/net/wireless/realtek/rtw89/regd.c
-@@ -1142,6 +1142,7 @@ static int rtw89_reg_6ghz_power_recalc(struct rtw89_dev *rtwdev,
- 		}
- 	} else {
- 		rtwvif_link->reg_6ghz_power = RTW89_REG_6GHZ_POWER_DFLT;
-+		dflt = true;
- 	}
+diff --git a/drivers/net/wireless/realtek/rtw89/mac.c b/drivers/net/wireless/realtek/rtw89/mac.c
+index 91854ae9a310..1375ab324a8b 100644
+--- a/drivers/net/wireless/realtek/rtw89/mac.c
++++ b/drivers/net/wireless/realtek/rtw89/mac.c
+@@ -5253,10 +5253,10 @@ rtw89_mac_bcn_fltr_rpt(struct rtw89_dev *rtwdev, struct rtw89_vif_link *rtwvif_l
+ 			if (start_detect)
+ 				return;
  
- 	rcu_read_unlock();
+-			ieee80211_connection_loss(vif);
+-		} else {
+-			rtw89_fw_h2c_set_bcn_fltr_cfg(rtwdev, rtwvif_link, true);
++			ieee80211_beacon_loss(vif);
+ 		}
++
++		rtw89_fw_h2c_set_bcn_fltr_cfg(rtwdev, rtwvif_link, true);
+ 		return;
+ 	case RTW89_BCN_FLTR_NOTIFY:
+ 		nl_event = NL80211_CQM_RSSI_THRESHOLD_EVENT_HIGH;
 -- 
 2.25.1
 
