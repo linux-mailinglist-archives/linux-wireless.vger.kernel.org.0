@@ -1,90 +1,101 @@
-Return-Path: <linux-wireless+bounces-30163-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-30164-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id B5082CE74EA
-	for <lists+linux-wireless@lfdr.de>; Mon, 29 Dec 2025 17:13:33 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 28C47CE80BE
+	for <lists+linux-wireless@lfdr.de>; Mon, 29 Dec 2025 20:33:55 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 62CF73010FDD
-	for <lists+linux-wireless@lfdr.de>; Mon, 29 Dec 2025 16:13:32 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 71CFF300B2A9
+	for <lists+linux-wireless@lfdr.de>; Mon, 29 Dec 2025 19:33:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 13ABC32ED34;
-	Mon, 29 Dec 2025 16:13:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E2BF83A1E94;
+	Mon, 29 Dec 2025 19:33:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="LtiLcenL"
+	dkim=fail reason="signature verification failed" (2048-bit key) header.d=kallisti.us header.i=@kallisti.us header.b="GL2QuF2a"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from ravenhurst.kallisti.us (ravenhurst.kallisti.us [69.164.210.145])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DE1C832E750;
-	Mon, 29 Dec 2025 16:13:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 55A2B10F1
+	for <linux-wireless@vger.kernel.org>; Mon, 29 Dec 2025 19:33:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=69.164.210.145
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767024811; cv=none; b=tMVMrH+5TdbesGdoNQ+JEw0GQxRcvMqADx7xd5dgISQxmdBNQyW1n2agvgGlB6fNOLWbyjHO461zfVyarTsyI20OxEyu4D0AbXFeRVyXCqEot34EHHTTU5Qe+Cutf7gOJiLabL8Q3lBawwvYoKz4/5+Yfu9vYt/MRapu93fVfAM=
+	t=1767036830; cv=none; b=RpZ4UrUglpizXMIrOF+Vwpb8k0Oy0VBslc7RB5HGRWTVmNyLkk9ube5AV+3ia7MTcl9VRbCS/2vNP8lQkUil7DFMG3LG4YjMgdgq18CyBQSgMthTxr+jyVrPLAoMV4BQSClLEqn9B5VZNH8CdTjDPR1LjHQfdTXTeO2pWLf7c04=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767024811; c=relaxed/simple;
-	bh=KvvIUZMqRvhgusL0SexTKBmx/xATApomYnBE6m6MIgQ=;
-	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc; b=FDznsJ4EXxZ1MxqiQzggudIBkBMzqjvmhVzQRkupMwI0ElQjVjHzwvDVKLq8jLygULAOMc04bgFJS7Xupvp11nAIadCqRzR0XnhCK9M9qC4mKd2R2VEcleRQOrstu7b903Mg55m54L6P0uS9wtF8dIX6+a7/wlx60UWwP/PHmxw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=LtiLcenL; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6734EC4CEF7;
-	Mon, 29 Dec 2025 16:13:30 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1767024810;
-	bh=KvvIUZMqRvhgusL0SexTKBmx/xATApomYnBE6m6MIgQ=;
-	h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
-	b=LtiLcenLSiAly2vUb9s+FkEklgwbP9kdoskQqhbTzrurWlaQJEE0Ek3ATkElXoFEF
-	 OQdcuG135kad0fKeOh4ESOoi5MskXuE1VWpj5M7A4U7zWKpLYORWEW2fB9/wxA9LrA
-	 LXDF4aVZCX6JZ7iahZcHofZjv5j4DHjDEFHZufOukHYWWjvAgG/rhNuBs3KQ5u18yX
-	 XVENIbQtRqNOEaGrxtgObr7kc2cd6e7uQo4YIq57+8g9OLEGuCVNd6gFAr9wPvUd6l
-	 X1MkqSQcqu77vRmt+WD9P/RP9nvxEbLOjn61X8G7DVOWRjhRybiC0JyJozaycBCNK4
-	 m533Lsfd96/5A==
-Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 3B7B43808200;
-	Mon, 29 Dec 2025 16:10:14 +0000 (UTC)
-Content-Type: text/plain; charset="utf-8"
+	s=arc-20240116; t=1767036830; c=relaxed/simple;
+	bh=Oe/dpeOePNqWlvKHi7bC6wOKh0bRRV9CfjacYIrtkmA=;
+	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
+	 Content-Disposition; b=Sx/TDDDfXa7nZJGuzy3cuHkwZGQNKlL8WnF1NYqgNf1bwCBXw16HhAtqLtHp7IulN8OI2jHDaDLtikNMCk9lyHQgvdq+STSwZ/euOg7LUiZarBgrvLMon4yc3o7xPTvdkbLL5cAihAFoHKO1i/EhCzXSuAzN9iNxewMp909eeSQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=kallisti.us; spf=pass smtp.mailfrom=kallisti.us; dkim=pass (2048-bit key) header.d=kallisti.us header.i=@kallisti.us header.b=GL2QuF2a; arc=none smtp.client-ip=69.164.210.145
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=kallisti.us
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=kallisti.us
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=kallisti.us
+	; s=20220106; h=Content-Type:MIME-Version:Message-ID:Subject:Cc:To:From:Date:
+	Sender:Reply-To:Content-Transfer-Encoding:Content-ID:Content-Description:
+	Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:
+	In-Reply-To:References:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
+	List-Post:List-Owner:List-Archive;
+	bh=qjp8rl3nPGoDuaselUVmykEowQaimV2zANlt7iKEMWo=; b=GL2QuF2a8Sc+cMz4VpJQy+tmXn
+	/ZWJ9ef0eNZjKGXFILpehcH3xbDbmJxJ9rzYpTJyUwHOdA8YL52bMxVRMtdXYen4dRyC0nySUaoev
+	XPHgV2/UR9aNsFGsYIXzB+Pd3955cK1L3dLABDGnUxYFZgW7dz0bKme1rWcIVCjxZ4wc60a3CrXvO
+	7d4usFoVwDlL08v12kbXuwvM09LKpHUmOgNLcqTrw2KTpYYavOdYNf20ymPj5cgEcsfrBZlheBwRc
+	roPtxCnVkdtomq9QKdGf+Ft9n84F9gfKF7nKl3Ir9oE5OEFbeSA9ngiGwLu7/33r/6X6xWNac+gbe
+	Eg0mB4LA==;
+Received: from [50.52.120.217] (helo=vanvanmojo.kallisti.us)
+	by ravenhurst.kallisti.us with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.98.2)
+	(envelope-from <ross@kallisti.us>)
+	id 1vaIPz-000000072eQ-1Zad;
+	Mon, 29 Dec 2025 13:56:35 -0500
+Date: Mon, 29 Dec 2025 10:56:31 -0800
+From: Ross Vandegrift <ross@kallisti.us>
+To: Jeff Johnson <jjohnson@kernel.org>
+Cc: Mark Pearson <mpearson-lenovo@squebb.ca>, ath11k@lists.infradead.org, 
+	linux-wireless@vger.kernel.org
+Subject: [PATCH] wifi: ath11k: add pm quirk for Thinkpad Z16 Gen1
+Message-ID: <lqdj7qwifphuvho2ag6fi25y63on2lzur7of6yt5prz3rxveur@zofllv7qgf2w>
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: Re: [GIT PULL] wireless-2025-12-17
-From: patchwork-bot+netdevbpf@kernel.org
-Message-Id: 
- <176702461304.2997313.8145325048246369890.git-patchwork-notify@kernel.org>
-Date: Mon, 29 Dec 2025 16:10:13 +0000
-References: <20251217201441.59876-3-johannes@sipsolutions.net>
-In-Reply-To: <20251217201441.59876-3-johannes@sipsolutions.net>
-To: Johannes Berg <johannes@sipsolutions.net>
-Cc: netdev@vger.kernel.org, linux-wireless@vger.kernel.org
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
-Hello:
+Z16 Gen1 has the wakeup-from-suspend issues from [1] but was never added
+to the appropriate quirk list.  I've tested this patch on top of 6.18.2,
+it fixes the issue for me.
 
-This pull request was applied to netdev/net.git (main)
-by Paolo Abeni <pabeni@redhat.com>:
+There's normally a second DMI product id, but I don't know what it is.
+I also suspect Z13 Gen1 should be added too.  Mark, do you have those?
 
-On Wed, 17 Dec 2025 21:12:20 +0100 you wrote:
-> Hi,
-> 
-> First set of changes for -rc, and then I'm pretty much ready
-> to sign off for vacations for a bit, I hope nothing critical
-> comes up.
-> 
-> The tag message is almost bigger than the code changes which
-> I'd say isn't a bad sign :)
-> 
-> [...]
+[1] - https://bugzilla.kernel.org/show_bug.cgi?id=219196
 
-Here is the summary with links:
-  - [GIT,PULL] wireless-2025-12-17
-    https://git.kernel.org/netdev/net/c/a6694b7e39b3
+Signed-off-by: Ross Vandegrift <ross@kallisti.us>
+---
+ drivers/net/wireless/ath/ath11k/core.c | 7 +++++++
+ 1 file changed, 7 insertions(+)
 
-You are awesome, thank you!
+diff --git a/drivers/net/wireless/ath/ath11k/core.c b/drivers/net/wireless/ath/ath11k/core.c
+index 812686173ac8..1c910db69738 100644
+--- a/drivers/net/wireless/ath/ath11k/core.c
++++ b/drivers/net/wireless/ath/ath11k/core.c
+@@ -994,6 +994,13 @@ static const struct dmi_system_id ath11k_pm_quirk_table[] = {
+ 			DMI_MATCH(DMI_PRODUCT_NAME, "21F9"),
+ 		},
+ 	},
++	{
++		.driver_data = (void *)ATH11K_PM_WOW,
++		.matches = { /* Z16 G1 */
++			DMI_MATCH(DMI_BOARD_VENDOR, "LENOVO"),
++			DMI_MATCH(DMI_PRODUCT_NAME, "21D4"),
++		},
++	},
+ 	{}
+ };
+ 
 -- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/patchwork/pwbot.html
-
+2.47.3
 
 
