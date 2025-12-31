@@ -1,177 +1,143 @@
-Return-Path: <linux-wireless+bounces-30204-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-30205-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5ED65CEB362
-	for <lists+linux-wireless@lfdr.de>; Wed, 31 Dec 2025 04:57:05 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id CA6BFCEB365
+	for <lists+linux-wireless@lfdr.de>; Wed, 31 Dec 2025 05:01:00 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id ED3613011A6A
-	for <lists+linux-wireless@lfdr.de>; Wed, 31 Dec 2025 03:56:53 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 40E43300DA63
+	for <lists+linux-wireless@lfdr.de>; Wed, 31 Dec 2025 04:00:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 85FB130C348;
-	Wed, 31 Dec 2025 03:56:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8D87030F804;
+	Wed, 31 Dec 2025 04:00:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="K2wMiTuN"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QDEAe+mn"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-ot1-f52.google.com (mail-ot1-f52.google.com [209.85.210.52])
+Received: from mail-ot1-f49.google.com (mail-ot1-f49.google.com [209.85.210.49])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 15CEB30BBB9
-	for <linux-wireless@vger.kernel.org>; Wed, 31 Dec 2025 03:56:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.52
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AD84538FA3
+	for <linux-wireless@vger.kernel.org>; Wed, 31 Dec 2025 04:00:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.49
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767153412; cv=none; b=MOkBwZTZ9j1blN4FHTKD47w75GO42aP862xOeS5aDvnttQiYobszZKGmaRyLrjggdQUGvMNg78l25AGg86QK8ZfuFibyN3vFkJo3UY/WrQUzpzRhzhMFe58FsO9+QDsOMy6ZHJaz42DBVQTj8+PMe+yaKpTShsUziHJC/AzZHXw=
+	t=1767153658; cv=none; b=LYrZ9ry4iWVowOey1d5jOTiNNDlbKNJPNjD6k4w4CVPwazb0lT0kDq/b+knrWXFy/vMIamFwG043Tqb6gFIS/ZJZ6/Rc+097BY5TRwzrMCEMHU82/g+VHzlAkYS7XWyA/VAp4ghiwdrbZMX5C15rgcOC7iQum2GxEipsut1lCHI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767153412; c=relaxed/simple;
-	bh=7IRQGniC8RV35kb3vf8on4sHktiyQS6VyfUPpC0weeM=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=ku8tDDBzOHh5EwUVSS1ZnRKVkVY7mv9U9ATcRmPTxkn8DyePbDydBtvgB8waCocZrEoNy8otD6Bz9i64z5mvTWDybeOF9W/S2DWu+LP2FUivzSvnncGaaDil0SmoEJfyTKb0jhJUsxi6CprlZ0nLZKmLhemO6XArhagaOyepMVQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linuxfoundation.org; spf=pass smtp.mailfrom=linuxfoundation.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=K2wMiTuN; arc=none smtp.client-ip=209.85.210.52
+	s=arc-20240116; t=1767153658; c=relaxed/simple;
+	bh=aVCmmmffctXfw9cmZQsxfxcu0pYDd14gTER5bJ+1/Fg=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=Q6xVLbjpHAfxO/Uy3aa5bOdWhuvvzLPDyzna39n/Sz2PZtQGeSPezAPB3BPBhrUhlNpQN4zT39YXdcae8YyE4lmYNhHMRVD/QCCxIxoIuHW7ejk2YSt5FbLkeoHg12BiixgZLpx2vfMLL04CDTMW6DXJ7jrgJXdCCRFu0elL7SM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linuxfoundation.org; spf=pass smtp.mailfrom=linuxfoundation.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QDEAe+mn; arc=none smtp.client-ip=209.85.210.49
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linuxfoundation.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linuxfoundation.org
-Received: by mail-ot1-f52.google.com with SMTP id 46e09a7af769-7c75178c05fso3694337a34.0
-        for <linux-wireless@vger.kernel.org>; Tue, 30 Dec 2025 19:56:48 -0800 (PST)
+Received: by mail-ot1-f49.google.com with SMTP id 46e09a7af769-7c6e815310aso8614574a34.0
+        for <linux-wireless@vger.kernel.org>; Tue, 30 Dec 2025 20:00:56 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linuxfoundation.org; s=google; t=1767153408; x=1767758208; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=+ml+CWfuCyt8xPYOA/5JpaBit+P1+CQ1YTe7Xd3yRLk=;
-        b=K2wMiTuNJUwiuMmL1mdfjIZ932gD/ChC5yPm2GlY0M3qoyeVwb90T+lIkGrvxiw7ff
-         FUzmfdxS3dl9rerC/XSSd8aqhBQDL4cliCNDjI6YdegjVpurPlfV4QQ4yJ3fTvQkUkfF
-         +PIgeUzB+GNyQtt8W2As22Tt9zDmYaCjyrWLE=
+        d=linuxfoundation.org; s=google; t=1767153655; x=1767758455; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=7VNylGeHty3hhb1+O1+8twZmND0tnjr8y4TdbwY0GSg=;
+        b=QDEAe+mnC/VsAfBqky7/IRbgRoTvJAl7BM7WcwiOTLIms2lXrO2720xXpfkHf61doS
+         qXYhv75kdZzHbCeFh/4uiZLD/GGLoPsXgSgLYvVw+UtsQvAZH/1OpNG8Y+7y6LDOxzkk
+         xppVNr7ai/8qj7xdxDkwe+VHefXGpkXF7KQEY=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1767153408; x=1767758208;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=+ml+CWfuCyt8xPYOA/5JpaBit+P1+CQ1YTe7Xd3yRLk=;
-        b=PfUKo0cz2XPyGBTi2p+4VP9CTWq2/vjzh0Zg42VvWRlDbGpsYH6WFbgjDcBDk00F2r
-         LxSF7+SHNa8+nVsr0BMq55AuzHZ32mWVLR00THTVCUxTGYUzIxNWgutQ5oqDtKaLXxJf
-         OtXRsEKjwPyZak+Zu5uTPC4L3oRygXndg3p65MOFrjp88ZSv4OJol4jSxlLni6BFizyV
-         INpsUdGQ709zQdHeyW0+GLZ4F+/mMFs/mlsKCOTg5wqQZowFfRkITvWiD71VWdsASfI3
-         jFBiIF8b+AJjH+AE6j0RNSL8ssXAu68Xb4P9+cnDt+sjAJgWDyOZjk4jhlBaV+FlgLBI
-         UBOg==
-X-Forwarded-Encrypted: i=1; AJvYcCUI5qN8WmfcO2q7D8JiJxCPwfmPHb3mgFORCKgQ/DN2LW/r6l3GORiFEugv8ufbM4HnFqDJaZ4cHnd3GaYbqg==@vger.kernel.org
-X-Gm-Message-State: AOJu0YxIaX2tdQdKn+OG5Ggpt7Jt4wjOMtOlsDGTiQ+Kf8cOX574kHxF
-	VYsunsrAMjMaVISZQmxq2bCmyARVuudEiQxW66xgwwtG7lqMUsUo8Zgc7mvw3dLjCeM=
-X-Gm-Gg: AY/fxX7TvSnMRG+sUZSInvlq/cLb4XfeDNB1AJYeuuvh7wwqu3IHhzZ1H0ogocNLRkg
-	GMo2MLCO5C8qOSLpYxbOGDuK3rQkW0Nxqdrj4VZz9gm63wyl4uy5pzFfRu3GyoI+kgwkSv/Uop+
-	83uMOlSHVMsZPdWXJfc8GSMH4A6DB1a9egHFyL0LDXwd7zH/qggMJuXf/P7b4FYinM+v1pMIKVv
-	+Kfi059YJvz0+ut7hWt87/Y8Gvs9Kde3jYi4prJXg/nj0SO6QBGd10+4LDLfjfdmAe+AYvoN8vi
-	wXZzo3gBv2aCQW+j3QysozR9rLK5e5WKjkX6Y1k7qjDjXQycArGhVIji7g6M8kdHzL30Ex8+Cce
-	ttCAp4+/EjAPiV5bfLfwijrjaBnpYbZIOHWENUKdK/DBShzYM5gD2HzYV4SfVg6KIECasWMA9Ho
-	2OqwKlj4xhZPLQbF1po3st4If6GVWn+X7tpu+2
-X-Google-Smtp-Source: AGHT+IERNvC/8Px0V8IUK3zXSD3cLtvI8CWOvblwcgNUVpnq5u8i6LLyM/rg8Ub+tY/WiPli4ic1Sg==
-X-Received: by 2002:a05:6830:8385:b0:7c6:d0b4:c973 with SMTP id 46e09a7af769-7cc66a843c9mr16033899a34.28.1767153407908;
-        Tue, 30 Dec 2025 19:56:47 -0800 (PST)
-Received: from shuah-framework.internal ([38.175.187.108])
-        by smtp.gmail.com with ESMTPSA id 46e09a7af769-7cc667d7f1dsm23582518a34.15.2025.12.30.19.56.46
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 30 Dec 2025 19:56:47 -0800 (PST)
-From: Shuah Khan <skhan@linuxfoundation.org>
-To: nbd@nbd.name,
-	lorenzo@kernel.org,
-	ryder.lee@mediatek.com,
-	shayne.chen@mediatek.com,
-	sean.wang@mediatek.com,
-	matthias.bgg@gmail.com,
-	angelogioacchino.delregno@collabora.com,
-	torvalds@linux-foundation.org,
-	ebiggers@kernel.org,
-	johannes@sipsolutions.net
-Cc: Shuah Khan <skhan@linuxfoundation.org>,
-	linux-wireless@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org,
-	linux-mediatek@lists.infradead.org
-Subject: [PATCH] Revert "wifi: mt76: Strip whitespace from build ddate"
-Date: Tue, 30 Dec 2025 20:56:42 -0700
-Message-ID: <20251231035645.5545-1-skhan@linuxfoundation.org>
-X-Mailer: git-send-email 2.51.0
+        d=1e100.net; s=20230601; t=1767153655; x=1767758455;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=7VNylGeHty3hhb1+O1+8twZmND0tnjr8y4TdbwY0GSg=;
+        b=xTaAPpDZpy3Af/YvS06/au9hy+R4aTBadyRuoOZR6r3NAyiksZH3mz4iQxWhVnF8Ya
+         bJnjUTyeGeQoX46AeTNscCUAzyQISCirj7+GV3h7aHAnS61jE++XikcJtkDC8JyF3iKi
+         1jAjVgBK92HAhdvSums6lXKzopxc9JzNv09wJ8ToADneusdBBUION94JLXjkzRKSP9Tv
+         0ncbHAPeBYL039Fp0SA7XibrrI9xlPWgy9W2fwEEOz9ac5Og1IOXoTzBBolN3Xisc8z4
+         gtOTLdnlUZ5dhA6dtLkdBLdu/rzJugImPJd7sMQ+R+3Zhgzhkh64VV7+WSVnNWy5HxHj
+         6MRg==
+X-Forwarded-Encrypted: i=1; AJvYcCVesyIdvcHn0GMYobceFzrtfuyl7gzmF4CGx+elitRjSqQSdE5UhwpIVcidVhj3+s0wZOBwI1wuQbuThxvioA==@vger.kernel.org
+X-Gm-Message-State: AOJu0Yyk/m+mCgqs6uq+Et0tX4dJ0WHqgGVaI6/vve4jOFi696W56bD3
+	VFSYkSzT1XkOZ1+wvLjA6Y6V5aa6fRXuI9KJG46Eoym6U8qjZ8dMUG82sgftYgM4a9U=
+X-Gm-Gg: AY/fxX7jmJv2Y/mjdztHf8BI3SfW0KyJAPelIZ7JT61nAnciR9UDChx8A8Hqtco5/v9
+	of9Bx1FGhnsxP7de/x9e+8roVVkuCNf8tfgYrRei4ylOR/ilmFKlqQ5trHo0/fBtoJxZZEed2Nw
+	giyNtvPkBNirtFR9aiXsHUCGlcSWO/dRv9YTdN5JDOOjGMKgFK3VW+bQi1tXKANDLRmHB8khGs5
+	BnUI/cukiUfWdLVFLNQLqm5XmDNZ0CDQmjpzmW7q4YJ3zc0DxwbN2om+sotB5MUZYfWa6ny1tdg
+	I0sOw6CHLZuBwu38Pj9eUIdUUookXiEecL7NWi4WN4/roWtD5wm1nV9qzb0IXkPSCdL8YkeJkXG
+	a8r0yKQURqmzJd+VDS0rPcC2f1RHhyERe724QPpGTIa7euIoSEl25TsNCNYdCVfkxcmoXfCkB5y
+	f7NM4+k2DGGgL6hiHu6T+3iHI=
+X-Google-Smtp-Source: AGHT+IF9F/siqhgAslvMOnVu4nsfQJ2/g/8vSzR2SppngNQxxoARtodDwAouloJqhdkdH2KDxgw/hQ==
+X-Received: by 2002:a05:6830:6688:b0:7c7:5974:3563 with SMTP id 46e09a7af769-7cc66a15846mr16285625a34.29.1767153655626;
+        Tue, 30 Dec 2025 20:00:55 -0800 (PST)
+Received: from [192.168.1.14] ([38.175.187.108])
+        by smtp.gmail.com with ESMTPSA id 46e09a7af769-7cc66727e37sm24112013a34.1.2025.12.30.20.00.54
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 30 Dec 2025 20:00:54 -0800 (PST)
+Message-ID: <fdebed60-264d-4f05-9423-618bc3ec6d6d@linuxfoundation.org>
+Date: Tue, 30 Dec 2025 21:00:53 -0700
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla Thunderbird
+Subject: Re: Linux 6.19-rc1 mediatek mt7921e broke badly
+To: Eric Biggers <ebiggers@kernel.org>,
+ Linus Torvalds <torvalds@linux-foundation.org>
+Cc: Matthew Schwartz <matthew.schwartz@linux.dev>,
+ =?UTF-8?Q?Thomas_Wei=C3=9Fschuh?= <linux@weissschuh.net>,
+ Mikhail Gavrilov <mikhail.v.gavrilov@gmail.com>,
+ Mario Limonciello <superm1@kernel.org>,
+ Johannes Berg <johannes@sipsolutions.net>, quan.zhou@mediatek.com,
+ Felix Fietkau <nbd@nbd.name>, lorenzo@kernel.org, ryder.lee@mediatek.com,
+ linux-wireless@vger.kernel.org,
+ Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+ Linux ARM <linux-arm-kernel@lists.infradead.org>,
+ linux-mediatek@lists.infradead.org, shuah <shuah@kernel.org>,
+ Shuah Khan <skhan@linuxfoundation.org>
+References: <d7f3b00d-beec-41f0-b157-7cfb871f9a46@linuxfoundation.org>
+ <756e3f65-b2f2-4da3-985a-17754a7a872d@t-8ch.de>
+ <CAHk-=wjO-7uR5HBi-MFnkxAxjhpgfbAQ+HCMKPiXFVwM+AJ7tA@mail.gmail.com>
+ <6fc04df5-b753-4b2d-b978-0e59a7f48ff7@linux.dev>
+ <c1304430-dd7d-437b-8744-70af9ca85c0d@linuxfoundation.org>
+ <CAHk-=wh6WP0Wq=rbC2Md6vsFrV-+nvDjxgfx9NpMzUmVFNkJ9A@mail.gmail.com>
+ <20251231015712.GA2299@sol>
+Content-Language: en-US
+From: Shuah Khan <skhan@linuxfoundation.org>
+In-Reply-To: <20251231015712.GA2299@sol>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-This reverts commit f804a5895ebad2b2d4fb8a3688d2115926e993d5.
+On 12/30/25 18:57, Eric Biggers wrote:
+> On Tue, Dec 30, 2025 at 05:27:13PM -0800, Linus Torvalds wrote:
+>> On Tue, 30 Dec 2025 at 15:57, Shuah Khan <skhan@linuxfoundation.org> wrote:
+>>>
+>>> I would recommend reverting f804a5895eba instead of trying
+>>> fix it. Then find a better way to eliminate extra newline that
+>>> shows up in dmesg when firmware build date happens to have
+>>> a newline.
+>>
+>> Yeah. Let's revert it.
+>>
+>> And the way to fix the extra newline is trivial: just remove it from
+>> the "dev_info()" format string.
+>>
+>> Our kernel printing logic will add a newline for the next line anyway
+>> if it is missing (unless somebody explicitly uses PR_CONT).
+>>
+>> Can whoever saw the problem confirm that just a revert and a "remove
+>> \n from that dev_info()" fixes the output for them?
+> 
+> That works for me.  The revert by itself makes the FORTIFY_SOURCE crash
+> go away and reintroduces a blank line in the log.  Removing the \n from
+> the string passed to dev_info as well makes the blank line go away.
+> 
 
-This change introduced the following panic, and mt792x_load_firmware()
-fails. wifi is dead on systems with mt792x wireless.
+I just sent the revert. I will try removing \n from dev_info()
+later on tomorrow.
 
-kern  :crit  : kernel BUG at lib/string_helpers.c:1043!
-kern  :warn  : Oops: invalid opcode: 0000 [#1] SMP NOPTI
-kern  :warn  : CPU: 14 UID: 0 PID: 61 Comm: kworker/14:0 Tainted: G        W
-        6.19.0-rc1 #1 PREEMPT(voluntary)
-kern  :warn  : Tainted: [W]=WARN
-kern  :warn  : Hardware name: Framework Laptop 13 (AMD Ryzen 7040Series)/FRANMDCP07, BIOS 03.16 07/25/2025
-kern  :warn  : Workqueue: events mt7921_init_work [mt7921_common]
-kern  :warn  : RIP: 0010:__fortify_panic+0xd/0xf
-kern  :warn  : Code: 66 2e 0f 1f 84 00 00 00 00 00 0f 1f 00 90 90 90 90 90 90 90 90 90 90 90 90 90 90 90 90 f3 0f 1e fa 40 0f b6 ff e8 c3 55 71 00 <0f> 0b 48 8b 54 24 10 48 8b 74 24 08 4c 89 e9 48 c7 c7 00 a2 d5 a0
-kern  :warn  : RSP: 0018:ffffa7a5c03a3d10 EFLAGS: 00010246
-kern  :warn  : RAX: ffffffffa0d7aaf2 RBX: 0000000000000000 RCX: ffffffffa0d7aaf2
-kern  :warn  : RDX: 0000000000000011 RSI: ffffffffa0d5a170 RDI: ffffffffa128db10
-kern  :warn  : RBP: ffff91650ae52060 R08: 0000000000000010 R09: ffffa7a5c31b2000
-kern  :warn  : R10: ffffa7a5c03a3bf0 R11: 00000000ffffffff R12: 0000000000000000
-kern  :warn  : R13: ffffa7a5c31b2000 R14: 0000000000001000 R15: 0000000000000000
-kern  :warn  : FS:  0000000000000000(0000) GS:ffff91743e664000(0000) knlGS:0000000000000000
-kern  :warn  : CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-kern  :warn  : CR2: 00007f10786c241c CR3: 00000003eca24000 CR4: 0000000000f50ef0
-kern  :warn  : PKRU: 55555554
-kern  :warn  : Call Trace:
-kern  :warn  :  <TASK>
-kern  :warn  :  mt76_connac2_load_patch.cold+0x2b/0xa41 [mt76_connac_lib]
-kern  :warn  :  ? srso_alias_return_thunk+0x5/0xfbef5
-kern  :warn  :  mt792x_load_firmware+0x36/0x150 [mt792x_lib]
-kern  :warn  :  mt7921_run_firmware+0x2c/0x4a0 [mt7921_common]
-kern  :warn  :  ? srso_alias_return_thunk+0x5/0xfbef5
-kern  :warn  :  ? mt7921_rr+0x12/0x30 [mt7921e]
-kern  :warn  :  ? srso_alias_return_thunk+0x5/0xfbef5
-kern  :warn  :  ? ____mt76_poll_msec+0x75/0xb0 [mt76]
-kern  :warn  :  mt7921e_mcu_init+0x4c/0x7a [mt7921e]
-kern  :warn  :  mt7921_init_work+0x51/0x190 [mt7921_common]
-kern  :warn  :  process_one_work+0x18b/0x340
-kern  :warn  :  worker_thread+0x256/0x3a0
-kern  :warn  :  ? __pfx_worker_thread+0x10/0x10
-kern  :warn  :  kthread+0xfc/0x240
-kern  :warn  :  ? __pfx_kthread+0x10/0x10
-kern  :warn  :  ? __pfx_kthread+0x10/0x10
-kern  :warn  :  ret_from_fork+0x254/0x290
-kern  :warn  :  ? __pfx_kthread+0x10/0x10
-kern  :warn  :  ret_from_fork_asm+0x1a/0x30
-kern  :warn  :  </TASK>
-Signed-off-by: Shuah Khan <skhan@linuxfoundation.org>
----
- drivers/net/wireless/mediatek/mt76/mt76_connac_mcu.c | 6 +-----
- 1 file changed, 1 insertion(+), 5 deletions(-)
+My quick trial still showed extra line which didn't make sense
+to me. More trials have to wait for tomorrow.
 
-diff --git a/drivers/net/wireless/mediatek/mt76/mt76_connac_mcu.c b/drivers/net/wireless/mediatek/mt76/mt76_connac_mcu.c
-index ea99167765b0..fba7025ffd3f 100644
---- a/drivers/net/wireless/mediatek/mt76/mt76_connac_mcu.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt76_connac_mcu.c
-@@ -3101,7 +3101,6 @@ int mt76_connac2_load_patch(struct mt76_dev *dev, const char *fw_name)
- 	int i, ret, sem, max_len = mt76_is_sdio(dev) ? 2048 : 4096;
- 	const struct mt76_connac2_patch_hdr *hdr;
- 	const struct firmware *fw = NULL;
--	char build_date[17];
- 
- 	sem = mt76_connac_mcu_patch_sem_ctrl(dev, true);
- 	switch (sem) {
-@@ -3125,11 +3124,8 @@ int mt76_connac2_load_patch(struct mt76_dev *dev, const char *fw_name)
- 	}
- 
- 	hdr = (const void *)fw->data;
--	strscpy(build_date, hdr->build_date, sizeof(build_date));
--	build_date[16] = '\0';
--	strim(build_date);
- 	dev_info(dev->dev, "HW/SW Version: 0x%x, Build Time: %.16s\n",
--		 be32_to_cpu(hdr->hw_sw_ver), build_date);
-+		 be32_to_cpu(hdr->hw_sw_ver), hdr->build_date);
- 
- 	for (i = 0; i < be32_to_cpu(hdr->desc.n_region); i++) {
- 		struct mt76_connac2_patch_sec *sec;
--- 
-2.51.0
+thanks,
+-- Shuah
 
 
