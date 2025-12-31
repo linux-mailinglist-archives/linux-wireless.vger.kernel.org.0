@@ -1,68 +1,68 @@
-Return-Path: <linux-wireless+bounces-30220-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-30221-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1E11CCEBA2E
-	for <lists+linux-wireless@lfdr.de>; Wed, 31 Dec 2025 10:09:33 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id CA0CDCEBA31
+	for <lists+linux-wireless@lfdr.de>; Wed, 31 Dec 2025 10:09:39 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 5CEC93034A22
-	for <lists+linux-wireless@lfdr.de>; Wed, 31 Dec 2025 09:07:47 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 704863038283
+	for <lists+linux-wireless@lfdr.de>; Wed, 31 Dec 2025 09:07:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AA07C31197A;
-	Wed, 31 Dec 2025 09:07:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9F8FC2D660E;
+	Wed, 31 Dec 2025 09:07:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=realtek.com header.i=@realtek.com header.b="OmkklA8w"
+	dkim=pass (2048-bit key) header.d=realtek.com header.i=@realtek.com header.b="K6C64f6K"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EC8C93112C2
-	for <linux-wireless@vger.kernel.org>; Wed, 31 Dec 2025 09:07:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D0D123112C2
+	for <linux-wireless@vger.kernel.org>; Wed, 31 Dec 2025 09:07:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=211.75.126.72
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767172066; cv=none; b=HD9YbxDlKXtjhCfhlpRaIShOQvYPdR1AX05orOSTUxTNHCTHp7fLt4gxNEtVlraqKrGHnRMzsNd6BJfQjqp8jDumVbTQptzByVLOc7QLMcZpb+sKuJ+K1N7I0taMl0rKcIyt2LtzGLJQSCHLm6AcDDWLOdQzXoPhlCe/Lwn7+iI=
+	t=1767172072; cv=none; b=s8vFEqcVn49giP05N5Nj0ZOYidWRcCeeU2GEOMYonUMejEhlj5CshVZB3MKefTJkMwt7ODZz1g9nFBKs1XKD+MKlOUAVPhBT5O55mMoKX17qAiXGZEzTlQD1vjLbwu7e7dWZurDBLjNxyJxhQU1RDFSQp2/H4+vVldHL6Kko58k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767172066; c=relaxed/simple;
-	bh=4pSB8h2tdO9cPEJ6ExeolyBD9ZnIyO1hOXHHggUtOr4=;
+	s=arc-20240116; t=1767172072; c=relaxed/simple;
+	bh=jyxrHeELKAZfvYga3mxe/rTcCTsRkCdCb4pOuoxgiO4=;
 	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=ChFtpJWsngzmw0GkgMQ7Zx9F42alhZzh+J3/c/nS4OBACefVjGnr9cBbQsMVXKxl3nHvAjnUTLZDmPy1RHHN8MUJ4A8sFsnaOLJo6mJTWV6pnk1VGoxWostUuvSfWpNpDBKg6hs6E6KF0fO7+HWwhs65khVrZ4LqeexO6069q0I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com; spf=pass smtp.mailfrom=realtek.com; dkim=pass (2048-bit key) header.d=realtek.com header.i=@realtek.com header.b=OmkklA8w; arc=none smtp.client-ip=211.75.126.72
+	 MIME-Version:Content-Type; b=BCfmo0eqzUg6v2ljh3ywGMmX4oczTx3OLdOTFhd5BuW987MN9pW8Z36EiTMaXycrpVWHOoTStzMyJCkSEKPtmjYK7J6Ns9xlUKBFSAOPKDq0+xKG668lLDgHwd1B4ICMHC5YPckhdP7ZBBihno+nfnMnbAi0IXcLR/Sap71qIPk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com; spf=pass smtp.mailfrom=realtek.com; dkim=pass (2048-bit key) header.d=realtek.com header.i=@realtek.com header.b=K6C64f6K; arc=none smtp.client-ip=211.75.126.72
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=realtek.com
-X-SpamFilter-By: ArmorX SpamTrap 5.80 with qID 5BV97gr26881251, This message is accepted by code: ctloc85258
+X-SpamFilter-By: ArmorX SpamTrap 5.80 with qID 5BV97mX22881262, This message is accepted by code: ctloc85258
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=realtek.com; s=dkim;
-	t=1767172062; bh=XOzYci4YYhffKZdM87HN/64GRCP50QNOqbS3I/787dU=;
+	t=1767172068; bh=jtS0FvTA5FmpZSd5V0ylIOTAx/fC0rw6HWszrJmlJq8=;
 	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
 	 MIME-Version:Content-Transfer-Encoding:Content-Type;
-	b=OmkklA8wnwjHVlOOJo145aWCrbvBBomAmVd9Ua3StHbU8MEydNQQjgvJFij/OXHk5
-	 ZbpKeLBgsw2Ca/x9A1BaV9ePIfJbVaXDMeBCYmvLsUrD8SwBw0uAXE8atoq3rPG215
-	 L+FiHF6+v+wWudITAt3Sm5+2bX3x1M1+wMopo74TMngHI4MdxQ9cBc8HU1i9SzknAn
-	 tBDTO24rW8eGyBXLTiZcDZPuLU20xue8N2GtJ+95QyQMhh+UOZA3Qo7IRVhLOzCMSO
-	 DBw3Gi83mrvng52xqKN30oHxluZ/sxZVyZLJO4tm3sK9vnTTAj1B3tL7XvY6ziNfSy
-	 B6xcgnDtn1DcQ==
-Received: from mail.realtek.com (rtkexhmbs04.realtek.com.tw[10.21.1.54])
-	by rtits2.realtek.com.tw (8.15.2/3.21/5.94) with ESMTPS id 5BV97gr26881251
+	b=K6C64f6Ka+UJJrw5LwU4J9Z2do+o+QK3Vz9Tw8MuXqJkJ4y1EW8ffepxN66J8+EN2
+	 FROr9cqN44Nr1Kxm8jJN3w8XyDYXT7sohVxqRsdEatYRrG188wWMvLoC0EdZl+HBrW
+	 7x7+knSvjUCsd0oY1HZTRwIWTxG8Ptnp2Yq2VTRp5OHfGgk9xwnpdJ1mv9mnznj58B
+	 7uOT6Yf3rSIqREXu8aH+GjIqKQaooAUxn05GP9Z2tSbC1w1WJT6EzL/o9zaef3dYG0
+	 HLJzrv0ihVGzwVg3/CxX9c5w2KVwSr4tGnCeqmUzrSVB79Mw+NcK7piBq6L+26/lhQ
+	 8Ha+93j66QNCQ==
+Received: from mail.realtek.com (rtkexhmbs03.realtek.com.tw[10.21.1.53])
+	by rtits2.realtek.com.tw (8.15.2/3.21/5.94) with ESMTPS id 5BV97mX22881262
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK)
-	for <linux-wireless@vger.kernel.org>; Wed, 31 Dec 2025 17:07:42 +0800
-Received: from RTKEXHMBS05.realtek.com.tw (10.21.1.55) by
- RTKEXHMBS04.realtek.com.tw (10.21.1.54) with Microsoft SMTP Server
+	for <linux-wireless@vger.kernel.org>; Wed, 31 Dec 2025 17:07:48 +0800
+Received: from RTKEXHMBS01.realtek.com.tw (172.21.6.40) by
+ RTKEXHMBS03.realtek.com.tw (10.21.1.53) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1748.10; Wed, 31 Dec 2025 17:07:43 +0800
+ 15.2.1748.10; Wed, 31 Dec 2025 17:07:48 +0800
 Received: from RTKEXHMBS04.realtek.com.tw (10.21.1.54) by
- RTKEXHMBS05.realtek.com.tw (10.21.1.55) with Microsoft SMTP Server
+ RTKEXHMBS01.realtek.com.tw (172.21.6.40) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1748.10; Wed, 31 Dec 2025 17:07:42 +0800
+ 15.2.1748.10; Wed, 31 Dec 2025 17:07:48 +0800
 Received: from [127.0.1.1] (172.21.40.75) by RTKEXHMBS04.realtek.com.tw
  (10.21.1.54) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1748.10 via Frontend
- Transport; Wed, 31 Dec 2025 17:07:42 +0800
+ Transport; Wed, 31 Dec 2025 17:07:48 +0800
 From: Ping-Ke Shih <pkshih@realtek.com>
 To: <linux-wireless@vger.kernel.org>
 CC: <gary.chang@realtek.com>, <dian_syuan0116@realtek.com>,
         <damon.chen@realtek.com>, <kevin_yang@realtek.com>
-Subject: [PATCH rtw-next 07/11] wifi: rtw89: refine mis-ordered entries in FW feature table
-Date: Wed, 31 Dec 2025 17:06:43 +0800
-Message-ID: <20251231090647.56407-8-pkshih@realtek.com>
+Subject: [PATCH rtw-next 08/11] wifi: rtw89: fw: change WITH_RFK_PRE_NOTIFY to be a FW feature group
+Date: Wed, 31 Dec 2025 17:06:44 +0800
+Message-ID: <20251231090647.56407-9-pkshih@realtek.com>
 X-Mailer: git-send-email 2.25.1
 In-Reply-To: <20251231090647.56407-1-pkshih@realtek.com>
 References: <20251231090647.56407-1-pkshih@realtek.com>
@@ -77,44 +77,113 @@ Content-Type: text/plain
 
 From: Zong-Zhe Yang <kevin_yang@realtek.com>
 
-Make all entries in firmware feature table in increasing order of firmware
-version.
+Actually, WITH_RFK_PRE_NOTIFY means supporting one of RFK_PRE_NOTIFY_Vx.
+So, change it to be a FW feature group which contains RFK_PRE_NOTIFY_Vx.
+Then, because WITH_RFK_PRE_NOTIFY is abandoned after some FW versions by
+chip, disable WITH_RFK_PRE_NOTIFY correspondingly in FW feature table.
 
 Signed-off-by: Zong-Zhe Yang <kevin_yang@realtek.com>
 Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
 ---
- drivers/net/wireless/realtek/rtw89/fw.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ drivers/net/wireless/realtek/rtw89/core.c     |  4 ++--
+ drivers/net/wireless/realtek/rtw89/core.h     | 10 ++++++----
+ drivers/net/wireless/realtek/rtw89/fw.c       |  5 +++--
+ drivers/net/wireless/realtek/rtw89/mac80211.c |  2 +-
+ drivers/net/wireless/realtek/rtw89/phy.c      |  2 +-
+ 5 files changed, 13 insertions(+), 10 deletions(-)
 
+diff --git a/drivers/net/wireless/realtek/rtw89/core.c b/drivers/net/wireless/realtek/rtw89/core.c
+index 96fb2839379f..191caafbd0fb 100644
+--- a/drivers/net/wireless/realtek/rtw89/core.c
++++ b/drivers/net/wireless/realtek/rtw89/core.c
+@@ -478,7 +478,7 @@ void rtw89_chip_rfk_channel(struct rtw89_dev *rtwdev,
+ 	bool prehdl_link = false;
+ 
+ 	if (chip->chip_gen != RTW89_CHIP_AX &&
+-	    !RTW89_CHK_FW_FEATURE(WITH_RFK_PRE_NOTIFY, &rtwdev->fw) &&
++	    !RTW89_CHK_FW_FEATURE_GROUP(WITH_RFK_PRE_NOTIFY, &rtwdev->fw) &&
+ 	    !mon && !rtw89_entity_check_hw(rtwdev, rtwvif_link->phy_idx))
+ 		prehdl_link = true;
+ 
+@@ -6244,7 +6244,7 @@ int rtw89_core_mlsr_switch(struct rtw89_dev *rtwdev, struct rtw89_vif *rtwvif,
+ 		goto wake_queue;
+ 	}
+ 
+-	if (RTW89_CHK_FW_FEATURE(WITH_RFK_PRE_NOTIFY, &rtwdev->fw))
++	if (RTW89_CHK_FW_FEATURE_GROUP(WITH_RFK_PRE_NOTIFY, &rtwdev->fw))
+ 		rtw89_chip_rfk_channel(rtwdev, target);
+ 
+ 	rtwvif->mlo_mode = RTW89_MLO_MODE_MLSR;
+diff --git a/drivers/net/wireless/realtek/rtw89/core.h b/drivers/net/wireless/realtek/rtw89/core.h
+index 8010ee070108..38a64b0bfb5c 100644
+--- a/drivers/net/wireless/realtek/rtw89/core.h
++++ b/drivers/net/wireless/realtek/rtw89/core.h
+@@ -4682,10 +4682,12 @@ enum rtw89_fw_feature {
+ 	RTW89_FW_FEATURE_MACID_PAUSE_SLEEP,
+ 	RTW89_FW_FEATURE_SCAN_OFFLOAD_BE_V0,
+ 	RTW89_FW_FEATURE_WOW_REASON_V1,
+-	RTW89_FW_FEATURE_RFK_PRE_NOTIFY_V0,
+-	RTW89_FW_FEATURE_RFK_PRE_NOTIFY_V1,
+-	RTW89_FW_FEATURE_RFK_PRE_NOTIFY_V2,
+-	RTW89_FW_FEATURE_WITH_RFK_PRE_NOTIFY,
++	RTW89_FW_FEATURE_GROUP(WITH_RFK_PRE_NOTIFY,
++			       RTW89_FW_FEATURE_RFK_PRE_NOTIFY_V0,
++			       RTW89_FW_FEATURE_RFK_PRE_NOTIFY_V1,
++			       RTW89_FW_FEATURE_RFK_PRE_NOTIFY_V2,
++			       RTW89_FW_FEATURE_RFK_PRE_NOTIFY_V3,
++	),
+ 	RTW89_FW_FEATURE_RFK_RXDCK_V0,
+ 	RTW89_FW_FEATURE_RFK_IQK_V0,
+ 	RTW89_FW_FEATURE_NO_WOW_CPU_IO_RX,
 diff --git a/drivers/net/wireless/realtek/rtw89/fw.c b/drivers/net/wireless/realtek/rtw89/fw.c
-index 067f6f0ea101..4ba99e7078fe 100644
+index 4ba99e7078fe..fed9b3db1543 100644
 --- a/drivers/net/wireless/realtek/rtw89/fw.c
 +++ b/drivers/net/wireless/realtek/rtw89/fw.c
-@@ -884,8 +884,8 @@ static const struct __fw_feat_cfg fw_feat_tbl[] = {
- 	__CFG_FW_FEAT(RTL8852BT, ge, 0, 29, 127, 0, CRASH_TRIGGER_TYPE_1),
- 	__CFG_FW_FEAT(RTL8852BT, ge, 0, 29, 127, 0, SER_L1_BY_EVENT),
- 	__CFG_FW_FEAT(RTL8852BT, ge, 0, 29, 130, 0, SIM_SER_L0L1_BY_HALT_H2C),
--	__CFG_FW_FEAT(RTL8852C, le, 0, 27, 33, 0, NO_DEEP_PS),
- 	__CFG_FW_FEAT(RTL8852C, ge, 0, 0, 0, 0, RFK_NTFY_MCC_V0),
-+	__CFG_FW_FEAT(RTL8852C, le, 0, 27, 33, 0, NO_DEEP_PS),
- 	__CFG_FW_FEAT(RTL8852C, ge, 0, 27, 34, 0, TX_WAKE),
- 	__CFG_FW_FEAT(RTL8852C, ge, 0, 27, 36, 0, SCAN_OFFLOAD),
- 	__CFG_FW_FEAT(RTL8852C, ge, 0, 27, 40, 0, CRASH_TRIGGER_TYPE_0),
-@@ -898,12 +898,12 @@ static const struct __fw_feat_cfg fw_feat_tbl[] = {
- 	__CFG_FW_FEAT(RTL8852C, ge, 0, 29, 94, 0, SER_L1_BY_EVENT),
- 	__CFG_FW_FEAT(RTL8852C, ge, 0, 29, 130, 0, SIM_SER_L0L1_BY_HALT_H2C),
- 	__CFG_FW_FEAT(RTL8922A, ge, 0, 0, 0, 0, RFK_PRE_NOTIFY_V0),
--	__CFG_FW_FEAT(RTL8922A, ge, 0, 34, 30, 0, CRASH_TRIGGER_TYPE_0),
- 	__CFG_FW_FEAT(RTL8922A, ge, 0, 34, 11, 0, MACID_PAUSE_SLEEP),
-+	__CFG_FW_FEAT(RTL8922A, ge, 0, 34, 30, 0, CRASH_TRIGGER_TYPE_0),
- 	__CFG_FW_FEAT(RTL8922A, ge, 0, 34, 35, 0, SCAN_OFFLOAD),
- 	__CFG_FW_FEAT(RTL8922A, ge, 0, 34, 35, 0, SCAN_OFFLOAD_EXTRA_OP),
--	__CFG_FW_FEAT(RTL8922A, lt, 0, 35, 21, 0, SCAN_OFFLOAD_BE_V0),
- 	__CFG_FW_FEAT(RTL8922A, ge, 0, 35, 12, 0, BEACON_FILTER),
-+	__CFG_FW_FEAT(RTL8922A, lt, 0, 35, 21, 0, SCAN_OFFLOAD_BE_V0),
- 	__CFG_FW_FEAT(RTL8922A, ge, 0, 35, 22, 0, WOW_REASON_V1),
- 	__CFG_FW_FEAT(RTL8922A, lt, 0, 35, 28, 0, RFK_IQK_V0),
- 	__CFG_FW_FEAT(RTL8922A, ge, 0, 35, 31, 0, RFK_PRE_NOTIFY_V1),
+@@ -918,7 +918,7 @@ static const struct __fw_feat_cfg fw_feat_tbl[] = {
+ 	__CFG_FW_FEAT(RTL8922A, ge, 0, 35, 76, 0, LPS_DACK_BY_C2H_REG),
+ 	__CFG_FW_FEAT(RTL8922A, ge, 0, 35, 79, 0, CRASH_TRIGGER_TYPE_1),
+ 	__CFG_FW_FEAT(RTL8922A, ge, 0, 35, 80, 0, BEACON_TRACKING),
+-	__CFG_FW_FEAT(RTL8922A, le, 0, 35, 80, 0, WITH_RFK_PRE_NOTIFY),
++	__DIS_FW_FEAT(RTL8922A, ge, 0, 35, 84, 0, WITH_RFK_PRE_NOTIFY, G),
+ 	__CFG_FW_FEAT(RTL8922A, lt, 0, 35, 84, 0, ADDR_CAM_V0),
+ };
+ 
+@@ -6414,7 +6414,8 @@ int rtw89_fw_h2c_rf_pre_ntfy(struct rtw89_dev *rtwdev,
+ 	u32 val32;
+ 	int ret;
+ 
+-	if (RTW89_CHK_FW_FEATURE(RFK_PRE_NOTIFY_V2, &rtwdev->fw)) {
++	if (RTW89_CHK_FW_FEATURE(RFK_PRE_NOTIFY_V3, &rtwdev->fw)) {
++	} else if (RTW89_CHK_FW_FEATURE(RFK_PRE_NOTIFY_V2, &rtwdev->fw)) {
+ 		len = sizeof(*h2c_v2);
+ 		ver = 2;
+ 	} else if (RTW89_CHK_FW_FEATURE(RFK_PRE_NOTIFY_V1, &rtwdev->fw)) {
+diff --git a/drivers/net/wireless/realtek/rtw89/mac80211.c b/drivers/net/wireless/realtek/rtw89/mac80211.c
+index 96dc94c1f556..ba71709a9bc9 100644
+--- a/drivers/net/wireless/realtek/rtw89/mac80211.c
++++ b/drivers/net/wireless/realtek/rtw89/mac80211.c
+@@ -720,7 +720,7 @@ static void rtw89_ops_vif_cfg_changed(struct ieee80211_hw *hw,
+ 	if (changed & BSS_CHANGED_MLD_VALID_LINKS) {
+ 		struct rtw89_vif_link *cur = rtw89_get_designated_link(rtwvif);
+ 
+-		if (RTW89_CHK_FW_FEATURE(WITH_RFK_PRE_NOTIFY, &rtwdev->fw))
++		if (RTW89_CHK_FW_FEATURE_GROUP(WITH_RFK_PRE_NOTIFY, &rtwdev->fw))
+ 			rtw89_chip_rfk_channel(rtwdev, cur);
+ 
+ 		if (hweight16(vif->active_links) == 1)
+diff --git a/drivers/net/wireless/realtek/rtw89/phy.c b/drivers/net/wireless/realtek/rtw89/phy.c
+index d0e5d52964de..f56b433a1674 100644
+--- a/drivers/net/wireless/realtek/rtw89/phy.c
++++ b/drivers/net/wireless/realtek/rtw89/phy.c
+@@ -3808,7 +3808,7 @@ int rtw89_phy_rfk_pre_ntfy_and_wait(struct rtw89_dev *rtwdev,
+ {
+ 	int ret;
+ 
+-	if (RTW89_CHK_FW_FEATURE(WITH_RFK_PRE_NOTIFY, &rtwdev->fw))
++	if (RTW89_CHK_FW_FEATURE_GROUP(WITH_RFK_PRE_NOTIFY, &rtwdev->fw))
+ 		goto pre_ntfy;
+ 
+ 	return rtw89_fw_h2c_rf_pre_ntfy_mcc(rtwdev, phy_idx);
 -- 
 2.25.1
 
