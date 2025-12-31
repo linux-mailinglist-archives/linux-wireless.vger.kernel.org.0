@@ -1,108 +1,88 @@
-Return-Path: <linux-wireless+bounces-30210-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-30211-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 231B5CEB827
-	for <lists+linux-wireless@lfdr.de>; Wed, 31 Dec 2025 09:08:27 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 126D1CEB830
+	for <lists+linux-wireless@lfdr.de>; Wed, 31 Dec 2025 09:15:22 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 623AC300FFBE
-	for <lists+linux-wireless@lfdr.de>; Wed, 31 Dec 2025 08:08:24 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 9F583300F311
+	for <lists+linux-wireless@lfdr.de>; Wed, 31 Dec 2025 08:15:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BE28B30F925;
-	Wed, 31 Dec 2025 08:08:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CDD451E8826;
+	Wed, 31 Dec 2025 08:15:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=realtek.com header.i=@realtek.com header.b="kqvpXDdM"
+	dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b="XoZ9pg9z"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from sipsolutions.net (s3.sipsolutions.net [168.119.38.16])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C49E5189BB0;
-	Wed, 31 Dec 2025 08:08:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=211.75.126.72
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2D6C93A1E82
+	for <linux-wireless@vger.kernel.org>; Wed, 31 Dec 2025 08:15:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=168.119.38.16
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767168502; cv=none; b=B4SNwvjveVrp6WPrXZ/VdxoHgcrO/wIXi0PigNOorrj5q/2bTAvzGV7pIOLgMOg6pcjrkJQrErg2J6PmL0kVw3qMkResyODxoD7Jf/6amSBXzWiI+I3LfThI5W2O9kYEYs1UgLBoTiAhWylIbApkARbYzLMa+kfmtHayEK8/yaQ=
+	t=1767168919; cv=none; b=gIcQ/D5r89Lt/iJZGzdcbs9rek8gn266jsP3+6wMKHMUUo1VXCnatlHUC5MHdRFG3AxV8XGXP3u8OtTaeNy4MIp5Cu0rSYS8axFeuxeiP4wnU+f4tv57DnbnpIYIEAePjKbPH52ih+GNtRfhm9yc4YcgjL0vYyzSeL/beGe5lBY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767168502; c=relaxed/simple;
-	bh=JW1BLqhvvHBAxaRR8io3zgL4Bi+efVFTHEmBK41At0U=;
-	h=From:To:CC:Subject:In-Reply-To:References:Message-ID:Date:
-	 MIME-Version:Content-Type; b=l605SGcJcv4nvYm+nSexqAakrLjEWg6FAXiEl0XEZw5SUe9FaG6/fnqOAfH8J3yIal7uKr+5j+gas/WNzD1qkESTma2DJeK93b2sUV+ml0x/OqpPfrBzueKOrWDmUpZGOThKbFJbFJtVB1ZjqJ+PUQfNuWyN82Pz+gYKhGPtnJQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com; spf=pass smtp.mailfrom=realtek.com; dkim=pass (2048-bit key) header.d=realtek.com header.i=@realtek.com header.b=kqvpXDdM; arc=none smtp.client-ip=211.75.126.72
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=realtek.com
-X-SpamFilter-By: ArmorX SpamTrap 5.80 with qID 5BV88GCL0804020, This message is accepted by code: ctloc85258
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=realtek.com; s=dkim;
-	t=1767168496; bh=HbsTUo6pLUvdS942Jaa04PtVAWHJdG8hha8lCaKzFZQ=;
-	h=From:To:CC:Subject:In-Reply-To:References:Message-ID:Date:
-	 MIME-Version:Content-Type;
-	b=kqvpXDdMgBzfKFLqH1xI9q5q/aWjD6lTSPodQ/oXxHCpCFwxGtIT220LfsLhv9tN0
-	 DBL97cBwInyuaBQMEFA4/jRSPANVPJnlpqVOPKT9N2Dofc1hvhuOhMpfKuvMns4Xpo
-	 1OMoE5DLc8rbF78yvfNQJQAhiJ7mzKeiVa3InKTx9mqyi5rMzuYdbOjrSMDbMwoYx7
-	 GiC9KPYC299PtuExDpOcFvprAybjxTJgsm0TxTU07jPe5WVlnfgPSDYih4kpQdI3dE
-	 hpb/OpYyyqEbzWn8DfRECMLf/TWXr+w7sEzRmjkyAvS0GNhEIB9U+wMS5tcX0tv3jp
-	 hWOv1CmmXWMRQ==
-Received: from mail.realtek.com (rtkexhmbs03.realtek.com.tw[10.21.1.53])
-	by rtits2.realtek.com.tw (8.15.2/3.21/5.94) with ESMTPS id 5BV88GCL0804020
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Wed, 31 Dec 2025 16:08:16 +0800
-Received: from RTKEXHMBS03.realtek.com.tw (10.21.1.53) by
- RTKEXHMBS03.realtek.com.tw (10.21.1.53) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1748.10; Wed, 31 Dec 2025 16:08:16 +0800
-Received: from [127.0.1.1] (172.21.40.75) by RTKEXHMBS03.realtek.com.tw
- (10.21.1.53) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1748.10 via Frontend
- Transport; Wed, 31 Dec 2025 16:08:11 +0800
-From: Ping-Ke Shih <pkshih@realtek.com>
-To: Ali Tariq <alitariq45892@gmail.com>, <Jes.Sorensen@gmail.com>
-CC: <linux-wireless@vger.kernel.org>, <netdev@vger.kernel.org>,
-        <linux-kernel@vger.kernel.org>, <stable@vger.kernel.org>,
-        Ali Tariq
-	<alitariq45892@gmail.com>
-Subject: Re: [PATCH] rtl8xxxu: fix slab-out-of-bounds in rtl8xxxu_sta_add
-In-Reply-To: <20251225115430.13011-1-alitariq45892@gmail.com>
-References: <20251225115430.13011-1-alitariq45892@gmail.com>
-Message-ID: <f05788ea-fb2d-4152-a4cd-016d4f5e8273@RTKEXHMBS03.realtek.com.tw>
-Date: Wed, 31 Dec 2025 16:08:11 +0800
+	s=arc-20240116; t=1767168919; c=relaxed/simple;
+	bh=t0hi9D+HRBvqh8DV7JHRdpg6ok+UYNCnISzM+BKnIy8=;
+	h=Message-ID:Subject:From:To:Date:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=ima5uzG8e7y6qtX0+1NHm+z/lYhkSJapmkBxn3k8fW/rAmfFC3d1tgNw2hSuGnZwYnZJ/dUu7+cWAJ6AyJ3l6J5EyqfmV4WtY+X0hZC1DWhjzlMGahKhOz7mdM6n7pqLPvO3DAaS7q20Ed1HE+J4srLsUc0Tout3kwpyo5OGgP8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net; spf=pass smtp.mailfrom=sipsolutions.net; dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b=XoZ9pg9z; arc=none smtp.client-ip=168.119.38.16
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sipsolutions.net
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=sipsolutions.net; s=mail; h=MIME-Version:Content-Transfer-Encoding:
+	Content-Type:References:In-Reply-To:Date:To:From:Subject:Message-ID:Sender:
+	Reply-To:Cc:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
+	Resent-Cc:Resent-Message-ID; bh=t0hi9D+HRBvqh8DV7JHRdpg6ok+UYNCnISzM+BKnIy8=;
+	t=1767168918; x=1768378518; b=XoZ9pg9zjZ00UToBCDF5jeXM/H7+QBQuF7tmb3pTxShmyt6
+	MQswDysiTZ5n0tCmkiFNxcM6+wt/XwjLSaDdhqscemTVBZPcq0GH6gL8Ug0m9o5EGaGxtXQdf91v8
+	or3X7+1ciWOiZ10AcePK/ll6zxsd4ZP3rA6Ily71xjSqDsmX9xE8tKXvVmXTVGSoWaYXkd/r9SKgv
+	W4iD8YEEMX21wI69k5KpU57IS0B85/KWSPpxK9c8i/pUQIm4Xc6GVpuJxbmNZHGDbCzmyBon1z6/Z
+	aCNAPsJRnJEOEy533f4iO14su5a0tWQQYuz5kUuZSEgXmX2sFUOt1iPHzvGeb1Zg==;
+Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
+	(Exim 4.98.2)
+	(envelope-from <johannes@sipsolutions.net>)
+	id 1varML-0000000HGa4-1Bcx;
+	Wed, 31 Dec 2025 09:15:09 +0100
+Message-ID: <0b3219c015de2623ebd5e18d927a995e97095bfa.camel@sipsolutions.net>
+Subject: Re: 6.18.2 iwlwifi broken, API version 4294967294
+From: Johannes Berg <johannes@sipsolutions.net>
+To: Thomas Meyer <thomas@m3y3r.de>, linux-wireless@vger.kernel.org
+Date: Wed, 31 Dec 2025 09:15:08 +0100
+In-Reply-To: <72464EF2-D744-4151-AB30-96C1EA41B482@m3y3r.de> (sfid-20251230_233158_225745_362CA8B5)
+References: <72464EF2-D744-4151-AB30-96C1EA41B482@m3y3r.de>
+	 (sfid-20251230_233158_225745_362CA8B5)
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.56.2 (3.56.2-2.fc42) 
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain
+X-malware-bazaar: not-scanned
 
-Ali Tariq <alitariq45892@gmail.com> wrote:
+On Tue, 2025-12-30 at 23:31 +0100, Thomas Meyer wrote:
+> Hi,
+>=20
+> This patch broke my laptop's wifi:
+>=20
+> https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/commit=
+/drivers/net/wireless/intel/iwlwifi/iwl-drv.c?h=3Dv6.18&id=3D5f708cccde9d1e=
+a61bb50574d361d1c80fc1a248
+>=20
+> The API min Version is shown as:
+> Driver supports FW core 4294967294..2, firmware is 2.
+>=20
+> Looks like some integer overflow for my old hardware.
+>=20
+> Reverting the patch makes the driver work again.
 
-> The driver does not set hw->sta_data_size, which causes mac80211 to
-> allocate insufficient space for driver private station data in
-> __sta_info_alloc(). When rtl8xxxu_sta_add() accesses members of
-> struct rtl8xxxu_sta_info through sta->drv_priv, this results in a
-> slab-out-of-bounds write.
-> 
-> KASAN report on RISC-V (VisionFive 2) with RTL8192EU adapter:
-> 
->   BUG: KASAN: slab-out-of-bounds in rtl8xxxu_sta_add+0x31c/0x346
->   Write of size 8 at addr ffffffd6d3e9ae88 by task kworker/u16:0/12
-> 
-> Set hw->sta_data_size to sizeof(struct rtl8xxxu_sta_info) during
-> probe, similar to how hw->vif_data_size is configured. This ensures
-> mac80211 allocates sufficient space for the driver's per-station
-> private data.
-> 
-> Tested on StarFive VisionFive 2 v1.2A board.
-> 
-> Fixes: eef55f1545c9 ("wifi: rtl8xxxu: support multiple interfaces in {add,remove}_interface()")
-> 
-> Cc: stable@vger.kernel.org
-> 
-> Signed-off-by: Ali Tariq <alitariq45892@gmail.com>
-> Reviewed-by: Ping-Ke Shih <pkshih@realtek.com>
+There should be fix on the way:
 
-1 patch(es) applied to rtw-next branch of rtw.git, thanks.
+https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/commit/?=
+id=3Dca5898222914f399797cea1aeb0ce77109ca2e62
 
-86c946bcc00f wifi: rtl8xxxu: fix slab-out-of-bounds in rtl8xxxu_sta_add
-
----
-https://github.com/pkshih/rtw.git
-
+johannes
 
