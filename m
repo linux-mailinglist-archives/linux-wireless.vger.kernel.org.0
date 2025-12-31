@@ -1,206 +1,194 @@
-Return-Path: <linux-wireless+bounces-30248-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-30250-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6B78FCEC8E4
-	for <lists+linux-wireless@lfdr.de>; Wed, 31 Dec 2025 22:08:37 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8E627CECA30
+	for <lists+linux-wireless@lfdr.de>; Wed, 31 Dec 2025 23:37:10 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id BA5A030088BD
-	for <lists+linux-wireless@lfdr.de>; Wed, 31 Dec 2025 21:08:35 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 064C53000E82
+	for <lists+linux-wireless@lfdr.de>; Wed, 31 Dec 2025 22:37:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BF7D22E22BA;
-	Wed, 31 Dec 2025 21:08:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C9B08301472;
+	Wed, 31 Dec 2025 22:37:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Odh0sm/3"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="N8tFnLjW"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-oi1-f170.google.com (mail-oi1-f170.google.com [209.85.167.170])
+Received: from mail-pg1-f178.google.com (mail-pg1-f178.google.com [209.85.215.178])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6DAF9242D72
-	for <linux-wireless@vger.kernel.org>; Wed, 31 Dec 2025 21:08:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.170
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 31CAA30AAD0
+	for <linux-wireless@vger.kernel.org>; Wed, 31 Dec 2025 22:37:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.178
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767215314; cv=none; b=W49VeY3lLW/9KSiQqMrTJsn1bdZCguTtZKptiux0wV6mVFW5yUAnpQQgFEa7ZGCgFVOl4GYVLOmOC9teJPXvbeN08ZTiRNyOKrKz8/zSrZCTAx1KGHDQWwgvhCb+2Haq1dGgfB+PoHQwkLyOhPLtmsifMO89ApHHF28lfl7nfMA=
+	t=1767220628; cv=none; b=HRFMPqYjqHaCR5D7Pst4axqrRjYIHbcHKHsJBcsWndtDyRxSxIEpAd78M2yvUN1o+QWQmVWlm+dm7y2TLzq9c3uA08nQg7ZEazcNjlew5aKhqwEjhdxRJOsgTJyBMkL1b2hpvJrIrnbymgHc5i/lO8F4pdSh9rDUeK/uYjQdV7Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767215314; c=relaxed/simple;
-	bh=/fpSGKCMZ84Yv6KlVUKGe8MIPvLGKfxJMy99z/GEhKE=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=oajIbfhN4PytWU767TaKidj8xJl/YLYYEPsE2Ztugt04izQ36LfdzSpW7Qjr05n72ZhrrTXOdmOk1pPrdtRWOwDBd4ZPt3cJ71X7ER+tTNMRnX9XG21ZnJB6zn4dIICkgcbwbjV6upE5J7XF4RYWJsfeCoUq/e8RYCUIwBp0uKM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linuxfoundation.org; spf=pass smtp.mailfrom=linuxfoundation.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Odh0sm/3; arc=none smtp.client-ip=209.85.167.170
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linuxfoundation.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linuxfoundation.org
-Received: by mail-oi1-f170.google.com with SMTP id 5614622812f47-44fe6771b2dso2269566b6e.1
-        for <linux-wireless@vger.kernel.org>; Wed, 31 Dec 2025 13:08:32 -0800 (PST)
+	s=arc-20240116; t=1767220628; c=relaxed/simple;
+	bh=oRqrRFGHp9Zedf0Kkom7ohXC/s2x9M7NKkmWrCTkdhg=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=HnoHKafbOe4oMYt4Jtmn+hFkfYZPwutxKUD4vK+VGVVo0gqBPFDSelD5Iu1eEUD2q2d/tHWbu1OMx18BTbxycGlJRHpqAo+Zm2dD43DWDev9zwywZpYAijWHIK3/n33lpiTaTArJrINAe8RpKHFehyEsX61W71VwR60YX1Ogyms=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=N8tFnLjW; arc=none smtp.client-ip=209.85.215.178
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-pg1-f178.google.com with SMTP id 41be03b00d2f7-c2af7d09533so4419240a12.1
+        for <linux-wireless@vger.kernel.org>; Wed, 31 Dec 2025 14:37:06 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linuxfoundation.org; s=google; t=1767215311; x=1767820111; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=xtR7PK39BaSx2GpuhvAfss4ZTutnP9LImpMPJNr7WtI=;
-        b=Odh0sm/3ewt9g2YwVP7y754mMB6rXILXiYIcxEred0B9OabaFzUy7cldkFiSzkPdHz
-         NX04tc7vFy8/ktSoF9GJUZ20uDSXiWZVxKodbUOY1AR6Bw/fk+60aSNBk3ZHGU2uiRAJ
-         oddk0iop2JzeyAcUUszgwkIp7I7VB8p3Vpaic=
+        d=gmail.com; s=20230601; t=1767220626; x=1767825426; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=kZB0aBwHBsHnm/b2GY2momvTrZBbqthwPjLSAEmi3GY=;
+        b=N8tFnLjWxzhqeuln/oIzwxpRgFOE4VpAB0sYk33ZOQaQsAmyAEcKXf5XNXX9n9dy0o
+         Q12PEvwMjiS6rvUP7iy2H725y0lADc7XQdWBG/Jup4/4ylAIgA/hrBaYP/h7WLCsfeQi
+         5NfDwzURp++fPzPvNDMpBkpiWNvfsH8J4L8ZhmUV6D/v+efxRTZIt9Ohwo8jMoZ2SR3J
+         xDXU2xHmJilPVdiogqYz8jvyql8H/Q9tP20TJJEDPRiYV4AsKnVRFyMTDtaiohDwz+/T
+         wCU7D93YGcX5G9J6iy+18Z5nK+LBr2jzjhQAeZfyxahhP/HH2oRJ8YvjpFgu7fF6N527
+         zjxw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1767215311; x=1767820111;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=xtR7PK39BaSx2GpuhvAfss4ZTutnP9LImpMPJNr7WtI=;
-        b=hxiXaFeF9cMytDtuRpIaoM/88fBjNIvDX3ltEV3+Pjjc8e/Q9E0JPYbFgqYjvgzJNM
-         ghRL73wkq6MWX2adqKCs6o24uC71kLUjudDUW40RReJwT0o8b5UFF9I3sTYWo45vMpun
-         7rqyywY7h3o+pzi/iI5QtycMHlAYJ35CE44zGwJCjxgok/KuK1VLc6wjm14Jj760D/ce
-         /Hnxp+SVkQfFziRtacJ2z97DvQIku39TGi0MGYLUlbfYug5Oi/oQrlw57JPFDBM6s+6b
-         f+i+135viqwj0aqVR7Nmv6S+06hHGSxfy8wkQpj48+Bcz74i7e7vRoZ5HEF2iUS3NbcD
-         Hd+Q==
-X-Forwarded-Encrypted: i=1; AJvYcCX1oBQ+1ANRgXGwjDNF5RzQj2+R3VRyj/RaN3gZI3K00I4w8fl/zdSZda/ywaz30eJF7HBaTilbWnOkbjM4+A==@vger.kernel.org
-X-Gm-Message-State: AOJu0YyJtUIF8XQoTxqjoreKJ8bmdXEzt2me3h7uReENlB4mK2qIiYlb
-	bdd8+1eeL40yjw+xSiRcnUhF0ippJNKm/kqijBPagUu4DE4FFyS9QJFuhEEc8KFM8YA=
-X-Gm-Gg: AY/fxX5Joq4F5qYU2HARhYiXuqAbCq2rKDwGEPgWV10adrkSv7v6Xcj7zBtYT5CO5iW
-	+ll4aKvc6qeM3q7Qe/8MIrv+E802TD4uSThKnvwOfPuJZPC1aT16XPJmD63IeNXBMQXDlZ+nAwY
-	3cGhNh5PgNkGpA4IpD3215IdFa9McU7880UJF+lPd5SgWEGM05kPf6XnrOT233p2dXYQkvaxbWv
-	yBBGc8zvgnGj9q/92CkqErN6feevvZTgjy+Qwt7L47U97lYCOw53LQV70pqNnuxI8DvuCYNnvyU
-	u8/dPSGbrVNnFbZerqsYFfWlzfxW8U4cVThwpa+HvuEv6+PzrrFZIVc+qZOajtVUFUXYZ2b2hK8
-	Gh0W3E6y3ZTscqC4fcEpKh5L9XAFAEdgubHeJ4pOtWUVSTN7PsorsDOwGEeQGVdw53Mn5U3ST3T
-	veW6iUm5m54ZaqOsgZSOw3PwI=
-X-Google-Smtp-Source: AGHT+IHTwHn1nXDjbjmhskjWx+MgiaHwYI6WYS1jGtnZhB7g8+LiP9lF5g92eNpfucMrdW9R4flOrA==
-X-Received: by 2002:a05:6808:1526:b0:450:3ff9:f4dd with SMTP id 5614622812f47-457b20b7730mr18285141b6e.24.1767215311322;
-        Wed, 31 Dec 2025 13:08:31 -0800 (PST)
-Received: from [192.168.1.14] ([38.175.187.108])
-        by smtp.gmail.com with ESMTPSA id 5614622812f47-4598c356623sm12481094b6e.2.2025.12.31.13.08.30
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 31 Dec 2025 13:08:30 -0800 (PST)
-Message-ID: <8b3d207c-76a2-4312-a149-724e55fbd0cb@linuxfoundation.org>
-Date: Wed, 31 Dec 2025 14:08:29 -0700
+        d=1e100.net; s=20230601; t=1767220626; x=1767825426;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=kZB0aBwHBsHnm/b2GY2momvTrZBbqthwPjLSAEmi3GY=;
+        b=I+O2eCwG+Ih8128sroIecU6AAYRVIeGoPnhMoDpHEcWEC8hJyY7ABYJLY89OK6c9S3
+         otTZK7vic0O+YhV3plRX9vIRpmjm8N/4T9LF9mssYV8qgKixhIioE4XGWRxKR3Lex9wB
+         k31YFCHFyz6RfXH57l+J4pbS+dp++18/bku8WnDIeQqIMJ5CJ0GO6txCKZZ8mIrYG9jv
+         vZBXK5eT2qdYmdPNAHqsmrAVgIi+b1UoLw++Mvc/tNCPDB3ktK+SodREw2pZXaz1vs28
+         3MR95e0kl8Vsb0vQhTdPsglGegiIXQ5ETuB6WYKhQ2UfllrsDB63sED9fjacC+3GMZIh
+         ROQw==
+X-Forwarded-Encrypted: i=1; AJvYcCVDdEnfqda10ulsi2LGsYz0WgXwiwBnHVDJ9FjayKpb8q9SHavcpnsiAIOEF6+PsRpeiGVT9mxcoHqUuMdVtQ==@vger.kernel.org
+X-Gm-Message-State: AOJu0YwDeUe25iP0oYVC2aoSHDRlP5VrcmSKSh8cmI5xTqaTWFQJeJPs
+	7UA9zUcMTB8ER2pzEYWEAG8S0wcPJjwkLmrhID+dGgVxybaS17CiwgH1
+X-Gm-Gg: AY/fxX4adpkbMIRT0DrRadGcAeAZAzZ44WFIUyCAOtqBerrbTcIduI1ivAd4PbJirQd
+	if7e8XdmmZH1ExTp7MMB270FVY6RB5OELc0sjtEBOslLOsGBTwwb6EvQ/+euyJ/PvmRUoj4JCrp
+	xf+rO3ZdLzlG2rU1bO/WRwhCE1K9EXzTrIelmBnW5zon554ibr/ozJU0Yd9s5tllBDC32Mb3/mZ
+	EBAiFe7KymWkY5YFJfCmi+ze6bQw9ObFfXx+ibPFALAmPXv9oq101ZLfH0FbnXE+B0xKADVS02C
+	cpa+l8NkHB9DeLGQhk8/ZlVUPLFQhDRDDcAk5W1KU6Djm14PHW9fUDaUhPnkTl/xhv43Ev3pDge
+	TZGENhQpVVWpkgI48T/ZOtI+1N0N1eqz0aV4IVhpLDsdFn5V22YwWLwxeX9mIK7dSWykxp0wEiN
+	5FEM1zFeka1zFFU0OtnqVtysllmXuohhgqlPKtoalxzl68XqEGAy5evkb0hnwz6A==
+X-Google-Smtp-Source: AGHT+IFDO7PqMSfJ9kZvMehwUr1S7PTSmbtdpd6FcboT9jIMWivuwfE88+jhwgbCLEm+TMz2XJeAbg==
+X-Received: by 2002:a05:7300:d58b:b0:2b0:4f34:eed3 with SMTP id 5a478bee46e88-2b05ec3d5e0mr20245885eec.27.1767220626281;
+        Wed, 31 Dec 2025 14:37:06 -0800 (PST)
+Received: from zubuntu.home.zacbowling.com ([2001:5a8:60d:bc9:9ebf:dff:fe00:f8f2])
+        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-2b05ffd5f86sm80818712eec.5.2025.12.31.14.37.05
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 31 Dec 2025 14:37:05 -0800 (PST)
+From: Zac Bowling <zbowling@gmail.com>
+To: zac@zacbowling.com
+Cc: deren.wu@mediatek.com,
+	kvalo@kernel.org,
+	linux-kernel@vger.kernel.org,
+	linux-mediatek@lists.infradead.org,
+	linux-wireless@vger.kernel.org,
+	lorenzo@kernel.org,
+	nbd@nbd.name,
+	ryder.lee@mediatek.com,
+	sean.wang@mediatek.com
+Subject: [PATCH] wifi: mt76: mt7925: fix missing mutex protection in reset and ROC abort paths
+Date: Wed, 31 Dec 2025 14:37:02 -0800
+Message-ID: <20251231223702.30957-1-zbowling@gmail.com>
+X-Mailer: git-send-email 2.51.0
+In-Reply-To: <CAA5_Hq7vNOy9oCGkkgyukq2OP=a5yL_3ZKBdmNtBXS+zp6byiQ@mail.gmail.com>
+References: <CAA5_Hq7vNOy9oCGkkgyukq2OP=a5yL_3ZKBdmNtBXS+zp6byiQ@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: Linux 6.19-rc1 mediatek mt7921e broke badly
-To: Eric Biggers <ebiggers@kernel.org>,
- Linus Torvalds <torvalds@linux-foundation.org>,
- Mario Limonciello <mario.limonciello@amd.com>
-Cc: Matthew Schwartz <matthew.schwartz@linux.dev>,
- =?UTF-8?Q?Thomas_Wei=C3=9Fschuh?= <linux@weissschuh.net>,
- Mikhail Gavrilov <mikhail.v.gavrilov@gmail.com>,
- Mario Limonciello <superm1@kernel.org>,
- Johannes Berg <johannes@sipsolutions.net>, quan.zhou@mediatek.com,
- Felix Fietkau <nbd@nbd.name>, lorenzo@kernel.org, ryder.lee@mediatek.com,
- linux-wireless@vger.kernel.org,
- Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
- Linux ARM <linux-arm-kernel@lists.infradead.org>,
- linux-mediatek@lists.infradead.org, shuah <shuah@kernel.org>
-References: <d7f3b00d-beec-41f0-b157-7cfb871f9a46@linuxfoundation.org>
- <756e3f65-b2f2-4da3-985a-17754a7a872d@t-8ch.de>
- <CAHk-=wjO-7uR5HBi-MFnkxAxjhpgfbAQ+HCMKPiXFVwM+AJ7tA@mail.gmail.com>
- <6fc04df5-b753-4b2d-b978-0e59a7f48ff7@linux.dev>
- <c1304430-dd7d-437b-8744-70af9ca85c0d@linuxfoundation.org>
- <CAHk-=wh6WP0Wq=rbC2Md6vsFrV-+nvDjxgfx9NpMzUmVFNkJ9A@mail.gmail.com>
- <20251231015712.GA2299@sol>
- <fdebed60-264d-4f05-9423-618bc3ec6d6d@linuxfoundation.org>
- <30d14c51-3325-49be-9510-43f4661ff6c4@linuxfoundation.org>
-Content-Language: en-US
-From: Shuah Khan <skhan@linuxfoundation.org>
-In-Reply-To: <30d14c51-3325-49be-9510-43f4661ff6c4@linuxfoundation.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
 
-On 12/30/25 21:07, Shuah Khan wrote:
-> On 12/30/25 21:00, Shuah Khan wrote:
->> On 12/30/25 18:57, Eric Biggers wrote:
->>> On Tue, Dec 30, 2025 at 05:27:13PM -0800, Linus Torvalds wrote:
->>>> On Tue, 30 Dec 2025 at 15:57, Shuah Khan <skhan@linuxfoundation.org> wrote:
->>>>>
->>>>> I would recommend reverting f804a5895eba instead of trying
->>>>> fix it. Then find a better way to eliminate extra newline that
->>>>> shows up in dmesg when firmware build date happens to have
->>>>> a newline.
->>>>
->>>> Yeah. Let's revert it.
->>>>
->>>> And the way to fix the extra newline is trivial: just remove it from
->>>> the "dev_info()" format string.
->>>>
->>>> Our kernel printing logic will add a newline for the next line anyway
->>>> if it is missing (unless somebody explicitly uses PR_CONT).
->>>>
->>>> Can whoever saw the problem confirm that just a revert and a "remove
->>>> \n from that dev_info()" fixes the output for them?
->>>
->>> That works for me.  The revert by itself makes the FORTIFY_SOURCE crash
->>> go away and reintroduces a blank line in the log.  Removing the \n from
->>> the string passed to dev_info as well makes the blank line go away.
->>>
->>
->> I just sent the revert. I will try removing \n from dev_info()
->> later on tomorrow.
->>
->> My quick trial still showed extra line which didn't make sense
->> to me. More trials have to wait for tomorrow.
->>
-> 
-> Hmm - there are 3 places that print build_date in  mt76_connac2_load_ram()
-> 
-> 3022         dev_info(dev->dev, "WM Firmware Version: %.10s, Build Time: %.15s\n     ",
-> 3023                  hdr->fw_ver, hdr->build_date);
-> 
-> 
-> 3051         dev_info(dev->dev, "WA Firmware Version: %.10s, Build Time: %.15s\n     ",
-> 3052                  hdr->fw_ver, hdr->build_date);
-> 
-> 3127         dev_info(dev->dev, "HW/SW Version: 0x%x, Build Time: %.16s\n",
-> 3128                  be32_to_cpu(hdr->hw_sw_ver), hdr->build_date);
-> 
-> The last one prints %.16s and other two do %.15s - is the fix simply
-> changing last one on line 3127 to print %.15s - this avoids printing
-> the extra \n?
-> 
+From: Zac Bowling <zac@zacbowling.com>
 
-The following change fixed the blank line problem on my system.
+This patch is a follow-up to the NULL pointer dereference fix (commit
+6790e656030fb23527aa5c0d6eaa28ce029335b1). While that patch prevented
+kernel panics from NULL pointer dereferences, it did not address the
+underlying system hangs and deadlocks that occur during firmware
+recovery.
 
-Mario, if you want to send this patch after testing on your system,
-let me know. Otherwise I will send it.
+The issue manifests on Framework Desktop systems with MT7925 WiFi cards
+when:
+1. Switching between WiFi networks
+2. Disconnecting/reconnecting ethernet while WiFi is active
+3. Firmware message timeouts trigger hardware reset recovery
 
-==============================================
+During these operations, MCU message timeouts can occur, triggering
+mt792x_reset() which queues reset_work. The reset work and ROC abort
+functions iterate over active interfaces and call MCU functions that
+require the device mutex to be held, but the mutex was not acquired
+before the iteration.
 
-diff --git a/drivers/net/wireless/mediatek/mt76/mt76_connac_mcu.c b/drivers/net/wireless/mediatek/mt76/mt76_connac_mcu.c
-index fba7025ffd3f..0457712286d5 100644
---- a/drivers/net/wireless/mediatek/mt76/mt76_connac_mcu.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt76_connac_mcu.c
-@@ -3019,7 +3019,7 @@ int mt76_connac2_load_ram(struct mt76_dev *dev, const char *fw_wm,
-         }
-  
-         hdr = (const void *)(fw->data + fw->size - sizeof(*hdr));
--       dev_info(dev->dev, "WM Firmware Version: %.10s, Build Time: %.15s\n",
-+       dev_info(dev->dev, "WM Firmware Version: %.10s, Build Time: %.15s",
-                  hdr->fw_ver, hdr->build_date);
-  
-         ret = mt76_connac_mcu_send_ram_firmware(dev, hdr, fw->data, false);
-@@ -3048,7 +3048,7 @@ int mt76_connac2_load_ram(struct mt76_dev *dev, const char *fw_wm,
-         }
-  
-         hdr = (const void *)(fw->data + fw->size - sizeof(*hdr));
--       dev_info(dev->dev, "WA Firmware Version: %.10s, Build Time: %.15s\n",
-+       dev_info(dev->dev, "WA Firmware Version: %.10s, Build Time: %.15s",
-                  hdr->fw_ver, hdr->build_date);
-  
-         ret = mt76_connac_mcu_send_ram_firmware(dev, hdr, fw->data, true);
-@@ -3124,7 +3124,7 @@ int mt76_connac2_load_patch(struct mt76_dev *dev, const char *fw_name)
-         }
-  
-         hdr = (const void *)fw->data;
--       dev_info(dev->dev, "HW/SW Version: 0x%x, Build Time: %.16s\n",
-+       dev_info(dev->dev, "HW/SW Version: 0x%x, Build Time: %.16s",
-                  be32_to_cpu(hdr->hw_sw_ver), hdr->build_date);
-  
-         for (i = 0; i < be32_to_cpu(hdr->desc.n_region); i++) {
+This causes system-wide hangs where:
+- Network commands (ip, etc.) hang indefinitely
+- Processes get stuck in uninterruptible sleep (D state)
+- Tailscale and other network services timeout
+- System becomes completely unresponsive requiring force reboot
 
-========================================
+The hang occurs because:
+1. Firmware timeouts trigger hardware reset via mt792x_reset()
+2. Reset work (mt7925_mac_reset_work) or ROC abort (mt7925_roc_abort_sync)
+   tries to iterate interfaces and call MCU functions
+3. MCU operations block indefinitely waiting for mutex that's held
+   elsewhere, or deadlock occurs
+4. Network stack becomes unresponsive
 
-thanks,
--- Shuah
+Add mutex protection around interface iteration in both:
+- mt7925_mac_reset_work(): Called during firmware recovery after MCU
+  timeouts to reconnect all interfaces
+- mt7925_roc_abort_sync(): Called during suspend/resume and when aborting
+  Remain On Channel operations
+
+This matches the pattern used elsewhere in the driver (e.g., in
+mt7925_roc_iter, mt7925_mcu_set_suspend_iter, etc.) where interface
+iteration callbacks invoke MCU functions.
+
+Note: The author does not have deep familiarity with this codebase, but
+this fix has been tested and appears to resolve the panic and deadlock
+issues observed on Framework Desktop hardware with MT7925 WiFi cards.
+
+Reported-by: Zac Bowling <zac@zacbowling.com>
+Tested-by: Zac Bowling <zac@zacbowling.com>
+Signed-off-by: Zac Bowling <zac@zacbowling.com>
+---
+ drivers/net/wireless/mediatek/mt76/mt7925/mac.c  | 2 ++
+ drivers/net/wireless/mediatek/mt76/mt7925/main.c | 5 ++++-
+ 2 files changed, 6 insertions(+), 1 deletion(-)
+
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7925/mac.c b/drivers/net/wireless/mediatek/mt76/mt7925/mac.c
+index 184efe8afa10..06420ac6ed55 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7925/mac.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7925/mac.c
+@@ -1331,9 +1331,11 @@ void mt7925_mac_reset_work(struct work_struct *work)
+ 	dev->hw_full_reset = false;
+ 	pm->suspended = false;
+ 	ieee80211_wake_queues(hw);
++	mt792x_mutex_acquire(dev);
+ 	ieee80211_iterate_active_interfaces(hw,
+ 					    IEEE80211_IFACE_ITER_RESUME_ALL,
+ 					    mt7925_vif_connect_iter, NULL);
++	mt792x_mutex_release(dev);
+ 	mt76_connac_power_save_sched(&dev->mt76.phy, pm);
+ 
+ 	mt7925_regd_change(&dev->phy, "00");
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7925/main.c b/drivers/net/wireless/mediatek/mt76/mt7925/main.c
+index 3001a62a8b67..1f7661175623 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7925/main.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7925/main.c
+@@ -459,10 +459,13 @@ void mt7925_roc_abort_sync(struct mt792x_dev *dev)
+ 
+ 	timer_delete_sync(&phy->roc_timer);
+ 	cancel_work_sync(&phy->roc_work);
+-	if (test_and_clear_bit(MT76_STATE_ROC, &phy->mt76->state))
++	if (test_and_clear_bit(MT76_STATE_ROC, &phy->mt76->state)) {
++		mt792x_mutex_acquire(dev);
+ 		ieee80211_iterate_interfaces(mt76_hw(dev),
+ 					     IEEE80211_IFACE_ITER_RESUME_ALL,
+ 					     mt7925_roc_iter, (void *)phy);
++		mt792x_mutex_release(dev);
++	}
+ }
+ EXPORT_SYMBOL_GPL(mt7925_roc_abort_sync);
+ 
+-- 
+2.51.0
 
 
