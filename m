@@ -1,188 +1,165 @@
-Return-Path: <linux-wireless+bounces-30255-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-30256-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 59018CECBBD
-	for <lists+linux-wireless@lfdr.de>; Thu, 01 Jan 2026 02:20:29 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1D00ECECD73
+	for <lists+linux-wireless@lfdr.de>; Thu, 01 Jan 2026 07:20:33 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 51A013007229
-	for <lists+linux-wireless@lfdr.de>; Thu,  1 Jan 2026 01:20:28 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id DAB9C30081A8
+	for <lists+linux-wireless@lfdr.de>; Thu,  1 Jan 2026 06:20:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 720742765ED;
-	Thu,  1 Jan 2026 01:20:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 31D3421638D;
+	Thu,  1 Jan 2026 06:20:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="HjLbc3YC"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-oo1-f79.google.com (mail-oo1-f79.google.com [209.85.161.79])
+Received: from mail-pg1-f173.google.com (mail-pg1-f173.google.com [209.85.215.173])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 98260271469
-	for <linux-wireless@vger.kernel.org>; Thu,  1 Jan 2026 01:20:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.161.79
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ACB4015B998
+	for <linux-wireless@vger.kernel.org>; Thu,  1 Jan 2026 06:20:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.173
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767230425; cv=none; b=YKbZSK5V1yYsZ/qSSqBnLp6TQJCiX3ubcRt3qAYIa5by4LyGfVVOYhCS9F6+usuK4atGNeJ1V4Pq45epz5X+xEnzEhNgsjigZgXmq68ELnS9C3P6YOpDJqjqJB6y43mwxnLXA2mCn7rbzM1H+lAGPBLSEQAG01Fq1lOCcIz8xcE=
+	t=1767248430; cv=none; b=AMnof8NskxzeHeC0OUd/q/L3dIDSjpGO+anvX4RH68v1zM3bWH6qmxUXRaS1TlfIWdMM+SjVIUZF7GhiIKcEHPnFDZCppzPDVz2A6goYNfJ1eng9CYDetsSyN36bDOetCgSfZgWhy4xqlshCESfwk0Sqf6vs7vk2Un7gC8chF6U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767230425; c=relaxed/simple;
-	bh=FHzOIjJhJMdPw+wxvAcFflmhHzTK3yk7O1FIiZ1ii0U=;
-	h=MIME-Version:Date:Message-ID:Subject:From:To:Content-Type; b=UtXIYR+2FKV1SiOvP4cXJ4wSE8g4P+U/H67e1uk18Wv3b1gyvpKpJRtTRz/Pq9N67TeJv7PjXdcPMoQhvsl+VGhj9sTogZkKQMzFWJ0a1i/rkOKSt4b6vTrk5W2eZcEkZSwME8wPTTjn4T/7cbkBkQQgr5qIq7gn0AgrjdmvFXo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com; arc=none smtp.client-ip=209.85.161.79
-Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com
-Received: by mail-oo1-f79.google.com with SMTP id 006d021491bc7-65b2cd67cceso19705917eaf.0
-        for <linux-wireless@vger.kernel.org>; Wed, 31 Dec 2025 17:20:22 -0800 (PST)
+	s=arc-20240116; t=1767248430; c=relaxed/simple;
+	bh=ZMjkQ2oEVaMus7T4ec0PlJQ/SINBc3xpFQWSs4HAiGw=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=a/5zQZV+JCellZQNsCGbSgQ8TJjtB+Ie6URrIxertASVyUj/6QWuGAok9zAnnYe9i3qkFM4FpPdIIleLII9V4dSRtau7URLdH2kCtSFirGzuTs9gSOCU2sEGDY3VLZbKOPgty9Q/BGjWkknOCDbgrYux11bfb86Y/7vJbckMd+Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=HjLbc3YC; arc=none smtp.client-ip=209.85.215.173
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-pg1-f173.google.com with SMTP id 41be03b00d2f7-c0ec27cad8cso6845893a12.1
+        for <linux-wireless@vger.kernel.org>; Wed, 31 Dec 2025 22:20:28 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1767248427; x=1767853227; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=F7OVxpcjzhJ36YO0FCMfAYe7gUj9JaKUB98nBjP7Gi8=;
+        b=HjLbc3YCHgHK/2gEAWgkRhR+LaBZLLmsMHEUKEoxB4YDtXzPLgHERvpPn3Krm5PzPP
+         vPWCGPnm0PeDyyU7TwNWCI0EoP6TNg8xW/OnTl7sHzF7XmYWEm+PrTCNx4O13lQdHd0u
+         n2s03AJyig72SksPhSdsU26kiJxf9IPEgAQGfI05/cTXF6VmcTlF9YPR5JNs5AWSS8mE
+         MN0VQY7sewcfU54UQgDb/IK7KyqxQKagXfzHPeqLAMCsaC6dxYCSO6R2ZNTMY6ZyvUpM
+         r5K68HSJ1iubC9C3xpiGsWZK278kww1ed0HDY1fpay0kSR/GlVxi6pAamrz4aAAMyk3i
+         kX1g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1767230421; x=1767835221;
-        h=to:from:subject:message-id:date:mime-version:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=l96xM7j24Yuz+mKcTl2sjAtipIWuU27H/Z/cgCLkeLs=;
-        b=ul5V2mC6tGRea5l7BO/PNShruxmCxi9V4/+DGCjYsoGkOuoijDgMFiTq2Myp/Nh6+V
-         ClCXpJbB4EF2EsLjCSLOYB3QWcZgfwKYXDXSuXIRFY76PFilqZmw0I+eWreQmuq1eJFn
-         Ya8qmsAbYl7UQMv4Tg6qqYAwxnJ6OhS7RH8usEBxTJDcHfzTSgETfMS/HwRsk7ilEK6b
-         Ep0wVvzats2HuZE6n4Ij2NpoqhEjv95XRwSve05tav+4/kO9l0GwnWjx7LbTaQK3QJ/8
-         Ca9cNsKkWz83HZFNWz7pliZ1j8Y22LeBxD9uZH7VwEb/BGwEZHp/ah4hK+JOt/1k/YW6
-         mqmw==
-X-Forwarded-Encrypted: i=1; AJvYcCU1tL7t/EGQr3jAc6Czip75qRgePYMf2yWevxhkskyvQBL5JgR7Wp4e087amvaQVdp/nlH6kqEmxVBJ7wr89Q==@vger.kernel.org
-X-Gm-Message-State: AOJu0YyR3iMMpUAm9PmeR/m/lIZe0Jwv+vEt1Wt8/TCz7rV0vbV8UyLq
-	uNIeThFPmQi7JbcnOwetZjdY9IP22cLF7jqTXooKQ6mcu/HogBuB1tksRvAw4xwH5ahbFzi85mV
-	40Uvq4KftgA6bG4tslXYRRv9mUJ02Dr7bC1t3/iu1LgzrZsT6NNDwvRWy9DY=
-X-Google-Smtp-Source: AGHT+IGo81+4AP49Jo7fSsmAkXk8EECnZ2jAXv+OHIEB+7FOktV+1w2xZAkqOawB7STHXZwGgL3MoFO8rCkKaVIZk0RBE60cf1FD
+        d=1e100.net; s=20230601; t=1767248427; x=1767853227;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=F7OVxpcjzhJ36YO0FCMfAYe7gUj9JaKUB98nBjP7Gi8=;
+        b=cDmvsqXBfqKhp/KFMhMcxrLC2ry9qj7PJXN7/oajvVdpQv50zNvTlPy51/O/v0aixj
+         O88JGbEuYnBRzgKtoShGk2svX/ik/ctDf1bR67RoeJ21ZGuvO3+cjB+qFZ2tyoySr8Fp
+         Jlc9xzuqjU5ZOmR2LMCQ/YBE2QKMPKLppahDPDKHo2VQCfWIiidisfMr/3l8uEcaze1V
+         HGPaD9DpzUYNITNI9tGdaIzUYWl/rcS8kfwxG4VhIvyV32BH0+lBd81OOSKzMr4Xtij+
+         FIn0EdV02Km2nMgSojpjI6ZyKRKqiiUU4SQrxf/jGSiuXXQ0lNl68IzBo4W7CueUIUa6
+         U63g==
+X-Gm-Message-State: AOJu0YyiPraW0MiMsWLYXqV2JgP0NGyfcMP378xcecbucm80t0MtSapC
+	7gxhH3x8XZYeMrJK36pBkYsQrg+PDsAq6nHsjQfB5JlGhsEOVstaYu6iJ0ILrTDR
+X-Gm-Gg: AY/fxX5QzR5c9lT7PUyWA7hL5UqW/lyj3RoJ/F8jCDPzQJ43A2L46cv83IqFCOmQ+qO
+	rxKgWuGmH9Bm/B8J2WpDXu0Xu85yKKj9ThO6Jhck7hnnymGmucAkeFlxkUV8LVeFAtbKZySABrf
+	mDqK3zgsE2t8vIMMTrR6jYYkQPtc8VCgH2hFwZ+RIcTjuM+5nO18n/Kq+kEWsi/LCzIST7nAkAY
+	Hxt1hB8UdktuqViFXmjQt0LDTaBgJm7O6e2UCzCX0rmnK4zT+pMZRSq1eN2vUoV7yhbu4hcnGWK
+	QMMnAEUn/u4AMe2LhFECGDu6dFvNDLBaF56rMFJZVyJk/thMojwDB7peK9j6PW2yRE2X14o7Muz
+	bnej9WQcfdY5shrWZYTbR9efG5vl3EUC72bisFWeMiKqZkMe7EmFEPtA20nXWnCsHaOckB4dCnQ
+	oiI4SAVX2ZfOgn8UKCklta/OHsAUpbLTBtgCSnBSi9HwR7KHbYqU+kT/GD5oEXWHQUiuivfCuS
+X-Google-Smtp-Source: AGHT+IFcNyD5xwVxRzRa1qB3GJNdE3L/hyCnyksDrjw+mHu292ZOJvkzX/ysi8HBo7Uasfom1wxTCQ==
+X-Received: by 2002:a05:7022:6983:b0:11b:9386:8273 with SMTP id a92af1059eb24-12172312cc6mr32852067c88.48.1767248427458;
+        Wed, 31 Dec 2025 22:20:27 -0800 (PST)
+Received: from zubuntu.home.zacbowling.com ([2001:5a8:60d:bc9:9ebf:dff:fe00:f8f2])
+        by smtp.gmail.com with ESMTPSA id a92af1059eb24-121724de25dsm108662883c88.7.2025.12.31.22.20.26
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 31 Dec 2025 22:20:26 -0800 (PST)
+From: Zac Bowling <zbowling@gmail.com>
+To: linux-wireless@vger.kernel.org
+Cc: linux-mediatek@lists.infradead.org,
+	linux-kernel@vger.kernel.org,
+	kvalo@kernel.org,
+	lorenzo@kernel.org,
+	nbd@nbd.name,
+	sean.wang@mediatek.com,
+	deren.wu@mediatek.com,
+	ryder.lee@mediatek.com
+Subject: [PATCH] wifi: mt76: mt792x: fix NULL pointer dereference in TX path
+Date: Wed, 31 Dec 2025 22:20:23 -0800
+Message-ID: <20260101062024.181697-1-zbowling@gmail.com>
+X-Mailer: git-send-email 2.51.0
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-Received: by 2002:a05:6820:16a4:b0:65c:fd25:f43d with SMTP id
- 006d021491bc7-65d0eaa182dmr17326666eaf.59.1767230421479; Wed, 31 Dec 2025
- 17:20:21 -0800 (PST)
-Date: Wed, 31 Dec 2025 17:20:21 -0800
-X-Google-Appengine-App-Id: s~syzkaller
-X-Google-Appengine-App-Id-Alias: syzkaller
-Message-ID: <6955cbd5.050a0220.a1b6.032d.GAE@google.com>
-Subject: [syzbot] [wireless?] WARNING in rfkill_unregister
-From: syzbot <syzbot+16210d09509730207241@syzkaller.appspotmail.com>
-To: johannes@sipsolutions.net, linux-kernel@vger.kernel.org, 
-	linux-wireless@vger.kernel.org, netdev@vger.kernel.org, 
-	syzkaller-bugs@googlegroups.com
-Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
 
-Hello,
+From: Zac Bowling <zac@zacbowling.com>
 
-syzbot found the following issue on:
+Add NULL pointer checks in mt792x_tx() to prevent kernel crashes when
+transmitting packets during MLO link removal.
 
-HEAD commit:    c53f467229a7 Merge tag 'scsi-fixes' of git://git.kernel.or..
-git tree:       upstream
-console output: https://syzkaller.appspot.com/x/log.txt?x=16e65b92580000
-kernel config:  https://syzkaller.appspot.com/x/.config?x=1f2b6fe1fdf1a00b
-dashboard link: https://syzkaller.appspot.com/bug?extid=16210d09509730207241
-compiler:       Debian clang version 20.1.8 (++20250708063551+0c9f909b7976-1~exp1~20250708183702.136), Debian LLD 20.1.8
+The function calls mt792x_sta_to_link() which can return NULL if the
+link is being removed, but the return value was dereferenced without
+checking. Similarly, the RCU-protected link_conf and link_sta pointers
+were used without NULL validation.
 
-Unfortunately, I don't have any reproducer for this issue yet.
+This race can occur when:
+1. A packet is queued for transmission
+2. Concurrently, the link is being removed (mt7925_mac_link_sta_remove)
+3. mt792x_sta_to_link() returns NULL for the removed link
+4. Kernel crashes on wcid = &mlink->wcid dereference
 
-Downloadable assets:
-disk image: https://storage.googleapis.com/syzbot-assets/d09cbe6bb078/disk-c53f4672.raw.xz
-vmlinux: https://storage.googleapis.com/syzbot-assets/83e2a6822b1d/vmlinux-c53f4672.xz
-kernel image: https://storage.googleapis.com/syzbot-assets/9eff6dd4ff63/bzImage-c53f4672.xz
+Fix by:
+- Check mlink return value before dereferencing wcid
+- Check RCU-dereferenced conf and link_sta before use
+- Free the SKB and return early if any pointer is NULL
 
-IMPORTANT: if you fix the issue, please add the following tag to the commit:
-Reported-by: syzbot+16210d09509730207241@syzkaller.appspotmail.com
+This affects both MT7921 and MT7925 drivers as mt792x_core.c is shared.
 
-------------[ cut here ]------------
-rtmutex deadlock detected
-WARNING: kernel/locking/rtmutex.c:1674 at rt_mutex_handle_deadlock+0x21/0xb0 kernel/locking/rtmutex.c:1674, CPU#0: syz.7.2908/15923
-Modules linked in:
-CPU: 0 UID: 0 PID: 15923 Comm: syz.7.2908 Not tainted syzkaller #0 PREEMPT_{RT,(full)} 
-Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 10/25/2025
-RIP: 0010:rt_mutex_handle_deadlock+0x21/0xb0 kernel/locking/rtmutex.c:1674
-Code: 90 90 90 90 90 90 90 90 90 41 57 41 56 41 55 41 54 53 83 ff dd 0f 85 86 00 00 00 48 89 f7 e8 a6 39 01 00 48 8d 3d af 7c 0a 04 <67> 48 0f b9 3a 4c 8d 3d 00 00 00 00 65 48 8b 1c 25 08 10 b3 91 4c
-RSP: 0018:ffffc90004617710 EFLAGS: 00010286
-RAX: 0000000080000000 RBX: ffffc900046177a0 RCX: 0000000000000000
-RDX: 0000000000000006 RSI: ffffffff8ce0bbf9 RDI: ffffffff8ede5760
-RBP: ffffc900046178c0 R08: ffffffff8edb3477 R09: 1ffffffff1db668e
-R10: dffffc0000000000 R11: fffffbfff1db668f R12: 1ffff920008c2ef0
-R13: ffffffff8ad3d599 R14: ffffffff8eb910e0 R15: dffffc0000000000
-FS:  0000000000000000(0000) GS:ffff888126cef000(0000) knlGS:0000000000000000
-CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-CR2: 000056422df5abe0 CR3: 000000005929c000 CR4: 00000000003526f0
-Call Trace:
- <TASK>
- __rt_mutex_slowlock kernel/locking/rtmutex.c:1734 [inline]
- __rt_mutex_slowlock_locked kernel/locking/rtmutex.c:1760 [inline]
- rt_mutex_slowlock+0x666/0x6b0 kernel/locking/rtmutex.c:1800
- __rt_mutex_lock kernel/locking/rtmutex.c:1815 [inline]
- __mutex_lock_common kernel/locking/rtmutex_api.c:534 [inline]
- mutex_lock_nested+0x16a/0x1d0 kernel/locking/rtmutex_api.c:552
- rfkill_unregister+0xd1/0x230 net/rfkill/core.c:1145
- nfc_unregister_device+0x96/0x300 net/nfc/core.c:1167
- virtual_ncidev_close+0x59/0x90 drivers/nfc/virtual_ncidev.c:172
- __fput+0x45b/0xa80 fs/file_table.c:468
- task_work_run+0x1d4/0x260 kernel/task_work.c:233
- exit_task_work include/linux/task_work.h:40 [inline]
- do_exit+0x694/0x22f0 kernel/exit.c:971
- do_group_exit+0x21c/0x2d0 kernel/exit.c:1112
- get_signal+0x125d/0x1310 kernel/signal.c:3034
- arch_do_signal_or_restart+0x9a/0x7a0 arch/x86/kernel/signal.c:337
- __exit_to_user_mode_loop kernel/entry/common.c:41 [inline]
- exit_to_user_mode_loop+0x87/0x4e0 kernel/entry/common.c:75
- __exit_to_user_mode_prepare include/linux/irq-entry-common.h:226 [inline]
- syscall_exit_to_user_mode_prepare include/linux/irq-entry-common.h:256 [inline]
- syscall_exit_to_user_mode_work include/linux/entry-common.h:159 [inline]
- syscall_exit_to_user_mode include/linux/entry-common.h:194 [inline]
- do_syscall_64+0x2b7/0xf80 arch/x86/entry/syscall_64.c:100
- entry_SYSCALL_64_after_hwframe+0x77/0x7f
-RIP: 0033:0x7f2e7f9af749
-Code: Unable to access opcode bytes at 0x7f2e7f9af71f.
-RSP: 002b:00007f2e7dc0e038 EFLAGS: 00000246 ORIG_RAX: 0000000000000101
-RAX: 0000000000000008 RBX: 00007f2e7fc05fa0 RCX: 00007f2e7f9af749
-RDX: 0000000000000002 RSI: 0000200000000500 RDI: ffffffffffffff9c
-RBP: 00007f2e7fa33f91 R08: 0000000000000000 R09: 0000000000000000
-R10: 0000000000000000 R11: 0000000000000246 R12: 0000000000000000
-R13: 00007f2e7fc06038 R14: 00007f2e7fc05fa0 R15: 00007fff5a2e50f8
- </TASK>
-----------------
-Code disassembly (best guess):
-   0:	90                   	nop
-   1:	90                   	nop
-   2:	90                   	nop
-   3:	90                   	nop
-   4:	90                   	nop
-   5:	90                   	nop
-   6:	90                   	nop
-   7:	90                   	nop
-   8:	90                   	nop
-   9:	41 57                	push   %r15
-   b:	41 56                	push   %r14
-   d:	41 55                	push   %r13
-   f:	41 54                	push   %r12
-  11:	53                   	push   %rbx
-  12:	83 ff dd             	cmp    $0xffffffdd,%edi
-  15:	0f 85 86 00 00 00    	jne    0xa1
-  1b:	48 89 f7             	mov    %rsi,%rdi
-  1e:	e8 a6 39 01 00       	call   0x139c9
-  23:	48 8d 3d af 7c 0a 04 	lea    0x40a7caf(%rip),%rdi        # 0x40a7cd9
-* 2a:	67 48 0f b9 3a       	ud1    (%edx),%rdi <-- trapping instruction
-  2f:	4c 8d 3d 00 00 00 00 	lea    0x0(%rip),%r15        # 0x36
-  36:	65 48 8b 1c 25 08 10 	mov    %gs:0xffffffff91b31008,%rbx
-  3d:	b3 91
-  3f:	4c                   	rex.WR
-
-
+Reported-by: Zac Bowling <zac@zacbowling.com>
+Signed-off-by: Zac Bowling <zac@zacbowling.com>
 ---
-This report is generated by a bot. It may contain errors.
-See https://goo.gl/tpsmEJ for more information about syzbot.
-syzbot engineers can be reached at syzkaller@googlegroups.com.
+ drivers/net/wireless/mediatek/mt76/mt792x_core.c | 13 +++++++++++--
+ 1 file changed, 11 insertions(+), 2 deletions(-)
 
-syzbot will keep track of this issue. See:
-https://goo.gl/tpsmEJ#status for how to communicate with syzbot.
+diff --git a/drivers/net/wireless/mediatek/mt76/mt792x_core.c b/drivers/net/wireless/mediatek/mt76/mt792x_core.c
+index f2ed16feb6c1..9dc768aa8b9c 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt792x_core.c
++++ b/drivers/net/wireless/mediatek/mt76/mt792x_core.c
+@@ -95,6 +95,8 @@ void mt792x_tx(struct ieee80211_hw *hw, struct ieee80211_tx_control *control,
+ 				       IEEE80211_TX_CTRL_MLO_LINK);
+ 		sta = (struct mt792x_sta *)control->sta->drv_priv;
+ 		mlink = mt792x_sta_to_link(sta, link_id);
++		if (!mlink)
++			goto free_skb;
+ 		wcid = &mlink->wcid;
+ 	}
+ 
+@@ -113,9 +115,12 @@ void mt792x_tx(struct ieee80211_hw *hw, struct ieee80211_tx_control *control,
+ 		link_id = wcid->link_id;
+ 		rcu_read_lock();
+ 		conf = rcu_dereference(vif->link_conf[link_id]);
+-		memcpy(hdr->addr2, conf->addr, ETH_ALEN);
+-
+ 		link_sta = rcu_dereference(control->sta->link[link_id]);
++		if (!conf || !link_sta) {
++			rcu_read_unlock();
++			goto free_skb;
++		}
++		memcpy(hdr->addr2, conf->addr, ETH_ALEN);
+ 		memcpy(hdr->addr1, link_sta->addr, ETH_ALEN);
+ 
+ 		if (vif->type == NL80211_IFTYPE_STATION)
+@@ -136,6 +141,10 @@ void mt792x_tx(struct ieee80211_hw *hw, struct ieee80211_tx_control *control,
+ 	}
+ 
+ 	mt76_connac_pm_queue_skb(hw, &dev->pm, wcid, skb);
++	return;
++
++free_skb:
++	ieee80211_free_txskb(hw, skb);
+ }
+ EXPORT_SYMBOL_GPL(mt792x_tx);
+ 
+-- 
+2.51.0
 
-If the report is already addressed, let syzbot know by replying with:
-#syz fix: exact-commit-title
-
-If you want to overwrite report's subsystems, reply with:
-#syz set subsystems: new-subsystem
-(See the list of subsystem names on the web dashboard)
-
-If the report is a duplicate of another one, reply with:
-#syz dup: exact-subject-of-another-report
-
-If you want to undo deduplication, reply with:
-#syz undup
 
