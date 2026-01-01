@@ -1,151 +1,121 @@
-Return-Path: <linux-wireless+bounces-30264-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-30265-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id D4215CECDA6
-	for <lists+linux-wireless@lfdr.de>; Thu, 01 Jan 2026 07:28:46 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id E76F7CECFF3
+	for <lists+linux-wireless@lfdr.de>; Thu, 01 Jan 2026 13:08:13 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id A63753010ABD
-	for <lists+linux-wireless@lfdr.de>; Thu,  1 Jan 2026 06:25:49 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 5C3D43004D3F
+	for <lists+linux-wireless@lfdr.de>; Thu,  1 Jan 2026 12:08:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CB82D21D5BC;
-	Thu,  1 Jan 2026 06:25:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8DE662BD5AD;
+	Thu,  1 Jan 2026 12:08:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Id1BZePZ"
+	dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b="KyPOajH5"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-pg1-f196.google.com (mail-pg1-f196.google.com [209.85.215.196])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from sipsolutions.net (s3.sipsolutions.net [168.119.38.16])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 51B2421FF2A
-	for <linux-wireless@vger.kernel.org>; Thu,  1 Jan 2026 06:25:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.196
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D77E0238178;
+	Thu,  1 Jan 2026 12:08:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=168.119.38.16
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767248747; cv=none; b=drwB/ywmTQahnweYqGaEFRHjuACHbVr/p6YBlq78oVR6b8lv00heWIzRWiTMo/QbcwPQuaXASe9fqfjEFiDZu3tjqfECMy/I46jD807ywMkOdoxd84gx4htjyVKjj2kR7ViZFEyPElGaPsxxr/bCXXtglfJkfCjM4ISiJGJhb/w=
+	t=1767269290; cv=none; b=g/dsXA+GSqODU4eDGoZyl0oLc2MoevfYb/t8ph2Jr59ADckdCd/eK193RLrH1zr8AfCHmmupk7t6xTq8DdDXbQdq5LGDX/6k9YRY8JBaAF7Vnbwosmzg3lYV8nv6gFk8eg94F+/5vh3RMamhqj0vB00IKhNY5SqnX6ja6J3Rjow=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767248747; c=relaxed/simple;
-	bh=9dnxJtj/RMl7V1fwPhsCNOnG7O0V0CnuufX0uTayI6o=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=GgVVKmuaRGUhKX2UOgqNCjq/eXtMCKdXC94CtG7yPF0rLpKQ/fHfvDi7CVgWXQ/WTf9XWOxint/Vv2EMd9n011rVsq43VLiFGXyzU4o1CiAw0mqQ07Fum50Ds67+c4mYvVwcBJVT/YD523ImEHCdvPSLh75sGl6gZJyTC+Zj9RM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Id1BZePZ; arc=none smtp.client-ip=209.85.215.196
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pg1-f196.google.com with SMTP id 41be03b00d2f7-bc2abdcfc6fso6405779a12.2
-        for <linux-wireless@vger.kernel.org>; Wed, 31 Dec 2025 22:25:45 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1767248745; x=1767853545; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=PXw0KS+mtzlW4R/yAZNXORVMUv1IZas0tr5wRPVkUCk=;
-        b=Id1BZePZvNUuqz7DLmXhdVwN1XbURnbYstSxc+kU/Hc2RgB9TVFEtRVfF90N5koLV6
-         Xa25dodgvz0mXESCyoLNXamqD5bq/PAZ8nI40/3Oce5kVveS7OzzsZ25x9EPYmuCEcS4
-         e4XzR3SZrIIawxZKFOV+c/0CvKoaUoKHSlOCJ10vr0hh/epJxef49MncnlNx/b6ch/6I
-         Lx+pdCGDayUo/wJIMwiQHfeG+G5Q+BILf7RB92uzI8vCdJyV1gBAT1Rf9XOKvwSacfl6
-         QCp0s2cu8D2CCS5c9csMfAJ32YYcB8ugCnxNwNNeTO9iitm/pRibN1L+te2uZMnC8jV8
-         +Aew==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1767248745; x=1767853545;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=PXw0KS+mtzlW4R/yAZNXORVMUv1IZas0tr5wRPVkUCk=;
-        b=r6gPMMDgExubmDaIcmvlFxpppzwISt85gYuE/qUzJjgvbfCEVZ1Ix93mlwZgjGrfPF
-         Zy1bGzu6uD+34TWWZYsP1/SxAONczyiCbalx1XH1ToBmNVMEI8gVWJVyfkw1Kuil8Ars
-         EWxyAc4aiRnF3BuYtpaoh5s607w05WBgdmSuHdCO8GIMONNnUr9YwhI7/DH6nTNSGLVx
-         UumoF1ckJh6ZBqtsRBQnvM/q6fxFWt4i4uKUX0FZ8L1tlowVb+jconfCQcR+sTE5ZXES
-         2Vi40w2ZtbVHig5dyEnUJz4jikZ8ZELDofZHqa0hTAqBm4cbfbyKdUPJtq2mgDzjUys7
-         sZmQ==
-X-Gm-Message-State: AOJu0YwjrR8o4wBxjmvQTCCCJ4NyzqURO+TfRX+ukKNIgwwA21V3HYaF
-	OZlAX7i11Fa2OPEzChkP7NwOqRvNIoKLWaqI/kImu0rXVs98mNkpBvudWDHC1tdce28=
-X-Gm-Gg: AY/fxX6rCH7+jQqNKXZk211w8dazRKorR7Z+hq39xtIxO2Z1Fqt86uR04s90I/8mA65
-	lupuDmdLTalA0X7dJEG+uSoD7ah9btZGEytBItGSyBbmbP4v3o3xplOy+1M5/bW4o29wUEnraUy
-	L8poLu5O73sE/y0N1dMdctTTMEDpV/rbVmabTjMOzTnIwNP1pPDgNvNmW1zjHIW10oI3YY0PHlp
-	FcQ/C1qOok7QBSlS2Qx/4oYFYZ+Xf6HDI0QQzCwdVUUyYXMUTv/phMZR04maNlteZgrQwqWy9tD
-	v4EyLs9XISwTBEShUNF5xhKc0MMHuQh1JTtVrYfPAPnAvOiHpxhknCeOIdyCZO+vn6IoLbHbYlr
-	/t5llwE1n3XJYFK+qlA9IhldYEocWvwzNom9l+J1t7QSRgEMOa+j1L0Av+HfrvDPMcVmIk7hZrs
-	8z9mXKxcCXpEtCThjzaXPUyBFLWil+QemJMo2rJD1OQz7OiRSp5uJXSXzAiwwQtg==
-X-Google-Smtp-Source: AGHT+IE1qOMp6eNFeyruma+P5Tn6KvSSX3KbEJeZqgXymgEx/iCWBkP2LmFHmJWNFi+DprjfluX8jw==
-X-Received: by 2002:a05:7301:1a12:b0:2a4:3593:ddd6 with SMTP id 5a478bee46e88-2b05ebb6038mr27901457eec.3.1767248744793;
-        Wed, 31 Dec 2025 22:25:44 -0800 (PST)
-Received: from zubuntu.home.zacbowling.com ([2001:5a8:60d:bc9:9ebf:dff:fe00:f8f2])
-        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-2b05fe99410sm103120199eec.2.2025.12.31.22.25.43
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 31 Dec 2025 22:25:44 -0800 (PST)
-From: Zac Bowling <zbowling@gmail.com>
-To: linux-wireless@vger.kernel.org
-Cc: linux-mediatek@lists.infradead.org,
-	linux-kernel@vger.kernel.org,
-	kvalo@kernel.org,
-	lorenzo@kernel.org,
-	nbd@nbd.name,
-	sean.wang@mediatek.com,
-	deren.wu@mediatek.com,
-	ryder.lee@mediatek.com
-Subject: [PATCH] wifi: mt76: mt7925: add lockdep assertions for mutex verification
-Date: Wed, 31 Dec 2025 22:25:43 -0800
-Message-ID: <20260101062543.186499-1-zbowling@gmail.com>
-X-Mailer: git-send-email 2.51.0
-In-Reply-To: <CAOFcj8Sad3pLohFfRdj5jzK3Zs3FAjFVBuzH=80i_m1YqSbpfA@mail.gmail.com>
-References: <CAOFcj8Sad3pLohFfRdj5jzK3Zs3FAjFVBuzH=80i_m1YqSbpfA@mail.gmail.com>
+	s=arc-20240116; t=1767269290; c=relaxed/simple;
+	bh=tsGSo2HrsFMCY95+pk823dqDu+F13XWvyAa5ILtk8mY=;
+	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=oB7hUnrN8Pn58OWTU1JHWq0BQYB+UmkHu4ysj/Aubtxjzzq6bR7PKTXLY6HS6SBUn50oM/+0fNmLgN7/0HmJOMhedBIA2hPIDWTyF+QzhRDBx4mgsrLWHQDeiBggZPVKqAIDJ2BJ60MYDiVnwzeyHIMPLJAlxmAehImft0CSFIw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net; spf=pass smtp.mailfrom=sipsolutions.net; dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b=KyPOajH5; arc=none smtp.client-ip=168.119.38.16
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sipsolutions.net
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=sipsolutions.net; s=mail; h=MIME-Version:Content-Transfer-Encoding:
+	Content-Type:References:In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender
+	:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
+	Resent-Cc:Resent-Message-ID; bh=vKPGkbZIKCZmwh5SXm3zhdSjGIVlD9aFSZwKeUbOzjw=;
+	t=1767269288; x=1768478888; b=KyPOajH5flWHeBg9ubdEzFMfVOysbzfhQglhCJQM8Qb68HG
+	ATeayvBNNTGTOn84EddTvwcHu7aFCvNy2hNX1EKQDKLfOVqbOQourv3UmTnYdO8WQcpb+DaATKubu
+	IcDkGgAb+I+IYIOC5AuFJW7x7ZnFh0EfufQktvtN4VnqUIQImI8MpT6bupSI9gsQovB5EwxjNf+EV
+	plVcIVVssTxsxpRJtUHepkVoVreAzDiiwohnAkp0AUSsM6WosDuKhBJPXtht0wwAi2toUo1D8sKD1
+	FQCfDI1I9e+W4zkgX7E1AS2jj9FFcxu/QUJqofidjus63iCjyIyaXYns13wYXazQ==;
+Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
+	(Exim 4.98.2)
+	(envelope-from <johannes@sipsolutions.net>)
+	id 1vbHTD-00000000V0v-2KOc;
+	Thu, 01 Jan 2026 13:07:59 +0100
+Message-ID: <e062f6a0a7583ca99ab0449481119634f8b02a3d.camel@sipsolutions.net>
+Subject: Re: [syzbot] [wireless?] WARNING in rfkill_unregister
+From: Johannes Berg <johannes@sipsolutions.net>
+To: syzbot <syzbot+16210d09509730207241@syzkaller.appspotmail.com>, 
+	linux-kernel@vger.kernel.org, linux-wireless@vger.kernel.org, 
+	netdev@vger.kernel.org, syzkaller-bugs@googlegroups.com
+Cc: Krzysztof Kozlowski <krzk@kernel.org>
+Date: Thu, 01 Jan 2026 13:07:58 +0100
+In-Reply-To: <6955cbd5.050a0220.a1b6.032d.GAE@google.com> (sfid-20260101_022031_682582_A65E16A5)
+References: <6955cbd5.050a0220.a1b6.032d.GAE@google.com>
+	 (sfid-20260101_022031_682582_A65E16A5)
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.56.2 (3.56.2-2.fc42) 
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+X-malware-bazaar: not-scanned
 
-From: Zac Bowling <zac@zacbowling.com>
+Hi,
 
-Add lockdep_assert_held() calls to critical MCU functions to help catch
-mutex violations during development and debugging. This follows the
-pattern used in other mt76 drivers (mt7996, mt7915, mt7615).
+> ------------[ cut here ]------------
+> rtmutex deadlock detected
+> WARNING: kernel/locking/rtmutex.c:1674 at rt_mutex_handle_deadlock+0x21/0=
+xb0 kernel/locking/rtmutex.c:1674, CPU#0: syz.7.2908/15923
+> Modules linked in:
+> CPU: 0 UID: 0 PID: 15923 Comm: syz.7.2908 Not tainted syzkaller #0 PREEMP=
+T_{RT,(full)}=20
+> Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS G=
+oogle 10/25/2025
+> RIP: 0010:rt_mutex_handle_deadlock+0x21/0xb0 kernel/locking/rtmutex.c:167=
+4
+> Code: 90 90 90 90 90 90 90 90 90 41 57 41 56 41 55 41 54 53 83 ff dd 0f 8=
+5 86 00 00 00 48 89 f7 e8 a6 39 01 00 48 8d 3d af 7c 0a 04 <67> 48 0f b9 3a=
+ 4c 8d 3d 00 00 00 00 65 48 8b 1c 25 08 10 b3 91 4c
+> RSP: 0018:ffffc90004617710 EFLAGS: 00010286
+> RAX: 0000000080000000 RBX: ffffc900046177a0 RCX: 0000000000000000
+> RDX: 0000000000000006 RSI: ffffffff8ce0bbf9 RDI: ffffffff8ede5760
+> RBP: ffffc900046178c0 R08: ffffffff8edb3477 R09: 1ffffffff1db668e
+> R10: dffffc0000000000 R11: fffffbfff1db668f R12: 1ffff920008c2ef0
+> R13: ffffffff8ad3d599 R14: ffffffff8eb910e0 R15: dffffc0000000000
+> FS:  0000000000000000(0000) GS:ffff888126cef000(0000) knlGS:0000000000000=
+000
+> CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+> CR2: 000056422df5abe0 CR3: 000000005929c000 CR4: 00000000003526f0
+> Call Trace:
+>  <TASK>
+>  __rt_mutex_slowlock kernel/locking/rtmutex.c:1734 [inline]
+>  __rt_mutex_slowlock_locked kernel/locking/rtmutex.c:1760 [inline]
+>  rt_mutex_slowlock+0x666/0x6b0 kernel/locking/rtmutex.c:1800
+>  __rt_mutex_lock kernel/locking/rtmutex.c:1815 [inline]
+>  __mutex_lock_common kernel/locking/rtmutex_api.c:534 [inline]
+>  mutex_lock_nested+0x16a/0x1d0 kernel/locking/rtmutex_api.c:552
+>  rfkill_unregister+0xd1/0x230 net/rfkill/core.c:1145
+>  nfc_unregister_device+0x96/0x300 net/nfc/core.c:1167
+>  virtual_ncidev_close+0x59/0x90 drivers/nfc/virtual_ncidev.c:172
 
-Functions with new assertions:
-- mt7925_mcu_add_bss_info(): Core BSS configuration MCU command
-- mt7925_mcu_sta_update(): Station record update MCU command
-- mt7925_mcu_uni_bss_ps(): Power save state MCU command
+NFC has been issues with this for *years*. Technically, Krzysztof is
+listed as a maintainer but I suspect that's mostly dead.
 
-These functions modify firmware state and must be called with the
-device mutex held to prevent race conditions.
+Is there a way you could route rfkill issues to NFC (and have them
+ignored there) if NFC is involved?
 
-Signed-off-by: Zac Bowling <zac@zacbowling.com>
----
- drivers/net/wireless/mediatek/mt76/mt7925/mcu.c | 6 ++++++
- 1 file changed, 6 insertions(+)
+Clearly they're not useful if nobody is interested in fixing NFC, so
+maybe we should just disable the virtual NFC driver completely and just
+not have syzbot run on anything there...
 
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7925/mcu.c b/drivers/net/wireless/mediatek/mt76/mt7925/mcu.c
-index d61a7fbda745..958ff9da9f01 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7925/mcu.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7925/mcu.c
-@@ -1527,6 +1527,8 @@ int mt7925_mcu_uni_bss_ps(struct mt792x_dev *dev,
- 		},
- 	};
- 
-+	lockdep_assert_held(&dev->mt76.mutex);
-+
- 	if (link_conf->vif->type != NL80211_IFTYPE_STATION)
- 		return -EOPNOTSUPP;
- 
-@@ -2037,6 +2039,8 @@ int mt7925_mcu_sta_update(struct mt792x_dev *dev,
- 	struct mt792x_sta *msta;
- 	struct mt792x_link_sta *mlink;
- 
-+	lockdep_assert_held(&dev->mt76.mutex);
-+
- 	if (link_sta) {
- 		msta = (struct mt792x_sta *)link_sta->sta->drv_priv;
- 		mlink = mt792x_sta_to_link(msta, link_sta->link_id);
-@@ -2843,6 +2847,8 @@ int mt7925_mcu_add_bss_info(struct mt792x_phy *phy,
- 	struct mt792x_link_sta *mlink_bc;
- 	struct sk_buff *skb;
- 
-+	lockdep_assert_held(&dev->mt76.mutex);
-+
- 	skb = __mt7925_mcu_alloc_bss_req(&dev->mt76, &mconf->mt76,
- 					 MT7925_BSS_UPDATE_MAX_SIZE);
- 	if (IS_ERR(skb))
--- 
-2.51.0
+If this email doesn't wake anyone up, I'll do that on the next syzbot
+rfkill vs. NFC report I get :)
 
+johannes
 
