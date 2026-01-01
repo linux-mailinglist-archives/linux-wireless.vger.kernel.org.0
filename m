@@ -1,203 +1,188 @@
-Return-Path: <linux-wireless+bounces-30254-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-30255-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 08C63CECB5E
-	for <lists+linux-wireless@lfdr.de>; Thu, 01 Jan 2026 01:41:44 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 59018CECBBD
+	for <lists+linux-wireless@lfdr.de>; Thu, 01 Jan 2026 02:20:29 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id B88CC3013947
-	for <lists+linux-wireless@lfdr.de>; Thu,  1 Jan 2026 00:41:42 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 51A013007229
+	for <lists+linux-wireless@lfdr.de>; Thu,  1 Jan 2026 01:20:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1635623A9BD;
-	Thu,  1 Jan 2026 00:41:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="EGd1B72J"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 720742765ED;
+	Thu,  1 Jan 2026 01:20:25 +0000 (UTC)
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-ej1-f41.google.com (mail-ej1-f41.google.com [209.85.218.41])
+Received: from mail-oo1-f79.google.com (mail-oo1-f79.google.com [209.85.161.79])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 324B0155A5D
-	for <linux-wireless@vger.kernel.org>; Thu,  1 Jan 2026 00:41:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.41
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 98260271469
+	for <linux-wireless@vger.kernel.org>; Thu,  1 Jan 2026 01:20:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.161.79
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767228102; cv=none; b=FB3BZknViojFEqZskSv0HO2YLfO1dSH0EAEGhS5ky01+F1U460zB+EYNDHphL+HDOsnJ+aKckreWJdknRP7rF0l5LutO37rCz2PgHKrRurhmkJrv3XZ4h4IjOsRkMhNYHBNNDLss7WdubUXhAkQg4pKA1E01U4FaOkwQrv00i+s=
+	t=1767230425; cv=none; b=YKbZSK5V1yYsZ/qSSqBnLp6TQJCiX3ubcRt3qAYIa5by4LyGfVVOYhCS9F6+usuK4atGNeJ1V4Pq45epz5X+xEnzEhNgsjigZgXmq68ELnS9C3P6YOpDJqjqJB6y43mwxnLXA2mCn7rbzM1H+lAGPBLSEQAG01Fq1lOCcIz8xcE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767228102; c=relaxed/simple;
-	bh=MCBRGB4H6O7KEpf5+wdKGGxYrafxhmV7aLse7bQ/PhE=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=fKn2Q7LDNCaNR4QQZ0/mGPye2hqusJ5CsyZUh9Mumpd8maoGqNUTsDCgl+qn12u7bWq34P//yBvj6juP0maTE3MYXK0AQTf9H35EhqErKVReBC2U7KvsR+RbXjxcOqCtz5PVH0TP0c3cWlYgTL7e1o7eb44gtpDKxjjN5KxFuI0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=EGd1B72J; arc=none smtp.client-ip=209.85.218.41
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-ej1-f41.google.com with SMTP id a640c23a62f3a-b7cf4a975d2so1718211666b.2
-        for <linux-wireless@vger.kernel.org>; Wed, 31 Dec 2025 16:41:39 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1767228098; x=1767832898; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=4zzksPKZPWZUHlNBpPimtH9Rx1z4lA3vMPadPMifw6g=;
-        b=EGd1B72JIA+0I4PtVoo2qTbrPB83kEJWcjw9bEQd5iPleHTPImWwZjicdUlLRvrjnD
-         hYYUUamSpQsgN6bDszDdeb9+KNip49jaYRw9pSQ4NYxGuFuzGVM2PzFu9uSVKjxiG6Aj
-         hZE0uvJp09vT1baVFDZWPl3012D9/2l3435az9aKGD99aOqq6G4pwsyF2PZxuX6ZgKFo
-         lvxegTQ+0VADIkKfSUswzSn2rmvG7mK+SgYxxzD7wMW24qUfxYJaBy6UH4PqkOoF9GI2
-         BNlsy6zCggYO3Hk/djot/RBOV/EbH6oq2K+OZQ1WpFZyowe/BCaOpavOKdmCX0bRK96c
-         AwSg==
+	s=arc-20240116; t=1767230425; c=relaxed/simple;
+	bh=FHzOIjJhJMdPw+wxvAcFflmhHzTK3yk7O1FIiZ1ii0U=;
+	h=MIME-Version:Date:Message-ID:Subject:From:To:Content-Type; b=UtXIYR+2FKV1SiOvP4cXJ4wSE8g4P+U/H67e1uk18Wv3b1gyvpKpJRtTRz/Pq9N67TeJv7PjXdcPMoQhvsl+VGhj9sTogZkKQMzFWJ0a1i/rkOKSt4b6vTrk5W2eZcEkZSwME8wPTTjn4T/7cbkBkQQgr5qIq7gn0AgrjdmvFXo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com; arc=none smtp.client-ip=209.85.161.79
+Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com
+Received: by mail-oo1-f79.google.com with SMTP id 006d021491bc7-65b2cd67cceso19705917eaf.0
+        for <linux-wireless@vger.kernel.org>; Wed, 31 Dec 2025 17:20:22 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1767228098; x=1767832898;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=4zzksPKZPWZUHlNBpPimtH9Rx1z4lA3vMPadPMifw6g=;
-        b=XUB8Lhp6DViMdgE+8r+EViSG5EGMr88QuErx7X49CT1lhMzzYgd8MEFkHu6xWCWx3d
-         MyfY9qQMnjo+X6h0rwGGsaHsAcPaRoIVxV7GYkKF8AiJu7YrXoEF10hyGbrvHm7pO2eK
-         atrKu4bYJWm6MRkGt8gurh6QozL53H2P7FBR4JBxlzRWjmATrCemCaqKrBhR7jGsAaxx
-         SRrGgzl10Cv1jilE80aIdg2t2VkTijURtcQObix5/TNeQDxEPuVmQXVgMT/uI8cJc5rR
-         Eujk1DxcYzjJVJU4XO2XGg1wM8zMRUZhsgHyVrLWNXLoKOtMhOc+9Q3Oa8dP4AoAaNS7
-         oPBg==
-X-Forwarded-Encrypted: i=1; AJvYcCUy5evYFZV0IxYtElIADTg5JZa8X+ZxCYc3K1mJHkcSFR/AOs9nkdKFzkW8J1WB+H0fFfjHRalTI2ZBovbQ8A==@vger.kernel.org
-X-Gm-Message-State: AOJu0Yxkt+Ln+NVEUrUibk6qR+il6Pa/d7VQl/8zHM/qfOpkAxO7/QU3
-	G7S/56NG5BMu6qdwBXxO/kq61FXJDPeHocsyCVK4WZtZ+umMvRAc4Xl3eAMNHHB4ZiJtSuXqQfI
-	TTGVViRXt9T4EbDdsZYBuPw8glm37dixNhd7OS0kDlQ==
-X-Gm-Gg: AY/fxX5wb9HzTYi2yU1a0229U8bvq6WCPCnhb96IxlfcykqqAiXhKtPD5VsqfxtzcbL
-	2400UqsZgpaBIiCKD1kzwWGXpSRbo/YI/JIicNcaB/6wWpKS//Z8eMX0+WTnneicT1oKgolv41G
-	yYTJGscI7Q/k1bJOOFWJaZ/tv2qiaR+/7DYQVqNhW1MS9/2OmxXwh1Azr8BM+g42oDp+7hklZCQ
-	QU/u9MhRwMC+7x1k6ePPDQqR/oH7MbuPhG3DgOeMg+MqUP6NSvulFHSacRiB1mGdgVgc9xP1FdE
-	vMia0wYY6l5EFbiupzhR/hLfeo/Y5tuAjckOx+mhltIlqW29e4ObcOgf03lCQxnFmC0=
-X-Google-Smtp-Source: AGHT+IEsDAjrzY7RYgrHd/ztJQ1jHCf1aLEL7TFb54prQWsJy57fUQAi+XFSKVoGBeMqqqjI2GIY9k7RUSPJXb6X6lE=
-X-Received: by 2002:a17:907:720f:b0:b73:8639:cd96 with SMTP id
- a640c23a62f3a-b8036f3a367mr3846484166b.24.1767228098167; Wed, 31 Dec 2025
- 16:41:38 -0800 (PST)
+        d=1e100.net; s=20230601; t=1767230421; x=1767835221;
+        h=to:from:subject:message-id:date:mime-version:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=l96xM7j24Yuz+mKcTl2sjAtipIWuU27H/Z/cgCLkeLs=;
+        b=ul5V2mC6tGRea5l7BO/PNShruxmCxi9V4/+DGCjYsoGkOuoijDgMFiTq2Myp/Nh6+V
+         ClCXpJbB4EF2EsLjCSLOYB3QWcZgfwKYXDXSuXIRFY76PFilqZmw0I+eWreQmuq1eJFn
+         Ya8qmsAbYl7UQMv4Tg6qqYAwxnJ6OhS7RH8usEBxTJDcHfzTSgETfMS/HwRsk7ilEK6b
+         Ep0wVvzats2HuZE6n4Ij2NpoqhEjv95XRwSve05tav+4/kO9l0GwnWjx7LbTaQK3QJ/8
+         Ca9cNsKkWz83HZFNWz7pliZ1j8Y22LeBxD9uZH7VwEb/BGwEZHp/ah4hK+JOt/1k/YW6
+         mqmw==
+X-Forwarded-Encrypted: i=1; AJvYcCU1tL7t/EGQr3jAc6Czip75qRgePYMf2yWevxhkskyvQBL5JgR7Wp4e087amvaQVdp/nlH6kqEmxVBJ7wr89Q==@vger.kernel.org
+X-Gm-Message-State: AOJu0YyR3iMMpUAm9PmeR/m/lIZe0Jwv+vEt1Wt8/TCz7rV0vbV8UyLq
+	uNIeThFPmQi7JbcnOwetZjdY9IP22cLF7jqTXooKQ6mcu/HogBuB1tksRvAw4xwH5ahbFzi85mV
+	40Uvq4KftgA6bG4tslXYRRv9mUJ02Dr7bC1t3/iu1LgzrZsT6NNDwvRWy9DY=
+X-Google-Smtp-Source: AGHT+IGo81+4AP49Jo7fSsmAkXk8EECnZ2jAXv+OHIEB+7FOktV+1w2xZAkqOawB7STHXZwGgL3MoFO8rCkKaVIZk0RBE60cf1FD
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20251231223702.30957-1-zbowling@gmail.com> <20260101002321.19332-1-zbowling@gmail.com>
-In-Reply-To: <20260101002321.19332-1-zbowling@gmail.com>
-From: Zac Bowling <zbowling@gmail.com>
-Date: Wed, 31 Dec 2025 16:41:27 -0800
-X-Gm-Features: AQt7F2pI_dhOs-zbE7FGIXVKviexl5P5mc0QK9CuuCDaL6zAWkJg3ebgrIT0Ccc
-Message-ID: <CAOFcj8Sad3pLohFfRdj5jzK3Zs3FAjFVBuzH=80i_m1YqSbpfA@mail.gmail.com>
-Subject: Re: [PATCH 3/3] wifi: mt76: mt7925: fix missing mutex protection in
- runtime PM and MLO PM
-To: zbowling@gmail.com
-Cc: deren.wu@mediatek.com, kvalo@kernel.org, linux-kernel@vger.kernel.org, 
-	linux-mediatek@lists.infradead.org, linux-wireless@vger.kernel.org, 
-	lorenzo@kernel.org, nbd@nbd.name, ryder.lee@mediatek.com, 
-	sean.wang@mediatek.com
+X-Received: by 2002:a05:6820:16a4:b0:65c:fd25:f43d with SMTP id
+ 006d021491bc7-65d0eaa182dmr17326666eaf.59.1767230421479; Wed, 31 Dec 2025
+ 17:20:21 -0800 (PST)
+Date: Wed, 31 Dec 2025 17:20:21 -0800
+X-Google-Appengine-App-Id: s~syzkaller
+X-Google-Appengine-App-Id-Alias: syzkaller
+Message-ID: <6955cbd5.050a0220.a1b6.032d.GAE@google.com>
+Subject: [syzbot] [wireless?] WARNING in rfkill_unregister
+From: syzbot <syzbot+16210d09509730207241@syzkaller.appspotmail.com>
+To: johannes@sipsolutions.net, linux-kernel@vger.kernel.org, 
+	linux-wireless@vger.kernel.org, netdev@vger.kernel.org, 
+	syzkaller-bugs@googlegroups.com
 Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
 
-Note, this is an update to the original patch I sent.
+Hello,
 
-In this v2 patch, I moved mutex protection from inside
-mt7925_roc_abort_sync() to the
-call site in pci.c. The previous approach caused a self-deadlock when
-roc_abort_sync was
-called from the station remove path, which already holds the mutex.
+syzbot found the following issue on:
 
-I created a repo with all these patches if that makes it easier:
-https://github.com/zbowling/mt7925
+HEAD commit:    c53f467229a7 Merge tag 'scsi-fixes' of git://git.kernel.or..
+git tree:       upstream
+console output: https://syzkaller.appspot.com/x/log.txt?x=16e65b92580000
+kernel config:  https://syzkaller.appspot.com/x/.config?x=1f2b6fe1fdf1a00b
+dashboard link: https://syzkaller.appspot.com/bug?extid=16210d09509730207241
+compiler:       Debian clang version 20.1.8 (++20250708063551+0c9f909b7976-1~exp1~20250708183702.136), Debian LLD 20.1.8
 
-These bugs also exist in the mt7921 driver, which this mt7925 driver
-seems to fork from.
-These lock patterns match the much older mt7615 driver and other wifi drive=
-rs.
+Unfortunately, I don't have any reproducer for this issue yet.
 
-Zac Bowling
+Downloadable assets:
+disk image: https://storage.googleapis.com/syzbot-assets/d09cbe6bb078/disk-c53f4672.raw.xz
+vmlinux: https://storage.googleapis.com/syzbot-assets/83e2a6822b1d/vmlinux-c53f4672.xz
+kernel image: https://storage.googleapis.com/syzbot-assets/9eff6dd4ff63/bzImage-c53f4672.xz
 
-Zac Bowling
+IMPORTANT: if you fix the issue, please add the following tag to the commit:
+Reported-by: syzbot+16210d09509730207241@syzkaller.appspotmail.com
+
+------------[ cut here ]------------
+rtmutex deadlock detected
+WARNING: kernel/locking/rtmutex.c:1674 at rt_mutex_handle_deadlock+0x21/0xb0 kernel/locking/rtmutex.c:1674, CPU#0: syz.7.2908/15923
+Modules linked in:
+CPU: 0 UID: 0 PID: 15923 Comm: syz.7.2908 Not tainted syzkaller #0 PREEMPT_{RT,(full)} 
+Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 10/25/2025
+RIP: 0010:rt_mutex_handle_deadlock+0x21/0xb0 kernel/locking/rtmutex.c:1674
+Code: 90 90 90 90 90 90 90 90 90 41 57 41 56 41 55 41 54 53 83 ff dd 0f 85 86 00 00 00 48 89 f7 e8 a6 39 01 00 48 8d 3d af 7c 0a 04 <67> 48 0f b9 3a 4c 8d 3d 00 00 00 00 65 48 8b 1c 25 08 10 b3 91 4c
+RSP: 0018:ffffc90004617710 EFLAGS: 00010286
+RAX: 0000000080000000 RBX: ffffc900046177a0 RCX: 0000000000000000
+RDX: 0000000000000006 RSI: ffffffff8ce0bbf9 RDI: ffffffff8ede5760
+RBP: ffffc900046178c0 R08: ffffffff8edb3477 R09: 1ffffffff1db668e
+R10: dffffc0000000000 R11: fffffbfff1db668f R12: 1ffff920008c2ef0
+R13: ffffffff8ad3d599 R14: ffffffff8eb910e0 R15: dffffc0000000000
+FS:  0000000000000000(0000) GS:ffff888126cef000(0000) knlGS:0000000000000000
+CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+CR2: 000056422df5abe0 CR3: 000000005929c000 CR4: 00000000003526f0
+Call Trace:
+ <TASK>
+ __rt_mutex_slowlock kernel/locking/rtmutex.c:1734 [inline]
+ __rt_mutex_slowlock_locked kernel/locking/rtmutex.c:1760 [inline]
+ rt_mutex_slowlock+0x666/0x6b0 kernel/locking/rtmutex.c:1800
+ __rt_mutex_lock kernel/locking/rtmutex.c:1815 [inline]
+ __mutex_lock_common kernel/locking/rtmutex_api.c:534 [inline]
+ mutex_lock_nested+0x16a/0x1d0 kernel/locking/rtmutex_api.c:552
+ rfkill_unregister+0xd1/0x230 net/rfkill/core.c:1145
+ nfc_unregister_device+0x96/0x300 net/nfc/core.c:1167
+ virtual_ncidev_close+0x59/0x90 drivers/nfc/virtual_ncidev.c:172
+ __fput+0x45b/0xa80 fs/file_table.c:468
+ task_work_run+0x1d4/0x260 kernel/task_work.c:233
+ exit_task_work include/linux/task_work.h:40 [inline]
+ do_exit+0x694/0x22f0 kernel/exit.c:971
+ do_group_exit+0x21c/0x2d0 kernel/exit.c:1112
+ get_signal+0x125d/0x1310 kernel/signal.c:3034
+ arch_do_signal_or_restart+0x9a/0x7a0 arch/x86/kernel/signal.c:337
+ __exit_to_user_mode_loop kernel/entry/common.c:41 [inline]
+ exit_to_user_mode_loop+0x87/0x4e0 kernel/entry/common.c:75
+ __exit_to_user_mode_prepare include/linux/irq-entry-common.h:226 [inline]
+ syscall_exit_to_user_mode_prepare include/linux/irq-entry-common.h:256 [inline]
+ syscall_exit_to_user_mode_work include/linux/entry-common.h:159 [inline]
+ syscall_exit_to_user_mode include/linux/entry-common.h:194 [inline]
+ do_syscall_64+0x2b7/0xf80 arch/x86/entry/syscall_64.c:100
+ entry_SYSCALL_64_after_hwframe+0x77/0x7f
+RIP: 0033:0x7f2e7f9af749
+Code: Unable to access opcode bytes at 0x7f2e7f9af71f.
+RSP: 002b:00007f2e7dc0e038 EFLAGS: 00000246 ORIG_RAX: 0000000000000101
+RAX: 0000000000000008 RBX: 00007f2e7fc05fa0 RCX: 00007f2e7f9af749
+RDX: 0000000000000002 RSI: 0000200000000500 RDI: ffffffffffffff9c
+RBP: 00007f2e7fa33f91 R08: 0000000000000000 R09: 0000000000000000
+R10: 0000000000000000 R11: 0000000000000246 R12: 0000000000000000
+R13: 00007f2e7fc06038 R14: 00007f2e7fc05fa0 R15: 00007fff5a2e50f8
+ </TASK>
+----------------
+Code disassembly (best guess):
+   0:	90                   	nop
+   1:	90                   	nop
+   2:	90                   	nop
+   3:	90                   	nop
+   4:	90                   	nop
+   5:	90                   	nop
+   6:	90                   	nop
+   7:	90                   	nop
+   8:	90                   	nop
+   9:	41 57                	push   %r15
+   b:	41 56                	push   %r14
+   d:	41 55                	push   %r13
+   f:	41 54                	push   %r12
+  11:	53                   	push   %rbx
+  12:	83 ff dd             	cmp    $0xffffffdd,%edi
+  15:	0f 85 86 00 00 00    	jne    0xa1
+  1b:	48 89 f7             	mov    %rsi,%rdi
+  1e:	e8 a6 39 01 00       	call   0x139c9
+  23:	48 8d 3d af 7c 0a 04 	lea    0x40a7caf(%rip),%rdi        # 0x40a7cd9
+* 2a:	67 48 0f b9 3a       	ud1    (%edx),%rdi <-- trapping instruction
+  2f:	4c 8d 3d 00 00 00 00 	lea    0x0(%rip),%r15        # 0x36
+  36:	65 48 8b 1c 25 08 10 	mov    %gs:0xffffffff91b31008,%rbx
+  3d:	b3 91
+  3f:	4c                   	rex.WR
 
 
-On Wed, Dec 31, 2025 at 4:23=E2=80=AFPM Zac Bowling <zbowling@gmail.com> wr=
-ote:
->
-> From: Zac Bowling <zac@zacbowling.com>
->
-> Two additional code paths were identified that iterate over active
-> interfaces and call MCU functions without proper mutex protection:
->
-> 1. mt7925_set_runtime_pm(): Called when runtime PM settings change.
->    The callback mt7925_pm_interface_iter() calls mt7925_mcu_set_beacon_fi=
-lter()
->    which in turn calls mt7925_mcu_set_rxfilter(). These MCU functions req=
-uire
->    the device mutex to be held.
->
-> 2. mt7925_mlo_pm_work(): A workqueue function for MLO power management.
->    The callback mt7925_mlo_pm_iter() was acquiring mutex internally, whic=
-h
->    is inconsistent with the rest of the driver where the caller holds the
->    mutex during interface iteration. Move the mutex to the caller for
->    consistency and to prevent potential race conditions.
->
-> The impact of these bugs:
-> - mt7925_set_runtime_pm(): Can cause deadlocks when power management
->   settings are changed while WiFi is active
-> - mt7925_mlo_pm_work(): Can cause race conditions during MLO power save
->   state transitions
->
-> Note: Similar bugs exist in the mt7921 driver and should be fixed in a
-> separate patch series.
->
-> Reported-by: Zac Bowling <zac@zacbowling.com>
-> Tested-by: Zac Bowling <zac@zacbowling.com>
-> Signed-off-by: Zac Bowling <zac@zacbowling.com>
-> ---
->  drivers/net/wireless/mediatek/mt76/mt7925/main.c | 6 ++++--
->  1 file changed, 4 insertions(+), 2 deletions(-)
->
-> diff --git a/drivers/net/wireless/mediatek/mt76/mt7925/main.c b/drivers/n=
-et/wireless/mediatek/mt76/mt7925/main.c
-> index 3001a62a8b67..9f17b21aef1c 100644
-> --- a/drivers/net/wireless/mediatek/mt76/mt7925/main.c
-> +++ b/drivers/net/wireless/mediatek/mt76/mt7925/main.c
-> @@ -751,9 +751,11 @@ void mt7925_set_runtime_pm(struct mt792x_dev *dev)
->         bool monitor =3D !!(hw->conf.flags & IEEE80211_CONF_MONITOR);
->
->         pm->enable =3D pm->enable_user && !monitor;
-> +       mt792x_mutex_acquire(dev);
->         ieee80211_iterate_active_interfaces(hw,
->                                             IEEE80211_IFACE_ITER_RESUME_A=
-LL,
->                                             mt7925_pm_interface_iter, dev=
-);
-> +       mt792x_mutex_release(dev);
->         pm->ds_enable =3D pm->ds_enable_user && !monitor;
->         mt7925_mcu_set_deep_sleep(dev, pm->ds_enable);
->  }
-> @@ -1301,14 +1303,12 @@ mt7925_mlo_pm_iter(void *priv, u8 *mac, struct ie=
-ee80211_vif *vif)
->         if (mvif->mlo_pm_state !=3D MT792x_MLO_CHANGED_PS)
->                 return;
->
-> -       mt792x_mutex_acquire(dev);
->         for_each_set_bit(i, &valid, IEEE80211_MLD_MAX_NUM_LINKS) {
->                 bss_conf =3D mt792x_vif_to_bss_conf(vif, i);
->                 if (!bss_conf)
->                         continue;
->                 mt7925_mcu_uni_bss_ps(dev, bss_conf);
->         }
-> -       mt792x_mutex_release(dev);
->  }
->
->  void mt7925_mlo_pm_work(struct work_struct *work)
-> @@ -1317,9 +1317,11 @@ void mt7925_mlo_pm_work(struct work_struct *work)
->                                               mlo_pm_work.work);
->         struct ieee80211_hw *hw =3D mt76_hw(dev);
->
-> +       mt792x_mutex_acquire(dev);
->         ieee80211_iterate_active_interfaces(hw,
->                                             IEEE80211_IFACE_ITER_RESUME_A=
-LL,
->                                             mt7925_mlo_pm_iter, dev);
-> +       mt792x_mutex_release(dev);
->  }
->
->  void mt7925_scan_work(struct work_struct *work)
-> --
-> 2.51.0
->
+---
+This report is generated by a bot. It may contain errors.
+See https://goo.gl/tpsmEJ for more information about syzbot.
+syzbot engineers can be reached at syzkaller@googlegroups.com.
+
+syzbot will keep track of this issue. See:
+https://goo.gl/tpsmEJ#status for how to communicate with syzbot.
+
+If the report is already addressed, let syzbot know by replying with:
+#syz fix: exact-commit-title
+
+If you want to overwrite report's subsystems, reply with:
+#syz set subsystems: new-subsystem
+(See the list of subsystem names on the web dashboard)
+
+If the report is a duplicate of another one, reply with:
+#syz dup: exact-subject-of-another-report
+
+If you want to undo deduplication, reply with:
+#syz undup
 
