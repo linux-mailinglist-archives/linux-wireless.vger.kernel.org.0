@@ -1,94 +1,96 @@
-Return-Path: <linux-wireless+bounces-30251-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-30252-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1E713CECAEB
-	for <lists+linux-wireless@lfdr.de>; Thu, 01 Jan 2026 00:46:41 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id 934E3CECB25
+	for <lists+linux-wireless@lfdr.de>; Thu, 01 Jan 2026 01:23:06 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id C23C630102BD
-	for <lists+linux-wireless@lfdr.de>; Wed, 31 Dec 2025 23:46:39 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id B534D30039F3
+	for <lists+linux-wireless@lfdr.de>; Thu,  1 Jan 2026 00:23:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0D74825C6EE;
-	Wed, 31 Dec 2025 23:46:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BCCF51E521A;
+	Thu,  1 Jan 2026 00:22:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZdEmJUjk"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="TV8Zt8Pv"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-ot1-f66.google.com (mail-ot1-f66.google.com [209.85.210.66])
+Received: from mail-pf1-f178.google.com (mail-pf1-f178.google.com [209.85.210.178])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AC2981EFF80
-	for <linux-wireless@vger.kernel.org>; Wed, 31 Dec 2025 23:46:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.66
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 41FC81D5CD1
+	for <linux-wireless@vger.kernel.org>; Thu,  1 Jan 2026 00:22:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.178
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767224798; cv=none; b=PuQcyQ97fLp3fPilB9ncwkNzdbQd+K2a5DfGlde0Iwvxz3BzkoLn53kcoReI9zXkXHrTLY1iMy/c5ewfH0tnwZemRFxhaJgg9ZWoSxzFWBzM5DoZh0Ck3TeywTDN4ndKiscB4htayRayPYnk7k3uvjrbkkSzUOdID3bKVpk8l5c=
+	t=1767226978; cv=none; b=FaIXHKy0qKMMm8K5aZ1tqAUujWzPBqYOZtPKGcIVEpxNxHb6pX4LBLuc9Xc4fEkTTjPWITfnqbXZt0Otm8dpnxUiLt6l14hDLG+BVZTOVuzDneLj6+F5YB+7jxN2qrfenwAsoM6Wm8xVCqnoLeTTYvaJBkyL9iTf7dV5h7obDcc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767224798; c=relaxed/simple;
-	bh=MWL/eF5/iegDIKlHPGSEIEhG52xmBM34mqqyx/kIhm0=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=fV7cWM81MvMbA23tRnQPAVVZlaq/LZ5RlnFsB32bpokqSWhM2aUUvneT4/kz6EnmcE4JYnGDYs4kNv2kgX7p9nOiY+jvutmyuidzCUddlW3twC5fghYJawUagYNXvRgklLkmwwfYwewEOE404fPLY9r9FxHawbTqv877oBC+kUw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linuxfoundation.org; spf=pass smtp.mailfrom=linuxfoundation.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZdEmJUjk; arc=none smtp.client-ip=209.85.210.66
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linuxfoundation.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linuxfoundation.org
-Received: by mail-ot1-f66.google.com with SMTP id 46e09a7af769-7c6d13986f8so9290431a34.0
-        for <linux-wireless@vger.kernel.org>; Wed, 31 Dec 2025 15:46:36 -0800 (PST)
+	s=arc-20240116; t=1767226978; c=relaxed/simple;
+	bh=uXmkWv5M339UFdEp2HwyEfhQgSaymFjQa8XRiW9b+YE=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=YgiEucqxxZ/+pjvgu4vmC4C5Rrbm6B9ktmCvjiZEC0TLPq77neDc1G8rnHWqzz9MfsJAmYn3i+iMnhMTtsrNh13/RM0ATV5fvmQbgQwfItxLgPZmOICv//pbQt6BjPl9VFNKnAePHod3oQoPRGLeTtlOf0+ZY64+7dQG/TwN/GM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=TV8Zt8Pv; arc=none smtp.client-ip=209.85.210.178
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-pf1-f178.google.com with SMTP id d2e1a72fcca58-7e1651ae0d5so8647759b3a.1
+        for <linux-wireless@vger.kernel.org>; Wed, 31 Dec 2025 16:22:57 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linuxfoundation.org; s=google; t=1767224795; x=1767829595; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=6lECKX6HYn/UFgYHW3Lep9ULLvDa097/tngl+1jpf04=;
-        b=ZdEmJUjko1si9FrQp6ZuU44K8tQ2QA0zGm58CwGGsij2pQpK1ZizNiZCvNc4/cVLwO
-         EALs4yKtR7AUrlBpsqhMz6cU5X442Be77NZiXV1pMnxjaY8n9cbk2BObXZ0h8dU2KWCC
-         68MPucIDVmE5yoMRUe3a5bcTXkAAmPkV3F0K0=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1767224795; x=1767829595;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+        d=gmail.com; s=20230601; t=1767226976; x=1767831776; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=6lECKX6HYn/UFgYHW3Lep9ULLvDa097/tngl+1jpf04=;
-        b=k1MTz2TjkH0vs2f9SvmpvwpA6FRFNQXH2/0kFQZe0spMqFZIot2MQ8ckfJUhMuMjzC
-         SqIDoi7uMm2sWSbNz+5s4DIGh33iVRdNfe8BpSynlWuWE3U+MOi1FvhfeD1rmav2rIWQ
-         8SZ7sUnaptfjp8fXaIORaft6tV1dvE8ZfSnKBRcPvFZbXRaIWfs5Ao8/qVqOKmYQUGR/
-         IZi31jHkEjCuSBZ5yY6dPqj2jEm7ysDjDL7X1fwuY1YZP0AUCXHab5+1iCPousKzs7JK
-         Vys2PNpMuKPwVOLIgWg5VvWHSLRQ0b6ihKavICKCchchlRWW9sN4f9CEr5wVZOBtCE26
-         h8Og==
-X-Forwarded-Encrypted: i=1; AJvYcCU5+rZZkThHbpEYwb+Bl/80m3LWYWW33c1BbWvIhitaPDFyopi4P/rdQ7ICxIYzfh6trJWZppjGznkgvZxLEg==@vger.kernel.org
-X-Gm-Message-State: AOJu0YxiWCuIpEGzCev3QFebYHX+VABFgR8oRHwNvVFwn35NuiyDAZqC
-	yHbl0WKl/u2aCQUNKljPS0OSFyluGDqycjWX9TucrSQkE2KeBJ5b08ZPwlI90FOOrmY=
-X-Gm-Gg: AY/fxX54xjnuAb7sVSXCEh+xZDGuMRLBI7Y1euK5vB3ZW1G7TYyYyB0fMaxDoe2zpp0
-	JwxDw6RhMbSNNE3tRp2MB1LIybp5KkA4p2oJWT5Ghwc5fBWoPW2CTFpGbwTKnlI8v+anUtwNuVO
-	WhAfmdClsTXm9JW3vGDT6SNs9QB7kbEAQt08Fxd/2JJ0dDFQNlk4L6+ZydI9+jVtnH4PR85w4qr
-	KvNOL0thzfpztKvJIp8lsZGVDJAK+OaxDh5C24kpVXXyu/Bp4Ts+WbkH248qX8uxKxVPGBAeDAw
-	mRtxWxqzFcd0Do6O1BP+zdg9Xk2Cj4poA5W5uKB3fvGTT+wdEftz1kWfO6xVcNcfOkHinuYwdAC
-	qwRuq1BjBLpTSdnaY2dhpns3zL44z5iJJtHn35B79JEXYac4CIxnZplmuB8+CcEiIqDrkSPH4Uk
-	5hzXmDPGVx5g+ywcGCe72e6QyjCG7WvVB7Dg2M
-X-Google-Smtp-Source: AGHT+IFV2BaGqD0BAddR/5VHavfl8Mnol7saz3Bsj0Em4upn6uAvpba1yOclRSKtiPCjPQk30vcWYg==
-X-Received: by 2002:a05:6830:2e06:b0:7c7:64f3:690a with SMTP id 46e09a7af769-7cc65eb8a4emr20258833a34.18.1767224795618;
-        Wed, 31 Dec 2025 15:46:35 -0800 (PST)
-Received: from shuah-framework.internal ([38.175.187.108])
-        by smtp.gmail.com with ESMTPSA id 46e09a7af769-7cc667ec367sm25187288a34.23.2025.12.31.15.46.34
+        bh=C7hP4/6MzXBlCphVpjUPnbzonToHfVmgk1yWMeGEYqo=;
+        b=TV8Zt8PvBWfYIqLzhDvEBRBTvX5IQGayxC8yQ1YP/TyY1PYBY6ncNnzBFTMGawlVNS
+         SZipty6EhCqWQtnDUMJP8JinUp5tsv4uXeqi6DZbRnIWbQWcjQLZZ8YVTQBj99NOGSVc
+         unCWyI32wdNtfXXbpzgVCdkkcsHUJTjsRtWOLch4zl1HXCp4F/9goGhrK7kfhRvrJtr8
+         UIGWyrdTo6+yBfLS5rH0AcVvJd1j4dBdT4LNxn4pioAhgXQ8Pmjy3ncy1GyyNMX5ibxM
+         c25aK4MMgvVHFYdInyAWyMDh68RCxtykHmaEDvujnETOx8lSnbL7DAtUSJar7mEA7UTa
+         UiQA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1767226976; x=1767831776;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=C7hP4/6MzXBlCphVpjUPnbzonToHfVmgk1yWMeGEYqo=;
+        b=oZoO0tRm4LPy8CjwT1JxNM7R/Mmicon4jV4/shdrmQ8KGBrmwhKDYFGDYmeGf5lPpi
+         LJNF/y2oijENwCXq5jvQF3XBXcPhxmJXZVxpQ4x/AfegVWv+/xzs6zX+nmODOiFrSeGs
+         ViPfeSH3xqrL6nrIfVRW+rO6mlPdQin+1/6OdL94q0R6DX2CnV3jt9wbwmooRNciChAB
+         cI8PpdM56ju1RCHys1Qh56Ym8FVTSftYwUR8jkzFJ0q1doWCpDiIMb6pcXZ+93Lhm3A4
+         NF9MoRILKBKuA3x2p0WLHLSStkd3ThAA9I7IxUTjdI+hOK0/OJnulDZ4TRVLn/CZxbkO
+         xhlQ==
+X-Forwarded-Encrypted: i=1; AJvYcCUh4pXbdAHMWjml3K4VdDr+pk+N+tT1e0qLU0DefrOHAzHvZw+YTWbkTLfnAspNUYzRpfQhgSYVjZqKo9Z92Q==@vger.kernel.org
+X-Gm-Message-State: AOJu0YyFCTlAb9Kgg2fpfcmq4KOQ4Yq2q29Wti4h/RgyPhnjclcmnrBl
+	T7bjcExeb41AkZHBqLi9u0RUaAEQes0mbYMqxsk7X3/kPHpBZbQRVmIz
+X-Gm-Gg: AY/fxX5oGJMT6F8iOzhjMED4nn+4frT20TSbuEJzUnxtwdRFp6mE9twPCRGUUlItSCS
+	4RvgPA6rd+0cAVnsiYbiF5t/SyE0FxNWp7d3R/UFbGSt0EIdTs4bqFQbh1CPlkrECHeoVbxY50E
+	gWdgItzQ1r6SXG1HRhvLi+96tZZJrLUozU5K5fYKQJ1SkF1ldoeZRmG7lqQRsqvlpEq3fSdGIV+
+	yUxMztlAsDtnIuwRXGtwJIvjKf41FfXUusIN+KAymJ9jFuIXDhupwuVNop9BaK5VoH152zGKgJo
+	ohtGu+K8Dj3WvKRouqgJV5VyYQvDEv3c81QWUqnDjrJrAvlEd2074xLzZc4aEx1Kol5RzylFC3c
+	caJKr3eFJ59vujeHjRXJP6CYCVcHweAdj54cuJ19zkhBv+rIjUEbmcR44EhsoGcymSSsWQ2LEaP
+	o+LjBKkbv7ICs54QxMK6PIaPMAFlL4KBPJ9aA1a7FLM/JVOtT2sa2O6KcPOsifSwLQw2MpF5aIE
+	A==
+X-Google-Smtp-Source: AGHT+IGvR3F8ZvfS9X6tm+SOPzohfY0S2Rtcb+Z9cxmiC/usD4FDeoHXUceXcAntkCJaJbwQT2hJig==
+X-Received: by 2002:a05:7022:e24:b0:119:e56b:98ab with SMTP id a92af1059eb24-121722b7ac5mr34376559c88.18.1767226976361;
+        Wed, 31 Dec 2025 16:22:56 -0800 (PST)
+Received: from zubuntu.bengal-mercat.ts.net ([2001:5a8:60d:bc9:9ebf:dff:fe00:f8f2])
+        by smtp.gmail.com with ESMTPSA id a92af1059eb24-121724de268sm110976431c88.8.2025.12.31.16.22.55
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 31 Dec 2025 15:46:35 -0800 (PST)
-From: Shuah Khan <skhan@linuxfoundation.org>
-To: nbd@nbd.name,
-	ryder.lee@mediatek.com,
-	shayne.chen@mediatek.com,
-	sean.wang@mediatek.com,
-	matthias.bgg@gmail.com,
-	angelogioacchino.delregno@collabora.com,
-	torvalds@linux-foundation.org,
-	johannes@sipsolutions.net,
-	ebiggers@kernel.org,
-	matthew.schwartz@linux.dev,
-	linux@weissschuh.net
-Cc: Shuah Khan <skhan@linuxfoundation.org>,
-	linux-wireless@vger.kernel.org,
+        Wed, 31 Dec 2025 16:22:55 -0800 (PST)
+From: Zac Bowling <zbowling@gmail.com>
+To: zbowling@gmail.com
+Cc: deren.wu@mediatek.com,
+	kvalo@kernel.org,
 	linux-kernel@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org,
 	linux-mediatek@lists.infradead.org,
-	Mario Limonciello <superm1@gmail.com>
-Subject: [PATCH] wifi: mt76: Remove blank line after mt792x firmware version dmesg
-Date: Wed, 31 Dec 2025 16:46:26 -0700
-Message-ID: <20251231234627.11867-1-skhan@linuxfoundation.org>
+	linux-wireless@vger.kernel.org,
+	lorenzo@kernel.org,
+	nbd@nbd.name,
+	ryder.lee@mediatek.com,
+	sean.wang@mediatek.com,
+	zac@zacbowling.com
+Subject: [PATCH 2/3] wifi: mt76: mt7925: fix missing mutex protection in reset and ROC abort
+Date: Wed, 31 Dec 2025 16:22:53 -0800
+Message-ID: <20260101002253.19078-1-zbowling@gmail.com>
 X-Mailer: git-send-email 2.51.0
+In-Reply-To: <20251231223702.30957-1-zbowling@gmail.com>
+References: <20251231223702.30957-1-zbowling@gmail.com>
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
@@ -97,64 +99,63 @@ List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-An extra blank line gets printed after printing firmware version
-because the build date is null terminated. Remove the "\n" from
-dev_info() calls to print firmware version and build date to fix
-the problem.
+From: Zac Bowling <zac@zacbowling.com>
 
-Reported-by: Mario Limonciello <superm1@gmail.com>
-Signed-off-by: Shuah Khan <skhan@linuxfoundation.org>
+During firmware recovery and ROC (Remain On Channel) abort operations,
+the driver iterates over active interfaces and calls MCU functions that
+require the device mutex to be held, but the mutex was not acquired.
+
+This causes system-wide hangs where network commands hang indefinitely,
+processes get stuck in uninterruptible sleep (D state), and the system
+becomes completely unresponsive requiring force reboot.
+
+Add mutex protection around interface iteration in:
+- mt7925_mac_reset_work(): Called during firmware recovery after MCU
+  timeouts to reconnect all interfaces
+- mt7925_roc_abort_sync(): Called during suspend/resume and when aborting
+  Remain On Channel operations
+
+This matches the pattern used elsewhere in the driver where interface
+iteration callbacks invoke MCU functions.
+
+Reported-by: Zac Bowling <zac@zacbowling.com>
+Tested-by: Zac Bowling <zac@zacbowling.com>
+Signed-off-by: Zac Bowling <zac@zacbowling.com>
 ---
+ drivers/net/wireless/mediatek/mt76/mt7925/mac.c | 2 ++
+ drivers/net/wireless/mediatek/mt76/mt7925/pci.c | 2 ++
+ 2 files changed, 4 insertions(+)
 
-Note: adding discussion threads about revert and simpler fix
-for this. Mario sent me email offline about being away for
-bit. Sending the patch since I have it ready before I disappear
-for New Years.
-
-Relevant threads:
-- Revert for f804a5895ebad2b2d4fb8a3688d2115926e993d5
-  https://lore.kernel.org/all/20251231035645.5545-1-skhan@linuxfoundation.org/
-
-  This patch depends on revert patch.
-- Discussion abour reverting:
-  https://lore.kernel.org/all/d7f3b00d-beec-41f0-b157-7cfb871f9a46@linuxfoundation.org/
-- Proposed fix for reverted commit
-  https://lore.kernel.org/all/CABXGCsMeAZyNJ-Axt_CUCXgyieWPV3rrcLpWsveMPT8R0YPGnQ@mail.gmail.com/
-
- drivers/net/wireless/mediatek/mt76/mt76_connac_mcu.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
-
-diff --git a/drivers/net/wireless/mediatek/mt76/mt76_connac_mcu.c b/drivers/net/wireless/mediatek/mt76/mt76_connac_mcu.c
-index fba7025ffd3f..0457712286d5 100644
---- a/drivers/net/wireless/mediatek/mt76/mt76_connac_mcu.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt76_connac_mcu.c
-@@ -3019,7 +3019,7 @@ int mt76_connac2_load_ram(struct mt76_dev *dev, const char *fw_wm,
- 	}
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7925/mac.c b/drivers/net/wireless/mediatek/mt76/mt7925/mac.c
+index 184efe8afa10..06420ac6ed55 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7925/mac.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7925/mac.c
+@@ -1331,9 +1331,11 @@ void mt7925_mac_reset_work(struct work_struct *work)
+ 	dev->hw_full_reset = false;
+ 	pm->suspended = false;
+ 	ieee80211_wake_queues(hw);
++	mt792x_mutex_acquire(dev);
+ 	ieee80211_iterate_active_interfaces(hw,
+ 					    IEEE80211_IFACE_ITER_RESUME_ALL,
+ 					    mt7925_vif_connect_iter, NULL);
++	mt792x_mutex_release(dev);
+ 	mt76_connac_power_save_sched(&dev->mt76.phy, pm);
  
- 	hdr = (const void *)(fw->data + fw->size - sizeof(*hdr));
--	dev_info(dev->dev, "WM Firmware Version: %.10s, Build Time: %.15s\n",
-+	dev_info(dev->dev, "WM Firmware Version: %.10s, Build Time: %.15s",
- 		 hdr->fw_ver, hdr->build_date);
+ 	mt7925_regd_change(&dev->phy, "00");
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7925/pci.c b/drivers/net/wireless/mediatek/mt76/mt7925/pci.c
+index c4161754c01d..e9d62c6aee91 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7925/pci.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7925/pci.c
+@@ -455,7 +455,9 @@ static int mt7925_pci_suspend(struct device *device)
+ 	cancel_delayed_work_sync(&pm->ps_work);
+ 	cancel_work_sync(&pm->wake_work);
  
- 	ret = mt76_connac_mcu_send_ram_firmware(dev, hdr, fw->data, false);
-@@ -3048,7 +3048,7 @@ int mt76_connac2_load_ram(struct mt76_dev *dev, const char *fw_wm,
- 	}
++	mt792x_mutex_acquire(dev);
+ 	mt7925_roc_abort_sync(dev);
++	mt792x_mutex_release(dev);
  
- 	hdr = (const void *)(fw->data + fw->size - sizeof(*hdr));
--	dev_info(dev->dev, "WA Firmware Version: %.10s, Build Time: %.15s\n",
-+	dev_info(dev->dev, "WA Firmware Version: %.10s, Build Time: %.15s",
- 		 hdr->fw_ver, hdr->build_date);
- 
- 	ret = mt76_connac_mcu_send_ram_firmware(dev, hdr, fw->data, true);
-@@ -3124,7 +3124,7 @@ int mt76_connac2_load_patch(struct mt76_dev *dev, const char *fw_name)
- 	}
- 
- 	hdr = (const void *)fw->data;
--	dev_info(dev->dev, "HW/SW Version: 0x%x, Build Time: %.16s\n",
-+	dev_info(dev->dev, "HW/SW Version: 0x%x, Build Time: %.16s",
- 		 be32_to_cpu(hdr->hw_sw_ver), hdr->build_date);
- 
- 	for (i = 0; i < be32_to_cpu(hdr->desc.n_region); i++) {
+ 	err = mt792x_mcu_drv_pmctrl(dev);
+ 	if (err < 0)
 -- 
 2.51.0
 
