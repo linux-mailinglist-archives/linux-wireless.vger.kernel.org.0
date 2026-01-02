@@ -1,77 +1,77 @@
-Return-Path: <linux-wireless+bounces-30301-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-30302-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id D4D23CEF445
-	for <lists+linux-wireless@lfdr.de>; Fri, 02 Jan 2026 21:05:58 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id B67A6CEF44B
+	for <lists+linux-wireless@lfdr.de>; Fri, 02 Jan 2026 21:06:23 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id EE12D305967E
-	for <lists+linux-wireless@lfdr.de>; Fri,  2 Jan 2026 20:03:42 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id C52D13064C23
+	for <lists+linux-wireless@lfdr.de>; Fri,  2 Jan 2026 20:03:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6A04E31AAA8;
-	Fri,  2 Jan 2026 20:03:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 91E0D31AF3F;
+	Fri,  2 Jan 2026 20:03:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="F721D7cn"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="ZHmlUxRA"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-pf1-f171.google.com (mail-pf1-f171.google.com [209.85.210.171])
+Received: from mail-pj1-f42.google.com (mail-pj1-f42.google.com [209.85.216.42])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5EEA82EDD63
-	for <linux-wireless@vger.kernel.org>; Fri,  2 Jan 2026 20:03:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.171
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 71CB031A7F1
+	for <linux-wireless@vger.kernel.org>; Fri,  2 Jan 2026 20:03:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.42
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767384206; cv=none; b=dkBrRJzOQ4LFn3fjCvdPRnzBzYMs7hlq/GtkJA6oHDEr9jdBQD75UabapZ0I28cG4m7RxKVkdr2bGmBL8eO7NuZnYlyZKDlxSTYDkC8bZ8tMccdsDyhCRfzhrd10mt1eoDZC64IE9Qm2zXszqIJGX+efHA4qXh2GM7Aw41WVx5Y=
+	t=1767384207; cv=none; b=E59d36TMPYM+WmbE7V+p7ZDJTRkDpSrPhAvRqwkUvSn/59FmdhL/38q+jPH3/4CKETDjT/U+P2VGenCtsvJ7Z8Ra/DjIEAHS+FQLqBFflsvY8PaqPAAeYjDztglJZOimVGYQ+crUashh1XINc+xD5C/fDr/7WTEb/OhpSr8BQ30=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767384206; c=relaxed/simple;
-	bh=cw8rk6kKEQyjbIA4Ch6Mou0UKqG7YDgnKyApEftbNtE=;
+	s=arc-20240116; t=1767384207; c=relaxed/simple;
+	bh=VhXBQtf8JMYP7iEplORKsTD0c5nXGZLDz2jVneZ3Y78=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=sio27eGYSP41PFa9pLmnBFuaOc73KHhLm43pBuoJdftewBGlmgUfkjmIHX5wUwfMmJwMhj4aozLi5t/pjwuGLUrwFqGxTwk8d44KOvDk7lpCKeXJnqqY54KI7ZFGqFoKEmf1/WDTVBJ5Dq9l48lfWz5ykW6ncAMJgQBMAoFZRuY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=F721D7cn; arc=none smtp.client-ip=209.85.210.171
+	 MIME-Version; b=dklp2DzwadIyLvlaeqPwpvlMhwsdg5JXKE78czlV1SozNXeL5TDndXcqopaDoSTdvIt1JLpoVev9IxfdhaS6o0qwUatRmswz/ellpK6zc9knoHQ4sRaL36iv3wEHxWmcdFHOJGUYM4UZX3mHTfe2ecB+X3GdrCa9OdnJJtcGrns=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=ZHmlUxRA; arc=none smtp.client-ip=209.85.216.42
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pf1-f171.google.com with SMTP id d2e1a72fcca58-7b8eff36e3bso19414945b3a.2
-        for <linux-wireless@vger.kernel.org>; Fri, 02 Jan 2026 12:03:24 -0800 (PST)
+Received: by mail-pj1-f42.google.com with SMTP id 98e67ed59e1d1-34c21417781so12996248a91.3
+        for <linux-wireless@vger.kernel.org>; Fri, 02 Jan 2026 12:03:25 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1767384203; x=1767989003; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1767384205; x=1767989005; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=rOTwbgpeLN5pXgDisgz/s6pvtJgX11/afdNTzS5QM/M=;
-        b=F721D7cnp2CZPH5DjF6tic0P4cEIg8jvZ9G0vveMCNmhjKisw01i+pbK/8F7HL1pcV
-         BLlJauWJTnbV09zxQ7ggWsNq6ynQ92YMkef7D4/vxbKXe+N00Q52zKsr7cHqe6+blhDA
-         c11wgIsKHAaZKtRgfSF8LkRMuneuc6993wxbaRGUExRPHl/cZHhOUouK+wYL0E2oa+eT
-         dNFuSm8//g+g5tEyzoB5CQnkQwJ+HZwZangk4HBXitWPKJ9Oqk2xQnG+C1nDWKWb3Kpj
-         yfmAJexQ2nE2T9GcHygkbvmzXjfOKW6Gz3PqWF8RYkcXbSpY+OZ0OXEUv+s97adFENF3
-         eXcQ==
+        bh=CwXGmthbpTQEUqtRqROv4y4T1PCVhu/O0zEJC5A6YzE=;
+        b=ZHmlUxRAEU68rlhG2BcHbunkpQBpRzITXnxqAkxH2Q+6EreZs70mO01fpLHbY4CMKS
+         0dc0tqPwCDpt/tWgkyMKoJD/ZiLwu6u5Kr802QxE1f6I4wYsLOGfb7uiFUgh6Dy77CZ+
+         Jp5Uvbyp220gtYZHRtjghX0JzJbAe/S8iB5hKyj+Yl9Tq7LQYLymb5VRK9N+h3h70i+n
+         tph9vYYu36evq58tkj6TuiFT/2A0IIAs/EdetkixLnhoM2V6E76J/nyFU1kIEngAY4zW
+         RahwktbHKjAaC1NCFKDHtsn5qgo4xQWZ4w6tH4ZEW1oE5In0RbXgos1z1a7nLf3JWUVl
+         pbxw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1767384203; x=1767989003;
+        d=1e100.net; s=20230601; t=1767384205; x=1767989005;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to;
-        bh=rOTwbgpeLN5pXgDisgz/s6pvtJgX11/afdNTzS5QM/M=;
-        b=Wm1DOCcb9at2NvSJ9A0gPsswSOhLSPnZHclDBpShuy+jd8lkiddg5107PzMmGgDN/+
-         PnjfSIBRyllm6XrihKg1APUE6pHluoF/3EgRInN7ZWrCbncj7JflLJJ2ySkmXB8FG31X
-         vPBy0W0MmiSIq07Xoi9NDeVW+hONUOtM3RG217cCHRC7xORgbuYnBh55TP/64mvv9Ej6
-         yeE3cvKTQ4fbnidw681I7krGRZ+AqdZrwjUrlYF4amY5729EESH97NQRKfbQw3SLouKi
-         vFLFCzG27R0Q7l0cvk9LiID2TmUkLjZ51CBkEeRs29S83pFC3R0seGwG1zaLaqJ7dYzR
-         camw==
-X-Forwarded-Encrypted: i=1; AJvYcCXPj6Vf5J+07CR4Has3ALH2iLfzXixUH5XYIv3/nPiP4TXk/yGeAxdU4oMKGYlVY20mYGggonUJFO5m1G8NxA==@vger.kernel.org
-X-Gm-Message-State: AOJu0YznBrb1RFanNEGZEp4/gpF2yoKpfLQZC0l8D+wzqpBHM2ICi1Kq
-	WZj0ROWyjttfr6AyKxR6y/Mlk9CEu9/+MPRZF6avtVI5P+8IVhOyuryF
-X-Gm-Gg: AY/fxX7kQfpz7pFNNvytfTcK6HDpwSly357NrlmnJLmvm9wAyr6pj0r47rspGrJPY8G
-	7yrODUjMNJPhwxX+RPtOmm+jhOudN6DMroUppRnUg9ORdCpFzd+/TZMkpLt8kFoH7RhVqS+UP0F
-	g8AFPkj3UvMHzNLIVrrOPYEYEAXo/PSN7YjZ98n4Kub4io/IXDzH3QeUBv5bj5iuSETmzUjMQQ5
-	asGr6lhs+Whxzf3+9CZ+bpHmlQFkkZCiTSkIEVq+aaKjPqE/aG0I9N+1T+eo/1lN9NMCyGCYxfL
-	Z8EV8i1u4I2JPpHhJLOfGZiZx5yEiXPzfXPvwazN96d/vHHFlKblQ56DkDgTsWAtoyWV6y0zZgB
-	/kUNf3VhzZQFqbIOg2aQ/UD/FSoM6AzptK4lW06HHEv4Fg+g1hvEyWyrKKcJdDfXHlpqOu/v+Eo
-	WGmEvj3F4twc5zFlAoGGAfFItlQB+RMHswnQcJOu108cERMYWMAqN1dmf4CMHZ3nA=
-X-Google-Smtp-Source: AGHT+IF84sKN8CnkJa4viQsaxDmj4nFuQ05LM/gZRcXeDb11Nou8i1NdOUdfSg4R18Yx3AAJrxHd9w==
-X-Received: by 2002:a05:7022:699d:b0:11f:3483:bba6 with SMTP id a92af1059eb24-121722b2861mr39252551c88.13.1767384203373;
-        Fri, 02 Jan 2026 12:03:23 -0800 (PST)
+        bh=CwXGmthbpTQEUqtRqROv4y4T1PCVhu/O0zEJC5A6YzE=;
+        b=cd1zGmHfRgi7aOJhINxJcw3d3v1AR9GTuzDvqvuQaHjNKNTrCgS4yMPIm6VSi+yBjZ
+         TDdhn083agoyckFjmvI/RwVX02B8s4zBzrxIqzXcg8swCHX/yCJkL8BnJspCe2pjZrTE
+         GA2T7Dr+wucOOPtvmtoPPk4ay2zwqfVl005ZPfwRQ7Ye3vXnRBT2g7oo3pa26p4+5LGO
+         CsLABLRDtCbk46i8Dlh9V+WktTCf99qAwaALmBchQEqOkY7ZuiOssm+a8M4o8W/ENnhQ
+         HhsQmqHj6j4IqRtxj4xExFhl59Xx81qdfe2yAG9ol+YtKS0cGosKNGj/1lYe8sjuD8qM
+         e5zg==
+X-Forwarded-Encrypted: i=1; AJvYcCWdTHXgFDj/rHlwdIjfrJ5d20rUXxWQ2JmlVY4TWA4GSDrOnQX91Ly7swTAguqtKgBSrTVgr+mpBDlMMWN9lQ==@vger.kernel.org
+X-Gm-Message-State: AOJu0YzedvqBIuWohsQF6Po7mFajUIVrFVxtpFlJ06QPeWvp8YWJJ4gR
+	/Ti4c/7uz5D5QiqhocMcuMfka2qeqODdAKMzNdmM0OBk7WnoL4WF209s
+X-Gm-Gg: AY/fxX7PMTtITRqWqGuzP2qW5jVcQASWHvn7U8PRR0bvJPRK+EySEDUcg/SMznx63gg
+	3/HgZnfHsNTEVKsqeafsnz+stIY7uXOJbhYRQWtDo3rp5oXhEPFaX+8biyoja1vO5mNgqhPZ/Bk
+	wFjEFNehdnC6nXceefLdVDqopqtl0UdZWLswq0gaWYN67oXLcXPWEBYUV+b8uc0GdM/78nGheUV
+	fxLB+3J2X6UCe2reRm5FIoF+NUZCg8lte9Y8lkQydASblkZqE1E24LgjSUOgaRcwW4TrtFzdHoy
+	ENdgMp4SvxiHknlsdrQln2PMfz0/gHq7Ls8hd/2Kw11U1YcI9vlwkAxvUof8B1As+LjZIvkjcMb
+	zW++zvmq0c3HTfpFYCCARRYu0HCTDBgDaUexlvww5snFQcks8UwpNM28Pll8u1nqpETZzHar0TG
+	0MoI3Re3vp8Ta3gHjpsGTpuQEylxSRiNMQkLSLB+EOvOcJq0xkHYkc7hYRynqSFyk=
+X-Google-Smtp-Source: AGHT+IH1/N1u2PuoX7Eh0VerFmshHlsErFvyeb9e1ESgN0ZCiAZGVIbekPGk8cfz8LdFjRq6JiFCzg==
+X-Received: by 2002:a05:7022:987:b0:11b:ca88:c4f7 with SMTP id a92af1059eb24-12172309d60mr39471937c88.40.1767384204564;
+        Fri, 02 Jan 2026 12:03:24 -0800 (PST)
 Received: from zubuntu.bengal-mercat.ts.net ([2001:5a8:60d:bc9:9ebf:dff:fe00:f8f2])
-        by smtp.gmail.com with ESMTPSA id a92af1059eb24-1217253bfe2sm120203795c88.10.2026.01.02.12.03.22
+        by smtp.gmail.com with ESMTPSA id a92af1059eb24-1217253bfe2sm120203795c88.10.2026.01.02.12.03.23
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 02 Jan 2026 12:03:22 -0800 (PST)
+        Fri, 02 Jan 2026 12:03:23 -0800 (PST)
 From: Zac Bowling <zbowling@gmail.com>
 To: zbowling@gmail.com
 Cc: deren.wu@mediatek.com,
@@ -83,9 +83,9 @@ Cc: deren.wu@mediatek.com,
 	nbd@nbd.name,
 	ryder.lee@mediatek.com,
 	sean.wang@mediatek.com
-Subject: [PATCH] wifi: mt76: mt7925: add mutex protection in resume path
-Date: Fri,  2 Jan 2026 12:03:14 -0800
-Message-ID: <20260102200315.290015-6-zbowling@gmail.com>
+Subject: [PATCH] wifi: mt76: mt7925: add NULL checks and error handling for MCU calls
+Date: Fri,  2 Jan 2026 12:03:15 -0800
+Message-ID: <20260102200315.290015-7-zbowling@gmail.com>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20260102200315.290015-1-zbowling@gmail.com>
 References: <20260101062543.186499-1-zbowling@gmail.com>
@@ -100,34 +100,74 @@ Content-Transfer-Encoding: 8bit
 
 From: Zac Bowling <zac@zacbowling.com>
 
-Add mutex protection around mt7925_mcu_set_deep_sleep() and
-mt7925_regd_update() calls in the resume path to prevent
-potential race conditions during resume operations.
+Add NULL pointer checks for mt792x_sta_to_link() and mt792x_vif_to_link()
+results in critical paths to prevent kernel crashes during MLO operations.
 
-These MCU operations require serialization, and the resume
-path was the only call site missing mutex protection.
+Add error logging for MCU return values in mt7925_regd_update() to help
+diagnose regulatory domain update failures.
 
-Found by static analysis (sparse/coccinelle).
+Found by static analysis review.
 ---
- drivers/net/wireless/mediatek/mt76/mt7925/pci.c | 2 ++
- 1 file changed, 2 insertions(+)
+ drivers/net/wireless/mediatek/mt76/mt7925/init.c | 13 ++++++++++---
+ drivers/net/wireless/mediatek/mt76/mt7925/main.c |  8 ++++++++
+ 2 files changed, 18 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7925/pci.c b/drivers/net/wireless/mediatek/mt76/mt7925/pci.c
-index ca868619e1b7..b6c90c5f7e91 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7925/pci.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7925/pci.c
-@@ -583,10 +583,12 @@ static int _mt7925_pci_resume(struct device *device, bool restore)
- 	}
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7925/init.c b/drivers/net/wireless/mediatek/mt76/mt7925/init.c
+index d7d5afe365ed..f800112ccaf7 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7925/init.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7925/init.c
+@@ -162,10 +162,17 @@ void mt7925_regd_update(struct mt792x_dev *dev)
+ 	if (!dev->regd_change)
+ 		return;
  
- 	/* restore previous ds setting */
-+	mt792x_mutex_acquire(dev);
- 	if (!pm->ds_enable)
- 		mt7925_mcu_set_deep_sleep(dev, false);
+-	mt7925_mcu_set_clc(dev, mdev->alpha2, dev->country_ie_env);
++	if (mt7925_mcu_set_clc(dev, mdev->alpha2, dev->country_ie_env) < 0)
++		dev_warn(dev->mt76.dev, "Failed to set CLC\n");
++
+ 	mt7925_regd_channel_update(wiphy, dev);
+-	mt7925_mcu_set_channel_domain(hw->priv);
+-	mt7925_set_tx_sar_pwr(hw, NULL);
++
++	if (mt7925_mcu_set_channel_domain(hw->priv) < 0)
++		dev_warn(dev->mt76.dev, "Failed to set channel domain\n");
++
++	if (mt7925_set_tx_sar_pwr(hw, NULL) < 0)
++		dev_warn(dev->mt76.dev, "Failed to set TX SAR power\n");
++
+ 	dev->regd_change = false;
+ }
+ EXPORT_SYMBOL_GPL(mt7925_regd_update);
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7925/main.c b/drivers/net/wireless/mediatek/mt76/mt7925/main.c
+index 11c0197c7426..b6e3002faf41 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7925/main.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7925/main.c
+@@ -863,12 +863,17 @@ static int mt7925_mac_link_sta_add(struct mt76_dev *mdev,
  
- 	mt7925_regd_update(dev);
-+	mt792x_mutex_release(dev);
- failed:
- 	pm->suspended = false;
+ 	msta = (struct mt792x_sta *)link_sta->sta->drv_priv;
+ 	mlink = mt792x_sta_to_link(msta, link_id);
++	if (!mlink)
++		return -EINVAL;
+ 
+ 	idx = mt76_wcid_alloc(dev->mt76.wcid_mask, MT792x_WTBL_STA - 1);
+ 	if (idx < 0)
+ 		return -ENOSPC;
+ 
+ 	mconf = mt792x_vif_to_link(mvif, link_id);
++	if (!mconf)
++		return -EINVAL;
++
+ 	mt76_wcid_init(&mlink->wcid, 0);
+ 	mlink->wcid.sta = 1;
+ 	mlink->wcid.idx = idx;
+@@ -1750,6 +1755,9 @@ mt7925_conf_tx(struct ieee80211_hw *hw, struct ieee80211_vif *vif,
+ 		    [IEEE80211_AC_BK] = 1,
+ 	};
+ 
++	if (!mconf)
++		return -EINVAL;
++
+ 	/* firmware uses access class index */
+ 	mconf->queue_params[mq_to_aci[queue]] = *params;
  
 -- 
 2.51.0
