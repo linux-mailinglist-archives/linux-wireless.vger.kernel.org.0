@@ -1,147 +1,84 @@
-Return-Path: <linux-wireless+bounces-30309-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-30310-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4396ACEFBF5
-	for <lists+linux-wireless@lfdr.de>; Sat, 03 Jan 2026 08:10:28 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3C533CEFF36
+	for <lists+linux-wireless@lfdr.de>; Sat, 03 Jan 2026 14:05:32 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 03C30300484C
-	for <lists+linux-wireless@lfdr.de>; Sat,  3 Jan 2026 07:10:24 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 98F073001EE9
+	for <lists+linux-wireless@lfdr.de>; Sat,  3 Jan 2026 13:05:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 096E523741;
-	Sat,  3 Jan 2026 07:10:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 876C02F4A19;
+	Sat,  3 Jan 2026 13:05:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="I726se6g"
+	dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b="QblgN0iW"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from sipsolutions.net (s3.sipsolutions.net [168.119.38.16])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D6F471E531
-	for <linux-wireless@vger.kernel.org>; Sat,  3 Jan 2026 07:10:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D0635246762;
+	Sat,  3 Jan 2026 13:05:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=168.119.38.16
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767424221; cv=none; b=M8CNS/M6Q+/oebCq8svvx5zDSNlJ/BNxHUZ78TgL86Dk4t631FZktoVKRyOcJg70hD3k2fBAfTW0SMjMv7SvQEZQvfhdIv8BD0CQAiS7Kg9yZS5EwLeBiqNj/COohpFdeNjj3bHnDo/BIyn3X3oNVV8204cyj3HHwdN+jg6NQ3w=
+	t=1767445529; cv=none; b=jcY/SPaGGDm8ylIhpf9gYva+s9Pklj+SDbfIl/w6UHFR//0MUW/EphRQudEHYdWTrEQW7zeWwLU165uu0kV0avEuL9r9MSFKkCPJWedriYG5vRzZWbGiNyTVhD1WoIrfnQZISiuZnj8jdDr/b8S9f5qv00bJjrpU6cTX628uksk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767424221; c=relaxed/simple;
-	bh=cqQ3Cp1O3S78fDBVt2ieQB0dIcnwI/x9ci0fd5b2ZIo=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=ANWa+TprOplM9RSw2iT9zP+iTnHNxnJR0nQnd2wz0C4Ls3tDnLglflprTTFcnOwXxhjCb6IO6WyImRYIC6ARboYlBsZz2A4JxndLBRylyEHRKKNDQtqjhfx2adoarD9W4GOiw58KjONxpnt+piUCzUnCK3226hlQ2cnk1aiRhtM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=I726se6g; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 587BDC116C6
-	for <linux-wireless@vger.kernel.org>; Sat,  3 Jan 2026 07:10:21 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1767424221;
-	bh=cqQ3Cp1O3S78fDBVt2ieQB0dIcnwI/x9ci0fd5b2ZIo=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=I726se6gb9jAe0Dk55FyYohwJuGhFs503/+HR8sPxUF0UEJXdh4Jda7gLfobEMqRe
-	 FtajRwO6MDtgzj9NVW9Du+keQjdJbGmEuV3SzAAtki1Yl0R9cMWOiTU4hcT9ob/9th
-	 Fvlqb44ucZAcpq3ANgvdYuhatbRAAWu8vvurv4lIU3UPpCScR36aMlV6EBQggMuoUJ
-	 QI4a/tC2MHNWxhn6aLhEWqLx9eVAdbZx65H1V39OdJoGojNzYJH0EW/Zas44SQ/kJw
-	 kMSUnjoeMhj9BHCZq1sKJspjdwwZoksjR7PFAeHzA94c6iRLA2n/v0hZ8pjzpZaqwk
-	 KhrnrJYXjvjNA==
-Received: by mail-lj1-f172.google.com with SMTP id 38308e7fff4ca-38107fadda2so95269891fa.1
-        for <linux-wireless@vger.kernel.org>; Fri, 02 Jan 2026 23:10:21 -0800 (PST)
-X-Gm-Message-State: AOJu0Ywk1fY6J+3+8bQo7JXZ4LFwUwH+8rpngG+I+aq4e/IXlJPo8dkP
-	62UkCsu0Uj2cuKGqh3YxNavzUQYPNE8X0D8EDwLkKy0dTOL/weWZA5OpNCMIEK8om9Em6oi041K
-	2mEEp15uTVaxxla7uZO68d3iisefmKro=
-X-Google-Smtp-Source: AGHT+IE0nGGSLOvtWi3wYMudd4eQi2SCOp37ehar+JWrgj4Bh8xrmqdXDfKKZoIc+upGr9gbToaLzXHY+TkEKQw3i7E=
-X-Received: by 2002:a2e:a54b:0:b0:36b:9ecc:cb36 with SMTP id
- 38308e7fff4ca-381216350d6mr154785091fa.23.1767424219578; Fri, 02 Jan 2026
- 23:10:19 -0800 (PST)
+	s=arc-20240116; t=1767445529; c=relaxed/simple;
+	bh=ljhVWlyIzpcsTEWCqtSJLtuxw6WH53rf4m2/VigWrdw=;
+	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=mRVokD6MkgJ7eECm8zVskR041fUqHPfP+BDn3FWFlr5+jTiRnfrfvbvdMSKEk2N0GQyNZ12SyPkXxPNA+gxswikf3tgSEttvF3IbOAqY74YlogXpjR4jCYq1XuoHqAfmuvJY3QrNQVDJjOB/2NJSn8KGimaQ/RA5N+uUF+WWsGg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net; spf=pass smtp.mailfrom=sipsolutions.net; dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b=QblgN0iW; arc=none smtp.client-ip=168.119.38.16
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sipsolutions.net
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=sipsolutions.net; s=mail; h=MIME-Version:Content-Transfer-Encoding:
+	Content-Type:References:In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender
+	:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
+	Resent-Cc:Resent-Message-ID; bh=ljhVWlyIzpcsTEWCqtSJLtuxw6WH53rf4m2/VigWrdw=;
+	t=1767445527; x=1768655127; b=QblgN0iW73bDkWa22VRbfapK86CrjlvTuLTuUWAutWX4dUO
+	b6VrpCuvUCuqajyZioLVE2s1sJfH1m55TGwh8k9czuFCtuoibkx/VXoavGIimvM1agNRskMId4v9f
+	hJq5SFP/xP9Gcp/rO5lvV9EKFsXHKA7stg9mqwV+G8TC/ZjPZrinWQTjivLJXTGWzQoXnvyl8z7em
+	8MRJvLjguCWuAWrtQTAaVeFR9JcxC5lNS3umD2xdq9L7gU7ba7VvJ39kF/CAPWkC73Lp1yJu7J4GY
+	X+bF0lQTf3CJq6dpO6P634R/jd7YbN+16bTcl8GwgKizpCxEGnBUaQ8I8A2us0rg==;
+Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
+	(Exim 4.98.2)
+	(envelope-from <johannes@sipsolutions.net>)
+	id 1vc1Jn-00000002A78-04GT;
+	Sat, 03 Jan 2026 14:05:19 +0100
+Message-ID: <13bd5c0903fef7d27b4af2a2e43e92a380f71968.camel@sipsolutions.net>
+Subject: Re: [syzbot] [wireless?] WARNING in rfkill_unregister
+From: Johannes Berg <johannes@sipsolutions.net>
+To: Aleksandr Nogikh <nogikh@google.com>
+Cc: syzbot <syzbot+16210d09509730207241@syzkaller.appspotmail.com>, 
+	linux-kernel@vger.kernel.org, linux-wireless@vger.kernel.org, 
+	netdev@vger.kernel.org, syzkaller-bugs@googlegroups.com, Krzysztof
+ Kozlowski	 <krzk@kernel.org>
+Date: Sat, 03 Jan 2026 14:05:18 +0100
+In-Reply-To: <CANp29Y6NNtie6ZTsFbYUfhubEYW2A-K44B0-TZC=b3+OZcz-Rg@mail.gmail.com> (sfid-20260102_230310_438801_8E58F90B)
+References: <6955cbd5.050a0220.a1b6.032d.GAE@google.com>
+	 <e062f6a0a7583ca99ab0449481119634f8b02a3d.camel@sipsolutions.net>
+	 <CANp29Y6NNtie6ZTsFbYUfhubEYW2A-K44B0-TZC=b3+OZcz-Rg@mail.gmail.com>
+	 (sfid-20260102_230310_438801_8E58F90B)
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.56.2 (3.56.2-2.fc42) 
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <4870974.vXUDI8C0e8@fedora.fritz.box>
-In-Reply-To: <4870974.vXUDI8C0e8@fedora.fritz.box>
-From: Sean Wang <sean.wang@kernel.org>
-Date: Sat, 3 Jan 2026 01:10:08 -0600
-X-Gmail-Original-Message-ID: <CAGp9Lzp8NjVwkn2atNqT9x9-QTkWMLxK+Ntkb=3Z1fWcM6N=7A@mail.gmail.com>
-X-Gm-Features: AQt7F2pG8y8xzlHaDwCnenEXUCXo0F5MNVqMpSOh_g6zCO_j7HeTk1xd1I8nsRs
-Message-ID: <CAGp9Lzp8NjVwkn2atNqT9x9-QTkWMLxK+Ntkb=3Z1fWcM6N=7A@mail.gmail.com>
-Subject: Re: mt7921e: repeated driver own failures cause hanging
-To: moosager90 <moosager90@gmail.com>
-Cc: linux-wireless@vger.kernel.org, 
-	"moderated list:ARM/Mediatek SoC support" <linux-mediatek@lists.infradead.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+X-malware-bazaar: not-scanned
 
-Hi moosager90,
+On Fri, 2026-01-02 at 23:02 +0100, Aleksandr Nogikh wrote:
+>=20
+> It depends on the particular case. It should be fairly easy to do for
+> warnings (where there's just one clear stack trace) and potentially
+> very tricky for task hungs (e.g.
+> https://syzkaller.appspot.com/bug?extid=3Def8f802abdb9a32343fc).
 
-Could you please share more details on how this issue can be
-reproduced? For example, does it occur after suspend/resume, under
-heavy traffic, or during normal runtime? Also, please confirm which
-firmware version you are using.
+Makes sense. I see now that there was a recent attempt to fix this NFC
+vs. rfkill deadlock issue (and this report is on a kernel before it), so
+I guess let's leave it and see what happens :)
 
-It would be helpful to test with the latest linux-firmware version:
-https://git.kernel.org/pub/scm/linux/kernel/git/firmware/linux-firmware.git=
-/commit/mediatek?id=3D5cf85776762a544ad27c4447b61eaabb0d4716e7
-
-As a debugging step, could you also try disabling PCIe ASPM and check
-whether the issue still occurs?
-
-               Sean
-
-On Fri, Jan 2, 2026 at 4:35=E2=80=AFAM moosager90 <moosager90@gmail.com> wr=
-ote:
->
-> Hello,
->
-> There is an issue with mt7921e which causes repeated failures in chip res=
-ets,
-> bringing the network down and causing hanging on every command or action =
-on the
-> system; the only workaround is to reboot. This is what the kernel output =
-looks
-> like at those times:
->
-> mt7921e 0000:62:00.0: driver own failed
-> kernel: mt7921e 0000:62:00.0: Timeout for driver own
-> kernel: mt7921e 0000:62:00.0: driver own failed
-> kernel: mt7921e 0000:62:00.0: Timeout for driver own
-> kernel: mt7921e 0000:62:00.0: driver own failed
-> kernel: mt7921e 0000:62:00.0: Timeout for driver own
-> kernel: mt7921e 0000:62:00.0: driver own failed
-> kernel: mt7921e 0000:62:00.0: chip reset failed
-> kernel: mt7921e 0000:62:00.0: Timeout for driver own
-> kernel: Console: switching to colour frame buffer device 360x112
-> kernel: fbcon: Taking over console
-> kernel: mt7921e 0000:62:00.0: Message 00020001 (seq 1) timeout
->
-> I have observed the issue on many untainted kernels, and I have had it ha=
-ppen on
-> vanilla kernels not provided by my distro as well.
->
-> Mine and some other people's reports are available at [1]. More logs of t=
-he
-> issue on my system are in the attachments of my original report on the Re=
-d Hat
-> Bugzilla [2].
->
-> In the past, the issue was reported at [3], which resulted in a patch [4]=
- that
-> only keeps the system running instead of panicking. This means the driver=
- still
-> causes system hangs.
->
-> I still don't know the root cause of the issue and I would like to get to=
- the
-> bottom of this; any help or guidance is appreciated. Crucially, I have no=
-t found
-> a way to reproduce the issue at will.
->
-> Best regards.
->
-> [1] https://bugzilla.kernel.org/show_bug.cgi?id=3D220353
-> [2] https://bugzilla.redhat.com/show_bug.cgi?id=3D2411854
-> [3] https://lore.kernel.org/linux-wireless/VE1PR04MB64945C660A81D38F290E4=
-A4BE59F9@VE1PR04MB6494.eurprd04.prod.outlook.com/T/#u
-> [4] https://patchwork.kernel.org/project/linux-wireless/patch/727eb5ffd3c=
-7c805245e512da150ecf0a7154020.1659452909.git.deren.wu@mediatek.com/
->
->
->
->
+johannes
 
