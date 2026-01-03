@@ -1,150 +1,146 @@
-Return-Path: <linux-wireless+bounces-30308-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-30309-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 41745CEFBEE
-	for <lists+linux-wireless@lfdr.de>; Sat, 03 Jan 2026 07:46:21 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4396ACEFBF5
+	for <lists+linux-wireless@lfdr.de>; Sat, 03 Jan 2026 08:10:28 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 3D82F300B988
-	for <lists+linux-wireless@lfdr.de>; Sat,  3 Jan 2026 06:46:18 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 03C30300484C
+	for <lists+linux-wireless@lfdr.de>; Sat,  3 Jan 2026 07:10:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 344A73BB5A;
-	Sat,  3 Jan 2026 06:46:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 096E523741;
+	Sat,  3 Jan 2026 07:10:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="qOf8rGop"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="I726se6g"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0F368A55
-	for <linux-wireless@vger.kernel.org>; Sat,  3 Jan 2026 06:46:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D6F471E531
+	for <linux-wireless@vger.kernel.org>; Sat,  3 Jan 2026 07:10:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767422777; cv=none; b=vBIvJ5rNPPj8mgTOfrtKsw2ojw+y5zZ55nKzLnFMnWM1oDfWlQEfZcubB28bEnVI6fU4OBfBr2/g5p9vqCs7ArH3yzEMeMdKSuGIyRmsRKlYszDMgPOSYSLv7uViG3Tq7g/6Q9sZOqmVRSUJNSLZBv+cLrqsud955YRzU+11bM0=
+	t=1767424221; cv=none; b=M8CNS/M6Q+/oebCq8svvx5zDSNlJ/BNxHUZ78TgL86Dk4t631FZktoVKRyOcJg70hD3k2fBAfTW0SMjMv7SvQEZQvfhdIv8BD0CQAiS7Kg9yZS5EwLeBiqNj/COohpFdeNjj3bHnDo/BIyn3X3oNVV8204cyj3HHwdN+jg6NQ3w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767422777; c=relaxed/simple;
-	bh=fKyT9YQ1JG7A9UW+J+VZvz2mXTizPcVyVmn/tQIYOU8=;
+	s=arc-20240116; t=1767424221; c=relaxed/simple;
+	bh=cqQ3Cp1O3S78fDBVt2ieQB0dIcnwI/x9ci0fd5b2ZIo=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=BL4zg5hqM97jTm1k2mpLM2Sv7vYSSMuc5oS99kGCaoZevL8DA5EO5u1Dw/+zoYI0SK1i8EcGfd7KtS327h7/FvcNsjNKwxApHmNXCoiNqzsEhUh6D22H958tstCZvCHyIaT8PlR0+zUc9SxZzT0oqtdwZthivoV2I5RPsHw5BEs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=qOf8rGop; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9FDFBC19423
-	for <linux-wireless@vger.kernel.org>; Sat,  3 Jan 2026 06:46:16 +0000 (UTC)
+	 To:Cc:Content-Type; b=ANWa+TprOplM9RSw2iT9zP+iTnHNxnJR0nQnd2wz0C4Ls3tDnLglflprTTFcnOwXxhjCb6IO6WyImRYIC6ARboYlBsZz2A4JxndLBRylyEHRKKNDQtqjhfx2adoarD9W4GOiw58KjONxpnt+piUCzUnCK3226hlQ2cnk1aiRhtM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=I726se6g; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 587BDC116C6
+	for <linux-wireless@vger.kernel.org>; Sat,  3 Jan 2026 07:10:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1767422776;
-	bh=fKyT9YQ1JG7A9UW+J+VZvz2mXTizPcVyVmn/tQIYOU8=;
+	s=k20201202; t=1767424221;
+	bh=cqQ3Cp1O3S78fDBVt2ieQB0dIcnwI/x9ci0fd5b2ZIo=;
 	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=qOf8rGopTKafTAiQyIcVzPreI6PDPhP9AdJjJsPaDgk/If6fYJGnJ+y9WoqWHUw1B
-	 gZqSLoAlSWuSgwPaT6eyTJOz6fAgJFTlt8v5FpGRji+pabrm/2Neb6RRO+vm7VWt5W
-	 kQhQXMEeyfH5djCqloRe+FPoRTeD33mIiAZzFv0slUEraMxNR2yBUZNGFgO9njI34E
-	 tDc7FgUkwfTbi+BmQn00vqc7ie17G08pIyrpGlKz7VzaKzXiyyz5gdEx/7bSl438Rl
-	 jPZst0mL7XEf9Xt/c3TN53yNbcbGdxn5uNmfOmFouU8gdypszzxkvkJzsnOSZwMT0n
-	 paieNo0M93dDw==
-Received: by mail-lf1-f44.google.com with SMTP id 2adb3069b0e04-5943b62c47dso11966872e87.1
-        for <linux-wireless@vger.kernel.org>; Fri, 02 Jan 2026 22:46:16 -0800 (PST)
-X-Forwarded-Encrypted: i=1; AJvYcCUlyAMLSmtEKI08pbxNCENZxKi4sN6wBLg5sqSm5PR35uE1xDx29q3Ev1vfYqqOA+lTLZ7rTcWyy8ecS34stQ==@vger.kernel.org
-X-Gm-Message-State: AOJu0YwR1upsKD5XwCm5hZZcbiH5RwuSxUlKZS3XSQHkIc5lu5WUYjZt
-	pIWw7axTwsp+YvdnLQduMSFf6wVO+coUzIYFkkr7hGX9H0uTa7rg3xmvFt1ZRDmeI0O8oQJ/ZPu
-	/71g1Uvd0KRuQUbRoqulIkRqkfO26YiU=
-X-Google-Smtp-Source: AGHT+IHXZ7D+FgPyIoTbZMNwsQhnnk+pRJDN0D/PxGXyy/t7T8KOZL5gpJOs2sze55vkNZd5OgU6UTSr6tnOuKvr2Bo=
-X-Received: by 2002:a05:6512:220e:b0:594:2f72:2f7b with SMTP id
- 2adb3069b0e04-59a17d00274mr13419800e87.6.1767422774918; Fri, 02 Jan 2026
- 22:46:14 -0800 (PST)
+	b=I726se6gb9jAe0Dk55FyYohwJuGhFs503/+HR8sPxUF0UEJXdh4Jda7gLfobEMqRe
+	 FtajRwO6MDtgzj9NVW9Du+keQjdJbGmEuV3SzAAtki1Yl0R9cMWOiTU4hcT9ob/9th
+	 Fvlqb44ucZAcpq3ANgvdYuhatbRAAWu8vvurv4lIU3UPpCScR36aMlV6EBQggMuoUJ
+	 QI4a/tC2MHNWxhn6aLhEWqLx9eVAdbZx65H1V39OdJoGojNzYJH0EW/Zas44SQ/kJw
+	 kMSUnjoeMhj9BHCZq1sKJspjdwwZoksjR7PFAeHzA94c6iRLA2n/v0hZ8pjzpZaqwk
+	 KhrnrJYXjvjNA==
+Received: by mail-lj1-f172.google.com with SMTP id 38308e7fff4ca-38107fadda2so95269891fa.1
+        for <linux-wireless@vger.kernel.org>; Fri, 02 Jan 2026 23:10:21 -0800 (PST)
+X-Gm-Message-State: AOJu0Ywk1fY6J+3+8bQo7JXZ4LFwUwH+8rpngG+I+aq4e/IXlJPo8dkP
+	62UkCsu0Uj2cuKGqh3YxNavzUQYPNE8X0D8EDwLkKy0dTOL/weWZA5OpNCMIEK8om9Em6oi041K
+	2mEEp15uTVaxxla7uZO68d3iisefmKro=
+X-Google-Smtp-Source: AGHT+IE0nGGSLOvtWi3wYMudd4eQi2SCOp37ehar+JWrgj4Bh8xrmqdXDfKKZoIc+upGr9gbToaLzXHY+TkEKQw3i7E=
+X-Received: by 2002:a2e:a54b:0:b0:36b:9ecc:cb36 with SMTP id
+ 38308e7fff4ca-381216350d6mr154785091fa.23.1767424219578; Fri, 02 Jan 2026
+ 23:10:19 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260101062543.186499-1-zbowling@gmail.com> <20260102200315.290015-1-zbowling@gmail.com>
- <20260102200315.290015-5-zbowling@gmail.com>
-In-Reply-To: <20260102200315.290015-5-zbowling@gmail.com>
+References: <4870974.vXUDI8C0e8@fedora.fritz.box>
+In-Reply-To: <4870974.vXUDI8C0e8@fedora.fritz.box>
 From: Sean Wang <sean.wang@kernel.org>
-Date: Sat, 3 Jan 2026 00:46:03 -0600
-X-Gmail-Original-Message-ID: <CAGp9LzrdvaPPLUi9TgenXvD6jWdOK-=95D_Fo2UYOppyzGPprw@mail.gmail.com>
-X-Gm-Features: AQt7F2pIoQVOw-nvZQpZLafgk1Bl34hZ8-Lvcuuid17YYwHEJSDX5uwl3bFn_5g
-Message-ID: <CAGp9LzrdvaPPLUi9TgenXvD6jWdOK-=95D_Fo2UYOppyzGPprw@mail.gmail.com>
-Subject: Re: [PATCH] wifi: mt76: mt792x: fix firmware reload failure after
- previous load crash
-To: Zac Bowling <zbowling@gmail.com>
-Cc: deren.wu@mediatek.com, kvalo@kernel.org, linux-kernel@vger.kernel.org, 
-	linux-mediatek@lists.infradead.org, linux-wireless@vger.kernel.org, 
-	lorenzo@kernel.org, nbd@nbd.name, ryder.lee@mediatek.com, 
-	sean.wang@mediatek.com
+Date: Sat, 3 Jan 2026 01:10:08 -0600
+X-Gmail-Original-Message-ID: <CAGp9Lzp8NjVwkn2atNqT9x9-QTkWMLxK+Ntkb=3Z1fWcM6N=7A@mail.gmail.com>
+X-Gm-Features: AQt7F2pG8y8xzlHaDwCnenEXUCXo0F5MNVqMpSOh_g6zCO_j7HeTk1xd1I8nsRs
+Message-ID: <CAGp9Lzp8NjVwkn2atNqT9x9-QTkWMLxK+Ntkb=3Z1fWcM6N=7A@mail.gmail.com>
+Subject: Re: mt7921e: repeated driver own failures cause hanging
+To: moosager90 <moosager90@gmail.com>
+Cc: linux-wireless@vger.kernel.org, 
+	"moderated list:ARM/Mediatek SoC support" <linux-mediatek@lists.infradead.org>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Fri, Jan 2, 2026 at 2:03=E2=80=AFPM Zac Bowling <zbowling@gmail.com> wro=
-te:
->
-> If the firmware loading process crashes or is interrupted after
-> acquiring the patch semaphore but before releasing it, subsequent
-> firmware load attempts will fail with 'Failed to get patch semaphore'
-> because the semaphore is still held.
->
-> This issue manifests as devices becoming unusable after suspend/resume
-> failures or firmware crashes, requiring a full hardware reboot to
-> recover. This has been widely reported on MT7921 and MT7925 devices.
->
-> Apply the same fix that was applied to MT7915 in commit 79dd14f:
-> 1. Release the patch semaphore before starting firmware load (in case
->    it was held by a previous failed attempt)
-> 2. Restart MCU firmware to ensure clean state
-> 3. Wait briefly for MCU to be ready
->
-> This fix applies to both MT7921 and MT7925 drivers which share the
-> mt792x_load_firmware() function.
->
-> Fixes: 'Failed to get patch semaphore' errors after firmware crash
-> Signed-off-by: Zac Bowling <zac@zacbowling.com>
-> ---
->  mt792x_core.c | 14 ++++++++++++++
->  1 file changed, 14 insertions(+)
->
-> diff --git a/mt792x_core.c b/mt792x_core.c
-> index cc488ee9..b82e4470 100644
-> --- a/mt792x_core.c
-> +++ b/mt792x_core.c
-> @@ -927,6 +927,20 @@ int mt792x_load_firmware(struct mt792x_dev *dev)
->  {
->         int ret;
->
-> +       /* Release semaphore if taken by previous failed load attempt.
-> +        * This prevents "Failed to get patch semaphore" errors when
-> +        * recovering from firmware crashes or suspend/resume failures.
-> +        */
-> +       ret =3D mt76_connac_mcu_patch_sem_ctrl(&dev->mt76, false);
-> +       if (ret < 0)
-> +               dev_dbg(dev->mt76.dev, "Semaphore release returned %d (ma=
-y be expected)\n", ret);
-> +
-> +       /* Always restart MCU to ensure clean state before loading firmwa=
-re */
-> +       mt76_connac_mcu_restart(&dev->mt76);
-> +
-> +       /* Wait for MCU to be ready after restart */
-> +       msleep(100);
-> +
+Hi moosager90,
 
-Hi Zac,
+Could you please share more details on how this issue can be
+reproduced? For example, does it occur after suspend/resume, under
+heavy traffic, or during normal runtime? Also, please confirm which
+firmware version you are using.
 
-This is a good finding. Since this is a common mt792x code path, have you
-also had a chance to test it on MT7921?
+It would be helpful to test with the latest linux-firmware version:
+https://git.kernel.org/pub/scm/linux/kernel/git/firmware/linux-firmware.git=
+/commit/mediatek?id=3D5cf85776762a544ad27c4447b61eaabb0d4716e7
 
-One small nit: the Fixes tag should reference the actual commit being
-fixed, e.g.
+As a debugging step, could you also try disabling PCIe ASPM and check
+whether the issue still occurs?
 
-  Fixes: <commit-sha> ("mt76: mt792x: ...")
+               Sean
 
-instead of the error string.
-
-                  Sean
-
->         ret =3D mt76_connac2_load_patch(&dev->mt76, mt792x_patch_name(dev=
-));
->         if (ret)
->                 return ret;
-> --
-> 2.51.0
+On Fri, Jan 2, 2026 at 4:35=E2=80=AFAM moosager90 <moosager90@gmail.com> wr=
+ote:
+>
+> Hello,
+>
+> There is an issue with mt7921e which causes repeated failures in chip res=
+ets,
+> bringing the network down and causing hanging on every command or action =
+on the
+> system; the only workaround is to reboot. This is what the kernel output =
+looks
+> like at those times:
+>
+> mt7921e 0000:62:00.0: driver own failed
+> kernel: mt7921e 0000:62:00.0: Timeout for driver own
+> kernel: mt7921e 0000:62:00.0: driver own failed
+> kernel: mt7921e 0000:62:00.0: Timeout for driver own
+> kernel: mt7921e 0000:62:00.0: driver own failed
+> kernel: mt7921e 0000:62:00.0: Timeout for driver own
+> kernel: mt7921e 0000:62:00.0: driver own failed
+> kernel: mt7921e 0000:62:00.0: chip reset failed
+> kernel: mt7921e 0000:62:00.0: Timeout for driver own
+> kernel: Console: switching to colour frame buffer device 360x112
+> kernel: fbcon: Taking over console
+> kernel: mt7921e 0000:62:00.0: Message 00020001 (seq 1) timeout
+>
+> I have observed the issue on many untainted kernels, and I have had it ha=
+ppen on
+> vanilla kernels not provided by my distro as well.
+>
+> Mine and some other people's reports are available at [1]. More logs of t=
+he
+> issue on my system are in the attachments of my original report on the Re=
+d Hat
+> Bugzilla [2].
+>
+> In the past, the issue was reported at [3], which resulted in a patch [4]=
+ that
+> only keeps the system running instead of panicking. This means the driver=
+ still
+> causes system hangs.
+>
+> I still don't know the root cause of the issue and I would like to get to=
+ the
+> bottom of this; any help or guidance is appreciated. Crucially, I have no=
+t found
+> a way to reproduce the issue at will.
+>
+> Best regards.
+>
+> [1] https://bugzilla.kernel.org/show_bug.cgi?id=3D220353
+> [2] https://bugzilla.redhat.com/show_bug.cgi?id=3D2411854
+> [3] https://lore.kernel.org/linux-wireless/VE1PR04MB64945C660A81D38F290E4=
+A4BE59F9@VE1PR04MB6494.eurprd04.prod.outlook.com/T/#u
+> [4] https://patchwork.kernel.org/project/linux-wireless/patch/727eb5ffd3c=
+7c805245e512da150ecf0a7154020.1659452909.git.deren.wu@mediatek.com/
+>
 >
 >
 >
