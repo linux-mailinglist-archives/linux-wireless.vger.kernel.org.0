@@ -1,123 +1,95 @@
-Return-Path: <linux-wireless+bounces-30316-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-30317-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id CA3B9CF076A
-	for <lists+linux-wireless@lfdr.de>; Sun, 04 Jan 2026 02:00:51 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id C7078CF0920
+	for <lists+linux-wireless@lfdr.de>; Sun, 04 Jan 2026 04:17:02 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 582D5300F887
-	for <lists+linux-wireless@lfdr.de>; Sun,  4 Jan 2026 01:00:50 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 2861A300B813
+	for <lists+linux-wireless@lfdr.de>; Sun,  4 Jan 2026 03:17:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A08B33A1E9B;
-	Sun,  4 Jan 2026 01:00:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0AD4821348;
+	Sun,  4 Jan 2026 03:17:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=fail reason="signature verification failed" (2048-bit key) header.d=kallisti.us header.i=@kallisti.us header.b="iIJXRjT6"
+	dkim=fail reason="key not found in DNS" (0-bit key) header.d=stu.xidian.edu.cn header.i=@stu.xidian.edu.cn header.b="CcMWmGzY"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from ravenhurst.kallisti.us (ravenhurst.kallisti.us [69.164.210.145])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1B30A1367
-	for <linux-wireless@vger.kernel.org>; Sun,  4 Jan 2026 01:00:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=69.164.210.145
+Received: from zg8tmtyylji0my4xnjqumte4.icoremail.net (zg8tmtyylji0my4xnjqumte4.icoremail.net [162.243.164.118])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5EF0D1EA7DF;
+	Sun,  4 Jan 2026 03:16:51 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=162.243.164.118
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767488449; cv=none; b=BXSO+Q9lOLC1jb5FSr4D6+Q6EPYKC7Rncvx5+XiBUXL/mjrm7FwiEeiNHy1ftk4xo9e+7uSBMGmGyQ0+xKLsdoyZvPCoSVgyL6NqVXZ0bwzMO6agSukjnwtAJizEnaDZwhOyll6c3tn2OxgZfiu0k8QlPPy8fteMrBT92smVook=
+	t=1767496619; cv=none; b=UbvqfE7DQRZPCgiqe02qCUUV3yKCA9CLFoui4PuAA0A6IQpwBxaqG7uJ09kh+nx22SrnwuHJCeJbmdOK33E8gSgCV/KiZvfzMYG5d1brPlpuckXx9IztPHdZptmV+OGAnozgtC4o81LZ6eYOl7N/jHUkMwOgpWanPlsHYa2ENH4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767488449; c=relaxed/simple;
-	bh=22EbgYA1NA77PlPLiqb0PPj0Y8xmSBtz76X4SOdE/tM=;
-	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
-	 Content-Disposition; b=scix6qIM6loO2cB7wE0dXigkTXiifbNk+Zhv9yiB5fdRG0FdOTVqaYPls4HVMefdaeJSUsBt7B3loZctH7LI4FqlAcJbN+OMuLW8YG333rIx09Z9+9RjHt8yICep1MljkLAi21DxTRBasJAo/6WnsDgc5LhbHGm664uGrYvwF1Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=kallisti.us; spf=pass smtp.mailfrom=kallisti.us; dkim=pass (2048-bit key) header.d=kallisti.us header.i=@kallisti.us header.b=iIJXRjT6; arc=none smtp.client-ip=69.164.210.145
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=kallisti.us
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=kallisti.us
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=kallisti.us
-	; s=20220106; h=Content-Type:MIME-Version:Message-ID:Subject:Cc:To:From:Date:
-	Sender:Reply-To:Content-Transfer-Encoding:Content-ID:Content-Description:
-	Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:
-	In-Reply-To:References:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
-	List-Post:List-Owner:List-Archive;
-	bh=shza/H2dQJXR6JluhC10VoHA78PjwQvcEkvEM14HAIs=; b=iIJXRjT619TuNfMsXRwcqEsur6
-	lgE3VPCDm8f1wA7pw+IEn/9nctnSyq5orub5XaaY5tWmYUmy7jOb85N0unKcUJZwDUt58zsEGwIlN
-	m4SMDjOb2hds/86RKk/pDCOJSSehU1n7REkpHqpPTD5TcfgTtPIcOI4+eGxv1E/tlia/GejxpN7TW
-	8taoTx4smdtdY519u8gvxKUXk7afJvZDlS8dgkBVbJGCw+qBWm/1to6wvz3UEUXEadKcjAGEZJuGX
-	8vl8YVAfnwP2+KChv0xVdSRRaCUaLRfC60A0gLukd8HXDbe+d54EH0qJvBnlObwgvp5KMmM9U9PjI
-	GFsyhObg==;
-Received: from [50.52.120.217] (helo=vanvanmojo.kallisti.us)
-	by ravenhurst.kallisti.us with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.98.2)
-	(envelope-from <ross@kallisti.us>)
-	id 1vcCU2-00000007agP-1q50;
-	Sat, 03 Jan 2026 20:00:38 -0500
-Date: Sat, 3 Jan 2026 17:00:34 -0800
-From: Ross Vandegrift <ross@kallisti.us>
-To: Jeff Johnson <jjohnson@kernel.org>
-Cc: Mark Pearson <mpearson-lenovo@squebb.ca>, ath11k@lists.infradead.org, 
-	linux-wireless@vger.kernel.org
-Subject: [PATCH v2] wifi: ath11k: add pm quirk for Thinkpad Z13/Z16 Gen1
-Message-ID: <wj7o2kmb7g54stdjvxp2hjqrnutnq3jbf4s2uh4ctvmlxdq7tf@nbkj2ebakhrd>
+	s=arc-20240116; t=1767496619; c=relaxed/simple;
+	bh=JG/FTtjuWCQYYqm8p1fkBD8CUXROB+lqgVCAQ0nN+L4=;
+	h=Date:From:To:Cc:Subject:Content-Type:MIME-Version:Message-ID; b=JKqm1iwr/FXKPwG4C9IkzJQKI9tmPZS2ClxAZc8ln2AqyS5Sk1J1CNG3kRy6JdRXncfYFePv2aS/VB9bykljb4+l5mJtH0Jn3cGBG/LNqZCGLrvDy8MiVqWJDuJAivIYXBmRXPKjE1xRleH1z8W3CaSHcJLcK9P1qp2UJERdRTo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=stu.xidian.edu.cn; spf=pass smtp.mailfrom=stu.xidian.edu.cn; dkim=fail (0-bit key) header.d=stu.xidian.edu.cn header.i=@stu.xidian.edu.cn header.b=CcMWmGzY reason="key not found in DNS"; arc=none smtp.client-ip=162.243.164.118
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=stu.xidian.edu.cn
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=stu.xidian.edu.cn
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=stu.xidian.edu.cn; s=dkim; h=Received:Date:From:To:Cc:Subject:
+	Content-Transfer-Encoding:Content-Type:MIME-Version:Message-ID;
+	bh=yS/xA0XwNPlVsRNQ/EYZQYpEwujlaEZoNJ+hsPCO360=; b=CcMWmGzYTqWB9
+	AjtIzNZS3JQEbluTp85vVtMnt/MUk3QIKx+mcLg7RmCOvZDbXvUSGJfOF7ROhiAP
+	gUrtMjFFtquIR+/pfHqyP7Ym304nAp9TKBSYo/xdZXdsccRbhZsH8c0vVHroJcRH
+	9a01zTQfXL4e0sQiMTZhRq+sVJA9Y0=
+Received: from 23009200614$stu.xidian.edu.cn ( [113.200.174.102] ) by
+ ajax-webmail-hzbj-edu-front-4.icoremail.net (Coremail) ; Sun, 4 Jan 2026
+ 11:16:48 +0800 (GMT+08:00)
+Date: Sun, 4 Jan 2026 11:16:48 +0800 (GMT+08:00)
+X-CM-HeaderCharset: UTF-8
+From: =?UTF-8?B?546L5b+X?= <23009200614@stu.xidian.edu.cn>
+To: linux-wireless@vger.kernel.org
+Cc: linux-kernel@vger.kernel.org, johannes@sipsolutions.net
+Subject: [BUG] cfg80211/mac80211: RCU stall in cfg80211_wiphy_work during
+ IBSS scan handling
+X-Priority: 3
+X-Mailer: Coremail Webmail Server Version 2024.3-cmXT6 build
+ 20250410(2f5ccd7f) Copyright (c) 2002-2026 www.mailtech.cn
+ mispb-8dfce572-2f24-404d-b59d-0dd2e304114c-icoremail.cn
+Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset=UTF-8
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+Message-ID: <532d062e.9287.19b8701eb6b.Coremail.23009200614@stu.xidian.edu.cn>
+X-Coremail-Locale: zh_CN
+X-CM-TRANSID:BrQMCkBmzeCh21lpddDqAA--.13290W
+X-CM-SenderInfo: qstqimqsqqliuu6v33wo0lvxldqovvfxof0/1tbiAQUDCGlZJUsz3
+	wACs-
+X-Coremail-Antispam: 1Ur529EdanIXcx71UUUUU7IcSsGvfJ3iIAIbVAYjsxI4VWxJw
+	CS07vEb4IE77IF4wCS07vE1I0E4x80FVAKz4kxMIAIbVAFxVCaYxvI4VCIwcAKzIAtYxBI
+	daVFxhVjvjDU=
 
-Z16 Gen1 has the wakeup-from-suspend issues from [1] but was never added
-to the appropriate quirk list.  I've tested this patch on top of 6.18.2,
-it fixes the issue for me on 21D4
-
-Mark Pearson provided the other product IDs covering the second Z16 Gen1
-and both Z13 Gen1 identifiers.  They share the same firmware, and folks
-in the bugzilla report do indeed see the problem on Z13.
-
-[1] - https://bugzilla.kernel.org/show_bug.cgi?id=219196
-
-Signed-off-by: Ross Vandegrift <ross@kallisti.us>
----
- drivers/net/wireless/ath/ath11k/core.c | 28 ++++++++++++++++++++++++++
- 1 file changed, 28 insertions(+)
-
-diff --git a/drivers/net/wireless/ath/ath11k/core.c b/drivers/net/wireless/ath/ath11k/core.c
-index 812686173ac8..03dddc1cd003 100644
---- a/drivers/net/wireless/ath/ath11k/core.c
-+++ b/drivers/net/wireless/ath/ath11k/core.c
-@@ -994,6 +994,34 @@ static const struct dmi_system_id ath11k_pm_quirk_table[] = {
- 			DMI_MATCH(DMI_PRODUCT_NAME, "21F9"),
- 		},
- 	},
-+	{
-+		.driver_data = (void *)ATH11K_PM_WOW,
-+		.matches = { /* Z13 G1 */
-+			DMI_MATCH(DMI_BOARD_VENDOR, "LENOVO"),
-+			DMI_MATCH(DMI_PRODUCT_NAME, "21D2"),
-+		},
-+	},
-+	{
-+		.driver_data = (void *)ATH11K_PM_WOW,
-+		.matches = { /* Z13 G1 */
-+			DMI_MATCH(DMI_BOARD_VENDOR, "LENOVO"),
-+			DMI_MATCH(DMI_PRODUCT_NAME, "21D3"),
-+		},
-+	},
-+	{
-+		.driver_data = (void *)ATH11K_PM_WOW,
-+		.matches = { /* Z16 G1 */
-+			DMI_MATCH(DMI_BOARD_VENDOR, "LENOVO"),
-+			DMI_MATCH(DMI_PRODUCT_NAME, "21D4"),
-+		},
-+	},
-+	{
-+		.driver_data = (void *)ATH11K_PM_WOW,
-+		.matches = { /* Z16 G1 */
-+			DMI_MATCH(DMI_BOARD_VENDOR, "LENOVO"),
-+			DMI_MATCH(DMI_PRODUCT_NAME, "21D5"),
-+		},
-+	},
- 	{}
- };
- 
--- 
-2.47.3
-
+SGVsbG8gd2lyZWxlc3MgbWFpbnRhaW5lcnMsCgpJIGFtIHJlcG9ydGluZyBhbiBSQ1Ugc3RhbGwg
+aXNzdWUgZm91bmQgYnkgc3l6a2FsbGVyIG9uIExpbnV4IHY2LjE4LiBUaGUgcHJvYmxlbSBtYW5p
+ZmVzdHMgYXMgYW4gUkNVIHByZWVtcHQgc3RhbGwgaW52b2x2aW5nIHRoZSBjZmc4MDIxMV93aXBo
+eV93b3JrIHdvcmtxdWV1ZS4gQSB3b3JrZXIgdGhyZWFkIHByb2Nlc3Npbmcgd2lyZWxlc3Mgc2Nh
+biAvIElCU1MgbWFuYWdlbWVudCBmcmFtZXMgYmVjb21lcyBzdHVjaywgZXZlbnR1YWxseSB0cmln
+Z2VyaW5nIGFuIFJDVSBzdGFsbCB3YXJuaW5nLgoKS2VybmVsOgpMaW51eCA2LjE4LjAgKGJhc2Vk
+IG9uIHY2LjE4KQpOb3QgdGFpbnRlZApDT05GSUdfUFJFRU1QVF9GVUxMPXkKVGVzdGVkIHVuZGVy
+IFFFTVUgKGk0NDBGWCkKCk9ic2VydmVkIGJlaGF2aW9yOgpSQ1UgcHJlZW1wdCBzdGFsbCBkZXRl
+Y3RlZCBjZmc4MDIxMV93aXBoeV93b3JrIGJsb2NrZWQgZm9yIH4xMGsgamlmZmllcwpXb3JrcXVl
+dWU6IGV2ZW50c191bmJvdW5kIGNmZzgwMjExX3dpcGh5X3dvcmsKUkNVIHN0YWxsIHJlcG9ydCBl
+eGNlcnB0OgpJTkZPOiByY3UgZGV0ZWN0ZWQgc3RhbGwgaW4gY2ZnODAyMTFfd2lwaHlfd29yawpy
+Y3U6IHJjdV9wcmVlbXB0IGRldGVjdGVkIHN0YWxscyBvbiBDUFVzL3Rhc2tzCldvcmtxdWV1ZTog
+ZXZlbnRzX3VuYm91bmQgY2ZnODAyMTFfd2lwaHlfd29yawpUaGUgYmxvY2tlZCB3b3JrZXIgc2hv
+d3MgdGhlIGZvbGxvd2luZyBjYWxsIHRyYWNlOgpjZmc4MDIxMV93aXBoeV93b3JrCmNmZzgwMjEx
+X2luZm9ybV9ic3NfZnJhbWVfZGF0YQpjZmc4MDIxMV9pbmZvcm1fYnNzX2RhdGEKaWVlZTgwMjEx
+X3J4X2Jzc19pbmZvCmllZWU4MDIxMV9pYnNzX3J4X3F1ZXVlZF9tZ210CmllZWU4MDIxMV9pZmFj
+ZV93b3JrCnByb2Nlc3Nfb25lX3dvcmsKd29ya2VyX3RocmVhZAoKQXQgdGhlIHNhbWUgdGltZSwg
+YW5vdGhlciBDUFUgaXMgc3Bpbm5pbmcgaW4gYW4gSVJRIGNvbnRleHQgaW5zaWRlIGRybS92a21z
+IHZibGFuayBoYW5kbGluZywgaG9sZGluZyBhIHJhdyBzcGlubG9jazoKbmF0aXZlX3F1ZXVlZF9z
+cGluX2xvY2tfc2xvd3BhdGgKZHJtX2hhbmRsZV92YmxhbmsKdmttc192Ymxhbmtfc2ltdWxhdGUK
+aHJ0aW1lcl9pbnRlcnJ1cHQKClRoaXMgc3VnZ2VzdHMgYSBwb3NzaWJsZSBsb2NrIGNvbnRlbnRp
+b24gb3IgdW5ib3VuZGVkIHByb2Nlc3NpbmcgcGF0aCBpbiB0aGUgY2ZnODAyMTEvbWFjODAyMTEg
+c2NhbiBvciBJQlNTIG1hbmFnZW1lbnQgZnJhbWUgaGFuZGxpbmcsIHdoaWNoIHByZXZlbnRzIHRo
+ZSB3b3JrZXIgZnJvbSByZWFjaGluZyBhbiBSQ1UgcXVpZXNjZW50IHN0YXRlLiBBIGZ1bGwga2Vy
+bmVsIGxvZyBpcyBhdmFpbGFibGUgdXBvbiByZXF1ZXN0LgoKUGxlYXNlIGxldCBtZSBrbm93IGlm
+IHlvdSB3b3VsZCBsaWtlIG1lIHRvIHByb3ZpZGUgYWRkaXRpb25hbCBsb2dzLCB0ZXN0IGEgcGF0
+Y2gsIG9yIG5hcnJvdyB0aGlzIGRvd24gZnVydGhlci4KVGhhbmsgeW91IGZvciB5b3VyIHRpbWUu
+CgpCZXN0IHJlZ2FyZHMsClpoaSBXYW5n
 
