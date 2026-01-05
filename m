@@ -1,78 +1,77 @@
-Return-Path: <linux-wireless+bounces-30322-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-30323-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 87C74CF17A6
-	for <lists+linux-wireless@lfdr.de>; Mon, 05 Jan 2026 01:26:55 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 60BA7CF17B2
+	for <lists+linux-wireless@lfdr.de>; Mon, 05 Jan 2026 01:27:10 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 1DDA73005E90
-	for <lists+linux-wireless@lfdr.de>; Mon,  5 Jan 2026 00:26:54 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id B25E83012DDC
+	for <lists+linux-wireless@lfdr.de>; Mon,  5 Jan 2026 00:26:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7DDAE1D6AA;
-	Mon,  5 Jan 2026 00:26:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 966F678F29;
+	Mon,  5 Jan 2026 00:26:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="nItjd97Q"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="kUoeFAnt"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-pg1-f172.google.com (mail-pg1-f172.google.com [209.85.215.172])
+Received: from mail-pf1-f176.google.com (mail-pf1-f176.google.com [209.85.210.176])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D2DE9175A5
-	for <linux-wireless@vger.kernel.org>; Mon,  5 Jan 2026 00:26:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.172
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E9EC4199D8
+	for <linux-wireless@vger.kernel.org>; Mon,  5 Jan 2026 00:26:51 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.176
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767572812; cv=none; b=WKVJXZ1ELKu+Bw9iPht0JZ7CFg5CQu/PxEeKy0aYsEUIkw9f9HljsJ+2Wpj+DWfCZ71daS0q0umi8bvCB5vDGqpeHNkmIJ0At3fbYz1xKcG6p97en46YyVPgHEe1slrfani998DBvbPHPF7hdLIsPEPDQWexzodSMt2A2InlHcE=
+	t=1767572813; cv=none; b=hOmH/Xs8XqW6+xuh2JlUolZOp1Unil3NWcR7dVZrmDcBfscuLRsLtKpBfB61HbfgBYywhBTmTplA5tuoPqRK7aC9SnU77F4refNg+XXyH16euhyuWreBzJ7qnw/2Tf3ywCypJpYpM9nSoUxoVwWALVYOcNvwRr8rgm6S3rvRH/g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767572812; c=relaxed/simple;
-	bh=YvpsYJsMDkp81Cd8U/l9hI167LcSGEdyNDV0ovD8XYQ=;
+	s=arc-20240116; t=1767572813; c=relaxed/simple;
+	bh=/6QfKpPidHpDqvGcmuwJUfCyH+4jBNFqQ0+6iItk0sI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=azYgrvakg7W/UbK5bbK2jH6LDij+HJf1IlUtZBSmU1iBOlqQrrOzXL2Tdz0pDpFRJ9BFAbIBPCnyrBlupfJ0CJby0h3OZz99UvEP6qcxCg4vsq2cNT5XInKOK3QlLerLdGyRc3BXPaf7SF0jR2ilNGw4AGiU82OYJ1HIaUDnsm0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=nItjd97Q; arc=none smtp.client-ip=209.85.215.172
+	 MIME-Version; b=YvVvqrDFLLzg+ForB18iUyCNGU37sUuthG7lNyf6uPV86AFF+Ql6gvhGUw8AeC35aSrWK1bJR97eWaEl2qxLpBDS9jPe+r9ft8vogqS7jmGQhLFFW/AoSCwuLPBMe3Dwn20rw1dnJbDa/rSyL26vURaA4Q3JhKnrdcEbjJKZWUI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=kUoeFAnt; arc=none smtp.client-ip=209.85.210.176
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pg1-f172.google.com with SMTP id 41be03b00d2f7-c4464dfeae8so1153601a12.3
-        for <linux-wireless@vger.kernel.org>; Sun, 04 Jan 2026 16:26:50 -0800 (PST)
+Received: by mail-pf1-f176.google.com with SMTP id d2e1a72fcca58-7baf61be569so13946030b3a.3
+        for <linux-wireless@vger.kernel.org>; Sun, 04 Jan 2026 16:26:51 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1767572810; x=1768177610; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1767572811; x=1768177611; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=TGsItTLYZ1AgpgK0DoAEs/2zR0B3ANCxJg83nnOaKnY=;
-        b=nItjd97QSblrAhPN5CryNqORtmHsTUoXNc+cJGrCdKCfhdPnZvCdytqZvJO6fkSgY2
-         9gXLJ5y3RMRvUOEbDUH0UwXOXN5ZEDV3DBd8NjsUvUC5WIDvsDBPMN8XD2jANef/AH0+
-         Ou/jUgpdLT/3zQE30YdO8BGcf0vLZYflBKQOKJn6rcJCBP6ScuoV+uya3DeKV7P74QAY
-         X4jYVPev/rnUBIb2zGvZ+IXjHgse1K168QFx3UsDmIeSLY6FrH/5Y9SV8h9tfDyJtWk8
-         e9ket/HxeXVgO+5pVu3cInheuiFMhh6n+8xUrhVDxfJpA0Lryklok0Rl9jn+eef+0dxz
-         OxLw==
+        bh=nx+S5z3h6030ObTHHh0B/SCcYrL7BGZ5wBUiVpgW8C8=;
+        b=kUoeFAntXDurCwykSojKmZQ4/wBezsSCCDlgyTHC0p+TZmUCiBcoJnMTWmzcakDHiO
+         tN3PiZOu4yQ9BhWi2LvRFE2I2/mKu/a8lqRXkhYiqlf5RJlb9qY3MHjfpbfcqF5I0gq+
+         oDgPTHaSnEFlijDgz8lrLmKxrObI3blyyk2/Wj0rkkjJI8qrGIAV2TNWSbFqQTt3kN4T
+         1/bhVnHVfBWhemgBX0r8k/Dx4To06DVTuIZCBmt7ccSNvYyWFC4jG8clPCBruSUnYMD2
+         NkYdb/wllI1jERgvn9v9izFckcCTQXISObPM7AOX3HyllRkqKIpTVfv9aAsRpaWHNTuH
+         Je+A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1767572810; x=1768177610;
+        d=1e100.net; s=20230601; t=1767572811; x=1768177611;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to;
-        bh=TGsItTLYZ1AgpgK0DoAEs/2zR0B3ANCxJg83nnOaKnY=;
-        b=JBJfsTYhulwuZDmLY+635aVOyOewV+T9akByjRMA4ohN6bOPUJdh3Z2Udp1ZhVu7J+
-         iDo30PruDH+Xu4vHaT6zzNRuXonjJw/c9G8wR0RfUwsO9WYb+d6L23Agy1bIFpmcdLOw
-         N8dTLExXdTN5Gy0MPuLsPLARBs5dajqxXqYGWDIFN5bC1IPtpaWMwN8/jnPxRIHlxpX1
-         VfTg/BITZKpQgvJmskrQdqUGXpdWFcjrMwMRnnfnFr062pVdmB0GUin+zvlMoj/xQIW8
-         l4bqNuUJVqCMNbgD/zwni6A1scghiJCu1ryCJaxUJj6lJJLD/YiueVo9PFaKJHgVkyYg
-         t8Cg==
-X-Forwarded-Encrypted: i=1; AJvYcCWsA2jW03Dns3ujPvVnwNhbnLM92OP47Czcg7C3DPThRJo41hZkZyaSUh7p9SeQCRWDv1yncFKH5w/hoM+q/g==@vger.kernel.org
-X-Gm-Message-State: AOJu0Yy+VpjtaBUdD6UAJoJcZ1wlzbtJotZ8JPGdfNTB15Vfc+tk563F
-	ls7S33MjFPfupwScl6al0AYSGMnnUNS7S2rV6RyHcCFQW4wGwo67Y0Fj
-X-Gm-Gg: AY/fxX4Yliy16mOY2h01RqiHiHcBYPQWPyeSimYVpS/cotlEsj5H1k8Icrc6i/d5EuI
-	ZEG10QX85pFwcVYYphUnrUNmQtIcThfADtULeqaRlkjhY4zsuOZvE2dOGX7aNXUgieDeKktQ4ZN
-	05yBUUuBly4Oi3dL/DhBBSO0YzvYe+sTktBlwo5pkHo0ALTPZZbXJ2ENau9XzjC1/KRrv5yzxpa
-	donTf1U/no1QGZvL4urrwiyyPxfyy3vkSYmeOrr81vGsDVoiu4Xb251x64+u9eT3I79rEh/nPdV
-	7p1pfbYK57z7y50BamIKACAjaLJq0FhSjKcJiO7ZqBf5gd1H7FyjUjIR1Yi7GJr2hKRBG8uwMza
-	Qx30ZKiaAlJ8AyPc0n+59hf9niNt+gA7nVZWaoUp6cVDHxxPpysMGwX/fHHwOZRzSZBFpgVuDx+
-	h7oJbteVB0oqnAQcHHY1XWMk1uN2fe8qHmlKw+gmB97hqMdKkpnCbnmIjf8OXA96iKKVGyGNVjj
-	Q==
-X-Google-Smtp-Source: AGHT+IGUlMoLAZTEdBS6DMTK8EyIRJTt+D9XZZtlYRD44utmmdlWurYUMUg/4PMNfp15VP8DPQf4tg==
-X-Received: by 2002:a05:7022:1e13:b0:11b:79f1:847 with SMTP id a92af1059eb24-121722b44bfmr31712624c88.12.1767572809919;
-        Sun, 04 Jan 2026 16:26:49 -0800 (PST)
+        bh=nx+S5z3h6030ObTHHh0B/SCcYrL7BGZ5wBUiVpgW8C8=;
+        b=P3wb4lTdB2PU92XCAKs7mzPXGltVu3g9BYunU8+e54YgcYKYblaiya4EK3stLsDsCb
+         SrTnb9eDiaIp3MZujjAxDEWx2jbJ87VGVNjz+OUuz3fByEndDzlzBc+e2cQY9QXAM8wR
+         E9iR20YakHYtFjHqizGLS+Q2t6RRUgO3IMASIZAFDPjY11LeJOmN8Kpp8c1C2gRIE8NY
+         KH0o3XUEMCXiu71k9TR7tKolVKPODgHY9SD5RUJc8D59xLT5moGRnul1VD+zUN23HqUt
+         J6eTpPXwoNt7EBMc0KsYL5gPoEaGsJ479GR6kgEcu5fGGaH9wNowHizkrgTTWuPTntMd
+         NX0g==
+X-Forwarded-Encrypted: i=1; AJvYcCVM+iZ1ZFwd/SasdStaGpJMQTdN8998Y8zH84SSCKcqo5hOkoUKzmR1DI+bhMX8kjjiCqZxRbjd5jSvjxftPg==@vger.kernel.org
+X-Gm-Message-State: AOJu0YwoLdR7PnOfamrOPutYZVrArXURP9XhwKogABJTJZJsfYtP/o2l
+	nhIX7zOQ4ayHQgfbVbwne/Gu2tqGC0ZqP1vcKab9eh3XKSzIeDeXgGcG
+X-Gm-Gg: AY/fxX6/0c7CrWmOz9O7XZXoXItqBnyMYgJVH+DY+agT0aowqHVRC4pc5vse5JnKIBr
+	0HNvdrUpLOVtsB1PywUJBMvp4jWpLaOS3gZyNwsgmg/KI4N44dICB1XiIUgljrhzauvCr7XH59B
+	ewqHC8uKIcWlTe/QiiX1YO5Ayu1ZqjAyLjWjOAngFcWdQwdMWz8LIvc0V8UFtLSRtfrErpEU8HQ
+	bsc/S8XsyH6sSXhHgQkciYQ2lJLxupNLXnMwgNU4DLrA53kOQ85VpxH2l9kVPoTRubfveR5WFFs
+	t9kdaO8GJKzuEtYoeRQaOY8gmM67zNOnt6lRx14HQNODlnNrmYO1mdu9vZD9LB5bfFifraIEkaP
+	8nZy4YVqNWzjoTOLPDt2JOqBbyDN6G2r5ArzTngpcRZSYkLzMHCy2NFmX+TrFzhRPsmt6wTNveT
+	vg2t8lli229Hrp2HBF5DxroV5R7BJO4mCUD939opYhHtI8533XCis1CzCLx2jzC1E=
+X-Google-Smtp-Source: AGHT+IG07f4+BWjJlbqJDdFUMO7Ft/315N9xOwOmVA0qQn17sAgscoR34CTnkVLXsA8WiWEJB7CjHQ==
+X-Received: by 2002:a05:7023:883:b0:11d:f890:6751 with SMTP id a92af1059eb24-121721acc21mr46191919c88.10.1767572811084;
+        Sun, 04 Jan 2026 16:26:51 -0800 (PST)
 Received: from zubuntu.bengal-mercat.ts.net ([2001:5a8:60d:bc9:9ebf:dff:fe00:f8f2])
-        by smtp.gmail.com with ESMTPSA id a92af1059eb24-121724de268sm133378109c88.8.2026.01.04.16.26.48
+        by smtp.gmail.com with ESMTPSA id a92af1059eb24-121724de268sm133378109c88.8.2026.01.04.16.26.50
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 04 Jan 2026 16:26:49 -0800 (PST)
+        Sun, 04 Jan 2026 16:26:50 -0800 (PST)
 From: Zac Bowling <zbowling@gmail.com>
 To: zbowling@gmail.com
 Cc: deren.wu@mediatek.com,
@@ -84,12 +83,13 @@ Cc: deren.wu@mediatek.com,
 	nbd@nbd.name,
 	ryder.lee@mediatek.com,
 	sean.wang@mediatek.com
-Subject: [PATCH v3 00/17] wifi: mt76: mt7925/mt792x: comprehensive stability fixes
-Date: Sun,  4 Jan 2026 16:26:21 -0800
-Message-ID: <20260105002638.668723-1-zbowling@gmail.com>
+Subject: [PATCH 01/17] wifi: mt76: mt7925: fix NULL pointer dereference in vif iteration
+Date: Sun,  4 Jan 2026 16:26:22 -0800
+Message-ID: <20260105002638.668723-2-zbowling@gmail.com>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20260102200524.290779-1-zbowling@gmail.com>
+In-Reply-To: <20260105002638.668723-1-zbowling@gmail.com>
 References: <20260102200524.290779-1-zbowling@gmail.com>
+ <20260105002638.668723-1-zbowling@gmail.com>
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
@@ -98,62 +98,21 @@ List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-From: Zac Bowling <zac@zacbowling.com>
+mt792x_vif_to_bss_conf() can return NULL when iterating over valid_links
+during HW reset or other state transitions, because the link configuration
+in mac80211 may not be set up yet even though the driver's valid_links
+bitmap has the link marked as valid.
 
-This patch series addresses kernel panics, system deadlocks, and various
-stability issues in the MT7925 WiFi driver. The issues were discovered on
-kernel 6.17 (Ubuntu 25.10) and fixes were developed and tested on 6.18.2.
+This causes a NULL pointer dereference in mt76_connac_mcu_uni_add_dev()
+when it tries to access bss_conf->vif->type, and similar crashes in other
+functions that use bss_conf without checking.
 
-These patches are based on the wireless tree (nbd168/wireless.git) as
-requested by Sean Wang.
+This crash was observed on Framework Desktop (AMD Ryzen AI Max 300) with
+MT7925 (RZ717) running kernel 6.17. The panic occurs during BSSID roaming
+when the adapter attempts to switch to a better access point:
 
-== Problem Description ==
-
-The MT7925 driver has several bugs that cause:
-- Kernel NULL pointer dereferences during BSSID roaming
-- System-wide deadlocks requiring hard reboot
-- Firmware reload failures after suspend/resume
-- Key removal errors during MLO roaming
-
-These issues manifest approximately every 5 minutes when the adapter
-tries to switch to a better BSSID, particularly in enterprise environments
-with multiple access points.
-
-== Root Causes ==
-
-1. Missing mutex protection around ieee80211_iterate_active_interfaces()
-   when the callback invokes MCU functions (patches 2, 3, 16)
-
-2. NULL pointer dereferences where mt792x_vif_to_bss_conf(),
-   mt792x_sta_to_link(), and similar functions return NULL during
-   MLO state transitions but results are not checked (patches 1, 4, 5,
-   9, 10, 14, 17)
-
-3. Ignored MCU return values hiding firmware errors (patches 6, 7, 8)
-
-4. WARN_ON_ONCE used where NULL is expected during normal MLO AP
-   setup (patch 13)
-
-5. Firmware semaphore not released after failed load attempts (patch 15)
-
-6. Key removal returning error when link is already torn down (patch 12)
-
-== Testing ==
-
-Stress tested by hammering the driver with custom test script.
-
-Tested on:
-- Framework Desktop (AMD Ryzen AI Max 300 Series) with MT7925 (RZ717)
-- This whole patch series was tested on Kernel 6.18.2 and 6.17.12 (Ubuntu 25.10)
-- Enterprise WiFi environment with multiple WIFI 7 APs with MLO enabled
-
-Before patches: System hangs/panics every 5-15 minutes during BSSID roaming
-After patches: Stable for 24+ hours under continuous stress testing
-
-== Crash Traces Fixed ==
-
-Primary NULL pointer dereference:
   BUG: kernel NULL pointer dereference, address: 0000000000000010
+  CPU: 1 UID: 0 PID: 8362 Comm: kworker/u128:10 Tainted: G           OE
   Workqueue: mt76 mt7925_mac_reset_work [mt7925_common]
   RIP: 0010:mt76_connac_mcu_uni_add_dev+0x9c/0x780 [mt76_connac_lib]
   Call Trace:
@@ -161,52 +120,87 @@ Primary NULL pointer dereference:
    __iterate_interfaces+0x92/0x130 [mac80211]
    ieee80211_iterate_interfaces+0x3d/0x60 [mac80211]
    mt7925_mac_reset_work+0x105/0x190 [mt7925_common]
+   process_one_work+0x18b/0x370
+   worker_thread+0x317/0x450
 
-Deadlock trace:
-  INFO: task kworker/u128:0:48737 blocked for more than 122 seconds.
-  Workqueue: mt76 mt7925_mac_reset_work [mt7925_common]
-  Call Trace:
-   __mutex_lock.constprop.0+0x3d0/0x6d0
-   mt7925_mac_reset_work+0x85/0x170 [mt7925_common]
+The issue manifests approximately every 5 minutes when the adapter tries
+to hop to a better BSSID, causing system-wide hangs where network commands
+(ip, ifconfig, etc.) hang indefinitely.
 
-== Related Links ==
+Add NULL checks for bss_conf before using it in:
+- mt7925_vif_connect_iter()
+- mt7925_change_vif_links()
+- mt7925_mac_sta_assoc()
+- mt7925_mac_sta_remove_links()
 
-Framework Community discussion:
-https://community.frame.work/t/kernel-panic-from-wifi-mediatek-mt7925-nullptr-dereference/79301
+Fixes: c948b5da6bbe ("wifi: mt76: mt7925: add Mediatek Wi-Fi7 driver for mt7925 chips")
+Link: https://community.frame.work/t/kernel-panic-from-wifi-mediatek-mt7925-nullptr-dereference/79301
+Reported-by: Zac Bowling <zac@zacbowling.com>
+Tested-by: Zac Bowling <zac@zacbowling.com>
+Signed-off-by: Zac Bowling <zac@zacbowling.com>
+---
+ drivers/net/wireless/mediatek/mt76/mt7925/mac.c  | 6 ++++++
+ drivers/net/wireless/mediatek/mt76/mt7925/main.c | 8 ++++++++
+ 2 files changed, 14 insertions(+)
 
-OpenWrt GitHub issues:
-https://github.com/openwrt/mt76/issues/1014
-https://github.com/openwrt/mt76/issues/1036
-
-GitHub repository with additional analysis:
-https://github.com/zbowling/mt7925
-
-Zac Bowling (17):
-  wifi: mt76: mt7925: fix NULL pointer dereference in vif iteration
-  wifi: mt76: mt7925: fix missing mutex protection in reset and ROC abort
-  wifi: mt76: mt7925: fix missing mutex protection in runtime PM and MLO PM
-  wifi: mt76: mt7925: add NULL checks in MCU STA TLV functions
-  wifi: mt76: mt7925: add NULL checks for link_conf and mlink in main.c
-  wifi: mt76: mt7925: add error handling for AMPDU MCU commands
-  wifi: mt76: mt7925: add error handling for BSS info MCU command in sta_add
-  wifi: mt76: mt7925: add error handling for BSS info in key setup
-  wifi: mt76: mt7925: add NULL checks in MLO link and chanctx functions
-  wifi: mt76: mt792x: fix NULL pointer dereference in TX path
-  wifi: mt76: mt7925: add lockdep assertions for mutex verification
-  wifi: mt76: mt7925: fix key removal failure during MLO roaming
-  wifi: mt76: mt7925: fix kernel warning in MLO ROC setup
-  wifi: mt76: mt7925: add NULL checks for MLO link pointers in MCU functions
-  wifi: mt76: mt792x: fix firmware reload failure after previous load crash
-  wifi: mt76: mt7925: add mutex protection in resume path
-  wifi: mt76: mt7925: add NULL checks in link station and TX queue setup
-
- drivers/net/wireless/mediatek/mt76/mt792x_core.c | 27 +++++++++++++++-
- drivers/net/wireless/mediatek/mt76/mt7925/mac.c  |  8 +++++
- drivers/net/wireless/mediatek/mt76/mt7925/main.c | 95 +++++++++++++++++++++---
- drivers/net/wireless/mediatek/mt76/mt7925/mcu.c  | 52 ++++++++++++++---
- drivers/net/wireless/mediatek/mt76/mt7925/pci.c  |  6 +++
- 5 files changed, 170 insertions(+), 18 deletions(-)
-
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7925/mac.c b/drivers/net/wireless/mediatek/mt76/mt7925/mac.c
+index 871b67101976..184efe8afa10 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7925/mac.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7925/mac.c
+@@ -1271,6 +1271,12 @@ mt7925_vif_connect_iter(void *priv, u8 *mac,
+ 		bss_conf = mt792x_vif_to_bss_conf(vif, i);
+ 		mconf = mt792x_vif_to_link(mvif, i);
+ 
++		/* Skip links that don't have bss_conf set up yet in mac80211.
++		 * This can happen during HW reset when link state is inconsistent.
++		 */
++		if (!bss_conf)
++			continue;
++
+ 		mt76_connac_mcu_uni_add_dev(&dev->mphy, bss_conf, &mconf->mt76,
+ 					    &mvif->sta.deflink.wcid, true);
+ 		mt7925_mcu_set_tx(dev, bss_conf);
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7925/main.c b/drivers/net/wireless/mediatek/mt76/mt7925/main.c
+index 2d358a96640c..3001a62a8b67 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7925/main.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7925/main.c
+@@ -1304,6 +1304,8 @@ mt7925_mlo_pm_iter(void *priv, u8 *mac, struct ieee80211_vif *vif)
+ 	mt792x_mutex_acquire(dev);
+ 	for_each_set_bit(i, &valid, IEEE80211_MLD_MAX_NUM_LINKS) {
+ 		bss_conf = mt792x_vif_to_bss_conf(vif, i);
++		if (!bss_conf)
++			continue;
+ 		mt7925_mcu_uni_bss_ps(dev, bss_conf);
+ 	}
+ 	mt792x_mutex_release(dev);
+@@ -1630,6 +1632,8 @@ static void mt7925_ipv6_addr_change(struct ieee80211_hw *hw,
+ 
+ 	for_each_set_bit(i, &valid, IEEE80211_MLD_MAX_NUM_LINKS) {
+ 		bss_conf = mt792x_vif_to_bss_conf(vif, i);
++		if (!bss_conf)
++			continue;
+ 		__mt7925_ipv6_addr_change(hw, bss_conf, idev);
+ 	}
+ }
+@@ -1861,6 +1865,8 @@ static void mt7925_vif_cfg_changed(struct ieee80211_hw *hw,
+ 	if (changed & BSS_CHANGED_ARP_FILTER) {
+ 		for_each_set_bit(i, &valid, IEEE80211_MLD_MAX_NUM_LINKS) {
+ 			bss_conf = mt792x_vif_to_bss_conf(vif, i);
++			if (!bss_conf)
++				continue;
+ 			mt7925_mcu_update_arp_filter(&dev->mt76, bss_conf);
+ 		}
+ 	}
+@@ -1876,6 +1882,8 @@ static void mt7925_vif_cfg_changed(struct ieee80211_hw *hw,
+ 			} else if (mvif->mlo_pm_state == MT792x_MLO_CHANGED_PS) {
+ 				for_each_set_bit(i, &valid, IEEE80211_MLD_MAX_NUM_LINKS) {
+ 					bss_conf = mt792x_vif_to_bss_conf(vif, i);
++					if (!bss_conf)
++						continue;
+ 					mt7925_mcu_uni_bss_ps(dev, bss_conf);
+ 				}
+ 			}
 -- 
 2.51.0
+
 
