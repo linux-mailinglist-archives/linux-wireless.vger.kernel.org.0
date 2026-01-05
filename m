@@ -1,46 +1,46 @@
-Return-Path: <linux-wireless+bounces-30356-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-30355-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9F9D6CF340C
-	for <lists+linux-wireless@lfdr.de>; Mon, 05 Jan 2026 12:30:45 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2988BCF33FA
+	for <lists+linux-wireless@lfdr.de>; Mon, 05 Jan 2026 12:29:59 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 684B13033F97
-	for <lists+linux-wireless@lfdr.de>; Mon,  5 Jan 2026 11:28:02 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 7628F30274F8
+	for <lists+linux-wireless@lfdr.de>; Mon,  5 Jan 2026 11:27:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CA0EB328B4E;
-	Mon,  5 Jan 2026 11:26:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7A7C633987B;
+	Mon,  5 Jan 2026 11:16:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=siemens.com header.i=jan.kiszka@siemens.com header.b="HEmrTu/o"
+	dkim=pass (2048-bit key) header.d=siemens.com header.i=jan.kiszka@siemens.com header.b="QTrnSt43"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mta-65-226.siemens.flowmailer.net (mta-65-226.siemens.flowmailer.net [185.136.65.226])
+Received: from mta-65-227.siemens.flowmailer.net (mta-65-227.siemens.flowmailer.net [185.136.65.227])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D0D3132AAC4
-	for <linux-wireless@vger.kernel.org>; Mon,  5 Jan 2026 11:26:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.136.65.226
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A2161338F55
+	for <linux-wireless@vger.kernel.org>; Mon,  5 Jan 2026 11:16:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.136.65.227
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767612403; cv=none; b=lw+6Z+dgHNY4s1ecTWGOFGWpecce5BhSwoaJir0mjnvgf7dhNJQzFNSUKOYIKuvW3mxK8n32pA8/DwQMJp/CcrS7n4UGTim097i1CeJrSkstLqLLh1Na0rHe02uTRBMOYdWcg62w9hEAtds14WqeZ1IDvyhCsMNTbzT+2MKjFMw=
+	t=1767611804; cv=none; b=W73c+pGn2np0AmC6EWam+xR7LY3O1rXrOZq6alaj6cJR98WoVL8F9/Bq7iwV47soxzEu8tLfDgvBtMLnMIGQdid0B2asEtVBvocng/riyN+MWwqPL7xUuB+lL+D8YSClhHMJZaPo8UY7Fu83kjixfdncTKNALkLOEhP5FWRLYjA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767612403; c=relaxed/simple;
-	bh=3b1hvWYW5tNW2vcrFdzau/5oMH1pdI4aId+IE68Lxi8=;
+	s=arc-20240116; t=1767611804; c=relaxed/simple;
+	bh=OeWTk5Sl4tPuhFfXRGKcK2Zcm1TASJuLTL8Y4iUHfIA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=MtF4z9hbiopp+V4Xl4FB9Ymo9d/WVTFpcc3vl6Gy6og/w/pVxh7MSVydGUec74z5qIV6JvIfXROigqia+e58cbS6EqZ4cW1xxZQPbaYRw3pppzmsZnpVxek84JNYJwXZY8P81QlCOcFzZRBVDaKzShf8YiVlxBoo/dxljdiLI/s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=siemens.com; spf=pass smtp.mailfrom=rts-flowmailer.siemens.com; dkim=pass (2048-bit key) header.d=siemens.com header.i=jan.kiszka@siemens.com header.b=HEmrTu/o; arc=none smtp.client-ip=185.136.65.226
+	 MIME-Version; b=EXzWCToTWIVQZkHc27zE6K18E0b8i7fa7+wKXpg6Un6XLYl/EB3zHXKtd9UlCwEKcFRGZY3gbNIBdl9RG5Y1RXCPXcMx7Bsp9iUGSbcm2FAoEi50MbIfEE9duN4Rlb0+7WFxJFvYCKIxLp+xBOiqceCZr3bLYQ8QfMEuDYsWzMU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=siemens.com; spf=pass smtp.mailfrom=rts-flowmailer.siemens.com; dkim=pass (2048-bit key) header.d=siemens.com header.i=jan.kiszka@siemens.com header.b=QTrnSt43; arc=none smtp.client-ip=185.136.65.227
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=siemens.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=rts-flowmailer.siemens.com
-Received: by mta-65-226.siemens.flowmailer.net with ESMTPSA id 20260105111630d82f392e7300020701
+Received: by mta-65-227.siemens.flowmailer.net with ESMTPSA id 202601051116307a483eadf4000207fb
         for <linux-wireless@vger.kernel.org>;
-        Mon, 05 Jan 2026 12:16:30 +0100
+        Mon, 05 Jan 2026 12:16:39 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; s=fm1;
  d=siemens.com; i=jan.kiszka@siemens.com;
  h=Date:From:Subject:To:Message-ID:MIME-Version:Content-Type:Content-Transfer-Encoding:Cc:References:In-Reply-To;
- bh=09yIlnVbkbaWQta4+eo7OcKsHkPXnjtb/uQFXaz99WI=;
- b=HEmrTu/owLpmFdXw0vZHh1cat6BNoldSoIBzwSHnlLDBAtKEjf+Tu/83jW/XalsMbaNXjk
- kQO16B6j+mbrJRld39cpmbKohOCaOqwZuEwC5vPVVP8eNGrJZIIhSoLZtQDk5dTdLak0c16L
- d+HJvmi1LTw2ms0IRWWHv5I8tGifFAcq/RDuzGMaO6w+1/bMZjRnrLvJTQec4B8K+d8sNRiG
- 3YaNktf7IzD3ShsTHFT824TDt3zF3cCINMjAc2MyedX0hBT/eKjhxFXzI6FB1XXzv+BREUc5
- O/HJ34ldJJuTVsTl+urNRfiaSgZ2qoCxRTIn5bzz5KlLldxt8fCNmxTg==;
+ bh=s2mO3bAvgt9zRRxnw5dLc3IaT8CuOn5gKppTj7efNsM=;
+ b=QTrnSt43MmrY1Mn/ZFV02Iriw3ZuruFEj+wv25NljusBAw4qn3Z+Wbi7vytJEOaoZQswHp
+ rSGZ1XwHO/WKXYKN5jb1ggPVkdUnpH4UcON7XCaqaPRw2t7oe3Ib6iXPrf/qygh3A+PUNoAd
+ yyoXkGwBaLX25ACMW3yhzu5gIED0/SLdcpF4o2mz+RNwk42wjPm5hBXjTiezNsSK2qT09DSd
+ ty8gJNYhWSWGcqDPUrR+X83M1b2JMe6JO9+X0h/cijOVX6qGo42Bv3yR+wHUUh1I5whgqNPC
+ DiKEyOGa708hTs+olnevzF22yk2EIp3ptfSGHB4gKLGlP5ehplXVsgIQ==;
 From: Jan Kiszka <jan.kiszka@siemens.com>
 To: stable@vger.kernel.org,
 	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -49,9 +49,9 @@ To: stable@vger.kernel.org,
 Cc: Sasha Levin <sashal@kernel.org>,
 	linux-kernel@vger.kernel.org,
 	linux-wireless@vger.kernel.org
-Subject: [PATCH 6.12 2/3] wifi: mt76: mt7925: fix CLC command timeout when suspend/resume
-Date: Mon,  5 Jan 2026 12:16:27 +0100
-Message-ID: <95428f78ab30c93a150999e430f07e7047d95adb.1767611788.git.jan.kiszka@siemens.com>
+Subject: [PATCH 6.12 3/3] wifi: mt76: mt7925: add handler to hif suspend/resume event
+Date: Mon,  5 Jan 2026 12:16:28 +0100
+Message-ID: <2976de5866957f422963bda026179b8a2958139d.1767611788.git.jan.kiszka@siemens.com>
 In-Reply-To: <cover.1767611788.git.jan.kiszka@siemens.com>
 References: <cover.1767611788.git.jan.kiszka@siemens.com>
 Precedence: bulk
@@ -66,104 +66,503 @@ Feedback-ID: 519:519-294854:519-21489:flowmailer
 
 From: Quan Zhou <quan.zhou@mediatek.com>
 
-[ Upstream commit a0f721b8d986b62b4de316444f2b2e356d17e3b5 ]
+[ Upstream commit 8f6571ad470feb242dcef36e53f7cf1bba03780f ]
 
-When enter suspend/resume while in a connected state, the upper layer
-will trigger disconnection before entering suspend, and at the same time,
-it will trigger regd_notifier() and update CLC, causing the CLC event to
-not be received due to suspend, resulting in a command timeout.
-
-Therefore, the update of CLC is postponed until resume, to ensure data
-consistency and avoid the occurrence of command timeout.
+When the system suspend or resume, the WiFi driver sends
+an hif_ctrl command to the firmware and waits for an event.
+Due to changes in the event format reported by the chip, the
+current mt7925's driver does not account for these changes,
+resulting in command timeout. Add flow to handle hif_ctrl
+event to avoid command timeout. We also exented API
+mt76_connac_mcu_set_hif_suspend for connac3 this time.
 
 Signed-off-by: Quan Zhou <quan.zhou@mediatek.com>
-Link: https://patch.msgid.link/bab00a2805d0533fd8beaa059222659858a9dcb5.1735910455.git.quan.zhou@mediatek.com
+Link: https://patch.msgid.link/3a0844ff5162142c4a9f3cf7104f75076ddd3b87.1735910562.git.quan.zhou@mediatek.com
 Signed-off-by: Felix Fietkau <nbd@nbd.name>
 Signed-off-by: Jan Kiszka <jan.kiszka@siemens.com>
 ---
- .../net/wireless/mediatek/mt76/mt7925/init.c  | 20 ++++++++++++++++---
- .../wireless/mediatek/mt76/mt7925/mt7925.h    |  1 +
- .../net/wireless/mediatek/mt76/mt7925/pci.c   |  3 +++
- 3 files changed, 21 insertions(+), 3 deletions(-)
+ .../net/wireless/mediatek/mt76/mt7615/main.c  |  4 +-
+ .../net/wireless/mediatek/mt76/mt7615/pci.c   |  6 +--
+ .../net/wireless/mediatek/mt76/mt7615/sdio.c  |  4 +-
+ .../net/wireless/mediatek/mt76/mt7615/usb.c   |  4 +-
+ .../wireless/mediatek/mt76/mt76_connac_mcu.c  |  4 +-
+ .../wireless/mediatek/mt76/mt76_connac_mcu.h  |  3 +-
+ .../net/wireless/mediatek/mt76/mt7921/pci.c   |  6 +--
+ .../net/wireless/mediatek/mt76/mt7921/sdio.c  |  6 +--
+ .../net/wireless/mediatek/mt76/mt7921/usb.c   |  4 +-
+ .../net/wireless/mediatek/mt76/mt7925/mcu.c   | 49 ++++++++++++++++++-
+ .../wireless/mediatek/mt76/mt7925/mt7925.h    | 20 ++++++++
+ .../net/wireless/mediatek/mt76/mt7925/pci.c   | 29 ++++++++---
+ .../net/wireless/mediatek/mt76/mt7925/usb.c   | 20 ++++++--
+ drivers/net/wireless/mediatek/mt76/mt792x.h   |  2 +
+ 14 files changed, 127 insertions(+), 34 deletions(-)
 
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7925/init.c b/drivers/net/wireless/mediatek/mt76/mt7925/init.c
-index 3f48ae80aed4..105ba5d0934c 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7925/init.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7925/init.c
-@@ -59,6 +59,18 @@ static int mt7925_thermal_init(struct mt792x_phy *phy)
- 						       mt7925_hwmon_groups);
- 	return PTR_ERR_OR_ZERO(hwmon);
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7615/main.c b/drivers/net/wireless/mediatek/mt76/mt7615/main.c
+index 376975388007..4f0c840ef93d 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7615/main.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7615/main.c
+@@ -1249,7 +1249,7 @@ static int mt7615_suspend(struct ieee80211_hw *hw,
+ 					    phy->mt76);
+ 
+ 	if (!mt7615_dev_running(dev))
+-		err = mt76_connac_mcu_set_hif_suspend(&dev->mt76, true);
++		err = mt76_connac_mcu_set_hif_suspend(&dev->mt76, true, true);
+ 
+ 	mt7615_mutex_release(dev);
+ 
+@@ -1271,7 +1271,7 @@ static int mt7615_resume(struct ieee80211_hw *hw)
+ 	if (!running) {
+ 		int err;
+ 
+-		err = mt76_connac_mcu_set_hif_suspend(&dev->mt76, false);
++		err = mt76_connac_mcu_set_hif_suspend(&dev->mt76, false, true);
+ 		if (err < 0) {
+ 			mt7615_mutex_release(dev);
+ 			return err;
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7615/pci.c b/drivers/net/wireless/mediatek/mt76/mt7615/pci.c
+index 9f43e673518b..9a278589df4e 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7615/pci.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7615/pci.c
+@@ -83,7 +83,7 @@ static int mt7615_pci_suspend(struct pci_dev *pdev, pm_message_t state)
+ 	hif_suspend = !test_bit(MT76_STATE_SUSPEND, &dev->mphy.state) &&
+ 		      mt7615_firmware_offload(dev);
+ 	if (hif_suspend) {
+-		err = mt76_connac_mcu_set_hif_suspend(mdev, true);
++		err = mt76_connac_mcu_set_hif_suspend(mdev, true, true);
+ 		if (err)
+ 			return err;
+ 	}
+@@ -131,7 +131,7 @@ static int mt7615_pci_suspend(struct pci_dev *pdev, pm_message_t state)
+ 	}
+ 	napi_enable(&mdev->tx_napi);
+ 	if (hif_suspend)
+-		mt76_connac_mcu_set_hif_suspend(mdev, false);
++		mt76_connac_mcu_set_hif_suspend(mdev, false, true);
+ 
+ 	return err;
  }
-+
-+void mt7925_regd_update(struct mt792x_dev *dev)
-+{
-+	struct mt76_dev *mdev = &dev->mt76;
-+	struct ieee80211_hw *hw = mdev->hw;
-+
-+	mt7925_mcu_set_clc(dev, mdev->alpha2, dev->country_ie_env);
-+	mt7925_mcu_set_channel_domain(hw->priv);
-+	mt7925_set_tx_sar_pwr(hw, NULL);
-+}
-+EXPORT_SYMBOL_GPL(mt7925_regd_update);
-+
- static void
- mt7925_regd_notifier(struct wiphy *wiphy,
- 		     struct regulatory_request *req)
-@@ -66,6 +78,7 @@ mt7925_regd_notifier(struct wiphy *wiphy,
- 	struct ieee80211_hw *hw = wiphy_to_ieee80211_hw(wiphy);
- 	struct mt792x_dev *dev = mt792x_hw_dev(hw);
- 	struct mt76_dev *mdev = &dev->mt76;
-+	struct mt76_connac_pm *pm = &dev->pm;
+@@ -175,7 +175,7 @@ static int mt7615_pci_resume(struct pci_dev *pdev)
  
- 	/* allow world regdom at the first boot only */
- 	if (!memcmp(req->alpha2, "00", 2) &&
-@@ -81,11 +94,12 @@ mt7925_regd_notifier(struct wiphy *wiphy,
- 	mdev->region = req->dfs_region;
- 	dev->country_ie_env = req->country_ie_env;
+ 	if (!test_bit(MT76_STATE_SUSPEND, &dev->mphy.state) &&
+ 	    mt7615_firmware_offload(dev))
+-		err = mt76_connac_mcu_set_hif_suspend(mdev, false);
++		err = mt76_connac_mcu_set_hif_suspend(mdev, false, true);
  
-+	if (pm->suspended)
-+		return;
-+
- 	dev->regd_in_progress = true;
- 	mt792x_mutex_acquire(dev);
--	mt7925_mcu_set_clc(dev, req->alpha2, req->country_ie_env);
--	mt7925_mcu_set_channel_domain(hw->priv);
--	mt7925_set_tx_sar_pwr(hw, NULL);
-+	mt7925_regd_update(dev);
- 	mt792x_mutex_release(dev);
- 	dev->regd_in_progress = false;
- 	wake_up(&dev->wait);
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7925/mt7925.h b/drivers/net/wireless/mediatek/mt76/mt7925/mt7925.h
-index c83b8a210498..76f31abe9146 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7925/mt7925.h
-+++ b/drivers/net/wireless/mediatek/mt76/mt7925/mt7925.h
-@@ -218,6 +218,7 @@ int mt7925_mcu_chip_config(struct mt792x_dev *dev, const char *cmd);
- int mt7925_mcu_set_rxfilter(struct mt792x_dev *dev, u32 fif,
- 			    u8 bit_op, u32 bit_map);
+ 	return err;
+ }
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7615/sdio.c b/drivers/net/wireless/mediatek/mt76/mt7615/sdio.c
+index aebfc4576aa4..f56038cd4d3a 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7615/sdio.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7615/sdio.c
+@@ -191,7 +191,7 @@ static int mt7663s_suspend(struct device *dev)
+ 	    mt7615_firmware_offload(mdev)) {
+ 		int err;
  
-+void mt7925_regd_update(struct mt792x_dev *dev);
- int mt7925_mac_init(struct mt792x_dev *dev);
- int mt7925_mac_sta_add(struct mt76_dev *mdev, struct ieee80211_vif *vif,
- 		       struct ieee80211_sta *sta);
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7925/pci.c b/drivers/net/wireless/mediatek/mt76/mt7925/pci.c
-index b4cc5607e0d6..ccb663bd9f52 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7925/pci.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7925/pci.c
-@@ -554,11 +554,14 @@ static int mt7925_pci_resume(struct device *device)
- 	local_bh_enable();
+-		err = mt76_connac_mcu_set_hif_suspend(&mdev->mt76, true);
++		err = mt76_connac_mcu_set_hif_suspend(&mdev->mt76, true, true);
+ 		if (err < 0)
+ 			return err;
+ 	}
+@@ -230,7 +230,7 @@ static int mt7663s_resume(struct device *dev)
  
- 	err = mt76_connac_mcu_set_hif_suspend(mdev, false);
-+	if (err < 0)
-+		goto failed;
+ 	if (!test_bit(MT76_STATE_SUSPEND, &mdev->mphy.state) &&
+ 	    mt7615_firmware_offload(mdev))
+-		err = mt76_connac_mcu_set_hif_suspend(&mdev->mt76, false);
++		err = mt76_connac_mcu_set_hif_suspend(&mdev->mt76, false, true);
  
- 	/* restore previous ds setting */
+ 	return err;
+ }
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7615/usb.c b/drivers/net/wireless/mediatek/mt76/mt7615/usb.c
+index 5020af52c68c..4aa9fa1c4a23 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7615/usb.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7615/usb.c
+@@ -225,7 +225,7 @@ static int mt7663u_suspend(struct usb_interface *intf, pm_message_t state)
+ 	    mt7615_firmware_offload(dev)) {
+ 		int err;
+ 
+-		err = mt76_connac_mcu_set_hif_suspend(&dev->mt76, true);
++		err = mt76_connac_mcu_set_hif_suspend(&dev->mt76, true, true);
+ 		if (err < 0)
+ 			return err;
+ 	}
+@@ -253,7 +253,7 @@ static int mt7663u_resume(struct usb_interface *intf)
+ 
+ 	if (!test_bit(MT76_STATE_SUSPEND, &dev->mphy.state) &&
+ 	    mt7615_firmware_offload(dev))
+-		err = mt76_connac_mcu_set_hif_suspend(&dev->mt76, false);
++		err = mt76_connac_mcu_set_hif_suspend(&dev->mt76, false, true);
+ 
+ 	return err;
+ }
+diff --git a/drivers/net/wireless/mediatek/mt76/mt76_connac_mcu.c b/drivers/net/wireless/mediatek/mt76/mt76_connac_mcu.c
+index a6324f6ead78..462b4a68c4f0 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt76_connac_mcu.c
++++ b/drivers/net/wireless/mediatek/mt76/mt76_connac_mcu.c
+@@ -2527,7 +2527,7 @@ mt76_connac_mcu_set_wow_ctrl(struct mt76_phy *phy, struct ieee80211_vif *vif,
+ }
+ EXPORT_SYMBOL_GPL(mt76_connac_mcu_set_wow_ctrl);
+ 
+-int mt76_connac_mcu_set_hif_suspend(struct mt76_dev *dev, bool suspend)
++int mt76_connac_mcu_set_hif_suspend(struct mt76_dev *dev, bool suspend, bool wait_resp)
+ {
+ 	struct {
+ 		struct {
+@@ -2559,7 +2559,7 @@ int mt76_connac_mcu_set_hif_suspend(struct mt76_dev *dev, bool suspend)
+ 		req.hdr.hif_type = 0;
+ 
+ 	return mt76_mcu_send_msg(dev, MCU_UNI_CMD(HIF_CTRL), &req,
+-				 sizeof(req), true);
++				 sizeof(req), wait_resp);
+ }
+ EXPORT_SYMBOL_GPL(mt76_connac_mcu_set_hif_suspend);
+ 
+diff --git a/drivers/net/wireless/mediatek/mt76/mt76_connac_mcu.h b/drivers/net/wireless/mediatek/mt76/mt76_connac_mcu.h
+index 57a8340fa700..6901971f5da6 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt76_connac_mcu.h
++++ b/drivers/net/wireless/mediatek/mt76/mt76_connac_mcu.h
+@@ -1049,6 +1049,7 @@ enum {
+ /* unified event table */
+ enum {
+ 	MCU_UNI_EVENT_RESULT = 0x01,
++	MCU_UNI_EVENT_HIF_CTRL = 0x03,
+ 	MCU_UNI_EVENT_FW_LOG_2_HOST = 0x04,
+ 	MCU_UNI_EVENT_ACCESS_REG = 0x6,
+ 	MCU_UNI_EVENT_IE_COUNTDOWN = 0x09,
+@@ -1989,7 +1990,7 @@ int mt76_connac_mcu_set_suspend_mode(struct mt76_dev *dev,
+ 				     struct ieee80211_vif *vif,
+ 				     bool enable, u8 mdtim,
+ 				     bool wow_suspend);
+-int mt76_connac_mcu_set_hif_suspend(struct mt76_dev *dev, bool suspend);
++int mt76_connac_mcu_set_hif_suspend(struct mt76_dev *dev, bool suspend, bool wait_resp);
+ void mt76_connac_mcu_set_suspend_iter(void *priv, u8 *mac,
+ 				      struct ieee80211_vif *vif);
+ int mt76_connac_sta_state_dp(struct mt76_dev *dev,
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7921/pci.c b/drivers/net/wireless/mediatek/mt76/mt7921/pci.c
+index 67723c22aea6..6da90c6238de 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7921/pci.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7921/pci.c
+@@ -435,7 +435,7 @@ static int mt7921_pci_suspend(struct device *device)
+ 	if (err < 0)
+ 		goto restore_suspend;
+ 
+-	err = mt76_connac_mcu_set_hif_suspend(mdev, true);
++	err = mt76_connac_mcu_set_hif_suspend(mdev, true, true);
+ 	if (err)
+ 		goto restore_suspend;
+ 
+@@ -481,7 +481,7 @@ static int mt7921_pci_suspend(struct device *device)
  	if (!pm->ds_enable)
- 		mt7925_mcu_set_deep_sleep(dev, false);
+ 		mt76_connac_mcu_set_deep_sleep(&dev->mt76, false);
  
-+	mt7925_regd_update(dev);
+-	mt76_connac_mcu_set_hif_suspend(mdev, false);
++	mt76_connac_mcu_set_hif_suspend(mdev, false, true);
+ 
+ restore_suspend:
+ 	pm->suspended = false;
+@@ -532,7 +532,7 @@ static int mt7921_pci_resume(struct device *device)
+ 	if (!pm->ds_enable)
+ 		mt76_connac_mcu_set_deep_sleep(&dev->mt76, false);
+ 
+-	err = mt76_connac_mcu_set_hif_suspend(mdev, false);
++	err = mt76_connac_mcu_set_hif_suspend(mdev, false, true);
+ 	if (err < 0)
+ 		goto failed;
+ 
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7921/sdio.c b/drivers/net/wireless/mediatek/mt76/mt7921/sdio.c
+index 95f526f7bb99..45b9f35aab17 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7921/sdio.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7921/sdio.c
+@@ -240,7 +240,7 @@ static int mt7921s_suspend(struct device *__dev)
+ 			   mt76s_txqs_empty(&dev->mt76), 5 * HZ);
+ 
+ 	/* It is supposed that SDIO bus is idle at the point */
+-	err = mt76_connac_mcu_set_hif_suspend(mdev, true);
++	err = mt76_connac_mcu_set_hif_suspend(mdev, true, true);
+ 	if (err)
+ 		goto restore_worker;
+ 
+@@ -258,7 +258,7 @@ static int mt7921s_suspend(struct device *__dev)
+ restore_txrx_worker:
+ 	mt76_worker_enable(&mdev->sdio.net_worker);
+ 	mt76_worker_enable(&mdev->sdio.txrx_worker);
+-	mt76_connac_mcu_set_hif_suspend(mdev, false);
++	mt76_connac_mcu_set_hif_suspend(mdev, false, true);
+ 
+ restore_worker:
+ 	mt76_worker_enable(&mdev->tx_worker);
+@@ -302,7 +302,7 @@ static int mt7921s_resume(struct device *__dev)
+ 	if (!pm->ds_enable)
+ 		mt76_connac_mcu_set_deep_sleep(mdev, false);
+ 
+-	err = mt76_connac_mcu_set_hif_suspend(mdev, false);
++	err = mt76_connac_mcu_set_hif_suspend(mdev, false, true);
  failed:
  	pm->suspended = false;
  
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7921/usb.c b/drivers/net/wireless/mediatek/mt76/mt7921/usb.c
+index 5be0edb2fe9a..100bdba32ba5 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7921/usb.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7921/usb.c
+@@ -263,7 +263,7 @@ static int mt7921u_suspend(struct usb_interface *intf, pm_message_t state)
+ 	pm->suspended = true;
+ 	flush_work(&dev->reset_work);
+ 
+-	err = mt76_connac_mcu_set_hif_suspend(&dev->mt76, true);
++	err = mt76_connac_mcu_set_hif_suspend(&dev->mt76, true, true);
+ 	if (err)
+ 		goto failed;
+ 
+@@ -313,7 +313,7 @@ static int mt7921u_resume(struct usb_interface *intf)
+ 	if (err < 0)
+ 		goto failed;
+ 
+-	err = mt76_connac_mcu_set_hif_suspend(&dev->mt76, false);
++	err = mt76_connac_mcu_set_hif_suspend(&dev->mt76, false, true);
+ failed:
+ 	pm->suspended = false;
+ 
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7925/mcu.c b/drivers/net/wireless/mediatek/mt76/mt7925/mcu.c
+index e42b4f0abbe7..d09f9aff0aea 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7925/mcu.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7925/mcu.c
+@@ -39,7 +39,6 @@ int mt7925_mcu_parse_response(struct mt76_dev *mdev, int cmd,
+ 	} else if (cmd == MCU_UNI_CMD(DEV_INFO_UPDATE) ||
+ 		   cmd == MCU_UNI_CMD(BSS_INFO_UPDATE) ||
+ 		   cmd == MCU_UNI_CMD(STA_REC_UPDATE) ||
+-		   cmd == MCU_UNI_CMD(HIF_CTRL) ||
+ 		   cmd == MCU_UNI_CMD(OFFLOAD) ||
+ 		   cmd == MCU_UNI_CMD(SUSPEND)) {
+ 		struct mt7925_mcu_uni_event *event;
+@@ -341,6 +340,51 @@ static void mt7925_mcu_roc_handle_grant(struct mt792x_dev *dev,
+ 		  jiffies + msecs_to_jiffies(duration));
+ }
+ 
++static void
++mt7925_mcu_handle_hif_ctrl_basic(struct mt792x_dev *dev, struct tlv *tlv)
++{
++	struct mt7925_mcu_hif_ctrl_basic_tlv *basic;
++
++	basic = (struct mt7925_mcu_hif_ctrl_basic_tlv *)tlv;
++
++	if (basic->hifsuspend) {
++		if (basic->hif_tx_traffic_status == HIF_TRAFFIC_IDLE &&
++		    basic->hif_rx_traffic_status == HIF_TRAFFIC_IDLE)
++			/* success */
++			dev->hif_idle = true;
++		else
++			/* busy */
++			/* invalid */
++			dev->hif_idle = false;
++	} else {
++		dev->hif_resumed = true;
++	}
++	wake_up(&dev->wait);
++}
++
++static void
++mt7925_mcu_uni_hif_ctrl_event(struct mt792x_dev *dev, struct sk_buff *skb)
++{
++	struct tlv *tlv;
++	u32 tlv_len;
++
++	skb_pull(skb, sizeof(struct mt7925_mcu_rxd) + 4);
++	tlv = (struct tlv *)skb->data;
++	tlv_len = skb->len;
++
++	while (tlv_len > 0 && le16_to_cpu(tlv->len) <= tlv_len) {
++		switch (le16_to_cpu(tlv->tag)) {
++		case UNI_EVENT_HIF_CTRL_BASIC:
++			mt7925_mcu_handle_hif_ctrl_basic(dev, tlv);
++			break;
++		default:
++			break;
++		}
++		tlv_len -= le16_to_cpu(tlv->len);
++		tlv = (struct tlv *)((char *)(tlv) + le16_to_cpu(tlv->len));
++	}
++}
++
+ static void
+ mt7925_mcu_uni_roc_event(struct mt792x_dev *dev, struct sk_buff *skb)
+ {
+@@ -487,6 +531,9 @@ mt7925_mcu_uni_rx_unsolicited_event(struct mt792x_dev *dev,
+ 	rxd = (struct mt7925_mcu_rxd *)skb->data;
+ 
+ 	switch (rxd->eid) {
++	case MCU_UNI_EVENT_HIF_CTRL:
++		mt7925_mcu_uni_hif_ctrl_event(dev, skb);
++		break;
+ 	case MCU_UNI_EVENT_FW_LOG_2_HOST:
+ 		mt7925_mcu_uni_debug_msg_event(dev, skb);
+ 		break;
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7925/mt7925.h b/drivers/net/wireless/mediatek/mt76/mt7925/mt7925.h
+index 76f31abe9146..27680ad28b60 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7925/mt7925.h
++++ b/drivers/net/wireless/mediatek/mt76/mt7925/mt7925.h
+@@ -27,6 +27,26 @@
+ 
+ #define MCU_UNI_EVENT_ROC  0x27
+ 
++#define HIF_TRAFFIC_IDLE 0x2
++
++enum {
++	UNI_EVENT_HIF_CTRL_BASIC = 0,
++	UNI_EVENT_HIF_CTRL_TAG_NUM
++};
++
++struct mt7925_mcu_hif_ctrl_basic_tlv {
++	__le16 tag;
++	__le16 len;
++	u8 cid;
++	u8 pad[3];
++	u32 status;
++	u8 hif_type;
++	u8 hif_tx_traffic_status;
++	u8 hif_rx_traffic_status;
++	u8 hifsuspend;
++	u8 rsv[4];
++} __packed;
++
+ enum {
+ 	UNI_ROC_ACQUIRE,
+ 	UNI_ROC_ABORT,
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7925/pci.c b/drivers/net/wireless/mediatek/mt76/mt7925/pci.c
+index ccb663bd9f52..a90e90131276 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7925/pci.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7925/pci.c
+@@ -442,9 +442,10 @@ static int mt7925_pci_suspend(struct device *device)
+ 	struct mt76_dev *mdev = pci_get_drvdata(pdev);
+ 	struct mt792x_dev *dev = container_of(mdev, struct mt792x_dev, mt76);
+ 	struct mt76_connac_pm *pm = &dev->pm;
+-	int i, err;
++	int i, err, ret;
+ 
+ 	pm->suspended = true;
++	dev->hif_resumed = false;
+ 	flush_work(&dev->reset_work);
+ 	cancel_delayed_work_sync(&pm->ps_work);
+ 	cancel_work_sync(&pm->wake_work);
+@@ -463,9 +464,13 @@ static int mt7925_pci_suspend(struct device *device)
+ 	 */
+ 	mt7925_mcu_set_deep_sleep(dev, true);
+ 
+-	err = mt76_connac_mcu_set_hif_suspend(mdev, true);
+-	if (err)
++	mt76_connac_mcu_set_hif_suspend(mdev, true, false);
++	ret = wait_event_timeout(dev->wait,
++				 dev->hif_idle, 3 * HZ);
++	if (!ret) {
++		err = -ETIMEDOUT;
+ 		goto restore_suspend;
++	}
+ 
+ 	napi_disable(&mdev->tx_napi);
+ 	mt76_worker_disable(&mdev->tx_worker);
+@@ -506,8 +511,11 @@ static int mt7925_pci_suspend(struct device *device)
+ 	if (!pm->ds_enable)
+ 		mt7925_mcu_set_deep_sleep(dev, false);
+ 
+-	mt76_connac_mcu_set_hif_suspend(mdev, false);
+-
++	mt76_connac_mcu_set_hif_suspend(mdev, false, false);
++	ret = wait_event_timeout(dev->wait,
++				 dev->hif_resumed, 3 * HZ);
++	if (!ret)
++		err = -ETIMEDOUT;
+ restore_suspend:
+ 	pm->suspended = false;
+ 
+@@ -523,8 +531,9 @@ static int mt7925_pci_resume(struct device *device)
+ 	struct mt76_dev *mdev = pci_get_drvdata(pdev);
+ 	struct mt792x_dev *dev = container_of(mdev, struct mt792x_dev, mt76);
+ 	struct mt76_connac_pm *pm = &dev->pm;
+-	int i, err;
++	int i, err, ret;
+ 
++	dev->hif_idle = false;
+ 	err = mt792x_mcu_drv_pmctrl(dev);
+ 	if (err < 0)
+ 		goto failed;
+@@ -553,9 +562,13 @@ static int mt7925_pci_resume(struct device *device)
+ 	napi_schedule(&mdev->tx_napi);
+ 	local_bh_enable();
+ 
+-	err = mt76_connac_mcu_set_hif_suspend(mdev, false);
+-	if (err < 0)
++	mt76_connac_mcu_set_hif_suspend(mdev, false, false);
++	ret = wait_event_timeout(dev->wait,
++				 dev->hif_resumed, 3 * HZ);
++	if (!ret) {
++		err = -ETIMEDOUT;
+ 		goto failed;
++	}
+ 
+ 	/* restore previous ds setting */
+ 	if (!pm->ds_enable)
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7925/usb.c b/drivers/net/wireless/mediatek/mt76/mt7925/usb.c
+index a63ff630eaba..bf040f34e4b9 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7925/usb.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7925/usb.c
+@@ -246,14 +246,19 @@ static int mt7925u_suspend(struct usb_interface *intf, pm_message_t state)
+ {
+ 	struct mt792x_dev *dev = usb_get_intfdata(intf);
+ 	struct mt76_connac_pm *pm = &dev->pm;
+-	int err;
++	int err, ret;
+ 
+ 	pm->suspended = true;
++	dev->hif_resumed = false;
+ 	flush_work(&dev->reset_work);
+ 
+-	err = mt76_connac_mcu_set_hif_suspend(&dev->mt76, true);
+-	if (err)
++	mt76_connac_mcu_set_hif_suspend(&dev->mt76, true, false);
++	ret = wait_event_timeout(dev->wait,
++				 dev->hif_idle, 3 * HZ);
++	if (!ret) {
++		err = -ETIMEDOUT;
+ 		goto failed;
++	}
+ 
+ 	mt76u_stop_rx(&dev->mt76);
+ 	mt76u_stop_tx(&dev->mt76);
+@@ -274,8 +279,9 @@ static int mt7925u_resume(struct usb_interface *intf)
+ 	struct mt792x_dev *dev = usb_get_intfdata(intf);
+ 	struct mt76_connac_pm *pm = &dev->pm;
+ 	bool reinit = true;
+-	int err, i;
++	int err, i, ret;
+ 
++	dev->hif_idle = false;
+ 	for (i = 0; i < 10; i++) {
+ 		u32 val = mt76_rr(dev, MT_WF_SW_DEF_CR_USB_MCU_EVENT);
+ 
+@@ -301,7 +307,11 @@ static int mt7925u_resume(struct usb_interface *intf)
+ 	if (err < 0)
+ 		goto failed;
+ 
+-	err = mt76_connac_mcu_set_hif_suspend(&dev->mt76, false);
++	mt76_connac_mcu_set_hif_suspend(&dev->mt76, false, false);
++	ret = wait_event_timeout(dev->wait,
++				 dev->hif_resumed, 3 * HZ);
++	if (!ret)
++		err = -ETIMEDOUT;
+ failed:
+ 	pm->suspended = false;
+ 
+diff --git a/drivers/net/wireless/mediatek/mt76/mt792x.h b/drivers/net/wireless/mediatek/mt76/mt792x.h
+index 2b8b9b2977f7..cf1b6083cf2f 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt792x.h
++++ b/drivers/net/wireless/mediatek/mt76/mt792x.h
+@@ -216,6 +216,8 @@ struct mt792x_dev {
+ 	bool has_eht:1;
+ 	bool regd_in_progress:1;
+ 	bool aspm_supported:1;
++	bool hif_idle:1;
++	bool hif_resumed:1;
+ 	wait_queue_head_t wait;
+ 
+ 	struct work_struct init_work;
 -- 
 2.51.0
 
