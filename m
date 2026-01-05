@@ -1,61 +1,61 @@
-Return-Path: <linux-wireless+bounces-30352-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-30353-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 452AFCF2F38
-	for <lists+linux-wireless@lfdr.de>; Mon, 05 Jan 2026 11:18:57 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0654BCF2F50
+	for <lists+linux-wireless@lfdr.de>; Mon, 05 Jan 2026 11:21:44 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 04E8F3012BF0
-	for <lists+linux-wireless@lfdr.de>; Mon,  5 Jan 2026 10:17:39 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 190AA300C298
+	for <lists+linux-wireless@lfdr.de>; Mon,  5 Jan 2026 10:20:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3E0472F5A08;
-	Mon,  5 Jan 2026 10:17:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B04AE2F60A7;
+	Mon,  5 Jan 2026 10:20:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b="g4TDLaRR"
+	dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b="OGXWFs+e"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from sipsolutions.net (s3.sipsolutions.net [168.119.38.16])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7402C22FDFF
-	for <linux-wireless@vger.kernel.org>; Mon,  5 Jan 2026 10:17:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 150252F25EF
+	for <linux-wireless@vger.kernel.org>; Mon,  5 Jan 2026 10:20:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=168.119.38.16
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767608258; cv=none; b=L5VFbEF2sjBlqk0ZUL/o3GX0U4WLIzdjSqO+ChLipc4XgPkNixx9Yey6DAGlljfugpmVzvZYFumxAmUhPQyQ/mheNnDfq1dFdL+3Gp0ZISRUuezPPDW803t9yDwxPP5hXyiTQaWHK0K21L4dc1YK9z/+BXHL+XeJ58O1KJPkK5Y=
+	t=1767608453; cv=none; b=QGff4S+1EUlZ1MHmGEm3ugrB4O2ngLNU6M2vCDz2lgVXWfuxvRmZxz5j2ydW5HyJJ3koyn/xF6irz8FKQCHXFcO35QO0Lbb6aavezObMU0j70pqRg3/XDd18zoPocLPyBEl63PjtyZpLMPjxbQN71mnD6zJELWpj0uSA8Ttcz8Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767608258; c=relaxed/simple;
-	bh=wIBaafGcOC+oRc4eOKe8RTVwjF1sDJrp9R0lYlLXOyA=;
+	s=arc-20240116; t=1767608453; c=relaxed/simple;
+	bh=Unfr97mdFpvC/4otDDrSpEXYU/9sIy236FWV41r5M2M=;
 	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=jcBWkuyh70SK46Vhtqxwn+xxBLZP+CMeqEhWlA/iP92i+7SZDEIaB6/JxXhA042K4PVXSMigb9wqGPUh2pCuqB8dk+EBK7ByitasId+CEdy+nftfH7KLoTRcLKKYaBvlsQ3FdK6XGQpbfUzG0BTEjMRFOftuDOJBWAD3IYD617s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net; spf=pass smtp.mailfrom=sipsolutions.net; dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b=g4TDLaRR; arc=none smtp.client-ip=168.119.38.16
+	 Content-Type:MIME-Version; b=X9IfXzGeVEy3jV/9CAwS+mm4AgETiAcmLWF4UuSCxlDf3dKfcSq/p4EIrETMTXpFdiUNnyzT5AdR/EjbJFiGSOm7J23EmWUEfq1x1l/fZA37xIotx0WAx87Ryb7cP+FyWkigGE5rYi9WybdsxoWWMxkA7cElvIVcmh5nhvYaqVA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net; spf=pass smtp.mailfrom=sipsolutions.net; dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b=OGXWFs+e; arc=none smtp.client-ip=168.119.38.16
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sipsolutions.net
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=sipsolutions.net; s=mail; h=MIME-Version:Content-Transfer-Encoding:
 	Content-Type:References:In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender
 	:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
-	Resent-Cc:Resent-Message-ID; bh=Gm4KjzqKwBTIdAdqCbIDFda0alfq47tJ1ARqdipfTcE=;
-	t=1767608256; x=1768817856; b=g4TDLaRRrwgSJ19Qot8stQGSbiKUoYeJ8iax58aLGY5bv+v
-	eEfdoyF6S/Z3vlUzDoOHVU/A+Xl9X80px9fc3QFjTlqg+oj43095Wb554GtSJiun2NkYy4hjjWKZJ
-	89fIVeJoq/sy8GLfqkUDV/VnBEJrW7ArEnahGRlipq82x8EduFti5sKnLGZTKB5RTeAoRDh2Hzz1J
-	85ffbe7A93udLUlySTG+IzqdmSGlGKKQJGLiSWM5NiUJoasmxsNeTw3QACMiyGC9klY5obaNK4dGG
-	Gqex51dtb/EunqXWlYdQagXgli+gR1HCP7VpKSUU8oegt9PNqhy0BwYEZRhsrrwA==;
+	Resent-Cc:Resent-Message-ID; bh=iLHCM/8ZjIiRZ6ZHylzxwMEr7FEPFYHPjvxBD7+PbU4=;
+	t=1767608452; x=1768818052; b=OGXWFs+eLIZTCFV4iPYOGHoR+rOrE90wNohHh1WR/E38T6G
+	1ZURIiAmc5H6h1tmfFdTTsNit6E9xq7FrzG+t77Tr2ZWUzMqfrFcTm5TXyQlUhupGTHb5dE6Xd3MY
+	QuYZpOewzrZ848goRzXIlHOBOuXFwMsN8aTEDNrfDD0wf0JJNJdm3KfmkrGrmdeLSpyqUq9ZXkmX2
+	+/ErqnX/0AICH17T+4fUutB1H3zdlV2fwFOW42LzxW/G4Nib3wdIFy5oeBoU0g6EQzL41M/7F7fcQ
+	6wBNtqfssZ4TaymEyfzNKuvazOdGeXbEMBBpJqoDxdVjlB+l5L9h/88kuStYykJA==;
 Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
 	(Exim 4.98.2)
 	(envelope-from <johannes@sipsolutions.net>)
-	id 1vcheR-00000003lwQ-1s8f;
-	Mon, 05 Jan 2026 11:17:27 +0100
-Message-ID: <7092990c23a205543890beb4eb1e2bc96acbf194.camel@sipsolutions.net>
-Subject: Re: [PATCH wireless-next v2 7/9] wifi: mac80211: add support for
- EPPKE authentication protocol in non-AP STA mode
+	id 1vchhg-00000003m0d-0ZyG;
+	Mon, 05 Jan 2026 11:20:48 +0100
+Message-ID: <2619e585674f89527f26bb83f2d04064a25fcfa1.camel@sipsolutions.net>
+Subject: Re: [PATCH wireless-next v2 8/9] wifi: mac80211: add support for
+ encryption/decryption of (Re)Association frames
 From: Johannes Berg <johannes@sipsolutions.net>
 To: Kavita Kavita <kavita.kavita@oss.qualcomm.com>
 Cc: linux-wireless@vger.kernel.org, ainy.kumari@oss.qualcomm.com, 
 	sai.magam@oss.qualcomm.com, quic_drohan@quicinc.com
-Date: Mon, 05 Jan 2026 11:17:26 +0100
-In-Reply-To: <20260105072415.3472165-8-kavita.kavita@oss.qualcomm.com> (sfid-20260105_082526_350968_2DC1EE94)
+Date: Mon, 05 Jan 2026 11:20:46 +0100
+In-Reply-To: <20260105072415.3472165-9-kavita.kavita@oss.qualcomm.com> (sfid-20260105_082528_746983_927CC772)
 References: <20260105072415.3472165-1-kavita.kavita@oss.qualcomm.com>
-	 <20260105072415.3472165-8-kavita.kavita@oss.qualcomm.com>
-	 (sfid-20260105_082526_350968_2DC1EE94)
+	 <20260105072415.3472165-9-kavita.kavita@oss.qualcomm.com>
+	 (sfid-20260105_082528_746983_927CC772)
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 User-Agent: Evolution 3.56.2 (3.56.2-2.fc42) 
@@ -68,39 +68,85 @@ MIME-Version: 1.0
 X-malware-bazaar: not-scanned
 
 On Mon, 2026-01-05 at 12:54 +0530, Kavita Kavita wrote:
-> For EPPKE authentication, the Multi-Link element (MLE) must be included
-> in the Authentication frame body by userspace. If the MLE is not
-> present, reject the Authentication frame.
-
-Is this true? It seems mostly orthogonal whether or not EPPKE is
-enabled/allowed and MLO is actually used?
-
-Clearly if an MLO connection is requested (we see this outside the frame
-by including multiple links) then the MLE must be included since
-otherwise the calculation would be invalidated, but if an MLO connection
-isn't requested, then no MLE would be included by mac80211, so at least
-in theory we could trivially support that, and I'm not sure I see why we
-wouldn't?
-
+> Currently, mac80211 does not encrypt or decrypt (Re)Association frames
+> (Request and Response) because temporal keys are not yet available at
+> that stage.
 >=20
-> @@ -1103,6 +1103,9 @@ void ieee80211_send_auth(struct ieee80211_sub_if_da=
-ta *sdata,
->  		   !cfg80211_find_ext_elem(WLAN_EID_EXT_EHT_MULTI_LINK,
->  					   extra, extra_len));
+> With extensions from IEEE P802.11bi, e.g. EPPKE, temporal keys can be
+> established before association. This enables the encryption and
+> decryption of (Re)Association Request/Response frames.
+>=20
+> Add support to unset the IEEE80211_TX_INTFL_DONT_ENCRYPT flag when
+> the peer is marked as an Enhanced Privacy Protection (EPP) peer and
+> encryption keys are available for the connection in non-AP STA mode,
+> allowing secure transmission of (Re)Association Request frames.
+>=20
+> Dropn unprotected (Re)Association Request/Response frames received from
+
+nit:  ^ typo
+
+> +static inline bool ieee80211_require_encrypted_assoc(__le16 fc,
+> +						     struct sta_info *sta)
+> +{
+> +	return (sta && sta->sta.epp_peer &&
+> +		(ieee80211_is_assoc_req(fc) || ieee80211_is_reassoc_req(fc) ||
+> +		 ieee80211_is_assoc_resp(fc) || ieee80211_is_reassoc_resp(fc)));
+> +}
+
+That seems much better. Maybe it should be in sta_info.h instead?
+Doesn't really matter much though.
+
+> +	bool assoc_encrypt =3D false;
+> +	struct sta_info *sta;
+>  	void *capab_pos;
+>  	size_t size;
+>  	int ret;
+> @@ -2335,7 +2337,16 @@ static int ieee80211_send_assoc(struct ieee80211_s=
+ub_if_data *sdata)
+>  	info.link_id =3D assoc_data->assoc_link_id;
+>  	drv_mgd_prepare_tx(local, sdata, &info);
 > =20
-> +	if (auth_alg =3D=3D WLAN_AUTH_EPPKE && add_mle)
-> +		return;
+> -	IEEE80211_SKB_CB(skb)->flags |=3D IEEE80211_TX_INTFL_DONT_ENCRYPT;
+> +	sta =3D sta_info_get_bss(sdata, sdata->vif.cfg.ap_addr);
 > +
->  	/* 24 + 6 =3D header + auth_algo + auth_transaction + status_code */
->  	skb =3D dev_alloc_skb(local->hw.extra_tx_headroom + IEEE80211_WEP_IV_LE=
-N +
->  			    24 + 6 + extra_len + IEEE80211_WEP_ICV_LEN +
+> +	if (sta && sta->sta.epp_peer &&
+> +	    wiphy_dereference(sdata->local->hw.wiphy, sta->ptk[sta->ptk_idx])) =
+{
+> +		assoc_encrypt =3D true;
+> +	}
 
-This is also kind of a bad way to "reject" it, it doesn't - it seems to
-conclude but then doesn't send a frame so you get timeouts or something?
+don't need braces, but really also maybe better to just assign it
+completely here remove the " =3D false" above:
 
-I think should just really reject it higher up even if that means
-duplicating the cfg80211_find_ext_elem() maybe.
+	assoc_encrypt =3D sta && sta->sta.epp_peer &&
+			wiphy_dereference(...);
+
+
+> +
+> +	if (!assoc_encrypt)
+> +		IEEE80211_SKB_CB(skb)->flags |=3D IEEE80211_TX_INTFL_DONT_ENCRYPT;
+> +
+>  	if (ieee80211_hw_check(&local->hw, REPORTS_TX_ACK_STATUS))
+>  		IEEE80211_SKB_CB(skb)->flags |=3D IEEE80211_TX_CTL_REQ_TX_STATUS |
+>  						IEEE80211_TX_INTFL_MLME_CONN_TX;
+> diff --git a/net/mac80211/rx.c b/net/mac80211/rx.c
+> index e0ccd9749853..3fd5885c7f69 100644
+> --- a/net/mac80211/rx.c
+> +++ b/net/mac80211/rx.c
+> @@ -2609,6 +2609,14 @@ ieee80211_drop_unencrypted_mgmt(struct ieee80211_r=
+x_data *rx)
+>  	    (!rx->sta || !test_sta_flag(rx->sta, WLAN_STA_ASSOC)))
+>  		return RX_DROP_U_UNPROT_ROBUST_ACTION;
+> =20
+> +	/*
+> +	 * Drop unprotected (Re)Association Request/Response frame received fro=
+m
+> +	 * an EPP Peer.
+> +	 */
+> +	if (!ieee80211_has_protected(fc) &&
+> +	     ieee80211_require_encrypted_assoc(fc, rx->sta))
+
+nit: indentation off by a space
 
 johannes
 
