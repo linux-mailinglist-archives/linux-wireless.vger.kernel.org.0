@@ -1,85 +1,149 @@
-Return-Path: <linux-wireless+bounces-30392-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-30393-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id A92AFCF72D4
-	for <lists+linux-wireless@lfdr.de>; Tue, 06 Jan 2026 09:00:27 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 61E5ACF7583
+	for <lists+linux-wireless@lfdr.de>; Tue, 06 Jan 2026 09:50:39 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 1532C3017E7F
-	for <lists+linux-wireless@lfdr.de>; Tue,  6 Jan 2026 08:00:25 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 9891F300BBAF
+	for <lists+linux-wireless@lfdr.de>; Tue,  6 Jan 2026 08:50:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2083330ACEB;
-	Tue,  6 Jan 2026 08:00:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0A9122BCF68;
+	Tue,  6 Jan 2026 08:50:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="LQQ0gBPI"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="AkP7Iw00"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f43.google.com (mail-wm1-f43.google.com [209.85.128.43])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CE8681D5CC6;
-	Tue,  6 Jan 2026 08:00:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4B6B127E7EC
+	for <linux-wireless@vger.kernel.org>; Tue,  6 Jan 2026 08:50:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.43
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767686421; cv=none; b=NSuKiYh14v/C65WPkkuE+NV1olN/gd3AS66mdOrUvlsHLLxmNOl8zSNOvnK/CAcZMFi5MjEdujeArbiCMiSqEPowxVrm1+aSugxy0QUDNNfZzfH1+u1mmZvSiLNRldasvBr5yylo6dTj4uwdApL7zg9utSP/jZRSkWdZN5kQcvs=
+	t=1767689410; cv=none; b=cQOWvKpVf0TtgR2beTUgNfgxEOvwzpaNi4ZaMT2NM5imUoEWHrIFxKZjmZo87BFk865TY+PzEspE1Znm4SjFX5rqKWfi37XMF/2XwsB1UKnOneB7i5liyMqF+p59uSddQTbaw62841ldlXqH3Uspqd8eVXlAvyumnd0HNLkRsbM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767686421; c=relaxed/simple;
-	bh=dkGrJ+HNkmvmZTpBr46Pq3Us3nvf8mhGcZF8C0/MzzY=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=pzTwaGi9e3qqYxLbZDcM8hxWAyoqEp6QGXoKOuDkWJCaYJAOGXF6+bXjMnwm1XZLXclzXN4QA8m5G6Y+jBa/PkuKKeYbnfi14h6CJTLQX1d7S3AWRWqXHSABod6CP6H89MJpyMvZHH+hS8H+m1TKe12+xHfySG9C4tE7iaDEpcM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=LQQ0gBPI; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B9012C116C6;
-	Tue,  6 Jan 2026 08:00:19 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1767686420;
-	bh=dkGrJ+HNkmvmZTpBr46Pq3Us3nvf8mhGcZF8C0/MzzY=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=LQQ0gBPICFv2Mhig5gItFjq+6d62Zn7GYDi4hGisgG54sbx1sgsEtz5/vFHvZEeQa
-	 KVKEZyE6wQXD9BTKrQmDB8+/PhWyAR5ZnqXqgzqlXGkoanlksDCKrIzVwpNbL0HMtU
-	 dR7y451KqxpHu0ySjoNP6rfE5urNIbAMBrO/QFKtdh1+HT/wgHh5/ZuU256HPkfutC
-	 zbMicu03Tv5lAInAc4BX/mjKq7VWuFuJpHUTAFRTr4LtpTkS2Ge+YjU4TPFm/FYwzA
-	 178W6grtUapZI8I9OdewbzF3lIcQfW19Y/is6EYEIu3mc1I409ROTXi7z4/DJ82s08
-	 3azdQeGnkeMqQ==
-Date: Tue, 6 Jan 2026 09:00:17 +0100
-From: Krzysztof Kozlowski <krzk@kernel.org>
-To: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
-Cc: Liam Girdwood <lgirdwood@gmail.com>, Mark Brown <broonie@kernel.org>, 
-	Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, 
-	Conor Dooley <conor+dt@kernel.org>, Bartosz Golaszewski <brgl@kernel.org>, 
-	Marcel Holtmann <marcel@holtmann.org>, Luiz Augusto von Dentz <luiz.dentz@gmail.com>, 
-	Jeff Johnson <jjohnson@kernel.org>, Bjorn Andersson <andersson@kernel.org>, 
-	Konrad Dybcio <konradybcio@kernel.org>, Manivannan Sadhasivam <mani@kernel.org>, 
-	Vinod Koul <vkoul@kernel.org>, Balakrishna Godavarthi <quic_bgodavar@quicinc.com>, 
-	Matthias Kaehlcke <mka@chromium.org>, linux-arm-msm@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	devicetree@vger.kernel.org, linux-bluetooth@vger.kernel.org, linux-wireless@vger.kernel.org, 
-	ath10k@lists.infradead.org, linux-pm@vger.kernel.org
-Subject: Re: [PATCH v2 01/14] regulator: dt-bindings: qcom,wcn3990-pmu:
- describe PMUs on WCN39xx
-Message-ID: <20260106-excellent-pygmy-puffin-97f7d5@quoll>
-References: <20260106-wcn3990-pwrctl-v2-0-0386204328be@oss.qualcomm.com>
- <20260106-wcn3990-pwrctl-v2-1-0386204328be@oss.qualcomm.com>
+	s=arc-20240116; t=1767689410; c=relaxed/simple;
+	bh=Mfr8IanOt8jxU7vewSt4DV+aakgkKleTBni/LrpiBkc=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=OjE6IOVSXa7VoX/SyAIqpTjlhmaaL5lZx0oBVIBYy/D8d6R6pSVl8asxsLODwxP/MA+QkEyvWsttUnZ6kkqZH9CpsC4KPwDrALIzKA953Ek2W2mADhOmL2Dg3rwR4++vri1ao1GeU3MDtjEgIrTFQcLqPrBh8HFCP5WaYLK1RHU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=AkP7Iw00; arc=none smtp.client-ip=209.85.128.43
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-wm1-f43.google.com with SMTP id 5b1f17b1804b1-47798f4059fso1044985e9.2
+        for <linux-wireless@vger.kernel.org>; Tue, 06 Jan 2026 00:50:07 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1767689406; x=1768294206; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=hV/GMcvRyLCr7DUYxLRLYti8UWuf7naTwJHZtiyzU+M=;
+        b=AkP7Iw00c1wFdlkYWq6yqgIF1CKlsR12fcDUPOL31p3kLkLR/ssOVsd7YqLz8P0+45
+         zPnNxxQf0culpGPdFzTrdJ5lTq3ZNWVJae7v49F4MuDkszzsCKItuT3JFtENQXFhq54c
+         RsXJjr5tniRMg5H6HZwfHq6PFDwQA9DlqyKM6P3sb0yDCLnHwwj7wtrx402r6om/OQbG
+         8PLPTw54DDVi8s1xRpQRTZ3JcpYRYt0PXwqvA1oAJ7++d5Z+5wJOBmG1exrCR+CGiNTc
+         SauophdfPBQPSecYWelhrr3sTf9MStySRg7m/DvfYpvEI6W0kZz4ozeBV3XnD1/5eimC
+         GfmA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1767689406; x=1768294206;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=hV/GMcvRyLCr7DUYxLRLYti8UWuf7naTwJHZtiyzU+M=;
+        b=bQ3MS0kRMukr9EMcuMsoxgDh6qTqxiKTFQmmkAZCrGpB4AxIRoYRhcsw64Ha2aktf8
+         tIKlJCI3/qjB8O54arKEBzusAHI8SPSK8h+YJ0gCK61B5ciga/hRZM+rXDCFhi2mnzkB
+         xqdp5zU6BQjQLjDMiHkiDyfIfGj5D8D74i6WEt/n4TgXA/BWyyaylMgALfhLnISK6z1k
+         OiIUpn3fxQ/Fx1fxj74Qke56ZEcvinEGbqhM+AOddKXkhRXS3rsE59GfI0d1bSOKs5JZ
+         y9rPbBn79o+U2GJC0H1Ff4BulPAuWuoI2PX4utu37NYvJ/6R5P56kJl4lIx6uwd/zPJv
+         cevQ==
+X-Forwarded-Encrypted: i=1; AJvYcCXJBisrV91TCkt5LCcWuDWPukyoKKQdqr0ua21CNg+UgokgBngxZqYxxhsM8DjrNMgESNEbx9P+/JNCGXpH8A==@vger.kernel.org
+X-Gm-Message-State: AOJu0Yx0ExGJUmLIKtdh4XfE1tyetWkt5O08IcptyuCNYImKQ7/JXG86
+	TzbIJpwShyIEk+E1+O1OCWsHQlTQirvoAfgX0PRk0g4dKWLnCQKAgDEA
+X-Gm-Gg: AY/fxX4jcwsWbosb1+qYUeiJ65kjddMS6o4QxuhZX6iGvQro7xOXhSe0LBkQwzxmHiG
+	o2WIaGb/+QbMG8deiPnrvXKe6O1A/W+xlOIWVxQTnz0uzbVPjAfEKq0wUX1xRv3FjFynwXORa+U
+	5+zUkdgfRIV5tJzTmYJRyQKZ/8DK265MCJxl6LXIvJAJKUKfr96ONG4PaXGOhtDVKFFK6WPONl2
+	J9cNMPdE+cYkXlA7GZhVmz1QEofdBDqQkZCmzP7FiDdR4qeNUR8JslN8CJ0rc4RDkB0PCIQ0IBh
+	ck5BjoDTVd7y33RrE59a7RQ4T2ftKwOMnN8/aL4n1j0VM6Lp3UfVY1lXDW1YGAE1oyrZKeSo8X+
+	r/y1vZHJHoFB7k/tyf+J9DpRbWO1EB744DZUHWJsDyD7cXX0pdMp7sGD3IpDpc7ca7c3ohws7ce
+	49LmCL6wLRCDAxcwAjGVd0TUMgi0RO1MhlTndwv7BI9Zf/LHbL3WcoUVX5kDsppjX1PGe4nJQhw
+	R0u4XM=
+X-Google-Smtp-Source: AGHT+IEbVRYctNc4A+yz5Gyy1tMc8wt0TvOceywuKntqSSYPrKkT3maN7meDceSemXFvcHnWFEclrQ==
+X-Received: by 2002:a05:600c:138b:b0:475:d7b8:8505 with SMTP id 5b1f17b1804b1-47d7f0a86f9mr14273175e9.7.1767689406312;
+        Tue, 06 Jan 2026 00:50:06 -0800 (PST)
+Received: from thomas-precision3591.paris.inria.fr (wifi-pro-83-215.paris.inria.fr. [128.93.83.215])
+        by smtp.googlemail.com with ESMTPSA id 5b1f17b1804b1-47d7fb35701sm12342695e9.11.2026.01.06.00.50.05
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 06 Jan 2026 00:50:06 -0800 (PST)
+From: Thomas Fourier <fourier.thomas@gmail.com>
+To: 
+Cc: Thomas Fourier <fourier.thomas@gmail.com>,
+	stable@vger.kernel.org,
+	Jeff Johnson <jjohnson@kernel.org>,
+	Pradeep Kumar Chitrapu <quic_pradeepc@quicinc.com>,
+	Sriram R <quic_srirrama@quicinc.com>,
+	Kalle Valo <kvalo@kernel.org>,
+	Wen Gong <quic_wgong@quicinc.com>,
+	linux-wireless@vger.kernel.org,
+	ath12k@lists.infradead.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH net] wifi: ath12k: fix dma_free_coherent() pointer
+Date: Tue,  6 Jan 2026 09:49:04 +0100
+Message-ID: <20260106084905.18622-2-fourier.thomas@gmail.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20260106-wcn3990-pwrctl-v2-1-0386204328be@oss.qualcomm.com>
+Content-Transfer-Encoding: 8bit
 
-On Tue, Jan 06, 2026 at 03:01:11AM +0200, Dmitry Baryshkov wrote:
-> WCN3990 and other similar WiFi/BT chips incorporate a simple on-chip PMU
-> (clearly described as such in the documentation). Provide DT schema
-> covering other Qualcomm WiFi/BT chips to cover these devices too.
-> 
-> Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
-> ---
->  .../bindings/regulator/qcom,wcn3990-pmu.yaml       | 100 +++++++++++++++++++++
->  1 file changed, 100 insertions(+)
+dma_alloc_coherent() allocates a DMA mapped buffer and stores the
+addresses in XXX_unaligned fields.  Those should be reused when freeing
+the buffer rather than the aligned addresses.
 
-Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@oss.qualcomm.com>
+Fixes: d889913205cf ("wifi: ath12k: driver for Qualcomm Wi-Fi 7 devices")
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Thomas Fourier <fourier.thomas@gmail.com>
+---
+ drivers/net/wireless/ath/ath12k/ce.c | 12 ++++++------
+ 1 file changed, 6 insertions(+), 6 deletions(-)
 
-Best regards,
-Krzysztof
+diff --git a/drivers/net/wireless/ath/ath12k/ce.c b/drivers/net/wireless/ath/ath12k/ce.c
+index 9a63608838ac..4aea58446838 100644
+--- a/drivers/net/wireless/ath/ath12k/ce.c
++++ b/drivers/net/wireless/ath/ath12k/ce.c
+@@ -984,8 +984,8 @@ void ath12k_ce_free_pipes(struct ath12k_base *ab)
+ 			dma_free_coherent(ab->dev,
+ 					  pipe->src_ring->nentries * desc_sz +
+ 					  CE_DESC_RING_ALIGN,
+-					  pipe->src_ring->base_addr_owner_space,
+-					  pipe->src_ring->base_addr_ce_space);
++					  pipe->src_ring->base_addr_owner_space_unaligned,
++					  pipe->src_ring->base_addr_ce_space_unaligned);
+ 			kfree(pipe->src_ring);
+ 			pipe->src_ring = NULL;
+ 		}
+@@ -995,8 +995,8 @@ void ath12k_ce_free_pipes(struct ath12k_base *ab)
+ 			dma_free_coherent(ab->dev,
+ 					  pipe->dest_ring->nentries * desc_sz +
+ 					  CE_DESC_RING_ALIGN,
+-					  pipe->dest_ring->base_addr_owner_space,
+-					  pipe->dest_ring->base_addr_ce_space);
++					  pipe->dest_ring->base_addr_owner_space_unaligned,
++					  pipe->dest_ring->base_addr_ce_space_unaligned);
+ 			kfree(pipe->dest_ring);
+ 			pipe->dest_ring = NULL;
+ 		}
+@@ -1007,8 +1007,8 @@ void ath12k_ce_free_pipes(struct ath12k_base *ab)
+ 			dma_free_coherent(ab->dev,
+ 					  pipe->status_ring->nentries * desc_sz +
+ 					  CE_DESC_RING_ALIGN,
+-					  pipe->status_ring->base_addr_owner_space,
+-					  pipe->status_ring->base_addr_ce_space);
++					  pipe->status_ring->base_addr_owner_space_unaligned,
++					  pipe->status_ring->base_addr_ce_space_unaligned);
+ 			kfree(pipe->status_ring);
+ 			pipe->status_ring = NULL;
+ 		}
+-- 
+2.43.0
 
 
