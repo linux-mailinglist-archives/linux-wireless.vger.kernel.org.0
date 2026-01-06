@@ -1,62 +1,62 @@
-Return-Path: <linux-wireless+bounces-30382-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-30383-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 980C0CF68E5
-	for <lists+linux-wireless@lfdr.de>; Tue, 06 Jan 2026 04:09:48 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 662A3CF68E8
+	for <lists+linux-wireless@lfdr.de>; Tue, 06 Jan 2026 04:09:51 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id A54663007918
-	for <lists+linux-wireless@lfdr.de>; Tue,  6 Jan 2026 03:09:45 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 689813016BAA
+	for <lists+linux-wireless@lfdr.de>; Tue,  6 Jan 2026 03:09:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 78928E56A;
-	Tue,  6 Jan 2026 03:09:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3F8261E7C23;
+	Tue,  6 Jan 2026 03:09:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=realtek.com header.i=@realtek.com header.b="uRrc1OcK"
+	dkim=pass (2048-bit key) header.d=realtek.com header.i=@realtek.com header.b="AThl2RNB"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3179A145B3E
-	for <linux-wireless@vger.kernel.org>; Tue,  6 Jan 2026 03:09:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 375BD145B3E
+	for <linux-wireless@vger.kernel.org>; Tue,  6 Jan 2026 03:09:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=211.75.126.72
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767668984; cv=none; b=p4MbiuZx+6chkoYz9gVnELi5a/QOTLpnRTyjUCMRQfDP+kr92vWJ/ZiC5I+YGmU3UGoVzjsjA+/G8ov0j39qodp7piit/334xR5NFmdWDYHb7nbaqTgnniKFTsPvgshtSgVSBY8zmcFQkS1yv60eTvJ7NWDjcl1p5pxPqWAct0g=
+	t=1767668989; cv=none; b=DjT63KU57gFq/gVDmkSHny6glX6DwLy1wv7V7jROta1bGaEwshRVJ5LlxrD0EtGA5XOy72coqN+XFw7mhC4MyFaasaq2T+r6zQuu8nqOKScdLCYOAGYxJm+TrBibvq5t4qHJ0sS3runkLIBmcmheJSC9b4t1GRRX0WXqM08gKrM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767668984; c=relaxed/simple;
-	bh=KZT6Vzh8xlZ023KVimhFnwHKMmkKwSeP5rwdC98Z5ok=;
+	s=arc-20240116; t=1767668989; c=relaxed/simple;
+	bh=Aj6gkKeA8Aw85TLI6JXqDZEZvyWkK1o+osJeNKtPfqg=;
 	h=From:To:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=LDx/zowp/fmWhPc2NiPLNPPaX40YNupcjFX56ruFksmnfvvleTMpveFMiLcFYVjtCjWL+HSw+7YBH/aUxaaU8kfbJX3shAXVZSbyyDhN1Q858iuX3a7D5hgVMirjS63ueCAXT6tIkCprJ378ZcLKY64e5amf586b+CL5JtX5zn8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com; spf=pass smtp.mailfrom=realtek.com; dkim=pass (2048-bit key) header.d=realtek.com header.i=@realtek.com header.b=uRrc1OcK; arc=none smtp.client-ip=211.75.126.72
+	 MIME-Version:Content-Type; b=nXRVaqCs9OFBHirxqL/R1EkqeGfCGXnAusFXfDUkNkciLaBeg755a/YsCMieKmd5657tXLLoXAxU63KPFKA9zXfIOg614Re2PH1yQ47w3msT1OW5ctiRFBoV5nCTJTbo3AhHgtxot4uJoOFvrQ2oPM04XeEFxUCaCA6tm/jJDi0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com; spf=pass smtp.mailfrom=realtek.com; dkim=pass (2048-bit key) header.d=realtek.com header.i=@realtek.com header.b=AThl2RNB; arc=none smtp.client-ip=211.75.126.72
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=realtek.com
-X-SpamFilter-By: ArmorX SpamTrap 5.80 with qID 60639dCD24168993, This message is accepted by code: ctloc85258
+X-SpamFilter-By: ArmorX SpamTrap 5.80 with qID 60639iTbA4169002, This message is accepted by code: ctloc85258
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=realtek.com; s=dkim;
-	t=1767668979; bh=+N0cDwlBTDrc/KVh7wpSHRow05F3VTBn0tIgDrrpcxg=;
+	t=1767668984; bh=lA2J2saIxCawvrdEFQeKlm1wyjEa3hjoazGj5R5/OIo=;
 	h=From:To:Subject:Date:Message-ID:In-Reply-To:References:
 	 MIME-Version:Content-Transfer-Encoding:Content-Type;
-	b=uRrc1OcKLYF3i9sjVv232zO7JARFXrLkLwZ6w1vmP5tKPIbT5rosdOQOwWh+cIfAM
-	 PNN7kCmOBA/OyVPpyE8H6F2CYJtZW/OzxREZ3K9xPHEHGlcfDg0xtFlt6wQdTybEAB
-	 3C89vprrcPkKCRpKKxWnY2Ba9i2VnvImwX/wCMMRfr8AFxMOANrqtFE6GdWQ4qw4G0
-	 QFcqs7SEWVKJptRvM8MwlUgJO4gRfI4M4P2yrlaAkvmMR4HKcLjIIKr02+72ES6+ez
-	 YmK+JhCIKc+1f6dOiROJUeURd+K4RZob8506N/wCt4aqIrASVuolNAwYOBMmall+1n
-	 OmiQ/HerN6p3g==
-Received: from mail.realtek.com (rtkexhmbs02.realtek.com.tw[172.21.6.41])
-	by rtits2.realtek.com.tw (8.15.2/3.21/5.94) with ESMTPS id 60639dCD24168993
+	b=AThl2RNBW8YQoqVknNikF9h0cD9HkfyJ0nnTpr4T/m2zXOL9rFsi8XjWc9mfhr6Mm
+	 aUsnlhcmD3TIsGYi/krW5Wz3SYrCLsavVobx2t2UujKaaPqfps01NyFdCk8GpI+Szd
+	 4pvtq9nyXSA94wn3pQMuvj7ksUGgEY9J79lX39CoiVcyXdcWgdsOKuqxFhsbDQDHw5
+	 favbPmPgL9d5VHjhWuKtk5jAB0TVK7mnByWVEDzrIfhZolYySCDC0OHitouTo5MPRM
+	 1Ifn+vIPly7wopAzJrFYeihqNSZG5R4x7jXmGKAdkNF//t/nF1HqRA9IyZGch8LNOa
+	 g8zR7GgztqD1w==
+Received: from mail.realtek.com (rtkexhmbs03.realtek.com.tw[10.21.1.53])
+	by rtits2.realtek.com.tw (8.15.2/3.21/5.94) with ESMTPS id 60639iTbA4169002
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK)
-	for <linux-wireless@vger.kernel.org>; Tue, 6 Jan 2026 11:09:39 +0800
-Received: from RTKEXHMBS03.realtek.com.tw (10.21.1.53) by
- RTKEXHMBS02.realtek.com.tw (172.21.6.41) with Microsoft SMTP Server
+	for <linux-wireless@vger.kernel.org>; Tue, 6 Jan 2026 11:09:44 +0800
+Received: from RTKEXHMBS04.realtek.com.tw (10.21.1.54) by
+ RTKEXHMBS03.realtek.com.tw (10.21.1.53) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1748.10; Tue, 6 Jan 2026 11:09:39 +0800
-Received: from [127.0.1.1] (172.21.40.75) by RTKEXHMBS03.realtek.com.tw
- (10.21.1.53) with Microsoft SMTP Server (version=TLS1_2,
+ 15.2.1748.10; Tue, 6 Jan 2026 11:09:45 +0800
+Received: from [127.0.1.1] (172.21.40.75) by RTKEXHMBS04.realtek.com.tw
+ (10.21.1.54) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1748.10 via Frontend
- Transport; Tue, 6 Jan 2026 11:09:39 +0800
+ Transport; Tue, 6 Jan 2026 11:09:45 +0800
 From: Ping-Ke Shih <pkshih@realtek.com>
 To: <linux-wireless@vger.kernel.org>
-Subject: [PATCH rtw-next v2 01/10] wifi: rtw89: update TXWD v3 for RTL8922D
-Date: Tue, 6 Jan 2026 11:09:02 +0800
-Message-ID: <20260106030911.15528-2-pkshih@realtek.com>
+Subject: [PATCH rtw-next v2 02/10] wifi: rtw89: update query RXDESC v3 for RTL8922D
+Date: Tue, 6 Jan 2026 11:09:03 +0800
+Message-ID: <20260106030911.15528-3-pkshih@realtek.com>
 X-Mailer: git-send-email 2.25.1
 In-Reply-To: <20260106030911.15528-1-pkshih@realtek.com>
 References: <20260106030911.15528-1-pkshih@realtek.com>
@@ -69,203 +69,186 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Content-Type: text/plain
 
-Add TXWD v3 to assist in transmitting for RTL8922D according to hardware
-design.
+Add RXDESC v3 to parse meta data of receiving packets for RTL8922D.
 
 Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
 ---
- drivers/net/wireless/realtek/rtw89/core.c | 59 +++++++++++++++++++++++
- drivers/net/wireless/realtek/rtw89/core.h |  3 ++
- drivers/net/wireless/realtek/rtw89/txrx.h | 16 ++++++
- 3 files changed, 78 insertions(+)
+v2: add missed bb_sel field which can report received link.
+---
+ drivers/net/wireless/realtek/rtw89/core.c | 73 +++++++++++++++++++++++
+ drivers/net/wireless/realtek/rtw89/core.h | 25 ++++++++
+ drivers/net/wireless/realtek/rtw89/txrx.h |  6 ++
+ 3 files changed, 104 insertions(+)
 
 diff --git a/drivers/net/wireless/realtek/rtw89/core.c b/drivers/net/wireless/realtek/rtw89/core.c
-index e713422ebd7c..36565ba2cc91 100644
+index 36565ba2cc91..b9b395e95c26 100644
 --- a/drivers/net/wireless/realtek/rtw89/core.c
 +++ b/drivers/net/wireless/realtek/rtw89/core.c
-@@ -1633,6 +1633,17 @@ static __le32 rtw89_build_txwd_body2_v2(struct rtw89_tx_desc_info *desc_info)
- 	return cpu_to_le32(dword);
+@@ -3469,6 +3469,79 @@ void rtw89_core_query_rxdesc_v2(struct rtw89_dev *rtwdev,
  }
+ EXPORT_SYMBOL(rtw89_core_query_rxdesc_v2);
  
-+static __le32 rtw89_build_txwd_body2_v3(struct rtw89_tx_desc_info *desc_info)
++void rtw89_core_query_rxdesc_v3(struct rtw89_dev *rtwdev,
++				struct rtw89_rx_desc_info *desc_info,
++				u8 *data, u32 data_offset)
 +{
-+	u32 dword = FIELD_PREP(BE_TXD_BODY2_TID_IND_V1, desc_info->tid_indicate) |
-+		    FIELD_PREP(BE_TXD_BODY2_QSEL_V1, desc_info->qsel) |
-+		    FIELD_PREP(BE_TXD_BODY2_TXPKTSIZE, desc_info->pkt_size) |
-+		    FIELD_PREP(BE_TXD_BODY2_AGG_EN, desc_info->agg_en) |
-+		    FIELD_PREP(BE_TXD_BODY2_MACID_V1, desc_info->mac_id);
++	struct rtw89_rxdesc_phy_rpt_v2 *rxd_rpt;
++	struct rtw89_rxdesc_short_v3 *rxd_s;
++	struct rtw89_rxdesc_long_v3 *rxd_l;
++	u16 shift_len, drv_info_len, phy_rtp_len, hdr_cnv_len;
 +
-+	return cpu_to_le32(dword);
-+}
++	rxd_s = (struct rtw89_rxdesc_short_v3 *)(data + data_offset);
 +
- static __le32 rtw89_build_txwd_body3_v2(struct rtw89_tx_desc_info *desc_info)
- {
- 	u32 dword = FIELD_PREP(BE_TXD_BODY3_WIFI_SEQ, desc_info->seq) |
-@@ -1642,6 +1653,16 @@ static __le32 rtw89_build_txwd_body3_v2(struct rtw89_tx_desc_info *desc_info)
- 	return cpu_to_le32(dword);
- }
- 
-+static __le32 rtw89_build_txwd_body3_v3(struct rtw89_tx_desc_info *desc_info)
-+{
-+	u32 dword = FIELD_PREP(BE_TXD_BODY3_WIFI_SEQ, desc_info->seq) |
-+		    FIELD_PREP(BE_TXD_BODY3_MLO_FLAG, desc_info->mlo) |
-+		    FIELD_PREP(BE_TXD_BODY3_IS_MLD_SW_EN, desc_info->sw_mld) |
-+		    FIELD_PREP(BE_TXD_BODY3_BK_V1, desc_info->bk);
++	desc_info->pkt_size = le32_get_bits(rxd_s->dword0, BE_RXD_RPKT_LEN_MASK);
++	desc_info->drv_info_size = le32_get_bits(rxd_s->dword0, BE_RXD_DRV_INFO_SZ_MASK);
++	desc_info->phy_rpt_size = le32_get_bits(rxd_s->dword0, BE_RXD_PHY_RPT_SZ_MASK);
++	desc_info->hdr_cnv_size = le32_get_bits(rxd_s->dword0, BE_RXD_HDR_CNV_SZ_MASK);
++	desc_info->shift = le32_get_bits(rxd_s->dword0, BE_RXD_SHIFT_MASK);
++	desc_info->long_rxdesc = le32_get_bits(rxd_s->dword0, BE_RXD_LONG_RXD);
++	desc_info->pkt_type = le32_get_bits(rxd_s->dword0, BE_RXD_RPKT_TYPE_MASK);
++	desc_info->bb_sel = le32_get_bits(rxd_s->dword0, BE_RXD_BB_SEL);
++	if (desc_info->pkt_type == RTW89_CORE_RX_TYPE_PPDU_STAT)
++		desc_info->mac_info_valid = true;
 +
-+	return cpu_to_le32(dword);
-+}
++	desc_info->frame_type = le32_get_bits(rxd_s->dword2, BE_RXD_TYPE_MASK);
++	desc_info->mac_id = le32_get_bits(rxd_s->dword2, BE_RXD_MAC_ID_V1);
++	desc_info->addr_cam_valid = le32_get_bits(rxd_s->dword2, BE_RXD_ADDR_CAM_VLD);
 +
- static __le32 rtw89_build_txwd_body4_v2(struct rtw89_tx_desc_info *desc_info)
- {
- 	u32 dword = FIELD_PREP(BE_TXD_BODY4_SEC_IV_L0, desc_info->sec_seq[0]) |
-@@ -1713,6 +1734,15 @@ static __le32 rtw89_build_txwd_info2_v2(struct rtw89_tx_desc_info *desc_info)
- 	return cpu_to_le32(dword);
- }
- 
-+static __le32 rtw89_build_txwd_info2_v3(struct rtw89_tx_desc_info *desc_info)
-+{
-+	u32 dword = FIELD_PREP(BE_TXD_INFO2_AMPDU_DENSITY, desc_info->ampdu_density) |
-+		    FIELD_PREP(BE_TXD_INFO2_FORCE_KEY_EN_V1, desc_info->sec_en) |
-+		    FIELD_PREP(BE_TXD_INFO2_SEC_CAM_IDX_V1, desc_info->sec_cam_idx);
++	desc_info->icv_err = le32_get_bits(rxd_s->dword3, BE_RXD_ICV_ERR);
++	desc_info->crc32_err = le32_get_bits(rxd_s->dword3, BE_RXD_CRC32_ERR);
++	desc_info->hw_dec = le32_get_bits(rxd_s->dword3, BE_RXD_HW_DEC);
++	desc_info->sw_dec = le32_get_bits(rxd_s->dword3, BE_RXD_SW_DEC);
++	desc_info->addr1_match = le32_get_bits(rxd_s->dword3, BE_RXD_A1_MATCH);
 +
-+	return cpu_to_le32(dword);
-+}
++	desc_info->bw = le32_get_bits(rxd_s->dword4, BE_RXD_BW_MASK);
++	desc_info->data_rate = le32_get_bits(rxd_s->dword4, BE_RXD_RX_DATARATE_MASK);
++	desc_info->gi_ltf = le32_get_bits(rxd_s->dword4, BE_RXD_RX_GI_LTF_MASK);
++	desc_info->ppdu_cnt = le32_get_bits(rxd_s->dword4, BE_RXD_PPDU_CNT_MASK);
++	desc_info->ppdu_type = le32_get_bits(rxd_s->dword4, BE_RXD_PPDU_TYPE_MASK);
 +
- static __le32 rtw89_build_txwd_info4_v2(struct rtw89_tx_desc_info *desc_info)
- {
- 	bool rts_en = !desc_info->is_bmc;
-@@ -1751,6 +1781,35 @@ void rtw89_core_fill_txdesc_v2(struct rtw89_dev *rtwdev,
- }
- EXPORT_SYMBOL(rtw89_core_fill_txdesc_v2);
- 
-+void rtw89_core_fill_txdesc_v3(struct rtw89_dev *rtwdev,
-+			       struct rtw89_tx_desc_info *desc_info,
-+			       void *txdesc)
-+{
-+	struct rtw89_txwd_body_v2 *txwd_body = txdesc;
-+	struct rtw89_txwd_info_v2 *txwd_info;
++	desc_info->free_run_cnt = le32_to_cpu(rxd_s->dword5);
 +
-+	txwd_body->dword0 = rtw89_build_txwd_body0_v2(desc_info);
-+	txwd_body->dword1 = rtw89_build_txwd_body1_v2(desc_info);
-+	txwd_body->dword2 = rtw89_build_txwd_body2_v3(desc_info);
-+	txwd_body->dword3 = rtw89_build_txwd_body3_v3(desc_info);
-+	if (desc_info->sec_en) {
-+		txwd_body->dword4 = rtw89_build_txwd_body4_v2(desc_info);
-+		txwd_body->dword5 = rtw89_build_txwd_body5_v2(desc_info);
++	shift_len = desc_info->shift << 1; /* 2-byte unit */
++	drv_info_len = desc_info->drv_info_size << 3; /* 8-byte unit */
++	phy_rtp_len = desc_info->phy_rpt_size << 3; /* 8-byte unit */
++	hdr_cnv_len = desc_info->hdr_cnv_size << 4; /* 16-byte unit */
++	desc_info->offset = data_offset + shift_len + drv_info_len +
++			    phy_rtp_len + hdr_cnv_len;
++
++	if (desc_info->long_rxdesc)
++		desc_info->rxd_len = sizeof(struct rtw89_rxdesc_long_v3);
++	else
++		desc_info->rxd_len = sizeof(struct rtw89_rxdesc_short_v3);
++	desc_info->ready = true;
++
++	if (phy_rtp_len == sizeof(*rxd_rpt)) {
++		rxd_rpt = (struct rtw89_rxdesc_phy_rpt_v2 *)(data + data_offset +
++							     desc_info->rxd_len);
++		desc_info->rssi = le32_get_bits(rxd_rpt->dword0, BE_RXD_PHY_RSSI);
 +	}
-+	txwd_body->dword6 = rtw89_build_txwd_body6_v2(desc_info);
-+	txwd_body->dword7 = rtw89_build_txwd_body7_v2(desc_info);
 +
-+	if (!desc_info->en_wd_info)
++	if (!desc_info->long_rxdesc)
 +		return;
 +
-+	txwd_info = (struct rtw89_txwd_info_v2 *)(txwd_body + 1);
-+	txwd_info->dword0 = rtw89_build_txwd_info0_v2(desc_info);
-+	txwd_info->dword1 = rtw89_build_txwd_info1_v2(desc_info);
-+	txwd_info->dword2 = rtw89_build_txwd_info2_v3(desc_info);
-+	txwd_info->dword4 = rtw89_build_txwd_info4_v2(desc_info);
-+}
-+EXPORT_SYMBOL(rtw89_core_fill_txdesc_v3);
++	rxd_l = (struct rtw89_rxdesc_long_v3 *)(data + data_offset);
 +
- static __le32 rtw89_build_txwd_fwcmd0_v1(struct rtw89_tx_desc_info *desc_info)
- {
- 	u32 dword = FIELD_PREP(AX_RXD_RPKT_LEN_MASK, desc_info->pkt_size) |
++	desc_info->sr_en = le32_get_bits(rxd_l->dword6, BE_RXD_SR_EN);
++	desc_info->user_id = le32_get_bits(rxd_l->dword6, BE_RXD_USER_ID_MASK);
++	desc_info->addr_cam_id = le32_get_bits(rxd_l->dword6, BE_RXD_ADDR_CAM_V1);
++	desc_info->sec_cam_id = le32_get_bits(rxd_l->dword6, BE_RXD_SEC_CAM_IDX_V1);
++
++	desc_info->rx_pl_id = le32_get_bits(rxd_l->dword7, BE_RXD_RX_PL_ID_MASK);
++}
++EXPORT_SYMBOL(rtw89_core_query_rxdesc_v3);
++
+ struct rtw89_core_iter_rx_status {
+ 	struct rtw89_dev *rtwdev;
+ 	struct ieee80211_rx_status *rx_status;
 diff --git a/drivers/net/wireless/realtek/rtw89/core.h b/drivers/net/wireless/realtek/rtw89/core.h
-index 93b633d39e47..d9931bc95fcc 100644
+index d9931bc95fcc..8678cfd3d3e4 100644
 --- a/drivers/net/wireless/realtek/rtw89/core.h
 +++ b/drivers/net/wireless/realtek/rtw89/core.h
-@@ -7580,6 +7580,9 @@ void rtw89_core_fill_txdesc_v1(struct rtw89_dev *rtwdev,
- void rtw89_core_fill_txdesc_v2(struct rtw89_dev *rtwdev,
- 			       struct rtw89_tx_desc_info *desc_info,
- 			       void *txdesc);
-+void rtw89_core_fill_txdesc_v3(struct rtw89_dev *rtwdev,
-+			       struct rtw89_tx_desc_info *desc_info,
-+			       void *txdesc);
- void rtw89_core_fill_txdesc_fwcmd_v1(struct rtw89_dev *rtwdev,
- 				     struct rtw89_tx_desc_info *desc_info,
- 				     void *txdesc);
+@@ -1137,6 +1137,15 @@ struct rtw89_rxdesc_short_v2 {
+ 	__le32 dword5;
+ } __packed;
+ 
++struct rtw89_rxdesc_short_v3 {
++	__le32 dword0;
++	__le32 dword1;
++	__le32 dword2;
++	__le32 dword3;
++	__le32 dword4;
++	__le32 dword5;
++} __packed;
++
+ struct rtw89_rxdesc_long {
+ 	__le32 dword0;
+ 	__le32 dword1;
+@@ -1161,6 +1170,19 @@ struct rtw89_rxdesc_long_v2 {
+ 	__le32 dword9;
+ } __packed;
+ 
++struct rtw89_rxdesc_long_v3 {
++	__le32 dword0;
++	__le32 dword1;
++	__le32 dword2;
++	__le32 dword3;
++	__le32 dword4;
++	__le32 dword5;
++	__le32 dword6;
++	__le32 dword7;
++	__le32 dword8;
++	__le32 dword9;
++} __packed;
++
+ struct rtw89_rxdesc_phy_rpt_v2 {
+ 	__le32 dword0;
+ 	__le32 dword1;
+@@ -7601,6 +7623,9 @@ void rtw89_core_query_rxdesc(struct rtw89_dev *rtwdev,
+ void rtw89_core_query_rxdesc_v2(struct rtw89_dev *rtwdev,
+ 				struct rtw89_rx_desc_info *desc_info,
+ 				u8 *data, u32 data_offset);
++void rtw89_core_query_rxdesc_v3(struct rtw89_dev *rtwdev,
++				struct rtw89_rx_desc_info *desc_info,
++				u8 *data, u32 data_offset);
+ void rtw89_core_napi_start(struct rtw89_dev *rtwdev);
+ void rtw89_core_napi_stop(struct rtw89_dev *rtwdev);
+ int rtw89_core_napi_init(struct rtw89_dev *rtwdev);
 diff --git a/drivers/net/wireless/realtek/rtw89/txrx.h b/drivers/net/wireless/realtek/rtw89/txrx.h
-index fa324b4a1dde..c92e25f8a2b5 100644
+index c92e25f8a2b5..b69a2529aefc 100644
 --- a/drivers/net/wireless/realtek/rtw89/txrx.h
 +++ b/drivers/net/wireless/realtek/rtw89/txrx.h
-@@ -188,12 +188,16 @@ static inline u8 rtw89_get_data_nss(struct rtw89_dev *rtwdev, u16 hw_rate)
- #define BE_TXD_BODY2_QSEL GENMASK(22, 17)
- #define BE_TXD_BODY2_TID_IND BIT(23)
- #define BE_TXD_BODY2_MACID GENMASK(31, 24)
-+#define BE_TXD_BODY2_QSEL_V1 GENMASK(20, 15)
-+#define BE_TXD_BODY2_TID_IND_V1 BIT(21)
-+#define BE_TXD_BODY2_MACID_V1 GENMASK(31, 22)
+@@ -504,6 +504,7 @@ struct rtw89_phy_sts_iehdr {
  
- /* TX WD BODY DWORD 3 */
- #define BE_TXD_BODY3_WIFI_SEQ GENMASK(11, 0)
- #define BE_TXD_BODY3_MLO_FLAG BIT(12)
- #define BE_TXD_BODY3_IS_MLD_SW_EN BIT(13)
- #define BE_TXD_BODY3_TRY_RATE BIT(14)
-+#define BE_TXD_BODY3_BK_V1 BIT(14)
- #define BE_TXD_BODY3_RELINK_FLAG_V1 BIT(15)
- #define BE_TXD_BODY3_BAND0_SU_TC_V1 GENMASK(21, 16)
- #define BE_TXD_BODY3_TOTAL_TC GENMASK(27, 22)
-@@ -201,6 +205,7 @@ static inline u8 rtw89_get_data_nss(struct rtw89_dev *rtwdev, u16 hw_rate)
- #define BE_TXD_BODY3_MU_PRI_RTY BIT(29)
- #define BE_TXD_BODY3_MU_2ND_RTY BIT(30)
- #define BE_TXD_BODY3_BAND1_SU_RTY_V1 BIT(31)
-+#define BE_TXD_BODY3_DRIVER_QUEUE_TIME GENMASK(31, 16)
+ /* BE RXD dword2 */
+ #define BE_RXD_MAC_ID_MASK GENMASK(7, 0)
++#define BE_RXD_MAC_ID_V1 GENMASK(9, 0)
+ #define BE_RXD_TYPE_MASK GENMASK(11, 10)
+ #define BE_RXD_LAST_MSDU BIT(12)
+ #define BE_RXD_AMSDU_CUT BIT(13)
+@@ -535,6 +536,7 @@ struct rtw89_phy_sts_iehdr {
+ #define BE_RXD_QNULL BIT(22)
+ #define BE_RXD_A4_FRAME BIT(23)
+ #define BE_RXD_FRAG_MASK GENMASK(27, 24)
++#define BE_RXD_GET_CH_INFO_V2 GENMASK(31, 29)
+ #define BE_RXD_GET_CH_INFO_V1_MASK GENMASK(31, 30)
  
- /* TX WD BODY DWORD 4 */
- #define BE_TXD_BODY4_TXDESC_CHECKSUM GENMASK(15, 0)
-@@ -224,6 +229,10 @@ static inline u8 rtw89_get_data_nss(struct rtw89_dev *rtwdev, u16 hw_rate)
- #define BE_TXD_BODY6_EOSP_BIT BIT(15)
- #define BE_TXD_BODY6_S_IDX GENMASK(23, 16)
- #define BE_TXD_BODY6_RU_POS GENMASK(31, 24)
-+#define BE_TXD_BODY6_MU_TC_V1 GENMASK(3, 0)
-+#define BE_TXD_BODY6_RU_TC_V1 GENMASK(8, 5)
-+#define BE_TXD_BODY6_RELINK_EN BIT(9)
-+#define BE_TXD_BODY6_RELINK_LAST BIT(10)
+ /* BE RXD dword4 */
+@@ -550,10 +552,14 @@ struct rtw89_phy_sts_iehdr {
  
- /* TX WD BODY DWORD 7 */
- #define BE_TXD_BODY7_RTS_TC GENMASK(5, 0)
-@@ -262,6 +271,8 @@ static inline u8 rtw89_get_data_nss(struct rtw89_dev *rtwdev, u16 hw_rate)
- /* TX WD INFO DWORD 2 */
- #define BE_TXD_INFO2_SEC_CAM_IDX GENMASK(7, 0)
- #define BE_TXD_INFO2_FORCE_KEY_EN BIT(8)
-+#define BE_TXD_INFO2_SEC_CAM_IDX_V1 GENMASK(9, 0)
-+#define BE_TXD_INFO2_FORCE_KEY_EN_V1 BIT(10)
- #define BE_TXD_INFO2_LIFETIME_SEL GENMASK(15, 13)
- #define BE_TXD_INFO2_FORCE_TXOP BIT(17)
- #define BE_TXD_INFO2_AMPDU_DENSITY GENMASK(20, 18)
-@@ -277,6 +288,7 @@ static inline u8 rtw89_get_data_nss(struct rtw89_dev *rtwdev, u16 hw_rate)
- #define BE_TXD_INFO3_RTT_EN BIT(9)
- #define BE_TXD_INFO3_HT_DATA_SND_V1 BIT(10)
- #define BE_TXD_INFO3_BT_NULL BIT(11)
-+#define BE_TXD_INFO3_DISABLE_TXBF BIT(11)
- #define BE_TXD_INFO3_TRI_FRAME BIT(12)
- #define BE_TXD_INFO3_NULL_0 BIT(13)
- #define BE_TXD_INFO3_NULL_1 BIT(14)
-@@ -292,6 +304,8 @@ static inline u8 rtw89_get_data_nss(struct rtw89_dev *rtwdev, u16 hw_rate)
- #define BE_TXD_INFO4_PUNC_MODE GENMASK(17, 16)
- #define BE_TXD_INFO4_SW_TX_OK_0 BIT(18)
- #define BE_TXD_INFO4_SW_TX_OK_1 BIT(19)
-+#define BE_TXD_INFO4_SW_EHT_NLTF_SWITCH BIT(20)
-+#define BE_TXD_INFO4_SW_EHT_NLTF GENMASK(22, 21)
- #define BE_TXD_INFO4_SW_TX_PWR_DBM GENMASK(26, 23)
- #define BE_TXD_INFO4_RTS_EN BIT(27)
- #define BE_TXD_INFO4_CTS2SELF BIT(28)
-@@ -308,6 +322,7 @@ static inline u8 rtw89_get_data_nss(struct rtw89_dev *rtwdev, u16 hw_rate)
- #define BE_TXD_INFO6_UL_GI_LTF GENMASK(14, 12)
- #define BE_TXD_INFO6_UL_DOPPLER BIT(15)
- #define BE_TXD_INFO6_UL_STBC BIT(16)
-+#define BE_TXD_INFO6_UL_MU_MIMO_EN BIT(17)
- #define BE_TXD_INFO6_UL_LENGTH_REF GENMASK(21, 18)
- #define BE_TXD_INFO6_UL_RF_GAIN_IDX GENMASK(31, 22)
- 
-@@ -322,6 +337,7 @@ static inline u8 rtw89_get_data_nss(struct rtw89_dev *rtwdev, u16 hw_rate)
- #define BE_TXD_INFO7_UL_HELTF_SYMBOL_NUM GENMASK(19, 17)
- #define BE_TXD_INFO7_ULBW GENMASK(21, 20)
- #define BE_TXD_INFO7_ULBW_EXT GENMASK(23, 22)
-+#define BE_TXD_INFO7_UL_TRI_PAD_TSF BIT(24)
- #define BE_TXD_INFO7_USE_WD_UL GENMASK(25, 24)
- #define BE_TXD_INFO7_EXTEND_MODE_SEL GENMASK(31, 28)
- 
+ /* BE RXD dword6 */
+ #define BE_RXD_ADDR_CAM_MASK GENMASK(7, 0)
++#define BE_RXD_ADDR_CAM_V1 GENMASK(9, 0)
++#define BE_RXD_RX_STATISTICS_V1 BIT(11)
++#define BE_RXD_SMART_ANT_V1 BIT(12)
+ #define BE_RXD_SR_EN BIT(13)
+ #define BE_RXD_NON_SRG_PPDU BIT(14)
+ #define BE_RXD_INTER_PPDU BIT(15)
+ #define BE_RXD_USER_ID_MASK GENMASK(21, 16)
++#define BE_RXD_SEC_CAM_IDX_V1 GENMASK(31, 22)
+ #define BE_RXD_RX_STATISTICS BIT(22)
+ #define BE_RXD_SMART_ANT BIT(23)
+ #define BE_RXD_SEC_CAM_IDX_MASK GENMASK(31, 24)
 -- 
 2.25.1
 
