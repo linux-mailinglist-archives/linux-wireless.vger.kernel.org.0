@@ -1,125 +1,114 @@
-Return-Path: <linux-wireless+bounces-30397-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-30398-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3CF2ACF860B
-	for <lists+linux-wireless@lfdr.de>; Tue, 06 Jan 2026 13:47:50 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3EB9DCF87AD
+	for <lists+linux-wireless@lfdr.de>; Tue, 06 Jan 2026 14:24:08 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 5C160301D0F7
-	for <lists+linux-wireless@lfdr.de>; Tue,  6 Jan 2026 12:38:40 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 84364301BFFC
+	for <lists+linux-wireless@lfdr.de>; Tue,  6 Jan 2026 13:24:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 37DB93254BD;
-	Tue,  6 Jan 2026 12:38:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="eBijw961"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AD6BF32F750;
+	Tue,  6 Jan 2026 13:24:02 +0000 (UTC)
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from www262.sakura.ne.jp (www262.sakura.ne.jp [202.181.97.72])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 13380256D
-	for <linux-wireless@vger.kernel.org>; Tue,  6 Jan 2026 12:38:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A388032ED25;
+	Tue,  6 Jan 2026 13:24:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=202.181.97.72
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767703119; cv=none; b=j7GnYReGA7zS3yTtKFrWs1UKsw5KiQAqx5mIJ+eaQ2+2kqAh0aIptkOBl5BrwlFw+zoSQXBw6616+HTEgYATHJ6693vrmdemJa3q0rxImDTQVyv72tcWyrTPRzauHf3eJflIJp7GKgetP9MgJxn2sr+BIqK+Ftw3BIqUFEsBSSg=
+	t=1767705842; cv=none; b=c7dHEAlFuXfFIHKqW6ycZjtfJFLf19ifEDmrpPBCuSlxQ7/r8v2pchIJmZ4bNC+HmFOFYli3KcS+J404mmYMUC/xgRW/TURyxxoMDobJuYNigzuRtC0LlfumRoie4EcCHIIx9uxP+Ew31spInNNsce7CwnDksaJY5inbpUe7WdM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767703119; c=relaxed/simple;
-	bh=/WJ3FXylxb75JjfkAYrSDskdl0Pr5JcXSOfrWa9vX2M=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=spvmHpEGqtjUTvf3jB0YLURKw3qQopJRNqODVDYhFySfjnCW8ZBU1ddihuF7cuk9lSYguqrYZbye0Ow9zIbyiahFTCBp2/ZYW4gP0qA65SRMZpb7WoUJIK/31GkEoTs1WJqYgzmggBlNbGk1Cpojw7eGkIc4IgJo3JFa1PPkdN4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=eBijw961; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C1BB0C4AF0B
-	for <linux-wireless@vger.kernel.org>; Tue,  6 Jan 2026 12:38:38 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1767703118;
-	bh=/WJ3FXylxb75JjfkAYrSDskdl0Pr5JcXSOfrWa9vX2M=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=eBijw961FdVqdQ5lzqU/ESM00AOiadOqx+ua0ZRGi8NdxZOi0LmsS4uMs8po6Cb0O
-	 5TMhTC1pqRmu5yMhNHRR+d9WYEpa5PYeh2yArJhCA70XzCJpBcWfx41mNkMu0g87H7
-	 xo89EoRPkf34wKF1WWhYht/GJw/1OcOhYW0wZp+ouQonriPSRbIJVqOczclQENQpIe
-	 N8Gjs/7c0iTXE66WYqZPBMwfi2/XNAtnLCMO3RPd6DP97ZzSdEoYSqQ4ZTSfsUnQ12
-	 xGnHMMTQLsb/EQJU/s/eAr+K2BKAJOufY6CAyLHUMxqYPkOXol0F+D/fjg/dimDcik
-	 qXCIufIZGv6/A==
-Received: by mail-lf1-f49.google.com with SMTP id 2adb3069b0e04-5945510fd7aso739304e87.0
-        for <linux-wireless@vger.kernel.org>; Tue, 06 Jan 2026 04:38:38 -0800 (PST)
-X-Forwarded-Encrypted: i=1; AJvYcCWroxqiJba1sw1VlL5hB8zYQH+nKw1/TE8D3iim4TwCEAEWPg6yzaRMpg6uYVmg95eWAK9bryMayDRhhaJ70g==@vger.kernel.org
-X-Gm-Message-State: AOJu0YynDyUzbnEkVvD+H3GCECVoFHUq/Zp2aep5WZqsNg9W+q0rSlYg
-	vSqP7ev6lH0lUrWrWnHpZmwy09KZaa3wDWhtrVsVr3jX5wFDpK6OjC/VXB6llUTRhDGcomoC62c
-	ncLUp0pXR2lKU4i8vr0d/GNXkhhp4o48Fm3d+3xVXBQ==
-X-Google-Smtp-Source: AGHT+IH/5oi/Mm4ylt/aH4A15j/ljVlSgxeG2MAOav7Sf6QITgCC+i0rM7ktFn11IEgwttpux/NAggqCjE5gcEsv344=
-X-Received: by 2002:a05:6512:4010:b0:598:f2e1:f616 with SMTP id
- 2adb3069b0e04-59b652b8202mr751335e87.29.1767703117392; Tue, 06 Jan 2026
- 04:38:37 -0800 (PST)
+	s=arc-20240116; t=1767705842; c=relaxed/simple;
+	bh=j0/XcQ4MyKbdRtIFVSuEfvR9IygVIY0KqI25WDHpKpc=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=WNraSHyVQ3FJ+/R1lU8N/+TB631A8g11/f6BVMuM9r5hQ2LA/Ai7Lu+iIo6LxmwKtgZn3qXTWZdaTPAcA8ykFV4MpRuI77AMMkBXZj8v2XSoQ+ZW/wyugc1RT6tOjLLksuyKsBwz37yP6Yxv5rJ7XMqAy40t16PL6YYbHPpL/jQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=I-love.SAKURA.ne.jp; spf=pass smtp.mailfrom=I-love.SAKURA.ne.jp; arc=none smtp.client-ip=202.181.97.72
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=I-love.SAKURA.ne.jp
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=I-love.SAKURA.ne.jp
+Received: from www262.sakura.ne.jp (localhost [127.0.0.1])
+	by www262.sakura.ne.jp (8.15.2/8.15.2) with ESMTP id 606DLekF006168;
+	Tue, 6 Jan 2026 22:21:40 +0900 (JST)
+	(envelope-from penguin-kernel@I-love.SAKURA.ne.jp)
+Received: from [192.168.1.10] (M106072142033.v4.enabler.ne.jp [106.72.142.33])
+	(authenticated bits=0)
+	by www262.sakura.ne.jp (8.15.2/8.15.2) with ESMTPSA id 606DLdft006165
+	(version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=NO);
+	Tue, 6 Jan 2026 22:21:39 +0900 (JST)
+	(envelope-from penguin-kernel@I-love.SAKURA.ne.jp)
+Message-ID: <993d381a-c24e-41d2-a0be-c1b0b5d8cbe9@I-love.SAKURA.ne.jp>
+Date: Tue, 6 Jan 2026 22:21:38 +0900
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260106-wcn3990-pwrctl-v2-0-0386204328be@oss.qualcomm.com> <20260106-wcn3990-pwrctl-v2-3-0386204328be@oss.qualcomm.com>
-In-Reply-To: <20260106-wcn3990-pwrctl-v2-3-0386204328be@oss.qualcomm.com>
-From: Bartosz Golaszewski <brgl@kernel.org>
-Date: Tue, 6 Jan 2026 13:38:25 +0100
-X-Gmail-Original-Message-ID: <CAMRc=McxGOejmegC9KaNLpCbxSL_CWmPC2PwfQGxQ+vaHg+rOw@mail.gmail.com>
-X-Gm-Features: AQt7F2rrsJVu7GLT96AFg8gb0rDx8lEL223Ap08R9PVwfe0DiaVCdXK84QTL9yQ
-Message-ID: <CAMRc=McxGOejmegC9KaNLpCbxSL_CWmPC2PwfQGxQ+vaHg+rOw@mail.gmail.com>
-Subject: Re: [PATCH v2 03/14] Bluetooth: qca: fix ROM version reading on
- WCN3998 chips
-To: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
-Cc: Liam Girdwood <lgirdwood@gmail.com>, Mark Brown <broonie@kernel.org>, 
-	Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, 
-	Marcel Holtmann <marcel@holtmann.org>, Luiz Augusto von Dentz <luiz.dentz@gmail.com>, 
-	Jeff Johnson <jjohnson@kernel.org>, Bjorn Andersson <andersson@kernel.org>, 
-	Konrad Dybcio <konradybcio@kernel.org>, Manivannan Sadhasivam <mani@kernel.org>, Vinod Koul <vkoul@kernel.org>, 
-	Balakrishna Godavarthi <quic_bgodavar@quicinc.com>, Matthias Kaehlcke <mka@chromium.org>, 
-	linux-arm-msm@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	devicetree@vger.kernel.org, linux-bluetooth@vger.kernel.org, 
-	linux-wireless@vger.kernel.org, ath10k@lists.infradead.org, 
-	linux-pm@vger.kernel.org, Krzysztof Kozlowski <krzk@kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v5 06/36] cleanup: Basic compatibility with context
+ analysis
+To: Marco Elver <elver@google.com>, Peter Zijlstra <peterz@infradead.org>,
+        Boqun Feng <boqun.feng@gmail.com>, Ingo Molnar <mingo@kernel.org>,
+        Will Deacon <will@kernel.org>
+Cc: "David S. Miller" <davem@davemloft.net>,
+        Luc Van Oostenryck <luc.vanoostenryck@gmail.com>,
+        Chris Li <sparse@chrisli.org>, "Paul E. McKenney" <paulmck@kernel.org>,
+        Alexander Potapenko <glider@google.com>, Arnd Bergmann <arnd@arndb.de>,
+        Bart Van Assche <bvanassche@acm.org>, Christoph Hellwig <hch@lst.de>,
+        Dmitry Vyukov <dvyukov@google.com>, Eric Dumazet <edumazet@google.com>,
+        Frederic Weisbecker <frederic@kernel.org>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Herbert Xu <herbert@gondor.apana.org.au>,
+        Ian Rogers <irogers@google.com>, Jann Horn <jannh@google.com>,
+        Joel Fernandes <joelagnelf@nvidia.com>,
+        Johannes Berg <johannes.berg@intel.com>,
+        Jonathan Corbet <corbet@lwn.net>,
+        Josh Triplett <josh@joshtriplett.org>,
+        Justin Stitt
+ <justinstitt@google.com>, Kees Cook <kees@kernel.org>,
+        Kentaro Takeda <takedakn@nttdata.co.jp>,
+        Lukas Bulwahn <lukas.bulwahn@gmail.com>,
+        Mark Rutland
+ <mark.rutland@arm.com>,
+        Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
+        Miguel Ojeda <ojeda@kernel.org>, Nathan Chancellor <nathan@kernel.org>,
+        Neeraj Upadhyay <neeraj.upadhyay@kernel.org>,
+        Nick Desaulniers <nick.desaulniers+lkml@gmail.com>,
+        Steven Rostedt <rostedt@goodmis.org>,
+        Thomas Gleixner <tglx@linutronix.de>, Thomas Graf <tgraf@suug.ch>,
+        Uladzislau Rezki <urezki@gmail.com>, Waiman Long <longman@redhat.com>,
+        kasan-dev@googlegroups.com, linux-crypto@vger.kernel.org,
+        linux-doc@vger.kernel.org, linux-kbuild@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-mm@kvack.org,
+        linux-security-module@vger.kernel.org, linux-sparse@vger.kernel.org,
+        linux-wireless@vger.kernel.org, llvm@lists.linux.dev,
+        rcu@vger.kernel.org
+References: <20251219154418.3592607-1-elver@google.com>
+ <20251219154418.3592607-7-elver@google.com>
+Content-Language: en-US
+From: Tetsuo Handa <penguin-kernel@I-love.SAKURA.ne.jp>
+In-Reply-To: <20251219154418.3592607-7-elver@google.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Anti-Virus-Server: fsav101.rs.sakura.ne.jp
+X-Virus-Status: clean
 
-On Tue, Jan 6, 2026 at 2:01=E2=80=AFAM Dmitry Baryshkov
-<dmitry.baryshkov@oss.qualcomm.com> wrote:
->
-> WCN3998 uses a bit different format for rom version:
->
-> [    5.479978] Bluetooth: hci0: setting up wcn399x
-> [    5.633763] Bluetooth: hci0: QCA Product ID   :0x0000000a
-> [    5.645350] Bluetooth: hci0: QCA SOC Version  :0x40010224
-> [    5.650906] Bluetooth: hci0: QCA ROM Version  :0x00001001
-> [    5.665173] Bluetooth: hci0: QCA Patch Version:0x00006699
-> [    5.679356] Bluetooth: hci0: QCA controller version 0x02241001
-> [    5.691109] Bluetooth: hci0: QCA Downloading qca/crbtfw21.tlv
-> [    6.680102] Bluetooth: hci0: QCA Downloading qca/crnv21.bin
-> [    6.842948] Bluetooth: hci0: QCA setup on UART is completed
->
-> Fixes: 523760b7ff88 ("Bluetooth: hci_qca: Added support for WCN3998")
-> Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
-> ---
->  drivers/bluetooth/btqca.c | 2 ++
->  1 file changed, 2 insertions(+)
->
-> diff --git a/drivers/bluetooth/btqca.c b/drivers/bluetooth/btqca.c
-> index 7c958d6065be..86a48d009d1b 100644
-> --- a/drivers/bluetooth/btqca.c
-> +++ b/drivers/bluetooth/btqca.c
-> @@ -804,6 +804,8 @@ int qca_uart_setup(struct hci_dev *hdev, uint8_t baud=
-rate,
->          */
->         if (soc_type =3D=3D QCA_WCN3988)
->                 rom_ver =3D ((soc_ver & 0x00000f00) >> 0x05) | (soc_ver &=
- 0x0000000f);
-> +       else if (soc_type =3D=3D QCA_WCN3998)
-> +               rom_ver =3D ((soc_ver & 0x0000f000) >> 0x07) | (soc_ver &=
- 0x0000000f);
->         else
->                 rom_ver =3D ((soc_ver & 0x00000f00) >> 0x04) | (soc_ver &=
- 0x0000000f);
->
->
-> --
-> 2.47.3
->
+On 2025/12/20 0:39, Marco Elver wrote:
+> Introduce basic compatibility with cleanup.h infrastructure.
 
-Reviewed-by: Bartosz Golaszewski <bartosz.golaszewski@oss.qualcomm.com>
+Can Compiler-Based Context- and Locking-Analysis work with conditional guards
+(unlock only if lock succeeded) ?
+
+I consider that replacing mutex_lock() with mutex_lock_killable() helps reducing
+frequency of hung tasks under heavy load where many processes are preempted waiting
+for the same mutex to become available (e.g.
+https://syzkaller.appspot.com/bug?extid=8f41dccfb6c03cc36fd6 ).
+
+But e.g. commit f49573f2f53e ("tty: use lock guard()s in tty_io") already replaced
+plain mutex_lock()/mutex_unlock() with plain guard(mutex). If I propose a patch for
+replacing mutex_lock() with mutex_lock_killable(), can I use conditional guards?
+(Would be yes if Compiler-Based Context- and Locking-Analysis can work, would be no
+ if Compiler-Based Context- and Locking-Analysis cannot work) ?
+
 
