@@ -1,72 +1,71 @@
-Return-Path: <linux-wireless+bounces-30396-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-30397-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id C5602CF8196
-	for <lists+linux-wireless@lfdr.de>; Tue, 06 Jan 2026 12:41:00 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3CF2ACF860B
+	for <lists+linux-wireless@lfdr.de>; Tue, 06 Jan 2026 13:47:50 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 3E9CF303C983
-	for <lists+linux-wireless@lfdr.de>; Tue,  6 Jan 2026 11:34:32 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 5C160301D0F7
+	for <lists+linux-wireless@lfdr.de>; Tue,  6 Jan 2026 12:38:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 91C09327C1C;
-	Tue,  6 Jan 2026 11:34:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 37DB93254BD;
+	Tue,  6 Jan 2026 12:38:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="D3pWQots"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="eBijw961"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6DB7B327C18
-	for <linux-wireless@vger.kernel.org>; Tue,  6 Jan 2026 11:34:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 13380256D
+	for <linux-wireless@vger.kernel.org>; Tue,  6 Jan 2026 12:38:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767699245; cv=none; b=kbuN8z8UIP9zDH/JHRFCDTW84K9IQvPkNrUnV5mxBQKXEVmJQqJ179TYMzgQqarCsAAGmUlIqGWiTADYUmAfowbK9sGgGFAzjEt8aR71ybx6Hv6//Y/ys8h+dF0lMG5y/h3IZuwtGospiWPd+vuDui4eY1PfprpQhockxjc7J2I=
+	t=1767703119; cv=none; b=j7GnYReGA7zS3yTtKFrWs1UKsw5KiQAqx5mIJ+eaQ2+2kqAh0aIptkOBl5BrwlFw+zoSQXBw6616+HTEgYATHJ6693vrmdemJa3q0rxImDTQVyv72tcWyrTPRzauHf3eJflIJp7GKgetP9MgJxn2sr+BIqK+Ftw3BIqUFEsBSSg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767699245; c=relaxed/simple;
-	bh=e7aQPfqZchv7cdvTlfV1PMxXNwB4FVHC6zfkDDRF1xc=;
+	s=arc-20240116; t=1767703119; c=relaxed/simple;
+	bh=/WJ3FXylxb75JjfkAYrSDskdl0Pr5JcXSOfrWa9vX2M=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=lD0mPF1ejZudMaIxjoANvcxKueOdKyAp47pigoXwJGofvZ5HVukcIQrjYMQRcsOpf3tvv+DPIyOV/ZRLCguavpmi0G0H5DulmzK++qxHO+gHbi0KGQgIUabHUkhiSJJwF91mJUn9k7o/kNFkFMG+jVGNV2VhkmyU6pWTVaE8myU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=D3pWQots; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9ED3CC2BCB4
-	for <linux-wireless@vger.kernel.org>; Tue,  6 Jan 2026 11:34:04 +0000 (UTC)
+	 To:Cc:Content-Type; b=spvmHpEGqtjUTvf3jB0YLURKw3qQopJRNqODVDYhFySfjnCW8ZBU1ddihuF7cuk9lSYguqrYZbye0Ow9zIbyiahFTCBp2/ZYW4gP0qA65SRMZpb7WoUJIK/31GkEoTs1WJqYgzmggBlNbGk1Cpojw7eGkIc4IgJo3JFa1PPkdN4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=eBijw961; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C1BB0C4AF0B
+	for <linux-wireless@vger.kernel.org>; Tue,  6 Jan 2026 12:38:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1767699244;
-	bh=e7aQPfqZchv7cdvTlfV1PMxXNwB4FVHC6zfkDDRF1xc=;
+	s=k20201202; t=1767703118;
+	bh=/WJ3FXylxb75JjfkAYrSDskdl0Pr5JcXSOfrWa9vX2M=;
 	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=D3pWQotsytWQtCtlHl5KBBCHpCDnrh7CFamjX4YScQ7WoLh13Zl9OaZHtoCtxxxl3
-	 o0QGkHNE4AHUeZuUk5AJtntDfydeVGfflbOafjnQfozmfyrnJn1MaRBqBdaVHykAzY
-	 mOXtOYE837Zcjo6/WqWZp+vYxZnlPesQJdM/nfQAOAW4yjdVeqZZTeWQBJ+w9K0264
-	 G3//SWOkJj73OT7eYK2X5D3hskxFA9Bo6bJEdpCNwP/m1bGkuD9X7ja82R2IJM2InP
-	 czZFhnEW5bVPb3TQMvEURHBmVHoV/4180rwsrSsV9pNvOtqDKyMpqH5CzAzax77nBt
-	 R/IIOShwS8LAg==
-Received: by mail-lf1-f51.google.com with SMTP id 2adb3069b0e04-59584301f0cso1029563e87.0
-        for <linux-wireless@vger.kernel.org>; Tue, 06 Jan 2026 03:34:04 -0800 (PST)
-X-Forwarded-Encrypted: i=1; AJvYcCXE9x8LyGP/iwxJ/FJJGDuKLq+h8oDEQsBm8crMByFdRkDz0JiAl3SRo0Vj0dVyckIPgqR5Bg4iQ5tVurW2ZQ==@vger.kernel.org
-X-Gm-Message-State: AOJu0Yx4mSYl129TzLj1y+3unI0aorGtb4T/4uJOLNiOsOmZ90j//ptE
-	WOsBd+g9WQrIvcybDckavHXeB49tq0v+GQ5paFNAas04F2bm4yVaWYpHiqAeR2k/1o4caa+2T30
-	ROG2YE9/BOVv7sMwHwga0kHvcHcQtnAu79NIFHvUqmg==
-X-Google-Smtp-Source: AGHT+IH6WUvrwJ3e6JIw+OZTKRmcLjomwAx5325+HpSyUiSTaP3mUf/7LgYZd13U9tO3lCh2JtbVraYQqOh0LYYUFzc=
-X-Received: by 2002:a05:6512:32c7:b0:595:82ed:ff28 with SMTP id
- 2adb3069b0e04-59b65258a07mr1027826e87.32.1767699243013; Tue, 06 Jan 2026
- 03:34:03 -0800 (PST)
+	b=eBijw961FdVqdQ5lzqU/ESM00AOiadOqx+ua0ZRGi8NdxZOi0LmsS4uMs8po6Cb0O
+	 5TMhTC1pqRmu5yMhNHRR+d9WYEpa5PYeh2yArJhCA70XzCJpBcWfx41mNkMu0g87H7
+	 xo89EoRPkf34wKF1WWhYht/GJw/1OcOhYW0wZp+ouQonriPSRbIJVqOczclQENQpIe
+	 N8Gjs/7c0iTXE66WYqZPBMwfi2/XNAtnLCMO3RPd6DP97ZzSdEoYSqQ4ZTSfsUnQ12
+	 xGnHMMTQLsb/EQJU/s/eAr+K2BKAJOufY6CAyLHUMxqYPkOXol0F+D/fjg/dimDcik
+	 qXCIufIZGv6/A==
+Received: by mail-lf1-f49.google.com with SMTP id 2adb3069b0e04-5945510fd7aso739304e87.0
+        for <linux-wireless@vger.kernel.org>; Tue, 06 Jan 2026 04:38:38 -0800 (PST)
+X-Forwarded-Encrypted: i=1; AJvYcCWroxqiJba1sw1VlL5hB8zYQH+nKw1/TE8D3iim4TwCEAEWPg6yzaRMpg6uYVmg95eWAK9bryMayDRhhaJ70g==@vger.kernel.org
+X-Gm-Message-State: AOJu0YynDyUzbnEkVvD+H3GCECVoFHUq/Zp2aep5WZqsNg9W+q0rSlYg
+	vSqP7ev6lH0lUrWrWnHpZmwy09KZaa3wDWhtrVsVr3jX5wFDpK6OjC/VXB6llUTRhDGcomoC62c
+	ncLUp0pXR2lKU4i8vr0d/GNXkhhp4o48Fm3d+3xVXBQ==
+X-Google-Smtp-Source: AGHT+IH/5oi/Mm4ylt/aH4A15j/ljVlSgxeG2MAOav7Sf6QITgCC+i0rM7ktFn11IEgwttpux/NAggqCjE5gcEsv344=
+X-Received: by 2002:a05:6512:4010:b0:598:f2e1:f616 with SMTP id
+ 2adb3069b0e04-59b652b8202mr751335e87.29.1767703117392; Tue, 06 Jan 2026
+ 04:38:37 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260106-wcn3990-pwrctl-v2-0-0386204328be@oss.qualcomm.com>
- <20260106-wcn3990-pwrctl-v2-1-0386204328be@oss.qualcomm.com> <20260106-excellent-pygmy-puffin-97f7d5@quoll>
-In-Reply-To: <20260106-excellent-pygmy-puffin-97f7d5@quoll>
+References: <20260106-wcn3990-pwrctl-v2-0-0386204328be@oss.qualcomm.com> <20260106-wcn3990-pwrctl-v2-3-0386204328be@oss.qualcomm.com>
+In-Reply-To: <20260106-wcn3990-pwrctl-v2-3-0386204328be@oss.qualcomm.com>
 From: Bartosz Golaszewski <brgl@kernel.org>
-Date: Tue, 6 Jan 2026 12:33:50 +0100
-X-Gmail-Original-Message-ID: <CAMRc=MfVsFY1T_PpT8nQ5AjcYrk_hy2Rgd6L0-Z7L0oB8D0uMw@mail.gmail.com>
-X-Gm-Features: AQt7F2pSNlyD56O3PupToeH6RHiDz4jFG1ufbKtVNPwZRdtJy5ouVmj8OutkSdU
-Message-ID: <CAMRc=MfVsFY1T_PpT8nQ5AjcYrk_hy2Rgd6L0-Z7L0oB8D0uMw@mail.gmail.com>
-Subject: Re: [PATCH v2 01/14] regulator: dt-bindings: qcom,wcn3990-pmu:
- describe PMUs on WCN39xx
-To: Krzysztof Kozlowski <krzk@kernel.org>, Mark Brown <broonie@kernel.org>
-Cc: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>, Liam Girdwood <lgirdwood@gmail.com>, 
+Date: Tue, 6 Jan 2026 13:38:25 +0100
+X-Gmail-Original-Message-ID: <CAMRc=McxGOejmegC9KaNLpCbxSL_CWmPC2PwfQGxQ+vaHg+rOw@mail.gmail.com>
+X-Gm-Features: AQt7F2rrsJVu7GLT96AFg8gb0rDx8lEL223Ap08R9PVwfe0DiaVCdXK84QTL9yQ
+Message-ID: <CAMRc=McxGOejmegC9KaNLpCbxSL_CWmPC2PwfQGxQ+vaHg+rOw@mail.gmail.com>
+Subject: Re: [PATCH v2 03/14] Bluetooth: qca: fix ROM version reading on
+ WCN3998 chips
+To: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
+Cc: Liam Girdwood <lgirdwood@gmail.com>, Mark Brown <broonie@kernel.org>, 
 	Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, 
 	Marcel Holtmann <marcel@holtmann.org>, Luiz Augusto von Dentz <luiz.dentz@gmail.com>, 
 	Jeff Johnson <jjohnson@kernel.org>, Bjorn Andersson <andersson@kernel.org>, 
@@ -75,31 +74,52 @@ Cc: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>, Liam Girdwood <lgirdwo
 	linux-arm-msm@vger.kernel.org, linux-kernel@vger.kernel.org, 
 	devicetree@vger.kernel.org, linux-bluetooth@vger.kernel.org, 
 	linux-wireless@vger.kernel.org, ath10k@lists.infradead.org, 
-	linux-pm@vger.kernel.org
+	linux-pm@vger.kernel.org, Krzysztof Kozlowski <krzk@kernel.org>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Tue, Jan 6, 2026 at 9:00=E2=80=AFAM Krzysztof Kozlowski <krzk@kernel.org=
-> wrote:
+On Tue, Jan 6, 2026 at 2:01=E2=80=AFAM Dmitry Baryshkov
+<dmitry.baryshkov@oss.qualcomm.com> wrote:
 >
-> On Tue, Jan 06, 2026 at 03:01:11AM +0200, Dmitry Baryshkov wrote:
-> > WCN3990 and other similar WiFi/BT chips incorporate a simple on-chip PM=
-U
-> > (clearly described as such in the documentation). Provide DT schema
-> > covering other Qualcomm WiFi/BT chips to cover these devices too.
-> >
-> > Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
-> > ---
-> >  .../bindings/regulator/qcom,wcn3990-pmu.yaml       | 100 +++++++++++++=
-++++++++
-> >  1 file changed, 100 insertions(+)
+> WCN3998 uses a bit different format for rom version:
 >
-> Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@oss.qualcomm.com>
+> [    5.479978] Bluetooth: hci0: setting up wcn399x
+> [    5.633763] Bluetooth: hci0: QCA Product ID   :0x0000000a
+> [    5.645350] Bluetooth: hci0: QCA SOC Version  :0x40010224
+> [    5.650906] Bluetooth: hci0: QCA ROM Version  :0x00001001
+> [    5.665173] Bluetooth: hci0: QCA Patch Version:0x00006699
+> [    5.679356] Bluetooth: hci0: QCA controller version 0x02241001
+> [    5.691109] Bluetooth: hci0: QCA Downloading qca/crbtfw21.tlv
+> [    6.680102] Bluetooth: hci0: QCA Downloading qca/crnv21.bin
+> [    6.842948] Bluetooth: hci0: QCA setup on UART is completed
+>
+> Fixes: 523760b7ff88 ("Bluetooth: hci_qca: Added support for WCN3998")
+> Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
+> ---
+>  drivers/bluetooth/btqca.c | 2 ++
+>  1 file changed, 2 insertions(+)
+>
+> diff --git a/drivers/bluetooth/btqca.c b/drivers/bluetooth/btqca.c
+> index 7c958d6065be..86a48d009d1b 100644
+> --- a/drivers/bluetooth/btqca.c
+> +++ b/drivers/bluetooth/btqca.c
+> @@ -804,6 +804,8 @@ int qca_uart_setup(struct hci_dev *hdev, uint8_t baud=
+rate,
+>          */
+>         if (soc_type =3D=3D QCA_WCN3988)
+>                 rom_ver =3D ((soc_ver & 0x00000f00) >> 0x05) | (soc_ver &=
+ 0x0000000f);
+> +       else if (soc_type =3D=3D QCA_WCN3998)
+> +               rom_ver =3D ((soc_ver & 0x0000f000) >> 0x07) | (soc_ver &=
+ 0x0000000f);
+>         else
+>                 rom_ver =3D ((soc_ver & 0x00000f00) >> 0x04) | (soc_ver &=
+ 0x0000000f);
+>
+>
+> --
+> 2.47.3
 >
 
-Mark, the bindings describe a device controlled by a pwrseq driver for
-which C changes are later in the series. Is it alright if I take it
-through the pwrseq tree?
-
-Bart
+Reviewed-by: Bartosz Golaszewski <bartosz.golaszewski@oss.qualcomm.com>
 
