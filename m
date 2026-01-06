@@ -1,104 +1,104 @@
-Return-Path: <linux-wireless+bounces-30405-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-30406-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 19B26CF9157
-	for <lists+linux-wireless@lfdr.de>; Tue, 06 Jan 2026 16:32:18 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0F2ECCF90B7
+	for <lists+linux-wireless@lfdr.de>; Tue, 06 Jan 2026 16:25:33 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id CC9DD30B0F44
-	for <lists+linux-wireless@lfdr.de>; Tue,  6 Jan 2026 15:25:27 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id ED138301BCDB
+	for <lists+linux-wireless@lfdr.de>; Tue,  6 Jan 2026 15:25:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A199633F8A0;
-	Tue,  6 Jan 2026 15:25:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CF2CB33F39B;
+	Tue,  6 Jan 2026 15:25:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="E40mX8iS";
-	dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b="ca2P4KUc"
+	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="WyWqJczv";
+	dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b="kGV+RWZU"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EB26E345743
-	for <linux-wireless@vger.kernel.org>; Tue,  6 Jan 2026 15:25:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 504CD345736
+	for <linux-wireless@vger.kernel.org>; Tue,  6 Jan 2026 15:25:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767713127; cv=none; b=HKJ/Js47JvoacbLKa4VioxzDzvxQLgpV784QkhIuoamniEdeZ5qIlEcIJ9Pj+jMaDgvQYttLjDtdcCzSaZXdeW2BLpNitFf9Vw5ao54kt959YiwcbcuCopGrS0pdSV6DTO6Yu/+eRTef2fuOVCR3oKsqEYyc4H5a7yw2TpcQrHo=
+	t=1767713129; cv=none; b=JMqDIpDnJ4B8Khdz/h9H03jv3iG1qVCQkKKgLeuKPdzEPGnUfN+rX9+ACwmC6tduiDUxx0L3irPXUzXP7xOT9oOl2Tbhiux2NeHlVjxWDgsJUrYKo6U5TjYZt8HKXhgog1FO3J2al6xdVi7bxAD7c/l8ocMu6BCY1cwfBZMJdXE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767713127; c=relaxed/simple;
-	bh=oxA+7iVJr+nS9YM4i0bCfkWTxYafVVQ/c+nyGvLKNhI=;
+	s=arc-20240116; t=1767713129; c=relaxed/simple;
+	bh=moSSl4uZn9UFiVxcCKZO8UECKei6vrFUpqASCb3JvCI=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=cbvWcLd1TZXaNtzWmDn6C9f7k8EjNjz1siiR8RKs0iW/ckUc1luK5vbGW+GjrAeppmawoIiZcoTdEqgJsip9k0ANEuscI6aDHQ2Ijkg+i7b12VovfLP0uW5gaUCZgITIsRCDn74zCzwpZurR1SlF//ltotpGOJVX4f7aarmNVMs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=E40mX8iS; dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b=ca2P4KUc; arc=none smtp.client-ip=205.220.168.131
+	 MIME-Version:Content-Type; b=adkroNfgpmEZd6yxegtp8k4cjJzA4/svqIZKs3fhKqfjoRTVu33z8ODgXMaDiH79Jl0IRMccoIR9qI/XWDZyOlg2u4Pax3gIcLStwZt8iI2XeGfWYIOoy6KdD6YZrb6tUrpk/wHPCW9yDMQOO8feK/pk4dFd4fNiJOyj23ca2sY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=WyWqJczv; dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b=kGV+RWZU; arc=none smtp.client-ip=205.220.168.131
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
-Received: from pps.filterd (m0279864.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 606AgWwk1462298
-	for <linux-wireless@vger.kernel.org>; Tue, 6 Jan 2026 15:25:25 GMT
+Received: from pps.filterd (m0279865.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 606EfkwD322873
+	for <linux-wireless@vger.kernel.org>; Tue, 6 Jan 2026 15:25:27 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
-	cc:content-transfer-encoding:date:from:in-reply-to:message-id
-	:mime-version:references:subject:to; s=qcppdkim1; bh=tqja4OTXFNT
-	3u47pL22RWBPmyTVbsLnCE6ubN6Tn3UY=; b=E40mX8iSmvUEu5Ya/x6mntZQevu
-	sd8ihIQnm/AenTiebxbtpOugLl+ZgfPROj5dYyelUy53nGCdz0xmd33sQr3uVpVy
-	7KWM+Z6DrdURv8vIAqoo8x4f+ZAWwdG0i6V+I7pemHDkumKKsCRzrBdVkEfNUjZl
-	D90W28DrQcCp3TrZxxiMHUJdMuU6uOoiKKxCrc5QtWB9ch0+lFU7M+rt2cnlQd9y
-	ANdK5X8oy83osEfIRRYAg522Jstv43V5DEMEWBdafmuld7digARxOUa0ARDuNxB3
-	hxFJ7KccoZPfHVGpag5qXNjjoePxu5PGQsDNzh2Yfl8cQFISdf5uqJfhSYQ==
-Received: from mail-pl1-f197.google.com (mail-pl1-f197.google.com [209.85.214.197])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4bh0vm0rfs-1
+	cc:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
+	lvutWKI7TKt16StpCuzmvGLizpsf+0/4btbqFsNvdR4=; b=WyWqJczveUCuVlFJ
+	OL2GQ8ZH/yywZP5y9zqU65aUBiDSvLfo/ujX1ELI2L8cZtDy+FJTYWE//eju/40m
+	1rINqaqsNJ4jDS2Oe9N7xc0jET0ZxARKByAQbgUP4BIz4TS/DKRBWiDODsfV+14a
+	ZffNZ6KCGM2nu2UljGuY/Rxg51npYkHpZK8Yeu/5qU3mlrPLYvY9NlaGGK2/SFfn
+	GQGga2+gJdM1s6p5eZQsA7P27WFTGURfdzrNduf6HgNPVDLJGuhQyJI6ySVSHmdI
+	WQHg3oY6sO3lVjQbw/DQ7+9cHGaRN8aMQ7cIMHvxipiYqfFd3b8XvYNOjSMDP+1m
+	TwPMFQ==
+Received: from mail-pl1-f200.google.com (mail-pl1-f200.google.com [209.85.214.200])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4bh4crg4dj-1
 	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
-	for <linux-wireless@vger.kernel.org>; Tue, 06 Jan 2026 15:25:25 +0000 (GMT)
-Received: by mail-pl1-f197.google.com with SMTP id d9443c01a7336-29f8e6a5de4so13407585ad.2
-        for <linux-wireless@vger.kernel.org>; Tue, 06 Jan 2026 07:25:25 -0800 (PST)
+	for <linux-wireless@vger.kernel.org>; Tue, 06 Jan 2026 15:25:27 +0000 (GMT)
+Received: by mail-pl1-f200.google.com with SMTP id d9443c01a7336-29f2b45ecffso16347715ad.2
+        for <linux-wireless@vger.kernel.org>; Tue, 06 Jan 2026 07:25:27 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=oss.qualcomm.com; s=google; t=1767713124; x=1768317924; darn=vger.kernel.org;
+        d=oss.qualcomm.com; s=google; t=1767713127; x=1768317927; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=tqja4OTXFNT3u47pL22RWBPmyTVbsLnCE6ubN6Tn3UY=;
-        b=ca2P4KUc6dXsoYoiU/Z/M5qeer2z1V2iPyFLIwLia87MVKwwcdMyLB9xpiy0ZepE31
-         hBRciwoguaMhjKINROtcRj6v16cNzeES6bujkFmJoF2U0V0cRbBejxuuknvW/8jRMJ3K
-         Ursx9jR6V7hhwb7YUT7oXZ2X6vUcd7Cy5/nxOWanteJ07QuM+SPge14D3H7POK9gN5Jz
-         WZrZOM2BOIsj4aKaH4M3fNW0CDRgv+NcNK3xWQjxsu2vRVxRfbLk/PeKfNawF6Bqhz+X
-         zJDwvb3JhVH0WgN3UWjuL8eARMzTyjAUKY9ZZ7cnewa1wyRyX0gNarqWpmiIaaH27+s2
-         3w2A==
+        bh=lvutWKI7TKt16StpCuzmvGLizpsf+0/4btbqFsNvdR4=;
+        b=kGV+RWZUs34a1j5/XoDuCjC+MUlXh3t+vOh50mfx9LqWzoutJnCYvxH1JSkFC4C6qI
+         2SG0iOqZzksRt4UDzijmQNEf/DRlXG+Ugm+xz+wrQua4CRBr2/DyomHgXXaR5WlIWlJx
+         mTVILjFyAZlUHy3SlYTOb0wMSeg5bpd/E46ofwsDD0Zcl9FxUeNg3p2s/PE/RXxKXTHr
+         GpX6vrfYEmqQ7tCFdmKt7hO87cusYbjDOeDcdEiIvK4MYN9lAWt2BxZ5hfhBO4ZfbGSC
+         iK/LIq28GdIDdrNGs6ACI5iqJQJy+8BhW90OGd963H7Ih3/IgP7OtFlKLAzR5sY8nxQL
+         S8VQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1767713124; x=1768317924;
+        d=1e100.net; s=20230601; t=1767713127; x=1768317927;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to;
-        bh=tqja4OTXFNT3u47pL22RWBPmyTVbsLnCE6ubN6Tn3UY=;
-        b=vBNBGf5mkY2HPLGDCBRLzyC6qOKdZnQMqShzB8VoFJv7hK8uP/lulh8XA4h2RMk0SM
-         MyQuHKUt4ek9vp/64UeZeQtdqtO3HzzbR16rYu5qCaGpWEvEx8PSYDGttXzcy+/YArw+
-         FSqnbVTLliVD/vaSbfw2+ycDyvmD0JMg6Ym0x009+SlL6UMyIZn54XW7gwelDF3vpXG8
-         099x82dcyf0AYLEmRbAY+88mMskFr4HIQYxksCvbhoPsSQDlr27x4y2gQIMGaIF29XCL
-         RY+LBhwsGWFWyLVN+zPgtOlfUfIj506lKcPIS2HRKqCezJA8tOrr3i1EZ5eCUaF8Ysed
-         QXlQ==
-X-Gm-Message-State: AOJu0Yz9VSTTsMEsR8P3NWt1MniukzYv803BzYtPB3AB3kr2sZSw5N+u
-	FLsQC9u2sH9Ss4aMQDpxk5uDBxGAmq2dVuMWCrrM+78JaS7MHwTE18k249cMYonKgNhQ4mk4nSX
-	yDvIal7u5Klq6mrm1Wx+W7NbhIwnJNIyJ05Yetv8zMDRDVRgQnh8iLrZ9uvMJ2srRejsr6Tc4SP
-	BmgQ==
-X-Gm-Gg: AY/fxX4OlRuYjYSJvhRiF4KZpA976jcfX7VbIIcKAazAxG3lqZ/60xaJK3ZCIvgVNuG
-	31CamaPVmCQR/ZydU3v1VGzveT+3UbHwbl9ytG/XgP8rWEy6Oav3zzl6A64WZgdnF7Xz5I4C9mY
-	J/DYSN3Pz2o09o9gRBY4HzfUuOQfpj2fvNfR1rFKejsiOY0b9v3BIqRlIdvJ4ay0jpy7iLTg9ai
-	jCiHrR/ajHeKYQ1i6vQ51aukLzGtpnxpCnKHAMBxVfYa8dLYoDTliH/LXYDAIg/h7N/2WR8HSwE
-	6FZ0xwE+rIEEeDOa1vD3fkojYxq91YkBSDTfZ1+3vSCCVHLZZOkVSjrnnyWzw0WjnXzLIM74LFs
-	6EjQgxWj0CKO7N7RuurL6K3JTzstVR+J8b5M++/NchA==
-X-Received: by 2002:a17:902:d4c1:b0:2a0:9b4f:5ebd with SMTP id d9443c01a7336-2a3e2ca308cmr31616235ad.15.1767713124166;
-        Tue, 06 Jan 2026 07:25:24 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IGb7p4nFroDHu3fY++zBGCrri83HpS56k2BHL+ZiWKLKPlXKvRhWK14CLSacpJjRcoO6PziyQ==
-X-Received: by 2002:a17:902:d4c1:b0:2a0:9b4f:5ebd with SMTP id d9443c01a7336-2a3e2ca308cmr31615905ad.15.1767713123542;
-        Tue, 06 Jan 2026 07:25:23 -0800 (PST)
+        bh=lvutWKI7TKt16StpCuzmvGLizpsf+0/4btbqFsNvdR4=;
+        b=NRUIRjZrFfMoUkLqKjDc2cS9P0mExBLCND8Q10AVgWSsMJ8686L5ueFlNQSYuCOzrc
+         TBWOzaYip3YsC6nu6ZtBotC/7qgqBdA0kb/DF/QxKNkW3J4FRZa313AUgP+1c3ZZN492
+         PZbsquIZRBdBWcF8F44pZDEgriwl1N/xwHw6Q5lejm2Q3c/8S6Xz7phDbN0ZnPtRJHuc
+         RUCeUk8OZ7YtoB2BVOqUVxo2QaESRUKKGrwa461+YGCTOXDat2OcZqWqPtwfeaDlUWVM
+         a3rdpNHdEIOqXJvQ/Ybah1pqQejufivE1xDr97XC0HCK7zN781aja9Bk7BUIqVIIe2dj
+         XcRg==
+X-Gm-Message-State: AOJu0YxdM3Lcv1UldAD+omeDbFWjCH2f4aJpjLHq9jmDViiAqTW6PErH
+	ywPwodQ3pLCniiEhXHlMPvBS90wOThTX+/LiW7eJ9eTkjUmdOk5Bn3vQ3045NlZSmdPCYZ6++8Z
+	HHuBGdScnEb1QEWeza2rh27ylQ2c5J3RmKXuAJe7mzrfuddIm+ynncGPKRaJVbzmay1JeXw==
+X-Gm-Gg: AY/fxX54JgVMxhvUz4kr7/jO924qw9mJ37FnnovQRbeaH2KRUM49ELNc6mNhRtaH7UD
+	yBRUVjVF0lYz+PWGN0voctaxs2Uo6Ljaz+b07nhvzouu1jA+1JLWDU9Aw7anOuCJ25gsSoXuUNR
+	YNZeeJ1R/tUIFQ2ypkE8fg4aQski9kunoLYdYP7NJdGN3349tzsFYCDvzpHnU+dbSOkq302ncP5
+	QKblpdLqSIZ9EH4h0BJid+TXr6Qk79QYUDKmtPHefU0+FmAJcb0GjmwCmBmTOfthwlVu3Ww8Xxp
+	fMk946kA390W20OCENpY7wUA8OwMZ+VA1wCfOHIyxXgbwHoMXpkpBLv3CnJ8uGSqpGhN1KbXUDK
+	Q177IBQQftemSVO/KNNneuUHDARjgOQAcXgVORR0IjQ==
+X-Received: by 2002:a17:902:ea11:b0:2a0:9e9d:e8cf with SMTP id d9443c01a7336-2a3e2df504amr36372665ad.57.1767713126577;
+        Tue, 06 Jan 2026 07:25:26 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IGbIWFs9zlq2bAMNYYU9U3Pu+1rZ7m0M8HHLrsgGkOvqlPm0zAmfgy/DpEM68LuYWpnHDw+vA==
+X-Received: by 2002:a17:902:ea11:b0:2a0:9e9d:e8cf with SMTP id d9443c01a7336-2a3e2df504amr36372395ad.57.1767713126077;
+        Tue, 06 Jan 2026 07:25:26 -0800 (PST)
 Received: from hu-kkavita-hyd.qualcomm.com ([202.46.22.19])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2a3e3cb2ea0sm26343595ad.62.2026.01.06.07.25.21
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2a3e3cb2ea0sm26343595ad.62.2026.01.06.07.25.23
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 06 Jan 2026 07:25:23 -0800 (PST)
+        Tue, 06 Jan 2026 07:25:25 -0800 (PST)
 From: Kavita Kavita <kavita.kavita@oss.qualcomm.com>
 To: johannes@sipsolutions.net
 Cc: linux-wireless@vger.kernel.org, kavita.kavita@oss.qualcomm.com,
         ainy.kumari@oss.qualcomm.com, sai.magam@oss.qualcomm.com,
         quic_drohan@quicinc.com
-Subject: [PATCH wireless-next v3 4/9] wifi: nl80211: Add new NL attributes to support (Re)Association frame encryption
-Date: Tue,  6 Jan 2026 20:54:58 +0530
-Message-Id: <20260106152503.223216-5-kavita.kavita@oss.qualcomm.com>
+Subject: [PATCH wireless-next v3 5/9] wifi: mac80211: allow key installation before association
+Date: Tue,  6 Jan 2026 20:54:59 +0530
+Message-Id: <20260106152503.223216-6-kavita.kavita@oss.qualcomm.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20260106152503.223216-1-kavita.kavita@oss.qualcomm.com>
 References: <20260106152503.223216-1-kavita.kavita@oss.qualcomm.com>
@@ -108,211 +108,96 @@ List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Authority-Analysis: v=2.4 cv=Pa3yRyhd c=1 sm=1 tr=0 ts=695d2965 cx=c_pps
- a=cmESyDAEBpBGqyK7t0alAg==:117 a=fChuTYTh2wq5r3m49p7fHw==:17
- a=vUbySO9Y5rIA:10 a=s4-Qcg_JpJYA:10 a=VkNPw1HP01LnGYTKEx00:22
- a=EUspDBNiAAAA:8 a=COk6AnOGAAAA:8 a=jRV2BHI1QgqqTT6Ge1oA:9
- a=1OuFwYUASf3TG4hYMiVC:22 a=TjNXssC_j7lpFel5tvFf:22
-X-Proofpoint-GUID: fVeZPa_DqqguGxQvWFj0dUceENoCRWMC
-X-Proofpoint-ORIG-GUID: fVeZPa_DqqguGxQvWFj0dUceENoCRWMC
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwMTA2MDEzNCBTYWx0ZWRfX8fBR9GtFuAMj
- r6SCqgT2TXjD1jpUMCOs3MR22ItGsruApl2D02NBtOnljGh8Z0w7ksKBgxsJRlGKNvydUyfRtZv
- oKC4M607wJXYicCPHbjU1mb5N4QqDIahwDGKTtVkzre8OaTmNu/2NOAVNpcs177ipiTZEwbLW9v
- vi11rgNTLebFAnVvEmZ950LW7KTr35m9H8qcsoNT73+0afNoaypE7P+IPkSXlIgvMfx/Pc9YvUr
- 7DbTaNl77gfoFIt/vEqcizqQeIH8kOI9H82UHUg/h1i+dNq5sEWIU94cuWeeRPnjR4MIDv9UCmN
- XWawty2JfJ2u7Os80DCwAUwjWpINbp71byTKGovKqmsEZu9Ox0Upr9CAcJLP42vM5JkQWn2XPk5
- haQahVXi0v6Prh6SOMYYr6BvIYI6eeyQKLjPnJgrAfE3IVVpftqq18Lb52qmXcYNmtyE1GHhxGT
- dmL7s99DnJqYcoCMaQQ==
+X-Authority-Analysis: v=2.4 cv=V9FwEOni c=1 sm=1 tr=0 ts=695d2967 cx=c_pps
+ a=IZJwPbhc+fLeJZngyXXI0A==:117 a=fChuTYTh2wq5r3m49p7fHw==:17
+ a=IkcTkHD0fZMA:10 a=vUbySO9Y5rIA:10 a=s4-Qcg_JpJYA:10
+ a=VkNPw1HP01LnGYTKEx00:22 a=EUspDBNiAAAA:8 a=NJNI8byFtPwFAtEfovoA:9
+ a=3ZKOabzyN94A:10 a=QEXdDO2ut3YA:10 a=uG9DUKGECoFWVXl0Dc02:22
+X-Proofpoint-ORIG-GUID: limB_nngGqSqJCq3wR2Y6gZEjzXav11D
+X-Proofpoint-GUID: limB_nngGqSqJCq3wR2Y6gZEjzXav11D
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwMTA2MDEzNCBTYWx0ZWRfX2YZqN8QAQuem
+ j5KtzHJa7cSKyedgq0olfo1hFigd3IxzebrJYYxtxhMSCGANZsdb6wZ8YABca9Fchy4cD9o3Xja
+ bVYRiWaftAkKEa2J0njp05xd0IV7qzHtSAR48vPE+IADLRx0i2eL1BcdzAvbnrLIBGJ9Xe2+m6K
+ qx2nNYt/vFnEEutjydktPC3UrNZZOylkjoybhxYADgIlBJbzY/hi6kK92iVdx3g/4OvgxrJ2vE8
+ nVqBOedGMkxPlVnOcWgdQoBfzHzWmY1me/CYywi55myqKyJ39w9tCaR2jC91Hrfsly2cdQ6gXwH
+ qk1/VI8nugCDiHEy7zTU+jMxYqSBF54qi/OS5iL6e0zNKa1VvXr4I5whq+CNR2yMGiPlj3AWLHG
+ sWIV9IdfDR26ZUGF6iSgePsCZxEnpqU2xk7xTxwazEb/WKK0dPSZLJfBl4hCv/H+whJiMqwNt4u
+ SShSp4xserKSOdcUY+A==
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.9,FMLib:17.12.100.49
  definitions=2026-01-06_01,2026-01-06_01,2025-10-01_01
 X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- impostorscore=0 clxscore=1015 priorityscore=1501 lowpriorityscore=0
- spamscore=0 adultscore=0 suspectscore=0 phishscore=0 malwarescore=0
- bulkscore=0 classifier=typeunknown authscore=0 authtc= authcc= route=outbound
- adjust=0 reason=mlx scancount=1 engine=8.22.0-2512120000
- definitions=main-2601060134
+ lowpriorityscore=0 priorityscore=1501 suspectscore=0 phishscore=0 bulkscore=0
+ adultscore=0 malwarescore=0 spamscore=0 clxscore=1015 impostorscore=0
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.22.0-2512120000 definitions=main-2601060134
 
-From: Sai Pratyusha Magam <sai.magam@oss.qualcomm.com>
+Currently, mac80211 allows key installation only after association
+completes. However, Enhanced Privacy Protection Key Exchange (EPPKE)
+requires key installation before association to enable encryption and
+decryption of (Re)Association Request and Response frames.
 
-Introduce new netlink attributes for the userspace to indicate
-following to the driver in AP mode:
+Add support to install keys prior to association when the peer is an
+Enhanced Privacy Protection (EPP) peer that requires encryption and
+decryption of (Re)Association Request and Response frames.
 
-A new netlink attribute NL80211_ATTR_EPP_PEER for NL80211_CMD_NEW_STA
-and NL80211_CMD_ADD_LINK_STA to indicate that it is an
-Enhanced Privacy Protection (EPP) peer.
+For non-AP STA mode, the existing "epp_peer" parameter is set when the
+authentication algorithm is WLAN_AUTH_EPPKE during station profile
+initialization. For AP mode, it is set during NL80211_CMD_NEW_STA and
+NL80211_CMD_ADD_LINK_STA. When "epp_peer" parameter is set, mac80211
+now accepts keys before association and enables encryption of the
+(Re)Association Request/Response frames.
 
-A new netlink attribute NL80211_ATTR_EPP_FLAGS for
-NL80211_CMD_SET_STATION to indicate the negotiated EPP capabilities of
-an EPP AP and an EPP non-AP STA
-
-The Extended RSN capabilities for EPP that an EPP AP and an EPP
-non-AP STA can negotiate are as per "IEEE P802.11bi/D3.0, 9.4.2.240"
-(RSNXE), few of which are driver dependent, hence need them to be
-communicated from userspace for later use.
-
-Co-developed-by: Rohan Dutta <quic_drohan@quicinc.com>
-Signed-off-by: Rohan Dutta <quic_drohan@quicinc.com>
+Co-developed-by: Sai Pratyusha Magam <sai.magam@oss.qualcomm.com>
 Signed-off-by: Sai Pratyusha Magam <sai.magam@oss.qualcomm.com>
 Signed-off-by: Kavita Kavita <kavita.kavita@oss.qualcomm.com>
 ---
- include/net/cfg80211.h       |  5 +++++
- include/net/mac80211.h       |  5 +++++
- include/uapi/linux/nl80211.h | 26 ++++++++++++++++++++++++++
- net/mac80211/cfg.c           |  6 ++++++
- net/wireless/nl80211.c       | 10 ++++++++++
- 5 files changed, 52 insertions(+)
+ net/mac80211/cfg.c  | 12 ++++++++++--
+ net/mac80211/mlme.c |  4 ++++
+ 2 files changed, 14 insertions(+), 2 deletions(-)
 
-diff --git a/include/net/cfg80211.h b/include/net/cfg80211.h
-index 899f267b7cf9..c0c1da2b258c 100644
---- a/include/net/cfg80211.h
-+++ b/include/net/cfg80211.h
-@@ -1785,6 +1785,9 @@ struct cfg80211_ttlm_params {
-  *	present/updated
-  * @eml_cap: EML capabilities of this station
-  * @link_sta_params: link related params.
-+ * @epp_peer: EPP peer indication
-+ * @epp_flags: Negotiated EPP capabilities
-+ *	(bitmask of BIT(%NL80211_EPP_FLAG_...))
-  */
- struct station_parameters {
- 	struct net_device *vlan;
-@@ -1811,6 +1814,8 @@ struct station_parameters {
- 	bool eml_cap_present;
- 	u16 eml_cap;
- 	struct link_station_parameters link_sta_params;
-+	bool epp_peer;
-+	u32 epp_flags;
- };
- 
- /**
-diff --git a/include/net/mac80211.h b/include/net/mac80211.h
-index c2e49542626c..7cc0625a7116 100644
---- a/include/net/mac80211.h
-+++ b/include/net/mac80211.h
-@@ -2520,6 +2520,9 @@ struct ieee80211_link_sta {
-  *	by the AP.
-  * @valid_links: bitmap of valid links, or 0 for non-MLO
-  * @spp_amsdu: indicates whether the STA uses SPP A-MSDU or not.
-+ * @epp_peer: indicates that the peer is an EPP peer.
-+ * @epp_flags: Negotiated EPP capabilities
-+ *	(bitmask of BIT(%NL80211_EPP_FLAG_...))
-  */
- struct ieee80211_sta {
- 	u8 addr[ETH_ALEN] __aligned(2);
-@@ -2544,6 +2547,8 @@ struct ieee80211_sta {
- 	struct ieee80211_txq *txq[IEEE80211_NUM_TIDS + 1];
- 
- 	u16 valid_links;
-+	bool epp_peer;
-+	u32 epp_flags;
- 	struct ieee80211_link_sta deflink;
- 	struct ieee80211_link_sta __rcu *link[IEEE80211_MLD_MAX_NUM_LINKS];
- 
-diff --git a/include/uapi/linux/nl80211.h b/include/uapi/linux/nl80211.h
-index 5c33486c6380..81ada0c3a7bf 100644
---- a/include/uapi/linux/nl80211.h
-+++ b/include/uapi/linux/nl80211.h
-@@ -2973,6 +2973,13 @@ enum nl80211_commands {
-  *	primary channel is 2 MHz wide, and the control channel designates
-  *	the 1 MHz primary subchannel within that 2 MHz primary.
-  *
-+ * @NL80211_ATTR_EPP_PEER: A flag attribute to indicate if the peer is an EPP
-+ *	STA. Used with %NL80211_CMD_NEW_STA and %NL80211_CMD_ADD_LINK_STA
-+ *
-+ * @NL80211_ATTR_EPP_FLAGS: A (u32) bitmap attribute to indicate the negotiated
-+ *	EPP capabilities of an EPP AP and an EPP non-AP STA. See
-+ *	&enum nl80211_epp_flags for details. Used with %NL80211_CMD_SET_STATION
-+ *
-  * @NUM_NL80211_ATTR: total number of nl80211_attrs available
-  * @NL80211_ATTR_MAX: highest attribute number currently defined
-  * @__NL80211_ATTR_AFTER_LAST: internal use
-@@ -3541,6 +3548,10 @@ enum nl80211_attrs {
- 
- 	NL80211_ATTR_S1G_PRIMARY_2MHZ,
- 
-+	NL80211_ATTR_EPP_PEER,
-+
-+	NL80211_ATTR_EPP_FLAGS,
-+
- 	/* add attributes here, update the policy in nl80211.c */
- 
- 	__NL80211_ATTR_AFTER_LAST,
-@@ -3702,6 +3713,21 @@ enum nl80211_sta_flags {
- 	NL80211_STA_FLAG_MAX = __NL80211_STA_FLAG_AFTER_LAST - 1
- };
- 
-+/**
-+ * enum nl80211_epp_flags - EPP Flags
-+ *
-+ * Negotiated EPP capabilities of an EPP STA
-+ *
-+ * @NL80211_EPP_FLAG_ASSOC_FRAME_ENCRYPTION: (Re)Association
-+ *	Request/Response frame encryption support
-+ * @NL80211_EPP_FLAG_1X_UTILIZING_AUTHENTICATION_FRAMES:
-+ *	IEEE 802.1X (EAP) Authentication utilizing Authentication frames
-+ */
-+enum nl80211_epp_flags {
-+	NL80211_EPP_FLAG_ASSOC_FRAME_ENCRYPTION = 0,
-+	NL80211_EPP_FLAG_1X_UTILIZING_AUTHENTICATION_FRAMES,
-+};
-+
- /**
-  * enum nl80211_sta_p2p_ps_status - station support of P2P PS
-  *
 diff --git a/net/mac80211/cfg.c b/net/mac80211/cfg.c
-index c81091a5cc3a..afc636a31f57 100644
+index afc636a31f57..ba7b1110c2f3 100644
 --- a/net/mac80211/cfg.c
 +++ b/net/mac80211/cfg.c
-@@ -2199,6 +2199,12 @@ static int sta_apply_parameters(struct ieee80211_local *local,
- 	mask = params->sta_flags_mask;
- 	set = params->sta_flags_set;
- 
-+	if (params->epp_peer)
-+		sta->sta.epp_peer = true;
-+
-+	if (sta->sta.epp_peer)
-+		sta->sta.epp_flags = params->epp_flags;
-+
- 	if (ieee80211_vif_is_mesh(&sdata->vif)) {
- 		/*
- 		 * In mesh mode, ASSOCIATED isn't part of the nl80211
-diff --git a/net/wireless/nl80211.c b/net/wireless/nl80211.c
-index c464c449cb0b..93c075c19807 100644
---- a/net/wireless/nl80211.c
-+++ b/net/wireless/nl80211.c
-@@ -932,6 +932,8 @@ static const struct nla_policy nl80211_policy[NUM_NL80211_ATTR] = {
- 		NLA_POLICY_NESTED(nl80211_s1g_short_beacon),
- 	[NL80211_ATTR_BSS_PARAM] = { .type = NLA_FLAG },
- 	[NL80211_ATTR_S1G_PRIMARY_2MHZ] = { .type = NLA_FLAG },
-+	[NL80211_ATTR_EPP_PEER] = { .type = NLA_FLAG },
-+	[NL80211_ATTR_EPP_FLAGS] = { .type = NLA_U32 },
- };
- 
- /* policy for the key attributes */
-@@ -8416,6 +8418,10 @@ static int nl80211_set_station(struct sk_buff *skb, struct genl_info *info)
- 			nla_len(info->attrs[NL80211_ATTR_STA_EXT_CAPABILITY]);
- 	}
- 
-+	if (info->attrs[NL80211_ATTR_EPP_FLAGS])
-+		params.epp_flags =
-+			nla_get_u32(info->attrs[NL80211_ATTR_EPP_FLAGS]);
-+
- 	if (parse_station_flags(info, dev->ieee80211_ptr->iftype, &params))
- 		return -EINVAL;
- 
-@@ -8789,6 +8795,10 @@ static int nl80211_new_station(struct sk_buff *skb, struct genl_info *info)
- 			goto out;
+@@ -680,10 +680,18 @@ static int ieee80211_add_key(struct wiphy *wiphy, struct net_device *dev,
+ 		 * association has completed, this rejects that attempt
+ 		 * so it will set the key again after association.
+ 		 *
++		 * With (re)association frame encryption enabled, cfg80211
++		 * may deliver keys to mac80211 before the station has
++		 * associated. In that case, accept the key if the station
++		 * is an Enhanced Privacy Protection (EPP) peer.
++		 * If (re)association frame encryption support is not present,
++		 * cfg80211 will not allow key installation in non‑AP STA mode.
++		 *
+ 		 * TODO: accept the key if we have a station entry and
+-		 *       add it to the device after the station.
++		 *	 add it to the device after the station associates.
+ 		 */
+-		if (!sta || !test_sta_flag(sta, WLAN_STA_ASSOC)) {
++		if (!sta || (!sta->sta.epp_peer &&
++			     !test_sta_flag(sta, WLAN_STA_ASSOC))) {
+ 			ieee80211_key_free_unused(key);
+ 			return -ENOENT;
  		}
+diff --git a/net/mac80211/mlme.c b/net/mac80211/mlme.c
+index ad53dedd929c..cfb87ae81bb8 100644
+--- a/net/mac80211/mlme.c
++++ b/net/mac80211/mlme.c
+@@ -8964,6 +8964,10 @@ static int ieee80211_prep_connection(struct ieee80211_sub_if_data *sdata,
+ 			goto out_err;
+ 		}
+ 
++		if (ifmgd->auth_data &&
++		    ifmgd->auth_data->algorithm == WLAN_AUTH_EPPKE)
++			new_sta->sta.epp_peer = true;
++
+ 		new_sta->sta.mlo = mlo;
  	}
-+
-+	params.epp_peer =
-+		nla_get_flag(info->attrs[NL80211_ATTR_EPP_PEER]);
-+
- 	err = rdev_add_station(rdev, dev, mac_addr, &params);
- out:
- 	dev_put(params.vlan);
+ 
 -- 
 2.34.1
 
