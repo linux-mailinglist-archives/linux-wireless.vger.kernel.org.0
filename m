@@ -1,180 +1,156 @@
-Return-Path: <linux-wireless+bounces-30412-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-30413-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id DBAE8CFA264
-	for <lists+linux-wireless@lfdr.de>; Tue, 06 Jan 2026 19:29:31 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8467FCFA5EE
+	for <lists+linux-wireless@lfdr.de>; Tue, 06 Jan 2026 19:57:06 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 1A271316B4DC
-	for <lists+linux-wireless@lfdr.de>; Tue,  6 Jan 2026 17:41:48 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id E77C730402B3
+	for <lists+linux-wireless@lfdr.de>; Tue,  6 Jan 2026 18:57:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B456A2FB08C;
-	Tue,  6 Jan 2026 17:34:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C40B921773D;
+	Tue,  6 Jan 2026 18:57:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="Ljs0vtvS"
+	dkim=pass (1024-bit key) header.d=candelatech.com header.i=@candelatech.com header.b="Waaw//hG"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-wm1-f66.google.com (mail-wm1-f66.google.com [209.85.128.66])
+Received: from dispatch1-us1.ppe-hosted.com (dispatch1-us1.ppe-hosted.com [148.163.129.49])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 21BFA2FC024
-	for <linux-wireless@vger.kernel.org>; Tue,  6 Jan 2026 17:34:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.66
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CE6F12367AC;
+	Tue,  6 Jan 2026 18:57:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.129.49
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767720892; cv=none; b=vDCINRkol2aSnqhq2QkLDedSqdZ1DWG9ATr0nWN7LBkGx+EgVxPBlJPsm0nWPe2RQam33G85krsl4P69PHXyL70AZzcyW/cDGgC8A5LBUkWFRW0EplizovYeZehOrRwztL+KkODLue93NV4O3Kp9Pt93Ji1G1MVZk5zaxyCjxQU=
+	t=1767725822; cv=none; b=vB/1g5fDKNOBoIHgZyXAWIxo1dS02BKyvlwl8kigsL+RZh4bPK4aMS09BMObXhlfksyM7q43+YcYvEAJQwT8zt+DaHoOp4F0k/iRklag3NiQMCd/35MeYBK6r3i0z5gOxvXCRljlcmJbmgk/2n/OQdnwDELQinkCrOyGtQUVikI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767720892; c=relaxed/simple;
-	bh=vbg/4Kuy8+wEtCaTdI808rOQJV/eEI0U33FeZ9sxcno=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=VfPI6Omo0bwUZ3m4IQYlskjEBzocwwIvwtI28PtSfJ6eqxawaJH7Rh4snWe9LhjzjNLT86iTME+IH6+ZzC9L8jQYtAzTLtTqo6Ia3tab+2hvwauZMNzmAwmbW971aRA++sQmFeAejRhsnemQs43jLgCZOCVJmjwcWoYh/yYP6tE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=Ljs0vtvS; arc=none smtp.client-ip=209.85.128.66
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
-Received: by mail-wm1-f66.google.com with SMTP id 5b1f17b1804b1-477ba2c1ca2so12763245e9.2
-        for <linux-wireless@vger.kernel.org>; Tue, 06 Jan 2026 09:34:49 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1767720888; x=1768325688; darn=vger.kernel.org;
-        h=user-agent:in-reply-to:content-disposition:mime-version:references
-         :message-id:subject:cc:to:from:date:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=RXcHtzljW/LEwcnvhUw7B+CYy+kN5WC/pk6M+qEtNI0=;
-        b=Ljs0vtvSNgpYJhknDhx9bELQGkkGVBktvrRTynlExmpLIGaAKcKfy3q+Vzhc0CBdzt
-         hBu8YqcaTsruwaGPpR28ZieFzq6vpX9ppPbtMDq1YX7oLCc1WBHU2/khCZGPgcPiCJQo
-         /SdqgjVvcX4o8hT7DcaJnMaMrndMqG0BlSQCVNuO18iucidmTBu/KWco362PprZTfFO/
-         XbxStM5Ax6eKh7Rzmwb+jd7wTMCelndFhBbeJ2nvVNQfn/FL+xadO2yxh5ZLwyELgTkw
-         edYtcRWUeQEl3fZGMU433z7W5zEQdjxichBC/sKkiUvsD8eW0UgBMhLx19RKhPBoMKrS
-         pmaw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1767720888; x=1768325688;
-        h=user-agent:in-reply-to:content-disposition:mime-version:references
-         :message-id:subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=RXcHtzljW/LEwcnvhUw7B+CYy+kN5WC/pk6M+qEtNI0=;
-        b=EWbVpoZy6GSxQeF3UyKANlULr6Cng1Sa7pJD4+1Pf9hNpSIGSwQ8svgL1mEahIx36W
-         +0M4clRbYmVh15/InBN0g6FzOX374NZlicIuetzarvR8uJ3L0N0KXxAW9jZDufwc+pVF
-         yvDWe70g23cCdk6PTqOaGJLuLh45p8v7TetnV3RXzOqiQMV3vMQc6gbxZcYdLyMDeuzZ
-         RuYA/S2vbMSyHf9rcOLYS/zAm6V5hjH/P332104eKNRbwimcRduUsvrF9Am/OwKrzG41
-         tUnySYXeMb9C2CvYgHtxB6evQ7eoddaL2NatWx7exf0bm9JPb8AWlMg9QRR7iYRR50Og
-         uCcw==
-X-Forwarded-Encrypted: i=1; AJvYcCVNqJ9GZZd6osDxP/jqqH21UFtfi6SFCWblROkLPxvZY1loSXMKB332qNGQ6ajgQUX3sWF5bYw30HatFFxQvQ==@vger.kernel.org
-X-Gm-Message-State: AOJu0YzmmgeGGPrtxcYIv79W+mM6y+6/7FcjdLpn7KjlrBmt52v+8d6q
-	LMf83z0NbLiJZ2vduWbgSakNxYgrhsBXyBG0yE6srVeVzXMqfp5+bnzjuW1t9UFt2w==
-X-Gm-Gg: AY/fxX67X035EL0o2vcBvcb7b69rKEYkZpFQlWFCnqcn6BjGXgkq349dp2HK5YD/JOB
-	eDjrTa6gR0v60IiHgnzpE6ixON+6M2czN67abCXykOEex6I+a/Tb9L51sVibacHn0JWBwRvjqP6
-	aTRkqEVPBfD9hGlPrTaVXqHqjpBXslMfoXz1B3BTYPtYGreFEfPyeCWA+vSqYBHWazl7f9W6Hg1
-	ar5bTiSkk+6+GB5SiVlYQA0z3hd7bCV8tV029pcOsgCOftXQltGpMr8saQlmNcr6PR6e6WrGkQ4
-	gI1LWzeg67UevyQrCCHmim4D3FGGlzjirVp9HKVUUdh/tLa1Ldf8gtzSgPucW2JBYpQtJRUN3O9
-	JISK3ST3Kg80Qne6QhrzQjbGhYN6GdXXEz4pzOPrck6saNtpK9hwsu5E5ZzohIVxSqzE653Eppl
-	JSrTXXDMcS1STDfmi4NGp7W06Z1RqlzfS2yb8/BfXvUtQMNuzO
-X-Google-Smtp-Source: AGHT+IHmVK6EqE14VH+HPUL16Zk51harYxsBJJheKVL1BeqXTS/M31ba8unH1eaK7+ALdSr4nMxyjw==
-X-Received: by 2002:a05:600c:46ca:b0:477:7a53:f493 with SMTP id 5b1f17b1804b1-47d7f0980e2mr44046495e9.23.1767720888108;
-        Tue, 06 Jan 2026 09:34:48 -0800 (PST)
-Received: from elver.google.com ([2a00:79e0:2834:9:4477:8df2:f516:1bd3])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-47d7fb4b3c5sm21868415e9.15.2026.01.06.09.34.45
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 06 Jan 2026 09:34:47 -0800 (PST)
-Date: Tue, 6 Jan 2026 18:34:39 +0100
-From: Marco Elver <elver@google.com>
-To: Tetsuo Handa <penguin-kernel@i-love.sakura.ne.jp>
-Cc: Peter Zijlstra <peterz@infradead.org>,
-	Boqun Feng <boqun.feng@gmail.com>, Ingo Molnar <mingo@kernel.org>,
-	Will Deacon <will@kernel.org>,
-	"David S. Miller" <davem@davemloft.net>,
-	Luc Van Oostenryck <luc.vanoostenryck@gmail.com>,
-	Chris Li <sparse@chrisli.org>,
-	"Paul E. McKenney" <paulmck@kernel.org>,
-	Alexander Potapenko <glider@google.com>,
-	Arnd Bergmann <arnd@arndb.de>, Bart Van Assche <bvanassche@acm.org>,
-	Christoph Hellwig <hch@lst.de>, Dmitry Vyukov <dvyukov@google.com>,
-	Eric Dumazet <edumazet@google.com>,
-	Frederic Weisbecker <frederic@kernel.org>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	Herbert Xu <herbert@gondor.apana.org.au>,
-	Ian Rogers <irogers@google.com>, Jann Horn <jannh@google.com>,
-	Joel Fernandes <joelagnelf@nvidia.com>,
-	Johannes Berg <johannes.berg@intel.com>,
-	Jonathan Corbet <corbet@lwn.net>,
-	Josh Triplett <josh@joshtriplett.org>,
-	Justin Stitt <justinstitt@google.com>, Kees Cook <kees@kernel.org>,
-	Kentaro Takeda <takedakn@nttdata.co.jp>,
-	Lukas Bulwahn <lukas.bulwahn@gmail.com>,
-	Mark Rutland <mark.rutland@arm.com>,
-	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
-	Miguel Ojeda <ojeda@kernel.org>,
-	Nathan Chancellor <nathan@kernel.org>,
-	Neeraj Upadhyay <neeraj.upadhyay@kernel.org>,
-	Nick Desaulniers <nick.desaulniers+lkml@gmail.com>,
-	Steven Rostedt <rostedt@goodmis.org>,
-	Thomas Gleixner <tglx@linutronix.de>, Thomas Graf <tgraf@suug.ch>,
-	Uladzislau Rezki <urezki@gmail.com>,
-	Waiman Long <longman@redhat.com>, kasan-dev@googlegroups.com,
-	linux-crypto@vger.kernel.org, linux-doc@vger.kernel.org,
-	linux-kbuild@vger.kernel.org, linux-kernel@vger.kernel.org,
-	linux-mm@kvack.org, linux-security-module@vger.kernel.org,
-	linux-sparse@vger.kernel.org, linux-wireless@vger.kernel.org,
-	llvm@lists.linux.dev, rcu@vger.kernel.org
-Subject: Re: [PATCH v5 06/36] cleanup: Basic compatibility with context
- analysis
-Message-ID: <aV1HrwZm6xg8PnRU@elver.google.com>
-References: <20251219154418.3592607-1-elver@google.com>
- <20251219154418.3592607-7-elver@google.com>
- <993d381a-c24e-41d2-a0be-c1b0b5d8cbe9@I-love.SAKURA.ne.jp>
+	s=arc-20240116; t=1767725822; c=relaxed/simple;
+	bh=meJWznmpisb4Z0tj5/BsgVG4zJyBnjMbDiLi5lcu3Rc=;
+	h=Message-ID:Date:MIME-Version:Subject:From:To:Cc:References:
+	 In-Reply-To:Content-Type; b=HhgMgBsjR7xVYVTPvOUxzam5JdqKYvt3jEoji3efECMzZk38G2Ie2atkRhmuymS2Z8s8RcMQ/8F8SGKX+LUdePN6r6XOfmuRPq0//dtJ5HrPh/zwo59Vx/X7rF1/OMCfMXbZwJ7HT/lhAhTHxqYf3cVl5de6t8NReUJzj3cxxNQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=candelatech.com; spf=pass smtp.mailfrom=candelatech.com; dkim=pass (1024-bit key) header.d=candelatech.com header.i=@candelatech.com header.b=Waaw//hG; arc=none smtp.client-ip=148.163.129.49
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=candelatech.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=candelatech.com
+X-Virus-Scanned: Proofpoint Essentials engine
+Received: from mail3.candelatech.com (mail.candelatech.com [208.74.158.173])
+	by mx1-us1.ppe-hosted.com (PPE Hosted ESMTP Server) with ESMTP id 2E321AC00E2;
+	Tue,  6 Jan 2026 18:56:52 +0000 (UTC)
+Received: from [192.168.101.118] (firewall.candelatech.com [50.251.239.81])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+	(No client certificate requested)
+	by mail3.candelatech.com (Postfix) with ESMTPSA id 8479913C2B0;
+	Tue,  6 Jan 2026 10:56:49 -0800 (PST)
+DKIM-Filter: OpenDKIM Filter v2.11.0 mail3.candelatech.com 8479913C2B0
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=candelatech.com;
+	s=default; t=1767725809;
+	bh=meJWznmpisb4Z0tj5/BsgVG4zJyBnjMbDiLi5lcu3Rc=;
+	h=Date:Subject:From:To:Cc:References:In-Reply-To:From;
+	b=Waaw//hG/TyF6p7ucTuzVCWt0sB/c1bBOwzvPvXFFaqrOWX5OaI4iUxgMTnIK0tjT
+	 HSGT+l6t6n0WB5adf8kstK/WRwC4VBeXY+Le+U3dC4YDWOJObQFAEm3aL59WmsTFwQ
+	 IlZf5Zsqj1dZKpg3hFdSCWHoCHuNwi3fGnbwqJtM=
+Message-ID: <e5cba37b-2bb5-46fb-b414-5cc6b2e894cf@candelatech.com>
+Date: Tue, 6 Jan 2026 10:56:49 -0800
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <993d381a-c24e-41d2-a0be-c1b0b5d8cbe9@I-love.SAKURA.ne.jp>
-User-Agent: Mutt/2.2.13 (2024-03-09)
+User-Agent: Mozilla Thunderbird
+Subject: Re: [BUG 6.18.2] Null Pointer Exception in Fair Scheduler
+From: "Dylan E." <dylan.eskew@candelatech.com>
+To: stable@vger.kernel.org, linux-kernel@vger.kernel.org,
+ linux-wireless@vger.kernel.org
+Cc: gregkh@linuxfoundation.org, sashal@kernel.org, jjohnson@kernel.org
+References: <38b9cad8-1c17-4d89-9f17-44f89fb66ab8@candelatech.com>
+Content-Language: en-US
+In-Reply-To: <38b9cad8-1c17-4d89-9f17-44f89fb66ab8@candelatech.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-MDID: 1767725813-gyDGdEY0fzPW
+X-PPE-STACK: {"stack":"us5"}
+X-MDID-O:
+ us5;ut7;1767725813;gyDGdEY0fzPW;<dylan.eskew@candelatech.com>;6d78aa1bc4c2468e9f5ce884163e871b
+X-PPE-TRUSTED: V=1;DIR=OUT;
 
-On Tue, Jan 06, 2026 at 10:21PM +0900, Tetsuo Handa wrote:
-> On 2025/12/20 0:39, Marco Elver wrote:
-> > Introduce basic compatibility with cleanup.h infrastructure.
-> 
-> Can Compiler-Based Context- and Locking-Analysis work with conditional guards
-> (unlock only if lock succeeded) ?
-> 
-> I consider that replacing mutex_lock() with mutex_lock_killable() helps reducing
-> frequency of hung tasks under heavy load where many processes are preempted waiting
-> for the same mutex to become available (e.g.
-> https://syzkaller.appspot.com/bug?extid=8f41dccfb6c03cc36fd6 ).
-> 
-> But e.g. commit f49573f2f53e ("tty: use lock guard()s in tty_io") already replaced
-> plain mutex_lock()/mutex_unlock() with plain guard(mutex). If I propose a patch for
-> replacing mutex_lock() with mutex_lock_killable(), can I use conditional guards?
-> (Would be yes if Compiler-Based Context- and Locking-Analysis can work, would be no
->  if Compiler-Based Context- and Locking-Analysis cannot work) ?
+Hello again,
 
-It works for cond guards, so yes. But, only if support for
-mutex_lock_killable() is added. At the moment mutex.h only has:
+On 6.18.3, I'm still seeing the scheduler NPE pop-up, though this one 
+happened at shutdown. Looks to be an identical location to the previous 
+stack trace.
 
-	...
-	DEFINE_LOCK_GUARD_1(mutex, struct mutex, mutex_lock(_T->lock), mutex_unlock(_T->lock))
-	DEFINE_LOCK_GUARD_1_COND(mutex, _try, mutex_trylock(_T->lock))
-	DEFINE_LOCK_GUARD_1_COND(mutex, _intr, mutex_lock_interruptible(_T->lock), _RET == 0)
+---
+BUG: kernel NULL pointer dereference, address: 0000000000000051
+#PF: supervisor read access in kernel mode
+#PF: error_code(0x0000) - not-present page
+PGD 0 P4D 0
+Oops: Oops: 0000 [#1] SMP
+CPU: 0 UID: 0 PID: 336 Comm: (udev-worker) Not tainted 6.18.3 #39 
+PREEMPT(full)
+Hardware name: Default string Default string/SKYBAY, BIOS 5.12 02/21/2023
+RIP: 0010:pick_task_fair+0x57/0x160
+Code: 66 90 66 90 48 8b 5d 50 48 85 db 74 10 48 8b 73 70 48 89 ef e8 3a 
+74 ff ff 85 c0 75 71 be 01 00 00 00 48 89 ef e8 29 a5 ff ff <80> 78 51 
+00 48 89 c3 0f 85 80 00 00 00 48 85 c0 0f 84 87 00 00 00
+RSP: 0018:ffffc9000091bca0 EFLAGS: 00010082
+RAX: 0000000000000000 RBX: 0000000000000000 RCX: 0000000000000c00
+RDX: fffffa1b1b2acc00 RSI: 0000000000001000 RDI: 0000000000000400
+RBP: ffff8881255ef000 R08: 0000000000000400 R09: 0000000000000002
+R10: 00000000000003ae R11: ffff88812d2cc200 R12: ffff88845dc2cd00
+R13: 0000000000000000 R14: ffff88845dc2cd80 R15: ffffffff827c71e0
+FS:  00007fed68640980(0000) GS:ffff8884da723000(0000) knlGS:0000000000000000
+CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+CR2: 0000000000000051 CR3: 00000001244dd006 CR4: 00000000003706f0
+Call Trace:
+  <TASK>
+  pick_next_task_fair+0x1d/0x3d0
+  __schedule+0x1ee/0x10c0
+  ? sock_def_readable+0x3e/0xb0
+  ? sock_poll+0x4d/0xd0
+  schedule+0x23/0xc0
+  schedule_hrtimeout_range_clock+0xf4/0x100
+  do_epoll_wait+0x481/0x4b0
+  ? ep_destroy_wakeup_source+0x20/0x20
+  __x64_sys_epoll_wait+0x5a/0xf0
+  ? syscall_trace_enter+0x8d/0x1a0
+  do_syscall_64+0x50/0x3a0
+  entry_SYSCALL_64_after_hwframe+0x4b/0x53
+RIP: 0033:0x7fed69033ea7
+Code: 0c 00 f7 d8 64 89 02 b8 ff ff ff ff eb be 0f 1f 44 00 00 f3 0f 1e 
+fa 80 3d c5 a4 0c 00 00 41 89 ca 74 10 b8 e8 00 00 00 0f 05 <48> 3d 00 
+f0 ff ff 77 51 c3 55 48 89 e5 48 83 ec 20 89 55 f8 48 89
+RSP: 002b:00007ffd7c3b5508 EFLAGS: 00000202 ORIG_RAX: 00000000000000e8
+RAX: ffffffffffffffda RBX: 0000000000000006 RCX: 00007fed69033ea7
+RDX: 0000000000000006 RSI: 0000558994c733e0 RDI: 0000000000000003
+RBP: 00007ffd7c3b5620 R08: 0000558994c42010 R09: 0000000000000003
+R10: 00000000ffffffff R11: 0000000000000202 R12: 0000558994c733e0
+R13: 0000000000000002 R14: 0000558994c73060 R15: ffffffffffffffff
+  </TASK>
+Modules linked in: i915 drm_buddy intel_gtt drm_client_lib 
+drm_display_helper drm_kms_helper cec rc_core ttm agpgart ixgbe igb mdio 
+i2c_algo_bit libie_fwlog drm dca hwmon intel_oc_wdt i2c_core mei_wdt 
+video wmi
+CR2: 0000000000000051
+---[ end trace 0000000000000000 ]---
+RIP: 0010:pick_task_fair+0x57/0x160
+Code: 66 90 66 90 48 8b 5d 50 48 85 db 74 10 48 8b 73 70 48 89 ef e8 3a 
+74 ff ff 85 c0 75 71 be 01 00 00 00 48 89 ef e8 29 a5 ff ff <80> 78 51 
+00 48 89 c3 0f 85 80 00 00 00 48 85 c0 0f 84 87 00 00 00
+RSP: 0018:ffffc9000091bca0 EFLAGS: 00010082
+RAX: 0000000000000000 RBX: 0000000000000000 RCX: 0000000000000c00
+RDX: fffffa1b1b2acc00 RSI: 0000000000001000 RDI: 0000000000000400
+RBP: ffff8881255ef000 R08: 0000000000000400 R09: 0000000000000002
+R10: 00000000000003ae R11: ffff88812d2cc200 R12: ffff88845dc2cd00
+R13: 0000000000000000 R14: ffff88845dc2cd80 R15: ffffffff827c71e0
+FS:  00007fed68640980(0000) GS:ffff8884da723000(0000) knlGS:0000000000000000
+CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+CR2: 0000000000000051 CR3: 00000001244dd006 CR4: 00000000003706f0
+Kernel panic - not syncing: Fatal exception
+Shutting down cpus with NMI
+Kernel Offset: disabled
+Rebooting in 30 seconds..
+---
 
-	DECLARE_LOCK_GUARD_1_ATTRS(mutex,	__acquires(_T), __releases(*(struct mutex **)_T))
-	#define class_mutex_constructor(_T) WITH_LOCK_GUARD_1_ATTRS(mutex, _T)
-	DECLARE_LOCK_GUARD_1_ATTRS(mutex_try,	__acquires(_T), __releases(*(struct mutex **)_T))
-	#define class_mutex_try_constructor(_T) WITH_LOCK_GUARD_1_ATTRS(mutex_try, _T)
-	DECLARE_LOCK_GUARD_1_ATTRS(mutex_intr,	__acquires(_T), __releases(*(struct mutex **)_T))
-	#define class_mutex_intr_constructor(_T) WITH_LOCK_GUARD_1_ATTRS(mutex_intr, _T)
-	...
+Let me know if I can provide anymore information!
 
-And we also have a test in lib/test_context-analysis.c checking it
-actually works:
+-- Dylan
 
-	...
-	scoped_cond_guard(mutex_try, return, &d->mtx) {
-		d->counter++;
-	}
-	scoped_cond_guard(mutex_intr, return, &d->mtx) {
-		d->counter++;
-	}
-	...
-
-What's missing is a variant for mutex_lock_killable(), but that should
-be similar to the mutex_lock_interruptible() variant.
 
