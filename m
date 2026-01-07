@@ -1,147 +1,95 @@
-Return-Path: <linux-wireless+bounces-30457-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-30459-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id B41C7CFE1C6
-	for <lists+linux-wireless@lfdr.de>; Wed, 07 Jan 2026 14:57:52 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 164EBCFDFB5
+	for <lists+linux-wireless@lfdr.de>; Wed, 07 Jan 2026 14:37:19 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 1567330CB108
-	for <lists+linux-wireless@lfdr.de>; Wed,  7 Jan 2026 13:52:03 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id C451A3005017
+	for <lists+linux-wireless@lfdr.de>; Wed,  7 Jan 2026 13:37:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A3EC532BF3A;
-	Wed,  7 Jan 2026 13:20:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5C9A833ADB5;
+	Wed,  7 Jan 2026 13:37:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="VESckjTP"
+	dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b="mnwqbA5j"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.10])
+Received: from sipsolutions.net (s3.sipsolutions.net [168.119.38.16])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D22D232A3FD
-	for <linux-wireless@vger.kernel.org>; Wed,  7 Jan 2026 13:20:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.10
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 92EAF24397A
+	for <linux-wireless@vger.kernel.org>; Wed,  7 Jan 2026 13:37:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=168.119.38.16
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767792034; cv=none; b=YIIOx4gUqfTC8Z7fhyrMyQXmlEkIlqZh0mXIUgRtyzsDpZJlPbM8DFzcwGV31NOIo2RlDdtcSvNzW4KI+vhamoyKjA3cJDXQwXvgEuAu3ydXXm5Vo/m0T8LuIn5E5YXxJSAvyHqeykSgLS96GBEy29TmwjKnqXAIj5PkjrLV0P4=
+	t=1767793027; cv=none; b=XdYl9rKqQzUFesehRYWHkNqt9FnJG4IAgB471Pp2Cy1Kn0xEdXqplWb4tlUv3O9pU2ZlTuXD4pV8WMWdk0Gz4ZwdnkQt6i9dwBMGzSA0HLf8HNkYa8953SFWrQCbn7ImmFCeBgZYOzGOJImbB5SpCVSvCsU1eshe9QjdY4k1xIA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767792034; c=relaxed/simple;
-	bh=4LbP+GXeLoWKM1rVQghHA4GEc1tJvdH7t2bxoAyUoSY=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=aj1yt/BI6l3eab+91RJT4bOlfVaPnWqKOxoAM+qno7cv62EZwZtrNesR73lsQg3r6GCGtIWT7qXbq8XFTAI4fRg30csqBi1pN2Up7RHJpjLRUqAvXoupV9xG3XF0fV/4Av5sMGEPTSES+MsWMeD++rf/hziepckWSVCdGRSIyiE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=VESckjTP; arc=none smtp.client-ip=198.175.65.10
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1767792033; x=1799328033;
-  h=from:to:cc:subject:date:message-id:in-reply-to:
-   references:mime-version:content-transfer-encoding;
-  bh=4LbP+GXeLoWKM1rVQghHA4GEc1tJvdH7t2bxoAyUoSY=;
-  b=VESckjTPXPccMwJQVFBtc3N8mUKrPllaGLkI5zbs0IuOCv10btsXdX80
-   g5EQFtgopeyKLLtlY7r667AlZkrNJ2NgmftVZ8wR7denscpNW/LUKz+Ty
-   avnS5j7VYWo5o1noVbun7Z19dcM+/AY9ffwc0i26A6phSEf9Ro+ESFS/7
-   TvCvYtZ2Qku9sHWOvJoH4XC17L1BJoM6IifwjaqZXnJ1qsbhFi1pXWr5X
-   fR8tF1REtMG6eGbya/iR+GrjVfbm62BRQU5KsZVgIiuCM5qLRn2oKVfj7
-   TNPuNWXg5AmjUMUwH4D+m/dG40Kdbg3iWpDSxBNMNp7o1NKjNuWEhTX2g
-   Q==;
-X-CSE-ConnectionGUID: RgT8L3RxR+ikdNJMDe7XYw==
-X-CSE-MsgGUID: XHLUcB4FQSmjmRWSKVyO0A==
-X-IronPort-AV: E=McAfee;i="6800,10657,11664"; a="86576875"
-X-IronPort-AV: E=Sophos;i="6.21,208,1763452800"; 
-   d="scan'208";a="86576875"
-Received: from fmviesa008.fm.intel.com ([10.60.135.148])
-  by orvoesa102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 07 Jan 2026 05:20:33 -0800
-X-CSE-ConnectionGUID: xxJPAWpsRNGw9aH8/fbnPQ==
-X-CSE-MsgGUID: +3aFAmZ1TQyNHP8xB1Zcbw==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.21,208,1763452800"; 
-   d="scan'208";a="203185816"
-Received: from weis0040.iil.intel.com ([10.12.217.108])
-  by fmviesa008-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 07 Jan 2026 05:20:31 -0800
-From: Miri Korenblit <miriam.rachel.korenblit@intel.com>
+	s=arc-20240116; t=1767793027; c=relaxed/simple;
+	bh=lfTCH2LriGQaKGt6Po5wf6Btnfuk1JVHrLW6vOzUXPw=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=l8xUMTbJeblF2aH/0xpkOWdVrGgwRVGmdrVdl3JUgybbNMZ6FA+lAHQB8QvVZkF3jQXQfs09A7Q6qBrUBngYQpIKN9xEC8uDSZcQWgNho5dvEkkqjYjVlx9hzkAfTfwbNVyDYbGyYZ/u9nR0E8v+A319IMjjVS1J8Nm4tExKvQQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net; spf=pass smtp.mailfrom=sipsolutions.net; dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b=mnwqbA5j; arc=none smtp.client-ip=168.119.38.16
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sipsolutions.net
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=sipsolutions.net; s=mail; h=Content-Transfer-Encoding:MIME-Version:
+	Message-ID:Date:Subject:Cc:To:From:Content-Type:Sender:Reply-To:Content-ID:
+	Content-Description:Resent-Date:Resent-From:Resent-To:Resent-Cc:
+	Resent-Message-ID:In-Reply-To:References;
+	bh=rk3qcSmktANrKc0HxOmaUAadhJQEtsFnnuDubsEiScU=; t=1767793025; x=1769002625; 
+	b=mnwqbA5j/6QNQqEpgszErRHH6s2SQPZ1qurxle+X7jCUk9iu8QlXDSOUEIqjxkgZl+v/sXNKaIW
+	ARWgf9So8sMEd17qK7fcaEqx9xFbkAuCZm3E25WxKJ4S1QUU6/t2kmX8Mwym2hTrWBskKeIXWr3Le
+	KfRDmxG4ka5qZwA/k+kXxlw3cT/9JXjFrSqjTXbJ0KrPViFiWQe4mBiGftfMCaBMnK2j6iJmPKtJR
+	U5T+lIb/p1+23vDyscHzvVCQz7tKie7pRQ+pGlnyBbUE687LvtEDIeCZbLl1mUXUTUkClfKt524YQ
+	G+qF9zcFO4k1gy+dHTledXDugq7IGF71vJog==;
+Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
+	(Exim 4.98.2)
+	(envelope-from <johannes@sipsolutions.net>)
+	id 1vdTia-00000005ZRC-2wxh;
+	Wed, 07 Jan 2026 14:36:56 +0100
+From: Johannes Berg <johannes@sipsolutions.net>
 To: linux-wireless@vger.kernel.org
-Cc: Avraham Stern <avraham.stern@intel.com>,
-	Johannes Berg <johannes.berg@intel.com>
-Subject: [PATCH wireless-next 15/15] wifi: cfg80211: allow protected action frame TX for NAN
-Date: Wed,  7 Jan 2026 15:20:03 +0200
-Message-Id: <20260107150057.f83dc16ac3d1.I16000c3e1e2bbc320457db1ac728d789bb2f36c6@changeid>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20260107132003.2291979-1-miriam.rachel.korenblit@intel.com>
-References: <20260107132003.2291979-1-miriam.rachel.korenblit@intel.com>
+Cc: Benjamin Berg <benjamin.berg@intel.com>,
+	Ilan Peer <ilan.peer@intel.com>,
+	Miriam Rachel Korenblit <miriam.rachel.korenblit@intel.com>
+Subject: [PATCH wireless] wifi: mac80211_hwsim: fix typo in frequency notification
+Date: Wed,  7 Jan 2026 14:36:51 +0100
+Message-ID: <20260107143652.7dab2035836f.Iacbaf7bb94ed5c14a0928a625827e4137d8bfede@changeid>
+X-Mailer: git-send-email 2.52.0
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Organization: Intel Israel (74) Limited
 Content-Transfer-Encoding: 8bit
 
-From: Avraham Stern <avraham.stern@intel.com>
+From: Benjamin Berg <benjamin.berg@intel.com>
 
-Allow transmitting protected dual of public action frames on
-NAN device and NAN data interfaces, since NAN action frames
-may be protected and can be sent on both.
+The NAN notification is for 5745 MHz which corresponds to channel 149
+and not 5475 which is not actually a valid channel. This could result in
+a NULL pointer dereference in cfg80211_next_nan_dw_notif.
 
-Signed-off-by: Avraham Stern <avraham.stern@intel.com>
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
-Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
+Fixes: a37a6f54439b ("wifi: mac80211_hwsim: Add simulation support for NAN device")
+Signed-off-by: Benjamin Berg <benjamin.berg@intel.com>
+Reviewed-by: Ilan Peer <ilan.peer@intel.com>
+Reviewed-by: Miriam Rachel Korenblit <miriam.rachel.korenblit@intel.com>
+Signed-off-by: Johannes Berg <johannes@sipsolutions.net>
 ---
- net/wireless/mlme.c    | 9 +++++++--
- net/wireless/nl80211.c | 2 ++
- 2 files changed, 9 insertions(+), 2 deletions(-)
+ drivers/net/wireless/virtual/mac80211_hwsim.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/net/wireless/mlme.c b/net/wireless/mlme.c
-index 903a3dc59007..5db2caf9f3ab 100644
---- a/net/wireless/mlme.c
-+++ b/net/wireless/mlme.c
-@@ -4,7 +4,7 @@
-  *
-  * Copyright (c) 2009, Jouni Malinen <j@w1.fi>
-  * Copyright (c) 2015		Intel Deutschland GmbH
-- * Copyright (C) 2019-2020, 2022-2025 Intel Corporation
-+ * Copyright (C) 2019-2020, 2022-2026 Intel Corporation
-  */
+diff --git a/drivers/net/wireless/virtual/mac80211_hwsim.c b/drivers/net/wireless/virtual/mac80211_hwsim.c
+index 551f5eb4e747..92427f527286 100644
+--- a/drivers/net/wireless/virtual/mac80211_hwsim.c
++++ b/drivers/net/wireless/virtual/mac80211_hwsim.c
+@@ -4040,7 +4040,7 @@ mac80211_hwsim_nan_dw_start(struct hrtimer *timer)
+ 			ieee80211_vif_to_wdev(data->nan_device_vif);
  
- #include <linux/kernel.h>
-@@ -933,12 +933,17 @@ int cfg80211_mlme_mgmt_tx(struct cfg80211_registered_device *rdev,
- 			 * cfg80211 doesn't track the stations
- 			 */
- 			break;
-+		case NL80211_IFTYPE_NAN:
-+		case NL80211_IFTYPE_NAN_DATA:
-+			if (mgmt->u.action.category !=
-+			    WLAN_CATEGORY_PROTECTED_DUAL_OF_ACTION)
-+				err = -EOPNOTSUPP;
-+			break;
- 		case NL80211_IFTYPE_P2P_DEVICE:
- 			/*
- 			 * fall through, P2P device only supports
- 			 * public action frames
- 			 */
--		case NL80211_IFTYPE_NAN:
- 		default:
- 			err = -EOPNOTSUPP;
- 			break;
-diff --git a/net/wireless/nl80211.c b/net/wireless/nl80211.c
-index 9d8738e895c6..b0061b3fd438 100644
---- a/net/wireless/nl80211.c
-+++ b/net/wireless/nl80211.c
-@@ -14021,6 +14021,7 @@ static int nl80211_register_mgmt(struct sk_buff *skb, struct genl_info *info)
- 	case NL80211_IFTYPE_P2P_DEVICE:
- 		break;
- 	case NL80211_IFTYPE_NAN:
-+	case NL80211_IFTYPE_NAN_DATA:
- 		if (!wiphy_ext_feature_isset(wdev->wiphy,
- 					     NL80211_EXT_FEATURE_SECURE_NAN) &&
- 		    !(wdev->wiphy->nan_capa.flags &
-@@ -14084,6 +14085,7 @@ static int nl80211_tx_mgmt(struct sk_buff *skb, struct genl_info *info)
- 	case NL80211_IFTYPE_P2P_GO:
- 		break;
- 	case NL80211_IFTYPE_NAN:
-+	case NL80211_IFTYPE_NAN_DATA:
- 		if (!wiphy_ext_feature_isset(wdev->wiphy,
- 					     NL80211_EXT_FEATURE_SECURE_NAN) &&
- 		    !(wdev->wiphy->nan_capa.flags &
+ 		if (data->nan_curr_dw_band == NL80211_BAND_5GHZ)
+-			ch = ieee80211_get_channel(hw->wiphy, 5475);
++			ch = ieee80211_get_channel(hw->wiphy, 5745);
+ 		else
+ 			ch = ieee80211_get_channel(hw->wiphy, 2437);
+ 
 -- 
-2.34.1
+2.52.0
 
 
