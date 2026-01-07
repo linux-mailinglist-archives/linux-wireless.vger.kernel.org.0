@@ -1,66 +1,66 @@
-Return-Path: <linux-wireless+bounces-30440-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-30441-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id E98AECFD980
-	for <lists+linux-wireless@lfdr.de>; Wed, 07 Jan 2026 13:18:23 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 12DAECFDADC
+	for <lists+linux-wireless@lfdr.de>; Wed, 07 Jan 2026 13:31:59 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 913783013ED4
-	for <lists+linux-wireless@lfdr.de>; Wed,  7 Jan 2026 12:16:09 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id A2D25306590F
+	for <lists+linux-wireless@lfdr.de>; Wed,  7 Jan 2026 12:30:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0D0EF2E6CDF;
-	Wed,  7 Jan 2026 12:16:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 61773322C7B;
+	Wed,  7 Jan 2026 12:23:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="duuDrysm"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="k4QwLrvz"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.18])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.19])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 872C0258ECA
-	for <linux-wireless@vger.kernel.org>; Wed,  7 Jan 2026 12:16:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9129B322B93
+	for <linux-wireless@vger.kernel.org>; Wed,  7 Jan 2026 12:23:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.19
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767788167; cv=none; b=qIY3f824/PD4JHjzeoyCeiaKHUITg93N33/bcAVvi9sRAV5/sW5OBanvOVFpxzT4WQG9uRmyHCFty04Ruap1aDufddvwEakxL7nEjMRb/SNQeZx6CRhuDt7hbqvCrrGCotlAbzaoOSdnhbu8rGIXXAAxa2KQ60yfOD5plQ3qz8k=
+	t=1767788587; cv=none; b=UsaQ/gVGod+ol8RZM+wQfZ+YpavwXJADJDBOEtCFZKTV2er4wfX5mQ7sqaThsmgKRtK/KoW8n/FWsioT+fN0vKePmuwP2uEsZiiywdGkJKg0S+Lx1A8UOCQgVP8AbSDi8FgU6MP10g1OMTLBmyIKxW8nqHVAAfNZkpyyN7P5MGI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767788167; c=relaxed/simple;
-	bh=dZbc0ye3zijikw4SAKktxsWn8w4oMM74ooP5BjklD7Y=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=BDgcAKUCRllaIbeuKUaihS1cNoxXdNSzFKVfrCoVLJsb+7o1gNoJoRsWmHTrLyI4RiECrXYKZ19J7Z1Zv9PyvUErFnKiIqeP8+8BQj23yS96fC0SN0c0VVhr7cNfgNZ8gIAAofOfFPDmPdIGurPxeySxpcUr0hBa8LpoRur548w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=duuDrysm; arc=none smtp.client-ip=198.175.65.18
+	s=arc-20240116; t=1767788587; c=relaxed/simple;
+	bh=jPmeEmbCPQPwCe4KqLHw8Nth816RbrkyRLAXvSCo7Xc=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=nD9hbjRxNcuicGVjmIjIMzrvbvAjLYa+wrH2zbBAD5Pcwh56lzwlM9zTF70dNbBQNCx6jCJz+9Xy+7JDfTMPpFeV0bCp3uMZ9aJvNsM6x6JD5/Ciig+NSLkE5V8zCuThE8ZSsZvHsFBV9ZdSrOelbGQ57dVhIRAeeNdvUq/F/sA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=k4QwLrvz; arc=none smtp.client-ip=198.175.65.19
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1767788167; x=1799324167;
+  t=1767788585; x=1799324585;
   h=from:to:cc:subject:date:message-id:mime-version:
    content-transfer-encoding;
-  bh=dZbc0ye3zijikw4SAKktxsWn8w4oMM74ooP5BjklD7Y=;
-  b=duuDrysmGOp+cm/OC7eoZgEvYapQTDYbK8hcpBFDeQ7PhlEYgoo8QIFy
-   mGaoR7TDqw8oQqFoxr4Fxtl6PX5ESIElgmNOXCoMgU1gTK0GT+Pjsz3ZD
-   Zevs+c/giEVcBkc79kZHoB8KpW+Jy48mbwmyz+1Ph5zGBOsHFNd0iyOTC
-   4eFzZWokOaSQDbhgZ/wra4FhWh99yTt2UKro9/fzJplzM6X8z+trBVo10
-   Hhzu5DwgokX0w3ILEODJF+aUsZgAPR3wzgxaLYBpw2AaCUmiGdV1dV4jz
-   eRaMfC+4H/RuW/NP0pcM/DbdVn3q8QI7p+8YQRjgGIX3CYIHreTuzoC6q
+  bh=jPmeEmbCPQPwCe4KqLHw8Nth816RbrkyRLAXvSCo7Xc=;
+  b=k4QwLrvzsswEkW6yjZUSGgpZ8kqNePptRkOhNZWSwPaYZK1cVPh1k7Ug
+   6hgKs9F9R/ChlfqMtIMgHLLz6/kWR+NkNaUG3RvqbxlebasG3nDG6MxHL
+   EF/IIJP1oMUUbMBJuHsdA0RtijCG8ZKnLwBK3aK3cckWn28Ngc0Xvbh6a
+   t/nPJJVI3IQGjsWnj8mXCu3Y5aK0F+R3DIxZ0NSf12ZERRKpx3yEV/R3/
+   XjIw4Jx7/tJpyRc6k3t7UMZADMB0MtpfF08b2p1O48Nri/Uj+ql1YEpdu
+   V8g+zjTnfn7S1bp9yQ5wY2/Fb6gjawcveJ7H/Z9vWLEM2Ey5d/D/L+nYr
    A==;
-X-CSE-ConnectionGUID: uW13w8cpQhiiSJGc1rquuQ==
-X-CSE-MsgGUID: XcknLVuGR8Ocek4DeQbZWg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11664"; a="69205859"
+X-CSE-ConnectionGUID: Fc76kMU1SXmpev8sTS03RA==
+X-CSE-MsgGUID: UO5HDDDOQSKjr8DIO/agtg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11664"; a="69055642"
 X-IronPort-AV: E=Sophos;i="6.21,208,1763452800"; 
-   d="scan'208";a="69205859"
-Received: from orviesa009.jf.intel.com ([10.64.159.149])
-  by orvoesa110.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 07 Jan 2026 04:16:06 -0800
-X-CSE-ConnectionGUID: W+6izmxFRxGRzCIHKZjOLw==
-X-CSE-MsgGUID: qbUR8xA8S96xbqZxQ8sf9w==
+   d="scan'208";a="69055642"
+Received: from fmviesa009.fm.intel.com ([10.60.135.149])
+  by orvoesa111.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 07 Jan 2026 04:23:04 -0800
+X-CSE-ConnectionGUID: 1/n3ghnvQCCDmAPB/Z8n/w==
+X-CSE-MsgGUID: o/m1M47mR4Wb/2QQj7IiIw==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.21,208,1763452800"; 
-   d="scan'208";a="202677823"
+   d="scan'208";a="203363366"
 Received: from weis0040.iil.intel.com ([10.12.217.108])
-  by orviesa009-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 07 Jan 2026 04:16:05 -0800
+  by fmviesa009-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 07 Jan 2026 04:23:03 -0800
 From: Miri Korenblit <miriam.rachel.korenblit@intel.com>
 To: linux-wireless@vger.kernel.org
 Cc: Johannes Berg <johannes.berg@intel.com>
-Subject: [PATCH wireless-next] wifi: cfg80211: limit NAN func management APIs to offloaded DE
-Date: Wed,  7 Jan 2026 14:15:56 +0200
-Message-Id: <20260107141549.86fa96c75211.I8fbb0506377170dd7b41234f20bcba057951dd1e@changeid>
+Subject: [PATCH wireless-next 1/2] wifi: cfg80211: cleanup cluster_id when stopping NAN
+Date: Wed,  7 Jan 2026 14:22:53 +0200
+Message-Id: <20260107142229.9ccb700797ec.I890ac852be6ca0093995655d987ca5c28a26ce3d@changeid>
 X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
@@ -71,39 +71,27 @@ MIME-Version: 1.0
 Organization: Intel Israel (74) Limited
 Content-Transfer-Encoding: 8bit
 
-A driver that declared that it has userspace DE should not call NAN func
-related APIs such as cfg80211_nan_match and cfg80211_nan_func_terminated
-Check and warn in such a case, as this indicates a driver bug.
+When NAN is stopped, cluster_id should be set to 0 to indicate that we
+are not part of any cluster.
 
 Reviewed-by: Johannes Berg <johannes.berg@intel.com>
 Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
 ---
- net/wireless/nl80211.c | 6 ++++++
- 1 file changed, 6 insertions(+)
+ net/wireless/core.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/net/wireless/nl80211.c b/net/wireless/nl80211.c
-index c961cd42a832..26c1b0caf3af 100644
---- a/net/wireless/nl80211.c
-+++ b/net/wireless/nl80211.c
-@@ -16106,6 +16106,9 @@ void cfg80211_nan_match(struct wireless_dev *wdev,
- 	struct sk_buff *msg;
- 	void *hdr;
+diff --git a/net/wireless/core.c b/net/wireless/core.c
+index 9a420d627d3c..4b18c10ce8b8 100644
+--- a/net/wireless/core.c
++++ b/net/wireless/core.c
+@@ -265,6 +265,8 @@ void cfg80211_stop_nan(struct cfg80211_registered_device *rdev,
+ 	rdev_stop_nan(rdev, wdev);
+ 	wdev->is_running = false;
  
-+	if (WARN_ON(wiphy->nan_capa.flags & WIPHY_NAN_FLAGS_USERSPACE_DE))
-+		return;
++	eth_zero_addr(wdev->u.nan.cluster_id);
 +
- 	if (WARN_ON(!match->inst_id || !match->peer_inst_id || !match->addr))
- 		return;
- 
-@@ -16188,6 +16191,9 @@ void cfg80211_nan_func_terminated(struct wireless_dev *wdev,
- 	struct nlattr *func_attr;
- 	void *hdr;
- 
-+	if (WARN_ON(wiphy->nan_capa.flags & WIPHY_NAN_FLAGS_USERSPACE_DE))
-+		return;
-+
- 	if (WARN_ON(!inst_id))
- 		return;
+ 	rdev->opencount--;
+ }
  
 -- 
 2.34.1
