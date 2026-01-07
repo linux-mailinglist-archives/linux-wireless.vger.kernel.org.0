@@ -1,55 +1,55 @@
-Return-Path: <linux-wireless+bounces-30481-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-30484-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 39690CFF6C7
-	for <lists+linux-wireless@lfdr.de>; Wed, 07 Jan 2026 19:23:19 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6951DCFF604
+	for <lists+linux-wireless@lfdr.de>; Wed, 07 Jan 2026 19:17:57 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 958E8304485E
-	for <lists+linux-wireless@lfdr.de>; Wed,  7 Jan 2026 18:21:46 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 8FB86300A3D6
+	for <lists+linux-wireless@lfdr.de>; Wed,  7 Jan 2026 18:16:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6AB9B33E376;
-	Wed,  7 Jan 2026 14:23:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E02A2341079;
+	Wed,  7 Jan 2026 14:23:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b="jhHYqMTR"
+	dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b="f3lyGvwT"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from sipsolutions.net (s3.sipsolutions.net [168.119.38.16])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5FAAE33DEE5
-	for <linux-wireless@vger.kernel.org>; Wed,  7 Jan 2026 14:23:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DAA1533E369
+	for <linux-wireless@vger.kernel.org>; Wed,  7 Jan 2026 14:23:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=168.119.38.16
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767795835; cv=none; b=dP8Zhq9AtG1Cy5ElKIcGaFoV7JJrTr7jOhd8pcB2D6965GMZU+hjm4+oMvS2z+ZbbwS3WnGb57yixyKSpPLsxMAKTIbyzyLTIJJfdBcgwrtCJW31ShB/rKshWhUAZ/TP+FvvQ5XTKZ+YLlpDOTYvBfpecTIU4OkqcNU22w/6o1w=
+	t=1767795836; cv=none; b=CjsDLtu1hsnkJPuUCCZRqPByXqJy6bEqXrDbe1Moi6pQO/sEwpFL1rasykEd98I5jT6mMOqPkB0Z3O0cfDwpEE2A6Q7dSiX6nl0LdOdaDRgVP/S02Q++GGgt/LfoAW9HkTE+MDwC836ZP4LNc6Ru1mHh+Kd53IQWYW1LZxpxzgU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767795835; c=relaxed/simple;
-	bh=ZC5hfmZZqcsPzuaSMaU9vv6uJE46tdUAU3eo0DSuTmo=;
+	s=arc-20240116; t=1767795836; c=relaxed/simple;
+	bh=vSxubMQCDsedQBlmF4ltgUrHZIhf4OG5gjZZk0pXaaA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=VYpq16i0Dxz+prQyr6LKo+LG+hIXAre3zBWcUkt6eyrLu1pJtFlwE2GA9LJOF/6L/7IqNgbpE64F6H0R03IzkzcNHW3dwiqTWsmPot72H8RLmzgEv7yKsngv6U8YQDE7gAteBc8+LCv4oeO3E5O8kNAklj/NZObEvwYrYuMcpTU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net; spf=pass smtp.mailfrom=sipsolutions.net; dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b=jhHYqMTR; arc=none smtp.client-ip=168.119.38.16
+	 MIME-Version; b=Ba1t1+fehSb7Xl2ZsLpiJBtxB257HmDb7CmsBf6dmMVIHPka3aqmEoHubrL0snGTP+JTunObsnvQqXuNM8UDIW0IDboMgJZjMBd/4N4rq9pswUwNjOBGz8bjFQ/04PAuQJgvzPn+4vRK1KC3Rhzot5THeL/xBrLzPp2nM8Tcsc4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net; spf=pass smtp.mailfrom=sipsolutions.net; dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b=f3lyGvwT; arc=none smtp.client-ip=168.119.38.16
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sipsolutions.net
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=sipsolutions.net; s=mail; h=Content-Transfer-Encoding:MIME-Version:
 	References:In-Reply-To:Message-ID:Date:Subject:Cc:To:From:Content-Type:Sender
 	:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
-	Resent-Cc:Resent-Message-ID; bh=QM2ZeQu4vSXcNlI+zk8m58DNDINgiMpAdRGLcso7jG4=;
-	t=1767795833; x=1769005433; b=jhHYqMTRTSymiAX3XSi72le8SaMnseL6nC0DsnN6t7M90RZ
-	feVJcZWwBAAkCwEccpaRqx37hH0sRt2j7kPVpKjxKgp8/v6hg5pHZK0Qv9YjwdR1XwPvGwL9vPcGu
-	uN16ue1CchSNCpJmraxkSc01RYJb/J/CrPzl2ZFzEIoKQ7do2Uw4nMLo70HKp9LdJw+6RyaumX6I9
-	83lVYhVqUcaCJoK7ClMMii7KMdQVC475qMDvGJ9EQhvfofFANGaHxaYVuBE30/e3+umURg6xznLpJ
-	vdf0ctNKcSVD9fON826JRRkNJ4vrlNyagRVVTxA/HOevM/VmHgiu80Wkrsf3HuRw==;
+	Resent-Cc:Resent-Message-ID; bh=S/+yn6nLNRQbYDLKaxol8AhPh3FIqcESEmp4vzApxBo=;
+	t=1767795834; x=1769005434; b=f3lyGvwTi80YknaM93TN0SbHvYnPsmZaSqcYyp8F7I5xTwN
+	j4OdUcwsNOCwII0gHpApJjCYyHtXaC1Jh968UL7QyN00ika7fTs1UyecpnW+u3cq0xYS4UdFkSz+k
+	ZsXEXRvcnJVInhvRJElZe+SS8migEI60LTRmEvzcV8OlcbDhJ42gDfIpzAo+070EKKF2bbfmqq9iD
+	gQwFa2mEofq5nuod5v2nNlmfJwLgBbYvmg4kATTOiygmk1/Wy9XS7K0w9HTsja0BHDAxlWb4LyHw7
+	avSntHNz2fazJVAgGWbPBGbQS9vwyfdG4EiqMJUbdaLYftZy4Mc10gQqu0HCgCnA==;
 Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
 	(Exim 4.98.2)
 	(envelope-from <johannes@sipsolutions.net>)
-	id 1vdURz-00000005agF-017S;
-	Wed, 07 Jan 2026 15:23:51 +0100
+	id 1vdUS0-00000005agF-2aZD;
+	Wed, 07 Jan 2026 15:23:52 +0100
 From: Johannes Berg <johannes@sipsolutions.net>
 To: linux-wireless@vger.kernel.org
-Cc: Miri Korenblit <miriam.rachel.korenblit@intel.com>
-Subject: [RFC wireless-next 20/46] wifi: mac80211: make ieee80211_find_chanctx link-unaware
-Date: Wed,  7 Jan 2026 15:22:19 +0100
-Message-ID: <20260107152325.94f3504f7037.I0b735a607e1ec7aa5749ab01c794ef99dbe82b7f@changeid>
+Cc: Johannes Berg <johannes.berg@intel.com>
+Subject: [RFC wireless-next 22/46] wifi: mac80211: improve interface iteration ergonomics
+Date: Wed,  7 Jan 2026 15:22:21 +0100
+Message-ID: <20260107152325.e23a7429bbac.Ie387227504c975c109c125b3c57f0bb3fdab2835@changeid>
 X-Mailer: git-send-email 2.52.0
 In-Reply-To: <20260107142324.45386-48-johannes@sipsolutions.net>
 References: <20260107142324.45386-48-johannes@sipsolutions.net>
@@ -61,123 +61,158 @@ List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-From: Miri Korenblit <miriam.rachel.korenblit@intel.com>
+From: Johannes Berg <johannes.berg@intel.com>
 
-Currently we have only one user for a channel context: the link.
-With NAN, a new type of the channel context user will be added - the NAN
-channel.
-To prepare for this, we need to separate the channel context code from
-the link code.
+Right now, the only way to iterate interfaces is to declare an
+iterator function, possibly data structure to use, and pass all
+that to the iteration helper function. This is annoying, and
+there's really no inherent need for it, except it was easier to
+implement with the iflist mutex, but that's not used much now.
 
-Removes the link argument from ieee80211_find_chanctx. Since the issue that led
-to commit 5e0c422d12b5 ("wifi: mac80211: reserve chanctx during find") - that
-added the link argument - is relevant for any user of the channel context, add
-a boolean to the chanctx itself, indicating that the chanctx is in the process
-of getting used.
+Add a new for_each_interface() macro that does the iteration in
+a more ergonomic way. To avoid even more exported functions, do
+the old ieee80211_iterate_active_interfaces_mtx() as an inline
+using the new way, which may also let the compiler optimise it
+a bit more, e.g. via inlining the iterator function.
 
-When this indication is set, the reference count of the channel context
-will be incremented by one, so even if it is getting released from a link
-(or another user) it won't be freed.
+Also provide for_each_active_interface() for the common case of
+just iterating active interfaces.
 
-Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
 Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 ---
- net/mac80211/chan.c        | 26 ++++++++++++++------------
- net/mac80211/ieee80211_i.h |  3 +++
- 2 files changed, 17 insertions(+), 12 deletions(-)
+ include/net/mac80211.h | 42 +++++++++++++++++++++++++++++-----
+ net/mac80211/util.c    | 52 +++++++++++++++++++++++++++++++++++-------
+ 2 files changed, 80 insertions(+), 14 deletions(-)
 
-diff --git a/net/mac80211/chan.c b/net/mac80211/chan.c
-index 5059f52a7d9f..0605350471ce 100644
---- a/net/mac80211/chan.c
-+++ b/net/mac80211/chan.c
-@@ -163,6 +163,13 @@ int ieee80211_chanctx_refcount(struct ieee80211_local *local,
- 	for_each_chanctx_user_all(local, ctx, &iter)
- 		num++;
+diff --git a/include/net/mac80211.h b/include/net/mac80211.h
+index 66f27b0c04a9..f7cdfb6b6d0c 100644
+--- a/include/net/mac80211.h
++++ b/include/net/mac80211.h
+@@ -6274,6 +6274,30 @@ void ieee80211_iterate_active_interfaces_atomic(struct ieee80211_hw *hw,
+ 						    struct ieee80211_vif *vif),
+ 						void *data);
  
-+	/*
-+	 * This ctx is in the process of getting used,
-+	 * take it into consideration
-+	 */
-+	if (ctx->will_be_used)
-+		num++;
++struct ieee80211_vif *
++__ieee80211_iterate_interfaces(struct ieee80211_hw *hw,
++			       struct ieee80211_vif *prev,
++			       u32 iter_flags);
 +
- 	return num;
- }
++/**
++ * for_each_interface - iterate interfaces under wiphy mutex
++ * @vif: the iterator variable
++ * @hw: the HW to iterate for
++ * @flags: the iteration flags, see &enum ieee80211_interface_iteration_flags
++ */
++#define for_each_interface(vif, hw, flags)				\
++	for (vif = __ieee80211_iterate_interfaces(hw, NULL, flags);	\
++	     vif;							\
++	     vif = __ieee80211_iterate_interfaces(hw, vif, flags))
++
++/**
++ * for_each_active_interface - iterate active interfaces under wiphy mutex
++ * @vif: the iterator variable
++ * @hw: the HW to iterate for
++ */
++#define for_each_active_interface(vif, hw)				\
++	for_each_interface(vif, hw, IEEE80211_IFACE_ITER_ACTIVE)
++
+ /**
+  * ieee80211_iterate_active_interfaces_mtx - iterate active interfaces
+  *
+@@ -6286,12 +6310,18 @@ void ieee80211_iterate_active_interfaces_atomic(struct ieee80211_hw *hw,
+  * @iterator: the iterator function to call, cannot sleep
+  * @data: first argument of the iterator function
+  */
+-void ieee80211_iterate_active_interfaces_mtx(struct ieee80211_hw *hw,
+-					     u32 iter_flags,
+-					     void (*iterator)(void *data,
+-						u8 *mac,
+-						struct ieee80211_vif *vif),
+-					     void *data);
++static inline void
++ieee80211_iterate_active_interfaces_mtx(struct ieee80211_hw *hw,
++					u32 iter_flags,
++					void (*iterator)(void *data, u8 *mac,
++							 struct ieee80211_vif *vif),
++					void *data)
++{
++	struct ieee80211_vif *vif;
++
++	for_each_interface(vif, hw, iter_flags | IEEE80211_IFACE_ITER_ACTIVE)
++		iterator(data, vif->addr, vif);
++}
  
-@@ -746,10 +753,9 @@ static void ieee80211_change_chanctx(struct ieee80211_local *local,
- 	_ieee80211_change_chanctx(local, ctx, old_ctx, chanreq, NULL);
+ /**
+  * ieee80211_iterate_stations_atomic - iterate stations
+diff --git a/net/mac80211/util.c b/net/mac80211/util.c
+index c93ffccb27e8..d123043d5cb9 100644
+--- a/net/mac80211/util.c
++++ b/net/mac80211/util.c
+@@ -812,20 +812,56 @@ void ieee80211_iterate_active_interfaces_atomic(
  }
+ EXPORT_SYMBOL_GPL(ieee80211_iterate_active_interfaces_atomic);
  
--/* Note: if successful, the returned chanctx is reserved for the link */
-+/* Note: if successful, the returned chanctx will_be_used flag is set */
- static struct ieee80211_chanctx *
- ieee80211_find_chanctx(struct ieee80211_local *local,
--		       struct ieee80211_link_data *link,
- 		       const struct ieee80211_chan_req *chanreq,
- 		       enum ieee80211_chanctx_mode mode)
+-void ieee80211_iterate_active_interfaces_mtx(
+-	struct ieee80211_hw *hw, u32 iter_flags,
+-	void (*iterator)(void *data, u8 *mac,
+-			 struct ieee80211_vif *vif),
+-	void *data)
++struct ieee80211_vif *
++__ieee80211_iterate_interfaces(struct ieee80211_hw *hw,
++			       struct ieee80211_vif *prev,
++			       u32 iter_flags)
  {
-@@ -761,9 +767,6 @@ ieee80211_find_chanctx(struct ieee80211_local *local,
- 	if (mode == IEEE80211_CHANCTX_EXCLUSIVE)
- 		return NULL;
++	bool active_only = iter_flags & IEEE80211_IFACE_ITER_ACTIVE;
++	struct ieee80211_sub_if_data *sdata = NULL, *monitor;
+ 	struct ieee80211_local *local = hw_to_local(hw);
  
--	if (WARN_ON(link->reserved_chanctx))
--		return NULL;
--
- 	list_for_each_entry(ctx, &local->chanctx_list, list) {
- 		const struct ieee80211_chan_req *compat;
+ 	lockdep_assert_wiphy(hw->wiphy);
  
-@@ -783,12 +786,12 @@ ieee80211_find_chanctx(struct ieee80211_local *local,
- 			continue;
- 
- 		/*
--		 * Reserve the chanctx temporarily, as the driver might change
-+		 * Mark the chanctx as will be used, as the driver might change
- 		 * active links during callbacks we make into it below and/or
- 		 * later during assignment, which could (otherwise) cause the
- 		 * context to actually be removed.
- 		 */
--		link->reserved_chanctx = ctx;
-+		ctx->will_be_used = true;
- 
- 		ieee80211_change_chanctx(local, ctx, ctx, compat);
- 
-@@ -2043,8 +2046,8 @@ int _ieee80211_link_use_channel(struct ieee80211_link_data *link,
- 	if (!local->in_reconfig)
- 		__ieee80211_link_release_channel(link, false);
- 
--	ctx = ieee80211_find_chanctx(local, link, chanreq, mode);
--	/* Note: context is now reserved */
-+	ctx = ieee80211_find_chanctx(local, chanreq, mode);
-+	/* Note: context will_be_used flag is now set */
- 	if (ctx)
- 		reserved = true;
- 	else if (!ieee80211_find_available_radio(local, chanreq,
-@@ -2064,9 +2067,8 @@ int _ieee80211_link_use_channel(struct ieee80211_link_data *link,
- 	ret = ieee80211_assign_link_chanctx(link, ctx, assign_on_failure);
- 
- 	if (reserved) {
--		/* remove reservation */
--		WARN_ON(link->reserved_chanctx != ctx);
--		link->reserved_chanctx = NULL;
-+		WARN_ON(!ctx->will_be_used);
-+		ctx->will_be_used = false;
- 	}
- 
- 	if (ret) {
-diff --git a/net/mac80211/ieee80211_i.h b/net/mac80211/ieee80211_i.h
-index 7083718e52d5..1e60597f032c 100644
---- a/net/mac80211/ieee80211_i.h
-+++ b/net/mac80211/ieee80211_i.h
-@@ -927,6 +927,9 @@ struct ieee80211_chanctx {
- 
- 	bool radar_detected;
- 
-+	/* This chanctx is in process of getting used */
-+	bool will_be_used;
+-	__iterate_interfaces(local, iter_flags | IEEE80211_IFACE_ITER_ACTIVE,
+-			     iterator, data);
++	if (prev)
++		sdata = vif_to_sdata(prev);
 +
- 	/* MUST be last - ends in a flexible-array member. */
- 	struct ieee80211_chanctx_conf conf;
- };
++	monitor = rcu_dereference_check(local->monitor_sdata,
++					lockdep_is_held(&hw->wiphy->mtx));
++	if (monitor && monitor == sdata)
++		return NULL;
++
++	sdata = list_prepare_entry(sdata, &local->interfaces, list);
++	list_for_each_entry_continue(sdata, &local->interfaces, list) {
++		switch (sdata->vif.type) {
++		case NL80211_IFTYPE_MONITOR:
++			if (!(sdata->u.mntr.flags & MONITOR_FLAG_ACTIVE) &&
++			    !ieee80211_hw_check(&local->hw, NO_VIRTUAL_MONITOR))
++				continue;
++			break;
++		case NL80211_IFTYPE_AP_VLAN:
++			continue;
++		default:
++			break;
++		}
++		if (!(iter_flags & IEEE80211_IFACE_ITER_RESUME_ALL) &&
++		    active_only && !(sdata->flags & IEEE80211_SDATA_IN_DRIVER))
++			continue;
++		if ((iter_flags & IEEE80211_IFACE_SKIP_SDATA_NOT_IN_DRIVER) &&
++		    !(sdata->flags & IEEE80211_SDATA_IN_DRIVER))
++			continue;
++		if (ieee80211_sdata_running(sdata) || !active_only)
++			return &sdata->vif;
++	}
++
++	if (monitor && ieee80211_hw_check(&local->hw, WANT_MONITOR_VIF) &&
++	    (iter_flags & IEEE80211_IFACE_ITER_RESUME_ALL || !active_only ||
++	     monitor->flags & IEEE80211_SDATA_IN_DRIVER))
++		return &monitor->vif;
++
++	return NULL;
+ }
+-EXPORT_SYMBOL_GPL(ieee80211_iterate_active_interfaces_mtx);
++EXPORT_SYMBOL_GPL(__ieee80211_iterate_interfaces);
+ 
+ static void __iterate_stations(struct ieee80211_local *local,
+ 			       void (*iterator)(void *data,
 -- 
 2.52.0
 
