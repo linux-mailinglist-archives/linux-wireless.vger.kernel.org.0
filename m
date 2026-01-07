@@ -1,56 +1,56 @@
-Return-Path: <linux-wireless+bounces-30505-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-30506-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3A46ACFF4B0
-	for <lists+linux-wireless@lfdr.de>; Wed, 07 Jan 2026 19:08:33 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6DE4ACFF07C
+	for <lists+linux-wireless@lfdr.de>; Wed, 07 Jan 2026 18:13:37 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 4C09A3559B62
-	for <lists+linux-wireless@lfdr.de>; Wed,  7 Jan 2026 16:59:08 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 6318635AB91E
+	for <lists+linux-wireless@lfdr.de>; Wed,  7 Jan 2026 17:00:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 38BBF345CA2;
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8D37A345CA8;
 	Wed,  7 Jan 2026 14:24:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b="dgWr9zgj"
+	dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b="jEtc6V5c"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from sipsolutions.net (s3.sipsolutions.net [168.119.38.16])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 789E0345752
-	for <linux-wireless@vger.kernel.org>; Wed,  7 Jan 2026 14:24:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9FE3D345754
+	for <linux-wireless@vger.kernel.org>; Wed,  7 Jan 2026 14:24:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=168.119.38.16
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767795858; cv=none; b=QH6c2Kthysx4oU8K8lWfe2UN6vfXhBh9/vUMy/5esfWHwfvoWGk9m0mB9mxx8Gv6FvEUczBVq3RpjkbNrpBPqBM7OWTCXxfuRxp0j2OLPl3DkOjl+F9I41QR9f5rDgf8aLepWkMOx47qKHc6LZZTNGq9GjKQAjHerjmFfkaEnZI=
+	t=1767795858; cv=none; b=n/2ShxWvaAUqvwlNb27/AK+w6vbc54/Fqvr6/QhE3ozQ3hmLBD7G4Y/RTE+a1zswC24z+Vm/zC+QtSnonxmZlsAs7Lnggt0oZo13GodO0W8g+ocv2MEcSS7rcCrS7QkUtDR0CXj9WqnoXFbOGSVtB4bJRvU4oGKwb5RReLB2GBk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1767795858; c=relaxed/simple;
-	bh=W3AjSx3EyieLiWk/Giv15LDXMWmJULOmioL19f70fc4=;
+	bh=SFKX3z490ImFviavaKdKSwwWWR3xay1Dl5/aoGZS4bE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=IjLO5qzuZnwg3hDJN6kX8xFkTe+yUL00lGD1NgFW9woCxJ5tox/AUJnWe3qdpyMaZHaXx0FeuhI5hHf6bowog3BHdKN+iVR09hbzWUrEonuDb/RIikFy9yfvfTdRBiChhrgDwgtdmZDm5/Uy8uNfJexAFoBp4d05d5KZjkKt76U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net; spf=pass smtp.mailfrom=sipsolutions.net; dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b=dgWr9zgj; arc=none smtp.client-ip=168.119.38.16
+	 MIME-Version; b=MKg5HpGxS66EX09UsMM4m3Uz2wyr4CF2bx2pY0EH0EB3rT6L4tBzScI/y+5Ci1hX4yc95DkGadv7ExLuPq1NJErxxH7qlM/uDRKgkiy9Z1UJXV0PeEeg8xyMgeFDL2tCpiQCJZI7aQiLl0qCgO7jclYyerdEmVMMk3RQI+nV02s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net; spf=pass smtp.mailfrom=sipsolutions.net; dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b=jEtc6V5c; arc=none smtp.client-ip=168.119.38.16
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sipsolutions.net
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=sipsolutions.net; s=mail; h=Content-Transfer-Encoding:MIME-Version:
 	References:In-Reply-To:Message-ID:Date:Subject:Cc:To:From:Content-Type:Sender
 	:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
-	Resent-Cc:Resent-Message-ID; bh=lJEY30h9q1eng3uvadOLyAIXYt+w11gzdc/HYgMzrI0=;
-	t=1767795856; x=1769005456; b=dgWr9zgjUdwhfrfGt0LwHrzSJ8VLW6jTnjN3zwJRLmDr7ZY
-	4kHshpHD6m2Ob2BC9bv2bhTKA1E2zFjgldHQQJlHbOXktIW9NB74h2v2ObnDgVkRCEzZHgvMgRL2I
-	v/omchRY8E2OD6FSA6XtpdmeDMcHqFs3CEkRfbAqHpbUecoTvkHmMEk2b3G5+UmjShUyrzEkXWldn
-	r8UBhd/rP83Qw0fjFO96PJMeUhbXE0Z/9AzVisjlZ1i5IuDyfqQY16efAC5YvRco4iYwQl7ADp1Y1
-	a+movdbVD4no8pCEgNS4uvQB2Sh3Lw/F3EfjZ3hVq2k9yTpJGofJViIzlQ8xtyvw==;
+	Resent-Cc:Resent-Message-ID; bh=OUnPsMV2mnmYyH5fthyJzqBRFImkOJLD0OSdQThfDjQ=;
+	t=1767795856; x=1769005456; b=jEtc6V5cNyQercpTHuytZUosmsZZwS0xrBYucJNBeB1kikX
+	y/kqthYKrT7b9OQPQ7k4HwYRygo4xo/p3XixXlKiQagkxQLfzffClCV8iovr+lqi/WGFk4hxl2MbK
+	qkWpz0CIYaSfD/YhIoFWp/7lG3ZhStrNYD+Wp2BixQ1jftZclQywP/y2nFg0Dqh0v3A+Q/sT+AUlB
+	s7to9qPUzm1+AjJMd+nTVTw431fMO5CQV/Awhj34Ne+gGP5YvxR6HxDSVx3SQmwX5PWbQQDg1KO8/
+	zzAlEyfK6UB71hHIYXJ5bIfh86scPbfG+FniQ/8ddoqQHax0Cb+Vq10kP76bxc3Q==;
 Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
 	(Exim 4.98.2)
 	(envelope-from <johannes@sipsolutions.net>)
-	id 1vdUSK-00000005agF-1WEJ;
-	Wed, 07 Jan 2026 15:24:12 +0100
+	id 1vdUSM-00000005agF-08N6;
+	Wed, 07 Jan 2026 15:24:14 +0100
 From: Johannes Berg <johannes@sipsolutions.net>
 To: linux-wireless@vger.kernel.org
-Cc: Daniel Gabay <daniel.gabay@intel.com>,
+Cc: Ilan Peer <ilan.peer@intel.com>,
 	Miriam Rachel Korenblit <miriam.rachel.korenblit@intel.com>
-Subject: [RFC wireless-next 43/46] wifi: mac80211_hwsim: set HAS_RATE_CONTROL when using NAN
-Date: Wed,  7 Jan 2026 15:22:42 +0100
-Message-ID: <20260107152325.9b82fef42996.If9ef94a12cec8dfc55416afaf745d6e5025a5ec9@changeid>
+Subject: [RFC wireless-next 44/46] wifi: mac80211: allow userspace TX/RX over NAN Data interfaces
+Date: Wed,  7 Jan 2026 15:22:43 +0100
+Message-ID: <20260107152325.07046779d48c.Ic4b1c90552497b7ff2616651a408e5fe8bde7b99@changeid>
 X-Mailer: git-send-email 2.52.0
 In-Reply-To: <20260107142324.45386-48-johannes@sipsolutions.net>
 References: <20260107142324.45386-48-johannes@sipsolutions.net>
@@ -62,78 +62,102 @@ List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-From: Daniel Gabay <daniel.gabay@intel.com>
+From: Ilan Peer <ilan.peer@intel.com>
 
-- NAN switches between bands/channels per its schedule, so mac80211
-  rate control can't work, set HAS_RATE_CONTROL instead.
-- Skip rate control checks for NAN interfaces in
-  mac80211_hwsim_sta_rc_update() as it's not relevant.
-- Move set_rts_threshold stub to HWSIM_COMMON_OPS and return 0 instead
-  of -EOPNOTSUPP to prevent failures in non-MLO tests that set RTS
-  threshold (hwsim ignores the use_rts instruction from mac80211
-  anyway).
+Allow TX/RX of action frames (for NAN action frames) over
+NAN Data interfaces to support cases where there's a secure
+NDP and NAFs may be exchanged over that.
 
-Signed-off-by: Daniel Gabay <daniel.gabay@intel.com>
+Signed-off-by: Ilan Peer <ilan.peer@intel.com>
 Reviewed-by: Miriam Rachel Korenblit <miriam.rachel.korenblit@intel.com>
 Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 ---
- .../net/wireless/virtual/mac80211_hwsim_main.c    | 15 +++++++++++++--
- 1 file changed, 13 insertions(+), 2 deletions(-)
+ net/mac80211/main.c       | 6 +++++-
+ net/mac80211/offchannel.c | 9 +++++++--
+ net/mac80211/tx.c         | 5 +++--
+ 3 files changed, 15 insertions(+), 5 deletions(-)
 
-diff --git a/drivers/net/wireless/virtual/mac80211_hwsim_main.c b/drivers/net/wireless/virtual/mac80211_hwsim_main.c
-index f7f3edf505d0..9db4eac5959d 100644
---- a/drivers/net/wireless/virtual/mac80211_hwsim_main.c
-+++ b/drivers/net/wireless/virtual/mac80211_hwsim_main.c
-@@ -2572,6 +2572,10 @@ mac80211_hwsim_sta_rc_update(struct ieee80211_hw *hw,
- 	u32 bw = U32_MAX;
- 	int link_id;
+diff --git a/net/mac80211/main.c b/net/mac80211/main.c
+index 0f05f6b2ff2f..b2a73d6c3ae3 100644
+--- a/net/mac80211/main.c
++++ b/net/mac80211/main.c
+@@ -5,7 +5,7 @@
+  * Copyright 2006-2007	Jiri Benc <jbenc@suse.cz>
+  * Copyright 2013-2014  Intel Mobile Communications GmbH
+  * Copyright (C) 2017     Intel Deutschland GmbH
+- * Copyright (C) 2018-2025 Intel Corporation
++ * Copyright (C) 2018-2026 Intel Corporation
+  */
  
-+	if (vif->type == NL80211_IFTYPE_NAN ||
-+	    vif->type == NL80211_IFTYPE_NAN_DATA)
-+		return;
-+
- 	rcu_read_lock();
- 	for (link_id = 0;
- 	     link_id < ARRAY_SIZE(vif->link_conf);
-@@ -3301,7 +3305,8 @@ static int mac80211_hwsim_tx_last_beacon(struct ieee80211_hw *hw)
- static int mac80211_hwsim_set_rts_threshold(struct ieee80211_hw *hw,
- 					    int radio_idx, u32 value)
- {
--	return -EOPNOTSUPP;
-+	/* hwsim ignores the use_rts instruction from mac80211 anyway */
-+	return 0;
- }
+ #include <net/mac80211.h>
+@@ -750,6 +750,10 @@ ieee80211_default_mgmt_stypes[NUM_NL80211_IFTYPES] = {
+ 		.rx = BIT(IEEE80211_STYPE_ACTION >> 4) |
+ 			BIT(IEEE80211_STYPE_AUTH >> 4),
+ 	},
++	[NL80211_IFTYPE_NAN_DATA] = {
++		.tx = 0xffff,
++		.rx = BIT(IEEE80211_STYPE_ACTION >> 4),
++	},
+ };
  
- static int mac80211_hwsim_change_vif_links(struct ieee80211_hw *hw,
-@@ -3941,6 +3946,7 @@ static int hwsim_pmsr_report_nl(struct sk_buff *msg, struct genl_info *info)
- 	.get_et_strings = mac80211_hwsim_get_et_strings,		 \
- 	.start_pmsr = mac80211_hwsim_start_pmsr,			 \
- 	.abort_pmsr = mac80211_hwsim_abort_pmsr,			 \
-+	.set_rts_threshold = mac80211_hwsim_set_rts_threshold,		 \
- 	.start_nan = mac80211_hwsim_nan_start,				 \
- 	.stop_nan = mac80211_hwsim_nan_stop,				 \
- 	.nan_change_conf = mac80211_hwsim_nan_change_config,		 \
-@@ -3986,7 +3992,6 @@ static const struct ieee80211_ops mac80211_hwsim_mchan_ops = {
- static const struct ieee80211_ops mac80211_hwsim_mlo_ops = {
- 	HWSIM_COMMON_OPS
- 	HWSIM_CHANCTX_OPS
--	.set_rts_threshold = mac80211_hwsim_set_rts_threshold,
- 	.change_vif_links = mac80211_hwsim_change_vif_links,
- 	.change_sta_links = mac80211_hwsim_change_sta_links,
- 	.sta_state = mac80211_hwsim_sta_state,
-@@ -5386,6 +5391,12 @@ static int mac80211_hwsim_new_radio(struct genl_info *info,
- 		hw->wiphy->nan_capa.phy.ht = hwsim_nan_ht_cap;
- 		hw->wiphy->nan_capa.phy.vht = hwsim_nan_vht_cap;
- 		hw->wiphy->nan_capa.phy.he = hwsim_nan_he_cap;
-+
-+		/*
-+		 * NAN switches between bands/channels per its schedule,
-+		 * so mac80211 rate control can't work here.
-+		 */
-+		ieee80211_hw_set(hw, HAS_RATE_CONTROL);
+ static const struct ieee80211_ht_cap mac80211_ht_capa_mod_mask = {
+diff --git a/net/mac80211/offchannel.c b/net/mac80211/offchannel.c
+index ae82533e3c02..0e44a5a18f07 100644
+--- a/net/mac80211/offchannel.c
++++ b/net/mac80211/offchannel.c
+@@ -8,7 +8,7 @@
+  * Copyright 2006-2007	Jiri Benc <jbenc@suse.cz>
+  * Copyright 2007, Michael Wu <flamingice@sourmilk.net>
+  * Copyright 2009	Johannes Berg <johannes@sipsolutions.net>
+- * Copyright (C) 2019, 2022-2025 Intel Corporation
++ * Copyright (C) 2019, 2022-2026 Intel Corporation
+  */
+ #include <linux/export.h>
+ #include <net/mac80211.h>
+@@ -898,6 +898,10 @@ int ieee80211_mgmt_tx(struct wiphy *wiphy, struct wireless_dev *wdev,
+ 		break;
+ 	case NL80211_IFTYPE_NAN:
+ 		break;
++	case NL80211_IFTYPE_NAN_DATA:
++		if (is_multicast_ether_addr(mgmt->da))
++			return -EOPNOTSUPP;
++		break;
+ 	default:
+ 		return -EOPNOTSUPP;
  	}
+@@ -911,7 +915,8 @@ int ieee80211_mgmt_tx(struct wiphy *wiphy, struct wireless_dev *wdev,
+ 	/* Check if the operating channel is the requested channel */
+ 	if (!params->chan && mlo_sta) {
+ 		need_offchan = false;
+-	} else if (sdata->vif.type == NL80211_IFTYPE_NAN) {
++	} else if (sdata->vif.type == NL80211_IFTYPE_NAN ||
++		   sdata->vif.type == NL80211_IFTYPE_NAN_DATA) {
+ 		/* Frames can be sent during NAN schedule */
+ 	} else if (!need_offchan) {
+ 		struct ieee80211_chanctx_conf *chanctx_conf = NULL;
+diff --git a/net/mac80211/tx.c b/net/mac80211/tx.c
+index a9a360fe0161..b44ad3a48258 100644
+--- a/net/mac80211/tx.c
++++ b/net/mac80211/tx.c
+@@ -5,7 +5,7 @@
+  * Copyright 2006-2007	Jiri Benc <jbenc@suse.cz>
+  * Copyright 2007	Johannes Berg <johannes@sipsolutions.net>
+  * Copyright 2013-2014  Intel Mobile Communications GmbH
+- * Copyright (C) 2018-2025 Intel Corporation
++ * Copyright (C) 2018-2026 Intel Corporation
+  *
+  * Transmit and frame generation functions.
+  */
+@@ -6332,7 +6332,8 @@ void ieee80211_tx_skb_tid(struct ieee80211_sub_if_data *sdata,
+ 	enum nl80211_band band;
  
- 	data->if_combination.radar_detect_widths =
+ 	rcu_read_lock();
+-	if (sdata->vif.type == NL80211_IFTYPE_NAN) {
++	if (sdata->vif.type == NL80211_IFTYPE_NAN ||
++	    sdata->vif.type == NL80211_IFTYPE_NAN_DATA) {
+ 		band = NUM_NL80211_BANDS;
+ 	} else if (!ieee80211_vif_is_mld(&sdata->vif)) {
+ 		WARN_ON(link_id >= 0);
 -- 
 2.52.0
 
