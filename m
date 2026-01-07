@@ -1,113 +1,97 @@
-Return-Path: <linux-wireless+bounces-30422-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-30423-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id B5581CFC71D
-	for <lists+linux-wireless@lfdr.de>; Wed, 07 Jan 2026 08:48:29 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 639ABCFC7DD
+	for <lists+linux-wireless@lfdr.de>; Wed, 07 Jan 2026 09:03:11 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 4B81E3089CF2
-	for <lists+linux-wireless@lfdr.de>; Wed,  7 Jan 2026 07:44:54 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 12991301FC23
+	for <lists+linux-wireless@lfdr.de>; Wed,  7 Jan 2026 08:01:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CBA8F29D260;
-	Wed,  7 Jan 2026 07:44:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 44B6D232395;
+	Wed,  7 Jan 2026 08:01:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=wp.pl header.i=@wp.pl header.b="uAZx0+Z2"
+	dkim=pass (2048-bit key) header.d=realtek.com header.i=@realtek.com header.b="f6iO0+yi"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mx4.wp.pl (mx4.wp.pl [212.77.101.12])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F400D27FB3E
-	for <linux-wireless@vger.kernel.org>; Wed,  7 Jan 2026 07:44:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.77.101.12
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3ABF121A92F
+	for <linux-wireless@vger.kernel.org>; Wed,  7 Jan 2026 08:01:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=211.75.126.72
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767771891; cv=none; b=OPSegspThT4XVrLm/j8YhbhD0nblW6JUD6KzdGpFEHHkf32GYW4774HJ983svsRc5OQ8XPsGvE2rZ5Xu97s56l4lSzMSWV4YtJJnrB+hnO5bYPMllj4g0CdmRb5jhA7bpAZgbpgcXkZRF3KpolAL+OsieRLh0ALQffF+b4WVHqg=
+	t=1767772899; cv=none; b=HpWH++OH7EG5CUKj58ufaQXRZux4UvFVkstnjbMHrWfBT9YmflPgNZ9tG9Lmzn6VwEUiGXaIS+IUcTVfpUDeQ11mvN0zT7LmP3AR+p48RLDH2tBNzZHDTrI1kk87Tmzcfe5vvzGsAlg59dSQ+x0FIm/RYx1YtBHY9rOR4OFHVog=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767771891; c=relaxed/simple;
-	bh=1m57/q8TMFVJ9BfUyApaGgLWZ9oytPDqw4rNi/4UEhM=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=IKNW9OzzBEzxohvWJO9xuIGFYswbdZ8IEjnWbltq8Q1RJm+deukgG/Tyc1BF84pxoG+qCOjSyL7H2ueiHfTyGyDGrEOCsbe+W0JuDBQ4o6ik1YtFop82sZxWvKLVFjIKvcTK73zHqRDwHgVjg2YoaLJG/V//JMaWn5ng/l0fcS0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=wp.pl; spf=pass smtp.mailfrom=wp.pl; dkim=pass (2048-bit key) header.d=wp.pl header.i=@wp.pl header.b=uAZx0+Z2; arc=none smtp.client-ip=212.77.101.12
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=wp.pl
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=wp.pl
-Received: (wp-smtpd smtp.wp.pl 40003 invoked from network); 7 Jan 2026 08:44:39 +0100
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=wp.pl; s=20241105;
-          t=1767771879; bh=Fe6W8fAQBOgadr93rAipk3Ar3uYh12YMNc1LT9BrA8Q=;
-          h=From:To:Cc:Subject;
-          b=uAZx0+Z2h4WrwUQ094C6Vwx+fyK2D0A327lGxfiXpgYGKBXBo0hFWuk0kT+UMSCck
-           MZcBSPbw0a4cEUHxsMXdulMv/ZkcxizfTe/2uuRsGQ8wwJqy+gNsGk3ToY147Nkx0e
-           4GpE77x9eWHyToNebUIKCfgjztSmuIzEkKZ/tR7tJtPb3c5y6ZBWvOMfs6skdgkEtt
-           yQeZ8SL+cPxzMxLTdJLk6MTkSYbX1DvsY02LZeEuVKy/L985fHdr9/GHNEsrorraJ1
-           V+xUE4mFZ90kfOqk3xfQvgsLe4yaEzKw6kOn3v11lEvUVQqOF5IoXbQuSQfQa16Q6g
-           9b9eu1UdffzyA==
-Received: from 89-64-9-177.dynamic.play.pl (HELO localhost) (stf_xl@wp.pl@[89.64.9.177])
-          (envelope-sender <stf_xl@wp.pl>)
-          by smtp.wp.pl (WP-SMTPD) with ECDHE-RSA-AES256-GCM-SHA384 encrypted SMTP
-          for <islituo@gmail.com>; 7 Jan 2026 08:44:39 +0100
-Date: Wed, 7 Jan 2026 08:44:38 +0100
-From: Stanislaw Gruszka <stf_xl@wp.pl>
-To: Tuo Li <islituo@gmail.com>
-Cc: linux-wireless@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] iwlegacy: 3945-rs: fix possible null-pointer
- dereferences in il3945_rs_get_rate()
-Message-ID: <20260107074438.GA34085@wp.pl>
-References: <20260107071001.172132-1-islituo@gmail.com>
+	s=arc-20240116; t=1767772899; c=relaxed/simple;
+	bh=v32BDCd9YdydJe0wlcyI9/Moe87eCFEStPnJtqdGaiQ=;
+	h=From:To:CC:Subject:In-Reply-To:References:Message-ID:Date:
+	 MIME-Version:Content-Type; b=RAENz8innHu3H9WFLcR8ouBTTENkTY7Nq5A9BY8q9lg/S8IgZtV4QTU6rKQqgUK6Nrk5GEhxMbxobpoUE7cU21s5VrwmxhCVpA8+VTljaP7SL9M0qOBNONwdJxf6glXatUSjp67HEmBCts6wro/gvUMIslDnG4dhX+drKZ9gsk4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com; spf=pass smtp.mailfrom=realtek.com; dkim=pass (2048-bit key) header.d=realtek.com header.i=@realtek.com header.b=f6iO0+yi; arc=none smtp.client-ip=211.75.126.72
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=realtek.com
+X-SpamFilter-By: ArmorX SpamTrap 5.80 with qID 60781ZHx82584618, This message is accepted by code: ctloc85258
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=realtek.com; s=dkim;
+	t=1767772895; bh=SmOp2AmTpz09RSFXIPh7oNQHymUsclRVmCzsb4fTlw4=;
+	h=From:To:CC:Subject:In-Reply-To:References:Message-ID:Date:
+	 MIME-Version:Content-Type;
+	b=f6iO0+yipwt25Fu7z+rmUBAPgZ3CtOluvBzbE6xMgCruMcg0mvQB+0w0c50tLSHUw
+	 6uN0YwUhYlPIckhRTqyoLol7kWR8ZPCejHs5FUVdHH/x0Z73zOEVl1d8b6DMOWv1vs
+	 xN4jpR6VeqgRbNFbhEHVLKJFjEQl2+WWVCz03iCHWdRNGzyb3x1qlJXTFxvPS03uqD
+	 I/JEO7sO4m3oxr0qDsq6gm+Tm/LzgDZsofVUm5tD04zRpD8POuOcH4IgW8zvnMjkBy
+	 GLfMd6RP1AdB3l10RD9GzUUhdfo8RZv2loMgO4Aw3Kr5/hmRsqAW+SVZjSFF/4RmGK
+	 MLFHeSa5RU6Fg==
+Received: from mail.realtek.com (rtkexhmbs04.realtek.com.tw[10.21.1.54])
+	by rtits2.realtek.com.tw (8.15.2/3.21/5.94) with ESMTPS id 60781ZHx82584618
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK)
+	for <linux-wireless@vger.kernel.org>; Wed, 7 Jan 2026 16:01:35 +0800
+Received: from RTKEXHMBS03.realtek.com.tw (10.21.1.53) by
+ RTKEXHMBS04.realtek.com.tw (10.21.1.54) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1748.10; Wed, 7 Jan 2026 16:01:34 +0800
+Received: from [127.0.1.1] (172.21.40.75) by RTKEXHMBS03.realtek.com.tw
+ (10.21.1.53) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1748.10 via Frontend
+ Transport; Wed, 7 Jan 2026 16:01:34 +0800
+From: Ping-Ke Shih <pkshih@realtek.com>
+To: Ping-Ke Shih <pkshih@realtek.com>, <linux-wireless@vger.kernel.org>
+CC: <gary.chang@realtek.com>, <dian_syuan0116@realtek.com>,
+        <damon.chen@realtek.com>, <kevin_yang@realtek.com>
+Subject: Re: [PATCH rtw-next 01/11] wifi: rtw89: rfk: update RFK pre info V2 for RTL8922D
+In-Reply-To: <20251231090647.56407-2-pkshih@realtek.com>
+References: <20251231090647.56407-1-pkshih@realtek.com> <20251231090647.56407-2-pkshih@realtek.com>
+Message-ID: <21bf0535-5fed-4a41-bfa9-702d0d9da934@RTKEXHMBS03.realtek.com.tw>
+Date: Wed, 7 Jan 2026 16:01:34 +0800
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260107071001.172132-1-islituo@gmail.com>
-X-WP-MailID: 2582bbe82f106bf9029adb0d6afe8e00
-X-WP-AV: skaner antywirusowy Poczty Wirtualnej Polski
-X-WP-SPAM: NO 0000003 [YYD1]                               
+Content-Type: text/plain
 
-On Wed, Jan 07, 2026 at 03:10:01PM +0800, Tuo Li wrote:
-> In this function, il_sta is assigned to rs_sta, and rs_sta is dereferenced
-> at several points. If il_sta is NULL, this can lead to null-pointer
-> dereferences. To fix this issue, add an early check for il_sta and return
-> if it is NULL, consistent with the handling in il3945_rs_tx_status().
+Ping-Ke Shih <pkshih@realtek.com> wrote:
+
+> The H2C command of RFK pre info is to tell current operating channels to
+> firmware, so RF calibrations can rely on these information as arguments
+> to configure hardware.
 > 
-> Signed-off-by: Tuo Li <islituo@gmail.com>
-> ---
->  drivers/net/wireless/intel/iwlegacy/3945-rs.c | 7 ++++++-
->  1 file changed, 6 insertions(+), 1 deletion(-)
-> 
-> diff --git a/drivers/net/wireless/intel/iwlegacy/3945-rs.c b/drivers/net/wireless/intel/iwlegacy/3945-rs.c
-> index 1826c37c090c..c13268093a6e 100644
-> --- a/drivers/net/wireless/intel/iwlegacy/3945-rs.c
-> +++ b/drivers/net/wireless/intel/iwlegacy/3945-rs.c
-> @@ -626,8 +626,13 @@ il3945_rs_get_rate(void *il_r, struct ieee80211_sta *sta, void *il_sta,
->  
->  	D_RATE("enter\n");
->  
-> +	if (!il_sta) {
-> +		D_RATE("leave: No STA il data available!\n");
-> +		return;
-> +	}
-> +
->  	/* Treat uninitialized rate scaling data same as non-existing. */
-> -	if (rs_sta && !rs_sta->il) {
-> +	if (!rs_sta->il) {
->  		D_RATE("Rate scaling information not initialized yet.\n");
->  		il_sta = NULL;
-Please also change to return here instead of setting il_sta to NULL.
-And make D_RATE messages similar to il3945_rs_tx_status() i.e. :
+> Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
 
-          if (!il_sta) {
-                  D_RATE("leave: No STA il data to update!\n");
-                  return;
-          }
+11 patch(es) applied to rtw-next branch of rtw.git, thanks.
 
-          /* Treat uninitialized rate scaling data same as non-existing. */
-          if (!rs_sta->il) {
-                  D_RATE("leave: STA il data uninitialized!\n");
-                  return;
-          }
+8c0ac5791eb9 wifi: rtw89: rfk: update RFK pre info V2 for RTL8922D
+ed15dddd7566 wifi: rtw89: rfk: add rtw89_fw_h2c_rf_pre_ntfy_mcc for new WiFi 7 firmware
+9485da4e4c9b wifi: rtw89: pre-handle RF calibration on link when needed
+c5e5519fd981 wifi: rtw89: fw: change FW feature map to a BITMAP
+2d986cf3cc71 wifi: rtw89: fw: introduce helper for disabling FW feature configuration
+29009d98d98f wifi: rtw89: 8922a: tweak RFK_PRE_NOTIFY FW feature configuration to align handling
+449a57911967 wifi: rtw89: refine mis-ordered entries in FW feature table
+6a6b0aac2874 wifi: rtw89: fw: change WITH_RFK_PRE_NOTIFY to be a FW feature group
+cd7ce83ff6da wifi: rtw89: rfk: update rtw89_fw_h2c_rf_pre_ntfy_mcc format
+eb57be32f438 wifi: rtw89: fix potential zero beacon interval in beacon tracking
+baef3d5d96d2 wifi: rtw89: 8852b: refine hardware parameters for RFE type 5
 
-Thanks
-Stanislaw
+---
+https://github.com/pkshih/rtw.git
 
 
