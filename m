@@ -1,53 +1,100 @@
-Return-Path: <linux-wireless+bounces-30413-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-30414-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8467FCFA5EE
-	for <lists+linux-wireless@lfdr.de>; Tue, 06 Jan 2026 19:57:06 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8DD36CFB818
+	for <lists+linux-wireless@lfdr.de>; Wed, 07 Jan 2026 01:48:19 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id E77C730402B3
-	for <lists+linux-wireless@lfdr.de>; Tue,  6 Jan 2026 18:57:03 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 09BF930124E9
+	for <lists+linux-wireless@lfdr.de>; Wed,  7 Jan 2026 00:44:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C40B921773D;
-	Tue,  6 Jan 2026 18:57:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 58A0314A4F9;
+	Wed,  7 Jan 2026 00:43:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=candelatech.com header.i=@candelatech.com header.b="Waaw//hG"
+	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="M+Y0523Z";
+	dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b="g54rYbQC"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from dispatch1-us1.ppe-hosted.com (dispatch1-us1.ppe-hosted.com [148.163.129.49])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CE6F12367AC;
-	Tue,  6 Jan 2026 18:57:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.129.49
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9107E168BD
+	for <linux-wireless@vger.kernel.org>; Wed,  7 Jan 2026 00:43:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767725822; cv=none; b=vB/1g5fDKNOBoIHgZyXAWIxo1dS02BKyvlwl8kigsL+RZh4bPK4aMS09BMObXhlfksyM7q43+YcYvEAJQwT8zt+DaHoOp4F0k/iRklag3NiQMCd/35MeYBK6r3i0z5gOxvXCRljlcmJbmgk/2n/OQdnwDELQinkCrOyGtQUVikI=
+	t=1767746639; cv=none; b=V/9gQuD/h15DJJ3mGQM6taMjl4BPSOxQU+ZD44dzbfoMbSuG+et98jztlnQ9QCvCfNVpsE4dhGiO5pl4b+SNBt7TYf6u7nf6fXyQ9m44EyYT5DsYq1R7S6l2yFYntDsGvE9iDtBhKsWOEPg28irwjKJfCH11Zce0+88nSpcFRMw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767725822; c=relaxed/simple;
-	bh=meJWznmpisb4Z0tj5/BsgVG4zJyBnjMbDiLi5lcu3Rc=;
-	h=Message-ID:Date:MIME-Version:Subject:From:To:Cc:References:
-	 In-Reply-To:Content-Type; b=HhgMgBsjR7xVYVTPvOUxzam5JdqKYvt3jEoji3efECMzZk38G2Ie2atkRhmuymS2Z8s8RcMQ/8F8SGKX+LUdePN6r6XOfmuRPq0//dtJ5HrPh/zwo59Vx/X7rF1/OMCfMXbZwJ7HT/lhAhTHxqYf3cVl5de6t8NReUJzj3cxxNQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=candelatech.com; spf=pass smtp.mailfrom=candelatech.com; dkim=pass (1024-bit key) header.d=candelatech.com header.i=@candelatech.com header.b=Waaw//hG; arc=none smtp.client-ip=148.163.129.49
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=candelatech.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=candelatech.com
-X-Virus-Scanned: Proofpoint Essentials engine
-Received: from mail3.candelatech.com (mail.candelatech.com [208.74.158.173])
-	by mx1-us1.ppe-hosted.com (PPE Hosted ESMTP Server) with ESMTP id 2E321AC00E2;
-	Tue,  6 Jan 2026 18:56:52 +0000 (UTC)
-Received: from [192.168.101.118] (firewall.candelatech.com [50.251.239.81])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-	(No client certificate requested)
-	by mail3.candelatech.com (Postfix) with ESMTPSA id 8479913C2B0;
-	Tue,  6 Jan 2026 10:56:49 -0800 (PST)
-DKIM-Filter: OpenDKIM Filter v2.11.0 mail3.candelatech.com 8479913C2B0
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=candelatech.com;
-	s=default; t=1767725809;
-	bh=meJWznmpisb4Z0tj5/BsgVG4zJyBnjMbDiLi5lcu3Rc=;
-	h=Date:Subject:From:To:Cc:References:In-Reply-To:From;
-	b=Waaw//hG/TyF6p7ucTuzVCWt0sB/c1bBOwzvPvXFFaqrOWX5OaI4iUxgMTnIK0tjT
-	 HSGT+l6t6n0WB5adf8kstK/WRwC4VBeXY+Le+U3dC4YDWOJObQFAEm3aL59WmsTFwQ
-	 IlZf5Zsqj1dZKpg3hFdSCWHoCHuNwi3fGnbwqJtM=
-Message-ID: <e5cba37b-2bb5-46fb-b414-5cc6b2e894cf@candelatech.com>
-Date: Tue, 6 Jan 2026 10:56:49 -0800
+	s=arc-20240116; t=1767746639; c=relaxed/simple;
+	bh=nntVmnnLJPM7xnbDiNYtgGUI5xAZPgIUDh2Y/Qk68IQ=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=U1zLKz/5ddAjbMYTUrXwllKMiyGDs3dd7tss492RS+Z9xukme8UOJTmcphjN4By7UlvuYthK7/3FxrRwt/LG/TfErZcr+jQ4n8Ng/RqPrrb0yUTNUH5cLeoHBqEswZulG5CVhGr68MfvH+NwNcbr00bdXWb1uQW70mknooppeHQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=M+Y0523Z; dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b=g54rYbQC; arc=none smtp.client-ip=205.220.168.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
+Received: from pps.filterd (m0279863.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 606Gi0im364946
+	for <linux-wireless@vger.kernel.org>; Wed, 7 Jan 2026 00:43:57 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
+	cc:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
+	9qA72KT28VgOjg8B7p0XTrqTLPCU/NziYWWjXvjQdh4=; b=M+Y0523ZTG0BucHj
+	TRgOryj+OiLI4ed93m+kANhC+oyyVuKObWkfmcVTNKhcCnhhRy4jqt4f5oz5kf4I
+	N90jm3FfUqZ3tZqr2Ne9uf+BayidKrEbLS8grWhq10ddGKzMKKYC/cLqCnw3UlX4
+	thX6KjLqeiQTV+83nb2norpfa6kriacaoQOdJBZr6++kcVCej1t48H9qm0j7pzj8
+	D1v8QmnV5hgUpAXzV5WjmIUMmxUf0W5ZIQLHnbiU1q6RRUgB8eTysm/vmGUSOnEa
+	knWQUVeV13cGaCEg2pENYY/pT9oBEm8ITXbJrLCZc/1idFcCdMO34oOCCOZojksU
+	sVSvLw==
+Received: from mail-dy1-f197.google.com (mail-dy1-f197.google.com [74.125.82.197])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4bh660s72a-1
+	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
+	for <linux-wireless@vger.kernel.org>; Wed, 07 Jan 2026 00:43:56 +0000 (GMT)
+Received: by mail-dy1-f197.google.com with SMTP id 5a478bee46e88-2b0531e07e3so750450eec.1
+        for <linux-wireless@vger.kernel.org>; Tue, 06 Jan 2026 16:43:56 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=oss.qualcomm.com; s=google; t=1767746636; x=1768351436; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:content-language:from
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=9qA72KT28VgOjg8B7p0XTrqTLPCU/NziYWWjXvjQdh4=;
+        b=g54rYbQC2pPW0XLi6cOaA2bK90mhbiFWgWfNrK/2n6JZqUd/l9KCQSxROLwOlN4TGR
+         kGt/wRI8nd6tjVa0hYxqLzPpWywOGvsKFMbwvAnRCI+3GKfSX3GhQlCBfdcVXpVH0haA
+         9mdTUbfmhe/JL59E5E28VUMQ8fME9uCGRcdaP0eEJBBmw9fMLtKKLbEqddTHOlrlZhzX
+         0WsIHuuz2Kr6JdIvJHPNuXiYm8dFT1g+wf+2fxNpB+E+SrGMq6xzW5jlyvNjMACLOgIA
+         EpYLi0Qacr/T/E3Dilkg74CBFjJguq7abeaghgD64MHQk7RCNnruAA47RDBzYp/wISIS
+         lBtA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1767746636; x=1768351436;
+        h=content-transfer-encoding:in-reply-to:content-language:from
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=9qA72KT28VgOjg8B7p0XTrqTLPCU/NziYWWjXvjQdh4=;
+        b=Yh8eVsjsPeP2YEy56OuZNbh2ChUpB5NOuvR61thHWbNwOxoBL/n7r/KmPk/ahI4Chy
+         2oFMga7goae5ZlmAeiN2t4PP/AxFlTvsMyf/XT4xmtpnw3qFtEo5A6bfRMiW3p2eBihf
+         B8XxSRTx4jZ/whJNZF0XC4+b0bQWucFosrq4R2VGtXB228greHY9cfLowxBZtKgY0I8u
+         vsIRTuY8uCV84vE5lUBARu/V/d5KV0lcvH3gV1u6XsVzY/Z7f6R8OfodNiVqxTCHTnS3
+         QbQqKRt/ykx1ksUW/q9jIaIvVBthdVpl7EdPOAUrGTbYAUkW2HwUnhG4WYAyHQawhBHU
+         qVIA==
+X-Gm-Message-State: AOJu0YxxlwZ5dzcnHufTOoZgPjexqKc8AJ/k89WRBChv0QsFSD5fTwge
+	Y9okDaUj4WAxjFu8UpoVNIN0+8h32IGiKRY+myVUNctQlzCtlmtF9xhMQRCMGvTOSaf6tCSZVvP
+	2RCeKbol+TtxKs2ER1l+ZpxQdkrVq8wutl5fVs+eCQh6gOW2LKg21Wcd6NFaT9FnqPnJOig==
+X-Gm-Gg: AY/fxX4HGz9aZPoiNd4jzIOOncf9Mn1vz8T+Ak+Jq4Vn66NK8sgtt5ZYEdovMVO8XTJ
+	3hSNL/uaBOJ293Dk2YNna00fJ4H6xWfMuBLGnfBDzeHvZpi2RitF775tVW9wqiijdE9eux6rFGj
+	mEmFHJdBPCqiB/6/6+3H60hR3TyMixYFKi9ciET6oUdP1YD/lvisT5ijr2qkHZVnwQ0++MEeCTg
+	ApDbQ+5yq2nzUdPOIBYTHJEb9vIVS/1zgnBm8BjQyglvXTmW56dnWzcPFttm+PSSwaDS0Vzjz3J
+	9GOvXqSDgTQ+CA/PMCDo/CjmDKTNygUjDyV6+Hjf4Dp/+x09VfMaBr2fXAbACinHiCfVWjv8gzS
+	p2Ms9qzsW9Wp9/gcYS55OzmBfUq2SDWla87ztDs5a0xipl5duN+/HDsUFpI0yMTHU/HiJhqYxbf
+	T+
+X-Received: by 2002:a05:7300:f0ce:b0:2b0:4c33:8e41 with SMTP id 5a478bee46e88-2b17d2e398cmr523645eec.20.1767746635989;
+        Tue, 06 Jan 2026 16:43:55 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IHMCPnwGPhz4Um6DtH+IfffVW8x9Wl02+mlryASKUK8ZLYmKWr12GfGVyDo3rYjyph6+Es55g==
+X-Received: by 2002:a05:7300:f0ce:b0:2b0:4c33:8e41 with SMTP id 5a478bee46e88-2b17d2e398cmr523618eec.20.1767746635377;
+        Tue, 06 Jan 2026 16:43:55 -0800 (PST)
+Received: from [192.168.1.3] (c-24-130-122-79.hsd1.ca.comcast.net. [24.130.122.79])
+        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-2b17078d9b1sm6006944eec.18.2026.01.06.16.43.54
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 06 Jan 2026 16:43:55 -0800 (PST)
+Message-ID: <9ba229f8-917a-4c58-ab63-fd34d2a66a9f@oss.qualcomm.com>
+Date: Tue, 6 Jan 2026 16:43:53 -0800
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
@@ -55,102 +102,85 @@ List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [BUG 6.18.2] Null Pointer Exception in Fair Scheduler
-From: "Dylan E." <dylan.eskew@candelatech.com>
-To: stable@vger.kernel.org, linux-kernel@vger.kernel.org,
- linux-wireless@vger.kernel.org
-Cc: gregkh@linuxfoundation.org, sashal@kernel.org, jjohnson@kernel.org
-References: <38b9cad8-1c17-4d89-9f17-44f89fb66ab8@candelatech.com>
+Subject: Re: [PATCH ath-next v4 1/6] wifi: ath11k: Add initialization and
+ deinitialization sequence for CFR module
+To: Arend van Spriel <arend.vanspriel@broadcom.com>,
+        Qian Zhang <qian.zhang@oss.qualcomm.com>, ath11k@lists.infradead.org
+Cc: linux-wireless@vger.kernel.org,
+        Venkateswara Naralasetty <quic_vnaralas@quicinc.com>,
+        Yu Zhang <yu.zhang@oss.qualcomm.com>,
+        Vasanthakumar Thiagarajan <vasanthakumar.thiagarajan@oss.qualcomm.com>
+References: <20251223092728.1950017-1-qian.zhang@oss.qualcomm.com>
+ <20251223092728.1950017-2-qian.zhang@oss.qualcomm.com>
+ <19b7303bb18.2873.9b12b7fc0a3841636cfb5e919b41b954@broadcom.com>
+From: Jeff Johnson <jeff.johnson@oss.qualcomm.com>
 Content-Language: en-US
-In-Reply-To: <38b9cad8-1c17-4d89-9f17-44f89fb66ab8@candelatech.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-MDID: 1767725813-gyDGdEY0fzPW
-X-PPE-STACK: {"stack":"us5"}
-X-MDID-O:
- us5;ut7;1767725813;gyDGdEY0fzPW;<dylan.eskew@candelatech.com>;6d78aa1bc4c2468e9f5ce884163e871b
-X-PPE-TRUSTED: V=1;DIR=OUT;
+In-Reply-To: <19b7303bb18.2873.9b12b7fc0a3841636cfb5e919b41b954@broadcom.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Authority-Analysis: v=2.4 cv=MNptWcZl c=1 sm=1 tr=0 ts=695dac4c cx=c_pps
+ a=Uww141gWH0fZj/3QKPojxA==:117 a=Tg7Z00WN3eLgNEO9NLUKUQ==:17
+ a=IkcTkHD0fZMA:10 a=vUbySO9Y5rIA:10 a=s4-Qcg_JpJYA:10
+ a=VkNPw1HP01LnGYTKEx00:22 a=VwQbUJbxAAAA:8 a=EUspDBNiAAAA:8
+ a=Yn4z64EjlknjKxJ9QlgA:9 a=QEXdDO2ut3YA:10 a=PxkB5W3o20Ba91AHUih5:22
+X-Proofpoint-ORIG-GUID: HckIyNLc24ySVe9uFRjMssodkFwm6JIX
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwMTA3MDAwNCBTYWx0ZWRfX6JFnXstF9RtQ
+ jNCq+SCwfIn+ppP7pbuJsRdKuBwZpPxQ8xn4D6NiEUVMAQykrrAkQUlC/4WlBApOHf0wrv7sxQh
+ MTz6nB/a76B3uU4Sdi7fDcbr/5kgElGHPw3lWOSC23ShLGYYDvPQ/AdZaiZL9m/lLolsQkQYf7I
+ e9HsFm3jTJFmVAQ++FpkY2dfQa8ujQuzbbzFalqX1EkqQSVdpTLKyhchXG//gqsTplQgGDJ6Sit
+ u4bpQM9aQSAEmSkWdMSUGj3k3PBulWz/eil6b6HiMDPDfvDXXhtcGUm5cp9kb+CLpx5AOdkSc1o
+ NdBmTpP3uZvuOhXuXMKluqfklbB49vrbmX2SAxqNs2ylGYShxrVtvy76iZ/9ywfNRvcXobKNxGN
+ 0rb/o0ZQUxP7KJeuEypXLOb5dCv6jVeLTChg1Ar8Lhl9ghtT/o8VRxrssSd/v9N6tnNiojpdle7
+ Ex/JYj10Gwq1lz6uZbg==
+X-Proofpoint-GUID: HckIyNLc24ySVe9uFRjMssodkFwm6JIX
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.9,FMLib:17.12.100.49
+ definitions=2026-01-06_03,2026-01-06_01,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ spamscore=0 priorityscore=1501 lowpriorityscore=0 impostorscore=0
+ malwarescore=0 adultscore=0 clxscore=1015 bulkscore=0 phishscore=0
+ suspectscore=0 classifier=typeunknown authscore=0 authtc= authcc=
+ route=outbound adjust=0 reason=mlx scancount=1 engine=8.22.0-2512120000
+ definitions=main-2601070004
 
-Hello again,
+On 12/30/2025 10:06 PM, Arend van Spriel wrote:
+> Op 23 december 2025 10:27:46 schreef Qian Zhang <qian.zhang@oss.qualcomm.com>:
+> 
+>> Channel Frequency Response (CFR) module will be initialized only when
+>> the following criteria passes:
+>> * Enabled CFR support for the hardware through the hardware param
+>>   'cfr_support'
+>> * WMI service enabled for the CFR support
+>>   'WMI_TLV_SERVICE_CFR_CAPTURE_SUPPORT'
+> 
+> [...]
+> 
+>> diff --git a/drivers/net/wireless/ath/ath11k/core.c 
+>> b/drivers/net/wireless/ath/ath11k/core.c
+>> index 812686173ac8..6a6bf6316ac9 100644
+>> --- a/drivers/net/wireless/ath/ath11k/core.c
+>> +++ b/drivers/net/wireless/ath/ath11k/core.c
+>> @@ -1,7 +1,6 @@
+>> // SPDX-License-Identifier: BSD-3-Clause-Clear
+>> /*
+>>  * Copyright (c) 2018-2019 The Linux Foundation. All rights reserved.
+>> - * Copyright (c) 2021-2025 Qualcomm Innovation Center, Inc. All rights 
+>> reserved.
+> 
+> Hi Qiang Zhang,
+> 
+> Some explanation on this would have been nice. Doing this in a separate 
+> patch would be even better.
 
-On 6.18.3, I'm still seeing the scheduler NPE pop-up, though this one 
-happened at shutdown. Looks to be an identical location to the previous 
-stack trace.
+Are you just referring to the copyright change?
 
----
-BUG: kernel NULL pointer dereference, address: 0000000000000051
-#PF: supervisor read access in kernel mode
-#PF: error_code(0x0000) - not-present page
-PGD 0 P4D 0
-Oops: Oops: 0000 [#1] SMP
-CPU: 0 UID: 0 PID: 336 Comm: (udev-worker) Not tainted 6.18.3 #39 
-PREEMPT(full)
-Hardware name: Default string Default string/SKYBAY, BIOS 5.12 02/21/2023
-RIP: 0010:pick_task_fair+0x57/0x160
-Code: 66 90 66 90 48 8b 5d 50 48 85 db 74 10 48 8b 73 70 48 89 ef e8 3a 
-74 ff ff 85 c0 75 71 be 01 00 00 00 48 89 ef e8 29 a5 ff ff <80> 78 51 
-00 48 89 c3 0f 85 80 00 00 00 48 85 c0 0f 84 87 00 00 00
-RSP: 0018:ffffc9000091bca0 EFLAGS: 00010082
-RAX: 0000000000000000 RBX: 0000000000000000 RCX: 0000000000000c00
-RDX: fffffa1b1b2acc00 RSI: 0000000000001000 RDI: 0000000000000400
-RBP: ffff8881255ef000 R08: 0000000000000400 R09: 0000000000000002
-R10: 00000000000003ae R11: ffff88812d2cc200 R12: ffff88845dc2cd00
-R13: 0000000000000000 R14: ffff88845dc2cd80 R15: ffffffff827c71e0
-FS:  00007fed68640980(0000) GS:ffff8884da723000(0000) knlGS:0000000000000000
-CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-CR2: 0000000000000051 CR3: 00000001244dd006 CR4: 00000000003706f0
-Call Trace:
-  <TASK>
-  pick_next_task_fair+0x1d/0x3d0
-  __schedule+0x1ee/0x10c0
-  ? sock_def_readable+0x3e/0xb0
-  ? sock_poll+0x4d/0xd0
-  schedule+0x23/0xc0
-  schedule_hrtimeout_range_clock+0xf4/0x100
-  do_epoll_wait+0x481/0x4b0
-  ? ep_destroy_wakeup_source+0x20/0x20
-  __x64_sys_epoll_wait+0x5a/0xf0
-  ? syscall_trace_enter+0x8d/0x1a0
-  do_syscall_64+0x50/0x3a0
-  entry_SYSCALL_64_after_hwframe+0x4b/0x53
-RIP: 0033:0x7fed69033ea7
-Code: 0c 00 f7 d8 64 89 02 b8 ff ff ff ff eb be 0f 1f 44 00 00 f3 0f 1e 
-fa 80 3d c5 a4 0c 00 00 41 89 ca 74 10 b8 e8 00 00 00 0f 05 <48> 3d 00 
-f0 ff ff 77 51 c3 55 48 89 e5 48 83 ec 20 89 55 f8 48 89
-RSP: 002b:00007ffd7c3b5508 EFLAGS: 00000202 ORIG_RAX: 00000000000000e8
-RAX: ffffffffffffffda RBX: 0000000000000006 RCX: 00007fed69033ea7
-RDX: 0000000000000006 RSI: 0000558994c733e0 RDI: 0000000000000003
-RBP: 00007ffd7c3b5620 R08: 0000558994c42010 R09: 0000000000000003
-R10: 00000000ffffffff R11: 0000000000000202 R12: 0000558994c733e0
-R13: 0000000000000002 R14: 0000558994c73060 R15: ffffffffffffffff
-  </TASK>
-Modules linked in: i915 drm_buddy intel_gtt drm_client_lib 
-drm_display_helper drm_kms_helper cec rc_core ttm agpgart ixgbe igb mdio 
-i2c_algo_bit libie_fwlog drm dca hwmon intel_oc_wdt i2c_core mei_wdt 
-video wmi
-CR2: 0000000000000051
----[ end trace 0000000000000000 ]---
-RIP: 0010:pick_task_fair+0x57/0x160
-Code: 66 90 66 90 48 8b 5d 50 48 85 db 74 10 48 8b 73 70 48 89 ef e8 3a 
-74 ff ff 85 c0 75 71 be 01 00 00 00 48 89 ef e8 29 a5 ff ff <80> 78 51 
-00 48 89 c3 0f 85 80 00 00 00 48 85 c0 0f 84 87 00 00 00
-RSP: 0018:ffffc9000091bca0 EFLAGS: 00010082
-RAX: 0000000000000000 RBX: 0000000000000000 RCX: 0000000000000c00
-RDX: fffffa1b1b2acc00 RSI: 0000000000001000 RDI: 0000000000000400
-RBP: ffff8881255ef000 R08: 0000000000000400 R09: 0000000000000002
-R10: 00000000000003ae R11: ffff88812d2cc200 R12: ffff88845dc2cd00
-R13: 0000000000000000 R14: ffff88845dc2cd80 R15: ffffffff827c71e0
-FS:  00007fed68640980(0000) GS:ffff8884da723000(0000) knlGS:0000000000000000
-CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-CR2: 0000000000000051 CR3: 00000001244dd006 CR4: 00000000003706f0
-Kernel panic - not syncing: Fatal exception
-Shutting down cpus with NMI
-Kernel Offset: disabled
-Rebooting in 30 seconds..
----
+The guidance from Qualcomm legal changed in 2025, and that was already
+discussed in a few places. The best reference is here:
 
-Let me know if I can provide anymore information!
+https://lore.kernel.org/linux-wireless/bce51392-d5f1-40a2-ae22-58df01b993e7@oss.qualcomm.com/
 
--- Dylan
+Note the guidance is to change copyright when the file changes, so changing
+copyright alone would not be an appropriate change.
 
+/jeff
 
