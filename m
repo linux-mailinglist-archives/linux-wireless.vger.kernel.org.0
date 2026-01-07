@@ -1,55 +1,55 @@
-Return-Path: <linux-wireless+bounces-30476-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-30482-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 46394CFFBF1
-	for <lists+linux-wireless@lfdr.de>; Wed, 07 Jan 2026 20:26:45 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 94D88CFFBF7
+	for <lists+linux-wireless@lfdr.de>; Wed, 07 Jan 2026 20:26:47 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 2D41D303D361
-	for <lists+linux-wireless@lfdr.de>; Wed,  7 Jan 2026 19:26:06 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 57F10303F984
+	for <lists+linux-wireless@lfdr.de>; Wed,  7 Jan 2026 19:26:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3DDF833D50E;
-	Wed,  7 Jan 2026 14:23:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9F1CB33E377;
+	Wed,  7 Jan 2026 14:23:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b="FeB8c2N6"
+	dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b="UK9VEHXM"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from sipsolutions.net (s3.sipsolutions.net [168.119.38.16])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7D5BA339708
-	for <linux-wireless@vger.kernel.org>; Wed,  7 Jan 2026 14:23:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9BBA033DECB
+	for <linux-wireless@vger.kernel.org>; Wed,  7 Jan 2026 14:23:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=168.119.38.16
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767795829; cv=none; b=k5O0WrjBZs+CGgJ2B5P1nYW4WEuaQhY6z6M/B3AI9WbVgtfCRkMXVYD+ab2Cdm8uSwp4EhbpeACEe/7TdhmKaaN0jOP1tCn1hRq0RaX/uJw2vWEQfXu8ZFi7pLUNMsb6kT/pPUwXcFC1k3BsH9wwzc8MYV7E/eelD+zmrXA7n38=
+	t=1767795835; cv=none; b=scsc2v3ApNneknbtFbOYUajcuiMqvXX7M0BBx3qCGWlLObGnV0lB4Us7w2ykGttBKGvlPr5g1nT8k4N4XneFrm0Ne5gVrI8yv8molPTRlmSBQE8a+KAwxNHXQGSTJEaDniYJBr1f2UXW/JehmcW2RiNeuw5b+/J37KqpsM3X0EQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767795829; c=relaxed/simple;
-	bh=8z3hOpzruyeJ0zDgaOexnMX/TEnS3tZTNbl1qpyGlGU=;
+	s=arc-20240116; t=1767795835; c=relaxed/simple;
+	bh=E8GU6zX3rbuDK2AvA054Gyfx+IMWVWt06nQ/iNnrxWA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=WljskD/h1qgEMZNd942u7Dq2nYyjE/RVjdmByrLICBOPIWN7VOR/KhMrZO082r1iLztiRgu9t8nCCjZJeu3kTUrW3V36bFSjwwR/SOE5myrml4fSto9UQL8D1ELjyx85XEoJ0Lbqdsv/js/DNrMadF0nJiGVmZHoiq5JsrRmJh0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net; spf=pass smtp.mailfrom=sipsolutions.net; dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b=FeB8c2N6; arc=none smtp.client-ip=168.119.38.16
+	 MIME-Version; b=CGQN4x7pZBThyOnQCAHidMDKWMvHe43p97/ZxuPN8ndkNEVUWjr1/MnytNcOlh1n5QvDzlyrdHTHFNPySqihm0QI9+gyDAiLV5LNBImt00Pp/68+myjEXwyo+WbRZXO24VCVwHX5PfdhcqDqR/+zh1dKB0hCf/okHFyMdLAdWz4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net; spf=pass smtp.mailfrom=sipsolutions.net; dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b=UK9VEHXM; arc=none smtp.client-ip=168.119.38.16
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sipsolutions.net
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=sipsolutions.net; s=mail; h=Content-Transfer-Encoding:MIME-Version:
 	References:In-Reply-To:Message-ID:Date:Subject:Cc:To:From:Content-Type:Sender
 	:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
-	Resent-Cc:Resent-Message-ID; bh=4bvrrWS8Hx1wEgfaVoa+fCIloxxwdqeI9v7WXwfD25o=;
-	t=1767795827; x=1769005427; b=FeB8c2N6LDmhqqxhvnnoU/H9Z47NKEAB6M5njzGhamJMCQW
-	+5Lhj+NVRfwlRZcPecRML6GhTLNVJdRL8C4aLYfsmarDfaqRVvhdWMLINJ1Njl8RIA2904H9I/mjZ
-	Rz1RjmbBt4A6yBzEcKYETRL069Ycc2IBkzJjBUj+p0FlPcZf9cEUIzZ3iaWhHGL+wHSRDc2oJwpz6
-	n0mhbWXTTq2yfSBWPb++JRLHOH8MudSK+XWxnbh4HHwBG7l0oJERUv7QKDc0lwbsbPg6VIUtPxrHL
-	XvKPWxn3cBHNRTCdLznlva21PidDag4euk3OXaCIPSq85L9jADtyoLa/wDfsepbw==;
+	Resent-Cc:Resent-Message-ID; bh=WwXbQe8lqfnZ1+jwBZm3XLCTAC1scLJFvaM2VdISgmc=;
+	t=1767795832; x=1769005432; b=UK9VEHXMk9b1A0I/ujCb2szACHJTwr0cRV/2uDWjz90+nWg
+	EIz/ATAxb2PdBBnwlh9FMwgGbkwq11DOKepW77/clcNVLlFeL/HQKa6wHA2N+rOK2gK/K+Zi6vd4G
+	k4+579FPXVEPsDXzl7CuvtyXFqzxS72uJy9fTu6IG11bjoJDyP8BB4qPC7PFRn7Y9F0UGJRpTaHS7
+	wONiTKO2Jui9Ele43VWbfBsJzPLqhtakOYwC3xY4LG5cBqpU7IbaNpIMtTYGMD1NFrGw8U+mNJdKO
+	VMVp5Io/m6DEz/TuxugFj8mZXoJP7vnpUn5NctW/r05kFIL3P65ERwlKcwSZsx9A==;
 Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
 	(Exim 4.98.2)
 	(envelope-from <johannes@sipsolutions.net>)
-	id 1vdURs-00000005agF-3lmK;
-	Wed, 07 Jan 2026 15:23:45 +0100
+	id 1vdURy-00000005agF-1E9D;
+	Wed, 07 Jan 2026 15:23:50 +0100
 From: Johannes Berg <johannes@sipsolutions.net>
 To: linux-wireless@vger.kernel.org
 Cc: Benjamin Berg <benjamin.berg@intel.com>
-Subject: [RFC wireless-next 14/46] wifi: mac80211_hwsim: select NAN TX channel based on current TSF
-Date: Wed,  7 Jan 2026 15:22:13 +0100
-Message-ID: <20260107152325.2084f2c9c153.I5ec4076a8a9445233dc414c6ecaa39f32f1e9595@changeid>
+Subject: [RFC wireless-next 19/46] wifi: mac80211_hwsim: implement NAN synchronization
+Date: Wed,  7 Jan 2026 15:22:18 +0100
+Message-ID: <20260107152325.cfb20c6919ab.I98b6c15eadefd6d123658294ef1a0cd3c2ce3054@changeid>
 X-Mailer: git-send-email 2.52.0
 In-Reply-To: <20260107142324.45386-48-johannes@sipsolutions.net>
 References: <20260107142324.45386-48-johannes@sipsolutions.net>
@@ -63,70 +63,1042 @@ Content-Transfer-Encoding: 8bit
 
 From: Benjamin Berg <benjamin.berg@intel.com>
 
-Move the TX channel selection into the NAN specific file and select the
-channel based on the current slot.
+Add all the handling to do NAN synchronization on 2.4 GHz including
+sending out beacons. With this, the mac80211_hwsim NAN device also works
+when used in conjunction with an external medium simulation.
+
+Note that the TSF sync is not ideal in case of an external medium
+simulation. This is because the mactime for received frames needs to be
+estimated and the simulation may not update the timestamp of beacons
+to the actual time that the frame was transmitted.
+
+The implementation has an initial short phase where it scans for
+clusters. This facilitates cluster joining and avoids creating a new
+cluster immediately, which would result in two cluster join
+notifications. It does not scan otherwise and will only see another
+cluster appearing if a discovery beacon happens to be sent during the
+2.4 GHz discovery window (DW).
 
 Signed-off-by: Benjamin Berg <benjamin.berg@intel.com>
 Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 ---
- .../net/wireless/virtual/mac80211_hwsim_main.c |  6 +-----
- .../net/wireless/virtual/mac80211_hwsim_nan.c  | 18 ++++++++++++++++++
- .../net/wireless/virtual/mac80211_hwsim_nan.h  |  3 +++
- 3 files changed, 22 insertions(+), 5 deletions(-)
+ .../net/wireless/virtual/mac80211_hwsim_i.h   |   4 +
+ .../wireless/virtual/mac80211_hwsim_main.c    |  18 +-
+ .../net/wireless/virtual/mac80211_hwsim_nan.c | 734 +++++++++++++++++-
+ .../net/wireless/virtual/mac80211_hwsim_nan.h |  43 +
+ 4 files changed, 754 insertions(+), 45 deletions(-)
 
+diff --git a/drivers/net/wireless/virtual/mac80211_hwsim_i.h b/drivers/net/wireless/virtual/mac80211_hwsim_i.h
+index ee566aff4785..a42f94dd6d6a 100644
+--- a/drivers/net/wireless/virtual/mac80211_hwsim_i.h
++++ b/drivers/net/wireless/virtual/mac80211_hwsim_i.h
+@@ -136,6 +136,10 @@ u64 mac80211_hwsim_boottime_to_tsf(struct mac80211_hwsim_data *data,
+ u64 mac80211_hwsim_get_tsf(struct ieee80211_hw *hw,
+ 			   struct ieee80211_vif *vif);
+ 
++void mac80211_hwsim_tx_frame(struct ieee80211_hw *hw,
++			     struct sk_buff *skb,
++			     struct ieee80211_channel *chan);
++
+ void ieee80211_hwsim_wake_tx_queue(struct ieee80211_hw *hw,
+ 				   struct ieee80211_txq *txq);
+ 
 diff --git a/drivers/net/wireless/virtual/mac80211_hwsim_main.c b/drivers/net/wireless/virtual/mac80211_hwsim_main.c
-index 57e22f18bbd1..cfe72dfd5918 100644
+index 09b4c2eec6c3..abed66633279 100644
 --- a/drivers/net/wireless/virtual/mac80211_hwsim_main.c
 +++ b/drivers/net/wireless/virtual/mac80211_hwsim_main.c
-@@ -1918,11 +1918,7 @@ static void mac80211_hwsim_tx(struct ieee80211_hw *hw,
+@@ -914,10 +914,6 @@ static int hwsim_get_chanwidth(enum nl80211_chan_width bw)
+ 	return INT_MAX;
+ }
+ 
+-static void mac80211_hwsim_tx_frame(struct ieee80211_hw *hw,
+-				    struct sk_buff *skb,
+-				    struct ieee80211_channel *chan);
+-
+ /* sysfs attributes */
+ static void hwsim_send_ps_poll(void *dat, u8 *mac, struct ieee80211_vif *vif)
+ {
+@@ -1728,6 +1724,9 @@ static void mac80211_hwsim_rx(struct mac80211_hwsim_data *data,
+ 
+ 	mac80211_hwsim_add_vendor_rtap(skb);
+ 
++	if (data->nan.device_vif)
++		mac80211_hwsim_nan_rx(data->hw, skb);
++
+ 	data->rx_pkts++;
+ 	data->rx_bytes += skb->len;
+ 	ieee80211_rx_irqsafe(data->hw, skb);
+@@ -2186,9 +2185,9 @@ static void mac80211_hwsim_remove_interface(
+ 		mac80211_hwsim_config_mac_nl(hw, vif->addr, false);
+ }
+ 
+-static void mac80211_hwsim_tx_frame(struct ieee80211_hw *hw,
+-				    struct sk_buff *skb,
+-				    struct ieee80211_channel *chan)
++void mac80211_hwsim_tx_frame(struct ieee80211_hw *hw,
++			     struct sk_buff *skb,
++			     struct ieee80211_channel *chan)
+ {
+ 	struct mac80211_hwsim_data *data = hw->priv;
+ 	u32 _portid = READ_ONCE(data->wmediumd);
+@@ -5285,6 +5284,11 @@ static int mac80211_hwsim_new_radio(struct genl_info *info,
+ 		hrtimer_setup(&data->nan.resume_txqs_timer,
+ 			      mac80211_hwsim_nan_resume_txqs_timer,
+ 			      CLOCK_BOOTTIME, HRTIMER_MODE_ABS_SOFT);
++		hrtimer_setup(&data->nan.discovery_beacon_timer,
++			      mac80211_hwsim_nan_discovery_beacon_timer,
++			      CLOCK_BOOTTIME, HRTIMER_MODE_ABS_SOFT);
++
++		spin_lock_init(&data->nan.state_lock);
  	}
  
- 	if (vif && vif->type == NL80211_IFTYPE_NAN && !data->tmp_chan) {
--		/* For NAN Device simulation purposes, assume that NAN is always
--		 * on channel 6 or channel 149, unless a ROC is in progress (for
--		 * USD use cases).
--		 */
--		channel = data->nan.channel;
-+		channel = mac80211_hwsim_nan_get_tx_channel(hw);
- 
- 		if (WARN_ON(!channel)) {
- 			ieee80211_free_txskb(hw, skb);
+ 	data->if_combination.radar_detect_widths =
 diff --git a/drivers/net/wireless/virtual/mac80211_hwsim_nan.c b/drivers/net/wireless/virtual/mac80211_hwsim_nan.c
-index 029499bf965f..ce8bb73f9dd6 100644
+index acc1cd6e24ac..2be256e4f7bd 100644
 --- a/drivers/net/wireless/virtual/mac80211_hwsim_nan.c
 +++ b/drivers/net/wireless/virtual/mac80211_hwsim_nan.c
-@@ -310,3 +310,21 @@ bool mac80211_hwsim_nan_txq_transmitting(struct ieee80211_hw *hw,
+@@ -1,9 +1,10 @@
+ // SPDX-License-Identifier: GPL-2.0-only
+ /*
+  * mac80211_hwsim_nan - NAN software simulation for mac80211_hwsim
+- * Copyright (C) 2025 Intel Corporation
++ * Copyright (C) 2025-2026 Intel Corporation
+  */
  
- 	return true;
- }
++#include <net/cfg80211.h>
+ #include "mac80211_hwsim_i.h"
+ 
+ /* Defined as the lower 23 bits being zero */
+@@ -26,11 +27,15 @@
+ static_assert(16 * DWST_TU * 1024 == 8192 * 1024);
+ static_assert(DW0_TSF_MASK + 1 == 8192 * 1024);
+ 
++/* warmup phase should be 120 seconds, which is approximately 225 DWSTs */
++#define NAN_WARMUP_DWST		225
 +
-+struct ieee80211_channel *
-+mac80211_hwsim_nan_get_tx_channel(struct ieee80211_hw *hw)
++#define NAN_RSSI_CLOSE (-60)
++#define NAN_RSSI_MIDDLE (-75)
++
+ /* Quiet time at the end of each slot where TX is suppressed */
+ #define NAN_CHAN_SWITCH_TIME_US		256
+ 
+-static u8 hwsim_nan_cluster_id[ETH_ALEN];
+-
+ static void mac80211_hwsim_nan_resume_txqs(struct mac80211_hwsim_data *data);
+ 
+ static u64 hwsim_nan_get_timer_tsf(struct mac80211_hwsim_data *data)
+@@ -45,10 +50,43 @@ static u8 hwsim_nan_slot_from_tsf(u64 tsf)
+ 	return (tsf & DWST_TSF_MASK) / ieee80211_tu_to_usec(SLOT_TU);
+ }
+ 
+-static void
+-mac80211_hwsim_nan_schedule_slot(struct mac80211_hwsim_data *data, u8 slot)
++static u64 hwsim_nan_encode_master_rank(u8 master_pref, u8 random_factor,
++					const u8 *addr)
+ {
+-	u64 tsf = hwsim_nan_get_timer_tsf(data);
++	return ((u64)master_pref << 56) +
++		((u64)random_factor << 48) +
++		((u64)addr[5] << 40) +
++		((u64)addr[4] << 32) +
++		((u64)addr[3] << 24) +
++		((u64)addr[2] << 16) +
++		((u64)addr[1] << 8) +
++		((u64)addr[0] << 0);
++}
++
++static u64 hwsim_nan_get_master_rank(struct mac80211_hwsim_data *data)
++{
++	u8 master_pref = 0;
++	u8 random_factor = 0;
++
++	if (data->nan.phase == MAC80211_HWSIM_NAN_PHASE_UP) {
++		master_pref = data->nan.master_pref;
++		random_factor = data->nan.random_factor;
++	}
++
++	return hwsim_nan_encode_master_rank(master_pref, random_factor,
++					    data->nan.device_vif->addr);
++}
++
++static void
++mac80211_hwsim_nan_schedule_slot(struct mac80211_hwsim_data *data, u8 slot,
++				 bool discontinuity)
++{
++	u64 tsf;
++
++	if (!discontinuity)
++		tsf = hwsim_nan_get_timer_tsf(data);
++	else
++		tsf = mac80211_hwsim_get_tsf(data->hw, data->nan.device_vif);
+ 
+ 	/* Only called by mac80211_hwsim_nan_dw_timer from softirq context */
+ 	lockdep_assert_in_softirq();
+@@ -60,16 +98,567 @@ mac80211_hwsim_nan_schedule_slot(struct mac80211_hwsim_data *data, u8 slot)
+ 			    mac80211_hwsim_tsf_to_boottime(data, tsf));
+ }
+ 
++void mac80211_hwsim_nan_rx(struct ieee80211_hw *hw,
++			   struct sk_buff *skb)
 +{
 +	struct mac80211_hwsim_data *data = hw->priv;
-+	u64 tsf = mac80211_hwsim_get_tsf(data->hw, data->nan.device_vif);
-+	u8 slot = hwsim_nan_slot_from_tsf(tsf);
++	const struct ieee80211_mgmt *mgmt = (void *)skb->data;
++	struct element *nan_elem = (void *)mgmt->u.beacon.variable;
++	struct ieee80211_nan_anchor_master_info *ami = NULL;
++	const struct ieee80211_nan_attr *nan_attr;
++	struct ieee80211_rx_status rx_status;
++	bool joined_cluster = false;
++	bool adopt_tsf = false;
++	bool is_sync_beacon;
++	bool is_same_cluster;
++	u64 master_rank = 0;
++	ssize_t data_len;
++	u8 slot;
 +
-+	if (slot == SLOT_24GHZ_DW)
-+		return ieee80211_get_channel(hw->wiphy, 2437);
++	/* Need a NAN vendor element at the start */
++	if (skb->len < (offsetofend(struct ieee80211_mgmt, u.beacon) + 6) ||
++	    !ieee80211_is_beacon(mgmt->frame_control))
++		return;
 +
-+	if (slot == SLOT_5GHZ_DW &&
-+	    data->nan.bands & BIT(NL80211_BAND_5GHZ))
-+		return ieee80211_get_channel(hw->wiphy, 5745);
++	data_len = skb->len - offsetofend(struct ieee80211_mgmt, u.beacon);
 +
-+	/* drop frame and warn, NAN_CHAN_SWITCH_TIME_US should avoid races */
-+	return NULL;
++	/* Copy the RX status to add a MAC timestamp if needed */
++	memcpy(&rx_status, IEEE80211_SKB_RXCB(skb),
++	       sizeof(struct ieee80211_rx_status));
++
++	/* And deal with the lack of mac time stamp */
++	if ((rx_status.flag & RX_FLAG_MACTIME) != RX_FLAG_MACTIME_START) {
++		u64 tsf = mac80211_hwsim_get_tsf(hw, data->nan.device_vif);;
++
++		/* In that case there should be no timestamp */
++		WARN_ON_ONCE(rx_status.flag & RX_FLAG_MACTIME);
++
++		/* No mac timestamp, set current TSF for the frame end */
++		rx_status.flag |= RX_FLAG_MACTIME_END;
++		rx_status.mactime = tsf;
++
++		/* And translate to the start for the rest of the code */
++		rx_status.mactime =
++			ieee80211_calculate_rx_timestamp(hw, &rx_status,
++							 skb->len, 0);
++		rx_status.flag &= ~RX_FLAG_MACTIME;
++		rx_status.flag |= RX_FLAG_MACTIME_START;
++
++		/* Match mac80211_hwsim_nan_receive, see comment there */
++		slot = hwsim_nan_slot_from_tsf(tsf + 128);
++	} else {
++		slot = hwsim_nan_slot_from_tsf(rx_status.mactime);
++	}
++
++	/*
++	 * (overly) simplify things, only track 2.4 GHz here. Also, ignore
++	 * frames outside of the 2.4 GHz DW slot, unless in the initial SCAN
++	 * phase.
++	 */
++	if ((slot != SLOT_24GHZ_DW &&
++	     data->nan.phase != MAC80211_HWSIM_NAN_PHASE_SCAN) ||
++	    rx_status.freq != 2437)
++		return;
++
++	/* Just ignore low RSSI beacons that we cannot sync to */
++	if (rx_status.signal < NAN_RSSI_MIDDLE)
++		return;
++
++	/* Needs to be a valid NAN cluster ID in A3 */
++	if (get_unaligned_be32(mgmt->bssid) != ((WLAN_OUI_WFA << 8) | 0x01))
++		return;
++
++	/* We are only interested in NAN beacons */
++	if (nan_elem->id != WLAN_EID_VENDOR_SPECIFIC ||
++	    nan_elem->datalen < 4 ||
++	    get_unaligned_be32(nan_elem->data) !=
++	    (WLAN_OUI_WFA << 8 | WLAN_OUI_TYPE_WFA_NAN))
++		return;
++
++	u8 *nan_defragmented __free(kfree) = kzalloc(data_len, GFP_ATOMIC);
++	if (!nan_defragmented)
++		return;
++
++	data_len = cfg80211_defragment_element(nan_elem,
++					       mgmt->u.beacon.variable,
++					       data_len,
++					       nan_defragmented, data_len,
++					       WLAN_EID_FRAGMENT);
++
++	if (data_len < 0)
++		return;
++
++	/* Assume it is a synchronization beacon if beacon_int is 512 TUs */
++	is_sync_beacon = le16_to_cpu(mgmt->u.beacon.beacon_int) == DWST_TU;
++	is_same_cluster = ether_addr_equal(mgmt->bssid, data->nan.cluster_id);
++
++	for_each_nan_attr(nan_attr, nan_defragmented + 4, data_len - 4) {
++		if (nan_attr->attr == NAN_ATTR_MASTER_INDICATION &&
++		    le16_to_cpu(nan_attr->length) >=
++		    sizeof(struct ieee80211_nan_master_indication)) {
++			struct ieee80211_nan_master_indication *mi =
++				(void *)nan_attr->data;
++
++			master_rank =
++				hwsim_nan_encode_master_rank(mi->master_pref,
++							     mi->random_factor,
++							     mgmt->sa);
++		}
++
++		if (nan_attr->attr == NAN_ATTR_CLUSTER_INFO &&
++		    le16_to_cpu(nan_attr->length) >=
++		    sizeof(struct ieee80211_nan_anchor_master_info)) {
++			ami = (void *)nan_attr->data;
++
++			/*
++			 * The AMBTT should be set to the beacon timestamp when
++			 * the sender is the anchor master. We can simply
++			 * modify the structure because we created a copy when
++			 * defragmenting the NAN element.
++			 */
++			if (ami->hop_count == 0)
++				ami->ambtt = cpu_to_le32(
++					le64_to_cpu(mgmt->u.beacon.timestamp));
++		}
++	}
++
++	/* Do the rest of the processing under lock */
++	spin_lock_bh(&data->nan.state_lock);
++
++	/*
++	 * sync beacon should be discarded if the master rank is the same
++	 * and the AMBTT is older than 16 * 512 TUs compared to our own TSF.
++	 *
++	 * Subtract the AMBTT from the lowered TSF. If the AMBTT is older
++	 * (smaller) then the calculation will not underflow.
++	 */
++	if (is_sync_beacon && ami &&
++	    ami->master_rank == data->nan.current_ami.master_rank &&
++	    (((u32)rx_status.mactime -
++	      ieee80211_tu_to_usec(16 * 512)) -
++	     le32_to_cpu(ami->ambtt)) < 0x8000000) {
++		wiphy_dbg(hw->wiphy,
++			  "NAN: ignoring sync beacon with old AMBTT\n");
++		is_sync_beacon = false;
++	}
++
++	if (is_same_cluster && is_sync_beacon &&
++	    master_rank > hwsim_nan_get_master_rank(data)) {
++		if (rx_status.signal > NAN_RSSI_CLOSE)
++			data->nan.master_transition_score += 3;
++		else
++			data->nan.master_transition_score += 1;
++	}
++
++	if (is_same_cluster && is_sync_beacon && ami &&
++	    ((ami->master_rank == data->nan.current_ami.master_rank &&
++	      ami->hop_count < data->nan.current_ami.hop_count) ||
++	     (master_rank > hwsim_nan_get_master_rank(data) &&
++	      ami->hop_count == data->nan.current_ami.hop_count))) {
++		if (rx_status.signal > NAN_RSSI_CLOSE)
++			data->nan.sync_transition_score += 3;
++		else
++			data->nan.sync_transition_score += 1;
++	}
++
++	/*
++	 * Decide on TSF adjustments before updating any other state
++	 */
++	if (is_same_cluster && is_sync_beacon && ami &&
++	    data->nan.current_ami.hop_count != 0) {
++		if (le64_to_cpu(ami->master_rank) >
++		    le64_to_cpu(data->nan.current_ami.master_rank) &&
++		    ami->master_rank != data->nan.last_ami.master_rank)
++			adopt_tsf = true;
++
++		if (le64_to_cpu(ami->master_rank) >
++		    le64_to_cpu(data->nan.current_ami.master_rank) &&
++		    ami->master_rank == data->nan.last_ami.master_rank &&
++		    le32_to_cpu(ami->ambtt) >
++		    le32_to_cpu(data->nan.last_ami.ambtt))
++			adopt_tsf = true;
++
++		if (le64_to_cpu(ami->master_rank) <
++		    le64_to_cpu(data->nan.current_ami.master_rank) &&
++		    le64_to_cpu(ami->master_rank) >
++		    hwsim_nan_get_master_rank(data) &&
++		    ether_addr_equal(ami->master_addr,
++				     data->nan.current_ami.master_addr))
++			adopt_tsf = true;
++
++		if (ami->master_rank == data->nan.current_ami.master_rank &&
++		    le32_to_cpu(ami->ambtt) >
++		    le32_to_cpu(data->nan.current_ami.ambtt))
++			adopt_tsf = true;
++
++		/* Anchor Master case is handled below */
++	}
++
++	/*
++	 * NAN Cluster merging
++	 */
++	if (!is_same_cluster && ami) {
++		u64 curr_amr;
++		u64 own_cg;
++		u64 frame_amr;
++		u64 cg;
++
++		/* Shifted down by 19 bits compared to spec */
++		frame_amr = le64_to_cpu(ami->master_rank);
++		cg = (u64)ami->master_pref << (64 - 19);
++		cg += le64_to_cpu(mgmt->u.beacon.timestamp) >> 19;
++
++		curr_amr = le64_to_cpu(data->nan.current_ami.master_rank);
++		own_cg = (u64)data->nan.current_ami.master_pref << (64 - 19);
++		own_cg += rx_status.mactime >> 19;
++
++		/*
++		 * Check if the cluster shall be joined
++		 *
++		 * When in the "scan" phase, just join immediately.
++		 */
++		if (cg > own_cg ||
++		    (cg == own_cg && frame_amr > curr_amr) ||
++		    data->nan.phase == MAC80211_HWSIM_NAN_PHASE_SCAN) {
++			/* Avoid a state transition */
++			data->nan.master_transition_score = 0;
++			data->nan.sync_transition_score = 0;
++
++			/*
++			 * NOTE: The spec says we should TX sync beacons on the
++			 * old schedule after joining. We do not implement this.
++			 */
++
++			wiphy_dbg(hw->wiphy, "NAN: joining cluster %pM\n",
++				  mgmt->bssid);
++
++			joined_cluster = true;
++			adopt_tsf = true;
++
++			memcpy(&data->nan.last_ami, &data->nan.current_ami,
++			       sizeof(data->nan.last_ami));
++			memcpy(&data->nan.current_ami, ami,
++			       sizeof(data->nan.last_ami));
++			data->nan.current_ami.hop_count += 1;
++
++			memcpy(data->nan.cluster_id, mgmt->bssid, ETH_ALEN);
++
++			/*
++			 * Assume we are UP if we joined a cluster.
++			 *
++			 * If the other anchor master is still in the warmup
++			 * phase, then we may temporarily become the anchor
++			 * master until it sets its own master preference to
++			 * be non-zero.
++			 */
++			data->nan.phase = MAC80211_HWSIM_NAN_PHASE_UP;
++			data->nan.random_factor_valid_dwst = 0;
++		}
++	}
++
++	/*
++	 * Anchor master selection
++	 */
++	/* We are not anchor master */
++	if (is_same_cluster && is_sync_beacon && ami &&
++	    data->nan.current_ami.hop_count != 0) {
++		if (le64_to_cpu(data->nan.current_ami.master_rank) <
++		    le64_to_cpu(ami->master_rank)) {
++			if (ami->master_rank == data->nan.last_ami.master_rank &&
++			    le32_to_cpu(ami->ambtt) <=
++			    le32_to_cpu(data->nan.last_ami.ambtt)) {
++				/* disregard frame */
++			} else {
++				memcpy(&data->nan.last_ami,
++				       &data->nan.current_ami,
++				       sizeof(data->nan.last_ami));
++				memcpy(&data->nan.current_ami, ami,
++				       sizeof(data->nan.last_ami));
++				data->nan.current_ami.hop_count += 1;
++			}
++		}
++
++		if (le64_to_cpu(data->nan.current_ami.master_rank) >
++		    le64_to_cpu(ami->master_rank)) {
++			if (!ether_addr_equal(data->nan.current_ami.master_addr,
++					      ami->master_addr)) {
++				/* disregard frame */
++			} else {
++				u64 amr = hwsim_nan_get_master_rank(data);
++
++				if (amr > le64_to_cpu(ami->master_rank)) {
++					/* assume ourselves as anchor master */
++					wiphy_dbg(hw->wiphy,
++						  "NAN: assume anchor master role\n");
++					data->nan.current_ami.master_rank =
++						cpu_to_le64(amr);
++					data->nan.current_ami.hop_count = 0;
++					memset(&data->nan.last_ami, 0,
++					       sizeof(data->nan.last_ami));
++					data->nan.last_ami.ambtt =
++						data->nan.current_ami.ambtt;
++					data->nan.current_ami.ambtt = 0;
++				} else {
++					memcpy(&data->nan.last_ami,
++					       &data->nan.current_ami,
++					       sizeof(data->nan.last_ami));
++					memcpy(&data->nan.current_ami, ami,
++					       sizeof(data->nan.last_ami));
++					data->nan.current_ami.hop_count += 1;
++				}
++			}
++		}
++
++		if (data->nan.current_ami.master_rank == ami->master_rank) {
++			if (le32_to_cpu(data->nan.current_ami.ambtt) <
++			    le32_to_cpu(ami->ambtt)) {
++				data->nan.current_ami.ambtt = ami->ambtt;
++			}
++
++			if (data->nan.current_ami.hop_count >
++			    ami->hop_count + 1) {
++				data->nan.current_ami.hop_count =
++					ami->hop_count + 1;
++			}
++		}
++	}
++
++	/* We are anchor master */
++	if (is_same_cluster && is_sync_beacon && ami &&
++	    data->nan.current_ami.hop_count == 0) {
++		WARN_ON_ONCE(!ether_addr_equal(data->nan.current_ami.master_addr,
++					       data->nan.device_vif->addr));
++
++		if (le64_to_cpu(ami->master_rank) <
++		    le64_to_cpu(data->nan.current_ami.master_rank) ||
++		    ether_addr_equal(ami->master_addr,
++				     data->nan.current_ami.master_addr)) {
++			/* disregard */
++		} else {
++			wiphy_dbg(hw->wiphy, "NAN: lost anchor master role\n");
++			adopt_tsf = true;
++			memcpy(&data->nan.last_ami, &data->nan.current_ami,
++			       sizeof(data->nan.last_ami));
++			memcpy(&data->nan.current_ami, ami,
++			       sizeof(data->nan.last_ami));
++			data->nan.current_ami.hop_count += 1;
++		}
++	}
++
++	if (adopt_tsf && !data->nan.tsf_adjusted) {
++		int threshold = 5;
++		s64 adjustment;
++
++		/* Timestamp is likely inaccurate (and late) in this case */
++		if (!(IEEE80211_SKB_RXCB(skb)->flag & RX_FLAG_MACTIME))
++			threshold = 128;
++
++		adjustment =
++			le64_to_cpu(mgmt->u.beacon.timestamp) -
++			ieee80211_calculate_rx_timestamp(hw, &rx_status,
++							 skb->len, 24);
++
++		scoped_guard(spinlock_bh, &data->tsf_offset_lock) {
++			if (adjustment < -threshold || adjustment > threshold) {
++				if (adjustment < -(s64)ieee80211_tu_to_usec(4) ||
++				    adjustment > (s64)ieee80211_tu_to_usec(4))
++					data->nan.tsf_discontinuity = true;
++
++				wiphy_debug(hw->wiphy,
++					    "NAN: Adjusting TSF by +/- %d us or more: %lld us (discontinuity: %d, from: %pM, old offset: %lld)\n",
++					    threshold, adjustment,
++					    data->nan.tsf_discontinuity, mgmt->sa,
++					    data->tsf_offset);
++			} else {
++				/* smooth things out a little bit */
++				adjustment /= 2;
++			}
++
++			/*
++			 * Do the TSF adjustment
++			 * The flag prevents further adjustments until the next
++			 * 2.4 GHz DW starts to avoid race conditions for
++			 * in-flight packets.
++			 */
++			data->nan.tsf_adjusted = true;
++			data->tsf_offset += adjustment;
++		}
++	}
++
++	spin_unlock_bh(&data->nan.state_lock);
++
++	if (joined_cluster) {
++		struct wireless_dev *wdev =
++			ieee80211_vif_to_wdev(data->nan.device_vif);
++
++		cfg80211_nan_cluster_joined(wdev, data->nan.cluster_id, false,
++					    GFP_ATOMIC);
++	}
 +}
++
+ static void
+ mac80211_hwsim_nan_exec_state_transitions(struct mac80211_hwsim_data *data)
+ {
++	bool notify_join = false;
++
+ 	/*
+ 	 * Handle NAN role and state transitions at the end of the DW period
+ 	 * in accordance to Wi-Fi Aware version 4.0 section 3.3.7 point 2, i.e.
+ 	 * end of 5 GHz DW if enabled else at the end of the 2.4 GHz DW.
+-	 *
+-	 * TODO: Implement
+ 	 */
++
++	spin_lock(&data->nan.state_lock);
++
++	/* Handle role transitions, Wi-Fi Aware version 4.0 section 3.3.6  */
++	if (data->nan.master_transition_score < 3)
++		data->nan.role = MAC80211_HWSIM_NAN_ROLE_MASTER;
++	else if (data->nan.role == MAC80211_HWSIM_NAN_ROLE_MASTER &&
++		 data->nan.master_transition_score >= 3)
++		data->nan.role = MAC80211_HWSIM_NAN_ROLE_SYNC;
++	else if (data->nan.role == MAC80211_HWSIM_NAN_ROLE_SYNC &&
++		 data->nan.sync_transition_score >= 3)
++		data->nan.role = MAC80211_HWSIM_NAN_ROLE_NON_SYNC;
++	else if (data->nan.role == MAC80211_HWSIM_NAN_ROLE_NON_SYNC &&
++		 data->nan.sync_transition_score < 3)
++		data->nan.role = MAC80211_HWSIM_NAN_ROLE_SYNC;
++
++	/*
++	 * The discovery beacon timer will stop automatically. Make sure it is
++	 * running if we are master. Do not bother with a proper alignment it
++	 * will sync itself to the TSF after the first TX.
++	 */
++	if (data->nan.role == MAC80211_HWSIM_NAN_ROLE_MASTER &&
++	    !hrtimer_active(&data->nan.discovery_beacon_timer))
++		hrtimer_start(&data->nan.discovery_beacon_timer,
++			      ns_to_ktime(10 * NSEC_PER_USEC),
++			      HRTIMER_MODE_REL_SOFT);
++
++	data->nan.master_transition_score = 0;
++	data->nan.sync_transition_score = 0;
++
++	if (data->nan.random_factor_valid_dwst == 0) {
++		u64 amr;
++
++		if (data->nan.phase == MAC80211_HWSIM_NAN_PHASE_SCAN) {
++			data->nan.phase = MAC80211_HWSIM_NAN_PHASE_WARMUP;
++			data->nan.random_factor_valid_dwst = NAN_WARMUP_DWST;
++
++			notify_join = true;
++		} else {
++			data->nan.phase = MAC80211_HWSIM_NAN_PHASE_UP;
++			data->nan.random_factor_valid_dwst =
++				get_random_u32_inclusive(120, 240);
++			data->nan.random_factor = get_random_u8();
++		}
++
++		amr = hwsim_nan_get_master_rank(data);
++
++		if (data->nan.current_ami.hop_count == 0) {
++			/* Update if we are already anchor master */
++			data->nan.current_ami.master_rank = cpu_to_le64(amr);
++		} else if (le64_to_cpu(data->nan.current_ami.master_rank) < amr) {
++			/* assume role if we have a higher rank */
++			wiphy_dbg(data->hw->wiphy,
++				  "NAN: assume anchor master role\n");
++			data->nan.current_ami.master_rank = cpu_to_le64(amr);
++			data->nan.current_ami.hop_count = 0;
++			memset(&data->nan.last_ami, 0,
++			       sizeof(data->nan.last_ami));
++			data->nan.last_ami.ambtt = data->nan.current_ami.ambtt;
++			data->nan.current_ami.ambtt = 0;
++		}
++	} else {
++		data->nan.random_factor_valid_dwst--;
++	}
++
++	spin_unlock(&data->nan.state_lock);
++
++	if (notify_join) {
++		struct wireless_dev *wdev =
++			ieee80211_vif_to_wdev(data->nan.device_vif);
++
++		cfg80211_nan_cluster_joined(wdev, data->nan.cluster_id, true,
++					    GFP_ATOMIC);
++	}
++}
++
++static void
++mac80211_hwsim_nan_tx_beacon(struct mac80211_hwsim_data *data,
++			     bool is_discovery,
++			     struct ieee80211_channel *channel)
++{
++	struct ieee80211_vendor_ie nan_ie = {
++		.element_id = WLAN_EID_VENDOR_SPECIFIC,
++		.len = 27 - 2,
++		.oui = { u32_get_bits(WLAN_OUI_WFA, 0xff0000),
++			 u32_get_bits(WLAN_OUI_WFA, 0xff00),
++			 u32_get_bits(WLAN_OUI_WFA, 0xff) },
++		.oui_type = WLAN_OUI_TYPE_WFA_NAN,
++	};
++	size_t alloc_size =
++		IEEE80211_TX_STATUS_HEADROOM +
++		offsetofend(struct ieee80211_mgmt, u.beacon) +
++		27 /* size of NAN vendor element */;
++	struct ieee80211_nan_master_indication master_indication;
++	struct ieee80211_nan_attr nan_attr;
++	struct ieee80211_mgmt *mgmt;
++	struct sk_buff *skb;
++
++	/*
++	 * TODO: Should the configured vendor elements or NAN attributes be
++	 * included in some of these beacons?
++	 */
++
++	skb = alloc_skb(alloc_size, GFP_ATOMIC);
++	if (!skb)
++		return;
++
++	spin_lock(&data->nan.state_lock);
++
++	skb_reserve(skb, IEEE80211_TX_STATUS_HEADROOM);
++	mgmt = skb_put(skb, offsetofend(struct ieee80211_mgmt, u.beacon));
++
++	memset(mgmt, 0, offsetofend(struct ieee80211_mgmt, u.beacon));
++	memcpy(mgmt->sa, data->nan.device_vif->addr, ETH_ALEN);
++	memset(mgmt->da, 0xff, ETH_ALEN);
++	memcpy(mgmt->bssid, data->nan.cluster_id, ETH_ALEN);
++
++	mgmt->frame_control = cpu_to_le16(IEEE80211_FTYPE_MGMT |
++					  IEEE80211_STYPE_BEACON);
++	mgmt->u.beacon.beacon_int = cpu_to_le16(is_discovery ? 100 : DWST_TU);
++	mgmt->u.beacon.capab_info =
++		cpu_to_le16(WLAN_CAPABILITY_SHORT_SLOT_TIME |
++			    WLAN_CAPABILITY_SHORT_PREAMBLE);
++
++	/* FIXME: set these to saner values? */
++	mgmt->duration = 0;
++	mgmt->seq_ctrl = 0;
++
++	/* Put the NAN element */
++	skb_put_data(skb, &nan_ie, sizeof(nan_ie));
++
++	nan_attr.attr = NAN_ATTR_MASTER_INDICATION;
++	nan_attr.length = cpu_to_le16(sizeof(master_indication));
++	if (data->nan.phase == MAC80211_HWSIM_NAN_PHASE_UP) {
++		master_indication.master_pref = data->nan.master_pref;
++		master_indication.random_factor = data->nan.random_factor;
++	} else {
++		master_indication.master_pref = 0;
++		master_indication.random_factor = 0;
++	}
++
++	skb_put_data(skb, &nan_attr, sizeof(nan_attr));
++	skb_put_data(skb, &master_indication, sizeof(master_indication));
++
++	nan_attr.attr = NAN_ATTR_CLUSTER_INFO;
++	nan_attr.length = cpu_to_le16(sizeof(data->nan.current_ami));
++	skb_put_data(skb, &nan_attr, sizeof(nan_attr));
++	skb_put_data(skb, &data->nan.current_ami,
++		     sizeof(data->nan.current_ami));
++
++	spin_unlock(&data->nan.state_lock);
++
++	mac80211_hwsim_tx_frame(data->hw, skb, channel);
+ }
+ 
+ enum hrtimer_restart
+@@ -80,10 +669,12 @@ mac80211_hwsim_nan_slot_timer(struct hrtimer *timer)
+ 			     nan.slot_timer);
+ 	struct ieee80211_hw *hw = data->hw;
+ 	struct ieee80211_channel *notify_dw_chan = NULL;
++	struct ieee80211_channel *beacon_sync_chan = NULL;
+ 	u64 tsf = hwsim_nan_get_timer_tsf(data);
+ 	u8 slot = hwsim_nan_slot_from_tsf(tsf);
+ 	bool dwst_of_dw0 = false;
+ 	bool dw_end = false;
++	bool tx_sync_beacon;
+ 
+ 	if (!data->nan.device_vif)
+ 		return HRTIMER_NORESTART;
+@@ -92,10 +683,28 @@ mac80211_hwsim_nan_slot_timer(struct hrtimer *timer)
+ 		dwst_of_dw0 = true;
+ 
+ 
++	scoped_guard(spinlock, &data->nan.state_lock) {
++		if (data->nan.tsf_discontinuity) {
++			data->nan.tsf_discontinuity = false;
++
++			mac80211_hwsim_nan_schedule_slot(data, 32, true);
++
++			return HRTIMER_RESTART;
++		}
++
++		if (slot == SLOT_24GHZ_DW)
++			data->nan.tsf_adjusted = false;
++
++		tx_sync_beacon =
++			data->nan.phase != MAC80211_HWSIM_NAN_PHASE_SCAN &&
++			data->nan.role != MAC80211_HWSIM_NAN_ROLE_NON_SYNC;
++	}
++
+ 	switch (slot) {
+ 	case SLOT_24GHZ_DW:
+ 		wiphy_dbg(data->hw->wiphy, "Start of 2.4 GHz DW, is DW0=%d\n",
+ 			  dwst_of_dw0);
++		beacon_sync_chan = ieee80211_get_channel(hw->wiphy, 2437);
+ 		break;
+ 
+ 	case SLOT_24GHZ_DW + 1:
+@@ -110,6 +719,8 @@ mac80211_hwsim_nan_slot_timer(struct hrtimer *timer)
+ 	case SLOT_5GHZ_DW:
+ 		if (data->nan.bands & BIT(NL80211_BAND_5GHZ)) {
+ 			wiphy_dbg(data->hw->wiphy, "Start of 5 GHz DW\n");
++			beacon_sync_chan =
++				ieee80211_get_channel(hw->wiphy, 5745);
+ 		}
+ 		break;
+ 
+@@ -122,6 +733,10 @@ mac80211_hwsim_nan_slot_timer(struct hrtimer *timer)
+ 		break;
+ 	}
+ 
++	/* TODO: This does not implement DW contention mitigation */
++	if (beacon_sync_chan && tx_sync_beacon)
++		mac80211_hwsim_nan_tx_beacon(data, false, beacon_sync_chan);
++
+ 	if (dw_end)
+ 		mac80211_hwsim_nan_exec_state_transitions(data);
+ 
+@@ -134,7 +749,48 @@ mac80211_hwsim_nan_slot_timer(struct hrtimer *timer)
+ 
+ 	mac80211_hwsim_nan_resume_txqs(data);
+ 
+-	mac80211_hwsim_nan_schedule_slot(data, slot + 1);
++	mac80211_hwsim_nan_schedule_slot(data, slot + 1, false);
++
++	return HRTIMER_RESTART;
++}
++
++enum hrtimer_restart
++mac80211_hwsim_nan_discovery_beacon_timer(struct hrtimer *timer)
++{
++	struct mac80211_hwsim_data *data =
++		container_of(timer, struct mac80211_hwsim_data,
++			     nan.discovery_beacon_timer);
++	u64 tsf_now;
++	u64 tbtt;
++
++	if (!data->nan.device_vif)
++		return HRTIMER_NORESTART;
++
++	scoped_guard(spinlock, &data->nan.state_lock) {
++		if (data->nan.phase == MAC80211_HWSIM_NAN_PHASE_SCAN ||
++		    data->nan.role != MAC80211_HWSIM_NAN_ROLE_MASTER)
++			return HRTIMER_NORESTART;
++	}
++
++	mac80211_hwsim_nan_tx_beacon(
++		data, true, ieee80211_get_channel(data->hw->wiphy, 2437));
++
++	if (data->nan.bands & BIT(NL80211_BAND_5GHZ))
++		mac80211_hwsim_nan_tx_beacon(
++			data, true,
++			ieee80211_get_channel(data->hw->wiphy, 5745));
++
++	/* Read the TSF from the current time in case of adjustments */
++	tsf_now = mac80211_hwsim_get_tsf(data->hw, data->nan.device_vif);
++
++	/* Wrap value to be after the next TBTT */
++	tbtt = tsf_now + ieee80211_tu_to_usec(100);
++
++	/* Round TBTT down to the correct time */
++	tbtt = tbtt - tbtt % ieee80211_tu_to_usec(100);
++
++	hrtimer_set_expires(&data->nan.discovery_beacon_timer,
++			    mac80211_hwsim_tsf_to_boottime(data, tbtt));
+ 
+ 	return HRTIMER_RESTART;
+ }
+@@ -144,7 +800,6 @@ int mac80211_hwsim_nan_start(struct ieee80211_hw *hw,
+ 			     struct cfg80211_nan_conf *conf)
+ {
+ 	struct mac80211_hwsim_data *data = hw->priv;
+-	struct wireless_dev *wdev = ieee80211_vif_to_wdev(vif);
+ 
+ 	if (vif->type != NL80211_IFTYPE_NAN)
+ 		return -EINVAL;
+@@ -156,28 +811,36 @@ int mac80211_hwsim_nan_start(struct ieee80211_hw *hw,
+ 	data->nan.device_vif = vif;
+ 	data->nan.bands = conf->bands;
+ 
++	scoped_guard(spinlock_bh, &data->nan.state_lock) {
++		/* Start in the "scan" phase and stay there for a little bit */
++		data->nan.phase = MAC80211_HWSIM_NAN_PHASE_SCAN;
++		data->nan.random_factor_valid_dwst = 1;
++		data->nan.random_factor = 0;
++		data->nan.master_pref = conf->master_pref;
++		data->nan.role = MAC80211_HWSIM_NAN_ROLE_MASTER;
++		memset(&data->nan.current_ami, 0,
++		       sizeof(data->nan.current_ami));
++		memset(&data->nan.last_ami, 0, sizeof(data->nan.last_ami));
++		data->nan.current_ami.master_rank =
++			cpu_to_le64(hwsim_nan_get_master_rank(data));
++	}
++
+ 	/* Just run this "soon" and start in a random schedule position */
+ 	hrtimer_start(&data->nan.slot_timer,
+ 		      ns_to_ktime(10 * NSEC_PER_USEC),
+ 		      HRTIMER_MODE_REL_SOFT);
+ 
+-	if (conf->cluster_id && !is_zero_ether_addr(conf->cluster_id) &&
+-	    is_zero_ether_addr(hwsim_nan_cluster_id)) {
+-		memcpy(hwsim_nan_cluster_id, conf->cluster_id, ETH_ALEN);
+-	} else if (is_zero_ether_addr(hwsim_nan_cluster_id)) {
+-		hwsim_nan_cluster_id[0] = 0x50;
+-		hwsim_nan_cluster_id[1] = 0x6f;
+-		hwsim_nan_cluster_id[2] = 0x9a;
+-		hwsim_nan_cluster_id[3] = 0x01;
+-		hwsim_nan_cluster_id[4] = get_random_u8();
+-		hwsim_nan_cluster_id[5] = get_random_u8();
++	if (conf->cluster_id && !is_zero_ether_addr(conf->cluster_id)) {
++		memcpy(data->nan.cluster_id, conf->cluster_id, ETH_ALEN);
++	} else {
++		put_unaligned_be32((WLAN_OUI_WFA << 8) | 0x01,
++				   data->nan.cluster_id);
++		data->nan.cluster_id[4] = get_random_u8();
++		data->nan.cluster_id[5] = get_random_u8();
+ 	}
+ 
+ 	data->nan.notify_dw = conf->enable_dw_notification;
+ 
+-	cfg80211_nan_cluster_joined(wdev, hwsim_nan_cluster_id, true,
+-				    GFP_KERNEL);
+-
+ 	return 0;
+ }
+ 
+@@ -185,8 +848,6 @@ int mac80211_hwsim_nan_stop(struct ieee80211_hw *hw,
+ 			    struct ieee80211_vif *vif)
+ {
+ 	struct mac80211_hwsim_data *data = hw->priv;
+-	struct mac80211_hwsim_data *data2;
+-	bool nan_cluster_running = false;
+ 
+ 	if (vif->type != NL80211_IFTYPE_NAN || !data->nan.device_vif ||
+ 	    data->nan.device_vif != vif)
+@@ -194,20 +855,9 @@ int mac80211_hwsim_nan_stop(struct ieee80211_hw *hw,
+ 
+ 	hrtimer_cancel(&data->nan.slot_timer);
+ 	hrtimer_cancel(&data->nan.resume_txqs_timer);
++	hrtimer_cancel(&data->nan.discovery_beacon_timer);
+ 	data->nan.device_vif = NULL;
+ 
+-	spin_lock_bh(&hwsim_radio_lock);
+-	list_for_each_entry(data2, &hwsim_radios, list) {
+-		if (data2->nan.device_vif) {
+-			nan_cluster_running = true;
+-			break;
+-		}
+-	}
+-	spin_unlock_bh(&hwsim_radio_lock);
+-
+-	if (!nan_cluster_running)
+-		memset(hwsim_nan_cluster_id, 0, ETH_ALEN);
+-
+ 	return 0;
+ }
+ 
+@@ -233,6 +883,11 @@ int mac80211_hwsim_nan_change_config(struct ieee80211_hw *hw,
+ 	if (changes & CFG80211_NAN_CONF_CHANGED_CONFIG)
+ 		data->nan.notify_dw = conf->enable_dw_notification;
+ 
++	if (changes & CFG80211_NAN_CONF_CHANGED_PREF) {
++		scoped_guard(spinlock_bh, &data->nan.state_lock)
++			data->nan.master_pref = conf->master_pref;
++	}
++
+ 	return 0;
+ }
+ 
+@@ -335,7 +990,10 @@ bool mac80211_hwsim_nan_receive(struct ieee80211_hw *hw,
+ 	if (WARN_ON_ONCE(!data->nan.device_vif))
+ 		return false;
+ 
+-	if (rx_status->rx_flags & RX_FLAG_MACTIME) {
++	if (data->nan.phase == MAC80211_HWSIM_NAN_PHASE_SCAN)
++		return channel->center_freq == 2437;
++
++	if (rx_status->flag & RX_FLAG_MACTIME) {
+ 		slot = hwsim_nan_slot_from_tsf(rx_status->mactime);
+ 	} else {
+ 		u64 tsf;
 diff --git a/drivers/net/wireless/virtual/mac80211_hwsim_nan.h b/drivers/net/wireless/virtual/mac80211_hwsim_nan.h
-index 6a0780797273..796cc17d194e 100644
+index af8dd7ff00cc..3199e5c5376b 100644
 --- a/drivers/net/wireless/virtual/mac80211_hwsim_nan.h
 +++ b/drivers/net/wireless/virtual/mac80211_hwsim_nan.h
-@@ -39,4 +39,7 @@ int mac80211_hwsim_nan_change_config(struct ieee80211_hw *hw,
- bool mac80211_hwsim_nan_txq_transmitting(struct ieee80211_hw *hw,
- 					 struct ieee80211_txq *txq);
+@@ -7,6 +7,18 @@
+ #ifndef __MAC80211_HWSIM_NAN_H
+ #define __MAC80211_HWSIM_NAN_H
  
-+struct ieee80211_channel *
-+mac80211_hwsim_nan_get_tx_channel(struct ieee80211_hw *hw);
++enum mac80211_hwsim_nan_phase {
++	MAC80211_HWSIM_NAN_PHASE_SCAN,
++	MAC80211_HWSIM_NAN_PHASE_WARMUP,
++	MAC80211_HWSIM_NAN_PHASE_UP,
++};
++
++enum mac80211_hwsim_nan_role {
++	MAC80211_HWSIM_NAN_ROLE_MASTER,
++	MAC80211_HWSIM_NAN_ROLE_SYNC,
++	MAC80211_HWSIM_NAN_ROLE_NON_SYNC,
++};
++
+ struct mac80211_hwsim_nan_data {
+ 	struct ieee80211_vif *device_vif;
+ 	u8 bands;
+@@ -14,12 +26,40 @@ struct mac80211_hwsim_nan_data {
+ 	struct hrtimer slot_timer;
+ 	struct hrtimer resume_txqs_timer;
+ 	bool notify_dw;
++
++	struct hrtimer discovery_beacon_timer;
++
++	/* Later members are protected by this lock */
++	spinlock_t state_lock;
++
++	u8 master_pref;
++	u8 random_factor;
++
++	u8 random_factor_valid_dwst;
++
++	enum mac80211_hwsim_nan_phase phase;
++	enum mac80211_hwsim_nan_role role;
++
++	u8 cluster_id[ETH_ALEN];
++
++	struct ieee80211_nan_anchor_master_info current_ami;
++	struct ieee80211_nan_anchor_master_info last_ami;
++
++	/* Wi-Fi Aware version 4.0, section 3.3.6.1 and 3.3.6.2 */
++	int master_transition_score;
++	/* Wi-Fi Aware version 4.0, section 3.3.6.3 and 3.3.6.4 */
++	int sync_transition_score;
++
++	bool tsf_adjusted;
++	bool tsf_discontinuity;
+ };
+ 
+ enum hrtimer_restart
+ mac80211_hwsim_nan_slot_timer(struct hrtimer *timer);
+ enum hrtimer_restart
+ mac80211_hwsim_nan_resume_txqs_timer(struct hrtimer *timer);
++enum hrtimer_restart
++mac80211_hwsim_nan_discovery_beacon_timer(struct hrtimer *timer);
+ 
+ int mac80211_hwsim_nan_start(struct ieee80211_hw *hw,
+ 			     struct ieee80211_vif *vif,
+@@ -43,4 +83,7 @@ bool mac80211_hwsim_nan_receive(struct ieee80211_hw *hw,
+ 				struct ieee80211_channel *channel,
+ 				struct ieee80211_rx_status *rx_status);
+ 
++void mac80211_hwsim_nan_rx(struct ieee80211_hw *hw,
++			   struct sk_buff *skb);
 +
  #endif /* __MAC80211_HWSIM_NAN_H */
 -- 
