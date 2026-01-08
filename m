@@ -1,264 +1,120 @@
-Return-Path: <linux-wireless+bounces-30547-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-30559-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 178FDD03A4A
-	for <lists+linux-wireless@lfdr.de>; Thu, 08 Jan 2026 16:04:08 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3C51BD033B2
+	for <lists+linux-wireless@lfdr.de>; Thu, 08 Jan 2026 15:08:19 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id B12BA3010D72
-	for <lists+linux-wireless@lfdr.de>; Thu,  8 Jan 2026 15:03:52 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 542BE303EB59
+	for <lists+linux-wireless@lfdr.de>; Thu,  8 Jan 2026 14:07:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 98C7A48380A;
-	Thu,  8 Jan 2026 12:03:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CF76F304BA3;
+	Thu,  8 Jan 2026 12:19:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=realtek.com header.i=@realtek.com header.b="mvMXbNNh"
+	dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b="ZY41mdGX"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from sipsolutions.net (s3.sipsolutions.net [168.119.38.16])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B85DD48381A
-	for <linux-wireless@vger.kernel.org>; Thu,  8 Jan 2026 12:03:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=211.75.126.72
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E80F5472DAE
+	for <linux-wireless@vger.kernel.org>; Thu,  8 Jan 2026 12:19:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=168.119.38.16
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767873822; cv=none; b=L+Z36CFZoRurSTtXG5h8mz2wJovvI7KHs5mnC+gnU+EWS59oAYzkuHLvv9H1+rzLh7q+CNESU/I0o+lS90D3UO6kpxBxVqyFthGiWpv3ouzJVkCI1nr3cidS+xVgWt/oUPyAGCWuOLmqyu4VhGyGi/5ZevTKXEObvWrndUtmE5Q=
+	t=1767874790; cv=none; b=AhtLVYaumSQGXExpDCTIy4u1T4VZxc9n6bWMVb9HJr2kp8PZWdlHKcNQ/XDCnybRk+yXg8xsXgawCa0aO8FFVtWeXWAgWSp4r2exTZ3/flHBhnYHfmGvCO0HcAPPrlZ9VUwH4/VHAIs17A4HF+AKmMUgGJz4BjwU8KsL5gdkCVI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767873822; c=relaxed/simple;
-	bh=yfBBw31iVxTNI/4jVjZq+1+S8SQZHiifJauRorkVTAs=;
-	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=XS/tOSaLAUUtwafBqzSBTaKDvfUoQneYSsaZz4osO2eHeDNjMzVjLsAtoEBZamkwww5QC4gv+lXTHS4PtUwEoeqFQMs0Zk9SKnHpQr5yNHlRAPDiud0+PXykQLs1JC7r9ftFQ0HRX58eKxXaCliqhXYCpaAvHEC1mVdGUscExXk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com; spf=pass smtp.mailfrom=realtek.com; dkim=pass (2048-bit key) header.d=realtek.com header.i=@realtek.com header.b=mvMXbNNh; arc=none smtp.client-ip=211.75.126.72
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=realtek.com
-X-SpamFilter-By: ArmorX SpamTrap 5.80 with qID 608C3ZfuC969973, This message is accepted by code: ctloc85258
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=realtek.com; s=dkim;
-	t=1767873815; bh=BYds8aVC21GLRew06GIznY5vL3ZZia6nduzzL/0/vwI=;
-	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Transfer-Encoding:Content-Type;
-	b=mvMXbNNhqKmGhrvyB7W3LwKPr3JJMd22UxyAFM3Y5hlsYE6v/fMT6E5sVdoauUs/+
-	 rK/co4upcUXUVi21uw1Yo/MsCNfl9B0vZuS1I0KMq0q4VXeOI7QCiDQZAKE3Z5cblF
-	 wmtDqhEYxy8HHhrkvWHbZyKi4M7jS42+QYmaUn+kn9APg+Bd9trLCfsFxZmTnwQmCG
-	 gndvHkenstZDVC9Acz+B6n1zHjfx1yF26vKIy/YerQbPjeZEnbK1Q9Pg2jC2uVe9rX
-	 7iJp+XxG20nnkmnfihGDgEZctI/kRaZlF2oat8LHo1PmBhoDpcs1XR+7b7XM5L8Nl8
-	 GasyUjSLQiWtQ==
-Received: from mail.realtek.com (rtkexhmbs04.realtek.com.tw[10.21.1.54])
-	by rtits2.realtek.com.tw (8.15.2/3.21/5.94) with ESMTPS id 608C3ZfuC969973
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK)
-	for <linux-wireless@vger.kernel.org>; Thu, 8 Jan 2026 20:03:35 +0800
-Received: from RTKEXHMBS03.realtek.com.tw (10.21.1.53) by
- RTKEXHMBS04.realtek.com.tw (10.21.1.54) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1748.10; Thu, 8 Jan 2026 20:03:36 +0800
-Received: from [127.0.1.1] (172.21.40.76) by RTKEXHMBS03.realtek.com.tw
- (10.21.1.53) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1748.10 via Frontend
- Transport; Thu, 8 Jan 2026 20:03:36 +0800
-From: Ping-Ke Shih <pkshih@realtek.com>
-To: <linux-wireless@vger.kernel.org>
-CC: <leo.li@realtek.com>
-Subject: [PATCH rtw-next 03/13] wifi: rtw89: coex: update coex software control for RTL8922D
-Date: Thu, 8 Jan 2026 20:03:10 +0800
-Message-ID: <20260108120320.2217402-4-pkshih@realtek.com>
-X-Mailer: git-send-email 2.25.1
-In-Reply-To: <20260108120320.2217402-1-pkshih@realtek.com>
-References: <20260108120320.2217402-1-pkshih@realtek.com>
+	s=arc-20240116; t=1767874790; c=relaxed/simple;
+	bh=CR7GvJdY4Kb4dV4IZVP5W2vKAlZoexS3s4SmtK5KBFU=;
+	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=ePXAP97nnIqOvzkKChkueP38JkDksozmTgwG9SUV0LzhHBs/h3Eh0ah7NcXItvBd4/Pr6TZ6yw8KkU+yQ4+9AQVZOsG86fEba1CwCn/T/ZYTLviqsosXyw8jyAuSzhz3Zvbm+SS5GMVcIeIxKfIastNGLGOhkkoJhS2GKzkMRWQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net; spf=pass smtp.mailfrom=sipsolutions.net; dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b=ZY41mdGX; arc=none smtp.client-ip=168.119.38.16
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sipsolutions.net
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=sipsolutions.net; s=mail; h=MIME-Version:Content-Transfer-Encoding:
+	Content-Type:References:In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender
+	:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
+	Resent-Cc:Resent-Message-ID; bh=nV/8cRkJZ5IZu2TQ3ZwaiTQ1xEXCUC6DpjzzN6f4JCw=;
+	t=1767874788; x=1769084388; b=ZY41mdGXks5zmxS1CpT6XvsPObSBPwwTL2OZm/263aRxMGo
+	0tTlYee6MAtxrY428Fx7DrA9WDWjAAkIyeq3TST1dxJ/tD5F9Ef5IXPawlKFPZ/nEHFOD812vnJe8
+	ePcOG+gLAbhDtVwzBqHxCLwQJtHTFOf+d9gS/YmgrXZHavV1sd2zT8EpYnmrxPUu9HP4KFVx9/ozO
+	j9H9XNEdQD4yLw9xQbN6ZNh8ojxNw4BJJGNw144kA4CzylWVUWDiLlt6wA6Ioe8E5h8m8+wmo+m33
+	83+PXOsOnfwT2x2f8CR5y7l1vUBvh5n6gcjy62/dQuc3u/HhD0WzNoYDVtGAqwFw==;
+Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
+	(Exim 4.98.2)
+	(envelope-from <johannes@sipsolutions.net>)
+	id 1vdozP-00000006UYt-1eFC;
+	Thu, 08 Jan 2026 13:19:43 +0100
+Message-ID: <67b8cc599e923433eec6c8baff72583c47a53cfd.camel@sipsolutions.net>
+Subject: Re: [PATCH wireless-next 1/2] wifi: mac80211: set band information
+ for NULL packets only for non-MLO stations
+From: Johannes Berg <johannes@sipsolutions.net>
+To: Suraj P Kizhakkethil <suraj.kizhakkethil@oss.qualcomm.com>
+Cc: linux-wireless@vger.kernel.org
+Date: Thu, 08 Jan 2026 13:19:42 +0100
+In-Reply-To: <20251127140555.472327-2-suraj.kizhakkethil@oss.qualcomm.com>
+References: <20251127140555.472327-1-suraj.kizhakkethil@oss.qualcomm.com>
+	 <20251127140555.472327-2-suraj.kizhakkethil@oss.qualcomm.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.56.2 (3.56.2-2.fc42) 
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
+X-malware-bazaar: not-scanned
 
-From: Chia-Yuan Li <leo.li@realtek.com>
+On Thu, 2025-11-27 at 19:35 +0530, Suraj P Kizhakkethil wrote:
+> Currently, when sending a NULL packet to probe a station, the band
+> information is derived from the chanctx_conf in the mac80211 vif's
+> bss_conf. However, for MLO, chanctx_conf is not assigned to the vif's
+> bss_conf; instead it is assigned on a per-link basis. As a result,
+> for MLO, sending a NULL packet to probe will trigger a warning.
+>=20
+> WARNING: net/mac80211/cfg.c:4593 at ieee80211_probe_client+0x1a8/0x1e0 [m=
+ac80211], CPU#2: hostapd/241
+> Call trace:
+>  ieee80211_probe_client+0x1a8/0x1e0 [mac80211] (P)
+>  nl80211_probe_client+0xac/0x170 [cfg80211]
+>  genl_family_rcv_msg_doit+0xc8/0x134
+>  genl_rcv_msg+0x200/0x280
+>  netlink_rcv_skb+0x38/0xfc
+>  genl_rcv+0x34/0x48
+>  netlink_unicast+0x228/0x334
+>  netlink_sendmsg+0x158/0x364
+>  ____sys_sendmsg+0x1f4/0x21c
+>  ___sys_sendmsg+0x98/0xc0
+>  __sys_sendmsg+0x74/0xd0
+>  __arm64_sys_sendmsg+0x20/0x28
+>  invoke_syscall.constprop.0+0x4c/0xd0
+>  do_el0_svc+0x3c/0xd0
+>  el0_svc+0x28/0xb8
+>  el0t_64_sync_handler+0x98/0xdc
+>  el0t_64_sync+0x154/0x158
+> ---[ end trace 0000000000000000 ]---
+>=20
+> For NULL packets sent to probe stations, set the band information only
+> for non-MLD case, since MLD transmissions does not rely on band. For
+> MLD connections, set the link ID as unspecified to allow the driver
+> to select the appropriate link. The case specific to non-MLO stations
+> connected to an MLD AP will be addressed in a follow up patch.
 
-Update software control API due to 8922D PTA hardware changes.
+Technically "AP MLD" ;)
 
-Signed-off-by: Chia-Yuan Li <leo.li@realtek.com>
-Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
----
- drivers/net/wireless/realtek/rtw89/mac.h    |  2 +
- drivers/net/wireless/realtek/rtw89/mac_be.c | 59 +++++++++++++++++-
- drivers/net/wireless/realtek/rtw89/reg.h    | 69 +++++++++++++++++++++
- 3 files changed, 129 insertions(+), 1 deletion(-)
+But I was more wondering about the use of "MLD connections", which seems
+odd to me (vs. "MLO connections")? Connections between MLDs? MLD is an
+entity, MLO is the mode of operation?
 
-diff --git a/drivers/net/wireless/realtek/rtw89/mac.h b/drivers/net/wireless/realtek/rtw89/mac.h
-index 79755032df2c..f2882ed23419 100644
---- a/drivers/net/wireless/realtek/rtw89/mac.h
-+++ b/drivers/net/wireless/realtek/rtw89/mac.h
-@@ -1358,6 +1358,8 @@ int rtw89_mac_cfg_gnt_v1(struct rtw89_dev *rtwdev,
- 			 const struct rtw89_mac_ax_coex_gnt *gnt_cfg);
- int rtw89_mac_cfg_gnt_v2(struct rtw89_dev *rtwdev,
- 			 const struct rtw89_mac_ax_coex_gnt *gnt_cfg);
-+int rtw89_mac_cfg_gnt_v3(struct rtw89_dev *rtwdev,
-+			 const struct rtw89_mac_ax_coex_gnt *gnt_cfg);
- 
- static inline
- int rtw89_mac_cfg_plt(struct rtw89_dev *rtwdev, struct rtw89_mac_ax_plt *plt)
-diff --git a/drivers/net/wireless/realtek/rtw89/mac_be.c b/drivers/net/wireless/realtek/rtw89/mac_be.c
-index 0b29f43b38bd..06538122c57a 100644
---- a/drivers/net/wireless/realtek/rtw89/mac_be.c
-+++ b/drivers/net/wireless/realtek/rtw89/mac_be.c
-@@ -2003,12 +2003,65 @@ int rtw89_mac_cfg_gnt_v2(struct rtw89_dev *rtwdev,
- }
- EXPORT_SYMBOL(rtw89_mac_cfg_gnt_v2);
- 
-+int rtw89_mac_cfg_gnt_v3(struct rtw89_dev *rtwdev,
-+			 const struct rtw89_mac_ax_coex_gnt *gnt_cfg)
-+{
-+	u32 val = 0;
-+
-+	if (gnt_cfg->band[0].gnt_bt)
-+		val |= B_BE_PTA_GNT_BT0_BB_VAL | B_BE_PTA_GNT_BT0_RX_BB0_VAL |
-+		       B_BE_PTA_GNT_BT0_TX_BB0_VAL;
-+
-+	if (gnt_cfg->band[0].gnt_bt_sw_en)
-+		val |= B_BE_PTA_GNT_BT0_BB_SWCTRL | B_BE_PTA_GNT_BT0_RX_BB0_SWCTRL |
-+		       B_BE_PTA_GNT_BT0_TX_BB0_SWCTRL;
-+
-+	if (gnt_cfg->band[0].gnt_wl)
-+		val |= B_BE_PTA_GNT_WL_BB0_VAL;
-+
-+	if (gnt_cfg->band[0].gnt_wl_sw_en)
-+		val |= B_BE_PTA_GNT_WL_BB0_SWCTRL;
-+
-+	if (gnt_cfg->band[1].gnt_bt)
-+		val |= B_BE_PTA_GNT_BT0_BB_VAL | B_BE_PTA_GNT_BT0_RX_BB1_VAL |
-+		       B_BE_PTA_GNT_BT0_TX_BB1_VAL;
-+
-+	if (gnt_cfg->band[1].gnt_bt_sw_en)
-+		val |= B_BE_PTA_GNT_BT0_BB_SWCTRL | B_BE_PTA_GNT_BT0_RX_BB1_SWCTRL |
-+		       B_BE_PTA_GNT_BT0_TX_BB1_SWCTRL;
-+
-+	if (gnt_cfg->band[1].gnt_wl)
-+		val |= B_BE_PTA_GNT_WL_BB1_VAL;
-+
-+	if (gnt_cfg->band[1].gnt_wl_sw_en)
-+		val |= B_BE_PTA_GNT_WL_BB1_SWCTRL;
-+
-+	if (gnt_cfg->bt[0].wlan_act_en)
-+		val |= B_BE_PTA_WL_ACT0_SWCTRL | B_BE_PTA_WL_ACT_RX_BT0_SWCTRL |
-+			   B_BE_PTA_WL_ACT_TX_BT0_SWCTRL;
-+	if (gnt_cfg->bt[0].wlan_act)
-+		val |= B_BE_PTA_WL_ACT0_VAL | B_BE_PTA_WL_ACT_RX_BT0_VAL |
-+			   B_BE_PTA_WL_ACT_TX_BT0_VAL;
-+	if (gnt_cfg->bt[1].wlan_act_en)
-+		val |= B_BE_PTA_WL_ACT1_SWCTRL | B_BE_PTA_WL_ACT_RX_BT1_SWCTRL |
-+			   B_BE_PTA_WL_ACT_TX_BT1_SWCTRL;
-+	if (gnt_cfg->bt[1].wlan_act)
-+		val |= B_BE_PTA_WL_ACT1_VAL | B_BE_PTA_WL_ACT_RX_BT1_VAL |
-+			   B_BE_PTA_WL_ACT_TX_BT1_VAL;
-+
-+	rtw89_write32(rtwdev, R_BE_PTA_GNT_SW_CTRL, val);
-+
-+	return 0;
-+}
-+EXPORT_SYMBOL(rtw89_mac_cfg_gnt_v3);
-+
- int rtw89_mac_cfg_ctrl_path_v2(struct rtw89_dev *rtwdev, bool wl)
- {
- 	struct rtw89_btc *btc = &rtwdev->btc;
- 	struct rtw89_btc_dm *dm = &btc->dm;
- 	struct rtw89_mac_ax_gnt *g = dm->gnt.band;
- 	struct rtw89_mac_ax_wl_act *gbt = dm->gnt.bt;
-+	const struct rtw89_chip_info *chip = rtwdev->chip;
- 	int i;
- 
- 	if (wl)
-@@ -2023,7 +2076,11 @@ int rtw89_mac_cfg_ctrl_path_v2(struct rtw89_dev *rtwdev, bool wl)
- 		gbt[i].wlan_act_en = 0;
- 	}
- 
--	return rtw89_mac_cfg_gnt_v2(rtwdev, &dm->gnt);
-+	if (chip->chip_id == RTL8922A)
-+		return rtw89_mac_cfg_gnt_v2(rtwdev, &dm->gnt);
-+	else
-+		return rtw89_mac_cfg_gnt_v3(rtwdev, &dm->gnt);
-+
- }
- EXPORT_SYMBOL(rtw89_mac_cfg_ctrl_path_v2);
- 
-diff --git a/drivers/net/wireless/realtek/rtw89/reg.h b/drivers/net/wireless/realtek/rtw89/reg.h
-index afe13c0c5629..de36cf5ef1a1 100644
---- a/drivers/net/wireless/realtek/rtw89/reg.h
-+++ b/drivers/net/wireless/realtek/rtw89/reg.h
-@@ -6202,6 +6202,75 @@
- #define B_BE_GNT_WL_BB_PWR_VAL BIT(1)
- #define B_BE_GNT_WL_BB_PWR_SWCTRL BIT(0)
- 
-+#define R_BE_PTA_GNT_SW_CTRL 0x0E348
-+#define B_BE_PTA_WL_ACT0_VAL BIT(19)
-+#define B_BE_PTA_WL_ACT0_SWCTRL BIT(18)
-+#define B_BE_PTA_GNT_BT0_RX_BB1_VAL BIT(17)
-+#define B_BE_PTA_GNT_BT0_RX_BB1_SWCTRL BIT(16)
-+#define B_BE_PTA_GNT_BT0_TX_BB1_VAL BIT(15)
-+#define B_BE_PTA_GNT_BT0_TX_BB1_SWCTRL BIT(14)
-+#define B_BE_PTA_GNT_BT0_RX_BB0_VAL BIT(13)
-+#define B_BE_PTA_GNT_BT0_RX_BB0_SWCTRL BIT(12)
-+#define B_BE_PTA_GNT_BT0_TX_BB0_VAL BIT(11)
-+#define B_BE_PTA_GNT_BT0_TX_BB0_SWCTRL BIT(10)
-+#define B_BE_PTA_GNT_BT0_BB_VAL BIT(9)
-+#define B_BE_PTA_GNT_BT0_BB_SWCTRL BIT(8)
-+#define B_BE_PTA_WL_ACT_RX_BT0_VAL BIT(7)
-+#define B_BE_PTA_WL_ACT_RX_BT0_SWCTRL BIT(6)
-+#define B_BE_PTA_WL_ACT_TX_BT0_VAL BIT(5)
-+#define B_BE_PTA_WL_ACT_TX_BT0_SWCTRL BIT(4)
-+#define B_BE_PTA_GNT_WL_BB1_VAL BIT(3)
-+#define B_BE_PTA_GNT_WL_BB1_SWCTRL BIT(2)
-+#define B_BE_PTA_GNT_WL_BB0_VAL BIT(1)
-+#define B_BE_PTA_GNT_WL_BB0_SWCTRL BIT(0)
-+
-+#define R_BE_PTA_GNT_VAL 0x0E34C
-+#define B_BE_PTA_WL_ACT2 BIT(20)
-+#define B_BE_PTA_GNT_ZB_TX_BB1 BIT(19)
-+#define B_BE_PTA_GNT_ZB_TX_BB0 BIT(18)
-+#define B_BE_PTA_WL_ACT1 BIT(17)
-+#define B_BE_PTA_GNT_BT1_RX_BB1 BIT(16)
-+#define B_BE_PTA_GNT_BT1_RX_BB0 BIT(15)
-+#define B_BE_PTA_GNT_BT1_TX_BB1 BIT(14)
-+#define B_BE_PTA_GNT_BT1_TX_BB0 BIT(13)
-+#define B_BE_PTA_WL_ACT_RX_BT1 BIT(12)
-+#define B_BE_PTA_WL_ACT_TX_BT1 BIT(11)
-+#define B_BE_PTA_GNT_BT1_BB BIT(10)
-+#define B_BE_PTA_WL_ACT0 BIT(9)
-+#define B_BE_PTA_GNT_BT0_RX_BB1 BIT(8)
-+#define B_BE_PTA_GNT_BT0_TX_BB1 BIT(7)
-+#define B_BE_PTA_GNT_BT0_RX_BB0 BIT(6)
-+#define B_BE_PTA_GNT_BT0_TX_BB0 BIT(5)
-+#define B_BE_PTA_GNT_BT0_BB BIT(4)
-+#define B_BE_PTA_WL_ACT_RX_BT0 BIT(3)
-+#define B_BE_PTA_WL_ACT_TX_BT0 BIT(2)
-+#define B_BE_PTA_GNT_WL_BB1 BIT(1)
-+#define B_BE_PTA_GNT_WL_BB0 BIT(0)
-+
-+#define R_BE_PTA_GNT_ZL_SW_CTRL 0x0E350
-+#define B_BE_PTA_WL_ACT2_VAL BIT(21)
-+#define B_BE_PTA_WL_ACT2_SWCTRL BIT(20)
-+#define B_BE_PTA_GNT_ZB_TX_BB1_VAL BIT(19)
-+#define B_BE_PTA_GNT_ZB_TX_BB1_SWCTRL BIT(18)
-+#define B_BE_PTA_GNT_ZB_TX_BB0_VAL BIT(17)
-+#define B_BE_PTA_GNT_ZB_TX_BB0_SWCTRL BIT(16)
-+#define B_BE_PTA_WL_ACT1_VAL BIT(15)
-+#define B_BE_PTA_WL_ACT1_SWCTRL BIT(14)
-+#define B_BE_PTA_GNT_BT1_RX_BB1_VAL BIT(13)
-+#define B_BE_PTA_GNT_BT1_RX_BB1_SWCTRL BIT(12)
-+#define B_BE_PTA_GNT_BT1_RX_BB0_VAL BIT(11)
-+#define B_BE_PTA_GNT_BT1_RX_BB0_SWCTRL BIT(10)
-+#define B_BE_PTA_GNT_BT1_TX_BB1_VAL BIT(9)
-+#define B_BE_PTA_GNT_BT1_TX_BB1_SWCTRL BIT(8)
-+#define B_BE_PTA_GNT_BT1_TX_BB0_VAL BIT(7)
-+#define B_BE_PTA_GNT_BT1_TX_BB0_SWCTRL BIT(6)
-+#define B_BE_PTA_WL_ACT_RX_BT1_VAL BIT(5)
-+#define B_BE_PTA_WL_ACT_RX_BT1_SWCTRL BIT(4)
-+#define B_BE_PTA_WL_ACT_TX_BT1_VAL BIT(3)
-+#define B_BE_PTA_WL_ACT_TX_BT1_SWCTRL BIT(2)
-+#define B_BE_PTA_GNT_BT1_BB_VAL BIT(1)
-+#define B_BE_PTA_GNT_BT1_BB_SWCTRL BIT(0)
-+
- #define R_BE_PWR_MACID_PATH_BASE 0x0E500
- #define R_BE_PWR_MACID_LMT_BASE 0x0ED00
- 
--- 
-2.25.1
+> +	if (ieee80211_vif_is_mld(&sdata->vif))
+> +		info->control.flags |=3D IEEE80211_TX_CTRL_MLO_LINK_UNSPEC;
 
+I don't see why it should be set conditionally, it should be ignored
+anyway by non-MLO drivers? Or maybe if you'd want it zero for t hose
+then do that explicitly?
+
+I'm really commenting here because it gets messy in the next patch, see
+also there.
+
+johannes
 
