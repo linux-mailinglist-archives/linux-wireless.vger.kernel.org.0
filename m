@@ -1,61 +1,58 @@
-Return-Path: <linux-wireless+bounces-30564-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-30565-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id D55B6D04733
-	for <lists+linux-wireless@lfdr.de>; Thu, 08 Jan 2026 17:39:31 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6F1D4D04A87
+	for <lists+linux-wireless@lfdr.de>; Thu, 08 Jan 2026 18:04:16 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id B7E6130492A5
-	for <lists+linux-wireless@lfdr.de>; Thu,  8 Jan 2026 15:30:02 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 117F6330B759
+	for <lists+linux-wireless@lfdr.de>; Thu,  8 Jan 2026 15:56:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 993974657FA;
-	Thu,  8 Jan 2026 12:42:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E0F1048AE21;
+	Thu,  8 Jan 2026 12:52:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b="F/OzmF7j"
+	dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b="JEiuPsr2"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from sipsolutions.net (s3.sipsolutions.net [168.119.38.16])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EC2A14657E4
-	for <linux-wireless@vger.kernel.org>; Thu,  8 Jan 2026 12:42:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5234148AE2B
+	for <linux-wireless@vger.kernel.org>; Thu,  8 Jan 2026 12:52:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=168.119.38.16
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767876151; cv=none; b=SIea4EkDHnIyTagK75qm2GKG3w5t6mF3AysudbDKc7bjU0nuZS50VQTZPT+TKimmRCIKep3N9XsUgSNrucUhiToY2CJ3sE6iyLdscA1QI+VOwVYlUhMFkyAqCLH3aanzBIqQqXRgMDqQaEFRFUP6WeGqXcuFMKo0MDsW7BswBcA=
+	t=1767876755; cv=none; b=CHWjhzq8YDUYHrVopsiP+ev+SXPz7e++NV7RCLX4lZWXJDS2ySrEJ9//FbYoGoOakyCSWptw4drmT6PGKqqf8FiorjN/plPzHovPunugHNhHI6EWJmEMgqAHi/GpJcrMC4bkhSAhInplvjMvQCrXqMkW5koXwcir5DTvjHquxsc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767876151; c=relaxed/simple;
-	bh=M6iNfNrNBMBMKbXVEvATsLrBYWz+UrIKzZ60sJ3wqCI=;
+	s=arc-20240116; t=1767876755; c=relaxed/simple;
+	bh=YUbNAMVvkKEXxxeP4e+YCkRxfEN254rgJ8OdxYqLh+8=;
 	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=da0OJplENqCAFlYEB25NRgmopE+XFxli/ig/Cr7g1bvJYMvK+E4GbzVCiHgMiVP0tWJ3JV6UWkvrLjv9kqZmxY0cFgjp/DcGBPJLQjhwxjdrfLE22UvgPP2DdywO3NyccRefzHlrYhYxbw7cPPBMWFTH4feK1AKc+0BtM/Dr0Ug=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net; spf=pass smtp.mailfrom=sipsolutions.net; dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b=F/OzmF7j; arc=none smtp.client-ip=168.119.38.16
+	 Content-Type:MIME-Version; b=HKKXSWIYYkMDQTKIvHbgYV6nurZawdaQZdZ2NQPvvabvbVAsbng9x3Nggh5rdHTkizQAemeTNCveFsePbW1SmNhjh77/VfYLenPBsOTwbzrh7yIchbw1FY7h6/TM9IeFVMaZgnQvppxSdCt+vFI0QLO28d+l6BVycR5WZ2ACsEs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net; spf=pass smtp.mailfrom=sipsolutions.net; dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b=JEiuPsr2; arc=none smtp.client-ip=168.119.38.16
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sipsolutions.net
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=sipsolutions.net; s=mail; h=MIME-Version:Content-Transfer-Encoding:
 	Content-Type:References:In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender
 	:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
-	Resent-Cc:Resent-Message-ID; bh=CNFjgpe2uzcdKETIx5bWZ2E7tid7AL/a7jz+QDnhfOk=;
-	t=1767876150; x=1769085750; b=F/OzmF7joJFadiRHimwcf2PpEU/fnGoVnwBbgeW1gp390zD
-	YkcNk1jO9am7eT23+qglb/uQIU+rp53RtHRGFOcar8vg/sA1PxSAicTLAfxYwwqgMHxkVDQJR6Q5G
-	tN3fh0Gp1ctNgjEoFJp9c55WyOlORiyVZiVbH42Nsu3VoNnEnG5+JO+cAtseaKLXJgHjD+nDhVVBe
-	CXTDDedY95zXmiQDjTgB6zsrKPwRwBzp/ntrOSwnVxSiGoKKsy8U/Cnzq+hyX+BcFSqgwhucCIv/7
-	FqtmTxVZz6kBlsdZMbQH8lVw4XrocanM1jVj8Fmfaw1f3r4syhQc2c1+aykKvKgw==;
+	Resent-Cc:Resent-Message-ID; bh=XrTJ5vkBrgjshnDoFVKN/JLXK3SxO4u/WDn6Mnnx6xg=;
+	t=1767876754; x=1769086354; b=JEiuPsr2NiV/Sxwu002tjj7BWjm4V7ruRGlVnI81zv8jumf
+	6ehR/k+WiTYizqTBm3edJj9xGYs6JS2u/lCqlfwk4o5JFJwLndcF+B8GP4zD3D6vgfREHCME5c9hV
+	kcOSbqU6wwa9HzxxQPH7HPG6aw+H0RhbAM1Uo1NQqwwnoe5aUV8wHh0hgO+NJXckJD5zRP4xlxxi3
+	7vKUnC+L/cqwQqoiW7sA4a2aCsqf+vFz0jmK2JkUeRVt/5e7k8JGMzWEE/nyKWyReFTNq8DNb2fej
+	qTmsqu7HDM6svWwzaB5Ris2RNJYCfOVIzz58p0C5XTsckb5dmIAL4QZUEPakuoNw==;
 Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
 	(Exim 4.98.2)
 	(envelope-from <johannes@sipsolutions.net>)
-	id 1vdpLO-00000006VEo-24vY;
-	Thu, 08 Jan 2026 13:42:26 +0100
-Message-ID: <16099966d1cbdccc5160c6aa7a2615dcfd0060d6.camel@sipsolutions.net>
-Subject: Re: [PATCH wireless-next v3 4/9] wifi: nl80211: Add new NL
- attributes to support (Re)Association frame encryption
+	id 1vdpV8-00000006VVM-3oyQ;
+	Thu, 08 Jan 2026 13:52:31 +0100
+Message-ID: <5ff51b07b69284ca9b477dfcbe08890167c7ed14.camel@sipsolutions.net>
+Subject: Re: [PATCH wireless-next] wifi: mac80211: Fix AAD/Nonce computation
+ for management frames with MLO
 From: Johannes Berg <johannes@sipsolutions.net>
-To: Kavita Kavita <kavita.kavita@oss.qualcomm.com>
-Cc: linux-wireless@vger.kernel.org, ainy.kumari@oss.qualcomm.com, 
-	sai.magam@oss.qualcomm.com, quic_drohan@quicinc.com
-Date: Thu, 08 Jan 2026 13:42:25 +0100
-In-Reply-To: <20260106152503.223216-5-kavita.kavita@oss.qualcomm.com> (sfid-20260106_162528_185648_909E42F7)
-References: <20260106152503.223216-1-kavita.kavita@oss.qualcomm.com>
-	 <20260106152503.223216-5-kavita.kavita@oss.qualcomm.com>
-	 (sfid-20260106_162528_185648_909E42F7)
+To: Sai Pratyusha Magam <sai.magam@oss.qualcomm.com>
+Cc: linux-wireless@vger.kernel.org, Rohan Dutta <quic_drohan@quicinc.com>
+Date: Thu, 08 Jan 2026 13:52:30 +0100
+In-Reply-To: <20251211123612.2470117-1-sai.magam@oss.qualcomm.com>
+References: <20251211123612.2470117-1-sai.magam@oss.qualcomm.com>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 User-Agent: Evolution 3.56.2 (3.56.2-2.fc42) 
@@ -67,77 +64,39 @@ List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 X-malware-bazaar: not-scanned
 
-On Tue, 2026-01-06 at 20:54 +0530, Kavita Kavita wrote:
+On Thu, 2025-12-11 at 18:06 +0530, Sai Pratyusha Magam wrote:
+> Per IEEE Std 802.11be-2024, 12.5.2.3.3, if the MPDU is an
+> individually addressed Data frame between an AP MLD and a
+> non-AP MLD associated with the AP MLD, then A1/A2/A3
+> will be MLD MAC addresses. Otherwise, Al/A2/A3 will be
+> over-the-air link MAC addresses.
 >=20
->  include/net/cfg80211.h       |  5 +++++
->  include/net/mac80211.h       |  5 +++++
->  include/uapi/linux/nl80211.h | 26 ++++++++++++++++++++++++++
->  net/mac80211/cfg.c           |  6 ++++++
->  net/wireless/nl80211.c       | 10 ++++++++++
+> Currently, during AAD and Nonce computation for software based
+> encryption/decryption cases, mac80211 directly uses the addresses it
+> receives in the skb frame header. However, after the first
+> authentication, management frame addresses for non-AP MLD stations
+> are translated to MLD addresses from over the air link addresses in
+> software. This means that the skb header could contain translated MLD
+> addresses, which when used as is, can lead to incorrect AAD/Nonce
+> computation.
 
-You should split this patchset differently so you don't have this mix of
-cfg80211/mac80211 here. Perhaps this patch becomes two, or perhaps it
-all goes into two other patches, dunno.
+Make sense ... we translate them internally because of all the matching
+to interfaces etc.
 
-The subject also seems confused - why is this about the encryption of
-certain frames? It doesn't seem to be doing any such thing at all?
+>  net/mac80211/wpa.c | 167 +++++++++++++++++++++++++++++++++++++++++----
 
-> + * @epp_flags: Negotiated EPP capabilities
-> + *	(bitmask of BIT(%NL80211_EPP_FLAG_...))
+This seems rather complex.
 
-All of this along with the nl80211 API isn't used, and the small commit
-log blurb about it:
+I believe the translation generally happens in mac80211 itself, in
+ieee80211_prepare_and_rx_handle, couldn't we stash away the 18 bytes of
+the three addresses in struct ieee80211_rx_data and then just
+*unconditionally* use those, instead of all this conditional logic?
 
-> The Extended RSN capabilities for EPP that an EPP AP and an EPP
-> non-AP STA can negotiate are as per "IEEE P802.11bi/D3.0, 9.4.2.240"
-> (RSNXE), few of which are driver dependent, hence need them to be
-> communicated from userspace for later use.
-
-really doesn't make it clear why that should be maintained. Sure support
-is driver dependent, but obviously you already have the extended feature
-bits from patches 1 and 2.
-
-> +++ b/include/uapi/linux/nl80211.h
-> @@ -2973,6 +2973,13 @@ enum nl80211_commands {
->   *	primary channel is 2 MHz wide, and the control channel designates
->   *	the 1 MHz primary subchannel within that 2 MHz primary.
->   *
-> + * @NL80211_ATTR_EPP_PEER: A flag attribute to indicate if the peer is a=
-n EPP
-> + *	STA. Used with %NL80211_CMD_NEW_STA and %NL80211_CMD_ADD_LINK_STA
-> + *
-> + * @NL80211_ATTR_EPP_FLAGS: A (u32) bitmap attribute to indicate the neg=
-otiated
-> + *	EPP capabilities of an EPP AP and an EPP non-AP STA. See
-> + *	&enum nl80211_epp_flags for details. Used with %NL80211_CMD_SET_STATI=
-ON
-
-My preference would be to remove the FLAGS, but if you can convince me
-that it's needed (and as you know I care very little about non-upstream
-drivers) then still this really ought to just have a single attribute
-and the mere presence indicates EPP support with the flags inside (or
-non-zero flags indicate such, though I prefer to not allow zero flags
-since then it's not EPP?)
-
-> @@ -8416,6 +8418,10 @@ static int nl80211_set_station(struct sk_buff *skb=
-, struct genl_info *info)
->  			nla_len(info->attrs[NL80211_ATTR_STA_EXT_CAPABILITY]);
->  	}
-> =20
-> +	if (info->attrs[NL80211_ATTR_EPP_FLAGS])
-> +		params.epp_flags =3D
-> +			nla_get_u32(info->attrs[NL80211_ATTR_EPP_FLAGS]);
-> +
->  	if (parse_station_flags(info, dev->ieee80211_ptr->iftype, &params))
->  		return -EINVAL;
-> =20
-
-Are you sure it needs to be _changed_? Since EPPKE is an authentication
-algorithm hostapd should know early?
-
-But I'm not even sure how the assoc frame encryption flag makes any
-sense at all, seems that ought to just depend on whether or not keys
-exist.
+I can see the value in putting something only into the SW crypto so it
+doesn't affect anything else, but also the address rewriting that
+happens is pretty rare, so maybe that means we also have a flag there if
+using the original 18 bytes is needed or not, but that should all still
+be far less complex?
 
 johannes
 
