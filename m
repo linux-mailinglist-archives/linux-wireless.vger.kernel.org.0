@@ -1,195 +1,177 @@
-Return-Path: <linux-wireless+bounces-30517-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-30518-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 52037D01262
-	for <lists+linux-wireless@lfdr.de>; Thu, 08 Jan 2026 06:40:04 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id E3325D0168A
+	for <lists+linux-wireless@lfdr.de>; Thu, 08 Jan 2026 08:36:15 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id AF9B5300DA6F
-	for <lists+linux-wireless@lfdr.de>; Thu,  8 Jan 2026 05:34:30 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id E02E8300A9A0
+	for <lists+linux-wireless@lfdr.de>; Thu,  8 Jan 2026 07:36:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CFC833176E3;
-	Thu,  8 Jan 2026 05:34:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="MPZ5lWCG";
-	dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b="O1Wl1mds"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 93C67318EF1;
+	Thu,  8 Jan 2026 07:35:59 +0000 (UTC)
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-oo1-f69.google.com (mail-oo1-f69.google.com [209.85.161.69])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 81943315D47
-	for <linux-wireless@vger.kernel.org>; Thu,  8 Jan 2026 05:34:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5337031B81C
+	for <linux-wireless@vger.kernel.org>; Thu,  8 Jan 2026 07:35:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.161.69
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767850468; cv=none; b=kuoTMQ52qbmuOq3W/IbUy+71Q1lSnq8KPyztoGa/+3pi1Cop/kCtfbCiPKChjdizZp1YixwSMyzn0pHzZQT8sISkABIhHv6/2FB0uy6AN8Iw5gsRd7GZkTSWJUVSrFAos7lfQ8okaSesncqy8fT/7ampVDVGAJhA1GQ+p8BA1CU=
+	t=1767857759; cv=none; b=OUQ+AxNqz8lKyaBellsOhOMS+T29Zi8m4BfvElhdUMKhxPhqomQ2Te0W7R/bJ16Cc4WV9MKwk43/nVOi4RYBTdV3l8XZIXf1WZyDFl2FeO3VL5ihupvT7YGGS8KweTLdmxNIIjyq6xzou8IzL4ErjLoefz2mdEps+Y/pHIayJho=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767850468; c=relaxed/simple;
-	bh=uaqlTPp/8KTPG3ef4O80xQjj2YN1sWpWHxKpKJ85omI=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=aq4yZS877NJ4AfS20i6FHVQzLjuwI6L708PYGcub69Zpqb3wUKWVZT+QjiWFU9VvIx5kW/YFE/F9qmnGTi1M1ky5C1VB1p8WJSPDp2XS3IFanjIyCl6Tk1/Ee8/OwvEWzNN00VkC7iS5gYUXcxaVH2OBrQKo9ShzmCI4dEx58Kc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=MPZ5lWCG; dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b=O1Wl1mds; arc=none smtp.client-ip=205.220.168.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
-Received: from pps.filterd (m0279865.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 6083xbLl3752247
-	for <linux-wireless@vger.kernel.org>; Thu, 8 Jan 2026 05:34:25 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
-	cc:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
-	slLn6K+KnTPN5Uck4oM5JY9fSY7YWNgrkn0AkTxdWS4=; b=MPZ5lWCGXRjgU9op
-	qBGFTCYw2j7wDtZP5dcyi4NQmZwuWbeK6SQjCgUzcqodUqmH7pE57vSmlTwWB0LH
-	rrgAlGuJICBO7euoCaCS+aLnQuQxF2oIMmQmqnK2suzPrRd8Uopv8IVxVK7Rn4de
-	euuvv9cGHTMWAVzqaJ6hv3qrC4UgGvXdpNMyw5jZffUiKgxR0DZVZMiEFV+97FuE
-	5mKynC+FHyl09cU8zbPfRBP30RyH4NkQb3iEsKdAqwY5KErOJnrRJkj8X+m9yGvV
-	+Fhuu+DrqEdi/qf3Q0itL/VxBc1UnlupodFFW3hj55AquuwYHA0ZPQHwvJt0kb/S
-	wq5ecA==
-Received: from mail-pf1-f198.google.com (mail-pf1-f198.google.com [209.85.210.198])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4bhuxcsypv-1
-	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
-	for <linux-wireless@vger.kernel.org>; Thu, 08 Jan 2026 05:34:25 +0000 (GMT)
-Received: by mail-pf1-f198.google.com with SMTP id d2e1a72fcca58-81c68fef4d4so1279389b3a.2
-        for <linux-wireless@vger.kernel.org>; Wed, 07 Jan 2026 21:34:24 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=oss.qualcomm.com; s=google; t=1767850464; x=1768455264; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:content-language:from
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=slLn6K+KnTPN5Uck4oM5JY9fSY7YWNgrkn0AkTxdWS4=;
-        b=O1Wl1mdsypMmd2eCa7UPI1VZLesez3XRhGGbmwXZ55JXAJV6zigs58szeo92CnhABB
-         vv/efQNsxcbNcrE8rDBOIu6ZzjUo0bCKN17j6o+nAb6g6Doz2B6Jss3x2MpfIVX+2pQP
-         0aP04O/oecMOLuTxxuffIWj/+QdTD7XMzBKtkobvbJHhnaCA9Qd0V/ynC15c3IMr4YZ3
-         0bf/1ZWFBzsSO7iqxTgBl9hW3bu2R6IqSA1WgLvRcMcnw3VsXxGs1Y60u5hCaVmxU/h8
-         TfTZzkFFFgr0a9Ht8U8712JoVNFtu8ZzIpIQgYygzJNzw0L8EIL2WCsHAv309oE71T5s
-         mcfQ==
+	s=arc-20240116; t=1767857759; c=relaxed/simple;
+	bh=DAUXvUTl2cPOHv+5VsYC6sBQzoCO/auAZ3uaklAgoF0=;
+	h=MIME-Version:Date:In-Reply-To:Message-ID:Subject:From:To:Cc:
+	 Content-Type; b=OOXqZ5L5awy3iwJGuflfiZBrE72n09urykIcI6Ps4AAp1zaMm4Y9eX9PGM2plEdC88kHFPUKHKbfNw/6By8Cz+O1Nu61qI0VCZWw1yFbY6OYwelsDYX+ffDLY8382KvIv/mIi59LD7BaYjfOWogPte7or83H7gRU9d/5hAEI4as=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com; arc=none smtp.client-ip=209.85.161.69
+Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com
+Received: by mail-oo1-f69.google.com with SMTP id 006d021491bc7-65f0fe5372aso4135265eaf.0
+        for <linux-wireless@vger.kernel.org>; Wed, 07 Jan 2026 23:35:57 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1767850464; x=1768455264;
-        h=content-transfer-encoding:in-reply-to:content-language:from
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=slLn6K+KnTPN5Uck4oM5JY9fSY7YWNgrkn0AkTxdWS4=;
-        b=OOPpncgT0gDE9d785+UeySuNbbpmG9abZmN85HBF+pdZIJihuUoW8fXo9Cbcyfu4v+
-         XnMdreydav30LlcTMxA0RmZOFmT0GjBJjgoGapregonoSfoXm6GoAfDp877oS7CX6o3I
-         y7/HHCSoMBt7ze3D+JeQ2RArA5A6tC7tlkfsjG2OGqXA20vH5cIU2Xl/DqDFTNb8POM/
-         p2nWnB0vZwKkoNI3QinXZMRtvyNUrPcL9oAqJIqBNAjfVVVfQQwF7IFyhGN6PZALJVUm
-         ICWeOsS+sJrlKdIlGDtsILBCZcFgcgQE32XEwKK8FyHDdT92r4WqM+Cfyt7kH2l9WQ/h
-         oybA==
-X-Gm-Message-State: AOJu0YwVMByJO122/3kyx7gKYQOp6tWElELsICgdr2AfozQhMKEFrRb3
-	Msc+X4K/r5/DsbQYjgW6e33PW+XcdF1GWeyDxFBpuiFDnaqr6na8qh+dMA24TD5GVlsFmezdb8n
-	jTMiYbd7UbFu8XlKJRZa/2glTZMTGNXQw2blal5mqqlqPVfD9IpfA2gzxehDM3D6qA0qKXQ==
-X-Gm-Gg: AY/fxX40n/h+WWyddW25xweri4NGSBaknomyqpyR2AexyET0veodkrgh79jSTxcLWId
-	4/7z9zB6D7ocy3G5NPSL6ABNnx3hIoJZkUjCvVNEXv9oTixEaFEcDIZqjOAcUBZmOBhGNTnZATP
-	WLnudjFaR1TzdaNYnhQdQFBeJcjGAXukfkzC+sGQLtVI6yPXsODNCPm+dzsvDHje3ih/m70/C1h
-	UZb98e86OxOfRgGDFt7NFxyTiJeR0T/WEUWh0fJOaO7XQ7xBLxq7rIfwlzSgazIFfSRh+sJ1bzC
-	bl4rC4ooqJ5XB7ybMK0sDC6YIvUOMGRYIC2BaE8VGpovrG0i/uZ9s4PN8R4U8Etc55aTNubeLSG
-	meb/EexqqWZ6kIlZfTZXa78AkaiBC9QJSge/DVXm5b0zkbpl4jXJb9WKu0vubR+deMBmIZbeG33
-	WmmkzmbwE=
-X-Received: by 2002:a05:6a00:428e:b0:7f0:ead9:578 with SMTP id d2e1a72fcca58-81b7d260595mr4207061b3a.2.1767850464294;
-        Wed, 07 Jan 2026 21:34:24 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IGvjKoMC4OVaPaZGA0PL5yN0sag4muDj4ni/96sAYrVTUGqph6n4D71VQxoz3vXbranFXLKMg==
-X-Received: by 2002:a05:6a00:428e:b0:7f0:ead9:578 with SMTP id d2e1a72fcca58-81b7d260595mr4207030b3a.2.1767850463794;
-        Wed, 07 Jan 2026 21:34:23 -0800 (PST)
-Received: from [10.133.33.194] (tpe-colo-wan-fw-bordernet.qualcomm.com. [103.229.16.4])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-819c52f8e10sm6428184b3a.44.2026.01.07.21.34.22
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 07 Jan 2026 21:34:23 -0800 (PST)
-Message-ID: <5b264207-de1e-4f76-a0f9-6b4d0d6f68f2@oss.qualcomm.com>
-Date: Thu, 8 Jan 2026 13:34:18 +0800
+        d=1e100.net; s=20230601; t=1767857756; x=1768462556;
+        h=cc:to:from:subject:message-id:in-reply-to:date:mime-version
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=SMY8b+FLXF2bIQ1s69KWFvtBYKUqbRD9eqKqFADp9fs=;
+        b=IAMqkvoL/OBl85qIXIayKqaD/6OnvvW3prybzB1Qz5/Lx9MQTuegwu2fkRLcCu06Z1
+         yy8r4PJSlSI/YY7Mwp73otZGw47SgwH/H21qhQPvfQ6nhW+Ra34SNsJ0opouecBub1sl
+         QPhBkmuapOxSBV4m2nhXNBt3ZwvzdpxZscL/aiS3mnEgTV6iefNlH9Yrgfzi8xBksu7P
+         5R0CrEfCGu3TNWajgM1HQJW6G6qHOoGHexrUxNfvu6wfIoktod1mH4SGXUufvPwojh/V
+         KsvoXALTiv1EeBWtLWn+JXqoufmcybIIxIOgwhySwAsK0/V3UHMCIK74boCoqbdnA+yx
+         vHDg==
+X-Forwarded-Encrypted: i=1; AJvYcCWNiRn6A/G/+ixX9UiuPxGWRvoLUgpVX+jgEdXJLnV/sjuSJdKHlcziON7m10hDq4YM21oNCYhdUmZFZm6Rwg==@vger.kernel.org
+X-Gm-Message-State: AOJu0YyjwLeI5btbATmVyP5/aLEHO6M+CzYBmrj/+6IILKhAdy1zk5D4
+	iSh0s6a9kdnCDQvuw9/tdQai4kneshiSGbJcKZ0hqvpreVKtC5qDtMOIYWh5dqpSgMYhDBcQ3BJ
+	b7fmwP3S4rBv2H82Ld1zG35zzqMFMpvTLeaA4sWcvbM1NviVCrcGnX52dBWE=
+X-Google-Smtp-Source: AGHT+IGXCguhbKytUq6HKF+AtjURXUOprlcQ8WgE/CV6dBtLwGyhoqVGvGHE4uQ555KQvGVGysd2xT5YqJIErSfrq1mw0nSAYnfz
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH ath-next v2] wifi: ath11k: Fix failure to connect to a 6
- GHz AP
-To: Qian Zhang <qian.zhang@oss.qualcomm.com>, ath11k@lists.infradead.org
-Cc: linux-wireless@vger.kernel.org
-References: <20260108034607.812885-1-qian.zhang@oss.qualcomm.com>
-From: Baochen Qiang <baochen.qiang@oss.qualcomm.com>
-Content-Language: en-US
-In-Reply-To: <20260108034607.812885-1-qian.zhang@oss.qualcomm.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwMTA4MDAzMyBTYWx0ZWRfX9E7BLm3JMZ17
- eqft+qLte2tJeKRcicrshYALM8THJjkuebQRY6d/RheDvqtmnOabQRqbx5zETRAeipb3SMqJzP+
- yCP8uMYjOflLf4gS6C4bjjNajyntY+pt5YKBIwJh9Trc/e+oDw7lGmMcZfGRTjoHbedrOx25bid
- z/dfUk+Bok7QC3HdOt+Urp9QDqb7AbABcUVsFVfq51xhtG3Fbt7A6vgt61ytqO3Mcb3YTxL+UbD
- jDMtdCw1pQe5ER3/ioa+Ytg48Ydao/TJK3ZgJLgNhn5qC01Y1wgoWs38abeGOoV2sXWHtr44ALH
- v7OWfFDNPi0uz2yPRYJ3Dp+433QgK1yeCgvyUMpaN02nvr30dAj9BjuHqsuoACHXH8k75t/h6EZ
- gprqGUUu0RTTQAejdWmSpPlxKugRDXSZq4gwCHlMWHC83DIAuyaOzKYS1kw1fcj6vH9Y1+MCf7C
- 8dWNztv6SjrvZIpMKqA==
-X-Proofpoint-ORIG-GUID: 28QI7RZM7O2FTU3h3ZJG6VOODbhM8AEy
-X-Authority-Analysis: v=2.4 cv=SPdPlevH c=1 sm=1 tr=0 ts=695f41e1 cx=c_pps
- a=m5Vt/hrsBiPMCU0y4gIsQw==:117 a=nuhDOHQX5FNHPW3J6Bj6AA==:17
- a=IkcTkHD0fZMA:10 a=vUbySO9Y5rIA:10 a=s4-Qcg_JpJYA:10
- a=VkNPw1HP01LnGYTKEx00:22 a=EUspDBNiAAAA:8 a=PKyBAWt5R5Rl1cvDm-IA:9
- a=QEXdDO2ut3YA:10 a=IoOABgeZipijB_acs4fv:22
-X-Proofpoint-GUID: 28QI7RZM7O2FTU3h3ZJG6VOODbhM8AEy
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.9,FMLib:17.12.100.49
- definitions=2026-01-07_05,2026-01-07_03,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- impostorscore=0 phishscore=0 lowpriorityscore=0 malwarescore=0 adultscore=0
- bulkscore=0 spamscore=0 clxscore=1015 suspectscore=0 priorityscore=1501
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.22.0-2512120000 definitions=main-2601080033
+X-Received: by 2002:a05:6820:6005:b0:65f:6038:e84b with SMTP id
+ 006d021491bc7-65f6038ee11mr210087eaf.26.1767857756162; Wed, 07 Jan 2026
+ 23:35:56 -0800 (PST)
+Date: Wed, 07 Jan 2026 23:35:56 -0800
+In-Reply-To: <20260107132003.2291979-1-miriam.rachel.korenblit@intel.com>
+X-Google-Appengine-App-Id: s~syzkaller
+X-Google-Appengine-App-Id-Alias: syzkaller
+Message-ID: <695f5e5c.050a0220.1c677c.038b.GAE@google.com>
+Subject: [syzbot ci] Re: wifi: cfg80211/nl80211: Add NAN Data Path support
+From: syzbot ci <syzbot+cib67e7c99902d09fe@syzkaller.appspotmail.com>
+To: avraham.stern@intel.com, daniel.gabay@intel.com, johannes.berg@intel.com, 
+	linux-wireless@vger.kernel.org, miriam.rachel.korenblit@intel.com
+Cc: syzbot@lists.linux.dev, syzkaller-bugs@googlegroups.com
+Content-Type: text/plain; charset="UTF-8"
+
+syzbot ci has tested the following series
+
+[v1] wifi: cfg80211/nl80211: Add NAN Data Path support
+https://lore.kernel.org/all/20260107132003.2291979-1-miriam.rachel.korenblit@intel.com
+* [PATCH wireless-next 01/15] wifi: nl80211: refactor nl80211_parse_chandef
+* [PATCH wireless-next 02/15] wifi: nl80211/cfg80211: support stations of non-netdev interfaces
+* [PATCH wireless-next 03/15] wifi: cfg80211: refactor wiphy_suspend
+* [PATCH wireless-next 04/15] wifi: nl80211: don't allow DFS channels for NAN
+* [PATCH wireless-next 05/15] wifi: cfg80211: Add an API to configure local NAN schedule
+* [PATCH wireless-next 06/15] wifi: cfg80211: store the chandefs used for NAN
+* [PATCH wireless-next 07/15] wifi: cfg80211: make sure NAN chandefs are valid
+* [PATCH wireless-next 08/15] wifi: cfg80211: add support for NAN data interface
+* [PATCH wireless-next 09/15] wifi: cfg80211: separately store HT, VHT and HE capabilities for NAN
+* [PATCH wireless-next 10/15] wifi: nl80211: add support for NAN stations
+* [PATCH wireless-next 11/15] wifi: nl80211: define an API for configuring the NAN peer's schedule
+* [PATCH wireless-next 12/15] wifi: cfg80211: allow ToDS=0/FromDS=0 data frames on NAN data interfaces
+* [PATCH wireless-next 13/15] wifi: nl80211: allow reporting spurious NAN Data frames
+* [PATCH wireless-next 14/15] wifi: cfg80211: support key installation on non-netdev wdevs
+* [PATCH wireless-next 15/15] wifi: cfg80211: allow protected action frame TX for NAN
+
+and found the following issue:
+possible deadlock in cfg80211_leave
+
+Full report is available here:
+https://ci.syzbot.org/series/233ae6b9-f1a6-42ee-a9ad-23778617ac45
+
+***
+
+possible deadlock in cfg80211_leave
+
+tree:      torvalds
+URL:       https://kernel.googlesource.com/pub/scm/linux/kernel/git/torvalds/linux
+base:      805f9a061372164d43ddef771d7cd63e3ba6d845
+arch:      amd64
+compiler:  Debian clang version 21.1.8 (++20251202083448+f68f64eb8130-1~exp1~20251202083504.46), Debian LLD 21.1.8
+config:    https://ci.syzbot.org/builds/ef828e0d-7b43-4e85-a3b3-c8a39bcbb3c9/config
+C repro:   https://ci.syzbot.org/findings/f7def9d9-24af-4952-b991-2e6c88f8fb50/c_repro
+syz repro: https://ci.syzbot.org/findings/f7def9d9-24af-4952-b991-2e6c88f8fb50/syz_repro
+
+============================================
+WARNING: possible recursive locking detected
+syzkaller #0 Not tainted
+--------------------------------------------
+kworker/1:3/1286 is trying to acquire lock:
+ffff888113640788 (&rdev->wiphy.mtx){+.+.}-{4:4}, at: class_wiphy_constructor include/net/cfg80211.h:6552 [inline]
+ffff888113640788 (&rdev->wiphy.mtx){+.+.}-{4:4}, at: cfg80211_leave+0x17e/0x240 net/wireless/core.c:1507
+
+but task is already holding lock:
+ffff888113640788 (&rdev->wiphy.mtx){+.+.}-{4:4}, at: class_wiphy_constructor include/net/cfg80211.h:6552 [inline]
+ffff888113640788 (&rdev->wiphy.mtx){+.+.}-{4:4}, at: cfg80211_destroy_ifaces+0x128/0x1e0 net/wireless/core.c:394
+
+other info that might help us debug this:
+ Possible unsafe locking scenario:
+
+       CPU0
+       ----
+  lock(&rdev->wiphy.mtx);
+  lock(&rdev->wiphy.mtx);
+
+ *** DEADLOCK ***
+
+ May be due to missing lock nesting notation
+
+4 locks held by kworker/1:3/1286:
+ #0: ffff888100075948 ((wq_completion)events){+.+.}-{0:0}, at: process_one_work kernel/workqueue.c:3232 [inline]
+ #0: ffff888100075948 ((wq_completion)events){+.+.}-{0:0}, at: process_scheduled_works+0x9d4/0x17a0 kernel/workqueue.c:3340
+ #1: ffffc90008c3fbc0 ((work_completion)(&rdev->destroy_work)){+.+.}-{0:0}, at: process_one_work kernel/workqueue.c:3233 [inline]
+ #1: ffffc90008c3fbc0 ((work_completion)(&rdev->destroy_work)){+.+.}-{0:0}, at: process_scheduled_works+0xa0f/0x17a0 kernel/workqueue.c:3340
+ #2: ffffffff8f714e88 (rtnl_mutex){+.+.}-{4:4}, at: cfg80211_destroy_iface_wk+0x19/0x30 net/wireless/core.c:424
+ #3: ffff888113640788 (&rdev->wiphy.mtx){+.+.}-{4:4}, at: class_wiphy_constructor include/net/cfg80211.h:6552 [inline]
+ #3: ffff888113640788 (&rdev->wiphy.mtx){+.+.}-{4:4}, at: cfg80211_destroy_ifaces+0x128/0x1e0 net/wireless/core.c:394
+
+stack backtrace:
+CPU: 1 UID: 0 PID: 1286 Comm: kworker/1:3 Not tainted syzkaller #0 PREEMPT(full) 
+Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS 1.16.2-debian-1.16.2-1 04/01/2014
+Workqueue: events cfg80211_destroy_iface_wk
+Call Trace:
+ <TASK>
+ dump_stack_lvl+0xe8/0x150 lib/dump_stack.c:120
+ print_deadlock_bug+0x279/0x290 kernel/locking/lockdep.c:3041
+ check_deadlock kernel/locking/lockdep.c:3093 [inline]
+ validate_chain kernel/locking/lockdep.c:3895 [inline]
+ __lock_acquire+0x253f/0x2cf0 kernel/locking/lockdep.c:5237
+ lock_acquire+0x106/0x330 kernel/locking/lockdep.c:5868
+ __mutex_lock_common kernel/locking/mutex.c:614 [inline]
+ __mutex_lock+0x19f/0x1340 kernel/locking/mutex.c:776
+ class_wiphy_constructor include/net/cfg80211.h:6552 [inline]
+ cfg80211_leave+0x17e/0x240 net/wireless/core.c:1507
+ cfg80211_destroy_ifaces+0x137/0x1e0 net/wireless/core.c:396
+ cfg80211_destroy_iface_wk+0x21/0x30 net/wireless/core.c:425
+ process_one_work kernel/workqueue.c:3257 [inline]
+ process_scheduled_works+0xaec/0x17a0 kernel/workqueue.c:3340
+ worker_thread+0x89f/0xd90 kernel/workqueue.c:3421
+ kthread+0x726/0x8b0 kernel/kthread.c:463
+ ret_from_fork+0x51b/0xa40 arch/x86/kernel/process.c:158
+ ret_from_fork_asm+0x1a/0x30 arch/x86/entry/entry_64.S:246
+ </TASK>
 
 
+***
 
-On 1/8/2026 11:46 AM, Qian Zhang wrote:
-> STA fails to connect to a 6 GHz AP with the following errors:
->  ath11k_pci 0000:01:00.0: failed to handle chan list with power type 1
->  wlp1s0: deauthenticating from c8:a3:e8:dd:41:e3 by local choice (Reason: 3=DEAUTH_LEAVING)
-> 
-> ath11k_reg_handle_chan_list() treats the update as redundant and
-> returns -EINVAL. That causes the connection attempt to fail.
-> 
-> Avoid unnecessary validation during association. Apply the regulatory
-> redundant check only when the power type is IEEE80211_REG_UNSET_AP,
-> which only occurs during core initialization.
-> 
-> Tested-on: WCN6855 hw2.1 PCI WLAN.HSP.1.1-03125-QCAHSPSWPL_V1_V2_SILICONZ_LITE-3.6510.41
-> 
-> Signed-off-by: Qian Zhang <qian.zhang@oss.qualcomm.com>
-> ---
-> Changes in v2:
-> - only return in IEEE80211_REG_UNSET_AP cases
-> ---
->  drivers/net/wireless/ath/ath11k/reg.c | 9 ++++++---
->  1 file changed, 6 insertions(+), 3 deletions(-)
-> 
-> diff --git a/drivers/net/wireless/ath/ath11k/reg.c b/drivers/net/wireless/ath/ath11k/reg.c
-> index d62a2014315a..49b79648752c 100644
-> --- a/drivers/net/wireless/ath/ath11k/reg.c
-> +++ b/drivers/net/wireless/ath/ath11k/reg.c
-> @@ -1,7 +1,7 @@
->  // SPDX-License-Identifier: BSD-3-Clause-Clear
->  /*
->   * Copyright (c) 2018-2019 The Linux Foundation. All rights reserved.
-> - * Copyright (c) 2021-2025 Qualcomm Innovation Center, Inc. All rights reserved.
-> + * Copyright (c) Qualcomm Technologies, Inc. and/or its subsidiaries.
->   */
->  #include <linux/rtnetlink.h>
->  
-> @@ -926,8 +926,11 @@ int ath11k_reg_handle_chan_list(struct ath11k_base *ab,
->  	 */
->  	if (ab->default_regd[pdev_idx] && !ab->new_regd[pdev_idx] &&
->  	    !memcmp((char *)ab->default_regd[pdev_idx]->alpha2,
-> -		    (char *)reg_info->alpha2, 2))
-> -		goto retfail;
-> +		    (char *)reg_info->alpha2, 2) &&
-> +	    power_type == IEEE80211_REG_UNSET_AP) {
-> +		ath11k_reg_reset_info(reg_info);
-> +		return 0;
-> +	}
->  
->  	/* Intersect new rules with default regd if a new country setting was
->  	 * requested, i.e a default regd was already set during initialization
-> 
-> base-commit: e33fc1c6d54ee1569a57255e11c2978ba9a42ffc
+If these findings have caused you to resend the series or submit a
+separate fix, please add the following tag to your commit message:
+  Tested-by: syzbot@syzkaller.appspotmail.com
 
-Reviewed-by: Baochen Qiang <baochen.qiang@oss.qualcomm.com>
-
+---
+This report is generated by a bot. It may contain errors.
+syzbot ci engineers can be reached at syzkaller@googlegroups.com.
 
