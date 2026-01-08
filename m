@@ -1,66 +1,70 @@
-Return-Path: <linux-wireless+bounces-30521-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-30523-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id A117DD03CAF
-	for <lists+linux-wireless@lfdr.de>; Thu, 08 Jan 2026 16:24:08 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4EF76D04654
+	for <lists+linux-wireless@lfdr.de>; Thu, 08 Jan 2026 17:32:00 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 09C87302B518
-	for <lists+linux-wireless@lfdr.de>; Thu,  8 Jan 2026 15:23:40 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 3263834DB316
+	for <lists+linux-wireless@lfdr.de>; Thu,  8 Jan 2026 15:22:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1AF4936A022;
-	Thu,  8 Jan 2026 08:36:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 656B3345722;
+	Thu,  8 Jan 2026 08:36:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="T2E5CYQP"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="AthmoCZT"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.14])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AC1AB2DB790
-	for <linux-wireless@vger.kernel.org>; Thu,  8 Jan 2026 08:35:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0B3132DB793
+	for <linux-wireless@vger.kernel.org>; Thu,  8 Jan 2026 08:35:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.14
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767861360; cv=none; b=ZYQsQMsbBqnDOLdDNqkaktyH4vZB6MZJZRBPmJHmwHJKRQBDq8776q0kaLCUljYDPr9iZs44k8ki7yoZgC0r99mHo7UVVC7z1JipyD0cIsTZOox6GjIlFfu3lSDulkWbNXO/3V/1mL2x11lu54xUEcnXenL3qbBu65E0gWmOw5U=
+	t=1767861365; cv=none; b=IqgRJZeJloFavhuuFSnHL2SxoDFivmVuuharONjGA8aCA9YaiueB8eFEtygPQi5Govk5CJbG7Dlzb8A+BsLWi9iUkTbW7XnVDpvzqVRYRa9Inbat7cDFXgZZ/59x5W7CpCswIcUauX6PScx0J6/eWmGOM3v5Z5XoxzEFp2FtEUw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767861360; c=relaxed/simple;
-	bh=LT5XC5zCCViACD1X+dNxSNes1AtqIYKYo33UAqQZLkc=;
-	h=From:To:Subject:Date:Message-Id:MIME-Version; b=u4NwngTPYzbrvSgDkl+njxuUjJh7zRaXWGdoxMtydwJwtYS0bYx6xNFQ9mG5c4M8qMYPkFpioqsr882mrYeNoJv/02Ef9tc13js8gECWH0Wv1/9SPHUnLboe7N4Wts3bnB7jXz0a+/jhbXocUVwRFeME8BV9I0VeoMCHFFjyh9g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=T2E5CYQP; arc=none smtp.client-ip=198.175.65.14
+	s=arc-20240116; t=1767861365; c=relaxed/simple;
+	bh=imGMfZRRd0CboWDgJYcc3AAHI88TC5vW4i1lG6TfkLo=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version; b=LA2xWpL7b/Qf0qMdGKRjgO3NNGlWPhnstehcTKthGJta9is8fvl+ruIdZxSHFomfxhxIcpU/YUw29KqWTbdFeosh1jJacyjiEGuR/1IlWd00btXfY1S//7gJMhxJPtcIiqoEGnD84SgP/hHw9WvufCCuCILmfAvvCeLgg06qpz4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=AthmoCZT; arc=none smtp.client-ip=198.175.65.14
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1767861353; x=1799397353;
-  h=from:to:subject:date:message-id:mime-version:
-   content-transfer-encoding;
-  bh=LT5XC5zCCViACD1X+dNxSNes1AtqIYKYo33UAqQZLkc=;
-  b=T2E5CYQP8S+HIiBUb1QOfjULm3WKbSLI8jZRXKwuwFuSyI90AR6tb2yv
-   57BAhctlWb4u6y+6lYerucwpCBDm4DOOZRdaHUz62x9TwqgnW8AqianwJ
-   8XWjBHnB8czMHiT8JXJ4RDZglNyhvX/fuFRdIxyPzyR/ZFjBuIAJsWkMq
-   NtQEzCySgkIDy6v6aNPpvIVFhTbnMbxOscSOf51ksGcglQ8dZy1qiUXQ0
-   8ouaNfCUFYyd6myW/QeWo3j54PmxUxw0PfYQr5bHGQ3GMDsWgkq/pELY8
-   HMmK843985T4TP2MriLXOwW8b5JsqHvpZmUdgvwLa/4f3qxvfrFEVQQ/q
+  t=1767861357; x=1799397357;
+  h=from:to:cc:subject:date:message-id:in-reply-to:
+   references:mime-version:content-transfer-encoding;
+  bh=imGMfZRRd0CboWDgJYcc3AAHI88TC5vW4i1lG6TfkLo=;
+  b=AthmoCZTHRmYAtnuhuBmZ497UpWIRBQ9VafxZR1weQYparwDSbQbhMg2
+   x5fQcHZ2a+kb+Y0bOZGEViScDHlE7bTQ8i26PRURb4poIxzGLPNjciR1S
+   Eo+71klDmlpU2FHBttZXgAmQxBSrppOMeP7ZuqERx4egn+e3Q9EFabb2t
+   Pjc+0EQqUWWReRPRI650ilUkIhktPnUWXg3Su4LBK5Y91hZJG8+x8L74o
+   zZkwyf8RAI/0toCj0QVgNoQqjUthGgenGdORrt8BUfQ95eY8MHQc8B+XP
+   ozB9LHlpK6YTHv/ai/CbzDNt85UPoKRSKKKrEPW6yL+kh6XhjZV7/v7pr
    A==;
-X-CSE-ConnectionGUID: 1EpRZftMQKmgnWhtGtlv1w==
-X-CSE-MsgGUID: chn1kVmyQZ+bT+/JUUZhAg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11664"; a="73084777"
+X-CSE-ConnectionGUID: RgfwLjRESSO5rp8mevM19g==
+X-CSE-MsgGUID: JTD3N5KJQAqAeoKkV2CX4Q==
+X-IronPort-AV: E=McAfee;i="6800,10657,11664"; a="73084779"
 X-IronPort-AV: E=Sophos;i="6.21,210,1763452800"; 
-   d="scan'208";a="73084777"
+   d="scan'208";a="73084779"
 Received: from orviesa002.jf.intel.com ([10.64.159.142])
-  by orvoesa106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 08 Jan 2026 00:35:50 -0800
-X-CSE-ConnectionGUID: OyagcUHcRBu6ld0hBh/nWQ==
-X-CSE-MsgGUID: /EEIJ9XiSv2hj3Q/lvUWcg==
+  by orvoesa106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 08 Jan 2026 00:35:51 -0800
+X-CSE-ConnectionGUID: a7X2fCU7QI2j86YvJZcFVQ==
+X-CSE-MsgGUID: OLA0rRPBSvKkxuxb4fgqYA==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.21,210,1763452800"; 
-   d="scan'208";a="233847438"
+   d="scan'208";a="233847446"
 Received: from weis0040.iil.intel.com ([10.12.217.108])
-  by orviesa002-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 08 Jan 2026 00:35:48 -0800
+  by orviesa002-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 08 Jan 2026 00:35:49 -0800
 From: Miri Korenblit <miriam.rachel.korenblit@intel.com>
 To: linux-wireless@vger.kernel.org
-Subject: [PATCH wireless-next v2 00/14] wifi: cfg80211/nl80211: Add NAN Data Path support
-Date: Thu,  8 Jan 2026 10:35:26 +0200
-Message-Id: <20260108083540.3129471-1-miriam.rachel.korenblit@intel.com>
+Cc: Johannes Berg <johannes.berg@intel.com>
+Subject: [PATCH wireless-next v2 01/14] wifi: nl80211: refactor nl80211_parse_chandef
+Date: Thu,  8 Jan 2026 10:35:27 +0200
+Message-Id: <20260108102921.aa6021eb3bdf.I6c2b6f4c7e2e09f4c47285ca4ac8a37b20700e19@changeid>
 X-Mailer: git-send-email 2.34.1
+In-Reply-To: <20260108083540.3129471-1-miriam.rachel.korenblit@intel.com>
+References: <20260108083540.3129471-1-miriam.rachel.korenblit@intel.com>
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
@@ -70,80 +74,270 @@ MIME-Version: 1.0
 Organization: Intel Israel (74) Limited
 Content-Transfer-Encoding: 8bit
 
-This series adds support for Neighbor Awareness Networking (NAN) Data
-Path in cfg80211/nl80211. This includes support for:
-- Local and peer NAN schedule configuration
-- A new netdev interface type for NAN data communication
-- NAN management and data stations
-- TX/RX support
+In order to be able to use this function also for nested attributes,
+change this function to receive a pointer to extack and to the
+attributes array, instead of receiving the info and extracting them out
+of it.
+While at it, use NL_SET_ERR_MSG_ATTR with the frequency of the chandef.
 
-Patches 1-4: refactoring and preparaion
-Patches 5-8: NAN channels and local schedule support
-Patch 9: NAN_DATA interface type support
-Patches 10-11: NAN stations and local phy capabilities
-Patch 12: Peer NAN schedule
-Patches 13-14: TX/RX for NAN DATA 
+Reviewed-by: Johannes Berg <johannes.berg@intel.com>
+Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
+---
+ net/wireless/nl80211.c | 67 ++++++++++++++++++++++++------------------
+ net/wireless/nl80211.h |  5 ++--
+ net/wireless/pmsr.c    |  5 ++--
+ 3 files changed, 44 insertions(+), 33 deletions(-)
 
-
-Daniel Gabay (1):
-  wifi: cfg80211: allow ToDS=0/FromDS=0 data frames on NAN data
-    interfaces
-
-Miri Korenblit (13):
-  wifi: nl80211: refactor nl80211_parse_chandef
-  wifi: cfg80211: remove unneeded call to cfg80211_leave
-  wifi: nl80211/cfg80211: support stations of non-netdev interfaces
-  wifi: cfg80211: refactor wiphy_suspend
-  wifi: nl80211: don't allow DFS channels for NAN
-  wifi: cfg80211: Add an API to configure local NAN schedule
-  wifi: cfg80211: store the chandefs used for NAN
-  wifi: cfg80211: make sure NAN chandefs are valid
-  wifi: cfg80211: add support for NAN data interface
-  wifi: cfg80211: separately store HT, VHT and HE capabilities for NAN
-  wifi: nl80211: add support for NAN stations
-  wifi: nl80211: define an API for configuring the NAN peer's schedule
-  wifi: nl80211: allow reporting spurious NAN Data frames
-
- drivers/net/wireless/ath/ath6kl/cfg80211.c    |   9 +-
- drivers/net/wireless/ath/ath6kl/main.c        |   4 +-
- drivers/net/wireless/ath/wil6210/cfg80211.c   |  20 +-
- drivers/net/wireless/ath/wil6210/main.c       |   3 +-
- drivers/net/wireless/ath/wil6210/wmi.c        |   5 +-
- .../broadcom/brcm80211/brcmfmac/cfg80211.c    |  23 +-
- drivers/net/wireless/marvell/libertas/cfg.c   |   2 +-
- .../net/wireless/marvell/mwifiex/cfg80211.c   |  24 +-
- .../net/wireless/marvell/mwifiex/uap_event.c  |   7 +-
- .../wireless/microchip/wilc1000/cfg80211.c    |  26 +-
- .../net/wireless/quantenna/qtnfmac/cfg80211.c |  26 +-
- .../net/wireless/quantenna/qtnfmac/event.c    |   6 +-
- drivers/net/wireless/virtual/virt_wifi.c      |  12 +-
- .../staging/rtl8723bs/os_dep/ioctl_cfg80211.c |  24 +-
- include/net/cfg80211.h                        | 230 ++++-
- include/uapi/linux/nl80211.h                  | 177 +++-
- net/mac80211/cfg.c                            |  22 +-
- net/mac80211/chan.c                           |   2 +
- net/mac80211/iface.c                          |   3 +
- net/mac80211/rx.c                             |   2 +
- net/mac80211/sta_info.c                       |   4 +-
- net/mac80211/util.c                           |   1 +
- net/wireless/chan.c                           |   4 +-
- net/wireless/core.c                           | 115 ++-
- net/wireless/core.h                           |   9 +
- net/wireless/mlme.c                           |   4 +-
- net/wireless/nl80211.c                        | 829 ++++++++++++++++--
- net/wireless/nl80211.h                        |   5 +-
- net/wireless/pmsr.c                           |   5 +-
- net/wireless/rdev-ops.h                       |  62 +-
- net/wireless/reg.c                            |  27 +-
- net/wireless/sysfs.c                          |  36 +-
- net/wireless/trace.h                          | 153 +++-
- net/wireless/util.c                           |  26 +-
- net/wireless/wext-compat.c                    |   6 +-
- 35 files changed, 1605 insertions(+), 308 deletions(-)
-
-v2: add commit "wifi: cfg80211: remove unneeded call to cfg80211_leave"
-to the series. It was sent separately but should really be part of this
-series, otherwise it contains a deadlock
+diff --git a/net/wireless/nl80211.c b/net/wireless/nl80211.c
+index c961cd42a832..515716fe5156 100644
+--- a/net/wireless/nl80211.c
++++ b/net/wireless/nl80211.c
+@@ -3511,11 +3511,10 @@ static bool nl80211_can_set_dev_channel(struct wireless_dev *wdev)
+ }
+ 
+ static int _nl80211_parse_chandef(struct cfg80211_registered_device *rdev,
+-				  struct genl_info *info, bool monitor,
++				  struct netlink_ext_ack *extack,
++				  struct nlattr **attrs, bool monitor,
+ 				  struct cfg80211_chan_def *chandef)
+ {
+-	struct netlink_ext_ack *extack = info->extack;
+-	struct nlattr **attrs = info->attrs;
+ 	u32 control_freq;
+ 
+ 	if (!attrs[NL80211_ATTR_WIPHY_FREQ]) {
+@@ -3525,10 +3524,10 @@ static int _nl80211_parse_chandef(struct cfg80211_registered_device *rdev,
+ 	}
+ 
+ 	control_freq = MHZ_TO_KHZ(
+-			nla_get_u32(info->attrs[NL80211_ATTR_WIPHY_FREQ]));
+-	if (info->attrs[NL80211_ATTR_WIPHY_FREQ_OFFSET])
++			nla_get_u32(attrs[NL80211_ATTR_WIPHY_FREQ]));
++	if (attrs[NL80211_ATTR_WIPHY_FREQ_OFFSET])
+ 		control_freq +=
+-		    nla_get_u32(info->attrs[NL80211_ATTR_WIPHY_FREQ_OFFSET]);
++		    nla_get_u32(attrs[NL80211_ATTR_WIPHY_FREQ_OFFSET]);
+ 
+ 	memset(chandef, 0, sizeof(*chandef));
+ 	chandef->chan = ieee80211_get_channel_khz(&rdev->wiphy, control_freq);
+@@ -3599,40 +3598,43 @@ static int _nl80211_parse_chandef(struct cfg80211_registered_device *rdev,
+ 			attrs[NL80211_ATTR_S1G_PRIMARY_2MHZ]);
+ 	}
+ 
+-	if (info->attrs[NL80211_ATTR_WIPHY_EDMG_CHANNELS]) {
++	if (attrs[NL80211_ATTR_WIPHY_EDMG_CHANNELS]) {
+ 		chandef->edmg.channels =
+-		      nla_get_u8(info->attrs[NL80211_ATTR_WIPHY_EDMG_CHANNELS]);
++		      nla_get_u8(attrs[NL80211_ATTR_WIPHY_EDMG_CHANNELS]);
+ 
+-		if (info->attrs[NL80211_ATTR_WIPHY_EDMG_BW_CONFIG])
++		if (attrs[NL80211_ATTR_WIPHY_EDMG_BW_CONFIG])
+ 			chandef->edmg.bw_config =
+-		     nla_get_u8(info->attrs[NL80211_ATTR_WIPHY_EDMG_BW_CONFIG]);
++		     nla_get_u8(attrs[NL80211_ATTR_WIPHY_EDMG_BW_CONFIG]);
+ 	} else {
+ 		chandef->edmg.bw_config = 0;
+ 		chandef->edmg.channels = 0;
+ 	}
+ 
+-	if (info->attrs[NL80211_ATTR_PUNCT_BITMAP]) {
++	if (attrs[NL80211_ATTR_PUNCT_BITMAP]) {
+ 		chandef->punctured =
+-			nla_get_u32(info->attrs[NL80211_ATTR_PUNCT_BITMAP]);
++			nla_get_u32(attrs[NL80211_ATTR_PUNCT_BITMAP]);
+ 
+ 		if (chandef->punctured &&
+ 		    !wiphy_ext_feature_isset(&rdev->wiphy,
+ 					     NL80211_EXT_FEATURE_PUNCT)) {
+-			NL_SET_ERR_MSG(extack,
+-				       "driver doesn't support puncturing");
++			NL_SET_ERR_MSG_ATTR(extack,
++					    attrs[NL80211_ATTR_WIPHY_FREQ],
++					    "driver doesn't support puncturing");
+ 			return -EINVAL;
+ 		}
+ 	}
+ 
+ 	if (!cfg80211_chandef_valid(chandef)) {
+-		NL_SET_ERR_MSG(extack, "invalid channel definition");
++		NL_SET_ERR_MSG_ATTR(extack, attrs[NL80211_ATTR_WIPHY_FREQ],
++				    "invalid channel definition");
+ 		return -EINVAL;
+ 	}
+ 
+ 	if (!_cfg80211_chandef_usable(&rdev->wiphy, chandef,
+ 				      IEEE80211_CHAN_DISABLED,
+ 				      monitor ? IEEE80211_CHAN_CAN_MONITOR : 0)) {
+-		NL_SET_ERR_MSG(extack, "(extension) channel is disabled");
++		NL_SET_ERR_MSG_ATTR(extack, attrs[NL80211_ATTR_WIPHY_FREQ],
++				    "(extension) channel is disabled");
+ 		return -EINVAL;
+ 	}
+ 
+@@ -3647,10 +3649,11 @@ static int _nl80211_parse_chandef(struct cfg80211_registered_device *rdev,
+ }
+ 
+ int nl80211_parse_chandef(struct cfg80211_registered_device *rdev,
+-			  struct genl_info *info,
++			  struct netlink_ext_ack *extack,
++			  struct nlattr **attrs,
+ 			  struct cfg80211_chan_def *chandef)
+ {
+-	return _nl80211_parse_chandef(rdev, info, false, chandef);
++	return _nl80211_parse_chandef(rdev, extack, attrs, false, chandef);
+ }
+ 
+ static int __nl80211_set_channel(struct cfg80211_registered_device *rdev,
+@@ -3677,7 +3680,7 @@ static int __nl80211_set_channel(struct cfg80211_registered_device *rdev,
+ 		link_id = 0;
+ 	}
+ 
+-	result = _nl80211_parse_chandef(rdev, info,
++	result = _nl80211_parse_chandef(rdev, info->extack, info->attrs,
+ 					iftype == NL80211_IFTYPE_MONITOR,
+ 					&chandef);
+ 	if (result)
+@@ -6733,7 +6736,8 @@ static int nl80211_start_ap(struct sk_buff *skb, struct genl_info *info)
+ 	}
+ 
+ 	if (info->attrs[NL80211_ATTR_WIPHY_FREQ]) {
+-		err = nl80211_parse_chandef(rdev, info, &params->chandef);
++		err = nl80211_parse_chandef(rdev, info->extack, info->attrs,
++					    &params->chandef);
+ 		if (err)
+ 			goto out;
+ 	} else if (wdev->valid_links) {
+@@ -11165,7 +11169,7 @@ static int nl80211_start_radar_detection(struct sk_buff *skb,
+ 	if (dfs_region == NL80211_DFS_UNSET)
+ 		return -EINVAL;
+ 
+-	err = nl80211_parse_chandef(rdev, info, &chandef);
++	err = nl80211_parse_chandef(rdev, info->extack, info->attrs, &chandef);
+ 	if (err)
+ 		return err;
+ 
+@@ -11253,7 +11257,7 @@ static int nl80211_notify_radar_detection(struct sk_buff *skb,
+ 		return -EINVAL;
+ 	}
+ 
+-	err = nl80211_parse_chandef(rdev, info, &chandef);
++	err = nl80211_parse_chandef(rdev, info->extack, info->attrs, &chandef);
+ 	if (err) {
+ 		GENL_SET_ERR_MSG(info, "Unable to extract chandef info");
+ 		return err;
+@@ -11439,7 +11443,8 @@ static int nl80211_channel_switch(struct sk_buff *skb, struct genl_info *info)
+ 		goto free;
+ 
+ skip_beacons:
+-	err = nl80211_parse_chandef(rdev, info, &params.chandef);
++	err = nl80211_parse_chandef(rdev, info->extack, info->attrs,
++				    &params.chandef);
+ 	if (err)
+ 		goto free;
+ 
+@@ -12665,7 +12670,8 @@ static int nl80211_join_ibss(struct sk_buff *skb, struct genl_info *info)
+ 		ibss.ie_len = nla_len(info->attrs[NL80211_ATTR_IE]);
+ 	}
+ 
+-	err = nl80211_parse_chandef(rdev, info, &ibss.chandef);
++	err = nl80211_parse_chandef(rdev, info->extack, info->attrs,
++				    &ibss.chandef);
+ 	if (err)
+ 		return err;
+ 
+@@ -13661,7 +13667,7 @@ static int nl80211_remain_on_channel(struct sk_buff *skb,
+ 	    duration > rdev->wiphy.max_remain_on_channel_duration)
+ 		return -EINVAL;
+ 
+-	err = nl80211_parse_chandef(rdev, info, &chandef);
++	err = nl80211_parse_chandef(rdev, info->extack, info->attrs, &chandef);
+ 	if (err)
+ 		return err;
+ 
+@@ -13877,7 +13883,8 @@ static int nl80211_tx_mgmt(struct sk_buff *skb, struct genl_info *info)
+ 	 */
+ 	chandef.chan = NULL;
+ 	if (info->attrs[NL80211_ATTR_WIPHY_FREQ]) {
+-		err = nl80211_parse_chandef(rdev, info, &chandef);
++		err = nl80211_parse_chandef(rdev, info->extack, info->attrs,
++					    &chandef);
+ 		if (err)
+ 			return err;
+ 	}
+@@ -14280,7 +14287,8 @@ static int nl80211_join_ocb(struct sk_buff *skb, struct genl_info *info)
+ 	struct ocb_setup setup = {};
+ 	int err;
+ 
+-	err = nl80211_parse_chandef(rdev, info, &setup.chandef);
++	err = nl80211_parse_chandef(rdev, info->extack, info->attrs,
++				    &setup.chandef);
+ 	if (err)
+ 		return err;
+ 
+@@ -14355,7 +14363,8 @@ static int nl80211_join_mesh(struct sk_buff *skb, struct genl_info *info)
+ 		cfg.auto_open_plinks = false;
+ 
+ 	if (info->attrs[NL80211_ATTR_WIPHY_FREQ]) {
+-		err = nl80211_parse_chandef(rdev, info, &setup.chandef);
++		err = nl80211_parse_chandef(rdev, info->extack, info->attrs,
++					    &setup.chandef);
+ 		if (err)
+ 			return err;
+ 	} else {
+@@ -16827,7 +16836,7 @@ static int nl80211_tdls_channel_switch(struct sk_buff *skb,
+ 	    !info->attrs[NL80211_ATTR_OPER_CLASS])
+ 		return -EINVAL;
+ 
+-	err = nl80211_parse_chandef(rdev, info, &chandef);
++	err = nl80211_parse_chandef(rdev, info->extack, info->attrs, &chandef);
+ 	if (err)
+ 		return err;
+ 
+diff --git a/net/wireless/nl80211.h b/net/wireless/nl80211.h
+index 5e25782af1e0..048ba92c3e42 100644
+--- a/net/wireless/nl80211.h
++++ b/net/wireless/nl80211.h
+@@ -1,7 +1,7 @@
+ /* SPDX-License-Identifier: GPL-2.0 */
+ /*
+  * Portions of this file
+- * Copyright (C) 2018, 2020-2024 Intel Corporation
++ * Copyright (C) 2018, 2020-2025 Intel Corporation
+  */
+ #ifndef __NET_WIRELESS_NL80211_H
+ #define __NET_WIRELESS_NL80211_H
+@@ -23,7 +23,8 @@ static inline u64 wdev_id(struct wireless_dev *wdev)
+ }
+ 
+ int nl80211_parse_chandef(struct cfg80211_registered_device *rdev,
+-			  struct genl_info *info,
++			  struct netlink_ext_ack *extack,
++			  struct nlattr **attrs,
+ 			  struct cfg80211_chan_def *chandef);
+ int nl80211_parse_random_mac(struct nlattr **attrs,
+ 			     u8 *mac_addr, u8 *mac_addr_mask);
+diff --git a/net/wireless/pmsr.c b/net/wireless/pmsr.c
+index a117f5093ca2..0ebbb26e9aa9 100644
+--- a/net/wireless/pmsr.c
++++ b/net/wireless/pmsr.c
+@@ -1,6 +1,6 @@
+ /* SPDX-License-Identifier: GPL-2.0 */
+ /*
+- * Copyright (C) 2018 - 2021, 2023 - 2024 Intel Corporation
++ * Copyright (C) 2018 - 2021, 2023 - 2025 Intel Corporation
+  */
+ #include <net/cfg80211.h>
+ #include "core.h"
+@@ -221,7 +221,8 @@ static int pmsr_parse_peer(struct cfg80211_registered_device *rdev,
+ 	if (err)
+ 		return err;
+ 
+-	err = nl80211_parse_chandef(rdev, info, &out->chandef);
++	err = nl80211_parse_chandef(rdev, info->extack, info->attrs,
++				    &out->chandef);
+ 	if (err)
+ 		return err;
+ 
 -- 
 2.34.1
 
