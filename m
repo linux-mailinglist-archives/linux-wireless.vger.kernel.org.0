@@ -1,102 +1,118 @@
-Return-Path: <linux-wireless+bounces-30543-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-30544-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 37A36D03FC7
-	for <lists+linux-wireless@lfdr.de>; Thu, 08 Jan 2026 16:46:09 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id E00C4D03E23
+	for <lists+linux-wireless@lfdr.de>; Thu, 08 Jan 2026 16:34:05 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 9707735D47F5
-	for <lists+linux-wireless@lfdr.de>; Thu,  8 Jan 2026 15:24:13 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id CD8073067458
+	for <lists+linux-wireless@lfdr.de>; Thu,  8 Jan 2026 15:27:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1B2934C0960;
-	Thu,  8 Jan 2026 12:02:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3227C484A04;
+	Thu,  8 Jan 2026 12:03:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b="U2/6IF2h"
+	dkim=pass (2048-bit key) header.d=realtek.com header.i=@realtek.com header.b="QRq0d5HD"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from sipsolutions.net (s3.sipsolutions.net [168.119.38.16])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 346EA4BE878;
-	Thu,  8 Jan 2026 12:02:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=168.119.38.16
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 836694849F7
+	for <linux-wireless@vger.kernel.org>; Thu,  8 Jan 2026 12:03:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=211.75.126.72
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767873739; cv=none; b=s4EviLFaBF0eE6NFb2P0YZKvBdffrTZ8fAZEJxp1L7e7ozjgU3Geu6FMzrB0e9Akv9Ac8klHYnd9G8FIHXkcZtDbaPHZDVUaoMOC/cqUidxYHWG48QPXYydHW1HL0hnb+JbPY7shvH+f+9hYz/7geljfwPAJ3vSHevAlMUOFHnk=
+	t=1767873807; cv=none; b=rl1Biyu0IOncN5ITPk05BsFFedYndiXu7Xi15h1HFyMB7IQbJ5ThqBW2itQlWfAROK/1UI0DhDFkHBgYkEOhfIsSQ/07J75QcvYfD0MbMyNbkutLFIL2cx/iQDHPNUKPNGrkTEnqghhwfiYzf0FI1+G12M2+HqlIJS4G+GaDvIg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767873739; c=relaxed/simple;
-	bh=v2HbcXQ6rbhyXPZBsbK6d0NNTgOwkYIXcGoFBEanUyo=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=uIxkZVQFM2QAf7vqp2RcqpWwFFEc0kMjW1c9fWhJUGKXRW/YqK7+VWSEkHAvCSjYBFrlXEi4jOB1XQjJXq/XIR+Lada7EEHXu3EH578bFS4Vtgn0G0Vw8R7z7tDQX8AjNX27QqWfD4/HreOcsYsv56HHJpJ5s1MRdnP5EFmOyNw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net; spf=pass smtp.mailfrom=sipsolutions.net; dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b=U2/6IF2h; arc=none smtp.client-ip=168.119.38.16
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sipsolutions.net
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=sipsolutions.net; s=mail; h=MIME-Version:Content-Transfer-Encoding:
-	Content-Type:References:In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender
-	:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
-	Resent-Cc:Resent-Message-ID; bh=QfaX9HLMJRaRW/NgwHv9ZDjDlW/4VzyABrzfVgdf7r4=;
-	t=1767873737; x=1769083337; b=U2/6IF2hiDCEE+acaMLFMPcjnqmTY6ZMeZKR0N5AqPqVCZT
-	1g61pLqkrQ4MwR2BmxF44hU7ffHyOnlr3I3TiYKxs73v9AHLwFK22wI3dglt28MIyKRg4lrM12q2u
-	kd1ebQZolHiLv0z7qmuVytEE4c7kDwxYXih118H6fH7iW5WOKwk9esb73tCJy0E7S8znJJgc1Szzp
-	6Xb29WfC79Z0yG1NMDAdIUKMnsxCzU021pNCjKuLUsZPPxk2KM+KImB8DgSA+zWhG6kAUyBI2DOuz
-	ZSEoKAXcc858/5P+61pW1rfhLzRuEUrLgPmsaYLIq5JOzlpQvmmKNSL1qjjnFD2Q==;
-Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
-	(Exim 4.98.2)
-	(envelope-from <johannes@sipsolutions.net>)
-	id 1vdoiU-00000006U3L-14zW;
-	Thu, 08 Jan 2026 13:02:14 +0100
-Message-ID: <d1806eda47fcb78344ed952e2a91b9c178650689.camel@sipsolutions.net>
-Subject: Re: [PATCH v2] wifi: iwlegacy: 3945-rs: fix possible null-pointer
- dereferences in il3945_rs_get_rate()
-From: Johannes Berg <johannes@sipsolutions.net>
-To: Stanislaw Gruszka <stf_xl@wp.pl>, Tuo Li <islituo@gmail.com>
-Cc: linux-wireless@vger.kernel.org, linux-kernel@vger.kernel.org
-Date: Thu, 08 Jan 2026 13:02:13 +0100
-In-Reply-To: <20260107085949.GA35258@wp.pl> (sfid-20260107_100022_894196_B0F8671D)
-References: <20260107084149.173289-1-islituo@gmail.com>
-	 <20260107085949.GA35258@wp.pl> (sfid-20260107_100022_894196_B0F8671D)
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.56.2 (3.56.2-2.fc42) 
+	s=arc-20240116; t=1767873807; c=relaxed/simple;
+	bh=REGt7qGY85gr5V6v0kWD8otmta9laUlydi3kTpkBZgk=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=goEt1guQe158uZYc5WHg2hZraOmEpv6wX8MQHkMhmrqQONpXrYvE527+YQo5BEhbRQcJQk9kfyggCIenBZOeBviFfvT0cF/umgsHmLR+HOjLIOFzpyRZ/KpcAoUXuzJVaWUKloIrwnpBmOkCJcQ6k7D7Jq/CLV8nFtcOzLA/q6Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com; spf=pass smtp.mailfrom=realtek.com; dkim=pass (2048-bit key) header.d=realtek.com header.i=@realtek.com header.b=QRq0d5HD; arc=none smtp.client-ip=211.75.126.72
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=realtek.com
+X-SpamFilter-By: ArmorX SpamTrap 5.80 with qID 608C3KpD4969679, This message is accepted by code: ctloc85258
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=realtek.com; s=dkim;
+	t=1767873800; bh=6OAZZffn3DoZkgVQ/l3hwAYAPMjDMiVeLIMNvydxdZg=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:
+	 Content-Transfer-Encoding:Content-Type;
+	b=QRq0d5HDb6lK5+3zzsCO6xveZLgRZYMQFdI1BNmZ223X0XTOHOcD1KyaqqhXRQLj0
+	 wJ6b9TGKfYcXxu5B3qtx0Qknx8jx/DHAJ2iWfSCAi3AY8TxetbEqnDEzBFEyaSypFE
+	 h7aWyFcZlpx+C9iwTLTL7S95r3gNLMxK1T1Ig6wDIums26Yi/eejfJv3mvasvJuXf0
+	 4dKfu6R14v+ZgRtoLa25J5naLpIJwkF/Hv4XWyrYFBQ4JUZs0N4JxQFnXvwrA6gitO
+	 WgWD600A1sBXBi2RF80dQbNIzmmd4hPsDnte6ybjzAmzns9BQW2GbmrZIlyXYrDnuw
+	 hl5BH/6Fs17Mg==
+Received: from mail.realtek.com (rtkexhmbs04.realtek.com.tw[10.21.1.54])
+	by rtits2.realtek.com.tw (8.15.2/3.21/5.94) with ESMTPS id 608C3KpD4969679
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK)
+	for <linux-wireless@vger.kernel.org>; Thu, 8 Jan 2026 20:03:20 +0800
+Received: from RTKEXHMBS05.realtek.com.tw (10.21.1.55) by
+ RTKEXHMBS04.realtek.com.tw (10.21.1.54) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1748.10; Thu, 8 Jan 2026 20:03:20 +0800
+Received: from RTKEXHMBS04.realtek.com.tw (10.21.1.54) by
+ RTKEXHMBS05.realtek.com.tw (10.21.1.55) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1748.10; Thu, 8 Jan 2026 20:03:20 +0800
+Received: from [127.0.1.1] (172.21.40.76) by RTKEXHMBS04.realtek.com.tw
+ (10.21.1.54) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1748.10 via Frontend
+ Transport; Thu, 8 Jan 2026 20:03:20 +0800
+From: Ping-Ke Shih <pkshih@realtek.com>
+To: <linux-wireless@vger.kernel.org>
+CC: <leo.li@realtek.com>
+Subject: [PATCH rtw-next 00/13] wifi: rtw89: prepare changes of MAC part for RTL8922D
+Date: Thu, 8 Jan 2026 20:03:07 +0800
+Message-ID: <20260108120320.2217402-1-pkshih@realtek.com>
+X-Mailer: git-send-email 2.25.1
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-malware-bazaar: not-scanned
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
 
-On Wed, 2026-01-07 at 09:59 +0100, Stanislaw Gruszka wrote:
-> On Wed, Jan 07, 2026 at 04:41:49PM +0800, Tuo Li wrote:
-> > In this function, il_sta is assigned to rs_sta, and rs_sta is dereferen=
-ced
-> > at several points. If il_sta is NULL, this can lead to null-pointer
-> > dereferences. To fix this issue, add an early check for il_sta and retu=
-rn
-> > if it is NULL, consistent with the handling in il3945_rs_tx_status().
-> >=20
-> > Besides, if the STA il data is uninitialized, return early instead of
-> > setting il_sta to NULL, consistent with the handling in
-> > il3945_rs_tx_status().
-> >=20
-> > Signed-off-by: Tuo Li <islituo@gmail.com>
-> Acked-by: Stanislaw Gruszka <stf_xl@wp.pl>
+The MAC part changes of RTL8922D includes helper of coex, quota of
+PLE/MPDU/WP, pre-load, pre-init, EDCCA and etc. Add them according to
+hardware changes.
 
-I can apply this if you want, but for the record,
+Chia-Yuan Li (1):
+  wifi: rtw89: coex: update coex software control for RTL8922D
 
-> > +++ b/drivers/net/wireless/intel/iwlegacy/3945-rs.c
-> > @@ -626,10 +626,15 @@ il3945_rs_get_rate(void *il_r, struct ieee80211_s=
-ta *sta, void *il_sta,
-> > =20
-> >  	D_RATE("enter\n");
-> > =20
-> > +	if (!il_sta) {
-> > +		D_RATE("leave: No STA il data to update!\n");
-> > +		return;
-> > +	}
-> > +
+Ping-Ke Shih (12):
+  wifi: rtw89: coex: make coex scoreboard as chip info
+  wifi: rtw89: coex: update scoreboard value according to power state
+    for two BT
+  wifi: rtw89: mac: remove unnecessary return from
+    rtw89_fwdl_secure_idmem_share_mode()
+  wifi: rtw89: mac: add dle_mem and ple_{min,max}_qt quota for RTL8922D
+  wifi: rtw89: mac: set quota 13 for PLE SNRPT
+  wifi: rtw89: mac: update MPDU quota according to chip DLE definition
+  wifi: rtw89: mac: update WP quota for RTL8922D
+  wifi: rtw89: mac: define preload_init for generations
+  wifi: rtw89: mac: configure DMA_STOP1 by predefined mask
+  wifi: rtw89: mac: separate functions of CMAC power and function enable
+  wifi: rtw89: mac: add an entry to enable MAC function in preinit
+  wifi: rtw89: mac: set EDCCA configurations for RTL8922D
 
-I don't see how this would be possible. _Maybe_ the other one, but I
-can't figure out any scenario in mac80211 where it could happen either.
+ drivers/net/wireless/realtek/rtw89/core.c     |   1 +
+ drivers/net/wireless/realtek/rtw89/core.h     |  36 +-
+ drivers/net/wireless/realtek/rtw89/mac.c      |  70 +++-
+ drivers/net/wireless/realtek/rtw89/mac.h      |  49 ++-
+ drivers/net/wireless/realtek/rtw89/mac_be.c   | 348 ++++++++++++++++--
+ drivers/net/wireless/realtek/rtw89/pci.h      |  25 --
+ drivers/net/wireless/realtek/rtw89/pci_be.c   |   4 +
+ drivers/net/wireless/realtek/rtw89/reg.h      | 294 ++++++++++++++-
+ drivers/net/wireless/realtek/rtw89/rtw8851b.c |   1 +
+ drivers/net/wireless/realtek/rtw89/rtw8852a.c |   1 +
+ drivers/net/wireless/realtek/rtw89/rtw8852b.c |   1 +
+ .../net/wireless/realtek/rtw89/rtw8852bt.c    |   1 +
+ drivers/net/wireless/realtek/rtw89/rtw8852c.c |   1 +
+ drivers/net/wireless/realtek/rtw89/rtw8922a.c |   1 +
+ 14 files changed, 767 insertions(+), 66 deletions(-)
 
-johannes
+
+base-commit: baef3d5d96d2f7530011cdebd7aeecdc85cd93a7
+-- 
+2.25.1
+
 
