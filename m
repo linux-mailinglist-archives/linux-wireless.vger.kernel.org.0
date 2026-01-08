@@ -1,63 +1,59 @@
-Return-Path: <linux-wireless+bounces-30541-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-30543-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id E875AD0467B
-	for <lists+linux-wireless@lfdr.de>; Thu, 08 Jan 2026 17:33:02 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 37A36D03FC7
+	for <lists+linux-wireless@lfdr.de>; Thu, 08 Jan 2026 16:46:09 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id A996E31F23F5
-	for <lists+linux-wireless@lfdr.de>; Thu,  8 Jan 2026 15:23:21 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 9707735D47F5
+	for <lists+linux-wireless@lfdr.de>; Thu,  8 Jan 2026 15:24:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 91BD0486943;
-	Thu,  8 Jan 2026 11:01:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1B2934C0960;
+	Thu,  8 Jan 2026 12:02:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b="usZprcgd"
+	dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b="U2/6IF2h"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from sipsolutions.net (s3.sipsolutions.net [168.119.38.16])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ADE8042846D;
-	Thu,  8 Jan 2026 11:01:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 346EA4BE878;
+	Thu,  8 Jan 2026 12:02:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=168.119.38.16
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767870095; cv=none; b=qKHw5uykK67S24zhYt6LupTIpAzz7zrXNOOw+RyRN/zOUh4ghhdPCbCbTADUlHiCPTYS7Yf8r8wXwCJvHJLKfYIPDlXEx1zCSZ8JqA0VILC8Z2sM9d/7zF7XTKsrhffiGA0Kw9NOP77ty/tTmkpH4JuqjAj7dF56Y37HHT6A4ao=
+	t=1767873739; cv=none; b=s4EviLFaBF0eE6NFb2P0YZKvBdffrTZ8fAZEJxp1L7e7ozjgU3Geu6FMzrB0e9Akv9Ac8klHYnd9G8FIHXkcZtDbaPHZDVUaoMOC/cqUidxYHWG48QPXYydHW1HL0hnb+JbPY7shvH+f+9hYz/7geljfwPAJ3vSHevAlMUOFHnk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767870095; c=relaxed/simple;
-	bh=kifWMDUcjyoNqnma7UqgQlLZbT3dPAVcD7eeu3dSDNg=;
+	s=arc-20240116; t=1767873739; c=relaxed/simple;
+	bh=v2HbcXQ6rbhyXPZBsbK6d0NNTgOwkYIXcGoFBEanUyo=;
 	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=XB7Kb5fTFw4RcgahAbUwHy6E9C+nKXez6rvRXH2FjwZY1Q9jK5XGvsYqg6ekf5IYWUZP1Xh7H1jPyZbaC+E7808UBy6LQoFAMWprByvq1zCqOFuoL5ko0YjksKkLMnSaZ2+Fl7QKXdOD980kZ2qlqmHrb+vWriwFAqXk26xKQBI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net; spf=pass smtp.mailfrom=sipsolutions.net; dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b=usZprcgd; arc=none smtp.client-ip=168.119.38.16
+	 Content-Type:MIME-Version; b=uIxkZVQFM2QAf7vqp2RcqpWwFFEc0kMjW1c9fWhJUGKXRW/YqK7+VWSEkHAvCSjYBFrlXEi4jOB1XQjJXq/XIR+Lada7EEHXu3EH578bFS4Vtgn0G0Vw8R7z7tDQX8AjNX27QqWfD4/HreOcsYsv56HHJpJ5s1MRdnP5EFmOyNw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net; spf=pass smtp.mailfrom=sipsolutions.net; dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b=U2/6IF2h; arc=none smtp.client-ip=168.119.38.16
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sipsolutions.net
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=sipsolutions.net; s=mail; h=MIME-Version:Content-Transfer-Encoding:
 	Content-Type:References:In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender
 	:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
-	Resent-Cc:Resent-Message-ID; bh=QXBd9eAoJBUhCI7owVszPAap9fsVDbLgy/vELqg02I8=;
-	t=1767870087; x=1769079687; b=usZprcgdYHAmiySm1ZuQiBSLSJM24eEwZSnb7cxWW35EIKC
-	eAWWfArgoGD12FBx9IBlkMAY6F7eyqUxrFjbugYdi7dSHguyUSn6cgHL35KrqVrtIokFsVhnVP5Vn
-	FuCwuMCvRBLbRVhHDLRRK9BYxBgwN3iItbU0y+rVw83q69Rrg8nz6arZSbi/ymK0PJHykIP+AdPDw
-	1yao9jvGZ9O98Uxd7BovHh075h+UktgXwvdKnUT3su+y0CH3pllQZVR/Nny2C+PyOsjHg4MXZWIL0
-	bZN6/nkefjSZvN5DIYfpWepcxF/aOe/jFVznPgeg8XEUBmKJ0RzxW0fWAJ/9Lraw==;
+	Resent-Cc:Resent-Message-ID; bh=QfaX9HLMJRaRW/NgwHv9ZDjDlW/4VzyABrzfVgdf7r4=;
+	t=1767873737; x=1769083337; b=U2/6IF2hiDCEE+acaMLFMPcjnqmTY6ZMeZKR0N5AqPqVCZT
+	1g61pLqkrQ4MwR2BmxF44hU7ffHyOnlr3I3TiYKxs73v9AHLwFK22wI3dglt28MIyKRg4lrM12q2u
+	kd1ebQZolHiLv0z7qmuVytEE4c7kDwxYXih118H6fH7iW5WOKwk9esb73tCJy0E7S8znJJgc1Szzp
+	6Xb29WfC79Z0yG1NMDAdIUKMnsxCzU021pNCjKuLUsZPPxk2KM+KImB8DgSA+zWhG6kAUyBI2DOuz
+	ZSEoKAXcc858/5P+61pW1rfhLzRuEUrLgPmsaYLIq5JOzlpQvmmKNSL1qjjnFD2Q==;
 Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
 	(Exim 4.98.2)
 	(envelope-from <johannes@sipsolutions.net>)
-	id 1vdnlU-00000006SZl-25oB;
-	Thu, 08 Jan 2026 12:01:16 +0100
-Message-ID: <0e3af232f15f62f2540a307ccb967c1ae5fdadbf.camel@sipsolutions.net>
-Subject: Re: [PATCH net] wifi: avoid kernel-infoleak from struct iw_point
+	id 1vdoiU-00000006U3L-14zW;
+	Thu, 08 Jan 2026 13:02:14 +0100
+Message-ID: <d1806eda47fcb78344ed952e2a91b9c178650689.camel@sipsolutions.net>
+Subject: Re: [PATCH v2] wifi: iwlegacy: 3945-rs: fix possible null-pointer
+ dereferences in il3945_rs_get_rate()
 From: Johannes Berg <johannes@sipsolutions.net>
-To: Eric Dumazet <edumazet@google.com>, "David S . Miller"
- <davem@davemloft.net>,  Jakub Kicinski	 <kuba@kernel.org>, Paolo Abeni
- <pabeni@redhat.com>
-Cc: linux-wireless@vger.kernel.org, netdev@vger.kernel.org, 
-	eric.dumazet@gmail.com,
- syzbot+bfc7323743ca6dbcc3d3@syzkaller.appspotmail.com, 
-	stable@vger.kernel.org
-Date: Thu, 08 Jan 2026 12:01:15 +0100
-In-Reply-To: <20260108101927.857582-1-edumazet@google.com> (sfid-20260108_112630_391137_9C1D2E9D)
-References: <20260108101927.857582-1-edumazet@google.com>
-	 (sfid-20260108_112630_391137_9C1D2E9D)
+To: Stanislaw Gruszka <stf_xl@wp.pl>, Tuo Li <islituo@gmail.com>
+Cc: linux-wireless@vger.kernel.org, linux-kernel@vger.kernel.org
+Date: Thu, 08 Jan 2026 13:02:13 +0100
+In-Reply-To: <20260107085949.GA35258@wp.pl> (sfid-20260107_100022_894196_B0F8671D)
+References: <20260107084149.173289-1-islituo@gmail.com>
+	 <20260107085949.GA35258@wp.pl> (sfid-20260107_100022_894196_B0F8671D)
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 User-Agent: Evolution 3.56.2 (3.56.2-2.fc42) 
@@ -69,42 +65,38 @@ List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 X-malware-bazaar: not-scanned
 
-On Thu, 2026-01-08 at 10:19 +0000, Eric Dumazet wrote:
->=20
-> https://lore.kernel.org/netdev/695f83f3.050a0220.1c677c.0392.GAE@google.c=
-om/T/#u
+On Wed, 2026-01-07 at 09:59 +0100, Stanislaw Gruszka wrote:
+> On Wed, Jan 07, 2026 at 04:41:49PM +0800, Tuo Li wrote:
+> > In this function, il_sta is assigned to rs_sta, and rs_sta is dereferen=
+ced
+> > at several points. If il_sta is NULL, this can lead to null-pointer
+> > dereferences. To fix this issue, add an early check for il_sta and retu=
+rn
+> > if it is NULL, consistent with the handling in il3945_rs_tx_status().
+> >=20
+> > Besides, if the STA il data is uninitialized, return early instead of
+> > setting il_sta to NULL, consistent with the handling in
+> > il3945_rs_tx_status().
+> >=20
+> > Signed-off-by: Tuo Li <islituo@gmail.com>
+> Acked-by: Stanislaw Gruszka <stf_xl@wp.pl>
 
-That wasn't the easiest bit to follow (for me anyway), so for anyone
-else wanting to follow along, here's my interpretation of what happens:
+I can apply this if you want, but for the record,
 
-> +++ b/net/wireless/wext-core.c
-> @@ -1101,6 +1101,10 @@ static int compat_standard_call(struct net_device	=
-*dev,
->  		return ioctl_standard_call(dev, iwr, cmd, info, handler);
-> =20
->  	iwp_compat =3D (struct compat_iw_point *) &iwr->u.data;
-> +
-> +	/* struct iw_point has a 32bit hole on 64bit arches. */
-> +	memset(&iwp, 0, sizeof(iwp));
-> +
->  	iwp.pointer =3D compat_ptr(iwp_compat->pointer);
->  	iwp.length =3D iwp_compat->length;
->  	iwp.flags =3D iwp_compat->flags;
+> > +++ b/drivers/net/wireless/intel/iwlegacy/3945-rs.c
+> > @@ -626,10 +626,15 @@ il3945_rs_get_rate(void *il_r, struct ieee80211_s=
+ta *sta, void *il_sta,
+> > =20
+> >  	D_RATE("enter\n");
+> > =20
+> > +	if (!il_sta) {
+> > +		D_RATE("leave: No STA il data to update!\n");
+> > +		return;
+> > +	}
+> > +
 
-This all looks mostly fine locally, even for the compat code, i.e. for a
-32-bit task on the 64-bit machine. The iwp is created here and is given
-to ioctl_standard_iw_point(), which crucially then for some requests
-(according to IW_DESCR_FLAG_EVENT) passes it to wireless_send_event().
-
-This then can creates _two_ events, one for 32-bit tasks and one for 64-
-bit tasks, and the 64-bit one will have the "struct iw_point" starting
-from "length", excluding "pointer" but including the padding at the
-end... The layout is further described in the "The problem for 64/32
-bit." comment in wext-core.c
-
-I don't think this can happen for the compat_private_call() part since
-no events are generated there, but fixing it there as well is definitely
-better (and who knows what random drivers might do in priv ioctls.)
+I don't see how this would be possible. _Maybe_ the other one, but I
+can't figure out any scenario in mac80211 where it could happen either.
 
 johannes
 
