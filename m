@@ -1,56 +1,58 @@
-Return-Path: <linux-wireless+bounces-30571-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-30572-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id EB683D04210
-	for <lists+linux-wireless@lfdr.de>; Thu, 08 Jan 2026 17:02:40 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id C0EC2D043C6
+	for <lists+linux-wireless@lfdr.de>; Thu, 08 Jan 2026 17:14:34 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id BCF0930AFC60
-	for <lists+linux-wireless@lfdr.de>; Thu,  8 Jan 2026 15:55:39 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id B325430F03DC
+	for <lists+linux-wireless@lfdr.de>; Thu,  8 Jan 2026 15:52:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D5E4B3D6F36;
-	Thu,  8 Jan 2026 13:34:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 46AC53E9F9D;
+	Thu,  8 Jan 2026 13:34:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b="eBbXCg0L"
+	dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b="al3EQXet"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from sipsolutions.net (s3.sipsolutions.net [168.119.38.16])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 309413D7D87
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9FFCB135A53
 	for <linux-wireless@vger.kernel.org>; Thu,  8 Jan 2026 13:34:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=168.119.38.16
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767879278; cv=none; b=RPKdSM141j8ywApsucpfWB4nne/R1n1Stl9HvhXioYWzNPnjlv4GJBqHwFiif5Y7MjoOA37C/sBMsQEPK+cQPJMoiUwmOW5DfW2Xze8LORy12wtU37UOMv8oVhLBFYa5wwX2bDXcnKYV0e+RiUgGw6wn+fXXFNM35gyR7uyXIFg=
+	t=1767879279; cv=none; b=kqmq9cFUME+wdplQAL8W5LBpNf9jwAeF6dPHETA49ilrfWBcGpsLTHk/mSuebIgV6CMvtKEPYNoQUCw1Mj+uBshOPzMn7r/U9KuebJejgFUyufv5OI9+S4Iiaeqp7Hb4VFNzkUtcwQmXfVcTyi7qFUHNTkynbGiY/Sv6p9nP/Jw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767879278; c=relaxed/simple;
-	bh=T+xsOtH7+WeSCQPOg8F2e2BvNkSIaPxRtT5erJpjPpk=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=QJzFQXhLogKFq+ePKrdfKGUdeuDmP9YbnuPleGdk4vJq6wwGYp/PsvV2651QPztpS7Xsq5LwdN/Wzy3ZfBDD4ruxmZ3Rdafi6eJujY5uSHJg+be3fn1aGkDG7JobRa5hgzfxRYnypM1rAgDxoxnK7lniLBpcy2Wt0ZYOrh/zDgU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net; spf=pass smtp.mailfrom=sipsolutions.net; dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b=eBbXCg0L; arc=none smtp.client-ip=168.119.38.16
+	s=arc-20240116; t=1767879279; c=relaxed/simple;
+	bh=FGeaka978Z5V3K02WnRG6g6xycfci/TzOLrgyVjNjLM=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=XYgYRl5v/Fg8iNwRM/SJEMqWCgfGsP/NMSxJl8+XmDsKz0Q7E5JkrNGKXdY23y24g5hiOjiKZlJC9MHSoDkN+iImcKjQkUfyXjbV4GqIl5OAv832Q0ATfIGkAsKDSa3zOiNB7l1hjndDUOPTUH7BPYQGJwRJJeuamuLrnQk4quA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net; spf=pass smtp.mailfrom=sipsolutions.net; dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b=al3EQXet; arc=none smtp.client-ip=168.119.38.16
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sipsolutions.net
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=sipsolutions.net; s=mail; h=Content-Transfer-Encoding:MIME-Version:
-	Message-ID:Date:Subject:Cc:To:From:Content-Type:Sender:Reply-To:Content-ID:
-	Content-Description:Resent-Date:Resent-From:Resent-To:Resent-Cc:
-	Resent-Message-ID:In-Reply-To:References;
-	bh=ODSBnEfPQxZ+Ex/oPUBfQch5SGg7zhX+UJ7djvSqauM=; t=1767879277; x=1769088877; 
-	b=eBbXCg0L5y8BiVodaaL7hV5cRWjTIBV8XQR8R4pEYTFO5BMD+4lzBAIZg2HohsC5vvNL1r+oiik
-	sHtpQtN/66FOswq1KeeRcmW40I0SAxOLU4mpBgYg3VZ/DwfseO0WUv/7pLEMg6ZTrXWrZ6hdgvFf3
-	4GQAcsPqdUgsfyLyVXp4oRQfRLfzFKE/ULvqbP5JeuyOCchdartdJZU+QRAHtocCZ6wpaGHo7RdyE
-	ncnq7iLrjyi2x0tIlbLY8IK1Nj1QPcCt2WpRwKgmyufz2xA981ZM/h/KDEMWecc4NnQ/LxoOeykDU
-	Qrfw3t6Q31PQpSuBB1nAlv2uUS2ZEy4ixzbg==;
+	References:In-Reply-To:Message-ID:Date:Subject:Cc:To:From:Content-Type:Sender
+	:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
+	Resent-Cc:Resent-Message-ID; bh=scBvNIhLWSDXdaccajs59FpABnKRCgD0l2wemt5/Xss=;
+	t=1767879277; x=1769088877; b=al3EQXetKXurH6aP4UkcNZ3o/r5ccd+Om19gy8TRP8b7Zth
+	6b8Qp8X2b5F0V9MjQ2jvWhaKxn5q2ZPocUJc5eZmieA3F9uDebR0qp8V8XbRHS8Rybm6eMmlPeuVw
+	Q5l2siJaMwF1qn0uwL5tx9GgX7kSwXXBD/KeETz4/8gld18cdEmG5IispzuyZ+xnPTAEIQDt7+Hgo
+	l2HrR7gS9PqTar0T/jFlG3fhVlsjwcDurpr55OO+rJLjNKjGsLNi8F11uiVZ8Fe8UlvpPtQ6+ZLtb
+	yd7TtKYjE3fLguXvnraFAKFK9M3C5hY18Rn4CF7gk8oxuNt8gfVC0Ju3qtZ1+BCA==;
 Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
 	(Exim 4.98.2)
 	(envelope-from <johannes@sipsolutions.net>)
-	id 1vdq9q-00000006WWB-11Ay;
-	Thu, 08 Jan 2026 14:34:34 +0100
+	id 1vdq9r-00000006WWB-0ETS;
+	Thu, 08 Jan 2026 14:34:35 +0100
 From: Johannes Berg <johannes@sipsolutions.net>
 To: linux-wireless@vger.kernel.org
 Cc: Johannes Berg <johannes.berg@intel.com>
-Subject: [PATCH 1/2] wifi: mac80211: improve interface iteration ergonomics
-Date: Thu,  8 Jan 2026 14:34:31 +0100
-Message-ID: <20260108143431.f2581e0c381a.Ie387227504c975c109c125b3c57f0bb3fdab2835@changeid>
+Subject: [PATCH 2/2] wifi: mac80211: improve station iteration ergonomics
+Date: Thu,  8 Jan 2026 14:34:32 +0100
+Message-ID: <20260108143431.d2b641f6f6af.I4470024f7404446052564b15bcf8b3f1ada33655@changeid>
 X-Mailer: git-send-email 2.52.0
+In-Reply-To: <20260108143431.f2581e0c381a.Ie387227504c975c109c125b3c57f0bb3fdab2835@changeid>
+References: <20260108143431.f2581e0c381a.Ie387227504c975c109c125b3c57f0bb3fdab2835@changeid>
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
@@ -61,156 +63,110 @@ Content-Transfer-Encoding: 8bit
 
 From: Johannes Berg <johannes.berg@intel.com>
 
-Right now, the only way to iterate interfaces is to declare an
+Right now, the only way to iterate stations is to declare an
 iterator function, possibly data structure to use, and pass all
 that to the iteration helper function. This is annoying, and
-there's really no inherent need for it, except it was easier to
-implement with the iflist mutex, but that's not used much now.
+there's really no inherent need for it.
 
-Add a new for_each_interface() macro that does the iteration in
+Add a new for_each_station() macro that does the iteration in
 a more ergonomic way. To avoid even more exported functions, do
-the old ieee80211_iterate_active_interfaces_mtx() as an inline
-using the new way, which may also let the compiler optimise it
-a bit more, e.g. via inlining the iterator function.
-
-Also provide for_each_active_interface() for the common case of
-just iterating active interfaces.
+the old ieee80211_iterate_stations_mtx() as an inline using the
+new way, which may also let the compiler optimise it a bit more,
+e.g. via inlining the iterator function.
 
 Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 ---
- include/net/mac80211.h | 42 +++++++++++++++++++++++++++++-----
- net/mac80211/util.c    | 52 +++++++++++++++++++++++++++++++++++-------
- 2 files changed, 80 insertions(+), 14 deletions(-)
+ include/net/mac80211.h | 29 +++++++++++++++++++++++++----
+ net/mac80211/util.c    | 23 +++++++++++++++++------
+ 2 files changed, 42 insertions(+), 10 deletions(-)
 
 diff --git a/include/net/mac80211.h b/include/net/mac80211.h
-index c2e49542626c..88ae5d60d9b9 100644
+index 88ae5d60d9b9..36daccef6554 100644
 --- a/include/net/mac80211.h
 +++ b/include/net/mac80211.h
-@@ -6272,6 +6272,30 @@ void ieee80211_iterate_active_interfaces_atomic(struct ieee80211_hw *hw,
- 						    struct ieee80211_vif *vif),
- 						void *data);
+@@ -6338,6 +6338,20 @@ void ieee80211_iterate_stations_atomic(struct ieee80211_hw *hw,
+ 						struct ieee80211_sta *sta),
+ 				       void *data);
  
-+struct ieee80211_vif *
-+__ieee80211_iterate_interfaces(struct ieee80211_hw *hw,
-+			       struct ieee80211_vif *prev,
-+			       u32 iter_flags);
++struct ieee80211_sta *
++__ieee80211_iterate_stations(struct ieee80211_hw *hw,
++			     struct ieee80211_sta *prev);
 +
 +/**
-+ * for_each_interface - iterate interfaces under wiphy mutex
-+ * @vif: the iterator variable
-+ * @hw: the HW to iterate for
-+ * @flags: the iteration flags, see &enum ieee80211_interface_iteration_flags
-+ */
-+#define for_each_interface(vif, hw, flags)				\
-+	for (vif = __ieee80211_iterate_interfaces(hw, NULL, flags);	\
-+	     vif;							\
-+	     vif = __ieee80211_iterate_interfaces(hw, vif, flags))
-+
-+/**
-+ * for_each_active_interface - iterate active interfaces under wiphy mutex
-+ * @vif: the iterator variable
++ * for_each_station - iterate stations under wiphy mutex
++ * @sta: the iterator variable
 + * @hw: the HW to iterate for
 + */
-+#define for_each_active_interface(vif, hw)				\
-+	for_each_interface(vif, hw, IEEE80211_IFACE_ITER_ACTIVE)
++#define for_each_station(sta, hw)					\
++	for (sta = __ieee80211_iterate_stations(hw, NULL);		\
++	     sta;							\
++	     sta = __ieee80211_iterate_stations(hw, sta))
 +
  /**
-  * ieee80211_iterate_active_interfaces_mtx - iterate active interfaces
+  * ieee80211_iterate_stations_mtx - iterate stations
   *
-@@ -6284,12 +6308,18 @@ void ieee80211_iterate_active_interfaces_atomic(struct ieee80211_hw *hw,
-  * @iterator: the iterator function to call, cannot sleep
+@@ -6350,10 +6364,17 @@ void ieee80211_iterate_stations_atomic(struct ieee80211_hw *hw,
+  * @iterator: the iterator function to call
   * @data: first argument of the iterator function
   */
--void ieee80211_iterate_active_interfaces_mtx(struct ieee80211_hw *hw,
--					     u32 iter_flags,
--					     void (*iterator)(void *data,
--						u8 *mac,
--						struct ieee80211_vif *vif),
--					     void *data);
+-void ieee80211_iterate_stations_mtx(struct ieee80211_hw *hw,
+-				    void (*iterator)(void *data,
+-						     struct ieee80211_sta *sta),
+-				    void *data);
 +static inline void
-+ieee80211_iterate_active_interfaces_mtx(struct ieee80211_hw *hw,
-+					u32 iter_flags,
-+					void (*iterator)(void *data, u8 *mac,
-+							 struct ieee80211_vif *vif),
-+					void *data)
++ieee80211_iterate_stations_mtx(struct ieee80211_hw *hw,
++			       void (*iterator)(void *data,
++						struct ieee80211_sta *sta),
++			       void *data)
 +{
-+	struct ieee80211_vif *vif;
++	struct ieee80211_sta *sta;
 +
-+	for_each_interface(vif, hw, iter_flags | IEEE80211_IFACE_ITER_ACTIVE)
-+		iterator(data, vif->addr, vif);
++	for_each_station(sta, hw)
++		iterator(data, sta);
 +}
  
  /**
-  * ieee80211_iterate_stations_atomic - iterate stations
+  * ieee80211_queue_work - add work onto the mac80211 workqueue
 diff --git a/net/mac80211/util.c b/net/mac80211/util.c
-index 0c46009a3d63..13f2e911f330 100644
+index 13f2e911f330..b95f7d50e77d 100644
 --- a/net/mac80211/util.c
 +++ b/net/mac80211/util.c
-@@ -800,20 +800,56 @@ void ieee80211_iterate_active_interfaces_atomic(
+@@ -880,18 +880,29 @@ void ieee80211_iterate_stations_atomic(struct ieee80211_hw *hw,
  }
- EXPORT_SYMBOL_GPL(ieee80211_iterate_active_interfaces_atomic);
+ EXPORT_SYMBOL_GPL(ieee80211_iterate_stations_atomic);
  
--void ieee80211_iterate_active_interfaces_mtx(
--	struct ieee80211_hw *hw, u32 iter_flags,
--	void (*iterator)(void *data, u8 *mac,
--			 struct ieee80211_vif *vif),
--	void *data)
-+struct ieee80211_vif *
-+__ieee80211_iterate_interfaces(struct ieee80211_hw *hw,
-+			       struct ieee80211_vif *prev,
-+			       u32 iter_flags)
+-void ieee80211_iterate_stations_mtx(struct ieee80211_hw *hw,
+-				    void (*iterator)(void *data,
+-						     struct ieee80211_sta *sta),
+-				    void *data)
++struct ieee80211_sta *
++__ieee80211_iterate_stations(struct ieee80211_hw *hw,
++			     struct ieee80211_sta *prev)
  {
-+	bool active_only = iter_flags & IEEE80211_IFACE_ITER_ACTIVE;
-+	struct ieee80211_sub_if_data *sdata = NULL, *monitor;
  	struct ieee80211_local *local = hw_to_local(hw);
++	struct sta_info *sta = NULL;
  
- 	lockdep_assert_wiphy(hw->wiphy);
+ 	lockdep_assert_wiphy(local->hw.wiphy);
  
--	__iterate_interfaces(local, iter_flags | IEEE80211_IFACE_ITER_ACTIVE,
--			     iterator, data);
+-	__iterate_stations(local, iterator, data);
 +	if (prev)
-+		sdata = vif_to_sdata(prev);
++		sta = container_of(prev, struct sta_info, sta);
 +
-+	monitor = rcu_dereference_check(local->monitor_sdata,
-+					lockdep_is_held(&hw->wiphy->mtx));
-+	if (monitor && monitor == sdata)
-+		return NULL;
++	sta = list_prepare_entry(sta, &local->sta_list, list);
++	list_for_each_entry_continue(sta, &local->sta_list, list) {
++		if (!sta->uploaded)
++			continue;
 +
-+	sdata = list_prepare_entry(sdata, &local->interfaces, list);
-+	list_for_each_entry_continue(sdata, &local->interfaces, list) {
-+		switch (sdata->vif.type) {
-+		case NL80211_IFTYPE_MONITOR:
-+			if (!(sdata->u.mntr.flags & MONITOR_FLAG_ACTIVE) &&
-+			    !ieee80211_hw_check(&local->hw, NO_VIRTUAL_MONITOR))
-+				continue;
-+			break;
-+		case NL80211_IFTYPE_AP_VLAN:
-+			continue;
-+		default:
-+			break;
-+		}
-+		if (!(iter_flags & IEEE80211_IFACE_ITER_RESUME_ALL) &&
-+		    active_only && !(sdata->flags & IEEE80211_SDATA_IN_DRIVER))
-+			continue;
-+		if ((iter_flags & IEEE80211_IFACE_SKIP_SDATA_NOT_IN_DRIVER) &&
-+		    !(sdata->flags & IEEE80211_SDATA_IN_DRIVER))
-+			continue;
-+		if (ieee80211_sdata_running(sdata) || !active_only)
-+			return &sdata->vif;
++		return &sta->sta;
 +	}
-+
-+	if (monitor && ieee80211_hw_check(&local->hw, WANT_MONITOR_VIF) &&
-+	    (iter_flags & IEEE80211_IFACE_ITER_RESUME_ALL || !active_only ||
-+	     monitor->flags & IEEE80211_SDATA_IN_DRIVER))
-+		return &monitor->vif;
 +
 +	return NULL;
  }
--EXPORT_SYMBOL_GPL(ieee80211_iterate_active_interfaces_mtx);
-+EXPORT_SYMBOL_GPL(__ieee80211_iterate_interfaces);
+-EXPORT_SYMBOL_GPL(ieee80211_iterate_stations_mtx);
++EXPORT_SYMBOL_GPL(__ieee80211_iterate_stations);
  
- static void __iterate_stations(struct ieee80211_local *local,
- 			       void (*iterator)(void *data,
+ struct ieee80211_vif *wdev_to_ieee80211_vif(struct wireless_dev *wdev)
+ {
 -- 
 2.52.0
 
