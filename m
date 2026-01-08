@@ -1,67 +1,63 @@
-Return-Path: <linux-wireless+bounces-30555-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-30556-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5D63DD0459A
-	for <lists+linux-wireless@lfdr.de>; Thu, 08 Jan 2026 17:26:52 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id DA6FDD0466C
+	for <lists+linux-wireless@lfdr.de>; Thu, 08 Jan 2026 17:32:33 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id AEF5F33D043F
-	for <lists+linux-wireless@lfdr.de>; Thu,  8 Jan 2026 15:16:24 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id EC8043517F0F
+	for <lists+linux-wireless@lfdr.de>; Thu,  8 Jan 2026 15:22:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E19664984AD;
-	Thu,  8 Jan 2026 12:04:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 66D954984AF;
+	Thu,  8 Jan 2026 12:04:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=realtek.com header.i=@realtek.com header.b="ces9nwVR"
+	dkim=pass (2048-bit key) header.d=realtek.com header.i=@realtek.com header.b="H7pjxHDS"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9A3D049848B
-	for <linux-wireless@vger.kernel.org>; Thu,  8 Jan 2026 12:04:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 26E854984B2
+	for <linux-wireless@vger.kernel.org>; Thu,  8 Jan 2026 12:04:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=211.75.126.72
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767873863; cv=none; b=Q80cZt0/xQ5vCM1Q4brnKi3a6Cx8cYRMqhksbffBnw9spD8t6tERHv5WV49F+aHr+521yDp3a4qZ0N3zoUEjPRnOsVKY36YSHT0lyb06R2lcfhHPIFGPtzZLXeI5wK89+Zw8DuEKXAEOn+XoYPXk5Mc4VeCqDVPRP5pf7tBnb5g=
+	t=1767873869; cv=none; b=kmjtjjAvoX0cjmfzWJHwnwL5K5QR5A17zoHOmAtCv/dWLtoDi0Yo2Tb/bp1MvZVjYM2P6gURoGIDyEQJFQFmTQBsFsJbdftrcLiUsZrPf8ZIeaeSbOKWVMFordf5KyQp4wfCbL7UfLCSPo/9ptwvk4Jyw7jDRurzTQValk/hURQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767873863; c=relaxed/simple;
-	bh=dqnn06Lo7FNYnp6mokp3M8NbNrxmHMQ4lTaYE+00S4k=;
+	s=arc-20240116; t=1767873869; c=relaxed/simple;
+	bh=VTqdVjPfSdPwb1A29wP8cTRrjMUfBlaSg+nV8uBE7hQ=;
 	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=fFcdGqWpQRj+B/bYwcnmPJlfVpfY/G6C8WkAEBFNrSHd/NYIWhrpsHPKvcfsiW2BG7I8WVVaZPrDpT7eJb4Kd4b4R+k6PH8ukN4Vf5GHej7yx36+1KXelOd1KIzqSJApCBEdMkSUMmloh4WHHbZ/0quM+e2ErKkdy54zyYkWluQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com; spf=pass smtp.mailfrom=realtek.com; dkim=pass (2048-bit key) header.d=realtek.com header.i=@realtek.com header.b=ces9nwVR; arc=none smtp.client-ip=211.75.126.72
+	 MIME-Version:Content-Type; b=oO1eguHgEYGnPlJwdTbSuPBVzM01hPEkRx+98cBYnOvX10S05zgaH9PekUWSxTIAnHMropjeTzG4Yk/fe/E5O+1QMBw3mfW3W76uVCxliFUrl8If9HQaCrh/jYzAZKCupIhLfC9KPexKrkEAWLQwf4+iDbbhMlgAP2f3WB22ERE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com; spf=pass smtp.mailfrom=realtek.com; dkim=pass (2048-bit key) header.d=realtek.com header.i=@realtek.com header.b=H7pjxHDS; arc=none smtp.client-ip=211.75.126.72
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=realtek.com
-X-SpamFilter-By: ArmorX SpamTrap 5.80 with qID 608C4HjY4970709, This message is accepted by code: ctloc85258
+X-SpamFilter-By: ArmorX SpamTrap 5.80 with qID 608C4MtqC970711, This message is accepted by code: ctloc85258
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=realtek.com; s=dkim;
-	t=1767873857; bh=+DxTQmeI0owf7C1V/aqPdK5GgxtjCXZVtml4buLtN6M=;
+	t=1767873862; bh=F4OwUBsjOOPahrp2rBdA9qI9Lx6XlUm+ocL2UWw1bzk=;
 	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
 	 MIME-Version:Content-Transfer-Encoding:Content-Type;
-	b=ces9nwVRN4Sx3quwHfcgQLfUs/iM2VJTbgiiRzllCmFNwXJLmXyWj34Mca+AlyMdt
-	 qqB4KnBpYta7lIdxNAOPXvakg9buaUl1PpR3zZrGio1/JpnOkHTqLLhHGzARBagPv1
-	 Fe8v2AGkKQNdmdprlKNLu8b6tp61vIHG3Qb50MnxHcKNC3zpYzCAmABz7k6XpTFAOU
-	 a+hsUnLN0YDCIrPZlWkmteM/DHmFd+12yXAQa6+hK2FKRdpf3L3KB4HpV9q7BPRsHE
-	 AKhISPdqsTuaQHKVeB3CP/wJMS1w4LsK9Jm/YKNfk0UFiE3+Roi8jF8XjhjZDETafk
-	 bpwBCapsamHjw==
+	b=H7pjxHDSv28fQlvwrkq/skpNf/zbzJmPXhoorF4DtgQNnLRs82RffIblobvNH+JWt
+	 oMISI9NEAbqON4yKo61cL49makdefuXz9ea+ujqb1ujbRmMLQl5Ia4J4OzYIdeEAsu
+	 eImlwtHGuKVHIW1OPGRmaj3x0Zs/Qpu4jOq6KVaRo/ZvqKw3Z8qwsL0zQXsT7/7dGh
+	 mLb1v1WvtOwZHUAccjDnUvgKpphrymtnzrBNDsPQ3kdcGhE7nmJAg0Fcxo1tGlTYXG
+	 RF+MpkHuN9qPTl/U9DHohJuzkxK1h/5UNKPempMRHSm1u/TsRPUf0qEpEytz/cSoIG
+	 OIi+RtcG9ffIA==
 Received: from mail.realtek.com (rtkexhmbs03.realtek.com.tw[10.21.1.53])
-	by rtits2.realtek.com.tw (8.15.2/3.21/5.94) with ESMTPS id 608C4HjY4970709
+	by rtits2.realtek.com.tw (8.15.2/3.21/5.94) with ESMTPS id 608C4MtqC970711
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK)
-	for <linux-wireless@vger.kernel.org>; Thu, 8 Jan 2026 20:04:17 +0800
-Received: from RTKEXHMBS06.realtek.com.tw (10.21.1.56) by
+	for <linux-wireless@vger.kernel.org>; Thu, 8 Jan 2026 20:04:22 +0800
+Received: from RTKEXHMBS03.realtek.com.tw (10.21.1.53) by
  RTKEXHMBS03.realtek.com.tw (10.21.1.53) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1748.10; Thu, 8 Jan 2026 20:04:18 +0800
-Received: from RTKEXHMBS03.realtek.com.tw (10.21.1.53) by
- RTKEXHMBS06.realtek.com.tw (10.21.1.56) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1748.10; Thu, 8 Jan 2026 20:04:17 +0800
+ 15.2.1748.10; Thu, 8 Jan 2026 20:04:23 +0800
 Received: from [127.0.1.1] (172.21.40.76) by RTKEXHMBS03.realtek.com.tw
  (10.21.1.53) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1748.10 via Frontend
- Transport; Thu, 8 Jan 2026 20:04:17 +0800
+ Transport; Thu, 8 Jan 2026 20:04:23 +0800
 From: Ping-Ke Shih <pkshih@realtek.com>
 To: <linux-wireless@vger.kernel.org>
 CC: <leo.li@realtek.com>
-Subject: [PATCH rtw-next 11/13] wifi: rtw89: mac: separate functions of CMAC power and function enable
-Date: Thu, 8 Jan 2026 20:03:18 +0800
-Message-ID: <20260108120320.2217402-12-pkshih@realtek.com>
+Subject: [PATCH rtw-next 12/13] wifi: rtw89: mac: add an entry to enable MAC function in preinit
+Date: Thu, 8 Jan 2026 20:03:19 +0800
+Message-ID: <20260108120320.2217402-13-pkshih@realtek.com>
 X-Mailer: git-send-email 2.25.1
 In-Reply-To: <20260108120320.2217402-1-pkshih@realtek.com>
 References: <20260108120320.2217402-1-pkshih@realtek.com>
@@ -74,229 +70,167 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Content-Type: text/plain
 
-To enable/disable CMAC function somewhere, separate controls of CMAC power
-and function into individual functions. Also correct the hardware settings
-by the way.
+The preinit is to initialize partial MAC hardware needed before
+downloading firmware, and then does post-init after firmware runs.
+
+For RTL8922D, initialize some DMAC and CMAC at this step.
 
 Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
 ---
- drivers/net/wireless/realtek/rtw89/core.h   |  2 +
- drivers/net/wireless/realtek/rtw89/mac.c    |  2 +
- drivers/net/wireless/realtek/rtw89/mac_be.c | 97 ++++++++++++++++++---
- drivers/net/wireless/realtek/rtw89/reg.h    | 15 ++--
- 4 files changed, 100 insertions(+), 16 deletions(-)
+ drivers/net/wireless/realtek/rtw89/mac.c    |  8 +++
+ drivers/net/wireless/realtek/rtw89/mac.h    |  1 +
+ drivers/net/wireless/realtek/rtw89/mac_be.c | 73 +++++++++++++++++++++
+ 3 files changed, 82 insertions(+)
 
-diff --git a/drivers/net/wireless/realtek/rtw89/core.h b/drivers/net/wireless/realtek/rtw89/core.h
-index f8d36343d68e..d8eb875e92ca 100644
---- a/drivers/net/wireless/realtek/rtw89/core.h
-+++ b/drivers/net/wireless/realtek/rtw89/core.h
-@@ -5138,6 +5138,8 @@ enum rtw89_flags {
- 	RTW89_FLAG_DMAC_FUNC,
- 	RTW89_FLAG_CMAC0_FUNC,
- 	RTW89_FLAG_CMAC1_FUNC,
-+	RTW89_FLAG_CMAC0_PWR,
-+	RTW89_FLAG_CMAC1_PWR,
- 	RTW89_FLAG_FW_RDY,
- 	RTW89_FLAG_RUNNING,
- 	RTW89_FLAG_PROBE_DONE,
 diff --git a/drivers/net/wireless/realtek/rtw89/mac.c b/drivers/net/wireless/realtek/rtw89/mac.c
-index 5bf81ef0313b..f142d3f80e95 100644
+index f142d3f80e95..f484e81d6595 100644
 --- a/drivers/net/wireless/realtek/rtw89/mac.c
 +++ b/drivers/net/wireless/realtek/rtw89/mac.c
-@@ -1559,6 +1559,8 @@ static int rtw89_mac_power_switch(struct rtw89_dev *rtwdev, bool on)
- 		clear_bit(RTW89_FLAG_DMAC_FUNC, rtwdev->flags);
- 		clear_bit(RTW89_FLAG_CMAC0_FUNC, rtwdev->flags);
- 		clear_bit(RTW89_FLAG_CMAC1_FUNC, rtwdev->flags);
-+		clear_bit(RTW89_FLAG_CMAC0_PWR, rtwdev->flags);
-+		clear_bit(RTW89_FLAG_CMAC1_PWR, rtwdev->flags);
- 		clear_bit(RTW89_FLAG_FW_RDY, rtwdev->flags);
+@@ -4223,12 +4223,19 @@ int rtw89_mac_partial_init(struct rtw89_dev *rtwdev, bool include_bb)
  
- 		rtw89_mac_update_scoreboard(rtwdev, MAC_AX_NOTIFY_PWR_MAJOR);
-diff --git a/drivers/net/wireless/realtek/rtw89/mac_be.c b/drivers/net/wireless/realtek/rtw89/mac_be.c
-index a0e5c99abb17..ef4de64d8661 100644
---- a/drivers/net/wireless/realtek/rtw89/mac_be.c
-+++ b/drivers/net/wireless/realtek/rtw89/mac_be.c
-@@ -754,28 +754,91 @@ static int dmac_func_en_be(struct rtw89_dev *rtwdev)
+ int rtw89_mac_preinit(struct rtw89_dev *rtwdev)
+ {
++	const struct rtw89_mac_gen_def *mac = rtwdev->chip->mac_def;
+ 	int ret;
+ 
+ 	ret = rtw89_mac_pwr_on(rtwdev);
+ 	if (ret)
+ 		return ret;
+ 
++	if (mac->mac_func_en) {
++		ret = mac->mac_func_en(rtwdev);
++		if (ret)
++			return ret;
++	}
++
  	return 0;
  }
  
-+static int cmac_pwr_en_be(struct rtw89_dev *rtwdev, u8 mac_idx, bool en)
+@@ -7292,6 +7299,7 @@ const struct rtw89_mac_gen_def rtw89_mac_gen_ax = {
+ 	.trx_init = trx_init_ax,
+ 	.preload_init = preload_init_set_ax,
+ 	.err_imr_ctrl = err_imr_ctrl_ax,
++	.mac_func_en = NULL,
+ 	.hci_func_en = rtw89_mac_hci_func_en_ax,
+ 	.dmac_func_pre_en = rtw89_mac_dmac_func_pre_en_ax,
+ 	.dle_func_en = dle_func_en_ax,
+diff --git a/drivers/net/wireless/realtek/rtw89/mac.h b/drivers/net/wireless/realtek/rtw89/mac.h
+index 7254a653c220..c5630ec88383 100644
+--- a/drivers/net/wireless/realtek/rtw89/mac.h
++++ b/drivers/net/wireless/realtek/rtw89/mac.h
+@@ -1040,6 +1040,7 @@ struct rtw89_mac_gen_def {
+ 	int (*preload_init)(struct rtw89_dev *rtwdev, u8 mac_idx,
+ 			    enum rtw89_qta_mode mode);
+ 	void (*err_imr_ctrl)(struct rtw89_dev *rtwdev, bool en);
++	int (*mac_func_en)(struct rtw89_dev *rtwdev);
+ 	void (*hci_func_en)(struct rtw89_dev *rtwdev);
+ 	void (*dmac_func_pre_en)(struct rtw89_dev *rtwdev);
+ 	void (*dle_func_en)(struct rtw89_dev *rtwdev, bool enable);
+diff --git a/drivers/net/wireless/realtek/rtw89/mac_be.c b/drivers/net/wireless/realtek/rtw89/mac_be.c
+index ef4de64d8661..35c16bcca3b7 100644
+--- a/drivers/net/wireless/realtek/rtw89/mac_be.c
++++ b/drivers/net/wireless/realtek/rtw89/mac_be.c
+@@ -751,6 +751,37 @@ static int rtw89_fwdl_check_path_ready_be(struct rtw89_dev *rtwdev,
+ 
+ static int dmac_func_en_be(struct rtw89_dev *rtwdev)
+ {
++	const struct rtw89_chip_info *chip = rtwdev->chip;
++
++	if (chip->chip_id == RTL8922A)
++		return 0;
++
++	rtw89_write32_set(rtwdev, R_BE_DMAC_FUNC_EN,
++			  B_BE_MAC_FUNC_EN | B_BE_DMAC_FUNC_EN |
++			  B_BE_MPDU_PROC_EN | B_BE_WD_RLS_EN |
++			  B_BE_DLE_WDE_EN | B_BE_TXPKT_CTRL_EN |
++			  B_BE_STA_SCH_EN | B_BE_DLE_PLE_EN |
++			  B_BE_PKT_BUF_EN | B_BE_DMAC_TBL_EN |
++			  B_BE_PKT_IN_EN | B_BE_DLE_CPUIO_EN |
++			  B_BE_DISPATCHER_EN | B_BE_BBRPT_EN |
++			  B_BE_MAC_SEC_EN | B_BE_H_AXIDMA_EN |
++			  B_BE_DMAC_MLO_EN | B_BE_PLRLS_EN |
++			  B_BE_P_AXIDMA_EN | B_BE_DLE_DATACPUIO_EN);
++
++	return 0;
++}
++
++static int cmac_share_func_en_be(struct rtw89_dev *rtwdev)
 +{
-+	if (mac_idx > RTW89_MAC_1)
-+		return -EINVAL;
++	const struct rtw89_chip_info *chip = rtwdev->chip;
 +
-+	if (mac_idx == RTW89_MAC_0) {
-+		if (en == test_bit(RTW89_FLAG_CMAC0_PWR, rtwdev->flags))
-+			return 0;
++	if (chip->chip_id == RTL8922A)
++		return 0;
 +
-+		if (en) {
-+			rtw89_write32_set(rtwdev, R_BE_AFE_CTRL1,
-+					  B_BE_R_SYM_WLCMAC0_ALL_EN);
-+			rtw89_write32_clr(rtwdev, R_BE_FEN_RST_ENABLE,
-+					  B_BE_R_SYM_ISO_CMAC02PP);
-+			rtw89_write32_set(rtwdev, R_BE_FEN_RST_ENABLE,
-+					  B_BE_CMAC0_FEN);
++	rtw89_write32_set(rtwdev, R_BE_CMAC_SHARE_FUNC_EN,
++			  B_BE_CMAC_SHARE_EN | B_BE_RESPBA_EN |
++			  B_BE_ADDRSRCH_EN | B_BE_BTCOEX_EN);
 +
-+			set_bit(RTW89_FLAG_CMAC0_PWR, rtwdev->flags);
-+		} else {
-+			rtw89_write32_clr(rtwdev, R_BE_FEN_RST_ENABLE,
-+					  B_BE_CMAC0_FEN);
-+			rtw89_write32_set(rtwdev, R_BE_FEN_RST_ENABLE,
-+					  B_BE_R_SYM_ISO_CMAC02PP);
-+			rtw89_write32_clr(rtwdev, R_BE_AFE_CTRL1,
-+					  B_BE_R_SYM_WLCMAC0_ALL_EN);
+ 	return 0;
+ }
+ 
+@@ -865,6 +896,10 @@ static int sys_init_be(struct rtw89_dev *rtwdev)
+ 	if (ret)
+ 		return ret;
+ 
++	ret = cmac_share_func_en_be(rtwdev);
++	if (ret)
++		return ret;
 +
-+			clear_bit(RTW89_FLAG_CMAC0_PWR, rtwdev->flags);
-+		}
-+	} else {
-+		if (en == test_bit(RTW89_FLAG_CMAC1_PWR, rtwdev->flags))
-+			return 0;
+ 	ret = cmac_pwr_en_be(rtwdev, RTW89_MAC_0, true);
+ 	if (ret)
+ 		return ret;
+@@ -880,6 +915,43 @@ static int sys_init_be(struct rtw89_dev *rtwdev)
+ 	return ret;
+ }
+ 
++static int mac_func_en_be(struct rtw89_dev *rtwdev)
++{
++	u32 val;
++	int ret;
 +
-+		if (en) {
-+			rtw89_write32_set(rtwdev, R_BE_AFE_CTRL1,
-+					  B_BE_R_SYM_WLCMAC1_ALL_EN);
-+			rtw89_write32_clr(rtwdev, R_BE_FEN_RST_ENABLE,
-+					  B_BE_R_SYM_ISO_CMAC12PP);
-+			rtw89_write32_set(rtwdev, R_BE_FEN_RST_ENABLE,
-+					  B_BE_CMAC1_FEN);
++	ret = dmac_func_en_be(rtwdev);
++	if (ret)
++		return ret;
 +
-+			set_bit(RTW89_FLAG_CMAC1_PWR, rtwdev->flags);
-+		} else {
-+			rtw89_write32_clr(rtwdev, R_BE_FEN_RST_ENABLE,
-+					  B_BE_CMAC1_FEN);
-+			rtw89_write32_set(rtwdev, R_BE_FEN_RST_ENABLE,
-+					  B_BE_R_SYM_ISO_CMAC12PP);
-+			rtw89_write32_clr(rtwdev, R_BE_AFE_CTRL1,
-+					  B_BE_R_SYM_WLCMAC1_ALL_EN);
++	ret = cmac_share_func_en_be(rtwdev);
++	if (ret)
++		return ret;
 +
-+			clear_bit(RTW89_FLAG_CMAC1_PWR, rtwdev->flags);
-+		}
++	val = rtw89_read32(rtwdev, R_BE_FEN_RST_ENABLE);
++	if (val & B_BE_CMAC0_FEN) {
++		ret = cmac_pwr_en_be(rtwdev, RTW89_MAC_0, true);
++		if (ret)
++			return ret;
++
++		ret = cmac_func_en_be(rtwdev, RTW89_MAC_0, true);
++		if (ret)
++			return ret;
++	}
++
++	if (val & B_BE_CMAC1_FEN) {
++		ret = cmac_pwr_en_be(rtwdev, RTW89_MAC_1, true);
++		if (ret)
++			return ret;
++
++		ret = cmac_func_en_be(rtwdev, RTW89_MAC_1, true);
++		if (ret)
++			return ret;
 +	}
 +
 +	return 0;
 +}
 +
- static int cmac_func_en_be(struct rtw89_dev *rtwdev, u8 mac_idx, bool en)
+ static int sta_sch_init_be(struct rtw89_dev *rtwdev)
  {
-+	enum rtw89_flags pwr_flag, func_flag;
- 	u32 reg;
- 
- 	if (mac_idx > RTW89_MAC_1)
- 		return -EINVAL;
- 
--	if (mac_idx == RTW89_MAC_0)
-+	if (mac_idx == RTW89_MAC_0) {
-+		pwr_flag = RTW89_FLAG_CMAC0_PWR;
-+		func_flag = RTW89_FLAG_CMAC0_FUNC;
-+	} else {
-+		pwr_flag = RTW89_FLAG_CMAC1_PWR;
-+		func_flag = RTW89_FLAG_CMAC1_FUNC;
-+	}
-+
-+	if (!test_bit(pwr_flag, rtwdev->flags)) {
-+		rtw89_warn(rtwdev, "CMAC %u power cut did not release\n", mac_idx);
- 		return 0;
-+	}
- 
- 	if (en) {
--		rtw89_write32_set(rtwdev, R_BE_AFE_CTRL1, B_BE_AFE_CTRL1_SET);
--		rtw89_write32_clr(rtwdev, R_BE_SYS_ISO_CTRL_EXTEND, B_BE_R_SYM_ISO_CMAC12PP);
--		rtw89_write32_set(rtwdev, R_BE_FEN_RST_ENABLE, B_BE_CMAC1_FEN);
--
- 		reg = rtw89_mac_reg_by_idx(rtwdev, R_BE_CK_EN, mac_idx);
- 		rtw89_write32_set(rtwdev, reg, B_BE_CK_EN_SET);
- 
- 		reg = rtw89_mac_reg_by_idx(rtwdev, R_BE_CMAC_FUNC_EN, mac_idx);
- 		rtw89_write32_set(rtwdev, reg, B_BE_CMAC_FUNC_EN_SET);
- 
--		set_bit(RTW89_FLAG_CMAC1_FUNC, rtwdev->flags);
-+		set_bit(func_flag, rtwdev->flags);
- 	} else {
- 		reg = rtw89_mac_reg_by_idx(rtwdev, R_BE_CMAC_FUNC_EN, mac_idx);
- 		rtw89_write32_clr(rtwdev, reg, B_BE_CMAC_FUNC_EN_SET);
-@@ -783,11 +846,7 @@ static int cmac_func_en_be(struct rtw89_dev *rtwdev, u8 mac_idx, bool en)
- 		reg = rtw89_mac_reg_by_idx(rtwdev, R_BE_CK_EN, mac_idx);
- 		rtw89_write32_clr(rtwdev, reg, B_BE_CK_EN_SET);
- 
--		rtw89_write32_clr(rtwdev, R_BE_FEN_RST_ENABLE, B_BE_CMAC1_FEN);
--		rtw89_write32_set(rtwdev, R_BE_SYS_ISO_CTRL_EXTEND, B_BE_R_SYM_ISO_CMAC12PP);
--		rtw89_write32_clr(rtwdev, R_BE_AFE_CTRL1, B_BE_AFE_CTRL1_SET);
--
--		clear_bit(RTW89_FLAG_CMAC1_FUNC, rtwdev->flags);
-+		clear_bit(func_flag, rtwdev->flags);
- 	}
- 
- 	return 0;
-@@ -806,6 +865,10 @@ static int sys_init_be(struct rtw89_dev *rtwdev)
- 	if (ret)
- 		return ret;
- 
-+	ret = cmac_pwr_en_be(rtwdev, RTW89_MAC_0, true);
-+	if (ret)
-+		return ret;
-+
- 	ret = cmac_func_en_be(rtwdev, RTW89_MAC_0, true);
- 	if (ret)
- 		return ret;
-@@ -1814,6 +1877,12 @@ static int band1_enable_be(struct rtw89_dev *rtwdev)
- 		return ret;
- 	}
- 
-+	ret = cmac_pwr_en_be(rtwdev, RTW89_MAC_1, true);
-+	if (ret) {
-+		rtw89_err(rtwdev, "[ERR]CMAC%d pwr en %d\n", RTW89_MAC_1, ret);
-+		return ret;
-+	}
-+
- 	ret = cmac_func_en_be(rtwdev, RTW89_MAC_1, true);
- 	if (ret) {
- 		rtw89_err(rtwdev, "[ERR]CMAC%d func en %d\n", RTW89_MAC_1, ret);
-@@ -1857,6 +1926,12 @@ static int band1_disable_be(struct rtw89_dev *rtwdev)
- 		return ret;
- 	}
- 
-+	ret = cmac_pwr_en_be(rtwdev, RTW89_MAC_1, false);
-+	if (ret) {
-+		rtw89_err(rtwdev, "[ERR]CMAC%d pwr dis %d\n", RTW89_MAC_1, ret);
-+		return ret;
-+	}
-+
- 	ret = rtw89_mac_dle_quota_change(rtwdev, rtwdev->mac.qta_mode, false);
- 	if (ret) {
- 		rtw89_err(rtwdev, "[ERR]DLE quota change %d\n", ret);
-diff --git a/drivers/net/wireless/realtek/rtw89/reg.h b/drivers/net/wireless/realtek/rtw89/reg.h
-index bfb1ebcc9fc2..8233841bb8ff 100644
---- a/drivers/net/wireless/realtek/rtw89/reg.h
-+++ b/drivers/net/wireless/realtek/rtw89/reg.h
-@@ -3943,6 +3943,11 @@
- #define B_BE_R_SYM_WLCMAC0_P2_PC_EN BIT(26)
- #define B_BE_R_SYM_WLCMAC0_P1_PC_EN BIT(25)
- #define B_BE_R_SYM_WLCMAC0_PC_EN BIT(24)
-+#define B_BE_R_SYM_WLCMAC0_ALL_EN (B_BE_R_SYM_WLCMAC0_PC_EN | \
-+				   B_BE_R_SYM_WLCMAC0_P1_PC_EN | \
-+				   B_BE_R_SYM_WLCMAC0_P2_PC_EN | \
-+				   B_BE_R_SYM_WLCMAC0_P3_PC_EN | \
-+				   B_BE_R_SYM_WLCMAC0_P4_PC_EN)
- #define B_BE_DATAMEM_PC3_EN BIT(23)
- #define B_BE_DATAMEM_PC2_EN BIT(22)
- #define B_BE_DATAMEM_PC1_EN BIT(21)
-@@ -3964,11 +3969,11 @@
- #define B_BE_R_SYM_WLCMAC1_P2_PC_EN BIT(2)
- #define B_BE_R_SYM_WLCMAC1_P1_PC_EN BIT(1)
- #define B_BE_R_SYM_WLCMAC1_PC_EN BIT(0)
--#define B_BE_AFE_CTRL1_SET (B_BE_R_SYM_WLCMAC1_PC_EN | \
--			    B_BE_R_SYM_WLCMAC1_P1_PC_EN | \
--			    B_BE_R_SYM_WLCMAC1_P2_PC_EN | \
--			    B_BE_R_SYM_WLCMAC1_P3_PC_EN | \
--			    B_BE_R_SYM_WLCMAC1_P4_PC_EN)
-+#define B_BE_R_SYM_WLCMAC1_ALL_EN (B_BE_R_SYM_WLCMAC1_PC_EN | \
-+				   B_BE_R_SYM_WLCMAC1_P1_PC_EN | \
-+				   B_BE_R_SYM_WLCMAC1_P2_PC_EN | \
-+				   B_BE_R_SYM_WLCMAC1_P3_PC_EN | \
-+				   B_BE_R_SYM_WLCMAC1_P4_PC_EN)
- 
- #define R_BE_EFUSE_CTRL 0x0030
- #define B_BE_EF_MODE_SEL_MASK GENMASK(31, 30)
+ 	u32 p_val;
+@@ -2911,6 +2983,7 @@ const struct rtw89_mac_gen_def rtw89_mac_gen_be = {
+ 	.trx_init = trx_init_be,
+ 	.preload_init = preload_init_be,
+ 	.err_imr_ctrl = err_imr_ctrl_be,
++	.mac_func_en = mac_func_en_be,
+ 	.hci_func_en = rtw89_mac_hci_func_en_be,
+ 	.dmac_func_pre_en = rtw89_mac_dmac_func_pre_en_be,
+ 	.dle_func_en = dle_func_en_be,
 -- 
 2.25.1
 
