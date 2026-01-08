@@ -1,128 +1,150 @@
-Return-Path: <linux-wireless+bounces-30574-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-30521-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 312BCD032B4
-	for <lists+linux-wireless@lfdr.de>; Thu, 08 Jan 2026 14:53:02 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id A117DD03CAF
+	for <lists+linux-wireless@lfdr.de>; Thu, 08 Jan 2026 16:24:08 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 45B5430133E9
-	for <lists+linux-wireless@lfdr.de>; Thu,  8 Jan 2026 13:49:27 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 09C87302B518
+	for <lists+linux-wireless@lfdr.de>; Thu,  8 Jan 2026 15:23:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4233D4E2A17;
-	Thu,  8 Jan 2026 13:41:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1AF4936A022;
+	Thu,  8 Jan 2026 08:36:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="mPRy/BrT"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="T2E5CYQP"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-dl1-f42.google.com (mail-dl1-f42.google.com [74.125.82.42])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.14])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8D29B4DF3D6
-	for <linux-wireless@vger.kernel.org>; Thu,  8 Jan 2026 13:41:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.82.42
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AC1AB2DB790
+	for <linux-wireless@vger.kernel.org>; Thu,  8 Jan 2026 08:35:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.14
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767879676; cv=none; b=Lr7b1p+XXnDd1NmgVBp6bd6QOlveY9JeoMPT9MWgsR958zjYsj2vDchlSR1CY1tRDLFhb+BLQNiUj1LnX93sndP/sX5Ngt0jNEMUtc17NFNOWSDod2H74ZXkUgRmFS2bnJNy+JtGU4JU9ga2jcmcATtSJRy8PmbzAmSSZEGOe3o=
+	t=1767861360; cv=none; b=ZYQsQMsbBqnDOLdDNqkaktyH4vZB6MZJZRBPmJHmwHJKRQBDq8776q0kaLCUljYDPr9iZs44k8ki7yoZgC0r99mHo7UVVC7z1JipyD0cIsTZOox6GjIlFfu3lSDulkWbNXO/3V/1mL2x11lu54xUEcnXenL3qbBu65E0gWmOw5U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767879676; c=relaxed/simple;
-	bh=Y/redTSJJiFiCIi0nEgY3wpVQ796lO42ejJF82iJWUY=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=mzagXoB4mkKED5pF59JmIJOawlly4qU4XkzYdR9ZUpih5EvtVigOMqF+npPvC8deJV9mM6VEZt+i5WZTQUCpSrm6iHLKtNJr0PRW8/KNSS/sdRPURtCSrGyBy/le/EKimM0kEcoh1tEzSdrBN/kHxn03KqySW4YON93OIpucOF4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=mPRy/BrT; arc=none smtp.client-ip=74.125.82.42
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-dl1-f42.google.com with SMTP id a92af1059eb24-11dd2370722so581662c88.1
-        for <linux-wireless@vger.kernel.org>; Thu, 08 Jan 2026 05:41:13 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1767879672; x=1768484472; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=xVx1Iceo8H7a1MGTgjly/2JCA8xXNTM+xi7dMPJELl0=;
-        b=mPRy/BrTHA4R/O3GrEYstmYPWODMeq8S9ZBXGu654VfGwYINTaX215HEQdRgw7foSr
-         eKYYQhk9vkgN0DraAHkN/GakreJ4n5tFQ7gRmI707x5QVFFt1/gzguOFEwij6LBPCpSP
-         yAQfIv8qttbdBcnUDDtvxZWL1jVY0Qt9fqV0iI9eospKJdNg/S2Gkw3FaZDAJSs0jVpb
-         Xe5XY5ovrnu84Hfaq724/Haa1mTjsZaL2QwDXXtHJRgiswAgKKdJtG6e1pkW15Y526km
-         jBGNGProj4vZCKGab2vWUrthzFi6HBBNd9zEFpNp0ZfuP00g9mJtdOnztvDXUSDXL3Cz
-         4ICA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1767879672; x=1768484472;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=xVx1Iceo8H7a1MGTgjly/2JCA8xXNTM+xi7dMPJELl0=;
-        b=pAa9DPtR994sPKLaM1lwx8osEkaacnqnnOJowsF96VGANsBOvu/b2IfvwZUq/XrXzj
-         exxVn8jUCOT4KGvvelsSDv28knkcIAzrt7U8yir7HVme8wBtS1ruSHUN9LTeXPpS9X2a
-         XDnR9vK3+E6+112xxeizQSRZV10ZaGXK8kzndpNvzt+c52yTMN58s/h9J8pzi67hzi+d
-         d/gHm0YpMn5NqHUNuvGhlYVIO6ZYQRxVYMCC4UsydP7NXv4xfVzS+befM0mit+ZdQ8Cl
-         LT2GSPutil66bFbnOS7aP+ZTe1L0/KU4DMuTf6STbhuvcTXOybarE0YNYFVQG07LCY1Q
-         VhqQ==
-X-Gm-Message-State: AOJu0YwBsf+CdhcG1DRgi++f8aMFXIH3BFO9PBxWq3aRxur9mCGriGOH
-	Ibs466lHgUu0mpsNTxeV1QNsuFG1vNA+94FMEjlSsVp/VmAsi+T0nRzufxubsxA2SCnOiVtvNTu
-	DpPP30GBJuVBBKP5SnIT1g7xsY+p8QOY=
-X-Gm-Gg: AY/fxX46QveRDBBu6ndXT2HpEkdgOudx0FRvrwGuGHKYkXRgq50k+9aze77RjKm19o1
-	bgutZh2f1bMSDXXFX4cZpwXaKogU7IyeZfM0kDPGpD7Rmilh9V0t3wWLaRKzTOOttZ7YZm45b3b
-	YVAsv4h0VgAXtq4QpATgO+YZvOWlXYfVup8i1SBV0s/LbJ+9mmPwp9YOeWJ+dxq/+F+92BAkG+k
-	7GLygu7P9Hk0y8glxsFRUYxaKOJTGEgSqWcYKdIlasu/VdqoAxjjEjhBsJcAp7m8aHyiR8=
-X-Google-Smtp-Source: AGHT+IED4kahw/QTcOzvyLqi8VxXqpDij6yBcyCz96pxa/5L/h6mgwzj8m7N1Ix8DmHT16XLMDX9eiIrewOayG7LiZs=
-X-Received: by 2002:a05:7022:107:b0:11d:f682:e475 with SMTP id
- a92af1059eb24-121f8b5fdefmr5831812c88.40.1767879672498; Thu, 08 Jan 2026
- 05:41:12 -0800 (PST)
+	s=arc-20240116; t=1767861360; c=relaxed/simple;
+	bh=LT5XC5zCCViACD1X+dNxSNes1AtqIYKYo33UAqQZLkc=;
+	h=From:To:Subject:Date:Message-Id:MIME-Version; b=u4NwngTPYzbrvSgDkl+njxuUjJh7zRaXWGdoxMtydwJwtYS0bYx6xNFQ9mG5c4M8qMYPkFpioqsr882mrYeNoJv/02Ef9tc13js8gECWH0Wv1/9SPHUnLboe7N4Wts3bnB7jXz0a+/jhbXocUVwRFeME8BV9I0VeoMCHFFjyh9g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=T2E5CYQP; arc=none smtp.client-ip=198.175.65.14
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1767861353; x=1799397353;
+  h=from:to:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=LT5XC5zCCViACD1X+dNxSNes1AtqIYKYo33UAqQZLkc=;
+  b=T2E5CYQP8S+HIiBUb1QOfjULm3WKbSLI8jZRXKwuwFuSyI90AR6tb2yv
+   57BAhctlWb4u6y+6lYerucwpCBDm4DOOZRdaHUz62x9TwqgnW8AqianwJ
+   8XWjBHnB8czMHiT8JXJ4RDZglNyhvX/fuFRdIxyPzyR/ZFjBuIAJsWkMq
+   NtQEzCySgkIDy6v6aNPpvIVFhTbnMbxOscSOf51ksGcglQ8dZy1qiUXQ0
+   8ouaNfCUFYyd6myW/QeWo3j54PmxUxw0PfYQr5bHGQ3GMDsWgkq/pELY8
+   HMmK843985T4TP2MriLXOwW8b5JsqHvpZmUdgvwLa/4f3qxvfrFEVQQ/q
+   A==;
+X-CSE-ConnectionGUID: 1EpRZftMQKmgnWhtGtlv1w==
+X-CSE-MsgGUID: chn1kVmyQZ+bT+/JUUZhAg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11664"; a="73084777"
+X-IronPort-AV: E=Sophos;i="6.21,210,1763452800"; 
+   d="scan'208";a="73084777"
+Received: from orviesa002.jf.intel.com ([10.64.159.142])
+  by orvoesa106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 08 Jan 2026 00:35:50 -0800
+X-CSE-ConnectionGUID: OyagcUHcRBu6ld0hBh/nWQ==
+X-CSE-MsgGUID: /EEIJ9XiSv2hj3Q/lvUWcg==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.21,210,1763452800"; 
+   d="scan'208";a="233847438"
+Received: from weis0040.iil.intel.com ([10.12.217.108])
+  by orviesa002-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 08 Jan 2026 00:35:48 -0800
+From: Miri Korenblit <miriam.rachel.korenblit@intel.com>
+To: linux-wireless@vger.kernel.org
+Subject: [PATCH wireless-next v2 00/14] wifi: cfg80211/nl80211: Add NAN Data Path support
+Date: Thu,  8 Jan 2026 10:35:26 +0200
+Message-Id: <20260108083540.3129471-1-miriam.rachel.korenblit@intel.com>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260107031203.170628-1-islituo@gmail.com> <87eco14u4p.fsf@toke.dk>
-In-Reply-To: <87eco14u4p.fsf@toke.dk>
-From: Tuo Li <islituo@gmail.com>
-Date: Thu, 8 Jan 2026 21:41:02 +0800
-X-Gm-Features: AQt7F2pqOthA3klwGzptaR_WtK8tBiNPP3U3wvNQ9jLQbjxTnCf10grChNQvqo8
-Message-ID: <CADm8Te=peTkMfSFqfHdj6AW-O88Jz3mtqQDn6rYwAn59zE5ZWQ@mail.gmail.com>
-Subject: Re: [PATCH] wifi: ath9k: add a defensive NULL check to prevent
- null-pointer dereference in ath9k_beacon_remove_slot()
-To: =?UTF-8?B?VG9rZSBIw7hpbGFuZC1Kw7hyZ2Vuc2Vu?= <toke@toke.dk>
-Cc: linux-wireless@vger.kernel.org, linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Organization: Intel Israel (74) Limited
+Content-Transfer-Encoding: 8bit
 
-On Wed, Jan 7, 2026 at 6:03=E2=80=AFPM Toke H=C3=B8iland-J=C3=B8rgensen <to=
-ke@toke.dk> wrote:
->
-> Tuo Li <islituo@gmail.com> writes:
->
-> > In this function, bf is guarded by an if statement, indicating that it =
-may
-> > be NULL:
-> >
-> >   if (bf && bf->bf_mpdu) {...}
-> >
-> > If bf is NULL, calling list_add_tail() may result in a null-pointer
-> > dereference:
-> >
-> >   list_add_tail(&bf->list, &sc->beacon.bbuf);
-> >
-> > Therefore, add a defensive NULL check before invoking list_add_tail() t=
-o
-> > prevent this issue.
-> >
-> > Signed-off-by: Tuo Li <islituo@gmail.com>
->
-> Are you fixing an actual bug here? Otherwise, this is not worth the
-> churn...
->
-> -Toke
+This series adds support for Neighbor Awareness Networking (NAN) Data
+Path in cfg80211/nl80211. This includes support for:
+- Local and peer NAN schedule configuration
+- A new netdev interface type for NAN data communication
+- NAN management and data stations
+- TX/RX support
 
-Thanks for pointing this out.
+Patches 1-4: refactoring and preparaion
+Patches 5-8: NAN channels and local schedule support
+Patch 9: NAN_DATA interface type support
+Patches 10-11: NAN stations and local phy capabilities
+Patch 12: Peer NAN schedule
+Patches 13-14: TX/RX for NAN DATA 
 
-This issue was reported by a static analysis tool. After reviewing the
-code, I noticed that bf is guarded by an if statement, which indicates
-that it may be NULL, so I added a defensive check before the other
-dereference.
 
-However, I have not been able to identify a concrete execution path in
-which bf would actually be NULL at that point. I'm fine with dropping
-this change if it is considered unnecessary.
+Daniel Gabay (1):
+  wifi: cfg80211: allow ToDS=0/FromDS=0 data frames on NAN data
+    interfaces
 
-Best regards,
-Tuo
+Miri Korenblit (13):
+  wifi: nl80211: refactor nl80211_parse_chandef
+  wifi: cfg80211: remove unneeded call to cfg80211_leave
+  wifi: nl80211/cfg80211: support stations of non-netdev interfaces
+  wifi: cfg80211: refactor wiphy_suspend
+  wifi: nl80211: don't allow DFS channels for NAN
+  wifi: cfg80211: Add an API to configure local NAN schedule
+  wifi: cfg80211: store the chandefs used for NAN
+  wifi: cfg80211: make sure NAN chandefs are valid
+  wifi: cfg80211: add support for NAN data interface
+  wifi: cfg80211: separately store HT, VHT and HE capabilities for NAN
+  wifi: nl80211: add support for NAN stations
+  wifi: nl80211: define an API for configuring the NAN peer's schedule
+  wifi: nl80211: allow reporting spurious NAN Data frames
+
+ drivers/net/wireless/ath/ath6kl/cfg80211.c    |   9 +-
+ drivers/net/wireless/ath/ath6kl/main.c        |   4 +-
+ drivers/net/wireless/ath/wil6210/cfg80211.c   |  20 +-
+ drivers/net/wireless/ath/wil6210/main.c       |   3 +-
+ drivers/net/wireless/ath/wil6210/wmi.c        |   5 +-
+ .../broadcom/brcm80211/brcmfmac/cfg80211.c    |  23 +-
+ drivers/net/wireless/marvell/libertas/cfg.c   |   2 +-
+ .../net/wireless/marvell/mwifiex/cfg80211.c   |  24 +-
+ .../net/wireless/marvell/mwifiex/uap_event.c  |   7 +-
+ .../wireless/microchip/wilc1000/cfg80211.c    |  26 +-
+ .../net/wireless/quantenna/qtnfmac/cfg80211.c |  26 +-
+ .../net/wireless/quantenna/qtnfmac/event.c    |   6 +-
+ drivers/net/wireless/virtual/virt_wifi.c      |  12 +-
+ .../staging/rtl8723bs/os_dep/ioctl_cfg80211.c |  24 +-
+ include/net/cfg80211.h                        | 230 ++++-
+ include/uapi/linux/nl80211.h                  | 177 +++-
+ net/mac80211/cfg.c                            |  22 +-
+ net/mac80211/chan.c                           |   2 +
+ net/mac80211/iface.c                          |   3 +
+ net/mac80211/rx.c                             |   2 +
+ net/mac80211/sta_info.c                       |   4 +-
+ net/mac80211/util.c                           |   1 +
+ net/wireless/chan.c                           |   4 +-
+ net/wireless/core.c                           | 115 ++-
+ net/wireless/core.h                           |   9 +
+ net/wireless/mlme.c                           |   4 +-
+ net/wireless/nl80211.c                        | 829 ++++++++++++++++--
+ net/wireless/nl80211.h                        |   5 +-
+ net/wireless/pmsr.c                           |   5 +-
+ net/wireless/rdev-ops.h                       |  62 +-
+ net/wireless/reg.c                            |  27 +-
+ net/wireless/sysfs.c                          |  36 +-
+ net/wireless/trace.h                          | 153 +++-
+ net/wireless/util.c                           |  26 +-
+ net/wireless/wext-compat.c                    |   6 +-
+ 35 files changed, 1605 insertions(+), 308 deletions(-)
+
+v2: add commit "wifi: cfg80211: remove unneeded call to cfg80211_leave"
+to the series. It was sent separately but should really be part of this
+series, otherwise it contains a deadlock
+-- 
+2.34.1
+
 
