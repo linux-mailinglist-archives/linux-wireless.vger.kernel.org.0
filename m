@@ -1,155 +1,122 @@
-Return-Path: <linux-wireless+bounces-30585-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-30586-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3D7FED06DFB
-	for <lists+linux-wireless@lfdr.de>; Fri, 09 Jan 2026 03:43:09 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 822BED07030
+	for <lists+linux-wireless@lfdr.de>; Fri, 09 Jan 2026 04:40:36 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id DB5823014DB6
-	for <lists+linux-wireless@lfdr.de>; Fri,  9 Jan 2026 02:42:50 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 2CA0F301A196
+	for <lists+linux-wireless@lfdr.de>; Fri,  9 Jan 2026 03:40:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 37E112E2663;
-	Fri,  9 Jan 2026 02:42:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 941E024466C;
+	Fri,  9 Jan 2026 03:40:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="l68Qpp0c"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="ZA2NHhqf"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-dl1-f51.google.com (mail-dl1-f51.google.com [74.125.82.51])
+Received: from mail-pl1-f174.google.com (mail-pl1-f174.google.com [209.85.214.174])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B77C63033C8
-	for <linux-wireless@vger.kernel.org>; Fri,  9 Jan 2026 02:42:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.82.51
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 472C623BF91
+	for <linux-wireless@vger.kernel.org>; Fri,  9 Jan 2026 03:40:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.174
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767926570; cv=none; b=o95is2OzPAO/mUyglhmlSSfIYJ07ZYnCYeBE6xMYTio8BRxGUMlI9AckoeDV+oQYiCUFKpY7Sj734Y1q+nPiFutxK1/UvJa3ht9mRmzMKbecQmDpDp0DfHkC+CaBHzFKdVDF+8z/CF9XSbPpZkJdBGAlt8q1fTrWJJ4fFe9FPSw=
+	t=1767930034; cv=none; b=jiESZSdSEXvoNA15BqSj3BFhh8MNUdWWf/dqZzxHgfyA+B4i5NTHt2dlX+FQ/or6w1tyPsRU6iBSDg5ZASJfU+Q8zRVuTIo3Pip4X6c5Z4/gPfBJw83JjO6oIC74jSCYvCLL+M6dZ8fV8NQS6VH/U/MKXRHz608opA80xpGtE3U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767926570; c=relaxed/simple;
-	bh=WPzbKvLmmiBtcdw5cmuOr7HfN/huAT2BwtyjiFVJTcA=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=fMYRT01zgArNTpSZvRh43hnILq3bS5sQBwwyp1TM034HtXhRRAQQqPY6c0VIZGy8kzo/xOPJMbQbVDeikEP/3S2mh5vzqss3XfL1eM73hS4+EgvPHJKloP5s2Kxm/CMS7fgqvNmHRVyFUXyydXvIXNYB3G3YyagWAeX9SXcPt2o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=l68Qpp0c; arc=none smtp.client-ip=74.125.82.51
+	s=arc-20240116; t=1767930034; c=relaxed/simple;
+	bh=ZngBZOuyEiiYCDmUGPUbp507lvGhb4UKwkiVQ+s/3BQ=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=FY1Dsvdeo/TZX/AbeEKgYN13h6WOwRdoGIIkNycYbGpxMVIRlpV+yDdeVfRgrimcvRnmsuOCHUm6CFABIy1cro3rq+BNgoXRFl2Stl/+jjtupTQc6byNvBUwflm0KNlUtzLoHQAxt0ZOboT9v+ZWr7ecY9lYeFytAqQaOt/q3fI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=ZA2NHhqf; arc=none smtp.client-ip=209.85.214.174
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-dl1-f51.google.com with SMTP id a92af1059eb24-11f3e3f0cacso4235096c88.0
-        for <linux-wireless@vger.kernel.org>; Thu, 08 Jan 2026 18:42:48 -0800 (PST)
+Received: by mail-pl1-f174.google.com with SMTP id d9443c01a7336-29f30233d8aso28208785ad.0
+        for <linux-wireless@vger.kernel.org>; Thu, 08 Jan 2026 19:40:33 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1767926568; x=1768531368; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=2pKwa9EyVKBu4K9f933OjN3qf+4pYS1JLmujmtYkYJI=;
-        b=l68Qpp0cANyFT4xg99dXkGZ25SPAjk9Gwu28vGhoTmocug845dbWJ8DxNBfuVfwCof
-         OLrLmzg15+qWRXuMkQ/Oc8d2ygJ6B2iMesRlCHcOYesCdjhQLstdtzjUYr/X4P0g7Bdg
-         ophPkTqsXs660433mEfNwjGgt1q664S+51FtInjcuxVBYWJ40YaFgBnGGk7niHVgIH2c
-         dDemiHZ8O7X+sDrPA5h+ImijcsOSV9iPiR9BQ4X9UxwgpSPiDQv0pOsZI5N09W223U+P
-         bawKS8aFgYNxLsons+FZ6c3qyrsnvoNAMx6c/zL0eyIOri1xxRBd2UGVgQQGQq4kk8iQ
-         GvNg==
+        d=gmail.com; s=20230601; t=1767930033; x=1768534833; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=6YIIoHMbWWMEgNdY0LTR9KPrDSBdoV9NydkT9nhfA8k=;
+        b=ZA2NHhqfmnQ2e1jprkXQx3r+8pD9xoPyONWvVlJAk5zjl/SOJBiIQMZRZu+6Jdk4co
+         S1oXKslWune1p5DbOQX8fT0qIwxKgUTaogUreOAO+PW8j//nWsoLRm3uVMvyMl6TroV+
+         sKuegO5N7hMmmc0JUyW41gWbYWWo4eEA8Yxj0cYHlaCjvS8MuR8Cngqk52oOjbaGAwfq
+         6I99x6jUCbjwTkSZW5XBUsTY6s/Pw0+T6XcSA6cgbHhW0Emn3/rqfv2wawLZbH0s3SoU
+         Cb5VERgBHyUlolaNcX/Slr8bK09Jo1BdAj5gT5CTV4JTjRM+SwJYHxQh7KAxA0683Ioa
+         VTVw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1767926568; x=1768531368;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=2pKwa9EyVKBu4K9f933OjN3qf+4pYS1JLmujmtYkYJI=;
-        b=nsqEAusuZ2BKOY/T6SGtNkh1bHIcZzaJNYPxyDPUNkr9nakLUmJVBY+2hdM39ARw9A
-         4fbGwBp08i2UebNGHqM1eb4s/zTXKlox/dAAZVfBQASZV9PAgYbhF0pokpZ0LdALUcN+
-         s13lNu3L/JvnkoigtpOEMDlyyEEpVrwLRsa/ETJ/AJVqkTOv0trEaEoXLyg4bsC5SUQ9
-         NxxwqWfWDyAkBkDtSt1UlWD847zFkCmAG0msAerjRkrTCz5FCxeU91+ouF2WQpoeq8+p
-         ytr9TXS/aLU07ePOppYWC7MbVY+YvjGPz7NhmYbfny2jfvaH04Ljg/ZiCud48On5vTPe
-         8y8A==
-X-Forwarded-Encrypted: i=1; AJvYcCVGjwA1aSw+0Yor+Um3PEiW+3r8AgnAQLsPqapn0zjAoSs/qe128+kxsQnAE/gVhyLtAFe6VQ2tp9XWoxVcpw==@vger.kernel.org
-X-Gm-Message-State: AOJu0Yw98xKe5/XXfdDUCIr79XRCfCMU47drTbJ4Y6rlfP3d2ZJSJRx7
-	WoI42ek+RHxRcvWltT1r90Fni97oeJbSgdEsM+Nfzicnq3ABtAKXX2WQF5QXgFT8j0oVQXCebjJ
-	lVO8ffD0kjR0nGopPuZuq66bibidIs0HKSuGd1Cg=
-X-Gm-Gg: AY/fxX7bWqP4Xxm2utjFaWI0HJWutuL4GCZqgx+b5WSdkh5Dj3088D7fVrg9jyfJ1wL
-	IX+nQ2j7fhH2S9p1dW+pj3Qxs/BhcKakbS8y7AzbhwkFhnuYN0K6yEihnmwi5t3Rda6D7Mn8whT
-	5mcoSRI9SP+Ty+QAXZ4EDw8o/ZIHRHMdzlP1g/mywdZRmI58QAhnGCC5sc8S9vypKCmR4V8pM/c
-	Z+7w3GgdlRu8qzBkD3QRK/tnFv/pP0oFpyqG3dTlKcPKKAYjTipNSEeDR6/GolMShWowkY=
-X-Google-Smtp-Source: AGHT+IHtylA/bxKOBQa/5BrpQpDXWs7TrQhxamkqSqCTi0u9shFX4Ro8wkaVn7J682/HFMquHhNVpIK+9G7htYcHUKk=
-X-Received: by 2002:a05:7022:6993:b0:11b:9b9f:4283 with SMTP id
- a92af1059eb24-121f8b46117mr7202025c88.24.1767926567604; Thu, 08 Jan 2026
- 18:42:47 -0800 (PST)
+        d=1e100.net; s=20230601; t=1767930033; x=1768534833;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=6YIIoHMbWWMEgNdY0LTR9KPrDSBdoV9NydkT9nhfA8k=;
+        b=GCXxRaIe5bQv0V0SLnUGM9rkB4HOw7/VonxHZICfpW0mUBTKSGuh5RlpVaM85eOCrE
+         37zforjU0smN+rWOkkbAc2VxioeoUmhnAK+d9ICt/NjUPBsvP1bLcgpkphtqOQY1o7+m
+         Y4bz+WkQpJHtYC1A32nQ4i7iDnZciRBSikHHR+QyRZTMxgLbkshOF2HVi1breoLVnEZv
+         osYPuSg6v3ydL5RZo93i382vORLXcc4HTgZSZF62MN1uRkwUqfIjA6KNyVeQ+xhlpg0U
+         pxcOGC1s3LyGY/kgyzh6XmMgLUUfljHsnSe78FFa0bOi+f2NMhZMcJcrCi8CaDqMM2Rw
+         BKRQ==
+X-Gm-Message-State: AOJu0YzzzpSz6iQEESkLyJKX0qbjWlsmjfh5tPs8vTpa1o1YX+lduPAL
+	PuyyJwQmBBcUlr3xLBPuYHFFlRhM4NzHx0zsFXFVg1weN/Lq4q3xfEspbHWsW+Pmf7I=
+X-Gm-Gg: AY/fxX7XEq9zDCXuYWAjy4SzSFsXkGt8PkrjccmZppX/ZBB5e5Xt69Sw0YVm7FslvjY
+	KeH3uRulSOvmD+f7esa7eyqARvECTQ485tvr9tubp77bMMRLJgPh152uAIvZJ/XQJQCuZUEmcFc
+	HmgboqOaRooeqz+MakTw5Vt8rE/gS9S8fDwvz7nCRi8N+A+1+a0H6vskMX91aXnJ3+/H10up/YB
+	8nNoE/+kICbL37NXgtWiOsb8S6zD9W4fsv7TqPbKZ9UY5xxKDP3Ol0DzozOK75AIfsPmaW6fih/
+	1df0dsihr9fHrc46lRnNHEtawq/eldkoF2A/DwIPFsIgjNRMElVIovh4BdPRtuU3ILO/Z4g2rUz
+	u8S+fOZK0AnHIl4vNIKtmKuz7e+ahIR4cAWPbYxTX/WLSOyDmeqx/vuiHXq95kAe4xYYLRmo=
+X-Google-Smtp-Source: AGHT+IGccHsxtGGAaNFfQO5IjD+5zUxmXgt0wLSTK0XmhDfTjED7T5x5SGhShSFCeCHtkyUfMBlCoA==
+X-Received: by 2002:a17:902:fc43:b0:2a0:ccdb:218d with SMTP id d9443c01a7336-2a3ee442824mr85400445ad.17.1767930032516;
+        Thu, 08 Jan 2026 19:40:32 -0800 (PST)
+Received: from oslab.. ([2402:f000:4:1006:809:0:a77:18ea])
+        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-c4cc02ecfccsm9116494a12.13.2026.01.08.19.40.31
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 08 Jan 2026 19:40:32 -0800 (PST)
+From: Tuo Li <islituo@gmail.com>
+To: stf_xl@wp.pl
+Cc: linux-wireless@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Tuo Li <islituo@gmail.com>
+Subject: [PATCH v3] wifi: iwlegacy: 3945-rs: add a defensive WARN_ON_ONCE for il_sta in il3945_rs_get_rate()
+Date: Fri,  9 Jan 2026 11:40:14 +0800
+Message-ID: <20260109034014.187124-1-islituo@gmail.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260107084149.173289-1-islituo@gmail.com> <20260107085949.GA35258@wp.pl>
- <d1806eda47fcb78344ed952e2a91b9c178650689.camel@sipsolutions.net>
- <CADm8Te=TRTgCaRm0Ebgos8n0qZ+7HJ7Q80Ck+-d8NtCMdAb1Zw@mail.gmail.com> <20260108163355.GA38716@wp.pl>
-In-Reply-To: <20260108163355.GA38716@wp.pl>
-From: Tuo Li <islituo@gmail.com>
-Date: Fri, 9 Jan 2026 10:42:25 +0800
-X-Gm-Features: AQt7F2puqd3rzMSKKBihnXPOShxjvwMtondWsrDyyKM5rLYlV7nlEaDJOzUsLHA
-Message-ID: <CADm8TemGjSooBLR+0+rk+izhZcSSHruSjTeMFeH9-KpqZGd+1Q@mail.gmail.com>
-Subject: Re: [PATCH v2] wifi: iwlegacy: 3945-rs: fix possible null-pointer
- dereferences in il3945_rs_get_rate()
-To: Stanislaw Gruszka <stf_xl@wp.pl>
-Cc: Johannes Berg <johannes@sipsolutions.net>, linux-wireless@vger.kernel.org, 
-	linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
 
-On Fri, Jan 9, 2026 at 12:33=E2=80=AFAM Stanislaw Gruszka <stf_xl@wp.pl> wr=
-ote:
->
-> On Thu, Jan 08, 2026 at 09:28:30PM +0800, Tuo Li wrote:
-> > On Thu, Jan 8, 2026 at 8:02=E2=80=AFPM Johannes Berg <johannes@sipsolut=
-ions.net> wrote:
-> > > I can apply this if you want, but for the record,
-> > >
-> > > > > +++ b/drivers/net/wireless/intel/iwlegacy/3945-rs.c
-> > > > > @@ -626,10 +626,15 @@ il3945_rs_get_rate(void *il_r, struct ieee8=
-0211_sta *sta, void *il_sta,
-> > > > >
-> > > > >     D_RATE("enter\n");
-> > > > >
-> > > > > +   if (!il_sta) {
-> > > > > +           D_RATE("leave: No STA il data to update!\n");
-> > > > > +           return;
-> > > > > +   }
-> > > > > +
-> > >
-> > > I don't see how this would be possible. _Maybe_ the other one, but I
-> > > can't figure out any scenario in mac80211 where it could happen eithe=
-r.
->
-> Regarding checking the rs_sta->il, we can get rid of the ->il
-> backpointer, it's only used for printing debug messages in a few
-> functions. I don't think person needing to debug 3945 rate scaling
-> algorithm exist nowadays :-)
->
-> I'll send patch for that.
->
-> > I don't have a concrete mac80211 execution path that would result in
-> > il_sta being NULL here either. This issue was reported by a static
-> > analysis tool, and after reviewing the code I noticed that the handling=
- is
-> > not consistent with il3945_rs_tx_status(), which is why I submitted thi=
-s
-> > patch to add a defensive check.
->
-> IMO is ok to have defensive checks (in reasonable amount :-)
->
-> They can be marked with WARN_ON_ONCE like this:
->
->    if (WARN_ON_ONCE(!il_sta))
->         return
->
-> that would clearly indicate the check is for 'not possible' scenario.
->
-> Regards
-> Stanislaw
->
->
+In this function, il_sta is not expected to be NULL. Add a defensive
+WARN_ON_ONCE() to catch this unexpected condition and aid debugging.
 
-Hi Stanislaw,
+Signed-off-by: Tuo Li <islituo@gmail.com>
+---
+v3:
+* Replace plain NULL check with WARN_ON_ONCE() and update subject to better
+  reflect defensive nature of the check.
+  Thanks to Johannes Berg and Stanislaw Gruszka for helpful advice.
+v2:
+* Return early for uninitialized STA il data and align D_RATE messages with
+  il3945_rs_tx_status(). Add a wifi: prefix to the patch title.
+  Thanks to Stanislaw Gruszka for the helpful advice.
+---
+ drivers/net/wireless/intel/iwlegacy/3945-rs.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-Thanks for your reply.
+diff --git a/drivers/net/wireless/intel/iwlegacy/3945-rs.c b/drivers/net/wireless/intel/iwlegacy/3945-rs.c
+index 1826c37c090c..463565ce14af 100644
+--- a/drivers/net/wireless/intel/iwlegacy/3945-rs.c
++++ b/drivers/net/wireless/intel/iwlegacy/3945-rs.c
+@@ -626,6 +626,9 @@ il3945_rs_get_rate(void *il_r, struct ieee80211_sta *sta, void *il_sta,
+ 
+ 	D_RATE("enter\n");
+ 
++	if (WARN_ON_ONCE(!il_sta))
++		return;
++
+ 	/* Treat uninitialized rate scaling data same as non-existing. */
+ 	if (rs_sta && !rs_sta->il) {
+ 		D_RATE("Rate scaling information not initialized yet.\n");
+-- 
+2.43.0
 
-I will add a defensive WARN_ON_ONCE() at the beginning of
-il3945_rs_get_rate() to catch this unexpected condition, and will submit a
-v3 patch accordingly.
-
-Best regards,
-Tuo
 
