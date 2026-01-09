@@ -1,102 +1,93 @@
-Return-Path: <linux-wireless+bounces-30593-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-30594-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 349D8D074F7
-	for <lists+linux-wireless@lfdr.de>; Fri, 09 Jan 2026 07:03:57 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id C7B02D075D8
+	for <lists+linux-wireless@lfdr.de>; Fri, 09 Jan 2026 07:16:06 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 7518530424A7
-	for <lists+linux-wireless@lfdr.de>; Fri,  9 Jan 2026 06:02:59 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id BF658302929D
+	for <lists+linux-wireless@lfdr.de>; Fri,  9 Jan 2026 06:16:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B2B2A2773EE;
-	Fri,  9 Jan 2026 06:02:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1EE131DF963;
+	Fri,  9 Jan 2026 06:16:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=realtek.com header.i=@realtek.com header.b="PQrsztS0"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from verein.lst.de (verein.lst.de [213.95.11.211])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B87B528F949;
-	Fri,  9 Jan 2026 06:02:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=213.95.11.211
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0949F1F94A
+	for <linux-wireless@vger.kernel.org>; Fri,  9 Jan 2026 06:16:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=211.75.126.72
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767938578; cv=none; b=cfs991zJpX1nhL3h47mOFbgzzoAb0tt+cife4B9AHBaXdCCMeZZgXaFaLXuhP0qLl1HRjgJJGQUxlUbQbBXldnl62ifLtji+hzFiEJzKDjLXlj9XOwDEiDGybOe1YoZetI5DcJrj4IwpnBgosbskKxk3P/jyVJ30JdLmMhjSark=
+	t=1767939365; cv=none; b=ansc6UZOritkJJdjOaBLiPfWwBV18IpOvVxOozMnfL7LDjiYRBhUO66RAgXvgbd5Y3/zMeKwgQpGbDUDULdmE9I/BGdhCX+IFjbxvD72r879YtLVY0i7mNbcmxSq3jttlyhwLXTs/DJHRt4bjpCtNS7ce7vAP/bMMpC5ZWowUpY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767938578; c=relaxed/simple;
-	bh=kjrPdLo2LuEMuL3ltra9YWkafT3XliJSnrixgwe1OgY=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=sEm1P9RHk3XvYX54MDslVI5bhlPMmAn0E01vx6M5jxasVruC+M3htQFZJwrDdTMl0w05Eg9z8TYrpZsbdttmDuNw6AGegmVfiQs8xzzsfsGZx+x0G3ZwMQO8oI2zQKnnsuKlqh7ArlyqKVJvzoxjsTuvVPW65RJJLf4oRLJGGLk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lst.de; spf=pass smtp.mailfrom=lst.de; arc=none smtp.client-ip=213.95.11.211
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lst.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lst.de
-Received: by verein.lst.de (Postfix, from userid 2407)
-	id 5106967373; Fri,  9 Jan 2026 07:02:49 +0100 (CET)
-Date: Fri, 9 Jan 2026 07:02:49 +0100
-From: Christoph Hellwig <hch@lst.de>
-To: Marco Elver <elver@google.com>
-Cc: Bart Van Assche <bvanassche@acm.org>,
-	Peter Zijlstra <peterz@infradead.org>,
-	Boqun Feng <boqun.feng@gmail.com>, Ingo Molnar <mingo@kernel.org>,
-	Will Deacon <will@kernel.org>,
-	"David S. Miller" <davem@davemloft.net>,
-	Luc Van Oostenryck <luc.vanoostenryck@gmail.com>,
-	Chris Li <sparse@chrisli.org>,
-	"Paul E. McKenney" <paulmck@kernel.org>,
-	Alexander Potapenko <glider@google.com>,
-	Arnd Bergmann <arnd@arndb.de>, Christoph Hellwig <hch@lst.de>,
-	Dmitry Vyukov <dvyukov@google.com>,
-	Eric Dumazet <edumazet@google.com>,
-	Frederic Weisbecker <frederic@kernel.org>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	Herbert Xu <herbert@gondor.apana.org.au>,
-	Ian Rogers <irogers@google.com>, Jann Horn <jannh@google.com>,
-	Joel Fernandes <joelagnelf@nvidia.com>,
-	Johannes Berg <johannes.berg@intel.com>,
-	Jonathan Corbet <corbet@lwn.net>,
-	Josh Triplett <josh@joshtriplett.org>,
-	Justin Stitt <justinstitt@google.com>, Kees Cook <kees@kernel.org>,
-	Kentaro Takeda <takedakn@nttdata.co.jp>,
-	Lukas Bulwahn <lukas.bulwahn@gmail.com>,
-	Mark Rutland <mark.rutland@arm.com>,
-	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
-	Miguel Ojeda <ojeda@kernel.org>,
-	Nathan Chancellor <nathan@kernel.org>,
-	Neeraj Upadhyay <neeraj.upadhyay@kernel.org>,
-	Nick Desaulniers <nick.desaulniers+lkml@gmail.com>,
-	Steven Rostedt <rostedt@goodmis.org>,
-	Tetsuo Handa <penguin-kernel@i-love.sakura.ne.jp>,
-	Thomas Gleixner <tglx@linutronix.de>, Thomas Graf <tgraf@suug.ch>,
-	Uladzislau Rezki <urezki@gmail.com>,
-	Waiman Long <longman@redhat.com>, kasan-dev@googlegroups.com,
-	linux-crypto@vger.kernel.org, linux-doc@vger.kernel.org,
-	linux-kbuild@vger.kernel.org, linux-kernel@vger.kernel.org,
-	linux-mm@kvack.org, linux-security-module@vger.kernel.org,
-	linux-sparse@vger.kernel.org, linux-wireless@vger.kernel.org,
-	llvm@lists.linux.dev, rcu@vger.kernel.org
-Subject: Re: [PATCH v5 10/36] locking/mutex: Support Clang's context
- analysis
-Message-ID: <20260109060249.GA5259@lst.de>
-References: <20251219154418.3592607-1-elver@google.com> <20251219154418.3592607-11-elver@google.com> <57062131-e79e-42c2-aa0b-8f931cb8cac2@acm.org> <aWA9P3_oI7JFTdkC@elver.google.com>
+	s=arc-20240116; t=1767939365; c=relaxed/simple;
+	bh=m+kJ/LksYC7Y9dBC6AxBxtKeWARVKZCJyJhNtJ+yOys=;
+	h=From:To:Subject:In-Reply-To:References:Message-ID:Date:
+	 MIME-Version:Content-Type; b=T27wDDpPuvpRqF62vrUEGzF784qcGbHeVFe1iuRbbVsiCqqY84Ny0aRt5Yui6+QtoYOaLGHlt2Jeyg0jGc0FhSR1rjpueS4sT7rA1tNCmxQvJqRe19nFHtJgLWk9pEXjaJj8r3sRWbu6afZa5V7bmKuuc5sbbD2dDriEyj9iGfI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com; spf=pass smtp.mailfrom=realtek.com; dkim=pass (2048-bit key) header.d=realtek.com header.i=@realtek.com header.b=PQrsztS0; arc=none smtp.client-ip=211.75.126.72
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=realtek.com
+X-SpamFilter-By: ArmorX SpamTrap 5.80 with qID 6096G0FS02637291, This message is accepted by code: ctloc85258
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=realtek.com; s=dkim;
+	t=1767939360; bh=M9Yyhiq3xK12NiGvJA7JVOhknGTNi8DNE6K/U7DL7fg=;
+	h=From:To:Subject:In-Reply-To:References:Message-ID:Date:
+	 MIME-Version:Content-Type;
+	b=PQrsztS0UwJXbtrEw9p5Bay9dbuUuCq0uZbYvCuYPvbp8VuJV+wEANYh0SQ/JkR00
+	 yvhd+PRrmepGGJQzoELAkQaO/eF6sGx1emxRsPGhHhL5pMW+S9ZOF9vK3uy5MuRX+b
+	 ZNVNwwejFuIEHhOiNbL6gGrhydUWEksMpJSAdAJMRP0r0XyFNiBOezAjsLXaIkxJQk
+	 /RHdhfEuG7lj7LkNm2ogz4d9p7eiA2ZTC8AvoKlqHGDHSgHCG84wuVQnXkWMAL+TEb
+	 MlAp/NWOUKAFCObCB3fN61uhCuArrOiXjuuwCe+AwrZkQh1B3/DSicX/ff9tQsJJEs
+	 WJ/fUY7rm0hwA==
+Received: from mail.realtek.com (rtkexhmbs02.realtek.com.tw[172.21.6.41])
+	by rtits2.realtek.com.tw (8.15.2/3.21/5.94) with ESMTPS id 6096G0FS02637291
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK)
+	for <linux-wireless@vger.kernel.org>; Fri, 9 Jan 2026 14:16:00 +0800
+Received: from RTKEXHMBS04.realtek.com.tw (10.21.1.54) by
+ RTKEXHMBS02.realtek.com.tw (172.21.6.41) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1748.10; Fri, 9 Jan 2026 14:16:00 +0800
+Received: from [127.0.1.1] (172.21.40.75) by RTKEXHMBS04.realtek.com.tw
+ (10.21.1.54) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1748.10 via Frontend
+ Transport; Fri, 9 Jan 2026 14:16:00 +0800
+From: Ping-Ke Shih <pkshih@realtek.com>
+To: Ping-Ke Shih <pkshih@realtek.com>, <linux-wireless@vger.kernel.org>
+Subject: Re: [PATCH rtw-next v2 01/10] wifi: rtw89: update TXWD v3 for RTL8922D
+In-Reply-To: <20260106030911.15528-2-pkshih@realtek.com>
+References: <20260106030911.15528-1-pkshih@realtek.com> <20260106030911.15528-2-pkshih@realtek.com>
+Message-ID: <6b8ccf3f-f1f5-4b37-afcc-82e6e7f38328@RTKEXHMBS04.realtek.com.tw>
+Date: Fri, 9 Jan 2026 14:16:00 +0800
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <aWA9P3_oI7JFTdkC@elver.google.com>
-User-Agent: Mutt/1.5.17 (2007-11-01)
+Content-Type: text/plain
 
-On Fri, Jan 09, 2026 at 12:26:55AM +0100, Marco Elver wrote:
-> Probably the most idiomatic option is to just factor out construction.
-> Clearly separating complex object construction from use also helps
-> readability regardless, esp. where concurrency is involved. We could
-> document such advice somewhere.
+Ping-Ke Shih <pkshih@realtek.com> wrote:
 
-Initializing and locking a mutex (or spinlock, or other primitive) is a
-not too unusual pattern, often used when inserting an object into a
-hash table or other lookup data structure.  So supporting it without
-creating pointless wrapper functions would be really useful.  One thing
-that would be nice to have and probably help here is to have lock
-initializers that create the lock in a held state.
+> Add TXWD v3 to assist in transmitting for RTL8922D according to hardware
+> design.
+> 
+> Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
+
+10 patch(es) applied to rtw-next branch of rtw.git, thanks.
+
+2adaa4b36b55 wifi: rtw89: update TXWD v3 for RTL8922D
+2b4a2fc32a47 wifi: rtw89: update query RXDESC v3 for RTL8922D
+49218572f331 wifi: rtw89: fw: add DMAC v3 H2C command for RTL8922D
+c73607b3a8ef wifi: rtw89: fw: add CMAC H2C command to initialize default value for RTL8922D
+96f5ceb44875 wifi: rtw89: fw: add CMAC H2C command for association for RTL8922D
+dfe3dea6b9a2 wifi: rtw89: fw: add CMAC H2C command for TX AMPDU for RTL8922D
+eccf7b10785b wifi: rtw89: fw: add CMAC H2C command for TX time for RTL8922D
+1ddebb8f6e04 wifi: rtw89: fw: add CMAC H2C command for punctured for RTL8922D
+483539d89110 wifi: rtw89: fw: consider hardware AID for firmware elements
+5fbc19b0f62b wifi: rtw89: fw: set RACK bit every 4 H2C command for WiFi 6 chips only
+
+---
+https://github.com/pkshih/rtw.git
 
 
