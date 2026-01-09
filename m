@@ -1,252 +1,155 @@
-Return-Path: <linux-wireless+bounces-30584-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-30585-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id BC195D068B9
-	for <lists+linux-wireless@lfdr.de>; Fri, 09 Jan 2026 00:27:26 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3D7FED06DFB
+	for <lists+linux-wireless@lfdr.de>; Fri, 09 Jan 2026 03:43:09 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 10A37303197F
-	for <lists+linux-wireless@lfdr.de>; Thu,  8 Jan 2026 23:27:10 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id DB5823014DB6
+	for <lists+linux-wireless@lfdr.de>; Fri,  9 Jan 2026 02:42:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AD3FB33D6E9;
-	Thu,  8 Jan 2026 23:27:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 37E112E2663;
+	Fri,  9 Jan 2026 02:42:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="GiYbvqxv"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="l68Qpp0c"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-wm1-f65.google.com (mail-wm1-f65.google.com [209.85.128.65])
+Received: from mail-dl1-f51.google.com (mail-dl1-f51.google.com [74.125.82.51])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AFEC433D50E
-	for <linux-wireless@vger.kernel.org>; Thu,  8 Jan 2026 23:27:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.65
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B77C63033C8
+	for <linux-wireless@vger.kernel.org>; Fri,  9 Jan 2026 02:42:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.82.51
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767914828; cv=none; b=NKFTtqn1/bmiMg3rFFAe4BqcYmK8RCa2EUbP9ndJY4Dw4bm814jlAoYFfW/YweLKzpO12+jrhQaRmCwnaSPsCKHY+W5QZN/Vg2gSSjFExmWT2fPb6AXYBXFYILfEU3pYa3o6NuAH+ENjBv0k8j440VisyR6Wv2Y3zBOWGfVGhO8=
+	t=1767926570; cv=none; b=o95is2OzPAO/mUyglhmlSSfIYJ07ZYnCYeBE6xMYTio8BRxGUMlI9AckoeDV+oQYiCUFKpY7Sj734Y1q+nPiFutxK1/UvJa3ht9mRmzMKbecQmDpDp0DfHkC+CaBHzFKdVDF+8z/CF9XSbPpZkJdBGAlt8q1fTrWJJ4fFe9FPSw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767914828; c=relaxed/simple;
-	bh=q/w2OHcDBmglSw3DmZWycMkP40pwy6rwq9Ljdbui14k=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=fFHN4JGv2xaKUUsu3N+HR4joW0LkRtc7Z61LlDQO3PRSp6k3geND3c68GUYz5qOQPX9jbi4aQUro9CtHQnIJzqKVof7CNuLwus1aqONFMsG1A7L9lMVajNGL4Kloww/STGShqvrfdS0bLmRluRnvCoBL1ZCI+dNiSe8PmMSjzq8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=GiYbvqxv; arc=none smtp.client-ip=209.85.128.65
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
-Received: by mail-wm1-f65.google.com with SMTP id 5b1f17b1804b1-477a2ab455fso34376495e9.3
-        for <linux-wireless@vger.kernel.org>; Thu, 08 Jan 2026 15:27:05 -0800 (PST)
+	s=arc-20240116; t=1767926570; c=relaxed/simple;
+	bh=WPzbKvLmmiBtcdw5cmuOr7HfN/huAT2BwtyjiFVJTcA=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=fMYRT01zgArNTpSZvRh43hnILq3bS5sQBwwyp1TM034HtXhRRAQQqPY6c0VIZGy8kzo/xOPJMbQbVDeikEP/3S2mh5vzqss3XfL1eM73hS4+EgvPHJKloP5s2Kxm/CMS7fgqvNmHRVyFUXyydXvIXNYB3G3YyagWAeX9SXcPt2o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=l68Qpp0c; arc=none smtp.client-ip=74.125.82.51
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-dl1-f51.google.com with SMTP id a92af1059eb24-11f3e3f0cacso4235096c88.0
+        for <linux-wireless@vger.kernel.org>; Thu, 08 Jan 2026 18:42:48 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1767914824; x=1768519624; darn=vger.kernel.org;
-        h=user-agent:in-reply-to:content-disposition:mime-version:references
-         :message-id:subject:cc:to:from:date:from:to:cc:subject:date
+        d=gmail.com; s=20230601; t=1767926568; x=1768531368; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=VJVnWCv1er1yEKW3Zzjqu5S3R8api15dEl8a9iGdG3k=;
-        b=GiYbvqxveXHimZB0cY0IPQGwtddGMXUFMQUq4vFCoukkq7vITxdgRtEVA1LjOdhDlb
-         EBQBGkY1rMMkjm+FSUmKwkAh5KnO21QhLSlgv2J0nPv55u6niA1zqm4U4Uo8WDI4XdKq
-         /6dsit2B4hHHyJrjVQA6IRBvVafZo1fwswK4gRdLEe1tcqpy/lH89/u4+LxJ91TccgZB
-         WC4ZnwLsgsY4DEYJQvCg+twqXCOAVkpieIZE0R+e5H2UiaAL+h6T/OteGJcfPXsUUe2z
-         YAhekXP47hmDWItii+2w7hUcyn56P3vWU5skC7b8UAu2sTNGTZcgl3rT5j1sVJIux09t
-         aS7w==
+        bh=2pKwa9EyVKBu4K9f933OjN3qf+4pYS1JLmujmtYkYJI=;
+        b=l68Qpp0cANyFT4xg99dXkGZ25SPAjk9Gwu28vGhoTmocug845dbWJ8DxNBfuVfwCof
+         OLrLmzg15+qWRXuMkQ/Oc8d2ygJ6B2iMesRlCHcOYesCdjhQLstdtzjUYr/X4P0g7Bdg
+         ophPkTqsXs660433mEfNwjGgt1q664S+51FtInjcuxVBYWJ40YaFgBnGGk7niHVgIH2c
+         dDemiHZ8O7X+sDrPA5h+ImijcsOSV9iPiR9BQ4X9UxwgpSPiDQv0pOsZI5N09W223U+P
+         bawKS8aFgYNxLsons+FZ6c3qyrsnvoNAMx6c/zL0eyIOri1xxRBd2UGVgQQGQq4kk8iQ
+         GvNg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1767914824; x=1768519624;
-        h=user-agent:in-reply-to:content-disposition:mime-version:references
-         :message-id:subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from
+        d=1e100.net; s=20230601; t=1767926568; x=1768531368;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to;
-        bh=VJVnWCv1er1yEKW3Zzjqu5S3R8api15dEl8a9iGdG3k=;
-        b=pvqfQW44z3Wvx/5zjMJN6wOYed37ZL8+o6lGVYmjqaSUVaFUdO9eyCx0/Cg8riVrFG
-         SqAcBAyPSNpYRVvweYKhGBfmmwbafHr0J4MYVnIY6F3dS4BuobsOdSYZrCmj0tD3Y96Z
-         9BaPlvQB9JlTJTVxnpxVqx+9qj9PvKK67a1aSqdDc/acRuNwQ92P5LbOrpIzPAyNvHFQ
-         GLLSt/+CDbaTAnX6kUqvLu2Etrzf8ap53hKQDK5vJ+b/jtEnD10aCk8vPi1XLHAorJSd
-         LrydFHibtyoNhdI5zKgpglRYt5UCQConSXS3yfAYVCmjEj5Mjnv0+EzGenThrwfnbrCX
-         QCrQ==
-X-Forwarded-Encrypted: i=1; AJvYcCW7aYrwDNFQOlJ6/CHD21onT1I1HYsJtLji/0JMIUZBcoaNb/JKYKKkN6No1a59bBLHxb4+vFyrKd6uvGXLiA==@vger.kernel.org
-X-Gm-Message-State: AOJu0YyQwen4w7UkoaXsP8pSRsi/Cmgj2/w9GzothifyXeg/qBs3/wEC
-	nL7YgOOMkhdYvOddK9pKLHLf51CGXy9GPbZTg1YclNJjaOWzD1SCoHfhLQAshX12rA==
-X-Gm-Gg: AY/fxX5qRmPt6tXiK5/8Nm3jfcxktIvqL2gg7M+m4e9hVo5SVJ/OZO1TUPaqDSL1Arl
-	VLga3ehJeVaqw3LCjf+22lN+k3/Uqd6HgarNbAza+6wgwDgHah40Nxh0L7kho14GHjmcWPl3xTG
-	pR506CD8DAXl2InhI7KLQZZXOLD7Lz96e4Uqx4P+1vIdMDi1Oz1gT4qsI28i6aWe/eWfmE0iSgz
-	D1+t0z7YS3nSIzaCRcjqEj98CFq8MH4oUjradmAzn6vyV1CRrRx3Bs4OS32CNIPbcwqS5TA/Z2p
-	bGpV64qOoksAqxrLHJZv3n8OCIkxNF0B5+V2Evj5dS/OsPcdkIyS1Oqb0cKA8/rRFITMNH2p3k8
-	al2UA2mZiuiVdgbQziOiIjzHD5tLSXXxf+JR0fUJF4orLwfDIumt6QC9TeYMBPijKMjYRJLhCUO
-	jzojlSDTiJD/BixOCPCkHSpZwjxb5R/yAK8ACkcydI+wcqkjm0
-X-Google-Smtp-Source: AGHT+IHhn5oqqXEXdXppHSooBMMRAzilyWn+PndcRbByujPILqHWwWxt63fu3OjbgMJmLJjeeFi/pw==
-X-Received: by 2002:a05:600c:4ed4:b0:471:14f5:126f with SMTP id 5b1f17b1804b1-47d84b41181mr100523185e9.33.1767914823835;
-        Thu, 08 Jan 2026 15:27:03 -0800 (PST)
-Received: from elver.google.com ([2a00:79e0:2834:9:384b:578b:5b8e:a6f3])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-47d871a1e11sm46386595e9.19.2026.01.08.15.27.01
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 08 Jan 2026 15:27:03 -0800 (PST)
-Date: Fri, 9 Jan 2026 00:26:55 +0100
-From: Marco Elver <elver@google.com>
-To: Bart Van Assche <bvanassche@acm.org>
-Cc: Peter Zijlstra <peterz@infradead.org>,
-	Boqun Feng <boqun.feng@gmail.com>, Ingo Molnar <mingo@kernel.org>,
-	Will Deacon <will@kernel.org>,
-	"David S. Miller" <davem@davemloft.net>,
-	Luc Van Oostenryck <luc.vanoostenryck@gmail.com>,
-	Chris Li <sparse@chrisli.org>,
-	"Paul E. McKenney" <paulmck@kernel.org>,
-	Alexander Potapenko <glider@google.com>,
-	Arnd Bergmann <arnd@arndb.de>, Christoph Hellwig <hch@lst.de>,
-	Dmitry Vyukov <dvyukov@google.com>,
-	Eric Dumazet <edumazet@google.com>,
-	Frederic Weisbecker <frederic@kernel.org>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	Herbert Xu <herbert@gondor.apana.org.au>,
-	Ian Rogers <irogers@google.com>, Jann Horn <jannh@google.com>,
-	Joel Fernandes <joelagnelf@nvidia.com>,
-	Johannes Berg <johannes.berg@intel.com>,
-	Jonathan Corbet <corbet@lwn.net>,
-	Josh Triplett <josh@joshtriplett.org>,
-	Justin Stitt <justinstitt@google.com>, Kees Cook <kees@kernel.org>,
-	Kentaro Takeda <takedakn@nttdata.co.jp>,
-	Lukas Bulwahn <lukas.bulwahn@gmail.com>,
-	Mark Rutland <mark.rutland@arm.com>,
-	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
-	Miguel Ojeda <ojeda@kernel.org>,
-	Nathan Chancellor <nathan@kernel.org>,
-	Neeraj Upadhyay <neeraj.upadhyay@kernel.org>,
-	Nick Desaulniers <nick.desaulniers+lkml@gmail.com>,
-	Steven Rostedt <rostedt@goodmis.org>,
-	Tetsuo Handa <penguin-kernel@i-love.sakura.ne.jp>,
-	Thomas Gleixner <tglx@linutronix.de>, Thomas Graf <tgraf@suug.ch>,
-	Uladzislau Rezki <urezki@gmail.com>,
-	Waiman Long <longman@redhat.com>, kasan-dev@googlegroups.com,
-	linux-crypto@vger.kernel.org, linux-doc@vger.kernel.org,
-	linux-kbuild@vger.kernel.org, linux-kernel@vger.kernel.org,
-	linux-mm@kvack.org, linux-security-module@vger.kernel.org,
-	linux-sparse@vger.kernel.org, linux-wireless@vger.kernel.org,
-	llvm@lists.linux.dev, rcu@vger.kernel.org
-Subject: Re: [PATCH v5 10/36] locking/mutex: Support Clang's context analysis
-Message-ID: <aWA9P3_oI7JFTdkC@elver.google.com>
-References: <20251219154418.3592607-1-elver@google.com>
- <20251219154418.3592607-11-elver@google.com>
- <57062131-e79e-42c2-aa0b-8f931cb8cac2@acm.org>
+        bh=2pKwa9EyVKBu4K9f933OjN3qf+4pYS1JLmujmtYkYJI=;
+        b=nsqEAusuZ2BKOY/T6SGtNkh1bHIcZzaJNYPxyDPUNkr9nakLUmJVBY+2hdM39ARw9A
+         4fbGwBp08i2UebNGHqM1eb4s/zTXKlox/dAAZVfBQASZV9PAgYbhF0pokpZ0LdALUcN+
+         s13lNu3L/JvnkoigtpOEMDlyyEEpVrwLRsa/ETJ/AJVqkTOv0trEaEoXLyg4bsC5SUQ9
+         NxxwqWfWDyAkBkDtSt1UlWD847zFkCmAG0msAerjRkrTCz5FCxeU91+ouF2WQpoeq8+p
+         ytr9TXS/aLU07ePOppYWC7MbVY+YvjGPz7NhmYbfny2jfvaH04Ljg/ZiCud48On5vTPe
+         8y8A==
+X-Forwarded-Encrypted: i=1; AJvYcCVGjwA1aSw+0Yor+Um3PEiW+3r8AgnAQLsPqapn0zjAoSs/qe128+kxsQnAE/gVhyLtAFe6VQ2tp9XWoxVcpw==@vger.kernel.org
+X-Gm-Message-State: AOJu0Yw98xKe5/XXfdDUCIr79XRCfCMU47drTbJ4Y6rlfP3d2ZJSJRx7
+	WoI42ek+RHxRcvWltT1r90Fni97oeJbSgdEsM+Nfzicnq3ABtAKXX2WQF5QXgFT8j0oVQXCebjJ
+	lVO8ffD0kjR0nGopPuZuq66bibidIs0HKSuGd1Cg=
+X-Gm-Gg: AY/fxX7bWqP4Xxm2utjFaWI0HJWutuL4GCZqgx+b5WSdkh5Dj3088D7fVrg9jyfJ1wL
+	IX+nQ2j7fhH2S9p1dW+pj3Qxs/BhcKakbS8y7AzbhwkFhnuYN0K6yEihnmwi5t3Rda6D7Mn8whT
+	5mcoSRI9SP+Ty+QAXZ4EDw8o/ZIHRHMdzlP1g/mywdZRmI58QAhnGCC5sc8S9vypKCmR4V8pM/c
+	Z+7w3GgdlRu8qzBkD3QRK/tnFv/pP0oFpyqG3dTlKcPKKAYjTipNSEeDR6/GolMShWowkY=
+X-Google-Smtp-Source: AGHT+IHtylA/bxKOBQa/5BrpQpDXWs7TrQhxamkqSqCTi0u9shFX4Ro8wkaVn7J682/HFMquHhNVpIK+9G7htYcHUKk=
+X-Received: by 2002:a05:7022:6993:b0:11b:9b9f:4283 with SMTP id
+ a92af1059eb24-121f8b46117mr7202025c88.24.1767926567604; Thu, 08 Jan 2026
+ 18:42:47 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <57062131-e79e-42c2-aa0b-8f931cb8cac2@acm.org>
-User-Agent: Mutt/2.2.13 (2024-03-09)
+References: <20260107084149.173289-1-islituo@gmail.com> <20260107085949.GA35258@wp.pl>
+ <d1806eda47fcb78344ed952e2a91b9c178650689.camel@sipsolutions.net>
+ <CADm8Te=TRTgCaRm0Ebgos8n0qZ+7HJ7Q80Ck+-d8NtCMdAb1Zw@mail.gmail.com> <20260108163355.GA38716@wp.pl>
+In-Reply-To: <20260108163355.GA38716@wp.pl>
+From: Tuo Li <islituo@gmail.com>
+Date: Fri, 9 Jan 2026 10:42:25 +0800
+X-Gm-Features: AQt7F2puqd3rzMSKKBihnXPOShxjvwMtondWsrDyyKM5rLYlV7nlEaDJOzUsLHA
+Message-ID: <CADm8TemGjSooBLR+0+rk+izhZcSSHruSjTeMFeH9-KpqZGd+1Q@mail.gmail.com>
+Subject: Re: [PATCH v2] wifi: iwlegacy: 3945-rs: fix possible null-pointer
+ dereferences in il3945_rs_get_rate()
+To: Stanislaw Gruszka <stf_xl@wp.pl>
+Cc: Johannes Berg <johannes@sipsolutions.net>, linux-wireless@vger.kernel.org, 
+	linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Thu, Jan 08, 2026 at 02:10PM -0800, 'Bart Van Assche' via kasan-dev wrote:
-> On 12/19/25 8:39 AM, Marco Elver wrote:
-> > diff --git a/include/linux/mutex.h b/include/linux/mutex.h
-> > index bf535f0118bb..89977c215cbd 100644
-> > --- a/include/linux/mutex.h
-> > +++ b/include/linux/mutex.h
-> > @@ -62,6 +62,7 @@ do {									\
-> >   	static struct lock_class_key __key;				\
-> >   									\
-> >   	__mutex_init((mutex), #mutex, &__key);				\
-> > +	__assume_ctx_lock(mutex);					\
-> >   } while (0)
-> 
-> The above type of change probably will have to be reverted. If I enable
-> context analysis for the entire kernel tree, drivers/base/devcoredump.c
-> doesn't build. The following error is reported:
-> 
-> drivers/base/devcoredump.c:406:2: error: acquiring mutex '_res->mutex' that
-> is already held [-Werror,-Wthread-safety-analysis]
->   406 |         mutex_lock(&devcd->mutex);
->       |         ^
-> 
-> dev_coredumpm_timeout() calls mutex_init() and mutex_lock() from the same
-> function. The above type of change breaks compilation of all code
-> that initializes and locks a synchronization object from the same
-> function. My understanding of dev_coredumpm_timeout() is that there is a
-> good reason for calling both mutex_init() and mutex_lock() from that
-> function. Possible solutions are disabling context analysis for that
-> function or removing __assume_ctx_lock() again from mutex_init(). Does
-> anyone want to share their opinion about this?
+On Fri, Jan 9, 2026 at 12:33=E2=80=AFAM Stanislaw Gruszka <stf_xl@wp.pl> wr=
+ote:
+>
+> On Thu, Jan 08, 2026 at 09:28:30PM +0800, Tuo Li wrote:
+> > On Thu, Jan 8, 2026 at 8:02=E2=80=AFPM Johannes Berg <johannes@sipsolut=
+ions.net> wrote:
+> > > I can apply this if you want, but for the record,
+> > >
+> > > > > +++ b/drivers/net/wireless/intel/iwlegacy/3945-rs.c
+> > > > > @@ -626,10 +626,15 @@ il3945_rs_get_rate(void *il_r, struct ieee8=
+0211_sta *sta, void *il_sta,
+> > > > >
+> > > > >     D_RATE("enter\n");
+> > > > >
+> > > > > +   if (!il_sta) {
+> > > > > +           D_RATE("leave: No STA il data to update!\n");
+> > > > > +           return;
+> > > > > +   }
+> > > > > +
+> > >
+> > > I don't see how this would be possible. _Maybe_ the other one, but I
+> > > can't figure out any scenario in mac80211 where it could happen eithe=
+r.
+>
+> Regarding checking the rs_sta->il, we can get rid of the ->il
+> backpointer, it's only used for printing debug messages in a few
+> functions. I don't think person needing to debug 3945 rate scaling
+> algorithm exist nowadays :-)
+>
+> I'll send patch for that.
+>
+> > I don't have a concrete mac80211 execution path that would result in
+> > il_sta being NULL here either. This issue was reported by a static
+> > analysis tool, and after reviewing the code I noticed that the handling=
+ is
+> > not consistent with il3945_rs_tx_status(), which is why I submitted thi=
+s
+> > patch to add a defensive check.
+>
+> IMO is ok to have defensive checks (in reasonable amount :-)
+>
+> They can be marked with WARN_ON_ONCE like this:
+>
+>    if (WARN_ON_ONCE(!il_sta))
+>         return
+>
+> that would clearly indicate the check is for 'not possible' scenario.
+>
+> Regards
+> Stanislaw
+>
+>
 
-Probably the most idiomatic option is to just factor out construction.
-Clearly separating complex object construction from use also helps
-readability regardless, esp. where concurrency is involved. We could
-document such advice somewhere.
+Hi Stanislaw,
 
-For the above case, this seems cleanest and also clearer to me:
+Thanks for your reply.
 
-diff --git a/drivers/base/devcoredump.c b/drivers/base/devcoredump.c
-index 55bdc7f5e59d..56ac8aa41608 100644
---- a/drivers/base/devcoredump.c
-+++ b/drivers/base/devcoredump.c
-@@ -339,6 +339,40 @@ void dev_coredump_put(struct device *dev)
- }
- EXPORT_SYMBOL_GPL(dev_coredump_put);
- 
-+static struct devcd_entry *
-+dev_coredumpm_init(struct device *dev, struct module *owner, void *data,
-+		   size_t datalen, gfp_t gfp,
-+		   ssize_t (*read)(char *buffer, loff_t offset, size_t count,
-+				   void *data, size_t datalen),
-+		   void (*free)(void *data))
-+{
-+	static atomic_t devcd_count = ATOMIC_INIT(0);
-+	struct devcd_entry *devcd;
-+
-+	devcd = kzalloc(sizeof(*devcd), gfp);
-+	if (!devcd)
-+		return NULL;
-+
-+	devcd->owner = owner;
-+	devcd->data = data;
-+	devcd->datalen = datalen;
-+	devcd->read = read;
-+	devcd->free = free;
-+	devcd->failing_dev = get_device(dev);
-+	devcd->deleted = false;
-+
-+	mutex_init(&devcd->mutex);
-+	device_initialize(&devcd->devcd_dev);
-+
-+	dev_set_name(&devcd->devcd_dev, "devcd%d",
-+		     atomic_inc_return(&devcd_count));
-+	devcd->devcd_dev.class = &devcd_class;
-+
-+	dev_set_uevent_suppress(&devcd->devcd_dev, true);
-+
-+	return devcd;
-+}
-+
- /**
-  * dev_coredumpm_timeout - create device coredump with read/free methods with a
-  * custom timeout.
-@@ -364,7 +398,6 @@ void dev_coredumpm_timeout(struct device *dev, struct module *owner,
- 			   void (*free)(void *data),
- 			   unsigned long timeout)
- {
--	static atomic_t devcd_count = ATOMIC_INIT(0);
- 	struct devcd_entry *devcd;
- 	struct device *existing;
- 
-@@ -381,27 +414,10 @@ void dev_coredumpm_timeout(struct device *dev, struct module *owner,
- 	if (!try_module_get(owner))
- 		goto free;
- 
--	devcd = kzalloc(sizeof(*devcd), gfp);
-+	devcd = dev_coredumpm_init(dev, owner, data, datalen, gfp, read, free);
- 	if (!devcd)
- 		goto put_module;
- 
--	devcd->owner = owner;
--	devcd->data = data;
--	devcd->datalen = datalen;
--	devcd->read = read;
--	devcd->free = free;
--	devcd->failing_dev = get_device(dev);
--	devcd->deleted = false;
--
--	mutex_init(&devcd->mutex);
--	device_initialize(&devcd->devcd_dev);
--
--	dev_set_name(&devcd->devcd_dev, "devcd%d",
--		     atomic_inc_return(&devcd_count));
--	devcd->devcd_dev.class = &devcd_class;
--
--	dev_set_uevent_suppress(&devcd->devcd_dev, true);
--
- 	/* devcd->mutex prevents devcd_del() completing until init finishes */
- 	mutex_lock(&devcd->mutex);
- 	devcd->init_completed = false;
+I will add a defensive WARN_ON_ONCE() at the beginning of
+il3945_rs_get_rate() to catch this unexpected condition, and will submit a
+v3 patch accordingly.
+
+Best regards,
+Tuo
 
