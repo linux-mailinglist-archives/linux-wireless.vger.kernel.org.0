@@ -1,87 +1,93 @@
-Return-Path: <linux-wireless+bounces-30597-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-30598-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id E9902D07FDC
-	for <lists+linux-wireless@lfdr.de>; Fri, 09 Jan 2026 09:54:12 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 43390D0801B
+	for <lists+linux-wireless@lfdr.de>; Fri, 09 Jan 2026 09:56:21 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 6BEAD3039AE4
-	for <lists+linux-wireless@lfdr.de>; Fri,  9 Jan 2026 08:50:38 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 4D474300E613
+	for <lists+linux-wireless@lfdr.de>; Fri,  9 Jan 2026 08:56:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 915A8352927;
-	Fri,  9 Jan 2026 08:50:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E606C35580E;
+	Fri,  9 Jan 2026 08:56:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b="lYU2X1Wx"
+	dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b="nXTpbZbr"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from sipsolutions.net (s3.sipsolutions.net [168.119.38.16])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E35DB350D6B
-	for <linux-wireless@vger.kernel.org>; Fri,  9 Jan 2026 08:50:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E61AE355807
+	for <linux-wireless@vger.kernel.org>; Fri,  9 Jan 2026 08:56:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=168.119.38.16
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767948636; cv=none; b=QOChDkt+hwiUPJc8v6eNKfck2m6sjNFyl/nSpHfOhNPFGM6nZ9vO03zrZ6RhlRSvdK/amGXL49/5N5drvFfq3WeUAe3lZ3zqEu0+j7gn6dQwXczApM544ttbblEBqwe6L3yhYetLJd4dg6OFgjMrsdeY5gGiwOyRCINEnPkCfSA=
+	t=1767948973; cv=none; b=ZpRNXsWoVEsVT5DLnpxb0GRqJsL/4K/bBkorceAU1Honl/3S0rDDJkCPgIgm1mIWojNPCMkXtNZeOtOSoyxQPn2j7FCTMQ1M6/qj/cKmMqyXsZ31cS2e0CD9irQF+8RNO4vZZfxkXJfUeIsp+/ogHNYfIure3Ycqrjp5HJBohvg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767948636; c=relaxed/simple;
-	bh=lSeufJS3T3LgwBv96YQRdwwuKfMBE/cwFvzU4hKFlio=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=ePL8bAkzx20sD1NdzM4wDYhllEjG/4ef2ucSunlyoB9p3qvikV5/2p8UUX/iiTl5zhb2cIU/E2mj7MyDBpk9q56hFbK1QzObk75XTclc/f+czeOU5AsWyQTqpDzF5M1Mn1RrgFKuZuqruaBNNoqnY6etH1CoMHRihG6XCHS6EIk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net; spf=pass smtp.mailfrom=sipsolutions.net; dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b=lYU2X1Wx; arc=none smtp.client-ip=168.119.38.16
+	s=arc-20240116; t=1767948973; c=relaxed/simple;
+	bh=PVm8dp3hcUYrzfg0J6c0O0j8Gdla1mPiLmtrfg5Skcw=;
+	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=Aj78UQpgiByNMIafPXu9dIpayXL63jaV1frNmcA7JhY0CFVYLRvE72tkMiOJTwtfJ0yTTvGvQoGwbgVn0oxBgrCtvm69+F/7eWReZCNZ5HUy6GdkJYWNH2uNiZaFyZB2gZ0vjktoUJzRGNEskFusTqmeNZ4XhjzwFfV4/ZmPza8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net; spf=pass smtp.mailfrom=sipsolutions.net; dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b=nXTpbZbr; arc=none smtp.client-ip=168.119.38.16
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sipsolutions.net
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=sipsolutions.net; s=mail; h=Content-Transfer-Encoding:MIME-Version:
-	Message-ID:Date:Subject:Cc:To:From:Content-Type:Sender:Reply-To:Content-ID:
-	Content-Description:Resent-Date:Resent-From:Resent-To:Resent-Cc:
-	Resent-Message-ID:In-Reply-To:References;
-	bh=B2yYBQzLUC8vGUPsbzTQQoe4jC9aix8GRIDjito6qWM=; t=1767948634; x=1769158234; 
-	b=lYU2X1WxeLJwwzRvZowW7IZkvbP2GeU+vpATm7yhRhveFS7P9+ITtkOym3FCiH17BMyI7zwNcaH
-	jpFsWftP0X6yIxycidFDpr5+rF9UBhtIAlszwD41iW3fqeSJN9wXBjbSTxfuOJTWaVHFYFZllrs4S
-	C9UOCaPbi7JdU4qaagFaZZgHsd2sD2uO3vfzxKQpDaBrhJou07Tx9OWem8bdhtR9U5d10t/9jNJlv
-	AOZHa8HsYFvKKNRKzQcpaziRJFac1M21ZwRt6Z6ZBkH8qI5ca8H8Ydm/dXmgdhWQj96c+mvstAokD
-	w32m2Pdv8imlLlL1blaU1qnxQEMZ7YmNtM6g==;
+	d=sipsolutions.net; s=mail; h=MIME-Version:Content-Transfer-Encoding:
+	Content-Type:References:In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender
+	:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
+	Resent-Cc:Resent-Message-ID; bh=PVm8dp3hcUYrzfg0J6c0O0j8Gdla1mPiLmtrfg5Skcw=;
+	t=1767948970; x=1769158570; b=nXTpbZbrBjVjzSPjAtkafcHbfQ409vyfNDofAuRjjDqUGgY
+	Ww6R944hd17+C+Oyrs80s38hTidojAyZl7ZvzqVm86pJC1OkKMB9BogzuaA59fiCGKApLFBAlGj+c
+	m9KFZTurGLZSdUk1Tb0EOR9Jv9TFMPBWf656nnmHuNWBLSEwE5KB/0gdVcZbd64ZCN+/k8SxR8xKq
+	ucISf14PdffeZQZbqIEQQ3Azvo/TcjckOanw9L8OaTpIMI+AE5MfNJ3HL9rrSZY07IKKIWUNJgWjV
+	W2oJZDCZmKo7kHpFrGAfyK556RP6hE+VLnVuXOqTYY74kbI8nS7zRAbogTsumqDQ==;
 Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
 	(Exim 4.98.2)
 	(envelope-from <johannes@sipsolutions.net>)
-	id 1ve8CV-00000007La6-33Mn;
-	Fri, 09 Jan 2026 09:50:32 +0100
+	id 1ve8Hq-00000007LhS-1pZm;
+	Fri, 09 Jan 2026 09:56:02 +0100
+Message-ID: <0a076df80ffd036a38803662b25e558d9d1c4297.camel@sipsolutions.net>
+Subject: Re: [PATCH wireless-next] wifi: mac80211: check BSSID before
+ dereference
 From: Johannes Berg <johannes@sipsolutions.net>
-To: linux-wireless@vger.kernel.org
-Cc: Johannes Berg <johannes.berg@intel.com>
-Subject: [PATCH wireless-next] wifi: mac80211: unexport ieee80211_get_bssid()
-Date: Fri,  9 Jan 2026 09:50:30 +0100
-Message-ID: <20260109095029.2b4d2fe53fc9.I9f5fa5c84cd42f749be0b87cc61dac8631c4c6d0@changeid>
-X-Mailer: git-send-email 2.52.0
+To: Sarika Sharma <sarika.sharma@oss.qualcomm.com>
+Cc: linux-wireless@vger.kernel.org
+Date: Fri, 09 Jan 2026 09:56:01 +0100
+In-Reply-To: <20260109034829.1489135-1-sarika.sharma@oss.qualcomm.com> (sfid-20260109_044923_922083_CE78FB63)
+References: <20260109034829.1489135-1-sarika.sharma@oss.qualcomm.com>
+	 (sfid-20260109_044923_922083_CE78FB63)
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.56.2 (3.56.2-2.fc42) 
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+X-malware-bazaar: not-scanned
 
-From: Johannes Berg <johannes.berg@intel.com>
+On Fri, 2026-01-09 at 09:18 +0530, Sarika Sharma wrote:
+> Currently, when retrieving the BSSID value using the function
+> ieee80211_get_bssid(), it may return NULL under error conditions.
+> Later, in ieee80211_rx_h_sta_process(), this value is used to
+> compare Ethernet addresses with the function ether_addr_equal().
+> Since ether_addr_equal() expects two valid addresses, this could
+> lead to a NULL pointer dereference or other undefined behavior.
 
-This is only used within mac80211, and not even declared in
-a public header file. Don't export it.
+That's a very local argument, did it come right out of a static checker
+or some kind of LLM/AI tool?
 
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
----
- net/mac80211/util.c | 1 -
- 1 file changed, 1 deletion(-)
+If this _were_ necessary (i.e. could crash today), then surely the
+change should target wireless.
 
-diff --git a/net/mac80211/util.c b/net/mac80211/util.c
-index 0c46009a3d63..df219e463fb5 100644
---- a/net/mac80211/util.c
-+++ b/net/mac80211/util.c
-@@ -101,7 +101,6 @@ u8 *ieee80211_get_bssid(struct ieee80211_hdr *hdr, size_t len,
- 
- 	return NULL;
- }
--EXPORT_SYMBOL(ieee80211_get_bssid);
- 
- void ieee80211_tx_set_protected(struct ieee80211_tx_data *tx)
- {
--- 
-2.52.0
+If it isn't actually necessary (today), and exists perhaps only to shut
+up a static checker tool, you should say so - and ideally also explain
+why it's not necessary but why it's better to have the check for future
+maintenance or whatever.
 
+As such I don't think this submission makes a lot of sense.
+
+
+(Hint: fairly obviously, it isn't actually necessary.)
+
+johannes
 
