@@ -1,185 +1,159 @@
-Return-Path: <linux-wireless+bounces-30602-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-30603-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 535D5D0AC54
-	for <lists+linux-wireless@lfdr.de>; Fri, 09 Jan 2026 16:00:21 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id CB312D0AD1B
+	for <lists+linux-wireless@lfdr.de>; Fri, 09 Jan 2026 16:13:09 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 01B9330124DC
-	for <lists+linux-wireless@lfdr.de>; Fri,  9 Jan 2026 15:00:19 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id C227C3009080
+	for <lists+linux-wireless@lfdr.de>; Fri,  9 Jan 2026 15:13:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8053D2135B8;
-	Fri,  9 Jan 2026 15:00:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AB53231A072;
+	Fri,  9 Jan 2026 15:13:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="WQHxG08E";
-	dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b="N4V/UteX"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="laXN4EjF"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-dl1-f43.google.com (mail-dl1-f43.google.com [74.125.82.43])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 241BC19E819
-	for <linux-wireless@vger.kernel.org>; Fri,  9 Jan 2026 15:00:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4CCC831078B
+	for <linux-wireless@vger.kernel.org>; Fri,  9 Jan 2026 15:13:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.82.43
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767970819; cv=none; b=mrd2bLDaS43ZDrQlJKxkskICgsWbssU84MTODNCq5/eSvANhMLKIjF4FMKHgpRerjjnBwbf7WOMnWXLF3uEwwaClTO2GdtJZ/grAEx31v9g4scOF7plV4x5BaXzLxyzDqRRMsZ/jAQX+FuKqclmTWgS2d6mdi06cASwXZSkCNEQ=
+	t=1767971587; cv=none; b=iNjhMR2mXWm9kxrstEUf5lUlfVYt2qJAHRFlEiTxc1MWSY4JSxHyLpv/9esGieOD5wgZDyQbn7I6sN+06ov6z3rDRAGVpZDSQmWmxY5P8Ds0YbYp0eTLkcqlMecTCYB9VbCYX+g6uZgSzC7eZoAXuFk01tHrZ2z77qTmqtahioA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767970819; c=relaxed/simple;
-	bh=W0e17JPCErFmeXEqRtatxqOxZpqXn6HiC4m5gVGqaQE=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=q3ZL5RSwkv4vjl2+W7NB8E7fSBFKU9doUudCaUHXWw8izr9w3nCeZiWYY0m7ZoiC2m+efE64xZFG9xfVF5jaFFPxav533NH98Ack3kq1G3fl7FRT2UWa3ujEzBl55MO3eJOKWV4egcnaTYPqUmLHSz3SrW7pUaxU1xasznigEjE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=WQHxG08E; dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b=N4V/UteX; arc=none smtp.client-ip=205.220.180.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
-Received: from pps.filterd (m0279869.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 609Dwmg93141617
-	for <linux-wireless@vger.kernel.org>; Fri, 9 Jan 2026 15:00:17 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
-	cc:content-transfer-encoding:content-type:date:from:message-id
-	:mime-version:subject:to; s=qcppdkim1; bh=ABxeclk2Cz+fYEYBZMCjIC
-	l/nxfHYBr7XSJGrAq5U2E=; b=WQHxG08EvSev+rR+vs/rXsErWngeg2WpOE76+L
-	LGoHRo/oPqZnmx3UrakKahSarrxaLYdz4tKEj5fgaU2kNlbO4e2lnelPtrMtQ17D
-	LkDbHucwXMk8WugJr5kVnAqi0fr4snlkzPTkhlrSBdeHKMK2lZDWBeRtXYCt6q4Y
-	SYQ/4kMr9yYQZ1LpuUUa7A23p1GTgwwUMiTG/+VrkIP/u4aIRQHMhR1FZR2+gc47
-	CsoYIfdy11oBI3OEvj4JcMO89I+9xU0fO2y5D1wf5djqO2n/R3oXFH3Kly6jgY7F
-	DB53UgYMhTSeWRBYRalgljLjUdGS8rEy5QfY8QOHJx1F2nEA==
-Received: from mail-pj1-f72.google.com (mail-pj1-f72.google.com [209.85.216.72])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4bjj8j313r-1
-	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
-	for <linux-wireless@vger.kernel.org>; Fri, 09 Jan 2026 15:00:17 +0000 (GMT)
-Received: by mail-pj1-f72.google.com with SMTP id 98e67ed59e1d1-34ab459c051so9752364a91.0
-        for <linux-wireless@vger.kernel.org>; Fri, 09 Jan 2026 07:00:16 -0800 (PST)
+	s=arc-20240116; t=1767971587; c=relaxed/simple;
+	bh=wYORjvxfGTh2FlvoiC40LPqMdmDdmaINSQzgG7fEXSA=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=kamjim4SLJ1/450igIsrl9yLYehkHbeIclmW63N2fpoGmG21eAuK5RMW1BDzaS3vbQOF0KhAmq7IQiMA5/SbympHuhqDCBBv7BIc0FNxARQ2gzsLIaaU390UIZ99imUz3NCEjQJsast6nbQsHJdekG/LX2CZKw+zrXegwoD+A7w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=laXN4EjF; arc=none smtp.client-ip=74.125.82.43
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-dl1-f43.google.com with SMTP id a92af1059eb24-11df4458a85so2436574c88.1
+        for <linux-wireless@vger.kernel.org>; Fri, 09 Jan 2026 07:13:06 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=oss.qualcomm.com; s=google; t=1767970816; x=1768575616; darn=vger.kernel.org;
-        h=cc:to:message-id:content-transfer-encoding:mime-version:subject
-         :date:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=ABxeclk2Cz+fYEYBZMCjICl/nxfHYBr7XSJGrAq5U2E=;
-        b=N4V/UteXbIxVTqMAZ6KawfbTsyMjhZ1Zr9oe5mVkD+rosrltq4NR67A32RqkKDKcg2
-         dSuR7BAH60rBaL60E6qiy+xGf1BtSrLRkP3I7/PlrUd/KEgUrFCHss5uRARZfgDJQjye
-         5rlhIdo8cz51O/qVzmBT/4J51xHlaeitiRxwOc8fZTQlaUUTfU6nSG17BAcKCD1txtxN
-         8UcsZ2GYW+si9dgQK6UQTmj6k7VG7g+/mT7pBaeNgAUaMMr0IQUcvifKbLcFNKPpPROY
-         al9ikhbSC9iM1kfw+DUTF7sUbSKw9JjYebRBejR2wC1WEc/L3X5xZKpdoyQWA8If2Jzg
-         h3gA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1767970816; x=1768575616;
-        h=cc:to:message-id:content-transfer-encoding:mime-version:subject
-         :date:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+        d=gmail.com; s=20230601; t=1767971585; x=1768576385; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=ABxeclk2Cz+fYEYBZMCjICl/nxfHYBr7XSJGrAq5U2E=;
-        b=g3VesJUtHD5J3lwsLhCsn1USo8iBNR1GvIl8AHZcddDi9422nb9dOjwhBbOU6mUZCn
-         GLXSIv/uYpzH36H95DwuN5qESomYunAvMsIT57bXvyWSUmWRK75WM5O7QNIC34FTuEtU
-         vJ+Biebu2ZdVcVYhmD0GlWYf2FFABdLmbJMMJ5Q5ZO1fWZT9K6nzQsoj6PaFusO5U0K3
-         wZj9u1hVpQ0nWQw8HJdrL5HPaWlmRs6V/Y2lOql80k3XFi+WbuX9WnkJdnY+TN3xrBgq
-         TyIkvV1rJEEqR4Olc/03puHsZgxHLVELZppph+XX/lIL3TwP5Oip+T7PB3g9oqqlN/0K
-         o9ow==
-X-Gm-Message-State: AOJu0YyvNC42YRUkBhdnHxRC730Z+thrKhCFRBZmnaL3gpfHOVGFufZI
-	seKKHUWf/hy4mi7rH0ZOVQdhLwfEju5i736yrIQdULRxSz9pvXJT6tk22iJ8GNWzUjpGFyieaxw
-	/5g5zifZgEvHijprpMv38jA666XEJmR7N6niFN4KKzNPxsTbqFoFQeR+2UzL2ckE5FaRqKw==
-X-Gm-Gg: AY/fxX5RRSaTe+7zdvlvCT7E4HrjGDPh/UckGza0p+XPmSzDBGmPlgXDt7MJ75JHEFv
-	OlDqZyZYMAfX0pxWwNE8tsBPmnSGR1Zc5C+CmN5CyNmcvW2Xcn/x5IlO8ulZesuRNZlW7k0NkWg
-	GanhtZW+faeNzQbzlxzHFu2GBEChPnMk4Ew2pjidDoYF/QMUcDCB42E6NqLhYuBOXxn2fmPaqwG
-	V+oaIsxMABZHYGhDbU87CAiG4BJOwtJi4qjhcLQ8w5zbTL6dKGMVfQelGZ7xiElWhZG7OaHVG8+
-	IRfu4x2zX71CJnYTjRUgLpatk6X4pXWMpgq+OicR8bwwfq91GjNVRcAGb88YdJ/TKT9rAZPPySM
-	UtuYsWht84HpeTWM/NlGRpeOe9qj4+qG05Qvzb+iJmahkt75GXyI=
-X-Received: by 2002:a17:90b:5784:b0:343:66e2:5f9b with SMTP id 98e67ed59e1d1-34f68c4dcd8mr10745626a91.24.1767970815918;
-        Fri, 09 Jan 2026 07:00:15 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IFzOca9xfKveGTgo/hbPr0BMmBHvml5knA43GN+MaN0zo0ItmywYjtPN8o31sfWBXhKf5XcAg==
-X-Received: by 2002:a17:90b:5784:b0:343:66e2:5f9b with SMTP id 98e67ed59e1d1-34f68c4dcd8mr10745582a91.24.1767970815292;
-        Fri, 09 Jan 2026 07:00:15 -0800 (PST)
-Received: from hu-vjakkam-hyd.qualcomm.com ([202.46.23.25])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-34f5fb64b3esm10842022a91.10.2026.01.09.07.00.13
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 09 Jan 2026 07:00:14 -0800 (PST)
-From: Veerendranath Jakkam <veerendranath.jakkam@oss.qualcomm.com>
-Date: Fri, 09 Jan 2026 20:30:04 +0530
-Subject: [PATCH wireless-next] wifi: cfg80211: Fix bitrate calculation
- overflow for HE rates
+        bh=Qsb2Dg3enhb/RCQsOD5dT9sSlAt7mEO56NWa2vXj6gA=;
+        b=laXN4EjFRkXP4vEHMjXOvUzJr7NTh7eHHbyXd4uJMcH0k8FlYZriBT3FAK7NZCgJvN
+         BhHZMBB4LKEZsODKxpOBJhV3T0VOmSQtiSt5f4YgAOoqa6LACXTPyhoIo8ol+MAK5qtH
+         evhrS+Vrm5ucWj4yU3/ZRALlkI7bn+9x8gIpxinW+D8zr8ED+fVYQ+OmrflqaVKN2mBS
+         E5x7H0OGXxXH64vB6NVIjBhxJqnkY673zT33It5FKnfspU3FIVQLcBUq967xj6uJM0bJ
+         WJMXZgiM7RLXIQ2gtvkCI/YjBizL6ARf/f9IOWwI4+p1X96nB/qoP3EpUWCmh0AKrax8
+         t8ZA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1767971585; x=1768576385;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=Qsb2Dg3enhb/RCQsOD5dT9sSlAt7mEO56NWa2vXj6gA=;
+        b=G+SUKmTahg/0mxOBEynRlJoczW6h7MVfpy95/0Jsyux50/0HC3Ehkgyq0sU4uehg8k
+         igDU5MADFK8NscD1xurbE1srYJMXDjwzX9j3AoWSmIg9F6CzQijBI7caiXmNyu+W9iP5
+         GNxoVEp6Zok+Vb4Wata3vHYm5xANMw3WQwQam3hYQPy+NsHDO9cIuvJZ65x7FOTBsFFs
+         Fm2qd+v1bh2Drf0WzHg/mo0ptK0QlkkzD6RFb7MBUSpwGTI5kjhAnVkuHIvqGNmHRcCP
+         yoZ0nIh4F/ADSmwUM4SGhNLmJ8upsWWsIDxKHEI75asUoAQ20K1crbSnKuN0JTqnmGPl
+         hkgQ==
+X-Gm-Message-State: AOJu0Yw5gqGBZxZ9weWucVsgIgFOsd1IRMN5dbVx+gVwAeRhtSzM8M2n
+	9VOOzRlYN8xFtQ6t/dBrz/RNRwCcCqCnFp/1O66y375pw1jgfY+kK2Gyi5ZIMviSclei4TJM75a
+	bc7F1ndN/r+tbz1QziRSdo4/ts2QLKeA=
+X-Gm-Gg: AY/fxX4kpPRNA4Oq7tTtumlV5rsrYNAFcGcTGJYf9egnWD0HYx4ms1vP7dMmct4UjHX
+	1ppk1+7hMsngI1UbKLhEPchTbvJ+hpjLi6c6u+LChq39rWltu1Nemlb+10u341qd6HhjD1a47fR
+	2Yh+YOPhiCtVAZrGrJUoQO9dX8psfUDfg9rNHIKJ3va+/r3I/+v+uF7M4XSc2MnQdQWXdKk6s3u
+	dIOylxLHfzp+Rm933c/JFXmvvY34jJUJJ/P+203SPF4AvAgeNf7Bel129bMjFWD/vL1E7M=
+X-Google-Smtp-Source: AGHT+IGx9U3vDvpPxzlH+MGaDo+dUNQNRqw67udM75RVmExZz+7RFg1WPhii30NiTu/vkgXUrupcMeLbV8Mns4Xmxl4=
+X-Received: by 2002:a05:7022:621:b0:122:9d:bd43 with SMTP id
+ a92af1059eb24-122009dc38cmr5494185c88.19.1767971585223; Fri, 09 Jan 2026
+ 07:13:05 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20260109-he_bitrate_overflow-v1-1-95575e466b6e@oss.qualcomm.com>
-X-B4-Tracking: v=1; b=H4sIAPMXYWkC/42OwQqDMBBEf0VybsREDaan/kcpEpNNDahpExst4
- r83em1py8LAsLtvZkEenAGPjsmCHATjjR2iIYcEyVYMV8BGRY9oRllGMo5bqBszOjFCbQM43dk
- Jc1aVSlSEZZKi+HlzoM28U89oMg468B4PMI/oEtet8aN1zz0zkP3oKz4QHEfmqqh0LkuiT9b79
- P4QnbR9n0bZQn8jQIHmglPKtHpHbM0C/aMNjaic6KYsSFTxCbWu6wsdJV95WgEAAA==
-To: Johannes Berg <johannes@sipsolutions.net>
-Cc: linux-wireless@vger.kernel.org, veerendranath.jakkam@oss.qualcomm.com
-X-Mailer: b4 0.12.5-dev-2aabd
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwMTA5MDExMSBTYWx0ZWRfX9DTA8qTF2i+2
- +gVbDWnQd4yeVW7pY8MCwBB7dLFuM9bLriQIRPu79v62R8dI0mjYf1ADgiJj4R/w1BuwvgpLjIv
- pTySv2yIKXxYx2JFNnjUBXfCHLldWlp0Px8VdOUkU70FFsMfErkmfYgbnAPx4B0GnaiSPaqhJMY
- aLGBZ2CZ7cOyxq2PHZvx3wZ3fOfwtuDpcKqtGczAwslOHD1tn/a55dOFpHJ4jLnQtJrPEfAUkvB
- gXjbKsRKelglrNqSmn820KWYMcbjfrV7AcgAW+/m2ReMsscPbDdIkVN44x3oo2+HdmDp213h/Yv
- /+g2Q2TDGCh7RNt4Tja0lpWTg8uJgxoZmu6lk6PsJm9BCXU9U70DjysXtvQg51yKN/gkCZWhBRz
- wqw1CHECny/R9kxSISuHkqLlsMEx1g/YJMewhZI81jxpDKAmwM4rcHAo1Dv73wgWWTb5QDuqs9d
- iLDNI85rGcGBT+EOXBA==
-X-Authority-Analysis: v=2.4 cv=JIs2csKb c=1 sm=1 tr=0 ts=69611801 cx=c_pps
- a=RP+M6JBNLl+fLTcSJhASfg==:117 a=ZePRamnt/+rB5gQjfz0u9A==:17
- a=IkcTkHD0fZMA:10 a=vUbySO9Y5rIA:10 a=s4-Qcg_JpJYA:10
- a=VkNPw1HP01LnGYTKEx00:22 a=EUspDBNiAAAA:8 a=48vHsAWMPIeAy46LMi4A:9
- a=QEXdDO2ut3YA:10 a=iS9zxrgQBfv6-_F4QbHw:22
-X-Proofpoint-GUID: 20cj3R8veqepCo4cCBJWViUeUWd9jJ9_
-X-Proofpoint-ORIG-GUID: 20cj3R8veqepCo4cCBJWViUeUWd9jJ9_
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.9,FMLib:17.12.100.49
- definitions=2026-01-09_04,2026-01-08_02,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- malwarescore=0 suspectscore=0 priorityscore=1501 lowpriorityscore=0
- impostorscore=0 bulkscore=0 adultscore=0 spamscore=0 clxscore=1011
- phishscore=0 classifier=typeunknown authscore=0 authtc= authcc=
- route=outbound adjust=0 reason=mlx scancount=1 engine=8.22.0-2512120000
- definitions=main-2601090111
+References: <20260109034014.187124-1-islituo@gmail.com> <20260109090227.GA48150@wp.pl>
+In-Reply-To: <20260109090227.GA48150@wp.pl>
+From: Tuo Li <islituo@gmail.com>
+Date: Fri, 9 Jan 2026 23:12:55 +0800
+X-Gm-Features: AQt7F2ptWObMroha8JQQJyN75fK905-7VE3N52KjCPUvCdw9LbR3s076dKwFbSM
+Message-ID: <CADm8Tenw9kpk9suABMEYguURxtWrXRaRAiXogxUfwSash-c0ng@mail.gmail.com>
+Subject: Re: [PATCH v3] wifi: iwlegacy: 3945-rs: add a defensive WARN_ON_ONCE
+ for il_sta in il3945_rs_get_rate()
+To: Stanislaw Gruszka <stf_xl@wp.pl>
+Cc: linux-wireless@vger.kernel.org, linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-An integer overflow occurs in cfg80211_calculate_bitrate_he() when
-calculating bitrates for high throughput HE configurations.
-For example, with 160 MHz bandwidth, HE-MCS 13, HE-NSS 4, and HE-GI 0,
-the multiplication (result * rate->nss) overflows the 32-bit 'result'
-variable before division by 8, leading to significantly underestimated
-bitrate values.
+Hi Stanislaw,
 
-The overflow occurs because the NSS multiplication operates on a 32-bit
-integer that cannot accommodate intermediate values exceeding
-4,294,967,295. When overflow happens, the value wraps around, producing
-incorrect bitrates for high MCS and NSS combinations.
+On Fri, Jan 9, 2026 at 5:02=E2=80=AFPM Stanislaw Gruszka <stf_xl@wp.pl> wro=
+te:
+>
+> Hi Tuo,
+>
+> On Fri, Jan 09, 2026 at 11:40:14AM +0800, Tuo Li wrote:
+> > In this function, il_sta is not expected to be NULL. Add a defensive
+> > WARN_ON_ONCE() to catch this unexpected condition and aid debugging.
+> >
+> > Signed-off-by: Tuo Li <islituo@gmail.com>
+> > ---
+> > v3:
+> > * Replace plain NULL check with WARN_ON_ONCE() and update subject to be=
+tter
+> >   reflect defensive nature of the check.
+> >   Thanks to Johannes Berg and Stanislaw Gruszka for helpful advice.
+> > v2:
+> > * Return early for uninitialized STA il data and align D_RATE messages =
+with
+> >   il3945_rs_tx_status(). Add a wifi: prefix to the patch title.
+> >   Thanks to Stanislaw Gruszka for the helpful advice.
+> > ---
+> >  drivers/net/wireless/intel/iwlegacy/3945-rs.c | 3 +++
+> >  1 file changed, 3 insertions(+)
+> >
+> > diff --git a/drivers/net/wireless/intel/iwlegacy/3945-rs.c b/drivers/ne=
+t/wireless/intel/iwlegacy/3945-rs.c
+> > index 1826c37c090c..463565ce14af 100644
+> > --- a/drivers/net/wireless/intel/iwlegacy/3945-rs.c
+> > +++ b/drivers/net/wireless/intel/iwlegacy/3945-rs.c
+> > @@ -626,6 +626,9 @@ il3945_rs_get_rate(void *il_r, struct ieee80211_sta=
+ *sta, void *il_sta,
+> >
+> >       D_RATE("enter\n");
+> >
+> > +     if (WARN_ON_ONCE(!il_sta))
+> > +             return;
+> > +
+>
+> Sorry for giving you wrong advice before, but after examining related cod=
+e
+> I agree with Johannes the il_sta can not be NULL.
+> Now, I think we should just remove il_sta/rs_sta pointer check.
+>
+> Regards
+> Stanislaw
 
-Fix this by utilizing the 64-bit 'tmp' variable for the NSS
-multiplication and subsequent divisions via do_div(). This approach
-preserves full precision throughout the entire calculation, with the
-final value assigned to 'result' only after completing all operations.
+Thanks for the follow-up and your patience. I appreciate you taking
+another look at the code.
 
-Signed-off-by: Veerendranath Jakkam <veerendranath.jakkam@oss.qualcomm.com>
----
- net/wireless/util.c | 8 +++++---
- 1 file changed, 5 insertions(+), 3 deletions(-)
+Just to confirm, would you like me to submit a v4 patch that removes the
+unnecessary il_sta / rs_sta checks, e.g.:
 
-diff --git a/net/wireless/util.c b/net/wireless/util.c
-index cc55b759694e..08c525835518 100644
---- a/net/wireless/util.c
-+++ b/net/wireless/util.c
-@@ -1562,12 +1562,14 @@ static u32 cfg80211_calculate_bitrate_he(struct rate_info *rate)
- 	tmp = result;
- 	tmp *= SCALE;
- 	do_div(tmp, mcs_divisors[rate->mcs]);
--	result = tmp;
- 
- 	/* and take NSS, DCM into account */
--	result = (result * rate->nss) / 8;
-+	tmp *= rate->nss;
-+	do_div(tmp, 8);
- 	if (rate->he_dcm)
--		result /= 2;
-+		do_div(tmp, 2);
-+
-+	result = tmp;
- 
- 	return result / 10000;
- }
+in il3945_rs_get_rate():
 
----
-base-commit: d66676e6ca96bf8680f869a9bd6573b26c634622
-change-id: 20260109-he_bitrate_overflow-9685da8160c2
+- if (rs_sta && !rs_sta->il) {
++ if (!rs_sta->il) {
 
+and in il3945_rs_tx_status():
+
+- if (!il_sta) {
+-     D_RATE("leave: No STA il data to update!\n");
+-     return;
+- }
+
+If a v4 is not needed, I'm also fine with dropping this patch series.
+
+Best regards,
+Tuo
 
