@@ -1,67 +1,68 @@
-Return-Path: <linux-wireless+bounces-30626-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-30627-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id C16DDD0D2CE
-	for <lists+linux-wireless@lfdr.de>; Sat, 10 Jan 2026 08:48:11 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id B7A34D0D2D7
+	for <lists+linux-wireless@lfdr.de>; Sat, 10 Jan 2026 08:53:47 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 7791230245C2
-	for <lists+linux-wireless@lfdr.de>; Sat, 10 Jan 2026 07:47:59 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id B59B8300A9BA
+	for <lists+linux-wireless@lfdr.de>; Sat, 10 Jan 2026 07:53:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 997111D618A;
-	Sat, 10 Jan 2026 07:47:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3A2F71EB5E1;
+	Sat, 10 Jan 2026 07:53:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=qq.com header.i=@qq.com header.b="lcsipWok"
+	dkim=pass (1024-bit key) header.d=qq.com header.i=@qq.com header.b="h+RAwMty"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from out203-205-221-164.mail.qq.com (out203-205-221-164.mail.qq.com [203.205.221.164])
+Received: from out203-205-221-210.mail.qq.com (out203-205-221-210.mail.qq.com [203.205.221.210])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CA02F2AEE1;
-	Sat, 10 Jan 2026 07:47:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=203.205.221.164
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 807F22AEE1;
+	Sat, 10 Jan 2026 07:53:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=203.205.221.210
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768031278; cv=none; b=raUqCM0xsproSL4CBq4WP48V8Ny/QpgJmfJEe81WoXi1FGnyzHrP1elNge9Wi2p8Ah1z+0dCQHnLtnkz0pxwZ05Ai/CUfIqnWHIlDRDAbMtSiYbxiTQlIKhp3ASliWfM6AMDmREVkdZGnwmbXkYOqgAE4vnrqNMdCkayvdNrh2M=
+	t=1768031618; cv=none; b=fj7mHo4VIxEDbtqO1WzeS28Xw1DpPObCzmkLuYGnnzk828l/f+ryC+Cuwlb1rYfDyZIx+Ayzj2Q5bKEGJHQ0VVeSRFIgc4mJXTeZmIjM1NZHNBpRbie3wKjbGzryEt6P+zEoMkAAKGz+oqp4GbQ2cDBkgnIwhQaRRc6ra4cj2oo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768031278; c=relaxed/simple;
-	bh=bhruphp32DOf5WTKGToDZdAU6jgHn65slWwOea11e5Q=;
-	h=Message-ID:From:To:Cc:Subject:Date:MIME-Version; b=kqdiXruuGwBby6va9qnQ/+KwAcXOZPIIEy/a5JKZW2ORsQM4RVESLR9fJsLIFF+S6vmots37hgXooT4qFnHc4n/yau1L/eDK4ImVwUfijvx+tz0OmW9YUTlsfNTXBGtRXg+lTBfqzBv9bVuCgghX0Amjc1UoEAsXDTo9CSteRf8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=qq.com; spf=pass smtp.mailfrom=qq.com; dkim=pass (1024-bit key) header.d=qq.com header.i=@qq.com header.b=lcsipWok; arc=none smtp.client-ip=203.205.221.164
+	s=arc-20240116; t=1768031618; c=relaxed/simple;
+	bh=pfzPB+pL+Vaucy9gfsAdG3O1/Ykt1J2u6vdmWdLKYeE=;
+	h=Message-ID:From:To:Cc:Subject:Date:MIME-Version; b=aqfs/+za9cVUUR2qybov+J6L6Dh4njC2YBGRQ4/h3YAARE1ZG5gUPwqKOk9sz3fQQlbv8LB1WHNJTK7jXocwukaqiTnCHwrRUa4QWg8DF5LH3gkGlvXFKbMQD1LyyrQTnRHqXA3Wz/bJ4Bzu/wqUYX4HCPFjgWU+GOD99FRk9Iw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=qq.com; spf=pass smtp.mailfrom=qq.com; dkim=pass (1024-bit key) header.d=qq.com header.i=@qq.com header.b=h+RAwMty; arc=none smtp.client-ip=203.205.221.210
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=qq.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=qq.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qq.com; s=s201512;
-	t=1768031267; bh=bhruphp32DOf5WTKGToDZdAU6jgHn65slWwOea11e5Q=;
+	t=1768031607; bh=pfzPB+pL+Vaucy9gfsAdG3O1/Ykt1J2u6vdmWdLKYeE=;
 	h=From:To:Cc:Subject:Date;
-	b=lcsipWoktXPDGlskvTYY1J6ay4NwH8vumrEMdRxotLCB/f7NL89mtpAzoeKa9Zs8M
-	 UOq05i++ymZQU9hv9KhqJJAGqdgaO/HxVysfoD+/h7WLgKDUg8gZXNLd6zzI4rYf9n
-	 lpuEAHw21UfVYXrolY6fJc6L5URGTvyf3IgNcIFM=
+	b=h+RAwMtyhDUI2nXi/0H+2U7uVNTNkmdoJ/1ShdFjGryvotA8F3WMjaXlO5PnTvA34
+	 pAGzedoelpj+lQSAcTQAWFYGY4O8X45nXwqBRS9cnQyqjz301xWsmShNGgzxf1KydW
+	 luqs+X2myotkf5R9AbmHFha6JM+lYVo4Te/2YTSs=
 Received: from cjz-VMware-Virtual-Platform.localdomain ([110.176.75.164])
-	by newxmesmtplogicsvrszb51-0.qq.com (NewEsmtp) with SMTP
-	id BEC3448E; Sat, 10 Jan 2026 15:47:44 +0800
-X-QQ-mid: xmsmtpt1768031264t4jipfc3w
-Message-ID: <tencent_1726B023EBD3D2ED3BBDF506F6E01D282907@qq.com>
-X-QQ-XMAILINFO: Nx5J06Esz7r7ire6JwyzampLJIwLkr/US1JlfDCARz7qprklDQ2LoyWWm5aZb5
-	 pruW+ymMxsnHBW4yBoEQtjGv3u4S1p6A22/GdyGKPzF73CXiDPrewO7/AZXql5J+Ypk5zdWzQH2z
-	 cwjS7FQhvFnq6E4ddxGOwrUC6MOExoDnDFeHNSlgg1ANiV8LWJSiba7R9wHUYxJsKIBKtRjDW38+
-	 XSpRKHdaxG4bAOetthIz4AEtLBc+XdYUP0vEMO5PfSMZaHPcjaXo4Q5cTLgqSIWIOXTsBHhpUSEF
-	 +vvlTAohKy9RI+C//WBbK8lxDSF90NSXwKuuQL3spNg1Uj50C+XeP+e4vnl7+MK0crFJVo4Nr0+u
-	 EfYtHMtkUP46j3AT1106tONxXJlZ6q8JM6/+qspXYdeHJsvjtyIS72h5i8nQ1DqQTRkSBTh49eNF
-	 PfnJbrqEY8Ld0H0py0gvGsZwBgVAQXIHXgeWnstwuANNidMcUWq/1E0cHtJUY3/duhguqghzBA3V
-	 0Hi3kmchl+rkZWjs9xve7PCzPVEz1TMFdbFZUaICqk8ACMammM9pmTOihkjUI5/mcpR/KBExRUW/
-	 Ypsb4PbnrJQ0hOvDyTIdYEpsVneg5SwuEC94N09CDMLJX1wxE+oD0LGuJgUNtVM9fHYen5dpQypv
-	 gknadr2VxZHGYCnygdNJREK/iBiMRXvZWJmhmvxJhPYvx8UZOQrj3ZI5nZsoCDD2RBUxqbPCmfwR
-	 eA8WK5oWoYQK6Pr2W4LRf45CP17BXtKZKiybHiTBPw1WX1mFrHKSRbXswBcHz1PdjpG9RcfQ5gTi
-	 DErOO55jEA1gWoS3cEdd1aHsT9eHWGYl0w5G3phvoIgGK/DiqyDLNmtsl+mWy3kB0CiUgFyQgl7F
-	 btj+6E6XOcWZyeCFSZoY4UEFCMJRm7FgaL04EeikqDTtaas8cfyd1ttxjxX1iEYDYt08UkgZVHml
-	 eJcZII3ZJOB/1LaoGP2ytkBzrStfAXIp+5nAJKIFsjWecnFW6FKw==
-X-QQ-XMRINFO: M/715EihBoGS47X28/vv4NpnfpeBLnr4Qg==
+	by newxmesmtplogicsvrszc50-0.qq.com (NewEsmtp) with SMTP
+	id D57B2284; Sat, 10 Jan 2026 15:53:23 +0800
+X-QQ-mid: xmsmtpt1768031603t3irqduae
+Message-ID: <tencent_18B0066BBCD2B63B86F511F6D01D3FA93E07@qq.com>
+X-QQ-XMAILINFO: MmpliBmRb3iCTc0Flu/kMd+utQTekXVhI0L8N3/XjK9rIdsjj0MBZLk3TGMrZX
+	 fb1Ut2a4Rs1mwaKRSF9dh/vu5HjlhEaa/P0zkXEKya9CHrAxa2aLIpXj8NocfHVAGNLZvs/AJXD0
+	 TJGHFr3UelhZnICEejuR+ERsJq+FM2/a/UE+SiVkNwxnoZi/Zuy8Q+GxYnGjF61WJRCdZrJ7LvfH
+	 m2X2KQXfg4hcg8fL3GgmSuKZ3inHsJNRdOYnKpuaFPjkxpK9B8BK50SasBurhYN+QP/+zYl2bXGC
+	 2qOsK4cn31KDv/S1XhyAy9ge8gYn/WqSUVPZdnsQsSV40SYvMBiVArF0Ajw4Au3+t8p2prUSOS5I
+	 duM3R0gRQGuoUAWkv/gNxgLWJtE3TMq8fWxEEuqLk/ZivC/6JEmmRs6m3mbYSbY8QNeNUqnbIKFF
+	 mJsGbKeoufuo0fCnPzAHZa2XobsHvQFHZKQcp2jH5PHjHYvL82vOQS8Df9ieKNyJsfxcw20H6S3s
+	 RsYy9lH9HpEK1YuNu27U4Zj8zJPmVh6wlGL+SlFV4pZgbYXg/CwMi8Dvl8e/FgoEDlrSSNwQ7Dem
+	 lVshHB/H32lPgo5GsFt4wqd0yIiFb9m0k/QeMXsWFNWYBVs+UcgMGsXGpo5FJAdE+1ygrmUBMJ2O
+	 90Za/copknZb2xUsrdsO358gbM1SqZYAh3CzGoqel7fuBvB66DtalAX50cu3nJxYxrX2TtHqsgz/
+	 sfuUqCsgAC5I9sCqrpNghMhcX38JEG4KTanDxLauCdSNXv9qChhfjxGtU5e3SD+GvdPQUeYQjvAx
+	 jWaZiLPgjnMhgXrJsVMmxzSVZ/rld+nxqXN5L3YQD9Behl4mGK2RVFcKTsJtuEaKENy0upHFY6Ks
+	 Bja2Vjo8fWlxExgyLNc0/4aSjUBdWV6Pj/0gmIUeweFK7bpaWsx01kJUhgnd87l1lC/Heu5q1MnI
+	 yxIs+uei77e97QbAFaRA9qO8YepMkXfiMXNZK7gXWCFysBH9rBR7zy02r2rcd6F4a8ae0zffz4U7
+	 CsfNII8AdNZWxxKoqyVGlMutK/nRs=
+X-QQ-XMRINFO: OWPUhxQsoeAVwkVaQIEGSKwwgKCxK/fD5g==
 From: cjz <guagua210311@qq.com>
-To: gregkh@linuxfoundation.org
+To: guagua210311@qq.com,
+	gregkh@linuxfoundation.org
 Cc: linux-kernel@vger.kernel.org,
-	linux-wireless@vger.kernel.org,
-	changjunzheng <guagua210311@qq.com>
-Subject: [PATCH v4 0/3] rtl8723bs: Remove redundant atomic op and replace global io error var
-Date: Sat, 10 Jan 2026 15:47:39 +0800
-X-OQ-MSGID: <20260110074742.4731-1-guagua210311@qq.com>
+	linux-wireless@vger.kernel.org
+Subject: Re: [PING] [PATCH v4 0/3] rtl8723bs: Remove redundant atomic op and replace global io error var
+Date: Sat, 10 Jan 2026 15:53:22 +0800
+X-OQ-MSGID: <20260110075322.4857-1-guagua210311@qq.com>
 X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
@@ -71,27 +72,19 @@ List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-This patch series optimizes the IO error counting logic of the rtl8723bs wireless
-driver by removing redundant atomic_t operations (unnecessary for non-concurrent scenarios) and replacing the global continual_io_error variable with local error counting. The series is split into logical patches (per Greg KH's review comment)
-to ensure each patch fulfills a single, clear purpose, which greatly improves
-reviewability and future maintainability.
+Hi Greg,
 
-Patch Breakdown:
-1. 0001: Add independent rtw_check_continual_io_error function (single responsibility, includes old function cleanup)
-2. 0002: Use local error_count in sd_read32/sd_write32 (eliminate global dependency, remove atomic ops)
-3. 0003: Remove redundant global continual_io_error variable (clean up struct)
+I'm glad to inform you that I have just successfully resent the complete v4 patch series (with "RESEND" tag) directly to your mailbox (gregkh@linuxfoundation.org), since the original linux-staging@vger.kernel.org address was bounced.
 
-Changelog from v3 to v4:
-- Split the monolithic v3 patch into logical, single-purpose patches
-- Fixed all coding style errors (trailing spaces, missing assignment spaces, indentation, blank line alignment)
-- Added detailed, purpose-driven commit messages for each patch
-- Added version changelog as required by kernel documentation
-- Added this cover letter to explain the entire patch series
-- Optimized the new check function to remove redundant ternary expression (more concise kernel style)
+The patch series optimizes the rtl8723bs driver by:
+1. Removing redundant atomic_t operations on continual_io_error (no concurrency scenario, atomic ops are unnecessary);
+2. Replacing the global continual_io_error variable with local error_count in SDIO functions;
+3. Cleaning up unused old functions related to io error counting.
 
-Thank you for your time and review!
+Thank you very much for your time and patience! I look forward to your review comments.
 
+Best regards,
+changjunzheng
 Signed-off-by: changjunzheng <guagua210311@qq.com>
----
 
 
