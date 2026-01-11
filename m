@@ -1,167 +1,138 @@
-Return-Path: <linux-wireless+bounces-30644-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-30646-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 18C42D0F7CB
-	for <lists+linux-wireless@lfdr.de>; Sun, 11 Jan 2026 18:04:56 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id D848AD0F7F2
+	for <lists+linux-wireless@lfdr.de>; Sun, 11 Jan 2026 18:11:50 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 20DDD3071A17
-	for <lists+linux-wireless@lfdr.de>; Sun, 11 Jan 2026 17:04:14 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 44466302CF7E
+	for <lists+linux-wireless@lfdr.de>; Sun, 11 Jan 2026 17:11:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1317B34C13B;
-	Sun, 11 Jan 2026 17:04:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C452B34889C;
+	Sun, 11 Jan 2026 17:11:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="e+vMi4/1"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="bf4MnstP"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pj1-f45.google.com (mail-pj1-f45.google.com [209.85.216.45])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6E93F34CFAB
-	for <linux-wireless@vger.kernel.org>; Sun, 11 Jan 2026 17:04:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 897C634B1A0
+	for <linux-wireless@vger.kernel.org>; Sun, 11 Jan 2026 17:11:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.45
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768151052; cv=none; b=jNw4IrYISoHqcV5A6uXrjHbhehefn9L9yT93SkhnDyBHQYaTy+olXNAI1ptDAw9LyX+hsvOz6YV7iYjay7n155GLVyIMLBa+C/Lsig2Ps7Ig0I38sAJU+jrWcPhlgUGZ7RxveghqryS7rfPw6jq+zZtKC8Jt+/r04EHBng+WoL0=
+	t=1768151497; cv=none; b=DOv9PDvCQZpoGzL+o7GSLEVBN5+kanM0LmmOuhosCL2jjQRUpKnI6QpAD4nTyknCFRCwqIZEeuXw4QNDEktFWDwod/uWTKk5ZYD/vn5nPv/uV344XLue5wPR53H1rpFaF1hyeomjZ7+/7nLvZLv2iNQ9ErFa6OaD/JJBJA75CDU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768151052; c=relaxed/simple;
-	bh=1OOt4VqRpbJ0g84oB9m3jkkYpJ/Hm/RttYrHKFPc0To=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=TWdqvfoXuHOGzir5rp8Du37U+GOm/krZGO2/a2YgVwaRksdDQ02/6E0+22YFjwkgIWZDUSgIwV56Wz/ehRgiCV/QpWGlTLwbR0f2Zkym0DXnk3dnXpzslI1KACp/mmKaihERC2Y+ZCR71G5Abn/g9PruWQkxw5JWb1ZBReUM24o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=e+vMi4/1; arc=none smtp.client-ip=192.198.163.18
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1768151044; x=1799687044;
-  h=from:to:cc:subject:date:message-id:in-reply-to:
-   references:mime-version:content-transfer-encoding;
-  bh=1OOt4VqRpbJ0g84oB9m3jkkYpJ/Hm/RttYrHKFPc0To=;
-  b=e+vMi4/1t3xnGWbD9BsFPlogAdKXncNMQ2ICX8rsyPB9nrCv0Vfo0wiG
-   Y0imPjxkoUuRV4ZpFMPqf0IZfCs5UtQA6rCZCng58avyAC0XZlpROW3BU
-   m0vTouFOccd63IF1olNA/qGrPndUHZuVcQ6kfAidWAA05ql6rO0iKAucZ
-   lVkhqsteo/wjcQatptMwkxkiHVj5/losWmeRCS8BBSftIjBvOvbOSlE/6
-   z5hxN9SmFvq3KgCwscD42xRud29g6k+j0eC5C8kDaBQqIl0526Fc4HYk2
-   3FagFWVCf+GrSHERykatmFiDBq8DsTTR4LCMf4CCGm4R2GIvn9GYfWaMh
-   Q==;
-X-CSE-ConnectionGUID: mEOIsZuWTM+miUazAv9jhw==
-X-CSE-MsgGUID: NBPZodf1Qj+AvhmxyuI6+w==
-X-IronPort-AV: E=McAfee;i="6800,10657,11668"; a="68650779"
-X-IronPort-AV: E=Sophos;i="6.21,219,1763452800"; 
-   d="scan'208";a="68650779"
-Received: from orviesa004.jf.intel.com ([10.64.159.144])
-  by fmvoesa112.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 Jan 2026 09:04:04 -0800
-X-CSE-ConnectionGUID: VN/Zf6UsSGqKNRR58wZ+qQ==
-X-CSE-MsgGUID: qyCDrBrIRiK7Es0iiOvzQA==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.21,219,1763452800"; 
-   d="scan'208";a="208433289"
-Received: from weis0040.iil.intel.com ([10.12.217.108])
-  by orviesa004-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 Jan 2026 09:04:03 -0800
-From: Miri Korenblit <miriam.rachel.korenblit@intel.com>
-To: linux-wireless@vger.kernel.org
-Cc: Avraham Stern <avraham.stern@intel.com>,
-	Johannes Berg <johannes.berg@intel.com>
-Subject: [PATCH wireless-next 2/4] wifi: nl80211/cfg80211: clarify periodic FTM parameters for non-EDCA based ranging
-Date: Sun, 11 Jan 2026 19:03:49 +0200
-Message-Id: <20260111190221.b89cb3f68e1a.I7a9d8c6d1c66c77f1b43120a841101c96c3f19ad@changeid>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20260111170351.2093318-1-miriam.rachel.korenblit@intel.com>
-References: <20260111170351.2093318-1-miriam.rachel.korenblit@intel.com>
+	s=arc-20240116; t=1768151497; c=relaxed/simple;
+	bh=1X4/mgD8i46cgaYtzD7T7tQWYglvatsNfrnjhmeWS04=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=YsysM0nRw+er/N3j2W13TYqEWV3kiZ9r2/O7QGBTBqUOOnK9dGJK0jsrWZTVe97p9hJDLZPS2xo3ji9Of4m/dN6LyqYDHkCmy0bH3qULkHCceC3GxzdJ7DhbyeEg38dTyVMnXhhV5k7z1Q5uEuoc6lSK/KspjPS/OVfn7ECwd5w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=bf4MnstP; arc=none smtp.client-ip=209.85.216.45
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-pj1-f45.google.com with SMTP id 98e67ed59e1d1-34c21417781so3846120a91.3
+        for <linux-wireless@vger.kernel.org>; Sun, 11 Jan 2026 09:11:36 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1768151496; x=1768756296; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=LAqq3UaflZMTR4kV8l/Zp3RcDFexgnKsLUUbdPELkew=;
+        b=bf4MnstPqALvGivrguOmcLqcNhAO5B5jiJ8uAxRW5mvkZJf0fXkV8Lzyf6ENwi5FCc
+         3sRJvUoFV+ekmw1/fqJIqmu7iIgOTyBxITMw10Nb87ZSPHPICx0gflFP72pPNsbWbJ17
+         mVi3UilkCcVOaGtGXBKY9dCRvOlgY12RPn5MAg5WFEBC6BD00LW+joePYLATGdHVDGJF
+         UEYnKBVWOizbi0y9xU6Z2ZT0vyUT0afIHVTjogNnX32wbZSeyetKg3MW9Edf1IkBneD/
+         HxnhdGlwulqh6t0oMrZiF6Ou0N2ugx9aMEg/rBdpoa/53CrNapDUZ4iCkPmKJictotAG
+         QvLg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1768151496; x=1768756296;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=LAqq3UaflZMTR4kV8l/Zp3RcDFexgnKsLUUbdPELkew=;
+        b=gjuG3t2dE4/HFeAJIPWTNS48jd53pGLVAJScLb95qy/M1rLF7daGqNy0f2mnASxikX
+         KKs2i1MADzEbV8aWtUjhZSAwxp5ose4l3/SApnJXj/D/WwXRyU8q+CsXdOMlGZWJMPGY
+         O0PmbF9aSX6bjs3TmSZx/sAtcQRuwI5B8wm+tohXggPhDh9QYYhf922Rikh2PvM+d/RK
+         OrngHXymsE+uhPls9mUkI458H8yiE6r+ZXB7moAPHXpSOCS5QHOvy9n8lw0LHhFc5k/o
+         zZfQUfhNwiK0kIaWEIB/Y1NO6D20Fp/qjbQcGErGmpRZ+XNYySvQHK8Gf/DRoTSSIo5X
+         yIqw==
+X-Gm-Message-State: AOJu0YxW6mTUvO19cG6f1sIJ8xuNVjnozvAbPorqT06rV0KztRQVzUXu
+	NV1Am69SF/L83iThhlfmZ0xrrooypRWLWa6TjT/aAHb7chsHttuIm0Oi
+X-Gm-Gg: AY/fxX4nN1x8TGUzO7bZntnJyjVsWIenYC9b1/4nMaI8wt+4DwEZB2ulCEtJDEHRc2M
+	E9by/woP4sN11SAuXWdE7RUOr+8PSuN78AGyxGy9ntQdPT89I0nt9GcJHjO7Fga7z0hwrM3P5Da
+	PzLbPYWrywBU2Y6OkRC26fOXlQDlhA2tWWeS28Xp4WlAWlp8kNdkAXybUeteAPUtltQPOAKcisw
+	+oRk0QzsYJgpy4piMtpSupNDwHujz2voqW6LXz5GJcrYsukGmAKmZVfvb90GDvYpTZm/Pa+DAOB
+	5Ba2krmyeB5WYq1fFKfu/icdTQRxY0k03s0oNn0gQYPJkp7Y9E1jtQfJGzVMp/Ferhg7f8xMZR9
+	+Fzud1TQceumHoCYBnk9y/tCROhcdQBDG+PiqgyAUxAOWqno6CaujqtgqsWPIoyv13qLUJD1bs5
+	BEa20d4A==
+X-Google-Smtp-Source: AGHT+IGkXAkN3Q14kO3huY9VOxkyFSlcXlgRN073mJecj/ahL42LaFJfICnOJ/iZcIbqx83xpsQf0A==
+X-Received: by 2002:a17:90b:4f48:b0:34c:c50e:9b80 with SMTP id 98e67ed59e1d1-34f68cb900fmr14009150a91.27.1768151495670;
+        Sun, 11 Jan 2026 09:11:35 -0800 (PST)
+Received: from oslab.. ([2402:f000:4:1006:809:0:a77:18ea])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-34f5f7b1cc1sm15454063a91.2.2026.01.11.09.11.34
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sun, 11 Jan 2026 09:11:35 -0800 (PST)
+From: Tuo Li <islituo@gmail.com>
+To: stf_xl@wp.pl
+Cc: linux-wireless@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Tuo Li <islituo@gmail.com>
+Subject: [PATCH v4] wifi: iwlegacy: 3945-rs: remove redundant pointer check in il3945_rs_tx_status() and il3945_rs_get_rate()
+Date: Mon, 12 Jan 2026 01:11:18 +0800
+Message-ID: <20260111171118.203249-1-islituo@gmail.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Organization: Intel Israel (74) Limited
 Content-Transfer-Encoding: 8bit
 
-From: Avraham Stern <avraham.stern@intel.com>
+The variable il_sta passed into these two functions cannot be NULL, so
+remove the related null checks.
 
-Periodic FTM request attributes are defined based on the periodic
-parameters used in EDCA-based ranging negotiation. However, non-EDCA
-based ranging (trigger-based/non-trigger-based) does not include
-periodic parameters in the negotiation protocol, even though upper
-layers may still request periodic measurements.
-
-Clarify the semantics of periodic ranging attributes when used with
-non-EDCA based ranging.
-
-Signed-off-by: Avraham Stern <avraham.stern@intel.com>
-Reviewed-by: Johannes Berg <johannes.berg@intel.com>
-Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
+Signed-off-by: Tuo Li <islituo@gmail.com>
 ---
- include/net/cfg80211.h       |  4 +++-
- include/uapi/linux/nl80211.h |  7 +++++--
- net/wireless/pmsr.c          | 11 ++++++-----
- 3 files changed, 14 insertions(+), 8 deletions(-)
+v4:
+* Remove the redundant NULL check instead of using WARN_ON_ONCE(), and
+  update the subject accordingly.
+  Thanks to Stanislaw Gruszka for helpful advice.
+v3:
+* Replace plain NULL check with WARN_ON_ONCE() and update subject to better
+  reflect defensive nature of the check.
+  Thanks to Johannes Berg and Stanislaw Gruszka for helpful advice.
+v2:
+* Return early for uninitialized STA il data and align D_RATE messages with
+  il3945_rs_tx_status(). Add a wifi: prefix to the patch title.
+  Thanks to Stanislaw Gruszka for the helpful advice.
+---
+ drivers/net/wireless/intel/iwlegacy/3945-rs.c | 7 +------
+ 1 file changed, 1 insertion(+), 6 deletions(-)
 
-diff --git a/include/net/cfg80211.h b/include/net/cfg80211.h
-index 9c80ee0c0357..614ffc4969f0 100644
---- a/include/net/cfg80211.h
-+++ b/include/net/cfg80211.h
-@@ -4293,7 +4293,9 @@ struct cfg80211_pmsr_result {
-  * @burst_period: burst period to use
-  * @asap: indicates to use ASAP mode
-  * @num_bursts_exp: number of bursts exponent
-- * @burst_duration: burst duration
-+ * @burst_duration: burst duration. If @trigger_based or @non_trigger_based is
-+ *	set, this is the burst duration in milliseconds, and zero means the
-+ *	device should pick an appropriate value based on @ftms_per_burst.
-  * @ftms_per_burst: number of FTMs per burst
-  * @ftmr_retries: number of retries for FTM request
-  * @request_lci: request LCI information
-diff --git a/include/uapi/linux/nl80211.h b/include/uapi/linux/nl80211.h
-index 34dc047a172f..7b5463168324 100644
---- a/include/uapi/linux/nl80211.h
-+++ b/include/uapi/linux/nl80211.h
-@@ -7827,12 +7827,15 @@ enum nl80211_peer_measurement_ftm_capa {
-  *	&enum nl80211_preamble), optional for DMG (u32)
-  * @NL80211_PMSR_FTM_REQ_ATTR_NUM_BURSTS_EXP: number of bursts exponent as in
-  *	802.11-2016 9.4.2.168 "Fine Timing Measurement Parameters element"
-- *	(u8, 0-15, optional with default 15 i.e. "no preference")
-+ *	(u8, 0-15, optional with default 15 i.e. "no preference". No limit for
-+ *	 non-EDCA ranging)
-  * @NL80211_PMSR_FTM_REQ_ATTR_BURST_PERIOD: interval between bursts in units
-  *	of 100ms (u16, optional with default 0)
-  * @NL80211_PMSR_FTM_REQ_ATTR_BURST_DURATION: burst duration, as in 802.11-2016
-  *	Table 9-257 "Burst Duration field encoding" (u8, 0-15, optional with
-- *	default 15 i.e. "no preference")
-+ *	default 15 i.e. "no preference"). For non-EDCA ranging, this is the
-+ *	burst duration in milliseconds (optional with default 0, i.e. let the
-+ *	device decide).
-  * @NL80211_PMSR_FTM_REQ_ATTR_FTMS_PER_BURST: number of successful FTM frames
-  *	requested per burst
-  *	(u8, 0-31, optional with default 0 i.e. "no preference")
-diff --git a/net/wireless/pmsr.c b/net/wireless/pmsr.c
-index a117f5093ca2..795683a81303 100644
---- a/net/wireless/pmsr.c
-+++ b/net/wireless/pmsr.c
-@@ -85,11 +85,6 @@ static int pmsr_parse_ftm(struct cfg80211_registered_device *rdev,
- 		return -EINVAL;
+diff --git a/drivers/net/wireless/intel/iwlegacy/3945-rs.c b/drivers/net/wireless/intel/iwlegacy/3945-rs.c
+index 1826c37c090c..ecc6c8d2a4c5 100644
+--- a/drivers/net/wireless/intel/iwlegacy/3945-rs.c
++++ b/drivers/net/wireless/intel/iwlegacy/3945-rs.c
+@@ -448,11 +448,6 @@ il3945_rs_tx_status(void *il_rate, struct ieee80211_supported_band *sband,
+ 		return;
  	}
  
--	out->ftm.burst_duration = 15;
--	if (tb[NL80211_PMSR_FTM_REQ_ATTR_BURST_DURATION])
--		out->ftm.burst_duration =
--			nla_get_u8(tb[NL80211_PMSR_FTM_REQ_ATTR_BURST_DURATION]);
+-	if (!il_sta) {
+-		D_RATE("leave: No STA il data to update!\n");
+-		return;
+-	}
 -
- 	out->ftm.ftms_per_burst = 0;
- 	if (tb[NL80211_PMSR_FTM_REQ_ATTR_FTMS_PER_BURST])
- 		out->ftm.ftms_per_burst =
-@@ -164,6 +159,12 @@ static int pmsr_parse_ftm(struct cfg80211_registered_device *rdev,
- 		return -EINVAL;
- 	}
+ 	/* Treat uninitialized rate scaling data same as non-existing. */
+ 	if (!rs_sta->il) {
+ 		D_RATE("leave: STA il data uninitialized!\n");
+@@ -627,7 +622,7 @@ il3945_rs_get_rate(void *il_r, struct ieee80211_sta *sta, void *il_sta,
+ 	D_RATE("enter\n");
  
-+	if (tb[NL80211_PMSR_FTM_REQ_ATTR_BURST_DURATION])
-+		out->ftm.burst_duration =
-+			nla_get_u8(tb[NL80211_PMSR_FTM_REQ_ATTR_BURST_DURATION]);
-+	else if (!out->ftm.non_trigger_based && !out->ftm.trigger_based)
-+		out->ftm.burst_duration = 15;
-+
- 	out->ftm.lmr_feedback =
- 		!!tb[NL80211_PMSR_FTM_REQ_ATTR_LMR_FEEDBACK];
- 	if (!out->ftm.trigger_based && !out->ftm.non_trigger_based &&
+ 	/* Treat uninitialized rate scaling data same as non-existing. */
+-	if (rs_sta && !rs_sta->il) {
++	if (!rs_sta->il) {
+ 		D_RATE("Rate scaling information not initialized yet.\n");
+ 		il_sta = NULL;
+ 	}
 -- 
-2.34.1
+2.43.0
 
 
