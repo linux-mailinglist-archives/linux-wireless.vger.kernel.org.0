@@ -1,67 +1,67 @@
-Return-Path: <linux-wireless+bounces-30654-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-30655-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 16E1DD0F865
-	for <lists+linux-wireless@lfdr.de>; Sun, 11 Jan 2026 18:40:04 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5A6AED0F868
+	for <lists+linux-wireless@lfdr.de>; Sun, 11 Jan 2026 18:40:19 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id C8E133062E32
-	for <lists+linux-wireless@lfdr.de>; Sun, 11 Jan 2026 17:39:43 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 90384306C579
+	for <lists+linux-wireless@lfdr.de>; Sun, 11 Jan 2026 17:39:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 495C234CFCF;
-	Sun, 11 Jan 2026 17:39:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6B76C21ABBB;
+	Sun, 11 Jan 2026 17:39:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="h2MibGx3"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="KFmNT5Ui"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.15])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D43A721ABBB
-	for <linux-wireless@vger.kernel.org>; Sun, 11 Jan 2026 17:39:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E1D8734C155
+	for <linux-wireless@vger.kernel.org>; Sun, 11 Jan 2026 17:39:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.15
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768153183; cv=none; b=kUEEThJ3CY/Mx5zoPjNHA9GNhJZTJM0PYZBHDkIxZHPC8YMvpt3YuMDup6fO6AxwS3x7y0UcJoOLxuAwhh+3+cwvdPDDuNTpkNpB6WeMvLnrKRLugy/Np8ZudabT82JkksnM1H9TGoH4/yEOR2TqP5n9j7vEK3oxif5H7zraZCQ=
+	t=1768153186; cv=none; b=JRVLc9vpkSQHDC8r47GmUmxm0OIujViKjUfZGTpWbiLKXVZ6AT3P+BqpQ//beRi5eSa/vJ3UBLzpKaXEXLsodV9rGoj4Y5iC8uJ60ffqn+XO5X8iw8HTaxdkNmDh1nmM4LiHdu5aEf+DCzdtwpkQlHOENKwlZRH6fYs5CG4ovoc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768153183; c=relaxed/simple;
-	bh=i051tcTKhuei/lfG+CVlOMWQ2/enG/ChckSKoLnNyaU=;
+	s=arc-20240116; t=1768153186; c=relaxed/simple;
+	bh=wIE3hqJ/DwBletgfLJ51tixWekIwvFKAcW3WXaikDrY=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=NFcKEGoHf46rOZxSRLAkXfwifbll4mgl5Q3ljFYFkJSrDNJUra4iSU1Kjo6y55UfwywYJdcWfLJhUXRuXN2CYrma4RSb7CqiTX4MUoUfHbJLmuVboVoGktTVOmt45Q7nJ9Bn6fcUKfH5z69ty7eVg+6itzVdvMtnJUxw3LZ4gCQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=h2MibGx3; arc=none smtp.client-ip=192.198.163.15
+	 MIME-Version; b=L+EZ8o2kg0jKa92sFa5a0he/OmBHVmRugS0vpVMADAbOKw4U1YzNxVVYKB5/aMYW6AFRrX5bUQabsKyPIoH07o8ohk73sVzlzIPyX96zgZZgSKeeI0vIIXyEz7qZuGnC1l+K7zEqlOxWteohFUZ5DkUafqyl2afbwdXo44U8G2o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=KFmNT5Ui; arc=none smtp.client-ip=192.198.163.15
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1768153182; x=1799689182;
+  t=1768153183; x=1799689183;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=i051tcTKhuei/lfG+CVlOMWQ2/enG/ChckSKoLnNyaU=;
-  b=h2MibGx3Hksw8FqUfwnCZ0aJoNQwCkdvPfArfGvzm0hzpXvi2A0Mp3Gx
-   Fu6HoO9mpzKh4RkxTraHDylgZlRzIrCnDMWwZKAJJwg7gZDbtem2yDM2a
-   MOKJkhyjSOEftjyEZLUeQZWh7mB/HD8ZQvFegFQhqwjZR2KsaErB26Ir9
-   LZmWHa9jfSfK1YrffaXT9OPffJpPWhzCrlkyDeK4l4R5gtA5hpn31MA5X
-   G+8um0C2/FAOEj3pnKof8JH82Omu/2zG0AhKJK825iC3KnYv0+38JpXL8
-   48dyXpSlyeCybRD21uQw2SbBZu+aF87Q2nbUtsN6v2drBCbB3FHxP4frj
+  bh=wIE3hqJ/DwBletgfLJ51tixWekIwvFKAcW3WXaikDrY=;
+  b=KFmNT5UiK/v8K0CKTP5akcYBt7qZmkjrXD5J0u2Nr1GoQE7egOev9+3Y
+   1iT6hJcyd6eMj4JhVM+WXMyKjs9BVIqlWVJns/K6dJVhlYhXAYGom4Gwk
+   7OXZ6HqJOBucO7ZgiqD9NbpXWze/Oiso+sqSLGBobDrZy+sqrV1c+/ngp
+   D9m6/6A8IE1Lg/pSCTKCi8M69jIt6+F/eDvTpIlveXmVW2kwschioL9HG
+   9j6CfdbLdrxAhChXUgRESFjURvKdEPQDLuyOo+e+ARlUH7gr8RsNvuggQ
+   jkETZGepiCL8uwVOdERvQpeF6ZUaOkrGhtXj1lytEfWe/4CbfBNjCdmkY
    A==;
-X-CSE-ConnectionGUID: 7Z1/S7CXToKzkeSQWbH3rQ==
-X-CSE-MsgGUID: LWeXQ0YYTnO0MzjweEy6NA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11668"; a="69521087"
+X-CSE-ConnectionGUID: 3wB9P4NgSs2O4GbCEwprCw==
+X-CSE-MsgGUID: eQONUmPpTji3hzVfDhzpIw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11668"; a="69521088"
 X-IronPort-AV: E=Sophos;i="6.21,219,1763452800"; 
-   d="scan'208";a="69521087"
+   d="scan'208";a="69521088"
 Received: from fmviesa005.fm.intel.com ([10.60.135.145])
-  by fmvoesa109.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 Jan 2026 09:39:41 -0800
-X-CSE-ConnectionGUID: OliJjy4FR16k3HAOgM7otg==
-X-CSE-MsgGUID: cy4mvMB7QQ2NMwK5xFBMCg==
+  by fmvoesa109.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 Jan 2026 09:39:43 -0800
+X-CSE-ConnectionGUID: GlkPVcmmSluOEoYYa7OwLg==
+X-CSE-MsgGUID: aXPYZnbvSbiwPPY2ro3Xiw==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.21,219,1763452800"; 
-   d="scan'208";a="208393790"
+   d="scan'208";a="208393793"
 Received: from weis0040.iil.intel.com ([10.12.217.108])
-  by fmviesa005-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 Jan 2026 09:39:40 -0800
+  by fmviesa005-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 Jan 2026 09:39:42 -0800
 From: Miri Korenblit <miriam.rachel.korenblit@intel.com>
 To: linux-wireless@vger.kernel.org
-Cc: Ilan Peer <ilan.peer@intel.com>
-Subject: [PATCH iwlwifi-next 05/15] wifi: iwlwifi: mld: prevent EMLSR when NAN is active
-Date: Sun, 11 Jan 2026 19:39:16 +0200
-Message-Id: <20260111193638.8baef343023a.Ie94e5f32db003ebce33bde65e0ed8c6d98673b5a@changeid>
+Cc: Emmanuel Grumbach <emmanuel.grumbach@intel.com>
+Subject: [PATCH iwlwifi-next 06/15] wifi: iwlwifi: move lari helper functions to the op_mode
+Date: Sun, 11 Jan 2026 19:39:17 +0200
+Message-Id: <20260111193638.4bb241e436cb.I3d80796d4722376ce24a847419d34723083baaa8@changeid>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20260111173926.2216629-1-miriam.rachel.korenblit@intel.com>
 References: <20260111173926.2216629-1-miriam.rachel.korenblit@intel.com>
@@ -74,161 +74,363 @@ MIME-Version: 1.0
 Organization: Intel Israel (74) Limited
 Content-Transfer-Encoding: 8bit
 
-EMLSR is not allowed when NAN is active. Block EMLSR when starting NAN,
-and unblock EMLSR when NAN is stopped.
+From: Emmanuel Grumbach <emmanuel.grumbach@intel.com>
 
-Reviewed-by: Ilan Peer <ilan.peer@intel.com>
+iwlmvm is the only op_mode that uses the lari helper functions. iwlmld
+has its own version to avoid introducing regressions.
+Move all those functions to iwlmvm, as they are more related to the
+op_mode.
+iwl_get_lari_config_bitmap will move in the next patch.
+
+Signed-off-by: Emmanuel Grumbach <emmanuel.grumbach@intel.com>
 Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
 ---
- .../net/wireless/intel/iwlwifi/mld/iface.h    |  2 ++
- .../net/wireless/intel/iwlwifi/mld/mac80211.c |  3 +++
- drivers/net/wireless/intel/iwlwifi/mld/mlo.c  | 20 ++++++++++++++++---
- drivers/net/wireless/intel/iwlwifi/mld/mlo.h  |  5 +++++
- drivers/net/wireless/intel/iwlwifi/mld/nan.c  | 18 +++++++++++++++--
- 5 files changed, 43 insertions(+), 5 deletions(-)
+ .../wireless/intel/iwlwifi/fw/regulatory.c    | 151 ------------------
+ .../wireless/intel/iwlwifi/fw/regulatory.h    |   3 -
+ drivers/net/wireless/intel/iwlwifi/mvm/fw.c   | 148 ++++++++++++++++-
+ 3 files changed, 147 insertions(+), 155 deletions(-)
 
-diff --git a/drivers/net/wireless/intel/iwlwifi/mld/iface.h b/drivers/net/wireless/intel/iwlwifi/mld/iface.h
-index a3573d20f214..62fca166afd1 100644
---- a/drivers/net/wireless/intel/iwlwifi/mld/iface.h
-+++ b/drivers/net/wireless/intel/iwlwifi/mld/iface.h
-@@ -32,6 +32,7 @@ enum iwl_mld_cca_40mhz_wa_status {
-  *      link is preventing EMLSR. This is a temporary blocking that is set when
-  *      there is an indication that a non-BSS interface is to be added.
-  * @IWL_MLD_EMLSR_BLOCKED_TPT: throughput is too low to make EMLSR worthwhile
-+ * @IWL_MLD_EMLSR_BLOCKED_NAN: NAN is preventing EMLSR.
-  */
- enum iwl_mld_emlsr_blocked {
- 	IWL_MLD_EMLSR_BLOCKED_PREVENTION	= 0x1,
-@@ -40,6 +41,7 @@ enum iwl_mld_emlsr_blocked {
- 	IWL_MLD_EMLSR_BLOCKED_NON_BSS		= 0x8,
- 	IWL_MLD_EMLSR_BLOCKED_TMP_NON_BSS	= 0x10,
- 	IWL_MLD_EMLSR_BLOCKED_TPT		= 0x20,
-+	IWL_MLD_EMLSR_BLOCKED_NAN		= 0x40,
- };
- 
- /**
-diff --git a/drivers/net/wireless/intel/iwlwifi/mld/mac80211.c b/drivers/net/wireless/intel/iwlwifi/mld/mac80211.c
-index 411a2d56e5f0..df8221277d51 100644
---- a/drivers/net/wireless/intel/iwlwifi/mld/mac80211.c
-+++ b/drivers/net/wireless/intel/iwlwifi/mld/mac80211.c
-@@ -1784,6 +1784,9 @@ static int iwl_mld_move_sta_state_up(struct iwl_mld *mld,
- 			/* Ensure any block due to a non-BSS link is synced */
- 			iwl_mld_emlsr_check_non_bss_block(mld, 0);
- 
-+			/* Ensure NAN block is synced */
-+			iwl_mld_emlsr_check_nan_block(mld, vif);
-+
- 			/* Block EMLSR until a certain throughput it reached */
- 			if (!mld->fw_status.in_hw_restart &&
- 			    IWL_MLD_ENTER_EMLSR_TPT_THRESH > 0)
-diff --git a/drivers/net/wireless/intel/iwlwifi/mld/mlo.c b/drivers/net/wireless/intel/iwlwifi/mld/mlo.c
-index 87f67ddfced4..f842f5183223 100644
---- a/drivers/net/wireless/intel/iwlwifi/mld/mlo.c
-+++ b/drivers/net/wireless/intel/iwlwifi/mld/mlo.c
-@@ -12,7 +12,8 @@
- 	HOW(ROC)			\
- 	HOW(NON_BSS)			\
- 	HOW(TMP_NON_BSS)		\
--	HOW(TPT)
-+	HOW(TPT)			\
-+	HOW(NAN)
- 
- static const char *
- iwl_mld_get_emlsr_blocked_string(enum iwl_mld_emlsr_blocked blocked)
-@@ -478,8 +479,8 @@ iwl_mld_vif_iter_update_emlsr_block(void *_data, u8 *mac,
- 	}
+diff --git a/drivers/net/wireless/intel/iwlwifi/fw/regulatory.c b/drivers/net/wireless/intel/iwlwifi/fw/regulatory.c
+index d2ad169ae880..7e7af2b81181 100644
+--- a/drivers/net/wireless/intel/iwlwifi/fw/regulatory.c
++++ b/drivers/net/wireless/intel/iwlwifi/fw/regulatory.c
+@@ -537,157 +537,6 @@ __le32 iwl_get_lari_config_bitmap(struct iwl_fw_runtime *fwrt)
  }
+ IWL_EXPORT_SYMBOL(iwl_get_lari_config_bitmap);
  
--static int iwl_mld_update_emlsr_block(struct iwl_mld *mld, bool block,
--				      enum iwl_mld_emlsr_blocked reason)
-+int iwl_mld_update_emlsr_block(struct iwl_mld *mld, bool block,
-+			       enum iwl_mld_emlsr_blocked reason)
+-static size_t iwl_get_lari_config_cmd_size(u8 cmd_ver)
+-{
+-	size_t cmd_size;
+-
+-	switch (cmd_ver) {
+-	case 12:
+-		cmd_size = sizeof(struct iwl_lari_config_change_cmd);
+-		break;
+-	case 8:
+-		cmd_size = sizeof(struct iwl_lari_config_change_cmd_v8);
+-		break;
+-	case 6:
+-		cmd_size = sizeof(struct iwl_lari_config_change_cmd_v6);
+-		break;
+-	default:
+-		cmd_size = sizeof(struct iwl_lari_config_change_cmd_v1);
+-		break;
+-	}
+-	return cmd_size;
+-}
+-
+-int iwl_fill_lari_config(struct iwl_fw_runtime *fwrt,
+-			 struct iwl_lari_config_change_cmd *cmd,
+-			 size_t *cmd_size)
+-{
+-	int ret;
+-	u32 value;
+-	bool has_raw_dsm_capa = fw_has_capa(&fwrt->fw->ucode_capa,
+-					    IWL_UCODE_TLV_CAPA_FW_ACCEPTS_RAW_DSM_TABLE);
+-	u8 cmd_ver = iwl_fw_lookup_cmd_ver(fwrt->fw,
+-					   WIDE_ID(REGULATORY_AND_NVM_GROUP,
+-						   LARI_CONFIG_CHANGE), 1);
+-
+-	if (WARN_ONCE(cmd_ver > 12,
+-		      "Don't add newer versions to this function\n"))
+-		return -EINVAL;
+-
+-	memset(cmd, 0, sizeof(*cmd));
+-	*cmd_size = iwl_get_lari_config_cmd_size(cmd_ver);
+-
+-	cmd->config_bitmap = iwl_get_lari_config_bitmap(fwrt);
+-
+-	ret = iwl_bios_get_dsm(fwrt, DSM_FUNC_11AX_ENABLEMENT, &value);
+-	if (!ret) {
+-		if (!has_raw_dsm_capa)
+-			value &= DSM_11AX_ALLOW_BITMAP;
+-		cmd->oem_11ax_allow_bitmap = cpu_to_le32(value);
+-	}
+-
+-	ret = iwl_bios_get_dsm(fwrt, DSM_FUNC_ENABLE_UNII4_CHAN, &value);
+-	if (!ret) {
+-		if (!has_raw_dsm_capa)
+-			value &= DSM_UNII4_ALLOW_BITMAP;
+-
+-		/* Since version 12, bits 4 and 5 are supported
+-		 * regardless of this capability, By pass this masking
+-		 * if firmware has capability of accepting raw DSM table.
+-		 */
+-		if (!has_raw_dsm_capa && cmd_ver < 12 &&
+-		    !fw_has_capa(&fwrt->fw->ucode_capa,
+-				 IWL_UCODE_TLV_CAPA_BIOS_OVERRIDE_5G9_FOR_CA))
+-			value &= ~(DSM_VALUE_UNII4_CANADA_OVERRIDE_MSK |
+-				   DSM_VALUE_UNII4_CANADA_EN_MSK);
+-
+-		cmd->oem_unii4_allow_bitmap = cpu_to_le32(value);
+-	}
+-
+-	ret = iwl_bios_get_dsm(fwrt, DSM_FUNC_ACTIVATE_CHANNEL, &value);
+-	if (!ret) {
+-		if (!has_raw_dsm_capa)
+-			value &= CHAN_STATE_ACTIVE_BITMAP_CMD_V12;
+-
+-		if (!has_raw_dsm_capa && cmd_ver < 8)
+-			value &= ~ACTIVATE_5G2_IN_WW_MASK;
+-
+-		/* Since version 12, bits 5 and 6 are supported
+-		 * regardless of this capability, By pass this masking
+-		 * if firmware has capability of accepting raw DSM table.
+-		 */
+-		if (!has_raw_dsm_capa && cmd_ver < 12 &&
+-		    !fw_has_capa(&fwrt->fw->ucode_capa,
+-				 IWL_UCODE_TLV_CAPA_BIOS_OVERRIDE_UNII4_US_CA))
+-			value &= CHAN_STATE_ACTIVE_BITMAP_CMD_V8;
+-
+-		cmd->chan_state_active_bitmap = cpu_to_le32(value);
+-	}
+-
+-	ret = iwl_bios_get_dsm(fwrt, DSM_FUNC_ENABLE_6E, &value);
+-	if (!ret)
+-		cmd->oem_uhb_allow_bitmap = cpu_to_le32(value);
+-
+-	ret = iwl_bios_get_dsm(fwrt, DSM_FUNC_FORCE_DISABLE_CHANNELS, &value);
+-	if (!ret) {
+-		if (!has_raw_dsm_capa)
+-			value &= DSM_FORCE_DISABLE_CHANNELS_ALLOWED_BITMAP;
+-		cmd->force_disable_channels_bitmap = cpu_to_le32(value);
+-	}
+-
+-	ret = iwl_bios_get_dsm(fwrt, DSM_FUNC_ENERGY_DETECTION_THRESHOLD,
+-			       &value);
+-	if (!ret) {
+-		if (!has_raw_dsm_capa)
+-			value &= DSM_EDT_ALLOWED_BITMAP;
+-		cmd->edt_bitmap = cpu_to_le32(value);
+-	}
+-
+-	ret = iwl_bios_get_wbem(fwrt, &value);
+-	if (!ret)
+-		cmd->oem_320mhz_allow_bitmap = cpu_to_le32(value);
+-
+-	ret = iwl_bios_get_dsm(fwrt, DSM_FUNC_ENABLE_11BE, &value);
+-	if (!ret)
+-		cmd->oem_11be_allow_bitmap = cpu_to_le32(value);
+-
+-	if (cmd->config_bitmap ||
+-	    cmd->oem_uhb_allow_bitmap ||
+-	    cmd->oem_11ax_allow_bitmap ||
+-	    cmd->oem_unii4_allow_bitmap ||
+-	    cmd->chan_state_active_bitmap ||
+-	    cmd->force_disable_channels_bitmap ||
+-	    cmd->edt_bitmap ||
+-	    cmd->oem_320mhz_allow_bitmap ||
+-	    cmd->oem_11be_allow_bitmap) {
+-		IWL_DEBUG_RADIO(fwrt,
+-				"sending LARI_CONFIG_CHANGE, config_bitmap=0x%x, oem_11ax_allow_bitmap=0x%x\n",
+-				le32_to_cpu(cmd->config_bitmap),
+-				le32_to_cpu(cmd->oem_11ax_allow_bitmap));
+-		IWL_DEBUG_RADIO(fwrt,
+-				"sending LARI_CONFIG_CHANGE, oem_unii4_allow_bitmap=0x%x, chan_state_active_bitmap=0x%x, cmd_ver=%d\n",
+-				le32_to_cpu(cmd->oem_unii4_allow_bitmap),
+-				le32_to_cpu(cmd->chan_state_active_bitmap),
+-				cmd_ver);
+-		IWL_DEBUG_RADIO(fwrt,
+-				"sending LARI_CONFIG_CHANGE, oem_uhb_allow_bitmap=0x%x, force_disable_channels_bitmap=0x%x\n",
+-				le32_to_cpu(cmd->oem_uhb_allow_bitmap),
+-				le32_to_cpu(cmd->force_disable_channels_bitmap));
+-		IWL_DEBUG_RADIO(fwrt,
+-				"sending LARI_CONFIG_CHANGE, edt_bitmap=0x%x, oem_320mhz_allow_bitmap=0x%x\n",
+-				le32_to_cpu(cmd->edt_bitmap),
+-				le32_to_cpu(cmd->oem_320mhz_allow_bitmap));
+-		IWL_DEBUG_RADIO(fwrt,
+-				"sending LARI_CONFIG_CHANGE, oem_11be_allow_bitmap=0x%x\n",
+-				le32_to_cpu(cmd->oem_11be_allow_bitmap));
+-	} else {
+-		return 1;
+-	}
+-
+-	return 0;
+-}
+-IWL_EXPORT_SYMBOL(iwl_fill_lari_config);
+-
+ int iwl_bios_get_dsm(struct iwl_fw_runtime *fwrt, enum iwl_dsm_funcs func,
+ 		     u32 *value)
  {
- 	struct iwl_mld_update_emlsr_block_data block_data = {
- 		.block = block,
-@@ -1210,3 +1211,16 @@ void iwl_mld_stop_ignoring_tpt_updates(struct iwl_mld *mld)
- 						iwl_mld_ignore_tpt_iter,
- 						&start);
+diff --git a/drivers/net/wireless/intel/iwlwifi/fw/regulatory.h b/drivers/net/wireless/intel/iwlwifi/fw/regulatory.h
+index 735482e7adf5..859cb303f813 100644
+--- a/drivers/net/wireless/intel/iwlwifi/fw/regulatory.h
++++ b/drivers/net/wireless/intel/iwlwifi/fw/regulatory.h
+@@ -219,9 +219,6 @@ int iwl_bios_get_eckv(struct iwl_fw_runtime *fwrt, u32 *ext_clk);
+ int iwl_bios_get_wbem(struct iwl_fw_runtime *fwrt, u32 *value);
+ 
+ __le32 iwl_get_lari_config_bitmap(struct iwl_fw_runtime *fwrt);
+-int iwl_fill_lari_config(struct iwl_fw_runtime *fwrt,
+-			 struct iwl_lari_config_change_cmd *cmd,
+-			 size_t *cmd_size);
+ 
+ int iwl_bios_get_dsm(struct iwl_fw_runtime *fwrt, enum iwl_dsm_funcs func,
+ 		     u32 *value);
+diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/fw.c b/drivers/net/wireless/intel/iwlwifi/mvm/fw.c
+index edae13755ee6..d04f5d408ec3 100644
+--- a/drivers/net/wireless/intel/iwlwifi/mvm/fw.c
++++ b/drivers/net/wireless/intel/iwlwifi/mvm/fw.c
+@@ -1165,13 +1165,159 @@ static void iwl_mvm_tas_init(struct iwl_mvm *mvm)
+ 		IWL_DEBUG_RADIO(mvm, "failed to send TAS_CONFIG (%d)\n", ret);
  }
-+
-+int iwl_mld_emlsr_check_nan_block(struct iwl_mld *mld, struct ieee80211_vif *vif)
+ 
++static size_t iwl_mvm_get_lari_config_cmd_size(u8 cmd_ver)
 +{
-+	if (mld->nan_device_vif &&
-+	    ieee80211_vif_nan_started(mld->nan_device_vif))
-+		return iwl_mld_block_emlsr_sync(mld, vif,
-+						IWL_MLD_EMLSR_BLOCKED_NAN,
-+						iwl_mld_get_primary_link(vif));
++	size_t cmd_size;
 +
-+	iwl_mld_unblock_emlsr(mld, vif, IWL_MLD_EMLSR_BLOCKED_NAN);
++	switch (cmd_ver) {
++	case 12:
++		cmd_size = sizeof(struct iwl_lari_config_change_cmd);
++		break;
++	case 8:
++		cmd_size = sizeof(struct iwl_lari_config_change_cmd_v8);
++		break;
++	case 6:
++		cmd_size = sizeof(struct iwl_lari_config_change_cmd_v6);
++		break;
++	default:
++		cmd_size = sizeof(struct iwl_lari_config_change_cmd_v1);
++		break;
++	}
++	return cmd_size;
++}
++
++static int iwl_mvm_fill_lari_config(struct iwl_fw_runtime *fwrt,
++				    struct iwl_lari_config_change_cmd *cmd,
++				    size_t *cmd_size)
++{
++	int ret;
++	u32 value;
++	bool has_raw_dsm_capa = fw_has_capa(&fwrt->fw->ucode_capa,
++					    IWL_UCODE_TLV_CAPA_FW_ACCEPTS_RAW_DSM_TABLE);
++	u8 cmd_ver = iwl_fw_lookup_cmd_ver(fwrt->fw,
++					   WIDE_ID(REGULATORY_AND_NVM_GROUP,
++						   LARI_CONFIG_CHANGE), 1);
++
++	memset(cmd, 0, sizeof(*cmd));
++	*cmd_size = iwl_mvm_get_lari_config_cmd_size(cmd_ver);
++
++	cmd->config_bitmap = iwl_get_lari_config_bitmap(fwrt);
++
++	ret = iwl_bios_get_dsm(fwrt, DSM_FUNC_11AX_ENABLEMENT, &value);
++	if (!ret) {
++		if (!has_raw_dsm_capa)
++			value &= DSM_11AX_ALLOW_BITMAP;
++		cmd->oem_11ax_allow_bitmap = cpu_to_le32(value);
++	}
++
++	ret = iwl_bios_get_dsm(fwrt, DSM_FUNC_ENABLE_UNII4_CHAN, &value);
++	if (!ret) {
++		if (!has_raw_dsm_capa)
++			value &= DSM_UNII4_ALLOW_BITMAP;
++
++		/* Since version 12, bits 4 and 5 are supported
++		 * regardless of this capability, By pass this masking
++		 * if firmware has capability of accepting raw DSM table.
++		 */
++		if (!has_raw_dsm_capa && cmd_ver < 12 &&
++		    !fw_has_capa(&fwrt->fw->ucode_capa,
++				 IWL_UCODE_TLV_CAPA_BIOS_OVERRIDE_5G9_FOR_CA))
++			value &= ~(DSM_VALUE_UNII4_CANADA_OVERRIDE_MSK |
++				   DSM_VALUE_UNII4_CANADA_EN_MSK);
++
++		cmd->oem_unii4_allow_bitmap = cpu_to_le32(value);
++	}
++
++	ret = iwl_bios_get_dsm(fwrt, DSM_FUNC_ACTIVATE_CHANNEL, &value);
++	if (!ret) {
++		if (!has_raw_dsm_capa)
++			value &= CHAN_STATE_ACTIVE_BITMAP_CMD_V12;
++
++		if (!has_raw_dsm_capa && cmd_ver < 8)
++			value &= ~ACTIVATE_5G2_IN_WW_MASK;
++
++		/* Since version 12, bits 5 and 6 are supported
++		 * regardless of this capability, By pass this masking
++		 * if firmware has capability of accepting raw DSM table.
++		 */
++		if (!has_raw_dsm_capa && cmd_ver < 12 &&
++		    !fw_has_capa(&fwrt->fw->ucode_capa,
++				 IWL_UCODE_TLV_CAPA_BIOS_OVERRIDE_UNII4_US_CA))
++			value &= CHAN_STATE_ACTIVE_BITMAP_CMD_V8;
++
++		cmd->chan_state_active_bitmap = cpu_to_le32(value);
++	}
++
++	ret = iwl_bios_get_dsm(fwrt, DSM_FUNC_ENABLE_6E, &value);
++	if (!ret)
++		cmd->oem_uhb_allow_bitmap = cpu_to_le32(value);
++
++	ret = iwl_bios_get_dsm(fwrt, DSM_FUNC_FORCE_DISABLE_CHANNELS, &value);
++	if (!ret) {
++		if (!has_raw_dsm_capa)
++			value &= DSM_FORCE_DISABLE_CHANNELS_ALLOWED_BITMAP;
++		cmd->force_disable_channels_bitmap = cpu_to_le32(value);
++	}
++
++	ret = iwl_bios_get_dsm(fwrt, DSM_FUNC_ENERGY_DETECTION_THRESHOLD,
++			       &value);
++	if (!ret) {
++		if (!has_raw_dsm_capa)
++			value &= DSM_EDT_ALLOWED_BITMAP;
++		cmd->edt_bitmap = cpu_to_le32(value);
++	}
++
++	ret = iwl_bios_get_wbem(fwrt, &value);
++	if (!ret)
++		cmd->oem_320mhz_allow_bitmap = cpu_to_le32(value);
++
++	ret = iwl_bios_get_dsm(fwrt, DSM_FUNC_ENABLE_11BE, &value);
++	if (!ret)
++		cmd->oem_11be_allow_bitmap = cpu_to_le32(value);
++
++	if (cmd->config_bitmap ||
++	    cmd->oem_uhb_allow_bitmap ||
++	    cmd->oem_11ax_allow_bitmap ||
++	    cmd->oem_unii4_allow_bitmap ||
++	    cmd->chan_state_active_bitmap ||
++	    cmd->force_disable_channels_bitmap ||
++	    cmd->edt_bitmap ||
++	    cmd->oem_320mhz_allow_bitmap ||
++	    cmd->oem_11be_allow_bitmap) {
++		IWL_DEBUG_RADIO(fwrt,
++				"sending LARI_CONFIG_CHANGE, config_bitmap=0x%x, oem_11ax_allow_bitmap=0x%x\n",
++				le32_to_cpu(cmd->config_bitmap),
++				le32_to_cpu(cmd->oem_11ax_allow_bitmap));
++		IWL_DEBUG_RADIO(fwrt,
++				"sending LARI_CONFIG_CHANGE, oem_unii4_allow_bitmap=0x%x, chan_state_active_bitmap=0x%x, cmd_ver=%d\n",
++				le32_to_cpu(cmd->oem_unii4_allow_bitmap),
++				le32_to_cpu(cmd->chan_state_active_bitmap),
++				cmd_ver);
++		IWL_DEBUG_RADIO(fwrt,
++				"sending LARI_CONFIG_CHANGE, oem_uhb_allow_bitmap=0x%x, force_disable_channels_bitmap=0x%x\n",
++				le32_to_cpu(cmd->oem_uhb_allow_bitmap),
++				le32_to_cpu(cmd->force_disable_channels_bitmap));
++		IWL_DEBUG_RADIO(fwrt,
++				"sending LARI_CONFIG_CHANGE, edt_bitmap=0x%x, oem_320mhz_allow_bitmap=0x%x\n",
++				le32_to_cpu(cmd->edt_bitmap),
++				le32_to_cpu(cmd->oem_320mhz_allow_bitmap));
++		IWL_DEBUG_RADIO(fwrt,
++				"sending LARI_CONFIG_CHANGE, oem_11be_allow_bitmap=0x%x\n",
++				le32_to_cpu(cmd->oem_11be_allow_bitmap));
++	} else {
++		return 1;
++	}
 +
 +	return 0;
 +}
-diff --git a/drivers/net/wireless/intel/iwlwifi/mld/mlo.h b/drivers/net/wireless/intel/iwlwifi/mld/mlo.h
-index d936589fe39d..ccc3a7afa095 100644
---- a/drivers/net/wireless/intel/iwlwifi/mld/mlo.h
-+++ b/drivers/net/wireless/intel/iwlwifi/mld/mlo.h
-@@ -150,6 +150,11 @@ void iwl_mld_emlsr_check_chan_load(struct ieee80211_hw *hw,
-  */
- void iwl_mld_retry_emlsr(struct iwl_mld *mld, struct ieee80211_vif *vif);
- 
-+int iwl_mld_emlsr_check_nan_block(struct iwl_mld *mld, struct ieee80211_vif *vif);
 +
-+int iwl_mld_update_emlsr_block(struct iwl_mld *mld, bool block,
-+			       enum iwl_mld_emlsr_blocked reason);
-+
- struct iwl_mld_link_sel_data {
- 	u8 link_id;
- 	const struct cfg80211_chan_def *chandef;
-diff --git a/drivers/net/wireless/intel/iwlwifi/mld/nan.c b/drivers/net/wireless/intel/iwlwifi/mld/nan.c
-index e7a2c1ec7494..d4298f44baf7 100644
---- a/drivers/net/wireless/intel/iwlwifi/mld/nan.c
-+++ b/drivers/net/wireless/intel/iwlwifi/mld/nan.c
-@@ -5,6 +5,7 @@
+ static void iwl_mvm_lari_cfg(struct iwl_mvm *mvm)
+ {
+ 	struct iwl_lari_config_change_cmd cmd;
+ 	size_t cmd_size;
+ 	int ret;
  
- #include "mld.h"
- #include "iface.h"
-+#include "mlo.h"
- #include "fw/api/mac-cfg.h"
- 
- #define IWL_NAN_DISOVERY_BEACON_INTERNVAL_TU 512
-@@ -130,15 +131,25 @@ int iwl_mld_start_nan(struct ieee80211_hw *hw, struct ieee80211_vif *vif,
- 
- 	IWL_DEBUG_MAC80211(mld, "NAN: start: bands=0x%x\n", conf->bands);
- 
--	ret = iwl_mld_add_aux_sta(mld, aux_sta);
-+	ret = iwl_mld_update_emlsr_block(mld, true, IWL_MLD_EMLSR_BLOCKED_NAN);
- 	if (ret)
- 		return ret;
- 
-+	ret = iwl_mld_add_aux_sta(mld, aux_sta);
-+	if (ret)
-+		goto unblock_emlsr;
-+
- 	ret = iwl_mld_nan_config(mld, vif, conf, FW_CTXT_ACTION_ADD);
- 	if (ret) {
- 		IWL_ERR(mld, "Failed to start NAN. ret=%d\n", ret);
--		iwl_mld_remove_aux_sta(mld, vif);
-+		goto remove_aux;
- 	}
-+	return 0;
-+
-+remove_aux:
-+	iwl_mld_remove_aux_sta(mld, vif);
-+unblock_emlsr:
-+	iwl_mld_update_emlsr_block(mld, false, IWL_MLD_EMLSR_BLOCKED_NAN);
- 
- 	return ret;
- }
-@@ -190,6 +201,9 @@ int iwl_mld_stop_nan(struct ieee80211_hw *hw,
- 	iwl_mld_cancel_notifications_of_object(mld,
- 					       IWL_MLD_OBJECT_TYPE_NAN,
- 					       0);
-+
-+	iwl_mld_update_emlsr_block(mld, false, IWL_MLD_EMLSR_BLOCKED_NAN);
-+
- 	return 0;
- }
- 
+-	ret = iwl_fill_lari_config(&mvm->fwrt, &cmd, &cmd_size);
++	ret = iwl_mvm_fill_lari_config(&mvm->fwrt, &cmd, &cmd_size);
+ 	if (!ret) {
+ 		ret = iwl_mvm_send_cmd_pdu(mvm,
+ 					   WIDE_ID(REGULATORY_AND_NVM_GROUP,
 -- 
 2.34.1
 
