@@ -1,100 +1,101 @@
-Return-Path: <linux-wireless+bounces-30679-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-30681-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6BA19D10EA4
-	for <lists+linux-wireless@lfdr.de>; Mon, 12 Jan 2026 08:37:38 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id E57BCD10E8E
+	for <lists+linux-wireless@lfdr.de>; Mon, 12 Jan 2026 08:37:14 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 17D7930869B3
-	for <lists+linux-wireless@lfdr.de>; Mon, 12 Jan 2026 07:37:09 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id C3150300E7DC
+	for <lists+linux-wireless@lfdr.de>; Mon, 12 Jan 2026 07:37:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C016C331A5B;
-	Mon, 12 Jan 2026 07:37:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DC67D311587;
+	Mon, 12 Jan 2026 07:37:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="oKKMdmrd";
-	dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b="jekHsA0d"
+	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="gIQUK4Pi";
+	dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b="foYS1aKF"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 67FD930CD82
-	for <linux-wireless@vger.kernel.org>; Mon, 12 Jan 2026 07:37:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AAF87334361
+	for <linux-wireless@vger.kernel.org>; Mon, 12 Jan 2026 07:37:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768203427; cv=none; b=VHjlCj2T1Wq4dpRipZTGT9pJ+vFcj/+nykoI1PeiOIfpWq9EaSiv5aNdDloeKA5850SiasTE8Rq16d8sE+GcC+SraLNyBxnjAqNDAkMutDm5nyskoNMfa2iBE596i7OsSk97xAofeDTQywhf+5/2DgNt2wKLxU7NnXs8752K4+8=
+	t=1768203432; cv=none; b=KDI+SBgIG98xFieTkchabVe2L1IMGMto2dn3GQ4hs6uFO+35I3Pd9Be+ogkXbBhQODBtLLJ1te3mJz34Eo8xchXkU0ZHCOCCtehkFCaerOV8yamiOkl+Wyt5RdAODSqJRDEX5KtVm3iMWChocKHvOsDybtYmcNgwXWybsufB+9Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768203427; c=relaxed/simple;
-	bh=vnMw/+9Hb/N2pjnSCowCVoWPy4Z5gRy2Hq2RNi/vLuc=;
+	s=arc-20240116; t=1768203432; c=relaxed/simple;
+	bh=OIRB4Ca2bnictDnt8M1UKZ67jvu3HRiqcY10BXAFSCc=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=r+85k3oJQHAWEz+UgSeYtjkkgSR0xvbou/6juiGlghDq10/A5YFZY2Rat+5EryJp5WwMwvfrPVO98jRnZAFKkB1XZ3r2ZY6hVmYfKpl709S4AZXOsn3JgTapz9Jf8RrF6gU56ouQWlk0m0JISu78nRAL24wCUkitOGVvS1KE2jc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=oKKMdmrd; dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b=jekHsA0d; arc=none smtp.client-ip=205.220.168.131
+	 In-Reply-To:To:Cc; b=DdD/caSSrM4/eQzukeoOQ8hT3PjE/+5cyXqYx+0N4qDjMGbZye3cl4dsqQVbT4sXx3AP/Sijzaq3mkgyhr44i7Gp9yLaLDVZ3I1ZbdeMPoHCpZAX2Ma46h6rdDHq9KoXaREfXamxsYZLPY78Ek91SVM6WoDiLN/xT9MH8IRQBF4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=gIQUK4Pi; dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b=foYS1aKF; arc=none smtp.client-ip=205.220.168.131
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
-Received: from pps.filterd (m0279867.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 60C7Ocm3555254
-	for <linux-wireless@vger.kernel.org>; Mon, 12 Jan 2026 07:37:05 GMT
+Received: from pps.filterd (m0279864.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 60BLGmiO1080044
+	for <linux-wireless@vger.kernel.org>; Mon, 12 Jan 2026 07:37:08 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
 	cc:content-transfer-encoding:content-type:date:from:in-reply-to
 	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
-	TM3rjSfEe43fhT+aoVY7K+zVTC/c8MyJyzGFdi0Enm4=; b=oKKMdmrdeq98vXEe
-	sbIJtTTjFHnelh9xyO7XC6AYWhwtrGJP8oXXHrBXV/eBw1mcIn2yaEVUcDufr4m+
-	s31PDYthGjHtimCC7QoSRi+TlOYR5tmmBwHM8+L0E5jSNocV6zapOuq/zbT7BMUa
-	WA1njIm4E29NllMTiUmnFsdFjVvDTbj8nxyj1iVVHM94jaA35uP9b2edsqPZFRvm
-	65oxbePbZpYWT7i81BE8U37s4rJZNl48qnAwtFnZ46RC+lKuux/sjBKD0mkhxvAU
-	sQGbYczPa032l6pRK4HvFERZijFRYtUZvEGtmcb52RYlASjWJkAm1GgKZNOnsLkt
-	U3nkTQ==
-Received: from mail-pf1-f200.google.com (mail-pf1-f200.google.com [209.85.210.200])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4bmvhw014m-1
+	iWrmA6fW3PhjppUon/QPWjAWhbRLPQ3SUpfNWS5hDIU=; b=gIQUK4PiItY765db
+	RDOmRFLIbWadCSGR32MiMkhuq+SpikS7mnVkSzPP/gbtNonQ5UbryqS2ZCr811V2
+	evYg2WboqeK8cej8sdK/smqvqwaR152kk7KR7RxMyMT1a+RhSe01Ilg3JsFTAA6F
+	0MLzgYsXGXsmbY6x7N2yAvhADG5D+ZW2MP0lhdEhmuOsSZLAjdABPz43nWDlUx7y
+	ZMFtHaMkt2punvtjvaALQC6tdWXB4eMJXQvdHTqdr6yPFRNAJzX3/qS5V1RgabFL
+	WcWLUnNIb42iYdnPZ+BS5KOyQzYh9ygHzWP7KeZ0g3F54nEZUcK7xyxQp+mPq3JU
+	qViHDg==
+Received: from mail-pg1-f199.google.com (mail-pg1-f199.google.com [209.85.215.199])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4bkfxfuwqc-1
 	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
-	for <linux-wireless@vger.kernel.org>; Mon, 12 Jan 2026 07:37:05 +0000 (GMT)
-Received: by mail-pf1-f200.google.com with SMTP id d2e1a72fcca58-81ee4f90ef8so1520238b3a.1
-        for <linux-wireless@vger.kernel.org>; Sun, 11 Jan 2026 23:37:05 -0800 (PST)
+	for <linux-wireless@vger.kernel.org>; Mon, 12 Jan 2026 07:37:07 +0000 (GMT)
+Received: by mail-pg1-f199.google.com with SMTP id 41be03b00d2f7-b630753cc38so1212090a12.1
+        for <linux-wireless@vger.kernel.org>; Sun, 11 Jan 2026 23:37:07 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=oss.qualcomm.com; s=google; t=1768203425; x=1768808225; darn=vger.kernel.org;
+        d=oss.qualcomm.com; s=google; t=1768203427; x=1768808227; darn=vger.kernel.org;
         h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
          :mime-version:subject:date:from:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=TM3rjSfEe43fhT+aoVY7K+zVTC/c8MyJyzGFdi0Enm4=;
-        b=jekHsA0dwkiUfukMxdFM2UkVPUZNbUaZHLDe1FWz6iIicWeYGJ8MnxVR2YwnZrskGB
-         KAt5pCmMRmFn8yGzllJy3OcMapczI6z6eIvpMcnwNA7/20xNovDbIc61llVxEaIznoDI
-         I0ZD6rnAo2xwbTuUUn5EEQeHGy2Gcb3n2PCNbxWAm6pEOU1R09vJbVNaiaxuVQ6RzEYs
-         LXW2QqeEX0PpOKUwtkQ1C/ACatIyfV8ZR11zHlbCSX6LoI5RzsZ+BxR0NPjKitoJbpsP
-         +/s9EQSi2C7OSmZLSTCBDa3CFd7Xg109HcQn7LjAyo0O1TzXo9hUVBlEG+HoIg286LK2
-         gosA==
+        bh=iWrmA6fW3PhjppUon/QPWjAWhbRLPQ3SUpfNWS5hDIU=;
+        b=foYS1aKF+4uGRdU63lFJtXYXv+lJWcJH0W8wvXkVHxq0c+nEXX7xCOIRoR7/e1p5Cy
+         dycVvFE10DXu5rFzKVHdyYUJXQgZ9J3H4kJdxnOlO+O/vyRZrvyUjfJZR4EW5Ka/2dSC
+         GWEhQ446bmRRfifnCd/A8Lh5egxSd3H6AXfaBCWT/DKiPOpmAEPwMZpgmU6+SVQU0C4F
+         uoPyX57BxmFGqqiiBkwBOqHPESzx8e+wTPXrW0nSOjKw7ZY3KA/SLYM+UmlGrqeTtncC
+         PZ1FnbUvyR9kKJY4hvF+R/6rAbREk4WF2OaBtSf1XCkYbQNpUX6IrSu2DDR/rb5me3Jn
+         VmQg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1768203425; x=1768808225;
+        d=1e100.net; s=20230601; t=1768203427; x=1768808227;
         h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
          :mime-version:subject:date:from:x-gm-gg:x-gm-message-state:from:to
          :cc:subject:date:message-id:reply-to;
-        bh=TM3rjSfEe43fhT+aoVY7K+zVTC/c8MyJyzGFdi0Enm4=;
-        b=oCXlgP5JAl6odbxpXzHJZqey+BX5DLScbGtzThLgCb4lSxJ7h6l7kjcF3+82IZ9OFe
-         IGAlSZhoKfd3+qVyObgjlK/m703j0hbI3r+BLhnmC9kn8UwMzsNRuNHZEqO4EffH+jWf
-         I1xrFExS4ITQ/MfiV/7+eve7MiDJKRBvam1Xde+WTQE5+wej3s1r2xqIsj1LHlRuaVkY
-         EXAPka5xJGOfEQOo8C6Ean/aSen7qLmGNIDmw8LQJnTSYuACUWo2Q3MGPLbyDqEpYnur
-         bJ0ev7JwlVUHALsAFIqJvgQ+vWiK0+umum7wwXQaLQewwWSUvoDS7tF5gocy7gNF3UPS
-         gjlw==
-X-Gm-Message-State: AOJu0YzpPd8i/Io1lE87knSMBeDA632ZvF2FdFsnhKU8U1ui88UHiwkb
-	W0QX7dHCSuo8wNvcDgEcSGhQUNKVOjhDUGRURyghnCdCOBCkgufpnorgaknHnwVfikpUeY7RW6d
-	7c6Eeh5t4f3xS6p6X2kmu77ezyi10teO/I6jA4huhtC5g9aQLcYDVsUVxHhweOv7m/0ZZnw==
-X-Gm-Gg: AY/fxX5jNVcedfPWTYlw1wOrgw64Orj/PcC4tXykfn7yQBC3m7ElXwUduolbjE8fgih
-	qxlxoEwCtWXdLfaAy9fxgRGB/Mkd5evy2tkpCKLsWSTVBowoSX1dH7DLuX540ohb5CUr6POrz3B
-	78Hz0/w7APo6k0dWimNa7hbbVeqhBVQmyabOw20PKxRXI0VBIw/e/sPe6G62up2zpnaXHSI8dqx
-	ajsTZEzx8DpqgMxLaY6PMYJX1pbLEN4ORHHY2peSt4W5qdv5HTDiSDHa29fYD9clEeQ64MTaWgE
-	I1BgjisGPvF/KZLgFZ0vDVJ7jUBVlbyAskStdCu/+xNrWGij57dhjXjoJdE5SKuZocrtKa8GeCM
-	lPo0mZuGPLXNgI4buAwTEUuGwQJKPa+QYjPEP+lWj5/f7thtf93JKTzPP0s+Z8jw=
-X-Received: by 2002:a05:6a00:8088:b0:7e8:450c:61b8 with SMTP id d2e1a72fcca58-81b806c8389mr15215730b3a.40.1768203424908;
-        Sun, 11 Jan 2026 23:37:04 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IG3rWtugbYV4vAb6oMxXrmEG1FVXJtQzJwP+lPOmpG0tx+hpTUMmsprOniOQc8a4w1Sk2aLgg==
-X-Received: by 2002:a05:6a00:8088:b0:7e8:450c:61b8 with SMTP id d2e1a72fcca58-81b806c8389mr15215711b3a.40.1768203424433;
-        Sun, 11 Jan 2026 23:37:04 -0800 (PST)
+        bh=iWrmA6fW3PhjppUon/QPWjAWhbRLPQ3SUpfNWS5hDIU=;
+        b=dc+JYrLDzSPpG7JcGK5cA/AfVekKB/dwFsA5HYmYr3qr124Bth660TwYxwR709K/et
+         l8mY2lSmoL23lOcvwEAj7ew2Jum36V+qo1fFX0ap8PJA415m/AgMbd6wh6cIww0tHrX/
+         hZq6jXnzaIqQcBe3/G7Wpzo2EqsMgmzxTeT2U/nolU6kScRz/W+1Jfm/7MHg8+/IXQmg
+         DUtg8NcKqkjZDX15ic5x5rlHL7Nvi5d4bger7cdfx/iesHCaA/AglgfQgVfRDdanQxdD
+         6/H1jgA9+myfTG6aSSztT4Dfmy78jEOgbr4iDHqlNTU0VGxTJarb+ajE+cC1OVrKzC10
+         3cHw==
+X-Gm-Message-State: AOJu0YyaAXLrH/AjoU4OZDTvc+/qTraYKTv7H5dNn/yyVxHFxpkxSd3r
+	U7YG6OtpOe5XmSL9JbVTgrqloLVMFIr/AWJUUHxCFlbtFR74l0Ydp1xnJrYfhGU6t5qGQyLTWSo
+	izlg2ANCQsq3OSg3KZHZM9tjDe1BC/10GwJeiHM/d5RjHXFw9U7ZT6Jt05/D6Hi77DjL+tolg8d
+	kOaVOS
+X-Gm-Gg: AY/fxX73y3YLQBX9KLoVBV3x27W7vm/dwjQcomcdCGgitMInNd42MYq14og9Ik/I98v
+	AU4kZ7Shy52ReFbnIi5dwnaAxC2KXPLmfvb8aBDsqaPbavo2ymswt+XELkvOzbWVuIIfOtD10Ii
+	vvw54BZNSFjZXErxhsyCCdlUeCuoVorx54YbdrtOw+LjfRA1mpYAcgr16aQ7Ggpn/4fRF8l9ki2
+	2AvjgFnblL/YjvAo7wPSN3R2wyzavEH13pmuxZ3ugRNQToEceL9KTK/YQEDry4TCoKwdl6sGZ6l
+	tkjGdPAb7PCD/gXoAwki7qhqVe6m+vEmMDEo0LnQiMhK4/JEE4hx323rRKuYM9I519lZ41XKGYK
+	UHAOXs/wMV+ylAwUKG+HYwtXLKsh5uCu8VbbKiqWMxHwVGl5ShdF5cDTiwkCXiGM=
+X-Received: by 2002:a05:6a21:3282:b0:366:14ac:e1f8 with SMTP id adf61e73a8af0-3898f9efa89mr16701612637.74.1768203426648;
+        Sun, 11 Jan 2026 23:37:06 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IH70hs6oIvASiNkU0ke4bcuU3PWbmO18Qip9niFVnjZw8dT2DIdRkoUMNEjTi1EuDZtoYGWcA==
+X-Received: by 2002:a05:6a21:3282:b0:366:14ac:e1f8 with SMTP id adf61e73a8af0-3898f9efa89mr16701603637.74.1768203426166;
+        Sun, 11 Jan 2026 23:37:06 -0800 (PST)
 Received: from [127.0.1.1] (tpe-colo-wan-fw-bordernet.qualcomm.com. [103.229.16.4])
-        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-c4cbf28faa9sm16548684a12.2.2026.01.11.23.37.02
+        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-c4cbf28faa9sm16548684a12.2.2026.01.11.23.37.04
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 11 Jan 2026 23:37:04 -0800 (PST)
+        Sun, 11 Jan 2026 23:37:05 -0800 (PST)
 From: Baochen Qiang <baochen.qiang@oss.qualcomm.com>
-Date: Mon, 12 Jan 2026 15:36:26 +0800
-Subject: [PATCH ath-next v2 06/18] wifi: ath12k: fix mac phy capability
- parsing
+Date: Mon, 12 Jan 2026 15:36:27 +0800
+Subject: [PATCH ath-next v2 07/18] wifi: ath12k: add hardware registers for
+ QCC2072
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
@@ -103,128 +104,236 @@ List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260112-ath12k-support-qcc2072-v2-6-fc8ce1e43969@oss.qualcomm.com>
+Message-Id: <20260112-ath12k-support-qcc2072-v2-7-fc8ce1e43969@oss.qualcomm.com>
 References: <20260112-ath12k-support-qcc2072-v2-0-fc8ce1e43969@oss.qualcomm.com>
 In-Reply-To: <20260112-ath12k-support-qcc2072-v2-0-fc8ce1e43969@oss.qualcomm.com>
 To: Jeff Johnson <jjohnson@kernel.org>
 Cc: linux-wireless@vger.kernel.org, ath12k@lists.infradead.org,
         Baochen Qiang <baochen.qiang@oss.qualcomm.com>
 X-Mailer: b4 0.14.3
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwMTEyMDA1OCBTYWx0ZWRfX0U3DIjLdKAi2
- DKxhQM05UieP/JNHRuJTwwYn586RDTa2rXxqoQv6FDw1xlH6z0VWRhj6kayvcDBZlvGxDgOVcMN
- 1As5J/99YZyxEyLMnR5v6h8xSJ6lP25mM1THzXq78Kfd+aA5vKaVTuj7LIIiSgFj23j3KKCgxvZ
- WOC+YLnr+gnaEiXsEWLtUWMszAg0U599N/U9z0juhN7cwWlkpQQXwvvw3g7K6Sp/O/7lXHXeP7k
- hWHvplMhPsIFQHiGlAW04BmvQsTG6wu/KBIla7mTEVoAYm7lBM+3lQbGod59QTmx7ezB2SPgE80
- UiSB+OwuWZ0abnqcuWIZnDZ126iniQj8NBmhIcbdD4jWJPIKPcEbrSoTh0RkVBbqdVJKIDtqcRz
- PdG6+ID7TadxNebYafMTCSYNz6nCjPPAe6SwHZP3ObYtScaUXUL2zZFFdnwCNNsdKLu6EcI3M9u
- eH8+04a51aW0EWqGpdA==
-X-Authority-Analysis: v=2.4 cv=JP02csKb c=1 sm=1 tr=0 ts=6964a4a1 cx=c_pps
- a=mDZGXZTwRPZaeRUbqKGCBw==:117 a=nuhDOHQX5FNHPW3J6Bj6AA==:17
+X-Proofpoint-ORIG-GUID: brrjGNc9CsNOqOpFvVJGixL3sAOeS0K_
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwMTEyMDA1OCBTYWx0ZWRfX/aOWDHgwVS3k
+ GAttn9t5hb5H3G1ZLrueH9wX/CeiH3GUUPp8uUzYLflmJmU0PDrZbr1A1+eoESGBybugyZEIBcE
+ PEz9+Q+35ifnjXGQJGmTDodn56chhdjqnawK0M7t7KVyyeAI7JW/V464HKFlaORoRoBVXvS+N+R
+ TGvJpPErTWYWLaPBtyggYyf5pdrlZhpEg0CERw0w4K3HIsIi5naoETilRVFBnslOvajmgeVLibI
+ o81tKlYErf/oI3oIQxwjp1aDioT/u0b14t/nGlDhrDC6StQBYsFXQ4SIRQ+JJPWiiQNWvvxrKJ0
+ QyC9Vd5hRbHsyOWzXJoXl1+7Q0dZZr3zfpVTFQnv4Oix0NGuhSH6UZMrj6B8y0yheDqaWw6GL0z
+ ZLH65FdJBlTE59X0+3H6t71C/3uY0wksqZAp3FyImHiouTsQgKCgz74vrzjGMZuWEuzBgksaSfl
+ nYNLEI25ngIL/T+Tdlw==
+X-Authority-Analysis: v=2.4 cv=c7WmgB9l c=1 sm=1 tr=0 ts=6964a4a3 cx=c_pps
+ a=Oh5Dbbf/trHjhBongsHeRQ==:117 a=nuhDOHQX5FNHPW3J6Bj6AA==:17
  a=IkcTkHD0fZMA:10 a=vUbySO9Y5rIA:10 a=s4-Qcg_JpJYA:10
- a=VkNPw1HP01LnGYTKEx00:22 a=EUspDBNiAAAA:8 a=f0Wkw4mh0JH31tpTHZgA:9
- a=QEXdDO2ut3YA:10 a=zc0IvFSfCIW2DFIPzwfm:22
-X-Proofpoint-GUID: rq3xjETYvevVIjJJ1aFL3NWDrvpmbWJ4
-X-Proofpoint-ORIG-GUID: rq3xjETYvevVIjJJ1aFL3NWDrvpmbWJ4
+ a=VkNPw1HP01LnGYTKEx00:22 a=EUspDBNiAAAA:8 a=fIzkMDVc4DzzmXS1f8kA:9
+ a=QEXdDO2ut3YA:10 a=_Vgx9l1VpLgwpw_dHYaR:22
+X-Proofpoint-GUID: brrjGNc9CsNOqOpFvVJGixL3sAOeS0K_
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.9,FMLib:17.12.100.49
  definitions=2026-01-12_02,2026-01-09_02,2025-10-01_01
 X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- lowpriorityscore=0 bulkscore=0 priorityscore=1501 impostorscore=0
- suspectscore=0 clxscore=1015 malwarescore=0 adultscore=0 spamscore=0
- phishscore=0 classifier=typeunknown authscore=0 authtc= authcc=
- route=outbound adjust=0 reason=mlx scancount=1 engine=8.22.0-2512120000
- definitions=main-2601120058
+ clxscore=1015 phishscore=0 priorityscore=1501 lowpriorityscore=0 bulkscore=0
+ spamscore=0 impostorscore=0 suspectscore=0 adultscore=0 malwarescore=0
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.22.0-2512120000 definitions=main-2601120058
 
-Currently ath12k_pull_mac_phy_cap_svc_ready_ext() assumes only one band
-supported in each phy, hence it skips 5 GHz band if 2 GHz band support
-is detected. This does not work for device which gets only one phy but
-has both bands supported, such as QCC2072.
+Add hardware registers and populate hw_regs field in
+ath12k_wifi7_hw_ver_map for QCC2072. Note for some registers not
+defined and not used by QCC2072, a magic value is assigned.
 
-Change to check each band individually to fix this issue.
+Also populate other fields to be the same with WCN7850. Among them,
+however, QCC2072 requires different HAL ops and descriptor size, both
+will be updated in upcoming patches.
 
+Tested-on: QCC2072 hw1.0 PCI WLAN.COL.1.0-01560-QCACOLSWPL_V1_TO_SILICONZ-1
 Tested-on: WCN7850 hw2.0 PCI WLAN.HMT.1.1.c5-00302-QCAHMTSWPL_V1.0_V2.0_SILICONZ-1.115823.3
 
 Signed-off-by: Baochen Qiang <baochen.qiang@oss.qualcomm.com>
 ---
- drivers/net/wireless/ath/ath12k/wmi.c | 22 ++++++++++++++--------
- 1 file changed, 14 insertions(+), 8 deletions(-)
+ drivers/net/wireless/ath/ath12k/core.h             |  1 +
+ drivers/net/wireless/ath/ath12k/hal.h              |  2 +
+ drivers/net/wireless/ath/ath12k/wifi7/Makefile     |  3 +-
+ drivers/net/wireless/ath/ath12k/wifi7/hal.c        |  8 ++
+ .../net/wireless/ath/ath12k/wifi7/hal_qcc2072.c    | 94 ++++++++++++++++++++++
+ .../net/wireless/ath/ath12k/wifi7/hal_qcc2072.h    |  8 ++
+ 6 files changed, 115 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/wireless/ath/ath12k/wmi.c b/drivers/net/wireless/ath/ath12k/wmi.c
-index 248933eac061..79a26203afad 100644
---- a/drivers/net/wireless/ath/ath12k/wmi.c
-+++ b/drivers/net/wireless/ath/ath12k/wmi.c
-@@ -399,6 +399,7 @@ ath12k_pull_mac_phy_cap_svc_ready_ext(struct ath12k_wmi_pdev *wmi_handle,
- 	struct ath12k_band_cap *cap_band;
- 	struct ath12k_pdev_cap *pdev_cap = &pdev->cap;
- 	struct ath12k_fw_pdev *fw_pdev;
-+	u32 supported_bands;
- 	u32 phy_map;
- 	u32 hw_idx, phy_idx = 0;
- 	int i;
-@@ -422,14 +423,19 @@ ath12k_pull_mac_phy_cap_svc_ready_ext(struct ath12k_wmi_pdev *wmi_handle,
- 		return -EINVAL;
+diff --git a/drivers/net/wireless/ath/ath12k/core.h b/drivers/net/wireless/ath/ath12k/core.h
+index 31d5d10beb85..667cf5993cf1 100644
+--- a/drivers/net/wireless/ath/ath12k/core.h
++++ b/drivers/net/wireless/ath/ath12k/core.h
+@@ -155,6 +155,7 @@ enum ath12k_hw_rev {
+ 	ATH12K_HW_QCN9274_HW20,
+ 	ATH12K_HW_WCN7850_HW20,
+ 	ATH12K_HW_IPQ5332_HW10,
++	ATH12K_HW_QCC2072_HW10,
+ };
  
- 	mac_caps = wmi_mac_phy_caps + phy_idx;
-+	supported_bands = le32_to_cpu(mac_caps->supported_bands);
+ enum ath12k_firmware_mode {
+diff --git a/drivers/net/wireless/ath/ath12k/hal.h b/drivers/net/wireless/ath/ath12k/hal.h
+index 81b0cb002b38..94ecc035fc49 100644
+--- a/drivers/net/wireless/ath/ath12k/hal.h
++++ b/drivers/net/wireless/ath/ath12k/hal.h
+@@ -1121,6 +1121,8 @@ struct ath12k_hw_hal_params {
+ 	u32 wbm2sw_cc_enable;
+ };
+ 
++#define ATH12K_HW_REG_UNDEFINED	0xdeadbeaf
 +
-+	if (!(supported_bands & WMI_HOST_WLAN_2GHZ_CAP) &&
-+	    !(supported_bands & WMI_HOST_WLAN_5GHZ_CAP))
-+		return -EINVAL;
+ struct ath12k_hw_regs {
+ 	u32 tcl1_ring_id;
+ 	u32 tcl1_ring_misc;
+diff --git a/drivers/net/wireless/ath/ath12k/wifi7/Makefile b/drivers/net/wireless/ath/ath12k/wifi7/Makefile
+index dcfa732bb95b..45b561cdba4b 100644
+--- a/drivers/net/wireless/ath/ath12k/wifi7/Makefile
++++ b/drivers/net/wireless/ath/ath12k/wifi7/Makefile
+@@ -14,6 +14,7 @@ ath12k_wifi7-y += core.o \
+ 		  dp_mon.o \
+ 		  hal.o \
+ 		  hal_qcn9274.o \
+-		  hal_wcn7850.o
++		  hal_wcn7850.o \
++		  hal_qcc2072.o
  
- 	pdev->pdev_id = ath12k_wmi_mac_phy_get_pdev_id(mac_caps);
- 	pdev->hw_link_id = ath12k_wmi_mac_phy_get_hw_link_id(mac_caps);
--	pdev_cap->supported_bands |= le32_to_cpu(mac_caps->supported_bands);
-+	pdev_cap->supported_bands |= supported_bands;
- 	pdev_cap->ampdu_density = le32_to_cpu(mac_caps->ampdu_density);
+ ath12k_wifi7-$(CONFIG_ATH12K_AHB) += ahb.o
+diff --git a/drivers/net/wireless/ath/ath12k/wifi7/hal.c b/drivers/net/wireless/ath/ath12k/wifi7/hal.c
+index 03a007dd6857..b957ebc9b7c5 100644
+--- a/drivers/net/wireless/ath/ath12k/wifi7/hal.c
++++ b/drivers/net/wireless/ath/ath12k/wifi7/hal.c
+@@ -12,6 +12,7 @@
+ #include "../hif.h"
+ #include "hal_qcn9274.h"
+ #include "hal_wcn7850.h"
++#include "hal_qcc2072.h"
  
- 	fw_pdev = &ab->fw_pdev[ab->fw_pdev_count];
--	fw_pdev->supported_bands = le32_to_cpu(mac_caps->supported_bands);
-+	fw_pdev->supported_bands = supported_bands;
- 	fw_pdev->pdev_id = ath12k_wmi_mac_phy_get_pdev_id(mac_caps);
- 	fw_pdev->phy_id = le32_to_cpu(mac_caps->phy_id);
- 	ab->fw_pdev_count++;
-@@ -438,10 +444,12 @@ ath12k_pull_mac_phy_cap_svc_ready_ext(struct ath12k_wmi_pdev *wmi_handle,
- 	 * band to band for a single radio, need to see how this should be
- 	 * handled.
- 	 */
--	if (le32_to_cpu(mac_caps->supported_bands) & WMI_HOST_WLAN_2GHZ_CAP) {
-+	if (supported_bands & WMI_HOST_WLAN_2GHZ_CAP) {
- 		pdev_cap->tx_chain_mask = le32_to_cpu(mac_caps->tx_chain_mask_2g);
- 		pdev_cap->rx_chain_mask = le32_to_cpu(mac_caps->rx_chain_mask_2g);
--	} else if (le32_to_cpu(mac_caps->supported_bands) & WMI_HOST_WLAN_5GHZ_CAP) {
-+	}
+ static const struct ath12k_hw_version_map ath12k_wifi7_hw_ver_map[] = {
+ 	[ATH12K_HW_QCN9274_HW10] = {
+@@ -42,6 +43,13 @@ static const struct ath12k_hw_version_map ath12k_wifi7_hw_ver_map[] = {
+ 		.hal_params = &ath12k_hw_hal_params_ipq5332,
+ 		.hw_regs = &ipq5332_regs,
+ 	},
++	[ATH12K_HW_QCC2072_HW10] = {
++		.hal_ops = &hal_wcn7850_ops,
++		.hal_desc_sz = sizeof(struct hal_rx_desc_wcn7850),
++		.tcl_to_wbm_rbm_map = ath12k_hal_tcl_to_wbm_rbm_map_wcn7850,
++		.hal_params = &ath12k_hw_hal_params_wcn7850,
++		.hw_regs = &qcc2072_regs,
++	},
+ };
+ 
+ int ath12k_wifi7_hal_init(struct ath12k_base *ab)
+diff --git a/drivers/net/wireless/ath/ath12k/wifi7/hal_qcc2072.c b/drivers/net/wireless/ath/ath12k/wifi7/hal_qcc2072.c
+new file mode 100644
+index 000000000000..6c4986050bc6
+--- /dev/null
++++ b/drivers/net/wireless/ath/ath12k/wifi7/hal_qcc2072.c
+@@ -0,0 +1,94 @@
++// SPDX-License-Identifier: BSD-3-Clause-Clear
++/*
++ * Copyright (c) Qualcomm Technologies, Inc. and/or its subsidiaries.
++ */
 +
-+	if (supported_bands & WMI_HOST_WLAN_5GHZ_CAP) {
- 		pdev_cap->vht_cap = le32_to_cpu(mac_caps->vht_cap_info_5g);
- 		pdev_cap->vht_mcs = le32_to_cpu(mac_caps->vht_supp_mcs_5g);
- 		pdev_cap->he_mcs = le32_to_cpu(mac_caps->he_supp_mcs_5g);
-@@ -451,8 +459,6 @@ ath12k_pull_mac_phy_cap_svc_ready_ext(struct ath12k_wmi_pdev *wmi_handle,
- 			WMI_NSS_RATIO_EN_DIS_GET(mac_caps->nss_ratio);
- 		pdev_cap->nss_ratio_info =
- 			WMI_NSS_RATIO_INFO_GET(mac_caps->nss_ratio);
--	} else {
--		return -EINVAL;
- 	}
- 
- 	/* tx/rx chainmask reported from fw depends on the actual hw chains used,
-@@ -468,7 +474,7 @@ ath12k_pull_mac_phy_cap_svc_ready_ext(struct ath12k_wmi_pdev *wmi_handle,
- 	pdev_cap->rx_chain_mask_shift =
- 			find_first_bit((unsigned long *)&pdev_cap->rx_chain_mask, 32);
- 
--	if (le32_to_cpu(mac_caps->supported_bands) & WMI_HOST_WLAN_2GHZ_CAP) {
-+	if (supported_bands & WMI_HOST_WLAN_2GHZ_CAP) {
- 		cap_band = &pdev_cap->band[NL80211_BAND_2GHZ];
- 		cap_band->phy_id = le32_to_cpu(mac_caps->phy_id);
- 		cap_band->max_bw_supported = le32_to_cpu(mac_caps->max_bw_supported_2g);
-@@ -488,7 +494,7 @@ ath12k_pull_mac_phy_cap_svc_ready_ext(struct ath12k_wmi_pdev *wmi_handle,
- 				le32_to_cpu(mac_caps->he_ppet2g.ppet16_ppet8_ru3_ru0[i]);
- 	}
- 
--	if (le32_to_cpu(mac_caps->supported_bands) & WMI_HOST_WLAN_5GHZ_CAP) {
-+	if (supported_bands & WMI_HOST_WLAN_5GHZ_CAP) {
- 		cap_band = &pdev_cap->band[NL80211_BAND_5GHZ];
- 		cap_band->phy_id = le32_to_cpu(mac_caps->phy_id);
- 		cap_band->max_bw_supported =
++#include "hal_qcc2072.h"
++
++const struct ath12k_hw_regs qcc2072_regs = {
++	/* SW2TCL(x) R0 ring configuration address */
++	.tcl1_ring_id = 0x00000920,
++	.tcl1_ring_misc = 0x00000928,
++	.tcl1_ring_tp_addr_lsb = 0x00000934,
++	.tcl1_ring_tp_addr_msb = 0x00000938,
++	.tcl1_ring_consumer_int_setup_ix0 = 0x00000948,
++	.tcl1_ring_consumer_int_setup_ix1 = 0x0000094c,
++	.tcl1_ring_msi1_base_lsb = 0x00000960,
++	.tcl1_ring_msi1_base_msb = 0x00000964,
++	.tcl1_ring_msi1_data = 0x00000968,
++	.tcl_ring_base_lsb = 0x00000b70,
++	.tcl1_ring_base_lsb = 0x00000918,
++	.tcl1_ring_base_msb = 0x0000091c,
++	.tcl2_ring_base_lsb = 0x00000990,
++
++	/* TCL STATUS ring address */
++	.tcl_status_ring_base_lsb = 0x00000d50,
++
++	.wbm_idle_ring_base_lsb = 0x00000d3c,
++	.wbm_idle_ring_misc_addr = 0x00000d4c,
++	.wbm_r0_idle_list_cntl_addr = 0x00000240,
++	.wbm_r0_idle_list_size_addr = 0x00000244,
++	.wbm_scattered_ring_base_lsb = 0x00000250,
++	.wbm_scattered_ring_base_msb = 0x00000254,
++	.wbm_scattered_desc_head_info_ix0 = 0x00000260,
++	.wbm_scattered_desc_head_info_ix1 = 0x00000264,
++	.wbm_scattered_desc_tail_info_ix0 = 0x00000270,
++	.wbm_scattered_desc_tail_info_ix1 = 0x00000274,
++	.wbm_scattered_desc_ptr_hp_addr = 0x00000027c,
++
++	.wbm_sw_release_ring_base_lsb = 0x0000037c,
++	.wbm_sw1_release_ring_base_lsb = ATH12K_HW_REG_UNDEFINED,
++	.wbm0_release_ring_base_lsb = 0x00000e08,
++	.wbm1_release_ring_base_lsb = 0x00000e80,
++
++	/* PCIe base address */
++	.pcie_qserdes_sysclk_en_sel = 0x01e0c0ac,
++	.pcie_pcs_osc_dtct_config_base = 0x01e0cc58,
++
++	/* PPE release ring address */
++	.ppe_rel_ring_base = 0x0000046c,
++
++	/* REO DEST ring address */
++	.reo2_ring_base = 0x00000578,
++	.reo1_misc_ctrl_addr = 0x00000ba0,
++	.reo1_sw_cookie_cfg0 = 0x0000006c,
++	.reo1_sw_cookie_cfg1 = 0x00000070,
++	.reo1_qdesc_lut_base0 = ATH12K_HW_REG_UNDEFINED,
++	.reo1_qdesc_lut_base1 = ATH12K_HW_REG_UNDEFINED,
++
++	.reo1_ring_base_lsb = 0x00000500,
++	.reo1_ring_base_msb = 0x00000504,
++	.reo1_ring_id = 0x00000508,
++	.reo1_ring_misc = 0x00000510,
++	.reo1_ring_hp_addr_lsb = 0x00000514,
++	.reo1_ring_hp_addr_msb = 0x00000518,
++	.reo1_ring_producer_int_setup = 0x00000524,
++	.reo1_ring_msi1_base_lsb = 0x00000548,
++	.reo1_ring_msi1_base_msb = 0x0000054c,
++	.reo1_ring_msi1_data = 0x00000550,
++	.reo1_aging_thres_ix0 = 0x00000b2c,
++	.reo1_aging_thres_ix1 = 0x00000b30,
++	.reo1_aging_thres_ix2 = 0x00000b34,
++	.reo1_aging_thres_ix3 = 0x00000b38,
++
++	/* REO Exception ring address */
++	.reo2_sw0_ring_base = 0x000008c0,
++
++	/* REO Reinject ring address */
++	.sw2reo_ring_base = 0x00000320,
++	.sw2reo1_ring_base = 0x00000398,
++
++	/* REO cmd ring address */
++	.reo_cmd_ring_base = 0x000002a8,
++
++	/* REO status ring address */
++	.reo_status_ring_base = 0x00000aa0,
++
++	/* CE base address */
++	.umac_ce0_src_reg_base = 0x01b80000,
++	.umac_ce0_dest_reg_base = 0x01b81000,
++	.umac_ce1_src_reg_base = 0x01b82000,
++	.umac_ce1_dest_reg_base = 0x01b83000,
++
++	.gcc_gcc_pcie_hot_rst = 0x1e65304,
++};
+diff --git a/drivers/net/wireless/ath/ath12k/wifi7/hal_qcc2072.h b/drivers/net/wireless/ath/ath12k/wifi7/hal_qcc2072.h
+new file mode 100644
+index 000000000000..744d7e02b46e
+--- /dev/null
++++ b/drivers/net/wireless/ath/ath12k/wifi7/hal_qcc2072.h
+@@ -0,0 +1,8 @@
++/* SPDX-License-Identifier: BSD-3-Clause-Clear */
++/*
++ * Copyright (c) Qualcomm Technologies, Inc. and/or its subsidiaries.
++ */
++
++#include "../hal.h"
++
++extern const struct ath12k_hw_regs qcc2072_regs;
 
 -- 
 2.25.1
