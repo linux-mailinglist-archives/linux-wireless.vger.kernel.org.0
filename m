@@ -1,100 +1,99 @@
-Return-Path: <linux-wireless+bounces-30690-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-30691-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 86B1BD10E9D
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id CC3BBD10EA0
 	for <lists+linux-wireless@lfdr.de>; Mon, 12 Jan 2026 08:37:30 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 701B83007882
-	for <lists+linux-wireless@lfdr.de>; Mon, 12 Jan 2026 07:37:28 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 4CD33300DD89
+	for <lists+linux-wireless@lfdr.de>; Mon, 12 Jan 2026 07:37:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3A8BE32E154;
-	Mon, 12 Jan 2026 07:37:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EBCAF32E154;
+	Mon, 12 Jan 2026 07:37:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="Cv2aVyKh";
-	dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b="EyB/BoFx"
+	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="IWv6pOCz";
+	dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b="K456IxYO"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9F5CB2652B0
-	for <linux-wireless@vger.kernel.org>; Mon, 12 Jan 2026 07:37:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 840B9331A4B
+	for <linux-wireless@vger.kernel.org>; Mon, 12 Jan 2026 07:37:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768203448; cv=none; b=rSSc0SJ0hmLaU7RhsPlki6I5FrsaZpaAeil5fbB8vDgfT2VIHK0QjHFrlOR2z2RZNsmr2zGKjpxlDP/V29fHXEPC+pel/g8A6XG+Lao0MHsuCjvMWHQwSlKHgZvTelkRKHcUphe8D+j6mu7YZdOm6OrXNH1vB3ijs6Vy2Vve3n0=
+	t=1768203449; cv=none; b=RIRehDMetusNY0A2QAGgAIxQhla5gwSf46F3CL4t1Ji/GLW0MVZlJi2GKorSlUFzeb0nL3UP9gumKHylC/mlgH5DM11bOarejzyAeCHPYMAc7iSZrzlnfZ4b6VN/E7tItgCQog2Ih4bgkwmrItFcH6y0cDN+pFjNlArJBKsp4ns=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768203448; c=relaxed/simple;
-	bh=6KzWa6R68qeoFG3faCDND3NNJffW01aKDfuhsmQc60U=;
+	s=arc-20240116; t=1768203449; c=relaxed/simple;
+	bh=eL9dMmOmf90JdzeHdvJjtIP7BSKWjMJAcyDyVsFObJ4=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=Bs0bIusDaXw45FlNJ4YSMFz5bmZh2LhELPXfgU7D2uFQBKWae8HxIZaag6ecoxaVLkzjJeLhuedYee8/mrSHVska08fyTZyiAmPdePKTavgHHALmMk1+xMJFH4As5ZBq1SXDEJtnO3o59lSjoP6LvB9rpRghTYZ29zzF+wK6kTA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=Cv2aVyKh; dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b=EyB/BoFx; arc=none smtp.client-ip=205.220.180.131
+	 In-Reply-To:To:Cc; b=O7f+hB66Gf76fFULcwwe63DHjFPEONxwZkMkfj/74sTUUwADhhCRX/xPfdZx5Ggia2/NqHWR7/Cs5hxVYDAcWKtyF6IdrT5QcL6Zh9LMK1Z3lsPhlrTbOK8I310YdkEwQPghGGQfitXcEu/LtgT77iFHY6uVF9hHO5BDgBrFLfE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=IWv6pOCz; dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b=K456IxYO; arc=none smtp.client-ip=205.220.180.131
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
 Received: from pps.filterd (m0279872.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 60BNpG6i3246798
-	for <linux-wireless@vger.kernel.org>; Mon, 12 Jan 2026 07:37:25 GMT
+	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 60BMpHEg3130016
+	for <linux-wireless@vger.kernel.org>; Mon, 12 Jan 2026 07:37:27 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
 	cc:content-transfer-encoding:content-type:date:from:in-reply-to
 	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
-	gRYX8YVK4IhobYJuFw94CAvEwbDe36ncjXdGfdxpUb0=; b=Cv2aVyKh3mNG97p2
-	QaJLfCSXKimwJhFv6yrJpUTtyJi7TQbO0kfIhL3E0slkkVrYOG0AnxrZimHL+wYc
-	U+3+vSOGHyhCq/xchX7Pqf2+OjtZcjm/n6X6YdAoPfr2/hemikRJ/zuDk3kBsBfI
-	iafYMEHJfYdhk43lS0Koas5B9ouIsK39ZlOJB5ClMtk06s+ipc3kbeMagSeIb4Zq
-	lvdyQfEvuVz1avfOx4Ui1TGdybDY4yI3UhjYIDlD184whzmMbdUjUm8XjpypY1HI
-	c6d33rsm59ujmzDpQL6kneF3oS8SjJ658Oyo62xDYG4Hb03Kfk0kfTwVQY3WcqDv
-	gsRDrQ==
+	RjNVQHclYLWfxtu9pN9DpjLIUxji9CjBRXoyJoIynas=; b=IWv6pOCzC4Qo0SZ4
+	NEuNEvUq8KmkzEYJbVCkALhzTy4hgOwOku70/S3cbJ/oQzVz+pIK0YDkmrmO6JVh
+	Jh3EDA/O8EhjWiD7eZAYAkU+att83wEgujhXGB+jLOA3a0NOcJP33OUYGbs8WFpU
+	mR6p27E55QTCHAZxZs0O4XMmWIz12kKBBz91H6Offqkm9kVqWBPrh8NWh3Ugjzcc
+	OojkAi1ivQEOFzf36sQ/dRkPTHw7ud8ZYVN5Zajaew2WOH4GgqQf4/3To2qFjHtV
+	yeQLBOi+KHSmwkFs7zR3dkIcTSBEKHe4Q/ryxuTVIHyaOt5CsRsFbAHOEMFPyYwp
+	hqWfXw==
 Received: from mail-pg1-f198.google.com (mail-pg1-f198.google.com [209.85.215.198])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4bkf57by9y-1
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4bkf57bya9-1
 	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
-	for <linux-wireless@vger.kernel.org>; Mon, 12 Jan 2026 07:37:25 +0000 (GMT)
-Received: by mail-pg1-f198.google.com with SMTP id 41be03b00d2f7-c5269fcecdeso2285446a12.0
-        for <linux-wireless@vger.kernel.org>; Sun, 11 Jan 2026 23:37:25 -0800 (PST)
+	for <linux-wireless@vger.kernel.org>; Mon, 12 Jan 2026 07:37:27 +0000 (GMT)
+Received: by mail-pg1-f198.google.com with SMTP id 41be03b00d2f7-c52ff723c86so2235111a12.0
+        for <linux-wireless@vger.kernel.org>; Sun, 11 Jan 2026 23:37:27 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=oss.qualcomm.com; s=google; t=1768203444; x=1768808244; darn=vger.kernel.org;
+        d=oss.qualcomm.com; s=google; t=1768203447; x=1768808247; darn=vger.kernel.org;
         h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
          :mime-version:subject:date:from:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=gRYX8YVK4IhobYJuFw94CAvEwbDe36ncjXdGfdxpUb0=;
-        b=EyB/BoFxzOIKlUyGw/tNhhD8N9XTpzuLCtFN8YwF2GqdGfc9zewe+sI235/vW0SwM3
-         3DM3rN2e1H2Tad2PUTGt+UTOeQeYmgRfG4S+66eOziyN92WTVzKrC2i8gtO3T66jE0F2
-         dfvOQ2FahTaYbey7WFyxaOr3tCAjZFg2XTPc/imixoifP6WeuHbYAQdg1NmUeDNxprIv
-         f41kWKGUam80Z9iIQM0SnHRShZD/jb/+MOeCtkjnzunU2O6l2Ow5tenES6S9QfFZNMMb
-         RenKZDrlsp94zTALA8wcAZ7qntyuPLhStqtxF9q/XrH8TsCQW9iloKLehqGCq8DaCz9m
-         OYkA==
+        bh=RjNVQHclYLWfxtu9pN9DpjLIUxji9CjBRXoyJoIynas=;
+        b=K456IxYOcsP+E5lkWGMpZt50mJ751lmZl01fWS5lZscmuSxZ/LSeLglsZc3fSPPHm3
+         i9oxTbkugv/7nPE4IhvImP8OhVTjDaMc0HDuyqhJjgqR6he1tgf6t7vNPAzZrrtDvRd3
+         uD0Oywi6eRJDa2jCIrjtAkUdGW1d4YXYP9kLEbRPhKJXWxYmKF+gpjbb0CkcJkajROex
+         3vdgo/AkQuhPkJf2vbXq4pz15iLWidixzi58GIyhx8udKFehDu0r7npUUfbwG+E4NF1X
+         8XgY0OFKMHe6zBB9NdYUHRn/rGxqzRIFQLigQXcGdjrBAz4SBNJ58Oc/6iAnAMfeFGkd
+         h+XQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1768203444; x=1768808244;
+        d=1e100.net; s=20230601; t=1768203447; x=1768808247;
         h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
          :mime-version:subject:date:from:x-gm-gg:x-gm-message-state:from:to
          :cc:subject:date:message-id:reply-to;
-        bh=gRYX8YVK4IhobYJuFw94CAvEwbDe36ncjXdGfdxpUb0=;
-        b=UmKN9dOIBWltBp8o2FVtgY1DysCGBhXWOpZY3tdJ8v6un+CImQZW4iybBg1T04aAms
-         z17BEE7oWWpKp1xBFVr/UFHeHGNTjS4ng4Mqes97snnjzMqy/U3o8myFmkJZhQzP14NY
-         UxEGoddXN5CZPJCZYKxbLokoKtt1ti8iyASXSv9jyEjVVftZu23jdemRZ41QiKgz+mBV
-         B8y1JoJ+ogRwcTansCFjomR1HIR5M8hivFl9aCOyjEGmVtYmuFGGzmCEnQDMNgVL6zek
-         xUjDVCV0itYkUlGWhcd6kDgbJqXA6qgCW8M/m8a1tTaOC7ljdoSppKH1YSYbEHaUYv24
-         09xg==
-X-Gm-Message-State: AOJu0YzIINYTQ+E6TEr1KcsF9sV5y3FzheJf5TyOQf7sxD3tYEyiMBZX
-	0NNL6ds01xbSHFhgf6Qt6uYYX5neMtB7/JcZq/uB2+lrVLp9ZbYmCbYz0fBM6NR1SLWgIXVM9g7
-	t5TxyL5CiAqMZa9edoQxbSNukMNNxVOX1CkrkKqlvNgiqi++WqdmFBYz2VwygouvsQ/jAQg==
-X-Gm-Gg: AY/fxX41xsTCNeo4BhH6mTOMuYBCIi+7tSBzBsEsuPLp1UaEt99yILBdrpSzyJHYGWA
-	+pGGej+Rz9uYQVwKX70foMvT4S5kflFCuk/S/iU+jzOAhdXQgkzdbpMJaKWjcbiRWYE0zzyszq1
-	Tcxz2bVWnmrAsbUvpeGlEDVT9U7jcB7PA+z42jAPiLaBEoL4gzy7mtaeR15JBdaRMU6Ff6KJilJ
-	oKlgkofRw7aV0FlsKcZE/ga1LH71YrO1KiTNxNsY0hYWGCM+VLAdIcPmcF5v5ElIoGNRgNzoPNn
-	cUTQG4w8uCSplrgN69DYZBNYC3DAuFm3oQXpyZdlw1+AKSIVhKTBsK2Hbr9qGAz0624PTGOb2Aq
-	Gig4JO7vOxrl7PlqAyip80GVEFNHMFHs4bwU4Ny3cMQ1Bldd+pBM/DNI5Zhsi0o4=
-X-Received: by 2002:a05:6a21:6da1:b0:33e:eb7a:4465 with SMTP id adf61e73a8af0-3898f8cc022mr16140620637.22.1768203444497;
-        Sun, 11 Jan 2026 23:37:24 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IGNBp3ADETjybZc8krnk+zrEAINBJ30KbTMvu7SVE2uIOY0qEet+yZXYtaJi6JHidGbHLeaYQ==
-X-Received: by 2002:a05:6a21:6da1:b0:33e:eb7a:4465 with SMTP id adf61e73a8af0-3898f8cc022mr16140602637.22.1768203443998;
-        Sun, 11 Jan 2026 23:37:23 -0800 (PST)
+        bh=RjNVQHclYLWfxtu9pN9DpjLIUxji9CjBRXoyJoIynas=;
+        b=O22dCcX2IlqsQ8S010ost9lcKNnsn4BBFxwg4e8+Q/d/lFVxA5CZgOyJ7C5nhMWC2N
+         eNcKFVW3mOcjVtZ+q38NVfMUXOGKZI2YKErLttg2fdB3ElcOQpr+Jz7urDO+cItON4aE
+         RcTqKbGo9qdxQX0Ea5LTLy18WlrVIGAq/nEpu+h2GnC/hAAKG5geNpuuD7u64lDFL+tc
+         bBho7wi8CXzeN7Zn0QloIIaljnThxz8+X7F2bQJLGF0VqHGQXWn1CAiDUJDDfEvDaJc7
+         FvTMQGP+SGRnx0aeyi0+7dCNv0iSgYfBcAh3KYHGzLRqJG51K6I7MUB2fmUUmxuxF86s
+         2xqg==
+X-Gm-Message-State: AOJu0YzXmk9fysfkM5trLKvtciOwVaUuEMaQ/zykwJ6LR+iUBPOEh1o/
+	17aBuY342KBMlnZDGrQDc7kK1Sy0co3jYT73pZuVUslNUjbHGTx+mE2tCI1gc5PRz+FTY4EDVOw
+	zSTuJnu6dtRHzcYS89FcO1t9PuZUiQvUQnCRMg7EElmvCsai3Y9eJed/zigmS+zVHMVzTGg==
+X-Gm-Gg: AY/fxX7L9994QhCDVUM1mg4kER62VEcG8HH5GXpBxAJZ53EFvQlp5lWO2fDu+52UV5S
+	AeRZ/5FsD7WGUyU+mr67wLfYn22FhKsTFYv7YJ1ZUEsmo5pO0YWGit3OvKzn054cz1H8cCAm0Ve
+	cq4hJZDMIf58nalk0GXKY6N+11iJrrZyfGwtE0QHlk9/Z6n8be8uP8ldoVYyFN1cGX2dTPfBjuH
+	yyDzAx9HJ8V/xcKSMheoaWQZNFZarGps/WR8x7lGcpmBh3lRg1RcU98UnrwSHDBuM2EXq7PEEY6
+	m9Kg/XkTwAdninvtNMHofuPZLy9kKFmhINR4zX2ixERap11+tI+Mx4APdeMhnPMPIr7FOXwUv7w
+	bZsqfhfWetTYjJaAj9iBLBcgo9Agz/C0ge027frw/cTzNddalSxhQbf85ttXpL/Y=
+X-Received: by 2002:a05:6a20:e290:b0:366:14b0:4b12 with SMTP id adf61e73a8af0-3898f9bde9fmr16362765637.78.1768203446560;
+        Sun, 11 Jan 2026 23:37:26 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IG/3b+RCzW+/Dbq7svVhbYRRWrlgi4ZmsYOV1KHNtRuTJUDGE0XVcdRer7wiWjxrySVZh8KvA==
+X-Received: by 2002:a05:6a20:e290:b0:366:14b0:4b12 with SMTP id adf61e73a8af0-3898f9bde9fmr16362755637.78.1768203446080;
+        Sun, 11 Jan 2026 23:37:26 -0800 (PST)
 Received: from [127.0.1.1] (tpe-colo-wan-fw-bordernet.qualcomm.com. [103.229.16.4])
-        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-c4cbf28faa9sm16548684a12.2.2026.01.11.23.37.22
+        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-c4cbf28faa9sm16548684a12.2.2026.01.11.23.37.24
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 11 Jan 2026 23:37:23 -0800 (PST)
+        Sun, 11 Jan 2026 23:37:25 -0800 (PST)
 From: Baochen Qiang <baochen.qiang@oss.qualcomm.com>
-Date: Mon, 12 Jan 2026 15:36:37 +0800
-Subject: [PATCH ath-next v2 17/18] wifi: ath12k: fix
- PCIE_LOCAL_REG_QRTR_NODE_ID definition for QCC2072
+Date: Mon, 12 Jan 2026 15:36:38 +0800
+Subject: [PATCH ath-next v2 18/18] wifi: ath12k: enable QCC2072 support
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
@@ -103,29 +102,28 @@ List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260112-ath12k-support-qcc2072-v2-17-fc8ce1e43969@oss.qualcomm.com>
+Message-Id: <20260112-ath12k-support-qcc2072-v2-18-fc8ce1e43969@oss.qualcomm.com>
 References: <20260112-ath12k-support-qcc2072-v2-0-fc8ce1e43969@oss.qualcomm.com>
 In-Reply-To: <20260112-ath12k-support-qcc2072-v2-0-fc8ce1e43969@oss.qualcomm.com>
 To: Jeff Johnson <jjohnson@kernel.org>
 Cc: linux-wireless@vger.kernel.org, ath12k@lists.infradead.org,
-        Baochen Qiang <baochen.qiang@oss.qualcomm.com>,
-        Miaoqing Pan <miaoqing.pan@oss.qualcomm.com>
+        Baochen Qiang <baochen.qiang@oss.qualcomm.com>
 X-Mailer: b4 0.14.3
-X-Authority-Analysis: v=2.4 cv=K/sv3iWI c=1 sm=1 tr=0 ts=6964a4b5 cx=c_pps
+X-Authority-Analysis: v=2.4 cv=K/sv3iWI c=1 sm=1 tr=0 ts=6964a4b7 cx=c_pps
  a=Qgeoaf8Lrialg5Z894R3/Q==:117 a=nuhDOHQX5FNHPW3J6Bj6AA==:17
  a=IkcTkHD0fZMA:10 a=vUbySO9Y5rIA:10 a=s4-Qcg_JpJYA:10
- a=VkNPw1HP01LnGYTKEx00:22 a=EUspDBNiAAAA:8 a=YBsQQ0GhBToZ_qaIIOwA:9
+ a=VkNPw1HP01LnGYTKEx00:22 a=EUspDBNiAAAA:8 a=ef0WcUByH-36KoXH_5MA:9
  a=QEXdDO2ut3YA:10 a=x9snwWr2DeNwDh03kgHS:22
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwMTEyMDA1OCBTYWx0ZWRfXx/tLwjE5z/04
- mimhjukdurOcoQO/P5n0M0JqcNTLRpO9V0d0yWxWHtlhB0MZjlSZuj+JSq77BG3CaWHlRwdImFa
- K5Z/wul7FL61zOeJZYZuxWi+3C91fqYfOs2ubPTrU/is2hWZdvGl9kVugdMn20jpFGs1jmUorEV
- 4BiZtmCu1kL/O8dlb/9ePD8oZ6vyR3GEIA53k+c5XugeJvF3Fjm59CrPg8/0RPT8nDpuoEN/VqW
- vLyg9/bDZ6kf7K1LQYkStmC5QQFkrhdiHmyzcYjMbch2qchfBHhn7s/O6O//YuqCMaIRb80FYiS
- fs3RJIZBFDcYNxGAj1VcIO4MWJwRNmjhONllXKGoyI4Qbf3FZuBSy+of31Sq+pFP0wMP3sSXJZ/
- UYCR3SkV52yc/UGSJiheMHxkGEADpOUDMUK6/RoDdhZ55tBrSoLXA0CW+7lfQa7CG/cFIUMqZBF
- vGIZpM44tPUaGDuaOmw==
-X-Proofpoint-GUID: tEeFBaWN6DuH7VFJcLHCzFgVpDT8SBsY
-X-Proofpoint-ORIG-GUID: tEeFBaWN6DuH7VFJcLHCzFgVpDT8SBsY
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwMTEyMDA1OCBTYWx0ZWRfX3VY9VLJ+/2bn
+ +nuHEX67V61KKm8dn+5D0SxRV+wiyq5X7Hj6iC1DXIPbuyiTKE0Lk0f2lqOTxFLjaQgNulQwT/o
+ 1+MNk5u18o0TpV5tS4pLD25zhsBA5GZSXVGzBhd6UQHVtR45YVy/uid87NMIT7tRvmxi08hNzS5
+ n0mcBSAj07lU+YGvA9q2ywFGmCw4CvzbG5RIJlr4KY3zA+JFO5VmO/WJ529uiTDOTe0VBtzos+0
+ yNElKo5TQ2+V5nWVbFzMVETBPo0tsMKzInmJalFy7D3eXal0cZAf3Dm+lWshw7jVY5UOa0Qcs9V
+ gnh4qX5EYZn/tAbHr2/p6XyHQ+Ez+ra8mxVPKwnnvf1Cx3V6NDCVkMy6STQFcFtmqQ5HuPUo7Dk
+ R/F7jdgZO6/Ys2OOS/Tm/mIFmn1znanQ0ZjZswUacsLYhFid030gY6raefj7xigxe4qTLlarydZ
+ 5CWYvYhBvgc/ZlLeakQ==
+X-Proofpoint-GUID: RnxOsSgsW36RdYECTJGu-VCAPREfHm3_
+X-Proofpoint-ORIG-GUID: RnxOsSgsW36RdYECTJGu-VCAPREfHm3_
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.9,FMLib:17.12.100.49
  definitions=2026-01-12_02,2026-01-09_02,2025-10-01_01
@@ -135,129 +133,65 @@ X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
  classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
  reason=mlx scancount=1 engine=8.22.0-2512120000 definitions=main-2601120058
 
-From: Miaoqing Pan <miaoqing.pan@oss.qualcomm.com>
+QCC2072 is a PCI based device that is very much like WCN7850, the major
+difference is that QCC2072 has only one phy hence does not support DBS.
+With previous patches handling such similarity and difference, it is now
+ready to finally enable supporting this device.
 
-The definition of PCIE_LOCAL_REG_QRTR_NODE_ID in QCC2072 is
-incorrect, which causes the QMI connection to fail when
-ATH12K_FW_FEATURE_MULTI_QRTR_ID is enabled. To resolve this
-issue, move it to the hardware register table.
+Add QCC2072's ID to the PCI device ID table, to allow it getting probed
+hence enable support. Also populate some necessary parameters when probing.
 
-Note IPQ5332 is not affected as it is not PCIe based device.
+Tested-on: QCC2072 hw1.0 PCI WLAN.COL.1.0-01560-QCACOLSWPL_V1_TO_SILICONZ-1
+Tested-on: WCN7850 hw2.0 PCI WLAN.HMT.1.1.c5-00302-QCAHMTSWPL_V1.0_V2.0_SILICONZ-1.115823.3
 
-Tested-on: QCC2072 hw1.0 PCI CI_WLAN.COL.1.0-01668.1-QCACOLSWPL_V1_TO_SILICONZ-9
-
-Signed-off-by: Miaoqing Pan <miaoqing.pan@oss.qualcomm.com>
 Signed-off-by: Baochen Qiang <baochen.qiang@oss.qualcomm.com>
 ---
- drivers/net/wireless/ath/ath12k/hal.h               | 2 ++
- drivers/net/wireless/ath/ath12k/pci.c               | 6 +-----
- drivers/net/wireless/ath/ath12k/pci.h               | 5 +++++
- drivers/net/wireless/ath/ath12k/wifi7/hal_qcc2072.c | 2 ++
- drivers/net/wireless/ath/ath12k/wifi7/hal_qcn9274.c | 4 ++++
- drivers/net/wireless/ath/ath12k/wifi7/hal_wcn7850.c | 2 ++
- 6 files changed, 16 insertions(+), 5 deletions(-)
+ drivers/net/wireless/ath/ath12k/wifi7/pci.c | 14 +++++++++++++-
+ 1 file changed, 13 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/wireless/ath/ath12k/hal.h b/drivers/net/wireless/ath/ath12k/hal.h
-index 520587305dfa..43e3880f8257 100644
---- a/drivers/net/wireless/ath/ath12k/hal.h
-+++ b/drivers/net/wireless/ath/ath12k/hal.h
-@@ -1201,6 +1201,8 @@ struct ath12k_hw_regs {
- 	u32 reo_status_ring_base;
+diff --git a/drivers/net/wireless/ath/ath12k/wifi7/pci.c b/drivers/net/wireless/ath/ath12k/wifi7/pci.c
+index 6c477fe97298..6c96b52dec13 100644
+--- a/drivers/net/wireless/ath/ath12k/wifi7/pci.c
++++ b/drivers/net/wireless/ath/ath12k/wifi7/pci.c
+@@ -19,6 +19,7 @@
  
- 	u32 gcc_gcc_pcie_hot_rst;
-+
-+	u32 qrtr_node_id;
+ #define QCN9274_DEVICE_ID		0x1109
+ #define WCN7850_DEVICE_ID		0x1107
++#define QCC2072_DEVICE_ID		0x1112
+ 
+ #define ATH12K_PCI_W7_SOC_HW_VERSION_1	1
+ #define ATH12K_PCI_W7_SOC_HW_VERSION_2	2
+@@ -28,10 +29,12 @@
+ #define TCSR_SOC_HW_VERSION_MINOR_MASK	GENMASK(7, 4)
+ 
+ #define WINDOW_REG_ADDRESS		0x310c
++#define WINDOW_REG_ADDRESS_QCC2072	0x3278
+ 
+ static const struct pci_device_id ath12k_wifi7_pci_id_table[] = {
+ 	{ PCI_VDEVICE(QCOM, QCN9274_DEVICE_ID) },
+ 	{ PCI_VDEVICE(QCOM, WCN7850_DEVICE_ID) },
++	{ PCI_VDEVICE(QCOM, QCC2072_DEVICE_ID) },
+ 	{}
  };
  
- /* HAL context to be used to access SRNG APIs (currently used by data path
-diff --git a/drivers/net/wireless/ath/ath12k/pci.c b/drivers/net/wireless/ath/ath12k/pci.c
-index 4bc30d86c1a7..fb597f063614 100644
---- a/drivers/net/wireless/ath/ath12k/pci.c
-+++ b/drivers/net/wireless/ath/ath12k/pci.c
-@@ -34,10 +34,6 @@
-  */
- #define ACCESS_ALWAYS_OFF 0xFE0
- 
--#define PCIE_LOCAL_REG_QRTR_NODE_ID	0x1E03164
--#define DOMAIN_NUMBER_MASK		GENMASK(7, 4)
--#define BUS_NUMBER_MASK			GENMASK(3, 0)
+@@ -152,7 +155,16 @@ static int ath12k_wifi7_pci_probe(struct pci_dev *pdev,
+ 			return -EOPNOTSUPP;
+ 		}
+ 		break;
 -
- static struct ath12k_pci_driver *ath12k_pci_family_drivers[ATH12K_DEVICE_FAMILY_MAX];
- static const struct ath12k_msi_config msi_config_one_msi = {
- 	.total_vectors = 1,
-@@ -918,7 +914,7 @@ static void ath12k_pci_update_qrtr_node_id(struct ath12k_base *ab)
- 	 * writes to the given register, it is available for firmware when the QMI service
- 	 * is spawned.
- 	 */
--	reg = PCIE_LOCAL_REG_QRTR_NODE_ID & WINDOW_RANGE_MASK;
-+	reg = PCIE_LOCAL_REG_QRTR_NODE_ID(ab) & WINDOW_RANGE_MASK;
- 	ath12k_pci_write32(ab, reg, ab_pci->qmi_instance);
- 
- 	ath12k_dbg(ab, ATH12K_DBG_PCI, "pci reg 0x%x instance 0x%x read val 0x%x\n",
-diff --git a/drivers/net/wireless/ath/ath12k/pci.h b/drivers/net/wireless/ath/ath12k/pci.h
-index a74b09d23a6a..0e0e2020c6ae 100644
---- a/drivers/net/wireless/ath/ath12k/pci.h
-+++ b/drivers/net/wireless/ath/ath12k/pci.h
-@@ -59,6 +59,11 @@
- #define QCN9274_QFPROM_RAW_RFA_PDET_ROW13_LSB	0x1E20338
- #define OTP_BOARD_ID_MASK			GENMASK(15, 0)
- 
-+#define PCIE_LOCAL_REG_QRTR_NODE_ID(ab) \
-+	((ab)->hal.regs->qrtr_node_id)
-+#define DOMAIN_NUMBER_MASK			GENMASK(7, 4)
-+#define BUS_NUMBER_MASK				GENMASK(3, 0)
-+
- #define PCI_BAR_WINDOW0_BASE	0x1E00000
- #define PCI_BAR_WINDOW0_END	0x1E7FFFC
- #define PCI_SOC_RANGE_MASK	0x3FFF
-diff --git a/drivers/net/wireless/ath/ath12k/wifi7/hal_qcc2072.c b/drivers/net/wireless/ath/ath12k/wifi7/hal_qcc2072.c
-index ee2427fadfc1..1eefb931a853 100644
---- a/drivers/net/wireless/ath/ath12k/wifi7/hal_qcc2072.c
-+++ b/drivers/net/wireless/ath/ath12k/wifi7/hal_qcc2072.c
-@@ -92,6 +92,8 @@ const struct ath12k_hw_regs qcc2072_regs = {
- 	.umac_ce1_dest_reg_base = 0x01b83000,
- 
- 	.gcc_gcc_pcie_hot_rst = 0x1e65304,
-+
-+	.qrtr_node_id = 0x1e03300,
- };
- 
- static void ath12k_hal_rx_desc_set_msdu_len_qcc2072(struct hal_rx_desc *desc, u16 len)
-diff --git a/drivers/net/wireless/ath/ath12k/wifi7/hal_qcn9274.c b/drivers/net/wireless/ath/ath12k/wifi7/hal_qcn9274.c
-index 95850e6dc6c7..41c918eb1767 100644
---- a/drivers/net/wireless/ath/ath12k/wifi7/hal_qcn9274.c
-+++ b/drivers/net/wireless/ath/ath12k/wifi7/hal_qcn9274.c
-@@ -297,6 +297,8 @@ const struct ath12k_hw_regs qcn9274_v1_regs = {
- 	.umac_ce1_dest_reg_base = 0x01b83000,
- 
- 	.gcc_gcc_pcie_hot_rst = 0x1e38338,
-+
-+	.qrtr_node_id = 0x1e03164,
- };
- 
- const struct ath12k_hw_regs qcn9274_v2_regs = {
-@@ -390,6 +392,8 @@ const struct ath12k_hw_regs qcn9274_v2_regs = {
- 	.umac_ce1_dest_reg_base = 0x01b83000,
- 
- 	.gcc_gcc_pcie_hot_rst = 0x1e38338,
-+
-+	.qrtr_node_id = 0x1e03164,
- };
- 
- const struct ath12k_hw_regs ipq5332_regs = {
-diff --git a/drivers/net/wireless/ath/ath12k/wifi7/hal_wcn7850.c b/drivers/net/wireless/ath/ath12k/wifi7/hal_wcn7850.c
-index 88f51a3828aa..e64e512cac7d 100644
---- a/drivers/net/wireless/ath/ath12k/wifi7/hal_wcn7850.c
-+++ b/drivers/net/wireless/ath/ath12k/wifi7/hal_wcn7850.c
-@@ -256,6 +256,8 @@ const struct ath12k_hw_regs wcn7850_regs = {
- 	.umac_ce1_dest_reg_base = 0x01b83000,
- 
- 	.gcc_gcc_pcie_hot_rst = 0x1e40304,
-+
-+	.qrtr_node_id = 0x1e03164,
- };
- 
- static inline
++	case QCC2072_DEVICE_ID:
++		ab->id.bdf_search = ATH12K_BDF_SEARCH_BUS_AND_BOARD;
++		ab_pci->msi_config = &ath12k_wifi7_msi_config[0];
++		ab->static_window_map = false;
++		ab_pci->pci_ops = &ath12k_wifi7_pci_ops_wcn7850;
++		ab_pci->window_reg_addr = WINDOW_REG_ADDRESS_QCC2072;
++		ab->target_mem_mode = ATH12K_QMI_MEMORY_MODE_DEFAULT;
++		/* there is only one version till now */
++		ab->hw_rev = ATH12K_HW_QCC2072_HW10;
++		break;
+ 	default:
+ 		dev_err(&pdev->dev, "Unknown Wi-Fi 7 PCI device found: 0x%x\n",
+ 			pci_dev->device);
 
 -- 
 2.25.1
