@@ -1,83 +1,84 @@
-Return-Path: <linux-wireless+bounces-30704-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-30705-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 65227D13C92
-	for <lists+linux-wireless@lfdr.de>; Mon, 12 Jan 2026 16:48:25 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 33397D13CD4
+	for <lists+linux-wireless@lfdr.de>; Mon, 12 Jan 2026 16:51:38 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id A26ED303ADCC
-	for <lists+linux-wireless@lfdr.de>; Mon, 12 Jan 2026 15:47:20 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id C74E5305D90A
+	for <lists+linux-wireless@lfdr.de>; Mon, 12 Jan 2026 15:47:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 18F113624C4;
-	Mon, 12 Jan 2026 15:47:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 343F830498E;
+	Mon, 12 Jan 2026 15:47:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="oZbvcZAe"
+	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="daR1dITH"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-wr1-f43.google.com (mail-wr1-f43.google.com [209.85.221.43])
+Received: from mail-wm1-f43.google.com (mail-wm1-f43.google.com [209.85.128.43])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6E9C8346AE6
-	for <linux-wireless@vger.kernel.org>; Mon, 12 Jan 2026 15:47:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.43
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5F2BF3126A3
+	for <linux-wireless@vger.kernel.org>; Mon, 12 Jan 2026 15:47:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.43
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768232837; cv=none; b=ax3irCiME7T7L4ABac7D5tQAUfQqGfeuVNr1bIY9mabBZ9uGCK7Eu0oy/GUdteW+spQnfgIH/D8qOsk5JqJf7gb+TBoEQmr5SBbevyqGsIvhnoi0xV2tPcpzbCF4imX22A7ga9dDnuuGWSmnLHlbJVK5AkL2DrerJ5DT0+G19FI=
+	t=1768232838; cv=none; b=s0JUhe8H90e1EUIQIdwtrIAb5o6jfsbPlSWG1MjdF0jt/N0KAsBAUMS1Z0JvsxcPug79aH19d1dHko9YOI2w1adjBqZYbcce7+q591mrKXD9pee+TazNmO/urvKA5MimRvfvZESXL1vAVyG8BbolG1DswkGTmuHohM4Q2/9qHaQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768232837; c=relaxed/simple;
-	bh=ZRl9U2eWNBrBGlVV90s5iYJcQXBiMXawJuqIetzdtkA=;
+	s=arc-20240116; t=1768232838; c=relaxed/simple;
+	bh=SkcAEzo7i/6i/n+AriKV4xHUsY6KE3N6pRVzU1yP/iM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=XpZNc3pADEK6JejuUGy738fPu6afQtLLT94+DXRYhQtSY9zo8YPJw4taIw69zAW1YxJegBWdcx5ri9++wMARREoJN86ZvxA13VUtj3beIUu0kYUtaKZabq0d8xmh0DmMgVYeDAezdoUq/lnrB13Bjg/1ceJNbzpM24LCCFn4k1o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=oZbvcZAe; arc=none smtp.client-ip=209.85.221.43
+	 MIME-Version:Content-Type; b=UeXczG1q1nYPjWpFZJddA7IXvNEK6jsoEji2sFRWH6iicBsDzXaX2rOluolgR5Q1Pb3MCnGgQaLSVow7IGnxovsDxc+LnXGl0YsetI7/LOegZea7OX+QNWoe4WcR1AN3ki07ZliYK8WdHq5npPb+N7xX2viH+4EFhkRQkwLpjIk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=daR1dITH; arc=none smtp.client-ip=209.85.128.43
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
-Received: by mail-wr1-f43.google.com with SMTP id ffacd0b85a97d-43277900fb4so2314635f8f.1
-        for <linux-wireless@vger.kernel.org>; Mon, 12 Jan 2026 07:47:15 -0800 (PST)
+Received: by mail-wm1-f43.google.com with SMTP id 5b1f17b1804b1-47d3ffa5f33so29679555e9.2
+        for <linux-wireless@vger.kernel.org>; Mon, 12 Jan 2026 07:47:16 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1768232834; x=1768837634; darn=vger.kernel.org;
+        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1768232835; x=1768837635; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=QEicXomtf6TLRidf/WjHVwpRlXa9+6h/7rckG81TX6A=;
-        b=oZbvcZAeOiE7GKnKqzRTg3EOAkm6nDHrEkBvfb7/EyjOkj0MgdINnMvWYq4oBSLfR4
-         Oo163g9ugqZt/YAKYn78FfMBm6AgYRptb38Ah01p/f/R3DUzSFwKKlGEHyWyxrsKNXBL
-         +WlprEGj/xqeOr0cj5FjC2t0IAEUyuaMp8jxBbpt/f8tYlZID+IRNMnICIW7MgAf+aa0
-         31RwmJZ9lbVIYD2yPcu9g5wUvOkcWTMrROdhFLtd5dHA5Z7k3j5a5akfCFL+oiKegCHp
-         hdvDGMntCcZx3bORlDX1lLubV8WSJzM/7eIU50Y0YcaEnEWfU+mtlLyVa5UmMNe7OTNu
-         eDzg==
+        bh=uJ5P43t34Lz1EY6AFSYYgZN1NN5lPCazHIAbk5Krusg=;
+        b=daR1dITHXXAu7s62xAbAPxJZnsqtUWo3wZNQxGqs2obuvvynUtehiucvsizKbUqiSs
+         P2QWgCnxSs3R2gyVr91nhBFXAtmfwDK3+dUozwNAA5JZ1YiX6U7GSO31F29JuwFAwI2/
+         DntSBqY+bYBu3UqZb1VAy57UpPK+p4RkfOZ2KE4UpEpN9jdWJyHNqw0Ix0j8ZW1ab9lZ
+         zKSOVT53m61s/XFC0mt75GoHKna3tDmdMHoUvZNR7lZ+svtG/7zQPUJH7oifW5DTGG4B
+         9HE4vuUEd+xaIBGMmfN2nkJfhsHtXZHGr5l4Nfu78CtlMCrJSbDh/laM7rdp1qQma6jQ
+         eY0g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1768232834; x=1768837634;
+        d=1e100.net; s=20230601; t=1768232835; x=1768837635;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to;
-        bh=QEicXomtf6TLRidf/WjHVwpRlXa9+6h/7rckG81TX6A=;
-        b=EuHY6R8eheNzdYa7Hsrf9lPphmLHTnF0G8MPemYbhFi2jzY9bd+tNqgkq35/Vsn8w9
-         LBoYCQ5eS7n3ZIQfY8XFBjplq6Wcgw98/8+uA1AeICVn/CGLEa6BYdgSakpm9b2XTHCY
-         zUp11pjL5oyZo3FFpBmrJ52ULUwMuYQcoK5GnkJQTjZnV0eYdA4vKjuaqtGnM0Omdnn8
-         OGlgkVlf1WzSdWe6+t3V+Pp5Yll70IV67WpWjbmf7tceCV8Ph13UJEyKpsE6n/HINVti
-         qb0fsmLtyZpAetocYR7Xz2IKxQtFF6W5poPN5cO8SQzvKWsb2tLqq7U7gdYDSCBCSE4L
-         vRnw==
-X-Gm-Message-State: AOJu0Yy3w6PSz7CVfvcPI2ttty2Xw9Z6SNhbNh7U+Pn0Rp5pzaG7azgk
-	QpWOjAAszsL3XfgXcoYemJuLeLyWSbtd0/I0gv7p+3h/PqxEzscnL8jmexDOfykHmNWi8QZ4Hnb
-	F3Uhg
-X-Gm-Gg: AY/fxX51o3K9+5AAf8kKmfklQbQ9qIzq9hqOZ2P4e2eN1RMWNk0CuW9cFRahqi7ssHD
-	9ixJCNZryXlGcXjMUckIqthVVqmEYeUiwMYK6paeko4aWe6DZG9xHk2U9jNN81OUuFrwE2G1Ijj
-	VDjzfGr4jzBcjkhkvj8+PBOfsLWxphUzL1z/pN13QnJPCEvYCnOzPMhfYbux7A53cgJRUuM/I8e
-	BfLtN2i8drVpcxc/NoVnhx5p3wDnsxkYtAy1ci1opR3ZB8yZkEzCM1UFEaL1s9BS+TvkXwblwIA
-	0sQdbYuiiyerWSrkH9626c8FH2FS7x85crMDKNhRq0NXRMjDRDbpGNyvPkQ0hXWpmyB/FzIabV5
-	7MAkd1D3lad+T5BCGgj2XFzS0fTd9W9WInSdsls9ifBfCuz4DdLQ0rtF+/bHckeL8d3KNb5h9Cs
-	cXxFhYLbp/wI4QTa/csWJpu7IkBOQj7XNQR9wqX7zco6FByXDFnwSJUtpD0wJ+elYz4SItd4fH
-X-Google-Smtp-Source: AGHT+IHMZ85csB50BO2m87ENQgmCB8Ih1xeLjmd1v22N/Cw65kTyEtKJRa0ovnk859ikxMf6kzUdQA==
-X-Received: by 2002:a05:6000:24c8:b0:432:86e3:84ec with SMTP id ffacd0b85a97d-432c3763569mr21308142f8f.23.1768232833662;
-        Mon, 12 Jan 2026 07:47:13 -0800 (PST)
+        bh=uJ5P43t34Lz1EY6AFSYYgZN1NN5lPCazHIAbk5Krusg=;
+        b=ry3MTDXSVuVWiKH404S4vcfPKIr4PULgos+iwGzXWdm8DKJLzJNZhnpxuGQAB9OYxB
+         zIf8eD8b1D9MtPb8NfqfwGEfqayEZvvB4goVqQhfZSLs/CH+p4pRhcIqTg54uC2eOTdD
+         eYnMEo/yzfHsnJG8ZMOM3z9ZtWWJUFPYpZV2JQvt+9CaUSwvUaGWuhhXld48o47IfGUd
+         SGDeoLGUbpIPKj1zslMv6ODPKQHX8NNzx3WjcK1kLDdoMbk7J6vbR+xKETC98+secSQN
+         jCrYXseDNO4VomgC/G4stkTtT9P9PAg77WuOh5MpKsnUGvvNJzMV8hzlP3MMrfzONlnv
+         m6JA==
+X-Gm-Message-State: AOJu0YyioIpSqpPPqRdwoUO68VfSf11uoByuZo0iIDluX5k4DwOmlWfX
+	FgJnxA/3zceMmXDl6c+KoX3c45mEoDkjAogFh6IE4r5wzSl1eyPx/PTIkr6isFpKqI0=
+X-Gm-Gg: AY/fxX6EEhbquUhF9oRCq5DmizPI7YxzU/6XEwzTH2XrRBT+1syihpn6uDBTk8JNzCJ
+	xRfAOpUFaM3JnRQ594wWtP7R952TWYtliF8Bo9IzgKzdAKSctS5xImM70+j3xkGVCjsTkOhFAfW
+	MxVNKJKh7V82FuPgNJeWq6hPpkIwOFs1AMfYgCEP+CLCJ82BkUpWRnC/60heJpNJEODA731oDoS
+	YO2jSG8Aoro50aLIN5qLHXBz4sBO9nScF0jH1boyRlPMzTGcloKvz2SAOCTaT08NqW5N2d4CDD0
+	JqzgHf91tvM+pb9mAnHfH0QHisPQLp452xYGQWIcTqdrgqbDzg9LruNprvxHxwrmWWwI7WFWzlv
+	u5l+6tfMB3CMVhbyezrb100HyWa3jMF+08GciW7ThFkwN14kWsVJuA4/1qUHPyGYeuwziubSg/I
+	vjqw/FuYM1fPvFZ/7ZigPt8TcIPNaRhCcYztLxYovfCGmfQj+2Ye716XILkPaUW2/CsL/l/oUH0
+	uPtq1Fwxbk=
+X-Google-Smtp-Source: AGHT+IFbP5oW/JB21vgOx2UKSKkyBkk9ayiRKjfoMXlXSkjwHyRMPYuhooj+NrHaf1R90PXfsoYraQ==
+X-Received: by 2002:a05:600c:45c7:b0:477:994b:dbb8 with SMTP id 5b1f17b1804b1-47d84b2cf22mr213320955e9.11.1768232834762;
+        Mon, 12 Jan 2026 07:47:14 -0800 (PST)
 Received: from localhost (p200300f65f20eb047d7efe6100b35af4.dip0.t-ipconnect.de. [2003:f6:5f20:eb04:7d7e:fe61:b3:5af4])
-        by smtp.gmail.com with UTF8SMTPSA id ffacd0b85a97d-432bd5df8besm37343069f8f.26.2026.01.12.07.47.13
+        by smtp.gmail.com with UTF8SMTPSA id 5b1f17b1804b1-47d7f4184e1sm349956355e9.4.2026.01.12.07.47.14
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 12 Jan 2026 07:47:13 -0800 (PST)
+        Mon, 12 Jan 2026 07:47:14 -0800 (PST)
 From: =?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig@baylibre.com>
-To: Johannes Berg <johannes@sipsolutions.net>
+To: Ping-Ke Shih <pkshih@realtek.com>,
+	Johannes Berg <johannes@sipsolutions.net>
 Cc: linux-wireless@vger.kernel.org
-Subject: [PATCH v2 2/3] wifi: rsi: sdio: Migrate to use sdio specific shutdown function
-Date: Mon, 12 Jan 2026 16:46:58 +0100
-Message-ID:  <2909323889b8ad4732ef6a8e05b5c40487a6c4bb.1768232321.git.u.kleine-koenig@baylibre.com>
+Subject: [PATCH v2 3/3] wifi: rtw88: sdio: Migrate to use sdio specific shutdown function
+Date: Mon, 12 Jan 2026 16:46:59 +0100
+Message-ID:  <5a328658c20613068bbbfabd3d0e721b69b3d474.1768232321.git.u.kleine-koenig@baylibre.com>
 X-Mailer: git-send-email 2.47.3
 In-Reply-To: <cover.1768232321.git.u.kleine-koenig@baylibre.com>
 References: <cover.1768232321.git.u.kleine-koenig@baylibre.com>
@@ -88,7 +89,7 @@ List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1221; i=u.kleine-koenig@baylibre.com; h=from:subject:message-id; bh=ZRl9U2eWNBrBGlVV90s5iYJcQXBiMXawJuqIetzdtkA=; b=owEBbQGS/pANAwAKAY+A+1h9Ev5OAcsmYgBpZRd2k9HsNgMP1d8tgsYl76HQQonJMxu1W2WJl Fm3PuV5l6+JATMEAAEKAB0WIQQ/gaxpOnoeWYmt/tOPgPtYfRL+TgUCaWUXdgAKCRCPgPtYfRL+ TsOBB/437Bp3D5ceQFgc5rPHTqw+pJSX93vqGKEyLVuYDXgvdGTfAXaKXc0lMRjJM0UMz9cRaNH o9a+fX9Kvj2M8JQc1xp7ph8ZTmP6B+3fzEASE1aQ/nZch5CGLBdM6L5NecaLP7axlJ0TJnbr901 2VGfM5eo9eEH5aE7qDUgxY+xD9PmrZvtewzBAoa/ATilJZVUuQlpvi4wekN/PWTeTuWgxfwO1t6 jrcfzAmLoAX06/k1b3ZXfPL3LJRpXjO+xzsG9vAb7lNfZXhrxtrIbgxps5sGc3iADXsEvIdLvvM 4S112SfyJgOyWuLN8X+CKRqqknR3NobyHU5KbxVc/QAoTex4
+X-Developer-Signature: v=1; a=openpgp-sha256; l=4923; i=u.kleine-koenig@baylibre.com; h=from:subject:message-id; bh=SkcAEzo7i/6i/n+AriKV4xHUsY6KE3N6pRVzU1yP/iM=; b=owEBbQGS/pANAwAKAY+A+1h9Ev5OAcsmYgBpZRd5ys/DMMtkhQ0/XITB/f7vUDN8rbaiOQhTD wb8ALA0oi2JATMEAAEKAB0WIQQ/gaxpOnoeWYmt/tOPgPtYfRL+TgUCaWUXeQAKCRCPgPtYfRL+ Tgo+CACqYWP8EmIQslr12Uar0vd3QRIiK8h1Bf5stYibqZd61jKGlqAtmTSgb70e6VA1R6XLkrX /W4LyagZdQh7dbXHXlbl+Dxo0Cflss6w1Yq46VnpD+45eFrpgGO9Ax2PuzBVmvGPdCKEAt/E51n iBIgLQt4TCiEfke2titUzVBBv2Lq0BmhSf5aL67EhdzGtakKTVJ5z77HbHhu49Yhjn+v4StM2Sv /u+f3G9O3A3d+sdFmTqkpW8RrohMG+OB7isyFgPrJQler7ucob4K1FSgThQOZQnNRgf2riySV80 b4mLMlKFkQ14MDhE3pVj95ZWL1a6mNH6BoppkPwfMEVHMyUt
 X-Developer-Key: i=u.kleine-koenig@baylibre.com; a=openpgp; fpr=0D2511F322BFAB1C1580266BE2DCDD9132669BD6
 Content-Transfer-Encoding: 8bit
 
@@ -97,35 +98,122 @@ This saves a cast in the driver. The motivation is stop using the callback
 
 Signed-off-by: Uwe Kleine-König <u.kleine-koenig@baylibre.com>
 ---
- drivers/net/wireless/rsi/rsi_91x_sdio.c | 5 ++---
- 1 file changed, 2 insertions(+), 3 deletions(-)
+ drivers/net/wireless/realtek/rtw88/rtw8723cs.c | 2 +-
+ drivers/net/wireless/realtek/rtw88/rtw8723ds.c | 2 +-
+ drivers/net/wireless/realtek/rtw88/rtw8821cs.c | 2 +-
+ drivers/net/wireless/realtek/rtw88/rtw8822bs.c | 2 +-
+ drivers/net/wireless/realtek/rtw88/rtw8822cs.c | 2 +-
+ drivers/net/wireless/realtek/rtw88/sdio.c      | 3 +--
+ drivers/net/wireless/realtek/rtw88/sdio.h      | 2 +-
+ 7 files changed, 7 insertions(+), 8 deletions(-)
 
-diff --git a/drivers/net/wireless/rsi/rsi_91x_sdio.c b/drivers/net/wireless/rsi/rsi_91x_sdio.c
-index 1e578533e473..ee7ad81c858d 100644
---- a/drivers/net/wireless/rsi/rsi_91x_sdio.c
-+++ b/drivers/net/wireless/rsi/rsi_91x_sdio.c
-@@ -1443,9 +1443,8 @@ static int rsi_thaw(struct device *dev)
- 	return 0;
- }
- 
--static void rsi_shutdown(struct device *dev)
-+static void rsi_shutdown(struct sdio_func *pfunction)
- {
--	struct sdio_func *pfunction = dev_to_sdio_func(dev);
- 	struct rsi_hw *adapter = sdio_get_drvdata(pfunction);
- 	struct rsi_91x_sdiodev *sdev = adapter->rsi_dev;
- 	struct ieee80211_hw *hw = adapter->hw;
-@@ -1513,9 +1512,9 @@ static struct sdio_driver rsi_driver = {
- 	.remove     = rsi_disconnect,
- 	.id_table   = rsi_dev_table,
- #ifdef CONFIG_PM
-+	.shutdown   = rsi_shutdown,
+diff --git a/drivers/net/wireless/realtek/rtw88/rtw8723cs.c b/drivers/net/wireless/realtek/rtw88/rtw8723cs.c
+index 1f98d35a8dd1..2018c9d76dd1 100644
+--- a/drivers/net/wireless/realtek/rtw88/rtw8723cs.c
++++ b/drivers/net/wireless/realtek/rtw88/rtw8723cs.c
+@@ -23,9 +23,9 @@ static struct sdio_driver rtw_8723cs_driver = {
+ 	.id_table = rtw_8723cs_id_table,
+ 	.probe = rtw_sdio_probe,
+ 	.remove = rtw_sdio_remove,
++	.shutdown = rtw_sdio_shutdown,
  	.drv = {
- 		.pm = &rsi_pm_ops,
--		.shutdown   = rsi_shutdown,
+ 		.pm = &rtw_sdio_pm_ops,
+-		.shutdown = rtw_sdio_shutdown
+ 	}};
+ module_sdio_driver(rtw_8723cs_driver);
+ 
+diff --git a/drivers/net/wireless/realtek/rtw88/rtw8723ds.c b/drivers/net/wireless/realtek/rtw88/rtw8723ds.c
+index 206b77e5b98e..e38c90b769a2 100644
+--- a/drivers/net/wireless/realtek/rtw88/rtw8723ds.c
++++ b/drivers/net/wireless/realtek/rtw88/rtw8723ds.c
+@@ -28,10 +28,10 @@ static struct sdio_driver rtw_8723ds_driver = {
+ 	.name = KBUILD_MODNAME,
+ 	.probe = rtw_sdio_probe,
+ 	.remove = rtw_sdio_remove,
++	.shutdown = rtw_sdio_shutdown,
+ 	.id_table = rtw_8723ds_id_table,
+ 	.drv = {
+ 		.pm = &rtw_sdio_pm_ops,
+-		.shutdown = rtw_sdio_shutdown,
  	}
- #endif
  };
+ module_sdio_driver(rtw_8723ds_driver);
+diff --git a/drivers/net/wireless/realtek/rtw88/rtw8821cs.c b/drivers/net/wireless/realtek/rtw88/rtw8821cs.c
+index 6d94162213c6..58e0ef219cdc 100644
+--- a/drivers/net/wireless/realtek/rtw88/rtw8821cs.c
++++ b/drivers/net/wireless/realtek/rtw88/rtw8821cs.c
+@@ -23,10 +23,10 @@ static struct sdio_driver rtw_8821cs_driver = {
+ 	.name = KBUILD_MODNAME,
+ 	.probe = rtw_sdio_probe,
+ 	.remove = rtw_sdio_remove,
++	.shutdown = rtw_sdio_shutdown,
+ 	.id_table = rtw_8821cs_id_table,
+ 	.drv = {
+ 		.pm = &rtw_sdio_pm_ops,
+-		.shutdown = rtw_sdio_shutdown,
+ 	}
+ };
+ module_sdio_driver(rtw_8821cs_driver);
+diff --git a/drivers/net/wireless/realtek/rtw88/rtw8822bs.c b/drivers/net/wireless/realtek/rtw88/rtw8822bs.c
+index 744781dcb419..2de9b11540c5 100644
+--- a/drivers/net/wireless/realtek/rtw88/rtw8822bs.c
++++ b/drivers/net/wireless/realtek/rtw88/rtw8822bs.c
+@@ -23,10 +23,10 @@ static struct sdio_driver rtw_8822bs_driver = {
+ 	.name = KBUILD_MODNAME,
+ 	.probe = rtw_sdio_probe,
+ 	.remove = rtw_sdio_remove,
++	.shutdown = rtw_sdio_shutdown,
+ 	.id_table = rtw_8822bs_id_table,
+ 	.drv = {
+ 		.pm = &rtw_sdio_pm_ops,
+-		.shutdown = rtw_sdio_shutdown,
+ 	}
+ };
+ module_sdio_driver(rtw_8822bs_driver);
+diff --git a/drivers/net/wireless/realtek/rtw88/rtw8822cs.c b/drivers/net/wireless/realtek/rtw88/rtw8822cs.c
+index 322281e07eb8..b00ef4173962 100644
+--- a/drivers/net/wireless/realtek/rtw88/rtw8822cs.c
++++ b/drivers/net/wireless/realtek/rtw88/rtw8822cs.c
+@@ -23,10 +23,10 @@ static struct sdio_driver rtw_8822cs_driver = {
+ 	.name = KBUILD_MODNAME,
+ 	.probe = rtw_sdio_probe,
+ 	.remove = rtw_sdio_remove,
++	.shutdown = rtw_sdio_shutdown,
+ 	.id_table = rtw_8822cs_id_table,
+ 	.drv = {
+ 		.pm = &rtw_sdio_pm_ops,
+-		.shutdown = rtw_sdio_shutdown,
+ 	}
+ };
+ module_sdio_driver(rtw_8822cs_driver);
+diff --git a/drivers/net/wireless/realtek/rtw88/sdio.c b/drivers/net/wireless/realtek/rtw88/sdio.c
+index 99d7c629eac6..ebd7636e2408 100644
+--- a/drivers/net/wireless/realtek/rtw88/sdio.c
++++ b/drivers/net/wireless/realtek/rtw88/sdio.c
+@@ -1412,9 +1412,8 @@ void rtw_sdio_remove(struct sdio_func *sdio_func)
+ }
+ EXPORT_SYMBOL(rtw_sdio_remove);
+ 
+-void rtw_sdio_shutdown(struct device *dev)
++void rtw_sdio_shutdown(struct sdio_func *sdio_func)
+ {
+-	struct sdio_func *sdio_func = dev_to_sdio_func(dev);
+ 	const struct rtw_chip_info *chip;
+ 	struct ieee80211_hw *hw;
+ 	struct rtw_dev *rtwdev;
+diff --git a/drivers/net/wireless/realtek/rtw88/sdio.h b/drivers/net/wireless/realtek/rtw88/sdio.h
+index 3c659ed180f0..457e8b02380e 100644
+--- a/drivers/net/wireless/realtek/rtw88/sdio.h
++++ b/drivers/net/wireless/realtek/rtw88/sdio.h
+@@ -166,7 +166,7 @@ extern const struct dev_pm_ops rtw_sdio_pm_ops;
+ int rtw_sdio_probe(struct sdio_func *sdio_func,
+ 		   const struct sdio_device_id *id);
+ void rtw_sdio_remove(struct sdio_func *sdio_func);
+-void rtw_sdio_shutdown(struct device *dev);
++void rtw_sdio_shutdown(struct sdio_func *sdio_func);
+ 
+ static inline bool rtw_sdio_is_sdio30_supported(struct rtw_dev *rtwdev)
+ {
 -- 
 2.47.3
 
