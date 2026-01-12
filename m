@@ -1,101 +1,100 @@
-Return-Path: <linux-wireless+bounces-30683-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-30685-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id E25DDD10E91
-	for <lists+linux-wireless@lfdr.de>; Mon, 12 Jan 2026 08:37:19 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id CC902D10EB0
+	for <lists+linux-wireless@lfdr.de>; Mon, 12 Jan 2026 08:38:13 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id E21733015E1E
-	for <lists+linux-wireless@lfdr.de>; Mon, 12 Jan 2026 07:37:15 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 2B29E30B1C32
+	for <lists+linux-wireless@lfdr.de>; Mon, 12 Jan 2026 07:37:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AADA330CD82;
-	Mon, 12 Jan 2026 07:37:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 20E883328FB;
+	Mon, 12 Jan 2026 07:37:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="E55Eo0I3";
-	dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b="Eg96j1Pb"
+	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="Qcg4F9SL";
+	dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b="JQGM2bzL"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D4D0D334361
-	for <linux-wireless@vger.kernel.org>; Mon, 12 Jan 2026 07:37:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B864132E154
+	for <linux-wireless@vger.kernel.org>; Mon, 12 Jan 2026 07:37:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768203435; cv=none; b=TpuklDZf6G6nlVF9zmtsnHKIRm8hGKNpei8m5oMsmhVpPvcKV/Y4xB8x1k63WbeGG6Et0228Q8kJvflczzWPJdl/R6X4IO0785qdgnaUCip6pH333OVYB641uiWtRGQO2LaGcqbIoxDPtaol/vVzp6Mj8y86qujn7QIsCER9MsI=
+	t=1768203439; cv=none; b=cjtX5IEDAGF/Azv+ob+V738BRiSSZbJCffIBf0q+gVUMjdbIs9vLZs1c+HVygzft7KuS35FacaQloxLgW5qQWXBc3Wk+ZPzyY3dvYd1oD8Rr3s3pFsV+mXzzHrHV/WM8COOxUqjrWggbT+tymU8gZ/TUhTcZn7MUE7xeu6TfY9g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768203435; c=relaxed/simple;
-	bh=2WPoqdIpmEUe1RpDEUfqMGN5Sh+uny6SUNn9P+LTMuI=;
+	s=arc-20240116; t=1768203439; c=relaxed/simple;
+	bh=3IO36Nbbv3zdrr1Hri/61Kgwz1jyF7gy+0dXpRcuwAs=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=sF4zx4P64YhO9GndfPTeoNd4KyuuR8JrhAzvgfKh6+JqS94U7MlroX4QBy9bmXpuxMaZ0lyjLyYfxgbn1O37acrm/cqFKee2V6OK3oq/L3otZeBPbVA7wN8ODsK0BKgICquCIe/5Ixx0ioooRRTBALq3i5bqvqLItpyH8YO0aZM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=E55Eo0I3; dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b=Eg96j1Pb; arc=none smtp.client-ip=205.220.168.131
+	 In-Reply-To:To:Cc; b=B9Sh0rLlF9Z3veg79ZOPu+9ecg74lHhJTmyrD50o93oSID2KenSd28XV5o/Fv9KLZXWsb5sy3lLNyGTgkLvVeBjqBBdVETmK2NNw337AFyPFz0PwwwBpD91EHDS9Scp5V6xtFlCEbI1c4fhndjjENPUjurhn93kmVmMxxBQYLs0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=Qcg4F9SL; dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b=JQGM2bzL; arc=none smtp.client-ip=205.220.168.131
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
-Received: from pps.filterd (m0279862.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 60BMbGfx4024750
-	for <linux-wireless@vger.kernel.org>; Mon, 12 Jan 2026 07:37:13 GMT
+Received: from pps.filterd (m0279865.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 60C2NmYB113363
+	for <linux-wireless@vger.kernel.org>; Mon, 12 Jan 2026 07:37:15 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
 	cc:content-transfer-encoding:content-type:date:from:in-reply-to
 	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
-	NE7S8gBTNQKTG3tmqbJFI7qx+haDyEtPwTPhOF443DQ=; b=E55Eo0I3uU8/098v
-	Aq2adUoG9Yw3eHuSYgRzsWGq8lk/eVgMpB7GlMuOJERtv7EdE7EUlviksjNcnlJE
-	C1A1k9rG25Vc28Mi97IzK24KGVwP6nqGjKi3oieYjqYXcPMzcT/pgutX5PszvOMk
-	ODcRUokXf+331LMcrNULCG5JnmJwev56wZ9PBBEsMorUWimsNg1agPEY7kmbh+MQ
-	IlP8UH8vffcondF7VSoTY4THM06w8ggtTtg3+mFSbuu3L2Rd9xqZxPJcv7fIEb3u
-	rizRf/tAiHHPPo5IIv7Bzl85hJbo4v55ay22uv6G4NdTC4Ml9Ec4yD1hKwK/pRNn
-	hfHH5w==
-Received: from mail-pg1-f197.google.com (mail-pg1-f197.google.com [209.85.215.197])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4bkfhakxcb-1
+	HCui9xX0LB5baEIWckuw98a0r2Jgz6TDCXW7KmDdZZk=; b=Qcg4F9SL/X/39D7i
+	iWi3qYTV7HPCYNRK5DEBOdp962KyGtzt0dFO2SUNtZcrMibfNVODQu/qx340ok3L
+	2fASxLw+6KQ10ByX927FRzgtAnuuaKcUPI0yuNqI7GUsWlS1KF+CBSbpNCEmMr/0
+	Pmm/AUIi/+8s1ZvIuaWfCPfyDNS03DOSfmos+gQLy6r2BpmTHPzMmTDHryVt+xoV
+	+XquQwPlax5CXISnLxDrjilFaibZRH4HD3zkdsHpfb5YLMaFWVgFjgJ6/qkbadJF
+	/3qP/OrbfPoxkqdX3KC0qpqx/+VZWjKVFTzc4TJAahNc5+waOZc4iPbOD2IKImbX
+	0oJfeA==
+Received: from mail-pj1-f72.google.com (mail-pj1-f72.google.com [209.85.216.72])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4bmr4ugsc6-1
 	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
-	for <linux-wireless@vger.kernel.org>; Mon, 12 Jan 2026 07:37:13 +0000 (GMT)
-Received: by mail-pg1-f197.google.com with SMTP id 41be03b00d2f7-c52779e9e65so1704684a12.0
-        for <linux-wireless@vger.kernel.org>; Sun, 11 Jan 2026 23:37:13 -0800 (PST)
+	for <linux-wireless@vger.kernel.org>; Mon, 12 Jan 2026 07:37:14 +0000 (GMT)
+Received: by mail-pj1-f72.google.com with SMTP id 98e67ed59e1d1-34c7d0c5ed2so5558377a91.0
+        for <linux-wireless@vger.kernel.org>; Sun, 11 Jan 2026 23:37:14 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=oss.qualcomm.com; s=google; t=1768203432; x=1768808232; darn=vger.kernel.org;
+        d=oss.qualcomm.com; s=google; t=1768203434; x=1768808234; darn=vger.kernel.org;
         h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
          :mime-version:subject:date:from:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=NE7S8gBTNQKTG3tmqbJFI7qx+haDyEtPwTPhOF443DQ=;
-        b=Eg96j1PbEj3hesrXkI5IVZak4aNTBSAaWpU3mJhS5gPl3JjmFVfbQZ0nfnzmRfHle8
-         doou9Dl641PrPDCgXoT5BICppOr30w+qwGGNYojq2s2LIz5/Gk3UbInN4u2/KDAD8G6x
-         4k/+fgEEyG4CSTAbia0l5823DjyF8fLFPfkWMbzqSF+YkOJvsDeqzaj7bithb6PfTH1l
-         ii9RLp5XALjS7ibonlF/q48QRFDs0pDhv0YcP8Xs0sryA/uy4ahPDlJ/PzRoJxC/aliV
-         RG67rXQ7PpYE68HLwEsPGXFn0yWDTWvLmIkbAu+GSqTSPzoaZDzwlqtB7L9eEkqB76Aj
-         w6rQ==
+        bh=HCui9xX0LB5baEIWckuw98a0r2Jgz6TDCXW7KmDdZZk=;
+        b=JQGM2bzLtL/d34d8/vZMaxNG02JAZgg4W1PzJsi2yuTSgqpcQVDASCpbk59Imft+vr
+         4kAgWG2LzGU8Pc558uVnkhZj/f3TlGkaY7X4ga9sE8MoE2pKpDoFu9Q9YSt9XJOp8gow
+         wSS3tkOjCDgytjGSVuJa5TMQ+FigkDwWcldHYrqHvc0dkkBbeMDTdoDzxAQ1r7qwNFzF
+         yXcZpEHnocBUmNekUGFLDMLRg89Lq7YkSIjLTiPPQQgvxLpfdhhKPv0Z/0nMM1nNqBMr
+         gguy16AShBD/kgkN8YLT67A+bOqJzR8VNgfqAJGGcgmtZEu2ETQ/Glt1MJI+pcFkGspW
+         ey1g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1768203432; x=1768808232;
+        d=1e100.net; s=20230601; t=1768203434; x=1768808234;
         h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
          :mime-version:subject:date:from:x-gm-gg:x-gm-message-state:from:to
          :cc:subject:date:message-id:reply-to;
-        bh=NE7S8gBTNQKTG3tmqbJFI7qx+haDyEtPwTPhOF443DQ=;
-        b=ak9Js0br48DtBErBlg5oUiSkfzkEWvkj80QujpO1xGC4yGYhIO6EAp/M82KSgC8HG4
-         wTrcA3d+sWxhOdtkHeh3VwjezCJeyoYBPfsihdafOW1lHDv+TtzidMbDDBkELiJ6ARCS
-         M4+Y3zYRpa4yIdxD0z2WtmbDjjKJ9KN60EG7G3wD66z/127CDQktfFaPQw/t/juGinCH
-         IZLZxqBroIx3pJBfkb1Nyuhzlqa9T1iD6VVK3Sjcq83n2vsIjAk7QlmZyh5uxhK7qbRe
-         e6Q0hL8fVaN1G2PZN4Ywy03YICbViWnsxjrBfNWPqtq+wpl4NTBtjOp3w0svkHBtTnC7
-         peHg==
-X-Gm-Message-State: AOJu0YxH5pUp7qZHleiiRPILUxhpFU4moYa+yQkw3+aVTGy1BG36NckN
-	uSqoWok3fLa2bL3WCIVz+2X6iFXn7+ZXDfCU0JDP9d63heH//YAqcfvy0MJKh8z5BlT72t/LJHn
-	EhDViMpvuUPOVj7yw80itPgAitsBbQlBMldm9f3xS8C4Dms12Txc+hHJfOvp341q+TSTmkSoht9
-	O1k/jj
-X-Gm-Gg: AY/fxX7pqzrTfMoU2DQe3nOYRYp4Ajh7MjLJ73bN3/wQqPA0P1FSmR/C7EtdkLYmMxM
-	K7aZ3eQInaxtMk3CcjTDJ7UD4vo8ZbQBD1mQ5s8XQd9fhPld1GInz8Eh6eG4y9TVM8y+a2RpxJe
-	AvcqfT5Pei4z+b8nL49z5TFqLvF3MB772biaclILcHb3I7H3/ESry7Tmf9izdjO8JwJe9Hqesgh
-	2nfU1NdhDikukwzeaFF83mmQCUmQR+3QEWSqo9xEAp086vF3Tdhl7grD6tdBlX9N+6ye6cNz8aI
-	O/j6tLgNmWayA9QXzey7a6fFJ2yhBI1Nt/rfZYzuC4RFwBg2qQx/9KSKHuJ8+Ve+QFj9GIQZ4tj
-	5/44xwja/M4ugb9CEhIcmvoEkq7siquELvmkYB8tjNkorkfBvzs8VPsXg2nOgWxs=
-X-Received: by 2002:a05:6a20:e212:b0:34a:f63:59dd with SMTP id adf61e73a8af0-3898f9ba712mr16218142637.51.1768203432032;
-        Sun, 11 Jan 2026 23:37:12 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IFsb9S52hPVJ5K/uAzdEyTnpgJTw6JTQ7/Q4JNdQh4BuJioN6plEDP+I1V6h7C82yC9ErCU/w==
-X-Received: by 2002:a05:6a20:e212:b0:34a:f63:59dd with SMTP id adf61e73a8af0-3898f9ba712mr16218130637.51.1768203431468;
-        Sun, 11 Jan 2026 23:37:11 -0800 (PST)
+        bh=HCui9xX0LB5baEIWckuw98a0r2Jgz6TDCXW7KmDdZZk=;
+        b=kjrJRIUzXceguOaG9Cg2/vcWHi0aE6Ke2A418PVE+41gDcWLiqgWCoqvxQLO43ydQu
+         KOFgE0iXlvLvGaWF0N5QVnK1Cje7+nv5zAhsUve2odLvYP7ce6B8UiW1BZ36fi/vksJF
+         N56OBfYQQLWOVrcaHZhVsi0HAEGwvxijYK2kk9D+9lQJ4FZfjtGTv/P2JEDlw8CuLtiP
+         7vjSScTaIBTPHFc9QavqZ8Bwx+m638PuVoNk3d15sNgScYClhBne7vUXkSFfyjQOPHJC
+         ActWrr379vrhr5+B8gIPi3K/KP+7UVA5Q7lPVHvK0353RqqaQaxGRgVJlha0E/SUW5nF
+         ijBA==
+X-Gm-Message-State: AOJu0YyVg6oq+YrQ0vKxbtYdfzL0/H9IQMGRCTGFOYEgKkkKuHCL2HaY
+	vy0FZTBtVyzKwFbGKUErwvlTIPDzjAbEfueGZqSgewqPy6H9FluNUW08BpKXwIm78f66Sx45FoI
+	C2QLROX3Hmp9QXqdl5DUhHUEY9fhBlIipbbW9ywsWZnu3kbK/aKGu4an49dvFzL9BeOlmrA==
+X-Gm-Gg: AY/fxX7VLsdFZ3dFqtUEeskmv04yF6hcLHrYPugxkWJKtc4vHYgzDWbMz5l5zFECliE
+	TwY8ffx1BkwGzeWz4mwTMsL/8wLvJzAlD0ylG44y+N2yozkoX0GSAIRXLFzpnpkp4IkcXxORowu
+	GoLUSrZpWJiVA+au978Li39CGDi9IVaaJovw/srxtt2ba9pHKFnMy3S+xRUHBAKvK8//PzHVqoa
+	8G9ZuAPF5UWIIwmNs/95tWWOe6AGpc6//KFPY5ZBRb6DMTNwMUjFoT/qoMM/yQEzZVpk1w+ccWe
+	skA9Y74kVD3Nk3+VMSsHDcUFC+72mvyxQ4WtkfAzO8h6E1N+h3eeV64CJnDsZcdAnVMP3G3IcMi
+	DmMYAPucql+72FmRCdREsXRhzxdxgvW6z11s2Nh+341Epz9sconpq5uQCilSHJkQ=
+X-Received: by 2002:a05:6a20:7fa4:b0:35f:b96d:af06 with SMTP id adf61e73a8af0-3898f8f5436mr17183031637.14.1768203433969;
+        Sun, 11 Jan 2026 23:37:13 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IFK1haRmLhJTsbL01rDYq1gvQOJMBiOIRCaLXSpcrk+UFM/KcsN96I6lnsfLAwycFCgO577ew==
+X-Received: by 2002:a05:6a20:7fa4:b0:35f:b96d:af06 with SMTP id adf61e73a8af0-3898f8f5436mr17183011637.14.1768203433395;
+        Sun, 11 Jan 2026 23:37:13 -0800 (PST)
 Received: from [127.0.1.1] (tpe-colo-wan-fw-bordernet.qualcomm.com. [103.229.16.4])
-        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-c4cbf28faa9sm16548684a12.2.2026.01.11.23.37.09
+        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-c4cbf28faa9sm16548684a12.2.2026.01.11.23.37.11
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 11 Jan 2026 23:37:11 -0800 (PST)
+        Sun, 11 Jan 2026 23:37:13 -0800 (PST)
 From: Baochen Qiang <baochen.qiang@oss.qualcomm.com>
-Date: Mon, 12 Jan 2026 15:36:30 +0800
-Subject: [PATCH ath-next v2 10/18] wifi: ath12k: support downloading
- auxiliary ucode image for QCC2072
+Date: Mon, 12 Jan 2026 15:36:31 +0800
+Subject: [PATCH ath-next v2 11/18] wifi: ath12k: add HAL descriptor and ops
+ for QCC2072
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
@@ -104,463 +103,520 @@ List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260112-ath12k-support-qcc2072-v2-10-fc8ce1e43969@oss.qualcomm.com>
+Message-Id: <20260112-ath12k-support-qcc2072-v2-11-fc8ce1e43969@oss.qualcomm.com>
 References: <20260112-ath12k-support-qcc2072-v2-0-fc8ce1e43969@oss.qualcomm.com>
 In-Reply-To: <20260112-ath12k-support-qcc2072-v2-0-fc8ce1e43969@oss.qualcomm.com>
 To: Jeff Johnson <jjohnson@kernel.org>
 Cc: linux-wireless@vger.kernel.org, ath12k@lists.infradead.org,
         Baochen Qiang <baochen.qiang@oss.qualcomm.com>
 X-Mailer: b4 0.14.3
-X-Proofpoint-ORIG-GUID: jpUKyVRGf6VycLcsVchRiufiXeVXRlyr
-X-Authority-Analysis: v=2.4 cv=bOEb4f+Z c=1 sm=1 tr=0 ts=6964a4a9 cx=c_pps
- a=rz3CxIlbcmazkYymdCej/Q==:117 a=nuhDOHQX5FNHPW3J6Bj6AA==:17
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwMTEyMDA1OCBTYWx0ZWRfX8CKvMQ6WTX5V
+ NVxWf+hI9LsiUSn1quKNENvCQnLtAIvPiX7+u+d9Vgs1my8j8lJetPRpeUNRaj8j5zl1KDCipSK
+ PVlYgSE1snFx5rCJbPos4uTaoSqCTtBcdzDhSChq+HgKYbJ5B8FH2Fim8e1GJ9+RRscGJcFMaci
+ zcaFs6XV7/5zYRFPClOZ7xNgxkpl0YTK7BPGKx5upMFSpqt5BQQ5KsP+tOQx8kRGqME6PgLGiUV
+ 2btxzLG7BraoAluyqbunl6GaJEvixgvGtjWQbHcAKYze6EraDUmmM1s2Xg8N+jTytIQuXKhHtal
+ DUHOrFrhsEuDR9qhQH7X28piB2TIxjvQsGfqx5WNaT3ErtXZjpuCiruycUTeiKQP/Jhbs20HLzr
+ z0pDFPxlxv3dNrOJDG9zvre3VZODE5kcho5DsoTA8Y2ECsGeSxRN/OwVh+64HS7yGDst4yRKItM
+ fp5YN14COz4Cmxe20mg==
+X-Proofpoint-ORIG-GUID: i_2UPfgNyJbrlm7PvKZKtuivleoeJ3rS
+X-Authority-Analysis: v=2.4 cv=YocChoYX c=1 sm=1 tr=0 ts=6964a4aa cx=c_pps
+ a=RP+M6JBNLl+fLTcSJhASfg==:117 a=nuhDOHQX5FNHPW3J6Bj6AA==:17
  a=IkcTkHD0fZMA:10 a=vUbySO9Y5rIA:10 a=s4-Qcg_JpJYA:10
- a=VkNPw1HP01LnGYTKEx00:22 a=EUspDBNiAAAA:8 a=ejwxJ43VBFfvAu_YmawA:9
- a=QEXdDO2ut3YA:10 a=bFCP_H2QrGi7Okbo017w:22
-X-Proofpoint-GUID: jpUKyVRGf6VycLcsVchRiufiXeVXRlyr
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwMTEyMDA1OCBTYWx0ZWRfX6jtNbLWLwmQc
- FJEhon/q/xX8Lh8C5IAxfOBRLgGdyHg9MOyoD+0dCBewgk051PazYUZXZ6naR238uBUp2jtzgkf
- tjU78U1Tiq3YJ9BLOgN3nxqXCErPHX/NKjomLbALmc3hI2HvxLiwRmt0rE+M8ImyXNBS/18EUCd
- K1A3O+q7q6TlvoWUfkuPJcWHNmuVYkrRinZbUpsC5iswmAvG3PwrSQoU8y5O8UEFDOiVogWugRn
- eoq9snyNEo5dpzmLI7xLNCUCte9hHOz//cDKJ0JCSMhMt5eZRHNZ9Dus504UaYjrrSKJF7lOtSB
- ANMkS0UqsAqgHHy8UzFMUga9k9mhfPSMM9indcRKrhgYAaqgTvXjQwaj5GNtp4BXxfymeGuNMIu
- 38DjYmk7zPSNi/eeKBcCTR6io25cRDx4410+coU7uu6HeAZD9w+BMQ2kcoammor5WAy9mahhLh7
- 4hjbKPvzNHQEl2VukzA==
+ a=VkNPw1HP01LnGYTKEx00:22 a=EUspDBNiAAAA:8 a=nIUU2HICKwZ5NK4rRtwA:9
+ a=QEXdDO2ut3YA:10 a=iS9zxrgQBfv6-_F4QbHw:22
+X-Proofpoint-GUID: i_2UPfgNyJbrlm7PvKZKtuivleoeJ3rS
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.9,FMLib:17.12.100.49
  definitions=2026-01-12_02,2026-01-09_02,2025-10-01_01
 X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- spamscore=0 phishscore=0 impostorscore=0 adultscore=0 suspectscore=0
- clxscore=1015 malwarescore=0 priorityscore=1501 lowpriorityscore=0
- bulkscore=0 classifier=typeunknown authscore=0 authtc= authcc= route=outbound
- adjust=0 reason=mlx scancount=1 engine=8.22.0-2512120000
- definitions=main-2601120058
+ bulkscore=0 spamscore=0 lowpriorityscore=0 malwarescore=0 phishscore=0
+ clxscore=1015 impostorscore=0 adultscore=0 priorityscore=1501 suspectscore=0
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.22.0-2512120000 definitions=main-2601120058
 
-QCC2072 requires another firmware image named aux_ucode.bin, add support
-to download it.
+QCC2072 has different HAL descriptors hence require different HAL
+handling, compared to other chips. Add support for this.
 
-Add a new hardware parameter download_aux_ucode to make sure other chips
-are not affected.
+REO CMD/status ring handling is currently using the 64 bit ops
+
+	.reo_init_cmd_ring = ath12k_wifi7_hal_reo_init_cmd_ring_tlv64,
+	.reo_cmd_enc_tlv_hdr = ath12k_hal_encode_tlv64_hdr,
+	.reo_status_dec_tlv_hdr = ath12k_hal_decode_tlv64_hdr,
+
+these will be updated to use 32 bit variants in upcoming patches.
 
 Tested-on: QCC2072 hw1.0 PCI WLAN.COL.1.0-01560-QCACOLSWPL_V1_TO_SILICONZ-1
 Tested-on: WCN7850 hw2.0 PCI WLAN.HMT.1.1.c5-00302-QCAHMTSWPL_V1.0_V2.0_SILICONZ-1.115823.3
 
 Signed-off-by: Baochen Qiang <baochen.qiang@oss.qualcomm.com>
 ---
- drivers/net/wireless/ath/ath12k/core.h     |   2 +
- drivers/net/wireless/ath/ath12k/fw.c       |  10 +-
- drivers/net/wireless/ath/ath12k/fw.h       |   3 +-
- drivers/net/wireless/ath/ath12k/hw.h       |   2 +
- drivers/net/wireless/ath/ath12k/qmi.c      | 179 ++++++++++++++++++++++++++++-
- drivers/net/wireless/ath/ath12k/qmi.h      |  15 +++
- drivers/net/wireless/ath/ath12k/wifi7/hw.c |   8 +-
- 7 files changed, 215 insertions(+), 4 deletions(-)
+ drivers/net/wireless/ath/ath12k/wifi7/hal.c        |   4 +-
+ .../net/wireless/ath/ath12k/wifi7/hal_qcc2072.c    | 362 +++++++++++++++++++++
+ .../net/wireless/ath/ath12k/wifi7/hal_qcc2072.h    |   2 +
+ .../net/wireless/ath/ath12k/wifi7/hal_rx_desc.h    |  17 +
+ .../net/wireless/ath/ath12k/wifi7/hal_wcn7850.c    |   2 +-
+ .../net/wireless/ath/ath12k/wifi7/hal_wcn7850.h    |   1 +
+ 6 files changed, 385 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/net/wireless/ath/ath12k/core.h b/drivers/net/wireless/ath/ath12k/core.h
-index 667cf5993cf1..990934ec92fc 100644
---- a/drivers/net/wireless/ath/ath12k/core.h
-+++ b/drivers/net/wireless/ath/ath12k/core.h
-@@ -1082,6 +1082,8 @@ struct ath12k_base {
- 		size_t amss_dualmac_len;
- 		const u8 *m3_data;
- 		size_t m3_len;
-+		const u8 *aux_uc_data;
-+		size_t aux_uc_len;
- 
- 		DECLARE_BITMAP(fw_features, ATH12K_FW_FEATURE_COUNT);
- 		bool fw_features_valid;
-diff --git a/drivers/net/wireless/ath/ath12k/fw.c b/drivers/net/wireless/ath/ath12k/fw.c
-index 5ac497f80cad..22074653cbb8 100644
---- a/drivers/net/wireless/ath/ath12k/fw.c
-+++ b/drivers/net/wireless/ath/ath12k/fw.c
-@@ -1,6 +1,6 @@
- // SPDX-License-Identifier: BSD-3-Clause-Clear
- /*
-- * Copyright (c) 2022-2025 Qualcomm Innovation Center, Inc. All rights reserved.
-+ * Copyright (c) Qualcomm Technologies, Inc. and/or its subsidiaries.
-  */
- 
- #include "core.h"
-@@ -121,6 +121,14 @@ static int ath12k_fw_request_firmware_api_n(struct ath12k_base *ab,
- 			ab->fw.m3_data = data;
- 			ab->fw.m3_len = ie_len;
- 			break;
-+		case ATH12K_FW_IE_AUX_UC_IMAGE:
-+			ath12k_dbg(ab, ATH12K_DBG_BOOT,
-+				   "found aux_uc image ie (%zd B)\n",
-+				   ie_len);
-+
-+			ab->fw.aux_uc_data = data;
-+			ab->fw.aux_uc_len = ie_len;
-+			break;
- 		case ATH12K_FW_IE_AMSS_DUALMAC_IMAGE:
- 			ath12k_dbg(ab, ATH12K_DBG_BOOT,
- 				   "found dualmac fw image ie (%zd B)\n",
-diff --git a/drivers/net/wireless/ath/ath12k/fw.h b/drivers/net/wireless/ath/ath12k/fw.h
-index 7afaefed5086..e146d24dfea4 100644
---- a/drivers/net/wireless/ath/ath12k/fw.h
-+++ b/drivers/net/wireless/ath/ath12k/fw.h
-@@ -1,6 +1,6 @@
- /* SPDX-License-Identifier: BSD-3-Clause-Clear */
- /*
-- * Copyright (c) 2022-2025 Qualcomm Innovation Center, Inc. All rights reserved.
-+ * Copyright (c) Qualcomm Technologies, Inc. and/or its subsidiaries.
-  */
- 
- #ifndef ATH12K_FW_H
-@@ -15,6 +15,7 @@ enum ath12k_fw_ie_type {
- 	ATH12K_FW_IE_AMSS_IMAGE = 2,
- 	ATH12K_FW_IE_M3_IMAGE = 3,
- 	ATH12K_FW_IE_AMSS_DUALMAC_IMAGE = 4,
-+	ATH12K_FW_IE_AUX_UC_IMAGE = 5,
- };
- 
- enum ath12k_fw_features {
-diff --git a/drivers/net/wireless/ath/ath12k/hw.h b/drivers/net/wireless/ath/ath12k/hw.h
-index 655753d0413a..a9888e0521a1 100644
---- a/drivers/net/wireless/ath/ath12k/hw.h
-+++ b/drivers/net/wireless/ath/ath12k/hw.h
-@@ -78,6 +78,7 @@
- #define ATH12K_DEFAULT_CAL_FILE		"caldata.bin"
- #define ATH12K_AMSS_FILE		"amss.bin"
- #define ATH12K_M3_FILE			"m3.bin"
-+#define ATH12K_AUX_UC_FILE		"aux_ucode.bin"
- #define ATH12K_REGDB_FILE_NAME		"regdb.bin"
- 
- #define ATH12K_PCIE_MAX_PAYLOAD_SIZE	128
-@@ -142,6 +143,7 @@ struct ath12k_hw_params {
- 		size_t board_size;
- 		size_t cal_offset;
- 		enum ath12k_m3_fw_loaders m3_loader;
-+		bool download_aux_ucode:1;
- 	} fw;
- 
- 	u8 max_radios;
-diff --git a/drivers/net/wireless/ath/ath12k/qmi.c b/drivers/net/wireless/ath/ath12k/qmi.c
-index 4966697f4e62..cfde4147c8fc 100644
---- a/drivers/net/wireless/ath/ath12k/qmi.c
-+++ b/drivers/net/wireless/ath/ath12k/qmi.c
-@@ -1623,6 +1623,47 @@ static const struct qmi_elem_info qmi_wlanfw_m3_info_resp_msg_v01_ei[] = {
+diff --git a/drivers/net/wireless/ath/ath12k/wifi7/hal.c b/drivers/net/wireless/ath/ath12k/wifi7/hal.c
+index b957ebc9b7c5..bd1753ca0db6 100644
+--- a/drivers/net/wireless/ath/ath12k/wifi7/hal.c
++++ b/drivers/net/wireless/ath/ath12k/wifi7/hal.c
+@@ -44,8 +44,8 @@ static const struct ath12k_hw_version_map ath12k_wifi7_hw_ver_map[] = {
+ 		.hw_regs = &ipq5332_regs,
  	},
+ 	[ATH12K_HW_QCC2072_HW10] = {
+-		.hal_ops = &hal_wcn7850_ops,
+-		.hal_desc_sz = sizeof(struct hal_rx_desc_wcn7850),
++		.hal_ops = &hal_qcc2072_ops,
++		.hal_desc_sz = sizeof(struct hal_rx_desc_qcc2072),
+ 		.tcl_to_wbm_rbm_map = ath12k_hal_tcl_to_wbm_rbm_map_wcn7850,
+ 		.hal_params = &ath12k_hw_hal_params_wcn7850,
+ 		.hw_regs = &qcc2072_regs,
+diff --git a/drivers/net/wireless/ath/ath12k/wifi7/hal_qcc2072.c b/drivers/net/wireless/ath/ath12k/wifi7/hal_qcc2072.c
+index 6c4986050bc6..847484ece204 100644
+--- a/drivers/net/wireless/ath/ath12k/wifi7/hal_qcc2072.c
++++ b/drivers/net/wireless/ath/ath12k/wifi7/hal_qcc2072.c
+@@ -4,6 +4,7 @@
+  */
+ 
+ #include "hal_qcc2072.h"
++#include "hal_wcn7850.h"
+ 
+ const struct ath12k_hw_regs qcc2072_regs = {
+ 	/* SW2TCL(x) R0 ring configuration address */
+@@ -92,3 +93,364 @@ const struct ath12k_hw_regs qcc2072_regs = {
+ 
+ 	.gcc_gcc_pcie_hot_rst = 0x1e65304,
  };
- 
-+static const struct qmi_elem_info qmi_wlanfw_aux_uc_info_req_msg_v01_ei[] = {
-+	{
-+		.data_type      = QMI_UNSIGNED_8_BYTE,
-+		.elem_len       = 1,
-+		.elem_size      = sizeof(u64),
-+		.array_type     = NO_ARRAY,
-+		.tlv_type       = 0x01,
-+		.offset         = offsetof(struct qmi_wlanfw_aux_uc_info_req_msg_v01, addr),
-+	},
-+	{
-+		.data_type      = QMI_UNSIGNED_4_BYTE,
-+		.elem_len       = 1,
-+		.elem_size      = sizeof(u32),
-+		.array_type     = NO_ARRAY,
-+		.tlv_type       = 0x02,
-+		.offset         = offsetof(struct qmi_wlanfw_aux_uc_info_req_msg_v01, size),
-+	},
-+	{
-+		.data_type      = QMI_EOTI,
-+		.array_type     = NO_ARRAY,
-+		.tlv_type       = QMI_COMMON_TLV_TYPE,
-+	},
-+};
 +
-+static const struct qmi_elem_info qmi_wlanfw_aux_uc_info_resp_msg_v01_ei[] = {
-+	{
-+		.data_type      = QMI_STRUCT,
-+		.elem_len       = 1,
-+		.elem_size      = sizeof(struct qmi_response_type_v01),
-+		.array_type     = NO_ARRAY,
-+		.tlv_type       = 0x02,
-+		.offset         = offsetof(struct qmi_wlanfw_aux_uc_info_resp_msg_v01, resp),
-+		.ei_array       = qmi_response_type_v01_ei,
-+	},
-+	{
-+		.data_type      = QMI_EOTI,
-+		.array_type     = NO_ARRAY,
-+		.tlv_type       = QMI_COMMON_TLV_TYPE,
-+	},
-+};
-+
- static const struct qmi_elem_info qmi_wlanfw_ce_tgt_pipe_cfg_s_v01_ei[] = {
- 	{
- 		.data_type	= QMI_UNSIGNED_4_BYTE,
-@@ -3237,6 +3278,131 @@ int ath12k_qmi_wlanfw_m3_info_send(struct ath12k_base *ab)
- 	return ret;
- }
- 
-+static void ath12k_qmi_aux_uc_free(struct ath12k_base *ab)
++static void ath12k_hal_rx_desc_set_msdu_len_qcc2072(struct hal_rx_desc *desc, u16 len)
 +{
-+	struct m3_mem_region *aux_uc_mem = &ab->qmi.aux_uc_mem;
++	u32 info = __le32_to_cpu(desc->u.qcc2072.msdu_end.info10);
 +
-+	if (!aux_uc_mem->vaddr)
++	info &= ~RX_MSDU_END_INFO10_MSDU_LENGTH;
++	info |= u32_encode_bits(len, RX_MSDU_END_INFO10_MSDU_LENGTH);
++
++	desc->u.qcc2072.msdu_end.info10 = __cpu_to_le32(info);
++}
++
++static void ath12k_hal_rx_desc_get_dot11_hdr_qcc2072(struct hal_rx_desc *desc,
++						     struct ieee80211_hdr *hdr)
++{
++	hdr->frame_control = desc->u.qcc2072.mpdu_start.frame_ctrl;
++	hdr->duration_id = desc->u.qcc2072.mpdu_start.duration;
++	ether_addr_copy(hdr->addr1, desc->u.qcc2072.mpdu_start.addr1);
++	ether_addr_copy(hdr->addr2, desc->u.qcc2072.mpdu_start.addr2);
++	ether_addr_copy(hdr->addr3, desc->u.qcc2072.mpdu_start.addr3);
++
++	if (__le32_to_cpu(desc->u.qcc2072.mpdu_start.info4) &
++	    RX_MPDU_START_INFO4_MAC_ADDR4_VALID)
++		ether_addr_copy(hdr->addr4, desc->u.qcc2072.mpdu_start.addr4);
++
++	hdr->seq_ctrl = desc->u.qcc2072.mpdu_start.seq_ctrl;
++}
++
++static void ath12k_hal_rx_desc_get_crypto_hdr_qcc2072(struct hal_rx_desc *desc,
++						      u8 *crypto_hdr,
++						      enum hal_encrypt_type enctype)
++{
++	unsigned int key_id;
++
++	switch (enctype) {
++	case HAL_ENCRYPT_TYPE_OPEN:
 +		return;
++	case HAL_ENCRYPT_TYPE_TKIP_NO_MIC:
++	case HAL_ENCRYPT_TYPE_TKIP_MIC:
++		crypto_hdr[0] =
++			HAL_RX_MPDU_INFO_PN_GET_BYTE2(desc->u.qcc2072.mpdu_start.pn[0]);
++		crypto_hdr[1] = 0;
++		crypto_hdr[2] =
++			HAL_RX_MPDU_INFO_PN_GET_BYTE1(desc->u.qcc2072.mpdu_start.pn[0]);
++		break;
++	case HAL_ENCRYPT_TYPE_CCMP_128:
++	case HAL_ENCRYPT_TYPE_CCMP_256:
++	case HAL_ENCRYPT_TYPE_GCMP_128:
++	case HAL_ENCRYPT_TYPE_AES_GCMP_256:
++		crypto_hdr[0] =
++			HAL_RX_MPDU_INFO_PN_GET_BYTE1(desc->u.qcc2072.mpdu_start.pn[0]);
++		crypto_hdr[1] =
++			HAL_RX_MPDU_INFO_PN_GET_BYTE2(desc->u.qcc2072.mpdu_start.pn[0]);
++		crypto_hdr[2] = 0;
++		break;
++	case HAL_ENCRYPT_TYPE_WEP_40:
++	case HAL_ENCRYPT_TYPE_WEP_104:
++	case HAL_ENCRYPT_TYPE_WEP_128:
++	case HAL_ENCRYPT_TYPE_WAPI_GCM_SM4:
++	case HAL_ENCRYPT_TYPE_WAPI:
++		return;
++	}
 +
-+	dma_free_coherent(ab->dev, aux_uc_mem->total_size,
-+			  aux_uc_mem->vaddr, aux_uc_mem->paddr);
-+	aux_uc_mem->vaddr = NULL;
-+	aux_uc_mem->total_size = 0;
-+	aux_uc_mem->size = 0;
++	key_id = u32_get_bits(__le32_to_cpu(desc->u.qcc2072.mpdu_start.info5),
++			      RX_MPDU_START_INFO5_KEY_ID);
++	crypto_hdr[3] = 0x20 | (key_id << 6);
++	crypto_hdr[4] = HAL_RX_MPDU_INFO_PN_GET_BYTE3(desc->u.qcc2072.mpdu_start.pn[0]);
++	crypto_hdr[5] = HAL_RX_MPDU_INFO_PN_GET_BYTE4(desc->u.qcc2072.mpdu_start.pn[0]);
++	crypto_hdr[6] = HAL_RX_MPDU_INFO_PN_GET_BYTE1(desc->u.qcc2072.mpdu_start.pn[1]);
++	crypto_hdr[7] = HAL_RX_MPDU_INFO_PN_GET_BYTE2(desc->u.qcc2072.mpdu_start.pn[1]);
 +}
 +
-+static int ath12k_qmi_aux_uc_load(struct ath12k_base *ab)
++static void ath12k_hal_rx_desc_copy_end_tlv_qcc2072(struct hal_rx_desc *fdesc,
++						    struct hal_rx_desc *ldesc)
 +{
-+	struct m3_mem_region *aux_uc_mem = &ab->qmi.aux_uc_mem;
-+	const struct firmware *fw = NULL;
-+	const void *aux_uc_data;
-+	char path[100];
-+	size_t aux_uc_len;
-+	int ret;
-+
-+	if (ab->fw.aux_uc_data && ab->fw.aux_uc_len > 0) {
-+		/* firmware-N.bin had a aux_uc firmware file so use that */
-+		aux_uc_data = ab->fw.aux_uc_data;
-+		aux_uc_len = ab->fw.aux_uc_len;
-+	} else {
-+		/*
-+		 * No aux_uc file in firmware-N.bin so try to request old
-+		 * separate aux_ucode.bin.
-+		 */
-+		fw = ath12k_core_firmware_request(ab, ATH12K_AUX_UC_FILE);
-+		if (IS_ERR(fw)) {
-+			ret = PTR_ERR(fw);
-+			ath12k_core_create_firmware_path(ab, ATH12K_AUX_UC_FILE,
-+							 path, sizeof(path));
-+			ath12k_err(ab, "failed to load %s: %d\n", path, ret);
-+			return ret;
-+		}
-+
-+		aux_uc_data = fw->data;
-+		aux_uc_len = fw->size;
-+	}
-+
-+	/* In recovery/resume cases, AUX_UC buffer is not freed, try to reuse that */
-+	if (aux_uc_mem->vaddr) {
-+		if (aux_uc_mem->total_size >= aux_uc_len)
-+			goto copy;
-+
-+		/* Old buffer is too small, free and reallocate */
-+		ath12k_qmi_aux_uc_free(ab);
-+	}
-+
-+	aux_uc_mem->vaddr = dma_alloc_coherent(ab->dev, aux_uc_len,
-+					       &aux_uc_mem->paddr, GFP_KERNEL);
-+	if (!aux_uc_mem->vaddr) {
-+		ret = -ENOMEM;
-+		goto out;
-+	}
-+
-+	 aux_uc_mem->total_size = aux_uc_len;
-+
-+copy:
-+	memcpy(aux_uc_mem->vaddr, aux_uc_data, aux_uc_len);
-+	aux_uc_mem->size = aux_uc_len;
-+
-+	ret = 0;
-+
-+out:
-+	release_firmware(fw);
-+
-+	return ret;
++	memcpy(&fdesc->u.qcc2072.msdu_end, &ldesc->u.qcc2072.msdu_end,
++	       sizeof(struct rx_msdu_end_qcn9274));
 +}
 +
-+static noinline_for_stack
-+int ath12k_qmi_wlanfw_aux_uc_info_send(struct ath12k_base *ab)
++static u8 ath12k_hal_rx_desc_get_msdu_src_link_qcc2072(struct hal_rx_desc *desc)
 +{
-+	struct m3_mem_region *aux_uc_mem = &ab->qmi.aux_uc_mem;
-+	struct qmi_wlanfw_aux_uc_info_req_msg_v01 req = {};
-+	struct qmi_wlanfw_aux_uc_info_resp_msg_v01 resp = {};
-+	struct qmi_txn txn;
-+	int ret = 0;
-+
-+	ret = ath12k_qmi_aux_uc_load(ab);
-+	if (ret) {
-+		ath12k_err(ab, "failed to load aux_uc firmware: %d", ret);
-+		return ret;
-+	}
-+
-+	req.addr = aux_uc_mem->paddr;
-+	req.size = aux_uc_mem->size;
-+
-+	ret = qmi_txn_init(&ab->qmi.handle, &txn,
-+			   qmi_wlanfw_aux_uc_info_resp_msg_v01_ei, &resp);
-+	if (ret < 0)
-+		goto out;
-+
-+	ret = qmi_send_request(&ab->qmi.handle, NULL, &txn,
-+			       QMI_WLANFW_AUX_UC_INFO_REQ_V01,
-+			       QMI_WLANFW_AUX_UC_INFO_REQ_MSG_V01_MAX_MSG_LEN,
-+			       qmi_wlanfw_aux_uc_info_req_msg_v01_ei, &req);
-+	if (ret < 0) {
-+		qmi_txn_cancel(&txn);
-+		ath12k_warn(ab, "qmi failed to send AUX_UC information request, err = %d\n",
-+			    ret);
-+		goto out;
-+	}
-+
-+	ret = qmi_txn_wait(&txn, msecs_to_jiffies(ATH12K_QMI_WLANFW_TIMEOUT_MS));
-+	if (ret < 0) {
-+		ath12k_warn(ab, "qmi failed AUX_UC information request %d\n", ret);
-+		goto out;
-+	}
-+
-+	if (resp.resp.result != QMI_RESULT_SUCCESS_V01) {
-+		ath12k_warn(ab, "qmi AUX_UC info request failed, result: %d, err: %d\n",
-+			    resp.resp.result, resp.resp.error);
-+		ret = -EINVAL;
-+		goto out;
-+	}
-+out:
-+	return ret;
++	return 0;
 +}
 +
- static int ath12k_qmi_wlanfw_mode_send(struct ath12k_base *ab,
- 				       u32 mode)
- {
-@@ -3601,6 +3767,7 @@ static noinline_for_stack
- int ath12k_qmi_event_load_bdf(struct ath12k_qmi *qmi)
- {
- 	struct ath12k_base *ab = qmi->ab;
-+	const struct ath12k_hw_params *hw_params = ab->hw_params;
- 	int ret;
- 
- 	ret = ath12k_qmi_request_target_cap(ab);
-@@ -3621,7 +3788,7 @@ int ath12k_qmi_event_load_bdf(struct ath12k_qmi *qmi)
- 		return ret;
- 	}
- 
--	if (ab->hw_params->download_calib) {
-+	if (hw_params->download_calib) {
- 		ret = ath12k_qmi_load_bdf_qmi(ab, ATH12K_QMI_BDF_TYPE_CALIBRATION);
- 		if (ret < 0)
- 			ath12k_warn(ab, "qmi failed to load calibrated data :%d\n", ret);
-@@ -3633,6 +3800,14 @@ int ath12k_qmi_event_load_bdf(struct ath12k_qmi *qmi)
- 		return ret;
- 	}
- 
-+	if (hw_params->fw.download_aux_ucode) {
-+		ret = ath12k_qmi_wlanfw_aux_uc_info_send(ab);
-+		if (ret < 0) {
-+			ath12k_warn(ab, "qmi failed to send aux_uc info req: %d\n", ret);
-+			return ret;
-+		}
-+	}
++static u8 ath12k_hal_rx_desc_get_l3_pad_bytes_qcc2072(struct hal_rx_desc *desc)
++{
++	return le16_get_bits(desc->u.qcc2072.msdu_end.info5,
++			     RX_MSDU_END_INFO5_L3_HDR_PADDING);
++}
 +
- 	return ret;
- }
- 
-@@ -3906,6 +4081,7 @@ void ath12k_qmi_deinit_service(struct ath12k_base *ab)
- 	qmi_handle_release(&ab->qmi.handle);
- 	cancel_work_sync(&ab->qmi.event_work);
- 	destroy_workqueue(ab->qmi.event_wq);
-+	ath12k_qmi_aux_uc_free(ab);
- 	ath12k_qmi_m3_free(ab);
- 	ath12k_qmi_free_target_mem_chunk(ab);
- 	ab->qmi.ab = NULL;
-@@ -3914,5 +4090,6 @@ void ath12k_qmi_deinit_service(struct ath12k_base *ab)
- void ath12k_qmi_free_resource(struct ath12k_base *ab)
- {
- 	ath12k_qmi_free_target_mem_chunk(ab);
-+	ath12k_qmi_aux_uc_free(ab);
- 	ath12k_qmi_m3_free(ab);
- }
-diff --git a/drivers/net/wireless/ath/ath12k/qmi.h b/drivers/net/wireless/ath/ath12k/qmi.h
-index 050dcaca1cb7..b5a4a01391cb 100644
---- a/drivers/net/wireless/ath/ath12k/qmi.h
-+++ b/drivers/net/wireless/ath/ath12k/qmi.h
-@@ -154,6 +154,7 @@ struct ath12k_qmi {
- 	u8 num_radios;
- 	struct target_info target;
- 	struct m3_mem_region m3_mem;
-+	struct m3_mem_region aux_uc_mem;
- 	unsigned int service_ins_id;
- 	struct dev_mem_info dev_mem[ATH12K_QMI_WLFW_MAX_DEV_MEM_NUM_V01];
- };
-@@ -203,6 +204,7 @@ enum ath12k_qmi_cnss_feature {
- 	CNSS_FEATURE_MIN_ENUM_VAL_V01 = INT_MIN,
- 	CNSS_QDSS_CFG_MISS_V01 = 3,
- 	CNSS_PCIE_PERST_NO_PULL_V01 = 4,
-+	CNSS_AUX_UC_SUPPORT_V01 = 6,
- 	CNSS_MAX_FEATURE_V01 = 64,
- 	CNSS_FEATURE_MAX_ENUM_VAL_V01 = INT_MAX,
- };
-@@ -541,6 +543,19 @@ struct qmi_wlanfw_m3_info_resp_msg_v01 {
- 	struct qmi_response_type_v01 resp;
- };
- 
-+#define QMI_WLANFW_AUX_UC_INFO_REQ_MSG_V01_MAX_MSG_LEN	18
-+#define QMI_WLANFW_AUX_UC_INFO_RESP_MSG_V01_MAX_MSG_LEN	7
-+#define QMI_WLANFW_AUX_UC_INFO_REQ_V01	0x005A
++static u32 ath12k_hal_rx_desc_get_mpdu_start_tag_qcc2072(struct hal_rx_desc *desc)
++{
++	return le32_get_bits(desc->u.qcc2072.mpdu_start_tag,
++			     HAL_TLV_HDR_TAG);
++}
 +
-+struct qmi_wlanfw_aux_uc_info_req_msg_v01 {
-+	u64 addr;
-+	u32 size;
++static u32 ath12k_hal_rx_desc_get_mpdu_ppdu_id_qcc2072(struct hal_rx_desc *desc)
++{
++	return __le16_to_cpu(desc->u.qcc2072.mpdu_start.phy_ppdu_id);
++}
++
++static u8 *ath12k_hal_rx_desc_get_msdu_payload_qcc2072(struct hal_rx_desc *desc)
++{
++	return &desc->u.qcc2072.msdu_payload[0];
++}
++
++static bool ath12k_hal_rx_desc_get_first_msdu_qcc2072(struct hal_rx_desc *desc)
++{
++	return !!le16_get_bits(desc->u.qcc2072.msdu_end.info5,
++			       RX_MSDU_END_INFO5_FIRST_MSDU);
++}
++
++static bool ath12k_hal_rx_desc_get_last_msdu_qcc2072(struct hal_rx_desc *desc)
++{
++	return !!le16_get_bits(desc->u.qcc2072.msdu_end.info5,
++			       RX_MSDU_END_INFO5_LAST_MSDU);
++}
++
++static bool ath12k_hal_rx_desc_encrypt_valid_qcc2072(struct hal_rx_desc *desc)
++{
++	return !!le32_get_bits(desc->u.qcc2072.mpdu_start.info4,
++			       RX_MPDU_START_INFO4_ENCRYPT_INFO_VALID);
++}
++
++static u32 ath12k_hal_rx_desc_get_encrypt_type_qcc2072(struct hal_rx_desc *desc)
++{
++	if (!ath12k_hal_rx_desc_encrypt_valid_qcc2072(desc))
++		return HAL_ENCRYPT_TYPE_OPEN;
++
++	return le32_get_bits(desc->u.qcc2072.mpdu_start.info2,
++			     RX_MPDU_START_INFO2_ENC_TYPE);
++}
++
++static u8 ath12k_hal_rx_desc_get_decap_type_qcc2072(struct hal_rx_desc *desc)
++{
++	return le32_get_bits(desc->u.qcc2072.msdu_end.info11,
++			     RX_MSDU_END_INFO11_DECAP_FORMAT);
++}
++
++static u8 ath12k_hal_rx_desc_get_mesh_ctl_qcc2072(struct hal_rx_desc *desc)
++{
++	return le32_get_bits(desc->u.qcc2072.msdu_end.info11,
++			     RX_MSDU_END_INFO11_MESH_CTRL_PRESENT);
++}
++
++static bool ath12k_hal_rx_desc_get_mpdu_seq_ctl_vld_qcc2072(struct hal_rx_desc *desc)
++{
++	return !!le32_get_bits(desc->u.qcc2072.mpdu_start.info4,
++			       RX_MPDU_START_INFO4_MPDU_SEQ_CTRL_VALID);
++}
++
++static bool ath12k_hal_rx_desc_get_mpdu_fc_valid_qcc2072(struct hal_rx_desc *desc)
++{
++	return !!le32_get_bits(desc->u.qcc2072.mpdu_start.info4,
++			       RX_MPDU_START_INFO4_MPDU_FCTRL_VALID);
++}
++
++static u16 ath12k_hal_rx_desc_get_mpdu_start_seq_no_qcc2072(struct hal_rx_desc *desc)
++{
++	return le32_get_bits(desc->u.qcc2072.mpdu_start.info4,
++			     RX_MPDU_START_INFO4_MPDU_SEQ_NUM);
++}
++
++static u16 ath12k_hal_rx_desc_get_msdu_len_qcc2072(struct hal_rx_desc *desc)
++{
++	return le32_get_bits(desc->u.qcc2072.msdu_end.info10,
++			     RX_MSDU_END_INFO10_MSDU_LENGTH);
++}
++
++static u8 ath12k_hal_rx_desc_get_msdu_sgi_qcc2072(struct hal_rx_desc *desc)
++{
++	return le32_get_bits(desc->u.qcc2072.msdu_end.info12,
++			     RX_MSDU_END_INFO12_SGI);
++}
++
++static u8 ath12k_hal_rx_desc_get_msdu_rate_mcs_qcc2072(struct hal_rx_desc *desc)
++{
++	return le32_get_bits(desc->u.qcc2072.msdu_end.info12,
++			     RX_MSDU_END_INFO12_RATE_MCS);
++}
++
++static u8 ath12k_hal_rx_desc_get_msdu_rx_bw_qcc2072(struct hal_rx_desc *desc)
++{
++	return le32_get_bits(desc->u.qcc2072.msdu_end.info12,
++			     RX_MSDU_END_INFO12_RECV_BW);
++}
++
++static u32 ath12k_hal_rx_desc_get_msdu_freq_qcc2072(struct hal_rx_desc *desc)
++{
++	return __le32_to_cpu(desc->u.qcc2072.msdu_end.phy_meta_data);
++}
++
++static u8 ath12k_hal_rx_desc_get_msdu_pkt_type_qcc2072(struct hal_rx_desc *desc)
++{
++	return le32_get_bits(desc->u.qcc2072.msdu_end.info12,
++			     RX_MSDU_END_INFO12_PKT_TYPE);
++}
++
++static u8 ath12k_hal_rx_desc_get_msdu_nss_qcc2072(struct hal_rx_desc *desc)
++{
++	return le32_get_bits(desc->u.qcc2072.msdu_end.info12,
++			     RX_MSDU_END_INFO12_MIMO_SS_BITMAP);
++}
++
++static u8 ath12k_hal_rx_desc_get_mpdu_tid_qcc2072(struct hal_rx_desc *desc)
++{
++	return le32_get_bits(desc->u.qcc2072.mpdu_start.info2,
++			     RX_MPDU_START_INFO2_TID);
++}
++
++static u16 ath12k_hal_rx_desc_get_mpdu_peer_id_qcc2072(struct hal_rx_desc *desc)
++{
++	return __le16_to_cpu(desc->u.qcc2072.mpdu_start.sw_peer_id);
++}
++
++static bool ath12k_hal_rx_desc_mac_addr2_valid_qcc2072(struct hal_rx_desc *desc)
++{
++	return __le32_to_cpu(desc->u.qcc2072.mpdu_start.info4) &
++			     RX_MPDU_START_INFO4_MAC_ADDR2_VALID;
++}
++
++static u8 *ath12k_hal_rx_desc_mpdu_start_addr2_qcc2072(struct hal_rx_desc *desc)
++{
++	return desc->u.qcc2072.mpdu_start.addr2;
++}
++
++static bool ath12k_hal_rx_desc_is_da_mcbc_qcc2072(struct hal_rx_desc *desc)
++{
++	return __le32_to_cpu(desc->u.qcc2072.msdu_end.info13) &
++			     RX_MSDU_END_INFO13_MCAST_BCAST;
++}
++
++static bool ath12k_hal_rx_h_msdu_done_qcc2072(struct hal_rx_desc *desc)
++{
++	return !!le32_get_bits(desc->u.qcc2072.msdu_end.info14,
++			       RX_MSDU_END_INFO14_MSDU_DONE);
++}
++
++static bool ath12k_hal_rx_h_l4_cksum_fail_qcc2072(struct hal_rx_desc *desc)
++{
++	return !!le32_get_bits(desc->u.qcc2072.msdu_end.info13,
++			       RX_MSDU_END_INFO13_TCP_UDP_CKSUM_FAIL);
++}
++
++static bool ath12k_hal_rx_h_ip_cksum_fail_qcc2072(struct hal_rx_desc *desc)
++{
++	return !!le32_get_bits(desc->u.qcc2072.msdu_end.info13,
++			       RX_MSDU_END_INFO13_IP_CKSUM_FAIL);
++}
++
++static bool ath12k_hal_rx_h_is_decrypted_qcc2072(struct hal_rx_desc *desc)
++{
++	return (le32_get_bits(desc->u.qcc2072.msdu_end.info14,
++			      RX_MSDU_END_INFO14_DECRYPT_STATUS_CODE) ==
++		RX_DESC_DECRYPT_STATUS_CODE_OK);
++}
++
++static u32 ath12k_hal_rx_h_mpdu_err_qcc2072(struct hal_rx_desc *desc)
++{
++	u32 info = __le32_to_cpu(desc->u.qcc2072.msdu_end.info13);
++	u32 errmap = 0;
++
++	if (info & RX_MSDU_END_INFO13_FCS_ERR)
++		errmap |= HAL_RX_MPDU_ERR_FCS;
++
++	if (info & RX_MSDU_END_INFO13_DECRYPT_ERR)
++		errmap |= HAL_RX_MPDU_ERR_DECRYPT;
++
++	if (info & RX_MSDU_END_INFO13_TKIP_MIC_ERR)
++		errmap |= HAL_RX_MPDU_ERR_TKIP_MIC;
++
++	if (info & RX_MSDU_END_INFO13_A_MSDU_ERROR)
++		errmap |= HAL_RX_MPDU_ERR_AMSDU_ERR;
++
++	if (info & RX_MSDU_END_INFO13_OVERFLOW_ERR)
++		errmap |= HAL_RX_MPDU_ERR_OVERFLOW;
++
++	if (info & RX_MSDU_END_INFO13_MSDU_LEN_ERR)
++		errmap |= HAL_RX_MPDU_ERR_MSDU_LEN;
++
++	if (info & RX_MSDU_END_INFO13_MPDU_LEN_ERR)
++		errmap |= HAL_RX_MPDU_ERR_MPDU_LEN;
++
++	return errmap;
++}
++
++static void ath12k_hal_extract_rx_desc_data_qcc2072(struct hal_rx_desc_data *rx_desc_data,
++						    struct hal_rx_desc *rx_desc,
++						    struct hal_rx_desc *ldesc)
++{
++	rx_desc_data->is_first_msdu = ath12k_hal_rx_desc_get_first_msdu_qcc2072(ldesc);
++	rx_desc_data->is_last_msdu = ath12k_hal_rx_desc_get_last_msdu_qcc2072(ldesc);
++	rx_desc_data->l3_pad_bytes = ath12k_hal_rx_desc_get_l3_pad_bytes_qcc2072(ldesc);
++	rx_desc_data->enctype = ath12k_hal_rx_desc_get_encrypt_type_qcc2072(rx_desc);
++	rx_desc_data->decap_type = ath12k_hal_rx_desc_get_decap_type_qcc2072(rx_desc);
++	rx_desc_data->mesh_ctrl_present =
++				ath12k_hal_rx_desc_get_mesh_ctl_qcc2072(rx_desc);
++	rx_desc_data->seq_ctl_valid =
++				ath12k_hal_rx_desc_get_mpdu_seq_ctl_vld_qcc2072(rx_desc);
++	rx_desc_data->fc_valid = ath12k_hal_rx_desc_get_mpdu_fc_valid_qcc2072(rx_desc);
++	rx_desc_data->seq_no = ath12k_hal_rx_desc_get_mpdu_start_seq_no_qcc2072(rx_desc);
++	rx_desc_data->msdu_len = ath12k_hal_rx_desc_get_msdu_len_qcc2072(ldesc);
++	rx_desc_data->sgi = ath12k_hal_rx_desc_get_msdu_sgi_qcc2072(rx_desc);
++	rx_desc_data->rate_mcs = ath12k_hal_rx_desc_get_msdu_rate_mcs_qcc2072(rx_desc);
++	rx_desc_data->bw = ath12k_hal_rx_desc_get_msdu_rx_bw_qcc2072(rx_desc);
++	rx_desc_data->phy_meta_data = ath12k_hal_rx_desc_get_msdu_freq_qcc2072(rx_desc);
++	rx_desc_data->pkt_type = ath12k_hal_rx_desc_get_msdu_pkt_type_qcc2072(rx_desc);
++	rx_desc_data->nss = hweight8(ath12k_hal_rx_desc_get_msdu_nss_qcc2072(rx_desc));
++	rx_desc_data->tid = ath12k_hal_rx_desc_get_mpdu_tid_qcc2072(rx_desc);
++	rx_desc_data->peer_id = ath12k_hal_rx_desc_get_mpdu_peer_id_qcc2072(rx_desc);
++	rx_desc_data->addr2_present = ath12k_hal_rx_desc_mac_addr2_valid_qcc2072(rx_desc);
++	rx_desc_data->addr2 = ath12k_hal_rx_desc_mpdu_start_addr2_qcc2072(rx_desc);
++	rx_desc_data->is_mcbc = ath12k_hal_rx_desc_is_da_mcbc_qcc2072(rx_desc);
++	rx_desc_data->msdu_done = ath12k_hal_rx_h_msdu_done_qcc2072(ldesc);
++	rx_desc_data->l4_csum_fail = ath12k_hal_rx_h_l4_cksum_fail_qcc2072(rx_desc);
++	rx_desc_data->ip_csum_fail = ath12k_hal_rx_h_ip_cksum_fail_qcc2072(rx_desc);
++	rx_desc_data->is_decrypted = ath12k_hal_rx_h_is_decrypted_qcc2072(rx_desc);
++	rx_desc_data->err_bitmap = ath12k_hal_rx_h_mpdu_err_qcc2072(rx_desc);
++}
++
++const struct hal_ops hal_qcc2072_ops = {
++	.create_srng_config = ath12k_hal_srng_create_config_wcn7850,
++	.rx_desc_set_msdu_len = ath12k_hal_rx_desc_set_msdu_len_qcc2072,
++	.rx_desc_get_dot11_hdr = ath12k_hal_rx_desc_get_dot11_hdr_qcc2072,
++	.rx_desc_get_crypto_header = ath12k_hal_rx_desc_get_crypto_hdr_qcc2072,
++	.rx_desc_copy_end_tlv = ath12k_hal_rx_desc_copy_end_tlv_qcc2072,
++	.rx_desc_get_msdu_src_link_id = ath12k_hal_rx_desc_get_msdu_src_link_qcc2072,
++	.extract_rx_desc_data = ath12k_hal_extract_rx_desc_data_qcc2072,
++	.rx_desc_get_l3_pad_bytes = ath12k_hal_rx_desc_get_l3_pad_bytes_qcc2072,
++	.rx_desc_get_mpdu_start_tag = ath12k_hal_rx_desc_get_mpdu_start_tag_qcc2072,
++	.rx_desc_get_mpdu_ppdu_id = ath12k_hal_rx_desc_get_mpdu_ppdu_id_qcc2072,
++	.rx_desc_get_msdu_payload = ath12k_hal_rx_desc_get_msdu_payload_qcc2072,
++	.ce_dst_setup = ath12k_wifi7_hal_ce_dst_setup,
++	.srng_src_hw_init = ath12k_wifi7_hal_srng_src_hw_init,
++	.srng_dst_hw_init = ath12k_wifi7_hal_srng_dst_hw_init,
++	.set_umac_srng_ptr_addr = ath12k_wifi7_hal_set_umac_srng_ptr_addr,
++	.srng_update_shadow_config = ath12k_wifi7_hal_srng_update_shadow_config,
++	.srng_get_ring_id = ath12k_wifi7_hal_srng_get_ring_id,
++	.ce_get_desc_size = ath12k_wifi7_hal_ce_get_desc_size,
++	.ce_src_set_desc = ath12k_wifi7_hal_ce_src_set_desc,
++	.ce_dst_set_desc = ath12k_wifi7_hal_ce_dst_set_desc,
++	.ce_dst_status_get_length = ath12k_wifi7_hal_ce_dst_status_get_length,
++	.set_link_desc_addr = ath12k_wifi7_hal_set_link_desc_addr,
++	.tx_set_dscp_tid_map = ath12k_wifi7_hal_tx_set_dscp_tid_map,
++	.tx_configure_bank_register =
++				ath12k_wifi7_hal_tx_configure_bank_register,
++	.reoq_lut_addr_read_enable = ath12k_wifi7_hal_reoq_lut_addr_read_enable,
++	.reoq_lut_set_max_peerid = ath12k_wifi7_hal_reoq_lut_set_max_peerid,
++	.write_reoq_lut_addr = ath12k_wifi7_hal_write_reoq_lut_addr,
++	.write_ml_reoq_lut_addr = ath12k_wifi7_hal_write_ml_reoq_lut_addr,
++	.setup_link_idle_list = ath12k_wifi7_hal_setup_link_idle_list,
++	.reo_init_cmd_ring = ath12k_wifi7_hal_reo_init_cmd_ring_tlv64,
++	.reo_hw_setup = ath12k_wifi7_hal_reo_hw_setup,
++	.rx_buf_addr_info_set = ath12k_wifi7_hal_rx_buf_addr_info_set,
++	.rx_buf_addr_info_get = ath12k_wifi7_hal_rx_buf_addr_info_get,
++	.cc_config = ath12k_wifi7_hal_cc_config,
++	.get_idle_link_rbm = ath12k_wifi7_hal_get_idle_link_rbm,
++	.rx_msdu_list_get = ath12k_wifi7_hal_rx_msdu_list_get,
++	.rx_reo_ent_buf_paddr_get = ath12k_wifi7_hal_rx_reo_ent_buf_paddr_get,
++	.reo_cmd_enc_tlv_hdr = ath12k_hal_encode_tlv64_hdr,
++	.reo_status_dec_tlv_hdr = ath12k_hal_decode_tlv64_hdr,
++};
+diff --git a/drivers/net/wireless/ath/ath12k/wifi7/hal_qcc2072.h b/drivers/net/wireless/ath/ath12k/wifi7/hal_qcc2072.h
+index 744d7e02b46e..392bfbb6a412 100644
+--- a/drivers/net/wireless/ath/ath12k/wifi7/hal_qcc2072.h
++++ b/drivers/net/wireless/ath/ath12k/wifi7/hal_qcc2072.h
+@@ -4,5 +4,7 @@
+  */
+ 
+ #include "../hal.h"
++#include "hal.h"
+ 
+ extern const struct ath12k_hw_regs qcc2072_regs;
++extern const struct hal_ops hal_qcc2072_ops;
+diff --git a/drivers/net/wireless/ath/ath12k/wifi7/hal_rx_desc.h b/drivers/net/wireless/ath/ath12k/wifi7/hal_rx_desc.h
+index cc5e1d336376..0d19a9cbb68c 100644
+--- a/drivers/net/wireless/ath/ath12k/wifi7/hal_rx_desc.h
++++ b/drivers/net/wireless/ath/ath12k/wifi7/hal_rx_desc.h
+@@ -1481,10 +1481,27 @@ struct hal_rx_desc_wcn7850 {
+ 	u8 msdu_payload[];
+ };
+ 
++struct rx_pkt_hdr_tlv_qcc2072 {
++	__le32 tag;
++	__le64 phy_ppdu_id;
++	u8 rx_pkt_hdr[HAL_RX_BE_PKT_HDR_TLV_LEN];
 +};
 +
-+struct qmi_wlanfw_aux_uc_info_resp_msg_v01 {
-+	struct qmi_response_type_v01 resp;
++struct hal_rx_desc_qcc2072 {
++	__le32 msdu_end_tag;
++	struct rx_msdu_end_qcn9274 msdu_end;
++	u8 rx_padding0[RX_BE_PADDING0_BYTES];
++	__le32 mpdu_start_tag;
++	struct rx_mpdu_start_qcn9274 mpdu_start;
++	struct rx_pkt_hdr_tlv_qcc2072 pkt_hdr_tlv;
++	u8 msdu_payload[];
 +};
 +
- #define QMI_WLANFW_WLAN_MODE_REQ_MSG_V01_MAX_LEN	11
- #define QMI_WLANFW_WLAN_MODE_RESP_MSG_V01_MAX_LEN	7
- #define QMI_WLANFW_WLAN_CFG_REQ_MSG_V01_MAX_LEN		803
-diff --git a/drivers/net/wireless/ath/ath12k/wifi7/hw.c b/drivers/net/wireless/ath/ath12k/wifi7/hw.c
-index ef0a59f6339c..38c388319e00 100644
---- a/drivers/net/wireless/ath/ath12k/wifi7/hw.c
-+++ b/drivers/net/wireless/ath/ath12k/wifi7/hw.c
-@@ -339,6 +339,7 @@ static const struct ath12k_hw_params ath12k_wifi7_hw_params[] = {
- 			.board_size = 256 * 1024,
- 			.cal_offset = 128 * 1024,
- 			.m3_loader = ath12k_m3_fw_loader_driver,
-+			.download_aux_ucode = false,
- 		},
- 		.max_radios = 1,
- 		.single_pdev_only = false,
-@@ -421,6 +422,7 @@ static const struct ath12k_hw_params ath12k_wifi7_hw_params[] = {
- 			.board_size = 256 * 1024,
- 			.cal_offset = 256 * 1024,
- 			.m3_loader = ath12k_m3_fw_loader_driver,
-+			.download_aux_ucode = false,
- 		},
+ struct hal_rx_desc {
+ 	union {
+ 		struct hal_rx_desc_qcn9274_compact qcn9274_compact;
+ 		struct hal_rx_desc_wcn7850 wcn7850;
++		struct hal_rx_desc_qcc2072 qcc2072;
+ 	} u;
+ } __packed;
  
- 		.max_radios = 1,
-@@ -505,6 +507,7 @@ static const struct ath12k_hw_params ath12k_wifi7_hw_params[] = {
- 			.board_size = 256 * 1024,
- 			.cal_offset = 128 * 1024,
- 			.m3_loader = ath12k_m3_fw_loader_driver,
-+			.download_aux_ucode = false,
- 		},
- 		.max_radios = 2,
- 		.single_pdev_only = false,
-@@ -586,6 +589,7 @@ static const struct ath12k_hw_params ath12k_wifi7_hw_params[] = {
- 			.board_size = 256 * 1024,
- 			.cal_offset = 128 * 1024,
- 			.m3_loader = ath12k_m3_fw_loader_remoteproc,
-+			.download_aux_ucode = false,
- 		},
- 		.max_radios = 1,
- 		.single_pdev_only = false,
-@@ -661,6 +665,7 @@ static const struct ath12k_hw_params ath12k_wifi7_hw_params[] = {
- 			.board_size = 256 * 1024,
- 			.cal_offset = 256 * 1024,
- 			.m3_loader = ath12k_m3_fw_loader_driver,
-+			.download_aux_ucode = true,
- 		},
+diff --git a/drivers/net/wireless/ath/ath12k/wifi7/hal_wcn7850.c b/drivers/net/wireless/ath/ath12k/wifi7/hal_wcn7850.c
+index c3093c01af87..88f51a3828aa 100644
+--- a/drivers/net/wireless/ath/ath12k/wifi7/hal_wcn7850.c
++++ b/drivers/net/wireless/ath/ath12k/wifi7/hal_wcn7850.c
+@@ -614,7 +614,7 @@ void ath12k_hal_extract_rx_desc_data_wcn7850(struct hal_rx_desc_data *rx_desc_da
+ 	rx_desc_data->err_bitmap = ath12k_hal_rx_h_mpdu_err_wcn7850(rx_desc);
+ }
  
- 		.max_radios = 1,
-@@ -707,7 +712,8 @@ static const struct ath12k_hw_params ath12k_wifi7_hw_params[] = {
- 		.wmi_init = ath12k_wifi7_wmi_init_wcn7850,
+-static int ath12k_hal_srng_create_config_wcn7850(struct ath12k_hal *hal)
++int ath12k_hal_srng_create_config_wcn7850(struct ath12k_hal *hal)
+ {
+ 	struct hal_srng_config *s;
  
- 		.qmi_cnss_feature_bitmap = BIT(CNSS_QDSS_CFG_MISS_V01) |
--					   BIT(CNSS_PCIE_PERST_NO_PULL_V01),
-+					   BIT(CNSS_PCIE_PERST_NO_PULL_V01) |
-+					   BIT(CNSS_AUX_UC_SUPPORT_V01),
- 
- 		.rfkill_pin = 0,
- 		.rfkill_cfg = 0,
+diff --git a/drivers/net/wireless/ath/ath12k/wifi7/hal_wcn7850.h b/drivers/net/wireless/ath/ath12k/wifi7/hal_wcn7850.h
+index 46047fd6a312..a56ca9fd3de4 100644
+--- a/drivers/net/wireless/ath/ath12k/wifi7/hal_wcn7850.h
++++ b/drivers/net/wireless/ath/ath12k/wifi7/hal_wcn7850.h
+@@ -36,4 +36,5 @@ void ath12k_hal_rx_desc_get_dot11_hdr_wcn7850(struct hal_rx_desc *desc,
+ void ath12k_hal_extract_rx_desc_data_wcn7850(struct hal_rx_desc_data *rx_desc_data,
+ 					     struct hal_rx_desc *rx_desc,
+ 					     struct hal_rx_desc *ldesc);
++int ath12k_hal_srng_create_config_wcn7850(struct ath12k_hal *hal);
+ #endif
 
 -- 
 2.25.1
