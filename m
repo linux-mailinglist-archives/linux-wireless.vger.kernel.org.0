@@ -1,240 +1,137 @@
-Return-Path: <linux-wireless+bounces-30701-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-30702-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 10EC2D13841
-	for <lists+linux-wireless@lfdr.de>; Mon, 12 Jan 2026 16:13:21 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9D5A5D13C89
+	for <lists+linux-wireless@lfdr.de>; Mon, 12 Jan 2026 16:48:15 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 803CA313693B
-	for <lists+linux-wireless@lfdr.de>; Mon, 12 Jan 2026 14:58:48 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 3C4C230386F9
+	for <lists+linux-wireless@lfdr.de>; Mon, 12 Jan 2026 15:47:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D475D2DB7B6;
-	Mon, 12 Jan 2026 14:58:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5024630498E;
+	Mon, 12 Jan 2026 15:47:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="sTlkbxiN"
+	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="0myqGsO2"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f51.google.com (mail-wm1-f51.google.com [209.85.128.51])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B02B62DB797;
-	Mon, 12 Jan 2026 14:58:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 870562F5A10
+	for <linux-wireless@vger.kernel.org>; Mon, 12 Jan 2026 15:47:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.51
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768229925; cv=none; b=VpTVxelSBqz6qSxz8t0GfEtFk2cC+rdLbe9P+2R9JJJciClBtjDxwvMDwbiEYkAA5yDMWrblsY7RzB56UgWXShI3IUaDzdsOUBlnzBdnIs2SaMBl3uk+XKb71mC/GhWEYeGuf3TgOuJoa+KJXAz6ElT7STwI2BNp9AtEBcKda78=
+	t=1768232835; cv=none; b=LNSogGrjjP1MXPqxf2w5X7WS/slkezdjnYAM/aFqcKlSMqojI55uyJqIjJYQLR4Kl0EvRcPmFx9aHcRxvFff/XWGWKvXcmX4jiSg0EDBAXPme/uJfc6drtZTGlxfv1lcWElWojjzhrKv3TJavMtMTMII9W4tPGfgXCKbqppvj9E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768229925; c=relaxed/simple;
-	bh=EvHDptncN54Nkvz1HybzgdOjR8fnhTbNY70OKrG0yYk=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=efLuVKzCVCKD9EQVRSgrEoKClX+J7hrp99grgM7zc2Tga9f5h5sn/qDVF4dGHbC6bxbXqOk6/rkDUkO+LyUjq98fSvUlVwmNHjds9l1OzIe18Db86agDm6WoeaPkL5PGd3PPtOcHBUH2UDIyCQYbQjX83d91MpXa6xbg6JN3kjA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=sTlkbxiN; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B7039C2BC86;
-	Mon, 12 Jan 2026 14:58:44 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1768229925;
-	bh=EvHDptncN54Nkvz1HybzgdOjR8fnhTbNY70OKrG0yYk=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=sTlkbxiNg/dI2ErhQHVzd82Z9f2pW8u8qfcCCDtjO2212rYUD95RcGWnt4qP6pzKr
-	 BKS2E9P7XdYY8gQzV4ZUmjaDfNIP5XWeGnC5bhcl9wvNjyjzq27TpK2ieXx/3H8g9U
-	 UkSVND/oRTZbdendTQxK/BFZooicPrE6KgcnMMBEs2jTUXWIAuGyeayHwatniXremM
-	 PNhNPsDZ2qjCkyMnkXWCa9vfHxalSGyow1INZxRYpoCjcbQkAgtv5HoK5s/cMHux3b
-	 HEmgy6abNbWeFQu0JwP8mrAujNmt6SmD0LuARIMOKbxFnUsims2q7Fo4ln7TsAm/5k
-	 rqJEhJV011c0Q==
-From: Sasha Levin <sashal@kernel.org>
-To: patches@lists.linux.dev,
-	stable@vger.kernel.org
-Cc: Baochen Qiang <baochen.qiang@oss.qualcomm.com>,
-	Johannes Berg <johannes.berg@intel.com>,
-	Sasha Levin <sashal@kernel.org>,
-	johannes@sipsolutions.net,
-	linux-wireless@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.18-5.10] wifi: mac80211: collect station statistics earlier when disconnect
-Date: Mon, 12 Jan 2026 09:58:04 -0500
-Message-ID: <20260112145840.724774-3-sashal@kernel.org>
-X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20260112145840.724774-1-sashal@kernel.org>
-References: <20260112145840.724774-1-sashal@kernel.org>
+	s=arc-20240116; t=1768232835; c=relaxed/simple;
+	bh=vHWFPBypaVR6QO9yY+NIT52Fwn/AnAUPV0IFF36KmuA=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=hGkzxjedJLwpDeJ5mm92MD3huAtAEq6cr+mcoDq4D6OEwh8X1okAnALJmPi37yKSX0RBVY8k8/D7EjqwETAxEznkUIPWlF4+x/gFWW6i4w5uXMwp/xp8a8D/exmPMj87K57IlOXL+19pOnUZoBKSGD2Y3wEle5BF6niJhMgjc5w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=0myqGsO2; arc=none smtp.client-ip=209.85.128.51
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
+Received: by mail-wm1-f51.google.com with SMTP id 5b1f17b1804b1-4775895d69cso32586505e9.0
+        for <linux-wireless@vger.kernel.org>; Mon, 12 Jan 2026 07:47:12 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1768232831; x=1768837631; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=QU+wdPQeGIMx2R82MPiKqXDiY8zUt2eXhqlQOcy8HXY=;
+        b=0myqGsO2xvaRKfH8bkgIAHGNfjElsxUKLmD+oEQlq0SmO4RtzHus4Vs4d0PL2BtMhL
+         dnGnJUW73JCXZBYKkVQjEf2/PNZmtS/dg3dv6UhiJIhaBgc16QQ7lHpqUmYahVzDGWWM
+         qW0L+S8RS3qF+NaGLRqdPe57c6WCz8VE6kgvK8eEJMIJP9b11x9ZLBwwIXZ8SPQkrfo3
+         FE5la+wW6HHqnFk7VvTUAonELcwi+qNQMOEVkHecLGmlON/gg9sRKyONt2nJ2wFaQ5aR
+         wPruFAjv9ksozvnz/JaEXMyyTZoU1q/FWIFR+/g/Wd471DqPwvXMKK25UXF0YTINBc1E
+         hVLg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1768232831; x=1768837631;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=QU+wdPQeGIMx2R82MPiKqXDiY8zUt2eXhqlQOcy8HXY=;
+        b=XGA93s7S7ugm+D6o22amwkSWVna7gStc6sW9j6Naww8j9eBTmOKfa170O51B/oVk5Z
+         dF7q+aBk+CDM1qmX9JzWwKFX8N17X0CeSHYNnHMlVu7LAG3wlhWMyn2zd8bOBBRC8AVk
+         K+XgBds6nIAFt2MiJG2/UEb7AFHZDZ3+UkL0KBOnGKEqNJY0N2oPE6/i5Q4uTaZm+tI2
+         oeIFa1oDo9Px/8QbKy+/jzJH8KKr49eeCQS4X4gD3/sycHZ1DIT3Sh1uyQLyehqnVeyi
+         PzBb/Si/DTZ+L6T0OXxfsaS2CwjZTBfIMc2NhEO8YkGBMd5gs/L6PEtkt/xqdKWWWkXu
+         DnNw==
+X-Gm-Message-State: AOJu0YwQakIdi1sOse2J6FwTUzPs4ZT603GWW256UNYD6Ol38xfu5RyD
+	RPJjRgf+G5r1r8FwXqtKchmlOsoTPwzE0fcMmIfEsqpg6JGHTwi338WWrkti8XG9ueo=
+X-Gm-Gg: AY/fxX6AH1M2GS9ia7/hzB2PnU9bIh7Y6rkfZI7xKzpXCVtutX0UI/DFroZpVxMKCEv
+	sRH+nBuZ7DiAFnW2WSenkiPAxhbB8TvpK16KeV3gfq8xI3UDJIRaHDBH5hZIcRVr4KOTeTRwpbm
+	JgpVesUu4n8Azt/Q6fMD0T/D4zBsPjX1FFrE0FqWb+Sj9HRQQPIjEVZJ4PwAbGKJBDpTtPLoF8z
+	JjXFUs2aI4FDp13mSh8L/VubvSh45dp2kYMUTlpVjC/dyFlUVmyYLbEaBK7HZ7JnsBKRShXh2EL
+	4NV3/4T1PWdVPBFvd4lWXpV+ZHhXB1v6fOrdCS8ECei2kUOKMhW5QPKrZhNFCdqX57Xe7pCZlLO
+	bIxsQhRs0MRzpgElgx1ldxVIl6TN/uFPkx8rsynQtbSRpRh3idEgrE6EoeZHaD+34iOFwK6FkHh
+	fTe7K6fvrUQ3hXeXKqXVfj29ApjMD6cWdIu+1qJQ/QxuTjTGOLCj1Xn4M9nT6lnRONdJOKz44/
+X-Google-Smtp-Source: AGHT+IGBO9eGPmHs6J445wbi3UmFE0FvHJHaxJck1zKJZ9qqr1A5nU0vnmnEQ4zzMoAofUQG+ru4TA==
+X-Received: by 2002:a05:600d:41c9:b0:46e:4e6d:79f4 with SMTP id 5b1f17b1804b1-47d84b21250mr200825905e9.15.1768232830771;
+        Mon, 12 Jan 2026 07:47:10 -0800 (PST)
+Received: from localhost (p200300f65f20eb047d7efe6100b35af4.dip0.t-ipconnect.de. [2003:f6:5f20:eb04:7d7e:fe61:b3:5af4])
+        by smtp.gmail.com with UTF8SMTPSA id 5b1f17b1804b1-47d8662ffaasm132658945e9.6.2026.01.12.07.47.10
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 12 Jan 2026 07:47:10 -0800 (PST)
+From: =?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig@baylibre.com>
+To: Ulf Hansson <ulf.hansson@linaro.org>,
+	Ping-Ke Shih <pkshih@realtek.com>,
+	Johannes Berg <johannes@sipsolutions.net>
+Cc: linux-wireless@vger.kernel.org,
+	linux-mmc@vger.kernel.org
+Subject: [PATCH v2 0/3] sdio: Use bus type function for shutdown
+Date: Mon, 12 Jan 2026 16:46:56 +0100
+Message-ID: <cover.1768232321.git.u.kleine-koenig@baylibre.com>
+X-Mailer: git-send-email 2.47.3
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-stable: review
-X-Patchwork-Hint: Ignore
-X-stable-base: Linux 6.18.5
 Content-Type: text/plain; charset=UTF-8
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1799; i=u.kleine-koenig@baylibre.com; h=from:subject:message-id; bh=vHWFPBypaVR6QO9yY+NIT52Fwn/AnAUPV0IFF36KmuA=; b=owEBbQGS/pANAwAKAY+A+1h9Ev5OAcsmYgBpZRdxpa+mgz/013rdQO8j6edwGc1OkH+Mw4/kK zqyYkMywumJATMEAAEKAB0WIQQ/gaxpOnoeWYmt/tOPgPtYfRL+TgUCaWUXcQAKCRCPgPtYfRL+ Tu0eCACAG4l5+26CC1ze23VOiVgBa3fPHJORep2Jda+t4jPg95bAUe4p9gS+vNvJVOfcG2aVPRr FyAV1rHhW2KsTYe5Cq1+o59QCfHLUEqtzninrJGVddD11Q1fxxjRNk02t4EnsM+VF1Yr2J0ESEt 7biNL5m18vKnXOhIgwT3hAjF3b1w/fXvju9KtmxTGHqfaY87xs2sP5OgshyIP4embaIhmlw7WSx Gji5CSpppjxDMFRNYBHBFci2pPQ9wfSpclApLYJ2tvTs1GJrL3GgCNdAivvwcBQ9zu6dC9t+Yds Sn8PQsTAH9oyptg2Humj9sI/TmYe624pn4VsZoZ0S66Qr1IS
+X-Developer-Key: i=u.kleine-koenig@baylibre.com; a=openpgp; fpr=0D2511F322BFAB1C1580266BE2DCDD9132669BD6
 Content-Transfer-Encoding: 8bit
 
-From: Baochen Qiang <baochen.qiang@oss.qualcomm.com>
+Hello,
 
-[ Upstream commit a203dbeeca15a9b924f0d51f510921f4bae96801 ]
+this series is part of an effort to get rid of the .shutdown() callback
+(and .probe() and .remove()) in struct device_driver. Preparing that,
+all sdio drivers that up to now use this callback are converted to a new
+sdio specific shutdown callback.
 
-In __sta_info_destroy_part2(), station statistics are requested after the
-IEEE80211_STA_NONE -> IEEE80211_STA_NOTEXIST transition. This is
-problematic because the driver may be unable to handle the request due to
-the STA being in the NOTEXIST state (i.e. if the driver destroys the
-underlying data when transitioning to NOTEXIST).
+v1 is available at https://lore.kernel.org/all/cover.1765968841.git.ukleinek@kernel.org.
 
-Move the statistics collection to before the state transition to avoid
-this issue.
+Changes since v1:
+ - Drop patch 2/4 which resulted in a build failure with CONFIG_PM=n
 
-Signed-off-by: Baochen Qiang <baochen.qiang@oss.qualcomm.com>
-Link: https://patch.msgid.link/20251222-mac80211-move-station-stats-collection-earlier-v1-1-12cd4e42c633@oss.qualcomm.com
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
----
+Patches #2 and #3 depend on the first patch, and with just the first
+patch applied there is a runtime warning (emitted by the driver core in
+driver_register()) for each unconverted driver. So it would be nice to
+get the whole series in during a single merge window to not let users
+face the warning.
 
-LLM Generated explanations, may be completely bogus:
+Given that all drivers are in drivers/net/wireless I suggest to apply
+the whole series via the wireless tree.
 
-## Analysis of wifi: mac80211: collect station statistics earlier when
-disconnect
+Best regards
+Uwe
 
-### 1. COMMIT MESSAGE ANALYSIS
+Uwe Kleine-König (3):
+  sdio: Provide a bustype shutdown function
+  wifi: rsi: sdio: Migrate to use sdio specific shutdown function
+  wifi: rtw88: sdio: Migrate to use sdio specific shutdown function
 
-The commit message clearly identifies a **bug fix** for an ordering
-problem:
-- In `__sta_info_destroy_part2()`, station statistics are collected
-  **after** the STA transitions to `IEEE80211_STA_NOTEXIST`
-- This is problematic because drivers may have already destroyed the
-  underlying data structures when entering NOTEXIST state
-- The fix moves statistics collection to **before** the NOTEXIST
-  transition
+ drivers/mmc/core/sdio_bus.c                   | 25 +++++++++++++++++++
+ .../net/wireless/realtek/rtw88/rtw8723cs.c    |  2 +-
+ .../net/wireless/realtek/rtw88/rtw8723ds.c    |  2 +-
+ .../net/wireless/realtek/rtw88/rtw8821cs.c    |  2 +-
+ .../net/wireless/realtek/rtw88/rtw8822bs.c    |  2 +-
+ .../net/wireless/realtek/rtw88/rtw8822cs.c    |  2 +-
+ drivers/net/wireless/realtek/rtw88/sdio.c     |  3 +--
+ drivers/net/wireless/realtek/rtw88/sdio.h     |  2 +-
+ drivers/net/wireless/rsi/rsi_91x_sdio.c       |  5 ++--
+ include/linux/mmc/sdio_func.h                 |  1 +
+ 10 files changed, 35 insertions(+), 11 deletions(-)
 
-Key indicators:
-- "problematic" - acknowledges a real issue
-- Clear explanation of the root cause (ordering)
-- Author is from Qualcomm (driver vendor likely experiencing this issue)
-- Signed off by Johannes Berg (mac80211 maintainer) - strong positive
-  signal
-
-### 2. CODE CHANGE ANALYSIS
-
-**The actual change is minimal - just moving 3 lines of code:**
-
-```c
-// MOVED FROM AFTER drv_sta_state() TO BEFORE IT:
-sinfo = kzalloc(sizeof(*sinfo), GFP_KERNEL);
-if (sinfo)
-    sta_set_sinfo(sta, sinfo, true);
-```
-
-**Before the fix (buggy order):**
-1. Transition STA to NONE state
-2. Call `drv_sta_state()` to transition NONE→NOTEXIST (driver may
-   destroy internal STA data here)
-3. Try to collect statistics via `sta_set_sinfo()` → **FAILS if driver
-   destroyed data**
-4. Report statistics to cfg80211
-
-**After the fix (correct order):**
-1. Transition STA to NONE state
-2. Collect statistics via `sta_set_sinfo()` → **STA data still valid**
-3. Call `drv_sta_state()` to transition NONE→NOTEXIST
-4. Report statistics to cfg80211
-
-The `cfg80211_del_sta_sinfo()` call remains in the same relative
-position (after statistics collection and after transition), so the
-interface to cfg80211 is preserved.
-
-### 3. CLASSIFICATION
-
-- **Type:** Bug fix (ordering/race condition fix)
-- **Subsystem:** WiFi mac80211 (core wireless stack)
-- **Not a feature addition:** No new functionality, just correcting
-  execution order
-
-### 4. SCOPE AND RISK ASSESSMENT
-
-**Scope:**
-- 1 file changed
-- Net 0 lines added (pure code movement)
-- Single function affected: `__sta_info_destroy_part2()`
-
-**Risk: VERY LOW**
-- The same operations are performed, just in different order
-- `sta_set_sinfo()` reads statistics - no side effects that would affect
-  the subsequent NOTEXIST transition
-- The `sinfo` pointer is still passed to `cfg80211_del_sta_sinfo()`
-  correctly
-- No logic changes, no new error paths
-
-### 5. USER IMPACT
-
-**Who is affected:**
-- All WiFi users during disconnection events
-- Disconnection is a common operation (switching networks, leaving WiFi
-  range, suspending laptop, etc.)
-
-**Severity:**
-- Without fix: Statistics may be missing, incorrect, or in worst case
-  cause driver errors/crashes depending on how drivers handle requests
-  when STA data is already destroyed
-- Qualcomm drivers (ath11k/ath12k) are likely affected based on author
-  affiliation
-
-### 6. STABILITY INDICATORS
-
-- **Reviewed/signed by mac80211 maintainer** (Johannes Berg) - major
-  positive signal
-- Simple, self-contained fix with clear rationale
-- The fix addresses a specific defect in existing code
-
-### 7. DEPENDENCY CHECK
-
-- **No dependencies:** This is a standalone fix
-- The affected function `__sta_info_destroy_part2()` exists in all
-  recent stable kernels
-- No prerequisite commits needed
-
-### Summary
-
-| Criterion | Assessment |
-|-----------|------------|
-| Fixes real bug | ✅ Yes - ordering causes driver failures |
-| Obviously correct | ✅ Yes - simple code movement |
-| Small and contained | ✅ Yes - 3 lines moved, 1 function |
-| No new features | ✅ Yes - just reordering |
-| Risk level | ✅ Very low |
-| Maintainer review | ✅ Johannes Berg (mac80211 maintainer) |
-
-This commit fixes a real bug affecting WiFi station disconnection. The
-fix is surgical (moving 3 lines of code earlier), has zero risk of
-introducing regressions since it's pure code reordering with no
-functional changes, and has been reviewed by the mac80211 maintainer.
-The bug affects all WiFi users during disconnection events, which is a
-very common operation.
-
-**YES**
-
- net/mac80211/sta_info.c | 7 ++++---
- 1 file changed, 4 insertions(+), 3 deletions(-)
-
-diff --git a/net/mac80211/sta_info.c b/net/mac80211/sta_info.c
-index f4d3b67fda062..1a995bc301b19 100644
---- a/net/mac80211/sta_info.c
-+++ b/net/mac80211/sta_info.c
-@@ -1533,6 +1533,10 @@ static void __sta_info_destroy_part2(struct sta_info *sta, bool recalc)
- 		}
- 	}
- 
-+	sinfo = kzalloc(sizeof(*sinfo), GFP_KERNEL);
-+	if (sinfo)
-+		sta_set_sinfo(sta, sinfo, true);
-+
- 	if (sta->uploaded) {
- 		ret = drv_sta_state(local, sdata, sta, IEEE80211_STA_NONE,
- 				    IEEE80211_STA_NOTEXIST);
-@@ -1541,9 +1545,6 @@ static void __sta_info_destroy_part2(struct sta_info *sta, bool recalc)
- 
- 	sta_dbg(sdata, "Removed STA %pM\n", sta->sta.addr);
- 
--	sinfo = kzalloc(sizeof(*sinfo), GFP_KERNEL);
--	if (sinfo)
--		sta_set_sinfo(sta, sinfo, true);
- 	cfg80211_del_sta_sinfo(sdata->dev, sta->sta.addr, sinfo, GFP_KERNEL);
- 	kfree(sinfo);
- 
+base-commit: 8f0b4cce4481fb22653697cced8d0d04027cb1e8
 -- 
-2.51.0
-
+2.47.3
 
