@@ -1,138 +1,119 @@
-Return-Path: <linux-wireless+bounces-30698-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-30699-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 75AEED11F81
-	for <lists+linux-wireless@lfdr.de>; Mon, 12 Jan 2026 11:42:30 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 924D6D12573
+	for <lists+linux-wireless@lfdr.de>; Mon, 12 Jan 2026 12:40:33 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 5825530B3A58
-	for <lists+linux-wireless@lfdr.de>; Mon, 12 Jan 2026 10:40:40 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 4C49C305499B
+	for <lists+linux-wireless@lfdr.de>; Mon, 12 Jan 2026 11:40:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F09E2329C77;
-	Mon, 12 Jan 2026 10:40:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C9446212566;
+	Mon, 12 Jan 2026 11:40:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=acldigital.com header.i=@acldigital.com header.b="Pjih2eKs"
+	dkim=pass (1024-bit key) header.d=mediatek.com header.i=@mediatek.com header.b="mbSIhAcB"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-pl1-f172.google.com (mail-pl1-f172.google.com [209.85.214.172])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mailgw01.mediatek.com (unknown [60.244.123.138])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8ABB0264609
-	for <linux-wireless@vger.kernel.org>; Mon, 12 Jan 2026 10:40:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.172
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 236AD1FECBA
+	for <linux-wireless@vger.kernel.org>; Mon, 12 Jan 2026 11:40:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=60.244.123.138
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768214439; cv=none; b=ZTqqoSw23fz/EXKmOpM3jpEAnrBjzwipFMkTuUD1UN64GEEf1bxgkzf7BTZ+1nJVNoibgFPXaFI7lrO9EmsZX26UdqV3eo67TodveVyDzdw4MLZrrof6iIW5HLBxWCr2ACfG24UaSZQtGLi5VygTrBT3JpSioBxwON6Frkc2wKM=
+	t=1768218031; cv=none; b=YKHcYAWJdeonGwVX0/neTq+Q+wFnzDE4Sl7ErJ52pIi+rCTWAm24NX92WE3ac5t17cRC49yfW8g/cLnSHNASfpk9UlShPwwyw4LVN6i22WBXOPfOgBxjNSznZR/FuZ/IklAC1EmJ/g/JQ+aaneMVou4UtAZCsGEriW+CKFHX0yg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768214439; c=relaxed/simple;
-	bh=kDEGxX1iqIANMlkQ46NirU6ZK8NPA15bfDGsEFXP1kI=;
-	h=Message-ID:Date:MIME-Version:To:From:Subject:Content-Type; b=h6tO0szqCFJgLmrglHbI8lunA4J0jw+T5anlvxL9Taqxn19s1hl4pFowuOwPgD6MZBU8Jzu/IH36kEIETdVaYwDxoX6x1w3KsAwGCFlkOSRNsc4gy+9nj9+RvDEaTqnP8iidvSZ4ZvNGiPkIUqEACzMOVCS16osuv1Kc6ZlEo1c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=acldigital.com; spf=pass smtp.mailfrom=acldigital.com; dkim=pass (2048-bit key) header.d=acldigital.com header.i=@acldigital.com header.b=Pjih2eKs; arc=none smtp.client-ip=209.85.214.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=acldigital.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=acldigital.com
-Received: by mail-pl1-f172.google.com with SMTP id d9443c01a7336-2a0a33d0585so39138115ad.1
-        for <linux-wireless@vger.kernel.org>; Mon, 12 Jan 2026 02:40:38 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=acldigital.com; s=google; t=1768214437; x=1768819237; darn=vger.kernel.org;
-        h=content-language:subject:from:to:user-agent:mime-version:date
-         :message-id:from:to:cc:subject:date:message-id:reply-to;
-        bh=DZpo2Z0ru/dJ5oRey7CdxR7JCtXwbsgsDv2h2jPolkQ=;
-        b=Pjih2eKscAGFAx96jgsiQOp0RgQb69CNmiqLdt3+QKgjb+ufEgvZzlqmghVK36bsWi
-         78OPSfo5JHezXuc3YqWTNG5zVXFNXt69ho26vPqj7QXkD1EkyGGsRUcXV41TPtC3O+U4
-         N4IQGB0eXeIL8OY0sgb8RqdUW/QuzB646p4rywykJIt4tDbQ65IHERjkCg6vkGEnrX+i
-         e+09FmfhaCAM/eewy7j9oOHeAwHfUgalAHU6gd1pZobfkL58hay2Rva++3nU3ULtQH6g
-         SPt2pS3d4uW4GojLSQ9Au8IoFdWoYUyI9tCfY47mRuCb6GG52zHrP/Am2xQ8wj6SGPTJ
-         7LYg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1768214437; x=1768819237;
-        h=content-language:subject:from:to:user-agent:mime-version:date
-         :message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=DZpo2Z0ru/dJ5oRey7CdxR7JCtXwbsgsDv2h2jPolkQ=;
-        b=d4wwNoTKLx16+n4dRGpRsmZySgFjYH0ued2k4nMtnUNjjHUJ/NM/lUaHB6jLXwhiyV
-         K8ZjifPzLjn+Sa6WjiCtOCDe1U7jK+dP0PEdz1OZ3Bw/jfmOBNkfJxHbYkjscaJB4OtS
-         32Kuf+EGRCyR6XDVVaOx7Dr/0hRmspb0Aa4Ri4pSZ3Yo1Q6Z6QLA92rb1VBi6sZM4Itt
-         6AjzNTebAFvSYT2jur4WLH37quT7htAdvLHp+utrP/3Y08cz4B/keO53IG5+yWSWvGsX
-         eUShmowNqD47D4CiZQ/5juu8ZcV0B4gr8OH3DUWFd8f3MRiJzC5cOt8mCc9nkmzmjA45
-         SvaQ==
-X-Gm-Message-State: AOJu0YxgBlr3jWtuVUU7Ge5MMdtv8ah04e69reDrK59cGzAZUfBVF220
-	QT2HsWgfVeMQu/shxaiPTrPz8WrdrtBpQXHjbo7Eaw4w3gkBSupvHsBQzqRkhgSGb5r2FLyi4pR
-	5r856hjLgCL0rPkoFisX14OUjxThdnWXH04xorREH6yxJyH8ogmn7jy6D7DgLwfTwwqKC1E8uKY
-	d9Fg==
-X-Gm-Gg: AY/fxX4ZlfnQzOpQVFE6uAsUWZxhyX3T+db0smCNWDZyGgQI8N6EZgTIRBBsblN05i7
-	TH1tMwn2SSBOhCkD2sPtl/um6UInVV0eiu2AF5vevrVk99i/pWuVYaylKSOBdOQpUgSVvIAz4cn
-	e7P/iI12qwHdZ659l6Twgt3q9R6viVHM+M185pfpxuYez47B2Zwz3eve2FFENEOY2KxTWM6hqbZ
-	FrG7YGzSrnvsbm9EY4mp5T3amHlLi3ECHYxydplvup8WIJrF1BJr/qq1LqJtAep2TfFprcVOVNM
-	YtbIPXbk5FBD5yn6febs+nO35ESXc9fH2Fb2dIEMTAjSts86k3QmnEfuyZdd5KCiau/cSJuJmGY
-	RTMm4pUOMyMECYYPmt2sIpAGYGUBy+0XGvS5HJFIJfhi/7HGAVokjqvQ9ETyCfo7C3y5vJAn0nE
-	H2Ad3MSApKOT64Njuxw1iHlpydwWSzGHd5KGsSmwd7Bk9WyQ==
-X-Google-Smtp-Source: AGHT+IE4hjvzxOSFe5sVX4lL+BAkGVgqsxgCwt2UdVR1t3j/rCusRDCPbWnwGX5s3aP0T+55ZMdBVQ==
-X-Received: by 2002:a17:90b:1d12:b0:340:e8e9:cc76 with SMTP id 98e67ed59e1d1-34f68c4ff6amr15129893a91.11.1768214437197;
-        Mon, 12 Jan 2026 02:40:37 -0800 (PST)
-Received: from [172.29.125.222] ([202.131.99.86])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-34f5fb7419csm17425069a91.13.2026.01.12.02.40.35
-        for <linux-wireless@vger.kernel.org>
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 12 Jan 2026 02:40:36 -0800 (PST)
-Message-ID: <994b4e1c-df11-45d8-a4bf-7ed166388441@acldigital.com>
-Date: Mon, 12 Jan 2026 16:10:34 +0530
+	s=arc-20240116; t=1768218031; c=relaxed/simple;
+	bh=p1wgX6SrB9TfOsqeuCLSzAfLnnOa57FiBiKxABaw/Yc=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=CeL7Rr7oBHBrWmUxv0r2VBHNNiOq14BCFVCKgQ9dTz9EnHY+8UVrf9n4+woVm6/rYbNZJSxOuUnwdBcoGw7XKCJAC8vwYvd6Pi60cFHSfvMMugKZ/NfPtyRxhqb7Aj6gaV1W75gfkyeBJGdhr0NRdexd7fOxUwa2HcVUb+0F504=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=mediatek.com; spf=pass smtp.mailfrom=mediatek.com; dkim=pass (1024-bit key) header.d=mediatek.com header.i=@mediatek.com header.b=mbSIhAcB; arc=none smtp.client-ip=60.244.123.138
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=mediatek.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=mediatek.com
+X-UUID: 76fa4df4efab11f0942a039f3f28ce95-20260112
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=mediatek.com; s=dk;
+	h=Content-Type:Content-Transfer-Encoding:MIME-Version:Message-ID:Date:Subject:CC:To:From; bh=561wSHnrgmKBR1P+hEk/MhPgUl4Ghix6Fy0zn2eRhEw=;
+	b=mbSIhAcBmH0w1GIKyLMrpFgpl8z+KPLA71cJgnwl76DVauN0yI4iyKD0DMECss5X7q3OuiWBcpmTx+mksRVTAnYp7t8S/clStVan4NDnrLrq8M2iZgkot7QVV3BeRd2RnzyuRRbsUeRFmvmv3l2qav75mbTwBTdYJEEFZXACh5c=;
+X-CID-P-RULE: Release_Ham
+X-CID-O-INFO: VERSION:1.3.9,REQID:958f266f-1d11-4068-8e21-7209e6dda4cf,IP:0,UR
+	L:0,TC:0,Content:-5,EDM:0,RT:0,SF:0,FILE:0,BULK:0,RULE:Release_Ham,ACTION:
+	release,TS:-5
+X-CID-META: VersionHash:5047765,CLOUDID:2434b179-8c8a-4fc4-88c0-3556e7711556,B
+	ulkID:nil,BulkQuantity:0,Recheck:0,SF:102|836|888|898,TC:-5,Content:0|15|5
+	0,EDM:-3,IP:nil,URL:0,File:130,RT:0,Bulk:nil,QS:nil,BEC:nil,COL:0,OSI:0,OS
+	A:0,AV:0,LES:1,SPR:NO,DKR:0,DKP:0,BRR:0,BRE:0,ARC:0
+X-CID-BVR: 2,SSN|SDN
+X-CID-BAS: 2,SSN|SDN,0,_
+X-CID-FACTOR: TF_CID_SPAM_SNR
+X-CID-RHF: D41D8CD98F00B204E9800998ECF8427E
+X-UUID: 76fa4df4efab11f0942a039f3f28ce95-20260112
+Received: from mtkmbs14n1.mediatek.inc [(172.21.101.75)] by mailgw01.mediatek.com
+	(envelope-from <leon.yen@mediatek.com>)
+	(Generic MTA with TLSv1.2 ECDHE-RSA-AES256-GCM-SHA384 256/256)
+	with ESMTP id 196207260; Mon, 12 Jan 2026 19:40:16 +0800
+Received: from mtkmbs11n2.mediatek.inc (172.21.101.187) by
+ mtkmbs11n1.mediatek.inc (172.21.101.185) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.29; Mon, 12 Jan 2026 19:40:15 +0800
+Received: from mtksitap99.mediatek.inc (10.233.130.16) by
+ mtkmbs11n2.mediatek.inc (172.21.101.73) with Microsoft SMTP Server id
+ 15.2.2562.29 via Frontend Transport; Mon, 12 Jan 2026 19:40:14 +0800
+From: Leon Yen <leon.yen@mediatek.com>
+To: <nbd@nbd.name>, <lorenzo@kernel.org>
+CC: <linux-wireless@vger.kernel.org>, <linux-mediatek@lists.infradead.org>,
+	<deren.wu@mediatek.com>, <sean.wang@mediatek.com>,
+	<mingyen.hsieh@mediatek.com>, <michael.lo@mediatek.com>,
+	<allan.wang@mediatek.com>, <quan.zhou@mediatek.com>,
+	<sarick.jiang@mediatek.com>, <ryder.lee@mediatek.com>,
+	<shayne.chen@mediatek.com>, <leon.yen@mediatek.com>
+Subject: [PATCH] wifi: mt76: mt7925: Skip scan process during suspend.
+Date: Mon, 12 Jan 2026 19:40:07 +0800
+Message-ID: <20260112114007.2115873-1-leon.yen@mediatek.com>
+X-Mailer: git-send-email 2.45.2
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-To: linux-wireless@vger.kernel.org
-From: Naseemakhtar <naseemakhtar.shaikh@acldigital.com>
-Subject: =?UTF-8?Q?Query=3A_Shutdown_/_Reset_ownership_for_Intel_AX200_=28iw?=
- =?UTF-8?Q?lwifi=29_=E2=80=93_Firmware_vs_Driver?=
-Content-Language: en-US
-Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
 
-Hello Linux Wireless Community,
+From: Michael Lo <michael.lo@mediatek.com>
 
-I am currently analyzing the shutdown, reset, and power-management 
-behavior of the Intel Wi-Fi 6 AX200 (iwlwifi PCIe device) as part of a 
-driver-level investigation.
+We are experiencing command timeouts because an upper layer triggers
+an unexpected scan while the system/device is in suspend.
+The upper layer should not initiate scans until the NIC has fully resumed.
+We want to prevent scans during suspend and avoid timeouts without harming
+power management or user experience.
 
-During my analysis of the iwlwifi PCIe driver, I observed that for AX200 
-and newer devices the apmg_not_supported configuration flag is set, 
-which causes the driver to skip PRPH/APMG power control register access 
-during shutdown or resume paths. From code inspection and debug logs, it 
-appears that for these devices the firmware fully owns power management, 
-and direct PRPH register read/write operations from the driver are 
-intentionally avoided, as they may break firmware state.
+Signed-off-by: Michael Lo <michael.lo@mediatek.com>
+---
+ drivers/net/wireless/mediatek/mt76/mt7925/main.c | 8 ++++++++
+ 1 file changed, 8 insertions(+)
 
-Based on this understanding, I would like to confirm the following with 
-the community:
-
-1. Is the shutdown and reset functionality for Intel AX200 fully 
-firmware-owned, meaning the device driver should not explicitly trigger 
-power-down, reset, or PRPH/APMG-based power transitions?
-
-2. Is there any supported mechanism for the driver to initiate a 
-hardware reset or shutdown for AX200, or are these operations 
-exclusively managed internally by firmware (including during runtime PM 
-and system suspend)?
-
-3. Are there any public documents, commit references, or design notes 
-that clearly describe this ownership model for AX200 and newer Intel 
-Wi-Fi devices?
-
-My goal is to ensure that any driver changes strictly follow the 
-intended design and do not interfere with firmware-managed power sequencing.
-
-Thank you for your time and guidance. Any clarification or pointers to 
-relevant documentation or commits would be greatly appreciated.
-
-Regards,
-Naseem Shaikh
-M.6353852575
-ACL Digital
-
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7925/main.c b/drivers/net/wireless/mediatek/mt76/mt7925/main.c
+index 2d358a96640c..38474cd2c38d 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7925/main.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7925/main.c
+@@ -1323,10 +1323,18 @@ void mt7925_mlo_pm_work(struct work_struct *work)
+ void mt7925_scan_work(struct work_struct *work)
+ {
+ 	struct mt792x_phy *phy;
++	struct mt792x_dev *dev;
++	struct mt76_connac_pm *pm;
+ 
+ 	phy = (struct mt792x_phy *)container_of(work, struct mt792x_phy,
+ 						scan_work.work);
+ 
++	dev = phy->dev;
++	pm = &dev->pm;
++
++	if (pm->suspended)
++		return;
++
+ 	while (true) {
+ 		struct sk_buff *skb;
+ 		struct tlv *tlv;
 -- 
-This email and its contents are intended solely for the intended 
-recipient(s) and may contain confidential or proprietary information of ACL 
-Digital. Unauthorized use, disclosure, distribution, or copying is strictly 
-prohibited. If you are not the intended recipient, please notify the sender 
-immediately and delete this email.
+2.45.2
+
 
