@@ -1,73 +1,102 @@
-Return-Path: <linux-wireless+bounces-30699-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-30700-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 924D6D12573
-	for <lists+linux-wireless@lfdr.de>; Mon, 12 Jan 2026 12:40:33 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9F62DD12691
+	for <lists+linux-wireless@lfdr.de>; Mon, 12 Jan 2026 12:55:27 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 4C49C305499B
-	for <lists+linux-wireless@lfdr.de>; Mon, 12 Jan 2026 11:40:32 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 2FB453009D4F
+	for <lists+linux-wireless@lfdr.de>; Mon, 12 Jan 2026 11:55:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C9446212566;
-	Mon, 12 Jan 2026 11:40:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1FE383557FF;
+	Mon, 12 Jan 2026 11:55:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=mediatek.com header.i=@mediatek.com header.b="mbSIhAcB"
+	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="NuUZWtFA";
+	dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b="JHOkmkKN"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mailgw01.mediatek.com (unknown [60.244.123.138])
+Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 236AD1FECBA
-	for <linux-wireless@vger.kernel.org>; Mon, 12 Jan 2026 11:40:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=60.244.123.138
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B52F73570DE
+	for <linux-wireless@vger.kernel.org>; Mon, 12 Jan 2026 11:55:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768218031; cv=none; b=YKHcYAWJdeonGwVX0/neTq+Q+wFnzDE4Sl7ErJ52pIi+rCTWAm24NX92WE3ac5t17cRC49yfW8g/cLnSHNASfpk9UlShPwwyw4LVN6i22WBXOPfOgBxjNSznZR/FuZ/IklAC1EmJ/g/JQ+aaneMVou4UtAZCsGEriW+CKFHX0yg=
+	t=1768218924; cv=none; b=CdvYDgxY62h+PVA6q6vRu4yRhHFb98zfOcBsUSdE2pabRGUXq1bVc/2vJgLDR7Jh147WOr10nUI9QodUkmfifWDvXj/GcRPKSPJ8BsLnivKk6pAINH8X3H2y5TWI9GSVzm82O373exGjs9yR0isKZWRjPcg2K9KeN/q/jAQLEmE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768218031; c=relaxed/simple;
-	bh=p1wgX6SrB9TfOsqeuCLSzAfLnnOa57FiBiKxABaw/Yc=;
-	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=CeL7Rr7oBHBrWmUxv0r2VBHNNiOq14BCFVCKgQ9dTz9EnHY+8UVrf9n4+woVm6/rYbNZJSxOuUnwdBcoGw7XKCJAC8vwYvd6Pi60cFHSfvMMugKZ/NfPtyRxhqb7Aj6gaV1W75gfkyeBJGdhr0NRdexd7fOxUwa2HcVUb+0F504=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=mediatek.com; spf=pass smtp.mailfrom=mediatek.com; dkim=pass (1024-bit key) header.d=mediatek.com header.i=@mediatek.com header.b=mbSIhAcB; arc=none smtp.client-ip=60.244.123.138
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=mediatek.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=mediatek.com
-X-UUID: 76fa4df4efab11f0942a039f3f28ce95-20260112
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=mediatek.com; s=dk;
-	h=Content-Type:Content-Transfer-Encoding:MIME-Version:Message-ID:Date:Subject:CC:To:From; bh=561wSHnrgmKBR1P+hEk/MhPgUl4Ghix6Fy0zn2eRhEw=;
-	b=mbSIhAcBmH0w1GIKyLMrpFgpl8z+KPLA71cJgnwl76DVauN0yI4iyKD0DMECss5X7q3OuiWBcpmTx+mksRVTAnYp7t8S/clStVan4NDnrLrq8M2iZgkot7QVV3BeRd2RnzyuRRbsUeRFmvmv3l2qav75mbTwBTdYJEEFZXACh5c=;
-X-CID-P-RULE: Release_Ham
-X-CID-O-INFO: VERSION:1.3.9,REQID:958f266f-1d11-4068-8e21-7209e6dda4cf,IP:0,UR
-	L:0,TC:0,Content:-5,EDM:0,RT:0,SF:0,FILE:0,BULK:0,RULE:Release_Ham,ACTION:
-	release,TS:-5
-X-CID-META: VersionHash:5047765,CLOUDID:2434b179-8c8a-4fc4-88c0-3556e7711556,B
-	ulkID:nil,BulkQuantity:0,Recheck:0,SF:102|836|888|898,TC:-5,Content:0|15|5
-	0,EDM:-3,IP:nil,URL:0,File:130,RT:0,Bulk:nil,QS:nil,BEC:nil,COL:0,OSI:0,OS
-	A:0,AV:0,LES:1,SPR:NO,DKR:0,DKP:0,BRR:0,BRE:0,ARC:0
-X-CID-BVR: 2,SSN|SDN
-X-CID-BAS: 2,SSN|SDN,0,_
-X-CID-FACTOR: TF_CID_SPAM_SNR
-X-CID-RHF: D41D8CD98F00B204E9800998ECF8427E
-X-UUID: 76fa4df4efab11f0942a039f3f28ce95-20260112
-Received: from mtkmbs14n1.mediatek.inc [(172.21.101.75)] by mailgw01.mediatek.com
-	(envelope-from <leon.yen@mediatek.com>)
-	(Generic MTA with TLSv1.2 ECDHE-RSA-AES256-GCM-SHA384 256/256)
-	with ESMTP id 196207260; Mon, 12 Jan 2026 19:40:16 +0800
-Received: from mtkmbs11n2.mediatek.inc (172.21.101.187) by
- mtkmbs11n1.mediatek.inc (172.21.101.185) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.29; Mon, 12 Jan 2026 19:40:15 +0800
-Received: from mtksitap99.mediatek.inc (10.233.130.16) by
- mtkmbs11n2.mediatek.inc (172.21.101.73) with Microsoft SMTP Server id
- 15.2.2562.29 via Frontend Transport; Mon, 12 Jan 2026 19:40:14 +0800
-From: Leon Yen <leon.yen@mediatek.com>
-To: <nbd@nbd.name>, <lorenzo@kernel.org>
-CC: <linux-wireless@vger.kernel.org>, <linux-mediatek@lists.infradead.org>,
-	<deren.wu@mediatek.com>, <sean.wang@mediatek.com>,
-	<mingyen.hsieh@mediatek.com>, <michael.lo@mediatek.com>,
-	<allan.wang@mediatek.com>, <quan.zhou@mediatek.com>,
-	<sarick.jiang@mediatek.com>, <ryder.lee@mediatek.com>,
-	<shayne.chen@mediatek.com>, <leon.yen@mediatek.com>
-Subject: [PATCH] wifi: mt76: mt7925: Skip scan process during suspend.
-Date: Mon, 12 Jan 2026 19:40:07 +0800
-Message-ID: <20260112114007.2115873-1-leon.yen@mediatek.com>
-X-Mailer: git-send-email 2.45.2
+	s=arc-20240116; t=1768218924; c=relaxed/simple;
+	bh=kUI69eF0mo9UF1F1hxOzGS47FKe7RiPQ0J39f68XvhY=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=cc8k4J9RKJM2BF92BjOYk3KtBpSt4aAUt9cdC9FMlCQo81oZjPFo8ojRUfUC2oqtkcVaEXpS8HHskgkByQxJt7S/eDa2Z8oTkF3mWgmM/da1kUezSkQqLZrvHxZ+X3WZqmYJCQA80K3Dcw5Tk+yCR0ky/QUc20wk1F9arTaW1gM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=NuUZWtFA; dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b=JHOkmkKN; arc=none smtp.client-ip=205.220.168.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
+Received: from pps.filterd (m0279863.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 60C8sIfH676410
+	for <linux-wireless@vger.kernel.org>; Mon, 12 Jan 2026 11:55:21 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
+	cc:content-transfer-encoding:date:from:message-id:mime-version
+	:subject:to; s=qcppdkim1; bh=QiTlYrCp+242s9QM5OzpPgWjVIOQu2yqgsp
+	IWqzWL0c=; b=NuUZWtFAy2ilccT4634Cla+3VKwhLoEVbGT5266bGlTAkMdSnsz
+	OS4+2+IiY7wZilRDzq9prWDCHJTqKFNVU3eo7ok6RFGujfJxCq7uCBRDyctw4zqs
+	A4C7pCWO3GawlFEqDWA1aX4Du3TNUiQnkDex5w12uF/ywMPUcADVYoe/IWtKPu7H
+	eiXbh5D0r8G4S0ttxDNm2tYVSM6D8qqc2yftbtJmkU87GaVplScVTnygkHbl+P/1
+	4RMfshmafXz3d8ztwhdPnXvGm+Bj3PFYUIwZnZ08/+Cihkv6bWMDbQu0RbSVCkff
+	gHYxv1AHDaTy0GiaM2PY2yldefyCC3f/0cg==
+Received: from mail-dl1-f69.google.com (mail-dl1-f69.google.com [74.125.82.69])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4bmwur8h5m-1
+	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
+	for <linux-wireless@vger.kernel.org>; Mon, 12 Jan 2026 11:55:20 +0000 (GMT)
+Received: by mail-dl1-f69.google.com with SMTP id a92af1059eb24-1219f27037fso29850183c88.1
+        for <linux-wireless@vger.kernel.org>; Mon, 12 Jan 2026 03:55:20 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=oss.qualcomm.com; s=google; t=1768218920; x=1768823720; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=QiTlYrCp+242s9QM5OzpPgWjVIOQu2yqgspIWqzWL0c=;
+        b=JHOkmkKNEaM/Cej0V0CuesKUPLCDmGiRAN096BzwSnIV7u+IjGCnm5mt/iZHdRbTer
+         3YugqAEXkCp+/YEubaLrbPolam7NK5KxYZrEd0iYyFfaxgkZNOATmrHfx/V66/reSwds
+         afsyZVwujeoRJo6vIWHjZZHa1W9V/j1O5Hp2+BblsQbU//Iqz1yTPWf2gtI6ZBCwYQwQ
+         0rV2W/cP90TOgZ7uWIWdQMDof6mdunG60pcpqhe2XCWZSUhkdPW7BVgAm3jdDIIyY5lF
+         TwEwK1TgPvrOSSEGp6YExHxjdLoQfFH/eBZRmpStGWTGPfZwNSEBulJKWubNOGIhbGrq
+         szbg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1768218920; x=1768823720;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=QiTlYrCp+242s9QM5OzpPgWjVIOQu2yqgspIWqzWL0c=;
+        b=VPfbEeu13akelGGCd1SynAMz8c2es8m4pGgHMZwc9K0tyLQyAcrQaqLdA/MS+D/8lg
+         v6MPVeXL5vgxgej9j/7r6uor3+5Rkv6JDScm2Yl9SWwupdDNQQkGYn0C3JVaTzxFHRQW
+         lfCDbvw7UM4YW2mYbpsxMw20IX73ZUIXmjHHd/9z97fxcayWCeZCEHJG6zfqBVdgnAXp
+         9763YBi39ORZD+B5s0qECDr4yLK8yQ1l79wnBtDMHX1gVwQHmEmFXzQn0GOAkirDf9To
+         JxJPFJUqnh3X36X3utLrEvPUqthfkaiLZWcz/t19KgIXqRYX/XWUOZw0fjvHTd0WiAk0
+         CXNg==
+X-Gm-Message-State: AOJu0YxgjegBK9qHRd5q+ltbbFBMdzuFidgg8KaT3OA4oDHF7Nzi2Er5
+	zoB4otFlwD3BYA8fwar5E0/WyIVJft1oBPOEkO7v/mC/ET/tCQc6thNy5bPDrCB8aI6Ls2nIo9n
+	kd6ZkM1X1fWVqp9Md+PK6eBpG5yiz75yvFMPYpRejhPM9XcyrI//W+nIAA2o+YEEl3N8Gq3BUc4
+	1JCw==
+X-Gm-Gg: AY/fxX4iHpN7YuqQrMnnY4pRPVaPOjq5chehzEKt87vB4bX2E6KKLNThrDVINDsCH0K
+	XH56dVn97smC8KuzDdHmvKTaQwGhFoT0O7Bf4+YJIsRG5E4c0jkacTmQcQT2ocS15dUhhYqBUeQ
+	WDWXwR+wUDtF4gXn6m1uf7Q6s+EiPut1VgRMThbGQyFHWIK2Mnwy8egQibB4eF34Q/bWU5w28h+
+	dfBRGytKTn3Pr6DmnMbVCwstexl4Z2IURkFi/zPC3hzyDUNlPPtlodvsh/vhsij8eEwCSNILf3q
+	hmIvdXrn6mAP8aFLyp+WG0QmbYGI9QdLLHBiLVJOWLri4vIiTfrbvnNQSN7MOyA+6rIVU7Fy81T
+	XPEUGnq5veMtXtRjs1ivlOVRK7lJbOcjuIDckHIugn1n5z1ugSHxUsNc5vbJOF2LM
+X-Received: by 2002:a05:7022:107:b0:11d:f682:e475 with SMTP id a92af1059eb24-121f8b5fdefmr18634406c88.40.1768218919870;
+        Mon, 12 Jan 2026 03:55:19 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IF+QbeglUyaGRsFN19UkoqBVLlQgsoX1tsbGzBj0vrb7j6DAphCBQ+n89q9q+YescjN00jEvw==
+X-Received: by 2002:a05:7022:107:b0:11d:f682:e475 with SMTP id a92af1059eb24-121f8b5fdefmr18634387c88.40.1768218919358;
+        Mon, 12 Jan 2026 03:55:19 -0800 (PST)
+Received: from hu-yintang-lv.qualcomm.com (Global_NAT1.qualcomm.com. [129.46.96.20])
+        by smtp.gmail.com with ESMTPSA id a92af1059eb24-121f243ed62sm25267595c88.5.2026.01.12.03.55.18
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 12 Jan 2026 03:55:18 -0800 (PST)
+From: Yingying Tang <yingying.tang@oss.qualcomm.com>
+To: ath12k@lists.infradead.org
+Cc: linux-wireless@vger.kernel.org, yintang@qti.qualcomm.com,
+        yingying.tang@oss.qualcomm.com
+Subject: [PATCH ath-current] wifi: ath12k: Fix scan state stuck in ABORTING after cancel_remain_on_channel
+Date: Mon, 12 Jan 2026 19:55:16 +0800
+Message-Id: <20260112115516.2144219-1-yingying.tang@oss.qualcomm.com>
+X-Mailer: git-send-email 2.25.1
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
@@ -75,45 +104,63 @@ List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwMTEyMDA5NSBTYWx0ZWRfX4K7tr5kcDvN6
+ 4Ls5fT7MyogAqsMHUx+TGjkSbSlyk/iXX77lhl0soI1BnW/yvsAGg8WgIBIv7/LnIj2I3C4OCFS
+ 5eenY5/Divcq3B+x0JzIDhqVOYW4BiRkbplBE2XOJ0pfWvdNndYLO4cXg92HXGO2PUG2qcH2js4
+ bH12qRBWRYW8mU2Kb2ThZFkCRmr6pfuSWKerPQjscd4T3QqzRJptDLwBMG/gAQB9UN5U2PIvYmG
+ XvZCx2WfHzRuSSSGgtglRPg6l48OXXLItN8IFZuUjPqFYszHLI9/cMtmuarQREB1jTkMiXU3gdY
+ c/mbAitaPGg9NfkKdsNgMCRoNZsgsFqNRCIHu+4vPhMUnPPJ2/E0hoj+21BH+hyev2r3FuKkQLz
+ UL1oIQyCf5Px/+SlGQjB18Gd83/wNbarENu0V6siDEe0WHeRF0yXSrYgXjd3EH1WvgAw4gtFtPT
+ ogpkt6qKYu/Z/bwJpBQ==
+X-Authority-Analysis: v=2.4 cv=HrJ72kTS c=1 sm=1 tr=0 ts=6964e128 cx=c_pps
+ a=kVLUcbK0zfr7ocalXnG1qA==:117 a=ouPCqIW2jiPt+lZRy3xVPw==:17
+ a=vUbySO9Y5rIA:10 a=s4-Qcg_JpJYA:10 a=VkNPw1HP01LnGYTKEx00:22
+ a=EUspDBNiAAAA:8 a=SdPIdFeAA3FGzxFMktMA:9 a=vr4QvYf-bLy2KjpDp97w:22
+X-Proofpoint-GUID: X9Ew3xJ4l_sSTAs1MWbyeltC3YuwqpMK
+X-Proofpoint-ORIG-GUID: X9Ew3xJ4l_sSTAs1MWbyeltC3YuwqpMK
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.9,FMLib:17.12.100.49
+ definitions=2026-01-12_03,2026-01-09_02,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ phishscore=0 priorityscore=1501 malwarescore=0 bulkscore=0 adultscore=0
+ clxscore=1011 impostorscore=0 spamscore=0 suspectscore=0 lowpriorityscore=0
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.22.0-2512120000 definitions=main-2601120095
 
-From: Michael Lo <michael.lo@mediatek.com>
+Scan finish workqueue was introduced in __ath12k_mac_scan_finish() by [1].
 
-We are experiencing command timeouts because an upper layer triggers
-an unexpected scan while the system/device is in suspend.
-The upper layer should not initiate scans until the NIC has fully resumed.
-We want to prevent scans during suspend and avoid timeouts without harming
-power management or user experience.
+During ath12k_mac_op_cancel_remain_on_channel(), scan state is set to
+ABORTING and should be reset to IDLE in the queued work. However,
+wiphy_work_cancel() is called before exiting
+ath12k_mac_op_cancel_remain_on_channel(), which prevents the work
+from running and leaves the state in ABORTING. This blocks all
+subsequent scan requests.
 
-Signed-off-by: Michael Lo <michael.lo@mediatek.com>
+Replace wiphy_work_cancel() with wiphy_work_flush() to ensure the
+queued work runs and scan state is reset to IDLE.
+
+Tested-on: WCN7850 hw2.0 PCI WLAN.HMT.1.1.c5-00302-QCAHMTSWPL_V1.0_V2.0_SILICONZ-1.115823.3
+
+Fixes: 3863f014ad23 ("wifi: ath12k: symmetrize scan vdev creation and deletion during HW scan") # [1]
+Signed-off-by: Yingying Tang <yingying.tang@oss.qualcomm.com>
 ---
- drivers/net/wireless/mediatek/mt76/mt7925/main.c | 8 ++++++++
- 1 file changed, 8 insertions(+)
+ drivers/net/wireless/ath/ath12k/mac.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7925/main.c b/drivers/net/wireless/mediatek/mt76/mt7925/main.c
-index 2d358a96640c..38474cd2c38d 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7925/main.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7925/main.c
-@@ -1323,10 +1323,18 @@ void mt7925_mlo_pm_work(struct work_struct *work)
- void mt7925_scan_work(struct work_struct *work)
- {
- 	struct mt792x_phy *phy;
-+	struct mt792x_dev *dev;
-+	struct mt76_connac_pm *pm;
+diff --git a/drivers/net/wireless/ath/ath12k/mac.c b/drivers/net/wireless/ath/ath12k/mac.c
+index 2f4daee9e2f0..7b72db3193d6 100644
+--- a/drivers/net/wireless/ath/ath12k/mac.c
++++ b/drivers/net/wireless/ath/ath12k/mac.c
+@@ -13448,7 +13448,7 @@ int ath12k_mac_op_cancel_remain_on_channel(struct ieee80211_hw *hw,
+ 	ath12k_scan_abort(ar);
  
- 	phy = (struct mt792x_phy *)container_of(work, struct mt792x_phy,
- 						scan_work.work);
+ 	cancel_delayed_work_sync(&ar->scan.timeout);
+-	wiphy_work_cancel(hw->wiphy, &ar->scan.vdev_clean_wk);
++	wiphy_work_flush(hw->wiphy, &ar->scan.vdev_clean_wk);
  
-+	dev = phy->dev;
-+	pm = &dev->pm;
-+
-+	if (pm->suspended)
-+		return;
-+
- 	while (true) {
- 		struct sk_buff *skb;
- 		struct tlv *tlv;
--- 
-2.45.2
+ 	return 0;
+ }
+--
+base-commit: d0309c054362a235077327b46f727bc48878a3bc
 
 
