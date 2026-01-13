@@ -1,68 +1,68 @@
-Return-Path: <linux-wireless+bounces-30773-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-30774-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id 81F51D1B3DB
-	for <lists+linux-wireless@lfdr.de>; Tue, 13 Jan 2026 21:38:40 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id CC26AD1B412
+	for <lists+linux-wireless@lfdr.de>; Tue, 13 Jan 2026 21:40:58 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id DBD3B30057EA
-	for <lists+linux-wireless@lfdr.de>; Tue, 13 Jan 2026 20:38:37 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 609AF308953A
+	for <lists+linux-wireless@lfdr.de>; Tue, 13 Jan 2026 20:38:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DA89B2EB840;
-	Tue, 13 Jan 2026 20:38:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E3D1F2C21C2;
+	Tue, 13 Jan 2026 20:38:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=infineon.com header.i=@infineon.com header.b="N03gZ0DC"
+	dkim=pass (1024-bit key) header.d=infineon.com header.i=@infineon.com header.b="BVFZvG1+"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from smtp9.infineon.com (smtp9.infineon.com [217.10.52.204])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4849D276051
-	for <linux-wireless@vger.kernel.org>; Tue, 13 Jan 2026 20:38:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 619E9276051
+	for <linux-wireless@vger.kernel.org>; Tue, 13 Jan 2026 20:38:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.10.52.204
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768336716; cv=none; b=SOnE+Qf357Yx0BFVl7K6Z/kXcPsnEP9FW2zzk/FIghSWkJ8vyIFgZuI6ZkswpAtt5fRd2jPeZ4doip/jqpnl8rAHWPsMKGNWl72fAwek8fBRnpTayRPq0vdu7wMpXAhw3SUFYhvM0qgctoaZSRydcRoIsmkC+k5Bw06RfLnHpP0=
+	t=1768336730; cv=none; b=PRGt/GSOi6+wBB+j9MtFl7+6v9u2q2ef2k4tEFd2uHB3iM12sUXGq9JGyMvDe565+6CPQax4KdON9frzjLXj+5S+plViGoMMIvb4K0YRg/UpuILBkL/UUzEVctFv5radZwY+jcH+4XVFA6c8IECf77BiJ595BputTz9pkh+zmzk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768336716; c=relaxed/simple;
-	bh=IEqOW/EkEvrh3bmi2NuZKVRwpkiUl7/nb3QNF2qQ8RU=;
+	s=arc-20240116; t=1768336730; c=relaxed/simple;
+	bh=173uQ1fSvyf9iyGtdeldX30nHIJlc2dVTFdAu9mURMU=;
 	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=JvCx6iE2c8qNXtBm5OV3ABv1wH+/lAzaJj58RwDZXWJokcq8gT2MqPjeUQd37c4f0ItNsGA1xNRK/SuntCr2+ynRnUwVDVMGhUN7mOQuJn1AtbVy8xOJ7qmzGY7tnlGg6JtWZhre2cghRbljbd0ahP9hZ0pCg++/bTUQcd0yzgc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infineon.com; spf=pass smtp.mailfrom=infineon.com; dkim=pass (1024-bit key) header.d=infineon.com header.i=@infineon.com header.b=N03gZ0DC; arc=none smtp.client-ip=217.10.52.204
+	 MIME-Version:Content-Type; b=oQQDwaq/xsTV5w0QzeuyijxC7own0UXDLIeRzJjNtrQlkYl7tYwa2Y4g6v7P3Oi8AT4QX1asae8Zq3axrVb7XO4+vevwqxtRlRZ2wiNv7n2V0v9iG7TgmNw09Mpwc797xOC0Sannx1Vge62uIUGQJ7Sq+H4ISmVjWKIcrX5nPtU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infineon.com; spf=pass smtp.mailfrom=infineon.com; dkim=pass (1024-bit key) header.d=infineon.com header.i=@infineon.com header.b=BVFZvG1+; arc=none smtp.client-ip=217.10.52.204
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infineon.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=infineon.com
 DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple;
   d=infineon.com; i=@infineon.com; q=dns/txt; s=IFXMAIL;
-  t=1768336713; x=1799872713;
+  t=1768336727; x=1799872727;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=IEqOW/EkEvrh3bmi2NuZKVRwpkiUl7/nb3QNF2qQ8RU=;
-  b=N03gZ0DCB7AJ1knFKebGUwAXeqC4NJJ7zQT0A/YuFkjxyaDiYj+1Z8s7
-   XQuRs04LYPbz3KaOlg2Wqy61bGzaVuxhdXFNn0rIxbJmYgZxWCCrNkt8j
-   LHXhomEWX2bYpTfdMCwjaMWyifOAgA108tIDAJ6XHxL3SrNUDrjLHsPER
-   0=;
-X-CSE-ConnectionGUID: q1fvHuk0TpKo7RGkJXraag==
-X-CSE-MsgGUID: Baw5NfYfSOacIxpFqo6SAw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11670"; a="78107174"
+  bh=173uQ1fSvyf9iyGtdeldX30nHIJlc2dVTFdAu9mURMU=;
+  b=BVFZvG1+a7zyWX/xQ8CgT1V5muYSHq12V/cDf+f8a9QUHD1yH4luPLk/
+   c4Hagd7+4HKnPnvpCVtpvHJly6Ge0K/+Yld5VZsXE/n8UkSUWRS5l8bYe
+   n0r/KoC3MCOXQ64tQ/fGFsb25Of75XJ7fF+mlQlNT4KUrKvqdBsrkjVv8
+   k=;
+X-CSE-ConnectionGUID: qCwZxi3JTvCKtbaxth9KlQ==
+X-CSE-MsgGUID: pWuS/0LoTx69UOW91X7g1w==
+X-IronPort-AV: E=McAfee;i="6800,10657,11670"; a="78107203"
 X-IronPort-AV: E=Sophos;i="6.21,222,1763420400"; 
-   d="scan'208";a="78107174"
+   d="scan'208";a="78107203"
 X-Amp-Result: SKIPPED(no attachment in message)
-Received: from unknown (HELO MUCSE822.infineon.com) ([172.23.29.53])
-  by smtp9.infineon.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 Jan 2026 21:38:31 +0100
-Received: from MUCSE827.infineon.com (172.23.29.20) by MUCSE822.infineon.com
- (172.23.29.53) with Microsoft SMTP Server (version=TLS1_2,
+Received: from unknown (HELO MUCSE819.infineon.com) ([172.23.29.45])
+  by smtp9.infineon.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 Jan 2026 21:38:45 +0100
+Received: from MUCSE827.infineon.com (172.23.29.20) by MUCSE819.infineon.com
+ (172.23.29.45) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.35; Tue, 13 Jan
- 2026 21:38:30 +0100
+ 2026 21:38:44 +0100
 Received: from ISCN5CG14747PP.infineon.com (10.161.6.196) by
  MUCSE827.infineon.com (172.23.29.20) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.35; Tue, 13 Jan 2026 21:38:28 +0100
+ 15.2.2562.35; Tue, 13 Jan 2026 21:38:42 +0100
 From: Gokul Sivakumar <gokulkumar.sivakumar@infineon.com>
 To: <linux-wireless@vger.kernel.org>
 CC: Johannes Berg <johannes@sipsolutions.net>, Arend van Spriel
 	<arend.vanspriel@broadcom.com>, <marex@nabladev.com>,
 	<wlan-kernel-dev-list@infineon.com>, <gokulkumar.sivakumar@infineon.com>
-Subject: [PATCH wireless-next v2 18/34] wifi: inffmac: add pcie.c/h
-Date: Wed, 14 Jan 2026 02:03:31 +0530
-Message-ID: <20260113203350.16734-19-gokulkumar.sivakumar@infineon.com>
+Subject: [PATCH wireless-next v2 19/34] wifi: inffmac: add p2p.c/h
+Date: Wed, 14 Jan 2026 02:03:32 +0530
+Message-ID: <20260113203350.16734-20-gokulkumar.sivakumar@infineon.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20260113203350.16734-1-gokulkumar.sivakumar@infineon.com>
 References: <20260113203350.16734-1-gokulkumar.sivakumar@infineon.com>
@@ -74,2716 +74,2650 @@ List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Content-Type: text/plain
-X-ClientProxiedBy: MUCSE824.infineon.com (172.23.29.55) To
+X-ClientProxiedBy: MUCSE813.infineon.com (172.23.29.39) To
  MUCSE827.infineon.com (172.23.29.20)
 
-Implements the specific bus logic for Infineon devices connected to the
-linux machine via a PCIe interface.
+Driver implementation of the Wi-Fi Direct (Peer-to-Peer) Mode of connection
+with a Peer device.
 
 Signed-off-by: Gokul Sivakumar <gokulkumar.sivakumar@infineon.com>
 ---
- drivers/net/wireless/infineon/inffmac/pcie.c | 2642 ++++++++++++++++++
- drivers/net/wireless/infineon/inffmac/pcie.h |   27 +
- include/linux/pci_ids.h                      |    3 +
- 3 files changed, 2672 insertions(+)
- create mode 100644 drivers/net/wireless/infineon/inffmac/pcie.c
- create mode 100644 drivers/net/wireless/infineon/inffmac/pcie.h
+ drivers/net/wireless/infineon/inffmac/p2p.c | 2379 +++++++++++++++++++
+ drivers/net/wireless/infineon/inffmac/p2p.h |  202 ++
+ include/linux/ieee80211-p2p.h               |   25 +
+ 3 files changed, 2606 insertions(+)
+ create mode 100644 drivers/net/wireless/infineon/inffmac/p2p.c
+ create mode 100644 drivers/net/wireless/infineon/inffmac/p2p.h
 
-diff --git a/drivers/net/wireless/infineon/inffmac/pcie.c b/drivers/net/wireless/infineon/inffmac/pcie.c
+diff --git a/drivers/net/wireless/infineon/inffmac/p2p.c b/drivers/net/wireless/infineon/inffmac/p2p.c
 new file mode 100644
-index 000000000000..3baf5be8dc3d
+index 000000000000..7a974111ce77
 --- /dev/null
-+++ b/drivers/net/wireless/infineon/inffmac/pcie.c
-@@ -0,0 +1,2642 @@
++++ b/drivers/net/wireless/infineon/inffmac/p2p.c
+@@ -0,0 +1,2379 @@
 +// SPDX-License-Identifier: ISC
 +/*
-+ * Copyright (c) 2014 Broadcom Corporation
++ * Copyright (c) 2012 Broadcom Corporation
 + *
 + * Copyright (c) 2025-2026, Infineon Technologies AG, or an affiliate of Infineon Technologies AG.
 + * All rights reserved.
 + */
-+
-+#include <linux/kernel.h>
-+#include <linux/module.h>
-+#include <linux/firmware.h>
-+#include <linux/pci.h>
-+#include <linux/vmalloc.h>
-+#include <linux/delay.h>
-+#include <linux/interrupt.h>
-+#include <linux/sched.h>
-+#include <linux/sched/signal.h>
-+#include <linux/kthread.h>
-+#include <linux/io.h>
-+#include <linux/unaligned.h>
++#include <linux/slab.h>
++#include <linux/netdevice.h>
++#include <linux/etherdevice.h>
++#include <linux/rtnetlink.h>
++#include <net/cfg80211.h>
 +
 +#include "main.h"
 +#include "utils.h"
++#include "chan.h"
 +#include "debug.h"
-+#include "bus_proto.h"
-+#include "commonring.h"
-+#include "msgbuf.h"
-+#include "pcie.h"
-+#include "firmware.h"
-+#include "chip.h"
++#include "dev_cmd.h"
++#include "p2p.h"
 +#include "cfg80211.h"
-+#include "trxhdr.h"
++#include "interface.h"
++#include "feature.h"
++#include "security.h"
++#include "net.h"
 +
-+/* per-board firmware binaries */
-+#define INFF_55572_FIRMWARE_BASENAME INFF_FW_DEFAULT_PATH "inffmac55572-pcie"
++/* parameters used for p2p escan */
++#define P2PAPI_SCAN_NPROBES 1
++#define P2PAPI_SCAN_DWELL_TIME_MS 80
++#define P2PAPI_SCAN_SOCIAL_DWELL_TIME_MS 40
++#define P2PAPI_SCAN_HOME_TIME_MS 60
++#define P2PAPI_SCAN_NPROBS_TIME_MS 30
++#define P2PAPI_SCAN_AF_SEARCH_DWELL_TIME_MS 100
++#define WL_SCAN_CONNECT_DWELL_TIME_MS 200
++#define WL_SCAN_JOIN_PROBE_INTERVAL_MS 20
 +
-+MODULE_FIRMWARE(INFF_55572_FIRMWARE_BASENAME ".trxse");
++#define INFF_P2P_WILDCARD_SSID		"DIRECT-"
++#define INFF_P2P_WILDCARD_SSID_LEN	(sizeof(INFF_P2P_WILDCARD_SSID) - 1)
 +
-+static const struct inff_firmware_mapping inff_pcie_fwnames[] = {
-+	INFF_FW_ENTRY(INF_CC_5557X_CHIP_ID, 0xFFFFFFFF, 55572),
-+};
++#define SOCIAL_CHAN_1		1
++#define SOCIAL_CHAN_2		6
++#define SOCIAL_CHAN_3		11
++#define IS_P2P_SOCIAL_CHANNEL(channel) ({ \
++	typeof(channel) __channel = (channel); \
++	(__channel == SOCIAL_CHAN_1) || \
++	(__channel == SOCIAL_CHAN_2) || \
++	(__channel == SOCIAL_CHAN_3); \
++})
 +
-+#define INFF_PCIE_READ_SHARED_TIMEOUT	5000 /* msec */
-+#define INFF_PCIE_FW_UP_TIMEOUT		5000 /* msec */
++#define INFF_P2P_TEMP_CHAN	SOCIAL_CHAN_3
++#define SOCIAL_CHAN_CNT		3
++#define AF_PEER_SEARCH_CNT	2
 +
-+#define INFF_PCIE_REG_MAP_SIZE			(32 * 1024)
++#define INFF_SCB_TIMEOUT_VALUE	20
 +
-+/* backplane address space accessed by BAR0 */
-+#define	INFF_PCIE_BAR0_WINDOW			0x80
-+#define INFF_PCIE_BAR0_REG_SIZE		0x1000
-+#define	INFF_PCIE_BAR0_WRAPPERBASE		0x70
++#define P2P_INVALID_CHANSPEC            0
++#define P2P_CHANNEL_SYNC_RETRY          5
++#define P2P_AF_FRM_SCAN_MAX_WAIT        msecs_to_jiffies(450)
++#define P2P_DEFAULT_SLEEP_TIME_VSDB     200
++#define P2P_AF_RETRY_DELAY_TIME         40
 +
-+#define INFF_PCIE_BAR0_WRAPBASE_DMP_OFFSET	0x1000
-+#define INFF_PCIE_BAR0_PCIE_ENUM_OFFSET	0x2000
-+#define INFF_CYW55572_PCIE_BAR0_PCIE_ENUM_OFFSET	0x3000
++#define INFF_P2P_DISABLE_TIMEOUT	msecs_to_jiffies(500)
 +
-+#define INFF_PCIE_BAR1_WINDOW			0x84
-+
-+#define INFF_PCIE_ARMCR4REG_BANKIDX		0x40
-+#define INFF_PCIE_ARMCR4REG_BANKPDA		0x4C
-+
-+#define INFF_PCIE_REG_INTSTATUS		0x90
-+#define INFF_PCIE_REG_INTMASK			0x94
-+#define INFF_PCIE_REG_SBMBX			0x98
-+
-+#define INFF_PCIE_REG_LINK_STATUS_CTRL		0xBC
-+
-+#define INFF_PCIE_PCIE2REG_INTMASK		0x24
-+#define INFF_PCIE_PCIE2REG_MAILBOXINT		0x48
-+#define INFF_PCIE_PCIE2REG_MAILBOXMASK		0x4C
-+#define INFF_PCIE_PCIE2REG_CONFIGADDR		0x120
-+#define INFF_PCIE_PCIE2REG_CONFIGDATA		0x124
-+#define INFF_PCIE_PCIE2REG_H2D_MAILBOX_0	0x140
-+#define INFF_PCIE_PCIE2REG_H2D_MAILBOX_1	0x144
-+#define INFF_PCIE_PCIE2REG_DAR_D2H_MSG_0	0xA80
-+#define INFF_PCIE_PCIE2REG_DAR_H2D_MSG_0	0xA90
-+
-+#define INFF_PCIE_64_PCIE2REG_INTMASK		0xC14
-+#define INFF_PCIE_64_PCIE2REG_MAILBOXINT	0xC30
-+#define INFF_PCIE_64_PCIE2REG_MAILBOXMASK	0xC34
-+#define INFF_PCIE_64_PCIE2REG_H2D_MAILBOX_0	0xA20
-+#define INFF_PCIE_64_PCIE2REG_H2D_MAILBOX_1	0xA24
-+
-+#define INFF_PCIE2_INTA			0x01
-+#define INFF_PCIE2_INTB			0x02
-+
-+#define INFF_PCIE_INT_0			0x01
-+#define INFF_PCIE_INT_1			0x02
-+#define INFF_PCIE_INT_DEF			(INFF_PCIE_INT_0 | \
-+						 INFF_PCIE_INT_1)
-+
-+#define INFF_PCIE_MB_INT_FN0_0			0x0100
-+#define INFF_PCIE_MB_INT_FN0_1			0x0200
-+#define	INFF_PCIE_MB_INT_D2H0_DB0		0x10000
-+#define	INFF_PCIE_MB_INT_D2H0_DB1		0x20000
-+#define	INFF_PCIE_MB_INT_D2H1_DB0		0x40000
-+#define	INFF_PCIE_MB_INT_D2H1_DB1		0x80000
-+#define	INFF_PCIE_MB_INT_D2H2_DB0		0x100000
-+#define	INFF_PCIE_MB_INT_D2H2_DB1		0x200000
-+#define	INFF_PCIE_MB_INT_D2H3_DB0		0x400000
-+#define	INFF_PCIE_MB_INT_D2H3_DB1		0x800000
-+
-+#define INFF_PCIE_MB_INT_FN0			(INFF_PCIE_MB_INT_FN0_0 | \
-+						 INFF_PCIE_MB_INT_FN0_1)
-+#define INFF_PCIE_MB_INT_D2H_DB		(INFF_PCIE_MB_INT_D2H0_DB0 | \
-+						 INFF_PCIE_MB_INT_D2H0_DB1 | \
-+						 INFF_PCIE_MB_INT_D2H1_DB0 | \
-+						 INFF_PCIE_MB_INT_D2H1_DB1 | \
-+						 INFF_PCIE_MB_INT_D2H2_DB0 | \
-+						 INFF_PCIE_MB_INT_D2H2_DB1 | \
-+						 INFF_PCIE_MB_INT_D2H3_DB0 | \
-+						 INFF_PCIE_MB_INT_D2H3_DB1)
-+
-+#define	INFF_PCIE_64_MB_INT_D2H0_DB0		0x1
-+#define	INFF_PCIE_64_MB_INT_D2H0_DB1		0x2
-+#define	INFF_PCIE_64_MB_INT_D2H1_DB0		0x4
-+#define	INFF_PCIE_64_MB_INT_D2H1_DB1		0x8
-+#define	INFF_PCIE_64_MB_INT_D2H2_DB0		0x10
-+#define	INFF_PCIE_64_MB_INT_D2H2_DB1		0x20
-+#define	INFF_PCIE_64_MB_INT_D2H3_DB0		0x40
-+#define	INFF_PCIE_64_MB_INT_D2H3_DB1		0x80
-+#define	INFF_PCIE_64_MB_INT_D2H4_DB0		0x100
-+#define	INFF_PCIE_64_MB_INT_D2H4_DB1		0x200
-+#define	INFF_PCIE_64_MB_INT_D2H5_DB0		0x400
-+#define	INFF_PCIE_64_MB_INT_D2H5_DB1		0x800
-+#define	INFF_PCIE_64_MB_INT_D2H6_DB0		0x1000
-+#define	INFF_PCIE_64_MB_INT_D2H6_DB1		0x2000
-+#define	INFF_PCIE_64_MB_INT_D2H7_DB0		0x4000
-+#define	INFF_PCIE_64_MB_INT_D2H7_DB1		0x8000
-+
-+#define INFF_PCIE_64_MB_INT_D2H_DB		(INFF_PCIE_64_MB_INT_D2H0_DB0 | \
-+						 INFF_PCIE_64_MB_INT_D2H0_DB1 | \
-+						 INFF_PCIE_64_MB_INT_D2H1_DB0 | \
-+						 INFF_PCIE_64_MB_INT_D2H1_DB1 | \
-+						 INFF_PCIE_64_MB_INT_D2H2_DB0 | \
-+						 INFF_PCIE_64_MB_INT_D2H2_DB1 | \
-+						 INFF_PCIE_64_MB_INT_D2H3_DB0 | \
-+						 INFF_PCIE_64_MB_INT_D2H3_DB1 | \
-+						 INFF_PCIE_64_MB_INT_D2H4_DB0 | \
-+						 INFF_PCIE_64_MB_INT_D2H4_DB1 | \
-+						 INFF_PCIE_64_MB_INT_D2H5_DB0 | \
-+						 INFF_PCIE_64_MB_INT_D2H5_DB1 | \
-+						 INFF_PCIE_64_MB_INT_D2H6_DB0 | \
-+						 INFF_PCIE_64_MB_INT_D2H6_DB1 | \
-+						 INFF_PCIE_64_MB_INT_D2H7_DB0 | \
-+						 INFF_PCIE_64_MB_INT_D2H7_DB1)
-+
-+#define INFF_PCIE_SHARED_VERSION_6		6
-+#define INFF_PCIE_SHARED_VERSION_7		7
-+#define INFF_PCIE_MIN_SHARED_VERSION		5
-+#define INFF_PCIE_MAX_SHARED_VERSION		INFF_PCIE_SHARED_VERSION_7
-+#define INFF_PCIE_SHARED_VERSION_MASK		0x00FF
-+#define INFF_PCIE_SHARED_DMA_INDEX		0x10000
-+#define INFF_PCIE_SHARED_DMA_2B_IDX		0x100000
-+#define INFF_PCIE_SHARED_USE_MAILBOX		0x2000000
-+#define INFF_PCIE_SHARED_HOSTRDY_DB1		0x10000000
-+
-+#define INFF_PCIE_FLAGS_HTOD_SPLIT		0x4000
-+#define INFF_PCIE_FLAGS_DTOH_SPLIT		0x8000
-+
-+#define INFF_SHARED_MAX_RXBUFPOST_OFFSET	34
-+#define INFF_SHARED_RING_BASE_OFFSET		52
-+#define INFF_SHARED_RX_DATAOFFSET_OFFSET	36
-+#define INFF_SHARED_CONSOLE_ADDR_OFFSET	20
-+#define INFF_SHARED_HTOD_MB_DATA_ADDR_OFFSET	40
-+#define INFF_SHARED_DTOH_MB_DATA_ADDR_OFFSET	44
-+#define INFF_SHARED_RING_INFO_ADDR_OFFSET	48
-+#define INFF_SHARED_DMA_SCRATCH_LEN_OFFSET	52
-+#define INFF_SHARED_DMA_SCRATCH_ADDR_OFFSET	56
-+#define INFF_SHARED_DMA_RINGUPD_LEN_OFFSET	64
-+#define INFF_SHARED_DMA_RINGUPD_ADDR_OFFSET	68
-+#define INFF_SHARED_HOST_CAP_OFFSET		84
-+
-+#define INFF_RING_H2D_RING_COUNT_OFFSET	0
-+#define INFF_RING_D2H_RING_COUNT_OFFSET	1
-+#define INFF_RING_H2D_RING_MEM_OFFSET		4
-+#define INFF_RING_H2D_RING_STATE_OFFSET	8
-+
-+#define INFF_RING_MEM_BASE_ADDR_OFFSET		8
-+#define INFF_RING_MAX_ITEM_OFFSET		4
-+#define INFF_RING_LEN_ITEMS_OFFSET		6
-+#define INFF_RING_MEM_SZ			16
-+#define INFF_RING_STATE_SZ			8
-+
-+#define INFF_DEF_MAX_RXBUFPOST			255
-+
-+#define INFF_HOSTCAP_H2D_ENABLE_HOSTRDY	0x400
-+#define INFF_HOSTCAP_DS_NO_OOB_DW			0x1000
-+
-+#define INFF_CONSOLE_BUFADDR_OFFSET		8
-+#define INFF_CONSOLE_BUFSIZE_OFFSET		12
-+#define INFF_CONSOLE_WRITEIDX_OFFSET		16
-+
-+#define INFF_DMA_D2H_SCRATCH_BUF_LEN		8
-+#define INFF_DMA_D2H_RINGUPD_BUF_LEN		1024
-+
-+#define INFF_D2H_DEV_D3_ACK			0x00000001
-+#define INFF_D2H_DEV_DS_ENTER_REQ		0x00000002
-+#define INFF_D2H_DEV_DS_EXIT_NOTE		0x00000004
-+#define INFF_D2H_DEV_FWHALT			0x10000000
-+
-+#define INFF_H2D_HOST_D3_INFORM		0x00000001
-+#define INFF_H2D_HOST_DS_ACK			0x00000002
-+#define INFF_H2D_HOST_D0_INFORM_IN_USE		0x00000008
-+#define INFF_H2D_HOST_D0_INFORM		0x00000010
-+
-+#define INFF_PCIE_MBDATA_TIMEOUT		msecs_to_jiffies(2000)
-+
-+#define INFF_PCIE_CFGREG_STATUS_CMD		0x4
-+#define INFF_PCIE_CFGREG_PM_CSR		0x4C
-+#define INFF_PCIE_CFGREG_MSI_CAP		0x58
-+#define INFF_PCIE_CFGREG_MSI_ADDR_L		0x5C
-+#define INFF_PCIE_CFGREG_MSI_ADDR_H		0x60
-+#define INFF_PCIE_CFGREG_MSI_DATA		0x64
-+#define INFF_PCIE_CFGREG_REVID			0x6C
-+#define INFF_PCIE_CFGREG_LINK_STATUS_CTRL	0xBC
-+#define INFF_PCIE_CFGREG_LINK_STATUS_CTRL2	0xDC
-+#define INFF_PCIE_CFGREG_RBAR_CTRL		0x228
-+#define INFF_PCIE_CFGREG_PML1_SUB_CTRL1	0x248
-+#define INFF_PCIE_CFGREG_REG_BAR2_CONFIG	0x4E0
-+#define INFF_PCIE_CFGREG_REG_BAR3_CONFIG	0x4F4
-+#define INFF_PCIE_CFGREG_REVID_SECURE_MODE	BIT(31)
-+#define INFF_PCIE_LINK_STATUS_CTRL_ASPM_ENAB	3
-+
-+/* Magic number at a magic location to find RAM size */
-+#define INFF_RAMSIZE_MAGIC			0x534d4152	/* SMAR */
-+#define INFF_RAMSIZE_OFFSET			0x6c
-+
-+#define INFF_ENTROPY_SEED_LEN		64u
-+#define INFF_ENTROPY_NONCE_LEN		16u
-+#define INFF_ENTROPY_HOST_LEN		(INFF_ENTROPY_SEED_LEN + \
-+					 INFF_ENTROPY_NONCE_LEN)
-+#define INFF_NVRAM_OFFSET_TCM		4u
-+#define INFF_NVRAM_COMPRS_FACTOR	4u
-+#define INFF_NVRAM_RNG_SIGNATURE	0xFEEDC0DEu
-+
-+struct inff_rand_metadata {
-+	__le32 signature;
-+	__le32 count;
++/* Mask for retry counter of custom dwell time */
++#define CUSTOM_RETRY_MASK 0xff000000
++/**
++ * struct inff_p2p_disc_st_le - set discovery state in firmware.
++ *
++ * @state: requested discovery state (see enum inff_p2p_disc_state).
++ * @chspec: channel parameter for %WL_P2P_DISC_ST_LISTEN state.
++ * @dwell: dwell time in ms for %WL_P2P_DISC_ST_LISTEN state.
++ */
++struct inff_p2p_disc_st_le {
++	u8 state;
++	__le16 chspec;
++	__le16 dwell;
 +};
 +
 +/**
-+ * struct inff_pcie_dhi_ringinfo - dongle/host interface shared ring info
++ * enum inff_p2p_disc_state - P2P discovery state values
 + *
-+ * @ringmem: dongle memory pointer to ring memory location
-+ * @h2d_w_idx_ptr: h2d ring write indices dongle memory pointers
-+ * @h2d_r_idx_ptr: h2d ring read indices dongle memory pointers
-+ * @d2h_w_idx_ptr: d2h ring write indices dongle memory pointers
-+ * @d2h_r_idx_ptr: d2h ring read indices dongle memory pointers
-+ * @h2d_w_idx_hostaddr: h2d ring write indices host memory pointers
-+ * @h2d_r_idx_hostaddr: h2d ring read indices host memory pointers
-+ * @d2h_w_idx_hostaddr: d2h ring write indices host memory pointers
-+ * @d2h_r_idx_hostaddr: d2h ring reaD indices host memory pointers
-+ * @max_flowrings: maximum number of tx flow rings supported.
-+ * @max_submissionrings: maximum number of submission rings(h2d) supported.
-+ * @max_completionrings: maximum number of completion rings(d2h) supported.
++ * @WL_P2P_DISC_ST_SCAN: P2P discovery with wildcard SSID and P2P IE.
++ * @WL_P2P_DISC_ST_LISTEN: P2P discovery off-channel for specified time.
++ * @WL_P2P_DISC_ST_SEARCH: P2P discovery with P2P wildcard SSID and P2P IE.
 + */
-+struct inff_pcie_dhi_ringinfo {
-+	__le32			ringmem;
-+	__le32			h2d_w_idx_ptr;
-+	__le32			h2d_r_idx_ptr;
-+	__le32			d2h_w_idx_ptr;
-+	__le32			d2h_r_idx_ptr;
-+	struct msgbuf_buf_addr	h2d_w_idx_hostaddr;
-+	struct msgbuf_buf_addr	h2d_r_idx_hostaddr;
-+	struct msgbuf_buf_addr	d2h_w_idx_hostaddr;
-+	struct msgbuf_buf_addr	d2h_r_idx_hostaddr;
-+	__le16			max_flowrings;
-+	__le16			max_submissionrings;
-+	__le16			max_completionrings;
++enum inff_p2p_disc_state {
++	WL_P2P_DISC_ST_SCAN,
++	WL_P2P_DISC_ST_LISTEN,
++	WL_P2P_DISC_ST_SEARCH
 +};
 +
-+struct inff_pcie_console {
-+	u32 base_addr;
-+	u32 buf_addr;
-+	u32 bufsize;
-+	u32 read_idx;
-+	u8 log_str[256];
-+	u8 log_idx;
-+};
-+
-+enum inff_pcie_state {
-+	INFFMAC_PCIE_STATE_DOWN,
-+	INFFMAC_PCIE_STATE_UP
-+};
-+
-+struct inff_pcie_reginfo {
-+	u32 intmask;
-+	u32 mailboxint;
-+	u32 mailboxmask;
-+	u32 h2d_mailbox_0;
-+	u32 h2d_mailbox_1;
-+	u32 int_d2h_db;
-+	u32 int_fn0;
-+};
-+
-+struct inff_pcie_shared_info {
-+	u32 tcm_base_address;
-+	u32 flags;
-+	struct inff_pcie_ringbuf *commonrings[INFF_NROF_COMMON_MSGRINGS];
-+	struct inff_pcie_ringbuf *flowrings;
-+	u16 max_rxbufpost;
-+	u16 max_flowrings;
-+	u16 max_submissionrings;
-+	u16 max_completionrings;
-+	u32 rx_dataoffset;
-+	u32 htod_mb_data_addr;
-+	u32 dtoh_mb_data_addr;
-+	u32 ring_info_addr;
-+	struct inff_pcie_console console;
-+	void *scratch;
-+	dma_addr_t scratch_dmahandle;
-+	void *ringupd;
-+	dma_addr_t ringupd_dmahandle;
-+	u8 version;
-+};
-+
-+struct inff_pciedev_info {
-+	enum inff_pcie_state state;
-+	bool in_irq;
-+	struct pci_dev *pdev;
-+	const struct inff_pcie_reginfo *reginfo;
-+	void __iomem *regs;
-+	void __iomem *tcm;
-+	u32 ram_base;
-+	u32 ram_size;
-+	struct inff_chip *ci;
-+	u32 coreid;
-+	struct inff_pcie_shared_info shared;
-+	u8 hostready;
-+	bool use_mailbox;
-+	bool use_d0_inform;
-+	wait_queue_head_t mbdata_resp_wait;
-+	bool mbdata_completed;
-+	bool irq_allocated;
-+	bool wowl_enabled;
-+	u8 dma_idx_sz;
-+	void *idxbuf;
-+	u32 idxbuf_sz;
-+	dma_addr_t idxbuf_dmahandle;
-+	u16 (*read_ptr)(struct inff_pciedev_info *devinfo, u32 mem_offset);
-+	void (*write_ptr)(struct inff_pciedev_info *devinfo, u32 mem_offset,
-+			  u16 value);
-+	struct inff_mp_device *settings;
-+	ulong bar1_size;
-+#ifdef DEBUG
-+	u32 console_interval;
-+	bool console_active;
-+	struct timer_list timer;
-+#endif
-+};
-+
-+static const struct inff_pcie_reginfo inff_reginfo_default = {
-+	.intmask = INFF_PCIE_PCIE2REG_INTMASK,
-+	.mailboxint = INFF_PCIE_PCIE2REG_MAILBOXINT,
-+	.mailboxmask = INFF_PCIE_PCIE2REG_MAILBOXMASK,
-+	.h2d_mailbox_0 = INFF_PCIE_PCIE2REG_H2D_MAILBOX_0,
-+	.h2d_mailbox_1 = INFF_PCIE_PCIE2REG_H2D_MAILBOX_1,
-+	.int_d2h_db = INFF_PCIE_MB_INT_D2H_DB,
-+	.int_fn0 = INFF_PCIE_MB_INT_FN0,
-+};
-+
-+static const struct inff_pcie_reginfo inff_reginfo_64 = {
-+	.intmask = INFF_PCIE_64_PCIE2REG_INTMASK,
-+	.mailboxint = INFF_PCIE_64_PCIE2REG_MAILBOXINT,
-+	.mailboxmask = INFF_PCIE_64_PCIE2REG_MAILBOXMASK,
-+	.h2d_mailbox_0 = INFF_PCIE_PCIE2REG_H2D_MAILBOX_0,
-+	.h2d_mailbox_1 = INFF_PCIE_PCIE2REG_H2D_MAILBOX_1,
-+	.int_d2h_db = INFF_PCIE_64_MB_INT_D2H_DB,
-+	.int_fn0 = INFF_PCIE_MB_INT_FN0,
-+};
-+
-+struct inff_pcie_ringbuf {
-+	struct inff_commonring commonring;
-+	dma_addr_t dma_handle;
-+	u32 w_idx_addr;
-+	u32 r_idx_addr;
-+	struct inff_pciedev_info *devinfo;
-+	u8 id;
-+};
-+
-+static u32
-+inff_pcie_read_reg32(struct inff_pciedev_info *devinfo, u32 reg_offset)
-+{
-+	void __iomem *address = devinfo->regs + reg_offset;
-+
-+	return ioread32(address);
-+}
-+
-+static void
-+inff_pcie_write_reg32(struct inff_pciedev_info *devinfo, u32 reg_offset,
-+		      u32 value)
-+{
-+	void __iomem *address = devinfo->regs + reg_offset;
-+
-+	iowrite32(value, address);
-+}
-+
-+static u8
-+inff_pcie_read_tcm8(struct inff_pciedev_info *devinfo, u32 mem_offset)
-+{
-+	void __iomem *address = devinfo->tcm + mem_offset;
-+	struct pci_dev *pdev = devinfo->pdev;
-+	struct inff_bus *bus = dev_get_drvdata(&pdev->dev);
-+
-+	if ((address - devinfo->tcm) >= devinfo->bar1_size) {
-+		inff_dev_err(bus->dev,
-+			     "mem_offset:%d exceeds device size=%ld\n",
-+			     mem_offset, devinfo->bar1_size);
-+		return -EINVAL;
-+	}
-+
-+	return (ioread8(address));
-+}
-+
-+static u16
-+inff_pcie_read_tcm16(struct inff_pciedev_info *devinfo, u32 mem_offset)
-+{
-+	void __iomem *address = devinfo->tcm + mem_offset;
-+	struct pci_dev *pdev = devinfo->pdev;
-+	struct inff_bus *bus = dev_get_drvdata(&pdev->dev);
-+
-+	if ((address - devinfo->tcm) >= devinfo->bar1_size) {
-+		inff_dev_err(bus->dev,
-+			     "mem_offset:%d exceeds device size=%ld\n",
-+			     mem_offset, devinfo->bar1_size);
-+		return -EINVAL;
-+	}
-+
-+	return (ioread16(address));
-+}
-+
-+static void
-+inff_pcie_write_tcm16(struct inff_pciedev_info *devinfo, u32 mem_offset,
-+		      u16 value)
-+{
-+	void __iomem *address = devinfo->tcm + mem_offset;
-+	struct pci_dev *pdev = devinfo->pdev;
-+	struct inff_bus *bus = dev_get_drvdata(&pdev->dev);
-+
-+	if ((address - devinfo->tcm) >= devinfo->bar1_size) {
-+		inff_dev_err(bus->dev,
-+			     "mem_offset:%d exceeds device size=%ld\n",
-+			     mem_offset, devinfo->bar1_size);
-+		return;
-+	}
-+
-+	iowrite16(value, address);
-+}
-+
-+static u16
-+inff_pcie_read_idx(struct inff_pciedev_info *devinfo, u32 mem_offset)
-+{
-+	u16 *address = devinfo->idxbuf + mem_offset;
-+
-+	return (*(address));
-+}
-+
-+static void
-+inff_pcie_write_idx(struct inff_pciedev_info *devinfo, u32 mem_offset,
-+		    u16 value)
-+{
-+	u16 *address = devinfo->idxbuf + mem_offset;
-+
-+	*(address) = value;
-+}
-+
-+static u32
-+inff_pcie_read_tcm32(struct inff_pciedev_info *devinfo, u32 mem_offset)
-+{
-+	void __iomem *address = devinfo->tcm + mem_offset;
-+	struct pci_dev *pdev = devinfo->pdev;
-+	struct inff_bus *bus = dev_get_drvdata(&pdev->dev);
-+
-+	if ((address - devinfo->tcm) >= devinfo->bar1_size) {
-+		inff_dev_err(bus->dev,
-+			     "mem_offset:%d exceeds device size=%ld\n",
-+			     mem_offset, devinfo->bar1_size);
-+		return -EINVAL;
-+	}
-+
-+	return (ioread32(address));
-+}
-+
-+static void
-+inff_pcie_write_tcm32(struct inff_pciedev_info *devinfo, u32 mem_offset,
-+		      u32 value)
-+{
-+	void __iomem *address = devinfo->tcm + mem_offset;
-+	struct pci_dev *pdev = devinfo->pdev;
-+	struct inff_bus *bus = dev_get_drvdata(&pdev->dev);
-+
-+	if ((address - devinfo->tcm) >= devinfo->bar1_size) {
-+		inff_dev_err(bus->dev,
-+			     "mem_offset:%d exceeds device size=%ld\n",
-+			     mem_offset, devinfo->bar1_size);
-+		return;
-+	}
-+
-+	iowrite32(value, address);
-+}
-+
-+static u32
-+inff_pcie_read_ram32(struct inff_pciedev_info *devinfo, u32 mem_offset)
-+{
-+	void __iomem *address = devinfo->tcm + devinfo->ci->rambase
-+		+ mem_offset;
-+	struct pci_dev *pdev = devinfo->pdev;
-+	struct inff_bus *bus = dev_get_drvdata(&pdev->dev);
-+
-+	if ((address - devinfo->tcm) >= devinfo->bar1_size) {
-+		inff_dev_err(bus->dev,
-+			     "mem_offset:%d exceeds device size=%ld\n",
-+			     mem_offset, devinfo->bar1_size);
-+		return -EINVAL;
-+	}
-+
-+	return (ioread32(address));
-+}
-+
-+static void
-+inff_pcie_write_ram32(struct inff_pciedev_info *devinfo, u32 mem_offset,
-+		      u32 value)
-+{
-+	void __iomem *address = devinfo->tcm + devinfo->ci->rambase
-+		+ mem_offset;
-+	struct pci_dev *pdev = devinfo->pdev;
-+	struct inff_bus *bus = dev_get_drvdata(&pdev->dev);
-+
-+	if ((address - devinfo->tcm) >= devinfo->bar1_size) {
-+		inff_dev_err(bus->dev,
-+			     "mem_offset:%d exceeds device size=%ld\n",
-+			     mem_offset, devinfo->bar1_size);
-+		return;
-+	}
-+
-+	iowrite32(value, address);
-+}
-+
-+static void
-+inff_pcie_copy_mem_todev(struct inff_pciedev_info *devinfo, u32 mem_offset,
-+			 void *srcaddr, u32 len)
-+{
-+	struct pci_dev *pdev = devinfo->pdev;
-+	struct inff_bus *bus = dev_get_drvdata(&pdev->dev);
-+	void __iomem *address = devinfo->tcm + mem_offset;
-+	__le32 *src32;
-+	__le16 *src16;
-+	u8 *src8;
-+
-+	if (((ulong)address & 4) || ((ulong)srcaddr & 4) || (len & 4)) {
-+		if (((ulong)address & 2) || ((ulong)srcaddr & 2) || (len & 2)) {
-+			src8 = (u8 *)srcaddr;
-+			while (len) {
-+				if ((address - devinfo->tcm) >=
-+				    devinfo->bar1_size) {
-+					inff_dev_err(bus->dev,
-+						     "mem_offset:%d exceeds device size=%ld\n",
-+						     mem_offset, devinfo->bar1_size);
-+					return;
-+				}
-+				iowrite8(*src8, address);
-+				address++;
-+				src8++;
-+				len--;
-+			}
-+		} else {
-+			len = len / 2;
-+			src16 = (__le16 *)srcaddr;
-+			while (len) {
-+				if ((address - devinfo->tcm) >=
-+				    devinfo->bar1_size) {
-+					inff_dev_err(bus->dev,
-+						     "mem_offset:%d exceeds device size=%ld\n",
-+						     mem_offset, devinfo->bar1_size);
-+					return;
-+				}
-+				iowrite16(le16_to_cpu(*src16), address);
-+				address += 2;
-+				src16++;
-+				len--;
-+			}
-+		}
-+	} else {
-+		len = len / 4;
-+		src32 = (__le32 *)srcaddr;
-+		while (len) {
-+			if ((address - devinfo->tcm) >=
-+				devinfo->bar1_size) {
-+				inff_dev_err(bus->dev,
-+					     "mem_offset:%d exceeds device size=%ld\n",
-+					     mem_offset, devinfo->bar1_size);
-+				return;
-+			}
-+			iowrite32(le32_to_cpu(*src32), address);
-+			address += 4;
-+			src32++;
-+			len--;
-+		}
-+	}
-+}
-+
-+static void
-+inff_pcie_copy_dev_tomem(struct inff_pciedev_info *devinfo, u32 mem_offset,
-+			 void *dstaddr, u32 len)
-+{
-+	struct pci_dev *pdev = devinfo->pdev;
-+	struct inff_bus *bus = dev_get_drvdata(&pdev->dev);
-+	void __iomem *address = devinfo->tcm + mem_offset;
-+	__le32 *dst32;
-+	__le16 *dst16;
-+	u8 *dst8;
-+
-+	if (((ulong)address & 4) || ((ulong)dstaddr & 4) || (len & 4)) {
-+		if (((ulong)address & 2) || ((ulong)dstaddr & 2) || (len & 2)) {
-+			dst8 = (u8 *)dstaddr;
-+			while (len) {
-+				if ((address - devinfo->tcm) >=
-+					devinfo->bar1_size) {
-+					inff_dev_err(bus->dev,
-+						     "mem_offset:%d exceeds device size=%ld\n",
-+						     mem_offset, devinfo->bar1_size);
-+					return;
-+				}
-+				*dst8 = ioread8(address);
-+				address++;
-+				dst8++;
-+				len--;
-+			}
-+		} else {
-+			len = len / 2;
-+			dst16 = (__le16 *)dstaddr;
-+			while (len) {
-+				if ((address - devinfo->tcm) >=
-+					devinfo->bar1_size) {
-+					inff_dev_err(bus->dev,
-+						     "mem_offset:%d exceeds device size=%ld\n",
-+						     mem_offset, devinfo->bar1_size);
-+					return;
-+				}
-+				*dst16 = cpu_to_le16(ioread16(address));
-+				address += 2;
-+				dst16++;
-+				len--;
-+			}
-+		}
-+	} else {
-+		len = len / 4;
-+		dst32 = (__le32 *)dstaddr;
-+		while (len) {
-+			if ((address - devinfo->tcm) >=
-+				devinfo->bar1_size) {
-+				inff_dev_err(bus->dev,
-+					     "mem_offset:%d exceeds device size=%ld\n",
-+					     mem_offset, devinfo->bar1_size);
-+				return;
-+			}
-+			*dst32 = cpu_to_le32(ioread32(address));
-+			address += 4;
-+			dst32++;
-+			len--;
-+		}
-+	}
-+}
-+
-+#define WRITECC32(devinfo, reg, value) inff_pcie_write_reg32(devinfo, \
-+		CHIPCREGOFFS(reg), value)
-+
-+static void
-+inff_pcie_select_core(struct inff_pciedev_info *devinfo, u16 coreid)
-+{
-+	const struct pci_dev *pdev = devinfo->pdev;
-+	struct inff_bus *bus = dev_get_drvdata(&pdev->dev);
-+	struct inff_core *core;
-+	u32 bar0_win;
-+
-+	core = inff_chip_get_core(devinfo->ci, coreid);
-+	if (core) {
-+		bar0_win = core->base;
-+		pci_write_config_dword(pdev, INFF_PCIE_BAR0_WINDOW, bar0_win);
-+		if (pci_read_config_dword(pdev, INFF_PCIE_BAR0_WINDOW,
-+					  &bar0_win) == 0) {
-+			if (bar0_win != core->base) {
-+				bar0_win = core->base;
-+				pci_write_config_dword(pdev,
-+						       INFF_PCIE_BAR0_WINDOW,
-+						       bar0_win);
-+			}
-+		}
-+	} else {
-+		inff_dev_err(bus->dev, "Unsupported core selected %x\n", coreid);
-+	}
-+}
-+
-+static void inff_pcie_reset_device(struct inff_pciedev_info *devinfo)
-+{
-+	struct inff_core *core;
-+	static const u16 cfg_offset[] = {
-+		INFF_PCIE_CFGREG_STATUS_CMD,
-+		INFF_PCIE_CFGREG_PM_CSR,
-+		INFF_PCIE_CFGREG_MSI_CAP,
-+		INFF_PCIE_CFGREG_MSI_ADDR_L,
-+		INFF_PCIE_CFGREG_MSI_ADDR_H,
-+		INFF_PCIE_CFGREG_MSI_DATA,
-+		INFF_PCIE_CFGREG_LINK_STATUS_CTRL2,
-+		INFF_PCIE_CFGREG_RBAR_CTRL,
-+		INFF_PCIE_CFGREG_PML1_SUB_CTRL1,
-+		INFF_PCIE_CFGREG_REG_BAR2_CONFIG,
-+		INFF_PCIE_CFGREG_REG_BAR3_CONFIG
++/**
++ * struct inff_p2p_scan_le - P2P specific scan request.
++ *
++ * @type: type of scan method requested (values: 'E' or 'S').
++ * @reserved: reserved (ignored).
++ * @eparams: parameters used for type 'E'.
++ * @sparams: parameters used for type 'S'.
++ */
++struct inff_p2p_scan_le {
++	u8 type;
++	u8 reserved[3];
++	union {
++		struct inff_escan_params_le eparams;
++		struct inff_scan_params_le sparams;
 +	};
-+	u32 i;
-+	u32 val;
-+	u32 lsc;
++};
 +
-+	if (!devinfo->ci)
-+		return;
++/**
++ * struct inff_config_af_params - Action Frame Parameters for tx.
++ *
++ * @mpc_onoff: To make sure to send successfully action frame, we have to
++ *             turn off mpc  0: off, 1: on,  (-1): do nothing
++ * @search_channel: 1: search peer's channel to send af
++ * @extra_listen: keep the dwell time to get af response frame.
++ */
++struct inff_config_af_params {
++	s32 mpc_onoff;
++	bool search_channel;
++	bool extra_listen;
++};
 +
-+	/* Disable ASPM */
-+	inff_pcie_select_core(devinfo, INF_CORE_PCIE2);
-+	pci_read_config_dword(devinfo->pdev, INFF_PCIE_REG_LINK_STATUS_CTRL,
-+			      &lsc);
-+	val = lsc & (~INFF_PCIE_LINK_STATUS_CTRL_ASPM_ENAB);
-+	pci_write_config_dword(devinfo->pdev, INFF_PCIE_REG_LINK_STATUS_CTRL,
-+			       val);
++#define P2P_PAF_SUBTYPE_INVALID	255	/* Invalid Subtype */
 +
-+	/* Watchdog reset */
-+	devinfo->ci->blhs->init(devinfo->ci);
-+	inff_pcie_select_core(devinfo, INF_CORE_CHIPCOMMON);
-+	WRITECC32(devinfo, watchdog, 4);
-+	msleep(100);
-+	if (devinfo->ci->blhs->post_wdreset(devinfo->ci))
-+		return;
-+
-+	/* Restore ASPM */
-+	inff_pcie_select_core(devinfo, INF_CORE_PCIE2);
-+	pci_write_config_dword(devinfo->pdev, INFF_PCIE_REG_LINK_STATUS_CTRL,
-+			       lsc);
-+
-+	core = inff_chip_get_core(devinfo->ci, INF_CORE_PCIE2);
-+	if (core->rev <= 13) {
-+		for (i = 0; i < ARRAY_SIZE(cfg_offset); i++) {
-+			inff_pcie_write_reg32(devinfo,
-+					      INFF_PCIE_PCIE2REG_CONFIGADDR,
-+					      cfg_offset[i]);
-+			val = inff_pcie_read_reg32(devinfo,
-+						   INFF_PCIE_PCIE2REG_CONFIGDATA);
-+			inff_dbg(PCIE, "config offset 0x%04x, value 0x%04x\n",
-+				 cfg_offset[i], val);
-+			inff_pcie_write_reg32(devinfo,
-+					      INFF_PCIE_PCIE2REG_CONFIGDATA,
-+					      val);
-+		}
-+	}
-+}
-+
-+static u32 inff_pcie_read_mb_data(struct inff_pciedev_info *devinfo)
++/**
++ * inff_ieee80211_is_p2p_pub_action() - true if p2p public type frame.
++ *
++ * @frame: action frame data.
++ * @frame_len: length of action frame data.
++ *
++ * Determine if action frame is p2p public action type
++ */
++static bool inff_ieee80211_is_p2p_pub_action(void *frame, u32 frame_len)
 +{
-+	struct inff_pcie_shared_info *shared;
-+	u32 addr;
-+	u32 dtoh_mb_data;
++	struct inff_pub_act_frame *pub_act_frm;
 +
-+	shared = &devinfo->shared;
-+	addr = shared->dtoh_mb_data_addr;
-+	dtoh_mb_data = inff_pcie_read_tcm32(devinfo, addr);
-+	inff_pcie_write_tcm32(devinfo, addr, 0);
-+	return dtoh_mb_data;
-+}
++	if (!frame)
++		return false;
 +
-+static int
-+inff_pcie_send_mb_data(struct inff_pciedev_info *devinfo, u32 htod_mb_data)
-+{
-+	struct inff_pcie_shared_info *shared;
-+	struct inff_bus *bus;
-+	int err;
-+	struct inff_core *core;
-+	u32 addr;
-+	u32 cur_htod_mb_data;
-+	u32 i;
++	pub_act_frm = (struct inff_pub_act_frame *)frame;
++	if (frame_len < sizeof(*pub_act_frm))
++		return false;
 +
-+	shared = &devinfo->shared;
-+	bus = dev_get_drvdata(&devinfo->pdev->dev);
-+	if (shared->version >= INFF_PCIE_SHARED_VERSION_6 &&
-+	    !devinfo->use_mailbox) {
-+		err = inff_msgbuf_tx_mbdata(bus->drvr, htod_mb_data);
-+		if (err) {
-+			inff_dev_err(bus->dev, "sendimg mbdata failed err=%d\n", err);
-+			return err;
-+		}
-+	} else {
-+		addr = shared->htod_mb_data_addr;
-+		cur_htod_mb_data = inff_pcie_read_tcm32(devinfo, addr);
++	if (pub_act_frm->category == WLAN_CATEGORY_PUBLIC &&
++	    pub_act_frm->action == WLAN_PUB_ACTION_VENDOR_SPECIFIC &&
++	    pub_act_frm->oui_type == WLAN_OUI_TYPE_WFA_P2P &&
++	    memcmp(pub_act_frm->oui, WFA_OUI, TLV_OUI_LEN) == 0)
++		return true;
 +
-+		if (cur_htod_mb_data != 0)
-+			inff_dbg(PCIE, "MB transaction is already pending 0x%04x\n",
-+				 cur_htod_mb_data);
-+
-+		i = 0;
-+		while (cur_htod_mb_data != 0) {
-+			usleep_range(10000, 10001);
-+			i++;
-+			if (i > 100)
-+				return -EIO;
-+			cur_htod_mb_data = inff_pcie_read_tcm32(devinfo, addr);
-+		}
-+
-+		inff_pcie_write_tcm32(devinfo, addr, htod_mb_data);
-+		pci_write_config_dword(devinfo->pdev, INFF_PCIE_REG_SBMBX, 1);
-+
-+		/* Send mailbox interrupt twice as a hardware workaround */
-+		core = inff_chip_get_core(devinfo->ci, INF_CORE_PCIE2);
-+		if (core->rev <= 13)
-+			pci_write_config_dword(devinfo->pdev,
-+					       INFF_PCIE_REG_SBMBX, 1);
-+	}
-+	return 0;
-+}
-+
-+void inff_pcie_handle_mb_data(struct inff_bus *bus_if, u32 d2h_mb_data)
-+{
-+	struct inff_pciedev *buspub = bus_if->bus_priv.pcie;
-+	struct inff_pciedev_info *devinfo = buspub->devinfo;
-+
-+	inff_dbg(INFO, "D2H_MB_DATA: 0x%04x\n", d2h_mb_data);
-+
-+	if (d2h_mb_data & INFF_D2H_DEV_DS_ENTER_REQ) {
-+		inff_dbg(INFO, "D2H_MB_DATA: DEEP SLEEP REQ\n");
-+		inff_pcie_send_mb_data(devinfo, INFF_H2D_HOST_DS_ACK);
-+		inff_dbg(INFO, "D2H_MB_DATA: sent DEEP SLEEP ACK\n");
-+	}
-+
-+	if (d2h_mb_data & INFF_D2H_DEV_DS_EXIT_NOTE)
-+		inff_dbg(INFO, "D2H_MB_DATA: DEEP SLEEP EXIT\n");
-+	if (d2h_mb_data & INFF_D2H_DEV_D3_ACK) {
-+		inff_dbg(INFO, "D2H_MB_DATA: D3 ACK\n");
-+		devinfo->mbdata_completed = true;
-+		wake_up(&devinfo->mbdata_resp_wait);
-+	}
-+
-+	if (d2h_mb_data & INFF_D2H_DEV_FWHALT) {
-+		inff_dbg(INFO, "D2H_MB_DATA: FW HALT\n");
-+		inff_fw_crashed(&devinfo->pdev->dev);
-+	}
-+}
-+
-+static int inff_pcie_ring_mb_ring_bell(void *ctx)
-+{
-+	struct inff_pcie_ringbuf *ring = (struct inff_pcie_ringbuf *)ctx;
-+	struct inff_pciedev_info *devinfo = ring->devinfo;
-+
-+	if (devinfo->state != INFFMAC_PCIE_STATE_UP)
-+		return -EIO;
-+
-+	inff_dbg(PCIE, "RING !\n");
-+	/* Any arbitrary value will do, lets use 1 */
-+	inff_pcie_write_reg32(devinfo, devinfo->reginfo->h2d_mailbox_0, 1);
-+
-+	return 0;
-+}
-+
-+static int inff_pcie_ring_mb_update_rptr(void *ctx)
-+{
-+	struct inff_pcie_ringbuf *ring = (struct inff_pcie_ringbuf *)ctx;
-+	struct inff_pciedev_info *devinfo = ring->devinfo;
-+	struct inff_commonring *commonring = &ring->commonring;
-+
-+	if (devinfo->state != INFFMAC_PCIE_STATE_UP)
-+		return -EIO;
-+
-+	commonring->r_ptr = devinfo->read_ptr(devinfo, ring->r_idx_addr);
-+
-+	inff_dbg(PCIE, "R r_ptr %d (%d), ring %d\n", commonring->r_ptr,
-+		 commonring->w_ptr, ring->id);
-+
-+	return 0;
-+}
-+
-+static int inff_pcie_ring_mb_update_wptr(void *ctx)
-+{
-+	struct inff_pcie_ringbuf *ring = (struct inff_pcie_ringbuf *)ctx;
-+	struct inff_pciedev_info *devinfo = ring->devinfo;
-+	struct inff_commonring *commonring = &ring->commonring;
-+
-+	if (devinfo->state != INFFMAC_PCIE_STATE_UP)
-+		return -EIO;
-+
-+	commonring->w_ptr = devinfo->read_ptr(devinfo, ring->w_idx_addr);
-+
-+	inff_dbg(PCIE, "R w_ptr %d (%d), ring %d\n", commonring->w_ptr,
-+		 commonring->r_ptr, ring->id);
-+
-+	return 0;
-+}
-+
-+static int inff_pcie_ring_mb_write_rptr(void *ctx)
-+{
-+	struct inff_pcie_ringbuf *ring = (struct inff_pcie_ringbuf *)ctx;
-+	struct inff_pciedev_info *devinfo = ring->devinfo;
-+	struct inff_commonring *commonring = &ring->commonring;
-+
-+	if (devinfo->state != INFFMAC_PCIE_STATE_UP)
-+		return -EIO;
-+
-+	inff_dbg(PCIE, "W r_ptr %d (%d), ring %d\n", commonring->r_ptr,
-+		 commonring->w_ptr, ring->id);
-+
-+	devinfo->write_ptr(devinfo, ring->r_idx_addr, commonring->r_ptr);
-+
-+	return 0;
-+}
-+
-+static int inff_pcie_ring_mb_write_wptr(void *ctx)
-+{
-+	struct inff_pcie_ringbuf *ring = (struct inff_pcie_ringbuf *)ctx;
-+	struct inff_pciedev_info *devinfo = ring->devinfo;
-+	struct inff_commonring *commonring = &ring->commonring;
-+
-+	if (devinfo->state != INFFMAC_PCIE_STATE_UP)
-+		return -EIO;
-+
-+	inff_dbg(PCIE, "W w_ptr %d (%d), ring %d\n", commonring->w_ptr,
-+		 commonring->r_ptr, ring->id);
-+
-+	devinfo->write_ptr(devinfo, ring->w_idx_addr, commonring->w_ptr);
-+
-+	return 0;
-+}
-+
-+static void inff_pcie_hostready(struct inff_pciedev_info *devinfo)
-+{
-+	if (devinfo->shared.flags & INFF_PCIE_SHARED_HOSTRDY_DB1)
-+		inff_pcie_write_reg32(devinfo,
-+				      devinfo->reginfo->h2d_mailbox_1, 1);
-+}
-+
-+static void inff_pcie_bus_console_init(struct inff_pciedev_info *devinfo)
-+{
-+	struct inff_pcie_shared_info *shared;
-+	struct inff_pcie_console *console;
-+	u32 buf_addr;
-+	u32 addr;
-+
-+	shared = &devinfo->shared;
-+	console = &shared->console;
-+	addr = shared->tcm_base_address + INFF_SHARED_CONSOLE_ADDR_OFFSET;
-+	console->base_addr = inff_pcie_read_tcm32(devinfo, addr);
-+
-+	addr = console->base_addr + INFF_CONSOLE_BUFADDR_OFFSET;
-+	buf_addr = inff_pcie_read_tcm32(devinfo, addr);
-+	/* reset console index when buffer address is updated */
-+	if (console->buf_addr != buf_addr) {
-+		console->buf_addr = buf_addr;
-+		console->read_idx = 0;
-+	}
-+	addr = console->base_addr + INFF_CONSOLE_BUFSIZE_OFFSET;
-+	console->bufsize = inff_pcie_read_tcm32(devinfo, addr);
-+
-+	inff_dbg(FWCON, "Console: base %x, buf %x, size %d\n",
-+		 console->base_addr, console->buf_addr, console->bufsize);
++	return false;
 +}
 +
 +/**
-+ * inff_pcie_bus_console_read - reads firmware messages
++ * struct inff_p2p_act_frame - WLAN MGMT P2P Action Frame
 + *
-+ * @devinfo: pointer to the device data structure
-+ * @error: specifies if error has occurred (prints messages unconditionally)
++ * @category: Category code - WLAN_CATEGORY_VENDOR_SPECIFIC
++ * @oui: P2P Action frame OUI - WFA_OUI
++ * @oui_type: P2P Action frame OUI Type - WLAN_OUI_TYPE_WFA_P2P
++ * @subtype: P2P Action frame Subtype - P2P_AF_*
++ * @dialog_token: nonzero, identifies req/resp tranaction
++ * @elts: Variable length information elements
 + */
-+static void inff_pcie_bus_console_read(struct inff_pciedev_info *devinfo,
-+				       bool error)
++struct inff_p2p_act_frame {
++	u8	category;
++	u8	oui[3];
++	u8	oui_type;
++	u8	subtype;
++	u8	dialog_token;
++	u8	elts[];
++};
++
++/**
++ * inff_ieee80211_is_p2p_action() - true if p2p action type frame.
++ *
++ * @frame: action frame data.
++ * @frame_len: length of action frame data.
++ *
++ * Determine if action frame is p2p action type
++ */
++static bool inff_ieee80211_is_p2p_action(void *frame, u32 frame_len)
 +{
-+	struct pci_dev *pdev = devinfo->pdev;
-+	struct inff_bus *bus = dev_get_drvdata(&pdev->dev);
-+	struct inff_pcie_console *console;
-+	u32 addr;
-+	u8 ch;
-+	u32 newidx;
++	struct inff_p2p_act_frame *act_frm;
 +
-+	if (!error && !INFF_MSGLVL_ON(FWCON))
-+		return;
++	if (!frame)
++		return false;
 +
-+	console = &devinfo->shared.console;
-+	if (!console->base_addr)
-+		return;
-+	addr = console->base_addr + INFF_CONSOLE_WRITEIDX_OFFSET;
-+	newidx = inff_pcie_read_tcm32(devinfo, addr);
-+	while (newidx != console->read_idx) {
-+		addr = console->buf_addr + console->read_idx;
-+		ch = inff_pcie_read_tcm8(devinfo, addr);
-+		console->read_idx++;
-+		if (console->read_idx == console->bufsize)
-+			console->read_idx = 0;
-+		if (ch == '\r')
-+			continue;
-+		console->log_str[console->log_idx] = ch;
-+		console->log_idx++;
-+		if ((ch != '\n') &&
-+		    (console->log_idx == (sizeof(console->log_str) - 2))) {
-+			ch = '\n';
-+			console->log_str[console->log_idx] = ch;
-+			console->log_idx++;
-+		}
-+		if (ch == '\n') {
-+			console->log_str[console->log_idx] = 0;
-+			if (error)
-+				inff_dev_err(bus->dev, "CONSOLE: %s",
-+					     console->log_str);
-+			else
-+				pr_debug("CONSOLE: %s", console->log_str);
-+			console->log_idx = 0;
-+		}
-+	}
++	act_frm = (struct inff_p2p_act_frame *)frame;
++	if (frame_len < sizeof(*act_frm))
++		return false;
++
++	if (act_frm->category == WLAN_CATEGORY_VENDOR_SPECIFIC &&
++	    act_frm->oui_type  == WLAN_OUI_TYPE_WFA_P2P &&
++	    memcmp(act_frm->oui, WFA_OUI, TLV_OUI_LEN) == 0)
++		return true;
++
++	return false;
 +}
 +
-+#ifdef DEBUG
-+static void
-+inff_pcie_fwcon_timer(struct inff_pciedev_info *devinfo, bool active)
++/**
++ * inff_print_action_frame() - WLAN Action frame type print function.
++ *
++ * @tx: Received or to be transmitted
++ * @frame: action frame data.
++ * @frame_len: length of action frame data.
++ *
++ * Print information about the p2p action frame
++ */
++void inff_print_action_frame(bool tx, void *frame, u32 frame_len)
 +{
-+	if (!active) {
-+		if (devinfo->console_active) {
-+			timer_delete_sync(&devinfo->timer);
-+			devinfo->console_active = false;
++	struct inff_pub_act_frame *pub_act_frm;
++	struct inff_p2p_act_frame *p2p_act_frm;
++	struct inff_gas_pub_act_frame *gas_pub_act_frm;
++
++	if (!frame || frame_len <= 2)
++		return;
++
++	if (inff_ieee80211_is_gas_pub_action(frame, frame_len)) {
++		gas_pub_act_frm = (struct inff_gas_pub_act_frame *)frame;
++		switch (gas_pub_act_frm->action) {
++		case WLAN_PUB_ACTION_GAS_INITIAL_REQ:
++			inff_dbg(TRACE, "%s Public Action GAS Initial Request\n",
++				 (tx) ? "TX" : "RX");
++			break;
++		case WLAN_PUB_ACTION_GAS_INITIAL_RESP:
++			inff_dbg(TRACE, "%s Public Action GAS Initial Response\n",
++				 (tx) ? "TX" : "RX");
++			break;
++		case WLAN_PUB_ACTION_GAS_COMEBACK_REQ:
++			inff_dbg(TRACE, "%s Public Action GAS Comeback Request\n",
++				 (tx) ? "TX" : "RX");
++			break;
++		case WLAN_PUB_ACTION_GAS_COMEBACK_RESP:
++			inff_dbg(TRACE, "%s Public Action GAS Comeback Response\n",
++				 (tx) ? "TX" : "RX");
++			break;
++		default:
++			inff_dbg(TRACE, "%s Unknown Public Action GAS Frame\n",
++				 (tx) ? "TX" : "RX");
++			break;
 +		}
-+		return;
-+	}
-+
-+	/* don't start the timer */
-+	if (devinfo->state != INFFMAC_PCIE_STATE_UP ||
-+	    !devinfo->console_interval || !INFF_MSGLVL_ON(FWCON))
-+		return;
-+
-+	if (!devinfo->console_active) {
-+		devinfo->timer.expires = jiffies + devinfo->console_interval;
-+		add_timer(&devinfo->timer);
-+		devinfo->console_active = true;
++	} else if (inff_ieee80211_is_dpp_pub_action(frame, frame_len)) {
++		inff_dbg(TRACE, "%s Public Action DPP Frame\n",
++			 (tx) ? "TX" : "RX");
++	} else if (inff_ieee80211_is_p2p_pub_action(frame, frame_len)) {
++		pub_act_frm = (struct inff_pub_act_frame *)frame;
++		switch (pub_act_frm->subtype) {
++		case IEEE80211_P2P_PUB_ACTION_GO_NEG_REQ:
++			inff_dbg(TRACE, "%s Public Action P2P Group Owner Nego Request Frame\n",
++				 (tx) ? "TX" : "RX");
++			break;
++		case IEEE80211_P2P_PUB_ACTION_GO_NEG_RESP:
++			inff_dbg(TRACE, "%s Public Action P2P Group Owner Nego Response Frame\n",
++				 (tx) ? "TX" : "RX");
++			break;
++		case IEEE80211_P2P_PUB_ACTION_GO_NEG_CONFIRM:
++			inff_dbg(TRACE, "%s Public Action P2P Group Owner Nego Confirm Frame\n",
++				 (tx) ? "TX" : "RX");
++			break;
++		case IEEE80211_P2P_PUB_ACTION_P2P_INVITE_REQ:
++			inff_dbg(TRACE, "%s Public Action P2P Invitation Request  Frame\n",
++				 (tx) ? "TX" : "RX");
++			break;
++		case IEEE80211_P2P_PUB_ACTION_P2P_INVITE_RESP:
++			inff_dbg(TRACE, "%s Public Action P2P Invitation Response Frame\n",
++				 (tx) ? "TX" : "RX");
++			break;
++		case IEEE80211_P2P_PUB_ACTION_DEVICE_DISCOV_REQ:
++			inff_dbg(TRACE, "%s Public Action P2P Device Discoverability Request Frame\n",
++				 (tx) ? "TX" : "RX");
++			break;
++		case IEEE80211_P2P_PUB_ACTION_DEVICE_DISCOV_RESP:
++			inff_dbg(TRACE, "%s Public Action P2P Device Discoverability Response Frame\n",
++				 (tx) ? "TX" : "RX");
++			break;
++		case IEEE80211_P2P_PUB_ACTION_PROVISION_DISCOV_REQ:
++			inff_dbg(TRACE, "%s Public Action P2P Provision Discovery Request Frame\n",
++				 (tx) ? "TX" : "RX");
++			break;
++		case IEEE80211_P2P_PUB_ACTION_PROVISION_DISCOV_RESP:
++			inff_dbg(TRACE, "%s Public Action P2P Provision Discovery Response Frame\n",
++				 (tx) ? "TX" : "RX");
++			break;
++		default:
++			inff_dbg(TRACE, "%s Unknown Public Action P2P Frame\n",
++				 (tx) ? "TX" : "RX");
++			break;
++		}
++	} else if (inff_ieee80211_is_p2p_action(frame, frame_len)) {
++		p2p_act_frm = (struct inff_p2p_act_frame *)frame;
++		switch (p2p_act_frm->subtype) {
++		case IEEE80211_P2P_ACTION_NOTICE_OF_ABSENCE:
++			inff_dbg(TRACE, "%s Action P2P Notice of Absence Frame\n",
++				 (tx) ? "TX" : "RX");
++			break;
++		case IEEE80211_P2P_ACTION_PRESENCE_REQ:
++			inff_dbg(TRACE, "%s Action P2P Presence Request Frame\n",
++				 (tx) ? "TX" : "RX");
++			break;
++		case IEEE80211_P2P_ACTION_PRESENCE_RESP:
++			inff_dbg(TRACE, "%s Action P2P Presence Response Frame\n",
++				 (tx) ? "TX" : "RX");
++			break;
++		case IEEE80211_P2P_ACTION_GO_DISCOV_REQ:
++			inff_dbg(TRACE, "%s Action P2P GO Discoverability Request Frame\n",
++				 (tx) ? "TX" : "RX");
++			break;
++		default:
++			inff_dbg(TRACE, "%s Unknown Action P2P Frame\n",
++				 (tx) ? "TX" : "RX");
++		}
 +	} else {
-+		/* Reschedule the timer */
-+		mod_timer(&devinfo->timer, jiffies + devinfo->console_interval);
++		inff_dbg(TRACE, "%s Unknown Action Frame\n",
++			 (tx) ? "TX" : "RX");
 +	}
 +}
 +
-+static void
-+inff_pcie_fwcon(struct timer_list *t)
++/**
++ * inff_p2p_set_firmware() - prepare firmware for peer-to-peer operation.
++ *
++ * @ifp: ifp to use for iovars (primary).
++ * @p2p_mac: mac address to configure for p2p_da_override
++ */
++static int inff_p2p_set_firmware(struct inff_if *ifp, u8 *p2p_mac)
 +{
-+	struct inff_pciedev_info *devinfo = timer_container_of(devinfo, t,
-+							       timer);
++	struct inff_pub *drvr = ifp->drvr;
++	s32 ret = 0, apsta = 0;
 +
-+	if (!devinfo->console_active)
-+		return;
-+
-+	inff_pcie_bus_console_read(devinfo, false);
-+
-+	/* Reschedule the timer if console interval is not zero */
-+	mod_timer(&devinfo->timer, jiffies + devinfo->console_interval);
-+}
-+
-+#else
-+void inff_pcie_fwcon_timer(struct inff_pciedev_info *devinfo, bool active)
-+{
-+}
-+
-+#endif
-+
-+static int inff_pcie_bus_readshared(struct inff_pciedev_info *devinfo,
-+				    u32 nvram_csm)
-+{
-+	struct inff_bus *bus = dev_get_drvdata(&devinfo->pdev->dev);
-+	u32 loop_counter;
-+	u32 addr = 0;
-+
-+	loop_counter = INFF_PCIE_READ_SHARED_TIMEOUT / 50;
-+	while ((addr == 0 || addr == nvram_csm) && (loop_counter)) {
-+		msleep(50);
-+		addr = inff_pcie_read_ram32(devinfo,
-+					    devinfo->ci->ramsize - 4);
-+		loop_counter--;
-+	}
-+	if (addr == 0 || addr == nvram_csm || addr < devinfo->ci->rambase ||
-+	    addr >= devinfo->ci->rambase + devinfo->ci->ramsize) {
-+		inff_dev_err(bus->dev, "Invalid shared RAM address 0x%08x\n", addr);
-+		return -ENODEV;
-+	}
-+	devinfo->shared.tcm_base_address = addr;
-+	inff_dbg(PCIE, "Shared RAM addr: 0x%08x\n", addr);
-+
-+	inff_pcie_bus_console_init(devinfo);
-+	return 0;
-+}
-+
-+static void inff_pcie_attach(struct inff_pciedev_info *devinfo)
-+{
-+	u32 config;
-+
-+	/* BAR1 window may not be sized properly */
-+	inff_pcie_select_core(devinfo, INF_CORE_PCIE2);
-+	inff_pcie_write_reg32(devinfo, INFF_PCIE_PCIE2REG_CONFIGADDR, 0x4e0);
-+	config = inff_pcie_read_reg32(devinfo, INFF_PCIE_PCIE2REG_CONFIGDATA);
-+	inff_pcie_write_reg32(devinfo, INFF_PCIE_PCIE2REG_CONFIGDATA, config);
-+
-+	device_wakeup_enable(&devinfo->pdev->dev);
-+}
-+
-+static void
-+inff_pcie_adjust_ramsize(struct inff_pciedev_info *devinfo, u8 *data,
-+			 u32 data_len)
-+{
-+	__le32 *field;
-+	u32 newsize;
-+
-+	if (data_len < INFF_RAMSIZE_OFFSET + 8)
-+		return;
-+
-+	field = (__le32 *)&data[INFF_RAMSIZE_OFFSET];
-+	if (le32_to_cpup(field) != INFF_RAMSIZE_MAGIC)
-+		return;
-+	field++;
-+	newsize = le32_to_cpup(field);
-+
-+	inff_dbg(PCIE, "Found ramsize info in FW, adjusting to 0x%x\n",
-+		 newsize);
-+	devinfo->ci->ramsize = newsize;
-+}
-+
-+static int inff_pcie_enter_download_state(struct inff_pciedev_info *devinfo)
-+{
-+	struct inff_bus *bus = dev_get_drvdata(&devinfo->pdev->dev);
-+	int err = 0;
-+
-+	err = devinfo->ci->blhs->prep_fwdl(devinfo->ci);
-+	if (err) {
-+		inff_dev_err(bus->dev, "FW download preparation failed");
-+		return err;
-+	}
-+
-+	if (!inff_pcie_bus_readshared(devinfo, 0))
-+		inff_pcie_bus_console_read(devinfo, false);
-+
-+	return err;
-+}
-+
-+static int inff_pcie_exit_download_state(struct inff_pciedev_info *devinfo,
-+					 u32 resetintr)
-+{
-+	inff_pcie_bus_console_read(devinfo, false);
-+	devinfo->ci->blhs->post_nvramdl(devinfo->ci);
-+
-+	return 0;
-+}
-+
-+static void
-+inff_pcie_write_rand(struct inff_pciedev_info *devinfo, u32 nvram_csm)
-+{
-+	struct inff_rand_metadata rand_data;
-+	u8 rand_buf[INFF_ENTROPY_HOST_LEN];
-+	u32 count = INFF_ENTROPY_HOST_LEN;
-+	u32 address;
-+
-+	address = devinfo->ci->rambase +
-+		  (devinfo->ci->ramsize - INFF_NVRAM_OFFSET_TCM) -
-+		  ((nvram_csm & 0xffff) * INFF_NVRAM_COMPRS_FACTOR) -
-+		  sizeof(rand_data);
-+	memset(rand_buf, 0, INFF_ENTROPY_HOST_LEN);
-+	rand_data.signature = cpu_to_le32(INFF_NVRAM_RNG_SIGNATURE);
-+	rand_data.count = cpu_to_le32(count);
-+	inff_pcie_copy_mem_todev(devinfo, address, &rand_data,
-+				 sizeof(rand_data));
-+	address -= count;
-+	get_random_bytes(rand_buf, count);
-+	inff_pcie_copy_mem_todev(devinfo, address, rand_buf, count);
-+}
-+
-+static int
-+inff_pcie_init_share_ram_info(struct inff_pciedev_info *devinfo,
-+			      u32 sharedram_addr)
-+{
-+	struct inff_bus *bus = dev_get_drvdata(&devinfo->pdev->dev);
-+	struct inff_pcie_shared_info *shared;
-+	u32 addr;
-+	u32 host_cap;
-+
-+	shared = &devinfo->shared;
-+	shared->tcm_base_address = sharedram_addr;
-+
-+	shared->flags = inff_pcie_read_tcm32(devinfo, sharedram_addr);
-+	shared->version = (u8)(shared->flags & INFF_PCIE_SHARED_VERSION_MASK);
-+	inff_dbg(PCIE, "PCIe protocol version %d\n", shared->version);
-+	if (shared->version > INFF_PCIE_MAX_SHARED_VERSION ||
-+	    shared->version < INFF_PCIE_MIN_SHARED_VERSION) {
-+		inff_dev_err(bus->dev, "Unsupported PCIE version %d\n",
-+			     shared->version);
-+		return -EINVAL;
-+	}
-+
-+	/* check firmware support dma indicies */
-+	if (shared->flags & INFF_PCIE_SHARED_DMA_INDEX) {
-+		if (shared->flags & INFF_PCIE_SHARED_DMA_2B_IDX)
-+			devinfo->dma_idx_sz = sizeof(u16);
-+		else
-+			devinfo->dma_idx_sz = sizeof(u32);
-+	}
-+
-+	addr = sharedram_addr + INFF_SHARED_MAX_RXBUFPOST_OFFSET;
-+	shared->max_rxbufpost = inff_pcie_read_tcm16(devinfo, addr);
-+	if (shared->max_rxbufpost == 0)
-+		shared->max_rxbufpost = INFF_DEF_MAX_RXBUFPOST;
-+
-+	addr = sharedram_addr + INFF_SHARED_RX_DATAOFFSET_OFFSET;
-+	shared->rx_dataoffset = inff_pcie_read_tcm32(devinfo, addr);
-+
-+	addr = sharedram_addr + INFF_SHARED_HTOD_MB_DATA_ADDR_OFFSET;
-+	shared->htod_mb_data_addr = inff_pcie_read_tcm32(devinfo, addr);
-+
-+	addr = sharedram_addr + INFF_SHARED_DTOH_MB_DATA_ADDR_OFFSET;
-+	shared->dtoh_mb_data_addr = inff_pcie_read_tcm32(devinfo, addr);
-+
-+	addr = sharedram_addr + INFF_SHARED_RING_INFO_ADDR_OFFSET;
-+	shared->ring_info_addr = inff_pcie_read_tcm32(devinfo, addr);
-+
-+	if (shared->version >= INFF_PCIE_SHARED_VERSION_6) {
-+		host_cap = shared->version;
-+
-+		/* Disable OOB Device Wake based DeepSleep State Machine */
-+		host_cap |= INFF_HOSTCAP_DS_NO_OOB_DW;
-+
-+		devinfo->hostready =
-+			((shared->flags & INFF_PCIE_SHARED_HOSTRDY_DB1)
-+			 == INFF_PCIE_SHARED_HOSTRDY_DB1);
-+		if (devinfo->hostready) {
-+			inff_dbg(PCIE, "HostReady supported by dongle.\n");
-+			host_cap |= INFF_HOSTCAP_H2D_ENABLE_HOSTRDY;
-+		}
-+		devinfo->use_mailbox =
-+			((shared->flags & INFF_PCIE_SHARED_USE_MAILBOX)
-+			 == INFF_PCIE_SHARED_USE_MAILBOX);
-+		devinfo->use_d0_inform = false;
-+		addr = sharedram_addr + INFF_SHARED_HOST_CAP_OFFSET;
-+
-+		inff_pcie_write_tcm32(devinfo, addr, host_cap);
-+	} else {
-+		devinfo->use_d0_inform = true;
-+	}
-+
-+	inff_dbg(PCIE, "max rx buf post %d, rx dataoffset %d\n",
-+		 shared->max_rxbufpost, shared->rx_dataoffset);
-+
-+	inff_pcie_bus_console_init(devinfo);
-+	inff_pcie_bus_console_read(devinfo, false);
-+
-+	return 0;
-+}
-+
-+#define INFF_PCIE_FW_CODE	0
-+#define INFF_PCIE_FW_NVRAM	1
-+#define INFF_PCIE_FW_CLM	2
-+
-+static int inff_pcie_download_fw_nvram(struct inff_pciedev_info *devinfo,
-+				       const struct firmware *fw, void *nvram,
-+				       u32 nvram_len)
-+{
-+	struct inff_bus *bus = dev_get_drvdata(&devinfo->pdev->dev);
-+	struct trx_header_le *trx = (struct trx_header_le *)fw->data;
-+	u32 fw_size;
-+	u32 sharedram_addr;
-+	u32 sharedram_addr_written;
-+	u32 loop_counter;
-+	int err;
-+	u32 address;
-+	u32 resetintr;
-+	u32 nvram_lenw;
-+	u32 nvram_csm;
-+	struct inff_chip_specific *chip_spec = &devinfo->ci->chip_spec;
-+	struct inff_fw_dataset *fw_data = &chip_spec->fwdata[0];
-+
-+	inff_dbg(PCIE, "Halt ARM.\n");
-+	err = inff_pcie_enter_download_state(devinfo);
-+	if (err)
-+		return err;
-+
-+	inff_dbg(PCIE, "Download FW %s\n", fw_data[INFF_FW_CODE].fwnames.path);
-+	address = devinfo->ci->rambase;
-+	fw_size = fw->size;
-+	if (trx->magic == cpu_to_le32(TRX_MAGIC)) {
-+		address -= sizeof(struct trx_header_le);
-+		fw_size = le32_to_cpu(trx->len);
-+	}
-+	inff_pcie_copy_mem_todev(devinfo, address, (void *)fw->data, fw_size);
-+
-+	resetintr = get_unaligned_le32(fw->data);
-+	release_firmware(fw);
-+
-+	inff_pcie_bus_console_read(devinfo, false);
-+	err = devinfo->ci->blhs->post_fwdl(devinfo->ci);
-+	if (err) {
-+		inff_dev_err(bus->dev, "FW download failed, err=%d\n", err);
-+		return err;
-+	}
-+
-+	err = devinfo->ci->blhs->chk_validation(devinfo->ci);
-+	if (err) {
-+		inff_dev_err(bus->dev, "FW valication failed, err=%d\n", err);
-+		return err;
-+	}
-+
-+	if (nvram) {
-+		inff_dbg(PCIE, "Download NVRAM %s\n", fw_data[INFF_FW_NVRAM].fwnames.path);
-+		address = devinfo->ci->rambase + devinfo->ci->ramsize -
-+			  nvram_len;
-+
-+		address -= 4;
-+		inff_pcie_copy_mem_todev(devinfo, address, nvram, nvram_len);
-+
-+		/* Convert nvram_len to words to determine the length token */
-+		nvram_lenw = nvram_len / 4;
-+		nvram_csm = (~nvram_lenw << 16) | (nvram_lenw & 0x0000FFFF);
-+		inff_fw_nvram_free(nvram);
-+	} else {
-+		nvram_csm = 0;
-+		inff_dbg(PCIE, "No matching NVRAM file found %s\n",
-+			 fw_data[INFF_FW_NVRAM].fwnames.path);
-+	}
-+
-+	if (devinfo->ci->chip == INF_CC_5557X_CHIP_ID) {
-+		/* Write the length token to the last word of RAM address */
-+		inff_pcie_write_ram32(devinfo, devinfo->ci->ramsize - 4,
-+				      nvram_csm);
-+
-+		/* Write random numbers to TCM for randomizing heap address */
-+		inff_pcie_write_rand(devinfo, nvram_csm);
-+	}
-+
-+	sharedram_addr_written = inff_pcie_read_ram32(devinfo,
-+						      devinfo->ci->ramsize -
-+						      4);
-+	inff_dbg(PCIE, "Bring ARM in running state\n");
-+	err = inff_pcie_exit_download_state(devinfo, resetintr);
-+	if (err)
-+		return err;
-+
-+	if (!inff_pcie_bus_readshared(devinfo, nvram_csm))
-+		inff_pcie_bus_console_read(devinfo, false);
-+
-+	inff_dbg(PCIE, "Wait for FW init\n");
-+	sharedram_addr = sharedram_addr_written;
-+	loop_counter = INFF_PCIE_FW_UP_TIMEOUT / 50;
-+	while ((sharedram_addr == sharedram_addr_written) && (loop_counter)) {
-+		msleep(50);
-+		sharedram_addr = inff_pcie_read_ram32(devinfo,
-+						      devinfo->ci->ramsize -
-+						       4);
-+		loop_counter--;
-+	}
-+	if (sharedram_addr == sharedram_addr_written) {
-+		inff_dev_err(bus->dev, "FW failed to initialize\n");
-+		return -ENODEV;
-+	}
-+	if (sharedram_addr < devinfo->ci->rambase ||
-+	    sharedram_addr >= devinfo->ci->rambase + devinfo->ci->ramsize) {
-+		inff_dev_err(bus->dev, "Invalid shared RAM address 0x%08x\n",
-+			     sharedram_addr);
-+		return -ENODEV;
-+	}
-+	inff_dbg(PCIE, "Shared RAM addr: 0x%08x\n", sharedram_addr);
-+
-+	return inff_pcie_init_share_ram_info(devinfo, sharedram_addr);
-+}
-+
-+static void inff_pcie_release_ringbuffer(struct device *dev,
-+					 struct inff_pcie_ringbuf *ring)
-+{
-+	void *dma_buf;
-+	u32 size;
-+
-+	if (!ring)
-+		return;
-+
-+	dma_buf = ring->commonring.buf_addr;
-+	if (dma_buf) {
-+		size = ring->commonring.depth * ring->commonring.item_len;
-+		dma_free_coherent(dev, size, dma_buf, ring->dma_handle);
-+	}
-+	kfree(ring);
-+}
-+
-+static void inff_pcie_release_ringbuffers(struct inff_pciedev_info *devinfo)
-+{
-+	u32 i;
-+
-+	for (i = 0; i < INFF_NROF_COMMON_MSGRINGS; i++) {
-+		inff_pcie_release_ringbuffer(&devinfo->pdev->dev,
-+					     devinfo->shared.commonrings[i]);
-+		devinfo->shared.commonrings[i] = NULL;
-+	}
-+	kfree(devinfo->shared.flowrings);
-+	devinfo->shared.flowrings = NULL;
-+	if (devinfo->idxbuf) {
-+		dma_free_coherent(&devinfo->pdev->dev,
-+				  devinfo->idxbuf_sz,
-+				  devinfo->idxbuf,
-+				  devinfo->idxbuf_dmahandle);
-+		devinfo->idxbuf = NULL;
-+	}
-+}
-+
-+static void *
-+inff_pcie_init_dmabuffer_for_device(struct inff_pciedev_info *devinfo,
-+				    u32 size, u32 tcm_dma_phys_addr,
-+				    dma_addr_t *dma_handle)
-+{
-+	void *ring;
-+	u64 address;
-+
-+	ring = dma_alloc_coherent(&devinfo->pdev->dev, size, dma_handle,
-+				  GFP_KERNEL);
-+	if (!ring)
-+		return NULL;
-+
-+	address = (u64)*dma_handle;
-+	inff_pcie_write_tcm32(devinfo, tcm_dma_phys_addr,
-+			      address & 0xffffffff);
-+	inff_pcie_write_tcm32(devinfo, tcm_dma_phys_addr + 4, address >> 32);
-+
-+	return ring;
-+}
-+
-+static struct inff_pcie_ringbuf *
-+inff_pcie_alloc_dma_and_ring(struct inff_pciedev_info *devinfo, u32 ring_id,
-+			     u32 tcm_ring_phys_addr)
-+{
-+	void *dma_buf;
-+	dma_addr_t dma_handle;
-+	struct inff_pcie_ringbuf *ring;
-+	u32 size;
-+	u32 addr;
-+	u32 ring_max_item, ring_item_size;
-+
-+	if (devinfo->shared.version < INFF_PCIE_SHARED_VERSION_7)
-+		ring_item_size = inff_ring_itemsize_pre_v7[ring_id];
-+	else
-+		ring_item_size = inff_ring_itemsize[ring_id];
-+
-+	ring_max_item = inff_ring_max_item[ring_id];
-+
-+	size = ring_max_item * ring_item_size;
-+	dma_buf = inff_pcie_init_dmabuffer_for_device(devinfo, size,
-+						      tcm_ring_phys_addr +
-+						      INFF_RING_MEM_BASE_ADDR_OFFSET,
-+						      &dma_handle);
-+	if (!dma_buf)
-+		return NULL;
-+
-+	addr = tcm_ring_phys_addr + INFF_RING_MAX_ITEM_OFFSET;
-+	inff_pcie_write_tcm16(devinfo, addr, ring_max_item);
-+	addr = tcm_ring_phys_addr + INFF_RING_LEN_ITEMS_OFFSET;
-+	inff_pcie_write_tcm16(devinfo, addr, ring_item_size);
-+
-+	ring = kzalloc(sizeof(*ring), GFP_KERNEL);
-+	if (!ring) {
-+		dma_free_coherent(&devinfo->pdev->dev, size, dma_buf,
-+				  dma_handle);
-+		return NULL;
-+	}
-+	inff_commonring_config(&ring->commonring, ring_max_item,
-+			       ring_item_size, dma_buf);
-+	ring->dma_handle = dma_handle;
-+	ring->devinfo = devinfo;
-+	inff_commonring_register_cb(&ring->commonring,
-+				    inff_pcie_ring_mb_ring_bell,
-+				    inff_pcie_ring_mb_update_rptr,
-+				    inff_pcie_ring_mb_update_wptr,
-+				    inff_pcie_ring_mb_write_rptr,
-+				    inff_pcie_ring_mb_write_wptr, ring);
-+
-+	return ring;
-+}
-+
-+static int inff_pcie_init_ringbuffers(struct inff_pciedev_info *devinfo)
-+{
-+	struct inff_bus *bus = dev_get_drvdata(&devinfo->pdev->dev);
-+	struct inff_pcie_ringbuf *ring;
-+	struct inff_pcie_ringbuf *rings;
-+	u32 d2h_w_idx_ptr;
-+	u32 d2h_r_idx_ptr;
-+	u32 h2d_w_idx_ptr;
-+	u32 h2d_r_idx_ptr;
-+	u32 ring_mem_ptr;
-+	u32 i;
-+	u64 address;
-+	u32 bufsz;
-+	u8 idx_offset;
-+	struct inff_pcie_dhi_ringinfo ringinfo;
-+	u16 max_flowrings;
-+	u16 max_submissionrings;
-+	u16 max_completionrings;
-+
-+	memcpy_fromio(&ringinfo, devinfo->tcm + devinfo->shared.ring_info_addr,
-+		      sizeof(ringinfo));
-+
-+	if (devinfo->shared.version >= 6) {
-+		max_submissionrings = le16_to_cpu(ringinfo.max_submissionrings);
-+		max_flowrings = le16_to_cpu(ringinfo.max_flowrings);
-+		max_completionrings = le16_to_cpu(ringinfo.max_completionrings);
-+	} else {
-+		max_submissionrings = le16_to_cpu(ringinfo.max_flowrings);
-+		max_flowrings = max_submissionrings -
-+				INFF_NROF_H2D_COMMON_MSGRINGS;
-+		max_completionrings = INFF_NROF_D2H_COMMON_MSGRINGS;
-+	}
-+	if (max_flowrings > 256) {
-+		inff_dev_err(bus->dev, "invalid max_flowrings(%d)\n", max_flowrings);
-+		return -EIO;
-+	}
-+
-+	if (devinfo->dma_idx_sz != 0) {
-+		bufsz = (max_submissionrings + max_completionrings) *
-+			devinfo->dma_idx_sz * 2;
-+		devinfo->idxbuf = dma_alloc_coherent(&devinfo->pdev->dev, bufsz,
-+						     &devinfo->idxbuf_dmahandle,
-+						     GFP_KERNEL);
-+		if (!devinfo->idxbuf)
-+			devinfo->dma_idx_sz = 0;
-+	}
-+
-+	if (devinfo->dma_idx_sz == 0) {
-+		d2h_w_idx_ptr = le32_to_cpu(ringinfo.d2h_w_idx_ptr);
-+		d2h_r_idx_ptr = le32_to_cpu(ringinfo.d2h_r_idx_ptr);
-+		h2d_w_idx_ptr = le32_to_cpu(ringinfo.h2d_w_idx_ptr);
-+		h2d_r_idx_ptr = le32_to_cpu(ringinfo.h2d_r_idx_ptr);
-+		idx_offset = sizeof(u32);
-+		devinfo->write_ptr = inff_pcie_write_tcm16;
-+		devinfo->read_ptr = inff_pcie_read_tcm16;
-+		inff_dbg(PCIE, "Using TCM indices\n");
-+	} else {
-+		memset(devinfo->idxbuf, 0, bufsz);
-+		devinfo->idxbuf_sz = bufsz;
-+		idx_offset = devinfo->dma_idx_sz;
-+		devinfo->write_ptr = inff_pcie_write_idx;
-+		devinfo->read_ptr = inff_pcie_read_idx;
-+
-+		h2d_w_idx_ptr = 0;
-+		address = (u64)devinfo->idxbuf_dmahandle;
-+		ringinfo.h2d_w_idx_hostaddr.low_addr =
-+			cpu_to_le32(address & 0xffffffff);
-+		ringinfo.h2d_w_idx_hostaddr.high_addr =
-+			cpu_to_le32(address >> 32);
-+
-+		h2d_r_idx_ptr = h2d_w_idx_ptr +
-+				max_submissionrings * idx_offset;
-+		address += max_submissionrings * idx_offset;
-+		ringinfo.h2d_r_idx_hostaddr.low_addr =
-+			cpu_to_le32(address & 0xffffffff);
-+		ringinfo.h2d_r_idx_hostaddr.high_addr =
-+			cpu_to_le32(address >> 32);
-+
-+		d2h_w_idx_ptr = h2d_r_idx_ptr +
-+				max_submissionrings * idx_offset;
-+		address += max_submissionrings * idx_offset;
-+		ringinfo.d2h_w_idx_hostaddr.low_addr =
-+			cpu_to_le32(address & 0xffffffff);
-+		ringinfo.d2h_w_idx_hostaddr.high_addr =
-+			cpu_to_le32(address >> 32);
-+
-+		d2h_r_idx_ptr = d2h_w_idx_ptr +
-+				max_completionrings * idx_offset;
-+		address += max_completionrings * idx_offset;
-+		ringinfo.d2h_r_idx_hostaddr.low_addr =
-+			cpu_to_le32(address & 0xffffffff);
-+		ringinfo.d2h_r_idx_hostaddr.high_addr =
-+			cpu_to_le32(address >> 32);
-+
-+		memcpy_toio(devinfo->tcm + devinfo->shared.ring_info_addr,
-+			    &ringinfo, sizeof(ringinfo));
-+		inff_dbg(PCIE, "Using host memory indices\n");
-+	}
-+
-+	ring_mem_ptr = le32_to_cpu(ringinfo.ringmem);
-+
-+	for (i = 0; i < INFF_NROF_H2D_COMMON_MSGRINGS; i++) {
-+		ring = inff_pcie_alloc_dma_and_ring(devinfo, i, ring_mem_ptr);
-+		if (!ring)
-+			goto fail;
-+		ring->w_idx_addr = h2d_w_idx_ptr;
-+		ring->r_idx_addr = h2d_r_idx_ptr;
-+		ring->id = i;
-+		devinfo->shared.commonrings[i] = ring;
-+
-+		h2d_w_idx_ptr += idx_offset;
-+		h2d_r_idx_ptr += idx_offset;
-+		ring_mem_ptr += INFF_RING_MEM_SZ;
-+	}
-+
-+	for (i = INFF_NROF_H2D_COMMON_MSGRINGS;
-+	     i < INFF_NROF_COMMON_MSGRINGS; i++) {
-+		ring = inff_pcie_alloc_dma_and_ring(devinfo, i, ring_mem_ptr);
-+		if (!ring)
-+			goto fail;
-+		ring->w_idx_addr = d2h_w_idx_ptr;
-+		ring->r_idx_addr = d2h_r_idx_ptr;
-+		ring->id = i;
-+		devinfo->shared.commonrings[i] = ring;
-+
-+		d2h_w_idx_ptr += idx_offset;
-+		d2h_r_idx_ptr += idx_offset;
-+		ring_mem_ptr += INFF_RING_MEM_SZ;
-+	}
-+
-+	devinfo->shared.max_flowrings = max_flowrings;
-+	devinfo->shared.max_submissionrings = max_submissionrings;
-+	devinfo->shared.max_completionrings = max_completionrings;
-+	rings = kcalloc(max_flowrings, sizeof(*ring), GFP_KERNEL);
-+	if (!rings)
-+		goto fail;
-+
-+	inff_dbg(PCIE, "Nr of flowrings is %d\n", max_flowrings);
-+
-+	for (i = 0; i < max_flowrings; i++) {
-+		ring = &rings[i];
-+		ring->devinfo = devinfo;
-+		ring->id = i + INFF_H2D_MSGRING_FLOWRING_IDSTART;
-+		inff_commonring_register_cb(&ring->commonring,
-+					    inff_pcie_ring_mb_ring_bell,
-+					     inff_pcie_ring_mb_update_rptr,
-+					     inff_pcie_ring_mb_update_wptr,
-+					     inff_pcie_ring_mb_write_rptr,
-+					     inff_pcie_ring_mb_write_wptr,
-+					     ring);
-+		ring->w_idx_addr = h2d_w_idx_ptr;
-+		ring->r_idx_addr = h2d_r_idx_ptr;
-+		h2d_w_idx_ptr += idx_offset;
-+		h2d_r_idx_ptr += idx_offset;
-+	}
-+	devinfo->shared.flowrings = rings;
-+
-+	return 0;
-+
-+fail:
-+	inff_dev_err(bus->dev, "Allocating ring buffers failed\n");
-+	inff_pcie_release_ringbuffers(devinfo);
-+	return -ENOMEM;
-+}
-+
-+static void
-+inff_pcie_release_scratchbuffers(struct inff_pciedev_info *devinfo)
-+{
-+	if (devinfo->shared.scratch)
-+		dma_free_coherent(&devinfo->pdev->dev,
-+				  INFF_DMA_D2H_SCRATCH_BUF_LEN,
-+				  devinfo->shared.scratch,
-+				  devinfo->shared.scratch_dmahandle);
-+	if (devinfo->shared.ringupd)
-+		dma_free_coherent(&devinfo->pdev->dev,
-+				  INFF_DMA_D2H_RINGUPD_BUF_LEN,
-+				  devinfo->shared.ringupd,
-+				  devinfo->shared.ringupd_dmahandle);
-+}
-+
-+static int inff_pcie_init_scratchbuffers(struct inff_pciedev_info *devinfo)
-+{
-+	struct inff_bus *bus = dev_get_drvdata(&devinfo->pdev->dev);
-+	u64 address;
-+	u32 addr;
-+
-+	devinfo->shared.scratch =
-+		dma_alloc_coherent(&devinfo->pdev->dev,
-+				   INFF_DMA_D2H_SCRATCH_BUF_LEN,
-+				   &devinfo->shared.scratch_dmahandle,
-+				   GFP_KERNEL);
-+	if (!devinfo->shared.scratch)
-+		goto fail;
-+
-+	addr = devinfo->shared.tcm_base_address +
-+	       INFF_SHARED_DMA_SCRATCH_ADDR_OFFSET;
-+	address = (u64)devinfo->shared.scratch_dmahandle;
-+	inff_pcie_write_tcm32(devinfo, addr, address & 0xffffffff);
-+	inff_pcie_write_tcm32(devinfo, addr + 4, address >> 32);
-+	addr = devinfo->shared.tcm_base_address +
-+	       INFF_SHARED_DMA_SCRATCH_LEN_OFFSET;
-+	inff_pcie_write_tcm32(devinfo, addr, INFF_DMA_D2H_SCRATCH_BUF_LEN);
-+
-+	devinfo->shared.ringupd =
-+		dma_alloc_coherent(&devinfo->pdev->dev,
-+				   INFF_DMA_D2H_RINGUPD_BUF_LEN,
-+				   &devinfo->shared.ringupd_dmahandle,
-+				   GFP_KERNEL);
-+	if (!devinfo->shared.ringupd)
-+		goto fail;
-+
-+	addr = devinfo->shared.tcm_base_address +
-+	       INFF_SHARED_DMA_RINGUPD_ADDR_OFFSET;
-+	address = (u64)devinfo->shared.ringupd_dmahandle;
-+	inff_pcie_write_tcm32(devinfo, addr, address & 0xffffffff);
-+	inff_pcie_write_tcm32(devinfo, addr + 4, address >> 32);
-+	addr = devinfo->shared.tcm_base_address +
-+	       INFF_SHARED_DMA_RINGUPD_LEN_OFFSET;
-+	inff_pcie_write_tcm32(devinfo, addr, INFF_DMA_D2H_RINGUPD_BUF_LEN);
-+	return 0;
-+
-+fail:
-+	inff_dev_err(bus->dev, "Allocating scratch buffers failed\n");
-+	inff_pcie_release_scratchbuffers(devinfo);
-+	return -ENOMEM;
-+}
-+
-+static inline void inff_pcie_intr_disable(struct inff_pciedev_info *devinfo)
-+{
-+	inff_pcie_write_reg32(devinfo, devinfo->reginfo->mailboxmask, 0);
-+}
-+
-+static inline void inff_pcie_intr_enable(struct inff_pciedev_info *devinfo)
-+{
-+	inff_pcie_write_reg32(devinfo, devinfo->reginfo->mailboxmask,
-+			      devinfo->reginfo->int_d2h_db |
-+			      devinfo->reginfo->int_fn0);
-+}
-+
-+static void inff_pcie_release_irq(struct inff_pciedev_info *devinfo)
-+{
-+	struct pci_dev *pdev = devinfo->pdev;
-+	struct inff_bus *bus = dev_get_drvdata(&pdev->dev);
-+	u32 status;
-+	u32 count;
-+
-+	if (!devinfo->irq_allocated)
-+		return;
-+
-+	inff_pcie_intr_disable(devinfo);
-+	free_irq(pdev->irq, devinfo);
-+	pci_disable_msi(pdev);
-+
-+	msleep(50);
-+	count = 0;
-+	while ((devinfo->in_irq) && (count < 20)) {
-+		msleep(50);
-+		count++;
-+	}
-+	if (devinfo->in_irq)
-+		inff_dev_err(bus->dev, "Still in IRQ (processing) !!!\n");
-+
-+	status = inff_pcie_read_reg32(devinfo, devinfo->reginfo->mailboxint);
-+	inff_pcie_write_reg32(devinfo, devinfo->reginfo->mailboxint, status);
-+
-+	devinfo->irq_allocated = false;
-+}
-+
-+static irqreturn_t inff_pcie_quick_check_isr(int irq, void *arg)
-+{
-+	struct inff_pciedev_info *devinfo = (struct inff_pciedev_info *)arg;
-+
-+	if (inff_pcie_read_reg32(devinfo, devinfo->reginfo->mailboxint)) {
-+		inff_pcie_intr_disable(devinfo);
-+		return IRQ_WAKE_THREAD;
-+	}
-+	return IRQ_NONE;
-+}
-+
-+static irqreturn_t inff_pcie_isr_thread(int irq, void *arg)
-+{
-+	struct inff_pciedev_info *devinfo = (struct inff_pciedev_info *)arg;
-+	u32 status;
-+	u32 d2h_mbdata;
-+	struct pci_dev *pdev = devinfo->pdev;
-+	struct inff_bus *bus = dev_get_drvdata(&pdev->dev);
-+
-+	devinfo->in_irq = true;
-+	status = inff_pcie_read_reg32(devinfo, devinfo->reginfo->mailboxint);
-+	inff_dbg(PCIE, "PCIe Interrupt status %x\n", status);
-+	if (status) {
-+		inff_pcie_write_reg32(devinfo, devinfo->reginfo->mailboxint,
-+				      status);
-+		if (status & devinfo->reginfo->int_fn0) {
-+			d2h_mbdata = inff_pcie_read_mb_data(devinfo);
-+			inff_pcie_handle_mb_data(bus, d2h_mbdata);
-+		}
-+		if (status & devinfo->reginfo->int_d2h_db) {
-+			if (devinfo->state == INFFMAC_PCIE_STATE_UP)
-+				inff_proto_msgbuf_rx_trigger(&devinfo->pdev->dev);
-+		}
-+	}
-+	inff_pcie_bus_console_read(devinfo, false);
-+	if (devinfo->state == INFFMAC_PCIE_STATE_UP)
-+		inff_pcie_intr_enable(devinfo);
-+	devinfo->in_irq = false;
-+	return IRQ_HANDLED;
-+}
-+
-+static int inff_pcie_request_irq(struct inff_pciedev_info *devinfo)
-+{
-+	struct pci_dev *pdev = devinfo->pdev;
-+	struct inff_bus *bus = dev_get_drvdata(&pdev->dev);
-+
-+	inff_pcie_intr_disable(devinfo);
-+
-+	pci_enable_msi(pdev);
-+	if (request_threaded_irq(pdev->irq, inff_pcie_quick_check_isr,
-+				 inff_pcie_isr_thread, IRQF_SHARED,
-+				 "inff_pcie_intr", devinfo)) {
-+		pci_disable_msi(pdev);
-+		inff_dev_err(bus->dev, "Failed to request IRQ %d\n", pdev->irq);
-+		return -EIO;
-+	}
-+	devinfo->irq_allocated = true;
-+	return 0;
-+}
-+
-+static void inff_pcie_setup(struct device *dev, int ret,
-+			    struct inff_fw_request *fwreq)
-+{
-+	const struct firmware *fw;
-+	void *nvram;
-+	struct inff_bus *bus;
-+	struct inff_pciedev *pcie_bus_dev;
-+	struct inff_pciedev_info *devinfo;
-+	struct inff_commonring **flowrings;
-+	struct inff_chip_specific *chip_spec;
-+	u32 i, nvram_len;
-+
-+	bus = dev_get_drvdata(dev);
-+	pcie_bus_dev = bus->bus_priv.pcie;
-+	devinfo = pcie_bus_dev->devinfo;
-+	chip_spec = &devinfo->ci->chip_spec;
-+
-+	/* check firmware loading result */
-+	if (ret)
-+		goto fail;
-+
-+	inff_pcie_attach(devinfo);
-+
-+	fw = fwreq->items[INFF_PCIE_FW_CODE].binary;
-+	nvram = fwreq->items[INFF_PCIE_FW_NVRAM].nv_data.data;
-+	nvram_len = fwreq->items[INFF_PCIE_FW_NVRAM].nv_data.len;
-+	chip_spec->clm_fw = fwreq->items[INFF_PCIE_FW_CLM].binary;
-+	kfree(fwreq);
-+
-+	ret = inff_chip_get_raminfo(devinfo->ci);
++	ret = inff_fwcmd_iovar_int_get(ifp, "apsta", &apsta);
 +	if (ret) {
-+		inff_dev_err(bus->dev, "Failed to get RAM info\n");
-+		release_firmware(fw);
-+		inff_fw_nvram_free(nvram);
-+		goto fail;
++		iphy_err(drvr, "failed to query apsta IOVAR");
++	} else if (!apsta) {
++		if (inff_fwcmd_cmd_int_set(ifp, INFF_C_DOWN, 1) ||
++		    inff_fwcmd_iovar_int_set(ifp, "apsta", 1) ||
++		    inff_fwcmd_cmd_int_set(ifp, INFF_C_UP, 1)) {
++			iphy_err(drvr, "failed to set apsta IOVAR");
++		}
 +	}
 +
-+	/* Some of the firmwares have the size of the memory of the device
-+	 * defined inside the firmware. This is because part of the memory in
-+	 * the device is shared and the division is determined by FW. Parse
-+	 * the firmware and adjust the chip memory size now.
++	/* In case of COB type, firmware has default mac address
++	 * After Initializing firmware, we have to set current mac address to
++	 * firmware for P2P device address. This must be done with discovery
++	 * disabled.
 +	 */
-+	inff_pcie_adjust_ramsize(devinfo, (u8 *)fw->data, fw->size);
++	inff_fwcmd_iovar_int_set(ifp, "p2p_disc", 0);
 +
-+	ret = inff_pcie_download_fw_nvram(devinfo, fw, nvram, nvram_len);
-+	if (ret) {
-+		if (!inff_pcie_bus_readshared(devinfo, 0))
-+			inff_pcie_bus_console_read(devinfo, true);
-+		goto fail;
-+	}
-+
-+	devinfo->state = INFFMAC_PCIE_STATE_UP;
-+
-+	ret = inff_pcie_init_ringbuffers(devinfo);
++	ret = inff_fwcmd_iovar_data_set(ifp, "p2p_da_override", p2p_mac,
++					ETH_ALEN);
 +	if (ret)
-+		goto fail;
++		iphy_err(drvr, "failed to update device address ret %d\n", ret);
 +
-+	ret = inff_pcie_init_scratchbuffers(devinfo);
-+	if (ret)
-+		goto fail;
-+
-+	inff_pcie_select_core(devinfo, INF_CORE_PCIE2);
-+	ret = inff_pcie_request_irq(devinfo);
-+	if (ret)
-+		goto fail;
-+
-+	/* hook the commonrings in the bus structure. */
-+	for (i = 0; i < INFF_NROF_COMMON_MSGRINGS; i++)
-+		bus->msgbuf->commonrings[i] =
-+				&devinfo->shared.commonrings[i]->commonring;
-+
-+	flowrings = kcalloc(devinfo->shared.max_flowrings, sizeof(*flowrings),
-+			    GFP_KERNEL);
-+	if (!flowrings)
-+		goto fail;
-+
-+	for (i = 0; i < devinfo->shared.max_flowrings; i++)
-+		flowrings[i] = &devinfo->shared.flowrings[i].commonring;
-+	bus->msgbuf->flowrings = flowrings;
-+
-+	bus->msgbuf->rx_dataoffset = devinfo->shared.rx_dataoffset;
-+	bus->msgbuf->max_rxbufpost = devinfo->shared.max_rxbufpost;
-+	bus->msgbuf->max_flowrings = devinfo->shared.max_flowrings;
-+
-+	init_waitqueue_head(&devinfo->mbdata_resp_wait);
-+
-+	ret = inff_bus_attach(&devinfo->pdev->dev, true);
-+	if (ret)
-+		goto fail;
-+
-+	inff_pcie_bus_console_read(devinfo, false);
-+
-+	inff_pcie_fwcon_timer(devinfo, true);
-+
-+	return;
-+
-+fail:
-+	inff_dev_err(bus->dev, "Dongle setup failed\n");
-+	inff_pcie_bus_console_read(devinfo, true);
-+	inff_fw_crashed(dev);
-+	device_release_driver(dev);
-+}
-+
-+static int inff_pcie_preinit(struct device *dev)
-+{
-+	struct inff_bus *bus_if = dev_get_drvdata(dev);
-+	struct inff_pciedev *buspub = bus_if->bus_priv.pcie;
-+
-+	inff_pcie_intr_enable(buspub->devinfo);
-+	inff_pcie_hostready(buspub->devinfo);
-+
-+	return 0;
-+}
-+
-+static int inff_pcie_tx(struct device *dev, struct sk_buff *skb)
-+{
-+	return 0;
-+}
-+
-+static void inff_pcie_down(struct device *dev)
-+{
-+	struct inff_bus *bus_if = dev_get_drvdata(dev);
-+	struct inff_pciedev *pcie_bus_dev = bus_if->bus_priv.pcie;
-+	struct inff_pciedev_info *devinfo = pcie_bus_dev->devinfo;
-+
-+	inff_pcie_fwcon_timer(devinfo, false);
-+}
-+
-+static int inff_pcie_tx_ctlpkt(struct device *dev, unsigned char *msg,
-+			       uint len)
-+{
-+	return 0;
-+}
-+
-+static int inff_pcie_rx_ctlpkt(struct device *dev, unsigned char *msg,
-+			       uint len)
-+{
-+	return 0;
-+}
-+
-+static void inff_pcie_wowl_config(struct device *dev, bool enabled)
-+{
-+	struct inff_bus *bus_if = dev_get_drvdata(dev);
-+	struct inff_pciedev *buspub = bus_if->bus_priv.pcie;
-+	struct inff_pciedev_info *devinfo = buspub->devinfo;
-+
-+	inff_dbg(PCIE, "Configuring WOWL, enabled=%d\n", enabled);
-+	devinfo->wowl_enabled = enabled;
-+}
-+
-+static size_t inff_pcie_get_ramsize(struct device *dev)
-+{
-+	struct inff_bus *bus_if = dev_get_drvdata(dev);
-+	struct inff_pciedev *buspub = bus_if->bus_priv.pcie;
-+	struct inff_pciedev_info *devinfo = buspub->devinfo;
-+
-+	return devinfo->ci->ramsize - devinfo->ci->srsize;
-+}
-+
-+static int inff_pcie_get_memdump(struct device *dev, void *data, size_t len)
-+{
-+	struct inff_bus *bus_if = dev_get_drvdata(dev);
-+	struct inff_pciedev *buspub = bus_if->bus_priv.pcie;
-+	struct inff_pciedev_info *devinfo = buspub->devinfo;
-+
-+	inff_dbg(PCIE, "dump at 0x%08X: len=%zu\n", devinfo->ci->rambase, len);
-+	inff_pcie_copy_dev_tomem(devinfo, devinfo->ci->rambase, data, len);
-+	return 0;
-+}
-+
-+static int inff_pcie_get_blob(struct device *dev, const struct firmware **fw,
-+			      enum inff_blob_type type)
-+{
-+	struct inff_bus *bus_if = dev_get_drvdata(dev);
-+	struct inff_pciedev *buspub = bus_if->bus_priv.pcie;
-+	struct inff_pciedev_info *devinfo = buspub->devinfo;
-+	struct inff_chip_specific *chip_spec = &devinfo->ci->chip_spec;
-+
-+	switch (type) {
-+	case INFF_BLOB_CLM:
-+		*fw = chip_spec->clm_fw;
-+		chip_spec->clm_fw = NULL;
-+		break;
-+	default:
-+		return -ENOENT;
-+	}
-+
-+	if (!*fw)
-+		return -ENOENT;
-+
-+	return 0;
-+}
-+
-+static int inff_pcie_reset(struct device *dev)
-+{
-+	struct inff_bus *bus_if = dev_get_drvdata(dev);
-+	struct inff_pciedev *buspub = bus_if->bus_priv.pcie;
-+	struct inff_pciedev_info *devinfo = buspub->devinfo;
-+	struct inff_fw_request *fwreq;
-+	int err;
-+
-+	inff_pcie_intr_disable(devinfo);
-+
-+	inff_pcie_bus_console_read(devinfo, true);
-+
-+	inff_bus_detach(dev);
-+
-+	inff_pcie_release_irq(devinfo);
-+	inff_pcie_release_scratchbuffers(devinfo);
-+	inff_pcie_release_ringbuffers(devinfo);
-+	inff_pcie_reset_device(devinfo);
-+
-+	fwreq = inff_prepare_fw_request(devinfo->settings->firmware_path,
-+					devinfo->ci, inff_pcie_fwnames,
-+					ARRAY_SIZE(inff_pcie_fwnames),
-+					devinfo->settings->board_type);
-+	if (!fwreq) {
-+		dev_err(dev, "Failed to prepare FW request\n");
-+		return -ENOMEM;
-+	}
-+
-+	/* NVRAM reserves PCI domain 0 for SDK faked bus */
-+	fwreq->domain_nr = pci_domain_nr(devinfo->pdev->bus) + 1;
-+	fwreq->bus_nr = devinfo->pdev->bus->number;
-+
-+	err = inff_fw_get_firmwares(dev, fwreq, inff_pcie_setup);
-+	if (err) {
-+		dev_err(dev, "Failed to prepare FW request\n");
-+		kfree(fwreq);
-+	}
-+
-+	return err;
-+}
-+
-+#ifdef DEBUG
-+static int inff_pcie_console_interval_get(void *data, u64 *val)
-+{
-+	struct inff_pciedev_info *devinfo = data;
-+
-+	*val = devinfo->console_interval;
-+
-+	return 0;
-+}
-+
-+static int inff_pcie_console_interval_set(void *data, u64 val)
-+{
-+	struct inff_pciedev_info *devinfo = data;
-+
-+	if (val > MAX_CONSOLE_INTERVAL)
-+		return -EINVAL;
-+
-+	devinfo->console_interval = val;
-+
-+	if (!val && devinfo->console_active)
-+		inff_pcie_fwcon_timer(devinfo, false);
-+	else if (val)
-+		inff_pcie_fwcon_timer(devinfo, true);
-+
-+	return 0;
-+}
-+
-+DEFINE_SIMPLE_ATTRIBUTE(inff_pcie_console_interval_fops,
-+			inff_pcie_console_interval_get,
-+			inff_pcie_console_interval_set,
-+			"%llu\n");
-+
-+static void inff_pcie_debugfs_create(struct device *dev)
-+{
-+	struct inff_bus *bus_if = dev_get_drvdata(dev);
-+	struct inff_pub *drvr = bus_if->drvr;
-+	struct inff_pciedev *pcie_bus_dev = bus_if->bus_priv.pcie;
-+	struct inff_pciedev_info *devinfo = pcie_bus_dev->devinfo;
-+	struct dentry *dentry = inff_debugfs_get_devdir(drvr);
-+
-+	if (IS_ERR_OR_NULL(dentry))
-+		return;
-+
-+	devinfo->console_interval = INFF_CONSOLE;
-+
-+	debugfs_create_file("console_interval", 0644, dentry, devinfo,
-+			    &inff_pcie_console_interval_fops);
-+}
-+
-+#else
-+
-+static void inff_pcie_debugfs_create(struct device *dev)
-+{
-+}
-+#endif
-+
-+static void inff_pcie_interrupt_disable(struct device *dev)
-+{
-+	struct inff_bus *bus_if = dev_get_drvdata(dev);
-+	struct inff_pciedev *pcie_bus_dev = bus_if->bus_priv.pcie;
-+	struct inff_pciedev_info *devinfo = pcie_bus_dev->devinfo;
-+
-+	inff_pcie_intr_disable(devinfo);
-+}
-+
-+static void inff_pcie_interrupt_enable(struct device *dev)
-+{
-+	struct inff_bus *bus_if = dev_get_drvdata(dev);
-+	struct inff_pciedev *pcie_bus_dev = bus_if->bus_priv.pcie;
-+	struct inff_pciedev_info *devinfo = pcie_bus_dev->devinfo;
-+
-+	inff_pcie_intr_enable(devinfo);
-+}
-+
-+static const struct inff_bus_ops inff_pcie_bus_ops = {
-+	.preinit = inff_pcie_preinit,
-+	.txdata = inff_pcie_tx,
-+	.stop = inff_pcie_down,
-+	.txctl = inff_pcie_tx_ctlpkt,
-+	.rxctl = inff_pcie_rx_ctlpkt,
-+	.wowl_config = inff_pcie_wowl_config,
-+	.get_ramsize = inff_pcie_get_ramsize,
-+	.get_memdump = inff_pcie_get_memdump,
-+	.get_blob = inff_pcie_get_blob,
-+	.reset = inff_pcie_reset,
-+	.debugfs_create = inff_pcie_debugfs_create,
-+	.interrupt_enable = inff_pcie_interrupt_enable,
-+	.interrupt_disable = inff_pcie_interrupt_disable,
-+};
-+
-+static int inff_pcie_get_resource(struct inff_pciedev_info *devinfo)
-+{
-+	struct pci_dev *pdev = devinfo->pdev;
-+	struct inff_bus *bus = dev_get_drvdata(&pdev->dev);
-+	int err;
-+	phys_addr_t  bar0_addr, bar1_addr;
-+	ulong bar1_size;
-+
-+	err = pci_enable_device(pdev);
-+	if (err) {
-+		inff_dev_err(bus->dev, "pci_enable_device failed err=%d\n", err);
-+		return err;
-+	}
-+
-+	pci_set_master(pdev);
-+
-+	/* Bar-0 mapped address */
-+	bar0_addr = pci_resource_start(pdev, 0);
-+	/* Bar-1 mapped address */
-+	bar1_addr = pci_resource_start(pdev, 2);
-+	/* read Bar-1 mapped memory range */
-+	bar1_size = pci_resource_len(pdev, 2);
-+	if (bar1_size == 0 || bar1_addr == 0) {
-+		inff_dev_err(bus->dev, "BAR1 Not enabled, device size=%ld, addr=%#016llx\n",
-+			     bar1_size, (unsigned long long)bar1_addr);
-+		return -EINVAL;
-+	}
-+
-+	devinfo->regs = ioremap(bar0_addr, INFF_PCIE_REG_MAP_SIZE);
-+	devinfo->tcm = ioremap(bar1_addr, bar1_size);
-+	devinfo->bar1_size = bar1_size;
-+
-+	if (!devinfo->regs || !devinfo->tcm) {
-+		inff_dev_err(bus->dev, "ioremap() failed (%p,%p)\n", devinfo->regs,
-+			     devinfo->tcm);
-+		return -EINVAL;
-+	}
-+	inff_dbg(PCIE, "Phys addr : reg space = %p base addr %#016llx\n",
-+		 devinfo->regs, (unsigned long long)bar0_addr);
-+	inff_dbg(PCIE, "Phys addr : mem space = %p base addr %#016llx size 0x%x\n",
-+		 devinfo->tcm, (unsigned long long)bar1_addr,
-+		 (unsigned int)bar1_size);
-+
-+	return 0;
-+}
-+
-+static void inff_pcie_release_resource(struct inff_pciedev_info *devinfo)
-+{
-+	if (devinfo->tcm)
-+		iounmap(devinfo->tcm);
-+	if (devinfo->regs)
-+		iounmap(devinfo->regs);
-+
-+	pci_disable_device(devinfo->pdev);
-+}
-+
-+static u32 inff_pcie_buscore_blhs_read(void *ctx, u32 reg_offset)
-+{
-+	struct inff_pciedev_info *devinfo = (struct inff_pciedev_info *)ctx;
-+
-+	inff_pcie_select_core(devinfo, INF_CORE_PCIE2);
-+	return inff_pcie_read_reg32(devinfo, reg_offset);
-+}
-+
-+static void inff_pcie_buscore_blhs_write(void *ctx, u32 reg_offset, u32 value)
-+{
-+	struct inff_pciedev_info *devinfo = (struct inff_pciedev_info *)ctx;
-+
-+	inff_pcie_select_core(devinfo, INF_CORE_PCIE2);
-+	inff_pcie_write_reg32(devinfo, reg_offset, value);
-+}
-+
-+static u32 inff_pcie_buscore_prep_addr(const struct pci_dev *pdev, u32 addr)
-+{
-+	u32 ret_addr;
-+
-+	ret_addr = addr & (INFF_PCIE_BAR0_REG_SIZE - 1);
-+	addr &= ~(INFF_PCIE_BAR0_REG_SIZE - 1);
-+	pci_write_config_dword(pdev, INFF_PCIE_BAR0_WINDOW, addr);
-+
-+	return ret_addr;
-+}
-+
-+static int inff_pcie_buscoreprep(void *ctx)
-+{
-+	return inff_pcie_get_resource(ctx);
-+}
-+
-+static int inff_pcie_buscore_reset(void *ctx, struct inff_chip *chip)
-+{
-+	struct inff_pciedev_info *devinfo = (struct inff_pciedev_info *)ctx;
-+	struct inff_core *core;
-+	u32 val, reg;
-+
-+	devinfo->ci = chip;
-+	inff_pcie_reset_device(devinfo);
-+
-+	/* reginfo is not ready yet */
-+	core = inff_chip_get_core(chip, INF_CORE_PCIE2);
-+	if (core->rev >= 64)
-+		reg = INFF_PCIE_64_PCIE2REG_MAILBOXINT;
-+	else
-+		reg = INFF_PCIE_PCIE2REG_MAILBOXINT;
-+
-+	val = inff_pcie_read_reg32(devinfo, reg);
-+	if (val != 0xffffffff)
-+		inff_pcie_write_reg32(devinfo, reg, val);
-+
-+	return 0;
-+}
-+
-+static void inff_pcie_buscore_activate(void *ctx, struct inff_chip *chip,
-+				       u32 rstvec)
-+{
-+	struct inff_pciedev_info *devinfo = (struct inff_pciedev_info *)ctx;
-+
-+	inff_pcie_write_tcm32(devinfo, 0, rstvec);
-+}
-+
-+static u32 inff_pcie_buscore_read32(void *ctx, u32 addr)
-+{
-+	struct inff_pciedev_info *devinfo = (struct inff_pciedev_info *)ctx;
-+
-+	addr = inff_pcie_buscore_prep_addr(devinfo->pdev, addr);
-+	return inff_pcie_read_reg32(devinfo, addr);
-+}
-+
-+static void inff_pcie_buscore_write32(void *ctx, u32 addr, u32 value)
-+{
-+	struct inff_pciedev_info *devinfo = (struct inff_pciedev_info *)ctx;
-+
-+	addr = inff_pcie_buscore_prep_addr(devinfo->pdev, addr);
-+	inff_pcie_write_reg32(devinfo, addr, value);
-+}
-+
-+static int
-+inff_pcie_buscore_sec_attach(void *ctx, struct inff_blhs **blhs, struct inff_ccsec **ccsec,
-+			     u32 flag, uint timeout, uint interval)
-+{
-+	struct inff_pciedev_info *devinfo = (struct inff_pciedev_info *)ctx;
-+	struct inff_bus *bus = dev_get_drvdata(&devinfo->pdev->dev);
-+	struct inff_blhs *blhsh;
-+	u32 regdata;
-+	u32 pcie_enum;
-+	u32 addr;
-+
-+	if (devinfo->pdev->vendor != PCI_VENDOR_ID_CYPRESS)
-+		return 0;
-+
-+	pci_read_config_dword(devinfo->pdev, INFF_PCIE_CFGREG_REVID, &regdata);
-+	if (regdata & INFF_PCIE_CFGREG_REVID_SECURE_MODE) {
-+		blhsh = kzalloc(sizeof(*blhsh), GFP_KERNEL);
-+		if (!blhsh)
-+			return -ENOMEM;
-+
-+		blhsh->d2h = INFF_PCIE_PCIE2REG_DAR_D2H_MSG_0;
-+		blhsh->h2d = INFF_PCIE_PCIE2REG_DAR_H2D_MSG_0;
-+		blhsh->read = inff_pcie_buscore_blhs_read;
-+		blhsh->write = inff_pcie_buscore_blhs_write;
-+
-+		/* Host indication for bootloarder to start the init */
-+		if (devinfo->pdev->device == PCI_DEVICE_ID_CYW5557X)
-+			pcie_enum = INFF_CYW55572_PCIE_BAR0_PCIE_ENUM_OFFSET;
-+		else
-+			pcie_enum = INFF_PCIE_BAR0_PCIE_ENUM_OFFSET;
-+
-+		pci_read_config_dword(devinfo->pdev, PCI_BASE_ADDRESS_0,
-+				      &regdata);
-+		addr = regdata + pcie_enum + blhsh->h2d;
-+		inff_pcie_buscore_write32(ctx, addr, 0);
-+
-+		addr = regdata + pcie_enum + blhsh->d2h;
-+		SPINWAIT_MS((inff_pcie_buscore_read32(ctx, addr) & flag) == 0,
-+			    timeout, interval);
-+		regdata = inff_pcie_buscore_read32(ctx, addr);
-+		if (!(regdata & flag)) {
-+			inff_dev_err(bus->dev, "Timeout waiting for bootloader ready\n");
-+			kfree(blhsh);
-+			return -EPERM;
-+		}
-+		*blhs = blhsh;
-+	}
-+
-+	return 0;
-+}
-+
-+static const struct inff_buscore_ops inff_pcie_buscore_ops = {
-+	.prepare = inff_pcie_buscoreprep,
-+	.reset = inff_pcie_buscore_reset,
-+	.activate = inff_pcie_buscore_activate,
-+	.read32 = inff_pcie_buscore_read32,
-+	.write32 = inff_pcie_buscore_write32,
-+	.sec_attach = inff_pcie_buscore_sec_attach,
-+};
-+
-+#define INFF_PCIE_DEVICE(dev_id) \
-+	{ \
-+		PCI_VENDOR_ID_CYPRESS, dev_id, \
-+		PCI_ANY_ID, PCI_ANY_ID, \
-+		PCI_CLASS_NETWORK_OTHER << 8, 0xffff00, \
-+		0 \
-+	} \
-+
-+static const struct pci_device_id inff_pcie_devid_table[] = {
-+	INFF_PCIE_DEVICE(PCI_DEVICE_ID_CYW5557X),
-+	{ /* end: all zeroes */ }
-+};
-+
-+MODULE_DEVICE_TABLE(pci, inff_pcie_devid_table);
-+
-+static int
-+inff_pcie_chip_socitype(unsigned short device)
-+{
-+	switch (device) {
-+	case PCI_DEVICE_ID_CYW5557X:
-+		return INFF_SOCI_AI;
-+	default:
-+		return INFF_SOCI_UNSPEC;
-+	}
-+}
-+
-+static int
-+inff_pcie_probe(struct pci_dev *pdev, const struct pci_device_id *id)
-+{
-+	int ret;
-+	struct inff_fw_request *fwreq;
-+	struct inff_pciedev_info *devinfo;
-+	struct inff_pciedev *pcie_bus_dev;
-+	struct inff_core *core;
-+	struct inff_bus *bus;
-+	unsigned short socitype = INFF_SOCI_UNSPEC;
-+
-+	if (!id) {
-+		id = pci_match_id(inff_pcie_devid_table, pdev);
-+		if (!id) {
-+			pci_err(pdev, "Error could not find pci_device_id for %x:%x\n",
-+				pdev->vendor, pdev->device);
-+			return -ENODEV;
-+		}
-+	}
-+
-+	inff_dbg(PCIE, "Probing PCIe Device %x:%x\n",
-+		 pdev->vendor, pdev->device);
-+
-+	ret = -ENOMEM;
-+	devinfo = kzalloc(sizeof(*devinfo), GFP_KERNEL);
-+	if (!devinfo)
-+		return ret;
-+
-+	devinfo->pdev = pdev;
-+	pcie_bus_dev = NULL;
-+	socitype = inff_pcie_chip_socitype(devinfo->pdev->device);
-+	devinfo->ci = inff_chip_attach(socitype, devinfo, pdev->device,
-+				       &inff_pcie_buscore_ops);
-+	if (IS_ERR(devinfo->ci)) {
-+		ret = PTR_ERR(devinfo->ci);
-+		devinfo->ci = NULL;
-+		goto fail;
-+	}
-+
-+	core = inff_chip_get_core(devinfo->ci, INF_CORE_PCIE2);
-+	if (core->rev >= 64)
-+		devinfo->reginfo = &inff_reginfo_64;
-+	else
-+		devinfo->reginfo = &inff_reginfo_default;
-+
-+	pcie_bus_dev = kzalloc(sizeof(*pcie_bus_dev), GFP_KERNEL);
-+	if (!pcie_bus_dev) {
-+		ret = -ENOMEM;
-+		goto fail;
-+	}
-+
-+	devinfo->settings = inff_get_module_param(&devinfo->pdev->dev);
-+	if (!devinfo->settings) {
-+		ret = -ENOMEM;
-+		goto fail;
-+	}
-+	ret = PTR_ERR_OR_ZERO(devinfo->settings);
-+	if (ret < 0)
-+		goto fail;
-+
-+	bus = kzalloc(sizeof(*bus), GFP_KERNEL);
-+	if (!bus) {
-+		ret = -ENOMEM;
-+		goto fail;
-+	}
-+	bus->msgbuf = kzalloc(sizeof(*bus->msgbuf), GFP_KERNEL);
-+	if (!bus->msgbuf) {
-+		ret = -ENOMEM;
-+		kfree(bus);
-+		goto fail;
-+	}
-+
-+	/* hook it all together. */
-+	pcie_bus_dev->devinfo = devinfo;
-+	pcie_bus_dev->bus = bus;
-+	bus->dev = &pdev->dev;
-+	bus->bus_priv.pcie = pcie_bus_dev;
-+	bus->ops = &inff_pcie_bus_ops;
-+	bus->proto_type = INFF_PROTO_MSGBUF;
-+	bus->chip = devinfo->coreid;
-+	bus->chip_pub = devinfo->ci;
-+	bus->wowl_supported = pci_pme_capable(pdev, PCI_D3hot);
-+	dev_set_drvdata(&pdev->dev, bus);
-+
-+	ret = inff_alloc_wiphy(&devinfo->pdev->dev, devinfo->settings);
-+	if (ret)
-+		goto fail_bus;
-+
-+#ifdef DEBUG
-+	/* Set up the fwcon timer */
-+	timer_setup(&devinfo->timer, inff_pcie_fwcon, 0);
-+#endif
-+
-+	fwreq = inff_prepare_fw_request(devinfo->settings->firmware_path,
-+					devinfo->ci, inff_pcie_fwnames,
-+					ARRAY_SIZE(inff_pcie_fwnames),
-+					devinfo->settings->board_type);
-+	if (!fwreq) {
-+		ret = -ENOMEM;
-+		goto fail_inff;
-+	}
-+
-+	/* NVRAM reserves PCI domain 0 for SDK faked bus */
-+	fwreq->domain_nr = pci_domain_nr(devinfo->pdev->bus) + 1;
-+	fwreq->bus_nr = devinfo->pdev->bus->number;
-+
-+	ret = inff_fw_get_firmwares(bus->dev, fwreq, inff_pcie_setup);
-+	if (ret < 0) {
-+		kfree(fwreq);
-+		goto fail_inff;
-+	}
-+	return 0;
-+
-+fail_inff:
-+	inff_free_wiphy(&devinfo->pdev->dev);
-+fail_bus:
-+	kfree(bus->msgbuf);
-+	kfree(bus);
-+fail:
-+	inff_dev_err(NULL, "failed %x:%x\n", pdev->vendor, pdev->device);
-+	inff_pcie_release_resource(devinfo);
-+	if (devinfo->ci)
-+		inff_chip_detach(devinfo->ci);
-+	if (devinfo->settings)
-+		inff_release_module_param(devinfo->settings);
-+	kfree(pcie_bus_dev);
-+	kfree(devinfo);
 +	return ret;
 +}
 +
-+static void
-+inff_pcie_remove(struct pci_dev *pdev)
++/**
++ * inff_p2p_generate_bss_mac() - derive mac addresses for P2P.
++ *
++ * @p2p: P2P specific data.
++ * @dev_addr: optional device address.
++ *
++ * P2P needs mac addresses for P2P device and interface. If no device
++ * address it specified, these are derived from a random ethernet
++ * address.
++ */
++static void inff_p2p_generate_bss_mac(struct inff_p2p_info *p2p, u8 *dev_addr)
 +{
-+	struct inff_pciedev_info *devinfo;
-+	struct inff_chip_specific *chip_spec;
-+	struct inff_bus *bus;
++	struct inff_if *pri_ifp = p2p->bss_idx[P2PAPI_BSSCFG_PRIMARY].vif->ifp;
++	bool random_addr = false;
++	bool local_admin = false;
 +
-+	bus = dev_get_drvdata(&pdev->dev);
-+	if (!bus)
-+		return;
++	if (!dev_addr || is_zero_ether_addr(dev_addr)) {
++		/* If the primary interface address is already locally
++		 * administered, create a new random address.
++		 */
++		if (pri_ifp->mac_addr[0] & 0x02) {
++			random_addr = true;
++		} else {
++			dev_addr = pri_ifp->mac_addr;
++			local_admin = true;
++		}
++	}
 +
-+	devinfo = bus->bus_priv.pcie->devinfo;
-+	chip_spec = &devinfo->ci->chip_spec;
++	/* Generate the P2P Device Address obtaining a random ethernet
++	 * address with the locally administered bit set.
++	 */
++	if (random_addr)
++		eth_random_addr(p2p->dev_addr);
++	else
++		memcpy(p2p->dev_addr, dev_addr, ETH_ALEN);
 +
-+	inff_pcie_bus_console_read(devinfo, false);
-+	inff_pcie_fwcon_timer(devinfo, false);
++	if (local_admin)
++		p2p->dev_addr[0] |= 0x02;
 +
-+	devinfo->state = INFFMAC_PCIE_STATE_DOWN;
-+	if (devinfo->ci)
-+		inff_pcie_intr_disable(devinfo);
++	/* Generate the P2P Interface Address.  If the discovery and connection
++	 * BSSCFGs need to simultaneously co-exist, then this address must be
++	 * different from the P2P Device Address, but also locally administered.
++	 */
++	memcpy(p2p->conn_int_addr, p2p->dev_addr, ETH_ALEN);
++	p2p->conn_int_addr[0] |= 0x02;
++	p2p->conn_int_addr[4] ^= 0x80;
 +
-+	inff_bus_detach(&pdev->dev);
-+	inff_free_wiphy(&pdev->dev);
-+
-+	kfree(bus->bus_priv.pcie);
-+	kfree(bus->msgbuf->flowrings);
-+	kfree(bus->msgbuf);
-+	kfree(bus);
-+
-+	inff_pcie_release_irq(devinfo);
-+	inff_pcie_release_scratchbuffers(devinfo);
-+	inff_pcie_release_ringbuffers(devinfo);
-+	inff_pcie_reset_device(devinfo);
-+	inff_pcie_release_resource(devinfo);
-+	release_firmware(chip_spec->clm_fw);
-+
-+	if (devinfo->ci)
-+		inff_chip_detach(devinfo->ci);
-+	if (devinfo->settings)
-+		inff_release_module_param(devinfo->settings);
-+
-+	kfree(devinfo);
-+	dev_set_drvdata(&pdev->dev, NULL);
++	memcpy(p2p->conn2_int_addr, p2p->dev_addr, ETH_ALEN);
++	p2p->conn2_int_addr[0] |= 0x02;
++	p2p->conn2_int_addr[4] ^= 0x90;
 +}
 +
-+#ifdef CONFIG_PM
-+
-+static int inff_pcie_pm_enter_D3(struct device *dev)
++/**
++ * inff_p2p_scan_is_p2p_request() - is cfg80211 scan request a P2P scan.
++ *
++ * @request: the scan request as received from cfg80211.
++ *
++ * returns true if one of the ssids in the request matches the
++ * P2P wildcard ssid; otherwise returns false.
++ */
++static bool inff_p2p_scan_is_p2p_request(struct cfg80211_scan_request *request)
 +{
-+	struct inff_pciedev_info *devinfo;
-+	struct inff_bus *bus;
-+	struct inff_cfg80211_info *config;
-+	int retry = INFF_PM_WAIT_MAXRETRY;
++	struct cfg80211_ssid *ssids = request->ssids;
++	int i;
 +
-+	bus = dev_get_drvdata(dev);
-+	devinfo = bus->bus_priv.pcie->devinfo;
-+	config = bus->drvr->config;
++	for (i = 0; i < request->n_ssids; i++) {
++		if (ssids[i].ssid_len != INFF_P2P_WILDCARD_SSID_LEN)
++			continue;
 +
-+	while (retry &&
-+	       config->pm_state == INFF_CFG80211_PM_STATE_SUSPENDING) {
-+		usleep_range(10000, 20000);
-+		retry--;
++		inff_dbg(INFO, "comparing ssid \"%s\"", ssids[i].ssid);
++		if (!memcmp(INFF_P2P_WILDCARD_SSID, ssids[i].ssid,
++			    INFF_P2P_WILDCARD_SSID_LEN))
++			return true;
 +	}
-+	if (!retry && config->pm_state == INFF_CFG80211_PM_STATE_SUSPENDING)
-+		inff_dev_err(bus->dev,
-+			     "timed out wait for cfg80211 suspended\n");
++	return false;
++}
 +
-+	inff_pcie_fwcon_timer(devinfo, false);
-+	inff_bus_change_state(bus, INFF_BUS_DOWN);
++/**
++ * inff_p2p_set_discover_state - set discover state in firmware.
++ *
++ * @ifp: low-level interface object.
++ * @state: discover state to set.
++ * @chanspec: channel parameters (for state @WL_P2P_DISC_ST_LISTEN only).
++ * @listen_ms: duration to listen (for state @WL_P2P_DISC_ST_LISTEN only).
++ */
++static s32 inff_p2p_set_discover_state(struct inff_if *ifp, u8 state,
++				       u16 chanspec, u16 listen_ms)
++{
++	struct inff_p2p_disc_st_le discover_state;
++	s32 ret = 0;
 +
-+	devinfo->mbdata_completed = false;
-+	inff_pcie_send_mb_data(devinfo, INFF_H2D_HOST_D3_INFORM);
++	discover_state.state = state;
++	discover_state.chspec = cpu_to_le16(chanspec);
++	discover_state.dwell = cpu_to_le16(listen_ms);
++	ret = inff_fwcmd_bsscfg_data_set(ifp, "p2p_state", &discover_state,
++					 sizeof(discover_state));
++	return ret;
++}
 +
-+	wait_event_timeout(devinfo->mbdata_resp_wait, devinfo->mbdata_completed,
-+			   INFF_PCIE_MBDATA_TIMEOUT);
-+	if (!devinfo->mbdata_completed) {
-+		inff_dev_err(bus->dev,
-+			     "Timeout on response for entering D3 substate\n");
-+		inff_bus_change_state(bus, INFF_BUS_UP);
-+		return -EIO;
-+	}
++/**
++ * inff_p2p_deinit_discovery() - disable P2P device discovery.
++ *
++ * @p2p: P2P specific data.
++ *
++ * Resets the discovery state and disables it in firmware.
++ */
++static s32 inff_p2p_deinit_discovery(struct inff_p2p_info *p2p)
++{
++	struct inff_cfg80211_vif *vif;
 +
-+	devinfo->state = INFFMAC_PCIE_STATE_DOWN;
++	/* Set the discovery state to SCAN */
++	vif = p2p->bss_idx[P2PAPI_BSSCFG_DEVICE].vif;
++	(void)inff_p2p_set_discover_state(vif->ifp, WL_P2P_DISC_ST_SCAN, 0, 0);
++
++	/* Disable P2P discovery in the firmware */
++	vif = p2p->bss_idx[P2PAPI_BSSCFG_PRIMARY].vif;
++	(void)inff_fwcmd_iovar_int_set(vif->ifp, "p2p_disc", 0);
 +
 +	return 0;
 +}
 +
-+static int inff_pcie_pm_leave_D3(struct device *dev)
++/**
++ * inff_p2p_enable_discovery() - initialize and configure discovery.
++ *
++ * @p2p: P2P specific data.
++ *
++ * Initializes the discovery device and configure the virtual interface.
++ */
++static int inff_p2p_enable_discovery(struct inff_p2p_info *p2p)
 +{
-+	struct inff_pciedev_info *devinfo;
-+	struct inff_bus *bus;
-+	struct pci_dev *pdev;
-+	int err;
++	struct inff_pub *drvr = p2p->cfg->pub;
++	struct inff_cfg80211_vif *vif;
++	s32 ret = 0;
 +
-+	bus = dev_get_drvdata(dev);
-+	devinfo = bus->bus_priv.pcie->devinfo;
-+	inff_dbg(PCIE, "PCIe PM Leave D3 dev=%p, bus=%p\n", dev, bus);
-+
-+	/* Check if device is still up and running, if so we are ready */
-+	if (inff_pcie_read_reg32(devinfo, devinfo->reginfo->intmask) != 0) {
-+		inff_dbg(PCIE, "Try to wakeup device....\n");
-+		if (devinfo->use_d0_inform) {
-+			if (inff_pcie_send_mb_data(devinfo,
-+						   INFF_H2D_HOST_D0_INFORM))
-+				goto cleanup;
-+		} else {
-+			inff_pcie_hostready(devinfo);
-+		}
-+
-+		inff_dbg(PCIE, "Hot resume, continue....\n");
-+		devinfo->state = INFFMAC_PCIE_STATE_UP;
-+		inff_pcie_select_core(devinfo, INF_CORE_PCIE2);
-+		inff_bus_change_state(bus, INFF_BUS_UP);
-+		inff_pcie_intr_enable(devinfo);
-+		if (devinfo->use_d0_inform) {
-+			inff_dbg(TRACE, "sending inff_pcie_hostready since use_d0_inform=%d\n",
-+				 devinfo->use_d0_inform);
-+			inff_pcie_hostready(devinfo);
-+		}
-+
-+		inff_pcie_fwcon_timer(devinfo, true);
-+		return 0;
++	vif = p2p->bss_idx[P2PAPI_BSSCFG_DEVICE].vif;
++	if (!vif) {
++		iphy_err(drvr, "P2P config device not available\n");
++		ret = -EPERM;
++		goto exit;
 +	}
 +
-+cleanup:
-+	inff_chip_detach(devinfo->ci);
-+	devinfo->ci = NULL;
-+	pdev = devinfo->pdev;
-+	inff_pcie_remove(pdev);
++	if (test_bit(INFF_P2P_STATUS_ENABLED, &p2p->status)) {
++		inff_dbg(INFO, "P2P config device already configured\n");
++		goto exit;
++	}
 +
-+	err = inff_pcie_probe(pdev, NULL);
++	/* Re-initialize P2P Discovery in the firmware */
++	vif = p2p->bss_idx[P2PAPI_BSSCFG_PRIMARY].vif;
++	ret = inff_fwcmd_iovar_int_set(vif->ifp, "p2p_disc", 1);
++	if (ret < 0) {
++		iphy_err(drvr, "set p2p_disc error\n");
++		goto exit;
++	}
++	vif = p2p->bss_idx[P2PAPI_BSSCFG_DEVICE].vif;
++	ret = inff_p2p_set_discover_state(vif->ifp, WL_P2P_DISC_ST_SCAN, 0, 0);
++	if (ret < 0) {
++		iphy_err(drvr, "unable to set WL_P2P_DISC_ST_SCAN\n");
++		goto exit;
++	}
++
++	/*
++	 * Set wsec to any non-zero value in the discovery bsscfg
++	 * to ensure our P2P probe responses have the privacy bit
++	 * set in the 802.11 WPA IE. Some peer devices may not
++	 * initiate WPS with us if this bit is not set.
++	 */
++	ret = inff_fwcmd_bsscfg_int_set(vif->ifp, "wsec", AES_ENABLED);
++	if (ret < 0) {
++		iphy_err(drvr, "wsec error %d\n", ret);
++		goto exit;
++	}
++
++	set_bit(INFF_P2P_STATUS_ENABLED, &p2p->status);
++exit:
++	return ret;
++}
++
++/**
++ * inff_p2p_escan() - initiate a P2P scan.
++ *
++ * @p2p: P2P specific data.
++ * @num_chans: number of channels to scan.
++ * @chanspecs: channel parameters for @num_chans channels.
++ * @search_state: P2P discover state to use.
++ * @bss_type: type of P2P bss.
++ */
++static s32 inff_p2p_escan(struct inff_p2p_info *p2p, u32 num_chans,
++			  u16 chanspecs[], s32 search_state,
++			  enum p2p_bss_type bss_type)
++{
++	struct inff_pub *drvr = p2p->cfg->pub;
++	s32 ret = 0;
++	s32 memsize = offsetof(struct inff_p2p_scan_le,
++			       eparams.params_le.channel_list);
++	s32 nprobes;
++	s32 active;
++	u32 i;
++	u8 *memblk;
++	struct inff_cfg80211_vif *vif;
++	struct inff_p2p_scan_le *p2p_params;
++	struct inff_scan_params_le *sparams;
++
++	memsize += num_chans * sizeof(__le16);
++	memblk = kzalloc(memsize, GFP_KERNEL);
++	if (!memblk)
++		return -ENOMEM;
++
++	vif = p2p->bss_idx[bss_type].vif;
++	if (!vif) {
++		iphy_err(drvr, "no vif for bss type %d\n", bss_type);
++		ret = -EINVAL;
++		goto exit;
++	}
++	p2p_params = (struct inff_p2p_scan_le *)memblk;
++	sparams = &p2p_params->eparams.params_le;
++
++	switch (search_state) {
++	case WL_P2P_DISC_ST_SEARCH:
++		/*
++		 * If we in SEARCH STATE, we don't need to set SSID explicitly
++		 * because dongle use P2P WILDCARD internally by default, use
++		 * null ssid, which it is already due to kzalloc.
++		 */
++		break;
++	case WL_P2P_DISC_ST_SCAN:
++		/*
++		 * wpa_supplicant has p2p_find command with type social or
++		 * progressive. For progressive, we need to set the ssid to
++		 * P2P WILDCARD because we just do broadcast scan unless
++		 * setting SSID.
++		 */
++		sparams->ssid_le.SSID_len =
++				cpu_to_le32(INFF_P2P_WILDCARD_SSID_LEN);
++		memcpy(sparams->ssid_le.SSID, INFF_P2P_WILDCARD_SSID,
++		       INFF_P2P_WILDCARD_SSID_LEN);
++		break;
++	default:
++		iphy_err(drvr, " invalid search state %d\n", search_state);
++		ret = -EINVAL;
++		goto exit;
++	}
++
++	inff_p2p_set_discover_state(vif->ifp, search_state, 0, 0);
++
++	/*
++	 * set p2p scan parameters.
++	 */
++	p2p_params->type = 'E';
++
++	/* determine the scan engine parameters */
++	sparams->bss_type = DOT11_BSSTYPE_ANY;
++	sparams->scan_type = INFF_SCANTYPE_ACTIVE;
++
++	eth_broadcast_addr(sparams->bssid);
++	sparams->home_time = cpu_to_le32(P2PAPI_SCAN_HOME_TIME_MS);
++
++	/*
++	 * SOCIAL_CHAN_CNT + 1 takes care of the Progressive scan
++	 * supported by the supplicant.
++	 */
++	if (num_chans == SOCIAL_CHAN_CNT || num_chans == (SOCIAL_CHAN_CNT + 1))
++		active = P2PAPI_SCAN_SOCIAL_DWELL_TIME_MS;
++	else if (num_chans == AF_PEER_SEARCH_CNT)
++		active = P2PAPI_SCAN_AF_SEARCH_DWELL_TIME_MS;
++	else if (inff_get_vif_state_any(p2p->cfg, INFF_VIF_STATUS_CONNECTED))
++		active = -1;
++	else
++		active = P2PAPI_SCAN_DWELL_TIME_MS;
++
++	/* Override scan params to find a peer for a connection */
++	if (num_chans == 1) {
++		active = WL_SCAN_CONNECT_DWELL_TIME_MS;
++		/* To sync with presence period of VSDB GO.
++		 * send probe request more frequently
++		 */
++		nprobes = active / WL_SCAN_JOIN_PROBE_INTERVAL_MS;
++	} else {
++		nprobes = active / P2PAPI_SCAN_NPROBS_TIME_MS;
++	}
++
++	if (nprobes <= 0)
++		nprobes = 1;
++
++	inff_dbg(INFO, "nprobes # %d, active_time %d\n", nprobes, active);
++	sparams->active_time = cpu_to_le32(active);
++	sparams->nprobes = cpu_to_le32(nprobes);
++	sparams->passive_time = cpu_to_le32(-1);
++	sparams->channel_num = cpu_to_le32(num_chans &
++					   INFF_SCAN_PARAMS_COUNT_MASK);
++	for (i = 0; i < num_chans; i++)
++		sparams->channel_list[i] = cpu_to_le16(chanspecs[i]);
++
++	/* set the escan specific parameters */
++	p2p_params->eparams.version = cpu_to_le32(INFF_ESCAN_REQ_VERSION);
++	p2p_params->eparams.action =  cpu_to_le16(WL_ESCAN_ACTION_START);
++	p2p_params->eparams.sync_id = cpu_to_le16(0x1234);
++	/* perform p2p scan on primary device */
++	ret = inff_fwcmd_bsscfg_data_set(vif->ifp, "p2p_scan", memblk, memsize);
++	if (!ret)
++		set_bit(INFF_SCAN_STATUS_BUSY, &p2p->cfg->scan_status);
++exit:
++	kfree(memblk);
++	return ret;
++}
++
++/**
++ * inff_p2p_run_escan() - escan callback for peer-to-peer.
++ *
++ * @cfg: driver private data for cfg80211 interface.
++ * @ifp: interface control.
++ * @request: scan request from cfg80211.
++ *
++ * Determines the P2P discovery state based to scan request parameters and
++ * validates the channels in the request.
++ */
++static s32 inff_p2p_run_escan(struct inff_cfg80211_info *cfg,
++			      struct inff_if *ifp,
++			       struct cfg80211_scan_request *request)
++{
++	struct inff_p2p_info *p2p = &cfg->p2p;
++	struct inff_pub *drvr = cfg->pub;
++	s32 err = 0;
++	s32 search_state = WL_P2P_DISC_ST_SCAN;
++	struct inff_cfg80211_vif *vif;
++	struct net_device *dev = NULL;
++	int i, num_nodfs = 0;
++	u16 *chanspecs;
++
++	if (!request) {
++		err = -EINVAL;
++		goto exit;
++	}
++
++	if (request->n_channels) {
++		chanspecs = kcalloc(request->n_channels, sizeof(*chanspecs),
++				    GFP_KERNEL);
++		if (!chanspecs) {
++			err = -ENOMEM;
++			goto exit;
++		}
++		vif = p2p->bss_idx[P2PAPI_BSSCFG_CONNECTION].vif;
++		if (vif)
++			dev = vif->wdev.netdev;
++		if (request->n_channels == 3 &&
++		    request->channels[0]->hw_value == SOCIAL_CHAN_1 &&
++		    request->channels[1]->hw_value == SOCIAL_CHAN_2 &&
++		    request->channels[2]->hw_value == SOCIAL_CHAN_3) {
++			/* SOCIAL CHANNELS 1, 6, 11 */
++			search_state = WL_P2P_DISC_ST_SEARCH;
++			inff_dbg(INFO, "P2P SEARCH PHASE START\n");
++		} else if (dev && vif->wdev.iftype == NL80211_IFTYPE_P2P_GO) {
++			/* If you are already a GO, then do SEARCH only */
++			inff_dbg(INFO, "Already a GO. Do SEARCH Only\n");
++			search_state = WL_P2P_DISC_ST_SEARCH;
++		} else {
++			inff_dbg(INFO, "P2P SCAN STATE START\n");
++		}
++
++		/*
++		 * no P2P scanning on passive or DFS channels.
++		 */
++		for (i = 0; i < request->n_channels; i++) {
++			struct ieee80211_channel *chan = request->channels[i];
++
++			if (chan->flags & (IEEE80211_CHAN_RADAR |
++					   IEEE80211_CHAN_NO_IR))
++				continue;
++
++			chanspecs[i] = inff_nl80211_chan_to_chanspec(chan);
++			inff_dbg(INFO, "%d: chan=%d, channel spec=%x\n",
++				 num_nodfs, chan->hw_value, chanspecs[i]);
++			num_nodfs++;
++		}
++		err = inff_p2p_escan(p2p, num_nodfs, chanspecs, search_state,
++				     P2PAPI_BSSCFG_DEVICE);
++		kfree(chanspecs);
++	}
++exit:
 +	if (err)
-+		inff_dev_err(NULL, "probe after resume failed, err=%d\n", err);
++		iphy_err(drvr, "error (%d)\n", err);
++	return err;
++}
++
++/**
++ * inff_p2p_find_listen_channel() - find listen channel in ie string.
++ *
++ * @ie: string of information elements.
++ * @ie_len: length of string.
++ *
++ * Scan ie for p2p ie and look for attribute 6 channel. If available determine
++ * channel and return it.
++ */
++static s32 inff_p2p_find_listen_channel(const u8 *ie, u32 ie_len)
++{
++	u8 channel_ie[5];
++	s32 listen_channel;
++	s32 err;
++
++	err = cfg80211_get_p2p_attr(ie, ie_len,
++				    IEEE80211_P2P_ATTR_LISTEN_CHANNEL,
++				    channel_ie, sizeof(channel_ie));
++	if (err < 0)
++		return err;
++
++	/* listen channel subel length format:     */
++	/* 3(country) + 1(op. class) + 1(chan num) */
++	listen_channel = (s32)channel_ie[3 + 1];
++
++	if (listen_channel == SOCIAL_CHAN_1 ||
++	    listen_channel == SOCIAL_CHAN_2 ||
++	    listen_channel == SOCIAL_CHAN_3) {
++		inff_dbg(INFO, "Found my Listen Channel %d\n", listen_channel);
++		return listen_channel;
++	}
++
++	return -EPERM;
++}
++
++/**
++ * inff_p2p_scan_prep() - prepare scan based on request.
++ *
++ * @wiphy: wiphy device.
++ * @request: scan request from cfg80211.
++ * @vif: vif on which scan request is to be executed.
++ *
++ * Prepare the scan appropriately for type of scan requested. Overrides the
++ * escan .run() callback for peer-to-peer scanning.
++ */
++int inff_p2p_scan_prep(struct wiphy *wiphy,
++		       struct cfg80211_scan_request *request,
++		       struct inff_cfg80211_vif *vif)
++{
++	struct inff_cfg80211_info *cfg = wiphy_to_cfg(wiphy);
++	struct inff_p2p_info *p2p = &cfg->p2p;
++	int err = 0;
++	struct inff_chan ch = {0};
++
++	if (inff_p2p_scan_is_p2p_request(request)) {
++		/* find my listen channel */
++		err = inff_p2p_find_listen_channel(request->ie,
++						   request->ie_len);
++		if (err < 0)
++			return err;
++
++		ch.band = INFF_CHAN_BAND_2G;
++		ch.bw = INFF_CHAN_BW_20;
++		ch.sb = INFF_CHAN_SB_NONE;
++		ch.chnum = err;
++		inff_chan_encchspec(&ch);
++		p2p->afx_hdl.my_listen_chan = ch.chspec;
++
++		clear_bit(INFF_P2P_STATUS_GO_NEG_PHASE, &p2p->status);
++		inff_dbg(INFO, "P2P: GO_NEG_PHASE status cleared\n");
++
++		err = inff_p2p_enable_discovery(p2p);
++		if (err)
++			return err;
++
++		vif = p2p->bss_idx[P2PAPI_BSSCFG_DEVICE].vif;
++
++		/* override .run_escan() callback. */
++		cfg->escan_info.run = inff_p2p_run_escan;
++	}
++	err = inff_vif_set_mgmt_ie(vif, INFF_VNDR_IE_PRBREQ_FLAG,
++				   request->ie, request->ie_len);
++	return err;
++}
++
++/**
++ * inff_p2p_discover_listen() - set firmware to discover listen state.
++ *
++ * @p2p: p2p device.
++ * @chspec: chspec for discover listen.
++ * @duration: time in ms to stay on channel.
++ *
++ */
++static s32
++inff_p2p_discover_listen(struct inff_p2p_info *p2p, u16 chspec, u32 duration)
++{
++	struct inff_pub *drvr = p2p->cfg->pub;
++	struct inff_cfg80211_vif *vif;
++	s32 err = 0;
++
++	vif = p2p->bss_idx[P2PAPI_BSSCFG_DEVICE].vif;
++	if (!vif) {
++		iphy_err(drvr, "Discovery is not set, so we have nothing to do\n");
++		err = -EPERM;
++		goto exit;
++	}
++
++	if (test_bit(INFF_P2P_STATUS_DISCOVER_LISTEN, &p2p->status)) {
++		iphy_err(drvr, "Previous LISTEN is not completed yet\n");
++		/* prevent cookie mismatch in wpa_supplicant return OK */
++		goto exit;
++	}
++
++	err = inff_p2p_set_discover_state(vif->ifp, WL_P2P_DISC_ST_LISTEN,
++					  chspec, (u16)duration);
++	if (!err) {
++		set_bit(INFF_P2P_STATUS_DISCOVER_LISTEN, &p2p->status);
++		p2p->remain_on_channel_cookie++;
++	}
++exit:
++	return err;
++}
++
++/**
++ * inff_p2p_remain_on_channel() - put device on channel and stay there.
++ *
++ * @p2p: p2p info
++ * @wdev: wireless device.
++ * @channel: channel to stay on.
++ * @duration: time in ms to remain on channel.
++ * @cookie: cookie.
++ */
++int inff_p2p_remain_on_channel(struct inff_p2p_info *p2p, struct wireless_dev *wdev,
++			       struct ieee80211_channel *channel,
++			       unsigned int duration, u64 *cookie)
++{
++	struct inff_pub *drvr = p2p->cfg->pub;
++	struct inff_cfg80211_vif *vif;
++	u16 chspec = 0;
++	s32 err;
++
++	vif = p2p->bss_idx[P2PAPI_BSSCFG_DEVICE].vif;
++	if (!vif) {
++		iphy_err(drvr, "No p2p device available\n");
++		return -ENODEV;
++	}
++
++	err = inff_p2p_enable_discovery(p2p);
++	if (err)
++		goto exit;
++
++	chspec = inff_nl80211_chan_to_chanspec(channel);
++	err = inff_p2p_discover_listen(p2p, chspec, duration);
++	if (err)
++		goto exit;
++
++	p2p->remain_on_channel_wdev = wdev;
++
++	memcpy(&p2p->remain_on_channel, channel, sizeof(*channel));
++	*cookie = p2p->remain_on_channel_cookie;
++	cfg80211_ready_on_channel(wdev, *cookie, channel, duration, GFP_KERNEL);
++
++exit:
++	return err;
++}
++
++/**
++ * inff_p2p_notify_listen_complete() - p2p listen has completed.
++ *
++ * @ifp: interfac control.
++ * @e: event message. Not used, to make it usable for fwevt dispatcher.
++ * @data: payload of message. Not used.
++ *
++ */
++int inff_p2p_notify_listen_complete(struct inff_if *ifp,
++				    const struct inff_event_msg *e,
++				    void *data)
++{
++	struct inff_cfg80211_info *cfg = ifp->drvr->config;
++	struct inff_p2p_info *p2p = &cfg->p2p;
++
++	if (test_and_clear_bit(INFF_P2P_STATUS_DISCOVER_LISTEN,
++			       &p2p->status)) {
++		if (test_and_clear_bit(INFF_P2P_STATUS_WAITING_NEXT_AF_LISTEN,
++				       &p2p->status)) {
++			clear_bit(INFF_P2P_STATUS_WAITING_NEXT_ACT_FRAME,
++				  &p2p->status);
++			inff_dbg(INFO, "Listen DONE, wake up wait_next_af\n");
++			complete(&p2p->wait_next_af);
++		}
++
++		cfg80211_remain_on_channel_expired(p2p->remain_on_channel_wdev ?
++						   : &ifp->vif->wdev,
++						   p2p->remain_on_channel_cookie,
++						   &p2p->remain_on_channel,
++						   GFP_KERNEL);
++		p2p->remain_on_channel_wdev = NULL;
++	}
++	return 0;
++}
++
++/**
++ * inff_p2p_cancel_remain_on_channel() - cancel p2p listen state.
++ *
++ * @p2p: p2p info.
++ * @wdev: wireless device of interface.
++ */
++int inff_p2p_cancel_remain_on_channel(struct inff_p2p_info *p2p,
++				      struct wireless_dev *wdev)
++{
++	struct inff_pub *drvr = p2p->cfg->pub;
++	struct inff_cfg80211_vif *vif;
++	struct inff_if *ifp;
++
++	vif = p2p->bss_idx[P2PAPI_BSSCFG_DEVICE].vif;
++	if (!vif) {
++		iphy_err(drvr, "No p2p device available\n");
++		return -ENODEV;
++	}
++
++	vif = container_of(wdev, struct inff_cfg80211_vif, wdev);
++	ifp = vif->ifp;
++	if (!ifp)
++		return -ENODEV;
++
++	inff_p2p_set_discover_state(ifp, WL_P2P_DISC_ST_SCAN, 0, 0);
++	inff_p2p_notify_listen_complete(ifp, NULL, NULL);
++
++	return 0;
++}
++
++/**
++ * inff_p2p_act_frm_search() - search function for action frame.
++ *
++ * @p2p: p2p device.
++ * @chspec: chspec on which action frame is to be trasmitted.
++ *
++ * search function to reach at common channel to send action frame. When
++ * channel is 0 then all social channels will be used to send af
++ */
++static s32 inff_p2p_act_frm_search(struct inff_p2p_info *p2p, u16 chspec)
++{
++	s32 err;
++	u32 channel_cnt;
++	u16 *default_chan_list;
++	u32 i;
++	struct inff_chan ch;
++
++	if (chspec)
++		channel_cnt = AF_PEER_SEARCH_CNT;
++	else
++		channel_cnt = SOCIAL_CHAN_CNT;
++	default_chan_list = kcalloc(channel_cnt, sizeof(*default_chan_list),
++				    GFP_KERNEL);
++	if (!default_chan_list) {
++		err = -ENOMEM;
++		goto exit;
++	}
++
++	if (chspec) {
++		for (i = 0; i < channel_cnt; i++)
++			default_chan_list[i] = chspec;
++	} else {
++		ch.band = INFF_CHAN_BAND_2G;
++		ch.bw = INFF_CHAN_BW_20;
++		ch.chnum = SOCIAL_CHAN_1;
++		inff_chan_encchspec(&ch);
++		default_chan_list[0] = ch.chspec;
++		ch.chnum = SOCIAL_CHAN_2;
++		inff_chan_encchspec(&ch);
++		default_chan_list[1] = ch.chspec;
++		ch.chnum = SOCIAL_CHAN_3;
++		inff_chan_encchspec(&ch);
++		default_chan_list[2] = ch.chspec;
++	}
++	err = inff_p2p_escan(p2p, channel_cnt, default_chan_list,
++			     WL_P2P_DISC_ST_SEARCH, P2PAPI_BSSCFG_DEVICE);
++	kfree(default_chan_list);
++exit:
++	return err;
++}
++
++/**
++ * inff_p2p_afx_handler() - afx worker thread.
++ *
++ * @work:
++ *
++ */
++static void inff_p2p_afx_handler(struct work_struct *work)
++{
++	struct afx_hdl *afx_hdl = container_of(work, struct afx_hdl, afx_work);
++	struct inff_p2p_info *p2p = container_of(afx_hdl,
++						 struct inff_p2p_info,
++						 afx_hdl);
++	struct inff_pub *drvr = p2p->cfg->pub;
++	s32 err;
++
++	if (!afx_hdl->is_active)
++		return;
++
++	if (afx_hdl->is_listen && afx_hdl->my_listen_chan)
++		/* 100ms ~ 300ms */
++		err = inff_p2p_discover_listen(p2p, afx_hdl->my_listen_chan,
++					       100 * get_random_u32_inclusive(1, 3));
++	else
++		err = inff_p2p_act_frm_search(p2p, afx_hdl->peer_listen_chan);
++
++	if (err) {
++		iphy_err(drvr, "ERROR occurred! value is (%d)\n", err);
++		if (test_bit(INFF_P2P_STATUS_FINDING_COMMON_CHANNEL,
++			     &p2p->status))
++			complete(&afx_hdl->act_frm_scan);
++	}
++}
++
++/**
++ * inff_p2p_af_searching_channel() - search channel.
++ *
++ * @p2p: p2p device info struct.
++ *
++ */
++static u16 inff_p2p_af_searching_channel(struct inff_p2p_info *p2p)
++{
++	struct afx_hdl *afx_hdl = &p2p->afx_hdl;
++	struct inff_cfg80211_vif *pri_vif;
++	s32 retry;
++
++	pri_vif = p2p->bss_idx[P2PAPI_BSSCFG_PRIMARY].vif;
++
++	reinit_completion(&afx_hdl->act_frm_scan);
++	set_bit(INFF_P2P_STATUS_FINDING_COMMON_CHANNEL, &p2p->status);
++	afx_hdl->is_active = true;
++	afx_hdl->peer_chan = P2P_INVALID_CHANSPEC;
++
++	/* Loop to wait until we find a peer's channel or the
++	 * pending action frame tx is cancelled.
++	 */
++	retry = 0;
++	while ((retry < P2P_CHANNEL_SYNC_RETRY) &&
++	       (afx_hdl->peer_chan == P2P_INVALID_CHANSPEC)) {
++		afx_hdl->is_listen = false;
++		inff_dbg(TRACE, "Scheduling action frame for sending.. (%d)\n",
++			 retry);
++		/* search peer on peer's listen channel */
++		schedule_work(&afx_hdl->afx_work);
++		wait_for_completion_timeout(&afx_hdl->act_frm_scan,
++					    P2P_AF_FRM_SCAN_MAX_WAIT);
++		if (afx_hdl->peer_chan != P2P_INVALID_CHANSPEC ||
++		    (!test_bit(INFF_P2P_STATUS_FINDING_COMMON_CHANNEL,
++			       &p2p->status)))
++			break;
++
++		if (afx_hdl->my_listen_chan) {
++			inff_dbg(TRACE, "Scheduling listen peer, chanspec=0x%04x\n",
++				 afx_hdl->my_listen_chan);
++			/* listen on my listen channel */
++			afx_hdl->is_listen = true;
++			schedule_work(&afx_hdl->afx_work);
++			wait_for_completion_timeout(&afx_hdl->act_frm_scan,
++						    P2P_AF_FRM_SCAN_MAX_WAIT);
++		}
++		if (afx_hdl->peer_chan != P2P_INVALID_CHANSPEC ||
++		    (!test_bit(INFF_P2P_STATUS_FINDING_COMMON_CHANNEL,
++			       &p2p->status)))
++			break;
++		retry++;
++
++		/* if sta is connected or connecting, sleep for a while before
++		 * retry af tx or finding a peer
++		 */
++		if (test_bit(INFF_VIF_STATUS_CONNECTED, &pri_vif->sme_state) ||
++		    test_bit(INFF_VIF_STATUS_CONNECTING, &pri_vif->sme_state))
++			msleep(P2P_DEFAULT_SLEEP_TIME_VSDB);
++	}
++
++	inff_dbg(TRACE, "Completed search/listen peer_chan=0x%4x\n",
++		 afx_hdl->peer_chan);
++	afx_hdl->is_active = false;
++
++	clear_bit(INFF_P2P_STATUS_FINDING_COMMON_CHANNEL, &p2p->status);
++
++	return afx_hdl->peer_chan;
++}
++
++/**
++ * inff_p2p_scan_finding_common_channel() - was escan used for finding channel
++ *
++ * @cfg: common configuration struct.
++ * @bi: bss info struct, result from scan.
++ *
++ */
++bool inff_p2p_scan_finding_common_channel(struct inff_cfg80211_info *cfg,
++					  struct inff_bss_info_le *bi)
++
++{
++	struct inff_p2p_info *p2p = &cfg->p2p;
++	struct afx_hdl *afx_hdl = &p2p->afx_hdl;
++	u8 *ie;
++	s32 err;
++	u8 p2p_dev_addr[ETH_ALEN];
++
++	if (!test_bit(INFF_P2P_STATUS_FINDING_COMMON_CHANNEL, &p2p->status))
++		return false;
++
++	if (!bi) {
++		inff_dbg(TRACE, "ACTION FRAME SCAN Done\n");
++		if (afx_hdl->peer_chan == P2P_INVALID_CHANSPEC)
++			complete(&afx_hdl->act_frm_scan);
++		return true;
++	}
++
++	ie = ((u8 *)bi) + le16_to_cpu(bi->ie_offset);
++	memset(p2p_dev_addr, 0, sizeof(p2p_dev_addr));
++	err = cfg80211_get_p2p_attr(ie, le32_to_cpu(bi->ie_length),
++				    IEEE80211_P2P_ATTR_DEVICE_INFO,
++				    p2p_dev_addr, sizeof(p2p_dev_addr));
++	if (err < 0)
++		err = cfg80211_get_p2p_attr(ie, le32_to_cpu(bi->ie_length),
++					    IEEE80211_P2P_ATTR_DEVICE_ID,
++					    p2p_dev_addr, sizeof(p2p_dev_addr));
++	if (err >= 0 &&
++	    (ether_addr_equal(p2p_dev_addr, afx_hdl->tx_dst_addr))) {
++		afx_hdl->peer_chan = le16_to_cpu(bi->chanspec);
++		inff_dbg(TRACE, "ACTION FRAME SCAN : Peer %pM found, chanspec : 0x%04x\n",
++			 afx_hdl->tx_dst_addr, afx_hdl->peer_chan);
++		complete(&afx_hdl->act_frm_scan);
++	}
++	return true;
++}
++
++/**
++ * inff_p2p_abort_action_frame() - abort action frame.
++ *
++ * @cfg: common configuration struct.
++ *
++ */
++static s32 inff_p2p_abort_action_frame(struct inff_cfg80211_info *cfg)
++{
++	struct inff_p2p_info *p2p = &cfg->p2p;
++	struct inff_cfg80211_vif *vif;
++	s32 err;
++	s32 int_val = 1;
++
++	vif = p2p->bss_idx[P2PAPI_BSSCFG_DEVICE].vif;
++
++	if (!vif)
++		vif = p2p->bss_idx[P2PAPI_BSSCFG_PRIMARY].vif;
++
++	err = inff_fwcmd_bsscfg_data_set(vif->ifp, "actframe_abort", &int_val,
++					 sizeof(s32));
++	if (err)
++		inff_err(" aborting action frame has failed (%d)\n", err);
 +
 +	return err;
 +}
 +
-+static const struct dev_pm_ops inff_pciedrvr_pm = {
-+	.suspend = inff_pcie_pm_enter_D3,
-+	.resume = inff_pcie_pm_leave_D3,
-+	.freeze = inff_pcie_pm_enter_D3,
-+	.restore = inff_pcie_pm_leave_D3,
-+};
-+
-+#endif /* CONFIG_PM */
-+
-+static struct pci_driver inff_pciedrvr = {
-+	.name = KBUILD_MODNAME,
-+	.id_table = inff_pcie_devid_table,
-+	.probe = inff_pcie_probe,
-+	.remove = inff_pcie_remove,
-+#ifdef CONFIG_PM
-+	.driver.pm = &inff_pciedrvr_pm,
-+#endif
-+	.driver.coredump = inff_dev_coredump,
-+};
-+
-+int inff_pcie_register(void)
++/**
++ * inff_p2p_stop_wait_next_action_frame() - finish scan if af tx complete.
++ *
++ * @cfg: common configuration struct.
++ *
++ */
++static void
++inff_p2p_stop_wait_next_action_frame(struct inff_cfg80211_info *cfg)
 +{
-+	return pci_register_driver(&inff_pciedrvr);
++	struct inff_p2p_info *p2p = &cfg->p2p;
++	struct inff_if *ifp = p2p->bss_idx[P2PAPI_BSSCFG_PRIMARY].vif->ifp;
++	s32 err;
++
++	if (test_bit(INFF_P2P_STATUS_SENDING_ACT_FRAME, &p2p->status) &&
++	    (test_bit(INFF_P2P_STATUS_ACTION_TX_COMPLETED, &p2p->status) ||
++	     test_bit(INFF_P2P_STATUS_ACTION_TX_NOACK, &p2p->status))) {
++		inff_dbg(TRACE, "*** Wake UP ** abort actframe iovar\n");
++		/* if channel is not zero, "actfame" uses off channel scan.
++		 * So abort scan for off channel completion.
++		 */
++		if (p2p->af_sent_channel) {
++			/* abort actframe using actframe_abort or abort scan */
++			err = inff_p2p_abort_action_frame(cfg);
++			if (err)
++				inff_notify_escan_complete(cfg, ifp, true,
++							   true);
++		}
++	} else if (test_bit(INFF_P2P_STATUS_WAITING_NEXT_AF_LISTEN,
++			    &p2p->status)) {
++		inff_dbg(TRACE, "*** Wake UP ** abort listen for next af frame\n");
++		/* So abort scan to cancel listen */
++		inff_notify_escan_complete(cfg, ifp, true, true);
++	}
 +}
 +
-+void inff_pcie_exit(void)
++/**
++ * inff_p2p_gon_req_collision() - Check if go negotiaton collission
++ *
++ * @p2p: p2p device info struct.
++ * @mac: MAC address.
++ *
++ * return true if received action frame is to be dropped.
++ */
++static bool
++inff_p2p_gon_req_collision(struct inff_p2p_info *p2p, const u8 *mac)
 +{
-+	pci_unregister_driver(&inff_pciedrvr);
++	struct inff_cfg80211_info *cfg = p2p->cfg;
++	struct inff_if *ifp;
++
++	if (!test_bit(INFF_P2P_STATUS_WAITING_NEXT_ACT_FRAME, &p2p->status) ||
++	    !p2p->gon_req_action)
++		return false;
++
++	inff_dbg(TRACE, "GO Negotiation Request COLLISION !!!\n");
++	/* if sa(peer) addr is less than da(my) addr, then this device
++	 * process peer's gon request and block to send gon req.
++	 * if not (sa addr > da addr),
++	 * this device will process gon request and drop gon req of peer.
++	 */
++	ifp = p2p->bss_idx[P2PAPI_BSSCFG_DEVICE].vif->ifp;
++	if (memcmp(mac, ifp->mac_addr, ETH_ALEN) < 0) {
++		inff_dbg(INFO, "Block transmit gon req !!!\n");
++		p2p->block_gon_req_tx = true;
++		/* if we are finding a common channel for sending af,
++		 * do not scan more to block to send current gon req
++		 */
++		if (test_and_clear_bit(INFF_P2P_STATUS_FINDING_COMMON_CHANNEL,
++				       &p2p->status))
++			complete(&p2p->afx_hdl.act_frm_scan);
++		if (test_and_clear_bit(INFF_P2P_STATUS_WAITING_NEXT_ACT_FRAME,
++				       &p2p->status))
++			inff_p2p_stop_wait_next_action_frame(cfg);
++		return false;
++	}
++
++	/* drop gon request of peer to process gon request by this device. */
++	inff_dbg(INFO, "Drop received gon req !!!\n");
++
++	return true;
 +}
-diff --git a/drivers/net/wireless/infineon/inffmac/pcie.h b/drivers/net/wireless/infineon/inffmac/pcie.h
++
++/**
++ * inff_p2p_action_rx_complete() - received action frame.
++ */
++int inff_p2p_action_rx_complete(struct inff_p2p_info *p2p,
++				struct inff_if *ifp,
++				u8 *frame, u32 mgmt_frame_len,
++				const u8 *addr, u16 chspec)
++{
++	struct inff_cfg80211_info *cfg = p2p->cfg;
++	struct afx_hdl *afx_hdl = &p2p->afx_hdl;
++	struct inff_pub_act_frame *pub_act_frm;
++	struct inff_gas_pub_act_frame *gas_pub_act_frm;
++	u8 action = P2P_PAF_SUBTYPE_INVALID;
++
++	if (inff_ieee80211_is_gas_pub_action(frame, mgmt_frame_len)) {
++		gas_pub_act_frm = (struct inff_gas_pub_act_frame *)frame;
++		action = gas_pub_act_frm->action;
++	} else if (inff_ieee80211_is_p2p_pub_action(frame, mgmt_frame_len)) {
++		pub_act_frm = (struct inff_pub_act_frame *)frame;
++		action = pub_act_frm->subtype;
++		if (action == IEEE80211_P2P_PUB_ACTION_GO_NEG_REQ &&
++		    (inff_p2p_gon_req_collision(p2p, addr))) {
++			if (test_bit(INFF_P2P_STATUS_FINDING_COMMON_CHANNEL,
++				     &p2p->status) &&
++			    (ether_addr_equal(afx_hdl->tx_dst_addr, addr))) {
++				afx_hdl->peer_chan = chspec;
++				inff_dbg(INFO,
++					 "GO NEG REQ: Peer found, chspec=0x%04x\n",
++					 afx_hdl->peer_chan);
++				complete(&afx_hdl->act_frm_scan);
++			}
++			return 0;
++		}
++		/* After complete GO Negotiation, roll back to mpc mode */
++		if (action == IEEE80211_P2P_PUB_ACTION_GO_NEG_CONFIRM ||
++		    action == IEEE80211_P2P_PUB_ACTION_PROVISION_DISCOV_RESP)
++			inff_set_mpc(ifp, 1);
++		if (action == IEEE80211_P2P_PUB_ACTION_GO_NEG_CONFIRM) {
++			inff_dbg(TRACE, "GO NEG PHASE status cleared\n");
++			clear_bit(INFF_P2P_STATUS_GO_NEG_PHASE, &p2p->status);
++		}
++	}
++
++	if (test_bit(INFF_P2P_STATUS_WAITING_NEXT_ACT_FRAME, &p2p->status) &&
++	    p2p->next_af_subtype == action) {
++		inff_dbg(TRACE, "We got a right next frame! (%d)\n", action);
++		clear_bit(INFF_P2P_STATUS_WAITING_NEXT_ACT_FRAME,
++			  &p2p->status);
++		/* Stop waiting for next AF. */
++		inff_p2p_stop_wait_next_action_frame(cfg);
++	}
++
++	return 0;
++}
++
++/**
++ * inff_p2p_action_tx_complete() - transmit action frame complete
++ */
++int inff_p2p_action_tx_complete(struct inff_p2p_info *p2p,
++				struct inff_if *ifp,
++				const struct inff_event_msg *e)
++{
++	struct inff_cfg80211_info *cfg = p2p->cfg;
++
++	if (!test_bit(INFF_P2P_STATUS_SENDING_ACT_FRAME, &p2p->status))
++		return 0;
++
++	if (e->event_code == INFF_E_ACTION_FRAME_TX_COMPLETE) {
++		if (e->status == INFF_E_STATUS_SUCCESS) {
++			set_bit(INFF_P2P_STATUS_ACTION_TX_COMPLETED,
++				&p2p->status);
++			if (!p2p->wait_for_offchan_complete)
++				complete(&p2p->send_af_done);
++		} else {
++			set_bit(INFF_P2P_STATUS_ACTION_TX_NOACK, &p2p->status);
++			/* If there is no ack, we don't need to wait for
++			 * INFF_E_ACTION_FRAME_OFFCHAN_COMPLETE event
++			 */
++			inff_p2p_stop_wait_next_action_frame(cfg);
++		}
++	} else if (e->event_code == INFF_E_ACTION_FRAME_OFF_CHAN_COMPLETE) {
++		complete(&p2p->send_af_done);
++	}
++
++	return 0;
++}
++
++/**
++ * inff_p2p_tx_action_frame() - send action frame over fil.
++ *
++ * @p2p: p2p info struct for vif.
++ * @vif: vif to send.
++ * @af_params: action frame data/info.
++ * @band: nl80211 band info.
++ *
++ * Send an action frame immediately without doing channel synchronization.
++ *
++ * This function waits for a completion event before returning.
++ * The INFF_E_ACTION_FRAME_TX_COMPLETE event will be received when the action
++ * frame is transmitted.
++ */
++static s32 inff_p2p_tx_action_frame(struct inff_p2p_info *p2p,
++				    struct inff_cfg80211_vif *vif,
++				    struct inff_fwcmd_af_params_le *af_params,
++				    u8 band)
++{
++	struct inff_pub *drvr = p2p->cfg->pub;
++	s32 err = 0;
++	struct inff_fwcmd_af_params_v2_le *af_params_v2;
++
++	reinit_completion(&p2p->send_af_done);
++	clear_bit(INFF_P2P_STATUS_ACTION_TX_COMPLETED, &p2p->status);
++	clear_bit(INFF_P2P_STATUS_ACTION_TX_NOACK, &p2p->status);
++
++	if (drvr->wlc_ver.wlc_ver_major == INFF_AF_PARAM_V2_FW_MAJOR &&
++	    drvr->wlc_ver.wlc_ver_minor >= INFF_AF_PARAM_V2_FW_MINOR) {
++		af_params_v2 = kzalloc(sizeof(*af_params_v2), GFP_KERNEL);
++		if (!af_params_v2) {
++			err = -ENOMEM;
++			goto exit;
++		}
++
++		/* set actframe iovar with af_params_v2 */
++		af_params_v2->band = inff_nl80211_band_to_fwil(band);
++		af_params_v2->channel = af_params->channel;
++		af_params_v2->dwell_time = af_params->dwell_time;
++		memcpy(af_params_v2->bssid, af_params->bssid, ETH_ALEN);
++		memcpy(&af_params_v2->action_frame, &af_params->action_frame,
++		       sizeof(af_params_v2->action_frame));
++
++		err = inff_fwcmd_bsscfg_data_set(vif->ifp, "actframe", af_params_v2,
++						 sizeof(*af_params_v2));
++		kfree(af_params_v2);
++	} else {
++		/* set actframe iovar with af_params */
++		err = inff_fwcmd_bsscfg_data_set(vif->ifp, "actframe", af_params,
++						 sizeof(*af_params));
++	}
++
++	if (err) {
++		iphy_err(drvr, " sending action frame has failed\n");
++		goto exit;
++	}
++
++	p2p->af_sent_channel = le32_to_cpu(af_params->channel);
++	p2p->af_tx_sent_jiffies = jiffies;
++
++	if (test_bit(INFF_P2P_STATUS_DISCOVER_LISTEN, &p2p->status) &&
++	    p2p->af_sent_channel ==
++	    ieee80211_frequency_to_channel(p2p->remain_on_channel.center_freq))
++		p2p->wait_for_offchan_complete = false;
++	else
++		p2p->wait_for_offchan_complete = true;
++
++	inff_dbg(TRACE, "Waiting for %s tx completion event\n",
++		 (p2p->wait_for_offchan_complete) ?
++		 "off-channel" : "on-channel");
++
++	wait_for_completion_timeout(&p2p->send_af_done, IEEE80211_AF_MAX_WAIT_TIME);
++
++	if (test_bit(INFF_P2P_STATUS_ACTION_TX_COMPLETED, &p2p->status)) {
++		inff_dbg(TRACE, "TX action frame operation is success\n");
++	} else {
++		err = -EIO;
++		inff_dbg(TRACE, "TX action frame operation has failed\n");
++	}
++	/* clear status bit for action tx */
++	clear_bit(INFF_P2P_STATUS_ACTION_TX_COMPLETED, &p2p->status);
++	clear_bit(INFF_P2P_STATUS_ACTION_TX_NOACK, &p2p->status);
++
++exit:
++	return err;
++}
++
++/**
++ * inff_p2p_pub_af_tx() - public action frame tx routine.
++ *
++ * @cfg: driver private data for cfg80211 interface.
++ * @af_params: action frame data/info.
++ * @config_af_params: configuration data for action frame.
++ *
++ * routine which transmits ation frame public type.
++ */
++static s32 inff_p2p_pub_af_tx(struct inff_cfg80211_info *cfg,
++			      struct inff_fwcmd_af_params_le *af_params,
++			       struct inff_config_af_params *config_af_params)
++{
++	struct inff_p2p_info *p2p = &cfg->p2p;
++	struct inff_pub *drvr = cfg->pub;
++	struct inff_fwcmd_action_frame_le *action_frame;
++	struct inff_pub_act_frame *act_frm;
++	s32 err = 0;
++	u16 ie_len;
++
++	action_frame = &af_params->action_frame;
++	act_frm = (struct inff_pub_act_frame *)(action_frame->data);
++
++	config_af_params->extra_listen = true;
++
++	switch (act_frm->subtype) {
++	case IEEE80211_P2P_PUB_ACTION_GO_NEG_REQ:
++		inff_dbg(TRACE, "P2P: GO_NEG_PHASE status set\n");
++		set_bit(INFF_P2P_STATUS_GO_NEG_PHASE, &p2p->status);
++		config_af_params->mpc_onoff = 0;
++		config_af_params->search_channel = true;
++		p2p->next_af_subtype = act_frm->subtype + 1;
++		p2p->gon_req_action = true;
++		/* increase dwell time to wait for RESP frame */
++		af_params->dwell_time = cpu_to_le32(IEEE80211_AF_MED_DWELL_TIME);
++		break;
++	case IEEE80211_P2P_PUB_ACTION_GO_NEG_RESP:
++		p2p->next_af_subtype = act_frm->subtype + 1;
++		/* increase dwell time to wait for CONF frame */
++		af_params->dwell_time = cpu_to_le32(IEEE80211_AF_MED_DWELL_TIME);
++		break;
++	case IEEE80211_P2P_PUB_ACTION_GO_NEG_CONFIRM:
++		/* If we reached till GO Neg confirmation reset the filter */
++		inff_dbg(TRACE, "P2P: GO_NEG_PHASE status cleared\n");
++		clear_bit(INFF_P2P_STATUS_GO_NEG_PHASE, &p2p->status);
++		/* turn on mpc again if go nego is done */
++		config_af_params->mpc_onoff = 1;
++		/* minimize dwell time */
++		af_params->dwell_time = cpu_to_le32(IEEE80211_AF_MIN_DWELL_TIME);
++		config_af_params->extra_listen = false;
++		break;
++	case IEEE80211_P2P_PUB_ACTION_P2P_INVITE_REQ:
++		config_af_params->search_channel = true;
++		p2p->next_af_subtype = act_frm->subtype + 1;
++		/* increase dwell time */
++		af_params->dwell_time = cpu_to_le32(IEEE80211_AF_MED_DWELL_TIME);
++		break;
++	case IEEE80211_P2P_PUB_ACTION_P2P_INVITE_RESP:
++		/* minimize dwell time */
++		af_params->dwell_time = cpu_to_le32(IEEE80211_AF_MIN_DWELL_TIME);
++		config_af_params->extra_listen = false;
++		break;
++	case IEEE80211_P2P_PUB_ACTION_DEVICE_DISCOV_REQ:
++		config_af_params->search_channel = true;
++		p2p->next_af_subtype = act_frm->subtype + 1;
++		/* maximize dwell time to wait for RESP frame */
++		af_params->dwell_time = cpu_to_le32(IEEE80211_AF_LONG_DWELL_TIME);
++		break;
++	case IEEE80211_P2P_PUB_ACTION_DEVICE_DISCOV_RESP:
++		/* minimize dwell time */
++		af_params->dwell_time = cpu_to_le32(IEEE80211_AF_MIN_DWELL_TIME);
++		config_af_params->extra_listen = false;
++		break;
++	case IEEE80211_P2P_PUB_ACTION_PROVISION_DISCOV_REQ:
++		ie_len = le16_to_cpu(action_frame->len) -
++			 offsetof(struct inff_pub_act_frame, elts);
++		if (cfg80211_get_p2p_attr(&act_frm->elts[0], ie_len,
++					  IEEE80211_P2P_ATTR_GROUP_ID,
++					  NULL, 0) < 0)
++			config_af_params->search_channel = true;
++		config_af_params->mpc_onoff = 0;
++		p2p->next_af_subtype = act_frm->subtype + 1;
++		/* increase dwell time to wait for RESP frame */
++		af_params->dwell_time = cpu_to_le32(IEEE80211_AF_MED_DWELL_TIME);
++		break;
++	case IEEE80211_P2P_PUB_ACTION_PROVISION_DISCOV_RESP:
++		/* wpa_supplicant send go nego req right after prov disc */
++		p2p->next_af_subtype = IEEE80211_P2P_PUB_ACTION_GO_NEG_REQ;
++		/* increase dwell time to MED level */
++		af_params->dwell_time = cpu_to_le32(IEEE80211_AF_MED_DWELL_TIME);
++		config_af_params->extra_listen = false;
++		break;
++	default:
++		iphy_err(drvr, "Unknown p2p pub act frame subtype: %d\n",
++			 act_frm->subtype);
++		err = -EINVAL;
++	}
++	return err;
++}
++
++static bool inff_p2p_check_dwell_overflow(u32 requested_dwell,
++					  unsigned long dwell_jiffies)
++{
++	if ((requested_dwell & CUSTOM_RETRY_MASK) &&
++	    (jiffies_to_msecs(jiffies - dwell_jiffies) >
++	    (requested_dwell & ~CUSTOM_RETRY_MASK))) {
++		inff_err("Action frame TX retry time over dwell time!\n");
++		return true;
++	}
++	return false;
++}
++
++/**
++ * inff_p2p_send_action_frame() - send action frame .
++ *
++ * @cfg: driver private data for cfg80211 interface.
++ * @ndev: net device to transmit on.
++ * @af_params: configuration data for action frame.
++ * @vif: virtual interface to send
++ */
++bool inff_p2p_send_action_frame(struct inff_cfg80211_info *cfg,
++				struct net_device *ndev,
++				struct inff_fwcmd_af_params_le *af_params,
++				struct inff_cfg80211_vif *vif,
++				struct ieee80211_channel *peer_listen_chan)
++{
++	struct inff_p2p_info *p2p = &cfg->p2p;
++	struct inff_if *ifp = netdev_priv(ndev);
++	struct inff_fwcmd_action_frame_le *action_frame;
++	struct inff_config_af_params config_af_params;
++	struct afx_hdl *afx_hdl = &p2p->afx_hdl;
++	struct inff_pub *drvr = cfg->pub;
++	struct inff_chan ch;
++	u16 action_frame_len;
++	bool ack = false;
++	u8 category;
++	u8 action;
++	s32 tx_retry;
++	s32 extra_listen_time;
++	uint delta_ms;
++	unsigned long dwell_jiffies = 0;
++	bool dwell_overflow = false;
++	u32 requested_dwell = le32_to_cpu(af_params->dwell_time);
++
++	action_frame = &af_params->action_frame;
++	action_frame_len = le16_to_cpu(action_frame->len);
++
++	/* Add the default dwell time. Dwell time to stay off-channel */
++	/* to wait for a response action frame after transmitting an  */
++	/* GO Negotiation action frame                                */
++	af_params->dwell_time = cpu_to_le32(IEEE80211_AF_DWELL_TIME);
++
++	category = action_frame->data[DOT11_ACTION_CAT_OFF];
++	action = action_frame->data[DOT11_ACTION_ACT_OFF];
++
++	/* initialize variables */
++	p2p->next_af_subtype = P2P_PAF_SUBTYPE_INVALID;
++	p2p->gon_req_action = false;
++
++	/* config parameters */
++	config_af_params.mpc_onoff = -1;
++	config_af_params.search_channel = false;
++	config_af_params.extra_listen = false;
++
++	if (inff_ieee80211_is_gas_pub_action(action_frame->data,
++					     action_frame_len)) {
++		/* service discovery process */
++		if (action == WLAN_PUB_ACTION_GAS_INITIAL_REQ ||
++		    action == WLAN_PUB_ACTION_GAS_COMEBACK_REQ) {
++			/* configure service discovery query frame */
++			config_af_params.search_channel = true;
++
++			/* save next af suptype to cancel */
++			/* remaining dwell time           */
++			p2p->next_af_subtype = action + 1;
++
++			af_params->dwell_time =
++				cpu_to_le32(IEEE80211_AF_MED_DWELL_TIME);
++		} else if (action == WLAN_PUB_ACTION_GAS_INITIAL_RESP ||
++			   action == WLAN_PUB_ACTION_GAS_COMEBACK_RESP) {
++			/* configure service discovery response frame */
++			af_params->dwell_time =
++				cpu_to_le32(IEEE80211_AF_MIN_DWELL_TIME);
++		} else {
++			iphy_err(drvr, "Unknown action type: %d\n", action);
++			goto exit;
++		}
++	} else if (inff_ieee80211_is_p2p_pub_action(action_frame->data,
++						    action_frame_len)) {
++		/* p2p public action frame process */
++		if (inff_p2p_pub_af_tx(cfg, af_params, &config_af_params)) {
++			/* Just send unknown subtype frame with */
++			/* default parameters.                  */
++			iphy_err(drvr, "P2P Public action frame, unknown subtype.\n");
++		}
++	} else if (inff_ieee80211_is_p2p_action(action_frame->data,
++						action_frame_len)) {
++		/* do not configure anything. it will be */
++		/* sent with a default configuration     */
++	} else {
++		iphy_err(drvr, "Unknown Frame: category 0x%x, action 0x%x\n",
++			 category, action);
++		return false;
++	}
++
++	/* if connecting on primary iface, sleep for a while before sending
++	 * af tx for VSDB
++	 */
++	if (test_bit(INFF_VIF_STATUS_CONNECTING,
++		     &p2p->bss_idx[P2PAPI_BSSCFG_PRIMARY].vif->sme_state))
++		msleep(50);
++
++	/* if scan is ongoing, abort current scan. */
++	if (test_bit(INFF_SCAN_STATUS_BUSY, &cfg->scan_status))
++		inff_abort_scanning(cfg);
++
++	memcpy(afx_hdl->tx_dst_addr, action_frame->da, ETH_ALEN);
++
++	/* To make sure to send successfully action frame, turn off mpc */
++	if (config_af_params.mpc_onoff == 0)
++		inff_set_mpc(ifp, 0);
++
++	/* set status and destination address before sending af */
++	if (p2p->next_af_subtype != P2P_PAF_SUBTYPE_INVALID) {
++		/* set status to cancel the remained dwell time in rx process */
++		set_bit(INFF_P2P_STATUS_WAITING_NEXT_ACT_FRAME, &p2p->status);
++	}
++
++	p2p->af_sent_channel = 0;
++	set_bit(INFF_P2P_STATUS_SENDING_ACT_FRAME, &p2p->status);
++	/* validate channel and p2p ies */
++	if (config_af_params.search_channel &&
++	    IS_P2P_SOCIAL_CHANNEL(le32_to_cpu(af_params->channel)) &&
++	    p2p->bss_idx[P2PAPI_BSSCFG_DEVICE].vif &&
++	    p2p->bss_idx[P2PAPI_BSSCFG_DEVICE].vif->saved_ie.probe_req_ie_len) {
++		afx_hdl = &p2p->afx_hdl;
++		afx_hdl->peer_listen_chan =
++			inff_nl80211_chan_to_chanspec(peer_listen_chan);
++
++		if (inff_p2p_af_searching_channel(p2p) ==
++							P2P_INVALID_CHANSPEC) {
++			iphy_err(drvr, "Couldn't find peer's channel.\n");
++			goto exit;
++		}
++
++		/* Abort scan even for VSDB scenarios. Scan gets aborted in
++		 * firmware but after the check of piggyback algorithm. To take
++		 * care of current piggback algo, lets abort the scan here
++		 * itself.
++		 */
++		inff_notify_escan_complete(cfg, ifp, true, true);
++
++		/* update channel */
++		ch.chspec = afx_hdl->peer_chan;
++		inff_chan_decchspec(&ch);
++		af_params->channel = cpu_to_le32(ch.control_ch_num);
++	}
++	dwell_jiffies = jiffies;
++	dwell_overflow = inff_p2p_check_dwell_overflow(requested_dwell,
++						       dwell_jiffies);
++
++	tx_retry = 0;
++	while (!p2p->block_gon_req_tx &&
++	       (!ack) && (tx_retry < IEEE80211_AF_TX_MAX_RETRY) &&
++		!dwell_overflow) {
++		if (af_params->channel)
++			msleep(P2P_AF_RETRY_DELAY_TIME);
++
++		ack = !inff_p2p_tx_action_frame(p2p, vif, af_params, peer_listen_chan->band);
++		tx_retry++;
++		dwell_overflow = inff_p2p_check_dwell_overflow(requested_dwell,
++							       dwell_jiffies);
++	}
++	if (!ack) {
++		iphy_err(drvr, "Failed to send Action Frame(retry %d)\n",
++			 tx_retry);
++		clear_bit(INFF_P2P_STATUS_GO_NEG_PHASE, &p2p->status);
++	}
++
++exit:
++	clear_bit(INFF_P2P_STATUS_SENDING_ACT_FRAME, &p2p->status);
++
++	/*
++	 * sometimes dongle does not keep the dwell time of 'actframe'.
++	 * if we coundn't get the next action response frame and dongle does
++	 * not keep the dwell time, go to listen state again to get next action
++	 * response frame.
++	 */
++	ch.chspec = afx_hdl->my_listen_chan;
++	inff_chan_decchspec(&ch);
++	if (ack && config_af_params.extra_listen && !p2p->block_gon_req_tx &&
++	    test_bit(INFF_P2P_STATUS_WAITING_NEXT_ACT_FRAME, &p2p->status) &&
++	    p2p->af_sent_channel == ch.control_ch_num) {
++		delta_ms = jiffies_to_msecs(jiffies - p2p->af_tx_sent_jiffies);
++		if (le32_to_cpu(af_params->dwell_time) > delta_ms)
++			extra_listen_time = le32_to_cpu(af_params->dwell_time) -
++					    delta_ms;
++		else
++			extra_listen_time = 0;
++		if (extra_listen_time > 50) {
++			set_bit(INFF_P2P_STATUS_WAITING_NEXT_AF_LISTEN,
++				&p2p->status);
++			inff_dbg(INFO, "Wait more time! actual af time:%d, calculated extra listen:%d\n",
++				 le32_to_cpu(af_params->dwell_time),
++				 extra_listen_time);
++			extra_listen_time += 100;
++			if (!inff_p2p_discover_listen(p2p,
++						      afx_hdl->my_listen_chan,
++						      extra_listen_time)) {
++				unsigned long duration;
++
++				extra_listen_time += 100;
++				duration = msecs_to_jiffies(extra_listen_time);
++				wait_for_completion_timeout(&p2p->wait_next_af,
++							    duration);
++			}
++			clear_bit(INFF_P2P_STATUS_WAITING_NEXT_AF_LISTEN,
++				  &p2p->status);
++		}
++	}
++
++	if (p2p->block_gon_req_tx) {
++		/* if ack is true, supplicant will wait more time(100ms).
++		 * so we will return it as a success to get more time .
++		 */
++		p2p->block_gon_req_tx = false;
++		ack = true;
++	}
++
++	clear_bit(INFF_P2P_STATUS_WAITING_NEXT_ACT_FRAME, &p2p->status);
++	/* if all done, turn mpc on again */
++	if (config_af_params.mpc_onoff == 1)
++		inff_set_mpc(ifp, 1);
++
++	return ack;
++}
++
++/**
++ * inff_p2p_notify_rx_mgmt_p2p_probereq() - Event handler for p2p probe req.
++ */
++s32 inff_p2p_notify_rx_mgmt_p2p_probereq(struct inff_p2p_info *p2p,
++					 const struct inff_event_msg *e,
++					 struct inff_rx_mgmt_data *rxframe)
++{
++	struct afx_hdl *afx_hdl = &p2p->afx_hdl;
++
++	if (test_bit(INFF_P2P_STATUS_FINDING_COMMON_CHANNEL, &p2p->status) &&
++	    (ether_addr_equal(afx_hdl->tx_dst_addr, e->addr))) {
++		afx_hdl->peer_chan = be16_to_cpu(rxframe->chanspec);
++		inff_dbg(INFO, "PROBE REQUEST: Peer found, chanspec=0x%04x\n",
++			 afx_hdl->peer_chan);
++		complete(&afx_hdl->act_frm_scan);
++	}
++
++	/* Firmware sends us two proberesponses for each idx one. At the */
++	/* moment anything but bsscfgidx 0 is passed up to supplicant    */
++	if (e->bsscfgidx == 0)
++		return 1;
++
++	/* Filter any P2P probe reqs arriving during the GO-NEG Phase */
++	if (test_bit(INFF_P2P_STATUS_GO_NEG_PHASE, &p2p->status)) {
++		inff_dbg(INFO, "Filtering P2P probe_req in GO-NEG phase\n");
++		return 1;
++	}
++
++	return 0;
++}
++
++/**
++ * inff_p2p_get_current_chanspec() - Get current operation channel.
++ *
++ * @p2p: P2P specific data.
++ * @chanspec: chanspec to be returned.
++ */
++static void inff_p2p_get_current_chanspec(struct inff_p2p_info *p2p,
++					  u16 *chanspec)
++{
++	struct inff_if *ifp;
++	u8 mac_addr[ETH_ALEN];
++	struct inff_chan ch = {0};
++	struct inff_bss_info_le *bi;
++	u8 *buf;
++
++	ifp = p2p->bss_idx[P2PAPI_BSSCFG_PRIMARY].vif->ifp;
++
++	if (inff_fwcmd_cmd_data_get(ifp, INFF_C_GET_BSSID, mac_addr,
++				    ETH_ALEN) == 0) {
++		buf = kzalloc(WL_BSS_INFO_MAX, GFP_KERNEL);
++		if (buf) {
++			*(__le32 *)buf = cpu_to_le32(WL_BSS_INFO_MAX);
++			if (inff_fwcmd_cmd_data_get(ifp, INFF_C_GET_BSS_INFO,
++						    buf, WL_BSS_INFO_MAX) == 0) {
++				bi = (struct inff_bss_info_le *)(buf + 4);
++				*chanspec = le16_to_cpu(bi->chanspec);
++				kfree(buf);
++				return;
++			}
++			kfree(buf);
++		}
++	}
++	/* Use default channel for P2P */
++	ch.band = INFF_CHAN_BAND_2G;
++	ch.chnum = INFF_P2P_TEMP_CHAN;
++	ch.bw = INFF_CHAN_BW_20;
++	inff_chan_encchspec(&ch);
++	*chanspec = ch.chspec;
++}
++
++/**
++ * inff_p2p_ifchange - Change a P2P Role.
++ * @cfg: driver private data for cfg80211 interface.
++ * @if_type: interface type.
++ * Returns 0 if success.
++ */
++int inff_p2p_ifchange(struct inff_cfg80211_info *cfg,
++		      enum inff_fwcmd_p2p_if_types if_type)
++{
++	struct inff_p2p_info *p2p = &cfg->p2p;
++	struct inff_pub *drvr = cfg->pub;
++	struct inff_cfg80211_vif *vif;
++	struct inff_fwcmd_p2p_if_le if_request;
++	s32 err;
++	u16 chanspec;
++
++	vif = p2p->bss_idx[P2PAPI_BSSCFG_PRIMARY].vif;
++	if (!vif) {
++		iphy_err(drvr, "vif for P2PAPI_BSSCFG_PRIMARY does not exist\n");
++		return -EPERM;
++	}
++	inff_notify_escan_complete(cfg, vif->ifp, true, true);
++	vif = p2p->bss_idx[P2PAPI_BSSCFG_CONNECTION].vif;
++	if (!vif) {
++		iphy_err(drvr, "vif for P2PAPI_BSSCFG_CONNECTION does not exist\n");
++		return -EPERM;
++	}
++	inff_set_mpc(vif->ifp, 0);
++
++	/* In concurrency case, STA may be already associated in a particular */
++	/* channel. so retrieve the current channel of primary interface and  */
++	/* then start the virtual interface on that.                          */
++	inff_p2p_get_current_chanspec(p2p, &chanspec);
++
++	if_request.type = cpu_to_le16((u16)if_type);
++	if_request.chspec = cpu_to_le16(chanspec);
++	memcpy(if_request.addr, p2p->conn_int_addr, sizeof(if_request.addr));
++
++	inff_arm_vif_event(cfg, vif);
++	err = inff_fwcmd_iovar_data_set(vif->ifp, "p2p_ifupd", &if_request,
++					sizeof(if_request));
++	if (err) {
++		iphy_err(drvr, "p2p_ifupd FAILED, err=%d\n", err);
++		inff_disarm_vif_event(cfg);
++		return err;
++	}
++	err = inff_wait_vif_event(cfg, INFF_E_IF_CHANGE,
++				  INFF_VIF_EVENT_TIMEOUT);
++	inff_disarm_vif_event(cfg);
++	if (!err)  {
++		iphy_err(drvr, "No INFF_E_IF_CHANGE event received\n");
++		return -EIO;
++	}
++
++	err = inff_fwcmd_cmd_int_set(vif->ifp, INFF_C_SET_SCB_TIMEOUT,
++				     INFF_SCB_TIMEOUT_VALUE);
++
++	return err;
++}
++
++static int
++inff_p2p_vif_req_create(struct inff_p2p_info *p2p,
++			struct inff_if *ifp, u8 ea[ETH_ALEN],
++			enum nl80211_iftype type)
++{
++	struct inff_fwcmd_p2p_if_le if_request;
++	enum inff_fwcmd_p2p_if_types iftype;
++	int err;
++	u16 chanspec;
++
++	switch (type) {
++	case NL80211_IFTYPE_P2P_CLIENT:
++		iftype = INFF_FIL_P2P_IF_CLIENT;
++		break;
++	case NL80211_IFTYPE_P2P_GO:
++		iftype = INFF_FIL_P2P_IF_GO;
++		break;
++	default:
++		err = -EOPNOTSUPP;
++		goto fail;
++	}
++
++	/* we need a default channel */
++	inff_p2p_get_current_chanspec(p2p, &chanspec);
++
++	/* fill the firmware request */
++	memcpy(if_request.addr, ea, ETH_ALEN);
++	if_request.type = cpu_to_le16((u16)iftype);
++	if_request.chspec = cpu_to_le16(chanspec);
++
++	err = inff_fwcmd_iovar_data_set(ifp, "p2p_ifadd", &if_request,
++					sizeof(if_request));
++fail:
++	return err;
++}
++
++static int
++inff_p2p_vif_req_remove(struct inff_cfg80211_vif *vif)
++{
++	struct inff_cfg80211_info *cfg = wdev_to_cfg(&vif->wdev);
++	struct net_device *pri_ndev = cfg_to_ndev(cfg);
++	struct inff_if *ifp = netdev_priv(pri_ndev);
++	const u8 *addr = vif->wdev.netdev->dev_addr;
++
++	return inff_fwcmd_iovar_data_set(ifp, "p2p_ifdel", addr, ETH_ALEN);
++}
++
++/**
++ * inff_p2p_device_add_vif() - create a P2P_DEVICE virtual interface.
++ *
++ * @wiphy: wiphy device of new interface.
++ * @params: contains mac address for P2P device.
++ * @type: nl80211 interface type.
++ */
++struct wireless_dev *
++inff_p2p_device_add_vif(struct wiphy *wiphy,
++			struct vif_params *params,
++			enum nl80211_iftype type)
++{
++	struct inff_cfg80211_info *cfg = wiphy_to_cfg(wiphy);
++	struct inff_p2p_info *p2p = &cfg->p2p;
++	struct inff_pub *drvr = cfg->pub;
++	struct inff_cfg80211_vif *p2p_vif;
++	struct inff_if *pri_ifp, *p2p_ifp;
++	int err;
++	u32 bsscfgidx = 0;
++
++	if (type != NL80211_IFTYPE_P2P_DEVICE)
++		return ERR_PTR(-EINVAL);
++
++	if (p2p->bss_idx[P2PAPI_BSSCFG_DEVICE].vif)
++		return ERR_PTR(-ENOSPC);
++
++	p2p_vif = inff_alloc_vif(p2p->cfg, type);
++	if (IS_ERR(p2p_vif)) {
++		iphy_err(drvr, "could not create discovery vif\n");
++		return (struct wireless_dev *)p2p_vif;
++	}
++
++	pri_ifp = p2p->bss_idx[P2PAPI_BSSCFG_PRIMARY].vif->ifp;
++
++	/* firmware requires unique mac address for p2pdev interface */
++	if (!is_zero_ether_addr(params->macaddr) &&
++	    ether_addr_equal(params->macaddr, pri_ifp->mac_addr)) {
++		iphy_err(drvr, "discovery vif must be different from primary interface\n");
++		err = -EINVAL;
++		goto fail;
++	}
++
++	inff_p2p_generate_bss_mac(p2p, params->macaddr);
++	inff_p2p_set_firmware(pri_ifp, p2p->dev_addr);
++
++	inff_arm_vif_event(p2p->cfg, p2p_vif);
++
++	/* Initialize P2P Discovery in the firmware */
++	err = inff_fwcmd_iovar_int_set(pri_ifp, "p2p_disc", 1);
++	if (err < 0) {
++		iphy_err(drvr, "set p2p_disc error\n");
++		inff_disarm_vif_event(p2p->cfg);
++		goto fail;
++	}
++
++	/* wait for firmware event */
++	err = inff_wait_vif_event(p2p->cfg, INFF_E_IF_ADD,
++				  INFF_VIF_EVENT_TIMEOUT);
++	inff_disarm_vif_event(p2p->cfg);
++	if (!err) {
++		iphy_err(drvr, "vif event timeout occurred\n");
++		err = -EIO;
++		goto fail;
++	}
++
++	/* discovery interface created in firmware */
++	p2p_ifp = p2p_vif->ifp;
++	if (!p2p_ifp) {
++		iphy_err(drvr, "no if pointer provided\n");
++		err = -ENOENT;
++		goto fail;
++	}
++
++	p2p->bss_idx[P2PAPI_BSSCFG_DEVICE].vif = p2p_vif;
++	memcpy(p2p_ifp->mac_addr, p2p->dev_addr, ETH_ALEN);
++	memcpy(&p2p_vif->wdev.address, p2p->dev_addr, sizeof(p2p->dev_addr));
++
++	/* verify bsscfg index for P2P discovery */
++	err = inff_fwcmd_iovar_int_get(pri_ifp, "p2p_dev", &bsscfgidx);
++	if (err < 0) {
++		iphy_err(drvr, "retrieving discover bsscfg index failed\n");
++		goto fail;
++	}
++
++	WARN_ON(p2p_ifp->bsscfgidx != bsscfgidx);
++
++	init_completion(&p2p->send_af_done);
++	INIT_WORK(&p2p->afx_hdl.afx_work, inff_p2p_afx_handler);
++	init_completion(&p2p->afx_hdl.act_frm_scan);
++	init_completion(&p2p->wait_next_af);
++
++	return &p2p_vif->wdev;
++
++fail:
++	inff_free_vif(p2p_vif);
++	return ERR_PTR(err);
++}
++
++/**
++ * inff_p2p_device_del_vif() - delete a P2P Device virtual interface.
++ *
++ * @wiphy: wiphy device of interface.
++ * @wdev: wireless device of interface.
++ */
++int
++inff_p2p_device_del_vif(struct wiphy *wiphy, struct wireless_dev *wdev)
++{
++	struct inff_cfg80211_info *cfg = wiphy_to_cfg(wiphy);
++	struct inff_p2p_info *p2p = &cfg->p2p;
++	struct inff_cfg80211_vif *vif;
++
++	if (wdev->iftype != NL80211_IFTYPE_P2P_DEVICE)
++		return -EOPNOTSUPP;
++
++	if (!p2p->bss_idx[P2PAPI_BSSCFG_DEVICE].vif)
++		return -EINVAL;
++
++	inff_dbg(TRACE, "delete P2P Device vif\n");
++
++	inff_p2p_cancel_remain_on_channel(p2p, wdev);
++
++	clear_bit(INFF_P2P_STATUS_GO_NEG_PHASE, &p2p->status);
++	inff_dbg(INFO, "P2P: GO_NEG_PHASE status cleared\n");
++
++	inff_p2p_deinit_discovery(p2p);
++
++	vif = container_of(wdev, struct inff_cfg80211_vif, wdev);
++	inff_net_del_if(cfg->pub, vif->ifp, true);
++
++	return 0;
++}
++
++static int inff_p2p_get_conn_idx(struct inff_cfg80211_info *cfg)
++{
++	int i;
++	struct inff_if *ifp = netdev_priv(cfg_to_ndev(cfg));
++
++	if (!ifp)
++		return -ENODEV;
++
++	for (i = P2PAPI_BSSCFG_CONNECTION; i < P2PAPI_BSSCFG_MAX; i++) {
++		if (!cfg->p2p.bss_idx[i].vif) {
++			if (i == P2PAPI_BSSCFG_CONNECTION2 &&
++			    !(inff_feat_is_enabled(ifp, INFF_FEAT_RSDB))) {
++				inff_err("Multi p2p not supported");
++				return -EIO;
++			}
++			return i;
++		}
++	}
++	return -EIO;
++}
++
++/**
++ * inff_p2p_gosta_add_vif() - create a new P2P virtual interface.
++ *
++ * @wiphy: wiphy device of new interface.
++ * @name: name of the new interface.
++ * @name_assign_type: origin of the interface name
++ * @params: contains mac address for P2P device.
++ * @type: nl80211 interface type.
++ */
++struct wireless_dev *
++inff_p2p_gosta_add_vif(struct wiphy *wiphy, const char *name,
++		       unsigned char name_assign_type,
++		       struct vif_params *params,
++		       enum nl80211_iftype type)
++{
++	struct inff_cfg80211_info *cfg = wiphy_to_cfg(wiphy);
++	struct inff_if *ifp = netdev_priv(cfg_to_ndev(cfg));
++	struct inff_pub *drvr = cfg->pub;
++	struct inff_cfg80211_vif *vif;
++	int err = 0;
++	int connidx;
++	u8 *p2p_intf_addr;
++
++	if (type != NL80211_IFTYPE_P2P_CLIENT && type != NL80211_IFTYPE_P2P_GO)
++		return ERR_PTR(-EINVAL);
++
++	if (inff_vif_event_armed(cfg))
++		return ERR_PTR(-EBUSY);
++
++	inff_dbg(INFO, "adding vif \"%s\" (type=%d)\n", name, type);
++
++	vif = inff_alloc_vif(cfg, type);
++	if (IS_ERR(vif))
++		return (struct wireless_dev *)vif;
++	inff_arm_vif_event(cfg, vif);
++
++	connidx = inff_p2p_get_conn_idx(cfg);
++
++	if (connidx == P2PAPI_BSSCFG_CONNECTION)
++		p2p_intf_addr = cfg->p2p.conn_int_addr;
++	else if (connidx == P2PAPI_BSSCFG_CONNECTION2)
++		p2p_intf_addr = cfg->p2p.conn2_int_addr;
++	else
++		err = -EINVAL;
++
++	if (!err)
++		err = inff_p2p_vif_req_create(&cfg->p2p, ifp,
++					      p2p_intf_addr, type);
++
++	if (err) {
++		inff_err("request p2p interface failed\n");
++		inff_disarm_vif_event(cfg);
++		goto fail;
++	}
++
++	/* wait for firmware event */
++	err = inff_wait_vif_event(cfg, INFF_E_IF_ADD,
++				  INFF_VIF_EVENT_TIMEOUT);
++	inff_disarm_vif_event(cfg);
++	if (!err) {
++		iphy_err(drvr, "vif event timeout occurred\n");
++		err = -EIO;
++		goto fail;
++	}
++
++	/* interface created in firmware */
++	ifp = vif->ifp;
++	if (!ifp) {
++		iphy_err(drvr, "no if pointer provided\n");
++		err = -ENOENT;
++		goto fail;
++	}
++
++	strscpy(ifp->ndev->name, name, sizeof(ifp->ndev->name));
++	ifp->ndev->name_assign_type = name_assign_type;
++	err = inff_net_attach(ifp, true);
++	if (err) {
++		iphy_err(drvr, "Registering netdevice failed\n");
++		free_netdev(ifp->ndev);
++		goto fail;
++	}
++
++	cfg->p2p.bss_idx[connidx].vif = vif;
++	/* Disable firmware roaming for P2P interface  */
++	inff_fwcmd_iovar_int_set(ifp, "roam_off", 1);
++	if (type == NL80211_IFTYPE_P2P_GO) {
++		/* set station timeout for p2p */
++		inff_fwcmd_cmd_int_set(ifp, INFF_C_SET_SCB_TIMEOUT,
++				       INFF_SCB_TIMEOUT_VALUE);
++	}
++	return &ifp->vif->wdev;
++
++fail:
++	inff_free_vif(vif);
++	return ERR_PTR(err);
++}
++
++/**
++ * inff_p2p_gosta_del_vif() - delete a P2P virtual interface.
++ *
++ * @wiphy: wiphy device of interface.
++ * @wdev: wireless device of interface.
++ */
++int
++inff_p2p_gosta_del_vif(struct wiphy *wiphy, struct wireless_dev *wdev)
++{
++	struct inff_cfg80211_info *cfg = wiphy_to_cfg(wiphy);
++	struct inff_pub *drvr = cfg->pub;
++	struct inff_if *pri_ifp = inff_get_ifp(drvr, 0);
++	struct inff_p2p_info *p2p = &cfg->p2p;
++	struct inff_cfg80211_vif *vif;
++	bool wait_for_disable = false;
++	int err;
++	int ret;
++
++	inff_dbg(TRACE, "delete P2P vif\n");
++	vif = container_of(wdev, struct inff_cfg80211_vif, wdev);
++
++	switch (wdev->iftype) {
++	case NL80211_IFTYPE_P2P_CLIENT:
++		if (test_bit(INFF_VIF_STATUS_DISCONNECTING, &vif->sme_state))
++			wait_for_disable = true;
++		break;
++
++	case NL80211_IFTYPE_P2P_GO:
++		err = inff_fwcmd_iovar_data_set(pri_ifp, "p2p_ifdis",
++						vif->wdev.netdev->dev_addr,
++						ETH_ALEN);
++		if (!err)
++			wait_for_disable = true;
++		break;
++	default:
++		return -EOPNOTSUPP;
++	}
++
++	clear_bit(INFF_P2P_STATUS_GO_NEG_PHASE, &p2p->status);
++	inff_dbg(INFO, "P2P: GO_NEG_PHASE status cleared\n");
++
++	if (wait_for_disable)
++		wait_for_completion_timeout(&cfg->vif_disabled,
++					    INFF_P2P_DISABLE_TIMEOUT);
++
++	inff_vif_clear_mgmt_ies(vif);
++
++	inff_arm_vif_event(cfg, vif);
++
++	err = inff_p2p_vif_req_remove(vif);
++	if (err) {
++		iphy_err(drvr, "interface_remove failed %d\n", err);
++		goto err_disarm;
++	}
++
++	/* wait for firmware event */
++	ret = inff_wait_vif_event(cfg, INFF_E_IF_DEL,
++				  INFF_VIF_EVENT_TIMEOUT);
++	if (!ret) {
++		iphy_err(drvr, "vif event timeout occurred\n");
++		err = -EIO;
++		goto err_disarm;
++	}
++
++	inff_net_del_if(cfg->pub, vif->ifp, true);
++
++	if (vif == p2p->bss_idx[P2PAPI_BSSCFG_CONNECTION].vif)
++		p2p->bss_idx[P2PAPI_BSSCFG_CONNECTION].vif = NULL;
++	if (vif == p2p->bss_idx[P2PAPI_BSSCFG_CONNECTION2].vif)
++		p2p->bss_idx[P2PAPI_BSSCFG_CONNECTION2].vif = NULL;
++
++err_disarm:
++	inff_disarm_vif_event(cfg);
++	return err;
++}
++
++void inff_p2p_detach_device(struct inff_if *ifp, bool locked)
++{
++	struct inff_cfg80211_info *cfg;
++	struct inff_cfg80211_vif *vif;
++
++	inff_dbg(INFO, "P2P: device interface removed\n");
++	vif = ifp->vif;
++	cfg = wdev_to_cfg(&vif->wdev);
++	cfg->p2p.bss_idx[P2PAPI_BSSCFG_DEVICE].vif = NULL;
++	if (locked) {
++		cfg80211_unregister_wdev(&vif->wdev);
++	} else {
++		rtnl_lock();
++		wiphy_lock(cfg->wiphy);
++		cfg80211_unregister_wdev(&vif->wdev);
++		wiphy_unlock(cfg->wiphy);
++		rtnl_unlock();
++	}
++	inff_free_vif(vif);
++}
++
++int inff_p2p_start_device(struct inff_p2p_info *p2p,
++			  struct wireless_dev *wdev)
++{
++	struct inff_cfg80211_vif *vif;
++	int err;
++
++	vif = container_of(wdev, struct inff_cfg80211_vif, wdev);
++
++	err = inff_p2p_enable_discovery(p2p);
++	if (!err)
++		set_bit(INFF_VIF_STATUS_READY, &vif->sme_state);
++
++	return err;
++}
++
++void inff_p2p_stop_device(struct inff_p2p_info *p2p,
++			  struct wireless_dev *wdev)
++{
++	struct inff_cfg80211_info *cfg = p2p->cfg;
++	struct inff_cfg80211_vif *vif;
++
++	vif = container_of(wdev, struct inff_cfg80211_vif, wdev);
++	if (p2p->bss_idx[P2PAPI_BSSCFG_DEVICE].vif == vif) {
++		/* Set the discovery state to SCAN */
++		(void)inff_p2p_set_discover_state(vif->ifp,
++						  WL_P2P_DISC_ST_SCAN,
++						  0, 0);
++		inff_abort_scanning(cfg);
++		clear_bit(INFF_VIF_STATUS_READY, &vif->sme_state);
++	}
++}
++
++/**
++ * inff_p2p_attach() - attach for P2P.
++ *
++ * @cfg: driver private data for cfg80211 interface.
++ */
++s32 inff_p2p_attach(struct inff_cfg80211_info *cfg)
++{
++	struct inff_p2p_info *p2p;
++	struct inff_if *pri_ifp;
++	s32 err = 0;
++
++	p2p = &cfg->p2p;
++	p2p->cfg = cfg;
++
++	pri_ifp = inff_get_ifp(cfg->pub, 0);
++	p2p->bss_idx[P2PAPI_BSSCFG_PRIMARY].vif = pri_ifp->vif;
++	init_completion(&p2p->send_af_done);
++
++	return err;
++}
++
++/**
++ * inff_p2p_detach() - detach P2P.
++ *
++ * @p2p: P2P specific data.
++ */
++void inff_p2p_detach(struct inff_p2p_info *p2p)
++{
++	struct inff_cfg80211_vif *vif;
++
++	vif = p2p->bss_idx[P2PAPI_BSSCFG_DEVICE].vif;
++	if (vif) {
++		inff_p2p_cancel_remain_on_channel(p2p, &vif->wdev);
++		inff_p2p_deinit_discovery(p2p);
++		inff_net_del_if(p2p->cfg->pub, vif->ifp, false);
++	}
++	/* just set it all to zero */
++	memset(p2p, 0, sizeof(*p2p));
++}
+diff --git a/drivers/net/wireless/infineon/inffmac/p2p.h b/drivers/net/wireless/infineon/inffmac/p2p.h
 new file mode 100644
-index 000000000000..db92749d7da9
+index 000000000000..bdd2c1352b88
 --- /dev/null
-+++ b/drivers/net/wireless/infineon/inffmac/pcie.h
-@@ -0,0 +1,27 @@
++++ b/drivers/net/wireless/infineon/inffmac/p2p.h
+@@ -0,0 +1,202 @@
 +/* SPDX-License-Identifier: ISC */
 +/*
-+ * Copyright (c) 2014 Broadcom Corporation
++ * Copyright (c) 2012 Broadcom Corporation
 + *
 + * Copyright (c) 2025-2026, Infineon Technologies AG, or an affiliate of Infineon Technologies AG.
 + * All rights reserved.
 + */
 +
-+#ifndef INFF_PCIE_H
-+#define INFF_PCIE_H
++#ifndef INFF_P2P_H
++#define INFF_P2P_H
 +
-+struct inff_pciedev {
-+	struct inff_bus *bus;
-+	struct inff_pciedev_info *devinfo;
++#include <net/cfg80211.h>
++
++#include "dev_cmd.h"
++
++struct inff_cfg80211_info;
++
++/**
++ * enum p2p_bss_type - different type of BSS configurations.
++ *
++ * @P2PAPI_BSSCFG_PRIMARY: maps to driver's primary bsscfg.
++ * @P2PAPI_BSSCFG_DEVICE: maps to driver's P2P device discovery bsscfg.
++ * @P2PAPI_BSSCFG_CONNECTION: maps to driver's 1st P2P connection bsscfg.
++ * @P2PAPI_BSSCFG_CONNECTION2: maps to driver's 2nd P2P connection bsscfg.
++ * @P2PAPI_BSSCFG_MAX: used for range checking.
++ */
++enum p2p_bss_type {
++	P2PAPI_BSSCFG_PRIMARY, /* maps to driver's primary bsscfg */
++	P2PAPI_BSSCFG_DEVICE, /* maps to driver's P2P device discovery bsscfg */
++	P2PAPI_BSSCFG_CONNECTION, /* driver's 1st P2P connection bsscfg */
++	P2PAPI_BSSCFG_CONNECTION2, /* driver's 2nd P2P connection bsscfg */
++	P2PAPI_BSSCFG_MAX
 +};
 +
-+void inff_pcie_handle_mb_data(struct inff_bus *bus_if, u32 d2h_mb_data);
++/**
++ * struct p2p_bss - peer-to-peer bss related information.
++ *
++ * @vif: virtual interface of this P2P bss.
++ * @private_data: TBD
++ */
++struct p2p_bss {
++	struct inff_cfg80211_vif *vif;
++	void *private_data;
++};
 +
-+#ifdef CONFIG_INFFMAC_PCIE
-+int inff_pcie_register(void);
-+void inff_pcie_exit(void);
-+#else
-+static inline int inff_pcie_register(void) { return 0; }
-+static inline void inff_pcie_exit(void) { }
-+#endif
++/**
++ * enum inff_p2p_status - P2P specific dongle status.
++ *
++ * @INFF_P2P_STATUS_IF_ADD: peer-to-peer vif add sent to dongle.
++ * @INFF_P2P_STATUS_IF_DEL: NOT-USED?
++ * @INFF_P2P_STATUS_IF_DELETING: peer-to-peer vif delete sent to dongle.
++ * @INFF_P2P_STATUS_IF_CHANGING: peer-to-peer vif change sent to dongle.
++ * @INFF_P2P_STATUS_IF_CHANGED: peer-to-peer vif change completed on dongle.
++ * @INFF_P2P_STATUS_ACTION_TX_COMPLETED: action frame tx completed.
++ * @INFF_P2P_STATUS_ACTION_TX_NOACK: action frame tx not acked.
++ * @INFF_P2P_STATUS_GO_NEG_PHASE: P2P GO negotiation ongoing.
++ * @INFF_P2P_STATUS_DISCOVER_LISTEN: P2P listen, remaining on channel.
++ * @INFF_P2P_STATUS_SENDING_ACT_FRAME: In the process of sending action frame.
++ * @INFF_P2P_STATUS_WAITING_NEXT_AF_LISTEN: extra listen time for af tx.
++ * @INFF_P2P_STATUS_WAITING_NEXT_ACT_FRAME: waiting for action frame response.
++ * @INFF_P2P_STATUS_FINDING_COMMON_CHANNEL: search channel for AF active.
++ */
++enum inff_p2p_status {
++	INFF_P2P_STATUS_ENABLED,
++	INFF_P2P_STATUS_IF_ADD,
++	INFF_P2P_STATUS_IF_DEL,
++	INFF_P2P_STATUS_IF_DELETING,
++	INFF_P2P_STATUS_IF_CHANGING,
++	INFF_P2P_STATUS_IF_CHANGED,
++	INFF_P2P_STATUS_ACTION_TX_COMPLETED,
++	INFF_P2P_STATUS_ACTION_TX_NOACK,
++	INFF_P2P_STATUS_GO_NEG_PHASE,
++	INFF_P2P_STATUS_DISCOVER_LISTEN,
++	INFF_P2P_STATUS_SENDING_ACT_FRAME,
++	INFF_P2P_STATUS_WAITING_NEXT_AF_LISTEN,
++	INFF_P2P_STATUS_WAITING_NEXT_ACT_FRAME,
++	INFF_P2P_STATUS_FINDING_COMMON_CHANNEL
++};
 +
-+#endif /* INFF_PCIE_H */
-diff --git a/include/linux/pci_ids.h b/include/linux/pci_ids.h
-index a9a089566b7c..7a252f52cc6f 100644
---- a/include/linux/pci_ids.h
-+++ b/include/linux/pci_ids.h
-@@ -2259,6 +2259,9 @@
- #define PCI_DEVICE_ID_BCM4401		0x4401
- #define PCI_DEVICE_ID_BCM4401B0		0x4402
++/**
++ * struct afx_hdl - action frame off channel storage.
++ *
++ * @afx_work: worker thread for searching channel
++ * @act_frm_scan: thread synchronizing struct.
++ * @is_active: channel searching active.
++ * @peer_chan: current channel.
++ * @is_listen: sets mode for afx worker.
++ * @my_listen_chan: this peers listen channel.
++ * @peer_listen_chan: remote peers listen channel.
++ * @tx_dst_addr: mac address where tx af should be sent to.
++ */
++struct afx_hdl {
++	struct work_struct afx_work;
++	struct completion act_frm_scan;
++	bool is_active;
++	u16 peer_chan;
++	bool is_listen;
++	u16 my_listen_chan;
++	u16 peer_listen_chan;
++	u8 tx_dst_addr[ETH_ALEN];
++};
++
++/**
++ * struct inff_p2p_info - p2p specific driver information.
++ *
++ * @cfg: driver private data for cfg80211 interface.
++ * @status: status of P2P (see enum inff_p2p_status).
++ * @dev_addr: P2P device address.
++ * @int_addr: P2P interface address.
++ * @bss_idx: informate for P2P bss types.
++ * @listen_timer: timer for @WL_P2P_DISC_ST_LISTEN discover state.
++ * @listen_channel: channel for @WL_P2P_DISC_ST_LISTEN discover state.
++ * @remain_on_channel: contains copy of struct used by cfg80211.
++ * @remain_on_channel_cookie: cookie counter for remain on channel cmd
++ * @remain_on_channel_wdev: wdev for remain on channel cmd
++ * @next_af_subtype: expected action frame subtype.
++ * @send_af_done: indication that action frame tx is complete.
++ * @afx_hdl: action frame search handler info.
++ * @af_sent_channel: channel action frame is sent.
++ * @af_tx_sent_jiffies: jiffies time when af tx was transmitted.
++ * @wait_next_af: thread synchronizing struct.
++ * @gon_req_action: about to send go negotiation requets frame.
++ * @block_gon_req_tx: drop tx go negotiation requets frame.
++ * @wait_for_offchan_complete: wait for off-channel tx completion event.
++ */
++struct inff_p2p_info {
++	struct inff_cfg80211_info *cfg;
++	unsigned long status;
++	u8 dev_addr[ETH_ALEN];
++	u8 conn_int_addr[ETH_ALEN];
++	u8 conn2_int_addr[ETH_ALEN];
++	struct p2p_bss bss_idx[P2PAPI_BSSCFG_MAX];
++	struct timer_list listen_timer;
++	u8 listen_channel;
++	struct ieee80211_channel remain_on_channel;
++	u32 remain_on_channel_cookie;
++	struct wireless_dev *remain_on_channel_wdev;
++	u8 next_af_subtype;
++	struct completion send_af_done;
++	struct afx_hdl afx_hdl;
++	u32 af_sent_channel;
++	unsigned long af_tx_sent_jiffies;
++	struct completion wait_next_af;
++	bool gon_req_action;
++	bool block_gon_req_tx;
++	bool wait_for_offchan_complete;
++};
++
++s32 inff_p2p_attach(struct inff_cfg80211_info *cfg);
++void inff_p2p_detach(struct inff_p2p_info *p2p);
++
++struct wireless_dev *
++inff_p2p_gosta_add_vif(struct wiphy *wiphy, const char *name,
++		       unsigned char name_assign_type,
++		       struct vif_params *params,
++		       enum nl80211_iftype type);
++int inff_p2p_gosta_del_vif(struct wiphy *wiphy, struct wireless_dev *wdev);
++struct wireless_dev *
++inff_p2p_device_add_vif(struct wiphy *wiphy,
++			struct vif_params *params,
++			enum nl80211_iftype type);
++int inff_p2p_device_del_vif(struct wiphy *wiphy, struct wireless_dev *wdev);
++
++int inff_p2p_ifchange(struct inff_cfg80211_info *cfg,
++		      enum inff_fwcmd_p2p_if_types if_type);
++
++void inff_p2p_detach_device(struct inff_if *ifp, bool locked);
++int inff_p2p_start_device(struct inff_p2p_info *p2p,
++			  struct wireless_dev *wdev);
++void inff_p2p_stop_device(struct inff_p2p_info *p2p,
++			  struct wireless_dev *wdev);
++int inff_p2p_scan_prep(struct wiphy *wiphy,
++		       struct cfg80211_scan_request *request,
++		       struct inff_cfg80211_vif *vif);
++void inff_print_action_frame(bool tx, void *frame, u32 frame_len);
++int inff_p2p_remain_on_channel(struct inff_p2p_info *p2p,
++			       struct wireless_dev *wdev,
++			       struct ieee80211_channel *channel,
++			       unsigned int duration, u64 *cookie);
++int inff_p2p_notify_listen_complete(struct inff_if *ifp,
++				    const struct inff_event_msg *e,
++				    void *data);
++int inff_p2p_cancel_remain_on_channel(struct inff_p2p_info *p2p,
++				      struct wireless_dev *wdev);
++int inff_p2p_action_rx_complete(struct inff_p2p_info *p2p,
++				struct inff_if *ifp,
++				u8 *frame, u32 mgmt_frame_len,
++				const u8 *addr, u16 chspec);
++int inff_p2p_action_tx_complete(struct inff_p2p_info *p2p,
++				struct inff_if *ifp,
++				const struct inff_event_msg *e);
++bool inff_p2p_send_action_frame(struct inff_cfg80211_info *cfg,
++				struct net_device *ndev,
++				struct inff_fwcmd_af_params_le *af_params,
++				struct inff_cfg80211_vif *vif,
++				struct ieee80211_channel *peer_listen_chan);
++bool inff_p2p_scan_finding_common_channel(struct inff_cfg80211_info *cfg,
++					  struct inff_bss_info_le *bi);
++s32 inff_p2p_notify_rx_mgmt_p2p_probereq(struct inff_p2p_info *p2p,
++					 const struct inff_event_msg *e,
++					 struct inff_rx_mgmt_data *rxframe);
++#endif /* INFF_P2P_H */
+diff --git a/include/linux/ieee80211-p2p.h b/include/linux/ieee80211-p2p.h
+index 180891c11f08..00a908b52362 100644
+--- a/include/linux/ieee80211-p2p.h
++++ b/include/linux/ieee80211-p2p.h
+@@ -48,6 +48,31 @@ enum ieee80211_p2p_attr_id {
+ 	IEEE80211_P2P_ATTR_MAX
+ };
  
-+#define PCI_VENDOR_ID_CYPRESS		0x12be
-+#define PCI_DEVICE_ID_CYW5557X		0xbd31
++/*
++ * enum ieee80211_p2p_pub_action_frame - P2P Public action frame types
++ */
++enum ieee80211_p2p_pub_action_frame {
++	IEEE80211_P2P_PUB_ACTION_GO_NEG_REQ = 0,
++	IEEE80211_P2P_PUB_ACTION_GO_NEG_RESP = 1,
++	IEEE80211_P2P_PUB_ACTION_GO_NEG_CONFIRM = 2,
++	IEEE80211_P2P_PUB_ACTION_P2P_INVITE_REQ = 3,
++	IEEE80211_P2P_PUB_ACTION_P2P_INVITE_RESP = 4,
++	IEEE80211_P2P_PUB_ACTION_DEVICE_DISCOV_REQ = 5,
++	IEEE80211_P2P_PUB_ACTION_DEVICE_DISCOV_RESP = 6,
++	IEEE80211_P2P_PUB_ACTION_PROVISION_DISCOV_REQ = 7,
++	IEEE80211_P2P_PUB_ACTION_PROVISION_DISCOV_RESP = 8,
++};
 +
- #define PCI_VENDOR_ID_TOPIC		0x151f
- #define PCI_DEVICE_ID_TOPIC_TP560	0x0000
- 
++/*
++ * enum ieee80211_p2p_action_frame - P2P action frame types
++ */
++enum ieee80211_p2p_action_frame {
++	IEEE80211_P2P_ACTION_NOTICE_OF_ABSENCE = 0,
++	IEEE80211_P2P_ACTION_PRESENCE_REQ = 1,
++	IEEE80211_P2P_ACTION_PRESENCE_RESP = 2,
++	IEEE80211_P2P_ACTION_GO_DISCOV_REQ = 3
++};
++
+ /* Notice of Absence attribute - described in P2P spec 4.1.14 */
+ /* Typical max value used here */
+ #define IEEE80211_P2P_NOA_DESC_MAX	4
 -- 
 2.25.1
 
