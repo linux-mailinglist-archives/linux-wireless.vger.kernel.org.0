@@ -1,46 +1,46 @@
-Return-Path: <linux-wireless+bounces-30735-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-30736-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id E14EDD1703D
-	for <lists+linux-wireless@lfdr.de>; Tue, 13 Jan 2026 08:30:10 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id C686BD1704F
+	for <lists+linux-wireless@lfdr.de>; Tue, 13 Jan 2026 08:30:44 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id C4411302EA3B
-	for <lists+linux-wireless@lfdr.de>; Tue, 13 Jan 2026 07:29:16 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 1158230124F5
+	for <lists+linux-wireless@lfdr.de>; Tue, 13 Jan 2026 07:30:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 33F5A36A018;
-	Tue, 13 Jan 2026 07:29:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 37394313540;
+	Tue, 13 Jan 2026 07:30:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="qyV1HwVp"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="t5eliOJ/"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0FC51269CE7;
-	Tue, 13 Jan 2026 07:29:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 137A9311C1B;
+	Tue, 13 Jan 2026 07:30:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768289355; cv=none; b=QdYO0J/eplo2NqSheT3Vkwhyen3K1uyhcj2q2PeDJ8ZBWrHuBhbFLB1ZrlBPV/XZExEA6sI5jt4AGWsVtjtjhImOebtQWPJly979m3upGQ/T4kXcn3Hod6f6uFGRHFLfrVb9AWAhtGFCDr/oclT2Qm+wn75mmyW6vtAx5tHOCik=
+	t=1768289436; cv=none; b=PiNUcl4BkUZYGQdcrvZkrh7rrNnRGrvCDLYc4p+j2hCeQSz5NdX4G55XZlISGquj7oubYi4wUlHH2bVdeBONol7FkJVEEKwVCQ4zpijGbF8bkJD3MjGZjodUnrAHWF+KUYJBhcLxsdrcGozu0w3tkhf6xur9x4fReSOjYQe6RfU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768289355; c=relaxed/simple;
-	bh=+1g63FBZYAnjoJfvzsiNwUHQkuO5dOwtUQFXga6ktcE=;
+	s=arc-20240116; t=1768289436; c=relaxed/simple;
+	bh=GkuVz6PJ37bXi+SsxKuFykpOfTC/ZcnWw1QD/eObPQI=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=MXy1Vjb9Mk5/HBoim3kooOI6aNCL+FP9NwysnxNL7jsZDCdUFrfEajnT02HI5QMGnTYeCGE2JDE+2efrVSSVDiRTiXyjHhxLoECrvw422Z4DEaeA8xB0JKbipPYB9YZhnGRlP+j3vrPILeC+fUGlNAhqu6QUul8qr0GpFFlnLsw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=qyV1HwVp; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 83EE3C116C6;
-	Tue, 13 Jan 2026 07:29:12 +0000 (UTC)
+	 In-Reply-To:Content-Type; b=KczXS7IF+JJ9WWtOlxUSw/2IpqRB2tgwkKa6mIBCgXGbkMdIMMw7sFAdkRxoZZOfsLBueWBU9wF61kXsTbqatR5RawoqCJ30ByI+u51NPncxWvboolAZzSbGBYRwCjMZX9B4fnOrtybevmgcML20tNoxbSChByHJg+rXTQKx/Ow=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=t5eliOJ/; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 66B75C116C6;
+	Tue, 13 Jan 2026 07:30:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1768289354;
-	bh=+1g63FBZYAnjoJfvzsiNwUHQkuO5dOwtUQFXga6ktcE=;
+	s=k20201202; t=1768289435;
+	bh=GkuVz6PJ37bXi+SsxKuFykpOfTC/ZcnWw1QD/eObPQI=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=qyV1HwVpVW6fy/NWPVNzSp6vrlrq1Hq0n2gpNvHTqhWZSUdSv96xvSKJsVxBGP5YQ
-	 hPQ6N0pBEbZ1tEMNBwKkcxz6zsgElS/izbeVcj7S4XBTaX4eGjIDzl2G6CCC20zhZ5
-	 laLlW9ir0vfk0hqCHx3Fbw0ly5zQBBPMAjq8r8gbRizBdncDBFcUq0wq1P8LPHQ3/F
-	 MsT1BpBxl/E43pGOflZfQGOG9EmrEy0FHn58jHV5i2v0Epayk121/XYalC/ipD+xGo
-	 5SnQKHktdJhmH8CKDDfE32FjIAu9Xkihu3rXoWuEEXpqC6AiLxc+ZdQz5ldtSadbB9
-	 9gJWcjc0H4d/Q==
-Message-ID: <6777df67-e6db-4f11-a971-9627fe86765e@kernel.org>
-Date: Tue, 13 Jan 2026 08:29:10 +0100
+	b=t5eliOJ/FiqE2tCMO4evqlPqp7LNVswtFLvaC/174Tm9zXKFncsP9Z6CFpZ+Yd1h9
+	 gkJsqdY9P14c8LUkyvfJkVrqAjd/TNRlQcsbWonGe/qwTvYMZmwTnaxrxhGogj00OT
+	 aO7IcP6WIjfgCeXLNwsP0vSBW1TG0tPx3IzOSy9a1xIoH6+Ir7JftVAbn/faJOcHz/
+	 PN/t+KhNXqVX5PCzt1oeqJve9G2w4PEZ8mNgd+aiyCBhJHeC0VAk9o3X+uBNaO8i52
+	 GzDtglPOBDQathEI2w77Swe06/VwSMCsFxV2eYqy60vRcQQK21/Ljqwoj2YxiTy2HU
+	 FRTavSpN9DQqw==
+Message-ID: <12234020-267c-4d62-baff-89e6d053f24e@kernel.org>
+Date: Tue, 13 Jan 2026 08:30:31 +0100
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
@@ -48,19 +48,16 @@ List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH ath-current 2/2] dt-bindings: net: wireless: ath11k-pci:
- deprecate 'firmware-name' property
-To: Jeff Johnson <jeff.johnson@oss.qualcomm.com>,
- Miaoqing Pan <miaoqing.pan@oss.qualcomm.com>, jjohnson@kernel.org,
+Subject: Re: [PATCH v2 ath-current 1/2] wifi: ath11k: add usecase firmware
+ handling based on device compatible
+To: Miaoqing Pan <miaoqing.pan@oss.qualcomm.com>, jjohnson@kernel.org,
  johannes@sipsolutions.net, robh@kernel.org, krzk+dt@kernel.org,
  conor+dt@kernel.org
 Cc: ath11k@lists.infradead.org, linux-wireless@vger.kernel.org,
- linux-kernel@vger.kernel.org, devicetree@vger.kernel.org
-References: <20251204071100.970518-1-miaoqing.pan@oss.qualcomm.com>
- <20251204071100.970518-3-miaoqing.pan@oss.qualcomm.com>
- <f60bc80d-a947-4083-9e14-000a937de412@oss.qualcomm.com>
- <76d1c3ad-d648-4719-b016-1f16b195e64c@kernel.org>
- <0ad4722d-1557-4d8d-ae45-c0fdf893067f@oss.qualcomm.com>
+ linux-kernel@vger.kernel.org, devicetree@vger.kernel.org,
+ Baochen Qiang <baochen.qiang@oss.qualcomm.com>
+References: <20251214025230.716387-1-miaoqing.pan@oss.qualcomm.com>
+ <20251214025230.716387-2-miaoqing.pan@oss.qualcomm.com>
 From: Krzysztof Kozlowski <krzk@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=krzk@kernel.org; keydata=
@@ -106,63 +103,38 @@ Autocrypt: addr=krzk@kernel.org; keydata=
  jWt87ecuHlpL3uuQ0ZZNWqHgZoQLXoqC2ZV5KrtKWb/jyiFX/sxSrodALf0zf+tfHv0FZWT2
  zHjUqd0t4njD/UOsuIMOQn4Ig0SdivYPfZukb5cdasKJukG1NOpbW7yRNivaCnfZz6dTawXw
  XRIV/KDsHQiyVxKvN73bThKhONkcX2LWuD928tAR6XMM2G5ovxLe09vuOzzfTWQDsm++9UKF a/A=
-In-Reply-To: <0ad4722d-1557-4d8d-ae45-c0fdf893067f@oss.qualcomm.com>
+In-Reply-To: <20251214025230.716387-2-miaoqing.pan@oss.qualcomm.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 
-On 12/01/2026 20:51, Jeff Johnson wrote:
-> On 12/11/2025 7:23 PM, Krzysztof Kozlowski wrote:
->> On 11/12/2025 17:44, Jeff Johnson wrote:
->>> On 12/3/2025 11:11 PM, Miaoqing Pan wrote:
->>>> The firmware-name property was introduced to allow end-users and
->>>> integrators to select usecase specific firmware for the WCN6855.
->>>> However, specifying firmware for an M.2 WLAN module in the Device
->>>> Tree is not appropriate. Instead, this functionality will be handled
->>>> within the ath11k driver.
->>>>
->>>> Signed-off-by: Miaoqing Pan <miaoqing.pan@oss.qualcomm.com>
->>>> ---
->>>>  .../devicetree/bindings/net/wireless/qcom,ath11k-pci.yaml        | 1 +
->>>>  1 file changed, 1 insertion(+)
->>>>
->>>> diff --git a/Documentation/devicetree/bindings/net/wireless/qcom,ath11k-pci.yaml b/Documentation/devicetree/bindings/net/wireless/qcom,ath11k-pci.yaml
->>>> index e34d42a30192..0162e365798b 100644
->>>> --- a/Documentation/devicetree/bindings/net/wireless/qcom,ath11k-pci.yaml
->>>> +++ b/Documentation/devicetree/bindings/net/wireless/qcom,ath11k-pci.yaml
->>>> @@ -37,6 +37,7 @@ properties:
->>>>  
->>>>    firmware-name:
->>>>      maxItems: 1
->>>> +    deprecated: true
->>>>      description:
->>>>        If present, a board or platform specific string used to lookup
->>>>        usecase-specific firmware files for the device.
->>>
->>> The driver patch completely removes support for this, so is this really
->>> considered deprecated? Or should this actually be considered obsolete and
->>
->> That's silent ABI break. I will formally NAK the patch.
->>
->>
->>> completely removed?
->>>
->>> Do any DTS files actually reference this?
->>>
->>> /jeff
->>
->>
->> Best regards,
->> Krzysztof
+On 14/12/2025 03:52, Miaoqing Pan wrote:
+> For M.2 WLAN chips, there is no suitable DTS node to specify the
+> firmware-name property. In addition, assigning firmware for the
+> M.2 PCIe interface causes chips that do not use usecase specific
+> firmware to fail. Therefore, abandoning the approach of specifying
+> firmware in DTS. As an alternative, propose a static lookup table
+> mapping device compatible to firmware names. Currently, only WCN6855
+> HW2.1 requires this.
 > 
-> Krzysztof,
-> Can you check the v2 to see if you still want to NAK?
+> For details on usecase specific firmware, see:
+> https://lore.kernel.org/all/20250522013444.1301330-3-miaoqing.pan@oss.qualcomm.com/.
 > 
-> https://msgid.link/20251214025230.716387-3-miaoqing.pan@oss.qualcomm.com
+> Tested-on: WCN6855 hw2.1 PCI WLAN.HSP.1.1-04685-QCAHSPSWPL_V1_V2_SILICONZ_IOE-1
 > 
+> Fixes: edbbc647c4f3 ("wifi: ath11k: support usercase-specific firmware overrides")
+> Reviewed-by: Baochen Qiang <baochen.qiang@oss.qualcomm.com>
+> Signed-off-by: Miaoqing Pan <miaoqing.pan@oss.qualcomm.com>
+> ---
 
-First, yes, still NAK.
+I already said why it is wrong patch and you did not improve. You also
+added tags from reviews of something completely different, which
+effectively bypassed my filters. I find it unacceptable.
 
-Second, that patch faked Rob's tag, so it is unacceptable!
+Let me mark it formally:
+
+NAK
+
+Nacked-by: Krzysztof Kozlowski <krzysztof.kozlowski@oss.qualcomm.com>
 
 Best regards,
 Krzysztof
