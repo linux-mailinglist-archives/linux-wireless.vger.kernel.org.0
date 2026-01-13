@@ -1,68 +1,68 @@
-Return-Path: <linux-wireless+bounces-30772-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-30773-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 80A73D1B40C
-	for <lists+linux-wireless@lfdr.de>; Tue, 13 Jan 2026 21:40:43 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id 81F51D1B3DB
+	for <lists+linux-wireless@lfdr.de>; Tue, 13 Jan 2026 21:38:40 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 530AD307A6AA
-	for <lists+linux-wireless@lfdr.de>; Tue, 13 Jan 2026 20:38:23 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id DBD3B30057EA
+	for <lists+linux-wireless@lfdr.de>; Tue, 13 Jan 2026 20:38:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 70545276051;
-	Tue, 13 Jan 2026 20:38:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DA89B2EB840;
+	Tue, 13 Jan 2026 20:38:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=infineon.com header.i=@infineon.com header.b="Q74L91BA"
+	dkim=pass (1024-bit key) header.d=infineon.com header.i=@infineon.com header.b="N03gZ0DC"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from smtp9.infineon.com (smtp9.infineon.com [217.10.52.204])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 63E172C21C2
-	for <linux-wireless@vger.kernel.org>; Tue, 13 Jan 2026 20:38:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4849D276051
+	for <linux-wireless@vger.kernel.org>; Tue, 13 Jan 2026 20:38:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.10.52.204
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768336702; cv=none; b=cnQ5R3pXsd6E6YitEHpTTHk5diLTF3E8JlPvidYiwEpBhLzeSr7t1G38+tRMAOVaK5wiocScQkQpZLzeywmiAdXVhLkNJq14VT5lJlsYV131O4rJPRAL2XCHZsQbgsn+Y9th+QI2aG5OcLvcwfYkaarbjXsDWZZCB5KDLE8D+6E=
+	t=1768336716; cv=none; b=SOnE+Qf357Yx0BFVl7K6Z/kXcPsnEP9FW2zzk/FIghSWkJ8vyIFgZuI6ZkswpAtt5fRd2jPeZ4doip/jqpnl8rAHWPsMKGNWl72fAwek8fBRnpTayRPq0vdu7wMpXAhw3SUFYhvM0qgctoaZSRydcRoIsmkC+k5Bw06RfLnHpP0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768336702; c=relaxed/simple;
-	bh=gwg3/AH1gH9/xwmTp5z10i8OVODugKW8Zn0ifn63D2o=;
+	s=arc-20240116; t=1768336716; c=relaxed/simple;
+	bh=IEqOW/EkEvrh3bmi2NuZKVRwpkiUl7/nb3QNF2qQ8RU=;
 	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=Dv21hCCYqaspUazMUqhjfivamR8jSCpS0RajwEyv3dnhxuQf9qnuycFaQtzC+lNeC7fYcHQ+aYU227YAd+2SrqkNyX9zh3aSF89dHAbTwytyt263A8u9FKbdjrDWvzCbPcm76y7PqVWqJbI9OI0r7eSVZuwLYBzWgb07lqSXN5U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infineon.com; spf=pass smtp.mailfrom=infineon.com; dkim=pass (1024-bit key) header.d=infineon.com header.i=@infineon.com header.b=Q74L91BA; arc=none smtp.client-ip=217.10.52.204
+	 MIME-Version:Content-Type; b=JvCx6iE2c8qNXtBm5OV3ABv1wH+/lAzaJj58RwDZXWJokcq8gT2MqPjeUQd37c4f0ItNsGA1xNRK/SuntCr2+ynRnUwVDVMGhUN7mOQuJn1AtbVy8xOJ7qmzGY7tnlGg6JtWZhre2cghRbljbd0ahP9hZ0pCg++/bTUQcd0yzgc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infineon.com; spf=pass smtp.mailfrom=infineon.com; dkim=pass (1024-bit key) header.d=infineon.com header.i=@infineon.com header.b=N03gZ0DC; arc=none smtp.client-ip=217.10.52.204
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infineon.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=infineon.com
 DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple;
   d=infineon.com; i=@infineon.com; q=dns/txt; s=IFXMAIL;
-  t=1768336699; x=1799872699;
+  t=1768336713; x=1799872713;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=gwg3/AH1gH9/xwmTp5z10i8OVODugKW8Zn0ifn63D2o=;
-  b=Q74L91BAHORI7fmR1BUGqdYTwh1PMsvobsxmrwoFPOQfbInnXBHUB1uI
-   pAg9D46/veI7teD3AF1cwaqRFEaPCFX9/oqqRPQNB2I+R/Y+Zz7rLek9G
-   WvCbY2dtG6xuRZUOjDTsiaJb/qV+xIAWXKACIvwtM60F8awW4JlPTz+Es
-   Q=;
-X-CSE-ConnectionGUID: +fIYdSjtRriFJI8Qzfh3TQ==
-X-CSE-MsgGUID: 98aCkcq2Q1GlqjelprZttQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11670"; a="78107153"
+  bh=IEqOW/EkEvrh3bmi2NuZKVRwpkiUl7/nb3QNF2qQ8RU=;
+  b=N03gZ0DCB7AJ1knFKebGUwAXeqC4NJJ7zQT0A/YuFkjxyaDiYj+1Z8s7
+   XQuRs04LYPbz3KaOlg2Wqy61bGzaVuxhdXFNn0rIxbJmYgZxWCCrNkt8j
+   LHXhomEWX2bYpTfdMCwjaMWyifOAgA108tIDAJ6XHxL3SrNUDrjLHsPER
+   0=;
+X-CSE-ConnectionGUID: q1fvHuk0TpKo7RGkJXraag==
+X-CSE-MsgGUID: Baw5NfYfSOacIxpFqo6SAw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11670"; a="78107174"
 X-IronPort-AV: E=Sophos;i="6.21,222,1763420400"; 
-   d="scan'208";a="78107153"
+   d="scan'208";a="78107174"
 X-Amp-Result: SKIPPED(no attachment in message)
-Received: from unknown (HELO MUCSE805.infineon.com) ([172.23.29.31])
-  by smtp9.infineon.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 Jan 2026 21:38:17 +0100
-Received: from MUCSE827.infineon.com (172.23.29.20) by MUCSE805.infineon.com
- (172.23.29.31) with Microsoft SMTP Server (version=TLS1_2,
+Received: from unknown (HELO MUCSE822.infineon.com) ([172.23.29.53])
+  by smtp9.infineon.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 Jan 2026 21:38:31 +0100
+Received: from MUCSE827.infineon.com (172.23.29.20) by MUCSE822.infineon.com
+ (172.23.29.53) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.35; Tue, 13 Jan
- 2026 21:38:16 +0100
+ 2026 21:38:30 +0100
 Received: from ISCN5CG14747PP.infineon.com (10.161.6.196) by
  MUCSE827.infineon.com (172.23.29.20) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.35; Tue, 13 Jan 2026 21:38:14 +0100
+ 15.2.2562.35; Tue, 13 Jan 2026 21:38:28 +0100
 From: Gokul Sivakumar <gokulkumar.sivakumar@infineon.com>
 To: <linux-wireless@vger.kernel.org>
 CC: Johannes Berg <johannes@sipsolutions.net>, Arend van Spriel
 	<arend.vanspriel@broadcom.com>, <marex@nabladev.com>,
 	<wlan-kernel-dev-list@infineon.com>, <gokulkumar.sivakumar@infineon.com>
-Subject: [PATCH wireless-next v2 17/34] wifi: inffmac: add msgbuf.c/h
-Date: Wed, 14 Jan 2026 02:03:30 +0530
-Message-ID: <20260113203350.16734-18-gokulkumar.sivakumar@infineon.com>
+Subject: [PATCH wireless-next v2 18/34] wifi: inffmac: add pcie.c/h
+Date: Wed, 14 Jan 2026 02:03:31 +0530
+Message-ID: <20260113203350.16734-19-gokulkumar.sivakumar@infineon.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20260113203350.16734-1-gokulkumar.sivakumar@infineon.com>
 References: <20260113203350.16734-1-gokulkumar.sivakumar@infineon.com>
@@ -74,26 +74,27 @@ List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Content-Type: text/plain
-X-ClientProxiedBy: MUCSE806.infineon.com (172.23.29.32) To
+X-ClientProxiedBy: MUCSE824.infineon.com (172.23.29.55) To
  MUCSE827.infineon.com (172.23.29.20)
 
-Driver implementation of the MSGBUF protocol used for the Control and Data
-communication with Infineon's WLAN Device over the PCIe BUS.
+Implements the specific bus logic for Infineon devices connected to the
+linux machine via a PCIe interface.
 
 Signed-off-by: Gokul Sivakumar <gokulkumar.sivakumar@infineon.com>
 ---
- .../net/wireless/infineon/inffmac/msgbuf.c    | 2004 +++++++++++++++++
- .../net/wireless/infineon/inffmac/msgbuf.h    |  112 +
- 2 files changed, 2116 insertions(+)
- create mode 100644 drivers/net/wireless/infineon/inffmac/msgbuf.c
- create mode 100644 drivers/net/wireless/infineon/inffmac/msgbuf.h
+ drivers/net/wireless/infineon/inffmac/pcie.c | 2642 ++++++++++++++++++
+ drivers/net/wireless/infineon/inffmac/pcie.h |   27 +
+ include/linux/pci_ids.h                      |    3 +
+ 3 files changed, 2672 insertions(+)
+ create mode 100644 drivers/net/wireless/infineon/inffmac/pcie.c
+ create mode 100644 drivers/net/wireless/infineon/inffmac/pcie.h
 
-diff --git a/drivers/net/wireless/infineon/inffmac/msgbuf.c b/drivers/net/wireless/infineon/inffmac/msgbuf.c
+diff --git a/drivers/net/wireless/infineon/inffmac/pcie.c b/drivers/net/wireless/infineon/inffmac/pcie.c
 new file mode 100644
-index 000000000000..69e4f6a76132
+index 000000000000..3baf5be8dc3d
 --- /dev/null
-+++ b/drivers/net/wireless/infineon/inffmac/msgbuf.c
-@@ -0,0 +1,2004 @@
++++ b/drivers/net/wireless/infineon/inffmac/pcie.c
+@@ -0,0 +1,2642 @@
 +// SPDX-License-Identifier: ISC
 +/*
 + * Copyright (c) 2014 Broadcom Corporation
@@ -102,2008 +103,2646 @@ index 000000000000..69e4f6a76132
 + * All rights reserved.
 + */
 +
-+/*******************************************************************************
-+ * Communicates with the dongle by using dcmd codes.
-+ * For certain dcmd codes, the dongle interprets string data from the host.
-+ ******************************************************************************/
-+
-+#include <linux/types.h>
-+#include <linux/netdevice.h>
-+#include <linux/etherdevice.h>
-+#include <linux/net_tstamp.h>
-+#include <linux/prefetch.h>
-+#include <net/page_pool/helpers.h>
++#include <linux/kernel.h>
++#include <linux/module.h>
++#include <linux/firmware.h>
++#include <linux/pci.h>
++#include <linux/vmalloc.h>
++#include <linux/delay.h>
++#include <linux/interrupt.h>
++#include <linux/sched.h>
++#include <linux/sched/signal.h>
++#include <linux/kthread.h>
++#include <linux/io.h>
++#include <linux/unaligned.h>
 +
 +#include "main.h"
-+#include "net.h"
 +#include "utils.h"
 +#include "debug.h"
 +#include "bus_proto.h"
-+#include "msgbuf.h"
 +#include "commonring.h"
-+#include "flowring.h"
++#include "msgbuf.h"
 +#include "pcie.h"
++#include "firmware.h"
++#include "chip.h"
++#include "cfg80211.h"
++#include "trxhdr.h"
 +
-+#define MSGBUF_IOCTL_RESP_TIMEOUT		msecs_to_jiffies(2000)
++/* per-board firmware binaries */
++#define INFF_55572_FIRMWARE_BASENAME INFF_FW_DEFAULT_PATH "inffmac55572-pcie"
 +
-+#define MSGBUF_TYPE_GEN_STATUS			0x1
-+#define MSGBUF_TYPE_RING_STATUS			0x2
-+#define MSGBUF_TYPE_FLOW_RING_CREATE		0x3
-+#define MSGBUF_TYPE_FLOW_RING_CREATE_CMPLT	0x4
-+#define MSGBUF_TYPE_FLOW_RING_DELETE		0x5
-+#define MSGBUF_TYPE_FLOW_RING_DELETE_CMPLT	0x6
-+#define MSGBUF_TYPE_FLOW_RING_FLUSH		0x7
-+#define MSGBUF_TYPE_FLOW_RING_FLUSH_CMPLT	0x8
-+#define MSGBUF_TYPE_IOCTLPTR_REQ		0x9
-+#define MSGBUF_TYPE_IOCTLPTR_REQ_ACK		0xA
-+#define MSGBUF_TYPE_IOCTLRESP_BUF_POST		0xB
-+#define MSGBUF_TYPE_IOCTL_CMPLT			0xC
-+#define MSGBUF_TYPE_EVENT_BUF_POST		0xD
-+#define MSGBUF_TYPE_WL_EVENT			0xE
-+#define MSGBUF_TYPE_TX_POST			0xF
-+#define MSGBUF_TYPE_TX_STATUS			0x10
-+#define MSGBUF_TYPE_RXBUF_POST			0x11
-+#define MSGBUF_TYPE_RX_CMPLT			0x12
-+#define MSGBUF_TYPE_LPBK_DMAXFER		0x13
-+#define MSGBUF_TYPE_LPBK_DMAXFER_CMPLT		0x14
-+#define MSGBUF_TYPE_H2D_MAILBOX_DATA		0x23
-+#define MSGBUF_TYPE_D2H_MAILBOX_DATA		0x24
++MODULE_FIRMWARE(INFF_55572_FIRMWARE_BASENAME ".trxse");
 +
-+#define NR_TX_PKTIDS				2048
-+#define NR_RX_PKTIDS				2048
-+
-+#define INFF_IOCTL_REQ_PKTID			0xFFFE
-+
-+#define INFF_MSGBUF_MAX_PKT_SIZE		2048
-+#define INFF_MSGBUF_MAX_CTL_PKT_SIZE           8192
-+#define INFF_MSGBUF_RXBUFPOST_THRESHOLD	32
-+#define INFF_MSGBUF_MAX_IOCTLRESPBUF_POST	8
-+#define INFF_MSGBUF_MAX_EVENTBUF_POST		8
-+
-+#define INFF_MSGBUF_PKT_FLAGS_FRAME_802_3	0x01
-+#define INFF_MSGBUF_PKT_FLAGS_FRAME_802_11	0x02
-+#define INFF_MSGBUF_PKT_FLAGS_FRAME_MASK	0x07
-+#define INFF_MSGBUF_PKT_FLAGS_PRIO_SHIFT	5
-+
-+#define INFF_MSGBUF_TX_FLUSH_CNT1		32
-+#define INFF_MSGBUF_TX_FLUSH_CNT2		96
-+
-+#define INFF_MSGBUF_DELAY_TXWORKER_THRS	96
-+#define INFF_MSGBUF_TRICKLE_TXWORKER_THRS	32
-+#define INFF_MSGBUF_UPDATE_RX_PTR_THRS		48
-+
-+#define INFF_MAX_TXSTATUS_WAIT_RETRIES		10
-+
-+struct msgbuf_common_hdr {
-+	u8				msgtype;
-+	u8				ifidx;
-+	u8				flags;
-+	u8				rsvd0;
-+	__le32				request_id;
++static const struct inff_firmware_mapping inff_pcie_fwnames[] = {
++	INFF_FW_ENTRY(INF_CC_5557X_CHIP_ID, 0xFFFFFFFF, 55572),
 +};
 +
-+struct msgbuf_ioctl_req_hdr {
-+	struct msgbuf_common_hdr	msg;
-+	__le32				cmd;
-+	__le16				trans_id;
-+	__le16				input_buf_len;
-+	__le16				output_buf_len;
-+	__le16				rsvd0[3];
-+	struct msgbuf_buf_addr		req_buf_addr;
-+	__le32				rsvd1[2];
++#define INFF_PCIE_READ_SHARED_TIMEOUT	5000 /* msec */
++#define INFF_PCIE_FW_UP_TIMEOUT		5000 /* msec */
++
++#define INFF_PCIE_REG_MAP_SIZE			(32 * 1024)
++
++/* backplane address space accessed by BAR0 */
++#define	INFF_PCIE_BAR0_WINDOW			0x80
++#define INFF_PCIE_BAR0_REG_SIZE		0x1000
++#define	INFF_PCIE_BAR0_WRAPPERBASE		0x70
++
++#define INFF_PCIE_BAR0_WRAPBASE_DMP_OFFSET	0x1000
++#define INFF_PCIE_BAR0_PCIE_ENUM_OFFSET	0x2000
++#define INFF_CYW55572_PCIE_BAR0_PCIE_ENUM_OFFSET	0x3000
++
++#define INFF_PCIE_BAR1_WINDOW			0x84
++
++#define INFF_PCIE_ARMCR4REG_BANKIDX		0x40
++#define INFF_PCIE_ARMCR4REG_BANKPDA		0x4C
++
++#define INFF_PCIE_REG_INTSTATUS		0x90
++#define INFF_PCIE_REG_INTMASK			0x94
++#define INFF_PCIE_REG_SBMBX			0x98
++
++#define INFF_PCIE_REG_LINK_STATUS_CTRL		0xBC
++
++#define INFF_PCIE_PCIE2REG_INTMASK		0x24
++#define INFF_PCIE_PCIE2REG_MAILBOXINT		0x48
++#define INFF_PCIE_PCIE2REG_MAILBOXMASK		0x4C
++#define INFF_PCIE_PCIE2REG_CONFIGADDR		0x120
++#define INFF_PCIE_PCIE2REG_CONFIGDATA		0x124
++#define INFF_PCIE_PCIE2REG_H2D_MAILBOX_0	0x140
++#define INFF_PCIE_PCIE2REG_H2D_MAILBOX_1	0x144
++#define INFF_PCIE_PCIE2REG_DAR_D2H_MSG_0	0xA80
++#define INFF_PCIE_PCIE2REG_DAR_H2D_MSG_0	0xA90
++
++#define INFF_PCIE_64_PCIE2REG_INTMASK		0xC14
++#define INFF_PCIE_64_PCIE2REG_MAILBOXINT	0xC30
++#define INFF_PCIE_64_PCIE2REG_MAILBOXMASK	0xC34
++#define INFF_PCIE_64_PCIE2REG_H2D_MAILBOX_0	0xA20
++#define INFF_PCIE_64_PCIE2REG_H2D_MAILBOX_1	0xA24
++
++#define INFF_PCIE2_INTA			0x01
++#define INFF_PCIE2_INTB			0x02
++
++#define INFF_PCIE_INT_0			0x01
++#define INFF_PCIE_INT_1			0x02
++#define INFF_PCIE_INT_DEF			(INFF_PCIE_INT_0 | \
++						 INFF_PCIE_INT_1)
++
++#define INFF_PCIE_MB_INT_FN0_0			0x0100
++#define INFF_PCIE_MB_INT_FN0_1			0x0200
++#define	INFF_PCIE_MB_INT_D2H0_DB0		0x10000
++#define	INFF_PCIE_MB_INT_D2H0_DB1		0x20000
++#define	INFF_PCIE_MB_INT_D2H1_DB0		0x40000
++#define	INFF_PCIE_MB_INT_D2H1_DB1		0x80000
++#define	INFF_PCIE_MB_INT_D2H2_DB0		0x100000
++#define	INFF_PCIE_MB_INT_D2H2_DB1		0x200000
++#define	INFF_PCIE_MB_INT_D2H3_DB0		0x400000
++#define	INFF_PCIE_MB_INT_D2H3_DB1		0x800000
++
++#define INFF_PCIE_MB_INT_FN0			(INFF_PCIE_MB_INT_FN0_0 | \
++						 INFF_PCIE_MB_INT_FN0_1)
++#define INFF_PCIE_MB_INT_D2H_DB		(INFF_PCIE_MB_INT_D2H0_DB0 | \
++						 INFF_PCIE_MB_INT_D2H0_DB1 | \
++						 INFF_PCIE_MB_INT_D2H1_DB0 | \
++						 INFF_PCIE_MB_INT_D2H1_DB1 | \
++						 INFF_PCIE_MB_INT_D2H2_DB0 | \
++						 INFF_PCIE_MB_INT_D2H2_DB1 | \
++						 INFF_PCIE_MB_INT_D2H3_DB0 | \
++						 INFF_PCIE_MB_INT_D2H3_DB1)
++
++#define	INFF_PCIE_64_MB_INT_D2H0_DB0		0x1
++#define	INFF_PCIE_64_MB_INT_D2H0_DB1		0x2
++#define	INFF_PCIE_64_MB_INT_D2H1_DB0		0x4
++#define	INFF_PCIE_64_MB_INT_D2H1_DB1		0x8
++#define	INFF_PCIE_64_MB_INT_D2H2_DB0		0x10
++#define	INFF_PCIE_64_MB_INT_D2H2_DB1		0x20
++#define	INFF_PCIE_64_MB_INT_D2H3_DB0		0x40
++#define	INFF_PCIE_64_MB_INT_D2H3_DB1		0x80
++#define	INFF_PCIE_64_MB_INT_D2H4_DB0		0x100
++#define	INFF_PCIE_64_MB_INT_D2H4_DB1		0x200
++#define	INFF_PCIE_64_MB_INT_D2H5_DB0		0x400
++#define	INFF_PCIE_64_MB_INT_D2H5_DB1		0x800
++#define	INFF_PCIE_64_MB_INT_D2H6_DB0		0x1000
++#define	INFF_PCIE_64_MB_INT_D2H6_DB1		0x2000
++#define	INFF_PCIE_64_MB_INT_D2H7_DB0		0x4000
++#define	INFF_PCIE_64_MB_INT_D2H7_DB1		0x8000
++
++#define INFF_PCIE_64_MB_INT_D2H_DB		(INFF_PCIE_64_MB_INT_D2H0_DB0 | \
++						 INFF_PCIE_64_MB_INT_D2H0_DB1 | \
++						 INFF_PCIE_64_MB_INT_D2H1_DB0 | \
++						 INFF_PCIE_64_MB_INT_D2H1_DB1 | \
++						 INFF_PCIE_64_MB_INT_D2H2_DB0 | \
++						 INFF_PCIE_64_MB_INT_D2H2_DB1 | \
++						 INFF_PCIE_64_MB_INT_D2H3_DB0 | \
++						 INFF_PCIE_64_MB_INT_D2H3_DB1 | \
++						 INFF_PCIE_64_MB_INT_D2H4_DB0 | \
++						 INFF_PCIE_64_MB_INT_D2H4_DB1 | \
++						 INFF_PCIE_64_MB_INT_D2H5_DB0 | \
++						 INFF_PCIE_64_MB_INT_D2H5_DB1 | \
++						 INFF_PCIE_64_MB_INT_D2H6_DB0 | \
++						 INFF_PCIE_64_MB_INT_D2H6_DB1 | \
++						 INFF_PCIE_64_MB_INT_D2H7_DB0 | \
++						 INFF_PCIE_64_MB_INT_D2H7_DB1)
++
++#define INFF_PCIE_SHARED_VERSION_6		6
++#define INFF_PCIE_SHARED_VERSION_7		7
++#define INFF_PCIE_MIN_SHARED_VERSION		5
++#define INFF_PCIE_MAX_SHARED_VERSION		INFF_PCIE_SHARED_VERSION_7
++#define INFF_PCIE_SHARED_VERSION_MASK		0x00FF
++#define INFF_PCIE_SHARED_DMA_INDEX		0x10000
++#define INFF_PCIE_SHARED_DMA_2B_IDX		0x100000
++#define INFF_PCIE_SHARED_USE_MAILBOX		0x2000000
++#define INFF_PCIE_SHARED_HOSTRDY_DB1		0x10000000
++
++#define INFF_PCIE_FLAGS_HTOD_SPLIT		0x4000
++#define INFF_PCIE_FLAGS_DTOH_SPLIT		0x8000
++
++#define INFF_SHARED_MAX_RXBUFPOST_OFFSET	34
++#define INFF_SHARED_RING_BASE_OFFSET		52
++#define INFF_SHARED_RX_DATAOFFSET_OFFSET	36
++#define INFF_SHARED_CONSOLE_ADDR_OFFSET	20
++#define INFF_SHARED_HTOD_MB_DATA_ADDR_OFFSET	40
++#define INFF_SHARED_DTOH_MB_DATA_ADDR_OFFSET	44
++#define INFF_SHARED_RING_INFO_ADDR_OFFSET	48
++#define INFF_SHARED_DMA_SCRATCH_LEN_OFFSET	52
++#define INFF_SHARED_DMA_SCRATCH_ADDR_OFFSET	56
++#define INFF_SHARED_DMA_RINGUPD_LEN_OFFSET	64
++#define INFF_SHARED_DMA_RINGUPD_ADDR_OFFSET	68
++#define INFF_SHARED_HOST_CAP_OFFSET		84
++
++#define INFF_RING_H2D_RING_COUNT_OFFSET	0
++#define INFF_RING_D2H_RING_COUNT_OFFSET	1
++#define INFF_RING_H2D_RING_MEM_OFFSET		4
++#define INFF_RING_H2D_RING_STATE_OFFSET	8
++
++#define INFF_RING_MEM_BASE_ADDR_OFFSET		8
++#define INFF_RING_MAX_ITEM_OFFSET		4
++#define INFF_RING_LEN_ITEMS_OFFSET		6
++#define INFF_RING_MEM_SZ			16
++#define INFF_RING_STATE_SZ			8
++
++#define INFF_DEF_MAX_RXBUFPOST			255
++
++#define INFF_HOSTCAP_H2D_ENABLE_HOSTRDY	0x400
++#define INFF_HOSTCAP_DS_NO_OOB_DW			0x1000
++
++#define INFF_CONSOLE_BUFADDR_OFFSET		8
++#define INFF_CONSOLE_BUFSIZE_OFFSET		12
++#define INFF_CONSOLE_WRITEIDX_OFFSET		16
++
++#define INFF_DMA_D2H_SCRATCH_BUF_LEN		8
++#define INFF_DMA_D2H_RINGUPD_BUF_LEN		1024
++
++#define INFF_D2H_DEV_D3_ACK			0x00000001
++#define INFF_D2H_DEV_DS_ENTER_REQ		0x00000002
++#define INFF_D2H_DEV_DS_EXIT_NOTE		0x00000004
++#define INFF_D2H_DEV_FWHALT			0x10000000
++
++#define INFF_H2D_HOST_D3_INFORM		0x00000001
++#define INFF_H2D_HOST_DS_ACK			0x00000002
++#define INFF_H2D_HOST_D0_INFORM_IN_USE		0x00000008
++#define INFF_H2D_HOST_D0_INFORM		0x00000010
++
++#define INFF_PCIE_MBDATA_TIMEOUT		msecs_to_jiffies(2000)
++
++#define INFF_PCIE_CFGREG_STATUS_CMD		0x4
++#define INFF_PCIE_CFGREG_PM_CSR		0x4C
++#define INFF_PCIE_CFGREG_MSI_CAP		0x58
++#define INFF_PCIE_CFGREG_MSI_ADDR_L		0x5C
++#define INFF_PCIE_CFGREG_MSI_ADDR_H		0x60
++#define INFF_PCIE_CFGREG_MSI_DATA		0x64
++#define INFF_PCIE_CFGREG_REVID			0x6C
++#define INFF_PCIE_CFGREG_LINK_STATUS_CTRL	0xBC
++#define INFF_PCIE_CFGREG_LINK_STATUS_CTRL2	0xDC
++#define INFF_PCIE_CFGREG_RBAR_CTRL		0x228
++#define INFF_PCIE_CFGREG_PML1_SUB_CTRL1	0x248
++#define INFF_PCIE_CFGREG_REG_BAR2_CONFIG	0x4E0
++#define INFF_PCIE_CFGREG_REG_BAR3_CONFIG	0x4F4
++#define INFF_PCIE_CFGREG_REVID_SECURE_MODE	BIT(31)
++#define INFF_PCIE_LINK_STATUS_CTRL_ASPM_ENAB	3
++
++/* Magic number at a magic location to find RAM size */
++#define INFF_RAMSIZE_MAGIC			0x534d4152	/* SMAR */
++#define INFF_RAMSIZE_OFFSET			0x6c
++
++#define INFF_ENTROPY_SEED_LEN		64u
++#define INFF_ENTROPY_NONCE_LEN		16u
++#define INFF_ENTROPY_HOST_LEN		(INFF_ENTROPY_SEED_LEN + \
++					 INFF_ENTROPY_NONCE_LEN)
++#define INFF_NVRAM_OFFSET_TCM		4u
++#define INFF_NVRAM_COMPRS_FACTOR	4u
++#define INFF_NVRAM_RNG_SIGNATURE	0xFEEDC0DEu
++
++struct inff_rand_metadata {
++	__le32 signature;
++	__le32 count;
 +};
 +
-+struct msgbuf_tx_msghdr {
-+	struct msgbuf_common_hdr	msg;
-+	u8				txhdr[ETH_HLEN];
-+	u8				flags;
-+	u8				seg_cnt;
-+	struct msgbuf_buf_addr		metadata_buf_addr;
-+	struct msgbuf_buf_addr		data_buf_addr;
-+	__le16				metadata_buf_len;
-+	__le16				data_len;
-+	__le32				rsvd0;
++/**
++ * struct inff_pcie_dhi_ringinfo - dongle/host interface shared ring info
++ *
++ * @ringmem: dongle memory pointer to ring memory location
++ * @h2d_w_idx_ptr: h2d ring write indices dongle memory pointers
++ * @h2d_r_idx_ptr: h2d ring read indices dongle memory pointers
++ * @d2h_w_idx_ptr: d2h ring write indices dongle memory pointers
++ * @d2h_r_idx_ptr: d2h ring read indices dongle memory pointers
++ * @h2d_w_idx_hostaddr: h2d ring write indices host memory pointers
++ * @h2d_r_idx_hostaddr: h2d ring read indices host memory pointers
++ * @d2h_w_idx_hostaddr: d2h ring write indices host memory pointers
++ * @d2h_r_idx_hostaddr: d2h ring reaD indices host memory pointers
++ * @max_flowrings: maximum number of tx flow rings supported.
++ * @max_submissionrings: maximum number of submission rings(h2d) supported.
++ * @max_completionrings: maximum number of completion rings(d2h) supported.
++ */
++struct inff_pcie_dhi_ringinfo {
++	__le32			ringmem;
++	__le32			h2d_w_idx_ptr;
++	__le32			h2d_r_idx_ptr;
++	__le32			d2h_w_idx_ptr;
++	__le32			d2h_r_idx_ptr;
++	struct msgbuf_buf_addr	h2d_w_idx_hostaddr;
++	struct msgbuf_buf_addr	h2d_r_idx_hostaddr;
++	struct msgbuf_buf_addr	d2h_w_idx_hostaddr;
++	struct msgbuf_buf_addr	d2h_r_idx_hostaddr;
++	__le16			max_flowrings;
++	__le16			max_submissionrings;
++	__le16			max_completionrings;
 +};
 +
-+struct msgbuf_h2d_mbdata {
-+	struct msgbuf_common_hdr	msg;
-+	__le32				mbdata;
-+	__le16				rsvd0[7];
++struct inff_pcie_console {
++	u32 base_addr;
++	u32 buf_addr;
++	u32 bufsize;
++	u32 read_idx;
++	u8 log_str[256];
++	u8 log_idx;
 +};
 +
-+struct msgbuf_rx_bufpost {
-+	struct msgbuf_common_hdr	msg;
-+	__le16				metadata_buf_len;
-+	__le16				data_buf_len;
-+	__le32				rsvd0;
-+	struct msgbuf_buf_addr		metadata_buf_addr;
-+	struct msgbuf_buf_addr		data_buf_addr;
++enum inff_pcie_state {
++	INFFMAC_PCIE_STATE_DOWN,
++	INFFMAC_PCIE_STATE_UP
 +};
 +
-+struct msgbuf_rx_ioctl_resp_or_event {
-+	struct msgbuf_common_hdr	msg;
-+	__le16				host_buf_len;
-+	__le16				rsvd0[3];
-+	struct msgbuf_buf_addr		host_buf_addr;
-+	__le32				rsvd1[4];
++struct inff_pcie_reginfo {
++	u32 intmask;
++	u32 mailboxint;
++	u32 mailboxmask;
++	u32 h2d_mailbox_0;
++	u32 h2d_mailbox_1;
++	u32 int_d2h_db;
++	u32 int_fn0;
 +};
 +
-+struct msgbuf_completion_hdr {
-+	__le16				status;
-+	__le16				flow_ring_id;
-+};
-+
-+/* Data struct for the MSGBUF_TYPE_GEN_STATUS */
-+struct msgbuf_gen_status {
-+	struct msgbuf_common_hdr	msg;
-+	struct msgbuf_completion_hdr	compl_hdr;
-+	__le16				write_idx;
-+	__le32				rsvd0[3];
-+};
-+
-+/* Data struct for the MSGBUF_TYPE_RING_STATUS */
-+struct msgbuf_ring_status {
-+	struct msgbuf_common_hdr	msg;
-+	struct msgbuf_completion_hdr	compl_hdr;
-+	__le16				write_idx;
-+	__le16				rsvd0[5];
-+};
-+
-+struct msgbuf_rx_event {
-+	struct msgbuf_common_hdr	msg;
-+	struct msgbuf_completion_hdr	compl_hdr;
-+	__le16				event_data_len;
-+	__le16				seqnum;
-+	__le16				rsvd0[4];
-+};
-+
-+struct msgbuf_ioctl_resp_hdr {
-+	struct msgbuf_common_hdr	msg;
-+	struct msgbuf_completion_hdr	compl_hdr;
-+	__le16				resp_len;
-+	__le16				trans_id;
-+	__le32				cmd;
-+	__le32				rsvd0;
-+};
-+
-+struct msgbuf_tx_status {
-+	struct msgbuf_common_hdr	msg;
-+	struct msgbuf_completion_hdr	compl_hdr;
-+	__le16				metadata_len;
-+	__le16				tx_status;
-+};
-+
-+struct msgbuf_rx_complete {
-+	struct msgbuf_common_hdr	msg;
-+	struct msgbuf_completion_hdr	compl_hdr;
-+	__le16				metadata_len;
-+	__le16				data_len;
-+	__le16				data_offset;
-+	__le16				flags;
-+	__le32				rx_status_0;
-+	__le32				rx_status_1;
-+	__le32				rsvd0;
-+};
-+
-+struct msgbuf_tx_flowring_create_req {
-+	struct msgbuf_common_hdr	msg;
-+	u8				da[ETH_ALEN];
-+	u8				sa[ETH_ALEN];
-+	u8				tid;
-+	u8				if_flags;
-+	__le16				flow_ring_id;
-+	u8				tc;
-+	u8				priority;
-+	__le16				int_vector;
-+	__le16				max_items;
-+	__le16				len_item;
-+	struct msgbuf_buf_addr		flow_ring_addr;
-+};
-+
-+struct msgbuf_tx_flowring_delete_req {
-+	struct msgbuf_common_hdr	msg;
-+	__le16				flow_ring_id;
-+	__le16				reason;
-+	__le32				rsvd0[7];
-+};
-+
-+struct msgbuf_flowring_create_resp {
-+	struct msgbuf_common_hdr	msg;
-+	struct msgbuf_completion_hdr	compl_hdr;
-+	__le32				rsvd0[3];
-+};
-+
-+struct msgbuf_flowring_delete_resp {
-+	struct msgbuf_common_hdr	msg;
-+	struct msgbuf_completion_hdr	compl_hdr;
-+	__le32				rsvd0[3];
-+};
-+
-+struct msgbuf_flowring_flush_resp {
-+	struct msgbuf_common_hdr	msg;
-+	struct msgbuf_completion_hdr	compl_hdr;
-+	__le32				rsvd0[3];
-+};
-+
-+struct msgbuf_d2h_mailbox_data {
-+	struct msgbuf_common_hdr	msg;
-+	struct msgbuf_completion_hdr	compl_hdr;
-+	__le32				mbdata;
-+	__le32				rsvd0[2];
-+};
-+
-+struct inff_msgbuf_work_item {
-+	struct list_head queue;
-+	u32 flowid;
-+	int ifidx;
-+	u8 sa[ETH_ALEN];
-+	u8 da[ETH_ALEN];
-+};
-+
-+struct inff_msgbuf_tx_status_entry {
-+	struct list_head queue;
-+	struct msgbuf_tx_status status;
-+};
-+
-+struct inff_msgbuf {
-+	struct inff_pub *drvr;
-+
-+	struct inff_commonring **commonrings;
-+	struct inff_commonring **flowrings;
-+	dma_addr_t *flowring_dma_handle;
-+
++struct inff_pcie_shared_info {
++	u32 tcm_base_address;
++	u32 flags;
++	struct inff_pcie_ringbuf *commonrings[INFF_NROF_COMMON_MSGRINGS];
++	struct inff_pcie_ringbuf *flowrings;
++	u16 max_rxbufpost;
 +	u16 max_flowrings;
 +	u16 max_submissionrings;
 +	u16 max_completionrings;
-+
-+	u16 rx_dataoffset;
-+	u32 max_rxbufpost;
-+	u16 rx_metadata_offset;
-+	u32 rxbufpost;
-+
-+	u32 max_ioctlrespbuf;
-+	u32 cur_ioctlrespbuf;
-+	u32 max_eventbuf;
-+	u32 cur_eventbuf;
-+
-+	void *ioctbuf;
-+	dma_addr_t ioctbuf_handle;
-+	u32 ioctbuf_phys_hi;
-+	u32 ioctbuf_phys_lo;
-+	int ioctl_resp_status;
-+	u32 ioctl_resp_ret_len;
-+	u32 ioctl_resp_pktid;
-+
-+	u16 data_seq_no;
-+	u16 ioctl_seq_no;
-+	u32 reqid;
-+	wait_queue_head_t ioctl_resp_wait;
-+	bool ctl_completed;
-+
-+	struct inff_msgbuf_pktids *tx_pktids;
-+	struct inff_msgbuf_pktids *rx_pktids;
-+	struct inff_flowring *flow;
-+
-+	struct workqueue_struct *txflow_wq;
-+	struct work_struct txflow_work;
-+	unsigned long *flow_map;
-+	unsigned long *txstatus_done_map;
-+
-+	struct work_struct flowring_work;
-+	/* lock for flow ring resource protection */
-+	spinlock_t flowring_work_lock;
-+	struct list_head work_queue;
++	u32 rx_dataoffset;
++	u32 htod_mb_data_addr;
++	u32 dtoh_mb_data_addr;
++	u32 ring_info_addr;
++	struct inff_pcie_console console;
++	void *scratch;
++	dma_addr_t scratch_dmahandle;
++	void *ringupd;
++	dma_addr_t ringupd_dmahandle;
++	u8 version;
 +};
 +
-+struct inff_msgbuf_pktid {
-+	atomic_t  allocated;
-+	u16 data_offset;
-+	struct sk_buff *skb;
-+	struct page *page;
-+	dma_addr_t physaddr;
++struct inff_pciedev_info {
++	enum inff_pcie_state state;
++	bool in_irq;
++	struct pci_dev *pdev;
++	const struct inff_pcie_reginfo *reginfo;
++	void __iomem *regs;
++	void __iomem *tcm;
++	u32 ram_base;
++	u32 ram_size;
++	struct inff_chip *ci;
++	u32 coreid;
++	struct inff_pcie_shared_info shared;
++	u8 hostready;
++	bool use_mailbox;
++	bool use_d0_inform;
++	wait_queue_head_t mbdata_resp_wait;
++	bool mbdata_completed;
++	bool irq_allocated;
++	bool wowl_enabled;
++	u8 dma_idx_sz;
++	void *idxbuf;
++	u32 idxbuf_sz;
++	dma_addr_t idxbuf_dmahandle;
++	u16 (*read_ptr)(struct inff_pciedev_info *devinfo, u32 mem_offset);
++	void (*write_ptr)(struct inff_pciedev_info *devinfo, u32 mem_offset,
++			  u16 value);
++	struct inff_mp_device *settings;
++	ulong bar1_size;
++#ifdef DEBUG
++	u32 console_interval;
++	bool console_active;
++	struct timer_list timer;
++#endif
 +};
 +
-+struct inff_msgbuf_pktids {
-+	u32 array_size;
-+	u32 last_allocated_idx;
-+	enum dma_data_direction direction;
-+	struct inff_msgbuf_pktid *array;
-+
-+	/* page pool */
-+	struct page_pool *page_pool;
++static const struct inff_pcie_reginfo inff_reginfo_default = {
++	.intmask = INFF_PCIE_PCIE2REG_INTMASK,
++	.mailboxint = INFF_PCIE_PCIE2REG_MAILBOXINT,
++	.mailboxmask = INFF_PCIE_PCIE2REG_MAILBOXMASK,
++	.h2d_mailbox_0 = INFF_PCIE_PCIE2REG_H2D_MAILBOX_0,
++	.h2d_mailbox_1 = INFF_PCIE_PCIE2REG_H2D_MAILBOX_1,
++	.int_d2h_db = INFF_PCIE_MB_INT_D2H_DB,
++	.int_fn0 = INFF_PCIE_MB_INT_FN0,
 +};
 +
-+static void inff_msgbuf_rxbuf_ioctlresp_post(struct inff_msgbuf *msgbuf);
-+static void inff_msgbuf_process_d2h_mbdata(struct inff_msgbuf *msgbuf,
-+					   void *buf);
-+static void inff_msgbuf_process_rx(struct inff_msgbuf *msgbuf,
-+				   struct inff_commonring *commonring);
-+static void inff_msgbuf_process_msgtype(struct inff_msgbuf *msgbuf,
-+					void *buf, unsigned int *work_done);
++static const struct inff_pcie_reginfo inff_reginfo_64 = {
++	.intmask = INFF_PCIE_64_PCIE2REG_INTMASK,
++	.mailboxint = INFF_PCIE_64_PCIE2REG_MAILBOXINT,
++	.mailboxmask = INFF_PCIE_64_PCIE2REG_MAILBOXMASK,
++	.h2d_mailbox_0 = INFF_PCIE_PCIE2REG_H2D_MAILBOX_0,
++	.h2d_mailbox_1 = INFF_PCIE_PCIE2REG_H2D_MAILBOX_1,
++	.int_d2h_db = INFF_PCIE_64_MB_INT_D2H_DB,
++	.int_fn0 = INFF_PCIE_MB_INT_FN0,
++};
 +
-+static struct inff_msgbuf_pktids *
-+inff_msgbuf_init_tx_pktids(struct inff_msgbuf *msgbuf, u32 nr_array_entries,
-+			   enum dma_data_direction direction)
++struct inff_pcie_ringbuf {
++	struct inff_commonring commonring;
++	dma_addr_t dma_handle;
++	u32 w_idx_addr;
++	u32 r_idx_addr;
++	struct inff_pciedev_info *devinfo;
++	u8 id;
++};
++
++static u32
++inff_pcie_read_reg32(struct inff_pciedev_info *devinfo, u32 reg_offset)
 +{
-+	struct inff_msgbuf_pktid *array;
-+	struct inff_msgbuf_pktids *pktids;
++	void __iomem *address = devinfo->regs + reg_offset;
 +
-+	array = kcalloc(nr_array_entries, sizeof(*array), GFP_KERNEL);
-+	if (!array)
-+		return NULL;
-+
-+	pktids = kzalloc(sizeof(*pktids), GFP_KERNEL);
-+	if (!pktids) {
-+		kfree(array);
-+		return NULL;
-+	}
-+	pktids->array = array;
-+	pktids->array_size = nr_array_entries;
-+
-+	return pktids;
++	return ioread32(address);
 +}
 +
-+static struct inff_msgbuf_pktids *
-+inff_msgbuf_init_rx_pktids(struct inff_msgbuf *msgbuf, u32 nr_array_entries,
-+			   enum dma_data_direction direction)
++static void
++inff_pcie_write_reg32(struct inff_pciedev_info *devinfo, u32 reg_offset,
++		      u32 value)
 +{
-+	struct inff_msgbuf_pktid *array;
-+	struct inff_msgbuf_pktids *pktids = NULL;
-+	struct device *dev = msgbuf->drvr->bus_if->dev;
++	void __iomem *address = devinfo->regs + reg_offset;
 +
-+	struct page_pool_params pp_params = {
-+		.order = 0,
-+		.flags = PP_FLAG_DMA_MAP | PP_FLAG_DMA_SYNC_DEV,
-+		.pool_size = nr_array_entries,
-+		.offset = INFF_SKB_HEADROOM,
-+		.nid = NUMA_NO_NODE,
-+		.dev = dev->parent,
-+		.dma_dir = direction,
-+		.max_len = INFF_MAX_RX_BUF_SIZE,
++	iowrite32(value, address);
++}
++
++static u8
++inff_pcie_read_tcm8(struct inff_pciedev_info *devinfo, u32 mem_offset)
++{
++	void __iomem *address = devinfo->tcm + mem_offset;
++	struct pci_dev *pdev = devinfo->pdev;
++	struct inff_bus *bus = dev_get_drvdata(&pdev->dev);
++
++	if ((address - devinfo->tcm) >= devinfo->bar1_size) {
++		inff_dev_err(bus->dev,
++			     "mem_offset:%d exceeds device size=%ld\n",
++			     mem_offset, devinfo->bar1_size);
++		return -EINVAL;
++	}
++
++	return (ioread8(address));
++}
++
++static u16
++inff_pcie_read_tcm16(struct inff_pciedev_info *devinfo, u32 mem_offset)
++{
++	void __iomem *address = devinfo->tcm + mem_offset;
++	struct pci_dev *pdev = devinfo->pdev;
++	struct inff_bus *bus = dev_get_drvdata(&pdev->dev);
++
++	if ((address - devinfo->tcm) >= devinfo->bar1_size) {
++		inff_dev_err(bus->dev,
++			     "mem_offset:%d exceeds device size=%ld\n",
++			     mem_offset, devinfo->bar1_size);
++		return -EINVAL;
++	}
++
++	return (ioread16(address));
++}
++
++static void
++inff_pcie_write_tcm16(struct inff_pciedev_info *devinfo, u32 mem_offset,
++		      u16 value)
++{
++	void __iomem *address = devinfo->tcm + mem_offset;
++	struct pci_dev *pdev = devinfo->pdev;
++	struct inff_bus *bus = dev_get_drvdata(&pdev->dev);
++
++	if ((address - devinfo->tcm) >= devinfo->bar1_size) {
++		inff_dev_err(bus->dev,
++			     "mem_offset:%d exceeds device size=%ld\n",
++			     mem_offset, devinfo->bar1_size);
++		return;
++	}
++
++	iowrite16(value, address);
++}
++
++static u16
++inff_pcie_read_idx(struct inff_pciedev_info *devinfo, u32 mem_offset)
++{
++	u16 *address = devinfo->idxbuf + mem_offset;
++
++	return (*(address));
++}
++
++static void
++inff_pcie_write_idx(struct inff_pciedev_info *devinfo, u32 mem_offset,
++		    u16 value)
++{
++	u16 *address = devinfo->idxbuf + mem_offset;
++
++	*(address) = value;
++}
++
++static u32
++inff_pcie_read_tcm32(struct inff_pciedev_info *devinfo, u32 mem_offset)
++{
++	void __iomem *address = devinfo->tcm + mem_offset;
++	struct pci_dev *pdev = devinfo->pdev;
++	struct inff_bus *bus = dev_get_drvdata(&pdev->dev);
++
++	if ((address - devinfo->tcm) >= devinfo->bar1_size) {
++		inff_dev_err(bus->dev,
++			     "mem_offset:%d exceeds device size=%ld\n",
++			     mem_offset, devinfo->bar1_size);
++		return -EINVAL;
++	}
++
++	return (ioread32(address));
++}
++
++static void
++inff_pcie_write_tcm32(struct inff_pciedev_info *devinfo, u32 mem_offset,
++		      u32 value)
++{
++	void __iomem *address = devinfo->tcm + mem_offset;
++	struct pci_dev *pdev = devinfo->pdev;
++	struct inff_bus *bus = dev_get_drvdata(&pdev->dev);
++
++	if ((address - devinfo->tcm) >= devinfo->bar1_size) {
++		inff_dev_err(bus->dev,
++			     "mem_offset:%d exceeds device size=%ld\n",
++			     mem_offset, devinfo->bar1_size);
++		return;
++	}
++
++	iowrite32(value, address);
++}
++
++static u32
++inff_pcie_read_ram32(struct inff_pciedev_info *devinfo, u32 mem_offset)
++{
++	void __iomem *address = devinfo->tcm + devinfo->ci->rambase
++		+ mem_offset;
++	struct pci_dev *pdev = devinfo->pdev;
++	struct inff_bus *bus = dev_get_drvdata(&pdev->dev);
++
++	if ((address - devinfo->tcm) >= devinfo->bar1_size) {
++		inff_dev_err(bus->dev,
++			     "mem_offset:%d exceeds device size=%ld\n",
++			     mem_offset, devinfo->bar1_size);
++		return -EINVAL;
++	}
++
++	return (ioread32(address));
++}
++
++static void
++inff_pcie_write_ram32(struct inff_pciedev_info *devinfo, u32 mem_offset,
++		      u32 value)
++{
++	void __iomem *address = devinfo->tcm + devinfo->ci->rambase
++		+ mem_offset;
++	struct pci_dev *pdev = devinfo->pdev;
++	struct inff_bus *bus = dev_get_drvdata(&pdev->dev);
++
++	if ((address - devinfo->tcm) >= devinfo->bar1_size) {
++		inff_dev_err(bus->dev,
++			     "mem_offset:%d exceeds device size=%ld\n",
++			     mem_offset, devinfo->bar1_size);
++		return;
++	}
++
++	iowrite32(value, address);
++}
++
++static void
++inff_pcie_copy_mem_todev(struct inff_pciedev_info *devinfo, u32 mem_offset,
++			 void *srcaddr, u32 len)
++{
++	struct pci_dev *pdev = devinfo->pdev;
++	struct inff_bus *bus = dev_get_drvdata(&pdev->dev);
++	void __iomem *address = devinfo->tcm + mem_offset;
++	__le32 *src32;
++	__le16 *src16;
++	u8 *src8;
++
++	if (((ulong)address & 4) || ((ulong)srcaddr & 4) || (len & 4)) {
++		if (((ulong)address & 2) || ((ulong)srcaddr & 2) || (len & 2)) {
++			src8 = (u8 *)srcaddr;
++			while (len) {
++				if ((address - devinfo->tcm) >=
++				    devinfo->bar1_size) {
++					inff_dev_err(bus->dev,
++						     "mem_offset:%d exceeds device size=%ld\n",
++						     mem_offset, devinfo->bar1_size);
++					return;
++				}
++				iowrite8(*src8, address);
++				address++;
++				src8++;
++				len--;
++			}
++		} else {
++			len = len / 2;
++			src16 = (__le16 *)srcaddr;
++			while (len) {
++				if ((address - devinfo->tcm) >=
++				    devinfo->bar1_size) {
++					inff_dev_err(bus->dev,
++						     "mem_offset:%d exceeds device size=%ld\n",
++						     mem_offset, devinfo->bar1_size);
++					return;
++				}
++				iowrite16(le16_to_cpu(*src16), address);
++				address += 2;
++				src16++;
++				len--;
++			}
++		}
++	} else {
++		len = len / 4;
++		src32 = (__le32 *)srcaddr;
++		while (len) {
++			if ((address - devinfo->tcm) >=
++				devinfo->bar1_size) {
++				inff_dev_err(bus->dev,
++					     "mem_offset:%d exceeds device size=%ld\n",
++					     mem_offset, devinfo->bar1_size);
++				return;
++			}
++			iowrite32(le32_to_cpu(*src32), address);
++			address += 4;
++			src32++;
++			len--;
++		}
++	}
++}
++
++static void
++inff_pcie_copy_dev_tomem(struct inff_pciedev_info *devinfo, u32 mem_offset,
++			 void *dstaddr, u32 len)
++{
++	struct pci_dev *pdev = devinfo->pdev;
++	struct inff_bus *bus = dev_get_drvdata(&pdev->dev);
++	void __iomem *address = devinfo->tcm + mem_offset;
++	__le32 *dst32;
++	__le16 *dst16;
++	u8 *dst8;
++
++	if (((ulong)address & 4) || ((ulong)dstaddr & 4) || (len & 4)) {
++		if (((ulong)address & 2) || ((ulong)dstaddr & 2) || (len & 2)) {
++			dst8 = (u8 *)dstaddr;
++			while (len) {
++				if ((address - devinfo->tcm) >=
++					devinfo->bar1_size) {
++					inff_dev_err(bus->dev,
++						     "mem_offset:%d exceeds device size=%ld\n",
++						     mem_offset, devinfo->bar1_size);
++					return;
++				}
++				*dst8 = ioread8(address);
++				address++;
++				dst8++;
++				len--;
++			}
++		} else {
++			len = len / 2;
++			dst16 = (__le16 *)dstaddr;
++			while (len) {
++				if ((address - devinfo->tcm) >=
++					devinfo->bar1_size) {
++					inff_dev_err(bus->dev,
++						     "mem_offset:%d exceeds device size=%ld\n",
++						     mem_offset, devinfo->bar1_size);
++					return;
++				}
++				*dst16 = cpu_to_le16(ioread16(address));
++				address += 2;
++				dst16++;
++				len--;
++			}
++		}
++	} else {
++		len = len / 4;
++		dst32 = (__le32 *)dstaddr;
++		while (len) {
++			if ((address - devinfo->tcm) >=
++				devinfo->bar1_size) {
++				inff_dev_err(bus->dev,
++					     "mem_offset:%d exceeds device size=%ld\n",
++					     mem_offset, devinfo->bar1_size);
++				return;
++			}
++			*dst32 = cpu_to_le32(ioread32(address));
++			address += 4;
++			dst32++;
++			len--;
++		}
++	}
++}
++
++#define WRITECC32(devinfo, reg, value) inff_pcie_write_reg32(devinfo, \
++		CHIPCREGOFFS(reg), value)
++
++static void
++inff_pcie_select_core(struct inff_pciedev_info *devinfo, u16 coreid)
++{
++	const struct pci_dev *pdev = devinfo->pdev;
++	struct inff_bus *bus = dev_get_drvdata(&pdev->dev);
++	struct inff_core *core;
++	u32 bar0_win;
++
++	core = inff_chip_get_core(devinfo->ci, coreid);
++	if (core) {
++		bar0_win = core->base;
++		pci_write_config_dword(pdev, INFF_PCIE_BAR0_WINDOW, bar0_win);
++		if (pci_read_config_dword(pdev, INFF_PCIE_BAR0_WINDOW,
++					  &bar0_win) == 0) {
++			if (bar0_win != core->base) {
++				bar0_win = core->base;
++				pci_write_config_dword(pdev,
++						       INFF_PCIE_BAR0_WINDOW,
++						       bar0_win);
++			}
++		}
++	} else {
++		inff_dev_err(bus->dev, "Unsupported core selected %x\n", coreid);
++	}
++}
++
++static void inff_pcie_reset_device(struct inff_pciedev_info *devinfo)
++{
++	struct inff_core *core;
++	static const u16 cfg_offset[] = {
++		INFF_PCIE_CFGREG_STATUS_CMD,
++		INFF_PCIE_CFGREG_PM_CSR,
++		INFF_PCIE_CFGREG_MSI_CAP,
++		INFF_PCIE_CFGREG_MSI_ADDR_L,
++		INFF_PCIE_CFGREG_MSI_ADDR_H,
++		INFF_PCIE_CFGREG_MSI_DATA,
++		INFF_PCIE_CFGREG_LINK_STATUS_CTRL2,
++		INFF_PCIE_CFGREG_RBAR_CTRL,
++		INFF_PCIE_CFGREG_PML1_SUB_CTRL1,
++		INFF_PCIE_CFGREG_REG_BAR2_CONFIG,
++		INFF_PCIE_CFGREG_REG_BAR3_CONFIG
 +	};
++	u32 i;
++	u32 val;
++	u32 lsc;
 +
-+	array = kcalloc(nr_array_entries, sizeof(*array), GFP_KERNEL);
-+	if (!array)
-+		return NULL;
++	if (!devinfo->ci)
++		return;
 +
-+	pktids = kzalloc(sizeof(*pktids), GFP_KERNEL);
-+	if (!pktids) {
-+		kfree(array);
-+		return NULL;
++	/* Disable ASPM */
++	inff_pcie_select_core(devinfo, INF_CORE_PCIE2);
++	pci_read_config_dword(devinfo->pdev, INFF_PCIE_REG_LINK_STATUS_CTRL,
++			      &lsc);
++	val = lsc & (~INFF_PCIE_LINK_STATUS_CTRL_ASPM_ENAB);
++	pci_write_config_dword(devinfo->pdev, INFF_PCIE_REG_LINK_STATUS_CTRL,
++			       val);
++
++	/* Watchdog reset */
++	devinfo->ci->blhs->init(devinfo->ci);
++	inff_pcie_select_core(devinfo, INF_CORE_CHIPCOMMON);
++	WRITECC32(devinfo, watchdog, 4);
++	msleep(100);
++	if (devinfo->ci->blhs->post_wdreset(devinfo->ci))
++		return;
++
++	/* Restore ASPM */
++	inff_pcie_select_core(devinfo, INF_CORE_PCIE2);
++	pci_write_config_dword(devinfo->pdev, INFF_PCIE_REG_LINK_STATUS_CTRL,
++			       lsc);
++
++	core = inff_chip_get_core(devinfo->ci, INF_CORE_PCIE2);
++	if (core->rev <= 13) {
++		for (i = 0; i < ARRAY_SIZE(cfg_offset); i++) {
++			inff_pcie_write_reg32(devinfo,
++					      INFF_PCIE_PCIE2REG_CONFIGADDR,
++					      cfg_offset[i]);
++			val = inff_pcie_read_reg32(devinfo,
++						   INFF_PCIE_PCIE2REG_CONFIGDATA);
++			inff_dbg(PCIE, "config offset 0x%04x, value 0x%04x\n",
++				 cfg_offset[i], val);
++			inff_pcie_write_reg32(devinfo,
++					      INFF_PCIE_PCIE2REG_CONFIGDATA,
++					      val);
++		}
 +	}
-+	pktids->array = array;
-+	pktids->array_size = nr_array_entries;
++}
 +
-+	pktids->page_pool = page_pool_create(&pp_params);
-+	if (IS_ERR(pktids->page_pool)) {
-+		pktids->page_pool = NULL;
-+		goto fail;
-+	}
++static u32 inff_pcie_read_mb_data(struct inff_pciedev_info *devinfo)
++{
++	struct inff_pcie_shared_info *shared;
++	u32 addr;
++	u32 dtoh_mb_data;
 +
-+	return pktids;
-+fail:
-+	kfree(pktids->array);
-+	kfree(pktids);
-+
-+	return NULL;
++	shared = &devinfo->shared;
++	addr = shared->dtoh_mb_data_addr;
++	dtoh_mb_data = inff_pcie_read_tcm32(devinfo, addr);
++	inff_pcie_write_tcm32(devinfo, addr, 0);
++	return dtoh_mb_data;
 +}
 +
 +static int
-+inff_msgbuf_alloc_pktid(struct device *dev,
-+			struct inff_msgbuf_pktids *pktids,
-+			struct sk_buff *skb, struct page *page,
-+			u16 data_offset, dma_addr_t *physaddr, u32 *idx)
++inff_pcie_send_mb_data(struct inff_pciedev_info *devinfo, u32 htod_mb_data)
 +{
-+	struct inff_msgbuf_pktid *array;
-+	u32 count;
++	struct inff_pcie_shared_info *shared;
++	struct inff_bus *bus;
++	int err;
++	struct inff_core *core;
++	u32 addr;
++	u32 cur_htod_mb_data;
++	u32 i;
 +
-+	array = pktids->array;
-+
-+	if (page) {
-+		*physaddr = page_pool_get_dma_addr(page) + INFF_SKB_HEADROOM;
-+	} else if (skb) {
-+		*physaddr = dma_map_single(dev, skb->data + data_offset,
-+					   skb->len - data_offset,
-+					   pktids->direction);
-+		if (dma_mapping_error(dev, *physaddr)) {
-+			inff_err("dma_map_single failed !!\n");
-+			return -ENOMEM;
++	shared = &devinfo->shared;
++	bus = dev_get_drvdata(&devinfo->pdev->dev);
++	if (shared->version >= INFF_PCIE_SHARED_VERSION_6 &&
++	    !devinfo->use_mailbox) {
++		err = inff_msgbuf_tx_mbdata(bus->drvr, htod_mb_data);
++		if (err) {
++			inff_dev_err(bus->dev, "sendimg mbdata failed err=%d\n", err);
++			return err;
 +		}
-+	}
-+
-+	*idx = pktids->last_allocated_idx;
-+
-+	count = 0;
-+	do {
-+		(*idx)++;
-+		if (*idx == pktids->array_size)
-+			*idx = 0;
-+		if (array[*idx].allocated.counter == 0)
-+			if (atomic_cmpxchg(&array[*idx].allocated, 0, 1) == 0)
-+				break;
-+		count++;
-+	} while (count < pktids->array_size);
-+
-+	if (count == pktids->array_size) {
-+		if (page)
-+			page_pool_put_full_page(pktids->page_pool, page, true);
-+		else if (skb)
-+			dma_unmap_single(dev, *physaddr, skb->len - data_offset,
-+					 pktids->direction);
-+		return -ENOMEM;
-+	}
-+
-+	array[*idx].data_offset = data_offset;
-+	array[*idx].physaddr = *physaddr;
-+
-+	if (page) {
-+		array[*idx].page = page;
-+		array[*idx].skb = NULL;
-+	} else if (skb) {
-+		array[*idx].skb = skb;
-+		array[*idx].page = NULL;
-+	}
-+
-+	pktids->last_allocated_idx = *idx;
-+
-+	return 0;
-+}
-+
-+static void*
-+inff_msgbuf_get_pktid(struct device *dev, struct inff_msgbuf_pktids *pktids,
-+		      u32 idx)
-+{
-+	struct inff_msgbuf_pktid *pktid;
-+	void *ret = NULL;
-+
-+	if (idx >= pktids->array_size) {
-+		inff_err("Invalid packet id %d (max %d)\n", idx,
-+			 pktids->array_size);
-+		return NULL;
-+	}
-+	if (pktids->array[idx].allocated.counter) {
-+		pktid = &pktids->array[idx];
-+
-+		if (pktid->page) {
-+			enum dma_data_direction dma_dir =
-+				page_pool_get_dma_dir(pktids->page_pool);
-+			dma_sync_single_for_cpu(dev->parent, pktid->physaddr,
-+						INFF_MAX_RX_BUF_SIZE, dma_dir);
-+			ret = (void *)pktid->page;
-+		} else if (pktid->skb) {
-+			dma_unmap_single(dev, pktid->physaddr,
-+					 pktid->skb->len - pktid->data_offset,
-+					 pktids->direction);
-+			ret = (void *)pktid->skb;
-+		}
-+
-+		pktid->allocated.counter = 0;
-+		pktid->physaddr = 0;
 +	} else {
-+		inff_err("Invalid packet id %d (not in use)\n", idx);
-+	}
++		addr = shared->htod_mb_data_addr;
++		cur_htod_mb_data = inff_pcie_read_tcm32(devinfo, addr);
 +
-+	return ret;
-+}
++		if (cur_htod_mb_data != 0)
++			inff_dbg(PCIE, "MB transaction is already pending 0x%04x\n",
++				 cur_htod_mb_data);
 +
-+static void
-+inff_msgbuf_release_array(struct device *dev,
-+			  struct inff_msgbuf_pktids *pktids)
-+{
-+	struct inff_msgbuf_pktid *array;
-+	struct inff_msgbuf_pktid *pktid;
-+	u32 count;
-+
-+	array = pktids->array;
-+	count = 0;
-+	do {
-+		if (array[count].allocated.counter) {
-+			pktid = &array[count];
-+
-+			if (pktid->page) {
-+				page_pool_put_full_page(pktids->page_pool,
-+							pktid->page, false);
-+			} else if (pktid->skb) {
-+				dma_unmap_single(dev, pktid->physaddr,
-+						 pktid->skb->len -
-+						 pktid->data_offset,
-+						 pktids->direction);
-+				inff_pkt_buf_free_skb(pktid->skb);
-+			}
++		i = 0;
++		while (cur_htod_mb_data != 0) {
++			usleep_range(10000, 10001);
++			i++;
++			if (i > 100)
++				return -EIO;
++			cur_htod_mb_data = inff_pcie_read_tcm32(devinfo, addr);
 +		}
-+		count++;
-+	} while (count < pktids->array_size);
 +
-+	if (pktids->page_pool)
-+		page_pool_destroy(pktids->page_pool);
++		inff_pcie_write_tcm32(devinfo, addr, htod_mb_data);
++		pci_write_config_dword(devinfo->pdev, INFF_PCIE_REG_SBMBX, 1);
 +
-+	kfree(array);
-+	kfree(pktids);
-+}
-+
-+static void inff_msgbuf_release_pktids(struct inff_msgbuf *msgbuf)
-+{
-+	if (msgbuf->rx_pktids)
-+		inff_msgbuf_release_array(msgbuf->drvr->bus_if->dev,
-+					  msgbuf->rx_pktids);
-+	if (msgbuf->tx_pktids)
-+		inff_msgbuf_release_array(msgbuf->drvr->bus_if->dev,
-+					  msgbuf->tx_pktids);
-+}
-+
-+int inff_msgbuf_tx_mbdata(struct inff_pub *drvr, u32 mbdata)
-+{
-+	struct inff_msgbuf *msgbuf = (struct inff_msgbuf *)drvr->proto->pd;
-+	struct inff_commonring *commonring;
-+	struct msgbuf_h2d_mbdata *h2d_mbdata;
-+	void *ret_ptr;
-+	int err;
-+
-+	commonring = msgbuf->commonrings[INFF_H2D_MSGRING_CONTROL_SUBMIT];
-+	inff_commonring_lock(commonring);
-+	ret_ptr = inff_commonring_reserve_for_write(commonring);
-+	if (!ret_ptr) {
-+		inff_err("Failed to reserve space in commonring\n");
-+		inff_commonring_unlock(commonring);
-+		return -ENOMEM;
++		/* Send mailbox interrupt twice as a hardware workaround */
++		core = inff_chip_get_core(devinfo->ci, INF_CORE_PCIE2);
++		if (core->rev <= 13)
++			pci_write_config_dword(devinfo->pdev,
++					       INFF_PCIE_REG_SBMBX, 1);
 +	}
-+	h2d_mbdata = (struct msgbuf_h2d_mbdata *)ret_ptr;
-+	memset(h2d_mbdata, 0, sizeof(*h2d_mbdata));
-+
-+	h2d_mbdata->msg.msgtype = MSGBUF_TYPE_H2D_MAILBOX_DATA;
-+	h2d_mbdata->mbdata = cpu_to_le32(mbdata);
-+
-+	err = inff_commonring_write_complete(commonring);
-+	inff_commonring_unlock(commonring);
-+
-+	return err;
++	return 0;
 +}
 +
-+static int inff_msgbuf_tx_ioctl(struct inff_pub *drvr, int ifidx,
-+				uint cmd, void *buf, uint len)
++void inff_pcie_handle_mb_data(struct inff_bus *bus_if, u32 d2h_mb_data)
 +{
-+	struct inff_msgbuf *msgbuf = (struct inff_msgbuf *)drvr->proto->pd;
-+	struct inff_commonring *commonring;
-+	struct msgbuf_ioctl_req_hdr *request;
-+	u16 buf_len;
-+	void *ret_ptr;
-+	int err;
++	struct inff_pciedev *buspub = bus_if->bus_priv.pcie;
++	struct inff_pciedev_info *devinfo = buspub->devinfo;
 +
-+	commonring = msgbuf->commonrings[INFF_H2D_MSGRING_CONTROL_SUBMIT];
-+	inff_commonring_lock(commonring);
-+	ret_ptr = inff_commonring_reserve_for_write(commonring);
-+	if (!ret_ptr) {
-+		iphy_err(drvr, "Failed to reserve space in commonring\n");
-+		inff_commonring_unlock(commonring);
-+		return -ENOMEM;
++	inff_dbg(INFO, "D2H_MB_DATA: 0x%04x\n", d2h_mb_data);
++
++	if (d2h_mb_data & INFF_D2H_DEV_DS_ENTER_REQ) {
++		inff_dbg(INFO, "D2H_MB_DATA: DEEP SLEEP REQ\n");
++		inff_pcie_send_mb_data(devinfo, INFF_H2D_HOST_DS_ACK);
++		inff_dbg(INFO, "D2H_MB_DATA: sent DEEP SLEEP ACK\n");
 +	}
 +
-+	msgbuf->reqid++;
++	if (d2h_mb_data & INFF_D2H_DEV_DS_EXIT_NOTE)
++		inff_dbg(INFO, "D2H_MB_DATA: DEEP SLEEP EXIT\n");
++	if (d2h_mb_data & INFF_D2H_DEV_D3_ACK) {
++		inff_dbg(INFO, "D2H_MB_DATA: D3 ACK\n");
++		devinfo->mbdata_completed = true;
++		wake_up(&devinfo->mbdata_resp_wait);
++	}
 +
-+	request = (struct msgbuf_ioctl_req_hdr *)ret_ptr;
-+	request->msg.msgtype = MSGBUF_TYPE_IOCTLPTR_REQ;
-+	request->msg.ifidx = (u8)ifidx;
-+	request->msg.flags = 0;
-+	request->msg.request_id = cpu_to_le32(INFF_IOCTL_REQ_PKTID);
-+	request->cmd = cpu_to_le32(cmd);
-+	request->output_buf_len = cpu_to_le16(len);
-+	request->trans_id = cpu_to_le16(msgbuf->reqid);
-+
-+	buf_len = min_t(u16, len, INFF_TX_IOCTL_MAX_MSG_SIZE);
-+	request->input_buf_len = cpu_to_le16(buf_len);
-+	request->req_buf_addr.high_addr = cpu_to_le32(msgbuf->ioctbuf_phys_hi);
-+	request->req_buf_addr.low_addr = cpu_to_le32(msgbuf->ioctbuf_phys_lo);
-+	if (buf)
-+		memcpy(msgbuf->ioctbuf, buf, buf_len);
-+	else
-+		memset(msgbuf->ioctbuf, 0, buf_len);
-+
-+	err = inff_commonring_write_complete(commonring);
-+	inff_commonring_unlock(commonring);
-+
-+	return err;
++	if (d2h_mb_data & INFF_D2H_DEV_FWHALT) {
++		inff_dbg(INFO, "D2H_MB_DATA: FW HALT\n");
++		inff_fw_crashed(&devinfo->pdev->dev);
++	}
 +}
 +
-+static int inff_msgbuf_ioctl_resp_wait(struct inff_msgbuf *msgbuf)
++static int inff_pcie_ring_mb_ring_bell(void *ctx)
 +{
-+	return wait_event_timeout(msgbuf->ioctl_resp_wait,
-+				  msgbuf->ctl_completed,
-+				  MSGBUF_IOCTL_RESP_TIMEOUT);
-+}
++	struct inff_pcie_ringbuf *ring = (struct inff_pcie_ringbuf *)ctx;
++	struct inff_pciedev_info *devinfo = ring->devinfo;
 +
-+static void inff_msgbuf_ioctl_resp_wake(struct inff_msgbuf *msgbuf)
-+{
-+	msgbuf->ctl_completed = true;
-+	wake_up(&msgbuf->ioctl_resp_wait);
-+}
-+
-+static int inff_msgbuf_query_fwcmd(struct inff_pub *drvr, int ifidx,
-+				   uint cmd, void *buf, uint len, int *fwerr)
-+{
-+	struct inff_msgbuf *msgbuf = (struct inff_msgbuf *)drvr->proto->pd;
-+	struct sk_buff *skb = NULL;
-+	int timeout;
-+	int err;
-+
-+	inff_dbg(MSGBUF, "ifidx=%d, cmd=%d, len=%d\n", ifidx, cmd, len);
-+	*fwerr = 0;
-+	msgbuf->ctl_completed = false;
-+	err = inff_msgbuf_tx_ioctl(drvr, ifidx, cmd, buf, len);
-+	if (err)
-+		return err;
-+
-+	timeout = inff_msgbuf_ioctl_resp_wait(msgbuf);
-+	if (!timeout) {
-+		iphy_err(drvr, "Timeout on response for query command\n");
++	if (devinfo->state != INFFMAC_PCIE_STATE_UP)
 +		return -EIO;
-+	}
 +
-+	skb = (struct sk_buff *)inff_msgbuf_get_pktid(msgbuf->drvr->bus_if->dev,
-+						      msgbuf->rx_pktids,
-+						      msgbuf->ioctl_resp_pktid);
-+	if (msgbuf->ioctl_resp_ret_len != 0) {
-+		if (!skb)
-+			return -EBADF;
-+
-+		memcpy(buf, skb->data, (len < msgbuf->ioctl_resp_ret_len) ?
-+				       len : msgbuf->ioctl_resp_ret_len);
-+	}
-+	inff_pkt_buf_free_skb(skb);
-+
-+	*fwerr = msgbuf->ioctl_resp_status;
-+	return 0;
-+}
-+
-+static int inff_msgbuf_set_fwcmd(struct inff_pub *drvr, int ifidx,
-+				 uint cmd, void *buf, uint len, int *fwerr)
-+{
-+	return inff_msgbuf_query_fwcmd(drvr, ifidx, cmd, buf, len, fwerr);
-+}
-+
-+static int inff_msgbuf_hdrpull(struct inff_pub *drvr, bool do_fws,
-+			       struct sk_buff *skb, struct inff_if **ifp)
-+{
-+	return -ENODEV;
-+}
-+
-+static void inff_msgbuf_rxreorder(struct inff_if *ifp, struct sk_buff *skb,
-+				  bool inirq)
-+{
-+}
-+
-+static void inff_msgbuf_poll_ring(struct inff_msgbuf *msgbuf, struct inff_commonring *ring,
-+				  unsigned int *work_done, int budget)
-+{
-+	void *buf;
-+	u16 count;
-+	u16 processed = 0;
-+
-+	buf = inff_commonring_get_read_ptr(ring, &count);
-+	while (buf && count) {
-+		if (*work_done >= budget)
-+			break;
-+		inff_msgbuf_process_msgtype(msgbuf,
-+					    buf + msgbuf->rx_dataoffset,
-+					    work_done);
-+		buf += inff_commonring_len_item(ring);
-+		processed++;
-+		if (processed == INFF_MSGBUF_UPDATE_RX_PTR_THRS) {
-+			inff_commonring_read_complete(ring, processed);
-+			processed = 0;
-+		}
-+		count--;
-+	}
-+	if (processed)
-+		inff_commonring_read_complete(ring, processed);
-+}
-+
-+static int inff_msgbuf_napi_poll(struct napi_struct *napi, int budget)
-+{
-+	struct inff_if *ifp;
-+	struct inff_msgbuf *msgbuf;
-+	unsigned int work_done = 0;
-+
-+	inff_dbg(TRACE, "NAPI poll started, work_done %d, budget %d\n",
-+		 work_done, budget);
-+
-+	ifp = container_of(napi, struct inff_if, napi);
-+
-+	msgbuf = ifp->drvr->proto->pd;
-+	inff_msgbuf_poll_ring(msgbuf,
-+			      msgbuf->commonrings[INFF_D2H_MSGRING_RX_COMPLETE],
-+			      &work_done, budget);
-+	if (work_done < budget)
-+		inff_msgbuf_poll_ring(msgbuf,
-+				      msgbuf->commonrings[INFF_D2H_MSGRING_TX_COMPLETE],
-+				      &work_done, budget);
-+
-+	/* If budget fully consumed, continue polling */
-+	if (work_done == budget)
-+		return budget;
-+
-+	if (work_done < budget) {
-+		napi_complete(napi);
-+		inff_dbg(TRACE, "NAPI poll completed, work_done %d, budget %d\n",
-+			 work_done, budget);
-+	}
-+
-+	return work_done;
-+}
-+
-+static void inff_msgbuf_napi_add(struct inff_if *ifp)
-+{
-+	struct net_device *ndev = ifp->ndev;
-+
-+	if (!ndev)
-+		return;
-+
-+	netif_napi_add(ndev, &ifp->napi, inff_msgbuf_napi_poll);
-+	napi_enable(&ifp->napi);
-+	ifp->napi_gro = true;
-+}
-+
-+static void inff_msgbuf_napi_del(struct inff_if *ifp)
-+{
-+	struct net_device *ndev = ifp->ndev;
-+
-+	if (!ndev)
-+		return;
-+
-+	napi_synchronize(&ifp->napi);
-+	napi_disable(&ifp->napi);
-+	netif_napi_del(&ifp->napi);
-+}
-+
-+static void inff_msgbuf_napi_schedule(void *info)
-+{
-+	struct inff_if *ifp = (struct inff_if *)info;
-+
-+	napi_schedule(&ifp->napi);
-+}
-+
-+static void
-+inff_msgbuf_remove_flowring(struct inff_msgbuf *msgbuf, u16 flowid)
-+{
-+	u32 dma_sz;
-+	void *dma_buf;
-+	struct inff_commonring *commonring = msgbuf->flowrings[flowid];
-+
-+	inff_dbg(MSGBUF, "Removing flowring %d\n", flowid);
-+	/* The flowring addr and dpeth be copied by the inff_commonring_config(),
-+	 * while flowring create. To keep the same logic as the commonring buf, so
-+	 * the commonring ptr is used in here.
-+	 */
-+	dma_buf = commonring->buf_addr;
-+	if (dma_buf) {
-+		dma_sz = commonring->depth * commonring->item_len;
-+		dma_free_coherent(msgbuf->drvr->bus_if->dev, dma_sz, dma_buf,
-+				  msgbuf->flowring_dma_handle[flowid]);
-+	}
-+	inff_flowring_delete(msgbuf->flow, flowid);
-+}
-+
-+static struct inff_msgbuf_work_item *
-+inff_msgbuf_dequeue_work(struct inff_msgbuf *msgbuf)
-+{
-+	struct inff_msgbuf_work_item *work = NULL;
-+	ulong flags;
-+
-+	spin_lock_irqsave(&msgbuf->flowring_work_lock, flags);
-+	if (!list_empty(&msgbuf->work_queue)) {
-+		work = list_first_entry(&msgbuf->work_queue,
-+					struct inff_msgbuf_work_item, queue);
-+		list_del(&work->queue);
-+	}
-+	spin_unlock_irqrestore(&msgbuf->flowring_work_lock, flags);
-+
-+	return work;
-+}
-+
-+static u32
-+inff_msgbuf_flowring_create_worker(struct inff_msgbuf *msgbuf,
-+				   struct inff_msgbuf_work_item *work)
-+{
-+	struct inff_pub *drvr = msgbuf->drvr;
-+	struct msgbuf_tx_flowring_create_req *create;
-+	struct inff_commonring *commonring;
-+	void *ret_ptr;
-+	u32 flowid;
-+	void *dma_buf;
-+	u32 dma_sz, ring_max_item;
-+	u64 address;
-+	int err;
-+
-+	ring_max_item = INFF_H2D_TXFLOWRING_MAX_ITEM;
-+
-+	flowid = work->flowid;
-+	dma_sz = ring_max_item * INFF_H2D_TXFLOWRING_ITEMSIZE;
-+	dma_buf = dma_alloc_coherent(msgbuf->drvr->bus_if->dev, dma_sz,
-+				     &msgbuf->flowring_dma_handle[flowid],
-+				     GFP_KERNEL);
-+	if (!dma_buf) {
-+		iphy_err(drvr, "dma_alloc_coherent failed\n");
-+		inff_flowring_delete(msgbuf->flow, flowid);
-+		return INFF_FLOWRING_INVALID_ID;
-+	}
-+
-+	inff_commonring_config(msgbuf->flowrings[flowid],
-+			       ring_max_item,
-+			       INFF_H2D_TXFLOWRING_ITEMSIZE, dma_buf);
-+
-+	commonring = msgbuf->commonrings[INFF_H2D_MSGRING_CONTROL_SUBMIT];
-+	inff_commonring_lock(commonring);
-+	ret_ptr = inff_commonring_reserve_for_write(commonring);
-+	if (!ret_ptr) {
-+		iphy_err(drvr, "Failed to reserve space in commonring\n");
-+		inff_commonring_unlock(commonring);
-+		inff_msgbuf_remove_flowring(msgbuf, flowid);
-+		return INFF_FLOWRING_INVALID_ID;
-+	}
-+
-+	create = (struct msgbuf_tx_flowring_create_req *)ret_ptr;
-+	create->msg.msgtype = MSGBUF_TYPE_FLOW_RING_CREATE;
-+	create->msg.ifidx = work->ifidx;
-+	create->msg.request_id = 0;
-+	create->tid = inff_flowring_tid(msgbuf->flow, flowid);
-+	create->flow_ring_id = cpu_to_le16(flowid +
-+					   INFF_H2D_MSGRING_FLOWRING_IDSTART);
-+	memcpy(create->sa, work->sa, ETH_ALEN);
-+	memcpy(create->da, work->da, ETH_ALEN);
-+	address = (u64)msgbuf->flowring_dma_handle[flowid];
-+	create->flow_ring_addr.high_addr = cpu_to_le32(address >> 32);
-+	create->flow_ring_addr.low_addr = cpu_to_le32(address & 0xffffffff);
-+	create->max_items = cpu_to_le16(ring_max_item);
-+	create->len_item = cpu_to_le16(INFF_H2D_TXFLOWRING_ITEMSIZE);
-+
-+	inff_dbg(MSGBUF, "Send Flow Create Req flow ID %d for peer %pM prio %d ifindex %d\n",
-+		 flowid, work->da, create->tid, work->ifidx);
-+
-+	err = inff_commonring_write_complete(commonring);
-+	inff_commonring_unlock(commonring);
-+	if (err) {
-+		iphy_err(drvr, "Failed to write commonring\n");
-+		inff_msgbuf_remove_flowring(msgbuf, flowid);
-+		return INFF_FLOWRING_INVALID_ID;
-+	}
-+
-+	return flowid;
-+}
-+
-+static void inff_msgbuf_flowring_worker(struct work_struct *work)
-+{
-+	struct inff_msgbuf *msgbuf;
-+	struct inff_msgbuf_work_item *create;
-+
-+	msgbuf = container_of(work, struct inff_msgbuf, flowring_work);
-+
-+	while ((create = inff_msgbuf_dequeue_work(msgbuf))) {
-+		inff_msgbuf_flowring_create_worker(msgbuf, create);
-+		kfree(create);
-+	}
-+}
-+
-+static u32 inff_msgbuf_flowring_create(struct inff_msgbuf *msgbuf, int ifidx,
-+				       struct sk_buff *skb)
-+{
-+	struct inff_msgbuf_work_item *create;
-+	struct ethhdr *eh = (struct ethhdr *)(skb->data);
-+	u32 flowid;
-+	ulong flags;
-+
-+	create = kzalloc(sizeof(*create), GFP_ATOMIC);
-+	if (!create)
-+		return INFF_FLOWRING_INVALID_ID;
-+
-+	flowid = inff_flowring_create(msgbuf->flow, eh->h_dest,
-+				      skb->priority, ifidx);
-+	if (flowid == INFF_FLOWRING_INVALID_ID) {
-+		kfree(create);
-+		return flowid;
-+	}
-+
-+	create->flowid = flowid;
-+	create->ifidx = ifidx;
-+	memcpy(create->sa, eh->h_source, ETH_ALEN);
-+	memcpy(create->da, eh->h_dest, ETH_ALEN);
-+
-+	spin_lock_irqsave(&msgbuf->flowring_work_lock, flags);
-+	list_add_tail(&create->queue, &msgbuf->work_queue);
-+	spin_unlock_irqrestore(&msgbuf->flowring_work_lock, flags);
-+
-+	schedule_work(&msgbuf->flowring_work);
-+
-+	return flowid;
-+}
-+
-+static void inff_msgbuf_txflow(struct inff_msgbuf *msgbuf, u16 flowid)
-+{
-+	struct inff_flowring *flow = msgbuf->flow;
-+	struct inff_pub *drvr = msgbuf->drvr;
-+	struct device *dev = drvr->bus_if->dev;
-+	struct inff_commonring *commonring;
-+	void *ret_ptr;
-+	u32 count;
-+	struct sk_buff *skb;
-+	dma_addr_t physaddr;
-+	struct inff_msgbuf_pktids *pktids = msgbuf->tx_pktids;
-+	u32 pktid;
-+	struct msgbuf_tx_msghdr *tx_msghdr;
-+	u64 address;
-+
-+	commonring = msgbuf->flowrings[flowid];
-+	if (!inff_commonring_write_available(commonring)) {
-+		if (commonring->was_full)
-+			iphy_err(drvr, "%d, TXPOST: commonring full !!\n", __LINE__);
-+		return;
-+	}
-+
-+	inff_commonring_lock(commonring);
-+
-+	count = INFF_MSGBUF_TX_FLUSH_CNT2 - INFF_MSGBUF_TX_FLUSH_CNT1;
-+	while (inff_flowring_qlen(flow, flowid)) {
-+		skb = inff_flowring_dequeue(flow, flowid);
-+		if (!skb) {
-+			iphy_err(drvr, "No SKB, but qlen %d\n",
-+				 inff_flowring_qlen(flow, flowid));
-+			break;
-+		}
-+		skb_tx_timestamp(skb);
-+		skb_orphan(skb);
-+		if (inff_msgbuf_alloc_pktid(dev, pktids, skb, NULL,
-+					    ETH_HLEN, &physaddr, &pktid)) {
-+			inff_flowring_reinsert(flow, flowid, skb);
-+			iphy_err(drvr, "TXPOST: No PKTID available (last alloc %d) !!\n",
-+				 pktids->last_allocated_idx);
-+			break;
-+		}
-+		ret_ptr = inff_commonring_reserve_for_write(commonring);
-+		if (!ret_ptr) {
-+			if (commonring->was_full)
-+				iphy_err(drvr, "%d, TXPOST: commonring full !!\n", __LINE__);
-+
-+			skb = (struct sk_buff *)inff_msgbuf_get_pktid(dev,
-+								      pktids,
-+								      pktid);
-+			if (skb)
-+				inff_flowring_reinsert(flow, flowid, skb);
-+			break;
-+		}
-+		count++;
-+
-+		tx_msghdr = (struct msgbuf_tx_msghdr *)ret_ptr;
-+
-+		tx_msghdr->msg.msgtype = MSGBUF_TYPE_TX_POST;
-+		tx_msghdr->msg.request_id = cpu_to_le32(pktid + 1);
-+		tx_msghdr->msg.ifidx = inff_flowring_ifidx_get(flow, flowid);
-+		tx_msghdr->flags = INFF_MSGBUF_PKT_FLAGS_FRAME_802_3;
-+		tx_msghdr->flags |= (skb->priority & 0x07) <<
-+				    INFF_MSGBUF_PKT_FLAGS_PRIO_SHIFT;
-+		tx_msghdr->seg_cnt = 1;
-+		memcpy(tx_msghdr->txhdr, skb->data, ETH_HLEN);
-+		tx_msghdr->data_len = cpu_to_le16(skb->len - ETH_HLEN);
-+		address = (u64)physaddr;
-+		tx_msghdr->data_buf_addr.high_addr = cpu_to_le32(address >> 32);
-+		tx_msghdr->data_buf_addr.low_addr =
-+			cpu_to_le32(address & 0xffffffff);
-+		tx_msghdr->metadata_buf_len = 0;
-+		tx_msghdr->metadata_buf_addr.high_addr = 0;
-+		tx_msghdr->metadata_buf_addr.low_addr = 0;
-+		atomic_inc(&commonring->outstanding_tx);
-+		if (count >= INFF_MSGBUF_TX_FLUSH_CNT2) {
-+			inff_commonring_write_complete(commonring);
-+			count = 0;
-+		}
-+	}
-+	if (count)
-+		inff_commonring_write_complete(commonring);
-+	inff_commonring_unlock(commonring);
-+}
-+
-+static void inff_msgbuf_txflow_worker(struct work_struct *worker)
-+{
-+	struct inff_msgbuf *msgbuf;
-+	u32 flowid;
-+
-+	msgbuf = container_of(worker, struct inff_msgbuf, txflow_work);
-+	for_each_set_bit(flowid, msgbuf->flow_map, msgbuf->max_flowrings) {
-+		clear_bit(flowid, msgbuf->flow_map);
-+		inff_msgbuf_txflow(msgbuf, flowid);
-+	}
-+}
-+
-+static int inff_msgbuf_schedule_txdata(struct inff_msgbuf *msgbuf, u32 flowid,
-+				       bool force)
-+{
-+	struct inff_commonring *commonring;
-+	int qlen;
-+
-+	set_bit(flowid, msgbuf->flow_map);
-+	commonring = msgbuf->flowrings[flowid];
-+
-+	qlen = inff_flowring_qlen(msgbuf->flow, flowid);
-+	inff_dbg(MSGBUF, "force: %u, txflowring[%u] qlen: %u, outstanding_tx: %u",
-+		 force, flowid, qlen, atomic_read(&commonring->outstanding_tx));
-+
-+	if ((force) || (atomic_read(&commonring->outstanding_tx) <
-+			INFF_MSGBUF_DELAY_TXWORKER_THRS))
-+		queue_work(msgbuf->txflow_wq, &msgbuf->txflow_work);
++	inff_dbg(PCIE, "RING !\n");
++	/* Any arbitrary value will do, lets use 1 */
++	inff_pcie_write_reg32(devinfo, devinfo->reginfo->h2d_mailbox_0, 1);
 +
 +	return 0;
 +}
 +
-+static int inff_msgbuf_tx_queue_data(struct inff_pub *drvr, int ifidx,
-+				     struct sk_buff *skb)
++static int inff_pcie_ring_mb_update_rptr(void *ctx)
 +{
-+	struct inff_msgbuf *msgbuf = (struct inff_msgbuf *)drvr->proto->pd;
-+	struct inff_flowring *flow = msgbuf->flow;
-+	struct ethhdr *eh = (struct ethhdr *)(skb->data);
-+	u32 flowid;
-+	u32 queue_count;
-+	bool force;
++	struct inff_pcie_ringbuf *ring = (struct inff_pcie_ringbuf *)ctx;
++	struct inff_pciedev_info *devinfo = ring->devinfo;
++	struct inff_commonring *commonring = &ring->commonring;
 +
-+	flowid = inff_flowring_lookup(flow, eh->h_dest, skb->priority, ifidx);
-+	if (flowid == INFF_FLOWRING_INVALID_ID) {
-+		flowid = inff_msgbuf_flowring_create(msgbuf, ifidx, skb);
-+		if (flowid == INFF_FLOWRING_INVALID_ID)
-+			return -ENOMEM;
++	if (devinfo->state != INFFMAC_PCIE_STATE_UP)
++		return -EIO;
 +
-+		inff_flowring_enqueue(flow, flowid, skb);
-+		return 0;
-+	}
-+	queue_count = inff_flowring_enqueue(flow, flowid, skb);
-+	force = ((queue_count % INFF_MSGBUF_TRICKLE_TXWORKER_THRS) == 0);
-+	inff_msgbuf_schedule_txdata(msgbuf, flowid, force);
++	commonring->r_ptr = devinfo->read_ptr(devinfo, ring->r_idx_addr);
++
++	inff_dbg(PCIE, "R r_ptr %d (%d), ring %d\n", commonring->r_ptr,
++		 commonring->w_ptr, ring->id);
 +
 +	return 0;
 +}
 +
-+static void
-+inff_msgbuf_configure_addr_mode(struct inff_pub *drvr, int ifidx,
-+				enum proto_addr_mode addr_mode)
++static int inff_pcie_ring_mb_update_wptr(void *ctx)
 +{
-+	struct inff_msgbuf *msgbuf = (struct inff_msgbuf *)drvr->proto->pd;
++	struct inff_pcie_ringbuf *ring = (struct inff_pcie_ringbuf *)ctx;
++	struct inff_pciedev_info *devinfo = ring->devinfo;
++	struct inff_commonring *commonring = &ring->commonring;
 +
-+	inff_flowring_configure_addr_mode(msgbuf->flow, ifidx, addr_mode);
-+}
++	if (devinfo->state != INFFMAC_PCIE_STATE_UP)
++		return -EIO;
 +
-+static void
-+inff_msgbuf_delete_peer(struct inff_pub *drvr, int ifidx, u8 peer[ETH_ALEN])
-+{
-+	struct inff_msgbuf *msgbuf = (struct inff_msgbuf *)drvr->proto->pd;
++	commonring->w_ptr = devinfo->read_ptr(devinfo, ring->w_idx_addr);
 +
-+	inff_flowring_delete_peer(msgbuf->flow, ifidx, peer);
-+}
-+
-+static void
-+inff_msgbuf_process_ioctl_complete(struct inff_msgbuf *msgbuf, void *buf)
-+{
-+	struct msgbuf_ioctl_resp_hdr *ioctl_resp;
-+
-+	ioctl_resp = (struct msgbuf_ioctl_resp_hdr *)buf;
-+
-+	msgbuf->ioctl_resp_status =
-+			(s16)le16_to_cpu(ioctl_resp->compl_hdr.status);
-+	msgbuf->ioctl_resp_ret_len = le16_to_cpu(ioctl_resp->resp_len);
-+	msgbuf->ioctl_resp_pktid = le32_to_cpu(ioctl_resp->msg.request_id);
-+
-+	inff_msgbuf_ioctl_resp_wake(msgbuf);
-+
-+	if (msgbuf->cur_ioctlrespbuf)
-+		msgbuf->cur_ioctlrespbuf--;
-+	inff_msgbuf_rxbuf_ioctlresp_post(msgbuf);
-+}
-+
-+static void
-+inff_msgbuf_process_txstatus(struct inff_msgbuf *msgbuf, void *buf, unsigned int *work_done)
-+{
-+	struct inff_commonring *commonring;
-+	struct msgbuf_tx_status *tx_status;
-+	u32 idx;
-+	struct sk_buff *skb;
-+	u16 flowid;
-+
-+	tx_status = (struct msgbuf_tx_status *)buf;
-+	idx = le32_to_cpu(tx_status->msg.request_id) - 1;
-+	flowid = le16_to_cpu(tx_status->compl_hdr.flow_ring_id);
-+	flowid -= INFF_H2D_MSGRING_FLOWRING_IDSTART;
-+	skb = (struct sk_buff *)inff_msgbuf_get_pktid(msgbuf->drvr->bus_if->dev,
-+						      msgbuf->tx_pktids, idx);
-+	if (!skb)
-+		return;
-+
-+	set_bit(flowid, msgbuf->txstatus_done_map);
-+	commonring = msgbuf->flowrings[flowid];
-+	atomic_dec(&commonring->outstanding_tx);
-+
-+	inff_txfinalize(inff_get_ifp(msgbuf->drvr, tx_status->msg.ifidx),
-+			skb, true);
-+	if (work_done)
-+		(*work_done)++;
-+}
-+
-+static u32 inff_msgbuf_rxbuf_data_post(struct inff_msgbuf *msgbuf, u32 count)
-+{
-+	struct inff_pub *drvr = msgbuf->drvr;
-+	struct inff_commonring *commonring;
-+	void *ret_ptr;
-+	struct page *page;
-+	u16 alloced;
-+	u32 pktlen;
-+	dma_addr_t physaddr;
-+	struct msgbuf_rx_bufpost *rx_bufpost;
-+	u64 address;
-+	u32 pktid;
-+	u32 i;
-+
-+	commonring = msgbuf->commonrings[INFF_H2D_MSGRING_RXPOST_SUBMIT];
-+	ret_ptr = inff_commonring_reserve_for_write_multiple(commonring,
-+							     count,
-+							     &alloced);
-+	if (!ret_ptr) {
-+		inff_dbg(MSGBUF, "Failed to reserve space in commonring\n");
-+		return 0;
-+	}
-+
-+	for (i = 0; i < alloced; i++) {
-+		rx_bufpost = (struct msgbuf_rx_bufpost *)ret_ptr;
-+		memset(rx_bufpost, 0, sizeof(*rx_bufpost));
-+
-+		page = page_pool_dev_alloc_pages(msgbuf->rx_pktids->page_pool);
-+		if (!page) {
-+			iphy_err(drvr, "Failed to alloc PAGE\n");
-+			inff_commonring_write_cancel(commonring, alloced - i);
-+			break;
-+		}
-+
-+		pktlen = INFF_MAX_RX_BUF_SIZE;
-+		if (inff_msgbuf_alloc_pktid(msgbuf->drvr->bus_if->dev,
-+					    msgbuf->rx_pktids, NULL, page, 0,
-+					    &physaddr, &pktid)) {
-+			page_pool_put_full_page(msgbuf->rx_pktids->page_pool,
-+						page, true);
-+			iphy_err(drvr, "RXPOST: No PKTID available (last alloc %d) !!\n",
-+				 msgbuf->rx_pktids->last_allocated_idx);
-+			inff_commonring_write_cancel(commonring, alloced - i);
-+			break;
-+		}
-+
-+		if (msgbuf->rx_metadata_offset) {
-+			address = (u64)physaddr;
-+			rx_bufpost->metadata_buf_len =
-+				cpu_to_le16(msgbuf->rx_metadata_offset);
-+			rx_bufpost->metadata_buf_addr.high_addr =
-+				cpu_to_le32(address >> 32);
-+			rx_bufpost->metadata_buf_addr.low_addr =
-+				cpu_to_le32(address & 0xffffffff);
-+
-+			pktlen -= msgbuf->rx_metadata_offset;
-+			physaddr += msgbuf->rx_metadata_offset;
-+		}
-+		rx_bufpost->msg.msgtype = MSGBUF_TYPE_RXBUF_POST;
-+		rx_bufpost->msg.request_id = cpu_to_le32(pktid);
-+
-+		address = (u64)physaddr;
-+		rx_bufpost->data_buf_len = cpu_to_le16((u16)pktlen);
-+		rx_bufpost->data_buf_addr.high_addr =
-+			cpu_to_le32(address >> 32);
-+		rx_bufpost->data_buf_addr.low_addr =
-+			cpu_to_le32(address & 0xffffffff);
-+
-+		ret_ptr += inff_commonring_len_item(commonring);
-+	}
-+
-+	if (i)
-+		inff_commonring_write_complete(commonring);
-+
-+	return i;
-+}
-+
-+static void
-+inff_msgbuf_rxbuf_data_fill(struct inff_msgbuf *msgbuf)
-+{
-+	u32 fillbufs;
-+	u32 retcount;
-+
-+	fillbufs = msgbuf->max_rxbufpost - msgbuf->rxbufpost;
-+
-+	while (fillbufs) {
-+		retcount = inff_msgbuf_rxbuf_data_post(msgbuf, fillbufs);
-+		if (!retcount)
-+			break;
-+		msgbuf->rxbufpost += retcount;
-+		fillbufs -= retcount;
-+	}
-+}
-+
-+static void
-+inff_msgbuf_update_rxbufpost_count(struct inff_msgbuf *msgbuf, u16 rxcnt)
-+{
-+	msgbuf->rxbufpost -= rxcnt;
-+	if (msgbuf->rxbufpost <= (msgbuf->max_rxbufpost -
-+				  INFF_MSGBUF_RXBUFPOST_THRESHOLD))
-+		inff_msgbuf_rxbuf_data_fill(msgbuf);
-+}
-+
-+static u32
-+inff_msgbuf_rxbuf_ctrl_post(struct inff_msgbuf *msgbuf, bool event_buf,
-+			    u32 count)
-+{
-+	struct inff_pub *drvr = msgbuf->drvr;
-+	struct inff_commonring *commonring;
-+	void *ret_ptr;
-+	struct sk_buff *skb;
-+	u16 alloced;
-+	u32 pktlen;
-+	dma_addr_t physaddr;
-+	struct msgbuf_rx_ioctl_resp_or_event *rx_bufpost;
-+	u64 address;
-+	u32 pktid;
-+	u32 i;
-+
-+	commonring = msgbuf->commonrings[INFF_H2D_MSGRING_CONTROL_SUBMIT];
-+	inff_commonring_lock(commonring);
-+	ret_ptr = inff_commonring_reserve_for_write_multiple(commonring,
-+							     count,
-+							     &alloced);
-+	if (!ret_ptr) {
-+		iphy_err(drvr, "Failed to reserve space in commonring\n");
-+		inff_commonring_unlock(commonring);
-+		return 0;
-+	}
-+
-+	for (i = 0; i < alloced; i++) {
-+		rx_bufpost = (struct msgbuf_rx_ioctl_resp_or_event *)ret_ptr;
-+		memset(rx_bufpost, 0, sizeof(*rx_bufpost));
-+
-+		skb = __inff_pkt_buf_get_skb(INFF_MSGBUF_MAX_CTL_PKT_SIZE, GFP_KERNEL);
-+		if (!skb) {
-+			iphy_err(drvr, "Failed to alloc SKB\n");
-+			inff_commonring_write_cancel(commonring, alloced - i);
-+			break;
-+		}
-+
-+		pktlen = skb->len;
-+		if (inff_msgbuf_alloc_pktid(msgbuf->drvr->bus_if->dev,
-+					    msgbuf->rx_pktids, skb, NULL, 0,
-+					    &physaddr, &pktid)) {
-+			dev_kfree_skb_any(skb);
-+			iphy_err(drvr, "CTRLPOST: No PKTID available (last alloc %d) !!\n",
-+				 msgbuf->rx_pktids->last_allocated_idx);
-+			inff_commonring_write_cancel(commonring, alloced - i);
-+			break;
-+		}
-+		if (event_buf)
-+			rx_bufpost->msg.msgtype = MSGBUF_TYPE_EVENT_BUF_POST;
-+		else
-+			rx_bufpost->msg.msgtype =
-+				MSGBUF_TYPE_IOCTLRESP_BUF_POST;
-+		rx_bufpost->msg.request_id = cpu_to_le32(pktid);
-+
-+		address = (u64)physaddr;
-+		rx_bufpost->host_buf_len = cpu_to_le16((u16)pktlen);
-+		rx_bufpost->host_buf_addr.high_addr =
-+			cpu_to_le32(address >> 32);
-+		rx_bufpost->host_buf_addr.low_addr =
-+			cpu_to_le32(address & 0xffffffff);
-+
-+		ret_ptr += inff_commonring_len_item(commonring);
-+	}
-+
-+	if (i)
-+		inff_commonring_write_complete(commonring);
-+
-+	inff_commonring_unlock(commonring);
-+
-+	return i;
-+}
-+
-+static void inff_msgbuf_rxbuf_ioctlresp_post(struct inff_msgbuf *msgbuf)
-+{
-+	u32 count;
-+
-+	count = msgbuf->max_ioctlrespbuf - msgbuf->cur_ioctlrespbuf;
-+	count = inff_msgbuf_rxbuf_ctrl_post(msgbuf, false, count);
-+	msgbuf->cur_ioctlrespbuf += count;
-+}
-+
-+static void inff_msgbuf_rxbuf_event_post(struct inff_msgbuf *msgbuf)
-+{
-+	u32 count;
-+
-+	count = msgbuf->max_eventbuf - msgbuf->cur_eventbuf;
-+	count = inff_msgbuf_rxbuf_ctrl_post(msgbuf, true, count);
-+	msgbuf->cur_eventbuf += count;
-+}
-+
-+static void inff_msgbuf_process_event(struct inff_msgbuf *msgbuf, void *buf)
-+{
-+	struct inff_pub *drvr = msgbuf->drvr;
-+	struct msgbuf_rx_event *event;
-+	u32 idx;
-+	u16 buflen;
-+	struct sk_buff *skb;
-+	struct inff_if *ifp;
-+
-+	event = (struct msgbuf_rx_event *)buf;
-+	idx = le32_to_cpu(event->msg.request_id);
-+	buflen = le16_to_cpu(event->event_data_len);
-+
-+	if (msgbuf->cur_eventbuf)
-+		msgbuf->cur_eventbuf--;
-+	inff_msgbuf_rxbuf_event_post(msgbuf);
-+
-+	skb = (struct sk_buff *)inff_msgbuf_get_pktid(msgbuf->drvr->bus_if->dev,
-+						      msgbuf->rx_pktids, idx);
-+	if (!skb)
-+		return;
-+
-+	if (msgbuf->rx_dataoffset)
-+		skb_pull(skb, msgbuf->rx_dataoffset);
-+
-+	skb_trim(skb, buflen);
-+
-+	ifp = inff_get_ifp(msgbuf->drvr, event->msg.ifidx);
-+	if (!ifp || !ifp->ndev) {
-+		iphy_err(drvr, "Received pkt for invalid ifidx %d\n",
-+			 event->msg.ifidx);
-+		goto exit;
-+	}
-+
-+	skb->protocol = eth_type_trans(skb, ifp->ndev);
-+
-+	inff_fwevt_process_skb(ifp->drvr, skb, 0, GFP_KERNEL);
-+
-+exit:
-+	inff_pkt_buf_free_skb(skb);
-+}
-+
-+static void
-+inff_msgbuf_process_rx_complete(struct inff_msgbuf *msgbuf, void *buf,
-+				unsigned int *work_done)
-+{
-+	struct inff_pub *drvr = msgbuf->drvr;
-+	struct msgbuf_rx_complete *rx_complete;
-+	struct sk_buff *skb, *cpskb = NULL;
-+	struct ethhdr *eh;
-+	u16 data_offset;
-+	u16 buflen;
-+	u16 flags;
-+	u32 idx;
-+	struct inff_if *ifp;
-+	struct inff_msgbuf_pktids *pktids = msgbuf->rx_pktids;
-+	struct page *page;
-+	unsigned char *data;
-+
-+	inff_msgbuf_update_rxbufpost_count(msgbuf, 1);
-+
-+	rx_complete = (struct msgbuf_rx_complete *)buf;
-+	data_offset = le16_to_cpu(rx_complete->data_offset);
-+	buflen = le16_to_cpu(rx_complete->data_len);
-+	idx = le32_to_cpu(rx_complete->msg.request_id);
-+	flags = le16_to_cpu(rx_complete->flags);
-+
-+	ifp = inff_get_ifp(drvr, rx_complete->msg.ifidx);
-+	if (!ifp || !ifp->ndev) {
-+		iphy_err(drvr, "Received pkt for invalid ifidx %d\n",
-+			 rx_complete->msg.ifidx);
-+		return;
-+	}
-+
-+	page = (struct page *)inff_msgbuf_get_pktid(drvr->bus_if->dev,
-+						    pktids, idx);
-+	if (!page)
-+		return;
-+
-+	data = page_address(page);
-+	prefetch(data);
-+
-+	if (data_offset)
-+		data += data_offset;
-+	else if (msgbuf->rx_dataoffset)
-+		data += msgbuf->rx_dataoffset;
-+
-+	skb = build_skb(data, PAGE_SIZE);
-+	if (!skb) {
-+		inff_err("Failed to build SKB from PAGE\n");
-+		page_pool_put_full_page(pktids->page_pool, page, true);
-+		return;
-+	}
-+
-+	/*
-+	 * Mark the SKB for recycle since it is created from
-+	 * a page pool memory.
-+	 */
-+	skb_mark_for_recycle(skb);
-+
-+	/*
-+	 * Shift skb->data by the size of Headroom to make
-+	 * data pointer point to start of the actual RX data.
-+	 */
-+	skb_reserve(skb, INFF_SKB_HEADROOM);
-+
-+	/* Shift skb->tail by the size of skb data to make
-+	 * tail pointer point to end of the actual RX data
-+	 */
-+	skb_put(skb, buflen);
-+
-+	if (work_done)
-+		(*work_done)++;
-+
-+	if (ifp->isap && ifp->fmac_pkt_fwd_en) {
-+		eh = (struct ethhdr *)(skb->data);
-+		skb_set_network_header(skb, sizeof(struct ethhdr));
-+		skb->protocol = eh->h_proto;
-+		skb->priority = cfg80211_classify8021d(skb, NULL);
-+		if (is_unicast_ether_addr(eh->h_dest)) {
-+			if (inff_find_sta(ifp, eh->h_dest)) {
-+				 /* determine the priority */
-+				if (skb->priority == 0 || skb->priority > 7) {
-+					skb->priority =
-+						cfg80211_classify8021d(skb,
-+								       NULL);
-+				}
-+				inff_proto_tx_queue_data(ifp->drvr,
-+							 ifp->ifidx, skb);
-+				return;
-+			}
-+		} else {
-+			cpskb = pskb_copy(skb, GFP_ATOMIC);
-+			if (cpskb) {
-+				inff_proto_tx_queue_data(ifp->drvr,
-+							 ifp->ifidx,
-+							 cpskb);
-+			} else {
-+				inff_err("Unable to do skb copy\n");
-+			}
-+		}
-+	}
-+	skb->dev = ifp->ndev;
-+	skb->protocol = eth_type_trans(skb, ifp->ndev);
-+
-+	inff_net_rx(ifp, skb, false);
-+}
-+
-+static void inff_msgbuf_process_gen_status(struct inff_msgbuf *msgbuf,
-+					   void *buf)
-+{
-+	struct msgbuf_gen_status *gen_status = buf;
-+	struct inff_pub *drvr = msgbuf->drvr;
-+	int err;
-+
-+	err = le16_to_cpu(gen_status->compl_hdr.status);
-+	if (err)
-+		iphy_err(drvr, "Firmware reported general error: %d\n", err);
-+}
-+
-+static void inff_msgbuf_process_ring_status(struct inff_msgbuf *msgbuf,
-+					    void *buf)
-+{
-+	struct msgbuf_ring_status *ring_status = buf;
-+	struct inff_pub *drvr = msgbuf->drvr;
-+	int err;
-+
-+	err = le16_to_cpu(ring_status->compl_hdr.status);
-+	if (err) {
-+		int ring = le16_to_cpu(ring_status->compl_hdr.flow_ring_id);
-+
-+		iphy_err(drvr, "Firmware reported ring %d error: %d\n", ring,
-+			 err);
-+	}
-+}
-+
-+static void
-+inff_msgbuf_process_flow_ring_create_response(struct inff_msgbuf *msgbuf,
-+					      void *buf)
-+{
-+	struct inff_pub *drvr = msgbuf->drvr;
-+	struct msgbuf_flowring_create_resp *flowring_create_resp;
-+	u16 status;
-+	u16 flowid;
-+
-+	flowring_create_resp = (struct msgbuf_flowring_create_resp *)buf;
-+
-+	flowid = le16_to_cpu(flowring_create_resp->compl_hdr.flow_ring_id);
-+	flowid -= INFF_H2D_MSGRING_FLOWRING_IDSTART;
-+	status =  le16_to_cpu(flowring_create_resp->compl_hdr.status);
-+
-+	if (status) {
-+		iphy_err(drvr, "Flowring creation failed, code %d\n", status);
-+		inff_msgbuf_remove_flowring(msgbuf, flowid);
-+		return;
-+	}
-+	inff_dbg(MSGBUF, "Flowring %d Create response status %d\n", flowid,
-+		 status);
-+
-+	inff_flowring_open(msgbuf->flow, flowid);
-+
-+	inff_msgbuf_schedule_txdata(msgbuf, flowid, true);
-+}
-+
-+static void
-+inff_msgbuf_process_flow_ring_delete_response(struct inff_msgbuf *msgbuf,
-+					      void *buf)
-+{
-+	struct inff_pub *drvr = msgbuf->drvr;
-+	struct msgbuf_flowring_delete_resp *flowring_delete_resp;
-+	u16 status;
-+	u16 flowid;
-+
-+	flowring_delete_resp = (struct msgbuf_flowring_delete_resp *)buf;
-+
-+	flowid = le16_to_cpu(flowring_delete_resp->compl_hdr.flow_ring_id);
-+	flowid -= INFF_H2D_MSGRING_FLOWRING_IDSTART;
-+	status =  le16_to_cpu(flowring_delete_resp->compl_hdr.status);
-+
-+	if (status) {
-+		iphy_err(drvr, "Flowring deletion failed, code %d\n", status);
-+		inff_flowring_delete(msgbuf->flow, flowid);
-+		return;
-+	}
-+	inff_dbg(MSGBUF, "Flowring %d Delete response status %d\n", flowid,
-+		 status);
-+
-+	inff_msgbuf_remove_flowring(msgbuf, flowid);
-+}
-+
-+static void
-+inff_msgbuf_process_d2h_mbdata(struct inff_msgbuf *msgbuf,
-+			       void *buf)
-+{
-+	struct msgbuf_d2h_mailbox_data *d2h_mbdata;
-+
-+	d2h_mbdata = (struct msgbuf_d2h_mailbox_data *)buf;
-+
-+	if (!d2h_mbdata) {
-+		inff_err("d2h_mbdata is null\n");
-+		return;
-+	}
-+
-+	inff_pcie_handle_mb_data(msgbuf->drvr->bus_if, le32_to_cpu(d2h_mbdata->mbdata));
-+}
-+
-+static void inff_msgbuf_process_msgtype(struct inff_msgbuf *msgbuf, void *buf,
-+					unsigned int *work_done)
-+{
-+	struct inff_pub *drvr = msgbuf->drvr;
-+	struct msgbuf_common_hdr *msg;
-+
-+	msg = (struct msgbuf_common_hdr *)buf;
-+	switch (msg->msgtype) {
-+	case MSGBUF_TYPE_GEN_STATUS:
-+		inff_dbg(MSGBUF, "MSGBUF_TYPE_GEN_STATUS\n");
-+		inff_msgbuf_process_gen_status(msgbuf, buf);
-+		break;
-+	case MSGBUF_TYPE_RING_STATUS:
-+		inff_dbg(MSGBUF, "MSGBUF_TYPE_RING_STATUS\n");
-+		inff_msgbuf_process_ring_status(msgbuf, buf);
-+		break;
-+	case MSGBUF_TYPE_FLOW_RING_CREATE_CMPLT:
-+		inff_dbg(MSGBUF, "MSGBUF_TYPE_FLOW_RING_CREATE_CMPLT\n");
-+		inff_msgbuf_process_flow_ring_create_response(msgbuf, buf);
-+		break;
-+	case MSGBUF_TYPE_FLOW_RING_DELETE_CMPLT:
-+		inff_dbg(MSGBUF, "MSGBUF_TYPE_FLOW_RING_DELETE_CMPLT\n");
-+		inff_msgbuf_process_flow_ring_delete_response(msgbuf, buf);
-+		break;
-+	case MSGBUF_TYPE_IOCTLPTR_REQ_ACK:
-+		inff_dbg(MSGBUF, "MSGBUF_TYPE_IOCTLPTR_REQ_ACK\n");
-+		break;
-+	case MSGBUF_TYPE_IOCTL_CMPLT:
-+		inff_dbg(MSGBUF, "MSGBUF_TYPE_IOCTL_CMPLT\n");
-+		inff_msgbuf_process_ioctl_complete(msgbuf, buf);
-+		break;
-+	case MSGBUF_TYPE_WL_EVENT:
-+		inff_dbg(MSGBUF, "MSGBUF_TYPE_WL_EVENT\n");
-+		inff_msgbuf_process_event(msgbuf, buf);
-+		break;
-+	case MSGBUF_TYPE_TX_STATUS:
-+		inff_dbg(MSGBUF, "MSGBUF_TYPE_TX_STATUS\n");
-+		inff_msgbuf_process_txstatus(msgbuf, buf, work_done);
-+		break;
-+	case MSGBUF_TYPE_RX_CMPLT:
-+		inff_dbg(MSGBUF, "MSGBUF_TYPE_RX_CMPLT\n");
-+		inff_msgbuf_process_rx_complete(msgbuf, buf, work_done);
-+		break;
-+	case MSGBUF_TYPE_D2H_MAILBOX_DATA:
-+		inff_dbg(MSGBUF, "MSGBUF_TYPE_D2H_MAILBOX_DATA\n");
-+		inff_msgbuf_process_d2h_mbdata(msgbuf, buf);
-+		break;
-+
-+	default:
-+		iphy_err(drvr, "Unsupported msgtype %d\n", msg->msgtype);
-+		break;
-+	}
-+}
-+
-+static void inff_msgbuf_process_rx(struct inff_msgbuf *msgbuf,
-+				   struct inff_commonring *commonring)
-+{
-+	void *buf;
-+	u16 count;
-+	u16 processed;
-+	struct inff_if *ifp;
-+	struct msgbuf_common_hdr *msg;
-+
-+again:
-+	buf = inff_commonring_get_read_ptr(commonring, &count);
-+	if (!buf)
-+		return;
-+
-+	msg = (struct msgbuf_common_hdr *)(buf + msgbuf->rx_dataoffset);
-+	ifp = inff_get_ifp(msgbuf->drvr, msg->ifidx);
-+	if (ifp && ifp->napi.poll &&
-+	    (count && (msg->msgtype == MSGBUF_TYPE_RX_CMPLT ||
-+		       msg->msgtype == MSGBUF_TYPE_TX_STATUS))) {
-+		inff_msgbuf_napi_schedule(ifp);
-+		return;
-+	}
-+
-+	processed = 0;
-+	while (count) {
-+		inff_msgbuf_process_msgtype(msgbuf,
-+					    buf + msgbuf->rx_dataoffset, NULL);
-+		buf += inff_commonring_len_item(commonring);
-+		processed++;
-+		if (processed == INFF_MSGBUF_UPDATE_RX_PTR_THRS) {
-+			inff_commonring_read_complete(commonring, processed);
-+			processed = 0;
-+		}
-+		count--;
-+	}
-+	if (processed)
-+		inff_commonring_read_complete(commonring, processed);
-+
-+	if (commonring->r_ptr == 0)
-+		goto again;
-+}
-+
-+int inff_proto_msgbuf_rx_trigger(struct device *dev)
-+{
-+	struct inff_bus *bus_if = dev_get_drvdata(dev);
-+	struct inff_pub *drvr = bus_if->drvr;
-+	struct inff_msgbuf *msgbuf = (struct inff_msgbuf *)drvr->proto->pd;
-+	struct inff_commonring *commonring;
-+	void *buf;
-+	u32 flowid;
-+	int qlen;
-+
-+	buf = msgbuf->commonrings[INFF_D2H_MSGRING_RX_COMPLETE];
-+	inff_msgbuf_process_rx(msgbuf, buf);
-+	buf = msgbuf->commonrings[INFF_D2H_MSGRING_TX_COMPLETE];
-+	inff_msgbuf_process_rx(msgbuf, buf);
-+	buf = msgbuf->commonrings[INFF_D2H_MSGRING_CONTROL_COMPLETE];
-+	inff_msgbuf_process_rx(msgbuf, buf);
-+
-+	for_each_set_bit(flowid, msgbuf->txstatus_done_map,
-+			 msgbuf->max_flowrings) {
-+		clear_bit(flowid, msgbuf->txstatus_done_map);
-+		commonring = msgbuf->flowrings[flowid];
-+		qlen = inff_flowring_qlen(msgbuf->flow, flowid);
-+		if (qlen > INFF_MSGBUF_TRICKLE_TXWORKER_THRS ||
-+		    ((qlen) && (atomic_read(&commonring->outstanding_tx) <
-+				INFF_MSGBUF_TRICKLE_TXWORKER_THRS)))
-+			inff_msgbuf_schedule_txdata(msgbuf, flowid, true);
-+	}
++	inff_dbg(PCIE, "R w_ptr %d (%d), ring %d\n", commonring->w_ptr,
++		 commonring->r_ptr, ring->id);
 +
 +	return 0;
 +}
 +
-+void inff_msgbuf_delete_flowring(struct inff_pub *drvr, u16 flowid)
++static int inff_pcie_ring_mb_write_rptr(void *ctx)
 +{
-+	struct inff_msgbuf *msgbuf = (struct inff_msgbuf *)drvr->proto->pd;
-+	struct msgbuf_tx_flowring_delete_req *delete;
-+	struct inff_commonring *commonring;
-+	struct inff_commonring *commonring_del = msgbuf->flowrings[flowid];
-+	struct inff_flowring *flow = msgbuf->flow;
-+	void *ret_ptr;
-+	u8 ifidx;
-+	int err;
-+	int retry = INFF_MAX_TXSTATUS_WAIT_RETRIES;
++	struct inff_pcie_ringbuf *ring = (struct inff_pcie_ringbuf *)ctx;
++	struct inff_pciedev_info *devinfo = ring->devinfo;
++	struct inff_commonring *commonring = &ring->commonring;
 +
-+	/* make sure it is not in txflow */
-+	inff_commonring_lock(commonring_del);
-+	flow->rings[flowid]->status = RING_CLOSING;
-+	inff_commonring_unlock(commonring_del);
++	if (devinfo->state != INFFMAC_PCIE_STATE_UP)
++		return -EIO;
 +
-+	/* wait for commonring txflow finished */
-+	while (retry && atomic_read(&commonring_del->outstanding_tx)) {
-+		usleep_range(5000, 10000);
-+		retry--;
++	inff_dbg(PCIE, "W r_ptr %d (%d), ring %d\n", commonring->r_ptr,
++		 commonring->w_ptr, ring->id);
++
++	devinfo->write_ptr(devinfo, ring->r_idx_addr, commonring->r_ptr);
++
++	return 0;
++}
++
++static int inff_pcie_ring_mb_write_wptr(void *ctx)
++{
++	struct inff_pcie_ringbuf *ring = (struct inff_pcie_ringbuf *)ctx;
++	struct inff_pciedev_info *devinfo = ring->devinfo;
++	struct inff_commonring *commonring = &ring->commonring;
++
++	if (devinfo->state != INFFMAC_PCIE_STATE_UP)
++		return -EIO;
++
++	inff_dbg(PCIE, "W w_ptr %d (%d), ring %d\n", commonring->w_ptr,
++		 commonring->r_ptr, ring->id);
++
++	devinfo->write_ptr(devinfo, ring->w_idx_addr, commonring->w_ptr);
++
++	return 0;
++}
++
++static void inff_pcie_hostready(struct inff_pciedev_info *devinfo)
++{
++	if (devinfo->shared.flags & INFF_PCIE_SHARED_HOSTRDY_DB1)
++		inff_pcie_write_reg32(devinfo,
++				      devinfo->reginfo->h2d_mailbox_1, 1);
++}
++
++static void inff_pcie_bus_console_init(struct inff_pciedev_info *devinfo)
++{
++	struct inff_pcie_shared_info *shared;
++	struct inff_pcie_console *console;
++	u32 buf_addr;
++	u32 addr;
++
++	shared = &devinfo->shared;
++	console = &shared->console;
++	addr = shared->tcm_base_address + INFF_SHARED_CONSOLE_ADDR_OFFSET;
++	console->base_addr = inff_pcie_read_tcm32(devinfo, addr);
++
++	addr = console->base_addr + INFF_CONSOLE_BUFADDR_OFFSET;
++	buf_addr = inff_pcie_read_tcm32(devinfo, addr);
++	/* reset console index when buffer address is updated */
++	if (console->buf_addr != buf_addr) {
++		console->buf_addr = buf_addr;
++		console->read_idx = 0;
 +	}
-+	if (!retry) {
-+		inff_err("timed out waiting for txstatus\n");
-+		atomic_set(&commonring_del->outstanding_tx, 0);
-+	}
++	addr = console->base_addr + INFF_CONSOLE_BUFSIZE_OFFSET;
++	console->bufsize = inff_pcie_read_tcm32(devinfo, addr);
 +
-+	/* no need to submit if firmware can not be reached */
-+	if (drvr->bus_if->state != INFF_BUS_UP) {
-+		inff_dbg(MSGBUF, "bus down, flowring will be removed\n");
-+		inff_msgbuf_remove_flowring(msgbuf, flowid);
++	inff_dbg(FWCON, "Console: base %x, buf %x, size %d\n",
++		 console->base_addr, console->buf_addr, console->bufsize);
++}
++
++/**
++ * inff_pcie_bus_console_read - reads firmware messages
++ *
++ * @devinfo: pointer to the device data structure
++ * @error: specifies if error has occurred (prints messages unconditionally)
++ */
++static void inff_pcie_bus_console_read(struct inff_pciedev_info *devinfo,
++				       bool error)
++{
++	struct pci_dev *pdev = devinfo->pdev;
++	struct inff_bus *bus = dev_get_drvdata(&pdev->dev);
++	struct inff_pcie_console *console;
++	u32 addr;
++	u8 ch;
++	u32 newidx;
++
++	if (!error && !INFF_MSGLVL_ON(FWCON))
 +		return;
-+	}
 +
-+	commonring = msgbuf->commonrings[INFF_H2D_MSGRING_CONTROL_SUBMIT];
-+	inff_commonring_lock(commonring);
-+	ret_ptr = inff_commonring_reserve_for_write(commonring);
-+	if (!ret_ptr) {
-+		iphy_err(drvr, "FW unaware, flowring will be removed !!\n");
-+		inff_commonring_unlock(commonring);
-+		inff_msgbuf_remove_flowring(msgbuf, flowid);
++	console = &devinfo->shared.console;
++	if (!console->base_addr)
 +		return;
-+	}
-+
-+	delete = (struct msgbuf_tx_flowring_delete_req *)ret_ptr;
-+
-+	ifidx = inff_flowring_ifidx_get(msgbuf->flow, flowid);
-+
-+	delete->msg.msgtype = MSGBUF_TYPE_FLOW_RING_DELETE;
-+	delete->msg.ifidx = ifidx;
-+	delete->msg.request_id = 0;
-+
-+	delete->flow_ring_id = cpu_to_le16(flowid +
-+					   INFF_H2D_MSGRING_FLOWRING_IDSTART);
-+	delete->reason = 0;
-+
-+	inff_dbg(MSGBUF, "Send Flow Delete Req flow ID %d, ifindex %d\n",
-+		 flowid, ifidx);
-+
-+	err = inff_commonring_write_complete(commonring);
-+	inff_commonring_unlock(commonring);
-+	if (err) {
-+		iphy_err(drvr, "Failed to submit RING_DELETE, flowring will be removed\n");
-+		inff_msgbuf_remove_flowring(msgbuf, flowid);
++	addr = console->base_addr + INFF_CONSOLE_WRITEIDX_OFFSET;
++	newidx = inff_pcie_read_tcm32(devinfo, addr);
++	while (newidx != console->read_idx) {
++		addr = console->buf_addr + console->read_idx;
++		ch = inff_pcie_read_tcm8(devinfo, addr);
++		console->read_idx++;
++		if (console->read_idx == console->bufsize)
++			console->read_idx = 0;
++		if (ch == '\r')
++			continue;
++		console->log_str[console->log_idx] = ch;
++		console->log_idx++;
++		if ((ch != '\n') &&
++		    (console->log_idx == (sizeof(console->log_str) - 2))) {
++			ch = '\n';
++			console->log_str[console->log_idx] = ch;
++			console->log_idx++;
++		}
++		if (ch == '\n') {
++			console->log_str[console->log_idx] = 0;
++			if (error)
++				inff_dev_err(bus->dev, "CONSOLE: %s",
++					     console->log_str);
++			else
++				pr_debug("CONSOLE: %s", console->log_str);
++			console->log_idx = 0;
++		}
 +	}
 +}
 +
 +#ifdef DEBUG
-+static int inff_msgbuf_stats_read(struct seq_file *seq, void *data)
++static void
++inff_pcie_fwcon_timer(struct inff_pciedev_info *devinfo, bool active)
 +{
-+	struct inff_bus *bus_if = dev_get_drvdata(seq->private);
-+	struct inff_pub *drvr = bus_if->drvr;
-+	struct inff_msgbuf *msgbuf = (struct inff_msgbuf *)drvr->proto->pd;
-+	struct inff_commonring *commonring;
-+	u16 i;
-+	struct inff_flowring_ring *ring;
-+	struct inff_flowring_hash *hash;
-+
-+	for (i = 0; i <= INFF_NROF_H2D_COMMON_MSGRINGS; i++) {
-+		commonring = msgbuf->commonrings[i];
-+		if (commonring->cr_update_rptr)
-+			commonring->cr_update_rptr(commonring->cr_ctx);
++	if (!active) {
++		if (devinfo->console_active) {
++			timer_delete_sync(&devinfo->timer);
++			devinfo->console_active = false;
++		}
++		return;
 +	}
 +
-+	for (i = 0; i <= INFF_NROF_D2H_COMMON_MSGRINGS; i++) {
-+		commonring = msgbuf->commonrings[i];
-+		if (commonring->cr_update_wptr)
-+			commonring->cr_update_wptr(commonring->cr_ctx);
++	/* don't start the timer */
++	if (devinfo->state != INFFMAC_PCIE_STATE_UP ||
++	    !devinfo->console_interval || !INFF_MSGLVL_ON(FWCON))
++		return;
++
++	if (!devinfo->console_active) {
++		devinfo->timer.expires = jiffies + devinfo->console_interval;
++		add_timer(&devinfo->timer);
++		devinfo->console_active = true;
++	} else {
++		/* Reschedule the timer */
++		mod_timer(&devinfo->timer, jiffies + devinfo->console_interval);
 +	}
-+
-+	commonring = msgbuf->commonrings[INFF_H2D_MSGRING_CONTROL_SUBMIT];
-+	seq_puts(seq, "\nh2d Submission commonrings:\n");
-+	seq_printf(seq, "h2d_ctl_submit: rp %4u, wp %4u, depth %4u, was_full %u\n",
-+		   commonring->r_ptr, commonring->w_ptr, commonring->depth,
-+		   commonring->was_full);
-+	commonring = msgbuf->commonrings[INFF_H2D_MSGRING_RXPOST_SUBMIT];
-+	seq_printf(seq, "h2d_rx_submit:  rp %4u, wp %4u, depth %4u, was_full %u\n",
-+		   commonring->r_ptr, commonring->w_ptr, commonring->depth,
-+		   commonring->was_full);
-+
-+	seq_puts(seq, "\nd2h Completion commonrings:\n");
-+	commonring = msgbuf->commonrings[INFF_D2H_MSGRING_CONTROL_COMPLETE];
-+	seq_printf(seq, "d2h_ctl_cmplt:  rp %4u, wp %4u, depth %4u, was_full %u\n",
-+		   commonring->r_ptr, commonring->w_ptr, commonring->depth,
-+		   commonring->was_full);
-+	commonring = msgbuf->commonrings[INFF_D2H_MSGRING_TX_COMPLETE];
-+	seq_printf(seq, "d2h_tx_cmplt:   rp %4u, wp %4u, depth %4u, was_full %u\n",
-+		   commonring->r_ptr, commonring->w_ptr, commonring->depth,
-+		   commonring->was_full);
-+	commonring = msgbuf->commonrings[INFF_D2H_MSGRING_RX_COMPLETE];
-+	seq_printf(seq, "d2h_rx_cmplt:   rp %4u, wp %4u, depth %4u, was_full %u\n",
-+		   commonring->r_ptr, commonring->w_ptr, commonring->depth,
-+		   commonring->was_full);
-+
-+	seq_puts(seq, "\n h2d Active flowrings:\n");
-+	for (i = 0; i < msgbuf->flow->nrofrings; i++) {
-+		if (!msgbuf->flow->rings[i])
-+			continue;
-+		ring = msgbuf->flow->rings[i];
-+		if (ring->status != RING_OPEN)
-+			continue;
-+		commonring = msgbuf->flowrings[i];
-+
-+		if (commonring->cr_update_rptr)
-+			commonring->cr_update_rptr(commonring->cr_ctx);
-+
-+		hash = &msgbuf->flow->hash[ring->hash_id];
-+		seq_printf(seq, "flowid %3u:     rp %4u, wp %4u, depth %4u, was_full %u, qlen %4u, blocked %u\n"
-+				"                ifidx %u, fifo %u, da %pM\n",
-+				i, commonring->r_ptr, commonring->w_ptr,
-+				commonring->depth, commonring->was_full,
-+				skb_queue_len(&ring->skblist), ring->blocked,
-+				hash->ifidx, hash->fifo, hash->mac);
-+	}
-+
-+	return 0;
 +}
++
++static void
++inff_pcie_fwcon(struct timer_list *t)
++{
++	struct inff_pciedev_info *devinfo = timer_container_of(devinfo, t,
++							       timer);
++
++	if (!devinfo->console_active)
++		return;
++
++	inff_pcie_bus_console_read(devinfo, false);
++
++	/* Reschedule the timer if console interval is not zero */
++	mod_timer(&devinfo->timer, jiffies + devinfo->console_interval);
++}
++
 +#else
-+static int inff_msgbuf_stats_read(struct seq_file *seq, void *data)
++void inff_pcie_fwcon_timer(struct inff_pciedev_info *devinfo, bool active)
 +{
-+	return 0;
 +}
++
 +#endif
 +
-+static void inff_msgbuf_debugfs_create(struct inff_pub *drvr)
++static int inff_pcie_bus_readshared(struct inff_pciedev_info *devinfo,
++				    u32 nvram_csm)
 +{
-+	inff_debugfs_add_entry(drvr, "msgbuf_stats", inff_msgbuf_stats_read);
++	struct inff_bus *bus = dev_get_drvdata(&devinfo->pdev->dev);
++	u32 loop_counter;
++	u32 addr = 0;
++
++	loop_counter = INFF_PCIE_READ_SHARED_TIMEOUT / 50;
++	while ((addr == 0 || addr == nvram_csm) && (loop_counter)) {
++		msleep(50);
++		addr = inff_pcie_read_ram32(devinfo,
++					    devinfo->ci->ramsize - 4);
++		loop_counter--;
++	}
++	if (addr == 0 || addr == nvram_csm || addr < devinfo->ci->rambase ||
++	    addr >= devinfo->ci->rambase + devinfo->ci->ramsize) {
++		inff_dev_err(bus->dev, "Invalid shared RAM address 0x%08x\n", addr);
++		return -ENODEV;
++	}
++	devinfo->shared.tcm_base_address = addr;
++	inff_dbg(PCIE, "Shared RAM addr: 0x%08x\n", addr);
++
++	inff_pcie_bus_console_init(devinfo);
++	return 0;
 +}
 +
-+int inff_proto_msgbuf_attach(struct inff_pub *drvr)
++static void inff_pcie_attach(struct inff_pciedev_info *devinfo)
 +{
-+	struct inff_bus_msgbuf *if_msgbuf;
-+	struct inff_msgbuf *msgbuf;
-+	u64 address;
-+	u32 count;
-+	unsigned int wq_flags;
++	u32 config;
 +
-+	if_msgbuf = drvr->bus_if->msgbuf;
++	/* BAR1 window may not be sized properly */
++	inff_pcie_select_core(devinfo, INF_CORE_PCIE2);
++	inff_pcie_write_reg32(devinfo, INFF_PCIE_PCIE2REG_CONFIGADDR, 0x4e0);
++	config = inff_pcie_read_reg32(devinfo, INFF_PCIE_PCIE2REG_CONFIGDATA);
++	inff_pcie_write_reg32(devinfo, INFF_PCIE_PCIE2REG_CONFIGDATA, config);
 +
-+	if (if_msgbuf->max_flowrings >= INFF_FLOWRING_HASHSIZE) {
-+		iphy_err(drvr, "driver not configured for this many flowrings %d\n",
-+			 if_msgbuf->max_flowrings);
-+		if_msgbuf->max_flowrings = INFF_FLOWRING_HASHSIZE - 1;
++	device_wakeup_enable(&devinfo->pdev->dev);
++}
++
++static void
++inff_pcie_adjust_ramsize(struct inff_pciedev_info *devinfo, u8 *data,
++			 u32 data_len)
++{
++	__le32 *field;
++	u32 newsize;
++
++	if (data_len < INFF_RAMSIZE_OFFSET + 8)
++		return;
++
++	field = (__le32 *)&data[INFF_RAMSIZE_OFFSET];
++	if (le32_to_cpup(field) != INFF_RAMSIZE_MAGIC)
++		return;
++	field++;
++	newsize = le32_to_cpup(field);
++
++	inff_dbg(PCIE, "Found ramsize info in FW, adjusting to 0x%x\n",
++		 newsize);
++	devinfo->ci->ramsize = newsize;
++}
++
++static int inff_pcie_enter_download_state(struct inff_pciedev_info *devinfo)
++{
++	struct inff_bus *bus = dev_get_drvdata(&devinfo->pdev->dev);
++	int err = 0;
++
++	err = devinfo->ci->blhs->prep_fwdl(devinfo->ci);
++	if (err) {
++		inff_dev_err(bus->dev, "FW download preparation failed");
++		return err;
 +	}
 +
-+	msgbuf = kzalloc(sizeof(*msgbuf), GFP_KERNEL);
-+	if (!msgbuf)
-+		goto fail;
++	if (!inff_pcie_bus_readshared(devinfo, 0))
++		inff_pcie_bus_console_read(devinfo, false);
 +
-+	wq_flags = WQ_HIGHPRI | WQ_MEM_RECLAIM | WQ_UNBOUND;
++	return err;
++}
 +
-+	msgbuf->txflow_wq = alloc_workqueue("msgbuf_txflow", wq_flags, 1);
-+	if (!msgbuf->txflow_wq) {
-+		iphy_err(drvr, "workqueue creation failed\n");
-+		goto fail;
++static int inff_pcie_exit_download_state(struct inff_pciedev_info *devinfo,
++					 u32 resetintr)
++{
++	inff_pcie_bus_console_read(devinfo, false);
++	devinfo->ci->blhs->post_nvramdl(devinfo->ci);
++
++	return 0;
++}
++
++static void
++inff_pcie_write_rand(struct inff_pciedev_info *devinfo, u32 nvram_csm)
++{
++	struct inff_rand_metadata rand_data;
++	u8 rand_buf[INFF_ENTROPY_HOST_LEN];
++	u32 count = INFF_ENTROPY_HOST_LEN;
++	u32 address;
++
++	address = devinfo->ci->rambase +
++		  (devinfo->ci->ramsize - INFF_NVRAM_OFFSET_TCM) -
++		  ((nvram_csm & 0xffff) * INFF_NVRAM_COMPRS_FACTOR) -
++		  sizeof(rand_data);
++	memset(rand_buf, 0, INFF_ENTROPY_HOST_LEN);
++	rand_data.signature = cpu_to_le32(INFF_NVRAM_RNG_SIGNATURE);
++	rand_data.count = cpu_to_le32(count);
++	inff_pcie_copy_mem_todev(devinfo, address, &rand_data,
++				 sizeof(rand_data));
++	address -= count;
++	get_random_bytes(rand_buf, count);
++	inff_pcie_copy_mem_todev(devinfo, address, rand_buf, count);
++}
++
++static int
++inff_pcie_init_share_ram_info(struct inff_pciedev_info *devinfo,
++			      u32 sharedram_addr)
++{
++	struct inff_bus *bus = dev_get_drvdata(&devinfo->pdev->dev);
++	struct inff_pcie_shared_info *shared;
++	u32 addr;
++	u32 host_cap;
++
++	shared = &devinfo->shared;
++	shared->tcm_base_address = sharedram_addr;
++
++	shared->flags = inff_pcie_read_tcm32(devinfo, sharedram_addr);
++	shared->version = (u8)(shared->flags & INFF_PCIE_SHARED_VERSION_MASK);
++	inff_dbg(PCIE, "PCIe protocol version %d\n", shared->version);
++	if (shared->version > INFF_PCIE_MAX_SHARED_VERSION ||
++	    shared->version < INFF_PCIE_MIN_SHARED_VERSION) {
++		inff_dev_err(bus->dev, "Unsupported PCIE version %d\n",
++			     shared->version);
++		return -EINVAL;
 +	}
-+	INIT_WORK(&msgbuf->txflow_work, inff_msgbuf_txflow_worker);
-+	count = BITS_TO_LONGS(if_msgbuf->max_flowrings);
-+	count = count * sizeof(unsigned long);
-+	msgbuf->flow_map = kzalloc(count, GFP_KERNEL);
-+	if (!msgbuf->flow_map)
-+		goto fail;
 +
-+	msgbuf->txstatus_done_map = kzalloc(count, GFP_KERNEL);
-+	if (!msgbuf->txstatus_done_map)
-+		goto fail;
-+
-+	msgbuf->drvr = drvr;
-+	msgbuf->ioctbuf = dma_alloc_coherent(drvr->bus_if->dev,
-+					     INFF_TX_IOCTL_MAX_MSG_SIZE,
-+					     &msgbuf->ioctbuf_handle,
-+					     GFP_KERNEL);
-+	if (!msgbuf->ioctbuf)
-+		goto fail;
-+	address = (u64)msgbuf->ioctbuf_handle;
-+	msgbuf->ioctbuf_phys_hi = address >> 32;
-+	msgbuf->ioctbuf_phys_lo = address & 0xffffffff;
-+
-+	drvr->proto->query_fwcmd = inff_msgbuf_query_fwcmd;
-+	drvr->proto->set_fwcmd = inff_msgbuf_set_fwcmd;
-+	drvr->proto->hdrpull = inff_msgbuf_hdrpull;
-+	drvr->proto->tx_queue_data = inff_msgbuf_tx_queue_data;
-+	drvr->proto->configure_addr_mode = inff_msgbuf_configure_addr_mode;
-+	drvr->proto->delete_peer = inff_msgbuf_delete_peer;
-+	drvr->proto->rxreorder = inff_msgbuf_rxreorder;
-+	drvr->proto->debugfs_create = inff_msgbuf_debugfs_create;
-+	drvr->proto->pd = msgbuf;
-+	drvr->proto->add_if = inff_msgbuf_napi_add;
-+	drvr->proto->del_if = inff_msgbuf_napi_del;
-+
-+	init_waitqueue_head(&msgbuf->ioctl_resp_wait);
-+
-+	msgbuf->commonrings =
-+		(struct inff_commonring **)if_msgbuf->commonrings;
-+	msgbuf->flowrings = (struct inff_commonring **)if_msgbuf->flowrings;
-+	msgbuf->max_flowrings = if_msgbuf->max_flowrings;
-+	msgbuf->flowring_dma_handle =
-+		kcalloc(msgbuf->max_flowrings,
-+			sizeof(*msgbuf->flowring_dma_handle), GFP_KERNEL);
-+	if (!msgbuf->flowring_dma_handle)
-+		goto fail;
-+
-+	msgbuf->rx_dataoffset = if_msgbuf->rx_dataoffset;
-+	msgbuf->max_rxbufpost = if_msgbuf->max_rxbufpost;
-+
-+	msgbuf->max_ioctlrespbuf = INFF_MSGBUF_MAX_IOCTLRESPBUF_POST;
-+	msgbuf->max_eventbuf = INFF_MSGBUF_MAX_EVENTBUF_POST;
-+
-+	msgbuf->tx_pktids = inff_msgbuf_init_tx_pktids(msgbuf,
-+						       NR_TX_PKTIDS,
-+						       DMA_TO_DEVICE);
-+	if (!msgbuf->tx_pktids)
-+		goto fail;
-+	msgbuf->rx_pktids = inff_msgbuf_init_rx_pktids(msgbuf,
-+						       NR_RX_PKTIDS,
-+						       DMA_FROM_DEVICE);
-+	if (!msgbuf->rx_pktids)
-+		goto fail;
-+	msgbuf->flow = inff_flowring_attach(drvr->bus_if->dev,
-+					    if_msgbuf->max_flowrings);
-+	if (!msgbuf->flow)
-+		goto fail;
-+
-+	inff_dbg(MSGBUF, "Feeding buffers, rx data %d, rx event %d, rx ioctl resp %d\n",
-+		 msgbuf->max_rxbufpost, msgbuf->max_eventbuf,
-+		 msgbuf->max_ioctlrespbuf);
-+	count = 0;
-+	do {
-+		inff_msgbuf_rxbuf_data_fill(msgbuf);
-+		if (msgbuf->max_rxbufpost != msgbuf->rxbufpost)
-+			usleep_range(10000, 10001);
++	/* check firmware support dma indicies */
++	if (shared->flags & INFF_PCIE_SHARED_DMA_INDEX) {
++		if (shared->flags & INFF_PCIE_SHARED_DMA_2B_IDX)
++			devinfo->dma_idx_sz = sizeof(u16);
 +		else
-+			break;
-+		count++;
-+	} while (count < 10);
-+	inff_msgbuf_rxbuf_event_post(msgbuf);
-+	inff_msgbuf_rxbuf_ioctlresp_post(msgbuf);
-+	INIT_WORK(&msgbuf->flowring_work, inff_msgbuf_flowring_worker);
-+	spin_lock_init(&msgbuf->flowring_work_lock);
-+	INIT_LIST_HEAD(&msgbuf->work_queue);
++			devinfo->dma_idx_sz = sizeof(u32);
++	}
++
++	addr = sharedram_addr + INFF_SHARED_MAX_RXBUFPOST_OFFSET;
++	shared->max_rxbufpost = inff_pcie_read_tcm16(devinfo, addr);
++	if (shared->max_rxbufpost == 0)
++		shared->max_rxbufpost = INFF_DEF_MAX_RXBUFPOST;
++
++	addr = sharedram_addr + INFF_SHARED_RX_DATAOFFSET_OFFSET;
++	shared->rx_dataoffset = inff_pcie_read_tcm32(devinfo, addr);
++
++	addr = sharedram_addr + INFF_SHARED_HTOD_MB_DATA_ADDR_OFFSET;
++	shared->htod_mb_data_addr = inff_pcie_read_tcm32(devinfo, addr);
++
++	addr = sharedram_addr + INFF_SHARED_DTOH_MB_DATA_ADDR_OFFSET;
++	shared->dtoh_mb_data_addr = inff_pcie_read_tcm32(devinfo, addr);
++
++	addr = sharedram_addr + INFF_SHARED_RING_INFO_ADDR_OFFSET;
++	shared->ring_info_addr = inff_pcie_read_tcm32(devinfo, addr);
++
++	if (shared->version >= INFF_PCIE_SHARED_VERSION_6) {
++		host_cap = shared->version;
++
++		/* Disable OOB Device Wake based DeepSleep State Machine */
++		host_cap |= INFF_HOSTCAP_DS_NO_OOB_DW;
++
++		devinfo->hostready =
++			((shared->flags & INFF_PCIE_SHARED_HOSTRDY_DB1)
++			 == INFF_PCIE_SHARED_HOSTRDY_DB1);
++		if (devinfo->hostready) {
++			inff_dbg(PCIE, "HostReady supported by dongle.\n");
++			host_cap |= INFF_HOSTCAP_H2D_ENABLE_HOSTRDY;
++		}
++		devinfo->use_mailbox =
++			((shared->flags & INFF_PCIE_SHARED_USE_MAILBOX)
++			 == INFF_PCIE_SHARED_USE_MAILBOX);
++		devinfo->use_d0_inform = false;
++		addr = sharedram_addr + INFF_SHARED_HOST_CAP_OFFSET;
++
++		inff_pcie_write_tcm32(devinfo, addr, host_cap);
++	} else {
++		devinfo->use_d0_inform = true;
++	}
++
++	inff_dbg(PCIE, "max rx buf post %d, rx dataoffset %d\n",
++		 shared->max_rxbufpost, shared->rx_dataoffset);
++
++	inff_pcie_bus_console_init(devinfo);
++	inff_pcie_bus_console_read(devinfo, false);
++
++	return 0;
++}
++
++#define INFF_PCIE_FW_CODE	0
++#define INFF_PCIE_FW_NVRAM	1
++#define INFF_PCIE_FW_CLM	2
++
++static int inff_pcie_download_fw_nvram(struct inff_pciedev_info *devinfo,
++				       const struct firmware *fw, void *nvram,
++				       u32 nvram_len)
++{
++	struct inff_bus *bus = dev_get_drvdata(&devinfo->pdev->dev);
++	struct trx_header_le *trx = (struct trx_header_le *)fw->data;
++	u32 fw_size;
++	u32 sharedram_addr;
++	u32 sharedram_addr_written;
++	u32 loop_counter;
++	int err;
++	u32 address;
++	u32 resetintr;
++	u32 nvram_lenw;
++	u32 nvram_csm;
++	struct inff_chip_specific *chip_spec = &devinfo->ci->chip_spec;
++	struct inff_fw_dataset *fw_data = &chip_spec->fwdata[0];
++
++	inff_dbg(PCIE, "Halt ARM.\n");
++	err = inff_pcie_enter_download_state(devinfo);
++	if (err)
++		return err;
++
++	inff_dbg(PCIE, "Download FW %s\n", fw_data[INFF_FW_CODE].fwnames.path);
++	address = devinfo->ci->rambase;
++	fw_size = fw->size;
++	if (trx->magic == cpu_to_le32(TRX_MAGIC)) {
++		address -= sizeof(struct trx_header_le);
++		fw_size = le32_to_cpu(trx->len);
++	}
++	inff_pcie_copy_mem_todev(devinfo, address, (void *)fw->data, fw_size);
++
++	resetintr = get_unaligned_le32(fw->data);
++	release_firmware(fw);
++
++	inff_pcie_bus_console_read(devinfo, false);
++	err = devinfo->ci->blhs->post_fwdl(devinfo->ci);
++	if (err) {
++		inff_dev_err(bus->dev, "FW download failed, err=%d\n", err);
++		return err;
++	}
++
++	err = devinfo->ci->blhs->chk_validation(devinfo->ci);
++	if (err) {
++		inff_dev_err(bus->dev, "FW valication failed, err=%d\n", err);
++		return err;
++	}
++
++	if (nvram) {
++		inff_dbg(PCIE, "Download NVRAM %s\n", fw_data[INFF_FW_NVRAM].fwnames.path);
++		address = devinfo->ci->rambase + devinfo->ci->ramsize -
++			  nvram_len;
++
++		address -= 4;
++		inff_pcie_copy_mem_todev(devinfo, address, nvram, nvram_len);
++
++		/* Convert nvram_len to words to determine the length token */
++		nvram_lenw = nvram_len / 4;
++		nvram_csm = (~nvram_lenw << 16) | (nvram_lenw & 0x0000FFFF);
++		inff_fw_nvram_free(nvram);
++	} else {
++		nvram_csm = 0;
++		inff_dbg(PCIE, "No matching NVRAM file found %s\n",
++			 fw_data[INFF_FW_NVRAM].fwnames.path);
++	}
++
++	if (devinfo->ci->chip == INF_CC_5557X_CHIP_ID) {
++		/* Write the length token to the last word of RAM address */
++		inff_pcie_write_ram32(devinfo, devinfo->ci->ramsize - 4,
++				      nvram_csm);
++
++		/* Write random numbers to TCM for randomizing heap address */
++		inff_pcie_write_rand(devinfo, nvram_csm);
++	}
++
++	sharedram_addr_written = inff_pcie_read_ram32(devinfo,
++						      devinfo->ci->ramsize -
++						      4);
++	inff_dbg(PCIE, "Bring ARM in running state\n");
++	err = inff_pcie_exit_download_state(devinfo, resetintr);
++	if (err)
++		return err;
++
++	if (!inff_pcie_bus_readshared(devinfo, nvram_csm))
++		inff_pcie_bus_console_read(devinfo, false);
++
++	inff_dbg(PCIE, "Wait for FW init\n");
++	sharedram_addr = sharedram_addr_written;
++	loop_counter = INFF_PCIE_FW_UP_TIMEOUT / 50;
++	while ((sharedram_addr == sharedram_addr_written) && (loop_counter)) {
++		msleep(50);
++		sharedram_addr = inff_pcie_read_ram32(devinfo,
++						      devinfo->ci->ramsize -
++						       4);
++		loop_counter--;
++	}
++	if (sharedram_addr == sharedram_addr_written) {
++		inff_dev_err(bus->dev, "FW failed to initialize\n");
++		return -ENODEV;
++	}
++	if (sharedram_addr < devinfo->ci->rambase ||
++	    sharedram_addr >= devinfo->ci->rambase + devinfo->ci->ramsize) {
++		inff_dev_err(bus->dev, "Invalid shared RAM address 0x%08x\n",
++			     sharedram_addr);
++		return -ENODEV;
++	}
++	inff_dbg(PCIE, "Shared RAM addr: 0x%08x\n", sharedram_addr);
++
++	return inff_pcie_init_share_ram_info(devinfo, sharedram_addr);
++}
++
++static void inff_pcie_release_ringbuffer(struct device *dev,
++					 struct inff_pcie_ringbuf *ring)
++{
++	void *dma_buf;
++	u32 size;
++
++	if (!ring)
++		return;
++
++	dma_buf = ring->commonring.buf_addr;
++	if (dma_buf) {
++		size = ring->commonring.depth * ring->commonring.item_len;
++		dma_free_coherent(dev, size, dma_buf, ring->dma_handle);
++	}
++	kfree(ring);
++}
++
++static void inff_pcie_release_ringbuffers(struct inff_pciedev_info *devinfo)
++{
++	u32 i;
++
++	for (i = 0; i < INFF_NROF_COMMON_MSGRINGS; i++) {
++		inff_pcie_release_ringbuffer(&devinfo->pdev->dev,
++					     devinfo->shared.commonrings[i]);
++		devinfo->shared.commonrings[i] = NULL;
++	}
++	kfree(devinfo->shared.flowrings);
++	devinfo->shared.flowrings = NULL;
++	if (devinfo->idxbuf) {
++		dma_free_coherent(&devinfo->pdev->dev,
++				  devinfo->idxbuf_sz,
++				  devinfo->idxbuf,
++				  devinfo->idxbuf_dmahandle);
++		devinfo->idxbuf = NULL;
++	}
++}
++
++static void *
++inff_pcie_init_dmabuffer_for_device(struct inff_pciedev_info *devinfo,
++				    u32 size, u32 tcm_dma_phys_addr,
++				    dma_addr_t *dma_handle)
++{
++	void *ring;
++	u64 address;
++
++	ring = dma_alloc_coherent(&devinfo->pdev->dev, size, dma_handle,
++				  GFP_KERNEL);
++	if (!ring)
++		return NULL;
++
++	address = (u64)*dma_handle;
++	inff_pcie_write_tcm32(devinfo, tcm_dma_phys_addr,
++			      address & 0xffffffff);
++	inff_pcie_write_tcm32(devinfo, tcm_dma_phys_addr + 4, address >> 32);
++
++	return ring;
++}
++
++static struct inff_pcie_ringbuf *
++inff_pcie_alloc_dma_and_ring(struct inff_pciedev_info *devinfo, u32 ring_id,
++			     u32 tcm_ring_phys_addr)
++{
++	void *dma_buf;
++	dma_addr_t dma_handle;
++	struct inff_pcie_ringbuf *ring;
++	u32 size;
++	u32 addr;
++	u32 ring_max_item, ring_item_size;
++
++	if (devinfo->shared.version < INFF_PCIE_SHARED_VERSION_7)
++		ring_item_size = inff_ring_itemsize_pre_v7[ring_id];
++	else
++		ring_item_size = inff_ring_itemsize[ring_id];
++
++	ring_max_item = inff_ring_max_item[ring_id];
++
++	size = ring_max_item * ring_item_size;
++	dma_buf = inff_pcie_init_dmabuffer_for_device(devinfo, size,
++						      tcm_ring_phys_addr +
++						      INFF_RING_MEM_BASE_ADDR_OFFSET,
++						      &dma_handle);
++	if (!dma_buf)
++		return NULL;
++
++	addr = tcm_ring_phys_addr + INFF_RING_MAX_ITEM_OFFSET;
++	inff_pcie_write_tcm16(devinfo, addr, ring_max_item);
++	addr = tcm_ring_phys_addr + INFF_RING_LEN_ITEMS_OFFSET;
++	inff_pcie_write_tcm16(devinfo, addr, ring_item_size);
++
++	ring = kzalloc(sizeof(*ring), GFP_KERNEL);
++	if (!ring) {
++		dma_free_coherent(&devinfo->pdev->dev, size, dma_buf,
++				  dma_handle);
++		return NULL;
++	}
++	inff_commonring_config(&ring->commonring, ring_max_item,
++			       ring_item_size, dma_buf);
++	ring->dma_handle = dma_handle;
++	ring->devinfo = devinfo;
++	inff_commonring_register_cb(&ring->commonring,
++				    inff_pcie_ring_mb_ring_bell,
++				    inff_pcie_ring_mb_update_rptr,
++				    inff_pcie_ring_mb_update_wptr,
++				    inff_pcie_ring_mb_write_rptr,
++				    inff_pcie_ring_mb_write_wptr, ring);
++
++	return ring;
++}
++
++static int inff_pcie_init_ringbuffers(struct inff_pciedev_info *devinfo)
++{
++	struct inff_bus *bus = dev_get_drvdata(&devinfo->pdev->dev);
++	struct inff_pcie_ringbuf *ring;
++	struct inff_pcie_ringbuf *rings;
++	u32 d2h_w_idx_ptr;
++	u32 d2h_r_idx_ptr;
++	u32 h2d_w_idx_ptr;
++	u32 h2d_r_idx_ptr;
++	u32 ring_mem_ptr;
++	u32 i;
++	u64 address;
++	u32 bufsz;
++	u8 idx_offset;
++	struct inff_pcie_dhi_ringinfo ringinfo;
++	u16 max_flowrings;
++	u16 max_submissionrings;
++	u16 max_completionrings;
++
++	memcpy_fromio(&ringinfo, devinfo->tcm + devinfo->shared.ring_info_addr,
++		      sizeof(ringinfo));
++
++	if (devinfo->shared.version >= 6) {
++		max_submissionrings = le16_to_cpu(ringinfo.max_submissionrings);
++		max_flowrings = le16_to_cpu(ringinfo.max_flowrings);
++		max_completionrings = le16_to_cpu(ringinfo.max_completionrings);
++	} else {
++		max_submissionrings = le16_to_cpu(ringinfo.max_flowrings);
++		max_flowrings = max_submissionrings -
++				INFF_NROF_H2D_COMMON_MSGRINGS;
++		max_completionrings = INFF_NROF_D2H_COMMON_MSGRINGS;
++	}
++	if (max_flowrings > 256) {
++		inff_dev_err(bus->dev, "invalid max_flowrings(%d)\n", max_flowrings);
++		return -EIO;
++	}
++
++	if (devinfo->dma_idx_sz != 0) {
++		bufsz = (max_submissionrings + max_completionrings) *
++			devinfo->dma_idx_sz * 2;
++		devinfo->idxbuf = dma_alloc_coherent(&devinfo->pdev->dev, bufsz,
++						     &devinfo->idxbuf_dmahandle,
++						     GFP_KERNEL);
++		if (!devinfo->idxbuf)
++			devinfo->dma_idx_sz = 0;
++	}
++
++	if (devinfo->dma_idx_sz == 0) {
++		d2h_w_idx_ptr = le32_to_cpu(ringinfo.d2h_w_idx_ptr);
++		d2h_r_idx_ptr = le32_to_cpu(ringinfo.d2h_r_idx_ptr);
++		h2d_w_idx_ptr = le32_to_cpu(ringinfo.h2d_w_idx_ptr);
++		h2d_r_idx_ptr = le32_to_cpu(ringinfo.h2d_r_idx_ptr);
++		idx_offset = sizeof(u32);
++		devinfo->write_ptr = inff_pcie_write_tcm16;
++		devinfo->read_ptr = inff_pcie_read_tcm16;
++		inff_dbg(PCIE, "Using TCM indices\n");
++	} else {
++		memset(devinfo->idxbuf, 0, bufsz);
++		devinfo->idxbuf_sz = bufsz;
++		idx_offset = devinfo->dma_idx_sz;
++		devinfo->write_ptr = inff_pcie_write_idx;
++		devinfo->read_ptr = inff_pcie_read_idx;
++
++		h2d_w_idx_ptr = 0;
++		address = (u64)devinfo->idxbuf_dmahandle;
++		ringinfo.h2d_w_idx_hostaddr.low_addr =
++			cpu_to_le32(address & 0xffffffff);
++		ringinfo.h2d_w_idx_hostaddr.high_addr =
++			cpu_to_le32(address >> 32);
++
++		h2d_r_idx_ptr = h2d_w_idx_ptr +
++				max_submissionrings * idx_offset;
++		address += max_submissionrings * idx_offset;
++		ringinfo.h2d_r_idx_hostaddr.low_addr =
++			cpu_to_le32(address & 0xffffffff);
++		ringinfo.h2d_r_idx_hostaddr.high_addr =
++			cpu_to_le32(address >> 32);
++
++		d2h_w_idx_ptr = h2d_r_idx_ptr +
++				max_submissionrings * idx_offset;
++		address += max_submissionrings * idx_offset;
++		ringinfo.d2h_w_idx_hostaddr.low_addr =
++			cpu_to_le32(address & 0xffffffff);
++		ringinfo.d2h_w_idx_hostaddr.high_addr =
++			cpu_to_le32(address >> 32);
++
++		d2h_r_idx_ptr = d2h_w_idx_ptr +
++				max_completionrings * idx_offset;
++		address += max_completionrings * idx_offset;
++		ringinfo.d2h_r_idx_hostaddr.low_addr =
++			cpu_to_le32(address & 0xffffffff);
++		ringinfo.d2h_r_idx_hostaddr.high_addr =
++			cpu_to_le32(address >> 32);
++
++		memcpy_toio(devinfo->tcm + devinfo->shared.ring_info_addr,
++			    &ringinfo, sizeof(ringinfo));
++		inff_dbg(PCIE, "Using host memory indices\n");
++	}
++
++	ring_mem_ptr = le32_to_cpu(ringinfo.ringmem);
++
++	for (i = 0; i < INFF_NROF_H2D_COMMON_MSGRINGS; i++) {
++		ring = inff_pcie_alloc_dma_and_ring(devinfo, i, ring_mem_ptr);
++		if (!ring)
++			goto fail;
++		ring->w_idx_addr = h2d_w_idx_ptr;
++		ring->r_idx_addr = h2d_r_idx_ptr;
++		ring->id = i;
++		devinfo->shared.commonrings[i] = ring;
++
++		h2d_w_idx_ptr += idx_offset;
++		h2d_r_idx_ptr += idx_offset;
++		ring_mem_ptr += INFF_RING_MEM_SZ;
++	}
++
++	for (i = INFF_NROF_H2D_COMMON_MSGRINGS;
++	     i < INFF_NROF_COMMON_MSGRINGS; i++) {
++		ring = inff_pcie_alloc_dma_and_ring(devinfo, i, ring_mem_ptr);
++		if (!ring)
++			goto fail;
++		ring->w_idx_addr = d2h_w_idx_ptr;
++		ring->r_idx_addr = d2h_r_idx_ptr;
++		ring->id = i;
++		devinfo->shared.commonrings[i] = ring;
++
++		d2h_w_idx_ptr += idx_offset;
++		d2h_r_idx_ptr += idx_offset;
++		ring_mem_ptr += INFF_RING_MEM_SZ;
++	}
++
++	devinfo->shared.max_flowrings = max_flowrings;
++	devinfo->shared.max_submissionrings = max_submissionrings;
++	devinfo->shared.max_completionrings = max_completionrings;
++	rings = kcalloc(max_flowrings, sizeof(*ring), GFP_KERNEL);
++	if (!rings)
++		goto fail;
++
++	inff_dbg(PCIE, "Nr of flowrings is %d\n", max_flowrings);
++
++	for (i = 0; i < max_flowrings; i++) {
++		ring = &rings[i];
++		ring->devinfo = devinfo;
++		ring->id = i + INFF_H2D_MSGRING_FLOWRING_IDSTART;
++		inff_commonring_register_cb(&ring->commonring,
++					    inff_pcie_ring_mb_ring_bell,
++					     inff_pcie_ring_mb_update_rptr,
++					     inff_pcie_ring_mb_update_wptr,
++					     inff_pcie_ring_mb_write_rptr,
++					     inff_pcie_ring_mb_write_wptr,
++					     ring);
++		ring->w_idx_addr = h2d_w_idx_ptr;
++		ring->r_idx_addr = h2d_r_idx_ptr;
++		h2d_w_idx_ptr += idx_offset;
++		h2d_r_idx_ptr += idx_offset;
++	}
++	devinfo->shared.flowrings = rings;
++
 +	return 0;
 +
 +fail:
-+	if (msgbuf) {
-+		kfree(msgbuf->flow_map);
-+		kfree(msgbuf->txstatus_done_map);
-+		inff_msgbuf_release_pktids(msgbuf);
-+		kfree(msgbuf->flowring_dma_handle);
-+		if (msgbuf->ioctbuf)
-+			dma_free_coherent(drvr->bus_if->dev,
-+					  INFF_TX_IOCTL_MAX_MSG_SIZE,
-+					  msgbuf->ioctbuf,
-+					  msgbuf->ioctbuf_handle);
-+		if (msgbuf->txflow_wq)
-+			destroy_workqueue(msgbuf->txflow_wq);
-+		kfree(msgbuf);
-+	}
++	inff_dev_err(bus->dev, "Allocating ring buffers failed\n");
++	inff_pcie_release_ringbuffers(devinfo);
 +	return -ENOMEM;
 +}
 +
-+void inff_proto_msgbuf_detach(struct inff_pub *drvr)
++static void
++inff_pcie_release_scratchbuffers(struct inff_pciedev_info *devinfo)
 +{
-+	struct inff_msgbuf *msgbuf;
-+	struct inff_msgbuf_work_item *work;
++	if (devinfo->shared.scratch)
++		dma_free_coherent(&devinfo->pdev->dev,
++				  INFF_DMA_D2H_SCRATCH_BUF_LEN,
++				  devinfo->shared.scratch,
++				  devinfo->shared.scratch_dmahandle);
++	if (devinfo->shared.ringupd)
++		dma_free_coherent(&devinfo->pdev->dev,
++				  INFF_DMA_D2H_RINGUPD_BUF_LEN,
++				  devinfo->shared.ringupd,
++				  devinfo->shared.ringupd_dmahandle);
++}
 +
-+	if (drvr->proto->pd) {
-+		msgbuf = (struct inff_msgbuf *)drvr->proto->pd;
-+		cancel_work_sync(&msgbuf->flowring_work);
-+		while (!list_empty(&msgbuf->work_queue)) {
-+			work = list_first_entry(&msgbuf->work_queue,
-+						struct inff_msgbuf_work_item,
-+						queue);
-+			list_del(&work->queue);
-+			kfree(work);
++static int inff_pcie_init_scratchbuffers(struct inff_pciedev_info *devinfo)
++{
++	struct inff_bus *bus = dev_get_drvdata(&devinfo->pdev->dev);
++	u64 address;
++	u32 addr;
++
++	devinfo->shared.scratch =
++		dma_alloc_coherent(&devinfo->pdev->dev,
++				   INFF_DMA_D2H_SCRATCH_BUF_LEN,
++				   &devinfo->shared.scratch_dmahandle,
++				   GFP_KERNEL);
++	if (!devinfo->shared.scratch)
++		goto fail;
++
++	addr = devinfo->shared.tcm_base_address +
++	       INFF_SHARED_DMA_SCRATCH_ADDR_OFFSET;
++	address = (u64)devinfo->shared.scratch_dmahandle;
++	inff_pcie_write_tcm32(devinfo, addr, address & 0xffffffff);
++	inff_pcie_write_tcm32(devinfo, addr + 4, address >> 32);
++	addr = devinfo->shared.tcm_base_address +
++	       INFF_SHARED_DMA_SCRATCH_LEN_OFFSET;
++	inff_pcie_write_tcm32(devinfo, addr, INFF_DMA_D2H_SCRATCH_BUF_LEN);
++
++	devinfo->shared.ringupd =
++		dma_alloc_coherent(&devinfo->pdev->dev,
++				   INFF_DMA_D2H_RINGUPD_BUF_LEN,
++				   &devinfo->shared.ringupd_dmahandle,
++				   GFP_KERNEL);
++	if (!devinfo->shared.ringupd)
++		goto fail;
++
++	addr = devinfo->shared.tcm_base_address +
++	       INFF_SHARED_DMA_RINGUPD_ADDR_OFFSET;
++	address = (u64)devinfo->shared.ringupd_dmahandle;
++	inff_pcie_write_tcm32(devinfo, addr, address & 0xffffffff);
++	inff_pcie_write_tcm32(devinfo, addr + 4, address >> 32);
++	addr = devinfo->shared.tcm_base_address +
++	       INFF_SHARED_DMA_RINGUPD_LEN_OFFSET;
++	inff_pcie_write_tcm32(devinfo, addr, INFF_DMA_D2H_RINGUPD_BUF_LEN);
++	return 0;
++
++fail:
++	inff_dev_err(bus->dev, "Allocating scratch buffers failed\n");
++	inff_pcie_release_scratchbuffers(devinfo);
++	return -ENOMEM;
++}
++
++static inline void inff_pcie_intr_disable(struct inff_pciedev_info *devinfo)
++{
++	inff_pcie_write_reg32(devinfo, devinfo->reginfo->mailboxmask, 0);
++}
++
++static inline void inff_pcie_intr_enable(struct inff_pciedev_info *devinfo)
++{
++	inff_pcie_write_reg32(devinfo, devinfo->reginfo->mailboxmask,
++			      devinfo->reginfo->int_d2h_db |
++			      devinfo->reginfo->int_fn0);
++}
++
++static void inff_pcie_release_irq(struct inff_pciedev_info *devinfo)
++{
++	struct pci_dev *pdev = devinfo->pdev;
++	struct inff_bus *bus = dev_get_drvdata(&pdev->dev);
++	u32 status;
++	u32 count;
++
++	if (!devinfo->irq_allocated)
++		return;
++
++	inff_pcie_intr_disable(devinfo);
++	free_irq(pdev->irq, devinfo);
++	pci_disable_msi(pdev);
++
++	msleep(50);
++	count = 0;
++	while ((devinfo->in_irq) && (count < 20)) {
++		msleep(50);
++		count++;
++	}
++	if (devinfo->in_irq)
++		inff_dev_err(bus->dev, "Still in IRQ (processing) !!!\n");
++
++	status = inff_pcie_read_reg32(devinfo, devinfo->reginfo->mailboxint);
++	inff_pcie_write_reg32(devinfo, devinfo->reginfo->mailboxint, status);
++
++	devinfo->irq_allocated = false;
++}
++
++static irqreturn_t inff_pcie_quick_check_isr(int irq, void *arg)
++{
++	struct inff_pciedev_info *devinfo = (struct inff_pciedev_info *)arg;
++
++	if (inff_pcie_read_reg32(devinfo, devinfo->reginfo->mailboxint)) {
++		inff_pcie_intr_disable(devinfo);
++		return IRQ_WAKE_THREAD;
++	}
++	return IRQ_NONE;
++}
++
++static irqreturn_t inff_pcie_isr_thread(int irq, void *arg)
++{
++	struct inff_pciedev_info *devinfo = (struct inff_pciedev_info *)arg;
++	u32 status;
++	u32 d2h_mbdata;
++	struct pci_dev *pdev = devinfo->pdev;
++	struct inff_bus *bus = dev_get_drvdata(&pdev->dev);
++
++	devinfo->in_irq = true;
++	status = inff_pcie_read_reg32(devinfo, devinfo->reginfo->mailboxint);
++	inff_dbg(PCIE, "PCIe Interrupt status %x\n", status);
++	if (status) {
++		inff_pcie_write_reg32(devinfo, devinfo->reginfo->mailboxint,
++				      status);
++		if (status & devinfo->reginfo->int_fn0) {
++			d2h_mbdata = inff_pcie_read_mb_data(devinfo);
++			inff_pcie_handle_mb_data(bus, d2h_mbdata);
 +		}
-+		kfree(msgbuf->flow_map);
-+		kfree(msgbuf->txstatus_done_map);
-+		if (msgbuf->txflow_wq)
-+			destroy_workqueue(msgbuf->txflow_wq);
++		if (status & devinfo->reginfo->int_d2h_db) {
++			if (devinfo->state == INFFMAC_PCIE_STATE_UP)
++				inff_proto_msgbuf_rx_trigger(&devinfo->pdev->dev);
++		}
++	}
++	inff_pcie_bus_console_read(devinfo, false);
++	if (devinfo->state == INFFMAC_PCIE_STATE_UP)
++		inff_pcie_intr_enable(devinfo);
++	devinfo->in_irq = false;
++	return IRQ_HANDLED;
++}
 +
-+		inff_flowring_detach(msgbuf->flow);
-+		dma_free_coherent(drvr->bus_if->dev,
-+				  INFF_TX_IOCTL_MAX_MSG_SIZE,
-+				  msgbuf->ioctbuf, msgbuf->ioctbuf_handle);
-+		inff_msgbuf_release_pktids(msgbuf);
-+		kfree(msgbuf->flowring_dma_handle);
-+		kfree(msgbuf);
-+		drvr->proto->pd = NULL;
++static int inff_pcie_request_irq(struct inff_pciedev_info *devinfo)
++{
++	struct pci_dev *pdev = devinfo->pdev;
++	struct inff_bus *bus = dev_get_drvdata(&pdev->dev);
++
++	inff_pcie_intr_disable(devinfo);
++
++	pci_enable_msi(pdev);
++	if (request_threaded_irq(pdev->irq, inff_pcie_quick_check_isr,
++				 inff_pcie_isr_thread, IRQF_SHARED,
++				 "inff_pcie_intr", devinfo)) {
++		pci_disable_msi(pdev);
++		inff_dev_err(bus->dev, "Failed to request IRQ %d\n", pdev->irq);
++		return -EIO;
++	}
++	devinfo->irq_allocated = true;
++	return 0;
++}
++
++static void inff_pcie_setup(struct device *dev, int ret,
++			    struct inff_fw_request *fwreq)
++{
++	const struct firmware *fw;
++	void *nvram;
++	struct inff_bus *bus;
++	struct inff_pciedev *pcie_bus_dev;
++	struct inff_pciedev_info *devinfo;
++	struct inff_commonring **flowrings;
++	struct inff_chip_specific *chip_spec;
++	u32 i, nvram_len;
++
++	bus = dev_get_drvdata(dev);
++	pcie_bus_dev = bus->bus_priv.pcie;
++	devinfo = pcie_bus_dev->devinfo;
++	chip_spec = &devinfo->ci->chip_spec;
++
++	/* check firmware loading result */
++	if (ret)
++		goto fail;
++
++	inff_pcie_attach(devinfo);
++
++	fw = fwreq->items[INFF_PCIE_FW_CODE].binary;
++	nvram = fwreq->items[INFF_PCIE_FW_NVRAM].nv_data.data;
++	nvram_len = fwreq->items[INFF_PCIE_FW_NVRAM].nv_data.len;
++	chip_spec->clm_fw = fwreq->items[INFF_PCIE_FW_CLM].binary;
++	kfree(fwreq);
++
++	ret = inff_chip_get_raminfo(devinfo->ci);
++	if (ret) {
++		inff_dev_err(bus->dev, "Failed to get RAM info\n");
++		release_firmware(fw);
++		inff_fw_nvram_free(nvram);
++		goto fail;
++	}
++
++	/* Some of the firmwares have the size of the memory of the device
++	 * defined inside the firmware. This is because part of the memory in
++	 * the device is shared and the division is determined by FW. Parse
++	 * the firmware and adjust the chip memory size now.
++	 */
++	inff_pcie_adjust_ramsize(devinfo, (u8 *)fw->data, fw->size);
++
++	ret = inff_pcie_download_fw_nvram(devinfo, fw, nvram, nvram_len);
++	if (ret) {
++		if (!inff_pcie_bus_readshared(devinfo, 0))
++			inff_pcie_bus_console_read(devinfo, true);
++		goto fail;
++	}
++
++	devinfo->state = INFFMAC_PCIE_STATE_UP;
++
++	ret = inff_pcie_init_ringbuffers(devinfo);
++	if (ret)
++		goto fail;
++
++	ret = inff_pcie_init_scratchbuffers(devinfo);
++	if (ret)
++		goto fail;
++
++	inff_pcie_select_core(devinfo, INF_CORE_PCIE2);
++	ret = inff_pcie_request_irq(devinfo);
++	if (ret)
++		goto fail;
++
++	/* hook the commonrings in the bus structure. */
++	for (i = 0; i < INFF_NROF_COMMON_MSGRINGS; i++)
++		bus->msgbuf->commonrings[i] =
++				&devinfo->shared.commonrings[i]->commonring;
++
++	flowrings = kcalloc(devinfo->shared.max_flowrings, sizeof(*flowrings),
++			    GFP_KERNEL);
++	if (!flowrings)
++		goto fail;
++
++	for (i = 0; i < devinfo->shared.max_flowrings; i++)
++		flowrings[i] = &devinfo->shared.flowrings[i].commonring;
++	bus->msgbuf->flowrings = flowrings;
++
++	bus->msgbuf->rx_dataoffset = devinfo->shared.rx_dataoffset;
++	bus->msgbuf->max_rxbufpost = devinfo->shared.max_rxbufpost;
++	bus->msgbuf->max_flowrings = devinfo->shared.max_flowrings;
++
++	init_waitqueue_head(&devinfo->mbdata_resp_wait);
++
++	ret = inff_bus_attach(&devinfo->pdev->dev, true);
++	if (ret)
++		goto fail;
++
++	inff_pcie_bus_console_read(devinfo, false);
++
++	inff_pcie_fwcon_timer(devinfo, true);
++
++	return;
++
++fail:
++	inff_dev_err(bus->dev, "Dongle setup failed\n");
++	inff_pcie_bus_console_read(devinfo, true);
++	inff_fw_crashed(dev);
++	device_release_driver(dev);
++}
++
++static int inff_pcie_preinit(struct device *dev)
++{
++	struct inff_bus *bus_if = dev_get_drvdata(dev);
++	struct inff_pciedev *buspub = bus_if->bus_priv.pcie;
++
++	inff_pcie_intr_enable(buspub->devinfo);
++	inff_pcie_hostready(buspub->devinfo);
++
++	return 0;
++}
++
++static int inff_pcie_tx(struct device *dev, struct sk_buff *skb)
++{
++	return 0;
++}
++
++static void inff_pcie_down(struct device *dev)
++{
++	struct inff_bus *bus_if = dev_get_drvdata(dev);
++	struct inff_pciedev *pcie_bus_dev = bus_if->bus_priv.pcie;
++	struct inff_pciedev_info *devinfo = pcie_bus_dev->devinfo;
++
++	inff_pcie_fwcon_timer(devinfo, false);
++}
++
++static int inff_pcie_tx_ctlpkt(struct device *dev, unsigned char *msg,
++			       uint len)
++{
++	return 0;
++}
++
++static int inff_pcie_rx_ctlpkt(struct device *dev, unsigned char *msg,
++			       uint len)
++{
++	return 0;
++}
++
++static void inff_pcie_wowl_config(struct device *dev, bool enabled)
++{
++	struct inff_bus *bus_if = dev_get_drvdata(dev);
++	struct inff_pciedev *buspub = bus_if->bus_priv.pcie;
++	struct inff_pciedev_info *devinfo = buspub->devinfo;
++
++	inff_dbg(PCIE, "Configuring WOWL, enabled=%d\n", enabled);
++	devinfo->wowl_enabled = enabled;
++}
++
++static size_t inff_pcie_get_ramsize(struct device *dev)
++{
++	struct inff_bus *bus_if = dev_get_drvdata(dev);
++	struct inff_pciedev *buspub = bus_if->bus_priv.pcie;
++	struct inff_pciedev_info *devinfo = buspub->devinfo;
++
++	return devinfo->ci->ramsize - devinfo->ci->srsize;
++}
++
++static int inff_pcie_get_memdump(struct device *dev, void *data, size_t len)
++{
++	struct inff_bus *bus_if = dev_get_drvdata(dev);
++	struct inff_pciedev *buspub = bus_if->bus_priv.pcie;
++	struct inff_pciedev_info *devinfo = buspub->devinfo;
++
++	inff_dbg(PCIE, "dump at 0x%08X: len=%zu\n", devinfo->ci->rambase, len);
++	inff_pcie_copy_dev_tomem(devinfo, devinfo->ci->rambase, data, len);
++	return 0;
++}
++
++static int inff_pcie_get_blob(struct device *dev, const struct firmware **fw,
++			      enum inff_blob_type type)
++{
++	struct inff_bus *bus_if = dev_get_drvdata(dev);
++	struct inff_pciedev *buspub = bus_if->bus_priv.pcie;
++	struct inff_pciedev_info *devinfo = buspub->devinfo;
++	struct inff_chip_specific *chip_spec = &devinfo->ci->chip_spec;
++
++	switch (type) {
++	case INFF_BLOB_CLM:
++		*fw = chip_spec->clm_fw;
++		chip_spec->clm_fw = NULL;
++		break;
++	default:
++		return -ENOENT;
++	}
++
++	if (!*fw)
++		return -ENOENT;
++
++	return 0;
++}
++
++static int inff_pcie_reset(struct device *dev)
++{
++	struct inff_bus *bus_if = dev_get_drvdata(dev);
++	struct inff_pciedev *buspub = bus_if->bus_priv.pcie;
++	struct inff_pciedev_info *devinfo = buspub->devinfo;
++	struct inff_fw_request *fwreq;
++	int err;
++
++	inff_pcie_intr_disable(devinfo);
++
++	inff_pcie_bus_console_read(devinfo, true);
++
++	inff_bus_detach(dev);
++
++	inff_pcie_release_irq(devinfo);
++	inff_pcie_release_scratchbuffers(devinfo);
++	inff_pcie_release_ringbuffers(devinfo);
++	inff_pcie_reset_device(devinfo);
++
++	fwreq = inff_prepare_fw_request(devinfo->settings->firmware_path,
++					devinfo->ci, inff_pcie_fwnames,
++					ARRAY_SIZE(inff_pcie_fwnames),
++					devinfo->settings->board_type);
++	if (!fwreq) {
++		dev_err(dev, "Failed to prepare FW request\n");
++		return -ENOMEM;
++	}
++
++	/* NVRAM reserves PCI domain 0 for SDK faked bus */
++	fwreq->domain_nr = pci_domain_nr(devinfo->pdev->bus) + 1;
++	fwreq->bus_nr = devinfo->pdev->bus->number;
++
++	err = inff_fw_get_firmwares(dev, fwreq, inff_pcie_setup);
++	if (err) {
++		dev_err(dev, "Failed to prepare FW request\n");
++		kfree(fwreq);
++	}
++
++	return err;
++}
++
++#ifdef DEBUG
++static int inff_pcie_console_interval_get(void *data, u64 *val)
++{
++	struct inff_pciedev_info *devinfo = data;
++
++	*val = devinfo->console_interval;
++
++	return 0;
++}
++
++static int inff_pcie_console_interval_set(void *data, u64 val)
++{
++	struct inff_pciedev_info *devinfo = data;
++
++	if (val > MAX_CONSOLE_INTERVAL)
++		return -EINVAL;
++
++	devinfo->console_interval = val;
++
++	if (!val && devinfo->console_active)
++		inff_pcie_fwcon_timer(devinfo, false);
++	else if (val)
++		inff_pcie_fwcon_timer(devinfo, true);
++
++	return 0;
++}
++
++DEFINE_SIMPLE_ATTRIBUTE(inff_pcie_console_interval_fops,
++			inff_pcie_console_interval_get,
++			inff_pcie_console_interval_set,
++			"%llu\n");
++
++static void inff_pcie_debugfs_create(struct device *dev)
++{
++	struct inff_bus *bus_if = dev_get_drvdata(dev);
++	struct inff_pub *drvr = bus_if->drvr;
++	struct inff_pciedev *pcie_bus_dev = bus_if->bus_priv.pcie;
++	struct inff_pciedev_info *devinfo = pcie_bus_dev->devinfo;
++	struct dentry *dentry = inff_debugfs_get_devdir(drvr);
++
++	if (IS_ERR_OR_NULL(dentry))
++		return;
++
++	devinfo->console_interval = INFF_CONSOLE;
++
++	debugfs_create_file("console_interval", 0644, dentry, devinfo,
++			    &inff_pcie_console_interval_fops);
++}
++
++#else
++
++static void inff_pcie_debugfs_create(struct device *dev)
++{
++}
++#endif
++
++static void inff_pcie_interrupt_disable(struct device *dev)
++{
++	struct inff_bus *bus_if = dev_get_drvdata(dev);
++	struct inff_pciedev *pcie_bus_dev = bus_if->bus_priv.pcie;
++	struct inff_pciedev_info *devinfo = pcie_bus_dev->devinfo;
++
++	inff_pcie_intr_disable(devinfo);
++}
++
++static void inff_pcie_interrupt_enable(struct device *dev)
++{
++	struct inff_bus *bus_if = dev_get_drvdata(dev);
++	struct inff_pciedev *pcie_bus_dev = bus_if->bus_priv.pcie;
++	struct inff_pciedev_info *devinfo = pcie_bus_dev->devinfo;
++
++	inff_pcie_intr_enable(devinfo);
++}
++
++static const struct inff_bus_ops inff_pcie_bus_ops = {
++	.preinit = inff_pcie_preinit,
++	.txdata = inff_pcie_tx,
++	.stop = inff_pcie_down,
++	.txctl = inff_pcie_tx_ctlpkt,
++	.rxctl = inff_pcie_rx_ctlpkt,
++	.wowl_config = inff_pcie_wowl_config,
++	.get_ramsize = inff_pcie_get_ramsize,
++	.get_memdump = inff_pcie_get_memdump,
++	.get_blob = inff_pcie_get_blob,
++	.reset = inff_pcie_reset,
++	.debugfs_create = inff_pcie_debugfs_create,
++	.interrupt_enable = inff_pcie_interrupt_enable,
++	.interrupt_disable = inff_pcie_interrupt_disable,
++};
++
++static int inff_pcie_get_resource(struct inff_pciedev_info *devinfo)
++{
++	struct pci_dev *pdev = devinfo->pdev;
++	struct inff_bus *bus = dev_get_drvdata(&pdev->dev);
++	int err;
++	phys_addr_t  bar0_addr, bar1_addr;
++	ulong bar1_size;
++
++	err = pci_enable_device(pdev);
++	if (err) {
++		inff_dev_err(bus->dev, "pci_enable_device failed err=%d\n", err);
++		return err;
++	}
++
++	pci_set_master(pdev);
++
++	/* Bar-0 mapped address */
++	bar0_addr = pci_resource_start(pdev, 0);
++	/* Bar-1 mapped address */
++	bar1_addr = pci_resource_start(pdev, 2);
++	/* read Bar-1 mapped memory range */
++	bar1_size = pci_resource_len(pdev, 2);
++	if (bar1_size == 0 || bar1_addr == 0) {
++		inff_dev_err(bus->dev, "BAR1 Not enabled, device size=%ld, addr=%#016llx\n",
++			     bar1_size, (unsigned long long)bar1_addr);
++		return -EINVAL;
++	}
++
++	devinfo->regs = ioremap(bar0_addr, INFF_PCIE_REG_MAP_SIZE);
++	devinfo->tcm = ioremap(bar1_addr, bar1_size);
++	devinfo->bar1_size = bar1_size;
++
++	if (!devinfo->regs || !devinfo->tcm) {
++		inff_dev_err(bus->dev, "ioremap() failed (%p,%p)\n", devinfo->regs,
++			     devinfo->tcm);
++		return -EINVAL;
++	}
++	inff_dbg(PCIE, "Phys addr : reg space = %p base addr %#016llx\n",
++		 devinfo->regs, (unsigned long long)bar0_addr);
++	inff_dbg(PCIE, "Phys addr : mem space = %p base addr %#016llx size 0x%x\n",
++		 devinfo->tcm, (unsigned long long)bar1_addr,
++		 (unsigned int)bar1_size);
++
++	return 0;
++}
++
++static void inff_pcie_release_resource(struct inff_pciedev_info *devinfo)
++{
++	if (devinfo->tcm)
++		iounmap(devinfo->tcm);
++	if (devinfo->regs)
++		iounmap(devinfo->regs);
++
++	pci_disable_device(devinfo->pdev);
++}
++
++static u32 inff_pcie_buscore_blhs_read(void *ctx, u32 reg_offset)
++{
++	struct inff_pciedev_info *devinfo = (struct inff_pciedev_info *)ctx;
++
++	inff_pcie_select_core(devinfo, INF_CORE_PCIE2);
++	return inff_pcie_read_reg32(devinfo, reg_offset);
++}
++
++static void inff_pcie_buscore_blhs_write(void *ctx, u32 reg_offset, u32 value)
++{
++	struct inff_pciedev_info *devinfo = (struct inff_pciedev_info *)ctx;
++
++	inff_pcie_select_core(devinfo, INF_CORE_PCIE2);
++	inff_pcie_write_reg32(devinfo, reg_offset, value);
++}
++
++static u32 inff_pcie_buscore_prep_addr(const struct pci_dev *pdev, u32 addr)
++{
++	u32 ret_addr;
++
++	ret_addr = addr & (INFF_PCIE_BAR0_REG_SIZE - 1);
++	addr &= ~(INFF_PCIE_BAR0_REG_SIZE - 1);
++	pci_write_config_dword(pdev, INFF_PCIE_BAR0_WINDOW, addr);
++
++	return ret_addr;
++}
++
++static int inff_pcie_buscoreprep(void *ctx)
++{
++	return inff_pcie_get_resource(ctx);
++}
++
++static int inff_pcie_buscore_reset(void *ctx, struct inff_chip *chip)
++{
++	struct inff_pciedev_info *devinfo = (struct inff_pciedev_info *)ctx;
++	struct inff_core *core;
++	u32 val, reg;
++
++	devinfo->ci = chip;
++	inff_pcie_reset_device(devinfo);
++
++	/* reginfo is not ready yet */
++	core = inff_chip_get_core(chip, INF_CORE_PCIE2);
++	if (core->rev >= 64)
++		reg = INFF_PCIE_64_PCIE2REG_MAILBOXINT;
++	else
++		reg = INFF_PCIE_PCIE2REG_MAILBOXINT;
++
++	val = inff_pcie_read_reg32(devinfo, reg);
++	if (val != 0xffffffff)
++		inff_pcie_write_reg32(devinfo, reg, val);
++
++	return 0;
++}
++
++static void inff_pcie_buscore_activate(void *ctx, struct inff_chip *chip,
++				       u32 rstvec)
++{
++	struct inff_pciedev_info *devinfo = (struct inff_pciedev_info *)ctx;
++
++	inff_pcie_write_tcm32(devinfo, 0, rstvec);
++}
++
++static u32 inff_pcie_buscore_read32(void *ctx, u32 addr)
++{
++	struct inff_pciedev_info *devinfo = (struct inff_pciedev_info *)ctx;
++
++	addr = inff_pcie_buscore_prep_addr(devinfo->pdev, addr);
++	return inff_pcie_read_reg32(devinfo, addr);
++}
++
++static void inff_pcie_buscore_write32(void *ctx, u32 addr, u32 value)
++{
++	struct inff_pciedev_info *devinfo = (struct inff_pciedev_info *)ctx;
++
++	addr = inff_pcie_buscore_prep_addr(devinfo->pdev, addr);
++	inff_pcie_write_reg32(devinfo, addr, value);
++}
++
++static int
++inff_pcie_buscore_sec_attach(void *ctx, struct inff_blhs **blhs, struct inff_ccsec **ccsec,
++			     u32 flag, uint timeout, uint interval)
++{
++	struct inff_pciedev_info *devinfo = (struct inff_pciedev_info *)ctx;
++	struct inff_bus *bus = dev_get_drvdata(&devinfo->pdev->dev);
++	struct inff_blhs *blhsh;
++	u32 regdata;
++	u32 pcie_enum;
++	u32 addr;
++
++	if (devinfo->pdev->vendor != PCI_VENDOR_ID_CYPRESS)
++		return 0;
++
++	pci_read_config_dword(devinfo->pdev, INFF_PCIE_CFGREG_REVID, &regdata);
++	if (regdata & INFF_PCIE_CFGREG_REVID_SECURE_MODE) {
++		blhsh = kzalloc(sizeof(*blhsh), GFP_KERNEL);
++		if (!blhsh)
++			return -ENOMEM;
++
++		blhsh->d2h = INFF_PCIE_PCIE2REG_DAR_D2H_MSG_0;
++		blhsh->h2d = INFF_PCIE_PCIE2REG_DAR_H2D_MSG_0;
++		blhsh->read = inff_pcie_buscore_blhs_read;
++		blhsh->write = inff_pcie_buscore_blhs_write;
++
++		/* Host indication for bootloarder to start the init */
++		if (devinfo->pdev->device == PCI_DEVICE_ID_CYW5557X)
++			pcie_enum = INFF_CYW55572_PCIE_BAR0_PCIE_ENUM_OFFSET;
++		else
++			pcie_enum = INFF_PCIE_BAR0_PCIE_ENUM_OFFSET;
++
++		pci_read_config_dword(devinfo->pdev, PCI_BASE_ADDRESS_0,
++				      &regdata);
++		addr = regdata + pcie_enum + blhsh->h2d;
++		inff_pcie_buscore_write32(ctx, addr, 0);
++
++		addr = regdata + pcie_enum + blhsh->d2h;
++		SPINWAIT_MS((inff_pcie_buscore_read32(ctx, addr) & flag) == 0,
++			    timeout, interval);
++		regdata = inff_pcie_buscore_read32(ctx, addr);
++		if (!(regdata & flag)) {
++			inff_dev_err(bus->dev, "Timeout waiting for bootloader ready\n");
++			kfree(blhsh);
++			return -EPERM;
++		}
++		*blhs = blhsh;
++	}
++
++	return 0;
++}
++
++static const struct inff_buscore_ops inff_pcie_buscore_ops = {
++	.prepare = inff_pcie_buscoreprep,
++	.reset = inff_pcie_buscore_reset,
++	.activate = inff_pcie_buscore_activate,
++	.read32 = inff_pcie_buscore_read32,
++	.write32 = inff_pcie_buscore_write32,
++	.sec_attach = inff_pcie_buscore_sec_attach,
++};
++
++#define INFF_PCIE_DEVICE(dev_id) \
++	{ \
++		PCI_VENDOR_ID_CYPRESS, dev_id, \
++		PCI_ANY_ID, PCI_ANY_ID, \
++		PCI_CLASS_NETWORK_OTHER << 8, 0xffff00, \
++		0 \
++	} \
++
++static const struct pci_device_id inff_pcie_devid_table[] = {
++	INFF_PCIE_DEVICE(PCI_DEVICE_ID_CYW5557X),
++	{ /* end: all zeroes */ }
++};
++
++MODULE_DEVICE_TABLE(pci, inff_pcie_devid_table);
++
++static int
++inff_pcie_chip_socitype(unsigned short device)
++{
++	switch (device) {
++	case PCI_DEVICE_ID_CYW5557X:
++		return INFF_SOCI_AI;
++	default:
++		return INFF_SOCI_UNSPEC;
 +	}
 +}
-diff --git a/drivers/net/wireless/infineon/inffmac/msgbuf.h b/drivers/net/wireless/infineon/inffmac/msgbuf.h
++
++static int
++inff_pcie_probe(struct pci_dev *pdev, const struct pci_device_id *id)
++{
++	int ret;
++	struct inff_fw_request *fwreq;
++	struct inff_pciedev_info *devinfo;
++	struct inff_pciedev *pcie_bus_dev;
++	struct inff_core *core;
++	struct inff_bus *bus;
++	unsigned short socitype = INFF_SOCI_UNSPEC;
++
++	if (!id) {
++		id = pci_match_id(inff_pcie_devid_table, pdev);
++		if (!id) {
++			pci_err(pdev, "Error could not find pci_device_id for %x:%x\n",
++				pdev->vendor, pdev->device);
++			return -ENODEV;
++		}
++	}
++
++	inff_dbg(PCIE, "Probing PCIe Device %x:%x\n",
++		 pdev->vendor, pdev->device);
++
++	ret = -ENOMEM;
++	devinfo = kzalloc(sizeof(*devinfo), GFP_KERNEL);
++	if (!devinfo)
++		return ret;
++
++	devinfo->pdev = pdev;
++	pcie_bus_dev = NULL;
++	socitype = inff_pcie_chip_socitype(devinfo->pdev->device);
++	devinfo->ci = inff_chip_attach(socitype, devinfo, pdev->device,
++				       &inff_pcie_buscore_ops);
++	if (IS_ERR(devinfo->ci)) {
++		ret = PTR_ERR(devinfo->ci);
++		devinfo->ci = NULL;
++		goto fail;
++	}
++
++	core = inff_chip_get_core(devinfo->ci, INF_CORE_PCIE2);
++	if (core->rev >= 64)
++		devinfo->reginfo = &inff_reginfo_64;
++	else
++		devinfo->reginfo = &inff_reginfo_default;
++
++	pcie_bus_dev = kzalloc(sizeof(*pcie_bus_dev), GFP_KERNEL);
++	if (!pcie_bus_dev) {
++		ret = -ENOMEM;
++		goto fail;
++	}
++
++	devinfo->settings = inff_get_module_param(&devinfo->pdev->dev);
++	if (!devinfo->settings) {
++		ret = -ENOMEM;
++		goto fail;
++	}
++	ret = PTR_ERR_OR_ZERO(devinfo->settings);
++	if (ret < 0)
++		goto fail;
++
++	bus = kzalloc(sizeof(*bus), GFP_KERNEL);
++	if (!bus) {
++		ret = -ENOMEM;
++		goto fail;
++	}
++	bus->msgbuf = kzalloc(sizeof(*bus->msgbuf), GFP_KERNEL);
++	if (!bus->msgbuf) {
++		ret = -ENOMEM;
++		kfree(bus);
++		goto fail;
++	}
++
++	/* hook it all together. */
++	pcie_bus_dev->devinfo = devinfo;
++	pcie_bus_dev->bus = bus;
++	bus->dev = &pdev->dev;
++	bus->bus_priv.pcie = pcie_bus_dev;
++	bus->ops = &inff_pcie_bus_ops;
++	bus->proto_type = INFF_PROTO_MSGBUF;
++	bus->chip = devinfo->coreid;
++	bus->chip_pub = devinfo->ci;
++	bus->wowl_supported = pci_pme_capable(pdev, PCI_D3hot);
++	dev_set_drvdata(&pdev->dev, bus);
++
++	ret = inff_alloc_wiphy(&devinfo->pdev->dev, devinfo->settings);
++	if (ret)
++		goto fail_bus;
++
++#ifdef DEBUG
++	/* Set up the fwcon timer */
++	timer_setup(&devinfo->timer, inff_pcie_fwcon, 0);
++#endif
++
++	fwreq = inff_prepare_fw_request(devinfo->settings->firmware_path,
++					devinfo->ci, inff_pcie_fwnames,
++					ARRAY_SIZE(inff_pcie_fwnames),
++					devinfo->settings->board_type);
++	if (!fwreq) {
++		ret = -ENOMEM;
++		goto fail_inff;
++	}
++
++	/* NVRAM reserves PCI domain 0 for SDK faked bus */
++	fwreq->domain_nr = pci_domain_nr(devinfo->pdev->bus) + 1;
++	fwreq->bus_nr = devinfo->pdev->bus->number;
++
++	ret = inff_fw_get_firmwares(bus->dev, fwreq, inff_pcie_setup);
++	if (ret < 0) {
++		kfree(fwreq);
++		goto fail_inff;
++	}
++	return 0;
++
++fail_inff:
++	inff_free_wiphy(&devinfo->pdev->dev);
++fail_bus:
++	kfree(bus->msgbuf);
++	kfree(bus);
++fail:
++	inff_dev_err(NULL, "failed %x:%x\n", pdev->vendor, pdev->device);
++	inff_pcie_release_resource(devinfo);
++	if (devinfo->ci)
++		inff_chip_detach(devinfo->ci);
++	if (devinfo->settings)
++		inff_release_module_param(devinfo->settings);
++	kfree(pcie_bus_dev);
++	kfree(devinfo);
++	return ret;
++}
++
++static void
++inff_pcie_remove(struct pci_dev *pdev)
++{
++	struct inff_pciedev_info *devinfo;
++	struct inff_chip_specific *chip_spec;
++	struct inff_bus *bus;
++
++	bus = dev_get_drvdata(&pdev->dev);
++	if (!bus)
++		return;
++
++	devinfo = bus->bus_priv.pcie->devinfo;
++	chip_spec = &devinfo->ci->chip_spec;
++
++	inff_pcie_bus_console_read(devinfo, false);
++	inff_pcie_fwcon_timer(devinfo, false);
++
++	devinfo->state = INFFMAC_PCIE_STATE_DOWN;
++	if (devinfo->ci)
++		inff_pcie_intr_disable(devinfo);
++
++	inff_bus_detach(&pdev->dev);
++	inff_free_wiphy(&pdev->dev);
++
++	kfree(bus->bus_priv.pcie);
++	kfree(bus->msgbuf->flowrings);
++	kfree(bus->msgbuf);
++	kfree(bus);
++
++	inff_pcie_release_irq(devinfo);
++	inff_pcie_release_scratchbuffers(devinfo);
++	inff_pcie_release_ringbuffers(devinfo);
++	inff_pcie_reset_device(devinfo);
++	inff_pcie_release_resource(devinfo);
++	release_firmware(chip_spec->clm_fw);
++
++	if (devinfo->ci)
++		inff_chip_detach(devinfo->ci);
++	if (devinfo->settings)
++		inff_release_module_param(devinfo->settings);
++
++	kfree(devinfo);
++	dev_set_drvdata(&pdev->dev, NULL);
++}
++
++#ifdef CONFIG_PM
++
++static int inff_pcie_pm_enter_D3(struct device *dev)
++{
++	struct inff_pciedev_info *devinfo;
++	struct inff_bus *bus;
++	struct inff_cfg80211_info *config;
++	int retry = INFF_PM_WAIT_MAXRETRY;
++
++	bus = dev_get_drvdata(dev);
++	devinfo = bus->bus_priv.pcie->devinfo;
++	config = bus->drvr->config;
++
++	while (retry &&
++	       config->pm_state == INFF_CFG80211_PM_STATE_SUSPENDING) {
++		usleep_range(10000, 20000);
++		retry--;
++	}
++	if (!retry && config->pm_state == INFF_CFG80211_PM_STATE_SUSPENDING)
++		inff_dev_err(bus->dev,
++			     "timed out wait for cfg80211 suspended\n");
++
++	inff_pcie_fwcon_timer(devinfo, false);
++	inff_bus_change_state(bus, INFF_BUS_DOWN);
++
++	devinfo->mbdata_completed = false;
++	inff_pcie_send_mb_data(devinfo, INFF_H2D_HOST_D3_INFORM);
++
++	wait_event_timeout(devinfo->mbdata_resp_wait, devinfo->mbdata_completed,
++			   INFF_PCIE_MBDATA_TIMEOUT);
++	if (!devinfo->mbdata_completed) {
++		inff_dev_err(bus->dev,
++			     "Timeout on response for entering D3 substate\n");
++		inff_bus_change_state(bus, INFF_BUS_UP);
++		return -EIO;
++	}
++
++	devinfo->state = INFFMAC_PCIE_STATE_DOWN;
++
++	return 0;
++}
++
++static int inff_pcie_pm_leave_D3(struct device *dev)
++{
++	struct inff_pciedev_info *devinfo;
++	struct inff_bus *bus;
++	struct pci_dev *pdev;
++	int err;
++
++	bus = dev_get_drvdata(dev);
++	devinfo = bus->bus_priv.pcie->devinfo;
++	inff_dbg(PCIE, "PCIe PM Leave D3 dev=%p, bus=%p\n", dev, bus);
++
++	/* Check if device is still up and running, if so we are ready */
++	if (inff_pcie_read_reg32(devinfo, devinfo->reginfo->intmask) != 0) {
++		inff_dbg(PCIE, "Try to wakeup device....\n");
++		if (devinfo->use_d0_inform) {
++			if (inff_pcie_send_mb_data(devinfo,
++						   INFF_H2D_HOST_D0_INFORM))
++				goto cleanup;
++		} else {
++			inff_pcie_hostready(devinfo);
++		}
++
++		inff_dbg(PCIE, "Hot resume, continue....\n");
++		devinfo->state = INFFMAC_PCIE_STATE_UP;
++		inff_pcie_select_core(devinfo, INF_CORE_PCIE2);
++		inff_bus_change_state(bus, INFF_BUS_UP);
++		inff_pcie_intr_enable(devinfo);
++		if (devinfo->use_d0_inform) {
++			inff_dbg(TRACE, "sending inff_pcie_hostready since use_d0_inform=%d\n",
++				 devinfo->use_d0_inform);
++			inff_pcie_hostready(devinfo);
++		}
++
++		inff_pcie_fwcon_timer(devinfo, true);
++		return 0;
++	}
++
++cleanup:
++	inff_chip_detach(devinfo->ci);
++	devinfo->ci = NULL;
++	pdev = devinfo->pdev;
++	inff_pcie_remove(pdev);
++
++	err = inff_pcie_probe(pdev, NULL);
++	if (err)
++		inff_dev_err(NULL, "probe after resume failed, err=%d\n", err);
++
++	return err;
++}
++
++static const struct dev_pm_ops inff_pciedrvr_pm = {
++	.suspend = inff_pcie_pm_enter_D3,
++	.resume = inff_pcie_pm_leave_D3,
++	.freeze = inff_pcie_pm_enter_D3,
++	.restore = inff_pcie_pm_leave_D3,
++};
++
++#endif /* CONFIG_PM */
++
++static struct pci_driver inff_pciedrvr = {
++	.name = KBUILD_MODNAME,
++	.id_table = inff_pcie_devid_table,
++	.probe = inff_pcie_probe,
++	.remove = inff_pcie_remove,
++#ifdef CONFIG_PM
++	.driver.pm = &inff_pciedrvr_pm,
++#endif
++	.driver.coredump = inff_dev_coredump,
++};
++
++int inff_pcie_register(void)
++{
++	return pci_register_driver(&inff_pciedrvr);
++}
++
++void inff_pcie_exit(void)
++{
++	pci_unregister_driver(&inff_pciedrvr);
++}
+diff --git a/drivers/net/wireless/infineon/inffmac/pcie.h b/drivers/net/wireless/infineon/inffmac/pcie.h
 new file mode 100644
-index 000000000000..a9d596ff1258
+index 000000000000..db92749d7da9
 --- /dev/null
-+++ b/drivers/net/wireless/infineon/inffmac/msgbuf.h
-@@ -0,0 +1,112 @@
++++ b/drivers/net/wireless/infineon/inffmac/pcie.h
+@@ -0,0 +1,27 @@
 +/* SPDX-License-Identifier: ISC */
 +/*
 + * Copyright (c) 2014 Broadcom Corporation
@@ -2112,110 +2751,39 @@ index 000000000000..a9d596ff1258
 + * All rights reserved.
 + */
 +
-+#ifndef INFF_MSGBUF_H
-+#define INFF_MSGBUF_H
++#ifndef INFF_PCIE_H
++#define INFF_PCIE_H
 +
-+#ifdef CONFIG_INFFMAC_PROTO_MSGBUF
-+
-+/* IDs of the 6 default common rings of msgbuf protocol */
-+#define INFF_H2D_MSGRING_CONTROL_SUBMIT	0
-+#define INFF_H2D_MSGRING_RXPOST_SUBMIT		1
-+#define INFF_H2D_MSGRING_FLOWRING_IDSTART	2
-+#define INFF_D2H_MSGRING_CONTROL_COMPLETE	2
-+#define INFF_D2H_MSGRING_TX_COMPLETE		3
-+#define INFF_D2H_MSGRING_RX_COMPLETE		4
-+
-+#define INFF_NROF_H2D_COMMON_MSGRINGS		2
-+#define INFF_NROF_D2H_COMMON_MSGRINGS		3
-+#define INFF_NROF_COMMON_MSGRINGS	(INFF_NROF_H2D_COMMON_MSGRINGS + \
-+					 INFF_NROF_D2H_COMMON_MSGRINGS)
-+
-+#define INFF_H2D_MSGRING_CONTROL_SUBMIT_MAX_ITEM	64
-+#define INFF_H2D_MSGRING_RXPOST_SUBMIT_MAX_ITEM	1024
-+#define INFF_D2H_MSGRING_CONTROL_COMPLETE_MAX_ITEM	64
-+#define INFF_D2H_MSGRING_TX_COMPLETE_MAX_ITEM		1024
-+#define INFF_D2H_MSGRING_RX_COMPLETE_MAX_ITEM		1024
-+#define INFF_H2D_TXFLOWRING_MAX_ITEM			512
-+
-+#define INFF_H2D_MSGRING_CONTROL_SUBMIT_ITEMSIZE	40
-+#define INFF_H2D_MSGRING_RXPOST_SUBMIT_ITEMSIZE	32
-+#define INFF_D2H_MSGRING_CONTROL_COMPLETE_ITEMSIZE	24
-+#define INFF_D2H_MSGRING_TX_COMPLETE_ITEMSIZE_PRE_V7	16
-+#define INFF_D2H_MSGRING_TX_COMPLETE_ITEMSIZE		24
-+#define INFF_D2H_MSGRING_RX_COMPLETE_ITEMSIZE_PRE_V7	32
-+#define INFF_D2H_MSGRING_RX_COMPLETE_ITEMSIZE		40
-+#define INFF_H2D_TXFLOWRING_ITEMSIZE			48
-+
-+static const u32 inff_ring_max_item[INFF_NROF_COMMON_MSGRINGS] = {
-+	INFF_H2D_MSGRING_CONTROL_SUBMIT_MAX_ITEM,
-+	INFF_H2D_MSGRING_RXPOST_SUBMIT_MAX_ITEM,
-+	INFF_D2H_MSGRING_CONTROL_COMPLETE_MAX_ITEM,
-+	INFF_D2H_MSGRING_TX_COMPLETE_MAX_ITEM,
-+	INFF_D2H_MSGRING_RX_COMPLETE_MAX_ITEM
++struct inff_pciedev {
++	struct inff_bus *bus;
++	struct inff_pciedev_info *devinfo;
 +};
 +
-+static const u32 inff_ring_itemsize_pre_v7[INFF_NROF_COMMON_MSGRINGS] = {
-+	INFF_H2D_MSGRING_CONTROL_SUBMIT_ITEMSIZE,
-+	INFF_H2D_MSGRING_RXPOST_SUBMIT_ITEMSIZE,
-+	INFF_D2H_MSGRING_CONTROL_COMPLETE_ITEMSIZE,
-+	INFF_D2H_MSGRING_TX_COMPLETE_ITEMSIZE_PRE_V7,
-+	INFF_D2H_MSGRING_RX_COMPLETE_ITEMSIZE_PRE_V7
-+};
++void inff_pcie_handle_mb_data(struct inff_bus *bus_if, u32 d2h_mb_data);
 +
-+static const u32 inff_ring_itemsize[INFF_NROF_COMMON_MSGRINGS] = {
-+	INFF_H2D_MSGRING_CONTROL_SUBMIT_ITEMSIZE,
-+	INFF_H2D_MSGRING_RXPOST_SUBMIT_ITEMSIZE,
-+	INFF_D2H_MSGRING_CONTROL_COMPLETE_ITEMSIZE,
-+	INFF_D2H_MSGRING_TX_COMPLETE_ITEMSIZE,
-+	INFF_D2H_MSGRING_RX_COMPLETE_ITEMSIZE
-+};
-+
-+#define INFF_SKB_HEADROOM      ALIGN(NET_SKB_PAD, 8)
-+#define INFF_SKB_PAD   (SKB_DATA_ALIGN(sizeof(struct skb_shared_info) + \
-+			INFF_SKB_HEADROOM))
-+#define INFF_MAX_RX_BUF_SIZE   (PAGE_SIZE - INFF_SKB_PAD)
-+
-+struct msgbuf_buf_addr {
-+	__le32		low_addr;
-+	__le32		high_addr;
-+};
-+
-+/**
-+ * struct inff_bus_msgbuf - bus ringbuf if in case of msgbuf.
-+ *
-+ * @commonrings: commonrings which are always there.
-+ * @flowrings: commonrings which are dynamically created and destroyed for data.
-+ * @rx_dataoffset: if set then all rx data has this offset.
-+ * @max_rxbufpost: maximum number of buffers to post for rx.
-+ * @max_flowrings: maximum number of tx flow rings supported.
-+ * @max_submissionrings: maximum number of submission rings(h2d) supported.
-+ * @max_completionrings: maximum number of completion rings(d2h) supported.
-+ */
-+struct inff_bus_msgbuf {
-+	struct inff_commonring *commonrings[INFF_NROF_COMMON_MSGRINGS];
-+	struct inff_commonring **flowrings;
-+	u32 rx_dataoffset;
-+	u32 max_rxbufpost;
-+	u16 max_flowrings;
-+	u16 max_submissionrings;
-+	u16 max_completionrings;
-+};
-+
-+int inff_proto_msgbuf_rx_trigger(struct device *dev);
-+void inff_msgbuf_delete_flowring(struct inff_pub *drvr, u16 flowid);
-+int inff_proto_msgbuf_attach(struct inff_pub *drvr);
-+void inff_proto_msgbuf_detach(struct inff_pub *drvr);
++#ifdef CONFIG_INFFMAC_PCIE
++int inff_pcie_register(void);
++void inff_pcie_exit(void);
 +#else
-+static inline int inff_proto_msgbuf_attach(struct inff_pub *drvr)
-+{
-+	return 0;
-+}
-+
-+static inline void inff_proto_msgbuf_detach(struct inff_pub *drvr) {}
++static inline int inff_pcie_register(void) { return 0; }
++static inline void inff_pcie_exit(void) { }
 +#endif
-+int inff_msgbuf_tx_mbdata(struct inff_pub *drvr, u32 mbdata);
 +
-+#endif /* INFF_MSGBUF_H */
++#endif /* INFF_PCIE_H */
+diff --git a/include/linux/pci_ids.h b/include/linux/pci_ids.h
+index a9a089566b7c..7a252f52cc6f 100644
+--- a/include/linux/pci_ids.h
++++ b/include/linux/pci_ids.h
+@@ -2259,6 +2259,9 @@
+ #define PCI_DEVICE_ID_BCM4401		0x4401
+ #define PCI_DEVICE_ID_BCM4401B0		0x4402
+ 
++#define PCI_VENDOR_ID_CYPRESS		0x12be
++#define PCI_DEVICE_ID_CYW5557X		0xbd31
++
+ #define PCI_VENDOR_ID_TOPIC		0x151f
+ #define PCI_DEVICE_ID_TOPIC_TP560	0x0000
+ 
 -- 
 2.25.1
 
