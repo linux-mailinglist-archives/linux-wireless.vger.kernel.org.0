@@ -1,68 +1,68 @@
-Return-Path: <linux-wireless+bounces-30778-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-30779-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1D93CD1B43C
-	for <lists+linux-wireless@lfdr.de>; Tue, 13 Jan 2026 21:42:58 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 39F8BD1B43F
+	for <lists+linux-wireless@lfdr.de>; Tue, 13 Jan 2026 21:43:08 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 9D35B30C40F5
-	for <lists+linux-wireless@lfdr.de>; Tue, 13 Jan 2026 20:39:44 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 5352230B6816
+	for <lists+linux-wireless@lfdr.de>; Tue, 13 Jan 2026 20:39:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 61ED1314B72;
-	Tue, 13 Jan 2026 20:39:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D24D52F0673;
+	Tue, 13 Jan 2026 20:39:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=infineon.com header.i=@infineon.com header.b="KBr3SUXq"
+	dkim=pass (1024-bit key) header.d=infineon.com header.i=@infineon.com header.b="HQKVP9GT"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from smtp2.infineon.com (smtp2.infineon.com [217.10.52.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 35A952F0673
-	for <linux-wireless@vger.kernel.org>; Tue, 13 Jan 2026 20:39:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8649C276051
+	for <linux-wireless@vger.kernel.org>; Tue, 13 Jan 2026 20:39:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.10.52.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768336783; cv=none; b=VXGnIuYZGBPP3B7+ixjLOhJQiHOGPF2guDm3whWQ+EmGCyqhwfQhR3pAeT5SsiNVi3aL2FYdWNZtql0IiMV5p3Ma+FUKBwDDXLXYPtAFotiNqsZAMja6RpCV/9xxNC7FdL8Q0RlBbpla0rSdbvMk4w2PD2XxYhozSsL/tBLHz1Q=
+	t=1768336796; cv=none; b=ZfTP/JHHplbMJ21AxB5uYx60bl/Qcht8llJh+5GXPeOzppVUh9qIobz9fTK6p/cNpdyWhtVcMId9wGR3ybu1GypBTrNFwJOpMQeBRo++wvwl6fWfe4TFfaHq15OjSrGiA1Y9TNi1jMxuKecvz+6EYijrKrLphCuu2GGZmDAj0Yk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768336783; c=relaxed/simple;
-	bh=CNVsBXXO/o5HPHoR7hbwz3MflGPEdYCFmV4wvaJFbhY=;
+	s=arc-20240116; t=1768336796; c=relaxed/simple;
+	bh=HnUCkcjPzmwacRcVFtCimrHwihZRZUIAyeUKRfYEwCI=;
 	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=nn9A6u7FQLJ+aedtZgRqdXAw6l19HTse5isPWg1SovBQswskx8jIjmAQrTXXQsQY5QVrSDjkH3dLl4MlZXNaQo76mkFxwLuyzOMxZwX13g24xdrlb8fahDf/WxP7RFHKoFBznxPPUCQR6Tf4AsqcIHyA+vqLAJcdkwLLONkyVSQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infineon.com; spf=pass smtp.mailfrom=infineon.com; dkim=pass (1024-bit key) header.d=infineon.com header.i=@infineon.com header.b=KBr3SUXq; arc=none smtp.client-ip=217.10.52.18
+	 MIME-Version:Content-Type; b=JYgIxzaKClJ/wSRtyMGwmaYsndC9KRuF0+rxrSnmu8buyuUOMXNaeUpJ5tM7E1Hxct1FW+NUTJFgcRY6nB2SMukVm1HuOeUGvCTKgmDMXIsnTJVOtzkmIRqdIr+ugDkuxqBiTxBpwaptMp/a3pDmGJN7ogRG2QU74DN9ukaYL/s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infineon.com; spf=pass smtp.mailfrom=infineon.com; dkim=pass (1024-bit key) header.d=infineon.com header.i=@infineon.com header.b=HQKVP9GT; arc=none smtp.client-ip=217.10.52.18
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infineon.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=infineon.com
 DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple;
   d=infineon.com; i=@infineon.com; q=dns/txt; s=IFXMAIL;
-  t=1768336782; x=1799872782;
+  t=1768336795; x=1799872795;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=CNVsBXXO/o5HPHoR7hbwz3MflGPEdYCFmV4wvaJFbhY=;
-  b=KBr3SUXqOgK2uJ3UkK6116p0Pu0DNAYbkU4UkFhkO5Ar05zZqsEr6cxP
-   o4z6/p0siq9l9HCiN44aFVzovAQHdtTpJhAutLxfxYnjbPZG//+TnfQM7
-   kds/BSubO73Oz3+faCCo4YJCJ4q4OPIlVNlgrnphl5xgp2IAdWU0/+iL6
-   M=;
-X-CSE-ConnectionGUID: LPWooYFHSh2QUoZ+x4VNqA==
-X-CSE-MsgGUID: ohood+d/S8OQBj4Et7lrXQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11670"; a="139542045"
+  bh=HnUCkcjPzmwacRcVFtCimrHwihZRZUIAyeUKRfYEwCI=;
+  b=HQKVP9GTIAM8OPn3aBpxmZplkp4uQg5dkPM2/tvevArpBftZDqBklFmC
+   GLaH4tCu4GYB49IXAkc9mXDfSljCwh0IQC2g2Wb9fKrqDvCCq+T4MFYn0
+   25DRyYUPmI9I5Q3EJCodlhMF8Me9uIoZGm6w8fY4pJ3wr+Yk3CJNeoAin
+   c=;
+X-CSE-ConnectionGUID: AyM33zsgToKIzx1qEcl7fA==
+X-CSE-MsgGUID: en3oRQGwRSqcLVlccRdU+A==
+X-IronPort-AV: E=McAfee;i="6800,10657,11670"; a="139542057"
 X-IronPort-AV: E=Sophos;i="6.21,222,1763420400"; 
-   d="scan'208";a="139542045"
+   d="scan'208";a="139542057"
 X-Amp-Result: SKIPPED(no attachment in message)
-Received: from unknown (HELO MUCSE803.infineon.com) ([172.23.29.29])
-  by smtp2.infineon.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 Jan 2026 21:39:40 +0100
-Received: from MUCSE827.infineon.com (172.23.29.20) by MUCSE803.infineon.com
- (172.23.29.29) with Microsoft SMTP Server (version=TLS1_2,
+Received: from unknown (HELO MUCSE822.infineon.com) ([172.23.29.53])
+  by smtp2.infineon.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 Jan 2026 21:39:53 +0100
+Received: from MUCSE827.infineon.com (172.23.29.20) by MUCSE822.infineon.com
+ (172.23.29.53) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.35; Tue, 13 Jan
- 2026 21:39:38 +0100
+ 2026 21:39:52 +0100
 Received: from ISCN5CG14747PP.infineon.com (10.161.6.196) by
  MUCSE827.infineon.com (172.23.29.20) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.35; Tue, 13 Jan 2026 21:39:37 +0100
+ 15.2.2562.35; Tue, 13 Jan 2026 21:39:50 +0100
 From: Gokul Sivakumar <gokulkumar.sivakumar@infineon.com>
 To: <linux-wireless@vger.kernel.org>
 CC: Johannes Berg <johannes@sipsolutions.net>, Arend van Spriel
 	<arend.vanspriel@broadcom.com>, <marex@nabladev.com>,
 	<wlan-kernel-dev-list@infineon.com>, <gokulkumar.sivakumar@infineon.com>
-Subject: [PATCH wireless-next v2 23/34] wifi: inffmac: add commonring.c/h
-Date: Wed, 14 Jan 2026 02:03:36 +0530
-Message-ID: <20260113203350.16734-24-gokulkumar.sivakumar@infineon.com>
+Subject: [PATCH wireless-next v2 24/34] wifi: inffmac: add flowring.c/h
+Date: Wed, 14 Jan 2026 02:03:37 +0530
+Message-ID: <20260113203350.16734-25-gokulkumar.sivakumar@infineon.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20260113203350.16734-1-gokulkumar.sivakumar@infineon.com>
 References: <20260113203350.16734-1-gokulkumar.sivakumar@infineon.com>
@@ -74,27 +74,27 @@ List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Content-Type: text/plain
-X-ClientProxiedBy: MUCSE813.infineon.com (172.23.29.39) To
+X-ClientProxiedBy: MUCSE805.infineon.com (172.23.29.31) To
  MUCSE827.infineon.com (172.23.29.20)
 
-Driver implementation of the Ring buffers used for Control and Data path
+Driver implementation of the Ring buffers used for TX Data path
 communication with the Infineon WLAN Device via the PCIe bus using a
 shared memory.
 
 Signed-off-by: Gokul Sivakumar <gokulkumar.sivakumar@infineon.com>
 ---
- .../wireless/infineon/inffmac/commonring.c    | 237 ++++++++++++++++++
- .../wireless/infineon/inffmac/commonring.h    |  63 +++++
- 2 files changed, 300 insertions(+)
- create mode 100644 drivers/net/wireless/infineon/inffmac/commonring.c
- create mode 100644 drivers/net/wireless/infineon/inffmac/commonring.h
+ .../net/wireless/infineon/inffmac/flowring.c  | 403 ++++++++++++++++++
+ .../net/wireless/infineon/inffmac/flowring.h  |  65 +++
+ 2 files changed, 468 insertions(+)
+ create mode 100644 drivers/net/wireless/infineon/inffmac/flowring.c
+ create mode 100644 drivers/net/wireless/infineon/inffmac/flowring.h
 
-diff --git a/drivers/net/wireless/infineon/inffmac/commonring.c b/drivers/net/wireless/infineon/inffmac/commonring.c
+diff --git a/drivers/net/wireless/infineon/inffmac/flowring.c b/drivers/net/wireless/infineon/inffmac/flowring.c
 new file mode 100644
-index 000000000000..54047379b30f
+index 000000000000..369f29cca111
 --- /dev/null
-+++ b/drivers/net/wireless/infineon/inffmac/commonring.c
-@@ -0,0 +1,237 @@
++++ b/drivers/net/wireless/infineon/inffmac/flowring.c
+@@ -0,0 +1,403 @@
 +// SPDX-License-Identifier: ISC
 +/*
 + * Copyright (c) 2014 Broadcom Corporation
@@ -105,239 +105,405 @@ index 000000000000..54047379b30f
 +
 +#include <linux/types.h>
 +#include <linux/netdevice.h>
-+
++#include <linux/etherdevice.h>
 +#include "utils.h"
 +
 +#include "main.h"
-+#include "commonring.h"
++#include "net.h"
 +#include "debug.h"
++#include "bus_proto.h"
++#include "flowring.h"
++#include "msgbuf.h"
 +
-+void inff_commonring_register_cb(struct inff_commonring *commonring,
-+				 int (*cr_ring_bell)(void *ctx),
-+				 int (*cr_update_rptr)(void *ctx),
-+				 int (*cr_update_wptr)(void *ctx),
-+				 int (*cr_write_rptr)(void *ctx),
-+				 int (*cr_write_wptr)(void *ctx), void *ctx)
-+{
-+	commonring->cr_ring_bell = cr_ring_bell;
-+	commonring->cr_update_rptr = cr_update_rptr;
-+	commonring->cr_update_wptr = cr_update_wptr;
-+	commonring->cr_write_rptr = cr_write_rptr;
-+	commonring->cr_write_wptr = cr_write_wptr;
-+	commonring->cr_ctx = ctx;
-+}
++#define INFF_FLOWRING_HIGH		1024
++#define INFF_FLOWRING_LOW		(INFF_FLOWRING_HIGH - 256)
++#define INFF_FLOWRING_INVALID_IFIDX	0xff
 +
-+void inff_commonring_config(struct inff_commonring *commonring, u16 depth,
-+			    u16 item_len, void *buf_addr)
++#define INFF_FLOWRING_HASH_AP(da, fifo, ifidx) (da[5] * 2 + (fifo) + (ifidx) * 16)
++#define INFF_FLOWRING_HASH_STA(fifo, ifidx) ((fifo) + (ifidx) * 16)
++
++static const u8 inff_flowring_prio2fifo[] = {
++	0,
++	1,
++	1,
++	0,
++	2,
++	2,
++	3,
++	3
++};
++
++static const u8 ALLFFMAC[ETH_ALEN] = { 0xff, 0xff, 0xff, 0xff, 0xff, 0xff };
++
++u32 inff_flowring_lookup(struct inff_flowring *flow, u8 da[ETH_ALEN],
++			 u8 prio, u8 ifidx)
 +{
-+	commonring->depth = depth;
-+	commonring->item_len = item_len;
-+	commonring->buf_addr = buf_addr;
-+	if (!commonring->inited) {
-+		spin_lock_init(&commonring->lock);
-+		commonring->inited = true;
++	struct inff_flowring_hash *hash;
++	u16 hash_idx;
++	u32 i;
++	bool found;
++	bool sta;
++	u8 fifo;
++	u8 *mac;
++
++	fifo = inff_flowring_prio2fifo[prio];
++	sta = (flow->addr_mode[ifidx] == ADDR_INDIRECT);
++	mac = da;
++	if (!sta && (is_multicast_ether_addr(da))) {
++		mac = (u8 *)ALLFFMAC;
++		fifo = 0;
 +	}
-+	commonring->r_ptr = 0;
-+	if (commonring->cr_write_rptr)
-+		commonring->cr_write_rptr(commonring->cr_ctx);
-+	commonring->w_ptr = 0;
-+	if (commonring->cr_write_wptr)
-+		commonring->cr_write_wptr(commonring->cr_ctx);
-+	commonring->f_ptr = 0;
++
++	hash_idx =  sta ? INFF_FLOWRING_HASH_STA(fifo, ifidx) :
++			  INFF_FLOWRING_HASH_AP(mac, fifo, ifidx);
++	hash_idx &= (INFF_FLOWRING_HASHSIZE - 1);
++	found = false;
++	hash = flow->hash;
++	for (i = 0; i < INFF_FLOWRING_HASHSIZE; i++) {
++		if ((sta || (memcmp(hash[hash_idx].mac, mac, ETH_ALEN) == 0)) &&
++		    hash[hash_idx].fifo == fifo &&
++		    hash[hash_idx].ifidx == ifidx) {
++			found = true;
++			break;
++		}
++		hash_idx++;
++		hash_idx &= (INFF_FLOWRING_HASHSIZE - 1);
++	}
++	if (found)
++		return hash[hash_idx].flowid;
++
++	return INFF_FLOWRING_INVALID_ID;
 +}
 +
-+void inff_commonring_lock(struct inff_commonring *commonring)
-+		__acquires(&commonring->lock)
++u32 inff_flowring_create(struct inff_flowring *flow, u8 da[ETH_ALEN],
++			 u8 prio, u8 ifidx)
 +{
++	struct inff_flowring_ring *ring;
++	struct inff_flowring_hash *hash;
++	u16 hash_idx;
++	u32 i;
++	bool found;
++	u8 fifo;
++	bool sta;
++	u8 *mac;
++
++	fifo = inff_flowring_prio2fifo[prio];
++	sta = (flow->addr_mode[ifidx] == ADDR_INDIRECT);
++	mac = da;
++	if (!sta && (is_multicast_ether_addr(da))) {
++		mac = (u8 *)ALLFFMAC;
++		fifo = 0;
++	}
++
++	hash_idx =  sta ? INFF_FLOWRING_HASH_STA(fifo, ifidx) :
++			  INFF_FLOWRING_HASH_AP(mac, fifo, ifidx);
++	hash_idx &= (INFF_FLOWRING_HASHSIZE - 1);
++	found = false;
++	hash = flow->hash;
++	for (i = 0; i < INFF_FLOWRING_HASHSIZE; i++) {
++		if (hash[hash_idx].ifidx == INFF_FLOWRING_INVALID_IFIDX &&
++		    (is_zero_ether_addr(hash[hash_idx].mac))) {
++			found = true;
++			break;
++		}
++		hash_idx++;
++		hash_idx &= (INFF_FLOWRING_HASHSIZE - 1);
++	}
++	if (found) {
++		for (i = 0; i < flow->nrofrings; i++) {
++			if (!flow->rings[i])
++				break;
++		}
++		if (i == flow->nrofrings)
++			return -ENOMEM;
++
++		ring = kzalloc(sizeof(*ring), GFP_ATOMIC);
++		if (!ring)
++			return -ENOMEM;
++
++		memcpy(hash[hash_idx].mac, mac, ETH_ALEN);
++		hash[hash_idx].fifo = fifo;
++		hash[hash_idx].ifidx = ifidx;
++		hash[hash_idx].flowid = i;
++
++		ring->hash_id = hash_idx;
++		ring->status = RING_CLOSED;
++		skb_queue_head_init(&ring->skblist);
++		flow->rings[i] = ring;
++
++		return i;
++	}
++	return INFF_FLOWRING_INVALID_ID;
++}
++
++u8 inff_flowring_tid(struct inff_flowring *flow, u16 flowid)
++{
++	struct inff_flowring_ring *ring;
++
++	ring = flow->rings[flowid];
++
++	return flow->hash[ring->hash_id].fifo;
++}
++
++static void inff_flowring_block(struct inff_flowring *flow, u16 flowid,
++				bool blocked)
++{
++	struct inff_flowring_ring *ring;
++	struct inff_bus *bus_if;
++	struct inff_pub *drvr;
++	struct inff_if *ifp;
++	bool currently_blocked;
++	int i;
++	u8 ifidx;
 +	unsigned long flags;
 +
-+	spin_lock_irqsave(&commonring->lock, flags);
-+	commonring->flags = flags;
-+}
++	spin_lock_irqsave(&flow->block_lock, flags);
 +
-+void inff_commonring_unlock(struct inff_commonring *commonring)
-+		__releases(&commonring->lock)
-+{
-+	spin_unlock_irqrestore(&commonring->lock, commonring->flags);
-+}
++	ring = flow->rings[flowid];
++	if (ring->blocked == blocked) {
++		spin_unlock_irqrestore(&flow->block_lock, flags);
++		return;
++	}
++	ifidx = inff_flowring_ifidx_get(flow, flowid);
 +
-+bool inff_commonring_write_available(struct inff_commonring *commonring)
-+{
-+	u16 available;
-+	bool retry = true;
-+
-+again:
-+	if (commonring->r_ptr <= commonring->w_ptr)
-+		available = commonring->depth - commonring->w_ptr +
-+			    commonring->r_ptr;
-+	else
-+		available = commonring->r_ptr - commonring->w_ptr;
-+
-+	if (available > 1) {
-+		if (!commonring->was_full)
-+			return true;
-+		if (available > commonring->depth / 8) {
-+			commonring->was_full = false;
-+			return true;
++	currently_blocked = false;
++	for (i = 0; i < flow->nrofrings; i++) {
++		if (flow->rings[i] && i != flowid) {
++			ring = flow->rings[i];
++			if (ring->status == RING_OPEN &&
++			    (inff_flowring_ifidx_get(flow, i) == ifidx)) {
++				if (ring->blocked) {
++					currently_blocked = true;
++					break;
++				}
++			}
 +		}
-+		if (retry) {
-+			if (commonring->cr_update_rptr)
-+				commonring->cr_update_rptr(commonring->cr_ctx);
-+			retry = false;
-+			goto again;
-+		}
-+		return false;
++	}
++	flow->rings[flowid]->blocked = blocked;
++	if (currently_blocked) {
++		spin_unlock_irqrestore(&flow->block_lock, flags);
++		return;
 +	}
 +
-+	if (retry) {
-+		if (commonring->cr_update_rptr)
-+			commonring->cr_update_rptr(commonring->cr_ctx);
-+		retry = false;
-+		goto again;
-+	}
++	bus_if = dev_get_drvdata(flow->dev);
++	drvr = bus_if->drvr;
++	ifp = inff_get_ifp(drvr, ifidx);
++	inff_net_txflowblock(ifp, INFF_NETIF_STOP_REASON_FLOW, blocked);
 +
-+	commonring->was_full = true;
-+	return false;
++	spin_unlock_irqrestore(&flow->block_lock, flags);
 +}
 +
-+void *inff_commonring_reserve_for_write(struct inff_commonring *commonring)
++void inff_flowring_delete(struct inff_flowring *flow, u16 flowid)
 +{
-+	void *ret_ptr;
-+	u16 available;
-+	bool retry = true;
++	struct inff_bus *bus_if = dev_get_drvdata(flow->dev);
++	struct inff_flowring_ring *ring;
++	struct inff_if *ifp;
++	u16 hash_idx;
++	u8 ifidx;
++	struct sk_buff *skb;
 +
-+again:
-+	if (commonring->cr_update_rptr)
-+		commonring->cr_update_rptr(commonring->cr_ctx);
++	ring = flow->rings[flowid];
++	if (!ring)
++		return;
 +
-+	if (commonring->r_ptr <= commonring->w_ptr) {
-+		if (commonring->r_ptr == commonring->w_ptr)
-+			inff_dbg(MSGBUF, "r_ptr == w_ptr");
-+		available = commonring->depth - commonring->w_ptr +
-+			    commonring->r_ptr;
-+	} else {
-+		available = commonring->r_ptr - commonring->w_ptr;
++	ifidx = inff_flowring_ifidx_get(flow, flowid);
++	ifp = inff_get_ifp(bus_if->drvr, ifidx);
++
++	inff_flowring_block(flow, flowid, false);
++	hash_idx = ring->hash_id;
++	flow->hash[hash_idx].ifidx = INFF_FLOWRING_INVALID_IFIDX;
++	eth_zero_addr(flow->hash[hash_idx].mac);
++	flow->rings[flowid] = NULL;
++
++	skb = skb_dequeue(&ring->skblist);
++	while (skb) {
++		inff_txfinalize(ifp, skb, false);
++		skb = skb_dequeue(&ring->skblist);
 +	}
 +
-+	if (available > 1) {
-+		ret_ptr = commonring->buf_addr +
-+			  (commonring->w_ptr * commonring->item_len);
-+		commonring->w_ptr++;
-+		if (commonring->w_ptr == commonring->depth)
-+			commonring->w_ptr = 0;
-+		return ret_ptr;
-+	}
-+
-+	if (retry) {
-+		retry = false;
-+		goto again;
-+	}
-+
-+	commonring->was_full = true;
-+	return NULL;
++	kfree(ring);
 +}
 +
-+void *
-+inff_commonring_reserve_for_write_multiple(struct inff_commonring *commonring,
-+					   u16 n_items, u16 *alloced)
++u32 inff_flowring_enqueue(struct inff_flowring *flow, u16 flowid,
++			  struct sk_buff *skb)
 +{
-+	void *ret_ptr;
-+	u16 available;
-+	bool retry = true;
++	struct inff_flowring_ring *ring;
 +
-+again:
-+	if (commonring->cr_update_rptr)
-+		commonring->cr_update_rptr(commonring->cr_ctx);
++	ring = flow->rings[flowid];
 +
-+	if (commonring->r_ptr <= commonring->w_ptr) {
-+		if (commonring->r_ptr == commonring->w_ptr)
-+			inff_dbg(MSGBUF, "r_ptr == w_ptr");
-+		available = commonring->depth - commonring->w_ptr +
-+			    commonring->r_ptr;
-+	} else {
-+		available = commonring->r_ptr - commonring->w_ptr;
++	skb_queue_tail(&ring->skblist, skb);
++
++	if (!ring->blocked &&
++	    (skb_queue_len(&ring->skblist) > INFF_FLOWRING_HIGH)) {
++		inff_flowring_block(flow, flowid, true);
++		inff_dbg(MSGBUF, "Flowcontrol: BLOCK for ring %d\n", flowid);
++		/* To prevent (work around) possible race condition, check
++		 * queue len again. It is also possible to use locking to
++		 * protect, but that is undesirable for every enqueue and
++		 * dequeue. This simple check will solve a possible race
++		 * condition if it occurs.
++		 */
++		if (skb_queue_len(&ring->skblist) < INFF_FLOWRING_LOW)
++			inff_flowring_block(flow, flowid, false);
 +	}
-+
-+	if (available > 1) {
-+		ret_ptr = commonring->buf_addr +
-+			  (commonring->w_ptr * commonring->item_len);
-+		*alloced = min_t(u16, n_items, available - 1);
-+		if (*alloced + commonring->w_ptr > commonring->depth)
-+			*alloced = commonring->depth - commonring->w_ptr;
-+		commonring->w_ptr += *alloced;
-+		if (commonring->w_ptr == commonring->depth)
-+			commonring->w_ptr = 0;
-+		return ret_ptr;
-+	}
-+
-+	if (retry) {
-+		retry = false;
-+		goto again;
-+	}
-+
-+	commonring->was_full = true;
-+	return NULL;
++	return skb_queue_len(&ring->skblist);
 +}
 +
-+int inff_commonring_write_complete(struct inff_commonring *commonring)
++struct sk_buff *inff_flowring_dequeue(struct inff_flowring *flow, u16 flowid)
 +{
-+	if (commonring->f_ptr > commonring->w_ptr)
-+		commonring->f_ptr = 0;
++	struct inff_flowring_ring *ring;
++	struct sk_buff *skb;
 +
-+	commonring->f_ptr = commonring->w_ptr;
-+
-+	if (commonring->cr_write_wptr)
-+		commonring->cr_write_wptr(commonring->cr_ctx);
-+	if (commonring->cr_ring_bell)
-+		return commonring->cr_ring_bell(commonring->cr_ctx);
-+
-+	return -EIO;
-+}
-+
-+void inff_commonring_write_cancel(struct inff_commonring *commonring,
-+				  u16 n_items)
-+{
-+	if (commonring->w_ptr == 0)
-+		commonring->w_ptr = commonring->depth - n_items;
-+	else
-+		commonring->w_ptr -= n_items;
-+}
-+
-+void *inff_commonring_get_read_ptr(struct inff_commonring *commonring,
-+				   u16 *n_items)
-+{
-+	if (commonring->cr_update_wptr)
-+		commonring->cr_update_wptr(commonring->cr_ctx);
-+
-+	*n_items = (commonring->w_ptr >= commonring->r_ptr) ?
-+				(commonring->w_ptr - commonring->r_ptr) :
-+				(commonring->depth - commonring->r_ptr);
-+
-+	if (*n_items == 0)
++	ring = flow->rings[flowid];
++	if (ring->status != RING_OPEN)
 +		return NULL;
 +
-+	return commonring->buf_addr +
-+	       (commonring->r_ptr * commonring->item_len);
++	skb = skb_dequeue(&ring->skblist);
++
++	if (ring->blocked &&
++	    (skb_queue_len(&ring->skblist) < INFF_FLOWRING_LOW)) {
++		inff_flowring_block(flow, flowid, false);
++		inff_dbg(MSGBUF, "Flowcontrol: OPEN for ring %d\n", flowid);
++	}
++
++	return skb;
 +}
 +
-+int inff_commonring_read_complete(struct inff_commonring *commonring,
-+				  u16 n_items)
++void inff_flowring_reinsert(struct inff_flowring *flow, u16 flowid,
++			    struct sk_buff *skb)
 +{
-+	commonring->r_ptr += n_items;
-+	if (commonring->r_ptr == commonring->depth)
-+		commonring->r_ptr = 0;
++	struct inff_flowring_ring *ring;
 +
-+	if (commonring->cr_write_rptr)
-+		return commonring->cr_write_rptr(commonring->cr_ctx);
++	ring = flow->rings[flowid];
 +
-+	return -EIO;
++	skb_queue_head(&ring->skblist, skb);
 +}
-diff --git a/drivers/net/wireless/infineon/inffmac/commonring.h b/drivers/net/wireless/infineon/inffmac/commonring.h
++
++u32 inff_flowring_qlen(struct inff_flowring *flow, u16 flowid)
++{
++	struct inff_flowring_ring *ring;
++
++	ring = flow->rings[flowid];
++	if (!ring)
++		return 0;
++
++	if (ring->status != RING_OPEN)
++		return 0;
++
++	return skb_queue_len(&ring->skblist);
++}
++
++void inff_flowring_open(struct inff_flowring *flow, u16 flowid)
++{
++	struct inff_flowring_ring *ring;
++
++	ring = flow->rings[flowid];
++	if (!ring) {
++		inff_err("Ring NULL, for flowid %d\n", flowid);
++		return;
++	}
++
++	ring->status = RING_OPEN;
++}
++
++u8 inff_flowring_ifidx_get(struct inff_flowring *flow, u16 flowid)
++{
++	struct inff_flowring_ring *ring;
++	u16 hash_idx;
++
++	ring = flow->rings[flowid];
++	hash_idx = ring->hash_id;
++
++	return flow->hash[hash_idx].ifidx;
++}
++
++struct inff_flowring *inff_flowring_attach(struct device *dev, u16 nrofrings)
++{
++	struct inff_flowring *flow;
++	u32 i;
++
++	flow = kzalloc(sizeof(*flow), GFP_KERNEL);
++	if (flow) {
++		flow->dev = dev;
++		flow->nrofrings = nrofrings;
++		spin_lock_init(&flow->block_lock);
++		for (i = 0; i < ARRAY_SIZE(flow->addr_mode); i++)
++			flow->addr_mode[i] = ADDR_INDIRECT;
++		for (i = 0; i < ARRAY_SIZE(flow->hash); i++)
++			flow->hash[i].ifidx = INFF_FLOWRING_INVALID_IFIDX;
++		flow->rings = kcalloc(nrofrings, sizeof(*flow->rings),
++				      GFP_KERNEL);
++		if (!flow->rings) {
++			kfree(flow);
++			flow = NULL;
++		}
++	}
++
++	return flow;
++}
++
++void inff_flowring_detach(struct inff_flowring *flow)
++{
++	struct inff_bus *bus_if = dev_get_drvdata(flow->dev);
++	struct inff_pub *drvr = bus_if->drvr;
++	u16 flowid;
++
++	for (flowid = 0; flowid < flow->nrofrings; flowid++) {
++		if (flow->rings[flowid])
++			inff_msgbuf_delete_flowring(drvr, flowid);
++	}
++
++	kfree(flow->rings);
++	kfree(flow);
++}
++
++void inff_flowring_configure_addr_mode(struct inff_flowring *flow, int ifidx,
++				       enum proto_addr_mode addr_mode)
++{
++	struct inff_bus *bus_if = dev_get_drvdata(flow->dev);
++	struct inff_pub *drvr = bus_if->drvr;
++	u32 i;
++	u16 flowid;
++
++	if (flow->addr_mode[ifidx] != addr_mode) {
++		for (i = 0; i < ARRAY_SIZE(flow->hash); i++) {
++			if (flow->hash[i].ifidx == ifidx) {
++				flowid = flow->hash[i].flowid;
++				if (flow->rings[flowid]->status != RING_OPEN)
++					continue;
++				inff_msgbuf_delete_flowring(drvr, flowid);
++			}
++		}
++		flow->addr_mode[ifidx] = addr_mode;
++	}
++}
++
++void inff_flowring_delete_peer(struct inff_flowring *flow, int ifidx,
++			       u8 peer[ETH_ALEN])
++{
++	struct inff_bus *bus_if = dev_get_drvdata(flow->dev);
++	struct inff_pub *drvr = bus_if->drvr;
++	struct inff_flowring_hash *hash;
++	bool sta  = (flow->addr_mode[ifidx] == ADDR_INDIRECT);
++	u32 i;
++	u16 flowid;
++
++	hash = flow->hash;
++	for (i = 0; i < INFF_FLOWRING_HASHSIZE; i++) {
++		if ((sta || (memcmp(hash[i].mac, peer, ETH_ALEN) == 0)) &&
++		    hash[i].ifidx == ifidx) {
++			flowid = flow->hash[i].flowid;
++			if (flow->rings[flowid]->status == RING_OPEN)
++				inff_msgbuf_delete_flowring(drvr, flowid);
++		}
++	}
++}
+diff --git a/drivers/net/wireless/infineon/inffmac/flowring.h b/drivers/net/wireless/infineon/inffmac/flowring.h
 new file mode 100644
-index 000000000000..fc5d835344e0
+index 000000000000..10332e559f2d
 --- /dev/null
-+++ b/drivers/net/wireless/infineon/inffmac/commonring.h
-@@ -0,0 +1,63 @@
++++ b/drivers/net/wireless/infineon/inffmac/flowring.h
+@@ -0,0 +1,65 @@
 +/* SPDX-License-Identifier: ISC */
 +/*
 + * Copyright (c) 2014 Broadcom Corporation
@@ -346,61 +512,63 @@ index 000000000000..fc5d835344e0
 + * All rights reserved.
 + */
 +
-+#ifndef INFF_COMMONRING_H
-+#define INFF_COMMONRING_H
++#ifndef INFF_FLOWRING_H
++#define INFF_FLOWRING_H
 +
-+struct inff_commonring {
-+	u16 r_ptr;
-+	u16 w_ptr;
-+	u16 f_ptr;
-+	u16 depth;
-+	u16 item_len;
++#define INFF_FLOWRING_HASHSIZE		512		/* has to be 2^x */
++#define INFF_FLOWRING_INVALID_ID	0xFFFFFFFF
 +
-+	void *buf_addr;
-+
-+	int (*cr_ring_bell)(void *ctx);
-+	int (*cr_update_rptr)(void *ctx);
-+	int (*cr_update_wptr)(void *ctx);
-+	int (*cr_write_rptr)(void *ctx);
-+	int (*cr_write_wptr)(void *ctx);
-+
-+	void *cr_ctx;
-+
-+	spinlock_t lock; /* used to protect common ring */
-+	unsigned long flags;
-+	bool inited;
-+	bool was_full;
-+
-+	atomic_t outstanding_tx;
++struct inff_flowring_hash {
++	u8 mac[ETH_ALEN];
++	u8 fifo;
++	u8 ifidx;
++	u16 flowid;
 +};
 +
-+void inff_commonring_register_cb(struct inff_commonring *commonring,
-+				 int (*cr_ring_bell)(void *ctx),
-+				 int (*cr_update_rptr)(void *ctx),
-+				 int (*cr_update_wptr)(void *ctx),
-+				 int (*cr_write_rptr)(void *ctx),
-+				 int (*cr_write_wptr)(void *ctx), void *ctx);
-+void inff_commonring_config(struct inff_commonring *commonring, u16 depth,
-+			    u16 item_len, void *buf_addr);
-+void inff_commonring_lock(struct inff_commonring *commonring);
-+void inff_commonring_unlock(struct inff_commonring *commonring);
-+bool inff_commonring_write_available(struct inff_commonring *commonring);
-+void *inff_commonring_reserve_for_write(struct inff_commonring *commonring);
-+void *
-+inff_commonring_reserve_for_write_multiple(struct inff_commonring *commonring,
-+					   u16 n_items, u16 *alloced);
-+int inff_commonring_write_complete(struct inff_commonring *commonring);
-+void inff_commonring_write_cancel(struct inff_commonring *commonring,
-+				  u16 n_items);
-+void *inff_commonring_get_read_ptr(struct inff_commonring *commonring,
-+				   u16 *n_items);
-+int inff_commonring_read_complete(struct inff_commonring *commonring,
-+				  u16 n_items);
++enum ring_status {
++	RING_CLOSED,
++	RING_CLOSING,
++	RING_OPEN
++};
 +
-+#define inff_commonring_n_items(commonring) ((commonring)->depth)
-+#define inff_commonring_len_item(commonring) ((commonring)->item_len)
++struct inff_flowring_ring {
++	u16 hash_id;
++	bool blocked;
++	enum ring_status status;
++	struct sk_buff_head skblist;
++};
 +
-+#endif /* INFF_COMMONRING_H */
++struct inff_flowring {
++	struct device *dev;
++	struct inff_flowring_hash hash[INFF_FLOWRING_HASHSIZE];
++	struct inff_flowring_ring **rings;
++	spinlock_t block_lock;	/* used to protect flow ring */
++	enum proto_addr_mode addr_mode[INFF_MAX_IFS];
++	u16 nrofrings;
++};
++
++u32 inff_flowring_lookup(struct inff_flowring *flow, u8 da[ETH_ALEN],
++			 u8 prio, u8 ifidx);
++u32 inff_flowring_create(struct inff_flowring *flow, u8 da[ETH_ALEN],
++			 u8 prio, u8 ifidx);
++void inff_flowring_delete(struct inff_flowring *flow, u16 flowid);
++void inff_flowring_open(struct inff_flowring *flow, u16 flowid);
++u8 inff_flowring_tid(struct inff_flowring *flow, u16 flowid);
++u32 inff_flowring_enqueue(struct inff_flowring *flow, u16 flowid,
++			  struct sk_buff *skb);
++struct sk_buff *inff_flowring_dequeue(struct inff_flowring *flow, u16 flowid);
++void inff_flowring_reinsert(struct inff_flowring *flow, u16 flowid,
++			    struct sk_buff *skb);
++u32 inff_flowring_qlen(struct inff_flowring *flow, u16 flowid);
++u8 inff_flowring_ifidx_get(struct inff_flowring *flow, u16 flowid);
++struct inff_flowring *inff_flowring_attach(struct device *dev, u16 nrofrings);
++void inff_flowring_detach(struct inff_flowring *flow);
++void inff_flowring_configure_addr_mode(struct inff_flowring *flow, int ifidx,
++				       enum proto_addr_mode addr_mode);
++void inff_flowring_delete_peer(struct inff_flowring *flow, int ifidx,
++			       u8 peer[ETH_ALEN]);
++
++#endif /* INFF_FLOWRING_H */
 -- 
 2.25.1
 
