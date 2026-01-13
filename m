@@ -1,96 +1,119 @@
-Return-Path: <linux-wireless+bounces-30740-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-30741-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 88399D1863E
-	for <lists+linux-wireless@lfdr.de>; Tue, 13 Jan 2026 12:14:56 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id C41CCD1866E
+	for <lists+linux-wireless@lfdr.de>; Tue, 13 Jan 2026 12:17:03 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 8C8DE306B84A
-	for <lists+linux-wireless@lfdr.de>; Tue, 13 Jan 2026 11:06:07 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id C07CC30123F7
+	for <lists+linux-wireless@lfdr.de>; Tue, 13 Jan 2026 11:17:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A0356349B02;
-	Tue, 13 Jan 2026 11:05:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4805036CDFA;
+	Tue, 13 Jan 2026 11:17:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b="uURmhcIa"
+	dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b="gPKtIxHe"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from sipsolutions.net (s3.sipsolutions.net [168.119.38.16])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-lf1-f51.google.com (mail-lf1-f51.google.com [209.85.167.51])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3A727296BC5;
-	Tue, 13 Jan 2026 11:05:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=168.119.38.16
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B342B34EEF4
+	for <linux-wireless@vger.kernel.org>; Tue, 13 Jan 2026 11:16:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.51
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768302342; cv=none; b=Qeaa0PzCQxAX4H4cWZlwyiKxvpztihz2IK9E+ZjxDurNZdzsrj0vwZmbdbbL8jyWDpXjm9KlVrw4UTDbzLCyFnkYwwAUTcKZ1vyKpFL1GjMuF5QeBp5hxSD8yy/wbVLd1nKerBMkq7Vjegp59qzqvl5p4f9WJCj7cG5sgWxCgeU=
+	t=1768303020; cv=none; b=HNT6YaEMKkTik43qMPTMogLr/jsdybQbYDRYWONy7RZhTRMAMnvakdJbp8fh+pvV1OLMr8xw0thpElS8i+g0+EgnOr39icTio8HG9ABs83EtFTiG8HeTOzln3anKCgOpDPhicPllae4jT8aLNYPpSs6TpB1erLWbGPZeBZ/53X8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768302342; c=relaxed/simple;
-	bh=CzjdWSiaEsZbo6KTHjYNSxL+ISojl6DULDL7gFMMLWY=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=S6wDT/tcECWDbZTKfDcPTbHABQ2OZGp+0xv5l0IRLLM3o4AUMk7xm+b/CJwE4j61iwXyznirjsVxrsIp0D/gzQ5Z5Xba+7HfFKzS/ST5BKSMPGw8yXj34dStF/HGmkZLQfHKFVP8Iq/EHkuWTDSbb8/ix9iZa0rVgm6LjVUT6fc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net; spf=pass smtp.mailfrom=sipsolutions.net; dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b=uURmhcIa; arc=none smtp.client-ip=168.119.38.16
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sipsolutions.net
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=sipsolutions.net; s=mail; h=MIME-Version:Content-Transfer-Encoding:
-	Content-Type:References:In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender
-	:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
-	Resent-Cc:Resent-Message-ID; bh=gXYb/LxBq8s1hNblmNQTz4msl7CLCdfEmYzUVwYx2eI=;
-	t=1768302341; x=1769511941; b=uURmhcIahkfA7jg9v+bW57pnHlL1VXcWixZvKATPQmelCBa
-	d3zxVaTk02epCnNpv0+AYeMEydGuXslirTsLpVo9R7mPglmJZpGPOdSrtWielAqxd3wp291ZFoMnM
-	ArgLnwqNk+VgGjQRb26DkPO7zaES6P8+FuKHLqXQM2iFYXjbJImknoa48t01FR42xu2PpS8S/mV/r
-	BsJg4QCg3SYF5mfrsXJQZc7155Gc2nenRobPHA+kRuQUAFUt6+V9YsTmV0Kf+4qp76vA13C8Ntwrm
-	Er9ZWO6INhm9DM3PDsQBkOyi2JRPMQC1YSP34bTq6ekrB/L7NLkKIUYrrla7M+3g==;
-Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
-	(Exim 4.98.2)
-	(envelope-from <johannes@sipsolutions.net>)
-	id 1vfcDM-0000000AjIc-46Rt;
-	Tue, 13 Jan 2026 12:05:33 +0100
-Message-ID: <2f4c22558d20b42615adde772551c1bfb346da47.camel@sipsolutions.net>
-Subject: Re: [PATCH 0/3] replace system_unbound_wq, add WQ_PERCPU to
- alloc_workqueue
-From: Johannes Berg <johannes@sipsolutions.net>
-To: Marco Crivellari <marco.crivellari@suse.com>, 
-	linux-kernel@vger.kernel.org, linux-wireless@vger.kernel.org
-Cc: Tejun Heo <tj@kernel.org>, Lai Jiangshan <jiangshanlai@gmail.com>, 
- Frederic Weisbecker
-	 <frederic@kernel.org>, Sebastian Andrzej Siewior <bigeasy@linutronix.de>, 
- Michal Hocko <mhocko@suse.com>
-Date: Tue, 13 Jan 2026 12:05:32 +0100
-In-Reply-To: <CAAofZF5yenY8Q92taaJW2-=kenDVuc6ABEtbVT5+yzM_pBVZsw@mail.gmail.com> (sfid-20260113_112857_683696_3BB5BCB5)
-References: <20251113162032.394804-1-marco.crivellari@suse.com>
-	 <CAAofZF5yenY8Q92taaJW2-=kenDVuc6ABEtbVT5+yzM_pBVZsw@mail.gmail.com>
-	 (sfid-20260113_112857_683696_3BB5BCB5)
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.56.2 (3.56.2-2.fc42) 
+	s=arc-20240116; t=1768303020; c=relaxed/simple;
+	bh=IXaKCDRtiCmFL/jsZIkQQPTfjbU0yreqCg8V2cgUgog=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=Vw0pXGhd21RwWssENxJ9RwJbRQN2lLGQkofgdHAqJgaSSvYnR2WQ4Q+O9MyTnT6Of9+7FZu4FtMl3nqKVM8iysjk+Zo+/wZtlmrAPJjVpXRjIKMxW81B6hPEYPxCGqhXqD937lTK03avAxxBPjTSWVres+KZ6bhC2Gm5CLQ0dQM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com; spf=pass smtp.mailfrom=suse.com; dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b=gPKtIxHe; arc=none smtp.client-ip=209.85.167.51
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.com
+Received: by mail-lf1-f51.google.com with SMTP id 2adb3069b0e04-59b6f04cae6so6080984e87.2
+        for <linux-wireless@vger.kernel.org>; Tue, 13 Jan 2026 03:16:58 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=suse.com; s=google; t=1768303017; x=1768907817; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=IXaKCDRtiCmFL/jsZIkQQPTfjbU0yreqCg8V2cgUgog=;
+        b=gPKtIxHekanhpmp8k5CPeHPwwFU4+llxCu13eMc3J9t3AtDlwIdd4BAjZZYyIe0BYq
+         GcGVDu844BFGG9J1niAfnl3k06/MVqrJUPpTRSaxBv1z0h7SDtOPGljpeVZBkrjuQRPL
+         ewvGbLi0XImTpeEs/QbrYBYEsp/SnG4aC48z4/Pqbk98wVWEf96vLF2ZSI8bhvRp7NaN
+         +D5nfyoZgSJDjDGbNuw0Ir2M2v9vjEB2IXKH3LM4m+H+pMfSYtoqJTzlkDiA93ywQ30S
+         w0Srk0XYIA8JtcTP56QvjZfmoDkzbALS4mykaUOUtAD10Ci3TcVVuJQvgvsThOKjeSC5
+         cndQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1768303017; x=1768907817;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=IXaKCDRtiCmFL/jsZIkQQPTfjbU0yreqCg8V2cgUgog=;
+        b=Ve5EWhamlDbFNcPLFC/bKhgdUFnIp7nD5agjCBZht7qk7to2WNbDgzfuFXumA5NwA+
+         dOulHj/T31RqQYQlH8j0vdeqTsGRaY82GVo6Rfn1KKlM4svayis5FbjjPc85gtdsfQis
+         JFKo/9waXjHk2ifLNXDw49nQPwoSMqPPJZ9VboWs/W6thpHLBLekJ7BtbpWY1cv05eyK
+         8U46jA/jGQbqN70sOZS0DBr1BzGZ0Vh6WrZ1ljk24Cjmx4DvtblRLy6+zpEFIbHLjBla
+         wE3JgUbEkoD2I3JCpVzmo2cgvnbH9xW88Rm2/aCQ6I20mSbXpGH0kx4rR+AKK1ZyOnHo
+         4QQw==
+X-Forwarded-Encrypted: i=1; AJvYcCW2s4s4QCYSk4ua1ArumYNk+nApKQKfG9TjEzE887MlDvktbRxHnyAWAzWr5CIyAYwzd9zMKoAqmdETsJxYhA==@vger.kernel.org
+X-Gm-Message-State: AOJu0YzwlIjpb7FbFLxwZVLi8OrVIt96LxVEBACp13TFqZQf27OVNQCt
+	MucmEM95VHzdejEMyqxZu+5OeJbn1TxRZSuY/2+pUyz4Ytji7hnwuRlVH8JK8jUaIppgZ99Bu/7
+	vdjhUcPUYtpuNnNyYp1pSQuTD9jamvGEO6h6r4/H+eX3u8Xy2n3+Qk68=
+X-Gm-Gg: AY/fxX4fM/6cOfknuhNap3T5YzPAprUMovvHyQVUgUoPtMnp6PaVI6LbHld6EPv6+4M
+	f7treBtm8IWGj6Xm8v29wVkLiXokOlLWeh8Lifkak9kVXqYqm1EnxMlS/NfdxGPQN1oSaLiSmFi
+	1OVZxqr3q6Ku6xYEVsmuKIraWckhazoMNWdh/mO303YhrV76PgKK4IxK6owqb9lq5Z66F6fEZG8
+	iL1qMcoIQskeGhUcGM9F+5gbxK2ySes40bTo5IArLfWfmXHdyMKoW5aqf0719EXe/taWz1anafj
+	R+VmGy0xTIJz8YzxD83NvZPz/Fc8
+X-Google-Smtp-Source: AGHT+IHt3d2u8B5HGegQht0R2ADB5XFc9sCNv04MoQ1Q8200kUV12VgWMukW+18YkL5qhnGPZnX2PeDKZ4zE0fIRZT4=
+X-Received: by 2002:a05:6512:3ca4:b0:596:9bfa:91a4 with SMTP id
+ 2adb3069b0e04-59b6ed1349fmr5211371e87.2.1768303016873; Tue, 13 Jan 2026
+ 03:16:56 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-malware-bazaar: not-scanned
+References: <20251113162032.394804-1-marco.crivellari@suse.com>
+ <CAAofZF5yenY8Q92taaJW2-=kenDVuc6ABEtbVT5+yzM_pBVZsw@mail.gmail.com> <2f4c22558d20b42615adde772551c1bfb346da47.camel@sipsolutions.net>
+In-Reply-To: <2f4c22558d20b42615adde772551c1bfb346da47.camel@sipsolutions.net>
+From: Marco Crivellari <marco.crivellari@suse.com>
+Date: Tue, 13 Jan 2026 12:16:45 +0100
+X-Gm-Features: AZwV_Qh1i7DLhmAWyBkO4PNlzkT5IoTkbhOvQ0LGPYPoIob524QKGFcRjIDbXy4
+Message-ID: <CAAofZF4Ptjmo=7taHuw_rdya-kGhEZGqXbQn8yPCi1pgA24mkw@mail.gmail.com>
+Subject: Re: [PATCH 0/3] replace system_unbound_wq, add WQ_PERCPU to alloc_workqueue
+To: Johannes Berg <johannes@sipsolutions.net>
+Cc: linux-kernel@vger.kernel.org, linux-wireless@vger.kernel.org, 
+	Tejun Heo <tj@kernel.org>, Lai Jiangshan <jiangshanlai@gmail.com>, 
+	Frederic Weisbecker <frederic@kernel.org>, Sebastian Andrzej Siewior <bigeasy@linutronix.de>, 
+	Michal Hocko <mhocko@suse.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Tue, 2026-01-13 at 11:28 +0100, Marco Crivellari wrote:
-> On Thu, Nov 13, 2025 at 5:20=E2=80=AFPM Marco Crivellari
-> <marco.crivellari@suse.com> wrote:
-> > [...]
-> > Marco Crivellari (3):
-> >   ath6kl: add WQ_PERCPU to alloc_workqueue users
-> >   cw1200: add WQ_PERCPU to alloc_workqueue users
-> >   wifi: replace use of system_unbound_wq with system_dfl_wq
-> >=20
-> >  drivers/net/wireless/ath/ath6kl/usb.c | 2 +-
-> >  drivers/net/wireless/st/cw1200/bh.c   | 5 +++--
-> >  net/wireless/core.c                   | 4 ++--
-> >  net/wireless/sysfs.c                  | 2 +-
-> >  4 files changed, 7 insertions(+), 6 deletions(-)
->=20
-> Gentle ping.
+On Tue, Jan 13, 2026 at 12:05=E2=80=AFPM Johannes Berg
+<johannes@sipsolutions.net> wrote:
+> I have none of these pending now - if I didn't accept them then they're
+> lost. I did try to apply another similar one yesterday but it was
+> already there in a slightly different format, so maybe things have
+> gotten out of sync?
+>
+> johannes
 
-I have none of these pending now - if I didn't accept them then they're
-lost. I did try to apply another similar one yesterday but it was
-already there in a slightly different format, so maybe things have
-gotten out of sync?
+Hi Johannes,
 
-johannes
+That's likely.
+I rebased now on v6.19-rc5 and I can only see in my branch:
+"ath6kl: add WQ_PERCPU to alloc_workqueue users".
+
+The others seem already applied.
+
+Well, sorry for the noise.
+
+Thank you!
+
+--=20
+
+Marco Crivellari
+
+L3 Support Engineer
 
