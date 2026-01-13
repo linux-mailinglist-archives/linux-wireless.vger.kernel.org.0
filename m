@@ -1,141 +1,172 @@
-Return-Path: <linux-wireless+bounces-30736-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-30737-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id C686BD1704F
-	for <lists+linux-wireless@lfdr.de>; Tue, 13 Jan 2026 08:30:44 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9A3EDD173EF
+	for <lists+linux-wireless@lfdr.de>; Tue, 13 Jan 2026 09:20:15 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 1158230124F5
-	for <lists+linux-wireless@lfdr.de>; Tue, 13 Jan 2026 07:30:41 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 79E1630142CF
+	for <lists+linux-wireless@lfdr.de>; Tue, 13 Jan 2026 08:18:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 37394313540;
-	Tue, 13 Jan 2026 07:30:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E4F9737C11D;
+	Tue, 13 Jan 2026 08:18:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="t5eliOJ/"
+	dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b="BD+W3o0z"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from sipsolutions.net (s3.sipsolutions.net [168.119.38.16])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 137A9311C1B;
-	Tue, 13 Jan 2026 07:30:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6F7F736BCEE
+	for <linux-wireless@vger.kernel.org>; Tue, 13 Jan 2026 08:18:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=168.119.38.16
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768289436; cv=none; b=PiNUcl4BkUZYGQdcrvZkrh7rrNnRGrvCDLYc4p+j2hCeQSz5NdX4G55XZlISGquj7oubYi4wUlHH2bVdeBONol7FkJVEEKwVCQ4zpijGbF8bkJD3MjGZjodUnrAHWF+KUYJBhcLxsdrcGozu0w3tkhf6xur9x4fReSOjYQe6RfU=
+	t=1768292319; cv=none; b=brDqxbfuoY9nFrwrvYFsoU0I1lIthcqz0ejHLbzmj9cCp/jFV7IxUHjDdM/wOYAGN/tipDm3GVFvbpfrRT8KOu3hYiaO5DKJ0ss1M4xarHeWfVt3dFkHKxUMLUFVTDWmSjLT7kl1r5oSZ8C6HgJMWZju8XqPZ4HIc3+gNOCKFa4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768289436; c=relaxed/simple;
-	bh=GkuVz6PJ37bXi+SsxKuFykpOfTC/ZcnWw1QD/eObPQI=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=KczXS7IF+JJ9WWtOlxUSw/2IpqRB2tgwkKa6mIBCgXGbkMdIMMw7sFAdkRxoZZOfsLBueWBU9wF61kXsTbqatR5RawoqCJ30ByI+u51NPncxWvboolAZzSbGBYRwCjMZX9B4fnOrtybevmgcML20tNoxbSChByHJg+rXTQKx/Ow=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=t5eliOJ/; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 66B75C116C6;
-	Tue, 13 Jan 2026 07:30:33 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1768289435;
-	bh=GkuVz6PJ37bXi+SsxKuFykpOfTC/ZcnWw1QD/eObPQI=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=t5eliOJ/FiqE2tCMO4evqlPqp7LNVswtFLvaC/174Tm9zXKFncsP9Z6CFpZ+Yd1h9
-	 gkJsqdY9P14c8LUkyvfJkVrqAjd/TNRlQcsbWonGe/qwTvYMZmwTnaxrxhGogj00OT
-	 aO7IcP6WIjfgCeXLNwsP0vSBW1TG0tPx3IzOSy9a1xIoH6+Ir7JftVAbn/faJOcHz/
-	 PN/t+KhNXqVX5PCzt1oeqJve9G2w4PEZ8mNgd+aiyCBhJHeC0VAk9o3X+uBNaO8i52
-	 GzDtglPOBDQathEI2w77Swe06/VwSMCsFxV2eYqy60vRcQQK21/Ljqwoj2YxiTy2HU
-	 FRTavSpN9DQqw==
-Message-ID: <12234020-267c-4d62-baff-89e6d053f24e@kernel.org>
-Date: Tue, 13 Jan 2026 08:30:31 +0100
+	s=arc-20240116; t=1768292319; c=relaxed/simple;
+	bh=Cf3dMf3PjJTG+VTIJBoBWP5Cbo00hozBy5WosqZ0ce8=;
+	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=QDe9dJdbwJg7DQIToVpzWxZhjWuPylCiUDZDI39z6hW0lpRbfcnQr/hsS6dWu4A3Z31aTGgQR48vnVGVw23CvccJJlP0X7TH5J+6ay5mmDhyD5BoXzRLArDwy5DrDiOOQZIVRwp5e5axjZpduHzyhDeVpc55CO9d0RK3XiynLaw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net; spf=pass smtp.mailfrom=sipsolutions.net; dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b=BD+W3o0z; arc=none smtp.client-ip=168.119.38.16
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sipsolutions.net
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=sipsolutions.net; s=mail; h=MIME-Version:Content-Transfer-Encoding:
+	Content-Type:References:In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender
+	:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
+	Resent-Cc:Resent-Message-ID; bh=s0zFsOTJ2A+bokYjIBoAIHrUqnyo2pW0Aan5pUbqA5s=;
+	t=1768292318; x=1769501918; b=BD+W3o0zGRAgdyURjyIIOjimfGcy2vpZW9pIeJy20aZoVz5
+	/BPtRUUplfQJ6VAFq3O8tYierIgM09MxCgF3wdBIA7SJ9AnJELJ1gMfQxHyrOqed5b9T9vdTosMFG
+	4qiGnBvN5SbiXSK+hE6QEM0uMZUYuZAqwGDoWd/3xGFHRz+RUdTM4iisH7w3i6+4ACJtzIYWjG8ON
+	HRHsz27aevm0JUHMykr6vwRi8Maz/SGPbfieuJu4miRZzbtJJB8wGEWyYDPpszoL91TfPQW0ZnKxd
+	aL36r6eK2gQHhVW11nA+DRFWyrdy+r/jb11sQ+Dx6yvCMXf3hXoBiPwxm58wJpZA==;
+Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
+	(Exim 4.98.2)
+	(envelope-from <johannes@sipsolutions.net>)
+	id 1vfZbo-0000000AfiI-0FJj;
+	Tue, 13 Jan 2026 09:18:36 +0100
+Message-ID: <14bc5d3362b071c7c7a6a64724d5b354c173a501.camel@sipsolutions.net>
+Subject: Re: [PATCH wireless-next] wifi: cfg80211: don't apply HT flags to
+ S1G channels
+From: Johannes Berg <johannes@sipsolutions.net>
+To: Lachlan Hodges <lachlan.hodges@morsemicro.com>
+Cc: linux-wireless@vger.kernel.org, arien.judge@morsemicro.com
+Date: Tue, 13 Jan 2026 09:18:35 +0100
+In-Reply-To: <csqd3cp5twlhfsrkrppe25q2xby6wb37fhtxfrzgffjzoww2hw@xcixpwzlxzmi> (sfid-20260113_045629_499851_3DEE4B54)
+References: <20260113030934.18726-1-lachlan.hodges@morsemicro.com>
+	 <csqd3cp5twlhfsrkrppe25q2xby6wb37fhtxfrzgffjzoww2hw@xcixpwzlxzmi>
+	 (sfid-20260113_045629_499851_3DEE4B54)
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.56.2 (3.56.2-2.fc42) 
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 ath-current 1/2] wifi: ath11k: add usecase firmware
- handling based on device compatible
-To: Miaoqing Pan <miaoqing.pan@oss.qualcomm.com>, jjohnson@kernel.org,
- johannes@sipsolutions.net, robh@kernel.org, krzk+dt@kernel.org,
- conor+dt@kernel.org
-Cc: ath11k@lists.infradead.org, linux-wireless@vger.kernel.org,
- linux-kernel@vger.kernel.org, devicetree@vger.kernel.org,
- Baochen Qiang <baochen.qiang@oss.qualcomm.com>
-References: <20251214025230.716387-1-miaoqing.pan@oss.qualcomm.com>
- <20251214025230.716387-2-miaoqing.pan@oss.qualcomm.com>
-From: Krzysztof Kozlowski <krzk@kernel.org>
-Content-Language: en-US
-Autocrypt: addr=krzk@kernel.org; keydata=
- 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 a/A=
-In-Reply-To: <20251214025230.716387-2-miaoqing.pan@oss.qualcomm.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+X-malware-bazaar: not-scanned
 
-On 14/12/2025 03:52, Miaoqing Pan wrote:
-> For M.2 WLAN chips, there is no suitable DTS node to specify the
-> firmware-name property. In addition, assigning firmware for the
-> M.2 PCIe interface causes chips that do not use usecase specific
-> firmware to fail. Therefore, abandoning the approach of specifying
-> firmware in DTS. As an alternative, propose a static lookup table
-> mapping device compatible to firmware names. Currently, only WCN6855
-> HW2.1 requires this.
-> 
-> For details on usecase specific firmware, see:
-> https://lore.kernel.org/all/20250522013444.1301330-3-miaoqing.pan@oss.qualcomm.com/.
-> 
-> Tested-on: WCN6855 hw2.1 PCI WLAN.HSP.1.1-04685-QCAHSPSWPL_V1_V2_SILICONZ_IOE-1
-> 
-> Fixes: edbbc647c4f3 ("wifi: ath11k: support usercase-specific firmware overrides")
-> Reviewed-by: Baochen Qiang <baochen.qiang@oss.qualcomm.com>
-> Signed-off-by: Miaoqing Pan <miaoqing.pan@oss.qualcomm.com>
-> ---
+On Tue, 2026-01-13 at 14:56 +1100, Lachlan Hodges wrote:
+> > 925.500 MHz (Band: 900 MHz, Channel 47) [NO_HT40+, NO_HT40-, NO_16MHZ]
+> > 926.500 MHz (Band: 900 MHz, Channel 49) [NO_HT40+, NO_HT40-, NO_16MHZ]
+> > 927.500 MHz (Band: 900 MHz, Channel 51) [NO_HT40+, NO_HT40-, NO_16MHZ, =
+NO_PRIMARY]
+>=20
+> So something we have been thinking about while we test the implementation
+> against usermode software such as OpenWRT, and not just hostapd,
+> is that we don't have an equivalent to the [HT40+/-] flags. Now while S1G
+> obviously isn't HT and while this doesn't affect the actual regulatory be=
+haviour
+> as mentioned in this patch, the information conveyed is still very useful
+> to usermode as usermode itself can restrict what's allowed.
+>=20
+> However looking at the regdb, it appears that the notion of HT40-/+ is mo=
+re
+> or less a "cfg80211 specific" regulatory componenet where the adjacent 20=
+ MHz
+> channels are validated to check if bonding in that direction is allowed (=
+please
+> do correct me if I'm wrong)
 
-I already said why it is wrong patch and you did not improve. You also
-added tags from reviews of something completely different, which
-effectively bypassed my filters. I find it unacceptable.
+You're not strictly wrong, but it is additionally possible for self-
+managed regulatory devices to have these flags, and I believe it was
+used for early Intel devices in some cases where the firmware doesn't
+"like" non-standard HT40 configurations.
 
-Let me mark it formally:
+>  which is more or less equivalent to what's done
+> for wider VHT channels and S1G channels as per this comment aswell:
+>=20
+> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0/*
+> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0* TODO: What if the=
+re are only certain 80/160/80+80 MHz channels
+> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0*       allowed by =
+the driver, or only certain combinations?
 
-NAK
+Yes we've basically ignored this, in part because drivers tend to
+support non-standard configurations too. For 6 GHz we've restricted this
+to only standard configurations, see cfg80211_valid_center_freq(), and
+then we don't really need the flags...
 
-Nacked-by: Krzysztof Kozlowski <krzysztof.kozlowski@oss.qualcomm.com>
+So overall we don't really need the flags - 2.4 GHz has the HT40 flags,
+5 GHz doesn't typically matter in practice, and 6 GHz we just always
+limit to the channelisation the spec says.
 
-Best regards,
-Krzysztof
+> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0*       For 40 MHz =
+the driver can set the NO_HT40 flags, but for
+> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0*       80/160 MHz =
+and in particular 80+80 MHz this isn't really
+> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0*       feasible an=
+d we only have NO_80MHZ/NO_160MHZ so far but
+> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0*       no way to c=
+over 80+80 MHz or more complex restrictions.
+> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0*       Note that s=
+uch restrictions also need to be advertised to
+> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0*       userspace, =
+for example for P2P channel selection.
+> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0*/
+>=20
+> (13 years ago!! :-))
+
+:)
+
+> Playing around with some 5 GHz configurations in OpenWRT it appears that =
+only
+> so much information can be conveyed and indeed there are configurations t=
+hat
+> will be rejected by cfg80211 (or maybe hostapd in some cases, not sure).
+
+Really? Got an example, perhaps even with hostapd log to see how it's
+rejected? That clearly contradicts what I wrote above which I really did
+believe to be true until this moment ;-)
+
+> I
+> suppose what I'm asking is - how much do we need to protect usermode from
+> this? Do you feel it's worth including a flag that somewhat emulates
+> NOHT40+/-? I know much of that logic is quite old and S1G is "modern" ...=
+ ?
+
+It's always nice to have userspace be aware of things, but I guess if
+it's a configuration that's statically known to be invalid, it wouldn't
+matter so much? But I don't think I've understood the S1G angle - are
+you talking about primary 1 MHz? Primary 2 MHz?
+
+> --
+>=20
+> Now on an unrelated note while I'm sending this email, we've sent a few a=
+dditional
+> fixups / cleanups over the last 2 months as we hope to have a driver subm=
+itted
+> for review in the coming weeks. There's still 2 small fixes that need to =
+be
+> done within hwsim before we can send up our hostapd patchset but I will
+> wait until we have at least kicked of the driver review process before se=
+nding
+> them.
+
+Very cool! :)
+
+We just posted a lot of hwsim changes for NAN - better send yours sooner
+rather than later ;-)
+
+johannes
 
