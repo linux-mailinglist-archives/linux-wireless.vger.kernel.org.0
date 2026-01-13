@@ -1,68 +1,68 @@
-Return-Path: <linux-wireless+bounces-30787-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-30788-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 31F06D1B45B
-	for <lists+linux-wireless@lfdr.de>; Tue, 13 Jan 2026 21:44:19 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id F3FB8D1B461
+	for <lists+linux-wireless@lfdr.de>; Tue, 13 Jan 2026 21:44:30 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 7A7B030A425A
-	for <lists+linux-wireless@lfdr.de>; Tue, 13 Jan 2026 20:41:47 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 7B07030E150D
+	for <lists+linux-wireless@lfdr.de>; Tue, 13 Jan 2026 20:42:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1601B2FDC35;
-	Tue, 13 Jan 2026 20:41:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4BA6530EF80;
+	Tue, 13 Jan 2026 20:42:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=infineon.com header.i=@infineon.com header.b="iLoflrk6"
+	dkim=pass (1024-bit key) header.d=infineon.com header.i=@infineon.com header.b="ac3YirDe"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from smtp2.infineon.com (smtp2.infineon.com [217.10.52.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 120C1276051
-	for <linux-wireless@vger.kernel.org>; Tue, 13 Jan 2026 20:41:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C7C67276051
+	for <linux-wireless@vger.kernel.org>; Tue, 13 Jan 2026 20:41:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.10.52.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768336907; cv=none; b=BEn3KEtBijUms9gUDqDp4BJy7zo7AuDfzVfEUXH7zFFy4BnYrbdGmosU/P0cg8qV7qWRsWELS6LS5gNC0mQox0USEvWDejFfWePYKGL1BFZby6Ggt/QHENDtdsyirzwknuZywyLw2vHQDl4Q1wgflnrjK1uAkR6mztayMOJ1ryY=
+	t=1768336921; cv=none; b=uD6tX9vg+KQwjlGJ+Rbl+3hjVM/V1syuOU1RbYgPCdGSYRZUEkDy4Y2xv5abnJHGnvzV3cBB2GzYeeHdCx/NTe/LyrjQ0RFMl5qwWOZgH80icKpQ3iRAgaHm8hiUngMInGptrV3vDUlJr76AK5umu96k90U8VVMQnurOhuOqrSQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768336907; c=relaxed/simple;
-	bh=dNUQSVPj1ia0nybr3QhANE/QVppHNoclKw9KslyD9Is=;
+	s=arc-20240116; t=1768336921; c=relaxed/simple;
+	bh=eejooxO3kZVgkxoYrULOOua/FSIb5x9CRslDcuusnMg=;
 	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=YgsoeizUrUdAJgK78A8KdExP/ZhqiRYGwlhb5PrUx8mqkCBQoTYWS2XiE+Ekv+Prb6CgpCtkJ8s4FgrkixsymqaxWY3fQgqs6GQSCoomoVz4MbCiaM0MxqNP/3y9ygKb+jCkD99VHyRvdhSNNjsK5guDOodPj8sKg9RMCBCB3HU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infineon.com; spf=pass smtp.mailfrom=infineon.com; dkim=pass (1024-bit key) header.d=infineon.com header.i=@infineon.com header.b=iLoflrk6; arc=none smtp.client-ip=217.10.52.18
+	 MIME-Version:Content-Type; b=hOwWJnxYVQl508FOJzeUoN2+nNVkqXAarwIYjLhzpG7Dt4BRIpTPzH76JRCSE2ZPnWQtBjT8V0pG4iMSJPA08dH5PfRwZYXBgz5B1lpkiBJU3NkBBcdMVu5SdSJ0mBmqKK2McNFePBkqvpOj4/vcw98BcLmp9nN/8BPk58Yc2x0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infineon.com; spf=pass smtp.mailfrom=infineon.com; dkim=pass (1024-bit key) header.d=infineon.com header.i=@infineon.com header.b=ac3YirDe; arc=none smtp.client-ip=217.10.52.18
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infineon.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=infineon.com
 DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple;
   d=infineon.com; i=@infineon.com; q=dns/txt; s=IFXMAIL;
-  t=1768336906; x=1799872906;
+  t=1768336919; x=1799872919;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=dNUQSVPj1ia0nybr3QhANE/QVppHNoclKw9KslyD9Is=;
-  b=iLoflrk6zi1x4wZ2oresNzh6q8WCo7wX88jIRYq7CsOkOI7U9SMTqgOQ
-   S308zO3S+ZRNrlNkl2SuBKInw0pNX8lybr7g9SATsST/9hJ7LWW2mNwyM
-   O3Fa98RttI4cmV+t6gqIXdaMTQY7HQZv9aOQufGrszbeHtu+bSUNpqpST
-   A=;
-X-CSE-ConnectionGUID: +AuxUoLwQTmxfPMUZm7fWg==
-X-CSE-MsgGUID: fxNpbpTcRbCZsj71pjslQg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11670"; a="139542182"
+  bh=eejooxO3kZVgkxoYrULOOua/FSIb5x9CRslDcuusnMg=;
+  b=ac3YirDe9PgMQBTCKBd5U35FEPSuT6az4T1Xf5AjM36ABPrUgu69CrrX
+   HR7x9YGKTcqJBa3mkD+kWUGzUW+qMJI+QSfUSZvcLJ1wDmvsj7O5YYSnf
+   CSwFlVDFfY9AmsWS6NTr+icRIXltu+dNZQrpeWZqa0fpiwJFFAdShIG7K
+   k=;
+X-CSE-ConnectionGUID: kv2ZpIAZSSGNvAH+VEACjQ==
+X-CSE-MsgGUID: KLJowt9GRtm3Cgr7ipln2A==
+X-IronPort-AV: E=McAfee;i="6800,10657,11670"; a="139542190"
 X-IronPort-AV: E=Sophos;i="6.21,222,1763420400"; 
-   d="scan'208";a="139542182"
+   d="scan'208";a="139542190"
 X-Amp-Result: SKIPPED(no attachment in message)
-Received: from unknown (HELO MUCSE812.infineon.com) ([172.23.29.38])
-  by smtp2.infineon.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 Jan 2026 21:41:44 +0100
-Received: from MUCSE827.infineon.com (172.23.29.20) by MUCSE812.infineon.com
- (172.23.29.38) with Microsoft SMTP Server (version=TLS1_2,
+Received: from unknown (HELO MUCSE805.infineon.com) ([172.23.29.31])
+  by smtp2.infineon.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 Jan 2026 21:41:57 +0100
+Received: from MUCSE827.infineon.com (172.23.29.20) by MUCSE805.infineon.com
+ (172.23.29.31) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.35; Tue, 13 Jan
- 2026 21:41:43 +0100
+ 2026 21:41:56 +0100
 Received: from ISCN5CG14747PP.infineon.com (10.161.6.196) by
  MUCSE827.infineon.com (172.23.29.20) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.35; Tue, 13 Jan 2026 21:41:41 +0100
+ 15.2.2562.35; Tue, 13 Jan 2026 21:41:54 +0100
 From: Gokul Sivakumar <gokulkumar.sivakumar@infineon.com>
 To: <linux-wireless@vger.kernel.org>
 CC: Johannes Berg <johannes@sipsolutions.net>, Arend van Spriel
 	<arend.vanspriel@broadcom.com>, <marex@nabladev.com>,
 	<wlan-kernel-dev-list@infineon.com>, <gokulkumar.sivakumar@infineon.com>
-Subject: [PATCH wireless-next v2 32/34] wifi: inffmac: add debug.c/h
-Date: Wed, 14 Jan 2026 02:03:45 +0530
-Message-ID: <20260113203350.16734-33-gokulkumar.sivakumar@infineon.com>
+Subject: [PATCH wireless-next v2 33/34] wifi: inffmac: add utils.c/h
+Date: Wed, 14 Jan 2026 02:03:46 +0530
+Message-ID: <20260113203350.16734-34-gokulkumar.sivakumar@infineon.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20260113203350.16734-1-gokulkumar.sivakumar@infineon.com>
 References: <20260113203350.16734-1-gokulkumar.sivakumar@infineon.com>
@@ -74,150 +74,323 @@ List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Content-Type: text/plain
-X-ClientProxiedBy: MUCSE802.infineon.com (172.23.29.28) To
+X-ClientProxiedBy: MUCSE803.infineon.com (172.23.29.29) To
  MUCSE827.infineon.com (172.23.29.20)
 
-Implements the driver debugging infrastructure for sending debug prints to
-the user (based on the configured debug level) with the help of helper
-functions. These functions are utilized by source files in the driver.
+Imeplemenation of common utility functions and MACRO definitions which can
+be used by other driver source files.
 
 Signed-off-by: Gokul Sivakumar <gokulkumar.sivakumar@infineon.com>
 ---
- drivers/net/wireless/infineon/inffmac/debug.c | 117 ++++++++++++
- drivers/net/wireless/infineon/inffmac/debug.h | 174 ++++++++++++++++++
- 2 files changed, 291 insertions(+)
- create mode 100644 drivers/net/wireless/infineon/inffmac/debug.c
- create mode 100644 drivers/net/wireless/infineon/inffmac/debug.h
+ drivers/net/wireless/infineon/inffmac/utils.c | 291 ++++++++++++++++++
+ drivers/net/wireless/infineon/inffmac/utils.h | 233 ++++++++++++++
+ 2 files changed, 524 insertions(+)
+ create mode 100644 drivers/net/wireless/infineon/inffmac/utils.c
+ create mode 100644 drivers/net/wireless/infineon/inffmac/utils.h
 
-diff --git a/drivers/net/wireless/infineon/inffmac/debug.c b/drivers/net/wireless/infineon/inffmac/debug.c
+diff --git a/drivers/net/wireless/infineon/inffmac/utils.c b/drivers/net/wireless/infineon/inffmac/utils.c
 new file mode 100644
-index 000000000000..5ddbbb6ab505
+index 000000000000..5d6468808d79
 --- /dev/null
-+++ b/drivers/net/wireless/infineon/inffmac/debug.c
-@@ -0,0 +1,117 @@
++++ b/drivers/net/wireless/infineon/inffmac/utils.c
+@@ -0,0 +1,291 @@
 +// SPDX-License-Identifier: ISC
++
 +/*
-+ * Copyright (c) 2012 Broadcom Corporation
++ * Copyright (c) 2010 Broadcom Corporation
 + *
 + * Copyright (c) 2025-2026, Infineon Technologies AG, or an affiliate of Infineon Technologies AG.
 + * All rights reserved.
 + */
-+#include <linux/debugfs.h>
++
++#define pr_fmt(fmt) KBUILD_MODNAME ": " fmt
++
 +#include <linux/netdevice.h>
 +#include <linux/module.h>
-+#include <linux/devcoredump.h>
 +
-+#include "main.h"
-+#include "bus_proto.h"
-+#include "debug.h"
++#include "utils.h"
 +
-+void __inff_dbg(u32 level, const char *func, const char *fmt, ...)
++struct sk_buff *inff_pkt_buf_get_skb(uint len)
 +{
-+	struct va_format vaf = {
-+		.fmt = fmt,
-+	};
-+	va_list args;
++	struct sk_buff *skb;
 +
-+	va_start(args, fmt);
-+	vaf.va = &args;
-+	if (inff_msg_level & level)
-+		pr_debug("%s %pV", func, &vaf);
-+	va_end(args);
++	skb = dev_alloc_skb(len);
++	if (skb) {
++		skb_put(skb, len);
++		skb->priority = 0;
++	}
++
++	return skb;
++}
++
++/* Free the driver packet. Free the tag if present */
++void inff_pkt_buf_free_skb(struct sk_buff *skb)
++{
++	if (!skb)
++		return;
++
++	WARN_ON(skb->next);
++	dev_kfree_skb_any(skb);
++}
++
++/*
++ * osl multiple-precedence packet queue
++ * hi_prec is always >= the number of the highest non-empty precedence
++ */
++struct sk_buff *inff_pktq_penq(struct pktq *pq, int prec,
++			       struct sk_buff *p)
++{
++	struct sk_buff_head *q;
++
++	if (pktq_full(pq) || pktq_pfull(pq, prec))
++		return NULL;
++
++	q = &pq->q[prec].skblist;
++	skb_queue_tail(q, p);
++	pq->len++;
++
++	if (pq->hi_prec < prec)
++		pq->hi_prec = (u8)prec;
++
++	return p;
++}
++
++struct sk_buff *inff_pktq_penq_head(struct pktq *pq, int prec,
++				    struct sk_buff *p)
++{
++	struct sk_buff_head *q;
++
++	if (pktq_full(pq) || pktq_pfull(pq, prec))
++		return NULL;
++
++	q = &pq->q[prec].skblist;
++	skb_queue_head(q, p);
++	pq->len++;
++
++	if (pq->hi_prec < prec)
++		pq->hi_prec = (u8)prec;
++
++	return p;
++}
++
++struct sk_buff *inff_pktq_pdeq(struct pktq *pq, int prec)
++{
++	struct sk_buff_head *q;
++	struct sk_buff *p;
++
++	q = &pq->q[prec].skblist;
++	p = skb_dequeue(q);
++	if (!p)
++		return NULL;
++
++	pq->len--;
++	return p;
++}
++
++/*
++ * precedence based dequeue with match function. Passing a NULL pointer
++ * for the match function parameter is considered to be a wildcard so
++ * any packet on the queue is returned. In that case it is no different
++ * from inff_pktq_pdeq() above.
++ */
++struct sk_buff *inff_pktq_pdeq_match(struct pktq *pq, int prec,
++				     bool (*match_fn)(struct sk_buff *skb,
++						      void *arg), void *arg)
++{
++	struct sk_buff_head *q;
++	struct sk_buff *p, *next;
++
++	q = &pq->q[prec].skblist;
++	skb_queue_walk_safe(q, p, next) {
++		if (!match_fn || match_fn(p, arg)) {
++			skb_unlink(p, q);
++			pq->len--;
++			return p;
++		}
++	}
++	return NULL;
++}
++
++struct sk_buff *inff_pktq_pdeq_tail(struct pktq *pq, int prec)
++{
++	struct sk_buff_head *q;
++	struct sk_buff *p;
++
++	q = &pq->q[prec].skblist;
++	p = skb_dequeue_tail(q);
++	if (!p)
++		return NULL;
++
++	pq->len--;
++	return p;
 +}
 +
 +void
-+__inff_err(struct device *dev, const char *func, const char *fmt, ...)
++inff_pktq_pflush(struct pktq *pq, int prec, bool dir,
++		 bool (*fn)(struct sk_buff *, void *), void *arg)
 +{
-+	struct va_format vaf = {
-+		.fmt = fmt,
-+	};
-+	va_list args;
++	struct sk_buff_head *q;
++	struct sk_buff *p, *next;
 +
-+	va_start(args, fmt);
-+	vaf.va = &args;
-+	if (dev)
-+		dev_err(dev, "%s: %pV", func, &vaf);
-+	else
-+		pr_err("%s: %pV", func, &vaf);
-+	va_end(args);
-+}
-+
-+/* pretty hex print a pkt buffer chain */
-+void inff_prpkt(const char *msg, struct sk_buff *p0)
-+{
-+	struct sk_buff *p;
-+
-+	if (msg && (msg[0] != '\0'))
-+		pr_debug("%s:\n", msg);
-+
-+	for (p = p0; p; p = p->next)
-+		print_hex_dump_bytes("", DUMP_PREFIX_OFFSET, p->data, p->len);
-+}
-+
-+void __inff_dbg_hex_dump(const void *data, size_t size,
-+			 const char *fmt, ...)
-+{
-+	struct va_format vaf;
-+	va_list args;
-+
-+	va_start(args, fmt);
-+
-+	vaf.fmt = fmt;
-+	vaf.va = &args;
-+
-+	pr_debug("%pV", &vaf);
-+
-+	va_end(args);
-+
-+	print_hex_dump_bytes("", DUMP_PREFIX_OFFSET, data, size);
-+}
-+
-+int inff_debug_create_memdump(struct inff_bus *bus, const void *data,
-+			      size_t len)
-+{
-+	void *dump;
-+	size_t ramsize;
-+	int err;
-+
-+	ramsize = inff_bus_get_ramsize(bus);
-+	if (!ramsize)
-+		return -EOPNOTSUPP;
-+
-+	dump = vzalloc(len + ramsize);
-+	if (!dump)
-+		return -ENOMEM;
-+
-+	if (data && len > 0)
-+		memcpy(dump, data, len);
-+	err = inff_bus_get_memdump(bus, dump + len, ramsize);
-+	if (err) {
-+		vfree(dump);
-+		return err;
++	q = &pq->q[prec].skblist;
++	skb_queue_walk_safe(q, p, next) {
++		if (!fn || (*fn) (p, arg)) {
++			skb_unlink(p, q);
++			inff_pkt_buf_free_skb(p);
++			pq->len--;
++		}
 +	}
-+
-+	dev_coredumpv(bus->dev, dump, len + ramsize, GFP_KERNEL);
-+
-+	return 0;
 +}
 +
-+struct dentry *inff_debugfs_get_devdir(struct inff_pub *drvr)
++void inff_pktq_flush(struct pktq *pq, bool dir,
++		     bool (*fn)(struct sk_buff *, void *), void *arg)
 +{
-+	return drvr->wiphy->debugfsdir;
++	int prec;
++
++	for (prec = 0; prec < pq->num_prec; prec++)
++		inff_pktq_pflush(pq, prec, dir, fn, arg);
 +}
 +
-+void inff_debugfs_add_entry(struct inff_pub *drvr, const char *fn,
-+			    int (*read_fn)(struct seq_file *seq, void *data))
++void inff_pktq_init(struct pktq *pq, int num_prec, int max_len)
 +{
-+	WARN(!drvr->wiphy->debugfsdir, "wiphy not (yet) registered\n");
-+	debugfs_create_devm_seqfile(drvr->bus_if->dev, fn,
-+				    drvr->wiphy->debugfsdir, read_fn);
++	int prec;
++
++	/* pq is variable size; only zero out what's requested */
++	memset(pq, 0,
++	       offsetof(struct pktq, q) + (sizeof(struct pktq_prec) * num_prec));
++
++	pq->num_prec = (u16)num_prec;
++
++	pq->max = (u16)max_len;
++
++	for (prec = 0; prec < num_prec; prec++) {
++		pq->q[prec].max = pq->max;
++		skb_queue_head_init(&pq->q[prec].skblist);
++	}
 +}
-diff --git a/drivers/net/wireless/infineon/inffmac/debug.h b/drivers/net/wireless/infineon/inffmac/debug.h
++
++struct sk_buff *inff_pktq_peek_tail(struct pktq *pq, int *prec_out)
++{
++	int prec;
++
++	if (pktq_empty(pq))
++		return NULL;
++
++	for (prec = 0; prec < pq->hi_prec; prec++)
++		if (!skb_queue_empty(&pq->q[prec].skblist))
++			break;
++
++	if (prec_out)
++		*prec_out = prec;
++
++	return skb_peek_tail(&pq->q[prec].skblist);
++}
++
++/* Return sum of lengths of a specific set of precedences */
++int inff_pktq_mlen(struct pktq *pq, uint prec_bmp)
++{
++	int prec, len;
++
++	len = 0;
++
++	for (prec = 0; prec <= pq->hi_prec; prec++)
++		if (prec_bmp & (1 << prec))
++			len += pq->q[prec].skblist.qlen;
++
++	return len;
++}
++
++/* Priority dequeue from a specific set of precedences */
++struct sk_buff *inff_pktq_mdeq(struct pktq *pq, uint prec_bmp,
++			       int *prec_out)
++{
++	struct sk_buff_head *q;
++	struct sk_buff *p;
++	int prec;
++
++	if (pktq_empty(pq))
++		return NULL;
++
++	while ((prec = pq->hi_prec) > 0 &&
++	       skb_queue_empty(&pq->q[prec].skblist))
++		pq->hi_prec--;
++
++	while ((prec_bmp & (1 << prec)) == 0 ||
++	       skb_queue_empty(&pq->q[prec].skblist))
++		if (prec-- == 0)
++			return NULL;
++
++	q = &pq->q[prec].skblist;
++	p = skb_dequeue(q);
++	if (!p)
++		return NULL;
++
++	pq->len--;
++
++	if (prec_out)
++		*prec_out = prec;
++
++	return p;
++}
++
++/* Produce a human-readable string for boardrev */
++char *inff_boardrev_str(u32 brev, char *buf)
++{
++	char c;
++
++	if (brev < 0x100) {
++		snprintf(buf, INFF_BOARDREV_LEN, "%d.%d",
++			 (brev & 0xf0) >> 4, brev & 0xf);
++	} else {
++		c = (brev & 0xf000) == 0x1000 ? 'P' : 'A';
++		snprintf(buf, INFF_BOARDREV_LEN, "%c%03x", c, brev & 0xfff);
++	}
++	return buf;
++}
++
++char *inff_dotrev_str(u32 dotrev, char *buf)
++{
++	u8 dotval[4];
++
++	if (!dotrev) {
++		snprintf(buf, INFF_DOTREV_LEN, "unknown");
++		return buf;
++	}
++	dotval[0] = (dotrev >> 24) & 0xFF;
++	dotval[1] = (dotrev >> 16) & 0xFF;
++	dotval[2] = (dotrev >> 8) & 0xFF;
++	dotval[3] = dotrev & 0xFF;
++
++	if (dotval[3])
++		snprintf(buf, INFF_DOTREV_LEN, "%d.%d.%d.%d", dotval[0],
++			 dotval[1], dotval[2], dotval[3]);
++	else if (dotval[2])
++		snprintf(buf, INFF_DOTREV_LEN, "%d.%d.%d", dotval[0],
++			 dotval[1], dotval[2]);
++	else
++		snprintf(buf, INFF_DOTREV_LEN, "%d.%d", dotval[0],
++			 dotval[1]);
++
++	return buf;
++}
++
++struct sk_buff *__inff_pkt_buf_get_skb(uint len, gfp_t gfp_mask)
++{
++	struct sk_buff *skb;
++
++	skb = __netdev_alloc_skb(NULL, len, gfp_mask);
++	if (skb) {
++		skb_put(skb, len);
++		skb->priority = 0;
++	}
++	return skb;
++}
+diff --git a/drivers/net/wireless/infineon/inffmac/utils.h b/drivers/net/wireless/infineon/inffmac/utils.h
 new file mode 100644
-index 000000000000..9a366ee9111f
+index 000000000000..79a100647eab
 --- /dev/null
-+++ b/drivers/net/wireless/infineon/inffmac/debug.h
-@@ -0,0 +1,174 @@
++++ b/drivers/net/wireless/infineon/inffmac/utils.h
+@@ -0,0 +1,233 @@
 +/* SPDX-License-Identifier: ISC */
 +/*
 + * Copyright (c) 2010 Broadcom Corporation
@@ -226,172 +399,231 @@ index 000000000000..9a366ee9111f
 + * All rights reserved.
 + */
 +
-+#ifndef INFF_DEBUG_H
-+#define INFF_DEBUG_H
++#ifndef	INFF_UTILS_H
++#define	INFF_UTILS_H
 +
-+#include <linux/net.h>	/* net_ratelimit() */
-+#include <linux/device.h>
++#include <linux/skbuff.h>
 +
-+/* message levels */
-+enum inff_msglvl {
-+	INFF_MSGLVL_TRACE	= BIT(1),
-+	INFF_MSGLVL_INFO	= BIT(2),
-+	INFF_MSGLVL_DATA	= BIT(3),
-+	INFF_MSGLVL_CTL		= BIT(4),
-+	INFF_MSGLVL_TIMER	= BIT(5),
-+	INFF_MSGLVL_HDRS	= BIT(6),
-+	INFF_MSGLVL_BYTES	= BIT(7),
-+	INFF_MSGLVL_INTR	= BIT(8),
-+	INFF_MSGLVL_GLOM	= BIT(9),
-+	INFF_MSGLVL_DEVEVT	= BIT(10),
-+	INFF_MSGLVL_BTA		= BIT(11),
-+	INFF_MSGLVL_DEVCMD	= BIT(12),
-+	INFF_MSGLVL_USB		= BIT(13),
-+	INFF_MSGLVL_SCAN	= BIT(14),
-+	INFF_MSGLVL_CONN	= BIT(15),
-+	INFF_MSGLVL_BCDC	= BIT(16),
-+	INFF_MSGLVL_SDIO	= BIT(17),
-+	INFF_MSGLVL_MSGBUF	= BIT(18),
-+	INFF_MSGLVL_PCIE	= BIT(19),
-+	INFF_MSGLVL_FWCON	= BIT(20),
-+	INFF_MSGLVL_ULP		= BIT(21),
-+	INFF_MSGLVL_TWT		= BIT(22),
-+	INFF_MSGLVL_SDIOEXT	= BIT(24),
-+	INFF_MSGLVL_ICDC	= BIT(25),
-+};
-+
-+#ifdef DEBUG
-+#define INFF_MSGLVL_ON(level) (inff_msg_level & INFF_MSGLVL_##level)
-+#else /* DEBUG */
-+#define INFF_MSGLVL_ON(LVL)	0
-+#endif /* DEBUG */
-+
-+/* set default print format */
-+#undef pr_fmt
-+#define pr_fmt(fmt)		KBUILD_MODNAME ": " fmt
-+
-+struct inff_bus;
-+
-+__printf(3, 4)
-+void __inff_err(struct device *dev, const char *func, const char *fmt, ...);
-+/* Macro for error messages. When debugging / tracing the driver all error
-+ * messages are important to us.
++/*
++ * Spin at most 'us' microseconds while 'exp' is true.
++ * Caller should explicitly test 'exp' when this completes
++ * and take appropriate error action if 'exp' is still true.
 + */
-+#define inff_err(fmt, ...)						\
-+	do {								\
-+		if (IS_ENABLED(CONFIG_INF_DEBUG) ||			\
-+		    net_ratelimit())					\
-+			__inff_err(NULL, __func__, fmt, ##__VA_ARGS__); \
-+	} while (0)
-+
-+#define inff_dev_err(dev, fmt, ...)						\
-+	do {								\
-+		if (IS_ENABLED(CONFIG_INF_DEBUG) ||			\
-+		    net_ratelimit())					\
-+			__inff_err(dev, __func__, fmt, ##__VA_ARGS__); \
-+	} while (0)
-+
-+#define iphy_err(drvr, fmt, ...)					\
-+	do {								\
-+		if (IS_ENABLED(CONFIG_INF_DEBUG) ||			\
-+		    net_ratelimit())					\
-+			wiphy_err((drvr)->wiphy, "%s: " fmt, __func__,	\
-+				  ##__VA_ARGS__);			\
-+	} while (0)
-+
-+#define iphy_info_once(drvr, fmt, ...)					\
-+	wiphy_info_once((drvr)->wiphy, "%s: " fmt, __func__,		\
-+			##__VA_ARGS__)
-+
-+#ifdef DEBUG
-+
-+/* For debug purposes treat info messages as errors */
-+#define inff_info inff_err
-+
-+__printf(3, 4)
-+void __inff_dbg(u32 level, const char *func, const char *fmt, ...);
-+#define inff_dbg(level, fmt, ...)				\
-+do {								\
-+	if (IS_ENABLED(CONFIG_INF_DEBUG))			\
-+		__inff_dbg(INFF_MSGLVL_##level, __func__,	\
-+			fmt, ##__VA_ARGS__);			\
-+} while (0)
-+
-+__printf(3, 4)
-+void __inff_dbg_hex_dump(const void *data, size_t size,
-+			 const char *fmt, ...);
-+#define inff_dbg_hex_dump(test, data, len, fmt, ...) \
-+do { \
-+	if (test) \
-+		__inff_dbg_hex_dump(data, len, fmt, ##__VA_ARGS__); \
-+} while (0)
-+
-+void inff_prpkt(const char *msg, struct sk_buff *p0);
-+
-+#else /* DEBUG */
-+
-+#define inff_info(fmt, ...)						\
-+	{								\
-+		pr_info("%s: " fmt, __func__, ##__VA_ARGS__);		\
-+	}
-+
-+#define inff_dbg(level, fmt, ...) \
-+	{	\
-+		UNUSED_PARAMETER(level);	\
-+		no_printk(fmt, ##__VA_ARGS__);	\
-+	}
-+
-+#define inff_dbg_hex_dump(test, data, len, fmt, ...)
-+#define inff_prpkt(a, b)
-+
-+#endif /* DEBUG */
-+
-+extern int inff_msg_level;
-+struct inff_pub;
-+
-+#ifdef DEBUG
-+struct dentry *inff_debugfs_get_devdir(struct inff_pub *drvr);
-+void inff_debugfs_add_entry(struct inff_pub *drvr, const char *fn,
-+			    int (*read_fn)(struct seq_file *seq, void *data));
-+int inff_debug_create_memdump(struct inff_bus *bus, const void *data,
-+			      size_t len);
-+#else
-+static inline struct dentry *inff_debugfs_get_devdir(struct inff_pub *drvr)
-+{
-+	return ERR_PTR(-ENOENT);
++#define SPINWAIT(exp, us) { \
++	uint countdown = (us) + 9; \
++	while ((exp) && (countdown >= 10)) {\
++		usleep_range(10, 20); \
++		countdown -= 10; \
++	} \
 +}
 +
-+static inline
-+void inff_debugfs_add_entry(struct inff_pub *drvr, const char *fn,
-+			    int (*read_fn)(struct seq_file *seq, void *data))
-+{ }
-+static inline
-+int inff_debug_create_memdump(struct inff_bus *bus, const void *data,
-+			      size_t len)
-+{
-+	return 0;
++/* Spin at most 'ms' milliseconds with polling interval 'interval' milliseconds
++ * while 'exp' is true. Caller should explicitly test 'exp' when this completes
++ * and take appropriate error action if 'exp' is still true.
++ */
++#define SPINWAIT_MS(exp, ms, interval) { \
++	typeof(interval) interval_ = (interval); \
++	uint countdown = (ms) + (interval_ - 1U); \
++	while ((exp) && (countdown >= interval_)) { \
++		msleep(interval_); \
++		countdown -= interval_; \
++	} \
 +}
-+#endif /* DEBUG */
 +
-+#define MSGTRACE_VERSION 1
-+#define MSGTRACE_HDR_TYPE_MSG 0
-+#define MSGTRACE_HDR_TYPE_LOG 1
++/* osl multi-precedence packet queue */
++#define PKTQ_LEN_DEFAULT        128	/* Max 128 packets */
++#define PKTQ_MAX_PREC           16	/* Maximum precedence levels */
 +
-+/* Message trace header */
-+struct msgtrace_hdr {
-+	u8	version;
-+	u8	trace_type;
-+	u16	len;    /* Len of the trace */
-+	u32	seqnum; /* Sequence number of message */
-+	/* Number of discarded bytes because of trace overflow  */
-+	u32	discarded_bytes;
-+	/* Number of discarded printf because of trace overflow */
-+	u32	discarded_printf;
++/* the largest reasonable packet buffer driver uses for ethernet MTU in bytes */
++#define	PKTBUFSZ	2048
++
++#ifndef setbit
++#ifndef NBBY			/* the BSD family defines NBBY */
++#define	NBBY	8		/* 8 bits per byte */
++#endif				/* #ifndef NBBY */
++#define	setbit(a, i)	{ \
++	typeof(i) _i = (i); \
++	(((u8 *)a)[(_i) / NBBY] |= 1 << ((_i) % NBBY)); \
++	}
++#define	clrbit(a, i)	{ \
++	typeof(i) _i = (i); \
++	(((u8 *)a)[(_i) / NBBY] &= ~(1 << ((_i) % NBBY))); \
++	}
++#define	isset(a, i)	{ \
++	typeof(i) _i = (i); \
++	(((const u8 *)a)[(_i) / NBBY] & (1 << ((_i) % NBBY))); \
++	}
++#define	isclr(a, i)	{ \
++	typeof(i) _i = (i); \
++	((((const u8 *)a)[(_i) / NBBY] & (1 << ((_i) % NBBY))) == 0); \
++	}
++#endif				/* setbit */
++
++#define	NBITS(type)	(sizeof(type) * 8)
++#define NBITVAL(nbits)	(1 << (nbits))
++#define MAXBITVAL(nbits)	((1 << (nbits)) - 1)
++#define	NBITMASK(nbits)	MAXBITVAL(nbits)
++#define MAXNBVAL(nbyte)	MAXBITVAL((nbyte) * 8)
++
++/* crc defines */
++#define CRC16_INIT_VALUE 0xffff	/* Initial CRC16 checksum value */
++#define CRC16_GOOD_VALUE 0xf0b8	/* Good final CRC16 checksum value */
++
++/* 18-bytes of Ethernet address buffer length */
++#define ETHER_ADDR_STR_LEN	18
++
++struct pktq_prec {
++	struct sk_buff_head skblist;
++	u16 max;		/* maximum number of queued packets */
 +};
 +
-+#define MSGTRACE_HDRLEN		sizeof(struct msgtrace_hdr)
++/* multi-priority pkt queue */
++struct pktq {
++	u16 num_prec;	/* number of precedences in use */
++	u16 hi_prec;	/* rapid dequeue hint (>= highest non-empty prec) */
++	u16 max;	/* total max packets */
++	u16 len;	/* total number of packets */
++	/*
++	 * q array must be last since # of elements can be either
++	 * PKTQ_MAX_PREC or 1
++	 */
++	struct pktq_prec q[PKTQ_MAX_PREC];
++};
 +
-+#endif /* INFF_DEBUG_H */
++/* operations on a specific precedence in packet queue */
++
++static inline int pktq_plen(struct pktq *pq, int prec)
++{
++	return pq->q[prec].skblist.qlen;
++}
++
++static inline int pktq_pavail(struct pktq *pq, int prec)
++{
++	return pq->q[prec].max - pq->q[prec].skblist.qlen;
++}
++
++static inline bool pktq_pfull(struct pktq *pq, int prec)
++{
++	return pq->q[prec].skblist.qlen >= pq->q[prec].max;
++}
++
++static inline bool pktq_pempty(struct pktq *pq, int prec)
++{
++	return skb_queue_empty(&pq->q[prec].skblist);
++}
++
++static inline struct sk_buff *pktq_ppeek(struct pktq *pq, int prec)
++{
++	return skb_peek(&pq->q[prec].skblist);
++}
++
++static inline struct sk_buff *pktq_ppeek_tail(struct pktq *pq, int prec)
++{
++	return skb_peek_tail(&pq->q[prec].skblist);
++}
++
++struct sk_buff *inff_pktq_penq(struct pktq *pq, int prec, struct sk_buff *p);
++struct sk_buff *inff_pktq_penq_head(struct pktq *pq, int prec,
++				    struct sk_buff *p);
++struct sk_buff *inff_pktq_pdeq(struct pktq *pq, int prec);
++struct sk_buff *inff_pktq_pdeq_tail(struct pktq *pq, int prec);
++struct sk_buff *inff_pktq_pdeq_match(struct pktq *pq, int prec,
++				     bool (*match_fn)(struct sk_buff *p,
++						      void *arg),
++				      void *arg);
++
++/* packet primitives */
++struct sk_buff *inff_pkt_buf_get_skb(uint len);
++void inff_pkt_buf_free_skb(struct sk_buff *skb);
++struct sk_buff *__inff_pkt_buf_get_skb(uint len, gfp_t gfp_mask);
++
++/* Empty the queue at particular precedence level */
++/* callback function fn(pkt, arg) returns true if pkt belongs to if */
++void inff_pktq_pflush(struct pktq *pq, int prec, bool dir,
++		      bool (*fn)(struct sk_buff *, void *), void *arg);
++
++/* operations on a set of precedences in packet queue */
++
++int inff_pktq_mlen(struct pktq *pq, uint prec_bmp);
++struct sk_buff *inff_pktq_mdeq(struct pktq *pq, uint prec_bmp, int *prec_out);
++
++/* operations on packet queue as a whole */
++
++static inline int pktq_len(struct pktq *pq)
++{
++	return (int)pq->len;
++}
++
++static inline int pktq_max(struct pktq *pq)
++{
++	return (int)pq->max;
++}
++
++static inline int pktq_avail(struct pktq *pq)
++{
++	return (int)(pq->max - pq->len);
++}
++
++static inline bool pktq_full(struct pktq *pq)
++{
++	return pq->len >= pq->max;
++}
++
++static inline bool pktq_empty(struct pktq *pq)
++{
++	return pq->len == 0;
++}
++
++void inff_pktq_init(struct pktq *pq, int num_prec, int max_len);
++/* prec_out may be NULL if caller is not interested in return value */
++struct sk_buff *inff_pktq_peek_tail(struct pktq *pq, int *prec_out);
++void inff_pktq_flush(struct pktq *pq, bool dir,
++		     bool (*fn)(struct sk_buff *, void *), void *arg);
++
++/*
++ * bitfield macros using masking and shift
++ *
++ * remark: the mask parameter should be a shifted mask.
++ */
++static inline void inff_maskset32(u32 *var, u32 mask, u8 shift, u32 value)
++{
++	value = (value << shift) & mask;
++	*var = (*var & ~mask) | value;
++}
++
++static inline u32 inff_maskget32(u32 var, u32 mask, u8 shift)
++{
++	return (var & mask) >> shift;
++}
++
++static inline void inff_maskset16(u16 *var, u16 mask, u8 shift, u16 value)
++{
++	value = (value << shift) & mask;
++	*var = (*var & ~mask) | value;
++}
++
++static inline u16 inff_maskget16(u16 var, u16 mask, u8 shift)
++{
++	return (var & mask) >> shift;
++}
++
++static __always_inline void inff_delay(u32 ms)
++{
++	if (ms < 1000 / HZ) {
++		cond_resched();
++		mdelay(ms);
++	} else {
++		msleep(ms);
++	}
++}
++
++#define INFF_BOARDREV_LEN	8
++#define INFF_DOTREV_LEN	16
++
++char *inff_boardrev_str(u32 brev, char *buf);
++char *inff_dotrev_str(u32 dotrev, char *buf);
++
++#endif /* INFF_UTILS_H */
 -- 
 2.25.1
 
