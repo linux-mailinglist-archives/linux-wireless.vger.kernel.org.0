@@ -1,68 +1,68 @@
-Return-Path: <linux-wireless+bounces-30769-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-30770-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5259ED1B3FF
-	for <lists+linux-wireless@lfdr.de>; Tue, 13 Jan 2026 21:40:15 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7B77BD1B3C9
+	for <lists+linux-wireless@lfdr.de>; Tue, 13 Jan 2026 21:37:55 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id A8E143030FEB
-	for <lists+linux-wireless@lfdr.de>; Tue, 13 Jan 2026 20:37:40 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 3C30C30057CF
+	for <lists+linux-wireless@lfdr.de>; Tue, 13 Jan 2026 20:37:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0D116276051;
-	Tue, 13 Jan 2026 20:37:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 36B052C21C2;
+	Tue, 13 Jan 2026 20:37:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=infineon.com header.i=@infineon.com header.b="YqXaqz70"
+	dkim=pass (1024-bit key) header.d=infineon.com header.i=@infineon.com header.b="OP14Cw/t"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from smtp11.infineon.com (smtp11.infineon.com [217.10.52.105])
+Received: from smtp2.infineon.com (smtp2.infineon.com [217.10.52.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DFD072FCC0E
-	for <linux-wireless@vger.kernel.org>; Tue, 13 Jan 2026 20:37:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.10.52.105
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 86DFD276051
+	for <linux-wireless@vger.kernel.org>; Tue, 13 Jan 2026 20:37:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.10.52.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768336659; cv=none; b=Fvw9E+r05SqoYVy3RDVpCeo8DzCpiiuGUpcrfgUppbVhdtZxnb8EG9Qqmkb4T4+8nk41FiC9AzHKMXyIuy2avgu/PhTvqzepfV2/p2pXFdHe1oXyKlV9vvRKNwETd3ar886/uPRSFdmCJbsgzWON84qZ5dxgAfwje9g0dLxQ6Uk=
+	t=1768336672; cv=none; b=iVQpe0pRIboQGEk385czCtqxkmqntGKaynvr3WsNDp47jhJsTIf7NN9D7FmU0NChU+uaQmVdzWYSyRedOW//i14A98RuQmG1NVloez+l3voQcwY1Tf6HTi/eiEH6xEb0gS1K2hqzJ2UgThkd4SlHYAnK0DKk6FOJsRnD4xT/Yy0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768336659; c=relaxed/simple;
-	bh=JWG5q1a4Eky8rb20B1KYjBgjX7DgK1jmfvU4faZanPE=;
+	s=arc-20240116; t=1768336672; c=relaxed/simple;
+	bh=qv5nnSzdelyNOuiETE1tHAbYQABuc5n/rJyMC9qTbyM=;
 	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=p+ToKpYPZx8em5dM4BQ6UFU9tIuHmgIsf2ivMRoNRoTuVKrVcrqwLIrKKUzoFHjg+dxT0RrzmIhfjqSmpqSsSxPRUl7b+/EAEnGv7u/hJ61sd9gl+Eru+f99Robwi4wrJIbIcgNuaS8wr4aUJ5endbG9T3oxcH2jHREBACcer1k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infineon.com; spf=pass smtp.mailfrom=infineon.com; dkim=pass (1024-bit key) header.d=infineon.com header.i=@infineon.com header.b=YqXaqz70; arc=none smtp.client-ip=217.10.52.105
+	 MIME-Version:Content-Type; b=Po2bbcD4Jy935ssrLCBXXf7BCotMkCl+BWDafSReNN2nJHv8/1D633S2XFMPuviXJ9moNig4kcgvKY+64i1F5SXYrvr4LcF/A8Hgs9Z6AMwsve/hs18IuR5hm4YgaLMPa0SJzgJQMGG2ZtzIVn3A5gpk7yCVpZxcK1GPlL5m9p8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infineon.com; spf=pass smtp.mailfrom=infineon.com; dkim=pass (1024-bit key) header.d=infineon.com header.i=@infineon.com header.b=OP14Cw/t; arc=none smtp.client-ip=217.10.52.18
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infineon.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=infineon.com
 DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple;
   d=infineon.com; i=@infineon.com; q=dns/txt; s=IFXMAIL;
-  t=1768336656; x=1799872656;
+  t=1768336670; x=1799872670;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=JWG5q1a4Eky8rb20B1KYjBgjX7DgK1jmfvU4faZanPE=;
-  b=YqXaqz70BkZ1m68w+WWpwL+nKiQUnUC09wRXLvRYWqth2Tp3JA+fTEwF
-   5olsPRNBe+iqyPzx8sBDAbU2VpuKkNCcIwUkOwX34msPMhzhlpEEXxKLm
-   QM3Z75EqnNjQCL4qGSAXdGFO5BH5s3UFW7BqgWHlRSdQuN/l+Q60ZI8bw
-   E=;
-X-CSE-ConnectionGUID: 3b05hM1WQQKcdc2sPTP4VQ==
-X-CSE-MsgGUID: cqb0jPjmSRmO8ItPp7XqdQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11670"; a="126568382"
+  bh=qv5nnSzdelyNOuiETE1tHAbYQABuc5n/rJyMC9qTbyM=;
+  b=OP14Cw/t5jhRHOKtxlvKbpL7fgfdLPIfFt/NI50u44O4kHE+D0g2QdDy
+   k9UDakapizGlgP6GdCBdfw63zaFeJ8B3lkAkXlYEWbgD0o0sFuQalG93Z
+   yQWku02lCnCkPZN4cT2lxH9txliSt7vyyzKEgKm/iYtz/IdXLT+TajvDf
+   I=;
+X-CSE-ConnectionGUID: PRpLJDdWTKKuKZihCluEtg==
+X-CSE-MsgGUID: fof3r14FRd6XMMxtBvQrgg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11670"; a="139541935"
 X-IronPort-AV: E=Sophos;i="6.21,222,1763420400"; 
-   d="scan'208";a="126568382"
+   d="scan'208";a="139541935"
 X-Amp-Result: SKIPPED(no attachment in message)
-Received: from unknown (HELO MUCSE819.infineon.com) ([172.23.29.45])
-  by smtp11.infineon.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 Jan 2026 21:37:34 +0100
-Received: from MUCSE827.infineon.com (172.23.29.20) by MUCSE819.infineon.com
- (172.23.29.45) with Microsoft SMTP Server (version=TLS1_2,
+Received: from unknown (HELO MUCSE814.infineon.com) ([172.23.29.40])
+  by smtp2.infineon.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 Jan 2026 21:37:48 +0100
+Received: from MUCSE827.infineon.com (172.23.29.20) by MUCSE814.infineon.com
+ (172.23.29.40) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.35; Tue, 13 Jan
- 2026 21:37:33 +0100
+ 2026 21:37:47 +0100
 Received: from ISCN5CG14747PP.infineon.com (10.161.6.196) by
  MUCSE827.infineon.com (172.23.29.20) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.35; Tue, 13 Jan 2026 21:37:31 +0100
+ 15.2.2562.35; Tue, 13 Jan 2026 21:37:45 +0100
 From: Gokul Sivakumar <gokulkumar.sivakumar@infineon.com>
 To: <linux-wireless@vger.kernel.org>
 CC: Johannes Berg <johannes@sipsolutions.net>, Arend van Spriel
 	<arend.vanspriel@broadcom.com>, <marex@nabladev.com>,
 	<wlan-kernel-dev-list@infineon.com>, <gokulkumar.sivakumar@infineon.com>
-Subject: [PATCH wireless-next v2 14/34] wifi: inffmac: add dev_cmd.c/h
-Date: Wed, 14 Jan 2026 02:03:27 +0530
-Message-ID: <20260113203350.16734-15-gokulkumar.sivakumar@infineon.com>
+Subject: [PATCH wireless-next v2 15/34] wifi: inffmac: add net.c/h
+Date: Wed, 14 Jan 2026 02:03:28 +0530
+Message-ID: <20260113203350.16734-16-gokulkumar.sivakumar@infineon.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20260113203350.16734-1-gokulkumar.sivakumar@infineon.com>
 References: <20260113203350.16734-1-gokulkumar.sivakumar@infineon.com>
@@ -74,2020 +74,769 @@ List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Content-Type: text/plain
-X-ClientProxiedBy: MUCSE805.infineon.com (172.23.29.31) To
+X-ClientProxiedBy: MUCSE801.infineon.com (172.23.29.27) To
  MUCSE827.infineon.com (172.23.29.20)
 
-Driver implementation of the Control path communication to the CP and WLAN
-Firmware of the Device.
+Integrate the driver with kernel network stack for enabling
+datapath communication using a netdev for WLAN interfaces.
 
 Signed-off-by: Gokul Sivakumar <gokulkumar.sivakumar@infineon.com>
 ---
- .../net/wireless/infineon/inffmac/dev_cmd.c   |  727 ++++++++++
- .../net/wireless/infineon/inffmac/dev_cmd.h   | 1261 +++++++++++++++++
- 2 files changed, 1988 insertions(+)
- create mode 100644 drivers/net/wireless/infineon/inffmac/dev_cmd.c
- create mode 100644 drivers/net/wireless/infineon/inffmac/dev_cmd.h
+ drivers/net/wireless/infineon/inffmac/net.c | 695 ++++++++++++++++++++
+ drivers/net/wireless/infineon/inffmac/net.h |  42 ++
+ 2 files changed, 737 insertions(+)
+ create mode 100644 drivers/net/wireless/infineon/inffmac/net.c
+ create mode 100644 drivers/net/wireless/infineon/inffmac/net.h
 
-diff --git a/drivers/net/wireless/infineon/inffmac/dev_cmd.c b/drivers/net/wireless/infineon/inffmac/dev_cmd.c
+diff --git a/drivers/net/wireless/infineon/inffmac/net.c b/drivers/net/wireless/infineon/inffmac/net.c
 new file mode 100644
-index 000000000000..16ec90cb98ba
+index 000000000000..e091d2890b32
 --- /dev/null
-+++ b/drivers/net/wireless/infineon/inffmac/dev_cmd.c
-@@ -0,0 +1,727 @@
++++ b/drivers/net/wireless/infineon/inffmac/net.c
+@@ -0,0 +1,695 @@
 +// SPDX-License-Identifier: ISC
 +/*
-+ * Copyright (c) 2012 Broadcom Corporation
++ * Copyright (c) 2010 Broadcom Corporation
 + *
 + * Copyright (c) 2025-2026, Infineon Technologies AG, or an affiliate of Infineon Technologies AG.
 + * All rights reserved.
 + */
 +
-+/**
-+ * Device/Dongle Control Interface. In this module the support functions
-+ * are located to set and get variables to and from the Device.
-+ */
-+
-+#include <linux/kernel.h>
 +#include <linux/netdevice.h>
++#include <linux/ethtool.h>
++#include <net/rtnetlink.h>
++#include <net/sock.h>
 +
 +#include "main.h"
++#include "net.h"
++#include "cfg80211.h"
++#include "interface.h"
 +#include "utils.h"
-+#include "debug.h"
-+#include "dev_cmd.h"
 +#include "bus_proto.h"
++#include "dev_cmd.h"
++#include "twt.h"
 +
-+#define MAX_HEX_DUMP_LEN	64
-+#define MAX_CMD_RESEND		3
++#define INFF_WLC_CNT_VER_30		30
++#define INFF_WLC_CNT_IOV_BUF	2048
 +
-+#ifdef DEBUG
-+static const char * const inff_fwcmd_errstr[] = {
-+	"INFE_OK",
-+	"INFE_ERROR",
-+	"INFE_BADARG",
-+	"INFE_BADOPTION",
-+	"INFE_NOTUP",
-+	"INFE_NOTDOWN",
-+	"INFE_NOTAP",
-+	"INFE_NOTSTA",
-+	"INFE_BADKEYIDX",
-+	"INFE_RADIOOFF",
-+	"INFE_NOTBANDLOCKED",
-+	"INFE_NOCLK",
-+	"INFE_BADRATESET",
-+	"INFE_BADBAND",
-+	"INFE_BUFTOOSHORT",
-+	"INFE_BUFTOOLONG",
-+	"INFE_BUSY",
-+	"INFE_NOTASSOCIATED",
-+	"INFE_BADSSIDLEN",
-+	"INFE_OUTOFRANGECHAN",
-+	"INFE_BADCHAN",
-+	"INFE_BADADDR",
-+	"INFE_NORESOURCE",
-+	"INFE_UNSUPPORTED",
-+	"INFE_BADLEN",
-+	"INFE_NOTREADY",
-+	"INFE_EPERM",
-+	"INFE_NOMEM",
-+	"INFE_ASSOCIATED",
-+	"INFE_RANGE",
-+	"INFE_NOTFOUND",
-+	"INFE_WME_NOT_ENABLED",
-+	"INFE_TSPEC_NOTFOUND",
-+	"INFE_ACM_NOTSUPPORTED",
-+	"INFE_NOT_WME_ASSOCIATION",
-+	"INFE_SDIO_ERROR",
-+	"INFE_DONGLE_DOWN",
-+	"INFE_VERSION",
-+	"INFE_TXFAIL",
-+	"INFE_RXFAIL",
-+	"INFE_NODEVICE",
-+	"INFE_NMODE_DISABLED",
-+	"INFE_NONRESIDENT",
-+	"INFE_SCANREJECT",
-+	"INFE_USAGE_ERROR",
-+	"INFE_IOCTL_ERROR",
-+	"INFE_SERIAL_PORT_ERR",
-+	"INFE_DISABLED",
-+	"INFE_DECERR",
-+	"INFE_ENCERR",
-+	"INFE_MICERR",
-+	"INFE_REPLAY",
-+	"INFE_IE_NOTFOUND",
++static const char inff_wlc_counter_strs_v30[][32] = {
++	"txframe", "txbyte", "txretrans", "txerror", "txctl", "txprshort", "txserr", "txnobuf",
++	"txnoassoc", "txrunt", "txchit", "txcmiss", "txuflo", "txphyerr", "txphycrs",
++	"rxframe", "rxbyte", "rxerror", "rxctl", "rxnobuf", "rxnondata", "rxbadds", "rxbadcm",
++	"rxfragerr", "rxrunt", "rxgiant", "rxnoscb", "rxbadproto", "rxbadsrcmac",
++	"rxbadda", "rxfilter", "rxoflo", "rxuflo[0]", "rxuflo[1]",
++	"rxuflo[2]", "rxuflo[3]", "rxuflo[4]", "rxuflo[5]",
++
++	"d11cnt_txrts_off", "d11cnt_rxcrc_off", "d11cnt_txnocts_off", "dmade", "dmada",
++	"dmape", "reset", "tbtt", "txdmawar", "pkt_callback_reg_fail",
++	"txfrag", "txmulti", "txfail", "txretry",
++	"txretrie", "rxdup", "txrts", "txnocts", "txnoack", "rxfrag",
++	"rxmulti", "rxcrc", "txfrmsnt", "rxundec",
++	"tkipmicfaill", "tkipcntrmsr", "tkipreplay", "ccmpfmterr",
++	"ccmpreplay", "ccmpundec", "fourwayfail", "wepundec",
++	"wepicverr", "decsuccess", "tkipicverr", "wepexcluded",
++	"txchanrej", "psmwds", "phywatchdog",
++	"prq_entries_handled", "prq_undirected_entries", "prq_bad_entries",
++	"atim_suppress_count", "bcn_template_not_ready", "bcn_template_not_ready_done",
++	"late_tbtt_dpc",
++
++	"rx1mbps", "rx2mbps", "rx5mbps5", "rx6mbps", "rx9mbps",
++	"rx11mbps", "rx12mbps", "rx18mbps", "rx24mbps", "rx36mbps",
++	"rx48mbps", "rx54mbps", "rx108mbps", "rx162mbps", "rx216mbps",
++	"rx270mbps", "rx324mbps", "rx378mbps", "rx432mbps", "rx486mbps",
++	"rx540mbps", "rfdisable", "txexptime", "txmpdu_sgi", "rxmpdu_sgi",
++	"txmpdu_stbc", "rxmpdu_stbc", "rxundec_mcst",
++
++	"tkipmicfaill_mcst", "tkipcntrmsr_mcst", "tkipreplay_mcst",
++	"ccmpfmterr_mcst", "ccmpreplay_mcst", "ccmpundec_mcst",
++	"fourwayfail_mcst", "wepundec_mcst", "wepicverr_mcst",
++	"decsuccess_mcst", "tkipicverr_mcst", "wepexcluded_mcst",
++	"dma_hang", "reinit", "pstatxucast",
++	"pstatxnoassoc", "pstarxucast", "pstarxbcmc",
++	"pstatxbcmc", "cso_passthrough", "cso_normal",
++	"chained", "chainedsz1", "unchained",
++	"maxchainsz", "currchainsz", "pciereset",
++	"cfgrestore", "reinitreason[0]", "reinitreason[1]",
++	"reinitreason[2]", "reinitreason[3]", "reinitreason[4]",
++	"reinitreason[5]", "reinitreason[6]", "reinitreason[7]",
++	"rxrtry", "rxmpdu_mu",
++
++	"txbar", "rxbar", "txpspoll", "rxpspoll", "txnull",
++	"rxnull", "txqosnull", "rxqosnull", "txassocreq", "rxassocreq",
++	"txreassocreq", "rxreassocreq", "txdisassoc", "rxdisassoc",
++	"txassocrsp", "rxassocrsp", "txreassocrsp", "rxreassocrsp",
++	"txauth", "rxauth", "txdeauth", "rxdeauth", "txprobereq",
++	"rxprobereq", "txprobersp", "rxprobersp", "txaction",
++	"rxaction", "ampdu_wds", "txlost", "txdatamcast",
++	"txdatabcast", "psmxwds", "rxback", "txback",
++	"p2p_tbtt", "p2p_tbtt_miss", "txqueue_start", "txqueue_end",
++	"txbcast", "txdropped", "rxbcast", "rxdropped",
++	"txq_end_assoccb",
 +};
 +
-+static const char *inff_fwcmd_get_errstr(u32 err)
++static void inff_ethtool_get_drvinfo(struct net_device *ndev,
++				     struct ethtool_drvinfo *info)
 +{
-+	if (err >= ARRAY_SIZE(inff_fwcmd_errstr))
-+		return "(unknown)";
-+
-+	return inff_fwcmd_errstr[err];
-+}
-+#else
-+static const char *inff_fwcmd_get_errstr(u32 err)
-+{
-+	return "";
-+}
-+#endif /* DEBUG */
-+
-+static s32
-+inff_cpcmd_data(struct inff_if *ifp, u32 cmd, void *data, u32 len, bool set)
-+{
++	struct inff_if *ifp = netdev_priv(ndev);
 +	struct inff_pub *drvr = ifp->drvr;
-+	s32 err, cperr;
-+	u8 resend_cnt = 1;
++	char drev[INFF_DOTREV_LEN] = "n/a";
 +
-+	if (drvr->bus_if->state != INFF_BUS_UP) {
-+		iphy_err(drvr, "bus is down. we have nothing to do.\n");
-+		return -EIO;
++	if (drvr->revinfo.result == 0)
++		inff_dotrev_str(drvr->revinfo.driverrev, drev);
++	strscpy(info->driver, KBUILD_MODNAME, sizeof(info->driver));
++	strscpy(info->version, drev, sizeof(info->version));
++	strscpy(info->fw_version, drvr->fwver, sizeof(info->fw_version));
++	strscpy(info->bus_info, dev_name(drvr->bus_if->dev),
++		sizeof(info->bus_info));
++
++	if (inff_socitype_is_ai(drvr->bus_if) &&
++	    !drvr->cnt_ver) {
++		int ret;
++		u8 *iovar_out;
++
++		iovar_out = kzalloc(INFF_WLC_CNT_IOV_BUF, GFP_KERNEL);
++		if (!iovar_out)
++			return;
++		ret = inff_fwcmd_iovar_data_get(ifp, "counters", iovar_out,
++						INFF_WLC_CNT_IOV_BUF);
++		if (ret) {
++			inff_err("Failed to get counters, code :%d\n", ret);
++			kfree(iovar_out);
++			iovar_out = NULL;
++		}
++		memcpy(&drvr->cnt_ver, iovar_out, sizeof(drvr->cnt_ver));
 +	}
++	inff_err(" driver %s bus_info %s\n", info->driver, info->bus_info);
++}
 +
-+	if (data)
-+		len = min_t(uint, len, INFF_DCMD_MAXLEN);
++static void inff_ethtool_get_strings(struct net_device *net_dev,
++				     u32 sset, u8 *strings)
++{
++	struct inff_if *ifp = netdev_priv(net_dev);
++	struct inff_pub *drvr = ifp->drvr;
 +
-+	do {
-+		if (set)
-+			err = inff_proto_set_cpcmd(drvr, ifp->ifidx, cmd,
-+						   data, len, &cperr);
-+		else
-+			err = inff_proto_query_cpcmd(drvr, ifp->ifidx, cmd,
-+						     data, len, &cperr);
-+		if (!err || resend_cnt > MAX_CMD_RESEND)
++	if (sset == ETH_SS_STATS) {
++		switch (drvr->cnt_ver) {
++		case INFF_WLC_CNT_VER_30:
++			memcpy(strings, inff_wlc_counter_strs_v30,
++			       sizeof(inff_wlc_counter_strs_v30));
 +			break;
-+
-+		inff_err("cmd error %d, resend cmd count %d\n", err, resend_cnt++);
-+	} while (true);
-+
-+	if (err) {
-+		inff_dbg(DEVCMD, "Failed: error=%d\n", err);
-+	} else if (cperr < 0) {
-+		inff_dbg(DEVCMD, "CP Command error: %s (%d)\n",
-+			 inff_fwcmd_get_errstr((u32)(-cperr)), cperr);
-+		err = -EBADE;
++		default:
++			inff_err("Unsupported counters version\n");
++		}
 +	}
-+	if (ifp->fwil_fwerr)
-+		return cperr;
-+
-+	return err;
 +}
 +
-+s32
-+inff_cpcmd_data_set(struct inff_if *ifp, u32 cmd, void *data, u32 len)
++static void inff_ethtool_get_stats(struct net_device *netdev,
++				   struct ethtool_stats *et_stats, u64 *results_buf)
 +{
-+	s32 err;
++	struct inff_if *ifp = netdev_priv(netdev);
++	u8 *iovar_out, *src, ret;
++	u16 version, len, xtlv_wl_cnt_offset = 0;
++	u16 soffset = 0, idx = 0;
 +
-+	mutex_lock(&ifp->drvr->proto_block);
++	iovar_out = kzalloc(INFF_WLC_CNT_IOV_BUF, GFP_KERNEL);
 +
-+	inff_dbg(DEVCMD, "ifidx=%d, cmd=%d, len=%d\n", ifp->ifidx, cmd, len);
-+	inff_dbg_hex_dump(INFF_MSGLVL_ON(DEVCMD), data,
-+			  min_t(uint, len, MAX_HEX_DUMP_LEN), "data\n");
++	if (!iovar_out)
++		return;
 +
-+	err = inff_cpcmd_data(ifp, cmd, data, len, true);
-+	mutex_unlock(&ifp->drvr->proto_block);
++	ret = inff_fwcmd_iovar_data_get(ifp, "counters", iovar_out,
++					INFF_WLC_CNT_IOV_BUF);
++	if (ret) {
++		inff_err("Failed to get counters, code :%d\n", ret);
++		goto done;
++	}
++	src = iovar_out;
 +
-+	return err;
++	memcpy(&version, src, sizeof(version));
++	soffset += sizeof(version);
++	memcpy(&len, (src + soffset), sizeof(len));
++	soffset += sizeof(len);
++
++	/* Check counters version and decide if its non-TLV or TLV (version>=30)*/
++	if (version >= INFF_WLC_CNT_VER_30) {
++		xtlv_wl_cnt_offset = inff_fwcmd_xtlv_find_wlc_cntr(src, &len);
++		len = (len / sizeof(u32));
++	} else {
++		len = (len / sizeof(u32)) - sizeof(u32);
++	}
++
++	src = src + soffset + xtlv_wl_cnt_offset;
++	while (idx < (len)) {
++		results_buf[idx++] = *((u32 *)src);
++		src += sizeof(u32);
++	}
++done:
++	kfree(iovar_out);
++	iovar_out = NULL;
 +}
 +
-+s32
-+inff_cpcmd_data_get(struct inff_if *ifp, u32 cmd, void *data, u32 len)
++static int inff_ethtool_get_scount(struct net_device *dev, int sset)
 +{
-+	s32 err;
-+
-+	mutex_lock(&ifp->drvr->proto_block);
-+	err = inff_cpcmd_data(ifp, cmd, data, len, false);
-+
-+	inff_dbg(DEVCMD, "ifidx=%d, cmd=%d, len=%d, err=%d\n", ifp->ifidx, cmd,
-+		 len, err);
-+	inff_dbg_hex_dump(INFF_MSGLVL_ON(DEVCMD), data,
-+			  min_t(uint, len, MAX_HEX_DUMP_LEN), "data\n");
-+
-+	mutex_unlock(&ifp->drvr->proto_block);
-+
-+	return err;
-+}
-+
-+static s32
-+inff_fwcmd_cmd_data(struct inff_if *ifp, u32 cmd, void *data, u32 len, bool set)
-+{
++	u16 array_size;
++	struct inff_if *ifp = netdev_priv(dev);
 +	struct inff_pub *drvr = ifp->drvr;
-+	s32 err, fwerr;
-+	u8 resend_cnt = 1;
 +
-+	if (drvr->bus_if->state != INFF_BUS_UP) {
-+		iphy_err(drvr, "bus is down. we have nothing to do.\n");
-+		return -EIO;
-+	}
-+
-+	if (data)
-+		len = min_t(uint, len, INFF_DCMD_MAXLEN);
-+
-+	do {
-+		if (set)
-+			err = inff_proto_set_fwcmd(drvr, ifp->ifidx, cmd,
-+						   data, len, &fwerr);
-+		else
-+			err = inff_proto_query_fwcmd(drvr, ifp->ifidx, cmd,
-+						     data, len, &fwerr);
-+		if (!err || resend_cnt > MAX_CMD_RESEND)
++	if (sset == ETH_SS_STATS) {
++		switch (drvr->cnt_ver) {
++		case INFF_WLC_CNT_VER_30:
++			array_size = ARRAY_SIZE(inff_wlc_counter_strs_v30);
 +			break;
-+
-+		inff_err("cmd error %d, resend cmd count %d\n", err, resend_cnt++);
-+	} while (true);
-+
-+	if (err) {
-+		inff_dbg(DEVCMD, "Failed: error=%d\n", err);
-+	} else if (fwerr < 0) {
-+		inff_dbg(DEVCMD, "Firmware error: %s (%d)\n",
-+			 inff_fwcmd_get_errstr((u32)(-fwerr)), fwerr);
-+		err = -EBADE;
-+	}
-+	if (ifp->fwil_fwerr)
-+		return fwerr;
-+
-+	return err;
-+}
-+
-+s32
-+inff_fwcmd_cmd_data_set(struct inff_if *ifp, u32 cmd, void *data, u32 len)
-+{
-+	s32 err;
-+
-+	mutex_lock(&ifp->drvr->proto_block);
-+
-+	inff_dbg(DEVCMD, "ifidx=%d, cmd=%d, len=%d\n", ifp->ifidx, cmd, len);
-+	inff_dbg_hex_dump(INFF_MSGLVL_ON(DEVCMD), data,
-+			  min_t(uint, len, MAX_HEX_DUMP_LEN), "data\n");
-+
-+	err = inff_fwcmd_cmd_data(ifp, cmd, data, len, true);
-+
-+	mutex_unlock(&ifp->drvr->proto_block);
-+
-+	return err;
-+}
-+
-+s32
-+inff_fwcmd_cmd_data_get(struct inff_if *ifp, u32 cmd, void *data, u32 len)
-+{
-+	s32 err;
-+
-+	mutex_lock(&ifp->drvr->proto_block);
-+
-+	err = inff_fwcmd_cmd_data(ifp, cmd, data, len, false);
-+
-+	inff_err("ifidx=%d, cmd=%d, len=%d, err=%d\n", ifp->ifidx, cmd,
-+		 len, err);
-+	inff_dbg_hex_dump(INFF_MSGLVL_ON(DEVCMD), data,
-+			  min_t(uint, len, MAX_HEX_DUMP_LEN), "data\n");
-+
-+	mutex_unlock(&ifp->drvr->proto_block);
-+
-+	return err;
-+}
-+
-+s32
-+inff_fwcmd_cmd_int_set(struct inff_if *ifp, u32 cmd, u32 data)
-+{
-+	s32 err;
-+	__le32 data_le = cpu_to_le32(data);
-+
-+	mutex_lock(&ifp->drvr->proto_block);
-+	inff_dbg(DEVCMD, "ifidx=%d, cmd=%d, value=%d\n", ifp->ifidx, cmd, data);
-+	err = inff_fwcmd_cmd_data(ifp, cmd, &data_le, sizeof(data_le), true);
-+	mutex_unlock(&ifp->drvr->proto_block);
-+
-+	return err;
-+}
-+
-+s32
-+inff_fwcmd_cmd_int_get(struct inff_if *ifp, u32 cmd, u32 *data)
-+{
-+	s32 err;
-+	__le32 data_le = cpu_to_le32(*data);
-+
-+	mutex_lock(&ifp->drvr->proto_block);
-+	err = inff_fwcmd_cmd_data(ifp, cmd, &data_le, sizeof(data_le), false);
-+	mutex_unlock(&ifp->drvr->proto_block);
-+	*data = le32_to_cpu(data_le);
-+	inff_dbg(DEVCMD, "ifidx=%d, cmd=%d, value=%d\n", ifp->ifidx, cmd, *data);
-+
-+	return err;
-+}
-+
-+static u32
-+inff_create_iovar(const char *name, const char *data, u32 datalen,
-+		  char *buf, u32 buflen)
-+{
-+	u32 len;
-+
-+	len = strlen(name) + 1;
-+
-+	if ((len + datalen) > buflen)
-+		return 0;
-+
-+	memcpy(buf, name, len);
-+
-+	/* append data onto the end of the name string */
-+	if (data && datalen)
-+		memcpy(&buf[len], data, datalen);
-+
-+	return len + datalen;
-+}
-+
-+s32
-+inff_fwcmd_iovar_data_set(struct inff_if *ifp, const char *name,
-+			  const void *data, u32 len)
-+{
-+	struct inff_pub *drvr = ifp->drvr;
-+	s32 err;
-+	u32 buflen;
-+
-+	mutex_lock(&drvr->proto_block);
-+
-+	inff_dbg(DEVCMD, "ifidx=%d, name=%s, len=%d\n", ifp->ifidx, name, len);
-+	inff_dbg_hex_dump(INFF_MSGLVL_ON(DEVCMD), data,
-+			  min_t(uint, len, MAX_HEX_DUMP_LEN), "data\n");
-+
-+	buflen = inff_create_iovar(name, data, len, drvr->proto_buf,
-+				   sizeof(drvr->proto_buf));
-+	if (buflen) {
-+		err = inff_fwcmd_cmd_data(ifp, INFF_C_SET_VAR,
-+					  drvr->proto_buf, buflen, true);
++		default:
++			inff_err("Unsupported counters version\n");
++			return -EOPNOTSUPP;
++		}
 +	} else {
-+		err = -EPERM;
-+		iphy_err(drvr, "Creating iovar failed\n");
++		inff_dbg(INFO, "Does not support ethtool string set %d\n", sset);
++		return -EOPNOTSUPP;
 +	}
-+
-+	mutex_unlock(&drvr->proto_block);
-+	return err;
++	return array_size;
 +}
 +
-+s32
-+inff_fwcmd_iovar_data_get(struct inff_if *ifp, const char *name,
-+			  void *data, u32 len)
++static const struct ethtool_ops inff_ethtool_ops = {
++	.get_drvinfo = inff_ethtool_get_drvinfo,
++	.get_ts_info = ethtool_op_get_ts_info,
++	.get_strings = inff_ethtool_get_strings,
++	.get_ethtool_stats = inff_ethtool_get_stats,
++	.get_sset_count	= inff_ethtool_get_scount,
++};
++
++void inff_net_txflowblock(struct inff_if *ifp,
++			  enum inff_netif_stop_reason reason, bool state)
 +{
-+	struct inff_pub *drvr = ifp->drvr;
-+	s32 err;
-+	u32 buflen;
++	unsigned long flags;
 +
-+	mutex_lock(&drvr->proto_block);
++	if (!ifp || !ifp->ndev)
++		return;
 +
-+	buflen = inff_create_iovar(name, data, len, drvr->proto_buf,
-+				   sizeof(drvr->proto_buf));
-+	if (buflen) {
-+		err = inff_fwcmd_cmd_data(ifp, INFF_C_GET_VAR,
-+					  drvr->proto_buf, buflen, false);
-+		if (err == 0)
-+			memcpy(data, drvr->proto_buf, len);
++	inff_dbg(TRACE, "bsscfgidx=%d stop=0x%X reason=%d state=%d\n",
++		 ifp->bsscfgidx, ifp->netif_stop, reason, state);
++
++	spin_lock_irqsave(&ifp->netif_stop_lock, flags);
++	if (state) {
++		if (!ifp->netif_stop)
++			netif_stop_queue(ifp->ndev);
++		ifp->netif_stop |= reason;
 +	} else {
-+		err = -EPERM;
-+		iphy_err(drvr, "Creating iovar failed\n");
++		ifp->netif_stop &= ~reason;
++		if (!ifp->netif_stop)
++			netif_wake_queue(ifp->ndev);
 +	}
-+
-+	inff_dbg(DEVCMD, "ifidx=%d, name=%s, len=%d, err=%d\n", ifp->ifidx, name,
-+		 len, err);
-+	inff_dbg_hex_dump(INFF_MSGLVL_ON(DEVCMD), data,
-+			  min_t(uint, len, MAX_HEX_DUMP_LEN), "data\n");
-+
-+	mutex_unlock(&drvr->proto_block);
-+	return err;
++	spin_unlock_irqrestore(&ifp->netif_stop_lock, flags);
 +}
 +
-+s32
-+inff_fwcmd_iovar_int_set(struct inff_if *ifp, const char *name, u32 data)
++void inff_net_setcarrier(struct inff_if *ifp, bool on)
 +{
-+	__le32 data_le = cpu_to_le32(data);
++	struct net_device *ndev;
 +
-+	return inff_fwcmd_iovar_data_set(ifp, name, &data_le, sizeof(data_le));
-+}
++	ndev = ifp->ndev;
++	inff_net_txflowblock(ifp, INFF_NETIF_STOP_REASON_DISCONNECTED, !on);
++	if (on) {
++		if (!netif_carrier_ok(ndev))
++			netif_carrier_on(ndev);
 +
-+s32
-+inff_fwcmd_iovar_int_get(struct inff_if *ifp, const char *name, u32 *data)
-+{
-+	__le32 data_le = cpu_to_le32(*data);
-+	s32 err;
-+
-+	err = inff_fwcmd_iovar_data_get(ifp, name, &data_le, sizeof(data_le));
-+	if (err == 0)
-+		*data = le32_to_cpu(data_le);
-+	return err;
-+}
-+
-+static u32
-+inff_create_bsscfg(s32 bsscfgidx, const char *name, char *data, u32 datalen,
-+		   char *buf, u32 buflen)
-+{
-+	const s8 *prefix = "bsscfg:";
-+	s8 *p;
-+	u32 prefixlen;
-+	u32 namelen;
-+	u32 iolen;
-+	__le32 bsscfgidx_le;
-+
-+	if (bsscfgidx == 0)
-+		return inff_create_iovar(name, data, datalen, buf, buflen);
-+
-+	prefixlen = strlen(prefix);
-+	namelen = strlen(name) + 1; /* length of iovar  name + null */
-+	iolen = prefixlen + namelen + sizeof(bsscfgidx_le) + datalen;
-+
-+	if (buflen < iolen) {
-+		inff_err("buffer is too short\n");
-+		return 0;
-+	}
-+
-+	p = buf;
-+
-+	/* copy prefix, no null */
-+	memcpy(p, prefix, prefixlen);
-+	p += prefixlen;
-+
-+	/* copy iovar name including null */
-+	memcpy(p, name, namelen);
-+	p += namelen;
-+
-+	/* bss config index as first data */
-+	bsscfgidx_le = cpu_to_le32(bsscfgidx);
-+	memcpy(p, &bsscfgidx_le, sizeof(bsscfgidx_le));
-+	p += sizeof(bsscfgidx_le);
-+
-+	/* parameter buffer follows */
-+	if (datalen)
-+		memcpy(p, data, datalen);
-+
-+	return iolen;
-+}
-+
-+s32
-+inff_fwcmd_bsscfg_data_set(struct inff_if *ifp, const char *name,
-+			   void *data, u32 len)
-+{
-+	struct inff_pub *drvr = ifp->drvr;
-+	s32 err;
-+	u32 buflen;
-+
-+	mutex_lock(&drvr->proto_block);
-+
-+	inff_dbg(DEVCMD, "ifidx=%d, bsscfgidx=%d, name=%s, len=%d\n", ifp->ifidx,
-+		 ifp->bsscfgidx, name, len);
-+	inff_dbg_hex_dump(INFF_MSGLVL_ON(DEVCMD), data,
-+			  min_t(uint, len, MAX_HEX_DUMP_LEN), "data\n");
-+
-+	buflen = inff_create_bsscfg(ifp->bsscfgidx, name, data, len,
-+				    drvr->proto_buf, sizeof(drvr->proto_buf));
-+	if (buflen) {
-+		err = inff_fwcmd_cmd_data(ifp, INFF_C_SET_VAR,
-+					  drvr->proto_buf, buflen, true);
 +	} else {
-+		err = -EPERM;
-+		iphy_err(drvr, "Creating bsscfg failed\n");
++		if (netif_carrier_ok(ndev))
++			netif_carrier_off(ndev);
 +	}
-+
-+	mutex_unlock(&drvr->proto_block);
-+	return err;
 +}
 +
-+s32
-+inff_fwcmd_bsscfg_data_get(struct inff_if *ifp, const char *name,
-+			   void *data, u32 len)
++void inff_net_rx(struct inff_if *ifp, struct sk_buff *skb, bool inirq)
 +{
-+	struct inff_pub *drvr = ifp->drvr;
-+	s32 err;
-+	u32 buflen;
++	if (skb->pkt_type == PACKET_MULTICAST)
++		ifp->ndev->stats.multicast++;
 +
-+	mutex_lock(&drvr->proto_block);
-+
-+	buflen = inff_create_bsscfg(ifp->bsscfgidx, name, data, len,
-+				    drvr->proto_buf, sizeof(drvr->proto_buf));
-+	if (buflen) {
-+		err = inff_fwcmd_cmd_data(ifp, INFF_C_GET_VAR,
-+					  drvr->proto_buf, buflen, false);
-+		if (err == 0)
-+			memcpy(data, drvr->proto_buf, len);
-+	} else {
-+		err = -EPERM;
-+		iphy_err(drvr, "Creating bsscfg failed\n");
-+	}
-+	inff_dbg(DEVCMD, "ifidx=%d, bsscfgidx=%d, name=%s, len=%d, err=%d\n",
-+		 ifp->ifidx, ifp->bsscfgidx, name, len, err);
-+	inff_dbg_hex_dump(INFF_MSGLVL_ON(DEVCMD), data,
-+			  min_t(uint, len, MAX_HEX_DUMP_LEN), "data\n");
-+
-+	mutex_unlock(&drvr->proto_block);
-+	return err;
-+}
-+
-+s32
-+inff_fwcmd_bsscfg_int_set(struct inff_if *ifp, const char *name, u32 data)
-+{
-+	__le32 data_le = cpu_to_le32(data);
-+
-+	return inff_fwcmd_bsscfg_data_set(ifp, name, &data_le,
-+					  sizeof(data_le));
-+}
-+
-+s32
-+inff_fwcmd_bsscfg_int_get(struct inff_if *ifp, const char *name, u32 *data)
-+{
-+	__le32 data_le = cpu_to_le32(*data);
-+	s32 err;
-+
-+	err = inff_fwcmd_bsscfg_data_get(ifp, name, &data_le,
-+					 sizeof(data_le));
-+	if (err == 0)
-+		*data = le32_to_cpu(data_le);
-+	return err;
-+}
-+
-+static int inff_fwcmd_xtlv_header_size(u16 opts)
-+{
-+	int len = (int)offsetof(struct inff_xtlv, data);
-+
-+	if (opts & INFF_XTLV_OPTION_IDU8)
-+		--len;
-+	if (opts & INFF_XTLV_OPTION_LENU8)
-+		--len;
-+
-+	return len;
-+}
-+
-+static int inff_fwcmd_xtlv_data_size(int dlen, u16 opts)
-+{
-+	int hsz;
-+
-+	hsz = inff_fwcmd_xtlv_header_size(opts);
-+	if (opts & INFF_XTLV_OPTION_ALIGN32)
-+		return roundup(dlen + hsz, 4);
-+
-+	return dlen + hsz;
-+}
-+
-+static void inff_fwcmd_xtlv_pack_header(struct inff_xtlv *xtlv, u16 id, u16 len,
-+					const u8 *data, u16 opts)
-+{
-+	u8 *data_buf;
-+	u16 mask = INFF_XTLV_OPTION_IDU8 | INFF_XTLV_OPTION_LENU8;
-+
-+	if (!(opts & mask)) {
-+		u8 *idp = (u8 *)xtlv;
-+		u8 *lenp = idp + sizeof(xtlv->id);
-+
-+		put_unaligned_le16(id, idp);
-+		put_unaligned_le16(len, lenp);
-+		data_buf = lenp + sizeof(u16);
-+	} else if ((opts & mask) == mask) { /* u8 id and u8 len */
-+		u8 *idp = (u8 *)xtlv;
-+		u8 *lenp = idp + 1;
-+
-+		*idp = (u8)id;
-+		*lenp = (u8)len;
-+		data_buf = lenp + sizeof(u8);
-+	} else if (opts & INFF_XTLV_OPTION_IDU8) { /* u8 id, u16 len */
-+		u8 *idp = (u8 *)xtlv;
-+		u8 *lenp = idp + 1;
-+
-+		*idp = (u8)id;
-+		put_unaligned_le16(len, lenp);
-+		data_buf = lenp + sizeof(u16);
-+	} else if (opts & INFF_XTLV_OPTION_LENU8) { /* u16 id, u8 len */
-+		u8 *idp = (u8 *)xtlv;
-+		u8 *lenp = idp + sizeof(u16);
-+
-+		put_unaligned_le16(id, idp);
-+		*lenp = (u8)len;
-+		data_buf = lenp + sizeof(u8);
-+	} else {
-+		WARN(true, "Unexpected xtlv option");
++	if (!(ifp->ndev->flags & IFF_UP)) {
++		inff_pkt_buf_free_skb(skb);
 +		return;
 +	}
 +
-+	if (opts & INFF_XTLV_OPTION_LENU8) {
-+		WARN_ON(len > 0x00ff);
-+		len &= 0xff;
-+	}
++	ifp->ndev->stats.rx_bytes += skb->len;
++	ifp->ndev->stats.rx_packets++;
 +
-+	if (data)
-+		memcpy(data_buf, data, len);
++	inff_dbg(DATA, "rx proto=0x%X\n", ntohs(skb->protocol));
++	if (ifp->napi.poll && ifp->napi_gro)
++		napi_gro_receive(&ifp->napi, skb);
++	else
++		netif_rx(skb);
 +}
 +
-+u32 inff_fwcmd_pack_xtlv(u16 id, char *data, u32 len,
-+			 char **buf, u16 *buflen)
++static int inff_netdev_open(struct net_device *ndev)
 +{
-+	u32 iolen;
-+
-+	iolen = inff_fwcmd_xtlv_data_size(len, INFF_XTLV_OPTION_ALIGN32);
-+
-+	if (iolen > *buflen) {
-+		WARN(true, "xtlv buffer is too short");
-+		return 0;
-+	}
-+
-+	inff_fwcmd_xtlv_pack_header((void *)*buf, id, len, data,
-+				    INFF_XTLV_OPTION_ALIGN32);
-+
-+	*buf = *buf + iolen;
-+	*buflen -= iolen;
-+	return iolen;
-+}
-+
-+static u32 inff_create_xtlv(const char *name, u16 id, char *data, u32 len,
-+			    char *buf, u32 buflen)
-+{
-+	u32 iolen;
-+	u32 nmlen;
-+
-+	nmlen = strlen(name) + 1;
-+	iolen = nmlen + inff_fwcmd_xtlv_data_size(len, INFF_XTLV_OPTION_ALIGN32);
-+
-+	if (iolen > buflen) {
-+		inff_err("buffer is too short\n");
-+		return 0;
-+	}
-+
-+	memcpy(buf, name, nmlen);
-+	inff_fwcmd_xtlv_pack_header((void *)(buf + nmlen), id, len, data,
-+				    INFF_XTLV_OPTION_ALIGN32);
-+
-+	return iolen;
-+}
-+
-+s32 inff_fwcmd_xtlv_data_set(struct inff_if *ifp, const char *name, u16 id,
-+			     void *data, u32 len)
-+{
++	struct inff_if *ifp = netdev_priv(ndev);
 +	struct inff_pub *drvr = ifp->drvr;
-+	s32 err;
-+	u32 buflen;
++	struct inff_bus *bus_if = drvr->bus_if;
++	u32 toe_ol = 0;
++	int ret;
 +
-+	mutex_lock(&drvr->proto_block);
-+
-+	inff_dbg(DEVCMD, "ifidx=%d, name=%s, id=%u, len=%u\n", ifp->ifidx, name,
-+		 id, len);
-+	inff_dbg_hex_dump(INFF_MSGLVL_ON(DEVCMD), data,
-+			  min_t(uint, len, MAX_HEX_DUMP_LEN), "data\n");
-+
-+	buflen = inff_create_xtlv(name, id, data, len,
-+				  drvr->proto_buf, sizeof(drvr->proto_buf));
-+	if (buflen) {
-+		err = inff_fwcmd_cmd_data(ifp, INFF_C_SET_VAR,
-+					  drvr->proto_buf, buflen, true);
-+	} else {
-+		err = -EPERM;
-+		iphy_err(drvr, "Creating xtlv failed\n");
++	/* If bus is not ready, can't continue */
++	if (bus_if->state != INFF_BUS_UP) {
++		iphy_err(drvr, "failed bus is not ready\n");
++		return -EAGAIN;
 +	}
 +
-+	mutex_unlock(&drvr->proto_block);
-+	return err;
++	atomic_set(&ifp->pend_8021x_cnt, 0);
++
++	/* Get current TOE mode from dongle */
++	if (inff_fwcmd_iovar_int_get(ifp, "toe_ol", &toe_ol) >= 0 &&
++	    (toe_ol & TOE_TX_CSUM_OL) != 0)
++		ndev->features |= NETIF_F_IP_CSUM;
++	else
++		ndev->features &= ~NETIF_F_IP_CSUM;
++
++	wiphy_lock(drvr->wiphy);
++	ret = inff_cfg80211_up(ndev);
++	wiphy_unlock(drvr->wiphy);
++
++	if (ret) {
++		iphy_err(drvr, "failed to bring up cfg80211\n");
++		return -EIO;
++	}
++
++	/* Clear, carrier, set when connected or AP mode. */
++	netif_carrier_off(ndev);
++
++	return 0;
 +}
 +
-+s32 inff_fwcmd_xtlv_data_get(struct inff_if *ifp, const char *name, u16 id,
-+			     void *data, u32 len)
++static int inff_netdev_stop(struct net_device *ndev)
 +{
++	struct inff_if *ifp = netdev_priv(ndev);
 +	struct inff_pub *drvr = ifp->drvr;
-+	s32 err;
-+	u32 buflen;
 +
-+	mutex_lock(&drvr->proto_block);
++	wiphy_lock(drvr->wiphy);
 +
-+	buflen = inff_create_xtlv(name, id, data, len,
-+				  drvr->proto_buf, sizeof(drvr->proto_buf));
-+	if (buflen) {
-+		err = inff_fwcmd_cmd_data(ifp, INFF_C_GET_VAR,
-+					  drvr->proto_buf, buflen, false);
-+		if (err == 0)
-+			memcpy(data, drvr->proto_buf, len);
-+	} else {
-+		err = -EPERM;
-+		iphy_err(drvr, "Creating bsscfg failed\n");
++	if (inff_socitype_is_ai(drvr->bus_if)) {
++		inff_cfg80211_down(ndev);
++	} else if (inff_socitype_is_cp(drvr->bus_if)) {
++		inff_cp_cfg80211_link_down(ifp);
++		clear_bit(INFF_VIF_STATUS_READY, &ifp->vif->sme_state);
 +	}
-+	inff_dbg(DEVCMD, "ifidx=%d, name=%s, id=%u, len=%u, err=%d\n",
-+		 ifp->ifidx, name, id, len, err);
-+	inff_dbg_hex_dump(INFF_MSGLVL_ON(DEVCMD), data,
-+			  min_t(uint, len, MAX_HEX_DUMP_LEN), "data\n");
 +
-+	mutex_unlock(&drvr->proto_block);
-+	return err;
++	wiphy_unlock(drvr->wiphy);
++
++	inff_net_setcarrier(ifp, false);
++
++	return 0;
 +}
 +
-+s32 inff_fwcmd_xtlv_int_set(struct inff_if *ifp, const char *name, u16 id, u32 data)
++static netdev_tx_t inff_netdev_start_xmit(struct sk_buff *skb,
++					  struct net_device *ndev)
 +{
-+	__le32 data_le = cpu_to_le32(data);
++	int ret;
++	struct inff_if *ifp = netdev_priv(ndev);
++	struct inff_pub *drvr = ifp->drvr;
++	struct ethhdr *eh;
++	int head_delta;
++	unsigned int tx_bytes = skb->len;
 +
-+	return inff_fwcmd_xtlv_data_set(ifp, name, id, &data_le,
-+					sizeof(data_le));
-+}
++	/* Can the device send data? */
++	if (drvr->bus_if->state != INFF_BUS_UP) {
++		iphy_err(drvr, "xmit rejected state=%d\n", drvr->bus_if->state);
++		netif_stop_queue(ndev);
++		dev_kfree_skb(skb);
++		ret = -ENODEV;
++		goto done;
++	}
 +
-+s32 inff_fwcmd_xtlv_int_get(struct inff_if *ifp, const char *name, u16 id, u32 *data)
-+{
-+	__le32 data_le = cpu_to_le32(*data);
-+	s32 err;
++	/* Make sure there's enough writeable headroom */
++	if (skb_headroom(skb) < drvr->hdrlen || skb_header_cloned(skb)) {
++		head_delta = max_t(int, drvr->hdrlen - skb_headroom(skb), 0);
 +
-+	err = inff_fwcmd_xtlv_data_get(ifp, name, id, &data_le,
-+				       sizeof(data_le));
-+	if (err == 0)
-+		*data = le32_to_cpu(data_le);
-+	return err;
-+}
-+
-+s32 inff_fwcmd_xtlv_int8_get(struct inff_if *ifp, const char *name, u16 id, u8 *data)
-+{
-+	return inff_fwcmd_xtlv_data_get(ifp, name, id, data, sizeof(*data));
-+}
-+
-+s32 inff_fwcmd_xtlv_int16_get(struct inff_if *ifp, const char *name, u16 id, u16 *data)
-+{
-+	__le16 data_le = cpu_to_le16(*data);
-+	s32 err;
-+
-+	err = inff_fwcmd_xtlv_data_get(ifp, name, id, &data_le, sizeof(data_le));
-+	if (err == 0)
-+		*data = le16_to_cpu(data_le);
-+	return err;
-+}
-+
-+s32 inff_fwcmd_xtlv_find_wlc_cntr(u8 *src, u16 *len)
-+{
-+	u16 tlv_id, data_len;
-+	u16 packing_offset, cur_tlv = INFF_IOVAR_XTLV_BEGIN;
-+
-+	while (cur_tlv < *len) {
-+		memcpy(&tlv_id, (src + cur_tlv), sizeof(*len));
-+		memcpy(&data_len, (src + cur_tlv + INFF_XTLV_TYPE_SIZE), sizeof(*len));
-+		if (tlv_id == INFF_WL_CNT_XTLV_SLICE_IDX) {
-+			*len = data_len;
-+			return cur_tlv;
++		inff_dbg(INFO, "%s: %s headroom\n", inff_ifname(ifp),
++			 head_delta ? "insufficient" : "unmodifiable");
++		atomic_inc(&drvr->bus_if->stats.pktcowed);
++		ret = pskb_expand_head(skb, ALIGN(head_delta, NET_SKB_PAD), 0,
++				       GFP_ATOMIC);
++		if (ret < 0) {
++			iphy_err(drvr, "%s: failed to expand headroom\n",
++				 inff_ifname(ifp));
++			atomic_inc(&drvr->bus_if->stats.pktcow_failed);
++			dev_kfree_skb(skb);
++			goto done;
 +		}
-+		/* xTLV data has 4 bytes packing. So caclculate the packing offset using the data */
-+		packing_offset = INFF_XTLV_PACKING_FACTOR(data_len);
-+		cur_tlv += INFF_XTLV_TYPE_LEN_SIZE + data_len + packing_offset;
 +	}
-+	return -EINVAL;
++
++	/* validate length for ether packet */
++	if (skb->len < sizeof(*eh)) {
++		ret = -EINVAL;
++		dev_kfree_skb(skb);
++		goto done;
++	}
++
++	eh = (struct ethhdr *)(skb->data);
++
++	if (eh->h_proto == htons(ETH_P_PAE))
++		atomic_inc(&ifp->pend_8021x_cnt);
++
++	/* determine the priority */
++	if (skb->priority == 0 || skb->priority > 7)
++		skb->priority = cfg80211_classify8021d(skb, NULL);
++
++	/* set pacing shift for packet aggregation */
++	sk_pacing_shift_update(skb->sk, 8);
++
++	ret = inff_proto_tx_queue_data(drvr, ifp->ifidx, skb);
++	if (ret < 0)
++		inff_txfinalize(ifp, skb, false);
++
++done:
++	if (ret) {
++		ndev->stats.tx_dropped++;
++	} else {
++		ndev->stats.tx_packets++;
++		ndev->stats.tx_bytes += tx_bytes;
++	}
++
++	/* Return ok: we always eat the packet */
++	return NETDEV_TX_OK;
 +}
-diff --git a/drivers/net/wireless/infineon/inffmac/dev_cmd.h b/drivers/net/wireless/infineon/inffmac/dev_cmd.h
++
++static int inff_netdev_set_mac_address(struct net_device *ndev, void *addr)
++{
++	struct inff_if *ifp = netdev_priv(ndev);
++	struct sockaddr *sa = (struct sockaddr *)addr;
++	int err = 0;
++
++	if (inff_socitype_is_ai(ifp->drvr->bus_if)) {
++		err = inff_set_cur_etheraddr(ifp, sa->sa_data);
++		if (err >= 0) {
++			inff_dbg(TRACE, "MAC Address updated to %pM\n", sa->sa_data);
++			memcpy(ifp->mac_addr, sa->sa_data, ETH_ALEN);
++			eth_hw_addr_set(ifp->ndev, ifp->mac_addr);
++		}
++	}
++
++	return err;
++}
++
++static void inff_net_set_multicast_list(struct wiphy *wiphy,
++					struct wiphy_work *work)
++{
++	struct inff_if *ifp = container_of(work, struct inff_if,
++					   multicast_work);
++	struct inff_pub *drvr = ifp->drvr;
++	struct net_device *ndev = ifp->ndev;
++	struct netdev_hw_addr *ha;
++	u32 cmd_value, cnt;
++	__le32 cnt_le;
++	char *buf, *bufp;
++	u32 buflen;
++	s32 err;
++
++	if (inff_socitype_is_cp(ifp->drvr->bus_if))
++		return;
++
++	/* Determine initial value of allmulti flag */
++	cmd_value = (ndev->flags & IFF_ALLMULTI) ? true : false;
++
++	/* Send down the multicast list first. */
++	cnt = netdev_mc_count(ndev);
++	buflen = sizeof(cnt) + (cnt * ETH_ALEN);
++	buf = kmalloc(buflen, GFP_KERNEL);
++	if (!buf)
++		return;
++	bufp = buf;
++
++	cnt_le = cpu_to_le32(cnt);
++	memcpy(bufp, &cnt_le, sizeof(cnt_le));
++	bufp += sizeof(cnt_le);
++
++	netdev_for_each_mc_addr(ha, ndev) {
++		if (!cnt)
++			break;
++		memcpy(bufp, ha->addr, ETH_ALEN);
++		bufp += ETH_ALEN;
++		cnt--;
++	}
++
++	err = inff_fwcmd_iovar_data_set(ifp, "mcast_list", buf, buflen);
++	if (err < 0) {
++		iphy_err(drvr, "Setting mcast_list failed, %d\n", err);
++		cmd_value = cnt ? true : cmd_value;
++	}
++
++	kfree(buf);
++
++	/*
++	 * Now send the allmulti setting.  This is based on the setting in the
++	 * net_device flags, but might be modified above to be turned on if we
++	 * were trying to set some addresses and dongle rejected it...
++	 */
++	err = inff_fwcmd_iovar_int_set(ifp, "allmulti", cmd_value);
++	if (err < 0)
++		iphy_err(drvr, "Setting allmulti failed, %d\n", err);
++
++	/*Finally, pick up the PROMISC flag */
++	cmd_value = (ndev->flags & IFF_PROMISC) ? true : false;
++	err = inff_fwcmd_cmd_int_set(ifp, INFF_C_SET_PROMISC, cmd_value);
++	if (err < 0) {
++		/* PROMISC unsupported by firmware of older chips */
++		if (err == -EBADE)
++			iphy_info_once(drvr, "INFF_C_SET_PROMISC unsupported\n");
++		else
++			iphy_err(drvr, "Setting INFF_C_SET_PROMISC failed, err=%d\n",
++				 err);
++	}
++}
++
++static void inff_netdev_set_multicast_list(struct net_device *ndev)
++{
++	struct inff_if *ifp = netdev_priv(ndev);
++
++	if (inff_socitype_is_ai(ifp->drvr->bus_if))
++		wiphy_work_queue(ifp->drvr->wiphy, &ifp->multicast_work);
++}
++
++static const struct net_device_ops inff_netdev_ops_pri = {
++	.ndo_open = inff_netdev_open,
++	.ndo_stop = inff_netdev_stop,
++	.ndo_start_xmit = inff_netdev_start_xmit,
++	.ndo_set_mac_address = inff_netdev_set_mac_address,
++	.ndo_set_rx_mode = inff_netdev_set_multicast_list,
++};
++
++int inff_net_attach(struct inff_if *ifp, bool locked)
++{
++	struct inff_pub *drvr = ifp->drvr;
++	struct net_device *ndev = ifp->ndev;
++	s32 err;
++
++	if (!ndev)
++		return -EINVAL;
++
++	/* set appropriate operations */
++	ndev->netdev_ops = &inff_netdev_ops_pri;
++
++	ndev->needed_headroom += drvr->hdrlen;
++	ndev->ethtool_ops = &inff_ethtool_ops;
++
++	/* set the mac address & netns */
++	eth_hw_addr_set(ndev, ifp->mac_addr);
++	dev_net_set(ndev, wiphy_net(drvr->config->wiphy));
++
++	wiphy_work_init(&ifp->multicast_work, inff_net_set_multicast_list);
++
++	if (locked)
++		err = cfg80211_register_netdevice(ndev);
++	else
++		err = register_netdev(ndev);
++	if (err != 0) {
++		iphy_err(drvr, "couldn't register the net device\n");
++		goto fail;
++	}
++
++	netif_carrier_off(ndev);
++
++	ndev->priv_destructor = inff_cfg80211_free_netdev_priv;
++	inff_dbg(INFO, "%s: Infineon Dongle Host Driver\n", ndev->name);
++	return 0;
++
++fail:
++	drvr->iflist[ifp->bsscfgidx] = NULL;
++	ndev->netdev_ops = NULL;
++	return -EBADE;
++}
++
++void inff_net_detach(struct net_device *ndev, bool locked)
++{
++	if (ndev->reg_state == NETREG_REGISTERED) {
++		if (locked)
++			cfg80211_unregister_netdevice(ndev);
++		else
++			unregister_netdev(ndev);
++	} else {
++		inff_cfg80211_free_netdev_priv(ndev);
++		free_netdev(ndev);
++	}
++}
++
++struct inff_if *inff_net_add_if(struct inff_pub *drvr, s32 bsscfgidx, s32 ifidx,
++				const char *name, const u8 *mac_addr,
++				enum nl80211_iftype iftype)
++{
++	struct inff_if *ifp;
++	struct net_device *ndev;
++	int err;
++
++	inff_dbg(TRACE, "bsscfgidx=%d, ifidx=%d\n", bsscfgidx, ifidx);
++
++	switch (iftype) {
++	case NL80211_IFTYPE_STATION:
++		fallthrough;
++	case NL80211_IFTYPE_AP:
++		fallthrough;
++	case NL80211_IFTYPE_P2P_GO:
++		fallthrough;
++	case NL80211_IFTYPE_P2P_CLIENT:
++		inff_dbg(INFO, "adding  netdev interface\n");
++		/* Allocate netdev, including space for private structure */
++		ndev = alloc_netdev(sizeof(*ifp), name,
++				    NET_NAME_UNKNOWN, ether_setup);
++		if (!ndev)
++			return ERR_PTR(-ENOMEM);
++
++		ndev->needs_free_netdev = true;
++		ifp = netdev_priv(ndev);
++		ifp->ndev = ndev;
++		/* store mapping ifidx to bsscfgidx */
++		if (drvr->if2bss[ifidx] == INFF_BSSIDX_INVALID)
++			drvr->if2bss[ifidx] = bsscfgidx;
++		break;
++	case NL80211_IFTYPE_P2P_DEVICE:
++		inff_dbg(INFO, "adding non-netdev interface\n");
++		ifp = kzalloc(sizeof(*ifp), GFP_KERNEL);
++		if (!ifp)
++			return ERR_PTR(-ENOMEM);
++		break;
++	default:
++		return ERR_PTR(-EINVAL);
++	}
++
++	ifp->drvr = drvr;
++	drvr->iflist[bsscfgidx] = ifp;
++	ifp->ifidx = ifidx;
++	ifp->bsscfgidx = bsscfgidx;
++
++	if (inff_socitype_is_ai(drvr->bus_if)) {
++		init_waitqueue_head(&ifp->pend_8021x_wait);
++		spin_lock_init(&ifp->netif_stop_lock);
++		INFF_IF_STA_LIST_LOCK_INIT(ifp);
++		 /* Initialize STA info list */
++		INIT_LIST_HEAD(&ifp->sta_list);
++
++		spin_lock_init(&ifp->twt_sess_list_lock);
++		 /* Initialize TWT Session list */
++		INIT_LIST_HEAD(&ifp->twt_sess_list);
++		wiphy_delayed_work_init(&ifp->twt_timeout_work,
++					inff_twt_event_timeout_worker);
++	} else if (inff_socitype_is_cp(drvr->bus_if)) {
++		if (drvr->bus_if->state != INFF_BUS_UP)
++			inff_bus_change_state(drvr->bus_if, INFF_BUS_UP);
++
++		err = inff_cpcmd_data_get(ifp, INFF_CP_C_MAC, ifp->mac_addr, ETH_ALEN);
++		if (err) {
++			inff_err("Could not get MAC address (%d)\n", err);
++			return ERR_PTR(-EINVAL);
++		}
++	}
++
++	if (mac_addr)
++		memcpy(ifp->mac_addr, mac_addr, ETH_ALEN);
++
++	inff_dbg(TRACE, "%s (%pM) created by pid:%x\n",
++		 name, ifp->mac_addr, current->pid);
++
++	return ifp;
++}
++
++void inff_net_del_if(struct inff_pub *drvr, struct inff_if *ifp, bool locked)
++{
++	int ifidx;
++	s32 bsscfgidx;
++	enum nl80211_iftype iftype = NL80211_IFTYPE_UNSPECIFIED;
++
++	if (!drvr || !ifp) {
++		inff_err("NULL interface cannot be removed\n");
++		return;
++	}
++
++	ifidx = ifp->ifidx;
++	bsscfgidx = ifp->bsscfgidx;
++
++	if (ifp->vif)
++		iftype = ifp->vif->wdev.iftype;
++
++	inff_dbg(TRACE, "bsscfgidx=%d, ifidx=%d\n", bsscfgidx,
++		 ifp->ifidx);
++
++	inff_proto_del_if(drvr, ifp);
++
++	/* Stop the aperiodic TWT Session cleanup activity */
++	wiphy_delayed_work_cancel(ifp->drvr->wiphy, &ifp->twt_timeout_work);
++
++	switch (iftype) {
++	case NL80211_IFTYPE_STATION:
++		fallthrough;
++	case NL80211_IFTYPE_AP:
++		fallthrough;
++	case NL80211_IFTYPE_P2P_GO:
++		fallthrough;
++	case NL80211_IFTYPE_P2P_CLIENT:
++		inff_dbg(INFO, "deleting netdev interface\n");
++		if (bsscfgidx == 0) {
++			rtnl_lock();
++			inff_netdev_stop(ifp->ndev);
++			rtnl_unlock();
++		} else {
++			netif_stop_queue(ifp->ndev);
++		}
++
++		wiphy_work_cancel(drvr->wiphy, &ifp->multicast_work);
++		inff_net_detach(ifp->ndev, locked);
++		break;
++	case NL80211_IFTYPE_P2P_DEVICE:
++		inff_dbg(INFO, "deleting non-netdev interface\n");
++		inff_p2p_detach_device(ifp, locked);
++		kfree(ifp);
++		break;
++	default:
++		inff_dbg(TRACE, "Unknown wdev iface type");
++		break;
++	}
++
++	drvr->iflist[bsscfgidx] = NULL;
++	if (drvr->if2bss[ifidx] == bsscfgidx)
++		drvr->if2bss[ifidx] = INFF_BSSIDX_INVALID;
++}
+diff --git a/drivers/net/wireless/infineon/inffmac/net.h b/drivers/net/wireless/infineon/inffmac/net.h
 new file mode 100644
-index 000000000000..9f61cfad7c6b
+index 000000000000..3ed625e9f103
 --- /dev/null
-+++ b/drivers/net/wireless/infineon/inffmac/dev_cmd.h
-@@ -0,0 +1,1261 @@
++++ b/drivers/net/wireless/infineon/inffmac/net.h
+@@ -0,0 +1,42 @@
 +/* SPDX-License-Identifier: ISC */
 +/*
-+ * Copyright (c) 2012 Broadcom Corporation
++ * Copyright (c) 2010 Broadcom Corporation
 + *
 + * Copyright (c) 2025-2026, Infineon Technologies AG, or an affiliate of Infineon Technologies AG.
 + * All rights reserved.
 + */
 +
-+#ifndef INFF_DEV_CMD_H
-+#define INFF_DEV_CMD_H
-+
-+#include <linux/if_ether.h>
-+#include <linux/byteorder/generic.h>
-+#include "debug.h"
-+
-+/*******************************************************************************
-+ * Dongle command codes that are interpreted by firmware
-+ ******************************************************************************/
-+#define INFF_C_GET_VERSION			1
-+#define INFF_C_UP				2
-+#define INFF_C_DOWN				3
-+#define INFF_C_SET_PROMISC			10
-+#define INFF_C_GET_RATE			12
-+#define INFF_C_GET_INFRA			19
-+#define INFF_C_SET_INFRA			20
-+#define INFF_C_GET_AUTH			21
-+#define INFF_C_SET_AUTH			22
-+#define INFF_C_GET_BSSID			23
-+#define INFF_C_GET_SSID			25
-+#define INFF_C_SET_SSID			26
-+#define INFF_C_TERMINATED			28
-+#define INFF_C_GET_CHANNEL			29
-+#define INFF_C_SET_CHANNEL			30
-+#define INFF_C_GET_SRL				31
-+#define INFF_C_SET_SRL				32
-+#define INFF_C_GET_LRL				33
-+#define INFF_C_SET_LRL				34
-+#define INFF_C_GET_RADIO			37
-+#define INFF_C_SET_RADIO			38
-+#define INFF_C_GET_PHYTYPE			39
-+#define INFF_C_SET_KEY				45
-+#define INFF_C_GET_REGULATORY			46
-+#define INFF_C_SET_REGULATORY			47
-+#define INFF_C_SET_PASSIVE_SCAN		49
-+#define INFF_C_SCAN				50
-+#define INFF_C_SCAN_RESULTS			51
-+#define INFF_C_DISASSOC			52
-+#define INFF_C_REASSOC				53
-+#define INFF_C_SET_ROAM_TRIGGER		55
-+#define INFF_C_SET_ROAM_DELTA			57
-+#define INFF_C_GET_BCNPRD			75
-+#define INFF_C_SET_BCNPRD			76
-+#define INFF_C_GET_DTIMPRD			77
-+#define INFF_C_SET_DTIMPRD			78
-+#define INFF_C_SET_COUNTRY			84
-+#define INFF_C_GET_PM				85
-+#define INFF_C_SET_PM				86
-+#define INFF_C_GET_REVINFO			98
-+#define INFF_C_GET_CURR_RATESET		114
-+#define INFF_C_GET_AP				117
-+#define INFF_C_SET_AP				118
-+#define INFF_C_SET_SCB_AUTHORIZE		121
-+#define INFF_C_SET_SCB_DEAUTHORIZE		122
-+#define INFF_C_GET_RSSI			127
-+#define INFF_C_GET_WSEC			133
-+#define INFF_C_SET_WSEC			134
-+#define INFF_C_GET_PHY_NOISE			135
-+#define INFF_C_GET_BSS_INFO			136
-+#define INFF_C_GET_GET_PKTCNTS			137
-+#define INFF_C_GET_BANDLIST			140
-+#define INFF_C_SET_SCB_TIMEOUT			158
-+#define INFF_C_GET_ASSOCLIST			159
-+#define INFF_C_GET_UP				162
-+#define INFF_C_GET_PHYLIST			180
-+#define INFF_C_SET_SCAN_CHANNEL_TIME		185
-+#define INFF_C_SET_SCAN_UNASSOC_TIME		187
-+#define INFF_C_SCB_DEAUTHENTICATE_FOR_REASON	201
-+#define INFF_C_SET_ASSOC_PREFER		205
-+#define INFF_C_GET_VALID_CHANNELS		217
-+#define INFF_C_GET_FAKEFRAG                    218
-+#define INFF_C_SET_FAKEFRAG			219
-+#define INFF_C_GET_KEY_PRIMARY			235
-+#define INFF_C_SET_KEY_PRIMARY			236
-+#define INFF_C_SET_SCAN_PASSIVE_TIME		258
-+#define INFF_C_GET_VAR				262
-+#define INFF_C_SET_VAR				263
-+#define INFF_C_SET_WSEC_PMK			268
-+
-+#define INFF_FW_BADARG				2
-+#define INFF_FW_UNSUPPORTED			23
-+
-+#define INFF_FIL_ACTION_FRAME_SIZE	1800
-+
-+#define INFF_AF_PARAM_V2_FW_MAJOR 13
-+#define INFF_AF_PARAM_V2_FW_MINOR 2
-+
-+#define INFF_AUTH_STATUS_V2_FW_MAJOR 13
-+#define INFF_AUTH_STATUS_V2_FW_MINOR 3
-+
-+#define	INFF_BSS_INFO_VERSION	109 /* curr ver of inff_bss_info_le struct */
-+#define INFF_BSS_RSSI_ON_CHANNEL	0x0004
-+
-+#define INFF_STA_INF        0x00000001	/* Running a Infineon driver */
-+#define INFF_STA_WME        0x00000002	/* WMM association */
-+#define INFF_STA_NONERP     0x00000004	/* No ERP */
-+#define INFF_STA_AUTHE      0x00000008	/* Authenticated */
-+#define INFF_STA_ASSOC      0x00000010	/* Associated */
-+#define INFF_STA_AUTHO      0x00000020	/* Authorized */
-+#define INFF_STA_WDS        0x00000040	/* Wireless Distribution System */
-+#define INFF_STA_WDS_LINKUP 0x00000080	/* WDS traffic/probes flowing properly */
-+#define INFF_STA_PS         0x00000100	/* STA is in power save mode from AP's viewpoint */
-+#define INFF_STA_APSD_BE    0x00000200	/* APSD delv/trigger for AC_BE is default enabled */
-+#define INFF_STA_APSD_BK    0x00000400	/* APSD delv/trigger for AC_BK is default enabled */
-+#define INFF_STA_APSD_VI    0x00000800	/* APSD delv/trigger for AC_VI is default enabled */
-+#define INFF_STA_APSD_VO    0x00001000	/* APSD delv/trigger for AC_VO is default enabled */
-+#define INFF_STA_N_CAP      0x00002000	/* STA 802.11n capable */
-+#define INFF_STA_SCBSTATS   0x00004000	/* Per STA debug stats */
-+#define INFF_STA_AMPDU_CAP  0x00008000	/* STA AMPDU capable */
-+#define INFF_STA_AMSDU_CAP  0x00010000	/* STA AMSDU capable */
-+#define INFF_STA_MIMO_PS    0x00020000	/* mimo ps mode is enabled */
-+#define INFF_STA_MIMO_RTS   0x00040000	/* send rts in mimo ps mode */
-+#define INFF_STA_RIFS_CAP   0x00080000	/* rifs enabled */
-+#define INFF_STA_VHT_CAP    0x00100000	/* STA VHT(11ac) capable */
-+#define INFF_STA_WPS        0x00200000	/* WPS state */
-+#define INFF_STA_DWDS_CAP   0x01000000	/* DWDS CAP */
-+#define INFF_STA_DWDS       0x02000000	/* DWDS active */
-+
-+/* size of inff_scan_params not including variable length array */
-+#define INFF_SCAN_PARAMS_FIXED_SIZE	64
-+#define INFF_SCAN_PARAMS_V2_FIXED_SIZE	72
-+
-+/* version of inff_scan_params structure */
-+#define INFF_SCAN_PARAMS_VERSION_V2	2
-+
-+/* masks for channel and ssid count */
-+#define INFF_SCAN_PARAMS_COUNT_MASK	0x0000ffff
-+#define INFF_SCAN_PARAMS_NSSID_SHIFT	16
-+
-+/* scan type definitions */
-+#define INFF_SCANTYPE_DEFAULT		0xFF
-+#define INFF_SCANTYPE_ACTIVE		0
-+#define INFF_SCANTYPE_PASSIVE		1
-+
-+#define INFF_WSEC_MAX_PSK_LEN		32
-+#define INFF_WSEC_PMK_LEN_SUITEB_192   48
-+#define INFF_WSEC_MAX_PMK_LEN		64	/* SUITE-B-192's PMK is 48 bytes */
-+#define	INFF_WSEC_PASSPHRASE		BIT(0)
-+
-+#define INFF_WSEC_MAX_SAE_PASSWORD_LEN 128
-+
-+/* primary (ie tx) key */
-+#define INFF_PRIMARY_KEY		BIT(1)
-+#define DOT11_BSSTYPE_ANY		2
-+#define INFF_ESCAN_REQ_VERSION		1
-+#define INFF_ESCAN_REQ_VERSION_V2	2
-+
-+#define INFF_MAXRATES_IN_SET		16	/* max # of rates in rateset */
-+
-+/* OBSS Coex Auto/On/Off */
-+#define INFF_OBSS_COEX_AUTO		(-1)
-+#define INFF_OBSS_COEX_OFF		0
-+#define INFF_OBSS_COEX_ON		1
-+
-+/* WOWL bits */
-+/* Wakeup on Magic packet: */
-+#define INFF_WOWL_MAGIC		BIT(0)
-+/* Wakeup on Netpattern */
-+#define INFF_WOWL_NET			BIT(1)
-+/* Wakeup on loss-of-link due to Disassoc/Deauth: */
-+#define INFF_WOWL_DIS			BIT(2)
-+/* Wakeup on retrograde TSF: */
-+#define INFF_WOWL_RETR			BIT(3)
-+/* Wakeup on loss of beacon: */
-+#define INFF_WOWL_BCN			BIT(4)
-+/* Wakeup after test: */
-+#define INFF_WOWL_TST			BIT(5)
-+/* Wakeup after PTK refresh: */
-+#define INFF_WOWL_M1			BIT(6)
-+/* Wakeup after receipt of EAP-Identity Req: */
-+#define INFF_WOWL_EAPID		BIT(7)
-+/* Wakeind via PME(0) or GPIO(1): */
-+#define INFF_WOWL_PME_GPIO		BIT(8)
-+/* need tkip phase 1 key to be updated by the driver: */
-+#define INFF_WOWL_NEEDTKIP1		BIT(9)
-+/* enable wakeup if GTK fails: */
-+#define INFF_WOWL_GTK_FAILURE		BIT(10)
-+/* support extended magic packets: */
-+#define INFF_WOWL_EXTMAGPAT		BIT(11)
-+/* support ARP/NS/keepalive offloading: */
-+#define INFF_WOWL_ARPOFFLOAD		BIT(12)
-+/* read protocol version for EAPOL frames: */
-+#define INFF_WOWL_WPA2			BIT(13)
-+/* If the bit is set, use key rotaton: */
-+#define INFF_WOWL_KEYROT		BIT(14)
-+/* If the bit is set, frm received was bcast frame: */
-+#define INFF_WOWL_BCAST		BIT(15)
-+/* If the bit is set, scan offload is enabled: */
-+#define INFF_WOWL_SCANOL		BIT(16)
-+/* Wakeup on tcpkeep alive timeout: */
-+#define INFF_WOWL_TCPKEEP_TIME		BIT(17)
-+/* Wakeup on mDNS Conflict Resolution: */
-+#define INFF_WOWL_MDNS_CONFLICT	BIT(18)
-+/* Wakeup on mDNS Service Connect: */
-+#define INFF_WOWL_MDNS_SERVICE		BIT(19)
-+/* tcp keepalive got data: */
-+#define INFF_WOWL_TCPKEEP_DATA		BIT(20)
-+/* Firmware died in wowl mode: */
-+#define INFF_WOWL_FW_HALT		BIT(21)
-+/* Enable detection of radio button changes: */
-+#define INFF_WOWL_ENAB_HWRADIO		BIT(22)
-+/* Offloads detected MIC failure(s): */
-+#define INFF_WOWL_MIC_FAIL		BIT(23)
-+/* Wakeup in Unassociated state (Net/Magic Pattern): */
-+#define INFF_WOWL_UNASSOC		BIT(24)
-+/* Wakeup if received matched secured pattern: */
-+#define INFF_WOWL_SECURE		BIT(25)
-+/* Wakeup on receiving pairwise key EAP packets: */
-+#define WIPHY_WOWL_EAP_PK		BIT(28)
-+/* Link Down indication in WoWL mode: */
-+#define INFF_WOWL_LINKDOWN		BIT(31)
-+
-+#define INFF_WOWL_MAXPATTERNS		16
-+#define INFF_WOWL_MAXPATTERNSIZE	128
-+
-+#define CMD_MASK        0x00FFFFFF
-+#define CMD_TYPE_MASK   0xFF000000
-+#define CMD_TYPE_SHIFT  24
-+
-+#define CMD_TYPE_CP     0
-+#define CMD_TYPE_WL     1
-+
-+enum {
-+	INFF_CP_C_MAC		 = 1,   /* Get MAC address, Set not ready */
-+	INFF_CP_C_IPv4		 = 2,   /* Get IPv4 address, Set not ready */
-+	INFF_CP_C_GATEWAY_IP	 = 3,   /* Get gateway address, Set not ready */
-+	INFF_CP_C_NETMASK	 = 4,   /* Get netmask address, Set not ready */
-+	INFF_CP_C_AP_INFO	 = 5,   /* Get AP SSID/BSSID/channel/RSSI, Set not ready */
-+	INFF_CP_C_IP_INFO	 = 6,   /* Get IPv4/gateway/netmask address, Set not ready */
-+	INFF_CP_C_SCAN		 = 7,   /* Set to trigger Wi-Fi scan, Get not support */
-+	INFF_CP_C_CONNECT	 = 8,   /* Set to trigger Wi-Fi connect, Get not support */
-+	INFF_CP_C_DISCONNECT	 = 9,   /* Set to trigger Wi-Fi disconnect, Get not support */
-+	INFF_CP_C_PING		 = 10,  /* Set to trigger ICMP ping, Get not support */
-+	INFF_CP_C_AT_CMD	 = 11,  /* Set to send AT command to chip, Get not support */
-+	INFF_CP_C_MSG_LEVEL	 = 12,  /* Set to msg level to chip, Get not support */
-+	INFF_CP_C_DFU		 = 13,  /* Set to download cp image through SDIO, Get not support */
-+
-+	/* Driver Get/Set */
-+	INFF_CP_C_REG_APP	 = 1001,  /* Set to register task, Get not support */
-+	INFF_CP_C_DEREG_APP	 = 1002,  /* Set to deregister task, Get not support */
-+	INFF_CP_C_EVENT		 = 1003,  /* Get event, Set not support */
-+	INFF_CP_C_REG_MONITOR	 = 1004,  /* Set to register monitor task, Get not support */
-+	INFF_CP_C_DEREG_MONITOR	 = 1005,  /* Set to deregister monitor task, Get not support */
-+	INFF_CP_C_MONITOR_EVENT	 = 1006,  /* Get monitor event, Set not support */
-+};
-+
-+enum {
-+	INFF_UNICAST_FILTER_NUM = 0,
-+	INFF_BROADCAST_FILTER_NUM,
-+	INFF_MULTICAST4_FILTER_NUM,
-+	INFF_MULTICAST6_FILTER_NUM,
-+	INFF_MDNS_FILTER_NUM,
-+	INFF_ARP_FILTER_NUM,
-+	INFF_BROADCAST_ARP_FILTER_NUM,
-+	MAX_PKT_FILTER_COUNT
-+};
-+
-+#define MAX_PKTFILTER_PATTERN_SIZE		16
-+#define MAX_PKTFILTER_PATTERN_FILL_SIZE	(MAX_PKTFILTER_PATTERN_SIZE * 2)
-+
-+#define INFF_COUNTRY_BUF_SZ		4
-+#define INFF_ANT_MAX			4
-+
-+#define INFF_MAX_ASSOCLIST		128
-+
-+#define INFF_TXBF_SU_BFE_CAP		BIT(0)
-+#define INFF_TXBF_MU_BFE_CAP		BIT(1)
-+#define INFF_TXBF_SU_BFR_CAP		BIT(0)
-+#define INFF_TXBF_MU_BFR_CAP		BIT(1)
-+
-+#define	INFF_MAXPMKID			16	/* max # PMKID cache entries */
-+#define INFF_NUMCHANNELS		64
-+
-+#define INFF_MCSSET_LEN		16
-+
-+#define INFF_RSN_KCK_LENGTH		16
-+#define INFF_RSN_KEK_LENGTH		16
-+#define INFF_RSN_REPLAY_LEN		8
-+
-+#define INFF_MFP_NONE			0
-+#define INFF_MFP_CAPABLE		1
-+#define INFF_MFP_REQUIRED		2
-+
-+#define INFF_VHT_CAP_MCS_MAP_NSS_MAX	8
-+
-+#define INFF_HE_CAP_MCS_MAP_NSS_MAX	8
-+
-+#define INFF_PMKSA_VER_2		2
-+#define INFF_PMKSA_VER_3		3
-+#define INFF_PMKSA_NO_EXPIRY		0xffffffff
-+
-+#define INFF_EXTAUTH_START	1
-+#define INFF_EXTAUTH_ABORT	2
-+#define INFF_EXTAUTH_FAIL	3
-+#define INFF_EXTAUTH_SUCCESS	4
-+
-+/* mchan configuration (ap timeslot : sta timeslot)*/
-+#define INFF_MCHAN_CONF_DEFAULT	0 /* mchan_algo=2 (25ms:25ms) */
-+#define INFF_MCHAN_CONF_VEDIO 1 /* mchan_algo=5 (29ms:21ms) */
-+#define INFF_MCHAN_CONF_AUDIO 2 /* mchan_algo=1, mchan_bw=32 (68ms:32ms) */
-+/* mchan algo in dongle */
-+#define INFF_MCHAN_DEFAULT_ALGO 0
-+#define INFF_MCHAN_BANDWIDTH_ALGO 1
-+#define INFF_MCHAN_SI_ALGO 2
-+#define INFF_MCHAN_DYNAMIC_BW_ALGO 3
-+#define INFF_MCHAN_ALTERNATE_SWITCHING 4
-+#define INFF_MCHAN_ASYMMETRIC_SI_ALGO 5
-+#define INFF_MCHAN_BANDWIDTH_VAL 32
-+
-+/* Values for PM */
-+#define INFF_PM_OFF 0
-+#define INFF_PM_MAX 1
-+#define INFF_PM_FAST 2
-+
-+/* MAX_CHUNK_LEN is the maximum length for data passing to firmware in each
-+ * ioctl. It is relatively small because firmware has small maximum size input
-+ * playload restriction for ioctls.
-+ */
-+#define MAX_CHUNK_LEN			1400
-+
-+#define DLOAD_HANDLER_VER		1	/* Downloader version */
-+#define DLOAD_FLAG_VER_MASK		0xf000	/* Downloader version mask */
-+#define DLOAD_FLAG_VER_SHIFT		12	/* Downloader version shift */
-+
-+#define DL_BEGIN			0x0002
-+#define DL_END				0x0004
-+
-+#define DL_TYPE_CLM			2
-+
-+#define WL_RSSI_EVENT_VERSION_OLD	0
-+#define WL_RSSI_EVENT_VERSION_NEW	1
-+
-+/* inf type(id), length, value with w/16 bit id/len. The structure below
-+ * is nominal, and is used to support variable length id and type. See
-+ * xtlv options below.
-+ */
-+struct inff_xtlv {
-+	__le16 id;
-+	__le16 len;
-+	u8 data[];
-+};
-+
-+#define INFF_WL_CNT_XTLV_SLICE_IDX		256
-+#define INFF_IOVAR_XTLV_BEGIN		4
-+#define INFF_XTLV_TYPE_SIZE		2
-+#define INFF_XTLV_TYPE_LEN_SIZE		4
-+
-+/* Macro to calculate packing factor with scalar 4 in a xTLV */
-+#define INFF_XTLV_PACKING_FACTOR(args)	({ \
-+	typeof(args) _args = (args); \
-+	((_args) % 4 == 0 ? 0 : (4 - ((_args) % 4))); \
-+	})
-+
-+enum inff_xtlv_option {
-+	INFF_XTLV_OPTION_ALIGN32 = BIT(0),
-+	INFF_XTLV_OPTION_IDU8 = BIT(1),
-+	INFF_XTLV_OPTION_LENU8 = BIT(2),
-+};
-+
-+/* join preference types for join_pref iovar */
-+enum inff_join_pref_types {
-+	INFF_JOIN_PREF_RSSI = 1,
-+	INFF_JOIN_PREF_WPA,
-+	INFF_JOIN_PREF_BAND,
-+	INFF_JOIN_PREF_RSSI_DELTA,
-+};
-+
-+enum inff_fwcmd_p2p_if_types {
-+	INFF_FIL_P2P_IF_CLIENT,
-+	INFF_FIL_P2P_IF_GO,
-+	INFF_FIL_P2P_IF_DYNBCN_GO,
-+	INFF_FIL_P2P_IF_DEV,
-+};
-+
-+enum inff_wowl_pattern_type {
-+	INFF_WOWL_PATTERN_TYPE_BITMAP = 0,
-+	INFF_WOWL_PATTERN_TYPE_ARP,
-+	INFF_WOWL_PATTERN_TYPE_NA
-+};
-+
-+struct inff_fwcmd_p2p_if_le {
-+	u8 addr[ETH_ALEN];
-+	__le16 type;
-+	__le16 chspec;
-+};
-+
-+struct inff_fwcmd_chan_info_le {
-+	__le32 hw_channel;
-+	__le32 target_channel;
-+	__le32 scan_channel;
-+};
-+
-+struct inff_fwcmd_action_frame_le {
-+	u8	da[ETH_ALEN];
-+	__le16	len;
-+	__le32	packet_id;
-+	u8	data[INFF_FIL_ACTION_FRAME_SIZE];
-+};
-+
-+struct inff_fwcmd_af_params_le {
-+	__le32					channel;
-+	__le32					dwell_time;
-+	u8					bssid[ETH_ALEN];
-+	u8					pad[2];
-+	struct inff_fwcmd_action_frame_le	action_frame;
-+};
-+
-+struct inff_fwcmd_af_params_v2_le {
-+	__le16					version;
-+	__le16					length;
-+	__le32					channel;
-+	__le32					dwell_time;
-+	u8					bssid[ETH_ALEN];
-+	u8					band;
-+	u8					pad[1];
-+	struct inff_fwcmd_action_frame_le	action_frame;
-+};
-+
-+struct inff_fwcmd_bss_enable_le {
-+	__le32 bsscfgidx;
-+	__le32 enable;
-+};
-+
-+struct inff_fwcmd_bwcap_le {
-+	__le32 band;
-+	__le32 bw_cap;
-+};
-+
-+/* Pattern matching filter. Specifies an offset within received packets to
-+ * start matching, the pattern to match, the size of the pattern, and a bitmask
-+ * that indicates which bits within the pattern should be matched.
-+ */
-+struct inff_pkt_filter_pattern_le {
-+	/*
-+	 * Offset within received packet to start pattern matching.
-+	 * Offset '0' is the first byte of the ethernet header.
-+	 */
-+	__le32 offset;
-+	/* Size of the pattern.  Bitmask must be the same size.*/
-+	__le32 size_bytes;
-+	/*
-+	 * Variable length mask and pattern data. mask starts at offset 0.
-+	 * Pattern immediately follows mask.
-+	 */
-+	u8 mask_and_pattern[MAX_PKTFILTER_PATTERN_FILL_SIZE];
-+};
-+
-+/* IOVAR "pkt_filter_add" parameter. Used to install packet filters. */
-+struct inff_pkt_filter_le {
-+	__le32 id;		/* Unique filter id, specified by app. */
-+	__le32 type;		/* Filter type (WL_PKT_FILTER_TYPE_xxx). */
-+	__le32 negate_match;	/* Negate the result of filter matches */
-+	union {			/* Filter definitions */
-+		struct inff_pkt_filter_pattern_le pattern; /* Filter pattern */
-+	} u;
-+};
-+
-+/* IOVAR "pkt_filter_enable" parameter. */
-+struct inff_pkt_filter_enable_le {
-+	__le32 id;		/* Unique filter id */
-+	__le32 enable;		/* Enable/disable bool */
-+};
-+
-+/* BSS info structure
-+ * Applications MUST CHECK ie_offset field and length field to access IEs and
-+ * next bss_info structure in a vector (in struct inff_scan_results)
-+ */
-+struct inff_bss_info_le {
-+	__le32 version;		/* version field */
-+	__le32 length;		/* byte length of data in this record,
-+				 * starting at version and including IEs
-+				 */
-+	u8 BSSID[ETH_ALEN];
-+	__le16 beacon_period;	/* units are Kusec */
-+	__le16 capability;	/* Capability information */
-+	u8 SSID_len;
-+	u8 SSID[32];
-+	struct {
-+		__le32 count;   /* # rates in this set */
-+		u8 rates[16]; /* rates in 500kbps units w/hi bit set if basic */
-+	} rateset;		/* supported rates */
-+	__le16 chanspec;	/* chanspec for bss */
-+	__le16 atim_window;	/* units are Kusec */
-+	u8 dtim_period;	/* DTIM period */
-+	__le16 RSSI;		/* receive signal strength (in dBm) */
-+	s8 phy_noise;		/* noise (in dBm) */
-+
-+	u8 n_cap;		/* BSS is 802.11N Capable */
-+	/* 802.11N BSS Capabilities (based on HT_CAP_*): */
-+	__le32 nbss_cap;
-+	u8 ctl_ch;		/* 802.11N BSS control channel number */
-+	__le32 reserved32[1];	/* Reserved for expansion of BSS properties */
-+	u8 flags;		/* flags */
-+	u8 reserved[3];	/* Reserved for expansion of BSS properties */
-+	u8 basic_mcs[INFF_MCSSET_LEN];	/* 802.11N BSS required MCS set */
-+
-+	__le16 ie_offset;	/* offset at which IEs start, from beginning */
-+	__le32 ie_length;	/* byte length of Information Elements */
-+	__le16 SNR;		/* average SNR of during frame reception */
-+	/* Add new fields here */
-+	/* variable length Information Elements */
-+};
-+
-+struct inff_rateset_le {
-+	/* # rates in this set */
-+	__le32 count;
-+	/* rates in 500kbps units w/hi bit set if basic */
-+	u8 rates[INFF_MAXRATES_IN_SET];
-+};
-+
-+struct inff_ssid_le {
-+	__le32 SSID_len;
-+	unsigned char SSID[IEEE80211_MAX_SSID_LEN];
-+};
-+
-+struct inff_scan_params_le {
-+	struct inff_ssid_le ssid_le;	/* default: {0, ""} */
-+	u8 bssid[ETH_ALEN];	/* default: bcast */
-+	s8 bss_type;		/* default: any,
-+				 * DOT11_BSSTYPE_ANY/INFRASTRUCTURE/INDEPENDENT
-+				 */
-+	u8 scan_type;	/* flags, 0 use default */
-+	__le32 nprobes;	  /* -1 use default, number of probes per channel */
-+	__le32 active_time;	/* -1 use default, dwell time per channel for
-+				 * active scanning
-+				 */
-+	__le32 passive_time;	/* -1 use default, dwell time per channel
-+				 * for passive scanning
-+				 */
-+	__le32 home_time;	/* -1 use default, dwell time for the
-+				 * home channel between channel scans
-+				 */
-+	__le32 channel_num;	/* count of channels and ssids that follow
-+				 *
-+				 * low half is count of channels in
-+				 * channel_list, 0 means default (use all
-+				 * available channels)
-+				 *
-+				 * high half is entries in struct inff_ssid
-+				 * array that follows channel_list, aligned for
-+				 * s32 (4 bytes) meaning an odd channel count
-+				 * implies a 2-byte pad between end of
-+				 * channel_list and first ssid
-+				 *
-+				 * if ssid count is zero, single ssid in the
-+				 * fixed parameter portion is assumed, otherwise
-+				 * ssid in the fixed portion is ignored
-+				 */
-+	union {
-+		__le16 padding;	/* Reserve space for at least 1 entry for abort
-+				 * which uses an on stack inff_scan_params_le
-+				 */
-+		DECLARE_FLEX_ARRAY(__le16, channel_list);	/* chanspecs */
-+	};
-+};
-+
-+struct inff_scan_params_v2_le {
-+	__le16 version;		/* structure version */
-+	__le16 length;		/* structure length */
-+	struct inff_ssid_le ssid_le;	/* default: {0, ""} */
-+	u8 bssid[ETH_ALEN];	/* default: bcast */
-+	s8 bss_type;		/* default: any,
-+				 * DOT11_BSSTYPE_ANY/INFRASTRUCTURE/INDEPENDENT
-+				 */
-+	u8 pad;
-+	__le32 scan_type;	/* flags, 0 use default */
-+	__le32 nprobes;		/* -1 use default, number of probes per channel */
-+	__le32 active_time;	/* -1 use default, dwell time per channel for
-+				 * active scanning
-+				 */
-+	__le32 passive_time;	/* -1 use default, dwell time per channel
-+				 * for passive scanning
-+				 */
-+	__le32 home_time;	/* -1 use default, dwell time for the
-+				 * home channel between channel scans
-+				 */
-+	__le32 channel_num;	/* count of channels and ssids that follow
-+				 *
-+				 * low half is count of channels in
-+				 * channel_list, 0 means default (use all
-+				 * available channels)
-+				 *
-+				 * high half is entries in struct inff_ssid
-+				 * array that follows channel_list, aligned for
-+				 * s32 (4 bytes) meaning an odd channel count
-+				 * implies a 2-byte pad between end of
-+				 * channel_list and first ssid
-+				 *
-+				 * if ssid count is zero, single ssid in the
-+				 * fixed parameter portion is assumed, otherwise
-+				 * ssid in the fixed portion is ignored
-+				 */
-+	union {
-+		__le16 padding;	/* Reserve space for at least 1 entry for abort
-+				 * which uses an on stack inff_scan_params_v2_le
-+				 */
-+		DECLARE_FLEX_ARRAY(__le16, channel_list);	/* chanspecs */
-+	};
-+};
-+
-+struct inff_scan_results {
-+	u32 buflen;
-+	u32 version;
-+	u32 count;
-+	struct inff_bss_info_le bss_info_le[];
-+};
-+
-+struct inff_escan_params_le {
-+	__le32 version;
-+	__le16 action;
-+	__le16 sync_id;
-+	union {
-+		struct inff_scan_params_le params_le;
-+		struct inff_scan_params_v2_le params_v2_le;
-+	};
-+};
-+
-+struct inff_escan_result_le {
-+	__le32 buflen;
-+	__le32 version;
-+	__le16 sync_id;
-+	__le16 bss_count;
-+	struct inff_bss_info_le bss_info_le;
-+};
-+
-+#define WL_ESCAN_RESULTS_FIXED_SIZE (sizeof(struct inff_escan_result_le) - \
-+	sizeof(struct inff_bss_info_le))
-+
-+/* used for association with a specific BSSID and chanspec list */
-+struct inff_assoc_params_le {
-+	/* 00:00:00:00:00:00: broadcast scan */
-+	u8 bssid[ETH_ALEN];
-+	/* 0: all available channels, otherwise count of chanspecs in
-+	 * chanspec_list
-+	 */
-+	__le32 chanspec_num;
-+	/*
-+	 * list of chanspecs. Currently, driver only uses 1 chanspec here.
-+	 * TODO: Conver this into a flexible array to support multiple
-+	 * chanspecs.
-+	 */
-+	__le16 chanspec_list;
-+};
++#ifndef INFF_NET_H
++#define INFF_NET_H
++
++#include <linux/types.h>
++#include <linux/unaligned.h>
 +
 +/**
-+ * struct join_pref params - parameters for preferred join selection.
++ * enum inff_netif_stop_reason - reason for stopping netif queue.
 + *
-+ * @type: preference type (see enum inff_join_pref_types).
-+ * @len: length of bytes following (currently always 2).
-+ * @rssi_gain: signal gain for selection (only when @type is RSSI_DELTA).
-+ * @band: band to which selection preference applies.
-+ *	This is used if @type is BAND or RSSI_DELTA.
++ * @INFF_NETIF_STOP_REASON_FWS_FC:
++ *	netif stopped due to firmware signalling flow control.
++ * @INFF_NETIF_STOP_REASON_FLOW:
++ *	netif stopped due to flowring full.
++ * @INFF_NETIF_STOP_REASON_DISCONNECTED:
++ *	netif stopped due to not being connected (STA mode).
 + */
-+struct inff_join_pref_params {
-+	u8 type;
-+	u8 len;
-+	u8 rssi_gain;
-+	u8 band;
++enum inff_netif_stop_reason {
++	INFF_NETIF_STOP_REASON_FWS_FC = BIT(0),
++	INFF_NETIF_STOP_REASON_FLOW = BIT(1),
++	INFF_NETIF_STOP_REASON_DISCONNECTED = BIT(2)
 +};
 +
-+/* used for join with or without a specific bssid and channel list */
-+struct inff_join_params {
-+	struct inff_ssid_le ssid_le;
-+	struct inff_assoc_params_le params_le;
-+};
++void inff_net_txflowblock(struct inff_if *ifp,
++			  enum inff_netif_stop_reason reason, bool state);
++void inff_net_setcarrier(struct inff_if *ifp, bool on);
++void inff_net_rx(struct inff_if *ifp, struct sk_buff *skb, bool inirq);
++int inff_net_attach(struct inff_if *ifp, bool locked);
++void inff_net_detach(struct net_device *ndev, bool locked);
++struct inff_if *inff_net_add_if(struct inff_pub *drvr, s32 bsscfgidx, s32 ifidx,
++				const char *name, const u8 *mac_addr,
++				enum nl80211_iftype iftype);
++void inff_net_del_if(struct inff_pub *drvr, struct inff_if *ifp, bool locked);
 +
-+/*
-+ * wifi connect structure
-+ */
-+struct inff_cp_connect_le {
-+	u8     ssid_length;                       /* SSID length                     */
-+	char   ssid[IEEE80211_MAX_SSID_LEN + 1];  /* SSID of the access point        */
-+	__le32    security_type;                     /* WiFi security type              */
-+	char   password[PMK_MAX_LEN - 1];         /* Length of WIFI password         */
-+	u8     macaddr[ETH_ALEN];                 /* MAC Address of the access point */
-+	u8     band;                              /* WiFi band of access point       */
-+	__le32    ip_address;                        /* static IP address               */
-+	__le32    gateway;                           /* static gateway                  */
-+	__le32    netmask;                           /* static netmask                  */
-+	__le32    option;                            /* join option                     */
-+} __packed;
-+
-+/* scan params for extended join */
-+struct inff_join_scan_params_le {
-+	u8 scan_type;		/* 0 use default, active or passive scan */
-+	__le32 nprobes;		/* -1 use default, nr of probes per channel */
-+	__le32 active_time;	/* -1 use default, dwell time per channel for
-+				 * active scanning
-+				 */
-+	__le32 passive_time;	/* -1 use default, dwell time per channel
-+				 * for passive scanning
-+				 */
-+	__le32 home_time;	/* -1 use default, dwell time for the home
-+				 * channel between channel scans
-+				 */
-+};
-+
-+/* extended join params */
-+struct inff_ext_join_params_le {
-+	struct inff_ssid_le ssid_le;	/* {0, ""}: wildcard scan */
-+	struct inff_join_scan_params_le scan_le;
-+	struct inff_assoc_params_le assoc_le;
-+};
-+
-+struct inff_wsec_key {
-+	u32 index;		/* key index */
-+	u32 len;		/* key length */
-+	u8 data[WLAN_MAX_KEY_LEN];	/* key data */
-+	u32 pad_1[18];
-+	u32 algo;	/* CRYPTO_ALGO_AES_CCM, CRYPTO_ALGO_WEP128, etc */
-+	u32 flags;	/* misc flags */
-+	u32 pad_2[3];
-+	u32 iv_initialized;	/* has IV been initialized already? */
-+	u32 pad_3;
-+	/* Rx IV */
-+	struct {
-+		u32 hi;	/* upper 32 bits of IV */
-+		u16 lo;	/* lower 16 bits of IV */
-+	} rxiv;
-+	u32 pad_4[2];
-+	u8 ea[ETH_ALEN];	/* per station */
-+};
-+
-+/*
-+ * dongle requires same struct as above but with fields in little endian order
-+ */
-+struct inff_wsec_key_le {
-+	__le32 index;		/* key index */
-+	__le32 len;		/* key length */
-+	u8 data[WLAN_MAX_KEY_LEN];	/* key data */
-+	__le32 pad_1[18];
-+	__le32 algo;	/* CRYPTO_ALGO_AES_CCM, CRYPTO_ALGO_WEP128, etc */
-+	__le32 flags;	/* misc flags */
-+	__le32 pad_2[3];
-+	__le32 iv_initialized;	/* has IV been initialized already? */
-+	__le32 pad_3;
-+	/* Rx IV */
-+	struct {
-+		__le32 hi;	/* upper 32 bits of IV */
-+		__le16 lo;	/* lower 16 bits of IV */
-+	} rxiv;
-+	__le32 pad_4[2];
-+	u8 ea[ETH_ALEN];	/* per station */
-+};
-+
-+/**
-+ * struct inff_wsec_pmk_le - firmware pmk material.
-+ *
-+ * @key_len: number of octets in key material.
-+ * @flags: key handling qualifiers.
-+ * @key: PMK key material.
-+ */
-+struct inff_wsec_pmk_le {
-+	__le16  key_len;
-+	__le16  flags;
-+	u8 key[INFF_WSEC_MAX_PMK_LEN];
-+};
-+
-+/**
-+ * struct inff_wsec_sae_pwd_le - firmware SAE password material.
-+ *
-+ * @key_len: number of octets in key materials.
-+ * @key: SAE password material.
-+ */
-+struct inff_wsec_sae_pwd_le {
-+	__le16 key_len;
-+	u8 key[INFF_WSEC_MAX_SAE_PASSWORD_LEN];
-+};
-+
-+/**
-+ * struct inff_auth_req_status_le - external auth request and status update
-+ *
-+ * @flags: flags for external auth status
-+ * @peer_mac: peer MAC address
-+ * @ssid_len: length of ssid
-+ * @ssid: ssid characters
-+ */
-+struct inff_auth_req_status_le {
-+	__le16 flags;
-+	u8 peer_mac[ETH_ALEN];
-+	__le32 ssid_len;
-+	u8 ssid[IEEE80211_MAX_SSID_LEN];
-+	u8 pmkid[WLAN_PMKID_LEN];
-+};
-+
-+struct inff_auth_req_status_info_le_v2 {
-+	__le16  version;
-+	__le16  len;
-+	__le16  flags;
-+	u8 peer_mac[ETH_ALEN];/* peer mac address */
-+	__le32 ssid_len;
-+	u8 ssid[IEEE80211_MAX_SSID_LEN];
-+	u8 pmkid[WLAN_PMKID_LEN];
-+	struct inff_bss_info_le bss_info_le[];
-+};
-+
-+/**
-+ * struct inff_mf_params_le - management frame parameters for mgmt_frame iovar
-+ *
-+ * @version: version of the iovar
-+ * @dwell_time: dwell duration in ms
-+ * @len: length of frame data
-+ * @frame_control: frame control
-+ * @channel: channel
-+ * @da: peer MAC address
-+ * @bssid: BSS network identifier
-+ * @packet_id: packet identifier
-+ * @data: frame data
-+ */
-+struct inff_mf_params_le {
-+	__le32 version;
-+	__le32 dwell_time;
-+	__le16 len;
-+	__le16 frame_control;
-+	__le16 channel;
-+	u8 da[ETH_ALEN];
-+	u8 bssid[ETH_ALEN];
-+	__le32 packet_id;
-+	u8 data[] __counted_by_le(len);
-+};
-+
-+/* Used to get specific STA parameters */
-+struct inff_scb_val_le {
-+	__le32 val;
-+	u8 ea[ETH_ALEN];
-+};
-+
-+/* channel encoding */
-+struct inff_channel_info_le {
-+	__le32 hw_channel;
-+	__le32 target_channel;
-+	__le32 scan_channel;
-+};
-+
-+struct inff_sta_info_le {
-+	__le16 ver;		/* version of this struct */
-+	__le16 len;		/* length in bytes of this structure */
-+	__le16 cap;		/* sta's advertised capabilities */
-+	__le32 flags;		/* flags defined below */
-+	__le32 idle;		/* time since data pkt rx'd from sta */
-+	u8 ea[ETH_ALEN];		/* Station address */
-+	__le32 count;			/* # rates in this set */
-+	u8 rates[INFF_MAXRATES_IN_SET];	/* rates in 500kbps units */
-+						/* w/hi bit set if basic */
-+	__le32 in;		/* seconds elapsed since associated */
-+	__le32 listen_interval_inms; /* Min Listen interval in ms for STA */
-+
-+	/* Fields valid for ver >= 3 */
-+	__le32 tx_pkts;	/* # of packets transmitted */
-+	__le32 tx_failures;	/* # of packets failed */
-+	__le32 rx_ucast_pkts;	/* # of unicast packets received */
-+	__le32 rx_mcast_pkts;	/* # of multicast packets received */
-+	__le32 tx_rate;	/* Rate of last successful tx frame */
-+	__le32 rx_rate;	/* Rate of last successful rx frame */
-+	__le32 rx_decrypt_succeeds;	/* # of packet decrypted successfully */
-+	__le32 rx_decrypt_failures;	/* # of packet decrypted failed */
-+
-+	/* Fields valid for ver >= 4 */
-+	__le32 tx_tot_pkts;    /* # of tx pkts (ucast + mcast) */
-+	__le32 rx_tot_pkts;    /* # of data packets recvd (uni + mcast) */
-+	__le32 tx_mcast_pkts;  /* # of mcast pkts txed */
-+	__le64 tx_tot_bytes;   /* data bytes txed (ucast + mcast) */
-+	__le64 rx_tot_bytes;   /* data bytes recvd (ucast + mcast) */
-+	__le64 tx_ucast_bytes; /* data bytes txed (ucast) */
-+	__le64 tx_mcast_bytes; /* # data bytes txed (mcast) */
-+	__le64 rx_ucast_bytes; /* data bytes recvd (ucast) */
-+	__le64 rx_mcast_bytes; /* data bytes recvd (mcast) */
-+	s8 rssi[INFF_ANT_MAX];   /* per antenna rssi */
-+	s8 nf[INFF_ANT_MAX];     /* per antenna noise floor */
-+	__le16 aid;                    /* association ID */
-+	__le16 ht_capabilities;        /* advertised ht caps */
-+	__le16 vht_flags;              /* converted vht flags */
-+	__le32 tx_pkts_retry_cnt;      /* # of frames where a retry was
-+					* exhausted.
-+					*/
-+	__le32 tx_pkts_retry_exhausted; /* # of user frames where a retry
-+					 * was exhausted
-+					 */
-+	s8 rx_lastpkt_rssi[INFF_ANT_MAX]; /* Per antenna RSSI of last
-+					   * received data frame.
-+					   */
-+	/* TX WLAN retry/failure statistics:
-+	 * Separated for host requested frames and locally generated frames.
-+	 * Include unicast frame only where the retries/failures can be counted.
-+	 */
-+	__le32 tx_pkts_total;          /* # user frames sent successfully */
-+	__le32 tx_pkts_retries;        /* # user frames retries */
-+	__le32 tx_pkts_fw_total;       /* # FW generated sent successfully */
-+	__le32 tx_pkts_fw_retries;     /* # retries for FW generated frames */
-+	__le32 tx_pkts_fw_retry_exhausted;     /* # FW generated where a retry
-+						* was exhausted
-+						*/
-+	__le32 rx_pkts_retried;        /* # rx with retry bit set */
-+	__le32 tx_rate_fallback;       /* lowest fallback TX rate */
-+
-+	union {
-+		struct {
-+			struct {
-+				/* # rates in this set */
-+				__le32 count;
-+				/* rates in 500kbps units w/hi bit set if basic */
-+				u8 rates[INFF_MAXRATES_IN_SET];
-+				/* supported mcs index bit map */
-+				u8 mcs[INFF_MCSSET_LEN];
-+				/* supported mcs index bit map per nss */
-+				__le16 vht_mcs[INFF_VHT_CAP_MCS_MAP_NSS_MAX];
-+			} rateset_adv;
-+		} v5;
-+
-+		struct {
-+			__le32 rx_dur_total;	/* total user RX duration (estimated) */
-+			__le16 chanspec;	/** chanspec this sta is on */
-+			__le16 pad_1;
-+			struct {
-+				__le16 version;					/* version */
-+				__le16 len;					/* length */
-+				/* # rates in this set */
-+				__le32 count;
-+				/* rates in 500kbps units w/hi bit set if basic */
-+				u8 rates[INFF_MAXRATES_IN_SET];
-+				/* supported mcs index bit map */
-+				u8 mcs[INFF_MCSSET_LEN];
-+				/* supported mcs index bit map per nss */
-+				__le16 vht_mcs[INFF_VHT_CAP_MCS_MAP_NSS_MAX];
-+				/* supported he mcs index bit map per nss */
-+				__le16 he_mcs[INFF_HE_CAP_MCS_MAP_NSS_MAX];
-+			} rateset_adv;		/* rateset along with mcs index bitmap */
-+			__le16 wpauth;		/* authentication type */
-+			u8 algo;		/* crypto algorithm */
-+			u8 pad_2;
-+			__le32 tx_rspec;	/* Rate of last successful tx frame */
-+			__le32 rx_rspec;	/* Rate of last successful rx frame */
-+			__le32 wnm_cap;		/* wnm capabilities */
-+		} v7;
-+	};
-+};
-+
-+struct inff_chanspec_list {
-+	__le32	count;		/* # of entries */
-+	__le32  element[];	/* variable length uint32 list */
-+};
-+
-+/*
-+ * INFF_E_PROBRESP_MSG
-+ * INFF_E_P2P_PROBREQ_MSG
-+ * INFF_E_ACTION_FRAME_RX_COMPLETE
-+ */
-+struct inff_rx_mgmt_data {
-+	__be16	version;
-+	__be16	chanspec;
-+	__be32	rssi;
-+	__be32	mactime;
-+	__be32	rate;
-+};
-+
-+/**
-+ * struct inff_fwcmd_wowl_pattern_le - wowl pattern configuration struct.
-+ *
-+ * @cmd: "add", "del" or "clr".
-+ * @masksize: Size of the mask in #of bytes
-+ * @offset: Pattern byte offset in packet
-+ * @patternoffset: Offset of start of pattern. Starting from field masksize.
-+ * @patternsize: Size of the pattern itself in #of bytes
-+ * @id: id
-+ * @reasonsize: Size of the wakeup reason code
-+ * @type: Type of pattern (enum inff_wowl_pattern_type)
-+ */
-+struct inff_fwcmd_wowl_pattern_le {
-+	u8	cmd[4];
-+	__le32	masksize;
-+	__le32	offset;
-+	__le32	patternoffset;
-+	__le32	patternsize;
-+	__le32	id;
-+	__le32	reasonsize;
-+	__le32	type;
-+	/* u8 mask[] - Mask follows the structure above */
-+	/* u8 pattern[] - Pattern follows the mask is at 'patternoffset' */
-+};
-+
-+/**
-+ * struct inff_fwcmd_country_le - country configuration structure.
-+ *
-+ * @country_abbrev: null-terminated country code used in the country IE.
-+ * @rev: revision specifier for ccode. on set, -1 indicates unspecified.
-+ * @ccode: null-terminated built-in country code.
-+ */
-+struct inff_fwcmd_country_le {
-+	char country_abbrev[INFF_COUNTRY_BUF_SZ];
-+	__le32 rev;
-+	char ccode[INFF_COUNTRY_BUF_SZ];
-+};
-+
-+/**
-+ * struct inff_rev_info_le - device revision info.
-+ *
-+ * @vendorid: PCI vendor id.
-+ * @deviceid: device id of chip.
-+ * @radiorev: radio revision.
-+ * @chiprev: chip revision.
-+ * @corerev: core revision.
-+ * @boardid: board identifier (usu. PCI sub-device id).
-+ * @boardvendor: board vendor (usu. PCI sub-vendor id).
-+ * @boardrev: board revision.
-+ * @driverrev: driver version.
-+ * @ucoderev: microcode version.
-+ * @bus: bus type.
-+ * @chipnum: chip number.
-+ * @phytype: phy type.
-+ * @phyrev: phy revision.
-+ * @anarev: anacore rev.
-+ * @chippkg: chip package info.
-+ * @nvramrev: nvram revision number.
-+ */
-+struct inff_rev_info_le {
-+	__le32 vendorid;
-+	__le32 deviceid;
-+	__le32 radiorev;
-+	__le32 chiprev;
-+	__le32 corerev;
-+	__le32 boardid;
-+	__le32 boardvendor;
-+	__le32 boardrev;
-+	__le32 driverrev;
-+	__le32 ucoderev;
-+	__le32 bus;
-+	__le32 chipnum;
-+	__le32 phytype;
-+	__le32 phyrev;
-+	__le32 anarev;
-+	__le32 chippkg;
-+	__le32 nvramrev;
-+};
-+
-+/**
-+ * struct inff_wlc_version_le - firmware revision info.
-+ *
-+ * @version: structure version.
-+ * @length: structure length.
-+ * @epi_ver_major: EPI major version
-+ * @epi_ver_minor: EPI minor version
-+ * @epi_ver_rc: EPI rc version
-+ * @epi_ver_incr: EPI increment version
-+ * @wlc_ver_major: WLC major version
-+ * @wlc_ver_minor: WLC minor version
-+ */
-+struct inff_wlc_version_le {
-+	__le16 version;
-+	__le16 length;
-+
-+	__le16 epi_ver_major;
-+	__le16 epi_ver_minor;
-+	__le16 epi_ver_rc;
-+	__le16 epi_ver_incr;
-+
-+	__le16 wlc_ver_major;
-+	__le16 wlc_ver_minor;
-+};
-+
-+/**
-+ * struct inff_assoclist_le - request assoc list.
-+ *
-+ * @count: indicates number of stations.
-+ * @mac: MAC addresses of stations.
-+ */
-+struct inff_assoclist_le {
-+	__le32 count;
-+	u8 mac[INFF_MAX_ASSOCLIST][ETH_ALEN];
-+};
-+
-+/**
-+ * struct inff_rssi_be - RSSI threshold event format
-+ *
-+ * @rssi: receive signal strength (in dBm)
-+ * @snr: signal-noise ratio
-+ * @noise: noise (in dBm)
-+ */
-+struct inff_rssi_be {
-+	__be32 rssi;
-+	__be32 snr;
-+	__be32 noise;
-+};
-+
-+#define INFF_MAX_RSSI_LEVELS 8
-+
-+/**
-+ * struct inff_rssi_old_event_le - rssi_old_event IOVAR format
-+ *
-+ * @rate_limit_msec: RSSI event rate limit
-+ * @rssi_level_num: number of supplied RSSI levels
-+ * @rssi_levels: RSSI levels in ascending order
-+ */
-+struct inff_rssi_old_event_le {
-+	__le32 rate_limit_msec;
-+	s8 rssi_level_num;
-+	s8 rssi_levels[INFF_MAX_RSSI_LEVELS];
-+};
-+
-+/**
-+ * struct inff_rssi_new_event_le - rssi_new_event IOVAR format
-+ *
-+ * @rate_limit_msec: RSSI event rate limit
-+ * @num_rssi_levels: number of supplied RSSI levels
-+ * @rssi_levels: RSSI levels in ascending order
-+ * @version: RSSI event version
-+ * @pad: Padding
-+ */
-+
-+struct inff_rssi_new_event_le {
-+	__le32 rate_limit_msec;
-+	u8 num_rssi_levels;
-+	s8 rssi_levels[INFF_MAX_RSSI_LEVELS];
-+	u8 version;
-+	s8 pad[2];
-+};
-+
-+/**
-+ * struct inff_wowl_wakeind_le - Wakeup indicators
-+ *	Note: note both fields contain same information.
-+ *
-+ * @pci_wakeind: Whether PCI PMECSR PMEStatus bit was set.
-+ * @ucode_wakeind: What wakeup-event indication was set by ucode
-+ */
-+struct inff_wowl_wakeind_le {
-+	__le32 pci_wakeind;
-+	__le32 ucode_wakeind;
-+};
-+
-+/**
-+ * struct inff_pmksa - PMK Security Association
-+ *
-+ * @bssid: The AP's BSSID.
-+ * @pmkid: he PMK material itself.
-+ */
-+struct inff_pmksa {
-+	u8 bssid[ETH_ALEN];
-+	u8 pmkid[WLAN_PMKID_LEN];
-+};
-+
-+/**
-+ * struct inff_pmk_list_le - List of pmksa's.
-+ *
-+ * @npmk: Number of pmksa's.
-+ * @pmk: PMK SA information.
-+ */
-+struct inff_pmk_list_le {
-+	__le32 npmk;
-+	struct inff_pmksa pmk[INFF_MAXPMKID];
-+};
-+
-+/**
-+ * struct inff_dload_data_le - data passing to firmware for downloading
-+ * @flag: flags related to download data.
-+ * @dload_type: type of download data.
-+ * @len: length in bytes of download data.
-+ * @crc: crc of download data.
-+ * @data: download data.
-+ */
-+struct inff_dload_data_le {
-+	__le16 flag;
-+	__le16 dload_type;
-+	__le32 len;
-+	__le32 crc;
-+	u8 data[];
-+};
-+
-+/**
-+ * struct inff_pktcnt_le - packet counters.
-+ *
-+ * @rx_good_pkt: packets (MSDUs & MMPDUs) received from this station
-+ * @rx_bad_pkt: failed rx packets
-+ * @tx_good_pkt: packets (MSDUs & MMPDUs) transmitted to this station
-+ * @tx_bad_pkt: failed tx packets
-+ * @rx_ocast_good_pkt: unicast packets destined for others
-+ */
-+struct inff_pktcnt_le {
-+	__le32 rx_good_pkt;
-+	__le32 rx_bad_pkt;
-+	__le32 tx_good_pkt;
-+	__le32 tx_bad_pkt;
-+	__le32 rx_ocast_good_pkt;
-+};
-+
-+/**
-+ * struct inff_gtk_keyinfo_le - GTP rekey data
-+ *
-+ * @kck: key confirmation key.
-+ * @kek: key encryption key.
-+ * @replay_counter: replay counter.
-+ */
-+struct inff_gtk_keyinfo_le {
-+	u8 kck[INFF_RSN_KCK_LENGTH];
-+	u8 kek[INFF_RSN_KEK_LENGTH];
-+	u8 replay_counter[INFF_RSN_REPLAY_LEN];
-+};
-+
-+/**
-+ * struct inff_mkeep_alive_pkt_le - configuration data for keep-alive frame.
-+ *
-+ * @version: version for mkeep_alive
-+ * @length: length of fixed parameters in the structure.
-+ * @period_msec: keep-alive period in milliseconds.
-+ * @len_bytes: size of the data.
-+ * @keep_alive_id: ID  (0 - 3).
-+ * @data: keep-alive frame data.
-+ */
-+struct inff_mkeep_alive_pkt_le {
-+	__le16  version;
-+	__le16  length;
-+	__le32  period_msec;
-+	__le16  len_bytes;
-+	u8   keep_alive_id;
-+	u8   data[];
-+} __packed;
-+
-+s32 inff_cpcmd_data_set(struct inff_if *ifp, u32 cmd, void *data, u32 len);
-+s32 inff_cpcmd_data_get(struct inff_if *ifp, u32 cmd, void *data, u32 len);
-+
-+s32 inff_fwcmd_cmd_data_set(struct inff_if *ifp, u32 cmd, void *data, u32 len);
-+s32 inff_fwcmd_cmd_data_get(struct inff_if *ifp, u32 cmd, void *data, u32 len);
-+s32 inff_fwcmd_cmd_int_set(struct inff_if *ifp, u32 cmd, u32 data);
-+s32 inff_fwcmd_cmd_int_get(struct inff_if *ifp, u32 cmd, u32 *data);
-+
-+s32 inff_fwcmd_iovar_data_set(struct inff_if *ifp, const char *name,
-+			      const void *data, u32 len);
-+s32 inff_fwcmd_iovar_data_get(struct inff_if *ifp, const char *name,
-+			      void *data, u32 len);
-+s32 inff_fwcmd_iovar_int_set(struct inff_if *ifp, const char *name, u32 data);
-+s32 inff_fwcmd_iovar_int_get(struct inff_if *ifp, const char *name, u32 *data);
-+
-+s32 inff_fwcmd_bsscfg_data_set(struct inff_if *ifp, const char *name,
-+			       void *data, u32 len);
-+s32 inff_fwcmd_bsscfg_data_get(struct inff_if *ifp, const char *name,
-+			       void *data, u32 len);
-+s32 inff_fwcmd_bsscfg_int_set(struct inff_if *ifp, const char *name, u32 data);
-+s32 inff_fwcmd_bsscfg_int_get(struct inff_if *ifp, const char *name, u32 *data);
-+
-+s32 inff_fwcmd_xtlv_data_get(struct inff_if *ifp, const char *name, u16 id,
-+			     void *data, u32 len);
-+u32 inff_fwcmd_pack_xtlv(u16 id, char *data, u32 len,
-+			 char **buf, u16 *buflen);
-+s32 inff_fwcmd_xtlv_data_set(struct inff_if *ifp, const char *name, u16 id,
-+			     void *data, u32 len);
-+s32 inff_fwcmd_xtlv_data_get(struct inff_if *ifp, const char *name, u16 id,
-+			     void *data, u32 len);
-+s32 inff_fwcmd_xtlv_int_set(struct inff_if *ifp, const char *name, u16 id, u32 data);
-+s32 inff_fwcmd_xtlv_int_get(struct inff_if *ifp, const char *name, u16 id, u32 *data);
-+s32 inff_fwcmd_xtlv_int8_get(struct inff_if *ifp, const char *name, u16 id, u8 *data);
-+s32 inff_fwcmd_xtlv_int16_get(struct inff_if *ifp, const char *name, u16 id, u16 *data);
-+s32 inff_fwcmd_xtlv_find_wlc_cntr(u8 *src, u16 *len);
-+
-+#endif /* INFF_DEV_CMD_H */
++#endif /* INFF_NET_H */
 -- 
 2.25.1
 
