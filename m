@@ -1,98 +1,83 @@
-Return-Path: <linux-wireless+bounces-30805-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-30806-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2BFA5D1BFD3
-	for <lists+linux-wireless@lfdr.de>; Wed, 14 Jan 2026 02:49:44 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id C0FEBD1C4FF
+	for <lists+linux-wireless@lfdr.de>; Wed, 14 Jan 2026 04:56:04 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id EA8753006701
-	for <lists+linux-wireless@lfdr.de>; Wed, 14 Jan 2026 01:49:40 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 43122300ACA0
+	for <lists+linux-wireless@lfdr.de>; Wed, 14 Jan 2026 03:56:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DDA8D248F66;
-	Wed, 14 Jan 2026 01:49:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CB63727FB21;
+	Wed, 14 Jan 2026 03:56:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=realtek.com header.i=@realtek.com header.b="RJbKmLvr"
+	dkim=pass (2048-bit key) header.d=nabladev.com header.i=@nabladev.com header.b="jxewuAx8"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx.nabladev.com (mx.nabladev.com [178.251.229.89])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8F63921ABD7
-	for <linux-wireless@vger.kernel.org>; Wed, 14 Jan 2026 01:49:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=211.75.126.72
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E4524239E9D
+	for <linux-wireless@vger.kernel.org>; Wed, 14 Jan 2026 03:55:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=178.251.229.89
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768355379; cv=none; b=aTm+YKnnjJfjK/VCGa7OLMS6EEy55sKYGVM8l57b0a43uveULG/OZiTPiUEepWwwrJ73/PoDR1HgHu4Z8Ud6XWKd66gNLnNWEXLqi38BBZxR6kT0ucoEkoJcCiWQf4G+ZtDUTOxjUXZa0oyOYcO4GZOchr7KuUL8i0Y2QPcATjY=
+	t=1768362961; cv=none; b=i4Y7Ic9JEmMOwmaYvOOv1Jz64rqZuojb5chiTxb/mSyTOuiXL4/v6AupOlJ1qVuhFclN4pX+FpEz6U8WloWx9B6DTOyeyOdm9oGa0oDvLmaECohstLhSmJ6fG12+2o4WNhRWD7Pqat/j6CFgxvJp+r1kw1k3G6BoewpzmIon3fI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768355379; c=relaxed/simple;
-	bh=1AoILnnkO4BrsPoOQuRvc9AomLcIBvtd0lz0f4Fmhkw=;
-	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=AezHAoP6jtx7DAMJ/mEqQPnUKHu98HAOWqPl0OEqIyZNF46cI87YJU+O86vM6ddGmVkUPgRuCXKseod+3fM6M3GpyK5Apy4VgCycQtjdji/aYFSXWaq6A5tMIMr4oDmUpCU0FVFk3v9ymmlD928NzIZDMQf0aqob1nO8Qow4sTQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com; spf=pass smtp.mailfrom=realtek.com; dkim=pass (2048-bit key) header.d=realtek.com header.i=@realtek.com header.b=RJbKmLvr; arc=none smtp.client-ip=211.75.126.72
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=realtek.com
-X-SpamFilter-By: ArmorX SpamTrap 5.80 with qID 60E1naZbB001878, This message is accepted by code: ctloc85258
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=realtek.com; s=dkim;
-	t=1768355376; bh=eb4LW4XID6Lr3z1QyvLORJNlRFf/Rzxl+N3J5bOCFSA=;
-	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:
-	 Content-Transfer-Encoding:Content-Type;
-	b=RJbKmLvrA4a5E2AKcHoyp6S11PwVx2THIkFaBiIZXSK+FberxOJUqPE2AuVOYeBzV
-	 6cqKgvFYh9y6L54lN7sO35p6bNzonFGMrhLdUq1V8L9EJ1EOuODUyFgU6K6dUdeYmT
-	 FNfToGCwi4HvOLqYvrSXRej9TAHUmWXbIRgF9YbX36V0feYhrAvnVcA1wAB379NQd4
-	 qu6hD+BsCd+5YJGUjCqoLPufziy43knwuZfXHcOQhQMRuXEOufTNjhL2UnKwXMhpfE
-	 pIuCSKjSpxcNToYwK0di2FLeA8NTal8iNIt38GWJGpe3XWbYKqPQY9nOQazmYG9riP
-	 osM7R5jUYCWcA==
-Received: from mail.realtek.com (rtkexhmbs04.realtek.com.tw[10.21.1.54])
-	by rtits2.realtek.com.tw (8.15.2/3.21/5.94) with ESMTPS id 60E1naZbB001878
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK)
-	for <linux-wireless@vger.kernel.org>; Wed, 14 Jan 2026 09:49:36 +0800
-Received: from RTKEXHMBS03.realtek.com.tw (10.21.1.53) by
- RTKEXHMBS04.realtek.com.tw (10.21.1.54) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1748.10; Wed, 14 Jan 2026 09:49:35 +0800
-Received: from [127.0.1.1] (172.21.40.75) by RTKEXHMBS03.realtek.com.tw
- (10.21.1.53) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1748.10 via Frontend
- Transport; Wed, 14 Jan 2026 09:49:35 +0800
-From: Ping-Ke Shih <pkshih@realtek.com>
-To: <linux-wireless@vger.kernel.org>
-CC: <isaiah@realtek.com>
-Subject: [PATCH rtw-next] wifi: rtw89: Add default ID 28de:2432 for RTL8832CU
-Date: Wed, 14 Jan 2026 09:49:06 +0800
-Message-ID: <20260114014906.21829-1-pkshih@realtek.com>
-X-Mailer: git-send-email 2.25.1
+	s=arc-20240116; t=1768362961; c=relaxed/simple;
+	bh=Xl0cI+rW6U0e4XdE2Al+eP+WSefG0YI572BsL4tLXfU=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=uJ42VCbhWRSfnVzyT6o3TMgVJtAmFHBBW8eUUOp++VrkdKcn3EiDGlR8eWRX0eNuFAooNHbLSIaz4ylVBBk+iX6/EMLAZvYsNOD2HNCB+qRj6g5cWIyRec+PW/Y8ynGd/uUhaPAsU/XKU7w9I4d+crjpnv3GeTBaQVVXyr+5rPE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nabladev.com; spf=pass smtp.mailfrom=nabladev.com; dkim=pass (2048-bit key) header.d=nabladev.com header.i=@nabladev.com header.b=jxewuAx8; arc=none smtp.client-ip=178.251.229.89
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nabladev.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nabladev.com
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 3BC3510DEC5;
+	Wed, 14 Jan 2026 04:55:51 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nabladev.com;
+	s=dkim; t=1768362951;
+	h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	 content-transfer-encoding:content-language:in-reply-to:references;
+	bh=SE7m26Kegd18IvpzjThoP1ZAfyO7L0cAMdaDRsYCG3s=;
+	b=jxewuAx8Yi4A4nROk374Lkv3MZJhiteLhqyKff/R0KNLJ9O7krKMNv/x32+auDChxVYFc7
+	aMe1TYJxMOr1GskraY7MIrimfLsCsfjJutEUdYqFItwoCK5XUt7W1s44xEdW6YvmCVcrTX
+	s//29A/RuReUzBXDDLe4F8ewsPqs9/rM8UuaCZB5sNYXNDETsFJywsGNo1TOJ3KyjaGyKg
+	g9Mahpi3VTIc1VOS+GHZLbjBAThPbQGMLZ9x867k74cUu6sdVoyoUEWFjc27u5DSqc4yvj
+	b9DuvzqHM8zrf4JFfbuO9ljlXvULtwmXK69yAKnt9FnFRWlJF1+FFHhLqjWjsg==
+Message-ID: <43acfb38-9dbc-4544-b429-dfd43afbf2b6@nabladev.com>
+Date: Wed, 14 Jan 2026 04:22:57 +0100
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH wireless-next v2 00/34] wifi: inffmac: introducing a
+ driver for Infineon's new generation chipsets
+To: Gokul Sivakumar <gokulkumar.sivakumar@infineon.com>,
+ linux-wireless@vger.kernel.org
+Cc: Johannes Berg <johannes@sipsolutions.net>,
+ Arend van Spriel <arend.vanspriel@broadcom.com>,
+ wlan-kernel-dev-list@infineon.com
+References: <20260113203350.16734-1-gokulkumar.sivakumar@infineon.com>
+Content-Language: en-US
+From: Marek Vasut <marex@nabladev.com>
+In-Reply-To: <20260113203350.16734-1-gokulkumar.sivakumar@infineon.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Last-TLS-Session-Version: TLSv1.3
 
-From: Shin-Yi Lin <isaiah@realtek.com>
+On 1/13/26 9:33 PM, Gokul Sivakumar wrote:
+> Infineon(Cypress) is introducing a new INFFMAC (WLAN FULLMAC) Linux driver
+> specifically for its new-generation AIROC family of Wi-Fi Connectivity
+> Processor (CP) chipsets (CYW5591x), Wi-Fi + Bluetooth combo chipsets
+> (CYW5557x, CYW5551x, CYW5591x, CYW43022), and also for all future chipsets.
+Support for the CYW55572 can be easily added into the existing brcmfmac 
+driver, I already posted a patch over a year ago [1], but it was blocked 
+by an off-list email.
 
-Add 28de:2432 for RTL8832CU-based adapters that use this default ID.
+Frankly, I do not see any good reason why the brcmfmac driver shouldn't 
+be extended when it is clearly easily doable. Adding new fork of the 
+brcmfmac would only increase maintenance burden and prevent bugfixes 
+from reaching the brcmfmac.
 
-Signed-off-by: Shin-Yi Lin <isaiah@realtek.com>
-Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
----
- drivers/net/wireless/realtek/rtw89/rtw8852cu.c | 2 ++
- 1 file changed, 2 insertions(+)
-
-diff --git a/drivers/net/wireless/realtek/rtw89/rtw8852cu.c b/drivers/net/wireless/realtek/rtw89/rtw8852cu.c
-index 2708b523ca14..3b9825c92a0d 100644
---- a/drivers/net/wireless/realtek/rtw89/rtw8852cu.c
-+++ b/drivers/net/wireless/realtek/rtw89/rtw8852cu.c
-@@ -46,6 +46,8 @@ static const struct usb_device_id rtw_8852cu_id_table[] = {
- 	  .driver_info = (kernel_ulong_t)&rtw89_8852cu_info },
- 	{ USB_DEVICE_AND_INTERFACE_INFO(0x0db0, 0x991d, 0xff, 0xff, 0xff),
- 	  .driver_info = (kernel_ulong_t)&rtw89_8852cu_info },
-+	{ USB_DEVICE_AND_INTERFACE_INFO(0x28de, 0x2432, 0xff, 0xff, 0xff),
-+	  .driver_info = (kernel_ulong_t)&rtw89_8852cu_info },
- 	{ USB_DEVICE_AND_INTERFACE_INFO(0x35b2, 0x0502, 0xff, 0xff, 0xff),
- 	  .driver_info = (kernel_ulong_t)&rtw89_8852cu_info },
- 	{ USB_DEVICE_AND_INTERFACE_INFO(0x35bc, 0x0101, 0xff, 0xff, 0xff),
-
-base-commit: 292c0bc8acb687de7e83fc454bb98af19187b6bf
--- 
-2.25.1
-
+[1] https://lore.kernel.org/all/20240909203133.74777-2-marex@denx.de/
 
