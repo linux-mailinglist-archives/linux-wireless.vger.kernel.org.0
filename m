@@ -1,136 +1,128 @@
-Return-Path: <linux-wireless+bounces-30807-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-30808-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9D5C2D1D084
-	for <lists+linux-wireless@lfdr.de>; Wed, 14 Jan 2026 09:12:44 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3FDB4D1D7A6
+	for <lists+linux-wireless@lfdr.de>; Wed, 14 Jan 2026 10:21:49 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id BF177300819D
-	for <lists+linux-wireless@lfdr.de>; Wed, 14 Jan 2026 08:12:43 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 699E8300EE7D
+	for <lists+linux-wireless@lfdr.de>; Wed, 14 Jan 2026 09:20:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4B5AA37A487;
-	Wed, 14 Jan 2026 08:12:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 032EF3876C3;
+	Wed, 14 Jan 2026 09:20:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=infineon.com header.i=@infineon.com header.b="oCBSYeEe"
+	dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b="ZbNcV2pT"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from smtp9.infineon.com (smtp9.infineon.com [217.10.52.204])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-lf1-f50.google.com (mail-lf1-f50.google.com [209.85.167.50])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 701F635F8AF
-	for <linux-wireless@vger.kernel.org>; Wed, 14 Jan 2026 08:12:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.10.52.204
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 521A737F8AF
+	for <linux-wireless@vger.kernel.org>; Wed, 14 Jan 2026 09:20:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.50
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768378361; cv=none; b=ZeD8CIDquwXmS4goCsjhvbo9x84NdI+lXPA6yG/65xhAmBePRlHFH4w4i8jXHkf05Y8YW7hZsdvr8S55ZNhwJYwuJ6Va8PUfmccxAXrOR4YshGJA5G2CtitI/jZzY7i/+pRHMFNW6sw97GwqlwR1ECqynp+ND1h7RgtJThvyYqo=
+	t=1768382444; cv=none; b=nguvriD7mb1Feqm2uJyg9qF//uzrMpijkOnwmrdPgdjC1EtbkKd9yQtYV9/liX9/yEhOqfPA96YIDyb8L0vs8T6CRY86cHcU5parOCKcUjMzBp6Xw+fjE3S4e6TUWHVDjwTwohIPAmtANm9Rj7gOFuKdowQU+0gdHDA5lcoX6Nk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768378361; c=relaxed/simple;
-	bh=dRo0da8KSJz5kCac7LwEFfMD48ZZ3objhi++HiABwUU=;
-	h=Date:From:To:CC:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=d57JWDfWhhtXvixrm3WJRa5mpQ5Ab2r6qssghIX6yYhhyHwYM19BvuGpH+ihtWKNCsB5Qxp/ewhmixiCLpeXWMsfFxQGIs18X2wNtxRobYoSCKF0ekhvL2HuD44Gd4qUNW0vLXmzLBPkDLCuIg83K3Wkk2GpFCpi+6qeit8NEsY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infineon.com; spf=pass smtp.mailfrom=infineon.com; dkim=pass (1024-bit key) header.d=infineon.com header.i=@infineon.com header.b=oCBSYeEe; arc=none smtp.client-ip=217.10.52.204
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infineon.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=infineon.com
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple;
-  d=infineon.com; i=@infineon.com; q=dns/txt; s=IFXMAIL;
-  t=1768378359; x=1799914359;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=dRo0da8KSJz5kCac7LwEFfMD48ZZ3objhi++HiABwUU=;
-  b=oCBSYeEe+t/naQiAIgXhbE3cw11JABsFCdWgQlwqpUYz3CC+7VVUgFgj
-   w+2q8QNisK1cdLSOSwxkP3UhoGeptlZZ78+uC9h220iqE5DDhTvP3IIVH
-   7HJ1gO5a0r6vQ866pTApc+0CkCrsGs1492QWnPMUraSVBfIRXi1PDEyRa
-   o=;
-X-CSE-ConnectionGUID: hvdB53BPSyeV49p+QiQr4w==
-X-CSE-MsgGUID: dGG8uXTvQ2O5XG1TuhRwdA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11670"; a="78174713"
-X-IronPort-AV: E=Sophos;i="6.21,225,1763420400"; 
-   d="scan'208";a="78174713"
-X-Amp-Result: SKIPPED(no attachment in message)
-Received: from unknown (HELO MUCSE803.infineon.com) ([172.23.29.29])
-  by smtp9.infineon.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 14 Jan 2026 09:12:35 +0100
-Received: from MUCSE827.infineon.com (172.23.29.20) by MUCSE803.infineon.com
- (172.23.29.29) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.35; Wed, 14 Jan
- 2026 09:12:34 +0100
-Received: from ISCN5CG14747PP.infineon.com (10.161.6.196) by
- MUCSE827.infineon.com (172.23.29.20) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.35; Wed, 14 Jan 2026 09:12:33 +0100
-Date: Wed, 14 Jan 2026 13:42:25 +0530
-From: Gokul Sivakumar <gokulkumar.sivakumar@infineon.com>
-To: Marek Vasut <marex@nabladev.com>
-CC: <linux-wireless@vger.kernel.org>, Johannes Berg
-	<johannes@sipsolutions.net>, Arend van Spriel <arend.vanspriel@broadcom.com>,
-	<wlan-kernel-dev-list@infineon.com>
-Subject: Re: [PATCH wireless-next v2 00/34] wifi: inffmac: introducing a
- driver for Infineon's new generation chipsets
-Message-ID: <aWdP6chPOS0PV-Nc@ISCN5CG14747PP.infineon.com>
-References: <20260113203350.16734-1-gokulkumar.sivakumar@infineon.com>
- <43acfb38-9dbc-4544-b429-dfd43afbf2b6@nabladev.com>
+	s=arc-20240116; t=1768382444; c=relaxed/simple;
+	bh=cF98mkEVd4jNVADlWVfxuGh/Uj+/voFfotpDuQm2wUs=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=bM93iox6p68PhcZItTKgMKuMf/7/PuFnTx8mehRRJhvG76200q3pqOfdhZBPaUYQzM99Mvf6o8woecBGzildhcrKtuoQO6c+s+Q6zQZ0DZ4nzLllAe0ThoyZZuDDAfFpAo+W/8kUkFn07yB5j7ebLF0NKcXvC/o6TNxumaXoGrg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com; spf=pass smtp.mailfrom=suse.com; dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b=ZbNcV2pT; arc=none smtp.client-ip=209.85.167.50
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.com
+Received: by mail-lf1-f50.google.com with SMTP id 2adb3069b0e04-59b67388c9cso10786905e87.2
+        for <linux-wireless@vger.kernel.org>; Wed, 14 Jan 2026 01:20:43 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=suse.com; s=google; t=1768382441; x=1768987241; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=cF98mkEVd4jNVADlWVfxuGh/Uj+/voFfotpDuQm2wUs=;
+        b=ZbNcV2pT2bumOJgaqLe4IqlNo77szArJTthk39An2IDH0gaCZLEHQ6xpCa5DIICHT7
+         YFceHocs0Tlj9Q1z18QGqB3jaTbUw2bXWzrae1XiavMHiJxk7Cv33Zt5opjZVpqEkzkn
+         7rSLYjTB4nU8vdS6IfK8VTWQ4UvefIDWF1fOL/1cHLBa6yQ8ARFXzydCFymEBlspn5Eo
+         bEScD0A1IVwPKlc+j2gnDyTXK6IUH9rqq5rB2w7JeEdH0/QtH/NC+St9joqh+NnB2au7
+         YpinU+4YpKc/IDnQbdLlziHiihbxe+3oRFjwtleCsSaqxsBivdO2guLG7allc0+DcNKI
+         48hA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1768382441; x=1768987241;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=cF98mkEVd4jNVADlWVfxuGh/Uj+/voFfotpDuQm2wUs=;
+        b=KLWbLPSLTAkuNuYR4FSazOMJz+g35Z+33U4gyPoaBtbAvbVUchZpb26JBUo2S+Qeoo
+         cKhK4ZsEnzxx2hovJakU+mo+s43zpILDm4rH7v1OpFiUv6n4TFMvPsnMVXQJ+76EKZx2
+         8NYHR7Rw6ZrBOP3xzUu40+JsABsQh2wCs4L28xgTHcBmSQc5I/osofZB7EfoLqb3gMnX
+         E0RAN7ZaU4BX/zIVpE8sJfXNbhia/+476lJ5XsE1vP98VyuRAgrS1KwQMKhi3deATvQe
+         ApS6XCrUQ1bpr6yXA1i2U+/igXJPwAu3FqMc29EzEPXtUUZxmLjNNtuSCvR3yuMvC8gg
+         8DKQ==
+X-Forwarded-Encrypted: i=1; AJvYcCUU7+zEMkuC4HAiryN9r5MmukSzEqbzLEFEUX43Rmu8vhqSqTBq6wD5LSAVdXY4XNYAxPBseAoz5tTEywWmuw==@vger.kernel.org
+X-Gm-Message-State: AOJu0YyAGXKHqnOX0NUNXC79oaHV5ewEctd5amikRl9pFZ5sqlRf0IUP
+	FBXXf9Bx9Km/0f3wSQV0nadDFvo3RBuNEMqpodg6xoS/LdMiD7BksvuonDHbaEyk1PDqnsGU0++
+	cLgyc9H9eG5U8p6VdDl/L6+GYu/LcPz8vGyVqDzS69Q==
+X-Gm-Gg: AY/fxX6qk35cz+tkSBKayur0/0t+7+NkM4F4I3c5bTtrVpP7yZZ47pwuU/elR+jigqb
+	S5plfS93Qd17g7XvXKRVdDYHG/94GFS5cA0ifMfJ/nScRjGGtzrtbQalPxIfuYafGYdh5K8+98a
+	Vd3FlnO6J7Kr5ykv3BIpe/0/pXUM32dvnzhXIen2DimBxK+fAwIXOE7RoUmXmjIJnSmHGIvBvBN
+	A2r1VxpNDUMMTZabKqXp1OROtKauaZYJ+KRmvkBko2cECEUbpbrxmWpVmxf2R1cl9KoVcMde/PM
+	mleXx62bGdu+ysTtv67eCm3QW+d0
+X-Received: by 2002:a05:6512:3783:20b0:594:2f72:2f7b with SMTP id
+ 2adb3069b0e04-59ba151b4a7mr334106e87.6.1768382441467; Wed, 14 Jan 2026
+ 01:20:41 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Disposition: inline
-In-Reply-To: <43acfb38-9dbc-4544-b429-dfd43afbf2b6@nabladev.com>
-X-ClientProxiedBy: MUCSE808.infineon.com (172.23.29.34) To
- MUCSE827.infineon.com (172.23.29.20)
+References: <20251113162032.394804-1-marco.crivellari@suse.com>
+ <CAAofZF5yenY8Q92taaJW2-=kenDVuc6ABEtbVT5+yzM_pBVZsw@mail.gmail.com>
+ <2f4c22558d20b42615adde772551c1bfb346da47.camel@sipsolutions.net>
+ <CAAofZF4Ptjmo=7taHuw_rdya-kGhEZGqXbQn8yPCi1pgA24mkw@mail.gmail.com>
+ <ed1279c6d79e13f9679ac33ea47201d5eea2d1c4.camel@sipsolutions.net>
+ <CAAofZF7BkX4hy=Sp2Yjq=aGrYL4wPj_vuoMRxPKpnU2Gs2eQbA@mail.gmail.com> <32088fccfccb468db893b33022f21fba@realtek.com>
+In-Reply-To: <32088fccfccb468db893b33022f21fba@realtek.com>
+From: Marco Crivellari <marco.crivellari@suse.com>
+Date: Wed, 14 Jan 2026 10:20:29 +0100
+X-Gm-Features: AZwV_Qg9hPbPIlURB4pRINf7dlmYg5g7NEIwTOBoje8HPki8603HzvZReVATA3Y
+Message-ID: <CAAofZF4+nDAWQrKEPTwR9vtfECevdjm=nsXR+5wUwGQCzsv=SA@mail.gmail.com>
+Subject: Re: [PATCH 0/3] replace system_unbound_wq, add WQ_PERCPU to alloc_workqueue
+To: Ping-Ke Shih <pkshih@realtek.com>
+Cc: Johannes Berg <johannes@sipsolutions.net>, 
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, 
+	"linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>, Tejun Heo <tj@kernel.org>, 
+	Lai Jiangshan <jiangshanlai@gmail.com>, Frederic Weisbecker <frederic@kernel.org>, 
+	Sebastian Andrzej Siewior <bigeasy@linutronix.de>, Michal Hocko <mhocko@suse.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On 01/14, Marek Vasut wrote:
-> On 1/13/26 9:33 PM, Gokul Sivakumar wrote:
-> > Infineon(Cypress) is introducing a new INFFMAC (WLAN FULLMAC) Linux driver
-> > specifically for its new-generation AIROC family of Wi-Fi Connectivity
-> > Processor (CP) chipsets (CYW5591x), Wi-Fi + Bluetooth combo chipsets
-> > (CYW5557x, CYW5551x, CYW5591x, CYW43022), and also for all future chipsets.
-> Support for the CYW55572 can be easily added into the existing brcmfmac
-> driver, I already posted a patch over a year ago [1], but it was blocked
-> by an off-list email.
+On Wed, Jan 14, 2026 at 1:42=E2=80=AFAM Ping-Ke Shih <pkshih@realtek.com> w=
+rote:
+> [...]
+> The rtw88 one [1] is still queued on my hand, because it was wrongly appl=
+ied [2]
+> causing regression and reverted by [3]. However, I have not rebased rtw-n=
+ext
+> tree on top of wireless tree, so I can't apply [1]. Do you think this is =
+urgent?
+> If so, I'd send a pull request to wireless-next right now since it is 6.1=
+9-rc5.
+> I don't want frequent pull-request that maintainers have extra load.
+>
+> [1] https://patchwork.kernel.org/project/linux-wireless/patch/20251113160=
+605.381777-3-marco.crivellari@suse.com/
+> [2] 9c194fe4625d ("wifi: rtw88: add WQ_UNBOUND to alloc_workqueue users")
+> [3] 0ff5e81e1518 ("Revert "wifi: rtw88: add WQ_UNBOUND to alloc_workqueue=
+ users"")
 
-> Frankly, I do not see any good reason why the brcmfmac driver shouldn't
-> be extended when it is clearly easily doable. Adding new fork of the
-> brcmfmac would only increase maintenance burden and prevent bugfixes
-> from reaching the brcmfmac.
-> 
-> [1] https://lore.kernel.org/all/20240909203133.74777-2-marex@denx.de/
+Hi,
 
-There are multiple reasons behind Infineon's proposal for this new INFFMAC
-driver for its new-generation chips. Sharing a few here, and more info
-is available in the v1 cover-letter [1]. For Example, the CYW5591x family
-chipsets that is currently supported in this INFFMAC driver has a unique
-Connected-MCU / Connectivtiy Processor (CP) Architecture [2], primarly
-intended for IoT applications and it is completely different from any of
-the legacy Broadcom architecture chipsets of Infineon supported currently
-in upstream BRCMFMAC. The CYW5591x family chipsets has dedicated MCU Core
-in addition to the WLAN core and an onboard FLASH memory for the Firmware.
+I still have some other patches around, so if you have to posticipate
+this to the next release is fine with me, no need to rush.
 
-And with respect to the support for the new-generation CYW5557x family of
-Secure chipsets, that requires a Secure boot handshake with the Bootloader.
-Even if the enumeration and firmware download support for the CYW55572 is
-somehow retro-fitted into the existing upstream BRCMFMAC driver, there are
-multiple other features and aspects of the Driver-Device communication that
-are unique to each WLAN vendor, which are not always practically feasible
-to support in the same upstream driver. Because currently BRCMFMAC driver
-has a shared ownership with more than 3 WLAN vendor organizations and this
-approach has its limitations. For Example, the version of the PCIe and SDIO
-BUS specific shared info in Device Memory is expected same from chipsets
-from all vendors. There would be a complex need to maintain vendor specifc
-as well as BUS specific Shared info version, vendor specific BUS Protocol
-layers, vendor specific firmware event header OUIs (currently always expects
-BRCM OUI even from other vendor chips) and even more.
+Thanks!
 
-Confining different architecture chips from different WLAN vendors into the
-same legacy BRCMFMAC driver codebase, may not be sustainable and could
-potentially increase the maintainence effort and codebase complexity.
-And not practically feasible to continue splitting this driver with more
-vendor specific checks in the longer run. Since being different vendors,
-each will only naturally diverge even more in the future with their chipset
-Architecture, Driver-Device communication flow, etc. Infineon will continue
-to support its legacy chipsets, already supported in the upstream BRCMFMAC.
+--=20
 
-[1] https://lore.kernel.org/linux-wireless/20250916221821.4387-1-gokulkumar.sivakumar@infineon.com/ 
-[2] https://www.infineon.com/products/wireless-connectivity/airoc-connected-mcu
+Marco Crivellari
 
-Gokul
+L3 Support Engineer
 
