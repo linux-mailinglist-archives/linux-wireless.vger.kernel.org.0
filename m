@@ -1,137 +1,181 @@
-Return-Path: <linux-wireless+bounces-30827-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-30828-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5ABD7D206AB
-	for <lists+linux-wireless@lfdr.de>; Wed, 14 Jan 2026 18:08:37 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 19227D2086E
+	for <lists+linux-wireless@lfdr.de>; Wed, 14 Jan 2026 18:24:27 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id BB98830021C5
-	for <lists+linux-wireless@lfdr.de>; Wed, 14 Jan 2026 17:08:33 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 8E830300819A
+	for <lists+linux-wireless@lfdr.de>; Wed, 14 Jan 2026 17:24:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3C7FB2E0914;
-	Wed, 14 Jan 2026 17:08:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 63EE72FFDFC;
+	Wed, 14 Jan 2026 17:24:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b="pc7Gf6MZ"
+	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="BMYn0omk";
+	dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b="VpvhsLnk"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from sipsolutions.net (s3.sipsolutions.net [168.119.38.16])
+Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CA9D22E2679
-	for <linux-wireless@vger.kernel.org>; Wed, 14 Jan 2026 17:08:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=168.119.38.16
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ED2A92FF643
+	for <linux-wireless@vger.kernel.org>; Wed, 14 Jan 2026 17:24:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768410511; cv=none; b=tRB5cjTZrfMDGfuqverIHOAgXlHAkYX/zMlK4IM6Aspod7Gh8ZQZ67yvL3FcEALHGUVRcJs0wV932hpJytIMjlzWY3xTvFaYLN61L8HhdWj8OlOR4v8MwE4j96/SdLgMBTcir5bjhFQ6e+QVjyfLtEkpc2GZQh4y8HMdS5a42l8=
+	t=1768411465; cv=none; b=LDxOD86bSnUi5rxzEG/QqQkyKhvJ5t4rmlszBsuhu0q/7gYqWc3fxlVpGjS9NPEMjc8p4nZVoiSp8lD2N26ZPQvmz7Jkgxy5QLhopRmEAu+6QZRYQyOaYda1g8eWegerx0Gxv3aqr2mUn6k/VtO3gZk8SxJoDvnAbx5gQHtRKKw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768410511; c=relaxed/simple;
-	bh=HNnp/CaZgp6m72jY/3vSQxfduj8evozXNkqRDUMz+cs=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=nINVo6nlED+IjdXKUMU+I6nDDHpHfZFcFsVIAiD+sFYPfG7uH55xgQB329US0mFExMrbytaVLC0PxRz1EjgjpNdWydDnjJEGzEig476Gns4IuMibfI5KextTV+HVHuz/Zp+EwxFoYgO5gcX8tVyKgQcl+OjKBhL5dxSc5/v+QWM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net; spf=pass smtp.mailfrom=sipsolutions.net; dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b=pc7Gf6MZ; arc=none smtp.client-ip=168.119.38.16
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sipsolutions.net
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=sipsolutions.net; s=mail; h=MIME-Version:Content-Transfer-Encoding:
-	Content-Type:References:In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender
-	:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
-	Resent-Cc:Resent-Message-ID; bh=HNnp/CaZgp6m72jY/3vSQxfduj8evozXNkqRDUMz+cs=;
-	t=1768410509; x=1769620109; b=pc7Gf6MZ5nPrItskaREdmcVzTuWr7B6F2K4UD+/zIwpqqsT
-	xoYAByRIWCwFmREgcjSVhikc8zEupSgBHHrIfdefq+F13FLJ50d3x8K/D++oH9z4pSO/CHxa67ozE
-	x5Udp1qR6FnjExmPrheSi1W8mCY6bNwPQOzYR0i2aSGkP78e3roX/S0TGhpdU1bOC4baYU5fdYTqI
-	wOW2+DIVp5xZlsRR/gI1DxjXpI00GJblv5WFvAe1k6Mr7DK/FPY9H4c4G8uVJaxDi1NCqWGdbLkF+
-	rL3JveKxIDnktsx/uGTIzCAzUV2K3LECxIoNrm0fjAypNbkofwYWCuATuzxJ4E1w==;
-Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
-	(Exim 4.98.2)
-	(envelope-from <johannes@sipsolutions.net>)
-	id 1vg4M4-0000000Bk8g-4Auu;
-	Wed, 14 Jan 2026 18:08:25 +0100
-Message-ID: <22746c254c4c43561e2e3deaf49dadf7c57dae17.camel@sipsolutions.net>
-Subject: Re: pull-request: ath-current-20260113
-From: Johannes Berg <johannes@sipsolutions.net>
-To: Jeff Johnson <jeff.johnson@oss.qualcomm.com>, 
-	linux-wireless@vger.kernel.org
-Cc: ath10k@lists.infradead.org, ath11k@lists.infradead.org, 
-	ath12k@lists.infradead.org, jjohnson@kernel.org
-Date: Wed, 14 Jan 2026 18:08:24 +0100
-In-Reply-To: <f12c186c-c76a-4d39-8591-4c8d7d04d307@oss.qualcomm.com> (sfid-20260114_161351_637731_0A0B26C6)
-References: <98386125-c0bb-495e-b2ba-2765aaed19d8@oss.qualcomm.com>
-	 <33d998cc225a7aeef4731ebc53c28a32b241ca7e.camel@sipsolutions.net>
-	 <f12c186c-c76a-4d39-8591-4c8d7d04d307@oss.qualcomm.com>
-	 (sfid-20260114_161351_637731_0A0B26C6)
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.56.2 (3.56.2-2.fc42) 
+	s=arc-20240116; t=1768411465; c=relaxed/simple;
+	bh=qQcflF4w079QNMpZfzmyomZEqM2JpNH5WkaVJP7WAyU=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=kotkwXrJP07FI48zBVMAlLpMffbHiKWf5k7wAQwlbhlidbJHCDluThebfgL9DYKglEeMRUjE+Sm0dJ1fPVdkVGEmFJvdy7k5OzoPYSEvu8Nv2z0X1ONsKICG8Gc86IUc8l9ilA08SeZ5djsEzZ9kGi1le4m3DzO1hpfZxU1Azi4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=BMYn0omk; dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b=VpvhsLnk; arc=none smtp.client-ip=205.220.180.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
+Received: from pps.filterd (m0279871.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 60EE1JB43850524
+	for <linux-wireless@vger.kernel.org>; Wed, 14 Jan 2026 17:24:23 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
+	cc:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
+	9+mDVu2OGbCT81X3aqnLFlTpu1u9SyfEN+WtZVk3UzM=; b=BMYn0omkV3KnPVwr
+	aYc7QEPJX7FQ1zDsOUQwM7ueppV982NjHgRbTbww2X1wElcH+dK+devi1eBD4o7R
+	31I/Au5ABO8cyTs1ta53A+UbUK4xHZLek6lNkI6T5dCijSRIIpBprL1DxQefB4xL
+	PFgq+WLXG1vRbkb5Iwvc4D/U5n+YiT8b69bg2G+ader+BadeegqhOHILJcrBLoVT
+	X8uhIX29Oo26kV4oPjNvJnhq9kq7ttG6R8vnBnBPtAG2978gS4QSQXhG15twuFiq
+	KOswoKe2n0pUNBJuN/8hyoWz5ZB7SPIOr2xKvFLWf5MGPlQWjlGyDB2UvGasU725
+	+sS+rA==
+Received: from mail-dl1-f72.google.com (mail-dl1-f72.google.com [74.125.82.72])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4bp8t2skcr-1
+	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
+	for <linux-wireless@vger.kernel.org>; Wed, 14 Jan 2026 17:24:22 +0000 (GMT)
+Received: by mail-dl1-f72.google.com with SMTP id a92af1059eb24-12338749ea9so6236c88.0
+        for <linux-wireless@vger.kernel.org>; Wed, 14 Jan 2026 09:24:22 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=oss.qualcomm.com; s=google; t=1768411462; x=1769016262; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:content-language:from
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=9+mDVu2OGbCT81X3aqnLFlTpu1u9SyfEN+WtZVk3UzM=;
+        b=VpvhsLnk7JpaVQeOiV9ssHMlE7YKtaPY5rF/g5Mv6jDyLDemz8rtTb3prZtnGCx/p8
+         YFW0V3VRhX3xxPcT9mCYrCdQTlsE/CF/BIvHmQaYSP96CgrFrXrispnvsDU/XpqvC+Sw
+         HzxkL9M2ZZaheoM2HWlqCFb1uoVDcgZwOWA0+IKUaav4z8oX/vwtMtHHdSgXvtGnX+23
+         aN0cW3YH9eIShlLer7Vt/mfL2GXwzQODrbDhWVhKIRdQabE2zQpOg+ZBX1lU7OQvxEEb
+         1cs2hzgRprxwiOVAlitxjPyjz8eaKhiQQH5jkeA2du87U0u6D6JX0aP3Co506uYsCRna
+         TQ8g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1768411462; x=1769016262;
+        h=content-transfer-encoding:in-reply-to:content-language:from
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=9+mDVu2OGbCT81X3aqnLFlTpu1u9SyfEN+WtZVk3UzM=;
+        b=GLX+cntwixfkLe2F+qX1gsjc4XDPK0zgKfFup6j86xGAkgW6DMU5B/8lsm4t+LJoI3
+         OCaXGWVTpPbtRomcMyooB/cGII2rv1jU0S9hwqREdmh5uKoKzG6kL7UTnt49FZlMAGZy
+         WuAmpbvRIlFzIlIMc05hPzmi+Ctq08ZtzzeiUk6BaO+izKO8n08WsMJ43tF3+hvuBHJT
+         ATx7mKMQtz9YD0O7QjjFV4/Y0EtMLe5bl6r0npnWwoMJXZNEx+DGSIVV/nYnjy6LQ+u4
+         wWy8+Sqh1UMqHtc80eq9pwswu6QkfDMReSWgdUBdbr8qVi13rpBM5c3nCcCFp8zRQPuu
+         D2KA==
+X-Forwarded-Encrypted: i=1; AJvYcCUAHyDgsJzoO1zKBb2KGk3baBTFP5Ywf7Rf1NM8Hg5gBsNVnM2VpYzdPUCtvPpYNoyji2SkwAyMeelnTByIig==@vger.kernel.org
+X-Gm-Message-State: AOJu0YxMY7fPoEXOzB9FDBgX8RRfPEfIPu4VH6CVXokBB/yhxnV2/gAW
+	45UV9hfO36Z9aSTptnapAfulRezN3T8Bi835akEu8kkS4cWb5BZi6UJZylVXf5jLwA3EcPYMtry
+	R2VE1IFYGc77erjsVDggg1Tp0Ou7ZKaNgCFOsK/zB7wLGDeWOq7Tpo2YFZS5UNwIq9L5/QQ==
+X-Gm-Gg: AY/fxX6KdgIcfDXmreOGDy2yFOPzwp9J8DyP2TBY/CFt9kQKmcgyQhjGhuSeB8/SU5K
+	v6ndoxW8eWPcEoQ5C4lSGP/VSRPaHGX9qD0Hop9voPi9kqEtRIHsXeZP0/8Jg3T/NrP3lMDwSJ/
+	+EPvf9GRrPodnqhUHHM9qOBdhJ60A10MuhCTaqUMyP4cYXlKqKy2TEumjQvRHo9gpPQQZ05dze6
+	2K5v1oFBuB+qvUxrCCUwswTg6X0TO50PBFESt0upIoNgKaoQ+UXaiRuqBVwnWMXPuFS4Ixvfh8b
+	lZCVpwNM8QxUBkJeYVvcVZ9QMOPSSS9poOPjv88qtnqE2CXsmCKkYRTFQKS4PIR66ZXHIXByyC/
+	3p+Ek5JHpsuF7qSZ9b2hvqMJD95zYm1RU2EezZMj39X1nc60RQDPVq4lsI8/dq4lCQlVfTA==
+X-Received: by 2002:a05:7022:fc0b:b0:11b:9b9f:4283 with SMTP id a92af1059eb24-12336a6d9c6mr2588086c88.24.1768411461903;
+        Wed, 14 Jan 2026 09:24:21 -0800 (PST)
+X-Received: by 2002:a05:7022:fc0b:b0:11b:9b9f:4283 with SMTP id a92af1059eb24-12336a6d9c6mr2588056c88.24.1768411461381;
+        Wed, 14 Jan 2026 09:24:21 -0800 (PST)
+Received: from [10.227.110.203] (i-global254.qualcomm.com. [199.106.103.254])
+        by smtp.gmail.com with ESMTPSA id a92af1059eb24-121f24985d1sm31170055c88.16.2026.01.14.09.24.20
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 14 Jan 2026 09:24:21 -0800 (PST)
+Message-ID: <c8456b52-f14c-4bcf-9385-580e9607219d@oss.qualcomm.com>
+Date: Wed, 14 Jan 2026 09:24:19 -0800
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-malware-bazaar: not-scanned
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v3] wifi: ath11k: move .max_tx_ring to struct
+ ath11k_hw_hal_params
+To: Vasanthakumar Thiagarajan <vasanthakumar.thiagarajan@oss.qualcomm.com>,
+        Alexandru Gagniuc <mr.nuke.me@gmail.com>, jjohnson@kernel.org,
+        ath11k@lists.infradead.org
+Cc: baochen.qiang@oss.qualcomm.com, linux-wireless@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+References: <20251228151408.2116108-1-mr.nuke.me@gmail.com>
+ <56c6471b-c878-4afd-8e8e-d56266ca9c64@oss.qualcomm.com>
+From: Jeff Johnson <jeff.johnson@oss.qualcomm.com>
+Content-Language: en-US
+In-Reply-To: <56c6471b-c878-4afd-8e8e-d56266ca9c64@oss.qualcomm.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Authority-Analysis: v=2.4 cv=YPaSCBGx c=1 sm=1 tr=0 ts=6967d146 cx=c_pps
+ a=bS7HVuBVfinNPG3f6cIo3Q==:117 a=JYp8KDb2vCoCEuGobkYCKw==:17
+ a=IkcTkHD0fZMA:10 a=vUbySO9Y5rIA:10 a=s4-Qcg_JpJYA:10
+ a=VkNPw1HP01LnGYTKEx00:22 a=VwQbUJbxAAAA:8 a=pGLkceISAAAA:8 a=EUspDBNiAAAA:8
+ a=4N76r0Ozp7Clb_Fv4mYA:9 a=QEXdDO2ut3YA:10 a=vBUdepa8ALXHeOFLBtFW:22
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwMTE0MDE0NiBTYWx0ZWRfXzm9bhYM/C9ee
+ b6r5rCpCXnO1lnC2k7BKEcPGjte3rfjUX8eHYmy6SHtLM2raq4Pc+1rg3mbVyKC4jzLUHPeLaB4
+ P4WdJXB75+NTpOvdEnJT3lGa3eOQT6VKhnaGOxzBS+bEufXRZNPldyWkZPZwkZ1FPO7SfKyMY+o
+ DOFOIzklH15IgWmSsFvFd2mrOYCNxAGHxug060h88moNuc+TViVLwKcFp7Cv20B1Bf1vhhO3D7N
+ fxDHa/LdfXMOrRMpcTDqv0q0WFu0g04xzvz0QMM2T0a8DkVHVQOMU7kAvTtM2oeMYJe+D6e3eCa
+ Zal0U2j3treBHfcZISxUOiz22LT1aWsd76YrKzhylUE0I4FxQOmIoHJ1UK5s/Gqmo/H3dxfE9Ix
+ BFf2b36ixarhJOpvkiAEtUeJtCLxt5L79TVOxCyXBvRxT2QDboJGZGKHc0qpz9AFLx3nFafg0m1
+ kGKO2eqpLusTV316H0w==
+X-Proofpoint-GUID: wgcZGEIf7cNYiSfRIMSbeaP4tjwUjM1L
+X-Proofpoint-ORIG-GUID: wgcZGEIf7cNYiSfRIMSbeaP4tjwUjM1L
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.9,FMLib:17.12.100.49
+ definitions=2026-01-14_05,2026-01-14_01,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ clxscore=1015 bulkscore=0 impostorscore=0 suspectscore=0 malwarescore=0
+ phishscore=0 lowpriorityscore=0 priorityscore=1501 spamscore=0 adultscore=0
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.22.0-2512120000 definitions=main-2601140146
 
-On Wed, 2026-01-14 at 07:13 -0800, Jeff Johnson wrote:
-> On 1/14/2026 1:47 AM, Johannes Berg wrote:
-> > On Tue, 2026-01-13 at 09:33 -0800, Jeff Johnson wrote:
-> > >=20
-> > > Note to maintainers:
-> > >=20
-> > > This tag includes:
-> > > 31707572108d ("wifi: ath12k: Fix wrong P2P device link id issue")
-> > >=20
-> > > That commit contains the following:
-> > >=20
-> > > Note to linux-next and netdev maintainers:
-> >=20
-> > I'm a bit on the fence about this, I hadn't thought about it on the
-> > prior -next PR much, but I feel like this is a process thing that
-> > shouldn't get recorded in the tag for posterity?
-> >=20
-> > I do appreciate the inclusion of this (*especially* when I won't notice
-> > the merge conflict myself), but I tend to think it should be in the
-> > email rather than the tag message, since the latter is something I use
-> > for the merge commit message and it gets recorded.
-> >=20
-> > Either way I have to preserve it manually to the next level, so it
-> > doesn't really help all that much, although I guess in the tag there's =
-a
-> > chance I could see it again when preparing my PR.
-> >=20
-> > I'll just edit it out this time I think since it's so long, but you can
-> > complain and convince me otherwise for the next time ;-)
->=20
-> In retrospect I made one bad decision.
+On 1/12/2026 11:00 PM, Vasanthakumar Thiagarajan wrote:
+> 
+> 
+> On 12/28/2025 8:44 PM, Alexandru Gagniuc wrote:
+>> ".max_tx_ring" is an upper bounds to indexing ".tcl2wbm_rbm_map". It
+>> is initialized in, core.c, a different file than the array. This
+>> spaghetti-like relation is fragile and not obvious. Accidentally
+>> setting ".max_tx_ring" too high leads to a hard to track out-of-
+>> bounds access and memory corruption.
+>>
+>> There is a small ambiguity on the meaning of "max_tx_ring":
+>>   - The highest ring, max=3 implies there are 4 rings (0, 1, 2, 3)
+>>   - The highest number to use for array indexing (there are 3 rings)
+>>
+>> Clarify this dependency by moving ".max_tx_ring" adjacent to the array
+>> ".tcl2wbm_rbm_map", and name it "num_tx_rings". Use ARRAY_SIZE()
+>> instead of #defines to initialize the length field.
+>>
+>> The ath11k_hw_hal_params_qca6390 uses fewer num_tx_rings than its map,
+>> so use a constant to express the correct value. Add a static_assert()
+>> to fail compilation if the constant is accidentally set too high.
+> 
+> Text related to static_assert to be removed accordingly.
 
-FTR, I didn't meant to imply that you made a bad choice here - including
-this information was valuable. I just didn't think it needs to be in the
-tag message, as outlined.
+I removed the last sentence in 'pending', please check:
 
-And I was scratching my head over what you said below when I read your
-mail earlier, and again now, until I looked back at git ...
+https://git.kernel.org/pub/scm/linux/kernel/git/ath/ath.git/commit/?h=pending&id=26bb149b5e011b0f73f7b74421589cbd38e3304b
 
-> I modified the commit text of that
-> patch in my "pending" branch to add the conflict resolution information.
+> 
+>>
+>> The intent is to make the code easier to understand rather than fix
+>> an existing bug.
+>>
+>> Signed-off-by: Alexandru Gagniuc <mr.nuke.me@gmail.com>
+> 
+> With the above minor comment addressed.
+> 
+> Reviewed-by: Vasanthakumar Thiagarajan <vasanthakumar.thiagarajan@oss.qualcomm.com>
 
-I hadn't even noticed _that_! I only noticed it in the merge / tag
-message, not in the individual commit.
-
-> Instead of that, I should have reposted the "pending" version with that
-> conflict resolution embedded in the "basement" of the patch so that then =
-it
-> would be part of the email record on lore but not part of the patch recor=
-d in
-> git. And then for the tag I could have referred to that lore link in the =
-PR
-> email. So this was a good learning lesson for me.
-
-Makes sense.
-
-Do you just want to redo it? I don't mind backing it out, nobody pulled
-my tree yet I'd think?
-
-> Hopefully these merge conflicts will be much fewer once the refactored at=
-h12k
-> lands in Linus' tree in the next merge window.
-
-Right.
-
-johannes
 
