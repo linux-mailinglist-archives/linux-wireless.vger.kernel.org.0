@@ -1,151 +1,343 @@
-Return-Path: <linux-wireless+bounces-30834-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-30835-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2BE20D2188D
-	for <lists+linux-wireless@lfdr.de>; Wed, 14 Jan 2026 23:18:18 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9FB0AD219F6
+	for <lists+linux-wireless@lfdr.de>; Wed, 14 Jan 2026 23:39:14 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id B242B3025123
-	for <lists+linux-wireless@lfdr.de>; Wed, 14 Jan 2026 22:16:35 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id DD24D304269B
+	for <lists+linux-wireless@lfdr.de>; Wed, 14 Jan 2026 22:37:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4E7C03B5306;
-	Wed, 14 Jan 2026 22:16:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1131A3B530A;
+	Wed, 14 Jan 2026 22:36:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Exe9xROA"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="PLhlBxz+"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-wm1-f65.google.com (mail-wm1-f65.google.com [209.85.128.65])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.8])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4ABD13B5310
-	for <linux-wireless@vger.kernel.org>; Wed, 14 Jan 2026 22:16:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.65
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D79D13AEF42
+	for <linux-wireless@vger.kernel.org>; Wed, 14 Jan 2026 22:36:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.8
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768428991; cv=none; b=uvWzHvmGLjlkEqtaohqr/6tZIVQNBpuTNMBsZkGI5CsykJKpE2viw2O8I8Dmn8YFqzTG7oIbXWM+52uiZvhblBsgkWCf6oc6N/tfPAXj76j9eA4B28C38DX130q0HUJ13mq2z6S5Dhp0D2vFmoNO7/TGuYRsjgYmSYiPC6txlGE=
+	t=1768430198; cv=none; b=gCqs0WtRreBuLju+LOeVqn8lknHTnb9GDkinsJaGoXJcX46ZhOrrhOLz1Rh9vYt2vPSpNiUr2T/8JM5Zvq0OYmPqogKQjtgf8zCwablDfLbJtTiifgDO0+yKSMtHvL6bEI7Rz5sfJg+IuCpP+pT8YH9O4aHZe9ZIPDsrYroZFwQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768428991; c=relaxed/simple;
-	bh=fzvauD40kAimdCckerfZgBpT7JM9LGbZKBC+or+J9L0=;
-	h=Message-ID:Date:MIME-Version:From:Subject:To:Cc:Content-Type; b=f6CP3MyyJ/elDLxXBs4fP8mQJe9OYWUeMpXyQ8pMFMyrBvv8XTRLwQjqoPKzfn9HX5HOFj1i8Rv7AaYNCxSPZKZYp+85C0gbmqXMSrB0ZJAsYt3N4uZWhIzNd6MA36ozymUFC4T29W9QZhwKH9n+50BzKOmz7YYB2aOKqkZvwvU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Exe9xROA; arc=none smtp.client-ip=209.85.128.65
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-wm1-f65.google.com with SMTP id 5b1f17b1804b1-47ee4338e01so1139685e9.2
-        for <linux-wireless@vger.kernel.org>; Wed, 14 Jan 2026 14:16:19 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1768428975; x=1769033775; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:content-language:to:subject:from
-         :user-agent:mime-version:date:message-id:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=RUgM3ZyyugB0rf54n39dsTIrI0pwlQCUDXRgUuG9VUM=;
-        b=Exe9xROAwkkaZjD5IcEi8noMnStcZY1nFg8gZccna5Z66NeUnUt4eiamrv7u4QqGqj
-         wb0nSQiJpKzy97Et099MgyBgtOxKy35UVuyA4fChbiwZaJITApMi8O5/3T3H3E14Xj4H
-         LlFq9jn9ygT0CgBY3zxFIQOH2H6oC5gcR1q38Hw1DTGe1554X7UJG+X0Z0HfDaqpm3cx
-         efrtac2Wyx++H89jLk1wt/mo+2FP/f6qv6vSIr1Pv9S3FlMCss8UwKqkGRObRwlQhQr0
-         P78Z6XRMGSaBBAngouDrPyjJWy4WL09+LiIUSnC4RbvD67w/WMwrYvYl8VkUN4PEPPvy
-         8hYQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1768428975; x=1769033775;
-        h=content-transfer-encoding:cc:content-language:to:subject:from
-         :user-agent:mime-version:date:message-id:x-gm-gg:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=RUgM3ZyyugB0rf54n39dsTIrI0pwlQCUDXRgUuG9VUM=;
-        b=eUW4CPvNEL3OoFwjOyITTUFCYhOorAFE7iM2HOwB1TZvsEJPXi61+0RZiL6DyvdHeN
-         6awqxpLFMqK/Jk/ZCfQ7eL3CoYi2SKVFfV81NjrygXP9fJZQBoZ5kzxIZqWt7enwb9aZ
-         uH7jtc70h3fdMGc0C1eBzrxz2x7J4n8W3horD6WlPQg1/XFN9oDAUzGL4t7oAyCPwZ/p
-         o8ds88G8+FWFUOV0F434LvpJPIDGcX9kk3P9kEiAS4PGxViQXhes0VYGWYoFpAggReUK
-         a8YwkxOQdREwm3FZnzvGa/08P9nNY4Uff4lieyPk2R1pS+yF+Km5b+6JJ+2BMdNtW//S
-         BiMg==
-X-Gm-Message-State: AOJu0YwVcLZMfdSkzLTIy+yAe2j+WgTK8nz8o1J3JimyBgYz7eJnP9iE
-	ujp3eF1fZ8zsXYxzlUs3rZzztdF4S9pjvHO9TDDc7E9XrRsPL/Dljv91jOxhLCPc
-X-Gm-Gg: AY/fxX4wuHmeRLgEO3SCkIRvZrOqv3FggNdbWxRheJJnFxJjyGk/zsiLLPOhJ6DUH7W
-	CAlCvZ99FRSCPiD7hh/UjvqT5LTGjbFDfp+WGhD0Hb4XH8oNApdjf8+/1Q2ae1JI1gXUT6JTNB/
-	7ERQkOJM1IIp0J68Ova70ils2Zz41P5aC1aK/HXDPZIEJN76rpysVXlnFzmnJ3LFBBfIVmA9cyP
-	lAREqVUDLTUlxwvBr645WzI0sVL4Oh4wvZJt5+Ve7shA/8moEplOevk3tOchpx6X9Q6aZyV1DzN
-	EA5UtWvfSEdVIOuvk2aeqFtA29o4hvdB3clp7lEWY6F8dh7mggQnKjeHeQbWTiQ1wNkwhWSjGxt
-	3/N1r0FyMrdgMQy9jyptVwd62vvCQeplHRdli8O86NfrjcBG4PeQ9UVvhs/9WjDsBqPYYbfKhmb
-	kYeBwAMeKrvTaVJhr07IRcD5S6JA4SXKypwJ3jD8/CGGZ9jAdMKBRsDE7/MecnyEhqhY8=
-X-Received: by 2002:a05:600c:524c:b0:477:429b:3b93 with SMTP id 5b1f17b1804b1-47ee3350464mr50429645e9.18.1768428974996;
-        Wed, 14 Jan 2026 14:16:14 -0800 (PST)
-Received: from [192.168.68.113] (193-80-180-232.hdsl.highway.telekom.at. [193.80.180.232])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-434af64a778sm1679153f8f.3.2026.01.14.14.16.14
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 14 Jan 2026 14:16:14 -0800 (PST)
-Message-ID: <2ce9b56f-edb0-4c3f-8fdf-251a20f103bf@gmail.com>
-Date: Wed, 14 Jan 2026 23:16:13 +0100
+	s=arc-20240116; t=1768430198; c=relaxed/simple;
+	bh=RjbaTkKTcj2XJIM5ntbTTFrM1n4DbL9G1EHma2R3nWA=;
+	h=Date:From:To:Cc:Subject:Message-ID; b=TQiPeuxxQpMLYQfJtKQoP05W0GcB5ZiKnB43h1CH/4BZXNxet2MfTR4wGDk+LyurIuX2TsozpJx4gBbD9cQ3t/lagGU/wF6USuk0c1pVUNdqnRYLZQt76p4CTvb1DBuO27Vezz2rtN5SwhhdD/DrYfXEkAtPG8/9/TE6KyVzogA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=PLhlBxz+; arc=none smtp.client-ip=192.198.163.8
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1768430192; x=1799966192;
+  h=date:from:to:cc:subject:message-id;
+  bh=RjbaTkKTcj2XJIM5ntbTTFrM1n4DbL9G1EHma2R3nWA=;
+  b=PLhlBxz+kPixmqItaG8u/IyvpnKTJRn2GiIgq5o3ScmN2lcECwKaS11y
+   iA4azt2iFdClAaRTdMNLkRSQuUOBY3FNP6ZmEVQO38AjSNzTNmpieKFGO
+   SfxhodkA69MDdYha+Z69+g6H6ZqTMJabYgyeXt6j3p9KL6utWj1UPDsRu
+   R4hfa921bCjjirTPe53DQoBB497QdFoUDVVHdvcdBue/1qyTgGHW+ygFX
+   19yUG1LwzscTpyuJaWSiLrCaD7TizuMGy6xBChJ0Kn6BCEENeHf9LXbIl
+   /DhH2UHq59mRDSVYBSvJnJ36cnkT8SVWvNzLkJC5MO/ptZbVPHqYShBf7
+   A==;
+X-CSE-ConnectionGUID: Y854lZhPSkGucwLJDdk8RA==
+X-CSE-MsgGUID: sHFvY0FPQNOFuvA1i+f0sg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11671"; a="87317608"
+X-IronPort-AV: E=Sophos;i="6.21,226,1763452800"; 
+   d="scan'208";a="87317608"
+Received: from fmviesa004.fm.intel.com ([10.60.135.144])
+  by fmvoesa102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 14 Jan 2026 14:36:28 -0800
+X-CSE-ConnectionGUID: bdrSwIhMRxCUmIuxrEm2vQ==
+X-CSE-MsgGUID: ATVOseSMS26eVZ0mqASnMA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.21,226,1763452800"; 
+   d="scan'208";a="209651379"
+Received: from lkp-server01.sh.intel.com (HELO 765f4a05e27f) ([10.239.97.150])
+  by fmviesa004.fm.intel.com with ESMTP; 14 Jan 2026 14:36:27 -0800
+Received: from kbuild by 765f4a05e27f with local (Exim 4.98.2)
+	(envelope-from <lkp@intel.com>)
+	id 1vg9TU-00000000H8h-3Pqn;
+	Wed, 14 Jan 2026 22:36:24 +0000
+Date: Thu, 15 Jan 2026 06:35:58 +0800
+From: kernel test robot <lkp@intel.com>
+To: Johannes Berg <johannes.berg@intel.com>
+Cc: linux-wireless@vger.kernel.org
+Subject: [wireless:for-next] BUILD SUCCESS
+ e7df8567878f9cbb9059287161e80f7c7da9b15c
+Message-ID: <202601150652.7NSDQmdp-lkp@intel.com>
+User-Agent: s-nail v14.9.25
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-From: Till Kamppeter <till.kamppeter@gmail.com>
-Subject: Google Summer of Code 2026 - Project ideas page for the Linux
- Foundation online
-To: linux-wireless <linux-wireless@vger.kernel.org>
-Content-Language: en-US
-Cc: Aveek Basu <basu.aveek@gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
 
-Hi,
+tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/wireless/wireless.git for-next
+branch HEAD: e7df8567878f9cbb9059287161e80f7c7da9b15c  Merge tag 'ath-current-20260113' of git://git.kernel.org/pub/scm/linux/kernel/git/ath/ath into wireless
 
-the Linux Foundation will apply again as mentoring organization in this year's 
-Google Summer of Code.
+elapsed time: 751m
 
-Perhaps also this year security-related projects and projects about AI/ML are 
-especially welcomed by the organizers at Google, like in 2025.
+configs tested: 252
+configs skipped: 2
 
-Everything is going as last year, especially allowance of open source newcomers 
-and not only students and flexibility with the end of the coding period and the 
-3 project sizes, large (350h), medium (175h), and small (90h).
+The following configs have been built successfully.
+More configs may be tested in the coming days.
 
-On January 19, 2026 (in 5 days) the application period for mentoring 
-organizations for the Google Summer of Code 2025 will start and the deadline 
-will be Feb 3.
+tested configs:
+alpha                            alldefconfig    clang-22
+alpha                             allnoconfig    gcc-15.2.0
+alpha                            allyesconfig    gcc-15.2.0
+alpha                               defconfig    gcc-15.2.0
+arc                              allmodconfig    clang-16
+arc                               allnoconfig    gcc-15.2.0
+arc                              allyesconfig    clang-22
+arc                                 defconfig    gcc-15.2.0
+arc                 nsimosci_hs_smp_defconfig    gcc-15.2.0
+arc                   randconfig-001-20260114    gcc-10.5.0
+arc                   randconfig-001-20260115    clang-22
+arc                   randconfig-002-20260114    gcc-10.5.0
+arc                   randconfig-002-20260115    clang-22
+arm                               allnoconfig    gcc-15.2.0
+arm                              allyesconfig    clang-16
+arm                         at91_dt_defconfig    clang-22
+arm                                 defconfig    gcc-15.2.0
+arm                          ep93xx_defconfig    gcc-15.2.0
+arm                          ixp4xx_defconfig    clang-22
+arm                          moxart_defconfig    clang-22
+arm                   randconfig-001-20260114    gcc-10.5.0
+arm                   randconfig-001-20260115    clang-22
+arm                   randconfig-002-20260114    gcc-10.5.0
+arm                   randconfig-002-20260115    clang-22
+arm                   randconfig-003-20260114    gcc-10.5.0
+arm                   randconfig-003-20260115    clang-22
+arm                   randconfig-004-20260114    gcc-10.5.0
+arm                   randconfig-004-20260115    clang-22
+arm                           sama7_defconfig    clang-22
+arm64                            allmodconfig    clang-22
+arm64                             allnoconfig    gcc-15.2.0
+arm64                               defconfig    gcc-15.2.0
+arm64                 randconfig-001-20260114    clang-22
+arm64                 randconfig-001-20260115    clang-22
+arm64                 randconfig-002-20260114    clang-22
+arm64                 randconfig-002-20260115    clang-22
+arm64                 randconfig-003-20260114    clang-22
+arm64                 randconfig-003-20260115    clang-22
+arm64                 randconfig-004-20260114    clang-22
+arm64                 randconfig-004-20260115    clang-22
+csky                             allmodconfig    gcc-15.2.0
+csky                              allnoconfig    gcc-15.2.0
+csky                                defconfig    gcc-15.2.0
+csky                  randconfig-001-20260114    clang-22
+csky                  randconfig-001-20260115    clang-22
+csky                  randconfig-002-20260114    clang-22
+csky                  randconfig-002-20260115    clang-22
+hexagon                          allmodconfig    gcc-15.2.0
+hexagon                           allnoconfig    gcc-15.2.0
+hexagon                             defconfig    gcc-15.2.0
+hexagon               randconfig-001-20260114    clang-22
+hexagon               randconfig-002-20260114    clang-22
+i386                             allmodconfig    clang-20
+i386                              allnoconfig    gcc-15.2.0
+i386                             allyesconfig    clang-20
+i386        buildonly-randconfig-001-20260114    gcc-14
+i386        buildonly-randconfig-002-20260114    gcc-14
+i386        buildonly-randconfig-003-20260114    gcc-14
+i386        buildonly-randconfig-004-20260114    gcc-14
+i386        buildonly-randconfig-005-20260114    gcc-14
+i386        buildonly-randconfig-006-20260114    gcc-14
+i386                                defconfig    gcc-15.2.0
+i386                  randconfig-001-20260114    gcc-14
+i386                  randconfig-001-20260115    clang-20
+i386                  randconfig-002-20260114    gcc-14
+i386                  randconfig-002-20260115    clang-20
+i386                  randconfig-003-20260114    gcc-14
+i386                  randconfig-003-20260115    clang-20
+i386                  randconfig-004-20260114    gcc-14
+i386                  randconfig-004-20260115    clang-20
+i386                  randconfig-005-20260114    gcc-14
+i386                  randconfig-005-20260115    clang-20
+i386                  randconfig-006-20260114    gcc-14
+i386                  randconfig-006-20260115    clang-20
+i386                  randconfig-007-20260114    gcc-14
+i386                  randconfig-007-20260115    clang-20
+i386                  randconfig-011-20260114    gcc-14
+i386                  randconfig-011-20260115    gcc-14
+i386                  randconfig-012-20260114    gcc-14
+i386                  randconfig-012-20260115    gcc-14
+i386                  randconfig-013-20260114    gcc-14
+i386                  randconfig-013-20260115    gcc-14
+i386                  randconfig-014-20260114    gcc-14
+i386                  randconfig-014-20260115    gcc-14
+i386                  randconfig-015-20260114    gcc-14
+i386                  randconfig-015-20260115    gcc-14
+i386                  randconfig-016-20260114    gcc-14
+i386                  randconfig-016-20260115    gcc-14
+i386                  randconfig-017-20260114    gcc-14
+i386                  randconfig-017-20260115    gcc-14
+loongarch                        allmodconfig    clang-22
+loongarch                         allnoconfig    gcc-15.2.0
+loongarch                           defconfig    clang-19
+loongarch             randconfig-001-20260114    clang-22
+loongarch             randconfig-002-20260114    clang-22
+m68k                             allmodconfig    gcc-15.2.0
+m68k                              allnoconfig    gcc-15.2.0
+m68k                             allyesconfig    clang-16
+m68k                                defconfig    clang-19
+microblaze                        allnoconfig    gcc-15.2.0
+microblaze                       allyesconfig    gcc-15.2.0
+microblaze                          defconfig    clang-19
+mips                             allmodconfig    gcc-15.2.0
+mips                              allnoconfig    gcc-15.2.0
+mips                             allyesconfig    gcc-15.2.0
+mips                           ip28_defconfig    gcc-15.2.0
+mips                           mtx1_defconfig    gcc-15.2.0
+mips                      pic32mzda_defconfig    clang-22
+mips                          rb532_defconfig    clang-22
+nios2                            allmodconfig    clang-22
+nios2                             allnoconfig    clang-22
+nios2                               defconfig    clang-19
+nios2                 randconfig-001-20260114    clang-22
+nios2                 randconfig-002-20260114    clang-22
+openrisc                         alldefconfig    gcc-15.2.0
+openrisc                         allmodconfig    clang-22
+openrisc                          allnoconfig    clang-22
+openrisc                            defconfig    gcc-15.2.0
+parisc                           allmodconfig    gcc-15.2.0
+parisc                            allnoconfig    clang-22
+parisc                           allyesconfig    clang-19
+parisc                              defconfig    gcc-15.2.0
+parisc                generic-64bit_defconfig    clang-22
+parisc                randconfig-001-20260114    gcc-14.3.0
+parisc                randconfig-001-20260115    clang-22
+parisc                randconfig-002-20260114    gcc-14.3.0
+parisc                randconfig-002-20260115    clang-22
+parisc64                            defconfig    clang-19
+powerpc                    adder875_defconfig    clang-22
+powerpc                          allmodconfig    gcc-15.2.0
+powerpc                           allnoconfig    clang-22
+powerpc                    gamecube_defconfig    clang-22
+powerpc                 linkstation_defconfig    clang-22
+powerpc                   lite5200b_defconfig    gcc-15.2.0
+powerpc               randconfig-001-20260114    gcc-14.3.0
+powerpc               randconfig-001-20260115    clang-22
+powerpc               randconfig-002-20260114    gcc-14.3.0
+powerpc               randconfig-002-20260115    clang-22
+powerpc                     tqm8555_defconfig    gcc-15.2.0
+powerpc                      tqm8xx_defconfig    clang-22
+powerpc64             randconfig-001-20260114    gcc-14.3.0
+powerpc64             randconfig-001-20260115    clang-22
+powerpc64             randconfig-002-20260114    gcc-14.3.0
+powerpc64             randconfig-002-20260115    clang-22
+riscv                            allmodconfig    clang-22
+riscv                             allnoconfig    clang-22
+riscv                            allyesconfig    clang-16
+riscv                               defconfig    clang-22
+riscv                               defconfig    gcc-15.2.0
+riscv                 randconfig-001-20260114    gcc-14.3.0
+riscv                 randconfig-001-20260114    gcc-15.2.0
+riscv                 randconfig-001-20260115    gcc-10.5.0
+riscv                 randconfig-002-20260114    gcc-15.2.0
+riscv                 randconfig-002-20260114    gcc-9.5.0
+riscv                 randconfig-002-20260115    gcc-10.5.0
+s390                             allmodconfig    clang-19
+s390                              allnoconfig    clang-22
+s390                             allyesconfig    gcc-15.2.0
+s390                                defconfig    gcc-15.2.0
+s390                  randconfig-001-20260114    gcc-15.2.0
+s390                  randconfig-001-20260115    gcc-10.5.0
+s390                  randconfig-002-20260114    gcc-15.2.0
+s390                  randconfig-002-20260114    gcc-8.5.0
+s390                  randconfig-002-20260115    gcc-10.5.0
+sh                               allmodconfig    gcc-15.2.0
+sh                                allnoconfig    clang-22
+sh                               allyesconfig    clang-19
+sh                                  defconfig    gcc-14
+sh                          kfr2r09_defconfig    gcc-15.2.0
+sh                          r7785rp_defconfig    clang-22
+sh                    randconfig-001-20260114    gcc-15.2.0
+sh                    randconfig-001-20260115    gcc-10.5.0
+sh                    randconfig-002-20260114    gcc-12.5.0
+sh                    randconfig-002-20260114    gcc-15.2.0
+sh                    randconfig-002-20260115    gcc-10.5.0
+sparc                             allnoconfig    clang-22
+sparc                               defconfig    gcc-15.2.0
+sparc                 randconfig-001-20260114    clang-20
+sparc                 randconfig-001-20260115    clang-22
+sparc                 randconfig-002-20260114    clang-20
+sparc                 randconfig-002-20260115    clang-22
+sparc64                          allmodconfig    clang-22
+sparc64                             defconfig    gcc-14
+sparc64               randconfig-001-20260114    clang-20
+sparc64               randconfig-001-20260115    clang-22
+sparc64               randconfig-002-20260114    clang-20
+sparc64               randconfig-002-20260115    clang-22
+um                               allmodconfig    clang-19
+um                                allnoconfig    clang-22
+um                               allyesconfig    gcc-15.2.0
+um                                  defconfig    gcc-14
+um                             i386_defconfig    clang-22
+um                             i386_defconfig    gcc-14
+um                    randconfig-001-20260114    clang-20
+um                    randconfig-001-20260115    clang-22
+um                    randconfig-002-20260114    clang-20
+um                    randconfig-002-20260115    clang-22
+um                           x86_64_defconfig    gcc-14
+x86_64                           allmodconfig    clang-20
+x86_64                            allnoconfig    clang-22
+x86_64                           allyesconfig    clang-20
+x86_64      buildonly-randconfig-001-20260114    clang-20
+x86_64      buildonly-randconfig-002-20260114    clang-20
+x86_64      buildonly-randconfig-003-20260114    clang-20
+x86_64      buildonly-randconfig-004-20260114    clang-20
+x86_64      buildonly-randconfig-005-20260114    clang-20
+x86_64      buildonly-randconfig-006-20260114    clang-20
+x86_64                              defconfig    gcc-14
+x86_64                                  kexec    clang-20
+x86_64                randconfig-001-20260114    gcc-14
+x86_64                randconfig-001-20260115    clang-20
+x86_64                randconfig-002-20260114    gcc-14
+x86_64                randconfig-002-20260115    clang-20
+x86_64                randconfig-003-20260114    gcc-14
+x86_64                randconfig-003-20260115    clang-20
+x86_64                randconfig-004-20260114    gcc-14
+x86_64                randconfig-004-20260115    clang-20
+x86_64                randconfig-005-20260114    gcc-14
+x86_64                randconfig-005-20260115    clang-20
+x86_64                randconfig-006-20260114    gcc-14
+x86_64                randconfig-006-20260115    clang-20
+x86_64                randconfig-011-20260114    gcc-14
+x86_64                randconfig-012-20260114    gcc-14
+x86_64                randconfig-013-20260114    gcc-14
+x86_64                randconfig-014-20260114    gcc-14
+x86_64                randconfig-015-20260114    gcc-14
+x86_64                randconfig-016-20260114    gcc-14
+x86_64                randconfig-071-20260114    clang-20
+x86_64                randconfig-071-20260115    gcc-14
+x86_64                randconfig-072-20260114    clang-20
+x86_64                randconfig-072-20260115    gcc-14
+x86_64                randconfig-073-20260114    clang-20
+x86_64                randconfig-073-20260115    gcc-14
+x86_64                randconfig-074-20260114    clang-20
+x86_64                randconfig-074-20260115    gcc-14
+x86_64                randconfig-075-20260114    clang-20
+x86_64                randconfig-075-20260115    gcc-14
+x86_64                randconfig-076-20260114    clang-20
+x86_64                randconfig-076-20260115    gcc-14
+x86_64                               rhel-9.4    clang-20
+x86_64                           rhel-9.4-bpf    gcc-14
+x86_64                          rhel-9.4-func    clang-20
+x86_64                    rhel-9.4-kselftests    clang-20
+x86_64                         rhel-9.4-kunit    gcc-14
+x86_64                           rhel-9.4-ltp    gcc-14
+x86_64                          rhel-9.4-rust    clang-20
+xtensa                            allnoconfig    clang-22
+xtensa                           allyesconfig    clang-22
+xtensa                randconfig-001-20260114    clang-20
+xtensa                randconfig-001-20260115    clang-22
+xtensa                randconfig-002-20260114    clang-20
+xtensa                randconfig-002-20260115    clang-22
 
-To be successful, we need a rich project idea list so that we will get selected 
-by Google.
-
-I have set up a page for project ideas for the Linux Foundation's participation 
-in the Google Summer of Code 2026:
-
-https://wiki.linuxfoundation.org/gsoc/google-summer-code-2026
-
-Please add your ideas to the sub-page of your work group. Also remove project 
-ideas which are already done in one of the previous years or not needed any more 
-and make sure that all contact info is up-to-date and all links are working.
-
-At each idea please tell for which project size (Large (350h), Medium (175h), 
-Small (90h)) it is intended, the level of difficulty (Easy, Intermediate, Hard), 
-and mark clearly your security-related and AI/ML-related project ideas (with 
-something like "**SECURITY**", "**AI**", "**ML**").
-
-Having security and AI/ML project ideas and also not only large-sized projects 
-raises our chances to get accepted.
-
-Make sure to not talk about "students", but about "contributors" instead. I 
-have, at least partially, taken care of this when I have copied your sub-group 
-pages from last year.
-
-Also make sure to remove the "**TO BE UPDATED**" phrase after having updated 
-your project ideas.
-
-If you have problems mail me with your project ideas and other editing wishes.
-
-The ideas list is in the Linux Foundation Wiki. If you want to edit and did not 
-have the edit rights already from previous years, please tell me and I give you 
-edit rights. I need your name and e-mail address for that. If you have an 
-account at the Linux Foundation, use preferably that e-mail address, but having 
-an account at the Linux Foundation is not required.
-
-Please also take into account that the deadline for our application as mentoring 
-organization is Feb 3 and after that Google will evaluate the applications. So 
-have your ideas (at least most of them, ideas can be posted at any time up to 
-the contributor application deadline) in by then to raise our chances to get 
-accepted.
-
-Please also tell us if you do not want to participate any more with your 
-workgroup, so that we can remove your sub-page.
-
-    Till
+--
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
 
