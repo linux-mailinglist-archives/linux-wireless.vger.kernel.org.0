@@ -1,145 +1,153 @@
-Return-Path: <linux-wireless+bounces-30846-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-30847-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id A8815D25B3C
-	for <lists+linux-wireless@lfdr.de>; Thu, 15 Jan 2026 17:21:45 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id F0B38D27423
+	for <lists+linux-wireless@lfdr.de>; Thu, 15 Jan 2026 19:15:23 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 1023E30BEA52
-	for <lists+linux-wireless@lfdr.de>; Thu, 15 Jan 2026 16:15:50 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id F08973160D9D
+	for <lists+linux-wireless@lfdr.de>; Thu, 15 Jan 2026 17:29:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 80C913AEF3C;
-	Thu, 15 Jan 2026 16:15:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 615142D94A7;
+	Thu, 15 Jan 2026 17:27:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="hILxpg2e"
+	dkim=pass (2048-bit key) header.d=nabladev.com header.i=@nabladev.com header.b="Rn0jJQKn"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.12])
+Received: from mx.nabladev.com (mx.nabladev.com [178.251.229.89])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1BE752C3268;
-	Thu, 15 Jan 2026 16:15:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.12
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 173563D3014
+	for <linux-wireless@vger.kernel.org>; Thu, 15 Jan 2026 17:27:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=178.251.229.89
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768493748; cv=none; b=Xvfk3bKYld9yEEhlAgkEYhC1FK+9oohD04iiNMpsTJPynhWpem9bCG0Gn4Hn7OtvUa1WIUEebNPB6WgmpBty/Vy1ZhLV2fIMak1tnxFU1mi5hb3L7X1kgs0YD8VnZ3fNMLw0UG7bejazzZu84DA4nwXxXqW75rTxJPJGtOMyY48=
+	t=1768498042; cv=none; b=MymetQfnDgEYg+r4bg99rpMPKruEvqMyG/SvjNuKBNg0oBeuWujIB/wwQcPxwqRo8B0BJSRqR0fw2FMsApHkAzXT26oFPGWP2EPfFKyGxvYLevrMqJFrS7YszqWwrNkcwq6t6PNFPISnQ2WMcA06gkPbTYaUFkLzhJIiaudne3M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768493748; c=relaxed/simple;
-	bh=ZGpnvg+G3xAAeLZmH9mflMH1HBmSgd8ebhhvzQYVWdQ=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=TSK/ozz55Uk4NAmtUYv7DLsq4U4OUHMUcU2SrZ1VN5OI7eEGv2w0HajnwFkJBrtobt5jabesD58X9btQeQnW5oNN6AE5mxZqFEmkrJA6qLLV3cmLQPRS7g92Buul+ysqD2n49M1WCBf8Ft/5Xg31pb8TuqvSlkiaOPmp7zMx/Nc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=hILxpg2e; arc=none smtp.client-ip=198.175.65.12
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1768493748; x=1800029748;
-  h=from:to:cc:subject:date:message-id:mime-version:
-   content-transfer-encoding;
-  bh=ZGpnvg+G3xAAeLZmH9mflMH1HBmSgd8ebhhvzQYVWdQ=;
-  b=hILxpg2ebIJEPOaMP11liWzN6MSF51uyLjUemBZsQRh5fiTzOIWWncEZ
-   mEc74br39rVHq2VtwnYZwOU/MyXMNlLinhBNkrtFtUaxxzt5Wm+dn+9Ba
-   Vp/XoXW4pW2vEz6RfIPs+tMvMZ7TVn7gyrf+uPZ+q1emCd/fNx2qdOlrI
-   +Plgh4J6564GgUSgboAdiqOWBjxaEQ0lD7HfslBGxV4dGsnB+z3aPBcjb
-   5V5TCMdbJOA0DtyZ+9aIhp11Wcy6WMQ6N50mZCy7miWuPxy2iN/hAvsIZ
-   qUfzShk1jhPR2Dm4XjNN0ZH5/31V3bhzLaBwwR8Bc0T+a1Qto9r8H9mTi
-   A==;
-X-CSE-ConnectionGUID: i0ymt/xQT1SerYjYJjRaLg==
-X-CSE-MsgGUID: mNXb/g9FR02n2xai9oEPPw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11672"; a="81248013"
-X-IronPort-AV: E=Sophos;i="6.21,228,1763452800"; 
-   d="scan'208";a="81248013"
-Received: from fmviesa007.fm.intel.com ([10.60.135.147])
-  by orvoesa104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 15 Jan 2026 08:15:47 -0800
-X-CSE-ConnectionGUID: X31GgfJ3T1yqTw0sVy2s7g==
-X-CSE-MsgGUID: 4qmu4v/zQPCgxRmKYHmqsQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.21,228,1763452800"; 
-   d="scan'208";a="204603476"
-Received: from junjie-nuc14rvs.bj.intel.com ([10.238.152.92])
-  by fmviesa007-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 15 Jan 2026 08:15:43 -0800
-From: Junjie Cao <junjie.cao@intel.com>
-To: Miri Korenblit <miriam.rachel.korenblit@intel.com>,
-	Johannes Berg <johannes.berg@intel.com>,
-	linux-wireless@vger.kernel.org,
-	Richard Cochran <richardcochran@gmail.com>
-Cc: Simon Horman <horms@kernel.org>,
-	netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Yedidya Benshimol <yedidya.ben.shimol@intel.com>,
-	Avraham Stern <avraham.stern@intel.com>,
-	Daniel Gabay <daniel.gabay@intel.com>,
-	Krishnanand Prabhu <krishnanand.prabhu@intel.com>,
-	Luca Coelho <luciano.coelho@intel.com>,
-	Gregory Greenman <gregory.greenman@intel.com>,
-	stable@vger.kernel.org
-Subject: [PATCH] wifi: iwlwifi: ptp: Fix potential race condition in PTP removal
-Date: Fri, 16 Jan 2026 00:15:29 +0800
-Message-ID: <20260115161529.85720-1-junjie.cao@intel.com>
-X-Mailer: git-send-email 2.43.0
+	s=arc-20240116; t=1768498042; c=relaxed/simple;
+	bh=8z5xayW9b9AZjmtqnU8Ak5nx29qez9AFDn5x04HI7uI=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=STiCE3c05JTmGWl1mOLhZTBk3pqA6uouxlISp83jBxk8kvfHFNrxrQfz9n4NCfEu9keUR+wZ8dNwKzLatH3oOzTPsral2bm2rUzdmPPuMMWtdJLewviwMj+AAfJMYWsoQADEBjbDcKmsjc631uhTA5HkV4QOwFol48b+AjnA2to=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nabladev.com; spf=pass smtp.mailfrom=nabladev.com; dkim=pass (2048-bit key) header.d=nabladev.com header.i=@nabladev.com header.b=Rn0jJQKn; arc=none smtp.client-ip=178.251.229.89
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nabladev.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nabladev.com
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id DD24110A34B;
+	Thu, 15 Jan 2026 18:27:10 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nabladev.com;
+	s=dkim; t=1768498031;
+	h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	 content-transfer-encoding:content-language:in-reply-to:references;
+	bh=5/BV4/reyF7KoWnKM9Wy5jPWkAsGrLOyrSr7J7CWU1Y=;
+	b=Rn0jJQKnnxSfuz3WOozAKQChGdHqtc3LV6eM90sgQzS/eUnB6cG8qc4l0HiUSOK6IHmMHK
+	0hQr5JJouISraYKcHSchqBcsIKI4xFPSmscIZILg6a0kGpYIXttnBsn0SXy9ZJjkj8owp+
+	3NHTOAqhoNG747/GYRgE5K5Qr1NnNHY3kEY7egTq5Q/A5NGsWNFJ4pnSab8Nj/BJ4YNp7f
+	n+/0/YYciVX+0EdJ07UUh9o+zrPvV4FbhmPUZUeA/vaSnRrG9BS9/iPsOYMGQxAVcma0B1
+	UzCjqPgUeGHhcBqgEfWys1g2aBdak7LmdTJYjB2JVkD75rT1SHH+A74ajNDYuQ==
+Message-ID: <66e4ddb8-47ac-4b2a-8c4b-6f407aa1d8eb@nabladev.com>
+Date: Thu, 15 Jan 2026 18:27:10 +0100
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH wireless-next v2 00/34] wifi: inffmac: introducing a
+ driver for Infineon's new generation chipsets
+To: Gokul Sivakumar <gokulkumar.sivakumar@infineon.com>
+Cc: linux-wireless@vger.kernel.org, Johannes Berg
+ <johannes@sipsolutions.net>, Arend van Spriel
+ <arend.vanspriel@broadcom.com>, wlan-kernel-dev-list@infineon.com
+References: <20260113203350.16734-1-gokulkumar.sivakumar@infineon.com>
+ <43acfb38-9dbc-4544-b429-dfd43afbf2b6@nabladev.com>
+ <aWdP6chPOS0PV-Nc@ISCN5CG14747PP.infineon.com>
+Content-Language: en-US
+From: Marek Vasut <marex@nabladev.com>
+In-Reply-To: <aWdP6chPOS0PV-Nc@ISCN5CG14747PP.infineon.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Last-TLS-Session-Version: TLSv1.3
 
-iwl_mvm_ptp_remove() and iwl_mld_ptp_remove() call
-cancel_delayed_work_sync() only after ptp_clock_unregister() and after
-partially clearing ptp_data state.
+On 1/14/26 9:12 AM, Gokul Sivakumar wrote:
+> On 01/14, Marek Vasut wrote:
+>> On 1/13/26 9:33 PM, Gokul Sivakumar wrote:
+>>> Infineon(Cypress) is introducing a new INFFMAC (WLAN FULLMAC) Linux driver
+>>> specifically for its new-generation AIROC family of Wi-Fi Connectivity
+>>> Processor (CP) chipsets (CYW5591x), Wi-Fi + Bluetooth combo chipsets
+>>> (CYW5557x, CYW5551x, CYW5591x, CYW43022), and also for all future chipsets.
+>> Support for the CYW55572 can be easily added into the existing brcmfmac
+>> driver, I already posted a patch over a year ago [1], but it was blocked
+>> by an off-list email.
+> 
+>> Frankly, I do not see any good reason why the brcmfmac driver shouldn't
+>> be extended when it is clearly easily doable. Adding new fork of the
+>> brcmfmac would only increase maintenance burden and prevent bugfixes
+>> from reaching the brcmfmac.
+>>
+>> [1] https://lore.kernel.org/all/20240909203133.74777-2-marex@denx.de/
+> 
+> There are multiple reasons behind Infineon's proposal for this new INFFMAC
+> driver for its new-generation chips. Sharing a few here, and more info
+> is available in the v1 cover-letter [1]. For Example, the CYW5591x family
+> chipsets that is currently supported in this INFFMAC driver has a unique
+> Connected-MCU / Connectivtiy Processor (CP) Architecture [2], primarly
+> intended for IoT applications and it is completely different from any of
+> the legacy Broadcom architecture chipsets of Infineon supported currently
+> in upstream BRCMFMAC.
 
-This creates a race where the delayed work (iwl_mvm_ptp_work /
-iwl_mld_ptp_work) can run while teardown is in progress and observe a
-partially modified PTP state. In addition, the work may re-arm itself,
-extending the teardown window and risking execution after driver
-resources have been released.
+This does not prevent them from being integrated in brcmfmac like many 
+of the other already supported chips, there seems to be no technical 
+reason here.
 
-Move cancel_delayed_work_sync() before ptp_clock_unregister() to ensure
-the delayed work is fully stopped before any PTP cleanup begins. This
-follows the standard pattern used by other Intel PTP drivers such as
-e1000e, igb, ixgbe, and ice.
+> The CYW5591x family chipsets has dedicated MCU Core
+> in addition to the WLAN core and an onboard FLASH memory for the Firmware.
 
-Fixes: d1e879ec600f ("wifi: iwlwifi: add iwlmld sub-driver")
-Fixes: 1595ecce1cf3 ("wifi: iwlwifi: mvm: add support for PTP HW clock (PHC)")
-Cc: stable@vger.kernel.org
-Signed-off-by: Junjie Cao <junjie.cao@intel.com>
----
- drivers/net/wireless/intel/iwlwifi/mld/ptp.c | 2 +-
- drivers/net/wireless/intel/iwlwifi/mvm/ptp.c | 2 +-
- 2 files changed, 2 insertions(+), 2 deletions(-)
+It seems all brcmfmac devices have a cortex-M core in them since a long 
+time.
 
-diff --git a/drivers/net/wireless/intel/iwlwifi/mld/ptp.c b/drivers/net/wireless/intel/iwlwifi/mld/ptp.c
-index 231920425c06..b40182320801 100644
---- a/drivers/net/wireless/intel/iwlwifi/mld/ptp.c
-+++ b/drivers/net/wireless/intel/iwlwifi/mld/ptp.c
-@@ -319,10 +319,10 @@ void iwl_mld_ptp_remove(struct iwl_mld *mld)
- 			       mld->ptp_data.ptp_clock_info.name,
- 			       ptp_clock_index(mld->ptp_data.ptp_clock));
- 
-+		cancel_delayed_work_sync(&mld->ptp_data.dwork);
- 		ptp_clock_unregister(mld->ptp_data.ptp_clock);
- 		mld->ptp_data.ptp_clock = NULL;
- 		mld->ptp_data.last_gp2 = 0;
- 		mld->ptp_data.wrap_counter = 0;
--		cancel_delayed_work_sync(&mld->ptp_data.dwork);
- 	}
- }
-diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/ptp.c b/drivers/net/wireless/intel/iwlwifi/mvm/ptp.c
-index 1da6260e238c..2b01ca36a1b5 100644
---- a/drivers/net/wireless/intel/iwlwifi/mvm/ptp.c
-+++ b/drivers/net/wireless/intel/iwlwifi/mvm/ptp.c
-@@ -325,11 +325,11 @@ void iwl_mvm_ptp_remove(struct iwl_mvm *mvm)
- 			       mvm->ptp_data.ptp_clock_info.name,
- 			       ptp_clock_index(mvm->ptp_data.ptp_clock));
- 
-+		cancel_delayed_work_sync(&mvm->ptp_data.dwork);
- 		ptp_clock_unregister(mvm->ptp_data.ptp_clock);
- 		mvm->ptp_data.ptp_clock = NULL;
- 		memset(&mvm->ptp_data.ptp_clock_info, 0,
- 		       sizeof(mvm->ptp_data.ptp_clock_info));
- 		mvm->ptp_data.last_gp2 = 0;
--		cancel_delayed_work_sync(&mvm->ptp_data.dwork);
- 	}
- }
--- 
-2.43.0
+> And with respect to the support for the new-generation CYW5557x family of
+> Secure chipsets, that requires a Secure boot handshake with the Bootloader.
 
+It seems like the TRX firmware loading is trivial to add, and parts of 
+it are already in the Linux kernel for other brcm components. It seems 
+this TRX was used since old broadcom MIPS SoCs.
+
+> Even if the enumeration and firmware download support for the CYW55572 is
+> somehow retro-fitted into the existing upstream BRCMFMAC driver, there are
+> multiple other features and aspects of the Driver-Device communication that
+> are unique to each WLAN vendor, which are not always practically feasible
+> to support in the same upstream driver.
+
+Why ?
+
+> Because currently BRCMFMAC driver
+> has a shared ownership with more than 3 WLAN vendor organizations and this
+> approach has its limitations.
+
+Yes, this means it is necessary to cooperate and coordinate with other 
+people, on the mailing list.
+
+> For Example, the version of the PCIe and SDIO
+> BUS specific shared info in Device Memory is expected same from chipsets
+> from all vendors. There would be a complex need to maintain vendor specifc
+> as well as BUS specific Shared info version, vendor specific BUS Protocol
+> layers, vendor specific firmware event header OUIs (currently always expects
+> BRCM OUI even from other vendor chips) and even more.
+
+This sounds like code refactoring is necessary.
+
+> Confining different architecture chips from different WLAN vendors into the
+> same legacy BRCMFMAC driver codebase, may not be sustainable and could
+> potentially increase the maintainence effort and codebase complexity.
+> And not practically feasible to continue splitting this driver with more
+> vendor specific checks in the longer run. Since being different vendors,
+> each will only naturally diverge even more in the future with their chipset
+> Architecture, Driver-Device communication flow, etc. Infineon will continue
+> to support its legacy chipsets, already supported in the upstream BRCMFMAC.
+Maybe all the extra functionality can be added later, and the driver can 
+be forked later, when it becomes clear that refactoring is not an option 
+and it is becoming too difficult to maintain ?
+
+So far, it seems the current generation chips can be easily added to 
+brcmfmac, even if the feature set would be limited. Adding them would 
+allow the maintainers to review such a smaller patchset and get at least 
+some hardware support in, step by step, instead of this mega-patchset.
 
