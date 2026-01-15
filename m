@@ -1,128 +1,156 @@
-Return-Path: <linux-wireless+bounces-30836-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-30837-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id B7972D21BAB
-	for <lists+linux-wireless@lfdr.de>; Thu, 15 Jan 2026 00:16:38 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id A4EA1D2205C
+	for <lists+linux-wireless@lfdr.de>; Thu, 15 Jan 2026 02:26:38 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 3879D300A3FB
-	for <lists+linux-wireless@lfdr.de>; Wed, 14 Jan 2026 23:16:38 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 5549530060ED
+	for <lists+linux-wireless@lfdr.de>; Thu, 15 Jan 2026 01:26:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A24D92FC006;
-	Wed, 14 Jan 2026 23:16:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 65DFD1C5D72;
+	Thu, 15 Jan 2026 01:26:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=samsung.com header.i=@samsung.com header.b="L3+H26Ba"
+	dkim=pass (1024-bit key) header.d=rock-chips.com header.i=@rock-chips.com header.b="UAvm1yuV"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mailout2.w1.samsung.com (mailout2.w1.samsung.com [210.118.77.12])
+Received: from mail-m49221.qiye.163.com (mail-m49221.qiye.163.com [45.254.49.221])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6B22726F2A0
-	for <linux-wireless@vger.kernel.org>; Wed, 14 Jan 2026 23:16:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=210.118.77.12
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0EB7A25776;
+	Thu, 15 Jan 2026 01:26:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.254.49.221
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768432595; cv=none; b=unYKJuB3v3pFgdyUF6wU/SVVWcBm1EWIUbxoqqojd5E10HRzMYzJSBpobLl2OmyNHPr7mLA6oRLGHfEHejZJnvKGPdx7/mhDBl1Qk7BYQC86Yi29PvwPUwmvLRuIvwJwefkMJvyjIRIAYgv/Ggfc+YKkOwHwWbMWbY938Q0v8M4=
+	t=1768440393; cv=none; b=IHrKYh/DNx9teRk9G0wYvgOD15VcGfQRq6CmZCY2VacCHPmROTtW9giPDLwsjmfgHAUJarFWPTluW2+pG7Sgu/4T7ossM/pYh7d0spbZknvBq9MzbAzOjKfaWBH5U7QE5PlfI22oOFU/20OFMLmNv+RP4VOpUJo85tmtzQZ+S8c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768432595; c=relaxed/simple;
-	bh=lL+eRe3ATart73Wr2RHXzJKq3uaRaLZiPZcHscRAc7k=;
-	h=Message-ID:Date:MIME-Version:Subject:To:From:In-Reply-To:
-	 Content-Type:References; b=M2fgcKK3W/Ixn9ZCoAjmjfSq0pLnKUaNPtT8SR93e0NlRBPmEzJeHOXz9Sz+VT0JYA8VVwP2FjfH6NtnrDBmYfCO5hvVpoQRJApGYkK9wESvEmujz+aZHXbQRR56NipecpZTXhHiYnBo99cOHHssck3LRQlY6nM7dH8lzN2/Di0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=samsung.com; spf=pass smtp.mailfrom=samsung.com; dkim=pass (1024-bit key) header.d=samsung.com header.i=@samsung.com header.b=L3+H26Ba; arc=none smtp.client-ip=210.118.77.12
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=samsung.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=samsung.com
-Received: from eucas1p2.samsung.com (unknown [182.198.249.207])
-	by mailout2.w1.samsung.com (KnoxPortal) with ESMTP id 20260114231630euoutp02228ae0b340cfbb64bce3548d23130819~KvBJarUEL1111011110euoutp02w
-	for <linux-wireless@vger.kernel.org>; Wed, 14 Jan 2026 23:16:30 +0000 (GMT)
-DKIM-Filter: OpenDKIM Filter v2.11.0 mailout2.w1.samsung.com 20260114231630euoutp02228ae0b340cfbb64bce3548d23130819~KvBJarUEL1111011110euoutp02w
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=samsung.com;
-	s=mail20170921; t=1768432590;
-	bh=jp1zL6vqiComiuZbdY62XP/xe/O5UGBTESSkK4unQds=;
-	h=Date:Subject:To:From:In-Reply-To:References:From;
-	b=L3+H26Bam8+NSHjr9khzESLVGmS0Nk0vlIZuqz+JvJBjF8P5fxFFTjQZPAKFBNrSr
-	 p7J5UNKpBGd7cqXWq4SPhbtfPBWMHSteDg9hTmQ36Wf1CS2HD8x4ePm0TtevhcsWT7
-	 NwvRqSF0/JG/LN71tdPzRiC3jYLIaDorrQZoL4yQ=
-Received: from eusmtip2.samsung.com (unknown [203.254.199.222]) by
-	eucas1p2.samsung.com (KnoxPortal) with ESMTPA id
-	20260114231629eucas1p2e5a6a703d0e1b3fb87c1b8225fb4e5ce~KvBITRi511370613706eucas1p2f;
-	Wed, 14 Jan 2026 23:16:29 +0000 (GMT)
-Received: from [106.210.134.192] (unknown [106.210.134.192]) by
-	eusmtip2.samsung.com (KnoxPortal) with ESMTPA id
-	20260114231629eusmtip2a1670c5b1c80e00d589c0812e8d6a8a6~KvBH2pP6r2574325743eusmtip2K;
-	Wed, 14 Jan 2026 23:16:28 +0000 (GMT)
-Message-ID: <062fde49-7438-4001-a06e-50175547b54c@samsung.com>
-Date: Thu, 15 Jan 2026 00:16:28 +0100
+	s=arc-20240116; t=1768440393; c=relaxed/simple;
+	bh=0k1QAMOCPQDEZ2u+NacYp9o5b2kS5rhRMjyWVXLRlts=;
+	h=Message-ID:Date:MIME-Version:Cc:Subject:To:References:From:
+	 In-Reply-To:Content-Type; b=pd80WLEIR8xI+BCwmHMhWjrMeQZWgZnuSYWWyZbdla9a+VUkmCr9T0JtbtNIVkd1qSNzZzhAQJC/bwi4YvE4v9y9xnQQanbTSEqlTG1LcGkSHLYXKKjRkpEWYcdMPSYQU6p+HWzKdVnAOs8eVwGGUCbMtgJoVHqZDlSOLqwT/2c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=rock-chips.com; spf=pass smtp.mailfrom=rock-chips.com; dkim=pass (1024-bit key) header.d=rock-chips.com header.i=@rock-chips.com header.b=UAvm1yuV; arc=none smtp.client-ip=45.254.49.221
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=rock-chips.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=rock-chips.com
+Received: from [172.16.12.14] (unknown [58.22.7.114])
+	by smtp.qiye.163.com (Hmail) with ESMTP id 30b1e7c8c;
+	Thu, 15 Jan 2026 09:26:21 +0800 (GMT+08:00)
+Message-ID: <ee62632a-34cb-494a-ad87-bd18a58d6a7c@rock-chips.com>
+Date: Thu, 15 Jan 2026 09:26:21 +0800
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Betterbird (Windows)
-Subject: Re: [PATCH] wifi: brcmfmac: Fix potential kernel oops when probe
- fails
-To: Arend van Spriel <arend.vanspriel@broadcom.com>,
-	linux-wireless@vger.kernel.org, brcm80211@lists.linux.dev,
-	brcm80211-dev-list.pdl@broadcom.com
-Content-Language: en-US
-From: Marek Szyprowski <m.szyprowski@samsung.com>
-In-Reply-To: <74e3bb49-ebbe-4692-b278-c04f2a30bf96@broadcom.com>
+User-Agent: Mozilla Thunderbird
+Cc: shawn.lin@rock-chips.com, linux-wireless@vger.kernel.org,
+ linux-mmc@vger.kernel.org, Ulf Hansson <ulf.hansson@linaro.org>,
+ Ping-Ke Shih <pkshih@realtek.com>, Johannes Berg <johannes@sipsolutions.net>
+Subject: Re: [PATCH v2 1/3] sdio: Provide a bustype shutdown function
+To: =?UTF-8?Q?Uwe_Kleine-K=C3=B6nig?= <u.kleine-koenig@baylibre.com>
+References: <cover.1768232321.git.u.kleine-koenig@baylibre.com>
+ <397f45c2818f6632151f92b70e547262f373c3b6.1768232321.git.u.kleine-koenig@baylibre.com>
+From: Shawn Lin <shawn.lin@rock-chips.com>
+In-Reply-To: <397f45c2818f6632151f92b70e547262f373c3b6.1768232321.git.u.kleine-koenig@baylibre.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-X-CMS-MailID: 20260114231629eucas1p2e5a6a703d0e1b3fb87c1b8225fb4e5ce
-X-Msg-Generator: CA
-Content-Type: text/plain; charset="utf-8"
-X-RootMTR: 20251231143556eucas1p141b278048039730d03edf85c6f3e5350
-X-EPHeader: CA
-X-CMS-RootMailID: 20251231143556eucas1p141b278048039730d03edf85c6f3e5350
-References: <CGME20251231143556eucas1p141b278048039730d03edf85c6f3e5350@eucas1p1.samsung.com>
-	<20251231143544.4158840-1-m.szyprowski@samsung.com>
-	<74e3bb49-ebbe-4692-b278-c04f2a30bf96@broadcom.com>
+X-HM-Tid: 0a9bbf42c1d009cckunm8959bb2750dd53
+X-HM-MType: 1
+X-HM-Spam-Status: e1kfGhgUHx5ZQUpXWQgPGg8OCBgUHx5ZQUlOS1dZFg8aDwILHllBWSg2Ly
+	tZV1koWUFDSUNOT01LS0k3V1ktWUFJV1kPCRoVCBIfWUFZGhlMTFYYSk1PHU4fSxgdGEhWFRQJFh
+	oXVRMBExYaEhckFA4PWVdZGBILWUFZTkNVSUlVTFVKSk9ZV1kWGg8SFR0UWUFZT0tIVUpLSU9PT0
+	hVSktLVUpCS0tZBg++
+DKIM-Signature: a=rsa-sha256;
+	b=UAvm1yuVGKjyJmIC1fDsjq3Y3166Haf7JD4mXTzCy902SuYYc3GsDsLqnThTI8xjKJw/DB5mVcGpM45ZUg5uNf5M3ogfpZXWeAV7cLG4LfUpdJLbdMLcYmdXtfEOFnnMdwiynQ+2Wz4y5h6Za7qixm5Tus6LnBWwBuxgMYnCo0A=; s=default; c=relaxed/relaxed; d=rock-chips.com; v=1;
+	bh=EyqykLUI/0mpJaTZt1HtmZTxG8qK5R8vFWQbXShUaHE=;
+	h=date:mime-version:subject:message-id:from;
 
-On 14.01.2026 14:45, Arend van Spriel wrote:
-> On 12/31/2025 3:35 PM, Marek Szyprowski wrote:
->> When probe of the sdio brcmfmac device fails for some reasons (i.e.
->> missing firmware), the sdiodev->bus is set to error instead of NULL, 
->> thus
->> the cleanup later in brcmf_sdio_remove() tries to free resources via
->> invalid bus pointer. Fix this.
->
-> Hi Marek,
->
-> Thanks for the fix. Please consider my suggestion below...
->
->> Fixes: 0ff0843310b7 ("wifi: brcmfmac: Add optional lpo clock enable 
->> support")
->> Signed-off-by: Marek Szyprowski <m.szyprowski@samsung.com>
->> ---
->>   drivers/net/wireless/broadcom/brcm80211/brcmfmac/bcmsdh.c | 1 +
->>   1 file changed, 1 insertion(+)
->>
->> diff --git 
->> a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/bcmsdh.c 
->> b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/bcmsdh.c
->> index 6a3f187320fc..6615748fa5bb 100644
->> --- a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/bcmsdh.c
->> +++ b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/bcmsdh.c
->> @@ -954,6 +954,7 @@ int brcmf_sdiod_probe(struct brcmf_sdio_dev 
->> *sdiodev)
->
-> Maybe use a local variable bus and assign it only on success:
->
->>       bus = brcmf_sdio_probe(sdiodev);
->>       if (IS_ERR(bus)) {
->>           ret = PTR_ERR(bus);
->>           goto out;
->>       }
->> +    sdiodev->bus = bus;
->> brcmf_sdiod_host_fixup(sdiodev->func2->card->host);
->
-Well, that would look much better, but sdiodev->bus is also assigned 
-inside brcmf_sdio_probe() and I didn't check if this is required by the 
-functions called there or not. Maybe brcmf_sdio_probe() should simply 
-return error code to make things easier to track?
+在 2026/01/12 星期一 23:46, Uwe Kleine-König 写道:
+> To prepare sdio drivers to migrate away from struct device_driver::shutdown
+> (and then eventually remove that callback) create a serdev driver shutdown
 
+/s/serdev driver/sdio driver ?
 
-Best regards
--- 
-Marek Szyprowski, PhD
-Samsung R&D Institute Poland
+> callback and migration code to keep the existing behaviour. Note this
+> introduces a warning for each driver that isn't converted yet to that
+> callback at register time.
+> 
+> Signed-off-by: Uwe Kleine-König <u.kleine-koenig@baylibre.com>
+> ---
+>   drivers/mmc/core/sdio_bus.c   | 25 +++++++++++++++++++++++++
+>   include/linux/mmc/sdio_func.h |  1 +
+>   2 files changed, 26 insertions(+)
+> 
+> diff --git a/drivers/mmc/core/sdio_bus.c b/drivers/mmc/core/sdio_bus.c
+> index 10799772494a..6e5bdc2f0cc8 100644
+> --- a/drivers/mmc/core/sdio_bus.c
+> +++ b/drivers/mmc/core/sdio_bus.c
+> @@ -232,6 +232,15 @@ static void sdio_bus_remove(struct device *dev)
+>   		pm_runtime_put_sync(dev);
+>   }
+>   
+> +static void sdio_bus_shutdown(struct device *dev)
+> +{
+> +	struct sdio_driver *drv = to_sdio_driver(dev->driver);
+> +	struct sdio_func *func = dev_to_sdio_func(dev);
+> +
+> +	if (dev->driver && drv->shutdown)
+> +		drv->shutdown(func);
+> +}
+
+Seem bogus check as a few line ahead, you used dev->driver to get
+sdio_driver already. Otherwise the reset looks good.
+
+> +
+>   static const struct dev_pm_ops sdio_bus_pm_ops = {
+>   	SET_SYSTEM_SLEEP_PM_OPS(pm_generic_suspend, pm_generic_resume)
+>   	SET_RUNTIME_PM_OPS(
+> @@ -248,6 +257,7 @@ static const struct bus_type sdio_bus_type = {
+>   	.uevent		= sdio_bus_uevent,
+>   	.probe		= sdio_bus_probe,
+>   	.remove		= sdio_bus_remove,
+> +	.shutdown	= sdio_bus_shutdown,
+>   	.pm		= &sdio_bus_pm_ops,
+>   };
+>   
+> @@ -261,6 +271,14 @@ void sdio_unregister_bus(void)
+>   	bus_unregister(&sdio_bus_type);
+>   }
+>   
+> +static void sdio_legacy_shutdown(struct sdio_func *func)
+> +{
+> +	struct device *dev = &func->dev;
+> +	struct device_driver *driver = dev->driver;
+> +
+> +	driver->shutdown(dev);
+> +}
+> +
+>   /**
+>    *	__sdio_register_driver - register a function driver
+>    *	@drv: SDIO function driver
+> @@ -272,6 +290,13 @@ int __sdio_register_driver(struct sdio_driver *drv, struct module *owner)
+>   	drv->drv.bus = &sdio_bus_type;
+>   	drv->drv.owner = owner;
+>   
+> +	/*
+> +	 * This driver needs updating. Note that driver_register() warns about
+> +	 * this, so we're not adding another warning here.
+> +	 */
+> +	if (!drv->shutdown && drv->drv.shutdown)
+> +		drv->shutdown = sdio_legacy_shutdown;
+> +
+>   	return driver_register(&drv->drv);
+>   }
+>   EXPORT_SYMBOL_GPL(__sdio_register_driver);
+> diff --git a/include/linux/mmc/sdio_func.h b/include/linux/mmc/sdio_func.h
+> index fed1f5f4a8d3..4534bf462aac 100644
+> --- a/include/linux/mmc/sdio_func.h
+> +++ b/include/linux/mmc/sdio_func.h
+> @@ -78,6 +78,7 @@ struct sdio_driver {
+>   
+>   	int (*probe)(struct sdio_func *, const struct sdio_device_id *);
+>   	void (*remove)(struct sdio_func *);
+> +	void (*shutdown)(struct sdio_func *);
+>   
+>   	struct device_driver drv;
+>   };
 
 
