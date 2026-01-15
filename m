@@ -1,156 +1,123 @@
-Return-Path: <linux-wireless+bounces-30837-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-30838-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id A4EA1D2205C
-	for <lists+linux-wireless@lfdr.de>; Thu, 15 Jan 2026 02:26:38 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 50148D220B3
+	for <lists+linux-wireless@lfdr.de>; Thu, 15 Jan 2026 02:39:11 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 5549530060ED
-	for <lists+linux-wireless@lfdr.de>; Thu, 15 Jan 2026 01:26:36 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 4B81E3019953
+	for <lists+linux-wireless@lfdr.de>; Thu, 15 Jan 2026 01:39:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 65DFD1C5D72;
-	Thu, 15 Jan 2026 01:26:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 575907260A;
+	Thu, 15 Jan 2026 01:39:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=rock-chips.com header.i=@rock-chips.com header.b="UAvm1yuV"
+	dkim=pass (2048-bit key) header.d=realtek.com header.i=@realtek.com header.b="cYkOnUhf"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-m49221.qiye.163.com (mail-m49221.qiye.163.com [45.254.49.221])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0EB7A25776;
-	Thu, 15 Jan 2026 01:26:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.254.49.221
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 339972629D
+	for <linux-wireless@vger.kernel.org>; Thu, 15 Jan 2026 01:39:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=211.75.126.72
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768440393; cv=none; b=IHrKYh/DNx9teRk9G0wYvgOD15VcGfQRq6CmZCY2VacCHPmROTtW9giPDLwsjmfgHAUJarFWPTluW2+pG7Sgu/4T7ossM/pYh7d0spbZknvBq9MzbAzOjKfaWBH5U7QE5PlfI22oOFU/20OFMLmNv+RP4VOpUJo85tmtzQZ+S8c=
+	t=1768441149; cv=none; b=tVBt68kxtSwMvvyhM2v/8lObTvkCvweIkm0Q3UbKqqIeX2bbK3qeUM7y14aZwIUzqc6YmPdPlb834/MlVdAElSRjF9EK0hyoLstq92CYinI7SWvTZBiiuAOOLoIXMncXNoQyQp1RNHaR+WXwVObzaGF/9H1GngTgvcJ5Lp8DbW4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768440393; c=relaxed/simple;
-	bh=0k1QAMOCPQDEZ2u+NacYp9o5b2kS5rhRMjyWVXLRlts=;
-	h=Message-ID:Date:MIME-Version:Cc:Subject:To:References:From:
-	 In-Reply-To:Content-Type; b=pd80WLEIR8xI+BCwmHMhWjrMeQZWgZnuSYWWyZbdla9a+VUkmCr9T0JtbtNIVkd1qSNzZzhAQJC/bwi4YvE4v9y9xnQQanbTSEqlTG1LcGkSHLYXKKjRkpEWYcdMPSYQU6p+HWzKdVnAOs8eVwGGUCbMtgJoVHqZDlSOLqwT/2c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=rock-chips.com; spf=pass smtp.mailfrom=rock-chips.com; dkim=pass (1024-bit key) header.d=rock-chips.com header.i=@rock-chips.com header.b=UAvm1yuV; arc=none smtp.client-ip=45.254.49.221
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=rock-chips.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=rock-chips.com
-Received: from [172.16.12.14] (unknown [58.22.7.114])
-	by smtp.qiye.163.com (Hmail) with ESMTP id 30b1e7c8c;
-	Thu, 15 Jan 2026 09:26:21 +0800 (GMT+08:00)
-Message-ID: <ee62632a-34cb-494a-ad87-bd18a58d6a7c@rock-chips.com>
-Date: Thu, 15 Jan 2026 09:26:21 +0800
+	s=arc-20240116; t=1768441149; c=relaxed/simple;
+	bh=zfT2CIANEKRSRGGV9c0KzMLDPa3G/h28yTWtNaEOhfM=;
+	h=From:To:CC:Subject:In-Reply-To:References:Message-ID:Date:
+	 MIME-Version:Content-Type; b=EY9ktTBBpr+p2FU7gPyrGcwrF0so0kHTZiLdTZT6JcgWANNKWH/Bx0ohDaHI8Rm3AGuzllqmwZkMcu0CPY5Gc+jtk4+C4jGd+Dpb2VcOAYtYNyCR/Hejk1xcrec/0wkrGSkeEUzQJO8FnDp8GciX20eGVm0YXQ//nFI0OOF6Vck=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com; spf=pass smtp.mailfrom=realtek.com; dkim=pass (2048-bit key) header.d=realtek.com header.i=@realtek.com header.b=cYkOnUhf; arc=none smtp.client-ip=211.75.126.72
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=realtek.com
+X-SpamFilter-By: ArmorX SpamTrap 5.80 with qID 60F1d4qB52088093, This message is accepted by code: ctloc85258
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=realtek.com; s=dkim;
+	t=1768441144; bh=pAjqqNxfvT87eenZCubDfqq0ygyUQnZLXwgP8nAOIGU=;
+	h=From:To:CC:Subject:In-Reply-To:References:Message-ID:Date:
+	 MIME-Version:Content-Type;
+	b=cYkOnUhfju4G8yOIfrb/ukFg0Zam4zgX4WLReEuE4jJhePjfXbham8pAOu9mrJXZm
+	 sj6O3Ovv4X1ituUir7fSllHC8FafUBG9YjVdXzDPg12vnbpZDmTnoqtQiwgZYuyrgC
+	 3s66qqy0lAv03SZzVhtX2ZNSxk1OY0mN/UDKHJlzbQAHKeIdJ4W9bvPLl0HncSkhhg
+	 8Vvlkoixl/1C2oLmJY84rpHgOirhrznBIqVk/6BOpgEmfmv7Jq9p9OEfkO0csIEwl7
+	 kd0R/Nfjk9dA0EZVfZEPN1Qpf8OtRPFmgQ9vPOZwyKnXTMPdwzvqKkSctJ4MeENOqc
+	 zujlqPiNLSJFg==
+Received: from mail.realtek.com (rtkexhmbs03.realtek.com.tw[10.21.1.53])
+	by rtits2.realtek.com.tw (8.15.2/3.21/5.94) with ESMTPS id 60F1d4qB52088093
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK)
+	for <linux-wireless@vger.kernel.org>; Thu, 15 Jan 2026 09:39:04 +0800
+Received: from RTKEXHMBS04.realtek.com.tw (10.21.1.54) by
+ RTKEXHMBS03.realtek.com.tw (10.21.1.53) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1748.10; Thu, 15 Jan 2026 09:39:05 +0800
+Received: from [127.0.1.1] (172.21.40.75) by RTKEXHMBS04.realtek.com.tw
+ (10.21.1.54) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1748.10 via Frontend
+ Transport; Thu, 15 Jan 2026 09:39:05 +0800
+From: Ping-Ke Shih <pkshih@realtek.com>
+To: Ping-Ke Shih <pkshih@realtek.com>, <linux-wireless@vger.kernel.org>
+CC: <timlee@realtek.com>, <damon.chen@realtek.com>
+Subject: Re: [PATCH rtw-next 1/8] wifi: rtw89: pci: validate sequence number of TX release report
+In-Reply-To: <20260110022019.2254969-2-pkshih@realtek.com>
+References: <20260110022019.2254969-1-pkshih@realtek.com> <20260110022019.2254969-2-pkshih@realtek.com>
+Message-ID: <6301a6df-92cf-4670-981e-4d96b9fde610@RTKEXHMBS04.realtek.com.tw>
+Date: Thu, 15 Jan 2026 09:39:05 +0800
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Cc: shawn.lin@rock-chips.com, linux-wireless@vger.kernel.org,
- linux-mmc@vger.kernel.org, Ulf Hansson <ulf.hansson@linaro.org>,
- Ping-Ke Shih <pkshih@realtek.com>, Johannes Berg <johannes@sipsolutions.net>
-Subject: Re: [PATCH v2 1/3] sdio: Provide a bustype shutdown function
-To: =?UTF-8?Q?Uwe_Kleine-K=C3=B6nig?= <u.kleine-koenig@baylibre.com>
-References: <cover.1768232321.git.u.kleine-koenig@baylibre.com>
- <397f45c2818f6632151f92b70e547262f373c3b6.1768232321.git.u.kleine-koenig@baylibre.com>
-From: Shawn Lin <shawn.lin@rock-chips.com>
-In-Reply-To: <397f45c2818f6632151f92b70e547262f373c3b6.1768232321.git.u.kleine-koenig@baylibre.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-HM-Tid: 0a9bbf42c1d009cckunm8959bb2750dd53
-X-HM-MType: 1
-X-HM-Spam-Status: e1kfGhgUHx5ZQUpXWQgPGg8OCBgUHx5ZQUlOS1dZFg8aDwILHllBWSg2Ly
-	tZV1koWUFDSUNOT01LS0k3V1ktWUFJV1kPCRoVCBIfWUFZGhlMTFYYSk1PHU4fSxgdGEhWFRQJFh
-	oXVRMBExYaEhckFA4PWVdZGBILWUFZTkNVSUlVTFVKSk9ZV1kWGg8SFR0UWUFZT0tIVUpLSU9PT0
-	hVSktLVUpCS0tZBg++
-DKIM-Signature: a=rsa-sha256;
-	b=UAvm1yuVGKjyJmIC1fDsjq3Y3166Haf7JD4mXTzCy902SuYYc3GsDsLqnThTI8xjKJw/DB5mVcGpM45ZUg5uNf5M3ogfpZXWeAV7cLG4LfUpdJLbdMLcYmdXtfEOFnnMdwiynQ+2Wz4y5h6Za7qixm5Tus6LnBWwBuxgMYnCo0A=; s=default; c=relaxed/relaxed; d=rock-chips.com; v=1;
-	bh=EyqykLUI/0mpJaTZt1HtmZTxG8qK5R8vFWQbXShUaHE=;
-	h=date:mime-version:subject:message-id:from;
+Content-Type: text/plain
 
-在 2026/01/12 星期一 23:46, Uwe Kleine-König 写道:
-> To prepare sdio drivers to migrate away from struct device_driver::shutdown
-> (and then eventually remove that callback) create a serdev driver shutdown
+Ping-Ke Shih <pkshih@realtek.com> wrote:
 
-/s/serdev driver/sdio driver ?
-
-> callback and migration code to keep the existing behaviour. Note this
-> introduces a warning for each driver that isn't converted yet to that
-> callback at register time.
+> Hardware rarely reports abnormal sequence number in TX release report,
+> which will access out-of-bounds of wd_ring->pages array, causing NULL
+> pointer dereference.
 > 
-> Signed-off-by: Uwe Kleine-König <u.kleine-koenig@baylibre.com>
-> ---
->   drivers/mmc/core/sdio_bus.c   | 25 +++++++++++++++++++++++++
->   include/linux/mmc/sdio_func.h |  1 +
->   2 files changed, 26 insertions(+)
+>   BUG: kernel NULL pointer dereference, address: 0000000000000000
+>   #PF: supervisor read access in kernel mode
+>   #PF: error_code(0x0000) - not-present page
+>   PGD 0 P4D 0
+>   Oops: 0000 [#1] PREEMPT SMP NOPTI
+>   CPU: 1 PID: 1085 Comm: irq/129-rtw89_p Tainted: G S   U
+>              6.1.145-17510-g2f3369c91536 #1 (HASH:69e8 1)
+>   Call Trace:
+>    <IRQ>
+>    rtw89_pci_release_tx+0x18f/0x300 [rtw89_pci (HASH:4c83 2)]
+>    rtw89_pci_napi_poll+0xc2/0x190 [rtw89_pci (HASH:4c83 2)]
+>    net_rx_action+0xfc/0x460 net/core/dev.c:6578 net/core/dev.c:6645 net/core/dev.c:6759
+>    handle_softirqs+0xbe/0x290 kernel/softirq.c:601
+>    ? rtw89_pci_interrupt_threadfn+0xc5/0x350 [rtw89_pci (HASH:4c83 2)]
+>    __local_bh_enable_ip+0xeb/0x120 kernel/softirq.c:499 kernel/softirq.c:423
+>    </IRQ>
+>    <TASK>
+>    rtw89_pci_interrupt_threadfn+0xf8/0x350 [rtw89_pci (HASH:4c83 2)]
+>    ? irq_thread+0xa7/0x340 kernel/irq/manage.c:0
+>    irq_thread+0x177/0x340 kernel/irq/manage.c:1205 kernel/irq/manage.c:1314
+>    ? thaw_kernel_threads+0xb0/0xb0 kernel/irq/manage.c:1202
+>    ? irq_forced_thread_fn+0x80/0x80 kernel/irq/manage.c:1220
+>    kthread+0xea/0x110 kernel/kthread.c:376
+>    ? synchronize_irq+0x1a0/0x1a0 kernel/irq/manage.c:1287
+>    ? kthread_associate_blkcg+0x80/0x80 kernel/kthread.c:331
+>    ret_from_fork+0x1f/0x30 arch/x86/entry/entry_64.S:295
+>    </TASK>
 > 
-> diff --git a/drivers/mmc/core/sdio_bus.c b/drivers/mmc/core/sdio_bus.c
-> index 10799772494a..6e5bdc2f0cc8 100644
-> --- a/drivers/mmc/core/sdio_bus.c
-> +++ b/drivers/mmc/core/sdio_bus.c
-> @@ -232,6 +232,15 @@ static void sdio_bus_remove(struct device *dev)
->   		pm_runtime_put_sync(dev);
->   }
->   
-> +static void sdio_bus_shutdown(struct device *dev)
-> +{
-> +	struct sdio_driver *drv = to_sdio_driver(dev->driver);
-> +	struct sdio_func *func = dev_to_sdio_func(dev);
-> +
-> +	if (dev->driver && drv->shutdown)
-> +		drv->shutdown(func);
-> +}
+> To prevent crash, validate rpp_info.seq before using.
+> 
+> Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
 
-Seem bogus check as a few line ahead, you used dev->driver to get
-sdio_driver already. Otherwise the reset looks good.
+8 patch(es) applied to rtw-next branch of rtw.git, thanks.
 
-> +
->   static const struct dev_pm_ops sdio_bus_pm_ops = {
->   	SET_SYSTEM_SLEEP_PM_OPS(pm_generic_suspend, pm_generic_resume)
->   	SET_RUNTIME_PM_OPS(
-> @@ -248,6 +257,7 @@ static const struct bus_type sdio_bus_type = {
->   	.uevent		= sdio_bus_uevent,
->   	.probe		= sdio_bus_probe,
->   	.remove		= sdio_bus_remove,
-> +	.shutdown	= sdio_bus_shutdown,
->   	.pm		= &sdio_bus_pm_ops,
->   };
->   
-> @@ -261,6 +271,14 @@ void sdio_unregister_bus(void)
->   	bus_unregister(&sdio_bus_type);
->   }
->   
-> +static void sdio_legacy_shutdown(struct sdio_func *func)
-> +{
-> +	struct device *dev = &func->dev;
-> +	struct device_driver *driver = dev->driver;
-> +
-> +	driver->shutdown(dev);
-> +}
-> +
->   /**
->    *	__sdio_register_driver - register a function driver
->    *	@drv: SDIO function driver
-> @@ -272,6 +290,13 @@ int __sdio_register_driver(struct sdio_driver *drv, struct module *owner)
->   	drv->drv.bus = &sdio_bus_type;
->   	drv->drv.owner = owner;
->   
-> +	/*
-> +	 * This driver needs updating. Note that driver_register() warns about
-> +	 * this, so we're not adding another warning here.
-> +	 */
-> +	if (!drv->shutdown && drv->drv.shutdown)
-> +		drv->shutdown = sdio_legacy_shutdown;
-> +
->   	return driver_register(&drv->drv);
->   }
->   EXPORT_SYMBOL_GPL(__sdio_register_driver);
-> diff --git a/include/linux/mmc/sdio_func.h b/include/linux/mmc/sdio_func.h
-> index fed1f5f4a8d3..4534bf462aac 100644
-> --- a/include/linux/mmc/sdio_func.h
-> +++ b/include/linux/mmc/sdio_func.h
-> @@ -78,6 +78,7 @@ struct sdio_driver {
->   
->   	int (*probe)(struct sdio_func *, const struct sdio_device_id *);
->   	void (*remove)(struct sdio_func *);
-> +	void (*shutdown)(struct sdio_func *);
->   
->   	struct device_driver drv;
->   };
+957eda596c76 wifi: rtw89: pci: validate sequence number of TX release report
+2fd8f953f251 wifi: rtw89: wow: add reason codes for disassociation in WoWLAN mode
+432b26382db2 wifi: rtw89: support EHT GI/LTF setting
+7fd36ffedeed wifi: rtw89: disable EHT protocol by chip capabilities
+91fb4007018f wifi: rtw89: align CUSTID defined by firmware
+aa2a44d0d22d wifi: rtw89: mac: correct page number for CSI response
+8e47ae078693 wifi: rtw89: mac: consider RTL8922D in MAC common flow
+5e632c7ca9e1 wifi: rtw89: pci: consider RTL8922D in PCI common flow
+
+---
+https://github.com/pkshih/rtw.git
 
 
