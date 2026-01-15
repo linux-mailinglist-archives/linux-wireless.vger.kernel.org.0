@@ -1,148 +1,233 @@
-Return-Path: <linux-wireless+bounces-30840-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-30841-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1A429D2260A
-	for <lists+linux-wireless@lfdr.de>; Thu, 15 Jan 2026 05:44:53 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3611BD22C70
+	for <lists+linux-wireless@lfdr.de>; Thu, 15 Jan 2026 08:20:14 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 607B3302BA51
-	for <lists+linux-wireless@lfdr.de>; Thu, 15 Jan 2026 04:44:03 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 9652F3018356
+	for <lists+linux-wireless@lfdr.de>; Thu, 15 Jan 2026 07:19:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C6D662C0323;
-	Thu, 15 Jan 2026 04:44:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 132D8329C40;
+	Thu, 15 Jan 2026 07:19:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="graEc0YF"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="CoWy5ZF/"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-oa1-f48.google.com (mail-oa1-f48.google.com [209.85.160.48])
+Received: from mail-ed1-f49.google.com (mail-ed1-f49.google.com [209.85.208.49])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 60E9F2C0285
-	for <linux-wireless@vger.kernel.org>; Thu, 15 Jan 2026 04:44:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.48
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3EE1C2E090B
+	for <linux-wireless@vger.kernel.org>; Thu, 15 Jan 2026 07:19:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.49
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768452242; cv=none; b=gwNwxOf7Gkqx5Ol0Pj1MySt8bV3iDBFjzVxdhVU3FNZrTwjv048Lm0CIfOX2A3YvfM0fXsner5VCKfIpa246GsXgehznwksmYxOriiT66yHeS0+2w4EWKr7KWQeho0oyHqVIO9QWNw2OmW9Lj+XxcwM+WrByINM8WKEYZY/R43U=
+	t=1768461580; cv=none; b=Is4rQ2VIvXluBMhopp8pm96MKQWC1YPyLC7Iz8ktwwrxEp50NXV+hsGyzNvlqnI7bI3bMN1zqHAmEiJ773GDS39oOQoGbZ4+xPiq3lwP3h1FiYjZM4NXz1SkyCIQfkzezp8T82Jd5tqHohQsXop8qjsrsmhxj6hB6cU0N0dMiEU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768452242; c=relaxed/simple;
-	bh=gea7RuH2/PFVWFXrNZ7LYLGqLx/mVrB0Dh3kN1pDCjg=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=dQMFsegyXQgV0IvGGMp9Z821xl4RXKgkwPxb9IIUs2tytvtdWyk4N+UrDZ4+19QRe5BDP/i1EqFoQCGT8pzX54XaXGrhSQyPTWqfK+O68VEmHVdORIiB+/xFxyf9okfSrRoZqx5EP157a9vilo0kjDXCUYQvE4gqbF5/woufGlY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=graEc0YF; arc=none smtp.client-ip=209.85.160.48
+	s=arc-20240116; t=1768461580; c=relaxed/simple;
+	bh=9Kit2tUkn4yeuCCRo7RysNTmX3aWbGfheTdACCzBk8Y=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=XiVQD5UQHyDzLW+NwIgVeagjy/DArnchfv7GhYqgr4iwLDOiExKVOG790NmPp9awqomxrpZkgP8Pso7tTHwaHupSJK2J93AaBt/BCk+GJYR9VIdat0RskZz50ebysNTRqL6RRbEroRxE+F5ELwExnysUaAgmpwdhvqI2TeeNljw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=CoWy5ZF/; arc=none smtp.client-ip=209.85.208.49
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-oa1-f48.google.com with SMTP id 586e51a60fabf-3fe3cc80bc3so344623fac.0
-        for <linux-wireless@vger.kernel.org>; Wed, 14 Jan 2026 20:44:01 -0800 (PST)
+Received: by mail-ed1-f49.google.com with SMTP id 4fb4d7f45d1cf-64dfb22c7e4so2980218a12.1
+        for <linux-wireless@vger.kernel.org>; Wed, 14 Jan 2026 23:19:35 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1768452240; x=1769057040; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+        d=gmail.com; s=20230601; t=1768461574; x=1769066374; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=FyJ1nwAoXFB46LdRdtLwHzhq+4ZJYtwrTRcf5CIjovw=;
-        b=graEc0YFLarvHSi2YZtshR92VoLGPP0e9CBKe5ZYkAZMEiG6VeeCgAN7Rz4/a/SVic
-         l0iH8b/D3uvDHf4n7SFdmmWne1EAlVZ9PFWF5L1ddcPlCVm9rlqsYUKvVETe68ej/tO+
-         irfShz9tmtwtZUvCkz5FIswEqjlQKUXA5QF8WKBg4YOS0RyNI7X+vKwUUxTB36lXwPoV
-         L2gn85osARJwFtgNYCaq+Iv+GLnoqHt/uOl9AP/nrHWAtRT8SV77RNDTH/MxZVMbw6J6
-         H/uYiTSFHjLDKm+pqIsfoddq99zdmKk6SCrk4phUdWLXBPsj89IdTIlR6alwWV700orL
-         yS7w==
+        bh=m/5XmxwHwYCP8/uagwllmfFu0i9L1U3rU59lyz06mIM=;
+        b=CoWy5ZF/LZH0GyLhfu6owfMZBb8psQVTJn6EcyTrR0QTx3M4++k4oCnabeWjcgW5GL
+         c4Ru71FMAGvO3SZT8D/EPOopFNJy01dNL2ytzjCMx5fnaLTZmZJJQSIsd18fwHJtVnUA
+         IRU5ODEmacgg3XKMB2GzmYMaSBOsuqWGvEELrgcCfA8qUp30Y5L9cku7m4c6oWH9ofL/
+         m4bKpViyrgYl0iBztEMIxXn2N/6oiRSVu0tbGxubmfsU1BpiJlpP369ze6sSm3RmGomb
+         mMZdcI/BX4ULLT3rlQurjOPJJ7lfVkNWvDAL8g7KofXxLBJIBeOO+jKxrUxhaWwryf0U
+         9sSw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1768452240; x=1769057040;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+        d=1e100.net; s=20230601; t=1768461574; x=1769066374;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to;
-        bh=FyJ1nwAoXFB46LdRdtLwHzhq+4ZJYtwrTRcf5CIjovw=;
-        b=pHBRHLXDuKpJuwtCvex8os7JszxrtWh8lRDSMgVT9pQOkT02f5dlKxORcKbG++vBqU
-         M5KKKIP5WrgmLW2wVymnGWJ1CnL3/wjPdo130WoNvMMFxiUGrA3htqO1lG7JALxfY5+s
-         +O5MZMp370tT9iK/G94i+eG30CM/79cF7H6lq6zPppV5NgkVhyOwANceV6/dxYZEl5ym
-         mcVNlOf6pa7THDEdD/J8X61+TZm+q1Mo4MbWcuIrwz8KsU/3LppLSVhj8x504ttx9+r+
-         mUTpJCG3sln4ilJ0FOVD8rqFYvgH9i2ROVhL9hPN6WB8f1pD7RuX5Yxk7NO6xnpWqUXm
-         vnhw==
-X-Forwarded-Encrypted: i=1; AJvYcCW+fL45pCIyFPiNXQoIDZrJMqjx71cCweD40QMikKd9kU3bKNEf2YGE9E4WIDTZqptwV09M4H8AWE0Snvq9ow==@vger.kernel.org
-X-Gm-Message-State: AOJu0YzBnBzKC+vk7jJk8ouvKdWoGZflOOY/VAuvLL3NKfQgkX5aTjfS
-	CGj1L+CPvW6uHlVeFpFGgfH0NArmPhejloQbMF/fvjgeshFrdn05D/iuItU3lw==
-X-Gm-Gg: AY/fxX7xb3TCYuz2jq/5uUWIU3Q4LXKbYfsV6E9FY1dER9m9Tzn8K2AagQpzXMgiVbc
-	usB++m8AyAVu9X+At3/YvLULoGir0nEIJcwyiKccIQOtuyzq83UdW8iHHqtJUQ96PYj4ox4TKPA
-	7+WGevA0ZsQVHZ9A+7LT7fy6dgsupQY8M8fxll1GY6icFtxhsv+P2Ag+Dff2DcWIV3FGizgz9fb
-	KOhM9Qrq3z3KvhOyJ7uunItkS3H12w+1E08V42Apg05Wa8U8pAzfoR/lSW+wXb4lWS16srWppYw
-	xjok67qg/3EyMBpnBSO6dkqWdnZ7fSkGX0wpKDriVw8+T4cK0WI2wnCsuI00PX/RCJQzpytu6Ja
-	hQdFgvW7BtPsuaDFxy3VXCaqVUYlvgbTJdHjY31sZljmsSeEXNmXNwFbUTLvAVWRLe1bhwJTDBZ
-	aVz5YGlZG9Gf0cYS/1nv5zw+rhp4wAyiqqMmECGadP9NbvPpMfq0LRBhXpZ4LyjzeiHvbPxCwXY
-	rcVm2AXuetnNJjg3nrqya79eswGffs=
-X-Received: by 2002:a05:6870:e194:b0:3e8:9b25:2fc4 with SMTP id 586e51a60fabf-40406f33962mr3217936fac.7.1768452240100;
-        Wed, 14 Jan 2026 20:44:00 -0800 (PST)
-Received: from nukework.gtech (c-98-57-15-22.hsd1.tx.comcast.net. [98.57.15.22])
-        by smtp.gmail.com with ESMTPSA id 586e51a60fabf-4043b1b0116sm82362fac.12.2026.01.14.20.43.57
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 14 Jan 2026 20:43:58 -0800 (PST)
-From: "Alex G." <mr.nuke.me@gmail.com>
-To: Vasanthakumar Thiagarajan <vasanthakumar.thiagarajan@oss.qualcomm.com>,
- jjohnson@kernel.org, ath11k@lists.infradead.org,
- Jeff Johnson <jeff.johnson@oss.qualcomm.com>
-Cc: baochen.qiang@oss.qualcomm.com, linux-wireless@vger.kernel.org,
- linux-kernel@vger.kernel.org
-Subject:
- Re: [PATCH v3] wifi: ath11k: move .max_tx_ring to struct ath11k_hw_hal_params
-Date: Wed, 14 Jan 2026 22:43:56 -0600
-Message-ID: <6267675.44csPzL39Z@nukework.gtech>
-In-Reply-To: <89a61ef1-3e83-4303-ba04-cf5c5a4aae56@oss.qualcomm.com>
-References:
- <20251228151408.2116108-1-mr.nuke.me@gmail.com>
- <5896283.e9J7NaK4W3@nukework.gtech>
- <89a61ef1-3e83-4303-ba04-cf5c5a4aae56@oss.qualcomm.com>
+        bh=m/5XmxwHwYCP8/uagwllmfFu0i9L1U3rU59lyz06mIM=;
+        b=ud1mGhzSuq3qKGCxAq6i6+m2YlrMFp9+ZhY7l3t9zDXRP7qz2RQy6E4wy+Oghf9Lzw
+         ILpZR6a+JSRKBxdG2TvlTzDubJHm9Cz8kP3gnmyVeM44t2HqP1uNqq50as2Of/ze7IIY
+         Zsh5rYXEaohBnobXaqLF/zprIgB0/vbtMehr/OZ4Sca6LHdIc8hN2MMC+GFhdxvbgDlK
+         t7sJuOxtHFVMRKz1SMJ7TGYeDX+02QNteBlR2jE6nEdhhTYNcZfpeJJIMgKug61CMfU0
+         kdwMb8ldBOKMYjpvTOY40/otf71qssdiyftFnvv+/lvnKzTEJlenpJZRygsA8RGFpBAy
+         bxvg==
+X-Forwarded-Encrypted: i=1; AJvYcCWjnPECfNDMjPwgWxReNtxZg6RUU9Y3Ud2scv/XiHVELPkQAXDz1SVVHWdBlet20/B/nOsGEqdQ3tFuQdroUA==@vger.kernel.org
+X-Gm-Message-State: AOJu0Yz/6xS+IfJND8kexNyO/oybamYPrR2dCmBTVZwJP5AuCPOBlTL4
+	5EZpWUIKIHkr+Rd1mEEkVEbCQt8THO9tx47XRXUWp1SLefDYWe20hwqJ5h3mIqJLVAd/exORB2J
+	dQU1/dvFsiW5J7+xs+iEHJt/l9vhNSFY=
+X-Gm-Gg: AY/fxX6jjnzmjttAMPWuIhl+L97BhSzkgyUihN8tko65ewl9QKi2ASCeDPrda7MqO5i
+	F/4UMvDG3QGJ4E0wsSfB/tKWxrSQZHUXOi43tLizj19ph9v57gfwsYVi1L4uN/hXDIe/dtPtBlE
+	R08+LEottqRMiHR/2O0QbMhTWrhGSf8VCesbwtCeWGAyE/+8U4KjK4M4b7rCBe0cQrCInexcH4P
+	5NkJXCkwMLg0bsj/uKFGSoiEiRAfhpGa5F42oQDxvAq3IovjLPPbpZvRQBIX0aoJ+yJAFnGrNlL
+	8Qtg5F3yMGuoIX6mPfY2CMOIwyxiu8hQgOuSfNu2BvvFF5FM8qnWnGbrmA==
+X-Received: by 2002:a05:6402:6c9:b0:653:c2ad:6d93 with SMTP id
+ 4fb4d7f45d1cf-65412e18ab4mr1261487a12.2.1768461573636; Wed, 14 Jan 2026
+ 23:19:33 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7Bit
-Content-Type: text/plain; charset="us-ascii"
+References: <20260101062543.186499-1-zbowling@gmail.com> <20260102200315.290015-1-zbowling@gmail.com>
+ <20260102200315.290015-5-zbowling@gmail.com> <CAGp9LzrdvaPPLUi9TgenXvD6jWdOK-=95D_Fo2UYOppyzGPprw@mail.gmail.com>
+ <CAOFcj8Qy=6gpKpkph_rj8Nyc82t_q87XM8B3hhmX0Rijv-FxeQ@mail.gmail.com>
+In-Reply-To: <CAOFcj8Qy=6gpKpkph_rj8Nyc82t_q87XM8B3hhmX0Rijv-FxeQ@mail.gmail.com>
+From: Zac Bowling <zbowling@gmail.com>
+Date: Wed, 14 Jan 2026 23:19:21 -0800
+X-Gm-Features: AZwV_QjK0v0tbT6r_b00Qb_Rg8mpI0meBJa8q-dEZ2am_HkmFWL9JtfuJmh_Ov0
+Message-ID: <CAOFcj8SnLPZoq7JLhUGZKmJVTt=iGC6AcTxghauz91PfDCm+ew@mail.gmail.com>
+Subject: Re: [PATCH] wifi: mt76: mt792x: fix firmware reload failure after
+ previous load crash
+To: Sean Wang <sean.wang@kernel.org>, linux@frame.work
+Cc: deren.wu@mediatek.com, kvalo@kernel.org, linux-kernel@vger.kernel.org, 
+	linux-mediatek@lists.infradead.org, linux-wireless@vger.kernel.org, 
+	lorenzo@kernel.org, nbd@nbd.name, ryder.lee@mediatek.com, 
+	sean.wang@mediatek.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Wednesday, January 14, 2026 3:59:09 PM CST Jeff Johnson wrote:
-> On 1/14/2026 1:29 PM, Alex G. wrote:
-> > On Wednesday, January 14, 2026 11:24:19 AM CST Jeff Johnson wrote:
-> >> On 1/12/2026 11:00 PM, Vasanthakumar Thiagarajan wrote:
-> >>> On 12/28/2025 8:44 PM, Alexandru Gagniuc wrote:
-> >>>> ".max_tx_ring" is an upper bounds to indexing ".tcl2wbm_rbm_map". It
-> >>>> is initialized in, core.c, a different file than the array. This
-> >>>> spaghetti-like relation is fragile and not obvious. Accidentally
-> >>>> setting ".max_tx_ring" too high leads to a hard to track out-of-
-> >>>> bounds access and memory corruption.
-> >>>> 
-> >>>> There is a small ambiguity on the meaning of "max_tx_ring":
-> >>>>   - The highest ring, max=3 implies there are 4 rings (0, 1, 2, 3)
-> >>>>   - The highest number to use for array indexing (there are 3 rings)
-> >>>> 
-> >>>> Clarify this dependency by moving ".max_tx_ring" adjacent to the array
-> >>>> ".tcl2wbm_rbm_map", and name it "num_tx_rings". Use ARRAY_SIZE()
-> >>>> instead of #defines to initialize the length field.
-> >>>> 
-> >>>> The ath11k_hw_hal_params_qca6390 uses fewer num_tx_rings than its map,
-> >>>> so use a constant to express the correct value. Add a static_assert()
-> >>>> to fail compilation if the constant is accidentally set too high.
-> >>> 
-> >>> Text related to static_assert to be removed accordingly.
-> > 
-> > Hi Jeff,
-> > 
-> >> I removed the last sentence in 'pending', please check:
-> >> 
-> >> https://git.kernel.org/pub/scm/linux/kernel/git/ath/ath.git/commit/?h=pen
-> >> din g&id=26bb149b5e011b0f73f7b74421589cbd38e3304b
-> > 
-> > Re-reading the commit message, I think it makes sense to also remove the
-> > sentence "The ath11k_hw_hal_params_qca6390 uses fewer num_tx_rings than
-> > its
-> > map, so use a constant to express the correct value.". Do you think it's
-> > worth submitting a v4 with this minor change?
-> > 
-> > Alex
-> 
-> No need to submit a v4. I can make that change in 'pending'
+While I'm still waiting for feedback from folks on these patches, I've
+set up a public repository with all the fixes for others experiencing
+these issues and created a DKMS package for folks so they can easily
+load these patches as an alternative driver since so many folks are
+running into these same problems on several popular commercial laptops
+and desktops:
 
-Thank you!
+ https://github.com/zbowling/mt7925
 
-> /jeff
+  The repository has:
+  - All 18 patches from this series I've sent here (different versions
+of these patches that apply cleanly to different kernel versions)
+  - Pre-patched kernel branches (6.17.x, 6.18.x, 6.19-rc5) in another
+repo linked in the README
+  - A new DKMS package for out-of-tree builds (requires kernel 6.17+)
+with various hacks with #ifdef kernel versions so that the single
+package works for all recent kernels.
+
+The DKMS package builds mt76, mt76-connac-lib, mt792x-lib,
+mt7925-common, and mt7925e modules with all fixes applied.
+
+Testing in the community with everyone experiencing these same panics
+in the current upstream version, I've heard feedback from many folks
+that this patch series (either just apply the patches or using the
+DKMS build) that this fixes most of their issues.
+
+There still seems to be ongoing issues inside the firmware related to
+MLO and deauths with certain APs (especially with my Unifi U7 Pros)
+but at least this keeps machines from crashing while it the chip
+resets so you only suffer momentary losses in connectivity instead of
+straight-up kernel panic or a deadlock.
+
+For anyone still hitting the NULL pointer dereferences, mutex
+deadlocks with NetworkManager and friends during MLO and deauth
+situations, or suspend/resume hangs with mt7925 - this DMKS package or
+these patches should greatly help.
+
+Happy to address any review feedback whenever you finally have a
+chance to look at these.
 
 
+Zac Bowling
 
 
+On Sat, Jan 3, 2026 at 10:42=E2=80=AFAM Zac Bowling <zbowling@gmail.com> wr=
+ote:
+>
+> Hi Sean,
+>
+> Thanks! I don't have a MT7921, only a MT7925, so no unfortunately. I
+> ordered off Amazon and should be here in a week or two.
+>
+> Zac Bowling
+>
+> Zac Bowling
+>
+>
+> On Fri, Jan 2, 2026 at 10:46=E2=80=AFPM Sean Wang <sean.wang@kernel.org> =
+wrote:
+> >
+> > On Fri, Jan 2, 2026 at 2:03=E2=80=AFPM Zac Bowling <zbowling@gmail.com>=
+ wrote:
+> > >
+> > > If the firmware loading process crashes or is interrupted after
+> > > acquiring the patch semaphore but before releasing it, subsequent
+> > > firmware load attempts will fail with 'Failed to get patch semaphore'
+> > > because the semaphore is still held.
+> > >
+> > > This issue manifests as devices becoming unusable after suspend/resum=
+e
+> > > failures or firmware crashes, requiring a full hardware reboot to
+> > > recover. This has been widely reported on MT7921 and MT7925 devices.
+> > >
+> > > Apply the same fix that was applied to MT7915 in commit 79dd14f:
+> > > 1. Release the patch semaphore before starting firmware load (in case
+> > >    it was held by a previous failed attempt)
+> > > 2. Restart MCU firmware to ensure clean state
+> > > 3. Wait briefly for MCU to be ready
+> > >
+> > > This fix applies to both MT7921 and MT7925 drivers which share the
+> > > mt792x_load_firmware() function.
+> > >
+> > > Fixes: 'Failed to get patch semaphore' errors after firmware crash
+> > > Signed-off-by: Zac Bowling <zac@zacbowling.com>
+> > > ---
+> > >  mt792x_core.c | 14 ++++++++++++++
+> > >  1 file changed, 14 insertions(+)
+> > >
+> > > diff --git a/mt792x_core.c b/mt792x_core.c
+> > > index cc488ee9..b82e4470 100644
+> > > --- a/mt792x_core.c
+> > > +++ b/mt792x_core.c
+> > > @@ -927,6 +927,20 @@ int mt792x_load_firmware(struct mt792x_dev *dev)
+> > >  {
+> > >         int ret;
+> > >
+> > > +       /* Release semaphore if taken by previous failed load attempt=
+.
+> > > +        * This prevents "Failed to get patch semaphore" errors when
+> > > +        * recovering from firmware crashes or suspend/resume failure=
+s.
+> > > +        */
+> > > +       ret =3D mt76_connac_mcu_patch_sem_ctrl(&dev->mt76, false);
+> > > +       if (ret < 0)
+> > > +               dev_dbg(dev->mt76.dev, "Semaphore release returned %d=
+ (may be expected)\n", ret);
+> > > +
+> > > +       /* Always restart MCU to ensure clean state before loading fi=
+rmware */
+> > > +       mt76_connac_mcu_restart(&dev->mt76);
+> > > +
+> > > +       /* Wait for MCU to be ready after restart */
+> > > +       msleep(100);
+> > > +
+> >
+> > Hi Zac,
+> >
+> > This is a good finding. Since this is a common mt792x code path, have y=
+ou
+> > also had a chance to test it on MT7921?
+> >
+> > One small nit: the Fixes tag should reference the actual commit being
+> > fixed, e.g.
+> >
+> >   Fixes: <commit-sha> ("mt76: mt792x: ...")
+> >
+> > instead of the error string.
+> >
+> >                   Sean
+> >
+> > >         ret =3D mt76_connac2_load_patch(&dev->mt76, mt792x_patch_name=
+(dev));
+> > >         if (ret)
+> > >                 return ret;
+> > > --
+> > > 2.51.0
+> > >
+> > >
+> > >
 
