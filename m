@@ -1,173 +1,263 @@
-Return-Path: <linux-wireless+bounces-30854-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-30855-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id EA115D2955A
-	for <lists+linux-wireless@lfdr.de>; Fri, 16 Jan 2026 00:48:48 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0E46BD29646
+	for <lists+linux-wireless@lfdr.de>; Fri, 16 Jan 2026 01:15:43 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 591A330A99A2
-	for <lists+linux-wireless@lfdr.de>; Thu, 15 Jan 2026 23:48:08 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 2B93A300B9EF
+	for <lists+linux-wireless@lfdr.de>; Fri, 16 Jan 2026 00:15:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 651C333120B;
-	Thu, 15 Jan 2026 23:48:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9437D2C0285;
+	Fri, 16 Jan 2026 00:15:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="X3WVWNP2";
-	dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b="XbGMG0VA"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ijzmveNy"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E35E83090E6
-	for <linux-wireless@vger.kernel.org>; Thu, 15 Jan 2026 23:48:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 70C562BEFF6
+	for <linux-wireless@vger.kernel.org>; Fri, 16 Jan 2026 00:15:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768520887; cv=none; b=L5lwwikL6kvuF1IxQNCpPdREEhLDOLchylPcFCdginL+V0lUnxRyzbFSda1JLpvJH1dQttkvbFjgsrNFDE9EDPxbLq8pWol8r/o0KLDmplVcP64eHAEiGfNO8k/lLQVtW33+Ij+BLOgQPM25sA2EETecdom+iWtuEKSvkKH8uH8=
+	t=1768522540; cv=none; b=ewqd9Fp38/G6wPb+DDEzRtdrLkZ1P/ZjadXAKycku/qIL7QbFVrnUtr9vsuuw+sePkKMFgIPsZ6A+ZGuW/RuSITPPwIV4neqI8QoEo2oudnnzhHjoniZ7q5JJl+aT7gB9iNug5kP3A7crpYJhfHvhPDmdvm3pLKb7GYxSt5vHo8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768520887; c=relaxed/simple;
-	bh=nJ3p6mC/wzPvxadeDm3fHiQidrwfAMDEvfM92VICd4A=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=RXAgYOmXK7NdTLgUrMByyrGOZGdDykw6PktTDY/zGSLsifkinBh50CN/Ntk4ZW280jo8btnsaEMO3QfqIpqnY9rF8n6h7MREDOlWtgGGwwxhNr1PejE72WBFCbIfjALg+HuKDaLXYcaYP050XhGHb0w3xtseByoaq3lttpnUA38=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=X3WVWNP2; dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b=XbGMG0VA; arc=none smtp.client-ip=205.220.180.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
-Received: from pps.filterd (m0279870.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 60FMl3mw3582947
-	for <linux-wireless@vger.kernel.org>; Thu, 15 Jan 2026 23:48:02 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
-	cc:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
-	GyBSAugGuEeuvYZ4IecENAE/B7++Wdg8K0nB6NRo6ao=; b=X3WVWNP26YCG74if
-	CAiNmyDgBOtzcy9WXiEZ/eFxHOikDSfe6FjNSvr3DIN4IXzQQeFNAtMx3wYdSO/B
-	G5dzGgtGfvsdxV+RM+ydZPArFIhnv7NUCYAixf4Zi/EC24oEtQQDkERnQ4tr28D0
-	srB8eDhL5Fi811iKEG6/xQDAGHm0D9OGZE8xKjZEmdr9Jo9q6MMJSq8iTKnaiWcu
-	nI+M8xprfC2fj2tyoc3QykCEX0bAQn4padS7KvA9TrPeMPd+VWDwZQsrcDluPrjd
-	HYgIgyrt72iiANJSFEUSxcZ9UzznpP8eahaN9mTFiJJzREqGadZecMxRL9146ezn
-	CdDDHA==
-Received: from mail-pj1-f71.google.com (mail-pj1-f71.google.com [209.85.216.71])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4bq9ayr3qs-1
-	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
-	for <linux-wireless@vger.kernel.org>; Thu, 15 Jan 2026 23:48:02 +0000 (GMT)
-Received: by mail-pj1-f71.google.com with SMTP id 98e67ed59e1d1-34c3501d784so1127324a91.1
-        for <linux-wireless@vger.kernel.org>; Thu, 15 Jan 2026 15:48:02 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=oss.qualcomm.com; s=google; t=1768520882; x=1769125682; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=GyBSAugGuEeuvYZ4IecENAE/B7++Wdg8K0nB6NRo6ao=;
-        b=XbGMG0VAz+o9R9DWDBf3ORsqjvzMl5ajHPXFEUl1+fFncuhJPE+bvYsVHmzdCT1k5+
-         a7M9Sua18VCrhBJinzyJTbCtS4ZBjLAy/LpUz84/1InDjbrUXd0rWWwCf0tHwKGrD+L6
-         TCjmFrfBy07gUO2EHaV3s0tGqit//oDrAG/umS9SrVif1eEhzKOk4BedNbOsXeHZK8kZ
-         o4tGuxPCuLmriT+yO6LySUDsvYljpIxTVd9HiPKMVU4hPXjZGj2GTl50vtitGRj0uoaj
-         EJBupHPDTOScGiMZSLt/FLOOEPLbg72HwkSrRGce9p8cAvkPnsbeNLbqxbAW5skue2Og
-         cC2Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1768520882; x=1769125682;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=GyBSAugGuEeuvYZ4IecENAE/B7++Wdg8K0nB6NRo6ao=;
-        b=rZlXWN1xy3YsvjDNLwscq18qurbFb522nh1BsHUShnVa/rnbINNWG2qkdPdN2yosC7
-         6AksD5S2B8QbJVpWhneMgYZn/lo5VIV7BURK1Oo2VkW5JZMZThejLJMccNW6ZqhmnNaB
-         0FPt+2LU9UBEo5GZ+rDbtQO4Q2oRU25w+cnDmVtAd3kh9OelndysiHHCU2i0iAyoncAu
-         lTvhH4kJIf2PQHxT4gARAJZnbpJRC5Afu7HORr/bRG8+mDktFNhP/Y56jV3LQpLL82rQ
-         VkFxLHsEbVTMN1YO4CT7VaRGWWxo3oG62/kXMjxnilqWe366pQuiw9PA7V80vbuBFfwZ
-         fnDA==
-X-Gm-Message-State: AOJu0YwY7ATlyMBZliGmcb+PZEFK9dFOqXy5u0T7tWyTsainR4y+yTny
-	eO2bgllxN9deS4oYsMKhKu1eKQlJsDqDGzc/zNelLHWu84rZZwQNZ5ReL0rsmGzGJgyYeGwGrPb
-	QCcgY4ZcXLBzok+koZtWTFRHl8IM+0tBJWGc44XBGmJ7pFT3CVGAQfTdXNXS9Ufx1aUrYcg==
-X-Gm-Gg: AY/fxX67ZEoxS6tE/ljxTAwqCdxH9GpLiY98T6kIf4xqJwLCn/d5zPqBZW5mMQWEJFL
-	28nQZa0XG3ZC4nkRTNEGKXhmQDidXjq+zuuWxHKefRVN07OVW8bx5qcsUCb25EKh1UvfCKjphUP
-	u14IabL4wRz1AurcwU0I8HF33/sgtroScuaPuDUHXv8UV+RGNgG/G6NGbnJ2QC0ABEgVZFQbgcf
-	Kiim/YsHNATxcHbfKpyJyKaUVZ45Wr1RuStIuamivlpD/ZljgqHcbLRV6X/Mkh1lQnfZ8ImJG5n
-	xVwj0Rwc6AQl3S+poG6Stg0ABy7it8W7Rxxx6E3EDS7TQODP92bjw5ppkGMstnkT2ik7K+0EJtm
-	W5bOhCs/sm250ocBEN1tXjCg9yh3qRuIGUK0=
-X-Received: by 2002:a17:90b:568e:b0:340:7b2e:64cc with SMTP id 98e67ed59e1d1-35272edc45cmr952774a91.15.1768520881685;
-        Thu, 15 Jan 2026 15:48:01 -0800 (PST)
-X-Received: by 2002:a17:90b:568e:b0:340:7b2e:64cc with SMTP id 98e67ed59e1d1-35272edc45cmr952760a91.15.1768520881171;
-        Thu, 15 Jan 2026 15:48:01 -0800 (PST)
-Received: from [10.253.11.195] ([114.94.8.21])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3527310210esm427320a91.9.2026.01.15.15.47.58
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 15 Jan 2026 15:48:00 -0800 (PST)
-Message-ID: <0f4fa27e-d9b4-4a23-8c8d-53f4a7014167@oss.qualcomm.com>
-Date: Fri, 16 Jan 2026 07:47:56 +0800
+	s=arc-20240116; t=1768522540; c=relaxed/simple;
+	bh=Qoom8EAk5s0vkxGTfEBdvDe4EU7HeMhX2lS+/4o9kAI=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=jtU9eDdN0G+RDT4FvcfFObY7HxN1S8VmPCPf0mvAnPDAxBgRFu8mzpA9wN4NNdJHsYLL6tKbfheYjcK3teYbTJs5hGtsT1PIQmV41dLYudjCRf70JZ1mhG3I6ht3evStODuQ+ZI017CGNa1OAQm91KXLtYHDvUpK98xk6GZ5VAQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ijzmveNy; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 23A12C19422
+	for <linux-wireless@vger.kernel.org>; Fri, 16 Jan 2026 00:15:40 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1768522540;
+	bh=Qoom8EAk5s0vkxGTfEBdvDe4EU7HeMhX2lS+/4o9kAI=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+	b=ijzmveNyZ7QPjXsJcU5OWUr81CR+GZukeX+7bvyT5/AwiMJk0ZPpvmn5dh+SABkS6
+	 UUQRiNJp6DdLBBLXiftzXWAO97GEu8XQMbNAlTaDP5nkkj7VOI1qnTRuMWffclu7cH
+	 PoNZesxScpHe0h0jQkxlq4So39Z4p8R9wh65ivEoj+ZZymG2QOX73OvJgv0V5HGmmg
+	 DLh6ar1/VDx2guhGHWDmoTYgEA8Gdy2tvZ70eHju/TjtBXLokdO6vBVn/XJzB/iIUK
+	 E3Fx0pMLGHYC1uHBoDSGaI48HsV92JGYGMdVp3DnlrUbbmho6+Mu9wzfM+ffVieeAl
+	 TQkP/mTWd12wQ==
+Received: by mail-lf1-f48.google.com with SMTP id 2adb3069b0e04-59b79451206so1440143e87.1
+        for <linux-wireless@vger.kernel.org>; Thu, 15 Jan 2026 16:15:40 -0800 (PST)
+X-Forwarded-Encrypted: i=1; AJvYcCU1zWqzSqlbDnnhrgnHUjTqH52YPRQW+FeIao42jHsGy/LIqAUc6W0HEt/R85BHFK8RVVi55Z/QGGCGsRPqYg==@vger.kernel.org
+X-Gm-Message-State: AOJu0Ywcs4mK4sjkiNCnOZwHNbvStUTpMghi6YajNT50SNKoADTnLnSo
+	1/3FzYwtWTELbzFiO79Qb2BpDkL2iXEVbset6MJ0aIBjhcj0Yh9xElOhbJJZrla4zHLkAZ0z/VT
+	4X9wqx0kj5lxKDoqBJPQhHwUqIcsJMN4=
+X-Received: by 2002:a05:6512:32c7:b0:598:f96f:af0 with SMTP id
+ 2adb3069b0e04-59baeeb1d50mr421415e87.7.1768522538465; Thu, 15 Jan 2026
+ 16:15:38 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH ath-next v5 0/6] wifi: ath11k: Add single shot/periodic
- CFR capture support
-To: Jeff Johnson <jeff.johnson@oss.qualcomm.com>,
-        Baochen Qiang <baochen.qiang@oss.qualcomm.com>,
-        ath11k@lists.infradead.org
-Cc: linux-wireless@vger.kernel.org, Yu Zhang <yu.zhang@oss.qualcomm.com>
-References: <20251230082520.3401007-1-qian.zhang@oss.qualcomm.com>
- <717658b7-91da-4073-a746-a389319aac2d@oss.qualcomm.com>
- <a7a73ad1-0761-4abc-acc9-fc94a4e77348@oss.qualcomm.com>
- <f0e98751-8fed-4cb8-9cc6-59a691f172b5@oss.qualcomm.com>
-Content-Language: en-US
-From: Qian Zhang <qian.zhang@oss.qualcomm.com>
-In-Reply-To: <f0e98751-8fed-4cb8-9cc6-59a691f172b5@oss.qualcomm.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Proofpoint-ORIG-GUID: fUR7Ln3yk_K3a1igsCPUKbwgskgjOd4G
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwMTE1MDE4OCBTYWx0ZWRfX13lTvL1R48UU
- 7Wn1q7gFN8G7oRhynSZUOZCjWGtSLT1IEWmQriHhnzd/OkvGjwZOLCfEJ2WXJf76ojeEvgUdMQ9
- YO31s7bmBhYFlpU8nWQCCac6cU0P3YpF0Jcrn5Czoa7XWECbFpfyFuveGhYa2/F4W2MK2eXFwGe
- iX1rVmBpkU2825gUh126TbHR1stXYdUZfuEJav4Jy33R+2mjZpCL8CT3U8nqyOwXiUSBelnRlTB
- 4FECPRh+JpMvgSnoIaeAcLiggFVIe+aLdDB5FhT7yyg5sljK+RegC+o04bCPunXf2lvscAQ+CtG
- kVhjAw6U86bobKoOMkNdeAlgFq42UQnqaOG6xk4b/PMrm8qilKQZe9yuFhPYKi2tYyMxe5r2ZR4
- 2lLUdDGK6EQKoIILA2374C9/HoZVa0t15AxrVjprCZFKhF9RkY8S0a/xe7pGOOj2OzgE5AtZ463
- xIb5seaonZcRdkb6IVQ==
-X-Proofpoint-GUID: fUR7Ln3yk_K3a1igsCPUKbwgskgjOd4G
-X-Authority-Analysis: v=2.4 cv=NfDrFmD4 c=1 sm=1 tr=0 ts=69697cb2 cx=c_pps
- a=UNFcQwm+pnOIJct1K4W+Mw==:117 a=Uz3yg00KUFJ2y2WijEJ4bw==:17
- a=IkcTkHD0fZMA:10 a=vUbySO9Y5rIA:10 a=s4-Qcg_JpJYA:10
- a=VkNPw1HP01LnGYTKEx00:22 a=TqcbJbPLsSPoifzPepEA:9 a=QEXdDO2ut3YA:10
- a=uKXjsCUrEbL0IQVhDsJ9:22
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.9,FMLib:17.12.100.49
- definitions=2026-01-15_07,2026-01-15_02,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- bulkscore=0 malwarescore=0 impostorscore=0 suspectscore=0 spamscore=0
- phishscore=0 clxscore=1015 priorityscore=1501 lowpriorityscore=0 adultscore=0
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.22.0-2512120000 definitions=main-2601150188
+References: <20260102200524.290779-1-zbowling@gmail.com> <20260105002638.668723-1-zbowling@gmail.com>
+In-Reply-To: <20260105002638.668723-1-zbowling@gmail.com>
+From: Sean Wang <sean.wang@kernel.org>
+Date: Thu, 15 Jan 2026 18:15:27 -0600
+X-Gmail-Original-Message-ID: <CAGp9LzpuyXRDa=TxqY+Xd5ZhDVvNayWbpMGDD1T0g7apkn7P0A@mail.gmail.com>
+X-Gm-Features: AZwV_QhmDGd0M2K2vGL98TrIqrM2dp7k_Pf6AakMzhTFC_0fKZSjjllodzG9UHY
+Message-ID: <CAGp9LzpuyXRDa=TxqY+Xd5ZhDVvNayWbpMGDD1T0g7apkn7P0A@mail.gmail.com>
+Subject: Re: [PATCH v3 00/17] wifi: mt76: mt7925/mt792x: comprehensive
+ stability fixes
+To: Zac Bowling <zbowling@gmail.com>
+Cc: deren.wu@mediatek.com, kvalo@kernel.org, linux-kernel@vger.kernel.org, 
+	linux-mediatek@lists.infradead.org, linux-wireless@vger.kernel.org, 
+	lorenzo@kernel.org, nbd@nbd.name, ryder.lee@mediatek.com, 
+	sean.wang@mediatek.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
+Hi Zac,
 
+Thanks for sharing this series. Overall the patches look good to me,
+and I=E2=80=99m continuing more testing to ensure there are no regressions =
+on
+mt7925 and mt7921 further
+But today I do hit a kernel WARN in the disconnect path (mac80211 BA
+session teardown) while testing v3 of the series
 
-On 1/15/2026 12:55 AM, Jeff Johnson wrote:
-> On 1/5/2026 3:51 AM, Qian Zhang wrote:
->> On 1/5/2026 10:22 AM, Baochen Qiang wrote:
->>> On 12/30/2025 4:25 PM, Qian Zhang wrote:
->>> what are these dependencies? They are not present in old revisions.
->>>
->>> BTW, if you indeed has dependencies, in addition to these prerequisite-patch-id's, please
->>> also list them explicitly in the cover letter above.
->>>
->>
->> These dependency details were added by mistake, and I will remove them.
-> 
-> Was that the only known problem with the v5 series?
-> 
-> My automation flagged a checkpatch issue in the 6/6 patch:
-> WARNING:LINE_SPACING: Missing a blank line after declarations
-> 
-> If there are no other issues with v5 then I can fix this in my pending branch.
-> Or you can submit a v6. Just let me know.
-> 
-> /jeff
+[ 3373.120224] Hardware name: HP HP EliteBook 830 G6/854A, BIOS R70
+Ver. 01.22.00 10/14/2022
+[ 3373.120228] Workqueue: events_unbound cfg80211_wiphy_work [cfg80211]
+[ 3373.120367] RIP: 0010:__ieee80211_stop_tx_ba_session+0x295/0x350 [mac802=
+11]
+[ 3373.120570] Code: 11 0f 83 a3 00 00 00 48 c7 80 90 03 00 00 00 00
+00 00 48 8b 7d 98 e8 4a 26 f3 fa 4c 89 ee 4c 89 ef e8 6f 16 0b fa 31
+c0 eb 93 <0f> 0b 31 c0 eb 8d b8 8e ff ff ff eb 86 48 8b 7d 98 e8 25 26
+f3 fa
+[ 3373.120576] RSP: 0018:ffffd00902ed7ba0 EFLAGS: 00010206
+[ 3373.120583] RAX: 0000000000010003 RBX: 0000000000000003 RCX: 00000000000=
+00000
+[ 3373.120587] RDX: 0000000000000000 RSI: 0000000000000000 RDI: 00000000000=
+00000
+[ 3373.120591] RBP: ffffd00902ed7c10 R08: 0000000000000000 R09: 00000000000=
+00000
+[ 3373.120596] R10: 0000000000000000 R11: 0000000000000000 R12: 00000000000=
+00000
+[ 3373.120599] R13: ffff8a8433717540 R14: ffff8a83e0b20960 R15: ffff8a834d4=
+2c000
+[ 3373.120604] FS:  0000000000000000(0000) GS:ffff8a8477b03000(0000)
+knlGS:0000000000000000
+[ 3373.120608] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+[ 3373.120626] CR2: 00007b9e0a8ba0d0 CR3: 000000009a440005 CR4: 00000000003=
+726f0
+[ 3373.120631] Call Trace:
+[ 3373.120656]  <TASK>
+[ 3373.120664]  ieee80211_sta_tear_down_BA_sessions+0x53/0xe0 [mac80211]
+[ 3373.120836]  __sta_info_destroy_part1+0x48/0x550 [mac80211]
+[ 3373.120994]  __sta_info_flush+0x10e/0x230 [mac80211]
+[ 3373.121150]  ieee80211_set_disassoc+0x6b3/0x900 [mac80211]
+[ 3373.121293]  ? _printk+0x5f/0x90
+[ 3373.121330]  __ieee80211_disconnect+0xd6/0x1a0 [mac80211]
+[ 3373.121446]  ieee80211_beacon_connection_loss_work+0x6d/0xc0 [mac80211]
+[ 3373.121573]  cfg80211_wiphy_work+0xb4/0x190 [cfg80211]
+[ 3373.121779]  process_one_work+0x191/0x3e0
+[ 3373.121789]  worker_thread+0x2e3/0x420
+[ 3373.121796]  ? __pfx_worker_thread+0x10/0x10
+[ 3373.121802]  kthread+0x10d/0x230
+[ 3373.121810]  ? __pfx_kthread+0x10/0x10
+[ 3373.121818]  ret_from_fork+0x205/0x230
+[ 3373.121826]  ? __pfx_kthread+0x10/0x10
+[ 3373.121832]  ret_from_fork_asm+0x1a/0x30
+[ 3373.121842]  </TASK>
+[ 3373.121844] ---[ end trace 0000000000000000 ]---
+[ 3373.128750] ------------[ cut here ]------------
+[ 3373.128757] WARNING: CPU: 1 PID: 14854 at net/mac80211/agg-tx.c:398
+__ieee80211_stop_tx_ba_session+0x295/0x350 [mac80211]
 
-This feature is under LX test now.
-Patchset V6 will be submitted when testing is finished.
-Fixes for new issues (if any new issue are found) as well
-as all previous reviewer comments will be included in
-the v6 patchset.
+I=E2=80=99m currently bisecting the series to identify which patch triggers=
+ it
+and will follow up once I have clearer results.
+Thanks again for the work and the DKMS setup.
 
-Qian
+                 Sean
+
+On Sun, Jan 4, 2026 at 6:27=E2=80=AFPM Zac Bowling <zbowling@gmail.com> wro=
+te:
+>
+> From: Zac Bowling <zac@zacbowling.com>
+>
+> This patch series addresses kernel panics, system deadlocks, and various
+> stability issues in the MT7925 WiFi driver. The issues were discovered on
+> kernel 6.17 (Ubuntu 25.10) and fixes were developed and tested on 6.18.2.
+>
+> These patches are based on the wireless tree (nbd168/wireless.git) as
+> requested by Sean Wang.
+>
+> =3D=3D Problem Description =3D=3D
+>
+> The MT7925 driver has several bugs that cause:
+> - Kernel NULL pointer dereferences during BSSID roaming
+> - System-wide deadlocks requiring hard reboot
+> - Firmware reload failures after suspend/resume
+> - Key removal errors during MLO roaming
+>
+> These issues manifest approximately every 5 minutes when the adapter
+> tries to switch to a better BSSID, particularly in enterprise environment=
+s
+> with multiple access points.
+>
+> =3D=3D Root Causes =3D=3D
+>
+> 1. Missing mutex protection around ieee80211_iterate_active_interfaces()
+>    when the callback invokes MCU functions (patches 2, 3, 16)
+>
+> 2. NULL pointer dereferences where mt792x_vif_to_bss_conf(),
+>    mt792x_sta_to_link(), and similar functions return NULL during
+>    MLO state transitions but results are not checked (patches 1, 4, 5,
+>    9, 10, 14, 17)
+>
+> 3. Ignored MCU return values hiding firmware errors (patches 6, 7, 8)
+>
+> 4. WARN_ON_ONCE used where NULL is expected during normal MLO AP
+>    setup (patch 13)
+>
+> 5. Firmware semaphore not released after failed load attempts (patch 15)
+>
+> 6. Key removal returning error when link is already torn down (patch 12)
+>
+> =3D=3D Testing =3D=3D
+>
+> Stress tested by hammering the driver with custom test script.
+>
+> Tested on:
+> - Framework Desktop (AMD Ryzen AI Max 300 Series) with MT7925 (RZ717)
+> - This whole patch series was tested on Kernel 6.18.2 and 6.17.12 (Ubuntu=
+ 25.10)
+> - Enterprise WiFi environment with multiple WIFI 7 APs with MLO enabled
+>
+> Before patches: System hangs/panics every 5-15 minutes during BSSID roami=
+ng
+> After patches: Stable for 24+ hours under continuous stress testing
+>
+> =3D=3D Crash Traces Fixed =3D=3D
+>
+> Primary NULL pointer dereference:
+>   BUG: kernel NULL pointer dereference, address: 0000000000000010
+>   Workqueue: mt76 mt7925_mac_reset_work [mt7925_common]
+>   RIP: 0010:mt76_connac_mcu_uni_add_dev+0x9c/0x780 [mt76_connac_lib]
+>   Call Trace:
+>    mt7925_vif_connect_iter+0xcb/0x240 [mt7925_common]
+>    __iterate_interfaces+0x92/0x130 [mac80211]
+>    ieee80211_iterate_interfaces+0x3d/0x60 [mac80211]
+>    mt7925_mac_reset_work+0x105/0x190 [mt7925_common]
+>
+> Deadlock trace:
+>   INFO: task kworker/u128:0:48737 blocked for more than 122 seconds.
+>   Workqueue: mt76 mt7925_mac_reset_work [mt7925_common]
+>   Call Trace:
+>    __mutex_lock.constprop.0+0x3d0/0x6d0
+>    mt7925_mac_reset_work+0x85/0x170 [mt7925_common]
+>
+> =3D=3D Related Links =3D=3D
+>
+> Framework Community discussion:
+> https://community.frame.work/t/kernel-panic-from-wifi-mediatek-mt7925-nul=
+lptr-dereference/79301
+>
+> OpenWrt GitHub issues:
+> https://github.com/openwrt/mt76/issues/1014
+> https://github.com/openwrt/mt76/issues/1036
+>
+> GitHub repository with additional analysis:
+> https://github.com/zbowling/mt7925
+>
+> Zac Bowling (17):
+>   wifi: mt76: mt7925: fix NULL pointer dereference in vif iteration
+>   wifi: mt76: mt7925: fix missing mutex protection in reset and ROC abort
+>   wifi: mt76: mt7925: fix missing mutex protection in runtime PM and MLO =
+PM
+>   wifi: mt76: mt7925: add NULL checks in MCU STA TLV functions
+>   wifi: mt76: mt7925: add NULL checks for link_conf and mlink in main.c
+>   wifi: mt76: mt7925: add error handling for AMPDU MCU commands
+>   wifi: mt76: mt7925: add error handling for BSS info MCU command in sta_=
+add
+>   wifi: mt76: mt7925: add error handling for BSS info in key setup
+>   wifi: mt76: mt7925: add NULL checks in MLO link and chanctx functions
+>   wifi: mt76: mt792x: fix NULL pointer dereference in TX path
+>   wifi: mt76: mt7925: add lockdep assertions for mutex verification
+>   wifi: mt76: mt7925: fix key removal failure during MLO roaming
+>   wifi: mt76: mt7925: fix kernel warning in MLO ROC setup
+>   wifi: mt76: mt7925: add NULL checks for MLO link pointers in MCU functi=
+ons
+>   wifi: mt76: mt792x: fix firmware reload failure after previous load cra=
+sh
+>   wifi: mt76: mt7925: add mutex protection in resume path
+>   wifi: mt76: mt7925: add NULL checks in link station and TX queue setup
+>
+>  drivers/net/wireless/mediatek/mt76/mt792x_core.c | 27 +++++++++++++++-
+>  drivers/net/wireless/mediatek/mt76/mt7925/mac.c  |  8 +++++
+>  drivers/net/wireless/mediatek/mt76/mt7925/main.c | 95 ++++++++++++++++++=
++++---
+>  drivers/net/wireless/mediatek/mt76/mt7925/mcu.c  | 52 ++++++++++++++---
+>  drivers/net/wireless/mediatek/mt76/mt7925/pci.c  |  6 +++
+>  5 files changed, 170 insertions(+), 18 deletions(-)
+>
+> --
+> 2.51.0
+>
 
