@@ -1,46 +1,53 @@
-Return-Path: <linux-wireless+bounces-30916-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-30917-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6011FD3391D
-	for <lists+linux-wireless@lfdr.de>; Fri, 16 Jan 2026 17:47:28 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7580CD33983
+	for <lists+linux-wireless@lfdr.de>; Fri, 16 Jan 2026 17:57:09 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 4605D3034187
-	for <lists+linux-wireless@lfdr.de>; Fri, 16 Jan 2026 16:47:25 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 75E6E300196F
+	for <lists+linux-wireless@lfdr.de>; Fri, 16 Jan 2026 16:57:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 78F79399A7E;
-	Fri, 16 Jan 2026 16:47:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9ED9E338906;
+	Fri, 16 Jan 2026 16:57:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="g2KJoYv9"
+	dkim=pass (2048-bit key) header.d=web.de header.i=markus.elfring@web.de header.b="WEcTJ8Nr"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mout.web.de (mout.web.de [212.227.17.11])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 49C903112BA;
-	Fri, 16 Jan 2026 16:47:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 982432571BE;
+	Fri, 16 Jan 2026 16:57:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.227.17.11
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768582044; cv=none; b=CpHH+1zZJllEib0iDg220BrLmgi5HwyAMqDH8nbP1uq/CA+bf4OVkPSpq8oI29IWrUnu7d9txabHbV3LKnRCE2V5m3ncyTEle5Qt+ZhNOv4UUwY8/LDpvJwZu01je+QTno2RXsUPYyA9xT20dbyi83Z9i0aDap6lGGeH7hCmIss=
+	t=1768582625; cv=none; b=c2puDODfsUs1CW5ZrxyYDpeDacUNvl+4iZQIeCwDqHE7G7oUBtIY5f2DpDC9rlRqHGa6P1RnT3i8wZ819XHE4XLyKTHLMqLj6YNF018vIe2lbCdA47J0+Wy7CuOS73Y10lG2fbe1CaupPyvSgfZVh8xB+U0/hyC4I1mGBWxoDas=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768582044; c=relaxed/simple;
-	bh=e8xHnIXHD8OCRmeLMtgO2Zm2XUqO+KGzAms+Oa6YeZ8=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=aI3B2LZc0/uda21sbA+vYnH+VfSbK4eGCM/LKwG5KDEWTdvXfpAOHaEPRN2CULmzmRAG/wCZmN3Z4W2TlzCU1Q9KH7O9HcDyFTtnODBTWlMxoLHnHKxnDSwmcwKy/37tLe/X6IkBc0ttYhYQxtzus+s2QaaaiHmt6aWEAfE03Ic=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=g2KJoYv9; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DC468C19424;
-	Fri, 16 Jan 2026 16:47:18 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1768582043;
-	bh=e8xHnIXHD8OCRmeLMtgO2Zm2XUqO+KGzAms+Oa6YeZ8=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=g2KJoYv9gXTPMov8oaRJTyCyHpsgN9woWts91t4oGjXAjXWIvgRIFSUtKnlRO4Tjr
-	 PPJn91TM3LUzK6DDBaOqbF6LvFpknezv0o/8/dxHY7yxC8R82dPcm9IMPgBm7s1MZp
-	 ns7GHV4BiBM6IJPItVpwxaiBSj2gEvJKddeK56D6jHgiLc9lvLZ57c/7INzY6RRR2S
-	 1Cd+Mo2Juwb9B1IcARkGZrfmiJuBAlUcl17jqDdKKfedWNcmUSmVTFt7vl0ouViLei
-	 dnlqF63eOUoPaNY4wrrPawY3q/Y2Vw1+GLCjFulN2qyaWVSSCtQ9I5vH1NVuAW0xTW
-	 Ebsx6lq+ZzHew==
-Message-ID: <f7c93dbb-9633-4dc5-983e-2f0df13989ce@kernel.org>
-Date: Fri, 16 Jan 2026 17:47:16 +0100
+	s=arc-20240116; t=1768582625; c=relaxed/simple;
+	bh=UCRzFnlL51J3r1v3KtHPuReG0jTDE1cPz5Nk0PllpmI=;
+	h=Message-ID:Date:MIME-Version:To:Cc:References:Subject:From:
+	 In-Reply-To:Content-Type; b=nWbAGG3qUz0W5dgxsh3USM8PusdlWmAuY8N0vNYC7G2OXhZrpQVX40mkEBAG3E94p60wutNkjsWP7bjXbjD+g46m5LET+DwFZU9rVUsYqctA88T+OLxhz5ZgBZtv45mAXF37G2StUGa7a+fnrqveWRGHk8/jEtW6Fy83G5TgCD0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=web.de; spf=pass smtp.mailfrom=web.de; dkim=pass (2048-bit key) header.d=web.de header.i=markus.elfring@web.de header.b=WEcTJ8Nr; arc=none smtp.client-ip=212.227.17.11
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=web.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=web.de
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=web.de;
+	s=s29768273; t=1768582621; x=1769187421; i=markus.elfring@web.de;
+	bh=UCRzFnlL51J3r1v3KtHPuReG0jTDE1cPz5Nk0PllpmI=;
+	h=X-UI-Sender-Class:Message-ID:Date:MIME-Version:To:Cc:References:
+	 Subject:From:In-Reply-To:Content-Type:Content-Transfer-Encoding:
+	 cc:content-transfer-encoding:content-type:date:from:message-id:
+	 mime-version:reply-to:subject:to;
+	b=WEcTJ8NrCXkdhCgtKJ8A+ub0H9dMTILNfgxtpoYFn7ubm/AIyUwKTJc4SbzyOq53
+	 Mw66Q1Z8c8f2iILtRporoy/pVnvaXHPFEVjkRl11ifD9ujv6iWTSPwMQVUj1bQK9b
+	 DuKkPdR+G+50b0Xe+4CqB4LctgAossZAVvFbqdykJo9jR0wVaBJ8kaSWc3p/NA58Q
+	 k34YSf0Rf9g8fm3g59xwF9Y6x92aMbA65WndQ862sf4ehQ86L/AtD3XsFAvskH4MN
+	 Pr8NMC+G5BDH9VME+Gv0ZjGLXgfbS+FAhiQydwFshFBr232OJt8m+FafPDoKW/AoH
+	 IZDKJclmcWI0aKLS7w==
+X-UI-Sender-Class: 814a7b36-bfc1-4dae-8640-3722d8ec6cd6
+Received: from [192.168.178.29] ([94.31.69.218]) by smtp.web.de (mrweb106
+ [213.165.67.124]) with ESMTPSA (Nemesis) id 1N6bCu-1vsNfP1y0M-00r8r9; Fri, 16
+ Jan 2026 17:57:01 +0100
+Message-ID: <d16ff74d-aa01-4b3a-aa76-9ac9a5c6c86b@web.de>
+Date: Fri, 16 Jan 2026 17:56:58 +0100
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
@@ -48,128 +55,110 @@ List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 04/14] wifi: ath10k: snoc: support powering on the
- device via pwrseq
-To: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
-Cc: Jeff Johnson <jeff.johnson@oss.qualcomm.com>,
- Liam Girdwood <lgirdwood@gmail.com>, Mark Brown <broonie@kernel.org>,
- Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
- Conor Dooley <conor+dt@kernel.org>, Bartosz Golaszewski <brgl@kernel.org>,
- Marcel Holtmann <marcel@holtmann.org>,
- Luiz Augusto von Dentz <luiz.dentz@gmail.com>,
- Jeff Johnson <jjohnson@kernel.org>, Bjorn Andersson <andersson@kernel.org>,
- Konrad Dybcio <konradybcio@kernel.org>,
- Manivannan Sadhasivam <mani@kernel.org>, Vinod Koul <vkoul@kernel.org>,
- Balakrishna Godavarthi <quic_bgodavar@quicinc.com>,
- Matthias Kaehlcke <mka@chromium.org>, linux-arm-msm@vger.kernel.org,
- linux-kernel@vger.kernel.org, devicetree@vger.kernel.org,
- linux-bluetooth@vger.kernel.org, linux-wireless@vger.kernel.org,
- ath10k@lists.infradead.org, linux-pm@vger.kernel.org,
- Bartosz Golaszewski <bartosz.golaszewski@oss.qualcomm.com>
-References: <20260106-wcn3990-pwrctl-v2-0-0386204328be@oss.qualcomm.com>
- <20260106-wcn3990-pwrctl-v2-4-0386204328be@oss.qualcomm.com>
- <52b2b799-09e6-40a4-bea8-c7e8bf21cf51@oss.qualcomm.com>
- <15470b51-d398-449d-9017-304df5ad7cef@kernel.org>
- <132c34db-07c6-491b-bfda-f3c51462a184@oss.qualcomm.com>
- <f35b1380-b7d4-45e7-94ad-9f76973d3289@kernel.org>
- <d4ttsbhlw4c2fvgpfwgnc5mdh2egc6nwluj5pmkst2sunpn6m7@7b6by2eboob4>
-From: Krzysztof Kozlowski <krzk@kernel.org>
-Content-Language: en-US
-Autocrypt: addr=krzk@kernel.org; keydata=
- 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 a/A=
-In-Reply-To: <d4ttsbhlw4c2fvgpfwgnc5mdh2egc6nwluj5pmkst2sunpn6m7@7b6by2eboob4>
+To: Zilin Guan <zilin@seu.edu.cn>, linux-wireless@vger.kernel.org,
+ linux-mediatek@lists.infradead.org, linux-arm-kernel@lists.infradead.org,
+ Felix Fietkau <nbd@nbd.name>
+Cc: LKML <linux-kernel@vger.kernel.org>,
+ Angelo Gioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
+ Jianhao Xu <jianhao.xu@seu.edu.cn>, Lorenzo Bianconi <lorenzo@kernel.org>,
+ Matthias Brugger <matthias.bgg@gmail.com>, Ryder Lee
+ <ryder.lee@mediatek.com>, Sean Wang <sean.wang@mediatek.com>,
+ Shayne Chen <shayne.chen@mediatek.com>
+References: <20260116144919.1482558-1-zilin@seu.edu.cn>
+Subject: Re: [PATCH] wifi: mt76: Fix memory leak after
+ mt76_connac_mcu_alloc_sta_req()
+Content-Language: en-GB, de-DE
+From: Markus Elfring <Markus.Elfring@web.de>
+In-Reply-To: <20260116144919.1482558-1-zilin@seu.edu.cn>
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: quoted-printable
+X-Provags-ID: V03:K1:GhP3f0OmHoEwyzJl8nBiItufgqDkyBKO0l/k/9qznQd195MT7I7
+ S88t/NC9arBrJ2IyFVqH9lHcaBi2Ic0GAYqnFQsbtbyosRCZ7IOh5jDyDW18MOLzQSZI84M
+ YrXMdY715Lgzxilyl+jDmVycI6FoFC8tA104J5120o5fGnYpVc6273zW1jgz158hRhORAf3
+ hF6Mx0crSLV+r6UxNxC/Q==
+X-Spam-Flag: NO
+UI-OutboundReport: notjunk:1;M01:P0:ENFTm9ZfFjE=;w7K+NAT/CaEQqIzyBRmbmhuFTpS
+ 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
 
-On 16/01/2026 17:41, Dmitry Baryshkov wrote:
-> On Fri, Jan 16, 2026 at 05:08:58PM +0100, Krzysztof Kozlowski wrote:
->> On 16/01/2026 16:18, Jeff Johnson wrote:
->>> On 1/15/2026 11:48 PM, Krzysztof Kozlowski wrote:
->>>> On 15/01/2026 23:30, Jeff Johnson wrote:
->>>>> On 1/5/2026 5:01 PM, Dmitry Baryshkov wrote:
->>>>>> The WCN39xx family of WiFi/BT chips incorporates a simple PMU, spreading
->>>>>> voltages over internal rails. Implement support for using powersequencer
->>>>>> for this family of ATH10k devices in addition to using regulators.
->>>>>>
->>>>>> Reviewed-by: Bartosz Golaszewski <bartosz.golaszewski@oss.qualcomm.com>
->>>>>> Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
->>>>>> ---
->>>>>>  drivers/net/wireless/ath/ath10k/snoc.c | 54 ++++++++++++++++++++++++++++++++--
->>>>>>  drivers/net/wireless/ath/ath10k/snoc.h |  2 ++
->>>>>
->>>>> My automation flagged:
->>>>> * drivers/net/wireless/ath/ath10k/snoc.c has no QTI copyright
->>>>> * drivers/net/wireless/ath/ath10k/snoc.h has no QTI copyright
->>>>> * 2 copyright issues
->>>>>
->>>>> I'll add these manually in my 'pending' branch
->>>>>
->>>>
->>>> And why is this a problem? You are not here to impose Qualcomm rules, bu
->>>> care about Linux kernel. You cannot add copyrights based on what exactly?
->>>
->>> I am a maintainer that is paid by Qualcomm to perform that role, and hence I
->>> have a duty to enforce the legal guidance from Qualcomm when it comes to
->>> contributions from other Qualcomm employees.
->>
->> No, it's not your duty to enforce rules from some other departments or
->> business units. Especially not without agreement of that person. You
->> cannot just add copyrights to other people's commits just because you
->> think that such copyrights should be there. Only the copyright owner -
->> which you did not identify here and email address of contributor does
->> not imply that (you don't even know what work contract a person has) -
->> can add such copyrights.
-> 
-> In this particular usecase Jeff has enough knowledge about me and my
-> working place. I will have to resend the series anyway, but otherwise it
-> was perfectly fine for him to correct the copyright.
+=E2=80=A6
+> Fix this by explicitly freeing the skb in these error paths.
+=E2=80=A6
 
-Fine, but please do not add copyrights yourself to any of my code. It's
-fine to point is a reviewing comment and expect clarifications on my
-side, I don't find changing people's code and adding there copyrights as
-right way.
+How do you think about to avoid a bit of duplicate source code here?
+https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/Do=
+cumentation/process/coding-style.rst?h=3Dv6.19-rc5#n526
 
-Best regards,
-Krzysztof
+Regards,
+Markus
 
