@@ -1,148 +1,156 @@
-Return-Path: <linux-wireless+bounces-30879-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-30882-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id A747BD298AA
-	for <lists+linux-wireless@lfdr.de>; Fri, 16 Jan 2026 02:13:31 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9535CD2999C
+	for <lists+linux-wireless@lfdr.de>; Fri, 16 Jan 2026 02:27:34 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 9A7B23126FD4
-	for <lists+linux-wireless@lfdr.de>; Fri, 16 Jan 2026 01:07:20 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 94C4530AFF3E
+	for <lists+linux-wireless@lfdr.de>; Fri, 16 Jan 2026 01:27:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 893BA32A3D9;
-	Fri, 16 Jan 2026 01:06:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CE5E5334C3B;
+	Fri, 16 Jan 2026 01:27:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="II8OOugC"
+	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="B06C8vwl";
+	dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b="CpELI1/i"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-dl1-f48.google.com (mail-dl1-f48.google.com [74.125.82.48])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1BBBC3148B6
-	for <linux-wireless@vger.kernel.org>; Fri, 16 Jan 2026 01:05:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.82.48
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 84B5E32E6BC
+	for <linux-wireless@vger.kernel.org>; Fri, 16 Jan 2026 01:26:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768525560; cv=none; b=fsQO3qtIzHCOrSZiknCOWS0rjtqbSE1cdyyuyvK8SewbzOrfdULD/e1rbpqxd4ZZP+JGzqLBp2v5yi3gI2nWlX33RqqLGiJJLTooXI6KwFd4NA80AzI04Gqpf1Ltlz1d7EELnU1D3jPjrLWQERAf0/RebJIJBWjfubLem8GYSBs=
+	t=1768526821; cv=none; b=jPGXokotkS2oEFGhVnKx3JcoMiz8R6O7ppqC5xtIz42XHkFnKIJeHvPbSCWPdUtpCxfNEe0ib4QC1+GH8Oe00Hnou1F8zxum1GVRTh4iP+CSidniTmXWwoa8c4Q3DON414xQxoWrGJxbkhMj7nK6Taq+m67WFSZPxHLIGzYxHy0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768525560; c=relaxed/simple;
-	bh=fEiRyuMj05TeICA1JoBhIIz3Ws39gKPSeCLw1wGtAFw=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=EdwKnQWxWUnIIBLbcgQFO88UvQ0iY1Up9DTkYpWO3M/5fmunJR4hpF4CpK5pE9T8Q/UkYtZ1afw7kKIsipnTDw1rZBOtnSJHqOSwgWKlaohPLe2o1WMsSH0GmGSBI3lr0ZkwhrG1OTsq0/5j9GY2PdIFLrGBVroBt9OX9NyAzus=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=zacbowling.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=II8OOugC; arc=none smtp.client-ip=74.125.82.48
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=zacbowling.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-dl1-f48.google.com with SMTP id a92af1059eb24-121a0bcd376so3934456c88.0
-        for <linux-wireless@vger.kernel.org>; Thu, 15 Jan 2026 17:05:56 -0800 (PST)
+	s=arc-20240116; t=1768526821; c=relaxed/simple;
+	bh=tkKapXJAv3P3u+XCyncrWRqWj5pzhnVqLBlDhYSg+xo=;
+	h=From:To:In-Reply-To:References:Subject:Message-Id:Date:
+	 MIME-Version:Content-Type; b=C9nR3thZ/37ms/iaZKhwq+mzJe6IMyXZP5v0q59Fvtp55GxocEaageYX99SuNLzjZqupUgiV4Ks+1BWbImSRBJbN4TTN7DpG5hvxYZYFhklxnqqRsUwz5aOumMnBMLeALHmjB5+62J58bSHn4prqpNu/uQS0hgrzMJQnya19wUI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=B06C8vwl; dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b=CpELI1/i; arc=none smtp.client-ip=205.220.168.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
+Received: from pps.filterd (m0279862.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 60FMcqKZ4100940
+	for <linux-wireless@vger.kernel.org>; Fri, 16 Jan 2026 01:26:47 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
+	content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
+	KHvpl0cOsSAPRSO1Igx8dlMLkSJkUG1m7ej0v0eL2VY=; b=B06C8vwl0TA2dTwL
+	79HMs24/72z8faPrGXX3/3rhxK9IxI/5GQYbJ6SJ/at3nRbXj/0hHenCvaeh2Kqh
+	uFUZBs29zeACJslZ7G5Z0MM1Ho6BPoMfUwP+DKQtaKCUkFJKBBnbJ3ITXcMBkTRJ
+	DhCuigNc7yEhG46B+H8m+YsjV+GmVHxA2tTkThbyioP0xoaQSFQklha3rLSqGs+a
+	rHWEL+x8RiYlE+9KaHBb+nYVYNUGafttnI/qEmEK5MVtZPR8szvt8m8hF95LmMV9
+	ldAbA5CY8owqem9Rmc6sUCWN9t1JGAZbxiPCM20ffjbHmP+BdU3DARh2/yAydKep
+	AoiWOA==
+Received: from mail-dy1-f197.google.com (mail-dy1-f197.google.com [74.125.82.197])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4bq9750atm-1
+	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
+	for <linux-wireless@vger.kernel.org>; Fri, 16 Jan 2026 01:26:47 +0000 (GMT)
+Received: by mail-dy1-f197.google.com with SMTP id 5a478bee46e88-2b6b9c1249fso209107eec.1
+        for <linux-wireless@vger.kernel.org>; Thu, 15 Jan 2026 17:26:47 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1768525554; x=1769130354; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:sender:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=mhC8L1hQ8dg4kLrkzny6o4mFLtnYcnvkf4rrn/bndiU=;
-        b=II8OOugCRrkOTX2aQdengwtEYX0Azu2IDT/ao1Awg5f8Uvun7XFXg9Fxo17oCGcFh6
-         M7phToDnzgy+qdUv6DAuoBnhetWcZXN95xZwa0lCChAt7647Rh+NsufIrNcC7z47Bugd
-         +rS9JDnaGubzoQc3i/qNP+ce2lVdWVmiN+mx8rU/deuPs7sd0BSPD4xr1Dt11B/stNRe
-         +RB+03FuNkJRO25qNovLlgpa/spoNpRKaMNoG67mqnS3gSHHAwbY0upzGCf2ogFz6Ymh
-         Vd1NDRYuz4HXJIqfoiGhNG3DIRJv8MoR6EIZrpx+7RxcKsZwZq3exDqJ/ZU8U8FAGaQd
-         r2bw==
+        d=oss.qualcomm.com; s=google; t=1768526807; x=1769131607; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:date:message-id:subject
+         :references:in-reply-to:to:from:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=KHvpl0cOsSAPRSO1Igx8dlMLkSJkUG1m7ej0v0eL2VY=;
+        b=CpELI1/ihWZsq/zc5brAeu830Mm8+jqqZJITtmopjsMgKOuYjMIyztyjzi0metl5bF
+         bFtWoFLqiozGzO+xkdGGZYcFteSiMrffXPZI2ueAQbZM6agLNzRqmf4lgyywrUx9agRr
+         /Mk4s2rCN87nUdQNLnxpRmxgC14EIKfcL/4QjEtiR+677P33zb1/SiSvR+OY1KnL3puD
+         UmxJkGqgjXj8Acm3O2PIIuKUts1YBu3IUtdZNWzB+Q6TAticnGkVp3UpWg1Hbo05PBdX
+         T+rKDySzl6r7TqgYNMiFI0MI2eMLUqQRd8Q6Wk8khbaDrGRtNtL+SiCExjC1rDara8Yb
+         /k7w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1768525554; x=1769130354;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:sender:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=mhC8L1hQ8dg4kLrkzny6o4mFLtnYcnvkf4rrn/bndiU=;
-        b=Wg+dtGJjVvVZjqgrS496qNcPS6dyDiMyajdB2E4ebB3COn5Afhj2WWct6Up953s5cQ
-         r2kEQ6zVHFN5rrn4snNwt2ReOzDWPL94LMLnJDCpcpMJZ1qCSqjNSBtpLMEdnF4S/DF4
-         ggJSa6P+aS9+J5JWmMWZWFzRCguoOAGEexHh/qBLKhq3W2jU0CplYb+X8RCnl2c9JlxN
-         pE22ZFD26dk1G2Th1DgX4dMGo2ECXjSwaVAdMnCuIVji0wPoyGceeUgpElCvAK83bNct
-         ud0rWXmoZ44/RwoRTgSHs1nLCjgbYZHpLHKFaAJiImGAOAUgAcn0hUK9Wy1WC1zUeGC3
-         R3dA==
-X-Forwarded-Encrypted: i=1; AJvYcCWFkclhXWP2S5BQSLX1cV1+hiEZtjRqoyV7XEO8QITL5j3MrDtmDBCqiTPx1Ifz+y4GqYinemvCM59yZOWC3Q==@vger.kernel.org
-X-Gm-Message-State: AOJu0YyEDUrMgYFymrI6jXOV8tD5/q4UFT52dMN2PC3DfKXnXGzT+S2N
-	ov7VGdQP5FkaM9x8En16M9OHRTsWzOW0ixuKPpeXeM3aGHRziZBYDv02
-X-Gm-Gg: AY/fxX7RAJPX8bs9ijO9ea9aPGkoAXOpwABw+NLg8PePXPZ+SCpUQfFmlC4xNoMsvj0
-	jWF9oUVSEQJ4MdsSYjq0BtVmsybMcGowB1eve7jFjVYoWePHF9riJgrIj/QF+sKOHaz3ShVKR0V
-	bWrS05cYwIX3a6+LmqiGMPmEsDnROucte0Sr8ZaqS7wd4xVgvV/wxm1oZChLR/LQajsSgSoS1xG
-	BPu9a6luGl+Yr2AoNe+GunoVFkf0sGtYQcpsFQi2Q+LFaRaQ4NW9aeOJm6MAapFRWF4VNwyl77b
-	nK1mO9R0m6x6b1buKQbBkyIOuMv0naglSOzlf3oLkNgAa6y5rwW6e05uJeVuPR4ptKsz/mwryA/
-	ZCnoXYz5xniXNRuYDLv5iumyxhj+S0D8iQt1oOgih+0R3cPpghV1WAsS9vJiOkSAVYeoQKxRG2R
-	DFJFambEe8U+/rsefdL6p1EmifQKorBuh72rv6FA28xu4c9xQgGk5FbqbiH5/Wwg==
-X-Received: by 2002:a05:7022:48e:b0:123:3461:99be with SMTP id a92af1059eb24-1244a6fe904mr2196015c88.21.1768525554364;
-        Thu, 15 Jan 2026 17:05:54 -0800 (PST)
-Received: from zcache.home.zacbowling.com ([2001:5a8:60d:bc9:f1d2:502c:a6ff:5556])
-        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-2b6b367cbc9sm1019884eec.32.2026.01.15.17.05.53
+        d=1e100.net; s=20230601; t=1768526807; x=1769131607;
+        h=content-transfer-encoding:mime-version:date:message-id:subject
+         :references:in-reply-to:to:from:x-gm-gg:x-gm-message-state:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=KHvpl0cOsSAPRSO1Igx8dlMLkSJkUG1m7ej0v0eL2VY=;
+        b=w8PxmnSR95bLkckOEe86h8NuK/gpOlbpUABm+CJbRWq38SUrltaujcojW13gIK1rhu
+         0E4CIf7yyZgXHNDYQKP6WFYmpy+l1DBWK+YVudMK7VFFsYmTqXV/OmwMOP83lzd0EYUt
+         XZJYdjCNtzcXa75fKNhHJBFbB1HgSHc+ZnU7Wrh3h6D5cre0sNszzS8ecJP/qhQLs6HB
+         2ObBCLzi44EpxI0vnbYYFeuCtkJAemxXA9HKpi2jJY/5tolXH6S2iRg1AEJWbxyYAww6
+         HZbA+LTSWIk4oZbkZEoVAYjCWyJ/PdRrmu3c6XzmhMjSCwWn9+2zKgwVRaw2FIZFVeav
+         2qkA==
+X-Forwarded-Encrypted: i=1; AJvYcCVkm8AUDRIqdlX6D0rncEghGv7lq4upeePY9cFBw2ZRPt0X4o/KYY9HPvHPcCB5yzQh+L10xXF8MCg+rCAKng==@vger.kernel.org
+X-Gm-Message-State: AOJu0Yw3Pz5Do4grIV2E4xNxjwilptOaaNAQudZjmymB0YNRdm2s96PM
+	QDITS1uN6k79Wmn6BywnxXe37eDnH9afQLZVzx2UMC6UADU8i/LrHrl4BAqm0dErI1AGrrlNw2j
+	S6Ai3lhPD1ntNseNxP1S9/X56EzV00FXfQv2v2c/a8AXfNz18A7gn2Et6dY8rXOeZlmPDmQ==
+X-Gm-Gg: AY/fxX7tltlMusLbo/EeDy3SEfR6QM8ahHmylqHDORWfTta5RapDvCvQq2QtSM8HBeR
+	pkUaI9SVGy/MvsScIu0kqEE/aoCLK+NSQ+0Uc9v8KYsN6nLugjc8OxfPsBfqB7bmxn1Wqj+HEbn
+	ONTSsBKIW82Ae/p/dnwbc9v3wYKHZNgQF/C6uoM8P50nmYJaTqm3vmgpIBsFZL2/gR6j08iUjrh
+	k0ImM4MqV6NagcxhG6nnq5l1Dyab9PbHxjIThdWsuFOyQvKdda18Agz17rfwWKJ/o4IvkyOVV0z
+	jEpC1QiuyMJ9CcGbiHzBDlTIUXDzUkGaLyYCkmd2181MhLg3QpxYyZ0XftrEcgQxpIXM6EM8M2T
+	queactCw/sSOy0Lo14bOgS6wfIfxZVh7p9DKYx/378bOhRp6F4+Ev3p/Aw7EEKAid
+X-Received: by 2002:a05:7300:6d1f:b0:2ae:5cb2:cc11 with SMTP id 5a478bee46e88-2b6b46d33b4mr1526117eec.6.1768526806339;
+        Thu, 15 Jan 2026 17:26:46 -0800 (PST)
+X-Received: by 2002:a05:7300:6d1f:b0:2ae:5cb2:cc11 with SMTP id 5a478bee46e88-2b6b46d33b4mr1526086eec.6.1768526805328;
+        Thu, 15 Jan 2026 17:26:45 -0800 (PST)
+Received: from hu-jjohnson-lv.qualcomm.com (Global_NAT1.qualcomm.com. [129.46.96.20])
+        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-2b6b3502c91sm884104eec.9.2026.01.15.17.26.44
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 15 Jan 2026 17:05:53 -0800 (PST)
-Sender: Zac Bowling <zbowling@gmail.com>
-From: Zac <zac@zacbowling.com>
-To: sean.wang@kernel.org
-Cc: deren.wu@mediatek.com,
-	kvalo@kernel.org,
-	linux-kernel@vger.kernel.org,
-	linux-mediatek@lists.infradead.org,
-	linux-wireless@vger.kernel.org,
-	lorenzo@kernel.org,
-	nbd@nbd.name,
-	linux@frame.work,
-	ryder.lee@mediatek.com,
-	sean.wang@mediatek.com,
-	Zac <zac@zacbowling.com>,
-	Zac Bowling <zbowling@gmail.com>
-Subject: [PATCH v4 21/21] wifi: mt76: mt7925: fix BA session teardown during beacon loss
-Date: Thu, 15 Jan 2026 17:05:19 -0800
-Message-ID: <20260116010519.37001-22-zac@zacbowling.com>
-X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260116010519.37001-1-zac@zacbowling.com>
-References: <CAGp9LzpuyXRDa=TxqY+Xd5ZhDVvNayWbpMGDD1T0g7apkn7P0A@mail.gmail.com>
- <20260116010519.37001-1-zac@zacbowling.com>
+        Thu, 15 Jan 2026 17:26:44 -0800 (PST)
+From: Jeff Johnson <jeff.johnson@oss.qualcomm.com>
+To: Johannes Berg <johannes@sipsolutions.net>, Rob Herring <robh@kernel.org>,
+        Krzysztof Kozlowski <krzk+dt@kernel.org>,
+        Conor Dooley <conor+dt@kernel.org>, Jeff Johnson <jjohnson@kernel.org>,
+        linux-wireless@vger.kernel.org, devicetree@vger.kernel.org,
+        ath11k@lists.infradead.org, linux-kernel@vger.kernel.org,
+        Krzysztof Kozlowski <krzysztof.kozlowski@oss.qualcomm.com>
+In-Reply-To: <20251230114835.52504-2-krzysztof.kozlowski@oss.qualcomm.com>
+References: <20251230114835.52504-2-krzysztof.kozlowski@oss.qualcomm.com>
+Subject: Re: [PATCH] dt-bindings: net: wireless: ath11k: Combine two
+ if:then: clauses
+Message-Id: <176852680474.1143034.17152758892782135246.b4-ty@oss.qualcomm.com>
+Date: Thu, 15 Jan 2026 17:26:44 -0800
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-Mailer: b4 0.14.3
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwMTE2MDAxMCBTYWx0ZWRfXz5p+ck/ul0xt
+ zDISVKsCCqQuP8qPnf/0N5yBJBt24pSFbBMxYzq7UHSwU9+NM1AD6kWUma1fgS6UJMQEJOfCG9U
+ Fy3IKWGrrZY5k+FnsErKsSavRKLlDoEjTkI34jb/Ja8u+R4QmQ+JEl+4Y6vCed0Y9SLxN65JR5J
+ 74jMkDKzdU6OU30rI6ef9FlxRRr33nyBSwQLe+a/bjjUpHagGLIZBOPkgbzY2TY8y+w+OtTDZ2s
+ +exnMOdJRXqYFUURUZcvghcZ3uxzNe8TtqFlnhoQgwf1vwulrTNKjKLBCcDlfpMZtwRxvHJWEs5
+ +wnvYpazAwiPdGl90/TBPnI/16zIy2VZzknpzv8aGeVY1I8Crw1zC1M8SAMZUccepG3dXz2xPM3
+ rw+kgejRASg4kDXrtJlM1QGbETOG4YYJYEMKFmkSTbHjwh0QYnrYSyEH5Nmep3kPCpKORO2B59s
+ z4P0eHL6bPcjpopNl2A==
+X-Authority-Analysis: v=2.4 cv=Sv6dKfO0 c=1 sm=1 tr=0 ts=696993d7 cx=c_pps
+ a=Uww141gWH0fZj/3QKPojxA==:117 a=ouPCqIW2jiPt+lZRy3xVPw==:17
+ a=IkcTkHD0fZMA:10 a=vUbySO9Y5rIA:10 a=s4-Qcg_JpJYA:10
+ a=VkNPw1HP01LnGYTKEx00:22 a=EUspDBNiAAAA:8 a=YCnGg3YljQHaMnv7sjoA:9
+ a=QEXdDO2ut3YA:10 a=PxkB5W3o20Ba91AHUih5:22
+X-Proofpoint-GUID: gMHyK1a3v6MH_9KdTtODGqZl6h9Nu49_
+X-Proofpoint-ORIG-GUID: gMHyK1a3v6MH_9KdTtODGqZl6h9Nu49_
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.9,FMLib:17.12.100.49
+ definitions=2026-01-16_01,2026-01-15_02,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ malwarescore=0 clxscore=1015 impostorscore=0 bulkscore=0 adultscore=0
+ phishscore=0 spamscore=0 suspectscore=0 lowpriorityscore=0 priorityscore=1501
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.22.0-2512120000 definitions=main-2601160010
 
-The ieee80211_stop_tx_ba_cb_irqsafe() callback was conditionally called
-only when the MCU command succeeded. However, during beacon connection
-loss, the MCU command may fail because the AP is no longer reachable.
 
-If the callback is not called, mac80211's BA session state machine gets
-stuck in an intermediate state. When mac80211 later tries to tear down
-all BA sessions during disconnection, it hits a WARN in
-__ieee80211_stop_tx_ba_session() due to the inconsistent state.
+On Tue, 30 Dec 2025 12:48:36 +0100, Krzysztof Kozlowski wrote:
+> Simplify the binding by combining two if:then: clauses which have
+> exactly the same conditional part.
+> 
+> 
 
-Fix by making the callback unconditional, matching the behavior of
-mt7921 and mt7996 drivers. The MCU command failure is acceptable during
-disconnection - what matters is that mac80211 is notified to complete
-the session teardown.
+Applied, thanks!
 
-Reported-by: Sean Wang <sean.wang@mediatek.com>
-Signed-off-by: Zac Bowling <zbowling@gmail.com>
----
- drivers/net/wireless/mediatek/mt76/mt7925/main.c | 10 +++++++---
- 1 file changed, 7 insertions(+), 3 deletions(-)
+[1/1] dt-bindings: net: wireless: ath11k: Combine two if:then: clauses
+      commit: 2125381d60c572684cc4ca61a2b1cf44c7eab059
 
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7925/main.c b/drivers/net/wireless/mediatek/mt76/mt7925/main.c
-index 81373e479a..cc7ef2c170 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7925/main.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7925/main.c
-@@ -1323,9 +1323,13 @@ mt7925_ampdu_action(struct ieee80211_hw *hw, struct ieee80211_vif *vif,
- 	case IEEE80211_AMPDU_TX_STOP_CONT:
- 		mtxq->aggr = false;
- 		clear_bit(tid, &msta->deflink.wcid.ampdu_state);
--		ret = mt7925_mcu_uni_tx_ba(dev, params, false);
--		if (!ret)
--			ieee80211_stop_tx_ba_cb_irqsafe(vif, sta->addr, tid);
-+		/* MCU command may fail during beacon loss, but callback must
-+		 * always be called to complete the BA session teardown in
-+		 * mac80211. Otherwise the state machine gets stuck and triggers
-+		 * WARN in __ieee80211_stop_tx_ba_session().
-+		 */
-+		mt7925_mcu_uni_tx_ba(dev, params, false);
-+		ieee80211_stop_tx_ba_cb_irqsafe(vif, sta->addr, tid);
- 		break;
- 	}
- 	mt792x_mutex_release(dev);
+Best regards,
 -- 
-2.52.0
+Jeff Johnson <jeff.johnson@oss.qualcomm.com>
 
 
