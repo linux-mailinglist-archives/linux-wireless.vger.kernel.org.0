@@ -1,76 +1,76 @@
-Return-Path: <linux-wireless+bounces-30876-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-30877-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4F625D29831
-	for <lists+linux-wireless@lfdr.de>; Fri, 16 Jan 2026 02:09:22 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id D751CD29898
+	for <lists+linux-wireless@lfdr.de>; Fri, 16 Jan 2026 02:13:07 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 6D2143029130
-	for <lists+linux-wireless@lfdr.de>; Fri, 16 Jan 2026 01:06:52 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id BBAB23093053
+	for <lists+linux-wireless@lfdr.de>; Fri, 16 Jan 2026 01:07:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F3D06327BEE;
-	Fri, 16 Jan 2026 01:05:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DA1F03176E1;
+	Fri, 16 Jan 2026 01:05:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="apD8G5Go"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="NnBZHSan"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-dy1-f173.google.com (mail-dy1-f173.google.com [74.125.82.173])
+Received: from mail-dy1-f176.google.com (mail-dy1-f176.google.com [74.125.82.176])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1A512318ED3
-	for <linux-wireless@vger.kernel.org>; Fri, 16 Jan 2026 01:05:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.82.173
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B308B3254BA
+	for <linux-wireless@vger.kernel.org>; Fri, 16 Jan 2026 01:05:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.82.176
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768525554; cv=none; b=NDT1gp53Bp8atZwX3vc/eLSmQtGdzhuINfbku+JA9TUj3CYAndLHjcowrkYWSSr23SIfvqJt58m4gk3AlflULIFIJ4Krec1/l6IRuRiE35z15yPawiNE+lX4so2A/y1BOQMsn2b6UNgx49uWAMm+KGQHoC7R7JWJX2zryrLb5Po=
+	t=1768525556; cv=none; b=rrcAc9z4FGqmls9VIbBkqWD/DWoXpCCqFzKHYWsAOdfTQTC3D/2NOLnBB00xVbkG1Ym47k9fkgwnDzQfKKXIVmaNgdNi0fnECoUEkLUO/8a7IcATKVxpM73BW9jIdXscVa+ipz73Lc7pvD5h/3rXuc5+37WSZXON7o2eeEvNrO0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768525554; c=relaxed/simple;
-	bh=HaKBfzs+vbqcZU4vZwpXtkvIH+Urmp8bT+Ano+LNPMs=;
+	s=arc-20240116; t=1768525556; c=relaxed/simple;
+	bh=xQRro3eUc7+kAN+ySF7Y8lq417EJb125DwuP6Y/XROE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=S60wyXilgCaacASUVeJGIWVtNK4UNk2tbe4CxBfVJJ+y4Nhs9GXsvJS9cAw/eANEdfFhC1/cX2iUNaQEa9nPm2hWMxioVK7Y7DH4kl+KfQQrEo/zzGAnpW4k6jUk4QZjD7DPn+YvdA0HT8nXruhhuxxoep+9nD+GIohSOW7MBI8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=zacbowling.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=apD8G5Go; arc=none smtp.client-ip=74.125.82.173
+	 MIME-Version; b=uc0X90qaqsjuOhSpMTNy6KY3JbAZtB9aRieBK2CoKOeek5DJzWDVHfDE4bYO9cB3CKYSZ1X1iZXCXJxIfTDuEKAqoSyNT2oCpT2oUzGVnqrlcxna66Mf+j3p54+dRxC7rxg0oPxiQE6wzs7SLs+KN48ZambyO9NjMOT0MWo2MTs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=zacbowling.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=NnBZHSan; arc=none smtp.client-ip=74.125.82.176
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=zacbowling.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-dy1-f173.google.com with SMTP id 5a478bee46e88-2b04fcfc0daso1838851eec.0
-        for <linux-wireless@vger.kernel.org>; Thu, 15 Jan 2026 17:05:51 -0800 (PST)
+Received: by mail-dy1-f176.google.com with SMTP id 5a478bee46e88-2b04a410f42so1852885eec.0
+        for <linux-wireless@vger.kernel.org>; Thu, 15 Jan 2026 17:05:52 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1768525550; x=1769130350; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1768525551; x=1769130351; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:sender:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=uzEynkgBJi1NWbI0Fd8DGgsgD9GPNNMBHOPHCo9YUDo=;
-        b=apD8G5GowbiIhoVY8FDpNQoUbI0ZPVfE2UbF1MYEG3l17kC78fXDjjLv1VqugTRb3Z
-         hJYjEGoCdtFtxYPF85aUQ1dQ5nmH6Tx8hSVWMatl7TtjsS32JGTw6ZAPtveKsrfvV5Wp
-         TX76ft2MsuaFrsS5fL29aiyQZXSNlgSWW2/+xnGra3jHsD6xJMS1Z0zHhVWSDvE98tnJ
-         F31OsMRbIAFEvu4p3akqxWyP+/1Wabqgf+giCn2G2JewW40q6FVH5AmDTjQhtqZgzmJx
-         tE0eQl06zfc/bagqjTlGcyVTRgzj3aRMZkSIi3S7kYsEBjxm++9AXqRrveXuO9HZevez
-         XCPg==
+        bh=VPmr/YvMhh6PyVTDX5uGjbBQK9qU8oKB4kDMk8rc0co=;
+        b=NnBZHSanZ+A4AEA98UD7U2186AoVx78VFx7jl/fs7poER/HTLIhwX/AloQzUYXs0/H
+         Ra90f4e3xN0R+6VAXEYlTGBdVSzpiOsx8yxWDlXthSjM8Mz96c1RQqlVxX5QvvhYG+57
+         95sSSuKKRqTYWGc2xbU5oISHShmQ9ZL1wH1fiW5KQ1dKtC/xQGwLPt1o0HNLjAxXuxsV
+         vebOgAptrds6aPB7HZwClH2UOMKW3LRyazBkGa4KZgUdf8txLn/N31seeQZEkMFBO3JL
+         AzOwh3Ej9iEDYQCzXSmhcMYRkk/UEDVJ5Atk5df4mvaeRBfmCRpAeszdqN4RMFB/sUh3
+         vgAw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1768525550; x=1769130350;
+        d=1e100.net; s=20230601; t=1768525551; x=1769130351;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:sender:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=uzEynkgBJi1NWbI0Fd8DGgsgD9GPNNMBHOPHCo9YUDo=;
-        b=oTackqrfwWz8YvCtD5BBf3Syp43tNvnIBlc0ko87IN95HpxIyEmVtylb1ozzM2Xyxb
-         i/3f2LTdmygCupQnTUHG05OWp715HH57AeNrx57nJtK5MU95qQKdD0ihemBOhV76cx86
-         3m4LE+erDd8TRTrEW+SUwKFGHAxUVlvX1iOBqcTou6/IGu397Ohvd3Rp2xZb7Qnqv6N/
-         1kxJ9RCS7feRRcRftzAen6PE8s3DcypUw875GCjGjhoHxe9HqJKFQoifwS7ZQrvaQfd2
-         QPMS2+gJTSfeBv1/t3WYqQ66YGxzcINOQtH6w4Vt1t93B/i17i/kCPDDYeRridLTNYWL
-         dnbw==
-X-Forwarded-Encrypted: i=1; AJvYcCVcxJVKie8vp7njQpnX314MTwYadS9wb+LB60HZvui63luQIQoOWUP643TtCFc9C7qqMDMeubFIH/BqDjJP1g==@vger.kernel.org
-X-Gm-Message-State: AOJu0YwLIevgJnSDmkmOcPW8gwuW3TECgU1a3LfhRcZ8bZ3DNn4jFbRE
-	5sBroZmeJXq1qk8jnil9JkYGoCwbwZyB4yG7bi+rn+csBcXO9iM3yuZS
-X-Gm-Gg: AY/fxX5m5+kLBAirdztvtddWGumFKmDJUVbiU38/WSVfTIz+g+heqvE6MMCs6CjQwbh
-	EFQW03axWAHIRmUBLVvzn62u8YQoyWrKhZo6KZggdG3OWrpTjd1/fqbzMIbLeqFjaFzIh0/Tx/0
-	lbQxvW+1oifLK31LorD1EpAJH7SRQOqR0xw2yNJyALXaRliLoNoD9EIlJsqZMj71b+7ZQKfAZM1
-	6Q84npp1PK/jp2Z1VsA6PfxjYobUCBoFdy+0u2fnnGfowFzuYVwOxxEss4nWhAK+jCguGoHp5+s
-	QCSptS0AiTShfuzkWVclFAHnE3djQC2naXguH8kzn72gPDSmbOqW+uS1va7mbp3x22MYiW+iuTV
-	jT6PGJTUMM46au7IRKj0rmYArf6McGjTMy1WLGpEBdagFtD29wtOyUGLqshNtnmNeZTSAaAO5br
-	Qp6n2N6yD4CV936iEbEn78BCBxoXk5u1cfiaJORbGnTc3HqiUs+49pg/Z/ghvF6w==
-X-Received: by 2002:a05:7301:678f:b0:2b0:4fe2:6a2e with SMTP id 5a478bee46e88-2b6b3f05fd8mr1663499eec.9.1768525549846;
-        Thu, 15 Jan 2026 17:05:49 -0800 (PST)
+        bh=VPmr/YvMhh6PyVTDX5uGjbBQK9qU8oKB4kDMk8rc0co=;
+        b=c19kMjf/2VD1RL79yN5QF3qg12tZ0wpmNp/AlcHTQl3T5V0AZHXbXW2hBNLw0yWV1m
+         tDorxAU1Ze0LzL+RD1zG94C5t45qORcgEy7PyrEimrnyeuzzRctQp3C/LAVP4M3n6iGr
+         FhIt5F4bwBbMaxe6qXbOvceT/P9Vx4m5zsMg83fof487cS2lrq5afVq9kYEwN3aBi1oV
+         VDz0MGC1r8fqID8IawqasQy9vmS+DMjBTN51ja4TAFZF1Wav1sb1Fnup8yQtiu3sBrh2
+         BgKIJ1U25k1N9JsrAtgIC0dnifE7SgqA8M2T3p3GeLIdaev2rHLlKkmEvor+jzw+29dF
+         EOsA==
+X-Forwarded-Encrypted: i=1; AJvYcCX4kGGEKD0A2aUrtGMI6qksdiN7DYmm1ltfbQ07P7uCSrcPY8+gn4IDBEILp6pcmAyyD6yMAEEx9wDX8HRWtA==@vger.kernel.org
+X-Gm-Message-State: AOJu0YxKoQ7j9FUdZZ5iRPeUIH+8RBgYAsXVAl8nBHe713wrY1a8QIBA
+	X8eJi8+49ePuXi4v5688EL3v7z79dKyl2OmZapBTW1y2Hd5TZa0WeU03
+X-Gm-Gg: AY/fxX4BrvSTLZ7Yf/UD9VBkMc/f+FVHvrQkzn8fOhqE1ecnclMMWr1syjfyGsciGxE
+	FCylT/ABLtsMOjBNBQNYj4jbs6DWNDxI8n4108e7XbiAnWJ6gdWPV2EqxjpMnkX4UwTOjJNe2nt
+	VsP9jvWhy8oN/twnuERf7F3oFK4sqCZutzEK/PdlNS84LKLi6zxpobr7Lf+Fz8ZDaG7/B7gNzAK
+	E9IpoFxn3ynKukx6RgV+7HlM0a5oOThTc95NFoiyL/FjrDz+duae3oxQtCWnyWB5+sK3KbeHd8S
+	XSSJc4SFtkS31Ld4+puOecpZl/aSZ9PAwmY2688nGQ324TQaOFH9JPnaBzlovTAGNLSUSv9BMAw
+	WvqRD9vVyiWyIZVaj3Sqp5+HAFf7xWRAjIbqAxstsiTxsdpWpPxriXb1ccfj1HBQShUTHU5sQk2
+	V8fAq/URJ9Iams97qgUJZSA3Z7m/ki83eaXYEKVB94e/a0GaqogHpWehsGukBM/A==
+X-Received: by 2002:a05:7301:7c0b:b0:2ae:56d7:b02 with SMTP id 5a478bee46e88-2b6b46c6449mr1393747eec.9.1768525551316;
+        Thu, 15 Jan 2026 17:05:51 -0800 (PST)
 Received: from zcache.home.zacbowling.com ([2001:5a8:60d:bc9:f1d2:502c:a6ff:5556])
-        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-2b6b367cbc9sm1019884eec.32.2026.01.15.17.05.48
+        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-2b6b367cbc9sm1019884eec.32.2026.01.15.17.05.50
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 15 Jan 2026 17:05:49 -0800 (PST)
+        Thu, 15 Jan 2026 17:05:50 -0800 (PST)
 Sender: Zac Bowling <zbowling@gmail.com>
 From: Zac <zac@zacbowling.com>
 To: sean.wang@kernel.org
@@ -85,9 +85,9 @@ Cc: deren.wu@mediatek.com,
 	ryder.lee@mediatek.com,
 	sean.wang@mediatek.com,
 	Zac <zac@zacbowling.com>
-Subject: [PATCH v4 18/21] wifi: mt76: mt7921: fix missing mutex protection in multiple paths
-Date: Thu, 15 Jan 2026 17:05:16 -0800
-Message-ID: <20260116010519.37001-19-zac@zacbowling.com>
+Subject: [PATCH v4 19/21] wifi: mt76: mt7921: fix mutex deadlocks in multiple paths
+Date: Thu, 15 Jan 2026 17:05:17 -0800
+Message-ID: <20260116010519.37001-20-zac@zacbowling.com>
 X-Mailer: git-send-email 2.52.0
 In-Reply-To: <20260116010519.37001-1-zac@zacbowling.com>
 References: <CAGp9LzpuyXRDa=TxqY+Xd5ZhDVvNayWbpMGDD1T0g7apkn7P0A@mail.gmail.com>
@@ -100,82 +100,92 @@ List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-Add mt792x_mutex_acquire/release around ieee80211_iterate_*() calls in
-MT7921 driver to prevent race conditions:
+Fix mutex handling to prevent deadlocks:
 
-- mt7921_roc_abort_sync(): protect ROC abort iteration
-- mt7921_set_runtime_pm(): protect runtime PM iteration
-- mt7921_regd_set_6ghz_power_type(): protect 6GHz power type iteration
-- mt7921_mac_reset_work(): protect vif reconnect iteration after reset
+- mt7921_roc_abort_sync(): Remove internal mutex acquire/release since
+  this function is called from contexts that already hold the mutex
+  (mt7921_mac_sta_remove via mt76_sta_remove). Add mutex at caller sites
+  that don't hold it (pci.c and sdio.c suspend paths).
 
-These paths were missing the mutex protection that is required when
-calling ieee80211_iterate_* functions with ITER_RESUME_ALL flag.
+- mt7921_set_runtime_pm(): Remove internal mutex acquire/release since
+  the only caller (debugfs) already holds the mutex.
+
+The previous patches incorrectly added mutex acquire inside functions
+that can be called from contexts where the mutex is already held,
+causing deadlocks.
 
 Signed-off-by: Zac Bowling <zac@zacbowling.com>
 ---
- drivers/net/wireless/mediatek/mt76/mt7921/mac.c  | 2 ++
- drivers/net/wireless/mediatek/mt76/mt7921/main.c | 9 ++++++++-
- 2 files changed, 10 insertions(+), 1 deletion(-)
+ drivers/net/wireless/mediatek/mt76/mt7921/main.c | 13 +++++++------
+ drivers/net/wireless/mediatek/mt76/mt7921/pci.c  |  2 ++
+ drivers/net/wireless/mediatek/mt76/mt7921/sdio.c |  2 ++
+ 3 files changed, 11 insertions(+), 6 deletions(-)
 
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7921/mac.c b/drivers/net/wireless/mediatek/mt76/mt7921/mac.c
-index 03b4960db7..f5c882e45b 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7921/mac.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7921/mac.c
-@@ -693,9 +693,11 @@ void mt7921_mac_reset_work(struct work_struct *work)
- 	clear_bit(MT76_RESET, &dev->mphy.state);
- 	pm->suspended = false;
- 	ieee80211_wake_queues(hw);
-+	mt792x_mutex_acquire(dev);
- 	ieee80211_iterate_active_interfaces(hw,
- 					    IEEE80211_IFACE_ITER_RESUME_ALL,
- 					    mt7921_vif_connect_iter, NULL);
-+	mt792x_mutex_release(dev);
- 	mt76_connac_power_save_sched(&dev->mt76.phy, pm);
- }
- 
 diff --git a/drivers/net/wireless/mediatek/mt76/mt7921/main.c b/drivers/net/wireless/mediatek/mt76/mt7921/main.c
-index 5fae9a6e27..8fc3770d1b 100644
+index 8fc3770d1b..9315dbdf88 100644
 --- a/drivers/net/wireless/mediatek/mt76/mt7921/main.c
 +++ b/drivers/net/wireless/mediatek/mt76/mt7921/main.c
-@@ -373,10 +373,13 @@ void mt7921_roc_abort_sync(struct mt792x_dev *dev)
+@@ -373,13 +373,15 @@ void mt7921_roc_abort_sync(struct mt792x_dev *dev)
  
  	timer_delete_sync(&phy->roc_timer);
  	cancel_work_sync(&phy->roc_work);
--	if (test_and_clear_bit(MT76_STATE_ROC, &phy->mt76->state))
-+	if (test_and_clear_bit(MT76_STATE_ROC, &phy->mt76->state)) {
-+		mt792x_mutex_acquire(dev);
+-	if (test_and_clear_bit(MT76_STATE_ROC, &phy->mt76->state)) {
+-		mt792x_mutex_acquire(dev);
++	/* Note: caller must hold mutex if ieee80211_iterate_interfaces is
++	 * needed for ROC cleanup. Some call sites (like mt7921_mac_sta_remove)
++	 * already hold the mutex via mt76_sta_remove(). For suspend paths,
++	 * the mutex should be acquired before calling this function.
++	 */
++	if (test_and_clear_bit(MT76_STATE_ROC, &phy->mt76->state))
  		ieee80211_iterate_interfaces(mt76_hw(dev),
  					     IEEE80211_IFACE_ITER_RESUME_ALL,
  					     mt7921_roc_iter, (void *)phy);
-+		mt792x_mutex_release(dev);
-+	}
+-		mt792x_mutex_release(dev);
+-	}
  }
  EXPORT_SYMBOL_GPL(mt7921_roc_abort_sync);
  
-@@ -619,9 +622,11 @@ void mt7921_set_runtime_pm(struct mt792x_dev *dev)
+@@ -622,11 +624,10 @@ void mt7921_set_runtime_pm(struct mt792x_dev *dev)
  	bool monitor = !!(hw->conf.flags & IEEE80211_CONF_MONITOR);
  
  	pm->enable = pm->enable_user && !monitor;
-+	mt792x_mutex_acquire(dev);
+-	mt792x_mutex_acquire(dev);
++	/* Note: caller (debugfs) must hold mutex before calling this function */
  	ieee80211_iterate_active_interfaces(hw,
  					    IEEE80211_IFACE_ITER_RESUME_ALL,
  					    mt7921_pm_interface_iter, dev);
-+	mt792x_mutex_release(dev);
+-	mt792x_mutex_release(dev);
  	pm->ds_enable = pm->ds_enable_user && !monitor;
  	mt76_connac_mcu_set_deep_sleep(&dev->mt76, pm->ds_enable);
  }
-@@ -765,9 +770,11 @@ mt7921_regd_set_6ghz_power_type(struct ieee80211_vif *vif, bool is_add)
- 	struct mt792x_dev *dev = phy->dev;
- 	u32 valid_vif_num = 0;
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7921/pci.c b/drivers/net/wireless/mediatek/mt76/mt7921/pci.c
+index ec96861832..9f76b334b9 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7921/pci.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7921/pci.c
+@@ -426,7 +426,9 @@ static int mt7921_pci_suspend(struct device *device)
+ 	cancel_delayed_work_sync(&pm->ps_work);
+ 	cancel_work_sync(&pm->wake_work);
  
 +	mt792x_mutex_acquire(dev);
- 	ieee80211_iterate_active_interfaces(mt76_hw(dev),
- 					    IEEE80211_IFACE_ITER_RESUME_ALL,
- 					    mt7921_calc_vif_num, &valid_vif_num);
+ 	mt7921_roc_abort_sync(dev);
 +	mt792x_mutex_release(dev);
  
- 	if (valid_vif_num > 1) {
- 		phy->power_type = MT_AP_DEFAULT;
+ 	err = mt792x_mcu_drv_pmctrl(dev);
+ 	if (err < 0)
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7921/sdio.c b/drivers/net/wireless/mediatek/mt76/mt7921/sdio.c
+index 3421e53dc9..92ea281181 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7921/sdio.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7921/sdio.c
+@@ -219,7 +219,9 @@ static int mt7921s_suspend(struct device *__dev)
+ 	cancel_delayed_work_sync(&pm->ps_work);
+ 	cancel_work_sync(&pm->wake_work);
+ 
++	mt792x_mutex_acquire(dev);
+ 	mt7921_roc_abort_sync(dev);
++	mt792x_mutex_release(dev);
+ 
+ 	err = mt792x_mcu_drv_pmctrl(dev);
+ 	if (err < 0)
 -- 
 2.52.0
 
