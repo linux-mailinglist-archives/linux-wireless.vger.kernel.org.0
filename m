@@ -1,107 +1,127 @@
-Return-Path: <linux-wireless+bounces-30902-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-30903-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2ED86D2DF6A
-	for <lists+linux-wireless@lfdr.de>; Fri, 16 Jan 2026 09:23:52 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 25084D2DF7E
+	for <lists+linux-wireless@lfdr.de>; Fri, 16 Jan 2026 09:24:07 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id B5F9D308BA30
-	for <lists+linux-wireless@lfdr.de>; Fri, 16 Jan 2026 08:21:22 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id B870B30245A2
+	for <lists+linux-wireless@lfdr.de>; Fri, 16 Jan 2026 08:24:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5628E6FC5;
-	Fri, 16 Jan 2026 08:21:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CB2AD3016E9;
+	Fri, 16 Jan 2026 08:24:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b="oDGws6i9"
+	dkim=pass (2048-bit key) header.d=realtek.com header.i=@realtek.com header.b="kxzCb6OY"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from sipsolutions.net (s3.sipsolutions.net [168.119.38.16])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F24EC2D8773
-	for <linux-wireless@vger.kernel.org>; Fri, 16 Jan 2026 08:21:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=168.119.38.16
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 960FC2F5461;
+	Fri, 16 Jan 2026 08:23:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=211.75.126.72
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768551682; cv=none; b=oZj+82BDDIImC+fyTdXWMNRHwyAY/ZUDGx/CkaqJeW15j9r7OkZax2gOftoO+qTexy2QoFXKzjYBcPHMn58HVjAWIdoeCHBVgHc8KpmF/mQXK2WI3yme25SO5Jl9mJix1zh7zDnfs+rL59qBOfsmxompGN5qYj1t/xK5jXXP+lA=
+	t=1768551841; cv=none; b=mThTtjp/Bts/kCNAfgbUKSsp3MUKxGxZFKAG3LQFFVM9Dasm8f+hkvu/CX5gQgyOdtK5VJRN+1xoAlA3serqfaQ8GQeVtTmCx5jAxGRcdPbFG3LzEKgeRXPZXzi0k4yz+9vfXlES2Igg2PTNLkwYk28QptJPSoJe656uwq1dX4A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768551682; c=relaxed/simple;
-	bh=91BCqD4x+eX1FFFTHm88FagT6FKjqEJimzH40M02xUE=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=Ojqx5DixYLvfSCQDKhQ+G35s2JWAKemTh/xIg+P5RflWPNOMFcMMaFFio1AVwUxuw3noksDlwcJkJJxgu8aX/GiJpIwPr7RD/AdbYoYOG2isss3ShgALKHFug7LcmngNUOBqYheqq+kJeSE+ULtQHx22O/2NPCi6fVoMzON2/lQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net; spf=pass smtp.mailfrom=sipsolutions.net; dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b=oDGws6i9; arc=none smtp.client-ip=168.119.38.16
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sipsolutions.net
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=sipsolutions.net; s=mail; h=Content-Transfer-Encoding:MIME-Version:
-	Message-ID:Date:Subject:Cc:To:From:Content-Type:Sender:Reply-To:Content-ID:
-	Content-Description:Resent-Date:Resent-From:Resent-To:Resent-Cc:
-	Resent-Message-ID:In-Reply-To:References;
-	bh=uDioT2nC3vOUGWewLofvG7H8Sn2GOrDR/T+uNuAgkUI=; t=1768551681; x=1769761281; 
-	b=oDGws6i9mRnjfBmR5iCQsbA+xioTWKw/kQIn/njYKA5dgWn48RrfxRpAQGYl5DK24GtcqJCQdN4
-	Pkr4ATViF7Qhm6+pbhS7g25jL8rUr5rMJYhcfKSSnp+jZDcjf4LhFJmrwAko53x8B4OJRJYN7kuv2
-	Yj3B6wvetF/wUta5HDQrxaTUMylLUZKvXTdWQvbpQlcjfEBHTfrzOAXS9vbmjGG8uJEFThQuoYq0q
-	/0kWIOhHiWzHVfE+F2Gbr29o8OyIazeH5m3O46j8E60AF5eS4g+cawHKHKxTNmRNneImiBw8e3qE5
-	I9eeO8bIXGFSg1kIGZfXOCTaejQExol4swZA==;
-Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
-	(Exim 4.98.2)
-	(envelope-from <johannes@sipsolutions.net>)
-	id 1vgf54-0000000DKxR-08Eu;
-	Fri, 16 Jan 2026 09:21:18 +0100
-From: Johannes Berg <johannes@sipsolutions.net>
-To: linux-wireless@vger.kernel.org
-Cc: Johannes Berg <johannes.berg@intel.com>
-Subject: [PATCH wireless-next] wifi: mac80211: mark iface work SKBs as consumed
-Date: Fri, 16 Jan 2026 09:21:15 +0100
-Message-ID: <20260116092115.1db534bdc12c.Ic0adae06684a6871144398d15cf7700c57620baa@changeid>
-X-Mailer: git-send-email 2.52.0
+	s=arc-20240116; t=1768551841; c=relaxed/simple;
+	bh=ca49IZgqV10Zwl/3iVGGXa0hdHdKchHm8reUZ2/3prk=;
+	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
+	 Content-Type:MIME-Version; b=bdn7FdWGER+5U3EabaTgxYdc5AJmcJa7CZ8o6776nVOTCBNkppYesqXhDa9WxDGie+jevo7FLGvQ4Ks8FDQqnNzydrJ+OpcCRfqflmQZJP1ys+MkG3eMSSzaoqudAc0In0v4M03q3/2REkqEopbO+1ei89Ql/j5JV5qv159awbE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com; spf=pass smtp.mailfrom=realtek.com; dkim=pass (2048-bit key) header.d=realtek.com header.i=@realtek.com header.b=kxzCb6OY; arc=none smtp.client-ip=211.75.126.72
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=realtek.com
+X-SpamFilter-By: ArmorX SpamTrap 5.80 with qID 60G8NvgM6691823, This message is accepted by code: ctloc85258
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=realtek.com; s=dkim;
+	t=1768551837; bh=IqIuquVZhXBDm1+IhN8RBzboXlwGMcahQmm4+cyTQIc=;
+	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
+	 Content-Type:Content-Transfer-Encoding:MIME-Version;
+	b=kxzCb6OYVf/bSGvvTxf7kLNQD9nXdZfyirPrWjy5DN/EdlpArgk4HyK9hhfASMBIW
+	 gFzLXeQ3b+gkABnwQMxGUeTakeA5hSWZgRmlXJ+Z7QSgY9cEj0a2A6H77DXxQF2Gp2
+	 I3s4d2xn6pSfRSzdSetM0KuORGYj+CMdmADTaOLvsUaoitILI8tM7X49SSPlYai1Pn
+	 pB63FWHdZ//jny/v/YKaKUeVwR7mVmN9oXOshJeB5KsAjBNBRyRKIh1Lj1ZixFT6Hd
+	 eO6B5hcSmeEmIoRGkR9Ud3S14ImANZcqO6wqyyRwsRPhUe7DyX9NVjfHap+edPnrgD
+	 LHuVg4pcxUCyw==
+Received: from mail.realtek.com (rtkexhmbs03.realtek.com.tw[10.21.1.53])
+	by rtits2.realtek.com.tw (8.15.2/3.21/5.94) with ESMTPS id 60G8NvgM6691823
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Fri, 16 Jan 2026 16:23:57 +0800
+Received: from RTKEXHMBS03.realtek.com.tw (10.21.1.53) by
+ RTKEXHMBS03.realtek.com.tw (10.21.1.53) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1748.10; Fri, 16 Jan 2026 16:23:57 +0800
+Received: from RTKEXHMBS03.realtek.com.tw ([fe80::8bac:ef80:dea8:91d5]) by
+ RTKEXHMBS03.realtek.com.tw ([fe80::8bac:ef80:dea8:91d5%9]) with mapi id
+ 15.02.1748.010; Fri, 16 Jan 2026 16:23:57 +0800
+From: Zong-Zhe Yang <kevin_yang@realtek.com>
+To: Zilin Guan <zilin@seu.edu.cn>, Ping-Ke Shih <pkshih@realtek.com>
+CC: "jianhao.xu@seu.edu.cn" <jianhao.xu@seu.edu.cn>,
+        "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
+Subject: RE: [PATCH] wifi: rtw89: debug: Fix memory leak in
+ __print_txpwr_map()
+Thread-Topic: [PATCH] wifi: rtw89: debug: Fix memory leak in
+ __print_txpwr_map()
+Thread-Index: AQHchr0WflTXzBa1CkaZ7RXjavv0q7VUcp3Q
+Date: Fri, 16 Jan 2026 08:23:57 +0000
+Message-ID: <2df4d692f5804c8ca87d3cd26b37081e@realtek.com>
+References: <20260116074836.1199951-1-zilin@seu.edu.cn>
+In-Reply-To: <20260116074836.1199951-1-zilin@seu.edu.cn>
+Accept-Language: zh-TW, en-US
+Content-Language: zh-TW
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
 
-From: Johannes Berg <johannes.berg@intel.com>
+Zilin Guan <zilin@seu.edu.cn> wrote:
+>=20
+> In __print_txpwr_map(), memory is allocated to bufp via vzalloc().
+> If max_valid_addr is 0, the function returns -EOPNOTSUPP immediately
+> without freeing bufp, leading to a memory leak.
+>=20
+> Fix this by freeing the temporary buffer bufp in the error path.
+>=20
+> Compile tested only. Issue found using a prototype static analysis tool
+> and code review.
+>=20
+> Fixes: 036042e15770 ("wifi: rtw89: debug: txpwr table supports Wi-Fi 7 ch=
+ips")
+> Signed-off-by: Zilin Guan <zilin@seu.edu.cn>
+> ---
+>  drivers/net/wireless/realtek/rtw89/debug.c | 4 +++-
+>  1 file changed, 3 insertions(+), 1 deletion(-)
+>=20
+> diff --git a/drivers/net/wireless/realtek/rtw89/debug.c
+> b/drivers/net/wireless/realtek/rtw89/debug.c
+> index 1264c2f82600..c7bd1d0212b6 100644
+> --- a/drivers/net/wireless/realtek/rtw89/debug.c
+> +++ b/drivers/net/wireless/realtek/rtw89/debug.c
+> @@ -834,8 +834,10 @@ static ssize_t __print_txpwr_map(struct rtw89_dev *r=
+twdev, char
+> *buf, size_t buf
+>         else
+>                 max_valid_addr =3D map->addr_to;
+>=20
+> -       if (max_valid_addr =3D=3D 0)
+> +       if (max_valid_addr =3D=3D 0) {
+> +               vfree(bufp);
+>                 return -EOPNOTSUPP;
+> +       }
 
-Using kfree_skb() here is misleading when looking at
-traces, since these frames have been handled. Use
-consume_skb() instead.
+Thank you for catching this.
+Since the decision for max_valid_addr doesn't depend on bufp,
+how about moving vzalloc down here ?
 
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
----
- net/mac80211/iface.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
-
-diff --git a/net/mac80211/iface.c b/net/mac80211/iface.c
-index 7b0aa24c1f97..3ce94b95decd 100644
---- a/net/mac80211/iface.c
-+++ b/net/mac80211/iface.c
-@@ -8,7 +8,7 @@
-  * Copyright 2008, Johannes Berg <johannes@sipsolutions.net>
-  * Copyright 2013-2014  Intel Mobile Communications GmbH
-  * Copyright (c) 2016        Intel Deutschland GmbH
-- * Copyright (C) 2018-2025 Intel Corporation
-+ * Copyright (C) 2018-2026 Intel Corporation
-  */
- #include <linux/slab.h>
- #include <linux/kernel.h>
-@@ -1789,7 +1789,7 @@ static void ieee80211_iface_work(struct wiphy *wiphy, struct wiphy_work *work)
- 		else
- 			ieee80211_iface_process_skb(local, sdata, skb);
- 
--		kfree_skb(skb);
-+		consume_skb(skb);
- 		kcov_remote_stop();
- 	}
- 
-@@ -1798,7 +1798,7 @@ static void ieee80211_iface_work(struct wiphy *wiphy, struct wiphy_work *work)
- 		kcov_remote_start_common(skb_get_kcov_handle(skb));
- 
- 		ieee80211_iface_process_status(sdata, skb);
--		kfree_skb(skb);
-+		consume_skb(skb);
- 
- 		kcov_remote_stop();
- 	}
--- 
-2.52.0
+>=20
+>         for (addr =3D map->addr_from; addr <=3D max_valid_addr; addr +=3D=
+ 4) {
+>                 ret =3D rtw89_mac_txpwr_read32(rtwdev, RTW89_PHY_0, addr,=
+ &val);
+> --
+> 2.34.1
+>=20
 
 
