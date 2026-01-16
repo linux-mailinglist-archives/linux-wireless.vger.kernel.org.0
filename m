@@ -1,93 +1,94 @@
-Return-Path: <linux-wireless+bounces-30905-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-30906-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id A5E0ED309C6
-	for <lists+linux-wireless@lfdr.de>; Fri, 16 Jan 2026 12:45:49 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id AEB90D30EAA
+	for <lists+linux-wireless@lfdr.de>; Fri, 16 Jan 2026 13:12:21 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 3B14E30734FC
-	for <lists+linux-wireless@lfdr.de>; Fri, 16 Jan 2026 11:41:41 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 90F583036AC9
+	for <lists+linux-wireless@lfdr.de>; Fri, 16 Jan 2026 12:11:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2CDF336655C;
-	Fri, 16 Jan 2026 11:41:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AF619376BCF;
+	Fri, 16 Jan 2026 12:11:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=realtek.com header.i=@realtek.com header.b="frIBqlZi"
+	dkim=pass (1024-bit key) header.d=seu.edu.cn header.i=@seu.edu.cn header.b="F6qxXBkF"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mail-m49198.qiye.163.com (mail-m49198.qiye.163.com [45.254.49.198])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 44528322B72;
-	Fri, 16 Jan 2026 11:41:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=211.75.126.72
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B079E3612EA;
+	Fri, 16 Jan 2026 12:11:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.254.49.198
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768563700; cv=none; b=h63GzEickAcQVL6xUaEVBXZlRznM9/anP1AmDPAH69N7oft2zWHFJE5BO/tsR/VjLu8KUkCOKo3+jpTW0f7r6j4PolFQv2QyECNldtPMgtp7BsR0tw3Khdc98pUTT6p3ClTGH8phaKAq1VgAztVf7NQYfBXykFeljwtJddMvryM=
+	t=1768565514; cv=none; b=PQ6h11un0rlD5IQ/E/14nTOuOY7feuFiF1ipAueGmGFgKOdyr3xh82X+yHLQRWgRDHYbjlvUwhUdCTIK2xgiCbHmLHT/rO4EUWc8G1qFcyizlu2XAxnrNCYLwe5msRsizRj71hI5jkZg3wPyfwce97YFAdW9W8LTElsK7jy07l4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768563700; c=relaxed/simple;
-	bh=3MLMUwqS1xUYXjIK4uS5nf0DKDLqE966MTs+MDAWcaI=;
-	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:MIME-Version; b=j33x9Uic+n47tiEXYIhb4uC1iVHR5wCaFOdoYy416T84TAH24H6GtpHMUePIWrk58S3qU7Sd41m65lzrAVEODe9GAv9c9U2HVoYTTohmq2cLG51a7c0zQiSboA2fnHwy/gCEWEZMBZmq+HVnttpSFEJMbrKcJWdMz9oebgpMfQQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com; spf=pass smtp.mailfrom=realtek.com; dkim=pass (2048-bit key) header.d=realtek.com header.i=@realtek.com header.b=frIBqlZi; arc=none smtp.client-ip=211.75.126.72
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=realtek.com
-X-SpamFilter-By: ArmorX SpamTrap 5.80 with qID 60GBfWd55980196, This message is accepted by code: ctloc85258
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=realtek.com; s=dkim;
-	t=1768563692; bh=3MLMUwqS1xUYXjIK4uS5nf0DKDLqE966MTs+MDAWcaI=;
-	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:Content-Transfer-Encoding:MIME-Version;
-	b=frIBqlZiBdEtfDW0o+Ofb6HpEVhnhbA20pOfLNFuVQPK5Eup/Jv9iImHOkxuhJWiV
-	 LFAg5I6a5HghkVxaXvH2QXuajakw0dNo09AzVQGOFezqr1rmiY8H1XlcP77xoRgvNu
-	 RiD/nRz/HyG0xUS7z8SuTxE6EXhmQsiBnjUOGQnqSfDJcMMlhyLyxsjs5cvzdDdkCF
-	 FdFve4sdkpqTrRR4u1A7ZtemOjWALZNCarEHEOGrjJDK39wj62dPU4Im95l98v6nas
-	 CaIDlaxRbvId3mVK6fC/gcy6MsF4II3QMhf9umGLm+3ngXnVurREDHDh5zauoYeY9N
-	 kRZQ1LvwACNgQ==
-Received: from mail.realtek.com (rtkexhmbs02.realtek.com.tw[172.21.6.41])
-	by rtits2.realtek.com.tw (8.15.2/3.21/5.94) with ESMTPS id 60GBfWd55980196
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Fri, 16 Jan 2026 19:41:32 +0800
-Received: from RTKEXHMBS03.realtek.com.tw (10.21.1.53) by
- RTKEXHMBS02.realtek.com.tw (172.21.6.41) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1748.10; Fri, 16 Jan 2026 19:41:31 +0800
-Received: from RTKEXHMBS03.realtek.com.tw ([fe80::8bac:ef80:dea8:91d5]) by
- RTKEXHMBS03.realtek.com.tw ([fe80::8bac:ef80:dea8:91d5%9]) with mapi id
- 15.02.1748.010; Fri, 16 Jan 2026 19:41:31 +0800
-From: Zong-Zhe Yang <kevin_yang@realtek.com>
-To: Markus Elfring <Markus.Elfring@web.de>, Zilin Guan <zilin@seu.edu.cn>,
-        "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
-        "Ping-Ke
- Shih" <pkshih@realtek.com>
-CC: LKML <linux-kernel@vger.kernel.org>,
-        "kernel-janitors@vger.kernel.org"
-	<kernel-janitors@vger.kernel.org>,
-        Jianhao Xu <jianhao.xu@seu.edu.cn>
-Subject: RE: [PATCH] wifi: rtw89: debug: Fix memory leak in
- __print_txpwr_map()
-Thread-Topic: [PATCH] wifi: rtw89: debug: Fix memory leak in
- __print_txpwr_map()
-Thread-Index: AQHchr0WflTXzBa1CkaZ7RXjavv0q7VUHE+AgACLEkA=
-Date: Fri, 16 Jan 2026 11:41:31 +0000
-Message-ID: <acc90353107248b98215847e56bb374b@realtek.com>
-References: <20260116074836.1199951-1-zilin@seu.edu.cn>
- <1d32418f-c315-4ce4-9b4c-6781bda72cfe@web.de>
-In-Reply-To: <1d32418f-c315-4ce4-9b4c-6781bda72cfe@web.de>
-Accept-Language: zh-TW, en-US
-Content-Language: zh-TW
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+	s=arc-20240116; t=1768565514; c=relaxed/simple;
+	bh=etTqRaHVDUZ14AB+4vLTJLPcIzWTlA6qH/Ib3+O86GU=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version; b=AY0BnuEi2BUUiUjKnvCwrUYxjv5FiiLMmSvCNO1l2KhhNDH5vdLZBWPhVqVlPW7dxTWjjvt4IkcqGR5OMszefeWMXFf7IHMiVgekBW1w6+2WhnJqhhQmktBO8IlJFs22DG0MP5Vx5p6tAKu/LbBpjslwbQuoMHbSsYFHUwny9/w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=seu.edu.cn; spf=pass smtp.mailfrom=seu.edu.cn; dkim=pass (1024-bit key) header.d=seu.edu.cn header.i=@seu.edu.cn header.b=F6qxXBkF; arc=none smtp.client-ip=45.254.49.198
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=seu.edu.cn
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=seu.edu.cn
+Received: from LAPTOP-N070L597.localdomain (unknown [223.112.146.162])
+	by smtp.qiye.163.com (Hmail) with ESMTP id 30ebc62ca;
+	Fri, 16 Jan 2026 20:11:46 +0800 (GMT+08:00)
+From: Zilin Guan <zilin@seu.edu.cn>
+To: kevin_yang@realtek.com
+Cc: jianhao.xu@seu.edu.cn,
+	linux-kernel@vger.kernel.org,
+	linux-wireless@vger.kernel.org,
+	pkshih@realtek.com,
+	zilin@seu.edu.cn
+Subject: RE: [PATCH] wifi: rtw89: debug: Fix memory leak in __print_txpwr_map()
+Date: Fri, 16 Jan 2026 12:11:45 +0000
+Message-Id: <20260116121145.1370320-1-zilin@seu.edu.cn>
+X-Mailer: git-send-email 2.34.1
+In-Reply-To: <2df4d692f5804c8ca87d3cd26b37081e@realtek.com>
+References: <2df4d692f5804c8ca87d3cd26b37081e@realtek.com>
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+X-HM-Tid: 0a9bc6b802dc03a1kunm2f79aef4114acd
+X-HM-MType: 10
+X-HM-Spam-Status: e1kfGhgUHx5ZQUpXWQgPGg8OCBgUHx5ZQUlOS1dZFg8aDwILHllBWSg2Ly
+	tZV1koWUFITzdXWS1ZQUlXWQ8JGhUIEh9ZQVkZQx5OVhlPHUtKGkMZTx4dHlYeHw5VEwETFhoSFy
+	QUDg9ZV1kYEgtZQVlJSUhVSkpJVUpPTVVKTUlZV1kWGg8SFR0UWUFZT0tIVUpLSUhOQ0NVSktLVU
+	tZBg++
+DKIM-Signature: a=rsa-sha256;
+	b=F6qxXBkFUFhcUsyO6S4HkWWTSP7boK2hoihMHoBuo/qOYNx7L9GKcwlyg92ITfD99rKjq7uAbKnJ1zbrLLJWYWlt5a4H7oi43cGcwmt1+aqdcX85j8TT9+ag/hzxeHiNJDJzndq6daroYJ7AlRerSaRRw/wqKGf/Tz5MpAHW2yI=; c=relaxed/relaxed; s=default; d=seu.edu.cn; v=1;
+	bh=TJ/sb3BxQG97jazvDMNcgO0XChyUuu9hlSh2MM8frZg=;
+	h=date:mime-version:subject:message-id:from;
 
-TWFya3VzIEVsZnJpbmcgPE1hcmt1cy5FbGZyaW5nQHdlYi5kZT4gd3JvdGU6DQo+IA0KPiDigKYN
-Cj4gPiBGaXggdGhpcyBieSBmcmVlaW5nIHRoZSB0ZW1wb3JhcnkgYnVmZmVyIGJ1ZnAgaW4gdGhl
-IGVycm9yIHBhdGguDQo+IOKApg0KPiANCj4gSG93IGRvIHlvdSB0aGluayBhYm91dCB0byB1c2Ug
-YW4gYXR0cmlidXRlIGxpa2Ug4oCcX19mcmVlKHZmcmVlKeKAnT8NCj4gaHR0cHM6Ly9lbGl4aXIu
-Ym9vdGxpbi5jb20vbGludXgvdjYuMTktcmM1L3NvdXJjZS9kcml2ZXJzL25ldC93aXJlbGVzcy9y
-ZWFsdGVrL3J0dzg5L2RlYnVnLmMjDQo+IEw4MTUtTDg1OA0KPiANCg0KVXNpbmcgX19mcmVlKFhY
-WCkgaXMgZmluZSB0byBtZS4NCkJ1dCwgSSBkb24ndCBzZWVtIHRvIHNlZSBERUZJTkVfRlJFRSh2
-ZnJlZSwgLi4uKSB5ZXQuDQpTbyBwZXJoYXBzLCBuZWVkIHRvIHVzZSBfX2ZyZWUoa3ZmcmVlKS4N
-Cg0K
+On Fri, Jan 16, 2026 at 08:23:57AM +0000, Zong-Zhe Yang wrote:
+> > @@ -834,8 +834,10 @@ static ssize_t __print_txpwr_map(struct rtw89_dev *rtwdev, char
+> > *buf, size_t buf
+> >         else
+> >                 max_valid_addr = map->addr_to;
+> > 
+> > -       if (max_valid_addr == 0)
+> > +       if (max_valid_addr == 0) {
+> > +               vfree(bufp);
+> >                 return -EOPNOTSUPP;
+> > +       }
+> 
+> Thank you for catching this.
+> Since the decision for max_valid_addr doesn't depend on bufp,
+> how about moving vzalloc down here ?
+> 
+> > 
+> >         for (addr = map->addr_from; addr <= max_valid_addr; addr += 4) {
+> >                 ret = rtw89_mac_txpwr_read32(rtwdev, RTW89_PHY_0, addr, &val);
+> > --
+> > 2.34.1
+> > 
+
+Thanks for your suggestion. I agree that moving vzalloc() after the check 
+is a cleaner solution. I will send a v2 patch to address this.
+
+Best Regards,
+Zilin Guan
 
