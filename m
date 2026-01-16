@@ -1,76 +1,76 @@
-Return-Path: <linux-wireless+bounces-30871-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-30870-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 223A1D29801
-	for <lists+linux-wireless@lfdr.de>; Fri, 16 Jan 2026 02:07:06 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id CC0A9D297FE
+	for <lists+linux-wireless@lfdr.de>; Fri, 16 Jan 2026 02:06:59 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 2A6AC3027E4E
-	for <lists+linux-wireless@lfdr.de>; Fri, 16 Jan 2026 01:06:32 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id D9B8C3027265
+	for <lists+linux-wireless@lfdr.de>; Fri, 16 Jan 2026 01:06:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CED613233EE;
-	Fri, 16 Jan 2026 01:05:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E0566320CA3;
+	Fri, 16 Jan 2026 01:05:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="GcEu1HNb"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="PPJXptpw"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-dy1-f194.google.com (mail-dy1-f194.google.com [74.125.82.194])
+Received: from mail-dy1-f174.google.com (mail-dy1-f174.google.com [74.125.82.174])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8A074315D33
-	for <linux-wireless@vger.kernel.org>; Fri, 16 Jan 2026 01:05:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.82.194
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B15B7314D22
+	for <linux-wireless@vger.kernel.org>; Fri, 16 Jan 2026 01:05:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.82.174
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768525550; cv=none; b=dt7ag2oISvLNtGpk04s9TQNekBQWv1XwfIO31uAYJkeSY3+2QQcnLCXJKx8sO/afF5pOklFEQ9I27XmmLb1cc2/Iyuh7U0pXoyo9ZNlQX92PUE7jS3/MiuLpflyjdBjZfPQfNhq4RMpHblQ8DyiZytYCBJyMUJKps8h1j83U2u8=
+	t=1768525549; cv=none; b=gETlbnK8yzG2KWJNG+qyrmbYw9bIafgUPdy8ozmheC8zC0HliMuhDnFkFIAKdoJYchq7zhRjFVnAEvSak8faLxVxX0fPPcHsQJq7bz5Zr523NPW/RzMV23eEPndxUvpdcz539lgJxFcHIGYftYZTqa8gK870zLRerZsiyi0hmJs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768525550; c=relaxed/simple;
-	bh=w6QN5tnbV21n88GBqrBPSA7O7w2Y8eDZmrW+Y9oHKq8=;
+	s=arc-20240116; t=1768525549; c=relaxed/simple;
+	bh=RL2egL+gt/RYZ+mDWmObhYGMsncwjLrPK8QRWukDVTM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Y6nNMbrBE4+tdMXnE8LnVUkIrcR+p0nJ6gYFq1lv7Wz2N/z7SDEe7N/DSSTmIvrnTwR7d19PtJZxx+vh0bv+X2RdgckMwYKl3dJyhUwBvd2xGT5spfCdi79yDRJwFapZ5rj4uluu1CurmOrzZhyPe8iJ56OeERF1KKU0P0O3aqU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=zacbowling.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=GcEu1HNb; arc=none smtp.client-ip=74.125.82.194
+	 MIME-Version; b=dw6w6mECBpcJTEUKHNp23hn4XLKANjgkdyRW4JbfMoiZG8YEil/zeKGss7K/3rEUIV6RwTmXJWSKhi6E6YzNJBuSHOI9EtLpS+lZN6dO4I6+oY9bntmxctqP+hMFjiwhLTB9rRaCYqkf1cVVliW+3QDWghsKTz+ZqfHU5n68tX0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=zacbowling.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=PPJXptpw; arc=none smtp.client-ip=74.125.82.174
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=zacbowling.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-dy1-f194.google.com with SMTP id 5a478bee46e88-2b1981ca515so1731936eec.1
-        for <linux-wireless@vger.kernel.org>; Thu, 15 Jan 2026 17:05:40 -0800 (PST)
+Received: by mail-dy1-f174.google.com with SMTP id 5a478bee46e88-2ae287a8444so744583eec.0
+        for <linux-wireless@vger.kernel.org>; Thu, 15 Jan 2026 17:05:42 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1768525540; x=1769130340; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1768525541; x=1769130341; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:sender:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=7ZFGFJGnMesEgV/ggwEQUIQPbrKFKaXQBFGLJsUOfUw=;
-        b=GcEu1HNbDTvEB0srfk5NFk/8KFEM53CARuYsm4d6RsxWJpS5WXL4fgx9W1wkU8d4nG
-         STP/73G9JBVEJ1WgSk0C3zFVNY5iGW2zmatQI2REfI2Tb9RnYxO4mRqluJJxNUxSo1BT
-         VmK6DvViFm4RjipIb21OtPpO77IlKM9jfUaKHuqSfpwAl5zRh+1gVlx8/Jsq8gywfamN
-         oqXQfEcC5w0hjP2k7bvuirQYuyNDwT1qZCWX52i0sbq2PZ9AaydqBW7FbTC7G1aTlmfY
-         W9LloFQSrQVPMFQ9pAGkk6yvoukiMRhFflhnB37iVM9bqCML0CLXHc/uLDm1OzLpa0qG
-         BWxA==
+        bh=SmoSCGQL2mRlPPuo0uD512LAshqRjYzmZB3+T0TG3ug=;
+        b=PPJXptpwWOI/pWfflSYTHtGDLMOQp+dr2qSkO3m/IhF2uORooGcJFeVVPJkG9bq3SL
+         1EQZsiNHvoL1M2/4Whf8u+Z+54dRe0VKDQ14tCHWUqSjM9TXg2lFYVasl7Iu10KKiRwa
+         SrgenHXxBzc331kg2e2q0DAAfFiU6AMut/ppoVolMns2aJ3Qstl4EgGi/eoaRsnPz2oe
+         pgYkA/QCw31d8nvM6yxsMYfyAjY/m9O2fj0iJfvFDqYcuJZ+cMQOKUG3qHWD8GrqwOd3
+         GVWEwAXmTZWiTDTXwCPzdz0YRtsS6vk8ZvXfOtV9YUeSqAnzUXgltMLdIY0UAcyxw45l
+         D9nw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1768525540; x=1769130340;
+        d=1e100.net; s=20230601; t=1768525541; x=1769130341;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:sender:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=7ZFGFJGnMesEgV/ggwEQUIQPbrKFKaXQBFGLJsUOfUw=;
-        b=i0rJLsjsqyNhplp/uoEmV9wn0Zw+TUxcgP5ygrvCVVdddarCRXEbN+0Efdpwj7dr2y
-         wtI8Yr3+LCduiwdLxzJng1fWhmbdh6+3KZAV6wW5GVsAIVT7XuLC3mL2Gt14EOeZNUaE
-         AKtbfYv/HLHtbFTmXgufKO6Fz+BdFp93YSoclA0eKOYboqN8SNMbH2DdmH//Jpt5WLrw
-         k6vuOtOlyJKHKDJiHXnsb5v9aWwvEubQ9Ag4K95LNe96xQ+V1U0tDz3ggqM7Ia9ycHzj
-         9AwJ8oHAL4GvcPV1aPXl/0XXzl3+JU6GmbQPsQsgGmEh48uXrh4SDv7W/sgiyM+REZ64
-         oe+g==
-X-Forwarded-Encrypted: i=1; AJvYcCXobh4pqgAjhgyyFwwe4O3zRuVtkEALoNtw2PSJwswq2BDtmes9dqd+ucxhHsSHPzUow03z/IHfVR/cGeb/8Q==@vger.kernel.org
-X-Gm-Message-State: AOJu0YxjL+GgHbSbz3zpgPo7tXXMf9nu1zkPNWEFK17VDU1GYeiQlLI3
-	dFY0y2NrgP02qnFJb5CdnO6WoGw0kzwKgz1Zl57DbTAXtTYiVXrFe4L0
-X-Gm-Gg: AY/fxX6mRvHsW7GoJ3du9RX1z/+bYnd4M6G2EMF+19trAL7j+s5ftq4eVo9IPNcSgGC
-	gZ6W9keABee+GRCt4OkE+NgxB+wRY3X/uscNTNb/epXiWBGG7lURMde5KCfWIA0dXNuVzDziYuR
-	NXajjm+qDimgQ+sj8bYi7ZeikF16k13mSsESvBeLy1kks21e2ub0KMedAV/Og1kfpAxmWmQ2ppK
-	9w3so4b+iExqRvUZSlHtaZiNEW1zVWERrl/U5LDi47WRpyacOjUz63HDhFfaGW7W+jgenGDosMN
-	vDpUo38mgoR6EBg3AlyM24O9URzijJS1BtXwHNLOXczd3xp0Gk/toQ34R38sVTHSOs/nSxXvkIc
-	EIbOOAtVgMstdMzuxZ6gJZ+48VqwuqjAlFS6nJ2AUxbPErFjrppdp3QyZf0mohGh6vifetM6UBW
-	UR+wDnQd5pMSiZ/I8WgtSuoVhbsT1cpPpyzgphMoASXDOPkHS9TA9aU6F6H2X1xg==
-X-Received: by 2002:a05:7300:cc0a:b0:2b0:56fd:4b67 with SMTP id 5a478bee46e88-2b6b3f074e7mr1271641eec.12.1768525539493;
-        Thu, 15 Jan 2026 17:05:39 -0800 (PST)
+        bh=SmoSCGQL2mRlPPuo0uD512LAshqRjYzmZB3+T0TG3ug=;
+        b=V6Rj1jWoRf0JlKkZiXnr9tWIwVJgUL11teDqSH6A5WGzF1b6pSjS0I1gKZ8ZXHn7c4
+         c97LN/DXIY8ZDXl2vT2z8X/P8bxD7LmMx37329/spcMDhVliBZ9XNZklTZewocv4OZPO
+         qU8WkKB0XTcrP7M17ID6DCJvEVzojYB029ijBBkJQ+TL9aENZTtGGQooY05RQtlrmXN3
+         n81NaKOhHqDvm8V70PMxz996js8NV2gQ+5aW0dbWJiHFroV2Gh4cBEXI67+NqZY2giV3
+         qY9mXYxUGdN1PqOdvrZSiG4cscYQoqAkeLRFQVm2Bq8UvWxZzW3+uSKf/YtYqSPwdDJY
+         eHmA==
+X-Forwarded-Encrypted: i=1; AJvYcCXTqhey8EXvY/+E2ES9j/VAx9GSeIHu8ix9fl02hMBvQGIB9iVKp8ECIaO4FlAwre+yOqmaHkYdGBo70fDgIw==@vger.kernel.org
+X-Gm-Message-State: AOJu0YyARfINXdqNAL4SjNF7hxn53qxiv+MftNS3KbL/nF1RDdbMZmNt
+	oWgcpUrBdsDj31M1Ldg/C2eYtqZ6kNLB+u/s3CZcjlFAv2b29nkts1GJ
+X-Gm-Gg: AY/fxX7wWNZlca/XUziEewCFRAPJJ3eqZKHqnqmXqiJcnsFTQVJkXLA5B+gXgrnZAO/
+	fxcaJDPXEMqRSH54fvmXsNlWFKbJLOMHUh489KyKVdDrSMX1khmVoOMxR/23r8CRF6DHKj0F4N9
+	hOtL0JME8StXUdVbBmm8Z/RvBa2z6aX8XqElG4Yxc7L9cL4Ea8S6FoTL+MErFd5v8ce4gF4NWPf
+	2+daaMlV6DZ1kN5gpfakE+wqznLUVE2uoUOmQ5xxgyTVZ9rn8mQQK7u79QtrKOAt7SbltkAkTXG
+	RGi3dJHYEJ90651/a82uiqqZ3+awPV2aQJOqdD+416/PB8uaGNvQ7Z5lVK1d70u73l6NxxecuV1
+	9PCw5ozZhKaBxp9/sQ+31SI4wjyXWedY81F/l7MfCqraZj5QYW1ywmXrTCBBEiG5UBsIoC4K97Z
+	tbDPkoNkg08O8/HURGEn8lIoowoPG2som/wHu2WGvWJiK/15YyOdSb/Nc2x/icGQ==
+X-Received: by 2002:a05:7300:5353:b0:2ab:f490:79f9 with SMTP id 5a478bee46e88-2b6b35a1060mr1657052eec.21.1768525540952;
+        Thu, 15 Jan 2026 17:05:40 -0800 (PST)
 Received: from zcache.home.zacbowling.com ([2001:5a8:60d:bc9:f1d2:502c:a6ff:5556])
-        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-2b6b367cbc9sm1019884eec.32.2026.01.15.17.05.38
+        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-2b6b367cbc9sm1019884eec.32.2026.01.15.17.05.39
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 15 Jan 2026 17:05:38 -0800 (PST)
+        Thu, 15 Jan 2026 17:05:40 -0800 (PST)
 Sender: Zac Bowling <zbowling@gmail.com>
 From: Zac <zac@zacbowling.com>
 To: sean.wang@kernel.org
@@ -86,9 +86,9 @@ Cc: deren.wu@mediatek.com,
 	sean.wang@mediatek.com,
 	Zac Bowling <zbowling@gmail.com>,
 	Zac Bowling <zac@zacbowling.com>
-Subject: [PATCH v4 11/21] wifi: mt76: mt7925: add lockdep assertions for mutex verification
-Date: Thu, 15 Jan 2026 17:05:09 -0800
-Message-ID: <20260116010519.37001-12-zac@zacbowling.com>
+Subject: [PATCH v4 12/21] wifi: mt76: mt7925: fix key removal failure during MLO roaming
+Date: Thu, 15 Jan 2026 17:05:10 -0800
+Message-ID: <20260116010519.37001-13-zac@zacbowling.com>
 X-Mailer: git-send-email 2.52.0
 In-Reply-To: <20260116010519.37001-1-zac@zacbowling.com>
 References: <CAGp9LzpuyXRDa=TxqY+Xd5ZhDVvNayWbpMGDD1T0g7apkn7P0A@mail.gmail.com>
@@ -103,58 +103,57 @@ Content-Transfer-Encoding: 8bit
 
 From: Zac Bowling <zbowling@gmail.com>
 
-Add lockdep_assert_held() calls to critical MCU functions to help catch
-mutex violations during development and debugging. This follows the
-pattern used in other mt76 drivers (mt7996, mt7915, mt7615).
+During MLO roaming, mac80211 may request key removal after the link state
+has already been torn down. The current code returns -EINVAL when
+link_conf, mconf, or mlink is NULL, causing 'failed to remove key from
+hardware (-22)' errors in the kernel log.
 
-Functions with new assertions:
-- mt7925_mcu_add_bss_info(): Core BSS configuration MCU command
-- mt7925_mcu_sta_update(): Station record update MCU command
-- mt7925_mcu_uni_bss_ps(): Power save state MCU command
+This is a race condition where:
+1. MLO link teardown begins, cleaning up driver state
+2. mac80211 requests group key removal for the old link
+3. mt792x_vif_to_bss_conf() or related functions return NULL
+4. Driver returns -EINVAL, confusing upper layers
 
-These functions modify firmware state and must be called with the
-device mutex held to prevent race conditions. The lockdep assertions
-will trigger warnings at runtime if code paths exist that call these
-functions without proper mutex protection.
+Observed kernel log errors during roaming:
+  wlp192s0: failed to remove key (1, ff:ff:ff:ff:ff:ff) from hardware (-22)
+  wlp192s0: failed to remove key (4, ff:ff:ff:ff:ff:ff) from hardware (-22)
 
-This aids in detecting the class of bugs fixed by patches in this series.
+And associated wpa_supplicant warnings:
+  nl80211: kernel reports: link ID must for MLO group key
 
+The fix: When removing a key (cmd != SET_KEY), if the link state is
+already gone, return success (0) instead of error. The key is effectively
+removed when the link was torn down.
+
+Fixes: c948b5da6bbe ("wifi: mt76: mt7925: add Mediatek Wi-Fi7 driver for mt7925 chips")
+Reported-by: Zac Bowling <zac@zacbowling.com>
+Tested-by: Zac Bowling <zac@zacbowling.com>
 Signed-off-by: Zac Bowling <zac@zacbowling.com>
 ---
- drivers/net/wireless/mediatek/mt76/mt7925/mcu.c | 6 ++++++
- 1 file changed, 6 insertions(+)
+ drivers/net/wireless/mediatek/mt76/mt7925/main.c | 9 ++++++++-
+ 1 file changed, 8 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7925/mcu.c b/drivers/net/wireless/mediatek/mt76/mt7925/mcu.c
-index d61a7fbda7..958ff9da9f 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7925/mcu.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7925/mcu.c
-@@ -1527,6 +1527,8 @@ int mt7925_mcu_uni_bss_ps(struct mt792x_dev *dev,
- 		},
- 	};
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7925/main.c b/drivers/net/wireless/mediatek/mt76/mt7925/main.c
+index 852cf8ff84..7cf6faa1f6 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7925/main.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7925/main.c
+@@ -605,8 +605,15 @@ static int mt7925_set_link_key(struct ieee80211_hw *hw, enum set_key_cmd cmd,
+ 	mconf = mt792x_vif_to_link(mvif, link_id);
+ 	mlink = mt792x_sta_to_link(msta, link_id);
  
-+	lockdep_assert_held(&dev->mt76.mutex);
-+
- 	if (link_conf->vif->type != NL80211_IFTYPE_STATION)
- 		return -EOPNOTSUPP;
+-	if (!link_conf || !mconf || !mlink)
++	if (!link_conf || !mconf || !mlink) {
++		/* During MLO roaming, link state may be torn down before
++		 * mac80211 requests key removal. If removing a key and
++		 * the link is already gone, consider it successfully removed.
++		 */
++		if (cmd != SET_KEY)
++			return 0;
+ 		return -EINVAL;
++	}
  
-@@ -2037,6 +2039,8 @@ int mt7925_mcu_sta_update(struct mt792x_dev *dev,
- 	struct mt792x_sta *msta;
- 	struct mt792x_link_sta *mlink;
- 
-+	lockdep_assert_held(&dev->mt76.mutex);
-+
- 	if (link_sta) {
- 		msta = (struct mt792x_sta *)link_sta->sta->drv_priv;
- 		mlink = mt792x_sta_to_link(msta, link_sta->link_id);
-@@ -2843,6 +2847,8 @@ int mt7925_mcu_add_bss_info(struct mt792x_phy *phy,
- 	struct mt792x_link_sta *mlink_bc;
- 	struct sk_buff *skb;
- 
-+	lockdep_assert_held(&dev->mt76.mutex);
-+
- 	skb = __mt7925_mcu_alloc_bss_req(&dev->mt76, &mconf->mt76,
- 					 MT7925_BSS_UPDATE_MAX_SIZE);
- 	if (IS_ERR(skb))
+ 	wcid = &mlink->wcid;
+ 	wcid_keyidx = &wcid->hw_key_idx;
 -- 
 2.52.0
 
