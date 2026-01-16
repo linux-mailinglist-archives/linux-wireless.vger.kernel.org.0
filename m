@@ -1,292 +1,201 @@
-Return-Path: <linux-wireless+bounces-30914-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-30915-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7F4B9D33851
-	for <lists+linux-wireless@lfdr.de>; Fri, 16 Jan 2026 17:34:18 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 38CAAD338E5
+	for <lists+linux-wireless@lfdr.de>; Fri, 16 Jan 2026 17:44:00 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id A0D80301412D
-	for <lists+linux-wireless@lfdr.de>; Fri, 16 Jan 2026 16:33:32 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 8672E30AE78F
+	for <lists+linux-wireless@lfdr.de>; Fri, 16 Jan 2026 16:41:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4407F33A6F1;
-	Fri, 16 Jan 2026 16:33:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C8889399A51;
+	Fri, 16 Jan 2026 16:41:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=infineon.com header.i=@infineon.com header.b="Rvfyc2fR"
+	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="i42Www/N";
+	dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b="VWnWp3T3"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from smtp11.infineon.com (smtp11.infineon.com [217.10.52.105])
+Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 82466338902
-	for <linux-wireless@vger.kernel.org>; Fri, 16 Jan 2026 16:33:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.10.52.105
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 50F8733B6EF
+	for <linux-wireless@vger.kernel.org>; Fri, 16 Jan 2026 16:41:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768581210; cv=none; b=PRC/UdsHpV+BXwIB0YoOu1sbdnW2F9AlHIPwu+s9yf8Cng/juXDR2qFdrAAOAEbLJ15ZoSZnUJ0/+RIlAeVGwrtJBBOik0HCbYPMPlRqAP+xwu85AkUvVGJou5uizvdQ2y1gv/qALG0TXJ9zC8crSGPxu92a1wRUzJnX9FbkcPE=
+	t=1768581713; cv=none; b=WamKTJY9pfkDUBZjkGJHXEOUyigLPMfuHmTkPcPfCjfQ5cB/LT28xWZJSspfFuwM8j76uSPTpEvhrT8CRA+v/pzJphzWMQqtngEsWjxpEPXmGEy9G7AUm9M94B3Wqc9++D3phqe2xOJDS7lC1pdtXd+znCq6pzpDQtmi3CsGg+E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768581210; c=relaxed/simple;
-	bh=Kcx2VyKELC+E6j8z6CUXb7Ka0dZ0uqH9PcNkUIXO9N8=;
-	h=Date:From:To:CC:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=adk5xzLpfzUBRrXjpHR6J6mb2EXKfAz6ekq4pgAAW+AnZVyo8YI06JpL9H4NF3hUuyJGv7xvijBHPNCezPaZDRVSnDLpPED3kAUtApfJN5xxw98FX76Q6UQx/WvoLn27sjg3/cV6WVy6bRu+H8IuJT3Z2pwibeRWk8s3luzTlY4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infineon.com; spf=pass smtp.mailfrom=infineon.com; dkim=pass (1024-bit key) header.d=infineon.com header.i=@infineon.com header.b=Rvfyc2fR; arc=none smtp.client-ip=217.10.52.105
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infineon.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=infineon.com
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple;
-  d=infineon.com; i=@infineon.com; q=dns/txt; s=IFXMAIL;
-  t=1768581208; x=1800117208;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=Kcx2VyKELC+E6j8z6CUXb7Ka0dZ0uqH9PcNkUIXO9N8=;
-  b=Rvfyc2fRFpk6jM/iJoIfy9kQcCU6DiNClGlUa9jRc5jR22iuhWKlgqIO
-   JUREknVq9VlV69FWGVnqI0x+qU91UClbQESR5Mmec+rij2rH2helRo/P0
-   7PVNjPIUBL3niL7myohjZPG8WxRkTTYCbLMHAect5KDTSxp9Us0CNQIvR
-   E=;
-X-CSE-ConnectionGUID: zXXF4hBJSFGcZCvK5xzpAA==
-X-CSE-MsgGUID: yKJj4WcbQ8Os7B8g+EcGHw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11673"; a="127045672"
-X-IronPort-AV: E=Sophos;i="6.21,231,1763420400"; 
-   d="scan'208";a="127045672"
-X-Amp-Result: SKIPPED(no attachment in message)
-Received: from unknown (HELO MUCSE819.infineon.com) ([172.23.29.45])
-  by smtp11.infineon.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 16 Jan 2026 17:33:21 +0100
-Received: from MUCSE827.infineon.com (172.23.29.20) by MUCSE819.infineon.com
- (172.23.29.45) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.35; Fri, 16 Jan
- 2026 17:33:20 +0100
-Received: from ISCN5CG14747PP.infineon.com (10.161.6.196) by
- MUCSE827.infineon.com (172.23.29.20) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.35; Fri, 16 Jan 2026 17:33:18 +0100
-Date: Fri, 16 Jan 2026 22:03:06 +0530
-From: Gokul Sivakumar <gokulkumar.sivakumar@infineon.com>
-To: Marek Vasut <marex@nabladev.com>
-CC: <linux-wireless@vger.kernel.org>, Johannes Berg
-	<johannes@sipsolutions.net>, Arend van Spriel <arend.vanspriel@broadcom.com>,
-	<wlan-kernel-dev-list@infineon.com>
-Subject: Re: [PATCH wireless-next v2 00/34] wifi: inffmac: introducing a
- driver for Infineon's new generation chipsets
-Message-ID: <aWpoQs8rzqGUCsPO@ISCN5CG14747PP.infineon.com>
-References: <20260113203350.16734-1-gokulkumar.sivakumar@infineon.com>
- <43acfb38-9dbc-4544-b429-dfd43afbf2b6@nabladev.com>
- <aWdP6chPOS0PV-Nc@ISCN5CG14747PP.infineon.com>
- <66e4ddb8-47ac-4b2a-8c4b-6f407aa1d8eb@nabladev.com>
+	s=arc-20240116; t=1768581713; c=relaxed/simple;
+	bh=0H54WM5icrDDsHWx0slJii+LQKMQlvrQdSIj++zZk/A=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=L5y3Jg9BqY9wlRZf6BcsxktvjgO/TAVzRyWGnkjkmxxgALmh56KAho54VB8G3llFzoTPzvihvTiz5SRbbp73vV1cJetK1OUTKpeGkNvq2jCedtjcgXVOdotWfWiHEwWCOqL658F+NKkOvgkPrii3JJynQjeGMgjaUIiJQr6UNIs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=i42Www/N; dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b=VWnWp3T3; arc=none smtp.client-ip=205.220.168.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
+Received: from pps.filterd (m0279867.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 60GFkjDt3714357
+	for <linux-wireless@vger.kernel.org>; Fri, 16 Jan 2026 16:41:51 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
+	cc:content-type:date:from:in-reply-to:message-id:mime-version
+	:references:subject:to; s=qcppdkim1; bh=iAhjhpP5g5sO71epspZ2mzNR
+	fO/LIFwmhQneKuVWClY=; b=i42Www/NdZN6LzItRHhs1lGNrTjUffsxmgdOuTcw
+	SwXr0VTXaQvPOZiHg58VQdO49hyLYsnLXM7E+rCHPl4SrIn8z6NQKLMcuOhXkes3
+	TSfQqynYD0YJHu+72n2CBiBFnTOsOusQI0IyRrjXjefyGsjDZ1Gi0i9ANX70CBi4
+	4JXhaElFc8ikkOrLQUHj6AsmlP6g+5Y76wPEPtc8mDp4Hf2VQHkZWqsjR916DC2d
+	D0X8EI+oE4s5NRc9NJ8DORM+sb9ob059Q7n7gdhoL1ohDTQmGuEd4ey0Wyk+HcPb
+	mF6dj2VDj1QTQRqU5iEilTmhMRYZyZkxgtbmtrdmpEpoVw==
+Received: from mail-qk1-f197.google.com (mail-qk1-f197.google.com [209.85.222.197])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4bq96pawcj-1
+	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
+	for <linux-wireless@vger.kernel.org>; Fri, 16 Jan 2026 16:41:51 +0000 (GMT)
+Received: by mail-qk1-f197.google.com with SMTP id af79cd13be357-8c52f89b415so553606085a.0
+        for <linux-wireless@vger.kernel.org>; Fri, 16 Jan 2026 08:41:51 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=oss.qualcomm.com; s=google; t=1768581711; x=1769186511; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=iAhjhpP5g5sO71epspZ2mzNRfO/LIFwmhQneKuVWClY=;
+        b=VWnWp3T3Wi4p510UfRAQ//b/ctaQa9Fb32R5I4OiyjJLMQWkdLuHj5T2Mk4IuGyToI
+         11u72hTyrKXnf8Ed8OxNzH7BoCnr4ckHb9AoAbqDq4Rd8Hr4mPAAVXBcfdp6fbyHctD8
+         /mMgbRWWPIuMbA49eF+8wqkiYnvd3ybrw/vnsqQtRllklh6ov2cPNr03FzUnX2QlQeTz
+         IDknUWoNScow7tb8RgTpzgOzo0upG2YWvq6B5yvUXBWBBTD0fTjJIgkmdCwJqmBuDS+7
+         eX4a4JlHfP3xr+HyWgtutcRZcx6lD5tTUIsLLjCFYXp/CNrYy9t0Sz8XTCcpAQClocUV
+         o/BQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1768581711; x=1769186511;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=iAhjhpP5g5sO71epspZ2mzNRfO/LIFwmhQneKuVWClY=;
+        b=OwN+rH8eQksmCkS1FgKtZOaPPk+lfTlnmEiqFt2fgUufB5TbQ2WCVMTuBDvJt30Hmw
+         wigW/rNvJJRuitifiDtUyjn8lzHuIX2VUCvG5tTF/C3zhGLH0mhhVuhJ+FJOuib2DPV2
+         CDUhty7G0rEUNRGNPIWI7+VH+fuwAKHXIgJHSgrHB4wRpInUwMqPskxBX3A0j5mSOt/z
+         RH9Ki8ElZxglPyYsVY5O1m2IKUkToP1mLys40YVeGV3/aDSk1Hs2du+dbFEqR6ChJ7af
+         VaN3EAgh2LwBgpBMASMAty7qAiYsM4+wj5auBhlSteYv1GdWZjDoxh1jIk1T9A9mN4g3
+         XAqg==
+X-Forwarded-Encrypted: i=1; AJvYcCVrKDMtnlgPy8EtGZX9IZ9rjOSI2sLhbjawQFP6vxR1G4+I/9CqfwFojUF16bs9j17AMbJbqkAE1U2Yd/tJAQ==@vger.kernel.org
+X-Gm-Message-State: AOJu0YyhJXw18luAc/YxNk4aa2fpsm5TN/bU3YilUuj8/0cw3HHkdByV
+	SRPLaMI6pz10zI2WqGkLHitMBkOm9j96yCszfkFVF3rcn/tzUAmso3Il92EbctKixJKu84TQj70
+	S0Ju5tF6yJqM9iUYil5DT8doLTvelGUvF6RsK8tZrZPjTzslZkHObJCVt0RU5dalZTUU1tg==
+X-Gm-Gg: AY/fxX4zyn0TmHPPuJSuckoylSrYhL/APVeFXcqML98qWnhwrPN0I5N4RGIsf+viYc5
+	yuyoA5KaqnGJEzuemesdvZL5lb9b8UzWoKlwrA3Lm8+d05LcdhbpXcGOGPXLMaTxLTMaOIWW1hG
+	vbxEnULiY3TjL/ZZ2nP5+zMfrKzykt2rt1ZPpAL4biDscDxiYSauyv5waD/K2Nv2oVsjDiRBpNE
+	YwPCXEdeCi8A/zJ6sP6iX92u2W5MrZRTy5MChDtD4XTQ64RWpgrnKfxVUBEs5Odm4vgDJIHB69T
+	O8avWMjySRFlqcCC5651In60LnYtPMJXVG9ASV3/ERdTHE0mWLX3QkUvKA612BHL1zypPCx5gg9
+	I5TOewBE+ahw10sTy09XS0AYsjP9SJA/nzsmD9PP6U+yPz8hzZJ6UOBVepPwYedPYM3tWSswD6n
+	pEL/3BrHqygELNFTwIGtAMbXk=
+X-Received: by 2002:a05:620a:f03:b0:8c5:e166:fa14 with SMTP id af79cd13be357-8c6a67a12c4mr475982285a.73.1768581710561;
+        Fri, 16 Jan 2026 08:41:50 -0800 (PST)
+X-Received: by 2002:a05:620a:f03:b0:8c5:e166:fa14 with SMTP id af79cd13be357-8c6a67a12c4mr475977585a.73.1768581710052;
+        Fri, 16 Jan 2026 08:41:50 -0800 (PST)
+Received: from umbar.lan (2001-14ba-a073-af00-264b-feff-fe8b-be8a.rev.dnainternet.fi. [2001:14ba:a073:af00:264b:feff:fe8b:be8a])
+        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-59baf3a4ccfsm899874e87.99.2026.01.16.08.41.48
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 16 Jan 2026 08:41:49 -0800 (PST)
+Date: Fri, 16 Jan 2026 18:41:47 +0200
+From: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
+To: Krzysztof Kozlowski <krzk@kernel.org>
+Cc: Jeff Johnson <jeff.johnson@oss.qualcomm.com>,
+        Liam Girdwood <lgirdwood@gmail.com>, Mark Brown <broonie@kernel.org>,
+        Rob Herring <robh@kernel.org>,
+        Krzysztof Kozlowski <krzk+dt@kernel.org>,
+        Conor Dooley <conor+dt@kernel.org>,
+        Bartosz Golaszewski <brgl@kernel.org>,
+        Marcel Holtmann <marcel@holtmann.org>,
+        Luiz Augusto von Dentz <luiz.dentz@gmail.com>,
+        Jeff Johnson <jjohnson@kernel.org>,
+        Bjorn Andersson <andersson@kernel.org>,
+        Konrad Dybcio <konradybcio@kernel.org>,
+        Manivannan Sadhasivam <mani@kernel.org>, Vinod Koul <vkoul@kernel.org>,
+        Balakrishna Godavarthi <quic_bgodavar@quicinc.com>,
+        Matthias Kaehlcke <mka@chromium.org>, linux-arm-msm@vger.kernel.org,
+        linux-kernel@vger.kernel.org, devicetree@vger.kernel.org,
+        linux-bluetooth@vger.kernel.org, linux-wireless@vger.kernel.org,
+        ath10k@lists.infradead.org, linux-pm@vger.kernel.org,
+        Bartosz Golaszewski <bartosz.golaszewski@oss.qualcomm.com>
+Subject: Re: [PATCH v2 04/14] wifi: ath10k: snoc: support powering on the
+ device via pwrseq
+Message-ID: <d4ttsbhlw4c2fvgpfwgnc5mdh2egc6nwluj5pmkst2sunpn6m7@7b6by2eboob4>
+References: <20260106-wcn3990-pwrctl-v2-0-0386204328be@oss.qualcomm.com>
+ <20260106-wcn3990-pwrctl-v2-4-0386204328be@oss.qualcomm.com>
+ <52b2b799-09e6-40a4-bea8-c7e8bf21cf51@oss.qualcomm.com>
+ <15470b51-d398-449d-9017-304df5ad7cef@kernel.org>
+ <132c34db-07c6-491b-bfda-f3c51462a184@oss.qualcomm.com>
+ <f35b1380-b7d4-45e7-94ad-9f76973d3289@kernel.org>
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <66e4ddb8-47ac-4b2a-8c4b-6f407aa1d8eb@nabladev.com>
-X-ClientProxiedBy: MUCSE806.infineon.com (172.23.29.32) To
- MUCSE827.infineon.com (172.23.29.20)
+In-Reply-To: <f35b1380-b7d4-45e7-94ad-9f76973d3289@kernel.org>
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwMTE2MDEyMSBTYWx0ZWRfXwdw+xDWY5Je7
+ ZqyW/zuS7OskWjyiSlcG9Wah4XDd25sXmwNVBKAcKfswZESoo+4FlcHk9WpyAQKxynvG2jWmKDh
+ QtGWakCpIX85h6mCMCXtlyAo3usbfKMfNmcVvZqauWK4QmUU1ATLFxfJr4thOKNhkfgQVqHECaw
+ KCoXM3oTSktukikwS0ZJ7B4yVnYcowHvCwnG+FABIASV/AEF2C/DNt0JwlgOvu4Ri9KU/7Lb8pW
+ LfU3ZBlW5KIBtHUMjHNWvLswKZYuw39c9SyKkwzzQ8l2MAcXOyYtxX4FExFHqtJtCqeDYSaMmey
+ X9lgxEcgfA8phv4XMYIbGFb94/oCLxXJksYd/5cwI+LV2bDK+bSGk4i+LFXjzvUZo3COcJjGUrD
+ dQVGcQagj6smy9oN8HPe7jgTSDfaVqU2Z1EB1Y8WDXS0c7s7TpQtLU5eHb3w+HDfW0eCCnXYUrF
+ uU+f1eKZQdlXYiLvVuA==
+X-Authority-Analysis: v=2.4 cv=M7ZA6iws c=1 sm=1 tr=0 ts=696a6a4f cx=c_pps
+ a=50t2pK5VMbmlHzFWWp8p/g==:117 a=xqWC_Br6kY4A:10 a=kj9zAlcOel0A:10
+ a=vUbySO9Y5rIA:10 a=s4-Qcg_JpJYA:10 a=VkNPw1HP01LnGYTKEx00:22
+ a=EUspDBNiAAAA:8 a=d62U7F-bSLN4PTEm1scA:9 a=CjuIK1q_8ugA:10
+ a=IoWCM6iH3mJn3m4BftBB:22
+X-Proofpoint-GUID: PSesd6xMArWoTU6Xd4eFihObpqtYFEC-
+X-Proofpoint-ORIG-GUID: PSesd6xMArWoTU6Xd4eFihObpqtYFEC-
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.9,FMLib:17.12.100.49
+ definitions=2026-01-16_06,2026-01-15_02,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ impostorscore=0 malwarescore=0 suspectscore=0 adultscore=0 spamscore=0
+ phishscore=0 clxscore=1015 lowpriorityscore=0 priorityscore=1501 bulkscore=0
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.22.0-2512120000 definitions=main-2601160121
 
-On 01/15, Marek Vasut wrote:
-> On 1/14/26 9:12 AM, Gokul Sivakumar wrote:
-> > On 01/14, Marek Vasut wrote:
-> > > On 1/13/26 9:33 PM, Gokul Sivakumar wrote:
-> > > > Infineon(Cypress) is introducing a new INFFMAC (WLAN FULLMAC) Linux driver
-> > > > specifically for its new-generation AIROC family of Wi-Fi Connectivity
-> > > > Processor (CP) chipsets (CYW5591x), Wi-Fi + Bluetooth combo chipsets
-> > > > (CYW5557x, CYW5551x, CYW5591x, CYW43022), and also for all future chipsets.
-> > > Support for the CYW55572 can be easily added into the existing brcmfmac
-> > > driver, I already posted a patch over a year ago [1], but it was blocked
-> > > by an off-list email.
+On Fri, Jan 16, 2026 at 05:08:58PM +0100, Krzysztof Kozlowski wrote:
+> On 16/01/2026 16:18, Jeff Johnson wrote:
+> > On 1/15/2026 11:48 PM, Krzysztof Kozlowski wrote:
+> >> On 15/01/2026 23:30, Jeff Johnson wrote:
+> >>> On 1/5/2026 5:01 PM, Dmitry Baryshkov wrote:
+> >>>> The WCN39xx family of WiFi/BT chips incorporates a simple PMU, spreading
+> >>>> voltages over internal rails. Implement support for using powersequencer
+> >>>> for this family of ATH10k devices in addition to using regulators.
+> >>>>
+> >>>> Reviewed-by: Bartosz Golaszewski <bartosz.golaszewski@oss.qualcomm.com>
+> >>>> Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
+> >>>> ---
+> >>>>  drivers/net/wireless/ath/ath10k/snoc.c | 54 ++++++++++++++++++++++++++++++++--
+> >>>>  drivers/net/wireless/ath/ath10k/snoc.h |  2 ++
+> >>>
+> >>> My automation flagged:
+> >>> * drivers/net/wireless/ath/ath10k/snoc.c has no QTI copyright
+> >>> * drivers/net/wireless/ath/ath10k/snoc.h has no QTI copyright
+> >>> * 2 copyright issues
+> >>>
+> >>> I'll add these manually in my 'pending' branch
+> >>>
+> >>
+> >> And why is this a problem? You are not here to impose Qualcomm rules, bu
+> >> care about Linux kernel. You cannot add copyrights based on what exactly?
 > > 
-> > > Frankly, I do not see any good reason why the brcmfmac driver shouldn't
-> > > be extended when it is clearly easily doable. Adding new fork of the
-> > > brcmfmac would only increase maintenance burden and prevent bugfixes
-> > > from reaching the brcmfmac.
-> > > 
-> > > [1] https://lore.kernel.org/all/20240909203133.74777-2-marex@denx.de/
-> > 
-> > There are multiple reasons behind Infineon's proposal for this new INFFMAC
-> > driver for its new-generation chips. Sharing a few here, and more info
-> > is available in the v1 cover-letter [1]. For Example, the CYW5591x family
-> > chipsets that is currently supported in this INFFMAC driver has a unique
-> > Connected-MCU / Connectivtiy Processor (CP) Architecture [2], primarly
-> > intended for IoT applications and it is completely different from any of
-> > the legacy Broadcom architecture chipsets of Infineon supported currently
-> > in upstream BRCMFMAC.
+> > I am a maintainer that is paid by Qualcomm to perform that role, and hence I
+> > have a duty to enforce the legal guidance from Qualcomm when it comes to
+> > contributions from other Qualcomm employees.
 > 
-> This does not prevent them from being integrated in brcmfmac like many
-> of the other already supported chips, there seems to be no technical
-> reason here.
+> No, it's not your duty to enforce rules from some other departments or
+> business units. Especially not without agreement of that person. You
+> cannot just add copyrights to other people's commits just because you
+> think that such copyrights should be there. Only the copyright owner -
+> which you did not identify here and email address of contributor does
+> not imply that (you don't even know what work contract a person has) -
+> can add such copyrights.
 
-I hope you would have got a chance to look into the elaborate info provided
-in v1 cover-letter about the challenges that we faced with that approach.
-In Infineon's new architecture CYW5591x family of chipsets coming with an
-onboard FLASH Memory, it does not follow the traditional Device firmware
-download sequence used by any of the legacy Broadcom chipsets and it would
-be appropriate to use a dedicated driver for Infineon's chipsets which were
-developed and intended mainly for IoT use-cases. 
+In this particular usecase Jeff has enough knowledge about me and my
+working place. I will have to resend the series anyway, but otherwise it
+was perfectly fine for him to correct the copyright.
 
-Here it requires a Boot firmware download, and a host handshake with the
-downloaded RAM boot firmware, followed by a CP Firmware image Download and
-validation. Sharing here the sequence for coldboot image download to FLASH.
-
-      Host Driver                                       Device
-      ___________                                     ____________
-         |                                                 |
-         |                                 Power UP and execute CP Firmware
-         |                                  from FLASH if available
- Attempt to enable SDIO F2                                 |
- if fails, FLASH is empty,                                 |
- Need to Download Firmware                                 |
-         |                                                 |
-        Wait for                                           |
-DFU_CP_D2H_MSG_BL_READY                                    |
-         |<<======== DFU_CP_D2H_MSG_BL_READY <<============|
-         |                                                 |
-Fetch Boot Firmware                                        |
-from Filesystem                                            |
-         |======>> DFU_CP_H2D_MSG_BOOT_FWLOAD_START =====>>|
-         |						   |
-         |======>> Transfer Boot Firmware over SDIO =====>>|
-         |                in multiple chunks               |
-         |						   |
-         |======>> DFU_CP_H2D_MSG_BOOT_FWLOAD_DONE ======>>|
-         |                                       Execute the downloaded
-         |                                           RAM Bootloader
-       Wait for                                            |
-DFU_CP_D2H_MSG_BOOTFW_READY                                |
-         |<<========= DFU_CP_D2H_MSG_BOOTFW_READY <<=======|
-         |                                                 |
-Fetch CP Firmware                                          |
-from Filesystem                                            |
-         |=======>> Transfer CP Firmware over SDIO ======>>|
-         |            in multiple chunks                   |
-	 |                                       Download CP Firmware
-         |                                        to FLASH Memory
-         |                                                 |
-         |=======>> DFU_CP_H2D_MSG_BOOTFW_DATA_LOADED ====>|
-         |                                                 |
-         |=======>> DFU_CP_D2H_MSG_FW_VALIDAT_START ======>|
-         |                                                 |
-    Wait for                                    Validate the CP Firmware
-DFU_CP_D2H_MSG_FW_VALIDAT_DONE                             |
-         |<<======= DFU_CP_D2H_MSG_FW_VALIDAT_DONE <<======|
-     	 |                                                 |
-         |                                      Execute the CP Firmware
-  Proceed with                                             |
-ctrl cmds to Device                                        |
-     	 |                                                 |
-
-Here there is no need to redownload the Device Firmware from the Host
-filesystem everyime the Host or Device goes through a power cycle. Also the
-device is capable of fully operating in an offloaded mode even when the
-host is in suspended state or even if fully powered off. This is critical
-to save power for extended durations in IoT use cases which are often
-battery operated.
- 
-> > The CYW5591x family chipsets has dedicated MCU Core
-> > in addition to the WLAN core and an onboard FLASH memory for the Firmware.
-> 
-> It seems all brcmfmac devices have a cortex-M core in them since a long
-> time.
-
-We were intending to mention that CYW5591x Cortex-M33 core is dedicated to
-function as a Co-Processor to the Host CPU/MCU and offload multiple wifi
-and network operations if configured by the user before host goes to sleep.
-You can refer the chipset block diagram in CYW55913/2/1 Product Brief [1]
-The CYW5591x SoC Backplane interconnects are also different from any of the
-legacy Broadcom chipsets.
- 
-> > And with respect to the support for the new-generation CYW5557x family of
-> > Secure chipsets, that requires a Secure boot handshake with the Bootloader.
-> 
-> It seems like the TRX firmware loading is trivial to add, and parts of
-> it are already in the Linux kernel for other brcm components. It seems
-> this TRX was used since old broadcom MIPS SoCs.
-
-No, your understanding needs a correction. Infineon's TRXSE and TRXS Device
-Bootloader handshake and Firmware formats are quite different from the old
-Broadcom TRX formats that you are mentioning here. Being two individual
-WLAN vendors, the chipset internals, firmware formats, Device Bootloader
-handshake cannot be expected to be the same. Yet another reason why it is
-not practically feasible to use upstream BRCMFMAC for the new-generation
-chipsets and new firmware releases from Infineon.
- 
-> > Even if the enumeration and firmware download support for the CYW55572 is
-> > somehow retro-fitted into the existing upstream BRCMFMAC driver, there are
-> > multiple other features and aspects of the Driver-Device communication that
-> > are unique to each WLAN vendor, which are not always practically feasible
-> > to support in the same upstream driver.
-> 
-> Why ?
-
-As mentioned before, various aspects of the Driver-Device communication are
-unique to each WLAN vendor. And it is not practically feasible to confine
-them into a common upstream driver, also not sustainable to maintain it that
-way througout the lifetime of the hardware.
- 
-> > Because currently BRCMFMAC driver
-> > has a shared ownership with more than 3 WLAN vendor organizations and this
-> > approach has its limitations.
-> 
-> Yes, this means it is necessary to cooperate and coordinate with other
-> people, on the mailing list.
-
-Infineon is committed to coordinate with other vendors in managing upstream
-BRCMFMAC driver and continuing the support for its legacy chipsets that
-still follows the legacy Broadcom architecture. Like for example, we have
-added support for CYW54591-PCIe in upstream BRCMFMAC few months back [2],
-because it has many things in common with other legacy Broadcom chips.
-But the same does not applies for all the new-generation Infineon chipsets.
-
-> > For Example, the version of the PCIe and SDIO
-> > BUS specific shared info in Device Memory is expected same from chipsets
-> > from all vendors. There would be a complex need to maintain vendor specifc
-> > as well as BUS specific Shared info version, vendor specific BUS Protocol
-> > layers, vendor specific firmware event header OUIs (currently always expects
-> > BRCM OUI even from other vendor chips) and even more.
-> 
-> This sounds like code refactoring is necessary.
-> 
-> > Confining different architecture chips from different WLAN vendors into the
-> > same legacy BRCMFMAC driver codebase, may not be sustainable and could
-> > potentially increase the maintainence effort and codebase complexity.
-> > And not practically feasible to continue splitting this driver with more
-> > vendor specific checks in the longer run. Since being different vendors,
-> > each will only naturally diverge even more in the future with their chipset
-> > Architecture, Driver-Device communication flow, etc. Infineon will continue
-> > to support its legacy chipsets, already supported in the upstream BRCMFMAC.
-> Maybe all the extra functionality can be added later, and the driver can
-> be forked later, when it becomes clear that refactoring is not an option
-> and it is becoming too difficult to maintain ?
-
-Refactoring the existing upstream BRCMFMAC driver for the new-architecture
-chipsets developed by Infineon is not a practical option now because these
-devices are fairly new. In the lifetime of these devices, the functionality
-of the Devices and Driver interaction are only going to evolve even more.
-Eventually, it would become more cumbersome to maintain as well as to avoid
-regressions for different architecture chips from different WLAN vendors
-if same upstream driver is used.
-
-We strongly believe that this is an appropriate time for thinking about a
-proposal to proceed with a dedicated driver for the new-generation chips
-developed individually by Infineon.
-
-> So far, it seems the current generation chips can be easily added to
-> brcmfmac, even if the feature set would be limited. Adding them would
-
-We are not in the same page here. As mentioned earlier and as you might
-know, there is infact much more to it than adding enumeration support for a
-chip in a driver. Certainly not easy when eventually Infineon is required
-to enable the end users with the actual capabilities of the chipset, also
-Infineon has the responsibility to ensure driver compatibility with all the
-newly shipped Device firmwares.
-
-> allow the maintainers to review such a smaller patchset and get at least
-> some hardware support in, step by step, instead of this mega-patchset.
-
-We understood that review bandwidth is limited and have taken the feedback
-received on v1 very seriously, so multiple features were already stripped
-off in v2. Willing to skip even more functionality in the upcoming versions
-and also ready to provide more information as needed to make the INFFMAC
-driver review as much easy as possible.
-
-[1] https://www.infineon.com/assets/row/public/documents/30/45/infineon-airoc-tm-cyw55913-2-1-connected-mcu-with-wi-fi-bluetooth-r-low-energy-5-productbrief-en.pdf
-[2] https://lore.kernel.org/linux-wireless/20250624093453.7264-1-ian.lin@infineon.com/
-
-Gokul
+-- 
+With best wishes
+Dmitry
 
