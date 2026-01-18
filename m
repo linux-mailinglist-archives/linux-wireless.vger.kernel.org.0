@@ -1,200 +1,111 @@
-Return-Path: <linux-wireless+bounces-30930-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-30931-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 30B18D392A6
-	for <lists+linux-wireless@lfdr.de>; Sun, 18 Jan 2026 05:03:30 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 77B11D3931D
+	for <lists+linux-wireless@lfdr.de>; Sun, 18 Jan 2026 08:28:47 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id BF2043014592
-	for <lists+linux-wireless@lfdr.de>; Sun, 18 Jan 2026 04:03:24 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id A75AE300486B
+	for <lists+linux-wireless@lfdr.de>; Sun, 18 Jan 2026 07:28:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7ABBE31A579;
-	Sun, 18 Jan 2026 04:03:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 276D7236A8B;
+	Sun, 18 Jan 2026 07:28:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b="e1WLL/LC"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="YUtrtCW7"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from m16.mail.163.com (m16.mail.163.com [220.197.31.2])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.9])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C84C931A565
-	for <linux-wireless@vger.kernel.org>; Sun, 18 Jan 2026 04:03:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=220.197.31.2
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B275215B971
+	for <linux-wireless@vger.kernel.org>; Sun, 18 Jan 2026 07:28:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.9
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768709004; cv=none; b=uwjuZyTV2VeSX0HQc5aKVzdn2MGPog+NPkqAbfTFoWK1tYXvaIlPKJKfJMCNfusyqlSRukk0EOkHUAY9e5mxNxeq66pTHruWrch0ieOqabdF7nGKPG0SIupimqxawKdAlCpEIfsOJEgxiYVBd0YGZ5+TluhNpRC5N9aFQaADuPs=
+	t=1768721322; cv=none; b=P6MJIYo0c8BA3JQbltx3NkiUSpOv1Gc1JkUuwvcnlPHP+yRVqSrbrg2ISYCnzmztZG3lMXuh+t/P3hN3rbf6rr5Shq9BLB3cKTl+yI6xJgESnHgdQ1EVDg9hT5YfelJ1Mm8JHWfMr+CCT9BM3yf9Xbi6TjAoNkzzLm9AMEYeB74=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768709004; c=relaxed/simple;
-	bh=pDXMo09iaRLzFUIzn66jqkWjHqofBg2RB4lwbjJelVQ=;
-	h=Date:From:To:Subject:Content-Type:MIME-Version:Message-ID; b=DPJiNhqPT6wMZVG63jJa4zgws09QO4JofcgmBMwVRPmLR5iS/5fMK8t/qRppZfFU1/W/dh/K4dSSW1JZZbZj/qzgasq+EDTNqJApyWTqdR4Jrhu0PNIEUTCHTZ6iMBv67FK9ksL3Ftk96jEJ/WXeUdlGvoUUHmV+PyoAIrwPH24=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com; spf=pass smtp.mailfrom=163.com; dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b=e1WLL/LC; arc=none smtp.client-ip=220.197.31.2
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=163.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
-	s=s110527; h=Date:From:To:Subject:Content-Type:MIME-Version:
-	Message-ID; bh=vsLbHmumI3Eb+v2rK0XTVUMfyH6Seax6qQpu1Gidr7E=; b=e
-	1WLL/LCksrs4RRnOFKMKOQ4tzu7/UUYwOLqHGHuf4FTcaz3J0ogiG9JY0cIPq7Qz
-	mV8I0uXgrN1fHhDRQSiQ2jti3VyA7qgLE8f0d9TLUrSI5QRo/1Y8rGKYFLRVdjMZ
-	zwh59Y0uNa96dRhKYy64aQEl/+e02iDErdpeLYX1I0=
-Received: from 18093582010$163.com ( [60.164.42.19] ) by
- ajax-webmail-wmsvr-40-115 (Coremail) ; Sun, 18 Jan 2026 12:03:09 +0800
- (CST)
-Date: Sun, 18 Jan 2026 12:03:09 +0800 (CST)
-From: yizhe <18093582010@163.com>
+	s=arc-20240116; t=1768721322; c=relaxed/simple;
+	bh=0xgLQq09e7uc9GQoNEUoxElzjhMxFADEkIC7pxz/04k=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=INmzAqtc5Mo4H946aluwN1/d9162qSc0Oqvov4SlUPcok5LYOycv0u1y/WeU4GWzi4OCpgATXNXtECpYw8TPi2Nc+7VtugFvpn0EKk3uQCWUBdKQ0YiNC2fYkBkWQH7C9FoJPjdKo3UlI1V5wjSS4y92579IepQ6iS1XsNAatfg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=YUtrtCW7; arc=none smtp.client-ip=198.175.65.9
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1768721320; x=1800257320;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=0xgLQq09e7uc9GQoNEUoxElzjhMxFADEkIC7pxz/04k=;
+  b=YUtrtCW7ohyF4PvMLeReZ0hXpKREHcfNW15qBtDPbmRWEtBOFlefa2EB
+   wRA/qDIZZzGwzQqwJTjaajVH1IZ6hQohFMvhhdnUQ4BmkTEWyg3+NGXlN
+   GV+lrejj4OIxqIQHk3dp0MOZkuvkVjszq5s7k/Q+Y5Iq314H3ibOfebnv
+   c4RNtGmn5QQkIl8bRSosCJFg0HQNDSuRHNWU4ABWtnYgPfcXf1UIoQlEu
+   D8Yv8GuiA4LUUoCr5wyTGEuOEjCqqAi/BtJQSp6uy9i1fKCsBy4H7Qxa3
+   e9h6xKTLQL6nB9L/uwv9z4sMgSfPl6fSE+mSHQBnOexfG9AjFOQPyqMyv
+   w==;
+X-CSE-ConnectionGUID: YzVLDPtCRcK3ZHpnLnAcGg==
+X-CSE-MsgGUID: yIiYf4G6Re61u/oLQ+ZCow==
+X-IronPort-AV: E=McAfee;i="6800,10657,11674"; a="92639674"
+X-IronPort-AV: E=Sophos;i="6.21,235,1763452800"; 
+   d="scan'208";a="92639674"
+Received: from fmviesa006.fm.intel.com ([10.60.135.146])
+  by orvoesa101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 17 Jan 2026 23:28:40 -0800
+X-CSE-ConnectionGUID: M7oJxvhFS4uj81c5G/sMFQ==
+X-CSE-MsgGUID: d9cZx4fWRdSqOYnB9pe6+w==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.21,235,1763452800"; 
+   d="scan'208";a="205494967"
+Received: from weis0040.iil.intel.com ([10.12.217.108])
+  by fmviesa006-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 17 Jan 2026 23:28:38 -0800
+From: Miri Korenblit <miriam.rachel.korenblit@intel.com>
 To: linux-wireless@vger.kernel.org
-Subject: [BUG] mt7921e driver loads abnormal firmware "____010000" on
- ThinkPad T14 Gen 2a, causing Wi-Fi stalls
-X-Priority: 3
-X-Mailer: Coremail Webmail Server Version 2023.4-cmXT build
- 20251222(83accb85) Copyright (c) 2002-2026 www.mailtech.cn 163com
-X-NTES-SC: AL_Qu2dCvubt0Ej7yOabelS/zNm5pN8DZbuwplxv/EVYuwOgiDQ4y0vUnhqDFb54cO19IpaWT1BppO8KMOy7Jc7
-Content-Type: multipart/mixed; 
-	boundary="----=_Part_8808_1854873163.1768708989337"
+Cc: Johannes Berg <johannes.berg@intel.com>
+Subject: [PATCH iwlwifi] wifi: mac80211: don't increment crypto_tx_tailroom_needed_cnt twice
+Date: Sun, 18 Jan 2026 09:28:29 +0200
+Message-Id: <20260118092821.4ca111fddcda.Id6e554f4b1c83760aa02d5a9e4e3080edb197aa2@changeid>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Message-ID: <1caf4a7e.85a.19bcf45619a.Coremail.18093582010@163.com>
-X-Coremail-Locale: zh_CN
-X-CM-TRANSID:cygvCgBHz3N+W2xphiJZAA--.3280W
-X-CM-SenderInfo: rpryimatvyjimrqbiqqrwthudrp/xtbC6x5rPWlsW37JuQAA3z
-X-Coremail-Antispam: 1U5529EdanIXcx71UUUUU7vcSsGvfC2KfnxnUU==
+Organization: Intel Israel (74) Limited
+Content-Transfer-Encoding: 8bit
 
-------=_Part_8808_1854873163.1768708989337
-Content-Type: multipart/alternative; 
-	boundary="----=_Part_8810_1121066424.1768708989338"
+In reconfig, in case the driver asks to disconnect during the reconfig,
+all the keys of the interface are marked as tainted.
+Then ieee80211_reenable_keys will loop over all the interface keys, and
+for each one it will
+a) increment crypto_tx_tailroom_needed_cnt
+b) call ieee80211_key_enable_hw_accel, which in turn will detect that
+this key is tainted, so it will mark it as "not in hardware", which is
+paired with crypto_tx_tailroom_needed_cnt incrementation, so we get two
+incrementations for each tainted key.
+Then we get a warning in ieee80211_free_keys.
 
-------=_Part_8810_1121066424.1768708989338
-Content-Type: text/plain; charset=GBK
-Content-Transfer-Encoding: base64
+To fix it, don't increment the count in ieee80211_reenable_keys for
+tainted keys
 
-SGVsbG8gbXQ3NiBtYWludGFpbmVycyBhbmQgbGludXgtd2lyZWxlc3MgY29tbXVuaXR5LAoKSSBh
-bSByZXBvcnRpbmcgYSBidWcgd2hlcmUgdGhlIGBtdDc5MjFlYCBkcml2ZXIgY29uc2lzdGVudGx5
-IGxvYWRzIGFuIGFibm9ybWFsIGZpcm13YXJlIHZlcnNpb24gb24gbXkgTWVkaWFUZWsgTVQ3OTIx
-IFdpLUZpIGFkYXB0ZXIsIGxlYWRpbmcgdG8gZnJlcXVlbnQgdXBsb2FkL2Rvd25sb2FkIHNwZWVk
-IGRyb3BzIHRvIHplcm8uCgojIyMgMS4gUHJvYmxlbSBEZXNjcmlwdGlvbgotICoqSGFyZHdhcmUq
-KjogVGhpbmtQYWQgVDE0IEdlbiAyYSB3aXRoIE1lZGlhVGVrIE1UNzkyMSAoUENJIElEOiAxNGMz
-Ojc5NjEpLgotICoqU29mdHdhcmUqKjogQXJjaCBMaW51eCB3aXRoIGtlcm5lbCBgNi4xMi42NS0x
-LWx0c2AgKGFsc28gcmVwcm9kdWNpYmxlIG9uIGBsaW51eC16ZW5gKS4KLSAqKlN5bXB0b20qKjog
-V2ktRmkgY29ubmVjdHMgYnV0IGZyZXF1ZW50bHkgc3RhbGxzIChzcGVlZCBkcm9wcyB0byAwIEIv
-cykuIFRoZSBkcml2ZXIgbG9ncyBzaG93IGl0IGlzIHVzaW5nIGZpcm13YXJlIHZlcnNpb24gYF9f
-X18wMTAwMDBgIHdpdGggYSBmdXR1cmUgYnVpbGQgdGltZSBgMjAyNTA2MjUxNTM3MDNgLiBOb3Jt
-YWwgZXh0ZXJuYWwgZmlybXdhcmUgZmlsZXMgYXJlIGlnbm9yZWQuCgojIyMgMi4gRGlhZ25vc3Rp
-YyBFdmlkZW5jZQotIFRoZSBhYm5vcm1hbCBmaXJtd2FyZSB2ZXJzaW9uIGFwcGVhcnMgaW4gZG1l
-c2cgaW1tZWRpYXRlbHkgYWZ0ZXIgZHJpdmVyIGxvYWQuCi0gYG1vZGluZm8gbXQ3OTIxZWAgc2hv
-d3MgdGhlIGRyaXZlciBpcyBjb25maWd1cmVkIGZvciBNVDc5MjIvTVQ3OTYxIGZpcm13YXJlIG9u
-bHksIHdpdGggbm8gZW50cnkgZm9yIE1UNzkyMS4KLSBXZSBoYXZlIGNvbmZpcm1lZCB0aGF0IHRo
-ZSBjb3JyZWN0IE1UNzk2MSBmaXJtd2FyZSBmaWxlcyBleGlzdCBpbiBgL2xpYi9maXJtd2FyZS9t
-ZWRpYXRlay9gIGFuZCBhcmUgcHJvcGVybHkgY29tcHJlc3NlZC4KLSBBdHRlbXB0cyB0byBzcGVj
-aWZ5IGZpcm13YXJlIHZpYSBtb2R1bGUgcGFyYW1ldGVycyAoYGZ3X25hbWVgLCBgd21md19uYW1l
-YCkgZmFpbGVkIGJlY2F1c2UgdGhlc2UgcGFyYW1ldGVycyBhcmUgbm90IHN1cHBvcnRlZCBieSB0
-aGUgY3VycmVudCBkcml2ZXIuCi0gKipDcnVjaWFsbHksIGEgZnVsbC1zeXN0ZW0gc2VhcmNoIGNv
-bmZpcm1zIHRoYXQgdGhlIHN0cmluZyBgX19fXzAxMDAwMGAgZG9lcyBOT1QgZXhpc3QgaW4gYW55
-IGtlcm5lbCBtb2R1bGUgZmlsZSoqLCBydWxpbmcgb3V0IHNpbXBsZSBidWlsdC1pbiBmaXJtd2Fy
-ZS4gVGhpcyBzdWdnZXN0cyBhIGRyaXZlciBsb2dpYyBidWcgaW4gdmVyc2lvbiByZXBvcnRpbmcg
-b3IgZmFsbGJhY2suCgojIyMgMy4gU3RlcHMgdG8gUmVwcm9kdWNlCjEuIEJvb3QgQXJjaCBMaW51
-eCBvbiBhIFRoaW5rUGFkIFQxNCBHZW4gMmEgd2l0aCBNVDc5MjEuCjIuIENoZWNrIGBzdWRvIGRt
-ZXNnIHwgZ3JlcCAtaSAiV00gRmlybXdhcmUgVmVyc2lvbiJgLgozLiBPYnNlcnZlIHRoZSBhYm5v
-cm1hbCB2ZXJzaW9uIGBfX19fMDEwMDAwYC4KCiMjIyA0LiBXaGF0IGhhcyBiZWVuIHRyaWVkIChh
-bmQgZmFpbGVkKQotIFBsYWNpbmcgdmFyaW91cyBNVDc5NjEgZmlybXdhcmUgZmlsZXMgd2l0aCBk
-aWZmZXJlbnQgbmFtZXMgYW5kIGNyZWF0aW5nIHN5bWxpbmtzLgotIEFkZGluZyBgZGlzYWJsZV9h
-c3BtPTFgIGFuZCBhdHRlbXB0aW5nIGZpcm13YXJlIHBhdGggcGFyYW1ldGVycyB2aWEgYG1vZHBy
-b2JlLmRgLgotIFN3aXRjaGluZyBiZXR3ZWVuIGBsaW51eC16ZW5gLCBgbGludXhgLCBhbmQgYGxp
-bnV4LWx0c2Aga2VybmVscy4KLSBDb21wbGV0ZWx5IHJlaW5zdGFsbGluZyBgbGludXgtZmlybXdh
-cmVgIGFuZCBgbGludXgtZmlybXdhcmUtbWVkaWF0ZWtgIHBhY2thZ2VzLgoKIyMjIDUuIFJlcXVl
-c3QKQ291bGQgeW91IHBsZWFzZSBpbnZlc3RpZ2F0ZToKMS4gV2h5IGRvZXMgdGhlIGRyaXZlciBy
-ZXBvcnQgYW5kIHBvc3NpYmx5IHVzZSB0aGlzIGFibm9ybWFsIGZpcm13YXJlIHZlcnNpb24/CjIu
-IElzIHRoZSBkcml2ZXIncyBmaXJtd2FyZSBjb25maWd1cmF0aW9uIGZvciBQQ0kgSUQgMTRjMzo3
-OTYxIGluY29tcGxldGUgb3IgaW5jb3JyZWN0PwozLiBXaGF0IGlzIHRoZSBjb3JyZWN0IHdheSB0
-byBtYWtlIHRoZSBkcml2ZXIgbG9hZCB0aGUgcHJvcGVyIGZpcm13YXJlIGZvciB0aGlzIGRldmlj
-ZT8KClRoZSBmdWxsIGRpYWdub3N0aWMgbG9ncyBhcmUgYXR0YWNoZWQgYmVsb3cgZm9yIHlvdXIg
-cmVmZXJlbmNlLgoKVGhhbmsgeW91IGZvciB5b3VyIHRpbWUgYW5kIHdvcmsgb24gdGhlIG10NzYg
-ZHJpdmVyLgoKRnVsbCB1bnByb2Nlc3NlZCBkbWVzZyBsb2dzIGFyZSBhdHRhY2hlZCBhcyBhIHRl
-eHQgZmlsZS4KCkJlc3QgcmVnYXJkcywKW3lpemhlXQ==
-------=_Part_8810_1121066424.1768708989338
-Content-Type: text/html; charset=GBK
-Content-Transfer-Encoding: base64
+Reviewed-by: Johannes Berg <johannes.berg@intel.com>
+Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
+---
+ net/mac80211/key.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-PGRpdiBkYXRhLW50ZXM9Im50ZXNfbWFpbF9ib2R5X3Jvb3QiIHN0eWxlPSJsaW5lLWhlaWdodDox
-Ljc7Y29sb3I6IzAwMDAwMDtmb250LXNpemU6MTRweDtmb250LWZhbWlseTpBcmlhbCI+PGRpdiBz
-dHlsZT0ibWFyZ2luOjA7Ij5IZWxsbyBtdDc2IG1haW50YWluZXJzIGFuZCBsaW51eC13aXJlbGVz
-cyBjb21tdW5pdHksPGJyPjxicj5JIGFtIHJlcG9ydGluZyBhIGJ1ZyB3aGVyZSB0aGUgYG10Nzky
-MWVgIGRyaXZlciBjb25zaXN0ZW50bHkgbG9hZHMgYW4gYWJub3JtYWwgZmlybXdhcmUgdmVyc2lv
-biBvbiBteSBNZWRpYVRlayBNVDc5MjEgV2ktRmkgYWRhcHRlciwgbGVhZGluZyB0byBmcmVxdWVu
-dCB1cGxvYWQvZG93bmxvYWQgc3BlZWQgZHJvcHMgdG8gemVyby48YnI+PGJyPiMjIyAxLiBQcm9i
-bGVtIERlc2NyaXB0aW9uPGJyPi0gKipIYXJkd2FyZSoqOiBUaGlua1BhZCBUMTQgR2VuIDJhIHdp
-dGggTWVkaWFUZWsgTVQ3OTIxIChQQ0kgSUQ6IDE0YzM6Nzk2MSkuPGJyPi0gKipTb2Z0d2FyZSoq
-OiBBcmNoIExpbnV4IHdpdGgga2VybmVsIGA2LjEyLjY1LTEtbHRzYCAoYWxzbyByZXByb2R1Y2li
-bGUgb24gYGxpbnV4LXplbmApLjxicj4tICoqU3ltcHRvbSoqOiBXaS1GaSBjb25uZWN0cyBidXQg
-ZnJlcXVlbnRseSBzdGFsbHMgKHNwZWVkIGRyb3BzIHRvIDAgQi9zKS4gVGhlIGRyaXZlciBsb2dz
-IHNob3cgaXQgaXMgdXNpbmcgZmlybXdhcmUgdmVyc2lvbiBgX19fXzAxMDAwMGAgd2l0aCBhIGZ1
-dHVyZSBidWlsZCB0aW1lIGAyMDI1MDYyNTE1MzcwM2AuIE5vcm1hbCBleHRlcm5hbCBmaXJtd2Fy
-ZSBmaWxlcyBhcmUgaWdub3JlZC48YnI+PGJyPiMjIyAyLiBEaWFnbm9zdGljIEV2aWRlbmNlPGJy
-Pi0gVGhlIGFibm9ybWFsIGZpcm13YXJlIHZlcnNpb24gYXBwZWFycyBpbiBkbWVzZyBpbW1lZGlh
-dGVseSBhZnRlciBkcml2ZXIgbG9hZC48YnI+LSBgbW9kaW5mbyBtdDc5MjFlYCBzaG93cyB0aGUg
-ZHJpdmVyIGlzIGNvbmZpZ3VyZWQgZm9yIE1UNzkyMi9NVDc5NjEgZmlybXdhcmUgb25seSwgd2l0
-aCBubyBlbnRyeSBmb3IgTVQ3OTIxLjxicj4tIFdlIGhhdmUgY29uZmlybWVkIHRoYXQgdGhlIGNv
-cnJlY3QgTVQ3OTYxIGZpcm13YXJlIGZpbGVzIGV4aXN0IGluIGAvbGliL2Zpcm13YXJlL21lZGlh
-dGVrL2AgYW5kIGFyZSBwcm9wZXJseSBjb21wcmVzc2VkLjxicj4tIEF0dGVtcHRzIHRvIHNwZWNp
-ZnkgZmlybXdhcmUgdmlhIG1vZHVsZSBwYXJhbWV0ZXJzIChgZndfbmFtZWAsIGB3bWZ3X25hbWVg
-KSBmYWlsZWQgYmVjYXVzZSB0aGVzZSBwYXJhbWV0ZXJzIGFyZSBub3Qgc3VwcG9ydGVkIGJ5IHRo
-ZSBjdXJyZW50IGRyaXZlci48YnI+LSAqKkNydWNpYWxseSwgYSBmdWxsLXN5c3RlbSBzZWFyY2gg
-Y29uZmlybXMgdGhhdCB0aGUgc3RyaW5nIGBfX19fMDEwMDAwYCBkb2VzIE5PVCBleGlzdCBpbiBh
-bnkga2VybmVsIG1vZHVsZSBmaWxlKiosIHJ1bGluZyBvdXQgc2ltcGxlIGJ1aWx0LWluIGZpcm13
-YXJlLiBUaGlzIHN1Z2dlc3RzIGEgZHJpdmVyIGxvZ2ljIGJ1ZyBpbiB2ZXJzaW9uIHJlcG9ydGlu
-ZyBvciBmYWxsYmFjay48YnI+PGJyPiMjIyAzLiBTdGVwcyB0byBSZXByb2R1Y2U8YnI+MS4gQm9v
-dCBBcmNoIExpbnV4IG9uIGEgVGhpbmtQYWQgVDE0IEdlbiAyYSB3aXRoIE1UNzkyMS48YnI+Mi4g
-Q2hlY2sgYHN1ZG8gZG1lc2cgfCBncmVwIC1pICJXTSBGaXJtd2FyZSBWZXJzaW9uImAuPGJyPjMu
-IE9ic2VydmUgdGhlIGFibm9ybWFsIHZlcnNpb24gYF9fX18wMTAwMDBgLjxicj48YnI+IyMjIDQu
-IFdoYXQgaGFzIGJlZW4gdHJpZWQgKGFuZCBmYWlsZWQpPGJyPi0gUGxhY2luZyB2YXJpb3VzIE1U
-Nzk2MSBmaXJtd2FyZSBmaWxlcyB3aXRoIGRpZmZlcmVudCBuYW1lcyBhbmQgY3JlYXRpbmcgc3lt
-bGlua3MuPGJyPi0gQWRkaW5nIGBkaXNhYmxlX2FzcG09MWAgYW5kIGF0dGVtcHRpbmcgZmlybXdh
-cmUgcGF0aCBwYXJhbWV0ZXJzIHZpYSBgbW9kcHJvYmUuZGAuPGJyPi0gU3dpdGNoaW5nIGJldHdl
-ZW4gYGxpbnV4LXplbmAsIGBsaW51eGAsIGFuZCBgbGludXgtbHRzYCBrZXJuZWxzLjxicj4tIENv
-bXBsZXRlbHkgcmVpbnN0YWxsaW5nIGBsaW51eC1maXJtd2FyZWAgYW5kIGBsaW51eC1maXJtd2Fy
-ZS1tZWRpYXRla2AgcGFja2FnZXMuPGJyPjxicj4jIyMgNS4gUmVxdWVzdDxicj5Db3VsZCB5b3Ug
-cGxlYXNlIGludmVzdGlnYXRlOjxicj4xLiBXaHkgZG9lcyB0aGUgZHJpdmVyIHJlcG9ydCBhbmQg
-cG9zc2libHkgdXNlIHRoaXMgYWJub3JtYWwgZmlybXdhcmUgdmVyc2lvbj88YnI+Mi4gSXMgdGhl
-IGRyaXZlcidzIGZpcm13YXJlIGNvbmZpZ3VyYXRpb24gZm9yIFBDSSBJRCAxNGMzOjc5NjEgaW5j
-b21wbGV0ZSBvciBpbmNvcnJlY3Q/PGJyPjMuIFdoYXQgaXMgdGhlIGNvcnJlY3Qgd2F5IHRvIG1h
-a2UgdGhlIGRyaXZlciBsb2FkIHRoZSBwcm9wZXIgZmlybXdhcmUgZm9yIHRoaXMgZGV2aWNlPzxi
-cj48YnI+VGhlIGZ1bGwgZGlhZ25vc3RpYyBsb2dzIGFyZSBhdHRhY2hlZCBiZWxvdyBmb3IgeW91
-ciByZWZlcmVuY2UuPGJyPjxicj5UaGFuayB5b3UgZm9yIHlvdXIgdGltZSBhbmQgd29yayBvbiB0
-aGUgbXQ3NiBkcml2ZXIuPGJyPjxicj48c3Bhbj5GdWxsIHVucHJvY2Vzc2VkIGRtZXNnIGxvZ3Mg
-YXJlIGF0dGFjaGVkIGFzIGEgdGV4dCBmaWxlLjwvc3Bhbj48YnI+PGJyPkJlc3QgcmVnYXJkcyw8
-YnI+W3lpemhlXTwvZGl2PjwvZGl2Pg==
-------=_Part_8810_1121066424.1768708989338--
-
-------=_Part_8808_1854873163.1768708989337
-Content-Type: text/plain; name=mt7921_full_dmesg.log; x-cm-securityLevel=0
-Content-Transfer-Encoding: base64
-Content-Disposition: attachment; filename="mt7921_full_dmesg.log"
-
-WyAgICAwLjEyNjY0NF0gU3BlY3RyZSBWMiA6IEVuYWJsaW5nIFJlc3RyaWN0ZWQgU3BlY3VsYXRp
-b24gZm9yIGZpcm13YXJlIGNhbGxzClsgICAgMS4xNjExNTldIHhoY2ktcGNpLXJlbmVzYXMgMDAw
-MDowNjowMC4wOiBmYWlsZWQgdG8gbG9hZCBmaXJtd2FyZSByZW5lc2FzX3VzYl9mdy5tZW0sIGZh
-bGxiYWNrIHRvIFJPTQpbICAgIDMuNDEwNDIyXSBbZHJtXSBMb2FkaW5nIERNVUIgZmlybXdhcmUg
-dmlhIFBTUDogdmVyc2lvbj0weDAxMDEwMDJCClsgICAgMy40MTA5NTJdIFtkcm1dIEZvdW5kIFZD
-TiBmaXJtd2FyZSBWZXJzaW9uIEVOQzogMS4yNCBERUM6IDggVkVQOiAwIFJldmlzaW9uOiA5Clsg
-ICAgNS41MjI4NTldIHN5c3RlbWRbMV06IENsZWFyIFN0YWxlIEhpYmVybmF0ZSBTdG9yYWdlIElu
-Zm8gd2FzIHNraXBwZWQgYmVjYXVzZSBvZiBhbiB1bm1ldCBjb25kaXRpb24gY2hlY2sgKENvbmRp
-dGlvblBhdGhFeGlzdHM9L3N5cy9maXJtd2FyZS9lZmkvZWZpdmFycy9IaWJlcm5hdGVMb2NhdGlv
-bi04Y2YyNjQ0Yi00YjBiLTQyOGYtOTM4Ny02ZDg3NjA1MGRjNjcpLgpbICAgIDYuMDgzNDE0XSBV
-c2luZyBzMmlkbGUgcXVpcmsgdG8gYXZvaWQgVDE0IEdlbjIgQU1EIHBsYXRmb3JtIGZpcm13YXJl
-IGJ1ZwpbICAgIDYuMjA0NDA2XSBwbGF0Zm9ybSByZWd1bGF0b3J5LjA6IERpcmVjdCBmaXJtd2Fy
-ZSBsb2FkIGZvciByZWd1bGF0b3J5LmRiIGZhaWxlZCB3aXRoIGVycm9yIC0yClsgICAgNi40NjE5
-ODRdIG10NzkyMWU6IHVua25vd24gcGFyYW1ldGVyICdmd19uYW1lJyBpZ25vcmVkClsgICAgNi40
-NjE5ODhdIG10NzkyMWU6IHVua25vd24gcGFyYW1ldGVyICd3bWZ3X25hbWUnIGlnbm9yZWQKWyAg
-ICA2LjQ2MjA3NV0gbXQ3OTIxZSAwMDAwOjAzOjAwLjA6IGVuYWJsaW5nIGRldmljZSAoMDAwMCAt
-PiAwMDAyKQpbICAgIDYuNDYzODEyXSBtdDc5MjFlIDAwMDA6MDM6MDAuMDogZGlzYWJsaW5nIEFT
-UE0gIEwxClsgICAgNi40NzA0NDRdIG10NzkyMWUgMDAwMDowMzowMC4wOiBBU0lDIHJldmlzaW9u
-OiA3OTYxMDAxMApbICAgIDYuNTUwNjUzXSBtdDc5MjFlIDAwMDA6MDM6MDAuMDogSFcvU1cgVmVy
-c2lvbjogMHg4YTEwOGExMCwgQnVpbGQgVGltZTogMjAyNTA2MjUxNTM2MjBhClsgICAgNi41NjIy
-NzJdIG10NzkyMWUgMDAwMDowMzowMC4wOiBXTSBGaXJtd2FyZSBWZXJzaW9uOiBfX19fMDEwMDAw
-LCBCdWlsZCBUaW1lOiAyMDI1MDYyNTE1MzcwMwpbICAgIDcuMzk5MTUwXSBtdDc5MjFlIDAwMDA6
-MDM6MDAuMCB3bHAzczA6IHJlbmFtZWQgZnJvbSB3bGFuMApbICAgIDcuNzc2NTUwXSBwc21vdXNl
-IHNlcmlvMjogdHJhY2twb2ludDogRWxhbiBUcmFja1BvaW50IGZpcm13YXJlOiAweDEyLCBidXR0
-b25zOiAzLzMK
-------=_Part_8808_1854873163.1768708989337--
+diff --git a/net/mac80211/key.c b/net/mac80211/key.c
+index d5da7ccea66e..04c8809173d7 100644
+--- a/net/mac80211/key.c
++++ b/net/mac80211/key.c
+@@ -987,7 +987,8 @@ void ieee80211_reenable_keys(struct ieee80211_sub_if_data *sdata)
+ 
+ 	if (ieee80211_sdata_running(sdata)) {
+ 		list_for_each_entry(key, &sdata->key_list, list) {
+-			increment_tailroom_need_count(sdata);
++			if (!(key->flags & KEY_FLAG_TAINTED))
++				increment_tailroom_need_count(sdata);
+ 			ieee80211_key_enable_hw_accel(key);
+ 		}
+ 	}
+-- 
+2.34.1
 
 
