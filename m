@@ -1,126 +1,99 @@
-Return-Path: <linux-wireless+bounces-30951-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-30953-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 053C1D3A661
-	for <lists+linux-wireless@lfdr.de>; Mon, 19 Jan 2026 12:10:22 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9C3C6D3A6FE
+	for <lists+linux-wireless@lfdr.de>; Mon, 19 Jan 2026 12:37:20 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id D81363078D90
-	for <lists+linux-wireless@lfdr.de>; Mon, 19 Jan 2026 11:06:29 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id CEFBA30581FE
+	for <lists+linux-wireless@lfdr.de>; Mon, 19 Jan 2026 11:37:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1692B3590BF;
-	Mon, 19 Jan 2026 11:06:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E9B203128CA;
+	Mon, 19 Jan 2026 11:37:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b="R+zH1m9S"
+	dkim=pass (1024-bit key) header.d=seu.edu.cn header.i=@seu.edu.cn header.b="VmA/Kzg9"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from sipsolutions.net (s3.sipsolutions.net [168.119.38.16])
+Received: from mail-m49197.qiye.163.com (mail-m49197.qiye.163.com [45.254.49.197])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9FAC82FDC52
-	for <linux-wireless@vger.kernel.org>; Mon, 19 Jan 2026 11:06:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=168.119.38.16
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4D1A023EA94;
+	Mon, 19 Jan 2026 11:37:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.254.49.197
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768820789; cv=none; b=B8AIj4g9rz3/EYQSNFu3rhUYvGqKo6t9ZCAFy326P6AlfDxBmNune01dPikF8dF1rsyFbqYh+y1EDGzqmWt4jHsJw39Cfg+Es06DLxMRUIHD0c88Prt27M3EYDtwjeZJrEGT3kF2TLGZ1p6ZVqFUV/bQ6IvR5jtRV1wP67k1EQA=
+	t=1768822625; cv=none; b=uOX+yPpx04VwBk9rbKn1UOL9wL9spynRSvJ/FTNR3OCzqXHzgG/D3dBdT3lHsIJNf98qJerYPzKhwDqVON3JC4k3TPHTbbNCyV5lZCwh44tVqItHVRhttcg/ss8fp7HfpU7Iy0heZp8DvX0TQSA4Ec/OtFqnACyGz7GnVRLpm4s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768820789; c=relaxed/simple;
-	bh=fOlQGPrBFEHwIN3E1fGGZt9NqhG5Ej+OGlJro0xWSrY=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=cRPp6yRuf5iwrPRrotd078kJtFSxDF9ePxAsk6KDDPAXmZEGMpskeuODFBkIArbQj7PFPCEvuTXSIcJy8iwCRxMsTFIERoPJMwTW/hQCFQ961equskhyXGbq4wcFk8OiSbQE9kq+90RaPVf5wYKMKLiH9rt31yFZElN2iH1h8Dk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net; spf=pass smtp.mailfrom=sipsolutions.net; dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b=R+zH1m9S; arc=none smtp.client-ip=168.119.38.16
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sipsolutions.net
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=sipsolutions.net; s=mail; h=MIME-Version:Content-Transfer-Encoding:
-	Content-Type:References:In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender
-	:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
-	Resent-Cc:Resent-Message-ID; bh=h6yWXAkElAZKSCNVALJur3hefTptdn5YP9bY0AvNYzQ=;
-	t=1768820787; x=1770030387; b=R+zH1m9S5/F0f0Tdbyk8ZEcemK6Y8/ejBPe0LymLJELcoP5
-	iAFGHYk94roJG3NdvQqFHlUYV+DiL3/98cTtP09BZu2vUNTn6TI65Fk/YWs85Ci7uIZWS59qyIAMA
-	0nFUkbYuOOqCuKGKQUE/GmhMNn8QHG+QlCTjzZUHnndq8QqdGREtrmDRe2Af9x0/ZGB+aVhdTzCu2
-	xKlUoi4O7zE4uaoMnQhopyaZbBtnfuTF9z/HDIt9QVgmxszEpLJxrzEIK3zNgOjomH5QbYVefIsmf
-	x7EtHCmoIGFhFHUBxVBbbsH6sY3/Y5cwedfRxUSCuBxo84+ryre5DY5m1hUPOjSw==;
-Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
-	(Exim 4.98.2)
-	(envelope-from <johannes@sipsolutions.net>)
-	id 1vhn5V-0000000FtrX-0mHB;
-	Mon, 19 Jan 2026 12:06:25 +0100
-Message-ID: <9c79c606f1e1a2ae0dfa3c97aa4af7c83684901e.camel@sipsolutions.net>
-Subject: Re: [PATCH] wifi: wlcore: avoid oops when reading tsf from debugfs
-From: Johannes Berg <johannes@sipsolutions.net>
-To: Peter =?ISO-8859-1?Q?=C5strand?= <astrand@lysator.liu.se>
-Cc: linux-wireless@vger.kernel.org
-Date: Mon, 19 Jan 2026 12:06:24 +0100
-In-Reply-To: <9945364c-ec4c-e2c9-a9cc-884e64b629d3@lysator.liu.se> (sfid-20260119_115908_210575_070FC903)
-References: <ac98f15b-4f6e-95c4-534d-583419068ce0@lysator.liu.se>
-	  (sfid-20260116_163710_192579_DC8B9783) <b408ac23d51bec80048c35055199176bd0377879.camel@sipsolutions.net>
-	 <9945364c-ec4c-e2c9-a9cc-884e64b629d3@lysator.liu.se>
-	 (sfid-20260119_115908_210575_070FC903)
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.56.2 (3.56.2-2.fc42) 
+	s=arc-20240116; t=1768822625; c=relaxed/simple;
+	bh=p/T6ah1eGdcRY1k71f4XxfnYZEvlcwWGnDLchs96p0M=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=YsCbb8BZAiSYRcokJoNXNFKXAYHLEiRs8DP7y3nhqC3hEcmRV00BUKrHj5kgsdLHPwREO83dSFlMb8drVTUxuGMnoeZ1+WCs8ye1PRcQLSPoMRHsjSIChyfz71FIOguUdrJU8ut7HuHBYO3H/8+8S2DPBsGHu/coTYlt/O6pn/w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=seu.edu.cn; spf=pass smtp.mailfrom=seu.edu.cn; dkim=pass (1024-bit key) header.d=seu.edu.cn header.i=@seu.edu.cn header.b=VmA/Kzg9; arc=none smtp.client-ip=45.254.49.197
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=seu.edu.cn
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=seu.edu.cn
+Received: from LAPTOP-N070L597.localdomain (unknown [222.191.246.242])
+	by smtp.qiye.163.com (Hmail) with ESMTP id 31281983f;
+	Mon, 19 Jan 2026 19:31:48 +0800 (GMT+08:00)
+From: Zilin Guan <zilin@seu.edu.cn>
+To: chunkeey@googlemail.com
+Cc: johannes.berg@intel.com,
+	quic_rdevanat@quicinc.com,
+	linux-wireless@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Zilin Guan <zilin@seu.edu.cn>
+Subject: [PATCH] wifi: p54: Fix memory leak in p54_beacon_update()
+Date: Mon, 19 Jan 2026 11:31:45 +0000
+Message-Id: <20260119113145.1433315-1-zilin@seu.edu.cn>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-malware-bazaar: not-scanned
+Content-Transfer-Encoding: 8bit
+X-HM-Tid: 0a9bd6067c3f03a1kunm434330ac1b48b6
+X-HM-MType: 10
+X-HM-Spam-Status: e1kfGhgUHx5ZQUpXWQgPGg8OCBgUHx5ZQUlOS1dZFg8aDwILHllBWSg2Ly
+	tZV1koWUFITzdXWS1ZQUlXWQ8JGhUIEh9ZQVlDT0kYVk5LHh5JTElCT0hPT1YeHw5VEwETFhoSFy
+	QUDg9ZV1kYEgtZQVlJSUlVSkJKVUlPTVVJT0lZV1kWGg8SFR0UWUFZT0tIVUpLSUhOQ0NVSktLVU
+	tZBg++
+DKIM-Signature: a=rsa-sha256;
+	b=VmA/Kzg9BuWupQX/n56853A+XiROBJTkpANwQ2YLCg3RtKQXPYGuR3DvPDWXekxZJaw2GIEBvZd/hTy6tppUiVpPLuTPAfMKo8WUgMiMS3pRpJ76Zais4zSTZOav8H/KbqoF2viK/h/PKiBV8mucSGkXpQbFUf+m0iOU6GfMUVg=; c=relaxed/relaxed; s=default; d=seu.edu.cn; v=1;
+	bh=53tL9ZWFTwbeAzf/8P+65IpatcAokVrvM7G2LLIPHZI=;
+	h=date:mime-version:subject:message-id:from;
 
-On Mon, 2026-01-19 at 11:59 +0100, Peter =C3=85strand wrote:
+In p54_beacon_update(), beacon is allocated via ieee80211_beacon_get().
+If p54_beacon_format_ie_tim() fails, the function returns immediately
+without freeing the allocated beacon skb, leading to a memory leak.
 
-> Thanks. Yes, I was a bit unsure of this solution. It is easy to trigger=
-=20
-> with "cat" though:
->=20
-> /sys/kernel/debug/ieee80211/phy0/netdev:wlan0# cat tsf
-> [  182.282540] BUG: scheduling while atomic: cat/269/0x00000002
-> [  182.288304] Modules linked in: cts wlcore_sdio wl18xx wlcore mac80211 =
-cfg80211
-> [  182.295785] CPU: 0 PID: 269 Comm: cat Tainted: G        W          6.6=
-.52-g0cdede7dcaea #1
-> [  182.304695] Hardware name: Freescale i.MX6 Ultralite (Device Tree)
-> [  182.310902]  unwind_backtrace from show_stack+0x10/0x14
-> [  182.316188]  show_stack from dump_stack_lvl+0x40/0x4c
-> [  182.321293]  dump_stack_lvl from __schedule_bug+0x54/0x68
-> [  182.326758]  __schedule_bug from __schedule+0x5ac/0x728
-> [  182.332030]  __schedule from schedule+0x5c/0xb8
-> [  182.336593]  schedule from schedule_hrtimeout_range_clock+0x10c/0x184
-> [  182.343074]  schedule_hrtimeout_range_clock from schedule_hrtimeout_ra=
-nge+0x1c/0x24
-> [  182.350780]  schedule_hrtimeout_range from usleep_range_state+0x5c/0x8=
-8
-> [  182.357438]  usleep_range_state from sdhci_start_signal_voltage_switch=
-+0xc4/0x2c0
-> [  182.364971]  sdhci_start_signal_voltage_switch from sdhci_runtime_resu=
-me_host+0x7c/0x268
-> [  182.373106]  sdhci_runtime_resume_host from sdhci_esdhc_runtime_resume=
-+0x168/0x1a0
-> [  182.380727]  sdhci_esdhc_runtime_resume from __rpm_callback+0x3c/0x168
-> [  182.387315]  __rpm_callback from rpm_callback+0x28/0x54
-> [  182.392590]  rpm_callback from rpm_resume+0x438/0x5ec
-> [  182.397690]  rpm_resume from __pm_runtime_resume+0x34/0x6c
-> [  182.403226]  __pm_runtime_resume from __mmc_claim_host+0x1a8/0x1f4
-> [  182.409460]  __mmc_claim_host from wl12xx_sdio_raw_write+0x4c/0x15c [w=
-lcore_sdio]
-> [  182.417019]  wl12xx_sdio_raw_write [wlcore_sdio] from wlcore_runtime_r=
-esume+0xc8/0x218 [wlcore]
-> [  182.426200]  wlcore_runtime_resume [wlcore] from __rpm_callback+0x3c/0=
-x168
-> [  182.433441]  __rpm_callback from rpm_callback+0x28/0x54
-> [  182.438729]  rpm_callback from rpm_resume+0x438/0x5ec
-> [  182.443835]  rpm_resume from __pm_runtime_resume+0x34/0x6c
-> [  182.449375]  __pm_runtime_resume from wl1271_op_get_tsf+0x70/0x140 [wl=
-core]
-> [  182.456685]  wl1271_op_get_tsf [wlcore] from ieee80211_if_fmt_tsf+0x1c=
-/0x44 [mac80211]
+Since no other references to this memory exist, it must be freed locally
+before returning the error. Fix this by freeing the buffer using
+dev_kfree_skb_any() in the error path.
 
-Looking at this, I think you have a much more general problem in this
-driver - __pm_runtime_resume() will always do wlcore_runtime_resume()
-under spinlock, and basically everything does that, so I don't see how
-this is ever safe in the driver?
+Compile tested only. Issue found using a prototype static analysis tool
+and code review.
 
-It may be that normally somehow it doesn't get into sdhci's rpm_resume?
-But at best that's very fragile?
+Fixes: 0ac0d6cedf61 ("p54: Move mac80211 glue code")
+Signed-off-by: Zilin Guan <zilin@seu.edu.cn>
+---
+ drivers/net/wireless/intersil/p54/main.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-johannes
+diff --git a/drivers/net/wireless/intersil/p54/main.c b/drivers/net/wireless/intersil/p54/main.c
+index 2ec3655f1a9c..57a62108cbc3 100644
+--- a/drivers/net/wireless/intersil/p54/main.c
++++ b/drivers/net/wireless/intersil/p54/main.c
+@@ -143,8 +143,10 @@ static int p54_beacon_update(struct p54_common *priv,
+ 	if (!beacon)
+ 		return -ENOMEM;
+ 	ret = p54_beacon_format_ie_tim(beacon);
+-	if (ret)
++	if (ret) {
++		dev_kfree_skb_any(beacon);
+ 		return ret;
++	}
+ 
+ 	/*
+ 	 * During operation, the firmware takes care of beaconing.
+-- 
+2.34.1
+
 
