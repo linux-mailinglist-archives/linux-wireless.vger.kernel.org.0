@@ -1,98 +1,124 @@
-Return-Path: <linux-wireless+bounces-30961-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-30962-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id D0921D3AB6F
-	for <lists+linux-wireless@lfdr.de>; Mon, 19 Jan 2026 15:15:58 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2CBD1D3AD19
+	for <lists+linux-wireless@lfdr.de>; Mon, 19 Jan 2026 15:53:53 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 5440330019CE
-	for <lists+linux-wireless@lfdr.de>; Mon, 19 Jan 2026 14:15:58 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 6CDE93073F4E
+	for <lists+linux-wireless@lfdr.de>; Mon, 19 Jan 2026 14:48:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E2BBB3793C2;
-	Mon, 19 Jan 2026 14:15:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8B157358D1B;
+	Mon, 19 Jan 2026 14:48:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Lm8MzkEa"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail.lysator.liu.se (mail.lysator.liu.se [130.236.254.3])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 16C9D37A4B9
-	for <linux-wireless@vger.kernel.org>; Mon, 19 Jan 2026 14:15:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=130.236.254.3
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 67CAF20296E;
+	Mon, 19 Jan 2026 14:48:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768832156; cv=none; b=dvrL7GyrhClXbgMGbYZ204vFmNEjzpsJnsPY22WqxdQmcsTrWUcRr4rHFaJP/WldrGLZRFrOVY0dPti7E52z9MhG17cIlxEWvrawe8C4FjYAu7iBaPyxep19rHz/K7lAteEYFX86wlDvVjWBKNXFNv+BP3UTuVE4x/ZyPRREpB4=
+	t=1768834115; cv=none; b=Xl8JaBYSpYIGhllzAFx8vAVyASsZwWRmTFIgFyiW0U0+IELgnjGHY/KkJB7rs+O/2q+0mJ24mtQfJ5eSIEI3WrMSEgML/mKlVcsKHLt+tZrbQxvUsGIiuD3VFVQ/imN4aR17Ken8bpjxu0fvogpPp4vat6Fe9GyVl4Eo/tQ0dZg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768832156; c=relaxed/simple;
-	bh=bUApM/MWCbUyDgmm9yd6EeGfi8b0hSJhxIImlz4XuMA=;
-	h=Date:From:To:cc:Subject:In-Reply-To:Message-ID:References:
-	 MIME-Version:Content-Type; b=tEvYCXiTbiCmE/T3BYG/QKRklqQ+igfNoQEfW4ts69vHxodTeFeLSAtQUbhZ6zk5SpTTiE16yNDb5rCpo6+t1BFUC7vL4cbLPBMRjrjyi63fWWbtx8s2hRbNYf8f3rZ9TQoA3Uw8wRbsg2Vm433rxPizctNEKa+Lupgu1qvZ5O4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lysator.liu.se; spf=pass smtp.mailfrom=lysator.liu.se; arc=none smtp.client-ip=130.236.254.3
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lysator.liu.se
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lysator.liu.se
-Received: from mail.lysator.liu.se (localhost [127.0.0.1])
-	by mail.lysator.liu.se (Postfix) with ESMTP id C2C511DD6E
-	for <linux-wireless@vger.kernel.org>; Mon, 19 Jan 2026 15:15:51 +0100 (CET)
-Received: by mail.lysator.liu.se (Postfix, from userid 1004)
-	id A68B51DE5F; Mon, 19 Jan 2026 15:15:51 +0100 (CET)
-X-Spam-Level: 
-X-Spam-Score: -1.0
-Received: from sara (h-62-63-215-216.A163.priv.bahnhof.se [62.63.215.216])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
-	(No client certificate requested)
-	by mail.lysator.liu.se (Postfix) with ESMTPSA id DA0991DED2;
-	Mon, 19 Jan 2026 15:15:48 +0100 (CET)
-Date: Mon, 19 Jan 2026 15:15:48 +0100 (CET)
-From: =?UTF-8?Q?Peter_=C3=85strand?= <astrand@lysator.liu.se>
-To: Johannes Berg <johannes@sipsolutions.net>
-cc: linux-wireless@vger.kernel.org
-Subject: Re: [PATCH] wifi: wlcore: avoid oops when reading tsf from debugfs
-In-Reply-To: <9c79c606f1e1a2ae0dfa3c97aa4af7c83684901e.camel@sipsolutions.net>
-Message-ID: <e29e09b0-7ccb-4348-f28f-1bf71765ac74@lysator.liu.se>
-References: <ac98f15b-4f6e-95c4-534d-583419068ce0@lysator.liu.se>   (sfid-20260116_163710_192579_DC8B9783) <b408ac23d51bec80048c35055199176bd0377879.camel@sipsolutions.net>  <9945364c-ec4c-e2c9-a9cc-884e64b629d3@lysator.liu.se>  (sfid-20260119_115908_210575_070FC903)
- <9c79c606f1e1a2ae0dfa3c97aa4af7c83684901e.camel@sipsolutions.net>
+	s=arc-20240116; t=1768834115; c=relaxed/simple;
+	bh=rpf4djG1YwivRTw3kz95ojVFel/Zs+v9ASb+PAYa4ws=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=uM0qpAIC53mWYMzIR9bdtUCRhJ5pv5AXBVVlSKwkdb2ruEKYPgiAvvD6QUURru6yIQM6wCRI1i+OQZ8vUhNBBHJRxbGwYphnc4wvTLymAdK99lOC3GAorW8nGnJpzhKyibftXagEJpqXBI5czmXQpuhaaVrftG7BXd8vR8Vz09c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Lm8MzkEa; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CEA38C116C6;
+	Mon, 19 Jan 2026 14:48:32 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1768834115;
+	bh=rpf4djG1YwivRTw3kz95ojVFel/Zs+v9ASb+PAYa4ws=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=Lm8MzkEaZEcpiGN5UtqIG1o2qH4ffSsX2WHTIX86vsVTpENMkCKUaU2ila6nVU8F6
+	 Z9lHLC/B0a6z168I5M1M1J5UtisJlR3DW+aHugyDglfMSQprmVbVBgy8yYQTBwXRJH
+	 HZEsPEv2y/LLD4FEFPOMe/UOGB7WTsLbeOGPnmSb30rSrX6Yc8j7WGxtQ50Cllzu4G
+	 7K0bFQZF0wcdBFRwGRHTRrwMNVgPhuC547UA35/ZLUIETAuxIldbCccIQam07NsIj0
+	 RzRRDTVGb8bhvsQ0Dy4oC4ng0ue9hL4BEoAqi56IYwT1dcZxbW4T73DeJEldTI/Jj8
+	 MkWNZYHIPDg5g==
+Message-ID: <2bf8dfc9-148a-4914-86a9-ebbb871a6887@kernel.org>
+Date: Mon, 19 Jan 2026 15:48:31 +0100
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-X-Virus-Scanned: ClamAV using ClamSMTP
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v3 ath-current 2/2] dt-bindings: net: wireless:
+ ath11k-pci: deprecate 'firmware-name' property
+To: Miaoqing Pan <miaoqing.pan@oss.qualcomm.com>, jjohnson@kernel.org,
+ johannes@sipsolutions.net, robh@kernel.org, krzk+dt@kernel.org,
+ conor+dt@kernel.org
+Cc: ath11k@lists.infradead.org, linux-wireless@vger.kernel.org,
+ linux-kernel@vger.kernel.org, devicetree@vger.kernel.org
+References: <20260119140238.3360658-1-miaoqing.pan@oss.qualcomm.com>
+ <20260119140238.3360658-3-miaoqing.pan@oss.qualcomm.com>
+From: Krzysztof Kozlowski <krzk@kernel.org>
+Content-Language: en-US
+Autocrypt: addr=krzk@kernel.org; keydata=
+ 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 a/A=
+In-Reply-To: <20260119140238.3360658-3-miaoqing.pan@oss.qualcomm.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-> > Thanks. Yes, I was a bit unsure of this solution. It is easy to trigger 
-> > with "cat" though:
-> > 
-> > /sys/kernel/debug/ieee80211/phy0/netdev:wlan0# cat tsf
-> > [  182.282540] BUG: scheduling while atomic: cat/269/0x00000002
->... 
-> Looking at this, I think you have a much more general problem in this
-> driver - __pm_runtime_resume() will always do wlcore_runtime_resume()
-> under spinlock, and basically everything does that, so I don't see how
-> this is ever safe in the driver?
+On 19/01/2026 15:02, Miaoqing Pan wrote:
+> The firmware-name property was originally introduced to allow end-users
+> and integrators to select use-case-specific firmware for the WCN6855.
+> However, specifying firmware for an M.2 WLAN module in the Device Tree
+> is not appropriate. Instead, this functionality will be handled within
+> the ath11k driver. Therefore, the firmware-name property is now
+> deprecated.
 > 
-> It may be that normally somehow it doesn't get into sdhci's rpm_resume?
-> But at best that's very fragile?
+> Signed-off-by: Miaoqing Pan <miaoqing.pan@oss.qualcomm.com>
 
-The driver is kind of stable for us nowadays; on i.IMX6ULL. On large 
-systems, we see warnings such as:
 
-[ 5565.989689] wlcore: WARNING Unable to flush all TX buffers, timed out 
-(timeout 500 ms
+Is this the same patch as the one which received review/tag?
 
-[221279.491607] ieee80211 phy0: Hardware restart was requested
-
-[135493.012941] wlcore: WARNING corrupted packet in RX: status: 0x1 len: 
-112
-
-Also, TSF reception seems to be unstable, this has been reported here:
-https://e2e.ti.com/support/wireless-connectivity/wi-fi-group/wifi/f/wi-fi-forum/1602281/wl1837mod-large-toffset-in-mesh-network-kernel-oops-when-reading-sys-kernel-debug-ieee80211-phy0-netdev-wlan0_mesh-tsf/6186063
-
-But never any "scheduling while atomic" in normal use. Agree that driver 
-is probably fragile. Unfortunately I don't know enough about the Linux RPM 
-subsystem and this driver in order to attempt a real fix, but if there is 
-something that I can test, just let me know. (In addition to our custom 
-platform, we can also test on i.MX6 14x14 EVK and Beaglebone Green 
-Wireless.)
-
-Br,
-Peter
+Best regards,
+Krzysztof
 
