@@ -1,177 +1,165 @@
-Return-Path: <linux-wireless+bounces-30957-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-30958-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4602AD3AA8F
-	for <lists+linux-wireless@lfdr.de>; Mon, 19 Jan 2026 14:42:28 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id B3FECD3AB37
+	for <lists+linux-wireless@lfdr.de>; Mon, 19 Jan 2026 15:08:08 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 01F723042755
-	for <lists+linux-wireless@lfdr.de>; Mon, 19 Jan 2026 13:42:26 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id BAAA7301D66F
+	for <lists+linux-wireless@lfdr.de>; Mon, 19 Jan 2026 14:02:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7A50D36AB7E;
-	Mon, 19 Jan 2026 13:42:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C588A36E47F;
+	Mon, 19 Jan 2026 14:02:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="k+B8GWtf";
+	dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b="DeYGlYYN"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-oa1-f77.google.com (mail-oa1-f77.google.com [209.85.160.77])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D0A8236921C
-	for <linux-wireless@vger.kernel.org>; Mon, 19 Jan 2026 13:42:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.77
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 058A53502BF
+	for <linux-wireless@vger.kernel.org>; Mon, 19 Jan 2026 14:02:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768830146; cv=none; b=FR8mAffTr8VFJLk/Yf/YPdiC8anqyhjJ4+/cBgbXonPZEkCW3DDB4zawU94//WcVG0PTitBegm1EfJCBCrC6m1hJZhK2yvzAqMRD+xNYc/QFNt0F3BR2z4xMqGk/3ZwIzj3WMNXQVZNA4gd9SjkQ7gBoF10VhBaa5blkIiiG3j0=
+	t=1768831372; cv=none; b=k1YPRR8T8AuBjULsuwUbTy0amzGWloxBXQ/sp3UoOFMIiYC+2wXV6yoSkhHRhELIldxkOrQaPVQ9G+3Xr6c0Y5aXVxWnhNbjFu2i2/9Kg1QY4UA3/BUfto2x+iwT4bnKHM/DE97NTKYuDbtbFkkEKkkbU2V+lseqmWghS7MAk3Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768830146; c=relaxed/simple;
-	bh=FMLcUUKCHc94/oLuNfGCQc4E6ZGfdlUDKBXGmEjPQ8A=;
-	h=MIME-Version:Date:Message-ID:Subject:From:To:Content-Type; b=RXxWO/pxrXEi5wECVoNKeKvtMJswCdScATzl/oFjHyi1T11nGgkK/aLZvJ4emFrPhZSbzc3BerFxNtK37QMDrjy+lYvXzntEIrvjPVwjzu2u3eKJD+r98qv6IT1TuGFagFoEtMydrhWfVA8ygUqyn/P8646g8hXvL2vjj0YsfVU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com; arc=none smtp.client-ip=209.85.160.77
-Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com
-Received: by mail-oa1-f77.google.com with SMTP id 586e51a60fabf-402d5d2706fso4698459fac.3
-        for <linux-wireless@vger.kernel.org>; Mon, 19 Jan 2026 05:42:24 -0800 (PST)
+	s=arc-20240116; t=1768831372; c=relaxed/simple;
+	bh=E7fHKTwM5kQWA24lxy1RNzMv9gSOpyB9Vk3+2q6FLHs=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=KZi6ogRNXd6X0YOW6Fj46P6PleB7W4R9rtWHqTg5dZU20H8XQaa9xQoatrbUUt8FYnL4tacnL4T7ZfZLa2r+3ReHkek/q512uXf/excKTEVkkZtSTQ+kf1ItCPFoctrRQwm+ur/KLzZqII6s0gVOah9ZheQ11BifuXjMNcHyqYA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=k+B8GWtf; dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b=DeYGlYYN; arc=none smtp.client-ip=205.220.180.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
+Received: from pps.filterd (m0279872.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 60JDdDqL1347463
+	for <linux-wireless@vger.kernel.org>; Mon, 19 Jan 2026 14:02:48 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
+	cc:content-transfer-encoding:date:from:message-id:mime-version
+	:subject:to; s=qcppdkim1; bh=fGhqupyolB5uH9UFQOHKkgJ43muW2xQ3TpC
+	9A+8sGfY=; b=k+B8GWtfXi/Dw0gvpD0r0AyT1KUcu7tZb3u9W/XBqYt0Dg4PKjR
+	oMSIMAcAq9zfEfHdkcgAiFWlDYhbwjAA0G91+96QXnMfLE+Nbj0Y9TkctgqEgy/c
+	zOoRGAYTSE5JZixc/yUAYSmT6tfEGcKp/QbMgfqJuTFtSL9KPAWtrqJZpwJ3jxZZ
+	X65OW8lY6R3jkTmsBjMBMc9BaPMUjXlksTKuzBNhGJ8Nnnl+Q9ok0KbGBKu8vTvo
+	q2CmuMiISmKcxRltJJKNHcU5HiZm+n3UGpCGXz1+6VXLsyAyXz007SHk1r9bnKkS
+	yxIehqgb/jSxEG1V868VuNVg2y/5tpX3Apw==
+Received: from mail-pl1-f199.google.com (mail-pl1-f199.google.com [209.85.214.199])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4bsnpdg1v8-1
+	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
+	for <linux-wireless@vger.kernel.org>; Mon, 19 Jan 2026 14:02:48 +0000 (GMT)
+Received: by mail-pl1-f199.google.com with SMTP id d9443c01a7336-29f1f69eec6so41887965ad.1
+        for <linux-wireless@vger.kernel.org>; Mon, 19 Jan 2026 06:02:48 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=oss.qualcomm.com; s=google; t=1768831367; x=1769436167; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=fGhqupyolB5uH9UFQOHKkgJ43muW2xQ3TpC9A+8sGfY=;
+        b=DeYGlYYNjzBjqeUw6MmMxrTJqNH9jxsk2AS7dqJjntA77i5X57PTQ88dlaSazY/gNg
+         c3iEvkGDNby6sglYoeRXc/NBs60t7X8W0OdSgCY9ufdFxEuVKzoWtWrk4PMDg3uliVm7
+         fk/v3a/P7tinpNjA/2HHxj6LquHauPp1faG7YgP6+M35uXNN5iev0zRAQpolcL4qn/W1
+         Fos5LBTS+pZeepi/O31DHgf43zRMm38W1qOcslvV43Bz1UKwpBpwv/aWEW468MaSv2OF
+         kcoJKluVzp+TqU/tQ6dyrVtb0kMPOO13T7fdk9EzTfMDGUloXBu3M3eTraZU7uNRjGbq
+         jt/Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1768830144; x=1769434944;
-        h=to:from:subject:message-id:date:mime-version:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=2XDY1/DfyQ23j23GzmXoCuFXSYNZFVLA6MfwMPKtank=;
-        b=PqMd13U8+YO+GR2b+D+/Rpj4QWN/2KPpVC0Dkp+csCAP61QqwaSPbhRqJneZxwi5L4
-         C23tkFVhTlwCBxsTe3EEQ+5CBa8FMy55yu2Zug16yCXG0xN8ZaFO/QliPgdG6zsz0hYo
-         7nNIEEXgSWDNUYgxJiGyc5WBSRhH+DilqTRXPDuH1VQEe2UZev7/iXYzi7QXlQbL77ah
-         yQw9IXIafuG+Pmrfv8Pbumx/DKvA7UEVBiIwdupwg56HMt5EPvxm2X+qeFT98TeV1qYS
-         8VpQmJYi8/E5z4Mc1MgtagwjK+ZKR1/dA4UnPICMov2D720gu9BlPirSY3rKDvWnRUTg
-         PQ+w==
-X-Forwarded-Encrypted: i=1; AJvYcCU11UfHSW8IZMsV7TdihBZWABuzdHV5/BulEbAEzeE4BKjTcTMKrUR68sfaUfkdrvtey7thLEILmGooRo1Nmg==@vger.kernel.org
-X-Gm-Message-State: AOJu0Yzf2LTkMHepJrcOM+0cQT6cZdMkxI/wEhcot7lZaeFURPgb3JWo
-	C4LV3MIAUVvcBvbVSmWGEw+zXYJnRWJ6ibTVnE3KjSjB/Z+coiZNvHYq7VDdLpD3I2eLaWhMU2J
-	pjXMvHgJ2emR1mBMNSCXml9H+sGN0lkEOQ3baU1O5H3G0RFiImFeYM3l6qv8=
+        d=1e100.net; s=20230601; t=1768831367; x=1769436167;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=fGhqupyolB5uH9UFQOHKkgJ43muW2xQ3TpC9A+8sGfY=;
+        b=mBv5sNYujl0aCQ4K8t+Hwc1Ze8mkn+umAHF1kQ4yNiEvWN/4LXbNt2byAnF0rZ6Tfh
+         VgNc1DbV9r2MXwQHdVV6IPfKmihAE3T7TaPwCNVB9wkbgSc+7H52pGmVSIaPVdKysuoX
+         8Hi4Fvn3VlC1fNfjCW1DQ+HDONMhMweILbEXV21NW6otTu/C1LuYcXznnNAyMMMvvSB7
+         ASbxdtHEWtCm/8tXu+AbJD1Akc0ZL5UpecEAJTlzgtTGL500KZq16RBeP5NuQWocyeIR
+         5tek12Vp74fGW+ikAtClbH4xCpSpVgWWHXWyqhZmrv+bevImQBPUw/Bacrl9axVjP+Wq
+         iy/Q==
+X-Forwarded-Encrypted: i=1; AJvYcCVycw78nU6IBy62bbTTcWfeh7+grfIFabr/pucYPYFKWHM1c4mT6CJzHH+uoZ1lp2Y5Vroq8ju8Cfm3L7eBrA==@vger.kernel.org
+X-Gm-Message-State: AOJu0YyCOC+6oblWL/7jMMMk1jv1b816ZzAIoDQRfBfO6IVZDpOZDUY1
+	B+jYk55eoy0TNtYscVFdSam6inb4LLVW2TbCvN/yHK/btqnWNnUJj3Uuuc8d04hxkEF6oDn60ce
+	mrdowlGfO9yq5xwsupGCtu05xiIYG5odHeP+NltFCT8opKrJTz3oJ5D67RHi0WZ45ryNAgg==
+X-Gm-Gg: AZuq6aLyk/6yBiN5jLMLu1yeEmjR3rMmrhnL8ExwSO0ss4PXSm6QKDe3UdQQZb7QsDK
+	t27VzEqGUrCIZLU8Fpa1Qjdywi6FZDX6tp2NDbt02vdZiYCATQAfsCKqQ/uNIeheYVyfCgzeGRd
+	ixiyoedbh2XWuMIGIDNCOSySfnyE+Ljt9SRnmmkYqD/2g64z5ZhGDwYe1X31LlA9Icer7VRnb57
+	8n1rngC0VqcscUtHXnunk7D0CKV+hwEOp0qE48SyOwnPuRRTDqpF1rRDS7eU9JS0miM3Rz8PW76
+	oaWPe+42Xx5SYLdsw48XXYyeFY1Q27/f5rJnMNcBl+C+b565LJNH4Ku5FTjseq2AkmS/0yw880X
+	Y9hDEObm4qGfDakGx8sBwszTLKEcFjFYSCHAjSyplcEIaKD+FtzyuwXMfmFR304LfZbgh
+X-Received: by 2002:a17:903:3d0f:b0:298:33c9:eda1 with SMTP id d9443c01a7336-2a7177cea20mr112457365ad.43.1768831367432;
+        Mon, 19 Jan 2026 06:02:47 -0800 (PST)
+X-Received: by 2002:a17:903:3d0f:b0:298:33c9:eda1 with SMTP id d9443c01a7336-2a7177cea20mr112456915ad.43.1768831366809;
+        Mon, 19 Jan 2026 06:02:46 -0800 (PST)
+Received: from Z2-SFF-G9-MQ.ap.qualcomm.com (i-global052.qualcomm.com. [199.106.103.52])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2a71941b915sm97416715ad.90.2026.01.19.06.02.43
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 19 Jan 2026 06:02:46 -0800 (PST)
+From: Miaoqing Pan <miaoqing.pan@oss.qualcomm.com>
+To: jjohnson@kernel.org, johannes@sipsolutions.net, robh@kernel.org,
+        krzk+dt@kernel.org, conor+dt@kernel.org
+Cc: ath11k@lists.infradead.org, linux-wireless@vger.kernel.org,
+        linux-kernel@vger.kernel.org, devicetree@vger.kernel.org,
+        krzk@kernel.org, Miaoqing Pan <miaoqing.pan@oss.qualcomm.com>
+Subject: [PATCH v3 ath-current 0/2] wifi: ath11k: add usecase firmware handling based on device compatible
+Date: Mon, 19 Jan 2026 22:02:36 +0800
+Message-Id: <20260119140238.3360658-1-miaoqing.pan@oss.qualcomm.com>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-Received: by 2002:a05:6820:1b0d:b0:65f:6cc6:6023 with SMTP id
- 006d021491bc7-66117a19629mr4228397eaf.76.1768830143889; Mon, 19 Jan 2026
- 05:42:23 -0800 (PST)
-Date: Mon, 19 Jan 2026 05:42:23 -0800
-X-Google-Appengine-App-Id: s~syzkaller
-X-Google-Appengine-App-Id-Alias: syzkaller
-Message-ID: <696e34bf.a70a0220.34546f.04ad.GAE@google.com>
-Subject: [syzbot] [wireless?] general protection fault in ieee80211_put_srates_elem
-From: syzbot <syzbot+81cd9dc1596563141d19@syzkaller.appspotmail.com>
-To: johannes@sipsolutions.net, linux-kernel@vger.kernel.org, 
-	linux-wireless@vger.kernel.org, netdev@vger.kernel.org, 
-	syzkaller-bugs@googlegroups.com
-Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
+X-Authority-Analysis: v=2.4 cv=NtncssdJ c=1 sm=1 tr=0 ts=696e3988 cx=c_pps
+ a=JL+w9abYAAE89/QcEU+0QA==:117 a=b9+bayejhc3NMeqCNyeLQQ==:17
+ a=vUbySO9Y5rIA:10 a=s4-Qcg_JpJYA:10 a=VkNPw1HP01LnGYTKEx00:22
+ a=AnkVv3gU2zmn-KRWxgsA:9 a=324X-CrmTo6CU4MGRt3R:22
+X-Proofpoint-GUID: Q9x0XHlo3nEUZCdpAypef-fk6Gc7xkxw
+X-Proofpoint-ORIG-GUID: Q9x0XHlo3nEUZCdpAypef-fk6Gc7xkxw
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwMTE5MDExNyBTYWx0ZWRfX7Q9Z1yUnmGuP
+ nhP45JnmJfHSbqrcyMduyZchXt04YCaTIzZrI98xpnEFlwQD8jjPaao5LroSb3bcPyjU9Pt+Gph
+ x+96dXikTf5QZpVre1Qn4NhOypXSq4z+8O2AMChuCVhZyYm6uhi08IuK3JxhTGz1dt6tFEuZ1lN
+ kYzUESPmfT5p7UX5BzCjHJZ21yl5bo4CCo+Ig6LB7BflS6V8pEjvbmER5cM6GGRRaRdL47IBd8Q
+ dsgk1tZ1J2lKmQIC/o1OHGHy6YwNP6qJI+H45kzLq8VHxoZxDHfKD3NV4ZRG8wY474F3ye6klrQ
+ jIZ7g1XIUFfdL64ErydSRbapnPyuRKTEaUbcIHsnJxWSo/I+uO+b+o4E8AKcoUa2DXTXe47GQeF
+ VdSOeXMRaCfslUxiIR+6xta3Hw7GxlwdS8axVIbrq+hSyL0dV6IQrCyQEcvTfoTckDGQjyz9HFP
+ Dj1Ebug9FlxPXBwuRgQ==
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.9,FMLib:17.12.100.49
+ definitions=2026-01-19_03,2026-01-19_02,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ bulkscore=0 clxscore=1015 lowpriorityscore=0 phishscore=0 suspectscore=0
+ priorityscore=1501 malwarescore=0 impostorscore=0 spamscore=0 adultscore=0
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.22.0-2601150000 definitions=main-2601190117
 
-Hello,
-
-syzbot found the following issue on:
-
-HEAD commit:    54e82e93ca93 Merge tag 'core_urgent_for_v6.19_rc4' of git:..
-git tree:       upstream
-console output: https://syzkaller.appspot.com/x/log.txt?x=17bceb9a580000
-kernel config:  https://syzkaller.appspot.com/x/.config?x=513255d80ab78f2b
-dashboard link: https://syzkaller.appspot.com/bug?extid=81cd9dc1596563141d19
-compiler:       Debian clang version 20.1.8 (++20250708063551+0c9f909b7976-1~exp1~20250708183702.136), Debian LLD 20.1.8
-syz repro:      https://syzkaller.appspot.com/x/repro.syz?x=13924b9a580000
-C reproducer:   https://syzkaller.appspot.com/x/repro.c?x=12d46852580000
-
-Downloadable assets:
-disk image (non-bootable): https://storage.googleapis.com/syzbot-assets/d900f083ada3/non_bootable_disk-54e82e93.raw.xz
-vmlinux: https://storage.googleapis.com/syzbot-assets/f3befb5f53a4/vmlinux-54e82e93.xz
-kernel image: https://storage.googleapis.com/syzbot-assets/92820ca1dbd8/bzImage-54e82e93.xz
-
-IMPORTANT: if you fix the issue, please add the following tag to the commit:
-Reported-by: syzbot+81cd9dc1596563141d19@syzkaller.appspotmail.com
-
-Oops: general protection fault, probably for non-canonical address 0xdffffc0000000003: 0000 [#1] SMP KASAN NOPTI
-KASAN: null-ptr-deref in range [0x0000000000000018-0x000000000000001f]
-CPU: 0 UID: 0 PID: 3030 Comm: kworker/u4:13 Not tainted syzkaller #0 PREEMPT(full) 
-Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS 1.16.3-debian-1.16.3-2~bpo12+1 04/01/2014
-Workqueue: events_unbound cfg80211_wiphy_work
-RIP: 0010:ieee80211_put_srates_elem+0x42/0x640 net/mac80211/util.c:3272
-Code: 18 89 54 24 28 48 89 f3 49 89 fe 49 bc 00 00 00 00 00 fc ff df e8 ae 3f e3 f6 48 89 5c 24 38 4c 8d 6b 18 4d 89 ef 49 c1 ef 03 <43> 0f b6 04 27 84 c0 0f 85 19 05 00 00 41 8b 5d 00 31 ff 89 de e8
-RSP: 0018:ffffc9000981f7b8 EFLAGS: 00010206
-RAX: ffffffff8addc7b2 RBX: 0000000000000000 RCX: ffff888038e9c980
-RDX: 0000000000000000 RSI: 0000000000000000 RDI: ffff88801a1bb000
-RBP: 0000000000000001 R08: 0000000000000001 R09: ffffffff8df41aa0
-R10: dffffc0000000000 R11: ffffed100343d00b R12: dffffc0000000000
-R13: 0000000000000018 R14: ffff88801a1bb000 R15: 0000000000000003
-FS:  0000000000000000(0000) GS:ffff88808d414000(0000) knlGS:0000000000000000
-CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-CR2: 00007f709ef1fa30 CR3: 0000000053e50000 CR4: 0000000000352ef0
-Call Trace:
- <TASK>
- ieee80211_mesh_build_beacon+0xa83/0x1b50 net/mac80211/mesh.c:1093
- ieee80211_mesh_rebuild_beacon+0xc7/0x170 net/mac80211/mesh.c:1147
- ieee80211_mesh_finish_csa+0x131/0x210 net/mac80211/mesh.c:1542
- ieee80211_set_after_csa_beacon net/mac80211/cfg.c:4085 [inline]
- __ieee80211_csa_finalize net/mac80211/cfg.c:4133 [inline]
- ieee80211_csa_finalize+0x633/0x1150 net/mac80211/cfg.c:4155
- cfg80211_wiphy_work+0x2ab/0x450 net/wireless/core.c:438
- process_one_work kernel/workqueue.c:3257 [inline]
- process_scheduled_works+0xad1/0x1770 kernel/workqueue.c:3340
- worker_thread+0x8a0/0xda0 kernel/workqueue.c:3421
- kthread+0x711/0x8a0 kernel/kthread.c:463
- ret_from_fork+0x510/0xa50 arch/x86/kernel/process.c:158
- ret_from_fork_asm+0x1a/0x30 arch/x86/entry/entry_64.S:246
- </TASK>
-Modules linked in:
----[ end trace 0000000000000000 ]---
-RIP: 0010:ieee80211_put_srates_elem+0x42/0x640 net/mac80211/util.c:3272
-Code: 18 89 54 24 28 48 89 f3 49 89 fe 49 bc 00 00 00 00 00 fc ff df e8 ae 3f e3 f6 48 89 5c 24 38 4c 8d 6b 18 4d 89 ef 49 c1 ef 03 <43> 0f b6 04 27 84 c0 0f 85 19 05 00 00 41 8b 5d 00 31 ff 89 de e8
-RSP: 0018:ffffc9000981f7b8 EFLAGS: 00010206
-RAX: ffffffff8addc7b2 RBX: 0000000000000000 RCX: ffff888038e9c980
-RDX: 0000000000000000 RSI: 0000000000000000 RDI: ffff88801a1bb000
-RBP: 0000000000000001 R08: 0000000000000001 R09: ffffffff8df41aa0
-R10: dffffc0000000000 R11: ffffed100343d00b R12: dffffc0000000000
-R13: 0000000000000018 R14: ffff88801a1bb000 R15: 0000000000000003
-FS:  0000000000000000(0000) GS:ffff88808d414000(0000) knlGS:0000000000000000
-CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-CR2: 00007ffd6f05c5e0 CR3: 000000001206c000 CR4: 0000000000352ef0
-----------------
-Code disassembly (best guess):
-   0:	18 89 54 24 28 48    	sbb    %cl,0x48282454(%rcx)
-   6:	89 f3                	mov    %esi,%ebx
-   8:	49 89 fe             	mov    %rdi,%r14
-   b:	49 bc 00 00 00 00 00 	movabs $0xdffffc0000000000,%r12
-  12:	fc ff df
-  15:	e8 ae 3f e3 f6       	call   0xf6e33fc8
-  1a:	48 89 5c 24 38       	mov    %rbx,0x38(%rsp)
-  1f:	4c 8d 6b 18          	lea    0x18(%rbx),%r13
-  23:	4d 89 ef             	mov    %r13,%r15
-  26:	49 c1 ef 03          	shr    $0x3,%r15
-* 2a:	43 0f b6 04 27       	movzbl (%r15,%r12,1),%eax <-- trapping instruction
-  2f:	84 c0                	test   %al,%al
-  31:	0f 85 19 05 00 00    	jne    0x550
-  37:	41 8b 5d 00          	mov    0x0(%r13),%ebx
-  3b:	31 ff                	xor    %edi,%edi
-  3d:	89 de                	mov    %ebx,%esi
-  3f:	e8                   	.byte 0xe8
-
+The 'firmware-name' property was introduced to allow end-users and
+integrators to select use-case-specific firmware for the WCN6855.
+But for M.2 WLAN chips, there is no suitable DTS node to specify
+the 'firmware-name' property. In addition, assigning firmware for
+the M.2 PCIe interface causes chips that do not use use-case-specific
+firmware to fail. Therefore, abandoning the approach of specifying
+firmware in DTS. As an alternative, propose a static lookup table
+mapping device compatible to firmware names.
 
 ---
-This report is generated by a bot. It may contain errors.
-See https://goo.gl/tpsmEJ for more information about syzbot.
-syzbot engineers can be reached at syzkaller@googlegroups.com.
+v2:
+- Drops `firmware-name` from completely.
+- Updates the commit message to clearly state that the property is
+  obsolete and the change is ABI-breaking but safe for upstream.
+v3:
+ - Deprecate 'firmware-name' property instead of obsolete.
+ - Keep the ABI backwards compatible.
+---
 
-syzbot will keep track of this issue. See:
-https://goo.gl/tpsmEJ#status for how to communicate with syzbot.
+Miaoqing Pan (2):
+  wifi: ath11k: add usecase firmware handling based on device compatible
+  dt-bindings: net: wireless: ath11k-pci: deprecate 'firmware-name'
+    property
 
-If the report is already addressed, let syzbot know by replying with:
-#syz fix: exact-commit-title
+ .../net/wireless/qcom,ath11k-pci.yaml         |  1 +
+ drivers/net/wireless/ath/ath11k/core.c        | 36 +++++++++++++++++++
+ drivers/net/wireless/ath/ath11k/core.h        |  4 +++
+ 3 files changed, 41 insertions(+)
 
-If you want syzbot to run the reproducer, reply with:
-#syz test: git://repo/address.git branch-or-commit-hash
-If you attach or paste a git patch, syzbot will apply it before testing.
 
-If you want to overwrite report's subsystems, reply with:
-#syz set subsystems: new-subsystem
-(See the list of subsystem names on the web dashboard)
+base-commit: d8e1f4a193101a72235416f189b01131a57e26e9
+-- 
+2.34.1
 
-If the report is a duplicate of another one, reply with:
-#syz dup: exact-subject-of-another-report
-
-If you want to undo deduplication, reply with:
-#syz undup
 
