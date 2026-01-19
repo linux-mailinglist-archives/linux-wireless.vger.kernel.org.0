@@ -1,155 +1,95 @@
-Return-Path: <linux-wireless+bounces-30978-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-30979-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id C909FD3B5C6
-	for <lists+linux-wireless@lfdr.de>; Mon, 19 Jan 2026 19:28:21 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 841BFD3BA08
+	for <lists+linux-wireless@lfdr.de>; Mon, 19 Jan 2026 22:33:10 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 1721A3075532
-	for <lists+linux-wireless@lfdr.de>; Mon, 19 Jan 2026 18:25:41 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id EC40A300969A
+	for <lists+linux-wireless@lfdr.de>; Mon, 19 Jan 2026 21:33:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BCD202DEA67;
-	Mon, 19 Jan 2026 18:25:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 59EB623B604;
+	Mon, 19 Jan 2026 21:33:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="IFwDejXY"
+	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="pZsbY9/l"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-wr1-f50.google.com (mail-wr1-f50.google.com [209.85.221.50])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from out-177.mta0.migadu.com (out-177.mta0.migadu.com [91.218.175.177])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 498BF32936F
-	for <linux-wireless@vger.kernel.org>; Mon, 19 Jan 2026 18:25:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.50
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 547092236EB
+	for <linux-wireless@vger.kernel.org>; Mon, 19 Jan 2026 21:33:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.177
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768847110; cv=none; b=L8liti+RmcsG2g8EC33SvqznYS/6kHgD0RqNAM6Wd3jGG5TIlVe2S+ZQMABw+zge5VmGsGWRMI+cdV3xMoWaqek6Z/o2wTA5+k4kkehZc4+es8kmrUMWB4jr3/2yIUaK1lQ28PFZG15/5H4kXfMDUMuNyGnPrh/uyS4yxrOhVF4=
+	t=1768858386; cv=none; b=YgzD45n9OeBSzjlNnRf2Ab1D1uUtFF4VEKvbuuOQFVFGfv7KL4jK+Kuky8+/C0cbmxDqs3srNfy4wh8IHd0WuOXXactwADq26z5fmCHw5T3U0Ko+8nIQ0GbAdVBzhhGgU1YRQTvzoG9pGQUelBXlJJrXZ9bEiAuBrCyZK0HVVPk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768847110; c=relaxed/simple;
-	bh=bbRORiYyfxrPjQV54dNp09qU7YK4BDPulecIRKoDveQ=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=VHtUCNMAh6GrqiOSXKvCNXsYJ1tSmxBjx0vqlkxPnKcF4mu8CqSrnV/YfCzL5lt69Q0grFT7kvnjCxTjTvZNqEZQvJfbUC/zv2H7k8bJJaHy0tJA2a/MsnEVi60H697wd0VSfc0/ftJAJj2Yw96l3PUEJJOdO301rOu0Wx8U7HI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=IFwDejXY; arc=none smtp.client-ip=209.85.221.50
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
-Received: by mail-wr1-f50.google.com with SMTP id ffacd0b85a97d-42fbad1fa90so4077847f8f.0
-        for <linux-wireless@vger.kernel.org>; Mon, 19 Jan 2026 10:25:08 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1768847107; x=1769451907; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=kQIGn34bZ1Heol3pK18U6IBla2vE71bF/d7hIpG3ME0=;
-        b=IFwDejXYXOUHncOSZSshYOpClrCvmn5ipUjT/OWVz48c2wNEpgUqc2LslgoXhcCzZJ
-         qVhMvyljneGdwW5JF5hMxv9ZSLc5wfwovHiREU5uABxw+xQ9Kh0/DZxkED0ixNxP82sp
-         1ezmf/bh+GynBI9N8Clem+ndrC+iXFxNgZGg9gg9b/K+riAsFAxQVG0hy1TcFmdeskzj
-         9ZxNoF7VVnl9jDT4B1lGUOTsOWisJ9zm2I5mfHigYqOgMN8yN19FkX3PKaNmkes9XllW
-         m0i0sMbBbKZJdpNFzI5aJPxY8TLOWfgANhIkHcnHtelY6nh+ckCnTAlDEPnaheklSfpC
-         +8fw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1768847107; x=1769451907;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=kQIGn34bZ1Heol3pK18U6IBla2vE71bF/d7hIpG3ME0=;
-        b=bDnxaSBaIDWdSdhyJxT9X6sMYBNLjx+rCEesuiHxqaEqUSJDGTmR+6jn/CjIMEW+Yn
-         NuTWOib+qom8sqDG8o9jTlg31Al7iTxZQb08gS+yLG4HyPlmj7KjC7nBb5YzxlbtlRTw
-         jk7Lp2hVqbBXdf2fGInGxbuYbm3dsAhh5jO+yOC0utASRYdtcYKTvuk3+qAaI+VOg5Um
-         6fWGTynhacwJ4jf55P7VlhqOc6zfSwmX2tqq3V/jauaQH2yCTgiFPKPSonwIGeAsqOow
-         R5OKO1ixJbEccfRzJMmEGm1oTs69FjK/30n25rGEDuMVOs+kbT7ZoDkioXwBvBKxI3g7
-         3TzQ==
-X-Forwarded-Encrypted: i=1; AJvYcCUwVd2Mjq0vxY2yVdbiozYl8eApvUWPAmJKhSr7ESXypqsMGtq1mg1qG8wskAAteSpDGteEp9VoS73HFMqgpg==@vger.kernel.org
-X-Gm-Message-State: AOJu0YxTrkgVZe1HsjICywAHHpcKyA8CoxiDF+wV6WQmPzMfxlKukukx
-	CWrewqN/xJ24tg2Q8HHfncdZfxnDVz9RRLN4fBBH4e0voLtWg6cVc60RWdhY0PT77Mjx0enSspo
-	H3XJX
-X-Gm-Gg: AZuq6aIu434C7ckaqEyVvoi8YN51fV+pqULWo2EARpiRhUa0mpVw4P6GNP2bEswWKLm
-	zDAWcSC1sdRLq8QPtsU1nHSBH7Y7nNkX2l6UR4sqRWEwq4j4sCZcvk6gFbWCCT1ES/A2PHWq1ZD
-	SIfdc4cCxWEa4aWoUD0ONFTBI8WnMkulx1tgHEV30nbJXqkMt/xeNHcPQYdmdfwR0Bwu2znfBds
-	QZuFMzLBbjVkyoashCYkl4g58yLR8ThmP1NDE2LRrXuV/hOTQUFRh7aQUVdBO6+fN9mCZVSsmOU
-	uULLxng4J63hKVR01nIWWoBQFnTJJQJ02W5GVHKW4QHq0YB33mbYOZenqPowqSUHHPVfPIOjJRb
-	rHq8ijvmGjZFcrR2nRY8bQSo3NzwDARFV+QLPWqjK/raqe/oZjyvJ452FGddYtDAZ/uMdXutl3m
-	mQbTbT1L3cKhnOnDr+q0rNvVsXq2F2YXcLkidwA3v1AMop77dX7ASf8eH8hSWKJbvHt9u6s6wCa
-	vI=
-X-Received: by 2002:a05:6000:1448:b0:430:f59d:4dfc with SMTP id ffacd0b85a97d-4356997f09fmr14869580f8f.9.1768847106647;
-        Mon, 19 Jan 2026 10:25:06 -0800 (PST)
-Received: from localhost (p200300f65f20eb047c0c6442f0dfcf4c.dip0.t-ipconnect.de. [2003:f6:5f20:eb04:7c0c:6442:f0df:cf4c])
-        by smtp.gmail.com with UTF8SMTPSA id ffacd0b85a97d-4356997eb0bsm24377554f8f.34.2026.01.19.10.25.05
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 19 Jan 2026 10:25:06 -0800 (PST)
-Date: Mon, 19 Jan 2026 19:25:04 +0100
-From: Uwe =?utf-8?Q?Kleine-K=C3=B6nig?= <u.kleine-koenig@baylibre.com>
-To: Ulf Hansson <ulf.hansson@linaro.org>
-Cc: Ping-Ke Shih <pkshih@realtek.com>, 
-	Johannes Berg <johannes@sipsolutions.net>, linux-wireless@vger.kernel.org, linux-mmc@vger.kernel.org
-Subject: Re: [PATCH v2 1/3] sdio: Provide a bustype shutdown function
-Message-ID: <v5jqdtpdj3zpuyo5owlujvifphjjxyygfrgqnmql664ck6vpc4@yvihqvp4lgka>
-References: <cover.1768232321.git.u.kleine-koenig@baylibre.com>
- <397f45c2818f6632151f92b70e547262f373c3b6.1768232321.git.u.kleine-koenig@baylibre.com>
- <CAPDyKFrman8YodyPNy6fSOYahoFKBuJRN6+Esz7ojmYqessEYw@mail.gmail.com>
+	s=arc-20240116; t=1768858386; c=relaxed/simple;
+	bh=8oQWoZ7Q+zZzaGw2k2EIKgVgPXXoy0g+IZ7fXp8XxNw=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=YJ7z6gDu1hYjxGpULibLPvWGu8BdCwPYtrAYwBLBdWEtWZyKZiJBoeZwI3BHjVfPXkVAovp1h8x5HF9ouLK9sZN1rIH5BF6g4zegF1hPB5/2mMCTitB3XGxgIxQ/Es3JLCk6Fi96pdgyhhxXFpxGTwKpc3sd4tJJrSg/EcU5/s8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=pZsbY9/l; arc=none smtp.client-ip=91.218.175.177
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
+Message-ID: <a28ff161-b417-46c0-b56b-d4cb6e11dc48@linux.dev>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1768858382;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=85T4LKKp4AM9DPzqBSjlAynKdfYbv5/ZBLnLYV6vWjw=;
+	b=pZsbY9/lzitryFRG46wLk+ArgG3J2+NfVzRZ6wFW8F1fQqh9ZR1M6UoTAjjNloxNQy9PhY
+	domM2cgfNucwMjQtALHZnoxyBg7Dddssez2bsaRIk5eqGut8sK+m15JQWRnXslXLvvQMUq
+	NZYW0/qGLEwU1A31zGOJvLYiGB2Yj5s=
+Date: Mon, 19 Jan 2026 21:32:58 +0000
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="2vcuelbuistjeync"
-Content-Disposition: inline
-In-Reply-To: <CAPDyKFrman8YodyPNy6fSOYahoFKBuJRN6+Esz7ojmYqessEYw@mail.gmail.com>
+Subject: Re: [PATCH] wifi: iwlwifi: ptp: Fix potential race condition in PTP
+ removal
+To: Junjie Cao <junjie.cao@intel.com>,
+ Miri Korenblit <miriam.rachel.korenblit@intel.com>,
+ Johannes Berg <johannes.berg@intel.com>, linux-wireless@vger.kernel.org,
+ Richard Cochran <richardcochran@gmail.com>
+Cc: Simon Horman <horms@kernel.org>, netdev@vger.kernel.org,
+ linux-kernel@vger.kernel.org,
+ Yedidya Benshimol <yedidya.ben.shimol@intel.com>,
+ Avraham Stern <avraham.stern@intel.com>,
+ Daniel Gabay <daniel.gabay@intel.com>,
+ Krishnanand Prabhu <krishnanand.prabhu@intel.com>,
+ Luca Coelho <luciano.coelho@intel.com>,
+ Gregory Greenman <gregory.greenman@intel.com>, stable@vger.kernel.org
+References: <20260115161529.85720-1-junjie.cao@intel.com>
+Content-Language: en-US
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: Vadim Fedorenko <vadim.fedorenko@linux.dev>
+In-Reply-To: <20260115161529.85720-1-junjie.cao@intel.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Migadu-Flow: FLOW_OUT
 
+On 15/01/2026 16:15, Junjie Cao wrote:
+> iwl_mvm_ptp_remove() and iwl_mld_ptp_remove() call
+> cancel_delayed_work_sync() only after ptp_clock_unregister() and after
+> partially clearing ptp_data state.
+> 
+> This creates a race where the delayed work (iwl_mvm_ptp_work /
+> iwl_mld_ptp_work) can run while teardown is in progress and observe a
+> partially modified PTP state. In addition, the work may re-arm itself,
+> extending the teardown window and risking execution after driver
+> resources have been released.
+> 
+> Move cancel_delayed_work_sync() before ptp_clock_unregister() to ensure
+> the delayed work is fully stopped before any PTP cleanup begins. This
+> follows the standard pattern used by other Intel PTP drivers such as
+> e1000e, igb, ixgbe, and ice.
+> 
+> Fixes: d1e879ec600f ("wifi: iwlwifi: add iwlmld sub-driver")
+> Fixes: 1595ecce1cf3 ("wifi: iwlwifi: mvm: add support for PTP HW clock (PHC)")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Junjie Cao <junjie.cao@intel.com>
 
---2vcuelbuistjeync
-Content-Type: text/plain; protected-headers=v1; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
-Subject: Re: [PATCH v2 1/3] sdio: Provide a bustype shutdown function
-MIME-Version: 1.0
-
-Hello Ulf,
-
-On Mon, Jan 19, 2026 at 04:00:48PM +0100, Ulf Hansson wrote:
-> On Mon, 12 Jan 2026 at 16:47, Uwe Kleine-K=F6nig
-> <u.kleine-koenig@baylibre.com> wrote:
-> > @@ -272,6 +290,13 @@ int __sdio_register_driver(struct sdio_driver *drv=
-, struct module *owner)
-> >         drv->drv.bus =3D &sdio_bus_type;
-> >         drv->drv.owner =3D owner;
-> >
-> > +       /*
-> > +        * This driver needs updating. Note that driver_register() warn=
-s about
-> > +        * this, so we're not adding another warning here.
-> > +        */
-> > +       if (!drv->shutdown && drv->drv.shutdown)
-> > +               drv->shutdown =3D sdio_legacy_shutdown;
-> > +
->=20
-> Is this added only to keep the series bisectable or are there other
-> (except those you fix in the series) sdio func drivers that make use
-> of the shutdown callback?
-
-It's kept because I don't know if there are any other sdio driver in
-flight and these would break silently when they are applied between this
-series and the removal of the callbacks from struct device_driver.
-
-> In any case, when are you planning to remove this?
-
-So my plan is to remove this in a series where the last patch is the
-modification to struct driver.
-
-Best regards
-Uwe
-
---2vcuelbuistjeync
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAABCgAdFiEEP4GsaTp6HlmJrf7Tj4D7WH0S/k4FAmludv4ACgkQj4D7WH0S
-/k4ZYQf+JwzMGRZcuVEXfZeTKhIj4GKevVvgzopTKnGuC1WvnFnZCW8SHoskHm6l
-xVQJKVWDPoX1lyaDHbc+Z4mqMfWbBl5+BIEJR8BXIq4iOfkzAG3Uks2q+JgbnQxm
-EdsRf8ZUTiaQzNrthpHp1rM4fREr2O6h762cX6cT2AkeRlxcgcTuTphXji6sfBJz
-g1BxAG9yEE/DUmFtVusuSbOv0dHhf8HEXrCb3SseDjEuldZSi0hLZcMcmkVQlbEs
-iuL/cQKezDjU0plyGCcdWjDPTJxHz6N/y2UDIlBDYnJ8y6uQNQ10QdO9dRHej2Ip
-piJMhA0srQiMW9vgz4HEHnNDpnuEJg==
-=yKJc
------END PGP SIGNATURE-----
-
---2vcuelbuistjeync--
+Reviewed-by: Vadim Fedorenko <vadim.fedorenko@linux.dev>
 
