@@ -1,88 +1,117 @@
-Return-Path: <linux-wireless+bounces-31013-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-31014-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id A1CFDD3C37A
-	for <lists+linux-wireless@lfdr.de>; Tue, 20 Jan 2026 10:30:03 +0100 (CET)
+Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [213.196.21.55])
+	by mail.lfdr.de (Postfix) with ESMTPS id 350A0D3C4E6
+	for <lists+linux-wireless@lfdr.de>; Tue, 20 Jan 2026 11:18:40 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id C6898663661
-	for <lists+linux-wireless@lfdr.de>; Tue, 20 Jan 2026 09:09:42 +0000 (UTC)
+	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 52EE3564CE8
+	for <lists+linux-wireless@lfdr.de>; Tue, 20 Jan 2026 10:08:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1DD503BF2F9;
-	Tue, 20 Jan 2026 09:09:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2F9E837BE86;
+	Tue, 20 Jan 2026 10:08:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b="IVmIsjRT"
+	dkim=pass (2048-bit key) header.d=morsemicro-com.20230601.gappssmtp.com header.i=@morsemicro-com.20230601.gappssmtp.com header.b="ecJ8AZ0C"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from sipsolutions.net (s3.sipsolutions.net [168.119.38.16])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pj1-f42.google.com (mail-pj1-f42.google.com [209.85.216.42])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8665533D50B
-	for <linux-wireless@vger.kernel.org>; Tue, 20 Jan 2026 09:09:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=168.119.38.16
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2F3E633F384
+	for <linux-wireless@vger.kernel.org>; Tue, 20 Jan 2026 10:08:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.42
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768900173; cv=none; b=kv0T8FuS/++2UvPf06H+FWPjKyEbKSQwVQfZPafS4mr1TyBTyvA8SZWmxNJeJzhwtERrWbojuV+14KKXUx6E02NDU5NlLRKnQoDkH8BXPE3Xicis7HfomPYcQmyVRPPRTjYaArRhOzu5W/TL40MaZKNqDh8jtw2hutRfbDvF4Tg=
+	t=1768903691; cv=none; b=A2hGDuyspSbmOXEX8YOcGyZG5yWiKH9JCVZuBBJvESq1Np9qqH25A+LUoNKl+iSgMdzinN3SuI3rGwn59O6dWhEjFDJtZZZ6O0gmMqGorPXyMI++shqnN6bqmK/koUW6hdW0J3GvIwEanHUO9RkQV1VLsM4Vh5y537I1hh2bGbw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768900173; c=relaxed/simple;
-	bh=JV+6rrKQ9IQXrxzGdWI2nV4l8On0RbEumkFXoZ3I7PE=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=F783Mu4EtgO77KRVHHy6fFRp4AyE6JSr3J7Xh7mL1YlLH6uvFxLjCpM40Tc+e8s5v/hMUc7Fz0ud3t95zTuY4I8ixs4kaDtbJlEvOYRufBibjMGXGlNkexshN0a2kl52ZOCnogfVuoYP96UHI6FhBataNAyholRwR9msCfAPdyQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net; spf=pass smtp.mailfrom=sipsolutions.net; dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b=IVmIsjRT; arc=none smtp.client-ip=168.119.38.16
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sipsolutions.net
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=sipsolutions.net; s=mail; h=MIME-Version:Content-Transfer-Encoding:
-	Content-Type:References:In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender
-	:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
-	Resent-Cc:Resent-Message-ID; bh=LKlmelLVvxQ0Ahczs5JZXsGUjMDn/JYcj1uTWGW7Vkg=;
-	t=1768900171; x=1770109771; b=IVmIsjRTgJo0e1SL6w2dVUa0GJH1nrY+RF1Ywj9B+YDI51t
-	V6NpP1rF1JG5JqerKYASRyoeajRtXkE33wI54oUWUPjTolKApfr3iKsIBkOTvj14wp0xs4+hvhBmr
-	gmndyDF7NtSFuj+yXlsG6mWE51dC9r/KekCsd5280ZqYmDEBzOcDzhdcVpsSlmZqAh3NIWVYc9D/H
-	dFVHf/tqH610oRdsSMmWse/Ay/6+GInvhNeUmppR3Y3S6yilsZy3qV1Lve40cn9wsLaP/qca5dAhf
-	Gn/gbH8hD4jA89qTjju3eOq9g10ZWpPYI0sr8uz92A5rv2r01ovLETVHMf2H/QZg==;
-Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
-	(Exim 4.98.2)
-	(envelope-from <johannes@sipsolutions.net>)
-	id 1vi7jm-0000000GiwU-3EbB;
-	Tue, 20 Jan 2026 10:09:22 +0100
-Message-ID: <a85a3aefd4a60536d68e6bbd2e6a8a2af9846aea.camel@sipsolutions.net>
-Subject: Re: [PATCH iwlwifi] wifi: mac80211: ignore reserved bits in
- reconfiguration status
-From: Johannes Berg <johannes@sipsolutions.net>
-To: Miri Korenblit <miriam.rachel.korenblit@intel.com>, 
-	linux-wireless@vger.kernel.org
-Cc: Benjamin Berg <benjamin.berg@intel.com>, Ilan Peer <ilan.peer@intel.com>
-Date: Tue, 20 Jan 2026 10:09:22 +0100
-In-Reply-To: <20260118095410.e54a0830f697.I9aef8f4fb6f1b06671bb6cf0e2bd4ec6e4c8bda4@changeid> (sfid-20260118_085436_785820_710033D5)
-References: 
-	<20260118095410.e54a0830f697.I9aef8f4fb6f1b06671bb6cf0e2bd4ec6e4c8bda4@changeid>
-	 (sfid-20260118_085436_785820_710033D5)
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.56.2 (3.56.2-2.fc42) 
+	s=arc-20240116; t=1768903691; c=relaxed/simple;
+	bh=tpHNQfw3RId2zcyVn54cQMBjPjFMccMqF2d1zPEkt8w=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=UfoIuE6QXk3/tL4AeKobp/4Jofr5GoXlqh7NjkUAIbHL4UOvseIMI1IgJeItYJzdPHVniEAejB7B6y+C5bQ/9j0o6ZqxM60dr/0Veb9AZPSCOcnnPwTo7M+SS/1fjRbhugdxJvGgHuxZXKX5S9o8tK2iT6OHZr6uX1fVdA/TOn4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=morsemicro.com; spf=pass smtp.mailfrom=morsemicro.com; dkim=pass (2048-bit key) header.d=morsemicro-com.20230601.gappssmtp.com header.i=@morsemicro-com.20230601.gappssmtp.com header.b=ecJ8AZ0C; arc=none smtp.client-ip=209.85.216.42
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=morsemicro.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=morsemicro.com
+Received: by mail-pj1-f42.google.com with SMTP id 98e67ed59e1d1-34f634dbfd6so3981120a91.2
+        for <linux-wireless@vger.kernel.org>; Tue, 20 Jan 2026 02:08:08 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=morsemicro-com.20230601.gappssmtp.com; s=20230601; t=1768903688; x=1769508488; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=+o2/1LEokKRrDMV8iJu441JuTohScvr4ZNAhL0SPcv0=;
+        b=ecJ8AZ0Cf6uVhZZ25ix1fCgLy/sKjYmiukIUByWMQXGfIu873XUfKLEMaS6oI0W9da
+         /gAElzxWme2XAoPkDxEJDgHIctlZp1BLdP3TjVLsPYOBkSLAnX7Sgb1NFbIksRN9akvV
+         lMqm2AHiZIb7vr6+DEX7yH3uNj+S1kSJ3yOqwbajErYChG56GJ65Q6DV20JWLgwUgojo
+         3eQgzD7BkDSInG9z9JKAamp6pzhhX+eKH8aSl15myM3cp+pAC1kXV7eZAcy1wyHYibYD
+         coYI+2Lef+kRV4BgnLjH4n2+TZfHeX2/EdFQKa9SPhLHiurco2LYkDnyCjYHPGrupbSS
+         fYAQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1768903688; x=1769508488;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=+o2/1LEokKRrDMV8iJu441JuTohScvr4ZNAhL0SPcv0=;
+        b=H/z98OS6ayrA+lAHyLU4Oq7zA5vAqQtL/qISJUREodFp4pnEIpCeZkywVNv7N36XFj
+         aoM9BZeIXRbRMYN1ZSoY+PDjXHWjgxbTeIUGJFGC9Vy1AqQ3RTxOA0WeRml6lvnbC2Ug
+         4VYMxHN6SWom169rVjInH9ezVNIkkUmyn2Mit21SAC1/uZ64jIdWC/qhqeFoDn0x3BYG
+         sOubxcsNuNNPErabvu7aIR8NvSQMrxU0hL4pFJcXkwtGdUkA4O2f99wY10QmvkPxMiw9
+         tctNWrxG+7NjFS5rWSTcMHaUbo4nPJWTC/Z7NSxLaxtxY3mKvWybbN4oLiCqD97xjKpZ
+         ErjA==
+X-Gm-Message-State: AOJu0YxSqda/3ZiL1C0/YheAOvWo6yzu9qc58Ehl07vqK4gX33xnXq/i
+	1BMCk11bY9KYadxETg32rJ24OsW147CIdmWTpS19dYp2aYuUGk97+ozIT22UD96tPJI=
+X-Gm-Gg: AZuq6aLE7umNnTpE8XXZ7lZxPqsk3wM4XhZvkSAVgwdSZHXl754aLz9F3k99HE2JGx8
+	A2HjTMzox5z7p+viKkxXnukLgQKZN/EfQKDOI7SgopAL8NyqX3t2cOcFeAnTTfEDU2WjmNoJxUS
+	1Uu/yGWBVc31A/WrJ0EdhINJOa3RtWQh9yLBibuNP/89pYyJi4oX29IdEEccSgO4pmR7dzSR/Va
+	z+3Ba8B/02r82/0qAFEdpRYMD/rHUYCJUmE4bjusjC1kZJq0fZVye3acsTNHxATNyYwWWyD3z1j
+	2AekB08uj0P45koayuKV3YMcItuI3S8DzG6kfeHE8uv+fvy/0a/OJZOuqvLc4qZzWpFPNE5QaMi
+	QoAYEwCqxWQwURREaUVwB7vu9rFp8nDUjUi7I5QG+tc5lT4Gr+9MLiAPv1tmHXlnnYJtiflaciO
+	woSRmTJFQAnyrcvX0ZT0YgWRaIbHQbJeHFMKPBpOjKivOYPhXKyUoG
+X-Received: by 2002:a17:90b:4b10:b0:34c:f8e6:5ec1 with SMTP id 98e67ed59e1d1-352c40de54amr1411344a91.35.1768903688367;
+        Tue, 20 Jan 2026 02:08:08 -0800 (PST)
+Received: from localhost ([60.227.235.230])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-81fa10be07fsm11685033b3a.20.2026.01.20.02.08.07
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 20 Jan 2026 02:08:07 -0800 (PST)
+Date: Tue, 20 Jan 2026 21:08:04 +1100
+From: Lachlan Hodges <lachlan.hodges@morsemicro.com>
+To: Johannes Berg <johannes@sipsolutions.net>
+Cc: linux-wireless@vger.kernel.org, arien.judge@morsemicro.com
+Subject: Re: [PATCH wireless-next] wifi: cfg80211: don't apply HT flags to
+ S1G channels
+Message-ID: <bgywcdzsxxgnldbijv2mu6oawojxcsuxasthjh63w5izm7w5ob@gw4bt33dlkc5>
+References: <20260113030934.18726-1-lachlan.hodges@morsemicro.com>
+ <csqd3cp5twlhfsrkrppe25q2xby6wb37fhtxfrzgffjzoww2hw@xcixpwzlxzmi>
+ <14bc5d3362b071c7c7a6a64724d5b354c173a501.camel@sipsolutions.net>
+ <tyreg7kb5ownpgrbcwo72rk5tevk6jpzbthtlqr5z5zykvhaji@wpybm6oversy>
+ <4dd2558fc13dd974bf551653b3db9c70feed73fe.camel@sipsolutions.net>
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-malware-bazaar: not-scanned
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <4dd2558fc13dd974bf551653b3db9c70feed73fe.camel@sipsolutions.net>
 
-On Sun, 2026-01-18 at 09:54 +0200, Miri Korenblit wrote:
->=20
-> +++ b/net/mac80211/mlme.c
-> @@ -10243,7 +10243,7 @@ void ieee80211_process_ml_reconf_resp(struct ieee=
-80211_sub_if_data *sdata,
->  	for (i =3D 0; i < mgmt->u.action.u.ml_reconf_resp.count; i++) {
->  		u16 status =3D get_unaligned_le16(pos + 1);
-> =20
-> -		link_id =3D *pos;
-> +		link_id =3D u8_get_bits(*pos, 0xf);
+> > channel=165
+> > 
+> > vht_oper_centr_freq_seg0_idx=171
+> 
+> > This is the result of selecting mode AX, channel 165 with a width of 80MHz.
+> 
+> Well, I guess that could be done in some countries, U-NII-4 goes up to
+> channel 177 inclusive? But not for Australia which only has up to 173
+> (according to Wikipedia, maybe it's changing, I didn't check better
+> sources now.)
 
-Seems like there should be a constant for that? Or maybe even some kind
-of struct for the "Reconfiguration Status Duple subfield", rather than
-parsing the things separately?
+Yea should've clarified that earlier.. kind of an important detail ^.^
 
-johannes
+> I don't think hwsim will get too many wifi8 changes, but yeah there are
+> a lot of things brewing now. Seems you (mostly?) got just ahead of it
+> though, so it shouldn't be much of an issue, I'd think.
+
+Yea I think we picked a good time to get the major stuff in, now I suppose
+it's just a driver .. and the fun challenge of getting S1G into hostapd ._.
+
+lachlan
 
