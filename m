@@ -1,180 +1,232 @@
-Return-Path: <linux-wireless+bounces-31005-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-31006-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8D3CDD3C033
-	for <lists+linux-wireless@lfdr.de>; Tue, 20 Jan 2026 08:20:09 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
+	by mail.lfdr.de (Postfix) with ESMTPS id 995AED3C073
+	for <lists+linux-wireless@lfdr.de>; Tue, 20 Jan 2026 08:31:06 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 5DA1D508319
-	for <lists+linux-wireless@lfdr.de>; Tue, 20 Jan 2026 07:05:05 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 0BCEA4F4B4A
+	for <lists+linux-wireless@lfdr.de>; Tue, 20 Jan 2026 07:19:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D986336B075;
-	Tue, 20 Jan 2026 07:04:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7BEDD395266;
+	Tue, 20 Jan 2026 07:19:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UFTVyrb1"
+	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="jxuO37Ci";
+	dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b="Baodj58i"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C23A02F99AD;
-	Tue, 20 Jan 2026 07:04:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6335D392B99
+	for <linux-wireless@vger.kernel.org>; Tue, 20 Jan 2026 07:19:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768892688; cv=none; b=ZxPiZRZ9ZwJp+kG8/74aQY8FBCxfla1IIlSsylaEDCe98tMO7GPrn+RF9ZUgEN35Fd1k7T3y0TI2O+Ku5Jx1yC0gskluhYglcf0VcU4cNIBHBq/gtZ/OPwJnRw90HJx2/qjbMewvAJO1ZNbfAdjt2VXczhyA62liv0eao+n2ugs=
+	t=1768893567; cv=none; b=V/eFgbCNUbWkiHDiBJ8naFwollgSKKLYJO4cuP+a8bAScA5wxATyFFLf7BEKxzHXAUMDuRfzOVCc7dVgsqPSWwkm89lUIzfBYeiIulohcNNrAJ2iBXrPtdKIsIqEY9lxVjjAAIyH93/K5GelU6bEcGvZ+ESwvBR8nLtlbxB0wjM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768892688; c=relaxed/simple;
-	bh=hga3ue21UWAE2W0mgxOLtL/aZcuRm+XpQziyEdU1Vj0=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=UyZobmvlMepxgvsqlzYgA4BlyIOtN+Ryli75fQI8LOJ5YCE8hZYZInFfmr/heZ6CbacGz74k+L1/1hPD7INumEl+UXNNRfoIx+k5FTnljcVXzscu9CBn56hA0tKHQEoDAgLGnnPPeJAM6xtZFQlWVphCM1XBjDQlMzWV4OUGdWk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UFTVyrb1; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9497AC16AAE;
-	Tue, 20 Jan 2026 07:04:44 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1768892685;
-	bh=hga3ue21UWAE2W0mgxOLtL/aZcuRm+XpQziyEdU1Vj0=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=UFTVyrb1xZIs2ufmuCCwRtf8OB8cRTfjy1Uxdju53XAZ+iTO4curPLJZKihuep/f0
-	 FeljExq3kaoHiP0+Di24J92psqJ6EvSvgFWh+fSfsQCoKjYNltRX5LYUFCOjyLCRBI
-	 NxUxCn5f25fhBY75qQjerpVu1WlfBSr34BFS6OXM=
-Date: Tue, 20 Jan 2026 08:04:42 +0100
-From: Greg KH <gregkh@linuxfoundation.org>
-To: Zac <zac@zacbowling.com>
-Cc: sean.wang@kernel.org, deren.wu@mediatek.com, kvalo@kernel.org,
-	linux-kernel@vger.kernel.org, linux-mediatek@lists.infradead.org,
-	linux-wireless@vger.kernel.org, lorenzo@kernel.org, nbd@nbd.name,
-	ryder.lee@mediatek.com, sean.wang@mediatek.com,
-	stable@vger.kernel.org, linux@frame.work, zbowling@gmail.com
-Subject: Re: [PATCH 02/11] wifi: mt76: mt792x: fix NULL pointer and firmware
- reload issues
-Message-ID: <2026012028-barmaid-ouch-e53b@gregkh>
-References: <CAGp9LzpuyXRDa=TxqY+Xd5ZhDVvNayWbpMGDD1T0g7apkn7P0A@mail.gmail.com>
- <20260120062854.126501-1-zac@zacbowling.com>
- <20260120062854.126501-3-zac@zacbowling.com>
+	s=arc-20240116; t=1768893567; c=relaxed/simple;
+	bh=Am4DASNIaChGbG8aHFcpMHq+BSTcDGBgY9be0xM7k4g=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=aMVvpPkXrMywEAedi8SsmNUXyWbGtjk926q/3P7eQZNCyB/1Vb3K0FnP87GkMqXzOUSd5+lxad7ZncIwpgpHBLiVzqTQJ8umuuyPOwI+3HiLGgadej+9DiXe4mhKT4fgUVJ3x0QKy64CLC9t4teWYJO6AOD7PrzdNhpjfkx3jhA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=jxuO37Ci; dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b=Baodj58i; arc=none smtp.client-ip=205.220.168.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
+Received: from pps.filterd (m0279867.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 60K61YSA3772477
+	for <linux-wireless@vger.kernel.org>; Tue, 20 Jan 2026 07:19:17 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
+	cc:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
+	gd7D/YUZzVo2knwthSbnndhf1Qb341qujHUYrRBqbTw=; b=jxuO37CiV/zMaSZ0
+	Dbhx+SlKE1KgIcWMQijlbPhYDWLxtYUbl5q/+OM2Nch6M+W9EZiEHRMmy3WeMBGT
+	xJpnRuTunGrZwI/N3PLvOr9GxdnQoaIp5+OlTiH/OEWamu+PJy67Y2nVovH+9woA
+	yN2XllfRLNfUewWa6m+B5nf1EK7o+uV/xgWDgsXOkn2e8lgnm9A2P1McXTdPE1wL
+	sKCx3fUZEIoN/wmzM1fCu4dw4vmQivexHCetmmC7Zx3u7wRQjih1SfTYb3aumwXK
+	3HS0i1pAdHCfk+GbA91x27BHhWy0yZlMJxbN7OnNwNRKfwG4PidLUnZ2YnhWuKBh
+	a7HZaA==
+Received: from mail-pl1-f197.google.com (mail-pl1-f197.google.com [209.85.214.197])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4bt42wr7wj-1
+	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
+	for <linux-wireless@vger.kernel.org>; Tue, 20 Jan 2026 07:19:16 +0000 (GMT)
+Received: by mail-pl1-f197.google.com with SMTP id d9443c01a7336-2a0bb1192cbso46453645ad.1
+        for <linux-wireless@vger.kernel.org>; Mon, 19 Jan 2026 23:19:16 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=oss.qualcomm.com; s=google; t=1768893556; x=1769498356; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:content-language:from
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=gd7D/YUZzVo2knwthSbnndhf1Qb341qujHUYrRBqbTw=;
+        b=Baodj58iOwPjSJUgwZzxOnG/HpALI4Lzrh1handlGddBF9aey6QVnGh0STs0iugyq8
+         Vd8CdnNRAavj5eprfrmqV1fUim6HJN7Nfr0v8GArTcoSapYTvOG2ReeoDrqsngimf7TJ
+         HAocBCAqU4kNponNICOoWrkK4UbMLmxc/nvDrB7p01rQeOHTLBkZpDMMcyzU93o3UUmT
+         YILP9gb4COt8s0fQ9gc1T5MIiZYn+yTTN+1hdKmtkAx8vIBtEpWr4vkZYMSSpYuAdPr1
+         vmPYaoHVRTWE7dGtJJMKxlrFIeyb7DyaNOyspod4W8nfpFXEe+VCk5WF3y04EHU+qFhZ
+         p74A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1768893556; x=1769498356;
+        h=content-transfer-encoding:in-reply-to:content-language:from
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=gd7D/YUZzVo2knwthSbnndhf1Qb341qujHUYrRBqbTw=;
+        b=PgcpyAuVSmHJo+n3aOmMEGCQA5YmU3OY7G8Rl5zoKtFUJBgV4QU1S+w18khAzUWTtc
+         PRNUvDNNfE5wRdH4zglCIyvxLNBtOSS92/M5z1SByzL3kw16TsYoSvbhI4jeffCde6eW
+         +0Na3VkFJqAI2fJU+xVV9+gUtdPN3wW45DLZyHUYZUZh0mBlYRIsYRJjq+69iN3YnSLB
+         P4IUroUbRJ3YAK0bMeFpRFyccFqB1eWgtxlLqI/xEygpYVuFwpC34GPlJRRQ2Pqny1iC
+         G/Pm1bIkwjQjzBor7gK83gkGxN6Rzn3SPkPyqCqpfODoyaKRLqQ3hORVbOvagiQUytqY
+         tMJA==
+X-Gm-Message-State: AOJu0YwQp7vHJCKU1RUkE/TmmWLzqHvcod4XsSYucOxbAOg6kF/18IRn
+	xAfRwLXcpX6SBnrz8W71jqKGorIU/VSOlrs44Kypzmsnh6lp67qBdd71cREDheN+CrkkFLRsVQS
+	r0M9XJlRaBcBIAQvHKr/KAI2nj7sR149xQWmxCCUkLHRelpnYJQbFklYNIucVT9W+mf0iY13Tbi
+	Xhdw==
+X-Gm-Gg: AZuq6aKfOmOzL1TuXJQJirvXLvqBojoHDxa3h7x8WLDl+xuV9yQu6PNYp29JiwoxStw
+	USibAG9UClP8gH6tca4eTvL4AINfb2MGHPhOztWhDdk6fWrzzsQi63qkQqpgSE45l/nhBUhk0jo
+	0qW9aWxAWbeb/MG1C3tPfntsyw/7R31YdeDaNcmLPpQHxs6fOtyNNsttAyNFxvtM25wwQNhorwx
+	wKOzyo+6OSVhbKj5RxC5BzsxPhFo9voPQJBJ36dIkYMDTl35HO75Vhj1J9vDUYYK+OJdL7BuQZ1
+	8p7ANlff87VgsBXj5VQc1P4xsH+FVRvVo/KxkutS7bIpmVFPBnrILvtQw7+viMGpMhHvAel3aWZ
+	UTqF/JB07ivd5/gKVcspz0CRB8Eew92Kgt6hnkcTq/YICk5b7uJuHSniea1oOBZ4PrqPGB85iQo
+	azsI2lUY0=
+X-Received: by 2002:a17:902:c40c:b0:2a1:35df:2513 with SMTP id d9443c01a7336-2a717533c8dmr132039385ad.17.1768893555639;
+        Mon, 19 Jan 2026 23:19:15 -0800 (PST)
+X-Received: by 2002:a17:902:c40c:b0:2a1:35df:2513 with SMTP id d9443c01a7336-2a717533c8dmr132039265ad.17.1768893555137;
+        Mon, 19 Jan 2026 23:19:15 -0800 (PST)
+Received: from [10.133.33.150] (tpe-colo-wan-fw-bordernet.qualcomm.com. [103.229.16.4])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2a7190ce6a9sm116209015ad.34.2026.01.19.23.19.13
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 19 Jan 2026 23:19:14 -0800 (PST)
+Message-ID: <40ccd4fc-33c8-41b5-b68e-4e590a5a6ec5@oss.qualcomm.com>
+Date: Tue, 20 Jan 2026 15:19:09 +0800
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260120062854.126501-3-zac@zacbowling.com>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2] wifi: ath11k: fix memory leaks in beacon template
+ setup
+To: Zilin Guan <zilin@seu.edu.cn>, jjohnson@kernel.org
+Cc: linux-wireless@vger.kernel.org, ath11k@lists.infradead.org,
+        linux-kernel@vger.kernel.org, jianhao.xu@seu.edu.cn
+References: <20260120063731.2383695-1-zilin@seu.edu.cn>
+From: Baochen Qiang <baochen.qiang@oss.qualcomm.com>
+Content-Language: en-US
+In-Reply-To: <20260120063731.2383695-1-zilin@seu.edu.cn>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Proofpoint-GUID: p4fS2r1Pia5zyYr9Ud9JKD1xQF1kLDGa
+X-Authority-Analysis: v=2.4 cv=eJMeTXp1 c=1 sm=1 tr=0 ts=696f2c74 cx=c_pps
+ a=cmESyDAEBpBGqyK7t0alAg==:117 a=nuhDOHQX5FNHPW3J6Bj6AA==:17
+ a=IkcTkHD0fZMA:10 a=vUbySO9Y5rIA:10 a=s4-Qcg_JpJYA:10
+ a=VkNPw1HP01LnGYTKEx00:22 a=EUspDBNiAAAA:8 a=cJDDEaPil63sA2faZhwA:9
+ a=QEXdDO2ut3YA:10 a=1OuFwYUASf3TG4hYMiVC:22
+X-Proofpoint-ORIG-GUID: p4fS2r1Pia5zyYr9Ud9JKD1xQF1kLDGa
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwMTIwMDA1OSBTYWx0ZWRfX+ZSYSpNcKRzb
+ ogFSBxpklL9BNVSdNIy67aGyuVrzsa2YoWx76v8SyHzbMstvRtzvawi4XYKZbFpP+7/gDVP5VEy
+ C2NbrbNnferiVavVQ18gs4XglHrnlOLjIxWIrzqCzWmnnKuuVSXgAcaKKlZ+Gh2fkXJavmWXdIQ
+ I3fqCQV5wtGkuTzH3ZcWZJRbHe5IY+Pe7JZa9Fdw6CrgkHw+1UYC3DliNMf7gHDvA5AsuyHdNkR
+ wqPplrEBJ+dclvNtkZjDaE8USQMA+2ftw4vkVXrHAUnbApsUByWoh3UZPlPJ/Oi8YB2qqVwBqOk
+ IhqcgKOSwIT+nRTyoCuI1TP91TSUc2CxtBwYUl0GDMZCei4ZDZjfQo925K+P8C9zFOsKge/Stk4
+ m3l9T2ojwbcqFd7RB2qwB0H3zLq5i7Pz0lLOR4kK/eFNewzaQePx6aogZUG8XlaAjoOiQ3X32tK
+ ++y9yn/FyQ9HeQFd9zw==
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.9,FMLib:17.12.100.49
+ definitions=2026-01-20_01,2026-01-19_03,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ phishscore=0 clxscore=1015 priorityscore=1501 malwarescore=0 spamscore=0
+ impostorscore=0 adultscore=0 bulkscore=0 suspectscore=0 lowpriorityscore=0
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.22.0-2601150000 definitions=main-2601200059
 
-On Mon, Jan 19, 2026 at 10:28:45PM -0800, Zac wrote:
-> From: Zac Bowling <zac@zacbowling.com>
+
+
+On 1/20/2026 2:37 PM, Zilin Guan wrote:
+> The functions ath11k_mac_setup_bcn_tmpl_ema() and
+> ath11k_mac_setup_bcn_tmpl_mbssid() allocate memory for beacon templates
+> but fail to free it when parameter setup returns an error.
 > 
-> This patch combines two fixes for the shared mt792x code used by both
-> MT7921 and MT7925 drivers:
+> Since beacon templates must be released during normal execution, they
+> must also be released in the error handling paths to prevent memory
+> leaks.
 > 
-> 1. Fix NULL pointer dereference in TX path:
+> Fix this by adding the missing deallocation calls in the respective
+> error paths.
 > 
-> Add NULL pointer checks in mt792x_tx() to prevent kernel crashes when
-> transmitting packets during MLO link removal.
+> Compile tested only. Issue found using a prototype static analysis tool
+> and code review.
 > 
-> The function calls mt792x_sta_to_link() which can return NULL if the
-> link is being removed, but the return value was dereferenced without
-> checking. Similarly, the RCU-protected link_conf and link_sta pointers
-> were used without NULL validation.
-> 
-> This race can occur when:
-> - A packet is queued for transmission
-> - Concurrently, the link is being removed (mt7925_mac_link_sta_remove)
-> - mt792x_sta_to_link() returns NULL for the removed link
-> - Kernel crashes on wcid = &mlink->wcid dereference
-> 
-> Fix by checking mlink, conf, and link_sta before use, freeing the SKB
-> and returning early if any pointer is NULL.
-> 
-> 2. Fix firmware reload failure after previous load crash:
-> 
-> If the firmware loading process crashes or is interrupted after
-> acquiring the patch semaphore but before releasing it, subsequent
-> firmware load attempts will fail with 'Failed to get patch semaphore'.
-> 
-> Apply the same fix from MT7915 (commit 79dd14f): release the patch
-> semaphore before starting firmware load and restart MCU firmware to
-> ensure clean state.
-> 
-> Fixes: c74df1c067f2 ("wifi: mt76: mt792x: introduce mt792x-lib module")
-> Fixes: 583204ae70f9 ("wifi: mt76: mt792x: move mt7921_load_firmware in mt792x-lib module")
-> Link: https://github.com/openwrt/mt76/commit/79dd14f2e8161b656341b6653261779199aedbe4
-> Signed-off-by: Zac Bowling <zac@zacbowling.com>
+> Fixes: 3a415daa3e8b ("wifi: ath11k: add P2P IE in beacon template")
+> Fixes: 335a92765d30 ("wifi: ath11k: MBSSID beacon support")
+> Suggested-by: Baochen Qiang <baochen.qiang@oss.qualcomm.com>
+> Signed-off-by: Zilin Guan <zilin@seu.edu.cn>
 > ---
->  .../net/wireless/mediatek/mt76/mt792x_core.c  | 27 +++++++++++++++++--
->  1 file changed, 25 insertions(+), 2 deletions(-)
+> Changes in v2:
+> - Use unified exit paths for cleanup.
 > 
-> diff --git a/drivers/net/wireless/mediatek/mt76/mt792x_core.c b/drivers/net/wireless/mediatek/mt76/mt792x_core.c
-> index f2ed16feb6c1..05598202b488 100644
-> --- a/drivers/net/wireless/mediatek/mt76/mt792x_core.c
-> +++ b/drivers/net/wireless/mediatek/mt76/mt792x_core.c
-> @@ -95,6 +95,8 @@ void mt792x_tx(struct ieee80211_hw *hw, struct ieee80211_tx_control *control,
->  				       IEEE80211_TX_CTRL_MLO_LINK);
->  		sta = (struct mt792x_sta *)control->sta->drv_priv;
->  		mlink = mt792x_sta_to_link(sta, link_id);
-> +		if (!mlink)
-> +			goto free_skb;
->  		wcid = &mlink->wcid;
+>  drivers/net/wireless/ath/ath11k/mac.c | 25 +++++++++++++++----------
+>  1 file changed, 15 insertions(+), 10 deletions(-)
+> 
+> diff --git a/drivers/net/wireless/ath/ath11k/mac.c b/drivers/net/wireless/ath/ath11k/mac.c
+> index 4dfd08b58416..42edcc5e9e49 100644
+> --- a/drivers/net/wireless/ath/ath11k/mac.c
+> +++ b/drivers/net/wireless/ath/ath11k/mac.c
+> @@ -1561,8 +1561,10 @@ static int ath11k_mac_setup_bcn_tmpl_ema(struct ath11k_vif *arvif,
 >  	}
 >  
-> @@ -113,9 +115,12 @@ void mt792x_tx(struct ieee80211_hw *hw, struct ieee80211_tx_control *control,
->  		link_id = wcid->link_id;
->  		rcu_read_lock();
->  		conf = rcu_dereference(vif->link_conf[link_id]);
-> -		memcpy(hdr->addr2, conf->addr, ETH_ALEN);
-> -
->  		link_sta = rcu_dereference(control->sta->link[link_id]);
-> +		if (!conf || !link_sta) {
-> +			rcu_read_unlock();
-> +			goto free_skb;
+>  	if (tx_arvif == arvif) {
+> -		if (ath11k_mac_set_vif_params(tx_arvif, beacons->bcn[0].skb))
+> -			return -EINVAL;
+> +		if (ath11k_mac_set_vif_params(tx_arvif, beacons->bcn[0].skb)) {
+> +			ret = -EINVAL;
+> +			goto free;
 > +		}
-> +		memcpy(hdr->addr2, conf->addr, ETH_ALEN);
->  		memcpy(hdr->addr1, link_sta->addr, ETH_ALEN);
->  
->  		if (vif->type == NL80211_IFTYPE_STATION)
-> @@ -136,6 +141,10 @@ void mt792x_tx(struct ieee80211_hw *hw, struct ieee80211_tx_control *control,
+>  	} else {
+>  		arvif->wpaie_present = tx_arvif->wpaie_present;
+>  	}
+> @@ -1589,11 +1591,11 @@ static int ath11k_mac_setup_bcn_tmpl_ema(struct ath11k_vif *arvif,
+>  		}
 >  	}
 >  
->  	mt76_connac_pm_queue_skb(hw, &dev->pm, wcid, skb);
-> +	return;
-> +
-> +free_skb:
-> +	ieee80211_free_txskb(hw, skb);
+> -	ieee80211_beacon_free_ema_list(beacons);
+> -
+>  	if (tx_arvif != arvif && !nontx_vif_params_set)
+> -		return -EINVAL; /* Profile not found in the beacons */
+> +		ret = -EINVAL; /* Profile not found in the beacons */
+>  
+> +free:
+> +	ieee80211_beacon_free_ema_list(beacons);
+>  	return ret;
 >  }
->  EXPORT_SYMBOL_GPL(mt792x_tx);
 >  
-> @@ -927,6 +936,20 @@ int mt792x_load_firmware(struct mt792x_dev *dev)
->  {
->  	int ret;
+> @@ -1622,19 +1624,22 @@ static int ath11k_mac_setup_bcn_tmpl_mbssid(struct ath11k_vif *arvif,
+>  	}
 >  
-> +	/* Release semaphore if taken by previous failed load attempt.
-> +	 * This prevents "Failed to get patch semaphore" errors when
-> +	 * recovering from firmware crashes or suspend/resume failures.
-> +	 */
-> +	ret = mt76_connac_mcu_patch_sem_ctrl(&dev->mt76, false);
-> +	if (ret < 0)
-> +		dev_dbg(dev->mt76.dev, "Semaphore release returned %d (may be expected)\n", ret);
-> +
-> +	/* Always restart MCU to ensure clean state before loading firmware */
-> +	mt76_connac_mcu_restart(&dev->mt76);
-> +
-> +	/* Wait for MCU to be ready after restart */
-> +	msleep(100);
-> +
->  	ret = mt76_connac2_load_patch(&dev->mt76, mt792x_patch_name(dev));
+>  	if (tx_arvif == arvif) {
+> -		if (ath11k_mac_set_vif_params(tx_arvif, bcn))
+> -			return -EINVAL;
+> +		if (ath11k_mac_set_vif_params(tx_arvif, bcn)) {
+> +			ret = -EINVAL;
+> +			goto free;
+> +		}
+>  	} else if (!ath11k_mac_set_nontx_vif_params(tx_arvif, arvif, bcn)) {
+> -		return -EINVAL;
+> +		ret = -EINVAL;
+> +		goto free;
+>  	}
+>  
+>  	ret = ath11k_wmi_bcn_tmpl(ar, arvif->vdev_id, &offs, bcn, 0);
+> -	kfree_skb(bcn);
+> -
 >  	if (ret)
->  		return ret;
-> -- 
-> 2.52.0
-> 
+>  		ath11k_warn(ab, "failed to submit beacon template command: %d\n",
+>  			    ret);
+>  
+> +free:
+> +	kfree_skb(bcn);
+>  	return ret;
+>  }
+>  
 
-<formletter>
-
-This is not the correct way to submit patches for inclusion in the
-stable kernel tree.  Please read:
-    https://www.kernel.org/doc/html/latest/process/stable-kernel-rules.html
-for how to do this properly.
-
-</formletter>
+Reviewed-by: Baochen Qiang <baochen.qiang@oss.qualcomm.com>
 
