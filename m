@@ -1,78 +1,78 @@
-Return-Path: <linux-wireless+bounces-30993-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-30994-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [213.196.21.55])
-	by mail.lfdr.de (Postfix) with ESMTPS id 84003D3BF32
-	for <lists+linux-wireless@lfdr.de>; Tue, 20 Jan 2026 07:31:06 +0100 (CET)
+Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [IPv6:2a01:60a::1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id 80D0ED3BF33
+	for <lists+linux-wireless@lfdr.de>; Tue, 20 Jan 2026 07:31:23 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.mirrors.kernel.org (Postfix) with ESMTPS id A5A1A359E65
-	for <lists+linux-wireless@lfdr.de>; Tue, 20 Jan 2026 06:29:29 +0000 (UTC)
+	by ams.mirrors.kernel.org (Postfix) with ESMTPS id BA6FC35F4EF
+	for <lists+linux-wireless@lfdr.de>; Tue, 20 Jan 2026 06:29:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7555436E49E;
-	Tue, 20 Jan 2026 06:29:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7BDC9376BFB;
+	Tue, 20 Jan 2026 06:29:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="KfBVCy6B"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="hjxv9Uac"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-dy1-f174.google.com (mail-dy1-f174.google.com [74.125.82.174])
+Received: from mail-dy1-f182.google.com (mail-dy1-f182.google.com [74.125.82.182])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 01F7036C5B8
-	for <linux-wireless@vger.kernel.org>; Tue, 20 Jan 2026 06:28:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.82.174
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A399D36D516
+	for <linux-wireless@vger.kernel.org>; Tue, 20 Jan 2026 06:29:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.82.182
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768890541; cv=none; b=u78wzbEVIs1YGereQmAPF+FkKZtUPZ2nhDC+n1XXTHu23d2J+cyWUcpVnQq1O6zdZNiQorb6QbbYIke4I7FsXfglzeJs8IQ0ssPdexWrchW4f9+zmYwkS4qn9nhxJuG97NDfI6jSjf+c3kkF552giID6NF5XC7pLS+ASLMR3+Yk=
+	t=1768890542; cv=none; b=H0XNRT0YZsFoOU2CsCCIrIY9o3q3LqEhwKUUVkDZXie5qRwfNBfoUDIVn02946Cf49TtHu/ceVG38ftkD6PVFAblXk+M3xySoI3UALoB4YhyzK+5Zj/5P4EdHsCEUxYb10m+oWe3wIypgR/4O+Dvac2oDBalnSjokIhWn3nxqo4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768890541; c=relaxed/simple;
-	bh=2+HHCsL4CHpvAxtcpZ+oNfJ91XAAY5ApArx/L+V3+Ww=;
+	s=arc-20240116; t=1768890542; c=relaxed/simple;
+	bh=U3Nyq3NqiqDHDQqkseFznMKgRIxsJy24U5IKOEvZynU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=LhTnYEmEWV8DsPzAK9nb8wlpoCL9oVRoSrgnqjmNwcsswcOiDB/2qPS/YqOFSoYM2UYGdLflu0dCNPyr7hprhUwqrmVeWzXF2Dhx+4X8UV+O8+AWkng9WP4NFNH/mo3nJVcgfw1j55rvQUt3Oth9LbWOyg4Fp7Pqt7sFbwr//Aw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=zacbowling.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=KfBVCy6B; arc=none smtp.client-ip=74.125.82.174
+	 MIME-Version; b=sr5/bEEvfgtn0aNs81xT6bsWsPBi/x624yhc7zXSmHZYubs8uFa0MeYvSFQS3mTV+Aq/Ziv4z88w+ihzEjmMgPl3kPj06iU4+UI2FCLE4QbKN0dYljMumv/uwuDyXdYkmq2WRbHaDYlo5RQcbKz17D3UndlRrkksCWHOvDkvnKA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=zacbowling.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=hjxv9Uac; arc=none smtp.client-ip=74.125.82.182
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=zacbowling.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-dy1-f174.google.com with SMTP id 5a478bee46e88-2ac3d5ab81bso5272037eec.1
-        for <linux-wireless@vger.kernel.org>; Mon, 19 Jan 2026 22:28:58 -0800 (PST)
+Received: by mail-dy1-f182.google.com with SMTP id 5a478bee46e88-2b0ea1edf11so9056370eec.0
+        for <linux-wireless@vger.kernel.org>; Mon, 19 Jan 2026 22:29:00 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1768890538; x=1769495338; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1768890540; x=1769495340; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:sender:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=hZqhvQUqHyPjd5YwFiryR+es7m9UdWSAqM9hdcVMAYY=;
-        b=KfBVCy6Btat3on8k4RWjWohTf/kL/A3GiZd/jR1dWPTZ7i8oymlmP7SNvzFIyhz0XK
-         8nA5MBTVR2ZmcixOvOKqha7hwOgVfpEE4xClNZ9FbNCVyLLP1aa5qOCRci/93z/xAJ7y
-         gGlVLb1IqjLb5qLobEpBugeiuNlaRdhzhF6g8sf8BY8uIZ7EuHNjUJsaWkjYu/EZCp7b
-         ip0bDp+gWeLFxjsiP/2+eaSJkuHG8NRqay56tqxJeJ6D24Zf8zmryBhuoUKZjByAH3Hd
-         zxBSCdt4hcC3HfQkao6ggL4hhq4z1UHu3RdOUQ5VVwsO6Wfat6XaFhuwUCErshY199Q/
-         x32g==
+        bh=QR+w7fOhhpyJjkq0X/V8TVo4iOOXXnMSK4qWX/dQNIE=;
+        b=hjxv9UacipiMzOCPp4LF1+mn+BQyU+EDAC+RQaNB/xGuqe13Y78ZEkm9H8/cPUzK8D
+         aYO5/FWmOqOjXLon0gpabv5CN4pAFPQZHAClgkOW7ZFXV7fscx/phS0rgtRzgdyu0IlI
+         B95qyZYzy11v9zN0SdgdRaQYsMZj7XDjaTWshh/96B2CzZ6umNdDXoM6C30VUg9YldiE
+         Zc+/10Q0mzCpzLzUX34XlMtbAIXMY9ktnzw0V5msh5GdagvQnSXy9+77U13PFt3iRj+g
+         EV5i25L/HMNG5ex+k4xPvLHUiZ9lD+HUvnTO4g6/1dOg9djnJsYz8n8qk6dV1oj6DsSJ
+         sEOg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1768890538; x=1769495338;
+        d=1e100.net; s=20230601; t=1768890540; x=1769495340;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:sender:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=hZqhvQUqHyPjd5YwFiryR+es7m9UdWSAqM9hdcVMAYY=;
-        b=RdyjsH0jkhCgqvMxqb0KaX+o9BjrCqlN7YvOyXDKYMpCMCAuYGdtFO3/5Y5ahLUPEy
-         Q0piC7a+vAnyQphBWni58l6l6sS4xL1IeTtTA5RB3hQrj5cJvzimafeM5OpGbYftwhXt
-         j2eG79ePAu9TAwAfgLIxCkrNpZBlnS7JLfk/YR9U2UEwbCLp0EegC6qDqx9VPIgW9E4W
-         MmuFTHShWKHj1tJX72ygNb/vha8GemOslEpzwYzZ1s/ncUWM9FWzwNGt+jYcbySKhLSO
-         FJLzyPjdZs2KTJZ9+b94c2izjHax32OtPXgIGTP6ZxX/CryPwVShtyDhZ0o7sWlOAiiF
-         4uVQ==
-X-Forwarded-Encrypted: i=1; AJvYcCVuWCQb2aHjX0WcT2hirbU6vDjzbKlms4P/peNDeN7BThq7NkLtXqICemnylxD0zj7NWFPtnIZPJ5ZGjzWt0w==@vger.kernel.org
-X-Gm-Message-State: AOJu0YzYR6/mlJ8kgIe2ZAmztXewhSBki8+uR8eWKiirs7mLCVryL/c4
-	dNsizk50IJDzd9//ejokAMZDykRO5EZmes0hckRdHV+d8sSZd7bMZWO0
-X-Gm-Gg: AZuq6aKoXxKr2xG7OTO5nt78zdFatbFAbShXjs9zRb4Atz6YuVm6ZmnDPMQcqTgYE9A
-	+tB1Zmz53tK2AKSDk2DTg025Dpqj3vAvHfirtwK1MG24JNVK0uWYHEiaImaGly1f5BC6tcF9aTo
-	eVXWkqi++ZpOIQCzaoH56el+z4usj28ytU7zdLX/wKAzOpTJqEFT31Gymz9jvhgiziA6+T0hGJB
-	QVmXVzTXgilxOlYyXZbWlrNjaEC3Ls+bGDSNEug7RDn79vlHKaop7go7vDebiOJ6uD3NG/XwXu3
-	iVMao9mImnGPH2pRJ1zoHPp/9vnU3i8iWeVmWD3rFZhmWQfAi9RkpuR3oZP4CK8Hs+HhSMb2Hqj
-	dQY7PKtEe2wEjRbr+21eKHSe8m8MRIZjP2SKyhAg3CagSLtdm5NQQVTAf+8KWfZj5jpMakaN/1x
-	q1/sAfDRK83BJI3mm2ktHNTGheKgZU48rQVCVsEgpGK7m7CeRAallNyVe4UDc472LFupHyKRs=
-X-Received: by 2002:a05:7300:6420:b0:2ac:1c5a:9950 with SMTP id 5a478bee46e88-2b6b4e98df3mr12535391eec.34.1768890538000;
-        Mon, 19 Jan 2026 22:28:58 -0800 (PST)
+        bh=QR+w7fOhhpyJjkq0X/V8TVo4iOOXXnMSK4qWX/dQNIE=;
+        b=CUX3JlgyLeTsbHsSC7KeJfH+I1AlYuP9H5CeMhYcQoFf5FiVCwiRK/IMPSSIYvpJZM
+         HoD/nU9KQoPln7eJlIUHWimh9Q1ieFN/FPYptYTp/Swq6l5dPDPET9rlpIyskxV2BQbp
+         lC2uxD8EBHZtNCtzuuZtA/tDn6QQS4NKsPDym3ps7DDRQPkDSmEb5AulvGT9+AH3Zp4M
+         kKOOsO5cSAt+RyXw8zgOfowaanN0JcgTnLrJRLzaGlM12zMb4CL99/7XkxFTuwFFLanX
+         IUTP/8PPMHvATpz3YKoCYbUgaqWJ49Gj6bx0NRaqNunuctZFAWPdx6m1/xmAeK53Gp3M
+         jkdw==
+X-Forwarded-Encrypted: i=1; AJvYcCUyEvODrLLWTIB2OPaInbiiW2c3iE2vtaZ1wcBNpFGXo8iwC6N9O7f1keDcyCbh1Pio637gRsO1TCFjWLfGpw==@vger.kernel.org
+X-Gm-Message-State: AOJu0Yy3qtqIIkoe9jBdHuFzk5mqdx6jtLdQ2ffVqwMop4swWdq6ljne
+	g5O6mwrJQod3PmL14t649W26kUufARCCIZ2fn37K+gfo8lLQ3VAnvl+PGCLx+a4y
+X-Gm-Gg: AZuq6aIRW3BC1PZ3vmESHuAe+8eNGl2PIZfBfL134w2LiI0/jJd7BYiUBEzQZ4GXj91
+	Xho4Rq6A19/+HzFiL2UTmCFn6KiKjT9Gql/qUy+lmW9Pm0t1zqHkaCzCq99WE7BgroULLsHrlJJ
+	+SIvetUSiju94YgKW/ub3ggZ7Cdqoj0HS3lC5HtN5sEGEuDZC+ZayumW8L+fPOUpcNw5bNV3p9n
+	qENejQxK1/u9nI3MsbdLfng+Bv8+7PG3SvywFN40+DBgkRZ5C1UjTvaU3UpaWqbZZ1wcbV8cbac
+	wTMTBN9QamUZdtNRQkl5koaL0dntxL2ysSN4qGeNn/8zX4YP19QVviK9EPAlmZEDd/kpKazeJKJ
+	BwQHz5/Yp9xGX2MfZEk7x3HDsgzXjY+JY7mkqgH3syUj5iL2aHOpUtuEtZMbYIm71B6UtEst35a
+	mWAXcYH1L/0drD2XJUlUjoTaNLWMup9LTPnx3D8GnGaNd1ELBhGMS3yzKrQGVo
+X-Received: by 2002:a05:7300:e825:b0:2ab:f56e:bea6 with SMTP id 5a478bee46e88-2b6b505d137mr10313793eec.39.1768890539343;
+        Mon, 19 Jan 2026 22:28:59 -0800 (PST)
 Received: from zcache.home.zacbowling.com ([2001:5a8:60d:bc9:f31e:1cb:296a:cc2a])
-        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-2b6b3502c91sm15706784eec.9.2026.01.19.22.28.56
+        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-2b6b3502c91sm15706784eec.9.2026.01.19.22.28.58
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 19 Jan 2026 22:28:57 -0800 (PST)
+        Mon, 19 Jan 2026 22:28:58 -0800 (PST)
 Sender: Zac Bowling <zbowling@gmail.com>
 From: Zac <zac@zacbowling.com>
 To: sean.wang@kernel.org
@@ -89,9 +89,9 @@ Cc: deren.wu@mediatek.com,
 	linux@frame.work,
 	zbowling@gmail.com,
 	Zac Bowling <zac@zacbowling.com>
-Subject: [PATCH 01/11] wifi: mt76: fix list corruption in mt76_wcid_cleanup
-Date: Mon, 19 Jan 2026 22:28:44 -0800
-Message-ID: <20260120062854.126501-2-zac@zacbowling.com>
+Subject: [PATCH 02/11] wifi: mt76: mt792x: fix NULL pointer and firmware reload issues
+Date: Mon, 19 Jan 2026 22:28:45 -0800
+Message-ID: <20260120062854.126501-3-zac@zacbowling.com>
 X-Mailer: git-send-email 2.52.0
 In-Reply-To: <20260120062854.126501-1-zac@zacbowling.com>
 References: <CAGp9LzpuyXRDa=TxqY+Xd5ZhDVvNayWbpMGDD1T0g7apkn7P0A@mail.gmail.com>
@@ -106,45 +106,106 @@ Content-Transfer-Encoding: 8bit
 
 From: Zac Bowling <zac@zacbowling.com>
 
-mt76_wcid_cleanup() was not removing wcid entries from sta_poll_list
-before mt76_reset_device() reinitializes the master list. This leaves
-stale pointers in wcid->poll_list, causing list corruption when
-mt76_wcid_add_poll() later checks list_empty() and tries to add the
-entry back.
+This patch combines two fixes for the shared mt792x code used by both
+MT7921 and MT7925 drivers:
 
-The fix adds proper cleanup of poll_list in mt76_wcid_cleanup(),
-matching how tx_list is already handled. This is similar to what
-mt7996_mac_sta_deinit_link() already does correctly.
+1. Fix NULL pointer dereference in TX path:
 
-Fixes list corruption warnings like:
-  list_add corruption. prev->next should be next (ffffffff...)
+Add NULL pointer checks in mt792x_tx() to prevent kernel crashes when
+transmitting packets during MLO link removal.
 
+The function calls mt792x_sta_to_link() which can return NULL if the
+link is being removed, but the return value was dereferenced without
+checking. Similarly, the RCU-protected link_conf and link_sta pointers
+were used without NULL validation.
+
+This race can occur when:
+- A packet is queued for transmission
+- Concurrently, the link is being removed (mt7925_mac_link_sta_remove)
+- mt792x_sta_to_link() returns NULL for the removed link
+- Kernel crashes on wcid = &mlink->wcid dereference
+
+Fix by checking mlink, conf, and link_sta before use, freeing the SKB
+and returning early if any pointer is NULL.
+
+2. Fix firmware reload failure after previous load crash:
+
+If the firmware loading process crashes or is interrupted after
+acquiring the patch semaphore but before releasing it, subsequent
+firmware load attempts will fail with 'Failed to get patch semaphore'.
+
+Apply the same fix from MT7915 (commit 79dd14f): release the patch
+semaphore before starting firmware load and restart MCU firmware to
+ensure clean state.
+
+Fixes: c74df1c067f2 ("wifi: mt76: mt792x: introduce mt792x-lib module")
+Fixes: 583204ae70f9 ("wifi: mt76: mt792x: move mt7921_load_firmware in mt792x-lib module")
+Link: https://github.com/openwrt/mt76/commit/79dd14f2e8161b656341b6653261779199aedbe4
 Signed-off-by: Zac Bowling <zac@zacbowling.com>
 ---
- drivers/net/wireless/mediatek/mt76/mac80211.c | 10 ++++++++++
- 1 file changed, 10 insertions(+)
+ .../net/wireless/mediatek/mt76/mt792x_core.c  | 27 +++++++++++++++++--
+ 1 file changed, 25 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/net/wireless/mediatek/mt76/mac80211.c b/drivers/net/wireless/mediatek/mt76/mac80211.c
-index 75772979f438..d0c522909e98 100644
---- a/drivers/net/wireless/mediatek/mt76/mac80211.c
-+++ b/drivers/net/wireless/mediatek/mt76/mac80211.c
-@@ -1716,6 +1716,16 @@ void mt76_wcid_cleanup(struct mt76_dev *dev, struct mt76_wcid *wcid)
+diff --git a/drivers/net/wireless/mediatek/mt76/mt792x_core.c b/drivers/net/wireless/mediatek/mt76/mt792x_core.c
+index f2ed16feb6c1..05598202b488 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt792x_core.c
++++ b/drivers/net/wireless/mediatek/mt76/mt792x_core.c
+@@ -95,6 +95,8 @@ void mt792x_tx(struct ieee80211_hw *hw, struct ieee80211_tx_control *control,
+ 				       IEEE80211_TX_CTRL_MLO_LINK);
+ 		sta = (struct mt792x_sta *)control->sta->drv_priv;
+ 		mlink = mt792x_sta_to_link(sta, link_id);
++		if (!mlink)
++			goto free_skb;
+ 		wcid = &mlink->wcid;
+ 	}
  
- 	idr_destroy(&wcid->pktid);
+@@ -113,9 +115,12 @@ void mt792x_tx(struct ieee80211_hw *hw, struct ieee80211_tx_control *control,
+ 		link_id = wcid->link_id;
+ 		rcu_read_lock();
+ 		conf = rcu_dereference(vif->link_conf[link_id]);
+-		memcpy(hdr->addr2, conf->addr, ETH_ALEN);
+-
+ 		link_sta = rcu_dereference(control->sta->link[link_id]);
++		if (!conf || !link_sta) {
++			rcu_read_unlock();
++			goto free_skb;
++		}
++		memcpy(hdr->addr2, conf->addr, ETH_ALEN);
+ 		memcpy(hdr->addr1, link_sta->addr, ETH_ALEN);
  
-+	/* Remove from sta_poll_list to prevent list corruption after reset.
-+	 * Without this, mt76_reset_device() reinitializes sta_poll_list but
-+	 * leaves wcid->poll_list with stale pointers, causing list corruption
-+	 * when mt76_wcid_add_poll() checks list_empty().
-+	 */
-+	spin_lock_bh(&dev->sta_poll_lock);
-+	if (!list_empty(&wcid->poll_list))
-+		list_del_init(&wcid->poll_list);
-+	spin_unlock_bh(&dev->sta_poll_lock);
+ 		if (vif->type == NL80211_IFTYPE_STATION)
+@@ -136,6 +141,10 @@ void mt792x_tx(struct ieee80211_hw *hw, struct ieee80211_tx_control *control,
+ 	}
+ 
+ 	mt76_connac_pm_queue_skb(hw, &dev->pm, wcid, skb);
++	return;
 +
- 	spin_lock_bh(&phy->tx_lock);
++free_skb:
++	ieee80211_free_txskb(hw, skb);
+ }
+ EXPORT_SYMBOL_GPL(mt792x_tx);
  
- 	if (!list_empty(&wcid->tx_list))
+@@ -927,6 +936,20 @@ int mt792x_load_firmware(struct mt792x_dev *dev)
+ {
+ 	int ret;
+ 
++	/* Release semaphore if taken by previous failed load attempt.
++	 * This prevents "Failed to get patch semaphore" errors when
++	 * recovering from firmware crashes or suspend/resume failures.
++	 */
++	ret = mt76_connac_mcu_patch_sem_ctrl(&dev->mt76, false);
++	if (ret < 0)
++		dev_dbg(dev->mt76.dev, "Semaphore release returned %d (may be expected)\n", ret);
++
++	/* Always restart MCU to ensure clean state before loading firmware */
++	mt76_connac_mcu_restart(&dev->mt76);
++
++	/* Wait for MCU to be ready after restart */
++	msleep(100);
++
+ 	ret = mt76_connac2_load_patch(&dev->mt76, mt792x_patch_name(dev));
+ 	if (ret)
+ 		return ret;
 -- 
 2.52.0
 
