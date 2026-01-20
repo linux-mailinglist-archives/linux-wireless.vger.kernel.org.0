@@ -1,160 +1,182 @@
-Return-Path: <linux-wireless+bounces-30989-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-30990-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [IPv6:2a01:60a::1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id 66359D3BDFB
-	for <lists+linux-wireless@lfdr.de>; Tue, 20 Jan 2026 04:39:30 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id A9351D3BEB8
+	for <lists+linux-wireless@lfdr.de>; Tue, 20 Jan 2026 06:22:46 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 4E856349C2E
-	for <lists+linux-wireless@lfdr.de>; Tue, 20 Jan 2026 03:39:25 +0000 (UTC)
+	by ams.mirrors.kernel.org (Postfix) with ESMTPS id E3DF335ADBB
+	for <lists+linux-wireless@lfdr.de>; Tue, 20 Jan 2026 05:22:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 566583314D1;
-	Tue, 20 Jan 2026 03:39:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 42AD8340A79;
+	Tue, 20 Jan 2026 05:22:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=realtek.com header.i=@realtek.com header.b="jdjF+ClA"
+	dkim=pass (2048-bit key) header.d=morsemicro-com.20230601.gappssmtp.com header.i=@morsemicro-com.20230601.gappssmtp.com header.b="gZ2snTkj"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
+Received: from mail-pf1-f169.google.com (mail-pf1-f169.google.com [209.85.210.169])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 33B143314C1;
-	Tue, 20 Jan 2026 03:39:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=211.75.126.72
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 36E9C31ED77
+	for <linux-wireless@vger.kernel.org>; Tue, 20 Jan 2026 05:22:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.169
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768880353; cv=none; b=M74Q3XcSLEaB0lpLsC7PXBh43STLNHeDz42r2yIn1FuLYmuYC/lHN2O/fCSWRiNcl8qIl8SsRaj1Gulw5g4TBtilN3tVj7+SJB45CqtaVLi4jSoBxfXU59MhV0Dq7Z6YX5qo3mj2kCSBqzxbVsZ3/KQgCPEJTOGejNbtYUDL7yA=
+	t=1768886561; cv=none; b=qBZfmHB5qusFwHaVqvWwKxjCESOJeT2g3kNzAC/to5h/QsqnD5oZ79W28jIU+ajYWN+KXx7BeO4gmOhez9DvVdOsdzurGx8N+s0yHSlhMqAyRSqETC8t5/xxPvss0cA4zvN4sBlKwsNt7UwgBEmSFpGzUhJgHmzjf6otHHkVIwU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768880353; c=relaxed/simple;
-	bh=fUs5qs/OdtDbWbiTghrWvVv9O+SqF5UEiLNAZUtqjr8=;
-	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:MIME-Version; b=jRjBKFO2m9c8waAGtmVeFBgN0dJneXPtPcPNGk5vcROf3QGu4SRxKHfbBLFu5hZdPRfpvLnD74WYBW5ICg3KknWfp3aqsAW8/cjLfC5T8hSIj4L6ZDM/s0OkClI0ACFdENDJXIArKWgGA24NMR35kM8xpMTe9T9kQgHP/tulcwY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com; spf=pass smtp.mailfrom=realtek.com; dkim=pass (2048-bit key) header.d=realtek.com header.i=@realtek.com header.b=jdjF+ClA; arc=none smtp.client-ip=211.75.126.72
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=realtek.com
-X-SpamFilter-By: ArmorX SpamTrap 5.80 with qID 60K3d4We9132860, This message is accepted by code: ctloc85258
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=realtek.com; s=dkim;
-	t=1768880344; bh=WWlRka46jla/1zA7NZfPd0mt9jvylFC+4gj4FEMccX8=;
-	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:Content-Transfer-Encoding:MIME-Version;
-	b=jdjF+ClAnNXHjoVflG+0mp1CE+qpT5rI0Pjo8L8Bnh2GiW67RAVwVwC+7etRLCbw1
-	 3GavkmYF601wN94gTmIvuCUM8b/rEeo1emXauSIo6in9nApdhOWkFtllWexFyXX2zj
-	 sescQH+Bn6ulPi7nzMkTD/YR7u9Cy/I8cPilr77iTgThDDqMu3yqBaCCYCzWRTLmNb
-	 B9CyKuxUbeY0enhbXd4LD4f/VN7aHMZmgAq+7qFsb0DqvxBKEfbruq9YHMFMiRbW8o
-	 RzWGbJklsSbmMHENCk9totD3a5Wr23f8UJAV2URT3GxwYSWbjGb8Rhtavh3MU6uXbz
-	 iDT6UPxl+jiVw==
-Received: from mail.realtek.com (rtkexhmbs02.realtek.com.tw[172.21.6.41])
-	by rtits2.realtek.com.tw (8.15.2/3.21/5.94) with ESMTPS id 60K3d4We9132860
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Tue, 20 Jan 2026 11:39:04 +0800
-Received: from RTKEXHMBS05.realtek.com.tw (10.21.1.55) by
- RTKEXHMBS02.realtek.com.tw (172.21.6.41) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1748.10; Tue, 20 Jan 2026 11:39:04 +0800
-Received: from RTKEXHMBS03.realtek.com.tw (10.21.1.53) by
- RTKEXHMBS05.realtek.com.tw (10.21.1.55) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1748.10; Tue, 20 Jan 2026 11:39:01 +0800
-Received: from RTKEXHMBS03.realtek.com.tw ([fe80::8bac:ef80:dea8:91d5]) by
- RTKEXHMBS03.realtek.com.tw ([fe80::8bac:ef80:dea8:91d5%9]) with mapi id
- 15.02.1748.010; Tue, 20 Jan 2026 11:39:01 +0800
-From: Zong-Zhe Yang <kevin_yang@realtek.com>
-To: Ping-Ke Shih <pkshih@realtek.com>, Zilin Guan <zilin@seu.edu.cn>
-CC: "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        "jianhao.xu@seu.edu.cn" <jianhao.xu@seu.edu.cn>
-Subject: RE: [PATCH v2] wifi: rtw89: debug: Fix memory leak in
- __print_txpwr_map()
-Thread-Topic: [PATCH v2] wifi: rtw89: debug: Fix memory leak in
- __print_txpwr_map()
-Thread-Index: AQHchulIg6QvmnQrbEyKhcpS3/LPa7VaatCg//97qACAAIflkA==
-Date: Tue, 20 Jan 2026 03:39:01 +0000
-Message-ID: <e0ddcb2d043c4006bc34a039f7469e04@realtek.com>
-References: <20260116130834.1413924-1-zilin@seu.edu.cn>
- <e8e7b26c37084c418e2d6778c77ca100@realtek.com>
- <1127a2bb3b86437e82cf4b46c1a73f44@realtek.com>
-In-Reply-To: <1127a2bb3b86437e82cf4b46c1a73f44@realtek.com>
-Accept-Language: zh-TW, en-US
-Content-Language: zh-TW
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: quoted-printable
+	s=arc-20240116; t=1768886561; c=relaxed/simple;
+	bh=TKi56gVqR9FIzCAxT2fhBIhwhhTOasGefxlZZNLrGqE=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=oiNz5mE/IfalHKTPET4aqQNpHdkk3wK0L/P/iV+ZV3IP2K8jNOa52m/rmUuBwnQAgBfidgE3UuJ0lGzg3PJnpM7NN8gkzTH1exoOb5rfnq03132zkQtddD9/Lnce76FKaro6YS/RaqdmrFjiMnx8FgAam6xA4m7MTPoSOuhed+8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=morsemicro.com; spf=pass smtp.mailfrom=morsemicro.com; dkim=pass (2048-bit key) header.d=morsemicro-com.20230601.gappssmtp.com header.i=@morsemicro-com.20230601.gappssmtp.com header.b=gZ2snTkj; arc=none smtp.client-ip=209.85.210.169
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=morsemicro.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=morsemicro.com
+Received: by mail-pf1-f169.google.com with SMTP id d2e1a72fcca58-81e7477828bso2691317b3a.0
+        for <linux-wireless@vger.kernel.org>; Mon, 19 Jan 2026 21:22:38 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=morsemicro-com.20230601.gappssmtp.com; s=20230601; t=1768886558; x=1769491358; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=lseYKAFnM5W7h7JRnSrsox/rPwv4yYCXI+JXbSyzQ1o=;
+        b=gZ2snTkjXDqgMFhlleVwVYO/zgyHkQrlygsRPzolqe2ovMzZpbpynpCF6AQk9glnpt
+         yAgq//LYhExpjK4xnGuFR+ekWrhYX2OgcjraasByFQv9wzLoFXTr6uiKyrXSTG5A2txr
+         M8ocmDdAoR8KjeNTwP0qqEM0FR45kZSxI4SAlshcdJofd5YC/GamCC6rw4HtYv22ibeJ
+         w2beQuOf5Wc+FuHNld3y/OpiALrDT8CSnunIsCFlNhwEQeaX0QuBmBBzlNprxpM2b5e4
+         fpuvVQtJ5Oo1bgPEYSy2gwSbF5HyexPuiZoOg2Nfh4C9XfXIWX89+W5YHgZ2u5QdwFR+
+         71RQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1768886558; x=1769491358;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=lseYKAFnM5W7h7JRnSrsox/rPwv4yYCXI+JXbSyzQ1o=;
+        b=FYKRAtAdnWwgSJCUf22Kb+MiOUQq3//21pr0VjzRowxFkx9W4tmaJpuaEnNDBDbKUu
+         EtmcI+U3wKM0saeayI1I6KRajkQ/aK5LQlGGGa9OOM1Rdy1XaTp3rl4K1iUzJRctR8b/
+         FB+sCwUkbfC8jqmk5BvondX0SNgOpS2RCYJa+nowyZy+jMZt+FdSv5Z7XsuCpj/uGE20
+         ybhmsOjg3hf+Ny0yPVd5E17+ZIq3d9SRXkwoHQ1jjz0MO0W0AqAa+I2fzUqjNOb3Glql
+         e7Q1bo7GodmByr8xei2o9SKI3e5kQqV5FmDHFFe9xmST3kLY6wqv14ZPK+H5mj5gWjOF
+         gdwg==
+X-Gm-Message-State: AOJu0Yykc9rXuKwOmhj4l9MajP735Uujc9th96Uik44dOY8HKOhuK6fK
+	y33wxlzHMStHTtoijQHEAVXIFySGqsMdaGrW6KfD3aAEjNFrmJshqIYwjQ22iR90heo=
+X-Gm-Gg: AY/fxX4kQN5NT66Knyc2yLFcSPU5z5FcTyYRXj7iWQbjtzBCc7VrjnRsYJVvviK1jC8
+	x+fp1RJxfBD5zYXp08bor0+0y97QxSgnVxHjw4Np9Z5mBv7iEYsVirJHiazNd4x7sAI/BuBP5Lx
+	8ER8cdM0VR+fCVRd3eaMMXjEmwjsAyH9OgCOTPjNa6w0xjHtfTTLh7q1dg8JDfmDJx47QOcWovs
+	7yF8SAaPaY7AKaKm3jgfWhCVsNE7iGJzq/MLC5S2Q3XLk7CVsCHCNZ1z8/Q1Hm5Gvhz1KCSSKkv
+	S6J5vFheOxqhX39/Fjtn6vG0OIir1d4nhjct1L0amme+dZeJW1t9ppSTi5Oym9xk1dp5Y3srULj
+	TuZrj8BypUJVuhMzFpIdpOuntyHTv6yaGBmr3TXPVPWydWKSa2kG/NhB5ARIcrm0WDbtHtEC5c7
+	awvNjOHlZD4s0UyjVDti2/rK1OqsY1dH5TlLhuWEcp+zIBjK515zpUiSg0PzG+L+49WdGEwbQJL
+	MjZAjYrdko=
+X-Received: by 2002:a05:6a00:ad0:b0:81d:70d9:2e9e with SMTP id d2e1a72fcca58-81f8f187eebmr13911099b3a.30.1768886558353;
+        Mon, 19 Jan 2026 21:22:38 -0800 (PST)
+Received: from localhost (60-242-93-14.static.tpgi.com.au. [60.242.93.14])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-81fa10bda5csm10703137b3a.19.2026.01.19.21.22.37
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 19 Jan 2026 21:22:38 -0800 (PST)
+Date: Tue, 20 Jan 2026 16:22:34 +1100
+From: Lachlan Hodges <lachlan.hodges@morsemicro.com>
+To: Johannes Berg <johannes@sipsolutions.net>
+Cc: linux-wireless@vger.kernel.org, arien.judge@morsemicro.com
+Subject: Re: [PATCH wireless-next] wifi: cfg80211: don't apply HT flags to
+ S1G channels
+Message-ID: <tyreg7kb5ownpgrbcwo72rk5tevk6jpzbthtlqr5z5zykvhaji@wpybm6oversy>
+References: <20260113030934.18726-1-lachlan.hodges@morsemicro.com>
+ <csqd3cp5twlhfsrkrppe25q2xby6wb37fhtxfrzgffjzoww2hw@xcixpwzlxzmi>
+ <14bc5d3362b071c7c7a6a64724d5b354c173a501.camel@sipsolutions.net>
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <14bc5d3362b071c7c7a6a64724d5b354c173a501.camel@sipsolutions.net>
 
-Ping-Ke Shih <pkshih@realtek.com> wrote:
-> Zong-Zhe Yang <kevin_yang@realtek.com> wrote:
-> > Zilin Guan <zilin@seu.edu.cn> wrote:
-> > >
-> > > In __print_txpwr_map(), memory is allocated to bufp via vzalloc().
-> > > If max_valid_addr is 0, the function returns -EOPNOTSUPP immediately
-> > > without freeing bufp, leading to a memory leak.
-> > >
-> > > Since the validation of max_valid_addr does not depend on the allocat=
-ed
-> > > memory, fix this by moving the vzalloc() call after the check.
-> > >
-> > > Compile tested only. Issue found using a prototype static analysis to=
-ol
-> > > and code review.
-> > >
-> > > Fixes: 036042e15770 ("wifi: rtw89: debug: txpwr table supports Wi-Fi =
-7 chips")
-> > > Suggested-by: Zong-Zhe Yang <kevin_yang@realtek.com>
-> > > Signed-off-by: Zilin Guan <zilin@seu.edu.cn>
-> > > ---
-> > > Changes in v2:
-> > > - Move memory allocation after validation check to avoid leak.
-> > >
-> > >  drivers/net/wireless/realtek/rtw89/debug.c | 8 ++++----
-> > >  1 file changed, 4 insertions(+), 4 deletions(-)
-> > >
-> > > diff --git a/drivers/net/wireless/realtek/rtw89/debug.c
-> > > b/drivers/net/wireless/realtek/rtw89/debug.c
-> > > index 1264c2f82600..987eef8170f2 100644
-> > > --- a/drivers/net/wireless/realtek/rtw89/debug.c
-> > > +++ b/drivers/net/wireless/realtek/rtw89/debug.c
-> > > @@ -825,10 +825,6 @@ static ssize_t __print_txpwr_map(struct rtw89_de=
-v *rtwdev,
-> char
-> > > *buf, size_t buf
-> > >         s8 *bufp, tmp;
-> > >         int ret;
-> > >
-> > > -       bufp =3D vzalloc(map->addr_to - map->addr_from + 4);
-> > > -       if (!bufp)
-> > > -               return -ENOMEM;
-> > > -
-> > >         if (path_num =3D=3D 1)
-> > >                 max_valid_addr =3D map->addr_to_1ss;
-> > >         else
-> > > @@ -837,6 +833,10 @@ static ssize_t __print_txpwr_map(struct rtw89_de=
-v *rtwdev,
-> char
-> > > *buf, size_t buf
-> > >         if (max_valid_addr =3D=3D 0)
-> > >                 return -EOPNOTSUPP;
-> > >
-> > > +       bufp =3D vzalloc(map->addr_to - map->addr_from + 4);
-> > > +       if (!bufp)
-> > > +               return -ENOMEM;
-> > > +
-> > >         for (addr =3D map->addr_from; addr <=3D max_valid_addr; addr =
-+=3D 4) {
-> > >                 ret =3D rtw89_mac_txpwr_read32(rtwdev, RTW89_PHY_0, a=
-ddr, &val);
-> > >                 if (ret)
-> > > --
-> > > 2.34.1
-> >
-> > Looks good to me.
->=20
-> I suppose I can add
-> Reviewed-by: Zong-Zhe Yang <kevin_yang@realtek.com>
->=20
-> Okay?
+> > Playing around with some 5 GHz configurations in OpenWRT it appears that only
+> > so much information can be conveyed and indeed there are configurations that
+> > will be rejected by cfg80211 (or maybe hostapd in some cases, not sure).
+> 
+> Really? Got an example, perhaps even with hostapd log to see how it's
+> rejected? That clearly contradicts what I wrote above which I really did
+> believe to be true until this moment ;-)
 
-Okay, thanks.
+Sorry, it is indeed cfg80211 that is not accepting the chandef configuration.
+Taking a look at the generated config:
+
+country_code=AU
+ieee80211d=1
+ieee80211h=1
+hw_mode=a
+beacon_int=100
+stationary_ap=1
+channel=165
+[...]
+ieee80211n=1
+ht_coex=0
+ht_capab=[HT40+][LDPC][SHORT-GI-20][SHORT-GI-40][TX-STBC][RX-STBC1][MAX-AMSDU-7935]
+ieee80211ac=1
+vht_oper_chwidth=1
+vht_oper_centr_freq_seg0_idx=171
+[vht_caps..]
+ieee80211ax=1
+he_oper_chwidth=1
+he_oper_centr_freq_seg0_idx=171
+
+This is the result of selecting mode AX, channel 165 with a width of 80MHz.
+The GL-MT3000 using the mt76 driver with mt7915e driver (?)
+
+cfg80211              299008  4 mt7915e,mt76_connac_lib,mt76,mac80211
+compat                 12288  3 mt76,mac80211,cfg80211
+mac80211              581632  3 mt7915e,mt76_connac_lib,mt76
+mt76                   73728  2 mt7915e,mt76_connac_lib
+mt76_connac_lib        45056  1 mt7915e
+
+And for hostapd output (Sorry I don't have anything more verbose)
+
+Tue Jan 20 04:10:43 2026 daemon.err hostapd: nl80211: kernel reports: (extension) channel is disabled
+Tue Jan 20 04:10:43 2026 daemon.err hostapd: Could not set channel for kernel driver
+Tue Jan 20 04:10:43 2026 daemon.err hostapd: Interface initialization failed
+
+where _cfg80211_chandef_usable() is (rightfully) rejecting the configuration.
+This simply appears to be the logic to generate the config doesn't cover this
+case properly. Anyways, I don't think this is all that useful too be honest,
+it just comes down to ensuring the static configurations are known especially
+since this range is specified as AUTO-BW anyway as per the regdom.
+
+> > I
+> > suppose what I'm asking is - how much do we need to protect usermode from
+> > this? Do you feel it's worth including a flag that somewhat emulates
+> > NOHT40+/-? I know much of that logic is quite old and S1G is "modern" ... ?
+> 
+> It's always nice to have userspace be aware of things, but I guess if
+> it's a configuration that's statically known to be invalid, it wouldn't
+> matter so much? But I don't think I've understood the S1G angle - are
+> you talking about primary 1 MHz? Primary 2 MHz?
+
+Putting primaries aside and just thinking of operating - eventually we would
+need a NO_2MHZ flag as India for example only has 1MHz channels.. however
+this is well into the future .. we first need to add support for other
+countries :').
+
+But yes as you said since these configurations are static it's not really a
+big deal and more up to userspace to be aware of it. I think what we have in
+cfg80211 now is good enough and seems to be working well when integrating
+into an actual userspace stack.
+
+> > Now on an unrelated note while I'm sending this email, we've sent a few additional
+> > fixups / cleanups over the last 2 months as we hope to have a driver submitted
+> > for review in the coming weeks. There's still 2 small fixes that need to be
+> > done within hwsim before we can send up our hostapd patchset but I will
+> > wait until we have at least kicked of the driver review process before sending
+> > them.
+> 
+> Very cool! :)
+> 
+> We just posted a lot of hwsim changes for NAN - better send yours sooner
+> rather than later ;-)
+
+Yes I have seen, lots of Wi-Fi 8 documents aswell so I assume that will get busy
+soon too. Well see .. Lots to do!!
+
+lachlan
 
