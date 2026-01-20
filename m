@@ -1,83 +1,83 @@
-Return-Path: <linux-wireless+bounces-31030-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-31031-lists+linux-wireless=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id GKgRKRblb2lhUQAAu9opvQ
-	(envelope-from <linux-wireless+bounces-31030-lists+linux-wireless=lfdr.de@vger.kernel.org>)
-	for <lists+linux-wireless@lfdr.de>; Tue, 20 Jan 2026 21:27:02 +0100
+	id WBUvIn3wb2m+UQAAu9opvQ
+	(envelope-from <linux-wireless+bounces-31031-lists+linux-wireless=lfdr.de@vger.kernel.org>)
+	for <lists+linux-wireless@lfdr.de>; Tue, 20 Jan 2026 22:15:41 +0100
 X-Original-To: lists+linux-wireless@lfdr.de
-Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [213.196.21.55])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7390F4B456
-	for <lists+linux-wireless@lfdr.de>; Tue, 20 Jan 2026 21:27:02 +0100 (CET)
+Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [IPv6:2a01:60a::1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id 333CB4C139
+	for <lists+linux-wireless@lfdr.de>; Tue, 20 Jan 2026 22:15:41 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 077A548EB71
-	for <lists+linux-wireless@lfdr.de>; Tue, 20 Jan 2026 20:12:36 +0000 (UTC)
+	by ams.mirrors.kernel.org (Postfix) with ESMTPS id D227962DC33
+	for <lists+linux-wireless@lfdr.de>; Tue, 20 Jan 2026 20:12:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0BF0C3A9DB0;
-	Tue, 20 Jan 2026 20:11:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2951B3AA183;
+	Tue, 20 Jan 2026 20:11:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="YqlPmD2d"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="dD+hpThh"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-dl1-f54.google.com (mail-dl1-f54.google.com [74.125.82.54])
+Received: from mail-dl1-f42.google.com (mail-dl1-f42.google.com [74.125.82.42])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 848B03A9D80
-	for <linux-wireless@vger.kernel.org>; Tue, 20 Jan 2026 20:11:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.82.54
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B31923A900C
+	for <linux-wireless@vger.kernel.org>; Tue, 20 Jan 2026 20:11:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.82.42
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768939865; cv=none; b=HVHMQcZAyx8wDurwuWr3A5uqo8+QI5bP94ZvBY2sgGL1BiUj0I2Sao4mPjtzT5CAywglQM+oIsN0/7iajGy/40/SI1l618TD/I/aqWZuYKRrC9ZjM+YohTtkFZEXT6J74uJWyM4ZmAP6rOMZJVHJOlIx6Vx3v9zACIhE9J8RBaQ=
+	t=1768939867; cv=none; b=hrkFC+Z1vycjhPsrEhayLzGETxweGYhkVjc8C4YcY91OG50TnyjwqsZGwdPm9lJ/3i2pIeDYJHP7uZDauESE3Cd+OCkbrLsnsA44GpYin0h+iWhjHs54oaxu8cIgEsMT5ObvgSIBw4z2CIkgbBTc+kCP93LetELGWYJBN0BJ+FA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768939865; c=relaxed/simple;
-	bh=Qln5kf9bToWgjs1fDaXaRatUHl+j8h/Zq+pqYMZ6gHI=;
+	s=arc-20240116; t=1768939867; c=relaxed/simple;
+	bh=/IefA+8JdDclRON4a/9CGbkJdy6uMN9aANZxEW2BTdo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=ovwtSi9RSpYD0jniaUChUVrBKRBZo+kc7j3fzlNkVrD/l1/VqxsqlNM4Q8tGY00YZk1nXfrPtc6eFbBQnNSVpClVBI5EV1eJmxf0xaTNXjLuxu3BXCMpGT2/7pXec3MLFrIT1H50WmWR+aZVLgd3NED8R1OFEysz0wrmVCcz/kg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=zacbowling.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=YqlPmD2d; arc=none smtp.client-ip=74.125.82.54
+	 MIME-Version; b=BkmNHSyA+L1oqskcJPQRDwUCk+P4c4h/3Hyk8bGL2hUvPuEv5joMZHPxPHZAbu/hHyyCanhaKwea1x2dgY282KLeBWzF4be+d+N3GXqkXGvhT2mfF4zRF/c9V+zcbd/z5vPFVxKRUb4JC4SIjKheBg9+81rTDV27R+BY4S6WN1w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=zacbowling.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=dD+hpThh; arc=none smtp.client-ip=74.125.82.42
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=zacbowling.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-dl1-f54.google.com with SMTP id a92af1059eb24-123320591a4so5952592c88.1
-        for <linux-wireless@vger.kernel.org>; Tue, 20 Jan 2026 12:11:00 -0800 (PST)
+Received: by mail-dl1-f42.google.com with SMTP id a92af1059eb24-1233702afd3so7451039c88.0
+        for <linux-wireless@vger.kernel.org>; Tue, 20 Jan 2026 12:11:02 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1768939859; x=1769544659; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1768939861; x=1769544661; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:sender:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=ohSMRLjuL2909kuGww04u5932kdmhx8B4cMtMffQj3Y=;
-        b=YqlPmD2dp+u/zHqEe9ULrnibYZaXV6EwP0DeFA56HJjJrHLkWHJ6n/3TMzr1js6VIx
-         +qyDfxdSkFZS7XIfenvF8IuLeHX1rmt+lk39nmEllPhiOJdMKNtwScucgZOZFd9+DBiq
-         bcfbKmkKLum/bOsXnvIr2BecTErI87crMFcfNC2gx5gV15Fhz1cYEClPm+fTvMBEGC86
-         k4FNNJAiNKexqd26U/BElLdQ1JzzZfdhaW3QR6B1A0JsGxFMmuxaDJpN3EfFn3TN1FWC
-         Rza1SumTk7nsGImh0vIxRI74lqZZ/hy8ffxyCQQxjTopJxpEZL69Nk6xhYhoCklbK2xb
-         DROQ==
+        bh=BT0PDrEpagMr6lAPteYD4f8kUJ9U66WD57A1dqEsIkg=;
+        b=dD+hpThh5RR7Y7+sPlJ9ZqunZpyWUcAdH6zJcrkAATKoMhcbQV4yZXcz2ALuOWdDMG
+         IW66PUo8MqXmJia/w6M7wUn3Ck72oP1rjevhj80rcluhO9NubWjpKdCmfXAPSLys9Ad+
+         s+z8LyAsfiaSjJdPCzM/vKfACAuZXqFNZsJ8Y/Xi6HeVuUBMxGbWG8mBPuD6hAtK4SAL
+         TyzBZaOa4Y1A9eZPqFOgk1paDmgbvicDItQPTWsvcgrER5denAqvawjduArfWI0Qm+hF
+         6Z3wV9VztaMP/4WWptmzkJmk+0UxiQPdTgDa81ntSbssvSwhu7oor8+sY0yb+8zM4x0T
+         2GWg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1768939859; x=1769544659;
+        d=1e100.net; s=20230601; t=1768939861; x=1769544661;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:sender:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=ohSMRLjuL2909kuGww04u5932kdmhx8B4cMtMffQj3Y=;
-        b=JInNP01mtjD1cEq3N/bLG0MmUDN/0sXQC+t3jtyU/OrEj5HxETYNCm+zMTSbnKzdf6
-         Ik4kf+gRUc7zbAWSY8Fc9oJKXbEfJhJwI1hQxvk3tfBJLcWHW6LqfjJKKOgTtkgTxruM
-         OfW9UMVd4yPzverOjwfJ0CE9n+DSPMlWew6p9aZ/WyeajKThdoNpv389yPjbidtQWPa6
-         bTYjq5Lvp4Z+sy2nm3DlmpbJAiaj1X15Afqn9g4f+kaKrcMMXz27IXmd0nAvTntiFnPf
-         Rdjipu0exg+NRMnjQI0SjtAovkw8iGTD13GqTfz14aO8VkmiE5t8jmIc0hT/qPpCy1BS
-         AyJA==
-X-Forwarded-Encrypted: i=1; AJvYcCVLZP7Abi1LBK9hAzrG8A8SVXV6UuD96SDNVey6JRzIUGqFGzurlmK/3QIg7oHnxVEhs8PmxXs2xO8E7YIdIQ==@vger.kernel.org
-X-Gm-Message-State: AOJu0YwjfWncBXk/3RKUGIrcGacHwuV0WJnEak3uRxvFVHkbMFYEmAw2
-	BNHPJvsOrenfUmLxvZ/hz7dQBgwyQPdWcW48OxjzGJSs2UFZPMpMTZnA
-X-Gm-Gg: AY/fxX4V4cNxrsE9MQDRUKDfsQg32MKUAh/V2Gfn1C4Vz04of3KlHpG7Xwwh832+b4z
-	to6gAYTRfdUOzZQkNehQ/JMs2Uoa0dsE32sTYMb9M/sqyb9E7yIlZKEtbNkFHv9ZdKR3Z/z7UtK
-	d4xEA7f3rR6tBUUHsgd6D1hlxuugy15+Nu5fs7G0Xv4EmwCwAee1qowajUgsCIyrTOnVEoyaUOh
-	rr9YOCMQ/5AKdAQ62/jOtLH1FVdb+8awVqfU/UczYeEna4R/2NmSYjHUq1SuylNxLl+wrZFgDag
-	2xYceGo2sOh3d/nHrHxVy0fwAHH4EHQZ603dxuybEiKDo4ujOXB4XUVH0eHQQmABsoSufNj1p7h
-	DWguGwj12DcNVfQCBMSVK+K6TrfFTVvDUqG7HeriweG1Ma0IrF6TZ91X+qrp1BDaLabKNRT1cnW
-	FEB1ZpgLfujdog00sUskANUDNBoliJNBSg+ogHE5CzgorZWibr5DJ7S87Jf+ip3g==
-X-Received: by 2002:a05:7022:1288:b0:119:e56c:189d with SMTP id a92af1059eb24-1244a71415emr11839754c88.5.1768939858961;
-        Tue, 20 Jan 2026 12:10:58 -0800 (PST)
+        bh=BT0PDrEpagMr6lAPteYD4f8kUJ9U66WD57A1dqEsIkg=;
+        b=ZTpNg2KVUES/8EBBEPq0kCX0uc2CoQJ2erzR9yMuTtpxRcQ38+02/ft2UDu7+l9exC
+         IGbNDdDhx39zM8nqnzGZY3U6Bba/Pb/s+OXDbPpDzb8jZDfpsJb+yEwcCrCnHDA6zuOW
+         JmkGWqpzAlnuX50O6s9s0t8ptkodFnIlwL7+m7StR8l/ywMjQEmgMZ3MpwYFwnFaAjTH
+         h8Y+mB429E9Yl3XW86/ggDuDhxOaasfxfEqOAQd+DLL5IblW95ArwH9FEVfx+KefuC5E
+         vEuN7RV4S9pa6DSqqNdVoDPasJws7yhjlA1V7xGYUrFoD3CHKtiAuWq/QyyFco0UmB+h
+         8Xxw==
+X-Forwarded-Encrypted: i=1; AJvYcCV4tLk5Y0ZdUgEup2X4tzToNH5x4kAJ80Od4juAoyO+qicQ8X1CEXPZWyad7QHqvLkb6iqMHQao03rTV7aq0g==@vger.kernel.org
+X-Gm-Message-State: AOJu0YwvpN0GRLCvxiZDjSfdz/tSTBIlUKuobrB+pLKvXebQbLQicked
+	R6pIGVaUCVK0Q146kLKl/t5EmbH425vZ6f2aTj2RQlsEv4WAxk5iNY7H
+X-Gm-Gg: AY/fxX75cGXBXiQk4L5MUjifeH9wJCduHHOkUmI1Q3GzfDqsoq2pCqSO9nsfXiNEYsa
+	xZIZzNJuN5TRaiKeZE11oO+DnFvonrl0cUHJ8HZzZSJDtugSt2eDkjhOd0ni88qP0kuMX2HqwRS
+	buehiRwmY+/PzwA50I5BImZGlgkuOyxRhfzp5OVSG7iBdFpRXaGdT4pZ0k/WMgaN/Du8DnMnu/8
+	Dnek3OOpvrspfCGtuJllkLV4+JG5e4GctOr3BNXHTEDKak+rPLCRK1NfajZdAeCjNzQtfes3P0I
+	rddjfmzu0AveYiE28oIipQOxzDS/wiJSnQTgFqgx84gD4n8HK1ATrhztto/n17f0YLrNlk1IsQr
+	pciThPEyv4cIg7WT7Ymqy3L5PWH5tp0K+ByMc0tGJ57Ipi9QV72bV5I8+IMWneqaHAPTugCJyU7
+	KPNt3XzLOBPwZ+ZO1uuoSKBVzqFywhisuyBXaPtSl/dRXXeEgZjlTpSAsO7IHr1IH0+hI/SuVq
+X-Received: by 2002:a05:7022:1e03:b0:11b:9386:a387 with SMTP id a92af1059eb24-1246aacae80mr2182611c88.42.1768939860981;
+        Tue, 20 Jan 2026 12:11:00 -0800 (PST)
 Received: from zcache.home.zacbowling.com ([2001:5a8:60d:bc9:4a3c:9f7c:8037:90c1])
-        by smtp.gmail.com with ESMTPSA id a92af1059eb24-1244ad7201fsm21982990c88.7.2026.01.20.12.10.56
+        by smtp.gmail.com with ESMTPSA id a92af1059eb24-1244ad7201fsm21982990c88.7.2026.01.20.12.10.59
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 20 Jan 2026 12:10:57 -0800 (PST)
+        Tue, 20 Jan 2026 12:10:59 -0800 (PST)
 Sender: Zac Bowling <zbowling@gmail.com>
 From: Zac <zac@zacbowling.com>
 To: sean.wang@kernel.org
@@ -93,9 +93,9 @@ Cc: deren.wu@mediatek.com,
 	sean.wang@mediatek.com,
 	zac@zacbowling.com,
 	zbowling@gmail.com
-Subject: [PATCH 05/13] wifi: mt76: mt7921: fix deadlock in sta removal and suspend ROC abort
-Date: Tue, 20 Jan 2026 12:10:35 -0800
-Message-ID: <20260120201043.38225-6-zac@zacbowling.com>
+Subject: [PATCH 06/13] wifi: mt76: mt7925: add comprehensive NULL pointer protection for MLO
+Date: Tue, 20 Jan 2026 12:10:36 -0800
+Message-ID: <20260120201043.38225-7-zac@zacbowling.com>
 X-Mailer: git-send-email 2.52.0
 In-Reply-To: <20260120201043.38225-1-zac@zacbowling.com>
 References: <CAGp9LzrcvW18xKFL-oF3wxRmb73G6PN59Y2NSA2E5idva1wtKg@mail.gmail.com>
@@ -106,156 +106,417 @@ List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-0.46 / 15.00];
-	MID_CONTAINS_FROM(1.00)[];
+X-Spamd-Result: default: False [0.04 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	MID_CONTAINS_FROM(1.00)[];
+	R_MISSING_CHARSET(0.50)[];
 	R_DKIM_ALLOW(-0.20)[gmail.com:s=20230601];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	FREEMAIL_CC(0.00)[mediatek.com,kernel.org,vger.kernel.org,lists.infradead.org,frame.work,nbd.name,zacbowling.com,gmail.com];
-	TAGGED_FROM(0.00)[bounces-31030-lists,linux-wireless=lfdr.de];
-	FROM_HAS_DN(0.00)[];
-	DMARC_NA(0.00)[zacbowling.com];
+	TAGGED_FROM(0.00)[bounces-31031-lists,linux-wireless=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	DMARC_NA(0.00)[zacbowling.com];
+	FROM_HAS_DN(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	DKIM_TRACE(0.00)[gmail.com:+];
-	ASN(0.00)[asn:7979, ipnet:213.196.21.0/24, country:US];
-	RCPT_COUNT_TWELVE(0.00)[13];
-	R_SPF_SOFTFAIL(0.00)[~all:c];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[zac@zacbowling.com,linux-wireless@vger.kernel.org];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	ASN(0.00)[asn:7979, ipnet:2a01:60a::/32, country:US];
 	RCVD_COUNT_FIVE(0.00)[5];
-	TAGGED_RCPT(0.00)[linux-wireless];
+	R_SPF_SOFTFAIL(0.00)[~all:c];
+	FROM_NEQ_ENVFROM(0.00)[zac@zacbowling.com,linux-wireless@vger.kernel.org];
 	TO_DN_NONE(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TAGGED_RCPT(0.00)[linux-wireless];
+	RCPT_COUNT_TWELVE(0.00)[13];
 	DBL_BLOCKED_OPENRESOLVER(0.00)[ams.mirrors.kernel.org:rdns,ams.mirrors.kernel.org:helo,zacbowling.com:email,zacbowling.com:mid]
-X-Rspamd-Queue-Id: 7390F4B456
+X-Rspamd-Queue-Id: 333CB4C139
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
 From: Zac Bowling <zac@zacbowling.com>
 
-Fix deadlock scenarios in mt7921 ROC (Remain On Channel) abort paths:
+Add NULL pointer checks for functions that return pointers to link-related
+structures throughout the mt7925 driver. During MLO state transitions,
+these functions can return NULL when link configuration is not synchronized.
 
-1. Suspend path deadlock (pci.c, sdio.c):
-   - Previous fix (b74d48c46f) added mutex around mt7921_roc_abort_sync
-   - But roc_work acquires mutex, so cancel_work_sync can deadlock
-   - Fix: Remove mutex wrappers since mt7921_roc_abort_sync doesn't
-     actually need them (it only calls timer_delete_sync, cancel_work_sync,
-     and ieee80211_iterate_interfaces which handles its own locking)
+Functions protected:
+- mt792x_vif_to_bss_conf(): Returns link BSS configuration
+- mt792x_vif_to_link(): Returns driver link state
+- mt792x_sta_to_link(): Returns station link state
 
-2. sta_remove path deadlock:
-   - mt7921_mac_sta_remove is called from mt76_sta_remove which holds mutex
-   - Calling mt7921_roc_abort_sync → cancel_work_sync can deadlock if
-     roc_work is waiting for the mutex
-   - Fix: Add mt7921_roc_abort_async (matching mt7925 pattern) that sets
-     abort flag and schedules work instead of blocking
-   - Add abort flag checking in mt7921_roc_work to handle async abort
+Files updated:
 
-The fix mirrors the mt7925 implementation which already handles these
-scenarios correctly.
+1. mac.c:
+   - mt7925_vif_connect_iter(): Check bss_conf before use
+   - mt7925_mac_sta_assoc(): Check bss_conf before use
 
-Fixes: b74d48c46f ("wifi: mt76: mt7921: fix mutex handling in multiple paths")
+2. main.c:
+   - mt7925_set_key(): Check link_conf and mlink
+   - mt7925_mac_link_sta_add(): Check link_conf and mlink
+   - mt7925_mac_link_sta_assoc(): Check bss_conf and mlink
+   - mt7925_mac_link_sta_remove(): Check bss_conf and mlink
+   - mt7925_change_vif_links(): Check conf before use
+   - mt7925_assign_vif_chanctx(): Check mconf and mlink
+   - mt7925_unassign_vif_chanctx(): Check mconf and mlink
+   - mt7925_mgd_prepare_tx(): Check link_conf
+
+3. mcu.c:
+   - mt7925_mcu_sta_phy_tlv(): Check link_sta
+   - mt7925_mcu_sta_amsdu_tlv(): Check link_sta
+   - mt7925_mcu_sta_mld_tlv(): Check link_sta
+   - mt7925_mcu_sta_cmd(): Check mlink
+   - mt7925_mcu_add_bss_info(): Check link_conf
+   - mt7925_mcu_set_chctx(): Check link_conf and mlink
+
+Prevents crashes during:
+- BSSID roaming transitions
+- MLO setup and teardown
+- Hardware reset operations
+- Runtime power management
+
+Fixes: c948b5da6bbe ("wifi: mt76: mt7925: add Mediatek Wi-Fi7 driver for mt7925 device")
 Signed-off-by: Zac Bowling <zac@zacbowling.com>
 ---
- .../net/wireless/mediatek/mt76/mt7921/main.c  | 29 +++++++++++++++----
- .../net/wireless/mediatek/mt76/mt7921/pci.c   |  2 --
- .../net/wireless/mediatek/mt76/mt7921/sdio.c  |  2 --
- 3 files changed, 23 insertions(+), 10 deletions(-)
+ .../net/wireless/mediatek/mt76/mt7925/mac.c   |  6 ++
+ .../net/wireless/mediatek/mt76/mt7925/main.c  | 82 ++++++++++++++++---
+ .../net/wireless/mediatek/mt76/mt7925/mcu.c   | 22 ++++-
+ 3 files changed, 97 insertions(+), 13 deletions(-)
 
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7921/main.c b/drivers/net/wireless/mediatek/mt76/mt7921/main.c
-index 196fcb1e2e94..f3941a25fd6f 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7921/main.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7921/main.c
-@@ -367,17 +367,24 @@ static void mt7921_roc_iter(void *priv, u8 *mac,
- 	mt7921_mcu_abort_roc(phy, mvif, phy->roc_token_id);
- }
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7925/mac.c b/drivers/net/wireless/mediatek/mt76/mt7925/mac.c
+index 871b67101976..184efe8afa10 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7925/mac.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7925/mac.c
+@@ -1271,6 +1271,12 @@ mt7925_vif_connect_iter(void *priv, u8 *mac,
+ 		bss_conf = mt792x_vif_to_bss_conf(vif, i);
+ 		mconf = mt792x_vif_to_link(mvif, i);
  
-+/* Async ROC abort - safe to call while holding mutex.
-+ * Sets abort flag and schedules roc_work for cleanup.
-+ */
-+static void mt7921_roc_abort_async(struct mt792x_dev *dev)
-+{
-+	struct mt792x_phy *phy = &dev->phy;
++		/* Skip links that don't have bss_conf set up yet in mac80211.
++		 * This can happen during HW reset when link state is inconsistent.
++		 */
++		if (!bss_conf)
++			continue;
 +
-+	set_bit(MT76_STATE_ROC_ABORT, &phy->mt76->state);
-+	timer_delete(&phy->roc_timer);
-+	ieee80211_queue_work(phy->mt76->hw, &phy->roc_work);
-+}
+ 		mt76_connac_mcu_uni_add_dev(&dev->mphy, bss_conf, &mconf->mt76,
+ 					    &mvif->sta.deflink.wcid, true);
+ 		mt7925_mcu_set_tx(dev, bss_conf);
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7925/main.c b/drivers/net/wireless/mediatek/mt76/mt7925/main.c
+index 05990455ee7d..74a48742e234 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7925/main.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7925/main.c
+@@ -608,6 +608,10 @@ static int mt7925_set_link_key(struct ieee80211_hw *hw, enum set_key_cmd cmd,
+ 	link_sta = sta ? mt792x_sta_to_link_sta(vif, sta, link_id) : NULL;
+ 	mconf = mt792x_vif_to_link(mvif, link_id);
+ 	mlink = mt792x_sta_to_link(msta, link_id);
 +
- void mt7921_roc_abort_sync(struct mt792x_dev *dev)
++	if (!link_conf || !mconf || !mlink)
++		return -EINVAL;
++
+ 	wcid = &mlink->wcid;
+ 	wcid_keyidx = &wcid->hw_key_idx;
+ 
+@@ -860,12 +864,17 @@ static int mt7925_mac_link_sta_add(struct mt76_dev *mdev,
+ 
+ 	msta = (struct mt792x_sta *)link_sta->sta->drv_priv;
+ 	mlink = mt792x_sta_to_link(msta, link_id);
++	if (!mlink)
++		return -EINVAL;
+ 
+ 	idx = mt76_wcid_alloc(dev->mt76.wcid_mask, MT792x_WTBL_STA - 1);
+ 	if (idx < 0)
+ 		return -ENOSPC;
+ 
+ 	mconf = mt792x_vif_to_link(mvif, link_id);
++	if (!mconf)
++		return -EINVAL;
++
+ 	mt76_wcid_init(&mlink->wcid, 0);
+ 	mlink->wcid.sta = 1;
+ 	mlink->wcid.idx = idx;
+@@ -891,6 +900,8 @@ static int mt7925_mac_link_sta_add(struct mt76_dev *mdev,
+ 			       MT_WTBL_UPDATE_ADM_COUNT_CLEAR);
+ 
+ 	link_conf = mt792x_vif_to_bss_conf(vif, link_id);
++	if (!link_conf)
++		return -EINVAL;
+ 
+ 	/* should update bss info before STA add */
+ 	if (vif->type == NL80211_IFTYPE_STATION && !link_sta->sta->tdls) {
+@@ -997,18 +1008,29 @@ mt7925_mac_set_links(struct mt76_dev *mdev, struct ieee80211_vif *vif)
  {
- 	struct mt792x_phy *phy = &dev->phy;
+ 	struct mt792x_dev *dev = container_of(mdev, struct mt792x_dev, mt76);
+ 	struct mt792x_vif *mvif = (struct mt792x_vif *)vif->drv_priv;
+-	struct ieee80211_bss_conf *link_conf =
+-		mt792x_vif_to_bss_conf(vif, mvif->deflink_id);
+-	struct cfg80211_chan_def *chandef = &link_conf->chanreq.oper;
+-	enum nl80211_band band = chandef->chan->band, secondary_band;
++	struct ieee80211_bss_conf *link_conf;
++	struct cfg80211_chan_def *chandef;
++	enum nl80211_band band, secondary_band;
++	u16 sel_links;
++	u8 secondary_link_id;
  
- 	timer_delete_sync(&phy->roc_timer);
- 	cancel_work_sync(&phy->roc_work);
--	/* Note: caller must hold mutex if ieee80211_iterate_interfaces is
--	 * needed for ROC cleanup. Some call sites (like mt7921_mac_sta_remove)
--	 * already hold the mutex via mt76_sta_remove(). For suspend paths,
--	 * the mutex should be acquired before calling this function.
--	 */
- 	if (test_and_clear_bit(MT76_STATE_ROC, &phy->mt76->state))
- 		ieee80211_iterate_interfaces(mt76_hw(dev),
- 					     IEEE80211_IFACE_ITER_RESUME_ALL,
-@@ -392,6 +399,15 @@ void mt7921_roc_work(struct work_struct *work)
- 	phy = (struct mt792x_phy *)container_of(work, struct mt792x_phy,
- 						roc_work);
- 
-+	/* Check abort flag before acquiring mutex to prevent deadlock.
-+	 * Only send expired callback if ROC was actually active.
-+	 */
-+	if (test_and_clear_bit(MT76_STATE_ROC_ABORT, &phy->mt76->state)) {
-+		if (test_and_clear_bit(MT76_STATE_ROC, &phy->mt76->state))
-+			ieee80211_remain_on_channel_expired(phy->mt76->hw);
+-	u16 sel_links = mt76_select_links(vif, 2);
+-	u8 secondary_link_id = __ffs(~BIT(mvif->deflink_id) & sel_links);
++	link_conf = mt792x_vif_to_bss_conf(vif, mvif->deflink_id);
++	if (!link_conf)
 +		return;
-+	}
 +
- 	if (!test_and_clear_bit(MT76_STATE_ROC, &phy->mt76->state))
++	chandef = &link_conf->chanreq.oper;
++	band = chandef->chan->band;
++
++	sel_links = mt76_select_links(vif, 2);
++	secondary_link_id = __ffs(~BIT(mvif->deflink_id) & sel_links);
+ 
+ 	if (!ieee80211_vif_is_mld(vif) || hweight16(sel_links) < 2)
  		return;
  
-@@ -888,7 +904,8 @@ void mt7921_mac_sta_remove(struct mt76_dev *mdev, struct ieee80211_vif *vif,
- 	struct mt792x_dev *dev = container_of(mdev, struct mt792x_dev, mt76);
- 	struct mt792x_sta *msta = (struct mt792x_sta *)sta->drv_priv;
+ 	link_conf = mt792x_vif_to_bss_conf(vif, secondary_link_id);
++	if (!link_conf)
++		return;
++
+ 	secondary_band = link_conf->chanreq.oper.chan->band;
  
--	mt7921_roc_abort_sync(dev);
-+	/* Async abort - caller already holds mutex */
-+	mt7921_roc_abort_async(dev);
- 	mt76_connac_free_pending_tx_skbs(&dev->pm, &msta->deflink.wcid);
- 	mt76_connac_pm_wake(&dev->mphy, &dev->pm);
+ 	if (band == NL80211_BAND_2GHZ ||
+@@ -1036,6 +1058,8 @@ static void mt7925_mac_link_sta_assoc(struct mt76_dev *mdev,
  
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7921/pci.c b/drivers/net/wireless/mediatek/mt76/mt7921/pci.c
-index 9f76b334b93d..ec9686183251 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7921/pci.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7921/pci.c
-@@ -426,9 +426,7 @@ static int mt7921_pci_suspend(struct device *device)
- 	cancel_delayed_work_sync(&pm->ps_work);
- 	cancel_work_sync(&pm->wake_work);
+ 	msta = (struct mt792x_sta *)link_sta->sta->drv_priv;
+ 	mlink = mt792x_sta_to_link(msta, link_sta->link_id);
++	if (!mlink)
++		return;
  
--	mt792x_mutex_acquire(dev);
- 	mt7921_roc_abort_sync(dev);
--	mt792x_mutex_release(dev);
+ 	mt792x_mutex_acquire(dev);
  
- 	err = mt792x_mcu_drv_pmctrl(dev);
- 	if (err < 0)
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7921/sdio.c b/drivers/net/wireless/mediatek/mt76/mt7921/sdio.c
-index 92ea2811816f..3421e53dc948 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7921/sdio.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7921/sdio.c
-@@ -219,9 +219,7 @@ static int mt7921s_suspend(struct device *__dev)
- 	cancel_delayed_work_sync(&pm->ps_work);
- 	cancel_work_sync(&pm->wake_work);
+@@ -1045,12 +1069,13 @@ static void mt7925_mac_link_sta_assoc(struct mt76_dev *mdev,
+ 		link_conf = mt792x_vif_to_bss_conf(vif, vif->bss_conf.link_id);
+ 	}
  
--	mt792x_mutex_acquire(dev);
- 	mt7921_roc_abort_sync(dev);
--	mt792x_mutex_release(dev);
+-	if (vif->type == NL80211_IFTYPE_STATION && !link_sta->sta->tdls) {
++	if (link_conf && vif->type == NL80211_IFTYPE_STATION && !link_sta->sta->tdls) {
+ 		struct mt792x_bss_conf *mconf;
  
- 	err = mt792x_mcu_drv_pmctrl(dev);
- 	if (err < 0)
+ 		mconf = mt792x_link_conf_to_mconf(link_conf);
+-		mt7925_mcu_add_bss_info(&dev->phy, mconf->mt76.ctx,
+-					link_conf, link_sta, true);
++		if (mconf)
++			mt7925_mcu_add_bss_info(&dev->phy, mconf->mt76.ctx,
++						link_conf, link_sta, true);
+ 	}
+ 
+ 	ewma_avg_signal_init(&mlink->avg_ack_signal);
+@@ -1097,6 +1122,8 @@ static void mt7925_mac_link_sta_remove(struct mt76_dev *mdev,
+ 
+ 	msta = (struct mt792x_sta *)link_sta->sta->drv_priv;
+ 	mlink = mt792x_sta_to_link(msta, link_id);
++	if (!mlink)
++		return;
+ 
+ 	mt7925_roc_abort_sync(dev);
+ 
+@@ -1110,10 +1137,12 @@ static void mt7925_mac_link_sta_remove(struct mt76_dev *mdev,
+ 
+ 	link_conf = mt792x_vif_to_bss_conf(vif, link_id);
+ 
+-	if (vif->type == NL80211_IFTYPE_STATION && !link_sta->sta->tdls) {
++	if (link_conf && vif->type == NL80211_IFTYPE_STATION && !link_sta->sta->tdls) {
+ 		struct mt792x_bss_conf *mconf;
+ 
+ 		mconf = mt792x_link_conf_to_mconf(link_conf);
++		if (!mconf)
++			goto out;
+ 
+ 		if (ieee80211_vif_is_mld(vif))
+ 			mt792x_mac_link_bss_remove(dev, mconf, mlink);
+@@ -1121,6 +1150,7 @@ static void mt7925_mac_link_sta_remove(struct mt76_dev *mdev,
+ 			mt7925_mcu_add_bss_info(&dev->phy, mconf->mt76.ctx, link_conf,
+ 						link_sta, false);
+ 	}
++out:
+ 
+ 	spin_lock_bh(&mdev->sta_poll_lock);
+ 	if (!list_empty(&mlink->wcid.poll_list))
+@@ -1308,6 +1338,8 @@ mt7925_mlo_pm_iter(void *priv, u8 *mac, struct ieee80211_vif *vif)
+ 	mt792x_mutex_acquire(dev);
+ 	for_each_set_bit(i, &valid, IEEE80211_MLD_MAX_NUM_LINKS) {
+ 		bss_conf = mt792x_vif_to_bss_conf(vif, i);
++		if (!bss_conf)
++			continue;
+ 		mt7925_mcu_uni_bss_ps(dev, bss_conf);
+ 	}
+ 	mt792x_mutex_release(dev);
+@@ -1634,6 +1666,8 @@ static void mt7925_ipv6_addr_change(struct ieee80211_hw *hw,
+ 
+ 	for_each_set_bit(i, &valid, IEEE80211_MLD_MAX_NUM_LINKS) {
+ 		bss_conf = mt792x_vif_to_bss_conf(vif, i);
++		if (!bss_conf)
++			continue;
+ 		__mt7925_ipv6_addr_change(hw, bss_conf, idev);
+ 	}
+ }
+@@ -1695,6 +1729,9 @@ mt7925_conf_tx(struct ieee80211_hw *hw, struct ieee80211_vif *vif,
+ 		    [IEEE80211_AC_BK] = 1,
+ 	};
+ 
++	if (!mconf)
++		return -EINVAL;
++
+ 	/* firmware uses access class index */
+ 	mconf->queue_params[mq_to_aci[queue]] = *params;
+ 
+@@ -1865,6 +1902,8 @@ static void mt7925_vif_cfg_changed(struct ieee80211_hw *hw,
+ 	if (changed & BSS_CHANGED_ARP_FILTER) {
+ 		for_each_set_bit(i, &valid, IEEE80211_MLD_MAX_NUM_LINKS) {
+ 			bss_conf = mt792x_vif_to_bss_conf(vif, i);
++			if (!bss_conf)
++				continue;
+ 			mt7925_mcu_update_arp_filter(&dev->mt76, bss_conf);
+ 		}
+ 	}
+@@ -1880,6 +1919,8 @@ static void mt7925_vif_cfg_changed(struct ieee80211_hw *hw,
+ 			} else if (mvif->mlo_pm_state == MT792x_MLO_CHANGED_PS) {
+ 				for_each_set_bit(i, &valid, IEEE80211_MLD_MAX_NUM_LINKS) {
+ 					bss_conf = mt792x_vif_to_bss_conf(vif, i);
++					if (!bss_conf)
++						continue;
+ 					mt7925_mcu_uni_bss_ps(dev, bss_conf);
+ 				}
+ 			}
+@@ -1901,7 +1942,12 @@ static void mt7925_link_info_changed(struct ieee80211_hw *hw,
+ 	struct ieee80211_bss_conf *link_conf;
+ 
+ 	mconf = mt792x_vif_to_link(mvif, info->link_id);
++	if (!mconf)
++		return;
++
+ 	link_conf = mt792x_vif_to_bss_conf(vif, mconf->link_id);
++	if (!link_conf)
++		return;
+ 
+ 	mt792x_mutex_acquire(dev);
+ 
+@@ -2025,6 +2071,11 @@ mt7925_change_vif_links(struct ieee80211_hw *hw, struct ieee80211_vif *vif,
+ 		mlink = mlinks[link_id];
+ 		link_conf = mt792x_vif_to_bss_conf(vif, link_id);
+ 
++		if (!link_conf) {
++			err = -EINVAL;
++			goto free;
++		}
++
+ 		rcu_assign_pointer(mvif->link_conf[link_id], mconf);
+ 		rcu_assign_pointer(mvif->sta.link[link_id], mlink);
+ 
+@@ -2105,9 +2156,14 @@ static int mt7925_assign_vif_chanctx(struct ieee80211_hw *hw,
+ 
+ 	if (ieee80211_vif_is_mld(vif)) {
+ 		mconf = mt792x_vif_to_link(mvif, link_conf->link_id);
++		if (!mconf) {
++			mutex_unlock(&dev->mt76.mutex);
++			return -EINVAL;
++		}
++
+ 		pri_link_conf = mt792x_vif_to_bss_conf(vif, mvif->deflink_id);
+ 
+-		if (vif->type == NL80211_IFTYPE_STATION &&
++		if (pri_link_conf && vif->type == NL80211_IFTYPE_STATION &&
+ 		    mconf == &mvif->bss_conf)
+ 			mt7925_mcu_add_bss_info(&dev->phy, NULL, pri_link_conf,
+ 						NULL, true);
+@@ -2136,6 +2192,10 @@ static void mt7925_unassign_vif_chanctx(struct ieee80211_hw *hw,
+ 
+ 	if (ieee80211_vif_is_mld(vif)) {
+ 		mconf = mt792x_vif_to_link(mvif, link_conf->link_id);
++		if (!mconf) {
++			mutex_unlock(&dev->mt76.mutex);
++			return;
++		}
+ 
+ 		if (vif->type == NL80211_IFTYPE_STATION &&
+ 		    mconf == &mvif->bss_conf)
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7925/mcu.c b/drivers/net/wireless/mediatek/mt76/mt7925/mcu.c
+index cf0fdea45cf7..94ec62a4538a 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7925/mcu.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7925/mcu.c
+@@ -1087,6 +1087,8 @@ mt7925_mcu_sta_hdr_trans_tlv(struct sk_buff *skb,
+ 		struct mt792x_link_sta *mlink;
+ 
+ 		mlink = mt792x_sta_to_link(msta, link_sta->link_id);
++		if (!mlink)
++			return;
+ 		wcid = &mlink->wcid;
+ 	} else {
+ 		wcid = &mvif->sta.deflink.wcid;
+@@ -1120,6 +1122,9 @@ int mt7925_mcu_wtbl_update_hdr_trans(struct mt792x_dev *dev,
+ 	link_sta = mt792x_sta_to_link_sta(vif, sta, link_id);
+ 	mconf = mt792x_vif_to_link(mvif, link_id);
+ 
++	if (!mlink || !mconf)
++		return -EINVAL;
++
+ 	skb = __mt76_connac_mcu_alloc_sta_req(&dev->mt76, &mconf->mt76,
+ 					      &mlink->wcid,
+ 					      MT7925_STA_UPDATE_MAX_SIZE);
+@@ -1741,6 +1746,8 @@ mt7925_mcu_sta_amsdu_tlv(struct sk_buff *skb,
+ 	amsdu->amsdu_en = true;
+ 
+ 	mlink = mt792x_sta_to_link(msta, link_sta->link_id);
++	if (!mlink)
++		return;
+ 	mlink->wcid.amsdu = true;
+ 
+ 	switch (link_sta->agg.max_amsdu_len) {
+@@ -1773,6 +1780,10 @@ mt7925_mcu_sta_phy_tlv(struct sk_buff *skb,
+ 
+ 	link_conf = mt792x_vif_to_bss_conf(vif, link_sta->link_id);
+ 	mconf = mt792x_vif_to_link(mvif, link_sta->link_id);
++
++	if (!link_conf || !mconf)
++		return;
++
+ 	chandef = mconf->mt76.ctx ? &mconf->mt76.ctx->def :
+ 				    &link_conf->chanreq.oper;
+ 
+@@ -1851,6 +1862,10 @@ mt7925_mcu_sta_rate_ctrl_tlv(struct sk_buff *skb,
+ 
+ 	link_conf = mt792x_vif_to_bss_conf(vif, link_sta->link_id);
+ 	mconf = mt792x_vif_to_link(mvif, link_sta->link_id);
++
++	if (!link_conf || !mconf)
++		return;
++
+ 	chandef = mconf->mt76.ctx ? &mconf->mt76.ctx->def :
+ 				    &link_conf->chanreq.oper;
+ 	band = chandef->chan->band;
+@@ -1935,6 +1950,9 @@ mt7925_mcu_sta_mld_tlv(struct sk_buff *skb,
+ 
+ 		mconf = mt792x_vif_to_link(mvif, i);
+ 		mlink = mt792x_sta_to_link(msta, i);
++		if (!mconf || !mlink)
++			continue;
++
+ 		mld->link[cnt].wlan_id = cpu_to_le16(mlink->wcid.idx);
+ 		mld->link[cnt++].bss_idx = mconf->mt76.idx;
+ 
+@@ -2027,13 +2045,13 @@ int mt7925_mcu_sta_update(struct mt792x_dev *dev,
+ 		.rcpi = to_rcpi(rssi),
+ 	};
+ 	struct mt792x_sta *msta;
+-	struct mt792x_link_sta *mlink;
++	struct mt792x_link_sta *mlink = NULL;
+ 
+ 	if (link_sta) {
+ 		msta = (struct mt792x_sta *)link_sta->sta->drv_priv;
+ 		mlink = mt792x_sta_to_link(msta, link_sta->link_id);
+ 	}
+-	info.wcid = link_sta ? &mlink->wcid : &mvif->sta.deflink.wcid;
++	info.wcid = (link_sta && mlink) ? &mlink->wcid : &mvif->sta.deflink.wcid;
+ 	info.newly = state != MT76_STA_INFO_STATE_ASSOC;
+ 
+ 	return mt7925_mcu_sta_cmd(&dev->mphy, &info);
 -- 
 2.52.0
 
