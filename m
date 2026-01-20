@@ -1,154 +1,180 @@
-Return-Path: <linux-wireless+bounces-31004-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-31005-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id 71A97D3BF64
-	for <lists+linux-wireless@lfdr.de>; Tue, 20 Jan 2026 07:42:20 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8D3CDD3C033
+	for <lists+linux-wireless@lfdr.de>; Tue, 20 Jan 2026 08:20:09 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 15E814F655B
-	for <lists+linux-wireless@lfdr.de>; Tue, 20 Jan 2026 06:37:47 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 5DA1D508319
+	for <lists+linux-wireless@lfdr.de>; Tue, 20 Jan 2026 07:05:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F3F2F328B56;
-	Tue, 20 Jan 2026 06:37:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D986336B075;
+	Tue, 20 Jan 2026 07:04:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=seu.edu.cn header.i=@seu.edu.cn header.b="XTeyhX80"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UFTVyrb1"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-m49197.qiye.163.com (mail-m49197.qiye.163.com [45.254.49.197])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8F68A2EB85E;
-	Tue, 20 Jan 2026 06:37:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.254.49.197
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C23A02F99AD;
+	Tue, 20 Jan 2026 07:04:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768891061; cv=none; b=IWZFKBybcFyqsnDBWA9SdwiBdJkZaHEAauLPhE/efWadQyJvo/8wOISgkhZkB+zsO8B2zDOrFIzAzX3JUWSmHQz1iTtTxBMk6SPg06R/PzWunxHorcMcI7CtOkkVIH4ZlGi4NWrrftq0Q8Apf3/VhG30jQjVYyRc5cny9jSPfq0=
+	t=1768892688; cv=none; b=ZxPiZRZ9ZwJp+kG8/74aQY8FBCxfla1IIlSsylaEDCe98tMO7GPrn+RF9ZUgEN35Fd1k7T3y0TI2O+Ku5Jx1yC0gskluhYglcf0VcU4cNIBHBq/gtZ/OPwJnRw90HJx2/qjbMewvAJO1ZNbfAdjt2VXczhyA62liv0eao+n2ugs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768891061; c=relaxed/simple;
-	bh=z/XC+nsnk6+IKPDr1voiVT4RhivEZva3lTH46PV7QXk=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=qLkjGjq5A8MfXp6yy4fwOhpQ9kr6Jjqykr3iHVGtIXgVmMjL/uL2b6nQqwBpbRyydBgY1qjEL5RE8o8lq0aOiNmCn/wYu3qyv9lasu5jnXc6gRJY91baaxUSYhGIcFWwYCYTHBd34unErCDUZh415NJSXFY82R5g+JZS8Z8MV5s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=seu.edu.cn; spf=pass smtp.mailfrom=seu.edu.cn; dkim=pass (1024-bit key) header.d=seu.edu.cn header.i=@seu.edu.cn header.b=XTeyhX80; arc=none smtp.client-ip=45.254.49.197
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=seu.edu.cn
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=seu.edu.cn
-Received: from LAPTOP-N070L597.localdomain (unknown [223.112.146.162])
-	by smtp.qiye.163.com (Hmail) with ESMTP id 3142e9bc2;
-	Tue, 20 Jan 2026 14:37:33 +0800 (GMT+08:00)
-From: Zilin Guan <zilin@seu.edu.cn>
-To: jjohnson@kernel.org
-Cc: baochen.qiang@oss.qualcomm.com,
-	linux-wireless@vger.kernel.org,
-	ath11k@lists.infradead.org,
-	linux-kernel@vger.kernel.org,
-	jianhao.xu@seu.edu.cn,
-	Zilin Guan <zilin@seu.edu.cn>
-Subject: [PATCH v2] wifi: ath11k: fix memory leaks in beacon template setup
-Date: Tue, 20 Jan 2026 06:37:31 +0000
-Message-Id: <20260120063731.2383695-1-zilin@seu.edu.cn>
-X-Mailer: git-send-email 2.34.1
+	s=arc-20240116; t=1768892688; c=relaxed/simple;
+	bh=hga3ue21UWAE2W0mgxOLtL/aZcuRm+XpQziyEdU1Vj0=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=UyZobmvlMepxgvsqlzYgA4BlyIOtN+Ryli75fQI8LOJ5YCE8hZYZInFfmr/heZ6CbacGz74k+L1/1hPD7INumEl+UXNNRfoIx+k5FTnljcVXzscu9CBn56hA0tKHQEoDAgLGnnPPeJAM6xtZFQlWVphCM1XBjDQlMzWV4OUGdWk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UFTVyrb1; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9497AC16AAE;
+	Tue, 20 Jan 2026 07:04:44 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1768892685;
+	bh=hga3ue21UWAE2W0mgxOLtL/aZcuRm+XpQziyEdU1Vj0=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=UFTVyrb1xZIs2ufmuCCwRtf8OB8cRTfjy1Uxdju53XAZ+iTO4curPLJZKihuep/f0
+	 FeljExq3kaoHiP0+Di24J92psqJ6EvSvgFWh+fSfsQCoKjYNltRX5LYUFCOjyLCRBI
+	 NxUxCn5f25fhBY75qQjerpVu1WlfBSr34BFS6OXM=
+Date: Tue, 20 Jan 2026 08:04:42 +0100
+From: Greg KH <gregkh@linuxfoundation.org>
+To: Zac <zac@zacbowling.com>
+Cc: sean.wang@kernel.org, deren.wu@mediatek.com, kvalo@kernel.org,
+	linux-kernel@vger.kernel.org, linux-mediatek@lists.infradead.org,
+	linux-wireless@vger.kernel.org, lorenzo@kernel.org, nbd@nbd.name,
+	ryder.lee@mediatek.com, sean.wang@mediatek.com,
+	stable@vger.kernel.org, linux@frame.work, zbowling@gmail.com
+Subject: Re: [PATCH 02/11] wifi: mt76: mt792x: fix NULL pointer and firmware
+ reload issues
+Message-ID: <2026012028-barmaid-ouch-e53b@gregkh>
+References: <CAGp9LzpuyXRDa=TxqY+Xd5ZhDVvNayWbpMGDD1T0g7apkn7P0A@mail.gmail.com>
+ <20260120062854.126501-1-zac@zacbowling.com>
+ <20260120062854.126501-3-zac@zacbowling.com>
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-HM-Tid: 0a9bda1f76b503a1kunm397afc672020ab
-X-HM-MType: 10
-X-HM-Spam-Status: e1kfGhgUHx5ZQUpXWQgPGg8OCBgUHx5ZQUlOS1dZFg8aDwILHllBWSg2Ly
-	tZV1koWUFITzdXWS1ZQUlXWQ8JGhUIEh9ZQVkZTk0aVkgaTENITkxMGh9ISFYeHw5VEwETFhoSFy
-	QUDg9ZV1kYEgtZQVlJSUhVSkpJVUpPTVVKTUlZV1kWGg8SFR0UWUFZT0tIVUpLSUhOQ0NVSktLVU
-	tZBg++
-DKIM-Signature: a=rsa-sha256;
-	b=XTeyhX80RUqjgcEmRlTWq/TzbQcIDl+LPLyjT4qYuIbeIU1TWYAFomlJzoqh7Jc9TJNPpBsz9pWZit5fYezE21363pluZ2ccKqW0+fiNcCquvnjZUIxQgWqoSCWUA+pr0ooyKXS8H9MADXJVkCY6vZwmu5Nzntpj6HKLVFe9VT4=; c=relaxed/relaxed; s=default; d=seu.edu.cn; v=1;
-	bh=544/TIMDJCitrXRz3cchjCp+Op8D6J6tsN+HJoq6ZEM=;
-	h=date:mime-version:subject:message-id:from;
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260120062854.126501-3-zac@zacbowling.com>
 
-The functions ath11k_mac_setup_bcn_tmpl_ema() and
-ath11k_mac_setup_bcn_tmpl_mbssid() allocate memory for beacon templates
-but fail to free it when parameter setup returns an error.
+On Mon, Jan 19, 2026 at 10:28:45PM -0800, Zac wrote:
+> From: Zac Bowling <zac@zacbowling.com>
+> 
+> This patch combines two fixes for the shared mt792x code used by both
+> MT7921 and MT7925 drivers:
+> 
+> 1. Fix NULL pointer dereference in TX path:
+> 
+> Add NULL pointer checks in mt792x_tx() to prevent kernel crashes when
+> transmitting packets during MLO link removal.
+> 
+> The function calls mt792x_sta_to_link() which can return NULL if the
+> link is being removed, but the return value was dereferenced without
+> checking. Similarly, the RCU-protected link_conf and link_sta pointers
+> were used without NULL validation.
+> 
+> This race can occur when:
+> - A packet is queued for transmission
+> - Concurrently, the link is being removed (mt7925_mac_link_sta_remove)
+> - mt792x_sta_to_link() returns NULL for the removed link
+> - Kernel crashes on wcid = &mlink->wcid dereference
+> 
+> Fix by checking mlink, conf, and link_sta before use, freeing the SKB
+> and returning early if any pointer is NULL.
+> 
+> 2. Fix firmware reload failure after previous load crash:
+> 
+> If the firmware loading process crashes or is interrupted after
+> acquiring the patch semaphore but before releasing it, subsequent
+> firmware load attempts will fail with 'Failed to get patch semaphore'.
+> 
+> Apply the same fix from MT7915 (commit 79dd14f): release the patch
+> semaphore before starting firmware load and restart MCU firmware to
+> ensure clean state.
+> 
+> Fixes: c74df1c067f2 ("wifi: mt76: mt792x: introduce mt792x-lib module")
+> Fixes: 583204ae70f9 ("wifi: mt76: mt792x: move mt7921_load_firmware in mt792x-lib module")
+> Link: https://github.com/openwrt/mt76/commit/79dd14f2e8161b656341b6653261779199aedbe4
+> Signed-off-by: Zac Bowling <zac@zacbowling.com>
+> ---
+>  .../net/wireless/mediatek/mt76/mt792x_core.c  | 27 +++++++++++++++++--
+>  1 file changed, 25 insertions(+), 2 deletions(-)
+> 
+> diff --git a/drivers/net/wireless/mediatek/mt76/mt792x_core.c b/drivers/net/wireless/mediatek/mt76/mt792x_core.c
+> index f2ed16feb6c1..05598202b488 100644
+> --- a/drivers/net/wireless/mediatek/mt76/mt792x_core.c
+> +++ b/drivers/net/wireless/mediatek/mt76/mt792x_core.c
+> @@ -95,6 +95,8 @@ void mt792x_tx(struct ieee80211_hw *hw, struct ieee80211_tx_control *control,
+>  				       IEEE80211_TX_CTRL_MLO_LINK);
+>  		sta = (struct mt792x_sta *)control->sta->drv_priv;
+>  		mlink = mt792x_sta_to_link(sta, link_id);
+> +		if (!mlink)
+> +			goto free_skb;
+>  		wcid = &mlink->wcid;
+>  	}
+>  
+> @@ -113,9 +115,12 @@ void mt792x_tx(struct ieee80211_hw *hw, struct ieee80211_tx_control *control,
+>  		link_id = wcid->link_id;
+>  		rcu_read_lock();
+>  		conf = rcu_dereference(vif->link_conf[link_id]);
+> -		memcpy(hdr->addr2, conf->addr, ETH_ALEN);
+> -
+>  		link_sta = rcu_dereference(control->sta->link[link_id]);
+> +		if (!conf || !link_sta) {
+> +			rcu_read_unlock();
+> +			goto free_skb;
+> +		}
+> +		memcpy(hdr->addr2, conf->addr, ETH_ALEN);
+>  		memcpy(hdr->addr1, link_sta->addr, ETH_ALEN);
+>  
+>  		if (vif->type == NL80211_IFTYPE_STATION)
+> @@ -136,6 +141,10 @@ void mt792x_tx(struct ieee80211_hw *hw, struct ieee80211_tx_control *control,
+>  	}
+>  
+>  	mt76_connac_pm_queue_skb(hw, &dev->pm, wcid, skb);
+> +	return;
+> +
+> +free_skb:
+> +	ieee80211_free_txskb(hw, skb);
+>  }
+>  EXPORT_SYMBOL_GPL(mt792x_tx);
+>  
+> @@ -927,6 +936,20 @@ int mt792x_load_firmware(struct mt792x_dev *dev)
+>  {
+>  	int ret;
+>  
+> +	/* Release semaphore if taken by previous failed load attempt.
+> +	 * This prevents "Failed to get patch semaphore" errors when
+> +	 * recovering from firmware crashes or suspend/resume failures.
+> +	 */
+> +	ret = mt76_connac_mcu_patch_sem_ctrl(&dev->mt76, false);
+> +	if (ret < 0)
+> +		dev_dbg(dev->mt76.dev, "Semaphore release returned %d (may be expected)\n", ret);
+> +
+> +	/* Always restart MCU to ensure clean state before loading firmware */
+> +	mt76_connac_mcu_restart(&dev->mt76);
+> +
+> +	/* Wait for MCU to be ready after restart */
+> +	msleep(100);
+> +
+>  	ret = mt76_connac2_load_patch(&dev->mt76, mt792x_patch_name(dev));
+>  	if (ret)
+>  		return ret;
+> -- 
+> 2.52.0
+> 
 
-Since beacon templates must be released during normal execution, they
-must also be released in the error handling paths to prevent memory
-leaks.
+<formletter>
 
-Fix this by adding the missing deallocation calls in the respective
-error paths.
+This is not the correct way to submit patches for inclusion in the
+stable kernel tree.  Please read:
+    https://www.kernel.org/doc/html/latest/process/stable-kernel-rules.html
+for how to do this properly.
 
-Compile tested only. Issue found using a prototype static analysis tool
-and code review.
-
-Fixes: 3a415daa3e8b ("wifi: ath11k: add P2P IE in beacon template")
-Fixes: 335a92765d30 ("wifi: ath11k: MBSSID beacon support")
-Suggested-by: Baochen Qiang <baochen.qiang@oss.qualcomm.com>
-Signed-off-by: Zilin Guan <zilin@seu.edu.cn>
----
-Changes in v2:
-- Use unified exit paths for cleanup.
-
- drivers/net/wireless/ath/ath11k/mac.c | 25 +++++++++++++++----------
- 1 file changed, 15 insertions(+), 10 deletions(-)
-
-diff --git a/drivers/net/wireless/ath/ath11k/mac.c b/drivers/net/wireless/ath/ath11k/mac.c
-index 4dfd08b58416..42edcc5e9e49 100644
---- a/drivers/net/wireless/ath/ath11k/mac.c
-+++ b/drivers/net/wireless/ath/ath11k/mac.c
-@@ -1561,8 +1561,10 @@ static int ath11k_mac_setup_bcn_tmpl_ema(struct ath11k_vif *arvif,
- 	}
- 
- 	if (tx_arvif == arvif) {
--		if (ath11k_mac_set_vif_params(tx_arvif, beacons->bcn[0].skb))
--			return -EINVAL;
-+		if (ath11k_mac_set_vif_params(tx_arvif, beacons->bcn[0].skb)) {
-+			ret = -EINVAL;
-+			goto free;
-+		}
- 	} else {
- 		arvif->wpaie_present = tx_arvif->wpaie_present;
- 	}
-@@ -1589,11 +1591,11 @@ static int ath11k_mac_setup_bcn_tmpl_ema(struct ath11k_vif *arvif,
- 		}
- 	}
- 
--	ieee80211_beacon_free_ema_list(beacons);
--
- 	if (tx_arvif != arvif && !nontx_vif_params_set)
--		return -EINVAL; /* Profile not found in the beacons */
-+		ret = -EINVAL; /* Profile not found in the beacons */
- 
-+free:
-+	ieee80211_beacon_free_ema_list(beacons);
- 	return ret;
- }
- 
-@@ -1622,19 +1624,22 @@ static int ath11k_mac_setup_bcn_tmpl_mbssid(struct ath11k_vif *arvif,
- 	}
- 
- 	if (tx_arvif == arvif) {
--		if (ath11k_mac_set_vif_params(tx_arvif, bcn))
--			return -EINVAL;
-+		if (ath11k_mac_set_vif_params(tx_arvif, bcn)) {
-+			ret = -EINVAL;
-+			goto free;
-+		}
- 	} else if (!ath11k_mac_set_nontx_vif_params(tx_arvif, arvif, bcn)) {
--		return -EINVAL;
-+		ret = -EINVAL;
-+		goto free;
- 	}
- 
- 	ret = ath11k_wmi_bcn_tmpl(ar, arvif->vdev_id, &offs, bcn, 0);
--	kfree_skb(bcn);
--
- 	if (ret)
- 		ath11k_warn(ab, "failed to submit beacon template command: %d\n",
- 			    ret);
- 
-+free:
-+	kfree_skb(bcn);
- 	return ret;
- }
- 
--- 
-2.34.1
-
+</formletter>
 
