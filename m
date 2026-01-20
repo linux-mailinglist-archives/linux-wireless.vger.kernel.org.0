@@ -1,253 +1,192 @@
-Return-Path: <linux-wireless+bounces-31021-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-31025-lists+linux-wireless=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id EM89BtNIcGnXXAAAu9opvQ
-	(envelope-from <linux-wireless+bounces-31021-lists+linux-wireless=lfdr.de@vger.kernel.org>)
-	for <lists+linux-wireless@lfdr.de>; Wed, 21 Jan 2026 04:32:35 +0100
+	id WN0NMMf8b2mUUgAAu9opvQ
+	(envelope-from <linux-wireless+bounces-31025-lists+linux-wireless=lfdr.de@vger.kernel.org>)
+	for <lists+linux-wireless@lfdr.de>; Tue, 20 Jan 2026 23:08:07 +0100
 X-Original-To: lists+linux-wireless@lfdr.de
 Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id 994A0506EF
-	for <lists+linux-wireless@lfdr.de>; Wed, 21 Jan 2026 04:32:34 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 52E8D4CC20
+	for <lists+linux-wireless@lfdr.de>; Tue, 20 Jan 2026 23:08:07 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 34B208E0D0E
-	for <lists+linux-wireless@lfdr.de>; Tue, 20 Jan 2026 13:27:26 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id D3C2B928D7E
+	for <lists+linux-wireless@lfdr.de>; Tue, 20 Jan 2026 20:10:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4698D42849D;
-	Tue, 20 Jan 2026 13:27:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C79DD2E54D1;
+	Tue, 20 Jan 2026 20:10:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="RFZYvcnc"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="J2jLetvJ"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.13])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-dl1-f41.google.com (mail-dl1-f41.google.com [74.125.82.41])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8B618428494;
-	Tue, 20 Jan 2026 13:27:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.13
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0495D3A7855
+	for <linux-wireless@vger.kernel.org>; Tue, 20 Jan 2026 20:10:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.82.41
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768915636; cv=none; b=MnkM3BbxOW/unfuNzq2/yo8HDoucVffOvzUWTcZ01gA+mn+v3B7Gw0GQeDVRX4SC+V1roReS1Xn+MCNxQgZbP514D1LhRrd5Whjs6HIfH36R/Ud+48WpgI9Pv60qga5IoDMJfFijWPdjyV82P5UNbgQro7dzeFDq1ychiv1BHYU=
+	t=1768939848; cv=none; b=SPzlqPWhKI0VfZkNPQ6jTInOcM+PLSPcjjmZ6ZVEHmsfJ7pEFPrBnRwYZxLsWX9Swvfgo5Go4lpqhTcqGzIjHVXbezy2+hegKmPXk3pUf16vQSfVgW7XUdGc2W8/ZwIYKpntDCq2gX5WpK7TupvgiWdB54r1fZh8cZfHDOkMqMQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768915636; c=relaxed/simple;
-	bh=zliMfnqN7+4qWXkakteLMnL1rqDZXpRuUMDYk9dV31A=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=khgUPl59rtwOT2lsWXL2Tc/2hrC3IB9MLFgG58c/gtayT8MEKsqRhB1uKmGjRz9Vg5disJKF4MniTat+OVAwaPgpFbqa0Ih94JGWU1CypbjLLE91zV7+ShVsgpQ2wECyr9YLqeJmBXOrtawAujkTPGPufvWixgMGqH/Zod37/io=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=RFZYvcnc; arc=none smtp.client-ip=198.175.65.13
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1768915632; x=1800451632;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=zliMfnqN7+4qWXkakteLMnL1rqDZXpRuUMDYk9dV31A=;
-  b=RFZYvcncd4tQ24uOoRFKKMoEZgTn7Z1L8DFAypWkOadhEgAU4BZMeO4R
-   mcdYIaHMwqBsF4n7eW48IAYULs2/5zvqPlOjmq4Lx2VdRV/YWWaCj+RVE
-   EIJtW048BB/g28S1ZkaLVptDzKZIYiq52oA+RXa/0nJnBAnblACurqJwU
-   zi9Ro4mfYs9jlCvO8dj7Y9U4aq5vqowMIR2mEXenYHuqGbMCm9MOl4ixr
-   5sZk2B0klI5Q60igLEHMRkfjthEUgTfzmUK7rMst/i9kj8FDu2EdUBilg
-   zsT4U7ScCN3fTRQ20WnAodZX1TaXSKBeW5MtUqSLf3EfRCLvLdO57aK0G
-   g==;
-X-CSE-ConnectionGUID: xHrWpkmCSMOvtWpsnE8z7w==
-X-CSE-MsgGUID: FGBg6SD/RxSa/WIrcOBRuQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11676"; a="81232151"
-X-IronPort-AV: E=Sophos;i="6.21,240,1763452800"; 
-   d="scan'208";a="81232151"
-Received: from orviesa010.jf.intel.com ([10.64.159.150])
-  by orvoesa105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 20 Jan 2026 05:27:12 -0800
-X-CSE-ConnectionGUID: qs6DvTcrSlGaTFKGlwR8NQ==
-X-CSE-MsgGUID: dy0vDc1tSN2LQyhVI9nNbg==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.21,240,1763452800"; 
-   d="scan'208";a="205362466"
-Received: from lkp-server01.sh.intel.com (HELO 765f4a05e27f) ([10.239.97.150])
-  by orviesa010.jf.intel.com with ESMTP; 20 Jan 2026 05:27:09 -0800
-Received: from kbuild by 765f4a05e27f with local (Exim 4.98.2)
-	(envelope-from <lkp@intel.com>)
-	id 1viBlB-00000000P1B-45b7;
-	Tue, 20 Jan 2026 13:27:05 +0000
-Date: Tue, 20 Jan 2026 21:26:40 +0800
-From: kernel test robot <lkp@intel.com>
-To: Zac <zac@zacbowling.com>, sean.wang@kernel.org
-Cc: llvm@lists.linux.dev, oe-kbuild-all@lists.linux.dev,
-	deren.wu@mediatek.com, kvalo@kernel.org,
-	linux-kernel@vger.kernel.org, linux-mediatek@lists.infradead.org,
-	linux-wireless@vger.kernel.org, lorenzo@kernel.org, nbd@nbd.name,
-	ryder.lee@mediatek.com, sean.wang@mediatek.com,
-	stable@vger.kernel.org, linux@frame.work, zbowling@gmail.com,
-	Zac Bowling <zac@zacbowling.com>
-Subject: Re: [PATCH 11/11] wifi: mt76: mt7925: fix ROC deadlocks and race
- conditions
-Message-ID: <202601202144.ee4DM9Pz-lkp@intel.com>
-References: <20260120062854.126501-12-zac@zacbowling.com>
+	s=arc-20240116; t=1768939848; c=relaxed/simple;
+	bh=5Uz8Q2q6SpnaXy1nh7Cjsa+0KQQm8vY0C8p4Qg2pyWs=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=HJdeSkUPGmZMSwGuWyvJWsxgTaFAv4g1gnll72p2Y749Y00sWmYgIR8/xBG2xbL0YxuiatJAZm1me2gd7e+uNCS7TEwltYVAcvznOgnPZdrvJy4NVtT33/qwbtsM6TvwXYWIqQ6Jra9oz7baR0uOiQ0fANQgXc/+4qGzwJ2ox9k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=zacbowling.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=J2jLetvJ; arc=none smtp.client-ip=74.125.82.41
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=zacbowling.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-dl1-f41.google.com with SMTP id a92af1059eb24-12332910300so9237996c88.0
+        for <linux-wireless@vger.kernel.org>; Tue, 20 Jan 2026 12:10:46 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1768939846; x=1769544646; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:sender:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=yRIzu+6S6vBi95fXcSYAvUvufcVOFBJ3gUVr6PCcUOA=;
+        b=J2jLetvJmQhx6O6JLkY6GP0fgtUhUU1t2O0+d+TxRL++6ptGkskWUsvroNSTiS+MwL
+         aTuBXGjYi4Ns5kkxrZHcgGXj9fN45OmHKIZKdOQ6MEvNX0fJFGVtNAjO4B6u9JtqkdUb
+         zUylgBo0R6wlRZDpLlNWeMqvuhvrETfrLNfI1geRALDlP8yLgy8/5zpttqtJp8DYyVJq
+         hSWADxA2KJtd8Ur0V2Av/wzmrpmoJrwlexVnfSsFjlBw5+i7hksjN+bYZcyghEbwoGJO
+         rRpD1aIT71MuhI0AbrlF0mVPj+vXIQxPwvC7aUgwxJRS75VoOBg6mP1daZkzF8d2EAth
+         GNXQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1768939846; x=1769544646;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:sender:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=yRIzu+6S6vBi95fXcSYAvUvufcVOFBJ3gUVr6PCcUOA=;
+        b=EOq4f2yVzgOLLDYBtLElMNOPCE24EU8qy9ZT/ATdqqWGiR5NaPc4R7rDbzbxWisZJ7
+         KOh+mhgWdG954T5HGf1nG87zQhKfkcXyE4yWjIpOF/PYDye3zEO6ZzayyUxo+OxRWHSd
+         xi3m12a7cIvYeds/v/gYMUGNmatBuPsSBiLF8NXTP50DV4hfmxHZ4zxLrHaCItb9Rps3
+         xyFLXojRhJGXVVrUdJzVRma7KtKj6xJkVhV5EsmQ56yH2Wj0zl5cny7fgMDSaiXxizi+
+         4nCiiAK1NBkaSjXcKwKRp+ZFeeqtuXQpTrl9TS8xeI257jfrkMQONsdJrC8GfYpwoHNq
+         79SQ==
+X-Forwarded-Encrypted: i=1; AJvYcCX9gK7JJqu7h7sfa17QtsTw0UUvYHnABOf8B1Ft4HuexNgwS4+/J1mL6fepU8p15fGbBxmIeMWwgAIK4SjOlQ==@vger.kernel.org
+X-Gm-Message-State: AOJu0YwuR5A9dLJVBXj3DAyTkkDFsxU5sFNT++9Qz7m9bafVMtwqtyou
+	HDHUme2MTLotftxsnjk1lyLk+rZM4pkDWBkPOiO4jRKHk7mEViz40dqa
+X-Gm-Gg: AY/fxX6Tl1+9uHhu9wxdmUbg6sOcUNxaHyySoQqWhZYA5OKDwYmSPJxwPGP7K8pEP5p
+	4iVY7enTDGSsCTrccU1mPryaRbEcyzDeyqgHvZfCjeqQ3ItJ7nGs2kEKEcJEJsAEY2xnwmuv8aX
+	qwfdXiEiN6hAmj/v24ehJ4a/db/mb8uUAJNflmE365HSqv41gYX+KZ1VwyCDzH17oj57NbB9JwE
+	JQb7oGV11yAjAq2msd3x2VhL3nvje3ojmZCHNNOtPpiW0UJC+8y+B1NPv0Rz5oqMl6SL7CKk/VP
+	1kKmo/U9g+n80LSVTS2747AGaxevN4LfWyTt4oeFilO1K3h3i2aIZdlU8BT4+DWHvw/jVAOp165
+	lcx7MJqWwtZPpGBKwpSHjX56n4g+hh92GjbJc6oPkDNFiX4m++NZNj8WSyPT5fVf8aKUwo6NLTT
+	WRA4aNumQEsKXNcLk+prDUt/yRwS4i1K1dZjgmrziePEvgj/3SoXPMGGOGDm4QbcOamXRWEhga
+X-Received: by 2002:a05:7022:a82:b0:11b:9386:a3c8 with SMTP id a92af1059eb24-1244a7690f2mr13531760c88.41.1768939845915;
+        Tue, 20 Jan 2026 12:10:45 -0800 (PST)
+Received: from zcache.home.zacbowling.com ([2001:5a8:60d:bc9:4a3c:9f7c:8037:90c1])
+        by smtp.gmail.com with ESMTPSA id a92af1059eb24-1244ad7201fsm21982990c88.7.2026.01.20.12.10.44
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 20 Jan 2026 12:10:44 -0800 (PST)
+Sender: Zac Bowling <zbowling@gmail.com>
+From: Zac <zac@zacbowling.com>
+To: sean.wang@kernel.org
+Cc: deren.wu@mediatek.com,
+	kvalo@kernel.org,
+	linux-kernel@vger.kernel.org,
+	linux-mediatek@lists.infradead.org,
+	linux-wireless@vger.kernel.org,
+	linux@frame.work,
+	lorenzo@kernel.org,
+	nbd@nbd.name,
+	ryder.lee@mediatek.com,
+	sean.wang@mediatek.com,
+	zac@zacbowling.com,
+	zbowling@gmail.com
+Subject: [PATCH v6 00/13] wifi: mt76: stability fixes for deadlocks, NULL derefs, and race conditions
+Date: Tue, 20 Jan 2026 12:10:30 -0800
+Message-ID: <20260120201043.38225-1-zac@zacbowling.com>
+X-Mailer: git-send-email 2.52.0
+In-Reply-To: <CAGp9LzrcvW18xKFL-oF3wxRmb73G6PN59Y2NSA2E5idva1wtKg@mail.gmail.com>
+References: <CAGp9LzrcvW18xKFL-oF3wxRmb73G6PN59Y2NSA2E5idva1wtKg@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260120062854.126501-12-zac@zacbowling.com>
-X-Spamd-Result: default: False [-0.96 / 15.00];
-	MID_CONTAINS_FROM(1.00)[];
+Content-Transfer-Encoding: 8bit
+X-Spamd-Result: default: False [0.04 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW_WITH_FAILURES(-0.50)[];
-	R_DKIM_ALLOW(-0.20)[intel.com:s=Intel];
+	MID_CONTAINS_FROM(1.00)[];
+	R_MISSING_CHARSET(0.50)[];
+	R_DKIM_ALLOW(-0.20)[gmail.com:s=20230601];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FREEMAIL_CC(0.00)[lists.linux.dev,mediatek.com,kernel.org,vger.kernel.org,lists.infradead.org,nbd.name,frame.work,gmail.com,zacbowling.com];
-	RCPT_COUNT_TWELVE(0.00)[17];
-	TAGGED_FROM(0.00)[bounces-31021-lists,linux-wireless=lfdr.de];
-	MIME_TRACE(0.00)[0:+];
+	FREEMAIL_CC(0.00)[mediatek.com,kernel.org,vger.kernel.org,lists.infradead.org,frame.work,nbd.name,zacbowling.com,gmail.com];
+	TAGGED_FROM(0.00)[bounces-31025-lists,linux-wireless=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	DMARC_POLICY_ALLOW(0.00)[intel.com,none];
-	DKIM_TRACE(0.00)[intel.com:+];
-	FROM_HAS_DN(0.00)[];
-	TO_DN_SOME(0.00)[];
-	R_SPF_SOFTFAIL(0.00)[~all:c];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[lkp@intel.com,linux-wireless@vger.kernel.org];
+	DMARC_NA(0.00)[zacbowling.com];
+	FROM_HAS_DN(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[gmail.com:+];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[6];
 	ASN(0.00)[asn:7979, ipnet:2605:f480::/32, country:US];
+	RCVD_COUNT_FIVE(0.00)[5];
+	R_SPF_SOFTFAIL(0.00)[~all:c];
+	FROM_NEQ_ENVFROM(0.00)[zac@zacbowling.com,linux-wireless@vger.kernel.org];
+	TO_DN_NONE(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[linux-wireless];
-	MISSING_XM_UA(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[01.org:url,dfw.mirrors.kernel.org:rdns,dfw.mirrors.kernel.org:helo,git-scm.com:url,intel.com:email,intel.com:dkim,intel.com:mid]
-X-Rspamd-Queue-Id: 994A0506EF
+	RCPT_COUNT_TWELVE(0.00)[13];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[dfw.mirrors.kernel.org:rdns,dfw.mirrors.kernel.org:helo,zacbowling.com:email,zacbowling.com:mid]
+X-Rspamd-Queue-Id: 52E8D4CC20
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-Hi Zac,
+From: Zac Bowling <zac@zacbowling.com>
 
-kernel test robot noticed the following build warnings:
+TLDR: This series addresses stability issues in both the MT7921 and MT7925 
+WiFi drivers that cause kernel panics, deadlocks, and system hangs 
+on various systems using these drivers.
 
-[auto build test WARNING on wireless-next/main]
-[also build test WARNING on wireless/main linus/master v6.19-rc6 next-20260119]
-[If your patch is applied to the wrong git tree, kindly drop us a note.
-And when submitting patch, we suggest to use '--base' as documented in
-https://git-scm.com/docs/git-format-patch#_base_tree_information]
+This v6 series is rebased on Sean Wang's upstream deadlock fix already sent
+which is now included as patch 01/13. The remaining 12 patches are my stability
+fixes.
 
-url:    https://github.com/intel-lab-lkp/linux/commits/Zac/wifi-mt76-fix-list-corruption-in-mt76_wcid_cleanup/20260120-143842
-base:   https://git.kernel.org/pub/scm/linux/kernel/git/wireless/wireless-next.git main
-patch link:    https://lore.kernel.org/r/20260120062854.126501-12-zac%40zacbowling.com
-patch subject: [PATCH 11/11] wifi: mt76: mt7925: fix ROC deadlocks and race conditions
-config: i386-randconfig-015-20260120 (https://download.01.org/0day-ci/archive/20260120/202601202144.ee4DM9Pz-lkp@intel.com/config)
-compiler: clang version 20.1.8 (https://github.com/llvm/llvm-project 87f0227cb60147a26a1eeb4fb06e3b505e9c7261)
-reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20260120/202601202144.ee4DM9Pz-lkp@intel.com/reproduce)
+Changes since v5:
+- Rebased on Sean Wang's fix for mt7925_roc_abort_sync deadlock (now patch 1)
+  and removed my work around for the same issue as Sean's fix is better.
+- Fixed format string warning in patch 12: %lu -> %u for jiffies_to_msecs()
+  return type (caught by kernel test robot)
+- Added patch 13: fix double wcid initialization race condition - removes
+  duplicate mt76_wcid_init() call that occurred after rcu_assign_pointer(),
+  which could cause list corruption, memory leaks, and race conditions
+  (this is a pre-existing bug in upstream, not introduced by this series)
 
-If you fix the issue in a separate patch/commit (i.e. not just a new version of
-the same patch/commit), kindly add following tags
-| Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202601202144.ee4DM9Pz-lkp@intel.com/
+Zac Bowling (12):
+  wifi: mt76: fix list corruption in mt76_wcid_cleanup
+  wifi: mt76: mt792x: fix NULL pointer and firmware reload issues
+  wifi: mt76: mt7921: add mutex protection in critical paths
+  wifi: mt76: mt7921: fix deadlock in sta removal and suspend ROC abort
+  wifi: mt76: mt7925: add comprehensive NULL pointer protection for MLO
+  wifi: mt76: mt7925: add mutex protection in critical paths
+  wifi: mt76: mt7925: add MCU command error handling
+  wifi: mt76: mt7925: add lockdep assertions for mutex verification
+  wifi: mt76: mt7925: fix MLO roaming and ROC setup issues
+  wifi: mt76: mt7925: fix BA session teardown during beacon loss
+  wifi: mt76: mt7925: fix ROC deadlocks and race conditions
+  wifi: mt76: mt7925: fix double wcid initialization race condition
 
-All warnings (new ones prefixed by >>):
+Sean Wang (1):
+  wifi: mt76: mt7925: fix potential deadlock in mt7925_roc_abort_sync
 
->> drivers/net/wireless/mediatek/mt76/mt7925/main.c:611:5: warning: format specifies type 'unsigned long' but the argument has type 'unsigned int' [-Wformat]
-     610 |                                 "mt7925: ROC throttled, %lu ms remaining\n",
-         |                                                         ~~~
-         |                                                         %u
-     611 |                                 jiffies_to_msecs(throttle));
-         |                                 ^~~~~~~~~~~~~~~~~~~~~~~~~~
-   include/linux/dev_printk.h:165:39: note: expanded from macro 'dev_dbg'
-     165 |         dynamic_dev_dbg(dev, dev_fmt(fmt), ##__VA_ARGS__)
-         |                                      ~~~     ^~~~~~~~~~~
-   include/linux/dynamic_debug.h:285:19: note: expanded from macro 'dynamic_dev_dbg'
-     285 |                            dev, fmt, ##__VA_ARGS__)
-         |                                 ~~~    ^~~~~~~~~~~
-   include/linux/dynamic_debug.h:261:59: note: expanded from macro '_dynamic_func_call'
-     261 |         _dynamic_func_call_cls(_DPRINTK_CLASS_DFLT, fmt, func, ##__VA_ARGS__)
-         |                                                                  ^~~~~~~~~~~
-   include/linux/dynamic_debug.h:259:65: note: expanded from macro '_dynamic_func_call_cls'
-     259 |         __dynamic_func_call_cls(__UNIQUE_ID(ddebug), cls, fmt, func, ##__VA_ARGS__)
-         |                                                                        ^~~~~~~~~~~
-   include/linux/dynamic_debug.h:231:15: note: expanded from macro '__dynamic_func_call_cls'
-     231 |                 func(&id, ##__VA_ARGS__);                       \
-         |                             ^~~~~~~~~~~
-   drivers/net/wireless/mediatek/mt76/mt7925/main.c:662:5: warning: format specifies type 'unsigned long' but the argument has type 'unsigned int' [-Wformat]
-     661 |                                 "mt7925: MLO ROC throttled, %lu ms remaining\n",
-         |                                                             ~~~
-         |                                                             %u
-     662 |                                 jiffies_to_msecs(throttle));
-         |                                 ^~~~~~~~~~~~~~~~~~~~~~~~~~
-   include/linux/dev_printk.h:165:39: note: expanded from macro 'dev_dbg'
-     165 |         dynamic_dev_dbg(dev, dev_fmt(fmt), ##__VA_ARGS__)
-         |                                      ~~~     ^~~~~~~~~~~
-   include/linux/dynamic_debug.h:285:19: note: expanded from macro 'dynamic_dev_dbg'
-     285 |                            dev, fmt, ##__VA_ARGS__)
-         |                                 ~~~    ^~~~~~~~~~~
-   include/linux/dynamic_debug.h:261:59: note: expanded from macro '_dynamic_func_call'
-     261 |         _dynamic_func_call_cls(_DPRINTK_CLASS_DFLT, fmt, func, ##__VA_ARGS__)
-         |                                                                  ^~~~~~~~~~~
-   include/linux/dynamic_debug.h:259:65: note: expanded from macro '_dynamic_func_call_cls'
-     259 |         __dynamic_func_call_cls(__UNIQUE_ID(ddebug), cls, fmt, func, ##__VA_ARGS__)
-         |                                                                        ^~~~~~~~~~~
-   include/linux/dynamic_debug.h:231:15: note: expanded from macro '__dynamic_func_call_cls'
-     231 |                 func(&id, ##__VA_ARGS__);                       \
-         |                             ^~~~~~~~~~~
-   2 warnings generated.
+ drivers/net/wireless/mediatek/mt76/mac80211.c    |  10 +
+ drivers/net/wireless/mediatek/mt76/mt76.h        |   1 +
+ drivers/net/wireless/mediatek/mt76/mt7921/mac.c  |   2 +
+ drivers/net/wireless/mediatek/mt76/mt7921/main.c |  28 ++-
+ drivers/net/wireless/mediatek/mt76/mt7925/mac.c  |   8 +
+ drivers/net/wireless/mediatek/mt76/mt7925/main.c | 303 ++++++++++++++++++++---
+ drivers/net/wireless/mediatek/mt76/mt7925/mcu.c  |  48 +++-
+ drivers/net/wireless/mediatek/mt76/mt7925/pci.c  |   2 +
+ drivers/net/wireless/mediatek/mt76/mt792x.h      |   7 +
+ drivers/net/wireless/mediatek/mt76/mt792x_core.c |  27 +-
+ 10 files changed, 390 insertions(+), 46 deletions(-)
 
+--
+2.52.0
 
-vim +611 drivers/net/wireless/mediatek/mt76/mt7925/main.c
-
-   592	
-   593	static int mt7925_set_roc(struct mt792x_phy *phy,
-   594				  struct mt792x_bss_conf *mconf,
-   595				  struct ieee80211_channel *chan,
-   596				  int duration,
-   597				  enum mt7925_roc_req type)
-   598	{
-   599		unsigned long throttle;
-   600		int err;
-   601	
-   602		/* Check rate limiting - if in backoff period, wait or return busy */
-   603		throttle = mt7925_roc_throttle_check(phy);
-   604		if (throttle) {
-   605			/* For short backoffs, wait; for longer ones, return busy */
-   606			if (throttle < msecs_to_jiffies(200)) {
-   607				msleep(jiffies_to_msecs(throttle));
-   608			} else {
-   609				dev_dbg(phy->dev->mt76.dev,
-   610					"mt7925: ROC throttled, %lu ms remaining\n",
- > 611					jiffies_to_msecs(throttle));
-   612				return -EBUSY;
-   613			}
-   614		}
-   615	
-   616		/* Clear stale abort flag from previous ROC */
-   617		clear_bit(MT76_STATE_ROC_ABORT, &phy->mt76->state);
-   618	
-   619		if (test_and_set_bit(MT76_STATE_ROC, &phy->mt76->state))
-   620			return -EBUSY;
-   621	
-   622		phy->roc_grant = false;
-   623	
-   624		err = mt7925_mcu_set_roc(phy, mconf, chan, duration, type,
-   625					 ++phy->roc_token_id);
-   626		if (err < 0) {
-   627			clear_bit(MT76_STATE_ROC, &phy->mt76->state);
-   628			goto out;
-   629		}
-   630	
-   631		if (!wait_event_timeout(phy->roc_wait, phy->roc_grant, 4 * HZ)) {
-   632			mt7925_mcu_abort_roc(phy, mconf, phy->roc_token_id);
-   633			clear_bit(MT76_STATE_ROC, &phy->mt76->state);
-   634			mt7925_roc_record_timeout(phy);
-   635			err = -ETIMEDOUT;
-   636		} else {
-   637			/* Successful ROC - reset timeout tracking */
-   638			mt7925_roc_clear_timeout(phy);
-   639		}
-   640	
-   641	out:
-   642		return err;
-   643	}
-   644	
-
--- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
 
