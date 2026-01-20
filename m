@@ -1,83 +1,83 @@
-Return-Path: <linux-wireless+bounces-31034-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-31035-lists+linux-wireless=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id yPhbFdbpb2m+UQAAu9opvQ
-	(envelope-from <linux-wireless+bounces-31034-lists+linux-wireless=lfdr.de@vger.kernel.org>)
-	for <lists+linux-wireless@lfdr.de>; Tue, 20 Jan 2026 21:47:18 +0100
+	id CNDRLRr4b2m+UQAAu9opvQ
+	(envelope-from <linux-wireless+bounces-31035-lists+linux-wireless=lfdr.de@vger.kernel.org>)
+	for <lists+linux-wireless@lfdr.de>; Tue, 20 Jan 2026 22:48:10 +0100
 X-Original-To: lists+linux-wireless@lfdr.de
-Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [213.196.21.55])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2C0BA4BB6D
-	for <lists+linux-wireless@lfdr.de>; Tue, 20 Jan 2026 21:47:18 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4CB9C4C81A
+	for <lists+linux-wireless@lfdr.de>; Tue, 20 Jan 2026 22:48:10 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.mirrors.kernel.org (Postfix) with ESMTPS id C794260DD72
-	for <lists+linux-wireless@lfdr.de>; Tue, 20 Jan 2026 20:13:49 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id CD81958EA17
+	for <lists+linux-wireless@lfdr.de>; Tue, 20 Jan 2026 20:14:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 770F13AA1BE;
-	Tue, 20 Jan 2026 20:11:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BD57A3AEF45;
+	Tue, 20 Jan 2026 20:11:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="IpmbZPfM"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="mTDg4Re8"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-dy1-f170.google.com (mail-dy1-f170.google.com [74.125.82.170])
+Received: from mail-dl1-f49.google.com (mail-dl1-f49.google.com [74.125.82.49])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E043D354AF6
-	for <linux-wireless@vger.kernel.org>; Tue, 20 Jan 2026 20:11:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.82.170
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2D7EC3A7F56
+	for <linux-wireless@vger.kernel.org>; Tue, 20 Jan 2026 20:11:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.82.49
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768939876; cv=none; b=JPmL30vzq8RXqljQyWHmB14NFbir3p60AB4YubS3olPqq2WCqFfsEyy3JAUy7z4DqCOu4wavTMpSuNYBgMT+eSry9PJ/QR1bputpoIruAcj86Mda0eLU+R/bqAbnT0nigXFkCRgzJva0H3ipUxvgmemy0pb7pyYsPEv0P8nB+8g=
+	t=1768939878; cv=none; b=oS+mjdzxtgxlQ8lOpiyXhPrZijCbclcibiSLREDF8FuSpK+FSMt/ZS2PoPrcnhTD/gn/AOQ3eGRpoEnk/FSWB9dP8A0KVh30SbNrjevt48DHSkxVfu+ymREKWE29FMLgJYj+mKREKZGIh71xjo99yKXbrqE278X4VSAv9nXRzgE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768939876; c=relaxed/simple;
-	bh=RRBH0UHPVlQWfG4Wwrnkl+pIQ4TyQWXm/+2gN2alFno=;
+	s=arc-20240116; t=1768939878; c=relaxed/simple;
+	bh=TLNQoSMEXU+RP58h/Pkr0CHJOfR6d2qGRa1L3YyZGmE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=I6hzbQN35oKjKA+Y/InZT+yuPZS6TOwY80cu9o+/TkjOr3s84beac53ur5YVI5+KGg3nwgG4bda35izOrWotGfndEpdaFflpwMXu7bquBj6pGvg9IRfItouqQb5AZRmk42ELuN0V6mq0eQsIQrsZEMbbkGNYRUpuq312IO0s9Jg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=zacbowling.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=IpmbZPfM; arc=none smtp.client-ip=74.125.82.170
+	 MIME-Version; b=oeVfD56SPy+Bicosx8gzJEoe4tda+P0dVfer3agGBwl/jRyzrbZrD/CxunmZ425RK5r0rAGdcwVTDjf3TrIKM/X+GlhQGX69ak+0qjKxEA8TwEdnZ85mlOF5MYShGBsVcjB65gxy/5MGPW+cFgg65krXw0Z+XXhkgzyefGF6fvM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=zacbowling.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=mTDg4Re8; arc=none smtp.client-ip=74.125.82.49
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=zacbowling.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-dy1-f170.google.com with SMTP id 5a478bee46e88-2b7070acfdcso776654eec.0
-        for <linux-wireless@vger.kernel.org>; Tue, 20 Jan 2026 12:11:12 -0800 (PST)
+Received: by mail-dl1-f49.google.com with SMTP id a92af1059eb24-1220154725fso224557c88.0
+        for <linux-wireless@vger.kernel.org>; Tue, 20 Jan 2026 12:11:14 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1768939871; x=1769544671; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1768939873; x=1769544673; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:sender:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=gozi34aOF6cyrG5FN8NDIhdFKRbqzfMHt5Dibx6zW+g=;
-        b=IpmbZPfMJbTcE7N4BYmMr+toak0NrblOGnuNQxWmSU8pbjDaJY4l3SLVh/2kG6gUG4
-         aPGpCXnjESHDaqLpv0A2y/GMET+gAu+O7Pjw71pa7GWtrrh+MrY7iiBiQH28rOtg/4bx
-         GKadHOhLG8FdYYgmuj/u2Vi2Fjx3f81m+kmJosgTjuE7cx95LfzIr/eOUHwMAtNPb2Qq
-         jPcnScs6zUlWeiv996whQa74sHUhOdjkDlfAx9ZRbZpGf39fdBBelOx3SCK/+H6phiAC
-         P3Zmq3W3CjNNMoFAs9zIdBGHv9Onq9S1efzwU9zsRLk/5zpgC5+yvZrNd0w2UljiGtIc
-         TeyA==
+        bh=OMeBYNgptE+VTvskSTsKlJV1FmbWFGB7NRFg6t+m7Ik=;
+        b=mTDg4Re8Q1Qg9GdHRJm3KRDgpYVK6uCHjAvXu+EaLzcjR6nMuax5pnEe6ajKqnJg0l
+         oq2xhXf6AMjJq/Pe57T0bkXE9CaVwlzoiMw79q/FHGXpmikwUKXW0xYpEAUtHrzrF14I
+         kBqvb9T/OqIhnw+crdgnzoFhx7C/Jod9Vws0yyJMAXWmkOey3HWxn7ExohtgqWLUKhu3
+         OFOyNZz1W4I5A8qJsOTpdEBi4TUzZN+cgYPRV9lt9rHpqVQCr/9MUqDQlQoSGHnATIt9
+         DJi90fSK9ye6a0XYeWNaq9wRsBpajsA0yuJnemEs6KAIrfvvRTJJtRSfuHJggxuCjlm3
+         QnbQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1768939871; x=1769544671;
+        d=1e100.net; s=20230601; t=1768939873; x=1769544673;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:sender:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=gozi34aOF6cyrG5FN8NDIhdFKRbqzfMHt5Dibx6zW+g=;
-        b=ArFeotnv+/JIh1SOveIMuV/em4x2BcYIOI3SUhfNDb8zGYr7WfNHSXTbJtkg93yS4W
-         VI53sivMc+EKYKrMjzMJaQfo9dOryf4CvrY2gZPzqGsF/Asbjw5hlWrrlB9xZr7SUF4n
-         5iKjkOsXO+oz6KymFNIYudELb/1D3+oTpDb5sVgWgfANGICHm0KfrBHoFGxphTmmAKQc
-         bfuNosKGsPkpLSE1GRSaUptTo81rFeflEPSKgnqxwYqB0UUvJlAvoaUhht8j/IjAajcu
-         SL9MnHnqeYt/HSK4OJvvohlyQfAYIbSUB7vlTr3a0zULqDx5C2hG5t7FG8ppOFSiMvPn
-         TvLg==
-X-Forwarded-Encrypted: i=1; AJvYcCUmGo4TqUL0HpTodBypw495iO2MWLMONvQ0NS3AMHUVG/b3TVv+iUFEpaEFZGNpoi8UwfuLu+r4sgXFbMJxiw==@vger.kernel.org
-X-Gm-Message-State: AOJu0YzgMTqb99j4zDsNSpwZFVnOBsGxfiKjQxmoAv0DXgmwJH0cMWyv
-	qf4gMY3N4yqiXFf9k521jZRVerR0qFFuYZd0WN8yLC2ZAoL59cPop8KG
-X-Gm-Gg: AZuq6aLoOIUfl0iPGYZbGwbKKStmVf3ymDJZOEFFanL9Q2jXgMXVUEEi6bDL0X/ZLuJ
-	2C8njepyio1Dj8AK16DRcZM4HuEcIwETlQv3UG7y+2u0qYNVG4S/SbrMDJnfQkmC8j3fsWEkGcd
-	Mfpdl3WbnWzowuu9rEv/4/nF9tWB5ijLHOxheZmvJ39lOXU4Ijfi/WE1qGCiFhZUC6ZpaGdr/t1
-	IerMTKVUAc6cYskhJTdxMyqU6D114lnS4nMxZdHlqQxtmsrHMh0zoRw00SIeIlAGc26TwxrUsVU
-	dVLwNmdZmOtcG7JASNzA+UWT3a2+7jOOAcV4e2gZABbkAVOOlKHiTLH6MWB34z6yHP0PMPQG+5i
-	18slD7Y4suNWhN22u1Lm6OWlBh24G3HmjNZ8bWoaNymRTvwBwkrZsaq/tSiWsoesRKjdiu2Xflc
-	YZvFvC2SDIBo1Bo94E+7ovVT4n/Tlcs17gEsIYC7vOjj4GE2mubaU78WQFmnlXZw==
-X-Received: by 2002:a05:693c:2d93:b0:2b0:5028:bafd with SMTP id 5a478bee46e88-2b6b46c68femr9374962eec.8.1768939870242;
-        Tue, 20 Jan 2026 12:11:10 -0800 (PST)
+        bh=OMeBYNgptE+VTvskSTsKlJV1FmbWFGB7NRFg6t+m7Ik=;
+        b=duP2XnGt5EQRSPsGcdnc4as4l6vUkJz1pyR3bzc2ygx5f1vt9bdMJZN7dbxTVlFt7c
+         47KlNbrjeVrKBk8RkLBbLZc63mNxVy+P9Q3AjWq8za0nx4RB4M+nKcIYf49QdWYMa/Hj
+         qdefIq28/fd6oP+4EN7R3DyMFOnXg1AX9+qMdpFoPCjIPO7EakFmEBZqS9nZ+b4WtMs/
+         mA14ki3PqYa8C4pJb5x/sc26FntlQG3AtNP5Tf0+uLNkvAqm7KfiwilaaPhTT/OEvO6v
+         ligmQxhjEYfU1xomFPdtun85wG3e6UHiGkjNWIKK3lVz1ISdGf3gFgBd554RtI+rn7De
+         ROKQ==
+X-Forwarded-Encrypted: i=1; AJvYcCVSC0t8V06v9IsuF+Q4eAZVDGNbTODLiMOW2INQIgjqByWt5STwA7E9B3RKOEh4xE+GutUJKITc3zdC6mffWg==@vger.kernel.org
+X-Gm-Message-State: AOJu0YycIrlLd0Ih+S+N/PZhAc0LaNTCWxhEMGX68cGPjKrOIlimMFRC
+	xUw/UxB79mAC6aASFq4xTnBsx20HCG9zlzyQqatoDbC7yZOA0xspVapE
+X-Gm-Gg: AY/fxX6IOrEv4opYhJQs+z6RdfWSgwtU/U4L8/1H4kC2vWY9s59uxSv2d4RR3/wJtbz
+	7cUP0R7Gr5CGf93ffJE5qu+EWvy6wtGCNDAYyyEvKa8nbK6F+SkEVfKCR7dbgsRgaJxTqXnQ+Mo
+	cDm/8JcfDvFucDFNUI+9QC40UQ2wb4sI/e8NxdOP5cVgGFWUT6sPesdy0ZfvvlYnsR8EMU6HXQM
+	Df3/wlIkpiv8lDMejmCSXhjknH4O/ietRHZEMLvpCBWqhowiVK2d77HnPSjkl0iU++et7hB4mvJ
+	rT5OUthopHatFX2FfC8ZJA9DtlDOWQR2PzkJwXv7/h+ohF8yl++AMtrPpXfzhnbpAC+/ctWdEHl
+	l0sNSzB0EVoIL9yn+O8t2wYJ2KUq4Fr9j0X1RxR/t3R6EPn0JrWuZIuzCIYuD4iyXtJK6pVBFUM
+	T6k4Vdj67mDMUTk2cf0+WE+TQgBbxM2cXzXCwgkyjboLuGPPf8LrPXupI/Ccc2MSoyT1scNrBS
+X-Received: by 2002:a05:701b:2310:b0:123:3673:8459 with SMTP id a92af1059eb24-1233d0a82bbmr10840641c88.12.1768939873295;
+        Tue, 20 Jan 2026 12:11:13 -0800 (PST)
 Received: from zcache.home.zacbowling.com ([2001:5a8:60d:bc9:4a3c:9f7c:8037:90c1])
-        by smtp.gmail.com with ESMTPSA id a92af1059eb24-1244ad7201fsm21982990c88.7.2026.01.20.12.11.08
+        by smtp.gmail.com with ESMTPSA id a92af1059eb24-1244ad7201fsm21982990c88.7.2026.01.20.12.11.10
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 20 Jan 2026 12:11:09 -0800 (PST)
+        Tue, 20 Jan 2026 12:11:11 -0800 (PST)
 Sender: Zac Bowling <zbowling@gmail.com>
 From: Zac <zac@zacbowling.com>
 To: sean.wang@kernel.org
@@ -93,9 +93,9 @@ Cc: deren.wu@mediatek.com,
 	sean.wang@mediatek.com,
 	zac@zacbowling.com,
 	zbowling@gmail.com
-Subject: [PATCH 10/13] wifi: mt76: mt7925: fix MLO roaming and ROC setup issues
-Date: Tue, 20 Jan 2026 12:10:40 -0800
-Message-ID: <20260120201043.38225-11-zac@zacbowling.com>
+Subject: [PATCH 11/13] wifi: mt76: mt7925: fix BA session teardown during beacon loss
+Date: Tue, 20 Jan 2026 12:10:41 -0800
+Message-ID: <20260120201043.38225-12-zac@zacbowling.com>
 X-Mailer: git-send-email 2.52.0
 In-Reply-To: <20260120201043.38225-1-zac@zacbowling.com>
 References: <CAGp9LzrcvW18xKFL-oF3wxRmb73G6PN59Y2NSA2E5idva1wtKg@mail.gmail.com>
@@ -116,7 +116,7 @@ X-Spamd-Result: default: False [0.04 / 15.00];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	FREEMAIL_CC(0.00)[mediatek.com,kernel.org,vger.kernel.org,lists.infradead.org,frame.work,nbd.name,zacbowling.com,gmail.com];
-	TAGGED_FROM(0.00)[bounces-31034-lists,linux-wireless=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-31035-lists,linux-wireless=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	DMARC_NA(0.00)[zacbowling.com];
@@ -125,7 +125,7 @@ X-Spamd-Result: default: False [0.04 / 15.00];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	DKIM_TRACE(0.00)[gmail.com:+];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ASN(0.00)[asn:7979, ipnet:213.196.21.0/24, country:US];
+	ASN(0.00)[asn:7979, ipnet:142.0.200.0/24, country:US];
 	RCVD_COUNT_FIVE(0.00)[5];
 	R_SPF_SOFTFAIL(0.00)[~all:c];
 	FROM_NEQ_ENVFROM(0.00)[zac@zacbowling.com,linux-wireless@vger.kernel.org];
@@ -133,111 +133,54 @@ X-Spamd-Result: default: False [0.04 / 15.00];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[linux-wireless];
 	RCPT_COUNT_TWELVE(0.00)[13];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[ams.mirrors.kernel.org:rdns,ams.mirrors.kernel.org:helo,zacbowling.com:email,zacbowling.com:mid]
-X-Rspamd-Queue-Id: 2C0BA4BB6D
+	DBL_BLOCKED_OPENRESOLVER(0.00)[dfw.mirrors.kernel.org:rdns,dfw.mirrors.kernel.org:helo,zacbowling.com:email,zacbowling.com:mid,mediatek.com:email]
+X-Rspamd-Queue-Id: 4CB9C4C81A
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
 From: Zac Bowling <zac@zacbowling.com>
 
-Fix two issues related to MLO roaming and remain-on-channel operations:
+The ieee80211_stop_tx_ba_cb_irqsafe() callback was conditionally called
+only when the MCU command succeeded. However, during beacon connection
+loss, the MCU command may fail because the AP is no longer reachable.
 
-1. Key removal failure during MLO roaming:
+If the callback is not called, mac80211's BA session state machine gets
+stuck in an intermediate state. When mac80211 later tries to tear down
+all BA sessions during disconnection, it hits a WARN in
+__ieee80211_stop_tx_ba_session() due to the inconsistent state.
 
-During MLO roaming, key removal can fail because the WCID (wireless client
-ID) is already cleaned up before the key removal operation completes.
+Fix by making the callback unconditional, matching the behavior of
+mt7921 and mt7996 drivers. The MCU command failure is acceptable during
+disconnection - what matters is that mac80211 is notified to complete
+the session teardown.
 
-When roaming between APs in an MLO setup:
-- mac80211 triggers sta_state changes
-- mt7925_mac_link_sta_remove() is called for the old link
-- WCID is cleared via mt76_wcid_cleanup()
-- Later, key removal MCU command uses the now-invalid WCID
-
-Fix by checking if the WCID is still valid before sending key removal
-commands to firmware. If the WCID has already been cleaned up, skip
-the MCU command since the firmware has already removed the keys.
-
-2. Kernel warning in MLO ROC setup:
-
-When starting a remain-on-channel operation in MLO mode, the driver
-passes incorrect parameters to mt7925_mcu_set_roc(), causing a kernel
-warning about invalid chanctx usage.
-
-Fix by checking for valid chanctx and link configuration before
-setting up ROC, and use the correct link_id from the vif when
-available.
-
-Fixes: c948b5da6bbe ("wifi: mt76: mt7925: add Mediatek Wi-Fi7 driver for mt7925 device")
+Reported-by: Sean Wang <sean.wang@mediatek.com>
 Signed-off-by: Zac Bowling <zac@zacbowling.com>
 ---
- .../net/wireless/mediatek/mt76/mt7925/main.c  |  9 ++++++++-
- .../net/wireless/mediatek/mt76/mt7925/mcu.c   | 20 +++++++++++++------
- 2 files changed, 22 insertions(+), 7 deletions(-)
+ drivers/net/wireless/mediatek/mt76/mt7925/main.c | 10 +++++++---
+ 1 file changed, 7 insertions(+), 3 deletions(-)
 
 diff --git a/drivers/net/wireless/mediatek/mt76/mt7925/main.c b/drivers/net/wireless/mediatek/mt76/mt7925/main.c
-index 59a5b22a6ed6..7d68b08f445a 100644
+index 7d68b08f445a..82c81c22e39c 100644
 --- a/drivers/net/wireless/mediatek/mt76/mt7925/main.c
 +++ b/drivers/net/wireless/mediatek/mt76/mt7925/main.c
-@@ -609,8 +609,15 @@ static int mt7925_set_link_key(struct ieee80211_hw *hw, enum set_key_cmd cmd,
- 	mconf = mt792x_vif_to_link(mvif, link_id);
- 	mlink = mt792x_sta_to_link(msta, link_id);
- 
--	if (!link_conf || !mconf || !mlink)
-+	if (!link_conf || !mconf || !mlink) {
-+		/* During MLO roaming, link state may be torn down before
-+		 * mac80211 requests key removal. If removing a key and
-+		 * the link is already gone, consider it successfully removed.
+@@ -1327,9 +1327,13 @@ mt7925_ampdu_action(struct ieee80211_hw *hw, struct ieee80211_vif *vif,
+ 	case IEEE80211_AMPDU_TX_STOP_CONT:
+ 		mtxq->aggr = false;
+ 		clear_bit(tid, &msta->deflink.wcid.ampdu_state);
+-		ret = mt7925_mcu_uni_tx_ba(dev, params, false);
+-		if (!ret)
+-			ieee80211_stop_tx_ba_cb_irqsafe(vif, sta->addr, tid);
++		/* MCU command may fail during beacon loss, but callback must
++		 * always be called to complete the BA session teardown in
++		 * mac80211. Otherwise the state machine gets stuck and triggers
++		 * WARN in __ieee80211_stop_tx_ba_session().
 +		 */
-+		if (cmd != SET_KEY)
-+			return 0;
- 		return -EINVAL;
-+	}
- 
- 	wcid = &mlink->wcid;
- 	wcid_keyidx = &wcid->hw_key_idx;
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7925/mcu.c b/drivers/net/wireless/mediatek/mt76/mt7925/mcu.c
-index 1c58b0be2be4..6f7fc1b9a440 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7925/mcu.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7925/mcu.c
-@@ -1342,15 +1342,23 @@ int mt7925_mcu_set_mlo_roc(struct mt792x_bss_conf *mconf, u16 sel_links,
- 	for (i = 0; i < ARRAY_SIZE(links); i++) {
- 		links[i].id = i ? __ffs(~BIT(mconf->link_id) & sel_links) :
- 				 mconf->link_id;
-+
- 		link_conf = mt792x_vif_to_bss_conf(vif, links[i].id);
--		if (WARN_ON_ONCE(!link_conf))
--			return -EPERM;
-+		if (!link_conf)
-+			return -ENOLINK;
- 
- 		links[i].chan = link_conf->chanreq.oper.chan;
--		if (WARN_ON_ONCE(!links[i].chan))
--			return -EPERM;
-+		if (!links[i].chan)
-+			/* Channel not configured yet - this can happen during
-+			 * MLO AP setup when links are being added sequentially.
-+			 * Return -ENOLINK to indicate link not ready.
-+			 */
-+			return -ENOLINK;
- 
- 		links[i].mconf = mt792x_vif_to_link(mvif, links[i].id);
-+		if (!links[i].mconf)
-+			return -ENOLINK;
-+
- 		links[i].tag = links[i].id == mconf->link_id ?
- 			       UNI_ROC_ACQUIRE : UNI_ROC_SUB_LINK;
- 
-@@ -1364,8 +1372,8 @@ int mt7925_mcu_set_mlo_roc(struct mt792x_bss_conf *mconf, u16 sel_links,
- 		type = MT7925_ROC_REQ_JOIN;
- 
- 	for (i = 0; i < ARRAY_SIZE(links) && i < hweight16(vif->active_links); i++) {
--		if (WARN_ON_ONCE(!links[i].mconf || !links[i].chan))
--			continue;
-+		if (!links[i].mconf || !links[i].chan)
-+			return -ENOLINK;
- 
- 		chan = links[i].chan;
- 		center_ch = ieee80211_frequency_to_channel(chan->center_freq);
++		mt7925_mcu_uni_tx_ba(dev, params, false);
++		ieee80211_stop_tx_ba_cb_irqsafe(vif, sta->addr, tid);
+ 		break;
+ 	}
+ 	mt792x_mutex_release(dev);
 -- 
 2.52.0
 
