@@ -1,140 +1,190 @@
-Return-Path: <linux-wireless+bounces-31078-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-31079-lists+linux-wireless=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id wMrNAboDcmmvZwAAu9opvQ
-	(envelope-from <linux-wireless+bounces-31078-lists+linux-wireless=lfdr.de@vger.kernel.org>)
-	for <lists+linux-wireless@lfdr.de>; Thu, 22 Jan 2026 12:02:18 +0100
+	id 6BARI+8GcmmvZwAAu9opvQ
+	(envelope-from <linux-wireless+bounces-31079-lists+linux-wireless=lfdr.de@vger.kernel.org>)
+	for <lists+linux-wireless@lfdr.de>; Thu, 22 Jan 2026 12:15:59 +0100
 X-Original-To: lists+linux-wireless@lfdr.de
-Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [IPv6:2a01:60a::1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id 908A165A81
-	for <lists+linux-wireless@lfdr.de>; Thu, 22 Jan 2026 12:02:17 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id 00A6865D39
+	for <lists+linux-wireless@lfdr.de>; Thu, 22 Jan 2026 12:15:58 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.mirrors.kernel.org (Postfix) with ESMTPS id E1CFE4AAD3D
-	for <lists+linux-wireless@lfdr.de>; Thu, 22 Jan 2026 10:42:22 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 96D3D8A8FB8
+	for <lists+linux-wireless@lfdr.de>; Thu, 22 Jan 2026 11:08:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6CC383F23AE;
-	Thu, 22 Jan 2026 10:40:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 91D9C42883F;
+	Thu, 22 Jan 2026 11:03:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="TC8ohXA6"
+	dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b="RnJE88ZB"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from sipsolutions.net (s3.sipsolutions.net [168.119.38.16])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 46A823F23A5
-	for <linux-wireless@vger.kernel.org>; Thu, 22 Jan 2026 10:40:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8759B3AEF59;
+	Thu, 22 Jan 2026 11:03:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=168.119.38.16
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769078449; cv=none; b=FnbBcfpeoKuLjKn7qJgcITDDDhoO0yYM5kWOIF7lzLDerupWO0zu1aqkOPuoM1n7NKK0Uv2pSHOcbNTiekwcAireg7T60zVuANgFhxrKTNS4OTJqeHxNX0h2FPCGyEGkqQWI+UxorUOBxN4qFpcC/2nKs0A6rFo7TnpLJ2NbGdA=
+	t=1769079783; cv=none; b=WA8B4jnlOrloZUGW/dZTGosQQmmN5TFxF1pVTu7xZ67XljsK3prRJ8NNPAczmIz0tdsCIKuf2qyV6nsgnvAYGPlk8bx6yrb+m7wbAoWj6YO1kR5VuQCnzMdbM7pIDw16IYG/wUFAo2K9/7cFIlo7j9TwpvmR49CTwZ4vVAVpKMc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769078449; c=relaxed/simple;
-	bh=MywH8r2SZSBalpNJ9OdEdz5o7Oc0QkcvnF7g3fOHIaw=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=jGpmUeyoUbGwT50xqFa3F8Y/XAlqpZmQa+G87J1m+7+jxMjDRZJwIuRs6zdskXh1MUwsgUaMgnvlZEBus0r4ass9SBHbmx61IiQanfeb9DW3eBNTrASz3nKPHLcXm/ZpH92Cug6ygCdOzETKHQ9xQ+5qVc+Bi1zQDbnhwUVQuLQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=TC8ohXA6; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9738AC19425;
-	Thu, 22 Jan 2026 10:40:48 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1769078449;
-	bh=MywH8r2SZSBalpNJ9OdEdz5o7Oc0QkcvnF7g3fOHIaw=;
-	h=From:Date:Subject:References:In-Reply-To:To:Cc:From;
-	b=TC8ohXA6IiBnc/nKJg7Pm0o2ptWQhR6DVq0InMjbU4HQhDSmVv8HoC1xHh880V8xO
-	 CiUNZoExm2UWkrdIat0/58ghctnxtKE/8A43ruqGPNdLHAWk5ZVv8mbxtpy93BwD9f
-	 zOQNM/fEUl7PPsXTKtl4LwJxPrRVzAyn+rWHsio1S2s1FS7/SZid8H7d5qOVN04olR
-	 0nXg2ME7CpTz5RBP/nPOa/q0/gr2dEFr/ogkkyVQJQ1sPhbbkC7SYj533vE9OHWm08
-	 AXxokDpQ+iIt6WjRDibvbJOfuOaA4g/sXnVvbTlzeTP1wvbkcy9kB6Ckm/7fYtxKlK
-	 40pRPifW56/9Q==
-From: Lorenzo Bianconi <lorenzo@kernel.org>
-Date: Thu, 22 Jan 2026 11:40:01 +0100
-Subject: [PATCH mt76 v2 17/17] wifi: mt76: Enable NPU support for MT7996
- devices
+	s=arc-20240116; t=1769079783; c=relaxed/simple;
+	bh=EJ9ib7F0K5Rqn/pUdIC06L4e/j5Oko3L1qHs+r39AQw=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=e5reT8Scsd5OimhJ0ArYIqUDf61q6d2QJEOoFOmUOc09LgNCne62xzFPrer6ky4/nGt5+nPeKkpfvFZitqS/fhfUgL9YBY1fxyJ8B50HRaKTyT6uLaRDItFcEmRiTNyK/eL78pLzEdphJlo+nsOmMcrKNvxGZjALWIxuafx+nns=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net; spf=pass smtp.mailfrom=sipsolutions.net; dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b=RnJE88ZB; arc=none smtp.client-ip=168.119.38.16
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sipsolutions.net
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=sipsolutions.net; s=mail; h=Content-Transfer-Encoding:MIME-Version:
+	Message-ID:Date:Subject:Cc:To:From:Content-Type:Sender:Reply-To:Content-ID:
+	Content-Description:Resent-Date:Resent-From:Resent-To:Resent-Cc:
+	Resent-Message-ID:In-Reply-To:References;
+	bh=PMYkWZ+WB18SE6UeamFhFApshl5FD7b6rWVwoxj0pwc=; t=1769079781; x=1770289381; 
+	b=RnJE88ZBeT62+pft3dgD1G2DNHnHQk9rR4fehIO+nq9fbzbsjML/NUCDl6ZQlmv6h5Gv7wMs72z
+	ieM8XLsu2t6VK15pBonaqjYwi7ByshG2/LX1XS+CiU1GpHqAL2Fl1lpvjLwaykx42TTJ7s9nagVnT
+	cyKw8St8eVUP81S1wxlnZnVCIiLhsXbmndU0hFVcz7RFSTThXOFY8i/aZVJBwxnm8QNR60waJegj2
+	b6Sqxl7Fxh+ozy9t5gD8qPV19USQIKox42T5hjaurQFt430HHoZ19q2ylND8t8BV1oeZ1Wgai58Bc
+	lqkuSFW/LwEW2g8Q6b7blHuq6rwUaI2HoPRg==;
+Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
+	(Exim 4.98.2)
+	(envelope-from <johannes@sipsolutions.net>)
+	id 1visSh-00000000ofa-3gIK;
+	Thu, 22 Jan 2026 12:02:52 +0100
+From: Johannes Berg <johannes@sipsolutions.net>
+To: netdev@vger.kernel.org
+Cc: linux-wireless@vger.kernel.org
+Subject: [GIT PULL] wireless-2026-11-22
+Date: Thu, 22 Jan 2026 12:00:15 +0100
+Message-ID: <20260122110248.15450-3-johannes@sipsolutions.net>
+X-Mailer: git-send-email 2.52.0
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20260122-mt76-npu-eagle-offload-v2-17-2374614c0de6@kernel.org>
-References: <20260122-mt76-npu-eagle-offload-v2-0-2374614c0de6@kernel.org>
-In-Reply-To: <20260122-mt76-npu-eagle-offload-v2-0-2374614c0de6@kernel.org>
-To: Felix Fietkau <nbd@nbd.name>, Ryder Lee <ryder.lee@mediatek.com>, 
- Shayne Chen <shayne.chen@mediatek.com>, Sean Wang <sean.wang@mediatek.com>, 
- Matthias Brugger <matthias.bgg@gmail.com>, 
- AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>, 
- Lorenzo Bianconi <lorenzo@kernel.org>
-Cc: linux-wireless@vger.kernel.org, linux-arm-kernel@lists.infradead.org, 
- linux-mediatek@lists.infradead.org, Kang Yang <kang.yang@airoha.com>
-X-Mailer: b4 0.14.2
+Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-0.46 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+	MID_CONTAINS_FROM(1.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW_WITH_FAILURES(-0.50)[];
-	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
+	R_DKIM_ALLOW(-0.20)[sipsolutions.net:s=mail];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-31078-lists,linux-wireless=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	FREEMAIL_TO(0.00)[nbd.name,mediatek.com,gmail.com,collabora.com,kernel.org];
-	DMARC_POLICY_ALLOW(0.00)[kernel.org,quarantine];
-	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[kernel.org:+];
-	FROM_HAS_DN(0.00)[];
-	TO_DN_SOME(0.00)[];
-	R_SPF_SOFTFAIL(0.00)[~all:c];
+	DMARC_POLICY_ALLOW(0.00)[sipsolutions.net,none];
+	RCVD_TLS_LAST(0.00)[];
+	RCPT_COUNT_TWO(0.00)[2];
+	RCVD_COUNT_THREE(0.00)[4];
+	TAGGED_FROM(0.00)[bounces-31079-lists,linux-wireless=lfdr.de];
+	DKIM_TRACE(0.00)[sipsolutions.net:+];
+	ASN(0.00)[asn:7979, ipnet:2605:f480::/32, country:US];
+	MIME_TRACE(0.00)[0:+];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[lorenzo@kernel.org,linux-wireless@vger.kernel.org];
+	FROM_NEQ_ENVFROM(0.00)[johannes@sipsolutions.net,linux-wireless@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	MID_RHS_MATCH_FROM(0.00)[];
+	R_SPF_SOFTFAIL(0.00)[~all:c];
 	TAGGED_RCPT(0.00)[linux-wireless];
-	RCPT_COUNT_SEVEN(0.00)[11];
-	ASN(0.00)[asn:7979, ipnet:2a01:60a::/32, country:US];
+	TO_DN_NONE(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[ams.mirrors.kernel.org:helo,ams.mirrors.kernel.org:rdns,airoha.com:email]
-X-Rspamd-Queue-Id: 908A165A81
+	DBL_BLOCKED_OPENRESOLVER(0.00)[dfw.mirrors.kernel.org:helo,dfw.mirrors.kernel.org:rdns,sipsolutions.net:mid,sipsolutions.net:dkim]
+X-Rspamd-Queue-Id: 00A6865D39
 X-Rspamd-Action: no action
 
-Enable NPU offloading for MT7990 chipset.
+Hi,
 
-Tested-by: Kang Yang <kang.yang@airoha.com>
-Signed-off-by: Lorenzo Bianconi <lorenzo@kernel.org>
----
- drivers/net/wireless/mediatek/mt76/npu.c | 6 +-----
- 1 file changed, 1 insertion(+), 5 deletions(-)
+Some more updates from wireless. The only interesting thing here is
+that there's a merge conflict with net-next, see here:
+https://lore.kernel.org/all/98386125-c0bb-495e-b2ba-2765aaed19d8@oss.qualcomm.com/
 
-diff --git a/drivers/net/wireless/mediatek/mt76/npu.c b/drivers/net/wireless/mediatek/mt76/npu.c
-index bc8f2012be9dbe2c7fc1fc885b6135d796d8c0d6..c4c7c0af63217a7e85b2d97b37febba16899e332 100644
---- a/drivers/net/wireless/mediatek/mt76/npu.c
-+++ b/drivers/net/wireless/mediatek/mt76/npu.c
-@@ -450,10 +450,6 @@ int mt76_npu_init(struct mt76_dev *dev, phys_addr_t phy_addr, int type)
- 	struct airoha_npu *npu;
- 	int err = 0;
- 
--	/* NPU offloading is only supported by MT7992 */
--	if (!is_mt7992(dev))
--		return 0;
--
- 	mutex_lock(&dev->mutex);
- 
- 	npu = airoha_npu_get(dev->dev);
-@@ -486,7 +482,7 @@ int mt76_npu_init(struct mt76_dev *dev, phys_addr_t phy_addr, int type)
- 	dev->mmio.phy_addr = phy_addr;
- 	dev->mmio.npu_type = type;
- 	/* NPU offloading requires HW-RRO for RX packet reordering. */
--	dev->hwrro_mode = MT76_HWRRO_V3_1;
-+	dev->hwrro_mode = is_mt7996(dev) ? MT76_HWRRO_V3 : MT76_HWRRO_V3_1;
- 	dev->rx_token_size = 32768;
- 
- 	rcu_assign_pointer(dev->mmio.npu, npu);
+Please pull and let us know if there's any problem.
 
--- 
-2.52.0
+Thanks,
+johannes
 
+
+
+The following changes since commit f2a3b12b305c7bb72467b2a56d19a4587b6007f9:
+
+  Merge tag 'net-6.19-rc5' of git://git.kernel.org/pub/scm/linux/kernel/git/netdev/net (2026-01-08 08:40:35 -1000)
+
+are available in the Git repository at:
+
+  https://git.kernel.org/pub/scm/linux/kernel/git/wireless/wireless.git tags/wireless-2026-11-22
+
+for you to fetch changes up to 50b359896fe55d0443ed550e1fabba71d242031a:
+
+  wifi: cfg80211: ignore link disabled flag from userspace (2026-01-20 10:02:01 +0100)
+
+----------------------------------------------------------------
+Another set of updates:
+ - various small fixes for ath10k/ath12k/mwifiex/rsi
+ - cfg80211 fix for HE bitrate overflow
+ - mac80211 fixes
+   - S1G beacon handling in scan
+   - skb tailroom handling for HW encryption
+   - CSA fix for multi-link
+   - handling of disabled links during association
+
+----------------------------------------------------------------
+Baochen Qiang (2):
+      wifi: ath12k: don't force radio frequency check in freq_to_idx()
+      wifi: ath12k: fix dead lock while flushing management frames
+
+Benjamin Berg (3):
+      wifi: mac80211: parse all TTLM entries
+      wifi: mac80211: apply advertised TTLM from association response
+      wifi: cfg80211: ignore link disabled flag from userspace
+
+Dan Carpenter (1):
+      wifi: mwifiex: Fix a loop in mwifiex_update_ampdu_rxwinsize()
+
+Johannes Berg (1):
+      Merge tag 'ath-current-20260113' of git://git.kernel.org/pub/scm/linux/kernel/git/ath/ath into wireless
+
+Lachlan Hodges (1):
+      wifi: mac80211: don't perform DA check on S1G beacon
+
+Manish Dharanenthiran (1):
+      wifi: ath12k: cancel scan only on active scan vdev
+
+Marek Vasut (1):
+      wifi: rsi: Fix memory corruption due to not set vif driver data size
+
+Miri Korenblit (2):
+      wifi: mac80211: correctly check if CSA is active
+      wifi: mac80211: don't increment crypto_tx_tailroom_needed_cnt twice
+
+Thomas Fourier (2):
+      wifi: ath10k: fix dma_free_coherent() pointer
+      wifi: ath12k: fix dma_free_coherent() pointer
+
+Veerendranath Jakkam (1):
+      wifi: cfg80211: Fix bitrate calculation overflow for HE rates
+
+Yingying Tang (2):
+      wifi: ath12k: Fix scan state stuck in ABORTING after cancel_remain_on_channel
+      wifi: ath12k: Fix wrong P2P device link id issue
+
+ drivers/net/wireless/ath/ath10k/ce.c               |  16 +-
+ drivers/net/wireless/ath/ath12k/ce.c               |  12 +-
+ drivers/net/wireless/ath/ath12k/mac.c              |  16 +-
+ drivers/net/wireless/ath/ath12k/wmi.c              |   9 +-
+ .../net/wireless/marvell/mwifiex/11n_rxreorder.c   |   6 +-
+ drivers/net/wireless/rsi/rsi_91x_mac80211.c        |   1 +
+ include/net/cfg80211.h                             |   3 -
+ include/uapi/linux/nl80211.h                       |   5 +-
+ net/mac80211/ieee80211_i.h                         |   2 -
+ net/mac80211/iface.c                               |   8 +-
+ net/mac80211/key.c                                 |   3 +-
+ net/mac80211/mlme.c                                | 213 ++++++++++++---------
+ net/mac80211/scan.c                                |   9 +-
+ net/wireless/nl80211.c                             |  10 -
+ net/wireless/util.c                                |   8 +-
+ 15 files changed, 171 insertions(+), 150 deletions(-)
 
