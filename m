@@ -1,150 +1,152 @@
-Return-Path: <linux-wireless+bounces-31060-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-31061-lists+linux-wireless=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id KCVdKAXpcWkONAAAu9opvQ
-	(envelope-from <linux-wireless+bounces-31060-lists+linux-wireless=lfdr.de@vger.kernel.org>)
-	for <lists+linux-wireless@lfdr.de>; Thu, 22 Jan 2026 10:08:21 +0100
+	id 8FzKLmECcmmvZwAAu9opvQ
+	(envelope-from <linux-wireless+bounces-31061-lists+linux-wireless=lfdr.de@vger.kernel.org>)
+	for <lists+linux-wireless@lfdr.de>; Thu, 22 Jan 2026 11:56:33 +0100
 X-Original-To: lists+linux-wireless@lfdr.de
-Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [213.196.21.55])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4785E643C1
-	for <lists+linux-wireless@lfdr.de>; Thu, 22 Jan 2026 10:08:21 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0CF9665940
+	for <lists+linux-wireless@lfdr.de>; Thu, 22 Jan 2026 11:56:33 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 3FDD15E5A71
-	for <lists+linux-wireless@lfdr.de>; Thu, 22 Jan 2026 09:00:57 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 37FB7509CB1
+	for <lists+linux-wireless@lfdr.de>; Thu, 22 Jan 2026 10:40:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 308AA1DF759;
-	Thu, 22 Jan 2026 08:59:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 49DE437F0EF;
+	Thu, 22 Jan 2026 10:40:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=seu.edu.cn header.i=@seu.edu.cn header.b="LjpozjHQ"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="t2MTWGjt"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-m155101.qiye.163.com (mail-m155101.qiye.163.com [101.71.155.101])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8B50F234973;
-	Thu, 22 Jan 2026 08:59:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=101.71.155.101
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0C30F3EFD26
+	for <linux-wireless@vger.kernel.org>; Thu, 22 Jan 2026 10:40:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769072396; cv=none; b=WCBgpeL43sRZr75/rFjqODQb8Yi7FKQGLCx5yVgFGb1zogQpjqOtUiEnnTpQofn2S9VHiVAOAD2e+PMpjjYxN1PlwlQ8Pd8LfWzqg/u1TeBjL2kjBwhSDMdDEPuVpEsdxq3DNDoHmMn3sd7zSiYhLHM4lzryhPqIebszPRj8yE4=
+	t=1769078410; cv=none; b=Y+KPHBVAnQHMdupxJtbHs5JnaBw50WFQl+tc0j9vFwAbQO0lLRiTPNKQ7OTevWb170m0HGT5i25qKSVAdgGXrsRqt6UXCETXQJ55BnHVUodSHFtEVweMtiEbuFjM/rUpUA2mcwM+bAEqfG6yUWS0GEes7L/Cy5E/4QL32+ww0rE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769072396; c=relaxed/simple;
-	bh=TNsykdaONIIlR4eNt2LJ+0FYYb8J/mUn4gf9mTQzgzg=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=PyuuXGwH9DoQ5V/227guEBDydw45vmZtuW+PKTVnHi8RMLyKPMmgXeAigosrVxqYRLBNdEAO/WYMEUNkJOQNqIYBHlbGFhKu9jiRrNMmG4CNfl034Ce+dundsDH1iEd967+AyadpiJINtpczf+avpxKBeb8my0JGcoF4F/cXRqw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=seu.edu.cn; spf=pass smtp.mailfrom=seu.edu.cn; dkim=pass (1024-bit key) header.d=seu.edu.cn header.i=@seu.edu.cn header.b=LjpozjHQ; arc=none smtp.client-ip=101.71.155.101
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=seu.edu.cn
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=seu.edu.cn
-Received: from LAPTOP-N070L597.localdomain (unknown [58.215.202.202])
-	by smtp.qiye.163.com (Hmail) with ESMTP id 319367b75;
-	Thu, 22 Jan 2026 16:59:49 +0800 (GMT+08:00)
-From: Zilin Guan <zilin@seu.edu.cn>
-To: chunkeey@googlemail.com
-Cc: johannes.berg@intel.com,
-	quic_rdevanat@quicinc.com,
-	linux-wireless@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	jianhao.xu@seu.edu.cn,
-	Zilin Guan <zilin@seu.edu.cn>
-Subject: [PATCH v3] wifi: p54: Fix memory leak in p54_beacon_update()
-Date: Thu, 22 Jan 2026 08:59:45 +0000
-Message-Id: <20260122085945.444955-1-zilin@seu.edu.cn>
-X-Mailer: git-send-email 2.34.1
+	s=arc-20240116; t=1769078410; c=relaxed/simple;
+	bh=HPK1to5A18w33KTKAfPrc3VJLcOPN/LuGnXNtI40+kU=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=Gi1EmqINis3LGNbk98AQs8Rhm7u7sage3xpBxRFl9p/FC7ScIpqlQ9x9ty9xx/LhyQfyB3dMttrkfD5LO+abHkuH2mCAoCzinfq1zJkARU/T0w5Tics494e782yV82kToSAJ6XahbkjUH+sMIRYKy/IKoRjoNIrEUekGxBzESR0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=t2MTWGjt; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0C4D2C19423;
+	Thu, 22 Jan 2026 10:40:04 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1769078405;
+	bh=HPK1to5A18w33KTKAfPrc3VJLcOPN/LuGnXNtI40+kU=;
+	h=From:Subject:Date:To:Cc:From;
+	b=t2MTWGjt1rXCrXNfXVwVI/cq2BIa30GgCX/cBH7/dIx3MYP6pmGkFSjSFO6yDRz9U
+	 3geMd6d9RZh7goUDZhjLkzeTdTnsPvesM05mW0mZequan8TG3uK9ZGNs5FbnCu/dRp
+	 FY89jSf6lZAm4XlAgdLWPhf76kMYnkQSCO77NcI2CPaf1VNzjvF0ljt2ysJZww26++
+	 dAmR98lIfCe32WZX3L5eZk4f2iOjIAq6lkApbnWYYk86NjVqhpebL66NYFSW5yqUwf
+	 6dYtxoYexYsItOtYZ3d9EgAZQ7/TizJv273J+MlsknUyPbaKxCckWa0bSYcyfCPlmQ
+	 pRYJ/T27EFDaw==
+From: Lorenzo Bianconi <lorenzo@kernel.org>
+Subject: [PATCH mt76 v2 00/17] wifi: mt76: mt7996: support for MT7996 NPU
+ offloading
+Date: Thu, 22 Jan 2026 11:39:44 +0100
+Message-Id: <20260122-mt76-npu-eagle-offload-v2-0-2374614c0de6@kernel.org>
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-HM-Tid: 0a9be4ee6ba903a1kunm3e47c58f33e96
-X-HM-MType: 10
-X-HM-Spam-Status: e1kfGhgUHx5ZQUpXWQgPGg8OCBgUHx5ZQUlOS1dZFg8aDwILHllBWSg2Ly
-	tZV1koWUFITzdXWS1ZQUlXWQ8JGhUIEh9ZQVlDSxoaVkJCSksfSB0eHkIfHlYeHw5VEwETFhoSFy
-	QUDg9ZV1kYEgtZQVlOQ1VJSk5VSUtJVUlLSVlXWRYaDxIVHRRZQVlPS0hVSktJSE5DQ1VKS0tVS1
-	kG
-DKIM-Signature: a=rsa-sha256;
-	b=LjpozjHQaDPGWgygp3qJp+INiTqVRx0qI2hVpnTJDkK0FDFBkUrMrO1N+gQKe+QjTB0c8OgdKgQEo8FqCWdU0WcDOw4LUijQLl0qCtpiKwMJbD3Zi0/hQqyDE6EjM1sU7fqBaasQOpSlto2gkEdChYL0HHhAFrcD6O9CL7HP1rg=; c=relaxed/relaxed; s=default; d=seu.edu.cn; v=1;
-	bh=oJHAU9mEp9hQIpogoLK30SuGJmBW+Htm38AfsOYxi78=;
-	h=date:mime-version:subject:message-id:from;
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAAAAAAAC/x3MQQqEMAxA0atI1hOwQTriVYZZpDbVgLbSjiKId
+ 7fM8i3+v6BIVikwNBdkObRoihX0amCcOU6C6quBWrKtIcL197YYtx2Fp0UwhbAk9hic8a7rmc0
+ oUOMtS9DzP/587/sB46HW12gAAAA=
+X-Change-ID: 20260122-mt76-npu-eagle-offload-fb1db48aa1ce
+To: Felix Fietkau <nbd@nbd.name>, Ryder Lee <ryder.lee@mediatek.com>, 
+ Shayne Chen <shayne.chen@mediatek.com>, Sean Wang <sean.wang@mediatek.com>, 
+ Matthias Brugger <matthias.bgg@gmail.com>, 
+ AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>, 
+ Lorenzo Bianconi <lorenzo@kernel.org>
+Cc: linux-wireless@vger.kernel.org, linux-arm-kernel@lists.infradead.org, 
+ linux-mediatek@lists.infradead.org, Kang Yang <kang.yang@airoha.com>
+X-Mailer: b4 0.14.2
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-0.46 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MID_CONTAINS_FROM(1.00)[];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW_WITH_FAILURES(-0.50)[];
-	R_DKIM_ALLOW(-0.20)[seu.edu.cn:s=default];
+	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	TAGGED_FROM(0.00)[bounces-31061-lists,linux-wireless=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	R_SPF_SOFTFAIL(0.00)[~all:c];
 	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-31060-lists,linux-wireless=lfdr.de];
-	FREEMAIL_TO(0.00)[googlemail.com];
+	FREEMAIL_TO(0.00)[nbd.name,mediatek.com,gmail.com,collabora.com,kernel.org];
+	DMARC_POLICY_ALLOW(0.00)[kernel.org,quarantine];
 	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[kernel.org:+];
 	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[seu.edu.cn:+];
-	PRECEDENCE_BULK(0.00)[];
-	TAGGED_RCPT(0.00)[linux-wireless];
-	RCPT_COUNT_SEVEN(0.00)[7];
-	DMARC_POLICY_ALLOW(0.00)[seu.edu.cn,none];
-	FROM_NEQ_ENVFROM(0.00)[zilin@seu.edu.cn,linux-wireless@vger.kernel.org];
 	TO_DN_SOME(0.00)[];
-	ASN(0.00)[asn:7979, ipnet:213.196.21.0/24, country:US];
+	R_SPF_SOFTFAIL(0.00)[~all:c];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[lorenzo@kernel.org,linux-wireless@vger.kernel.org];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[ams.mirrors.kernel.org:helo,ams.mirrors.kernel.org:rdns,seu.edu.cn:email,seu.edu.cn:dkim,seu.edu.cn:mid]
-X-Rspamd-Queue-Id: 4785E643C1
+	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[linux-wireless];
+	RCPT_COUNT_SEVEN(0.00)[11];
+	ASN(0.00)[asn:7979, ipnet:142.0.200.0/24, country:US];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[dfw.mirrors.kernel.org:helo,dfw.mirrors.kernel.org:rdns]
+X-Rspamd-Queue-Id: 0CF9665940
 X-Rspamd-Action: no action
 
-In p54_beacon_update(), beacon is allocated via ieee80211_beacon_get().
-If p54_beacon_format_ie_tim() fails, the function returns immediately
-without freeing the allocated beacon skb, which would lead to a memory
-leak.
+Introduce support for NPU offloading in MT7996 (7990-Eagle) chipset.
 
-Since no other references to this memory exist, it must be freed locally
-before returning the error. Fix this by freeing the buffer using
-dev_kfree_skb_any() in the error path.
-
-Note that this error path is unreachable in practice because mac80211
-guarantees a minimum TIM length of 4 bytes for non-S1G devices. This
-change primarily serves to silence static analysis warnings and keep
-the error handling logic complete.
-
-Compile tested only. Issue found using a prototype static analysis tool
-and code review.
-
-Signed-off-by: Zilin Guan <zilin@seu.edu.cn>
 ---
-Changes in v3:
-- Add a note in the commit message about the code path being unreachable
-  in practice.
-- Remove the Fixes tag as the issue is theoretical and unreachable.
-
 Changes in v2:
-- Correct the Fixes tag to point to the commit that introduced this issue.
+- Rebase on top of mt76 tree
+- Fix NPU reset procedure
+- Link to v1: https://lore.kernel.org/linux-wireless/20251204-mt76-npu-eagle-offload-v1-0-7819c52c0893@kernel.org/
 
- drivers/net/wireless/intersil/p54/main.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+---
+Lorenzo Bianconi (17):
+      wifi: mt76: mt7996: Fix NPU stop procedure
+      wifi: mt76: npu: Add missing rx_token_size initialization
+      wifi: mt76: always enable RRO queues for non-MT7992 chipset
+      wifi: mt76: mt7996: Fix BAND2 tx queues initialization when NPU is enabled
+      wifi: mt76: mt7996: Fix wdma_idx for MT7996 device if NPU is enabled
+      wifi: mt76: mt7996: Add mt7992_npu_txrx_offload_init routine
+      wifi: mt76: mt7996: Rename mt7996_npu_rxd_init() in mt7992_npu_rxd_init()
+      wifi: mt76: mt7996: Add NPU support for MT7990 chipset
+      wifi: mt76: mt7996: Integrate NPU in RRO session management
+      wifi: mt76: mt7996: Integrate MT7990 init configuration for NPU
+      wifi: mt76: mt7996: Integrate MT7990 dma configuration for NPU
+      wifi: mt76: mt7996: Add __mt7996_npu_hw_init routine
+      wifi: mt76: mt7996: Move RRO dma start in a dedicated routine
+      wifi: mt76: Do not reset idx for NPU tx queues during reset
+      wifi: mt76: mt7996: Do not schedule RRO and TxFree queues during reset for NPU
+      wifi: mt76: mt7996: Store DMA mapped buffer addresses in mt7996_npu_hw_init()
+      wifi: mt76: Enable NPU support for MT7996 devices
 
-diff --git a/drivers/net/wireless/intersil/p54/main.c b/drivers/net/wireless/intersil/p54/main.c
-index 2ec3655f1a9c..57a62108cbc3 100644
---- a/drivers/net/wireless/intersil/p54/main.c
-+++ b/drivers/net/wireless/intersil/p54/main.c
-@@ -143,8 +143,10 @@ static int p54_beacon_update(struct p54_common *priv,
- 	if (!beacon)
- 		return -ENOMEM;
- 	ret = p54_beacon_format_ie_tim(beacon);
--	if (ret)
-+	if (ret) {
-+		dev_kfree_skb_any(beacon);
- 		return ret;
-+	}
- 
- 	/*
- 	 * During operation, the firmware takes care of beaconing.
+ drivers/net/wireless/mediatek/mt76/dma.c           |  20 +-
+ drivers/net/wireless/mediatek/mt76/dma.h           |   4 +-
+ drivers/net/wireless/mediatek/mt76/mt76.h          |  20 +
+ drivers/net/wireless/mediatek/mt76/mt7996/dma.c    | 204 +++++----
+ drivers/net/wireless/mediatek/mt76/mt7996/init.c   |  49 ++-
+ drivers/net/wireless/mediatek/mt76/mt7996/mac.c    |  21 +-
+ drivers/net/wireless/mediatek/mt76/mt7996/main.c   |   4 +
+ drivers/net/wireless/mediatek/mt76/mt7996/mt7996.h |  13 +
+ drivers/net/wireless/mediatek/mt76/mt7996/npu.c    | 457 +++++++++++++++++----
+ drivers/net/wireless/mediatek/mt76/npu.c           |  37 +-
+ 10 files changed, 640 insertions(+), 189 deletions(-)
+---
+base-commit: 3bc60b741f6a2d51b6743fd0e5639beaffc39953
+change-id: 20260122-mt76-npu-eagle-offload-fb1db48aa1ce
+
+Best regards,
 -- 
-2.34.1
+Lorenzo Bianconi <lorenzo@kernel.org>
 
 
