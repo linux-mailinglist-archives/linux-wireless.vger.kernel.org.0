@@ -1,190 +1,191 @@
-Return-Path: <linux-wireless+bounces-31079-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-31080-lists+linux-wireless=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 6BARI+8GcmmvZwAAu9opvQ
-	(envelope-from <linux-wireless+bounces-31079-lists+linux-wireless=lfdr.de@vger.kernel.org>)
-	for <lists+linux-wireless@lfdr.de>; Thu, 22 Jan 2026 12:15:59 +0100
+	id mK0MIRwScmksawAAu9opvQ
+	(envelope-from <linux-wireless+bounces-31080-lists+linux-wireless=lfdr.de@vger.kernel.org>)
+	for <lists+linux-wireless@lfdr.de>; Thu, 22 Jan 2026 13:03:40 +0100
 X-Original-To: lists+linux-wireless@lfdr.de
 Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id 00A6865D39
-	for <lists+linux-wireless@lfdr.de>; Thu, 22 Jan 2026 12:15:58 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 01DF8665BC
+	for <lists+linux-wireless@lfdr.de>; Thu, 22 Jan 2026 13:03:39 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 96D3D8A8FB8
-	for <lists+linux-wireless@lfdr.de>; Thu, 22 Jan 2026 11:08:32 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 681468CBF4E
+	for <lists+linux-wireless@lfdr.de>; Thu, 22 Jan 2026 11:45:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 91D9C42883F;
-	Thu, 22 Jan 2026 11:03:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2084F330B3E;
+	Thu, 22 Jan 2026 11:43:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b="RnJE88ZB"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="JJ6W94Ho"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from sipsolutions.net (s3.sipsolutions.net [168.119.38.16])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f50.google.com (mail-wm1-f50.google.com [209.85.128.50])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8759B3AEF59;
-	Thu, 22 Jan 2026 11:03:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=168.119.38.16
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 791D43D34A6
+	for <linux-wireless@vger.kernel.org>; Thu, 22 Jan 2026 11:43:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.50
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769079783; cv=none; b=WA8B4jnlOrloZUGW/dZTGosQQmmN5TFxF1pVTu7xZ67XljsK3prRJ8NNPAczmIz0tdsCIKuf2qyV6nsgnvAYGPlk8bx6yrb+m7wbAoWj6YO1kR5VuQCnzMdbM7pIDw16IYG/wUFAo2K9/7cFIlo7j9TwpvmR49CTwZ4vVAVpKMc=
+	t=1769082210; cv=none; b=Ke4eiIPBzTe6+0aQQgvau+/pAdZwkTJ9ByjceYI0BnErV1wLMeD4eAA93mLbJMqmvL4uK9porTzsMa0ggUcc7HjbcohoZ3a9v4e9OVEfRjryALxotG+rUTFLILpVaTzrHxY7DBeR448c+1z2b//zwmMpcXQJGjjN7mD2obzpitg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769079783; c=relaxed/simple;
-	bh=EJ9ib7F0K5Rqn/pUdIC06L4e/j5Oko3L1qHs+r39AQw=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=e5reT8Scsd5OimhJ0ArYIqUDf61q6d2QJEOoFOmUOc09LgNCne62xzFPrer6ky4/nGt5+nPeKkpfvFZitqS/fhfUgL9YBY1fxyJ8B50HRaKTyT6uLaRDItFcEmRiTNyK/eL78pLzEdphJlo+nsOmMcrKNvxGZjALWIxuafx+nns=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net; spf=pass smtp.mailfrom=sipsolutions.net; dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b=RnJE88ZB; arc=none smtp.client-ip=168.119.38.16
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sipsolutions.net
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=sipsolutions.net; s=mail; h=Content-Transfer-Encoding:MIME-Version:
-	Message-ID:Date:Subject:Cc:To:From:Content-Type:Sender:Reply-To:Content-ID:
-	Content-Description:Resent-Date:Resent-From:Resent-To:Resent-Cc:
-	Resent-Message-ID:In-Reply-To:References;
-	bh=PMYkWZ+WB18SE6UeamFhFApshl5FD7b6rWVwoxj0pwc=; t=1769079781; x=1770289381; 
-	b=RnJE88ZBeT62+pft3dgD1G2DNHnHQk9rR4fehIO+nq9fbzbsjML/NUCDl6ZQlmv6h5Gv7wMs72z
-	ieM8XLsu2t6VK15pBonaqjYwi7ByshG2/LX1XS+CiU1GpHqAL2Fl1lpvjLwaykx42TTJ7s9nagVnT
-	cyKw8St8eVUP81S1wxlnZnVCIiLhsXbmndU0hFVcz7RFSTThXOFY8i/aZVJBwxnm8QNR60waJegj2
-	b6Sqxl7Fxh+ozy9t5gD8qPV19USQIKox42T5hjaurQFt430HHoZ19q2ylND8t8BV1oeZ1Wgai58Bc
-	lqkuSFW/LwEW2g8Q6b7blHuq6rwUaI2HoPRg==;
-Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
-	(Exim 4.98.2)
-	(envelope-from <johannes@sipsolutions.net>)
-	id 1visSh-00000000ofa-3gIK;
-	Thu, 22 Jan 2026 12:02:52 +0100
-From: Johannes Berg <johannes@sipsolutions.net>
-To: netdev@vger.kernel.org
-Cc: linux-wireless@vger.kernel.org
-Subject: [GIT PULL] wireless-2026-11-22
-Date: Thu, 22 Jan 2026 12:00:15 +0100
-Message-ID: <20260122110248.15450-3-johannes@sipsolutions.net>
-X-Mailer: git-send-email 2.52.0
+	s=arc-20240116; t=1769082210; c=relaxed/simple;
+	bh=I1P32dRnlRRlRytuS718Mi6x2CGbWNt6tQn/o7se8tI=;
+	h=Message-ID:Date:MIME-Version:From:Subject:To:Cc:References:
+	 In-Reply-To:Content-Type; b=dkpuq2/RMfZck4FbxfDGryXVk34ky/S2G2v5VNdBE9n70KM/DSfMw0sU+PsArPohg27KFKbtc3tRbcrlgjoberNQPALy7s0FH66841CDapLNUXr2aQ8Uf6x5SBr6A8zM77Yr7wa9TqW2NdZgVl9KrQXCINnXKPat1cF676dNdxw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=JJ6W94Ho; arc=none smtp.client-ip=209.85.128.50
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-wm1-f50.google.com with SMTP id 5b1f17b1804b1-47d59da3d81so13274905e9.0
+        for <linux-wireless@vger.kernel.org>; Thu, 22 Jan 2026 03:43:28 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1769082207; x=1769687007; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:content-language:references
+         :cc:to:subject:from:user-agent:mime-version:date:message-id:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=Vi3eOtlGMdvgIFC1VrsJnTLpPSzBkZyu4ZAigbqhHhA=;
+        b=JJ6W94HokGi0hriJnBJWXke2Rv6NfjhuDrW67cs8QVy/oXoOD63+IitFi1CZqhTqeE
+         fJwfPM1IABXqK+wNKOdOwGUHorBea00+RBcON/3eKUd1NaQ417yuJ2X57hvAkHGcaRF9
+         T8h4aOP6ro0hMUDd7aTxi20Af/Jp4zOhrLsCC+N0M+G27Q4ICm7lpQQ/SuI8GjbVM/F7
+         k5syYmnDSfFXWSS5KoAbzk9+Sif7f/pWNYcywNUHhJFiRdY6SatYEQX8t8M6777Vc73e
+         8ztc1PF2dslJzDXZkrbyf4c8TIw2a8EfaFVy5RLPN6FHBnLAhuYZR5nS9UP5kd5mtAyP
+         LO+A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1769082207; x=1769687007;
+        h=content-transfer-encoding:in-reply-to:content-language:references
+         :cc:to:subject:from:user-agent:mime-version:date:message-id:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=Vi3eOtlGMdvgIFC1VrsJnTLpPSzBkZyu4ZAigbqhHhA=;
+        b=Z19+zFp9j0ABOVak/jqSeIpxvBduvyFmlttpQEYKN+OLvfAkTwrV8IP94eVuYlGFPz
+         QCE9zkKBGVhKhQ2VvtdrAHQcee6PwSeun34TfuKooa8A8VEAn+k8FpgwjYkOBXUKGX+F
+         4z5eB0ReRypXAk1axKtobpTIXSSyoX17Xc/b/K9pbTJtzcgn2E1KGEcSiK6XhL6XcqW8
+         EMH/kBegIsth8ZHlXMd7eHJK3WMrp8t02y0K/By3gOciscHRDn3OPuq3LxWmhjOslIeD
+         cfSWWnRXbs+vKjvVtmII+Zhas236m6oKu06NxzuFCyCfEIn6TIad5YDJSOStVxbyAsf5
+         wpYw==
+X-Forwarded-Encrypted: i=1; AJvYcCVaw5ICvFkcckTtP9/pMTgdWcREKXFZE0P+nISU0qerkXoMafbm36HdN56LnbycaiMMO/6touBE4XWhQWpDdw==@vger.kernel.org
+X-Gm-Message-State: AOJu0Yw4drn0I/nY9N3pE0AsNaCJ7aLyicnXeOGYem3QntapkPy6Wt2X
+	t4YpkJOLD92kV9+2ECT2KNXjfOOm6jS7Jmcteo45TK8fG+jGPqt+JqID
+X-Gm-Gg: AZuq6aL5eAQaqzJ6cn03K+57MdU36hIJDwfvGN5lrPt0ChLXtyQWRM+E+FkNS1amjsY
+	cR5SgH6TufQEr2VChqXtJ7JUbrXYEHpU4IDWnYFveWToKVb3S+aXmc1bNOKFOH2PmAGXbHs3Ung
+	JpqYX6w84H+lOybOi4hiE2TXaecWVvsyWJtmm1BCkDejnQhPqkvnIwvULSqh+XHK3LE2DJIisGd
+	6jFiifbD7sN9aZvCIR4X24fQqe2xeAoLlrzszN+BiRfRfGotvbmu6JFZFAkoC4RqQQ+X4sD08/e
+	RUpP3fyFLaW8cviPTLIqkF8vU823ohnbJ0wH6VuR5iG7dNtDgc/D897+RpD/XFDmoQwDVOSu896
+	3wtBb6EPrucXvdrn2cgWlC5+W4twBaIQjOlrxlL8A3nyNMJ9tl1JOlJZm2fLkDQjNPS/czehiI4
+	tWEbcXpSvVm3TC2vHmo9eSVBNLyhU7xMtoZ+Yf7hHpARDlxJIqiEqeY3LpI2Gcy2KymBy3Zv1wz
+	n+emLlV4uclrbB6Gig=
+X-Received: by 2002:a05:600c:4fd0:b0:46e:2815:8568 with SMTP id 5b1f17b1804b1-4804708299dmr23584965e9.10.1769082202231;
+        Thu, 22 Jan 2026 03:43:22 -0800 (PST)
+Received: from shift.daheim (p200300d5ff09750050f496fffe46beef.dip0.t-ipconnect.de. [2003:d5:ff09:7500:50f4:96ff:fe46:beef])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-480424b64a8sm54172145e9.3.2026.01.22.03.43.21
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 22 Jan 2026 03:43:21 -0800 (PST)
+Received: from localhost ([127.0.0.1])
+	by shift.daheim with esmtp (Exim 4.99.1)
+	(envelope-from <chunkeey@gmail.com>)
+	id 1vit56-000000016ac-09nk;
+	Thu, 22 Jan 2026 12:43:21 +0100
+Message-ID: <12dcf657-b8d9-4bd5-9bb1-e760dcbf1b30@gmail.com>
+Date: Thu, 22 Jan 2026 12:43:21 +0100
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla Thunderbird
+From: Christian Lamparter <chunkeey@gmail.com>
+Subject: Re: [PATCH v3] wifi: p54: Fix memory leak in p54_beacon_update()
+To: Zilin Guan <zilin@seu.edu.cn>
+Cc: johannes.berg@intel.com, quic_rdevanat@quicinc.com,
+ linux-wireless@vger.kernel.org, linux-kernel@vger.kernel.org,
+ jianhao.xu@seu.edu.cn
+References: <20260122085945.444955-1-zilin@seu.edu.cn>
+Content-Language: de-DE
+In-Reply-To: <20260122085945.444955-1-zilin@seu.edu.cn>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.46 / 15.00];
-	MID_CONTAINS_FROM(1.00)[];
+X-Spamd-Result: default: False [-1.96 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW_WITH_FAILURES(-0.50)[];
-	R_DKIM_ALLOW(-0.20)[sipsolutions.net:s=mail];
+	R_DKIM_ALLOW(-0.20)[gmail.com:s=20230601];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	TAGGED_FROM(0.00)[bounces-31080-lists,linux-wireless=lfdr.de];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	DMARC_POLICY_ALLOW(0.00)[sipsolutions.net,none];
+	FREEMAIL_FROM(0.00)[gmail.com];
 	RCVD_TLS_LAST(0.00)[];
-	RCPT_COUNT_TWO(0.00)[2];
-	RCVD_COUNT_THREE(0.00)[4];
-	TAGGED_FROM(0.00)[bounces-31079-lists,linux-wireless=lfdr.de];
-	DKIM_TRACE(0.00)[sipsolutions.net:+];
-	ASN(0.00)[asn:7979, ipnet:2605:f480::/32, country:US];
+	TO_DN_SOME(0.00)[];
+	RECEIVED_HELO_LOCALHOST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[johannes@sipsolutions.net,linux-wireless@vger.kernel.org];
+	DMARC_POLICY_ALLOW(0.00)[gmail.com,none];
+	DKIM_TRACE(0.00)[gmail.com:+];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[6];
 	R_SPF_SOFTFAIL(0.00)[~all:c];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[chunkeey@gmail.com,linux-wireless@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCVD_COUNT_FIVE(0.00)[6];
 	TAGGED_RCPT(0.00)[linux-wireless];
-	TO_DN_NONE(0.00)[];
+	MID_RHS_MATCH_FROM(0.00)[];
+	ASN(0.00)[asn:7979, ipnet:2605:f480::/32, country:US];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[dfw.mirrors.kernel.org:helo,dfw.mirrors.kernel.org:rdns,sipsolutions.net:mid,sipsolutions.net:dkim]
-X-Rspamd-Queue-Id: 00A6865D39
+	DBL_BLOCKED_OPENRESOLVER(0.00)[dfw.mirrors.kernel.org:helo,dfw.mirrors.kernel.org:rdns,seu.edu.cn:email]
+X-Rspamd-Queue-Id: 01DF8665BC
 X-Rspamd-Action: no action
 
-Hi,
+On 1/22/26 9:59 AM, Zilin Guan wrote:
+> In p54_beacon_update(), beacon is allocated via ieee80211_beacon_get().
+> If p54_beacon_format_ie_tim() fails, the function returns immediately
+> without freeing the allocated beacon skb, which would lead to a memory
+> leak.
+> 
+> Since no other references to this memory exist, it must be freed locally
+> before returning the error. Fix this by freeing the buffer using
+> dev_kfree_skb_any() in the error path.
+> 
+> Note that this error path is unreachable in practice because mac80211
+> guarantees a minimum TIM length of 4 bytes for non-S1G devices. This
+> change primarily serves to silence static analysis warnings and keep
+> the error handling logic complete.
+> 
+> Compile tested only. Issue found using a prototype static analysis tool
+> and code review.
+> 
+> Signed-off-by: Zilin Guan <zilin@seu.edu.cn>
+Acked-by: Christian Lamparter <chunkeey@gmail.com>
 
-Some more updates from wireless. The only interesting thing here is
-that there's a merge conflict with net-next, see here:
-https://lore.kernel.org/all/98386125-c0bb-495e-b2ba-2765aaed19d8@oss.qualcomm.com/
+This will be picked up automatically, right?
 
-Please pull and let us know if there's any problem.
+> ---
+> Changes in v3:
+> - Add a note in the commit message about the code path being unreachable
+>    in practice.
+> - Remove the Fixes tag as the issue is theoretical and unreachable.
+> 
+> Changes in v2:
+> - Correct the Fixes tag to point to the commit that introduced this issue.
+> 
+>   drivers/net/wireless/intersil/p54/main.c | 4 +++-
+>   1 file changed, 3 insertions(+), 1 deletion(-)
+> 
+> diff --git a/drivers/net/wireless/intersil/p54/main.c b/drivers/net/wireless/intersil/p54/main.c
+> index 2ec3655f1a9c..57a62108cbc3 100644
+> --- a/drivers/net/wireless/intersil/p54/main.c
+> +++ b/drivers/net/wireless/intersil/p54/main.c
+> @@ -143,8 +143,10 @@ static int p54_beacon_update(struct p54_common *priv,
+>   	if (!beacon)
+>   		return -ENOMEM;
+>   	ret = p54_beacon_format_ie_tim(beacon);
+> -	if (ret)
+> +	if (ret) {
+> +		dev_kfree_skb_any(beacon);
+>   		return ret;
+> +	}
+>   
+>   	/*
+>   	 * During operation, the firmware takes care of beaconing.
 
-Thanks,
-johannes
-
-
-
-The following changes since commit f2a3b12b305c7bb72467b2a56d19a4587b6007f9:
-
-  Merge tag 'net-6.19-rc5' of git://git.kernel.org/pub/scm/linux/kernel/git/netdev/net (2026-01-08 08:40:35 -1000)
-
-are available in the Git repository at:
-
-  https://git.kernel.org/pub/scm/linux/kernel/git/wireless/wireless.git tags/wireless-2026-11-22
-
-for you to fetch changes up to 50b359896fe55d0443ed550e1fabba71d242031a:
-
-  wifi: cfg80211: ignore link disabled flag from userspace (2026-01-20 10:02:01 +0100)
-
-----------------------------------------------------------------
-Another set of updates:
- - various small fixes for ath10k/ath12k/mwifiex/rsi
- - cfg80211 fix for HE bitrate overflow
- - mac80211 fixes
-   - S1G beacon handling in scan
-   - skb tailroom handling for HW encryption
-   - CSA fix for multi-link
-   - handling of disabled links during association
-
-----------------------------------------------------------------
-Baochen Qiang (2):
-      wifi: ath12k: don't force radio frequency check in freq_to_idx()
-      wifi: ath12k: fix dead lock while flushing management frames
-
-Benjamin Berg (3):
-      wifi: mac80211: parse all TTLM entries
-      wifi: mac80211: apply advertised TTLM from association response
-      wifi: cfg80211: ignore link disabled flag from userspace
-
-Dan Carpenter (1):
-      wifi: mwifiex: Fix a loop in mwifiex_update_ampdu_rxwinsize()
-
-Johannes Berg (1):
-      Merge tag 'ath-current-20260113' of git://git.kernel.org/pub/scm/linux/kernel/git/ath/ath into wireless
-
-Lachlan Hodges (1):
-      wifi: mac80211: don't perform DA check on S1G beacon
-
-Manish Dharanenthiran (1):
-      wifi: ath12k: cancel scan only on active scan vdev
-
-Marek Vasut (1):
-      wifi: rsi: Fix memory corruption due to not set vif driver data size
-
-Miri Korenblit (2):
-      wifi: mac80211: correctly check if CSA is active
-      wifi: mac80211: don't increment crypto_tx_tailroom_needed_cnt twice
-
-Thomas Fourier (2):
-      wifi: ath10k: fix dma_free_coherent() pointer
-      wifi: ath12k: fix dma_free_coherent() pointer
-
-Veerendranath Jakkam (1):
-      wifi: cfg80211: Fix bitrate calculation overflow for HE rates
-
-Yingying Tang (2):
-      wifi: ath12k: Fix scan state stuck in ABORTING after cancel_remain_on_channel
-      wifi: ath12k: Fix wrong P2P device link id issue
-
- drivers/net/wireless/ath/ath10k/ce.c               |  16 +-
- drivers/net/wireless/ath/ath12k/ce.c               |  12 +-
- drivers/net/wireless/ath/ath12k/mac.c              |  16 +-
- drivers/net/wireless/ath/ath12k/wmi.c              |   9 +-
- .../net/wireless/marvell/mwifiex/11n_rxreorder.c   |   6 +-
- drivers/net/wireless/rsi/rsi_91x_mac80211.c        |   1 +
- include/net/cfg80211.h                             |   3 -
- include/uapi/linux/nl80211.h                       |   5 +-
- net/mac80211/ieee80211_i.h                         |   2 -
- net/mac80211/iface.c                               |   8 +-
- net/mac80211/key.c                                 |   3 +-
- net/mac80211/mlme.c                                | 213 ++++++++++++---------
- net/mac80211/scan.c                                |   9 +-
- net/wireless/nl80211.c                             |  10 -
- net/wireless/util.c                                |   8 +-
- 15 files changed, 171 insertions(+), 150 deletions(-)
 
