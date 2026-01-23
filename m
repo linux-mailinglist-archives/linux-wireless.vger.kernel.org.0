@@ -1,111 +1,74 @@
-Return-Path: <linux-wireless+bounces-31110-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-31111-lists+linux-wireless=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id MIb5GC8gc2ngsQAAu9opvQ
-	(envelope-from <linux-wireless+bounces-31110-lists+linux-wireless=lfdr.de@vger.kernel.org>)
-	for <lists+linux-wireless@lfdr.de>; Fri, 23 Jan 2026 08:15:59 +0100
+	id CLoYBwNAc2m0twAAu9opvQ
+	(envelope-from <linux-wireless+bounces-31111-lists+linux-wireless=lfdr.de@vger.kernel.org>)
+	for <lists+linux-wireless@lfdr.de>; Fri, 23 Jan 2026 10:31:47 +0100
 X-Original-To: lists+linux-wireless@lfdr.de
 Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 240D8718A3
-	for <lists+linux-wireless@lfdr.de>; Fri, 23 Jan 2026 08:15:59 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0AB8A73607
+	for <lists+linux-wireless@lfdr.de>; Fri, 23 Jan 2026 10:31:45 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 0B2E9300C26D
-	for <lists+linux-wireless@lfdr.de>; Fri, 23 Jan 2026 07:14:57 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 51BC3302F7D5
+	for <lists+linux-wireless@lfdr.de>; Fri, 23 Jan 2026 09:29:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2AE7637105B;
-	Fri, 23 Jan 2026 07:13:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 74BF234405B;
+	Fri, 23 Jan 2026 09:29:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="duqbpG2L";
-	dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b="LSQaWUfv"
+	dkim=pass (1024-bit key) header.d=mediatek.com header.i=@mediatek.com header.b="Xyv2baT5"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
+Received: from mailgw02.mediatek.com (unknown [210.61.82.184])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5C5C535D613
-	for <linux-wireless@vger.kernel.org>; Fri, 23 Jan 2026 07:13:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9F54233B97E
+	for <linux-wireless@vger.kernel.org>; Fri, 23 Jan 2026 09:28:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=210.61.82.184
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769152427; cv=none; b=NqpMiTbtTdF7h3lN72cm9lLDJLy4oYAKBzIB3wh7hes2jtQPgjxMqeE79EKhhQuPM88JOyJh/zvQLpZTF7IVl7agizYuier6YFahWMTku2Jq0BaOQHc6K/HkeiMAQ1q04ZZaMXZ2CysFiyL544XzTi/HHz9C0vT+Q6O5smzTd8A=
+	t=1769160540; cv=none; b=AWQRRvocCIrHZiYOMWg1DttkNe7rCsJCzW0K54aZDXPR9nDnyvs3+8L9qDPaUorDypmvGCSJdOxX+JgW5L2kiWAGdnXx8ijMb4vZU/Yw2hltnUgZin8aUWDGW0ymD+l2O5N1bX1hoelCMcW1o18PleQhpOep8cPr+v5BZveS2vM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769152427; c=relaxed/simple;
-	bh=gVhlKr6Yw+eHKsATgs3AFqpppRwzQXEFJbl2xup+LJU=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=uriPmeqDkehMeLZm9TH98r2hvYo0yeHnU8garE9w9l5Ov84gifz8OSgqoSzCk686yPY0o1YrTdqPackFAjdmA0KX52eXMBHcPxTSi9LR/m87MdAMxOZnq8sRs+lzPA5UhL0D9qFoDprX+9vOfDvi7esNQ22Wg/qXIFgbvx9CecU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=duqbpG2L; dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b=LSQaWUfv; arc=none smtp.client-ip=205.220.180.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
-Received: from pps.filterd (m0279872.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 60N1DRS13649502
-	for <linux-wireless@vger.kernel.org>; Fri, 23 Jan 2026 07:13:18 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
-	cc:content-transfer-encoding:date:from:in-reply-to:message-id
-	:mime-version:references:subject:to; s=qcppdkim1; bh=Eo5Cqh/YaDf
-	/Hx/aCx/Sn/3ZIfQucmSQ5SKZhbC2KjY=; b=duqbpG2LbLs7v6OYMjTBcdaIrOx
-	23x830RB7XkzTyNzt3Ii6JevPpKaN+9Kl+f3btlVWilqTLGgjT9/oZ03pzb4gocz
-	6r4DqV0ky3xSaAO6AT+PKg9uqd8HHwcMhVksrgwroBhWuc75QIdyIuMwRDgkKxOy
-	rJ8r0yhuhx3Y2FJSzll42W+bGG24Hw70hhtpm2HeGsMOEHiWps/wVui0HroL2mx0
-	po0ELR8UAKxLxuiFzHLaiKl9pSWf/IN0pKDX/F2ubms15p1APXC5sDlK48o0JqKO
-	lf8fee/lef6bV1/lyS/Dt/RxxTYETo8nbr27jRPKKAvAW95vsk1AHXQdXmA==
-Received: from mail-pl1-f199.google.com (mail-pl1-f199.google.com [209.85.214.199])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4buy4ns63r-1
-	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
-	for <linux-wireless@vger.kernel.org>; Fri, 23 Jan 2026 07:13:18 +0000 (GMT)
-Received: by mail-pl1-f199.google.com with SMTP id d9443c01a7336-2a7a98ba326so19983345ad.1
-        for <linux-wireless@vger.kernel.org>; Thu, 22 Jan 2026 23:13:17 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=oss.qualcomm.com; s=google; t=1769152397; x=1769757197; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=Eo5Cqh/YaDf/Hx/aCx/Sn/3ZIfQucmSQ5SKZhbC2KjY=;
-        b=LSQaWUfvTZlzZlzwL0ZjtzzenVZhz3cmM122ULpRvMgt7LyhKQzRWKueEbiDQa8djW
-         2IMDo/RIr4K0FeiPCl0RKVmZC226hrByyi/mjONePpvB296/Yp/SSoqQ+ENtCISCP/VF
-         BCfQHPImuhqsSiKpahh3Weev8nZFqzhR7jcGX8gJRhKQE+ISFuaAt5wvJ1sEvbib7jf8
-         eD6Wxkae8mSEl8W5uBOQzI+enVqCjGRhViU1mgQQoTqhDCuQ60Fbu80ML3UmR3eGThY5
-         So7kwM0aKC3GtDaBjpIhXE5/AiZDHvHJsnrJPbM8JrJVD3ovapXURsKiBv88cJJidt25
-         8b9Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1769152397; x=1769757197;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=Eo5Cqh/YaDf/Hx/aCx/Sn/3ZIfQucmSQ5SKZhbC2KjY=;
-        b=uSSLkKkWAfDJo/X8leKGosiuROWzQJl6AxmZwrsyQ3BFHXcqwoCoQImDVYCcolbYB2
-         XznYCM0Yyn7PTWPfC4DkQmIbyCeH5yxXW09sez8L7XIDb1HK0zRCnBwkpc3T+ZqSzqDo
-         xe82iV1XKgp29+jGurxjJPNGDJlqozfevqUoDGfPKjsweixP5TkVFvV9O7UxzXiXgZU+
-         FbIAx5VRi3DvaUmwIo4irHCFQUqoxBfJ6IrfvNWyDX/EysZ8PD7FyZ7k3Sb7D8HrPTOL
-         ZXs7UAm/Hcwe+1U00MIwSxg38mZmH48AE3+hjQPQbk30TFPCWFxRgrCc6OD+NhW+xv7I
-         P17g==
-X-Gm-Message-State: AOJu0YzlMADVWO4TqcAGyxdBVwDNbUUS71ijC06f3YuGMAgwMrKi6f0W
-	GwNhMRnz1cxNugWd/Y3mt3SzTF95Im/Fm9iZpJ193v+DxvXvXvyVGkLO0xSIqCfJkD0rrGpfMqL
-	RG4+n4XJIQcYCZtKuoaLzkoImzdDfsBW5XIR345L04ronu+sOHwWqbvFbxWUJG4bHqmBMGarAF5
-	UFhQ==
-X-Gm-Gg: AZuq6aLlPjKAdIEFCYh9DcVBOYp7gS4hlzypjQ8hAnA7ovumK9tn07IYK/Y0B0Re+VJ
-	g4CECJNCqu4DVl1Wfbphh+mXwXTxZtPOThx3WDF3473Mq3BI3YV7nR24k09VzkyqbcXzL2ftcGc
-	bML4wkg2jAU9YzkqOlNv4JkC1nrapZh6QV9XNCpIF6t76Eiz6BXl9hKlABhTi435AyO1HW7VTfT
-	uOu8uoLIqAvbAUl240lf3h0ivHbQ6i8idQygcl61yt/15wt/ENyrwxOHNzyj1ucV7Cst8ZlHxCc
-	t+DzarsClj9RnTT9WnZGTcRjASFz6jNQovAknL6AId55ZGx+xP4j2lXSzf1/Ey4foVaRCa3tkDo
-	tsgKJLg4yhkaNiTlrcHn85fSa0Yh7ahGVrle3h1/FNusXLXtG/0IVVlgerEDJ16hCqE2tjwqEV/
-	MwUzUMrULQZit4oAc79nK7GwQ2i+O8Mg/e
-X-Received: by 2002:a17:902:f54e:b0:2a0:89c6:1824 with SMTP id d9443c01a7336-2a7d2f17e0bmr51989475ad.8.1769152396837;
-        Thu, 22 Jan 2026 23:13:16 -0800 (PST)
-X-Received: by 2002:a17:902:f54e:b0:2a0:89c6:1824 with SMTP id d9443c01a7336-2a7d2f17e0bmr51989315ad.8.1769152396318;
-        Thu, 22 Jan 2026 23:13:16 -0800 (PST)
-Received: from hu-aarasahu-blr.qualcomm.com (blr-bdr-fw-01_GlobalNAT_AllZones-Outside.qualcomm.com. [103.229.18.19])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2a802daa654sm11319165ad.11.2026.01.22.23.13.14
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 22 Jan 2026 23:13:15 -0800 (PST)
-From: Aaradhana Sahu <aaradhana.sahu@oss.qualcomm.com>
-To: ath12k@lists.infradead.org
-Cc: linux-wireless@vger.kernel.org,
-        Aaradhana Sahu <aaradhana.sahu@oss.qualcomm.com>
-Subject: [PATCH ath-next 3/3] wifi: ath12k: Add support TX hardware queue stats
-Date: Fri, 23 Jan 2026 12:42:53 +0530
-Message-Id: <20260123071253.2202644-4-aaradhana.sahu@oss.qualcomm.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20260123071253.2202644-1-aaradhana.sahu@oss.qualcomm.com>
-References: <20260123071253.2202644-1-aaradhana.sahu@oss.qualcomm.com>
+	s=arc-20240116; t=1769160540; c=relaxed/simple;
+	bh=AssJQfXubghJxXD/6CCRNgDq9PGne7nqWuTVypOYtDI=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=CR/8IU1WeAgZutFyBu0/AN7vpfUO3D7H0HoWL1ePC05wyeaIw5xVk7Mi9gpJxlQEmhHctcbF+ByiK4zZ213J8hHtlUVh+NuFWxRRci+I2fUHoCF90gUUCucf7E+nj0746CRcFDlGOI7sqz4UTSlt4RVRfoD7tAORcTF9wmwLq6E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=mediatek.com; spf=pass smtp.mailfrom=mediatek.com; dkim=pass (1024-bit key) header.d=mediatek.com header.i=@mediatek.com header.b=Xyv2baT5; arc=none smtp.client-ip=210.61.82.184
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=mediatek.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=mediatek.com
+X-UUID: ec321756f83d11f0b7fc4fdb8733b2bc-20260123
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=mediatek.com; s=dk;
+	h=Content-Type:Content-Transfer-Encoding:MIME-Version:Message-ID:Date:Subject:CC:To:From; bh=pRV8jk5gZuWFIIs+MJ2nROf6R7XRT5wfP85IRpLa9PM=;
+	b=Xyv2baT5vm1hqOdfPX/dQhmgMLGKN7UHuifHV5HFoT3AOMiHAKaNbn+7JrpiMLWP5B95P36T/mBM/MPWoaDbDdYbS1ALghrYRHCLVI3RLhsUNFmy2DqeAiD4ffS3GWn/j3Ldnp4xXcd7eDIz38OmZa51PZxpf4P2tVGR4SDfJcQ=;
+X-CID-P-RULE: Release_Ham
+X-CID-O-INFO: VERSION:1.3.11,REQID:4bf5a1e7-16b5-4542-9eae-caac86786089,IP:0,U
+	RL:0,TC:0,Content:0,EDM:-25,RT:0,SF:0,FILE:0,BULK:0,RULE:Release_Ham,ACTIO
+	N:release,TS:-25
+X-CID-META: VersionHash:89c9d04,CLOUDID:9031227a-8c8a-4fc4-88c0-3556e7711556,B
+	ulkID:nil,BulkQuantity:0,Recheck:0,SF:102|836|888|898,TC:-5,Content:0|15|5
+	0,EDM:2,IP:nil,URL:0,File:130,RT:0,Bulk:nil,QS:nil,BEC:-1,COL:0,OSI:0,OSA:
+	0,AV:0,LES:1,SPR:NO,DKR:0,DKP:0,BRR:0,BRE:0,ARC:0
+X-CID-BVR: 2,SSN|SDN
+X-CID-BAS: 2,SSN|SDN,0,_
+X-CID-FACTOR: TF_CID_SPAM_SNR
+X-CID-RHF: D41D8CD98F00B204E9800998ECF8427E
+X-UUID: ec321756f83d11f0b7fc4fdb8733b2bc-20260123
+Received: from mtkmbs14n1.mediatek.inc [(172.21.101.75)] by mailgw02.mediatek.com
+	(envelope-from <ryder.lee@mediatek.com>)
+	(Generic MTA with TLSv1.2 ECDHE-RSA-AES256-GCM-SHA384 256/256)
+	with ESMTP id 409430831; Fri, 23 Jan 2026 17:28:48 +0800
+Received: from mtkmbs13n1.mediatek.inc (172.21.101.193) by
+ MTKMBS09N1.mediatek.inc (172.21.101.35) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.29; Fri, 23 Jan 2026 17:28:47 +0800
+Received: from mussdccf250.eus.mediatek.inc (10.73.250.250) by
+ mtkmbs13n1.mediatek.inc (172.21.101.73) with Microsoft SMTP Server id
+ 15.2.2562.29 via Frontend Transport; Fri, 23 Jan 2026 17:28:46 +0800
+From: Ryder Lee <ryder.lee@mediatek.com>
+To: Felix Fietkau <nbd@nbd.name>
+CC: <linux-wireless@vger.kernel.org>, <linux-mediatek@lists.infradead.org>,
+	Allen Ye <allen.ye@mediatek.com>, Ryder Lee <ryder.lee@mediatek.com>
+Subject: [PATCH] mt76: fix backoff fields and max_power calculation
+Date: Fri, 23 Jan 2026 01:28:43 -0800
+Message-ID: <e92213f793f9cb9f509c26205e7ecb2be6ce77aa.1769156922.git.ryder.lee@mediatek.com>
+X-Mailer: git-send-email 2.45.2
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
@@ -113,234 +76,302 @@ List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Proofpoint-GUID: qYHupsEWFaFd4R3T4jXiwnR6sKjC6Zsy
-X-Authority-Analysis: v=2.4 cv=I5lohdgg c=1 sm=1 tr=0 ts=69731f8e cx=c_pps
- a=JL+w9abYAAE89/QcEU+0QA==:117 a=Ou0eQOY4+eZoSc0qltEV5Q==:17
- a=vUbySO9Y5rIA:10 a=s4-Qcg_JpJYA:10 a=VkNPw1HP01LnGYTKEx00:22
- a=EUspDBNiAAAA:8 a=r7p6sMyryvZn4FPVG9QA:9 a=324X-CrmTo6CU4MGRt3R:22
-X-Proofpoint-ORIG-GUID: qYHupsEWFaFd4R3T4jXiwnR6sKjC6Zsy
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwMTIzMDA1NCBTYWx0ZWRfX0S9Z3vB0MiP5
- 0lkRjanA0c1v46o7kKV0jJOrZ+29KrBWbgzYy0G3NJ8iTy4jyDEUC8kWOH6RB0uqRKy/2QDedCp
- gKP93qNdJGCK4le/S2Zpf+KpHkHq/zUoCG2fGNWzX1JOpnZ6oi7GVHKY85ZG7K7cMBxEKHIbmcU
- c1I9QE7BE7NvX5Jm+ps0E19IYgiIC+z4kbGUt2QUO8toFk1f7lMzKlJ5IhkmxtlvNuQcFReDSfG
- MLSOyL8ZkTPcg0ZD7oIWb+w2IWMsa8hcdQK+TyJz3vlC9r1Tqse+XV//3U4GgAqTnT1IUe5Nhw5
- Wgrh0uLVVhYrIcLqnxCA9CzRIeS+Bz2y+1JH9RNLdtMqYokKxm3Ct6IZ0L0guXAG2XM/+vajgEN
- GhXoevqRXQUQu+w1wGzWNZPY5muKP4bgvjZf/lB50olhEKylYcvvMG7i0NbjBvM8Oj0fHE6CQBN
- 3YVz3iCr2KqT0eFmobA==
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.20,FMLib:17.12.100.49
- definitions=2026-01-22_06,2026-01-22_02,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- impostorscore=0 clxscore=1015 malwarescore=0 lowpriorityscore=0 phishscore=0
- spamscore=0 bulkscore=0 suspectscore=0 adultscore=0 priorityscore=1501
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.22.0-2601150000 definitions=main-2601230054
+Content-Type: text/plain
+X-MTK: N
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-0.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	MID_CONTAINS_FROM(1.00)[];
-	DMARC_POLICY_ALLOW(-0.50)[qualcomm.com,reject];
 	R_MISSING_CHARSET(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[mediatek.com,quarantine];
+	R_DKIM_ALLOW(-0.20)[mediatek.com:s=dk];
 	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
-	R_DKIM_ALLOW(-0.20)[qualcomm.com:s=qcppdkim1,oss.qualcomm.com:s=google];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-31110-lists,linux-wireless=lfdr.de];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[oss.qualcomm.com:mid,oss.qualcomm.com:dkim,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,qualcomm.com:email,qualcomm.com:dkim];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	FROM_NEQ_ENVFROM(0.00)[aaradhana.sahu@oss.qualcomm.com,linux-wireless@vger.kernel.org];
-	RCPT_COUNT_THREE(0.00)[3];
-	PRECEDENCE_BULK(0.00)[];
-	TAGGED_RCPT(0.00)[linux-wireless];
-	NEURAL_HAM(-0.00)[-0.995];
-	DKIM_TRACE(0.00)[qualcomm.com:+,oss.qualcomm.com:+];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
 	TO_DN_SOME(0.00)[];
-	RCVD_COUNT_SEVEN(0.00)[7]
-X-Rspamd-Queue-Id: 240D8718A3
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-31111-lists,linux-wireless=lfdr.de];
+	DKIM_TRACE(0.00)[mediatek.com:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	RCPT_COUNT_FIVE(0.00)[5];
+	FROM_NEQ_ENVFROM(0.00)[ryder.lee@mediatek.com,linux-wireless@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	NEURAL_HAM(-0.00)[-0.998];
+	RCVD_COUNT_FIVE(0.00)[6];
+	TAGGED_RCPT(0.00)[linux-wireless];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 0AB8A73607
 X-Rspamd-Action: no action
 
-Add support to request and receive TX hardware queue stats using
-HTT stats type 3. This stats type reports MPDU mac id and hardware
-queue information, including xretry, BAR, RTS, CTS, self, and QoS-null
-counts, along with underrun, flush, and filter counters.
+From: Allen Ye <allen.ye@mediatek.com>
 
-Sample output:
--------------
-echo 3 >/sys/kernel/debug/ath12k/pci-0000\:58\:00.0/mac0/htt_stats_type
-cat /sys/kernel/debug/ath12k/pci-0000\:58\:00.0/mac0/htt_stats
+The maximum power value may exist in data or backoff field.
+To reponse the correct value of txpower, mt76 should also consider
+these values in sku table.
 
-HTT_TX_HWQ_STATS_CMN_TLV:
-mac_id = 0
-hwq_id = 0
-xretry = 0
-underrun_cnt = 0
-flush_cnt = 0
-filt_cnt = 0
-null_mpdu_bmap = 0
-user_ack_failure = 379
-ack_tlv_proc = 0
-sched_id_proc = 0
-null_mpdu_tx_count = 0
-mpdu_bmap_not_recvd = 0
-num_bar = 0
-rts = 0
-cts2self = 0
-qos_null = 0
-mpdu_tried_cnt = 379
-mpdu_queued_cnt = 379
-mpdu_ack_fail_cnt = 0
-mpdu_filt_cnt = 0
-false_mpdu_ack_count = 0
-txq_timeout = 0
-
-Tested-on: QCN9274 hw2.0 PCI WLAN.WBE.1.5-01651-QCAHKSWPL_SILICONZ-1
-Tested-on: WCN7850 hw2.0 PCI WLAN.HMT.1.1.c5-00302-QCAHMTSWPL_V1.0_V2.0_SILICONZ-1.115823.3
-
-Signed-off-by: Aaradhana Sahu <aaradhana.sahu@oss.qualcomm.com>
+Fixes: b05ab4be9fd7 (wifi: mt76: mt7915: add bf backoff limit table support)
+Signed-off-by: Allen Ye <allen.ye@mediatek.com>
+Signed-off-by: Ryder Lee <ryder.lee@mediatek.com>
 ---
- .../wireless/ath/ath12k/debugfs_htt_stats.c   | 64 +++++++++++++++++++
- .../wireless/ath/ath12k/debugfs_htt_stats.h   | 26 ++++++++
- 2 files changed, 90 insertions(+)
+ drivers/net/wireless/mediatek/mt76/eeprom.c | 171 +++++++++++++-------
+ drivers/net/wireless/mediatek/mt76/mt76.h   |   1 -
+ 2 files changed, 113 insertions(+), 59 deletions(-)
 
-diff --git a/drivers/net/wireless/ath/ath12k/debugfs_htt_stats.c b/drivers/net/wireless/ath/ath12k/debugfs_htt_stats.c
-index a667eb9966c9..7f6ca07fb335 100644
---- a/drivers/net/wireless/ath/ath12k/debugfs_htt_stats.c
-+++ b/drivers/net/wireless/ath/ath12k/debugfs_htt_stats.c
-@@ -5661,6 +5661,67 @@ ath12k_htt_print_rx_pdev_fw_stats_tlv(const void *tag_buf, u16 tag_len,
- 	stats_req->buf_len = len;
+diff --git a/drivers/net/wireless/mediatek/mt76/eeprom.c b/drivers/net/wireless/mediatek/mt76/eeprom.c
+index 573400d57..3e182c8e0 100644
+--- a/drivers/net/wireless/mediatek/mt76/eeprom.c
++++ b/drivers/net/wireless/mediatek/mt76/eeprom.c
+@@ -9,6 +9,13 @@
+ #include <linux/nvmem-consumer.h>
+ #include <linux/etherdevice.h>
+ #include "mt76.h"
++#include "mt76_connac.h"
++
++enum mt76_sku_type {
++	MT76_SKU_RATE,
++	MT76_SKU_BACKOFF,
++	MT76_SKU_BACKOFF_BF_OFFSET,
++};
+ 
+ static int mt76_get_of_eeprom_data(struct mt76_dev *dev, void *eep, int len)
+ {
+@@ -292,7 +299,6 @@ mt76_find_channel_node(struct device_node *np, struct ieee80211_channel *chan)
+ }
+ EXPORT_SYMBOL_GPL(mt76_find_channel_node);
+ 
+-
+ static s8
+ mt76_get_txs_delta(struct device_node *np, u8 nss)
+ {
+@@ -306,9 +312,24 @@ mt76_get_txs_delta(struct device_node *np, u8 nss)
+ 	return be32_to_cpu(val[nss - 1]);
  }
  
-+static void
-+ath12k_htt_print_tx_hwq_stats_cmn_tlv(const void *tag_buf, u16 tag_len,
-+				      struct debug_htt_stats_req *stats_req)
++static inline u8 mt76_backoff_n_chains(struct mt76_dev *dev, u8 idx)
 +{
-+	const struct htt_tx_hwq_stats_cmn_tlv *htt_stats_buf = tag_buf;
-+	u32 buf_len = ATH12K_HTT_STATS_BUF_SIZE;
-+	u32 len = stats_req->buf_len;
-+	u8 *buf = stats_req->buf;
++	/* 0:1T1S, 1:2T1S, ..., 14:5T5S */
++	static const u8 connac3_table[] =
++		{1, 2, 3, 4, 5, 2, 3, 4, 5, 3, 4, 5, 4, 5, 5};
++	static const u8 connac2_table[] =
++		{1, 2, 3, 4, 2, 3, 4, 3, 4, 4, 0, 0, 0, 0, 0};
 +
-+	if (tag_len < sizeof(*htt_stats_buf))
-+		return;
++	if (idx < 0 || idx >= ARRAY_SIZE(connac3_table))
++		return 0;
 +
-+	len += scnprintf(buf + len, buf_len - len, "HTT_TX_HWQ_STATS_CMN_TLV:\n");
-+	len += scnprintf(buf + len, buf_len - len, "mac_id = %u\n",
-+			le32_to_cpu(htt_stats_buf->mac_id__hwq_id__word) & 0xFF);
-+	len += scnprintf(buf + len, buf_len - len, "hwq_id = %u\n",
-+			(le32_to_cpu(htt_stats_buf->mac_id__hwq_id__word) & 0xFF00) >> 8);
-+	len += scnprintf(buf + len, buf_len - len, "xretry = %u\n",
-+			le32_to_cpu(htt_stats_buf->xretry));
-+	len += scnprintf(buf + len, buf_len - len, "underrun_cnt = %u\n",
-+			le32_to_cpu(htt_stats_buf->underrun_cnt));
-+	len += scnprintf(buf + len, buf_len - len, "flush_cnt = %u\n",
-+			le32_to_cpu(htt_stats_buf->flush_cnt));
-+	len += scnprintf(buf + len, buf_len - len, "filt_cnt = %u\n",
-+			le32_to_cpu(htt_stats_buf->filt_cnt));
-+	len += scnprintf(buf + len, buf_len - len, "null_mpdu_bmap = %u\n",
-+			le32_to_cpu(htt_stats_buf->null_mpdu_bmap));
-+	len += scnprintf(buf + len, buf_len - len, "user_ack_failure = %u\n",
-+			le32_to_cpu(htt_stats_buf->user_ack_failure));
-+	len += scnprintf(buf + len, buf_len - len, "ack_tlv_proc = %u\n",
-+			le32_to_cpu(htt_stats_buf->ack_tlv_proc));
-+	len += scnprintf(buf + len, buf_len - len, "sched_id_proc = %u\n",
-+			le32_to_cpu(htt_stats_buf->sched_id_proc));
-+	len += scnprintf(buf + len, buf_len - len, "null_mpdu_tx_count = %u\n",
-+			le32_to_cpu(htt_stats_buf->null_mpdu_tx_count));
-+	len += scnprintf(buf + len, buf_len - len, "mpdu_bmap_not_recvd = %u\n",
-+			le32_to_cpu(htt_stats_buf->mpdu_bmap_not_recvd));
-+	len += scnprintf(buf + len, buf_len - len, "num_bar = %u\n",
-+			le32_to_cpu(htt_stats_buf->num_bar));
-+	len += scnprintf(buf + len, buf_len - len, "rts = %u\n",
-+			le32_to_cpu(htt_stats_buf->rts));
-+	len += scnprintf(buf + len, buf_len - len, "cts2self = %u\n",
-+			le32_to_cpu(htt_stats_buf->cts2self));
-+	len += scnprintf(buf + len, buf_len - len, "qos_null = %u\n",
-+			le32_to_cpu(htt_stats_buf->qos_null));
-+	len += scnprintf(buf + len, buf_len - len, "mpdu_tried_cnt = %u\n",
-+			le32_to_cpu(htt_stats_buf->mpdu_tried_cnt));
-+	len += scnprintf(buf + len, buf_len - len, "mpdu_queued_cnt = %u\n",
-+			le32_to_cpu(htt_stats_buf->mpdu_queued_cnt));
-+	len += scnprintf(buf + len, buf_len - len, "mpdu_ack_fail_cnt = %u\n",
-+			le32_to_cpu(htt_stats_buf->mpdu_ack_fail_cnt));
-+	len += scnprintf(buf + len, buf_len - len, "mpdu_filt_cnt = %u\n",
-+			le32_to_cpu(htt_stats_buf->mpdu_filt_cnt));
-+	len += scnprintf(buf + len, buf_len - len, "false_mpdu_ack_count = %u\n",
-+			le32_to_cpu(htt_stats_buf->false_mpdu_ack_count));
-+	len += scnprintf(buf + len, buf_len - len, "txq_timeout = %u\n",
-+			le32_to_cpu(htt_stats_buf->txq_timeout));
-+
-+	stats_req->buf_len = len;
++	return is_mt799x(dev) ? connac3_table[idx] : connac2_table[idx];
 +}
 +
- static int ath12k_dbg_htt_ext_stats_parse(struct ath12k_base *ab,
- 					  u16 tag, u16 len, const void *tag_buf,
- 					  void *user_data)
-@@ -5960,6 +6021,9 @@ static int ath12k_dbg_htt_ext_stats_parse(struct ath12k_base *ab,
- 	case HTT_STATS_PDEV_RTT_TBR_CMD_RESULT_STATS_TAG:
- 		ath12k_htt_print_pdev_rtt_tbr_cmd_res_stats_tlv(tag_buf, len, stats_req);
- 		break;
-+	case HTT_STATS_TX_HWQ_CMN_TAG:
-+		ath12k_htt_print_tx_hwq_stats_cmn_tlv(tag_buf, len, stats_req);
-+		break;
- 	default:
- 		break;
- 	}
-diff --git a/drivers/net/wireless/ath/ath12k/debugfs_htt_stats.h b/drivers/net/wireless/ath/ath12k/debugfs_htt_stats.h
-index a6656f20b845..bfabe6500d44 100644
---- a/drivers/net/wireless/ath/ath12k/debugfs_htt_stats.h
-+++ b/drivers/net/wireless/ath/ath12k/debugfs_htt_stats.h
-@@ -128,6 +128,7 @@ enum ath12k_dbg_htt_ext_stats_type {
- 	ATH12K_DBG_HTT_EXT_STATS_RESET				= 0,
- 	ATH12K_DBG_HTT_EXT_STATS_PDEV_TX			= 1,
- 	ATH12K_DBG_HTT_EXT_STATS_PDEV_RX			= 2,
-+	ATH12K_DBG_HTT_EXT_STATS_PDEV_TX_HWQ			= 3,
- 	ATH12K_DBG_HTT_EXT_STATS_PDEV_TX_SCHED			= 4,
- 	ATH12K_DBG_HTT_EXT_STATS_PDEV_ERROR			= 5,
- 	ATH12K_DBG_HTT_EXT_STATS_PDEV_TQM			= 6,
-@@ -174,6 +175,7 @@ enum ath12k_dbg_htt_tlv_tag {
- 	HTT_STATS_TX_PDEV_SIFS_TAG			= 2,
- 	HTT_STATS_TX_PDEV_FLUSH_TAG			= 3,
- 	HTT_STATS_STRING_TAG				= 5,
-+	HTT_STATS_TX_HWQ_CMN_TAG                        = 6,
- 	HTT_STATS_TX_TQM_GEN_MPDU_TAG			= 11,
- 	HTT_STATS_TX_TQM_LIST_MPDU_TAG			= 12,
- 	HTT_STATS_TX_TQM_LIST_MPDU_CNT_TAG		= 13,
-@@ -2130,4 +2132,28 @@ struct htt_rx_pdev_fw_stats_tlv {
- 	__le32 bytes_received_high_32;
- } __packed;
+ static void
+-mt76_apply_array_limit(s8 *pwr, size_t pwr_len, const s8 *data,
+-		       s8 target_power, s8 nss_delta, s8 *max_power)
++mt76_apply_array_limit(struct mt76_dev *dev, s8 *pwr, size_t pwr_len,
++		       const s8 *data, s8 target_power, s8 nss_delta,
++		       s8 *max_power, int n_chains, enum mt76_sku_type type)
+ {
+ 	int i;
  
-+struct htt_tx_hwq_stats_cmn_tlv {
-+	__le32 mac_id__hwq_id__word;
-+	__le32 xretry;
-+	__le32 underrun_cnt;
-+	__le32 flush_cnt;
-+	__le32 filt_cnt;
-+	__le32 null_mpdu_bmap;
-+	__le32 user_ack_failure;
-+	__le32 ack_tlv_proc;
-+	__le32 sched_id_proc;
-+	__le32 null_mpdu_tx_count;
-+	__le32 mpdu_bmap_not_recvd;
-+	__le32 num_bar;
-+	__le32 rts;
-+	__le32 cts2self;
-+	__le32 qos_null;
-+	__le32 mpdu_tried_cnt;
-+	__le32 mpdu_queued_cnt;
-+	__le32 mpdu_ack_fail_cnt;
-+	__le32 mpdu_filt_cnt;
-+	__le32 false_mpdu_ack_count;
-+	__le32 txq_timeout;
-+} __packed;
+@@ -316,18 +337,50 @@ mt76_apply_array_limit(s8 *pwr, size_t pwr_len, const s8 *data,
+ 		return;
+ 
+ 	for (i = 0; i < pwr_len; i++) {
+-		pwr[i] = min_t(s8, target_power, data[i] + nss_delta);
++		s8 backoff_delta, delta = mt76_tx_power_path_delta(n_chains);
++		int backoff_n_chains = 0;
 +
- #endif
++		switch (type) {
++		case MT76_SKU_RATE:
++			pwr[i] = min_t(s8, target_power, data[i] + nss_delta);
++			break;
++		case MT76_SKU_BACKOFF:
++			backoff_n_chains = mt76_backoff_n_chains(dev, i);
++			backoff_delta = mt76_tx_power_path_delta(backoff_n_chains);
++			pwr[i] = min_t(s8, target_power + delta - backoff_delta,
++				       data[i] + nss_delta);
++			break;
++		case MT76_SKU_BACKOFF_BF_OFFSET:
++			backoff_n_chains = mt76_backoff_n_chains(dev, i + 1);
++			backoff_delta = mt76_tx_power_path_delta(backoff_n_chains);
++			pwr[i] = min_t(s8, target_power + delta - backoff_delta,
++				       data[i] + nss_delta);
++			break;
++		default:
++			return;
++		}
++
++		/* used for padding, doesn't need to be considered */
++		if (data[i] >= S8_MAX - 1)
++			continue;
++
++		/* only consider backoff value for the configured chain number */
++		if (type != MT76_SKU_RATE && n_chains != backoff_n_chains)
++			continue;
++
+ 		*max_power = max(*max_power, pwr[i]);
+ 	}
+ }
+ 
+ static void
+-mt76_apply_multi_array_limit(s8 *pwr, size_t pwr_len, s8 pwr_num,
+-			     const s8 *data, size_t len, s8 target_power,
+-			     s8 nss_delta)
++mt76_apply_multi_array_limit(struct mt76_dev *dev, s8 *pwr, size_t pwr_len,
++			     s8 pwr_num, const s8 *data, size_t len,
++			     s8 target_power, s8 nss_delta, s8 *max_power,
++			     int n_chains, enum mt76_sku_type type)
+ {
+ 	int i, cur;
+-	s8 max_power = -128;
++
++#define connac2_backoff_ru_idx	2
+ 
+ 	if (!data)
+ 		return;
+@@ -337,8 +390,13 @@ mt76_apply_multi_array_limit(s8 *pwr, size_t pwr_len, s8 pwr_num,
+ 		if (len < pwr_len + 1)
+ 			break;
+ 
+-		mt76_apply_array_limit(pwr + pwr_len * i, pwr_len, data + 1,
+-				       target_power, nss_delta, &max_power);
++		if (!is_mt799x(dev) && type == MT76_SKU_BACKOFF &&
++		    i > connac2_backoff_ru_idx)
++			type = MT76_SKU_BACKOFF_BF_OFFSET;
++
++		mt76_apply_array_limit(dev, pwr + pwr_len * i, pwr_len, data + 1,
++				       target_power, nss_delta, max_power,
++				       n_chains, type);
+ 		if (--cur > 0)
+ 			continue;
+ 
+@@ -360,18 +418,11 @@ s8 mt76_get_rate_power_limits(struct mt76_phy *phy,
+ 	struct device_node *np;
+ 	const s8 *val;
+ 	char name[16];
+-	u32 mcs_rates = dev->drv->mcs_rates;
+-	u32 ru_rates = ARRAY_SIZE(dest->ru[0]);
+ 	char band;
+ 	size_t len;
+-	s8 max_power = 0;
+-	s8 max_power_backoff = -127;
++	s8 max_power = -127;
+ 	s8 txs_delta;
+ 	int n_chains = hweight16(phy->chainmask);
+-	s8 target_power_combine = target_power + mt76_tx_power_path_delta(n_chains);
+-
+-	if (!mcs_rates)
+-		mcs_rates = 10;
+ 
+ 	memset(dest, target_power, sizeof(*dest) - sizeof(dest->path));
+ 	memset(&dest->path, 0, sizeof(dest->path));
+@@ -408,47 +459,51 @@ s8 mt76_get_rate_power_limits(struct mt76_phy *phy,
+ 
+ 	txs_delta = mt76_get_txs_delta(np, hweight16(phy->chainmask));
+ 
++#define __apply_array_limit(arr, type)						\
++	mt76_apply_array_limit(dev, (arr), ARRAY_SIZE(arr), val, target_power,	\
++			       txs_delta, &max_power, n_chains, type)
++
++#define __apply_multi_array_limit(arr, type)					\
++	mt76_apply_multi_array_limit(dev, (arr)[0], ARRAY_SIZE((arr)[0]),	\
++				     ARRAY_SIZE(arr), val, len, target_power,	\
++				     txs_delta, &max_power, n_chains, type)
++
+ 	val = mt76_get_of_array_s8(np, "rates-cck", &len, ARRAY_SIZE(dest->cck));
+-	mt76_apply_array_limit(dest->cck, ARRAY_SIZE(dest->cck), val,
+-			       target_power, txs_delta, &max_power);
+-
+-	val = mt76_get_of_array_s8(np, "rates-ofdm",
+-				   &len, ARRAY_SIZE(dest->ofdm));
+-	mt76_apply_array_limit(dest->ofdm, ARRAY_SIZE(dest->ofdm), val,
+-			       target_power, txs_delta, &max_power);
+-
+-	val = mt76_get_of_array_s8(np, "rates-mcs", &len, mcs_rates + 1);
+-	mt76_apply_multi_array_limit(dest->mcs[0], ARRAY_SIZE(dest->mcs[0]),
+-				     ARRAY_SIZE(dest->mcs), val, len,
+-				     target_power, txs_delta);
+-
+-	val = mt76_get_of_array_s8(np, "rates-ru", &len, ru_rates + 1);
+-	mt76_apply_multi_array_limit(dest->ru[0], ARRAY_SIZE(dest->ru[0]),
+-				     ARRAY_SIZE(dest->ru), val, len,
+-				     target_power, txs_delta);
+-
+-	max_power_backoff = max_power;
+-	val = mt76_get_of_array_s8(np, "paths-cck", &len, ARRAY_SIZE(dest->path.cck));
+-	mt76_apply_array_limit(dest->path.cck, ARRAY_SIZE(dest->path.cck), val,
+-			       target_power_combine, txs_delta, &max_power_backoff);
+-
+-	val = mt76_get_of_array_s8(np, "paths-ofdm", &len, ARRAY_SIZE(dest->path.ofdm));
+-	mt76_apply_array_limit(dest->path.ofdm, ARRAY_SIZE(dest->path.ofdm), val,
+-			       target_power_combine, txs_delta, &max_power_backoff);
+-
+-	val = mt76_get_of_array_s8(np, "paths-ofdm-bf", &len, ARRAY_SIZE(dest->path.ofdm_bf));
+-	mt76_apply_array_limit(dest->path.ofdm_bf, ARRAY_SIZE(dest->path.ofdm_bf), val,
+-			       target_power_combine, txs_delta, &max_power_backoff);
+-
+-	val = mt76_get_of_array_s8(np, "paths-ru", &len, ARRAY_SIZE(dest->path.ru[0]) + 1);
+-	mt76_apply_multi_array_limit(dest->path.ru[0], ARRAY_SIZE(dest->path.ru[0]),
+-				     ARRAY_SIZE(dest->path.ru), val, len,
+-				     target_power_combine, txs_delta);
+-
+-	val = mt76_get_of_array_s8(np, "paths-ru-bf", &len, ARRAY_SIZE(dest->path.ru_bf[0]) + 1);
+-	mt76_apply_multi_array_limit(dest->path.ru_bf[0], ARRAY_SIZE(dest->path.ru_bf[0]),
+-				     ARRAY_SIZE(dest->path.ru_bf), val, len,
+-				     target_power_combine, txs_delta);
++	__apply_array_limit(dest->cck, MT76_SKU_RATE);
++
++	val = mt76_get_of_array_s8(np, "rates-ofdm", &len, ARRAY_SIZE(dest->ofdm));
++	__apply_array_limit(dest->ofdm, MT76_SKU_RATE);
++
++	val = mt76_get_of_array_s8(np, "rates-mcs", &len,
++				   ARRAY_SIZE(dest->mcs[0]) + 1);
++	__apply_multi_array_limit(dest->mcs, MT76_SKU_RATE);
++
++	val = mt76_get_of_array_s8(np, "rates-ru", &len,
++				   ARRAY_SIZE(dest->ru[0]) + 1);
++	__apply_multi_array_limit(dest->ru, MT76_SKU_RATE);
++
++	val = mt76_get_of_array_s8(np, "paths-cck", &len,
++				   ARRAY_SIZE(dest->path.cck));
++	__apply_array_limit(dest->path.cck, MT76_SKU_BACKOFF);
++
++	val = mt76_get_of_array_s8(np, "paths-ofdm", &len,
++				   ARRAY_SIZE(dest->path.ofdm));
++	__apply_array_limit(dest->path.ofdm, MT76_SKU_BACKOFF);
++
++	val = mt76_get_of_array_s8(np, "paths-ofdm-bf", &len,
++				   ARRAY_SIZE(dest->path.ofdm_bf));
++	__apply_array_limit(dest->path.ofdm_bf, MT76_SKU_BACKOFF_BF_OFFSET);
++
++	val = mt76_get_of_array_s8(np, "paths-ru", &len,
++				   ARRAY_SIZE(dest->path.ru[0]) + 1);
++	__apply_multi_array_limit(dest->path.ru, MT76_SKU_BACKOFF);
++
++	val = mt76_get_of_array_s8(np, "paths-ru-bf", &len,
++				   ARRAY_SIZE(dest->path.ru_bf[0]) + 1);
++	__apply_multi_array_limit(dest->path.ru_bf, MT76_SKU_BACKOFF);
++
++#undef __apply_array_limit
++#undef __apply_multi_array_limit
+ 
+ 	return max_power;
+ }
+diff --git a/drivers/net/wireless/mediatek/mt76/mt76.h b/drivers/net/wireless/mediatek/mt76/mt76.h
+index d05e83ea1..32876eab2 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt76.h
++++ b/drivers/net/wireless/mediatek/mt76/mt76.h
+@@ -540,7 +540,6 @@ struct mt76_driver_ops {
+ 	u32 survey_flags;
+ 	u16 txwi_size;
+ 	u16 token_size;
+-	u8 mcs_rates;
+ 
+ 	unsigned int link_data_size;
+ 
 -- 
-2.34.1
+2.45.2
 
 
