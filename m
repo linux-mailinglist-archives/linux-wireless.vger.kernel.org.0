@@ -1,172 +1,208 @@
-Return-Path: <linux-wireless+bounces-31127-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-31128-lists+linux-wireless=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id ESwCH6K2c2ncyAAAu9opvQ
-	(envelope-from <linux-wireless+bounces-31127-lists+linux-wireless=lfdr.de@vger.kernel.org>)
-	for <lists+linux-wireless@lfdr.de>; Fri, 23 Jan 2026 18:57:54 +0100
+	id EMvuNf2+c2mjyQAAu9opvQ
+	(envelope-from <linux-wireless+bounces-31128-lists+linux-wireless=lfdr.de@vger.kernel.org>)
+	for <lists+linux-wireless@lfdr.de>; Fri, 23 Jan 2026 19:33:33 +0100
 X-Original-To: lists+linux-wireless@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id C84BC7943D
-	for <lists+linux-wireless@lfdr.de>; Fri, 23 Jan 2026 18:57:53 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4BE0079AE9
+	for <lists+linux-wireless@lfdr.de>; Fri, 23 Jan 2026 19:33:33 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id B77E7301AA4F
-	for <lists+linux-wireless@lfdr.de>; Fri, 23 Jan 2026 17:56:28 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 39D753015A4C
+	for <lists+linux-wireless@lfdr.de>; Fri, 23 Jan 2026 18:33:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DBE5126B971;
-	Fri, 23 Jan 2026 17:56:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5282419067C;
+	Fri, 23 Jan 2026 18:33:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=u-northwestern-edu.20230601.gappssmtp.com header.i=@u-northwestern-edu.20230601.gappssmtp.com header.b="KiiCcHkc"
+	dkim=pass (2048-bit key) header.d=freebox-fr.20230601.gappssmtp.com header.i=@freebox-fr.20230601.gappssmtp.com header.b="inJ4YQPI"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-oo1-f54.google.com (mail-oo1-f54.google.com [209.85.161.54])
+Received: from mail-wm1-f50.google.com (mail-wm1-f50.google.com [209.85.128.50])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 70CFF244186
-	for <linux-wireless@vger.kernel.org>; Fri, 23 Jan 2026 17:56:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.161.54
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B51C013B58C
+	for <linux-wireless@vger.kernel.org>; Fri, 23 Jan 2026 18:33:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.50
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769190986; cv=none; b=VVHLyhtCpnFO9oDxqWnnyk5EDMqUm6xSGtE+MSn0OZb49qgAa1n4dnYoMhWPWwinQP9lseKRM3Inwne23yFIDoH5h72SLF+wD6r6yhKWd/R3dvqrTiYf3DQOUQErcUdyJQmYISwBZsvrloz+cY4Al3ZdAzQ3uUGaOVJHte7FMYM=
+	t=1769193211; cv=none; b=C8shNVatDU1W1l2nqk1J6GJxna/nfIoHVXqWt/FqIrgRpy3g/f0x95Kw41bfiG3umsuBU35joERA1DIU49fOPi5Q0YndWsoSlAwDDAmc0QWubkKCgYYeJkdzbw5uMWwslFSwpqzWDFDiyqgEVFKSixL80oy7b5IvaJ+U+2SkyyE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769190986; c=relaxed/simple;
-	bh=3s1ZvG4P3WmIZF3H5HsQvvQxalPtq1UMEG/svuL5U4I=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=aB016TM0yzjirOEs7N54swvPZX7HBUNu83d5JOS6mXZt/dPQtcpQqSQRHJzh7DLUJ11dDCBG7gmERC+CbIbpzzqcbkopS3unPaU/Hh/L15itRbHjeZPIHzAMQLXTwp60saIx75faOiBP2wxZdLKUO8LwhWPy/HT/PvcPwf455Eo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=u.northwestern.edu; spf=pass smtp.mailfrom=u.northwestern.edu; dkim=pass (2048-bit key) header.d=u-northwestern-edu.20230601.gappssmtp.com header.i=@u-northwestern-edu.20230601.gappssmtp.com header.b=KiiCcHkc; arc=none smtp.client-ip=209.85.161.54
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=u.northwestern.edu
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=u.northwestern.edu
-Received: by mail-oo1-f54.google.com with SMTP id 006d021491bc7-66106a2f8d0so1728576eaf.2
-        for <linux-wireless@vger.kernel.org>; Fri, 23 Jan 2026 09:56:25 -0800 (PST)
+	s=arc-20240116; t=1769193211; c=relaxed/simple;
+	bh=K56drsMV4WPaf1EGc4Qwe7QOuDyniBruHimQvdW2xh0=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=tpAj6BNp/WA4f++PcAKakx6SUGnBwWHN94Ux5luuZOB0M2uoLAAlOQ3N4PlUYs/vdWBRP9I93XgSLVoZ/OEnJ1Hh/fNb1Ob4BHOfsRr4mkI4b6uvLu3N6EVUbjCJ+D/45+vLKetE22k+ykYnpxCM5fgcXXPCCXjrch8VuZCaxnw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=freebox.fr; spf=pass smtp.mailfrom=freebox.fr; dkim=pass (2048-bit key) header.d=freebox-fr.20230601.gappssmtp.com header.i=@freebox-fr.20230601.gappssmtp.com header.b=inJ4YQPI; arc=none smtp.client-ip=209.85.128.50
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=freebox.fr
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=freebox.fr
+Received: by mail-wm1-f50.google.com with SMTP id 5b1f17b1804b1-47f5c2283b6so19021145e9.1
+        for <linux-wireless@vger.kernel.org>; Fri, 23 Jan 2026 10:33:28 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=u-northwestern-edu.20230601.gappssmtp.com; s=20230601; t=1769190984; x=1769795784; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=CFDEOmaGngrWuic2vWW8nkHShPa2cF6a+SEkB8r9KMU=;
-        b=KiiCcHkcWLY0V1ndrwC60VIMS41gmVfgAuIlcnVOVqDaNlccgQn88sM4XP6sQEYfGH
-         06NlMSgbKIwOazIZs68ONcEPsSDIZSfNAlelvZpnoe0om0Raa10Kwlftcd2I10BunFua
-         U3cMFdNuMSFAnuipHJ2N7WTdyTnch734dOw86tMDMntSPg8NTbpA6eO4Fl5GS5z5Ym6J
-         ETNtk/RV6lZo/oflWQkWZzXMFwqCs3GylgwaDE2NYKy4bG927ZLgZG9NQOyuyX+NZhXW
-         WQoct4e6S4ZoJElsFI8osxh0/BNGcHBhdPC6bA8e2b1Ze7dJ9QsNIiiKVK9EEbnlgayY
-         jEww==
+        d=freebox-fr.20230601.gappssmtp.com; s=20230601; t=1769193207; x=1769798007; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=KegYK2vZBZviGaRge3JiqfwLGVWHhhcV3h3kEHEJt98=;
+        b=inJ4YQPIKGMK0ACMrR+03i+TNSRoa/jsLuhPqueqAMYxr/yFCTP+XAp4ZAdl96EWMI
+         LUCZKHQ1CycVsRE4B7cai+1v9Hd/lJVNTJSuI9cVz6rCauBGI8w8grbQWFTlOrGw7RDf
+         bEkDiJnYgc7tPl+8ZKwJV0BwZW1CEYQ4Fznm24X704Jj9l9kgl38YvQS2PeeqIdFcsOj
+         E2Beqk94oMk4WxL6pEkdhrqsX7FvtolXMC+JK/nn5DWrfie2EXZE8/goeLGibveG+zJV
+         tCnj3dvZo3IiAdsZIwjI7fnGmF7m5W0schJPnB8GnRjttpXI+VDnc2S/066FtxahyIWR
+         VEHg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1769190984; x=1769795784;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=CFDEOmaGngrWuic2vWW8nkHShPa2cF6a+SEkB8r9KMU=;
-        b=YfyEGvg+NaOwFMxl73lkg37W085fIYX5IK3ZOV7UQlYpsB/mnRWRxGzX8kcsnLcRi/
-         xj6ljWTMgMfW1WYtaTjsDCxvDgWntJCyGCRul9F4rDUKYRXHxrjPE1J7nHi7F0z2NzNK
-         KEGpqIQrOs6KaaHrloPboA/FtTaYOgn4FfhlOrRO4NAI+mVe8WN8zBmAgAG6xuJtICEi
-         pyew6yQZLm7wRNbiJukLeVCPpkCojhE3Cy3sNzHjl37AXzo1a7d7poMiX0wojE7hxOEA
-         4NdzJOkP0+L2bH69H8U2DX7pjJNktmCbuNPqFeHW2GuC6lKrXfry/YNni2UtJrtAKLE9
-         BnVg==
-X-Gm-Message-State: AOJu0YxBbC2Mb8BVMits7OdKPSMaUd5rOKTgFf+1fQZu4dyBHo2QTlfq
-	C5/u+dTN5tM5aP4C908mOeaniesfmYl9iUuT88IvfHjWMFyjUK+lkAMl/D0XnmttYD8=
-X-Gm-Gg: AZuq6aJzXbU2NUO9mo8ffnOHMDb1DwdTtsiEsNr1UTHJsPYoD2E53qPIXvMYrEcMPcs
-	g8Z7usmhsv8O2MzVL83fAM9CGZHEfGWcXpDwXyiySWuSsV1ATtadXk75NNoQm5whIAzzeoiNKTW
-	w6vhsh/BnOmzYYu7hpmLkjaN+eswdAMr4l3/Gki6/2aah9xxfi4Z+hd/oN4QSiLycHhtXj04w/3
-	r0OSh5GtUco5VzSK50GPtPmzFvGV1LCdN/DClHhKy22sEi32WXBozOGsUPLs4No3wrD+gR/gHvh
-	uZAuFJCXInB6RVMKZ201ev2CfLHNwvaOXIeGKSjqYq4iChC1JO8Tzy/2VKIy2REK1atfzWsS8ZQ
-	iLnCC5OkjV2CWLEMEp/4A1oiQq8EGdQ4UFbO6mrjJjK0r7fZE8Mf0v3nWWrDa9K1YWjObeHZW+i
-	zVuf6dnv8W2V+/5ys/rPMzJH/vN7IT0iDJOxnRKBe2IL9xWoV0ud79R81svybl/4Dw9Gi4JWbGj
-	Tn6x3MZaTe11vECXR1RCW6DnS8W04c=
-X-Received: by 2002:a05:6820:1794:b0:65f:27dd:f565 with SMTP id 006d021491bc7-662caaefbddmr1770681eaf.22.1769190979584;
-        Fri, 23 Jan 2026 09:56:19 -0800 (PST)
-Received: from security.cs.northwestern.edu (security.cs.northwestern.edu. [165.124.184.136])
-        by smtp.gmail.com with ESMTPSA id 006d021491bc7-662cb666c45sm1354143eaf.15.2026.01.23.09.56.19
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 23 Jan 2026 09:56:19 -0800 (PST)
-From: Ziyi Guo <n7l8m4@u.northwestern.edu>
-To: Jeff Johnson <jjohnson@kernel.org>
-Cc: linux-wireless@vger.kernel.org,
-	ath10k@lists.infradead.org,
-	linux-kernel@vger.kernel.org,
-	Ziyi Guo <n7l8m4@u.northwestern.edu>
-Subject: [PATCH v2] wifi: ath10k: fix lock protection in ath10k_wmi_event_peer_sta_ps_state_chg()
-Date: Fri, 23 Jan 2026 17:56:11 +0000
-Message-Id: <20260123175611.767731-1-n7l8m4@u.northwestern.edu>
-X-Mailer: git-send-email 2.34.1
+        d=1e100.net; s=20230601; t=1769193207; x=1769798007;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=KegYK2vZBZviGaRge3JiqfwLGVWHhhcV3h3kEHEJt98=;
+        b=K/Hr/u87Okr9og9g/FfTdNV4jtxX+ap2AgLHn2tvvw+atA8MJeELP9AkvORdyK4GgY
+         BiAV0VTM0nCPNAk3WL9pWKADkCgDNXKZIlvfiO74f7vst4UuqBQZQ5zgdm2YTn0oVdWN
+         aOXA6KQOn17lbJ2iiRqi+e+UJogp4Y1lgx2T6vVGAfGjpKxbvAiCWtawt6HlcwEgnhet
+         +O4HQtkoT9AU7CFVsJ2leEHrWaB7BayGYnJvRHKaZv57bpG410URc93KQBUaWiG17EDa
+         1FjkKrEjQw2m0SRZSfjecQ2IhPzyN58jSLGKcjlDknAf99ACSHgx3DKxFnMeUB6QWGxt
+         URkA==
+X-Gm-Message-State: AOJu0YxeaR3vPAPb2C8n0G5hIB2wMCp5lfqhfbvk6f/RvjcJVBEK/S9e
+	Ngvc/5BE2BGjympyvtCQb/jiOT0JJrJN38CrrLe23mML6FW75RWElLyhsHtp4lg5yRDD4qgtVJx
+	YSLGo
+X-Gm-Gg: AZuq6aKTi9VuOfe394WGD1qio11wrl4X0PDgyVB+ImJfz2bIJ5y58WvEcTM3/M9D5JG
+	IOSkRJCrjq6ncgzG49kgiHSa/gSD01ETj1A1+vVWOv0rLxmV94Tfv+tFa3KF2qAJmA7pj6eMxL6
+	wRoacfrzRyIZoOHeDnSYRiPgABGPPbT1QKw7p+tDuMf/iAvmzPFO44WyCb3IQIz3+XAeXzvnFzW
+	q1wlF/UnVwGaKWGGNq6AXU0CJBbF3Lee52kxg5vjzM94/CIsl0uF7kehdsLnZKI94XTyGFXu0XZ
+	t5T0X+FBa5uF1cGpqD3jIAhSkHm8TFIMCnSTp6FouwMdo71FTqX5789cvWSr9evEmftUDNpbV/Z
+	8OgcxrDJpBtiT4fY3rh0upza14kj/RDd2lPMLoodE99jZG30b0gdibMA2yKPnIzk3d6IXx0jNga
+	ZL+8DiZElUDp2BnnV2VjccsAriLhtBxFxg6qtTBvnOLcQXAMtdgxN6
+X-Received: by 2002:a05:600c:a016:b0:47e:e712:aa88 with SMTP id 5b1f17b1804b1-4804c9c144fmr69060155e9.31.1769193206911;
+        Fri, 23 Jan 2026 10:33:26 -0800 (PST)
+Received: from [192.168.108.101] (freebox.vlq16.iliad.fr. [213.36.7.13])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4804dbb6315sm28860395e9.4.2026.01.23.10.33.26
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Fri, 23 Jan 2026 10:33:26 -0800 (PST)
+Message-ID: <d26ee979-b5d5-4f50-b423-f8783122f603@freebox.fr>
+Date: Fri, 23 Jan 2026 19:33:25 +0100
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH ath-next] wifi: ath12k: avoid setting 320MHZ support on
+ non 6GHz band
+To: Nicolas Escande <nico.escande@gmail.com>, ath12k@lists.infradead.org
+Cc: linux-wireless@vger.kernel.org
+References: <20260123144224.2216923-1-nico.escande@gmail.com>
+Content-Language: en-US
+From: Pablo MARTIN-GOMEZ <pmartin-gomez@freebox.fr>
+In-Reply-To: <20260123144224.2216923-1-nico.escande@gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.06 / 15.00];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MID_CONTAINS_FROM(1.00)[];
-	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64];
-	R_DKIM_ALLOW(-0.20)[u-northwestern-edu.20230601.gappssmtp.com:s=20230601];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_DKIM_ALLOW(-0.20)[freebox-fr.20230601.gappssmtp.com:s=20230601];
 	MAILLIST(-0.15)[generic];
-	DMARC_POLICY_SOFTFAIL(0.10)[northwestern.edu : SPF not aligned (relaxed), DKIM not aligned (relaxed),none];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-31127-lists,linux-wireless=lfdr.de];
-	TO_DN_SOME(0.00)[];
-	FROM_HAS_DN(0.00)[];
+	TAGGED_FROM(0.00)[bounces-31128-lists,linux-wireless=lfdr.de];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[n7l8m4@u.northwestern.edu,linux-wireless@vger.kernel.org];
-	NEURAL_HAM(-0.00)[-0.997];
+	DMARC_NA(0.00)[freebox.fr];
+	FREEMAIL_TO(0.00)[gmail.com,lists.infradead.org];
+	DKIM_TRACE(0.00)[freebox-fr.20230601.gappssmtp.com:+];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCPT_COUNT_THREE(0.00)[3];
+	FROM_HAS_DN(0.00)[];
+	TO_DN_SOME(0.00)[];
 	RCVD_COUNT_FIVE(0.00)[5];
-	DKIM_TRACE(0.00)[u-northwestern-edu.20230601.gappssmtp.com:+];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[pmartin-gomez@freebox.fr,linux-wireless@vger.kernel.org];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	NEURAL_HAM(-0.00)[-0.999];
 	TAGGED_RCPT(0.00)[linux-wireless];
-	RCPT_COUNT_FIVE(0.00)[5];
+	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,u-northwestern-edu.20230601.gappssmtp.com:dkim,u.northwestern.edu:mid,northwestern.edu:email]
-X-Rspamd-Queue-Id: C84BC7943D
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,freebox-fr.20230601.gappssmtp.com:dkim]
+X-Rspamd-Queue-Id: 4BE0079AE9
 X-Rspamd-Action: no action
 
-ath10k_wmi_event_peer_sta_ps_state_chg() uses lockdep_assert_held() to
-assert that ar->data_lock should be held by the caller, but neither
-ath10k_wmi_10_2_op_rx() nor ath10k_wmi_10_4_op_rx() acquire this lock
-before calling this function.
+Hello,
 
-The field arsta->peer_ps_state is documented as protected by
-ar->data_lock in core.h, and other accessors (ath10k_peer_ps_state_disable,
-ath10k_dbg_sta_read_peer_ps_state) properly acquire this lock.
+On 23/01/2026 15:42, Nicolas Escande wrote:
+> On a split phy qcn9274 (2.4GHz + 5GHz low), "iw phy" reports 320MHz
+> realated features on the 5GHz band while it should not:
+>
+>      Wiphy phy1
+>      [...]
+>          Band 2:
+>      [...]
+>              EHT Iftypes: managed
+>      [...]
+>                  EHT PHY Capabilities: (0xe2ffdbe018778000):
+>                      320MHz in 6GHz Supported
+>      [...]
+>                      Beamformee SS (320MHz): 7
+>      [...]
+>                      Number Of Sounding Dimensions (320MHz): 3
+>      [...]
+>                  EHT MCS/NSS: (0x22222222222222222200000000):
+>
+> This is also reflected in the beacons sent by a mesh interface started on
+> that band. They erroneously advertise 320MHZ support too.
+>
+> This should not happen as the spec at section 9.4.2.323.3 says we should
+> not set the 320MHz related fields when not operating on a 6GHz band.
+> For example it says about Bit 0 "Support For 320 MHz In 6 GHz"
+>
+>    "Reserved if the EHT Capabilities element is indicating capabilities for
+>     the 2.4 GHz or 5 GHz bands."
+>
+> Fix this by clearing the related bits when converting from WMI eht phy
+> capabilities to mac80211 phy capabilities, for bands other than 6GHz.
+>
+> Tested-on: QCN9274 hw2.0 PCI WLAN.WBE.1.3.1-00218-QCAHKSWPL_SILICONZ-1
+>
+> Signed-off-by: Nicolas Escande <nico.escande@gmail.com>
+> ---
+>   drivers/net/wireless/ath/ath12k/wmi.c | 9 ++++++++-
+>   1 file changed, 8 insertions(+), 1 deletion(-)
+>
+> diff --git a/drivers/net/wireless/ath/ath12k/wmi.c b/drivers/net/wireless/ath/ath12k/wmi.c
+> index 84c29e4896a4..14947fdb9813 100644
+> --- a/drivers/net/wireless/ath/ath12k/wmi.c
+> +++ b/drivers/net/wireless/ath/ath12k/wmi.c
+> @@ -4888,6 +4888,7 @@ static void ath12k_wmi_eht_caps_parse(struct ath12k_pdev *pdev, u32 band,
+>   				       __le32 cap_info_internal)
+>   {
+>   	struct ath12k_band_cap *cap_band = &pdev->cap.band[band];
+> +	u8 *phy_cap = (u8 *)&cap_band->eht_cap_phy_info[0];
+>   	u32 support_320mhz;
+>   	u8 i;
+>   
+> @@ -4901,8 +4902,14 @@ static void ath12k_wmi_eht_caps_parse(struct ath12k_pdev *pdev, u32 band,
+>   	for (i = 0; i < WMI_MAX_EHTCAP_PHY_SIZE; i++)
+>   		cap_band->eht_cap_phy_info[i] = le32_to_cpu(cap_phy_info[i]);
+>   
+> -	if (band == NL80211_BAND_6GHZ)
+> +	if (band == NL80211_BAND_6GHZ) {
+>   		cap_band->eht_cap_phy_info[0] |= support_320mhz;
+> +	} else {
+> +		phy_cap[0] &= ~IEEE80211_EHT_PHY_CAP0_320MHZ_IN_6GHZ;
+> +		phy_cap[1] &= ~IEEE80211_EHT_PHY_CAP1_BEAMFORMEE_SS_320MHZ_MASK;
+> +		phy_cap[2] &= ~IEEE80211_EHT_PHY_CAP2_SOUNDING_DIM_320MHZ_MASK;
+> +		phy_cap[6] &= ~IEEE80211_EHT_PHY_CAP6_MCS15_SUPP_320MHZ;
+> +	}
+If you want to clear all 320 MHz fields, you'll also have to clear 
+IEEE80211_EHT_PHY_CAP7_NON_OFDMA_UL_MU_MIMO_320MHZ and 
+IEEE80211_EHT_PHY_CAP7_MU_BEAMFORMER_320MHZ (not sure why it is not done 
+in mac80211)
+>   
+>   	cap_band->eht_mcs_20_only = le32_to_cpu(supp_mcs[0]);
+>   	cap_band->eht_mcs_80 = le32_to_cpu(supp_mcs[1]);
 
-Add spin_lock_bh()/spin_unlock_bh() around the peer_ps_state update,
-and remove the lockdep_assert_held() to be aligned with new locking,
-following the pattern used by other WMI event handlers in the driver.
+Best regards,
 
-Signed-off-by: Ziyi Guo <n7l8m4@u.northwestern.edu>
----
-v2:
- - Remove lockdep_assert_held() as suggested, since
-   we are now taking the lock internally.
-
- drivers/net/wireless/ath/ath10k/wmi.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
-
-diff --git a/drivers/net/wireless/ath/ath10k/wmi.c b/drivers/net/wireless/ath/ath10k/wmi.c
-index b4aad6604d6d..061a2fa8f00f 100644
---- a/drivers/net/wireless/ath/ath10k/wmi.c
-+++ b/drivers/net/wireless/ath/ath10k/wmi.c
-@@ -5289,7 +5289,6 @@ ath10k_wmi_event_peer_sta_ps_state_chg(struct ath10k *ar, struct sk_buff *skb)
- 	struct ath10k_sta *arsta;
- 	u8 peer_addr[ETH_ALEN];
- 
--	lockdep_assert_held(&ar->data_lock);
- 
- 	ev = (struct wmi_peer_sta_ps_state_chg_event *)skb->data;
- 	ether_addr_copy(peer_addr, ev->peer_macaddr.addr);
-@@ -5305,7 +5304,9 @@ ath10k_wmi_event_peer_sta_ps_state_chg(struct ath10k *ar, struct sk_buff *skb)
- 	}
- 
- 	arsta = (struct ath10k_sta *)sta->drv_priv;
-+	spin_lock_bh(&ar->data_lock);
- 	arsta->peer_ps_state = __le32_to_cpu(ev->peer_ps_state);
-+	spin_unlock_bh(&ar->data_lock);
- 
- exit:
- 	rcu_read_unlock();
--- 
-2.34.1
+Pablo MG
 
 
