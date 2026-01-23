@@ -1,88 +1,88 @@
-Return-Path: <linux-wireless+bounces-31121-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-31122-lists+linux-wireless=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id YOYiMpKac2nNxQAAu9opvQ
-	(envelope-from <linux-wireless+bounces-31121-lists+linux-wireless=lfdr.de@vger.kernel.org>)
-	for <lists+linux-wireless@lfdr.de>; Fri, 23 Jan 2026 16:58:10 +0100
+	id OES/CpWac2nNxQAAu9opvQ
+	(envelope-from <linux-wireless+bounces-31122-lists+linux-wireless=lfdr.de@vger.kernel.org>)
+	for <lists+linux-wireless@lfdr.de>; Fri, 23 Jan 2026 16:58:13 +0100
 X-Original-To: lists+linux-wireless@lfdr.de
 Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id D234A7818A
-	for <lists+linux-wireless@lfdr.de>; Fri, 23 Jan 2026 16:58:09 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id E883278191
+	for <lists+linux-wireless@lfdr.de>; Fri, 23 Jan 2026 16:58:11 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 4B85C3006203
-	for <lists+linux-wireless@lfdr.de>; Fri, 23 Jan 2026 15:58:07 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 4866C30060B8
+	for <lists+linux-wireless@lfdr.de>; Fri, 23 Jan 2026 15:58:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E779C1DD877;
-	Fri, 23 Jan 2026 15:58:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E389F287269;
+	Fri, 23 Jan 2026 15:58:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="ZbtqZtir"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="F0c5VycO"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-pf1-f178.google.com (mail-pf1-f178.google.com [209.85.210.178])
+Received: from mail-pg1-f176.google.com (mail-pg1-f176.google.com [209.85.215.176])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9CB9625A642
-	for <linux-wireless@vger.kernel.org>; Fri, 23 Jan 2026 15:58:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.178
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9EC1728B7DA
+	for <linux-wireless@vger.kernel.org>; Fri, 23 Jan 2026 15:58:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.176
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769183886; cv=none; b=ecTktfDK0LQ2WuQF80UwhevuWkXyO8WDMyJXTYadAc8Ic05YZAnusoBwRpza9HKiVMXHJ2RxbSYYj7eXR6eb7DAVmevisHR2WvIOUfCcfhwxfs294I9/382c/nzi36G39l7RKLPZfpP2TdnvQqIcDwlui6fQDGbGrqtOXj2JisI=
+	t=1769183888; cv=none; b=HrG/4Y6iA/4ZNmsEmqk5k32ppJorz+clGqh7or72ULbed47iJGK2IobXyPupv2UzYj7wKwvAWyCDZuAYaMX/mHmwfyih/zVLyOpZWkAF5R7P12iUfPDu6X9iOXfvFZedrVfryAcX3rmk5gTHN/zAYJHF7oTb/Xv4W+kQ2rH/Dnk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769183886; c=relaxed/simple;
-	bh=Dl1pNuIyA/9XuvTAAfN9PgDr66VvIBhi/wej/aJJsgA=;
+	s=arc-20240116; t=1769183888; c=relaxed/simple;
+	bh=sDBEja9caBGfx+XaqHCBxp6JYAqsd/xq4CXneEwrnyQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=PZGRM2O2qvbJm/2LBrZa7gytHGO1qv2bwGRSwPw0ZVJ59QVKfgNystvrp1g3uN5nt17WZ5ab2eusBSR2x5JI/8ElMrGDGpGW0kK2JEZ58Tp36+89khA9Xly9CVbTWk75SotWiMmm7QCCe5/QzCdmnPWtGqHsfkRI8kd38kR48sw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=ZbtqZtir; arc=none smtp.client-ip=209.85.210.178
+	 MIME-Version; b=eRQlX05Wv68UWFd1MA9zC00WzlCF4ipmrzaocxevYUyNiMNbfNCj4ROa4XE2lFHZq9Qbf4LUAWLcnV/UO+V1d5vcgDEi45nH7NVuCfc9Pfq3gWvqkDzHA9d0yTds0/mxk8HXme6x4YDJK5RGdt0CrBuNfHdKAg8VQTneRBY2FzQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=F0c5VycO; arc=none smtp.client-ip=209.85.215.176
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pf1-f178.google.com with SMTP id d2e1a72fcca58-81e93c5961cso2137608b3a.0
-        for <linux-wireless@vger.kernel.org>; Fri, 23 Jan 2026 07:58:05 -0800 (PST)
+Received: by mail-pg1-f176.google.com with SMTP id 41be03b00d2f7-c47ee987401so928158a12.1
+        for <linux-wireless@vger.kernel.org>; Fri, 23 Jan 2026 07:58:07 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1769183885; x=1769788685; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1769183887; x=1769788687; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=om9q+srifk+m3/ipW1COktkWxrQuXTLgvLJtU2pt4s0=;
-        b=ZbtqZtirIG7lWIWMt5R/qpugKIk5gaLEyBqO1vsT7xIb4npPVeikz4Efyc/mDaa+wx
-         nGrW0Q/NvGwtcBnf5cWo+2z4FFdjLoYSHbv1/b3Yx9wQc5zh8IeaYqfcV6paBvWKGnH7
-         jdkqLutJfZmmsffhDPLjwTRPPPnqgkSjWNRaUdM/jtWMCli5GfaQFIlF5yCNLVJB8534
-         RAHd5UdhZN4W1ucyec1opWYSNcJ/uqQ7ZnLLQbEtc+TAs7pBfZA1Irub62pfvhXf3UVV
-         BbPOxir9Uso/QZA5u3s6mfndEoj6YjfRQqViChtGZAjfJBZ7g5MWs5PsLakKfwOXqwTe
-         9bsg==
+        bh=BArbmjiBa6Ohmbx6FKnPpxNrDpx4xGnZ/TyoYHn7A5Y=;
+        b=F0c5VycOKsA8D568vCX+gec6k1Z+ljrhhxG1ZCEwTk0ONPQNbWZ833JE+/xZpD8NKa
+         57Cqdt+TO4EzmIc6IDCgCeKjae8TggqPHu3knPY/GKF4V05/DzanSSXsClMgTavnOfMH
+         1dYaqAc+rOUrtyPHmOMl/b1sBF5hoFHRP4QwPF6RQLh8QFnelqleTkzVprNXAH1nervB
+         yExco+KEeHUhcXzyEYX2A5vEWRis3qAS18ZDVwlffo3XR6Fu0bOcNCTVCC/N3ZWZHGxf
+         2yRPxbuM5FDXwQ35ijDVGcqAc675EbwfRHXiFRguoZBHYNaAj22zf/tn0f2h0tAtAtMy
+         rvAg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1769183885; x=1769788685;
+        d=1e100.net; s=20230601; t=1769183887; x=1769788687;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to;
-        bh=om9q+srifk+m3/ipW1COktkWxrQuXTLgvLJtU2pt4s0=;
-        b=pmpDXtxJ23wZRBvPqAcNLw+GT+FSUcBEaXHu1V8IXl4YvmyHn/ucSSofS4H6CBYcI5
-         s84bK5ilQSfOi6OeU3znsXnI8WKGHvH8oVTEsAXcokXEjkt50TZ6ndWEz2QIlgRXwSwu
-         W9tBM3H2hz9GXVeKMeVnaJIwkPgcM7E7eLk6uDz8r6FAaHVpj/fPB6v9wN/4hkRFua3o
-         LVbmMK58D6pqDz8adONwVoRQDB89SvB8pxcvwPgFcR2vxXLlJ5RyF1kASomhgvC6xEkf
-         w6O3MKIZXLLEhopo+Y2Fz+sK3zUy+I16KcFMCfeqstOS2nkBPyfNfXfQc9XIliA3vsc+
-         8SRQ==
-X-Gm-Message-State: AOJu0Yxfl2LGWGTPE5TVzS1jhjsZDe+bEQBUzcrijK7h6qbd7bEXBrsJ
-	b10T0yjrc+8EkI92sGqZkN5xW5nios3w8eszjbT6gXIee1c+OL4E0CxP
-X-Gm-Gg: AZuq6aL2/fPe5nmEMrPBsUjoZBvCLNjTJjL/Z0YbsCvK0eCtmHlgyREyM3/Ur700Aqg
-	378nS8qlOrmQ2PBmFpv0YEivUaRZAPjZ51ApKr+QHSB0ps+NR3ND0SKLdQrouwwRKuVC8pwUKWR
-	3fTUerW4+Z1GdsiyorfXdr54haJgePFitQPk5kaORjbRMdtcAiSIhukJnW6jVfuYPd8MrPgCf9h
-	zo72jzz9sKjaaUdKnzWTrGoM4owQwWOxh6GmW3RUZXc3nc3ie5UZi1RrueAqSPUmYnoYZxswrBs
-	jhpdJz37RYsk309y5UGbSScLb3c1FZmQAJB3QTwcDD1cqIKQp6fxCCfml/3SstoIKAq0ZKS4XdM
-	bcp9HMa+qyMP5MMs7RMNqP4RE+cPnQdHnaBJTLi8rYingnN4TYA9yUx32UaYbtFomxEEaA/O1D1
-	sqw1ka9O0KIR5/z3bEgpmKm44vWnq0odI5p2VD
-X-Received: by 2002:a17:90b:5625:b0:343:5f43:933e with SMTP id 98e67ed59e1d1-3536894d3b5mr2930051a91.19.1769183884674;
-        Fri, 23 Jan 2026 07:58:04 -0800 (PST)
+        bh=BArbmjiBa6Ohmbx6FKnPpxNrDpx4xGnZ/TyoYHn7A5Y=;
+        b=RYnFdEpXOzqL8nvXH02NfAnEims/bxWD1aLGZsmhlqMmKsc3f8W29/1D16NJKBdJ6f
+         dztCqUVFTMKKey6XJryDAavUlH3yYO7iRWp6HXAxqcjgFscqnAGtnMwQ/mqoDHcDDMhm
+         l6Dora/YA0HaIA4SiV2x2ZvCd2yUUKd6codHnbrJJyXVMVG1VHpnG62OJ6Xqdsgfj0ig
+         aRPAEJIA+s3NKnXqjUO90kKLuwfcc4HsbZhGF6xe3vTE03LgfuQtrYr4WsQQmtwzHdB1
+         IQXbyQB+r5ApMAP3YeLHcjcun5wWKO8XC7p+XOZd+dc9mY9hcRmb2K/AUccdM9K4PpYl
+         KvOg==
+X-Gm-Message-State: AOJu0YxwVppAwgEDIzKFJ1815Z375fNEb6g+HFHJAH/SCr+cweA6fcav
+	CIrQfHCKFhHPz2Sha3bq1c88Vy2If4WCM3lkIAbsPIaYFNYb0a/nxn/z
+X-Gm-Gg: AZuq6aJu7Xt2rM5ILQ9bsOsqr/Ilt5dEU8HPXUPj800J1uXozZqqavx5FPFBPTTV1cQ
+	vEQgO3iyfwuro6lprLStyLwa8ULtpEl1L2fGK65Smc2NP0yQ7N41rsg1UBWg6D8daa6JiBZ5JpN
+	ibYurviPMSkVSq6390ug63qofeLb+oenNdU6ZJNpM/XjxQYRsh+k4FyQ3PPIDU5CCawVdY8ykhB
+	g1zHN7srywLoxmg7NlMkVksbqG25Jvv89S0pb/fP5yhLUPRdwGLUgTzTw5MuoSNtCkiCTaOr3t4
+	fCHwfJFmCr2Ido5g6GR/MNwN50HFldIAozm8b4MVRz+DdH1wJrIGqp03jLZtLQ1qUeajykgjcnD
+	c6uPYNF0R92tYqH/lqZkj/4ZYDsr7kJz1HcbTdU50wS18rQv+HkyPZv5HXuDD8jDzQHZEHPZpMH
+	TkiNJm+KSg0JXT3tkihjPtftzDZH/MCWZ1IQVm
+X-Received: by 2002:a17:90b:6cd:b0:340:b501:7b83 with SMTP id 98e67ed59e1d1-3536ace1173mr2553134a91.10.1769183886916;
+        Fri, 23 Jan 2026 07:58:06 -0800 (PST)
 Received: from saikiran-Yoga-Slim-7-14Q8X9 ([2402:e280:3d17:646:dfb6:6b31:aa17:2446])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-35335206b23sm5489305a91.3.2026.01.23.07.58.02
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-35335206b23sm5489305a91.3.2026.01.23.07.58.05
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 23 Jan 2026 07:58:04 -0800 (PST)
+        Fri, 23 Jan 2026 07:58:06 -0800 (PST)
 From: Saikiran <bjsaikiran@gmail.com>
 To: ath12k@lists.infradead.org
 Cc: linux-wireless@vger.kernel.org,
 	kvalo@kernel.org,
 	Saikiran <bjsaikiran@gmail.com>
-Subject: [PATCH] wifi: ath12k: Add fallback regulatory domain for WCN7850 without SMBIOS
-Date: Fri, 23 Jan 2026 21:27:48 +0530
-Message-ID: <20260123155750.6007-4-bjsaikiran@gmail.com>
+Subject: [PATCH] wifi: ath12k: Remove broken frequency range filtering
+Date: Fri, 23 Jan 2026 21:27:49 +0530
+Message-ID: <20260123155750.6007-5-bjsaikiran@gmail.com>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20260123155750.6007-1-bjsaikiran@gmail.com>
 References: <20260123155750.6007-1-bjsaikiran@gmail.com>
@@ -110,7 +110,7 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-31121-lists,linux-wireless=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-31122-lists,linux-wireless=lfdr.de];
 	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
 	RCPT_COUNT_THREE(0.00)[4];
 	PRECEDENCE_BULK(0.00)[];
@@ -122,67 +122,63 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	NEURAL_HAM(-0.00)[-1.000];
 	FREEMAIL_FROM(0.00)[gmail.com];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[launchpad.net:url,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: D234A7818A
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: E883278191
 X-Rspamd-Action: no action
 
-When SMBIOS doesn't provide country code data (common on some Lenovo
-X Elite laptops), initialize with world domain (00) and skip sending
-it to firmware to let firmware use its default regulatory settings.
+Between kernel 6.16 and 6.17, ath12k added frequency range filtering in
+ath12k_reg_update_chan_list() that filters channels based on
+ar->freq_range.start_freq and ar->freq_range.end_freq.
 
-Without this, new_alpha2 remains uninitialized and firmware receives
-invalid country code, causing repeated regulatory update failures.
+However, these values are reset to 0 in ath12k_regd_update(), causing
+the filter to skip ALL channels:
+    if (channel_freq < 0 || channel_freq > 0)  // Always true when end_freq=0
+        continue;  // All channels skipped
 
-Note: This workaround doesn't fully resolve the regulatory failures
-seen on WCN7850 hw2.0 with firmware WLAN.HMT.1.1.c5-00302. The firmware
-still rejects regulatory settings during early initialization, keeping
-the device in passive-scan-only mode for 5GHz channels. Further firmware
-debugging is needed to resolve the root cause.
+This results in no channel list sent to firmware, causing 5 GHz Wi-Fi
+to stop working.
 
-Link: https://bugs.launchpad.net/ubuntu-concept/+bug/2138308
+Fix by removing the broken frequency range filtering. The firmware
+itself handles frequency range restrictions based on hardware capabilities.
+
 Tested-on: WCN7850 hw2.0 PCI WLAN.HMT.1.1.c5-00302 (Lenovo Yoga Slim 7x)
 
 Signed-off-by: Saikiran <bjsaikiran@gmail.com>
 ---
- drivers/net/wireless/ath/ath12k/core.c | 18 ++++++++++++++++++
- 1 file changed, 18 insertions(+)
+ drivers/net/wireless/ath/ath12k/reg.c | 13 -------------
+ 1 file changed, 13 deletions(-)
 
-diff --git a/drivers/net/wireless/ath/ath12k/core.c b/drivers/net/wireless/ath/ath12k/core.c
-index cc352eef1939..4121dd14bbcc 100644
---- a/drivers/net/wireless/ath/ath12k/core.c
-+++ b/drivers/net/wireless/ath/ath12k/core.c
-@@ -800,6 +800,18 @@ int ath12k_core_check_smbios(struct ath12k_base *ab)
- 	ab->qmi.target.bdf_ext[0] = '\0';
- 	dmi_walk(ath12k_core_check_cc_code_bdfext, ab);
+diff --git a/drivers/net/wireless/ath/ath12k/reg.c b/drivers/net/wireless/ath/ath12k/reg.c
+index 2dfcef013277..2d9adc74ac6e 100644
+--- a/drivers/net/wireless/ath/ath12k/reg.c
++++ b/drivers/net/wireless/ath/ath12k/reg.c
+@@ -153,12 +153,6 @@ int ath12k_reg_update_chan_list(struct ath12k *ar, bool wait)
+ 			if (bands[band]->channels[i].flags &
+ 			    IEEE80211_CHAN_DISABLED)
+ 				continue;
+-			/* Skip Channels that are not in current radio's range */
+-			if (bands[band]->channels[i].center_freq <
+-			    KHZ_TO_MHZ(ar->freq_range.start_freq) ||
+-			    bands[band]->channels[i].center_freq >
+-			    KHZ_TO_MHZ(ar->freq_range.end_freq))
+-				continue;
  
-+	/* If SMBIOS doesn't provide country code, initialize with world domain (00)
-+	 * to let firmware use its default regulatory settings
-+	 */
-+	spin_lock_bh(&ab->base_lock);
-+	if (ab->new_alpha2[0] == 0 && ab->new_alpha2[1] == 0) {
-+		/* Use world domain - let firmware decide */
-+		ab->new_alpha2[0] = '0';
-+		ab->new_alpha2[1] = '0';
-+		ath12k_info(ab, "No SMBIOS country code, using world regulatory domain\n");
-+	}
-+	spin_unlock_bh(&ab->base_lock);
-+
- 	if (ab->qmi.target.bdf_ext[0] == '\0')
- 		return -ENODATA;
+ 			num_channels++;
+ 		}
+@@ -190,13 +184,6 @@ int ath12k_reg_update_chan_list(struct ath12k *ar, bool wait)
+ 			if (channel->flags & IEEE80211_CHAN_DISABLED)
+ 				continue;
  
-@@ -1522,6 +1534,12 @@ static void ath12k_update_11d(struct work_struct *work)
- 	memcpy(&arg.alpha2, &ab->new_alpha2, 2);
- 	spin_unlock_bh(&ab->base_lock);
- 
-+	/* Skip setting country code if it's world domain (00) - let firmware use defaults */
-+	if (arg.alpha2[0] == '0' && arg.alpha2[1] == '0') {
-+		ath12k_dbg(ab, ATH12K_DBG_WMI, "skip sending world domain to firmware\n");
-+		return;
-+	}
-+
- 	ath12k_dbg(ab, ATH12K_DBG_WMI, "update 11d new cc %c%c\n",
- 		   arg.alpha2[0], arg.alpha2[1]);
- 
+-			/* Skip Channels that are not in current radio's range */
+-			if (bands[band]->channels[i].center_freq <
+-			    KHZ_TO_MHZ(ar->freq_range.start_freq) ||
+-			    bands[band]->channels[i].center_freq >
+-			    KHZ_TO_MHZ(ar->freq_range.end_freq))
+-				continue;
+-
+ 			/* TODO: Set to true/false based on some condition? */
+ 			ch->allow_ht = true;
+ 			ch->allow_vht = true;
 -- 
 2.51.0
 
