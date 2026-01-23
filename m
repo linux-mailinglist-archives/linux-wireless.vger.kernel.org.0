@@ -1,379 +1,249 @@
-Return-Path: <linux-wireless+bounces-31112-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-31113-lists+linux-wireless=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id EEvCMtxBc2mWtwAAu9opvQ
-	(envelope-from <linux-wireless+bounces-31112-lists+linux-wireless=lfdr.de@vger.kernel.org>)
-	for <lists+linux-wireless@lfdr.de>; Fri, 23 Jan 2026 10:39:40 +0100
+	id +NdhLaJfc2l3vAAAu9opvQ
+	(envelope-from <linux-wireless+bounces-31113-lists+linux-wireless=lfdr.de@vger.kernel.org>)
+	for <lists+linux-wireless@lfdr.de>; Fri, 23 Jan 2026 12:46:42 +0100
 X-Original-To: lists+linux-wireless@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 87F147382F
-	for <lists+linux-wireless@lfdr.de>; Fri, 23 Jan 2026 10:39:39 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3F47275554
+	for <lists+linux-wireless@lfdr.de>; Fri, 23 Jan 2026 12:46:42 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id D7C65306FCDB
-	for <lists+linux-wireless@lfdr.de>; Fri, 23 Jan 2026 09:32:55 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id C489030C0239
+	for <lists+linux-wireless@lfdr.de>; Fri, 23 Jan 2026 11:40:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 04D00322B90;
-	Fri, 23 Jan 2026 09:32:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E345B36EAB4;
+	Fri, 23 Jan 2026 11:39:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=mediatek.com header.i=@mediatek.com header.b="L9rw0n4R"
+	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="MkFFqzxq";
+	dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b="DiI3N4w3"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mailgw01.mediatek.com (unknown [60.244.123.138])
+Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ED6DA2D839E
-	for <linux-wireless@vger.kernel.org>; Fri, 23 Jan 2026 09:32:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=60.244.123.138
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 525B03446A6
+	for <linux-wireless@vger.kernel.org>; Fri, 23 Jan 2026 11:39:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769160774; cv=none; b=Un4Hk4CnqSlHdjWhAXcA/6IYLfaaWSwm0YAXz+iKDaoO6y6bHMUXy5qfyc/Tozz3HmF4XOGaqCGhFfmmvV9djQTQCFr1KI7EUkP/UtHep+qgex5ucG2f+e6Q+GJrMwbGN1+R/h6TDLl8mui8WnufVDmpZQhnY0NlBg0+NUvXW+c=
+	t=1769168385; cv=none; b=TJA6i7FViTlNFnRsAtUa3Fh9Hnu3PdfZHOL2aNppBe9qMsE3f1d3v2trZzWlJ36ThPEH6rHdyPZ4Fz/9bEqIZzd2CweIBUGQ3AgqOESULGER9wXyoOLVc5KeP/PHovPgRofusw/n0nQ5zNLO7D8pTt84OhKcAkVk450UF/onDTU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769160774; c=relaxed/simple;
-	bh=UzGH9MypbSYU4H5EAOCITO/LyldTOz8vnvOFtY81qYs=;
-	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=pXZSebb5bWfhaWe3yd0L5XhNayJl1EVSjTTM52f1Rht25t3MWf24rYld6iMVhGMTcJ5J8QMfiTRszReTgKfldpyKpGaLF1QyhJtzYx+xsXe9V73fC6E+B4o/pyjsuxVf8i/qmtkHpc2aDTCZ6STMcfdmPS/cRnjvSkJ7J8b8Nyc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=mediatek.com; spf=pass smtp.mailfrom=mediatek.com; dkim=pass (1024-bit key) header.d=mediatek.com header.i=@mediatek.com header.b=L9rw0n4R; arc=none smtp.client-ip=60.244.123.138
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=mediatek.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=mediatek.com
-X-UUID: 7843c3f2f83e11f085319dbc3099e8fb-20260123
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=mediatek.com; s=dk;
-	h=Content-Type:Content-Transfer-Encoding:MIME-Version:Message-ID:Date:Subject:CC:To:From; bh=I63zytWXS2xebVsEuvN+V7iX4l5JRzMVnP73vhaBndE=;
-	b=L9rw0n4RkCgnUfKbVbubJZk/Tou3A0Wd7CtMeGd37hsQ9fGZNYE6b1Qlq/AA6LZEpODACAvIc9W1Uy0qxIZZKSklrudwEURoHaUfd1LMd6qiZ3bG928g941EM8CKpQm5aXupN108Dx1XEgfLnJpkrxuDAmXwBz/pNMuT4YlJICQ=;
-X-CID-P-RULE: Release_Ham
-X-CID-O-INFO: VERSION:1.3.11,REQID:01260727-0bc8-49c1-bb46-a7b5bc0d3980,IP:0,U
-	RL:0,TC:0,Content:0,EDM:-25,RT:0,SF:0,FILE:0,BULK:0,RULE:Release_Ham,ACTIO
-	N:release,TS:-25
-X-CID-META: VersionHash:89c9d04,CLOUDID:74dedfef-16bd-4243-b4ca-b08ca08ab1d8,B
-	ulkID:nil,BulkQuantity:0,Recheck:0,SF:102|836|888|898,TC:-5,Content:0|15|5
-	0,EDM:2,IP:nil,URL:0,File:130,RT:0,Bulk:nil,QS:nil,BEC:-1,COL:0,OSI:0,OSA:
-	0,AV:0,LES:1,SPR:NO,DKR:0,DKP:0,BRR:0,BRE:0,ARC:0
-X-CID-BVR: 2,SSN|SDN
-X-CID-BAS: 2,SSN|SDN,0,_
-X-CID-FACTOR: TF_CID_SPAM_SNR
-X-CID-RHF: D41D8CD98F00B204E9800998ECF8427E
-X-UUID: 7843c3f2f83e11f085319dbc3099e8fb-20260123
-Received: from mtkmbs13n2.mediatek.inc [(172.21.101.108)] by mailgw01.mediatek.com
-	(envelope-from <ryder.lee@mediatek.com>)
-	(Generic MTA with TLSv1.2 ECDHE-RSA-AES256-GCM-SHA384 256/256)
-	with ESMTP id 431252351; Fri, 23 Jan 2026 17:32:43 +0800
-Received: from mtkmbs11n2.mediatek.inc (172.21.101.187) by
- MTKMBS14N1.mediatek.inc (172.21.101.75) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.29; Fri, 23 Jan 2026 17:32:42 +0800
-Received: from mussdccf250.eus.mediatek.inc (10.73.250.250) by
- mtkmbs11n2.mediatek.inc (172.21.101.73) with Microsoft SMTP Server id
- 15.2.2562.29 via Frontend Transport; Fri, 23 Jan 2026 17:32:41 +0800
-From: Ryder Lee <ryder.lee@mediatek.com>
-To: Felix Fietkau <nbd@nbd.name>
-CC: <linux-wireless@vger.kernel.org>, <linux-mediatek@lists.infradead.org>,
-	Allen Ye <allen.ye@mediatek.com>, Ryder Lee <ryder.lee@mediatek.com>
-Subject: [PATCH v1] wifi: mt76: fix backoff fields and max_power calculation
-Date: Fri, 23 Jan 2026 01:32:34 -0800
-Message-ID: <e92213f793f9cb9f509c26205e7ecb2be6ce77aa.1769156922.git.ryder.lee@mediatek.com>
-X-Mailer: git-send-email 2.45.2
+	s=arc-20240116; t=1769168385; c=relaxed/simple;
+	bh=J8pZ+ClusBGsRK+1ntie2Ynm5vfPef1pFOykEq3rn9A=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=pMuKoX+nMZPP3p5AFvn+GIxTXOcovYcSnzQwMB9cZrUQsEpkeXrzEITmYfDgvshX8R/QamBHFLBSi5ZkdZp2cli2MYWs/W0VzVZcZKvufycARity5jmG8MLMe89Ehp0KawqJtg0ApU48yRRzZIdMiQ3BDKkKYqLALZkBbxSLtWU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=MkFFqzxq; dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b=DiI3N4w3; arc=none smtp.client-ip=205.220.168.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
+Received: from pps.filterd (m0279862.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 60N6rjcL1327308
+	for <linux-wireless@vger.kernel.org>; Fri, 23 Jan 2026 11:39:37 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
+	cc:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
+	kjPFUtx39Ba+K/bbVp5woEFBUQwLmQgG9crjOGxsSVw=; b=MkFFqzxqTFdn58vM
+	Vvu0JJEJBA1un17aDZnkt/955Etg/U8OFsERG3Gpagq8muALuExZ+R8xg77+5RQg
+	ng+3TbF4ZEAmBJYIcZuwaxN8yth+LkMCbRzKIcDJ0SC7iHBO77CGr1WIArIvooxX
+	9FU1MeOJB/8/aGWNOeLYevPqrL1ZvdjHJrMBy5ohnwznNJAPJCx1KZFt6PTXsa4z
+	/iaYlrPc3tirD++dOlts7uk5O1+T921GEcJzL1DdJnZGBDANmkYyMripLDvYyDx0
+	0WulaKy67EAy62w52OsfGK0nLvdy1cwXxjviDmWXrMXccLCd8z8anIJJwieUQqDn
+	zNGy4g==
+Received: from mail-pl1-f198.google.com (mail-pl1-f198.google.com [209.85.214.198])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4bv44c94tt-1
+	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
+	for <linux-wireless@vger.kernel.org>; Fri, 23 Jan 2026 11:39:37 +0000 (GMT)
+Received: by mail-pl1-f198.google.com with SMTP id d9443c01a7336-2a08cbeb87eso22279935ad.3
+        for <linux-wireless@vger.kernel.org>; Fri, 23 Jan 2026 03:39:37 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=oss.qualcomm.com; s=google; t=1769168376; x=1769773176; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=kjPFUtx39Ba+K/bbVp5woEFBUQwLmQgG9crjOGxsSVw=;
+        b=DiI3N4w3xby2/3R1KKqeFi/oMHrJyFxqiE8Jkv41o0B+aGwlGS6oaxZ7CxOWBD4N0B
+         bLRmK46qepDfI3Cwrf+X73eJX3tH3KI0nG8x0h90+6I5Gkm1FZhdY9wJ+GmSCeIUb123
+         XaVprcyS7UdykS6rU597NLmCtSoEVp/t3dW7nVOXF2OP9D+Lkh3gpBGy4aH6s5wR+e/O
+         P7aSHtCM1SGN/AV/pJQiJ/DuPXgSpX8dvayIQ5n8lnwULHymOgcxrAYQmf7423SdrkbT
+         ZOBF5wtsOHhPDuGwe7uQOIXf9g1VnSajPgfQCdd2So3H5IxLslMmWZpU7zPz4XFq/ejm
+         RD+Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1769168376; x=1769773176;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=kjPFUtx39Ba+K/bbVp5woEFBUQwLmQgG9crjOGxsSVw=;
+        b=ABxpfi0Jj1dyEC6tIdXr/0nd5iUNp/uvCF2Zy7ogv5GpyU/v9u6I24zWkIWHPgShJb
+         PRvBZkAOgduvNfY5QNijh47kFuQ1RyK3ssUxA1g+H0Bm12F7BXxxPAXxYVHgTZa5ybhP
+         CyBr/8KnFFe8bSCNldNUTO2qIxojUQWh+nhPXBipvtjcc1+pBgZpyciVSpLZjfMijUJO
+         Idyu4uJ0SiViCUOh+BREQnjRmJdF4xpDA4hqFoaCXQPD1dVYkwuUm5lJrjjphpqCEwXs
+         nXjeFSmVzbJ0Vpp9eq0aw+A5HJHNVehsGekLigTWfNCoNr6cnH6xrA3ukY291yb+CZK8
+         iYkQ==
+X-Gm-Message-State: AOJu0YzMGGzQtj+mbIePkgjJGjLhlP5/XfzBUO1zxgoPy9KReLn80UZR
+	LAs5/8HB1nqI208aEtXP2z/cs7av3PPAHlbzfxWerHX7nMALNPOMnHYqrHav/XjGHlFFTRq1bC0
+	qDqB6MIOicoW4v80C9UnUBg59uONSItIYKHOBKUD9QJdw3/6oyJ0j6j+O4qPE0UAyNwvdABWzIa
+	Uukw==
+X-Gm-Gg: AZuq6aILxh2NyVzHLmIi8EBsc3BO59R94ATs0GEYRAAzsv2xgRZ9PeSjUjcTykNBMsG
+	kOfUnE+INpVD9q4Not03kJt8/hqShDldm1w5ARjLy3QaiFE6jcGKqM/naWM1CXOibK2WTEtu2Cx
+	5Y5GV4qqdZd3ERIYXtVzKCT+MSg1wZrtwVMCmdNQZU8nVNMbZS96stL/QrEyV7swe+vUt52GgDO
+	eYX1VBXTeDEr+1ZSlZmkRc9OC8hJIx312Szt7XILTLRg0lIqgzkvxhKpeNoI9lc2w9bQKQBZpyO
+	S1z0ftLAC4l3DgpyfBbuTO0lMR34ghgL265ONgNTqa896btaPGt+seJQD3lsM7lH6796M6YjLtu
+	3lKdFS0sZ3wDh8AkrVwmTwmdH1oPWeYtzQLk=
+X-Received: by 2002:a17:903:41cb:b0:2a7:aa9e:fb40 with SMTP id d9443c01a7336-2a7fe73fcfamr24029045ad.45.1769168376467;
+        Fri, 23 Jan 2026 03:39:36 -0800 (PST)
+X-Received: by 2002:a17:903:41cb:b0:2a7:aa9e:fb40 with SMTP id d9443c01a7336-2a7fe73fcfamr24028925ad.45.1769168375997;
+        Fri, 23 Jan 2026 03:39:35 -0800 (PST)
+Received: from [10.151.40.229] ([202.46.23.19])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2a802dcd776sm18122495ad.26.2026.01.23.03.39.34
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Fri, 23 Jan 2026 03:39:35 -0800 (PST)
+Message-ID: <215985b3-e951-415e-b091-3306fa08036c@oss.qualcomm.com>
+Date: Fri, 23 Jan 2026 17:08:30 +0530
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-MTK: N
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH wireless-next] wifi: mac80211: Fix AAD/Nonce computation
+ for management frames with MLO
+To: Johannes Berg <johannes@sipsolutions.net>
+Cc: linux-wireless@vger.kernel.org, Rohan Dutta <quic_drohan@quicinc.com>
+References: <20251211123612.2470117-1-sai.magam@oss.qualcomm.com>
+ <5ff51b07b69284ca9b477dfcbe08890167c7ed14.camel@sipsolutions.net>
+ <0847363a-055a-4d6f-a9ac-b62f275e02ec@oss.qualcomm.com>
+ <d0798e0f62405687c57eff59767ac77b25c1f330.camel@sipsolutions.net>
+Content-Language: en-US
+From: Sai Pratyusha Magam <sai.magam@oss.qualcomm.com>
+In-Reply-To: <d0798e0f62405687c57eff59767ac77b25c1f330.camel@sipsolutions.net>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Authority-Analysis: v=2.4 cv=TLdIilla c=1 sm=1 tr=0 ts=69735df9 cx=c_pps
+ a=MTSHoo12Qbhz2p7MsH1ifg==:117 a=j4ogTh8yFefVWWEFDRgCtg==:17
+ a=IkcTkHD0fZMA:10 a=vUbySO9Y5rIA:10 a=s4-Qcg_JpJYA:10
+ a=VkNPw1HP01LnGYTKEx00:22 a=stkexhm8AAAA:8 a=aFT3MlpeULJ1tTDsbxUA:9
+ a=QEXdDO2ut3YA:10 a=GvdueXVYPmCkWapjIL-Q:22 a=pIW3pCRaVxJDc-hWtpF8:22
+X-Proofpoint-GUID: bXjX_tW07DXCTTPmJd_kNecnjXXpzgAi
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwMTIzMDA5NCBTYWx0ZWRfXzCkWdyL7yKRU
+ uVX4vdEEoRJujn74lHBBLyUhuRqmJnfVfbkxANxZxIJSBiH9kc3RvHl1XL81uDCO+lNtG5yjOTd
+ aLYApquPMmcAVWuYEmvep0kqUMu/dRtgTIrBvXSyHvvBb6BbCD8Is8N4/ZqrtWXRP878oVm24cQ
+ RgKJcp/BmQ1Ic0pP6/R9FtY/XiSkeIev9s4gl4CLHBtfW4xB6C7dcBgOcHaTdALxE+TXBO6pJ+q
+ EbS4GYNajRgnfwVKg1m8BLiUBsRtA9ibpqT+XQ6het3UGKwmGy9/hbI+6tZubSrLjxm9UUMc5nV
+ oIqK7STF0zT/N+HVQCtgHyHK//FHpHgZ0NY3nLHv7tuOxi94OUeSQJ+p1bAUitvutbc0z2tFoUS
+ D5YE8VbNh+Pr8py/qjwAHUReKkXI10PpafxhMkA7uiJUkA8BTxDFDmqMvL6y2ZUerGQJe5uU7EX
+ epa/aMWlTllNXzj7C4A==
+X-Proofpoint-ORIG-GUID: bXjX_tW07DXCTTPmJd_kNecnjXXpzgAi
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.20,FMLib:17.12.100.49
+ definitions=2026-01-23_02,2026-01-22_02,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ adultscore=0 suspectscore=0 phishscore=0 impostorscore=0 spamscore=0
+ bulkscore=0 priorityscore=1501 clxscore=1015 malwarescore=0
+ lowpriorityscore=0 classifier=typeunknown authscore=0 authtc= authcc=
+ route=outbound adjust=0 reason=mlx scancount=1 engine=8.22.0-2601150000
+ definitions=main-2601230094
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.66 / 15.00];
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MID_CONTAINS_FROM(1.00)[];
-	R_MISSING_CHARSET(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[mediatek.com,quarantine];
-	R_DKIM_ALLOW(-0.20)[mediatek.com:s=dk];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	DMARC_POLICY_ALLOW(-0.50)[qualcomm.com,reject];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_DKIM_ALLOW(-0.20)[qualcomm.com:s=qcppdkim1,oss.qualcomm.com:s=google];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	MIME_TRACE(0.00)[0:+];
-	TO_DN_SOME(0.00)[];
+	DKIM_TRACE(0.00)[qualcomm.com:+,oss.qualcomm.com:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-31112-lists,linux-wireless=lfdr.de];
-	DKIM_TRACE(0.00)[mediatek.com:+];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	RCPT_COUNT_FIVE(0.00)[5];
-	FROM_NEQ_ENVFROM(0.00)[ryder.lee@mediatek.com,linux-wireless@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
+	TAGGED_FROM(0.00)[bounces-31113-lists,linux-wireless=lfdr.de];
+	RCPT_COUNT_THREE(0.00)[3];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[qualcomm.com:dkim,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,oss.qualcomm.com:mid,oss.qualcomm.com:dkim,sipsolutions.net:url];
+	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[sai.magam@oss.qualcomm.com,linux-wireless@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
 	NEURAL_HAM(-0.00)[-0.998];
-	RCVD_COUNT_FIVE(0.00)[6];
 	TAGGED_RCPT(0.00)[linux-wireless];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 87F147382F
+	MID_RHS_MATCH_FROM(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	RCVD_COUNT_SEVEN(0.00)[7]
+X-Rspamd-Queue-Id: 3F47275554
 X-Rspamd-Action: no action
 
-From: Allen Ye <allen.ye@mediatek.com>
 
-The maximum power value may exist in data or backoff field.
-To reponse the correct value of txpower, mt76 should also consider
-these values in sku table.
 
-Fixes: b05ab4be9fd7 (wifi: mt76: mt7915: add bf backoff limit table support)
-Signed-off-by: Allen Ye <allen.ye@mediatek.com>
-Signed-off-by: Ryder Lee <ryder.lee@mediatek.com>
----
-v1 - add "wifi:" prefix into subject
----
- drivers/net/wireless/mediatek/mt76/eeprom.c | 171 +++++++++++++-------
- drivers/net/wireless/mediatek/mt76/mt76.h   |   1 -
- 2 files changed, 113 insertions(+), 59 deletions(-)
+On 1/14/2026 10:34 PM, Johannes Berg wrote:
+> On Fri, 2026-01-09 at 15:33 +0530, Sai Pratyusha Magam wrote:
+>>
+>> Hi Johannes, I agree that by maintaining a local storage of the A1/A2/A3
+>> link addresses before mac80211 translates them to the MLD addresses
+>> would make things easy, i.e, they can directly be used for the
+>> computations in the SW crypto. While this works well for the receive
+>> path, on the Transmit path, mac80211 would still receive management
+>> frames from hostapd with the MLD addresses, which again cannot be used
+>> directly for the AAD/Nonce computations.
+> 
+> Fair point.
+> 
+> Thinking out loud: First, I think we can afford to separate TX and RX
+> discussions.
+> 
+> For RX, I think we agree that it could be done much simpler by
+> (conditionally, when we do translation in mac80211) keeping the pre-
+> translation addresses, and passing them into the SW crypto. If not set,
+> use the frame itself.
+Agree that on the RX, crypto computations can use the copy of 
+untranslated storage of addresses
 
-diff --git a/drivers/net/wireless/mediatek/mt76/eeprom.c b/drivers/net/wireless/mediatek/mt76/eeprom.c
-index 573400d57..3e182c8e0 100644
---- a/drivers/net/wireless/mediatek/mt76/eeprom.c
-+++ b/drivers/net/wireless/mediatek/mt76/eeprom.c
-@@ -9,6 +9,13 @@
- #include <linux/nvmem-consumer.h>
- #include <linux/etherdevice.h>
- #include "mt76.h"
-+#include "mt76_connac.h"
-+
-+enum mt76_sku_type {
-+	MT76_SKU_RATE,
-+	MT76_SKU_BACKOFF,
-+	MT76_SKU_BACKOFF_BF_OFFSET,
-+};
- 
- static int mt76_get_of_eeprom_data(struct mt76_dev *dev, void *eep, int len)
- {
-@@ -292,7 +299,6 @@ mt76_find_channel_node(struct device_node *np, struct ieee80211_channel *chan)
- }
- EXPORT_SYMBOL_GPL(mt76_find_channel_node);
- 
--
- static s8
- mt76_get_txs_delta(struct device_node *np, u8 nss)
- {
-@@ -306,9 +312,24 @@ mt76_get_txs_delta(struct device_node *np, u8 nss)
- 	return be32_to_cpu(val[nss - 1]);
- }
- 
-+static inline u8 mt76_backoff_n_chains(struct mt76_dev *dev, u8 idx)
-+{
-+	/* 0:1T1S, 1:2T1S, ..., 14:5T5S */
-+	static const u8 connac3_table[] =
-+		{1, 2, 3, 4, 5, 2, 3, 4, 5, 3, 4, 5, 4, 5, 5};
-+	static const u8 connac2_table[] =
-+		{1, 2, 3, 4, 2, 3, 4, 3, 4, 4, 0, 0, 0, 0, 0};
-+
-+	if (idx < 0 || idx >= ARRAY_SIZE(connac3_table))
-+		return 0;
-+
-+	return is_mt799x(dev) ? connac3_table[idx] : connac2_table[idx];
-+}
-+
- static void
--mt76_apply_array_limit(s8 *pwr, size_t pwr_len, const s8 *data,
--		       s8 target_power, s8 nss_delta, s8 *max_power)
-+mt76_apply_array_limit(struct mt76_dev *dev, s8 *pwr, size_t pwr_len,
-+		       const s8 *data, s8 target_power, s8 nss_delta,
-+		       s8 *max_power, int n_chains, enum mt76_sku_type type)
- {
- 	int i;
- 
-@@ -316,18 +337,50 @@ mt76_apply_array_limit(s8 *pwr, size_t pwr_len, const s8 *data,
- 		return;
- 
- 	for (i = 0; i < pwr_len; i++) {
--		pwr[i] = min_t(s8, target_power, data[i] + nss_delta);
-+		s8 backoff_delta, delta = mt76_tx_power_path_delta(n_chains);
-+		int backoff_n_chains = 0;
-+
-+		switch (type) {
-+		case MT76_SKU_RATE:
-+			pwr[i] = min_t(s8, target_power, data[i] + nss_delta);
-+			break;
-+		case MT76_SKU_BACKOFF:
-+			backoff_n_chains = mt76_backoff_n_chains(dev, i);
-+			backoff_delta = mt76_tx_power_path_delta(backoff_n_chains);
-+			pwr[i] = min_t(s8, target_power + delta - backoff_delta,
-+				       data[i] + nss_delta);
-+			break;
-+		case MT76_SKU_BACKOFF_BF_OFFSET:
-+			backoff_n_chains = mt76_backoff_n_chains(dev, i + 1);
-+			backoff_delta = mt76_tx_power_path_delta(backoff_n_chains);
-+			pwr[i] = min_t(s8, target_power + delta - backoff_delta,
-+				       data[i] + nss_delta);
-+			break;
-+		default:
-+			return;
-+		}
-+
-+		/* used for padding, doesn't need to be considered */
-+		if (data[i] >= S8_MAX - 1)
-+			continue;
-+
-+		/* only consider backoff value for the configured chain number */
-+		if (type != MT76_SKU_RATE && n_chains != backoff_n_chains)
-+			continue;
-+
- 		*max_power = max(*max_power, pwr[i]);
- 	}
- }
- 
- static void
--mt76_apply_multi_array_limit(s8 *pwr, size_t pwr_len, s8 pwr_num,
--			     const s8 *data, size_t len, s8 target_power,
--			     s8 nss_delta)
-+mt76_apply_multi_array_limit(struct mt76_dev *dev, s8 *pwr, size_t pwr_len,
-+			     s8 pwr_num, const s8 *data, size_t len,
-+			     s8 target_power, s8 nss_delta, s8 *max_power,
-+			     int n_chains, enum mt76_sku_type type)
- {
- 	int i, cur;
--	s8 max_power = -128;
-+
-+#define connac2_backoff_ru_idx	2
- 
- 	if (!data)
- 		return;
-@@ -337,8 +390,13 @@ mt76_apply_multi_array_limit(s8 *pwr, size_t pwr_len, s8 pwr_num,
- 		if (len < pwr_len + 1)
- 			break;
- 
--		mt76_apply_array_limit(pwr + pwr_len * i, pwr_len, data + 1,
--				       target_power, nss_delta, &max_power);
-+		if (!is_mt799x(dev) && type == MT76_SKU_BACKOFF &&
-+		    i > connac2_backoff_ru_idx)
-+			type = MT76_SKU_BACKOFF_BF_OFFSET;
-+
-+		mt76_apply_array_limit(dev, pwr + pwr_len * i, pwr_len, data + 1,
-+				       target_power, nss_delta, max_power,
-+				       n_chains, type);
- 		if (--cur > 0)
- 			continue;
- 
-@@ -360,18 +418,11 @@ s8 mt76_get_rate_power_limits(struct mt76_phy *phy,
- 	struct device_node *np;
- 	const s8 *val;
- 	char name[16];
--	u32 mcs_rates = dev->drv->mcs_rates;
--	u32 ru_rates = ARRAY_SIZE(dest->ru[0]);
- 	char band;
- 	size_t len;
--	s8 max_power = 0;
--	s8 max_power_backoff = -127;
-+	s8 max_power = -127;
- 	s8 txs_delta;
- 	int n_chains = hweight16(phy->chainmask);
--	s8 target_power_combine = target_power + mt76_tx_power_path_delta(n_chains);
--
--	if (!mcs_rates)
--		mcs_rates = 10;
- 
- 	memset(dest, target_power, sizeof(*dest) - sizeof(dest->path));
- 	memset(&dest->path, 0, sizeof(dest->path));
-@@ -408,47 +459,51 @@ s8 mt76_get_rate_power_limits(struct mt76_phy *phy,
- 
- 	txs_delta = mt76_get_txs_delta(np, hweight16(phy->chainmask));
- 
-+#define __apply_array_limit(arr, type)						\
-+	mt76_apply_array_limit(dev, (arr), ARRAY_SIZE(arr), val, target_power,	\
-+			       txs_delta, &max_power, n_chains, type)
-+
-+#define __apply_multi_array_limit(arr, type)					\
-+	mt76_apply_multi_array_limit(dev, (arr)[0], ARRAY_SIZE((arr)[0]),	\
-+				     ARRAY_SIZE(arr), val, len, target_power,	\
-+				     txs_delta, &max_power, n_chains, type)
-+
- 	val = mt76_get_of_array_s8(np, "rates-cck", &len, ARRAY_SIZE(dest->cck));
--	mt76_apply_array_limit(dest->cck, ARRAY_SIZE(dest->cck), val,
--			       target_power, txs_delta, &max_power);
--
--	val = mt76_get_of_array_s8(np, "rates-ofdm",
--				   &len, ARRAY_SIZE(dest->ofdm));
--	mt76_apply_array_limit(dest->ofdm, ARRAY_SIZE(dest->ofdm), val,
--			       target_power, txs_delta, &max_power);
--
--	val = mt76_get_of_array_s8(np, "rates-mcs", &len, mcs_rates + 1);
--	mt76_apply_multi_array_limit(dest->mcs[0], ARRAY_SIZE(dest->mcs[0]),
--				     ARRAY_SIZE(dest->mcs), val, len,
--				     target_power, txs_delta);
--
--	val = mt76_get_of_array_s8(np, "rates-ru", &len, ru_rates + 1);
--	mt76_apply_multi_array_limit(dest->ru[0], ARRAY_SIZE(dest->ru[0]),
--				     ARRAY_SIZE(dest->ru), val, len,
--				     target_power, txs_delta);
--
--	max_power_backoff = max_power;
--	val = mt76_get_of_array_s8(np, "paths-cck", &len, ARRAY_SIZE(dest->path.cck));
--	mt76_apply_array_limit(dest->path.cck, ARRAY_SIZE(dest->path.cck), val,
--			       target_power_combine, txs_delta, &max_power_backoff);
--
--	val = mt76_get_of_array_s8(np, "paths-ofdm", &len, ARRAY_SIZE(dest->path.ofdm));
--	mt76_apply_array_limit(dest->path.ofdm, ARRAY_SIZE(dest->path.ofdm), val,
--			       target_power_combine, txs_delta, &max_power_backoff);
--
--	val = mt76_get_of_array_s8(np, "paths-ofdm-bf", &len, ARRAY_SIZE(dest->path.ofdm_bf));
--	mt76_apply_array_limit(dest->path.ofdm_bf, ARRAY_SIZE(dest->path.ofdm_bf), val,
--			       target_power_combine, txs_delta, &max_power_backoff);
--
--	val = mt76_get_of_array_s8(np, "paths-ru", &len, ARRAY_SIZE(dest->path.ru[0]) + 1);
--	mt76_apply_multi_array_limit(dest->path.ru[0], ARRAY_SIZE(dest->path.ru[0]),
--				     ARRAY_SIZE(dest->path.ru), val, len,
--				     target_power_combine, txs_delta);
--
--	val = mt76_get_of_array_s8(np, "paths-ru-bf", &len, ARRAY_SIZE(dest->path.ru_bf[0]) + 1);
--	mt76_apply_multi_array_limit(dest->path.ru_bf[0], ARRAY_SIZE(dest->path.ru_bf[0]),
--				     ARRAY_SIZE(dest->path.ru_bf), val, len,
--				     target_power_combine, txs_delta);
-+	__apply_array_limit(dest->cck, MT76_SKU_RATE);
-+
-+	val = mt76_get_of_array_s8(np, "rates-ofdm", &len, ARRAY_SIZE(dest->ofdm));
-+	__apply_array_limit(dest->ofdm, MT76_SKU_RATE);
-+
-+	val = mt76_get_of_array_s8(np, "rates-mcs", &len,
-+				   ARRAY_SIZE(dest->mcs[0]) + 1);
-+	__apply_multi_array_limit(dest->mcs, MT76_SKU_RATE);
-+
-+	val = mt76_get_of_array_s8(np, "rates-ru", &len,
-+				   ARRAY_SIZE(dest->ru[0]) + 1);
-+	__apply_multi_array_limit(dest->ru, MT76_SKU_RATE);
-+
-+	val = mt76_get_of_array_s8(np, "paths-cck", &len,
-+				   ARRAY_SIZE(dest->path.cck));
-+	__apply_array_limit(dest->path.cck, MT76_SKU_BACKOFF);
-+
-+	val = mt76_get_of_array_s8(np, "paths-ofdm", &len,
-+				   ARRAY_SIZE(dest->path.ofdm));
-+	__apply_array_limit(dest->path.ofdm, MT76_SKU_BACKOFF);
-+
-+	val = mt76_get_of_array_s8(np, "paths-ofdm-bf", &len,
-+				   ARRAY_SIZE(dest->path.ofdm_bf));
-+	__apply_array_limit(dest->path.ofdm_bf, MT76_SKU_BACKOFF_BF_OFFSET);
-+
-+	val = mt76_get_of_array_s8(np, "paths-ru", &len,
-+				   ARRAY_SIZE(dest->path.ru[0]) + 1);
-+	__apply_multi_array_limit(dest->path.ru, MT76_SKU_BACKOFF);
-+
-+	val = mt76_get_of_array_s8(np, "paths-ru-bf", &len,
-+				   ARRAY_SIZE(dest->path.ru_bf[0]) + 1);
-+	__apply_multi_array_limit(dest->path.ru_bf, MT76_SKU_BACKOFF);
-+
-+#undef __apply_array_limit
-+#undef __apply_multi_array_limit
- 
- 	return max_power;
- }
-diff --git a/drivers/net/wireless/mediatek/mt76/mt76.h b/drivers/net/wireless/mediatek/mt76/mt76.h
-index d05e83ea1..32876eab2 100644
---- a/drivers/net/wireless/mediatek/mt76/mt76.h
-+++ b/drivers/net/wireless/mediatek/mt76/mt76.h
-@@ -540,7 +540,6 @@ struct mt76_driver_ops {
- 	u32 survey_flags;
- 	u16 txwi_size;
- 	u16 token_size;
--	u8 mcs_rates;
- 
- 	unsigned int link_data_size;
- 
--- 
-2.45.2
+> 
+> Secondly, this all seems only relevant to hwsim. Do you think otherwise?
+> Few drivers seem to use IEEE80211_KEY_FLAG_SW_MGMT_TX, so I think
+> especially with MLO we can say that you simply _have_ to support TX
+> encryption offload for EPPKE [1].
+>
+True, all of this is for the hwsim use case that uses the mac80211 based 
+software crypto.
+
+
+> Obviously we still want to have hwsim, but if this really is only for
+> that then I feel we can still fairly easily implement TX encryption
+> "offload"? After all, in RX we make decryption optional for every single
+> frame - so if the device/driver didn't decrypt/validate the frame then
+> mac80211 will. We also pass the key to the driver for each individual
+> packet (struct ieee80211_tx_info::control::key). So doing the encryption
+> in hwsim would be really simple if we export a function akin to
+> ieee80211_tx_h_encrypt() that works on a single skb (which has the key
+> pointer), sets up a single-frame struct ieee80211_tx_data and returns
+> the skb from that [2].
+>
+"Implement TX encryption offload" - As I understand, your guidance is
+towards implementing the Tx encryption in the mac80211_hwsim driver
+Can you please kindly clarify if the understanding is correct?
+In order to let mac80211_hwsim driver do the Tx encryption:
+(1)Add support for key install to hwsim driver, i.e, 
+mac80211_hwsim_ops::add_key, so mac80211 knows that the driver is going 
+to do the encryption.
+(2)A function similar to ieee80211_tx_h_encrypt() in the hwsim driver
+that can do the actual encryption. Since mgmt frames need to use link 
+addresses for crypto computations, possibly I could call 
+ieee80211_encrypt_tx_skb() [2] after address translation to link 
+addresses in mac80211_hwsim_tx() and since data frames need to use the 
+MLD addresses, ieee80211_encrypt_tx_skb() can be called before the 
+address translation to link addresses.
+
+
+> While this may sound like a bit more work overall, I'm not even
+> convinced that it's _that_ much more, and I it would also align hwsim
+> more with how modern hardware works today anyway.
+> 
+> Any thoughts?
+> 
+> johannes
+> 
+> [1] and, it seems, correct unicast action frame encryption?
+> [2] https://p.sipsolutions.net/154c5c86af7765fd.txt
 
 
