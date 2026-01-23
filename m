@@ -1,89 +1,107 @@
-Return-Path: <linux-wireless+bounces-31103-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-31104-lists+linux-wireless=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id oDfyHP//cmmrrgAAu9opvQ
-	(envelope-from <linux-wireless+bounces-31103-lists+linux-wireless=lfdr.de@vger.kernel.org>)
-	for <lists+linux-wireless@lfdr.de>; Fri, 23 Jan 2026 05:58:39 +0100
+	id SLXuDsAZc2mwsAAAu9opvQ
+	(envelope-from <linux-wireless+bounces-31104-lists+linux-wireless=lfdr.de@vger.kernel.org>)
+	for <lists+linux-wireless@lfdr.de>; Fri, 23 Jan 2026 07:48:32 +0100
 X-Original-To: lists+linux-wireless@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id EDF20705A3
-	for <lists+linux-wireless@lfdr.de>; Fri, 23 Jan 2026 05:58:38 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id 55B927124A
+	for <lists+linux-wireless@lfdr.de>; Fri, 23 Jan 2026 07:48:31 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 60877300831C
-	for <lists+linux-wireless@lfdr.de>; Fri, 23 Jan 2026 04:58:38 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id C853D3003BD3
+	for <lists+linux-wireless@lfdr.de>; Fri, 23 Jan 2026 06:48:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4A33C3933F5;
-	Fri, 23 Jan 2026 04:58:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CE72E1D5AD4;
+	Fri, 23 Jan 2026 06:48:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=u-northwestern-edu.20230601.gappssmtp.com header.i=@u-northwestern-edu.20230601.gappssmtp.com header.b="LpNVEgpU"
+	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="B+VqoB/E";
+	dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b="kSxEwSrE"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-oo1-f50.google.com (mail-oo1-f50.google.com [209.85.161.50])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 25D4D314D23
-	for <linux-wireless@vger.kernel.org>; Fri, 23 Jan 2026 04:58:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.161.50
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 814A61EA84
+	for <linux-wireless@vger.kernel.org>; Fri, 23 Jan 2026 06:48:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769144316; cv=none; b=JsFbAireFaCCYqZTG3VTrTMJjpCRFxfPRQ9CbG7ZO1DwLmeHxrXmXsU4X3wGH+5jmv7cOZRpFfPlriK1tkYnWzso9MtMcRTrjANv/EGD7w293r7V15gpFDqiJ61+i0fiD4Z1peMJ7KMaEIvXW1Ca8FbviuekZgB3pX3Az0SoyLc=
+	t=1769150907; cv=none; b=G5hjYk3W5w4mQfQib/yOmVGuV/4R9MwUT4ahOYovFTzoH41hUPyvUTTBlBq9IdNLKGjz9bYN1pj1cZDVn1MVmqqD1CHz6QT1hGtuaHUQxSJz7biyD878zcNKl1ZlBF+dyVmguwh83/707nJLZinzUxSB8ygIQyc4aKPQVHn7BzY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769144316; c=relaxed/simple;
-	bh=lYsrQ1EJwEWL/1e/oTQamNHkx7ztcxzCi6MRAQrIUXw=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=kSR//6UPzIgZPEboX4cdqO091h1c1zhi4aTya6BtRqiL2yqnSloB3iVh8PNyuFU+Yp2+XhaR/linWQHndLDdwoMoFw74wW1ivhHyAHFLDmJ34NcFg+5rtQL8okXVFPMZyIRN661T1LTBBbtWi4lTMOHgJYM7wgLD3pdsvhx7Rf4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=u.northwestern.edu; spf=pass smtp.mailfrom=u.northwestern.edu; dkim=pass (2048-bit key) header.d=u-northwestern-edu.20230601.gappssmtp.com header.i=@u-northwestern-edu.20230601.gappssmtp.com header.b=LpNVEgpU; arc=none smtp.client-ip=209.85.161.50
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=u.northwestern.edu
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=u.northwestern.edu
-Received: by mail-oo1-f50.google.com with SMTP id 006d021491bc7-662b5db048cso504627eaf.0
-        for <linux-wireless@vger.kernel.org>; Thu, 22 Jan 2026 20:58:29 -0800 (PST)
+	s=arc-20240116; t=1769150907; c=relaxed/simple;
+	bh=Fxa8Zgq8JCzG3cfbotu1Yi2IsXJIYKg4hSlc7sjxzsE=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=Nz+/Ap2RvPVtXb/6ocDqWSiXFiFNkU8H9lZ818NTpv9rCWdaQ18kRxR1zlVF/6mn73uTWEO0rXd4PJSlWRpwNHPcq9jyCzNzOJyn7B8FwMpRw3xztGOre6iqqO61SE5VOM5SJ7XnJNWhLbrMci+ygk/qmyNhHatPk3BJqqdvSpQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=B+VqoB/E; dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b=kSxEwSrE; arc=none smtp.client-ip=205.220.168.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
+Received: from pps.filterd (m0279863.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 60N65gv43504014
+	for <linux-wireless@vger.kernel.org>; Fri, 23 Jan 2026 06:48:26 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
+	cc:content-transfer-encoding:date:from:message-id:mime-version
+	:subject:to; s=qcppdkim1; bh=/54UclkpqOwxDHYahcS9J1UHOq2QTEmzbvl
+	JzYpgHaU=; b=B+VqoB/EAmTTAdLOc4UkMdAx/0avu58LVIOEQqZR88LwfQsA1pb
+	iWFqo0xmeuI61Dnvlj5uc68Rm3dw43s1UlDoMbE8Ebw7JtrGJMx1oQunaooBiInD
+	Fq024GP+dCGcih0KYdC/6YmCrFAtY7AYO1GPf0D11wt4gxN9KGcVaUHLeCeUmOoE
+	STSf+aRdz+Z1YDi823kYJ/e0IOa15TANPe3ysCs7x5viIrY3w2HeIbEQT+ltZ0SI
+	32KsloQc9PFNl27GjV90n82cKFMQ4uUmRn2JoQYnycOlVCqHuq8SkXWRw4vemBM/
+	E8DdnDM1OP/arrDLntwXq6wVKA49xlLP6PA==
+Received: from mail-dl1-f70.google.com (mail-dl1-f70.google.com [74.125.82.70])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4bus9821kp-1
+	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
+	for <linux-wireless@vger.kernel.org>; Fri, 23 Jan 2026 06:48:25 +0000 (GMT)
+Received: by mail-dl1-f70.google.com with SMTP id a92af1059eb24-12338d13f2cso2278597c88.1
+        for <linux-wireless@vger.kernel.org>; Thu, 22 Jan 2026 22:48:25 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=u-northwestern-edu.20230601.gappssmtp.com; s=20230601; t=1769144307; x=1769749107; darn=vger.kernel.org;
+        d=oss.qualcomm.com; s=google; t=1769150905; x=1769755705; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:message-id:date:subject:cc
          :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=7TaN6HO4UpfTa5x1GQ53EAUUeL9sRzG0T0kFV13YYQg=;
-        b=LpNVEgpU6/wfulMe4txjV/vQCyU0S9ljMlhRVazh8qeSGdoEfA4vixaa9b2KcToNW3
-         78WipYGCNGuw0L24sdvxgsxm5E+NIxHyo8CsmzhDLvXu1pQcgKc3xNxvhOyeZnp8ca76
-         6FJfbXksHaY7igQGt/Mxqq6OWSZ/hrCVwo/HjGB1s/+3LIjJscwGqVegekvm0m2Tn408
-         d4GRrdoDzcxIKPYf10FXBRavdh7d1vNRrxO3T7RZ76Nr8AcHJ7WROY4fgCl6o/d7DrpW
-         WaN5DA+TkGipJ8WXeNKvpANBrdQ2baLc8H+V9HxRz6g6shaUe78rNGRIjvq4X0xhljtE
-         7REw==
+        bh=/54UclkpqOwxDHYahcS9J1UHOq2QTEmzbvlJzYpgHaU=;
+        b=kSxEwSrEoRPlni0qrtxY56MdBVPN8M3WzaxOqIuUSRMG8uZhl8uzTuciEbGCE/Y/kq
+         WnS6hESflEYisd3VQug/e08CnAApJZjUczIEdqHKLnx0tnJB7fhD+0TE/81zmKiVxtc3
+         WF+8DgaEvRIAPt0Wwb0xry27LtHWreq+Juej9PwWhrbdj0LNAi+T4h+wiHNu6vdV5UIQ
+         VCs1s9do6zANMYwbwU4BmLoEhQCkL4tEp2/HJOg333t+ZR2RDPNxvxyboMknZJz7rM7T
+         v4+Z8ufr+afoq/4lb+dXURx1dO+32jU9D3ltu02luA6RLNcW07BV5T+Hynllh7Rhkvsb
+         FLZw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1769144307; x=1769749107;
+        d=1e100.net; s=20230601; t=1769150905; x=1769755705;
         h=content-transfer-encoding:mime-version:message-id:date:subject:cc
          :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=7TaN6HO4UpfTa5x1GQ53EAUUeL9sRzG0T0kFV13YYQg=;
-        b=LVCe2OgQCjhQfF3fOutaFcFqJo25tdqCWk5kwy5B/XU0rNM0BEz2RD2ARShCPqowei
-         X1T994U912sCBPRp9R5S/xTQ57Efx9d9bLOyC8ZXIm4gYunS1MAYylSZJLQHIQM/j3Oh
-         /kKPIV/pCvXPpXCoCu1ZcZ6cApBpOQHAny8lrhg9tGIlfWE/fKhxNIWGg+Arosjxu6Xw
-         YtYr9LGp+H904VpJnmWFkvly8qNjZCXr1BScJpbCNURvHCryhmHXhot7SLj7VBC8oOc1
-         Nw4hJyaPqR3qbAGir7/W5xTDH9iYKSny3AeO0r3ILMShoVMeaI8mlq7mnRpCpNqG0JPc
-         E/PQ==
-X-Gm-Message-State: AOJu0YwscQaseWzIfQVh2fC/dqRuNmq/nBChKF/8uuyBrfpUUgLziDt/
-	9X5IZxeoWBbaWqWULg5h2Y0UMJXVBY0xncvxyMnLWgC4aawtoGVrUAFLeQIhsWpQKB0=
-X-Gm-Gg: AZuq6aJknfpr/RHb1Y1GwTDzTrhKqV5HYumePYJxyQUU7oSUbhRE+o4gAQIvGKs7G4H
-	udHrIV5zWVA6pObCt7nBBwORoUHYQskFUNMaVC6iT1ICeeeMQvH6j7GmYYLDMzn1y23hnXRf5Eu
-	gCevEuNkynNofwDauNKo2BhMrG6nvdx9ilN/1tCMmedmImr2+F6h1B9mI0XfrZTTPbbPeoaeSTa
-	8YwAE5ALL+sU+SP26a8KrRYKdxm6VZUIqN/qk4oHfsGwrx+twu9rQA3OEQgSXNOdcRVQfU5CmCt
-	AAldWAT1hgItU7JgNabJQMWj7xR88mZSS2YFBYRoO1S3rgCXT11BburyVOEXU1LUNoDbOABtxg8
-	MbQ5Deud1IiGAFT+12Tm39xydLMrdnCQgn6vaWyV14e+Dvg2/y22OhMMy7QEPw0sjIAXa3L4YlV
-	LCx1X/gMuk/efFbUTIgFSVnEvKHm2h6631bwd/0yabLctRVCBW0JX5tGN7avqsQN8zJPJVHtou/
-	+qywiwSqBEFKkiCsvAJseWnX2QAoz/mIlm6Fr+D1Q==
-X-Received: by 2002:a05:6820:4c17:b0:659:9a49:8f04 with SMTP id 006d021491bc7-662cab0991fmr870166eaf.21.1769144307361;
-        Thu, 22 Jan 2026 20:58:27 -0800 (PST)
-Received: from security.cs.northwestern.edu (security.cs.northwestern.edu. [165.124.184.136])
-        by smtp.gmail.com with ESMTPSA id 006d021491bc7-662cb662e90sm600579eaf.14.2026.01.22.20.58.26
+        bh=/54UclkpqOwxDHYahcS9J1UHOq2QTEmzbvlJzYpgHaU=;
+        b=IwDkI2uEPvm15NAzbXaO1bdy+pzUJS6lSgu/+w/a5W5qyrHLzK+wdiC2vztbZfKsbT
+         hij3hkzL/KCckH94VN292XWcPIAlgQb3nf9xhdWhsguSoULvK1iajF5dyrMRd0FMKvEZ
+         zsySInX3YJ0M/aUJhoUmmDh+4BSnIeINzl91689ToWp6Fm3e3KrOzelA9dEVSwtNvnxF
+         5silXjxzlBOKozy6DFDJVO5JTJXqUPWU1t8EG8m3dHQ5YqC+PMvyZtnjCYvdLZOSY1rL
+         f6a0fKvmPNT4u1ocS9wAj0DiGh2Rl9djK9aUqMLIb9eM2Zcs9L5aA/fnVdx09K+5oLgw
+         sHlA==
+X-Forwarded-Encrypted: i=1; AJvYcCXPfovUXN5gAbj9vO5tzlIWnCrh88O2yXKZSsZXJGLmVIkFIRid1dz5ikXRB+NiukfXef9QoGaLSf3q3eir4Q==@vger.kernel.org
+X-Gm-Message-State: AOJu0YwkYuq5i6A4GhwhHoz6OKCTLeqsZERSFyYlngKAcWo5VkRpVnSb
+	Zq9JCTnwCd9W6hPJhrb7iZLvLwsshjNMxeL9vBrf5hbdK283h/4p1bRBRONCO9f89fh4XjVo/2K
+	/oBdly8PJEdnb95LQ/0tgHcrbTWetmr0Yu1oj0DZV43J1Yaw+kzOVnIDROeFuFiEJkMcTvIb+2v
+	9wiK1N
+X-Gm-Gg: AZuq6aJqRnOprY+zVsIIjJd68as9G7bAMGWijOLzpIlBOFj9Cc74NBWPcWGpg2ktjFu
+	uhp5g0PnoSLAMK4W5AvWsvkiECIxOs3EaegFnrTbO9ZOHCaQh2nOnpLQLiDnV0zQ3BrFy+rppmA
+	1OZniNlFEwcpR/RCuO+ADFcNL/IJYNWMw80umJ4qyg+3k797q9SIHuKLg2C8SWStO6OmP833+jA
+	BSeQr3W+aJV4HHH4Fr+ihlhxMfst65f7prtfmRwA6khTw7NFYv5ez/liCCg6Ju77hy/BqV2FdS9
+	YjFrcdwSRPCroFQJ8Cij/+crtmSxTxXjqvXL3GVIAOYUw/Nv/zJeRDc6BWXjQE2QwQmpxPAI8lj
+	nv6WZQIU9LmW41CoFR/gzbLIkpm3m5y09pMzbTbvCkYY/e7Fl6+i4zB18fh+4JSUZzg==
+X-Received: by 2002:a05:7022:e0e:b0:119:e569:f622 with SMTP id a92af1059eb24-1247dbfdd9bmr772955c88.27.1769150904830;
+        Thu, 22 Jan 2026 22:48:24 -0800 (PST)
+X-Received: by 2002:a05:7022:e0e:b0:119:e569:f622 with SMTP id a92af1059eb24-1247dbfdd9bmr772948c88.27.1769150904317;
+        Thu, 22 Jan 2026 22:48:24 -0800 (PST)
+Received: from san-w175-na3-01.qualcomm.com (i-global254.qualcomm.com. [199.106.103.254])
+        by smtp.gmail.com with ESMTPSA id a92af1059eb24-1247d90d13esm2819484c88.2.2026.01.22.22.48.23
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 22 Jan 2026 20:58:27 -0800 (PST)
-From: Ziyi Guo <n7l8m4@u.northwestern.edu>
-To: Jeff Johnson <jjohnson@kernel.org>
-Cc: linux-wireless@vger.kernel.org,
-	ath10k@lists.infradead.org,
-	linux-kernel@vger.kernel.org,
-	Ziyi Guo <n7l8m4@u.northwestern.edu>
-Subject: [PATCH] wifi: ath10k: sdio: add missing lock protection in ath10k_sdio_fw_crashed_dump()
-Date: Fri, 23 Jan 2026 04:58:22 +0000
-Message-Id: <20260123045822.2221549-1-n7l8m4@u.northwestern.edu>
-X-Mailer: git-send-email 2.34.1
+        Thu, 22 Jan 2026 22:48:23 -0800 (PST)
+From: Wei Zhang <wei.zhang@oss.qualcomm.com>
+To: jeff.johnson@oss.qualcomm.com
+Cc: ath12k@lists.infradead.org, linux-wireless@vger.kernel.org,
+        wei.zhang@oss.qualcomm.com
+Subject: [PATCH ath-next 0/2] wifi: ath12k: Add pdev-level OBSS PD configuration
+Date: Thu, 22 Jan 2026 22:48:15 -0800
+Message-ID: <20260123064817.364047-1-wei.zhang@oss.qualcomm.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
@@ -91,81 +109,88 @@ List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwMTIzMDA1MCBTYWx0ZWRfX/x/sIUnwzrFj
+ U8aG/yjqWIYK/m8qhLpVWe9VO64F44OOVZ3VB7UlnKjSqiEPhluKiwvRyFaDv3y+1p7eDyBD4MZ
+ Sw5aIgbf5hMM134084esh6T3u72aes7/zwd7GqQfzb7oPYz5T/ozVrsDOgSXdma0wCIF+8s254X
+ jyjEFU4epp5hbQDDEdyBMAxpPH16HOpOG2JX/jDS0raCxGKaYGAre+8/8aTA9YczZtXMebrrBRs
+ 7WYwU7TST2TDEmVdSf/BpQsfWlavi4t0DRKkNHV0zzRE34PdGu7jQEJY512Huz8jIyaPbmJphCF
+ mA3dvXMTI1bEi4p5TyLQx7v64qDeOMfNW0IcaYnw5hJk4N2ZHpI/LUMA3T8H57iCtHLo79XPlwp
+ Kwt/QEam295gtXe5uezjLTdJMTjc+5slEcKCnsxWw21veE5DJXAaGseatzVyNWjVMydEFe61sKy
+ Sbqw8bUGGbN7oV136QQ==
+X-Authority-Analysis: v=2.4 cv=JuX8bc4C c=1 sm=1 tr=0 ts=697319b9 cx=c_pps
+ a=SvEPeNj+VMjHSW//kvnxuw==:117 a=JYp8KDb2vCoCEuGobkYCKw==:17
+ a=vUbySO9Y5rIA:10 a=s4-Qcg_JpJYA:10 a=VkNPw1HP01LnGYTKEx00:22
+ a=gbK--YHSo8g9L1OSsNMA:9 a=Kq8ClHjjuc5pcCNDwlU0:22
+X-Proofpoint-GUID: 715qAq6ww8wmZsTKLpL0xqq23lXl64dY
+X-Proofpoint-ORIG-GUID: 715qAq6ww8wmZsTKLpL0xqq23lXl64dY
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.20,FMLib:17.12.100.49
+ definitions=2026-01-22_06,2026-01-22_02,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ malwarescore=0 priorityscore=1501 spamscore=0 bulkscore=0 lowpriorityscore=0
+ phishscore=0 suspectscore=0 clxscore=1011 impostorscore=0 adultscore=0
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.22.0-2601150000 definitions=main-2601230050
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.06 / 15.00];
+X-Spamd-Result: default: False [-0.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	MID_CONTAINS_FROM(1.00)[];
+	DMARC_POLICY_ALLOW(-0.50)[qualcomm.com,reject];
 	R_MISSING_CHARSET(0.50)[];
-	R_DKIM_ALLOW(-0.20)[u-northwestern-edu.20230601.gappssmtp.com:s=20230601];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	R_DKIM_ALLOW(-0.20)[qualcomm.com:s=qcppdkim1,oss.qualcomm.com:s=google];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	MAILLIST(-0.15)[generic];
-	DMARC_POLICY_SOFTFAIL(0.10)[northwestern.edu : SPF not aligned (relaxed), DKIM not aligned (relaxed),none];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TO_DN_SOME(0.00)[];
-	TAGGED_FROM(0.00)[bounces-31103-lists,linux-wireless=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[u-northwestern-edu.20230601.gappssmtp.com:+];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
-	RCPT_COUNT_FIVE(0.00)[5];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[n7l8m4@u.northwestern.edu,linux-wireless@vger.kernel.org];
+	DKIM_TRACE(0.00)[qualcomm.com:+,oss.qualcomm.com:+];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[5];
-	TAGGED_RCPT(0.00)[linux-wireless];
-	NEURAL_HAM(-0.00)[-0.997];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-31104-lists,linux-wireless=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
+	RCPT_COUNT_THREE(0.00)[4];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: EDF20705A3
+	MIME_TRACE(0.00)[0:+];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[wei.zhang@oss.qualcomm.com,linux-wireless@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	TO_DN_NONE(0.00)[];
+	NEURAL_HAM(-0.00)[-0.999];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,qualcomm.com:dkim,oss.qualcomm.com:mid,oss.qualcomm.com:dkim];
+	TAGGED_RCPT(0.00)[linux-wireless];
+	RCVD_COUNT_SEVEN(0.00)[7]
+X-Rspamd-Queue-Id: 55B927124A
 X-Rspamd-Action: no action
 
-ath10k_sdio_fw_crashed_dump() calls ath10k_coredump_new() which requires
-ar->dump_mutex to be held, as indicated by lockdep_assert_held() in that
-function. However, the SDIO implementation does not acquire this lock,
-unlike the PCI and SNOC implementations which properly hold the mutex.
+This series introduces WMI support and AP-mode handling for HE Spatial
+Reuse in ath12k:
 
-Additionally, ar->stats.fw_crash_counter is documented as protected by
-ar->data_lock in core.h, but the SDIO implementation modifies it without
-holding this spinlock.
+Patch 1 adds new WMI commands, TLV tags, and a service flag to configure
+SRG/non-SRG OBSS PD bitmaps (BSS color and partial BSSID) at the pdev
+level.
+Patch 2 switches AP mode to use the new pdev-level configuration path,
+programming OBSS PD thresholds, per-AC enablement, SR prohibit control,
+and SRG/non-SRG bitmaps based on mac80211 HE SPR parameters.
 
-Add the missing mutex_lock()/mutex_unlock() around the coredump
-operations, and add spin_lock_bh()/spin_unlock_bh() around the
-fw_crash_counter increment, following the pattern used in
-ath10k_pci_fw_dump_work() and ath10k_snoc_fw_crashed_dump().
+These changes enable firmware-managed OBSS PD behavior for HE Spatial
+Reuse.
 
-Fixes: 3c45f21af84e ("ath10k: sdio: add firmware coredump support")
-Signed-off-by: Ziyi Guo <n7l8m4@u.northwestern.edu>
----
- drivers/net/wireless/ath/ath10k/sdio.c | 6 ++++++
- 1 file changed, 6 insertions(+)
+Tested-on: WCN7850 hw2.0 PCI WLAN.IOE_HMT.1.1-00011-QCAHMTSWPL_V1.0_V2.0_SILICONZ-1
+Tested-on: QCN9274 hw2.0 WLAN.WBE.1.5-01651-QCAHKSWPL_SILICONZ-1
 
-diff --git a/drivers/net/wireless/ath/ath10k/sdio.c b/drivers/net/wireless/ath/ath10k/sdio.c
-index c06d50db40b8..00d0556dafef 100644
---- a/drivers/net/wireless/ath/ath10k/sdio.c
-+++ b/drivers/net/wireless/ath/ath10k/sdio.c
-@@ -2487,7 +2487,11 @@ void ath10k_sdio_fw_crashed_dump(struct ath10k *ar)
- 	if (fast_dump)
- 		ath10k_bmi_start(ar);
- 
-+	mutex_lock(&ar->dump_mutex);
-+
-+	spin_lock_bh(&ar->data_lock);
- 	ar->stats.fw_crash_counter++;
-+	spin_unlock_bh(&ar->data_lock);
- 
- 	ath10k_sdio_disable_intrs(ar);
- 
-@@ -2505,6 +2509,8 @@ void ath10k_sdio_fw_crashed_dump(struct ath10k *ar)
- 
- 	ath10k_sdio_enable_intrs(ar);
- 
-+	mutex_unlock(&ar->dump_mutex);
-+
- 	ath10k_core_start_recovery(ar);
- }
- 
+Wei Zhang (2):
+  wifi: ath12k: add WMI support for spatial reuse parameter
+    configuration
+  wifi: ath12k: support OBSS PD configuration for AP mode
+
+ drivers/net/wireless/ath/ath12k/mac.c | 170 +++++++++++++++++++++++++-
+ drivers/net/wireless/ath/ath12k/mac.h |   3 +
+ drivers/net/wireless/ath/ath12k/wmi.c | 142 +++++++++++++++++++++
+ drivers/net/wireless/ath/ath12k/wmi.h |  47 +++++++
+ 4 files changed, 359 insertions(+), 3 deletions(-)
+
+
+base-commit: 758064145fe77e06d07661b27dfa9c24fe0309a3
 -- 
 2.34.1
 
