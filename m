@@ -1,178 +1,155 @@
-Return-Path: <linux-wireless+bounces-31114-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-31115-lists+linux-wireless=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id GPkTHPJqc2mivQAAu9opvQ
-	(envelope-from <linux-wireless+bounces-31114-lists+linux-wireless=lfdr.de@vger.kernel.org>)
-	for <lists+linux-wireless@lfdr.de>; Fri, 23 Jan 2026 13:34:58 +0100
+	id zvZ6IAB8c2lowwAAu9opvQ
+	(envelope-from <linux-wireless+bounces-31115-lists+linux-wireless=lfdr.de@vger.kernel.org>)
+	for <lists+linux-wireless@lfdr.de>; Fri, 23 Jan 2026 14:47:44 +0100
 X-Original-To: lists+linux-wireless@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id D6E4475E21
-	for <lists+linux-wireless@lfdr.de>; Fri, 23 Jan 2026 13:34:57 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 20B7B76728
+	for <lists+linux-wireless@lfdr.de>; Fri, 23 Jan 2026 14:47:44 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 4F41E301828A
-	for <lists+linux-wireless@lfdr.de>; Fri, 23 Jan 2026 12:34:52 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id F0A4930089AE
+	for <lists+linux-wireless@lfdr.de>; Fri, 23 Jan 2026 13:47:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8A91628136C;
-	Fri, 23 Jan 2026 12:34:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8D68235977;
+	Fri, 23 Jan 2026 13:47:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b="DivuSVAH"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="mnxdY5Jz"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from sipsolutions.net (s3.sipsolutions.net [168.119.38.16])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f51.google.com (mail-wm1-f51.google.com [209.85.128.51])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D95FA26B741
-	for <linux-wireless@vger.kernel.org>; Fri, 23 Jan 2026 12:34:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=168.119.38.16
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0A2331B394F
+	for <linux-wireless@vger.kernel.org>; Fri, 23 Jan 2026 13:47:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.51
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769171691; cv=none; b=WhAQJhQvHjg346kAGH6Wyn7lD4NmW4g4NhwPiaQaI8HflT/TTz8ZicmWGmmV7ftIDdhz9hz5dSrHcSD8E9mebU0P2ADLBKG27FTesTvjXKeuWuhXnR6ORlXfRv70mBx4qfkdEUrg2k7PjsrfMSmB9AZocR4fxGImWkoYLPRTEjo=
+	t=1769176062; cv=none; b=u6VDMZiTx+avmsQBM2DzE9XduoSJdBODHYnqWXJ5KfoPk6t2LJ/83W6C6QEatxLxDc4oGwjfWv6rnFTmZ1QGgW57f3z0MlPpbfks8CuKGFKkTlLy0awMck0VgWtW68AmYaMuA+Fz8cJgb2XVO2P0eiWVtOHjAK1T9SmLaHYTy3w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769171691; c=relaxed/simple;
-	bh=Ap7W1OsQ4xr5bXiTDUi+0zYdKUdtaQ3QVhwPB87IfqE=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=N2musRqA+iEXH3qmozibG1jxsmeI3b7NjmJ1Os6YNMR+qE6bpwEyGT57Y4bNpVFRmJs8Em2W6xs0OCqEhwFsPBWfXZlyPNryahXFu47jTP0r5mrhDROzyYv9CJJB3bNRP+Zr3PknUCfEutLFXVVwgqqR/RFF82BeWmSbMKfmHng=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net; spf=pass smtp.mailfrom=sipsolutions.net; dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b=DivuSVAH; arc=none smtp.client-ip=168.119.38.16
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sipsolutions.net
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=sipsolutions.net; s=mail; h=MIME-Version:Content-Transfer-Encoding:
-	Content-Type:References:In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender
-	:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
-	Resent-Cc:Resent-Message-ID; bh=ZOqjqLtDvG99yYqI/I7zi9/9o268DymXDCi6dweV0lI=;
-	t=1769171689; x=1770381289; b=DivuSVAHgMP6dxSnTMy0VF85/EHF+0ToS/vLBWEKC+6VuGC
-	fGza1KB1r3/HE5gHHai+z2QsIFjPoB5Qp77axdMzCZXEDWqDwPWnCUc2T9SxAtoxeXbJBdtgXyCNW
-	WFDQnC5Ge1M7voE/nD1FiJzao/jP50f8YH1Oj5mBhCcbhRbgrZuFhhfRV911+woDxyyaiQntD9lgq
-	QeHyzCVO/MYfpjGmaI2pwhEw35y+LXsfT2gzGJg1t4CmL4ozYrkrWDz1qMoQvAoe4UZEQxOQbk12b
-	Rimx0MZ5mTokm8GTQYF+jaMkZ4TO9bGPUxp8ihWgiieRc48aIkpNoMPepWCkbQpg==;
-Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
-	(Exim 4.98.2)
-	(envelope-from <johannes@sipsolutions.net>)
-	id 1vjGN6-00000001heb-3CwF;
-	Fri, 23 Jan 2026 13:34:40 +0100
-Message-ID: <6fbfb8b4f4a4a745b81cc8f81e01429ca90aa547.camel@sipsolutions.net>
-Subject: Re: [PATCH wireless-next] wifi: mac80211: Fix AAD/Nonce computation
- for management frames with MLO
-From: Johannes Berg <johannes@sipsolutions.net>
-To: Sai Pratyusha Magam <sai.magam@oss.qualcomm.com>
-Cc: linux-wireless@vger.kernel.org, Rohan Dutta <quic_drohan@quicinc.com>
-Date: Fri, 23 Jan 2026 13:34:40 +0100
-In-Reply-To: <215985b3-e951-415e-b091-3306fa08036c@oss.qualcomm.com> (sfid-20260123_123940_345604_B7F23BEC)
-References: <20251211123612.2470117-1-sai.magam@oss.qualcomm.com>
-	 <5ff51b07b69284ca9b477dfcbe08890167c7ed14.camel@sipsolutions.net>
-	 <0847363a-055a-4d6f-a9ac-b62f275e02ec@oss.qualcomm.com>
-	 <d0798e0f62405687c57eff59767ac77b25c1f330.camel@sipsolutions.net>
-	 <215985b3-e951-415e-b091-3306fa08036c@oss.qualcomm.com>
-	 (sfid-20260123_123940_345604_B7F23BEC)
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.56.2 (3.56.2-2.fc42) 
+	s=arc-20240116; t=1769176062; c=relaxed/simple;
+	bh=vDw6xmuKifeBebBIrOxzyi9SXbfOM6lDcV75mlsnFzQ=;
+	h=Mime-Version:Content-Type:Date:Message-Id:Subject:From:To:
+	 References:In-Reply-To; b=Y2012oadHkNjYXMXUpDGYuZzpizuwEPGjtGpm0TDg22NEjVR/p0qcQKFFHsGHp+eOoS5lC5+Q36GIYDPmeJSnoB53/RHa4wDqgFRMWBdAB9iCeeMjec3kwZCnjBDFJAd5n2pLyw16TLGvQAzGAU2qBK9hAmGfmjYfHrKuOUFLgU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=mnxdY5Jz; arc=none smtp.client-ip=209.85.128.51
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-wm1-f51.google.com with SMTP id 5b1f17b1804b1-4801c1ad878so22882395e9.1
+        for <linux-wireless@vger.kernel.org>; Fri, 23 Jan 2026 05:47:40 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1769176059; x=1769780859; darn=vger.kernel.org;
+        h=in-reply-to:references:to:from:subject:message-id:date
+         :content-transfer-encoding:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=vDw6xmuKifeBebBIrOxzyi9SXbfOM6lDcV75mlsnFzQ=;
+        b=mnxdY5JzRE6HOzy637FPS5ex6gzlAsNXvPsIqjiKfRVuqXt4IOVkpwCAcOZ0OoJFW3
+         1SrHNWlytlzG1y28j9C1VI33LqZJVp2n9pB+wRFQKitTRFMy6KQwgVxtDUW/nsEEeKaQ
+         50PGd7CPKlv9JXPHWWpvGjjGftYqFJw3xxVIqT4RtNwY1m940VANHgWnCCtSRcqFjuh/
+         eYGKMoAjM8WtfnPl56AzLRgc0lo9v8BoDQSqbKI27u8rzsyQoFIYmmsjvDgiWtk7+kL2
+         FNun4rXw0VFu1mQ/FjDtse+zTL8brCIbclE2DpvgJflgaZcL6xFap0CxvtDOFnd4oaaU
+         +5mA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1769176059; x=1769780859;
+        h=in-reply-to:references:to:from:subject:message-id:date
+         :content-transfer-encoding:mime-version:x-gm-gg:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=vDw6xmuKifeBebBIrOxzyi9SXbfOM6lDcV75mlsnFzQ=;
+        b=b8Mx3g+SZLKadIqvXtKd51e3jM2VkZPN9CldBLNz6DvTXZFl3rS9qVsZeZjL3dZj3T
+         +ZLefdJb0Ghc13i6IW4ivdhthiNUjTL1AsphbNjKprNuxBp+w2tViMSvectU8Cbqi5MZ
+         +Owq/GcLzTW0rGo6B6QTj2ON/3OjaS8gIXwFYj+QwxuFI8YvRwYznOpgGhD/QMEdE1xh
+         4o9AfzGW3JKfrdAVF6pwZU0k87sXyjvfIY0ltxmn+tiiOLEaeJhiFKUo3nOEAqKk5f59
+         EnYHbKz15HNo29PD+l+d+9722lM1m6nhArp6/K8MEdQrQmEIbDBYXxw+MkmKiyUQgOBv
+         izkw==
+X-Forwarded-Encrypted: i=1; AJvYcCVXFrmNEdCyVrY37M/5/nT6AancRbq6uw2KTJ3HnCCUI/lRrmrPbk4uZUBYaK9JDF0vFTVI/WB30caB9FEXmw==@vger.kernel.org
+X-Gm-Message-State: AOJu0YyR/I2evpAzNAE3qhhXL/ekY7oJBC8H0FH/HGC5/qcg5NPL03Rq
+	4Y8pFFAjRfelQWTMizHtZoWwg7TqaXvoj8CqHf0qmMY87FDgJlGaWGg1
+X-Gm-Gg: AZuq6aKUHK+7lljmksKWTi0g9Kavdu5dODWHiM98yl4TFeMN0o5DW+w8D6NWUXxkA4q
+	cIzt7sxfktoTie0IMDyN/363velU6cFyoAr+o2E8wfqlomSb9+Van+WZCjCA8ZkyYx9OP3eO8PL
+	4AGJqCqeUKuykDMSEFNilxKnfAB6MuNh4cCHsloLqDoL3m5f5j49XDHDxG7DDyYj/q6UdeYhayn
+	M+DoRfna4rfBYQPE7binpcHej45TuMlNdKaNHicpCmYm3gzRNtuudg1yUl0xN3Mmp9yBFT1F31L
+	harlILu9wLFtSN/yK33vhEpNcYcoLFQguBqozWF6nQwQVsz6kk7lJNvQ8iXXDLFXxtHCEB0AYGc
+	UQXQ7ApPPxih40JwSY5bVKYrErXSj/13j5epmDjaRNYkDB8REoNcWPSv/qls5zw5l8KCfzC9CBf
+	z5vdmDEV7UC7CF97Jt005Rf/Vz1d9/CA==
+X-Received: by 2002:a05:600d:640e:20b0:477:7991:5d1e with SMTP id 5b1f17b1804b1-4804d3c9da2mr37374905e9.25.1769176059113;
+        Fri, 23 Jan 2026 05:47:39 -0800 (PST)
+Received: from localhost (freebox.vlq16.iliad.fr. [213.36.7.13])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-435b1c24acdsm7382309f8f.13.2026.01.23.05.47.38
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Fri, 23 Jan 2026 05:47:38 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-X-malware-bazaar: not-scanned
+Mime-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Fri, 23 Jan 2026 14:47:38 +0100
+Message-Id: <DFW0KL08YQEF.1KG7J1I78VTQ2@gmail.com>
+Subject: Re: [PATCH] wifi: mac80211: do not set 320MHz EHT capabilities on
+ non 6GHz band
+From: "Nicolas Escande" <nico.escande@gmail.com>
+To: "Johannes Berg" <johannes@sipsolutions.net>, "Nicolas Escande"
+ <nico.escande@gmail.com>, <linux-wireless@vger.kernel.org>
+X-Mailer: aerc 0.21.0-0-g5549850facc2
+References: <20260122145620.861355-1-nico.escande@gmail.com>
+ <829488acfdbf7ecfe6418bfb2c5669dae18392ed.camel@sipsolutions.net>
+ <DFV9KI49QEP2.2TMVJXR5EK0B7@gmail.com>
+ <b2cc421f0416cc1ab42a937ccd78b4a8c27d47cb.camel@sipsolutions.net>
+In-Reply-To: <b2cc421f0416cc1ab42a937ccd78b4a8c27d47cb.camel@sipsolutions.net>
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[sipsolutions.net,none];
-	R_DKIM_ALLOW(-0.20)[sipsolutions.net:s=mail];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
+	MV_CASE(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+	R_DKIM_ALLOW(-0.20)[gmail.com:s=20230601];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-31114-lists,linux-wireless=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	DKIM_TRACE(0.00)[sipsolutions.net:+];
+	TAGGED_FROM(0.00)[bounces-31115-lists,linux-wireless=lfdr.de];
+	FREEMAIL_TO(0.00)[sipsolutions.net,gmail.com,vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	TO_DN_SOME(0.00)[];
+	RECEIVED_HELO_LOCALHOST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
 	RCPT_COUNT_THREE(0.00)[3];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	TO_DN_SOME(0.00)[];
+	RCVD_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[johannes@sipsolutions.net,linux-wireless@vger.kernel.org];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-0.997];
-	TAGGED_RCPT(0.00)[linux-wireless];
+	FROM_NEQ_ENVFROM(0.00)[nicoescande@gmail.com,linux-wireless@vger.kernel.org];
+	DKIM_TRACE(0.00)[gmail.com:+];
 	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[linux-wireless];
+	NEURAL_HAM(-0.00)[-1.000];
+	FREEMAIL_FROM(0.00)[gmail.com];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: D6E4475E21
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 20B7B76728
 X-Rspamd-Action: no action
 
-Hi Sai,
+On Thu Jan 22, 2026 at 5:41 PM CET, Johannes Berg wrote:
+> On Thu, 2026-01-22 at 17:38 +0100, Nicolas Escande wrote:
+>> For context I initially encountered this problem on an ath12k AP which h=
+as a
+>> single phy with both 5GHz & 6GHz bands available but only had a 5GHz AP =
+started.
+>> On such a platform, we set this '320MHz in 6G' operation on the 5GHz no =
+matter
+>> what beacause of the phy's capabilities.
+>
+> But that's what I'm saying why it's a driver bug - the PHY capabilities
+> are advertised *per interface type* and *per band* by the driver. It
+> shouldn't set this one on 2.4/5 GHz bands.
+>
 
-So I'll preface this saying (maybe again) I'm mostly thinking out loud,
-because adding 150+ lines of complex address munging code that reaches
-into a lot of different data structures for what's effectively a hwsim-
-only special case doesn't seem like a good trade-off right now... If we
-can avoid this in mac80211 and push something into hwsim, it seems like
-a win even if it were more complex there.
+Arf I missed the per band part of the equation. I'll fix it there.
+Sry for wasting your time.
 
-> > Obviously we still want to have hwsim, but if this really is only for
-> > that then I feel we can still fairly easily implement TX encryption
-> > "offload"? After all, in RX we make decryption optional for every singl=
-e
-> > frame - so if the device/driver didn't decrypt/validate the frame then
-> > mac80211 will. We also pass the key to the driver for each individual
-> > packet (struct ieee80211_tx_info::control::key). So doing the encryptio=
-n
-> > in hwsim would be really simple if we export a function akin to
-> > ieee80211_tx_h_encrypt() that works on a single skb (which has the key
-> > pointer), sets up a single-frame struct ieee80211_tx_data and returns
-> > the skb from that [2].
-> >=20
-> "Implement TX encryption offload" - As I understand, your guidance is
-> towards implementing the Tx encryption in the mac80211_hwsim driver
-> Can you please kindly clarify if the understanding is correct?
+> johannes
 
-Not sure I'd say "guidance", but yes, that's what I was thinking of.
-Note that this is fairly limited, I'll elaborate below.
-
-> In order to let mac80211_hwsim driver do the Tx encryption:
-> (1)Add support for key install to hwsim driver, i.e,=20
-> mac80211_hwsim_ops::add_key, so mac80211 knows that the driver is going=
-=20
-> to do the encryption.
-
-Yes. Note that due to the mac80211 SW crypto design, it doesn't really
-need to do _anything_, because:
- - on TX, mac80211 gives the key in the tx_info of every skb
- - on RX, mac80211 will happily do SW decryption if RX_FLAG_DECRYPTED
-   isn't set on the skb
-
-> (2)A function similar to ieee80211_tx_h_encrypt() in the hwsim driver
-> that can do the actual encryption.=C2=A0
-
-Actually, the function I posted in my other mail was going to live in
-mac80211, but exported to be (only) called by hwsim. That way we can
-reuse all the existing mac80211 code without making it more complex.
-(We could even put it under a hwsim ifdef or hwsim-only export
-namespace, but not sure that has much value.)
-
-> Since mgmt frames need to use link=20
-> addresses for crypto computations, possibly I could call=20
-> ieee80211_encrypt_tx_skb() [2] after address translation to link=20
-> addresses in mac80211_hwsim_tx() and since data frames need to use the=
-=20
-> MLD addresses, ieee80211_encrypt_tx_skb() can be called before the=20
-> address translation to link addresses.
-
-Right.
-
-Given the function I posted wasn't even 30 lines, and the key install
-function in hwsim can be basically "return 0", the RX part likely won't
-be _that_ much either, I'd tend to think that overall it could end up
-with even fewer lines of code than this solution, never mind the fact
-that it won't have to reach into all the vif/link/sta/link_sta data
-structures.
-
-Now I haven't actually written it, so I don't know for sure it'll be
-that simple, but at this point I'm fairly confident it should be? Do you
-see any holes in this?
-
-johannes
+Nico,
 
