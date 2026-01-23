@@ -1,88 +1,88 @@
-Return-Path: <linux-wireless+bounces-31120-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-31121-lists+linux-wireless=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id wDQlNnmbc2nNxQAAu9opvQ
-	(envelope-from <linux-wireless+bounces-31120-lists+linux-wireless=lfdr.de@vger.kernel.org>)
-	for <lists+linux-wireless@lfdr.de>; Fri, 23 Jan 2026 17:02:01 +0100
+	id YOYiMpKac2nNxQAAu9opvQ
+	(envelope-from <linux-wireless+bounces-31121-lists+linux-wireless=lfdr.de@vger.kernel.org>)
+	for <lists+linux-wireless@lfdr.de>; Fri, 23 Jan 2026 16:58:10 +0100
 X-Original-To: lists+linux-wireless@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 67E667820E
-	for <lists+linux-wireless@lfdr.de>; Fri, 23 Jan 2026 17:02:01 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id D234A7818A
+	for <lists+linux-wireless@lfdr.de>; Fri, 23 Jan 2026 16:58:09 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id E1E2B307D704
-	for <lists+linux-wireless@lfdr.de>; Fri, 23 Jan 2026 15:58:04 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 4B85C3006203
+	for <lists+linux-wireless@lfdr.de>; Fri, 23 Jan 2026 15:58:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 85F53287269;
-	Fri, 23 Jan 2026 15:58:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E779C1DD877;
+	Fri, 23 Jan 2026 15:58:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="WQ9aK1Jq"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="ZbtqZtir"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-pg1-f176.google.com (mail-pg1-f176.google.com [209.85.215.176])
+Received: from mail-pf1-f178.google.com (mail-pf1-f178.google.com [209.85.210.178])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 29CB52DAFC7
-	for <linux-wireless@vger.kernel.org>; Fri, 23 Jan 2026 15:58:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.176
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9CB9625A642
+	for <linux-wireless@vger.kernel.org>; Fri, 23 Jan 2026 15:58:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.178
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769183884; cv=none; b=t1Vjr0HPGi4oL+SJvTf3iqbfrP/QueO4+u6qQMzyd2BQy7oDER9IptLS9vRo4+ySHvZkDYhXohiYXzlMU2CL4yM8FwUD3k7OfNRUYvJW7EGWhVhLjSmk2tCKsadI5RoCfwu/EDHIvgPDCVa1ODO+y50CpIQFTUAtMfVpOu7Kl+0=
+	t=1769183886; cv=none; b=ecTktfDK0LQ2WuQF80UwhevuWkXyO8WDMyJXTYadAc8Ic05YZAnusoBwRpza9HKiVMXHJ2RxbSYYj7eXR6eb7DAVmevisHR2WvIOUfCcfhwxfs294I9/382c/nzi36G39l7RKLPZfpP2TdnvQqIcDwlui6fQDGbGrqtOXj2JisI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769183884; c=relaxed/simple;
-	bh=5gCzyYhkC0My1sh9sagjLiLTqS+YnqxNJNEuJAxopdQ=;
+	s=arc-20240116; t=1769183886; c=relaxed/simple;
+	bh=Dl1pNuIyA/9XuvTAAfN9PgDr66VvIBhi/wej/aJJsgA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=jYlU2wGgIsGTVhfQ91QI55GVPwAjUbqrRsNG8C1E1mZlkl+xH8hcqs2LzSbaAvldafOkxNb658M7hYglPxPqpViW70W0NLxRMo7MVwG1D2TZGSQihixraod6GPf7Y3MrfJFgJkdvC3bYF3Kuje02aa+WGNyKdagl7XAJEkYZRDk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=WQ9aK1Jq; arc=none smtp.client-ip=209.85.215.176
+	 MIME-Version; b=PZGRM2O2qvbJm/2LBrZa7gytHGO1qv2bwGRSwPw0ZVJ59QVKfgNystvrp1g3uN5nt17WZ5ab2eusBSR2x5JI/8ElMrGDGpGW0kK2JEZ58Tp36+89khA9Xly9CVbTWk75SotWiMmm7QCCe5/QzCdmnPWtGqHsfkRI8kd38kR48sw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=ZbtqZtir; arc=none smtp.client-ip=209.85.210.178
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pg1-f176.google.com with SMTP id 41be03b00d2f7-c05d66dbab2so1674444a12.0
-        for <linux-wireless@vger.kernel.org>; Fri, 23 Jan 2026 07:58:03 -0800 (PST)
+Received: by mail-pf1-f178.google.com with SMTP id d2e1a72fcca58-81e93c5961cso2137608b3a.0
+        for <linux-wireless@vger.kernel.org>; Fri, 23 Jan 2026 07:58:05 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1769183882; x=1769788682; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1769183885; x=1769788685; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=NzibT8m2ri/6+nQQXOFIdpBUf9O69J4+aJF2V6yb0pE=;
-        b=WQ9aK1JqVqyU0oYLBecoqMZKX8e5nRNuV2a2mL0lBioBauiWCavCSfgo6FIDRsuJmS
-         Inu75x7wlSTbnST0twbo89SUda0+xVV8mvAM3c0AiXzfoDZoroROBb41NOcQf6Su1hTu
-         hK+m1IL8wuNLu//RCuONgm/2FdQ29f+3n2EeUXR3/xj+KuGRy6rKpqqVeKgKyEW2305O
-         TJqr7+2OSRDXDzwTpDnassBjt+X6nmXsIk4EeAzksDtL053UgbVijbWIUko1Hir2GCrs
-         W+j3AGivBAw+Ilj+H8SHV0PhokKIwFKqDstuuztr6j7xA0WnxfCh/BMYLdgP0PUmpo1L
-         7iyQ==
+        bh=om9q+srifk+m3/ipW1COktkWxrQuXTLgvLJtU2pt4s0=;
+        b=ZbtqZtirIG7lWIWMt5R/qpugKIk5gaLEyBqO1vsT7xIb4npPVeikz4Efyc/mDaa+wx
+         nGrW0Q/NvGwtcBnf5cWo+2z4FFdjLoYSHbv1/b3Yx9wQc5zh8IeaYqfcV6paBvWKGnH7
+         jdkqLutJfZmmsffhDPLjwTRPPPnqgkSjWNRaUdM/jtWMCli5GfaQFIlF5yCNLVJB8534
+         RAHd5UdhZN4W1ucyec1opWYSNcJ/uqQ7ZnLLQbEtc+TAs7pBfZA1Irub62pfvhXf3UVV
+         BbPOxir9Uso/QZA5u3s6mfndEoj6YjfRQqViChtGZAjfJBZ7g5MWs5PsLakKfwOXqwTe
+         9bsg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1769183882; x=1769788682;
+        d=1e100.net; s=20230601; t=1769183885; x=1769788685;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to;
-        bh=NzibT8m2ri/6+nQQXOFIdpBUf9O69J4+aJF2V6yb0pE=;
-        b=TONQchTyRNQwsoIFknVv3nYhFznIZVAHuEEzrpYtyaTL2BXM9XxX7xOPXvfZqdlX9i
-         FkU+qBSz6k+sTLYPQVmNILizkt4XwmJ8L85PLEybol+hrzUeKT3tPQQbp6+sM8Mdr4Sp
-         3ptloTQuwgC8H68gw38OE464MAGwPcrj6pXkTyBDGogeCpQW+aJfPyfNn9JtdymOtrHo
-         O3XwzPTfG6YnjYd4HcpiY/CjoHwU6BtR7mLGPUf8o+6x3L/iqhoQBmp3eb5ZgPeZUmOL
-         2sGuyoH+meZwODpBiq4TMydiRiJYJBcTT4Mi6gJO8V3sI3Nxsid5wP6cvoL/LcajRIxY
-         A7eg==
-X-Gm-Message-State: AOJu0YzWvBL5Bbbsta4UxekKNtUeebJLjHbtEENIbdxV4JYP1xi+FRWB
-	vJ2HkqAreT2Zn96dvHBPeGSReLntTUPwdPDmSZdxIx8gK6DqhPOvZUmN
-X-Gm-Gg: AZuq6aLo9bdr19522z/vdQb5xNFsCltTCwH7El0ZhCpYLovgOSkgkyI4vIzjpXI0LDT
-	gvuFglUEmOrFy3JBZuYT+XFU/dR5RaFaTika/cQNWyUazkx5T8tURk2igj1PUgk4CH4+OQPN6ep
-	ORycbmMRK7HloxqhIrAhiLVndDiWoqOyHuLRo47fcoDWdzsMqXjHHRDJocKDaDMn3geC3os2liZ
-	g8iwna3UNv9wIsFzt4djpfx0sS6LVXM0L7LWHzeUJFLTvw8qQp2mndsCBylbQTzY64G5nUvVBeo
-	p81R1C+1jDW72kM1loF0HCgTU8oBgPmaK/qsGVxlY48TrpgeRNFpj44PCsWLV51sHQto/mVO5pm
-	q4FRENLKOdDvsVGG4RUilAACpW4f3krdX2B7wfM9NfXUuEjuMeiUK/BwMQVNcgZTDicfmUSUxer
-	l75lmU/SxLIED5xtQbAAZwdvCol/cDP06aZlAQ
-X-Received: by 2002:a17:90b:3503:b0:341:ae23:85fd with SMTP id 98e67ed59e1d1-35367025551mr2841157a91.11.1769183882420;
-        Fri, 23 Jan 2026 07:58:02 -0800 (PST)
+        bh=om9q+srifk+m3/ipW1COktkWxrQuXTLgvLJtU2pt4s0=;
+        b=pmpDXtxJ23wZRBvPqAcNLw+GT+FSUcBEaXHu1V8IXl4YvmyHn/ucSSofS4H6CBYcI5
+         s84bK5ilQSfOi6OeU3znsXnI8WKGHvH8oVTEsAXcokXEjkt50TZ6ndWEz2QIlgRXwSwu
+         W9tBM3H2hz9GXVeKMeVnaJIwkPgcM7E7eLk6uDz8r6FAaHVpj/fPB6v9wN/4hkRFua3o
+         LVbmMK58D6pqDz8adONwVoRQDB89SvB8pxcvwPgFcR2vxXLlJ5RyF1kASomhgvC6xEkf
+         w6O3MKIZXLLEhopo+Y2Fz+sK3zUy+I16KcFMCfeqstOS2nkBPyfNfXfQc9XIliA3vsc+
+         8SRQ==
+X-Gm-Message-State: AOJu0Yxfl2LGWGTPE5TVzS1jhjsZDe+bEQBUzcrijK7h6qbd7bEXBrsJ
+	b10T0yjrc+8EkI92sGqZkN5xW5nios3w8eszjbT6gXIee1c+OL4E0CxP
+X-Gm-Gg: AZuq6aL2/fPe5nmEMrPBsUjoZBvCLNjTJjL/Z0YbsCvK0eCtmHlgyREyM3/Ur700Aqg
+	378nS8qlOrmQ2PBmFpv0YEivUaRZAPjZ51ApKr+QHSB0ps+NR3ND0SKLdQrouwwRKuVC8pwUKWR
+	3fTUerW4+Z1GdsiyorfXdr54haJgePFitQPk5kaORjbRMdtcAiSIhukJnW6jVfuYPd8MrPgCf9h
+	zo72jzz9sKjaaUdKnzWTrGoM4owQwWOxh6GmW3RUZXc3nc3ie5UZi1RrueAqSPUmYnoYZxswrBs
+	jhpdJz37RYsk309y5UGbSScLb3c1FZmQAJB3QTwcDD1cqIKQp6fxCCfml/3SstoIKAq0ZKS4XdM
+	bcp9HMa+qyMP5MMs7RMNqP4RE+cPnQdHnaBJTLi8rYingnN4TYA9yUx32UaYbtFomxEEaA/O1D1
+	sqw1ka9O0KIR5/z3bEgpmKm44vWnq0odI5p2VD
+X-Received: by 2002:a17:90b:5625:b0:343:5f43:933e with SMTP id 98e67ed59e1d1-3536894d3b5mr2930051a91.19.1769183884674;
+        Fri, 23 Jan 2026 07:58:04 -0800 (PST)
 Received: from saikiran-Yoga-Slim-7-14Q8X9 ([2402:e280:3d17:646:dfb6:6b31:aa17:2446])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-35335206b23sm5489305a91.3.2026.01.23.07.58.00
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-35335206b23sm5489305a91.3.2026.01.23.07.58.02
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 23 Jan 2026 07:58:02 -0800 (PST)
+        Fri, 23 Jan 2026 07:58:04 -0800 (PST)
 From: Saikiran <bjsaikiran@gmail.com>
 To: ath12k@lists.infradead.org
 Cc: linux-wireless@vger.kernel.org,
 	kvalo@kernel.org,
 	Saikiran <bjsaikiran@gmail.com>
-Subject: [PATCH] wifi: ath12k: Initialize regulatory frequency ranges to avoid filtering all channels
-Date: Fri, 23 Jan 2026 21:27:47 +0530
-Message-ID: <20260123155750.6007-3-bjsaikiran@gmail.com>
+Subject: [PATCH] wifi: ath12k: Add fallback regulatory domain for WCN7850 without SMBIOS
+Date: Fri, 23 Jan 2026 21:27:48 +0530
+Message-ID: <20260123155750.6007-4-bjsaikiran@gmail.com>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20260123155750.6007-1-bjsaikiran@gmail.com>
 References: <20260123155750.6007-1-bjsaikiran@gmail.com>
@@ -100,7 +100,7 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
 	R_DKIM_ALLOW(-0.20)[gmail.com:s=20230601];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
@@ -110,8 +110,8 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-31120-lists,linux-wireless=lfdr.de];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	TAGGED_FROM(0.00)[bounces-31121-lists,linux-wireless=lfdr.de];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
 	RCPT_COUNT_THREE(0.00)[4];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[bjsaikiran@gmail.com,linux-wireless@vger.kernel.org];
@@ -122,63 +122,67 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	NEURAL_HAM(-0.00)[-1.000];
 	FREEMAIL_FROM(0.00)[gmail.com];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 67E667820E
+	DBL_BLOCKED_OPENRESOLVER(0.00)[launchpad.net:url,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: D234A7818A
 X-Rspamd-Action: no action
 
-Commit 657b0c72c4ad ("wifi: ath12k: Fix frequency range in driver")
-added reg_freq_2ghz/5ghz/6ghz structures to intersect regulatory
-frequency ranges with hardware capabilities. However, these structures
-are never initialized for devices with self-managed regulatory (like
-WCN7850).
+When SMBIOS doesn't provide country code data (common on some Lenovo
+X Elite laptops), initialize with world domain (00) and skip sending
+it to firmware to let firmware use its default regulatory settings.
 
-The WCN7850 firmware manages its own regulatory domain and never calls
-ath12k_reg_build_regd() which updates these structures. This leaves
-them at {0, 0}, causing this logic in mac.c:
+Without this, new_alpha2 remains uninitialized and firmware receives
+invalid country code, causing repeated regulatory update failures.
 
-  freq_high = min(reg_cap->high_5ghz_chan, ab->reg_freq_5ghz.end_freq);
-  // freq_high = min(6000MHz, 0) = 0
+Note: This workaround doesn't fully resolve the regulatory failures
+seen on WCN7850 hw2.0 with firmware WLAN.HMT.1.1.c5-00302. The firmware
+still rejects regulatory settings during early initialization, keeping
+the device in passive-scan-only mode for 5GHz channels. Further firmware
+debugging is needed to resolve the root cause.
 
-Result: ALL 5GHz channels are filtered out and 5GHz WiFi is broken.
-
-Fix: Initialize reg_freq_* structures to full frequency ranges in
-ath12k_core_alloc(). For devices with proper regulatory domain
-updates, these will be overwritten by ath12k_reg_build_regd().
-For WCN7850 with self-managed regulatory, these defaults allow
-channels to work.
-
-Tested-on: WCN7850 hw2.0 PCI WLAN.HMT.1.1.c5-00302
-Fixes: 657b0c72c4ad ("wifi: ath12k: Fix frequency range in driver")
+Link: https://bugs.launchpad.net/ubuntu-concept/+bug/2138308
+Tested-on: WCN7850 hw2.0 PCI WLAN.HMT.1.1.c5-00302 (Lenovo Yoga Slim 7x)
 
 Signed-off-by: Saikiran <bjsaikiran@gmail.com>
 ---
- drivers/net/wireless/ath/ath12k/core.c | 13 +++++++++++++
- 1 file changed, 13 insertions(+)
+ drivers/net/wireless/ath/ath12k/core.c | 18 ++++++++++++++++++
+ 1 file changed, 18 insertions(+)
 
 diff --git a/drivers/net/wireless/ath/ath12k/core.c b/drivers/net/wireless/ath/ath12k/core.c
-index 4121dd14bbcc..99c26ba01304 100644
+index cc352eef1939..4121dd14bbcc 100644
 --- a/drivers/net/wireless/ath/ath12k/core.c
 +++ b/drivers/net/wireless/ath/ath12k/core.c
-@@ -2290,6 +2290,19 @@ struct ath12k_base *ath12k_core_alloc(struct device *dev, size_t priv_size,
- 	ab->qmi.num_radios = U8_MAX;
- 	ab->single_chip_mlo_support = false;
+@@ -800,6 +800,18 @@ int ath12k_core_check_smbios(struct ath12k_base *ab)
+ 	ab->qmi.target.bdf_ext[0] = '\0';
+ 	dmi_walk(ath12k_core_check_cc_code_bdfext, ab);
  
-+	/* Initialize regulatory frequency ranges to full range.
-+	 * These will be updated by ath12k_reg_build_regd() when
-+	 * regulatory domain is set. For WCN7850 with self-managed
-+	 * regulatory, firmware doesn't call reg_build_regd so we
-+	 * need sane defaults to avoid filtering out all channels.
++	/* If SMBIOS doesn't provide country code, initialize with world domain (00)
++	 * to let firmware use its default regulatory settings
 +	 */
-+	ab->reg_freq_2ghz.start_freq = 2312000; /* 2.312 GHz */
-+	ab->reg_freq_2ghz.end_freq = 2732000;   /* 2.732 GHz */
-+	ab->reg_freq_5ghz.start_freq = 5150000; /* 5.150 GHz */
-+	ab->reg_freq_5ghz.end_freq = 5945000;   /* 5.945 GHz */
-+	ab->reg_freq_6ghz.start_freq = 5945000; /* 5.945 GHz */
-+	ab->reg_freq_6ghz.end_freq = 7125000;   /* 7.125 GHz */
++	spin_lock_bh(&ab->base_lock);
++	if (ab->new_alpha2[0] == 0 && ab->new_alpha2[1] == 0) {
++		/* Use world domain - let firmware decide */
++		ab->new_alpha2[0] = '0';
++		ab->new_alpha2[1] = '0';
++		ath12k_info(ab, "No SMBIOS country code, using world regulatory domain\n");
++	}
++	spin_unlock_bh(&ab->base_lock);
 +
- 	/* Device index used to identify the devices in a group.
- 	 *
- 	 * In Intra-device MLO, only one device present in a group,
+ 	if (ab->qmi.target.bdf_ext[0] == '\0')
+ 		return -ENODATA;
+ 
+@@ -1522,6 +1534,12 @@ static void ath12k_update_11d(struct work_struct *work)
+ 	memcpy(&arg.alpha2, &ab->new_alpha2, 2);
+ 	spin_unlock_bh(&ab->base_lock);
+ 
++	/* Skip setting country code if it's world domain (00) - let firmware use defaults */
++	if (arg.alpha2[0] == '0' && arg.alpha2[1] == '0') {
++		ath12k_dbg(ab, ATH12K_DBG_WMI, "skip sending world domain to firmware\n");
++		return;
++	}
++
+ 	ath12k_dbg(ab, ATH12K_DBG_WMI, "update 11d new cc %c%c\n",
+ 		   arg.alpha2[0], arg.alpha2[1]);
+ 
 -- 
 2.51.0
 
