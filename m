@@ -1,61 +1,62 @@
-Return-Path: <linux-wireless+bounces-31150-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-31151-lists+linux-wireless=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 8DlpEpSKdmkxRwEAu9opvQ
-	(envelope-from <linux-wireless+bounces-31150-lists+linux-wireless=lfdr.de@vger.kernel.org>)
-	for <lists+linux-wireless@lfdr.de>; Sun, 25 Jan 2026 22:26:44 +0100
+	id EAXQAa2ZdmmESwEAu9opvQ
+	(envelope-from <linux-wireless+bounces-31151-lists+linux-wireless=lfdr.de@vger.kernel.org>)
+	for <lists+linux-wireless@lfdr.de>; Sun, 25 Jan 2026 23:31:09 +0100
 X-Original-To: lists+linux-wireless@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6AE3982802
-	for <lists+linux-wireless@lfdr.de>; Sun, 25 Jan 2026 22:26:43 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 384EF82B1B
+	for <lists+linux-wireless@lfdr.de>; Sun, 25 Jan 2026 23:31:08 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id A7DE830038DB
-	for <lists+linux-wireless@lfdr.de>; Sun, 25 Jan 2026 21:26:41 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 9E71F3004204
+	for <lists+linux-wireless@lfdr.de>; Sun, 25 Jan 2026 22:31:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 413883009E4;
-	Sun, 25 Jan 2026 21:26:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 311BB2D1F4E;
+	Sun, 25 Jan 2026 22:31:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=debian.org header.i=@debian.org header.b="Tjq6YAup"
+	dkim=pass (1024-bit key) header.d=t32smtp-sign002.email header.i=@t32smtp-sign002.email header.b="AcdmqGUt"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from stravinsky.debian.org (stravinsky.debian.org [82.195.75.108])
+Received: from mail11.out.titan.email (mail11.out.titan.email [3.232.242.252])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B59273009C3
-	for <linux-wireless@vger.kernel.org>; Sun, 25 Jan 2026 21:26:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=82.195.75.108
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BA4582264CC
+	for <linux-wireless@vger.kernel.org>; Sun, 25 Jan 2026 22:31:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=3.232.242.252
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769376401; cv=none; b=liTKrbihAdlSGJ+7xPFNla0CzBKz7eL9dqF1Zhgj00NvieKyjMlLqipoAehIr/S2a/QSLGuwsTmwvTUNhnrRSUd5dO2Gf3MadI8cPSslqWT8mhi1bIaH73FG5lRSPCKwBM/fkx87/gPnLWSUX3nDTaMb2ZEoW5FIGNyuYR2z1ro=
+	t=1769380266; cv=none; b=HaZCtbvWQPKx3Ck9jQoE4gRiAmxhDBaGXZ1gz0HXT8v/YXu3T5ziMzqefpSsUlJ1LYB5QaIPPn8cTO9DjGIAKuiZjnv8jyGuTm/ZCZRhlA+NDV0jGa4na4msYmAtAFFQB0GfUY9jzXzYibG1heU58sHOCBHpcsHKZZKIF2+7TfA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769376401; c=relaxed/simple;
-	bh=L21VCTs4TYrfq9uWHSVd8CZVtv3K2D+ZFKCCaf4FEuI=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=bLDVB+n9cIHIcy2flyjQKmgdTv7GHx7IaeMrdUZAkXmgJ09ezrDo8QGzxDEi+NGDAP54n2Nde1sDx3bJM9aSiJ6zHx5DaMVx60y8GWbyrXuJ8EWWO+nMBFYR9OpoMDlMMT4wdrYj3metloOamhnvmW3qeTVgUk/FlGb+O8HoFlg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=debian.org; spf=none smtp.mailfrom=debian.org; dkim=pass (2048-bit key) header.d=debian.org header.i=@debian.org header.b=Tjq6YAup; arc=none smtp.client-ip=82.195.75.108
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=debian.org
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=debian.org
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=debian.org;
-	s=smtpauto.stravinsky; h=X-Debian-User:Content-Transfer-Encoding:MIME-Version
-	:Message-ID:Date:Subject:Cc:To:From:Reply-To:Content-Type:Content-ID:
-	Content-Description:In-Reply-To:References;
-	bh=SshLZhQzifZiuzEz2HIJWPdY47YZPx5r4Q79+b43iVk=; b=Tjq6YAupEKmjpf98+i7mA36mCE
-	0Wvm2qYz5bjZb+okn10w80sMLG5DACggBmC5mTr5Rg+a1L5UvnYIonOul7hySSa9g842ZUhz4HiCd
-	scUyj7n6J13Zx8+veRja8WVC6yYluN2lVDu1EsPqiP+JgeoAy/Gju5jPbot28qbdgDUvyX2BKl2Vw
-	CWM8ZvpI2+WJ2EPaTCdq+VCBA4nks61ZvYH0eFaTD3VOa8AZ1/XVvjz1nEgdZY93hBRPgtik/gOOD
-	BERu1+fTr33zDTOiw7ZRovsXf8w/iOI9aRpN9InjMkylll6fazsqdyMEassO0sS/a7a//1xf5e5Yr
-	HEY8+P6g==;
-Received: from authenticated user
-	by stravinsky.debian.org with esmtpsa (TLS1.3:ECDHE_SECP256R1__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
-	(Exim 4.94.2)
-	(envelope-from <bage@debian.org>)
-	id 1vk7ct-00FgtB-9k; Sun, 25 Jan 2026 21:26:31 +0000
-From: Bastian Germann <bage@debian.org>
+	s=arc-20240116; t=1769380266; c=relaxed/simple;
+	bh=HPnCaPVTAi6aLKfp+3oqmpSl2+8TmDZ9KO24w2P7cRE=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=KmWShGm3KOyJZAOnD6VVs8u0QhM77nKdTVhUnWYlseb5eW5iT7vt4EzQ3wuBlUy/A/xOPO38e4GLTmhDWwAFT6eVYEUJiyhuWc+lBVwAxxKJ6JrIlbG49yq3Yf6yzdJ/gTTQkzFsaZyHQ17GWNZ071zRiok0ubcLdyyoQ9NmhcE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=justthetip.ca; spf=pass smtp.mailfrom=justthetip.ca; dkim=pass (1024-bit key) header.d=t32smtp-sign002.email header.i=@t32smtp-sign002.email header.b=AcdmqGUt; arc=none smtp.client-ip=3.232.242.252
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=justthetip.ca
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=justthetip.ca
+Received: from localhost (localhost [127.0.0.1])
+	by smtp-out.flockmail.com (Postfix) with ESMTP id 4dzmPd0zLdz9rvX;
+	Sun, 25 Jan 2026 22:22:29 +0000 (UTC)
+DKIM-Signature: a=rsa-sha256; bh=HDde+sERU+6wCDmo3G07iytJThT1QX5SLbUADM4E1gY=;
+	c=relaxed/relaxed; d=t32smtp-sign002.email;
+	h=from:cc:subject:date:mime-version:message-id:to:from:to:cc:subject:date:message-id:in-reply-to:reply-to:references;
+	q=dns/txt; s=titan1; t=1769379749; v=1;
+	b=AcdmqGUtNCGyif4HBh9QfnORv8TWYp1xzWJNZ31dNXGOtv+bTl7H7IBHpc9Hv+f/oR43waO2
+	H4pBP7FCOcooqF34yoDSl6SmO+wq9g2ReuTpt7VNvWpNyllYmdKuf6xx3Q+pMcK2yHrNxNxC6+M
+	/vofsJ0matYbIpSlsM9IPImM=
+Received: from fedora (unknown [176.100.43.128])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp-out.flockmail.com (Postfix) with ESMTPSA id 4dzmPc3htnz9rvs;
+	Sun, 25 Jan 2026 22:22:28 +0000 (UTC)
+Feedback-ID: :lucid_duck@justthetip.ca:justthetip.ca:flockmailId
+From: Lucid Duck <lucid_duck@justthetip.ca>
 To: linux-wireless@vger.kernel.org
-Cc: Bastian Germann <bage@debian.org>,
-	wireless-regdb@lists.infradead.org
-Subject: [PATCH] wireless-regdb: Port RSA signing to cryptography lib
-Date: Sun, 25 Jan 2026 22:26:19 +0100
-Message-ID: <20260125212622.28370-1-bage@debian.org>
-X-Mailer: git-send-email 2.51.0
+Cc: Ping-Ke Shih <pkshih@realtek.com>,
+	Lucid Duck <lucid_duck@justthetip.ca>
+Subject: [PATCH] wifi: rtw89: usb: fix TX flow control by tracking in-flight URBs
+Date: Sun, 25 Jan 2026 14:19:43 -0800
+Message-ID: <20260125221943.36001-1-lucid_duck@justthetip.ca>
+X-Mailer: git-send-email 2.52.0
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
@@ -63,96 +64,167 @@ List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Debian-User: bage
+X-F-Verdict: SPFVALID
+X-Titan-Src-Out: 1769379748937774343.13754.960002775032896041@prod-use1-smtp-out1003.
+X-CMAE-Score: 0
+X-CMAE-Analysis: v=2.4 cv=WtDRMcfv c=1 sm=1 tr=0 ts=697697a4
+	a=yrWfAsoAw4/hpWCXcRwPxQ==:117 a=yrWfAsoAw4/hpWCXcRwPxQ==:17
+	a=CEWIc4RMnpUA:10 a=ThxqNdz_AAAA:8 a=ciokKiwchZdtPYetSlsA:9
+	a=X5WbqfxFh8zCdCUNm0Nt:22
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-0.16 / 15.00];
-	MID_CONTAINS_FROM(1.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	MID_CONTAINS_FROM(1.00)[];
 	R_MISSING_CHARSET(0.50)[];
-	R_DKIM_ALLOW(-0.20)[debian.org:s=smtpauto.stravinsky];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_DKIM_ALLOW(-0.20)[t32smtp-sign002.email:s=titan1];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-31150-lists,linux-wireless=lfdr.de];
-	MIME_TRACE(0.00)[0:+];
-	DMARC_NA(0.00)[debian.org];
-	RCPT_COUNT_THREE(0.00)[3];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[bage@debian.org,linux-wireless@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[debian.org:+];
+	RECEIVED_HELO_LOCALHOST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	TAGGED_RCPT(0.00)[linux-wireless];
+	DMARC_NA(0.00)[justthetip.ca];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-31151-lists,linux-wireless=lfdr.de];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[t32smtp-sign002.email:+];
+	FROM_NEQ_ENVFROM(0.00)[lucid_duck@justthetip.ca,linux-wireless@vger.kernel.org];
 	NEURAL_HAM(-0.00)[-1.000];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,db2bin.py:url]
-X-Rspamd-Queue-Id: 6AE3982802
+	RCVD_COUNT_FIVE(0.00)[5];
+	FROM_HAS_DN(0.00)[];
+	TAGGED_RCPT(0.00)[linux-wireless];
+	TO_DN_SOME(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	RCPT_COUNT_THREE(0.00)[3];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,t32smtp-sign002.email:dkim]
+X-Rspamd-Queue-Id: 384EF82B1B
 X-Rspamd-Action: no action
 
-Port the RSA signing from the deprecated M2Crypto library to the
-cryptography library.
+rtw89_usb_ops_check_and_reclaim_tx_resource() currently returns a
+hardcoded placeholder value of 42, violating mac80211's TX flow control
+contract. This causes uncontrolled URB accumulation under sustained TX
+load since mac80211 believes resources are always available.
 
-M2Crypto is no longer actively maintained. The cryptography library is
-the recommended replacement, offering better maintenance.
+Fix this by implementing proper TX backpressure:
 
-Remove unused hashlib import.
+- Add per-channel atomic counters (tx_inflight[]) to track URBs between
+  submission and completion
+- Increment counter before usb_submit_urb() with rollback on failure
+- Decrement counter in completion callback
+- Return available slots (max - inflight) to mac80211, or 0 at capacity
+- Exclude firmware command channel (CH12) from flow control
 
-Signed-off-by: Bastian Germann <bage@debian.org>
+Tested on D-Link DWA-X1850 (RTL8832AU) with:
+- Sustained high-throughput traffic
+- Module load/unload stress tests
+- Hot-unplug during active transmission
+- 30-minute soak test verifying counters balance at idle
+
+Signed-off-by: Lucid Duck <lucid_duck@justthetip.ca>
 ---
- db2bin.py | 25 ++++++++++++++++---------
- 1 file changed, 16 insertions(+), 9 deletions(-)
+ drivers/net/wireless/realtek/rtw89/usb.c | 27 ++++++++++++++++++++++--
+ drivers/net/wireless/realtek/rtw89/usb.h |  6 ++++++
+ 2 files changed, 31 insertions(+), 2 deletions(-)
 
-diff --git a/db2bin.py b/db2bin.py
-index 29ae313..a4fa3e5 100755
---- a/db2bin.py
-+++ b/db2bin.py
-@@ -2,7 +2,6 @@
- 
- from io import BytesIO, open
- import struct
--import hashlib
- from dbparse import DBParser
- import sys
- 
-@@ -125,19 +124,27 @@ if len(sys.argv) > 3:
-     # Load RSA only now so people can use this script
-     # without having those libraries installed to verify
-     # their SQL changes
--    from M2Crypto import RSA
-+    from cryptography.hazmat.primitives import hashes, serialization
-+    from cryptography.hazmat.primitives.asymmetric import padding
+diff --git a/drivers/net/wireless/realtek/rtw89/usb.c b/drivers/net/wireless/realtek/rtw89/usb.c
+index e77561a4d..6fcf32603 100644
+--- a/drivers/net/wireless/realtek/rtw89/usb.c
++++ b/drivers/net/wireless/realtek/rtw89/usb.c
+@@ -161,16 +161,25 @@ static u32
+ rtw89_usb_ops_check_and_reclaim_tx_resource(struct rtw89_dev *rtwdev,
+ 					    u8 txch)
+ {
++	struct rtw89_usb *rtwusb = rtw89_usb_priv(rtwdev);
++	int inflight;
 +
-+    # load the private key
-+    with open(sys.argv[3], 'rb') as key_file:
-+        key = serialization.load_pem_private_key(key_file.read(), password=None)
++	/* Firmware command channel is not flow-controlled */
+ 	if (txch == RTW89_TXCH_CH12)
+ 		return 1;
  
-     # determine signature length
--    key = RSA.load_key(sys.argv[3])
--    hash = hashlib.sha1()
--    hash.update(output.getvalue())
--    sig = key.sign(hash.digest())
-+    sig = key.sign(
-+        output.getvalue(),
-+        padding.PKCS1v15(),
-+        hashes.SHA1()
-+    )
-     # write it to file
-     siglen.set(len(sig))
-     # sign again
--    hash = hashlib.sha1()
--    hash.update(output.getvalue())
--    sig = key.sign(hash.digest())
-+    sig = key.sign(
-+        output.getvalue(),
-+        padding.PKCS1v15(),
-+        hashes.SHA1()
-+    )
+-	return 42; /* TODO some kind of calculation? */
++	inflight = atomic_read(&rtwusb->tx_inflight[txch]);
++	if (inflight >= RTW89_USB_MAX_TX_URBS_PER_CH)
++		return 0;
++
++	return RTW89_USB_MAX_TX_URBS_PER_CH - inflight;
+ }
  
-     output.write(sig)
- else:
+ static void rtw89_usb_write_port_complete(struct urb *urb)
+ {
+ 	struct rtw89_usb_tx_ctrl_block *txcb = urb->context;
+ 	struct rtw89_dev *rtwdev = txcb->rtwdev;
++	struct rtw89_usb *rtwusb = rtw89_usb_priv(rtwdev);
+ 	struct ieee80211_tx_info *info;
+ 	struct rtw89_txwd_body *txdesc;
+ 	struct sk_buff *skb;
+@@ -229,6 +238,10 @@ static void rtw89_usb_write_port_complete(struct urb *urb)
+ 		break;
+ 	}
+ 
++	/* Decrement in-flight counter (skip firmware command channel) */
++	if (txcb->txch != RTW89_TXCH_CH12)
++		atomic_dec(&rtwusb->tx_inflight[txcb->txch]);
++
+ 	kfree(txcb);
+ }
+ 
+@@ -306,9 +319,17 @@ static void rtw89_usb_ops_tx_kick_off(struct rtw89_dev *rtwdev, u8 txch)
+ 
+ 		skb_queue_tail(&txcb->tx_ack_queue, skb);
+ 
++		/* Increment BEFORE submit to avoid race with completion */
++		if (txch != RTW89_TXCH_CH12)
++			atomic_inc(&rtwusb->tx_inflight[txch]);
++
+ 		ret = rtw89_usb_write_port(rtwdev, txch, skb->data, skb->len,
+ 					   txcb);
+ 		if (ret) {
++			/* Rollback increment on failure */
++			if (txch != RTW89_TXCH_CH12)
++				atomic_dec(&rtwusb->tx_inflight[txch]);
++
+ 			if (ret != -ENODEV)
+ 				rtw89_err(rtwdev, "write port txch %d failed: %d\n",
+ 					  txch, ret);
+@@ -666,8 +687,10 @@ static void rtw89_usb_init_tx(struct rtw89_dev *rtwdev)
+ 	struct rtw89_usb *rtwusb = rtw89_usb_priv(rtwdev);
+ 	int i;
+ 
+-	for (i = 0; i < ARRAY_SIZE(rtwusb->tx_queue); i++)
++	for (i = 0; i < ARRAY_SIZE(rtwusb->tx_queue); i++) {
+ 		skb_queue_head_init(&rtwusb->tx_queue[i]);
++		atomic_set(&rtwusb->tx_inflight[i], 0);
++	}
+ }
+ 
+ static void rtw89_usb_deinit_tx(struct rtw89_dev *rtwdev)
+diff --git a/drivers/net/wireless/realtek/rtw89/usb.h b/drivers/net/wireless/realtek/rtw89/usb.h
+index 203ec8e99..f72a8b1b2 100644
+--- a/drivers/net/wireless/realtek/rtw89/usb.h
++++ b/drivers/net/wireless/realtek/rtw89/usb.h
+@@ -20,6 +20,9 @@
+ #define RTW89_MAX_ENDPOINT_NUM		9
+ #define RTW89_MAX_BULKOUT_NUM		7
+ 
++/* TX flow control: max in-flight URBs per channel */
++#define RTW89_USB_MAX_TX_URBS_PER_CH	32
++
+ struct rtw89_usb_info {
+ 	u32 usb_host_request_2;
+ 	u32 usb_wlan0_1;
+@@ -63,6 +66,9 @@ struct rtw89_usb {
+ 	struct usb_anchor tx_submitted;
+ 
+ 	struct sk_buff_head tx_queue[RTW89_TXCH_NUM];
++
++	/* TX flow control: track in-flight URBs per channel */
++	atomic_t tx_inflight[RTW89_TXCH_NUM];
+ };
+ 
+ static inline struct rtw89_usb *rtw89_usb_priv(struct rtw89_dev *rtwdev)
+-- 
+2.52.0
+
 
