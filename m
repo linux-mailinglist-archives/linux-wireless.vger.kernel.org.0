@@ -1,88 +1,61 @@
-Return-Path: <linux-wireless+bounces-31149-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-31150-lists+linux-wireless=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 6q7KN8FxdmmIQwEAu9opvQ
-	(envelope-from <linux-wireless+bounces-31149-lists+linux-wireless=lfdr.de@vger.kernel.org>)
-	for <lists+linux-wireless@lfdr.de>; Sun, 25 Jan 2026 20:40:49 +0100
+	id 8DlpEpSKdmkxRwEAu9opvQ
+	(envelope-from <linux-wireless+bounces-31150-lists+linux-wireless=lfdr.de@vger.kernel.org>)
+	for <lists+linux-wireless@lfdr.de>; Sun, 25 Jan 2026 22:26:44 +0100
 X-Original-To: lists+linux-wireless@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4D848823EF
-	for <lists+linux-wireless@lfdr.de>; Sun, 25 Jan 2026 20:40:49 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6AE3982802
+	for <lists+linux-wireless@lfdr.de>; Sun, 25 Jan 2026 22:26:43 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 304B5300425E
-	for <lists+linux-wireless@lfdr.de>; Sun, 25 Jan 2026 19:40:48 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id A7DE830038DB
+	for <lists+linux-wireless@lfdr.de>; Sun, 25 Jan 2026 21:26:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F3C462FA0C6;
-	Sun, 25 Jan 2026 19:40:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 413883009E4;
+	Sun, 25 Jan 2026 21:26:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=u-northwestern-edu.20230601.gappssmtp.com header.i=@u-northwestern-edu.20230601.gappssmtp.com header.b="KO4VDU6u"
+	dkim=pass (2048-bit key) header.d=debian.org header.i=@debian.org header.b="Tjq6YAup"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-ot1-f43.google.com (mail-ot1-f43.google.com [209.85.210.43])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from stravinsky.debian.org (stravinsky.debian.org [82.195.75.108])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E389F25771
-	for <linux-wireless@vger.kernel.org>; Sun, 25 Jan 2026 19:40:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.43
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B59273009C3
+	for <linux-wireless@vger.kernel.org>; Sun, 25 Jan 2026 21:26:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=82.195.75.108
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769370046; cv=none; b=EogDmR38dgvRifwlh9kUFny5sFnfQ+dgRzlAm20gyrpnXQZX6J5ap17hHngrfCHbgk7EKSDI/paMQRFP3SuR5oh7SDX/BZpcjc4OAHErhJfA/l2Ed5KUiMBo4+PkmZTdE4DnzZUaXNRDO4y2k9mLuC3zemL7bLU7TjADwfC/0cI=
+	t=1769376401; cv=none; b=liTKrbihAdlSGJ+7xPFNla0CzBKz7eL9dqF1Zhgj00NvieKyjMlLqipoAehIr/S2a/QSLGuwsTmwvTUNhnrRSUd5dO2Gf3MadI8cPSslqWT8mhi1bIaH73FG5lRSPCKwBM/fkx87/gPnLWSUX3nDTaMb2ZEoW5FIGNyuYR2z1ro=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769370046; c=relaxed/simple;
-	bh=NDw0zdlNccBo0OEGcTqzdJEKe4tgfmzrwRyhiRthcVU=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=Dr+sEZADVgN6+XO10YbfSntRT9m7fbaPVla6vz0BvdRYJns7WnrzMlHXDtBv2p2CPHSOiOwDCueHgyICTKSCseG8Vk1NhVRTEW4k8iirkLeAcBZL2U9VQeGn1q9QLQnFc6Eihb4LYC6i34lA9R+vemREVW9SJOoC/cDyUl+U6eM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=u.northwestern.edu; spf=pass smtp.mailfrom=u.northwestern.edu; dkim=pass (2048-bit key) header.d=u-northwestern-edu.20230601.gappssmtp.com header.i=@u-northwestern-edu.20230601.gappssmtp.com header.b=KO4VDU6u; arc=none smtp.client-ip=209.85.210.43
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=u.northwestern.edu
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=u.northwestern.edu
-Received: by mail-ot1-f43.google.com with SMTP id 46e09a7af769-7d148dd16edso3382360a34.2
-        for <linux-wireless@vger.kernel.org>; Sun, 25 Jan 2026 11:40:44 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=u-northwestern-edu.20230601.gappssmtp.com; s=20230601; t=1769370044; x=1769974844; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=ujBxaUbZpVezvFs0113sYpNtSpcNhJdPNBv65Q63G8w=;
-        b=KO4VDU6u5SNdNTKMe0jk8amn08v1lNE+RtxuoILbQE2zyYgzaYoxh+o9MZCiagVZGL
-         YfaCSMZxlCZEB2PhVOzX6scCsYrXv1q9YpCqxA6O/0eXnGKYGDzq4aZtms0WjRHzaOYR
-         1j24P8KAzgflWMm0ekgxiQUsqlJZC3Ar9IfsnHfJ+t7Y6RGoKA3N8I2qDYX8Zvo9FApv
-         YHd1rQj32v5dlmNw2eQUYp4gPmJrw0C2mV9buTwDL0cbOL3cK7TNDJv3aIS7Y3ahXzIq
-         5mmdPVyB+T0Cb5BrAV7eaWX0bQiMPcjgl/SId9El7908s43xLvBeuJbewFaDaJ5GYlfU
-         tNQg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1769370044; x=1769974844;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=ujBxaUbZpVezvFs0113sYpNtSpcNhJdPNBv65Q63G8w=;
-        b=cDk/L6v7LwoMwdly3eMfM/6i3wmPXHp3kMoJ8wt91yhPnVY5/sxekMFYe6STmsSQLP
-         ozV7R6+qa8l4gRYBjuhvMzVFR7jAX1tsT8936435LI8Aifko+Ds2xZxdCv3i8xLHpjZ0
-         vi+i0+C3558yragoC/R/DejPsX4+JxhH3sxA8EpZiyC8IWmx4ujQdUItZmY03QATuk5c
-         Hn6h1yJHE+6LvkW1spiKN8Ty8/ZceYi8xAzhgoUh5LfKmueaZDf3raVoBwipXb5BfaF+
-         MvfaUU225j1EwM1O70mbrk0ch2KNR1GmWF9UPJJuJSbO61+UgrfIWxo/mq4bi8GyzZY4
-         iPmQ==
-X-Gm-Message-State: AOJu0Yyp6N1HfrgHLbOGNHEbrzfVjMnVQECyOxuCONlf7q/FzKPMdRu6
-	OjS7o2RpfVH5bOoGyGCsA0bDlY8lwtQ304e+0hp1Nyr1iXzh3WeX7PvHe4iQZBNPWoU=
-X-Gm-Gg: AZuq6aLAqvtGyciT/eNCHtukFMlpBVeAFyHHVqMlFLYnWTY7gmdRALxJS0aCSK0VWdW
-	EpRRTj5/vnsU0wjLOs7p1YwBSiLaJ4Rm9KO1fNfSMNOWSrdbCXUjm0xOyBpdzwQsZEhPfmFfa/P
-	MBpe+Xtz+JOBW788UrGkpx3mV8o4M4bc7tYkF3cctPzuEefCQuNWJShRXSok4vrX/OSprfLRrhr
-	5lEmSTwoGWxyVICIqlYcw5ruMllzGZus4SFfTiw+i1gIP6U1mp0Z1+h2BdAj/iAl7VQSiMVMP76
-	FBLW2okNmQ3ww8FQLA/FVRDEZEO5k/W80UKA8G2XJPyd0ShfCepINt+1jfI1GDVIykmCJErx/e7
-	vKQXCJulBCKCgxWJDDLasV2AQ8K4FmBTrLMAgfWalE+KPSKWj+lziBVETdNCes74j3CV3M3L74u
-	xKm8/qlBCTiwUZt5QhRscGQb14QEa41iA8PfwAWzr901YqvDsjAUarRuFF20hbitAyjjTsTfpNC
-	d3DKcRh9y2tNQeK4RcHcLbhIFMYaxE=
-X-Received: by 2002:a05:6830:6102:b0:7c7:4f2:e15d with SMTP id 46e09a7af769-7d170223bfdmr1559368a34.16.1769370043771;
-        Sun, 25 Jan 2026 11:40:43 -0800 (PST)
-Received: from security.cs.northwestern.edu (security.cs.northwestern.edu. [165.124.184.136])
-        by smtp.gmail.com with ESMTPSA id 46e09a7af769-7d15b346e2asm6426106a34.2.2026.01.25.11.40.43
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 25 Jan 2026 11:40:43 -0800 (PST)
-From: Ziyi Guo <n7l8m4@u.northwestern.edu>
-To: Stanislaw Gruszka <stf_xl@wp.pl>
-Cc: linux-wireless@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Ziyi Guo <n7l8m4@u.northwestern.edu>
-Subject: [PATCH] wifi: iwlegacy: add missing mutex protection in il4965_store_tx_power()
-Date: Sun, 25 Jan 2026 19:40:39 +0000
-Message-Id: <20260125194039.1196488-1-n7l8m4@u.northwestern.edu>
-X-Mailer: git-send-email 2.34.1
+	s=arc-20240116; t=1769376401; c=relaxed/simple;
+	bh=L21VCTs4TYrfq9uWHSVd8CZVtv3K2D+ZFKCCaf4FEuI=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=bLDVB+n9cIHIcy2flyjQKmgdTv7GHx7IaeMrdUZAkXmgJ09ezrDo8QGzxDEi+NGDAP54n2Nde1sDx3bJM9aSiJ6zHx5DaMVx60y8GWbyrXuJ8EWWO+nMBFYR9OpoMDlMMT4wdrYj3metloOamhnvmW3qeTVgUk/FlGb+O8HoFlg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=debian.org; spf=none smtp.mailfrom=debian.org; dkim=pass (2048-bit key) header.d=debian.org header.i=@debian.org header.b=Tjq6YAup; arc=none smtp.client-ip=82.195.75.108
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=debian.org
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=debian.org
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=debian.org;
+	s=smtpauto.stravinsky; h=X-Debian-User:Content-Transfer-Encoding:MIME-Version
+	:Message-ID:Date:Subject:Cc:To:From:Reply-To:Content-Type:Content-ID:
+	Content-Description:In-Reply-To:References;
+	bh=SshLZhQzifZiuzEz2HIJWPdY47YZPx5r4Q79+b43iVk=; b=Tjq6YAupEKmjpf98+i7mA36mCE
+	0Wvm2qYz5bjZb+okn10w80sMLG5DACggBmC5mTr5Rg+a1L5UvnYIonOul7hySSa9g842ZUhz4HiCd
+	scUyj7n6J13Zx8+veRja8WVC6yYluN2lVDu1EsPqiP+JgeoAy/Gju5jPbot28qbdgDUvyX2BKl2Vw
+	CWM8ZvpI2+WJ2EPaTCdq+VCBA4nks61ZvYH0eFaTD3VOa8AZ1/XVvjz1nEgdZY93hBRPgtik/gOOD
+	BERu1+fTr33zDTOiw7ZRovsXf8w/iOI9aRpN9InjMkylll6fazsqdyMEassO0sS/a7a//1xf5e5Yr
+	HEY8+P6g==;
+Received: from authenticated user
+	by stravinsky.debian.org with esmtpsa (TLS1.3:ECDHE_SECP256R1__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
+	(Exim 4.94.2)
+	(envelope-from <bage@debian.org>)
+	id 1vk7ct-00FgtB-9k; Sun, 25 Jan 2026 21:26:31 +0000
+From: Bastian Germann <bage@debian.org>
+To: linux-wireless@vger.kernel.org
+Cc: Bastian Germann <bage@debian.org>,
+	wireless-regdb@lists.infradead.org
+Subject: [PATCH] wireless-regdb: Port RSA signing to cryptography lib
+Date: Sun, 25 Jan 2026 22:26:19 +0100
+Message-ID: <20260125212622.28370-1-bage@debian.org>
+X-Mailer: git-send-email 2.51.0
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
@@ -90,71 +63,96 @@ List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+X-Debian-User: bage
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.06 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
 	MID_CONTAINS_FROM(1.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
-	R_DKIM_ALLOW(-0.20)[u-northwestern-edu.20230601.gappssmtp.com:s=20230601];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_DKIM_ALLOW(-0.20)[debian.org:s=smtpauto.stravinsky];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
-	DMARC_POLICY_SOFTFAIL(0.10)[northwestern.edu : SPF not aligned (relaxed), DKIM not aligned (relaxed),none];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-31149-lists,linux-wireless=lfdr.de];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FREEMAIL_TO(0.00)[wp.pl];
 	RCVD_TLS_LAST(0.00)[];
-	DKIM_TRACE(0.00)[u-northwestern-edu.20230601.gappssmtp.com:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	TAGGED_FROM(0.00)[bounces-31150-lists,linux-wireless=lfdr.de];
+	MIME_TRACE(0.00)[0:+];
+	DMARC_NA(0.00)[debian.org];
+	RCPT_COUNT_THREE(0.00)[3];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	TO_DN_SOME(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[n7l8m4@u.northwestern.edu,linux-wireless@vger.kernel.org];
+	FROM_NEQ_ENVFROM(0.00)[bage@debian.org,linux-wireless@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	RCPT_COUNT_THREE(0.00)[4];
-	RCVD_COUNT_FIVE(0.00)[5];
+	DKIM_TRACE(0.00)[debian.org:+];
+	PRECEDENCE_BULK(0.00)[];
 	TAGGED_RCPT(0.00)[linux-wireless];
 	NEURAL_HAM(-0.00)[-1.000];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[u-northwestern-edu.20230601.gappssmtp.com:dkim,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,u.northwestern.edu:mid]
-X-Rspamd-Queue-Id: 4D848823EF
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,db2bin.py:url]
+X-Rspamd-Queue-Id: 6AE3982802
 X-Rspamd-Action: no action
 
-il4965_store_tx_power() calls il_set_tx_power() without holding il->mutex.
-However, il_set_tx_power() has lockdep_assert_held(&il->mutex) indicating
-that callers must hold this lock.
+Port the RSA signing from the deprecated M2Crypto library to the
+cryptography library.
 
-All other callers of il_set_tx_power() properly acquire the mutex:
-- il_bg_scan_completed() acquires mutex at common.c:1683
-- il_mac_config() acquires mutex at common.c:5006
-- il3945_commit_rxon() and il4965_commit_rxon() are called via work
-  queues that hold the mutex (like il4965_bg_alive_start)
+M2Crypto is no longer actively maintained. The cryptography library is
+the recommended replacement, offering better maintenance.
 
-Add mutex_lock()/mutex_unlock() around the il_set_tx_power() call in
-the sysfs store function to fix the missing lock protection.
+Remove unused hashlib import.
 
-Signed-off-by: Ziyi Guo <n7l8m4@u.northwestern.edu>
+Signed-off-by: Bastian Germann <bage@debian.org>
 ---
- drivers/net/wireless/intel/iwlegacy/4965-mac.c | 2 ++
- 1 file changed, 2 insertions(+)
+ db2bin.py | 25 ++++++++++++++++---------
+ 1 file changed, 16 insertions(+), 9 deletions(-)
 
-diff --git a/drivers/net/wireless/intel/iwlegacy/4965-mac.c b/drivers/net/wireless/intel/iwlegacy/4965-mac.c
-index 3588dec75ebd..57fa866efd9f 100644
---- a/drivers/net/wireless/intel/iwlegacy/4965-mac.c
-+++ b/drivers/net/wireless/intel/iwlegacy/4965-mac.c
-@@ -4606,7 +4606,9 @@ il4965_store_tx_power(struct device *d, struct device_attribute *attr,
- 	if (ret)
- 		IL_INFO("%s is not in decimal form.\n", buf);
- 	else {
-+		mutex_lock(&il->mutex);
- 		ret = il_set_tx_power(il, val, false);
-+		mutex_unlock(&il->mutex);
- 		if (ret)
- 			IL_ERR("failed setting tx power (0x%08x).\n", ret);
- 		else
--- 
-2.34.1
-
+diff --git a/db2bin.py b/db2bin.py
+index 29ae313..a4fa3e5 100755
+--- a/db2bin.py
++++ b/db2bin.py
+@@ -2,7 +2,6 @@
+ 
+ from io import BytesIO, open
+ import struct
+-import hashlib
+ from dbparse import DBParser
+ import sys
+ 
+@@ -125,19 +124,27 @@ if len(sys.argv) > 3:
+     # Load RSA only now so people can use this script
+     # without having those libraries installed to verify
+     # their SQL changes
+-    from M2Crypto import RSA
++    from cryptography.hazmat.primitives import hashes, serialization
++    from cryptography.hazmat.primitives.asymmetric import padding
++
++    # load the private key
++    with open(sys.argv[3], 'rb') as key_file:
++        key = serialization.load_pem_private_key(key_file.read(), password=None)
+ 
+     # determine signature length
+-    key = RSA.load_key(sys.argv[3])
+-    hash = hashlib.sha1()
+-    hash.update(output.getvalue())
+-    sig = key.sign(hash.digest())
++    sig = key.sign(
++        output.getvalue(),
++        padding.PKCS1v15(),
++        hashes.SHA1()
++    )
+     # write it to file
+     siglen.set(len(sig))
+     # sign again
+-    hash = hashlib.sha1()
+-    hash.update(output.getvalue())
+-    sig = key.sign(hash.digest())
++    sig = key.sign(
++        output.getvalue(),
++        padding.PKCS1v15(),
++        hashes.SHA1()
++    )
+ 
+     output.write(sig)
+ else:
 
