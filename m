@@ -1,88 +1,87 @@
-Return-Path: <linux-wireless+bounces-31148-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-31149-lists+linux-wireless=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id oLbrKzBwdmnyQgEAu9opvQ
-	(envelope-from <linux-wireless+bounces-31148-lists+linux-wireless=lfdr.de@vger.kernel.org>)
-	for <lists+linux-wireless@lfdr.de>; Sun, 25 Jan 2026 20:34:08 +0100
+	id 6q7KN8FxdmmIQwEAu9opvQ
+	(envelope-from <linux-wireless+bounces-31149-lists+linux-wireless=lfdr.de@vger.kernel.org>)
+	for <lists+linux-wireless@lfdr.de>; Sun, 25 Jan 2026 20:40:49 +0100
 X-Original-To: lists+linux-wireless@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id C8F07823A1
-	for <lists+linux-wireless@lfdr.de>; Sun, 25 Jan 2026 20:34:07 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4D848823EF
+	for <lists+linux-wireless@lfdr.de>; Sun, 25 Jan 2026 20:40:49 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 063F430056C7
-	for <lists+linux-wireless@lfdr.de>; Sun, 25 Jan 2026 19:30:15 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 304B5300425E
+	for <lists+linux-wireless@lfdr.de>; Sun, 25 Jan 2026 19:40:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6BB612F60A2;
-	Sun, 25 Jan 2026 19:30:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F3C462FA0C6;
+	Sun, 25 Jan 2026 19:40:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=u-northwestern-edu.20230601.gappssmtp.com header.i=@u-northwestern-edu.20230601.gappssmtp.com header.b="yWmxOmuK"
+	dkim=pass (2048-bit key) header.d=u-northwestern-edu.20230601.gappssmtp.com header.i=@u-northwestern-edu.20230601.gappssmtp.com header.b="KO4VDU6u"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-oo1-f51.google.com (mail-oo1-f51.google.com [209.85.161.51])
+Received: from mail-ot1-f43.google.com (mail-ot1-f43.google.com [209.85.210.43])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8CF6D2F5461
-	for <linux-wireless@vger.kernel.org>; Sun, 25 Jan 2026 19:30:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.161.51
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E389F25771
+	for <linux-wireless@vger.kernel.org>; Sun, 25 Jan 2026 19:40:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.43
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769369414; cv=none; b=fWNrb7ayX9TOMABWcNC7t7PGYrkDE4jsuhNGH2RNjAuk3hIVqcddKZIyVapCzfdtiKeZt/BBt1a49FQn0izs2vmHHKZHG2Y6/+SnmuNVFSD+JW+MADaMktPyy07HFVaXvS27iYM3NQ3IJ02xcI6C4NHCgTk7MjQno5vvU4EeZa8=
+	t=1769370046; cv=none; b=EogDmR38dgvRifwlh9kUFny5sFnfQ+dgRzlAm20gyrpnXQZX6J5ap17hHngrfCHbgk7EKSDI/paMQRFP3SuR5oh7SDX/BZpcjc4OAHErhJfA/l2Ed5KUiMBo4+PkmZTdE4DnzZUaXNRDO4y2k9mLuC3zemL7bLU7TjADwfC/0cI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769369414; c=relaxed/simple;
-	bh=4i4jP7kP2aHf/CxOoLcXrYqiFvB8WBy+y068JRX34WA=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=KtM1IITjaQU5H+3si/S26WheqQ8zq9WA5KfXB/Tih8j/1kBd0UUFWXWA03/BOb7A27geu/tokY/zCyK0HWGzAhHEE+TQrj9myNrRZKPIUooZXdGCuy27V8RloRActeqVZChgVfS0th9TI+RiuRYnyUN3LDbTtd5DpZ7nBi4sTqM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=u.northwestern.edu; spf=pass smtp.mailfrom=u.northwestern.edu; dkim=pass (2048-bit key) header.d=u-northwestern-edu.20230601.gappssmtp.com header.i=@u-northwestern-edu.20230601.gappssmtp.com header.b=yWmxOmuK; arc=none smtp.client-ip=209.85.161.51
+	s=arc-20240116; t=1769370046; c=relaxed/simple;
+	bh=NDw0zdlNccBo0OEGcTqzdJEKe4tgfmzrwRyhiRthcVU=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=Dr+sEZADVgN6+XO10YbfSntRT9m7fbaPVla6vz0BvdRYJns7WnrzMlHXDtBv2p2CPHSOiOwDCueHgyICTKSCseG8Vk1NhVRTEW4k8iirkLeAcBZL2U9VQeGn1q9QLQnFc6Eihb4LYC6i34lA9R+vemREVW9SJOoC/cDyUl+U6eM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=u.northwestern.edu; spf=pass smtp.mailfrom=u.northwestern.edu; dkim=pass (2048-bit key) header.d=u-northwestern-edu.20230601.gappssmtp.com header.i=@u-northwestern-edu.20230601.gappssmtp.com header.b=KO4VDU6u; arc=none smtp.client-ip=209.85.210.43
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=u.northwestern.edu
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=u.northwestern.edu
-Received: by mail-oo1-f51.google.com with SMTP id 006d021491bc7-66103641d76so853136eaf.1
-        for <linux-wireless@vger.kernel.org>; Sun, 25 Jan 2026 11:30:10 -0800 (PST)
+Received: by mail-ot1-f43.google.com with SMTP id 46e09a7af769-7d148dd16edso3382360a34.2
+        for <linux-wireless@vger.kernel.org>; Sun, 25 Jan 2026 11:40:44 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=u-northwestern-edu.20230601.gappssmtp.com; s=20230601; t=1769369408; x=1769974208; darn=vger.kernel.org;
+        d=u-northwestern-edu.20230601.gappssmtp.com; s=20230601; t=1769370044; x=1769974844; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:message-id:date:subject:cc
          :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=zlSpUCJ3gqRbwg4bt4p5ahC24nJIWE1a9/cK/hf0tbk=;
-        b=yWmxOmuKJki10wYruM49zLQUH/uxy77hu2W2vkJpa8PcjhR4K6lvvdDMtQMjiyIHiU
-         eOK60rzxKCwPJD2hT9ZMD0c+cf8Hd2/AkXjB+jbShh9dRKCFcVNy4ZC4XkWXb/FDTGpZ
-         eEQMqkB+9kQkHo5Z+K7BQ833iu6V/zBUAMsDxA0PkxNUanuMORf1Au2H4IiKaPxQAnF6
-         HBGv2MpKfpWSgjZQHgBT09i9cvGLqWQT8nNO6kwW/WbLJajpNwTodn57GFCyHqWx80YI
-         71se9HnkGjyVraKOxQZ2/IMyh4xEQrV5lQM9ITpAq/ZILzOrspXVZ4+O3eBoPRQwmRPO
-         HdtA==
+        bh=ujBxaUbZpVezvFs0113sYpNtSpcNhJdPNBv65Q63G8w=;
+        b=KO4VDU6u5SNdNTKMe0jk8amn08v1lNE+RtxuoILbQE2zyYgzaYoxh+o9MZCiagVZGL
+         YfaCSMZxlCZEB2PhVOzX6scCsYrXv1q9YpCqxA6O/0eXnGKYGDzq4aZtms0WjRHzaOYR
+         1j24P8KAzgflWMm0ekgxiQUsqlJZC3Ar9IfsnHfJ+t7Y6RGoKA3N8I2qDYX8Zvo9FApv
+         YHd1rQj32v5dlmNw2eQUYp4gPmJrw0C2mV9buTwDL0cbOL3cK7TNDJv3aIS7Y3ahXzIq
+         5mmdPVyB+T0Cb5BrAV7eaWX0bQiMPcjgl/SId9El7908s43xLvBeuJbewFaDaJ5GYlfU
+         tNQg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1769369408; x=1769974208;
+        d=1e100.net; s=20230601; t=1769370044; x=1769974844;
         h=content-transfer-encoding:mime-version:message-id:date:subject:cc
          :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=zlSpUCJ3gqRbwg4bt4p5ahC24nJIWE1a9/cK/hf0tbk=;
-        b=IHLyIJdfGcp/PeasmenZ6R70JEL21ArzuMiHNJs2NlIcKzLOHqq7l/Lmwnc2L3J9Yc
-         7EQn/qrKix0OpcCDeBWA1NDYN2S6InkJTTNZoJomiy0C1d4XWxQBnX6aycKPw/iaFFy9
-         bDEwsHudEQxzS5Y9a3Gn3fSm3vBydDOVqLXyLvkgi84ku3Ej8q3pA4FFMpkMyJ/rYMBS
-         hZb3EiHIwBwoq/97SvZaplGfS0Lv/vY02K1exbWyZUdqbSDKWJfiMx4D49RSLsknpVDI
-         inhzkCc3sIgGEt9Yp0ikrEM4fuNYlV+QpUlOwam1aw5cyKBx1P7ezNJggAW7inUsezjp
-         7Zsg==
-X-Gm-Message-State: AOJu0YztY+ANyClcnmvq8MOTz6MQI1l6W1vW80kl3BnczzzlQ/i6e32P
-	1ngXc6W3WP2+6mGjsMmLyNzpQpw8n/n+7gCmsJFdp5ynd8JyHv2CzMdFmJPoepUNWkHdJps2Mle
-	YHoJE
-X-Gm-Gg: AZuq6aIPDN5muLZVlf/t8APHUtoh45fFPmxHmRwZlwl9XeHlSFjWFgCIDVjhx5WwJCh
-	qrvoyhmypFY3tmcNh//LeCCV59DWjRDy/vaNoELHMDxrHW3bWr9Pc1KZT1PwGDHE2HkEc9l7E6A
-	xTljog9C1dwRYG5WOvscP/3y9Rm8ndvB6/C4CAxJBsrch0zNYKH4dOVXbxoioswx4pmzCbqxlOA
-	ADOJsxgAMX3/PFXDTmwe2kQefQ1MSyq/BDMgKpzmxZPavbDheYna8tKGnC2qbU6U49hZX6Wd+nz
-	NgZuuWLflegpbXEKxpVmJ/aM0g9gUAyuw7jMKe2o8ciBLJrG7D+7Ebd5xZq11Vo5UVxGfxzcEP6
-	Iax/OPRjnOJUTc+Qf4b2PZr9SzO16dgnFyGl5AtgipWnL5CTzkgvcj4aoDhwjCTG6bQ4t5K2Ytx
-	sTDxs3EFAqFKrSw0feXu33R02P3echu6p4mw1cQ3iGurIxEl/9vyIybzcXnpiQyQl2I7E6tZj/C
-	AJlNV8zehTG0BEGUvZ2rYRxneLjstk=
-X-Received: by 2002:a05:6820:4b14:b0:65d:e58:5041 with SMTP id 006d021491bc7-662e04cca23mr1024396eaf.77.1769369408669;
-        Sun, 25 Jan 2026 11:30:08 -0800 (PST)
+        bh=ujBxaUbZpVezvFs0113sYpNtSpcNhJdPNBv65Q63G8w=;
+        b=cDk/L6v7LwoMwdly3eMfM/6i3wmPXHp3kMoJ8wt91yhPnVY5/sxekMFYe6STmsSQLP
+         ozV7R6+qa8l4gRYBjuhvMzVFR7jAX1tsT8936435LI8Aifko+Ds2xZxdCv3i8xLHpjZ0
+         vi+i0+C3558yragoC/R/DejPsX4+JxhH3sxA8EpZiyC8IWmx4ujQdUItZmY03QATuk5c
+         Hn6h1yJHE+6LvkW1spiKN8Ty8/ZceYi8xAzhgoUh5LfKmueaZDf3raVoBwipXb5BfaF+
+         MvfaUU225j1EwM1O70mbrk0ch2KNR1GmWF9UPJJuJSbO61+UgrfIWxo/mq4bi8GyzZY4
+         iPmQ==
+X-Gm-Message-State: AOJu0Yyp6N1HfrgHLbOGNHEbrzfVjMnVQECyOxuCONlf7q/FzKPMdRu6
+	OjS7o2RpfVH5bOoGyGCsA0bDlY8lwtQ304e+0hp1Nyr1iXzh3WeX7PvHe4iQZBNPWoU=
+X-Gm-Gg: AZuq6aLAqvtGyciT/eNCHtukFMlpBVeAFyHHVqMlFLYnWTY7gmdRALxJS0aCSK0VWdW
+	EpRRTj5/vnsU0wjLOs7p1YwBSiLaJ4Rm9KO1fNfSMNOWSrdbCXUjm0xOyBpdzwQsZEhPfmFfa/P
+	MBpe+Xtz+JOBW788UrGkpx3mV8o4M4bc7tYkF3cctPzuEefCQuNWJShRXSok4vrX/OSprfLRrhr
+	5lEmSTwoGWxyVICIqlYcw5ruMllzGZus4SFfTiw+i1gIP6U1mp0Z1+h2BdAj/iAl7VQSiMVMP76
+	FBLW2okNmQ3ww8FQLA/FVRDEZEO5k/W80UKA8G2XJPyd0ShfCepINt+1jfI1GDVIykmCJErx/e7
+	vKQXCJulBCKCgxWJDDLasV2AQ8K4FmBTrLMAgfWalE+KPSKWj+lziBVETdNCes74j3CV3M3L74u
+	xKm8/qlBCTiwUZt5QhRscGQb14QEa41iA8PfwAWzr901YqvDsjAUarRuFF20hbitAyjjTsTfpNC
+	d3DKcRh9y2tNQeK4RcHcLbhIFMYaxE=
+X-Received: by 2002:a05:6830:6102:b0:7c7:4f2:e15d with SMTP id 46e09a7af769-7d170223bfdmr1559368a34.16.1769370043771;
+        Sun, 25 Jan 2026 11:40:43 -0800 (PST)
 Received: from security.cs.northwestern.edu (security.cs.northwestern.edu. [165.124.184.136])
-        by smtp.gmail.com with ESMTPSA id 006d021491bc7-662cb4f24fdsm4320250eaf.5.2026.01.25.11.30.08
+        by smtp.gmail.com with ESMTPSA id 46e09a7af769-7d15b346e2asm6426106a34.2.2026.01.25.11.40.43
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 25 Jan 2026 11:30:08 -0800 (PST)
+        Sun, 25 Jan 2026 11:40:43 -0800 (PST)
 From: Ziyi Guo <n7l8m4@u.northwestern.edu>
 To: Stanislaw Gruszka <stf_xl@wp.pl>
 Cc: linux-wireless@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
 	Ziyi Guo <n7l8m4@u.northwestern.edu>
-Subject: [PATCH] wifi: iwlegacy: add missing mutex protection in il3945_store_measurement()
-Date: Sun, 25 Jan 2026 19:30:05 +0000
-Message-Id: <20260125193005.1090429-1-n7l8m4@u.northwestern.edu>
+Subject: [PATCH] wifi: iwlegacy: add missing mutex protection in il4965_store_tx_power()
+Date: Sun, 25 Jan 2026 19:40:39 +0000
+Message-Id: <20260125194039.1196488-1-n7l8m4@u.northwestern.edu>
 X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
@@ -93,66 +92,68 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-0.06 / 15.00];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	MID_CONTAINS_FROM(1.00)[];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[u-northwestern-edu.20230601.gappssmtp.com:s=20230601];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	MAILLIST(-0.15)[generic];
-	DMARC_POLICY_SOFTFAIL(0.10)[northwestern.edu : SPF not aligned (relaxed), DKIM not aligned (relaxed),none];
 	MIME_GOOD(-0.10)[text/plain];
+	DMARC_POLICY_SOFTFAIL(0.10)[northwestern.edu : SPF not aligned (relaxed), DKIM not aligned (relaxed),none];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FREEMAIL_TO(0.00)[wp.pl];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-31148-lists,linux-wireless=lfdr.de];
 	MIME_TRACE(0.00)[0:+];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-31149-lists,linux-wireless=lfdr.de];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FREEMAIL_TO(0.00)[wp.pl];
+	RCVD_TLS_LAST(0.00)[];
 	DKIM_TRACE(0.00)[u-northwestern-edu.20230601.gappssmtp.com:+];
-	FROM_NEQ_ENVFROM(0.00)[n7l8m4@u.northwestern.edu,linux-wireless@vger.kernel.org];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCVD_COUNT_FIVE(0.00)[5];
-	FROM_HAS_DN(0.00)[];
-	TAGGED_RCPT(0.00)[linux-wireless];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
 	TO_DN_SOME(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[n7l8m4@u.northwestern.edu,linux-wireless@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
 	RCPT_COUNT_THREE(0.00)[4];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,u.northwestern.edu:mid,u-northwestern-edu.20230601.gappssmtp.com:dkim]
-X-Rspamd-Queue-Id: C8F07823A1
+	RCVD_COUNT_FIVE(0.00)[5];
+	TAGGED_RCPT(0.00)[linux-wireless];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[u-northwestern-edu.20230601.gappssmtp.com:dkim,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,u.northwestern.edu:mid]
+X-Rspamd-Queue-Id: 4D848823EF
 X-Rspamd-Action: no action
 
-il3945_store_measurement() calls il3945_get_measurement() which internally
-calls il_send_cmd_sync() without holding il->mutex. However,
-il_send_cmd_sync() has lockdep_assert_held(&il->mutex) indicating that
-callers must hold this lock.
+il4965_store_tx_power() calls il_set_tx_power() without holding il->mutex.
+However, il_set_tx_power() has lockdep_assert_held(&il->mutex) indicating
+that callers must hold this lock.
 
-Other sysfs store functions in the same file properly acquire the mutex:
-- il3945_store_flags() acquires mutex at 3945-mac.c:3110
-- il3945_store_filter_flags() acquires mutex at 3945-mac.c:3144
+All other callers of il_set_tx_power() properly acquire the mutex:
+- il_bg_scan_completed() acquires mutex at common.c:1683
+- il_mac_config() acquires mutex at common.c:5006
+- il3945_commit_rxon() and il4965_commit_rxon() are called via work
+  queues that hold the mutex (like il4965_bg_alive_start)
 
-Add mutex_lock()/mutex_unlock() around the il3945_get_measurement() call
-in the sysfs store function to fix the missing lock protection.
+Add mutex_lock()/mutex_unlock() around the il_set_tx_power() call in
+the sysfs store function to fix the missing lock protection.
 
 Signed-off-by: Ziyi Guo <n7l8m4@u.northwestern.edu>
 ---
- drivers/net/wireless/intel/iwlegacy/3945-mac.c | 2 ++
+ drivers/net/wireless/intel/iwlegacy/4965-mac.c | 2 ++
  1 file changed, 2 insertions(+)
 
-diff --git a/drivers/net/wireless/intel/iwlegacy/3945-mac.c b/drivers/net/wireless/intel/iwlegacy/3945-mac.c
-index 104748fcdc33..54991f31c52c 100644
---- a/drivers/net/wireless/intel/iwlegacy/3945-mac.c
-+++ b/drivers/net/wireless/intel/iwlegacy/3945-mac.c
-@@ -3224,7 +3224,9 @@ il3945_store_measurement(struct device *d, struct device_attribute *attr,
- 
- 	D_INFO("Invoking measurement of type %d on " "channel %d (for '%s')\n",
- 	       type, params.channel, buf);
-+	mutex_lock(&il->mutex);
- 	il3945_get_measurement(il, &params, type);
-+	mutex_unlock(&il->mutex);
- 
- 	return count;
- }
+diff --git a/drivers/net/wireless/intel/iwlegacy/4965-mac.c b/drivers/net/wireless/intel/iwlegacy/4965-mac.c
+index 3588dec75ebd..57fa866efd9f 100644
+--- a/drivers/net/wireless/intel/iwlegacy/4965-mac.c
++++ b/drivers/net/wireless/intel/iwlegacy/4965-mac.c
+@@ -4606,7 +4606,9 @@ il4965_store_tx_power(struct device *d, struct device_attribute *attr,
+ 	if (ret)
+ 		IL_INFO("%s is not in decimal form.\n", buf);
+ 	else {
++		mutex_lock(&il->mutex);
+ 		ret = il_set_tx_power(il, val, false);
++		mutex_unlock(&il->mutex);
+ 		if (ret)
+ 			IL_ERR("failed setting tx power (0x%08x).\n", ret);
+ 		else
 -- 
 2.34.1
 
