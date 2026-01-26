@@ -1,240 +1,227 @@
-Return-Path: <linux-wireless+bounces-31153-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-31154-lists+linux-wireless=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id cVKLImCodmkZUAEAu9opvQ
-	(envelope-from <linux-wireless+bounces-31153-lists+linux-wireless=lfdr.de@vger.kernel.org>)
-	for <lists+linux-wireless@lfdr.de>; Mon, 26 Jan 2026 00:33:52 +0100
+	id eNjXIlPOdmktWwEAu9opvQ
+	(envelope-from <linux-wireless+bounces-31154-lists+linux-wireless=lfdr.de@vger.kernel.org>)
+	for <lists+linux-wireless@lfdr.de>; Mon, 26 Jan 2026 03:15:47 +0100
 X-Original-To: lists+linux-wireless@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id 552F68325B
-	for <lists+linux-wireless@lfdr.de>; Mon, 26 Jan 2026 00:33:51 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id F276B83796
+	for <lists+linux-wireless@lfdr.de>; Mon, 26 Jan 2026 03:15:46 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id D04DF300106C
-	for <lists+linux-wireless@lfdr.de>; Sun, 25 Jan 2026 23:33:48 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 97CBA300DDE3
+	for <lists+linux-wireless@lfdr.de>; Mon, 26 Jan 2026 02:15:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C827A30FC1D;
-	Sun, 25 Jan 2026 23:33:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 44A6E27A47F;
+	Mon, 26 Jan 2026 02:15:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="UKAoNCpr"
+	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="lq1g+vHH";
+	dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b="W8iMgL+/"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-wm1-f42.google.com (mail-wm1-f42.google.com [209.85.128.42])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 437B730EF7A
-	for <linux-wireless@vger.kernel.org>; Sun, 25 Jan 2026 23:33:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.42
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C9A4D2868AD
+	for <linux-wireless@vger.kernel.org>; Mon, 26 Jan 2026 02:15:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769384025; cv=none; b=L7YeiiPLk4B9Zcpw/39xwEmBaKs6OngsrYbsf/2A21FhmJzo8tfmV4k44hZ59/gamt5SgRDCgyqshkyK5KYXbqD5zr6aP8KuE3Ez/DZ2vWTJbHgK8gP7xdRkiFzTKEcARRdpEuGmUDLpZxBqYw+6hxzeLtLT07nDopm6dCUsgBs=
+	t=1769393723; cv=none; b=ci2mjsXoJyL9mY1PJ7qLRyGnc9iSHdOHuTT5a19dIygfmhASTCYjn+ymggMZdANhICoJd895PbbUsdeID9tKvr1SCzecT73jI/xRRmgdXc2AJMr63uLIuWNzI95sY8ctIXbyIJg/MSUvFt0Y0yi+fItpdq1OxwAa+H5VhsBkRyI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769384025; c=relaxed/simple;
-	bh=40HDaw8ntqkj11TLcXWCKMbTSTaBwFBrT4JI2rWl1Fg=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=JCllqwPG7q7F7qHArsLeLpebhXqxjPVO4wd4FEFOqqBEnKXR3jkth1r3e4O1IMq8z/UCx00dlQyynswzrMLYimmodqH7uQXW4AWyrLhIS7KPyOcCF33qrAoGEAgOY9RgaAs50a5YQK5EqmXLlpwUR/NMF5MrbrI2Q9M2vgv1eI0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=UKAoNCpr; arc=none smtp.client-ip=209.85.128.42
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-wm1-f42.google.com with SMTP id 5b1f17b1804b1-47ee3a63300so45020555e9.2
-        for <linux-wireless@vger.kernel.org>; Sun, 25 Jan 2026 15:33:44 -0800 (PST)
+	s=arc-20240116; t=1769393723; c=relaxed/simple;
+	bh=w1GAQCf1HxThXzDyTuLGQBFSQXiEYFMA9Iwtcw41YCw=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=TtQsfN1EwljhFhXrZLYIrM9p8qaM3hAiBV5e7iAOp05GVFfefYQrrsfA10JWN/4XMFjw163OSlD+wxFt7+sH8t7T06GxsDWLwTEDsxFT2sPugDozBbhjBgBUR/36rfr9Kb7FUqi8Rxu+Ug4606qGaFlCndq6dOlec4xNMOK1UX8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=lq1g+vHH; dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b=W8iMgL+/; arc=none smtp.client-ip=205.220.180.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
+Received: from pps.filterd (m0279870.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 60P7CojR3596623
+	for <linux-wireless@vger.kernel.org>; Mon, 26 Jan 2026 02:15:20 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
+	cc:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
+	zwtxPTrPGzWPOqfN7gVyzUfj/+vOMn7+smpYP5omEwk=; b=lq1g+vHHhH3UUkxI
+	DXt6YiKzlnEE5G6NZdVZvGt0pSt44uoshy5CUi8upSvODrNGu3a6CM+SNvcXhmNs
+	7LLdYf3mOvv+OTI1+G5JLuS+m2/HZW1H/rabifuJ3pPBPAsT/QS0iwu6HSxSC1nl
+	PeloIFcPL12D2gpNO2NR8BDPKLsQFMhOGZk7GsI2uF4dgG56tNdwYfBfmrRI5MJ4
+	7ti2wIUlRhFRFqk+LeBzYTjasFnAi010wI1qfNsJYHP1jYw7LcoPVNgUFCMz0CJ9
+	AkIJ/clL8+VO131fY6OawF2mo1qVoniLG1sFBhH7447o8/9LMHIWFBCI/F/ZRq3T
+	+ja++w==
+Received: from mail-pl1-f199.google.com (mail-pl1-f199.google.com [209.85.214.199])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4bvq3hb4a6-1
+	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
+	for <linux-wireless@vger.kernel.org>; Mon, 26 Jan 2026 02:15:20 +0000 (GMT)
+Received: by mail-pl1-f199.google.com with SMTP id d9443c01a7336-2a0a8c465c1so26453265ad.1
+        for <linux-wireless@vger.kernel.org>; Sun, 25 Jan 2026 18:15:20 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1769384023; x=1769988823; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=hxZFFubEOU7PGE71UzXJvLIW4o2EMn+DKQPsfeMWqfQ=;
-        b=UKAoNCprplxnEp4hCh/uNyISdbtgB/t6NxpjElu9BAg7pxAM3ttZq/m3cwMPBebwYv
-         kPxDdaHjHx7fE0O23J1wGNU4fqL4k6KCllPHmGLQ4Af/UMajhbF4yM1LpTa5eV0VU3oT
-         mUaUfwkbKUmqiQVcJFFCnjYJK+1yX4Kcd13XJG6hQO4jZ7suFT+86D3qpPEvn64YLnC9
-         ksigIWyxm2cYdUqr2/KDA55w6zR6ehsFUSDTyxoAJi9BrlM60r+5d1hBOZ6LMQLLRwQP
-         XY3pJFILLhzVeE5kC2pi6NmpUTEZfZKO07hUGjEOT5q0AvOx7NjYsCRYJpIKuJvicYhr
-         g40A==
+        d=oss.qualcomm.com; s=google; t=1769393719; x=1769998519; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:content-language:from
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=zwtxPTrPGzWPOqfN7gVyzUfj/+vOMn7+smpYP5omEwk=;
+        b=W8iMgL+/XbAM0BNocQNAyRjw/arubjqg08Add9+xLwCNY2iz5wzrsLplLsFthQjIqY
+         FKrNI7n017Y5QqUCzbs+zLxKgvhn7dO3QUTfEe+9l7AJ9CoqeRmq1GoHGbB/YDqQBwQ8
+         sjOwkCJDamvb0VNjPO68ze9QMrNANNSR6IaLqOrM/YUjepPffRyWUvqyEho54FL5GS7I
+         LFoJq40m2wRWe/4jxGuUefcMDGSnLHXleQrhRZy6z1SoDtgcUzuUgVOehuBPo0pyHwSr
+         5D+2eND7gRI0alROvv8DoVlSGPfmD0j0095toR7jDeL3qrcVpsH22AB9XbbgghJiutw4
+         Mf6Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1769384023; x=1769988823;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=hxZFFubEOU7PGE71UzXJvLIW4o2EMn+DKQPsfeMWqfQ=;
-        b=CLp+2dOc4+vng3TQvV4j2T7n2HvvPc1y7WVuN+zEDLkm6z83bNU1r+qM597TOHOrJb
-         Wl9ChYpMY5UFsj5u+S0z0RVJC3OGnBjOTd9yhVQybYb0Q6U5afmDIkVZ9cQE9s9aNNn2
-         CYd4z3c5G2yf2G5qXe+vr/jdcfJPVjfUyFrtnwkHPNkAYLBtFYUMVx99rjVyAnisVEYS
-         bktBC9uLt+LPNeTeP9gUSuoRbliHFerT7N0uolneXiIC6t00KZSt8uO45Mfoi3TleLrn
-         KR1aX4EzmP14KqwEgShSt6rTCXzxGzUhUJkH5G3TsImP1Y9eIGlwtrWafb9sc00pxA1S
-         sT4w==
-X-Forwarded-Encrypted: i=1; AJvYcCXWW9F4KtHLlJtBg3FlrLQ6JDom/DGwFYQ2rQz9vlWQ7T4VXJtjNfLZ2d6fkbiAXUp2VFkFHPfCSdA00FoS1g==@vger.kernel.org
-X-Gm-Message-State: AOJu0YxpuGTtfKJcZXkm1rTNFq5ENeXJQpfTcKxPMKKZLw6+aCzcCaVL
-	wzBXgMOEv5ckqr0mtOstGLHVpNQ1MPpPrgvvINiWyfApXARqefLviZNx
-X-Gm-Gg: AZuq6aJxbfDW78hkNws74eOvgFX6cCEQ8r13pT/YyUnnIXrHPuT9rQQ02SvH26LnlLe
-	TR4O2Bx6Aig7R8PfkKXAKUUJ+Ejbsl6EdIKH01WTJGjByxfuaHNM74NcWI2zVsxuzyvIhE4h5pt
-	CbiF5RvkVzgo2p/2rY+ATM5T7MdvwgyuFoiUnGGmsqBgdPHQfEt/BbzCntO1XmeiqHF//qMPFaC
-	PpDWnWcT2mlxlh2YUDVRjNrYW8b63MS9Mg1j/j0GeAalYNQ5QdoyUX1W+mmwDah5jxTJX5FKgCK
-	5p9x2snQmyRhVboI88ZAftW47JIbFfEZ5cn9RAZQZylyChjJm+G9cH8gYOwW76GNIthrC/SEtFD
-	vWcPj0Yyw2pCFvO40DEh3C448MCL4txQ+xGbuWXgY3XswfTKFoMDlewMKeBGtlng6x5nLazsOxo
-	r+IgqTtIRofClMKzmeWQAkrUapAN8=
-X-Received: by 2002:a05:600c:4f8e:b0:477:b642:9dc1 with SMTP id 5b1f17b1804b1-4805cf669d1mr40697975e9.20.1769384022447;
-        Sun, 25 Jan 2026 15:33:42 -0800 (PST)
-Received: from debian.powerhub ([2a0a:ef40:e94:5d01:a218:5589:9f9c:4f52])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4804d84ef51sm209938985e9.5.2026.01.25.15.33.40
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 25 Jan 2026 15:33:42 -0800 (PST)
-From: Chris Bainbridge <chris.bainbridge@gmail.com>
-To: miriam.rachel.korenblit@intel.com,
-	kvalo@kernel.org
-Cc: johannes.berg@intel.com,
-	benjamin@sipsolutions.net,
-	gustavoars@kernel.org,
-	linux-intel-wifi@intel.com,
-	linux-wireless@vger.kernel.org,
-	netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Chris Bainbridge <chris.bainbridge@gmail.com>,
-	stable@vger.kernel.org
-Subject: [PATCH] Revert "wifi: iwlwifi: trans: remove STATUS_SUSPENDED"
-Date: Sun, 25 Jan 2026 23:33:34 +0000
-Message-ID: <20260125233335.6875-1-chris.bainbridge@gmail.com>
-X-Mailer: git-send-email 2.47.3
+        d=1e100.net; s=20230601; t=1769393719; x=1769998519;
+        h=content-transfer-encoding:in-reply-to:content-language:from
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=zwtxPTrPGzWPOqfN7gVyzUfj/+vOMn7+smpYP5omEwk=;
+        b=CpGaZZsTYPPXBCTy6A0MjPC+Fgfb3u0LAFo8ZMu25cvpWU1K1vqH4AKgDP1IUPTIv5
+         05sdB3MmYcmQecs4oxRJX9kkrUwcgESVYoKOcZSrP5N7m/pnaGUG6gLLjFQXZPainGaW
+         nWwDYNvUMUr/nJa2RFBW5sBNA9pQrD4V3oFA21yIbUGQvKE/CutYdDqrbbBnjJGbCYD0
+         ItGybaT4YzbHHC7LniUVkGq8h0HWkswS/FO5PmXFi+rvDcVEfpYWL8B8AJjo3i2mqMQN
+         oTmIjzfUEb9FfhRIOm2p80hj+I80rhMS4BRxoYPotjTyPKsg8gAuheDxHKBC+Cyko553
+         H/VQ==
+X-Gm-Message-State: AOJu0YzTVfXywv4jraty0e13gxaPFOnq7GLD+edj4976o9Tchsggn8hC
+	lh9KGfc5TJhmWq0mXTTOzrZ/I1rhKmQjnCY9KMAP5sigughqXvNUSkkzswRRxnBN0BcXR4DaOLG
+	7XweH2c9wF3x0sLFmXsuE8D7OVAykIWD5KEsR7YlFSdMcn3eqc80Ub9OVLOOfVS64NFNvoQ==
+X-Gm-Gg: AZuq6aIcXwvXEI8l3zJRQ3hIk9Bu4VAmS2uTa7GzR3MW6sPcLveQx4paLuvV8APyEE0
+	UaEe5vuMsRxW/73BEjBgycZkXb+EEopxyY4Uku9sGKQQn6zLefRukCwYg1f1QgxeW6cBpRFwoHK
+	7NbA5B157A7EbxLhksSChENsU3bD88hHa8E+cTyL4sGkV9yZ/dFSQuRM7xafKTYrXCNhkTi+R9b
+	ZBmW5nL7ZfNRY+C9r4EOQfi78YsbZJaCKZUR5WzPtU+ZYT9dgm+EfjJdgEvC5TcLcAjsQ9ODdc5
+	Gv3xElKOco8YiffubYvEBj7UQK8Wf4bjbqy7bbboKs3twP4ObvUD5l3JTp2OmDGixDuG5SX+sOK
+	VxzJcUQL8YDnwY51/yt6UGM0Y9hUOg+i1+DFug/Dh/E2RjGjtC22PCz4e84m8jIAmDe3yH8xMNS
+	HR/d2iDLs=
+X-Received: by 2002:a17:902:c94d:b0:294:f6e5:b91a with SMTP id d9443c01a7336-2a845502f26mr29584615ad.13.1769393719329;
+        Sun, 25 Jan 2026 18:15:19 -0800 (PST)
+X-Received: by 2002:a17:902:c94d:b0:294:f6e5:b91a with SMTP id d9443c01a7336-2a845502f26mr29584355ad.13.1769393718834;
+        Sun, 25 Jan 2026 18:15:18 -0800 (PST)
+Received: from [10.133.33.199] (tpe-colo-wan-fw-bordernet.qualcomm.com. [103.229.16.4])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2a802f97ba6sm76776135ad.50.2026.01.25.18.15.17
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Sun, 25 Jan 2026 18:15:18 -0800 (PST)
+Message-ID: <86af03f9-3823-4561-95ec-8b15ed88249c@oss.qualcomm.com>
+Date: Mon, 26 Jan 2026 10:15:13 +0800
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2] wifi: ath10k: fix lock protection in
+ ath10k_wmi_event_peer_sta_ps_state_chg()
+To: Ziyi Guo <n7l8m4@u.northwestern.edu>, Jeff Johnson <jjohnson@kernel.org>
+Cc: linux-wireless@vger.kernel.org, ath10k@lists.infradead.org,
+        linux-kernel@vger.kernel.org
+References: <20260123175611.767731-1-n7l8m4@u.northwestern.edu>
+From: Baochen Qiang <baochen.qiang@oss.qualcomm.com>
+Content-Language: en-US
+In-Reply-To: <20260123175611.767731-1-n7l8m4@u.northwestern.edu>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwMTI2MDAxNyBTYWx0ZWRfX0qX2nW9jNNSv
+ 9CEKIeGV5cuJK6OKvYiaeug7S2pvvkmYAdvrxsdVYdbeElNWVVg6CU3ZJ57QSEwcPI4pBLOR0UX
+ wl56oghkzDz5NI4xjUt4uUMDXcUMDiIAT/m3jfG6ObgjVFaQ/PO4QaF/pIIZvWF1LtwlF3U5Nb2
+ imBY5HqgkaIBtTUdhSha1O8oQeA27rfjLCJOqUZZ6fjGqlQ8NaR4GqeVy1bw4u6d6Jtk+RlCxux
+ EF+G1KnKBUkFNf0I1BnJb4RLMmorNvnhp1HcnqSCDieZYnvkk/KbIVQuSxFyV1mUnxF0Car6NvK
+ aGWkeMFYG82Frb4QuFaAK1bXIJxHnX3JBS4KeNFuncSPGfiswoXJFkLvMEUxwa5W9XkJ47G7xMS
+ UuzhhSgBlcY7HC3RnC8RFSwuqZPdIHTd4qQAqPpSwFWFF0YMYuRlXca0VGPJkI/uITCTdGffSki
+ oznANT3ZDA9w5lPQOyA==
+X-Proofpoint-ORIG-GUID: FNboQD8hqK8JxsYk06kUr3x9BPCw0xlQ
+X-Proofpoint-GUID: FNboQD8hqK8JxsYk06kUr3x9BPCw0xlQ
+X-Authority-Analysis: v=2.4 cv=c/imgB9l c=1 sm=1 tr=0 ts=6976ce38 cx=c_pps
+ a=JL+w9abYAAE89/QcEU+0QA==:117 a=nuhDOHQX5FNHPW3J6Bj6AA==:17
+ a=IkcTkHD0fZMA:10 a=vUbySO9Y5rIA:10 a=s4-Qcg_JpJYA:10
+ a=VkNPw1HP01LnGYTKEx00:22 a=EUspDBNiAAAA:8 a=27jATeYspuGomxVIXMEA:9
+ a=QEXdDO2ut3YA:10 a=324X-CrmTo6CU4MGRt3R:22
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.20,FMLib:17.12.100.49
+ definitions=2026-01-25_06,2026-01-22_02,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ adultscore=0 bulkscore=0 spamscore=0 malwarescore=0 lowpriorityscore=0
+ suspectscore=0 priorityscore=1501 clxscore=1015 phishscore=0 impostorscore=0
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.22.0-2601150000 definitions=main-2601260017
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
-	R_DKIM_ALLOW(-0.20)[gmail.com:s=20230601];
+	DMARC_POLICY_ALLOW(-0.50)[qualcomm.com,reject];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_DKIM_ALLOW(-0.20)[qualcomm.com:s=qcppdkim1,oss.qualcomm.com:s=google];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[gmail.com:+];
 	TO_DN_SOME(0.00)[];
-	FREEMAIL_CC(0.00)[intel.com,sipsolutions.net,kernel.org,vger.kernel.org,gmail.com];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-31153-lists,linux-wireless=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-31154-lists,linux-wireless=lfdr.de];
 	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	DKIM_TRACE(0.00)[qualcomm.com:+,oss.qualcomm.com:+];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[linux-wireless];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[oss.qualcomm.com:mid,oss.qualcomm.com:dkim,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,qualcomm.com:email,qualcomm.com:dkim,northwestern.edu:email];
+	RCPT_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[chrisbainbridge@gmail.com,linux-wireless@vger.kernel.org];
+	FROM_NEQ_ENVFROM(0.00)[baochen.qiang@oss.qualcomm.com,linux-wireless@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	FREEMAIL_FROM(0.00)[gmail.com];
-	RCVD_COUNT_FIVE(0.00)[5];
-	MID_RHS_MATCH_FROM(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[11];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,yhbt.net:url]
-X-Rspamd-Queue-Id: 552F68325B
+	TAGGED_RCPT(0.00)[linux-wireless];
+	MID_RHS_MATCH_FROM(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	RCVD_COUNT_SEVEN(0.00)[7]
+X-Rspamd-Queue-Id: F276B83796
 X-Rspamd-Action: no action
 
-This reverts commit e769f6f27ffe41331e00b69a33aa8a34db4dd830.
 
-The removal of STATUS_SUSPENDED (which tracks suspend/resume state)
-resulted in an intermittent race condition on resume. The fault can be
-reproduced by carrying out repeated suspend/resume cycles while passing
-traffic through the NIC. A typical failure looks like:
 
-[  141.093986] iwlwifi 0000:01:00.0: Error sending SCAN_CFG_CMD: time out after 2000ms.
-[  141.094057] iwlwifi 0000:01:00.0: Current CMD queue read_ptr 441 write_ptr 442
-[  141.094864] iwlwifi 0000:01:00.0: Start IWL Error Log Dump:
-[  141.094866] iwlwifi 0000:01:00.0: Transport status: 0x00000042, valid: 6
-[  141.094870] iwlwifi 0000:01:00.0: Loaded firmware version: 89.7f71c7f4.0 ty-a0-gf-a0-89.ucode
-[  141.094873] iwlwifi 0000:01:00.0: 0x01000071 | ADVANCED_SYSASSERT
-...
-[  141.098401] iwlwifi 0000:01:00.0: iwl_mvm_check_rt_status failed, device is gone during suspend
+On 1/24/2026 1:56 AM, Ziyi Guo wrote:
+> ath10k_wmi_event_peer_sta_ps_state_chg() uses lockdep_assert_held() to
+> assert that ar->data_lock should be held by the caller, but neither
+> ath10k_wmi_10_2_op_rx() nor ath10k_wmi_10_4_op_rx() acquire this lock
+> before calling this function.
+> 
+> The field arsta->peer_ps_state is documented as protected by
+> ar->data_lock in core.h, and other accessors (ath10k_peer_ps_state_disable,
+> ath10k_dbg_sta_read_peer_ps_state) properly acquire this lock.
 
-The kernel then oops due to a null pointer dereference in
-iwl_mvm_realloc_queues_after_restart().
+there is another instance in ath10k_sta_state() where the lock is not acquired, but I
+guess that is OK since during the NOTEXIST -> NONE transition no race is expected.
 
-Fixes: e769f6f27ffe ("wifi: iwlwifi: trans: remove STATUS_SUSPENDED")
-Closes: https://yhbt.net/lore/linux-wireless/aTDoDiD55qlUZ0pn@debian.local/
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Chris Bainbridge <chris.bainbridge@gmail.com>
----
- .../net/wireless/intel/iwlwifi/iwl-trans.c    | 22 +++++++++++++++++--
- .../net/wireless/intel/iwlwifi/iwl-trans.h    |  3 +++
- 2 files changed, 23 insertions(+), 2 deletions(-)
+> 
+> Add spin_lock_bh()/spin_unlock_bh() around the peer_ps_state update,
+> and remove the lockdep_assert_held() to be aligned with new locking,
+> following the pattern used by other WMI event handlers in the driver.
+> 
+> Signed-off-by: Ziyi Guo <n7l8m4@u.northwestern.edu>
+> ---
+> v2:
+>  - Remove lockdep_assert_held() as suggested, since
+>    we are now taking the lock internally.
+> 
+>  drivers/net/wireless/ath/ath10k/wmi.c | 3 ++-
+>  1 file changed, 2 insertions(+), 1 deletion(-)
+> 
+> diff --git a/drivers/net/wireless/ath/ath10k/wmi.c b/drivers/net/wireless/ath/ath10k/wmi.c
+> index b4aad6604d6d..061a2fa8f00f 100644
+> --- a/drivers/net/wireless/ath/ath10k/wmi.c
+> +++ b/drivers/net/wireless/ath/ath10k/wmi.c
+> @@ -5289,7 +5289,6 @@ ath10k_wmi_event_peer_sta_ps_state_chg(struct ath10k *ar, struct sk_buff *skb)
+>  	struct ath10k_sta *arsta;
+>  	u8 peer_addr[ETH_ALEN];
+>  
+> -	lockdep_assert_held(&ar->data_lock);
+>  
+>  	ev = (struct wmi_peer_sta_ps_state_chg_event *)skb->data;
+>  	ether_addr_copy(peer_addr, ev->peer_macaddr.addr);
+> @@ -5305,7 +5304,9 @@ ath10k_wmi_event_peer_sta_ps_state_chg(struct ath10k *ar, struct sk_buff *skb)
+>  	}
+>  
+>  	arsta = (struct ath10k_sta *)sta->drv_priv;
+> +	spin_lock_bh(&ar->data_lock);
+>  	arsta->peer_ps_state = __le32_to_cpu(ev->peer_ps_state);
+> +	spin_unlock_bh(&ar->data_lock);
+>  
+>  exit:
+>  	rcu_read_unlock();
 
-diff --git a/drivers/net/wireless/intel/iwlwifi/iwl-trans.c b/drivers/net/wireless/intel/iwlwifi/iwl-trans.c
-index cc8a84018f70..f5c4aa165c5b 100644
---- a/drivers/net/wireless/intel/iwlwifi/iwl-trans.c
-+++ b/drivers/net/wireless/intel/iwlwifi/iwl-trans.c
-@@ -306,6 +306,9 @@ int iwl_trans_send_cmd(struct iwl_trans *trans, struct iwl_host_cmd *cmd)
- 		     test_bit(STATUS_RFKILL_OPMODE, &trans->status)))
- 		return -ERFKILL;
- 
-+	if (unlikely(test_bit(STATUS_SUSPENDED, &trans->status)))
-+		return -EHOSTDOWN;
-+
- 	if (unlikely(test_bit(STATUS_FW_ERROR, &trans->status)))
- 		return -EIO;
- 
-@@ -406,6 +409,8 @@ int iwl_trans_start_hw(struct iwl_trans *trans)
- 	might_sleep();
- 
- 	clear_bit(STATUS_TRANS_RESET_IN_PROGRESS, &trans->status);
-+	/* opmode may not resume if it detects errors */
-+	clear_bit(STATUS_SUSPENDED, &trans->status);
- 
- 	return iwl_trans_pcie_start_hw(trans);
- }
-@@ -505,17 +510,30 @@ iwl_trans_dump_data(struct iwl_trans *trans, u32 dump_mask,
- 
- int iwl_trans_d3_suspend(struct iwl_trans *trans, bool reset)
- {
-+	int err;
-+
- 	might_sleep();
- 
--	return iwl_trans_pcie_d3_suspend(trans, reset);
-+	err = iwl_trans_pcie_d3_suspend(trans, reset);
-+
-+	if (!err)
-+		set_bit(STATUS_SUSPENDED, &trans->status);
-+
-+	return err;
- }
- IWL_EXPORT_SYMBOL(iwl_trans_d3_suspend);
- 
- int iwl_trans_d3_resume(struct iwl_trans *trans, bool reset)
- {
-+	int err;
-+
- 	might_sleep();
- 
--	return iwl_trans_pcie_d3_resume(trans, reset);
-+	err = iwl_trans_pcie_d3_resume(trans, reset);
-+
-+	clear_bit(STATUS_SUSPENDED, &trans->status);
-+
-+	return err;
- }
- IWL_EXPORT_SYMBOL(iwl_trans_d3_resume);
- 
-diff --git a/drivers/net/wireless/intel/iwlwifi/iwl-trans.h b/drivers/net/wireless/intel/iwlwifi/iwl-trans.h
-index a552669db6e2..c4d06a323f9b 100644
---- a/drivers/net/wireless/intel/iwlwifi/iwl-trans.h
-+++ b/drivers/net/wireless/intel/iwlwifi/iwl-trans.h
-@@ -290,6 +290,8 @@ static inline void iwl_free_rxb(struct iwl_rx_cmd_buffer *r)
-  *	the firmware state yet
-  * @STATUS_TRANS_RESET_IN_PROGRESS: reset is still in progress, don't
-  *	attempt another reset yet
-+ * @STATUS_SUSPENDED: device is suspended, don't send commands that
-+ *	aren't marked accordingly
-  */
- enum iwl_trans_status {
- 	STATUS_SYNC_HCMD_ACTIVE,
-@@ -303,6 +305,7 @@ enum iwl_trans_status {
- 	STATUS_IN_SW_RESET,
- 	STATUS_RESET_PENDING,
- 	STATUS_TRANS_RESET_IN_PROGRESS,
-+	STATUS_SUSPENDED,
- };
- 
- static inline int
--- 
-2.47.3
+Reviewed-by: Baochen Qiang <baochen.qiang@oss.qualcomm.com>
 
 
