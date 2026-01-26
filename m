@@ -1,154 +1,166 @@
-Return-Path: <linux-wireless+bounces-31175-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-31176-lists+linux-wireless=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id eF08ICBKd2mLdwEAu9opvQ
-	(envelope-from <linux-wireless+bounces-31175-lists+linux-wireless=lfdr.de@vger.kernel.org>)
-	for <lists+linux-wireless@lfdr.de>; Mon, 26 Jan 2026 12:04:00 +0100
+	id gE2rLIJRd2lQeAEAu9opvQ
+	(envelope-from <linux-wireless+bounces-31176-lists+linux-wireless=lfdr.de@vger.kernel.org>)
+	for <lists+linux-wireless@lfdr.de>; Mon, 26 Jan 2026 12:35:30 +0100
 X-Original-To: lists+linux-wireless@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id ECB5D8776C
-	for <lists+linux-wireless@lfdr.de>; Mon, 26 Jan 2026 12:03:59 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id C2E7F87AF4
+	for <lists+linux-wireless@lfdr.de>; Mon, 26 Jan 2026 12:35:29 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 41E733004580
-	for <lists+linux-wireless@lfdr.de>; Mon, 26 Jan 2026 11:03:38 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 34F243004DB2
+	for <lists+linux-wireless@lfdr.de>; Mon, 26 Jan 2026 11:35:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F204229DB9A;
-	Mon, 26 Jan 2026 11:03:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8CB2032E146;
+	Mon, 26 Jan 2026 11:35:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="bv/LAOYf"
+	dkim=pass (2048-bit key) header.d=freebox-fr.20230601.gappssmtp.com header.i=@freebox-fr.20230601.gappssmtp.com header.b="cR0pzmOD"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-wm1-f49.google.com (mail-wm1-f49.google.com [209.85.128.49])
+Received: from mail-wm1-f67.google.com (mail-wm1-f67.google.com [209.85.128.67])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 40D002BEC2B
-	for <linux-wireless@vger.kernel.org>; Mon, 26 Jan 2026 11:03:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.49
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8E3F21DED57
+	for <linux-wireless@vger.kernel.org>; Mon, 26 Jan 2026 11:35:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.67
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769425415; cv=none; b=oLf1dn+R5X/nCgMwgj0U9cge+3Jk/cUcS3T7PlLDH3xILvh0an4aJVlRxJKULhbbU5kSlvxF0oaFIv9cBuXO42fsjNcf/eGtF+YmnYW5DAELBJael6OeFrOZogJZfzgWDEOj6xwEAWkGlUH38u0P6+IYF0I73FinPMvYeiIEEYw=
+	t=1769427324; cv=none; b=m9B/fOrYCELJHrRaRWlZr1/ZnZ+kytwTzLq6TZ8fPt3IKKXsA+N06ARPRh9FtO15AhzxvxwIKAKnunu/PodlQwQbFIYUPYP/38htBQJqU22Vkf5MDucp61zosdCpArKnBPBjmLG50GJ+zzj7LsDM7QgGjurNPc+sTLj9nInxRwk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769425415; c=relaxed/simple;
-	bh=ftANPfDkKCapPd7bQiu4qZa9B3OoRodj+GpPCtPKU+I=;
-	h=Message-ID:Date:From:To:Cc:Subject:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=anbbTNxO7p/GYFY3EoXsJNh59yJLFZ8OgfX4TpnyvqW2pVB9IC61eag0daGtNtkq8KbNJp/it8v4vixFpK8HsZHIvpI//4Ir1OGybJdHSM3Va4Zio+gski84VlIq9anvpYtci1aOE0jNMjyOqhgkXF4NpijGRxHxOXBTOz0+1lA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=bv/LAOYf; arc=none smtp.client-ip=209.85.128.49
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-wm1-f49.google.com with SMTP id 5b1f17b1804b1-4801bc328easo49677965e9.3
-        for <linux-wireless@vger.kernel.org>; Mon, 26 Jan 2026 03:03:34 -0800 (PST)
+	s=arc-20240116; t=1769427324; c=relaxed/simple;
+	bh=IxYzerzjJyh9zLVcB2OhOmBPwuSIg0rUtYxqHOneNl4=;
+	h=Message-ID:Date:MIME-Version:To:Cc:From:Subject:Content-Type; b=cznYe/OR5/hFidWJ+1DvM8Rv+Vmf0W4gXecbyJKuzlQcpk/vw+s72wZOV0WXA+/zuMHOvv4dz7LI+X9wJ8tV68mbl3rQBpLQhDM8K+AhwOqeCDuyGE3ERsv1T+ZjWWm+Ozfafe1qa/89+VidSwzu0QjDQymEviyGPm0ZJeUxOvA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=freebox.fr; spf=pass smtp.mailfrom=freebox.fr; dkim=pass (2048-bit key) header.d=freebox-fr.20230601.gappssmtp.com header.i=@freebox-fr.20230601.gappssmtp.com header.b=cR0pzmOD; arc=none smtp.client-ip=209.85.128.67
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=freebox.fr
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=freebox.fr
+Received: by mail-wm1-f67.google.com with SMTP id 5b1f17b1804b1-4801bc32725so34311975e9.0
+        for <linux-wireless@vger.kernel.org>; Mon, 26 Jan 2026 03:35:21 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1769425413; x=1770030213; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:subject:cc
-         :to:from:date:message-id:from:to:cc:subject:date:message-id:reply-to;
-        bh=aTH8w0h3kKICWLf+Wiu0sGV5MiSH0o7xe3QPb1+JG0w=;
-        b=bv/LAOYfCaD+Ii5jmiOdcBNnxl6Rui+gfePpPGSA5leUCP6NtBhDi7b2lwnWuQj9uU
-         s7WxzL+XPmQIIlaUyVwmhlfT/zWqYYN+5TFTQRWHOJK2bVV+sfX8AU2GY+uDj1TF4lZV
-         ewU3qVxTsw3xqV2pGXyqxijJO1HeYT3Qwfm+vu9xMkXG9YemzA/H2hAcWbGeteGOyan1
-         GRYOXpIBbwj2gvxkrpe7ksbI6dymOWRoVcyTtgqMg6BoPBhKqq5qZW5l60RoVqxzBP0r
-         SjsbNGl+LMz+AP7nZCe3FBumMwDaXYdIQiEmQwz8F7ysIXxPyPi1mattU3adkB9pIym8
-         XIwA==
+        d=freebox-fr.20230601.gappssmtp.com; s=20230601; t=1769427320; x=1770032120; darn=vger.kernel.org;
+        h=content-transfer-encoding:subject:from:cc:to:content-language
+         :user-agent:mime-version:date:message-id:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=SXjJjt/6dVBULRmQetw7Sw/hK8UIoQyy1iJNMtHwAMc=;
+        b=cR0pzmOD/Xibd6t0fh9MnVYFZ2K47/9d2oPkU5RgFaTYYUpV/DKJ0bPOCLsRV/qWqW
+         GY1H/EpsUo8FwhxqRPzpn/LZtF696rhN8va1NFfQ5yhtFkaa8l3pGTEnmhoNIZIc8i5f
+         iXUwtxEDjyueLMnhblWdtUA1QoG/JShKdKEPK8AZVSavyo/bbL4qd7hx1Ny6F6tDuuTf
+         TmifzUTDJ3jZdugi9QjH/QGP3w5Dcuk5fShmE+TtAQfmK0At8OOPJaLczIbeP4OMu6MG
+         SMSm5yrGlEruZTpMY/XQN4y+VBFcKzmgoRBAZTiwfcT5bSS28i0vo6aZmsmmlDIpbWhR
+         jOYg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1769425413; x=1770030213;
-        h=in-reply-to:content-disposition:mime-version:references:subject:cc
-         :to:from:date:message-id:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=aTH8w0h3kKICWLf+Wiu0sGV5MiSH0o7xe3QPb1+JG0w=;
-        b=YKIq8QWTz1y301aivBTV6HZoJs52yUGHe65H9gLrf5QY+IZ6I9vd+vd8ZemPulYZPS
-         9gJKsS0w8E6sG8TGkVg+2NQ3CxRRb1upPxcHyWpr+j8uwaPRzGjm/isesyMEeK4pLlf6
-         CioNSGpK6HelbRdhrWLok5hYDWJYMuDDg4ATPyMns2zsqxUld6X/Zix/cmH0cMPDRGP8
-         Zzs/jPbxDdUjEkAlSDGNTYIG50ekq1NWkX5cOrKXQVM2lkv21Kno69EmLrlHRkcpLKyW
-         W8gdVqMSbPiITsMwshwYydq57lCA4zuOkZMiVT4YdG6mSIcto8ptfDfGtQCqloVhk8cm
-         yR2Q==
-X-Forwarded-Encrypted: i=1; AJvYcCVB6Flw7N6t7+L15o6HiiE/BJFxbBgKOzlz6Px2b00zKPMtbHL/HH9UXX3EWSYzVK5aNBig+y0qHwxpRfrWOg==@vger.kernel.org
-X-Gm-Message-State: AOJu0YwZiFs8NlYNx25/+TAYlWhTwYUzuqqDrE/O8st7bcKvH2OEflo5
-	lcQ5yoPTAR4Pc3U+n/Hj6EKVYWt6JyHTp4WTXIgWibMGKmPheyVQStPX
-X-Gm-Gg: AZuq6aImYyYE/9V/jO5IAssaUDnYahKTCAlEBZ8YC9l+FBB9btGP27lrZVkNAGsq6cK
-	/FtW9swQ81/VWDkM+UssziFUXexTOPoGAlgkO/7nohDY8QSTcEtIpamfLL/cnPVbGs5AT87Lvzg
-	idk9pWczji/7SqPNLKABs/huDCzw0aCUA5RZimbnUd3/C/GHjc9qWkK47sfq6+cu0jkUjarg0U8
-	6uq2DgzKZej+bTQtXF66TJUKde/2hkaYdXOZDrSrkX55CCH4wTansYn3dE7jDEkuCXrWBoW/lOn
-	sXnznA4rwQ8mpv79pRjKN3+7PiCPbykOq8AzyqxPws2hahgUQoR9izduUYmlbBoxps5iLuSr3t9
-	31qcN8oNyPu++n6iOVe15fSlBGTth0wLZ7EidtUCzd6xe33FdBsdQU4sG7RHwc2odiTwJe3nig9
-	Qgatxevk5UIvMFKR7Zua04bXO2o+E1i3F9cRC9LKw=
-X-Received: by 2002:a05:600c:3113:b0:47d:403e:4eaf with SMTP id 5b1f17b1804b1-480650f2933mr10392565e9.10.1769425412353;
-        Mon, 26 Jan 2026 03:03:32 -0800 (PST)
-Received: from Ansuel-XPS. (93-34-88-81.ip49.fastwebnet.it. [93.34.88.81])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4804d85d146sm286254045e9.8.2026.01.26.03.03.31
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 26 Jan 2026 03:03:31 -0800 (PST)
-Message-ID: <69774a03.050a0220.3a3ac6.305f@mx.google.com>
-X-Google-Original-Message-ID: <aXdKAHW0z2qC7s5e@Ansuel-XPS.>
-Date: Mon, 26 Jan 2026 12:03:28 +0100
-From: Christian Marangi <ansuelsmth@gmail.com>
-To: Lorenzo Bianconi <lorenzo@kernel.org>
-Cc: Johannes Berg <johannes@sipsolutions.net>,
-	Ryder Lee <ryder.lee@mediatek.com>,
-	Sean Wang <sean.wang@mediatek.com>,
-	Matthias Brugger <matthias.bgg@gmail.com>,
-	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
-	linux-wireless@vger.kernel.org, Felix Fietkau <nbd@nbd.name>,
-	Shayne Chen <shayne.chen@mediatek.com>,
-	linux-mediatek@lists.infradead.org,
-	linux-arm-kernel@lists.infradead.org,
-	MeiChia Chiu <MeiChia.Chiu@mediatek.com>
-Subject: Re: [PATCH wireless-next v2 2/2] wifi: mt76: mt7996: Add eMLSR
- support
-References: <20260125-mac80211-emlsr-v2-0-466329d61c88@kernel.org>
- <20260125-mac80211-emlsr-v2-2-466329d61c88@kernel.org>
+        d=1e100.net; s=20230601; t=1769427320; x=1770032120;
+        h=content-transfer-encoding:subject:from:cc:to:content-language
+         :user-agent:mime-version:date:message-id:x-gm-gg:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=SXjJjt/6dVBULRmQetw7Sw/hK8UIoQyy1iJNMtHwAMc=;
+        b=EDDsKbP9qmT0Jn5/K/Xo01OzNXsihc+ohxPEZv9GhLVUU6REPf3B92b8G86sSf/DSk
+         is1UKGL1VWBpn6o3PKun6Ti/VCfL8WMiG7j/q+q4IZeegENab/uUHTDZJ/uQxe3VDcp6
+         +UIx+yLYkanFeR8MB1PMW87BQxKfEw6IXOdPdGfiI+9nUKex608gflpHGyC3pmcm4ERQ
+         dYn0HNfEY9Lh97mWRRWfFzav9h0DXxH5LVEpw7wZXSQqMwlsE78so1+Ixq8cJdOMIs+N
+         7k26FrI71Rki5GIwKmpNs1xDqZkXghlODra2y1eKcGQ3K1StBxs2GoebPd1iTih7GY8q
+         adcg==
+X-Gm-Message-State: AOJu0Yy2ZFMpfKV9dGCprjaeJUHyBooyk2aBVegb2ki4LgoqeEa+nILx
+	GNoK0Jf+ozwqjw3Wto2zw3nrJIemNELYF6AhH0AeISYqP1Q4avZ2odSuauyyWVxCcUY=
+X-Gm-Gg: AZuq6aJupnEtbdVY5nT61FCUnbdoFbm4HPhRjiEnrMElPi1N7Wtaa/5yZ67Bd2+BjO9
+	rtDfe2O2doNLVkF+HEvGnuPk+dTbjaYRb+P623w0tIkMQXnizHF1AvgQX8hM8zh7WK2yWFFJg7J
+	vzWoqMesQQ/PBx8iDor8psxVB3eVagSoJBWPlr3HnfcGXYHEvw1HdKzGafW0djhzl0DxjVh2ukN
+	zjCexdRChE9y7fktAcR1+y0I4WVJm/MWUgGHg/pM2bnMhfj7WseAGngRnDY+uv8pkpVS5kfgUQC
+	CsomHMIlLtMpJF8cztJxjRS/NwtwSY/Yo2EYWqKTr9IC/PeTijwTRrPCfscgH4ItSSHauvPcGT1
+	ikuwJVYb4vBWFBOuEtn7CiVEKTQ6yJl1ZjNERmHgv0+MwrXOtxPACB3PHmc5UxyPsoi1W+zW4tx
+	6UUcL7vHdCiw/zHbjyQ+ix9XsiyoX/oAodZ0BD5S0w6g==
+X-Received: by 2002:a05:600c:3b8e:b0:47e:e807:a05a with SMTP id 5b1f17b1804b1-4805d064497mr76579485e9.33.1769427319654;
+        Mon, 26 Jan 2026 03:35:19 -0800 (PST)
+Received: from [192.168.108.101] (freebox.vlq16.iliad.fr. [213.36.7.13])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-480470472f1sm379056065e9.7.2026.01.26.03.35.19
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 26 Jan 2026 03:35:19 -0800 (PST)
+Message-ID: <2633095a-9555-45bf-b143-ad2bdaa1ab01@freebox.fr>
+Date: Mon, 26 Jan 2026 12:35:18 +0100
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260125-mac80211-emlsr-v2-2-466329d61c88@kernel.org>
+User-Agent: Mozilla Thunderbird
+Content-Language: en-US
+To: ath12k@lists.infradead.org, Jeff Johnson <jeff.johnson@oss.qualcomm.com>
+Cc: linux-wireless@vger.kernel.org
+From: Pablo MARTIN-GOMEZ <pmartin-gomez@freebox.fr>
+Subject: [PATCH ath-current] wifi: ath12k: fix wrong TID passed when stopping
+ AMPDU session
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.66 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
-	R_DKIM_ALLOW(-0.20)[gmail.com:s=20230601];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
+	R_DKIM_ALLOW(-0.20)[freebox-fr.20230601.gappssmtp.com:s=20230601];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-31175-lists,linux-wireless=lfdr.de];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[freebox-fr.20230601.gappssmtp.com:+];
+	TAGGED_FROM(0.00)[bounces-31176-lists,linux-wireless=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	FREEMAIL_CC(0.00)[sipsolutions.net,mediatek.com,gmail.com,collabora.com,vger.kernel.org,nbd.name,lists.infradead.org];
-	FREEMAIL_FROM(0.00)[gmail.com];
-	RCPT_COUNT_TWELVE(0.00)[12];
-	FROM_HAS_DN(0.00)[];
-	MISSING_XM_UA(0.00)[];
+	DMARC_NA(0.00)[freebox.fr];
+	RCPT_COUNT_THREE(0.00)[3];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	TO_DN_SOME(0.00)[];
 	RCVD_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[ansuelsmth@gmail.com,linux-wireless@vger.kernel.org];
-	DKIM_TRACE(0.00)[gmail.com:+];
+	FROM_NEQ_ENVFROM(0.00)[pmartin-gomez@freebox.fr,linux-wireless@vger.kernel.org];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
 	NEURAL_HAM(-0.00)[-1.000];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[linux-wireless];
-	TO_DN_SOME(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,mx.google.com:mid]
-X-Rspamd-Queue-Id: ECB5D8776C
+	MID_RHS_MATCH_FROM(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: C2E7F87AF4
 X-Rspamd-Action: no action
 
-On Sun, Jan 25, 2026 at 11:51:31AM +0100, Lorenzo Bianconi wrote:
-> From: MeiChia Chiu <MeiChia.Chiu@mediatek.com>
-> 
-> Implement set_eml_op_mode mac80211 callback in order to introduce eMLSR
-> support.
-> 
-> Signed-off-by: MeiChia Chiu <MeiChia.Chiu@mediatek.com>
-> Co-developed-by: Lorenzo Bianconi <lorenzo@kernel.org>
-> Signed-off-by: Lorenzo Bianconi <lorenzo@kernel.org>
+When handling a DELBA request, ath12k_dp_rx_ampdu_stop() calls
+ath12k_peer_rx_tid_reo_update() to tear down the BA session for the
+specified TID. However, it currently passes peer->rx_tid instead of the
+entry corresponding to params->tid.
 
-Tested-by: Christian Marangi <ansuelsmth@gmail.com>
+Since peer->rx_tid is an array, this decays to a pointer to the first
+element, effectively operating on TID 0 regardless of the TID in the
+DELBA request. As a result, the BA session for TID 0 is stopped while
+the intended TID remains active.
 
---
+This leads to incorrect BA session state and may significantly reduce
+RX throughput, as traffic that should use aggregation falls back to a
+BA window size of 1 on TID 0.
 
-	Ansuel
+Fix this by passing the correct TID entry:
+   &peer->rx_tid[params->tid]
+
+Fixes: d889913205cf ("wifi: ath12k: driver for Qualcomm Wi-Fi 7 devices")
+Signed-off-by: Pablo Martin-Gomez <pmartin-gomez@freebox.fr>
+---
+  drivers/net/wireless/ath/ath12k/dp_rx.c | 2 +-
+  1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/drivers/net/wireless/ath/ath12k/dp_rx.c 
+b/drivers/net/wireless/ath/ath12k/dp_rx.c
+index d28d8ffec0f8..f2327c82953b 100644
+--- a/drivers/net/wireless/ath/ath12k/dp_rx.c
++++ b/drivers/net/wireless/ath/ath12k/dp_rx.c
+@@ -1289,7 +1289,7 @@ int ath12k_dp_rx_ampdu_stop(struct ath12k *ar,
+          return 0;
+      }
+
+-    ret = ath12k_peer_rx_tid_reo_update(ar, peer, peer->rx_tid, 1, 0, 
+false);
++    ret = ath12k_peer_rx_tid_reo_update(ar, peer, 
+&peer->rx_tid[params->tid], 1, 0, false);
+      spin_unlock_bh(&ab->base_lock);
+      if (ret) {
+          ath12k_warn(ab, "failed to update reo for rx tid %d: %d\n",
+-- 
+2.43.0
+
 
