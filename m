@@ -1,156 +1,166 @@
-Return-Path: <linux-wireless+bounces-31184-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-31185-lists+linux-wireless=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id +AHeLESnd2lrjwEAu9opvQ
-	(envelope-from <linux-wireless+bounces-31184-lists+linux-wireless=lfdr.de@vger.kernel.org>)
-	for <lists+linux-wireless@lfdr.de>; Mon, 26 Jan 2026 18:41:24 +0100
+	id 6PLNLrurd2kZkAEAu9opvQ
+	(envelope-from <linux-wireless+bounces-31185-lists+linux-wireless=lfdr.de@vger.kernel.org>)
+	for <lists+linux-wireless@lfdr.de>; Mon, 26 Jan 2026 19:00:27 +0100
 X-Original-To: lists+linux-wireless@lfdr.de
 Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2B6CF8B978
-	for <lists+linux-wireless@lfdr.de>; Mon, 26 Jan 2026 18:41:24 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 558498BDBB
+	for <lists+linux-wireless@lfdr.de>; Mon, 26 Jan 2026 19:00:27 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 196DB30138B2
-	for <lists+linux-wireless@lfdr.de>; Mon, 26 Jan 2026 17:41:23 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 43EDD301C103
+	for <lists+linux-wireless@lfdr.de>; Mon, 26 Jan 2026 18:00:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CB30934D4C1;
-	Mon, 26 Jan 2026 17:41:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=freebox-fr.20230601.gappssmtp.com header.i=@freebox-fr.20230601.gappssmtp.com header.b="lVCPtbFl"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A813234A790;
+	Mon, 26 Jan 2026 18:00:23 +0000 (UTC)
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-wm1-f67.google.com (mail-wm1-f67.google.com [209.85.128.67])
+Received: from mail-oi1-f169.google.com (mail-oi1-f169.google.com [209.85.167.169])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4F64D34C124
-	for <linux-wireless@vger.kernel.org>; Mon, 26 Jan 2026 17:41:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.67
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E36D0239E7F
+	for <linux-wireless@vger.kernel.org>; Mon, 26 Jan 2026 18:00:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.169
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769449280; cv=none; b=hkjvDhBZk0IOH0jAEPMCS0B59ysQrBqo7tGib3UlzML1j21EP+sJrbQ2rF2NBWBAFjW4TBkcNKQi16n7ZnudOiIP3hPvkk8dxPuq99MCCTMbltyspfbKBt8dqz5Sfyg4FQb40fVUwezDHaPdQY2TVy1z2Z+UkzT6aS9gjq+VJnI=
+	t=1769450423; cv=none; b=dv8hdCqgAfLxIXxWu+CU7cza/J0zViBCu0nQjvpXJomryj53lPxv/AY8U+rp6GygVjY775GKjbRgnpJp+rAr8Mv5lUxG7jUi9meDih5+9Pfmu55rGtfJQeIHD47G4ldvqdjddbgYdjfRKWElXcW7MwtqXV4lqLgkDFrCWhYr8EA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769449280; c=relaxed/simple;
-	bh=f6sRW+OjiJKtFGszBDJ3KI8aEkT1gEIHN0sodVn2HIs=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=pKiTiK+2FyWbLdbmK039yd/BY7c9DFpBlxiQpT71NrSFMAK2l/3OXotajl+e65jqV/DoXS/KP0RcrqngBuBat1c/roMkiV/ueOyqmuaF3iJWf+AfbpCAO5A4w5D9BGcRZz7ZkYb08499NMUmR77en42QlPrKvL15VNauT+DDt8E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=freebox.fr; spf=pass smtp.mailfrom=freebox.fr; dkim=pass (2048-bit key) header.d=freebox-fr.20230601.gappssmtp.com header.i=@freebox-fr.20230601.gappssmtp.com header.b=lVCPtbFl; arc=none smtp.client-ip=209.85.128.67
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=freebox.fr
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=freebox.fr
-Received: by mail-wm1-f67.google.com with SMTP id 5b1f17b1804b1-47ee9817a35so36591845e9.1
-        for <linux-wireless@vger.kernel.org>; Mon, 26 Jan 2026 09:41:18 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=freebox-fr.20230601.gappssmtp.com; s=20230601; t=1769449277; x=1770054077; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=TxWCDGOalC1xTYHIkVlYbNPnVuMBEdIAI2IdHhYbv0E=;
-        b=lVCPtbFlXnutH0pux2U8PHdrpJ3t1tDPhPaR/pNED8+HCTW2Si3ykPxccgofiKgjQa
-         AFUc9eWHhMVb1ZMIDGmghr69sCjsJ9d8DrNgHX4HSdk0viOjIfGHrC9w72baAJAc1FWK
-         GSRnGzBoySyuvepE4sDP6iJuEy9rzSTyFmjcR9B3NvQk0MD4Vo5Q+fBgnQeAT8P22jdK
-         1YUyLJLG8D89qXBePRWJz9HcUrdtPi9x1EqD4neykUGPJ8+bE9fiPSkFmwp7hZoyM4+P
-         +vOyqxngSTuk7+m+Hc9aVi5QRgA9H/NR0c2RpY5nxaObZTreS2BpRXMfe9gL/cHsul/N
-         ponw==
+	s=arc-20240116; t=1769450423; c=relaxed/simple;
+	bh=m8lCZYrtv6Qoifxxy6t6zkh7mSRUSw2fRiy0Gt/9m2Q=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=FPjiW6cyp+iwPUx/z2NsL7ASzMzy1/fOmV4rVwv0oW07zf60VGvXShkNmFeEbkQSC77ixwk7syhDxvlOLJQOikM5uundxaEbiyYD3X1TxZrjQ6Se/wb+3eyPG5sxYkf6OVghsQq3hfBp8EY5VcI+1NjXmNDRNVhjMl64KMZZltc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=quarantine dis=none) header.from=kernel.org; spf=pass smtp.mailfrom=gmail.com; arc=none smtp.client-ip=209.85.167.169
+Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=quarantine dis=none) header.from=kernel.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-oi1-f169.google.com with SMTP id 5614622812f47-45c958d480aso1423607b6e.1
+        for <linux-wireless@vger.kernel.org>; Mon, 26 Jan 2026 10:00:20 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1769449277; x=1770054077;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=TxWCDGOalC1xTYHIkVlYbNPnVuMBEdIAI2IdHhYbv0E=;
-        b=QZ2jWZrnknpUIKxRq2FI7JvjF4t9wCnfWIxIHgyNH2gUJwsIcGjd3z/2b76gFsKYD5
-         9g16Y5x3xG7Q+1dsaFEli8flQxN3+lJ96ZY9WfM/0w4+8VEEF87XFw1v9gd/eEOnt7Ei
-         hDld/s4TkV1fEhyMRnuCSp8VBwWv8PyEt/CsiZvzkB2319pFfdDhiwHbtjj+HxaURSO5
-         OvHnmBBpgZHNcXZ301K/dGqGW34A5D0qtfnVovuX+fHiwVrBw2IH2eymHU+gvI3+FbbF
-         XWYdgoHw10q4lKZxATeRpb8DYon40hcam2KRk59lJ6BQO3ZJMV0HBWcOeGmuEwzV3ymM
-         0Llw==
-X-Gm-Message-State: AOJu0YzQaLCJqEYCRQp/O4FXbejZDFYkDz5rddZPK5J4SjP89OQSf07+
-	e/QMTOupzOxw/3b5lBl8UuVCrj4e9KIPvgdD8LY3P/A2mYwslrYMncpVAHhPn+CPGJniQA9cinF
-	2eIkVFh4=
-X-Gm-Gg: AZuq6aJNQcxpMOZq/bGan/ssAfVm37iz6oXHEam16nLmRV4kO8lnId8VBzTuCgsaVGS
-	AkUKY/LC5soCtq/UrCjQ+URvXQQAuv670rElnH+JFy30PCkcV45eoYClCRbgsByUl2WpoyrUBwJ
-	p0uzXa1s3Jv2tEM41LjdmKipZgfaGKv8xsq/auppCcZU4JEoAz1k1YEJHFDEy6z7QWdTNjVQaLd
-	hxsJUEwBH85E7i0oWdD05ggoGmguXWCyIZhhZ5zuLhY0V+PCUfkMbc6nNTJwrZFJxHjkzprGjN7
-	WG5T0n9RTT2v2tyRykaMDzjkh+oANrw78koupfmpa+wa6G0ageS2T2cvsN7fTCmflcD+yahhCbq
-	6AcyidGARUlEEARAR0NTsMLyyRGkJDz/dhWCte5Cu88XhshY1j5wMYnLYwPG91qVd3Qq1ij8clr
-	ALs34Og/DgMQaYr/os4/J83+4+QKSxUuJJrDzNh9hy6Mp6Y14ya2N2
-X-Received: by 2002:a05:600c:4eca:b0:47a:7fd0:9eea with SMTP id 5b1f17b1804b1-4805ce3fdddmr78475835e9.3.1769449277609;
-        Mon, 26 Jan 2026 09:41:17 -0800 (PST)
-Received: from [192.168.108.101] (freebox.vlq16.iliad.fr. [213.36.7.13])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4804d4faecbsm109407095e9.1.2026.01.26.09.41.17
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 26 Jan 2026 09:41:17 -0800 (PST)
-Message-ID: <45cd1b88-105c-486b-975f-a5fcd5bf78e9@freebox.fr>
-Date: Mon, 26 Jan 2026 18:41:16 +0100
+        d=1e100.net; s=20230601; t=1769450419; x=1770055219;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=MtP8Go2M3C9++DiSDULRDE+5Pn2l5CFyfesMiTCa6/g=;
+        b=kh4Of84PN3flYRnZO/EKnzxw6maRpNewBfzbtuxzH3O2uizy5XdV3xmuYTnXkHVRqO
+         6nt/kpfF1jk9TuvVqBkfytkRJ0Pzk2sMNUXweUCIZlrChP8he7Y42rLLIK9b24pKBqLN
+         +izuH+HdFObYjymwD0rLX1qX3F27qG3bIA/vwV4ASmHCCLVh83jQR1oh6hPy3GKeM57x
+         SYO49nlcORh5IpxbefL1TGRaTZShG4ahc3ShaOBlZUKm+z//6N8Tk6jOfjrj4QkvrM1Q
+         ErQcplJyfG2V5bzcGxMoDyuaxWYkDCoj6d+FA8+3iIgEQeSovsB+ZvcVv8nXQGAwMA9n
+         XXCQ==
+X-Forwarded-Encrypted: i=1; AJvYcCXOOgKdnUlGaBGnVzfPvbAVqkPHdlB5Nv/mWVH9AXlTSzdJl7EdyAMkVWJcdmFw77BgfcMTC7E5mVrU0C0eDA==@vger.kernel.org
+X-Gm-Message-State: AOJu0Yy57Rtsl71OsU0Ih9S2Pgmf/zC8OFDUoxGZaVJHe7WOTDF83qq1
+	qCr8uS2KOYlSGTeEgoYEwV+Nm7Pw40ng3Yy7cBvDRrIrh6wC7kcwUNKs
+X-Gm-Gg: AZuq6aJsJHBIZvOOeT41jV4UpIER5u3E7olSi4e/AxRgPLltjPOCZAacaPyE4DBFmXN
+	pD297xjnDltNbJRLrdumPCJ9mpnkRETBjuTerm0ZPv41iUfpCcanVmaBXbvvqoE4Yfe1kQ9/2rj
+	5w4P3k72IVtReI79p27dCSHV4xCMu28pADNXvOfSPx/cDSPXkI5el5kp9dSGSZbbUDdXam318Jt
+	QEBJCWf50t5+1oCokGfRh3u+ZhtuRGq+HTVzjq6SQGxP83bMgYqUTP/0swBdwcyT2fkypmMPF5h
+	6u+qoFJ97wTaCjytnrMAiANTRYht59C7rXZ7DF6u7wRqkFGvorqFyjrtQbDinLXov2ACzQidoTO
+	ug15I3kQGiyiQegvyKJo/5MOX0Ub9+91YTYX6+yP5SFNA6yYejJBTwXN2ZUf3FT6ud0d6x79lRc
+	yaknlLugG9yrBc4pBMmYA0RWJpGKh/NkoIpaWkZ/gyx+pK0HxTfZ3I8XM4oTP159rBPwjmDbZxK
+	qWVhmW6lg==
+X-Received: by 2002:a05:6830:3143:b0:7c6:d0b2:8eb6 with SMTP id 46e09a7af769-7d1701d7c73mr2647850a34.15.1769450419085;
+        Mon, 26 Jan 2026 10:00:19 -0800 (PST)
+Received: from sean-HP-EliteBook-830-G6.. (65-36-108-159.dyn.grandenetworks.net. [65.36.108.159])
+        by smtp.gmail.com with ESMTPSA id 46e09a7af769-7d15b3d31d4sm8173838a34.21.2026.01.26.10.00.18
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 26 Jan 2026 10:00:18 -0800 (PST)
+From: Sean Wang <sean.wang@kernel.org>
+To: nbd@nbd.name,
+	lorenzo@kernel.org
+Cc: allan.wang@mediatek.com,
+	quan.zhou@mediatek.com,
+	leon.yen@mediatek.com,
+	linux-wireless@vger.kernel.org,
+	linux-mediatek@lists.infradead.org,
+	Sean Wang <sean.wang@mediatek.com>
+Subject: [PATCH] wifi: mt76: mt7921: fix potential deadlock in mt7921_roc_abort_sync
+Date: Mon, 26 Jan 2026 12:00:13 -0600
+Message-ID: <20260126180013.8167-1-sean.wang@kernel.org>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH ath-current] wifi: ath12k: fix wrong TID passed when
- stopping AMPDU session
-To: Jeff Johnson <jeff.johnson@oss.qualcomm.com>, ath12k@lists.infradead.org
-Cc: linux-wireless@vger.kernel.org
-References: <2633095a-9555-45bf-b143-ad2bdaa1ab01@freebox.fr>
- <9c6369f4-c80c-4a59-a17a-7b4ed0d8a032@oss.qualcomm.com>
-Content-Language: en-US
-From: Pablo MARTIN-GOMEZ <pmartin-gomez@freebox.fr>
-In-Reply-To: <9c6369f4-c80c-4a59-a17a-7b4ed0d8a032@oss.qualcomm.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.46 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	MID_CONTAINS_FROM(1.00)[];
+	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	R_MISSING_CHARSET(0.50)[];
 	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
-	R_DKIM_ALLOW(-0.20)[freebox-fr.20230601.gappssmtp.com:s=20230601];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[freebox-fr.20230601.gappssmtp.com:+];
-	TAGGED_FROM(0.00)[bounces-31184-lists,linux-wireless=lfdr.de];
+	FROM_NEQ_ENVFROM(0.00)[sean.wang@kernel.org,linux-wireless@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	TAGGED_FROM(0.00)[bounces-31185-lists,linux-wireless=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	DMARC_NA(0.00)[freebox.fr];
-	RCPT_COUNT_THREE(0.00)[3];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	TO_DN_SOME(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[5];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[pmartin-gomez@freebox.fr,linux-wireless@vger.kernel.org];
+	MIME_TRACE(0.00)[0:+];
 	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[linux-wireless];
-	MID_RHS_MATCH_FROM(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,freebox-fr.20230601.gappssmtp.com:dkim,freebox.fr:mid]
-X-Rspamd-Queue-Id: 2B6CF8B978
+	R_DKIM_NA(0.00)[];
+	NEURAL_HAM(-0.00)[-0.992];
+	RCVD_COUNT_FIVE(0.00)[5];
+	RCPT_COUNT_SEVEN(0.00)[8];
+	TO_DN_SOME(0.00)[];
+	TAGGED_RCPT(0.00)[linux-wireless];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 558498BDBB
 X-Rspamd-Action: no action
 
-Hello,
+From: Sean Wang <sean.wang@mediatek.com>
 
-On 26/01/2026 18:28, Jeff Johnson wrote:
-> On 1/26/2026 3:35 AM, Pablo MARTIN-GOMEZ wrote:
->
-> -    ret = ath12k_peer_rx_tid_reo_update(ar, peer, peer->rx_tid, 1, 0,
-> false);
-> +    ret = ath12k_peer_rx_tid_reo_update(ar, peer,
-> &peer->rx_tid[params->tid], 1, 0, false);
-> FYI your e-mail client is munging your patch, adding a line break.
-> And using "view source" it looks like other artifacts are being added.
-> My tooling (using 'b4') cannot process your patch...
-Oh, my bad. I've resent both my patches for ath11k & ath12k with git 
-send-email to be sure.
-> Applying: wifi: ath12k: fix wrong TID passed when stopping AMPDU session
-> error: git diff header lacks filename information when removing 1 leading pathname component (line 6)
->
-> Suggest using https://b4.docs.kernel.org/en/latest/contributor/overview.html
->>        spin_unlock_bh(&ab->base_lock);
->>        if (ret) {
->>            ath12k_warn(ab, "failed to update reo for rx tid %d: %d\n",
+roc_abort_sync() can deadlock with roc_work(). roc_work() holds
+dev->mt76.mutex, while cancel_work_sync() waits for roc_work()
+to finish. If the caller already owns the same mutex, both
+sides block and no progress is possible.
 
-Best regards,
+This deadlock can occur during station removal when
+mt76_sta_state() -> mt76_sta_remove() -> mt7921_mac_sta_remove() ->
+mt7921_roc_abort_sync() invokes cancel_work_sync() while
+roc_work() is still running and holding dev->mt76.mutex.
 
-Pablo MG
+This avoids the mutex deadlock and preserves exactly-once
+work ownership.
+
+Fixes: 352d966126e6 ("wifi: mt76: mt7921: fix a potential association failure upon resuming")
+Co-developed-by: Quan Zhou <quan.zhou@mediatek.com>
+Signed-off-by: Quan Zhou <quan.zhou@mediatek.com>
+Signed-off-by: Sean Wang <sean.wang@mediatek.com>
+---
+ drivers/net/wireless/mediatek/mt76/mt7921/main.c | 13 ++++++++-----
+ 1 file changed, 8 insertions(+), 5 deletions(-)
+
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7921/main.c b/drivers/net/wireless/mediatek/mt76/mt7921/main.c
+index 05793a786644..ddb81ca6bda0 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7921/main.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7921/main.c
+@@ -371,12 +371,15 @@ void mt7921_roc_abort_sync(struct mt792x_dev *dev)
+ {
+ 	struct mt792x_phy *phy = &dev->phy;
+ 
++	if (!test_and_clear_bit(MT76_STATE_ROC, &phy->mt76->state))
++		return;
++
+ 	timer_delete_sync(&phy->roc_timer);
+-	cancel_work_sync(&phy->roc_work);
+-	if (test_and_clear_bit(MT76_STATE_ROC, &phy->mt76->state))
+-		ieee80211_iterate_interfaces(mt76_hw(dev),
+-					     IEEE80211_IFACE_ITER_RESUME_ALL,
+-					     mt7921_roc_iter, (void *)phy);
++	cancel_work(&phy->roc_work);
++
++	ieee80211_iterate_interfaces(mt76_hw(dev),
++				     IEEE80211_IFACE_ITER_RESUME_ALL,
++				     mt7921_roc_iter, (void *)phy);
+ }
+ EXPORT_SYMBOL_GPL(mt7921_roc_abort_sync);
+ 
+-- 
+2.43.0
 
 
