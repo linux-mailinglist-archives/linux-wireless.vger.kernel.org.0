@@ -1,37 +1,37 @@
-Return-Path: <linux-wireless+bounces-31221-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-31219-lists+linux-wireless=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id qAd/F1KdeGlurQEAu9opvQ
-	(envelope-from <linux-wireless+bounces-31221-lists+linux-wireless=lfdr.de@vger.kernel.org>)
-	for <lists+linux-wireless@lfdr.de>; Tue, 27 Jan 2026 12:11:14 +0100
+	id +G+uKoaaeGk9rQEAu9opvQ
+	(envelope-from <linux-wireless+bounces-31219-lists+linux-wireless=lfdr.de@vger.kernel.org>)
+	for <lists+linux-wireless@lfdr.de>; Tue, 27 Jan 2026 11:59:18 +0100
 X-Original-To: lists+linux-wireless@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id EA843936D2
-	for <lists+linux-wireless@lfdr.de>; Tue, 27 Jan 2026 12:11:13 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 14A5293446
+	for <lists+linux-wireless@lfdr.de>; Tue, 27 Jan 2026 11:59:18 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 70740303478E
-	for <lists+linux-wireless@lfdr.de>; Tue, 27 Jan 2026 11:10:27 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 80353300B102
+	for <lists+linux-wireless@lfdr.de>; Tue, 27 Jan 2026 10:59:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 64697345722;
-	Tue, 27 Jan 2026 11:10:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0C814344D98;
+	Tue, 27 Jan 2026 10:59:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=fail reason="signature verification failed" (1024-bit key) header.d=nbd.name header.i=@nbd.name header.b="LjwHAYh6"
+	dkim=fail reason="signature verification failed" (1024-bit key) header.d=nbd.name header.i=@nbd.name header.b="BAkHs3kW"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from nbd.name (nbd.name [46.4.11.11])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C4873299943;
-	Tue, 27 Jan 2026 11:10:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A3443345CA2;
+	Tue, 27 Jan 2026 10:59:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=46.4.11.11
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769512223; cv=none; b=pchXjWG6pDa3D7VLaiCe3s321zENKBigAB0N9750A95/5n3vBfPSn5QFVKu/MxeXrpeb2Qg/JUgonQ/C/25EKkMyPHCDiE3124VgGl9yTinkOqE/ASCrvX/CG0MM0KrAd2LlwYXrn6xxi6tuH/S/3GBks6cPA4nmx9L4yXGRruc=
+	t=1769511555; cv=none; b=Cx+lBO+SGYepZUV8WLjfADdbW5Srr3fe+FovsFv3J8Bcw31qu3gHRjNT7+QJ/FlMIPpCmycF8HM6su28hgOTcjRsB3toaP+5chOKK3aDHjgXFt138RCyiczNfA8TmErf/j87GUfBf2FveavdmD0H7BvlUAg+l9lfFfktbQ6cOQ0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769512223; c=relaxed/simple;
-	bh=wol5gNYbfrHKVH1JG3Tfb4H7wpRy/Qbx1IlarW3yCZI=;
+	s=arc-20240116; t=1769511555; c=relaxed/simple;
+	bh=qZkTdx2Qt1odHBohN8Wn+d6UUfW74odeVPUEwY8rbd4=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=Se72CAxvj/bEcGRvkHad5tTUyfNTJf9U9h1HrPHbIIxFpivN/Gyr2CAkZcvoPUku0l2nPumCV5p1nui1ewrKbYIBMeVTNoeelsE7im/ir3PPNvwjJDSZQsH2D+XrMMrGTOu2TVADAI5chEEWgye2X+qAIy/VICIZXW+ZiAclWcY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nbd.name; spf=pass smtp.mailfrom=nbd.name; dkim=pass (1024-bit key) header.d=nbd.name header.i=@nbd.name header.b=LjwHAYh6; arc=none smtp.client-ip=46.4.11.11
+	 In-Reply-To:Content-Type; b=jV04EdvyBMTeQGVStVv71xlgfxNuMpNqSMncIRGbp9Yz1ggwQd1cth1pY6915lI6DjeyZVNFakP/lpqOKnMH3W/uNDkeGD2WfCxhSVdCmX80TKtTFCjh5PCqvKEd7Zpnxp3NriONEscxVTyr/cHhyOygFnnl0UhFoh5nAwWltE0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nbd.name; spf=pass smtp.mailfrom=nbd.name; dkim=pass (1024-bit key) header.d=nbd.name header.i=@nbd.name header.b=BAkHs3kW; arc=none smtp.client-ip=46.4.11.11
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nbd.name
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nbd.name
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=nbd.name;
@@ -40,17 +40,17 @@ DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=nbd.name;
 	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
 	Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:
 	List-Subscribe:List-Post:List-Owner:List-Archive;
-	bh=hpgKNlN63EpyDBnmUAwrfehDwJrER44GOkudbVi3BWM=; b=LjwHAYh624hHfVuZ5G8+LKCeqt
-	KWuZ+oFLLazfRT4jIiWFAR/auE08mfA0I5iIAZVie/iePuiim4JvAMKx8BTZfTPDkL0ly41jFceyG
-	IGcn7hDZCrJqa7WTBLuaqlwD/+ad+xpSu/jWNtTCHfc7ZEQfDIqGAOVnyqTKYgk27zoc=;
+	bh=pBcKfGEm0HX448WXDFbLuVJe8IgT3W1pTsRj6aILCN4=; b=BAkHs3kWnd8woq3FttRZV9IrVs
+	cH2I0cTUOEf4X1fAugTiE/BA4SdtUTsy3O9B4TVL21eh9LMTyUHhmi7UY3Q0asvnR18VBTyDbLVzF
+	rBE1oZz5cYlU3YIP8KVJ9J/ExJ7iFZyBKq5CP5ZwBSiuHtUndSYLFYdivD79Ycc6I3sc=;
 Received: from p54a43f8f.dip0.t-ipconnect.de ([84.164.63.143] helo=nf.local)
 	by ds12 with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256
 	(Exim 4.96)
 	(envelope-from <nbd@nbd.name>)
-	id 1vkgmB-00BWdF-1C;
-	Tue, 27 Jan 2026 11:58:27 +0100
-Message-ID: <c9b81e89-cd29-44f2-b4e8-0179b2049c21@nbd.name>
-Date: Tue, 27 Jan 2026 11:58:26 +0100
+	id 1vkgmr-00BWf9-0L;
+	Tue, 27 Jan 2026 11:59:09 +0100
+Message-ID: <a1113ede-9575-433f-a9d4-f8e9c1c6f8ab@nbd.name>
+Date: Tue, 27 Jan 2026 11:59:08 +0100
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
@@ -58,8 +58,8 @@ List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v6 00/13] wifi: mt76: stability fixes for deadlocks, NULL
- derefs, and race conditions
+Subject: Re: [PATCH 04/13] wifi: mt76: mt7921: add mutex protection in
+ critical paths
 To: Zac <zac@zacbowling.com>, sean.wang@kernel.org
 Cc: deren.wu@mediatek.com, kvalo@kernel.org, linux-kernel@vger.kernel.org,
  linux-mediatek@lists.infradead.org, linux-wireless@vger.kernel.org,
@@ -67,6 +67,7 @@ Cc: deren.wu@mediatek.com, kvalo@kernel.org, linux-kernel@vger.kernel.org,
  sean.wang@mediatek.com, zbowling@gmail.com
 References: <CAGp9LzrcvW18xKFL-oF3wxRmb73G6PN59Y2NSA2E5idva1wtKg@mail.gmail.com>
  <20260120201043.38225-1-zac@zacbowling.com>
+ <20260120201043.38225-5-zac@zacbowling.com>
 Content-Language: en-US
 From: Felix Fietkau <nbd@nbd.name>
 Autocrypt: addr=nbd@nbd.name; keydata=
@@ -92,54 +93,130 @@ Autocrypt: addr=nbd@nbd.name; keydata=
  TspgwBWLnXQvP5EDvlZnNaKa/3oBes6z0QdaSOwZCRA3QSLHBwtgUsrT6RxRSweLrcabwkkE
  GBECAAkFAkah5FQCGwwACgkQ130UHQKnbvW2GgCeMncXpbbWNT2AtoAYICrKyX5R3iMAoMhw
  cL98efvrjdstUfTCP2pfetyN
-In-Reply-To: <20260120201043.38225-1-zac@zacbowling.com>
+In-Reply-To: <20260120201043.38225-5-zac@zacbowling.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-0.36 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_DKIM_REJECT(1.00)[nbd.name:s=20160729];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	DMARC_POLICY_SOFTFAIL(0.10)[nbd.name : SPF not aligned (relaxed),none];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-31221-lists,linux-wireless=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-31219-lists,linux-wireless=lfdr.de];
 	FROM_HAS_DN(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
 	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	RCPT_COUNT_TWELVE(0.00)[12];
 	FREEMAIL_CC(0.00)[mediatek.com,kernel.org,vger.kernel.org,lists.infradead.org,frame.work,gmail.com];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-0.696];
-	FROM_NEQ_ENVFROM(0.00)[nbd@nbd.name,linux-wireless@vger.kernel.org];
+	NEURAL_HAM(-0.00)[-0.816];
 	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[nbd@nbd.name,linux-wireless@vger.kernel.org];
 	DKIM_TRACE(0.00)[nbd.name:-];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[linux-wireless];
 	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[zacbowling.com:email,nbd.name:mid,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: EA843936D2
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,nbd.name:mid,zacbowling.com:email]
+X-Rspamd-Queue-Id: 14A5293446
 X-Rspamd-Action: no action
 
 On 20.01.26 21:10, Zac wrote:
 > From: Zac Bowling <zac@zacbowling.com>
 > 
-> TLDR: This series addresses stability issues in both the MT7921 and MT7925
-> WiFi drivers that cause kernel panics, deadlocks, and system hangs
-> on various systems using these drivers.
+> Add proper mutex protection for mt7921 driver operations that access
+> hardware state without proper synchronization. This fixes multiple race
+> conditions that can cause system instability.
 > 
-> This v6 series is rebased on Sean Wang's upstream deadlock fix already sent
-> which is now included as patch 01/13. The remaining 12 patches are my stability
-> fixes.
+> Fixes added:
+> 
+> 1. mac.c: mt7921_mac_reset_work()
+>     - Wrap ieee80211_iterate_active_interfaces() with mt792x_mutex
+>     - The vif_connect_iter callback accesses hw_encap state
+> 
+> 2. main.c: mt7921_remain_on_channel()
+>     - Remove mt792x_mutex_acquire/release around mt7925_set_channel_state()
+>     - The function is already called with mutex held from mac80211
+>     - This was causing double-lock deadlock
+> 
+> 3. main.c: mt7921_cancel_remain_on_channel()
+>     - Remove mt792x_mutex_acquire/release
+>     - Function is called from mac80211 with mutex already held
+> 
+> 4. pci.c: mt7921_pci_pm_complete()
+>     - Remove mt792x_mutex_acquire/release around ieee80211_iterate_active_interfaces
+>     - This was causing deadlock as the vif connect iteration tries
+>       to acquire the mutex again
+> 
+> 5. usb.c: mt7921_usb_pm_complete()
+>     - Same fix as pci.c for USB driver path
+Changelog should be below "---" after the commit description, so it 
+doesn't get picked up.
 
-When you send v7, please include the "v7" in the subject for all 
-patches, instead of just the cover letter. Working through your patches 
-in patchwork is getting quite confusing...
+> These changes prevent both missing mutex protection and mutex deadlocks
+> in the mt7921 driver.
+> 
+> Fixes: 5c14a5f944b9 ("wifi: mt76: mt7921: introduce remain_on_channel support")
+> Signed-off-by: Zac Bowling <zac@zacbowling.com>
+
+> diff --git a/drivers/net/wireless/mediatek/mt76/mt7921/main.c b/drivers/net/wireless/mediatek/mt76/mt7921/main.c
+> index 5fae9a6e273c..196fcb1e2e94 100644
+> --- a/drivers/net/wireless/mediatek/mt76/mt7921/main.c
+> +++ b/drivers/net/wireless/mediatek/mt76/mt7921/main.c
+> @@ -373,6 +373,11 @@ void mt7921_roc_abort_sync(struct mt792x_dev *dev)
+>   
+>   	timer_delete_sync(&phy->roc_timer);
+>   	cancel_work_sync(&phy->roc_work);
+> +	/* Note: caller must hold mutex if ieee80211_iterate_interfaces is
+> +	 * needed for ROC cleanup. Some call sites (like mt7921_mac_sta_remove)
+> +	 * already hold the mutex via mt76_sta_remove(). For suspend paths,
+> +	 * the mutex should be acquired before calling this function.
+> +	 */
+>   	if (test_and_clear_bit(MT76_STATE_ROC, &phy->mt76->state))
+>   		ieee80211_iterate_interfaces(mt76_hw(dev),
+>   					     IEEE80211_IFACE_ITER_RESUME_ALL,
+> @@ -619,6 +624,7 @@ void mt7921_set_runtime_pm(struct mt792x_dev *dev)
+>   	bool monitor = !!(hw->conf.flags & IEEE80211_CONF_MONITOR);
+>   
+>   	pm->enable = pm->enable_user && !monitor;
+> +	/* Note: caller (debugfs) must hold mutex before calling this function */
+>   	ieee80211_iterate_active_interfaces(hw,
+>   					    IEEE80211_IFACE_ITER_RESUME_ALL,
+>   					    mt7921_pm_interface_iter, dev);
+> @@ -765,6 +771,9 @@ mt7921_regd_set_6ghz_power_type(struct ieee80211_vif *vif, bool is_add)
+>   	struct mt792x_dev *dev = phy->dev;
+>   	u32 valid_vif_num = 0;
+>   
+> +	/* Note: caller (mt7921_mac_sta_add/remove via mt76_sta_add/remove)
+> +	 * already holds dev->mt76.mutex, so we must not acquire it here.
+> +	 */
+>   	ieee80211_iterate_active_interfaces(mt76_hw(dev),
+>   					    IEEE80211_IFACE_ITER_RESUME_ALL,
+>   					    mt7921_calc_vif_num, &valid_vif_num);
+
+It looks like these comments should be replaced with 
+lockdep_assert_held, so that these assumptions can be verified 
+automatically instead of doing so by hand.
+
+
+> diff --git a/drivers/net/wireless/mediatek/mt76/mt7921/pci.c b/drivers/net/wireless/mediatek/mt76/mt7921/pci.c
+> index ec9686183251..9f76b334b93d 100644
+> --- a/drivers/net/wireless/mediatek/mt76/mt7921/pci.c
+> +++ b/drivers/net/wireless/mediatek/mt76/mt7921/pci.c
+> @@ -426,7 +426,9 @@ static int mt7921_pci_suspend(struct device *device)
+>   	cancel_delayed_work_sync(&pm->ps_work);
+>   	cancel_work_sync(&pm->wake_work);
+>   
+> +	mt792x_mutex_acquire(dev);
+>   	mt7921_roc_abort_sync(dev);
+> +	mt792x_mutex_release(dev);
+The next patch is removing those...
 
 - Felix
 
