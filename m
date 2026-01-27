@@ -1,85 +1,85 @@
-Return-Path: <linux-wireless+bounces-31235-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-31236-lists+linux-wireless=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id oGsICjveeGnytgEAu9opvQ
-	(envelope-from <linux-wireless+bounces-31235-lists+linux-wireless=lfdr.de@vger.kernel.org>)
-	for <lists+linux-wireless@lfdr.de>; Tue, 27 Jan 2026 16:48:11 +0100
+	id IF5WDazkeGlftwEAu9opvQ
+	(envelope-from <linux-wireless+bounces-31236-lists+linux-wireless=lfdr.de@vger.kernel.org>)
+	for <lists+linux-wireless@lfdr.de>; Tue, 27 Jan 2026 17:15:40 +0100
 X-Original-To: lists+linux-wireless@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 768F5970CF
-	for <lists+linux-wireless@lfdr.de>; Tue, 27 Jan 2026 16:48:10 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id A8DAE978F2
+	for <lists+linux-wireless@lfdr.de>; Tue, 27 Jan 2026 17:15:39 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 3F3BE301014B
-	for <lists+linux-wireless@lfdr.de>; Tue, 27 Jan 2026 15:43:53 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id DDA503043231
+	for <lists+linux-wireless@lfdr.de>; Tue, 27 Jan 2026 16:12:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A73B82749FE;
-	Tue, 27 Jan 2026 15:43:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8D4BD35FF42;
+	Tue, 27 Jan 2026 16:12:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=freebox-fr.20230601.gappssmtp.com header.i=@freebox-fr.20230601.gappssmtp.com header.b="i3ST9Cp8"
+	dkim=pass (2048-bit key) header.d=freebox-fr.20230601.gappssmtp.com header.i=@freebox-fr.20230601.gappssmtp.com header.b="QMpb3DY0"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-wm1-f44.google.com (mail-wm1-f44.google.com [209.85.128.44])
+Received: from mail-ed1-f52.google.com (mail-ed1-f52.google.com [209.85.208.52])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 94CB6240611
-	for <linux-wireless@vger.kernel.org>; Tue, 27 Jan 2026 15:43:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.44
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8496D22B5AD
+	for <linux-wireless@vger.kernel.org>; Tue, 27 Jan 2026 16:12:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.52
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769528632; cv=none; b=nfkFz1V4dfzi/T5ahmwvHTb6P/LiCNTvN6xqgCK+J3o5yjeNLh9VfHZK92ODh/ZkwLgHPVxwnogYvJjSL9PHoL/6V40Nl6LwiHoCKTMopX1s7/15aoqNiLMvWn0pubAGbMoOOeKUwYuVr+HLuzqv0f+q0i5YsHG/kp1xhI4i7ns=
+	t=1769530342; cv=none; b=QdNTxNiYBUP23T0M66/Gu/i8t5iTh5+DA4IGUETRy2RtQpMCOujrE+H55/WlaVrO+S739Zoe9UCNNy+3r65dfZWhjOOOn09uyki+HTEjHx9hSdJZmXLvi6CD7XLqfqBRiLFTdLOzSkrjkrn6R68JnoRK5lk96DxZpYrQ2BLbIUE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769528632; c=relaxed/simple;
-	bh=Pd6JojxAxOXxtPBl3it2gguI4Rf4c5BCJcIFHNZLS+E=;
+	s=arc-20240116; t=1769530342; c=relaxed/simple;
+	bh=v8Gr65xUT+ff0PQd+mp5gvptNqEdD7hZBSr/28Cuu3w=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=oMjFo8jSwT9Uh4cseAEBbN5Y+lZL/Pc3fWZoXvNunRMIt1ztYaSzLhTQaYr3nqHZBYCP9miRkZnoP+islKOduKbcqYP+Be5/nqql6vQahd5HqppGa+jmpfyGuT8xyIcVTMcDrOvqdlsVzRyPshZtf+sU+g4QGYJATPCcNL/Mew0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=freebox.fr; spf=pass smtp.mailfrom=freebox.fr; dkim=pass (2048-bit key) header.d=freebox-fr.20230601.gappssmtp.com header.i=@freebox-fr.20230601.gappssmtp.com header.b=i3ST9Cp8; arc=none smtp.client-ip=209.85.128.44
+	 In-Reply-To:Content-Type; b=QN5+3PRR5DKsamug1lYAZukbKAuydJdY2P+3AKaxCnfvHqriua4+1ObWe3ocwMk1sWg9nu+wyHYwMN/KC6iUPsZTVrA4j7TkQ/MY2qwm7lSITPV8mt8o3K9y/RG6+lkzsEl4Oj2QfsAdY7jnvQ5fObU15mj6HoqhYuskRWNeTfA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=freebox.fr; spf=pass smtp.mailfrom=freebox.fr; dkim=pass (2048-bit key) header.d=freebox-fr.20230601.gappssmtp.com header.i=@freebox-fr.20230601.gappssmtp.com header.b=QMpb3DY0; arc=none smtp.client-ip=209.85.208.52
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=freebox.fr
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=freebox.fr
-Received: by mail-wm1-f44.google.com with SMTP id 5b1f17b1804b1-47ee3a63300so66176665e9.2
-        for <linux-wireless@vger.kernel.org>; Tue, 27 Jan 2026 07:43:50 -0800 (PST)
+Received: by mail-ed1-f52.google.com with SMTP id 4fb4d7f45d1cf-64b92abe63aso11754314a12.0
+        for <linux-wireless@vger.kernel.org>; Tue, 27 Jan 2026 08:12:19 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=freebox-fr.20230601.gappssmtp.com; s=20230601; t=1769528629; x=1770133429; darn=vger.kernel.org;
+        d=freebox-fr.20230601.gappssmtp.com; s=20230601; t=1769530338; x=1770135138; darn=vger.kernel.org;
         h=content-transfer-encoding:in-reply-to:from:content-language
          :references:cc:to:subject:user-agent:mime-version:date:message-id
          :from:to:cc:subject:date:message-id:reply-to;
-        bh=m5ibw7LAsl4aZJeaOwxUHchf1Pjoej6ir99TcJIDmcM=;
-        b=i3ST9Cp8b1QFlgwgrOJIA+rBwNvGAQuTu9eaTPBySH6pmrzBswxyZotMm09qEHOdGv
-         Unm9ynaCwerilEBuLYks+5FE4e0jjFpemMG+utDhbdu5qgDpSwNGBstSbs83v6YOQJ0j
-         GGISiAOyBQRN14wEP+jLhdwumRy9ltMKeT0RGF8PF5E8SM8sjN26HQG9IBJ9yIXwfCYd
-         zmIVkjqG4bGyAulCs+4NzsIXJ33PmMuAFUNgGEVb92/0NfZyYDE18c1tL7Fkx/18Z77M
-         GGTX4KX5YGy+deTLixKw7lhieT3vgr5PlJEH7RzvGzwOBSDBFPDMA70fYrK3RU5nstBS
-         GsXQ==
+        bh=A/zfLsFMMruW4ZNk7z3DxWWozQd6lHc40f1JUxxKvY0=;
+        b=QMpb3DY0idzObiB3MzzljuKfLsd7W7FUFDrZ5VbVdkPrmbnnG5yhnkJzXMRaSQjP33
+         cRRvpRsz0jTYSeWW3GlS5dsNhp7RFHRc7uJdM9WSkwD6A2oBvDjArQLS7NDQ5K497+dP
+         BPWiWvTkNOIDyfEepQyno2gN2dYkq4lNa/jvux9+9uffVBEkPlcWAdb9GBfn3dkEkebm
+         auAS2ilyrnufjcUaoCHtCsNKDuI6zF3qo5sJ72E+Xm9Tt6+VFJhut3rbdHGKZYnzB46a
+         DVMjKZgWQVkZ81r9r/de5iVV0Pu7cR7tCWRbn1gKBu0AdSwYXOgKJUaVGS/+QCvdvrMi
+         iM1g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1769528629; x=1770133429;
+        d=1e100.net; s=20230601; t=1769530338; x=1770135138;
         h=content-transfer-encoding:in-reply-to:from:content-language
          :references:cc:to:subject:user-agent:mime-version:date:message-id
          :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=m5ibw7LAsl4aZJeaOwxUHchf1Pjoej6ir99TcJIDmcM=;
-        b=AmnSv0wZbLpV544TVErKI5x6lGYQ/bKhYvsb+uPCFVMi1IetWot+a5bABzyVO+i/sA
-         r5CGnka/apOBUdUJjP+m2+dJ25cbcrpWjxRz0mIDcaDFdFmO80gg1AvN8FT6MJLe2ZCE
-         7db+MPEOSr7vmZu5eAHM6z5FTy36d3Rl1QwepSGeOaPfagzUHFHNqxL3wcXfH7YZ1x9K
-         yhdV9iG3N0JnKjXK+UVZGnNfauyJVUJJGENhWMmbHkXe+wWaBN2+SF4tgtzr7cbpztVN
-         8OO2HLMVdqLuPlbGynmqWwSbcmVrrsn4rSiOPswfGsVp7YVmdMq52lwO8JYRqU65lfH9
-         EcBQ==
-X-Forwarded-Encrypted: i=1; AJvYcCXO43L33v74k4j4Vf5+D12nYBNkPzWEvVPv3DAGOBntdeNXapjhjrCH9jY2o1jQt62lqb+5VpY707Om6d1evg==@vger.kernel.org
-X-Gm-Message-State: AOJu0YxuPFiZtOQleCD34K/q19DjC23sQCpDBZwIAOBzSeYK/A9hBfL4
-	2kkqWfuhiDFFElslhQGE6Ri4G9XMrMhrFMa4A0VMamO3ifhuT92vazv5fOiawo2Wdk9/bVXx3kK
-	ghDqu
-X-Gm-Gg: AZuq6aKuw22RGmJs6BdmE6VEsPvHfcEZz9ZdpUfZ6YnR+lqoqgcNOEs1Q/67QJsb5p9
-	J+7fwG0xEmm4SiJC2LWu4lWUYZCusHI2V/tKxb8AqkIXoAycosy3fJegv4PBWFYpaw4mzrI6XPQ
-	Cr1a/8qfK+7C2PTO0L4UaUtHax0B9vBVggrOTMeU15k6QytNQZi0/8ZXYLTYQA/PMNkPVKppU9d
-	iesZ95OtqVGNu1qzH5oU0aNLtWCtfdJ/mfRbl0oCeF3cjbl67S8fPtuPk3bNVmL8mxwtzIBAP9I
-	aWn58dxjkc0kRnMlg722uuyerZ5Bdmp/g88RxNfAPBVzPAbFeBNoMh3LXwN0y/ljDCS7/LChJP+
-	7CkH2Ob2fXrST9EXI3KGa0vDNKYn54p3Vpde9LMEnSUGFRU6kO28s3v30S9EO0g4yZonhj4exiW
-	x9HORIHZOtfGihEChwDQR8xx5f8SZmeGoME9y6b0svGQ==
-X-Received: by 2002:a05:600c:4f82:b0:477:76c2:49c9 with SMTP id 5b1f17b1804b1-48069c16213mr29315445e9.2.1769528628897;
-        Tue, 27 Jan 2026 07:43:48 -0800 (PST)
+        bh=A/zfLsFMMruW4ZNk7z3DxWWozQd6lHc40f1JUxxKvY0=;
+        b=qG4U4xRHGg6K+tS6ggbZelD7/ogEcpUdEoGJz1fddINb0/TuHbJo73NUQ8NjIHDWEc
+         dBRtLoWNkwoXS/uNJ4BSkMpT6dhPtzsX0ZgfbwkBtXRgZlDagU8HQZL/UFZZBDD88NRX
+         pcdqkiOpEY7W49Ib7SFalIbDIaZE5TD+1fJvabHjFrxQDr+K56o2LP0yuvbPiUS30ZEQ
+         izATjy6InASKtWilLxKtGa+vO4b8sBzoE2Oc9XlroHnEabZkSLisDo8yOpn6sJcUCkR6
+         GflpG31G+olmsnalP8ag1oyV76/2ZcnOIY2Vj6kgCL5w6h0XOBx8+l/eLhEPkLN1uSKm
+         1bDA==
+X-Forwarded-Encrypted: i=1; AJvYcCX5IrTb9x9+tgaosUofCKuLmMXibZWeKTm2NTD2635h2C9xdUOjipCULVunqFoNRR0o7k+l3xuTMQPBImnJ/A==@vger.kernel.org
+X-Gm-Message-State: AOJu0YzNrj3EvK0IdlQB5pBh5vTIYfZ+UdZgN2V9Tvjf3QvYhclkb6Ke
+	IyAXKdxDgKJitYkhusCPm4PzPhFpcEb2C2BGk0N/ekLsw2XgMkJotgZbbEHGbAj4a55Asuq9xhg
+	+F03w
+X-Gm-Gg: AZuq6aJGjU3N3FV0uxdevbrhLaiqc1fUWeuQ+Fh0H4savPacjT2LQDk9sX3xyRV+CKv
+	elW9pLNO5pP1mpuyyQoTc99VS3fILKAY7DqGCaMATqb/VN2mtqTuBKMkwESzC0B7hyx4ewUJS48
+	SqO+n9O+9beQgGLzz8zkl7W0veDGeddNP9bYNfkH7T8igVLdGOTKP8biGRzlvmsfs5RCgzjY8iZ
+	TlGs0sEnNZy6Xt/QTMvngvVzxSYRV2GfkFD6tqfQU5AkgnPCR0OIAR5IirSlab9gnlz6KMtk+/y
+	NtvY2dzqkqnW4h771bL6Qhk0cyCf9jduxoqZ0ew2NByFO6Jo6ZHkJlORx3QxfTzgLAKII7sQ683
+	IKkE4bUMPrVZDsR6fLTfahtuHw6QKZbun5C8kLigo7CkFPkxuLVh0oKpugpxgIPIUmPpNIsW354
+	A5o0iUOa/m98r1SwpaoIe+ri4Kq4aY1oVgNXQMR2BC8quuABLJhp8n
+X-Received: by 2002:a17:907:1c0a:b0:b88:dc6:3967 with SMTP id a640c23a62f3a-b8dab423069mr184503766b.40.1769530337563;
+        Tue, 27 Jan 2026 08:12:17 -0800 (PST)
 Received: from [192.168.108.101] (freebox.vlq16.iliad.fr. [213.36.7.13])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4806bdf419fsm7584805e9.15.2026.01.27.07.43.48
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-b885b75d632sm813653166b.48.2026.01.27.08.12.16
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 27 Jan 2026 07:43:48 -0800 (PST)
-Message-ID: <745c6e68-5e2d-4d72-a9a6-74703c4af276@freebox.fr>
-Date: Tue, 27 Jan 2026 16:43:47 +0100
+        Tue, 27 Jan 2026 08:12:17 -0800 (PST)
+Message-ID: <b9b2cf39-8989-40c9-8ffa-b1626217b773@freebox.fr>
+Date: Tue, 27 Jan 2026 17:12:16 +0100
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
@@ -87,28 +87,28 @@ List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH wireless-next v3 2/3] wifi: cfg80211: add initial UHR
+Subject: Re: [PATCH wireless-next v3 3/3] wifi: mac80211: add initial UHR
  support
 To: Johannes Berg <johannes@sipsolutions.net>, linux-wireless@vger.kernel.org
 Cc: Johannes Berg <johannes.berg@intel.com>
 References: <20260127141005.583581-5-johannes@sipsolutions.net>
- <20260127151005.dea4882ccc8e.I26126bebd83c7ab17e99827489f946ceabb3521f@changeid>
+ <20260127151005.751175e8035e.Ieec940b58dbf8115dab7e1e24cb5513f52c8cb2f@changeid>
 Content-Language: en-US
 From: Pablo MARTIN-GOMEZ <pmartin-gomez@freebox.fr>
-In-Reply-To: <20260127151005.dea4882ccc8e.I26126bebd83c7ab17e99827489f946ceabb3521f@changeid>
+In-Reply-To: <20260127151005.751175e8035e.Ieec940b58dbf8115dab7e1e24cb5513f52c8cb2f@changeid>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	R_DKIM_ALLOW(-0.20)[freebox-fr.20230601.gappssmtp.com:s=20230601];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[freebox-fr.20230601.gappssmtp.com:+];
-	TAGGED_FROM(0.00)[bounces-31235-lists,linux-wireless=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-31236-lists,linux-wireless=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	DMARC_NA(0.00)[freebox.fr];
@@ -119,124 +119,62 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	RCVD_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[pmartin-gomez@freebox.fr,linux-wireless@vger.kernel.org];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
 	NEURAL_HAM(-0.00)[-1.000];
 	TAGGED_RCPT(0.00)[linux-wireless];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,intel.com:email,freebox-fr.20230601.gappssmtp.com:dkim,freebox.fr:mid]
-X-Rspamd-Queue-Id: 768F5970CF
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,intel.com:email,freebox.fr:mid]
+X-Rspamd-Queue-Id: A8DAE978F2
 X-Rspamd-Action: no action
 
 Hello,
 
-One comment below:
+My comment below:
 
 On 27/01/2026 15:09, Johannes Berg wrote:
 > From: Johannes Berg <johannes.berg@intel.com>
 >
-> Add initial support for making UHR connections (or suppressing
-> that), adding UHR capable stations on the AP side, encoding
-> and decoding UHR MCSes (except rate calculation for the new
-> MCSes 17, 19, 20 and 23) as well as regulatory support.
+> Add support for making UHR connections and accepting AP
+> stations with UHR support.
 >
 > Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 > ---
 > v3:
->   - remove UHR capa pointer from AP settings, it's not in
->     the beacon anyway
->   - fix kernel-doc (Jeff Johnson)
+>   - use uhr_oper instead of removed uhr_capa
+>   - fix indentation (Jeff Johnson)
 > ---
->   include/net/cfg80211.h       |  56 ++++++++++++++++++-
->   include/uapi/linux/nl80211.h |  30 +++++++++++
->   net/wireless/nl80211.c       | 102 +++++++++++++++++++++++++++++++++--
->   net/wireless/reg.c           |   2 +
->   net/wireless/util.c          |  96 +++++++++++++++++++++++++--------
->   5 files changed, 259 insertions(+), 27 deletions(-)
+>   include/net/mac80211.h     |  33 +++++++++-
+>   net/mac80211/Makefile      |   2 +-
+>   net/mac80211/cfg.c         |  14 ++++
+>   net/mac80211/ieee80211_i.h |  17 ++++-
+>   net/mac80211/main.c        |  13 +++-
+>   net/mac80211/mlme.c        | 131 ++++++++++++++++++++++++++++++++++---
+>   net/mac80211/parse.c       |  20 ++++++
+>   net/mac80211/rx.c          |  21 ++++++
+>   net/mac80211/sta_info.c    |  11 ++++
+>   net/mac80211/sta_info.h    |  80 ++++++++++++++++------
+>   net/mac80211/uhr.c         |  29 ++++++++
+>   net/mac80211/util.c        |  34 ++++++++++
+>   12 files changed, 373 insertions(+), 32 deletions(-)
+>   create mode 100644 net/mac80211/uhr.c
 [...]
+> @@ -1040,8 +1064,15 @@ static inline u32 sta_stats_encode_rate(struct ieee80211_rx_status *s)
 >   
-> -static u32 cfg80211_calculate_bitrate_eht(struct rate_info *rate)
-> +static u32 _cfg80211_calculate_bitrate_eht_uhr(struct rate_info *rate)
->   {
->   #define SCALE 6144
-> -	static const u32 mcs_divisors[16] = {
-> -		102399, /* 16.666666... */
-> -		 51201, /*  8.333333... */
-> -		 34134, /*  5.555555... */
-> -		 25599, /*  4.166666... */
-> -		 17067, /*  2.777777... */
-> -		 12801, /*  2.083333... */
-> -		 11377, /*  1.851725... */
-> -		 10239, /*  1.666666... */
-> -		  8532, /*  1.388888... */
-> -		  7680, /*  1.250000... */
-> -		  6828, /*  1.111111... */
-> -		  6144, /*  1.000000... */
-> -		  5690, /*  0.926106... */
-> -		  5120, /*  0.833333... */
-> -		409600, /* 66.666666... */
-> -		204800, /* 33.333333... */
-> +	static const u32 mcs_divisors[] = {
-> +		[ 0] = 102399, /* 16.666666... */
-> +		[ 1] =  51201, /*  8.333333... */
-> +		[ 2] =  34134, /*  5.555555... */
-> +		[ 3] =  25599, /*  4.166666... */
-> +		[ 4] =  17067, /*  2.777777... */
-> +		[ 5] =  12801, /*  2.083333... */
-> +		[ 6] =  11377, /*  1.851725... */
-> +		[ 7] =  10239, /*  1.666666... */
-> +		[ 8] =   8532, /*  1.388888... */
-> +		[ 9] =   7680, /*  1.250000... */
-> +		[10] =   6828, /*  1.111111... */
-> +		[11] =   6144, /*  1.000000... */
-> +		[12] =   5690, /*  0.926106... */
-> +		[13] =   5120, /*  0.833333... */
-> +		[14] = 409600, /* 66.666666... */
-> +		[15] = 204800, /* 33.333333... */
-> +		[17] =  38400, /*  6.250180... */
-> +		[19] =  19200, /*  3.125090... */
-> +		[20] =  15360, /*  2.500000... */
-> +		[23] =   9600, /*  1.562545... */
->   	};
->   	static const u32 rates_996[3] =  { 480388888, 453700000, 408333333 };
->   	static const u32 rates_484[3] =  { 229411111, 216666666, 195000000 };
-> @@ -1602,8 +1606,6 @@ static u32 cfg80211_calculate_bitrate_eht(struct rate_info *rate)
->   	u64 tmp;
->   	u32 result;
+>   	r = STA_STATS_FIELD(BW, s->bw);
 >   
-> -	if (WARN_ON_ONCE(rate->mcs > 15))
-> -		return 0;
->   	if (WARN_ON_ONCE(rate->eht_gi > NL80211_RATE_INFO_EHT_GI_3_2))
->   		return 0;
->   	if (WARN_ON_ONCE(rate->eht_ru_alloc >
-> @@ -1684,7 +1686,7 @@ static u32 cfg80211_calculate_bitrate_eht(struct rate_info *rate)
->   		 rate->eht_ru_alloc == NL80211_RATE_INFO_EHT_RU_ALLOC_26)
->   		result = rates_26[rate->eht_gi];
->   	else {
-> -		WARN(1, "invalid EHT MCS: bw:%d, ru:%d\n",
-> +		WARN(1, "invalid EHT or UHR MCS: bw:%d, ru:%d\n",
->   		     rate->bw, rate->eht_ru_alloc);
->   		return 0;
->   	}
-> @@ -1698,11 +1700,61 @@ static u32 cfg80211_calculate_bitrate_eht(struct rate_info *rate)
->   	tmp *= rate->nss;
->   	do_div(tmp, 8);
->   
-> +	/* and handle interference mitigation - 0.9x */
-> +	if (rate->flags & RATE_INFO_FLAGS_UHR_IM) {
-The function cfg80211_calculate_bitrate_eht has already a bunch of 
-sanity check, shouldn't we add nss == 1 and MCS != 15 for IM?
-> +		tmp *= 9000;
-> +		do_div(tmp, 10000);
+> -	if (s->enc_flags & RX_ENC_FLAG_SHORT_GI)
+> -		r |= STA_STATS_FIELD(SGI, 1);
+> +	switch (s->encoding) {
+> +	case RX_ENC_HT:
+> +	case RX_ENC_VHT:
+> +		if (s->enc_flags & RX_ENC_FLAG_SHORT_GI)
+> +			r |= STA_STATS_FIELD(SGI, 1);
+> +		break;
+> +	default:
+> +		break;
 > +	}
-> +
->   	result = tmp;
->   
->   	return result / 10000;
->   }
->   
->
->   
+Not sure this change should be in this commit
 
 Best regards,
 
