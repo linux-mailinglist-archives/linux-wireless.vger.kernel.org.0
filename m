@@ -1,221 +1,288 @@
-Return-Path: <linux-wireless+bounces-31197-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-31198-lists+linux-wireless=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id SGGPNTMyeGlRowEAu9opvQ
-	(envelope-from <linux-wireless+bounces-31197-lists+linux-wireless=lfdr.de@vger.kernel.org>)
-	for <lists+linux-wireless@lfdr.de>; Tue, 27 Jan 2026 04:34:11 +0100
+	id IAwsOWI5eGmmowEAu9opvQ
+	(envelope-from <linux-wireless+bounces-31198-lists+linux-wireless=lfdr.de@vger.kernel.org>)
+	for <lists+linux-wireless@lfdr.de>; Tue, 27 Jan 2026 05:04:50 +0100
 X-Original-To: lists+linux-wireless@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 526E88F999
-	for <lists+linux-wireless@lfdr.de>; Tue, 27 Jan 2026 04:34:11 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8026C8FC93
+	for <lists+linux-wireless@lfdr.de>; Tue, 27 Jan 2026 05:04:50 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id BB334301C92D
-	for <lists+linux-wireless@lfdr.de>; Tue, 27 Jan 2026 03:34:09 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 4514A300B443
+	for <lists+linux-wireless@lfdr.de>; Tue, 27 Jan 2026 04:04:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 114B92D24B7;
-	Tue, 27 Jan 2026 03:34:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 950A93191D8;
+	Tue, 27 Jan 2026 04:04:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="AIgaAaH/";
-	dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b="FfkOZ2vg"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Ddpipc3x"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f176.google.com (mail-pl1-f176.google.com [209.85.214.176])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B61F5280CE5
-	for <linux-wireless@vger.kernel.org>; Tue, 27 Jan 2026 03:34:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769484849; cv=none; b=ekkzT3k5ozLIgn4ULe56djO5o8uyG6wVZvAIaYCpoL5Sz36GbucGrlj5rvlNF5BquGz6tMlgs/VQxcTPX57pKlwnSwMOEobn4CMmLQ+C/2GKiSergynDFBjilcrtH/wwN4ht4vjfm/VhszzAY3y5jgsxHXcy1SVW+2LRIoXwKBU=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769484849; c=relaxed/simple;
-	bh=jl/rJfb1UxscEBaSjSdrwhDdZOC5zc+QFiSovZ1m/L8=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=t74Y7HNj2S7shlak59bIOFzab/8GXiGARLiHmxVtgWHrPJRiidW6K5gxAjs7iLnV52yuxhKXFzvlJNrfOwAhzpaPTJnGVVkz9NjwplV6H97ZvptC2yWWuhuvFgyK6MfElPZIcec3mAZqhnwoaSFPTygBvYgis+BMNVbsK6AERrQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=AIgaAaH/; dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b=FfkOZ2vg; arc=none smtp.client-ip=205.220.168.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
-Received: from pps.filterd (m0279863.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 60QKgQq13384643
-	for <linux-wireless@vger.kernel.org>; Tue, 27 Jan 2026 03:34:07 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
-	cc:content-transfer-encoding:date:from:message-id:mime-version
-	:subject:to; s=qcppdkim1; bh=lr2+tNxH4fOHIvQOeYoJgdvCBLvY2/PQOfo
-	BT4idddo=; b=AIgaAaH/T5bYvOrniiEjPifgU2BpvnWQQURxZl8CzSwnhWHNZET
-	gabng2xqaeMUttIstbv1NiBn2Gj+M/NcyeCEhDwHKphiSE50p9+bogvEsdXvBN1M
-	1M9bwlOvAUSFzYjPkPsQx/QhGwpdVYqtdkQ4SVUocdvlCF1T11+9wbzNDK+3DhHc
-	sGRA6NxjE+WBdy1I3o5V1VselDagGgs3T9wqgtDAXWnPCPuaUEjHAWYqwNPZx+E0
-	16hEXJqG/w1TI9UywBGzNkUGN+yi2BrVCVDealtpr+ZkQ8CclSh304m0rGSkn2qL
-	mJ6GxbWAfk1QeRRLza//xzTbqYToS3kl8fA==
-Received: from mail-pg1-f199.google.com (mail-pg1-f199.google.com [209.85.215.199])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4bxf3a116w-1
-	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
-	for <linux-wireless@vger.kernel.org>; Tue, 27 Jan 2026 03:34:06 +0000 (GMT)
-Received: by mail-pg1-f199.google.com with SMTP id 41be03b00d2f7-b630b4d8d52so3391479a12.3
-        for <linux-wireless@vger.kernel.org>; Mon, 26 Jan 2026 19:34:06 -0800 (PST)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 186903191AC
+	for <linux-wireless@vger.kernel.org>; Tue, 27 Jan 2026 04:04:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.214.176
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1769486688; cv=pass; b=WcEqQfiGXSbOzSgxshrHdFxlZkPIyMX7ZIJkfVlaQnAA8dsR96T//i6J1hKA/kkkKRjwC2Got9m4ZXsR0TzB1odemnkKYl0EGOUBSaa30Y4Npoev9qVrF3kXJotk1Oy29NIy5TtS3UJvM3QWImvglODwCxUt1+a6o4Vqn2Sx9bU=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1769486688; c=relaxed/simple;
+	bh=VINbCF2HXdEABxAxhSqVvLNP3F/sSc/MoKoEGXH77is=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=ovza+mfPK9ve834kUDntrEYKns6bY4sT20iA6noi+CSUaApwceWK/hbB8fRiPMFqyjq84eyows02aV996NEPxn/H8H0KydCQsVIaZIg5+UaRG4x8GMVEyejhjVGyqqkIxrsXaltyc8vC66qIA0G0BVIqRg6S11To0/BnXOlb9pc=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Ddpipc3x; arc=pass smtp.client-ip=209.85.214.176
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-pl1-f176.google.com with SMTP id d9443c01a7336-2a07fac8aa1so38721615ad.1
+        for <linux-wireless@vger.kernel.org>; Mon, 26 Jan 2026 20:04:46 -0800 (PST)
+ARC-Seal: i=1; a=rsa-sha256; t=1769486686; cv=none;
+        d=google.com; s=arc-20240605;
+        b=PaGxQNBHDwkfpozJ9u/Bi9doTITBazZB24TwWaPax7kuNW5Ue9MHkk5CvMW9httWAo
+         MIUrYpOv2oWC1yeo0VGIGRdny30bdDQPTsSa9ZNXzLIXAWoJo5sFgJ4m/LMdznst3Z/p
+         AMRG0agFAFSt9zUxplLp4Dr3rB+o4pZYfIsNSDFTOfTYNADTFxlybVcRvtmGmyypTDPb
+         X1nFM7aUyXPcDX5r7spuA1neg+9TqcvvrWqqRlA7ojmoJvRNH6UOu63ook7lx/3sWSpW
+         PGVOWbHgtbW+t8tB9e9SHbukwTVQtUMjCsL71CQ3MIJYdRhON0EDlJA+6x6tjMquEB1T
+         tOdg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=/NlII7TAXZebUu1p/KKdfJCc4A2tlDtBUvsS8b+u0co=;
+        fh=EaNd6h/7/C2cBcLFTM2t3MApuZ8nKo89XT+AxbLP7kU=;
+        b=STnhtFpZuNb+Bm9f1AgAvoIOL30sg6xGXHh4iKfRbHTMDNrkgBTYqEMcDmsJDrPpQJ
+         OWptfeiOLJxwuN9tj8q7ssu8UCUYCW07V5A6uuVA/QmRp54HR+OlsG68JnvjFfKSnK/w
+         Da76fdnOTRJ8JsuUGtCzOHugiGxFLgMQwYDQJ+YF4zwI3YkXw8ZjdlulT8MYipLozUm0
+         IwF0giEJd5h0ftjUocdIW1plop9KOL0XySplFw906PVSdF7/zaucyhZKppD3k80IoW8r
+         D/Lh7oGd0m90Qh7MZNKs/O5cmTy5Pztrn0BXPzVWDyKzNBVgHxy6HMnNlb47QVStMPTM
+         Bp2A==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=oss.qualcomm.com; s=google; t=1769484846; x=1770089646; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=lr2+tNxH4fOHIvQOeYoJgdvCBLvY2/PQOfoBT4idddo=;
-        b=FfkOZ2vgxfkHjzqFHeFmf/GdgrG/PSTdZM4bro6pKSr6ZIIN4kH+0J7Ap0I+8obNKe
-         +cGIk3eLxfC2rP1Z+GI9XR4GzLRYn/MQaYAY89Zpzsx7Lij6GTX5W61PgA8mzOZd6DKs
-         HBJJA8+HkMMki2oMzCnMbDFGnOBWG1oCOlfUNduZZLxDg0SRSF0NEqogrOyGDcLca+q0
-         60vtBaWV8X7TL17nEIJQo63wtB3s7mnVFtBRskK+RslPMe2odDNVM+BcNjRsDtRa8VC1
-         EuZ0HSgmTVkwaI8ZKrVK+iTNPkczPgUUL03tgkbvRi++fJJUrVClIan53PakDza4jPS/
-         fl9g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1769484846; x=1770089646;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+        d=gmail.com; s=20230601; t=1769486686; x=1770091486; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=lr2+tNxH4fOHIvQOeYoJgdvCBLvY2/PQOfoBT4idddo=;
-        b=YtL46HKocgAWGa3O36Lyo08tMmDzVRO35JmVM3i3t0iQtki+n/Z0xxEvV+1jDN93h/
-         aJSinTg6v1ZzrNpww57FVNsmHLfE6QFYcyJYDzxgbXlvpIDOxvEa1SoIAj0sYPt9+hte
-         HUe3hvvQTgVPLAiwBjG7ooE5hyLapfNQv9wwYtBmJsWq5778Cdfxwsjen/7EnCHupgB7
-         f0zEsQXOFjSvs1IrBMZZMOROo4UIb1wT5LVAneHQ+qmVjWY57vIQE9tecB7TIYfmQCwk
-         AMFvjyQt113YM2eTzW2wZhioPKbjLe0uNsFWOfCR9Dj8Ouj+KqC/uGOQWWONR6FPSRvJ
-         qn+A==
-X-Gm-Message-State: AOJu0Yw+OTS9YhRh6dqx0DjufemS1KcSg2z8BbFLobIxXqzFN1BskkEH
-	bjsAILgmLsxSaNyWIHnYd6p725I9XVyLJJm4iX9x0HZvFD+mJ2rwh1AViZAIYXtAJOGU2NcpnI/
-	nq1XTBUzJStvkTG/EbuRtz/VLbNDe+7lEK+KOgDPYxKFA2MPOl5Hk5YFSPdO9Rk9mZyAfLeNYDc
-	SjIA==
-X-Gm-Gg: AZuq6aJQV8F/pRzoww6DbF8ya39T50P/AslD/lCJgiLWyX3AXtjeDShETFJ7MjNycBX
-	gzx4qOEn6RA64euMrAJTvhM52vIRt3BHwJsO3WwnkzUZ/2plEUgEYAFqePMhYMdNRZYgFJAB1RR
-	P9+3mrAXoDP8Z1/SamDiuWdf2djSTxqishRaVT58zxrdBJQ3tQvAp3fftEx18190TGe5sRdQaAL
-	G1wQrOVtaQfiBoXQKufIt3tT366ZA+tZvD+iaR3fDNOr4AjCIR/mTd1MlHU40Ql2AN5B2E0ajBy
-	VvzsEbpu8m0daN7QzUUXfo0yGSDtD0ub8BEryFM8heFYnUDcumMO3zkUnAa7jPROd9FszaP9Ewj
-	q5z5Iy6j8AitZ1NS7+crcHuzJVFt+y5b0BzWj/9E4dGQN7sMF8lZrt48XHm5tgXICA53VYvXypM
-	sRksZXtvAxUWUNGB/TXIbV3PAsNznbQx8Z
-X-Received: by 2002:aa7:88ce:0:b0:823:b1f:893a with SMTP id d2e1a72fcca58-823692c3a61mr411949b3a.48.1769484845926;
-        Mon, 26 Jan 2026 19:34:05 -0800 (PST)
-X-Received: by 2002:aa7:88ce:0:b0:823:b1f:893a with SMTP id d2e1a72fcca58-823692c3a61mr411919b3a.48.1769484845436;
-        Mon, 26 Jan 2026 19:34:05 -0800 (PST)
-Received: from hu-aarasahu-blr.qualcomm.com (blr-bdr-fw-01_GlobalNAT_AllZones-Outside.qualcomm.com. [103.229.18.19])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-82339095c85sm5934929b3a.67.2026.01.26.19.34.03
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 26 Jan 2026 19:34:05 -0800 (PST)
-From: Aaradhana Sahu <aaradhana.sahu@oss.qualcomm.com>
-To: ath12k@lists.infradead.org
-Cc: linux-wireless@vger.kernel.org,
-        Aaradhana Sahu <aaradhana.sahu@oss.qualcomm.com>
-Subject: [PATCH ath-next] wifi: ath12k: clear stale link mapping of ahvif->links_map
-Date: Tue, 27 Jan 2026 09:04:00 +0530
-Message-Id: <20260127033400.1721220-1-aaradhana.sahu@oss.qualcomm.com>
-X-Mailer: git-send-email 2.34.1
+        bh=/NlII7TAXZebUu1p/KKdfJCc4A2tlDtBUvsS8b+u0co=;
+        b=Ddpipc3xeN3DmlPPXz3QZMgenmsg6n1o+86WWaWFhAhmZ0f8SnBmAFQDCSoEacBNDn
+         hc9UpTqj0wLRVL6fLKaZCFPAHXJpDY4dJu8Jf8Z32dJvbD81U0bPSr/JM3bGv6IEh2/V
+         b2g+DfAR3wmYhCMH9IOtIePJHtcrwdD2IHlzE+pBEl1dZEX2jDbAgZa4Z42yJJ6YcnZi
+         lb3quvSLYOYppmHfvKbtCOOqnzdo0A7oZhKw1XRXGvMZssQPKayK5TXjVOugC99wpLUl
+         sxk2OOd4oYsoKZfko2QfcuZceLNJ/ruRFVG6wjbw5OqpEn+ha/f+SIU1zLUVW/QDj8Ix
+         ac5w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1769486686; x=1770091486;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=/NlII7TAXZebUu1p/KKdfJCc4A2tlDtBUvsS8b+u0co=;
+        b=QNGep0WzKqsbj5O6K7vybbDm6dGEzj59u9AMwKoldRZPgsKfdoH+KFT9t2WKivG1KY
+         wqFvKFJHe/Qxoai4Rv9sg+DPGq+fviAZDcPN4q8PgcEtBwvMvQN9MF4zvuCWxrXdis4P
+         479eU26twnYhItTBrGUmleJsHl8ZeA43fa/lsiPMTgoJvrxpPpR0zuzG7XwuVW/aMCjO
+         VcuuwEysHnBHsbU7U7JCunMdekQHUO7RiGjI5sypRSgQaGrs/YhzdfDDYGyR53Wt9Rrj
+         x/iuAd3Mh5glG+GtS341QZXQacH92Ja0qDXqfUA2g5tahFGGDOTcLJ7yIrC+bkeONeTZ
+         4etQ==
+X-Forwarded-Encrypted: i=1; AJvYcCUa4fBP7FDw3AcziH9xFJa2b0QdmADu5hAECyBN/B/qxI8yPCYkm4mBMQEi0ZlUi+3m6cF6mFKxlNpA4X6QuQ==@vger.kernel.org
+X-Gm-Message-State: AOJu0Yz0jo/sOAnMgqGWbTnhz3FpiFKFB9sNn6uWF7SYw6rRR0PBiH1T
+	MgwbesfSLOy/RLOuLXrXcDouLfsyN5JD4cuwRfl9taY1N0CTkTfSvtSnlbz4u8nWTkQQvstsNUC
+	hcPFz74CScu7DmgKSKUvxDdPhSdfacDM=
+X-Gm-Gg: AZuq6aIya9CJ+o1yw/8gyIICMBI4tgb62wticmqBgz0YcZQub+lxuZt2A8Hf2Hc7C/D
+	r5HyAwllrlCwdydkVfl1ncLAdGXzhquLrl/zXv5oBNGVKlfGpysLZjXmqkEAa8cKwK2oZws6yEl
+	I1TnBrsQWiDTj35HwgFT48ohA9I5UfKKs1/29/lyITl5dZxG1u2dYTKe7e1N25C0mT7+pIP9h0j
+	OfPsFlJHqLE4bO79cipqukbw4/dhIFV+15WbCXp79g3bTxMyv5P9BfxrbCgA8d/IpHfiOBlVQce
+	5Qv6La3/fgSSii7MVecOGbo7j8Zy
+X-Received: by 2002:a17:902:da82:b0:2a1:3e15:380e with SMTP id
+ d9443c01a7336-2a870dc88aemr4512735ad.34.1769486686171; Mon, 26 Jan 2026
+ 20:04:46 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwMTI3MDAyNyBTYWx0ZWRfX4Fc5cIKaUjlS
- Ye8rL8KkdSKRngowGOInedfnZ9jABwaXI0JN0h9KH5nEDog0cyZ+u+usQQo0kwyQao2tu2ZWRzV
- 7sr/NwmiQKIbj2mQytk0U0awij81PYn2H20F+29LL1BN/O7qQbOhLoJbc3wWIT+k2ozhOSBayhh
- w14RkQsZV1l7yKpUcweyVzBr7lDPVchE/19cGEw+s/duwLuG9BZM5DSHuZjqbJULExBOo8BRXTi
- sPDg5JEVOnnD76Y9tydxb8sUOPoOpBUd/RRRpVjFO7gHo7Ljs41XRb98OBHXWqJwMcpGAW59KgY
- A0uq5xSB2IFMrXHO/Ukp2LUyCrciACWZ/M73EGQXrl7uGErFrcczpXd6lhrYrFqNqff46DqFmm7
- k42X8FTMosFfQWL6UZ6Pk2270mAOpYFOkqCPtUOP2zW2dRFox+BaUFQjHQabNUHC05ijlFzdUGW
- +KyT52f70MR3qE8t6vw==
-X-Proofpoint-ORIG-GUID: RcDMxli92AcrH_KrMbgHiox7yYnMyRO6
-X-Proofpoint-GUID: RcDMxli92AcrH_KrMbgHiox7yYnMyRO6
-X-Authority-Analysis: v=2.4 cv=a6k9NESF c=1 sm=1 tr=0 ts=6978322e cx=c_pps
- a=Oh5Dbbf/trHjhBongsHeRQ==:117 a=Ou0eQOY4+eZoSc0qltEV5Q==:17
- a=vUbySO9Y5rIA:10 a=s4-Qcg_JpJYA:10 a=VkNPw1HP01LnGYTKEx00:22
- a=EUspDBNiAAAA:8 a=eHKh3QcvEQMPWO9sNqkA:9 a=_Vgx9l1VpLgwpw_dHYaR:22
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.20,FMLib:17.12.100.49
- definitions=2026-01-27_01,2026-01-26_01,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- malwarescore=0 spamscore=0 phishscore=0 lowpriorityscore=0 adultscore=0
- priorityscore=1501 bulkscore=0 suspectscore=0 clxscore=1015 impostorscore=0
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.22.0-2601150000 definitions=main-2601270027
+References: <20260126095244.113301-1-bjsaikiran@gmail.com> <20260126095244.113301-2-bjsaikiran@gmail.com>
+ <776ae681-9db7-4051-abe1-07530f87d485@oss.qualcomm.com>
+In-Reply-To: <776ae681-9db7-4051-abe1-07530f87d485@oss.qualcomm.com>
+From: Saikiran B <bjsaikiran@gmail.com>
+Date: Tue, 27 Jan 2026 09:34:34 +0530
+X-Gm-Features: AZwV_Qh_KtUjPrbR6pKqraFjqNXJOMwM-O9Veq8b69C6AaKOjsHboDih_EcVer0
+Message-ID: <CAAFDt1sgAC6bHOVtELmcQVx=L1dTXDsQFtO+N3R_C2C35VOxhA@mail.gmail.com>
+Subject: Re: [PATCH v2 1/2] wifi: ath12k: Remove frequency range filtering for
+ single-phy devices
+To: Baochen Qiang <baochen.qiang@oss.qualcomm.com>
+Cc: ath12k@lists.infradead.org, linux-wireless@vger.kernel.org, 
+	kvalo@kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.66 / 15.00];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MID_CONTAINS_FROM(1.00)[];
-	DMARC_POLICY_ALLOW(-0.50)[qualcomm.com,reject];
-	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
-	R_DKIM_ALLOW(-0.20)[qualcomm.com:s=qcppdkim1,oss.qualcomm.com:s=google];
+X-Spamd-Result: default: False [-2.16 / 15.00];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=2];
+	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+	R_DKIM_ALLOW(-0.20)[gmail.com:s=20230601];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	TAGGED_FROM(0.00)[bounces-31198-lists,linux-wireless=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-31197-lists,linux-wireless=lfdr.de];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[qualcomm.com:email,qualcomm.com:dkim,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns];
+	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	FROM_NEQ_ENVFROM(0.00)[aaradhana.sahu@oss.qualcomm.com,linux-wireless@vger.kernel.org];
-	RCPT_COUNT_THREE(0.00)[3];
-	PRECEDENCE_BULK(0.00)[];
-	TAGGED_RCPT(0.00)[linux-wireless];
-	NEURAL_HAM(-0.00)[-1.000];
-	DKIM_TRACE(0.00)[qualcomm.com:+,oss.qualcomm.com:+];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	TO_DN_SOME(0.00)[];
-	RCVD_COUNT_SEVEN(0.00)[7]
-X-Rspamd-Queue-Id: 526E88F999
+	MIME_TRACE(0.00)[0:+];
+	FROM_HAS_DN(0.00)[];
+	MISSING_XM_UA(0.00)[];
+	RCPT_COUNT_THREE(0.00)[4];
+	NEURAL_HAM(-0.00)[-1.000];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[bjsaikiran@gmail.com,linux-wireless@vger.kernel.org];
+	DKIM_TRACE(0.00)[gmail.com:+];
+	MID_RHS_MATCH_FROMTLD(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	TAGGED_RCPT(0.00)[linux-wireless];
+	FREEMAIL_FROM(0.00)[gmail.com];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[mail.gmail.com:mid,qualcomm.com:email,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 8026C8FC93
 X-Rspamd-Action: no action
 
-When an arvif is initialized in non-AP STA mode but MLO connection
-preparation fails before the arvif is created
-(arvif->is_created remains false), the error path attempts to delete all
-links. However, link deletion only executes when arvif->is_created is true.
-As a result, ahvif retains a stale entry of arvif that is initialized but
-not created.
+Hi Baochen,
 
-When a new arvif is initialized with the same link id, this stale mapping
-triggers the following WARN_ON.
+I checked the logs again.
 
-WARNING: drivers/net/wireless/ath/ath12k/mac.c:4271 at ath12k_mac_op_change_vif_links+0x140/0x180 [ath12k], CPU#3: wpa_supplicant/275
+The issue seems to be coming from how
+[ath12k_regd_update()](drivers/net/wireless/ath/ath12k/reg.c) handles
+frequency range updates for this device. WCN7850 is a single-phy
+device (single [ar](drivers/net/wireless/ath/ath12k/mac.c) that
+supports both 2.4GHz and 5GHz/6GHz.
 
-Call trace:
- ath12k_mac_op_change_vif_links+0x140/0x180 [ath12k] (P)
- drv_change_vif_links+0xbc/0x1a4 [mac80211]
- ieee80211_vif_update_links+0x54c/0x6a0 [mac80211]
- ieee80211_vif_set_links+0x40/0x70 [mac80211]
- ieee80211_prep_connection+0x84/0x450 [mac80211]
- ieee80211_mgd_auth+0x200/0x480 [mac80211]
- ieee80211_auth+0x14/0x20 [mac80211]
- cfg80211_mlme_auth+0x90/0xf0 [cfg80211]
- nl80211_authenticate+0x32c/0x380 [cfg80211]
- genl_family_rcv_msg_doit+0xc8/0x134
+In ath12k_regd_update():
 
-Fix this issue by unassigning the link vif and clearing ahvif->links_map
-if arvif is only initialized but not created.
+1. It updates the range for 2GHz capabilities (sets range to ~2.4GHz).
+2. It then attempts to update for 5GHz capabilities.
+3. Because `ar->supports_6ghz` is true, it uses the 6GHz path logic.
+4. However, `ab->reg_freq_6ghz` appears to be uninitialized/invalid at
+this stage (possibly due to regulatory init timing or country code
+issues, On Lenovo Yoga Slim 7x, SMBIOS does not seem to provide a
+valid country code. The driver attempts to set an invalid country code
+which the firmware rejects. This inturn triggers this issue. Fixing
+SMBIOS parsing/defaults is a separate, complex issue that varies by
+vendor.), causing the 5GHz range update to be skipped or invalid.
 
-Tested-on: QCN9274 hw2.0 PCI WLAN.WBE.1.5-01651-QCAHKSWPL_SILICONZ-1
+[ 11.699027] ath12k_pci 0004:01:00.0: Failed to set the requested
+Country regulatory setting
+[ 31.111995] ath12k_pci 0004:01:00.0: Failed to set the requested
+Country regulatory setting
 
-Fixes: 81e4be30544e ("wifi: ath12k: handle link removal in change_vif_links()")
-Signed-off-by: Aaradhana Sahu <aaradhana.sahu@oss.qualcomm.com>
----
- drivers/net/wireless/ath/ath12k/mac.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+As a result, `ar->freq_range` remains effectively set for only the 2.4GHz b=
+and.
 
-diff --git a/drivers/net/wireless/ath/ath12k/mac.c b/drivers/net/wireless/ath/ath12k/mac.c
-index cdb72439dcf4..9a926f5b7e8a 100644
---- a/drivers/net/wireless/ath/ath12k/mac.c
-+++ b/drivers/net/wireless/ath/ath12k/mac.c
-@@ -4281,8 +4281,10 @@ ath12k_mac_op_change_vif_links(struct ieee80211_hw *hw,
- 		if (WARN_ON(!arvif))
- 			return -EINVAL;
- 
--		if (!arvif->is_created)
-+		if (!arvif->is_created) {
-+			ath12k_mac_unassign_link_vif(arvif);
- 			continue;
-+		}
- 
- 		if (WARN_ON(!arvif->ar))
- 			return -EINVAL;
+When ath12k_reg_update_chan_list() runs:
 
-base-commit: 13f9e5344a517048f3d8c61e49a9a72f97410de3
--- 
-2.34.1
+It compares 5GHz channels (e.g., 5180 MHz) against a
+[freq_range](drivers/net/wireless/ath/ath12k/reg.c) that only covers
+2.4GHz.
+Result: `center_freq > end_freq` is TRUE -> Channel is filtered out.
 
+The filtering logic added in acc152f9be20 works for split-phy topology
+where each host ar covers a specific range. For WCN7850, where a
+single host ar covers disjoint bands (2.4G + 5G), [freq_range] but
+[freq_range](drivers/net/wireless/ath/ath12k/reg.c) (start/end) cannot
+represent multiple disjoint bands at the same time.
+
+Removing this driver-level filter allows the firmware (which knows the
+true capabilities) to handle the channel list correctly.
+
+Thanks & Regards,
+Saikiran
+
+On Tue, Jan 27, 2026 at 8:52=E2=80=AFAM Baochen Qiang
+<baochen.qiang@oss.qualcomm.com> wrote:
+>
+>
+>
+> On 1/26/2026 5:52 PM, Saikiran wrote:
+> > The frequency range filtering added in commit acc152f9be20 was designed
+> > for split-phy devices where multiple radios with overlapping frequency
+> > ranges within the same band are combined into a single wiphy. Each radi=
+o
+> > in such setups handles only a subset of channels within a band (e.g., t=
+wo
+> > 5GHz radios covering 5GHz-low and 5GHz-high separately).
+> >
+> > However, this filtering breaks single-phy devices like WCN7850 that use
+> > a single radio to handle both 2.4GHz and 5GHz bands. On these devices,
+>
+> To be accurate, WCN7850 still gets two phys in hardware, it is just in ho=
+st that we treat
+> it as single.
+>
+> > the freq_range is set to cover the entire supported spectrum, but the
+>
+> exactly
+>
+> > filtering logic incorrectly restricts channels, causing 5GHz to become
+> > completely unusable.
+>
+> how? what are the actual values of freq_range when you hit the issue and =
+how are they
+> calculated?
+>
+> >
+> > The issue manifests as:
+> > - All 5GHz channels filtered out during channel list updates
+> > - No 5GHz SSIDs visible in scans
+> > - Only 2.4GHz networks functional
+> >
+> > Remove the frequency range filtering entirely and rely on the firmware
+> > to handle frequency restrictions based on actual hardware capabilities.
+> > This approach works correctly for both split-phy and single-phy devices=
+,
+> > as the firmware has complete knowledge of what the hardware supports.
+> >
+> > Fixes: acc152f9be20 ("wifi: ath12k: combine channel list for split-phy =
+devices in single-wiphy")
+> > Tested-on: WCN7850 hw2.0 PCI WLAN.HMT.1.1.c5-00302 (Lenovo Yoga Slim 7x=
+)
+> > Signed-off-by: Saikiran <bjsaikiran@gmail.com>
+> > ---
+> >  drivers/net/wireless/ath/ath12k/reg.c | 13 -------------
+> >  1 file changed, 13 deletions(-)
+> >
+> > diff --git a/drivers/net/wireless/ath/ath12k/reg.c b/drivers/net/wirele=
+ss/ath/ath12k/reg.c
+> > index 7898f6981e5a..48c362a86524 100644
+> > --- a/drivers/net/wireless/ath/ath12k/reg.c
+> > +++ b/drivers/net/wireless/ath/ath12k/reg.c
+> > @@ -153,12 +153,6 @@ int ath12k_reg_update_chan_list(struct ath12k *ar,=
+ bool wait)
+> >                       if (bands[band]->channels[i].flags &
+> >                           IEEE80211_CHAN_DISABLED)
+> >                               continue;
+> > -                     /* Skip Channels that are not in current radio's =
+range */
+> > -                     if (bands[band]->channels[i].center_freq <
+> > -                         KHZ_TO_MHZ(ar->freq_range.start_freq) ||
+> > -                         bands[band]->channels[i].center_freq >
+> > -                         KHZ_TO_MHZ(ar->freq_range.end_freq))
+> > -                             continue;
+> >
+> >                       num_channels++;
+> >               }
+> > @@ -190,13 +184,6 @@ int ath12k_reg_update_chan_list(struct ath12k *ar,=
+ bool wait)
+> >                       if (channel->flags & IEEE80211_CHAN_DISABLED)
+> >                               continue;
+> >
+> > -                     /* Skip Channels that are not in current radio's =
+range */
+> > -                     if (bands[band]->channels[i].center_freq <
+> > -                         KHZ_TO_MHZ(ar->freq_range.start_freq) ||
+> > -                         bands[band]->channels[i].center_freq >
+> > -                         KHZ_TO_MHZ(ar->freq_range.end_freq))
+> > -                             continue;
+> > -
+> >                       /* TODO: Set to true/false based on some conditio=
+n? */
+> >                       ch->allow_ht =3D true;
+> >                       ch->allow_vht =3D true;
+>
 
