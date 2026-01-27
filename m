@@ -1,177 +1,189 @@
-Return-Path: <linux-wireless+bounces-31238-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-31239-lists+linux-wireless=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id wC4oDIXneGmHtwEAu9opvQ
-	(envelope-from <linux-wireless+bounces-31238-lists+linux-wireless=lfdr.de@vger.kernel.org>)
-	for <lists+linux-wireless@lfdr.de>; Tue, 27 Jan 2026 17:27:49 +0100
+	id eDzHKdbweGmGuAEAu9opvQ
+	(envelope-from <linux-wireless+bounces-31239-lists+linux-wireless=lfdr.de@vger.kernel.org>)
+	for <lists+linux-wireless@lfdr.de>; Tue, 27 Jan 2026 18:07:34 +0100
 X-Original-To: lists+linux-wireless@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 873EE97C1D
-	for <lists+linux-wireless@lfdr.de>; Tue, 27 Jan 2026 17:27:48 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id CECE8982E6
+	for <lists+linux-wireless@lfdr.de>; Tue, 27 Jan 2026 18:07:33 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 8247C30160EE
-	for <lists+linux-wireless@lfdr.de>; Tue, 27 Jan 2026 16:27:35 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id B5E893009E26
+	for <lists+linux-wireless@lfdr.de>; Tue, 27 Jan 2026 17:00:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AF09E22A7E4;
-	Tue, 27 Jan 2026 16:27:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C654E362135;
+	Tue, 27 Jan 2026 17:00:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b="HHUSAedm"
+	dkim=fail reason="signature verification failed" (1024-bit key) header.d=nbd.name header.i=@nbd.name header.b="kNbfZXNO"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from sipsolutions.net (s3.sipsolutions.net [168.119.38.16])
+Received: from nbd.name (nbd.name [46.4.11.11])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4B1A4243951
-	for <linux-wireless@vger.kernel.org>; Tue, 27 Jan 2026 16:27:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=168.119.38.16
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ADAB2230BD5
+	for <linux-wireless@vger.kernel.org>; Tue, 27 Jan 2026 17:00:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=46.4.11.11
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769531254; cv=none; b=F6quBmsupII9QnxXrR7InlDM2fxmp5I5hoSBIT7RAvVn5QnQansrGJPqMOYxftX0+1zzomOmh8lMyfwBlcsA+xgBsmaxmSrQP1FyoqV+/0qo0/OiB4vMlf2V283jdWQabdufevQp4M76Dm409mv7jkZCeGZCEWS7mX0H5L78vSI=
+	t=1769533250; cv=none; b=UdDUsfTXgHtZ9t35EP7Far51ljWrCbHMsFcmXxMuJytiYECqb4i71QzmRE5rcqluseIu1KeaoIe7M/3RAIICiu09ce7DLNaevVKv1qu/aksjtEFY73Vle9veflOIzHPQ5JJEQAyP8zxArCTfZEuNXMsRtHk6yPoycgmGx814Bhw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769531254; c=relaxed/simple;
-	bh=wFR6oYei0hA5qkGiSJ81kZMal9eEBK8tCDpi4X8wxsU=;
-	h=Message-ID:Subject:From:To:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=NleE8jgledlEV6l/Wtn6TxD3+QqBENb3YlM3vxAOy/5lAEfpmmaE2ETtur2Cch1wobDt6lHOrSutL2tX8brnMBm/LMNr1q0sUCnZEDBe5lY2DzByVF3xd4BfkbSfsbh9xY5U7KYQorI4y5mx8eoARYcUQEuWft1AxPEL0K2WrgY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net; spf=pass smtp.mailfrom=sipsolutions.net; dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b=HHUSAedm; arc=none smtp.client-ip=168.119.38.16
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sipsolutions.net
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=sipsolutions.net; s=mail; h=MIME-Version:Content-Transfer-Encoding:
-	Content-Type:References:In-Reply-To:Date:To:From:Subject:Message-ID:Sender:
-	Reply-To:Cc:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
-	Resent-Cc:Resent-Message-ID; bh=IC61uJnWjoxTsOrevC30zWaSgGuRpaR3Rt5ifukdits=;
-	t=1769531253; x=1770740853; b=HHUSAedmGX1JWnjfFYTyoXp3CIKX4p+1L9Ituo0Fq3EFeKw
-	Uqqs8eMqELEKZohNGmD8+hpOxr03O8KctBhVf8iijT0MIG03lOChPA+3n561Aq9B8gNRNM8YTcZ/b
-	libf/wCDBBeHNoV50Rf+BOkSv8/jbHDd9R3qQB+gRCIWt70/oOpJaIzzVtn3AJoI+ZF/1KefW14QL
-	9uz357F75SDtNUgCvbHYpm5e9qc875orhcR2884jYrwHLDpiEFgF6Uuj6m8MB+nvWakjsAVIICB+/
-	qd3JNBRgoXsum1jFrIy8B5Um+NDTpGHBRhw5iuZV9U3aQXW3HRx5dNZa0yKBfLAA==;
-Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
-	(Exim 4.98.2)
-	(envelope-from <johannes@sipsolutions.net>)
-	id 1vklud-000000054LU-06Sm;
-	Tue, 27 Jan 2026 17:27:31 +0100
-Message-ID: <71915f491ec27e2a13bf291e3dfeb729fda398f1.camel@sipsolutions.net>
-Subject: Re: [PATCH wireless-next v3 1/3] wifi: ieee80211: add some initial
- UHR definitions
-From: Johannes Berg <johannes@sipsolutions.net>
-To: Pablo MARTIN-GOMEZ <pmartin-gomez@freebox.fr>, 
-	linux-wireless@vger.kernel.org
-Date: Tue, 27 Jan 2026 17:27:30 +0100
-In-Reply-To: <55abccdc-3752-4bb6-b022-42901a8b303f@freebox.fr> (sfid-20260127_160821_325299_080AAAB6)
-References: <20260127141005.583581-5-johannes@sipsolutions.net>
-	 <20260127151005.7681c4f95202.I5b11fb0345a933bf497fd802aecc72932d58dd68@changeid>
-	 <55abccdc-3752-4bb6-b022-42901a8b303f@freebox.fr>
-	 (sfid-20260127_160821_325299_080AAAB6)
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.58.2 (3.58.2-1.fc43) 
+	s=arc-20240116; t=1769533250; c=relaxed/simple;
+	bh=5p0vJKbbIOOYnRp/oLeN2PI6Xz4v0WPciD3N581SREc=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=q/sAr1L5fKRPIKJnv7ilnIQq18xKEnFb+QeGLzeq6qcHTuJtVc7M+zgaX9OVo7hasBT4e+25O2Eb6vpJxpHnQ4g51D/i0UTKLvgPlxMQFzqvNXqI+pRMPi9jhWEkH47wEcYCnVgOCwaP79osVqAV2VavlYv3NiXwnivAIF4Iyo4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nbd.name; spf=pass smtp.mailfrom=nbd.name; dkim=pass (1024-bit key) header.d=nbd.name header.i=@nbd.name header.b=kNbfZXNO; arc=none smtp.client-ip=46.4.11.11
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nbd.name
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nbd.name
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=nbd.name;
+	s=20160729; h=Content-Transfer-Encoding:Content-Type:In-Reply-To:From:
+	References:Cc:To:Subject:MIME-Version:Date:Message-ID:Sender:Reply-To:
+	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
+	Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:
+	List-Subscribe:List-Post:List-Owner:List-Archive;
+	bh=XILyT17ZMMPYRrz9JqseQKbUaHFCP6aU1jH5zpBbKx0=; b=kNbfZXNORV0X2Dzd9yQVGrNgc6
+	+Nu9pdfoCn2Hpp9VewMSXmFOJgt0IbFxrRYU/lKPo3t7P8fnMSpMgdsG8hBsHfLntkd73gf2k0hWS
+	bpYsgYCnnIR8Uh9VEzPIEokWMMuK7Q+gCCAfj5SEPhjVDtvJAcXXOJRx3uw4ofmKnqdA=;
+Received: from p54a43f8f.dip0.t-ipconnect.de ([84.164.63.143] helo=nf.local)
+	by ds12 with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256
+	(Exim 4.96)
+	(envelope-from <nbd@nbd.name>)
+	id 1vkmQk-00BtUQ-0J;
+	Tue, 27 Jan 2026 18:00:42 +0100
+Message-ID: <8286aa0e-d8b8-4c32-af5b-6ddf163b6417@nbd.name>
+Date: Tue, 27 Jan 2026 18:00:41 +0100
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-malware-bazaar: not-scanned
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] wifi: mt76: connac: fix txpower_cur not being updated
+To: Bitterblue Smith <rtl8821cerfe2@gmail.com>,
+ Lucid Duck <lucid_duck@justthetip.ca>, linux-wireless@vger.kernel.org
+Cc: Lorenzo Bianconi <lorenzo@kernel.org>, Ryder Lee <ryder.lee@mediatek.com>
+References: <20260125222235.36565-1-lucid_duck@justthetip.ca>
+ <4ddb4417-d623-44ae-878d-5ee5939f2826@nbd.name>
+ <f677b9d5-235c-4ff4-be36-c71c43b6988a@gmail.com>
+Content-Language: en-US
+From: Felix Fietkau <nbd@nbd.name>
+Autocrypt: addr=nbd@nbd.name; keydata=
+ xsDiBEah5CcRBADIY7pu4LIv3jBlyQ/2u87iIZGe6f0f8pyB4UjzfJNXhJb8JylYYRzIOSxh
+ ExKsdLCnJqsG1PY1mqTtoG8sONpwsHr2oJ4itjcGHfn5NJSUGTbtbbxLro13tHkGFCoCr4Z5
+ Pv+XRgiANSpYlIigiMbOkide6wbggQK32tC20QxUIwCg4k6dtV/4kwEeiOUfErq00TVqIiEE
+ AKcUi4taOuh/PQWx/Ujjl/P1LfJXqLKRPa8PwD4j2yjoc9l+7LptSxJThL9KSu6gtXQjcoR2
+ vCK0OeYJhgO4kYMI78h1TSaxmtImEAnjFPYJYVsxrhay92jisYc7z5R/76AaELfF6RCjjGeP
+ wdalulG+erWju710Bif7E1yjYVWeA/9Wd1lsOmx6uwwYgNqoFtcAunDaMKi9xVQW18FsUusM
+ TdRvTZLBpoUAy+MajAL+R73TwLq3LnKpIcCwftyQXK5pEDKq57OhxJVv1Q8XkA9Dn1SBOjNB
+ l25vJDFAT9ntp9THeDD2fv15yk4EKpWhu4H00/YX8KkhFsrtUs69+vZQwc0cRmVsaXggRmll
+ dGthdSA8bmJkQG5iZC5uYW1lPsJgBBMRAgAgBQJGoeQnAhsjBgsJCAcDAgQVAggDBBYCAwEC
+ HgECF4AACgkQ130UHQKnbvXsvgCgjsAIIOsY7xZ8VcSm7NABpi91yTMAniMMmH7FRenEAYMa
+ VrwYTIThkTlQzsFNBEah5FQQCACMIep/hTzgPZ9HbCTKm9xN4bZX0JjrqjFem1Nxf3MBM5vN
+ CYGBn8F4sGIzPmLhl4xFeq3k5irVg/YvxSDbQN6NJv8o+tP6zsMeWX2JjtV0P4aDIN1pK2/w
+ VxcicArw0VYdv2ZCarccFBgH2a6GjswqlCqVM3gNIMI8ikzenKcso8YErGGiKYeMEZLwHaxE
+ Y7mTPuOTrWL8uWWRL5mVjhZEVvDez6em/OYvzBwbkhImrryF29e3Po2cfY2n7EKjjr3/141K
+ DHBBdgXlPNfDwROnA5ugjjEBjwkwBQqPpDA7AYPvpHh5vLbZnVGu5CwG7NAsrb2isRmjYoqk
+ wu++3117AAMFB/9S0Sj7qFFQcD4laADVsabTpNNpaV4wAgVTRHKV/kC9luItzwDnUcsZUPdQ
+ f3MueRJ3jIHU0UmRBG3uQftqbZJj3ikhnfvyLmkCNe+/hXhPu9sGvXyi2D4vszICvc1KL4RD
+ aLSrOsROx22eZ26KqcW4ny7+va2FnvjsZgI8h4sDmaLzKczVRIiLITiMpLFEU/VoSv0m1F4B
+ FtRgoiyjFzigWG0MsTdAN6FJzGh4mWWGIlE7o5JraNhnTd+yTUIPtw3ym6l8P+gbvfoZida0
+ TspgwBWLnXQvP5EDvlZnNaKa/3oBes6z0QdaSOwZCRA3QSLHBwtgUsrT6RxRSweLrcabwkkE
+ GBECAAkFAkah5FQCGwwACgkQ130UHQKnbvW2GgCeMncXpbbWNT2AtoAYICrKyX5R3iMAoMhw
+ cL98efvrjdstUfTCP2pfetyN
+In-Reply-To: <f677b9d5-235c-4ff4-be36-c71c43b6988a@gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [-0.36 / 15.00];
+	R_DKIM_REJECT(1.00)[nbd.name:s=20160729];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[sipsolutions.net,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
-	R_DKIM_ALLOW(-0.20)[sipsolutions.net:s=mail];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	MAILLIST(-0.15)[generic];
+	DMARC_POLICY_SOFTFAIL(0.10)[nbd.name : SPF not aligned (relaxed),none];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-31238-lists,linux-wireless=lfdr.de];
-	FROM_HAS_DN(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
+	FREEMAIL_TO(0.00)[gmail.com,justthetip.ca,vger.kernel.org];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	RCPT_COUNT_TWO(0.00)[2];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[sipsolutions.net:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	TAGGED_FROM(0.00)[bounces-31239-lists,linux-wireless=lfdr.de];
 	TO_DN_SOME(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[johannes@sipsolutions.net,linux-wireless@vger.kernel.org];
+	MIME_TRACE(0.00)[0:+];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[linux-wireless];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[nbd@nbd.name,linux-wireless@vger.kernel.org];
+	DKIM_TRACE(0.00)[nbd.name:-];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 873EE97C1D
+	TAGGED_RCPT(0.00)[linux-wireless];
+	RCPT_COUNT_FIVE(0.00)[5];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[justthetip.ca:email,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: CECE8982E6
 X-Rspamd-Action: no action
 
-On Tue, 2026-01-27 at 16:08 +0100, Pablo MARTIN-GOMEZ wrote:
->=20
-> > +#define IEEE80211_UHR_NPCA_PARAMS_PRIMARY_CHAN		0x000000FF
-> So I understand you've changed the NPCA channel to be 8bits instead of=
-=20
-> 4. I see it's 8bits in D0.3 but it has been updated to 4bits in both=20
-> D1.0 and D1.2, so I would believe 4bits is the correct value
+On 27.01.26 17:17, Bitterblue Smith wrote:
+> On 27/01/2026 14:21, Felix Fietkau wrote:
+>> On 25.01.26 23:22, Lucid Duck wrote:
+>>> The mt76_connac_mcu_set_rate_txpower() function sends TX power settings
+>>> to the firmware but never updates phy->txpower_cur. This causes
+>>> mt76_get_txpower() to return stale or incorrect values (typically
+>>> showing 3 dBm regardless of actual transmit power) when userspace
+>>> queries TX power via nl80211.
+>>>
+>>> This affects MT7921 and other connac-based devices. Users observe:
+>>>    $ iw dev wlan0 info
+>>>    ...
+>>>    txpower 3.00 dBm
+>>>
+>>> The firmware receives and applies the correct power level, but the
+>>> reported value is wrong because txpower_cur is never set.
+>>>
+>>> Fix by updating phy->txpower_cur after successfully configuring TX
+>>> power, matching the behavior of other mt76 drivers like mt7915.
+>>>
+>>> Signed-off-by: Lucid Duck <lucid_duck@justthetip.ca>
+>>> ---
+>>>   drivers/net/wireless/mediatek/mt76/mt76_connac_mcu.c | 8 +++++++-
+>>>   1 file changed, 7 insertions(+), 1 deletion(-)
+>>>
+>>> diff --git a/drivers/net/wireless/mediatek/mt76/mt76_connac_mcu.c b/drivers/net/wireless/mediatek/mt76/mt76_connac_mcu.c
+>>> index 045771228..7cd357419 100644
+>>> --- a/drivers/net/wireless/mediatek/mt76/mt76_connac_mcu.c
+>>> +++ b/drivers/net/wireless/mediatek/mt76/mt76_connac_mcu.c
+>>> @@ -2251,7 +2251,7 @@ mt76_connac_mcu_rate_txpower_band(struct mt76_phy *phy,
+>>>     int mt76_connac_mcu_set_rate_txpower(struct mt76_phy *phy)
+>>>   {
+>>> -    int err;
+>>> +    int err, tx_power;
+>>>         if (phy->cap.has_2ghz) {
+>>>           err = mt76_connac_mcu_rate_txpower_band(phy,
+>>> @@ -2272,6 +2272,12 @@ int mt76_connac_mcu_set_rate_txpower(struct mt76_phy *phy)
+>>>               return err;
+>>>       }
+>>>   +    /* Update txpower_cur for accurate reporting via nl80211 */
+>>> +    tx_power = 2 * phy->hw->conf.power_level;
+>>> +    if (!tx_power)
+>>> +        tx_power = 127;
+>>> +    phy->txpower_cur = tx_power;
+>> 
+>> phy->hw->conf.power_level is the user configured power level, not what the hardware is capable of transmitting.
+>> 
+>> To fix it properly, I think you should determine the maximum rate power used in the loop within mt76_connac_mcu_rate_txpower_band (updated with each call).
+>> 
+>> - Felix
+>> 
+> 
+> What about these older patches?
+> 
+> https://patchwork.kernel.org/project/linux-wireless/list/?series=932665&submitter=&state=*&q=&archive=&delegate=
 
-Hmm. Four bits are clearly not enough to hold a "channel number" as
-described in the text in D1.2, and had been told that it's going to be
-changed to 8 bits. It's also inconsistent between this and 9.4.2.360.3
-where it says it's 8 bits, but the interpretation is the same as here.
-Clearly not possible.
+If I remember correctly, I found some issues in those patches and asked 
+the Author about them and he mentioned that he only tested them on some 
+old 5.15 vendor tree and didn't actually use anything recent.
+So I dropped them from my tree again.
 
-However, now asking around again it seems that there's a chance it'll
-just remain four bits places, defining this as the location of the NPCA
-primary channel within the overall BSS bandwidth. But then the text
-needs to be updated, the field should be renamed to "... Location", and
-the 8 bit field in the update needs to be changed to four bits ...
-
-
-Also, yes, I haven't updated this to D1.2 yet, not sure there's much
-value in doing that at this point. Mostly we need this for the code and
-the netlink attributes etc. at this point so Qualcomm can also base
-their other changes on _something_.
-
-> > +#define IEEE80211_UHR_MAC_CAP0_ML_PM_SUPP		0x08
-> FYI this has been converted in Reserved for D1.2
-
-Noted.
-
-> > +#define IEEE80211_UHR_MAC_CAP3_PARAM_UPD_ADV_NOTIF_INTV	0x1C
-> I would choose between shrinking `Interval` into either INTV or INTVL=20
-> but not use both
-> > +#define IEEE80211_UHR_MAC_CAP3_UPD_IND_TIM_INTVL_LOW	0xE0
-
-Heh, fair.
-
-> > +
-> > +#define IEEE80211_UHR_MAC_CAP4_UPD_IND_TIM_INTVL_LOW	0x03
-> IEEE80211_UHR_MAC_CAP4_UPD_IND_TIM_INTVL_HIGH
-> > +#define IEEE80211_UHR_MAC_CAP4_BTM_ASSURANCE		0x04
-> You are missing the bit for Bounded ESS (B34) [BTM Assurance is B35]
-> > +
-> > +struct ieee80211_uhr_capa_mac {
-> > +	u8 mac_cap[5];
-> > +} __packed;
-> DBE Capability Parameters is not handled yet? [it's defined in figure=20
-> 9-aa8, even if the title of the figure is wrong in D1.0]
-
-Seems plausible that the title of the figure confused me, or at least I
-didn't trust it :)
-
-> > +
-> > +struct ieee80211_uhr_capa {
-> > +	struct ieee80211_uhr_capa_mac mac;
-> > +	u8 variable[];
-> > +} __packed;
-> > +
-> > +#define IEEE80211_UHR_PHY_CAP_MAX_NSS_RX_LE80		0x01
-> This is specifically for sounding NDP, I would name them=20
-> IEEE80211_UHR_PHY_CAP_MAX_NSS_RX_SND_XXX instead
-
-Yeah, good point.
-
-> > +	WLAN_EID_EXT_BSS_TRANS_PARAMS =3D 155,
-> This is specific for SMD, I feel like WLAN_EID_EXT_SMD_BSS_TRANS_PARAMS=
-=20
-> is more appropriate
-
-fair
-
-johannes
+- Felix
 
