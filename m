@@ -1,37 +1,37 @@
-Return-Path: <linux-wireless+bounces-31220-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-31222-lists+linux-wireless=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 8AJiLTGceGmTrQEAu9opvQ
-	(envelope-from <linux-wireless+bounces-31220-lists+linux-wireless=lfdr.de@vger.kernel.org>)
-	for <lists+linux-wireless@lfdr.de>; Tue, 27 Jan 2026 12:06:25 +0100
+	id QBUSIG6ueGlasAEAu9opvQ
+	(envelope-from <linux-wireless+bounces-31222-lists+linux-wireless=lfdr.de@vger.kernel.org>)
+	for <lists+linux-wireless@lfdr.de>; Tue, 27 Jan 2026 13:24:14 +0100
 X-Original-To: lists+linux-wireless@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id E416893599
-	for <lists+linux-wireless@lfdr.de>; Tue, 27 Jan 2026 12:06:24 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1551A94489
+	for <lists+linux-wireless@lfdr.de>; Tue, 27 Jan 2026 13:24:09 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 1B1B53003BC2
-	for <lists+linux-wireless@lfdr.de>; Tue, 27 Jan 2026 11:06:18 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 5F996300B04B
+	for <lists+linux-wireless@lfdr.de>; Tue, 27 Jan 2026 12:21:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 42B6D30B53F;
-	Tue, 27 Jan 2026 11:06:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C78A834B66F;
+	Tue, 27 Jan 2026 12:21:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=fail reason="signature verification failed" (1024-bit key) header.d=nbd.name header.i=@nbd.name header.b="PleGCWe3"
+	dkim=fail reason="signature verification failed" (1024-bit key) header.d=nbd.name header.i=@nbd.name header.b="X8aU+eKC"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from nbd.name (nbd.name [46.4.11.11])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9113030BF79;
-	Tue, 27 Jan 2026 11:06:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5288E34CFA7
+	for <linux-wireless@vger.kernel.org>; Tue, 27 Jan 2026 12:21:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=46.4.11.11
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769511976; cv=none; b=ZvDdHRmXw/47qqgfyJJozH7McsvUvCBQexYqISDJySJiuv0Q/va0KQTmegrB51sg1JIi3r6Xm5Khm37FQa9dx54NMOovQI5NMIMe5RFKNQOPNQwVgMFelamJNPy6eJcv77u4Jm321qi94rbmRTaAbyW17+mD+8g7cXaZxl8HE0E=
+	t=1769516478; cv=none; b=M/u9Cmh5BmLauI8wb6/PAU2gI0nqf2nC/QWGGfZMABwwulqhyh5kMjb3gJE48dAjtBKWDqXpHiDUCmOHpX8GEcPAkr/Ird9HlbwWFJo1RVM9AxUrbPsBkn1jYNHc/q9mo38FGsh7qGVCefWn8QqfKAUlHvydupPA+glGmocN/Bc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769511976; c=relaxed/simple;
-	bh=sIvRkYqAQuz66YvmDwCt3k+esCCc3AMRfzjWwpi0deU=;
+	s=arc-20240116; t=1769516478; c=relaxed/simple;
+	bh=dCc6/Fp//WLMMA0bYwBnBGOH4EIHinYTYrskGPTbr8I=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=UI+QgFA70SIcHFk293EIlaTkO1h0L7Mm/OjKoHwP5ICspMZl0o1DOKeGA0Kf6LlvfaTIxYDnvig/2yAgv1C9Kk+jSuVnQzK/b1TOA3P9X9MxJxKnbCjzHk9VzzQig+QbJZ8lguVV6fXPqHXUlg/NViZ+CzM44Kw+PuNIXpoM62s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nbd.name; spf=pass smtp.mailfrom=nbd.name; dkim=pass (1024-bit key) header.d=nbd.name header.i=@nbd.name header.b=PleGCWe3; arc=none smtp.client-ip=46.4.11.11
+	 In-Reply-To:Content-Type; b=rcSAAO4GBQisYfReiOJMTDAZm6eGQBVLsK6+/ilZLM5gu1YAtjNLC+Mm8/Frf/QUao43LPLkVy1jDuAkRKaC+ZF4WepeK88+PKpbDS4UdEWQR+ui0UUAYhucFz6wg8XQCYzBzhs1YjHX51aqlbtKLfiUd5ckdZrM2xtbVOYWJwo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nbd.name; spf=pass smtp.mailfrom=nbd.name; dkim=pass (1024-bit key) header.d=nbd.name header.i=@nbd.name header.b=X8aU+eKC; arc=none smtp.client-ip=46.4.11.11
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nbd.name
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nbd.name
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=nbd.name;
@@ -40,17 +40,17 @@ DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=nbd.name;
 	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
 	Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:
 	List-Subscribe:List-Post:List-Owner:List-Archive;
-	bh=Na1vcvFToKAlP+gcDTXu43Yb7D0Mcd0xqiMaFIxU/qI=; b=PleGCWe3qI/8WoePBKkbGLb+tz
-	SbvHCRLSH3TQaEXlW/J1Kd7OC1FaIR9Wxwe5x2tZq0B/V9Y2PwIJEioIPXJisyZ+peEabpsUcvOOx
-	Zd/1GnOv3CMgk1qkIUjoZs6G1Cq32K8qjVBZGslxD4FwRxkKMtw547xYO8aDMNCn3zec=;
+	bh=mWgI1MehsR5Fkoxw406LUnf58LEiCHEf0iUrk8eSYIA=; b=X8aU+eKCy2pDBf2uljNiQGVGLU
+	qYaYKEWRJHTC8w1NdqP/B1mlUTAy78qaQ/rSwvE9HLDl5ZnI6ZKYRrkiNridrKyVWjOY/Irk4RgfN
+	a7WzHfm98P46yA3tWqlbKO9MwVCkAaNNKS8lGmHc+ZmH68h4HRIvmhaaTniwCdZ0R/qE=;
 Received: from p54a43f8f.dip0.t-ipconnect.de ([84.164.63.143] helo=nf.local)
 	by ds12 with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256
 	(Exim 4.96)
 	(envelope-from <nbd@nbd.name>)
-	id 1vkgtc-00BXsD-0B;
-	Tue, 27 Jan 2026 12:06:08 +0100
-Message-ID: <8d1b7d91-5191-4292-b49b-3d96dc76232e@nbd.name>
-Date: Tue, 27 Jan 2026 12:06:07 +0100
+	id 1vki4G-00Bgu5-1m;
+	Tue, 27 Jan 2026 13:21:12 +0100
+Message-ID: <4ddb4417-d623-44ae-878d-5ee5939f2826@nbd.name>
+Date: Tue, 27 Jan 2026 13:21:11 +0100
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
@@ -58,16 +58,10 @@ List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 12/13] wifi: mt76: mt7925: fix ROC deadlocks and race
- conditions
-To: Zac <zac@zacbowling.com>, sean.wang@kernel.org
-Cc: deren.wu@mediatek.com, kvalo@kernel.org, linux-kernel@vger.kernel.org,
- linux-mediatek@lists.infradead.org, linux-wireless@vger.kernel.org,
- linux@frame.work, lorenzo@kernel.org, ryder.lee@mediatek.com,
- sean.wang@mediatek.com, zbowling@gmail.com
-References: <CAGp9LzrcvW18xKFL-oF3wxRmb73G6PN59Y2NSA2E5idva1wtKg@mail.gmail.com>
- <20260120201043.38225-1-zac@zacbowling.com>
- <20260120201043.38225-13-zac@zacbowling.com>
+Subject: Re: [PATCH] wifi: mt76: connac: fix txpower_cur not being updated
+To: Lucid Duck <lucid_duck@justthetip.ca>, linux-wireless@vger.kernel.org
+Cc: Lorenzo Bianconi <lorenzo@kernel.org>, Ryder Lee <ryder.lee@mediatek.com>
+References: <20260125222235.36565-1-lucid_duck@justthetip.ca>
 Content-Language: en-US
 From: Felix Fietkau <nbd@nbd.name>
 Autocrypt: addr=nbd@nbd.name; keydata=
@@ -93,98 +87,92 @@ Autocrypt: addr=nbd@nbd.name; keydata=
  TspgwBWLnXQvP5EDvlZnNaKa/3oBes6z0QdaSOwZCRA3QSLHBwtgUsrT6RxRSweLrcabwkkE
  GBECAAkFAkah5FQCGwwACgkQ130UHQKnbvW2GgCeMncXpbbWNT2AtoAYICrKyX5R3iMAoMhw
  cL98efvrjdstUfTCP2pfetyN
-In-Reply-To: <20260120201043.38225-13-zac@zacbowling.com>
+In-Reply-To: <20260125222235.36565-1-lucid_duck@justthetip.ca>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-0.36 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_DKIM_REJECT(1.00)[nbd.name:s=20160729];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
-	DMARC_POLICY_SOFTFAIL(0.10)[nbd.name : SPF not aligned (relaxed),none];
 	MIME_GOOD(-0.10)[text/plain];
+	DMARC_POLICY_SOFTFAIL(0.10)[nbd.name : SPF not aligned (relaxed),none];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-31220-lists,linux-wireless=lfdr.de];
-	FROM_HAS_DN(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
 	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[12];
-	FREEMAIL_CC(0.00)[mediatek.com,kernel.org,vger.kernel.org,lists.infradead.org,frame.work,gmail.com];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-0.778];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-31222-lists,linux-wireless=lfdr.de];
+	DKIM_TRACE(0.00)[nbd.name:-];
+	RCPT_COUNT_THREE(0.00)[4];
+	FROM_HAS_DN(0.00)[];
+	TO_DN_SOME(0.00)[];
+	NEURAL_HAM(-0.00)[-0.998];
 	FROM_NEQ_ENVFROM(0.00)[nbd@nbd.name,linux-wireless@vger.kernel.org];
 	PRECEDENCE_BULK(0.00)[];
-	DKIM_TRACE(0.00)[nbd.name:-];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	MID_RHS_MATCH_FROM(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[linux-wireless];
-	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,zacbowling.com:email,nbd.name:mid]
-X-Rspamd-Queue-Id: E416893599
+	BLOCKLISTDE_FAIL(0.00)[100.90.174.1:query timed out];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 1551A94489
 X-Rspamd-Action: no action
 
-On 20.01.26 21:10, Zac wrote:
-> From: Zac Bowling <zac@zacbowling.com>
+On 25.01.26 23:22, Lucid Duck wrote:
+> The mt76_connac_mcu_set_rate_txpower() function sends TX power settings
+> to the firmware but never updates phy->txpower_cur. This causes
+> mt76_get_txpower() to return stale or incorrect values (typically
+> showing 3 dBm regardless of actual transmit power) when userspace
+> queries TX power via nl80211.
 > 
-> Fix multiple interrelated issues in the remain-on-channel (ROC) handling
-> that cause deadlocks, race conditions, and resource leaks.
+> This affects MT7921 and other connac-based devices. Users observe:
+>    $ iw dev wlan0 info
+>    ...
+>    txpower 3.00 dBm
 > 
-> Problems fixed:
+> The firmware receives and applies the correct power level, but the
+> reported value is wrong because txpower_cur is never set.
 > 
-> 1. Deadlock in sta removal ROC abort path:
->     When a station is removed while a ROC operation is in progress, the
->     driver would call mt7925_roc_abort_sync() which waits for ROC completion.
->     However, the ROC work itself needs to acquire mt792x_mutex which is
->     already held during station removal, causing a deadlock.
+> Fix by updating phy->txpower_cur after successfully configuring TX
+> power, matching the behavior of other mt76 drivers like mt7915.
 > 
->     Fix: Use async ROC abort (mt76_connac_mcu_abort_roc) when called from
->     paths that already hold the mutex, and add MT76_STATE_ROC_ABORT flag
->     to coordinate between the abort and the ROC timer.
+> Signed-off-by: Lucid Duck <lucid_duck@justthetip.ca>
+> ---
+>   drivers/net/wireless/mediatek/mt76/mt76_connac_mcu.c | 8 +++++++-
+>   1 file changed, 7 insertions(+), 1 deletion(-)
 > 
-> 2. ROC timer race during suspend:
->     The ROC timer could fire after the device started suspending but before
->     the ROC was properly aborted, causing undefined behavior.
-> 
->     Fix: Delete ROC timer synchronously before suspend and check device
->     state before processing ROC timeout.
-> 
-> 3. ROC rate limiting for MLO auth failures:
->     Rapid ROC requests during MLO authentication can overwhelm the firmware,
->     causing authentication timeouts. The MT7925 firmware has limited ROC
->     handling capacity.
-> 
->     Fix: Add rate limiting infrastructure with configurable minimum interval
->     between ROC requests. Track last ROC completion time and defer new
->     requests if they arrive too quickly.
-> 
-> 4. WCID leak in ROC cleanup:
->     When ROC operations are aborted, the associated WCID resources were
->     not being properly released, causing resource exhaustion over time.
-> 
->     Fix: Ensure WCID cleanup happens in all ROC termination paths.
-> 
-> 5. Async ROC abort race condition:
->     The async ROC abort could race with normal ROC completion, causing
->     double-free or use-after-free of ROC resources.
-> 
->     Fix: Use MT76_STATE_ROC_ABORT flag and proper synchronization to
->     prevent races between async abort and normal completion paths.
-> 
-> These fixes work together to provide robust ROC handling that doesn't
-> deadlock, properly releases resources, and handles edge cases during
-> suspend and MLO operations.
-> 
-> Fixes: c948b5da6bbe ("wifi: mt76: mt7925: add Mediatek Wi-Fi7 driver for mt7925 device")
-> Signed-off-by: Zac Bowling <zac@zacbowling.com>
+> diff --git a/drivers/net/wireless/mediatek/mt76/mt76_connac_mcu.c b/drivers/net/wireless/mediatek/mt76/mt76_connac_mcu.c
+> index 045771228..7cd357419 100644
+> --- a/drivers/net/wireless/mediatek/mt76/mt76_connac_mcu.c
+> +++ b/drivers/net/wireless/mediatek/mt76/mt76_connac_mcu.c
+> @@ -2251,7 +2251,7 @@ mt76_connac_mcu_rate_txpower_band(struct mt76_phy *phy,
+>   
+>   int mt76_connac_mcu_set_rate_txpower(struct mt76_phy *phy)
+>   {
+> -	int err;
+> +	int err, tx_power;
+>   
+>   	if (phy->cap.has_2ghz) {
+>   		err = mt76_connac_mcu_rate_txpower_band(phy,
+> @@ -2272,6 +2272,12 @@ int mt76_connac_mcu_set_rate_txpower(struct mt76_phy *phy)
+>   			return err;
+>   	}
+>   
+> +	/* Update txpower_cur for accurate reporting via nl80211 */
+> +	tx_power = 2 * phy->hw->conf.power_level;
+> +	if (!tx_power)
+> +		tx_power = 127;
+> +	phy->txpower_cur = tx_power;
 
-The rate limiting code seems a bit suspicious to me.
-What does "limited ROC handling capacity" mean? Outstanding ROC 
-requests? Does it need time to settle after a completed ROC?
-This needs to be clarified and likely replaced with a more targeted fix.
+phy->hw->conf.power_level is the user configured power level, not what 
+the hardware is capable of transmitting.
+
+To fix it properly, I think you should determine the maximum rate power 
+used in the loop within mt76_connac_mcu_rate_txpower_band (updated with 
+each call).
 
 - Felix
 
