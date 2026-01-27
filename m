@@ -1,85 +1,84 @@
-Return-Path: <linux-wireless+bounces-31236-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-31237-lists+linux-wireless=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id IF5WDazkeGlftwEAu9opvQ
-	(envelope-from <linux-wireless+bounces-31236-lists+linux-wireless=lfdr.de@vger.kernel.org>)
-	for <lists+linux-wireless@lfdr.de>; Tue, 27 Jan 2026 17:15:40 +0100
+	id sFUfNSvleGlvtwEAu9opvQ
+	(envelope-from <linux-wireless+bounces-31237-lists+linux-wireless=lfdr.de@vger.kernel.org>)
+	for <lists+linux-wireless@lfdr.de>; Tue, 27 Jan 2026 17:17:47 +0100
 X-Original-To: lists+linux-wireless@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id A8DAE978F2
-	for <lists+linux-wireless@lfdr.de>; Tue, 27 Jan 2026 17:15:39 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7AAA3979A3
+	for <lists+linux-wireless@lfdr.de>; Tue, 27 Jan 2026 17:17:47 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id DDA503043231
-	for <lists+linux-wireless@lfdr.de>; Tue, 27 Jan 2026 16:12:25 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id CE8173003831
+	for <lists+linux-wireless@lfdr.de>; Tue, 27 Jan 2026 16:17:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8D4BD35FF42;
-	Tue, 27 Jan 2026 16:12:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 06AFD31328C;
+	Tue, 27 Jan 2026 16:17:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=freebox-fr.20230601.gappssmtp.com header.i=@freebox-fr.20230601.gappssmtp.com header.b="QMpb3DY0"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="PsUzC4eb"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-ed1-f52.google.com (mail-ed1-f52.google.com [209.85.208.52])
+Received: from mail-wm1-f41.google.com (mail-wm1-f41.google.com [209.85.128.41])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8496D22B5AD
-	for <linux-wireless@vger.kernel.org>; Tue, 27 Jan 2026 16:12:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.52
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 57EA9315D3B
+	for <linux-wireless@vger.kernel.org>; Tue, 27 Jan 2026 16:17:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.41
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769530342; cv=none; b=QdNTxNiYBUP23T0M66/Gu/i8t5iTh5+DA4IGUETRy2RtQpMCOujrE+H55/WlaVrO+S739Zoe9UCNNy+3r65dfZWhjOOOn09uyki+HTEjHx9hSdJZmXLvi6CD7XLqfqBRiLFTdLOzSkrjkrn6R68JnoRK5lk96DxZpYrQ2BLbIUE=
+	t=1769530661; cv=none; b=n0ZiElZYcTwP9fzOshXyaiS6sXfUOkJG7PCvCxhYmr9E9HjI68Li5vugLYJaGsadZFuij7H95MFPdEoqFb0U/+pPynILQN3ab+3dzxAl9FcoYMBex1X8Py66wxa//3vxQTxUix3ZhLE1gdUzJ875PTavX8+1CipgKkMIeQ3DUBw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769530342; c=relaxed/simple;
-	bh=v8Gr65xUT+ff0PQd+mp5gvptNqEdD7hZBSr/28Cuu3w=;
+	s=arc-20240116; t=1769530661; c=relaxed/simple;
+	bh=87PaDhLMvveyDf0BoXT59QnBgLb3gG08rex8jLNCNsM=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=QN5+3PRR5DKsamug1lYAZukbKAuydJdY2P+3AKaxCnfvHqriua4+1ObWe3ocwMk1sWg9nu+wyHYwMN/KC6iUPsZTVrA4j7TkQ/MY2qwm7lSITPV8mt8o3K9y/RG6+lkzsEl4Oj2QfsAdY7jnvQ5fObU15mj6HoqhYuskRWNeTfA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=freebox.fr; spf=pass smtp.mailfrom=freebox.fr; dkim=pass (2048-bit key) header.d=freebox-fr.20230601.gappssmtp.com header.i=@freebox-fr.20230601.gappssmtp.com header.b=QMpb3DY0; arc=none smtp.client-ip=209.85.208.52
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=freebox.fr
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=freebox.fr
-Received: by mail-ed1-f52.google.com with SMTP id 4fb4d7f45d1cf-64b92abe63aso11754314a12.0
-        for <linux-wireless@vger.kernel.org>; Tue, 27 Jan 2026 08:12:19 -0800 (PST)
+	 In-Reply-To:Content-Type; b=H3GTwwl3rdJIC8LsAcjZyQ0+TpA6JqnFbEecFIOefPdHsK1QiLOBbREEdzkg8b1ZhPzk6j1FUtAdTHvLqkg6FU7Q2IjK8M4dOOuYf3i1at0kFGToP96OTUdG3G9R0mzA7hCNGSjcnPxj0AE9t+g82/WUYuTRJpSKDBbvP/LYzE0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=PsUzC4eb; arc=none smtp.client-ip=209.85.128.41
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-wm1-f41.google.com with SMTP id 5b1f17b1804b1-4801d7c72a5so45938355e9.0
+        for <linux-wireless@vger.kernel.org>; Tue, 27 Jan 2026 08:17:40 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=freebox-fr.20230601.gappssmtp.com; s=20230601; t=1769530338; x=1770135138; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1769530659; x=1770135459; darn=vger.kernel.org;
         h=content-transfer-encoding:in-reply-to:from:content-language
          :references:cc:to:subject:user-agent:mime-version:date:message-id
          :from:to:cc:subject:date:message-id:reply-to;
-        bh=A/zfLsFMMruW4ZNk7z3DxWWozQd6lHc40f1JUxxKvY0=;
-        b=QMpb3DY0idzObiB3MzzljuKfLsd7W7FUFDrZ5VbVdkPrmbnnG5yhnkJzXMRaSQjP33
-         cRRvpRsz0jTYSeWW3GlS5dsNhp7RFHRc7uJdM9WSkwD6A2oBvDjArQLS7NDQ5K497+dP
-         BPWiWvTkNOIDyfEepQyno2gN2dYkq4lNa/jvux9+9uffVBEkPlcWAdb9GBfn3dkEkebm
-         auAS2ilyrnufjcUaoCHtCsNKDuI6zF3qo5sJ72E+Xm9Tt6+VFJhut3rbdHGKZYnzB46a
-         DVMjKZgWQVkZ81r9r/de5iVV0Pu7cR7tCWRbn1gKBu0AdSwYXOgKJUaVGS/+QCvdvrMi
-         iM1g==
+        bh=VwDnk5uOMV/UB49+4e7v5FBtsAbtq5voacJEhYYH4XI=;
+        b=PsUzC4ebyJ187cvb7pXDX273tLJq+rpO8CjkkgxGuUzzCESeSWjkcFSqU54FC27KnB
+         vJvZDWExqYozuEbKJd5hT0bqx8o//G1yjaQUD66kQfi8y65wcfFxzQrVSHYzCIhXszk/
+         OUZCobU5uxeqxcdGg9XWucPGwO6JRoYSySBXBnb1ErOVPQa9LO0yh5T2MH+fBW0oDKuV
+         75xQwJk5j1+H8gp1XCqOig6K9TIUZkggELinGz8oxXLCuvoU4d1w0HVCoVv3qIy4KB88
+         yCMVMHQATThjRGeKeGBqDXJ6/VyUKRwG6+7i2OpBxR7gslEU2VJTypx38TTtXgzAVyN2
+         oUbQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1769530338; x=1770135138;
+        d=1e100.net; s=20230601; t=1769530659; x=1770135459;
         h=content-transfer-encoding:in-reply-to:from:content-language
          :references:cc:to:subject:user-agent:mime-version:date:message-id
          :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=A/zfLsFMMruW4ZNk7z3DxWWozQd6lHc40f1JUxxKvY0=;
-        b=qG4U4xRHGg6K+tS6ggbZelD7/ogEcpUdEoGJz1fddINb0/TuHbJo73NUQ8NjIHDWEc
-         dBRtLoWNkwoXS/uNJ4BSkMpT6dhPtzsX0ZgfbwkBtXRgZlDagU8HQZL/UFZZBDD88NRX
-         pcdqkiOpEY7W49Ib7SFalIbDIaZE5TD+1fJvabHjFrxQDr+K56o2LP0yuvbPiUS30ZEQ
-         izATjy6InASKtWilLxKtGa+vO4b8sBzoE2Oc9XlroHnEabZkSLisDo8yOpn6sJcUCkR6
-         GflpG31G+olmsnalP8ag1oyV76/2ZcnOIY2Vj6kgCL5w6h0XOBx8+l/eLhEPkLN1uSKm
-         1bDA==
-X-Forwarded-Encrypted: i=1; AJvYcCX5IrTb9x9+tgaosUofCKuLmMXibZWeKTm2NTD2635h2C9xdUOjipCULVunqFoNRR0o7k+l3xuTMQPBImnJ/A==@vger.kernel.org
-X-Gm-Message-State: AOJu0YzNrj3EvK0IdlQB5pBh5vTIYfZ+UdZgN2V9Tvjf3QvYhclkb6Ke
-	IyAXKdxDgKJitYkhusCPm4PzPhFpcEb2C2BGk0N/ekLsw2XgMkJotgZbbEHGbAj4a55Asuq9xhg
-	+F03w
-X-Gm-Gg: AZuq6aJGjU3N3FV0uxdevbrhLaiqc1fUWeuQ+Fh0H4savPacjT2LQDk9sX3xyRV+CKv
-	elW9pLNO5pP1mpuyyQoTc99VS3fILKAY7DqGCaMATqb/VN2mtqTuBKMkwESzC0B7hyx4ewUJS48
-	SqO+n9O+9beQgGLzz8zkl7W0veDGeddNP9bYNfkH7T8igVLdGOTKP8biGRzlvmsfs5RCgzjY8iZ
-	TlGs0sEnNZy6Xt/QTMvngvVzxSYRV2GfkFD6tqfQU5AkgnPCR0OIAR5IirSlab9gnlz6KMtk+/y
-	NtvY2dzqkqnW4h771bL6Qhk0cyCf9jduxoqZ0ew2NByFO6Jo6ZHkJlORx3QxfTzgLAKII7sQ683
-	IKkE4bUMPrVZDsR6fLTfahtuHw6QKZbun5C8kLigo7CkFPkxuLVh0oKpugpxgIPIUmPpNIsW354
-	A5o0iUOa/m98r1SwpaoIe+ri4Kq4aY1oVgNXQMR2BC8quuABLJhp8n
-X-Received: by 2002:a17:907:1c0a:b0:b88:dc6:3967 with SMTP id a640c23a62f3a-b8dab423069mr184503766b.40.1769530337563;
-        Tue, 27 Jan 2026 08:12:17 -0800 (PST)
-Received: from [192.168.108.101] (freebox.vlq16.iliad.fr. [213.36.7.13])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-b885b75d632sm813653166b.48.2026.01.27.08.12.16
+        bh=VwDnk5uOMV/UB49+4e7v5FBtsAbtq5voacJEhYYH4XI=;
+        b=Zh/Wc/oNzT3jFEtNlHLl7y2UvG6BLOp9BG1r5gvaeC/Mshle3Tw60wm1ZZjcm23wgm
+         gglIkffUJoPKlqY4Kz0hB0nMA9xZnv+LPGoDT7MlcWJRAxBcKcrirbBmx9zt6AbXdxZm
+         dLx6zdabjtTDmKlgxZNnxFmcgiNjEKxzObSLSdv601LBrZcTwdDNpTzmvrNF4BpcBhZr
+         DI5UcyyHyivjRGB/psma6eAawxLbLmRP3wdHdAn15GRRTaVDkwx41A3S3hP0LCM6KbEN
+         MugMdGOx3Dndnt9+vPFn0NhDCFSjm/lfzAAt9Thb/rYwdlUnRbHVGrbUDNx8TF9is/RK
+         PsRg==
+X-Forwarded-Encrypted: i=1; AJvYcCWJmb269t1XprkwNdkPlxakMNn2B0j175VBFjMJ0uTwSo4l/0o449TobFfdwmoW46e2H0s9jX5zVf7K5dbWpw==@vger.kernel.org
+X-Gm-Message-State: AOJu0YxnYFPYTirv/ehKKw+/SLCafoXsVDNN+igPUS6guDjenTcA1ZBE
+	MwVkx2Lb+rLK5r/PteW7t6cYb83A6G4z1tQliduaoF+Ae9Sxbs8KGsNe
+X-Gm-Gg: AZuq6aLRHkTwG7YvOOV4n5HKnfSF6CCb+ygtK4mUAPt+1pwvFLnxxsdB+enpJi+MmZJ
+	2GLLab8EruF1s2w76smLhDDip6LGjt6jTCiGqBL9Pm9I00VeChZq5/BMQGb39FnlWf+kheHJWob
+	luzVA9wA6kOiCBTXBeGpbyXICzzKtX2T1cqNwUW/feMacp5IwpeE6oVdiB74jZdLbod6s+g+mam
+	li3uesUL4Eb6rQINzhIzFQEJ9n94JcLQhjcsoRfe0NLoWh7fAB1z8vDOQDEhcUkbbDfBjkJivWV
+	AcUTUDRxS2AvRE42pOdx38r3BjJgI9moXEtrdRJ6jNv0F2ruo7yQpHdTSmeHzeJMhVrWUkDB5e5
+	BUbsyqxkiOLDaFnmh7GsUjCK5aSmMojB6yV0gEk15pRi8WaHKFeGhEQxNzOVtC825Cojoemj46H
+	iq8RgW5v7QnU5JfnkIZA==
+X-Received: by 2002:a05:600c:3e16:b0:47e:e20e:bba3 with SMTP id 5b1f17b1804b1-48069c40595mr29890365e9.7.1769530658292;
+        Tue, 27 Jan 2026 08:17:38 -0800 (PST)
+Received: from [192.168.1.50] ([81.196.40.21])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4806cdd79c7sm2511665e9.2.2026.01.27.08.17.37
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 27 Jan 2026 08:12:17 -0800 (PST)
-Message-ID: <b9b2cf39-8989-40c9-8ffa-b1626217b773@freebox.fr>
-Date: Tue, 27 Jan 2026 17:12:16 +0100
+        Tue, 27 Jan 2026 08:17:37 -0800 (PST)
+Message-ID: <f677b9d5-235c-4ff4-be36-c71c43b6988a@gmail.com>
+Date: Tue, 27 Jan 2026 18:17:36 +0200
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
@@ -87,97 +86,100 @@ List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH wireless-next v3 3/3] wifi: mac80211: add initial UHR
- support
-To: Johannes Berg <johannes@sipsolutions.net>, linux-wireless@vger.kernel.org
-Cc: Johannes Berg <johannes.berg@intel.com>
-References: <20260127141005.583581-5-johannes@sipsolutions.net>
- <20260127151005.751175e8035e.Ieec940b58dbf8115dab7e1e24cb5513f52c8cb2f@changeid>
+Subject: Re: [PATCH] wifi: mt76: connac: fix txpower_cur not being updated
+To: Felix Fietkau <nbd@nbd.name>, Lucid Duck <lucid_duck@justthetip.ca>,
+ linux-wireless@vger.kernel.org
+Cc: Lorenzo Bianconi <lorenzo@kernel.org>, Ryder Lee <ryder.lee@mediatek.com>
+References: <20260125222235.36565-1-lucid_duck@justthetip.ca>
+ <4ddb4417-d623-44ae-878d-5ee5939f2826@nbd.name>
 Content-Language: en-US
-From: Pablo MARTIN-GOMEZ <pmartin-gomez@freebox.fr>
-In-Reply-To: <20260127151005.751175e8035e.Ieec940b58dbf8115dab7e1e24cb5513f52c8cb2f@changeid>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+From: Bitterblue Smith <rtl8821cerfe2@gmail.com>
+In-Reply-To: <4ddb4417-d623-44ae-878d-5ee5939f2826@nbd.name>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
-	R_DKIM_ALLOW(-0.20)[freebox-fr.20230601.gappssmtp.com:s=20230601];
+	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+	R_DKIM_ALLOW(-0.20)[gmail.com:s=20230601];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[freebox-fr.20230601.gappssmtp.com:+];
-	TAGGED_FROM(0.00)[bounces-31236-lists,linux-wireless=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-31237-lists,linux-wireless=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	DMARC_NA(0.00)[freebox.fr];
-	RCPT_COUNT_THREE(0.00)[3];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[gmail.com:+];
+	FREEMAIL_FROM(0.00)[gmail.com];
+	TO_DN_SOME(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	FROM_HAS_DN(0.00)[];
-	TO_DN_SOME(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[5];
 	RCVD_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[pmartin-gomez@freebox.fr,linux-wireless@vger.kernel.org];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	FROM_NEQ_ENVFROM(0.00)[rtl8821cerfe2@gmail.com,linux-wireless@vger.kernel.org];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
 	NEURAL_HAM(-0.00)[-1.000];
 	TAGGED_RCPT(0.00)[linux-wireless];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,intel.com:email,freebox.fr:mid]
-X-Rspamd-Queue-Id: A8DAE978F2
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,justthetip.ca:email]
+X-Rspamd-Queue-Id: 7AAA3979A3
 X-Rspamd-Action: no action
 
-Hello,
+On 27/01/2026 14:21, Felix Fietkau wrote:
+> On 25.01.26 23:22, Lucid Duck wrote:
+>> The mt76_connac_mcu_set_rate_txpower() function sends TX power settings
+>> to the firmware but never updates phy->txpower_cur. This causes
+>> mt76_get_txpower() to return stale or incorrect values (typically
+>> showing 3 dBm regardless of actual transmit power) when userspace
+>> queries TX power via nl80211.
+>>
+>> This affects MT7921 and other connac-based devices. Users observe:
+>>    $ iw dev wlan0 info
+>>    ...
+>>    txpower 3.00 dBm
+>>
+>> The firmware receives and applies the correct power level, but the
+>> reported value is wrong because txpower_cur is never set.
+>>
+>> Fix by updating phy->txpower_cur after successfully configuring TX
+>> power, matching the behavior of other mt76 drivers like mt7915.
+>>
+>> Signed-off-by: Lucid Duck <lucid_duck@justthetip.ca>
+>> ---
+>>   drivers/net/wireless/mediatek/mt76/mt76_connac_mcu.c | 8 +++++++-
+>>   1 file changed, 7 insertions(+), 1 deletion(-)
+>>
+>> diff --git a/drivers/net/wireless/mediatek/mt76/mt76_connac_mcu.c b/drivers/net/wireless/mediatek/mt76/mt76_connac_mcu.c
+>> index 045771228..7cd357419 100644
+>> --- a/drivers/net/wireless/mediatek/mt76/mt76_connac_mcu.c
+>> +++ b/drivers/net/wireless/mediatek/mt76/mt76_connac_mcu.c
+>> @@ -2251,7 +2251,7 @@ mt76_connac_mcu_rate_txpower_band(struct mt76_phy *phy,
+>>     int mt76_connac_mcu_set_rate_txpower(struct mt76_phy *phy)
+>>   {
+>> -    int err;
+>> +    int err, tx_power;
+>>         if (phy->cap.has_2ghz) {
+>>           err = mt76_connac_mcu_rate_txpower_band(phy,
+>> @@ -2272,6 +2272,12 @@ int mt76_connac_mcu_set_rate_txpower(struct mt76_phy *phy)
+>>               return err;
+>>       }
+>>   +    /* Update txpower_cur for accurate reporting via nl80211 */
+>> +    tx_power = 2 * phy->hw->conf.power_level;
+>> +    if (!tx_power)
+>> +        tx_power = 127;
+>> +    phy->txpower_cur = tx_power;
+> 
+> phy->hw->conf.power_level is the user configured power level, not what the hardware is capable of transmitting.
+> 
+> To fix it properly, I think you should determine the maximum rate power used in the loop within mt76_connac_mcu_rate_txpower_band (updated with each call).
+> 
+> - Felix
+> 
 
-My comment below:
+What about these older patches?
 
-On 27/01/2026 15:09, Johannes Berg wrote:
-> From: Johannes Berg <johannes.berg@intel.com>
->
-> Add support for making UHR connections and accepting AP
-> stations with UHR support.
->
-> Signed-off-by: Johannes Berg <johannes.berg@intel.com>
-> ---
-> v3:
->   - use uhr_oper instead of removed uhr_capa
->   - fix indentation (Jeff Johnson)
-> ---
->   include/net/mac80211.h     |  33 +++++++++-
->   net/mac80211/Makefile      |   2 +-
->   net/mac80211/cfg.c         |  14 ++++
->   net/mac80211/ieee80211_i.h |  17 ++++-
->   net/mac80211/main.c        |  13 +++-
->   net/mac80211/mlme.c        | 131 ++++++++++++++++++++++++++++++++++---
->   net/mac80211/parse.c       |  20 ++++++
->   net/mac80211/rx.c          |  21 ++++++
->   net/mac80211/sta_info.c    |  11 ++++
->   net/mac80211/sta_info.h    |  80 ++++++++++++++++------
->   net/mac80211/uhr.c         |  29 ++++++++
->   net/mac80211/util.c        |  34 ++++++++++
->   12 files changed, 373 insertions(+), 32 deletions(-)
->   create mode 100644 net/mac80211/uhr.c
-[...]
-> @@ -1040,8 +1064,15 @@ static inline u32 sta_stats_encode_rate(struct ieee80211_rx_status *s)
->   
->   	r = STA_STATS_FIELD(BW, s->bw);
->   
-> -	if (s->enc_flags & RX_ENC_FLAG_SHORT_GI)
-> -		r |= STA_STATS_FIELD(SGI, 1);
-> +	switch (s->encoding) {
-> +	case RX_ENC_HT:
-> +	case RX_ENC_VHT:
-> +		if (s->enc_flags & RX_ENC_FLAG_SHORT_GI)
-> +			r |= STA_STATS_FIELD(SGI, 1);
-> +		break;
-> +	default:
-> +		break;
-> +	}
-Not sure this change should be in this commit
-
-Best regards,
-
-Pablo MG
-
+https://patchwork.kernel.org/project/linux-wireless/list/?series=932665&submitter=&state=*&q=&archive=&delegate=
 
