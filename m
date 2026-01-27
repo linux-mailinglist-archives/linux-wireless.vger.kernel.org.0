@@ -1,65 +1,65 @@
-Return-Path: <linux-wireless+bounces-31225-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-31226-lists+linux-wireless=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id aEV5C3q3eGlzsQEAu9opvQ
-	(envelope-from <linux-wireless+bounces-31225-lists+linux-wireless=lfdr.de@vger.kernel.org>)
-	for <lists+linux-wireless@lfdr.de>; Tue, 27 Jan 2026 14:02:50 +0100
+	id KILyF8K4eGlzsQEAu9opvQ
+	(envelope-from <linux-wireless+bounces-31226-lists+linux-wireless=lfdr.de@vger.kernel.org>)
+	for <lists+linux-wireless@lfdr.de>; Tue, 27 Jan 2026 14:08:18 +0100
 X-Original-To: lists+linux-wireless@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id D5DD3949E5
-	for <lists+linux-wireless@lfdr.de>; Tue, 27 Jan 2026 14:02:48 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id D71EE94A9B
+	for <lists+linux-wireless@lfdr.de>; Tue, 27 Jan 2026 14:08:17 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 4777430072B8
-	for <lists+linux-wireless@lfdr.de>; Tue, 27 Jan 2026 13:02:24 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 9A5563012274
+	for <lists+linux-wireless@lfdr.de>; Tue, 27 Jan 2026 13:07:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C567927FD4A;
-	Tue, 27 Jan 2026 13:02:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1309D2FE598;
+	Tue, 27 Jan 2026 13:07:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b="BgLIBqWr"
+	dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b="o+q97kcq"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from sipsolutions.net (s3.sipsolutions.net [168.119.38.16])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 715CF352930
-	for <linux-wireless@vger.kernel.org>; Tue, 27 Jan 2026 13:02:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B6C5533554B
+	for <linux-wireless@vger.kernel.org>; Tue, 27 Jan 2026 13:07:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=168.119.38.16
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769518938; cv=none; b=CaBMZtNwkR0uUsiLWxkmiszxo4gXdGDgbnY+WhgNpsn1X/Gx/Pahv0AgGxLZMhC5FdoDOwZYpCL9gxayoJJsk+kDdBvROUYPDClxi5hZCJapEo7X7Jpg3IjFwVoHU51+ftQBauuI+39rRqRslzXdPN6a66KxDECETS7dUpoj/u0=
+	t=1769519247; cv=none; b=Nwk/sJ8jQBYRqGgmxgbp3S/Q+pT3GOTvTjWwskKSnW2Br8eSgmMqEvdee8bmzSBbYR70CSDV2jr/2dfc8ss3h6Psln/wF9/oe0IzLZI9deH8Qam7PHy0GswlLSPFlmFaj5amQTtTJNdy2Jpap2dy4her/8iqgXfC+Fdt2wGjiuA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769518938; c=relaxed/simple;
-	bh=oikarJayW0NZnDO+0QVRIRfoeBtM8zUy8i/lqLIRFBo=;
+	s=arc-20240116; t=1769519247; c=relaxed/simple;
+	bh=Q+vYmEyrOVtMWt0emvclk0q8208EBo6N1K1fSN4c0dI=;
 	h=Message-ID:Subject:From:To:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=C7LzyUafBWeCprLsPecv0ZqkOKCly5ynA+nzjZ5zvAk2silCSYLNq1Coqr6mOguBNwDogu6YGgAmaDVGhyB1zVv3BK6bGP01QtkJG0X8iN1H69z5XT7WT5idP4o75EEluUN2Q7M9jpfV+POAGZI5t0lZtB3wJg9Fbkq5JcOqHfw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net; spf=pass smtp.mailfrom=sipsolutions.net; dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b=BgLIBqWr; arc=none smtp.client-ip=168.119.38.16
+	 Content-Type:MIME-Version; b=TNY00Nb2erCPHS5j6D3qItxwKGjkmoWN5gmXSHzhMwqs+O07NQaYU/MZ7zUkHzgkpVd+sevm+K4zxCkfFihY3QxZHsbw6RTOwTyCVejGqyCc2SweeU7Of/6IqoJtJj3LEJR7oFMxlKoE6PWzOdYFyrVc8yQXE8LNBAnrZNHwPoQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net; spf=pass smtp.mailfrom=sipsolutions.net; dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b=o+q97kcq; arc=none smtp.client-ip=168.119.38.16
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sipsolutions.net
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=sipsolutions.net; s=mail; h=MIME-Version:Content-Transfer-Encoding:
 	Content-Type:References:In-Reply-To:Date:To:From:Subject:Message-ID:Sender:
 	Reply-To:Cc:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
-	Resent-Cc:Resent-Message-ID; bh=GvG5Vn6NI9pbJ/6/ajv0TWQYACZb84dPyKyKtjL3HBw=;
-	t=1769518937; x=1770728537; b=BgLIBqWremieCEge/M5YrB39xIBwUfHLZQ1/DcF2jrk3y8V
-	GTr9qxpS3gxKcCOXbDt1qNPSk/yfGE/0/THX2lOfYcq0UfQ0b4DKyd5ZLz0d/w1ljgc11uVqoxBsb
-	70FEwpBMNLeTQxRaPjBxnhy7MiN835aYYSge0TLrr+1IJaN4zohmuzfsZT/R2dj9DA6kd4LnprQ1q
-	fpY1VnBzKaiK4IrEFn0f2muTSi9CcJ/tblVtNRvfpDScyN+0XQafTThUR+xIVgx+Bp7CBEu+NvNqi
-	s0ddHfyvk540eudp8ui1B6nA4h2KiFTDW0lbWGLso+2lC0ap0cLOKhY8H+RoSG9A==;
+	Resent-Cc:Resent-Message-ID; bh=hkD4L7L4Y6XmO7kDRoNZ5kNYkY2APBYGUGnB5ufnZ5Y=;
+	t=1769519245; x=1770728845; b=o+q97kcqlW8g7/GPEmxhEEoKp2GCVAAc4WM9LOdSjmqwTyL
+	ycdUDmnl8mCXv3gV5cBsYbmQ4nYKsO7GFcmDecREiqhxL9TICcs8O/JKPD5KNSAQmUA0cUGr8vURj
+	EoEuG9WDNDXSqzcVveSz0AlJaWggj68xfLqwE7uXg45dMTnKGhR4V6LkpMSDLEpvzYbH8T+2NkIrk
+	t38jgMqedOstsYQTV/FOfLhDfO/8zSdcOlJO6v+T6iQV7YBn5RSTEub3SHDKp3BOKncQAKerMwRZY
+	Y5bwvCN3oHMAIFfFCWUP1rqt38NEQ9DmfAbHMpV/pscUUP7XEwQcn9IblpkVTw/Q==;
 Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
 	(Exim 4.98.2)
 	(envelope-from <johannes@sipsolutions.net>)
-	id 1vkihz-00000004zyo-1AFv;
-	Tue, 27 Jan 2026 14:02:15 +0100
-Message-ID: <69c37195aaedd7933bcc307aadbc12d1cdf85b33.camel@sipsolutions.net>
-Subject: Re: [RFC v5 wireless-next 2/4] wifi: cfg80211: set and report
- chandef CAC ongoing
+	id 1vkimx-0000000504S-20F0;
+	Tue, 27 Jan 2026 14:07:23 +0100
+Message-ID: <f19edf136407e6e4ff46c58e5497424538304cef.camel@sipsolutions.net>
+Subject: Re: [RFC v5 wireless-next 4/4] wifi: mac80211_hwsim: background CAC
+ support
 From: Johannes Berg <johannes@sipsolutions.net>
 To: Janusz Dziedzic <janusz.dziedzic@gmail.com>, 
 	linux-wireless@vger.kernel.org
-Date: Tue, 27 Jan 2026 14:02:14 +0100
-In-Reply-To: <20260125160353.34102-3-janusz.dziedzic@gmail.com> (sfid-20260125_170409_804588_262B2BFE)
+Date: Tue, 27 Jan 2026 14:07:22 +0100
+In-Reply-To: <20260125160353.34102-5-janusz.dziedzic@gmail.com> (sfid-20260125_170411_232795_78492DFF)
 References: <20260125160353.34102-1-janusz.dziedzic@gmail.com>
-	 <20260125160353.34102-3-janusz.dziedzic@gmail.com>
-	 (sfid-20260125_170409_804588_262B2BFE)
+	 <20260125160353.34102-5-janusz.dziedzic@gmail.com>
+	 (sfid-20260125_170411_232795_78492DFF)
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 User-Agent: Evolution 3.58.2 (3.58.2-1.fc43) 
@@ -74,7 +74,7 @@ X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[sipsolutions.net,none];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[sipsolutions.net:s=mail];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
@@ -83,11 +83,11 @@ X-Spamd-Result: default: False [-2.16 / 15.00];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCPT_COUNT_TWO(0.00)[2];
 	FREEMAIL_TO(0.00)[gmail.com,vger.kernel.org];
-	TAGGED_FROM(0.00)[bounces-31225-lists,linux-wireless=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-31226-lists,linux-wireless=lfdr.de];
 	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
 	PRECEDENCE_BULK(0.00)[];
@@ -97,46 +97,51 @@ X-Spamd-Result: default: False [-2.16 / 15.00];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[linux-wireless];
 	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: D5DD3949E5
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,sipsolutions.net:mid,sipsolutions.net:dkim]
+X-Rspamd-Queue-Id: D71EE94A9B
 X-Rspamd-Action: no action
 
 On Sun, 2026-01-25 at 17:00 +0100, Janusz Dziedzic wrote:
->=20
-> + * @cac_ongoing_time: timestamp (CLOCK_BOOTTIME, nanoseconds) when CAC w=
-as
-> + *	started on this channel. Zero when CAC is not in progress.
+> Report background CAC support and add allow
+> to cancel background CAC and simulate radar.
 
-Is "ongoing" really a good name? To me something like "CAC start
-timestamp" would seem more descriptive?
+It seems that perhaps this should be optional, so that we can continue
+using the existing code paths too?
 
->   * @psd: power spectral density (in dBm)
->   */
->  struct ieee80211_channel {
-> @@ -205,6 +207,7 @@ struct ieee80211_channel {
->  	enum nl80211_dfs_state dfs_state;
->  	unsigned long dfs_state_entered;
->  	unsigned int dfs_cac_ms;
-> +	u64 cac_ongoing_time;
->  	s8 psd;
->  };
-> =20
-> diff --git a/include/uapi/linux/nl80211.h b/include/uapi/linux/nl80211.h
-> index b0f050e36fa4..7c23fd1b8ce9 100644
-> --- a/include/uapi/linux/nl80211.h
-> +++ b/include/uapi/linux/nl80211.h
-> @@ -4452,6 +4452,10 @@ enum nl80211_wmm_rule {
->   * @NL80211_FREQUENCY_ATTR_S1G_NO_PRIMARY: Channel is not permitted for =
-use
->   *	as a primary channel. Does not prevent the channel from existing
->   *	as a non-primary subchannel. Only applicable to S1G channels.
-> + * @NL80211_FREQUENCY_ATTR_CAC_START_TIME: Channel Availability Check (C=
-AC)
-> + *	start time (CLOCK_BOOTTIME, nanoseconds). Only present when CAC is
-> + *	currently in progress on this channel.
+> +static ssize_t hwsim_background_cac_write(struct file *file,
+> +					  const char __user *user_buf,
+> +					  size_t count, loff_t *ppos)
+> +{
+> +	struct mac80211_hwsim_data *data =3D file->private_data;
+> +	size_t buf_size;
+> +	char buf[16];
+> +
+> +	buf_size =3D min(count, sizeof(buf) - 1);
+> +	if (copy_from_user(buf, user_buf, buf_size))
+> +		return -EFAULT;
+> +
+> +	buf[buf_size] =3D '\0';
+> +
+> +	/* Remove trailing newline if present */
+> +	if (buf_size > 0 && buf[buf_size - 1] =3D=3D '\n')
+> +		buf[buf_size - 1] =3D '\0';
 
-And here it _is_ "CAC start time".
+Perhaps simpler to just do buf[...] =3D {}, return an error if count >
+sizeof(buf)-1, and then just copy?
 
+> +	if (strcmp(buf, "radar") =3D=3D 0)
+> +		cfg80211_background_radar_event(data->hw->wiphy,
+> +						&data->radar_background_chandef,
+> +						GFP_KERNEL);
+> +	else if (strcmp(buf, "cancel") =3D=3D 0)
+> +		cfg80211_background_cac_abort(data->hw->wiphy);
+
+I wonder if this could be simplified by using sysfs_match_string(), but
+I guess that'd require some enum or so and then isn't really worth it.
+Surely though sysfs_streq() could be used instead of the manual trailing
+newline handling, though honestly I feel it's kind of pointless anyway
+since the user can just use "echo -n" instead of "echo" and not _have_
+the \n in the first place :)
 
 johannes
 
