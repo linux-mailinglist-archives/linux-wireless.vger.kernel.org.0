@@ -1,200 +1,348 @@
-Return-Path: <linux-wireless+bounces-31211-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-31212-lists+linux-wireless=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id +Ec5DrN8eGkFqQEAu9opvQ
-	(envelope-from <linux-wireless+bounces-31211-lists+linux-wireless=lfdr.de@vger.kernel.org>)
-	for <lists+linux-wireless@lfdr.de>; Tue, 27 Jan 2026 09:52:03 +0100
+	id uIPZF0p/eGkFqQEAu9opvQ
+	(envelope-from <linux-wireless+bounces-31212-lists+linux-wireless=lfdr.de@vger.kernel.org>)
+	for <lists+linux-wireless@lfdr.de>; Tue, 27 Jan 2026 10:03:06 +0100
 X-Original-To: lists+linux-wireless@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 540ED914C4
-	for <lists+linux-wireless@lfdr.de>; Tue, 27 Jan 2026 09:52:02 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id BFCE191713
+	for <lists+linux-wireless@lfdr.de>; Tue, 27 Jan 2026 10:03:05 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 4C95E3002D3C
-	for <lists+linux-wireless@lfdr.de>; Tue, 27 Jan 2026 08:51:59 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 9163E305B09B
+	for <lists+linux-wireless@lfdr.de>; Tue, 27 Jan 2026 08:58:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3EDC0229B2A;
-	Tue, 27 Jan 2026 08:51:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B83263161AD;
+	Tue, 27 Jan 2026 08:58:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=realtek.com header.i=@realtek.com header.b="TFAtASed"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="gbC8924t"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
+Received: from mail-pg1-f178.google.com (mail-pg1-f178.google.com [209.85.215.178])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7C8F42D3A7B
-	for <linux-wireless@vger.kernel.org>; Tue, 27 Jan 2026 08:51:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=211.75.126.72
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769503917; cv=none; b=SuHH0InIxC2LHxSCkDIjDBm3Dsa8rBwXFk1WAEuGPuQPMZJ7U/3rqVD8bGYtrDvqF2swLv1DJHJxpY5Azxq/s6o2SaJwfTFmvvntAxytB1vpgkyNEkEV9eCgohiFRVCaaitg+oYB93lt5Y2Fexn46G85Jf78jmuUOSdEGgBN5H4=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769503917; c=relaxed/simple;
-	bh=PcP+iVQMPzRjYc2l/vtjxZ8RWU+bD7Hg/VGZtQjcBUw=;
-	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=iuGlg1BmrOgx4jxfSbRTi0vaWAHCwcpbj+7yis7o08OWupVRoAl/W+Rp6wEkvDgtZvAJ5RyscaG7pWSKM4ZKX62FDGWZXSjzGhgGPSG4TAsNXWLKm531eN2Ng4M4k5/gz0n7dkdwy8RVe+fwplyj9WMdfp9acvM694cKfSfDoaw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com; spf=pass smtp.mailfrom=realtek.com; dkim=pass (2048-bit key) header.d=realtek.com header.i=@realtek.com header.b=TFAtASed; arc=none smtp.client-ip=211.75.126.72
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=realtek.com
-X-SpamFilter-By: ArmorX SpamTrap 5.80 with qID 60R8prRyB2655533, This message is accepted by code: ctloc85258
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=realtek.com; s=dkim;
-	t=1769503913; bh=RlktVedcH88ElHQjPPVMgsjfPBgnGXNPis5nUS5ha5w=;
-	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Transfer-Encoding:Content-Type;
-	b=TFAtASedPfzwwhj1K4Xm4MEQPTEHzmID+9QZ7YgPeGFtkZmZDpVNN4ymb8qKLMkI7
-	 1lu1twREpY+eReGrEzT8vjnMFjb2m73iY4Z+EJurU/Jf9VvAY49HWcbpIWQk8NDA5e
-	 a8HA5FldrVlEhiOaD2HGOaRxin+OR6biIiyZDAY5k7ZLGhtTmkq9+VkmZGmFTub+A6
-	 qnrV1uMdC9RaH3P5rG+QYAX8BFeOdaqRd5G1MtjaLcYShOkb6wahquuBaRQ2vaVBH1
-	 IBCvtQmep91XRJ8jShL5ZBo+sT3+0hMZe/9rWoCOaobo/RUSExBpJaYwlhulE2mfID
-	 bgYqSOY6SJz6A==
-Received: from mail.realtek.com (rtkexhmbs03.realtek.com.tw[10.21.1.53])
-	by rtits2.realtek.com.tw (8.15.2/3.21/5.94) with ESMTPS id 60R8prRyB2655533
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK)
-	for <linux-wireless@vger.kernel.org>; Tue, 27 Jan 2026 16:51:53 +0800
-Received: from RTKEXHMBS01.realtek.com.tw (172.21.6.40) by
- RTKEXHMBS03.realtek.com.tw (10.21.1.53) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1748.10; Tue, 27 Jan 2026 16:51:53 +0800
-Received: from RTKEXHMBS03.realtek.com.tw (10.21.1.53) by
- RTKEXHMBS01.realtek.com.tw (172.21.6.40) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1748.10; Tue, 27 Jan 2026 16:51:53 +0800
-Received: from [127.0.1.1] (172.21.40.75) by RTKEXHMBS03.realtek.com.tw
- (10.21.1.53) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1748.10 via Frontend
- Transport; Tue, 27 Jan 2026 16:51:53 +0800
-From: Ping-Ke Shih <pkshih@realtek.com>
-To: <linux-wireless@vger.kernel.org>
-CC: <gary.chang@realtek.com>, <dian_syuan0116@realtek.com>,
-        <kevin_yang@realtek.com>
-Subject: [PATCH rtw-next 6/6] wifi: rtw89: pci: warn if SPS OCP happens for RTL8922DE
-Date: Tue, 27 Jan 2026 16:50:36 +0800
-Message-ID: <20260127085036.44060-7-pkshih@realtek.com>
-X-Mailer: git-send-email 2.25.1
-In-Reply-To: <20260127085036.44060-1-pkshih@realtek.com>
-References: <20260127085036.44060-1-pkshih@realtek.com>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 383C31F63CD
+	for <linux-wireless@vger.kernel.org>; Tue, 27 Jan 2026 08:58:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.215.178
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1769504294; cv=pass; b=jGeorPWDt4va5kbYl853wKMNpbMc54LSne2uVzv/F7rVJg8nDdq8/Xc2AQfLRByYoGrRKrVhDBwZoYFSdSBFYe9QoHQANtWOlaM9cXQt3+6B9nIl3Msvhq2TItWTF8aZnnDArSHrRJv/PMspYEXXUjUxA+89Z6adY+TLNLvSays=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1769504294; c=relaxed/simple;
+	bh=RMHfXBfPJ+X8bZVELlNyO5L4gv4ir1wtTNkGks1IBW0=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=IF4mxL5+9R/ngVTqqPX+MbOftvOVTrFXTBXaWy1CCVFbX9R4KoBecbe3KLV2MXy3y/aWXx/YswcaUikA/O2gpERbR5YYlcg1KOte4OiqL2coOotHzrLZajdecpevPdmbraoOgfY0cuWnEorUtsnfxjG7j1FlpDPgtxz7OxiGEJo=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=gbC8924t; arc=pass smtp.client-ip=209.85.215.178
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-pg1-f178.google.com with SMTP id 41be03b00d2f7-c551edc745eso2121136a12.2
+        for <linux-wireless@vger.kernel.org>; Tue, 27 Jan 2026 00:58:13 -0800 (PST)
+ARC-Seal: i=1; a=rsa-sha256; t=1769504292; cv=none;
+        d=google.com; s=arc-20240605;
+        b=lH57EYUCls0NLwNJAMSisN8M118RmSNvoSMrFd+YQavyojEGGBGPqNpAzD1qVrgc9z
+         yHpXec0+9Ddhym4GYcUetOV9QEzdxjSqCio4Fu4n/PzUPpseZsYfXSvmSEtDpGR9dYKV
+         qbeESAPbYq+9vwl+l7n70QFxJTgA1B39AAzdjLniBcmQ7bFm70Xo2zc0qt72r0Kw/169
+         GUw7kInlWoEgejApVpulIfHS4WEaX21PFTQjeSd/9X0TeGieLbPXabh0Y1pXqMWktP+8
+         DL7cWfUVryXYI0BVVwSNZfoL5RE7lXUUJqDZAzA041/x7gQ2rrdYdhr647okDuEQ0ePg
+         PmRg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=PU4lUQv1xAbHw1WmtS2XtfNJZJXUJbo4VT1ueuu/oCk=;
+        fh=yyB3FrU037Aavi2v1QB170c1h9+OC+BX/NyRc7eKSUs=;
+        b=kf3YdvOHh+4iqD0Cv76k6Y005E5GDX0KYxUwdk5JRjDNPKRJ2328qjHGVAUgNHB001
+         wN7hxbjdbHEYMZeXTHyas9319YO5JO9a2v/QFSu5q/HO66iaWJ5P448FI2kt+QtvPGfl
+         UUcGpSIHavuK+g30UWVCGOETRRE5WljcsJw4EW+J/+GyiCyWCmVqKKAXVfneEgTl2SVg
+         FYBcSvJ7NsovR8Lpdh7NyglJ4QV1UFw1xJ1rBIRLKPPFjYm8z/teHP2FS8+sOZCgvJT7
+         hmrOq1qqRFKSBBv7SqHz8EhOhSUgdUfFjJu+R2k39LENnp+mK0A6YtNSZJCa8WH7gTgl
+         ugnw==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1769504292; x=1770109092; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=PU4lUQv1xAbHw1WmtS2XtfNJZJXUJbo4VT1ueuu/oCk=;
+        b=gbC8924tS90/mKNK0xJPObrV0ERWhWyIMNG8bzGZHU2A9uaXxJEKI7VCG3ajY8j0hn
+         IkuXWXCChaeQYtxvSOlGOikEiQ5Z4aQmvQkeoP+YYCaSpvVhIFhtmSQvTQ3soytc+hxa
+         nREChabOeK7Ls6Mj4Jon/uS7ZdFn+M9K//drN9X8ii7J6BwwCwN6ZVTQ4C7WucCPA02m
+         RTpgtega+6CnxXvfiyqXIW/uuVOE5LpdiHzmILyywt5YXQfjLng692N/o2zRKmz/F7Ln
+         dVGvNK2P2cQ+DDpWqHIjJDHYEvndtuaMjspuVAEEe0jPxeaCHpM/76j46Y4COe1lMEJ5
+         83cA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1769504292; x=1770109092;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=PU4lUQv1xAbHw1WmtS2XtfNJZJXUJbo4VT1ueuu/oCk=;
+        b=k3FqvoZ2e9mRfmMnQsmlZO5Z9BjmhAMyhcpBNt6ebBWoTNt/WGF3UfKHc0idqHAhKt
+         zsUwyay2X0uhm/dPa7c/57jH7WNGxdp2TjbOtqO4f6U/u/AkamWdjeqU/ePPZ2DUrKVo
+         icMwDaKuLHKNrXqsL+9nHa0pn5leTlH/D6BVIC9ahCL1GZbU03IGkga0Q0PXOxDvPRVD
+         KMhSMbmuH8mPCI9oqiAq2E+ChB9wmTJDxsXmSxwCNzXiWFJtKTC6pMMPqnGsq7Byv/Jq
+         jGlvyrC2KhEAtjQDKagxf+eSewIDudNxBVDnvgDWXBCNF8uNxkNzXQBGq5oZHCkayDyw
+         dwkA==
+X-Forwarded-Encrypted: i=1; AJvYcCX+R7miKe6eg8ksd78v7AwVcrW0Fm9XDgDxDxg9Ci4sqKETEavHfzISX2NiI9CHtibXaVn50gANhsbSW2yglw==@vger.kernel.org
+X-Gm-Message-State: AOJu0YwkW1MuCRMAlVCjwq9oEOovFADXNE7dn3aNj4+5IvXGxSZuO8V/
+	SlaRCeLcOoSeADAps9XpNjEaYEuBbaQOXCP9DRusDUXEycauYXwJC7O3aq/HOcN6Py9Bvagneo8
+	XGQ18UdmaBZY8WUHqv9aWxJawYluL72k=
+X-Gm-Gg: AZuq6aLfBKosFEpbD2STaWoV1Ylb7DZRq+kLbtHrp9VzYOFecDF7BihDPkrg7AO2Mf/
+	Ha5xDApwoaXphIY9rPxpwvqM15hhChRrUFmVth1oZJQSwggg1r3seT8A/YlalHhwQ1SJrDzTY61
+	r3eh0D9NI0lKso43TbtYJ9hnLPj4BJ0gyFV4untg3F0y8I+QV/RDOO2rJ6WwjHXYcDZ4NF8b6Ur
+	zWUe5dgnDcdkVXJuGBNyi1L0Jf/7dcjIyF1eyisZ4/iMpdUvivzxQYyrbx1Io7zV6rbOyMSlFJk
+	sf58eiijwfGPggOKqhNJTC1qj/4AHU1A0oKfO/4=
+X-Received: by 2002:a17:903:2ecf:b0:2a0:9402:2175 with SMTP id
+ d9443c01a7336-2a870d613b3mr10649075ad.27.1769504292292; Tue, 27 Jan 2026
+ 00:58:12 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
+References: <20260126095244.113301-1-bjsaikiran@gmail.com> <20260126095244.113301-2-bjsaikiran@gmail.com>
+ <776ae681-9db7-4051-abe1-07530f87d485@oss.qualcomm.com> <CAAFDt1sgAC6bHOVtELmcQVx=L1dTXDsQFtO+N3R_C2C35VOxhA@mail.gmail.com>
+ <45061c9a-6f01-4228-9737-0222b4b49059@oss.qualcomm.com>
+In-Reply-To: <45061c9a-6f01-4228-9737-0222b4b49059@oss.qualcomm.com>
+From: Saikiran B <bjsaikiran@gmail.com>
+Date: Tue, 27 Jan 2026 14:28:01 +0530
+X-Gm-Features: AZwV_Qg1RPufYvgrZ0FZi9GiRAuYpA21EVJ3rHbV9_hVbHAErLSOAhFnJSRuvtc
+Message-ID: <CAAFDt1sdE3Wpp5CByTZmBk=YnQxFhAwmbC5XpYaqYq0Wdx547A@mail.gmail.com>
+Subject: Re: [PATCH v2 1/2] wifi: ath12k: Remove frequency range filtering for
+ single-phy devices
+To: Baochen Qiang <baochen.qiang@oss.qualcomm.com>
+Cc: ath12k@lists.infradead.org, linux-wireless@vger.kernel.org, 
+	kvalo@kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.66 / 15.00];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MID_CONTAINS_FROM(1.00)[];
-	DMARC_POLICY_ALLOW(-0.50)[realtek.com,none];
-	R_MISSING_CHARSET(0.50)[];
-	R_DKIM_ALLOW(-0.20)[realtek.com:s=dkim];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
+X-Spamd-Result: default: False [-2.16 / 15.00];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=2];
+	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_DKIM_ALLOW(-0.20)[gmail.com:s=20230601];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-31211-lists,linux-wireless=lfdr.de];
-	FROM_HAS_DN(0.00)[];
-	TO_DN_NONE(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[pkshih@realtek.com,linux-wireless@vger.kernel.org];
+	TAGGED_FROM(0.00)[bounces-31212-lists,linux-wireless=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[realtek.com:+];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,realtek.com:email,realtek.com:dkim,realtek.com:mid];
-	RCPT_COUNT_THREE(0.00)[4];
-	TAGGED_RCPT(0.00)[linux-wireless];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	TO_DN_SOME(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	RCVD_COUNT_SEVEN(0.00)[7]
-X-Rspamd-Queue-Id: 540ED914C4
+	FROM_HAS_DN(0.00)[];
+	MISSING_XM_UA(0.00)[];
+	RCPT_COUNT_THREE(0.00)[4];
+	NEURAL_HAM(-0.00)[-1.000];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[bjsaikiran@gmail.com,linux-wireless@vger.kernel.org];
+	DKIM_TRACE(0.00)[gmail.com:+];
+	MID_RHS_MATCH_FROMTLD(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	TAGGED_RCPT(0.00)[linux-wireless];
+	FREEMAIL_FROM(0.00)[gmail.com];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[qualcomm.com:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,mail.gmail.com:mid]
+X-Rspamd-Queue-Id: BFCE191713
 X-Rspamd-Action: no action
 
-SPS OCP (over current protection) is a mechanism to cut off power to
-protect hardware. When this happens, raise an interrupt to signal driver,
-which prints out a message to note hardware status.
+Hi Baochen,
 
-Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
----
- drivers/net/wireless/realtek/rtw89/pci.c    | 10 ++++++++--
- drivers/net/wireless/realtek/rtw89/pci.h    |  1 +
- drivers/net/wireless/realtek/rtw89/pci_be.c |  2 ++
- 3 files changed, 11 insertions(+), 2 deletions(-)
+1. Here are the MD5 sums from my /lib/firmware/ath12k/WCN7850/hw2.0/
+(sourced from linux-firmware 20250901):
 
-diff --git a/drivers/net/wireless/realtek/rtw89/pci.c b/drivers/net/wireless/realtek/rtw89/pci.c
-index 9f3445fa55a9..e5efc1c989ff 100644
---- a/drivers/net/wireless/realtek/rtw89/pci.c
-+++ b/drivers/net/wireless/realtek/rtw89/pci.c
-@@ -968,6 +968,9 @@ static irqreturn_t rtw89_pci_interrupt_threadfn(int irq, void *dev)
- 	if (unlikely(isrs.halt_c2h_isrs & isr_def->isr_wdt_timeout))
- 		rtw89_ser_notify(rtwdev, MAC_AX_ERR_L2_ERR_WDT_TIMEOUT_INT);
- 
-+	if (unlikely(isrs.halt_c2h_isrs & isr_def->isr_sps_ocp))
-+		rtw89_warn(rtwdev, "SPS OCP alarm 0x%x\n", isrs.halt_c2h_isrs);
-+
- 	if (unlikely(rtwpci->under_recovery))
- 		goto enable_intr;
- 
-@@ -4003,7 +4006,8 @@ static void rtw89_pci_recovery_intr_mask_v3(struct rtw89_dev *rtwdev)
- 	struct rtw89_pci *rtwpci = (struct rtw89_pci *)rtwdev->priv;
- 
- 	rtwpci->ind_intrs = B_BE_HS0_IND_INT_EN0;
--	rtwpci->halt_c2h_intrs = B_BE_HALT_C2H_INT_EN | B_BE_WDT_TIMEOUT_INT_EN;
-+	rtwpci->halt_c2h_intrs = B_BE_HALT_C2H_INT_EN | B_BE_WDT_TIMEOUT_INT_EN |
-+				 B_BE_SPSANA_OCP_INT_EN | B_BE_SPS_OCP_INT_EN;
- 	rtwpci->intrs[0] = 0;
- 	rtwpci->intrs[1] = 0;
- }
-@@ -4013,7 +4017,8 @@ static void rtw89_pci_default_intr_mask_v3(struct rtw89_dev *rtwdev)
- 	struct rtw89_pci *rtwpci = (struct rtw89_pci *)rtwdev->priv;
- 
- 	rtwpci->ind_intrs = B_BE_HS0_IND_INT_EN0;
--	rtwpci->halt_c2h_intrs = B_BE_HALT_C2H_INT_EN | B_BE_WDT_TIMEOUT_INT_EN;
-+	rtwpci->halt_c2h_intrs = B_BE_HALT_C2H_INT_EN | B_BE_WDT_TIMEOUT_INT_EN |
-+				 B_BE_SPSANA_OCP_INT_EN | B_BE_SPS_OCP_INT_EN;
- 	rtwpci->intrs[0] = 0;
- 	rtwpci->intrs[1] = B_BE_PCIE_RDU_CH1_IMR |
- 			   B_BE_PCIE_RDU_CH0_IMR |
-@@ -4655,6 +4660,7 @@ const struct rtw89_pci_isr_def rtw89_pci_isr_ax = {
- 	.isr_rdu = B_AX_RDU_INT,
- 	.isr_halt_c2h = B_AX_HALT_C2H_INT_EN,
- 	.isr_wdt_timeout = B_AX_WDT_TIMEOUT_INT_EN,
-+	.isr_sps_ocp = 0,
- 	.isr_clear_rpq = {R_AX_PCIE_HISR00, B_AX_RPQDMA_INT | B_AX_RPQBD_FULL_INT},
- 	.isr_clear_rxq = {R_AX_PCIE_HISR00, B_AX_RXP1DMA_INT | B_AX_RXDMA_INT |
- 					    B_AX_RDU_INT},
-diff --git a/drivers/net/wireless/realtek/rtw89/pci.h b/drivers/net/wireless/realtek/rtw89/pci.h
-index b0081b694046..ccfa6d33623a 100644
---- a/drivers/net/wireless/realtek/rtw89/pci.h
-+++ b/drivers/net/wireless/realtek/rtw89/pci.h
-@@ -1331,6 +1331,7 @@ struct rtw89_pci_isr_def {
- 	u32 isr_rdu;
- 	u32 isr_halt_c2h;
- 	u32 isr_wdt_timeout;
-+	u32 isr_sps_ocp;
- 	struct rtw89_reg2_def isr_clear_rpq;
- 	struct rtw89_reg2_def isr_clear_rxq;
- };
-diff --git a/drivers/net/wireless/realtek/rtw89/pci_be.c b/drivers/net/wireless/realtek/rtw89/pci_be.c
-index 33bdd3e66bf6..114f40c6c31b 100644
---- a/drivers/net/wireless/realtek/rtw89/pci_be.c
-+++ b/drivers/net/wireless/realtek/rtw89/pci_be.c
-@@ -763,6 +763,7 @@ const struct rtw89_pci_isr_def rtw89_pci_isr_be = {
- 	.isr_rdu = B_BE_RDU_CH1_INT_V1 | B_BE_RDU_CH0_INT_V1,
- 	.isr_halt_c2h = B_BE_HALT_C2H_INT,
- 	.isr_wdt_timeout = B_BE_WDT_TIMEOUT_INT,
-+	.isr_sps_ocp = 0,
- 	.isr_clear_rpq = {R_BE_PCIE_DMA_ISR, B_BE_PCIE_RX_RPQ0_ISR_V1},
- 	.isr_clear_rxq = {R_BE_PCIE_DMA_ISR, B_BE_PCIE_RX_RX0P2_ISR_V1},
- };
-@@ -772,6 +773,7 @@ const struct rtw89_pci_isr_def rtw89_pci_isr_be_v1 = {
- 	.isr_rdu = B_BE_PCIE_RDU_CH1_INT | B_BE_PCIE_RDU_CH0_INT,
- 	.isr_halt_c2h = B_BE_HALT_C2H_INT,
- 	.isr_wdt_timeout = B_BE_WDT_TIMEOUT_INT,
-+	.isr_sps_ocp = B_BE_SPS_OCP_INT | B_BE_SPSANA_OCP_INT,
- 	.isr_clear_rpq = {R_BE_PCIE_DMA_ISR, B_BE_PCIE_RX_RPQ0_ISR_V1},
- 	.isr_clear_rxq = {R_BE_PCIE_DMA_ISR, B_BE_PCIE_RX_RX0P2_ISR_V1},
- };
--- 
-2.25.1
+2fa9a691f199b25aafce48967d93c85b  amss.bin.zst
+7cd6eb50e9a6ad98e658a53033214c9e  board-2.bin.zst
+62c117046e52cb78c922635bea177afe  m3.bin.zst
+953ba9719c55664a5d91d99b412caee1  Notice.txt.zst
 
+2. Logs: I realized CONFIG_ATH12K_DEBUG was disabled in my recent
+build. I am rebuilding the kernel now with the debug mask enabled and
+will provide the verbose logs in a follow-up email once tested.
+
+3. Regarding the Frequency Logic: While I gather the logs, I'd like to
+highlight that the issue likely persists regardless of the firmware
+behavior.
+
+The freq_range filter assumes ar has a single contiguous range (e.g.,
+start=3D5150, end=3D5850). For a Single-PHY device like WCN7850 that
+supports disjoint bands (2.4GHz + 5GHz), a single start/end pair
+cannot correctly represent the capabilities.
+
+If we set it to cover 2.4GHz, it filters 5GHz.
+
+If we set it to cover both (e.g., 2.4GHz to 7GHz), the filter allows
+everything and becomes redundant.
+
+I will get back to you shortly with the logs to confirm the firmware state.
+
+Thanks & Regards,
+Saikiran
+
+On Tue, Jan 27, 2026 at 1:11=E2=80=AFPM Baochen Qiang
+<baochen.qiang@oss.qualcomm.com> wrote:
+>
+>
+>
+> On 1/27/2026 12:04 PM, Saikiran B wrote:
+> > Hi Baochen,
+> >
+> > I checked the logs again.
+> >
+> > The issue seems to be coming from how
+> > [ath12k_regd_update()](drivers/net/wireless/ath/ath12k/reg.c) handles
+> > frequency range updates for this device. WCN7850 is a single-phy
+> > device (single [ar](drivers/net/wireless/ath/ath12k/mac.c) that
+> > supports both 2.4GHz and 5GHz/6GHz.
+> >
+> > In ath12k_regd_update():
+> >
+> > 1. It updates the range for 2GHz capabilities (sets range to ~2.4GHz).
+> > 2. It then attempts to update for 5GHz capabilities.
+> > 3. Because `ar->supports_6ghz` is true, it uses the 6GHz path logic.
+> > 4. However, `ab->reg_freq_6ghz` appears to be uninitialized/invalid at
+>
+> Hmm, this seems like a known firmware bug. Are you using the latest board=
+-2.bin? please
+> share md5sum of your firmware binaries under /lib/firmware/ath12k/WCN7850=
+/hw2.0
+>
+> If you are using the latest, please help collect verbose ath12k dmesg log=
+:
+>
+> modprobe ath12k debug_mask=3D0xffffffff
+> modprobe ath12k_wifi7
+>
+> > this stage (possibly due to regulatory init timing or country code
+> > issues, On Lenovo Yoga Slim 7x, SMBIOS does not seem to provide a
+> > valid country code. The driver attempts to set an invalid country code
+> > which the firmware rejects. This inturn triggers this issue. Fixing
+> > SMBIOS parsing/defaults is a separate, complex issue that varies by
+> > vendor.), causing the 5GHz range update to be skipped or invalid.
+> >
+> > [ 11.699027] ath12k_pci 0004:01:00.0: Failed to set the requested
+> > Country regulatory setting
+> > [ 31.111995] ath12k_pci 0004:01:00.0: Failed to set the requested
+> > Country regulatory setting
+> >
+> > As a result, `ar->freq_range` remains effectively set for only the 2.4G=
+Hz band.
+> >
+> > When ath12k_reg_update_chan_list() runs:
+> >
+> > It compares 5GHz channels (e.g., 5180 MHz) against a
+> > [freq_range](drivers/net/wireless/ath/ath12k/reg.c) that only covers
+> > 2.4GHz.
+> > Result: `center_freq > end_freq` is TRUE -> Channel is filtered out.
+> >
+> > The filtering logic added in acc152f9be20 works for split-phy topology
+> > where each host ar covers a specific range. For WCN7850, where a
+> > single host ar covers disjoint bands (2.4G + 5G), [freq_range] but
+> > [freq_range](drivers/net/wireless/ath/ath12k/reg.c) (start/end) cannot
+> > represent multiple disjoint bands at the same time.
+> >
+> > Removing this driver-level filter allows the firmware (which knows the
+> > true capabilities) to handle the channel list correctly.
+> >
+> > Thanks & Regards,
+> > Saikiran
+> >
+> > On Tue, Jan 27, 2026 at 8:52=E2=80=AFAM Baochen Qiang
+> > <baochen.qiang@oss.qualcomm.com> wrote:
+> >>
+> >>
+> >>
+> >> On 1/26/2026 5:52 PM, Saikiran wrote:
+> >>> The frequency range filtering added in commit acc152f9be20 was design=
+ed
+> >>> for split-phy devices where multiple radios with overlapping frequenc=
+y
+> >>> ranges within the same band are combined into a single wiphy. Each ra=
+dio
+> >>> in such setups handles only a subset of channels within a band (e.g.,=
+ two
+> >>> 5GHz radios covering 5GHz-low and 5GHz-high separately).
+> >>>
+> >>> However, this filtering breaks single-phy devices like WCN7850 that u=
+se
+> >>> a single radio to handle both 2.4GHz and 5GHz bands. On these devices=
+,
+> >>
+> >> To be accurate, WCN7850 still gets two phys in hardware, it is just in=
+ host that we treat
+> >> it as single.
+> >>
+> >>> the freq_range is set to cover the entire supported spectrum, but the
+> >>
+> >> exactly
+> >>
+> >>> filtering logic incorrectly restricts channels, causing 5GHz to becom=
+e
+> >>> completely unusable.
+> >>
+> >> how? what are the actual values of freq_range when you hit the issue a=
+nd how are they
+> >> calculated?
+> >>
+> >>>
+> >>> The issue manifests as:
+> >>> - All 5GHz channels filtered out during channel list updates
+> >>> - No 5GHz SSIDs visible in scans
+> >>> - Only 2.4GHz networks functional
+> >>>
+> >>> Remove the frequency range filtering entirely and rely on the firmwar=
+e
+> >>> to handle frequency restrictions based on actual hardware capabilitie=
+s.
+> >>> This approach works correctly for both split-phy and single-phy devic=
+es,
+> >>> as the firmware has complete knowledge of what the hardware supports.
+> >>>
+> >>> Fixes: acc152f9be20 ("wifi: ath12k: combine channel list for split-ph=
+y devices in single-wiphy")
+> >>> Tested-on: WCN7850 hw2.0 PCI WLAN.HMT.1.1.c5-00302 (Lenovo Yoga Slim =
+7x)
+> >>> Signed-off-by: Saikiran <bjsaikiran@gmail.com>
+> >>> ---
+> >>>  drivers/net/wireless/ath/ath12k/reg.c | 13 -------------
+> >>>  1 file changed, 13 deletions(-)
+> >>>
+> >>> diff --git a/drivers/net/wireless/ath/ath12k/reg.c b/drivers/net/wire=
+less/ath/ath12k/reg.c
+> >>> index 7898f6981e5a..48c362a86524 100644
+> >>> --- a/drivers/net/wireless/ath/ath12k/reg.c
+> >>> +++ b/drivers/net/wireless/ath/ath12k/reg.c
+> >>> @@ -153,12 +153,6 @@ int ath12k_reg_update_chan_list(struct ath12k *a=
+r, bool wait)
+> >>>                       if (bands[band]->channels[i].flags &
+> >>>                           IEEE80211_CHAN_DISABLED)
+> >>>                               continue;
+> >>> -                     /* Skip Channels that are not in current radio'=
+s range */
+> >>> -                     if (bands[band]->channels[i].center_freq <
+> >>> -                         KHZ_TO_MHZ(ar->freq_range.start_freq) ||
+> >>> -                         bands[band]->channels[i].center_freq >
+> >>> -                         KHZ_TO_MHZ(ar->freq_range.end_freq))
+> >>> -                             continue;
+> >>>
+> >>>                       num_channels++;
+> >>>               }
+> >>> @@ -190,13 +184,6 @@ int ath12k_reg_update_chan_list(struct ath12k *a=
+r, bool wait)
+> >>>                       if (channel->flags & IEEE80211_CHAN_DISABLED)
+> >>>                               continue;
+> >>>
+> >>> -                     /* Skip Channels that are not in current radio'=
+s range */
+> >>> -                     if (bands[band]->channels[i].center_freq <
+> >>> -                         KHZ_TO_MHZ(ar->freq_range.start_freq) ||
+> >>> -                         bands[band]->channels[i].center_freq >
+> >>> -                         KHZ_TO_MHZ(ar->freq_range.end_freq))
+> >>> -                             continue;
+> >>> -
+> >>>                       /* TODO: Set to true/false based on some condit=
+ion? */
+> >>>                       ch->allow_ht =3D true;
+> >>>                       ch->allow_vht =3D true;
+> >>
+>
 
