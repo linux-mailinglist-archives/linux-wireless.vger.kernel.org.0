@@ -1,105 +1,49 @@
-Return-Path: <linux-wireless+bounces-31259-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-31260-lists+linux-wireless=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id cDQCLGOxeWn5yQEAu9opvQ
-	(envelope-from <linux-wireless+bounces-31259-lists+linux-wireless=lfdr.de@vger.kernel.org>)
-	for <lists+linux-wireless@lfdr.de>; Wed, 28 Jan 2026 07:49:07 +0100
+	id 0HFwG4e/eWl/ywEAu9opvQ
+	(envelope-from <linux-wireless+bounces-31260-lists+linux-wireless=lfdr.de@vger.kernel.org>)
+	for <lists+linux-wireless@lfdr.de>; Wed, 28 Jan 2026 08:49:27 +0100
 X-Original-To: lists+linux-wireless@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 17DB19D83A
-	for <lists+linux-wireless@lfdr.de>; Wed, 28 Jan 2026 07:49:07 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3EDB09DDAF
+	for <lists+linux-wireless@lfdr.de>; Wed, 28 Jan 2026 08:49:26 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id EDEFE3011C6B
-	for <lists+linux-wireless@lfdr.de>; Wed, 28 Jan 2026 06:49:05 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id A89BB3003BCA
+	for <lists+linux-wireless@lfdr.de>; Wed, 28 Jan 2026 07:49:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3A670288C0E;
-	Wed, 28 Jan 2026 06:49:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="okBR7+LK";
-	dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b="f0xfmmzM"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7CFF12FFDFA;
+	Wed, 28 Jan 2026 07:49:22 +0000 (UTC)
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
+Received: from wens.tw (mirror2.csie.ntu.edu.tw [140.112.30.76])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C075321CC4F
-	for <linux-wireless@vger.kernel.org>; Wed, 28 Jan 2026 06:49:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C93B32BCFC
+	for <linux-wireless@vger.kernel.org>; Wed, 28 Jan 2026 07:49:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=140.112.30.76
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769582943; cv=none; b=IuR4I7LDzXidFDLGbCQfsNbtknPR+ziwrXAQBha1yUGeHkFtA0fsCcWamHSeHHwH6H/LopI20VQIfh+KnEDgL2OlKfpT8k/OULf45SRnEPduG0wJ0O8Lu5bzuyxMeLOy+KTpfzNJy5T2K7J2iVg4CQzjDs/vNpGhzRRxzB2EKgw=
+	t=1769586562; cv=none; b=CvzyyJtfNlDHsO9yZSXkgeZiF2/lVxwX9Bxrln+kcZ4SwfEd/Mg0tUZhlEDbN5k3JJ0D+j9+GhgXqI7b1jq5FEyCxRDLRHoT/prvbpycZkEHzKLOnngIpo/d6oMs6Od+8IebiM6jwESjbe0yZgpsJDm4diOoY/U1wlQK/dK/tMM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769582943; c=relaxed/simple;
-	bh=kuKtMd2Ny4G+rlkPTs7TOxrkTLoDauSeh7r2zHwpbEc=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=NvSMiqIlTkx3pK4qVYf/5KNk3sz1bhK3GwC25MHIdfDC9B6d3kQB/qtUGfaDqTuxsFBgFjbyqkRT5Fe6fzO8jQCeOumOEIr+ev0jtpgp9HnT+mbpviwAZfw9orfNshrsCLm9Ho9zkR6NXWyhR3+g/pK6w1QH3gJEA/9GtHRR44U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=okBR7+LK; dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b=f0xfmmzM; arc=none smtp.client-ip=205.220.168.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
-Received: from pps.filterd (m0279866.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 60S3X4LG2728765
-	for <linux-wireless@vger.kernel.org>; Wed, 28 Jan 2026 06:49:01 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
-	cc:content-transfer-encoding:date:from:message-id:mime-version
-	:subject:to; s=qcppdkim1; bh=v4BEeXbchbHlCbaup7z908hHFkecDhmLTBr
-	CqW3KKx0=; b=okBR7+LKRNeE+mZ1M9w1Q90dsAiREsLn3SOu32UA6GW9tRTynv+
-	VQP3E/VVf6Q1cGwQC/hihmv+PztyHnUtUXPihmOB/UvFIhPlKvlkVwTsRjCXTGve
-	br3FcZFQVWa5YtL84yMgwjKG1qL0KxgWOaFYHZuvzxFEi8d6vQwJUcXiqzW2PtDa
-	n0JH9cvbm+ESeY1LJTXeb5QFs8HzK3TNwccsJEM1SbYI8Noa982UeszGVwLxIozq
-	IKStedetU1xiQPf2nmhLOe6OcSp18CaKQhd77H6cqbnSh1DgLAPj1fJq2S94Ypri
-	C9LsE6DVXJCklQ0cmY/24Z+5EN7a4chRwzA==
-Received: from mail-pj1-f72.google.com (mail-pj1-f72.google.com [209.85.216.72])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4byanaggsk-1
-	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
-	for <linux-wireless@vger.kernel.org>; Wed, 28 Jan 2026 06:49:00 +0000 (GMT)
-Received: by mail-pj1-f72.google.com with SMTP id 98e67ed59e1d1-352e1a8603bso6630253a91.1
-        for <linux-wireless@vger.kernel.org>; Tue, 27 Jan 2026 22:49:00 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=oss.qualcomm.com; s=google; t=1769582940; x=1770187740; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=v4BEeXbchbHlCbaup7z908hHFkecDhmLTBrCqW3KKx0=;
-        b=f0xfmmzMBRv/qIttugi1Qn99kiFdAyOaujbNCu3tvFPNqKOFTyM8556FZLo1x5uTzp
-         hvd8MkOwxqTWDaKDYcJmqrdl6FVsadd8eJyK3gMcoDjPtVOS3LeN8951BWV2X01GYbqk
-         HJLBmpaCtCUr/N6kctJp+77idV6zBuIpKVhlnJ5i6g2qt8IbByej2RoHsuZtPlfQ/YKs
-         brugdzzlG18xtSOXLV/HRACsrFkP0A7OtG3nZ48hcjd3WR6wfrywXW9f9hQL6jt5cp7+
-         Zxwmjsx5KhZ5/ZStn01W/z01Atv9rBwyf8ez0QLjWN2QJyb2FoAWjN48Vn7xdsVsPuUL
-         ECrA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1769582940; x=1770187740;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=v4BEeXbchbHlCbaup7z908hHFkecDhmLTBrCqW3KKx0=;
-        b=H3RuAXEVIbmunMigFQX4K0VeKCuDUncURvE30vrbw1f6fcURajxb7R55N23RCbWjtH
-         zXNZu3lZXqs7n0fBZVc0IlI1oEMNub+7x/p4/xepUhZ2TP64Y8Mkq4Bt24CAK65y8zBo
-         ygEZ9VB2bofFpHxC3JomyyxJlcpRZkCOOGWCEZnkRtuIw9LluLm7YBWOZNkUzKr4Gd8a
-         /xBnWu+BnVzJ/6k/9gMMOeKSwSNueoHAZJ9suwzg67GCRsgWfHPVb6QUOvy+u9KOxCdK
-         ItISCSQ/I9kWnl7XCADUjSx337ej5RASSO2+KReQGYIpnuSugY1yF0rsbkvnWgpXEZ6H
-         bhqQ==
-X-Gm-Message-State: AOJu0YxzuhV1iquJBR3ipJ0uIiPwoU0CvmCErFstAFyHxPqobPCvImiQ
-	dI04mpNince2cJj824KMOROnXxnICX0fQFBKmpkXyj8CfvhdjTmuUvJ2iUmdJmevAf7HFm0LNs/
-	2Ek/U2HlvyclfwMVnqyeXTMR9tuy6yx4hS795L3Ik+Q3/G+ZPnPCUYRLyvzAeuG9796GUmQ==
-X-Gm-Gg: AZuq6aLzZuaduJ1/FA3FnE4hIMhOam2vv7Frw2QSnRCG8vZstdgPS5GP/AX+qAIl3Bp
-	UybemomVHY1o+9QlQpMlyU34OXL2bHR0QFjKAGLSIsJjN3qBK4PUXyb7s3xPJ43jdYAiSechow1
-	3Yt34wMOtI62Qbo5WzRbThAGX5pQvrXTXDnbl7YB/7h/IwicRXI+HdXHyXSwMEpJhqRjDzHEkF0
-	T2Avr54jut1dymjJN/2EOrfBGyLb+/DVmWmYQ2eNQSRBo71JXYDnOdFKywZqd9s2kGhQzFsVxrf
-	m9F5BGdr0rY8CrSp/DHTgDJ68pccKI6JJDJBxgwWhmjH4pw/m6BmcObydq1wcvoP710IWnGd95K
-	4F3JSmuCr8Q4zjxvm3u62CQNZu81PYyVTI2jbkajOCxQu0Gnhmw1WeWB8lN8AtMEqPJp/JacfVq
-	bfI9VfbyEvN22Gfef0yXVs8CM=
-X-Received: by 2002:a17:90b:28ce:b0:353:3977:a082 with SMTP id 98e67ed59e1d1-353fecc6684mr3570376a91.1.1769582940038;
-        Tue, 27 Jan 2026 22:49:00 -0800 (PST)
-X-Received: by 2002:a17:90b:28ce:b0:353:3977:a082 with SMTP id 98e67ed59e1d1-353fecc6684mr3570349a91.1.1769582939511;
-        Tue, 27 Jan 2026 22:48:59 -0800 (PST)
-Received: from hu-amitajit-blr.qualcomm.com (blr-bdr-fw-01_GlobalNAT_AllZones-Outside.qualcomm.com. [103.229.18.19])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3540f2cae91sm1359995a91.4.2026.01.27.22.48.58
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 27 Jan 2026 22:48:59 -0800 (PST)
-From: Amith A <amith.a@oss.qualcomm.com>
-To: johannes@sipsolutions.net
-Cc: linux-wireless@vger.kernel.org, amith.a@oss.qualcomm.com
-Subject: [PATCH wireless-next] wifi: mac80211: use wiphy_hrtimer_work for CAC timeout
-Date: Wed, 28 Jan 2026 12:18:56 +0530
-Message-Id: <20260128064856.3667270-1-amith.a@oss.qualcomm.com>
-X-Mailer: git-send-email 2.34.1
+	s=arc-20240116; t=1769586562; c=relaxed/simple;
+	bh=5Jd1u2LYBXz8lrxKiWu2R9AaCF0lIiv0uKhjJuh4G8I=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=mMn9XSxXS4y7IXjzhNtj/LQpl6pBJcztNd4SuaL4bSUI5idZ/fS1ore05Gi2vJUbO38GSXW7LhujdkpQAl/RJzjag9+XSHCzWTo92X7neSfqNQnyDHpwQPEbmKGSQhYIq3jJgvhhWaVAVIZ7rk1ItsQJ1rhT7Gg0TCiYpzq8hZA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=quarantine dis=none) header.from=kernel.org; spf=pass smtp.mailfrom=wens.tw; arc=none smtp.client-ip=140.112.30.76
+Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=quarantine dis=none) header.from=kernel.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=wens.tw
+Received: by wens.tw (Postfix, from userid 1000)
+	id B02405FD53; Wed, 28 Jan 2026 15:42:44 +0800 (CST)
+From: Chen-Yu Tsai <wens@kernel.org>
+To: Chen-Yu Tsai <wens@kernel.org>,
+	druth@google.com,
+	Ping-Ke Shih <pkshih@realtek.com>
+Cc: wireless-regdb@lists.infradead.org,
+	linux-wireless@vger.kernel.org,
+	Johannes Berg <johannes@sipsolutions.net>
+Subject: [PATCH] wireless-regdb: Update regulatory info for Canada (CA) for 2025
+Date: Wed, 28 Jan 2026 15:42:34 +0800
+Message-ID: <20260128074236.965019-1-wens@kernel.org>
+X-Mailer: git-send-email 2.47.3
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
@@ -107,193 +51,128 @@ List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Proofpoint-GUID: 7XVorGTqS-ksje2vdMsgh2akdtIrHif_
-X-Proofpoint-ORIG-GUID: 7XVorGTqS-ksje2vdMsgh2akdtIrHif_
-X-Authority-Analysis: v=2.4 cv=N58k1m9B c=1 sm=1 tr=0 ts=6979b15c cx=c_pps
- a=RP+M6JBNLl+fLTcSJhASfg==:117 a=Ou0eQOY4+eZoSc0qltEV5Q==:17
- a=vUbySO9Y5rIA:10 a=s4-Qcg_JpJYA:10 a=VkNPw1HP01LnGYTKEx00:22
- a=EUspDBNiAAAA:8 a=TBLNI4pxKqmck-2k7qYA:9 a=iS9zxrgQBfv6-_F4QbHw:22
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwMTI4MDA1NCBTYWx0ZWRfXz2QgiwdE+No+
- yjh9Q3n3a8DPcEv0+VyK2kTeA47oXjiAcdDp6LMZEzebm4ae9AAWTsEmYTELfmd5lCIi4fgDF4v
- 8EE7dgLedfBV83jXn+PuV0hGKNjop+GZNOONBEUGgsvSLckyYbHBuXLwDK6w5i8TsI8W7Bsm2xV
- VoGmvlXcZuZUzD1teoPs6d3UBQATWKUU1ZqOHr835opZxioGkSiJwiO2tjO+qnF+FiPBaAuA5YX
- BBfl3S8RN8YKKRxUkD+xbzPFeeKR+O1m+aylz1lGWiRpILKRRcHp6mqgPMr8gA/a4Pgrw23DboD
- jz2ybohb53cOSMr4ubqTw0psshlY189xti6wy5LpFL1/ZV5vyqtwPL9IqOl0GQ5CVi9MCQkNOjT
- F7LrEJeoUkQCAN4YkcESK8x3Vc1eJmOlXuyDq2kc95oS7OdSn4Dby98vuOBav4n7lE3muAM2mqP
- DhJ1delltehTjDUe+yg==
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.51,FMLib:17.12.100.49
- definitions=2026-01-28_01,2026-01-27_03,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- spamscore=0 suspectscore=0 lowpriorityscore=0 priorityscore=1501
- malwarescore=0 bulkscore=0 adultscore=0 clxscore=1011 impostorscore=0
- phishscore=0 classifier=typeunknown authscore=0 authtc= authcc=
- route=outbound adjust=0 reason=mlx scancount=1 engine=8.22.0-2601150000
- definitions=main-2601280054
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.66 / 15.00];
+X-Spamd-Result: default: False [-0.46 / 15.00];
 	MID_CONTAINS_FROM(1.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
 	R_MISSING_CHARSET(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[qualcomm.com,reject];
-	R_DKIM_ALLOW(-0.20)[qualcomm.com:s=qcppdkim1,oss.qualcomm.com:s=google];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCPT_COUNT_THREE(0.00)[3];
-	TAGGED_FROM(0.00)[bounces-31259-lists,linux-wireless=lfdr.de];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_TLS_LAST(0.00)[];
-	DKIM_TRACE(0.00)[qualcomm.com:+,oss.qualcomm.com:+];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[linux-wireless];
-	FROM_NEQ_ENVFROM(0.00)[amith.a@oss.qualcomm.com,linux-wireless@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
+	TO_DN_SOME(0.00)[];
 	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	R_DKIM_NA(0.00)[];
+	NEURAL_HAM(-0.00)[-0.993];
+	TAGGED_FROM(0.00)[bounces-31260-lists,linux-wireless=lfdr.de];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,canada.ca:url,ic.gc.ca:url];
 	PRECEDENCE_BULK(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[oss.qualcomm.com:mid,oss.qualcomm.com:dkim,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns];
-	TO_DN_NONE(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCVD_COUNT_SEVEN(0.00)[7]
-X-Rspamd-Queue-Id: 17DB19D83A
+	RCVD_TLS_LAST(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[6];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[wens@kernel.org,linux-wireless@vger.kernel.org]
+X-Rspamd-Queue-Id: 3EDB09DDAF
 X-Rspamd-Action: no action
 
-Prior initiating communication in a DFS channel, there should be a
-monitoring of RADAR in that channel for a minimum of 600 seconds if it
-is a Weather RADAR channel and 60 seconds for other DFS channels. This
-Channel Availability Check(CAC) is currently implemented by scheduling
-a work item for execution with a delay equal to an appropriate timeout.
-But this work item is observed to take more delay than specified
-(4-5 seconds in regular DFS channels and 25-30 seconds in Weather RADAR
-channels). Even though this delay is expected in case of delayed work
-queue as there is no guarantee that the work will be scheduled exactly
-after the specified delay, a delay of more than 20 seconds is too much
-for the AP to be in non-operational state.
+Canada issued a new revision of its regulatory standards for 2.4 GHz
+and 5 GHz license-exempt local area network devices - RSS-247.
 
-Recently commit 7ceba45a6658 ("wifi: cfg80211: add an hrtimer based
-delayed work item") added an infrastructure to overcome this issue by
-supporting high resolution timers for mac80211 delayed work, which do not
-have this timeout latency. The other patches in that series converted some
-mac80211 work items to use the new infrastructure.
+Update the rules to match the new version. Fix up band boundaries and
+power limit values and units to match the text.
 
-Unfortunately the CAC timeout work was not addressed as part of that series,
-so address it now.
+Note: the database is supposed to have values for e.i.r.p.. Most
+regulatory documents specify e.i.r.p. as well, except for FCC ones and
+any regions that have rules based on FCC ones.
 
-Signed-off-by: Amith A <amith.a@oss.qualcomm.com>
+Details about the changes and justification for them are as follows.
+
+- 2.4 GHz band boundary aligned to actual text instead of WiFi channels
+
+- 2.4 GHz band changed from 30 dBm (1W) to 4 W
+  section 6.3.2 explicitly states e.i.r.p. limit at 4 W.
+
+- 5.15 ~ 5.25 GHz band power limit unit changed to mW
+  section 7.3.1.2 explicitly states e.i.r.p. limit at 200 mW.
+
+- 5.25 ~ 5.35 GHz band power limit changed to 500 mW
+  section 7.3.2.2 states e.i.r.p. limit at 1 W, but requires TPC for
+  e.i.r.p. above 500 mW. As the database nor Linux implements TPC,
+  the 500 mW limit is chosen.
+
+- 5.4 ~ 5.725 GHz band combined and power limit unit changed to mW
+  the new revision removed the restriction 5.6 ~ 5.65 GHz usage.
+  the two existing rules are combined to cover the whole band,
+  and the upper boundary has been increased to 5.73 GHz to cover
+  the whole WiFi channel and make it easier to write the rule,
+  like how the US rules are written.
+
+  section 7.3.3.2 states e.i.r.p. limit at 1 W, but requires TPC for
+  e.i.r.p. above 500 mW. As the database nor Linux implements TPC,
+  the 500 mW limit is chosen.
+
+- 5.725 ~ 5.85 GHz boundaries aligned and limit changed from 30 dBm (1W)
+  to 4 W; AUTO-BW added for combined usage with next band.
+
+  section 7.3.4.3 states maximum conducted power limit at 1 W, but no
+  explicit e.i.r.p. limit is given.
+
+  apply "e.i.r.p. = max conducted power + 6 dBi" conversion, arriving
+  at roughly 4 W. This aligns with the ratio for the 2.4 GHz band.
+
+- 5.85 ~ 5.895 GHz band newly opened in this revision
+  section 7.3.5.3 states maximum e.i.r.p. for indoor clients at 1 W or
+  30 dBm, with maximum e.i.r.p. spectral density at 14 dBm / MHz.
+
+  Apply spectral density limit at 20 MHz channel width, arriving at
+  roughly 27 dBm e.i.r.p. limit.
+
+  While the limit comes from the "indoor clients" rule, it is the lowest
+  limit of all the types, hence it should be applicable without any
+  restrictions.
+
+Signed-off-by: Chen-Yu Tsai <wens@kernel.org>
 ---
- net/mac80211/cfg.c         | 8 ++++----
- net/mac80211/ieee80211_i.h | 2 +-
- net/mac80211/iface.c       | 2 +-
- net/mac80211/link.c        | 4 ++--
- net/mac80211/util.c        | 2 +-
- 5 files changed, 9 insertions(+), 9 deletions(-)
+ db.txt | 19 ++++++++++++-------
+ 1 file changed, 12 insertions(+), 7 deletions(-)
 
-diff --git a/net/mac80211/cfg.c b/net/mac80211/cfg.c
-index 964f440e31cd..acec44957040 100644
---- a/net/mac80211/cfg.c
-+++ b/net/mac80211/cfg.c
-@@ -1916,7 +1916,7 @@ static int ieee80211_stop_ap(struct wiphy *wiphy, struct net_device *dev,
+diff --git a/db.txt b/db.txt
+index dc72989..64bc853 100644
+--- a/db.txt
++++ b/db.txt
+@@ -388,15 +388,20 @@ country BZ: DFS-JP
+ 	(5735 - 5835 @ 80), (30)
  
- 	if (sdata->wdev.links[link_id].cac_started) {
- 		chandef = link_conf->chanreq.oper;
--		wiphy_delayed_work_cancel(wiphy, &link->dfs_cac_timer_work);
-+		wiphy_hrtimer_work_cancel(wiphy, &link->dfs_cac_timer_work);
- 		cfg80211_cac_event(sdata->dev, &chandef,
- 				   NL80211_RADAR_CAC_ABORTED,
- 				   GFP_KERNEL, link_id);
-@@ -3851,6 +3851,7 @@ static int ieee80211_start_radar_detection(struct wiphy *wiphy,
- 					   u32 cac_time_ms, int link_id)
- {
- 	struct ieee80211_sub_if_data *sdata = IEEE80211_DEV_TO_SUB_IF(dev);
-+	ktime_t ktime = ktime_set(0, cac_time_ms * NSEC_PER_MSEC);
- 	struct ieee80211_chan_req chanreq = { .oper = *chandef };
- 	struct ieee80211_local *local = sdata->local;
- 	struct ieee80211_link_data *link_data;
-@@ -3874,8 +3875,7 @@ static int ieee80211_start_radar_detection(struct wiphy *wiphy,
- 	if (err)
- 		return err;
+ # Sources:
+-# https://www.ic.gc.ca/eic/site/smt-gst.nsf/vwapj/rss-247-i2-e.pdf/$file/rss-247-i2-e.pdf
++# RSS-247 Issue 4
++# https://ised-isde.canada.ca/site/spectrum-management-telecommunications/en/devices-and-equipment/radio-equipment-standards/radio-standards-specifications-rss/rss-247-digital-transmission-systems-dtss-frequency-hopping-systems-fhss-and-licence-exempt-local
+ # https://www.ic.gc.ca/eic/site/smt-gst.nsf/eng/sf11750.html (6 GHz operation)
+ country CA: DFS-FCC
+-	(2402 - 2472 @ 40), (30)
+-	(5150 - 5250 @ 80), (23), NO-OUTDOOR, AUTO-BW
+-	(5250 - 5350 @ 80), (24), DFS, AUTO-BW
+-	(5470 - 5600 @ 80), (24), DFS
+-	(5650 - 5730 @ 80), (24), DFS
+-	(5735 - 5835 @ 80), (30)
++	(2400 - 2483.5 @ 40), (4000 mW)
++	(5150 - 5250 @ 80), (200 mW), NO-OUTDOOR, AUTO-BW
++	(5250 - 5350 @ 80), (500 mW), DFS, AUTO-BW
++	# This range ends at 5725 MHz, but channel 144 extends to 5730 MHz.
++	# Since 5725 ~ 5730 MHz belongs to the next range which has looser
++	# requirements, we can extend the range by 5 MHz to make the kernel
++	# happy and be able to use channel 144.
++	(5470 - 5730 @ 160), (500 mW), DFS
++	(5730 - 5850 @ 80), (4000 mW), AUTO-BW
++	(5850 - 5895 @ 40), (27), AUTO-BW
+ 	(5925 - 7125 @ 320), (12), NO-OUTDOOR
  
--	wiphy_delayed_work_queue(wiphy, &link_data->dfs_cac_timer_work,
--				 msecs_to_jiffies(cac_time_ms));
-+	wiphy_hrtimer_work_queue(wiphy, &link_data->dfs_cac_timer_work, ktime);
- 
- 	return 0;
- }
-@@ -3894,7 +3894,7 @@ static void ieee80211_end_cac(struct wiphy *wiphy,
- 		if (!link_data)
- 			continue;
- 
--		wiphy_delayed_work_cancel(wiphy,
-+		wiphy_hrtimer_work_cancel(wiphy,
- 					  &link_data->dfs_cac_timer_work);
- 
- 		if (sdata->wdev.links[link_id].cac_started) {
-diff --git a/net/mac80211/ieee80211_i.h b/net/mac80211/ieee80211_i.h
-index dc757cb32974..df5056463388 100644
---- a/net/mac80211/ieee80211_i.h
-+++ b/net/mac80211/ieee80211_i.h
-@@ -1101,7 +1101,7 @@ struct ieee80211_link_data {
- 	int ap_power_level; /* in dBm */
- 
- 	bool radar_required;
--	struct wiphy_delayed_work dfs_cac_timer_work;
-+	struct wiphy_hrtimer_work dfs_cac_timer_work;
- 
- 	union {
- 		struct ieee80211_link_data_managed mgd;
-diff --git a/net/mac80211/iface.c b/net/mac80211/iface.c
-index 3ce94b95decd..15583fc7003a 100644
---- a/net/mac80211/iface.c
-+++ b/net/mac80211/iface.c
-@@ -561,7 +561,7 @@ static void ieee80211_do_stop(struct ieee80211_sub_if_data *sdata, bool going_do
- 	wiphy_work_cancel(local->hw.wiphy, &sdata->deflink.csa.finalize_work);
- 	wiphy_work_cancel(local->hw.wiphy,
- 			  &sdata->deflink.color_change_finalize_work);
--	wiphy_delayed_work_cancel(local->hw.wiphy,
-+	wiphy_hrtimer_work_cancel(local->hw.wiphy,
- 				  &sdata->deflink.dfs_cac_timer_work);
- 
- 	if (sdata->wdev.links[0].cac_started) {
-diff --git a/net/mac80211/link.c b/net/mac80211/link.c
-index 1e05845872af..17bf55dabd31 100644
---- a/net/mac80211/link.c
-+++ b/net/mac80211/link.c
-@@ -116,7 +116,7 @@ void ieee80211_link_init(struct ieee80211_sub_if_data *sdata,
- 			ieee80211_color_change_finalize_work);
- 	wiphy_delayed_work_init(&link->color_collision_detect_work,
- 				ieee80211_color_collision_detection_work);
--	wiphy_delayed_work_init(&link->dfs_cac_timer_work,
-+	wiphy_hrtimer_work_init(&link->dfs_cac_timer_work,
- 				ieee80211_dfs_cac_timer_work);
- 
- 	if (!deflink) {
-@@ -155,7 +155,7 @@ void ieee80211_link_stop(struct ieee80211_link_data *link)
- 			  &link->csa.finalize_work);
- 
- 	if (link->sdata->wdev.links[link->link_id].cac_started) {
--		wiphy_delayed_work_cancel(link->sdata->local->hw.wiphy,
-+		wiphy_hrtimer_work_cancel(link->sdata->local->hw.wiphy,
- 					  &link->dfs_cac_timer_work);
- 		cfg80211_cac_event(link->sdata->dev,
- 				   &link->conf->chanreq.oper,
-diff --git a/net/mac80211/util.c b/net/mac80211/util.c
-index 4d5680da7aa0..260893b83df1 100644
---- a/net/mac80211/util.c
-+++ b/net/mac80211/util.c
-@@ -3597,7 +3597,7 @@ void ieee80211_dfs_cac_cancel(struct ieee80211_local *local,
- 			if (ctx && &ctx->conf != chanctx_conf)
- 				continue;
- 
--			wiphy_delayed_work_cancel(local->hw.wiphy,
-+			wiphy_hrtimer_work_cancel(local->hw.wiphy,
- 						  &link->dfs_cac_timer_work);
- 
- 			if (!sdata->wdev.links[link_id].cac_started)
-
-base-commit: c30e188bd2a886258be5facb970a804d8ef549b5
+ # Source:
 -- 
-2.34.1
+2.47.3
 
 
