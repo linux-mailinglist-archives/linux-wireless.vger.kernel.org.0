@@ -1,142 +1,424 @@
-Return-Path: <linux-wireless+bounces-31270-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-31271-lists+linux-wireless=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id GAfXCcD4eWkE1QEAu9opvQ
-	(envelope-from <linux-wireless+bounces-31270-lists+linux-wireless=lfdr.de@vger.kernel.org>)
-	for <lists+linux-wireless@lfdr.de>; Wed, 28 Jan 2026 12:53:36 +0100
+	id SKM9LHIBemn31QEAu9opvQ
+	(envelope-from <linux-wireless+bounces-31271-lists+linux-wireless=lfdr.de@vger.kernel.org>)
+	for <lists+linux-wireless@lfdr.de>; Wed, 28 Jan 2026 13:30:42 +0100
 X-Original-To: lists+linux-wireless@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id BC52AA0E1E
-	for <lists+linux-wireless@lfdr.de>; Wed, 28 Jan 2026 12:53:35 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3D198A1438
+	for <lists+linux-wireless@lfdr.de>; Wed, 28 Jan 2026 13:30:42 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id DE22F301A417
-	for <lists+linux-wireless@lfdr.de>; Wed, 28 Jan 2026 11:50:10 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 82DB830054F0
+	for <lists+linux-wireless@lfdr.de>; Wed, 28 Jan 2026 12:30:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C746E338599;
-	Wed, 28 Jan 2026 11:50:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 246DA1A83F9;
+	Wed, 28 Jan 2026 12:30:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b="Ucn4nX3A"
+	dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b="g2cEvj92"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from sipsolutions.net (s3.sipsolutions.net [168.119.38.16])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2EB00D531
-	for <linux-wireless@vger.kernel.org>; Wed, 28 Jan 2026 11:50:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 74C0E6FC3
+	for <linux-wireless@vger.kernel.org>; Wed, 28 Jan 2026 12:30:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=168.119.38.16
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769601009; cv=none; b=QJfIhhLC2mghycfUvbg8JcofJvLZhliFdU5kgPliuSdmwqr9+sq1+Fy52CoxR5WL/GXdkztLcnjZCJhkhY6FUl/XOMqWlqtJZAgD525Vjt7413SdK+ANN48grfbeco2iCezsQO+3gR4jHxOQE02P1CU0Ev8xUZ9zx4CYCfWzkUk=
+	t=1769603440; cv=none; b=WC+SgpfdVx7U+lCXyc0wZKuTiVYeDPh7DhzL2Oa+vHlgvpwVjTwSloY27oGzU/33wTyOSYwm7pxQKtjQkUnHChXTZ+IkJsuAyE4SzDyN5GHVgFX8gO9JphiCxVRa6IOnp492dtSuQ9mUmTVLTa+a+kuSL2CfmuHruomv2z4W3Ug=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769601009; c=relaxed/simple;
-	bh=Vudfb/ma6j0ISlgyMyQlUg45zCUlHkrD1SVOJxCYIJ8=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=mgCjTnY7l7BzxcEPlhSkgG30Ya6k75lAe4m6PaK5RImWeK0HVOGGRCS2Ctt65UDNHDPxWmGlnPEXtGgMgNiX5OymE4fMRL1uA+D4ciPYP9xLzhMO9PACmuy4EnH8bbBVBB7QAk8rh07MF/XqG+l4PyN9JoXSsd0vAQsFxboDujA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net; spf=pass smtp.mailfrom=sipsolutions.net; dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b=Ucn4nX3A; arc=none smtp.client-ip=168.119.38.16
+	s=arc-20240116; t=1769603440; c=relaxed/simple;
+	bh=+Qtr8N+lNK8hnZKNoQokeVWaEOT9/qhuR6UZD79Z7uk=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=bYnlCEkyWpB8jWwkLGXZdtrC0qp/sTZ56Uj8y+5ORRhV6oZ/gOEG2h9i5wf6JMrSkfC9mZjbf1JPRDlWyvAq3avMkihoB6UpkrPaYFPPUBGnJ6SZ30yVdBakR52IvqzNMu0xWnoXyOBvWOP1j05+CkmxUYl+demwvsS4Bov8h1Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net; spf=pass smtp.mailfrom=sipsolutions.net; dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b=g2cEvj92; arc=none smtp.client-ip=168.119.38.16
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sipsolutions.net
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=sipsolutions.net; s=mail; h=MIME-Version:Content-Transfer-Encoding:
-	Content-Type:References:In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender
-	:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
-	Resent-Cc:Resent-Message-ID; bh=iRJzba95YNbQZtqj//pbDPHC/663xqJuFvXEYYPTvLA=;
-	t=1769601008; x=1770810608; b=Ucn4nX3Aq8m2ppRsCs//O+NDaWITLRGOyNczq3l8+BHzJ6P
-	975+34Z2Esz0CYgLMqUTNIt7smniD6f4c5guJ/QSRYFf/cQfkMmlkh+6L+aiU6HINWbVH1kmwuwZ5
-	zx6u4C53cDGH4RWBlWtyNkylThMpWAom3G0jn575TTzUjDvxu3tntGq6tG6it+bjzlj3FYWaREGsN
-	d6v2Slen8nDzFXkT+eHMIzWPxU/OwZDA0Ce1O6gNQmfV3tLB2pjgCgeiqvk65P8oLbtK+ijTtedNR
-	KL1Ozg2d8NJGJcBHwiED3p0H3yQZsFnY05Ny7CqQpyGfm5NgZryDmdvq6wY5UpvQ==;
+	d=sipsolutions.net; s=mail; h=Content-Transfer-Encoding:MIME-Version:
+	Message-ID:Date:Subject:Cc:To:From:Content-Type:Sender:Reply-To:Content-ID:
+	Content-Description:Resent-Date:Resent-From:Resent-To:Resent-Cc:
+	Resent-Message-ID:In-Reply-To:References;
+	bh=AiLrdGgV0cNNB9p5bVU+Y7oH8wpbJA3F31t/9Ko7NYE=; t=1769603438; x=1770813038; 
+	b=g2cEvj92vb1vAVrE1KLjXYhuYj/nbRvZ8LMylYRjT5qo19QuYmuNcUluH26ObSCfQG2oibumsPY
+	/x9mXdSjGDvvfjZSebXU/JQIMnMLGJK4EcFjd4bSL/PyIcIJOLhPbg8OiaFQRK4koZsF3D2xazEua
+	IYHecNs5Grlp49gbmypF1A7FLA+bx6EENg+hYmBAsf9YkcVDJKAdEGDZkTrfodZp7fZ2U6+4E0CPz
+	1Q8nbkfc61F55y3mio2gVoftbrOu7Vieir1zx6TUukGuI+grc6tZeSn27l3u0/5J4ZBp8qXTbdWGU
+	7IGnWrUybRKb0jnS0H5ZCfwMf1GxAJHm7kMA==;
 Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
 	(Exim 4.98.2)
 	(envelope-from <johannes@sipsolutions.net>)
-	id 1vl43e-00000005oNF-3cT0;
-	Wed, 28 Jan 2026 12:50:03 +0100
-Message-ID: <69d939aae0abecfdd011219e00076542c6e1abb1.camel@sipsolutions.net>
-Subject: Re: [PATCH wireless-next v3] wifi: mac80211: Add eMLSR/eMLMR action
- frame parsing support
+	id 1vl4gt-00000005pX9-2VOo;
+	Wed, 28 Jan 2026 13:30:35 +0100
 From: Johannes Berg <johannes@sipsolutions.net>
-To: Lorenzo Bianconi <lorenzo@kernel.org>, Ryder Lee
- <ryder.lee@mediatek.com>,  Sean Wang <sean.wang@mediatek.com>, Matthias
- Brugger <matthias.bgg@gmail.com>, AngeloGioacchino Del Regno
- <angelogioacchino.delregno@collabora.com>
-Cc: linux-wireless@vger.kernel.org, Felix Fietkau <nbd@nbd.name>, Shayne
- Chen	 <shayne.chen@mediatek.com>, Christian Marangi <ansuelsmth@gmail.com>,
- 	linux-mediatek@lists.infradead.org, linux-arm-kernel@lists.infradead.org
-Date: Wed, 28 Jan 2026 12:50:01 +0100
-In-Reply-To: <20260128-mac80211-emlsr-v3-1-473b0c1d9cc4@kernel.org> (sfid-20260128_121810_555043_35237ACC)
-References: <20260128-mac80211-emlsr-v3-1-473b0c1d9cc4@kernel.org>
-	 (sfid-20260128_121810_555043_35237ACC)
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.58.2 (3.58.2-1.fc43) 
+To: linux-wireless@vger.kernel.org
+Cc: Johannes Berg <johannes.berg@intel.com>
+Subject: [PATCH wireless-next v4 1/3] wifi: ieee80211: add some initial UHR definitions
+Date: Wed, 28 Jan 2026 13:30:32 +0100
+Message-ID: <20260128133033.aa4a43982df0.I5b11fb0345a933bf497fd802aecc72932d58dd68@changeid>
+X-Mailer: git-send-email 2.52.0
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-malware-bazaar: not-scanned
+Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.66 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	R_MISSING_CHARSET(0.50)[];
+	MID_RHS_NOT_FQDN(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[sipsolutions.net,none];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	R_DKIM_ALLOW(-0.20)[sipsolutions.net:s=mail];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-31270-lists,linux-wireless=lfdr.de];
+	RCPT_COUNT_TWO(0.00)[2];
 	RCVD_TLS_LAST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	FREEMAIL_TO(0.00)[kernel.org,mediatek.com,gmail.com,collabora.com];
-	FREEMAIL_CC(0.00)[vger.kernel.org,nbd.name,mediatek.com,gmail.com,lists.infradead.org];
+	TAGGED_FROM(0.00)[bounces-31271-lists,linux-wireless=lfdr.de];
 	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	TO_DN_SOME(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[johannes@sipsolutions.net,linux-wireless@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
 	DKIM_TRACE(0.00)[sipsolutions.net:+];
-	MID_RHS_MATCH_FROM(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
 	TAGGED_RCPT(0.00)[linux-wireless];
-	RCPT_COUNT_SEVEN(0.00)[11];
+	NEURAL_HAM(-0.00)[-0.999];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,sipsolutions.net:mid,sipsolutions.net:dkim]
-X-Rspamd-Queue-Id: BC52AA0E1E
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,intel.com:email,sourmilk.net:email]
+X-Rspamd-Queue-Id: 3D198A1438
 X-Rspamd-Action: no action
 
-I probably missed this the last time already:
+From: Johannes Berg <johannes.berg@intel.com>
 
-> +	if ((control & IEEE80211_EML_CTRL_EMLSR_MODE) ||
-> +	    (control & IEEE80211_EML_CTRL_EMLMR_MODE)) {
-> +		eml_params.link_bitmap =3D get_unaligned_le16(ptr);
-> +		if (eml_params.link_bitmap &&
+This is based on Draft P802.11bn_D1.2, but that's still very
+incomplete, so don't handle a number of things and make some
+local decisions such as using 40 bits for MAC capabilities
+and 8 bits for PHY capabilities.
 
-Surely 0 is an invalid bitmap? To disable it, you send a frame without
-IEEE80211_EML_CTRL_EMLSR_MODE or IEEE80211_EML_CTRL_EMLMR_MODE set, so I
-don't see how an empty bitmap would be valid?
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+---
+v4:
+  - update to D1.2, including DBE in UHR capabilities
+  - fold in suggestions from Pablo
+---
+ include/linux/ieee80211-uhr.h | 215 ++++++++++++++++++++++++++++++++++
+ include/linux/ieee80211.h     |  33 +++++-
+ 2 files changed, 246 insertions(+), 2 deletions(-)
+ create mode 100644 include/linux/ieee80211-uhr.h
 
-> +		    !(eml_params.link_bitmap & sdata->vif.active_links))
+diff --git a/include/linux/ieee80211-uhr.h b/include/linux/ieee80211-uhr.h
+new file mode 100644
+index 000000000000..06556867b004
+--- /dev/null
++++ b/include/linux/ieee80211-uhr.h
+@@ -0,0 +1,215 @@
++/* SPDX-License-Identifier: GPL-2.0-only */
++/*
++ * IEEE 802.11 UHR definitions
++ *
++ * Copyright (c) 2025-2026 Intel Corporation
++ */
++#ifndef LINUX_IEEE80211_UHR_H
++#define LINUX_IEEE80211_UHR_H
++
++#include <linux/types.h>
++#include <linux/if_ether.h>
++
++#define IEEE80211_UHR_OPER_PARAMS_DPS_ENA		0x0001
++#define IEEE80211_UHR_OPER_PARAMS_NPCA_ENA		0x0002
++#define IEEE80211_UHR_OPER_PARAMS_DBE_ENA		0x0004
++#define IEEE80211_UHR_OPER_PARAMS_PEDCA_ENA		0x0008
++
++struct ieee80211_uhr_oper {
++	__le16 params;
++	u8 basic_mcs_nss_set[4];
++	u8 variable[];
++} __packed;
++
++#define IEEE80211_UHR_NPCA_PARAMS_PRIMARY_CHAN_OFFS	0x0000000F
++#define IEEE80211_UHR_NPCA_PARAMS_MIN_DUR_THRESH	0x000000F0
++#define IEEE80211_UHR_NPCA_PARAMS_SWITCH_DELAY		0x00003F00
++#define IEEE80211_UHR_NPCA_PARAMS_SWITCH_BACK_DELAY	0x000FC000
++#define IEEE80211_UHR_NPCA_PARAMS_INIT_QSRC		0x00300000
++#define IEEE80211_UHR_NPCA_PARAMS_MOPLEN		0x00400000
++#define IEEE80211_UHR_NPCA_PARAMS_DIS_SUBCH_BMAP_PRES	0x00800000
++
++struct ieee80211_uhr_npca_info {
++	__le32 params;
++	__le16 dis_subch_bmap[];
++} __packed;
++
++static inline bool ieee80211_uhr_oper_size_ok(const u8 *data, u8 len,
++					      bool beacon)
++{
++	const struct ieee80211_uhr_oper *oper = (const void *)data;
++	u8 needed = sizeof(*oper);
++
++	if (len < needed)
++		return false;
++
++	/* nothing else present in beacons */
++	if (beacon)
++		return true;
++
++	/* FIXME: DPS, DBE, P-EDCA (consider order, also relative to NPCA) */
++
++	if (oper->params & cpu_to_le16(IEEE80211_UHR_OPER_PARAMS_NPCA_ENA)) {
++		const struct ieee80211_uhr_npca_info *npca =
++			(const void *)oper->variable;
++
++		needed += sizeof(*npca);
++
++		if (len < needed)
++			return false;
++
++		if (npca->params & cpu_to_le32(IEEE80211_UHR_NPCA_PARAMS_DIS_SUBCH_BMAP_PRES))
++			needed += sizeof(npca->dis_subch_bmap[0]);
++	}
++
++	return len >= needed;
++}
++
++/*
++ * Note: cannot call this on the element coming from a beacon,
++ * must ensure ieee80211_uhr_oper_size_ok(..., false) first
++ */
++static inline const struct ieee80211_uhr_npca_info *
++ieee80211_uhr_npca_info(const struct ieee80211_uhr_oper *oper)
++{
++	if (!(oper->params & cpu_to_le16(IEEE80211_UHR_OPER_PARAMS_NPCA_ENA)))
++		return NULL;
++
++	/* FIXME: DPS */
++
++	return (const void *)oper->variable;
++}
++
++static inline const __le16 *
++ieee80211_uhr_npca_dis_subch_bitmap(const struct ieee80211_uhr_oper *oper)
++{
++	const struct ieee80211_uhr_npca_info *npca;
++
++	npca = ieee80211_uhr_npca_info(oper);
++	if (!npca)
++		return NULL;
++	if (!(npca->params & cpu_to_le32(IEEE80211_UHR_NPCA_PARAMS_DIS_SUBCH_BMAP_PRES)))
++		return NULL;
++	return npca->dis_subch_bmap;
++}
++
++#define IEEE80211_UHR_MAC_CAP0_DPS_SUPP			0x01
++#define IEEE80211_UHR_MAC_CAP0_DPS_ASSIST_SUPP		0x02
++#define IEEE80211_UHR_MAC_CAP0_DPS_AP_STATIC_HCM_SUPP	0x04
++#define IEEE80211_UHR_MAC_CAP0_NPCA_SUPP		0x10
++#define IEEE80211_UHR_MAC_CAP0_ENH_BSR_SUPP		0x20
++#define IEEE80211_UHR_MAC_CAP0_ADD_MAP_TID_SUPP		0x40
++#define IEEE80211_UHR_MAC_CAP0_EOTSP_SUPP		0x80
++
++#define IEEE80211_UHR_MAC_CAP1_DSO_SUPP			0x01
++#define IEEE80211_UHR_MAC_CAP1_PEDCA_SUPP		0x02
++#define IEEE80211_UHR_MAC_CAP1_DBE_SUPP			0x04
++#define IEEE80211_UHR_MAC_CAP1_UL_LLI_SUPP		0x08
++#define IEEE80211_UHR_MAC_CAP1_P2P_LLI_SUPP		0x10
++#define IEEE80211_UHR_MAC_CAP1_PUO_SUPP			0x20
++#define IEEE80211_UHR_MAC_CAP1_AP_PUO_SUPP		0x40
++#define IEEE80211_UHR_MAC_CAP1_DUO_SUPP			0x80
++
++#define IEEE80211_UHR_MAC_CAP2_OMC_UL_MU_DIS_RX_SUPP	0x01
++#define IEEE80211_UHR_MAC_CAP2_AOM_SUPP			0x02
++#define IEEE80211_UHR_MAC_CAP2_IFCS_LOC_SUPP		0x04
++#define IEEE80211_UHR_MAC_CAP2_UHR_TRS_SUPP		0x08
++#define IEEE80211_UHR_MAC_CAP2_TXSPG_SUPP		0x10
++#define IEEE80211_UHR_MAC_CAP2_TXOP_RET_IN_TXSPG	0x20
++#define IEEE80211_UHR_MAC_CAP2_UHR_OM_PU_TO_LOW		0xC0
++
++#define IEEE80211_UHR_MAC_CAP3_UHR_OM_PU_TO_HIGH	0x03
++#define IEEE80211_UHR_MAC_CAP3_PARAM_UPD_ADV_NOTIF_INTV	0x1C
++#define IEEE80211_UHR_MAC_CAP3_UPD_IND_TIM_INTV_LOW	0xE0
++
++#define IEEE80211_UHR_MAC_CAP4_UPD_IND_TIM_INTV_HIGH	0x03
++#define IEEE80211_UHR_MAC_CAP4_BOUNDED_ESS		0x04
++#define IEEE80211_UHR_MAC_CAP4_BTM_ASSURANCE		0x08
++#define IEEE80211_UHR_MAC_CAP4_CO_BF_SUPP		0x10
++
++#define IEEE80211_UHR_MAC_CAP_DBE_MAX_BW		0x07
++#define IEEE80211_UHR_MAC_CAP_DBE_EHT_MCS_MAP_160_PRES	0x08
++#define IEEE80211_UHR_MAC_CAP_DBE_EHT_MCS_MAP_320_PRES	0x10
++
++struct ieee80211_uhr_capa_mac {
++	u8 mac_cap[5];
++} __packed;
++
++struct ieee80211_uhr_capa {
++	struct ieee80211_uhr_capa_mac mac;
++	/* DBE, PHY capabilities */
++	u8 variable[];
++} __packed;
++
++#define IEEE80211_UHR_PHY_CAP_MAX_NSS_RX_SND_NDP_LE80	0x01
++#define IEEE80211_UHR_PHY_CAP_MAX_NSS_RX_DL_MU_LE80	0x02
++#define IEEE80211_UHR_PHY_CAP_MAX_NSS_RX_SND_NDP_160	0x04
++#define IEEE80211_UHR_PHY_CAP_MAX_NSS_RX_DL_MU_160	0x08
++#define IEEE80211_UHR_PHY_CAP_MAX_NSS_RX_SND_NDP_320	0x10
++#define IEEE80211_UHR_PHY_CAP_MAX_NSS_RX_DL_MU_320	0x20
++#define IEEE80211_UHR_PHY_CAP_ELR_RX			0x40
++#define IEEE80211_UHR_PHY_CAP_ELR_TX			0x80
++
++struct ieee80211_uhr_capa_phy {
++	u8 cap;
++} __packed;
++
++static inline bool ieee80211_uhr_capa_size_ok(const u8 *data, u8 len)
++{
++	const struct ieee80211_uhr_capa *cap = (const void *)data;
++	size_t needed = sizeof(*cap) + sizeof(struct ieee80211_uhr_capa_phy);
++
++	if (len < needed)
++		return false;
++
++	if (cap->mac.mac_cap[1] & IEEE80211_UHR_MAC_CAP1_DBE_SUPP) {
++		u8 dbe;
++
++		needed += 1;
++		if (len < needed)
++			return false;
++
++		dbe = cap->variable[0];
++
++		if (dbe & IEEE80211_UHR_MAC_CAP_DBE_EHT_MCS_MAP_160_PRES)
++			needed += 24;
++
++		if (dbe & IEEE80211_UHR_MAC_CAP_DBE_EHT_MCS_MAP_320_PRES)
++			needed += 24;
++	}
++
++	return len >= needed;
++}
++
++static inline const struct ieee80211_uhr_capa_phy *
++ieee80211_uhr_phy_cap(const struct ieee80211_uhr_capa *cap)
++{
++	u8 offs = 0;
++
++	if (cap->mac.mac_cap[1] & IEEE80211_UHR_MAC_CAP1_DBE_SUPP) {
++		u8 dbe = cap->variable[0];
++
++		offs += 1;
++
++		if (dbe & IEEE80211_UHR_MAC_CAP_DBE_EHT_MCS_MAP_160_PRES)
++			offs += 24;
++
++		if (dbe & IEEE80211_UHR_MAC_CAP_DBE_EHT_MCS_MAP_320_PRES)
++			offs += 24;
++	}
++
++	return (const void *)&cap->variable[offs];
++}
++
++#define IEEE80211_SMD_INFO_CAPA_DL_DATA_FWD		0x01
++#define IEEE80211_SMD_INFO_CAPA_MAX_NUM_PREP		0x0E
++#define IEEE80211_SMD_INFO_CAPA_TYPE			0x10
++#define IEEE80211_SMD_INFO_CAPA_PTK_PER_AP_MLD		0x20
++
++struct ieee80211_smd_info {
++	u8 id[ETH_ALEN];
++	u8 capa;
++	__le16 timeout;
++} __packed;
++
++#endif /* LINUX_IEEE80211_UHR_H */
+diff --git a/include/linux/ieee80211.h b/include/linux/ieee80211.h
+index fbde215c25aa..82d797be95b9 100644
+--- a/include/linux/ieee80211.h
++++ b/include/linux/ieee80211.h
+@@ -9,7 +9,7 @@
+  * Copyright (c) 2006, Michael Wu <flamingice@sourmilk.net>
+  * Copyright (c) 2013 - 2014 Intel Mobile Communications GmbH
+  * Copyright (c) 2016 - 2017 Intel Deutschland GmbH
+- * Copyright (c) 2018 - 2025 Intel Corporation
++ * Copyright (c) 2018 - 2026 Intel Corporation
+  */
+ 
+ #ifndef LINUX_IEEE80211_H
+@@ -1200,8 +1200,9 @@ struct ieee80211_mgmt {
+ #define BSS_MEMBERSHIP_SELECTOR_SAE_H2E 123
+ #define BSS_MEMBERSHIP_SELECTOR_HE_PHY	122
+ #define BSS_MEMBERSHIP_SELECTOR_EHT_PHY	121
++#define BSS_MEMBERSHIP_SELECTOR_UHR_PHY	120
+ 
+-#define BSS_MEMBERSHIP_SELECTOR_MIN	BSS_MEMBERSHIP_SELECTOR_EHT_PHY
++#define BSS_MEMBERSHIP_SELECTOR_MIN	BSS_MEMBERSHIP_SELECTOR_UHR_PHY
+ 
+ /* mgmt header + 1 byte category code */
+ #define IEEE80211_MIN_ACTION_SIZE offsetof(struct ieee80211_mgmt, u.action.u)
+@@ -1802,6 +1803,15 @@ enum ieee80211_eid_ext {
+ 	WLAN_EID_EXT_BANDWIDTH_INDICATION = 135,
+ 	WLAN_EID_EXT_KNOWN_STA_IDENTIFCATION = 136,
+ 	WLAN_EID_EXT_NON_AP_STA_REG_CON = 137,
++	WLAN_EID_EXT_UHR_OPER = 151,
++	WLAN_EID_EXT_UHR_CAPA = 152,
++	WLAN_EID_EXT_MACP = 153,
++	WLAN_EID_EXT_SMD = 154,
++	WLAN_EID_EXT_BSS_SMD_TRANS_PARAMS = 155,
++	WLAN_EID_EXT_CHAN_USAGE = 156,
++	WLAN_EID_EXT_UHR_MODE_CHG = 157,
++	WLAN_EID_EXT_UHR_PARAM_UPD = 158,
++	WLAN_EID_EXT_TXPI = 159,
+ };
+ 
+ /* Action category code */
+@@ -2745,6 +2755,22 @@ static inline bool for_each_element_completed(const struct element *element,
+ #define WLAN_RSNX_CAPA_PROTECTED_TWT BIT(4)
+ #define WLAN_RSNX_CAPA_SAE_H2E BIT(5)
+ 
++/* EBPCC = Enhanced BSS Parameter Change Count */
++#define IEEE80211_ENH_CRIT_UPD_EBPCC		0x0F
++#define IEEE80211_ENH_CRIT_UPD_TYPE		0x70
++#define IEEE80211_ENH_CRIT_UPD_TYPE_NO_UHR	0
++#define IEEE80211_ENH_CRIT_UPD_TYPE_UHR		1
++#define IEEE80211_ENH_CRIT_UPD_ALL		0x80
++
++/**
++ * struct ieee80211_enh_crit_upd - enhanced critical update (UHR)
++ * @v: value of the enhanced critical update data,
++ *	see %IEEE80211_ENH_CRIT_UPD_* to parse the bits
++ */
++struct ieee80211_enh_crit_upd {
++	u8 v;
++} __packed;
++
+ /*
+  * reduced neighbor report, based on Draft P802.11ax_D6.1,
+  * section 9.4.2.170 and accepted contributions.
+@@ -2763,6 +2789,7 @@ static inline bool for_each_element_completed(const struct element *element,
+ #define IEEE80211_RNR_TBTT_PARAMS_COLOC_ESS			0x10
+ #define IEEE80211_RNR_TBTT_PARAMS_PROBE_ACTIVE			0x20
+ #define IEEE80211_RNR_TBTT_PARAMS_COLOC_AP			0x40
++#define IEEE80211_RNR_TBTT_PARAMS_SAME_SMD			0x80
+ 
+ #define IEEE80211_RNR_TBTT_PARAMS_PSD_NO_LIMIT			127
+ #define IEEE80211_RNR_TBTT_PARAMS_PSD_RESERVED			-128
+@@ -2815,12 +2842,14 @@ struct ieee80211_tbtt_info_ge_11 {
+ 	u8 bss_params;
+ 	s8 psd_20;
+ 	struct ieee80211_rnr_mld_params mld_params;
++	struct ieee80211_enh_crit_upd enh_crit_upd;
+ } __packed;
+ 
+ #include "ieee80211-ht.h"
+ #include "ieee80211-vht.h"
+ #include "ieee80211-he.h"
+ #include "ieee80211-eht.h"
++#include "ieee80211-uhr.h"
+ #include "ieee80211-mesh.h"
+ #include "ieee80211-s1g.h"
+ #include "ieee80211-p2p.h"
+-- 
+2.52.0
 
-That's the wrong check, I think? It only checks that you have any
-overlap, but we need all bits to be valid, i.e. only
-
-		(link_bitmap & active_links) =3D=3D link_bitmap
-
-is valid, no?
-
-> +			return;
-> +	}
-> +
-> +	if (drv_set_eml_op_mode(sdata, &sta->sta, &eml_params))
-> +		return;
-> +
-> +	ieee80211_send_eml_op_mode_notif(sdata, mgmt, opt_len);
-
-IMHO it would make more sense to pass "ptr, opt_len" rather than "mgmt,
-opt_len", since that's just what gets copied and then the callee doesn't
-need to dig it out.
-
-johannes
 
