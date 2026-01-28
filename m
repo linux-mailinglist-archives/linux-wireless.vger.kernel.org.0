@@ -1,156 +1,166 @@
-Return-Path: <linux-wireless+bounces-31266-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-31267-lists+linux-wireless=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id kIlGHSbUeWm6zwEAu9opvQ
-	(envelope-from <linux-wireless+bounces-31266-lists+linux-wireless=lfdr.de@vger.kernel.org>)
-	for <lists+linux-wireless@lfdr.de>; Wed, 28 Jan 2026 10:17:26 +0100
+	id cAy2HYLpeWkF1AEAu9opvQ
+	(envelope-from <linux-wireless+bounces-31267-lists+linux-wireless=lfdr.de@vger.kernel.org>)
+	for <lists+linux-wireless@lfdr.de>; Wed, 28 Jan 2026 11:48:34 +0100
 X-Original-To: lists+linux-wireless@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9A8C49EB75
-	for <lists+linux-wireless@lfdr.de>; Wed, 28 Jan 2026 10:17:25 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1415C9FACB
+	for <lists+linux-wireless@lfdr.de>; Wed, 28 Jan 2026 11:48:24 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 904003012CE2
-	for <lists+linux-wireless@lfdr.de>; Wed, 28 Jan 2026 09:17:24 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 24EE2303B4D8
+	for <lists+linux-wireless@lfdr.de>; Wed, 28 Jan 2026 10:47:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B2E6533065D;
-	Wed, 28 Jan 2026 09:17:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7350A2DC798;
+	Wed, 28 Jan 2026 10:47:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="CdUWOfAS"
+	dkim=pass (1024-bit key) header.d=nic.in header.i=@nic.in header.b="e95eDnid"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-pg1-f170.google.com (mail-pg1-f170.google.com [209.85.215.170])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from relayout15.nic.in (relayout15.nic.in [164.100.14.111])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 615A0341AD7
-	for <linux-wireless@vger.kernel.org>; Wed, 28 Jan 2026 09:17:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.170
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DD0CD28CF6F
+	for <linux-wireless@vger.kernel.org>; Wed, 28 Jan 2026 10:47:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=164.100.14.111
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769591843; cv=none; b=AC0N+OMK4PvK79mSM9Z8Q5yZrAV9ec+p5X7G77wgymLhSFWp+2cde6FprFVlNESsoF8WJi3GfdmMolnC2/I4jmaHCt3bo1fB3z9D6+setiKn0aiE2+GkDdrZA3qEArFkFDXIddNPfnOY9Mqx6j9iIe4mvY40oWJfGRFfi7yrHzw=
+	t=1769597227; cv=none; b=hNVMavylQtmvRpnUMkZYDo7oTqG+8p6ljee1ThqBWR0bZf/UFK+HXLJm+GC5n4xCqXZNbAPF0WFp71w8/JvQUjna3g9sGtj1pK7CsvlLbYM8IBwDnKfjJgDitGLfkTP/EqUfnCllIdDUEMahjCsqhmVz7hv25BMuIAT2GNoNxHc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769591843; c=relaxed/simple;
-	bh=32wbxUyESH3m7aMBWjlYCyNQDo6IvXCSzsfsqAUfskU=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=nO5jvbKtyiYRFN8yraXyAWpI8FCfAK9gpc3U8J91xJtI3Ko/PgHJzmffDZ2Z/azAfODq56iFje8zlszNiO8TGVJrTRoJlZ1rR8YQ+as0hDjzWXXI2aKl4uoK7g3ieA57nbh7q+oyt4w/Q/HBhsUWVHDuZN4PyVPdv5TqXPQYYpA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=CdUWOfAS; arc=none smtp.client-ip=209.85.215.170
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pg1-f170.google.com with SMTP id 41be03b00d2f7-c633984fbeeso287826a12.0
-        for <linux-wireless@vger.kernel.org>; Wed, 28 Jan 2026 01:17:20 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1769591840; x=1770196640; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=hPzz6Fs5J73M9AfzdnFQjFqLwU/A9pwIaV7/8cV24RY=;
-        b=CdUWOfASBeHkd6EOuVFQxDy/GxQ5l4Q8rJscFR7rQn/eYK1RWdWG+v/LMqPd3Jvexb
-         n7vinDmx2BVcSaVdlRDJrngaGlVrGiFEuQxRHEQWhcFtOMf0jkhPpOImieoSEIKLIndS
-         +0SkJpYGpbO4BHuI7uHETBPfW46cf49BQNO4NxodizS/lLhctJu0hCVR+mCjFO5Rhj34
-         vTdto2IhZiLI/QppEz7bAb4C1IMhNvONVaiAVqjIUFNj58DIKCGRIbTcuqwBQXS0hUwc
-         WydRYNDuZuFN8RZPAM+AUwSxgm5pgfjJfIrtd15+1Y+IDaiDMEbWA+dT43ZczSWAybsQ
-         AdQg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1769591840; x=1770196640;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=hPzz6Fs5J73M9AfzdnFQjFqLwU/A9pwIaV7/8cV24RY=;
-        b=IubyP027Uj5QOe8qsg6/OWVVmyJYwLYLuXaAEKpJ4lL00nkR+0EvRc1pKVdbu823Jk
-         JmhPMl6rNNaVwuWSJG5N72yNxKE/W0udirnTZVGiYsCYwfeE3tePcpXquBysih+UbeF4
-         oThlCdUXpuLK1r9MS7fbgZgSJ1wvuA3fXgwBLiOLo6DSJuFF3fM/G7FQr+YtFo7Jwlcf
-         sGdKdesTjFK2LvRhkeMGqim+x/lz/VXfFQKtVfpUZCuwYLBw2RP0VCGZ/Fu2ifTBSRUV
-         2+jaIjMsPM3CvT1WOOVoys5WYqkeUpiufjehpTQxCwyvWYhUqYkaO7o072nhtWW76frO
-         ujUQ==
-X-Gm-Message-State: AOJu0YwrIIu/743w1AmT7ytxaPSdaKpB1Ab5DPY1HqSMDmYzf5b0veUX
-	XEK0mF80EMvASuMBTbBlu7bWdXpSzKr+YVQeMeKNRiynCzd2ny9NtUdu35g1Uw==
-X-Gm-Gg: AZuq6aJZhd9yf6Xkh4lPLtuze0fjDKoj3sfP11NoS72khukjitYRRXjtFTQwq36FHeL
-	JIT4yebjXaaAzio/6+4ZCyA/37v+X+TIfo0A8wCLCls1w8Kn1NrY7f3GNpftRmVQnUlAnSwmC86
-	bxjwEDRqHtAQj8paFyAHmWRKjrAc+bQ7Q9hLvqi1ovK7yDWoy7YVkO1Ua0xGZJKfc4QXmHC1FK9
-	qtvKwEVw0OJVd40eXG9TGDkaz8PR2Lm9cYEiBrL3/MLt5WPcADhmk4AoqaR0gOYC1J6fJm+PKiJ
-	tIiUXoN/0+egU4wbWebibHQii9iBU4rpaJrlXbEvYqyTpLYkjsvsAM0j/Prd/yxczkeEWahhh6z
-	g6az8e/dnZGfeOc9h1dRNFUa1AGoYJWo4Y61fly5YNWQvI1I3OtGQwW+loNwSUjD++2XD/lPi7T
-	YA5tZjXDH6b5JN8PMEGAIcWMzlrtK6hsKOnKoDXJIYn1PtbdNb/HvUZw==
-X-Received: by 2002:a17:903:190:b0:2a7:a9f4:9fb6 with SMTP id d9443c01a7336-2a87132b446mr40781315ad.24.1769591839568;
-        Wed, 28 Jan 2026 01:17:19 -0800 (PST)
-Received: from localhost.localdomain (59-124-166-19.hinet-ip.hinet.net. [59.124.166.19])
-        by smtp.googlemail.com with ESMTPSA id d9443c01a7336-2a88b4c3d2bsm17106345ad.53.2026.01.28.01.17.18
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 28 Jan 2026 01:17:19 -0800 (PST)
-From: Ping-Ke Shih <pkshih@gmail.com>
+	s=arc-20240116; t=1769597227; c=relaxed/simple;
+	bh=3NDOijO22Tft7cIxE6M7OHKY8F0iaf8RKCkERV1nsbA=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=GgIPTcIb5If3ARFCnsYuDHnOLlbMrMzH5seLj6hziI82xrsc+xcxjkGfg7130za8t43mef+gSWyfNzbiPDGJzIbtG0IMRySy71tf2ThzmzdO7RnSeVPeVHwc2rWaPv23YyaBj26Uqoa1D4r0i4OjMaFZsF8xiRVyKaKrkDB5bsA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nic.in; spf=pass smtp.mailfrom=nic.in; dkim=pass (1024-bit key) header.d=nic.in header.i=@nic.in header.b=e95eDnid; arc=none smtp.client-ip=164.100.14.111
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nic.in
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nic.in
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple;
+  d=nic.in; i=@nic.in; q=dns/txt; s=NIC; t=1769597223;
+  x=1801133223;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=3NDOijO22Tft7cIxE6M7OHKY8F0iaf8RKCkERV1nsbA=;
+  b=e95eDnidKgQcnlh7QnuNAoCGoUE1uqZw70HzhZUlrXhcdaUQ0Z3nemvU
+   atWBEHvp6nnhNXPRfpxP+GvKAmo8u7lT2XPtjIjtNqwLVLmwx56QwuQ+L
+   i5RDTZUnAgqB8BnckpB3tpWuGXRVqbtVsW5PsL8AI8xnuaFSEqigQb7+a
+   E=;
+X-IPAS-Result: =?us-ascii?q?A2AkAADkiuNo/yh6KAo+HBwBAQEBAQEHAQESAQEEBAEBQ?=
+ =?us-ascii?q?AmBNgcBAQsBg0GBZYRUg1iERIlVnh2Bfw8BAQEBAQEBAQE9HQQBAYRBRoxJJ?=
+ =?us-ascii?q?zQJDgECBAEBAQEDAgMBAQEBAQEQAQEGAQEBAQEBBgWBIYYJRg2GXQIlDwFGK?=
+ =?us-ascii?q?AgFAiYCaQiDAgGCchQGQat5gTIaAmU7gx8DBAcBBg8KCxraI4FQBoEbLgGBa?=
+ =?us-ascii?q?YZnAYR8cIJIgi+CT4EUAYNogVABgRABAQEBAReBKDsJJ4MOgmkEgiKBFoQOg?=
+ =?us-ascii?q?iiJe4F6jgFIgQIcA1ksAVUTDQoLBwWBYwM1DAsuFW4yDg+BJ4ULhB4rT4UCg?=
+ =?us-ascii?q?RiDUyJrDwaBFYNaBolmD4ImAwsYDUgRLDcUGwY9AW4HmFSDSmEDKioClVETk?=
+ =?us-ascii?q?jmhEQeQPZU5TZd9A5JqAZkGjFqBLoh6jH1ZhlGBZBwCAwkHgR+DCFIZlQYRg?=
+ =?us-ascii?q?iyrCnACOgIHAQoBAQMJk2cBAQ?=
+IronPort-Data: A9a23:zS7MT6JSnIf7zu7TFE+RmJQlxSXFcZb7ZxGr2PjKsXjdYENS1mZTn
+ 2JJUG+OOvmPamKnc41+PYSw/U1X68PVyIU2SFAd+CA2RRqmi+KcXo3BcR2Y0wB+jyHnZBg6h
+ ynLQoCYdKjYdleF+lH3dOGJQUBUjcmgXqD7BPPPJhd/TAplTDZJoR94kobVuKYx6TSEK1rlV
+ e3a8pW31GCNhmYc3lI8s8qrtB5ptfLujzIU1nRWiSdj5QK2e9E9VfrzFInpR5fKatA88t2SG
+ 44v+IqEElbxpH/BPD8KfoHTKSXmSpaKVeSHZ+E/t6KK2nCurQRquko32WZ1hUp/0120c95NJ
+ NpltIGbVx0jMKP2pfkGWQUCEXFXPZ9oweqSSZS/mZT7I0zub3/3x/xkFwcwPIZd8ettHSdI9
+ PdeKTZlghKr3rrwnOr9E7M2wJh7RCXoFNp3VnVIwjjEF/84B5PKRb7D4fde3Tx2h8Ym8fP2P
+ pFCOGAxMkueC/FJEktKMa0Tnb2Vv2e8c2ZUjxHJmrAx+HeGmWSd15CoarI5YOeiQcRTg1bdu
+ WPc8mD0GQoyKtOS03yG/2iqi+uJmjn0MKoNFae18vNxmxiJy2MfAjUSVECnur+4jECkUt5SI
+ kBS/TAhxYAt+UqwZtrwRRu1pDiDpBF0ZjZLO7Rirl3VjPOOuUDFXgDoUwJ8VTDvj+duLRRC6
+ 7NDt4mB6eBH2FFNdU+gyw==
+IronPort-HdrOrdr: A9a23:fgurGK6YPgVHIZu7JQPXwNfXdLJyesId70hD6qm+c3Fom6uj5q
+ KTdZUgpHzJYVkqN03I9erqBEDiexPhHPxOj7X5VI3KNDUO01HFEGgN1+HfKkXbehHDyg==
+X-Talos-CUID: 9a23:QtFYBWxGQ2fhRP0mrkdiBgUVB+s7aHfTwk3tPlSyFTxrGJSVe3GprfY=
+X-Talos-MUID: =?us-ascii?q?9a23=3AhjWu1w04jOLDm2XVCT+huXmuAzUj//mXN20My6g?=
+ =?us-ascii?q?/pYqEbiBXeGuiljKsXdpy?=
+X-IronPort-Anti-Spam-Filtered: true
+Received: from unknown (HELO tlslabs.nic-cert.nic.in) ([10.40.122.40])
+  by relayin.nic.in with ESMTP; 28 Jan 2026 15:55:30 +0530
+From: gaurav.kansal@nic.in
 To: wens@kernel.org
 Cc: linux-wireless@vger.kernel.org,
-	wireless-regdb@lists.infradead.org
-Subject: [PATCH] wireless-regdb: Update regulatory info for Tunisia (TN) on 6GHz for 2025
-Date: Wed, 28 Jan 2026 17:16:34 +0800
-Message-Id: <20260128091634.28983-1-pkshih@gmail.com>
-X-Mailer: git-send-email 2.25.1
+	wireless-regdb@lists.infradead.org,
+	Gaurav Kansal <gaurav.kansal@nic.in>
+Subject: [PATCH] wireless-regdb: add IN rules for lower 6 GHz (5925-6425 MHz) LPI and VLP
+Date: Wed, 28 Jan 2026 15:55:24 +0530
+Message-ID: <20260128102525.872517-1-gaurav.kansal@nic.in>
+X-Mailer: git-send-email 2.47.3
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.66 / 15.00];
+X-Spamd-Result: default: False [-0.46 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	MID_CONTAINS_FROM(1.00)[];
-	R_MISSING_CHARSET(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
-	R_DKIM_ALLOW(-0.20)[gmail.com:s=20230601];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-31266-lists,linux-wireless=lfdr.de];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gaurav.kansal@nic.in,linux-wireless@vger.kernel.org];
+	TAGGED_FROM(0.00)[bounces-31267-lists,linux-wireless=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	DKIM_TRACE(0.00)[nic.in:?];
 	RCVD_TLS_LAST(0.00)[];
-	DKIM_TRACE(0.00)[gmail.com:+];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	FREEMAIL_FROM(0.00)[gmail.com];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCPT_COUNT_THREE(0.00)[4];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	FROM_NO_DN(0.00)[];
+	DMARC_DNSFAIL(0.00)[nic.in : query timed out];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[pkshih@gmail.com,linux-wireless@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
-	RCPT_COUNT_THREE(0.00)[3];
-	RCVD_COUNT_FIVE(0.00)[5];
-	NEURAL_HAM(-0.00)[-1.000];
-	TO_DN_NONE(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	NEURAL_HAM(-0.00)[-0.673];
+	R_DKIM_TEMPFAIL(0.00)[nic.in:s=NIC];
 	TAGGED_RCPT(0.00)[linux-wireless];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 9A8C49EB75
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[wikipedia.org:url,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,gauravkansal.in:url,dot.gov.in:url]
+X-Rspamd-Queue-Id: 1415C9FACB
 X-Rspamd-Action: no action
 
-From: Ping-Ke Shih <pkshih@realtek.com>
+From: Gaurav Kansal <gaurav.kansal@nic.in>
 
-By decree no. 2024-641 of December 11, 2024 [1], which applies to
-frequency band 5925-6425 MHz, with power limits 200 mW, for use inside
-buildings, in compliance with EN 303 687.
+    DoT / Gazette notification (20 Jan 2026) delicensed lower 6 GHz (5925-6425 MHz).
+    Add rules for:
+     - Low Power Indoor (LPI) 5925-6425 MHz, up to 1000 mW (30 dBm) EIRP, NO-OUTDOOR
+     - Very Low Power (VLP) 5925-6425 MHz, up to 25 mW (14 dBm) EIRP
 
-[1] https://www.anf.tn/sites/default/files/2025-01/Arr%C3%AAt%C3%A92024_4611.pdf
-
-Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
+    References:
+     - DoT / Gazette notification (Jan 20, 2026)
+       https://blog.gauravkansal.in/2026/01/Gazette%20on%20the%20Use%20of%20Low%20Power%20and%20Very%20Low%20Power%20Wireless%20Access%20System%20in%20Lower%206%20GHz%20band%20-%202026.pdf
+       https://blog.gauravkansal.in/2026/01/Opening-India-Lower-6-GHz-Band-for-Wireless-Use:-A-Strategic-Regulatory-Landmark.html
+       https://en.wikipedia.org/w/index.php?title=List_of_WLAN_channels#India_2
+     - Linux wireless-regdb db.txt format docs
+    Signed-off-by: Gaurav Kansal gaurav.kansal@nic.in
 ---
- db.txt | 3 +++
- 1 file changed, 3 insertions(+)
+ db.txt | 8 ++++++++
+ 1 file changed, 8 insertions(+)
 
 diff --git a/db.txt b/db.txt
-index dc72989b5b40..7abbe3f1341a 100644
+index dc72989..0f90f6e 100644
 --- a/db.txt
 +++ b/db.txt
-@@ -1929,10 +1929,13 @@ country TH: DFS-FCC
- 	(5735 - 5835 @ 80), (30)
- 	(5925 - 6425 @ 320), (250 mW), NO-OUTDOOR
- 
-+# Source:
-+# https://www.anf.tn/sites/default/files/2025-01/Arr%C3%AAt%C3%A92024_4611.pdf
- country TN: DFS-ETSI
- 	(2402 - 2482 @ 40), (20)
- 	(5170 - 5250 @ 80), (20), AUTO-BW
- 	(5250 - 5330 @ 80), (20), DFS, AUTO-BW
-+	(5925 - 6425 @ 320), (200 mW), NO-OUTDOOR
+@@ -974,12 +974,20 @@ country IL: DFS-ETSI
+ # Source:
+ # https://dot.gov.in/spectrummanagement/delicensing-24-24835-ghz-band-gsr-45-e-5150-5350-ghz-gsr-46-e-and-5725-5875-ghz
+ # https://dot.gov.in/spectrummanagement/license-exemption-5-ghz-gsr-1048e-dated-22102018
++# Info about 6 GHz added by Gaurav Kansal (gaurav.kansal@nic.in)
++# Lower 6 GHz delicensed for India: 5925-6425 MHz (on 21.Jan.2026)
++# LPI: Low Power Indoor (indoor only) — 1000 mW = 30 dBm EIRP
++# VLP: Very Low Power (outdoor allowed at very low EIRP) — 25 mW = 14 dBm EIRP
++# https://blog.gauravkansal.in/2026/01/Opening-India-Lower-6-GHz-Band-for-Wireless-Use:-A-Strategic-Regulatory-Landmark.html
++# https://blog.gauravkansal.in/2026/01/Gazette%20on%20the%20Use%20of%20Low%20Power%20and%20Very%20Low%20Power%20Wireless%20Access%20System%20in%20Lower%206%20GHz%20band%20-%202026.pdf 
+ country IN:
+ 	(2402 - 2482 @ 40), (30)
+ 	(5150 - 5250 @ 80), (30)
+ 	(5250 - 5350 @ 80), (24), DFS
+ 	(5470 - 5725 @ 160), (24), DFS
+ 	(5725 - 5875 @ 80), (30)
++	(5925 - 6425 @ 320), (1000 mW), NO-OUTDOOR, AUTO-BW
++        (5925 - 6425 @ 320), (25 mW), AUTO-BW
  
  # Source:
- # Technical Criteria for Radio Devices and Systems Excluded from Frequency Allocation, Sept 9, 2022
+ # https://asnad.cra.ir/fa/Public/Documents/Details/73af8590-f065-eb11-968f-0050569b0899
 -- 
-2.25.1
+2.47.3
 
 
