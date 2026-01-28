@@ -1,400 +1,341 @@
-Return-Path: <linux-wireless+bounces-31248-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-31249-lists+linux-wireless=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id gLhoDqZQeWnYwQEAu9opvQ
-	(envelope-from <linux-wireless+bounces-31248-lists+linux-wireless=lfdr.de@vger.kernel.org>)
-	for <lists+linux-wireless@lfdr.de>; Wed, 28 Jan 2026 00:56:22 +0100
+	id SOc5DwZqeWmPwwEAu9opvQ
+	(envelope-from <linux-wireless+bounces-31249-lists+linux-wireless=lfdr.de@vger.kernel.org>)
+	for <lists+linux-wireless@lfdr.de>; Wed, 28 Jan 2026 02:44:38 +0100
 X-Original-To: lists+linux-wireless@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 205099B8A1
-	for <lists+linux-wireless@lfdr.de>; Wed, 28 Jan 2026 00:56:21 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2D2939C02B
+	for <lists+linux-wireless@lfdr.de>; Wed, 28 Jan 2026 02:44:37 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 82050300053F
-	for <lists+linux-wireless@lfdr.de>; Tue, 27 Jan 2026 23:56:18 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id E486A30209E8
+	for <lists+linux-wireless@lfdr.de>; Wed, 28 Jan 2026 01:44:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8B0DC2F5A32;
-	Tue, 27 Jan 2026 23:56:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BDE0A256C84;
+	Wed, 28 Jan 2026 01:44:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=mediatek.com header.i=@mediatek.com header.b="dWedzItG"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="H3cRS7WP"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mailgw02.mediatek.com (unknown [210.61.82.184])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.19])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0989B245031
-	for <linux-wireless@vger.kernel.org>; Tue, 27 Jan 2026 23:56:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=210.61.82.184
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 67B5E18B0A
+	for <linux-wireless@vger.kernel.org>; Wed, 28 Jan 2026 01:44:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.19
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769558177; cv=none; b=RaoU5nOobkxKVZFZw3+4GgpLRyZ+mId4nDT+Clwr6v8/GlLq/dNX/ESQHkYU9+m9IglvSSS/arh3Zi7aNx0fGvLFbT6AR7Zfg+4Mczaa+LgdgIHhG6iDBB6+GA7cBq60h0v/c+/d+Jhj9azMuIYs4jj/0S14Z56DcEddHygyoI4=
+	t=1769564648; cv=none; b=bktYM1+3tqEwpYhFzYUNw8GiKZDdwJ8zN4UPbYBYNRYiMyQQppRdu6onGD8ZFKzuDvN8ehVVzLCyOTdpSFigTw2/EtuDMhzk/XeYUHhTSvIt7xO2dgkZSFKrYh9BVXZgQrYPA/Z3MuF1pTYUW522vP05cONH9dZlGXf7CKo1C6Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769558177; c=relaxed/simple;
-	bh=NLWvSvx67bDy0yggzmH3nYXi6Aq58UTC4Fr0ouDPV7A=;
-	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=tmP9ayj6ERCUql7tazD/OZYCpAyXF81DMAoVezOPMoaTNiYnJy3wqE7fVte8JS5yXS0l6CTMbPJomwXqBXzrAMtzkqGGLBfnaJzgVg/+KjTEPWPbXbfSqhNNwVdjY3Aq1me1drdwns4HML55vcu94zMV1Dirg9w6Q5/0Oh0pExQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=mediatek.com; spf=pass smtp.mailfrom=mediatek.com; dkim=pass (1024-bit key) header.d=mediatek.com header.i=@mediatek.com header.b=dWedzItG; arc=none smtp.client-ip=210.61.82.184
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=mediatek.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=mediatek.com
-X-UUID: bc3a407cfbdb11f0b7fc4fdb8733b2bc-20260128
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=mediatek.com; s=dk;
-	h=Content-Type:Content-Transfer-Encoding:MIME-Version:Message-ID:Date:Subject:CC:To:From; bh=d4Qg30T2WxL92OCbsAOZY5mgloFYgBKd0pj24f3++Ew=;
-	b=dWedzItG6RZ5s7BBhcs36j/dMj0N3Yg0y2yk9kU/BnGkyLVL1J/OociFVgNSImXIScqc9asZPR2sijHl8zjm19KLPJ1+lUZ/EHk/vhJ7sexxppfageLWGF8tiaQd/clWRVyrXC1ke+MGyXqu3LtW3CffXKa23y0vM9fImuUOUZs=;
-X-CID-P-RULE: Release_Ham
-X-CID-O-INFO: VERSION:1.3.11,REQID:1a102259-1beb-4ac1-a331-84c9b6371db0,IP:0,U
-	RL:0,TC:0,Content:0,EDM:0,RT:0,SF:0,FILE:0,BULK:0,RULE:Release_Ham,ACTION:
-	release,TS:0
-X-CID-META: VersionHash:89c9d04,CLOUDID:4ba94a7a-8c8a-4fc4-88c0-3556e7711556,B
-	ulkID:nil,BulkQuantity:0,Recheck:0,SF:102|836|888|898,TC:-5,Content:0|15|5
-	0,EDM:-3,IP:nil,URL:0,File:130,RT:0,Bulk:nil,QS:nil,BEC:-1,COL:0,OSI:0,OSA
-	:0,AV:0,LES:1,SPR:NO,DKR:0,DKP:0,BRR:0,BRE:0,ARC:0
-X-CID-BVR: 2,SSN|SDN
-X-CID-BAS: 2,SSN|SDN,0,_
-X-CID-FACTOR: TF_CID_SPAM_SNR
-X-CID-RHF: D41D8CD98F00B204E9800998ECF8427E
-X-UUID: bc3a407cfbdb11f0b7fc4fdb8733b2bc-20260128
-Received: from mtkmbs09n2.mediatek.inc [(172.21.101.94)] by mailgw02.mediatek.com
-	(envelope-from <ryder.lee@mediatek.com>)
-	(Generic MTA with TLSv1.2 ECDHE-RSA-AES256-GCM-SHA384 256/256)
-	with ESMTP id 1005902057; Wed, 28 Jan 2026 07:56:02 +0800
-Received: from mtkmbs11n2.mediatek.inc (172.21.101.187) by
- mtkmbs10n1.mediatek.inc (172.21.101.34) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.29; Wed, 28 Jan 2026 07:56:00 +0800
-Received: from mussdccf250.eus.mediatek.inc (10.73.250.250) by
- mtkmbs11n2.mediatek.inc (172.21.101.73) with Microsoft SMTP Server id
- 15.2.2562.29 via Frontend Transport; Wed, 28 Jan 2026 07:56:00 +0800
-From: Ryder Lee <ryder.lee@mediatek.com>
-To: Felix Fietkau <nbd@nbd.name>
-CC: <linux-wireless@vger.kernel.org>, <linux-mediatek@lists.infradead.org>,
-	Allen Ye <allen.ye@mediatek.com>, Ryder Lee <ryder.lee@mediatek.com>
-Subject: [PATCH v2] wifi: mt76: fix backoff fields and max_power calculation
-Date: Tue, 27 Jan 2026 15:55:57 -0800
-Message-ID: <54627282cfb8e5a89fe753da66552c0a084f6387.1769557863.git.ryder.lee@mediatek.com>
-X-Mailer: git-send-email 2.45.2
+	s=arc-20240116; t=1769564648; c=relaxed/simple;
+	bh=4SRxdceyVxxWSJoSV+rVdn4zRtVpdRbtmqufbUc0tAM=;
+	h=Date:From:To:Cc:Subject:Message-ID; b=DFZXFHIfIqf9RFsSL+1eNZa7jUcFGYJzwlkXf/U2r+TxjNQTG2+V7xg7PSY1q6EWnEJylqlLxfkxOGx2FymMtUz4Tk8pDmMK3XSm+xhWxFZVw0FfviZck8zRzhMUWOorL+JLGIu7oMFkjSxkdFp9QqG2Dc833r5e1M879a1emms=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=H3cRS7WP; arc=none smtp.client-ip=192.198.163.19
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1769564646; x=1801100646;
+  h=date:from:to:cc:subject:message-id;
+  bh=4SRxdceyVxxWSJoSV+rVdn4zRtVpdRbtmqufbUc0tAM=;
+  b=H3cRS7WPwquwWFBfcH+8KFabOqZwGsq+X2McRGrkKelb8qi//i5Q9UK9
+   wH0mvcCIyF+ZK0OEBxNk3bmklCx+SDQh9lm0hF7lRxUJgIWncPgPlAHoi
+   hKbD6+oa0lpNq4ScP+zgG7QDePZt1JF26t1W1r+DTVjtDftQq2j9gCYPe
+   91O68xY6DDcJ3lwQFmxbRS/C/nH8xXFsccVwbf9dqLQO4fztBJ6FYH4y7
+   ymh5jO9Z7hiLsboSnQ/usRYPxw43lCumwfOFyp7Z6bSHhCDxMOZCSuunt
+   9HFNCmFfoKOu+nEZbTF3BkowGv4K02RrMoMzVDcnU0pxudWEkdOJEMv3l
+   Q==;
+X-CSE-ConnectionGUID: CJdaelNmSVOzy2PRGBGjkg==
+X-CSE-MsgGUID: rOub+bkORkuHEwR503yR7g==
+X-IronPort-AV: E=McAfee;i="6800,10657,11684"; a="69787348"
+X-IronPort-AV: E=Sophos;i="6.21,257,1763452800"; 
+   d="scan'208";a="69787348"
+Received: from orviesa003.jf.intel.com ([10.64.159.143])
+  by fmvoesa113.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 27 Jan 2026 17:44:05 -0800
+X-CSE-ConnectionGUID: 59jlNSPkRKe1V8wyhrajGQ==
+X-CSE-MsgGUID: shj/F/vxQHGh5pw6xHwRng==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.21,257,1763452800"; 
+   d="scan'208";a="212233194"
+Received: from lkp-server01.sh.intel.com (HELO 765f4a05e27f) ([10.239.97.150])
+  by orviesa003.jf.intel.com with ESMTP; 27 Jan 2026 17:44:03 -0800
+Received: from kbuild by 765f4a05e27f with local (Exim 4.98.2)
+	(envelope-from <lkp@intel.com>)
+	id 1vkubB-00000000Z6U-2mhX;
+	Wed, 28 Jan 2026 01:44:01 +0000
+Date: Wed, 28 Jan 2026 09:43:32 +0800
+From: kernel test robot <lkp@intel.com>
+To: Johannes Berg <johannes.berg@intel.com>
+Cc: linux-wireless@vger.kernel.org
+Subject: [wireless-next:main] BUILD SUCCESS
+ c30e188bd2a886258be5facb970a804d8ef549b5
+Message-ID: <202601280927.U5niIaiH-lkp@intel.com>
+User-Agent: s-nail v14.9.25
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-MTK: N
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-0.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	MID_CONTAINS_FROM(1.00)[];
+	DMARC_POLICY_ALLOW(-0.50)[intel.com,none];
 	R_MISSING_CHARSET(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[mediatek.com,quarantine];
-	R_DKIM_ALLOW(-0.20)[mediatek.com:s=dk];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_DKIM_ALLOW(-0.20)[intel.com:s=Intel];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	TO_DN_SOME(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_COUNT_FIVE(0.00)[6];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-31248-lists,linux-wireless=lfdr.de];
-	DKIM_TRACE(0.00)[mediatek.com:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	RCPT_COUNT_FIVE(0.00)[5];
-	FROM_NEQ_ENVFROM(0.00)[ryder.lee@mediatek.com,linux-wireless@vger.kernel.org];
+	RCPT_COUNT_TWO(0.00)[2];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-31249-lists,linux-wireless=lfdr.de];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[intel.com:+];
 	PRECEDENCE_BULK(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	RCVD_COUNT_FIVE(0.00)[6];
+	FROM_NEQ_ENVFROM(0.00)[lkp@intel.com,linux-wireless@vger.kernel.org];
 	TAGGED_RCPT(0.00)[linux-wireless];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 205099B8A1
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,intel.com:mid,intel.com:dkim]
+X-Rspamd-Queue-Id: 2D2939C02B
 X-Rspamd-Action: no action
 
-From: Allen Ye <allen.ye@mediatek.com>
+tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/wireless/wireless-next.git main
+branch HEAD: c30e188bd2a886258be5facb970a804d8ef549b5  Merge tag 'iwlwifi-next-2026-01-21' of https://git.kernel.org/pub/scm/linux/kernel/git/iwlwifi/iwlwifi-next
 
-The maximum power value may exist in either the data or backoff field.
-Previously, backoff power limits were not considered in txpower reporting.
-This patch ensures mt76 also considers backoff values in the SKU table.
+elapsed time: 722m
 
-For connac2 devices,
-- paths-ru = RU26, RU52, RU106, BW20, BW40, BW80, BW160
-- paths-ru-bf = RU26, RU52, RU106, BW20, BW40, BW80, BW160
+configs tested: 217
+configs skipped: 2
 
-Only the first three entries use 1T1S and do not need index adjustment;
-the remaining four require index offset.
+The following configs have been built successfully.
+More configs may be tested in the coming days.
 
-Fixes: b05ab4be9fd7 ("wifi: mt76: mt7915: add bf backoff limit table support")
-Signed-off-by: Allen Ye <allen.ye@mediatek.com>
-Signed-off-by: Ryder Lee <ryder.lee@mediatek.com>
----
-v1:
-- Add "wifi:" prefix to the subject.
+tested configs:
+alpha                             allnoconfig    gcc-15.2.0
+alpha                            allyesconfig    gcc-15.2.0
+alpha                               defconfig    gcc-15.2.0
+arc                              allmodconfig    clang-16
+arc                              allmodconfig    gcc-15.2.0
+arc                               allnoconfig    gcc-15.2.0
+arc                              allyesconfig    clang-22
+arc                              allyesconfig    gcc-15.2.0
+arc                      axs103_smp_defconfig    gcc-15.2.0
+arc                                 defconfig    gcc-15.2.0
+arc                     nsimosci_hs_defconfig    gcc-15.2.0
+arc                 nsimosci_hs_smp_defconfig    gcc-15.2.0
+arc                   randconfig-001-20260128    gcc-8.5.0
+arc                   randconfig-002-20260128    gcc-8.5.0
+arm                               allnoconfig    clang-22
+arm                               allnoconfig    gcc-15.2.0
+arm                              allyesconfig    clang-16
+arm                              allyesconfig    gcc-15.2.0
+arm                                 defconfig    gcc-15.2.0
+arm                          pxa3xx_defconfig    clang-22
+arm                   randconfig-001-20260128    gcc-8.5.0
+arm                   randconfig-002-20260128    gcc-8.5.0
+arm                   randconfig-003-20260128    gcc-8.5.0
+arm                   randconfig-004-20260128    gcc-8.5.0
+arm64                            allmodconfig    clang-19
+arm64                            allmodconfig    clang-22
+arm64                             allnoconfig    gcc-15.2.0
+arm64                               defconfig    gcc-15.2.0
+arm64                 randconfig-001-20260128    gcc-14.3.0
+arm64                 randconfig-002-20260128    gcc-14.3.0
+arm64                 randconfig-003-20260128    gcc-14.3.0
+arm64                 randconfig-004-20260128    gcc-14.3.0
+csky                             allmodconfig    gcc-15.2.0
+csky                              allnoconfig    gcc-15.2.0
+csky                                defconfig    gcc-15.2.0
+csky                  randconfig-001-20260128    gcc-14.3.0
+csky                  randconfig-002-20260128    gcc-14.3.0
+hexagon                          allmodconfig    clang-17
+hexagon                          allmodconfig    gcc-15.2.0
+hexagon                           allnoconfig    clang-22
+hexagon                           allnoconfig    gcc-15.2.0
+hexagon                             defconfig    gcc-15.2.0
+hexagon               randconfig-001-20260128    clang-22
+hexagon               randconfig-002-20260128    clang-22
+i386                             allmodconfig    clang-20
+i386                             allmodconfig    gcc-14
+i386                              allnoconfig    gcc-14
+i386                              allnoconfig    gcc-15.2.0
+i386                             allyesconfig    clang-20
+i386                             allyesconfig    gcc-14
+i386        buildonly-randconfig-001-20260128    clang-20
+i386        buildonly-randconfig-002-20260128    clang-20
+i386        buildonly-randconfig-003-20260128    clang-20
+i386        buildonly-randconfig-004-20260128    clang-20
+i386        buildonly-randconfig-005-20260128    clang-20
+i386        buildonly-randconfig-006-20260128    clang-20
+i386                                defconfig    gcc-15.2.0
+i386                  randconfig-001-20260128    gcc-14
+i386                  randconfig-002-20260128    gcc-14
+i386                  randconfig-003-20260128    gcc-14
+i386                  randconfig-004-20260128    gcc-14
+i386                  randconfig-005-20260128    gcc-14
+i386                  randconfig-006-20260128    gcc-14
+i386                  randconfig-007-20260128    gcc-14
+i386                  randconfig-011-20260128    clang-20
+i386                  randconfig-012-20260128    gcc-14
+i386                  randconfig-013-20260128    gcc-14
+i386                  randconfig-014-20260128    clang-20
+i386                  randconfig-015-20260128    clang-20
+i386                  randconfig-016-20260128    gcc-14
+i386                  randconfig-017-20260128    clang-20
+loongarch                        allmodconfig    clang-19
+loongarch                        allmodconfig    clang-22
+loongarch                         allnoconfig    clang-22
+loongarch                         allnoconfig    gcc-15.2.0
+loongarch                           defconfig    clang-19
+loongarch             randconfig-001-20260128    clang-22
+loongarch             randconfig-002-20260128    clang-22
+m68k                             allmodconfig    gcc-15.2.0
+m68k                              allnoconfig    gcc-15.2.0
+m68k                             allyesconfig    clang-16
+m68k                             allyesconfig    gcc-15.2.0
+m68k                                defconfig    clang-19
+microblaze                        allnoconfig    gcc-15.2.0
+microblaze                       allyesconfig    gcc-15.2.0
+microblaze                          defconfig    clang-19
+mips                             allmodconfig    gcc-15.2.0
+mips                              allnoconfig    gcc-15.2.0
+mips                             allyesconfig    gcc-15.2.0
+mips                     cu1830-neo_defconfig    gcc-15.2.0
+mips                           ip27_defconfig    gcc-15.2.0
+mips                           ip30_defconfig    gcc-15.2.0
+nios2                            allmodconfig    clang-22
+nios2                            allmodconfig    gcc-11.5.0
+nios2                             allnoconfig    clang-22
+nios2                             allnoconfig    gcc-11.5.0
+nios2                               defconfig    clang-19
+nios2                 randconfig-001-20260128    clang-22
+nios2                 randconfig-002-20260128    clang-22
+openrisc                         allmodconfig    clang-22
+openrisc                         allmodconfig    gcc-15.2.0
+openrisc                          allnoconfig    clang-22
+openrisc                          allnoconfig    gcc-15.2.0
+openrisc                            defconfig    gcc-15.2.0
+parisc                           allmodconfig    gcc-15.2.0
+parisc                            allnoconfig    clang-22
+parisc                            allnoconfig    gcc-15.2.0
+parisc                           allyesconfig    gcc-15.2.0
+parisc                              defconfig    gcc-15.2.0
+parisc                randconfig-001-20260128    gcc-11.5.0
+parisc                randconfig-002-20260128    gcc-11.5.0
+parisc                randconfig-002-20260128    gcc-12.5.0
+parisc64                         alldefconfig    gcc-15.2.0
+parisc64                            defconfig    clang-19
+powerpc                          allmodconfig    gcc-15.2.0
+powerpc                           allnoconfig    clang-22
+powerpc                           allnoconfig    gcc-15.2.0
+powerpc                        fsp2_defconfig    gcc-15.2.0
+powerpc                      mgcoge_defconfig    clang-22
+powerpc                     mpc83xx_defconfig    clang-22
+powerpc                    mvme5100_defconfig    gcc-15.2.0
+powerpc                      ppc6xx_defconfig    gcc-15.2.0
+powerpc               randconfig-001-20260128    clang-22
+powerpc               randconfig-001-20260128    gcc-11.5.0
+powerpc               randconfig-002-20260128    gcc-11.5.0
+powerpc               randconfig-002-20260128    gcc-8.5.0
+powerpc                     redwood_defconfig    clang-22
+powerpc64             randconfig-001-20260128    clang-22
+powerpc64             randconfig-001-20260128    gcc-11.5.0
+powerpc64             randconfig-002-20260128    clang-22
+powerpc64             randconfig-002-20260128    gcc-11.5.0
+riscv                            allmodconfig    clang-22
+riscv                             allnoconfig    clang-22
+riscv                             allnoconfig    gcc-15.2.0
+riscv                            allyesconfig    clang-16
+riscv                               defconfig    gcc-15.2.0
+riscv                 randconfig-001-20260128    gcc-13.4.0
+riscv                 randconfig-002-20260128    gcc-13.4.0
+s390                             allmodconfig    clang-18
+s390                              allnoconfig    clang-22
+s390                             allyesconfig    gcc-15.2.0
+s390                                defconfig    gcc-15.2.0
+s390                  randconfig-001-20260128    gcc-13.4.0
+s390                  randconfig-002-20260128    gcc-13.4.0
+sh                               allmodconfig    gcc-15.2.0
+sh                                allnoconfig    clang-22
+sh                                allnoconfig    gcc-15.2.0
+sh                               allyesconfig    gcc-15.2.0
+sh                                  defconfig    gcc-14
+sh                    randconfig-001-20260128    gcc-13.4.0
+sh                    randconfig-002-20260128    gcc-13.4.0
+sparc                             allnoconfig    clang-22
+sparc                             allnoconfig    gcc-15.2.0
+sparc                               defconfig    gcc-15.2.0
+sparc                 randconfig-001-20260128    gcc-11.5.0
+sparc                 randconfig-001-20260128    gcc-8.5.0
+sparc                 randconfig-002-20260128    gcc-11.5.0
+sparc                 randconfig-002-20260128    gcc-8.5.0
+sparc                       sparc64_defconfig    gcc-15.2.0
+sparc64                          allmodconfig    clang-22
+sparc64                             defconfig    gcc-14
+sparc64               randconfig-001-20260128    gcc-11.5.0
+sparc64               randconfig-001-20260128    gcc-12.5.0
+sparc64               randconfig-002-20260128    gcc-10.5.0
+sparc64               randconfig-002-20260128    gcc-11.5.0
+um                               allmodconfig    clang-19
+um                                allnoconfig    clang-22
+um                               allyesconfig    gcc-14
+um                               allyesconfig    gcc-15.2.0
+um                                  defconfig    gcc-14
+um                             i386_defconfig    gcc-14
+um                    randconfig-001-20260128    gcc-11.5.0
+um                    randconfig-001-20260128    gcc-12
+um                    randconfig-002-20260128    clang-22
+um                    randconfig-002-20260128    gcc-11.5.0
+um                           x86_64_defconfig    gcc-14
+x86_64                           allmodconfig    clang-20
+x86_64                            allnoconfig    clang-20
+x86_64                            allnoconfig    clang-22
+x86_64                           allyesconfig    clang-20
+x86_64      buildonly-randconfig-001-20260128    gcc-14
+x86_64      buildonly-randconfig-002-20260128    gcc-14
+x86_64      buildonly-randconfig-003-20260128    gcc-14
+x86_64      buildonly-randconfig-004-20260128    gcc-14
+x86_64      buildonly-randconfig-005-20260128    gcc-14
+x86_64      buildonly-randconfig-006-20260128    gcc-14
+x86_64                              defconfig    gcc-14
+x86_64                                  kexec    clang-20
+x86_64                randconfig-011-20260128    clang-20
+x86_64                randconfig-012-20260128    clang-20
+x86_64                randconfig-012-20260128    gcc-14
+x86_64                randconfig-013-20260128    clang-20
+x86_64                randconfig-014-20260128    clang-20
+x86_64                randconfig-015-20260128    clang-20
+x86_64                randconfig-015-20260128    gcc-14
+x86_64                randconfig-016-20260128    clang-20
+x86_64                randconfig-071-20260128    clang-20
+x86_64                randconfig-072-20260128    clang-20
+x86_64                randconfig-073-20260128    clang-20
+x86_64                randconfig-074-20260128    clang-20
+x86_64                randconfig-075-20260128    clang-20
+x86_64                randconfig-076-20260128    clang-20
+x86_64                               rhel-9.4    clang-20
+x86_64                           rhel-9.4-bpf    gcc-14
+x86_64                          rhel-9.4-func    clang-20
+x86_64                    rhel-9.4-kselftests    clang-20
+x86_64                         rhel-9.4-kunit    gcc-14
+x86_64                           rhel-9.4-ltp    gcc-14
+x86_64                          rhel-9.4-rust    clang-20
+xtensa                            allnoconfig    clang-22
+xtensa                            allnoconfig    gcc-15.2.0
+xtensa                           allyesconfig    clang-22
+xtensa                           allyesconfig    gcc-15.2.0
+xtensa                  nommu_kc705_defconfig    gcc-15.2.0
+xtensa                randconfig-001-20260128    gcc-11.5.0
+xtensa                randconfig-001-20260128    gcc-8.5.0
+xtensa                randconfig-002-20260128    gcc-11.5.0
 
-v2:
-- Fix checkpatch errors.
-- Remove unnecessary style changes.
-- Add explanation for connac2 index adjustment.
----
- drivers/net/wireless/mediatek/mt76/eeprom.c | 180 +++++++++++++-------
- drivers/net/wireless/mediatek/mt76/mt76.h   |   1 -
- 2 files changed, 122 insertions(+), 59 deletions(-)
-
-diff --git a/drivers/net/wireless/mediatek/mt76/eeprom.c b/drivers/net/wireless/mediatek/mt76/eeprom.c
-index 573400d57..6ca0274b4 100644
---- a/drivers/net/wireless/mediatek/mt76/eeprom.c
-+++ b/drivers/net/wireless/mediatek/mt76/eeprom.c
-@@ -9,6 +9,13 @@
- #include <linux/nvmem-consumer.h>
- #include <linux/etherdevice.h>
- #include "mt76.h"
-+#include "mt76_connac.h"
-+
-+enum mt76_sku_type {
-+	MT76_SKU_RATE,
-+	MT76_SKU_BACKOFF,
-+	MT76_SKU_BACKOFF_BF_OFFSET,
-+};
- 
- static int mt76_get_of_eeprom_data(struct mt76_dev *dev, void *eep, int len)
- {
-@@ -292,7 +299,6 @@ mt76_find_channel_node(struct device_node *np, struct ieee80211_channel *chan)
- }
- EXPORT_SYMBOL_GPL(mt76_find_channel_node);
- 
--
- static s8
- mt76_get_txs_delta(struct device_node *np, u8 nss)
- {
-@@ -306,9 +312,24 @@ mt76_get_txs_delta(struct device_node *np, u8 nss)
- 	return be32_to_cpu(val[nss - 1]);
- }
- 
-+static inline u8 mt76_backoff_n_chains(struct mt76_dev *dev, u8 idx)
-+{
-+	/* 0:1T1ss, 1:2T1ss, ..., 14:5T5ss */
-+	static const u8 connac3_table[] = {
-+		1, 2, 3, 4, 5, 2, 3, 4, 5, 3, 4, 5, 4, 5, 5};
-+	static const u8 connac2_table[] = {
-+		1, 2, 3, 4, 2, 3, 4, 3, 4, 4, 0, 0, 0, 0, 0};
-+
-+	if (idx < 0 || idx >= ARRAY_SIZE(connac3_table))
-+		return 0;
-+
-+	return is_mt799x(dev) ? connac3_table[idx] : connac2_table[idx];
-+}
-+
- static void
--mt76_apply_array_limit(s8 *pwr, size_t pwr_len, const s8 *data,
--		       s8 target_power, s8 nss_delta, s8 *max_power)
-+mt76_apply_array_limit(struct mt76_dev *dev, s8 *pwr, size_t pwr_len,
-+		       const s8 *data, s8 target_power, s8 nss_delta,
-+		       s8 *max_power, int n_chains, enum mt76_sku_type type)
- {
- 	int i;
- 
-@@ -316,18 +337,51 @@ mt76_apply_array_limit(s8 *pwr, size_t pwr_len, const s8 *data,
- 		return;
- 
- 	for (i = 0; i < pwr_len; i++) {
--		pwr[i] = min_t(s8, target_power, data[i] + nss_delta);
-+		u8 backoff_chain_idx = i;
-+		int backoff_n_chains;
-+		s8 backoff_delta;
-+		s8 delta;
-+
-+		switch (type) {
-+		case MT76_SKU_RATE:
-+			delta = 0;
-+			backoff_delta = 0;
-+			backoff_n_chains = 0;
-+			break;
-+		case MT76_SKU_BACKOFF:
-+			backoff_chain_idx += 1;
-+			fallthrough;
-+		case MT76_SKU_BACKOFF_BF_OFFSET:
-+			delta = mt76_tx_power_path_delta(n_chains);
-+			backoff_n_chains = mt76_backoff_n_chains(dev, backoff_chain_idx);
-+			backoff_delta = mt76_tx_power_path_delta(backoff_n_chains);
-+			break;
-+		default:
-+			return;
-+		}
-+
-+		pwr[i] = min_t(s8, target_power + delta - backoff_delta, data[i] + nss_delta);
-+
-+		/* used for padding, doesn't need to be considered */
-+		if (data[i] >= S8_MAX - 1)
-+			continue;
-+
-+		/* only consider backoff value for the configured chain number */
-+		if (type != MT76_SKU_RATE && n_chains != backoff_n_chains)
-+			continue;
-+
- 		*max_power = max(*max_power, pwr[i]);
- 	}
- }
- 
- static void
--mt76_apply_multi_array_limit(s8 *pwr, size_t pwr_len, s8 pwr_num,
--			     const s8 *data, size_t len, s8 target_power,
--			     s8 nss_delta)
-+mt76_apply_multi_array_limit(struct mt76_dev *dev, s8 *pwr, size_t pwr_len,
-+			     s8 pwr_num, const s8 *data, size_t len,
-+			     s8 target_power, s8 nss_delta, s8 *max_power,
-+			     int n_chains, enum mt76_sku_type type)
- {
-+	static const int connac2_backoff_ru_idx = 2;
- 	int i, cur;
--	s8 max_power = -128;
- 
- 	if (!data)
- 		return;
-@@ -337,8 +391,19 @@ mt76_apply_multi_array_limit(s8 *pwr, size_t pwr_len, s8 pwr_num,
- 		if (len < pwr_len + 1)
- 			break;
- 
--		mt76_apply_array_limit(pwr + pwr_len * i, pwr_len, data + 1,
--				       target_power, nss_delta, &max_power);
-+		/* For connac2 devices,
-+		 * - paths-ru = RU26, RU52, RU106, BW20, BW40, BW80, BW160
-+		 * - paths-ru-bf = RU26, RU52, RU106, BW20, BW40, BW80, BW160
-+		 * Only the first three entries use 1T1ss and do not need index
-+		 * adjustment; the remaining four require index offset.
-+		 */
-+		if (!is_mt799x(dev) && type == MT76_SKU_BACKOFF &&
-+		    i > connac2_backoff_ru_idx)
-+			type = MT76_SKU_BACKOFF_BF_OFFSET;
-+
-+		mt76_apply_array_limit(dev, pwr + pwr_len * i, pwr_len, data + 1,
-+				       target_power, nss_delta, max_power,
-+				       n_chains, type);
- 		if (--cur > 0)
- 			continue;
- 
-@@ -360,18 +425,11 @@ s8 mt76_get_rate_power_limits(struct mt76_phy *phy,
- 	struct device_node *np;
- 	const s8 *val;
- 	char name[16];
--	u32 mcs_rates = dev->drv->mcs_rates;
--	u32 ru_rates = ARRAY_SIZE(dest->ru[0]);
- 	char band;
- 	size_t len;
--	s8 max_power = 0;
--	s8 max_power_backoff = -127;
-+	s8 max_power = -127;
- 	s8 txs_delta;
- 	int n_chains = hweight16(phy->chainmask);
--	s8 target_power_combine = target_power + mt76_tx_power_path_delta(n_chains);
--
--	if (!mcs_rates)
--		mcs_rates = 10;
- 
- 	memset(dest, target_power, sizeof(*dest) - sizeof(dest->path));
- 	memset(&dest->path, 0, sizeof(dest->path));
-@@ -409,46 +467,52 @@ s8 mt76_get_rate_power_limits(struct mt76_phy *phy,
- 	txs_delta = mt76_get_txs_delta(np, hweight16(phy->chainmask));
- 
- 	val = mt76_get_of_array_s8(np, "rates-cck", &len, ARRAY_SIZE(dest->cck));
--	mt76_apply_array_limit(dest->cck, ARRAY_SIZE(dest->cck), val,
--			       target_power, txs_delta, &max_power);
--
--	val = mt76_get_of_array_s8(np, "rates-ofdm",
--				   &len, ARRAY_SIZE(dest->ofdm));
--	mt76_apply_array_limit(dest->ofdm, ARRAY_SIZE(dest->ofdm), val,
--			       target_power, txs_delta, &max_power);
--
--	val = mt76_get_of_array_s8(np, "rates-mcs", &len, mcs_rates + 1);
--	mt76_apply_multi_array_limit(dest->mcs[0], ARRAY_SIZE(dest->mcs[0]),
--				     ARRAY_SIZE(dest->mcs), val, len,
--				     target_power, txs_delta);
--
--	val = mt76_get_of_array_s8(np, "rates-ru", &len, ru_rates + 1);
--	mt76_apply_multi_array_limit(dest->ru[0], ARRAY_SIZE(dest->ru[0]),
--				     ARRAY_SIZE(dest->ru), val, len,
--				     target_power, txs_delta);
--
--	max_power_backoff = max_power;
--	val = mt76_get_of_array_s8(np, "paths-cck", &len, ARRAY_SIZE(dest->path.cck));
--	mt76_apply_array_limit(dest->path.cck, ARRAY_SIZE(dest->path.cck), val,
--			       target_power_combine, txs_delta, &max_power_backoff);
--
--	val = mt76_get_of_array_s8(np, "paths-ofdm", &len, ARRAY_SIZE(dest->path.ofdm));
--	mt76_apply_array_limit(dest->path.ofdm, ARRAY_SIZE(dest->path.ofdm), val,
--			       target_power_combine, txs_delta, &max_power_backoff);
--
--	val = mt76_get_of_array_s8(np, "paths-ofdm-bf", &len, ARRAY_SIZE(dest->path.ofdm_bf));
--	mt76_apply_array_limit(dest->path.ofdm_bf, ARRAY_SIZE(dest->path.ofdm_bf), val,
--			       target_power_combine, txs_delta, &max_power_backoff);
--
--	val = mt76_get_of_array_s8(np, "paths-ru", &len, ARRAY_SIZE(dest->path.ru[0]) + 1);
--	mt76_apply_multi_array_limit(dest->path.ru[0], ARRAY_SIZE(dest->path.ru[0]),
--				     ARRAY_SIZE(dest->path.ru), val, len,
--				     target_power_combine, txs_delta);
--
--	val = mt76_get_of_array_s8(np, "paths-ru-bf", &len, ARRAY_SIZE(dest->path.ru_bf[0]) + 1);
--	mt76_apply_multi_array_limit(dest->path.ru_bf[0], ARRAY_SIZE(dest->path.ru_bf[0]),
--				     ARRAY_SIZE(dest->path.ru_bf), val, len,
--				     target_power_combine, txs_delta);
-+	mt76_apply_array_limit(dev, dest->cck, ARRAY_SIZE(dest->cck), val,
-+			       target_power, txs_delta, &max_power, n_chains, MT76_SKU_RATE);
-+
-+	val = mt76_get_of_array_s8(np, "rates-ofdm", &len, ARRAY_SIZE(dest->ofdm));
-+	mt76_apply_array_limit(dev, dest->ofdm, ARRAY_SIZE(dest->ofdm), val,
-+			       target_power, txs_delta, &max_power, n_chains, MT76_SKU_RATE);
-+
-+	val = mt76_get_of_array_s8(np, "rates-mcs", &len,
-+				   ARRAY_SIZE(dest->mcs[0]) + 1);
-+	mt76_apply_multi_array_limit(dev, dest->mcs[0], ARRAY_SIZE(dest->mcs[0]),
-+				     ARRAY_SIZE(dest->mcs), val, len, target_power,
-+				     txs_delta, &max_power, n_chains, MT76_SKU_RATE);
-+
-+	val = mt76_get_of_array_s8(np, "rates-ru", &len,
-+				   ARRAY_SIZE(dest->ru[0]) + 1);
-+	mt76_apply_multi_array_limit(dev, dest->ru[0], ARRAY_SIZE(dest->ru[0]),
-+				     ARRAY_SIZE(dest->ru), val, len, target_power,
-+				     txs_delta, &max_power, n_chains, MT76_SKU_RATE);
-+
-+	val = mt76_get_of_array_s8(np, "paths-cck", &len,
-+				   ARRAY_SIZE(dest->path.cck));
-+	mt76_apply_array_limit(dev, dest->path.cck, ARRAY_SIZE(dest->path.cck), val,
-+			       target_power, txs_delta, &max_power, n_chains, MT76_SKU_BACKOFF);
-+
-+	val = mt76_get_of_array_s8(np, "paths-ofdm", &len,
-+				   ARRAY_SIZE(dest->path.ofdm));
-+	mt76_apply_array_limit(dev, dest->path.ofdm, ARRAY_SIZE(dest->path.ofdm), val,
-+			       target_power, txs_delta, &max_power, n_chains, MT76_SKU_BACKOFF);
-+
-+	val = mt76_get_of_array_s8(np, "paths-ofdm-bf", &len,
-+				   ARRAY_SIZE(dest->path.ofdm_bf));
-+	mt76_apply_array_limit(dev, dest->path.ofdm_bf, ARRAY_SIZE(dest->path.ofdm_bf), val,
-+			       target_power, txs_delta, &max_power, n_chains,
-+			       MT76_SKU_BACKOFF_BF_OFFSET);
-+
-+	val = mt76_get_of_array_s8(np, "paths-ru", &len,
-+				   ARRAY_SIZE(dest->path.ru[0]) + 1);
-+	mt76_apply_multi_array_limit(dev, dest->path.ru[0], ARRAY_SIZE(dest->path.ru[0]),
-+				     ARRAY_SIZE(dest->path.ru), val, len, target_power,
-+				     txs_delta, &max_power, n_chains, MT76_SKU_BACKOFF);
-+
-+	val = mt76_get_of_array_s8(np, "paths-ru-bf", &len,
-+				   ARRAY_SIZE(dest->path.ru_bf[0]) + 1);
-+	mt76_apply_multi_array_limit(dev, dest->path.ru_bf[0], ARRAY_SIZE(dest->path.ru_bf[0]),
-+				     ARRAY_SIZE(dest->path.ru_bf), val, len, target_power,
-+				     txs_delta, &max_power, n_chains, MT76_SKU_BACKOFF);
- 
- 	return max_power;
- }
-diff --git a/drivers/net/wireless/mediatek/mt76/mt76.h b/drivers/net/wireless/mediatek/mt76/mt76.h
-index d05e83ea1..32876eab2 100644
---- a/drivers/net/wireless/mediatek/mt76/mt76.h
-+++ b/drivers/net/wireless/mediatek/mt76/mt76.h
-@@ -540,7 +540,6 @@ struct mt76_driver_ops {
- 	u32 survey_flags;
- 	u16 txwi_size;
- 	u16 token_size;
--	u8 mcs_rates;
- 
- 	unsigned int link_data_size;
- 
--- 
-2.45.2
-
+--
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
 
