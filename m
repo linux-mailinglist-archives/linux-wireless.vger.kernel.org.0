@@ -1,209 +1,178 @@
-Return-Path: <linux-wireless+bounces-31291-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-31292-lists+linux-wireless=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id FxMADIX6emlSAQIAu9opvQ
-	(envelope-from <linux-wireless+bounces-31291-lists+linux-wireless=lfdr.de@vger.kernel.org>)
-	for <lists+linux-wireless@lfdr.de>; Thu, 29 Jan 2026 07:13:25 +0100
+	id mLgCEZv6emlSAQIAu9opvQ
+	(envelope-from <linux-wireless+bounces-31292-lists+linux-wireless=lfdr.de@vger.kernel.org>)
+	for <lists+linux-wireless@lfdr.de>; Thu, 29 Jan 2026 07:13:47 +0100
 X-Original-To: lists+linux-wireless@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6CC9DAC2A6
-	for <lists+linux-wireless@lfdr.de>; Thu, 29 Jan 2026 07:13:24 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4071AAC2AF
+	for <lists+linux-wireless@lfdr.de>; Thu, 29 Jan 2026 07:13:45 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 616CA3008A69
-	for <lists+linux-wireless@lfdr.de>; Thu, 29 Jan 2026 06:13:22 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 1092A30046AB
+	for <lists+linux-wireless@lfdr.de>; Thu, 29 Jan 2026 06:13:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A3230368275;
-	Thu, 29 Jan 2026 06:13:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7733D3783A5;
+	Thu, 29 Jan 2026 06:13:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="K0406ziM"
+	dkim=pass (1024-bit key) header.d=seu.edu.cn header.i=@seu.edu.cn header.b="N+33e20h"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mail-m49198.qiye.163.com (mail-m49198.qiye.163.com [45.254.49.198])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7E0C7352923
-	for <linux-wireless@vger.kernel.org>; Thu, 29 Jan 2026 06:13:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ABF03352923;
+	Thu, 29 Jan 2026 06:13:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.254.49.198
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769667201; cv=none; b=FBUHmjifJXBmtUKL2w8h00RRUWEb+yACiCrQvU/RtC7Cd+Iv/cFz7bcypEnaBm8gfBOlLBvN+XaKyIWzCq0I0n4PoK2XT80JW24ISYht+qwF7rxOiWE+2ZQz5M6NtvXr8GGNU3lYoU5JK0tCz52u3kwPoJhZ0ykc1JfayZWYxh4=
+	t=1769667220; cv=none; b=HAP6VWrpkOEbsCh2LfF2iFzb3OeOeyElEMMqQQzXi5iP304dMeWVmVG2CbcNCeqFx/bgBLuLqXd/bHxnxZiWisXbJd6mPfwAtZeFKOM1kmweApiZLfkI7wpSQURFYdytZOPM9MmV7p9trRUfFQpw7/HmzNZavvx46PaEVMYjfrU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769667201; c=relaxed/simple;
-	bh=BFbjrLJ/PTbN1EwdFqpx7TU5Rs4CEN760xmvAW7LfoY=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=Csp4/K7d7Lqyzw8ukA6vXjPTGXyF1R5KHZsPViSjd4G6mWkRj+gCCm9rSnjKbwndvqUxmyWmfFGnT/b3wKpsspdX7c807BsrrOgFnJ63XkI8T0QPlkRGxN+HvTYBPKC2OLYIahr8ubm+K7SsEwDqkn3lPe1ePIvvtiBGJhJwZjs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=K0406ziM; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1B5D1C19425
-	for <linux-wireless@vger.kernel.org>; Thu, 29 Jan 2026 06:13:21 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1769667201;
-	bh=BFbjrLJ/PTbN1EwdFqpx7TU5Rs4CEN760xmvAW7LfoY=;
-	h=References:In-Reply-To:Reply-To:From:Date:Subject:To:Cc:From;
-	b=K0406ziMm41sPKGR7QIFzk3a0dYiPlMQEpL+IY3/oGKhkEMD6nil35UXu8y6IoL+C
-	 pqOVIEDL4yv3xhbi4CdHvO6r8ANKQKOm6lIcN7e0YuKCxbg87KOIixZwf+xWMgBSbf
-	 ycUhH/0VjcOEja2eo6BNM6DI7HICP2rzkO0FBhbGL04xlQWCaIxRv/QwRT2WmbfVLm
-	 dxrbafVWIXn9nDx7Gx44oWg+xF/+Djfqv4hrjiTFmLK/W8eFXCxxFzffuEwan4zrV5
-	 BDXF3pqzgDz6Y6WelmGQj0toRMGuHvDDUFb62wzWyd+MkIQCtv8YZodCtkYkFQQJTG
-	 9uZ8a2h6KbvNg==
-Received: by mail-lj1-f169.google.com with SMTP id 38308e7fff4ca-382fb535b73so5149281fa.0
-        for <linux-wireless@vger.kernel.org>; Wed, 28 Jan 2026 22:13:21 -0800 (PST)
-X-Gm-Message-State: AOJu0YzE9nrCr0dWV8RvFKsWgOzLL3Df8/cuxSEhMz6nTZ1Dk3jJSisE
-	imMVPTG9UjphW2QrJUIg0Hl8ct9rUMt4S7T6e2HP3zOF1nY5qu27XPPKbdrhEkdK6RGsttnPz9H
-	EkicIMpDkUB0zzksHinQjzynPGYWDLEM=
-X-Received: by 2002:a05:6512:4019:b0:59c:b91d:3a56 with SMTP id
- 2adb3069b0e04-59e04013e12mr2740311e87.2.1769667199411; Wed, 28 Jan 2026
- 22:13:19 -0800 (PST)
+	s=arc-20240116; t=1769667220; c=relaxed/simple;
+	bh=LAxJ4r2khmYzrFy0IaJ5OE5g69m/iuKnXCOPaX9F2Hg=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version; b=UwYqX3OKTSI6q9XPqtXFCNJfXiEp82JvHngfkYxp9xTB4NmeUhhvihOApMKvawIPx4dg9VUgjtpUfgv7XDT+JZdhhJLZlSgQU7Oy4jqvFKhJl3rAcAlHyGJpy0vYCvUKReTWPQFg224xsLk0CwC7vAjvhLbruIp2UP+DfFaWOhA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=seu.edu.cn; spf=pass smtp.mailfrom=seu.edu.cn; dkim=pass (1024-bit key) header.d=seu.edu.cn header.i=@seu.edu.cn header.b=N+33e20h; arc=none smtp.client-ip=45.254.49.198
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=seu.edu.cn
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=seu.edu.cn
+Received: from LAPTOP-N070L597.localdomain (unknown [221.228.238.82])
+	by smtp.qiye.163.com (Hmail) with ESMTP id 3262103f5;
+	Thu, 29 Jan 2026 14:13:31 +0800 (GMT+08:00)
+From: Zilin Guan <zilin@seu.edu.cn>
+To: jeff.johnson@oss.qualcomm.com
+Cc: ath11k@lists.infradead.org,
+	baochen.qiang@oss.qualcomm.com,
+	jianhao.xu@seu.edu.cn,
+	jjohnson@kernel.org,
+	linux-kernel@vger.kernel.org,
+	linux-wireless@vger.kernel.org,
+	zilin@seu.edu.cn
+Subject: Re: [PATCH v2] wifi: ath11k: fix memory leaks in beacon template setup
+Date: Thu, 29 Jan 2026 06:13:30 +0000
+Message-Id: <20260129061330.796429-1-zilin@seu.edu.cn>
+X-Mailer: git-send-email 2.34.1
+In-Reply-To: <6cc72c12-6f50-4e91-9b7a-bde8633009c4@oss.qualcomm.com>
+References: <6cc72c12-6f50-4e91-9b7a-bde8633009c4@oss.qualcomm.com>
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260128102525.872517-1-gaurav.kansal@nic.in> <CAHrRpuk7Xqab+BC57m_5KWJVr8rc+_LHWwKr-pWmvR3y9W2ghA@mail.gmail.com>
-In-Reply-To: <CAHrRpuk7Xqab+BC57m_5KWJVr8rc+_LHWwKr-pWmvR3y9W2ghA@mail.gmail.com>
-Reply-To: wens@kernel.org
-From: Chen-Yu Tsai <wens@kernel.org>
-Date: Thu, 29 Jan 2026 14:13:07 +0800
-X-Gmail-Original-Message-ID: <CAGb2v64jhYNkf_O-mkhcE3=zpvpDG7C54WJEDfn1sKM1hB9GFw@mail.gmail.com>
-X-Gm-Features: AZwV_QiVnR2uKuydYO8raxzfaSV1FXqRXAOJyIHTjzFjWAV068fe-Hz3dhHQoLE
-Message-ID: <CAGb2v64jhYNkf_O-mkhcE3=zpvpDG7C54WJEDfn1sKM1hB9GFw@mail.gmail.com>
-Subject: Re: [PATCH] wireless-regdb: add IN rules for lower 6 GHz (5925-6425
- MHz) LPI and VLP
-To: gaurav.kansal@nic.in
-Cc: linux-wireless@vger.kernel.org, wireless-regdb@lists.infradead.org, 
-	Ping-Ke Shih <pkshih@gmail.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
+X-HM-Tid: 0a9c0862afff03a1kunme0f4efb7101759
+X-HM-MType: 10
+X-HM-Spam-Status: e1kfGhgUHx5ZQUpXWQgPGg8OCBgUHx5ZQUlOS1dZFg8aDwILHllBWSg2Ly
+	tZV1koWUFITzdXWS1ZQUlXWQ8JGhUIEh9ZQVlDGU5MVktDQ04ZTB1NTUJDS1YeHw5VEwETFhoSFy
+	QUDg9ZV1kYEgtZQVlJSUpVSUlDVUlIQ1VDSVlXWRYaDxIVHRRZQVlPS0hVSktJSE5DQ1VKS0tVS1
+	kG
+DKIM-Signature: a=rsa-sha256;
+	b=N+33e20hZPujV9M4SD7xaqas3npKFRMKKSSOOir1i5JvxRvctx8KW3XzrUeVG+4zlGZGjyuKumJtt0E1T5zwvyOLRMitdG5a7puLGouLfO2kzleozibEq64/YaHZ9CLKJH3xVwvUY6PWQiJYD0v9i2vk3DeJ2cydFl1lRnoSYZs=; s=default; c=relaxed/relaxed; d=seu.edu.cn; v=1;
+	bh=1aP+p3pkuZEJ5WqF20qIXkmTR7lKKQv4XO2CS/5zgQk=;
+	h=date:mime-version:subject:message-id:from;
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [-0.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
-	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
+	MID_CONTAINS_FROM(1.00)[];
+	DMARC_POLICY_ALLOW(-0.50)[seu.edu.cn,none];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
+	R_DKIM_ALLOW(-0.20)[seu.edu.cn:s=default];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FREEMAIL_CC(0.00)[vger.kernel.org,lists.infradead.org,gmail.com];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	DKIM_TRACE(0.00)[kernel.org:+];
-	TO_DN_SOME(0.00)[];
-	TAGGED_FROM(0.00)[bounces-31291-lists,linux-wireless=lfdr.de];
-	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-31292-lists,linux-wireless=lfdr.de];
+	TO_DN_NONE(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	REPLYTO_DOM_NEQ_TO_DOM(0.00)[];
-	MISSING_XM_UA(0.00)[];
-	HAS_REPLYTO(0.00)[wens@kernel.org];
-	RCVD_COUNT_FIVE(0.00)[5];
-	REPLYTO_ADDR_EQ_FROM(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[wens@kernel.org,linux-wireless@vger.kernel.org];
-	RCPT_COUNT_THREE(0.00)[4];
+	FROM_HAS_DN(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[zilin@seu.edu.cn,linux-wireless@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	TAGGED_RCPT(0.00)[linux-wireless];
+	RCPT_COUNT_SEVEN(0.00)[8];
 	NEURAL_HAM(-0.00)[-1.000];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[wikipedia.org:url,mail.gmail.com:mid,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,gauravkansal.in:url,nic.in:email,dot.gov.in:url,cra.ir:url]
-X-Rspamd-Queue-Id: 6CC9DAC2A6
+	DKIM_TRACE(0.00)[seu.edu.cn:+];
+	TAGGED_RCPT(0.00)[linux-wireless];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	MIME_TRACE(0.00)[0:+];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,qualcomm.com:email]
+X-Rspamd-Queue-Id: 4071AAC2AF
 X-Rspamd-Action: no action
 
-On Thu, Jan 29, 2026 at 10:10=E2=80=AFAM Ping-Ke Shih <pkshih@gmail.com> wr=
-ote:
->
-> <gaurav.kansal@nic.in> wrote=EF=BC=9A
-> >
-> > From: Gaurav Kansal <gaurav.kansal@nic.in>
-> >
-> >     DoT / Gazette notification (20 Jan 2026) delicensed lower 6 GHz (59=
-25-6425 MHz).
-> >     Add rules for:
-> >      - Low Power Indoor (LPI) 5925-6425 MHz, up to 1000 mW (30 dBm) EIR=
-P, NO-OUTDOOR
-> >      - Very Low Power (VLP) 5925-6425 MHz, up to 25 mW (14 dBm) EIRP
-> >
-> >     References:
-> >      - DoT / Gazette notification (Jan 20, 2026)
-> >        https://blog.gauravkansal.in/2026/01/Gazette%20on%20the%20Use%20=
-of%20Low%20Power%20and%20Very%20Low%20Power%20Wireless%20Access%20System%20=
-in%20Lower%206%20GHz%20band%20-%202026.pdf
->
-> Is it possible to tag original official link?
->
-> >        https://blog.gauravkansal.in/2026/01/Opening-India-Lower-6-GHz-B=
-and-for-Wireless-Use:-A-Strategic-Regulatory-Landmark.html
-> >        https://en.wikipedia.org/w/index.php?title=3DList_of_WLAN_channe=
-ls#India_2
-> >      - Linux wireless-regdb db.txt format docs
-> >     Signed-off-by: Gaurav Kansal gaurav.kansal@nic.in
-
-Somehow your commit message is indented.
-
-Please have an empty line before the Signed-off-by.
-
+On Wed, Jan 28, 2026 at 08:30:22AM -0800, Jeff Johnson wrote:
+> On 1/19/2026 10:37 PM, Zilin Guan wrote:
+> > The functions ath11k_mac_setup_bcn_tmpl_ema() and
+> > ath11k_mac_setup_bcn_tmpl_mbssid() allocate memory for beacon templates
+> > but fail to free it when parameter setup returns an error.
+> > 
+> > Since beacon templates must be released during normal execution, they
+> > must also be released in the error handling paths to prevent memory
+> > leaks.
+> > 
+> > Fix this by adding the missing deallocation calls in the respective
+> > error paths.
+> > 
+> > Compile tested only. Issue found using a prototype static analysis tool
+> > and code review.
+> > 
+> > Fixes: 3a415daa3e8b ("wifi: ath11k: add P2P IE in beacon template")
+> > Fixes: 335a92765d30 ("wifi: ath11k: MBSSID beacon support")
+> > Suggested-by: Baochen Qiang <baochen.qiang@oss.qualcomm.com>
+> > Signed-off-by: Zilin Guan <zilin@seu.edu.cn>
 > > ---
-> >  db.txt | 8 ++++++++
-> >  1 file changed, 8 insertions(+)
-> >
-> > diff --git a/db.txt b/db.txt
-> > index dc72989..0f90f6e 100644
-> > --- a/db.txt
-> > +++ b/db.txt
-> > @@ -974,12 +974,20 @@ country IL: DFS-ETSI
-> >  # Source:
-> >  # https://dot.gov.in/spectrummanagement/delicensing-24-24835-ghz-band-=
-gsr-45-e-5150-5350-ghz-gsr-46-e-and-5725-5875-ghz
-> >  # https://dot.gov.in/spectrummanagement/license-exemption-5-ghz-gsr-10=
-48e-dated-22102018
-> > +# Info about 6 GHz added by Gaurav Kansal (gaurav.kansal@nic.in)
-> > +# Lower 6 GHz delicensed for India: 5925-6425 MHz (on 21.Jan.2026)
-> > +# LPI: Low Power Indoor (indoor only) =E2=80=94 1000 mW =3D 30 dBm EIR=
-P
-> > +# VLP: Very Low Power (outdoor allowed at very low EIRP) =E2=80=94 25 =
-mW =3D 14 dBm EIRP
-> > +# https://blog.gauravkansal.in/2026/01/Opening-India-Lower-6-GHz-Band-=
-for-Wireless-Use:-A-Strategic-Regulatory-Landmark.html
-> > +# https://blog.gauravkansal.in/2026/01/Gazette%20on%20the%20Use%20of%2=
-0Low%20Power%20and%20Very%20Low%20Power%20Wireless%20Access%20System%20in%2=
-0Lower%206%20GHz%20band%20-%202026.pdf
-> >  country IN:
-> >         (2402 - 2482 @ 40), (30)
-> >         (5150 - 5250 @ 80), (30)
-> >         (5250 - 5350 @ 80), (24), DFS
-> >         (5470 - 5725 @ 160), (24), DFS
-> >         (5725 - 5875 @ 80), (30)
-> > +       (5925 - 6425 @ 320), (1000 mW), NO-OUTDOOR, AUTO-BW
->
-> I'd prefer in unit of dBm as [1].
+> > Changes in v2:
+> > - Use unified exit paths for cleanup.
+> > 
+> >  drivers/net/wireless/ath/ath11k/mac.c | 25 +++++++++++++++----------
+> >  1 file changed, 15 insertions(+), 10 deletions(-)
+> > 
+> > diff --git a/drivers/net/wireless/ath/ath11k/mac.c b/drivers/net/wireless/ath/ath11k/mac.c
+> > index 4dfd08b58416..42edcc5e9e49 100644
+> > --- a/drivers/net/wireless/ath/ath11k/mac.c
+> > +++ b/drivers/net/wireless/ath/ath11k/mac.c
+> > @@ -1561,8 +1561,10 @@ static int ath11k_mac_setup_bcn_tmpl_ema(struct ath11k_vif *arvif,
+> 
+> while looking to apply this patch I noticed the following logic earlier in the
+> function:
+> 
+>  	beacons = ieee80211_beacon_get_template_ema_list(tx_arvif->ar->hw,
+>  							 tx_arvif->vif, 0);
+>  	if (!beacons || !beacons->cnt) {
+>  		ath11k_warn(arvif->ar->ab,
+>  			    "failed to get ema beacon templates from mac80211\n");
+>  		return -EPERM;
+>  	}
+> 
+> I did not look at ieee80211_beacon_get_template_ema_list()
+> But if it is possible that this can return a valid beacons pointer with
+> beacons->cnt == 0, then won't this also leak the beacons allocation?
+> 
+> Given that ieee80211_beacon_free_ema_list(beacons) can handle a NULL
+> beacons pointer, perhaps this should also goto free?
 
-Please stick with what the official document uses.
+Hi Jeff,
 
-> I think no need AUTO-BW that is to merge adjacent rules to have large ban=
-dwidth.
->
-> > +        (5925 - 6425 @ 320), (25 mW), AUTO-BW
->
-> Use tab as indent instead.
->
-> I'm not aware we can possibly have two entries with the same frequency ra=
-nge,
-> and I only added one entry for indoor (or no indoor/outdoor restriction) =
-before.
-> Checking freq_reg_info_regd(), I think only first matched entry is adopte=
-d, but
-> no error to build reg-db by 'make'.
+Thanks for pointing that out.
 
-That's my impression as well. Linux cannot handle two rules for the same
-band. Only one is ever used.
+I looked into the allocation chain for 
+ieee80211_beacon_get_template_ema_list():
 
+ieee80211_beacon_get_template_ema_list()
+	|__ __ieee80211_beacon_get()
+		|__ ieee80211_beacon_get_ap_ema_list()
 
-ChenYu
+It seems that ieee80211_beacon_get_ap_ema_list() only returns a valid 
+pointer when ema->cnt is non-zero. Therefore, a valid beacons pointer with 
+beacons->cnt == 0 is likely unreachable under the current mac80211 
+implementation, making the existing check more of a defensive programming
+measure.
 
-> >
-> >  # Source:
-> >  # https://asnad.cra.ir/fa/Public/Documents/Details/73af8590-f065-eb11-=
-968f-0050569b0899
-> > --
-> > 2.47.3
-> >
-> >
+However, for the sake of strict logical consistency, it would make sense 
+to use the goto path there as well.
+
+Do you think it's worth updating this in a v3, or is the current v2 
+sufficient given the current call logic?
+
+Best regards, 
+Zilin
 
