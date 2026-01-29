@@ -1,81 +1,81 @@
-Return-Path: <linux-wireless+bounces-31303-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-31304-lists+linux-wireless=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id +IvwOk4Ye2lCBQIAu9opvQ
-	(envelope-from <linux-wireless+bounces-31303-lists+linux-wireless=lfdr.de@vger.kernel.org>)
-	for <lists+linux-wireless@lfdr.de>; Thu, 29 Jan 2026 09:20:30 +0100
+	id gG60NHYYe2lCBQIAu9opvQ
+	(envelope-from <linux-wireless+bounces-31304-lists+linux-wireless=lfdr.de@vger.kernel.org>)
+	for <lists+linux-wireless@lfdr.de>; Thu, 29 Jan 2026 09:21:10 +0100
 X-Original-To: lists+linux-wireless@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 50046AD6E2
-	for <lists+linux-wireless@lfdr.de>; Thu, 29 Jan 2026 09:20:30 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1DC48AD708
+	for <lists+linux-wireless@lfdr.de>; Thu, 29 Jan 2026 09:21:10 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 8CB3130490CB
-	for <lists+linux-wireless@lfdr.de>; Thu, 29 Jan 2026 08:18:57 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 3215030580B8
+	for <lists+linux-wireless@lfdr.de>; Thu, 29 Jan 2026 08:19:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6105A37C0E3;
-	Thu, 29 Jan 2026 08:18:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 12A703783C9;
+	Thu, 29 Jan 2026 08:18:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="XbOrnyCQ"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="D7WES9ZF"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-dl1-f42.google.com (mail-dl1-f42.google.com [74.125.82.42])
+Received: from mail-dl1-f66.google.com (mail-dl1-f66.google.com [74.125.82.66])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C71E4378D8C
-	for <linux-wireless@vger.kernel.org>; Thu, 29 Jan 2026 08:18:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.82.42
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8A76E23F26A
+	for <linux-wireless@vger.kernel.org>; Thu, 29 Jan 2026 08:18:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.82.66
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769674734; cv=none; b=kYKuS3J4m77vSErof+Uo/aVZvI+BNzYSNP1PBWwI9fRAD2/fodIabsBwc4aAfMjgMMPSAENU2exsluKNmLRuhMdT7ptUD2bkPBI7IB//CAsNcGiol4ZBTY+vg6ItjzcUzoP17QgWaXAb9TehE9M2Y7oLhaw/7kofHvRUzk4ln74=
+	t=1769674736; cv=none; b=hzBQtjJA9z1Sy/K6L7aARb3nDEvfzdbXSgukkQQKMcPhVrYokWFC3kG6MenWdoX05tQLnV8XSuP8sL0/yx5xOYaCIbLFwnRVLHxMuCg1wHiEBCgXDdPqKFc0JZDWAOikFXpYU4TaXlkCH5LB4bzahLhLdAolULzReJAFnuRESzs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769674734; c=relaxed/simple;
-	bh=zLCOroas8zXs/FEWrMgLQ0DEsN6MpeN96pQBLNH+XAM=;
+	s=arc-20240116; t=1769674736; c=relaxed/simple;
+	bh=xl3UgJeqbTdzlSajXSm9VOSPzyX9z7hRNR2pLFxKQuk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=jPr2B2c5t1lD1/Oe5gg4GY7QUxUEXyG1SLZH1+ze46oLU2OYEc4yc7694WQzmu+Cak/BKzukZazRPdH5S3ty981213Xhph0wlXrP0vpJj2xoPh3toU2c/B2wOXgvZTiZNA+IKVpDFvpKc0zkf+gnA7EpwFHPX3MoMoeX1rmYvr0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=zacbowling.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=XbOrnyCQ; arc=none smtp.client-ip=74.125.82.42
+	 MIME-Version; b=jqHsAbadQcKClZP+L1uEJ8RQOtPJ8/6ibAMXHi7KWdtPuSD8iqMD/wp6ITLLN9SfOD6OJNoV/4g4CHtpUP6sPFgHEqMTk8/bmjG8pxRwU9pwoSNUUHTzf12vuitx9KDGqwEt3Dq+JVskOmSC1DtI51CJiXCsvFU4gsIfGzZR8oo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=zacbowling.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=D7WES9ZF; arc=none smtp.client-ip=74.125.82.66
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=zacbowling.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-dl1-f42.google.com with SMTP id a92af1059eb24-1233c155a42so1054020c88.1
-        for <linux-wireless@vger.kernel.org>; Thu, 29 Jan 2026 00:18:52 -0800 (PST)
+Received: by mail-dl1-f66.google.com with SMTP id a92af1059eb24-124a635476fso976265c88.0
+        for <linux-wireless@vger.kernel.org>; Thu, 29 Jan 2026 00:18:54 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1769674732; x=1770279532; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1769674733; x=1770279533; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:sender:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=sv2sCi1LhoxanCq/pgAsKlL6gjjvT4vp60gwfpl3NMU=;
-        b=XbOrnyCQ1qaMsObaBNZE92bk0HdIORm4ZnIxtSUrQKZy83NntCu6NAkA83bV1UXOqW
-         Dep2BUGPKAJKSLVmMZ6713nycnCKUrJf9RZe8wBhAzZNfqc641+xqhD23N9x/mg+YpVy
-         igVqRCF3oL6rBg2iGOVqn6F4m86jDyAQGiJo1cbeJx+aUU0l3SAMcQPDo4vXyuTBO738
-         74m0/y3v1eFpUSk5HDv2FyBjIEK81rhqov2l7leA2SE26mw+k8Uexc4Owu0bOtnmlZKt
-         oLduvCS8rGPl93mlPwxeoeEZVrxGoNK9EDBsO6Rx4H6PeCKh6KRtceeZ434oSwLuYmMc
-         uWhw==
+        bh=UKrm2KEh+DPYHiCEU3ivvoqMw474gqaI6xe0hQwvxHI=;
+        b=D7WES9ZF158rHXc0DHk0UPnBeXIuiMxh8L3KvuwRbSpWQn7FkROjz9Orr2nU6qiO6v
+         e3GGAYZROKzXHcNzge9kV9hQTtxA7SB/BLDNLP2FTYqGrX9VT/nqqtvmFFnKw+fCno8g
+         QUrilUAQ2HOsOT7CqZZbDgr+ng+KJToUX1UTZ6LZvSKhE96zPROAq/uCf+52Jeuxc5MR
+         w/ww9P2sA4411PZxQu8pPqr6Fp0xjqSECrfyRekFxo0uH1AVNiH6vq3t99GOvzCAaR28
+         1slTBY5LoQolyPkobi1u8RbHWZ8eJEOWV78JkjdIQI2m1CJDR9FKKEMmahIxxYU/l65W
+         F/HA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1769674732; x=1770279532;
+        d=1e100.net; s=20230601; t=1769674733; x=1770279533;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:sender:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=sv2sCi1LhoxanCq/pgAsKlL6gjjvT4vp60gwfpl3NMU=;
-        b=aIzb17WFh2UpJ2obXO0W2j3mEMIv2Ixcx/1CPyy/LJoaXFjBmOXV2vaUwRYh4nvfXN
-         bicI2bF3ravQ7U2CDAs2WnUdyW+3s1OVg78RNgjBhp4cO6u1AfSXwSrwgMnPa6CdhBff
-         z3s34xMk9Tf/n8lQNBjUmrVnoT+Uq0vp8+9kS7GRGakrQoN3o9ouY3oD5Nw71z4SaHdF
-         dFBVMQdsGKZtIHD8rAQGysAMpjkLSZwr+OoW3TiuIo2DcmXneJAmm7hUyBmtd4nsd1y8
-         20t9WQQTaeDDrzmydQWcnPZ+/SYnWjK4/PnkB8342urQ9iclDl+DgiPEmD19PCP1k7br
-         snNg==
-X-Forwarded-Encrypted: i=1; AJvYcCWka5krfR2N6z4ZCMgcBVGmWEEPrxv07/lA2xK4ZASRLMI2S+FGclhWykz1zCH769OKSqiLCgDWt4f4uWRhvw==@vger.kernel.org
-X-Gm-Message-State: AOJu0Yxc26YoyC5EWNdpnfk7lcmP+Z+KUyIqy6bQ9+XUP+Cx+yG0fNjw
-	2N2KKCueAAjnSO+kOr07ZiC8zm40zeCWD/t8W2N0ubiEniBb6HkukJ0b
-X-Gm-Gg: AZuq6aLqinkNYdA8JA5xjoliRAGMQFp8TAMGhdIqGQgx+72w/x7C7jR2fUtqTibIQ8V
-	ydUc2rUzyE3FTqhTbRIUI4d1STFF416VPqWw5ZM05W9jjAbVMsdEDlP2a/dT+pEPakcusAh0l//
-	/Hkuw5do+kH06lAo8HwBiuOD8wZsHteTVeN/R1Zy0r7m/8zE+LWMNYLZ9U7LRaJaqjttzmqVhMA
-	+oKfJGgwHPbMwi5cFligYVOzGijFansN/YUCZNnl1+q3flWZMwg6Ax73NqKt8zwIHKkWCxD/5cT
-	0mubG0Xp8NcLpPo7bydnPQhjQzXzUC+1ypc5UTA0nC7zcPMDDFAVZ4AjfXwaeIlD5sgcdLfTlqM
-	uByT42xef0g74VYdBU6gj7OUm5fjVF38jy5zRkwsa87S18Xzwe1jnCCf6+fAoVAB1aqC4vDSPV8
-	5BSyaQT3CUiEgUlLfbdwOwbJH63OcyNwWTKTyxS+X6JpqghmJ1TGuIiFvxaKswX2gVV/AJql0=
-X-Received: by 2002:a05:7022:6a0:b0:11b:9386:826c with SMTP id a92af1059eb24-124a00d64dbmr5188230c88.41.1769674731965;
-        Thu, 29 Jan 2026 00:18:51 -0800 (PST)
+        bh=UKrm2KEh+DPYHiCEU3ivvoqMw474gqaI6xe0hQwvxHI=;
+        b=dSEyaetOm5Nk2DD2GkwUJLW2fQyNL4q3KR+qGwTl/aPTUFmPBbhYNHm8pevSq4K56z
+         lrVaiKEdi3QUfn9VnGUOo3FYtJOfGl/s9gzqciQyyD9IFk5EbNHbYBfFrs1SXH97L0H0
+         p8GLVyz9VoFgTq8Nb/IrP+ozIQCg78v86UjwU/oKCsJWHX8MRFfr7bEy9ce7X8v2tbOt
+         eJ+xqMHcZEm5h8WkLs0eZgMawTuXG6vJ23gOKKUdw7YeRemvWJ+nQioH18VCdL8HEpHl
+         +Bqvk3aEicvTJxUeULvd5f87Jifpize+GTONcCCUI+MbONgwESJ0CxpTmOI4F16ttU9k
+         +49w==
+X-Forwarded-Encrypted: i=1; AJvYcCUFnFRnsRe4KXXZ1hy9AP/AJXWAdEdb6PD0+ibjCWsw8iDP65Q+7izIAgOch7BGeelx4VIorWqK/eJf3H9vdg==@vger.kernel.org
+X-Gm-Message-State: AOJu0YwX2gCr2cwNej4DaRCpIH7zNd/x6QpFJXwXdyMsFUGF2gk4w7K0
+	TfSunj98kPIZCu6S5LnX0cpuIhEB8fNIJ3r2mUjfLyLb7dTl/Hge+4aA
+X-Gm-Gg: AZuq6aLdsOS6V8cNeJh4cQF1TjfeUVT+7aHexrjqTm1Iop3E6aEilCMpayAXufyHXkI
+	PSPMk+uLb/4IY+pB6Pc6moHP3UCJZAyJO+zIy2YhbGt+k5FVmnwjpQNiKEDLniQESfHT6I1RjS2
+	Kj/i4IutnQsddRcanVsMOIvDajcWgBI9B+vVvYgfDeQYiggnGdPyvc0trw6cY6FBGd8uz7Bl/nz
+	9pOZI+nkcUfA8b6y9CQ+DyAK535AQioiij+ycZ+y7YgBHomdO9hGHI5gqeiEgmLxnEWvGmcgfU9
+	hMjWnidRCawxG1uDJFlHstThcbSltyOgUsNrsi1kd4MA+dqeYFzeHK0Xfy7fcuZPGU5TZ+TAUuK
+	PyzHxb8AvT3qHeXSskvLSSoYYUTHP3tlqNbpMErpm4haLVe31TbVgGbWR8Cc1s14PkrYmjMmo3o
+	SmR9x75OHmRwR96vXrEsEJxohV+Z2/lnkHNVxB7nuRaVP1Ijf0Voqd3NtEfEbJ
+X-Received: by 2002:a05:7022:24a9:b0:122:345:a944 with SMTP id a92af1059eb24-124a00f4ecdmr3632733c88.29.1769674733341;
+        Thu, 29 Jan 2026 00:18:53 -0800 (PST)
 Received: from zcache.home.zacbowling.com ([2001:5a8:60d:bc9:f31e:1cb:296a:cc2a])
-        by smtp.gmail.com with ESMTPSA id a92af1059eb24-124a9efb4casm5483508c88.16.2026.01.29.00.18.50
+        by smtp.gmail.com with ESMTPSA id a92af1059eb24-124a9efb4casm5483508c88.16.2026.01.29.00.18.52
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 29 Jan 2026 00:18:51 -0800 (PST)
+        Thu, 29 Jan 2026 00:18:52 -0800 (PST)
 Sender: Zac Bowling <zbowling@gmail.com>
 From: Zac <zac@zacbowling.com>
 To: nbd@nbd.name
@@ -91,9 +91,9 @@ Cc: deren.wu@mediatek.com,
 	sean.wang@mediatek.com,
 	zac@zacbowling.com,
 	zbowling@gmail.com
-Subject: [PATCH v7 4/6] wifi: mt76: mt7925: add MCU command error handling in ampdu_action
-Date: Thu, 29 Jan 2026 00:18:37 -0800
-Message-ID: <20260129081839.179709-5-zac@zacbowling.com>
+Subject: [PATCH v7 5/6] wifi: mt76: mt7925: add lockdep assertions for mutex verification
+Date: Thu, 29 Jan 2026 00:18:38 -0800
+Message-ID: <20260129081839.179709-6-zac@zacbowling.com>
 X-Mailer: git-send-email 2.52.0
 In-Reply-To: <20260129081839.179709-1-zac@zacbowling.com>
 References: <c9b81e89-cd29-44f2-b4e8-0179b2049c21@nbd.name>
@@ -115,7 +115,7 @@ X-Spamd-Result: default: False [-0.16 / 15.00];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-31303-lists,linux-wireless=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-31304-lists,linux-wireless=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
 	FREEMAIL_CC(0.00)[mediatek.com,kernel.org,vger.kernel.org,lists.infradead.org,frame.work,zacbowling.com,gmail.com];
 	PRECEDENCE_BULK(0.00)[];
@@ -129,80 +129,76 @@ X-Spamd-Result: default: False [-0.16 / 15.00];
 	TO_DN_NONE(0.00)[];
 	RCVD_COUNT_FIVE(0.00)[5];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-0.987];
+	NEURAL_HAM(-0.00)[-0.984];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[linux-wireless];
 	RCPT_COUNT_TWELVE(0.00)[13];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,zacbowling.com:mid,zacbowling.com:email]
-X-Rspamd-Queue-Id: 50046AD6E2
+	DBL_BLOCKED_OPENRESOLVER(0.00)[zacbowling.com:mid,zacbowling.com:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 1DC48AD708
 X-Rspamd-Action: no action
 
-Add proper error handling for MCU command return values that were
-previously being ignored. Without proper error handling, failures in
-MCU communication can leave the driver in an inconsistent state.
+Add lockdep_assert_held() calls to critical MCU functions to help catch
+mutex violations during development and debugging. This follows the
+pattern used in other mt76 drivers (mt7996, mt7915, mt7615).
 
-Changes:
-- Check mt7925_mcu_uni_tx_ba() return value
-- Check mt7925_mcu_uni_rx_ba() return value
-- Return error to mac80211 on failure
+Functions with new assertions:
+- mt7925_mcu_add_bss_info(): Core BSS configuration MCU command
+- mt7925_mcu_sta_update(): Station record update MCU command
+- mt7925_mcu_uni_bss_ps(): Power save state MCU command
 
-Special case for IEEE80211_AMPDU_TX_STOP_CONT:
-The ieee80211_stop_tx_ba_cb_irqsafe() callback is kept unconditional
-because during beacon loss, the MCU command may fail but mac80211
-MUST be notified to complete the BA session teardown. Otherwise the
-state machine gets stuck and triggers WARN in
-__ieee80211_stop_tx_ba_session(). This matches the behavior of mt7921
-and mt7996 drivers.
+These functions modify firmware state and must be called with the
+device mutex held to prevent race conditions. The lockdep assertions
+will trigger warnings at runtime if code paths exist that call these
+functions without proper mutex protection.
 
-Fixes: c948b5da6bbe ("wifi: mt76: mt7925: add Mediatek Wi-Fi7 driver for mt7925 device")
+Also fixes a potential NULL pointer issue in mt7925_mcu_sta_update()
+by initializing mlink to NULL and checking it before use.
+
 Signed-off-by: Zac Bowling <zac@zacbowling.com>
 ---
- drivers/net/wireless/mediatek/mt76/mt7925/main.c | 13 +++++++++----
- 1 file changed, 9 insertions(+), 4 deletions(-)
+ drivers/net/wireless/mediatek/mt76/mt7925/mcu.c | 10 ++++++++--
+ 1 file changed, 8 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7925/main.c b/drivers/net/wireless/mediatek/mt76/mt7925/main.c
-index 82de6f30ec27..8236edb1fb48 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7925/main.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7925/main.c
-@@ -1300,22 +1300,22 @@ mt7925_ampdu_action(struct ieee80211_hw *hw, struct ieee80211_vif *vif,
- 	case IEEE80211_AMPDU_RX_START:
- 		mt76_rx_aggr_start(&dev->mt76, &msta->deflink.wcid, tid, ssn,
- 				   params->buf_size);
--		mt7925_mcu_uni_rx_ba(dev, params, true);
-+		ret = mt7925_mcu_uni_rx_ba(dev, params, true);
- 		break;
- 	case IEEE80211_AMPDU_RX_STOP:
- 		mt76_rx_aggr_stop(&dev->mt76, &msta->deflink.wcid, tid);
--		mt7925_mcu_uni_rx_ba(dev, params, false);
-+		ret = mt7925_mcu_uni_rx_ba(dev, params, false);
- 		break;
- 	case IEEE80211_AMPDU_TX_OPERATIONAL:
- 		mtxq->aggr = true;
- 		mtxq->send_bar = false;
--		mt7925_mcu_uni_tx_ba(dev, params, true);
-+		ret = mt7925_mcu_uni_tx_ba(dev, params, true);
- 		break;
- 	case IEEE80211_AMPDU_TX_STOP_FLUSH:
- 	case IEEE80211_AMPDU_TX_STOP_FLUSH_CONT:
- 		mtxq->aggr = false;
- 		clear_bit(tid, &msta->deflink.wcid.ampdu_state);
--		mt7925_mcu_uni_tx_ba(dev, params, false);
-+		ret = mt7925_mcu_uni_tx_ba(dev, params, false);
- 		break;
- 	case IEEE80211_AMPDU_TX_START:
- 		set_bit(tid, &msta->deflink.wcid.ampdu_state);
-@@ -1324,6 +1324,11 @@ mt7925_ampdu_action(struct ieee80211_hw *hw, struct ieee80211_vif *vif,
- 	case IEEE80211_AMPDU_TX_STOP_CONT:
- 		mtxq->aggr = false;
- 		clear_bit(tid, &msta->deflink.wcid.ampdu_state);
-+		/* MCU command may fail during beacon loss, but callback must
-+		 * always be called to complete the BA session teardown in
-+		 * mac80211. Otherwise the state machine gets stuck and triggers
-+		 * WARN in __ieee80211_stop_tx_ba_session().
-+		 */
- 		mt7925_mcu_uni_tx_ba(dev, params, false);
- 		ieee80211_stop_tx_ba_cb_irqsafe(vif, sta->addr, tid);
- 		break;
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7925/mcu.c b/drivers/net/wireless/mediatek/mt76/mt7925/mcu.c
+index 1379bf6a26b5..2ed4af282120 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7925/mcu.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7925/mcu.c
+@@ -1532,6 +1532,8 @@ int mt7925_mcu_uni_bss_ps(struct mt792x_dev *dev,
+ 		},
+ 	};
+ 
++	lockdep_assert_held(&dev->mt76.mutex);
++
+ 	if (link_conf->vif->type != NL80211_IFTYPE_STATION)
+ 		return -EOPNOTSUPP;
+ 
+@@ -2032,13 +2034,15 @@ int mt7925_mcu_sta_update(struct mt792x_dev *dev,
+ 		.rcpi = to_rcpi(rssi),
+ 	};
+ 	struct mt792x_sta *msta;
+-	struct mt792x_link_sta *mlink;
++	struct mt792x_link_sta *mlink = NULL;
++
++	lockdep_assert_held(&dev->mt76.mutex);
+ 
+ 	if (link_sta) {
+ 		msta = (struct mt792x_sta *)link_sta->sta->drv_priv;
+ 		mlink = mt792x_sta_to_link(msta, link_sta->link_id);
+ 	}
+-	info.wcid = link_sta ? &mlink->wcid : &mvif->sta.deflink.wcid;
++	info.wcid = (link_sta && mlink) ? &mlink->wcid : &mvif->sta.deflink.wcid;
+ 	info.newly = state != MT76_STA_INFO_STATE_ASSOC;
+ 
+ 	return mt7925_mcu_sta_cmd(&dev->mphy, &info);
+@@ -2840,6 +2844,8 @@ int mt7925_mcu_add_bss_info(struct mt792x_phy *phy,
+ 	struct mt792x_link_sta *mlink_bc;
+ 	struct sk_buff *skb;
+ 
++	lockdep_assert_held(&dev->mt76.mutex);
++
+ 	skb = __mt7925_mcu_alloc_bss_req(&dev->mt76, &mconf->mt76,
+ 					 MT7925_BSS_UPDATE_MAX_SIZE);
+ 	if (IS_ERR(skb))
 -- 
 2.52.0
 
