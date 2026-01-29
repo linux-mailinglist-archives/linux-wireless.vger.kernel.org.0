@@ -1,105 +1,104 @@
-Return-Path: <linux-wireless+bounces-31295-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-31296-lists+linux-wireless=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id eITYOVcPe2nqAwIAu9opvQ
-	(envelope-from <linux-wireless+bounces-31295-lists+linux-wireless=lfdr.de@vger.kernel.org>)
-	for <lists+linux-wireless@lfdr.de>; Thu, 29 Jan 2026 08:42:15 +0100
+	id CBK2G4sPe2nqAwIAu9opvQ
+	(envelope-from <linux-wireless+bounces-31296-lists+linux-wireless=lfdr.de@vger.kernel.org>)
+	for <lists+linux-wireless@lfdr.de>; Thu, 29 Jan 2026 08:43:07 +0100
 X-Original-To: lists+linux-wireless@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id 22034ACDB7
-	for <lists+linux-wireless@lfdr.de>; Thu, 29 Jan 2026 08:42:15 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 81009ACDDF
+	for <lists+linux-wireless@lfdr.de>; Thu, 29 Jan 2026 08:43:06 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id C372F30657ED
-	for <lists+linux-wireless@lfdr.de>; Thu, 29 Jan 2026 07:33:46 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id D049230038FA
+	for <lists+linux-wireless@lfdr.de>; Thu, 29 Jan 2026 07:41:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D2281374172;
-	Thu, 29 Jan 2026 07:33:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2E4FE37A4AA;
+	Thu, 29 Jan 2026 07:41:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="NObh+eyw";
-	dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b="ScyLHaV6"
+	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="SfLBL3lg";
+	dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b="R0+balBU"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 164DA37AA9C
-	for <linux-wireless@vger.kernel.org>; Thu, 29 Jan 2026 07:33:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B71903793B5
+	for <linux-wireless@vger.kernel.org>; Thu, 29 Jan 2026 07:41:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769672019; cv=none; b=JdJPjH/Z0FRrjYoGLkPKeTg/zQeI09Ccp3/pyyqFZkuNATccpQ5TnPHMwQPZVZ7G/kGl8box0dkrChQjbA8edFhH7tlc0zpLkkgcgZ4OjqhGPEwWp3q8JA3ApJ+tbe2x86JO+kd4zATLOCUuyylw7oTOQM7QPE99hM9r3KsPRXE=
+	t=1769672510; cv=none; b=syffDwDzeunYAbWnNMxkh9RlDP5yP01Ukl7ozzJmw/gwJIKCVmytTxLkLWuDoH1db3vNeZsGkl21trUvL4hdbY9DVhSezpnwStiL1cSI4GXv0hOZlJOVyGxBnMaaWUaGTAsuYyQfhVXR60PCLb8Td23AvRK7DcKS1IJ4HeIywLo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769672019; c=relaxed/simple;
-	bh=3gX8HijMuiImGXMdc1PwLzWh9h64CmK9IqJuZWG9xx4=;
+	s=arc-20240116; t=1769672510; c=relaxed/simple;
+	bh=eZtO11sCVrsZEt9ca7rQFZRXz0mz1fmSu7KIntlknKg=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=F0uLjVcYnF71QNurJzOEcFsZRbx0XBaSGp8nA75z9mlCJ61e2O6rhiSsvktVUTKcjqJMeRdbn8M7QFpcDgBoq+EDz/xBnMxRZcin6sdaFfIhuCttny4HvVM2E5augJ5drb44RWwtxkZ6TlPajjvaIadP33YSK0pXNSxfwuwWaJ4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=NObh+eyw; dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b=ScyLHaV6; arc=none smtp.client-ip=205.220.180.131
+	 In-Reply-To:Content-Type; b=K0c0P5OrgozxBdtjkTmSHupDoSn4LDwMVkZhY31lpuZ6mstjdpVM1l8fOSEvMKtTrKYJmAO1ppTeCWlwUofP5thTBgYncR55dqDBmV9e27aWrvF5Y5ClZm2v2qLpZ698tsXNZ8oDrrup3jrvLdctiB2luYzHPv7KOep0JkmIKtk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=SfLBL3lg; dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b=R0+balBU; arc=none smtp.client-ip=205.220.180.131
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
-Received: from pps.filterd (m0279873.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 60T2qFBo1525164
-	for <linux-wireless@vger.kernel.org>; Thu, 29 Jan 2026 07:33:37 GMT
+Received: from pps.filterd (m0279871.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 60T3AG8w1430614
+	for <linux-wireless@vger.kernel.org>; Thu, 29 Jan 2026 07:41:46 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
 	cc:content-transfer-encoding:content-type:date:from:in-reply-to
 	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
-	ITzCif2SI49ds4TIjmAR6gichOGOkzNCxPnwrIbXTi0=; b=NObh+eywbGUpFXGT
-	/3KVp/sc5xn4eiQLvsiqekoAL7rp/FVmeCVnPkrpf6W48g16KZXkZ6J2CvgUGmE6
-	6toNvNano3DRBjcvSH6kWn6qure79mCzwNdzJ9WNJVb3okfnHOlRdesTd6yyvEFK
-	SGFWPXDwwZv38rbjDgD3Xx00B7tFq0FmnzMpDsEeO3zbnw6PhF/UeZQBit6z+eoS
-	FtIHel08EIlbRxhG1t99M5nGdHuZ+b4hPMNBhMLqRMJ7EsgupLrDep8YRyPiIWg9
-	W6AjprVSuqxeErknx8vlPF87V+TMBg3D0jCAVz5Blpr+p3Qa3Xsl3XyGgjJQGI2j
-	FO+V9A==
-Received: from mail-pf1-f199.google.com (mail-pf1-f199.google.com [209.85.210.199])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4byjxhua52-1
+	y9Sd7B3R6gxbF70iE8GarZzUrZaOcL1TXv3dhtu2ryc=; b=SfLBL3lgAldu9dZJ
+	upYMeKtp7yLvzICySyDNFw3dl19fysQIS43C5Py525NqNLT0e7GpEtBYXQKuFvhy
+	bdJYSVbCojnQD16i5eMo6RPOhFSrHjtlprxFzgpbYAuWUFRIf5RQfgkFRl/epPRb
+	9EfEp1xXOKYW1rpG7EdEMNkNGeJlBUfFnRgM7iz/0v/slcAY7ufmX8doCiYNYr9X
+	OvSGRnT+YIPH5Ui20q4zuM47PxhYBJI/WjSoUQ5ZZLeFlJs0e51k3udPYd13BvJB
+	PC/2R15J89JXfbSOE+i4AuGdw5pp8arLdMT8CWf9t4+1Bl7am49GoBYMSTqD+qoR
+	Ul9+Bw==
+Received: from mail-pf1-f198.google.com (mail-pf1-f198.google.com [209.85.210.198])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4byydh0pp5-1
 	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
-	for <linux-wireless@vger.kernel.org>; Thu, 29 Jan 2026 07:33:36 +0000 (GMT)
-Received: by mail-pf1-f199.google.com with SMTP id d2e1a72fcca58-81e7fd70908so1290288b3a.2
-        for <linux-wireless@vger.kernel.org>; Wed, 28 Jan 2026 23:33:36 -0800 (PST)
+	for <linux-wireless@vger.kernel.org>; Thu, 29 Jan 2026 07:41:46 +0000 (GMT)
+Received: by mail-pf1-f198.google.com with SMTP id d2e1a72fcca58-822426d844aso535044b3a.0
+        for <linux-wireless@vger.kernel.org>; Wed, 28 Jan 2026 23:41:46 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=oss.qualcomm.com; s=google; t=1769672016; x=1770276816; darn=vger.kernel.org;
+        d=oss.qualcomm.com; s=google; t=1769672505; x=1770277305; darn=vger.kernel.org;
         h=content-transfer-encoding:in-reply-to:from:content-language
          :references:cc:to:subject:user-agent:mime-version:date:message-id
          :from:to:cc:subject:date:message-id:reply-to;
-        bh=ITzCif2SI49ds4TIjmAR6gichOGOkzNCxPnwrIbXTi0=;
-        b=ScyLHaV6TwmF9YbA1UDM7AZlwj14DMoRpSKryBfJ2IGMp7SsfXnmSur83haioQR+ZL
-         UgszBxzBvhryB5F/knHnQKS5W49uKLVzVgFQqC9+qs7oW3sgMnqn+1H1v1ai11X2bidC
-         hWyzJ5EmNY42ElsTlXwNm4MSZKk94T4H23p/TDAYa0fX7O0Q9NtuNCrQYoxtxvPkCeq1
-         khmlB6/XDMCbO0qv0ILD8rQZtnFfTtFXK3dvrpNe0dR+ymXD+LA8sjGurbGweUB4lYIP
-         0jGm8bMf6SNHE5v6ngFy0uO6VFRiOQ7/zB+ukNz7+W9EoHUmP6zOJoUeUPO60tR75V5f
-         VAIA==
+        bh=y9Sd7B3R6gxbF70iE8GarZzUrZaOcL1TXv3dhtu2ryc=;
+        b=R0+balBUF5t+ft6mNl6OZWrxzgBKnF9UP8dBvTLIz8pSfOmcr/Sd+4H/GIQjvz3F91
+         JKj/2DXKxlVq4a5ECXhp+90kNTIeUQ9xkzI0b4nmRiZzI3SYre5f6ekIKWxj6jOe4X4V
+         hXBOcIvQ4AeEPIhTMMHSUfMqHl7pgoJ29Ck6/YPVgG6vlxcW0F9KG825M1fctEqEO8xD
+         pYzQxceIL7VJ+PwqoMPW3BRg4YZBCsIid4yTNEbdRg6bB1gfqLVzxQz6vWRpwsAugM7N
+         fzSZDO9rmzoo3MTkyziq0fCXyzSeFq1f01YMOnqzxIB6TjeaC3RhwwOR+kIOPsGdZAaB
+         C01A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1769672016; x=1770276816;
+        d=1e100.net; s=20230601; t=1769672505; x=1770277305;
         h=content-transfer-encoding:in-reply-to:from:content-language
          :references:cc:to:subject:user-agent:mime-version:date:message-id
          :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=ITzCif2SI49ds4TIjmAR6gichOGOkzNCxPnwrIbXTi0=;
-        b=axBs98Y3nXthGxxXmKyJGXyUPAcoKpeDxv2LH55SGUlFuGw3KBJ8x0ozJmwHCgoqRF
-         1wx4A9F8ZAeW+tRpeXzRKwqAhR1zSea86seFR3l/CFgrT/Jlgk5fyhTwFWzh6CEN4TjS
-         hH05bRSoIQGpwGK+iav8BiCt3Jp1yW5H8bSXrxO/ioQHhXxlkAZNAyb2j4OAgmi1yDl/
-         6C1W8ZaOT46fw3zXFp2qXezt0//WSbC/0wimHiBHu3rouRC46t1nJUy9+tFEfHhFePBa
-         McdEaMesfVY7fw7IqE1alv2W66Rc2iWIsTZTR2YCwcq5thHtknxtwmwHCFuhrQ1VwYgN
-         Hm/Q==
-X-Forwarded-Encrypted: i=1; AJvYcCXfD9kiLgmy629wJx8l23Z/qwMQPlV/pZtbcaeoJ2Mz67EKcNue9w7yJqVCz+NXVLGX5K0BjXgih9d7+m96Dg==@vger.kernel.org
-X-Gm-Message-State: AOJu0YzgoPckPYC3laPkDCuLdQPByKxr8yoCfLaSxuIroJO/ihYPA1kN
-	h+PTRf3Jo5gXJeu0zUwD3stYe6iFrTE5UlwhLf+2uVUCsLm4vI5ScBz7/k9nKNUMtlcMLGKax2S
-	uFw5bfEUz0dfqpmXGxas057DMCQeV6fgZzL9490F5vJmi+7T3QF4ZdQt8hScdf1hKN+/SW0TCV9
-	ImYQ==
-X-Gm-Gg: AZuq6aLI0yCXcLvAS6j+eSBbA8NS1N9Yq9bbfYxFTaqrkXXrgGMqZFl2VRSsQEfzo3k
-	nrJigPk9oI+MbKdPnYkQ+SZTGu9NMa5XXGLC0bHwcv0Pw9NGzBMw51FRe0scWGktdHENHe/EXVM
-	ik/UE8IF6tTe7jkNHQqGKnyyRVrkG5K58hAPO5i7HMMZxV8wskJGVmoUS2hYGvwd6tOBqHMOjFt
-	kHHdbn1la8wG3McTNU/Sm6j4dWIVzXVZyxF6e7kB9k/C7ljIyjt8WAAdwYWmzMF0/ssEMob624i
-	+v72eM/iweztJKemewcYfSNNNGzo6oY7uN7TA9V2N9zdS1VQ1J2gQELqsFoO0jRflvBeiAE2XaF
-	v9fRBQFH9a5eHhlIAhh/gKcjIKZDuiC7qozASNPSt6iF/k7pYuxQ=
-X-Received: by 2002:a05:6a00:39a7:b0:81f:9938:b07d with SMTP id d2e1a72fcca58-82369167625mr7583497b3a.7.1769672015624;
-        Wed, 28 Jan 2026 23:33:35 -0800 (PST)
-X-Received: by 2002:a05:6a00:39a7:b0:81f:9938:b07d with SMTP id d2e1a72fcca58-82369167625mr7583476b3a.7.1769672015090;
-        Wed, 28 Jan 2026 23:33:35 -0800 (PST)
+        bh=y9Sd7B3R6gxbF70iE8GarZzUrZaOcL1TXv3dhtu2ryc=;
+        b=grdL6fxf4345XiIk4sFgykZhz1Kj9Z/AuIWti0zKCTPnZjG7rC+LwbZEqDTEMRBBtA
+         yt+1FwT4ExgkjL9ymRrtH2T68ttmZEG1rgshFd7e+uUm8i8OP2Rof0XBILHHfumJIyuX
+         wA4drGS7XFmJzxK1kDR8lUKaKRV6+PH8OR6G0UecGFvlSNqoh796ztF+o5pjIra8y0uT
+         hbelA6/p0WWNs6Py4/660vZmd6HfCGTeTpPvgSSBlVrVh7Qspp4iBLGrN2ZOunDGyDeE
+         iDsAwyxifGDUIbF4eI822wVpgJb7WXV4FpHFDB2p/t57rUE/wuSDFgWJduHax6wPrxML
+         XAfw==
+X-Forwarded-Encrypted: i=1; AJvYcCVa2FNs025+pIbsfjCxVDT+Ht+M4U7r9kpI2q9l0ZDbs8KJi2UGUmmKNt/Qigy4fXTJhlAHtpEIyVk0wK6Brg==@vger.kernel.org
+X-Gm-Message-State: AOJu0Yw6FaKuosyeAEEeTdntFARKaO7L9lZw82rj+xvCh6dvjzOiHLKQ
+	fYKrz+zHGwoCRjp6tHCNENt96GQBPRW7TllosnxQO+icGoXEMc7gWdDRjJZ6LQrQSCJ+fJeXDCm
+	G1rIueX+vteauIvpMxYdnmk+ZE5F8ggTHtOJInUnwCyq2fAa4nCHNfxOqr6eYtuuHxXkSVA==
+X-Gm-Gg: AZuq6aIvJUAG4eFsBfiqE+2Ek2bazgzZy5CpiIGhJvWyfxpEujBqCeevrVccLsyaO4K
+	wZ7G24DAIMKOi7ZTXt3In/tcqJ/iE1zgE8kwhMV/4XTw34gG3FlEV1+kvKGo47mC1QsyzbxwxJL
+	7vgDEXW/ikCbS8s2NiHWkPF6MNto9yg/c3HZPtQYSAqjH5brHWVpBCUkwUB9YQ4QqiFTQeZdz06
+	aMnPord4iZge9s224YwC45GMJIWgVEnLQXK1Q49vWteP0NKWWggO0FPyJ5m3Z4KyZA9gjxTD0/E
+	djenXggS4G8xy1cGjraeIbP6yigoIcSTAkVO+CtoURzjF5ZYgLVhmSBij5nL89he5+wS2lu7jap
+	qOIc9aTSNEnEDx5K76u/x3ddkO65sWxv3Bv5LSqCeSe86uCmnNuE=
+X-Received: by 2002:a05:6a00:1953:b0:81c:5bca:8104 with SMTP id d2e1a72fcca58-823920bcb7emr1965700b3a.24.1769672505070;
+        Wed, 28 Jan 2026 23:41:45 -0800 (PST)
+X-Received: by 2002:a05:6a00:1953:b0:81c:5bca:8104 with SMTP id d2e1a72fcca58-823920bcb7emr1965673b3a.24.1769672504347;
+        Wed, 28 Jan 2026 23:41:44 -0800 (PST)
 Received: from [10.152.199.53] ([202.46.23.19])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-82379b4ea8bsm5385704b3a.22.2026.01.28.23.33.33
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-82379b1ee2bsm4772447b3a.3.2026.01.28.23.41.42
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 28 Jan 2026 23:33:34 -0800 (PST)
-Message-ID: <ec69981d-aa4d-4ce2-ad7f-71e68784029e@oss.qualcomm.com>
-Date: Thu, 29 Jan 2026 13:03:31 +0530
+        Wed, 28 Jan 2026 23:41:43 -0800 (PST)
+Message-ID: <415aaac2-eb63-446f-9fe5-315666ed3c64@oss.qualcomm.com>
+Date: Thu, 29 Jan 2026 13:11:40 +0530
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
@@ -107,68 +106,70 @@ List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH wireless-next v4 1/3] wifi: ieee80211: add some initial
- UHR definitions
+Subject: Re: [PATCH wireless-next v4 3/3] wifi: mac80211: add initial UHR
+ support
 To: Johannes Berg <johannes@sipsolutions.net>, linux-wireless@vger.kernel.org
 Cc: Johannes Berg <johannes.berg@intel.com>
 References: <20260128133033.aa4a43982df0.I5b11fb0345a933bf497fd802aecc72932d58dd68@changeid>
+ <20260128133033.fba9174f1fd1.Ieec940b58dbf8115dab7e1e24cb5513f52c8cb2f@changeid>
 Content-Language: en-US
 From: Karthikeyan Kathirvel <karthikeyan.kathirvel@oss.qualcomm.com>
-In-Reply-To: <20260128133033.aa4a43982df0.I5b11fb0345a933bf497fd802aecc72932d58dd68@changeid>
+In-Reply-To: <20260128133033.fba9174f1fd1.Ieec940b58dbf8115dab7e1e24cb5513f52c8cb2f@changeid>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-X-Proofpoint-ORIG-GUID: CyE0-6ZZn2lw1xQKAo0N3cMWzamKNgHc
-X-Proofpoint-GUID: CyE0-6ZZn2lw1xQKAo0N3cMWzamKNgHc
-X-Authority-Analysis: v=2.4 cv=b9G/I9Gx c=1 sm=1 tr=0 ts=697b0d50 cx=c_pps
- a=WW5sKcV1LcKqjgzy2JUPuA==:117 a=j4ogTh8yFefVWWEFDRgCtg==:17
+X-Proofpoint-GUID: pvFii8uYMeyMQMAleaLTzAJ1WpQiyiqm
+X-Proofpoint-ORIG-GUID: pvFii8uYMeyMQMAleaLTzAJ1WpQiyiqm
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwMTI5MDA0NCBTYWx0ZWRfXy/i8C1Lzocyv
+ W0vPE6CZtMIka2tdVUIQi3Y2xjh2xtmvjLHkB1uuvqnWaDzC+Dc/S1EYZsPWZMPgWd5+UQdJ7Zz
+ ivC8jWteoqpOrfJVxZAXxIvXCLV3aaWQWO04Ht1oROV9K71ddzhhxwZgG7u9vFM5iRCVV/ZCeY9
+ V2hJHVAwvq9nfj1B9WAk45wAbE4Qjn4pXxEVFQ18y6suYE2shi6UsHx4tL+Ran390Z3sGrCHLwP
+ Hot60kxe4IbpV6V9vKuSpVmFBJUXsR0SkakuaK0suq7Z2vV/Xu8M2ZHYpCT+Hug01spGliR0fgS
+ HI/nQOpa8hb70dz4pC6013cjH5kp22yZHOVtlYAQfVcwrsVPaWMw77sDNKzdBYTM35bNFwyZVFU
+ ZCLytnTlanJ98eS8qSpxCpojbmrxjtaMIsnKrZKR1XFMEYRHrJs8kx+Z42XqNIOd8yhXhJRGG/e
+ zOw0Bwku3f1+MG3RK7w==
+X-Authority-Analysis: v=2.4 cv=Cs6ys34D c=1 sm=1 tr=0 ts=697b0f3a cx=c_pps
+ a=m5Vt/hrsBiPMCU0y4gIsQw==:117 a=j4ogTh8yFefVWWEFDRgCtg==:17
  a=IkcTkHD0fZMA:10 a=vUbySO9Y5rIA:10 a=s4-Qcg_JpJYA:10
- a=VkNPw1HP01LnGYTKEx00:22 a=QyXUC8HyAAAA:8 a=skU_J7KqAAAA:8
- a=6sLwTB8bCWpBakW1fQAA:9 a=QEXdDO2ut3YA:10 a=OpyuDcXvxspvyRM73sMx:22
- a=b6CkM2rtsW-bHoL29FmJ:22
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwMTI5MDA0MyBTYWx0ZWRfX/LYBGxg0d/mi
- gFvYm+OTs3h3ijKp4ratNQ83eIP+2yOzA5uTqkxXTgXuuGDT3Z6ZGooexaBL47zzwWPh+q40mT2
- 8LeBhSoObOg6hqPDXnimtmaRagWgVaGrfMvd6OcgzY1qrJOg+QpzHP+uWWfxpAP4f6Lz+Kzsqdq
- U5Z6boVgxbHzU6vnki5bKjUDP6DAjepsc4e1w+U/WYLQyIVfeNx4SXC8/LZDEA0iGRNhfqW7cGN
- 4mXIXxqWPjRK83nlXAidCV9uOIytCimu9V6+yr6QWdcq3iv59RCOIm1B0vj9lZ3BPJJBmtXAfNI
- f60BWdgMElvb51aqosFbzukFUlcLUESDjmFth6O+hn2Ab8GaCtLYDugeKU7U+B6vBPtTOrMycXy
- w4h/1Qke5MPVXZ3cB2s6sTaZjIRdZstNngsuGDEkgN3Dk3grxeXKgRxddDBVxX1iXrxW/GM493Z
- B94k30kAmJuPCeYCm4g==
+ a=VkNPw1HP01LnGYTKEx00:22 a=QyXUC8HyAAAA:8 a=PIgmARLQAAAA:8 a=8uO-BwtZAAAA:8
+ a=skU_J7KqAAAA:8 a=stkexhm8AAAA:8 a=ltRmQBt9G--eQEMS9HoA:9 a=QEXdDO2ut3YA:10
+ a=IoOABgeZipijB_acs4fv:22 a=gmoW3VEtnuKblUSCmhOl:22 a=UmM1XOiemSxannmj3pYQ:22
+ a=b6CkM2rtsW-bHoL29FmJ:22 a=pIW3pCRaVxJDc-hWtpF8:22
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.51,FMLib:17.12.100.49
  definitions=2026-01-29_01,2026-01-28_03,2025-10-01_01
 X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- priorityscore=1501 spamscore=0 suspectscore=0 bulkscore=0 clxscore=1015
- impostorscore=0 lowpriorityscore=0 malwarescore=0 adultscore=0 phishscore=0
+ lowpriorityscore=0 clxscore=1015 spamscore=0 phishscore=0 bulkscore=0
+ malwarescore=0 priorityscore=1501 adultscore=0 impostorscore=0 suspectscore=0
  classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.22.0-2601150000 definitions=main-2601290043
+ reason=mlx scancount=1 engine=8.22.0-2601150000 definitions=main-2601290044
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[qualcomm.com,reject];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[qualcomm.com:s=qcppdkim1,oss.qualcomm.com:s=google];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	RCPT_COUNT_THREE(0.00)[3];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-31295-lists,linux-wireless=lfdr.de];
 	DKIM_TRACE(0.00)[qualcomm.com:+,oss.qualcomm.com:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-31296-lists,linux-wireless=lfdr.de];
+	RCPT_COUNT_THREE(0.00)[3];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:email,qualcomm.com:dkim,oss.qualcomm.com:mid,oss.qualcomm.com:dkim,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,sourmilk.net:email];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:email,sourmilk.net:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,qualcomm.com:dkim,oss.qualcomm.com:mid,oss.qualcomm.com:dkim];
 	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[karthikeyan.kathirvel@oss.qualcomm.com,linux-wireless@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	NEURAL_HAM(-0.00)[-1.000];
 	TAGGED_RCPT(0.00)[linux-wireless];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	RCVD_COUNT_SEVEN(0.00)[7]
-X-Rspamd-Queue-Id: 22034ACDB7
+X-Rspamd-Queue-Id: 81009ACDDF
 X-Rspamd-Action: no action
 
 
@@ -176,333 +177,829 @@ X-Rspamd-Action: no action
 On 1/28/2026 6:00 PM, Johannes Berg wrote:
 > From: Johannes Berg <johannes.berg@intel.com>
 > 
-> This is based on Draft P802.11bn_D1.2, but that's still very
-> incomplete, so don't handle a number of things and make some
-> local decisions such as using 40 bits for MAC capabilities
-> and 8 bits for PHY capabilities.
+> Add support for making UHR connections and accepting AP
+> stations with UHR support.
 > 
 > Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 > ---
 > v4:
->    - update to D1.2, including DBE in UHR capabilities
->    - fold in suggestions from Pablo
+>   - fix NPCA validation
+> v3:
+>   - use uhr_oper instead of removed uhr_capa
+>   - fix indentation (Jeff Johnson)
 > ---
->   include/linux/ieee80211-uhr.h | 215 ++++++++++++++++++++++++++++++++++
->   include/linux/ieee80211.h     |  33 +++++-
->   2 files changed, 246 insertions(+), 2 deletions(-)
->   create mode 100644 include/linux/ieee80211-uhr.h
+>   include/net/mac80211.h     |  33 ++++++++++-
+>   net/mac80211/Makefile      |   2 +-
+>   net/mac80211/cfg.c         |  14 +++++
+>   net/mac80211/ieee80211_i.h |  17 +++++-
+>   net/mac80211/main.c        |  13 ++++-
+>   net/mac80211/mlme.c        | 117 ++++++++++++++++++++++++++++++++++---
+>   net/mac80211/parse.c       |  20 +++++++
+>   net/mac80211/rx.c          |  26 +++++++++
+>   net/mac80211/sta_info.c    |  11 ++++
+>   net/mac80211/sta_info.h    |  80 ++++++++++++++++++-------
+>   net/mac80211/uhr.c         |  29 +++++++++
+>   net/mac80211/util.c        |  36 +++++++++++-
+>   12 files changed, 364 insertions(+), 34 deletions(-)
+>   create mode 100644 net/mac80211/uhr.c
 > 
-> diff --git a/include/linux/ieee80211-uhr.h b/include/linux/ieee80211-uhr.h
-> new file mode 100644
-> index 000000000000..06556867b004
-> --- /dev/null
-> +++ b/include/linux/ieee80211-uhr.h
-> @@ -0,0 +1,215 @@
-> +/* SPDX-License-Identifier: GPL-2.0-only */
-> +/*
-> + * IEEE 802.11 UHR definitions
-> + *
-> + * Copyright (c) 2025-2026 Intel Corporation
-> + */
-> +#ifndef LINUX_IEEE80211_UHR_H
-> +#define LINUX_IEEE80211_UHR_H
+> diff --git a/include/net/mac80211.h b/include/net/mac80211.h
+> index 36ae7fe9ddf3..7bfcb2c02801 100644
+> --- a/include/net/mac80211.h
+> +++ b/include/net/mac80211.h
+> @@ -706,6 +706,7 @@ struct ieee80211_parsed_tpe {
+>    * @pwr_reduction: power constraint of BSS.
+>    * @eht_support: does this BSS support EHT
+>    * @epcs_support: does this BSS support EPCS
+> + * @uhr_support: does this BSS support UHR
+>    * @csa_active: marks whether a channel switch is going on.
+>    * @mu_mimo_owner: indicates interface owns MU-MIMO capability
+>    * @chanctx_conf: The channel context this interface is assigned to, or %NULL
+> @@ -832,6 +833,8 @@ struct ieee80211_bss_conf {
+>   	u8 pwr_reduction;
+>   	bool eht_support;
+>   	bool epcs_support;
+> +	bool uhr_support;
 > +
-> +#include <linux/types.h>
-> +#include <linux/if_ether.h>
-> +
-> +#define IEEE80211_UHR_OPER_PARAMS_DPS_ENA		0x0001
-> +#define IEEE80211_UHR_OPER_PARAMS_NPCA_ENA		0x0002
-> +#define IEEE80211_UHR_OPER_PARAMS_DBE_ENA		0x0004
-> +#define IEEE80211_UHR_OPER_PARAMS_PEDCA_ENA		0x0008
-> +
-> +struct ieee80211_uhr_oper {
-> +	__le16 params;
-> +	u8 basic_mcs_nss_set[4];
-> +	u8 variable[];
-> +} __packed;
-> +
-> +#define IEEE80211_UHR_NPCA_PARAMS_PRIMARY_CHAN_OFFS	0x0000000F
-> +#define IEEE80211_UHR_NPCA_PARAMS_MIN_DUR_THRESH	0x000000F0
-> +#define IEEE80211_UHR_NPCA_PARAMS_SWITCH_DELAY		0x00003F00
-> +#define IEEE80211_UHR_NPCA_PARAMS_SWITCH_BACK_DELAY	0x000FC000
-> +#define IEEE80211_UHR_NPCA_PARAMS_INIT_QSRC		0x00300000
-> +#define IEEE80211_UHR_NPCA_PARAMS_MOPLEN		0x00400000
-> +#define IEEE80211_UHR_NPCA_PARAMS_DIS_SUBCH_BMAP_PRES	0x00800000
-> +
-> +struct ieee80211_uhr_npca_info {
-> +	__le32 params;
-> +	__le16 dis_subch_bmap[];
-> +} __packed;
-> +
-> +static inline bool ieee80211_uhr_oper_size_ok(const u8 *data, u8 len,
-> +					      bool beacon)
-> +{
-> +	const struct ieee80211_uhr_oper *oper = (const void *)data;
-> +	u8 needed = sizeof(*oper);
-> +
-> +	if (len < needed)
-> +		return false;
-> +
-> +	/* nothing else present in beacons */
-> +	if (beacon)
-> +		return true;
-> +
-> +	/* FIXME: DPS, DBE, P-EDCA (consider order, also relative to NPCA) */
-> +
-> +	if (oper->params & cpu_to_le16(IEEE80211_UHR_OPER_PARAMS_NPCA_ENA)) {
-> +		const struct ieee80211_uhr_npca_info *npca =
-> +			(const void *)oper->variable;
-> +
-> +		needed += sizeof(*npca);
-> +
-> +		if (len < needed)
-> +			return false;
-> +
-> +		if (npca->params & cpu_to_le32(IEEE80211_UHR_NPCA_PARAMS_DIS_SUBCH_BMAP_PRES))
-> +			needed += sizeof(npca->dis_subch_bmap[0]);
-> +	}
-> +
-> +	return len >= needed;
-> +}
-> +
-> +/*
-> + * Note: cannot call this on the element coming from a beacon,
-> + * must ensure ieee80211_uhr_oper_size_ok(..., false) first
-> + */
-> +static inline const struct ieee80211_uhr_npca_info *
-> +ieee80211_uhr_npca_info(const struct ieee80211_uhr_oper *oper)
-> +{
-> +	if (!(oper->params & cpu_to_le16(IEEE80211_UHR_OPER_PARAMS_NPCA_ENA)))
-> +		return NULL;
-> +
-> +	/* FIXME: DPS */
-> +
-> +	return (const void *)oper->variable;
-> +}
-> +
-> +static inline const __le16 *
-> +ieee80211_uhr_npca_dis_subch_bitmap(const struct ieee80211_uhr_oper *oper)
-> +{
-> +	const struct ieee80211_uhr_npca_info *npca;
-> +
-> +	npca = ieee80211_uhr_npca_info(oper);
-> +	if (!npca)
-> +		return NULL;
-> +	if (!(npca->params & cpu_to_le32(IEEE80211_UHR_NPCA_PARAMS_DIS_SUBCH_BMAP_PRES)))
-> +		return NULL;
-> +	return npca->dis_subch_bmap;
-> +}
-> +
-> +#define IEEE80211_UHR_MAC_CAP0_DPS_SUPP			0x01
-> +#define IEEE80211_UHR_MAC_CAP0_DPS_ASSIST_SUPP		0x02
-> +#define IEEE80211_UHR_MAC_CAP0_DPS_AP_STATIC_HCM_SUPP	0x04
-> +#define IEEE80211_UHR_MAC_CAP0_NPCA_SUPP		0x10
-> +#define IEEE80211_UHR_MAC_CAP0_ENH_BSR_SUPP		0x20
-> +#define IEEE80211_UHR_MAC_CAP0_ADD_MAP_TID_SUPP		0x40
-> +#define IEEE80211_UHR_MAC_CAP0_EOTSP_SUPP		0x80
-> +
-> +#define IEEE80211_UHR_MAC_CAP1_DSO_SUPP			0x01
-> +#define IEEE80211_UHR_MAC_CAP1_PEDCA_SUPP		0x02
-> +#define IEEE80211_UHR_MAC_CAP1_DBE_SUPP			0x04
-> +#define IEEE80211_UHR_MAC_CAP1_UL_LLI_SUPP		0x08
-> +#define IEEE80211_UHR_MAC_CAP1_P2P_LLI_SUPP		0x10
-> +#define IEEE80211_UHR_MAC_CAP1_PUO_SUPP			0x20
-> +#define IEEE80211_UHR_MAC_CAP1_AP_PUO_SUPP		0x40
-> +#define IEEE80211_UHR_MAC_CAP1_DUO_SUPP			0x80
-> +
-> +#define IEEE80211_UHR_MAC_CAP2_OMC_UL_MU_DIS_RX_SUPP	0x01
-> +#define IEEE80211_UHR_MAC_CAP2_AOM_SUPP			0x02
-> +#define IEEE80211_UHR_MAC_CAP2_IFCS_LOC_SUPP		0x04
-> +#define IEEE80211_UHR_MAC_CAP2_UHR_TRS_SUPP		0x08
-> +#define IEEE80211_UHR_MAC_CAP2_TXSPG_SUPP		0x10
-> +#define IEEE80211_UHR_MAC_CAP2_TXOP_RET_IN_TXSPG	0x20
-> +#define IEEE80211_UHR_MAC_CAP2_UHR_OM_PU_TO_LOW		0xC0
-> +
-> +#define IEEE80211_UHR_MAC_CAP3_UHR_OM_PU_TO_HIGH	0x03
-> +#define IEEE80211_UHR_MAC_CAP3_PARAM_UPD_ADV_NOTIF_INTV	0x1C
-> +#define IEEE80211_UHR_MAC_CAP3_UPD_IND_TIM_INTV_LOW	0xE0
-> +
-> +#define IEEE80211_UHR_MAC_CAP4_UPD_IND_TIM_INTV_HIGH	0x03
-> +#define IEEE80211_UHR_MAC_CAP4_BOUNDED_ESS		0x04
-> +#define IEEE80211_UHR_MAC_CAP4_BTM_ASSURANCE		0x08
-> +#define IEEE80211_UHR_MAC_CAP4_CO_BF_SUPP		0x10
-> +
-> +#define IEEE80211_UHR_MAC_CAP_DBE_MAX_BW		0x07
-> +#define IEEE80211_UHR_MAC_CAP_DBE_EHT_MCS_MAP_160_PRES	0x08
-> +#define IEEE80211_UHR_MAC_CAP_DBE_EHT_MCS_MAP_320_PRES	0x10
-> +
-> +struct ieee80211_uhr_capa_mac {
-> +	u8 mac_cap[5];
-> +} __packed;
-> +
-> +struct ieee80211_uhr_capa {
-> +	struct ieee80211_uhr_capa_mac mac;
-> +	/* DBE, PHY capabilities */
-> +	u8 variable[];
-> +} __packed;
-> +
-> +#define IEEE80211_UHR_PHY_CAP_MAX_NSS_RX_SND_NDP_LE80	0x01
-> +#define IEEE80211_UHR_PHY_CAP_MAX_NSS_RX_DL_MU_LE80	0x02
-> +#define IEEE80211_UHR_PHY_CAP_MAX_NSS_RX_SND_NDP_160	0x04
-> +#define IEEE80211_UHR_PHY_CAP_MAX_NSS_RX_DL_MU_160	0x08
-> +#define IEEE80211_UHR_PHY_CAP_MAX_NSS_RX_SND_NDP_320	0x10
-> +#define IEEE80211_UHR_PHY_CAP_MAX_NSS_RX_DL_MU_320	0x20
-> +#define IEEE80211_UHR_PHY_CAP_ELR_RX			0x40
-> +#define IEEE80211_UHR_PHY_CAP_ELR_TX			0x80
-> +
-> +struct ieee80211_uhr_capa_phy {
-> +	u8 cap;
-> +} __packed;
-> +
-> +static inline bool ieee80211_uhr_capa_size_ok(const u8 *data, u8 len)
-> +{
-> +	const struct ieee80211_uhr_capa *cap = (const void *)data;
-> +	size_t needed = sizeof(*cap) + sizeof(struct ieee80211_uhr_capa_phy);
-> +
-> +	if (len < needed)
-> +		return false;
-> +
-> +	if (cap->mac.mac_cap[1] & IEEE80211_UHR_MAC_CAP1_DBE_SUPP) {
-> +		u8 dbe;
-> +
-> +		needed += 1;
-> +		if (len < needed)
-> +			return false;
-> +
-> +		dbe = cap->variable[0];
-> +
-> +		if (dbe & IEEE80211_UHR_MAC_CAP_DBE_EHT_MCS_MAP_160_PRES)
-cpu_to_le32 ?
-> +			needed += 24;
-It should be in bytes right offs += 3 ?
-> +
-> +		if (dbe & IEEE80211_UHR_MAC_CAP_DBE_EHT_MCS_MAP_320_PRES)
-> +			needed += 24;
-Same here
-> +	}
-> +
-> +	return len >= needed;
-> +}
-> +
-> +static inline const struct ieee80211_uhr_capa_phy *
-> +ieee80211_uhr_phy_cap(const struct ieee80211_uhr_capa *cap)
-> +{
-> +	u8 offs = 0;
-> +
-> +	if (cap->mac.mac_cap[1] & IEEE80211_UHR_MAC_CAP1_DBE_SUPP) {
-> +		u8 dbe = cap->variable[0];
-> +
-> +		offs += 1;
-> +
-> +		if (dbe & IEEE80211_UHR_MAC_CAP_DBE_EHT_MCS_MAP_160_PRES)
-cpu_to_le32 ?
-> +			offs += 24;
-It should be in bytes right offs += 3 ?
-> +
-> +		if (dbe & IEEE80211_UHR_MAC_CAP_DBE_EHT_MCS_MAP_320_PRES)
-> +			offs += 24;
-Same here
-> +	}
-> +
-> +	return (const void *)&cap->variable[offs];
-> +}
-> +
-> +#define IEEE80211_SMD_INFO_CAPA_DL_DATA_FWD		0x01
-> +#define IEEE80211_SMD_INFO_CAPA_MAX_NUM_PREP		0x0E
-> +#define IEEE80211_SMD_INFO_CAPA_TYPE			0x10
-> +#define IEEE80211_SMD_INFO_CAPA_PTK_PER_AP_MLD		0x20
-> +
-> +struct ieee80211_smd_info {
-> +	u8 id[ETH_ALEN];
-> +	u8 capa;
-> +	__le16 timeout;
-> +} __packed;
-> +
-> +#endif /* LINUX_IEEE80211_UHR_H */
-> diff --git a/include/linux/ieee80211.h b/include/linux/ieee80211.h
-> index fbde215c25aa..82d797be95b9 100644
-> --- a/include/linux/ieee80211.h
-> +++ b/include/linux/ieee80211.h
-> @@ -9,7 +9,7 @@
->    * Copyright (c) 2006, Michael Wu <flamingice@sourmilk.net>
->    * Copyright (c) 2013 - 2014 Intel Mobile Communications GmbH
->    * Copyright (c) 2016 - 2017 Intel Deutschland GmbH
-> - * Copyright (c) 2018 - 2025 Intel Corporation
-> + * Copyright (c) 2018 - 2026 Intel Corporation
->    */
+>   	bool csa_active;
 >   
->   #ifndef LINUX_IEEE80211_H
-> @@ -1200,8 +1200,9 @@ struct ieee80211_mgmt {
->   #define BSS_MEMBERSHIP_SELECTOR_SAE_H2E 123
->   #define BSS_MEMBERSHIP_SELECTOR_HE_PHY	122
->   #define BSS_MEMBERSHIP_SELECTOR_EHT_PHY	121
-> +#define BSS_MEMBERSHIP_SELECTOR_UHR_PHY	120
->   
-> -#define BSS_MEMBERSHIP_SELECTOR_MIN	BSS_MEMBERSHIP_SELECTOR_EHT_PHY
-> +#define BSS_MEMBERSHIP_SELECTOR_MIN	BSS_MEMBERSHIP_SELECTOR_UHR_PHY
->   
->   /* mgmt header + 1 byte category code */
->   #define IEEE80211_MIN_ACTION_SIZE offsetof(struct ieee80211_mgmt, u.action.u)
-> @@ -1802,6 +1803,15 @@ enum ieee80211_eid_ext {
->   	WLAN_EID_EXT_BANDWIDTH_INDICATION = 135,
->   	WLAN_EID_EXT_KNOWN_STA_IDENTIFCATION = 136,
->   	WLAN_EID_EXT_NON_AP_STA_REG_CON = 137,
-> +	WLAN_EID_EXT_UHR_OPER = 151,
-> +	WLAN_EID_EXT_UHR_CAPA = 152,
-> +	WLAN_EID_EXT_MACP = 153,
-> +	WLAN_EID_EXT_SMD = 154,
-> +	WLAN_EID_EXT_BSS_SMD_TRANS_PARAMS = 155,
-> +	WLAN_EID_EXT_CHAN_USAGE = 156,
-> +	WLAN_EID_EXT_UHR_MODE_CHG = 157,
-> +	WLAN_EID_EXT_UHR_PARAM_UPD = 158,
-> +	WLAN_EID_EXT_TXPI = 159,
+>   	bool mu_mimo_owner;
+> @@ -1598,6 +1601,7 @@ enum mac80211_rx_encoding {
+>   	RX_ENC_VHT,
+>   	RX_ENC_HE,
+>   	RX_ENC_EHT,
+> +	RX_ENC_UHR,
 >   };
 >   
->   /* Action category code */
-> @@ -2745,6 +2755,22 @@ static inline bool for_each_element_completed(const struct element *element,
->   #define WLAN_RSNX_CAPA_PROTECTED_TWT BIT(4)
->   #define WLAN_RSNX_CAPA_SAE_H2E BIT(5)
+>   /**
+> @@ -1631,7 +1635,7 @@ enum mac80211_rx_encoding {
+>    * @antenna: antenna used
+>    * @rate_idx: index of data rate into band's supported rates or MCS index if
+>    *	HT or VHT is used (%RX_FLAG_HT/%RX_FLAG_VHT)
+> - * @nss: number of streams (VHT, HE and EHT only)
+> + * @nss: number of streams (VHT, HE, EHT and UHR only)
+>    * @flag: %RX_FLAG_\*
+>    * @encoding: &enum mac80211_rx_encoding
+>    * @bw: &enum rate_info_bw
+> @@ -1642,6 +1646,11 @@ enum mac80211_rx_encoding {
+>    * @eht: EHT specific rate information
+>    * @eht.ru: EHT RU, from &enum nl80211_eht_ru_alloc
+>    * @eht.gi: EHT GI, from &enum nl80211_eht_gi
+> + * @uhr: UHR specific rate information
+> + * @uhr.ru: UHR RU, from &enum nl80211_eht_ru_alloc
+> + * @uhr.gi: UHR GI, from &enum nl80211_eht_gi
+> + * @uhr.elr: UHR ELR MCS was used
+> + * @uhr.im: UHR interference mitigation was used
+>    * @rx_flags: internal RX flags for mac80211
+>    * @ampdu_reference: A-MPDU reference number, must be a different value for
+>    *	each A-MPDU but the same for each subframe within one A-MPDU
+> @@ -1673,6 +1682,12 @@ struct ieee80211_rx_status {
+>   			u8 ru:4;
+>   			u8 gi:2;
+>   		} eht;
+> +		struct {
+> +			u8 ru:4;
+> +			u8 gi:2;
+> +			u8 elr:1;
+> +			u8 im:1;
+> +		} uhr;
+>   	};
+>   	u8 rate_idx;
+>   	u8 nss;
+> @@ -2434,6 +2449,7 @@ struct ieee80211_sta_aggregates {
+>    * @he_cap: HE capabilities of this STA
+>    * @he_6ghz_capa: on 6 GHz, holds the HE 6 GHz band capabilities
+>    * @eht_cap: EHT capabilities of this STA
+> + * @uhr_cap: UHR capabilities of this STA
+>    * @s1g_cap: S1G capabilities of this STA
+>    * @agg: per-link data for multi-link aggregation
+>    * @bandwidth: current bandwidth the station can receive with
+> @@ -2457,6 +2473,7 @@ struct ieee80211_link_sta {
+>   	struct ieee80211_sta_he_cap he_cap;
+>   	struct ieee80211_he_6ghz_capa he_6ghz_capa;
+>   	struct ieee80211_sta_eht_cap eht_cap;
+> +	struct ieee80211_sta_uhr_cap uhr_cap;
+>   	struct ieee80211_sta_s1g_cap s1g_cap;
 >   
-> +/* EBPCC = Enhanced BSS Parameter Change Count */
-> +#define IEEE80211_ENH_CRIT_UPD_EBPCC		0x0F
-> +#define IEEE80211_ENH_CRIT_UPD_TYPE		0x70
-> +#define IEEE80211_ENH_CRIT_UPD_TYPE_NO_UHR	0
-> +#define IEEE80211_ENH_CRIT_UPD_TYPE_UHR		1
-> +#define IEEE80211_ENH_CRIT_UPD_ALL		0x80
-> +
+>   	struct ieee80211_sta_aggregates agg;
+> @@ -7289,6 +7306,20 @@ ieee80211_get_eht_iftype_cap_vif(const struct ieee80211_supported_band *sband,
+>   	return ieee80211_get_eht_iftype_cap(sband, ieee80211_vif_type_p2p(vif));
+>   }
+>   
 > +/**
-> + * struct ieee80211_enh_crit_upd - enhanced critical update (UHR)
-> + * @v: value of the enhanced critical update data,
-> + *	see %IEEE80211_ENH_CRIT_UPD_* to parse the bits
+> + * ieee80211_get_uhr_iftype_cap_vif - return UHR capabilities for sband/vif
+> + * @sband: the sband to search for the iftype on
+> + * @vif: the vif to get the iftype from
+> + *
+> + * Return: pointer to the struct ieee80211_sta_uhr_cap, or %NULL is none found
 > + */
-> +struct ieee80211_enh_crit_upd {
-> +	u8 v;
-> +} __packed;
+> +static inline const struct ieee80211_sta_uhr_cap *
+> +ieee80211_get_uhr_iftype_cap_vif(const struct ieee80211_supported_band *sband,
+> +				 struct ieee80211_vif *vif)
+> +{
+> +	return ieee80211_get_uhr_iftype_cap(sband, ieee80211_vif_type_p2p(vif));
+> +}
 > +
->   /*
->    * reduced neighbor report, based on Draft P802.11ax_D6.1,
->    * section 9.4.2.170 and accepted contributions.
-> @@ -2763,6 +2789,7 @@ static inline bool for_each_element_completed(const struct element *element,
->   #define IEEE80211_RNR_TBTT_PARAMS_COLOC_ESS			0x10
->   #define IEEE80211_RNR_TBTT_PARAMS_PROBE_ACTIVE			0x20
->   #define IEEE80211_RNR_TBTT_PARAMS_COLOC_AP			0x40
-> +#define IEEE80211_RNR_TBTT_PARAMS_SAME_SMD			0x80
+>   /**
+>    * ieee80211_update_mu_groups - set the VHT MU-MIMO groud data
+>    *
+> diff --git a/net/mac80211/Makefile b/net/mac80211/Makefile
+> index a33884967f21..b0e392eb7753 100644
+> --- a/net/mac80211/Makefile
+> +++ b/net/mac80211/Makefile
+> @@ -36,7 +36,7 @@ mac80211-y := \
+>   	tdls.o \
+>   	ocb.o \
+>   	airtime.o \
+> -	eht.o
+> +	eht.o uhr.o
 >   
->   #define IEEE80211_RNR_TBTT_PARAMS_PSD_NO_LIMIT			127
->   #define IEEE80211_RNR_TBTT_PARAMS_PSD_RESERVED			-128
-> @@ -2815,12 +2842,14 @@ struct ieee80211_tbtt_info_ge_11 {
->   	u8 bss_params;
->   	s8 psd_20;
->   	struct ieee80211_rnr_mld_params mld_params;
-> +	struct ieee80211_enh_crit_upd enh_crit_upd;
->   } __packed;
+>   mac80211-$(CONFIG_MAC80211_LEDS) += led.o
+>   mac80211-$(CONFIG_MAC80211_DEBUGFS) += \
+> diff --git a/net/mac80211/cfg.c b/net/mac80211/cfg.c
+> index 964f440e31cd..5f816b4ec438 100644
+> --- a/net/mac80211/cfg.c
+> +++ b/net/mac80211/cfg.c
+> @@ -1608,6 +1608,13 @@ static int ieee80211_start_ap(struct wiphy *wiphy, struct net_device *dev,
+>   		link_conf->eht_mu_beamformer = false;
+>   	}
 >   
->   #include "ieee80211-ht.h"
->   #include "ieee80211-vht.h"
->   #include "ieee80211-he.h"
->   #include "ieee80211-eht.h"
-> +#include "ieee80211-uhr.h"
->   #include "ieee80211-mesh.h"
->   #include "ieee80211-s1g.h"
->   #include "ieee80211-p2p.h"
+> +	if (params->uhr_oper) {
+> +		if (!link_conf->eht_support)
+> +			return -EOPNOTSUPP;
+> +
+> +		link_conf->uhr_support = true;
+> +	}
+> +
+>   	if (sdata->vif.type == NL80211_IFTYPE_AP &&
+>   	    params->mbssid_config.tx_wdev) {
+>   		err = ieee80211_set_ap_mbssid_options(sdata,
+> @@ -2085,6 +2092,7 @@ static int sta_link_apply_parameters(struct ieee80211_local *local,
+>   		       params->vht_capa ||
+>   		       params->he_capa ||
+>   		       params->eht_capa ||
+> +		       params->uhr_capa ||
+>   		       params->s1g_capa ||
+>   		       params->opmode_notif_used;
+>   
+> @@ -2163,6 +2171,12 @@ static int sta_link_apply_parameters(struct ieee80211_local *local,
+>   						    params->eht_capa_len,
+>   						    link_sta);
+>   
+> +	if (params->uhr_capa)
+> +		ieee80211_uhr_cap_ie_to_sta_uhr_cap(sdata, sband,
+> +						    params->uhr_capa,
+> +						    params->uhr_capa_len,
+> +						    link_sta);
+> +
+>   	if (params->s1g_capa)
+>   		ieee80211_s1g_cap_to_sta_s1g_cap(sdata, params->s1g_capa,
+>   						 link_sta);
+> diff --git a/net/mac80211/ieee80211_i.h b/net/mac80211/ieee80211_i.h
+> index dc757cb32974..b0a3b264d678 100644
+> --- a/net/mac80211/ieee80211_i.h
+> +++ b/net/mac80211/ieee80211_i.h
+> @@ -394,9 +394,10 @@ enum ieee80211_conn_mode {
+>   	IEEE80211_CONN_MODE_VHT,
+>   	IEEE80211_CONN_MODE_HE,
+>   	IEEE80211_CONN_MODE_EHT,
+> +	IEEE80211_CONN_MODE_UHR,
+>   };
+>   
+> -#define IEEE80211_CONN_MODE_HIGHEST	IEEE80211_CONN_MODE_EHT
+> +#define IEEE80211_CONN_MODE_HIGHEST	IEEE80211_CONN_MODE_UHR
+>   
+>   enum ieee80211_conn_bw_limit {
+>   	IEEE80211_CONN_BW_LIMIT_20,
+> @@ -1826,6 +1827,8 @@ struct ieee802_11_elems {
+>   	const struct ieee80211_multi_link_elem *ml_epcs;
+>   	const struct ieee80211_bandwidth_indication *bandwidth_indication;
+>   	const struct ieee80211_ttlm_elem *ttlm[IEEE80211_TTLM_MAX_CNT];
+> +	const struct ieee80211_uhr_capa *uhr_capa;
+> +	const struct ieee80211_uhr_oper *uhr_oper;
+>   
+>   	/* not the order in the psd values is per element, not per chandef */
+>   	struct ieee80211_parsed_tpe tpe;
+> @@ -1850,6 +1853,8 @@ struct ieee802_11_elems {
+>   	u8 country_elem_len;
+>   	u8 bssid_index_len;
+>   	u8 eht_cap_len;
+> +	u8 uhr_capa_len;
+> +	u8 uhr_oper_len;
+>   
+>   	/* mult-link element can be de-fragmented and thus u8 is not sufficient */
+>   	size_t ml_basic_len;
+> @@ -2693,6 +2698,9 @@ int ieee80211_put_eht_cap(struct sk_buff *skb,
+>   			  struct ieee80211_sub_if_data *sdata,
+>   			  const struct ieee80211_supported_band *sband,
+>   			  const struct ieee80211_conn_settings *conn);
+> +int ieee80211_put_uhr_cap(struct sk_buff *skb,
+> +			  struct ieee80211_sub_if_data *sdata,
+> +			  const struct ieee80211_supported_band *sband);
+>   int ieee80211_put_reg_conn(struct sk_buff *skb,
+>   			   enum ieee80211_channel_flags flags);
+>   
+> @@ -2868,6 +2876,13 @@ void ieee80211_process_ml_reconf_resp(struct ieee80211_sub_if_data *sdata,
+>   				      struct ieee80211_mgmt *mgmt, size_t len);
+>   void ieee80211_stop_mbssid(struct ieee80211_sub_if_data *sdata);
+>   
+> +void
+> +ieee80211_uhr_cap_ie_to_sta_uhr_cap(struct ieee80211_sub_if_data *sdata,
+> +				    struct ieee80211_supported_band *sband,
+> +				    const struct ieee80211_uhr_capa *uhr_capa,
+> +				    u8 uhr_capa_len,
+> +				    struct link_sta_info *link_sta);
+> +
+>   #if IS_ENABLED(CONFIG_MAC80211_KUNIT_TEST)
+>   #define EXPORT_SYMBOL_IF_MAC80211_KUNIT(sym) EXPORT_SYMBOL_IF_KUNIT(sym)
+>   #define VISIBLE_IF_MAC80211_KUNIT
+> diff --git a/net/mac80211/main.c b/net/mac80211/main.c
+> index b05e313c7f17..b209e865a657 100644
+> --- a/net/mac80211/main.c
+> +++ b/net/mac80211/main.c
+> @@ -1123,7 +1123,7 @@ int ieee80211_register_hw(struct ieee80211_hw *hw)
+>   	int result, i;
+>   	enum nl80211_band band;
+>   	int channels, max_bitrates;
+> -	bool supp_ht, supp_vht, supp_he, supp_eht, supp_s1g;
+> +	bool supp_ht, supp_vht, supp_he, supp_eht, supp_s1g, supp_uhr;
+>   	struct cfg80211_chan_def dflt_chandef = {};
+>   
+>   	if (ieee80211_hw_check(hw, QUEUE_CONTROL) &&
+> @@ -1237,6 +1237,7 @@ int ieee80211_register_hw(struct ieee80211_hw *hw)
+>   	supp_he = false;
+>   	supp_eht = false;
+>   	supp_s1g = false;
+> +	supp_uhr = false;
+>   	for (band = 0; band < NUM_NL80211_BANDS; band++) {
+>   		const struct ieee80211_sband_iftype_data *iftd;
+>   		struct ieee80211_supported_band *sband;
+> @@ -1293,6 +1294,7 @@ int ieee80211_register_hw(struct ieee80211_hw *hw)
+>   
+>   			supp_he = supp_he || iftd->he_cap.has_he;
+>   			supp_eht = supp_eht || iftd->eht_cap.has_eht;
+> +			supp_uhr = supp_uhr || iftd->uhr_cap.has_uhr;
+>   
+>   			if (band == NL80211_BAND_2GHZ)
+>   				he_40_mhz_cap =
+> @@ -1325,6 +1327,10 @@ int ieee80211_register_hw(struct ieee80211_hw *hw)
+>   		if (WARN_ON(supp_eht && !supp_he))
+>   			return -EINVAL;
+>   
+> +		/* UHR requires EHT support */
+> +		if (WARN_ON(supp_uhr && !supp_eht))
+> +			return -EINVAL;
+> +
+>   		if (!sband->ht_cap.ht_supported)
+>   			continue;
+>   
+> @@ -1437,6 +1443,11 @@ int ieee80211_register_hw(struct ieee80211_hw *hw)
+>   				IEEE80211_EHT_PPE_THRES_MAX_LEN;
+>   	}
+>   
+> +	if (supp_uhr)
+> +		local->scan_ies_len +=
+> +			3 + sizeof(struct ieee80211_uhr_capa) +
+> +			sizeof(struct ieee80211_uhr_capa_phy);
+> +
+>   	if (!local->ops->hw_scan) {
+>   		/* For hw_scan, driver needs to set these up. */
+>   		local->hw.wiphy->max_scan_ssids = 4;
+> diff --git a/net/mac80211/mlme.c b/net/mac80211/mlme.c
+> index 6e468c4fcda2..df170556825f 100644
+> --- a/net/mac80211/mlme.c
+> +++ b/net/mac80211/mlme.c
+> @@ -8,7 +8,7 @@
+>    * Copyright 2007, Michael Wu <flamingice@sourmilk.net>
+>    * Copyright 2013-2014  Intel Mobile Communications GmbH
+>    * Copyright (C) 2015 - 2017 Intel Deutschland GmbH
+> - * Copyright (C) 2018 - 2025 Intel Corporation
+> + * Copyright (C) 2018 - 2026 Intel Corporation
+>    */
+>   
+>   #include <linux/delay.h>
+> @@ -162,6 +162,7 @@ ieee80211_determine_ap_chan(struct ieee80211_sub_if_data *sdata,
+>   	const struct ieee80211_vht_operation *vht_oper = elems->vht_operation;
+>   	const struct ieee80211_he_operation *he_oper = elems->he_operation;
+>   	const struct ieee80211_eht_operation *eht_oper = elems->eht_operation;
+> +	const struct ieee80211_uhr_oper *uhr_oper = elems->uhr_oper;
+>   	struct ieee80211_supported_band *sband =
+>   		sdata->local->hw.wiphy->bands[channel->band];
+>   	struct cfg80211_chan_def vht_chandef;
+> @@ -192,7 +193,7 @@ ieee80211_determine_ap_chan(struct ieee80211_sub_if_data *sdata,
+>   
+>   	/* get special 6 GHz case out of the way */
+>   	if (sband->band == NL80211_BAND_6GHZ) {
+> -		enum ieee80211_conn_mode mode = IEEE80211_CONN_MODE_EHT;
+> +		enum ieee80211_conn_mode mode = IEEE80211_CONN_MODE_HIGHEST;
+>   
+>   		/* this is an error */
+>   		if (conn->mode < IEEE80211_CONN_MODE_HE)
+> @@ -215,7 +216,9 @@ ieee80211_determine_ap_chan(struct ieee80211_sub_if_data *sdata,
+>   			return IEEE80211_CONN_MODE_LEGACY;
+>   		}
+>   
+> -		return mode;
+> +		if (mode <= IEEE80211_CONN_MODE_EHT)
+> +			return mode;
+> +		goto check_uhr;
+>   	}
+>   
+>   	/* now we have the progression HT, VHT, ... */
+> @@ -340,7 +343,63 @@ ieee80211_determine_ap_chan(struct ieee80211_sub_if_data *sdata,
+>   		*chandef = eht_chandef;
+>   	}
+>   
+> -	return IEEE80211_CONN_MODE_EHT;
+> +check_uhr:
+> +	if (conn->mode < IEEE80211_CONN_MODE_UHR || !uhr_oper)
+> +		return IEEE80211_CONN_MODE_EHT;
+> +
+> +	/*
+> +	 * In beacons we don't have all the data - but we know the size was OK,
+> +	 * so if the size is valid as a non-beacon case, we have more data and
+> +	 * can validate the NPCA parameters.
+> +	 */
+> +	if (ieee80211_uhr_oper_size_ok((const void *)uhr_oper,
+> +				       elems->uhr_oper_len,
+> +				       false)) {
+> +		struct cfg80211_chan_def npca_chandef = *chandef;
+> +		const struct ieee80211_uhr_npca_info *npca;
+> +		const __le16 *dis_subch_bmap;
+> +		u16 punct = chandef->punctured, npca_punct;
+> +
+> +		npca = ieee80211_uhr_npca_info(uhr_oper);
+> +		if (npca) {
+> +			int width = cfg80211_chandef_get_width(chandef);
+> +			u8 offs = le32_get_bits(npca->params,
+> +						IEEE80211_UHR_NPCA_PARAMS_PRIMARY_CHAN_OFFS);
+> +			u32 cf1 = chandef->center_freq1;
+> +			bool pri_upper, npca_upper;
+> +
+> +			pri_upper = chandef->chan->center_freq > cf1;
+> +			npca_upper = 20 * offs >= width / 2;
+> +
+> +			if (20 * offs >= cfg80211_chandef_get_width(chandef) ||
+> +			    pri_upper == npca_upper) {
+> +				sdata_info(sdata,
+> +					   "AP UHR NPCA primary channel invalid, disabling UHR\n");
+> +				return IEEE80211_CONN_MODE_EHT;
+> +			}
+> +		}
+> +
+> +		dis_subch_bmap = ieee80211_uhr_npca_dis_subch_bitmap(uhr_oper);
+> +
+> +		if (dis_subch_bmap) {
+> +			npca_punct = get_unaligned_le16(dis_subch_bmap);
+> +			npca_chandef.punctured = npca_punct;
+> +		}
+> +
+> +		/*
+> +		 * must be a valid puncturing pattern for this channel as
+> +		 * well as puncturing all subchannels that are already in
+> +		 * the disabled subchannel bitmap on the primary channel
+> +		 */
+> +		if (!cfg80211_chandef_valid(&npca_chandef) ||
+> +		    ((punct & npca_punct) != punct)) {
+> +			sdata_info(sdata,
+> +				   "AP UHR NPCA disabled subchannel bitmap invalid, disabling UHR\n");
+> +			return IEEE80211_CONN_MODE_EHT;
+> +		}
+> +	}
+> +
+> +	return IEEE80211_CONN_MODE_UHR;
+>   }
+>   
+>   static bool
+> @@ -1091,6 +1150,7 @@ ieee80211_determine_chan_mode(struct ieee80211_sub_if_data *sdata,
+>   				       IEEE80211_CONN_BW_LIMIT_160);
+>   		break;
+>   	case IEEE80211_CONN_MODE_EHT:
+> +	case IEEE80211_CONN_MODE_UHR:
+>   		conn->bw_limit = min_t(enum ieee80211_conn_bw_limit,
+>   				       conn->bw_limit,
+>   				       IEEE80211_CONN_BW_LIMIT_320);
+> @@ -1108,6 +1168,8 @@ ieee80211_determine_chan_mode(struct ieee80211_sub_if_data *sdata,
+>   		set_bit(BSS_MEMBERSHIP_SELECTOR_HE_PHY, sta_selectors);
+>   	if (conn->mode >= IEEE80211_CONN_MODE_EHT)
+>   		set_bit(BSS_MEMBERSHIP_SELECTOR_EHT_PHY, sta_selectors);
+> +	if (conn->mode >= IEEE80211_CONN_MODE_UHR)
+> +		set_bit(BSS_MEMBERSHIP_SELECTOR_UHR_PHY, sta_selectors);
+>   
+>   	/*
+>   	 * We do not support EPD or GLK so never add them.
+> @@ -1155,6 +1217,11 @@ ieee80211_determine_chan_mode(struct ieee80211_sub_if_data *sdata,
+>   				       IEEE80211_CONN_BW_LIMIT_160);
+>   	}
+>   
+> +	if (conn->mode >= IEEE80211_CONN_MODE_UHR &&
+> +	    !cfg80211_chandef_usable(sdata->wdev.wiphy, &chanreq->oper,
+> +				     IEEE80211_CHAN_NO_UHR))
+> +		conn->mode = IEEE80211_CONN_MODE_EHT;
+> +
+>   	if (chanreq->oper.width != ap_chandef->width || ap_mode != conn->mode)
+>   		link_id_info(sdata, link_id,
+>   			     "regulatory prevented using AP config, downgraded\n");
+> @@ -1884,11 +1951,13 @@ ieee80211_add_link_elems(struct ieee80211_sub_if_data *sdata,
+>   
+>   	/*
+>   	 * careful - need to know about all the present elems before
+> -	 * calling ieee80211_assoc_add_ml_elem(), so add this one if
+> -	 * we're going to put it after the ML element
+> +	 * calling ieee80211_assoc_add_ml_elem(), so add these if
+> +	 * we're going to put them after the ML element
+>   	 */
+>   	if (assoc_data->link[link_id].conn.mode >= IEEE80211_CONN_MODE_EHT)
+>   		ADD_PRESENT_EXT_ELEM(WLAN_EID_EXT_EHT_CAPABILITY);
+> +	if (assoc_data->link[link_id].conn.mode >= IEEE80211_CONN_MODE_UHR)
+> +		ADD_PRESENT_EXT_ELEM(WLAN_EID_EXT_UHR_CAPA);
+>   
+>   	if (link_id == assoc_data->assoc_link_id)
+>   		ieee80211_assoc_add_ml_elem(sdata, skb, orig_capab, ext_capa,
+> @@ -1901,6 +1970,9 @@ ieee80211_add_link_elems(struct ieee80211_sub_if_data *sdata,
+>   		ieee80211_put_eht_cap(skb, sdata, sband,
+>   				      &assoc_data->link[link_id].conn);
+>   
+> +	if (assoc_data->link[link_id].conn.mode >= IEEE80211_CONN_MODE_UHR)
+> +		ieee80211_put_uhr_cap(skb, sdata, sband);
+> +
+>   	if (sband->band == NL80211_BAND_S1GHZ) {
+>   		ieee80211_add_aid_request_ie(sdata, skb);
+>   		ieee80211_add_s1g_capab_ie(sdata, &sband->s1g_cap, skb);
+> @@ -2135,6 +2207,9 @@ ieee80211_link_common_elems_size(struct ieee80211_sub_if_data *sdata,
+>   		sizeof(struct ieee80211_eht_mcs_nss_supp) +
+>   		IEEE80211_EHT_PPE_THRES_MAX_LEN;
+>   
+> +	size += 2 + 1 + sizeof(struct ieee80211_uhr_capa) +
+> +		sizeof(struct ieee80211_uhr_capa_phy);
+> +
+>   	return size;
+>   }
+>   
+> @@ -5531,6 +5606,18 @@ static bool ieee80211_assoc_config_link(struct ieee80211_link_data *link,
+>   		bss_conf->epcs_support = false;
+>   	}
+>   
+> +	if (elems->uhr_oper && elems->uhr_capa &&
+> +	    link->u.mgd.conn.mode >= IEEE80211_CONN_MODE_UHR) {
+> +		ieee80211_uhr_cap_ie_to_sta_uhr_cap(sdata, sband,
+> +						    elems->uhr_capa,
+> +						    elems->uhr_capa_len,
+> +						    link_sta);
+> +
+> +		bss_conf->uhr_support = link_sta->pub->uhr_cap.has_uhr;
+> +	} else {
+> +		bss_conf->uhr_support = false;
+> +	}
+> +
+>   	if (elems->s1g_oper &&
+>   	    link->u.mgd.conn.mode == IEEE80211_CONN_MODE_S1G &&
+>   	    elems->s1g_capab)
+> @@ -5821,6 +5908,7 @@ ieee80211_determine_our_sta_mode(struct ieee80211_sub_if_data *sdata,
+>   	bool is_6ghz = sband->band == NL80211_BAND_6GHZ;
+>   	const struct ieee80211_sta_he_cap *he_cap;
+>   	const struct ieee80211_sta_eht_cap *eht_cap;
+> +	const struct ieee80211_sta_uhr_cap *uhr_cap;
+>   	struct ieee80211_sta_vht_cap vht_cap;
+>   
+>   	if (sband->band == NL80211_BAND_S1GHZ) {
+> @@ -5996,9 +6084,6 @@ ieee80211_determine_our_sta_mode(struct ieee80211_sub_if_data *sdata,
+>   				 "no EHT support, limiting to HE\n");
+>   		goto out;
+>   	}
+> -
+> -	/* we have EHT */
+> -
+>   	conn->mode = IEEE80211_CONN_MODE_EHT;
+>   
+>   	/* check bandwidth */
+> @@ -6009,6 +6094,20 @@ ieee80211_determine_our_sta_mode(struct ieee80211_sub_if_data *sdata,
+>   		mlme_link_id_dbg(sdata, link_id,
+>   				 "no EHT 320 MHz cap in 6 GHz, limiting to 160 MHz\n");
+>   
+> +	if (req && req->flags & ASSOC_REQ_DISABLE_UHR) {
+> +		mlme_link_id_dbg(sdata, link_id,
+> +				 "UHR disabled by flag, limiting to EHT\n");
+> +		goto out;
+> +	}
+> +
+> +	uhr_cap = ieee80211_get_uhr_iftype_cap_vif(sband, &sdata->vif);
+> +	if (!uhr_cap) {
+> +		mlme_link_id_dbg(sdata, link_id,
+> +				 "no UHR support, limiting to EHT\n");
+> +		goto out;
+> +	}
+> +	conn->mode = IEEE80211_CONN_MODE_UHR;
+> +
+>   out:
+>   	mlme_link_id_dbg(sdata, link_id,
+>   			 "determined local STA to be %s, BW limited to %d MHz\n",
+> diff --git a/net/mac80211/parse.c b/net/mac80211/parse.c
+> index 667021bc60c6..558eb3385bf5 100644
+> --- a/net/mac80211/parse.c
+> +++ b/net/mac80211/parse.c
+> @@ -189,6 +189,26 @@ ieee80211_parse_extension_element(u32 *crc,
+>   			elems->ttlm_num++;
+>   		}
+>   		break;
+> +	case WLAN_EID_EXT_UHR_OPER:
+> +		if (params->mode < IEEE80211_CONN_MODE_UHR)
+> +			break;
+> +		calc_crc = true;
+> +		if (ieee80211_uhr_oper_size_ok(data, len,
+> +					       params->type == (IEEE80211_FTYPE_MGMT |
+> +								IEEE80211_STYPE_BEACON))) {
+> +			elems->uhr_oper = data;
+> +			elems->uhr_oper_len = len;
+> +		}
+> +		break;
+> +	case WLAN_EID_EXT_UHR_CAPA:
+> +		if (params->mode < IEEE80211_CONN_MODE_UHR)
+> +			break;
+> +		calc_crc = true;
+> +		if (ieee80211_uhr_capa_size_ok(data, len)) {
+> +			elems->uhr_capa = data;
+> +			elems->uhr_capa_len = len;
+> +		}
+> +		break;
+>   	}
+>   
+>   	if (crc && calc_crc)
+> diff --git a/net/mac80211/rx.c b/net/mac80211/rx.c
+> index 30b9b4d76357..69034d83a7b6 100644
+> --- a/net/mac80211/rx.c
+> +++ b/net/mac80211/rx.c
+> @@ -5518,6 +5518,32 @@ void ieee80211_rx_list(struct ieee80211_hw *hw, struct ieee80211_sta *pubsta,
+>   				      status->rate_idx, status->nss, status->eht.gi))
+>   				goto drop;
+>   			break;
+> +		case RX_ENC_UHR:
+> +			if (WARN_ONCE(!(status->rate_idx <= 15 ||
+> +					status->rate_idx == 17 ||
+> +					status->rate_idx == 19 ||
+> +					status->rate_idx == 20 ||
+> +					status->rate_idx == 23) ||
+> +				      !status->nss ||
+> +				      status->nss > 8 ||
+> +				      status->uhr.gi > NL80211_RATE_INFO_EHT_GI_3_2,
+> +				      "Rate marked as a UHR rate but data is invalid: MCS:%d, NSS:%d, GI:%d\n",
+> +				      status->rate_idx, status->nss, status->uhr.gi))
+> +				goto drop;
+> +			if (WARN_ONCE(status->uhr.elr &&
+> +				      (status->nss != 1 || status->rate_idx > 1 ||
+> +				       status->uhr.gi != NL80211_RATE_INFO_EHT_GI_1_6 ||
+> +				       status->bw != RATE_INFO_BW_20 || status->uhr.im),
+> +				      "bad UHR ELR MCS MCS:%d, NSS:%d, GI:%d, BW:%d, IM:%d\n",
+> +				      status->rate_idx, status->nss, status->uhr.gi,
+> +				      status->bw, status->uhr.im))
+> +				goto drop;
+> +			if (WARN_ONCE(status->uhr.im &&
+> +				      (status->nss != 1 || status->rate_idx == 15),
+> +				      "bad UHR IM MCS MCS:%d, NSS:%d\n",
+> +				      status->rate_idx, status->nss))
+> +				goto drop;
+> +			break;
+>   		default:
+>   			WARN_ON_ONCE(1);
+>   			fallthrough;
+> diff --git a/net/mac80211/sta_info.c b/net/mac80211/sta_info.c
+> index 22e8561ad6fc..a2776196f97c 100644
+> --- a/net/mac80211/sta_info.c
+> +++ b/net/mac80211/sta_info.c
+> @@ -2567,6 +2567,17 @@ static void sta_stats_decode_rate(struct ieee80211_local *local, u32 rate,
+>   		rinfo->eht_gi = STA_STATS_GET(EHT_GI, rate);
+>   		rinfo->eht_ru_alloc = STA_STATS_GET(EHT_RU, rate);
+>   		break;
+> +	case STA_STATS_RATE_TYPE_UHR:
+> +		rinfo->flags = RATE_INFO_FLAGS_UHR_MCS;
+> +		rinfo->mcs = STA_STATS_GET(UHR_MCS, rate);
+> +		rinfo->nss = STA_STATS_GET(UHR_NSS, rate);
+> +		rinfo->eht_gi = STA_STATS_GET(UHR_GI, rate);
+> +		rinfo->eht_ru_alloc = STA_STATS_GET(UHR_RU, rate);
+> +		if (STA_STATS_GET(UHR_ELR, rate))
+> +			rinfo->flags |= RATE_INFO_FLAGS_UHR_ELR_MCS;
+> +		if (STA_STATS_GET(UHR_IM, rate))
+> +			rinfo->flags |= RATE_INFO_FLAGS_UHR_IM;
+> +		break;
+>   	}
+>   }
+>   
+> diff --git a/net/mac80211/sta_info.h b/net/mac80211/sta_info.h
+> index b1edf8ed102f..24dda075820d 100644
+> --- a/net/mac80211/sta_info.h
+> +++ b/net/mac80211/sta_info.h
+> @@ -3,7 +3,7 @@
+>    * Copyright 2002-2005, Devicescape Software, Inc.
+>    * Copyright 2013-2014  Intel Mobile Communications GmbH
+>    * Copyright(c) 2015-2017 Intel Deutschland GmbH
+> - * Copyright(c) 2020-2024 Intel Corporation
+> + * Copyright(c) 2020-2025 Intel Corporation
+>    */
+>   
+>   #ifndef STA_INFO_H
+> @@ -1009,25 +1009,49 @@ enum sta_stats_type {
+>   	STA_STATS_RATE_TYPE_HE,
+>   	STA_STATS_RATE_TYPE_S1G,
+>   	STA_STATS_RATE_TYPE_EHT,
+> +	STA_STATS_RATE_TYPE_UHR,
+>   };
+>   
+> -#define STA_STATS_FIELD_HT_MCS		GENMASK( 7,  0)
+> -#define STA_STATS_FIELD_LEGACY_IDX	GENMASK( 3,  0)
+> -#define STA_STATS_FIELD_LEGACY_BAND	GENMASK( 7,  4)
+> -#define STA_STATS_FIELD_VHT_MCS		GENMASK( 3,  0)
+> -#define STA_STATS_FIELD_VHT_NSS		GENMASK( 7,  4)
+> -#define STA_STATS_FIELD_HE_MCS		GENMASK( 3,  0)
+> -#define STA_STATS_FIELD_HE_NSS		GENMASK( 7,  4)
+> -#define STA_STATS_FIELD_EHT_MCS		GENMASK( 3,  0)
+> -#define STA_STATS_FIELD_EHT_NSS		GENMASK( 7,  4)
+> -#define STA_STATS_FIELD_BW		GENMASK(12,  8)
+> -#define STA_STATS_FIELD_SGI		GENMASK(13, 13)
+> -#define STA_STATS_FIELD_TYPE		GENMASK(16, 14)
+> -#define STA_STATS_FIELD_HE_RU		GENMASK(19, 17)
+> -#define STA_STATS_FIELD_HE_GI		GENMASK(21, 20)
+> -#define STA_STATS_FIELD_HE_DCM		GENMASK(22, 22)
+> -#define STA_STATS_FIELD_EHT_RU		GENMASK(20, 17)
+> -#define STA_STATS_FIELD_EHT_GI		GENMASK(22, 21)
+> +/* common */
+> +#define STA_STATS_FIELD_TYPE		0x0000000F
+> +#define STA_STATS_FIELD_BW		0x000001F0
+> +#define STA_STATS_FIELD_RESERVED	0x00000E00
+> +
+> +/* STA_STATS_RATE_TYPE_LEGACY */
+> +#define STA_STATS_FIELD_LEGACY_IDX	0x0000F000
+> +#define STA_STATS_FIELD_LEGACY_BAND	0x000F0000
+> +
+> +/* STA_STATS_RATE_TYPE_HT */
+> +#define STA_STATS_FIELD_HT_MCS		0x000FF000
+> +
+> +/* STA_STATS_RATE_TYPE_VHT */
+> +#define STA_STATS_FIELD_VHT_MCS		0x0000F000
+> +#define STA_STATS_FIELD_VHT_NSS		0x000F0000
+> +
+> +/* HT & VHT */
+> +#define STA_STATS_FIELD_SGI		0x00100000
+> +
+> +/* STA_STATS_RATE_TYPE_HE */
+> +#define STA_STATS_FIELD_HE_MCS		0x0000F000
+> +#define STA_STATS_FIELD_HE_NSS		0x000F0000
+> +#define STA_STATS_FIELD_HE_RU		0x00700000
+> +#define STA_STATS_FIELD_HE_GI		0x01800000
+> +#define STA_STATS_FIELD_HE_DCM		0x02000000
+> +
+> +/* STA_STATS_RATE_TYPE_EHT */
+> +#define STA_STATS_FIELD_EHT_MCS		0x0000F000
+> +#define STA_STATS_FIELD_EHT_NSS		0x000F0000
+> +#define STA_STATS_FIELD_EHT_RU		0x00F00000
+> +#define STA_STATS_FIELD_EHT_GI		0x03000000
+> +
+> +/* STA_STATS_RATE_TYPE_UHR */
+> +#define STA_STATS_FIELD_UHR_MCS		0x0001F000
+> +#define STA_STATS_FIELD_UHR_NSS		0x001E0000
+> +#define STA_STATS_FIELD_UHR_RU		0x01E00000
+> +#define STA_STATS_FIELD_UHR_GI		0x06000000
+> +#define STA_STATS_FIELD_UHR_ELR		0x08000000
+> +#define STA_STATS_FIELD_UHR_IM		0x10000000
+> +
+>   
+>   #define STA_STATS_FIELD(_n, _v)		FIELD_PREP(STA_STATS_FIELD_ ## _n, _v)
+>   #define STA_STATS_GET(_n, _v)		FIELD_GET(STA_STATS_FIELD_ ## _n, _v)
+> @@ -1040,8 +1064,15 @@ static inline u32 sta_stats_encode_rate(struct ieee80211_rx_status *s)
+>   
+>   	r = STA_STATS_FIELD(BW, s->bw);
+>   
+> -	if (s->enc_flags & RX_ENC_FLAG_SHORT_GI)
+> -		r |= STA_STATS_FIELD(SGI, 1);
+> +	switch (s->encoding) {
+> +	case RX_ENC_HT:
+> +	case RX_ENC_VHT:
+> +		if (s->enc_flags & RX_ENC_FLAG_SHORT_GI)
+> +			r |= STA_STATS_FIELD(SGI, 1);
+> +		break;
+> +	default:
+> +		break;
+> +	}
+>   
+>   	switch (s->encoding) {
+>   	case RX_ENC_VHT:
+> @@ -1073,6 +1104,15 @@ static inline u32 sta_stats_encode_rate(struct ieee80211_rx_status *s)
+>   		r |= STA_STATS_FIELD(EHT_GI, s->eht.gi);
+>   		r |= STA_STATS_FIELD(EHT_RU, s->eht.ru);
+>   		break;
+> +	case RX_ENC_UHR:
+> +		r |= STA_STATS_FIELD(TYPE, STA_STATS_RATE_TYPE_UHR);
+> +		r |= STA_STATS_FIELD(UHR_NSS, s->nss);
+> +		r |= STA_STATS_FIELD(UHR_MCS, s->rate_idx);
+> +		r |= STA_STATS_FIELD(UHR_GI, s->uhr.gi);
+> +		r |= STA_STATS_FIELD(UHR_RU, s->uhr.ru);
+> +		r |= STA_STATS_FIELD(UHR_ELR, s->uhr.elr);
+> +		r |= STA_STATS_FIELD(UHR_IM, s->uhr.im);
+> +		break;
+>   	default:
+>   		WARN_ON(1);
+>   		return STA_STATS_RATE_INVALID;
+> diff --git a/net/mac80211/uhr.c b/net/mac80211/uhr.c
+> new file mode 100644
+> index 000000000000..18029fa93f40
+> --- /dev/null
+> +++ b/net/mac80211/uhr.c
+> @@ -0,0 +1,29 @@
+> +// SPDX-License-Identifier: GPL-2.0-only
+> +/*
+> + * UHR handling
+> + *
+> + * Copyright(c) 2025 Intel Corporation
+> + */
+> +
+> +#include "ieee80211_i.h"
+> +
+> +void
+> +ieee80211_uhr_cap_ie_to_sta_uhr_cap(struct ieee80211_sub_if_data *sdata,
+> +				    struct ieee80211_supported_band *sband,
+> +				    const struct ieee80211_uhr_capa *uhr_capa,
+> +				    u8 uhr_capa_len,
+> +				    struct link_sta_info *link_sta)
+> +{
+> +	struct ieee80211_sta_uhr_cap *uhr_cap = &link_sta->pub->uhr_cap;
+> +
+> +	memset(uhr_cap, 0, sizeof(*uhr_cap));
+> +
+> +	if (!uhr_capa ||
+> +	    !ieee80211_get_uhr_iftype_cap_vif(sband, &sdata->vif))
+> +		return;
+> +
+> +	uhr_cap->has_uhr = true;
+> +
+> +	uhr_cap->mac = uhr_capa->mac;
+> +	uhr_cap->phy = *ieee80211_uhr_phy_cap(uhr_capa);
+> +}
+> diff --git a/net/mac80211/util.c b/net/mac80211/util.c
+> index 4d5680da7aa0..97433347c26d 100644
+> --- a/net/mac80211/util.c
+> +++ b/net/mac80211/util.c
+> @@ -6,7 +6,7 @@
+>    * Copyright 2007	Johannes Berg <johannes@sipsolutions.net>
+>    * Copyright 2013-2014  Intel Mobile Communications GmbH
+>    * Copyright (C) 2015-2017	Intel Deutschland GmbH
+> - * Copyright (C) 2018-2025 Intel Corporation
+> + * Copyright (C) 2018-2026 Intel Corporation
+>    *
+>    * utilities for mac80211
+>    */
+> @@ -1421,6 +1421,13 @@ static int ieee80211_put_preq_ies_band(struct sk_buff *skb,
+>   	if (err)
+>   		return err;
+>   
+> +	if (cfg80211_any_usable_channels(local->hw.wiphy, BIT(sband->band),
+> +					 IEEE80211_CHAN_NO_UHR)) {
+> +		err = ieee80211_put_uhr_cap(skb, sdata, sband);
+> +		if (err)
+> +			return err;
+> +	}
+> +
+>   	/*
+>   	 * If adding more here, adjust code in main.c
+>   	 * that calculates local->scan_ies_len.
+> @@ -4527,6 +4534,32 @@ int ieee80211_put_eht_cap(struct sk_buff *skb,
+>   	return 0;
+>   }
+>   
+> +int ieee80211_put_uhr_cap(struct sk_buff *skb,
+> +			  struct ieee80211_sub_if_data *sdata,
+> +			  const struct ieee80211_supported_band *sband)
+> +{
+> +	const struct ieee80211_sta_uhr_cap *uhr_cap =
+> +		ieee80211_get_uhr_iftype_cap_vif(sband, &sdata->vif);
+> +	int len;
+> +
+> +	if (!uhr_cap)
+> +		return 0;
+> +
+> +	len = 2 + 1 + sizeof(struct ieee80211_uhr_capa) +
+> +	      sizeof(struct ieee80211_uhr_capa_phy);
+> +
+> +	if (skb_tailroom(skb) < len)
+> +		return -ENOBUFS;
+> +
+> +	skb_put_u8(skb, WLAN_EID_EXTENSION);
+> +	skb_put_u8(skb, len - 2);
+> +	skb_put_u8(skb, WLAN_EID_EXT_UHR_CAPA);
+> +	skb_put_data(skb, &uhr_cap->mac, sizeof(uhr_cap->mac));
+DBE not required for non-AP ?
+> +	skb_put_data(skb, &uhr_cap->phy, sizeof(uhr_cap->phy));
+> +
+> +	return 0;
+> +}
+> +
+>   const char *ieee80211_conn_mode_str(enum ieee80211_conn_mode mode)
+>   {
+>   	static const char * const modes[] = {
+> @@ -4536,6 +4569,7 @@ const char *ieee80211_conn_mode_str(enum ieee80211_conn_mode mode)
+>   		[IEEE80211_CONN_MODE_VHT] = "VHT",
+>   		[IEEE80211_CONN_MODE_HE] = "HE",
+>   		[IEEE80211_CONN_MODE_EHT] = "EHT",
+> +		[IEEE80211_CONN_MODE_UHR] = "UHR",
+>   	};
+>   
+>   	if (WARN_ON(mode >= ARRAY_SIZE(modes)))
 
