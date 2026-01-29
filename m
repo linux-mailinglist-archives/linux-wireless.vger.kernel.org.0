@@ -1,581 +1,354 @@
-Return-Path: <linux-wireless+bounces-31326-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-31327-lists+linux-wireless=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id P2wpFpdde2kdEQIAu9opvQ
-	(envelope-from <linux-wireless+bounces-31326-lists+linux-wireless=lfdr.de@vger.kernel.org>)
-	for <lists+linux-wireless@lfdr.de>; Thu, 29 Jan 2026 14:16:07 +0100
+	id uEXYC3Npe2lEEgIAu9opvQ
+	(envelope-from <linux-wireless+bounces-31327-lists+linux-wireless=lfdr.de@vger.kernel.org>)
+	for <lists+linux-wireless@lfdr.de>; Thu, 29 Jan 2026 15:06:43 +0100
 X-Original-To: lists+linux-wireless@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9BDB5B04BB
-	for <lists+linux-wireless@lfdr.de>; Thu, 29 Jan 2026 14:16:06 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id D97C9B0AE9
+	for <lists+linux-wireless@lfdr.de>; Thu, 29 Jan 2026 15:06:42 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 28CD130107ED
-	for <lists+linux-wireless@lfdr.de>; Thu, 29 Jan 2026 13:16:05 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 96937300D357
+	for <lists+linux-wireless@lfdr.de>; Thu, 29 Jan 2026 14:06:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9193142A80;
-	Thu, 29 Jan 2026 13:16:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A77B53806A8;
+	Thu, 29 Jan 2026 14:06:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Pi/l0SDB"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Rzgzp+l7"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pj1-f47.google.com (mail-pj1-f47.google.com [209.85.216.47])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6EF5F6FC3
-	for <linux-wireless@vger.kernel.org>; Thu, 29 Jan 2026 13:16:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769692564; cv=none; b=JPk6vm38yUYlMXxwrsg5UX2WOBLG0RbzC6UfYYA3QXYJakinc4bFZm/hKeCsvsRoOIIJ0JT0NxhI0jvXCQHl+3BUnmcQ/SKlO1WH5imUOVyuFfY5LGXkomY16SYxFtN/Pziccc93Z6aSizQQVxcHa19OWmFNfGpILRxSdym2HBI=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769692564; c=relaxed/simple;
-	bh=YEbMLf0wwzn4zQ2AJDape8vX5gzPi4ez4n/GKO6BByI=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=RfShFvLd7BuGnczi/6qzMexPk9dAkT739W2JF3Nm4xO7y4Mnhuw3hzt0bC3yJ2mQSohbJ8JkMsl3pPjtfisth0cU0uFUTE6tTRdvxzHNvUROFPI9IZqM7m4wxvXMelqMU+QnO/v2WcjWiWYdv/2rTz4lu/G9z7vmiGyFC+Upv58=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Pi/l0SDB; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8DFC5C116D0;
-	Thu, 29 Jan 2026 13:16:03 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1769692564;
-	bh=YEbMLf0wwzn4zQ2AJDape8vX5gzPi4ez4n/GKO6BByI=;
-	h=From:Date:Subject:To:Cc:From;
-	b=Pi/l0SDBbi/5ZY5sj8BsawHFzDchVNX9pjF9AKRxuHLdUbhGN8Rkdsvwbi9MA0fOv
-	 sKZ0Cv6qB2yp4WNnYXLxo8xsgJZb96+zLt4l4obNs9oz8xvlBRJYXR02QYXiEW8arq
-	 UTu38YDXlToVtcA8aGUBXZ/U5O0DsqxUEaFFUHpOl/qELL7Xm95fi6whsgb18/ffG3
-	 z9q+ku3JLjaaVbbm0fcYeJ3Hx6OPRkk64UHvKKxMQTPEs47+OU+Kt2KEVdpkzLHL1d
-	 fBruKhalsPV39t/gNTZKFrTqN2xl5/Aq2gS8k4620SRAk5mFOXcDwVNNOrqrHEfLse
-	 HiYis4uXB/qow==
-From: Lorenzo Bianconi <lorenzo@kernel.org>
-Date: Thu, 29 Jan 2026 14:15:46 +0100
-Subject: [PATCH wireless-next v4] wifi: mac80211: Add eMLSR/eMLMR action
- frame parsing support
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0E8AA3081D2
+	for <linux-wireless@vger.kernel.org>; Thu, 29 Jan 2026 14:06:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.216.47
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1769695591; cv=pass; b=K8SexsVhfT06IRqgOdUTDT52iehpSVUbfaEOoEptxzkqNIaHSGbM6ePYmo4/VqiyzYSk4uBsxyiupanFNV2A0habjAdZ/FVhBPCrtDKw8B+Kjd+P/aIFPrfi2MMAHLXVYOohW0m31aMcWEzQZYPtvtlnvq8M8cw+pc55VyGeOs8=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1769695591; c=relaxed/simple;
+	bh=OYBgHyNokWWDYIFiut4ACHNoNBQrkQkp6vdiTPUBN04=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=s0XLq3J2/sREf5ewxltkqc4BX/Nx9oqZ38h7w2nZ08tsaQSlfQe97N9Jcr9oeRuoWgXPoH0d1FTsusz+ECCnWF1kldoy52jZ3HWnDqXh/LqXcWCku6GLz7Eex2EkJjMoe2iYm4b4G2nJl/JGFYrFvnberSXHos8pfqJQYY57ViE=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Rzgzp+l7; arc=pass smtp.client-ip=209.85.216.47
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-pj1-f47.google.com with SMTP id 98e67ed59e1d1-34c24f4dfb7so622796a91.0
+        for <linux-wireless@vger.kernel.org>; Thu, 29 Jan 2026 06:06:29 -0800 (PST)
+ARC-Seal: i=1; a=rsa-sha256; t=1769695589; cv=none;
+        d=google.com; s=arc-20240605;
+        b=Rvy4yvu3Zm6AdAjxM02tcoFy3zDKvXdSWUoMa6HZm8YuF0dfkzyhwu0bXGR5xjvYmi
+         7mCPgZ+VLepypptUaMd/uh2WVEi1qC2dd/31IKCs4o/xxt1ZPcUVpdhMRHoAh062CkQ9
+         qqHfOS94D3C35SEWKXCgUk+UnJ9Bs1yzXVy5iiL5TqnRp9ksmHpIoejEqYmwIBgCpuNK
+         kMqj3dCzOxWVsWHcsyRAKG3wJkI3BuUlARQPRZfzwF8KGAzHrI4ufTCYjQE4IkmFra7n
+         G5xjlCCi/s+StqKI1cF4F7eUqowt+PPsL71Aeyk1FRzAC+TD/SzU7U+7AqDfkBSKfEGo
+         rskg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=RcLENt0AH5rhLcl7Jm2sgoJkBXC9N8ulrINMcIPia5k=;
+        fh=9ncy+lnpn11saNTI5ILrhqTLZtWYnGuBHk11j1tMrLM=;
+        b=cDlMnVW7WSxtfyogqWYYdvWLUIXmJ1Cd0fwp9ST4Voa8GSF896ri9oLWgsdMAIXWuL
+         DUuc/3snqdgMnxjqAIgyRcj+BNY3fQYJ2xQ80rHlaBGGvzDuPgPmvIM83saOTeASA5tU
+         KqFclosrvpep6+k6CTb4bRlKN8QSYEcaUhD/0qkJMYuD2LseeSs4K4zp/ZG15J1MLuMy
+         m66QouffhLKBSh4uNt/F0/fb4q7Q7CZakuUFD9bTYdRAUWCUdjOF/BKoiUkiLFElRx5g
+         ZjlOVrW1jv1RRMrm9rLheDbDOj326qwXtFXYMgoTUsf+Uwhh/1IBqnTms5s4u5P23gIn
+         Hbug==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1769695589; x=1770300389; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=RcLENt0AH5rhLcl7Jm2sgoJkBXC9N8ulrINMcIPia5k=;
+        b=Rzgzp+l7rXIFkb3+wWzO6nO0jUhfdqyvvCMgNOdhGUpY3oZSSsg3ceuZ7nLPWhbThC
+         ZHiStSWIx5VfAI9wM0jroTTg2NKJAi6Jr/I2bIIYf7XQ/p36Mt5aVj7h8UPS0dRVhaYg
+         Mn490Vw7/xqsHvSdCVHmJ05020rnulEnIFymZrNNoiwS9jU9g450nVBH0aS54OltG3bi
+         t0VseVoWovneZQ4u0q51yhhFxbEGpFQSX0zaFOyg5KUqANEw0WJYkkUt7g0sbE/UTkWN
+         y3fxLpUMEZJ1YjyX1/8/5ZBAUhn6XAFmqE/oQZ9EvoJ0LqiVBAdcA7Nw940OK5oZTbbi
+         arrw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1769695589; x=1770300389;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=RcLENt0AH5rhLcl7Jm2sgoJkBXC9N8ulrINMcIPia5k=;
+        b=uOjads3rSdJbZ0BqTk7dyp89UgEeWh1wO8ixfGYQEHZDjJ9PPPSWXm4lV+8E7o6dzl
+         biDdpS9ivFh+Apebextuuwo8Tx6WyIdZUC0HJSIxbD237KQTcms3a85scyHjl2BIDvK0
+         GmO99EWK7FbxqxfuMdV7Yv5pG8eBRId4aZB5yVvfxHvSWy2SYS5clRla96D2YQRKOvXp
+         QjInfqO+IIe8w0y8g0+1iBphP0booLfZ7SWhQMRizjS+1soTy87DV8y6E1Pgxfuw6pTU
+         ggtYpGFux5klxwNVEXj8z1unThrwbVfezgeGTW98oFa+kihLMcKHbFbvT8hkUGtWmpPx
+         Tkag==
+X-Forwarded-Encrypted: i=1; AJvYcCW1TUtLkLcul6h1M93Bjt3r4qtNvrksQA/opWD2o868+/zN/FfqO91bAYrDW28utco6O3/dj5Xv7tbm8OqTgA==@vger.kernel.org
+X-Gm-Message-State: AOJu0YxRiB8DEwl4FSfH/GI64UDGtQFyBxJODPgNMm1tfawW8qrdSwUb
+	HbFH+ZyD3eorQoTelVQfMMBfV/F9nIT+Mi6qcjZkmkhfbVU4zgODzUrRN4m3jzA3pfNyiFCAd8D
+	F8rvqdhUYjntJzZ6dgi8/EMjsaff4E5gxrFm7GU0=
+X-Gm-Gg: AZuq6aIM2rGZU+Q7N6qRe0xs4MtZodt1CItGF8s1dHqXdjdeprakc7q2OngNySZpiFB
+	1QQzCe2shAEZgi3o18npRtR/GCghoOUt+WKyARRVbt4jh5NNC8c7HT8Am1pD5CMS3kFDOkYgk9f
+	UA/1eFvKcmKg5STYvNE1vOwG8myT4mlLkiTiOOhdOUD6o2H2j304WK/6oSUWk4oEnoJawUP9nxA
+	JtgS4TMWE7yp8rXNBWmN7X7OFMZdPFnQehSW4+MQMvrnAa997XhuEzlmoFod//7jmNNLkbX+kvY
+	w6iB3SILrQWFqGTaTPJmUaKtE2DF
+X-Received: by 2002:a17:90a:c88c:b0:340:9cf1:54d0 with SMTP id
+ 98e67ed59e1d1-353fecca19emr8148301a91.1.1769695589142; Thu, 29 Jan 2026
+ 06:06:29 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20260129-mac80211-emlsr-v4-1-14bdadf57380@kernel.org>
-X-B4-Tracking: v=1; b=H4sIAAAAAAAC/2XMSw6CMBSF4a2Yjq3pvS2lOHIfxgGUCzTyMK0hG
- sLeLSQmKMNzku+fWCDvKLDzYWKeRhfc0Mehjgdmm7yvibsyboYCtQAE3uXWCATg1LXB8yRNlTB
- YVcZaFtHDU+Vea/B6i7tx4Tn499ofYXm/KfxPjcAFrwQpWRS6zJL8ciffU3safM2W1ohbn+w8R
- q+0lpiVGqwxOy+33uy85MBVKgthocysVT9+nucPXD2SXy0BAAA=
-X-Change-ID: 20260121-mac80211-emlsr-5774082ff8cc
-To: Johannes Berg <johannes@sipsolutions.net>, 
- Ryder Lee <ryder.lee@mediatek.com>, Sean Wang <sean.wang@mediatek.com>, 
- Matthias Brugger <matthias.bgg@gmail.com>, 
- AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
-Cc: linux-wireless@vger.kernel.org, Felix Fietkau <nbd@nbd.name>, 
- Shayne Chen <shayne.chen@mediatek.com>, 
- Lorenzo Bianconi <lorenzo@kernel.org>, 
- Christian Marangi <ansuelsmth@gmail.com>, 
- linux-mediatek@lists.infradead.org, linux-arm-kernel@lists.infradead.org
-X-Mailer: b4 0.14.2
+References: <20260126095244.113301-1-bjsaikiran@gmail.com> <20260126095244.113301-3-bjsaikiran@gmail.com>
+ <9ca7ceac-2799-4993-844c-8427508c7d9b@oss.qualcomm.com> <CAAFDt1sxWMb1xPaWGWGE1XVFxRKwjOuQPZ__fNTH2+ujXJ6d5A@mail.gmail.com>
+ <CAAFDt1s8HPQWJpSiDDk8PmUAKqkQHELcJj_F0faZ1C9RfiYu6g@mail.gmail.com> <7fb6b431-58ea-47bc-b251-5144575db17d@oss.qualcomm.com>
+In-Reply-To: <7fb6b431-58ea-47bc-b251-5144575db17d@oss.qualcomm.com>
+From: Saikiran B <bjsaikiran@gmail.com>
+Date: Thu, 29 Jan 2026 19:36:17 +0530
+X-Gm-Features: AZwV_QhHbNenSWHu850YbkxhJb3eHlb_ZpOB6u7ptj-ZZOVmyFVj8PtOT56zULg
+Message-ID: <CAAFDt1s_NtY1vXa5STRW7oQn9yDJBC0g7CPSZXn0tFhd+CSHrQ@mail.gmail.com>
+Subject: Re: [PATCH v2 2/2] wifi: ath12k: Fix firmware stats leak when pdev
+ list is empty
+To: Baochen Qiang <baochen.qiang@oss.qualcomm.com>
+Cc: ath12k@lists.infradead.org, linux-wireless@vger.kernel.org, 
+	kvalo@kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.66 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	HAS_FILE_URL(2.00)[];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=2];
+	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
+	R_DKIM_ALLOW(-0.20)[gmail.com:s=20230601];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	TAGGED_FROM(0.00)[bounces-31327-lists,linux-wireless=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-31326-lists,linux-wireless=lfdr.de];
-	FROM_HAS_DN(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FREEMAIL_TO(0.00)[sipsolutions.net,mediatek.com,gmail.com,collabora.com];
-	RCPT_COUNT_TWELVE(0.00)[12];
-	MIME_TRACE(0.00)[0:+];
-	FREEMAIL_CC(0.00)[vger.kernel.org,nbd.name,mediatek.com,kernel.org,gmail.com,lists.infradead.org];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
 	TO_DN_SOME(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	FROM_HAS_DN(0.00)[];
+	MISSING_XM_UA(0.00)[];
+	RCPT_COUNT_THREE(0.00)[4];
 	NEURAL_HAM(-0.00)[-1.000];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[lorenzo@kernel.org,linux-wireless@vger.kernel.org];
-	DKIM_TRACE(0.00)[kernel.org:+];
-	MID_RHS_MATCH_FROM(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[bjsaikiran@gmail.com,linux-wireless@vger.kernel.org];
+	DKIM_TRACE(0.00)[gmail.com:+];
+	MID_RHS_MATCH_FROMTLD(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
 	TAGGED_RCPT(0.00)[linux-wireless];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 9BDB5B04BB
+	FREEMAIL_FROM(0.00)[gmail.com];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[mail.gmail.com:mid,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,qualcomm.com:email,launchpad.net:url]
+X-Rspamd-Queue-Id: D97C9B0AE9
 X-Rspamd-Action: no action
 
-Introduce support in AP mode for parsing of the Operating Mode Notification
-frame sent by the client to enable/disable MLO eMLSR or eMLMR if supported
-by both the AP and the client.
-Add drv_set_eml_op_mode mac80211 callback in order to configure underlay
-driver with eMLSR/eMLMR info.
+On Thu, Jan 29, 2026 at 7:57=E2=80=AFAM Baochen Qiang
+<baochen.qiang@oss.qualcomm.com> wrote:
+>
+>
+>
+> On 1/27/2026 12:40 PM, Saikiran B wrote:
+> > I have analyzed the logs and code flow in depth to provide more
+> > definitive answers for your questions.
+> >
+> > The log entries showing the failure are:
+> > [  563.574076] ath12k_pci 0004:01:00.0: failed to pull fw stats: -71
+> > [  564.575896] ath12k_pci 0004:01:00.0: time out while waiting for get =
+fw stats
+> >
+> > 1. Why are other stats populated?
+> > The "failed to pull fw stats: -71" error is not the initial failure
+> > but a symptom that appears after repeated operations. The leak happens
+> > during *successful* calls prior to this error.
+> >
+> > Code flow proving the leak:
+> > - ath12k_mac_get_fw_stats() sends WMI_REQUEST_PDEV_STAT.
+> > - Firmware responds. ath12k_update_stats_event() parses the response.
+> > - ath12k_wmi_fw_stats_process() is called, which splices 'vdevs' and
+> > 'beacon' stats into ar->fw_stats.vdevs/bcn.
+> > - ath12k_mac_get_fw_stats() returns 0 (Success).
+> > - In ath12k_mac_op_get_txpower(), the check `if (!pdev)` fails if the
+> > pdev-specific list is empty (but vdev list is NOT empty).
+> > - The function exits via `err_fallback` WITHOUT calling ath12k_fw_stats=
+_reset().
+> > - Result: The 'vdev' and 'beacon' stats that were spliced into
+> > ar->fw_stats remain there, leaking memory and accumulating with every
+> > call.
+> >
+> > 2. Exact place where -71 is printed:
+> > The error "failed to pull fw stats: -71" is printed in
+> > [ath12k_update_stats_event()](drivers/net/wireless/ath/ath12k/wmi.c).
+> > It corresponds to "ret =3D ath12k_wmi_pull_fw_stats()" returning -EPROT=
+O.
+> > This propagates from
+> > [ath12k_wmi_tlv_fw_stats_data_parse()](drivers/net/wireless/ath/ath12k/=
+wmi.c),
+> > when buffer validation checks (like `len < sizeof(*src)`) fail.
+> >
+> > Conclusion:
+> > The fix in my patch (resetting stats when `!pdev`) is critical because
+> > it ensures that the accumulated 'vdev' and 'beacon' stats are freed
+> > even when the 'pdev' list ends up empty.
+> >
+> > Let me know if you need anything else.
+>
+> can you please try below to see if it can fix your issue?
+>
+> https://lore.kernel.org/r/20260129-ath12k-fw-stats-fixes-v1-0-55d66064f4d=
+5@oss.qualcomm.com
+>
+> >
+> > Thanks & Regards,
+> > Saikiran
+> >
+> > On Tue, Jan 27, 2026 at 9:47=E2=80=AFAM Saikiran B <bjsaikiran@gmail.co=
+m> wrote:
+> >>
+> >> Hi Baochen,
+> >>
+> >> Regarding your questions:
+> >>
+> >> "Are other stats populated?"
+> >>
+> >> Yes. When ath12k_mac_get_fw_stats() returns success (0), it means the
+> >> firmware response was received and valid WMI events were processed.
+> >> The firmware response to WMI_REQUEST_PDEV_STAT typically includes
+> >> multiple stats TLVs (vdev stats, beacon stats, etc.). Even if the
+> >> "pdev stats" list ends up empty (e.g., due to specific filtering or
+> >> availability), the firmware should have populated other lists (like
+> >> vdevs or beacons) in the ar->fw_stats structure. If we don't reset,
+> >> these valid entries leak and accumulate.
+> >>
+> >> "Where exactly is -71 (EPROTO) printed?"
+> >>
+> >> The log "failed to pull fw stats: -71" is printed in
+> >> ath12k_update_stats_event() (wmi.c line 8500 in my tree). This error
+> >> code (-EPROTO) propagates from ath12k_wmi_tlv_fw_stats_data_parse(),
+> >> where it is returned when buffer validation checks fail (e.g., if (len
+> >> < sizeof(*src))). This failure suggests that the accumulated state or
+> >> memory corruption from the leak eventually causes the parser to fail
+> >> on subsequent events.
+> >>
+> >> So, fixing the leak is necessary for correctness regardless of the
+> >> specific side-effect error code.
+> >>
+> >> Thanks & Regards,
+> >> Saikiran
+> >>
+> >> On Tue, Jan 27, 2026 at 8:57=E2=80=AFAM Baochen Qiang
+> >> <baochen.qiang@oss.qualcomm.com> wrote:
+> >>>
+> >>>
+> >>>
+> >>> On 1/26/2026 5:52 PM, Saikiran wrote:
+> >>>> The commits bd6ec8111e65 and 2977567b244f changed firmware stats han=
+dling
+> >>>> to be caller-driven, requiring explicit ath12k_fw_stats_reset() call=
+s
+> >>>> after using ath12k_mac_get_fw_stats().
+> >>>>
+> >>>> In ath12k_mac_op_get_txpower(), when ath12k_mac_get_fw_stats() succe=
+eds
+> >>>> but the pdev stats list is empty, the function exits without calling
+> >>>> ath12k_fw_stats_reset(). Even though the pdev list is empty, the fir=
+mware
+> >>>> may have populated other stats lists (vdevs, beacons, etc.) in the
+> >>>
+> >>> 'may' is not enough, we need to be 100% sure whether other stats are =
+populated. This is
+> >>> critical for us to find the root cause.
+> >>>
+> >>>> ar->fw_stats structure.
+> >>>>
+> >>>> Without resetting the stats buffer, this data accumulates across mul=
+tiple
+> >>>> calls, eventually causing the stats buffer to overflow and leading t=
+o
+> >>>> firmware communication failures (error -71/EPROTO) during subsequent
+> >>>> operations.
+> >>>>
+> >>>> The issue manifests during 5GHz scanning which triggers multiple TX =
+power
+> >>>> queries. Symptoms include:
+> >>>> - "failed to pull fw stats: -71" errors in dmesg
+> >>>
+> >>> still, can you please check the logs to see at which exact place is t=
+his printed?
+> >>>
+> >>>> - 5GHz networks not detected despite hardware support
+> >>>> - 2.4GHz networks work normally
+> >>>>
+> >>>> Fix by calling ath12k_fw_stats_reset() when the pdev list is empty,
+> >>>> ensuring the stats buffer is properly cleaned up even when only part=
+ial
+> >>>> stats data is received from firmware.
+> >>>>
+> >>>> Fixes: bd6ec8111e65 ("wifi: ath12k: Make firmware stats reset caller=
+-driven")
+> >>>> Link: https://bugs.launchpad.net/ubuntu-concept/+bug/2138308
+> >>>> Tested-on: WCN7850 hw2.0 PCI WLAN.HMT.1.1.c5-00302 (Lenovo Yoga Slim=
+ 7x)
+> >>>> Signed-off-by: Saikiran <bjsaikiran@gmail.com>
+> >>>> ---
+> >>>>  drivers/net/wireless/ath/ath12k/mac.c | 1 +
+> >>>>  1 file changed, 1 insertion(+)
+> >>>>
+> >>>> diff --git a/drivers/net/wireless/ath/ath12k/mac.c b/drivers/net/wir=
+eless/ath/ath12k/mac.c
+> >>>> index e0e49f782bf8..6e35c3ee9864 100644
+> >>>> --- a/drivers/net/wireless/ath/ath12k/mac.c
+> >>>> +++ b/drivers/net/wireless/ath/ath12k/mac.c
+> >>>> @@ -5169,6 +5169,7 @@ static int ath12k_mac_op_get_txpower(struct ie=
+ee80211_hw *hw,
+> >>>>                                       struct ath12k_fw_stats_pdev, l=
+ist);
+> >>>>       if (!pdev) {
+> >>>>               spin_unlock_bh(&ar->data_lock);
+> >>>> +             ath12k_fw_stats_reset(ar);
+> >>>>               goto err_fallback;
+> >>>>       }
+> >>>>
+> >>>
+>
 
-Tested-by: Christian Marangi <ansuelsmth@gmail.com>
-Signed-off-by: Lorenzo Bianconi <lorenzo@kernel.org>
----
-Introduce support in AP mode for parsing of the Operating Mode Notification
-frame sent by the client to enable/disable MLO eMLSR or eMLMR if supported
-by both the AP and the client.
-Add drv_set_eml_op_mode mac80211 callback in order to configure underlay
-driver with eMLSR info (control and bitmap).
-Implement drv_set_eml_op_mode callback for MT7996 driver.
----
-Changes in v4:
-- Fix link_bitmap sanity checks
-- Link to v3: https://lore.kernel.org/r/20260128-mac80211-emlsr-v3-1-473b0c1d9cc4@kernel.org
+Hi Baochen,
 
-Changes in v3:
-- Get rid of ieee80211_get_emlsr_pad_delay_update and
-  ieee80211_get_emlsr_trans_delay_update routines and add sanity checks
-  for pad_delay/trans_delay directly in ieee80211_rx_eml_op_mode_notif()
-- Add mcs_map sanity checks.
-- Add ieee80211_eml_params struct kernel-doc.
-- Get rid of emlsr_pad_delay/emlsr_trans_delay in ieee80211_eml_params
-  struct and rely on ieee80211_sta fields.
-- Improve sanity checks.
-- Remove mt7996 patch from the series.
-- Link to v2: https://lore.kernel.org/r/20260125-mac80211-emlsr-v2-0-466329d61c88@kernel.org
+I tried applying your patches on top of v6.19-rc7 (which is the latest
+mainline release candidate I'm testing on), but I ran into build
+issues because some of the dependencies seem missing.
 
-Changes in v2:
-- Improve sanity check against device EML capabilities
-- Squash patch 1/2 and 2/2
-- Validate link_bitmap with vif->active_links
-- Introduce ieee80211_eml_params struct as containe for EML info to pass
-  to the underlay driver.
-- Pass padding_delay and transition_delay to the underlay driver.
-- Implement drv_set_eml_op_mode callback for MT7996 driver.
-- Link to v2: https://lore.kernel.org/r/20260122-mac80211-emlsr-v1-0-f0e43bb6d95a@kernel.org
----
- include/linux/ieee80211-eht.h |  11 +++
- include/linux/ieee80211.h     |   6 ++
- include/net/mac80211.h        |  32 ++++++++
- net/mac80211/driver-ops.h     |  21 +++++
- net/mac80211/eht.c            | 175 ++++++++++++++++++++++++++++++++++++++++++
- net/mac80211/ieee80211_i.h    |   2 +
- net/mac80211/iface.c          |  10 ++-
- net/mac80211/rx.c             |   8 ++
- net/mac80211/trace.h          |  32 ++++++++
- 9 files changed, 296 insertions(+), 1 deletion(-)
+Specifically:
+Patch 2 ("wifi: ath12k: fix station lookup failure when disconnecting
+from AP") uses `ath12k_link_sta_find_by_addr()`, which does not exist
+in my tree. It seems your patches are based on a different tree
+(ath-next?) that has newer changes not yet in the mainline.
 
-diff --git a/include/linux/ieee80211-eht.h b/include/linux/ieee80211-eht.h
-index f9782e46c5e5241bccc84c3bbc18b1cc9ec1879c..11105528a2c60d8351a5c9be04fcb714878601fe 100644
---- a/include/linux/ieee80211-eht.h
-+++ b/include/linux/ieee80211-eht.h
-@@ -558,6 +558,17 @@ struct ieee80211_mle_tdls_common_info {
- 
- #define IEEE80211_MLC_PRIO_ACCESS_PRES_AP_MLD_MAC_ADDR	0x0010
- 
-+#define IEEE80211_EML_CTRL_EMLSR_MODE		BIT(0)
-+#define IEEE80211_EML_CTRL_EMLMR_MODE		BIT(1)
-+#define IEEE80211_EML_CTRL_EMLSR_PARAM_UPDATE	BIT(2)
-+#define IEEE80211_EML_CTRL_INDEV_COEX_ACT	BIT(3)
-+
-+#define IEEE80211_EML_EMLSR_PAD_DELAY		0x07
-+#define IEEE80211_EML_EMLSR_TRANS_DELAY		0x38
-+
-+#define IEEE80211_EML_EMLMR_RX_MCS_MAP		0xf0
-+#define IEEE80211_EML_EMLMR_TX_MCS_MAP		0x0f
-+
- /* no fixed fields in PRIO_ACCESS */
- 
- /**
-diff --git a/include/linux/ieee80211.h b/include/linux/ieee80211.h
-index fbde215c25aa79efd339aa530896a29dbb1a8ff8..f2c6f34f39f24ce59cbb2650f70e898d24d12901 100644
---- a/include/linux/ieee80211.h
-+++ b/include/linux/ieee80211.h
-@@ -1186,6 +1186,12 @@ struct ieee80211_mgmt {
- 					u8 action_code;
- 					u8 variable[];
- 				} __packed epcs;
-+				struct {
-+					u8 action_code;
-+					u8 dialog_token;
-+					u8 control;
-+					u8 variable[];
-+				} __packed eml_omn;
- 			} u;
- 		} __packed action;
- 		DECLARE_FLEX_ARRAY(u8, body); /* Generic frame body */
-diff --git a/include/net/mac80211.h b/include/net/mac80211.h
-index 36ae7fe9ddf35190921f4fee0fe3294418007a56..388076b1b17c2560756deb2966903e21049205ac 100644
---- a/include/net/mac80211.h
-+++ b/include/net/mac80211.h
-@@ -1902,6 +1902,31 @@ enum ieee80211_offload_flags {
- 	IEEE80211_OFFLOAD_DECAP_ENABLED		= BIT(2),
- };
- 
-+/**
-+ * struct ieee80211_eml_params - EHT Operating mode notification parameters
-+ *
-+ * EML Operating mode notification parameters received in the Operating mode
-+ * notification frame. This struct is used as a container to pass the info to
-+ * the underlay driver.
-+ *
-+ * @link_id: the link ID where the Operating mode notification frame has been
-+ *	received.
-+ * @control: EML control field defined in P802.11be section 9.4.1.76.
-+ * @link_bitmap: eMLSR/eMLMR enabled links defined in P802.11be
-+ *	section 9.4.1.76.
-+ * @emlmr_mcs_map_count: eMLMR number of valid mcs_map_bw fields according to
-+ *	P802.11be section 9.4.1.76 (valid if eMLMR mode control bit is set).
-+ * @emlmr_mcs_map_bw: eMLMR supported MCS and NSS set subfileds defined in
-+ *	P802.11be section 9.4.1.76 (valid if eMLMR mode control bit is set).
-+ */
-+struct ieee80211_eml_params {
-+	u8 link_id;
-+	u8 control;
-+	u16 link_bitmap;
-+	u8 emlmr_mcs_map_count;
-+	u8 emlmr_mcs_map_bw[9];
-+};
-+
- /**
-  * struct ieee80211_vif_cfg - interface configuration
-  * @assoc: association status
-@@ -4513,6 +4538,9 @@ struct ieee80211_prep_tx_info {
-  *      interface with the specified type would be added, and thus drivers that
-  *      implement this callback need to handle such cases. The type is the full
-  *      &enum nl80211_iftype.
-+ * @set_eml_op_mode: Configure eMLSR/eMLMR operation mode in the underlay
-+ *	driver according to the parameter received in the EML Operating mode
-+ *	notification frame.
-  */
- struct ieee80211_ops {
- 	void (*tx)(struct ieee80211_hw *hw,
-@@ -4908,6 +4936,10 @@ struct ieee80211_ops {
- 			struct ieee80211_neg_ttlm *ttlm);
- 	void (*prep_add_interface)(struct ieee80211_hw *hw,
- 				   enum nl80211_iftype type);
-+	int (*set_eml_op_mode)(struct ieee80211_hw *hw,
-+			       struct ieee80211_vif *vif,
-+			       struct ieee80211_sta *sta,
-+			       struct ieee80211_eml_params *eml_params);
- };
- 
- /**
-diff --git a/net/mac80211/driver-ops.h b/net/mac80211/driver-ops.h
-index 55105d238d6bc5963eb2863575805bee72c42399..51bf3c7822a76007e6ec59fb70e97fa50d43632b 100644
---- a/net/mac80211/driver-ops.h
-+++ b/net/mac80211/driver-ops.h
-@@ -1772,4 +1772,25 @@ drv_prep_add_interface(struct ieee80211_local *local,
- 	trace_drv_return_void(local);
- }
- 
-+static inline int drv_set_eml_op_mode(struct ieee80211_sub_if_data *sdata,
-+				      struct ieee80211_sta *sta,
-+				      struct ieee80211_eml_params *eml_params)
-+{
-+	struct ieee80211_local *local = sdata->local;
-+	int ret = -EOPNOTSUPP;
-+
-+	might_sleep();
-+	lockdep_assert_wiphy(local->hw.wiphy);
-+
-+	trace_drv_set_eml_op_mode(local, sdata, sta, eml_params->link_id,
-+				  eml_params->control,
-+				  eml_params->link_bitmap);
-+	if (local->ops->set_eml_op_mode)
-+		ret = local->ops->set_eml_op_mode(&local->hw, &sdata->vif,
-+						  sta, eml_params);
-+	trace_drv_return_int(local, ret);
-+
-+	return ret;
-+}
-+
- #endif /* __MAC80211_DRIVER_OPS */
-diff --git a/net/mac80211/eht.c b/net/mac80211/eht.c
-index fd41046e3b681b753e6cc7ddf82046e4bc5df9b3..75096b2195d24358da4ae3abc595d0e349d17037 100644
---- a/net/mac80211/eht.c
-+++ b/net/mac80211/eht.c
-@@ -5,6 +5,7 @@
-  * Copyright(c) 2021-2025 Intel Corporation
-  */
- 
-+#include "driver-ops.h"
- #include "ieee80211_i.h"
- 
- void
-@@ -102,3 +103,177 @@ ieee80211_eht_cap_ie_to_sta_eht_cap(struct ieee80211_sub_if_data *sdata,
- 
- 	ieee80211_sta_recalc_aggregates(&link_sta->sta->sta);
- }
-+
-+static void
-+ieee80211_send_eml_op_mode_notif(struct ieee80211_sub_if_data *sdata,
-+				 struct ieee80211_mgmt *req, int opt_len)
-+{
-+	int len = offsetofend(struct ieee80211_mgmt, u.action.u.eml_omn);
-+	struct ieee80211_local *local = sdata->local;
-+	struct ieee80211_mgmt *mgmt;
-+	struct sk_buff *skb;
-+
-+	len += opt_len; /* optional len */
-+	skb = dev_alloc_skb(local->tx_headroom + len);
-+	if (!skb)
-+		return;
-+
-+	skb_reserve(skb, local->tx_headroom);
-+	mgmt = skb_put_zero(skb, len);
-+	mgmt->frame_control = cpu_to_le16(IEEE80211_FTYPE_MGMT |
-+					  IEEE80211_STYPE_ACTION);
-+	memcpy(mgmt->da, req->sa, ETH_ALEN);
-+	memcpy(mgmt->sa, sdata->vif.addr, ETH_ALEN);
-+	memcpy(mgmt->bssid, sdata->vif.addr, ETH_ALEN);
-+
-+	mgmt->u.action.category = WLAN_CATEGORY_PROTECTED_EHT;
-+	mgmt->u.action.u.eml_omn.action_code =
-+		WLAN_PROTECTED_EHT_ACTION_EML_OP_MODE_NOTIF;
-+	mgmt->u.action.u.eml_omn.dialog_token =
-+		req->u.action.u.eml_omn.dialog_token;
-+	mgmt->u.action.u.eml_omn.control = req->u.action.u.eml_omn.control &
-+		~(IEEE80211_EML_CTRL_EMLSR_PARAM_UPDATE |
-+		  IEEE80211_EML_CTRL_INDEV_COEX_ACT);
-+	/* Copy optional fields from the received notification frame */
-+	memcpy(mgmt->u.action.u.eml_omn.variable,
-+	       req->u.action.u.eml_omn.variable, opt_len);
-+
-+	ieee80211_tx_skb(sdata, skb);
-+}
-+
-+void ieee80211_rx_eml_op_mode_notif(struct ieee80211_sub_if_data *sdata,
-+				    struct sk_buff *skb)
-+{
-+	int len = offsetofend(struct ieee80211_mgmt, u.action.u.eml_omn);
-+	enum nl80211_iftype type = ieee80211_vif_type_p2p(&sdata->vif);
-+	struct ieee80211_rx_status *status = IEEE80211_SKB_RXCB(skb);
-+	const struct wiphy_iftype_ext_capab *ift_ext_capa;
-+	struct ieee80211_mgmt *mgmt = (void *)skb->data;
-+	struct ieee80211_local *local = sdata->local;
-+	u8 control = mgmt->u.action.u.eml_omn.control;
-+	u8 *ptr = mgmt->u.action.u.eml_omn.variable;
-+	struct ieee80211_eml_params eml_params = {
-+		.link_id = status->link_id,
-+	};
-+	struct sta_info *sta;
-+	int opt_len = 0;
-+
-+	if (!ieee80211_vif_is_mld(&sdata->vif))
-+		return;
-+
-+	/* eMLSR and eMLMR can't be enabled at the same time */
-+	if ((control & IEEE80211_EML_CTRL_EMLSR_MODE) &&
-+	    (control & IEEE80211_EML_CTRL_EMLMR_MODE))
-+		return;
-+
-+	if ((control & IEEE80211_EML_CTRL_EMLMR_MODE) &&
-+	    (control & IEEE80211_EML_CTRL_EMLSR_PARAM_UPDATE))
-+		return;
-+
-+	ift_ext_capa = cfg80211_get_iftype_ext_capa(local->hw.wiphy, type);
-+	if (!ift_ext_capa)
-+		return;
-+
-+	if (!status->link_valid)
-+		return;
-+
-+	sta = sta_info_get_bss(sdata, mgmt->sa);
-+	if (!sta)
-+		return;
-+
-+	if (control & IEEE80211_EML_CTRL_EMLSR_MODE) {
-+		u8 emlsr_param_update_len;
-+
-+		if (!(ift_ext_capa->eml_capabilities &
-+		      IEEE80211_EML_CAP_EMLSR_SUPP))
-+			return;
-+
-+		opt_len += sizeof(__le16); /* eMLSR link_bitmap */
-+		/* eMLSR param update field is not part of Notfication frame
-+		 * sent by the AP to client so account it separately.
-+		 */
-+		emlsr_param_update_len =
-+			!!(control & IEEE80211_EML_CTRL_EMLSR_PARAM_UPDATE);
-+
-+		if (skb->len < len + opt_len + emlsr_param_update_len)
-+			return;
-+
-+		if (control & IEEE80211_EML_CTRL_EMLSR_PARAM_UPDATE) {
-+			u8 pad_delay, trans_delay;
-+
-+			pad_delay = u8_get_bits(ptr[2],
-+						IEEE80211_EML_EMLSR_PAD_DELAY);
-+			if (pad_delay >
-+			    IEEE80211_EML_CAP_EMLSR_PADDING_DELAY_256US)
-+				return;
-+
-+			trans_delay = u8_get_bits(ptr[2],
-+					IEEE80211_EML_EMLSR_TRANS_DELAY);
-+			if (trans_delay >
-+			    IEEE80211_EML_CAP_EMLSR_TRANSITION_DELAY_256US)
-+				return;
-+
-+			/* Update sta padding and transition delay */
-+			sta->sta.eml_cap =
-+				u8_replace_bits(sta->sta.eml_cap,
-+						pad_delay,
-+						IEEE80211_EML_CAP_EMLSR_PADDING_DELAY);
-+			sta->sta.eml_cap =
-+				u8_replace_bits(sta->sta.eml_cap,
-+						trans_delay,
-+						IEEE80211_EML_CAP_EMLSR_TRANSITION_DELAY);
-+		}
-+	}
-+
-+	if (control & IEEE80211_EML_CTRL_EMLMR_MODE) {
-+		u8 mcs_map_size;
-+		int i;
-+
-+		if (!(ift_ext_capa->eml_capabilities &
-+		      IEEE80211_EML_CAP_EMLMR_SUPPORT))
-+			return;
-+
-+		opt_len += sizeof(__le16); /* eMLMR link_bitmap */
-+		opt_len++; /* eMLMR mcs_map_count */
-+		if (skb->len < len + opt_len)
-+			return;
-+
-+		eml_params.emlmr_mcs_map_count = ptr[2];
-+		if (eml_params.emlmr_mcs_map_count > 2)
-+			return;
-+
-+		mcs_map_size = 3 * (1 + eml_params.emlmr_mcs_map_count);
-+		opt_len += mcs_map_size;
-+		if (skb->len < len + opt_len)
-+			return;
-+
-+		for (i = 0; i < mcs_map_size; i++) {
-+			u8 rx_mcs, tx_mcs;
-+
-+			rx_mcs = u8_get_bits(ptr[3 + i],
-+					     IEEE80211_EML_EMLMR_RX_MCS_MAP);
-+			if (rx_mcs > 8)
-+				return;
-+
-+			tx_mcs = u8_get_bits(ptr[3 + i],
-+					     IEEE80211_EML_EMLMR_TX_MCS_MAP);
-+			if (tx_mcs > 8)
-+				return;
-+		}
-+
-+		memcpy(eml_params.emlmr_mcs_map_bw, &ptr[3], mcs_map_size);
-+	}
-+
-+	if ((control & IEEE80211_EML_CTRL_EMLSR_MODE) ||
-+	    (control & IEEE80211_EML_CTRL_EMLMR_MODE)) {
-+		eml_params.link_bitmap = get_unaligned_le16(ptr);
-+		if ((eml_params.link_bitmap & sdata->vif.active_links) !=
-+		    eml_params.link_bitmap)
-+			return;
-+	}
-+
-+	if (drv_set_eml_op_mode(sdata, &sta->sta, &eml_params))
-+		return;
-+
-+	ieee80211_send_eml_op_mode_notif(sdata, mgmt, opt_len);
-+}
-diff --git a/net/mac80211/ieee80211_i.h b/net/mac80211/ieee80211_i.h
-index dc757cb329740d621f6a9deb4e9ffe258e1b7d67..3ef93cd1fb33e2614c3e06c51d6b1ebcafa4824c 100644
---- a/net/mac80211/ieee80211_i.h
-+++ b/net/mac80211/ieee80211_i.h
-@@ -2837,6 +2837,8 @@ void ieee80211_destroy_frag_cache(struct ieee80211_fragment_cache *cache);
- 
- u8 ieee80211_ie_len_eht_cap(struct ieee80211_sub_if_data *sdata);
- 
-+void ieee80211_rx_eml_op_mode_notif(struct ieee80211_sub_if_data *sdata,
-+				    struct sk_buff *skb);
- void
- ieee80211_eht_cap_ie_to_sta_eht_cap(struct ieee80211_sub_if_data *sdata,
- 				    struct ieee80211_supported_band *sband,
-diff --git a/net/mac80211/iface.c b/net/mac80211/iface.c
-index 3ce94b95decd64eea4ea063ae98c111bdfd57e9c..17476fd9259b68b3d9c649eabad10efa42d56cd7 100644
---- a/net/mac80211/iface.c
-+++ b/net/mac80211/iface.c
-@@ -1664,7 +1664,15 @@ static void ieee80211_iface_process_skb(struct ieee80211_local *local,
- 		}
- 	} else if (ieee80211_is_action(mgmt->frame_control) &&
- 		   mgmt->u.action.category == WLAN_CATEGORY_PROTECTED_EHT) {
--		if (sdata->vif.type == NL80211_IFTYPE_STATION) {
-+		if (sdata->vif.type == NL80211_IFTYPE_AP) {
-+			switch (mgmt->u.action.u.eml_omn.action_code) {
-+			case WLAN_PROTECTED_EHT_ACTION_EML_OP_MODE_NOTIF:
-+				ieee80211_rx_eml_op_mode_notif(sdata, skb);
-+				break;
-+			default:
-+				break;
-+			}
-+		} else if (sdata->vif.type == NL80211_IFTYPE_STATION) {
- 			switch (mgmt->u.action.u.ttlm_req.action_code) {
- 			case WLAN_PROTECTED_EHT_ACTION_TTLM_REQ:
- 				ieee80211_process_neg_ttlm_req(sdata, mgmt,
-diff --git a/net/mac80211/rx.c b/net/mac80211/rx.c
-index 30b9b4d763578feea179ad33be5174fc3fc19209..6a13460b8b6a9176f50ca9ec7fb365befc9b317c 100644
---- a/net/mac80211/rx.c
-+++ b/net/mac80211/rx.c
-@@ -3928,6 +3928,14 @@ ieee80211_rx_h_action(struct ieee80211_rx_data *rx)
- 					      u.action.u.epcs))
- 				goto invalid;
- 			goto queue;
-+		case WLAN_PROTECTED_EHT_ACTION_EML_OP_MODE_NOTIF:
-+			if (sdata->vif.type != NL80211_IFTYPE_AP)
-+				break;
-+
-+			if (len < offsetofend(typeof(*mgmt),
-+					      u.action.u.eml_omn))
-+				goto invalid;
-+			goto queue;
- 		default:
- 			break;
- 		}
-diff --git a/net/mac80211/trace.h b/net/mac80211/trace.h
-index 0bfbce1574862b5a6a2ca39794abea7fe9a3f34a..c04d4547e8f4655ad77b83bed6e5a832d959e61b 100644
---- a/net/mac80211/trace.h
-+++ b/net/mac80211/trace.h
-@@ -3353,6 +3353,38 @@ TRACE_EVENT(drv_prep_add_interface,
- 	)
- );
- 
-+TRACE_EVENT(drv_set_eml_op_mode,
-+	    TP_PROTO(struct ieee80211_local *local,
-+		     struct ieee80211_sub_if_data *sdata,
-+		     struct ieee80211_sta *sta,
-+		     unsigned int link_id,
-+		     u8 control, u16 link_bitmap),
-+
-+	TP_ARGS(local, sdata, sta, link_id, control, link_bitmap),
-+
-+	TP_STRUCT__entry(LOCAL_ENTRY
-+			 VIF_ENTRY
-+			 STA_ENTRY
-+			 __field(u32, link_id)
-+			 __field(u8, control)
-+			 __field(u16, link_bitmap)),
-+
-+	TP_fast_assign(LOCAL_ASSIGN;
-+		       VIF_ASSIGN;
-+		       STA_NAMED_ASSIGN(sta);
-+		       __entry->link_id = link_id;
-+		       __entry->control = control;
-+		       __entry->link_bitmap = link_bitmap;
-+	),
-+
-+	TP_printk(
-+		LOCAL_PR_FMT  VIF_PR_FMT  STA_PR_FMT
-+		" (link:%d control:%02x link_bitmap:%04x)",
-+		LOCAL_PR_ARG, VIF_PR_ARG, STA_PR_ARG, __entry->link_id,
-+		__entry->control, __entry->link_bitmap
-+	)
-+);
-+
- #endif /* !__MAC80211_DRIVER_TRACE || TRACE_HEADER_MULTI_READ */
- 
- #undef TRACE_INCLUDE_PATH
+Could you please point me to the specific git repo/branch you are
+using? I can try to build and test on that baseline to be sure.
 
----
-base-commit: c30e188bd2a886258be5facb970a804d8ef549b5
-change-id: 20260121-mac80211-emlsr-5774082ff8cc
+Regarding the firmware stats issue:
+I verified the firmware files match the latest available (MD5 sums
+matched), yet the "-71" errors and memory leak persist on my device
+without fixes.
 
-Best regards,
--- 
-Lorenzo Bianconi <lorenzo@kernel.org>
+I successfully applied the logic from your Patch 1 manually (since
+[ath12k_mac_get_target_pdev_id](cci:1://file:///home/saikiran/linux/kernel/=
+x1e/x1e/drivers/net/wireless/ath/ath12k/mac.c:989:0-1008:1)
+exists), but I haven't fully validated if it alone resolves the leak
+in all scenarios.
 
+However, the fix I proposed in my v2 patch (resetting stats when pdev
+list is empty) definitely stops the leak mechanism by ensuring cleanup
+happens even when the firmware returns partial stats (which seems to
+be the trigger condition).
+
+I'll wait for your pointer to the base tree to do a proper test of your ser=
+ies.
+
+Thanks & Regards,
+Saikiran
 
