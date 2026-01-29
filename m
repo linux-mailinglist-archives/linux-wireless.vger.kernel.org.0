@@ -1,354 +1,170 @@
-Return-Path: <linux-wireless+bounces-31327-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-31328-lists+linux-wireless=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id uEXYC3Npe2lEEgIAu9opvQ
-	(envelope-from <linux-wireless+bounces-31327-lists+linux-wireless=lfdr.de@vger.kernel.org>)
-	for <lists+linux-wireless@lfdr.de>; Thu, 29 Jan 2026 15:06:43 +0100
+	id sNGVEB5qe2lEEgIAu9opvQ
+	(envelope-from <linux-wireless+bounces-31328-lists+linux-wireless=lfdr.de@vger.kernel.org>)
+	for <lists+linux-wireless@lfdr.de>; Thu, 29 Jan 2026 15:09:34 +0100
 X-Original-To: lists+linux-wireless@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id D97C9B0AE9
-	for <lists+linux-wireless@lfdr.de>; Thu, 29 Jan 2026 15:06:42 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4852EB0BCB
+	for <lists+linux-wireless@lfdr.de>; Thu, 29 Jan 2026 15:09:33 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 96937300D357
-	for <lists+linux-wireless@lfdr.de>; Thu, 29 Jan 2026 14:06:38 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id AAFF6303AB4D
+	for <lists+linux-wireless@lfdr.de>; Thu, 29 Jan 2026 14:08:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A77B53806A8;
-	Thu, 29 Jan 2026 14:06:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AE79837F0EB;
+	Thu, 29 Jan 2026 14:08:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Rzgzp+l7"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="Zew9WG4y";
+	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="bqDzCI/T"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-pj1-f47.google.com (mail-pj1-f47.google.com [209.85.216.47])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0E8AA3081D2
-	for <linux-wireless@vger.kernel.org>; Thu, 29 Jan 2026 14:06:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.216.47
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769695591; cv=pass; b=K8SexsVhfT06IRqgOdUTDT52iehpSVUbfaEOoEptxzkqNIaHSGbM6ePYmo4/VqiyzYSk4uBsxyiupanFNV2A0habjAdZ/FVhBPCrtDKw8B+Kjd+P/aIFPrfi2MMAHLXVYOohW0m31aMcWEzQZYPtvtlnvq8M8cw+pc55VyGeOs8=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769695591; c=relaxed/simple;
-	bh=OYBgHyNokWWDYIFiut4ACHNoNBQrkQkp6vdiTPUBN04=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=s0XLq3J2/sREf5ewxltkqc4BX/Nx9oqZ38h7w2nZ08tsaQSlfQe97N9Jcr9oeRuoWgXPoH0d1FTsusz+ECCnWF1kldoy52jZ3HWnDqXh/LqXcWCku6GLz7Eex2EkJjMoe2iYm4b4G2nJl/JGFYrFvnberSXHos8pfqJQYY57ViE=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Rzgzp+l7; arc=pass smtp.client-ip=209.85.216.47
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pj1-f47.google.com with SMTP id 98e67ed59e1d1-34c24f4dfb7so622796a91.0
-        for <linux-wireless@vger.kernel.org>; Thu, 29 Jan 2026 06:06:29 -0800 (PST)
-ARC-Seal: i=1; a=rsa-sha256; t=1769695589; cv=none;
-        d=google.com; s=arc-20240605;
-        b=Rvy4yvu3Zm6AdAjxM02tcoFy3zDKvXdSWUoMa6HZm8YuF0dfkzyhwu0bXGR5xjvYmi
-         7mCPgZ+VLepypptUaMd/uh2WVEi1qC2dd/31IKCs4o/xxt1ZPcUVpdhMRHoAh062CkQ9
-         qqHfOS94D3C35SEWKXCgUk+UnJ9Bs1yzXVy5iiL5TqnRp9ksmHpIoejEqYmwIBgCpuNK
-         kMqj3dCzOxWVsWHcsyRAKG3wJkI3BuUlARQPRZfzwF8KGAzHrI4ufTCYjQE4IkmFra7n
-         G5xjlCCi/s+StqKI1cF4F7eUqowt+PPsL71Aeyk1FRzAC+TD/SzU7U+7AqDfkBSKfEGo
-         rskg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=RcLENt0AH5rhLcl7Jm2sgoJkBXC9N8ulrINMcIPia5k=;
-        fh=9ncy+lnpn11saNTI5ILrhqTLZtWYnGuBHk11j1tMrLM=;
-        b=cDlMnVW7WSxtfyogqWYYdvWLUIXmJ1Cd0fwp9ST4Voa8GSF896ri9oLWgsdMAIXWuL
-         DUuc/3snqdgMnxjqAIgyRcj+BNY3fQYJ2xQ80rHlaBGGvzDuPgPmvIM83saOTeASA5tU
-         KqFclosrvpep6+k6CTb4bRlKN8QSYEcaUhD/0qkJMYuD2LseeSs4K4zp/ZG15J1MLuMy
-         m66QouffhLKBSh4uNt/F0/fb4q7Q7CZakuUFD9bTYdRAUWCUdjOF/BKoiUkiLFElRx5g
-         ZjlOVrW1jv1RRMrm9rLheDbDOj326qwXtFXYMgoTUsf+Uwhh/1IBqnTms5s4u5P23gIn
-         Hbug==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4522B37F0F0
+	for <linux-wireless@vger.kernel.org>; Thu, 29 Jan 2026 14:08:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1769695734; cv=none; b=uGEZl4d/Hw8ijMtAfmuvyYFMKYlaOk15jo9duB2UBxTc5q34f+8u6XBGGmzAWHcwuCMENd1ZdX1laUKeZ/x+PXySsoVj2YeCWGqODqtMc8oF1KyF+OAh5B0BC7VUvAMAfxIJkQv57li/oqjnyESB5TpHaua/3r4ggtTW4ZnFkHo=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1769695734; c=relaxed/simple;
+	bh=O7hoovYiGhQ14c3Rl6ksEXi28ZIhAz9OKfVontyZ6gQ=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=Zx8E/43J6+SCYoC1Lahl//x2Fi1NgNyj5HYLaLTc3jvpbgwMFykUHuvtTjLSFAxWiWOxRAgiF8vT/+UP+2BnlJVnfOjBeUoVTBH7WXOkZxZ+dswmlxCHYQMisJIOhYJv75hAUsNgW7+Dqy/EDuX+q0kaw4luH5MfP16zPpinZGY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=Zew9WG4y; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=bqDzCI/T; arc=none smtp.client-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1769695732;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=/yDdc0aOssQmwPiAEAMbLVrZwNafZDqUbaKFlwp9zUo=;
+	b=Zew9WG4y0gopqo1LjywO6h+0mWy1ayX724nFhi3O3uZgggca+zSNbk59S+86qMImOvGrqf
+	lONYfOE7+mPDpfd4EZdYU727+N2TjjyG4FiTc00fRDNaN3k9ziFja0FKnwOREY9Dr1UFbH
+	EvKLxLEEoA+qt2HqOULWxrPgS1qD0OY=
+Received: from mail-wm1-f72.google.com (mail-wm1-f72.google.com
+ [209.85.128.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-600-KbTx3yDdPNmyQe2mgl3KvQ-1; Thu, 29 Jan 2026 09:08:49 -0500
+X-MC-Unique: KbTx3yDdPNmyQe2mgl3KvQ-1
+X-Mimecast-MFC-AGG-ID: KbTx3yDdPNmyQe2mgl3KvQ_1769695728
+Received: by mail-wm1-f72.google.com with SMTP id 5b1f17b1804b1-4806cfffca6so10525235e9.2
+        for <linux-wireless@vger.kernel.org>; Thu, 29 Jan 2026 06:08:49 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1769695589; x=1770300389; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=RcLENt0AH5rhLcl7Jm2sgoJkBXC9N8ulrINMcIPia5k=;
-        b=Rzgzp+l7rXIFkb3+wWzO6nO0jUhfdqyvvCMgNOdhGUpY3oZSSsg3ceuZ7nLPWhbThC
-         ZHiStSWIx5VfAI9wM0jroTTg2NKJAi6Jr/I2bIIYf7XQ/p36Mt5aVj7h8UPS0dRVhaYg
-         Mn490Vw7/xqsHvSdCVHmJ05020rnulEnIFymZrNNoiwS9jU9g450nVBH0aS54OltG3bi
-         t0VseVoWovneZQ4u0q51yhhFxbEGpFQSX0zaFOyg5KUqANEw0WJYkkUt7g0sbE/UTkWN
-         y3fxLpUMEZJ1YjyX1/8/5ZBAUhn6XAFmqE/oQZ9EvoJ0LqiVBAdcA7Nw940OK5oZTbbi
-         arrw==
+        d=redhat.com; s=google; t=1769695728; x=1770300528; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=/yDdc0aOssQmwPiAEAMbLVrZwNafZDqUbaKFlwp9zUo=;
+        b=bqDzCI/T8Skdr117gGj4p7MvrP/ZqGfe+bWINSa5o31WX/LG5qwi2shY4zUKgAKzX2
+         QDZDSE1r30/uHOMBNVWqXSUBpK5V4/q7GWGZFWyl0o0lZFBnxKDhUUmaX8LBrPUf1sXD
+         9WCaLWzPzj75SX/4da+XHt2twrCscvHU6wgJjgqAgct3hCS+Ti0XaHJJyX5cB4fR1iQN
+         D8ahaXcLKZs/8wfHx0MBGNMDtfmDdiyjz5kGYeaD48nB3gfGpPbkzkopMNsEp4vLLaRc
+         UuvQoUkcmSfbH9WeVOWIhXFZk0WCX67T0VPr64ozMLS4yZUPeb7mh3SfRnZDbvbW/JNm
+         lFug==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1769695589; x=1770300389;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=RcLENt0AH5rhLcl7Jm2sgoJkBXC9N8ulrINMcIPia5k=;
-        b=uOjads3rSdJbZ0BqTk7dyp89UgEeWh1wO8ixfGYQEHZDjJ9PPPSWXm4lV+8E7o6dzl
-         biDdpS9ivFh+Apebextuuwo8Tx6WyIdZUC0HJSIxbD237KQTcms3a85scyHjl2BIDvK0
-         GmO99EWK7FbxqxfuMdV7Yv5pG8eBRId4aZB5yVvfxHvSWy2SYS5clRla96D2YQRKOvXp
-         QjInfqO+IIe8w0y8g0+1iBphP0booLfZ7SWhQMRizjS+1soTy87DV8y6E1Pgxfuw6pTU
-         ggtYpGFux5klxwNVEXj8z1unThrwbVfezgeGTW98oFa+kihLMcKHbFbvT8hkUGtWmpPx
-         Tkag==
-X-Forwarded-Encrypted: i=1; AJvYcCW1TUtLkLcul6h1M93Bjt3r4qtNvrksQA/opWD2o868+/zN/FfqO91bAYrDW28utco6O3/dj5Xv7tbm8OqTgA==@vger.kernel.org
-X-Gm-Message-State: AOJu0YxRiB8DEwl4FSfH/GI64UDGtQFyBxJODPgNMm1tfawW8qrdSwUb
-	HbFH+ZyD3eorQoTelVQfMMBfV/F9nIT+Mi6qcjZkmkhfbVU4zgODzUrRN4m3jzA3pfNyiFCAd8D
-	F8rvqdhUYjntJzZ6dgi8/EMjsaff4E5gxrFm7GU0=
-X-Gm-Gg: AZuq6aIM2rGZU+Q7N6qRe0xs4MtZodt1CItGF8s1dHqXdjdeprakc7q2OngNySZpiFB
-	1QQzCe2shAEZgi3o18npRtR/GCghoOUt+WKyARRVbt4jh5NNC8c7HT8Am1pD5CMS3kFDOkYgk9f
-	UA/1eFvKcmKg5STYvNE1vOwG8myT4mlLkiTiOOhdOUD6o2H2j304WK/6oSUWk4oEnoJawUP9nxA
-	JtgS4TMWE7yp8rXNBWmN7X7OFMZdPFnQehSW4+MQMvrnAa997XhuEzlmoFod//7jmNNLkbX+kvY
-	w6iB3SILrQWFqGTaTPJmUaKtE2DF
-X-Received: by 2002:a17:90a:c88c:b0:340:9cf1:54d0 with SMTP id
- 98e67ed59e1d1-353fecca19emr8148301a91.1.1769695589142; Thu, 29 Jan 2026
- 06:06:29 -0800 (PST)
+        d=1e100.net; s=20230601; t=1769695728; x=1770300528;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=/yDdc0aOssQmwPiAEAMbLVrZwNafZDqUbaKFlwp9zUo=;
+        b=vdQ4h83Jy0yCAXAG3UY7w4lFglNnDLPjS4hOgclsnMNMS/OV4+7exSqYqgRwydXakk
+         12y/VVFdm2Vvg/IkgWonszokLrd0S0a5lJR6iu0tTUBD5qRnzuMJe7RkFSB2qhCqV+md
+         5mg4xSV9FCXDaknuKzx2LCNsZsyqFmjE6btHwk0eFXA1dGR7WnggSBHyUvVdNMowRLfi
+         PTzhaoLGhGceLcppvSyBNube0/YNbaMixTflRyD8Z1U3KER12WNFUbM8ZnRvFigiZnmn
+         pea0CO/WzBmqeDxSyZt4jDreAGlXg5Z1igSTGKqhu8qbP4/lBLqTy7K6PZp95CPTghtl
+         blJQ==
+X-Gm-Message-State: AOJu0YwX2jqeu+U2OTSHubIK/PQqGiZnGcwsC8/9aZIpsrzCNNJ6snhb
+	i6qhS92kXKdY7rKojWqBQeaYHFwUCmS9aQzaxM2BOQi56QRbn474k/Wn4EYjcOyJv+SR6YNXPc+
+	+t9t7BZAXDUxy+og1KxgCEfOxmhGz8obcMub7FIKsEtnij++i1g2rls61vjS9E8kMcHqdFekoA0
+	Nr
+X-Gm-Gg: AZuq6aIFLCXOiR3UmpcwwUtYiGz0QvtqaBEOqqFKdn3GJJkzTyH1jCIo58w9KQSb8en
+	xsvedS5RO6EX1bVTSgPFxJr665cmbfOLZCd96I8b6FyS/YcyGpTHF+UBIgkfnai44wPjO8XP6Zt
+	vpdGZVPo94j0rAbhiqPMiJ55YBX4zTB/Da3DQ7LoHeQnbwBaACPWRENSE3hTOZyh8oKeWRGPD7A
+	GWETgFo2IUfaod3e0Txb0vl3D+Qz55AuZ+4ZeO2cKw9TwARVJ5frrnER5EkaBmK1/OJve4ZAAQN
+	SWq9pWlPKzotqR7Sa0LkEYPm+ll1++msy/XJNkdVRNmIUn+hdLHcxSZ9DrqWhQ2vlj0yRCk/7at
+	Hj0lvs5IJTNtX
+X-Received: by 2002:a05:600c:b8a:b0:480:3b4e:41b8 with SMTP id 5b1f17b1804b1-48069c7586amr115691805e9.33.1769695728074;
+        Thu, 29 Jan 2026 06:08:48 -0800 (PST)
+X-Received: by 2002:a05:600c:b8a:b0:480:3b4e:41b8 with SMTP id 5b1f17b1804b1-48069c7586amr115691455e9.33.1769695727626;
+        Thu, 29 Jan 2026 06:08:47 -0800 (PST)
+Received: from [192.168.88.32] ([212.105.153.56])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-48066bee7d0sm213363445e9.4.2026.01.29.06.08.46
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 29 Jan 2026 06:08:47 -0800 (PST)
+Message-ID: <b0d6887f-7946-46b6-986a-bf410b832d66@redhat.com>
+Date: Thu, 29 Jan 2026 15:08:46 +0100
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260126095244.113301-1-bjsaikiran@gmail.com> <20260126095244.113301-3-bjsaikiran@gmail.com>
- <9ca7ceac-2799-4993-844c-8427508c7d9b@oss.qualcomm.com> <CAAFDt1sxWMb1xPaWGWGE1XVFxRKwjOuQPZ__fNTH2+ujXJ6d5A@mail.gmail.com>
- <CAAFDt1s8HPQWJpSiDDk8PmUAKqkQHELcJj_F0faZ1C9RfiYu6g@mail.gmail.com> <7fb6b431-58ea-47bc-b251-5144575db17d@oss.qualcomm.com>
-In-Reply-To: <7fb6b431-58ea-47bc-b251-5144575db17d@oss.qualcomm.com>
-From: Saikiran B <bjsaikiran@gmail.com>
-Date: Thu, 29 Jan 2026 19:36:17 +0530
-X-Gm-Features: AZwV_QhHbNenSWHu850YbkxhJb3eHlb_ZpOB6u7ptj-ZZOVmyFVj8PtOT56zULg
-Message-ID: <CAAFDt1s_NtY1vXa5STRW7oQn9yDJBC0g7CPSZXn0tFhd+CSHrQ@mail.gmail.com>
-Subject: Re: [PATCH v2 2/2] wifi: ath12k: Fix firmware stats leak when pdev
- list is empty
-To: Baochen Qiang <baochen.qiang@oss.qualcomm.com>
-Cc: ath12k@lists.infradead.org, linux-wireless@vger.kernel.org, 
-	kvalo@kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+User-Agent: Mozilla Thunderbird
+Subject: Re: [GIT PULL] wireless-next-2026-01-29
+To: Johannes Berg <johannes@sipsolutions.net>, netdev@vger.kernel.org
+Cc: linux-wireless@vger.kernel.org
+References: <20260129110136.176980-39-johannes@sipsolutions.net>
+Content-Language: en-US
+From: Paolo Abeni <pabeni@redhat.com>
+In-Reply-To: <20260129110136.176980-39-johannes@sipsolutions.net>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	HAS_FILE_URL(2.00)[];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=2];
-	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
-	R_DKIM_ALLOW(-0.20)[gmail.com:s=20230601];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+X-Spamd-Result: default: False [-2.16 / 15.00];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	DMARC_POLICY_ALLOW(-0.50)[redhat.com,quarantine];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_DKIM_ALLOW(-0.20)[redhat.com:s=mimecast20190719,redhat.com:s=google];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-31327-lists,linux-wireless=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	TO_DN_SOME(0.00)[];
 	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[redhat.com:+];
+	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-31328-lists,linux-wireless=lfdr.de];
+	RCPT_COUNT_THREE(0.00)[3];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	FROM_HAS_DN(0.00)[];
-	MISSING_XM_UA(0.00)[];
-	RCPT_COUNT_THREE(0.00)[4];
-	NEURAL_HAM(-0.00)[-1.000];
+	TO_DN_SOME(0.00)[];
+	RCVD_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[bjsaikiran@gmail.com,linux-wireless@vger.kernel.org];
-	DKIM_TRACE(0.00)[gmail.com:+];
-	MID_RHS_MATCH_FROMTLD(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	FROM_NEQ_ENVFROM(0.00)[pabeni@redhat.com,linux-wireless@vger.kernel.org];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	NEURAL_HAM(-0.00)[-1.000];
 	TAGGED_RCPT(0.00)[linux-wireless];
-	FREEMAIL_FROM(0.00)[gmail.com];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[mail.gmail.com:mid,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,qualcomm.com:email,launchpad.net:url]
-X-Rspamd-Queue-Id: D97C9B0AE9
+	MID_RHS_MATCH_FROM(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 4852EB0BCB
 X-Rspamd-Action: no action
 
-On Thu, Jan 29, 2026 at 7:57=E2=80=AFAM Baochen Qiang
-<baochen.qiang@oss.qualcomm.com> wrote:
->
->
->
-> On 1/27/2026 12:40 PM, Saikiran B wrote:
-> > I have analyzed the logs and code flow in depth to provide more
-> > definitive answers for your questions.
-> >
-> > The log entries showing the failure are:
-> > [  563.574076] ath12k_pci 0004:01:00.0: failed to pull fw stats: -71
-> > [  564.575896] ath12k_pci 0004:01:00.0: time out while waiting for get =
-fw stats
-> >
-> > 1. Why are other stats populated?
-> > The "failed to pull fw stats: -71" error is not the initial failure
-> > but a symptom that appears after repeated operations. The leak happens
-> > during *successful* calls prior to this error.
-> >
-> > Code flow proving the leak:
-> > - ath12k_mac_get_fw_stats() sends WMI_REQUEST_PDEV_STAT.
-> > - Firmware responds. ath12k_update_stats_event() parses the response.
-> > - ath12k_wmi_fw_stats_process() is called, which splices 'vdevs' and
-> > 'beacon' stats into ar->fw_stats.vdevs/bcn.
-> > - ath12k_mac_get_fw_stats() returns 0 (Success).
-> > - In ath12k_mac_op_get_txpower(), the check `if (!pdev)` fails if the
-> > pdev-specific list is empty (but vdev list is NOT empty).
-> > - The function exits via `err_fallback` WITHOUT calling ath12k_fw_stats=
-_reset().
-> > - Result: The 'vdev' and 'beacon' stats that were spliced into
-> > ar->fw_stats remain there, leaking memory and accumulating with every
-> > call.
-> >
-> > 2. Exact place where -71 is printed:
-> > The error "failed to pull fw stats: -71" is printed in
-> > [ath12k_update_stats_event()](drivers/net/wireless/ath/ath12k/wmi.c).
-> > It corresponds to "ret =3D ath12k_wmi_pull_fw_stats()" returning -EPROT=
-O.
-> > This propagates from
-> > [ath12k_wmi_tlv_fw_stats_data_parse()](drivers/net/wireless/ath/ath12k/=
-wmi.c),
-> > when buffer validation checks (like `len < sizeof(*src)`) fail.
-> >
-> > Conclusion:
-> > The fix in my patch (resetting stats when `!pdev`) is critical because
-> > it ensures that the accumulated 'vdev' and 'beacon' stats are freed
-> > even when the 'pdev' list ends up empty.
-> >
-> > Let me know if you need anything else.
->
-> can you please try below to see if it can fix your issue?
->
-> https://lore.kernel.org/r/20260129-ath12k-fw-stats-fixes-v1-0-55d66064f4d=
-5@oss.qualcomm.com
->
-> >
-> > Thanks & Regards,
-> > Saikiran
-> >
-> > On Tue, Jan 27, 2026 at 9:47=E2=80=AFAM Saikiran B <bjsaikiran@gmail.co=
-m> wrote:
-> >>
-> >> Hi Baochen,
-> >>
-> >> Regarding your questions:
-> >>
-> >> "Are other stats populated?"
-> >>
-> >> Yes. When ath12k_mac_get_fw_stats() returns success (0), it means the
-> >> firmware response was received and valid WMI events were processed.
-> >> The firmware response to WMI_REQUEST_PDEV_STAT typically includes
-> >> multiple stats TLVs (vdev stats, beacon stats, etc.). Even if the
-> >> "pdev stats" list ends up empty (e.g., due to specific filtering or
-> >> availability), the firmware should have populated other lists (like
-> >> vdevs or beacons) in the ar->fw_stats structure. If we don't reset,
-> >> these valid entries leak and accumulate.
-> >>
-> >> "Where exactly is -71 (EPROTO) printed?"
-> >>
-> >> The log "failed to pull fw stats: -71" is printed in
-> >> ath12k_update_stats_event() (wmi.c line 8500 in my tree). This error
-> >> code (-EPROTO) propagates from ath12k_wmi_tlv_fw_stats_data_parse(),
-> >> where it is returned when buffer validation checks fail (e.g., if (len
-> >> < sizeof(*src))). This failure suggests that the accumulated state or
-> >> memory corruption from the leak eventually causes the parser to fail
-> >> on subsequent events.
-> >>
-> >> So, fixing the leak is necessary for correctness regardless of the
-> >> specific side-effect error code.
-> >>
-> >> Thanks & Regards,
-> >> Saikiran
-> >>
-> >> On Tue, Jan 27, 2026 at 8:57=E2=80=AFAM Baochen Qiang
-> >> <baochen.qiang@oss.qualcomm.com> wrote:
-> >>>
-> >>>
-> >>>
-> >>> On 1/26/2026 5:52 PM, Saikiran wrote:
-> >>>> The commits bd6ec8111e65 and 2977567b244f changed firmware stats han=
-dling
-> >>>> to be caller-driven, requiring explicit ath12k_fw_stats_reset() call=
-s
-> >>>> after using ath12k_mac_get_fw_stats().
-> >>>>
-> >>>> In ath12k_mac_op_get_txpower(), when ath12k_mac_get_fw_stats() succe=
-eds
-> >>>> but the pdev stats list is empty, the function exits without calling
-> >>>> ath12k_fw_stats_reset(). Even though the pdev list is empty, the fir=
-mware
-> >>>> may have populated other stats lists (vdevs, beacons, etc.) in the
-> >>>
-> >>> 'may' is not enough, we need to be 100% sure whether other stats are =
-populated. This is
-> >>> critical for us to find the root cause.
-> >>>
-> >>>> ar->fw_stats structure.
-> >>>>
-> >>>> Without resetting the stats buffer, this data accumulates across mul=
-tiple
-> >>>> calls, eventually causing the stats buffer to overflow and leading t=
-o
-> >>>> firmware communication failures (error -71/EPROTO) during subsequent
-> >>>> operations.
-> >>>>
-> >>>> The issue manifests during 5GHz scanning which triggers multiple TX =
-power
-> >>>> queries. Symptoms include:
-> >>>> - "failed to pull fw stats: -71" errors in dmesg
-> >>>
-> >>> still, can you please check the logs to see at which exact place is t=
-his printed?
-> >>>
-> >>>> - 5GHz networks not detected despite hardware support
-> >>>> - 2.4GHz networks work normally
-> >>>>
-> >>>> Fix by calling ath12k_fw_stats_reset() when the pdev list is empty,
-> >>>> ensuring the stats buffer is properly cleaned up even when only part=
-ial
-> >>>> stats data is received from firmware.
-> >>>>
-> >>>> Fixes: bd6ec8111e65 ("wifi: ath12k: Make firmware stats reset caller=
--driven")
-> >>>> Link: https://bugs.launchpad.net/ubuntu-concept/+bug/2138308
-> >>>> Tested-on: WCN7850 hw2.0 PCI WLAN.HMT.1.1.c5-00302 (Lenovo Yoga Slim=
- 7x)
-> >>>> Signed-off-by: Saikiran <bjsaikiran@gmail.com>
-> >>>> ---
-> >>>>  drivers/net/wireless/ath/ath12k/mac.c | 1 +
-> >>>>  1 file changed, 1 insertion(+)
-> >>>>
-> >>>> diff --git a/drivers/net/wireless/ath/ath12k/mac.c b/drivers/net/wir=
-eless/ath/ath12k/mac.c
-> >>>> index e0e49f782bf8..6e35c3ee9864 100644
-> >>>> --- a/drivers/net/wireless/ath/ath12k/mac.c
-> >>>> +++ b/drivers/net/wireless/ath/ath12k/mac.c
-> >>>> @@ -5169,6 +5169,7 @@ static int ath12k_mac_op_get_txpower(struct ie=
-ee80211_hw *hw,
-> >>>>                                       struct ath12k_fw_stats_pdev, l=
-ist);
-> >>>>       if (!pdev) {
-> >>>>               spin_unlock_bh(&ar->data_lock);
-> >>>> +             ath12k_fw_stats_reset(ar);
-> >>>>               goto err_fallback;
-> >>>>       }
-> >>>>
-> >>>
->
+On 1/29/26 11:58 AM, Johannes Berg wrote:
+> Here's another set of changes for net-next. Two things to note:
+> 
+>  1) This introduces a couple of new sparse warnings, because it
+>     cannot deal with guard(spinlock_bh)() which the drivers are
+>     now using. I previously fixed sparse for that for RCU, but
+>     given the context tracking work will remove this validation
+>     from sparse entirely, I haven't bothered trying to keep up.
+> 
+>  2) There's a core SDIO patch in here, but that's intentional
+>     and we agreed with the maintainer to merge it through this
+>     tree since only two wireless changes depend on it.
+> 
+> Please pull and let us know if there's any problem.
+The CI also report a 32bit build failure, but with a dangling link to
+the actual build results:
 
-Hi Baochen,
+https://patchwork.kernel.org/project/netdevbpf/patch/20260129110136.176980-39-johannes@sipsolutions.net/
 
-I tried applying your patches on top of v6.19-rc7 (which is the latest
-mainline release candidate I'm testing on), but I ran into build
-issues because some of the dependencies seem missing.
+so it could be a CI flake, but could you please have a look?
 
-Specifically:
-Patch 2 ("wifi: ath12k: fix station lookup failure when disconnecting
-from AP") uses `ath12k_link_sta_find_by_addr()`, which does not exist
-in my tree. It seems your patches are based on a different tree
-(ath-next?) that has newer changes not yet in the mainline.
+/P
 
-Could you please point me to the specific git repo/branch you are
-using? I can try to build and test on that baseline to be sure.
-
-Regarding the firmware stats issue:
-I verified the firmware files match the latest available (MD5 sums
-matched), yet the "-71" errors and memory leak persist on my device
-without fixes.
-
-I successfully applied the logic from your Patch 1 manually (since
-[ath12k_mac_get_target_pdev_id](cci:1://file:///home/saikiran/linux/kernel/=
-x1e/x1e/drivers/net/wireless/ath/ath12k/mac.c:989:0-1008:1)
-exists), but I haven't fully validated if it alone resolves the leak
-in all scenarios.
-
-However, the fix I proposed in my v2 patch (resetting stats when pdev
-list is empty) definitely stops the leak mechanism by ensuring cleanup
-happens even when the firmware returns partial stats (which seems to
-be the trigger condition).
-
-I'll wait for your pointer to the base tree to do a proper test of your ser=
-ies.
-
-Thanks & Regards,
-Saikiran
 
