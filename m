@@ -1,105 +1,106 @@
-Return-Path: <linux-wireless+bounces-31391-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-31392-lists+linux-wireless=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id sOUJC/nVfGlbOwIAu9opvQ
-	(envelope-from <linux-wireless+bounces-31391-lists+linux-wireless=lfdr.de@vger.kernel.org>)
-	for <lists+linux-wireless@lfdr.de>; Fri, 30 Jan 2026 17:02:01 +0100
+	id AEieNwHWfGlbOwIAu9opvQ
+	(envelope-from <linux-wireless+bounces-31392-lists+linux-wireless=lfdr.de@vger.kernel.org>)
+	for <lists+linux-wireless@lfdr.de>; Fri, 30 Jan 2026 17:02:09 +0100
 X-Original-To: lists+linux-wireless@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8AE3CBC588
-	for <lists+linux-wireless@lfdr.de>; Fri, 30 Jan 2026 17:02:00 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 82AC7BC58F
+	for <lists+linux-wireless@lfdr.de>; Fri, 30 Jan 2026 17:02:09 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 1EC563046B82
-	for <lists+linux-wireless@lfdr.de>; Fri, 30 Jan 2026 16:01:13 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 95E27302410D
+	for <lists+linux-wireless@lfdr.de>; Fri, 30 Jan 2026 16:01:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EF8DC2F4A05;
-	Fri, 30 Jan 2026 16:01:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6F04F303A3B;
+	Fri, 30 Jan 2026 16:01:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="U2q9OT7E";
-	dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b="kkz+k+k2"
+	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="bJB9uGYu";
+	dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b="VNl55TLk"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6D8D6341660
-	for <linux-wireless@vger.kernel.org>; Fri, 30 Jan 2026 16:01:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E7B4432B992
+	for <linux-wireless@vger.kernel.org>; Fri, 30 Jan 2026 16:01:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769788872; cv=none; b=EYVjkUiJEsNpQ4R91EXlHDYkGxweUcsOeDBKxeGoEmhXA6VhqCQ/5ROdYlgPRNbjI0/fd+XlTpeK86juozbUl8vUVM7OSjQuzX3IEwYJLZ75DqEWkcYwCTmNkXe7obEfgL2Z7/9pfM6301d9SJE7aIXnAoA7q8Cp1APf2A+Ff9U=
+	t=1769788875; cv=none; b=VuaxrBJnblaeHQpWz0yURgjnw37z2ujF/pCQeiM3qIl+b/lsOqSlu8TcLb63zwbL4JlwPa3NBVijj6zsI/WJzYXMMTaoDfOJ9PirKfc+l9IjIFdrYpyJN5PoxCXVwfzdhXGFjdOcJZaBEKkcbIvkGZ5DH+FmFJ1NbrhvBxFfWck=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769788872; c=relaxed/simple;
-	bh=C8sxlC595AYYJRUjKzbTYA1MZGqBXsZhSDJomp6wTbY=;
+	s=arc-20240116; t=1769788875; c=relaxed/simple;
+	bh=KdA/xa6HiDzKUjIddqJXvoBVF1VGrdukOTZ6wcEDtUM=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=jzeKi50csnI7J8/T5B2tlUzzYGx50e+qAuXlUVk0SPdkgX6Evj2SzrG4UCpcp5uPFV7yLNdQdLb19tRxa5Nke0VTF5od4IVCMAeHUk4HmvfSa97Zuje8ffvj7QB//GOFFbs9+Zsc3srxZ8Uresd9ACyXXSA/aA+EhOZq0t9nkpw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=U2q9OT7E; dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b=kkz+k+k2; arc=none smtp.client-ip=205.220.180.131
+	 MIME-Version; b=bGTodp38JZ7d3BgjiBbheXmyPt8mptSp+CvGZZ/7qSKTAvwOlvAnqDz1kBi0mo7mFlr/z9kmVpoIhun6+KP8+CtWuss6HAwbH4FHyJM4KnO8CKDe5OxkyoLuQXUPEh4DAS+QBZNKPHc+mgCerJbNGNlWykguLXSYLDnS7L7JMc4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=bJB9uGYu; dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b=VNl55TLk; arc=none smtp.client-ip=205.220.180.131
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
-Received: from pps.filterd (m0279870.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 60UEcmDt2419200
-	for <linux-wireless@vger.kernel.org>; Fri, 30 Jan 2026 16:01:10 GMT
+Received: from pps.filterd (m0279868.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 60UAoXbO995907
+	for <linux-wireless@vger.kernel.org>; Fri, 30 Jan 2026 16:01:12 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
 	cc:content-transfer-encoding:date:from:in-reply-to:message-id
-	:mime-version:references:subject:to; s=qcppdkim1; bh=sZbDPNYjiuo
-	o1JcdXHlXmIfsRq8x/plB74K3MSXs9gk=; b=U2q9OT7E3aXhKPs9Zf9USrPYrSK
-	lWZn69M+IH7bdkSyf3/ADIz0jDZ07z+3BQk++bnRGZ4Qq7devvu0dhLSlkzsmPJo
-	FU6MCx7s1ETWwxI5d+9u2oYWXJaRtSmfmDUDdiOT52zdvDfVNXw6hl/5JvijDgCS
-	zVWZy3mUOA1CfN/cDMufjxwS8La3GMkA5HF77FQ2xauexvBhoIDtEuDsFfhtZnjR
-	ZZOHaGZ0kHf3T1pVo15s/39kKGOi4vIUEY0xZDNIh17NvCsABFk06EaZOmvdpoFj
-	cQ6xXa0bvh2SAulBCTUwINa5iEwWcRIJ9DLgcEX+DLBdCzk3aPSgt8nhpxQ==
-Received: from mail-pf1-f198.google.com (mail-pf1-f198.google.com [209.85.210.198])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4c0r41hjn1-1
+	:mime-version:references:subject:to; s=qcppdkim1; bh=xh617qGgHBW
+	Q1Y9BNS3QowATTZL08x/nq0KYIgORb+c=; b=bJB9uGYuv22jPPcrtLKOR47sPsP
+	UlYe6q2fIAl4QhCKqBNjacl6BZSKmitUG9Q+eMcEJ4+DnvdBQnIVdXVoj6KVbfi+
+	Zm+TnsfGONTp5qtpr/zd/smficDhBKzGCACvoZTXKbu2zwHsI7+WMts9JXLYZJzM
+	jp3WbZcaj4OdsOVCT7KSRPQ7x5rh+WVgE0Iv5yFkU5qVI2iY/fqsiQbZS3NOkwEs
+	J2kZL6nan67CrwctfItHQhTAvZOfQFVPe+F1qP8n2XTuRfICiHkyICmEvD5xJmfN
+	AI7j4bE/QdJWhy3gXSq9jj9P4058AQZlLfWFhh6eGUvxjPwtiHgYIV1FXYQ==
+Received: from mail-pf1-f199.google.com (mail-pf1-f199.google.com [209.85.210.199])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4c0bvvkqts-1
 	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
-	for <linux-wireless@vger.kernel.org>; Fri, 30 Jan 2026 16:01:10 +0000 (GMT)
-Received: by mail-pf1-f198.google.com with SMTP id d2e1a72fcca58-822f926eff5so1113439b3a.1
-        for <linux-wireless@vger.kernel.org>; Fri, 30 Jan 2026 08:01:09 -0800 (PST)
+	for <linux-wireless@vger.kernel.org>; Fri, 30 Jan 2026 16:01:12 +0000 (GMT)
+Received: by mail-pf1-f199.google.com with SMTP id d2e1a72fcca58-81ecb6279d9so2349797b3a.3
+        for <linux-wireless@vger.kernel.org>; Fri, 30 Jan 2026 08:01:12 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=oss.qualcomm.com; s=google; t=1769788869; x=1770393669; darn=vger.kernel.org;
+        d=oss.qualcomm.com; s=google; t=1769788871; x=1770393671; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=sZbDPNYjiuoo1JcdXHlXmIfsRq8x/plB74K3MSXs9gk=;
-        b=kkz+k+k2MCv2L1f13H8W2DkIYP4SKx8ecNuRAKpQjgquerfu0gMPNdr/W6FKixCIRR
-         2h/vjRvdzOuCwOu6N/HgGzxPAoB6e+tRbif/FLNfI29CTwMwW6vPuTJKd/QW1EUELV3r
-         Kn/O977ujS5wAyXp/pl8xWosR6bi8cV/RRE1fJgWgtM2DXRVauF5snPWhrFH23mCEGlR
-         GEve/UMazvUEJBb4mebS798ZIq8houk2SlJfCsomA3/GFx0ZBktrMWRafLGXhBCWYeXW
-         isXInqiKkcjjO0dgP780qoeZ4yKr8NE9UXSWK4Bfoi2mZAUVVTwarAagvmn/uE204bO9
-         mIqw==
+        bh=xh617qGgHBWQ1Y9BNS3QowATTZL08x/nq0KYIgORb+c=;
+        b=VNl55TLkBJsHchHvMV7GCdk4D7Cyk3a19gflllfYTBRyBDFg6cxgiGRxMskDRoNog4
+         coMgNvjeKAls/BVZmqbx9ZrnKH/8+ZyQV4qNDeLvBhdj5fMTVYr+6x9OaD5W6pqorRku
+         2IU8G17BhmgiBstk5MycTwqQ3lo7xblarwXxygogRtriH/3es+YPetFxZ/htZVv24VDR
+         Qw4dj739OuAHo1w6Q/SU07kK6KBYUDdgkQp4+aQoLhngRfHZmz17zANV9LyHOD/sYMPZ
+         2od16ki/gGMsc28bBNf9Csg0iTov9XdD4ZFKNeVCQMLYiKOTI6kcWl8wpftuo3fKrwjB
+         gO+A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1769788869; x=1770393669;
+        d=1e100.net; s=20230601; t=1769788871; x=1770393671;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to;
-        bh=sZbDPNYjiuoo1JcdXHlXmIfsRq8x/plB74K3MSXs9gk=;
-        b=W30Ouq0UZmI8P8/VuBaOToGsatK06WhHy/STXvqrGEXDpssXWRcNbL1OjJrQ2mg59p
-         jyO9Q/IvW+CE52+1i0w/hncZbCAywZwaAdSDhYds/dLEAdCoc6FxhBWtGXzxt8hFhyAq
-         WznBPrOea8+YWVdAOq2hUASC0/ZPMldyFKMxtHI5N8aunqpWWRcoh4WwTqpz99Acug36
-         Ar7buvZMDdOC4VSTWMu4mr5sGZRVh+KCwUSbvG+d4wuC/j/83u5TNyURAFxlOG3ktYP5
-         hLRLsq1Jzc3+v9tPKtNzhNjLOpsztGaB/JCA8awnCSACktvhUty2vJnhLbUQ6oAmxCiy
-         c/0w==
-X-Gm-Message-State: AOJu0Yz7hUWz3IBYBa9ouVqN++d8hIHQK6NwEIfvAWdqq2DE/vpPZdaZ
-	nE8wEeMWzLSTSDBZidZNgobEerK4avPbSZZAf9BGKiOQpFuNGEJiEy4di0CxQKUyLMSHUz8Ryc6
-	u0VPvp6eNYLLM4aS2bh2hkx0Y44v6GesNUAHFOTmxPX4eGeCueKmdNcpy6dNDCVXUTMlV
-X-Gm-Gg: AZuq6aJQgmWz14pB90Xd7qETvtZNFvAMCYhSFOmeIzUVgKUCCW06cF1fXf43gR/4JE/
-	UWRrk4fH6TyDMc7mkcNFtF3I2ekYdQO/6SM4QE7XIFMNAI/QpNQ8cqzyJzyuf1TH0j6J9iUmjfM
-	cBTByfPvmzRF5MsRx7ELy5Mixlju59Pra1GdcVFxZZb0RwrL9ByxlI6GnoE6nfK57LrvZ7jvS7R
-	nvPP7GXNm0y/4okOEanASw+RBknJ11qK+0MiOXl+B7UpSiR/fADfqocD/QWuJNQ2uq3XYbd7q9Z
-	ld6gGtbXd3hqYUZT1hCMt+31XAV+4G7hMW5zaOLEaczvtFmAwknuviLFu0B+7Z2EbmiWvqkhw6F
-	v1CqKysqlMgpBjjutC+hxT1ExiAT5ArmztuIBKORxfUQ=
-X-Received: by 2002:a05:6a00:1acf:b0:81f:46ba:1817 with SMTP id d2e1a72fcca58-823ab9a1e24mr3390296b3a.66.1769788868767;
-        Fri, 30 Jan 2026 08:01:08 -0800 (PST)
-X-Received: by 2002:a05:6a00:1acf:b0:81f:46ba:1817 with SMTP id d2e1a72fcca58-823ab9a1e24mr3390240b3a.66.1769788868047;
-        Fri, 30 Jan 2026 08:01:08 -0800 (PST)
+        bh=xh617qGgHBWQ1Y9BNS3QowATTZL08x/nq0KYIgORb+c=;
+        b=W/d8w7ZZTa2c09Lfz2qY2Qm8aLCIAJ4RZ2xzrQuULs1z2avDh0KaGbCYo6m23aUqA9
+         HGoe3+JNO7ULjW8dDSgh5JTkqMQf95Ycom9e/i2NOule2fHRbIK8m3UhOQ8ZmWYYRABX
+         651XHRkY9KCuxpMsRZVT1wlkqx/ad0NGD1/1AwFLkMLlJNjGIU5Z3W38oVb7LqqF3Ts6
+         YEcitn3KBMnYpPx3VCmZeQiYESJ4kBgdt3QE3KIUf3B3ubML2N2Y3RyA8Nk2uKsSnPHY
+         eS9Z/Jqw1C/NTgwWscJr688RbogpI5BD+FxboWCmS75y+14guhitg6WOw/OZ5yKlgP4x
+         0SBw==
+X-Gm-Message-State: AOJu0YzvJE6C1Z1MphEO6uWrcdKA+voZssKyhtzJn6xVH2VKOppXpAQU
+	0ytL2bO56qMMzHepM+w+TL0bYxValvDVCstZGklKP8kTqZOYDuTJI73ImEv9Q/ZILxThsHlTEKj
+	a+NHTFr+0GmlKzc83NK6YCvA3iMkMO4VvwCIrH15LlrvqUVjbcxLfMzVOX/g6gWGbV48PTH1cap
+	4y
+X-Gm-Gg: AZuq6aKIaknkbVkGlYFzHhdrRRmWfl8cQKxcdsCyb/W0O6ZJRlPtwy0G5oDbCHbMM1P
+	e6wzHDUWI5XYjbBl+8d1bmKUjKoUNKDIj7ZaXpnUF2QeW+brdaxlc20EDAwdtIWqgi34x2Cx2+5
+	DN5LWiq6Rj0phh6Qe/54BJMoe7CvhxjLPPfhAHxQwI0ESsZjO8NItjOXL7blXs/D6TjmMLDhP1Q
+	U/YhL/e0N22sKpRQOQIIalwuX6ds5j2xECjuiH6OrlbHF+HQ6UJyo4gtfX0MNd3DaloujjAgFHS
+	qyG6YF4rWweKzM5lMyzrAJIDCDZtlqLtzUVxxBxtFiGjtu+CKo1oSBMVBnpJ0Oll+Elv9Nhm/Op
+	pEL3HOOqxqNvT+/KTH7WAbfloq9duWdAd7arfqUxJM9o=
+X-Received: by 2002:a05:6a20:d48b:b0:2fb:2e04:eeae with SMTP id adf61e73a8af0-392e003d350mr3482569637.21.1769788871293;
+        Fri, 30 Jan 2026 08:01:11 -0800 (PST)
+X-Received: by 2002:a05:6a20:d48b:b0:2fb:2e04:eeae with SMTP id adf61e73a8af0-392e003d350mr3482470637.21.1769788870069;
+        Fri, 30 Jan 2026 08:01:10 -0800 (PST)
 Received: from hu-peddolla-hyd.qualcomm.com ([202.46.23.25])
-        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-c642a3359f4sm7621673a12.22.2026.01.30.08.01.06
+        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-c642a3359f4sm7621673a12.22.2026.01.30.08.01.08
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 30 Jan 2026 08:01:07 -0800 (PST)
+        Fri, 30 Jan 2026 08:01:09 -0800 (PST)
 From: Peddolla Harshavardhan Reddy <peddolla.reddy@oss.qualcomm.com>
 To: johannes@sipsolutions.net
 Cc: linux-wireless@vger.kernel.org
-Subject: [PATCH 07/13] wifi: nl80211/cfg80211: add ingress/egress distance thresholds for FTM
-Date: Fri, 30 Jan 2026 21:30:33 +0530
-Message-Id: <20260130160039.2823409-8-peddolla.reddy@oss.qualcomm.com>
+Subject: [PATCH 08/13] wifi: nl80211/cfg80211: add PD-specific bandwidth capabilities for FTM
+Date: Fri, 30 Jan 2026 21:30:34 +0530
+Message-Id: <20260130160039.2823409-9-peddolla.reddy@oss.qualcomm.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20260130160039.2823409-1-peddolla.reddy@oss.qualcomm.com>
 References: <20260130160039.2823409-1-peddolla.reddy@oss.qualcomm.com>
@@ -110,28 +111,29 @@ List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Proofpoint-GUID: f4cMMod1iNRZYQAD5VkX-ul0phePNHOb
-X-Authority-Analysis: v=2.4 cv=W541lBWk c=1 sm=1 tr=0 ts=697cd5c6 cx=c_pps
- a=m5Vt/hrsBiPMCU0y4gIsQw==:117 a=ZePRamnt/+rB5gQjfz0u9A==:17
+X-Authority-Analysis: v=2.4 cv=ZdEQ98VA c=1 sm=1 tr=0 ts=697cd5c8 cx=c_pps
+ a=WW5sKcV1LcKqjgzy2JUPuA==:117 a=ZePRamnt/+rB5gQjfz0u9A==:17
  a=vUbySO9Y5rIA:10 a=s4-Qcg_JpJYA:10 a=VkNPw1HP01LnGYTKEx00:22
- a=EUspDBNiAAAA:8 a=BeJEL0HO4be_EaA0mV4A:9 a=IoOABgeZipijB_acs4fv:22
-X-Proofpoint-ORIG-GUID: f4cMMod1iNRZYQAD5VkX-ul0phePNHOb
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwMTMwMDEyOSBTYWx0ZWRfX4oWLn2ExKqI/
- LcVcCGbM+0RqppclzghaL37LH8TA667VjaYOWv+B9eZTZfvZshxNijliicYZOAP2fBJ0r4Pi2J1
- ZfyRa7IVhU/k3xi9h8CGA7MzKoZV/ZtaIj3Sv5hS7fcnf4dngm+EjCl3NfTrXorX8GKv5x8Drb9
- udO6Al7c0A9btyLXhGJu84KW8DEK0pMfONaBRZj8U7/l4Xi5nMQaNLtVQpjND0O9iigzUaasTxN
- xDaDHBEcGOusndfMZ2OKlIkWPUZMlPtmokb0dxr6QK0GI0TkMPlG9BILgeJwt7mcFWoXlys/iyJ
- gScTg/EHZWwzTf3vCvH/UEhuT3pvyKNnxvCwVZqVFB3zla096oOtjEgzHo2GV2/RT5ARR5gig2z
- /qSk5Q+aJZ78nmsjfWRZxK7Y2g1dioeG/00FY25VUmM1oDXP8/aXPbWlzj3SdWqswI/ovQn23xF
- xj1MdmvzBy5uWS5ro7w==
+ a=EUspDBNiAAAA:8 a=baz0SFNEh9tLq6XKQnIA:9 a=OpyuDcXvxspvyRM73sMx:22
+X-Proofpoint-GUID: RxW31ClRJEXTAdHnTNJP-jmwQ9Srr0cK
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwMTMwMDEyOSBTYWx0ZWRfXzyBoUUdbN4Pr
+ UyQyL9hyJJEm9VwC665Klk7FbffsTphp04bTC864KAA5hGSuYY++1jX09pHgoD6gYK47ibB5gB0
+ Ta0nn4IyKq/yB4vu57GsW2Jh4BM5EMnX5IBgyTEdZSRzYnpRDMkGw7n+5SROTzP6+kNSDYTJTNd
+ uSI9IZ3rjmrd9mZPvAmcZLxUCoSB/j3hS4C8TN4Tr7ykoJ0C1cvDkLRj7clh0eVI89hFth/jIAf
+ tKqjvGb1UAoBz8wc14561D2PCE+ktYp/jVE1A6PSDGrS38HtpmoZ0SIIAtJ1KEteJP6Bi4EM97n
+ L5V7/BQfMLCARZ2f5hM2e1HAOCZ9PAh2AFvQ39uGIdQ9G8Joo7UlI5JF6fhzG4spJ7SSzZM796x
+ Aa7hrO8XrF1X4wagKkfpS684HsKSmJgniFTOQSVFBW2dt4spAvtNNv3wihE+dF8EyGwJ6vT/AQX
+ wFmSPqp81ozPwz7iDeA==
+X-Proofpoint-ORIG-GUID: RxW31ClRJEXTAdHnTNJP-jmwQ9Srr0cK
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.51,FMLib:17.12.100.49
  definitions=2026-01-30_02,2026-01-30_02,2025-10-01_01
 X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- bulkscore=0 spamscore=0 malwarescore=0 lowpriorityscore=0 priorityscore=1501
- adultscore=0 clxscore=1015 impostorscore=0 phishscore=0 suspectscore=0
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.22.0-2601150000 definitions=main-2601300129
+ adultscore=0 clxscore=1011 phishscore=0 spamscore=0 suspectscore=0
+ malwarescore=0 bulkscore=0 lowpriorityscore=0 priorityscore=1501
+ impostorscore=0 classifier=typeunknown authscore=0 authtc= authcc=
+ route=outbound adjust=0 reason=mlx scancount=1 engine=8.22.0-2601150000
+ definitions=main-2601300129
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-0.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
@@ -144,7 +146,7 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-31391-lists,linux-wireless=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-31392-lists,linux-wireless=lfdr.de];
 	TO_DN_NONE(0.00)[];
 	RCPT_COUNT_TWO(0.00)[2];
 	FORGED_SENDER_MAILLIST(0.00)[];
@@ -159,113 +161,123 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	MIME_TRACE(0.00)[0:+];
 	RCVD_COUNT_SEVEN(0.00)[7]
-X-Rspamd-Queue-Id: 8AE3CBC588
+X-Rspamd-Queue-Id: 82AC7BC58F
 X-Rspamd-Action: no action
 
-Add support for configurable distance-based measurement reporting
-thresholds in FTM peer measurement requests. This enables proximity
-detection applications to receive measurement results only when
-devices move into (ingress) or out of (egress) specified distance
-ranges in millimeters.
-
-The implementation adds NL80211_PMSR_FTM_REQ_ATTR_INGRESS and
-NL80211_PMSR_FTM_REQ_ATTR_EGRESS attributes with corresponding
-u64 fields in cfg80211_pmsr_ftm_request_peer. When configured,
-measurement results are reported on burst index basis only when
-peer crosses these distance boundaries.
+Add separate bandwidth capability reporting for proximity detection
+(PD) requests with EDCA and NTB-based ranging. This allows devices
+to advertise different supported bandwidths for PD operations
+versus regular FTM measurements, enabling more flexible capability
+negotiation for proximity ranging scenarios.
 
 Signed-off-by: Peddolla Harshavardhan Reddy <peddolla.reddy@oss.qualcomm.com>
 ---
- include/net/cfg80211.h       | 9 +++++++++
- include/uapi/linux/nl80211.h | 7 +++++++
- net/wireless/nl80211.c       | 2 ++
- net/wireless/pmsr.c          | 8 ++++++++
- 4 files changed, 26 insertions(+)
+ include/net/cfg80211.h       |  8 ++++++++
+ include/uapi/linux/nl80211.h | 14 ++++++++++++++
+ net/wireless/nl80211.c       |  6 ++++++
+ net/wireless/pmsr.c          | 10 +++++++++-
+ 4 files changed, 37 insertions(+), 1 deletion(-)
 
 diff --git a/include/net/cfg80211.h b/include/net/cfg80211.h
-index ae63a3ead165..73ef64d86a63 100644
+index 73ef64d86a63..5224a68867cc 100644
 --- a/include/net/cfg80211.h
 +++ b/include/net/cfg80211.h
-@@ -4385,6 +4385,13 @@ struct cfg80211_pmsr_result {
-  *	in units of milli seconds. Only valid if @non_trigger_based is set.
-  * @measurements_per_aw: number of measurement attempts per availability window
-  *	with a maximum value of 4. Only valid if @non_trigger_based is set.
-+ * @ingress_distancemm: the measurement result of the peer needs
-+ *	to be indicated in case the device moves into this range.(units mm, u64)
-+ *	measurement results need be sent on a burst index basis in this case.
-+ * @egress_distancemm: the measurement result of the peer needs
-+ *	to be indicated in case the device moves out of this range.
-+ *	(units mm, u64). measurement results need be sent on a burst index basis
-+ *	in this case.
-  * See also nl80211 for the respective attribute documentation.
+@@ -5772,6 +5772,12 @@ cfg80211_get_iftype_ext_capa(struct wiphy *wiphy, enum nl80211_iftype type);
+  * @ftm.support_rsta: supports operating as RSTA in PMSR FTM request
+  * @ftm.support_edca_responder: supports operating as FTM responder in PMSR FTM
+  *	request for EDCA-based ranging
++ * @ftm.pd_edca_bandwidths: bitmap of bandwidths supported
++ *	(&enum nl80211_chan_width) in case of PD request with EDCA based
++ *	initiator or responder role. ignored if @pd_support is not set.
++ * @ftm.pd_ntb_bandwidths: bitmap of bandwidths supported
++ *	(&enum nl80211_chan_width) in case of PD request with NTB based
++ *	initiator or responder role. ignored if @pd_support is not set.
   */
- struct cfg80211_pmsr_ftm_request_peer {
-@@ -4408,6 +4415,8 @@ struct cfg80211_pmsr_ftm_request_peer {
- 	u8 availability_window;
- 	u32 nominal_time;
- 	u8 measurements_per_aw;
-+	u64 ingress_distancemm;
-+	u64 egress_distancemm;
+ struct cfg80211_pmsr_capabilities {
+ 	unsigned int max_peers;
+@@ -5807,6 +5813,8 @@ struct cfg80211_pmsr_capabilities {
+ 		u32 min_allowed_ranging_interval_ntb;
+ 		u8 support_rsta:1,
+ 		   support_edca_responder:1;
++		u32 pd_edca_bandwidths;
++		u32 pd_ntb_bandwidths;
+ 	} ftm;
  };
  
- /**
 diff --git a/include/uapi/linux/nl80211.h b/include/uapi/linux/nl80211.h
-index b6c28c75e141..4d91c73a4ed2 100644
+index 4d91c73a4ed2..181595ec960e 100644
 --- a/include/uapi/linux/nl80211.h
 +++ b/include/uapi/linux/nl80211.h
-@@ -7971,6 +7971,11 @@ enum nl80211_peer_measurement_ftm_capa {
-  * @NL80211_PMSR_FTM_REQ_ATTR_MEAS_PER_AW: meas per AW field shall indicate the.
-  *	number of measurements attempts per AW with a maximum value of 4 (u8).
-  *	Only valid if %NL80211_PMSR_FTM_REQ_ATTR_NON_TRIGGER_BASED is set.
-+ * @NL80211_PMSR_FTM_REQ_ATTR_INGRESS: the measurement result of the peer needs
-+ *	to be indicated in case the device moves into this range.(units mm, u64)
-+ * @NL80211_PMSR_FTM_REQ_ATTR_EGRESS: the measurement result of the peer needs
-+ *	to be indicated in case the device moves out of this range.
-+ *	(units mm, u64)
+@@ -7863,6 +7863,18 @@ enum nl80211_peer_measurement_attrs {
+  * @NL80211_PMSR_FTM_CAPA_ATTR_MIN_INTERVAL_NTB: u32 attribute indicating
+  *	the minimum NTB ranging interval supported by the device
+  *	in milli seconds. (0 means unknown)
++ * @NL80211_PMSR_FTM_CAPA_ATTR_PD_EDCA_BANDWIDTHS: bitmap of values from
++ *	&enum nl80211_chan_width indicating the supported channel
++ *	bandwidths for FTM in case of PD based EDCA initiator or responder role.
++ *	Note that a higher channel bandwidth may be configured to allow for
++ *	other measurements types with different bandwidth requirement in the
++ *	same measurement.
++ * @NL80211_PMSR_FTM_CAPA_ATTR_PD_NTB_BANDWIDTHS: bitmap of values from
++ *	&enum nl80211_chan_width indicating the supported channel
++ *	bandwidths for FTM in case of PD based NTB initiator or responder role.
++ *	Note that a higher channel bandwidth may be configured to allow for
++ *	other measurements types with different bandwidth requirement in the
++ *	same measurement.
   *
-  * @NUM_NL80211_PMSR_FTM_REQ_ATTR: internal
-  * @NL80211_PMSR_FTM_REQ_ATTR_MAX: highest attribute number
-@@ -7997,6 +8002,8 @@ enum nl80211_peer_measurement_ftm_req {
- 	NL80211_PMSR_FTM_REQ_ATTR_NOMINAL_TIME,
- 	NL80211_PMSR_FTM_REQ_ATTR_AW_DURATION,
- 	NL80211_PMSR_FTM_REQ_ATTR_MEAS_PER_AW,
-+	NL80211_PMSR_FTM_REQ_ATTR_INGRESS,
-+	NL80211_PMSR_FTM_REQ_ATTR_EGRESS,
+  * @NUM_NL80211_PMSR_FTM_CAPA_ATTR: internal
+  * @NL80211_PMSR_FTM_CAPA_ATTR_MAX: highest attribute number
+@@ -7893,6 +7905,8 @@ enum nl80211_peer_measurement_ftm_capa {
+ 	NL80211_PMSR_FTM_CAPA_ATTR_MAX_NUM_RX_ANTENNAS,
+ 	NL80211_PMSR_FTM_CAPA_ATTR_MIN_INTERVAL_EDCA,
+ 	NL80211_PMSR_FTM_CAPA_ATTR_MIN_INTERVAL_NTB,
++	NL80211_PMSR_FTM_CAPA_ATTR_PD_EDCA_BANDWIDTHS,
++	NL80211_PMSR_FTM_CAPA_ATTR_PD_NTB_BANDWIDTHS,
  
  	/* keep last */
- 	NUM_NL80211_PMSR_FTM_REQ_ATTR,
+ 	NUM_NL80211_PMSR_FTM_CAPA_ATTR,
 diff --git a/net/wireless/nl80211.c b/net/wireless/nl80211.c
-index bfe88f7068da..b1865668feb4 100644
+index b1865668feb4..571d96a5ddf4 100644
 --- a/net/wireless/nl80211.c
 +++ b/net/wireless/nl80211.c
-@@ -371,6 +371,8 @@ nl80211_pmsr_ftm_req_attr_policy[NL80211_PMSR_FTM_REQ_ATTR_MAX + 1] = {
- 	[NL80211_PMSR_FTM_REQ_ATTR_NOMINAL_TIME] = { .type = NLA_U32 },
- 	[NL80211_PMSR_FTM_REQ_ATTR_AW_DURATION] = { .type = NLA_U8 },
- 	[NL80211_PMSR_FTM_REQ_ATTR_MEAS_PER_AW] = { .type = NLA_U8 },
-+	[NL80211_PMSR_FTM_REQ_ATTR_INGRESS] = { .type = NLA_U64 },
-+	[NL80211_PMSR_FTM_REQ_ATTR_EGRESS] = { .type = NLA_U64 },
- };
+@@ -2378,6 +2378,12 @@ nl80211_send_pmsr_ftm_capa(const struct cfg80211_pmsr_capabilities *cap,
+ 	    nla_put_u32(msg, NL80211_PMSR_FTM_CAPA_ATTR_MIN_INTERVAL_NTB,
+ 			cap->ftm.min_allowed_ranging_interval_ntb))
+ 		return -ENOBUFS;
++	if (nla_put_u32(msg, NL80211_PMSR_FTM_CAPA_ATTR_PD_EDCA_BANDWIDTHS,
++			cap->ftm.pd_edca_bandwidths))
++		return -ENOBUFS;
++	if (nla_put_u32(msg, NL80211_PMSR_FTM_CAPA_ATTR_PD_NTB_BANDWIDTHS,
++			cap->ftm.pd_ntb_bandwidths))
++		return -ENOBUFS;
  
- static const struct nla_policy
+ 	nla_nest_end(msg, ftm);
+ 	return 0;
 diff --git a/net/wireless/pmsr.c b/net/wireless/pmsr.c
-index e1b4cc7244cd..c9915b1f57cb 100644
+index c9915b1f57cb..0ed0f401db11 100644
 --- a/net/wireless/pmsr.c
 +++ b/net/wireless/pmsr.c
-@@ -225,6 +225,14 @@ static int pmsr_parse_ftm(struct cfg80211_registered_device *rdev,
+@@ -17,11 +17,19 @@ static int pmsr_parse_ftm(struct cfg80211_registered_device *rdev,
+ 	u32 preamble = NL80211_PREAMBLE_DMG; /* only optional in DMG */
+ 
+ 	/* validate existing data */
+-	if (!(rdev->wiphy.pmsr_capa->ftm.bandwidths & BIT(out->chandef.width))) {
++	if (!out->pd_request &&
++	    !(rdev->wiphy.pmsr_capa->ftm.bandwidths & BIT(out->chandef.width))) {
+ 		NL_SET_ERR_MSG(info->extack, "FTM: unsupported bandwidth");
  		return -EINVAL;
  	}
  
-+	if (tb[NL80211_PMSR_FTM_REQ_ATTR_INGRESS])
-+		out->ftm.ingress_distancemm =
-+			nla_get_u64(tb[NL80211_PMSR_FTM_REQ_ATTR_INGRESS]);
++	if (out->pd_request &&
++	    (!(rdev->wiphy.pmsr_capa->ftm.pd_edca_bandwidths & BIT(out->chandef.width)) &&
++	    !(rdev->wiphy.pmsr_capa->ftm.pd_ntb_bandwidths & BIT(out->chandef.width)))) {
++		NL_SET_ERR_MSG(info->extack, "FTM: unsupported bandwidth for pd request");
++		return -EINVAL;
++	}
 +
-+	if (tb[NL80211_PMSR_FTM_REQ_ATTR_EGRESS])
-+		out->ftm.egress_distancemm =
-+			nla_get_u64(tb[NL80211_PMSR_FTM_REQ_ATTR_EGRESS]);
-+
- 	return 0;
- }
- 
+ 	/* no validation needed - was already done via nested policy */
+ 	nla_parse_nested_deprecated(tb, NL80211_PMSR_FTM_REQ_ATTR_MAX, ftmreq,
+ 				    NULL, NULL);
 -- 
 2.34.1
 
