@@ -1,80 +1,80 @@
-Return-Path: <linux-wireless+bounces-31362-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-31363-lists+linux-wireless=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 0GKCDgurfGkaOQIAu9opvQ
-	(envelope-from <linux-wireless+bounces-31362-lists+linux-wireless=lfdr.de@vger.kernel.org>)
-	for <lists+linux-wireless@lfdr.de>; Fri, 30 Jan 2026 13:58:51 +0100
+	id 2BysJ52rfGkaOQIAu9opvQ
+	(envelope-from <linux-wireless+bounces-31363-lists+linux-wireless=lfdr.de@vger.kernel.org>)
+	for <lists+linux-wireless@lfdr.de>; Fri, 30 Jan 2026 14:01:17 +0100
 X-Original-To: lists+linux-wireless@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id 42111BACFD
-	for <lists+linux-wireless@lfdr.de>; Fri, 30 Jan 2026 13:58:50 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id DDBC6BAD34
+	for <lists+linux-wireless@lfdr.de>; Fri, 30 Jan 2026 14:01:06 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 04BC53005321
-	for <lists+linux-wireless@lfdr.de>; Fri, 30 Jan 2026 12:53:36 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 74AC53039883
+	for <lists+linux-wireless@lfdr.de>; Fri, 30 Jan 2026 12:56:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B970637D135;
-	Fri, 30 Jan 2026 12:53:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BA2A8352C47;
+	Fri, 30 Jan 2026 12:56:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="cYUJOe/p"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="TQT31aW9"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-wm1-f47.google.com (mail-wm1-f47.google.com [209.85.128.47])
+Received: from mail-wm1-f50.google.com (mail-wm1-f50.google.com [209.85.128.50])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 38E6D37E2FE
-	for <linux-wireless@vger.kernel.org>; Fri, 30 Jan 2026 12:53:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.47
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3C7DE350A36
+	for <linux-wireless@vger.kernel.org>; Fri, 30 Jan 2026 12:56:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.50
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769777614; cv=none; b=qQUPP20yIzPjZTD6DeJJBfr2GI6n6J0vN5LuEwaD7xonzN91CBGqw9TaoKYB3mlaJ+mjri7kmutLzv0ry016vAbEalfti5sMKoKiZsXBR8Uy9qLttZKgJlVJ6mfH40wSdx+P6FJEvR9GV79pXg9Gb+Seh+vWr/1FtIoNPzzljBA=
+	t=1769777815; cv=none; b=c/41rAS5yZkKA1Ozd4Kilcg88RNs0TbToWiVTOBiibaD2uY2eoTBwGw+cJp+rlFXkO7ucHSN2DZ9OG9Mm0hlv4ui7LQQdJoRdc1EzhffSdep4YQ0/hURrWU0V0EyZ1JjTOP1YE7Z0V30xfJI/9kkky9ktM9kG8B2qUmYcUrFFMg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769777614; c=relaxed/simple;
+	s=arc-20240116; t=1769777815; c=relaxed/simple;
 	bh=dg9kYr8aZfQN0Z5Niq94kmT7y8LXjeCMZKoKN1fucL0=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=gzU1HfZwwbgtMnXVfe7ozkLvKIDwwhbggrgGhNNYkkoL1Z2z6OKbfLmE72ZWOCWx5Y4Zjwhzqch85m6kQyf2EFwN3+6NvzduAYUjKUNPk3LlrreTX9LtOHAlQU2rXcRff7t7YkwPZ+QcjCcb1pIp/LpccptyFWgx3apBQwE7zwk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=cYUJOe/p; arc=none smtp.client-ip=209.85.128.47
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=ke55j/Vb9zQeVaPezcwZpsMIg6Aq74qiOSP7uXSj/kzdLMT9OR8mdxg1mul8+gi9IgKFN1sWuAQlnFbjj9l6TNMWMxGSfFCAj8kTD38qo3iggQbMOrVuhhUUmzAvcidhpKK9zU5JOLzKCtVCW1pWddL2fjYw2KfAslDtKXQa35Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=TQT31aW9; arc=none smtp.client-ip=209.85.128.50
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-wm1-f47.google.com with SMTP id 5b1f17b1804b1-47d59da3d81so22713255e9.0
-        for <linux-wireless@vger.kernel.org>; Fri, 30 Jan 2026 04:53:33 -0800 (PST)
+Received: by mail-wm1-f50.google.com with SMTP id 5b1f17b1804b1-4806d23e9f1so23504775e9.2
+        for <linux-wireless@vger.kernel.org>; Fri, 30 Jan 2026 04:56:54 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1769777612; x=1770382412; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1769777813; x=1770382613; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:message-id:date:subject:cc
          :to:from:from:to:cc:subject:date:message-id:reply-to;
         bh=iQzOK0aKaeoderdrXRGweVvWgIMEPYBk9+gZ71lrHVY=;
-        b=cYUJOe/puO5FiZ+6g7TGB6pDF25G31nSEqTwbmJK/HrQfCGnEi/ZMC/Up2hnPGy7ZJ
-         u6Rzxm6wAxy+Zl29ClbyMNl0xZU6fvKazMSs4xJmQEtwS5iPyBEjUaE/l6eAxZTZCtvx
-         La1QcZR2ZNJI8ZTesQXSRv6BfzH2HYb1Op/zxIXa2sjhTRXyoafKfvsWHHmSz71ASvWO
-         Dgk4c/llexms3jwznIrmmxqeB8myHz0Ty9e/jOPlYAexv9vBYsrqlqxfhUTzPF/4VURO
-         Mf8v9UZ7MviIwye7BhqbECqVSzNqf8OIH0KbxLb4ILplW+WmMrZM8supsYBqBvagtP0W
-         lItg==
+        b=TQT31aW9kXm7Y4MrPD9NDb+keD+yzYvE0/tN9KSiKLKKif5eza+UuY0Da1Z9j38xxU
+         ehJe/rX57rm/7QOOZ0Tr6B9iOwJIeXzDoV6l3nTIQc/URTBoo2cHNLB3IsXMRVNHml0B
+         fhQApywnFACwOZ4xn4WbpQWPYNbZcm9zNfBGA6ys/NTXzFyupljiU565bNCFRRbaKDs/
+         Bf1m3+/w9v2zNo5iFQ2VfjF8WtcXZkL/LWo+PaEbf3JCNp4KzzMkKkRzp6qmCx60ZI6L
+         aMZ9UlZG8I8Dn98umdtVOhd/jr0vixXEZQIEFtWmgCy8ZYnxQexRQUS36ldRNzHrXrIL
+         VELg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1769777612; x=1770382412;
+        d=1e100.net; s=20230601; t=1769777813; x=1770382613;
         h=content-transfer-encoding:mime-version:message-id:date:subject:cc
          :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to;
         bh=iQzOK0aKaeoderdrXRGweVvWgIMEPYBk9+gZ71lrHVY=;
-        b=kt2FYyhLM5dI9hUqHZK172MISZZcAgyJwJly4fCaKe6sQpuv3tq4rc7q7JC/snOVR0
-         WiP94sdJkA4C65K4W+WmmFT1kLRrbuLh2GeYGojCI3eJWP/vvYMcrOvmUHI4+VqDsr8b
-         ztLyd197yKd9xKikknd1VwkrDZuoknAaooshelY5t26jQY3PZsZ6L4Wu1LyHp18B/Sb2
-         ZwCUCcsVixQkkSw63C01sk3E0aXNdFjK0oSxLsLeAAVhBXG+b/chTKyKNusHvqhmzUiJ
-         eM+DbjDLULog+wW0Ya1HL+7/PmaQMcDPyAGzQfmCe7GAHt1VSJHJd2TPfswKUes2UgXE
-         7r3Q==
-X-Gm-Message-State: AOJu0YyxgdVe5oezJeEEd8MItbErlUYJZBccbTs6NXqbPcPGjvYQfZKd
-	c6QnPfsWhChAusQgDOI0Q9UoNo6t2SM6VvAViJ7uzqAzjMtxMqYHRPfb
-X-Gm-Gg: AZuq6aL+1BH4RJET5PXp0Dz8184+b1gvEZhovxJnYDSofoInTi3phGez9JBD6nL/EKn
-	Z+l0Y68LQIQmH7+SEZsTl7cH5MJE1OYrab+Rc/EWwfzt0IIvSkyZKI9d7y9b8hiOTjUgnJ1gCBH
-	pLecVj+9LZ7dbRZWRCa5wsj4skOb+yTfk2/lJgdlAToFwTJfKAV1c7hzk5xlvxTFRB6RJnoOWbs
-	voSiApk6I7fRNt3mJ+ll5RRN/MQVeufyBYrtsWCqdXVxO/l2cDuWKj6dBQYg+4hI4YE+xKTGzDv
-	31O1O/BcwkV2K9NNJls3QaTjB44U31UB4AZ27w4V9IEysFXM6WLoRFpEASLPjoT+eIgpOrORgBx
-	WOXcAku781g16+YGVP/t54nXfFHTx554w5kiAJevAjhxjVvCR5PMNo13pbX09o7ZQ2YxvgjhnkV
-	PndC8rdPYSUU2g6nqN4yv01UyXWD8W6E88iE4amurLt8r+EN1GQjpLUECf4UUV/09cqIgq
-X-Received: by 2002:a05:600c:8b52:b0:479:1348:c63e with SMTP id 5b1f17b1804b1-482db476c30mr33587235e9.9.1769777611406;
-        Fri, 30 Jan 2026 04:53:31 -0800 (PST)
+        b=wsqxcDpIAvppANJFGZqHVyAExyFQzpM5JazaxUPfh5lMykXKePvsyTxzCj7dTEW7WM
+         gGg+hZhlPKG0nOwjYSnIBxQ6uhkW2LpltE7TmZAxEcJqhM4fAFE3EKlIyEIZ145vFN4K
+         jwLJ28HnTckVXgrMgOdH9o98mjMsulIYBSAJtMtCZqD3tlL1r/2APBfwCZVFremZNAhG
+         Y29tA1PoC1Owr3YMh4HVxUVBoO/P3l4IYcF82Kz+kXqdaJgKSAW/xU2Ir3jXBSADUeN5
+         kQ4h6N36FOMk/zZAqHIc1a+IMrCY5pR10vaq3wE/Jd49pgpgqS7MGZmzwT+o1vqVdd8j
+         8fjg==
+X-Gm-Message-State: AOJu0YwvVFg/81YFAcC1SodJ/zYuXmLznSFTCALl2MCsA9OYO9UP8plX
+	h2TrEadpYjaYF4kDTHMOHf0gNhSWe0z/ktJv56ON8o5OsRXUZzHXdOye
+X-Gm-Gg: AZuq6aKW3Sgb+6mk0oH6nJN1dvkVLd9x0UVOtSX9gfcqr16vNEaJiV6pLHwevVh4Y7i
+	F+EGnE99iJVosoSvuCHI8piQWPqRbyw+8p2kTlFsIh2wsLwe1UoOwTgXHdWk7qhrtb76XIDT5HH
+	rtEBblS4ImHHslNr5evxtRNrSD7jKOW2rZh6VMepvXb7CCAEAARJFOYJAj7w7YwnNDfDNCWIaN5
+	Ch6beK0Zn+44+PTQHk/yFQgyPgVdyLTFou3EITgXogfQK5uyv494D4DUCNtVpvxvpYpBNt6WVJd
+	hOktcQVpkxXQfS7StDySoSdpwcosgGCdX08Z64QDmGihqAW0v201peeu6q0L33xpBUi0LS4zwMv
+	K29c3yCBcq3KeF9bh37P/YLCqTwH57mS1iip8MHIJV5CWJYY++6ZEo4Z9NEU4naNNsmC6oasnhR
+	iEnMIJ+ILrqy7jfeAfjSADbXvIuVRqp7y5Ld/fpHQQCwmgYvDHbBicgzzbAA==
+X-Received: by 2002:a05:600c:1e8a:b0:45d:d8d6:7fcc with SMTP id 5b1f17b1804b1-482db4958famr33084195e9.27.1769777812528;
+        Fri, 30 Jan 2026 04:56:52 -0800 (PST)
 Received: from anesterenko.. (62.43.64.127.dyn.user.ono.com. [62.43.64.127])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-482e267b699sm12837375e9.16.2026.01.30.04.53.30
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-482dffd47c2sm15117155e9.0.2026.01.30.04.56.51
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 30 Jan 2026 04:53:31 -0800 (PST)
+        Fri, 30 Jan 2026 04:56:52 -0800 (PST)
 From: Aleksandr Nesterenko <alexandernesterenko837@gmail.com>
-To: kvalo@codeaurora.org,
+To: quic_kvalo@quicinc.com,
 	davem@davemloft.net,
 	kuba@kernel.org
 Cc: linux-wireless@vger.kernel.org,
@@ -82,8 +82,8 @@ Cc: linux-wireless@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
 	Aleksandr Nesterenko <alexandernesterenko837@gmail.com>
 Subject: [PATCH] wifi: ath9k: add range check for epid in htc_issue_send()
-Date: Fri, 30 Jan 2026 13:53:26 +0100
-Message-Id: <20260130125326.44456-1-alexandernesterenko837@gmail.com>
+Date: Fri, 30 Jan 2026 13:56:46 +0100
+Message-Id: <20260130125646.45925-1-alexandernesterenko837@gmail.com>
 X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
@@ -96,33 +96,34 @@ X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-0.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	MID_CONTAINS_FROM(1.00)[];
-	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
 	R_MISSING_CHARSET(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[gmail.com:s=20230601];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
+	ASN_FAIL(0.00)[1.2.3.5.c.f.2.1.0.0.0.0.0.0.0.0.b.d.0.0.1.0.0.e.a.0.c.3.0.0.6.2.asn6.rspamd.com:query timed out];
 	FREEMAIL_CC(0.00)[vger.kernel.org,gmail.com];
-	TAGGED_FROM(0.00)[bounces-31362-lists,linux-wireless=lfdr.de];
-	RCVD_COUNT_FIVE(0.00)[5];
-	FORGED_SENDER_MAILLIST(0.00)[];
+	FREEMAIL_FROM(0.00)[gmail.com];
 	MIME_TRACE(0.00)[0:+];
-	FROM_HAS_DN(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-31363-lists,linux-wireless=lfdr.de];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[gmail.com:+];
+	RSPAMD_EMAILBL_FAIL(0.00)[alexandernesterenko837.gmail.com:query timed out];
 	TO_DN_SOME(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[alexandernesterenko837@gmail.com,linux-wireless@vger.kernel.org];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCVD_COUNT_FIVE(0.00)[5];
 	RCPT_COUNT_SEVEN(0.00)[7];
 	NEURAL_HAM(-0.00)[-1.000];
-	DKIM_TRACE(0.00)[gmail.com:+];
-	TAGGED_RCPT(0.00)[linux-wireless];
-	FREEMAIL_FROM(0.00)[gmail.com];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 42111BACFD
+	TAGGED_RCPT(0.00)[linux-wireless];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: DDBC6BAD34
 X-Rspamd-Action: no action
 
 The fix for CVE-2024-53156 (commit 8619593634cb ("wifi: ath9k: add
