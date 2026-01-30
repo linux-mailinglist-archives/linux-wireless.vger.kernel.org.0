@@ -1,121 +1,170 @@
-Return-Path: <linux-wireless+bounces-31361-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-31362-lists+linux-wireless=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 2IATG6mhfGlxOAIAu9opvQ
-	(envelope-from <linux-wireless+bounces-31361-lists+linux-wireless=lfdr.de@vger.kernel.org>)
-	for <lists+linux-wireless@lfdr.de>; Fri, 30 Jan 2026 13:18:49 +0100
+	id 0GKCDgurfGkaOQIAu9opvQ
+	(envelope-from <linux-wireless+bounces-31362-lists+linux-wireless=lfdr.de@vger.kernel.org>)
+	for <lists+linux-wireless@lfdr.de>; Fri, 30 Jan 2026 13:58:51 +0100
 X-Original-To: lists+linux-wireless@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 82774BA6B0
-	for <lists+linux-wireless@lfdr.de>; Fri, 30 Jan 2026 13:18:48 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id 42111BACFD
+	for <lists+linux-wireless@lfdr.de>; Fri, 30 Jan 2026 13:58:50 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 7BFA23003733
-	for <lists+linux-wireless@lfdr.de>; Fri, 30 Jan 2026 12:18:45 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 04BC53005321
+	for <lists+linux-wireless@lfdr.de>; Fri, 30 Jan 2026 12:53:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EC2F7352C57;
-	Fri, 30 Jan 2026 12:18:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B970637D135;
+	Fri, 30 Jan 2026 12:53:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=fail reason="signature verification failed" (2048-bit key) header.d=kapsi.fi header.i=@kapsi.fi header.b="QjDv4GZf"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="cYUJOe/p"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail.kapsi.fi (mail-auth.kapsi.fi [91.232.154.24])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f47.google.com (mail-wm1-f47.google.com [209.85.128.47])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D868732C925
-	for <linux-wireless@vger.kernel.org>; Fri, 30 Jan 2026 12:18:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.232.154.24
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 38E6D37E2FE
+	for <linux-wireless@vger.kernel.org>; Fri, 30 Jan 2026 12:53:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.47
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769775523; cv=none; b=IsE1XGcwFuX5p5AnCo9W0NZMzhh7KbUZh+RqkvYusG/7CRjENgDTydCbBSZmkEkv4hKRiGedfFp0oXdhEsgEpx6Zl7xa5Au8pVTSNEwwNp7BI0cGUKMust/BF5QuC4CYzs2FwWXX/PrikwJFlOr2PQrKCNBKRi8mtuAGPo9qn5U=
+	t=1769777614; cv=none; b=qQUPP20yIzPjZTD6DeJJBfr2GI6n6J0vN5LuEwaD7xonzN91CBGqw9TaoKYB3mlaJ+mjri7kmutLzv0ry016vAbEalfti5sMKoKiZsXBR8Uy9qLttZKgJlVJ6mfH40wSdx+P6FJEvR9GV79pXg9Gb+Seh+vWr/1FtIoNPzzljBA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769775523; c=relaxed/simple;
-	bh=WMQYC2ECElU+Yo72RuzWdoSlpVJpi22L1B5urUcreuI=;
-	h=Message-ID:Date:MIME-Version:To:Cc:From:Subject:Content-Type; b=thRIv3DjCaPfHxYjWAfLeHLi1dpWaSnCW0UWAE7A/UNt6ikaoM+VNZpAGXB6RnlQOa2d46EcuoHZJxmWNO9UU5lO2KNgS6/uicvR2MqA5vDx5bY8aLxN8sjRPkMupVPB5qblJ+cTweO68uVlQmb9HSHsoTiMZnm1YgETDyHu6bs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=mail.hopiavuori.net; spf=pass smtp.mailfrom=kapsi.fi; dkim=pass (2048-bit key) header.d=kapsi.fi header.i=@kapsi.fi header.b=QjDv4GZf; arc=none smtp.client-ip=91.232.154.24
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=mail.hopiavuori.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=kapsi.fi
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=kapsi.fi;
-	s=20161220; h=Content-Transfer-Encoding:Content-Type:Subject:From:Cc:To:
-	MIME-Version:Date:Message-ID:Sender:Reply-To:Content-ID:Content-Description:
-	Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:
-	In-Reply-To:References:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
-	List-Post:List-Owner:List-Archive;
-	bh=EQIITpPRApet7+SQPGzxWI2DjJmP0PMYqzH0v5ZTA10=; b=QjDv4GZfQj7J4J84McOeuFhmj8
-	Cg9DOlA8wovTacha/sX8cvlWrgImjJoWQvuavqA4tYWlA7NnzSGwxOXjqs+SKLXhNY9mW0qrO69fI
-	6jw/MvDRxuae9bicOgLwmhhugZWg37klBMtdA2H08LJvp0BTQLu24jgswTpspoIjB2dlwdhmlrxEe
-	BrsD9YpvtKlc2KsEeDszUfzyXYojE0HcMFAxLYBeT03426kXTmmtXLjXd6aE7rYBPGTKUYt0aLI6g
-	JsvnOiMy+IRXb1XNNgGUSvCV2fk/dQljCWKYPg6wkxjBaMCCDA47Anp9k1Z9QTPQ92PANkO6nWvS/
-	BgHVnmiA==;
-Received: from dsl-hkibng41-567305-225.dhcp.inet.fi ([86.115.5.225] helo=[10.0.100.21])
-	by mail.kapsi.fi with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256
-	(Exim 4.96)
-	(envelope-from <linux-wireless-mailing-list@mail.hopiavuori.net>)
-	id 1vlnSM-00AE2t-2y;
-	Fri, 30 Jan 2026 14:18:34 +0200
-Message-ID: <89e415cf-246f-41aa-942e-132be83df632@mail.hopiavuori.net>
-Date: Fri, 30 Jan 2026 14:18:34 +0200
+	s=arc-20240116; t=1769777614; c=relaxed/simple;
+	bh=dg9kYr8aZfQN0Z5Niq94kmT7y8LXjeCMZKoKN1fucL0=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=gzU1HfZwwbgtMnXVfe7ozkLvKIDwwhbggrgGhNNYkkoL1Z2z6OKbfLmE72ZWOCWx5Y4Zjwhzqch85m6kQyf2EFwN3+6NvzduAYUjKUNPk3LlrreTX9LtOHAlQU2rXcRff7t7YkwPZ+QcjCcb1pIp/LpccptyFWgx3apBQwE7zwk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=cYUJOe/p; arc=none smtp.client-ip=209.85.128.47
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-wm1-f47.google.com with SMTP id 5b1f17b1804b1-47d59da3d81so22713255e9.0
+        for <linux-wireless@vger.kernel.org>; Fri, 30 Jan 2026 04:53:33 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1769777612; x=1770382412; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=iQzOK0aKaeoderdrXRGweVvWgIMEPYBk9+gZ71lrHVY=;
+        b=cYUJOe/puO5FiZ+6g7TGB6pDF25G31nSEqTwbmJK/HrQfCGnEi/ZMC/Up2hnPGy7ZJ
+         u6Rzxm6wAxy+Zl29ClbyMNl0xZU6fvKazMSs4xJmQEtwS5iPyBEjUaE/l6eAxZTZCtvx
+         La1QcZR2ZNJI8ZTesQXSRv6BfzH2HYb1Op/zxIXa2sjhTRXyoafKfvsWHHmSz71ASvWO
+         Dgk4c/llexms3jwznIrmmxqeB8myHz0Ty9e/jOPlYAexv9vBYsrqlqxfhUTzPF/4VURO
+         Mf8v9UZ7MviIwye7BhqbECqVSzNqf8OIH0KbxLb4ILplW+WmMrZM8supsYBqBvagtP0W
+         lItg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1769777612; x=1770382412;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=iQzOK0aKaeoderdrXRGweVvWgIMEPYBk9+gZ71lrHVY=;
+        b=kt2FYyhLM5dI9hUqHZK172MISZZcAgyJwJly4fCaKe6sQpuv3tq4rc7q7JC/snOVR0
+         WiP94sdJkA4C65K4W+WmmFT1kLRrbuLh2GeYGojCI3eJWP/vvYMcrOvmUHI4+VqDsr8b
+         ztLyd197yKd9xKikknd1VwkrDZuoknAaooshelY5t26jQY3PZsZ6L4Wu1LyHp18B/Sb2
+         ZwCUCcsVixQkkSw63C01sk3E0aXNdFjK0oSxLsLeAAVhBXG+b/chTKyKNusHvqhmzUiJ
+         eM+DbjDLULog+wW0Ya1HL+7/PmaQMcDPyAGzQfmCe7GAHt1VSJHJd2TPfswKUes2UgXE
+         7r3Q==
+X-Gm-Message-State: AOJu0YyxgdVe5oezJeEEd8MItbErlUYJZBccbTs6NXqbPcPGjvYQfZKd
+	c6QnPfsWhChAusQgDOI0Q9UoNo6t2SM6VvAViJ7uzqAzjMtxMqYHRPfb
+X-Gm-Gg: AZuq6aL+1BH4RJET5PXp0Dz8184+b1gvEZhovxJnYDSofoInTi3phGez9JBD6nL/EKn
+	Z+l0Y68LQIQmH7+SEZsTl7cH5MJE1OYrab+Rc/EWwfzt0IIvSkyZKI9d7y9b8hiOTjUgnJ1gCBH
+	pLecVj+9LZ7dbRZWRCa5wsj4skOb+yTfk2/lJgdlAToFwTJfKAV1c7hzk5xlvxTFRB6RJnoOWbs
+	voSiApk6I7fRNt3mJ+ll5RRN/MQVeufyBYrtsWCqdXVxO/l2cDuWKj6dBQYg+4hI4YE+xKTGzDv
+	31O1O/BcwkV2K9NNJls3QaTjB44U31UB4AZ27w4V9IEysFXM6WLoRFpEASLPjoT+eIgpOrORgBx
+	WOXcAku781g16+YGVP/t54nXfFHTx554w5kiAJevAjhxjVvCR5PMNo13pbX09o7ZQ2YxvgjhnkV
+	PndC8rdPYSUU2g6nqN4yv01UyXWD8W6E88iE4amurLt8r+EN1GQjpLUECf4UUV/09cqIgq
+X-Received: by 2002:a05:600c:8b52:b0:479:1348:c63e with SMTP id 5b1f17b1804b1-482db476c30mr33587235e9.9.1769777611406;
+        Fri, 30 Jan 2026 04:53:31 -0800 (PST)
+Received: from anesterenko.. (62.43.64.127.dyn.user.ono.com. [62.43.64.127])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-482e267b699sm12837375e9.16.2026.01.30.04.53.30
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 30 Jan 2026 04:53:31 -0800 (PST)
+From: Aleksandr Nesterenko <alexandernesterenko837@gmail.com>
+To: kvalo@codeaurora.org,
+	davem@davemloft.net,
+	kuba@kernel.org
+Cc: linux-wireless@vger.kernel.org,
+	netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Aleksandr Nesterenko <alexandernesterenko837@gmail.com>
+Subject: [PATCH] wifi: ath9k: add range check for epid in htc_issue_send()
+Date: Fri, 30 Jan 2026 13:53:26 +0100
+Message-Id: <20260130125326.44456-1-alexandernesterenko837@gmail.com>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Content-Language: en-US
-To: linux-wireless@vger.kernel.org
-Cc: brcm80211-dev-list@broadcom.com
-From: Utu Hopiavuori <linux-wireless-mailing-list@mail.hopiavuori.net>
-Subject: brcmfmac: iwd fails to connect on multi-AP networks (MacBook Pro
- 12,1, BCM43602)
-Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-X-SA-Exim-Connect-IP: 86.115.5.225
-X-SA-Exim-Mail-From: linux-wireless-mailing-list@mail.hopiavuori.net
-X-SA-Exim-Scanned: No (on mail.kapsi.fi); SAEximRunCond expanded to false
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.46 / 15.00];
-	R_DKIM_REJECT(1.00)[kapsi.fi:s=20161220];
+X-Spamd-Result: default: False [-0.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
+	MID_CONTAINS_FROM(1.00)[];
+	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
+	R_MISSING_CHARSET(0.50)[];
+	R_DKIM_ALLOW(-0.20)[gmail.com:s=20230601];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	DKIM_TRACE(0.00)[kapsi.fi:-];
-	TAGGED_FROM(0.00)[bounces-31361-lists,linux-wireless=lfdr.de];
-	FROM_HAS_DN(0.00)[];
-	DMARC_NA(0.00)[hopiavuori.net];
 	RCVD_TLS_LAST(0.00)[];
-	RCPT_COUNT_TWO(0.00)[2];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	FREEMAIL_CC(0.00)[vger.kernel.org,gmail.com];
+	TAGGED_FROM(0.00)[bounces-31362-lists,linux-wireless=lfdr.de];
+	RCVD_COUNT_FIVE(0.00)[5];
 	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	FROM_HAS_DN(0.00)[];
+	TO_DN_SOME(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[alexandernesterenko837@gmail.com,linux-wireless@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[linux-wireless-mailing-list@mail.hopiavuori.net,linux-wireless@vger.kernel.org];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
-	TO_DN_NONE(0.00)[];
-	MID_RHS_MATCH_FROM(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[gmail.com:+];
 	TAGGED_RCPT(0.00)[linux-wireless];
-	MIME_TRACE(0.00)[0:+]
-X-Rspamd-Queue-Id: 82774BA6B0
+	FREEMAIL_FROM(0.00)[gmail.com];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 42111BACFD
 X-Rspamd-Action: no action
 
-On MacBook Pro 12,1 with BCM43602, iwd 3.8 fails to connect to a network 
-with multiple APs under the same SSID (connect-failed, status: 16). 
-Non-free firmware loads successfully; no NetworkManager installed. 
-Workaround using wpa_supplicant works. Applying options brcmfmac 
-feature_disable=0x82000 allows reliable connection.
+The fix for CVE-2024-53156 (commit 8619593634cb ("wifi: ath9k: add
+range check for conn_rsp_epid in htc_connect_service()")) added a
+bounds check for conn_rsp_epid in htc_connect_service() to prevent
+out-of-bounds array access. However, htc_issue_send() accesses
+target->endpoint[epid] directly without validating the epid parameter.
 
-Debug/logs:
-* 
-https://p.kapsi.fi/?955065d6c0d0caf1#D8NZwkNPxayrNRWHxR8UofT3htVDRw64nu5SG41v3BvS
-* 
-https://p.kapsi.fi/?58aefcff5920f733#F4MdmgRbmTUtgsbVm76ixMRwFktkZMJEuwCW9ZLQMNJo
-     - Boot 7db8fc4051a14fba8c19086100bf2f0d: before fix
-     - Boot 2bf8b79cf80c4abb95b2ad8c074a4249: after fix
-     - Boot 402b96dbfcc44b5c9d31bf5f15af8bf5: always known-good-network
+While htc_connect_service() now validates the endpoint ID before storing
+it, htc_issue_send() can still receive invalid epid values from callers
+such as htc_send() and htc_send_epid(). This provides defense-in-depth
+against out-of-bounds access.
 
---
-Utu Hopiavuori
+Fixes: fb9987d0f748 ("ath9k_htc: Support for AR9271 chipset.")
+Signed-off-by: Aleksandr Nesterenko <alexandernesterenko837@gmail.com>
+---
+ drivers/net/wireless/ath/ath9k/htc_hst.c | 9 ++++++++-
+ 1 file changed, 8 insertions(+), 1 deletion(-)
+
+diff --git a/drivers/net/wireless/ath/ath9k/htc_hst.c b/drivers/net/wireless/ath/ath9k/htc_hst.c
+index 00dc97ac53b9..7821a31c0abb 100644
+--- a/drivers/net/wireless/ath/ath9k/htc_hst.c
++++ b/drivers/net/wireless/ath/ath9k/htc_hst.c
+@@ -23,9 +23,16 @@ static int htc_issue_send(struct htc_target *target, struct sk_buff* skb,
+ 
+ {
+ 	struct htc_frame_hdr *hdr;
+-	struct htc_endpoint *endpoint = &target->endpoint[epid];
++	struct htc_endpoint *endpoint;
+ 	int status;
+ 
++	if (epid >= ENDPOINT_MAX) {
++		kfree_skb(skb);
++		return -EINVAL;
++	}
++
++	endpoint = &target->endpoint[epid];
++
+ 	hdr = skb_push(skb, sizeof(struct htc_frame_hdr));
+ 	hdr->endpoint_id = epid;
+ 	hdr->flags = flags;
+-- 
+2.34.1
 
 
