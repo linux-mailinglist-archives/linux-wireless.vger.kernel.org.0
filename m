@@ -1,106 +1,105 @@
-Return-Path: <linux-wireless+bounces-31389-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-31390-lists+linux-wireless=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 8DSVMenVfGlbOwIAu9opvQ
-	(envelope-from <linux-wireless+bounces-31389-lists+linux-wireless=lfdr.de@vger.kernel.org>)
-	for <lists+linux-wireless@lfdr.de>; Fri, 30 Jan 2026 17:01:45 +0100
+	id gIiHH/HVfGlbOwIAu9opvQ
+	(envelope-from <linux-wireless+bounces-31390-lists+linux-wireless=lfdr.de@vger.kernel.org>)
+	for <lists+linux-wireless@lfdr.de>; Fri, 30 Jan 2026 17:01:53 +0100
 X-Original-To: lists+linux-wireless@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2719DBC573
-	for <lists+linux-wireless@lfdr.de>; Fri, 30 Jan 2026 17:01:45 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id D99FFBC581
+	for <lists+linux-wireless@lfdr.de>; Fri, 30 Jan 2026 17:01:52 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 71E5D303DD41
-	for <lists+linux-wireless@lfdr.de>; Fri, 30 Jan 2026 16:01:09 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id C2FC2301D322
+	for <lists+linux-wireless@lfdr.de>; Fri, 30 Jan 2026 16:01:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0DAA0303A3B;
-	Fri, 30 Jan 2026 16:01:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0E6662F4A05;
+	Fri, 30 Jan 2026 16:01:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="AlV6mjiK";
-	dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b="Pqccz6cO"
+	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="LFwRnytl";
+	dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b="Q00Uecyj"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 918EA3446A5
-	for <linux-wireless@vger.kernel.org>; Fri, 30 Jan 2026 16:01:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 626F13446C7
+	for <linux-wireless@vger.kernel.org>; Fri, 30 Jan 2026 16:01:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769788868; cv=none; b=fBjCohP6MIU6uOfNMyiwbNjTadoxNX4/07fsS9gJu+E3xsdsLr8afIGzHOvOQNhuHmbIFVSFZfAtdcwD3KGLvhIne6GSV0M/XDAXz6RZD6HM0ZZCkOvX1iX4dUiie2MmVnB9vGaQXecjmLZbpyCdJcDXjzBFCYWp9NcMjwPHszA=
+	t=1769788870; cv=none; b=JLUmlYVKKPG4CfrB8aN9PK1RuGPglRU94BhBNNGkj+gCLglUSdTitxbOr5oh0WJrgLsDGZgMihNcfnF0zRISNOYFVY7Na6inYfozwnlVJUndQKxdlUOi5z4u+q0D4jiIFYeEeVuInTLGiKsVvUF//hhLkOOuCDRBOQbe6D8y+f0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769788868; c=relaxed/simple;
-	bh=2CE7va60BGZmGmCqF+VOg+sfA33EUBnOBVgt/BwJZM0=;
+	s=arc-20240116; t=1769788870; c=relaxed/simple;
+	bh=s5ZP3YHuEw9FqeppncOTLtpfDm1kubfzo5F1a+XkKN0=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=bwNsGrku6ekDzqHT+VERFa/WEuuI1ZkpqZ2K3yeqNXItuhtmmvRUP3yYYlKFUQ/SMwoTfMJOp3IwGapJR9s212mnGs6F8uYDaAAFHib4CgBrKCvBL+ia7M1l1NaZgX+SyIvW0JqqnoiNCWnPXOjxsTjfDrko7ay7zJOZP8yJ5dk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=AlV6mjiK; dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b=Pqccz6cO; arc=none smtp.client-ip=205.220.180.131
+	 MIME-Version; b=Wr9olwBp95DPjOOOH5iLOuGapF1URvXtiTWTWgWTEVG3qh6Qw4yYMd4y34C8cMXNlglngBzKr2UjDBetE86oy5xI3qAFz2nnSEAKT/sZtpCR6PtPFkabD8oxdYP+UwkHecazbkCetXZ+ee8ijFYsVCO6SUYpl82pS9AcCCAdv2Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=LFwRnytl; dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b=Q00Uecyj; arc=none smtp.client-ip=205.220.180.131
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
 Received: from pps.filterd (m0279873.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 60UAoLBT486064
-	for <linux-wireless@vger.kernel.org>; Fri, 30 Jan 2026 16:01:06 GMT
+	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 60UADdLA485882
+	for <linux-wireless@vger.kernel.org>; Fri, 30 Jan 2026 16:01:08 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
 	cc:content-transfer-encoding:date:from:in-reply-to:message-id
-	:mime-version:references:subject:to; s=qcppdkim1; bh=Xc495iUHo3u
-	WMYhaUvvQrFklJ8gPyz8PjoZa/ug9vug=; b=AlV6mjiKG569DPiAP+kcKBwwlo/
-	rdoKM6M7uI9ekRQTsoZBXsB2dEYrz3lnczPfghr27jm+zSUnJsUkNipBDp6Ihjox
-	uRVc221ftmejzWCiPMbzxM1bshtgUr9skDExff3r55qFcZObIrfUYbxXbainp5eC
-	JVOeHdUVnHsYCmV1+7fqUji8e9Ni0F8hb9jBkN9BIvbwp3fJqja3CXpQanr2xJIg
-	jgvIazU2rVtyeYlvysyJFmCerOVM/I2XBvACzxrq2kE6AGrwPq8Q6FQ8kr0G5BKD
-	3PylAFWeZ5Ht3baaeWweyCP0O90FPTK1li/WGj/s9LHUKMVX1EYp96V6WXw==
-Received: from mail-pg1-f197.google.com (mail-pg1-f197.google.com [209.85.215.197])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4c0gtnjrjg-1
+	:mime-version:references:subject:to; s=qcppdkim1; bh=juGkkaXlLWu
+	qh+dFJpotYumwMu8HupAlQO8ydXLb/lw=; b=LFwRnytlQiI9Sqs3Ar+2+L2w7ze
+	uZZ37jXtlRPN86J42QaAHvupZlIjmEm2RKwiQuu8EXV8DMctJgbJUJfblPP7SQgv
+	tiifT9Kf2dfrXC+04u3Bko7jj7KxvylINQaQ/hG3d3HZjOsjzPsNUN5au+MijxTS
+	lfNXmc/2aZTNe8JHVwPKe3JoXQtUuY3phB40u5b0hxXX4SuvOuY/BHTd1E1xOcXF
+	1WzY0Kono73JzrpniY6hphH88mOup3ZlVgrLvIPsCYO1cjat+WlmRgGzRVepW5cn
+	spxtDukXPGrykSxYEWArCM/dENv/rRAiDAKz4zwZMJna9aWlXI/xMGvxhzw==
+Received: from mail-pl1-f200.google.com (mail-pl1-f200.google.com [209.85.214.200])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4c0gtnjrk4-1
 	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
-	for <linux-wireless@vger.kernel.org>; Fri, 30 Jan 2026 16:01:06 +0000 (GMT)
-Received: by mail-pg1-f197.google.com with SMTP id 41be03b00d2f7-b6ce1b57b9cso1296646a12.1
-        for <linux-wireless@vger.kernel.org>; Fri, 30 Jan 2026 08:01:06 -0800 (PST)
+	for <linux-wireless@vger.kernel.org>; Fri, 30 Jan 2026 16:01:07 +0000 (GMT)
+Received: by mail-pl1-f200.google.com with SMTP id d9443c01a7336-2a0a8c465c1so20736055ad.1
+        for <linux-wireless@vger.kernel.org>; Fri, 30 Jan 2026 08:01:07 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=oss.qualcomm.com; s=google; t=1769788865; x=1770393665; darn=vger.kernel.org;
+        d=oss.qualcomm.com; s=google; t=1769788867; x=1770393667; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=Xc495iUHo3uWMYhaUvvQrFklJ8gPyz8PjoZa/ug9vug=;
-        b=Pqccz6cOgbWhw/GOQPzOUPhQkghdnJrJcIDnOHWEnj0/VnkBKjDAz9idaP/HDldlTm
-         qFhV9pLkrYf5K48r2zL0EvnNckKGj1yqE8uUe/l1BDfpvAAEPZVpD3kQjie/RRuw3Bgm
-         LGD4imYBCfcEthhhUfwZrGT25IbqWwvqFvmWMLoXGLivasTm/V2a7PnWd4Zlgm/9MNsR
-         0ZeUa3nr3Df9ypVkC1Wx3RV9FlCNtLu7mG8Vw7ZmNgn4He500X4LsPiV6nLJWBUiAlDX
-         g44lYZSZ58s5BZG3y/UCydVLoKBLGUOJsC1OZ9ANRsgbQK/Tj7c1D/IigE7LCsqvKuaV
-         XW9w==
+        bh=juGkkaXlLWuqh+dFJpotYumwMu8HupAlQO8ydXLb/lw=;
+        b=Q00Uecyjw8htpjSDqNP6CeG8UBvQmeE8La5+HGD2l/8tbUw/3kXJMMBGq84HompG9d
+         qZ6bzB4ZJroGKSphj+YTKDtiDI0rKwk4/Mj9uQnxy4BAtvvl8qKQGNAdaUCiCLKIq1Yl
+         RqL7rme70zWNuKc0z/UIpjrCpBfgkRGvzPoFV4vNIxeZrv1mvWA0jabudjTSvF40fPrm
+         5LYN14gU8t8TmpCDGD0RDNgxYbZ4cxhuL909RrK6dJ5wEwVIK1v3V/+7aXlQaLQ/PTkD
+         VOIv7D059m/1wj8AdGEJ6EL/TfJ3RIKUkxl2K2OtnGaqDQUtSg9XxoVkT4OtqBd0OeaE
+         tsMw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1769788865; x=1770393665;
+        d=1e100.net; s=20230601; t=1769788867; x=1770393667;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to;
-        bh=Xc495iUHo3uWMYhaUvvQrFklJ8gPyz8PjoZa/ug9vug=;
-        b=ulOJuuwCvqua2xXtK/sBGUrp0bfzn95hGLSi4h4nM3G34HbQW11pmHDL4zr+muKvtZ
-         0pmCupphxcCwf+UPH8FYzgYwyWJeJAIPgeB5suTooWfpCHspyWMhazLkZIY+2OhZ3JHO
-         ClAUf5Pesc/OBeiCJwJkQtIXYLpnNA2psdDCa7MNqefJRPhnehUU1v0t7gmFTt7oZjl5
-         Th0crapQBmjfvdFpioQOvG6sS0gCo0skqEcMJxEqdRm36IZ9e88l2z9TWfqt1puSRrep
-         P8NbPogLwUiQmxiSOD5op0aemrUzNmOnN5G5tp8Hm3c5Qi9nh/ma38DyJg2iz27n0f3d
-         ByWg==
-X-Gm-Message-State: AOJu0YylRqCYDwH7JlZTUhRf7NmExoIUxdmZDqA3mv3siZZSMB0cw/DZ
-	I+jblSck1pylL2Tsa9WqB0v7qt2ly2qi/Py4c8wv4jdgYzZrzAexbdBn1SgPNVy/O8ZYAQF7ipv
-	h+p4hxZHU8HDwUVWxuqNOSqAcvi7BqPItxyfrP0aarb7jsV4SXss1G9YUrm1dCrLYp9Ga5+f7cn
-	oW
-X-Gm-Gg: AZuq6aLpiCoEDEU10BGNWqYgtC+cH6bWfwUEMso8degy3iN1Px5ZQV0AnXFF/1KJ/66
-	n0aRWon6plTncCLGePEbTg5ZaxEeCVqGhTEy85DM9DEAZKQGemF8Iqb+2R4DnDbpmvqNODUsNBC
-	6FSh2EWzPusSRZhVTU2ulbzfKKGCx0amVlfUg1ueW2ao/dpJtcx98nfB7PSXsditfVrOrmZvak2
-	Te1ZLkRZvm3gWtw9kaRChpojAOPkWusd3g0mJJySKe6xqS5lq6ymJuV+dn/8yVf0pgi0UqoLecL
-	wOMVjKtenGZ+2A26oeFfWIh4RlD7GHW9eg4/C4KLFK+31uupZ2NTzlzeB0YOZAskQWCr3rE/vbZ
-	gyZb0vPPukJDReTAOhAVtpPwDgBHLLlzuHZuegMGPvKA=
-X-Received: by 2002:a05:6a21:3286:b0:38e:87b6:a00a with SMTP id adf61e73a8af0-392e014b50cmr2825747637.55.1769788864865;
-        Fri, 30 Jan 2026 08:01:04 -0800 (PST)
-X-Received: by 2002:a05:6a21:3286:b0:38e:87b6:a00a with SMTP id adf61e73a8af0-392e014b50cmr2825674637.55.1769788863859;
-        Fri, 30 Jan 2026 08:01:03 -0800 (PST)
+        bh=juGkkaXlLWuqh+dFJpotYumwMu8HupAlQO8ydXLb/lw=;
+        b=lVH76zjonRZ0Otjxn1fCrbYD68149DFCCeDrTpkxQ1dKIDgWrVhGOc1eDPD6akC+2x
+         7LpCxkBomhWynMoNx6VwB3GCBVLvAs7jW1lsToBFMPElh+EMRrhNzQIhBGZ0tznZCV3O
+         rra3ZbGPVPg9U+Z5yLCtvQ6uExbn947KuXMuj0To45O0QvaBMmlP69QUp8m+fQZEUo41
+         nt/ul39WDSkSvGQqXiQW99G5Otn6N40TIJ58/tcR3vQhMM6EBEhMQk5t8o7BPsMlYtgx
+         U3LVI4DwIWwB+/6sPSaOUiNBXy3QcbDD4pAkbLxc2MpTLUKuI2hV1VQTssjoD3poacJt
+         oDMA==
+X-Gm-Message-State: AOJu0YzrdrZMSMZSqauO4r6deaL/ubgZEVOHWKNEG0ZaetQzpPR3Odd3
+	N6y+4d2YYHLfoF32W45uAqfAx1AZ4qd49eZOmxTYT6AGJCpyZ20n1/vqgIFEPlAaaHBCm6Ivs9L
+	F+12IoLcgPCLtnYdMJo7p/bnKiHei0dwnqFAcqI5sngaYRF+Im35TvegX9c4UR98Z5deq
+X-Gm-Gg: AZuq6aI8A71whg34zsTMAvTQZpwIrjT7wnkwU+pc1qc1CL/o7QY/gd99LFD4R3Y3qOe
+	29zL1Xk2stpunkh0OGQZOguBtPAsg2AMabNSmBBkXHtkCSeanq6riFHs1LiDwwi828clV0Da4+t
+	YqUXgYqEXy/8GSCsFpAVrGs3qmcaBfuAK1GVx2LFwxlQRZvN2IADKcNKutUdbKqkCIkyKkwtqjd
+	cxhBV2h5Cs3xwXYhkn0R0L6I9Bi1l+IJ1F4W5fIBNH1e6PAs7OHWBZi+aCcNgY+xK3czwIz2MdS
+	oGr108pPlECCg28NZT4a/sXS2bFekMO3lMF5PVny8ygIHwlkYYX97qpHhGG6DcV+II6WL8wxzjv
+	VWJW9yc/NlZEqclFtZGT6Xbc+Pvw32iVEt2lU4zkhZkk=
+X-Received: by 2002:a17:903:3508:b0:2a0:b432:4a6 with SMTP id d9443c01a7336-2a8d99502eemr36031065ad.15.1769788866772;
+        Fri, 30 Jan 2026 08:01:06 -0800 (PST)
+X-Received: by 2002:a17:903:3508:b0:2a0:b432:4a6 with SMTP id d9443c01a7336-2a8d99502eemr36030415ad.15.1769788865789;
+        Fri, 30 Jan 2026 08:01:05 -0800 (PST)
 Received: from hu-peddolla-hyd.qualcomm.com ([202.46.23.25])
-        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-c642a3359f4sm7621673a12.22.2026.01.30.08.01.02
+        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-c642a3359f4sm7621673a12.22.2026.01.30.08.01.04
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 30 Jan 2026 08:01:03 -0800 (PST)
+        Fri, 30 Jan 2026 08:01:05 -0800 (PST)
 From: Peddolla Harshavardhan Reddy <peddolla.reddy@oss.qualcomm.com>
 To: johannes@sipsolutions.net
 Cc: linux-wireless@vger.kernel.org
-Subject: [PATCH 05/13] wifi: nl80211/cfg80211: add peer measurement abort command
-Date: Fri, 30 Jan 2026 21:30:31 +0530
-Message-Id: <20260130160039.2823409-6-peddolla.reddy@oss.qualcomm.com>
+Subject: [PATCH 06/13] wifi: nl80211/cfg80211: add role-based PD peer limits
+Date: Fri, 30 Jan 2026 21:30:32 +0530
+Message-Id: <20260130160039.2823409-7-peddolla.reddy@oss.qualcomm.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20260130160039.2823409-1-peddolla.reddy@oss.qualcomm.com>
 References: <20260130160039.2823409-1-peddolla.reddy@oss.qualcomm.com>
@@ -111,25 +110,25 @@ List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Proofpoint-GUID: DXGBUQTt9ivc1dUPaP8VTiT0FdNICl38
-X-Authority-Analysis: v=2.4 cv=FPcWBuos c=1 sm=1 tr=0 ts=697cd5c2 cx=c_pps
- a=rz3CxIlbcmazkYymdCej/Q==:117 a=ZePRamnt/+rB5gQjfz0u9A==:17
+X-Proofpoint-GUID: Y8fG7IR4tUkgkRfApEu6-78zfVdmHqHY
+X-Authority-Analysis: v=2.4 cv=FPcWBuos c=1 sm=1 tr=0 ts=697cd5c3 cx=c_pps
+ a=IZJwPbhc+fLeJZngyXXI0A==:117 a=ZePRamnt/+rB5gQjfz0u9A==:17
  a=vUbySO9Y5rIA:10 a=s4-Qcg_JpJYA:10 a=VkNPw1HP01LnGYTKEx00:22
- a=EUspDBNiAAAA:8 a=G1p9uJ5VPZ1gOx4JwssA:9 a=bFCP_H2QrGi7Okbo017w:22
-X-Proofpoint-ORIG-GUID: DXGBUQTt9ivc1dUPaP8VTiT0FdNICl38
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwMTMwMDEyOSBTYWx0ZWRfX7HNWSrTlyTai
- 0mj4j75McIZfNh9qdNqrLSijDncKJwYiofNT+twA11U2bVqmTOY7jXo9MDdAWvqGe115bmwx/Pd
- /JnhJFlHOLlheE1/sNfBUW2Xs9WprYNklLximAaUCw6XcscGSicceyTFdHT1vjWf/O9Has8QGb0
- b3m9tlXWHPVjQutFI5aBXYn2htV05om6rt7eZchSfKTuqlECwSxV+Mgvb+Q73WFsrpoeKVI7gY7
- cjZ95umTc4DXIuWg7hAP94HYHwN8w1qHFD0ssj2XGc9bYYHBrFaJvV6bp0X6U2HSGKTG8IZMCZ6
- CyJGMR9pqicqcb39D8ieK+itzDBoTru2CzT9gw0lyDFif3DZh8fbkHX8W3GRHSTlspjGYtl857G
- EFb26mrqes9ZszBFSeZP7Rhsimw3PEE7R1HgflDNgel63PTW+0UwY2GDN7HsTStWcyJEe4eEG5R
- bXsrCycf2Ej9thKZMqQ==
+ a=EUspDBNiAAAA:8 a=XesYEwEoQZ8k41pBQkUA:9 a=uG9DUKGECoFWVXl0Dc02:22
+X-Proofpoint-ORIG-GUID: Y8fG7IR4tUkgkRfApEu6-78zfVdmHqHY
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwMTMwMDEyOSBTYWx0ZWRfXz8Q9/Gl/7ZbU
+ QU8apfBDSP4Z9uQLI4Jb0kVxiccPClsXXDGot2APG90Wk0eQOCfycPSOZ69HWTla4A1+LjASEKW
+ 0gXOF3df4EjHbKZXE5RZeeiUB7gyqNhzLAR+a88Suzpp6/cA3+cbClosowk72rQFnldaRTS46XI
+ ltNBf3PC0t4e4+GIN/VLiTCBJ6yJwguDpQt1BGazQWOws1RqCtXUlJ37U5fPIuHuNhwXsfTo9VK
+ nZT/xp0WAxxUHCFIKbEsNfSqaggyGdZTFhWRq2tJivy1KdpGmLTi/4fo5FYwY/O9HssdKt5y4gO
+ lG2NRp8PA0ed6sv2cKC2oMlS2i3OIZR0xeomH6UdTzdQWUp1ZOWaqgFRx2rinPFrr2lqj2Nqqqa
+ x0tmJwzFch/jotXd4vZ2h1kR7fUht00fKtADjX+/UbIkMJ5CV8aQMGoztiCWVD8eeI/R92bHJpZ
+ CTPVxe63OCLuHXE6V8w==
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.51,FMLib:17.12.100.49
  definitions=2026-01-30_02,2026-01-30_02,2025-10-01_01
 X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- lowpriorityscore=0 spamscore=0 clxscore=1015 phishscore=0 bulkscore=0
+ lowpriorityscore=0 spamscore=0 clxscore=1011 phishscore=0 bulkscore=0
  impostorscore=0 suspectscore=0 priorityscore=1501 adultscore=0 malwarescore=0
  classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
  reason=mlx scancount=1 engine=8.22.0-2601150000 definitions=main-2601300129
@@ -140,12 +139,12 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	DMARC_POLICY_ALLOW(-0.50)[qualcomm.com,reject];
 	R_MISSING_CHARSET(0.50)[];
 	R_DKIM_ALLOW(-0.20)[qualcomm.com:s=qcppdkim1,oss.qualcomm.com:s=google];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-31389-lists,linux-wireless=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-31390-lists,linux-wireless=lfdr.de];
 	TO_DN_NONE(0.00)[];
 	RCPT_COUNT_TWO(0.00)[2];
 	FORGED_SENDER_MAILLIST(0.00)[];
@@ -157,127 +156,208 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	NEURAL_HAM(-0.00)[-1.000];
 	DKIM_TRACE(0.00)[qualcomm.com:+,oss.qualcomm.com:+];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	MIME_TRACE(0.00)[0:+];
 	RCVD_COUNT_SEVEN(0.00)[7]
-X-Rspamd-Queue-Id: 2719DBC573
+X-Rspamd-Queue-Id: D99FFBC581
 X-Rspamd-Action: no action
 
-Add support for aborting ongoing peer measurement sessions
-through a new NL80211_CMD_PEER_MEASUREMENT_ABORT command.
-This allows userspace to cancel continuous ranging or other
-long-running measurement sessions before completion.
+Currently, proximity detection capabilities only advertise a
+single maximum peer count that applies regardless of whether
+the request is of PD type. However, some devices may support
+different numbers of simultaneous peers depending on whether
+the request is of PD type or not.
 
-The abort operation is identified by the measurement cookie.
-When a matching request is found, it is marked for cleanup
-and the existing free work is scheduled to handle the
-abortion and notify the driver.
+Introduce separate capability fields to allow drivers to
+specify distinct peer limits for each request type. When a
+device operates as a PD initiator, it can now advertise how
+many responder peers it can measure simultaneously.
+Similarly, when operating as a PD responder, it can indicate
+how many initiator peers it can serve concurrently.
+
+In scenarios where a device supports concurrent operation
+as both PD initiator and PD responder, the enforcement logic
+considers the sum of both role-specific limits to determine
+the total number of peers allowed in a single measurement
+request.
 
 Signed-off-by: Peddolla Harshavardhan Reddy <peddolla.reddy@oss.qualcomm.com>
 ---
- include/uapi/linux/nl80211.h |  5 +++++
- net/wireless/nl80211.c       |  6 ++++++
- net/wireless/nl80211.h       |  1 +
- net/wireless/pmsr.c          | 34 ++++++++++++++++++++++++++++++++++
- 4 files changed, 46 insertions(+)
+ include/net/cfg80211.h       | 12 ++++++++++++
+ include/uapi/linux/nl80211.h | 16 ++++++++++++++++
+ net/wireless/nl80211.c       | 13 +++++++++++++
+ net/wireless/pmsr.c          | 32 ++++++++++++++++++++++++++++----
+ 4 files changed, 69 insertions(+), 4 deletions(-)
 
+diff --git a/include/net/cfg80211.h b/include/net/cfg80211.h
+index a82d1606345a..ae63a3ead165 100644
+--- a/include/net/cfg80211.h
++++ b/include/net/cfg80211.h
+@@ -5716,6 +5716,16 @@ cfg80211_get_iftype_ext_capa(struct wiphy *wiphy, enum nl80211_iftype type);
+  *	multi-peer request this will indicate if the device can act
+  *	simultaneously as initiator and a responder. Only valid if @pd_support
+  *	is set.
++ * @pd_max_peer_ista_role: Maximum number of peers allowed for a device
++ *	operating in the ISTA role under proximity detection. Only valid if
++ *	@pd_support is set. Sum of both @pd_max_peer_ista_role and
++ *	@pd_max_peer_rsta_role is considered to enforce the max peers supported
++ *	in case the request is of peer-to-peer PD type.
++ * @pd_max_peer_rsta_role: Maximum number of peers allowed for a device
++ *	operating in the RSTA role under proximity detection. Only valid if
++ *	@pd_support is set. Sum of both @pd_max_peer_ista_role and
++ *	@pd_max_peer_rsta_role is considered to enforce the max peers supported
++ *	in case the request is of peer-to-peer PD type
+  * @ftm: FTM measurement data
+  * @ftm.supported: FTM measurement is supported
+  * @ftm.asap: ASAP-mode is supported
+@@ -5760,6 +5770,8 @@ struct cfg80211_pmsr_capabilities {
+ 	   randomize_mac_addr:1,
+ 	   pd_support:1,
+ 	   pd_concurrent_ista_rsta_support:1;
++	u32 pd_max_peer_ista_role;
++	u32 pd_max_peer_rsta_role;
+ 
+ 	struct {
+ 		u32 preambles;
 diff --git a/include/uapi/linux/nl80211.h b/include/uapi/linux/nl80211.h
-index a3c82b231d82..b2410d4f572c 100644
+index b2410d4f572c..b6c28c75e141 100644
 --- a/include/uapi/linux/nl80211.h
 +++ b/include/uapi/linux/nl80211.h
-@@ -1361,6 +1361,9 @@
-  *	user space that the NAN new cluster has been joined. The cluster ID is
-  *	indicated by %NL80211_ATTR_MAC.
+@@ -7762,6 +7762,20 @@ enum nl80211_peer_measurement_peer_attrs {
+  *	multi-peer request, the device can act simultaneously as initiator and
+  *	a responder, where the multiple requests are being processed
+  *	simultaneously
++ * @NL80211_PMSR_ATTR_PD_MAX_PEER_ISTA_ROLE: u32 attribute indicating the
++ *	maximum number of peers allowed for a device operating in the ISTA
++ *	(Initiator STA) role under proximity detection. Only valid if
++ *	NL80211_PMSR_ATTR_PD_SUPPORT is set. Sum of both
++ *	NL80211_PMSR_ATTR_PD_MAX_PEER_ISTA_ROLE and
++ *	NL80211_PMSR_ATTR_PD_MAX_PEER_RSTA_ROLE is considered to enforce the
++ *	max peers supported in case the request is of peer-to-peer PD type
++ * @NL80211_PMSR_ATTR_PD_MAX_PEER_RSTA_ROLE: u32 attribute indicating the
++ *	maximum number of peers allowed for a device operating in the RSTA
++ *	(Responder STA) role under proximity detection. Only valid if
++ *	NL80211_PMSR_ATTR_PD_SUPPORT is set. Sum of both
++ *	NL80211_PMSR_ATTR_PD_MAX_PEER_ISTA_ROLE and
++ *	NL80211_PMSR_ATTR_PD_MAX_PEER_RSTA_ROLE is considered to enforce the
++ *	max peers supported in case the request is of peer-to-peer PD type
   *
-+ * @NL80211_CMD_PEER_MEASUREMENT_ABORT: Abort an ongoing peer measurement,
-+ *     identified by %NL80211_ATTR_COOKIE.
-+ *
-  * @NL80211_CMD_MAX: highest used command number
-  * @__NL80211_CMD_AFTER_LAST: internal use
-  */
-@@ -1624,6 +1627,8 @@ enum nl80211_commands {
- 	NL80211_CMD_NAN_NEXT_DW_NOTIFICATION,
- 	NL80211_CMD_NAN_CLUSTER_JOINED,
+  * @NUM_NL80211_PMSR_ATTR: internal
+  * @NL80211_PMSR_ATTR_MAX: highest attribute number
+@@ -7776,6 +7790,8 @@ enum nl80211_peer_measurement_attrs {
+ 	NL80211_PMSR_ATTR_PEERS,
+ 	NL80211_PMSR_ATTR_PD_SUPPORT,
+ 	NL80211_PMSR_ATTR_PD_CONCURRENT_ISTA_RSTA_SUPPORT,
++	NL80211_PMSR_ATTR_PD_MAX_PEER_ISTA_ROLE,
++	NL80211_PMSR_ATTR_PD_MAX_PEER_RSTA_ROLE,
  
-+	NL80211_CMD_PEER_MEASUREMENT_ABORT,
-+
- 	/* add new commands above here */
- 
- 	/* used to define NL80211_CMD_MAX below */
+ 	/* keep last */
+ 	NUM_NL80211_PMSR_ATTR,
 diff --git a/net/wireless/nl80211.c b/net/wireless/nl80211.c
-index e0c910d22bd4..1ad7eb103189 100644
+index 1ad7eb103189..bfe88f7068da 100644
 --- a/net/wireless/nl80211.c
 +++ b/net/wireless/nl80211.c
-@@ -19117,6 +19117,12 @@ static const struct genl_small_ops nl80211_small_ops[] = {
- 		.flags = GENL_UNS_ADMIN_PERM,
- 		.internal_flags = IFLAGS(NL80211_FLAG_NEED_NETDEV_UP),
+@@ -408,6 +408,8 @@ nl80211_pmsr_attr_policy[NL80211_PMSR_ATTR_MAX + 1] = {
+ 	[NL80211_PMSR_ATTR_PD_CONCURRENT_ISTA_RSTA_SUPPORT] = {
+ 		.type = NLA_REJECT
  	},
-+	{
-+		.cmd = NL80211_CMD_PEER_MEASUREMENT_ABORT,
-+		.doit = nl80211_pmsr_abort,
-+		.flags = GENL_UNS_ADMIN_PERM,
-+		.internal_flags = IFLAGS(NL80211_FLAG_NEED_WDEV_UP),
-+	},
++	[NL80211_PMSR_ATTR_PD_MAX_PEER_ISTA_ROLE] = { .type = NLA_REJECT },
++	[NL80211_PMSR_ATTR_PD_MAX_PEER_RSTA_ROLE] = { .type = NLA_REJECT },
  };
  
- static struct genl_family nl80211_fam __ro_after_init = {
-diff --git a/net/wireless/nl80211.h b/net/wireless/nl80211.h
-index 5e25782af1e0..9791da9f5fbd 100644
---- a/net/wireless/nl80211.h
-+++ b/net/wireless/nl80211.h
-@@ -123,6 +123,7 @@ void cfg80211_free_coalesce(struct cfg80211_coalesce *coalesce);
+ static const struct nla_policy
+@@ -2017,6 +2019,7 @@ nl80211_send_iftype_data(struct sk_buff *msg,
+ 		    nla_put(msg, NL80211_BAND_IFTYPE_ATTR_EHT_CAP_PPE,
+ 			    ppe_thresh_size, eht_cap->eht_ppe_thres))
+ 			return -ENOBUFS;
++
+ 	}
  
- /* peer measurement */
- int nl80211_pmsr_start(struct sk_buff *skb, struct genl_info *info);
-+int nl80211_pmsr_abort(struct sk_buff *skb, struct genl_info *info);
- 
- void nl80211_mlo_reconf_add_done(struct net_device *dev,
- 				 struct cfg80211_mlo_reconf_done_data *data);
+ 	if (sband->band == NL80211_BAND_6GHZ &&
+@@ -2415,6 +2418,16 @@ static int nl80211_send_pmsr_capa(struct cfg80211_registered_device *rdev,
+ 		    nla_put_flag(msg,
+ 				 NL80211_PMSR_ATTR_PD_CONCURRENT_ISTA_RSTA_SUPPORT))
+ 			return -ENOBUFS;
++
++		if (cap->pd_max_peer_ista_role > 0 &&
++		    nla_put_u32(msg, NL80211_PMSR_ATTR_PD_MAX_PEER_ISTA_ROLE,
++				cap->pd_max_peer_ista_role))
++			return -ENOBUFS;
++
++		if (cap->pd_max_peer_rsta_role > 0 &&
++		    nla_put_u32(msg, NL80211_PMSR_ATTR_PD_MAX_PEER_RSTA_ROLE,
++				cap->pd_max_peer_rsta_role))
++			return -ENOBUFS;
+ 	}
+ 	caps = nla_nest_start_noflag(msg, NL80211_PMSR_ATTR_TYPE_CAPA);
+ 	if (!caps)
 diff --git a/net/wireless/pmsr.c b/net/wireless/pmsr.c
-index 141ac19f86c8..8b7665f2f824 100644
+index 8b7665f2f824..e1b4cc7244cd 100644
 --- a/net/wireless/pmsr.c
 +++ b/net/wireless/pmsr.c
-@@ -718,6 +718,40 @@ void cfg80211_pmsr_wdev_down(struct wireless_dev *wdev)
- 	WARN_ON(!list_empty(&wdev->pmsr_list));
- }
+@@ -318,11 +318,14 @@ int nl80211_pmsr_start(struct sk_buff *skb, struct genl_info *info)
+ 	struct nlattr *reqattr = info->attrs[NL80211_ATTR_PEER_MEASUREMENTS];
+ 	struct cfg80211_registered_device *rdev = info->user_ptr[0];
+ 	struct wireless_dev *wdev = info->user_ptr[1];
++	const struct cfg80211_pmsr_capabilities *capa;
+ 	struct cfg80211_pmsr_request *req;
+ 	struct nlattr *peers, *peer;
+-	int count, rem, err, idx;
++	int count, rem, err, idx, pd_count, max_pd_peers;
  
-+int nl80211_pmsr_abort(struct sk_buff *skb, struct genl_info *info)
-+{
-+	struct cfg80211_registered_device *rdev = info->user_ptr[0];
-+	struct wireless_dev *wdev = info->user_ptr[1];
-+	struct cfg80211_pmsr_request *req;
-+	u64 cookie;
+-	if (!rdev->wiphy.pmsr_capa)
++	capa = rdev->wiphy.pmsr_capa;
 +
-+	if (!rdev->wiphy.pmsr_capa)
-+		return -EOPNOTSUPP;
++	if (!capa)
+ 		return -EOPNOTSUPP;
+ 
+ 	if (!reqattr)
+@@ -337,7 +340,7 @@ int nl80211_pmsr_start(struct sk_buff *skb, struct genl_info *info)
+ 	nla_for_each_nested(peer, peers, rem) {
+ 		count++;
+ 
+-		if (count > rdev->wiphy.pmsr_capa->max_peers) {
++		if (count > capa->max_peers) {
+ 			NL_SET_ERR_MSG_ATTR(info->extack, peer,
+ 					    "Too many peers used");
+ 			return -EINVAL;
+@@ -353,7 +356,7 @@ int nl80211_pmsr_start(struct sk_buff *skb, struct genl_info *info)
+ 		req->timeout = nla_get_u32(info->attrs[NL80211_ATTR_TIMEOUT]);
+ 
+ 	if (info->attrs[NL80211_ATTR_MAC]) {
+-		if (!rdev->wiphy.pmsr_capa->randomize_mac_addr) {
++		if (!capa->randomize_mac_addr) {
+ 			NL_SET_ERR_MSG_ATTR(info->extack,
+ 					    info->attrs[NL80211_ATTR_MAC],
+ 					    "device cannot randomize MAC address");
+@@ -378,6 +381,27 @@ int nl80211_pmsr_start(struct sk_buff *skb, struct genl_info *info)
+ 			goto out_err;
+ 		idx++;
+ 	}
 +
-+	if (!info->attrs[NL80211_ATTR_COOKIE])
-+		return -EINVAL;
++	/* Count PD requests and validate against PD peer limits */
++	if (capa->pd_support) {
++		pd_count = 0;
 +
-+	cookie = nla_get_u64(info->attrs[NL80211_ATTR_COOKIE]);
++		max_pd_peers = capa->pd_max_peer_ista_role +
++			       capa->pd_max_peer_rsta_role;
 +
-+	spin_lock_bh(&wdev->pmsr_lock);
-+	list_for_each_entry(req, &wdev->pmsr_list, list) {
-+		if (req->cookie == cookie) {
-+			/* Verify the request belongs to this netlink port */
-+			if (req->nl_portid != info->snd_portid) {
-+				spin_unlock_bh(&wdev->pmsr_lock);
-+				return -EACCES;
++		for (idx = 0; idx < req->n_peers; idx++) {
++			if (req->peers[idx].pd_request) {
++				pd_count++;
++
++				if (pd_count > max_pd_peers) {
++					NL_SET_ERR_MSG(info->extack,
++						       "Too many PD peers used");
++					err = -EINVAL;
++					goto out_err;
++				}
 +			}
-+			req->nl_portid = 0; /* Mark for abortion */
-+			schedule_work(&wdev->pmsr_free_wk);
-+			spin_unlock_bh(&wdev->pmsr_lock);
-+			return 0;
 +		}
 +	}
-+	spin_unlock_bh(&wdev->pmsr_lock);
-+
-+	return -ENOENT; /* Request not found */
-+}
-+
- void cfg80211_release_pmsr(struct wireless_dev *wdev, u32 portid)
- {
- 	struct cfg80211_pmsr_request *req;
+ 	req->cookie = cfg80211_assign_cookie(rdev);
+ 	req->nl_portid = info->snd_portid;
+ 
 -- 
 2.34.1
 
