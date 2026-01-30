@@ -1,181 +1,163 @@
-Return-Path: <linux-wireless+bounces-31371-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-31372-lists+linux-wireless=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 8CEyB3XFfGm+OgIAu9opvQ
-	(envelope-from <linux-wireless+bounces-31371-lists+linux-wireless=lfdr.de@vger.kernel.org>)
-	for <lists+linux-wireless@lfdr.de>; Fri, 30 Jan 2026 15:51:33 +0100
+	id wH/COTjHfGnaOgIAu9opvQ
+	(envelope-from <linux-wireless+bounces-31372-lists+linux-wireless=lfdr.de@vger.kernel.org>)
+	for <lists+linux-wireless@lfdr.de>; Fri, 30 Jan 2026 15:59:04 +0100
 X-Original-To: lists+linux-wireless@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 719D0BBC09
-	for <lists+linux-wireless@lfdr.de>; Fri, 30 Jan 2026 15:51:32 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2A98ABBD20
+	for <lists+linux-wireless@lfdr.de>; Fri, 30 Jan 2026 15:59:03 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 11CFC30097DB
-	for <lists+linux-wireless@lfdr.de>; Fri, 30 Jan 2026 14:51:31 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 209C6300A137
+	for <lists+linux-wireless@lfdr.de>; Fri, 30 Jan 2026 14:59:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6DC60322C6D;
-	Fri, 30 Jan 2026 14:51:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=freebox-fr.20230601.gappssmtp.com header.i=@freebox-fr.20230601.gappssmtp.com header.b="NO/wOCtE"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3C6DB329E5A;
+	Fri, 30 Jan 2026 14:59:00 +0000 (UTC)
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-wm1-f48.google.com (mail-wm1-f48.google.com [209.85.128.48])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 603AC31BC95
-	for <linux-wireless@vger.kernel.org>; Fri, 30 Jan 2026 14:51:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.48
+Received: from azure-sdnproxy.icoremail.net (azure-sdnproxy.icoremail.net [13.76.78.106])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 84CC041C62;
+	Fri, 30 Jan 2026 14:58:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=13.76.78.106
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769784690; cv=none; b=T92yH5L028eoBamKpsvCdtW37xeV4yDItjPZOJVF06Dr0UjqOI/7mLjb2oM+zqeGWT2uvi0a40j/1rPsaDDyo5h3weyMxKTsHCYQFYRYcGSSq2Uyr9aZsKkoNoirzPyzkU46wSVQbQeKxGHJFMHbIv7hDsrbz59SKsvck4WZelI=
+	t=1769785140; cv=none; b=lAzFZ/n9vrU5bxWoLCaYMFq1Uq7QXwb9wxai2OjqgXpXfA5x8fECJzxMFqvT+JSw6ku3TWR0i7QADddWt9bLa5P+in69j1m2Qh6fQtIrDzy1moNRjjuLx/MFju7A48ZN/nDudSdgpovUTuqfDrUl1mUZ+WUFMGD1OHCELjdZStk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769784690; c=relaxed/simple;
-	bh=2U1sxipaEn5dm7JFezouLaaVCzWB2OCOwD/7Brp25rA=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=mXkPJrKbpgtOj8Ch2t9BtWKECX2mVjLDwH8iW8b4OnvRjxh92ZvJuchogsENPQHrG7YuDBzLoDTe6bWIlzDHOnHV2a9mxtxqIY4kD5f+8gpEtRFpxwFFZw76Dr4gLpfRLs2mq5G8Ib1VvVlxW5bNqGDmJSDFneA8N8xIP3vGVu0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=freebox.fr; spf=pass smtp.mailfrom=freebox.fr; dkim=pass (2048-bit key) header.d=freebox-fr.20230601.gappssmtp.com header.i=@freebox-fr.20230601.gappssmtp.com header.b=NO/wOCtE; arc=none smtp.client-ip=209.85.128.48
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=freebox.fr
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=freebox.fr
-Received: by mail-wm1-f48.google.com with SMTP id 5b1f17b1804b1-4806ce0f97bso18736185e9.0
-        for <linux-wireless@vger.kernel.org>; Fri, 30 Jan 2026 06:51:28 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=freebox-fr.20230601.gappssmtp.com; s=20230601; t=1769784687; x=1770389487; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=bRt0GeybgNu8ZSx8GmOx9phoRbW/Z90F3hfrFzShS8E=;
-        b=NO/wOCtEbRs0me3Vcc+msaeUaJKtqbAcjL/gMWHCifSatPDarq5LrcdgzSTBcbkaNO
-         wpIZhgY6SrUsiVEQ2uwN1z/fGU8Sk71/jMP0KcW8FwuIp/ZcsB5qtp8+EGEcLuU53CiA
-         DTxBNx1VP1+mNYJCCgahW1W1zNDFU0u1kdlB9MtcmASOFzUL+o8ur5xSzB0GCM8Yd1lw
-         cvcK7+tZBGXA+voit3g7wtCqEg8tND+wEzxFg73u/7eOoHd0PLIcRVkHRS4gDuw73h13
-         dvJ2p+LzcmMwSWmM1C28gDRfwjj72+cCJMbwT97NrXc+Xy1Y0ZnUTczrrprTwc7FqTCc
-         cmrA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1769784687; x=1770389487;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=bRt0GeybgNu8ZSx8GmOx9phoRbW/Z90F3hfrFzShS8E=;
-        b=YzVIN54PhR1qkg+rTCKF+/6AwH1AsHg1rJ/v/ok5daZMg9KlBAAHB33nnBno3D1tRS
-         OzWKTXMl0KvXpTFgsBFM+XlYslG4CGau3kwHxZHayCXgpD8QZf02HG+L2/CKhp+GnJRX
-         gp6b0mk9wI9+yzJOQK/hm/A+4mM9eZaG53w1xLw5pYAwMhecb7izMFZUelcT18vTL7Vo
-         hhYlIWHDwGTEXWs96T66O2F+VGuADEoWxIVnJGfCrNpnfAQCGuEIRONYXNAoH/Vgr6YD
-         RS1q/c2T2EFD8EHbYe3aBBNSR38CjwBKsXSrOKmSpsgcFR3OnQX4q7JtGcWqYMGx1KO9
-         aFIA==
-X-Forwarded-Encrypted: i=1; AJvYcCUvBOzKye6tXRombLelJebq61t5oD++rmbcGM+oh4AKLxgFMyecqT7znnLn30QZUnKVoqWtzJ4NtNBqnCzGnw==@vger.kernel.org
-X-Gm-Message-State: AOJu0Yw4DTLylDI0frqfLFaG28q32MWL6UJQHs4UKBEy7Ysb4i7GPw4d
-	R3s4Lm7y8BVdHvU1TtGipzPIPadkj+yE8IwapmSRs3ben91CJwfK63xJmUjyafVLAn8=
-X-Gm-Gg: AZuq6aIp0EsMbGEsXzO+qMk5DFYq0oHUh/Egub6fdwuelPTp4jSRGWoLUfNwy4DS2b6
-	UZCITG81OJ44hH0bLeziO1zvTVJzUL8AWk9Tf7H4nBPAHjJzIAfbbGoymSmoXEf1Iab2r6ByLuK
-	5Kdok6Vt/Wa0ex/snydHvqhAylxFZGasnhGNcBU6yBdFQOt4nYgGt5C4DPH6LP+FjsrVel4uwA7
-	rkS41v3hqPSHsOlqK4jK9W418i5UUupNQMNtBVcvxqlVD+iWMvnRGE/5s6hyqMvgNxKfpCyxSoc
-	Fm96zrhLV3Z+G66VNiJXlPfD3S8aY+2iOUMo0zkAFN7wYg6HsnaJDgIbn+R5wgVetTM4YZJhWA8
-	gvMORnIcB9w3J+6aaI3YySzFQKj2en68QCwKQgvQrx/Peh88H4EZZq6mjZiyBgMJcxtdzlC5WkI
-	dnJ74ZfaKO2OYUD9J82xkXEBxdLh7mciQcL6ab3BZLLpellJEzt0aa
-X-Received: by 2002:a05:600c:4506:b0:477:7ab8:aba with SMTP id 5b1f17b1804b1-482db448862mr43189065e9.1.1769784686682;
-        Fri, 30 Jan 2026 06:51:26 -0800 (PST)
-Received: from [192.168.108.101] (freebox.vlq16.iliad.fr. [213.36.7.13])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-48066c4f3edsm260174715e9.15.2026.01.30.06.51.26
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 30 Jan 2026 06:51:26 -0800 (PST)
-Message-ID: <45714517-8388-4c1c-9004-0bd0826706db@freebox.fr>
-Date: Fri, 30 Jan 2026 15:51:25 +0100
+	s=arc-20240116; t=1769785140; c=relaxed/simple;
+	bh=QtzEdA9ntSNO7ppt6lzTmGwmBNOVWqhYXfkYsqeaHB4=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=d1rO51UTy8SZN8u3RTK+7w+WR3ppowgyE3Gbc5GjlSahfP0WawldLt/JnGu3i3/o7ArKNfCBMxemP3C3BlHfNd1+DdxcLgY1OumC50llSpwhjVhQfcGa/Sa6dVP3XCphTAZZf2L3+jFAcJDYjTgf5VAi+gcBHWU3mCTXQ8X0EZQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=zju.edu.cn; spf=pass smtp.mailfrom=zju.edu.cn; arc=none smtp.client-ip=13.76.78.106
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=zju.edu.cn
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=zju.edu.cn
+Received: from zju.edu.cn (unknown [106.117.99.170])
+	by mtasvr (Coremail) with SMTP id _____wBnPM78xnxp8L1gAA--.5479S3;
+	Fri, 30 Jan 2026 22:58:05 +0800 (CST)
+Received: from ubuntu.localdomain (unknown [106.117.99.170])
+	by mail-app1 (Coremail) with SMTP id yy_KCgDH0dv5xnxpnhTxBQ--.54572S2;
+	Fri, 30 Jan 2026 22:58:03 +0800 (CST)
+From: Duoming Zhou <duoming@zju.edu.cn>
+To: linux-wireless@vger.kernel.org
+Cc: linux-kernel@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org,
+	linux-mediatek@lists.infradead.org,
+	nbd@nbd.name,
+	lorenzo@kernel.org,
+	ryder.lee@mediatek.com,
+	shayne.chen@mediatek.com,
+	sean.wang@mediatek.com,
+	matthias.bgg@gmail.com,
+	angelogioacchino.delregno@collabora.com,
+	kuba@kernel.org,
+	alexander.deucher@amd.com,
+	pkshih@realtek.com,
+	akpm@linux-foundation.org,
+	StanleyYP.Wang@mediatek.com,
+	howard-yh.hsu@mediatek.com,
+	rosenp@gmail.com,
+	Duoming Zhou <duoming@zju.edu.cn>
+Subject: [PATCH] wifi: mt76: mt7915: fix use-after-free bugs in mt7915_mac_dump_work()
+Date: Fri, 30 Jan 2026 22:57:59 +0800
+Message-Id: <20260130145759.84272-1-duoming@zju.edu.cn>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH wireless-next v7 2/3] wifi: cfg80211: add initial UHR
- support
-To: Johannes Berg <johannes@sipsolutions.net>, linux-wireless@vger.kernel.org
-Cc: Johannes Berg <johannes.berg@intel.com>
-References: <20260130142019.bd561c0eae91.I5b11fb0345a933bf497fd802aecc72932d58dd68@changeid>
- <20260130142019.69d59a4538d6.I26126bebd83c7ab17e99827489f946ceabb3521f@changeid>
-Content-Language: en-US
-From: Pablo MARTIN-GOMEZ <pmartin-gomez@freebox.fr>
-In-Reply-To: <20260130142019.69d59a4538d6.I26126bebd83c7ab17e99827489f946ceabb3521f@changeid>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
+X-CM-TRANSID:yy_KCgDH0dv5xnxpnhTxBQ--.54572S2
+X-CM-SenderInfo: qssqjiasttq6lmxovvfxof0/1tbiAwYHAWl7uAYDcwBHsY
+X-CM-DELIVERINFO: =?B?cYGOmAXKKxbFmtjJiESix3B1w3uoVhYI+vyen2ZzBEkOnu5chDpkB+ZdGnv/zQ0PbP
+	CR11YjdbuMySUouUtrOXK8iwzYcuYFk7aHTFsYiRbb0uC/oQbxyu3xRrnSKM/xJF44wcM8
+	Hq9+lQsvkMLsMeqhmXkB8lQQRIwc0TJdq+owcnJ2UFiSBZHsqxAN1s176MXBxg==
+X-Coremail-Antispam: 1Uk129KBj93XoW7Zr1xKr15CFykKFyxXFy8tFc_yoW8WFWkpa
+	yFga4UurWUWFsrt3yDJFWxJa15W3Zag34jkryrW34Yq395GFySyws8ZFy29Fy0yF4qkFyY
+	vr45tr98uFyYvFXCm3ZEXasCq-sJn29KB7ZKAUJUUUUU529EdanIXcx71UUUUU7KY7ZEXa
+	sCq-sGcSsGvfJ3Ic02F40EFcxC0VAKzVAqx4xG6I80ebIjqfuFe4nvWSU5nxnvy29KBjDU
+	0xBIdaVrnRJUUU9Eb4IE77IF4wAFF20E14v26ryj6rWUM7CY07I20VC2zVCF04k26cxKx2
+	IYs7xG6rWj6s0DM7CIcVAFz4kK6r1j6r18M28lY4IEw2IIxxk0rwA2F7IY1VAKz4vEj48v
+	e4kI8wA2z4x0Y4vE2Ix0cI8IcVAFwI0_tr0E3s1l84ACjcxK6xIIjxv20xvEc7CjxVAFwI
+	0_Gr1j6F4UJwA2z4x0Y4vEx4A2jsIE14v26rxl6s0DM28EF7xvwVC2z280aVCY1x0267AK
+	xVW0oVCq3wAS0I0E0xvYzxvE52x082IY62kv0487Mc804VCY07AIYIkI8VC2zVCFFI0UMc
+	02F40EFcxC0VAKzVAqx4xG6I80ewAv7VC0I7IYx2IY67AKxVWUJVWUGwAv7VC2z280aVAF
+	wI0_Jr0_Gr1lOx8S6xCaFVCjc4AY6r1j6r4UM4x0Y48IcxkI7VAKI48JM4x0Y48IcxkI7V
+	AKI48G6xCjnVAKz4kxM4IIrI8v6xkF7I0E8cxan2IY04v7MxAIw28IcxkI7VAKI48JMxC2
+	0s026xCaFVCjc4AY6r1j6r4UMI8I3I0E5I8CrVAFwI0_Jr0_Jr4lx2IqxVCjr7xvwVAFwI
+	0_JrI_JrWlx4CE17CEb7AF67AKxVW8ZVWrXwCIc40Y0x0EwIxGrwCI42IY6xIIjxv20xvE
+	14v26r1j6r1xMIIF0xvE2Ix0cI8IcVCY1x0267AKxVW8JVWxJwCI42IY6xAIw20EY4v20x
+	vaj40_Jr0_JF4lIxAIcVC2z280aVAFwI0_Jr0_Gr1lIxAIcVC2z280aVCY1x0267AKxVW8
+	JVW8JrUvcSsGvfC2KfnxnUUI43ZEXa7IU8YFAJUUUUU==
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [1.54 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
-	R_DKIM_ALLOW(-0.20)[freebox-fr.20230601.gappssmtp.com:s=20230601];
+	MID_CONTAINS_FROM(1.00)[];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[freebox-fr.20230601.gappssmtp.com:+];
-	TAGGED_FROM(0.00)[bounces-31371-lists,linux-wireless=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	DMARC_NA(0.00)[freebox.fr];
-	RCPT_COUNT_THREE(0.00)[3];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	TO_DN_SOME(0.00)[];
+	TAGGED_FROM(0.00)[bounces-31372-lists,linux-wireless=lfdr.de];
+	DMARC_NA(0.00)[zju.edu.cn];
 	RCVD_COUNT_FIVE(0.00)[5];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	FROM_HAS_DN(0.00)[];
+	RCPT_COUNT_TWELVE(0.00)[19];
+	FREEMAIL_CC(0.00)[vger.kernel.org,lists.infradead.org,nbd.name,kernel.org,mediatek.com,gmail.com,collabora.com,amd.com,realtek.com,linux-foundation.org,zju.edu.cn];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[pmartin-gomez@freebox.fr,linux-wireless@vger.kernel.org];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	R_DKIM_NA(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
+	FROM_NEQ_ENVFROM(0.00)[duoming@zju.edu.cn,linux-wireless@vger.kernel.org];
 	TAGGED_RCPT(0.00)[linux-wireless];
-	MID_RHS_MATCH_FROM(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 719D0BBC09
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,zju.edu.cn:mid,zju.edu.cn:email]
+X-Rspamd-Queue-Id: 2A98ABBD20
 X-Rspamd-Action: no action
 
-On 30/01/2026 14:20, Johannes Berg wrote:
-> From: Johannes Berg <johannes.berg@intel.com>
->
-> Add initial support for making UHR connections (or suppressing
-> that), adding UHR capable stations on the AP side, encoding
-> and decoding UHR MCSes (except rate calculation for the new
-> MCSes 17, 19, 20 and 23) as well as regulatory support.
->
-> Signed-off-by: Johannes Berg <johannes.berg@intel.com>
-> ---
-> v7:
->   - adjust for changed naming
-> v5:
->   - validate NL80211_ATTR_UHR_CAPABILITY for non-AP (only)
-> v4:
->   - check for correct NSS/MCS for interference mitigation
-> v3:
->   - remove UHR capa pointer from AP settings, it's not in
->     the beacon anyway
->   - fix kernel-doc (Jeff Johnson)
-> ---
->   include/net/cfg80211.h       |  58 ++++++++++++++++++--
->   include/uapi/linux/nl80211.h |  30 +++++++++++
->   net/wireless/nl80211.c       | 102 +++++++++++++++++++++++++++++++++--
->   net/wireless/reg.c           |   4 +-
->   net/wireless/util.c          | 101 ++++++++++++++++++++++++++--------
->   5 files changed, 265 insertions(+), 30 deletions(-)
-[...]
-> @@ -1698,11 +1700,64 @@ static u32 cfg80211_calculate_bitrate_eht(struct rate_info *rate)
->   	tmp *= rate->nss;
->   	do_div(tmp, 8);
->   
-> +	/* and handle interference mitigation - 0.9x */
-> +	if (rate->flags & RATE_INFO_FLAGS_UHR_IM) {
-> +		if (WARN(rate->nss != 1 || rate->mcs != 15,
-I forgot this remark... We have to warn if `rate->mcs == 15` not if its 
-different (it's done correctly for function `ieee80211_rx_list`)
-> +			 "invalid NSS or MCS for UHR IM\n"))
-> +			return 0;
-> +		tmp *= 9000;
-> +		do_div(tmp, 10000);
-> +	}
-> +
->   	result = tmp;
->   
->   	return result / 10000;
->   }
->   
+When the mt7915 pci chip is detaching, the mt7915_crash_data is
+released in mt7915_coredump_unregister(). However, the work item
+dump_work may still be running or pending, leading to UAF bugs
+when the already freed crash_data is dereferenced again in
+mt7915_mac_dump_work().
 
-Pablo
+The race condition can occur as follows:
+
+CPU 0 (removal path)               | CPU 1 (workqueue)
+mt7915_pci_remove()                | mt7915_sys_recovery_set()
+ mt7915_unregister_device()        |  mt7915_reset()
+  mt7915_coredump_unregister()     |   queue_work()
+   vfree(dev->coredump.crash_data) | mt7915_mac_dump_work()
+                                   |  crash_data-> // UAF
+
+Fix this by ensuring dump_work is properly canceled before
+the crash_data is deallocated. Add cancel_work_sync() in
+mt7915_unregister_device() to synchronize with any pending
+or executing dump work.
+
+Fixes: 4dbcb9125cc3 ("wifi: mt76: mt7915: enable coredump support")
+Signed-off-by: Duoming Zhou <duoming@zju.edu.cn>
+---
+ drivers/net/wireless/mediatek/mt76/mt7915/init.c | 1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7915/init.c b/drivers/net/wireless/mediatek/mt76/mt7915/init.c
+index 22443cbc74a..250c2d2479b 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7915/init.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7915/init.c
+@@ -1294,6 +1294,7 @@ int mt7915_register_device(struct mt7915_dev *dev)
+ 
+ void mt7915_unregister_device(struct mt7915_dev *dev)
+ {
++	cancel_work_sync(&dev->dump_work);
+ 	mt7915_unregister_ext_phy(dev);
+ 	mt7915_coredump_unregister(dev);
+ 	mt7915_unregister_thermal(&dev->phy);
+-- 
+2.34.1
 
 
