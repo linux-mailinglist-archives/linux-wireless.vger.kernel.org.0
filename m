@@ -1,163 +1,133 @@
-Return-Path: <linux-wireless+bounces-31350-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-31351-lists+linux-wireless=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id CCnUBCk+fGkxLgIAu9opvQ
-	(envelope-from <linux-wireless+bounces-31350-lists+linux-wireless=lfdr.de@vger.kernel.org>)
-	for <lists+linux-wireless@lfdr.de>; Fri, 30 Jan 2026 06:14:17 +0100
+	id lfTuBv1TfGnTLwIAu9opvQ
+	(envelope-from <linux-wireless+bounces-31351-lists+linux-wireless=lfdr.de@vger.kernel.org>)
+	for <lists+linux-wireless@lfdr.de>; Fri, 30 Jan 2026 07:47:25 +0100
 X-Original-To: lists+linux-wireless@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5B8B3B73C5
-	for <lists+linux-wireless@lfdr.de>; Fri, 30 Jan 2026 06:14:16 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7AD20B7AFA
+	for <lists+linux-wireless@lfdr.de>; Fri, 30 Jan 2026 07:47:24 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 672DF302BDCA
-	for <lists+linux-wireless@lfdr.de>; Fri, 30 Jan 2026 05:11:51 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 530743014869
+	for <lists+linux-wireless@lfdr.de>; Fri, 30 Jan 2026 06:47:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E8C662F0C45;
-	Fri, 30 Jan 2026 05:11:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 78873227EA8;
+	Fri, 30 Jan 2026 06:47:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=morsemicro-com.20230601.gappssmtp.com header.i=@morsemicro-com.20230601.gappssmtp.com header.b="HQkSyN02"
+	dkim=pass (2048-bit key) header.d=realtek.com header.i=@realtek.com header.b="aGG61myu"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-pj1-f50.google.com (mail-pj1-f50.google.com [209.85.216.50])
+Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 66C5F329C6D
-	for <linux-wireless@vger.kernel.org>; Fri, 30 Jan 2026 05:11:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.50
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A259321883E
+	for <linux-wireless@vger.kernel.org>; Fri, 30 Jan 2026 06:47:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=211.75.126.72
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769749910; cv=none; b=nYYlU/a90vioWiGhkp2ZgR+0RSzD4BPK2aoNwPq9o8IH4Mmz1ZKf7M44UIjJKK9Ac9Ygs7qHBGQJ8QUwm4mZC75xKA1AndBcQn9ch/7yamtxjctVM8xjEqxMyMPhsSS3WhoEwcktAYU8lY3LQO30ig1Ou0wBEPW23PiJZVJBeok=
+	t=1769755640; cv=none; b=a6Ega0wIY/h+Zc3PNNHoFybqU5OGE6A39QGVMWQke9Q4udWalFvpIcbSldjBDMz6N9nIxvloserZ/Vrtn4l+sNApegqpzFkNVuD88EAuJ1RXl677V/yCCll7sXnJ6NtrXppbG7I4iWo/fsqKw+0dy23YKaQg8g2e2PiOUGto7eQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769749910; c=relaxed/simple;
-	bh=JVw1mA3heauJ+Hx1KAUZYa082rsehFgBMKMDur02Pak=;
-	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
-	 Content-Disposition; b=c4TMaiGbi696mBsGvzSghURBomsD7jHYMNKQA1zJ8NeBw4WUJidQ3/h4ctDqgkZy3uOi2iDqefpmUNZjyWTwWPzELAvRc7Rh08YvPY4oYP+CYhOYJTYsEb4Aa1xdwJCuj/DJRSaaN9vBgUfGj4GSkHByMtgn7zaEmkhJlfESa38=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=morsemicro.com; spf=pass smtp.mailfrom=morsemicro.com; dkim=pass (2048-bit key) header.d=morsemicro-com.20230601.gappssmtp.com header.i=@morsemicro-com.20230601.gappssmtp.com header.b=HQkSyN02; arc=none smtp.client-ip=209.85.216.50
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=morsemicro.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=morsemicro.com
-Received: by mail-pj1-f50.google.com with SMTP id 98e67ed59e1d1-3530715386cso1134707a91.2
-        for <linux-wireless@vger.kernel.org>; Thu, 29 Jan 2026 21:11:49 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=morsemicro-com.20230601.gappssmtp.com; s=20230601; t=1769749908; x=1770354708; darn=vger.kernel.org;
-        h=content-disposition:mime-version:message-id:subject:cc:to:from:date
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=vqB7Ct/TfkgUyj66ml98s4FlfglvXgzgwPPwSU0a6VQ=;
-        b=HQkSyN02sDDDi2+Ct0uDz4RtBQ0Dc/YRUnWcV++/cGBmK1B8YgNk0qSvQPvPTIhtBj
-         0jPYcOfcr9CuKlmnOZZu7Y5fEkG+BI/jxWu7B0jp8Somum7N/rIS0gGLJvIvp0HWLGXk
-         kHSry0m3iPl+m0W61dS7xHTp/CdZuxwAUAVRbqx4eQ9WGpK39ZKtptv/LPjfS0zjV8AY
-         WJOMhWf0rJQT11WoOr9ZBhy3kLFHrncINHAjDP33qJdZAuFLmHOOHCH+thcGi0uTV/6s
-         wtEP7kGh7RRqaRCrZ33ZHt3C/b6ADlcJYVFmwbmLOhx8Peh2/Hf0+jTEjBiADR9Ub5H+
-         ED0Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1769749908; x=1770354708;
-        h=content-disposition:mime-version:message-id:subject:cc:to:from:date
-         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=vqB7Ct/TfkgUyj66ml98s4FlfglvXgzgwPPwSU0a6VQ=;
-        b=vhjGDuq5S7akwJ0LIDidLTMelwDV2s2IXEaHntR+GJOSV+/AhB79DYD9VIBM4Ry/Cz
-         7d9jxx8zIOym6S8M+ga7+8ZdwLdN/gGIlApNC19l0hs4jt54mBisYVaqo2bCaeWidrKd
-         jt0Ng+z1IZPO5eaYWI5tlJS2XmGHmzEfDeCIxV1DugOUSX4b1cASGZvEcNCBbkRUY7HV
-         +eSrNMQOBwzxkaxJs1zVxWQAI/M/N/WzPElGz8ivpQ1fKF0+OJh5XHXGcg89C1r9MJry
-         aNX5q8rU/2J2vPLxH+FyKjh7EqG70lySD6Z08u3H8A9NoUC1RsZP5xetUUFlwe2MZFFI
-         PN5g==
-X-Gm-Message-State: AOJu0YzrOPuCbHJ8hkEV5Vj0cLHfom5eyoenqddLPTZJwgKkgP1xRgeZ
-	8GcVg/XTqQPv06u9DBfKnTJMU3yMojZJW8CGULII7AjKPC/3Uh+ezHSSQBSLveVIj/ZRpxyZFRE
-	aC1Fq
-X-Gm-Gg: AZuq6aIjePnLyTDl13AFBFS2bJEsRlSykqFU2YXO5bvX5zYkZSW05so0cgjPQaWHFoR
-	XMJsR7Hi6ZF9mSKG1lFaR8WpZzIUAP7V2MG6XMTUC4ertxzSFTnhniHuW4nhFypYGho4/P5YIV8
-	r+RC5ibqYvr3/acSFyBA+tmTeETMl0Nk4Qdd754AYl6ahnEci2aP5mJW7LBS58jQW4Zj3Zz5pKe
-	RR16QSkwuvP3ZEaeyE68cCyHLdPEoDxeGifZWq6YkAdD6L8kKs6QT7gRFwEjiNK9NPMmOFSTGq2
-	W7o3+AZPcm2evwM5oxzTT7O9LNa4IodSTpjaAZUvdguBUieDnMamaJbdo2iWA420jCM1Gxk3Bee
-	PTpzx9tOximEchE1zROn3n5L3rN+RpoLtRVrr3KQQBLiYMNlpDYijCDrRxLN+ZItX2WwqWHj04n
-	wbyOVOEV+5eBwxDku8LsQNSQbAw9wyvEGxRDaL7MPOh4XSPWrx/J674szr4OnRJctvBwj66TJ3i
-	SlAfaDJGWI=
-X-Received: by 2002:a17:90b:4a4e:b0:34a:b1ea:6648 with SMTP id 98e67ed59e1d1-3543b2df76emr1689867a91.2.1769749908180;
-        Thu, 29 Jan 2026 21:11:48 -0800 (PST)
-Received: from localhost (60-242-93-14.static.tpgi.com.au. [60.242.93.14])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-353f6102679sm9725131a91.3.2026.01.29.21.11.46
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 29 Jan 2026 21:11:47 -0800 (PST)
-Date: Fri, 30 Jan 2026 16:11:45 +1100
-From: Lachlan Hodges <lachlan.hodges@morsemicro.com>
-To: linux-wireless@vger.kernel.org
-Cc: arien.judge@morsemicro.com
-Subject: [INQUIRY] wireless driver kernel-doc format
-Message-ID: <dknc7nkkzfmbrhnfjhnmtz7tbacydiluzcbvtkrk65ml6u3mqj@3sjdk3gx7run>
+	s=arc-20240116; t=1769755640; c=relaxed/simple;
+	bh=t9IsKtEGcYUQtLWfFEcXCmpF7TRvkjAD0lWSqSYKmFI=;
+	h=From:To:CC:Subject:In-Reply-To:References:Message-ID:Date:
+	 MIME-Version:Content-Type; b=umg65/YOq4RPjZtx3IVdF85okwR/3A1PEeFTQdeUGEYx6q1N63PNTonRzUnk6rXLR0o2cZevTnoWg70nHpAR/AcX7D6KRdijP0U79d+spCpJ3r03roXBm/VKZQ4t+xFvN/xV5NaHs9QOy7bafaJP0di6qN0eYfLpE6Tt16mgff8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com; spf=pass smtp.mailfrom=realtek.com; dkim=pass (2048-bit key) header.d=realtek.com header.i=@realtek.com header.b=aGG61myu; arc=none smtp.client-ip=211.75.126.72
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=realtek.com
+X-SpamFilter-By: ArmorX SpamTrap 5.80 with qID 60U6lFuxD442049, This message is accepted by code: ctloc85258
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=realtek.com; s=dkim;
+	t=1769755636; bh=4vV4QfhEcNA3JI94saEBv7+2Mc3sboaGOXhb2we9fhw=;
+	h=From:To:CC:Subject:In-Reply-To:References:Message-ID:Date:
+	 MIME-Version:Content-Type;
+	b=aGG61myuaWUfCJ5mlqCksxyi1K5CJoc69/ylbmEPzwf87V3zaTQ5uSLo2KQiy3Hkd
+	 3pAeS6YOB4/vAPqSEiYnfZtpYFLGyzPWM6VkRxJpH0YuXF9SM8b5CV1Oo+CfNR/GER
+	 gTRctD/TZyxXOlK9Xu75vOnzD9hdBV4/74SHqeQyZZTXMrI8tYhM9FeJO009n8rr6D
+	 gCsTY7k9X5OFFAKKrf6lrtPfZgQOYBHEKu+fF/Ap0JIxHTmYnRE6OVibBuTnItEQvO
+	 YWoQT2gSgSEY8hv34Rz41Th5ehQauruwy7c8vDrtYHrR4vBIUlEEWzbl5FdTIBH/SK
+	 2MQiOsYDVichw==
+Received: from mail.realtek.com (rtkexhmbs03.realtek.com.tw[10.21.1.53])
+	by rtits2.realtek.com.tw (8.15.2/3.21/5.94) with ESMTPS id 60U6lFuxD442049
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK)
+	for <linux-wireless@vger.kernel.org>; Fri, 30 Jan 2026 14:47:15 +0800
+Received: from RTKEXHMBS01.realtek.com.tw (172.21.6.40) by
+ RTKEXHMBS03.realtek.com.tw (10.21.1.53) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1748.10; Fri, 30 Jan 2026 14:47:16 +0800
+Received: from RTKEXHMBS03.realtek.com.tw (10.21.1.53) by
+ RTKEXHMBS01.realtek.com.tw (172.21.6.40) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1748.10; Fri, 30 Jan 2026 14:47:15 +0800
+Received: from [127.0.1.1] (172.21.40.75) by RTKEXHMBS03.realtek.com.tw
+ (10.21.1.53) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1748.10 via Frontend
+ Transport; Fri, 30 Jan 2026 14:47:15 +0800
+From: Ping-Ke Shih <pkshih@realtek.com>
+To: Ping-Ke Shih <pkshih@realtek.com>, <linux-wireless@vger.kernel.org>
+CC: <gary.chang@realtek.com>, <dian_syuan0116@realtek.com>,
+        <kevin_yang@realtek.com>
+Subject: Re: [PATCH rtw-next 1/6] wifi: rtw89: debug: rename mac/ctrl error to L0/L1 error
+In-Reply-To: <20260127085036.44060-2-pkshih@realtek.com>
+References: <20260127085036.44060-1-pkshih@realtek.com> <20260127085036.44060-2-pkshih@realtek.com>
+Message-ID: <64d4ef3b-8d3b-432c-92e5-34a736f24010@RTKEXHMBS03.realtek.com.tw>
+Date: Fri, 30 Jan 2026 14:47:15 +0800
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+Content-Type: text/plain
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-1.06 / 15.00];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MID_RHS_NOT_FQDN(0.50)[];
-	R_DKIM_ALLOW(-0.20)[morsemicro-com.20230601.gappssmtp.com:s=20230601];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	DMARC_POLICY_ALLOW(-0.50)[realtek.com,none];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_DKIM_ALLOW(-0.20)[realtek.com:s=dkim];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
-	DMARC_POLICY_SOFTFAIL(0.10)[morsemicro.com : SPF not aligned (relaxed), DKIM not aligned (relaxed),none];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-31350-lists,linux-wireless=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[morsemicro-com.20230601.gappssmtp.com:+];
-	RECEIVED_HELO_LOCALHOST(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	RCPT_COUNT_TWO(0.00)[2];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	MIME_TRACE(0.00)[0:+];
-	RCVD_COUNT_FIVE(0.00)[5];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[lachlan.hodges@morsemicro.com,linux-wireless@vger.kernel.org];
+	TO_DN_SOME(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-31351-lists,linux-wireless=lfdr.de];
+	DKIM_TRACE(0.00)[realtek.com:+];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	RCPT_COUNT_FIVE(0.00)[5];
+	FROM_NEQ_ENVFROM(0.00)[pkshih@realtek.com,linux-wireless@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
 	MISSING_XM_UA(0.00)[];
-	TO_DN_NONE(0.00)[];
-	TAGGED_RCPT(0.00)[linux-wireless];
+	PRECEDENCE_BULK(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 5B8B3B73C5
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns];
+	TAGGED_RCPT(0.00)[linux-wireless];
+	RCVD_COUNT_SEVEN(0.00)[7]
+X-Rspamd-Queue-Id: 7AD20B7AFA
 X-Rspamd-Action: no action
 
-Hi,
+Ping-Ke Shih <pkshih@realtek.com> wrote:
 
-I am wondering what the modern consensus is on kernel doc formatting
-when it comes to multi line definitions. Take the following example from
-the kernel doc documentation [1]:
+> From: Zong-Zhe Yang <kevin_yang@realtek.com>
+> 
+> Sync Realtek terms on SER (system error recovery) simulation.
+> 
+> No logic is changed.
+> 
+> Signed-off-by: Zong-Zhe Yang <kevin_yang@realtek.com>
+> Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
 
-/**
- * struct struct_name - Brief description.
- * @member1: Description of member1.
- * @member2: Description of member2.
- *           One can provide multiple line descriptions
- *           for members.
- *
- * Description of the structure.
- */
+6 patch(es) applied to rtw-next branch of rtw.git, thanks.
 
-where the each subsequent line for @member2 is indented until the start of
-the first line. However I know mac80211, cfg80211 and some drivers use
-the following:
+9e1e967b4dbe wifi: rtw89: debug: rename mac/ctrl error to L0/L1 error
+6792fcf6a691 wifi: rtw89: debug: tweak Wi-Fi 7 SER L0/L1 simulation methods
+734bb61782d4 wifi: rtw89: wow: disable interrupt before swapping FW for 8922D
+2258f2770e19 wifi: rtw89: mac: set MU group membership and position to registers
+af1e82232b98 wifi: rtw89: pci: restore LDO setting after device resume
+4c1552473acf wifi: rtw89: pci: warn if SPS OCP happens for RTL8922DE
 
-/**
- * struct struct_name - Brief description.
- * @member1: Description of member1.
- * @member2: Description of member2.
- *      One can provide multiple line descriptions
- *      for members.
- *
- * Description of the structure.
- */
+---
+https://github.com/pkshih/rtw.git
 
-where each subsequent line is indented by a single tab. This is my preferred
-method but the docs say otherwise and there appears to be a general mix in
-drivers so I am wondering is there any expectation on style for new drivers?
-Or are either OK? Thanks in advance.
-
-lachlan
-
-[1] https://docs.kernel.org/doc-guide/kernel-doc.html#structure-union-and-enumeration-documentation
 
