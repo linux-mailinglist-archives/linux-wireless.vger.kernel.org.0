@@ -1,164 +1,163 @@
-Return-Path: <linux-wireless+bounces-31418-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-31419-lists+linux-wireless=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id mIsjLMYbfmn5VgIAu9opvQ
-	(envelope-from <linux-wireless+bounces-31418-lists+linux-wireless=lfdr.de@vger.kernel.org>)
-	for <lists+linux-wireless@lfdr.de>; Sat, 31 Jan 2026 16:12:06 +0100
+	id WPBVIGo9fmk6WgIAu9opvQ
+	(envelope-from <linux-wireless+bounces-31419-lists+linux-wireless=lfdr.de@vger.kernel.org>)
+	for <lists+linux-wireless@lfdr.de>; Sat, 31 Jan 2026 18:35:38 +0100
 X-Original-To: lists+linux-wireless@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id C7D19C2A39
-	for <lists+linux-wireless@lfdr.de>; Sat, 31 Jan 2026 16:12:05 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id BF21AC3496
+	for <lists+linux-wireless@lfdr.de>; Sat, 31 Jan 2026 18:35:36 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 582993002514
-	for <lists+linux-wireless@lfdr.de>; Sat, 31 Jan 2026 15:12:03 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 7BC40300A314
+	for <lists+linux-wireless@lfdr.de>; Sat, 31 Jan 2026 17:35:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A241C3563D1;
-	Sat, 31 Jan 2026 15:12:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6D0EA35BDA7;
+	Sat, 31 Jan 2026 17:34:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=worksmobile.com header.i=@worksmobile.com header.b="gsaDFw7C";
+	dkim=pass (1024-bit key) header.d=korea.ac.kr header.i=@korea.ac.kr header.b="W/pI+f5Y"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [185.203.201.7])
+Received: from cvsmtppost106.wmail.worksmobile.com (cvsmtppost106.wmail.worksmobile.com [125.209.209.73])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 84F7B341AD8
-	for <linux-wireless@vger.kernel.org>; Sat, 31 Jan 2026 15:11:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.201.7
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D3FC1364056
+	for <linux-wireless@vger.kernel.org>; Sat, 31 Jan 2026 17:34:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=125.209.209.73
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769872322; cv=none; b=L24K6RBKjyInLf/raQ7WgdKyWVKLipX6eUhDROq8KNvq4k1RE7tvJ3ulcWS8jcryHPbD6AmgMRb7oqzgt4SaeSiD7B2r9TrhvVs2Mkn1RKG8Xg1yVJ62VY3Pqi9P2A+azOIYIeh0srtCFU6w4sKOqvMkkMmDkpVy00lUrFPzouc=
+	t=1769880851; cv=none; b=g69KoTfJgdNyJEHNZy8riun48qUkhno68gJRxNTiIt4XT4o/GCuqQtUq0Q7xO/SbsGkXxrQpePPDqV+ErqnHSmDHvdaTBFGd2iQAtyD3vafldS2U4ogy0Si9WSeSEJ6+4Q3c5g1jI5v8MSqlZ/HeUtBkAHZGWMZDeme3vLwXl/M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769872322; c=relaxed/simple;
-	bh=Rw88yKb3KZqqYW+ZvJrAaS4iZ9qjJKr36+r+XVg7YKw=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=BbKyDArpX0rNWu9i4iz0LVWNaRFvSnzIOMJRx3xvlFAwSJNWw6wXj0JM73PBiup5DDFlnLzfzrMQglseX4aTLuXV26S6Tc5njNaig/R6RfL+TrK2xVY0X0kJLXkxxwbqP4WLs9ynL8s4dKmykBDHQEmRA30hgD/4LFLRnoB0k90=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.201.7
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
-Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
-	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
-	(Exim 4.92)
-	(envelope-from <mkl@pengutronix.de>)
-	id 1vmCdI-0004OL-MZ; Sat, 31 Jan 2026 16:11:32 +0100
-Received: from moin.white.stw.pengutronix.de ([2a0a:edc0:0:b01:1d::7b] helo=bjornoya.blackshift.org)
-	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.96)
-	(envelope-from <mkl@pengutronix.de>)
-	id 1vmCdG-003QgM-0O;
-	Sat, 31 Jan 2026 16:11:29 +0100
-Received: from pengutronix.de (unknown [IPv6:2001:67c:1810:f051:561c:856e:5964:a6ed])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange x25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(Client did not present a certificate)
-	(Authenticated sender: mkl-all@blackshift.org)
-	by smtp.blackshift.org (Postfix) with ESMTPSA id 4331E4DC6F6;
-	Sat, 31 Jan 2026 15:11:28 +0000 (UTC)
-Date: Sat, 31 Jan 2026 16:11:25 +0100
-From: Marc Kleine-Budde <mkl@pengutronix.de>
-To: Ethan Nelson-Moore <enelsonmoore@gmail.com>
-Cc: netdev@vger.kernel.org, linux-can@vger.kernel.org, 
-	linux-wireless@vger.kernel.org, Michael Grzeschik <m.grzeschik@pengutronix.de>, 
-	Andrew Lunn <andrew+netdev@lunn.ch>, "David S. Miller" <davem@davemloft.net>, 
-	Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, 
-	Paolo Abeni <pabeni@redhat.com>, Vincent Mailhol <mailhol@kernel.org>, 
-	Ido Schimmel <idosch@nvidia.com>, Petr Machata <petrm@nvidia.com>, 
-	Sridhar Samudrala <sridhar.samudrala@intel.com>, Toke =?utf-8?Q?H=C3=B8iland-J=C3=B8rgensen?= <toke@toke.dk>, 
-	Ping-Ke Shih <pkshih@realtek.com>, Thomas =?utf-8?Q?M=C3=BChlbacher?= <tmuehlbacher@posteo.net>, 
-	Oliver Hartkopp <socketcan@hartkopp.net>
-Subject: Re: [PATCH net-next] net: remove unnecessary module_init/exit
- functions
-Message-ID: <20260131-wooden-overjoyed-rook-f04e62-mkl@pengutronix.de>
-X-AI: stop_reason: "refusal"
-References: <20260131004327.18112-1-enelsonmoore@gmail.com>
+	s=arc-20240116; t=1769880851; c=relaxed/simple;
+	bh=h0BHEf3EUV2XoZUux+VQ9dvTNp8V8LICsw0jUbT9E/E=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=IxG/CyNnRmEfT3M5bKWXvXZNVjubDhyn4e07/+7FaCLE84R/0BcRphlv7l6XR2R9tlVCKVqyMTYp6OAW420h6PcDtq9/AhvEXMhOn7Nt148itVRdubwo/O2mbHKdQd8X836pRrDid9y8u327iJTNlvj2jTtmFzBCBSwL1dMYpYE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=korea.ac.kr; spf=pass smtp.mailfrom=korea.ac.kr; dkim=pass (2048-bit key) header.d=worksmobile.com header.i=@worksmobile.com header.b=gsaDFw7C; dkim=pass (1024-bit key) header.d=korea.ac.kr header.i=@korea.ac.kr header.b=W/pI+f5Y; arc=none smtp.client-ip=125.209.209.73
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=korea.ac.kr
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=korea.ac.kr
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=worksmobile.com;
+	s=s20171120; t=1769880237;
+	bh=h0BHEf3EUV2XoZUux+VQ9dvTNp8V8LICsw0jUbT9E/E=;
+	h=From:To:Subject:Date:Message-Id:From:Subject:Feedback-ID:
+	 X-Works-Security;
+	b=gsaDFw7C2mQxqsB5sr/SbPw7BD63OZAuVrergK5MTJ6XAvvyQgx7YEhitgD2vihSW
+	 f27mxjhkAriu8MU7XeYqsPc7tCCwflqZqMQLrdqpWz2Rr870H0+oIDcKgsK8TmoXMw
+	 VAr4az0NZ8BSnosOGhwaT7grhOYpxwy59x3cvn00BurWuM08VncuC7oRXGLhJ/D0HJ
+	 w5aviLQKDrZInL7OY3gZcyTfcgAAjlHBJto2PQd62rzzyh1Dxz2ZA1Bgob6Yvj8N9p
+	 USMGwWEn1ecbgVzeRlp1W8s4Ui2l5JwbqUnC0fA51zpQTM0nsHC0vvFJnqFMUSIA+A
+	 i5LynD1sMyvQg==
+Received: from cvsendbo003.wmail ([10.113.20.165])
+  by cvsmtppost106.wmail.worksmobile.com with ESMTP id 5c9rIlrZQyOiuHhcH2HE+Q
+  for <linux-wireless@vger.kernel.org>;
+  Sat, 31 Jan 2026 17:23:57 -0000
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=korea.ac.kr;
+	s=naverworks; t=1769880237;
+	bh=h0BHEf3EUV2XoZUux+VQ9dvTNp8V8LICsw0jUbT9E/E=;
+	h=From:To:Subject:Date:Message-Id:From:Subject:Feedback-ID:
+	 X-Works-Security;
+	b=W/pI+f5Yh9HQwZWjwUdlvNw5BP0pbZZhnu8UvCgKkdymnK/TMYgUq/P7T9ajSEPIS
+	 GsA6GJXVZrXw0ttNfAommFfJ6LALbGiKM3+GCctAN+4IDXYwTbYXIcYyVQePL4dE5p
+	 IIInfq/BMsE9/8VZZXHiIWWN7vxUNGymGuAh64MU=
+X-Session-ID: 1W-InNWnSW2Nn+Ds4VGMFQ
+X-Works-Send-Opt: kendjAJYjHm/FqM9FqJYFxMqFNwYjAg=
+X-Works-Smtp-Source: A9bdaAvrFqJZ+HmXKq2X+6E=
+Received: from s2lab05.. ([163.152.163.130])
+  by jvnsmtp402.gwmail.worksmobile.com with ESMTP id 1W-InNWnSW2Nn+Ds4VGMFQ
+  for <multiple recipients>
+  (version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384);
+  Sat, 31 Jan 2026 17:23:57 -0000
+From: Ingyu Jang <ingyujang25@korea.ac.kr>
+To: linux-wireless@vger.kernel.org
+Cc: arend.vanspriel@broadcom.com,
+	brcm80211@lists.linux.dev,
+	brcm80211-dev-list.pdl@broadcom.com,
+	Ingyu Jang <ingyujang25@korea.ac.kr>
+Subject: [PATCH] wifi: brcmsmac: phy: Remove unreachable error handling code
+Date: Sun,  1 Feb 2026 02:23:55 +0900
+Message-Id: <20260131172355.3367673-1-ingyujang25@korea.ac.kr>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="6yd7qrhj4jkcdcod"
-Content-Disposition: inline
-In-Reply-To: <20260131004327.18112-1-enelsonmoore@gmail.com>
-X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
-X-SA-Exim-Mail-From: mkl@pengutronix.de
-X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
-X-PTX-Original-Recipient: linux-wireless@vger.kernel.org
+Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-1.06 / 15.00];
-	SIGNED_PGP(-2.00)[];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-0.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	MID_CONTAINS_FROM(1.00)[];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
-	MIME_GOOD(-0.20)[multipart/signed,text/plain];
+	R_MISSING_CHARSET(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[korea.ac.kr,none];
+	R_DKIM_ALLOW(-0.20)[worksmobile.com:s=s20171120,korea.ac.kr:s=naverworks];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	MAILLIST(-0.15)[generic];
+	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	MIME_TRACE(0.00)[0:+];
+	TO_DN_SOME(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+,1:+,2:~];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FREEMAIL_TO(0.00)[gmail.com];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-31418-lists,linux-wireless=lfdr.de];
-	DMARC_NA(0.00)[pengutronix.de];
-	MISSING_XM_UA(0.00)[];
+	TAGGED_FROM(0.00)[bounces-31419-lists,linux-wireless=lfdr.de];
+	DKIM_TRACE(0.00)[worksmobile.com:+,korea.ac.kr:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	RCPT_COUNT_FIVE(0.00)[5];
+	FROM_NEQ_ENVFROM(0.00)[ingyujang25@korea.ac.kr,linux-wireless@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[18];
-	RCVD_COUNT_FIVE(0.00)[6];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[mkl@pengutronix.de,linux-wireless@vger.kernel.org];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
 	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[linux-wireless,netdev];
-	R_DKIM_NA(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TO_DN_SOME(0.00)[]
-X-Rspamd-Queue-Id: C7D19C2A39
+	RCVD_COUNT_FIVE(0.00)[5];
+	TAGGED_RCPT(0.00)[linux-wireless];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,worksmobile.com:dkim]
+X-Rspamd-Queue-Id: BF21AC3496
 X-Rspamd-Action: no action
 
+wlc_phy_txpwr_srom_read_lcnphy() in wlc_phy_attach_lcnphy() always
+returns true, making the error handling code unreachable. Change the
+function's return type to void and remove the dead code, similar to
+the cleanup done for wlc_phy_txpwr_srom_read_nphy() in commit
+47f0e32ffe4e ("wifi: brcmsmac: phy: Remove unreachable code").
 
---6yd7qrhj4jkcdcod
-Content-Type: text/plain; protected-headers=v1; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
-Subject: Re: [PATCH net-next] net: remove unnecessary module_init/exit
- functions
-MIME-Version: 1.0
+Signed-off-by: Ingyu Jang <ingyujang25@korea.ac.kr>
+---
+ .../wireless/broadcom/brcm80211/brcmsmac/phy/phy_lcn.c   | 9 ++-------
+ 1 file changed, 2 insertions(+), 7 deletions(-)
 
-On 30.01.2026 16:42:56, Ethan Nelson-Moore wrote:
-> Many network drivers have unnecessary empty module_init and module_exit
-> functions. Remove them (including some that just print a message). Note
-> that if a module_init function exists, a module_exit function must also
-> exist; otherwise, the module cannot be unloaded.
->
-> Signed-off-by: Ethan Nelson-Moore <enelsonmoore@gmail.com>
-> ---
->  drivers/net/can/sja1000/sja1000.c             | 16 ----------
+diff --git a/drivers/net/wireless/broadcom/brcm80211/brcmsmac/phy/phy_lcn.c b/drivers/net/wireless/broadcom/brcm80211/brcmsmac/phy/phy_lcn.c
+index b4bba67a45ec3..5258681218ea9 100644
+--- a/drivers/net/wireless/broadcom/brcm80211/brcmsmac/phy/phy_lcn.c
++++ b/drivers/net/wireless/broadcom/brcm80211/brcmsmac/phy/phy_lcn.c
+@@ -4790,7 +4790,7 @@ void wlc_phy_init_lcnphy(struct brcms_phy *pi)
+ 	wlc_lcnphy_calib_modes(pi, PHY_PERICAL_PHYINIT);
+ }
+ 
+-static bool wlc_phy_txpwr_srom_read_lcnphy(struct brcms_phy *pi)
++static void wlc_phy_txpwr_srom_read_lcnphy(struct brcms_phy *pi)
+ {
+ 	s8 txpwr = 0;
+ 	int i;
+@@ -4879,8 +4879,6 @@ static bool wlc_phy_txpwr_srom_read_lcnphy(struct brcms_phy *pi)
+ 				sprom->ant_available_bg);
+ 	}
+ 	pi_lcn->lcnphy_cck_dig_filt_type = -1;
+-
+-	return true;
+ }
+ 
+ void wlc_2064_vco_cal(struct brcms_phy *pi)
+@@ -4992,10 +4990,7 @@ bool wlc_phy_attach_lcnphy(struct brcms_phy *pi)
+ 	pi->pi_fptr.radioloftget = wlc_lcnphy_get_radio_loft;
+ 	pi->pi_fptr.detach = wlc_phy_detach_lcnphy;
+ 
+-	if (!wlc_phy_txpwr_srom_read_lcnphy(pi)) {
+-		kfree(pi->u.pi_lcnphy);
+-		return false;
+-	}
++	wlc_phy_txpwr_srom_read_lcnphy(pi);
+ 
+ 	if (LCNREV_IS(pi->pubpi.phy_rev, 1)) {
+ 		if (pi_lcn->lcnphy_tempsense_option == 3) {
+-- 
+2.34.1
 
-For drivers/net/can
-
-Acked-by: Marc Kleine-Budde <mkl@pengutronix.de>
-
-regards,
-Marc
-
---=20
-Pengutronix e.K.                 | Marc Kleine-Budde          |
-Embedded Linux                   | https://www.pengutronix.de |
-Vertretung N=C3=BCrnberg              | Phone: +49-5121-206917-129 |
-Amtsgericht Hildesheim, HRA 2686 | Fax:   +49-5121-206917-9   |
-
---6yd7qrhj4jkcdcod
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAABCgAdFiEEn/sM2K9nqF/8FWzzDHRl3/mQkZwFAml+G5oACgkQDHRl3/mQ
-kZwFxQgAqTWarHnOMLQgAfktq8C6b1xbDfGkeLEVgqQLgeK3hr1CXec3E3TbKYn9
-n5CEvjy5bGfh0RJ/tLDbPATx5kzwrGteRHpqmd8mO+Cn063l06OpcLLLJ/HxEU1Y
-icgrkF8XRG4pCrzHtFFLtI5lxDIbx1Gb4T3o3IiusfphN5bN0ySKkPQVluOrK0nG
-S1lwcjqHjGYr2kXQ0PB5ULHdOiugYBGk1ZgOoOrZyjQSyC0sye50YThQhek3xEDV
-cMBf/NMFIfSjXkx/z8B87YOK2hotfB5qHilqje1AClDuK45Bjs6A+xb+EwAPc3Lt
-ktHD4Px12IJbaBaJo4hCFxyCM1Xm4g==
-=iYrI
------END PGP SIGNATURE-----
-
---6yd7qrhj4jkcdcod--
 
