@@ -1,86 +1,104 @@
-Return-Path: <linux-wireless+bounces-31409-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-31410-lists+linux-wireless=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id MFZlMqVNfWmkRQIAu9opvQ
-	(envelope-from <linux-wireless+bounces-31409-lists+linux-wireless=lfdr.de@vger.kernel.org>)
-	for <lists+linux-wireless@lfdr.de>; Sat, 31 Jan 2026 01:32:37 +0100
+	id GIlCOlFQfWnORQIAu9opvQ
+	(envelope-from <linux-wireless+bounces-31410-lists+linux-wireless=lfdr.de@vger.kernel.org>)
+	for <lists+linux-wireless@lfdr.de>; Sat, 31 Jan 2026 01:44:01 +0100
 X-Original-To: lists+linux-wireless@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4EA73BFA24
-	for <lists+linux-wireless@lfdr.de>; Sat, 31 Jan 2026 01:32:37 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2869EBFAE4
+	for <lists+linux-wireless@lfdr.de>; Sat, 31 Jan 2026 01:44:01 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id EA45930056D5
-	for <lists+linux-wireless@lfdr.de>; Sat, 31 Jan 2026 00:32:35 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id DB3453003836
+	for <lists+linux-wireless@lfdr.de>; Sat, 31 Jan 2026 00:43:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6AE732F8BDF;
-	Sat, 31 Jan 2026 00:32:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 66D1E30F80B;
+	Sat, 31 Jan 2026 00:43:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="ali4QblL"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="EoiHGZOq"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-qk1-f180.google.com (mail-qk1-f180.google.com [209.85.222.180])
+Received: from mail-dl1-f65.google.com (mail-dl1-f65.google.com [74.125.82.65])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0223918027
-	for <linux-wireless@vger.kernel.org>; Sat, 31 Jan 2026 00:32:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.180
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 30AE830C60B
+	for <linux-wireless@vger.kernel.org>; Sat, 31 Jan 2026 00:43:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.82.65
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769819555; cv=none; b=qbFy43iuZikBCb2gSDxxQvwk8rthkdwoPFHtoJGjW40OpIhiJ6AEJtT9dI6paFzWG9OPscfdf1uMLHJoY85D921s/u6ybTCcbInItXi7fOtxv0mI15/cWVm21ix69beaRKGx18K1eYASmZiL2IVK0KsGBzUbiN1zWkC9Rltc7+U=
+	t=1769820235; cv=none; b=gNggebOtDJA0Xu8YYWuYbsTdl6c6Lzbzy+i+yJzVHhCBj0tMftpuz9IU8WKS8uW5aGDf+e/4IaMP5INOkqr/LxvBAUj4Mf6QTicEm5wEWpXvWI/smnX64PmM3g5rJuLJYa2ffYe10TX9+9iDgectWsgIgqRALqkATyT2je1RVJc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769819555; c=relaxed/simple;
-	bh=qHLwm3foGsLyRfN/w8M5G6gWqz7qzuvoYSrEcQQG3d4=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=f8KKU7BzU5lLkgut24p3ESYNM6GKc2t+9F0GxOFnS8b/+twvoGpBU5giieHdw+CTelKmGh5ahDpyzvxRUh5AchuXs1SmFiTd4VFA526+N829tpHounwiR066KtwBFviqXhu2WyleHXsLF+DHrKyX/q8JMO5poTVO7BDCQVjyUl8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=ali4QblL; arc=none smtp.client-ip=209.85.222.180
+	s=arc-20240116; t=1769820235; c=relaxed/simple;
+	bh=gAMxZn0Bbk69ZZJxMKMKvrwOH+mTYEZ1m8iOZgJYkZE=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=CyVVijQfxyqG6PirLY7SlSyQ4WFDjfRWNjZtLsV5539Sjdua08XSASUdsmnq/BbPsh8LYUbYUFYoHlY7tc3cRX2zyX9c6RNASqqyer46xKnvKz7IceXlT31FMd/wLvXdCFIAInwq1lmlA8Chn1z3JI+I1HKfKEMz8MeYMk8X1GI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=EoiHGZOq; arc=none smtp.client-ip=74.125.82.65
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-qk1-f180.google.com with SMTP id af79cd13be357-8c7199e7f79so413415185a.0
-        for <linux-wireless@vger.kernel.org>; Fri, 30 Jan 2026 16:32:33 -0800 (PST)
+Received: by mail-dl1-f65.google.com with SMTP id a92af1059eb24-12336c0a8b6so3812821c88.1
+        for <linux-wireless@vger.kernel.org>; Fri, 30 Jan 2026 16:43:50 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1769819553; x=1770424353; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1769820230; x=1770425030; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:message-id:date:subject:cc
          :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=NdZ/Sc5hV/uhGzu0pWshiyKD65Sr9XHMviGrv3h2kCQ=;
-        b=ali4QblLrYOCgRe5ZNd3f8CHScWtIfyQ0Xtun/YcbAKK+IAo1UGM/ljXExFFeMN0kU
-         zXf32Fbe8BEZ1E3+jvc0vmmB2ypc4vO1qGyS+Az92hmckUz23M/jDyzDe58Qr96QbVZ3
-         E5gBykYFYsSE3g8oWhryOhTABBL8Kt2i/C3hafQnSgXJ7wp4Ay4zefBOTNapwaFSM5X0
-         EKNvFo5LlhzvOzJSIik4rIwmj67bl2JsxkDyPr/iJJlcoJPr/7jg/m6V9cAN1d0hi9ZO
-         KJx/7TmhS/BLGmVcAgFgvxT0BZwxTERKzb8WikqVrIxy8e6lfU2nGl1hYTTdyo524Jqc
-         Orng==
+        bh=Lz/w+ViHe1NFxGhmvKw2Td3oBT35x8hZuCkuGLcRPRE=;
+        b=EoiHGZOq1n+YqkmJ8RdCd+vjNLjMRY8d7N0js7XEzTUkM/k4VsCUrOCG8r9Rtltflp
+         SURYEBQwRWjFb/LLK3zls1RwRTQcw6yeyP82KeLblFalF8WOg1kOC++vEb62lgRoy1y3
+         AhCZfU724LbU6Kw6WFzNfGik3fy/yXDXi4982mgcQ/5AvZFn0TfaDWIEM+zNdypUc1sS
+         IxvURZ4X584Lima7TJXbyOmxXA2RHa77Pg4KBmwtN0lC6JBQzfzn2NX4azPIU1awHW/J
+         VwXPcO0KL0i0aKGD8I4RkYUXCoxNjJ5GlQvsO6lNd7K4ZWivXKPKJrjy7dqF2f7P2inL
+         zNDQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1769819553; x=1770424353;
+        d=1e100.net; s=20230601; t=1769820230; x=1770425030;
         h=content-transfer-encoding:mime-version:message-id:date:subject:cc
          :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=NdZ/Sc5hV/uhGzu0pWshiyKD65Sr9XHMviGrv3h2kCQ=;
-        b=dyG78YexmKDGU26Ta3xjpJQY7aw9OYYt8Pr+EBtm3Ghbaeh5gkhZ4Xm2zbHeJiIXh3
-         b2swaEqSRK2vlHZqTiQSuw/ZtlrBocuMX1A4iyHgZoqDGIo6/2xdocyxtsjRa4WzblPA
-         aoccwKob/vlEMtUvh/wfPfVhMcaXzmGRfEi4I/RWZbfe3GEEdfhCReB/s3/QbijRgAfK
-         5iffIpJm19DQ9j5O3R03VFunx6CouU8P8sKT6gMsFxDSHWndxDS2thqiH/dayi6G7DCe
-         3lvoRKyGQGGrFZo8jN9FSpOXFfcS8vRqEarSvkALjARxuUbkTElz8faD1dJnFEbi/B4v
-         fYsQ==
-X-Gm-Message-State: AOJu0YzujGIECw3jwQ36tvY4wB7K3g1cXoPJQMTeo3Tca9Lz6zXYxZxf
-	gjlOIUub4M9TiumIdRDVmNWW46JHRNwRDN9dRRhDCqpEgtJo6OW3C0gJ
-X-Gm-Gg: AZuq6aJANb0J9yqYGujjV0p4VUacFi0Gy5YdJMz/NgWdis1Y1YKcklQY+outs+CGKM6
-	hj4qH9gUl9ubfMufm6jSvpk/DGEeYtLADb5HzhZC2j5G4odcatZtB2+9Hfmn8w/C0le8ur8SoDW
-	fOju6IEr78D3iZIAjMfNGp+y9IRT1L6F0gRkxI5nDywRQg45iEtlBhdDBYaVpld++Y08PC/nC6v
-	2NP6B9SEkOFb2728kxdT8kmYuKMN85bIRliMUUIRUYaEYojj1KSXGC6qiigCWTv3pYbZoRFBUFC
-	n09OjiFfJhQvRR7Q61u6xc3xH2E1Yo4pC2dYnHMHPwc+42E32AcUDQd/gzKMGNyLOXCUKKq3rLq
-	7kKtofQEoyGcyZM2p5ejx5nIUZSfNESPm7rI70yV3qxb2aVIkUmiu3jqKo+xMcEcg7+vddg==
-X-Received: by 2002:a05:620a:1a26:b0:8b2:e17a:37 with SMTP id af79cd13be357-8c9eb2fa58cmr623720085a.43.1769819552944;
-        Fri, 30 Jan 2026 16:32:32 -0800 (PST)
-Received: from dev.lan ([2601:19b:4201:3e2::ff7])
-        by smtp.googlemail.com with ESMTPSA id af79cd13be357-8c711d29044sm719968485a.30.2026.01.30.16.32.32
+        bh=Lz/w+ViHe1NFxGhmvKw2Td3oBT35x8hZuCkuGLcRPRE=;
+        b=lNK4NEX66fZyy/8hOQ75AzZIT2T0yTQOq5O4/ZE1z0GxbEpDPc72/kaX6VGKM+F/hz
+         WOHeeYN0+4FYtgNQtdS7KbuXUCeq3ou/51+Hq0+KMxqCLjDztvLmqFdIA4Gla4d95axO
+         KwdZuDb4NfPf5cCPVRPOgQj1jEfTfUj8aK9vfv42lVOKejz+225i4Ed0mBG7FO0Bq2Hn
+         qBRqsM6MpOGRGqBvhkRlQr96H3u73BrOun9H5vtzY/4CQrhMzoyO1JWbuVS4Fq0eupA1
+         y399FsqyxlbFB8en2ojcHyJizPibN1v7+QGRuk6jpQv6B26s+0b/VKqNjGLbhCj6CXzh
+         84Bg==
+X-Forwarded-Encrypted: i=1; AJvYcCWvDaU9YJ3KorQ4f7v1Xb7jDdXONUA+AaSz7JHv+cVf7OjAgJesFkveb6I/RrmzDfi4cd+MfbHND+mTUH24aQ==@vger.kernel.org
+X-Gm-Message-State: AOJu0YzczfXMo9JGEW2iEWsD4P4Qp54WVGKm0BD/kS3jsxUIdhDe04Ir
+	6e/4wBqy1ayQEnc5U/pReS2oyNt3aj/6RFFZyyc8ANsr/u5yMp36E4ak
+X-Gm-Gg: AZuq6aKmTlt3xIhvCM7VajRaZmDJOGRsRhepPN+NlRW0RBECurUCCdMI3udTF+1/im4
+	LPn+u3HIFz90N3ANMqtV/4ZixgWjI0Uxe/W5T+gUIcuA57ZHREN5+Fqov9kwVJyV6GwONy58u/J
+	r7WxCVZUKpPc68ZCvgtWfGCixMlbenVU4zic9PAY3C5o3yTVJRQxn14aVvIEj1cF/3taJ71oCws
+	oBugjvKKDy8dsXwgDR8+ZaQn22kruOt5Hg3R/yJeGsQ49N6RVSJpznUIiTuww1NcArA6Dds6l7/
+	CxbrDj1OseejhTBVYNC/wA7K/m/FG0UuTdb6cDVL+xmqTIoP7KTpA3K6B7mavcBjoiu6fnyBvpo
+	j7Ye8ONI5U0+sWFoZvf2bNqYq6w8PG/EdfF/rIZM9pN37vcUEnvsseMc0X9YDxweONgmP74Brth
+	qf5p9GsI6voqzfQbH/hg7aqQM3X0jPU3UfV8EyRTZgwQM2YPOTdJJ6r9Yq3w1NDgIXhWKcaGr+l
+	B0BsGYsNccA+HoeH6+8XGfUT3VD1jMOpuhctv3X1SvmizPDn4b8iMhppRa4y4/n7qGoxr4OisAm
+	e2Us
+X-Received: by 2002:a05:7022:e25:b0:11b:9386:a3cf with SMTP id a92af1059eb24-125c10211dbmr2225916c88.48.1769820229772;
+        Fri, 30 Jan 2026 16:43:49 -0800 (PST)
+Received: from ethan-latitude5420.. (host-127-24.cafrjco.fresno.ca.us.clients.pavlovmedia.net. [68.180.127.24])
+        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-2b7a16cf8f2sm14710638eec.7.2026.01.30.16.43.48
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 30 Jan 2026 16:32:32 -0800 (PST)
-From: Andrew LaMarche <andrewjlamarche@gmail.com>
-To: Jeff Johnson <jjohnson@kernel.org>
-Cc: linux-wireless@vger.kernel.org,
-	ath12k@lists.infradead.org,
-	linux-kernel@vger.kernel.org,
-	andrewjlamarche@gmail.com
-Subject: [PATCH 1/1] wifi: ath12k: support calibration-variant from device tree
-Date: Sat, 31 Jan 2026 00:32:22 +0000
-Message-ID: <20260131003222.2011259-1-andrewjlamarche@gmail.com>
+        Fri, 30 Jan 2026 16:43:49 -0800 (PST)
+From: Ethan Nelson-Moore <enelsonmoore@gmail.com>
+To: netdev@vger.kernel.org,
+	linux-can@vger.kernel.org,
+	linux-wireless@vger.kernel.org
+Cc: Ethan Nelson-Moore <enelsonmoore@gmail.com>,
+	Michael Grzeschik <m.grzeschik@pengutronix.de>,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Marc Kleine-Budde <mkl@pengutronix.de>,
+	Vincent Mailhol <mailhol@kernel.org>,
+	Ido Schimmel <idosch@nvidia.com>,
+	Petr Machata <petrm@nvidia.com>,
+	Sridhar Samudrala <sridhar.samudrala@intel.com>,
+	=?UTF-8?q?Toke=20H=C3=B8iland-J=C3=B8rgensen?= <toke@toke.dk>,
+	Ping-Ke Shih <pkshih@realtek.com>,
+	=?UTF-8?q?Thomas=20M=C3=BChlbacher?= <tmuehlbacher@posteo.net>,
+	Oliver Hartkopp <socketcan@hartkopp.net>
+Subject: [PATCH net-next] net: remove unnecessary module_init/exit functions
+Date: Fri, 30 Jan 2026 16:42:56 -0800
+Message-ID: <20260131004327.18112-1-enelsonmoore@gmail.com>
 X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
@@ -90,123 +108,309 @@ List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.66 / 15.00];
-	MID_CONTAINS_FROM(1.00)[];
+X-Spamd-Result: default: False [0.84 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	MID_CONTAINS_FROM(1.00)[];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
 	R_DKIM_ALLOW(-0.20)[gmail.com:s=20230601];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FREEMAIL_FROM(0.00)[gmail.com];
-	FREEMAIL_CC(0.00)[vger.kernel.org,lists.infradead.org,gmail.com];
-	TAGGED_FROM(0.00)[bounces-31409-lists,linux-wireless=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	FREEMAIL_CC(0.00)[gmail.com,pengutronix.de,lunn.ch,davemloft.net,google.com,kernel.org,redhat.com,nvidia.com,intel.com,toke.dk,realtek.com,posteo.net,hartkopp.net];
+	RCVD_TLS_LAST(0.00)[];
+	FREEMAIL_FROM(0.00)[gmail.com];
+	MIME_TRACE(0.00)[0:+];
+	RCPT_COUNT_TWELVE(0.00)[19];
+	TAGGED_FROM(0.00)[bounces-31410-lists,linux-wireless=lfdr.de];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[andrewjlamarche@gmail.com,linux-wireless@vger.kernel.org];
+	FROM_NEQ_ENVFROM(0.00)[enelsonmoore@gmail.com,linux-wireless@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
 	DKIM_TRACE(0.00)[gmail.com:+];
 	RCVD_COUNT_FIVE(0.00)[5];
-	TAGGED_RCPT(0.00)[linux-wireless];
+	TAGGED_RCPT(0.00)[linux-wireless,netdev];
 	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_FIVE(0.00)[5];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 4EA73BFA24
+	DBL_BLOCKED_OPENRESOLVER(0.00)[realtek.com:email,che.eu:email,mellanox.com:email,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 2869EBFAE4
 X-Rspamd-Action: no action
 
-ath10k and ath11k support reading calibration variants from the device
-tree to locate the correct Board Description File (BDF). The ath12k-wsi
-binding already describes using qcom,calibration-variant and
-qcom,ath12k-calibration-variant, but it is not implemented in the code.
+Many network drivers have unnecessary empty module_init and module_exit
+functions. Remove them (including some that just print a message). Note
+that if a module_init function exists, a module_exit function must also
+exist; otherwise, the module cannot be unloaded.
 
-Many ath12k designs expose all the radios under a single phy, each of
-which typically require a separate BDF. Without this, the radios may not
-come up or will not be calibrated correctly.
-
-Fix this by parsing the device tree for the generation-agnostic
-qcom,calibration-variant node or ath12k-specific
-qcom,ath12k-calibration-variant node. This allows the driver to properly
-select, read and apply the correct BDF.
-
-Signed-off-by: Andrew LaMarche <andrewjlamarche@gmail.com>
+Signed-off-by: Ethan Nelson-Moore <enelsonmoore@gmail.com>
 ---
- drivers/net/wireless/ath/ath12k/core.c | 25 +++++++++++++++++++++++++
- drivers/net/wireless/ath/ath12k/core.h |  2 +-
- drivers/net/wireless/ath/ath12k/qmi.c  |  4 ++++
- 3 files changed, 30 insertions(+), 1 deletion(-)
+ drivers/net/arcnet/com20020.c                 | 16 ----------
+ drivers/net/can/sja1000/sja1000.c             | 16 ----------
+ drivers/net/ethernet/8390/8390.c              | 14 ---------
+ drivers/net/ethernet/8390/8390p.c             | 11 -------
+ drivers/net/ethernet/mellanox/mlxsw/pci.c     | 12 --------
+ drivers/net/hamradio/hdlcdrv.c                | 20 -------------
+ drivers/net/net_failover.c                    | 13 ---------
+ drivers/net/wireless/ath/ath9k/common.c       | 12 --------
+ .../realtek/rtlwifi/btcoexist/rtl_btc.c       | 13 ---------
+ drivers/net/wireless/rsi/rsi_91x_main.c       | 29 -------------------
+ 10 files changed, 156 deletions(-)
 
-diff --git a/drivers/net/wireless/ath/ath12k/core.c b/drivers/net/wireless/ath/ath12k/core.c
-index cc352eef1939..e45f76d81337 100644
---- a/drivers/net/wireless/ath/ath12k/core.c
-+++ b/drivers/net/wireless/ath/ath12k/core.c
-@@ -806,6 +806,31 @@ int ath12k_core_check_smbios(struct ath12k_base *ab)
- 	return 0;
+diff --git a/drivers/net/arcnet/com20020.c b/drivers/net/arcnet/com20020.c
+index a0053e3992a3..b8526805ffac 100644
+--- a/drivers/net/arcnet/com20020.c
++++ b/drivers/net/arcnet/com20020.c
+@@ -401,19 +401,3 @@ EXPORT_SYMBOL(com20020_netdev_ops);
+ 
+ MODULE_DESCRIPTION("ARCnet COM20020 chipset core driver");
+ MODULE_LICENSE("GPL");
+-
+-#ifdef MODULE
+-
+-static int __init com20020_module_init(void)
+-{
+-	if (BUGLVL(D_NORMAL))
+-		pr_info("%s\n", "COM20020 chipset support (by David Woodhouse et al.)");
+-	return 0;
+-}
+-
+-static void __exit com20020_module_exit(void)
+-{
+-}
+-module_init(com20020_module_init);
+-module_exit(com20020_module_exit);
+-#endif				/* MODULE */
+diff --git a/drivers/net/can/sja1000/sja1000.c b/drivers/net/can/sja1000/sja1000.c
+index a8fa0d6516b9..7c5aa8d399d4 100644
+--- a/drivers/net/can/sja1000/sja1000.c
++++ b/drivers/net/can/sja1000/sja1000.c
+@@ -725,19 +725,3 @@ void unregister_sja1000dev(struct net_device *dev)
+ 	unregister_candev(dev);
  }
+ EXPORT_SYMBOL_GPL(unregister_sja1000dev);
+-
+-static __init int sja1000_init(void)
+-{
+-	printk(KERN_INFO "%s CAN netdevice driver\n", DRV_NAME);
+-
+-	return 0;
+-}
+-
+-module_init(sja1000_init);
+-
+-static __exit void sja1000_exit(void)
+-{
+-	printk(KERN_INFO "%s: driver removed\n", DRV_NAME);
+-}
+-
+-module_exit(sja1000_exit);
+diff --git a/drivers/net/ethernet/8390/8390.c b/drivers/net/ethernet/8390/8390.c
+index c5636245f1ca..8e4354568f04 100644
+--- a/drivers/net/ethernet/8390/8390.c
++++ b/drivers/net/ethernet/8390/8390.c
+@@ -86,19 +86,5 @@ void NS8390_init(struct net_device *dev, int startp)
+ }
+ EXPORT_SYMBOL(NS8390_init);
  
-+int ath12k_core_check_dt(struct ath12k_base *ab)
-+{
-+	size_t max_len = sizeof(ab->qmi.target.bdf_ext);
-+	const char *variant = NULL;
-+	struct device_node *node;
-+
-+	node = ab->dev->of_node;
-+	if (!node)
-+		return -ENOENT;
-+
-+	of_property_read_string(node, "qcom,calibration-variant",
-+			&variant);
-+	if (!variant)
-+		of_property_read_string(node, "qcom,ath12k-calibration-variant",
-+				&variant);
-+	if (!variant)
-+		return -ENODATA;
-+
-+	if (strscpy(ab->qmi.target.bdf_ext, variant, max_len) < 0)
-+		ath12k_dbg(ab, ATH12K_DBG_BOOT,
-+				"bdf variant string is longer than the buffer can accommodate (variant: %s)\n", variant);
-+
-+	return 0;
-+}
-+
- static int ath12k_core_soc_create(struct ath12k_base *ab)
- {
- 	int ret;
-diff --git a/drivers/net/wireless/ath/ath12k/core.h b/drivers/net/wireless/ath/ath12k/core.h
-index 3c1e0069be1e..39700a780ee2 100644
---- a/drivers/net/wireless/ath/ath12k/core.h
-+++ b/drivers/net/wireless/ath/ath12k/core.h
-@@ -1352,7 +1352,7 @@ int ath12k_core_fetch_bdf(struct ath12k_base *ath12k,
- 			  struct ath12k_board_data *bd);
- void ath12k_core_free_bdf(struct ath12k_base *ab, struct ath12k_board_data *bd);
- int ath12k_core_fetch_regdb(struct ath12k_base *ab, struct ath12k_board_data *bd);
--int ath12k_core_check_dt(struct ath12k_base *ath12k);
-+int ath12k_core_check_dt(struct ath12k_base *ab);
- int ath12k_core_check_smbios(struct ath12k_base *ab);
- void ath12k_core_halt(struct ath12k *ar);
- int ath12k_core_resume_early(struct ath12k_base *ab);
-diff --git a/drivers/net/wireless/ath/ath12k/qmi.c b/drivers/net/wireless/ath/ath12k/qmi.c
-index b7c48b6706df..22ef5aab871f 100644
---- a/drivers/net/wireless/ath/ath12k/qmi.c
-+++ b/drivers/net/wireless/ath/ath12k/qmi.c
-@@ -2903,6 +2903,10 @@ int ath12k_qmi_request_target_cap(struct ath12k_base *ab)
- 	if (r)
- 		ath12k_dbg(ab, ATH12K_DBG_QMI, "SMBIOS bdf variant name not set.\n");
+-#if defined(MODULE)
+-
+-static int __init ns8390_module_init(void)
+-{
+-	return 0;
+-}
+-
+-static void __exit ns8390_module_exit(void)
+-{
+-}
+-
+-module_init(ns8390_module_init);
+-module_exit(ns8390_module_exit);
+-#endif /* MODULE */
+ MODULE_DESCRIPTION("National Semiconductor 8390 core driver");
+ MODULE_LICENSE("GPL");
+diff --git a/drivers/net/ethernet/8390/8390p.c b/drivers/net/ethernet/8390/8390p.c
+index 6d429b11e9c6..a0bfc8e34f79 100644
+--- a/drivers/net/ethernet/8390/8390p.c
++++ b/drivers/net/ethernet/8390/8390p.c
+@@ -91,16 +91,5 @@ void NS8390p_init(struct net_device *dev, int startp)
+ }
+ EXPORT_SYMBOL(NS8390p_init);
  
-+	r = ath12k_core_check_dt(ab);
-+	if (r)
-+		ath12k_dbg(ab, ATH12K_DBG_QMI, "DT bdf variant name not set.\n");
-+
- 	r = ath12k_acpi_start(ab);
- 	if (r)
- 		/* ACPI is optional so continue in case of an error */
+-static int __init NS8390p_init_module(void)
+-{
+-	return 0;
+-}
+-
+-static void __exit NS8390p_cleanup_module(void)
+-{
+-}
+-
+-module_init(NS8390p_init_module);
+-module_exit(NS8390p_cleanup_module);
+ MODULE_DESCRIPTION("National Semiconductor 8390 core for ISA driver");
+ MODULE_LICENSE("GPL");
+diff --git a/drivers/net/ethernet/mellanox/mlxsw/pci.c b/drivers/net/ethernet/mellanox/mlxsw/pci.c
+index 8769cba2c746..7da9ef254b72 100644
+--- a/drivers/net/ethernet/mellanox/mlxsw/pci.c
++++ b/drivers/net/ethernet/mellanox/mlxsw/pci.c
+@@ -2542,18 +2542,6 @@ void mlxsw_pci_driver_unregister(struct pci_driver *pci_driver)
+ }
+ EXPORT_SYMBOL(mlxsw_pci_driver_unregister);
+ 
+-static int __init mlxsw_pci_module_init(void)
+-{
+-	return 0;
+-}
+-
+-static void __exit mlxsw_pci_module_exit(void)
+-{
+-}
+-
+-module_init(mlxsw_pci_module_init);
+-module_exit(mlxsw_pci_module_exit);
+-
+ MODULE_LICENSE("Dual BSD/GPL");
+ MODULE_AUTHOR("Jiri Pirko <jiri@mellanox.com>");
+ MODULE_DESCRIPTION("Mellanox switch PCI interface driver");
+diff --git a/drivers/net/hamradio/hdlcdrv.c b/drivers/net/hamradio/hdlcdrv.c
+index 2263029d1a20..3b88e465d08f 100644
+--- a/drivers/net/hamradio/hdlcdrv.c
++++ b/drivers/net/hamradio/hdlcdrv.c
+@@ -742,26 +742,6 @@ EXPORT_SYMBOL(hdlcdrv_unregister);
+ 
+ /* --------------------------------------------------------------------- */
+ 
+-static int __init hdlcdrv_init_driver(void)
+-{
+-	printk(KERN_INFO "hdlcdrv: (C) 1996-2000 Thomas Sailer HB9JNX/AE4WA\n");
+-	printk(KERN_INFO "hdlcdrv: version 0.8\n");
+-	return 0;
+-}
+-
+-/* --------------------------------------------------------------------- */
+-
+-static void __exit hdlcdrv_cleanup_driver(void)
+-{
+-	printk(KERN_INFO "hdlcdrv: cleanup\n");
+-}
+-
+-/* --------------------------------------------------------------------- */
+-
+ MODULE_AUTHOR("Thomas M. Sailer, sailer@ife.ee.ethz.ch, hb9jnx@hb9w.che.eu");
+ MODULE_DESCRIPTION("Packet Radio network interface HDLC encoder/decoder");
+ MODULE_LICENSE("GPL");
+-module_init(hdlcdrv_init_driver);
+-module_exit(hdlcdrv_cleanup_driver);
+-
+-/* --------------------------------------------------------------------- */
+diff --git a/drivers/net/net_failover.c b/drivers/net/net_failover.c
+index 5b50d9186f12..d0361aaf25ef 100644
+--- a/drivers/net/net_failover.c
++++ b/drivers/net/net_failover.c
+@@ -819,18 +819,5 @@ void net_failover_destroy(struct failover *failover)
+ }
+ EXPORT_SYMBOL_GPL(net_failover_destroy);
+ 
+-static __init int
+-net_failover_init(void)
+-{
+-	return 0;
+-}
+-module_init(net_failover_init);
+-
+-static __exit
+-void net_failover_exit(void)
+-{
+-}
+-module_exit(net_failover_exit);
+-
+ MODULE_DESCRIPTION("Failover driver for Paravirtual drivers");
+ MODULE_LICENSE("GPL v2");
+diff --git a/drivers/net/wireless/ath/ath9k/common.c b/drivers/net/wireless/ath/ath9k/common.c
+index ffcf2276eb92..f55b3afb3777 100644
+--- a/drivers/net/wireless/ath/ath9k/common.c
++++ b/drivers/net/wireless/ath/ath9k/common.c
+@@ -403,15 +403,3 @@ void ath9k_cmn_init_crypto(struct ath_hw *ah)
+ 		ath_hw_keyreset(common, (u16) i);
+ }
+ EXPORT_SYMBOL(ath9k_cmn_init_crypto);
+-
+-static int __init ath9k_cmn_init(void)
+-{
+-	return 0;
+-}
+-module_init(ath9k_cmn_init);
+-
+-static void __exit ath9k_cmn_exit(void)
+-{
+-	return;
+-}
+-module_exit(ath9k_cmn_exit);
+diff --git a/drivers/net/wireless/realtek/rtlwifi/btcoexist/rtl_btc.c b/drivers/net/wireless/realtek/rtlwifi/btcoexist/rtl_btc.c
+index 4641999f3fe9..e88d92d3ae7a 100644
+--- a/drivers/net/wireless/realtek/rtlwifi/btcoexist/rtl_btc.c
++++ b/drivers/net/wireless/realtek/rtlwifi/btcoexist/rtl_btc.c
+@@ -519,16 +519,3 @@ MODULE_AUTHOR("Realtek WlanFAE	<wlanfae@realtek.com>");
+ MODULE_AUTHOR("Larry Finger	<Larry.FInger@lwfinger.net>");
+ MODULE_LICENSE("GPL");
+ MODULE_DESCRIPTION("Realtek 802.11n PCI wireless core");
+-
+-static int __init rtl_btcoexist_module_init(void)
+-{
+-	return 0;
+-}
+-
+-static void __exit rtl_btcoexist_module_exit(void)
+-{
+-	return;
+-}
+-
+-module_init(rtl_btcoexist_module_init);
+-module_exit(rtl_btcoexist_module_exit);
+diff --git a/drivers/net/wireless/rsi/rsi_91x_main.c b/drivers/net/wireless/rsi/rsi_91x_main.c
+index 2112d8d277a9..a9bb37d5d581 100644
+--- a/drivers/net/wireless/rsi/rsi_91x_main.c
++++ b/drivers/net/wireless/rsi/rsi_91x_main.c
+@@ -425,35 +425,6 @@ void rsi_91x_deinit(struct rsi_hw *adapter)
+ }
+ EXPORT_SYMBOL_GPL(rsi_91x_deinit);
+ 
+-/**
+- * rsi_91x_hal_module_init() - This function is invoked when the module is
+- *			       loaded into the kernel.
+- *			       It registers the client driver.
+- * @void: Void.
+- *
+- * Return: 0 on success, -1 on failure.
+- */
+-static int rsi_91x_hal_module_init(void)
+-{
+-	rsi_dbg(INIT_ZONE, "%s: Module init called\n", __func__);
+-	return 0;
+-}
+-
+-/**
+- * rsi_91x_hal_module_exit() - This function is called at the time of
+- *			       removing/unloading the module.
+- *			       It unregisters the client driver.
+- * @void: Void.
+- *
+- * Return: None.
+- */
+-static void rsi_91x_hal_module_exit(void)
+-{
+-	rsi_dbg(INIT_ZONE, "%s: Module exit called\n", __func__);
+-}
+-
+-module_init(rsi_91x_hal_module_init);
+-module_exit(rsi_91x_hal_module_exit);
+ MODULE_AUTHOR("Redpine Signals Inc");
+ MODULE_DESCRIPTION("Station driver for RSI 91x devices");
+ MODULE_VERSION("0.1");
 -- 
 2.43.0
 
