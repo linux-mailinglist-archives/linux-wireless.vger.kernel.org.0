@@ -1,176 +1,193 @@
-Return-Path: <linux-wireless+bounces-31416-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-31417-lists+linux-wireless=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id +N9fO3d8fWltSQIAu9opvQ
-	(envelope-from <linux-wireless+bounces-31416-lists+linux-wireless=lfdr.de@vger.kernel.org>)
-	for <lists+linux-wireless@lfdr.de>; Sat, 31 Jan 2026 04:52:23 +0100
+	id IBlMG8ujfWkETAIAu9opvQ
+	(envelope-from <linux-wireless+bounces-31417-lists+linux-wireless=lfdr.de@vger.kernel.org>)
+	for <lists+linux-wireless@lfdr.de>; Sat, 31 Jan 2026 07:40:11 +0100
 X-Original-To: lists+linux-wireless@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4E7F8C0969
-	for <lists+linux-wireless@lfdr.de>; Sat, 31 Jan 2026 04:52:23 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8591AC0FAE
+	for <lists+linux-wireless@lfdr.de>; Sat, 31 Jan 2026 07:40:10 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id EE56A3011855
-	for <lists+linux-wireless@lfdr.de>; Sat, 31 Jan 2026 03:52:17 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id A3B343003704
+	for <lists+linux-wireless@lfdr.de>; Sat, 31 Jan 2026 06:40:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8D8362DEA9E;
-	Sat, 31 Jan 2026 03:52:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AB5E93093C1;
+	Sat, 31 Jan 2026 06:40:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=u-northwestern-edu.20230601.gappssmtp.com header.i=@u-northwestern-edu.20230601.gappssmtp.com header.b="g/JnKIQQ"
+	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="gqe1TvuT";
+	dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b="jlwEXv7W"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-ot1-f41.google.com (mail-ot1-f41.google.com [209.85.210.41])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 67D3B4A01
-	for <linux-wireless@vger.kernel.org>; Sat, 31 Jan 2026 03:52:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.41
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3A0052DB7AD
+	for <linux-wireless@vger.kernel.org>; Sat, 31 Jan 2026 06:40:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769831536; cv=none; b=k7TVkqbL7nRVnysrW6N/rc/HNE303HhSt4PaHZh3/1agForZGgLi3c9ehOU3F+I/tI4vx9LgvRH2si9B7gbBj5qdmF/asNi73M+Wn4G0cj1a8tIZ37MnL/GoKVyRfDgAmNfGlYMR1yJtLYJtziZMD303kVDDm9KZ0kXjOqjogOQ=
+	t=1769841605; cv=none; b=dLfA065/3ibLODCM6lzy/IQYF383jq++ie/PtbUQgnMDrTj/QeL5bZj2vaOeXbyiX3jL3lXSvZgQRxDULHTJJA37Mc152eV6oSi0Thfzy0A37AZ1Gb/nN9FdYiXzzfAeYfuAhM7G6z0ZZTWciSEGCgO1zmf5t3vyLZd4cjQzsRw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769831536; c=relaxed/simple;
-	bh=GuQRayMdtq0K4ZAP4rpnMcjmlMbRz1yFN4dBUoBskrI=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=S37Efua5YmCSUCMFSc2LGppCE8aelc8e/7PiiuSsSSoDO+Zysv+WgAwdQiwz51tOVwxo0PWykvWQ5lzT/DY2NhUZg4aVqeTn+bmgfnwndDaFT+hvoORFUdeJ2RqKgu/tnp5bWEcAoK29bIC7CYBa/6Y0ycIbdO6JtBaLD1D2E4w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=u.northwestern.edu; spf=pass smtp.mailfrom=u.northwestern.edu; dkim=pass (2048-bit key) header.d=u-northwestern-edu.20230601.gappssmtp.com header.i=@u-northwestern-edu.20230601.gappssmtp.com header.b=g/JnKIQQ; arc=none smtp.client-ip=209.85.210.41
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=u.northwestern.edu
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=u.northwestern.edu
-Received: by mail-ot1-f41.google.com with SMTP id 46e09a7af769-7d18d02af68so1772289a34.2
-        for <linux-wireless@vger.kernel.org>; Fri, 30 Jan 2026 19:52:14 -0800 (PST)
+	s=arc-20240116; t=1769841605; c=relaxed/simple;
+	bh=8vJfCl4Wb+I5m0XQZ3032LmP4vlsjPEeVAkUXsI5DYc=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=DgJYG1KW9hnvviubuHCWtrv63QePsnOGGsfP4zFM7c26eVf6GE+teXcwIziYch1MoTWBcxco4dexu6779Qx7kR+zwqWIDDCibgBnhr9yXc4a/m8D5hvzsHJQKErrXfkYg7wLfWD+6cAoIfHtbhat+sVmCJNukWj5Z3rTYIqRCRA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=gqe1TvuT; dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b=jlwEXv7W; arc=none smtp.client-ip=205.220.180.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
+Received: from pps.filterd (m0279872.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 60V4U0Oa447021
+	for <linux-wireless@vger.kernel.org>; Sat, 31 Jan 2026 06:40:03 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
+	cc:content-type:date:from:in-reply-to:message-id:mime-version
+	:references:subject:to; s=qcppdkim1; bh=zfLFnX/pj06+42VOeKs579fA
+	r4gQfJugqfCbVka7R48=; b=gqe1TvuTQykpAnbs5syhyV19Zb0JB4DvSwyMCrZ1
+	rXFdenj1qvete+UFM6GVhAF+ZGfa3lT0a2MxDs/bgjDM+FNN88BVqwFf3CsWVHmB
+	Y57Rmn8/QONQhuLFez1LyzSnZYKngkJPMRQxgigpHjWJCnsdNqPoL5yhGSur58eB
+	9d1bKnId1uQfRwR2iZbBOZ+T1gR3/EGdBBUsPs9hC/BQKWmL3rb0AaqDeDIKT/zj
+	8Jq80h2yHDSudSYnPzQ/bXTZmvfGRk8+gjLj8XPpoj6+ckV2kX2H0lCRCCVQFExh
+	P8YhLPBZTVrQXwKjfMq3GTiiZvHV7bChU/87fDDnRvuA9w==
+Received: from mail-qk1-f199.google.com (mail-qk1-f199.google.com [209.85.222.199])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4c1arrr943-1
+	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
+	for <linux-wireless@vger.kernel.org>; Sat, 31 Jan 2026 06:40:02 +0000 (GMT)
+Received: by mail-qk1-f199.google.com with SMTP id af79cd13be357-8c70ab7f67fso1196767785a.3
+        for <linux-wireless@vger.kernel.org>; Fri, 30 Jan 2026 22:40:02 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=u-northwestern-edu.20230601.gappssmtp.com; s=20230601; t=1769831533; x=1770436333; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=a+tuxKzfIwGph4KGmy/W4D3saam1yAaOrHAbmg45lyE=;
-        b=g/JnKIQQOukUFU79+0k2rBNNRCaoHdkURyi3lS5n0WDnawOpb8NYiY66Dp4J/m4fqN
-         3Hm3I1tmFgsbyOA65hLTqeM4CFb41rTyJ3ZaqfnBGgkwtFrTQqAYP2QP38o0Y8sHStw3
-         cpjGTNb0ErT6yuZXWgT91HVZdh41KYz4+enKEQIuE/GNdnNuF5qEYpHBCC1DaFAnuERG
-         fUQnJkv5cs+7D9HWiUXHg5UZOcm9JJo5RsSJcKcOBCjHCkpQ69dT8/t+Pi2ewkARnR+z
-         /hftBtNnUs2z/0djVxjz26j3SJXTtmw8GWvAhUxzINDVocSio+5/Us5S7rODaJr4XIZB
-         eKpQ==
+        d=oss.qualcomm.com; s=google; t=1769841602; x=1770446402; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=zfLFnX/pj06+42VOeKs579fAr4gQfJugqfCbVka7R48=;
+        b=jlwEXv7Wfjv/2wdqGj2EdvatgK1O2qxSmWxpqmuIwQqzh65zPBVKbWbWi2yIr9SLXk
+         WT59Lc+0aD6+h/IM/Qf6JHM11uqE8WJjNIZRlvI9v/fzzVG0C6a0L3LuAZbvcd++EmYu
+         O4YDIdvLSqFHE/XJPy5glh1bg2C65RNMjlqUXMA9Sy3eNBWt1n8EhJts9549CFnfPYGp
+         bkoB2h/hCiCDSiiLdMp/OYsZ+Ik8f++kgdqa3u5Affqid7BJmjvKfDlYmtRCnvYGyG36
+         Y9d+vu0kRa9oU7eVfejtE3YG1BC1Jot2I9pl5ZJ6ReEirz//GAJF/ShzHtZKm+B6KgPs
+         VYzQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1769831533; x=1770436333;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=a+tuxKzfIwGph4KGmy/W4D3saam1yAaOrHAbmg45lyE=;
-        b=iCWBWsLI/cizBOoGR6n58wzJZWBOryuWLcdghbILeuXCs3aecEeFLXg2GVPGGXsN/S
-         Ig/j6IRf9hV3hCHh6yrbJ632kgqxrJCkxTPmqfusak9nh13nHF7L1AFYU68GAqZkksR+
-         CAPP0lFqA2kuaPBmloRues+2xH/GZY63jA6AeQ9c5XdSnzr5SwREfKGvinxTZ0hMEOhG
-         GEuWj8CZtiJ8zFzXNZTixv9rLhXEgc3EalQlkwgLvckblpaDixYVyOkfHeC3cwIU67mm
-         zT9LMJSF8w51AYZw8v4Hc+poadbLR7Dy5xaqtLhDjhEh3kobeYcKCwBfm8umJPSH5ApW
-         g0EA==
-X-Forwarded-Encrypted: i=1; AJvYcCVOGwId/GHIj5/vP0h5YmMuV8gqt7omwk7Itj4KvHRrTKRGpw3rkwWOZAatUO0a5mbnGoPqtTjrB12WrErs4w==@vger.kernel.org
-X-Gm-Message-State: AOJu0Yx21aCC6ZP0UNHw7AP21/mF3qEf6iCtqxTUcNbKcoWxT/rIdSkC
-	fvZ67q+zI37gyc5MK/8VV0vZNr7338YGm1QvQ42J7uvIaO8CXehycNZ4IbXxtrU1XQM=
-X-Gm-Gg: AZuq6aIiKv9v2boCMZhm8yW6JKK8BISHzgTywnPjo9xO2KzpM9GyqO3oEy2kfJHa+nn
-	yrPMK22gNBEbuTSHK+ASvYkD708Yz81YtU4uTMi72BUrp63eMEZcJC83+Y++LbAqhjt9lFROPcG
-	FyBRC30kskZTXDfkVYBJknptgNIekK2fsAjpCe7YceUNOJSf2D1DikVbwsUCbc68U5Nwzj+zQDc
-	l7xiFaEHkGIO4qHvajljGW2HRPngJ+KCrkh0jRQtUq083QTx4asHlJYBnOJsXD/jhp+PLj7kV57
-	iyMsHDj3M23kK771DGGp11Az/41453ByFRSFRR8PddpYZyGo8AT0lC2z55cqN3h5SVovYgX7M54
-	ensvLW/x3fp62xRPSvf2/15oiu8b9wc2xmlMKQgy/3etXt7ZP17fLPjkf17Ct3Ni84ZvzJLY2m4
-	RPev8A0WcGLNsbjyr679lA971bTs58sPlyX1nqf5c9gbn3nhjmYl2wdR/+nNGHB7mud3D3qiuU5
-	ssyVAppiuy2gr45E/Sl7I7FB7dKXtg=
-X-Received: by 2002:a05:6830:6738:b0:7cf:d96d:7882 with SMTP id 46e09a7af769-7d1a5250f74mr3189657a34.3.1769831533374;
-        Fri, 30 Jan 2026 19:52:13 -0800 (PST)
-Received: from security.cs.northwestern.edu (security.cs.northwestern.edu. [165.124.184.136])
-        by smtp.gmail.com with ESMTPSA id 46e09a7af769-7d18c69ac16sm6727975a34.7.2026.01.30.19.52.12
+        d=1e100.net; s=20230601; t=1769841602; x=1770446402;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=zfLFnX/pj06+42VOeKs579fAr4gQfJugqfCbVka7R48=;
+        b=I7wTiXh7oG5XqBuRKsIK/j9WTM59edzNQErMv7kJru/DUBuJXsk5xvNs3CUc++LGsp
+         OTH6V976letVhv0H6JA4h3woBsO7m3L3IwgyEIY+T2c8hrwMOc1d+ugWL3ypJB8rzLpg
+         UD+llevg8S6U2jeF6KN0PIJtu0jkK1nSnYXTGklhDvTPpqVvb3OlyMu8SZOSYvygWmYf
+         RebC51qu6sdFfJk4zKIe5UxxFNjU0ecwVPZwujINNZxKjcVPtsDIV943e+jwgLky5jyE
+         Meu7UhUrGBoYO9LdFquAYNnpQb9jmfJa+2ueeQIgfaBeaBRPkAy6a8ok6uy1qZBTpgzl
+         7img==
+X-Forwarded-Encrypted: i=1; AJvYcCXY6tJTbRNHG2bSdzqVW6aHhRdUy/WYb0JOfJxi9zCcWLwXbijk0O6dPM0t/Q+eAvTRkoJ5g0irtzEpztwH7Q==@vger.kernel.org
+X-Gm-Message-State: AOJu0YxnL2qBegfN5GqeIOegsDSJlPTgaBC8CckguCiPHC74lEJdlWdk
+	+uh3WOmUPJS72LwzTECI9NoOmZcCluPO13yPBFDo98PIKfc+XNPOyU+K+Z2bq+12nZfIUetUPH6
+	o4o6ei8l6z0rtE3sdHYy9dI/U9e/WhQ3Gfuxjih++Y7bM8lz+M175HEglTXkf+q13NjuatA==
+X-Gm-Gg: AZuq6aI7uPD340+pAuV1zt/BqfHRYvTS3bDaFkVdBV8CHwO2fum1EOeJy2FgTHgHjcn
+	A0GAMbe1ZcHqYksEX4UNaGXyfsTBwerbD8d2+mh/kB5mA6WWOzp8V6je7qeq4OK1fY36HJj/fWt
+	ZkA19GZR6KIEP4XBUiBEexb3FbOK+jIEE9z3BRFuTOMrveGxcaEbKWtrTFOo2OohGPbtQLGmFGR
+	55CjGzcxZAzFs1xd+OdfYx1eKkZj3GG+pkLv6V1hk8C3+U0g7N2LaRb9MzHuCj8EO5aeKaoiw8W
+	OY5a64o6CnPy2rU29d8FPSLugwenGHfHA6QCbRtKdi9AjyCiwE1pzvkggm4+xkrwxsKrJpJhW6V
+	gQjIsN4Qx2+TUb8zQmtdBK5zSkDcjTl1FgLUgn6vik+QJcYY/r/A23mFNxiPKK61huqk7eQdbNy
+	qUXFLqi3dgzsKFYgdg9r2phG4=
+X-Received: by 2002:a05:620a:f10:b0:8c7:10cc:758e with SMTP id af79cd13be357-8c9eb2d3ca0mr723604285a.45.1769841601707;
+        Fri, 30 Jan 2026 22:40:01 -0800 (PST)
+X-Received: by 2002:a05:620a:f10:b0:8c7:10cc:758e with SMTP id af79cd13be357-8c9eb2d3ca0mr723602685a.45.1769841601226;
+        Fri, 30 Jan 2026 22:40:01 -0800 (PST)
+Received: from umbar.lan (2001-14ba-a073-af00-264b-feff-fe8b-be8a.rev.dnainternet.fi. [2001:14ba:a073:af00:264b:feff:fe8b:be8a])
+        by smtp.gmail.com with ESMTPSA id 38308e7fff4ca-38625c621basm18212161fa.13.2026.01.30.22.39.59
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 30 Jan 2026 19:52:12 -0800 (PST)
-From: Ziyi Guo <n7l8m4@u.northwestern.edu>
-To: Felix Fietkau <nbd@nbd.name>,
-	Lorenzo Bianconi <lorenzo@kernel.org>,
-	Ryder Lee <ryder.lee@mediatek.com>
-Cc: Shayne Chen <shayne.chen@mediatek.com>,
-	Sean Wang <sean.wang@mediatek.com>,
-	Matthias Brugger <matthias.bgg@gmail.com>,
-	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
-	linux-wireless@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	linux-mediatek@lists.infradead.org,
-	linux-arm-kernel@lists.infradead.org,
-	Ziyi Guo <n7l8m4@u.northwestern.edu>
-Subject: [PATCH v2] wifi: mt76: add missing lock protection in mt76_sta_state for sta_event callback
-Date: Sat, 31 Jan 2026 03:52:10 +0000
-Message-Id: <20260131035210.2198259-1-n7l8m4@u.northwestern.edu>
-X-Mailer: git-send-email 2.34.1
+        Fri, 30 Jan 2026 22:40:00 -0800 (PST)
+Date: Sat, 31 Jan 2026 08:39:57 +0200
+From: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
+To: Jeff Johnson <jeff.johnson@oss.qualcomm.com>
+Cc: linux-firmware@kernel.org, linux-wireless@vger.kernel.org,
+        ath10k@lists.infradead.org, ath11k@lists.infradead.org,
+        ath12k@lists.infradead.org, jjohnson@kernel.org
+Subject: Re: [PULL linux-firmware] ath10k, ath11k and ath12k firmware
+ ath-20260130
+Message-ID: <34lnv35rbicqk6duyqhhidunulcipttsj6ryvzw6embgablnpl@gh3wtsknmcma>
+References: <ecf412bd-7bd3-42ed-bea4-d7aa837ddcae@oss.qualcomm.com>
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <ecf412bd-7bd3-42ed-bea4-d7aa837ddcae@oss.qualcomm.com>
+X-Proofpoint-ORIG-GUID: F1Bq15itnIuNIxZ_qqeJahyQTOEf9pZp
+X-Authority-Analysis: v=2.4 cv=FNYWBuos c=1 sm=1 tr=0 ts=697da3c2 cx=c_pps
+ a=HLyN3IcIa5EE8TELMZ618Q==:117 a=xqWC_Br6kY4A:10 a=kj9zAlcOel0A:10
+ a=vUbySO9Y5rIA:10 a=s4-Qcg_JpJYA:10 a=VkNPw1HP01LnGYTKEx00:22
+ a=gcp-Y-p2_AVPb3T4FLMA:9 a=CjuIK1q_8ugA:10 a=bTQJ7kPSJx9SKPbeHEYW:22
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwMTMxMDA1MyBTYWx0ZWRfXyS6sFCW8AqBu
+ lb2A8pkF0IwhPNRYgc9GSMD/d5+L2Bj71iWkRUJ4NlLVT5TJgwvSVuIZDHMWj0OwYR/r7qArBXY
+ HnPBV1VKR1OL3FzTNRp3topiJQU/XHmF4J3n3MHraQCAcvsHH/J2u+gkhrm2kHJZ5QG2yWlnYMN
+ jQIk4xiUlguM7hLc9okaOmD9g0W6zglMdDV/QoJgpElBnyg55Jek5CE6wn8zrvhwnC0xQDAgHp/
+ 7SwBa6lt4WHz8EfeJWazPtYYhZ6cbebXV3S9g/wNtJNfKlxnXC4AsdhuT+dNXY7p8BP9gP1+aqN
+ FwtdjxjWwZVLGI3HFb1NXzskIBtQ+qCa8qqAWMt0ryVuPdBAbd9rurQoQICPrKJN8ZIfHb6gief
+ s+9e0KPqDR7+F6camWDU0iNWsO5LeWO8qF+cf7u9qAA317Nh0zp5IKmVlm4eQDL+FQCguLG0iaB
+ rUsbsLp/hCxIkHke3ag==
+X-Proofpoint-GUID: F1Bq15itnIuNIxZ_qqeJahyQTOEf9pZp
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.51,FMLib:17.12.100.49
+ definitions=2026-01-30_04,2026-01-30_04,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ impostorscore=0 malwarescore=0 bulkscore=0 priorityscore=1501 clxscore=1015
+ spamscore=0 adultscore=0 lowpriorityscore=0 phishscore=0 suspectscore=0
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.22.0-2601150000 definitions=main-2601310053
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [1.44 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
 	SUSPICIOUS_RECIPS(1.50)[];
-	MID_CONTAINS_FROM(1.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
-	R_DKIM_ALLOW(-0.20)[u-northwestern-edu.20230601.gappssmtp.com:s=20230601];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	MID_RHS_NOT_FQDN(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[qualcomm.com,reject];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
+	R_DKIM_ALLOW(-0.20)[qualcomm.com:s=qcppdkim1,oss.qualcomm.com:s=google];
 	MAILLIST(-0.15)[generic];
-	DMARC_POLICY_SOFTFAIL(0.10)[northwestern.edu : SPF not aligned (relaxed), DKIM not aligned (relaxed),none];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCPT_COUNT_TWELVE(0.00)[12];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-31416-lists,linux-wireless=lfdr.de];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FREEMAIL_CC(0.00)[mediatek.com,gmail.com,collabora.com,vger.kernel.org,lists.infradead.org,u.northwestern.edu];
+	TAGGED_FROM(0.00)[bounces-31417-lists,linux-wireless=lfdr.de];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns];
+	DKIM_TRACE(0.00)[qualcomm.com:+,oss.qualcomm.com:+];
 	RCVD_TLS_LAST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[n7l8m4@u.northwestern.edu,linux-wireless@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[u-northwestern-edu.20230601.gappssmtp.com:+];
-	RCVD_COUNT_FIVE(0.00)[5];
-	TAGGED_RCPT(0.00)[linux-wireless];
-	NEURAL_HAM(-0.00)[-1.000];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
 	TO_DN_SOME(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[dmitry.baryshkov@oss.qualcomm.com,linux-wireless@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	MISSING_XM_UA(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	TAGGED_RCPT(0.00)[linux-wireless];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[u-northwestern-edu.20230601.gappssmtp.com:dkim,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,northwestern.edu:email,u.northwestern.edu:mid]
-X-Rspamd-Queue-Id: 4E7F8C0969
+	RCVD_COUNT_SEVEN(0.00)[7]
+X-Rspamd-Queue-Id: 8591AC0FAE
 X-Rspamd-Action: no action
 
-mt76_sta_state() calls the sta_event callback without holding dev->mutex.
-However, mt7915_mac_sta_event() (MT7915 implementation of this callback)
-calls mt7915_mac_twt_teardown_flow() which has
-lockdep_assert_held(&dev->mt76.mutex) indicating that callers must
-hold this lock.
+On Fri, Jan 30, 2026 at 12:29:48PM -0800, Jeff Johnson wrote:
+> Hi,
+> Here's a new pull request for ath10k, ath11k and ath12k.
+> 
+> For ath12k:
+> 
+> Update firmware for QCN9274/hw2.0.
+> 
+> Update board file for WCN7850/hw2.0 to support:
+> bus=pci,vendor=17cb,device=1107,subsystem-vendor=1eac,subsystem-device=8001,qmi-chip-id=2,qmi-board-id=255
+> bus=pci,vendor=17cb,device=1107,subsystem-vendor=1eac,subsystem-device=8004,qmi-chip-id=2,qmi-board-id=255
 
-The locking pattern in mt76_sta_state() is inconsistent:
-- mt76_sta_add() acquires dev->mutex before calling dev->drv->sta_add
-- mt76_sta_remove() acquires dev->mutex before calling __mt76_sta_remove
-- But sta_event callback is called without acquiring the lock
+These two were not a part of the previous upload, but... They again have
+board-id of 255 (unprogrammed). Why is there no calibration variant?
 
-Add mutex_lock()/mutex_unlock() around the mt7915_mac_twt_teardown_flow
-invocation to fix the missing lock protection and maintain consistency
-with the existing locking pattern.
+> 
+> 
+> Please let me know if there are any problems.
 
-Signed-off-by: Ziyi Guo <n7l8m4@u.northwestern.edu>
----
-v2:
- - Move the locking to MT7915 driver to avoid deadlock in other drivers
-
- drivers/net/wireless/mediatek/mt76/mt7915/main.c | 2 ++
- 1 file changed, 2 insertions(+)
-
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7915/main.c b/drivers/net/wireless/mediatek/mt76/mt7915/main.c
-index 90d5e79fbf74..e212e964fda0 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7915/main.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7915/main.c
-@@ -851,8 +851,10 @@ int mt7915_mac_sta_event(struct mt76_dev *mdev, struct ieee80211_vif *vif,
- 		return mt7915_mcu_add_sta(dev, vif, sta, CONN_STATE_PORT_SECURE, false);
- 
- 	case MT76_STA_EVENT_DISASSOC:
-+		mutex_lock(&dev->mt76.mutex);
- 		for (i = 0; i < ARRAY_SIZE(msta->twt.flow); i++)
- 			mt7915_mac_twt_teardown_flow(dev, msta, i);
-+		mutex_unlock(&dev->mt76.mutex);
- 
- 		mt7915_mcu_add_sta(dev, vif, sta, CONN_STATE_DISCONNECT, false);
- 		msta->wcid.sta_disabled = 1;
 -- 
-2.34.1
-
+With best wishes
+Dmitry
 
