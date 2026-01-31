@@ -1,74 +1,113 @@
-Return-Path: <linux-wireless+bounces-31412-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-31413-lists+linux-wireless=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id OAckKcpcfWnKRgIAu9opvQ
-	(envelope-from <linux-wireless+bounces-31412-lists+linux-wireless=lfdr.de@vger.kernel.org>)
-	for <lists+linux-wireless@lfdr.de>; Sat, 31 Jan 2026 02:37:14 +0100
+	id 1h94H11jfWmtRwIAu9opvQ
+	(envelope-from <linux-wireless+bounces-31413-lists+linux-wireless=lfdr.de@vger.kernel.org>)
+	for <lists+linux-wireless@lfdr.de>; Sat, 31 Jan 2026 03:05:17 +0100
 X-Original-To: lists+linux-wireless@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0C38BC008C
-	for <lists+linux-wireless@lfdr.de>; Sat, 31 Jan 2026 02:37:13 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id A375BC0331
+	for <lists+linux-wireless@lfdr.de>; Sat, 31 Jan 2026 03:05:16 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id A67B43010515
-	for <lists+linux-wireless@lfdr.de>; Sat, 31 Jan 2026 01:37:12 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 4A6443009F93
+	for <lists+linux-wireless@lfdr.de>; Sat, 31 Jan 2026 02:05:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 661762FD1DB;
-	Sat, 31 Jan 2026 01:37:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B2EA8311967;
+	Sat, 31 Jan 2026 02:05:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="QgXpE0tD"
+	dkim=pass (2048-bit key) header.d=u-northwestern-edu.20230601.gappssmtp.com header.i=@u-northwestern-edu.20230601.gappssmtp.com header.b="26wN7Dwy"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ot1-f54.google.com (mail-ot1-f54.google.com [209.85.210.54])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 43AB92BDC27
-	for <linux-wireless@vger.kernel.org>; Sat, 31 Jan 2026 01:37:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769823431; cv=none; b=gklCkidgBgU2tOZggwoVYRI8AoD+6wOA2NsWq1HWAJ/LvNmJrgtkLjm6EMumhJp5LUIDuxjAOAHjXlJ+ZJgYnGQbDHSg3stOzgF4tHCw2jkc36OM3WhgPu8m+As270b34m7nukWpfS59pNKQiNR1osYwOsfK1udWgIOHe+A84SE=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769823431; c=relaxed/simple;
-	bh=HSlwIJ3DA03/OunBfURR+gTgDH9OrO+A2nv+pjkXXjw=;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0924B30C36D
+	for <linux-wireless@vger.kernel.org>; Sat, 31 Jan 2026 02:05:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.210.54
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1769825114; cv=pass; b=HMkwLpNRGkVWyoI2IdLQX3IqmD/vhGvVUKXWsQbMTcNhnP8FpalGZD6FEpV+T+KwtCs8YRhTw1jASBam0If2oIUFp+wO4duNhgsYk+Roy908y14x4Np9NpWH1PHNknxiwQ1n/LBqaODVupwUa/dmY7C9Cu8u7nHs0aa+8C47Qko=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1769825114; c=relaxed/simple;
+	bh=Et1LJjq+me05jisNBQoUpKr3ed6Fid9VeSP+iy1Nl3w=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=jdjlu0+BpBCAoM5kWNlRmo/7ExriVDCUQzWvrZ5kTYJTU8kI0cDKNldib9wRRzMotYHpOzwG1RBEsID8c4HA3xzh1EEy28Yw4ad+SppwbmK0Nydvpsq03GzszUr6fZtpjdT18CwNezo205KThxr1Agig2A9DTlMxASlimQxOVxY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=QgXpE0tD; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0E7DEC19421
-	for <linux-wireless@vger.kernel.org>; Sat, 31 Jan 2026 01:37:11 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1769823431;
-	bh=HSlwIJ3DA03/OunBfURR+gTgDH9OrO+A2nv+pjkXXjw=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=QgXpE0tDl3vo6ylg8njiRaJhA142z6t9oj9LisXrIMOCApL9oRxp6dO8R+a56W+iy
-	 090+Utx6lu425HbkFoLbfPXsizeAl5hU4rWVqA6FBlTufiymgDPsVcboGy4A9KV8U5
-	 DgCru4xNydtjMLpdvNYv3PQmzrm6LygJnxdz53Y6Icu65seR3mUipjgJ5pXLf0xH5A
-	 +TdshQjXiJd4NNMY+D+ZToG2mJxW7D7iA26BZ1wLJsnIvrOocufWm7kDl2ognpbGS7
-	 Ab0xs+6OGeUc/5D0yoI4VVqlWy2XnGpIpM+W3mi2JUamOMnssMv6Envx6VFz/59xa0
-	 b8hcbXkhqAJ/A==
-Received: by mail-lf1-f52.google.com with SMTP id 2adb3069b0e04-59b834e3d64so2975185e87.2
-        for <linux-wireless@vger.kernel.org>; Fri, 30 Jan 2026 17:37:10 -0800 (PST)
-X-Forwarded-Encrypted: i=1; AJvYcCUq5d6Sc8yDTjzlY/pEB9HdzSslLdTbY9jnQTNIOSq13gp3TORU7c4/2zzUUVQHD2hzJTBhWnTS/95Zeal1yA==@vger.kernel.org
-X-Gm-Message-State: AOJu0YzeKVeNX98TTYrWwA5kby95EKkA/Sa9ac3LqFlQwYzJgqnK2T3V
-	i0p0vd2CKz8dUGBoPV0hpVKaO30G8WsK7VynlDX8miSmFqrvk2dGoMwA8WYhqtQkgdG/7oRu+tT
-	jk0AHjHhUFQLhlqzUVSaEa/pmNxwZy3I=
-X-Received: by 2002:a05:6512:ad4:b0:59b:70e7:4128 with SMTP id
- 2adb3069b0e04-59e16463c5emr1561236e87.53.1769823429264; Fri, 30 Jan 2026
- 17:37:09 -0800 (PST)
+	 To:Cc:Content-Type; b=gqZgYUXOaWK6ljtN3TPMkhW1J/Spp5018XVh1tZfLiTDgdZGIVs/6Otnptfsoir67MmhjTTBX0jKA1lPsAGcdjf+Gpt9C/cHt/VLDbPdICX5lcM42Nk9o/bQRIzPywzsY4YYOP7UkjeoD4VCquXnnQKkATTdjM01hjmKRfy4A0U=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=u.northwestern.edu; spf=pass smtp.mailfrom=u.northwestern.edu; dkim=pass (2048-bit key) header.d=u-northwestern-edu.20230601.gappssmtp.com header.i=@u-northwestern-edu.20230601.gappssmtp.com header.b=26wN7Dwy; arc=pass smtp.client-ip=209.85.210.54
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=u.northwestern.edu
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=u.northwestern.edu
+Received: by mail-ot1-f54.google.com with SMTP id 46e09a7af769-7cfd2423793so1789905a34.2
+        for <linux-wireless@vger.kernel.org>; Fri, 30 Jan 2026 18:05:12 -0800 (PST)
+ARC-Seal: i=1; a=rsa-sha256; t=1769825112; cv=none;
+        d=google.com; s=arc-20240605;
+        b=k0f81iKojClJ6Y3Y7vSjKhu37R4XtWdFdj/YcVqMtLJoXApHP9pY3vmpV5/keu44l9
+         Sw6YAXZXwdQBxO0e0NAjc6ruArjpuQlbr9qWl0e+99qfys/w9q0Ku74JB/6QGBALQcH0
+         C5iGkBujO3l20+/gqecXMaIHNoubQTu+omQkz6zKC3AfeRGd/73z+ZB77qqbYnA5QNh0
+         RgnffQAOHF+J4P/oJ9P2Jv2XoOXfQLDGz8MA41VrmfcXrFenRUPl7avVicrU8QeKmLID
+         h/3Qqyh1YHTjjwiwiiBLCtaUjns8VRJBG+bcUxhi/5kuxYNUMtzRTQUad4mYfmVzW7r0
+         +EUA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=Et1LJjq+me05jisNBQoUpKr3ed6Fid9VeSP+iy1Nl3w=;
+        fh=tPpwep4bOd79UZOuCbRqI8NqX9adYJHvGlTFNmIIGWA=;
+        b=PCq2nRXbSVwfLH1hGTJ5fgT1bRJ1+VdO5aN2UISH5Yy3BPOvok3Uyjg5FW8+h523pM
+         V0Wj6/bjcv5+k+16+H1bGjtqRppCvNd9UMf1zl/xKFsbhQvDonb9Y37CuO8d5oYXikM7
+         cT70m6SjXFVlEjbO5+7i8I4MEwU4iRNErJdXGFlZKzEeyQb+I/o7t8wEVT74+4yFPapB
+         6CpUFEmiJcIHPu0B4LOHYkxB5l5SjyQUJdibG0kitV08nW1V4dspaxYR29eUay1dmazb
+         85/Y3yiZeni6rG94OI5GZRkagjFru3Y2eAACFMakAVWgGzm7TB4pLqJgyUgBfMjUZ7A3
+         8XsA==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=u-northwestern-edu.20230601.gappssmtp.com; s=20230601; t=1769825112; x=1770429912; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=Et1LJjq+me05jisNBQoUpKr3ed6Fid9VeSP+iy1Nl3w=;
+        b=26wN7Dwy1eLvVH8VFs/OKnvVlZKZimdzWxBPrIcnsmQ8wKYd5fSxzuOr33nTuV7WqX
+         6REbBMr+zr/gnF9LDpkFJF1THN1gRCab19vuBwALV4FcYUnvfxNr5EvWl1uMTut8dmtR
+         ZagxFyTEkpnQ8MSQ17+/H4WOu/t97E5kpmZgO/dIIsqTKExR9K0+QNvwAA4hcybQpUuH
+         wKPVspk13RE6aMo1Ql2yAPIA7peMgijseNDWrgHOklyUcW/yPTGI0GZIL8VS/3uwe8K3
+         gfx5fuCb6jQOmjZ7E2qnTQ5x+sahdjXL6n7osxVXRyfRgsqmhSzu/wA+/Uh0MLwKY+EJ
+         XaYQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1769825112; x=1770429912;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=Et1LJjq+me05jisNBQoUpKr3ed6Fid9VeSP+iy1Nl3w=;
+        b=kMZAf/cciDaZGzkJ81ETxfyrdYBujxgFoDnJxEHSXZ+FHy6O1VxHhbbrZQX6ok7pWB
+         QaGMfBJMottnQrLgJA6JoKLhDxV4hxHtya/kg2jvA73sX/e7fJbMHvPCvQsfQTUQmvZj
+         QKTAPgaQjSOOqN33ZvypBg2PWYTX0lDgIsDXuFwiC/8gA5cQWcXZgNIHs4YlcE5/+gGX
+         sFrDrQNI/7lXmLReH8jj+3Ldf/KYjVuSyuuafPCvCrgbfo+T+cfER42G6qIlH/1+0GNa
+         YTYmRH/wyO+QpipEixPtakZem+QhABA6ckgN+Q5eMRYx7kxDGsXIIZYZ0umYB5Wr9oqB
+         HViQ==
+X-Forwarded-Encrypted: i=1; AJvYcCUY+v+CwGFN57G2p9QLVb1KSnvFtM2HMi1EH9f5dghLU0dvg0yjTppFd1hcJkESRS7Y7kK2pyaWuSPrmosPfw==@vger.kernel.org
+X-Gm-Message-State: AOJu0YyDWrGDZF+2dp7MdViDODyur2eYR8lH3qABZHKZwq3wYFGsXC1H
+	jTQRHqok67QugEtwv5zaXuJw1NBVuxSwaRU8hzMN+2BdMwsGBfYfXqDWFBn4l0b2YPbvuZXNpuG
+	tcwmYCRxEiw64oxtT8nWSqSYz/UJeBJWg3vY5L9ovtA==
+X-Gm-Gg: AZuq6aLMhb2mfdXW9xo9FwaG/RE7Tr45QJvfK7pUUehG0wt3QnbkEYa97b6NfAy9f6l
+	HThuXoZzziIYlIlKBsImdbNq2lg9KG2okPb53YefkwzfbHggpfeVdjjN3Ssy3NhuY6F69sfxZhb
+	s2fWk2LVwFV7Uqds6PA5F2qQMHWpX+YpHtYc2amPsFoy47B2KOLKFCX0xwdM+5uRTTBmdPigT/+
+	TfTw4q57TYbgSLEyYUZhjxf9UC5wdqaaljQr4Rr0jXR65QQGVsjb9F3R1KZy7rd5zs7lasy5o5b
+	cWS6Xhb67GQl8wnAUduJ4WPc4nuyPfAZ6ZmbpRBJ4L2fFIizaEZ14U0giBI8XQ==
+X-Received: by 2002:a05:6830:3698:b0:7cf:d642:d36c with SMTP id
+ 46e09a7af769-7d1a52a7495mr2787735a34.2.1769825111961; Fri, 30 Jan 2026
+ 18:05:11 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260130032517.173590-1-n7l8m4@u.northwestern.edu>
-In-Reply-To: <20260130032517.173590-1-n7l8m4@u.northwestern.edu>
-From: Sean Wang <sean.wang@kernel.org>
-Date: Fri, 30 Jan 2026 19:36:56 -0600
-X-Gmail-Original-Message-ID: <CAGp9LzqQ45LAeeG1Cijs1QmtzBjOmML_qY=9Y5zH8tYmZeQWZQ@mail.gmail.com>
-X-Gm-Features: AZwV_Qgzlc9REroD0uijyrgcGZUw6qt5vKeV6p_1BhQT_C5t6Fi3nVhTvV39E4c
-Message-ID: <CAGp9LzqQ45LAeeG1Cijs1QmtzBjOmML_qY=9Y5zH8tYmZeQWZQ@mail.gmail.com>
+References: <20260130032517.173590-1-n7l8m4@u.northwestern.edu> <CAGp9LzqQ45LAeeG1Cijs1QmtzBjOmML_qY=9Y5zH8tYmZeQWZQ@mail.gmail.com>
+In-Reply-To: <CAGp9LzqQ45LAeeG1Cijs1QmtzBjOmML_qY=9Y5zH8tYmZeQWZQ@mail.gmail.com>
+From: Ziyi Guo <n7l8m4@u.northwestern.edu>
+Date: Fri, 30 Jan 2026 21:05:01 -0500
+X-Gm-Features: AZwV_Qj3ZqdJVfOqPn3A8gLGh5XdNUoxV_dzTMgg-iq3V96ImWZgH2oWndFPTiA
+Message-ID: <CAMFT1=YkqTrgVTmnf1YLQ_djk-2sU8VpDDDbw=TFBzoWs+MW9g@mail.gmail.com>
 Subject: Re: [PATCH] wifi: mt76: add missing lock protection in mt76_sta_state
  for sta_event callback
-To: Ziyi Guo <n7l8m4@u.northwestern.edu>
+To: Sean Wang <sean.wang@kernel.org>
 Cc: Felix Fietkau <nbd@nbd.name>, Lorenzo Bianconi <lorenzo@kernel.org>, Ryder Lee <ryder.lee@mediatek.com>, 
 	Shayne Chen <shayne.chen@mediatek.com>, Sean Wang <sean.wang@mediatek.com>, 
 	Matthias Brugger <matthias.bgg@gmail.com>, 
@@ -78,95 +117,43 @@ Cc: Felix Fietkau <nbd@nbd.name>, Lorenzo Bianconi <lorenzo@kernel.org>, Ryder L
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.66 / 15.00];
+X-Spamd-Result: default: False [-0.06 / 15.00];
 	SUSPICIOUS_RECIPS(1.50)[];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=2];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64];
+	R_DKIM_ALLOW(-0.20)[u-northwestern-edu.20230601.gappssmtp.com:s=20230601];
 	MAILLIST(-0.15)[generic];
+	DMARC_POLICY_SOFTFAIL(0.10)[northwestern.edu : SPF not aligned (relaxed), DKIM not aligned (relaxed),none];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-31412-lists,linux-wireless=lfdr.de];
-	FREEMAIL_CC(0.00)[nbd.name,kernel.org,mediatek.com,gmail.com,collabora.com,vger.kernel.org,lists.infradead.org];
-	FROM_HAS_DN(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_TLS_LAST(0.00)[];
 	RCPT_COUNT_TWELVE(0.00)[12];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	TAGGED_FROM(0.00)[bounces-31413-lists,linux-wireless=lfdr.de];
 	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[kernel.org:+];
-	MISSING_XM_UA(0.00)[];
-	TO_DN_SOME(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[5];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[sean.wang@kernel.org,linux-wireless@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[u-northwestern-edu.20230601.gappssmtp.com:+];
 	NEURAL_HAM(-0.00)[-1.000];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[n7l8m4@u.northwestern.edu,linux-wireless@vger.kernel.org];
+	FREEMAIL_CC(0.00)[nbd.name,kernel.org,mediatek.com,gmail.com,collabora.com,vger.kernel.org,lists.infradead.org];
 	TAGGED_RCPT(0.00)[linux-wireless];
+	MISSING_XM_UA(0.00)[];
 	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,mail.gmail.com:mid,northwestern.edu:email]
-X-Rspamd-Queue-Id: 0C38BC008C
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: A375BC0331
 X-Rspamd-Action: no action
 
-On Thu, Jan 29, 2026 at 9:25=E2=80=AFPM Ziyi Guo <n7l8m4@u.northwestern.edu=
-> wrote:
+On Fri, Jan 30, 2026 at 8:37=E2=80=AFPM Sean Wang <sean.wang@kernel.org> wr=
+ote:
 >
-> mt76_sta_state() calls the sta_event callback without holding dev->mutex.
-> However, mt7915_mac_sta_event() (MT7915 implementation of this callback)
-> calls mt7915_mac_twt_teardown_flow() which has
-> lockdep_assert_held(&dev->mt76.mutex) indicating that callers must
-> hold this lock.
->
-> The locking pattern in mt76_sta_state() is inconsistent:
-> - mt76_sta_add() acquires dev->mutex before calling dev->drv->sta_add
-> - mt76_sta_remove() acquires dev->mutex before calling __mt76_sta_remove
-> - But sta_event callback is called without acquiring the lock
->
-> Add mutex_lock()/mutex_unlock() around the sta_event callback invocation
-> to fix the missing lock protection and maintain consistency with the
-> existing locking pattern.
+> The mt7921 / mt7925 .sta_event callback already holds the lock; this
+> patch would cause a deadlock. Suggest adding the implementation to
+> MT7915.
 >
 
-The mt7921 / mt7925 .sta_event callback already holds the lock; this
-patch would cause a deadlock. Suggest adding the implementation to
-MT7915.
-
-> Signed-off-by: Ziyi Guo <n7l8m4@u.northwestern.edu>
-> ---
->  drivers/net/wireless/mediatek/mt76/mac80211.c | 7 ++++++-
->  1 file changed, 6 insertions(+), 1 deletion(-)
->
-> diff --git a/drivers/net/wireless/mediatek/mt76/mac80211.c b/drivers/net/=
-wireless/mediatek/mt76/mac80211.c
-> index 75772979f438..468bc176bacb 100644
-> --- a/drivers/net/wireless/mediatek/mt76/mac80211.c
-> +++ b/drivers/net/wireless/mediatek/mt76/mac80211.c
-> @@ -1640,6 +1640,7 @@ int mt76_sta_state(struct ieee80211_hw *hw, struct =
-ieee80211_vif *vif,
->         struct mt76_phy *phy =3D hw->priv;
->         struct mt76_dev *dev =3D phy->dev;
->         enum mt76_sta_event ev;
-> +       int ret;
->
->         phy =3D mt76_vif_phy(hw, vif);
->         if (!phy)
-> @@ -1668,7 +1669,11 @@ int mt76_sta_state(struct ieee80211_hw *hw, struct=
- ieee80211_vif *vif,
->         else
->                 return 0;
->
-> -       return dev->drv->sta_event(dev, vif, sta, ev);
-> +       mutex_lock(&dev->mutex);
-> +       ret =3D dev->drv->sta_event(dev, vif, sta, ev);
-> +       mutex_unlock(&dev->mutex);
-> +
-> +       return ret;
->  }
->  EXPORT_SYMBOL_GPL(mt76_sta_state);
->
-> --
-> 2.34.1
->
->
+Thanks for the review, I'll add to MT7915, and send a v2 patch.
 
