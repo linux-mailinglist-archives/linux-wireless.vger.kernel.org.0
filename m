@@ -1,87 +1,87 @@
-Return-Path: <linux-wireless+bounces-31428-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-31429-lists+linux-wireless=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id YEwANfZ8f2nMrwIAu9opvQ
-	(envelope-from <linux-wireless+bounces-31428-lists+linux-wireless=lfdr.de@vger.kernel.org>)
-	for <lists+linux-wireless@lfdr.de>; Sun, 01 Feb 2026 17:19:02 +0100
+	id SIvRFPx8f2nMrwIAu9opvQ
+	(envelope-from <linux-wireless+bounces-31429-lists+linux-wireless=lfdr.de@vger.kernel.org>)
+	for <lists+linux-wireless@lfdr.de>; Sun, 01 Feb 2026 17:19:08 +0100
 X-Original-To: lists+linux-wireless@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id EBB7DC66A1
-	for <lists+linux-wireless@lfdr.de>; Sun, 01 Feb 2026 17:19:01 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id C4637C66AF
+	for <lists+linux-wireless@lfdr.de>; Sun, 01 Feb 2026 17:19:07 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 540DA3001CED
-	for <lists+linux-wireless@lfdr.de>; Sun,  1 Feb 2026 16:18:59 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 54F113009B01
+	for <lists+linux-wireless@lfdr.de>; Sun,  1 Feb 2026 16:19:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7BD06248F5C;
-	Sun,  1 Feb 2026 16:18:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 904DD242D91;
+	Sun,  1 Feb 2026 16:18:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="UxxKevQF"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="FR7mooWu"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-wm1-f54.google.com (mail-wm1-f54.google.com [209.85.128.54])
+Received: from mail-wr1-f45.google.com (mail-wr1-f45.google.com [209.85.221.45])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0E0A4242D91
-	for <linux-wireless@vger.kernel.org>; Sun,  1 Feb 2026 16:18:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.54
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F266D245019
+	for <linux-wireless@vger.kernel.org>; Sun,  1 Feb 2026 16:18:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.45
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769962735; cv=none; b=eNgPd9kTB3AuXh2uWUjvHSrjuCX8YyzZGBZGWGQlDef2eYbrPM1PE5qxvyJoUBZkcc2gHHAJXqfSPh48OoWxrHuRwCmK0sm0mTlr2+3mR3baUUO1zKtEbllnJWyH8b6pQ0qFMdovqVrRUgd8eV87YhwkfS1y+vUANR38qIA961M=
+	t=1769962736; cv=none; b=d3utzDOHOp5BGJyVltsdi1uGwAU4b3AdkUhPSAszja4vUVoL8/73lCMy1MKqKhLqR+YI9p7Q/7kpU5KVOvXuOx1zMA2gq10ZIVtdsi1yGCgPYX3LDctHMwWrUbQElQotEq4Py7l8FnCIIgrBtFP4GJx4ZCPHXBKyVP/yht0+v6I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769962735; c=relaxed/simple;
-	bh=Ru6IwYp9TYf6IwxXA6fm4FCfKEc9vpq6/Nyd8KVSftU=;
+	s=arc-20240116; t=1769962736; c=relaxed/simple;
+	bh=3r591LqVlUrmnjvASagh7mox6dhK1KPqO+Qu/Y5oh1E=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=eEHtsrSACVO9YvLbUwVoLeGxBpVU+Y89+5xMcATGtXhJ4wG3ZionoikzVXD7YRkp9e8zxtlwV0Y+oZsvdgzl6edNCzP4YYtuESqlekTl+536Ay61ZXVxuaq6kzM2D16pBY5FGE0lVU4cJEKNxd8Kl/lQy99rfxwG4cZWcOmTUF8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=UxxKevQF; arc=none smtp.client-ip=209.85.128.54
+	 MIME-Version; b=eJj52W5Hg1dB18ggji2ngXl/h/LG/7Msw2m86F/jC8uqY5tJsM+P3lqsN/zLD8GR9fZQsVSsEII30Hkj+thZeGcSMdj1qSd7tJNbgLc9z/yTr/1RNfnWTiezIYpJMTklpgNBb7RfoSoEFRfzZHRJK97HsWVghV0DbguqFNCZQJg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=FR7mooWu; arc=none smtp.client-ip=209.85.221.45
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-wm1-f54.google.com with SMTP id 5b1f17b1804b1-4801ea9bafdso14639155e9.3
-        for <linux-wireless@vger.kernel.org>; Sun, 01 Feb 2026 08:18:53 -0800 (PST)
+Received: by mail-wr1-f45.google.com with SMTP id ffacd0b85a97d-435f177a8f7so2677794f8f.1
+        for <linux-wireless@vger.kernel.org>; Sun, 01 Feb 2026 08:18:54 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1769962732; x=1770567532; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1769962733; x=1770567533; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=sQ+jnweoDGkeUIToLfriab5tDVmZNAy+555y5fQdc6o=;
-        b=UxxKevQFqDDKSN8XtxGjgae7hlkLrEhEuTkNExYGXbl0hPy406b8Pnaha4EUPwbL5b
-         P3cGDI/B3ruL006xilTLYjSpprsdm58+Gg2p6Hh9+Y0Xjg/6TEfW/Uhp2LcUk4iJ4sMq
-         Do7az9usu/EZFVXysSYpRgmP5JjkO/WehvVPE86gOqnCdVFIhxppYrvTwgCISWId7P4J
-         tXLc/LkWW4lOHgSO1ndAMoaeyOLba/kPZsI2azfMhW5rkcnFEHhihz4OoAjxfPygW6e8
-         b/ND+Bqs1V7vbA6qO4iIiCYQlJT0hEEJwRzE8pD3lUVayS5OaK6IZo47hqzsHyaqIDDQ
-         M9Rw==
+        bh=4BtcOfsTNMjO1s1xNgK+IoI1+hSlSuAGGBIHgO9a7Vc=;
+        b=FR7mooWu33o4L0F+d5Xpip2cQnznTeToMhOcnAZw+s9f0X3Q4PX0G4Cyg6FZrKs9Qh
+         6q/n7W3B7oodsiMdaN7qgQRN1EJF+BhKDah/o/btbuOofOQvQLhV4Jqs3NZqaXfIByUn
+         vw8Mu5qS3yLyYpSYktds1bA1axlOnwaw86muiwoUJSKpSdUcIM/51fOt/4rh4spQtGvI
+         3DG6JlYQMz0gvoBVO8EDHdN/CUW0CsPxjZwUuUZ13Rdw0YjaU+V4yTL6a5fFX7/YQsRr
+         g9cWZyxX+8Y3Tz5wFFqI5LfKtXGlm8hi3/CsTzSBFOKNdCWS+GlVStjyWBq3r9I0zD3o
+         kfjA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1769962732; x=1770567532;
+        d=1e100.net; s=20230601; t=1769962733; x=1770567533;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to;
-        bh=sQ+jnweoDGkeUIToLfriab5tDVmZNAy+555y5fQdc6o=;
-        b=eXmxUYSEvCkjdwL9tz92pj7K2aTFauMynERHKI2XE6Q0LXqti9hQVQi4rsZZ5N+Uz+
-         nwMvEYMFLWH3TeLR0bskQsK9lbZhGH9Kn11cZv/wG40iL432G5g09f19q/2xTACGE8OO
-         bF98R1QVPD5Oq2i3lFGqi4iXYZ82nW1nxoZNRePnlbJ6bJgK9FHNEW2oycxYpp3QCuQW
-         7TrDmE632Zo7Scya5wMwmtoSpCJLJBgl/wQZuuT5YlJLJ1bh2rb6QqUDrDbxsopg6VFe
-         uZnxGeTDJrNx2l5vjwmqHeMFQKFHcw/UIKWdCZcWFTIJ/4JhyjHg5uAoondMuVsWSIp+
-         V0Og==
-X-Gm-Message-State: AOJu0YwyYJI3MsFP/k+MZijh8JdwnAw4QKE4o8xpmzDSu3yxlDzDk1AT
-	I3QrxknRTdgbnctya6i1YK2D6/1clim2GricKl43ev5MuCuh/XT91rjymPHe/g==
-X-Gm-Gg: AZuq6aLxzapBRAmsvsPvZp0qgUfNhaJNvgmR/8YwKiARjL0zUgR3QbLrhi9/YsZXtcZ
-	/uLp2Xxq9QR+J6H9iLrXhLvUJRsStSAfml837B4/wWvFdJTcCAo24NJwRWbhVsBpw42Mw+ijwCz
-	iqc4i1H/qw8AoiixH0zOOSmtuWr3cXxcjf4vjJB/hMU6SqHQUoWnHxHR3Y5NCGvRfvHjAaxwbCD
-	H3whMEskTvpCPv6wja1wdZ0vPmbR7ujFL2Rv6gUbqAue48jkjN7QaMZ2XYWlinFLTm7y26sHOtJ
-	DkwcS91ANDqC5J5RGlLYqbrMtF6SftWeWWDEatWGLtw0pHsuCMZCfzxAANmLzZ/KmsCFBTu7geU
-	cWrnrV2hvz5qZsard9vAO1qZCIzM7hezqXSQ3hYimWBH+fPDziho5o2T5CplKdghBeywK7GOUaY
-	rcOOUoQOQG+V1X/iv8LGMfIkad1iLFCMtSRKsqCGAXu2Wlz9ZK
-X-Received: by 2002:a05:600c:1da8:b0:480:3a71:92b2 with SMTP id 5b1f17b1804b1-482db498227mr106761135e9.26.1769962732345;
-        Sun, 01 Feb 2026 08:18:52 -0800 (PST)
+        bh=4BtcOfsTNMjO1s1xNgK+IoI1+hSlSuAGGBIHgO9a7Vc=;
+        b=lxkuo1QVREx8CbEsvcn06D1A+o41Qyxc1gsMughIii8hsbTRrJOg9WQIYFIzRjcQpH
+         642qhsy/wp2nMTiu5nkT4gfhrVTQ0LHdSlWXhP6RXn9YxNb/cdesYP6wE4OyVov9dXk7
+         mXZ6aKByMETI0VUIaiaVRL/XxeiHyZN5mFheM5XyiGaBuKARHgZ3fWAIjK/yndvNIN5J
+         PixbmKqYTmKzhQ4ULoPVD/GHiKSONEWw4cKw9cn1oeVJHv9Q/zKe3/czGwARDDv/xpmv
+         H26YN6zA6o7jL+6gdVya1nv6+e9WKHKAUseX81zT9zEz1+mcqeLIKzBqPzSe0mAz2Rl6
+         jHNg==
+X-Gm-Message-State: AOJu0YzCmN+MsMuF9DOCmoi8eRP1dZnGImKq4d/YPH5+0LJkpKKQL4q9
+	q+vOwsEXNxbJqEytBSu4E3fonoXQ1l0er54aaTW8JWrfgUVm/PJ0w5uUTEMhag==
+X-Gm-Gg: AZuq6aKMIP/Fq+ll149COaABKZWUAGOedU/BkfBoUToE3O6dFBkWKOHuAOldkSkQuNc
+	Gl++oKBJb7K4q162+/A6GHWUWWH7LFkZk+PqN2HnKJVr8MOFqwUiBNbAAvDMbyNIslo/5hJXyQ+
+	PpQ4g+BAftXvlQyQ/bW3hNMy/oGSDsSmTgY1je9QTqtS4uuI7D1x7hIv5F6PcnwCCSN/GKlQRPi
+	yVqlrdmxnPJonfUiHfFmzGTTOokxrXyoE0uINlGD+0kZBjc/fK2jd8ts0xb3K0c6Lv/GuEbt4w8
+	+yK7vBOtljAZwNA4KFOn/VVpPDsbcESfgvtIp+G9Hzjd9mpaszLXS23s29ocRwJcyHclnffUtpj
+	uoAL7Ae4aOAG5FIYACbVBhB6L7wZDeoghvN3hooDTKgVYn0aPe5DxeuzgSfJR0mOqWiKDOe2f2c
+	Jy+CkE+Zgm9vUItZkc9nZzM4LU6kvbDLtnXSXTysUrsV1ZrRnF
+X-Received: by 2002:a05:6000:2887:b0:430:f5ed:83e3 with SMTP id ffacd0b85a97d-435f3a6a951mr10906327f8f.6.1769962733196;
+        Sun, 01 Feb 2026 08:18:53 -0800 (PST)
 Received: from hp.. (109241135248.swidnica.vectranet.pl. [109.241.135.248])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-435e131ce93sm36368545f8f.24.2026.02.01.08.18.51
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-435e131ce93sm36368545f8f.24.2026.02.01.08.18.52
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 01 Feb 2026 08:18:51 -0800 (PST)
+        Sun, 01 Feb 2026 08:18:52 -0800 (PST)
 From: Janusz Dziedzic <janusz.dziedzic@gmail.com>
 To: linux-wireless@vger.kernel.org
 Cc: johannes@sipsolutions.net,
 	Janusz Dziedzic <janusz.dziedzic@gmail.com>
-Subject: [RFC v6 wireless-next 1/4] wifi: cfg80211: fix background CAC
-Date: Sun,  1 Feb 2026 17:15:39 +0100
-Message-ID: <20260201161836.16506-2-janusz.dziedzic@gmail.com>
+Subject: [RFC v6 wireless-next 2/4] wifi: cfg80211: set and report chandef CAC ongoing
+Date: Sun,  1 Feb 2026 17:15:40 +0100
+Message-ID: <20260201161836.16506-3-janusz.dziedzic@gmail.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20260201161836.16506-1-janusz.dziedzic@gmail.com>
 References: <20260201161836.16506-1-janusz.dziedzic@gmail.com>
@@ -97,13 +97,13 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	R_DKIM_ALLOW(-0.20)[gmail.com:s=20230601];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-31428-lists,linux-wireless=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-31429-lists,linux-wireless=lfdr.de];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
@@ -120,114 +120,196 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	TAGGED_RCPT(0.00)[linux-wireless];
 	FREEMAIL_FROM(0.00)[gmail.com];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: EBB7DC66A1
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: C4637C66AF
 X-Rspamd-Action: no action
 
-Fix:
-- Send CAC_ABORT event when background CAC is canceled
-- Cancel CAC done workqueue when radar is detected
-- Release background wdev ownership when CAC is aborted or passed
-- Clean lower layer background radar state when CAC is aborted or passed
-- Prevent sending abort event when radar event is sent
+Allow to track and check CAC state from user mode by
+simple check phy channels eg. using iw phy1 channels
+command.
+This is done for regular CAC and background CAC.
+It is important for background CAC while we can start
+it from any app (eg. iw or hostapd).
 
 Signed-off-by: Janusz Dziedzic <janusz.dziedzic@gmail.com>
 ---
- net/wireless/mlme.c | 40 +++++++++++++++++++---------------------
- 1 file changed, 19 insertions(+), 21 deletions(-)
+ include/net/cfg80211.h       |  3 +++
+ include/uapi/linux/nl80211.h |  6 ++++++
+ net/wireless/chan.c          | 27 +++++++++++++++++++++++++++
+ net/wireless/core.h          |  4 ++++
+ net/wireless/mlme.c          |  7 +++++++
+ net/wireless/nl80211.c       |  7 +++++++
+ 6 files changed, 54 insertions(+)
 
+diff --git a/include/net/cfg80211.h b/include/net/cfg80211.h
+index 7911ed58abbb..82840040dc02 100644
+--- a/include/net/cfg80211.h
++++ b/include/net/cfg80211.h
+@@ -188,6 +188,8 @@ enum ieee80211_channel_flags {
+  *	on this channel.
+  * @dfs_state_entered: timestamp (jiffies) when the dfs state was entered.
+  * @dfs_cac_ms: DFS CAC time in milliseconds, this is valid for DFS channels.
++ * @cac_start_time: timestamp (CLOCK_BOOTTIME, nanoseconds) when CAC was
++ *	started on this channel. Zero when CAC is not in progress.
+  * @psd: power spectral density (in dBm)
+  */
+ struct ieee80211_channel {
+@@ -205,6 +207,7 @@ struct ieee80211_channel {
+ 	enum nl80211_dfs_state dfs_state;
+ 	unsigned long dfs_state_entered;
+ 	unsigned int dfs_cac_ms;
++	u64 cac_start_time;
+ 	s8 psd;
+ };
+ 
+diff --git a/include/uapi/linux/nl80211.h b/include/uapi/linux/nl80211.h
+index 706a98686068..c13c587e83cf 100644
+--- a/include/uapi/linux/nl80211.h
++++ b/include/uapi/linux/nl80211.h
+@@ -4453,6 +4453,10 @@ enum nl80211_wmm_rule {
+  * @NL80211_FREQUENCY_ATTR_S1G_NO_PRIMARY: Channel is not permitted for use
+  *	as a primary channel. Does not prevent the channel from existing
+  *	as a non-primary subchannel. Only applicable to S1G channels.
++ * @NL80211_FREQUENCY_ATTR_CAC_START_TIME: Channel Availability Check (CAC)
++ *	start time (CLOCK_BOOTTIME, nanoseconds). Only present when CAC is
++ *	currently in progress on this channel.
++ * @NL80211_FREQUENCY_ATTR_PAD: attribute used for padding for 64-bit alignment
+  * @NL80211_FREQUENCY_ATTR_MAX: highest frequency attribute number
+  *	currently defined
+  * @__NL80211_FREQUENCY_ATTR_AFTER_LAST: internal use
+@@ -4502,6 +4506,8 @@ enum nl80211_frequency_attr {
+ 	NL80211_FREQUENCY_ATTR_NO_8MHZ,
+ 	NL80211_FREQUENCY_ATTR_NO_16MHZ,
+ 	NL80211_FREQUENCY_ATTR_S1G_NO_PRIMARY,
++	NL80211_FREQUENCY_ATTR_CAC_START_TIME,
++	NL80211_FREQUENCY_ATTR_PAD,
+ 
+ 	/* keep last */
+ 	__NL80211_FREQUENCY_ATTR_AFTER_LAST,
+diff --git a/net/wireless/chan.c b/net/wireless/chan.c
+index 68221b1ab45e..dfe319565280 100644
+--- a/net/wireless/chan.c
++++ b/net/wireless/chan.c
+@@ -642,6 +642,33 @@ void cfg80211_set_dfs_state(struct wiphy *wiphy,
+ 	}
+ }
+ 
++void cfg80211_set_cac_state(struct wiphy *wiphy,
++			    const struct cfg80211_chan_def *chandef,
++			    bool cac_ongoing)
++{
++	struct ieee80211_channel *c;
++	int width;
++	u64 cac_time;
++
++	if (WARN_ON(!cfg80211_chandef_valid(chandef)))
++		return;
++
++	width = cfg80211_chandef_get_width(chandef);
++	if (width < 0)
++		return;
++
++	/* Get the same timestamp for all subchannels */
++	cac_time = cac_ongoing ? ktime_get_boottime_ns() : 0;
++
++	for_each_subchan(chandef, freq, cf) {
++		c = ieee80211_get_channel_khz(wiphy, freq);
++		if (!c)
++			continue;
++
++		c->cac_start_time = cac_time;
++	}
++}
++
+ static bool
+ cfg80211_dfs_permissive_check_wdev(struct cfg80211_registered_device *rdev,
+ 				   enum nl80211_iftype iftype,
+diff --git a/net/wireless/core.h b/net/wireless/core.h
+index 6ac57b7b2615..6cace846d7a3 100644
+--- a/net/wireless/core.h
++++ b/net/wireless/core.h
+@@ -481,6 +481,10 @@ void cfg80211_set_dfs_state(struct wiphy *wiphy,
+ 			    const struct cfg80211_chan_def *chandef,
+ 			    enum nl80211_dfs_state dfs_state);
+ 
++void cfg80211_set_cac_state(struct wiphy *wiphy,
++			    const struct cfg80211_chan_def *chandef,
++			    bool cac_ongoing);
++
+ void cfg80211_dfs_channels_update_work(struct work_struct *work);
+ 
+ void cfg80211_sched_dfs_chan_update(struct cfg80211_registered_device *rdev);
 diff --git a/net/wireless/mlme.c b/net/wireless/mlme.c
-index 3fc175f9f868..212178d04efa 100644
+index 212178d04efa..cafb39596a40 100644
 --- a/net/wireless/mlme.c
 +++ b/net/wireless/mlme.c
-@@ -1115,8 +1115,10 @@ void __cfg80211_radar_event(struct wiphy *wiphy,
- 	 */
- 	cfg80211_set_dfs_state(wiphy, chandef, NL80211_DFS_UNAVAILABLE);
- 
--	if (offchan)
-+	if (offchan) {
-+		cancel_delayed_work(&rdev->background_cac_done_wk);
- 		queue_work(cfg80211_wq, &rdev->background_cac_abort_wk);
-+	}
- 
- 	cfg80211_sched_dfs_chan_update(rdev);
- 
-@@ -1187,21 +1189,16 @@ __cfg80211_background_cac_event(struct cfg80211_registered_device *rdev,
- 	if (!cfg80211_chandef_valid(chandef))
- 		return;
- 
--	if (!rdev->background_radar_wdev)
--		return;
--
+@@ -1162,9 +1162,11 @@ void cfg80211_cac_event(struct net_device *netdev,
+ 		fallthrough;
+ 	case NL80211_RADAR_CAC_ABORTED:
+ 		wdev->links[link_id].cac_started = false;
++		cfg80211_set_cac_state(wiphy, chandef, false);
+ 		break;
+ 	case NL80211_RADAR_CAC_STARTED:
+ 		wdev->links[link_id].cac_started = true;
++		cfg80211_set_cac_state(wiphy, chandef, true);
+ 		break;
+ 	default:
+ 		WARN_ON(1);
+@@ -1192,15 +1194,18 @@ __cfg80211_background_cac_event(struct cfg80211_registered_device *rdev,
  	switch (event) {
  	case NL80211_RADAR_CAC_FINISHED:
  		cfg80211_set_dfs_state(wiphy, chandef, NL80211_DFS_AVAILABLE);
++		cfg80211_set_cac_state(wiphy, chandef, false);
  		memcpy(&rdev->cac_done_chandef, chandef, sizeof(*chandef));
  		queue_work(cfg80211_wq, &rdev->propagate_cac_done_wk);
  		cfg80211_sched_dfs_chan_update(rdev);
--		wdev = rdev->background_radar_wdev;
  		break;
  	case NL80211_RADAR_CAC_ABORTED:
++		cfg80211_set_cac_state(wiphy, chandef, false);
  		if (!cancel_delayed_work(&rdev->background_cac_done_wk))
  			return;
--		wdev = rdev->background_radar_wdev;
  		break;
  	case NL80211_RADAR_CAC_STARTED:
++		cfg80211_set_cac_state(wiphy, chandef, true);
  		break;
-@@ -1213,17 +1210,6 @@ __cfg80211_background_cac_event(struct cfg80211_registered_device *rdev,
- 	nl80211_radar_notify(rdev, chandef, event, netdev, GFP_KERNEL);
+ 	default:
+ 		return;
+@@ -1306,7 +1311,9 @@ void cfg80211_stop_radar_detection(struct wireless_dev *wdev)
+ 			continue;
+ 
+ 		chandef = *wdev_chandef(wdev, link_id);
++		wdev->links[link_id].cac_started = false;
+ 		rdev_end_cac(rdev, wdev->netdev, link_id);
++		cfg80211_set_cac_state(wiphy, &chandef, false);
+ 		nl80211_radar_notify(rdev, &chandef, NL80211_RADAR_CAC_ABORTED,
+ 				     wdev->netdev, GFP_KERNEL);
+ 	}
+diff --git a/net/wireless/nl80211.c b/net/wireless/nl80211.c
+index 9aa83a6943a2..99b323528211 100644
+--- a/net/wireless/nl80211.c
++++ b/net/wireless/nl80211.c
+@@ -1319,6 +1319,12 @@ static int nl80211_msg_put_channel(struct sk_buff *msg, struct wiphy *wiphy,
+ 		if ((chan->flags & IEEE80211_CHAN_S1G_NO_PRIMARY) &&
+ 		    nla_put_flag(msg, NL80211_FREQUENCY_ATTR_S1G_NO_PRIMARY))
+ 			goto nla_put_failure;
++		if (chan->cac_start_time &&
++		    nla_put_u64_64bit(msg,
++				      NL80211_FREQUENCY_ATTR_CAC_START_TIME,
++				      chan->cac_start_time,
++				      NL80211_FREQUENCY_ATTR_PAD))
++			goto nla_put_failure;
+ 	}
+ 
+ 	if (nla_put_u32(msg, NL80211_FREQUENCY_ATTR_MAX_TX_POWER,
+@@ -11276,6 +11282,7 @@ static int nl80211_start_radar_detection(struct sk_buff *skb,
+ 	wdev->links[link_id].cac_started = true;
+ 	wdev->links[link_id].cac_start_time = jiffies;
+ 	wdev->links[link_id].cac_time_ms = cac_time_ms;
++	cfg80211_set_cac_state(wiphy, &chandef, true);
+ 
+ 	return 0;
  }
- 
--static void
--cfg80211_background_cac_event(struct cfg80211_registered_device *rdev,
--			      const struct cfg80211_chan_def *chandef,
--			      enum nl80211_radar_event event)
--{
--	guard(wiphy)(&rdev->wiphy);
--
--	__cfg80211_background_cac_event(rdev, rdev->background_radar_wdev,
--					chandef, event);
--}
--
- void cfg80211_background_cac_done_wk(struct work_struct *work)
- {
- 	struct delayed_work *delayed_work = to_delayed_work(work);
-@@ -1231,18 +1217,30 @@ void cfg80211_background_cac_done_wk(struct work_struct *work)
- 
- 	rdev = container_of(delayed_work, struct cfg80211_registered_device,
- 			    background_cac_done_wk);
--	cfg80211_background_cac_event(rdev, &rdev->background_radar_chandef,
--				      NL80211_RADAR_CAC_FINISHED);
-+
-+	guard(wiphy)(&rdev->wiphy);
-+
-+	rdev_set_radar_background(rdev, NULL);
-+	rdev->background_radar_wdev = NULL;
-+
-+	__cfg80211_background_cac_event(rdev, rdev->background_radar_wdev,
-+					&rdev->background_radar_chandef,
-+					NL80211_RADAR_CAC_FINISHED);
- }
- 
- void cfg80211_background_cac_abort_wk(struct work_struct *work)
- {
- 	struct cfg80211_registered_device *rdev;
-+	struct wireless_dev *wdev;
- 
- 	rdev = container_of(work, struct cfg80211_registered_device,
- 			    background_cac_abort_wk);
--	cfg80211_background_cac_event(rdev, &rdev->background_radar_chandef,
--				      NL80211_RADAR_CAC_ABORTED);
-+
-+	guard(wiphy)(&rdev->wiphy);
-+
-+	wdev = rdev->background_radar_wdev;
-+	if (wdev)
-+		cfg80211_stop_background_radar_detection(wdev);
- }
- 
- void cfg80211_background_cac_abort(struct wiphy *wiphy)
 -- 
 2.43.0
 
