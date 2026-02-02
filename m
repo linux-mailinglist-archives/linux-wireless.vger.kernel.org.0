@@ -1,194 +1,224 @@
-Return-Path: <linux-wireless+bounces-31465-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-31466-lists+linux-wireless=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id YFgXHMC9gGl3AgMAu9opvQ
-	(envelope-from <linux-wireless+bounces-31465-lists+linux-wireless=lfdr.de@vger.kernel.org>)
-	for <lists+linux-wireless@lfdr.de>; Mon, 02 Feb 2026 16:07:44 +0100
+	id uOJKBpfBgGl3AgMAu9opvQ
+	(envelope-from <linux-wireless+bounces-31466-lists+linux-wireless=lfdr.de@vger.kernel.org>)
+	for <lists+linux-wireless@lfdr.de>; Mon, 02 Feb 2026 16:24:07 +0100
 X-Original-To: lists+linux-wireless@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 145A0CDE49
-	for <lists+linux-wireless@lfdr.de>; Mon, 02 Feb 2026 16:07:43 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7A335CE26F
+	for <lists+linux-wireless@lfdr.de>; Mon, 02 Feb 2026 16:24:06 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 38479308899C
-	for <lists+linux-wireless@lfdr.de>; Mon,  2 Feb 2026 15:00:51 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 281813002E3C
+	for <lists+linux-wireless@lfdr.de>; Mon,  2 Feb 2026 15:17:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0E2FB372B4D;
-	Mon,  2 Feb 2026 14:59:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 78E7437A494;
+	Mon,  2 Feb 2026 15:17:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="JDf16Nco";
-	dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b="eQvtmaVC"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="lNzlokGC"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pf1-f169.google.com (mail-pf1-f169.google.com [209.85.210.169])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B937734D3AA
-	for <linux-wireless@vger.kernel.org>; Mon,  2 Feb 2026 14:59:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 383E0366833
+	for <linux-wireless@vger.kernel.org>; Mon,  2 Feb 2026 15:17:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.169
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770044345; cv=none; b=IJxMe5HTLZHAJw0Pbp4EO7zYUOoaXx6jLsR2sIi/DOlRL7qJEFTKOmPBqK2O841JJF3RP3ZURZ41pAwZX23gC0DnvD6ijtPyYVn9c/Xz4gJnPwgESemO2TWiYKiyJGcVFrTc8AJ7cWbXnAb8Z80frlpoBCIJ4qMohyGj9xUKL50=
+	t=1770045449; cv=none; b=A+NtYXjwBMPXUl/PgvacxzJs8YcxS1fTCOBufXAdI5ptnxP6LYWe2Ef40QCv6zfjS+AokaeuJXLKxCDyh/8sjuyNCFLmtZ7C0jduh/KZjUq9vj6mfmVvNWjoacq602Q/S8pY7wZA/qmEueznzE659UnnvdatuF1MqczqarIBs80=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770044345; c=relaxed/simple;
-	bh=ubppEABThm5I1xUctkd+0mBZdN1gwm1LLiwqS3R+RiE=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=sN8u0FOdlzqaJJ/kqz1P4goVOMVreSoTTM4WCyEZTJpOsopjNJYl08t22czGqF0onaHAVKYzBlWX6kehZKE4qhM9YTYINRt8YEpQPrib6VuXYv/FyiN62qiM3P2EtCmjwzNBNu4BQv9a8cvjr3yoCcjb9F0jK3KfHpm33NISVd4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=JDf16Nco; dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b=eQvtmaVC; arc=none smtp.client-ip=205.220.168.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
-Received: from pps.filterd (m0279865.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 612BAFup3082673
-	for <linux-wireless@vger.kernel.org>; Mon, 2 Feb 2026 14:59:04 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
-	cc:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
-	mLPFwv3AAwyyP27oI++i5Ku5Yds+CxHyahu16/9DSFo=; b=JDf16NcoGUeJnhBw
-	A/Ja3hdjllzNFuEsAJvW+EvNiIMdHIEPN8p0sQY3SaKkekx992KPTXtkaa7XknsK
-	gErBdlcJQqYXQG2QyaLAj1KOBeYHEzZ1O51SY7VaPbhzfuGC1HcSphjQ+8iLMVIx
-	uJ2apmnHpwZ+tXpvfXraAwPFw3CFXE3+XNMDLHaC8NtCk4yb5FJCGCJnhsWgxIgy
-	ZkBi18rWhP+Lx/cEKqtvgf2lMCN8eFdYERYs3HG4b782xQnyWV9ezJqulrdT3ruF
-	3Q/CqMpf6D+44fQnHmQVpWmxBox6Z/VaignN7edelWHyNlRSs7WpIdNE1gBZ1eV9
-	a0mbwA==
-Received: from mail-dy1-f200.google.com (mail-dy1-f200.google.com [74.125.82.200])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4c2ttn0khk-1
-	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
-	for <linux-wireless@vger.kernel.org>; Mon, 02 Feb 2026 14:59:03 +0000 (GMT)
-Received: by mail-dy1-f200.google.com with SMTP id 5a478bee46e88-2b71bdcd037so3166862eec.1
-        for <linux-wireless@vger.kernel.org>; Mon, 02 Feb 2026 06:59:03 -0800 (PST)
+	s=arc-20240116; t=1770045449; c=relaxed/simple;
+	bh=lSH4WdJZQFQKbcuOTcqByxROAsgttdinJuGz3TKVfQU=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=BnXwCMuTzRLqVjPoWyK+BpirurBpGSjVAdsWY3fSbr6he+n5rf/bqXVEH/qhFwK30qx/hbNkXTF9lQ2D7VScW9p2Rvam7zQyThR6Mby9CQ2jlvPD2uGcX/rtKjDRH8scGwYbofhZKd3ZNvF+G+EBVy9iRR7fKGeRz+osdB0NbTI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=lNzlokGC; arc=none smtp.client-ip=209.85.210.169
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-pf1-f169.google.com with SMTP id d2e1a72fcca58-81f4dfa82edso2483742b3a.0
+        for <linux-wireless@vger.kernel.org>; Mon, 02 Feb 2026 07:17:27 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=oss.qualcomm.com; s=google; t=1770044343; x=1770649143; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:content-language:from
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=mLPFwv3AAwyyP27oI++i5Ku5Yds+CxHyahu16/9DSFo=;
-        b=eQvtmaVC2179eNw+lbDaeodlbFs4rdcFdhNWJmQfBK0wWJFzWI+sjz58KHvhWXXdXg
-         Xo5o14mvtW1owC1v8OC/1UPcSlgIn4TZlqAQLzvvlwjOa2NJgNs+l+iJD9yQvsOChlBC
-         G99Uv+PZ+oXggHu2Z6w8U4vz/SQpk5sQI2v7X09/q7UQj38qwZYWtdH2uaYQV/5JC8KT
-         2uuQ/4FxTMCp58R2QS0eGADOyakAWZCzJM/WyW0Mc3aGsc2VzbJBWcrCI2Ipand5nk0F
-         KiIB0/gOlb3syscuDftpXu5p3SQZA4kYbzGhwnbD8jnA/hGMZXNRVbgS5ZWB1gaRq2g1
-         LDWg==
+        d=gmail.com; s=20230601; t=1770045447; x=1770650247; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=VUARgzGPJhRK4HrRb+3HfBCK/Wz2+3KoUtSkwanfWJY=;
+        b=lNzlokGC6j/ZdoNNGXsVcFhFugiSeNN20OHJh2yg0aceVHgPTKmF3laego62adn9AD
+         00nFjQbqxKCqF8SxOoRDidgzD5cLuz/tji0s65OpwTkcME/Yy1lVYCdKJti5QQE+6PNQ
+         zBlDGaJL6/7+hD/RMy1qJhG/X13iG1ADzCQg4b8iocwamsXhS1jaDNQ2Qj7RQfGiHpMe
+         f2I5T/1Faju8Nm0FdJKJuRHUUj1IO7+lV3a6V0VYzK/5dqlhAy4f8EhdM5UAraOad9fQ
+         /6DC6ZPTmpuG93VZCLZo1RFbdl3RekidijC2yLum3gBloqRY9O3lYxRAD1/cX0scBc/V
+         4AEA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1770044343; x=1770649143;
-        h=content-transfer-encoding:in-reply-to:content-language:from
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=mLPFwv3AAwyyP27oI++i5Ku5Yds+CxHyahu16/9DSFo=;
-        b=kS/Xlpyu9Y6shSR8lgi4RORFAloJ+hs/XRWpPshULI7vWtA/8s53BEiGJdbeMI017S
-         DGtZLoL17s8dK+eKHSiAngkpKUZUBpq6AtWHaOTgYA5DfHD6BDTKidgPNbC464WPpu5X
-         MLsukjcpoD+fihyy5ibYlikVv99za39rRyQtJqiUwhvpEN2poOyQpr13AjI7zXUynXoi
-         L6BiU69DoNLyspN/EeQaF9RhGlny9h8qS9EeS3QEf46HKuo0jyl2ThOjaNjsmmMfeT/i
-         HEK2f5KaWV/u8rKHlkyk13pG/syBkig6ei4BhwZ549Ymq3dcR9OcthNEzj9VIjSuhMhM
-         2snw==
-X-Gm-Message-State: AOJu0YwbZIGbBg56ExC/tmKQRK7Ocv6/ieVpQJktc7CoTf401jTZXCBD
-	jMm5mOl5yOljUQAMljMUEHYFkmF2uxbxFl5gHWS38puqwD1zjMKlcs/Q9g/3Frgsb1V5Qrb9Z+D
-	hQiMmJOQTg+1K3buotdG5SIoKbbsSFhemytyAskPhAThroBXh75BTvfefC2EzwjzUQv2saQ==
-X-Gm-Gg: AZuq6aIFN4unPJVaOyD+GKT9Pi+EDFTWsbXNmm5NdowPKbVWYPHCZF3i4LJWrxy40Bc
-	eTq4Nujh2AkW2gjPWntrX/AcaDOaOpZLcSfondsoVSQD0AQI+k1EyZ2TLBtKg5/me8UxVPEgGHV
-	Yytb9aqAzcgOcoOz4Wn/hjfPVSAdKT6Uc8ZsTkymHHZDWD7QERquqluKxIzYygzPcWaO/CZgPAJ
-	gAVV0EaU7c/GygZaJCDwhLKU/Gx2DrEfigjtDKzdrtyf0CjauKL/rC2hSI458iC6wgk/pNQMiWQ
-	g97N/kAInO+mzJQUlVEjO/iuvex2gofwtOXOmeWMzhN2Zr79vApfCj4EXpldAlzY3lxz9RGSMGs
-	S8MlAipWkSCNoP8zK9DzVSkkgVNek5ecmd5pxYNWQQq0Ci2KNnrYIsgSVXlNod1UuIwYY0Q==
-X-Received: by 2002:a05:7301:6097:b0:2a4:3593:ccba with SMTP id 5a478bee46e88-2b7c9124e92mr4388026eec.1.1770044342735;
-        Mon, 02 Feb 2026 06:59:02 -0800 (PST)
-X-Received: by 2002:a05:7301:6097:b0:2a4:3593:ccba with SMTP id 5a478bee46e88-2b7c9124e92mr4388012eec.1.1770044341768;
-        Mon, 02 Feb 2026 06:59:01 -0800 (PST)
-Received: from [10.227.110.203] (i-global254.qualcomm.com. [199.106.103.254])
-        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-2b7a16cfaa8sm19582564eec.4.2026.02.02.06.59.01
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 02 Feb 2026 06:59:01 -0800 (PST)
-Message-ID: <c069c74a-3a0e-4067-8d29-4ba894ead78d@oss.qualcomm.com>
-Date: Mon, 2 Feb 2026 06:59:00 -0800
+        d=1e100.net; s=20230601; t=1770045447; x=1770650247;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=VUARgzGPJhRK4HrRb+3HfBCK/Wz2+3KoUtSkwanfWJY=;
+        b=rh+5kjKE2ZdMgYp9ACrzx6PfdZSrOdv/6pi/z0LXzlxbAWUerYuZ0UHu2Zcw1aAm+6
+         PjFc6v47aD8jCqKYjVZVDAmRsKJ1QwEc59tOFvmpV5vdsUNAnddsvZS4W0X6Py5+v8kg
+         dTd9lRu8isWvBGqOx4WSxxgyaXIJQoprzlIleAdXSZtKnfVFTAHrppE/QFFHXREQYYHi
+         sOpxqbb4bYLW8dpoFlcVBpNUw6GJuiW72bCDTxEM6nEKMSvkvFtYwEyjg9FyVFTq2nYh
+         Lxziv91h0rEY9ychSfojcNdq+F2E3wscS8XLs2qDMium7ovzTUutJBjkCUeklildHN+p
+         +1AA==
+X-Forwarded-Encrypted: i=1; AJvYcCWBSqXLgqlOcfwXw5RgbZ4zYkErIy9yV1kKEY9/WbZyMSSLNFE5Duv+Wt+lOHYyOjlAMk3zySXVrs9++LfdLw==@vger.kernel.org
+X-Gm-Message-State: AOJu0YygCAoN8CPpJ0WpWn216c7KBMW4A4n7FRIdgiqAznWYYBKXEqmk
+	810IwugwVgdejwWUdyJ1K4sJjTg8OcPZmodGyVdyjghnyc6k2Zm8dNc9
+X-Gm-Gg: AZuq6aIJaeN1UQdt10+W4hedpBk3ZGNX8kcoMPgJJRpk55Ku+NM3M7hALe7t15nesV7
+	IamLLAhmpuztGrABG3l4YGpngwYUfMQ8iRdQDpJ3rH3vprbWOdeAo27/9bCHWphquX3mjFm58yo
+	H2sfBqRYyUhEALRBG/TsAa/GB/E67z8d6GGIXS1QlqwQdW3/hjxGZWjcZrVCTsoNAWYy1Nt0Gz7
+	33T2K7MVc6rILRKpwozSdPypxRz36mwynZ+buzeP0Q8iXXTq1uteE8tgNkYqyleU8UobLEH1wRW
+	2B4BF16gwGntEzU1e89uGJ1mhdoFgK0UlFVoflkSwLxN5ufyNBqS/IaT+kmMUE+JhbRgh32MuWF
+	ZotSGZzEF44jG1FN8K9S2bw/66eXeQudtc5oEkxQmqGbkgDttFvWvg845Bl/VUCGVYzjFBAGRlj
+	F2NhwpJgwFyi2WZBq4y/rH3n8jmmKO6o+I2w==
+X-Received: by 2002:a05:6a00:3026:b0:7e8:4471:ae6d with SMTP id d2e1a72fcca58-823aa7376d1mr11367711b3a.57.1770045447289;
+        Mon, 02 Feb 2026 07:17:27 -0800 (PST)
+Received: from saikiran-Yoga-Slim-7-14Q8X9 ([2402:e280:3d17:646:6b:a50d:4972:6cd4])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-82379b58f38sm16843432b3a.24.2026.02.02.07.17.24
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 02 Feb 2026 07:17:26 -0800 (PST)
+From: Saikiran <bjsaikiran@gmail.com>
+To: jjohnson@kernel.org,
+	kvalo@kernel.org
+Cc: quic_bqiang@quicinc.com,
+	linux-wireless@vger.kernel.org,
+	ath12k@lists.infradead.org,
+	linux-kernel@vger.kernel.org,
+	Saikiran <bjsaikiran@gmail.com>
+Subject: [PATCH] wifi: ath12k: fix CMA error and MHI state mismatch during resume
+Date: Mon,  2 Feb 2026 20:47:20 +0530
+Message-ID: <20260202151720.49904-1-bjsaikiran@gmail.com>
+X-Mailer: git-send-email 2.51.0
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 11/13] wifi: nl80211/cfg80211: add MAC randomization
- support for PD requests
-To: Peddolla Harshavardhan Reddy <peddolla.reddy@oss.qualcomm.com>,
-        johannes@sipsolutions.net
-Cc: linux-wireless@vger.kernel.org
-References: <20260130160039.2823409-1-peddolla.reddy@oss.qualcomm.com>
- <20260130160039.2823409-12-peddolla.reddy@oss.qualcomm.com>
-From: Jeff Johnson <jeff.johnson@oss.qualcomm.com>
-Content-Language: en-US
-In-Reply-To: <20260130160039.2823409-12-peddolla.reddy@oss.qualcomm.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Authority-Analysis: v=2.4 cv=ANnNY0ku c=1 sm=1 tr=0 ts=6980bbb7 cx=c_pps
- a=PfFC4Oe2JQzmKTvty2cRDw==:117 a=JYp8KDb2vCoCEuGobkYCKw==:17
- a=IkcTkHD0fZMA:10 a=HzLeVaNsDn8A:10 a=s4-Qcg_JpJYA:10
- a=VkNPw1HP01LnGYTKEx00:22 a=EUspDBNiAAAA:8 a=RPI7tyx9PfwCRmZe4zUA:9
- a=QEXdDO2ut3YA:10 a=ZXulRonScM0A:10 a=6Ab_bkdmUrQuMsNx7PHu:22
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwMjAyMDExOCBTYWx0ZWRfX4RO5mNRps4v3
- T9tgBBwXjysGF9topGk1CKreY1IFeVtBhFnwT7Im88DhmQJIoztwbzjTd6Wmxmxibtnq3cO1zTP
- 8yJYDXHFzqLX5yvJSmoDMbiPHU8heUiIWrM1hCOV9jlICX531QPwIPfLyJgnH4/pgeZ22oUCPS5
- 1KWoN23KTsEErO8OA00WCg9eHEv9X5sqth6GLxrl3Z8gHSSG9EWoyk803BEmCcgQg5kcjaZyHOs
- TVhkyoBmfebvP3/zDGOEWn7SfjiJl8i3Kuw5JPnV7arccQUShgB8ws0JEcfbdyb7yn7r+RisSoE
- N8f1r6GkHQ1TQUndZd0uUuHFumgIIknXUHOtJQ5Sib1nsj2mjhcvnwCOD7eT4e2BsaF6Y6AbRuL
- ytXjHjLj1cjrdVW/yBfrL46E1p5A53+OdIhXnuI5ik76rK1ytMKst26bQkrtBRCxPlcgJzKCCgD
- fYNrjaTAOJ2Suh6jo5g==
-X-Proofpoint-GUID: vtPSR2j-pYiMT2POVqveYyHQCcqmxE7_
-X-Proofpoint-ORIG-GUID: vtPSR2j-pYiMT2POVqveYyHQCcqmxE7_
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.51,FMLib:17.12.100.49
- definitions=2026-02-02_04,2026-01-30_04,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- suspectscore=0 malwarescore=0 lowpriorityscore=0 clxscore=1015 bulkscore=0
- spamscore=0 priorityscore=1501 impostorscore=0 phishscore=0 adultscore=0
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.22.0-2601150000 definitions=main-2602020118
+Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [-0.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[qualcomm.com,reject];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
-	R_DKIM_ALLOW(-0.20)[qualcomm.com:s=qcppdkim1,oss.qualcomm.com:s=google];
+	MID_CONTAINS_FROM(1.00)[];
+	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
+	R_MISSING_CHARSET(0.50)[];
+	R_DKIM_ALLOW(-0.20)[gmail.com:s=20230601];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[qualcomm.com:+,oss.qualcomm.com:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-31465-lists,linux-wireless=lfdr.de];
-	RCPT_COUNT_THREE(0.00)[3];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[qualcomm.com:email,qualcomm.com:dkim,oss.qualcomm.com:mid,oss.qualcomm.com:dkim,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns];
-	TO_DN_SOME(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[jeff.johnson@oss.qualcomm.com,linux-wireless@vger.kernel.org];
+	FREEMAIL_CC(0.00)[quicinc.com,vger.kernel.org,lists.infradead.org,gmail.com];
+	TAGGED_FROM(0.00)[bounces-31466-lists,linux-wireless=lfdr.de];
+	RCVD_COUNT_FIVE(0.00)[5];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	TO_DN_SOME(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[bjsaikiran@gmail.com,linux-wireless@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[gmail.com:+];
 	TAGGED_RCPT(0.00)[linux-wireless];
-	MID_RHS_MATCH_FROM(0.00)[];
+	FREEMAIL_FROM(0.00)[gmail.com];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	RCVD_COUNT_SEVEN(0.00)[7]
-X-Rspamd-Queue-Id: 145A0CDE49
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 7A335CE26F
 X-Rspamd-Action: no action
 
-On 1/30/2026 8:00 AM, Peddolla Harshavardhan Reddy wrote:
-> Add support for MAC address randomization in proximity detection
-> (PD) requests. When enabled, the same randomized MAC address
-> used for discovery and authentication phases will be used for
-> the ranging measurements, maintaining privacy throughout the
-> entire PD session workflow.
+Commit 8d5f4da8d70b ("wifi: ath12k: support suspend/resume") introduced
+system suspend/resume support but caused a critical regression where
+CMA pages are corrupted during resume.
 
-describe the problem first
+1. CMA page corruption:
+   Calling mhi_unprepare_after_power_down() during suspend (via
+   ATH12K_MHI_DEINIT) prematurely frees the fbc_image and rddm_image
+   DMA buffers. When these pages are accessed during resume, the kernel
+   detects corruption (Bad page state).
 
-> 
-> The implementation adds a capability flag for devices to
+To fix this corruption, the driver must skip ATH12K_MHI_DEINIT during
+suspend, preserving the DMA buffers. However, implementing this fix
+exposes a second issue in the state machine:
 
-use imperative tense
+2. Resume failure due to MHI state mismatch:
+   When DEINIT is skipped during suspend to protect the memory, the
+   ATH12K_MHI_INIT bit remains set. On resume, ath12k_mhi_start()
+   blindly attempts to set INIT again, but the state machine rejects
+   the transition:
 
-> advertise PD MAC randomization support and validates that
-> randomization is only requested when the device supports it.
-> This ensures consistent MAC address usage across all phases of
-> proximity detection while preventing invalid configurations
-> where randomization is requested but not supported by hardware.
-> 
-> Signed-off-by: Peddolla Harshavardhan Reddy <peddolla.reddy@oss.qualcomm.com>
+   ath12k_wifi7_pci ...: failed to set mhi state INIT(0) in current
+   mhi state (0x1)
+
+Fix the corruption and enable the correct suspend flow by:
+
+1. In ath12k_mhi_stop(), skipping ATH12K_MHI_DEINIT if suspending.
+   This prevents the memory corruption by keeping the device context
+   valid (MHI_POWER_OFF_KEEP_DEV).
+
+2. In ath12k_mhi_start(), checking if MHI_INIT is already set.
+   This accommodates the new suspend flow where the device remains
+   initialized, allowing the driver to proceed directly to POWER_ON.
+
+Tested with suspend/resume cycles on Qualcomm Snapdragon X Elite
+(SC8380XP) with WCN7850 WiFi. No CMA corruption observed, WiFi resumes
+successfully, and deep sleep works correctly.
+
+Fixes: 8d5f4da8d70b ("wifi: ath12k: support suspend/resume")
+Tested-on: WCN7850 hw2.0 PCI WLAN.HMT.1.1.c5-00302 (Lenovo Yoga Slim 7x)
+Signed-off-by: Saikiran <bjsaikiran@gmail.com>
+---
+ drivers/net/wireless/ath/ath12k/mhi.c | 24 +++++++++++++++++-------
+ 1 file changed, 17 insertions(+), 7 deletions(-)
+
+diff --git a/drivers/net/wireless/ath/ath12k/mhi.c b/drivers/net/wireless/ath/ath12k/mhi.c
+index 45c0f66dcc5e..1a0b3bcc6bbf 100644
+--- a/drivers/net/wireless/ath/ath12k/mhi.c
++++ b/drivers/net/wireless/ath/ath12k/mhi.c
+@@ -485,9 +485,14 @@ int ath12k_mhi_start(struct ath12k_pci *ab_pci)
+ 
+ 	ab_pci->mhi_ctrl->timeout_ms = MHI_TIMEOUT_DEFAULT_MS;
+ 
+-	ret = ath12k_mhi_set_state(ab_pci, ATH12K_MHI_INIT);
+-	if (ret)
+-		goto out;
++	/* In case of suspend/resume, MHI INIT is already done.
++	 * So check if MHI INIT is set or not.
++	 */
++	if (!test_bit(ATH12K_MHI_INIT, &ab_pci->mhi_state)) {
++		ret = ath12k_mhi_set_state(ab_pci, ATH12K_MHI_INIT);
++		if (ret)
++			goto out;
++	}
+ 
+ 	ret = ath12k_mhi_set_state(ab_pci, ATH12K_MHI_POWER_ON);
+ 	if (ret)
+@@ -501,16 +506,21 @@ int ath12k_mhi_start(struct ath12k_pci *ab_pci)
+ 
+ void ath12k_mhi_stop(struct ath12k_pci *ab_pci, bool is_suspend)
+ {
+-	/* During suspend we need to use mhi_power_down_keep_dev()
+-	 * workaround, otherwise ath12k_core_resume() will timeout
+-	 * during resume.
++	/* During suspend, we need to use mhi_power_down_keep_dev()
++	 * and avoid calling MHI_DEINIT. The deinit frees BHIE tables
++	 * which causes memory corruption when those pages are
++	 * accessed/freed again during resume. We want to keep the
++	 * device prepared for resume, otherwise ath12k_core_resume()
++	 * will timeout.
+ 	 */
+ 	if (is_suspend)
+ 		ath12k_mhi_set_state(ab_pci, ATH12K_MHI_POWER_OFF_KEEP_DEV);
+ 	else
+ 		ath12k_mhi_set_state(ab_pci, ATH12K_MHI_POWER_OFF);
+ 
+-	ath12k_mhi_set_state(ab_pci, ATH12K_MHI_DEINIT);
++	/* Only deinit when doing full power down, not during suspend */
++	if (!is_suspend)
++		ath12k_mhi_set_state(ab_pci, ATH12K_MHI_DEINIT);
+ }
+ 
+ void ath12k_mhi_suspend(struct ath12k_pci *ab_pci)
+-- 
+2.51.0
+
 
