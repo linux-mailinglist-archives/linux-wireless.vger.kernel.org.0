@@ -1,148 +1,152 @@
-Return-Path: <linux-wireless+bounces-31443-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-31444-lists+linux-wireless=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id aOjdHJ1ggGlj7AIAu9opvQ
-	(envelope-from <linux-wireless+bounces-31443-lists+linux-wireless=lfdr.de@vger.kernel.org>)
-	for <lists+linux-wireless@lfdr.de>; Mon, 02 Feb 2026 09:30:21 +0100
+	id EHSyN/RlgGlA7wIAu9opvQ
+	(envelope-from <linux-wireless+bounces-31444-lists+linux-wireless=lfdr.de@vger.kernel.org>)
+	for <lists+linux-wireless@lfdr.de>; Mon, 02 Feb 2026 09:53:08 +0100
 X-Original-To: lists+linux-wireless@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id D467CC9B0E
-	for <lists+linux-wireless@lfdr.de>; Mon, 02 Feb 2026 09:30:20 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5AF66C9D08
+	for <lists+linux-wireless@lfdr.de>; Mon, 02 Feb 2026 09:53:08 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 963E73006B3B
-	for <lists+linux-wireless@lfdr.de>; Mon,  2 Feb 2026 08:27:17 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 5A0A4300D918
+	for <lists+linux-wireless@lfdr.de>; Mon,  2 Feb 2026 08:53:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 510CB353EFA;
-	Mon,  2 Feb 2026 08:27:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DE07D28031D;
+	Mon,  2 Feb 2026 08:53:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b="ttuVNxI+"
+	dkim=fail reason="signature verification failed" (1024-bit key) header.d=nbd.name header.i=@nbd.name header.b="kJFQeria"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from sipsolutions.net (s3.sipsolutions.net [168.119.38.16])
+Received: from nbd.name (nbd.name [46.4.11.11])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F246034F263
-	for <linux-wireless@vger.kernel.org>; Mon,  2 Feb 2026 08:27:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=168.119.38.16
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 97CBE23D2B4
+	for <linux-wireless@vger.kernel.org>; Mon,  2 Feb 2026 08:53:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=46.4.11.11
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770020836; cv=none; b=i75LEMn7JYGXoWAri/EsGFH6pkbMrf2E3yBzNmG9RkXqrCZY+otRSyHrlc3x/yyuwwZV3bDqVAC5MBSPHYZnlo4Is9oj6zVoMibFK+um0jjivkalXqrjNRhtiFWQT9z/u32j56KWha6mZyLHhk097kjMetZC6/WtufcjkErB+l0=
+	t=1770022385; cv=none; b=gaQIYh65tJGLmXz1c+47BV4NGfjOWiM9+eIqwrbULKiJDhTVrYeFuC5TrM0zym3sATuJyLOHOPpp96ZQLko3j0tEUEYc1Dm9Xt9m+yb2wjF5Yprb+m0VN3tSt79yh2erThCTe4RDkgFhzz6x1liOfAKgURHkNwDrDijnha42kKg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770020836; c=relaxed/simple;
-	bh=vsZAmM8tJJ1IJUNcPSt/R6di46IrRLZvQWgTNviYPbU=;
-	h=Message-ID:Subject:From:To:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=glG6ABu1tMRnKpAyJu4+VMVhwvMW+GHdDovPFJgV4zki1ggKXsdOkzfQvdZsc1yWtuA6pJNfqrH8owj0xoO1hD775BEnbeE8ai3CdbjsuSafNzVsv56kyIKYRg7vkaUDvpAORqMSaHxSN10YZ81f2iACnqabNLkjs0l19huSCKQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net; spf=pass smtp.mailfrom=sipsolutions.net; dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b=ttuVNxI+; arc=none smtp.client-ip=168.119.38.16
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sipsolutions.net
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=sipsolutions.net; s=mail; h=MIME-Version:Content-Transfer-Encoding:
-	Content-Type:References:In-Reply-To:Date:To:From:Subject:Message-ID:Sender:
-	Reply-To:Cc:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
-	Resent-Cc:Resent-Message-ID; bh=mLS4JFnGk86za0ejaTRaOAH6elcT+Hux15avYj4723g=;
-	t=1770020834; x=1771230434; b=ttuVNxI+QRAh9VxeeKkmMnT5oXdoxC1eGT0g8BGFkikLXxH
-	BkPNK6I7F86UoHcKqAxeTuQ7/OIxg0Hd0wpr6bRCHp4qVkTOCULkQLGAybNXqCRLYSS4Xjq7Uz8HH
-	wu9/70NE3Gob+sXG2SGGwSww6MMmg0pCH4/oIkTL43QxVYZXFDEQHYVhIx3McKqGtsqoo8dazu1nr
-	w/YWyf5+JN+HNFvd44IqmICrSLe1bRQEctqO6cl4PzKIkkix9wxPJHv1imHBKjsOLn+62E45nil5I
-	BKLEqGJ/6LBB32bYwgRnmnf6lD+gxJZkN4nmcwODnFGN9brbOiUwrhSrYlxHjY6g==;
-Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
-	(Exim 4.98.2)
-	(envelope-from <johannes@sipsolutions.net>)
-	id 1vmpGy-0000000BMPD-3UgS;
-	Mon, 02 Feb 2026 09:27:05 +0100
-Message-ID: <b0eac13e1778566fbd52bac2f29d8ab5810badb6.camel@sipsolutions.net>
-Subject: Re: [PATCH wireless-next v8 3/3] wifi: mac80211: add initial UHR
- support
-From: Johannes Berg <johannes@sipsolutions.net>
-To: Pablo MARTIN-GOMEZ <pmartin-gomez@freebox.fr>, 
-	linux-wireless@vger.kernel.org
-Date: Mon, 02 Feb 2026 09:27:04 +0100
-In-Reply-To: <009232c6-2a67-4df4-9309-71c9d5788c73@freebox.fr> (sfid-20260130_192945_783004_468158C1)
-References: <20260130154259.265130-5-johannes@sipsolutions.net>
-	 <20260130164259.7185980484eb.Ieec940b58dbf8115dab7e1e24cb5513f52c8cb2f@changeid>
-	 <009232c6-2a67-4df4-9309-71c9d5788c73@freebox.fr>
-	 (sfid-20260130_192945_783004_468158C1)
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.58.2 (3.58.2-1.fc43) 
+	s=arc-20240116; t=1770022385; c=relaxed/simple;
+	bh=Ih7IMnzof2wFfkJ9Gl4zxYD94lbztZxBG4s783DvzXE=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=dvkeEeGqpBFf5ijOJyUzWY0SGgl9Yn2suQ6AIt1G4+1dYvEDCN7od0XkQcCIWFbGzXznyxrfMqawjcaharl9ELUuuFJcWC5mNJRYi0Ld6JbkxwNWDExma8TddCZJ6CFBMviUJi8wCyXY5+ht5TRjFUq8cG/m6Zfo6I46+nH1YlE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nbd.name; spf=pass smtp.mailfrom=nbd.name; dkim=pass (1024-bit key) header.d=nbd.name header.i=@nbd.name header.b=kJFQeria; arc=none smtp.client-ip=46.4.11.11
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nbd.name
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nbd.name
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=nbd.name;
+	s=20160729; h=Content-Transfer-Encoding:Content-Type:In-Reply-To:From:
+	References:Cc:To:Subject:MIME-Version:Date:Message-ID:Sender:Reply-To:
+	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
+	Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:
+	List-Subscribe:List-Post:List-Owner:List-Archive;
+	bh=RE0gFltxi5DIMKf1lTQ50Q9AGlA4tyMJX1qsAvinHrw=; b=kJFQeriaak9S28vZGWWVI9F9Gq
+	OzaRN0jHM7IK1LFhWClzyTz6C/VevkwbgN3/Ky123bLIV94BXtTxFzKkHvTwq1cB4u5BljMK/PLx9
+	CZPOHYx+YCStk/Mikgkv2leucDsDCBq6yglkOw7GK8gUlEwmqVyh1Jt5N5LdTepIQDH0=;
+Received: from p54a43c03.dip0.t-ipconnect.de ([84.164.60.3] helo=nf.local)
+	by ds12 with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256
+	(Exim 4.96)
+	(envelope-from <nbd@nbd.name>)
+	id 1vmpfv-000AX6-1Q;
+	Mon, 02 Feb 2026 09:52:51 +0100
+Message-ID: <e785fe7c-eb3c-4697-9ea6-705c8c9dcfe1@nbd.name>
+Date: Mon, 2 Feb 2026 09:52:50 +0100
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-malware-bazaar: not-scanned
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 1/5] wifi: mt76: fix potential deadlock caused by rx_lock
+To: Shayne Chen <shayne.chen@mediatek.com>
+Cc: linux-wireless <linux-wireless@vger.kernel.org>,
+ Lorenzo Bianconi <lorenzo@kernel.org>, Ryder Lee <ryder.lee@mediatek.com>,
+ Evelyn Tsai <evelyn.tsai@mediatek.com>, Money Wang
+ <money.wang@mediatek.com>,
+ linux-mediatek <linux-mediatek@lists.infradead.org>
+References: <20260202075311.365673-1-shayne.chen@mediatek.com>
+Content-Language: en-US
+From: Felix Fietkau <nbd@nbd.name>
+Autocrypt: addr=nbd@nbd.name; keydata=
+ xsDiBEah5CcRBADIY7pu4LIv3jBlyQ/2u87iIZGe6f0f8pyB4UjzfJNXhJb8JylYYRzIOSxh
+ ExKsdLCnJqsG1PY1mqTtoG8sONpwsHr2oJ4itjcGHfn5NJSUGTbtbbxLro13tHkGFCoCr4Z5
+ Pv+XRgiANSpYlIigiMbOkide6wbggQK32tC20QxUIwCg4k6dtV/4kwEeiOUfErq00TVqIiEE
+ AKcUi4taOuh/PQWx/Ujjl/P1LfJXqLKRPa8PwD4j2yjoc9l+7LptSxJThL9KSu6gtXQjcoR2
+ vCK0OeYJhgO4kYMI78h1TSaxmtImEAnjFPYJYVsxrhay92jisYc7z5R/76AaELfF6RCjjGeP
+ wdalulG+erWju710Bif7E1yjYVWeA/9Wd1lsOmx6uwwYgNqoFtcAunDaMKi9xVQW18FsUusM
+ TdRvTZLBpoUAy+MajAL+R73TwLq3LnKpIcCwftyQXK5pEDKq57OhxJVv1Q8XkA9Dn1SBOjNB
+ l25vJDFAT9ntp9THeDD2fv15yk4EKpWhu4H00/YX8KkhFsrtUs69+vZQwc0cRmVsaXggRmll
+ dGthdSA8bmJkQG5iZC5uYW1lPsJgBBMRAgAgBQJGoeQnAhsjBgsJCAcDAgQVAggDBBYCAwEC
+ HgECF4AACgkQ130UHQKnbvXsvgCgjsAIIOsY7xZ8VcSm7NABpi91yTMAniMMmH7FRenEAYMa
+ VrwYTIThkTlQzsFNBEah5FQQCACMIep/hTzgPZ9HbCTKm9xN4bZX0JjrqjFem1Nxf3MBM5vN
+ CYGBn8F4sGIzPmLhl4xFeq3k5irVg/YvxSDbQN6NJv8o+tP6zsMeWX2JjtV0P4aDIN1pK2/w
+ VxcicArw0VYdv2ZCarccFBgH2a6GjswqlCqVM3gNIMI8ikzenKcso8YErGGiKYeMEZLwHaxE
+ Y7mTPuOTrWL8uWWRL5mVjhZEVvDez6em/OYvzBwbkhImrryF29e3Po2cfY2n7EKjjr3/141K
+ DHBBdgXlPNfDwROnA5ugjjEBjwkwBQqPpDA7AYPvpHh5vLbZnVGu5CwG7NAsrb2isRmjYoqk
+ wu++3117AAMFB/9S0Sj7qFFQcD4laADVsabTpNNpaV4wAgVTRHKV/kC9luItzwDnUcsZUPdQ
+ f3MueRJ3jIHU0UmRBG3uQftqbZJj3ikhnfvyLmkCNe+/hXhPu9sGvXyi2D4vszICvc1KL4RD
+ aLSrOsROx22eZ26KqcW4ny7+va2FnvjsZgI8h4sDmaLzKczVRIiLITiMpLFEU/VoSv0m1F4B
+ FtRgoiyjFzigWG0MsTdAN6FJzGh4mWWGIlE7o5JraNhnTd+yTUIPtw3ym6l8P+gbvfoZida0
+ TspgwBWLnXQvP5EDvlZnNaKa/3oBes6z0QdaSOwZCRA3QSLHBwtgUsrT6RxRSweLrcabwkkE
+ GBECAAkFAkah5FQCGwwACgkQ130UHQKnbvW2GgCeMncXpbbWNT2AtoAYICrKyX5R3iMAoMhw
+ cL98efvrjdstUfTCP2pfetyN
+In-Reply-To: <20260202075311.365673-1-shayne.chen@mediatek.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [-0.36 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[sipsolutions.net,none];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
-	R_DKIM_ALLOW(-0.20)[sipsolutions.net:s=mail];
+	R_DKIM_REJECT(1.00)[nbd.name:s=20160729];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
+	DMARC_POLICY_SOFTFAIL(0.10)[nbd.name : SPF not aligned (relaxed),none];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-31443-lists,linux-wireless=lfdr.de];
-	FROM_HAS_DN(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	RCPT_COUNT_TWO(0.00)[2];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[sipsolutions.net:+];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	TO_DN_SOME(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[johannes@sipsolutions.net,linux-wireless@vger.kernel.org];
+	DKIM_TRACE(0.00)[nbd.name:-];
+	TAGGED_FROM(0.00)[bounces-31444-lists,linux-wireless=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
+	TO_DN_ALL(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	MIME_TRACE(0.00)[0:+];
 	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[linux-wireless];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[nbd@nbd.name,linux-wireless@vger.kernel.org];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
 	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[linux-wireless];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: D467CC9B0E
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,nbd.name:mid]
+X-Rspamd-Queue-Id: 5AF66C9D08
 X-Rspamd-Action: no action
 
-On Fri, 2026-01-30 at 19:29 +0100, Pablo MARTIN-GOMEZ wrote:
->=20
-> > +void
-> > +ieee80211_uhr_cap_ie_to_sta_uhr_cap(struct ieee80211_sub_if_data *sdat=
-a,
-> > +				    struct ieee80211_supported_band *sband,
-> > +				    const struct ieee80211_uhr_cap *uhr_cap,
-> > +				    u8 uhr_cap_len,
-> > +				    struct link_sta_info *link_sta)
-> > +{
-> > +	struct ieee80211_sta_uhr_cap *sta_uhr_cap =3D &link_sta->pub->uhr_cap=
-;
-> > +	bool from_ap;
-> > +
-> > +	memset(sta_uhr_cap, 0, sizeof(*sta_uhr_cap));
-> > +
-> > +	if (!ieee80211_get_uhr_iftype_cap_vif(sband, &sdata->vif))
-> > +		return;
-> > +
-> > +	sta_uhr_cap->has_uhr =3D true;
-> > +
-> > +	sta_uhr_cap->mac =3D uhr_cap->mac;
-> > +	from_ap =3D sdata->vif.type =3D=3D NL80211_IFTYPE_STATION;
+On 02.02.26 08:53, Shayne Chen wrote:
+> A deadlock will occur if both of the following conditions are met,
+> because they each attempt to acquire the rx_lock:
+> - mac80211 receives an unexpected BAR control frame, which triggers
+>    a BA deletion
+> - A transmission failure happens due to an abnormality in DMA
+> 
+> Since ieee80211_tx_status_ext() is primarily used to address AQL issues,
+> avoid potential deadlocks by restricting calls to ieee80211_tx_status_ext
+> only for data frames.
 
-> My knowledge of mac80211 is quite limited so I might be very well wrong=
-=20
-> but it feels that either this is wrong and it should be `sdata->vif.type=
-=20
-> =3D=3D NL80211_IFTYPE_AP`
+First of all, ieee80211_tx_status_ext is not primarily used to address 
+AQL, ieee80211_free_txskb handles it as well. The reason for it is tx 
+status handling, e.g. for management frames sent by hostapd that require 
+an ACK status report, so limiting the status calls for data frames seems 
+wrong to me.
 
-If we _are_ the AP then we won't parse data coming _from_ the AP, so
-it's correct.
+I don't really understand how the scenario you're describing leads to a 
+deadlock. From my understanding, if something in the mac80211 rx path 
+triggers a tx, it should end up calling mt76_tx(), which queues the skb 
+to wcid->tx_list and triggers the tx worker. So the actual dma tx callls 
+are expected to come from the worker kthread.
+How does this lead to a deadlock on rx_lock?
 
-> or this is correct but it won't work with mesh=20
-> point for example and that=C2=A0 `sdata->vif.type !=3D NL80211_IFTYPE_AP`=
- would=20
-> be better.
-
-Also no, according to the spec, I even quoted it the other day. But I
-guess if someone wants UHR on mesh they have a bunch of work anyway, so
-it doesn't even matter.
-
-johannes
->=20
+- Felix
 
