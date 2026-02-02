@@ -1,179 +1,154 @@
-Return-Path: <linux-wireless+bounces-31433-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-31434-lists+linux-wireless=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id Q/3iMK4AgGlo1QIAu9opvQ
-	(envelope-from <linux-wireless+bounces-31433-lists+linux-wireless=lfdr.de@vger.kernel.org>)
-	for <lists+linux-wireless@lfdr.de>; Mon, 02 Feb 2026 02:41:02 +0100
+	id 6CVYIWwDgGkh1gIAu9opvQ
+	(envelope-from <linux-wireless+bounces-31434-lists+linux-wireless=lfdr.de@vger.kernel.org>)
+	for <lists+linux-wireless@lfdr.de>; Mon, 02 Feb 2026 02:52:44 +0100
 X-Original-To: lists+linux-wireless@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id DA47EC7C7E
-	for <lists+linux-wireless@lfdr.de>; Mon, 02 Feb 2026 02:41:01 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id F0FF9C7CE3
+	for <lists+linux-wireless@lfdr.de>; Mon, 02 Feb 2026 02:52:43 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 76707300107C
-	for <lists+linux-wireless@lfdr.de>; Mon,  2 Feb 2026 01:40:58 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 9C6E7300421C
+	for <lists+linux-wireless@lfdr.de>; Mon,  2 Feb 2026 01:52:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 21FBC6DCE1;
-	Mon,  2 Feb 2026 01:40:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D408F26ADC;
+	Mon,  2 Feb 2026 01:52:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=realtek.com header.i=@realtek.com header.b="X2a67yz2"
+	dkim=pass (2048-bit key) header.d=realtek.com header.i=@realtek.com header.b="qcpJR0VT"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0D8595464D
-	for <linux-wireless@vger.kernel.org>; Mon,  2 Feb 2026 01:40:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EA83D1C01
+	for <linux-wireless@vger.kernel.org>; Mon,  2 Feb 2026 01:52:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=211.75.126.72
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769996456; cv=none; b=qfkx76SEOZL7ZBNZFFXqp92HfektG9RB3Fgd5hGwZcuJsUsYNC+s6Oxo8j7hGQfcahgaQAHOyNkmhryd464blbfWn1o4cXZaHKxnVjDum+W6OThx+B4ftiW9SA6i8U8KGn7IPos8IrdrKw5MGdMP8xIWnkmSMr+LVSwUSBAueLg=
+	t=1769997161; cv=none; b=ne9Nfy7PFMOod6pQVoBjG/FkH1PpbPkfOautVkvD/n1bwAwoeL/PLKVxm0glRQqTFG1+xrR3swhvZjcitZW+5EzK5URdbxVTyIDRYmt3Iqv9CWw7ktOzgld30FkRJkgbgbKVOV1Ki/47EQuEHBX0+WuBPXQR6I5PbOzRlb8MUag=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769996456; c=relaxed/simple;
-	bh=ANl910oa30g3dfMTS0CnmxjjWkWdmTUBumajbGdUEAg=;
-	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=kPk18bwjhQm9a4exhYW10YR1RYr5H/Nsu7frTyDPeUNcKknNMTrjk33kiiS6LlwqCP5Qc4k0jbB2GEHTAI+8Wbveh6smWQiFodmWG5FE050B+0H1NJn16tmU+qevB1omYWU8O9SD7gTBMHPPa0XNe3fHrefipXd2smiApVlSEKE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com; spf=pass smtp.mailfrom=realtek.com; dkim=pass (2048-bit key) header.d=realtek.com header.i=@realtek.com header.b=X2a67yz2; arc=none smtp.client-ip=211.75.126.72
+	s=arc-20240116; t=1769997161; c=relaxed/simple;
+	bh=6kVeYK5aLo13YM9ZRttSI1KsCWbVFegRcCLcoF/mKMY=;
+	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
+	 Content-Type:MIME-Version; b=KY+9WKeQDQm7VN+TYnn9a7q9IIMgojIhnQClPkJ7eqjYoa7mxmgs3BzjAvil8uI4nrScf/Jf5FqfyLvP1u8ZH6Ghq/oedEz6cX+FaLb7omzWnA1EJNrkU+mxJpyyx8TQF4okhleYHb7wrli84MIAvrzEo2yxzTmA9avqqGHjhL0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com; spf=pass smtp.mailfrom=realtek.com; dkim=pass (2048-bit key) header.d=realtek.com header.i=@realtek.com header.b=qcpJR0VT; arc=none smtp.client-ip=211.75.126.72
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=realtek.com
-X-SpamFilter-By: ArmorX SpamTrap 5.80 with qID 6121en9731862600, This message is accepted by code: ctloc85258
+X-SpamFilter-By: ArmorX SpamTrap 5.80 with qID 6121qaaH71881526, This message is accepted by code: ctloc85258
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=realtek.com; s=dkim;
-	t=1769996449; bh=VMjGj7G5TJTzr1rhe2cfXwxZLawWaGZOLS4TieOzmj4=;
-	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:
-	 Content-Transfer-Encoding:Content-Type;
-	b=X2a67yz2bc/OW3DE3dNk7BD9uhIQcwnop5qgTcJHdZ0IvAiSZBDv5+ReWwQFeMVnr
-	 7No9skejr5E3+/LS1ZfpQCcnT588VDjvd21neKweoHSIbvotJ+E2rWTmOKraXOPage
-	 W/8XdZVuj0wj4cJeYwsZvuLqb3aTLdxLl9J/XfYN3R0VljRVlYw86XwikA2bVsae9w
-	 twmFzv36UXic6WGFAwYdyXDbRIFCbO1Uzns11bzPB9oZbkXYT4TiOPKeVkdU7qAv9g
-	 vuNeuCdylnRT78R6aHjewSbvjTxfuhX6iU9URUzzvqINgi8ypaHaXO0av1nHdAxWoK
-	 VqYVX1HDDWjmw==
-Received: from mail.realtek.com (rtkexhmbs04.realtek.com.tw[10.21.1.54])
-	by rtits2.realtek.com.tw (8.15.2/3.21/5.94) with ESMTPS id 6121en9731862600
+	t=1769997156; bh=6kVeYK5aLo13YM9ZRttSI1KsCWbVFegRcCLcoF/mKMY=;
+	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
+	 Content-Type:Content-Transfer-Encoding:MIME-Version;
+	b=qcpJR0VTH4yttRiJDf1Lx0MTidjoOyfEn+Esi4fyTY+u14BHnTvNVQm6wvQ74CLVy
+	 roH5fw8GsU+FxRazaoLZPAfeaNg9XhXPeZ2bZrvZF8udYmRwZHdx4h8NhfafceuAHE
+	 Fva8Rdl2tp8V5K2ff1UPiByODCsdap7C9R2/qHhmbjv/tF2lKRVTXA9csk2HbUvvaz
+	 tl5r69vjGFeWvWDO72IyNPK3mRh68ZPwbPaVHAIy8nLoGER/YSeO6+0p28STlmPQS9
+	 7X9oLKEliWZqvITIegmkk/9Dm2vTcb5NqOrZYyJmFVXul8r4ReNL8+3BIFpgHkQYOx
+	 Q0jhL8YIhNqnw==
+Received: from mail.realtek.com (rtkexhmbs03.realtek.com.tw[10.21.1.53])
+	by rtits2.realtek.com.tw (8.15.2/3.21/5.94) with ESMTPS id 6121qaaH71881526
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Mon, 2 Feb 2026 09:40:49 +0800
+	Mon, 2 Feb 2026 09:52:36 +0800
 Received: from RTKEXHMBS06.realtek.com.tw (10.21.1.56) by
- RTKEXHMBS04.realtek.com.tw (10.21.1.54) with Microsoft SMTP Server
+ RTKEXHMBS03.realtek.com.tw (10.21.1.53) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1748.10; Mon, 2 Feb 2026 09:40:50 +0800
-Received: from RTKEXHMBS03.realtek.com.tw (10.21.1.53) by
+ 15.2.1748.10; Mon, 2 Feb 2026 09:52:36 +0800
+Received: from RTKEXHMBS06.realtek.com.tw (10.21.1.56) by
  RTKEXHMBS06.realtek.com.tw (10.21.1.56) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1748.10; Mon, 2 Feb 2026 09:40:50 +0800
-Received: from [127.0.1.1] (172.21.40.76) by RTKEXHMBS03.realtek.com.tw
- (10.21.1.53) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1748.10 via Frontend
- Transport; Mon, 2 Feb 2026 09:40:50 +0800
+ 15.2.1748.10; Mon, 2 Feb 2026 09:52:36 +0800
+Received: from RTKEXHMBS06.realtek.com.tw ([fe80::4cbd:6c6c:b92b:3913]) by
+ RTKEXHMBS06.realtek.com.tw ([fe80::4cbd:6c6c:b92b:3913%10]) with mapi id
+ 15.02.1748.010; Mon, 2 Feb 2026 09:52:36 +0800
 From: Ping-Ke Shih <pkshih@realtek.com>
-To: <linux-wireless@vger.kernel.org>
-CC: <iohann.tachy@gmail.com>
-Subject: [PATCH rtw-next] wifi: rtw89: pci: add quirks to avoid using PCI DAC for X99 board across chips
-Date: Mon, 2 Feb 2026 09:40:49 +0800
-Message-ID: <20260202014049.11783-1-pkshih@realtek.com>
-X-Mailer: git-send-email 2.25.1
+To: Iohann Tachy <iohann.tachy@gmail.com>
+CC: "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>
+Subject: RE: Problems building rtw89
+Thread-Topic: Problems building rtw89
+Thread-Index: AQHckRigK2YBsPmWJU23l7X48l+K4rVp3ZDwgACNW4CAAJzOgIADoBRw
+Date: Mon, 2 Feb 2026 01:52:35 +0000
+Message-ID: <b7830d69ee2645fb9e4a3c371dcdf6eb@realtek.com>
+References: <CAPVS0eKn3zEyRekrQP_K3W5n5iVZ44nXkUAAE2=KkNcpq+LeYg@mail.gmail.com>
+ <f730f3ca7b1d4fd08795831e13cc8f2f@realtek.com>
+ <CAPVS0eKLicu1Y+MUpLcuwqTU0agEn9m7zyOO_5rgB3vA+gM9Bg@mail.gmail.com>
+ <CAPVS0eLR5KCmBEkGHnSxwKQM0hwCSaL0TSaTMNT_GJQK1sT8hg@mail.gmail.com>
+In-Reply-To: <CAPVS0eLR5KCmBEkGHnSxwKQM0hwCSaL0TSaTMNT_GJQK1sT8hg@mail.gmail.com>
+Accept-Language: en-US, zh-TW
+Content-Language: zh-TW
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.66 / 15.00];
+X-Spamd-Result: default: False [-2.06 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MID_CONTAINS_FROM(1.00)[];
 	DMARC_POLICY_ALLOW(-0.50)[realtek.com,none];
-	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[realtek.com:s=dkim];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
+	MIME_BASE64_TEXT(0.10)[];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-31433-lists,linux-wireless=lfdr.de];
-	FREEMAIL_CC(0.00)[gmail.com];
-	TO_DN_NONE(0.00)[];
+	FREEMAIL_TO(0.00)[gmail.com];
+	TAGGED_FROM(0.00)[bounces-31434-lists,linux-wireless=lfdr.de];
+	TO_DN_SOME(0.00)[];
 	RCPT_COUNT_TWO(0.00)[2];
-	FROM_HAS_DN(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[pkshih@realtek.com,linux-wireless@vger.kernel.org];
+	MIME_TRACE(0.00)[0:+];
+	TO_DN_EQ_ADDR_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns];
+	MISSING_XM_UA(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns];
+	FROM_NEQ_ENVFROM(0.00)[pkshih@realtek.com,linux-wireless@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
 	DKIM_TRACE(0.00)[realtek.com:+];
+	NEURAL_HAM(-0.00)[-1.000];
 	TAGGED_RCPT(0.00)[linux-wireless];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
-	MIME_TRACE(0.00)[0:+];
+	MID_RHS_MATCH_FROM(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	RCVD_COUNT_SEVEN(0.00)[7]
-X-Rspamd-Queue-Id: DA47EC7C7E
+X-Rspamd-Queue-Id: F0FF9C7CE3
 X-Rspamd-Action: no action
 
-RTL8852BE can't enable 36-bits DMA on Intel X99 motherboard, which isn't
-a sold combination so add quirk across all chips, not only on specific chip
-RTL8852BE,
-
-Reported-by: Iohann Tachy <iohann.tachy@gmail.com>
-Closes: https://lore.kernel.org/linux-wireless/CAPVS0eLR5KCmBEkGHnSxwKQM0hwCSaL0TSaTMNT_GJQK1sT8hg@mail.gmail.com/T/#m976028ea900ea6f2c5fbbd1ff14a92377227f555
-Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
----
- drivers/net/wireless/realtek/rtw89/core.h |  1 +
- drivers/net/wireless/realtek/rtw89/pci.c  | 16 ++++++++++++++++
- 2 files changed, 17 insertions(+)
-
-diff --git a/drivers/net/wireless/realtek/rtw89/core.h b/drivers/net/wireless/realtek/rtw89/core.h
-index 4778957d6b2d..0c894ba73a65 100644
---- a/drivers/net/wireless/realtek/rtw89/core.h
-+++ b/drivers/net/wireless/realtek/rtw89/core.h
-@@ -5205,6 +5205,7 @@ enum rtw89_flags {
- 
- enum rtw89_quirks {
- 	RTW89_QUIRK_PCI_BER,
-+	RTW89_QUIRK_PCI_NO_DAC,
- 	RTW89_QUIRK_THERMAL_PROT_120C,
- 	RTW89_QUIRK_THERMAL_PROT_110C,
- 
-diff --git a/drivers/net/wireless/realtek/rtw89/pci.c b/drivers/net/wireless/realtek/rtw89/pci.c
-index 43c61b3dc969..fded15b2029f 100644
---- a/drivers/net/wireless/realtek/rtw89/pci.c
-+++ b/drivers/net/wireless/realtek/rtw89/pci.c
-@@ -19,6 +19,18 @@ MODULE_PARM_DESC(disable_clkreq, "Set Y to disable PCI clkreq support");
- MODULE_PARM_DESC(disable_aspm_l1, "Set Y to disable PCI ASPM L1 support");
- MODULE_PARM_DESC(disable_aspm_l1ss, "Set Y to disable PCI L1SS support");
- 
-+static const struct dmi_system_id rtw89_pci_quirks[] = {
-+	{
-+		.ident = "MACHINIST X99-RS9",
-+		.matches = {
-+			DMI_MATCH(DMI_SYS_VENDOR, "MACHINIST"),
-+			DMI_MATCH(DMI_PRODUCT_NAME, "X99-RS9"),
-+		},
-+		.driver_data = (void *)RTW89_QUIRK_PCI_NO_DAC,
-+	},
-+	{},
-+};
-+
- static int rtw89_pci_get_phy_offset_by_link_speed(struct rtw89_dev *rtwdev,
- 						  u32 *phy_offset)
- {
-@@ -3305,6 +3317,9 @@ static bool rtw89_pci_is_dac_compatible_bridge(struct rtw89_dev *rtwdev)
- 	if (!bridge)
- 		return false;
- 
-+	if (test_bit(RTW89_QUIRK_PCI_NO_DAC, rtwdev->quirks))
-+		return false;
-+
- 	switch (bridge->vendor) {
- 	case PCI_VENDOR_ID_INTEL:
- 		return true;
-@@ -4765,6 +4780,7 @@ int rtw89_pci_probe(struct pci_dev *pdev, const struct pci_device_id *id)
- 	rtwdev->hci.cpwm_addr = pci_info->cpwm_addr;
- 
- 	rtw89_check_quirks(rtwdev, info->quirks);
-+	rtw89_check_quirks(rtwdev, rtw89_pci_quirks);
- 	rtw89_check_pci_ssid_quirks(rtwdev, pdev, pci_info->ssid_quirks);
- 
- 	SET_IEEE80211_DEV(rtwdev->hw, &pdev->dev);
-
-base-commit: 4c1552473acf03cad828884b4e1c90b97a89b265
--- 
-2.25.1
-
+Ly8gc29ydCBwb3N0aW5nIGFzIGV4cGVjdGVkIChhdm9pZCB0b3AgcG9zdGluZykNCg0KSW9oYW5u
+IFRhY2h5IDxpb2hhbm4udGFjaHlAZ21haWwuY29tPiB3cm90ZToNCj4gPiBPbiBUaHUsIEphbiAy
+OSwgMjAyNiBhdCA5OjM24oCvUE0gUGluZy1LZSBTaGloIDxwa3NoaWhAcmVhbHRlay5jb20+IHdy
+b3RlOg0KPiA+ID4NCj4gPiA+IElvaGFubiBUYWNoeSA8aW9oYW5uLnRhY2h5QGdtYWlsLmNvbT4g
+d3JvdGU6DQo+ID4gPiA+IEdvb2QgbW9ybmluZywNCj4gPiA+ID4NCj4gPiA+ID4gQ3VycmVudGx5
+IHRoZXJlJ3MgYW4gaXNzdWUgd2hlcmUgaXQncyBub3QgcG9zc2libGUgdG8gYnVpbGQgdGhlIHJ0
+dzg5IGRyaXZlci4NCj4gPiA+ID4gVGhlIFJUTDg4NTJCRSBjYXJkIGhhcyBhIGNvbXBhdGliaWxp
+dHkgcHJvYmxlbSB3aXRoIEludGVsIFg5OSBjaGlwc2V0DQo+ID4gPiA+IGFuZCBhIGhhY2tlZCBy
+dHc4OSBkcml2ZXIgaXMgbmVlZGVkIHRvIG1ha2UgaXQgd29yay4NCj4gPiA+ID4NCj4gPiA+ID4g
+SSBraW5kbHkgcmVxdWVzdCB0byByZWFkIHRoZSBHaXRodWIgaXNzdWU6DQo+ID4gPiA+IGh0dHBz
+Oi8vZ2l0aHViLmNvbS9sd2Zpbmdlci9ydHc4OS9pc3N1ZXMvMzk2DQo+ID4gPg0KPiA+ID4gQSBm
+aXggaW4gR2l0aHViIGlzIHRvIGRpc2FibGUgMzYtYml0IERNQSBbMV0uIEknZCBsaWtlIHRvIGNv
+bGxlY3QgcGxhdGZvcm0NCj4gPiA+IGluZm8gdG8gYWRkIGEgcXVpcmsuIFBsZWFzZSBzaGFyZSBv
+dXRwdXRzIG9mIGJlbG93IGNvbW1hbmRzDQo+ID4gPiAgLSBkbWlkZWNvZGUNCj4gPiA+ICAtIGxz
+cGNpIC12dA0KPiA+ID4gIC0gbHNwY2kgLXgNCj4gPiA+DQo+ID4gPiBbMV0gaHR0cHM6Ly9naXRo
+dWIuY29tL2E1YTVhYTU1NW9vL3J0dzg5LTEvY29tbWl0LzYyOTc1NmVlMDIzMjA4OWQyOThiYjM5
+ODc5MGQ0YTc0NWI5NTAwNTgNCj4gPiA+DQo+ID4gPg0KPiBPbiBGcmksIEphbiAzMCwgMjAyNiBh
+dCAxOjU44oCvUE0gSW9oYW5uIFRhY2h5IDxpb2hhbm4udGFjaHlAZ21haWwuY29tPiB3cm90ZToN
+Cj4gPg0KPiA+IEdvb2QgYWZ0ZXJub29uIQ0KPiA+IEknbGwgcnVuIHRoZSAiIC0gZG1pZGVjb2Rl
+DQo+ID4gIC0gbHNwY2kgLXZ0DQo+ID4gIC0gbHNwY2kgLXgiDQo+ID4gY29tbWFuZHMgdG9kYXkg
+ZXZlbmluZy4NCj4gPiBhbmQgSSdsbCBsZXQgeW91IGtub3cgd2hhdCdzIHRoZSBvdXRwdXQgcmVz
+dWx0cy4NCj4gPg0KPiA+IFJlZ2FyZHMsDQo+ID4gSW9oYW5uDQo+ID4NCj4gR29vZCBldmVuaW5n
+LA0KPiANCj4gSSBhdHRhY2hlZCB0aGUgcmVzdWx0cyBvZiB0aGUgY29tbWFuZHMgeW91IHJlcXVl
+c3RlZC4NCj4gDQoNCkkgc2VudCBhIHBhdGNoIHRvIGF2b2lkIDM2LWJpdCBETUEgYXMgZ2l0aHVi
+IGRpZCBpZiB0aGUgZHJpdmVyIGlzIHJ1bm5pbmcgb24NCnlvdXIgbW90aGVyYm9hcmQgWDk5LiBQ
+bGVhc2UgcmV2ZXJ0IHRoZSBwYXRjaCB5b3UgbWVudGlvbmVkIGZyb20gZ2l0aHViLCBhbmQNCmFw
+cGx5IHRoaXMgb25lIHRvIHNlZSBpZiBpdCBjYW4gd29yayB0byB5b3UuDQoNCkkgZGVjaWRlIHRv
+IG5vdCBjaG9vc2UgUENJIGJyaWRnZSBhcyBhIHF1aXJrIHJ1bGUsIGJlY2F1c2UgdGhlIFBDSSBi
+cmlkZ2UNCiJJbnRlbCBDb3Jwb3JhdGlvbiA4IFNlcmllcy9DMjIwIFNlcmllcyBDaGlwc2V0IEZh
+bWlseSBQQ0kgRXhwcmVzcyBSb290IFBvcnQiDQppcyBpbiBjb21tb24gdXNlLCBhbmQgSSBiZWxp
+ZXZlIG90aGVyIGJvYXJkcyB1c2luZyB0aGlzIGJyaWRnZSBjYW4gd29yayB3aXRoDQpSVEw4ODUy
+QkUuDQoNCkFub3RoZXIsIEkgYXNzdW1lIHlvdSBpbnN0YWxsZWQgUlRMODg1MkJFIG9uIFg5OSBw
+ZXJzb25hbGx5LCBub3QgcHJlLWluc3RhbGxlZA0Kb24gdGhlIGJvYXJkIHdoZW4geW91IHB1cmNo
+YXNlZCwgcmlnaHQ/DQoNClsxXSBodHRwczovL2xvcmUua2VybmVsLm9yZy9saW51eC13aXJlbGVz
+cy8yMDI2MDIwMjAxNDA0OS4xMTc4My0xLXBrc2hpaEByZWFsdGVrLmNvbS9ULyN1DQoNCg0K
 
