@@ -1,214 +1,277 @@
-Return-Path: <linux-wireless+bounces-31494-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-31495-lists+linux-wireless=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id YGyKK7OUgWl/HAMAu9opvQ
-	(envelope-from <linux-wireless+bounces-31494-lists+linux-wireless=lfdr.de@vger.kernel.org>)
-	for <lists+linux-wireless@lfdr.de>; Tue, 03 Feb 2026 07:24:51 +0100
+	id YHB3NQu0gWnNIwMAu9opvQ
+	(envelope-from <linux-wireless+bounces-31495-lists+linux-wireless=lfdr.de@vger.kernel.org>)
+	for <lists+linux-wireless@lfdr.de>; Tue, 03 Feb 2026 09:38:35 +0100
 X-Original-To: lists+linux-wireless@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 510D2D52FD
-	for <lists+linux-wireless@lfdr.de>; Tue, 03 Feb 2026 07:24:51 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 31DC9D649C
+	for <lists+linux-wireless@lfdr.de>; Tue, 03 Feb 2026 09:38:35 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 9D01B300C011
-	for <lists+linux-wireless@lfdr.de>; Tue,  3 Feb 2026 06:24:50 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 38AAF309F88D
+	for <lists+linux-wireless@lfdr.de>; Tue,  3 Feb 2026 08:32:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BE37C3783DA;
-	Tue,  3 Feb 2026 06:24:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4434E395249;
+	Tue,  3 Feb 2026 08:32:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b="WUMBVJKC"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="nRuQmNY7"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-ot1-f98.google.com (mail-ot1-f98.google.com [209.85.210.98])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3CE47377547
-	for <linux-wireless@vger.kernel.org>; Tue,  3 Feb 2026 06:24:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.98
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6B8F4393DF1
+	for <linux-wireless@vger.kernel.org>; Tue,  3 Feb 2026 08:32:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770099888; cv=none; b=kpUkbv7WRpCQnLEY2hKXhZpaY9T1Cwtp5P7bVsVVswLJZLVb/wjPKEF2qf4+fvvbzC3EJPyWEPszUyj6U0AH5XSiS/cVdFhm/cymu3NT6YPNVeU/WRjsTTgXdUkN6FIgzDK2xccNusXA/qhCeFAfsE0DNlw4AhAAKYxFG6hYsOI=
+	t=1770107552; cv=none; b=WLwHAzxLSCPMOP+AdPR1kpR0UU8ds6e4QoJC5pIKN4PcIsuNt96vpgOshjUWYIKKba3uj63WchVcQTQrn2qwAMAxjxWHkLJ+iCOTQqkY96Up3aGWHmlQEPBji68lzU4JLwMKbzR772u2LDeeaDHP0V+QHbqlYAIQ6Q2wZ0WyHPU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770099888; c=relaxed/simple;
-	bh=DnqXyytA3eHd4isuuaVxZ2pCH8gO8AVLcQwRj1P4L+c=;
-	h=From:To:Date:Message-ID:In-Reply-To:References:Subject:
-	 MIME-Version:Content-Type; b=dbgaMQ+yDrAXzcA3ys9Pfcvrqx9UVui2dkXxfVNnUFkeWFI8IlPNNiTYrnH4JWlSda43mLcH/xkgkkoNmfqm1DNCI4xaMWtckDUBtbg3WDNPlEMdDYn6mPvFdyBSkKnUKjynLeVmzGl02SQURNbiKjZGd5lrBXL9xWCdydeS+GU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=broadcom.com; spf=fail smtp.mailfrom=broadcom.com; dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b=WUMBVJKC; arc=none smtp.client-ip=209.85.210.98
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=broadcom.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=broadcom.com
-Received: by mail-ot1-f98.google.com with SMTP id 46e09a7af769-7cfd0f349c4so3232454a34.1
-        for <linux-wireless@vger.kernel.org>; Mon, 02 Feb 2026 22:24:46 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1770099886; x=1770704686;
-        h=content-transfer-encoding:mime-version:subject:user-agent
-         :references:in-reply-to:message-id:date:to:from:dkim-signature
-         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=5Fyzv4BpF2csRiKuM0EcuzOyp2n6OQjgXIRPBKETqRE=;
-        b=QX9mRHSpGdxFUqJ4d2ZXQn69AwgoOVhtZVe+oBtGfvRU2ablkH8ANsGUQBS6q2v/OD
-         RecYJQ+3RgwNTmVpm+ZIJIfIAbWmChFCAQdhvTRn4dR2vCRa1C3YGHU2AWZmYlBfgaO4
-         sGfq/EZtl5cv0O4OjIyyJSI9/gFdPj0AmDG0GhQIrLF4adgoNIxyeXGnL4F1DrZ8Rv/A
-         Pg2pFIwue3wX6N9zJ7IEQmSM1+9HyTtOknc4UvyhiPFscWR6Vcl8wMi372PT6BwF0CW0
-         5CJEfpvQCMIegfDl8KWqXUkNUTHHu+nZvoWNhJA4UQx3Al6OnmadU55AqZDOO0r9UPHy
-         L/yA==
-X-Forwarded-Encrypted: i=1; AJvYcCUmDiTk6vN45n+5En/rygv+BQhPkXGiHYpnXTxMq0mi0YRqYvBl+sUeR9mmEnpwD0heTdzXn9Xlv5y18u/fgQ==@vger.kernel.org
-X-Gm-Message-State: AOJu0YzulQxUk8n6AJH/Owv0ZXWiDEvqMFPj+zIr6oEEa2OEuhHKudLu
-	yAoYZoLsP/1wQx58BWzo1qcSkqFX6EvmcDbEhDeCVPOvksyDNWOcW54VW62hQJWGchGJ3Ug73Iz
-	b4cg9aWtoqqON/uvFDUx77qmWpo2DeUddzIiVDmmcw1m+dbnG8/fv3ejLOQD6/apFHcXTKEYQjQ
-	B0z+h+sMHg16WRTZrd9gjOWOH8vtQCblk2vYcEzqaLJjqxhzYlr7pwEYLnEm+wkrDvr4mCT2reJ
-	PBxd8qJi4CZGC+joCxGXjjxOe74
-X-Gm-Gg: AZuq6aJl5Qwmm/Dlvs6bdJtK0KqMtT3S+QH0gpD5JK/DdE70gdQuFwplvCKr2TpU0pm
-	3adbEatOZrByXRt4o8plmHvyQxdnRf3WiPVMkMA+fRWuJ7G4SEQzErz/MaNTPhtOOJBvhMtOK6I
-	MANa4BPpxV1v+JAo4YWMuH8quYQJVgqNG36QGWjmPVZRTph2voSIzimY9X38itHLasKMTe6iQMl
-	YLnTi17KjbR8vBYjOJuTR+MkVlYZ8AQQlRIy52NUP+ZcFHiyvDcSp+uq9WLrhzzK6BqTcW2GTgp
-	nIAdCHy59bmgK7L+f5vgi1L4uCkNv54PO7riVUmcShQDnwNpNXsv6T9S+ldTldGZxdSiQNTBvw2
-	krNI+14IOTRr1SuDM5y3wMFyxIZdkeSuImPiHnT1obab72jNq0dq/zIlKVQrgb2ctEMJzkdE+PC
-	2a4N9EMNcA9z2kcgxAWnfvD2AmfhX9omH8t6U7PZfftfNoTJJxgxE=
-X-Received: by 2002:a05:6830:82cb:b0:7cf:d88d:5dd5 with SMTP id 46e09a7af769-7d1a5233029mr8963046a34.5.1770099885865;
-        Mon, 02 Feb 2026 22:24:45 -0800 (PST)
-Received: from smtp-us-east1-p01-i01-si01.dlp.protect.broadcom.com (address-144-49-247-100.dlp.protect.broadcom.com. [144.49.247.100])
-        by smtp-relay.gmail.com with ESMTPS id 46e09a7af769-7d18c768bedsm2907119a34.5.2026.02.02.22.24.44
-        for <linux-wireless@vger.kernel.org>
-        (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
-        Mon, 02 Feb 2026 22:24:45 -0800 (PST)
-X-Relaying-Domain: broadcom.com
-X-CFilter-Loop: Reflected
-Received: by mail-ej1-f71.google.com with SMTP id a640c23a62f3a-b8842248611so510956666b.0
-        for <linux-wireless@vger.kernel.org>; Mon, 02 Feb 2026 22:24:44 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=broadcom.com; s=google; t=1770099882; x=1770704682; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:subject:user-agent
-         :references:in-reply-to:message-id:date:to:from:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=5Fyzv4BpF2csRiKuM0EcuzOyp2n6OQjgXIRPBKETqRE=;
-        b=WUMBVJKC8gmD8CU8Zpk7lXV7hCguMf1ZP97K1w3PXszZTeCdZgE93kWJN4EwtwyQWK
-         BV/DNukdApv51kKzyME47JiaZSGiV6qYVtxRVDx4MyswHb2AcxmDwEWvspNrBC02086U
-         dXpu6t2y47UL2RawF9j8OPXLE8/kjABM7BDT4=
-X-Forwarded-Encrypted: i=1; AJvYcCXbd/qe6zCGF8keSah7fDp83lcydjIsJX37eGRFfcB0vfJy2fLKe0d7lwBfxbgUQ8LuATTMmfjxhcnjBKcHRw==@vger.kernel.org
-X-Received: by 2002:a17:907:6eac:b0:b88:64e9:899d with SMTP id a640c23a62f3a-b8dff653203mr854870666b.34.1770099882512;
-        Mon, 02 Feb 2026 22:24:42 -0800 (PST)
-X-Received: by 2002:a17:907:6eac:b0:b88:64e9:899d with SMTP id a640c23a62f3a-b8dff653203mr854869566b.34.1770099882103;
-        Mon, 02 Feb 2026 22:24:42 -0800 (PST)
-Received: from [192.168.178.58] (f215227.upc-f.chello.nl. [80.56.215.227])
-        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-658b4691d15sm8546954a12.19.2026.02.02.22.24.40
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 02 Feb 2026 22:24:41 -0800 (PST)
-From: Arend van Spriel <arend.vanspriel@broadcom.com>
-To: Marek Szyprowski <m.szyprowski@samsung.com>, <linux-wireless@vger.kernel.org>, <brcm80211@lists.linux.dev>, <brcm80211-dev-list.pdl@broadcom.com>
-Date: Tue, 03 Feb 2026 07:24:40 +0100
-Message-ID: <19c222cb040.2873.9b12b7fc0a3841636cfb5e919b41b954@broadcom.com>
-In-Reply-To: <19c1f9f9108.2873.9b12b7fc0a3841636cfb5e919b41b954@broadcom.com>
-References: <CGME20251231143556eucas1p141b278048039730d03edf85c6f3e5350@eucas1p1.samsung.com>
- <20251231143544.4158840-1-m.szyprowski@samsung.com>
- <74e3bb49-ebbe-4692-b278-c04f2a30bf96@broadcom.com>
- <062fde49-7438-4001-a06e-50175547b54c@samsung.com>
- <19c1f9f9108.2873.9b12b7fc0a3841636cfb5e919b41b954@broadcom.com>
-User-Agent: AquaMail/1.56.0 (build: 105600589)
-Subject: Re: [PATCH] wifi: brcmfmac: Fix potential kernel oops when probe fails
+	s=arc-20240116; t=1770107552; c=relaxed/simple;
+	bh=Rxqd6CZwBn18DO82HK4+2RYTRznPltmfeG6JDWGATF8=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=KNR/SdCPEl1oR5BJZPXu4RelhWbgK28Vpa9b31+o8Yrzb8Pj4VrEcUOACQLXakRaBryxMAZgZxcHEtAmITqWDyo6io2FkAXgxfMvrYTNY3aIOgj6u18TPuRA/+HszPxa/WBBEaWzwv3+eMrqhEKkmgINEXWje0Kaf2daUW4D8rA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=nRuQmNY7; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 160B1C116D0;
+	Tue,  3 Feb 2026 08:32:30 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1770107551;
+	bh=Rxqd6CZwBn18DO82HK4+2RYTRznPltmfeG6JDWGATF8=;
+	h=From:Date:Subject:To:Cc:From;
+	b=nRuQmNY7tHHkXXX3CEDKDi3qX9Bc9CY+8ueHn7ndQ+m2AIyj6XNX+hj7l6W4xN5XZ
+	 svPYoNCZ+OGWSgb/GUklF5Zy1pbOwkCSuuqDEcSk0JXlxmhWEdLXtbG+YbVu+9DFLI
+	 Mny2S3v533zHOwz6Vyed4SCRAQ1DpsZ5jAGV/g6ypnNQS9FFLkdFb/cX3UGTDLtqlr
+	 Dju9Sb+Ww5xQ3QlGIKmiKanQl7eJFwJL66m9VKiabaVuil53hq2y6M0frODPdXTrVa
+	 gcLzyhgXkMk/opPJX3nGTF1CiOS2B/sOEMVHaTkRVhcefC7gaaFk4IHHqSPX94oeqk
+	 qz8NjpcU9PjdQ==
+From: Lorenzo Bianconi <lorenzo@kernel.org>
+Date: Tue, 03 Feb 2026 09:32:02 +0100
+Subject: [PATCH mt76] wifi: mt76: mt7996: Add eMLSR support
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; format=flowed; charset="us-ascii"
-Content-Transfer-Encoding: 8bit
-X-DetectorID-Processed: b00c1d49-9d2e-4205-b15f-d015386d3d5e
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20260203-mt7996-emlsr-v1-1-38ffb3d5110c@kernel.org>
+X-B4-Tracking: v=1; b=H4sIAAAAAAAC/6tWKk4tykwtVrJSqFYqSi3LLM7MzwNyDHUUlJIzE
+ vPSU3UzU4B8JSMDIzMDIwNj3dwSc0tLM93U3JziIl3L5GSLRDMLk+TkpEQloJaCotS0zAqwcdG
+ xtbUA6rvh0l4AAAA=
+X-Change-ID: 20260203-mt7996-emlsr-9cc8a684ccba
+To: Felix Fietkau <nbd@nbd.name>, Ryder Lee <ryder.lee@mediatek.com>, 
+ Shayne Chen <shayne.chen@mediatek.com>, Sean Wang <sean.wang@mediatek.com>, 
+ Matthias Brugger <matthias.bgg@gmail.com>, 
+ AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+Cc: linux-wireless@vger.kernel.org, linux-arm-kernel@lists.infradead.org, 
+ linux-mediatek@lists.infradead.org, 
+ MeiChia Chiu <MeiChia.Chiu@mediatek.com>, 
+ Christian Marangi <ansuelsmth@gmail.com>, 
+ Lorenzo Bianconi <lorenzo@kernel.org>
+X-Mailer: b4 0.14.2
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [-0.66 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[broadcom.com,reject];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
-	R_DKIM_ALLOW(-0.20)[broadcom.com:s=google];
+	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	RCPT_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-31494-lists,linux-wireless=lfdr.de];
-	DKIM_TRACE(0.00)[broadcom.com:+];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,broadcom.com:email,broadcom.com:dkim,broadcom.com:mid];
-	TO_DN_SOME(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[arend.vanspriel@broadcom.com,linux-wireless@vger.kernel.org];
+	TAGGED_FROM(0.00)[bounces-31495-lists,linux-wireless=lfdr.de];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FREEMAIL_TO(0.00)[nbd.name,mediatek.com,gmail.com,collabora.com];
+	RCPT_COUNT_TWELVE(0.00)[12];
+	MIME_TRACE(0.00)[0:+];
+	FREEMAIL_CC(0.00)[vger.kernel.org,lists.infradead.org,mediatek.com,gmail.com,kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	TO_DN_SOME(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[linux-wireless];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[lorenzo@kernel.org,linux-wireless@vger.kernel.org];
+	DKIM_TRACE(0.00)[kernel.org:+];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	RCVD_COUNT_SEVEN(0.00)[7]
-X-Rspamd-Queue-Id: 510D2D52FD
+	TAGGED_RCPT(0.00)[linux-wireless];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,mediatek.com:email]
+X-Rspamd-Queue-Id: 31DC9D649C
 X-Rspamd-Action: no action
 
-Op 2 februari 2026 19:31:17 schreef Arend van Spriel 
-<arend.vanspriel@broadcom.com>:
+From: MeiChia Chiu <MeiChia.Chiu@mediatek.com>
 
-> Op 15 januari 2026 00:16:31 schreef Marek Szyprowski 
-> <m.szyprowski@samsung.com>:
->
->> On 14.01.2026 14:45, Arend van Spriel wrote:
->>> On 12/31/2025 3:35 PM, Marek Szyprowski wrote:
->>>> When probe of the sdio brcmfmac device fails for some reasons (i.e.
->>>> missing firmware), the sdiodev->bus is set to error instead of NULL,
->>>> thus
->>>> the cleanup later in brcmf_sdio_remove() tries to free resources via
->>>> invalid bus pointer. Fix this.
->>>
->>> Hi Marek,
->>>
->>> Thanks for the fix. Please consider my suggestion below...
->>>
->>>> Fixes: 0ff0843310b7 ("wifi: brcmfmac: Add optional lpo clock enable
->>>> support")
->>>> Signed-off-by: Marek Szyprowski <m.szyprowski@samsung.com>
->>>> ---
->>>> drivers/net/wireless/broadcom/brcm80211/brcmfmac/bcmsdh.c | 1 +
->>>> 1 file changed, 1 insertion(+)
->>>>
->>>> diff --git
->>>> a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/bcmsdh.c
->>>> b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/bcmsdh.c
->>>> index 6a3f187320fc..6615748fa5bb 100644
->>>> --- a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/bcmsdh.c
->>>> +++ b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/bcmsdh.c
->>>> @@ -954,6 +954,7 @@ int brcmf_sdiod_probe(struct brcmf_sdio_dev
->>>> *sdiodev)
->>>
->>> Maybe use a local variable bus and assign it only on success:
->>>
->>>> bus = brcmf_sdio_probe(sdiodev);
->>>> if (IS_ERR(bus)) {
->>>>   ret = PTR_ERR(bus);
->>>>   goto out;
->>>> }
->>>> +    sdiodev->bus = bus;
->>>> brcmf_sdiod_host_fixup(sdiodev->func2->card->host);
->> Well, that would look much better, but sdiodev->bus is also assigned
->> inside brcmf_sdio_probe() and I didn't check if this is required by the
->> functions called there or not. Maybe brcmf_sdio_probe() should simply
->> return error code to make things easier to track?
+Implement set_eml_op_mode mac80211 callback in order to introduce eMLSR
+support.
 
-Correcting some typos here...
+Tested-by: Christian Marangi <ansuelsmth@gmail.com>
+Signed-off-by: MeiChia Chiu <MeiChia.Chiu@mediatek.com>
+Co-developed-by: Lorenzo Bianconi <lorenzo@kernel.org>
+Signed-off-by: Lorenzo Bianconi <lorenzo@kernel.org>
+---
+ .../net/wireless/mediatek/mt76/mt76_connac_mcu.h   |  9 ++++
+ drivers/net/wireless/mediatek/mt76/mt7996/main.c   | 16 +++++++
+ drivers/net/wireless/mediatek/mt76/mt7996/mcu.c    | 55 ++++++++++++++++++++++
+ drivers/net/wireless/mediatek/mt76/mt7996/mt7996.h |  4 ++
+ 4 files changed, 84 insertions(+)
 
->>
-> Sorry for the late response. Indeed the bus instance is allocated and 
-> assigned to sdiodev
+diff --git a/drivers/net/wireless/mediatek/mt76/mt76_connac_mcu.h b/drivers/net/wireless/mediatek/mt76/mt76_connac_mcu.h
+index f44977f9093da76a9f5e2b4d7ce147de28c5b18e..b8629c0a1639b3f55d2133bdea28fa6cae552cac 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt76_connac_mcu.h
++++ b/drivers/net/wireless/mediatek/mt76/mt76_connac_mcu.h
+@@ -628,6 +628,13 @@ struct sta_rec_tx_proc {
+ 	__le32 flag;
+ } __packed;
+ 
++struct sta_rec_eml_op {
++	__le16 tag;
++	__le16 len;
++	u8 link_bitmap;
++	u8 link_ant_num[3];
++} __packed;
++
+ /* wtbl_rec */
+ 
+ struct wtbl_req_hdr {
+@@ -796,6 +803,7 @@ struct wtbl_raw {
+ 					 sizeof(struct sta_rec_he_6g_capa) + \
+ 					 sizeof(struct sta_rec_pn_info) + \
+ 					 sizeof(struct sta_rec_tx_proc) + \
++					 sizeof(struct sta_rec_eml_op) + \
+ 					 sizeof(struct tlv) +		\
+ 					 MT76_CONNAC_WTBL_UPDATE_MAX_SIZE)
+ 
+@@ -832,6 +840,7 @@ enum {
+ 	STA_REC_PN_INFO = 0x26,
+ 	STA_REC_KEY_V3 = 0x27,
+ 	STA_REC_HDRT = 0x28,
++	STA_REC_EML_OP = 0x29,
+ 	STA_REC_HDR_TRANS = 0x2B,
+ 	STA_REC_MAX_NUM
+ };
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7996/main.c b/drivers/net/wireless/mediatek/mt76/mt7996/main.c
+index 7046bf26d8ed6776ea114592f8b89c8b2a605339..48e4cd5af9293cedb9018fd9148dceac67bc4653 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7996/main.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7996/main.c
+@@ -2368,6 +2368,21 @@ mt7996_reconfig_complete(struct ieee80211_hw *hw,
+ 					     MT7996_WATCHDOG_TIME);
+ }
+ 
++static int
++mt7996_set_eml_op_mode(struct ieee80211_hw *hw, struct ieee80211_vif *vif,
++		       struct ieee80211_sta *sta,
++		       struct ieee80211_eml_params *eml_params)
++{
++	struct mt7996_dev *dev = mt7996_hw_dev(hw);
++	int ret;
++
++	mutex_lock(&dev->mt76.mutex);
++	ret = mt7996_mcu_set_emlsr_mode(dev, vif, sta, eml_params);
++	mutex_unlock(&dev->mt76.mutex);
++
++	return ret;
++}
++
+ const struct ieee80211_ops mt7996_ops = {
+ 	.add_chanctx = mt76_add_chanctx,
+ 	.remove_chanctx = mt76_remove_chanctx,
+@@ -2431,4 +2446,5 @@ const struct ieee80211_ops mt7996_ops = {
+ 	.change_vif_links = mt7996_change_vif_links,
+ 	.change_sta_links = mt7996_mac_sta_change_links,
+ 	.reconfig_complete = mt7996_reconfig_complete,
++	.set_eml_op_mode = mt7996_set_eml_op_mode,
+ };
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7996/mcu.c b/drivers/net/wireless/mediatek/mt76/mt7996/mcu.c
+index 8e1c8e1d6a99f093a2b7d7dc3a0c56f3a4bc220b..3098bddc5f6d6d33433bc653d5ef63bbe5c740fb 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7996/mcu.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7996/mcu.c
+@@ -1302,6 +1302,61 @@ int mt7996_mcu_set_protection(struct mt7996_phy *phy, struct mt7996_vif_link *li
+ 				     MCU_WM_UNI_CMD(BSS_INFO_UPDATE), true);
+ }
+ 
++int mt7996_mcu_set_emlsr_mode(struct mt7996_dev *dev,
++			      struct ieee80211_vif *vif,
++			      struct ieee80211_sta *sta,
++			      struct ieee80211_eml_params *eml_params)
++{
++	struct mt7996_sta *msta = (struct mt7996_sta *)sta->drv_priv;
++	struct mt7996_sta_link *msta_link;
++	struct sta_rec_eml_op *eml_op;
++	struct mt7996_vif_link *link;
++	struct sk_buff *skb;
++	struct tlv *tlv;
++
++	msta_link = mt76_dereference(msta->link[eml_params->link_id],
++				     &dev->mt76);
++	if (!msta_link)
++		return -EINVAL;
++
++	link = mt7996_vif_link(dev, vif, eml_params->link_id);
++	if (!link)
++		return -EINVAL;
++
++	skb = __mt76_connac_mcu_alloc_sta_req(&dev->mt76, &link->mt76,
++					      &msta_link->wcid,
++					      MT7996_STA_UPDATE_MAX_SIZE);
++	if (IS_ERR(skb))
++		return PTR_ERR(skb);
++
++	tlv = mt76_connac_mcu_add_tlv(skb, STA_REC_EML_OP, sizeof(*eml_op));
++	eml_op = (struct sta_rec_eml_op *)tlv;
++	eml_op->link_bitmap = 0;
++
++	if (eml_params->control & IEEE80211_EML_CTRL_EMLSR_MODE) {
++		unsigned long link_bitmap = eml_params->link_bitmap;
++		unsigned int link_id;
++
++		for_each_set_bit(link_id, &link_bitmap,
++				 IEEE80211_MLD_MAX_NUM_LINKS) {
++			struct mt76_phy *mphy;
++
++			link = mt7996_vif_link(dev, vif, link_id);
++			if (!link)
++				continue;
++
++			mphy = mt76_vif_link_phy(&link->mt76);
++			if (!mphy)
++				continue;
++
++			eml_op->link_bitmap |= BIT(mphy->band_idx);
++		}
++	}
++
++	return mt76_mcu_skb_send_msg(&dev->mt76, skb,
++				     MCU_WMWA_UNI_CMD(STA_REC_UPDATE), true);
++}
++
+ int mt7996_mcu_set_timing(struct mt7996_phy *phy, struct ieee80211_vif *vif,
+ 			  struct ieee80211_bss_conf *link_conf)
+ {
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7996/mt7996.h b/drivers/net/wireless/mediatek/mt76/mt7996/mt7996.h
+index 3ff730e36fa60830cc9ba5311643b008860cec22..c5d60c273cf8e15e3d54e2d851acbd83ce69719d 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7996/mt7996.h
++++ b/drivers/net/wireless/mediatek/mt76/mt7996/mt7996.h
+@@ -875,6 +875,10 @@ int mt7996_mcu_wtbl_update_hdr_trans(struct mt7996_dev *dev,
+ 				     struct mt7996_vif_link *link,
+ 				     struct mt7996_sta_link *msta_link);
+ int mt7996_mcu_cp_support(struct mt7996_dev *dev, u8 mode);
++int mt7996_mcu_set_emlsr_mode(struct mt7996_dev *dev,
++			      struct ieee80211_vif *vif,
++			      struct ieee80211_sta *sta,
++			      struct ieee80211_eml_params *eml_params);
+ #ifdef CONFIG_MAC80211_DEBUGFS
+ void mt7996_sta_add_debugfs(struct ieee80211_hw *hw, struct ieee80211_vif *vif,
+ 			    struct ieee80211_sta *sta, struct dentry *dir);
 
-...in brcmf_sdio_probe.
+---
+base-commit: 4eefc435c985f4dfdba9afb1c705f0e17377c084
+change-id: 20260203-mt7996-emlsr-9cc8a684ccba
 
-> So that is
-
-*NOT*
-
-> something the caller needs to repeat. So changing the return type of 
-> brcmf_sdio_probe() makes sense. The only thing that should be taken care of 
-> in the failure path of brcmf_sdio_probe() is to set sdiodev->bus to NULL 
-> after calling brcmf_sdio_remove().
-
-Regards,
-Arend
-
+Best regards,
+-- 
+Lorenzo Bianconi <lorenzo@kernel.org>
 
 
