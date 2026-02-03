@@ -1,80 +1,86 @@
-Return-Path: <linux-wireless+bounces-31502-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-31506-lists+linux-wireless=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id sNQyFiccgmmhPQMAu9opvQ
-	(envelope-from <linux-wireless+bounces-31502-lists+linux-wireless=lfdr.de@vger.kernel.org>)
-	for <lists+linux-wireless@lfdr.de>; Tue, 03 Feb 2026 17:02:47 +0100
+	id cIOMOU1GgmlHRQMAu9opvQ
+	(envelope-from <linux-wireless+bounces-31506-lists+linux-wireless=lfdr.de@vger.kernel.org>)
+	for <lists+linux-wireless@lfdr.de>; Tue, 03 Feb 2026 20:02:37 +0100
 X-Original-To: lists+linux-wireless@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id E8EBBDBA7D
-	for <lists+linux-wireless@lfdr.de>; Tue, 03 Feb 2026 17:02:45 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5ED44DE06C
+	for <lists+linux-wireless@lfdr.de>; Tue, 03 Feb 2026 20:02:37 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id A1EE6315D64B
-	for <lists+linux-wireless@lfdr.de>; Tue,  3 Feb 2026 15:56:01 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 299A8315CE95
+	for <lists+linux-wireless@lfdr.de>; Tue,  3 Feb 2026 18:58:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D5BAD3BFE46;
-	Tue,  3 Feb 2026 15:56:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DD0A62DECC6;
+	Tue,  3 Feb 2026 18:57:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=mediatek.com header.i=@mediatek.com header.b="BWs674Yd"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="TuSnmEfo"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mailgw02.mediatek.com (unknown [210.61.82.184])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f46.google.com (mail-wm1-f46.google.com [209.85.128.46])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0434D238C07
-	for <linux-wireless@vger.kernel.org>; Tue,  3 Feb 2026 15:55:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=210.61.82.184
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 650A52628D
+	for <linux-wireless@vger.kernel.org>; Tue,  3 Feb 2026 18:57:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.46
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770134160; cv=none; b=R+8pFaYBBvXqFs0NnH6naE1rI2IRJtf8T+a51izipMQ6+Ahvjtrjh0c9uEjvfiTWq1c0sLGkk2t3K8drSF4haanUys69l+4Zo58mHxC4P4OiN1hV+mVE+hTHEIaLS8l46SCh0KqZU/wO7T9sFcy2k7AMo9fI1XSPwsTtDHVEaoI=
+	t=1770145054; cv=none; b=Z0KD2SW+yUy/2fIhpswA/P8sW0iR3fvwklKKIik7LfsSbjf+ar7mbMpMfxJpQGC4+Lj0tdk8qexCvW50MRlzV/AHGG7ZJH7eQe00kMu0sDU5rbuJ5eMox9J3TAV1TpFAyzV6GmsYIYYIJ9QG+KfyDdrxPxOLp9ZS9fe+flLW3Bg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770134160; c=relaxed/simple;
-	bh=ujD7ZFY70Z0VzPttN379T/yCHgUfBPR8q4uGkW/cvuM=;
-	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=Ga6owQ1I2u+iownvcezbTUYDyldepCgjykUI0yXL9hSha3RB76l+LQhiGvi0I2p4PE1alQCNkiS9ET3blNgpN4rwGq/TvOe7kogv6GibYCDaNWStkzOGZo737ucG1rnjdODTV7Kh4YHYgXvfAnwX7yi9JcmNdGASQL4S7LGmCHg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=mediatek.com; spf=pass smtp.mailfrom=mediatek.com; dkim=pass (1024-bit key) header.d=mediatek.com header.i=@mediatek.com header.b=BWs674Yd; arc=none smtp.client-ip=210.61.82.184
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=mediatek.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=mediatek.com
-X-UUID: ce6d92f2011811f1b7fc4fdb8733b2bc-20260203
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=mediatek.com; s=dk;
-	h=Content-Type:Content-Transfer-Encoding:MIME-Version:References:In-Reply-To:Message-ID:Date:Subject:CC:To:From; bh=PRY8mAbFNGM0afVcuy6wNyGauxb2U3kibDu+fFKkTfE=;
-	b=BWs674YdNmk5aRPX72RzDFq4mgCU26CZO5PbfVElVmYGNR7j4f22obNqPviL40+P3h3bhVhq2d+Y74Azs37yaaohQOu3AeZmAv/APpotARRky51dAPwT3aB+eLgS2yS0qqJinPrQDoAABU1ze/ot1U7GhFYJCLT+YpBDa4KAy4A=;
-X-CID-P-RULE: Release_Ham
-X-CID-O-INFO: VERSION:1.3.11,REQID:0ba9a062-fccc-4672-a906-0e9054f2bde3,IP:0,U
-	RL:0,TC:0,Content:0,EDM:0,RT:0,SF:0,FILE:0,BULK:0,RULE:Release_Ham,ACTION:
-	release,TS:0
-X-CID-META: VersionHash:89c9d04,CLOUDID:eb7a44e9-ef90-4382-9c6f-55f2a0689a6b,B
-	ulkID:nil,BulkQuantity:0,Recheck:0,SF:81|82|102|836|888|898,TC:-5,Content:
-	0|15|50,EDM:-3,IP:nil,URL:0,File:130,RT:0,Bulk:nil,QS:nil,BEC:-1,COL:0,OSI
-	:0,OSA:0,AV:0,LES:1,SPR:NO,DKR:0,DKP:0,BRR:0,BRE:0,ARC:0
-X-CID-BVR: 2,SSN|SDN
-X-CID-BAS: 2,SSN|SDN,0,_
-X-CID-FACTOR: TF_CID_SPAM_SNR
-X-CID-RHF: D41D8CD98F00B204E9800998ECF8427E
-X-UUID: ce6d92f2011811f1b7fc4fdb8733b2bc-20260203
-Received: from mtkmbs14n1.mediatek.inc [(172.21.101.75)] by mailgw02.mediatek.com
-	(envelope-from <shayne.chen@mediatek.com>)
-	(Generic MTA with TLSv1.2 ECDHE-RSA-AES256-GCM-SHA384 256/256)
-	with ESMTP id 669973243; Tue, 03 Feb 2026 23:55:47 +0800
-Received: from mtkmbs13n2.mediatek.inc (172.21.101.108) by
- mtkmbs10n1.mediatek.inc (172.21.101.34) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.29; Tue, 3 Feb 2026 23:55:46 +0800
-Received: from mtksitap99.mediatek.inc (10.233.130.16) by
- mtkmbs13n2.mediatek.inc (172.21.101.73) with Microsoft SMTP Server id
- 15.2.2562.29 via Frontend Transport; Tue, 3 Feb 2026 23:55:46 +0800
-From: Shayne Chen <shayne.chen@mediatek.com>
-To: Felix Fietkau <nbd@nbd.name>
-CC: linux-wireless <linux-wireless@vger.kernel.org>, Lorenzo Bianconi
-	<lorenzo@kernel.org>, Ryder Lee <ryder.lee@mediatek.com>, Evelyn Tsai
-	<evelyn.tsai@mediatek.com>, Money Wang <money.wang@mediatek.com>,
-	linux-mediatek <linux-mediatek@lists.infradead.org>, StanleyYP Wang
-	<StanleyYP.Wang@mediatek.com>, Shayne Chen <shayne.chen@mediatek.com>
-Subject: [PATCH mt76 v2 4/4] wifi: mt76: mt7996: fix queue pause after scan due to wrong channel switch reason
-Date: Tue, 3 Feb 2026 23:55:32 +0800
-Message-ID: <20260203155532.1098290-4-shayne.chen@mediatek.com>
-X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20260203155532.1098290-1-shayne.chen@mediatek.com>
-References: <20260203155532.1098290-1-shayne.chen@mediatek.com>
+	s=arc-20240116; t=1770145054; c=relaxed/simple;
+	bh=HOGa73DSHlmk+qMLmsTjR/Runnyi4a1XbLektJ7Q6ZI=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=MuZrGRGkapixScZ5BfYmt1r9V+PcHZMqhwAJxNgIhxWZ8jMajOr1XBqvu7hKlDGnqgXgs+adCbeVXG+fUgwiU8l/wieeN3REDagaskIlBE/zUeUv6D+aL+MzJytvwLFqxv32dcpDYbSZRMu4ariLrcDRWlcqIky5dOoSg6Q+ORw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=TuSnmEfo; arc=none smtp.client-ip=209.85.128.46
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-wm1-f46.google.com with SMTP id 5b1f17b1804b1-47ff94b46afso1075185e9.1
+        for <linux-wireless@vger.kernel.org>; Tue, 03 Feb 2026 10:57:33 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1770145052; x=1770749852; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=x1Mg8m4uKi39aVoM0hZEYbMPcLG5m6gWxGXZ4r+0Im8=;
+        b=TuSnmEfo/m+Y7jgeUBdTcCvfpbL1BzUyzs9lU0X6VbGZk8zHkVX0FVY81lGB8WTsS3
+         ZHZ5T2Ruq2wgpfWfxgHLUb2wgjA3ptX0f6ZPVfLeNzXVgqi/fb5ENyGkpjzi0TIcdw9l
+         0pFyt0t15GUpdsA445S7LD5m0wvnNgQZh3WUf2lUrw2kxaBKGAkl6TXn1JSJve/yb+ru
+         0nbWzGeVpIE3T3AOUCok8rOamjY7ViQfvOSpWo9aAekg86n3FODDs3bJGi4Sk6CVOex3
+         GhMttlmrYw4/rXQBiy6R8ditqJnyAZ5JXfu7RK5ZwMPGeV+D4DOX6/qCn+nVjUCS+93J
+         uGPA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1770145052; x=1770749852;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=x1Mg8m4uKi39aVoM0hZEYbMPcLG5m6gWxGXZ4r+0Im8=;
+        b=Viha2Gx4n06gXP1LY5TjBGPk7V0VASvDk5mLocB9HMYu+fM0doUgAawjRjzibM3vhT
+         18gQuvHqg2Su1+w35ZrgsSfs+7cpSJJJmzOutUCPSvg9445WFU6Ugn4E6K+jnUVozdA6
+         AapDydg/hv+tSDkeAHMr2lGBhzJPneZ95ZxgO3tQxIQhbeW5UgfAuAOzNIiZw1UQmIrO
+         o4D5yYn2wMPjovNuKV1lM4sdHrVnQDXdqhklUfi8rRJ5VQbd5VdkOF9bcFkok2fBqgCw
+         wt7crIi/60MB7Eq36QjfuOsod3Ma69nmQ7GnEk26JEQXE+AniCk1QHTF8pIXhNKLyRmW
+         VbkA==
+X-Gm-Message-State: AOJu0YyT3Ys8jWUVg+cvapP0Qdkz4LtK1+gSxCLoo02jdQ56VyYODZzc
+	0ENdcp25wjMjttdbOpGCcZvj3nhNy8xZR6qf7mx5TgFu5HQwSic9PT0hLJDskA==
+X-Gm-Gg: AZuq6aINM7fxwBszb5KAJrPbxWNijRJQ0fCrGkbkaOrDil5UifiJmuC6iMRR+pzzeLE
+	fjD/B3JWWKYTol7gdPGJ6TgSvY0FvbG3+nArtYpny4m1wFefnugpQuWGzQpBQKKJhu8mbcbaVY7
+	gcoiaT+XaVcW3nEiIYJfK/AHcLrv/m1Fl/AUqBoUiqS+Hk3XbYzSXHpWuBdKMAsnYRl/5xa6mzy
+	sdXECQDP2O6ImLHRxbGnBiESFOHoD3YTGhyEp4jUAJjtYrVNIOzJXBpoGTPrH0b8kx9uSNf3Ryv
+	p+CYLLZWFgMaXhDU63ziWpr4MwtCAUO8QxImg+RmdCThrFhuPE4McPKDzg3El8p1PoROKPk5AYN
+	ZPhjxdTx2ZyVUNNLUI01/Y2vg0BxE6ohnLf9htv8B8nO2Pr+N+RHej6KqyQID8kPxkujvaFBiGu
+	njebYcc7LCmj/4n6x45QMi100NvUvB+CoXOOePYmLpIC6qGwIE
+X-Received: by 2002:a05:600c:4743:b0:481:a662:b3f3 with SMTP id 5b1f17b1804b1-4830eb30bf8mr6412695e9.7.1770145051585;
+        Tue, 03 Feb 2026 10:57:31 -0800 (PST)
+Received: from hp.. (109241135248.swidnica.vectranet.pl. [109.241.135.248])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4830eac4d11sm7773425e9.3.2026.02.03.10.57.30
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 03 Feb 2026 10:57:31 -0800 (PST)
+From: Janusz Dziedzic <janusz.dziedzic@gmail.com>
+To: linux-wireless@vger.kernel.org
+Cc: johannes@sipsolutions.net,
+	Janusz Dziedzic <janusz.dziedzic@gmail.com>
+Subject: [PATCH wireless-next 0/4] DFS/CAC changes
+Date: Tue,  3 Feb 2026 19:53:45 +0100
+Message-ID: <20260203185717.103810-1-janusz.dziedzic@gmail.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
@@ -82,77 +88,60 @@ List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-MTK: N
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.66 / 15.00];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MID_CONTAINS_FROM(1.00)[];
-	DMARC_POLICY_ALLOW(-0.50)[mediatek.com,quarantine];
+	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_DKIM_ALLOW(-0.20)[mediatek.com:s=dk];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_DKIM_ALLOW(-0.20)[gmail.com:s=20230601];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TO_DN_ALL(0.00)[];
-	TAGGED_FROM(0.00)[bounces-31502-lists,linux-wireless=lfdr.de];
-	RCVD_COUNT_FIVE(0.00)[6];
-	FROM_HAS_DN(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[shayne.chen@mediatek.com,linux-wireless@vger.kernel.org];
+	TAGGED_FROM(0.00)[bounces-31506-lists,linux-wireless=lfdr.de];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[9];
-	NEURAL_HAM(-0.00)[-0.999];
-	DKIM_TRACE(0.00)[mediatek.com:+];
-	TAGGED_RCPT(0.00)[linux-wireless];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,mediatek.com:email,mediatek.com:dkim,mediatek.com:mid]
-X-Rspamd-Queue-Id: E8EBBDBA7D
+	FREEMAIL_CC(0.00)[sipsolutions.net,gmail.com];
+	TO_DN_SOME(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	RCPT_COUNT_THREE(0.00)[3];
+	FROM_NEQ_ENVFROM(0.00)[januszdziedzic@gmail.com,linux-wireless@vger.kernel.org];
+	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCVD_COUNT_FIVE(0.00)[5];
+	DKIM_TRACE(0.00)[gmail.com:+];
+	TAGGED_RCPT(0.00)[linux-wireless];
+	FREEMAIL_FROM(0.00)[gmail.com];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 5ED44DE06C
 X-Rspamd-Action: no action
 
-From: StanleyYP Wang <StanleyYP.Wang@mediatek.com>
+- report CAC ongoing to user mode
+- add hwsim support for background CAC
 
-Previously, we used the IEEE80211_CONF_IDLE flag to avoid setting the
-parking channel with the CH_SWITCH_NORMAL reason, which could trigger TX
-emission before bootup CAC.
 
-However, we found that this flag can be set after triggering scanning on a
-connected station interface, and the reason CH_SWITCH_SCAN_BYPASS_DPD will
-be used when switching back to the operating channel, which makes the
-firmware failed to resume paused AC queues.
+Janusz Dziedzic (4):
+  wifi: cfg80211: fix background CAC
+  wifi: cfg80211: set and report chandef CAC ongoing
+  wifi: cfg80211: events, report background radar
+  wifi: mac80211_hwsim: background CAC support
 
-Seems that we should avoid relying on this flag after switching to single
-multi-radio architecture. Instead, use the existence of chanctx as the
-condition.
+ drivers/net/wireless/virtual/mac80211_hwsim.c | 77 +++++++++++++++++++
+ drivers/net/wireless/virtual/mac80211_hwsim.h |  2 +
+ include/net/cfg80211.h                        |  3 +
+ include/uapi/linux/nl80211.h                  |  6 ++
+ net/wireless/chan.c                           | 27 +++++++
+ net/wireless/core.h                           |  4 +
+ net/wireless/mlme.c                           | 51 ++++++------
+ net/wireless/nl80211.c                        | 14 ++++
+ 8 files changed, 162 insertions(+), 22 deletions(-)
 
-Signed-off-by: StanleyYP Wang <StanleyYP.Wang@mediatek.com>
-Signed-off-by: Shayne Chen <shayne.chen@mediatek.com>
----
-v2:
-  - change to use the existence of chanctx as the condition
----
- drivers/net/wireless/mediatek/mt76/mt7996/mcu.c | 3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
-
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7996/mcu.c b/drivers/net/wireless/mediatek/mt76/mt7996/mcu.c
-index 68d698033e43..9ccf9f97c984 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7996/mcu.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7996/mcu.c
-@@ -3924,8 +3924,7 @@ int mt7996_mcu_set_chan_info(struct mt7996_phy *phy, u16 tag)
- 
- 	if (phy->mt76->hw->conf.flags & IEEE80211_CONF_MONITOR)
- 		req.switch_reason = CH_SWITCH_NORMAL;
--	else if (phy->mt76->offchannel ||
--		 phy->mt76->hw->conf.flags & IEEE80211_CONF_IDLE)
-+	else if (phy->mt76->offchannel || !phy->mt76->chanctx)
- 		req.switch_reason = CH_SWITCH_SCAN_BYPASS_DPD;
- 	else if (!cfg80211_reg_can_beacon(phy->mt76->hw->wiphy, chandef,
- 					  NL80211_IFTYPE_AP))
 -- 
-2.51.0
+2.43.0
 
 
