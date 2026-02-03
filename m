@@ -1,211 +1,171 @@
-Return-Path: <linux-wireless+bounces-31489-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-31490-lists+linux-wireless=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 2OmBJSdogWl5GAMAu9opvQ
-	(envelope-from <linux-wireless+bounces-31489-lists+linux-wireless=lfdr.de@vger.kernel.org>)
-	for <lists+linux-wireless@lfdr.de>; Tue, 03 Feb 2026 04:14:47 +0100
+	id mPRLGFiBgWk6GwMAu9opvQ
+	(envelope-from <linux-wireless+bounces-31490-lists+linux-wireless=lfdr.de@vger.kernel.org>)
+	for <lists+linux-wireless@lfdr.de>; Tue, 03 Feb 2026 06:02:16 +0100
 X-Original-To: lists+linux-wireless@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id F15A3D407B
-	for <lists+linux-wireless@lfdr.de>; Tue, 03 Feb 2026 04:14:46 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id C4512D4876
+	for <lists+linux-wireless@lfdr.de>; Tue, 03 Feb 2026 06:02:15 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id E72C83058496
-	for <lists+linux-wireless@lfdr.de>; Tue,  3 Feb 2026 03:14:07 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 681CF3030ED0
+	for <lists+linux-wireless@lfdr.de>; Tue,  3 Feb 2026 05:02:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6DB822F5474;
-	Tue,  3 Feb 2026 03:14:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4315C286A7;
+	Tue,  3 Feb 2026 05:02:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=139.com header.i=@139.com header.b="CM3Ge6Vl"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="E/K661Lz"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from n169-110.mail.139.com (n169-110.mail.139.com [120.232.169.110])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pf1-f175.google.com (mail-pf1-f175.google.com [209.85.210.175])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C9A8F1509AB;
-	Tue,  3 Feb 2026 03:14:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=120.232.169.110
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F28903EBF15
+	for <linux-wireless@vger.kernel.org>; Tue,  3 Feb 2026 05:02:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.175
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770088447; cv=none; b=sKhsZCvIbBQfcDnl9bccVYqopzSu8w9RSwNq1oWZ+kh8l+ioSPRE+NpEzlwoR6LvHIHSqU/JUDGhYJkbjNXgaoKAHQdDH261KmGiZJea3H8kdxYipUoyljMRqBGuDc2BimEyPVqT2EgcI6G5C9mXs68YTSfTgMX0/A4aDbgQbp4=
+	t=1770094932; cv=none; b=GFhyM+9HwedmqYdzuKFO/lM5gQJcf53XPYujvVMjqDdQfGhN3fyFBsTQMLVOkiDPcdCbU29abt38UtTdLg9M+VcO5cVIO132CydWSSndblQneqgX1+Fd5e5hjcui4/yrzS2Gl8h2ozE62uMrOpZiTjNyy46e4WHt5bB1xupOcYA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770088447; c=relaxed/simple;
-	bh=SS5F5dyw8QnB6n9567Uf4Xb0YdzCcKXxnN7nDnfU4zQ=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=tl5499QbBmgmncsV+jEeiIhOWrdYfE6EC16FpLMOqoR/EfWBkBHlSE6BPJlvVRsLWN+YKt8tT2CT77CiTavzqzvzcr9r+FB4E0t/8IondqryqheN5/AYG92yN54EmATS1sH6b6wDcNAkWHs1JTQLaLk4mWfPm4uYKT5x4ddURM0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=139.com; spf=pass smtp.mailfrom=139.com; dkim=pass (1024-bit key) header.d=139.com header.i=@139.com header.b=CM3Ge6Vl; arc=none smtp.client-ip=120.232.169.110
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=139.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=139.com
+	s=arc-20240116; t=1770094932; c=relaxed/simple;
+	bh=oUZNxn0AkBvCSElifaEzxbofihH10AvUXckx7NBTcy0=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=HRROr1yJqFLVbdusHwH8IsvM0cKRHGoUbGEnHu1ZPtqy600KYcRecuTVkBW1rNEniGJmrISaAygzisKq5/t6h6cYMSGVFKx8bHDexuCLEN/w8zjze7sV4LHZGdEOx7d67lOtQUC2S1AdbHA1TlaOc923KGxcgfA/tUVVaJyXpjI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=E/K661Lz; arc=none smtp.client-ip=209.85.210.175
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-pf1-f175.google.com with SMTP id d2e1a72fcca58-823081bb15fso2743569b3a.3
+        for <linux-wireless@vger.kernel.org>; Mon, 02 Feb 2026 21:02:10 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=139.com; s=dkim; l=0;
-	h=from:subject:message-id:to:cc:mime-version;
-	bh=47DEQpj8HBSa+/TImW+5JCeuQeRkm5NMpJWZG3hSuFU=;
-	b=CM3Ge6Vl/N/TAHyFvv+Y5RzRTyxtfIPEz2RiQcpYL+c/5lgcR612aXhP5d+NNtZ03kgdt2HiSXLGR
-	 PCkIoTN9MYPVIX3cA3jgUt49wc0pBRYs4DoTXFCc1wWljj2/kC71jsSnaCIFl16AEsTmEB/ciIBukL
-	 JVEysUxkHbj9dKlw=
-X-RM-TagInfo: emlType=0                                       
-X-RM-SPAM:                                                                                        
-X-RM-SPAM-FLAG:00000000
-Received:from NTT-kernel-dev (unknown[60.247.85.88])
-	by rmsmtp-lg-appmail-03-12081 (RichMail) with SMTP id 2f31698167e54ae-024dc;
-	Tue, 03 Feb 2026 11:13:47 +0800 (CST)
-X-RM-TRANSID:2f31698167e54ae-024dc
-From: Li hongliang <1468888505@139.com>
-To: gregkh@linuxfoundation.org,
-	stable@vger.kernel.org,
-	quic_kangyang@quicinc.com
-Cc: patches@lists.linux.dev,
-	linux-kernel@vger.kernel.org,
-	kvalo@kernel.org,
-	jjohnson@kernel.org,
-	quic_vthiagar@quicinc.com,
-	quic_vnaralas@quicinc.com,
-	quic_msinada@quicinc.com,
-	gseset@codeaurora.org,
-	linux-wireless@vger.kernel.org,
-	ath11k@lists.infradead.org,
-	quic_jjohnson@quicinc.com,
-	jeff.johnson@oss.qualcomm.com
-Subject: [PATCH 6.12.y] wifi: ath11k: add srng->lock for ath11k_hal_srng_* in monitor mode
-Date: Tue,  3 Feb 2026 11:13:55 +0800
-Message-Id: <20260203031355.1359867-1-1468888505@139.com>
-X-Mailer: git-send-email 2.34.1
+        d=gmail.com; s=20230601; t=1770094930; x=1770699730; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=jxSEjdF3GcjRCJJjZuZzgfiWY7Eb+I3otWHzu60Ku0E=;
+        b=E/K661LzWXpNEhTxtUDa2qy/zRbSDwVB1Jg0FQ657FXU7ddMjz3zJ0TPm0+Q4eV4az
+         PAQnDIIVZviDiyBVS82cZeWQuhMmXs4Ba6j1js8wipXKOy0NcA0CAJWbfC/7/p1/se/S
+         I9zFK4U34EmzbdRJcUARKptmlHHASdvH1G24BDGAUPS3/FLOXTK4gPAB7541vkApsgig
+         3BDDomZg+I3MYcFnd463X4R87EWWmYxbxsqHe10+Sx4WIhG/oHbz0kVPWaiMh4iZ1Nph
+         1uc/ClybKoqi6bTT3x6lhW99U28CsWMPT2Lv2wqwpUyY1+EfrmMVR63jfWkUXdFnqSQl
+         a7og==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1770094930; x=1770699730;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=jxSEjdF3GcjRCJJjZuZzgfiWY7Eb+I3otWHzu60Ku0E=;
+        b=p3a/R4GayBfnJ5R9We08Fns+Jj08MPSb2EfykGmp+2x4JRYD3FT/L2za32iR9kmmhj
+         aQEwb9ZIQ2EW56m0zVnjKxmj9BrzJfGTbZlltYdIHABDSHyX85BH33rZIEr+lgtgAt3J
+         jDUmf/lCbkIcIIS/pC4SJradHvOidVeieHdHXekNxoVgE9NtHzey/r0p32Er9+R9HEY5
+         zJZ4AjZ/NP/oY2obLpZg33CUfuebO4eVoeq1ilM/pzNK0u7Wn/K85sVizIbur0hln8JJ
+         bzW0JKsxvR0ODtDB6sheZJtLQkDbK2f5NsvyKSE6B34DpABBN2TCLJyhw9i4+Brjwe/R
+         czWA==
+X-Forwarded-Encrypted: i=1; AJvYcCXx88r1W6iRrl0p2ve8T6MkKDRdsVqETgPiA35mZK4KlBCqfgOR6+6jzDJeoNksgvEuIrxOXce44soNJh12Kw==@vger.kernel.org
+X-Gm-Message-State: AOJu0YwWQCnMZM24L9EqHI2elUGI9A8KCvi4KqCMNKss1df8Bx9Yhsnq
+	WRZR6C/QdlozJVraZa7ugqUrszWEwuKtltNjxU053vaRZQ23imN3DeEJ
+X-Gm-Gg: AZuq6aLDXVQ1XZeCWyxYUfxsDb1wYm7+04ZxYFeVuWivJDJ6gKbzh5NGS236mogyR0P
+	4KAMLJsfkS9knjGs6zOMj6mCjJiOXgMZ02KNwGioWK7bUIJngOENCSMsr9L2pqfxJqwIcSNIUlr
+	4D4hhyiKO5eKXEs4Eq8BSofTEx9tXBlOVbaDfjSQhUahcjTjjf199+w8K3B3Yl5a1dlLLWInR6/
+	/bIvblBK/WOHs8pvx6/g91vPkXa17rsUv4wJbo6rI2ZVFbACW2d1rf7HBg04Suy/tnKpYqgf8jH
+	UYVfmIKi8KVtEkVw8HkgFSWmMnIdhUNcQ+cIoE+UZlfdDYK3T8jH+XB5kG6ETbWMfQ+og/na2xz
+	VYv5eINJKr+1780slvc8jEQGdGfhULf3u7/iiFfGOEKzR7yeqLlvs0Bkh+Lwa9Ik1lbJ446N+tj
+	w2N44OHT/A34YTYvk6BwdoqigspBip68DJ50G7Q2QO29kfkVHR4VA0wpgrSYqJ
+X-Received: by 2002:a05:6a00:21d3:b0:81e:a228:f0d8 with SMTP id d2e1a72fcca58-823aa6ee9a5mr14141035b3a.34.1770094930127;
+        Mon, 02 Feb 2026 21:02:10 -0800 (PST)
+Received: from ?IPV6:2402:e280:3d17:646:b60a:307f:3199:d66f? ([2402:e280:3d17:646:b60a:307f:3199:d66f])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-82379b65068sm19821711b3a.27.2026.02.02.21.02.07
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 02 Feb 2026 21:02:09 -0800 (PST)
+Message-ID: <399d4ea0-5f70-4678-b0d6-9a80c3399ceb@gmail.com>
+Date: Tue, 3 Feb 2026 10:32:06 +0530
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird Beta
+Subject: Re: [PATCH] wifi: ath12k: fix CMA error and MHI state mismatch during
+ resume
+To: Baochen Qiang <baochen.qiang@oss.qualcomm.com>, jjohnson@kernel.org,
+ kvalo@kernel.org
+Cc: quic_bqiang@quicinc.com, linux-wireless@vger.kernel.org,
+ ath12k@lists.infradead.org, linux-kernel@vger.kernel.org
+References: <20260202151720.49904-1-bjsaikiran@gmail.com>
+ <125f0ecb-79a5-4806-aa93-aecaf937885e@oss.qualcomm.com>
+Content-Language: en-US
+From: Jayasaikiran Banigallapati <bjsaikiran@gmail.com>
+In-Reply-To: <125f0ecb-79a5-4806-aa93-aecaf937885e@oss.qualcomm.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [2.54 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MID_CONTAINS_FROM(1.00)[];
-	R_DKIM_REJECT(1.00)[139.com:s=dkim];
-	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
+	R_DKIM_ALLOW(-0.20)[gmail.com:s=20230601];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-31489-lists,linux-wireless=lfdr.de];
-	RCPT_COUNT_TWELVE(0.00)[15];
-	MIME_TRACE(0.00)[0:+];
-	RCVD_TLS_LAST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	DMARC_NA(0.00)[139.com];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FREEMAIL_FROM(0.00)[139.com];
-	FROM_NEQ_ENVFROM(0.00)[1468888505@139.com,linux-wireless@vger.kernel.org];
-	PRECEDENCE_BULK(0.00)[];
+	DKIM_TRACE(0.00)[gmail.com:+];
 	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[139.com:-];
-	TO_DN_NONE(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-31490-lists,linux-wireless=lfdr.de];
+	MIME_TRACE(0.00)[0:+];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[linux-wireless];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[bjsaikiran@gmail.com,linux-wireless@vger.kernel.org];
+	TO_DN_SOME(0.00)[];
+	RCVD_COUNT_FIVE(0.00)[5];
+	MID_RHS_MATCH_FROM(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,msgid.link:url,qualcomm.com:email]
-X-Rspamd-Queue-Id: F15A3D407B
+	RCPT_COUNT_SEVEN(0.00)[7];
+	FREEMAIL_FROM(0.00)[gmail.com]
+X-Rspamd-Queue-Id: C4512D4876
 X-Rspamd-Action: no action
 
-From: Kang Yang <quic_kangyang@quicinc.com>
 
-[ Upstream commit 63b7af49496d0e32f7a748b6af3361ec138b1bd3 ]
-
-ath11k_hal_srng_* should be used with srng->lock to protect srng data.
-
-For ath11k_dp_rx_mon_dest_process() and ath11k_dp_full_mon_process_rx(),
-they use ath11k_hal_srng_* for many times but never call srng->lock.
-
-So when running (full) monitor mode, warning will occur:
-RIP: 0010:ath11k_hal_srng_dst_peek+0x18/0x30 [ath11k]
-Call Trace:
- ? ath11k_hal_srng_dst_peek+0x18/0x30 [ath11k]
- ath11k_dp_rx_process_mon_status+0xc45/0x1190 [ath11k]
- ? idr_alloc_u32+0x97/0xd0
- ath11k_dp_rx_process_mon_rings+0x32a/0x550 [ath11k]
- ath11k_dp_service_srng+0x289/0x5a0 [ath11k]
- ath11k_pcic_ext_grp_napi_poll+0x30/0xd0 [ath11k]
- __napi_poll+0x30/0x1f0
- net_rx_action+0x198/0x320
- __do_softirq+0xdd/0x319
-
-So add srng->lock for them to avoid such warnings.
-
-Inorder to fetch the srng->lock, should change srng's definition from
-'void' to 'struct hal_srng'. And initialize them elsewhere to prevent
-one line of code from being too long. This is consistent with other ring
-process functions, such as ath11k_dp_process_rx().
-
-Tested-on: WCN6855 hw2.0 PCI WLAN.HSP.1.1-03125-QCAHSPSWPL_V1_V2_SILICONZ_LITE-3.6510.30
-Tested-on: QCN9074 hw1.0 PCI WLAN.HK.2.7.0.1-01744-QCAHKSWPL_SILICONZ-1
-
-Fixes: d5c65159f289 ("ath11k: driver for Qualcomm IEEE 802.11ax devices")
-Signed-off-by: Kang Yang <quic_kangyang@quicinc.com>
-Acked-by: Jeff Johnson <quic_jjohnson@quicinc.com>
-Link: https://patch.msgid.link/20241219110531.2096-3-quic_kangyang@quicinc.com
-Signed-off-by: Jeff Johnson <jeff.johnson@oss.qualcomm.com>
-Signed-off-by: Li hongliang <1468888505@139.com>
----
- drivers/net/wireless/ath/ath11k/dp_rx.c | 10 ++++++++--
- 1 file changed, 8 insertions(+), 2 deletions(-)
-
-diff --git a/drivers/net/wireless/ath/ath11k/dp_rx.c b/drivers/net/wireless/ath/ath11k/dp_rx.c
-index 9373bfe50526..ff97c2649ce5 100644
---- a/drivers/net/wireless/ath/ath11k/dp_rx.c
-+++ b/drivers/net/wireless/ath/ath11k/dp_rx.c
-@@ -5142,7 +5142,7 @@ static void ath11k_dp_rx_mon_dest_process(struct ath11k *ar, int mac_id,
- 	struct ath11k_mon_data *pmon = (struct ath11k_mon_data *)&dp->mon_data;
- 	const struct ath11k_hw_hal_params *hal_params;
- 	void *ring_entry;
--	void *mon_dst_srng;
-+	struct hal_srng *mon_dst_srng;
- 	u32 ppdu_id;
- 	u32 rx_bufs_used;
- 	u32 ring_id;
-@@ -5159,6 +5159,7 @@ static void ath11k_dp_rx_mon_dest_process(struct ath11k *ar, int mac_id,
- 
- 	spin_lock_bh(&pmon->mon_lock);
- 
-+	spin_lock_bh(&mon_dst_srng->lock);
- 	ath11k_hal_srng_access_begin(ar->ab, mon_dst_srng);
- 
- 	ppdu_id = pmon->mon_ppdu_info.ppdu_id;
-@@ -5217,6 +5218,7 @@ static void ath11k_dp_rx_mon_dest_process(struct ath11k *ar, int mac_id,
- 								mon_dst_srng);
- 	}
- 	ath11k_hal_srng_access_end(ar->ab, mon_dst_srng);
-+	spin_unlock_bh(&mon_dst_srng->lock);
- 
- 	spin_unlock_bh(&pmon->mon_lock);
- 
-@@ -5606,7 +5608,7 @@ static int ath11k_dp_full_mon_process_rx(struct ath11k_base *ab, int mac_id,
- 	struct hal_sw_mon_ring_entries *sw_mon_entries;
- 	struct ath11k_pdev_mon_stats *rx_mon_stats;
- 	struct sk_buff *head_msdu, *tail_msdu;
--	void *mon_dst_srng = &ar->ab->hal.srng_list[dp->rxdma_mon_dst_ring.ring_id];
-+	struct hal_srng *mon_dst_srng;
- 	void *ring_entry;
- 	u32 rx_bufs_used = 0, mpdu_rx_bufs_used;
- 	int quota = 0, ret;
-@@ -5622,6 +5624,9 @@ static int ath11k_dp_full_mon_process_rx(struct ath11k_base *ab, int mac_id,
- 		goto reap_status_ring;
- 	}
- 
-+	mon_dst_srng = &ar->ab->hal.srng_list[dp->rxdma_mon_dst_ring.ring_id];
-+	spin_lock_bh(&mon_dst_srng->lock);
-+
- 	ath11k_hal_srng_access_begin(ar->ab, mon_dst_srng);
- 	while ((ring_entry = ath11k_hal_srng_dst_peek(ar->ab, mon_dst_srng))) {
- 		head_msdu = NULL;
-@@ -5665,6 +5670,7 @@ static int ath11k_dp_full_mon_process_rx(struct ath11k_base *ab, int mac_id,
- 	}
- 
- 	ath11k_hal_srng_access_end(ar->ab, mon_dst_srng);
-+	spin_unlock_bh(&mon_dst_srng->lock);
- 	spin_unlock_bh(&pmon->mon_lock);
- 
- 	if (rx_bufs_used) {
--- 
-2.34.1
-
-
+On 2/3/26 08:21, Baochen Qiang wrote:
+>
+> On 2/2/2026 11:17 PM, Saikiran wrote:
+>> Commit 8d5f4da8d70b ("wifi: ath12k: support suspend/resume") introduced
+>> system suspend/resume support but caused a critical regression where
+>> CMA pages are corrupted during resume.
+>>
+>> 1. CMA page corruption:
+>>     Calling mhi_unprepare_after_power_down() during suspend (via
+>>     ATH12K_MHI_DEINIT) prematurely frees the fbc_image and rddm_image
+>>     DMA buffers. When these pages are accessed during resume, the kernel
+>>     detects corruption (Bad page state).
+> How, FBC image and RDDM image get re-allocated at resume, no?
+>
+> To clarify, the BUG: Bad page state crash actually occurs during the 
+> suspend phase, specifically when ath12k_mhi_stop() calls 
+> mhi_unprepare_after_power_down().
+>
+> The stack trace shows the panic happens inside mhi_free_bhie_table() 
+> while trying to free the pages:
+>
+>  mhi_free_bhie_table+0x50/0xa0 [mhi]
+>  mhi_unprepare_after_power_down+0x30/0x70 [mhi]
+>  ath12k_mhi_stop+0xf8/0x210 [ath12k]
+>  ath12k_core_suspend_late+0x94/0xc0 [ath12k]
+>
+> The kernel reports nonzero _refcount when attempting to free the CMA 
+> pages (fbc_image/rddm_image). This suggests that something is still 
+> holding a reference to these pages when DEINIT attempts to free them, 
+> causing the kernel to panic before we reach the resume stage.
+>
+> Since the pages cannot be safely freed during suspend, skipping DEINIT 
+> (and using MHI_POWER_OFF_KEEP_DEV) avoids this invalid free operation. 
+> This also aligns with the existing comment in ath12k_mhi_stop which 
+> suggests using mhi_power_down_keep_dev() for suspend.
+>
+> Thanks & Regards,
+> Saikiran
 
