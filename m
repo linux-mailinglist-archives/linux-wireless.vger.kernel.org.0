@@ -1,52 +1,52 @@
-Return-Path: <linux-wireless+bounces-31488-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-31489-lists+linux-wireless=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 8CETIQFogWl5GAMAu9opvQ
-	(envelope-from <linux-wireless+bounces-31488-lists+linux-wireless=lfdr.de@vger.kernel.org>)
-	for <lists+linux-wireless@lfdr.de>; Tue, 03 Feb 2026 04:14:09 +0100
+	id 2OmBJSdogWl5GAMAu9opvQ
+	(envelope-from <linux-wireless+bounces-31489-lists+linux-wireless=lfdr.de@vger.kernel.org>)
+	for <lists+linux-wireless@lfdr.de>; Tue, 03 Feb 2026 04:14:47 +0100
 X-Original-To: lists+linux-wireless@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id C7ADAD405A
-	for <lists+linux-wireless@lfdr.de>; Tue, 03 Feb 2026 04:14:05 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id F15A3D407B
+	for <lists+linux-wireless@lfdr.de>; Tue, 03 Feb 2026 04:14:46 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id B4B5830495C1
-	for <lists+linux-wireless@lfdr.de>; Tue,  3 Feb 2026 03:14:03 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id E72C83058496
+	for <lists+linux-wireless@lfdr.de>; Tue,  3 Feb 2026 03:14:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E218B2F290A;
-	Tue,  3 Feb 2026 03:14:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6DB822F5474;
+	Tue,  3 Feb 2026 03:14:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=139.com header.i=@139.com header.b="bF9xXUCB"
+	dkim=pass (1024-bit key) header.d=139.com header.i=@139.com header.b="CM3Ge6Vl"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from n169-113.mail.139.com (n169-113.mail.139.com [120.232.169.113])
+Received: from n169-110.mail.139.com (n169-110.mail.139.com [120.232.169.110])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6FFAD1FE47C;
-	Tue,  3 Feb 2026 03:13:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=120.232.169.113
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C9A8F1509AB;
+	Tue,  3 Feb 2026 03:14:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=120.232.169.110
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770088442; cv=none; b=m8N8OdVA/AJiyALspyhJiuDGeFIOC9zyYtlPJexGJrvl2QJ9xI+66js0WG6yrfQyQRnjWDYBZSEf9HsceGObVkOs2zChWeLIUz/yAHBXfRQ8paN/hz5Ch8FO81nXORl0iuZoQ6gfdYrjM/yFasdSvWtkxiCBbJUvaOXFEA/x2b4=
+	t=1770088447; cv=none; b=sKhsZCvIbBQfcDnl9bccVYqopzSu8w9RSwNq1oWZ+kh8l+ioSPRE+NpEzlwoR6LvHIHSqU/JUDGhYJkbjNXgaoKAHQdDH261KmGiZJea3H8kdxYipUoyljMRqBGuDc2BimEyPVqT2EgcI6G5C9mXs68YTSfTgMX0/A4aDbgQbp4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770088442; c=relaxed/simple;
-	bh=5UkKq/PQcRPKT071SnACLvK1PSuY7S1FbMoyniqH04A=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=ijj0ANGCQsnta0AZYgJ6Puu5L4MraRFtmRFktwngtThU2qTA/2i+fk4cSzzQOvXOKeuu8Lux8b0C4p7wshXkm3iRDPRkKwoWs9VTjrxXoOsoxAGeNNym9JV3jQmnhVJQvaMK+zOcDCjyYmL4AdD92ACUjK3NL9051i7YsNF4kfM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=139.com; spf=pass smtp.mailfrom=139.com; dkim=pass (1024-bit key) header.d=139.com header.i=@139.com header.b=bF9xXUCB; arc=none smtp.client-ip=120.232.169.113
+	s=arc-20240116; t=1770088447; c=relaxed/simple;
+	bh=SS5F5dyw8QnB6n9567Uf4Xb0YdzCcKXxnN7nDnfU4zQ=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=tl5499QbBmgmncsV+jEeiIhOWrdYfE6EC16FpLMOqoR/EfWBkBHlSE6BPJlvVRsLWN+YKt8tT2CT77CiTavzqzvzcr9r+FB4E0t/8IondqryqheN5/AYG92yN54EmATS1sH6b6wDcNAkWHs1JTQLaLk4mWfPm4uYKT5x4ddURM0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=139.com; spf=pass smtp.mailfrom=139.com; dkim=pass (1024-bit key) header.d=139.com header.i=@139.com header.b=CM3Ge6Vl; arc=none smtp.client-ip=120.232.169.110
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=139.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=139.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
 	d=139.com; s=dkim; l=0;
 	h=from:subject:message-id:to:cc:mime-version;
 	bh=47DEQpj8HBSa+/TImW+5JCeuQeRkm5NMpJWZG3hSuFU=;
-	b=bF9xXUCBYr14DTlSP3qW82ZV2LS9j203TZXrBWdDQM9Sz7QJtxdViRC+IoO5haIusaksYLTJ9K1vZ
-	 005CSKOB9xMlgQuB81xBm2SBdNYPzoBG7oasP69F4CBIiQmpw6BzqJxqf9DejVX83et0dAlFEBy4DN
-	 n9lGAcm2h24BhV4E=
+	b=CM3Ge6Vl/N/TAHyFvv+Y5RzRTyxtfIPEz2RiQcpYL+c/5lgcR612aXhP5d+NNtZ03kgdt2HiSXLGR
+	 PCkIoTN9MYPVIX3cA3jgUt49wc0pBRYs4DoTXFCc1wWljj2/kC71jsSnaCIFl16AEsTmEB/ciIBukL
+	 JVEysUxkHbj9dKlw=
 X-RM-TagInfo: emlType=0                                       
 X-RM-SPAM:                                                                                        
 X-RM-SPAM-FLAG:00000000
 Received:from NTT-kernel-dev (unknown[60.247.85.88])
-	by rmsmtp-lg-appmail-32-12046 (RichMail) with SMTP id 2f0e698167da3b3-0440b;
-	Tue, 03 Feb 2026 11:13:34 +0800 (CST)
-X-RM-TRANSID:2f0e698167da3b3-0440b
+	by rmsmtp-lg-appmail-03-12081 (RichMail) with SMTP id 2f31698167e54ae-024dc;
+	Tue, 03 Feb 2026 11:13:47 +0800 (CST)
+X-RM-TRANSID:2f31698167e54ae-024dc
 From: Li hongliang <1468888505@139.com>
 To: gregkh@linuxfoundation.org,
 	stable@vger.kernel.org,
@@ -63,9 +63,9 @@ Cc: patches@lists.linux.dev,
 	ath11k@lists.infradead.org,
 	quic_jjohnson@quicinc.com,
 	jeff.johnson@oss.qualcomm.com
-Subject: [PATCH 6.6.y] wifi: ath11k: add srng->lock for ath11k_hal_srng_* in monitor mode
-Date: Tue,  3 Feb 2026 11:13:45 +0800
-Message-Id: <20260203031345.1357063-1-1468888505@139.com>
+Subject: [PATCH 6.12.y] wifi: ath11k: add srng->lock for ath11k_hal_srng_* in monitor mode
+Date: Tue,  3 Feb 2026 11:13:55 +0800
+Message-Id: <20260203031355.1359867-1-1468888505@139.com>
 X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
@@ -81,11 +81,11 @@ X-Spamd-Result: default: False [2.54 / 15.00];
 	MID_CONTAINS_FROM(1.00)[];
 	R_DKIM_REJECT(1.00)[139.com:s=dkim];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-31488-lists,linux-wireless=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-31489-lists,linux-wireless=lfdr.de];
 	RCPT_COUNT_TWELVE(0.00)[15];
 	MIME_TRACE(0.00)[0:+];
 	RCVD_TLS_LAST(0.00)[];
@@ -94,16 +94,16 @@ X-Spamd-Result: default: False [2.54 / 15.00];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	FREEMAIL_FROM(0.00)[139.com];
-	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[1468888505@139.com,linux-wireless@vger.kernel.org];
+	PRECEDENCE_BULK(0.00)[];
 	FROM_HAS_DN(0.00)[];
 	DKIM_TRACE(0.00)[139.com:-];
 	TO_DN_NONE(0.00)[];
 	TAGGED_RCPT(0.00)[linux-wireless];
 	NEURAL_HAM(-0.00)[-1.000];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,qualcomm.com:email,msgid.link:url]
-X-Rspamd-Queue-Id: C7ADAD405A
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,msgid.link:url,qualcomm.com:email]
+X-Rspamd-Queue-Id: F15A3D407B
 X-Rspamd-Action: no action
 
 From: Kang Yang <quic_kangyang@quicinc.com>
@@ -149,10 +149,10 @@ Signed-off-by: Li hongliang <1468888505@139.com>
  1 file changed, 8 insertions(+), 2 deletions(-)
 
 diff --git a/drivers/net/wireless/ath/ath11k/dp_rx.c b/drivers/net/wireless/ath/ath11k/dp_rx.c
-index dc54ea16c12a..ed1ea61c8142 100644
+index 9373bfe50526..ff97c2649ce5 100644
 --- a/drivers/net/wireless/ath/ath11k/dp_rx.c
 +++ b/drivers/net/wireless/ath/ath11k/dp_rx.c
-@@ -5093,7 +5093,7 @@ static void ath11k_dp_rx_mon_dest_process(struct ath11k *ar, int mac_id,
+@@ -5142,7 +5142,7 @@ static void ath11k_dp_rx_mon_dest_process(struct ath11k *ar, int mac_id,
  	struct ath11k_mon_data *pmon = (struct ath11k_mon_data *)&dp->mon_data;
  	const struct ath11k_hw_hal_params *hal_params;
  	void *ring_entry;
@@ -161,7 +161,7 @@ index dc54ea16c12a..ed1ea61c8142 100644
  	u32 ppdu_id;
  	u32 rx_bufs_used;
  	u32 ring_id;
-@@ -5117,6 +5117,7 @@ static void ath11k_dp_rx_mon_dest_process(struct ath11k *ar, int mac_id,
+@@ -5159,6 +5159,7 @@ static void ath11k_dp_rx_mon_dest_process(struct ath11k *ar, int mac_id,
  
  	spin_lock_bh(&pmon->mon_lock);
  
@@ -169,7 +169,7 @@ index dc54ea16c12a..ed1ea61c8142 100644
  	ath11k_hal_srng_access_begin(ar->ab, mon_dst_srng);
  
  	ppdu_id = pmon->mon_ppdu_info.ppdu_id;
-@@ -5175,6 +5176,7 @@ static void ath11k_dp_rx_mon_dest_process(struct ath11k *ar, int mac_id,
+@@ -5217,6 +5218,7 @@ static void ath11k_dp_rx_mon_dest_process(struct ath11k *ar, int mac_id,
  								mon_dst_srng);
  	}
  	ath11k_hal_srng_access_end(ar->ab, mon_dst_srng);
@@ -177,7 +177,7 @@ index dc54ea16c12a..ed1ea61c8142 100644
  
  	spin_unlock_bh(&pmon->mon_lock);
  
-@@ -5564,7 +5566,7 @@ static int ath11k_dp_full_mon_process_rx(struct ath11k_base *ab, int mac_id,
+@@ -5606,7 +5608,7 @@ static int ath11k_dp_full_mon_process_rx(struct ath11k_base *ab, int mac_id,
  	struct hal_sw_mon_ring_entries *sw_mon_entries;
  	struct ath11k_pdev_mon_stats *rx_mon_stats;
  	struct sk_buff *head_msdu, *tail_msdu;
@@ -186,7 +186,7 @@ index dc54ea16c12a..ed1ea61c8142 100644
  	void *ring_entry;
  	u32 rx_bufs_used = 0, mpdu_rx_bufs_used;
  	int quota = 0, ret;
-@@ -5580,6 +5582,9 @@ static int ath11k_dp_full_mon_process_rx(struct ath11k_base *ab, int mac_id,
+@@ -5622,6 +5624,9 @@ static int ath11k_dp_full_mon_process_rx(struct ath11k_base *ab, int mac_id,
  		goto reap_status_ring;
  	}
  
@@ -196,7 +196,7 @@ index dc54ea16c12a..ed1ea61c8142 100644
  	ath11k_hal_srng_access_begin(ar->ab, mon_dst_srng);
  	while ((ring_entry = ath11k_hal_srng_dst_peek(ar->ab, mon_dst_srng))) {
  		head_msdu = NULL;
-@@ -5623,6 +5628,7 @@ static int ath11k_dp_full_mon_process_rx(struct ath11k_base *ab, int mac_id,
+@@ -5665,6 +5670,7 @@ static int ath11k_dp_full_mon_process_rx(struct ath11k_base *ab, int mac_id,
  	}
  
  	ath11k_hal_srng_access_end(ar->ab, mon_dst_srng);
