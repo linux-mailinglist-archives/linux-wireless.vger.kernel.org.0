@@ -1,277 +1,195 @@
-Return-Path: <linux-wireless+bounces-31495-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-31496-lists+linux-wireless=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id YHB3NQu0gWnNIwMAu9opvQ
-	(envelope-from <linux-wireless+bounces-31495-lists+linux-wireless=lfdr.de@vger.kernel.org>)
-	for <lists+linux-wireless@lfdr.de>; Tue, 03 Feb 2026 09:38:35 +0100
+	id IAgVNszMgWl1JwMAu9opvQ
+	(envelope-from <linux-wireless+bounces-31496-lists+linux-wireless=lfdr.de@vger.kernel.org>)
+	for <lists+linux-wireless@lfdr.de>; Tue, 03 Feb 2026 11:24:12 +0100
 X-Original-To: lists+linux-wireless@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 31DC9D649C
-	for <lists+linux-wireless@lfdr.de>; Tue, 03 Feb 2026 09:38:35 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6FB4AD7887
+	for <lists+linux-wireless@lfdr.de>; Tue, 03 Feb 2026 11:24:11 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 38AAF309F88D
-	for <lists+linux-wireless@lfdr.de>; Tue,  3 Feb 2026 08:32:34 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 16AAA30B454C
+	for <lists+linux-wireless@lfdr.de>; Tue,  3 Feb 2026 10:21:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4434E395249;
-	Tue,  3 Feb 2026 08:32:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 797B23126DA;
+	Tue,  3 Feb 2026 10:21:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="nRuQmNY7"
+	dkim=pass (1024-bit key) header.d=samsung.com header.i=@samsung.com header.b="EvjJWzEo"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mailout2.w1.samsung.com (mailout2.w1.samsung.com [210.118.77.12])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6B8F4393DF1
-	for <linux-wireless@vger.kernel.org>; Tue,  3 Feb 2026 08:32:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ABDC3313526
+	for <linux-wireless@vger.kernel.org>; Tue,  3 Feb 2026 10:21:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=210.118.77.12
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770107552; cv=none; b=WLwHAzxLSCPMOP+AdPR1kpR0UU8ds6e4QoJC5pIKN4PcIsuNt96vpgOshjUWYIKKba3uj63WchVcQTQrn2qwAMAxjxWHkLJ+iCOTQqkY96Up3aGWHmlQEPBji68lzU4JLwMKbzR772u2LDeeaDHP0V+QHbqlYAIQ6Q2wZ0WyHPU=
+	t=1770114117; cv=none; b=RQkDeq1A/dbFIJ+F6TiSVUTB2xGrzruOem00KbzTYHKTN+UnXsBwBSwlzQCF3UDRURBt8WyNMhPfbBVmNV1Vwmtb7DDiYnFFgOlsxYQkmRIxiahoiq+AwporGoWjIOcX6NdFbFJj+t787aWWHUHBsQQfbq9YO24iNGnG4pRF6Lw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770107552; c=relaxed/simple;
-	bh=Rxqd6CZwBn18DO82HK4+2RYTRznPltmfeG6JDWGATF8=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=KNR/SdCPEl1oR5BJZPXu4RelhWbgK28Vpa9b31+o8Yrzb8Pj4VrEcUOACQLXakRaBryxMAZgZxcHEtAmITqWDyo6io2FkAXgxfMvrYTNY3aIOgj6u18TPuRA/+HszPxa/WBBEaWzwv3+eMrqhEKkmgINEXWje0Kaf2daUW4D8rA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=nRuQmNY7; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 160B1C116D0;
-	Tue,  3 Feb 2026 08:32:30 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1770107551;
-	bh=Rxqd6CZwBn18DO82HK4+2RYTRznPltmfeG6JDWGATF8=;
-	h=From:Date:Subject:To:Cc:From;
-	b=nRuQmNY7tHHkXXX3CEDKDi3qX9Bc9CY+8ueHn7ndQ+m2AIyj6XNX+hj7l6W4xN5XZ
-	 svPYoNCZ+OGWSgb/GUklF5Zy1pbOwkCSuuqDEcSk0JXlxmhWEdLXtbG+YbVu+9DFLI
-	 Mny2S3v533zHOwz6Vyed4SCRAQ1DpsZ5jAGV/g6ypnNQS9FFLkdFb/cX3UGTDLtqlr
-	 Dju9Sb+Ww5xQ3QlGIKmiKanQl7eJFwJL66m9VKiabaVuil53hq2y6M0frODPdXTrVa
-	 gcLzyhgXkMk/opPJX3nGTF1CiOS2B/sOEMVHaTkRVhcefC7gaaFk4IHHqSPX94oeqk
-	 qz8NjpcU9PjdQ==
-From: Lorenzo Bianconi <lorenzo@kernel.org>
-Date: Tue, 03 Feb 2026 09:32:02 +0100
-Subject: [PATCH mt76] wifi: mt76: mt7996: Add eMLSR support
+	s=arc-20240116; t=1770114117; c=relaxed/simple;
+	bh=mDbAkw6+5b3PYP4j3HekYDmobxPGUwHOAHgr6SSerzM=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version:Content-Type:
+	 References; b=Y3Szzc1lRprJEpr5WPgy/uODzgNp+vm1la7K7k8Uvb2datd2Yi1S4O3as4wuJ3V7bikir6KW4Y6Py0JxcH/bGIeyn7iXztZ7ap99lVtFAcjxnt/VH5PKCFSrx9r/v5TEFyRpTIzAldQsYjWSdZtXpv2YZWtLXdGWif2ifnhulas=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=samsung.com; spf=pass smtp.mailfrom=samsung.com; dkim=pass (1024-bit key) header.d=samsung.com header.i=@samsung.com header.b=EvjJWzEo; arc=none smtp.client-ip=210.118.77.12
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=samsung.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=samsung.com
+Received: from eucas1p2.samsung.com (unknown [182.198.249.207])
+	by mailout2.w1.samsung.com (KnoxPortal) with ESMTP id 20260203102151euoutp02e6b86f8d07c0c75c363af49a39484aa3~QtWf0VraR0091500915euoutp02S
+	for <linux-wireless@vger.kernel.org>; Tue,  3 Feb 2026 10:21:51 +0000 (GMT)
+DKIM-Filter: OpenDKIM Filter v2.11.0 mailout2.w1.samsung.com 20260203102151euoutp02e6b86f8d07c0c75c363af49a39484aa3~QtWf0VraR0091500915euoutp02S
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=samsung.com;
+	s=mail20170921; t=1770114111;
+	bh=G9a2mtBb++O8s1zmn/uRpbg3SjCQvjrM8KhIPFcNSJQ=;
+	h=From:To:Cc:Subject:Date:References:From;
+	b=EvjJWzEo3V54M3mh4AdPSkP/QPhZqrgi0pA2lGYM42pX1UrZgwBYCjZ/tKNSmtyRg
+	 SQjs6Fepn3bKZcL+HzTPb2jMcjfKJ5JW2CM6R3G25Ojbh/KaAMVgtmpO7hzgyDugBv
+	 cs6p9j6XcSV/GJYoAVKNxfBe8Fa7fIPZcVSPk6VI=
+Received: from eusmtip2.samsung.com (unknown [203.254.199.222]) by
+	eucas1p1.samsung.com (KnoxPortal) with ESMTPA id
+	20260203102148eucas1p10c43be72827d74e5be41fe40a84fbd59~QtWdUoppG3022430224eucas1p1p;
+	Tue,  3 Feb 2026 10:21:48 +0000 (GMT)
+Received: from AMDC4653.digital.local (unknown [106.120.51.32]) by
+	eusmtip2.samsung.com (KnoxPortal) with ESMTPA id
+	20260203102148eusmtip201effc4af688babcac9ef33e67d90e4c~QtWdC86R-0627706277eusmtip2U;
+	Tue,  3 Feb 2026 10:21:48 +0000 (GMT)
+From: Marek Szyprowski <m.szyprowski@samsung.com>
+To: linux-wireless@vger.kernel.org, brcm80211@lists.linux.dev,
+	brcm80211-dev-list.pdl@broadcom.com
+Cc: Marek Szyprowski <m.szyprowski@samsung.com>, Arend van Spriel
+	<arend.vanspriel@broadcom.com>
+Subject: [PATCH v2] wifi: brcmfmac: Fix potential kernel oops when probe
+ fails
+Date: Tue,  3 Feb 2026 11:21:33 +0100
+Message-Id: <20260203102133.1478331-1-m.szyprowski@samsung.com>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+X-CMS-MailID: 20260203102148eucas1p10c43be72827d74e5be41fe40a84fbd59
+X-Msg-Generator: CA
 Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20260203-mt7996-emlsr-v1-1-38ffb3d5110c@kernel.org>
-X-B4-Tracking: v=1; b=H4sIAAAAAAAC/6tWKk4tykwtVrJSqFYqSi3LLM7MzwNyDHUUlJIzE
- vPSU3UzU4B8JSMDIzMDIwNj3dwSc0tLM93U3JziIl3L5GSLRDMLk+TkpEQloJaCotS0zAqwcdG
- xtbUA6rvh0l4AAAA=
-X-Change-ID: 20260203-mt7996-emlsr-9cc8a684ccba
-To: Felix Fietkau <nbd@nbd.name>, Ryder Lee <ryder.lee@mediatek.com>, 
- Shayne Chen <shayne.chen@mediatek.com>, Sean Wang <sean.wang@mediatek.com>, 
- Matthias Brugger <matthias.bgg@gmail.com>, 
- AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
-Cc: linux-wireless@vger.kernel.org, linux-arm-kernel@lists.infradead.org, 
- linux-mediatek@lists.infradead.org, 
- MeiChia Chiu <MeiChia.Chiu@mediatek.com>, 
- Christian Marangi <ansuelsmth@gmail.com>, 
- Lorenzo Bianconi <lorenzo@kernel.org>
-X-Mailer: b4 0.14.2
+X-RootMTR: 20260203102148eucas1p10c43be72827d74e5be41fe40a84fbd59
+X-EPHeader: CA
+X-CMS-RootMailID: 20260203102148eucas1p10c43be72827d74e5be41fe40a84fbd59
+References: <CGME20260203102148eucas1p10c43be72827d74e5be41fe40a84fbd59@eucas1p1.samsung.com>
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.66 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.16 / 15.00];
+	MID_CONTAINS_FROM(1.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
+	DMARC_POLICY_ALLOW(-0.50)[samsung.com,none];
+	R_DKIM_ALLOW(-0.20)[samsung.com:s=mail20170921];
 	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-31495-lists,linux-wireless=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-31496-lists,linux-wireless=lfdr.de];
 	FROM_HAS_DN(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FREEMAIL_TO(0.00)[nbd.name,mediatek.com,gmail.com,collabora.com];
-	RCPT_COUNT_TWELVE(0.00)[12];
-	MIME_TRACE(0.00)[0:+];
-	FREEMAIL_CC(0.00)[vger.kernel.org,lists.infradead.org,mediatek.com,gmail.com,kernel.org];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
 	TO_DN_SOME(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[lorenzo@kernel.org,linux-wireless@vger.kernel.org];
-	DKIM_TRACE(0.00)[kernel.org:+];
-	MID_RHS_MATCH_FROM(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[linux-wireless];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[samsung.com:+];
 	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,mediatek.com:email]
-X-Rspamd-Queue-Id: 31DC9D649C
+	RCPT_COUNT_FIVE(0.00)[5];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[m.szyprowski@samsung.com,linux-wireless@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCVD_COUNT_FIVE(0.00)[6];
+	TAGGED_RCPT(0.00)[linux-wireless];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[samsung.com:email,samsung.com:dkim,samsung.com:mid,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 6FB4AD7887
 X-Rspamd-Action: no action
 
-From: MeiChia Chiu <MeiChia.Chiu@mediatek.com>
+When probe of the sdio brcmfmac device fails for some reasons (i.e.
+missing firmware), the sdiodev->bus is set to error instead of NULL, thus
+the cleanup later in brcmf_sdio_remove() tries to free resources via
+invalid bus pointer. This happens because sdiodev->bus is set 2 times:
+first in brcmf_sdio_probe() and second time in brcmf_sdiod_probe(). Fix
+this by chaning the brcmf_sdio_probe() function to return the error code
+and set sdio->bus only there.
 
-Implement set_eml_op_mode mac80211 callback in order to introduce eMLSR
-support.
-
-Tested-by: Christian Marangi <ansuelsmth@gmail.com>
-Signed-off-by: MeiChia Chiu <MeiChia.Chiu@mediatek.com>
-Co-developed-by: Lorenzo Bianconi <lorenzo@kernel.org>
-Signed-off-by: Lorenzo Bianconi <lorenzo@kernel.org>
+Fixes: 0ff0843310b7 ("wifi: brcmfmac: Add optional lpo clock enable support")
+Signed-off-by: Marek Szyprowski <m.szyprowski@samsung.com>
 ---
- .../net/wireless/mediatek/mt76/mt76_connac_mcu.h   |  9 ++++
- drivers/net/wireless/mediatek/mt76/mt7996/main.c   | 16 +++++++
- drivers/net/wireless/mediatek/mt76/mt7996/mcu.c    | 55 ++++++++++++++++++++++
- drivers/net/wireless/mediatek/mt76/mt7996/mt7996.h |  4 ++
- 4 files changed, 84 insertions(+)
+Changelog:
+v2:
+- changed return type of brcmf_sdio_probe() function
 
-diff --git a/drivers/net/wireless/mediatek/mt76/mt76_connac_mcu.h b/drivers/net/wireless/mediatek/mt76/mt76_connac_mcu.h
-index f44977f9093da76a9f5e2b4d7ce147de28c5b18e..b8629c0a1639b3f55d2133bdea28fa6cae552cac 100644
---- a/drivers/net/wireless/mediatek/mt76/mt76_connac_mcu.h
-+++ b/drivers/net/wireless/mediatek/mt76/mt76_connac_mcu.h
-@@ -628,6 +628,13 @@ struct sta_rec_tx_proc {
- 	__le32 flag;
- } __packed;
+v1: https://lore.kernel.org/all/20251231143544.4158840-1-m.szyprowski@samsung.com
+---
+ drivers/net/wireless/broadcom/brcm80211/brcmfmac/bcmsdh.c | 7 +++----
+ drivers/net/wireless/broadcom/brcm80211/brcmfmac/sdio.c   | 7 ++++---
+ drivers/net/wireless/broadcom/brcm80211/brcmfmac/sdio.h   | 2 +-
+ 3 files changed, 8 insertions(+), 8 deletions(-)
+
+diff --git a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/bcmsdh.c b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/bcmsdh.c
+index 6a3f187320fc..13952dfeb3e3 100644
+--- a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/bcmsdh.c
++++ b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/bcmsdh.c
+@@ -951,11 +951,10 @@ int brcmf_sdiod_probe(struct brcmf_sdio_dev *sdiodev)
+ 		goto out;
  
-+struct sta_rec_eml_op {
-+	__le16 tag;
-+	__le16 len;
-+	u8 link_bitmap;
-+	u8 link_ant_num[3];
-+} __packed;
+ 	/* try to attach to the target device */
+-	sdiodev->bus = brcmf_sdio_probe(sdiodev);
+-	if (IS_ERR(sdiodev->bus)) {
+-		ret = PTR_ERR(sdiodev->bus);
++	ret = brcmf_sdio_probe(sdiodev);
++	if (ret)
+ 		goto out;
+-	}
 +
- /* wtbl_rec */
- 
- struct wtbl_req_hdr {
-@@ -796,6 +803,7 @@ struct wtbl_raw {
- 					 sizeof(struct sta_rec_he_6g_capa) + \
- 					 sizeof(struct sta_rec_pn_info) + \
- 					 sizeof(struct sta_rec_tx_proc) + \
-+					 sizeof(struct sta_rec_eml_op) + \
- 					 sizeof(struct tlv) +		\
- 					 MT76_CONNAC_WTBL_UPDATE_MAX_SIZE)
- 
-@@ -832,6 +840,7 @@ enum {
- 	STA_REC_PN_INFO = 0x26,
- 	STA_REC_KEY_V3 = 0x27,
- 	STA_REC_HDRT = 0x28,
-+	STA_REC_EML_OP = 0x29,
- 	STA_REC_HDR_TRANS = 0x2B,
- 	STA_REC_MAX_NUM
- };
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7996/main.c b/drivers/net/wireless/mediatek/mt76/mt7996/main.c
-index 7046bf26d8ed6776ea114592f8b89c8b2a605339..48e4cd5af9293cedb9018fd9148dceac67bc4653 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7996/main.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7996/main.c
-@@ -2368,6 +2368,21 @@ mt7996_reconfig_complete(struct ieee80211_hw *hw,
- 					     MT7996_WATCHDOG_TIME);
+ 	brcmf_sdiod_host_fixup(sdiodev->func2->card->host);
+ out:
+ 	if (ret)
+diff --git a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/sdio.c b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/sdio.c
+index 8cf9d7e7c3f7..4e6ed02c1591 100644
+--- a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/sdio.c
++++ b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/sdio.c
+@@ -4445,7 +4445,7 @@ brcmf_sdio_prepare_fw_request(struct brcmf_sdio *bus)
+ 	return fwreq;
  }
  
-+static int
-+mt7996_set_eml_op_mode(struct ieee80211_hw *hw, struct ieee80211_vif *vif,
-+		       struct ieee80211_sta *sta,
-+		       struct ieee80211_eml_params *eml_params)
-+{
-+	struct mt7996_dev *dev = mt7996_hw_dev(hw);
-+	int ret;
-+
-+	mutex_lock(&dev->mt76.mutex);
-+	ret = mt7996_mcu_set_emlsr_mode(dev, vif, sta, eml_params);
-+	mutex_unlock(&dev->mt76.mutex);
-+
-+	return ret;
-+}
-+
- const struct ieee80211_ops mt7996_ops = {
- 	.add_chanctx = mt76_add_chanctx,
- 	.remove_chanctx = mt76_remove_chanctx,
-@@ -2431,4 +2446,5 @@ const struct ieee80211_ops mt7996_ops = {
- 	.change_vif_links = mt7996_change_vif_links,
- 	.change_sta_links = mt7996_mac_sta_change_links,
- 	.reconfig_complete = mt7996_reconfig_complete,
-+	.set_eml_op_mode = mt7996_set_eml_op_mode,
- };
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7996/mcu.c b/drivers/net/wireless/mediatek/mt76/mt7996/mcu.c
-index 8e1c8e1d6a99f093a2b7d7dc3a0c56f3a4bc220b..3098bddc5f6d6d33433bc653d5ef63bbe5c740fb 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7996/mcu.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7996/mcu.c
-@@ -1302,6 +1302,61 @@ int mt7996_mcu_set_protection(struct mt7996_phy *phy, struct mt7996_vif_link *li
- 				     MCU_WM_UNI_CMD(BSS_INFO_UPDATE), true);
- }
- 
-+int mt7996_mcu_set_emlsr_mode(struct mt7996_dev *dev,
-+			      struct ieee80211_vif *vif,
-+			      struct ieee80211_sta *sta,
-+			      struct ieee80211_eml_params *eml_params)
-+{
-+	struct mt7996_sta *msta = (struct mt7996_sta *)sta->drv_priv;
-+	struct mt7996_sta_link *msta_link;
-+	struct sta_rec_eml_op *eml_op;
-+	struct mt7996_vif_link *link;
-+	struct sk_buff *skb;
-+	struct tlv *tlv;
-+
-+	msta_link = mt76_dereference(msta->link[eml_params->link_id],
-+				     &dev->mt76);
-+	if (!msta_link)
-+		return -EINVAL;
-+
-+	link = mt7996_vif_link(dev, vif, eml_params->link_id);
-+	if (!link)
-+		return -EINVAL;
-+
-+	skb = __mt76_connac_mcu_alloc_sta_req(&dev->mt76, &link->mt76,
-+					      &msta_link->wcid,
-+					      MT7996_STA_UPDATE_MAX_SIZE);
-+	if (IS_ERR(skb))
-+		return PTR_ERR(skb);
-+
-+	tlv = mt76_connac_mcu_add_tlv(skb, STA_REC_EML_OP, sizeof(*eml_op));
-+	eml_op = (struct sta_rec_eml_op *)tlv;
-+	eml_op->link_bitmap = 0;
-+
-+	if (eml_params->control & IEEE80211_EML_CTRL_EMLSR_MODE) {
-+		unsigned long link_bitmap = eml_params->link_bitmap;
-+		unsigned int link_id;
-+
-+		for_each_set_bit(link_id, &link_bitmap,
-+				 IEEE80211_MLD_MAX_NUM_LINKS) {
-+			struct mt76_phy *mphy;
-+
-+			link = mt7996_vif_link(dev, vif, link_id);
-+			if (!link)
-+				continue;
-+
-+			mphy = mt76_vif_link_phy(&link->mt76);
-+			if (!mphy)
-+				continue;
-+
-+			eml_op->link_bitmap |= BIT(mphy->band_idx);
-+		}
-+	}
-+
-+	return mt76_mcu_skb_send_msg(&dev->mt76, skb,
-+				     MCU_WMWA_UNI_CMD(STA_REC_UPDATE), true);
-+}
-+
- int mt7996_mcu_set_timing(struct mt7996_phy *phy, struct ieee80211_vif *vif,
- 			  struct ieee80211_bss_conf *link_conf)
+-struct brcmf_sdio *brcmf_sdio_probe(struct brcmf_sdio_dev *sdiodev)
++int brcmf_sdio_probe(struct brcmf_sdio_dev *sdiodev)
  {
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7996/mt7996.h b/drivers/net/wireless/mediatek/mt76/mt7996/mt7996.h
-index 3ff730e36fa60830cc9ba5311643b008860cec22..c5d60c273cf8e15e3d54e2d851acbd83ce69719d 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7996/mt7996.h
-+++ b/drivers/net/wireless/mediatek/mt76/mt7996/mt7996.h
-@@ -875,6 +875,10 @@ int mt7996_mcu_wtbl_update_hdr_trans(struct mt7996_dev *dev,
- 				     struct mt7996_vif_link *link,
- 				     struct mt7996_sta_link *msta_link);
- int mt7996_mcu_cp_support(struct mt7996_dev *dev, u8 mode);
-+int mt7996_mcu_set_emlsr_mode(struct mt7996_dev *dev,
-+			      struct ieee80211_vif *vif,
-+			      struct ieee80211_sta *sta,
-+			      struct ieee80211_eml_params *eml_params);
- #ifdef CONFIG_MAC80211_DEBUGFS
- void mt7996_sta_add_debugfs(struct ieee80211_hw *hw, struct ieee80211_vif *vif,
- 			    struct ieee80211_sta *sta, struct dentry *dir);
-
----
-base-commit: 4eefc435c985f4dfdba9afb1c705f0e17377c084
-change-id: 20260203-mt7996-emlsr-9cc8a684ccba
-
-Best regards,
+ 	int ret;
+ 	struct brcmf_sdio *bus;
+@@ -4551,11 +4551,12 @@ struct brcmf_sdio *brcmf_sdio_probe(struct brcmf_sdio_dev *sdiodev)
+ 		goto fail;
+ 	}
+ 
+-	return bus;
++	return 0;
+ 
+ fail:
+ 	brcmf_sdio_remove(bus);
+-	return ERR_PTR(ret);
++	sdiodev->bus = NULL;
++	return ret;
+ }
+ 
+ /* Detach and free everything */
+diff --git a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/sdio.h b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/sdio.h
+index 0d18ed15b403..80180d5c6c87 100644
+--- a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/sdio.h
++++ b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/sdio.h
+@@ -358,7 +358,7 @@ void brcmf_sdiod_freezer_uncount(struct brcmf_sdio_dev *sdiodev);
+ int brcmf_sdiod_probe(struct brcmf_sdio_dev *sdiodev);
+ int brcmf_sdiod_remove(struct brcmf_sdio_dev *sdiodev);
+ 
+-struct brcmf_sdio *brcmf_sdio_probe(struct brcmf_sdio_dev *sdiodev);
++int brcmf_sdio_probe(struct brcmf_sdio_dev *sdiodev);
+ void brcmf_sdio_remove(struct brcmf_sdio *bus);
+ void brcmf_sdio_isr(struct brcmf_sdio *bus, bool in_isr);
+ 
 -- 
-Lorenzo Bianconi <lorenzo@kernel.org>
+2.34.1
 
 
