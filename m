@@ -1,115 +1,154 @@
-Return-Path: <linux-wireless+bounces-31596-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-31597-lists+linux-wireless=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id qJ+yLTTGhGk45QMAu9opvQ
-	(envelope-from <linux-wireless+bounces-31596-lists+linux-wireless=lfdr.de@vger.kernel.org>)
-	for <lists+linux-wireless@lfdr.de>; Thu, 05 Feb 2026 17:32:52 +0100
+	id sNwjO3PIhGk45QMAu9opvQ
+	(envelope-from <linux-wireless+bounces-31597-lists+linux-wireless=lfdr.de@vger.kernel.org>)
+	for <lists+linux-wireless@lfdr.de>; Thu, 05 Feb 2026 17:42:27 +0100
 X-Original-To: lists+linux-wireless@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id BF68AF5478
-	for <lists+linux-wireless@lfdr.de>; Thu, 05 Feb 2026 17:32:51 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2684EF55D0
+	for <lists+linux-wireless@lfdr.de>; Thu, 05 Feb 2026 17:42:27 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 1562E3005325
-	for <lists+linux-wireless@lfdr.de>; Thu,  5 Feb 2026 16:32:48 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 11539300CFED
+	for <lists+linux-wireless@lfdr.de>; Thu,  5 Feb 2026 16:42:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D9721421F1F;
-	Thu,  5 Feb 2026 16:32:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A2DB1423143;
+	Thu,  5 Feb 2026 16:42:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b="ErHhcOiD"
+	dkim=pass (2048-bit key) header.d=kroah.com header.i=@kroah.com header.b="HErDp+3H";
+	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="IIj1tN+f"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from sipsolutions.net (s3.sipsolutions.net [168.119.38.16])
+Received: from fout-b5-smtp.messagingengine.com (fout-b5-smtp.messagingengine.com [202.12.124.148])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 83C6D426D05
-	for <linux-wireless@vger.kernel.org>; Thu,  5 Feb 2026 16:32:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=168.119.38.16
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 22D6642189D
+	for <linux-wireless@vger.kernel.org>; Thu,  5 Feb 2026 16:42:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=202.12.124.148
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770309166; cv=none; b=Ip73ot1f4Wo6H8Y/S20Cbzh2qr6GpHNLy/jm/LcZJ1PiEyvX6QDrUlU/EnE3kPhC4K8cYWIYONoDYTUhEYGrZReUysZdMJn1WgFQp2KokN3Ri9ntZT68GG+X45Mn8bn724AyKWulRca2oP2uh1qYuy2XyD94yhBWmkGRGnavvNk=
+	t=1770309743; cv=none; b=K2LPRdx4MLIJ90xtm+5V0J1iFF6PMBsDfKij7KkRPw9KQzFFj0Thi+Q4dcBSmJECdotEYZevzxtU5TKLqQrKXSNez7TZ3Zx94se7cWqHqI95eHOCRwxceS2Cvz5LYD5ZviCz6MdLULM+JYaIO90U9zULzSE7JoE1WcxS6vXtcb0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770309166; c=relaxed/simple;
-	bh=6/HgWrc7kWjkvchXK4iIAHijzyjxS1jF5yIVJGR5vNE=;
-	h=Message-ID:Subject:From:To:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=f6z6cNzGhBn5kj2WhliD2bZAGvu9z0qEmTv8KTlsUcaW4VQKYq3+qyx4V8mNBNPuhtDHGLTW02nfCdEPSPWaogW702Gh6UI2M7nFPN/Apy6/19YpfMsnoSUFbzDafrdqXp3z9zcQ1gB3J8p7TEe5TGgmVRC7wLyDpa6UWWxyn7E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net; spf=pass smtp.mailfrom=sipsolutions.net; dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b=ErHhcOiD; arc=none smtp.client-ip=168.119.38.16
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sipsolutions.net
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=sipsolutions.net; s=mail; h=MIME-Version:Content-Transfer-Encoding:
-	Content-Type:References:In-Reply-To:Date:To:From:Subject:Message-ID:Sender:
-	Reply-To:Cc:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
-	Resent-Cc:Resent-Message-ID; bh=6/HgWrc7kWjkvchXK4iIAHijzyjxS1jF5yIVJGR5vNE=;
-	t=1770309166; x=1771518766; b=ErHhcOiDrV4r5qIFox5nmYDsLpBHPxcwXWf7hO6JxlLDMqU
-	altLsBNvA5ShtteuTxnRIbGBHy++H1HdvtskL8vjU8+W87N1/CgdQDhDAt2O88V8uMjz/huMjUcTr
-	i9/QZDtb/SGnpqXRFIh7wDJvt6Vt95pU6FxpO66KYzikS3PwLx+KUhkdkI2PC9Q36t0dzV4CYAbvG
-	ZgMjsO3nLispdYrOZls2UtDSxdoGdIy23loQ3dsQQCGEu95agqOt+7i0IN1KlLSJ65kJAsllNvVO3
-	FVFSVSUTYffwki6jGQSf9QrSDRW8WPJf9J+IhCqdnyOvk4auyEPw/IuyQtzpO6UQ==;
-Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
-	(Exim 4.98.2)
-	(envelope-from <johannes@sipsolutions.net>)
-	id 1vo2Hc-0000000FkFv-15yJ
-	for linux-wireless@vger.kernel.org;
-	Thu, 05 Feb 2026 17:32:44 +0100
-Message-ID: <a3e5e4a8a8d147e4b77b02b479844f4a9c0cbd8d.camel@sipsolutions.net>
-Subject: Re: bot results missing in patchwork
-From: Johannes Berg <johannes@sipsolutions.net>
-To: linux-wireless@vger.kernel.org
-Date: Thu, 05 Feb 2026 17:32:43 +0100
-In-Reply-To: <2edc78e3581a11c18189b1ac5ee95b0600586f82.camel@sipsolutions.net>
-References: 
-	<2edc78e3581a11c18189b1ac5ee95b0600586f82.camel@sipsolutions.net>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.58.3 (3.58.3-1.fc43) 
+	s=arc-20240116; t=1770309743; c=relaxed/simple;
+	bh=KlIONm0g1NATPZIe9IxUaIcxS25VYoo8zRqDHBVcJvw=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=PF3S2+O7A9ViyGnNLMAnCjkrgjDMXslo1KZy9XC69kTENiPmmCstAoeRCnvRCsQ0bmcFUN2IdLZIa6tfyAEzjOw6ukhTjl7dsUHvrvxo/yBDUq3Z6p6jI2G93RyVDZv8MjyIHogkjb1/EmhDUaRuYM5PUHWsh9K2UjK0IFVPx+8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=kroah.com; spf=pass smtp.mailfrom=kroah.com; dkim=pass (2048-bit key) header.d=kroah.com header.i=@kroah.com header.b=HErDp+3H; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=IIj1tN+f; arc=none smtp.client-ip=202.12.124.148
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=kroah.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=kroah.com
+Received: from phl-compute-06.internal (phl-compute-06.internal [10.202.2.46])
+	by mailfout.stl.internal (Postfix) with ESMTP id 526E21D000AA;
+	Thu,  5 Feb 2026 11:42:22 -0500 (EST)
+Received: from phl-frontend-03 ([10.202.2.162])
+  by phl-compute-06.internal (MEProxy); Thu, 05 Feb 2026 11:42:22 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kroah.com; h=cc
+	:cc:content-type:content-type:date:date:from:from:in-reply-to
+	:in-reply-to:message-id:mime-version:references:reply-to:subject
+	:subject:to:to; s=fm3; t=1770309742; x=1770396142; bh=KlIONm0g1N
+	ATPZIe9IxUaIcxS25VYoo8zRqDHBVcJvw=; b=HErDp+3HfLAcT2s+pjgbnsgadt
+	EOR6ygNm0HOQSGe1aG/gh0kesIhSNG28sGoU1R2KY5DWRfsPLClz74v0ckv6xy+W
+	O8EH+nm1zyrLdrk6Jqo+h6zzQ8fbttfXruPo4x77DU0iUgpgmb9ZPL6H4/b3CJ8q
+	WcJo4Ya5thb2RrgLcbqPAEqovpVfyzNYtoStZabNv+LbzOLIdzRiVF4RUszbPoaU
+	KdOHdw5JjbcJXDFQ9oWUta9Sv6P02KlnaXy+lvoooeu8+AEavhDaT9lLC21O5Ikr
+	3LuvyGXCtAaTkvKBGQ0TyW6dYJtabgBs+eSXbK1cOpVSvGMNxX8BLtjBFZEw==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-type:content-type:date:date
+	:feedback-id:feedback-id:from:from:in-reply-to:in-reply-to
+	:message-id:mime-version:references:reply-to:subject:subject:to
+	:to:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=fm3; t=
+	1770309742; x=1770396142; bh=KlIONm0g1NATPZIe9IxUaIcxS25VYoo8zRq
+	DHBVcJvw=; b=IIj1tN+fqJvfiwJ2rt49YFeDW5739les1oq4hC7gQSdzdNcczdk
+	DmbgU84TmEvJgomBXtMowSBYqk5TbOeQnWEOvOAoxsfy1+j2XTY3bEkYbEntBVXk
+	b+MEmR0mJFCio/PLcRXi01lRaVK36pYf8KlSFEShicElqjq563y48lTnHU1/AAkA
+	WjR3qIhNUxMh+Oq9HAG17FqI2y8CtGoud+fKrRCGoKw8kwXyqS6CMUmDEJgIAt6P
+	573lHG7c/OWiHqst4/rQqFc3ekrG1oH5+cuJYbeSpdGDpQ6wePlqMfMvqzLrMFvK
+	c9plUJ9kRqIJIumACC+tC4b9WbzaRX6e8kw==
+X-ME-Sender: <xms:bciEaRbGCxxi-hxijEQgZDlid_vArZ2k3khWu8RK-UuwYhebcMdbBA>
+    <xme:bciEaaofETQoQvWOhk7XnlLg2GwRnA5nm1553AuhEDhz7c3DpxtgythkPxE72JtDv
+    Y4EHwyD3cEfxuBlPUKvWxjc9Z9fRpXSAJoUBbrmvDkSl3J7MVY>
+X-ME-Received: <xmr:bciEaWMTuRXe8-162rRgQzeQcggPgRkx0ik9F6Fmoi0ENOvKguH1NtnlBnHlL_e9W9GlLwlnMtDP8ZkkLSZA3h9JdzfTqeBjasLVuA>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefgedrtddtgddukeehkeduucetufdoteggodetrf
+    dotffvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfurfetoffkrfgpnffqhgenuceu
+    rghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujf
+    gurhepfffhvfevuffkfhggtggujgesthdtredttddtvdenucfhrhhomhepifhrvghgucfm
+    jfcuoehgrhgvgheskhhrohgrhhdrtghomheqnecuggftrfgrthhtvghrnhepheegvdevvd
+    eljeeugfdtudduhfekledtiefhveejkeejuefhtdeufefhgfehkeetnecuvehluhhsthgv
+    rhfuihiivgeptdenucfrrghrrghmpehmrghilhhfrhhomhepghhrvghgsehkrhhorghhrd
+    gtohhmpdhnsggprhgtphhtthhopeeipdhmohguvgepshhmthhpohhuthdprhgtphhtthho
+    pegsuhgsuhhpvghrshhonhgrlhesthhuthgrmhgrihhlrdgtohhmpdhrtghpthhtoheplh
+    hinhhugidqshhtrghgihhngheslhhishhtshdrlhhinhhugidruggvvhdprhgtphhtthho
+    pehlihhnuhigqdifihhrvghlvghsshesvhhgvghrrdhkvghrnhgvlhdrohhrgh
+X-ME-Proxy: <xmx:bciEaVqhK896scNPLYerng0BZQd7wujELZXd7xOVirL33h0r7EaiaQ>
+    <xmx:bciEabdjN3vh4dh474GSmu7gMhdJa0QTuYnhfjgI2geqgBjIpEsFSw>
+    <xmx:bciEabQ-LStPuPlUKmaaS7_-8-5OlUk9DViC81-ccnVnd902Gxhm5Q>
+    <xmx:bciEaUbGY2JxnSPRmzhCF4LVQewHxyi-jv7Bv_KhgwD4gZ8pRKh1Lg>
+    <xmx:bsiEaQ8m_NFcsRQCdOJkJ4PlpWU1yAoU9KRa6tHo3CzYzIBVF0Ha5W1C>
+Feedback-ID: i787e41f1:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Thu,
+ 5 Feb 2026 11:42:21 -0500 (EST)
+Date: Thu, 5 Feb 2026 17:42:19 +0100
+From: Greg KH <greg@kroah.com>
+To: bubupersonal@tutamail.com
+Cc: Linux Staging <linux-staging@lists.linux.dev>,
+	Linux Wireless <linux-wireless@vger.kernel.org>
+Subject: Re: [PATCH] rtw: btcoex: clean up style and documentation
+Message-ID: <2026020541-pectin-jujitsu-0c63@gregkh>
+References: <OkiaM3C--F-9@tutamail.com>
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-malware-bazaar: not-scanned
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <OkiaM3C--F-9@tutamail.com>
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[sipsolutions.net,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
-	R_DKIM_ALLOW(-0.20)[sipsolutions.net:s=mail];
+	MID_RHS_NOT_FQDN(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[kroah.com,none];
+	R_DKIM_ALLOW(-0.20)[kroah.com:s=fm3,messagingengine.com:s=fm3];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCPT_COUNT_ONE(0.00)[1];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-31596-lists,linux-wireless=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	RCVD_TLS_LAST(0.00)[];
-	DKIM_TRACE(0.00)[sipsolutions.net:+];
+	TAGGED_FROM(0.00)[bounces-31597-lists,linux-wireless=lfdr.de];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	FROM_HAS_DN(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TO_DN_NONE(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[kroah.com:+,messagingengine.com:+];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	MISSING_XM_UA(0.00)[];
+	RCVD_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[johannes@sipsolutions.net,linux-wireless@vger.kernel.org];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	FROM_NEQ_ENVFROM(0.00)[greg@kroah.com,linux-wireless@vger.kernel.org];
+	RCPT_COUNT_THREE(0.00)[3];
 	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[linux-wireless];
-	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,sipsolutions.net:mid,sipsolutions.net:dkim]
-X-Rspamd-Queue-Id: BF68AF5478
+	TAGGED_RCPT(0.00)[linux-wireless];
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[messagingengine.com:dkim,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 2684EF55D0
 X-Rspamd-Action: no action
 
-On Thu, 2026-02-05 at 11:28 +0100, Johannes Berg wrote:
-> Hi,
->=20
-> Just noticed now that evidently when I did some server shuffling
-> yesterday I lost the job that uploads the results to patchwork...
->=20
-> I can't fix it right now, so for now just wanted to say that it's
-> missing and that I'm aware. I'll get it fixed soon.
+On Thu, Feb 05, 2026 at 05:18:54PM +0100, bubupersonal@tutamail.com wrote:
+> From: Bubuworks <bubupersonal@tutamail.com>
+> Date: Thu, 05 Feb 2026 17:25:00 +0200
+> Subject: [PATCH] rtw: btcoex: clean up style and documentation
+> Signed-off-by: Bubuworks <bubupersonal@tutamail.com>
 
-Should be good now. And because I mixed up the new config and made it
-link to https://..., I actually gave it a key and certificate now so
-that actually works.
+This looks very odd, are you sure it's correct, because:
 
-johannes
+> <start of patch>
+> >From 0eca95cba2b7bf7b7b4f2fa90734a85fcaa72782 Mon Sep 17 00:00:00 2001
+> From: Tejun Heo <tj@kernel.org>
+> Date: Wed, 4 Feb 2026 10:07:55 -1000
+> Subject: [PATCH] sched_ext: Short-circuit sched_class operations on dead tasks
+
+That's not your patch :(
+
+Something went wrong with your email system :(
+
 
