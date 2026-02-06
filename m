@@ -1,251 +1,150 @@
-Return-Path: <linux-wireless+bounces-31617-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-31618-lists+linux-wireless=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id sDAFKQOwhWkRFAQAu9opvQ
-	(envelope-from <linux-wireless+bounces-31617-lists+linux-wireless=lfdr.de@vger.kernel.org>)
-	for <lists+linux-wireless@lfdr.de>; Fri, 06 Feb 2026 10:10:27 +0100
+	id mHKQHnoihmklKAQAu9opvQ
+	(envelope-from <linux-wireless+bounces-31618-lists+linux-wireless=lfdr.de@vger.kernel.org>)
+	for <lists+linux-wireless@lfdr.de>; Fri, 06 Feb 2026 18:18:50 +0100
 X-Original-To: lists+linux-wireless@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id F12FAFBDB0
-	for <lists+linux-wireless@lfdr.de>; Fri, 06 Feb 2026 10:10:26 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id AA98F100DDF
+	for <lists+linux-wireless@lfdr.de>; Fri, 06 Feb 2026 18:18:49 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 1696F301C8B8
-	for <lists+linux-wireless@lfdr.de>; Fri,  6 Feb 2026 09:05:40 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 80DCA3007206
+	for <lists+linux-wireless@lfdr.de>; Fri,  6 Feb 2026 17:18:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8F467355023;
-	Fri,  6 Feb 2026 09:05:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B2AAE32B98A;
+	Fri,  6 Feb 2026 17:18:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b="BO/LqVu/"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Kt+svTkR"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from sipsolutions.net (s3.sipsolutions.net [168.119.38.16])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wr1-f51.google.com (mail-wr1-f51.google.com [209.85.221.51])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3E31D279DB6
-	for <linux-wireless@vger.kernel.org>; Fri,  6 Feb 2026 09:05:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=168.119.38.16
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 47F9C3148D3
+	for <linux-wireless@vger.kernel.org>; Fri,  6 Feb 2026 17:18:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.51
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770368739; cv=none; b=Ebs/mjww9ypUCT+P8lxIq7ByRG3ecIbl+VuzKYtSlj0Unc57EWNuvwjgmnAR5A9kaO7hda8Ch4IS2jF4yVvHdEdhMYwzj74duPyb9jWTxra2p7roWC7cs/QmdM7jwGTuwIQ8MGAmhKxgf2kFjdKm1pa3qQIcUxR3HmW4cRUMEA0=
+	t=1770398323; cv=none; b=GVj7+qQTs/EchbL95S9bo0jP+WioRUDOWItVuMbYEhTiX85qHdfz+IkfWZrjXL3ISyWcq5fUPTuLuIUQDj9q97blK4P6JPeG46wJS+bVFdz7HWOwPN/JNb9gyc2qWnN738noE3Aq4K3xaZGCUQ9wynLEWft7ovxq2rIs73N/Nmk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770368739; c=relaxed/simple;
-	bh=dG0pbqfYZ9+4xchyCn4MVHiuj30L0YjdNVsxXOP3nQI=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=BrcWMMRcASFlD/NqaRh1l8BXQmYRYJNEcYMW1F/5jDAD55LMp7LuqTeXTGs2aBdym6Q93+rSo/LWLWY4eJK68EfEMD8FLnfWefmlmZMTGHYfWqIne8ovLXrFiD1y3GClimT+h32Hivpcb3Ns/zrR3NxTh64YLbbS+CYpsDJ/Ztk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net; spf=pass smtp.mailfrom=sipsolutions.net; dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b=BO/LqVu/; arc=none smtp.client-ip=168.119.38.16
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sipsolutions.net
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=sipsolutions.net; s=mail; h=MIME-Version:Content-Transfer-Encoding:
-	Content-Type:References:In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender
-	:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
-	Resent-Cc:Resent-Message-ID; bh=dG0pbqfYZ9+4xchyCn4MVHiuj30L0YjdNVsxXOP3nQI=;
-	t=1770368739; x=1771578339; b=BO/LqVu/ub83CmCpf7m++E+l1fZHIra/YbqfD9PfbDGwrZN
-	hz8Sr5LYr086txAAhFEeO0eyYw8tWwsnGfRYXaYtkKAEbEypZuJK0C0X6euQB666IiwPAcX49bD69
-	qGbtigMrr09gp5fgCIG77z3hMEj/i85tb6W2z6Eqfpwz6glpxENA8CtcrhGlaX5L6XhNb/J3Po0Q9
-	Il2R4hDlC7ELU1HULRbHaD9La+WdUCGrZNltdyRxH4kK83vBMogENalhrS2Dhw0hXnQ2g2D3m6bMg
-	wlIkD9Jk+DeTYybMEhpQOgWF3U8Tw2hJ7QK+4B1Jw7YWh1JWYQKd1we7nOj/6tWA==;
-Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
-	(Exim 4.98.2)
-	(envelope-from <benjamin@sipsolutions.net>)
-	id 1voHmQ-0000000Gge9-0OTT;
-	Fri, 06 Feb 2026 10:05:34 +0100
-Message-ID: <3643c9d1111a0076c7d420a16d0f97c29ac6575d.camel@sipsolutions.net>
-Subject: Re: [PATCH v2 2/3] AP: Always re-add stations that use MLO
-From: Benjamin Berg <benjamin@sipsolutions.net>
-To: Ramasamy Kaliappan <ramasamy.kaliappan@oss.qualcomm.com>, Rameshkumar
- Sundaram <rameshkumar.sundaram@oss.qualcomm.com>, hostap@lists.infradead.org
-Cc: linux-wireless@vger.kernel.org, Andrei Otcheretianski
-	 <andrei.otcheretianski@intel.com>
-Date: Fri, 06 Feb 2026 10:05:33 +0100
-In-Reply-To: <0c167905-6ba7-4e6e-8a4e-455507d8497e@oss.qualcomm.com>
-References: <20260126160300.2600380-5-benjamin@sipsolutions.net>
-	 <20260126160300.2600380-7-benjamin@sipsolutions.net>
-	 <612a2814-216d-435b-a58a-1f17169a944b@oss.qualcomm.com>
-	 <707fe82d66e77aed06002c529322eb9689db027b.camel@sipsolutions.net>
-	 <fcef3c86-5384-4211-9f6b-be6ef562cef5@oss.qualcomm.com>
-	 <97511b524cecf4862d8a83038017c23bc7d715b8.camel@sipsolutions.net>
-	 <0c167905-6ba7-4e6e-8a4e-455507d8497e@oss.qualcomm.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.56.2 (3.56.2-2.fc42) 
+	s=arc-20240116; t=1770398323; c=relaxed/simple;
+	bh=5L02b5S8WrMD6pdvRZiXqMVBQPYLV+VXMQ07aTitZNY=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=DZ/P9WmYFoWZ9SwTZyxpCeqFh/uJmlC7e4CRwfr8mEih1CCd3L95lkTRVbk23iIEixlQ3fo+PofWK0V2SKLR4RstB7akT7WpIeL/IakHWXjN4QyD1WjVZi3U1psEJINtwX1/NjuA1awnhwEXmsCSX5cJbYXn489AkRIqwJT0f7A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Kt+svTkR; arc=none smtp.client-ip=209.85.221.51
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-wr1-f51.google.com with SMTP id ffacd0b85a97d-4359249bbacso2105909f8f.0
+        for <linux-wireless@vger.kernel.org>; Fri, 06 Feb 2026 09:18:43 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1770398322; x=1771003122; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=ZHLfwHamig3o+/rBZWB/HbkqcDb3bvgGVyMVqKmCT4c=;
+        b=Kt+svTkRqnzkMTfgT6A7A1ZUe8ZssGs0xR9+J+DZZg3HoulNGxSJDY83LGXIbXUBRP
+         lXeOFgTwJbRRSBf+9gqJQl7WxPx1QIx7WEp4A0F5PQz3L+A3SJq19nQzvE8j8QQdgp02
+         yjhIWKRmXKSjEU/dbI/bqon6kYNYT4OtgGCEFvyxpLyYuPbnsbRyeOYRJxTvuadOHGPs
+         ymaNPqU0wHsvoJn15JjdfeW05kQp+myNpZWGVpvJ6eUZorYvHq5OXCe6CfcZgpfunLgH
+         RoMbw8UTWRbl5NHQ9uCuaAa0fgTFWBtjU5oZpqVk6wydLPatqNJ8WGaMDQRviZt+d7Te
+         xS2Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1770398322; x=1771003122;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=ZHLfwHamig3o+/rBZWB/HbkqcDb3bvgGVyMVqKmCT4c=;
+        b=BpwXUc6tv9Ae8ldGGoZyajt1cuDojx/0Txum68ul7QuDn5/OKATfwBdmthI2VmoxIj
+         vkxaWAKT7rMGkND5hfkea5i3v81444ui2GIaEU8Hd4yQBcjkKGlt+BeNBzpvzmroIxxp
+         27e+qoykxcTfY2HrusCCr/voxaPr+MpjszAwPOoGi2FmoK4b2Ye+7FAtxpDIBwqo/uS5
+         tgr8aOcF2WaMaPTl6OJfiO+xPhxLNd6pArGjqmpcHlXb8ph9y5+7293UDxweEq3ubWuZ
+         RcyYL5CCk+snqhjGaZ/iMR+6NDKiTUirs+5Ysv78korTeiVTqeEB+nh34dRNrnJWAl+g
+         gAEA==
+X-Gm-Message-State: AOJu0YzvSLFqG1GPUwDgX2le9dZgW6MNQdsdr2zRbmKppJWcIF+qRvdq
+	R+K9T1nm4nhm2FTSbNDbkLNYrETW0zrSgeR0uC57qEovVhjqQxcNoBVVfEEDOqal
+X-Gm-Gg: AZuq6aLg7J4QbNOGs4xAOZfTQidPidZUay5ybKO2b+msWWf3tUULL95/v9DwOeO8ySQ
+	K2IlmdCUjLiD8iOHyYIwY8BJYJsWi9TRoWSlY7DcbItyQhx4jAnysSdPSZ/YbDdgiPH6LNg0p6K
+	Bx3z7jXU/HCtXj2JBs85n98QlSUB+qH6QeX5QlR6oZaiUajyTv4mEk2cZAdfl9mLrYQGctHZlMF
+	Ft5XrSWG2+oBw5D6hyhqOPN9ShS6jR7K/7Af/LpgUlPAYwK78KlW4REHzFLuUM4DXSuEX07ZAqp
+	EIqWSQlEdlgtHT5Zxas5ImrWeDmDxcR4Iqi03g5MpdH+S9+E40CjPQtPBWor5kphsrhE+8f1INt
+	+jQzLwAG6Ujfb3LsBpVJgKTnniTE3YZ3N5qCdZFm60SySyf4513xLaIKk/2X0dW9/f/6Jyjw9dA
+	JnqGJA3yAA+KVJD0zlIGSqO1ljOcfuSRf5L34KM3Yo1/RSoCeK
+X-Received: by 2002:a05:6000:250a:b0:432:88c4:e180 with SMTP id ffacd0b85a97d-436209bfc2cmr12380308f8f.15.1770398321404;
+        Fri, 06 Feb 2026 09:18:41 -0800 (PST)
+Received: from hp.. (109241135248.swidnica.vectranet.pl. [109.241.135.248])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-4362974527fsm7986208f8f.31.2026.02.06.09.18.40
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 06 Feb 2026 09:18:40 -0800 (PST)
+From: Janusz Dziedzic <janusz.dziedzic@gmail.com>
+To: linux-wireless@vger.kernel.org
+Cc: johannes@sipsolutions.net,
+	Janusz Dziedzic <janusz.dziedzic@gmail.com>
+Subject: [PATCH v2 wireless-next 0/4] DFS/CAC changes
+Date: Fri,  6 Feb 2026 18:15:47 +0100
+Message-ID: <20260206171830.553879-1-janusz.dziedzic@gmail.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-malware-bazaar: not-scanned
+Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[sipsolutions.net,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
-	R_DKIM_ALLOW(-0.20)[sipsolutions.net:s=mail];
+	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
+	R_DKIM_ALLOW(-0.20)[gmail.com:s=20230601];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-31617-lists,linux-wireless=lfdr.de];
-	FROM_HAS_DN(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	DKIM_TRACE(0.00)[sipsolutions.net:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	RCPT_COUNT_FIVE(0.00)[5];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[benjamin@sipsolutions.net,linux-wireless@vger.kernel.org];
+	TAGGED_FROM(0.00)[bounces-31618-lists,linux-wireless=lfdr.de];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[linux-wireless];
+	PRECEDENCE_BULK(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	FREEMAIL_CC(0.00)[sipsolutions.net,gmail.com];
+	TO_DN_SOME(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	RCPT_COUNT_THREE(0.00)[3];
+	FROM_NEQ_ENVFROM(0.00)[januszdziedzic@gmail.com,linux-wireless@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCVD_COUNT_FIVE(0.00)[5];
+	DKIM_TRACE(0.00)[gmail.com:+];
+	TAGGED_RCPT(0.00)[linux-wireless];
+	FREEMAIL_FROM(0.00)[gmail.com];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,sipsolutions.net:mid,sipsolutions.net:dkim]
-X-Rspamd-Queue-Id: F12FAFBDB0
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: AA98F100DDF
 X-Rspamd-Action: no action
 
-On Thu, 2026-02-05 at 22:34 +0530, Ramasamy Kaliappan wrote:
-> Hi,
->=20
-> On 1/30/2026 5:32 PM, Benjamin Berg wrote:
-> > Hi,
-> >=20
-> > On Thu, 2026-01-29 at 22:56 +0530, Rameshkumar Sundaram wrote:
-> > > On 1/29/2026 3:38 PM, Benjamin Berg wrote:
-> > > > [SNIP]
-> > > > That said, to properly fix this we need an nl80211/mac80211 API tha=
-t
-> > > > permits us to disable address translation for the frame. Otherwise =
-we
-> > > > would still get the address translated to the old link address shou=
-ld
-> > > > the new link address match the MLD address.
-> > > >=20
-> > >=20
-> > > That's true=E2=80=94even probe responses get translated when the old =
-link
-> > > address matches the new link MLD address.
-> > >=20
-> > > Few other cases I encountered:
-> > > Consider an ML STA with ML address M associated with link A and link =
-B,
-> > > using link addresses X and Y respectively. If the STA sends an
-> > > authentication frame with address Y on link A, it gets translated to =
-M
-> > > (even though link A has no STA with address Y) and forwarded to link =
-B.
-> > > As a result, hostapd is unaware of the actual TA and queues the
-> > > authentication reply to the MLD address on link B. This frame will
-> > > eventually be transmitted over the air on link B with address Y.
-> >=20
-> > Honestly, that type of link confusion seems like a bug. We should be
-> > able to avoid that as we hopefully know on which link the frame was
-> > received.
-> >=20
-> > > This will be true even if STA associated in one link and tries to roa=
-m
-> > > to other link of MLD using same link and ML addresses.
-> > >=20
-> > > There also cases where an ML STA roams/re-associates as legacy (non-M=
-L)
-> > > STA with ML address as link address. The reply would go out with old
-> > > link address.
-> >=20
-> > Yes, I think that case is similar a station using its MLD Address on
-> > the association link and returning on another link.
-> >=20
-> > > It seems that address translation at the driver/mac80211 level for
-> > > management frames could be avoided for both TX and RX, allowing hosta=
-pd
-> > > to handle these frames and their replies more efficiently in cases of
-> > > roaming and address reuse.
-> >=20
-> > Doing address translation in the TX path is required if the
-> > hardware/driver should decide on which link to TX the frame. For RX, it
-> > seems sensible to me to do the translation when it is possible.
-> >=20
-> > I talked a bit to Johannes about this today, and my current proposal
-> > would be add a new flag that is set when mac80211 did not find (RX) or
-> > should not use (TX) a STA for the frame.
-> >=20
-> > More specifically I think that we could:
-> > =C2=A0 * Fix the link address based STA lookup to only work when the fr=
-ame
-> > =C2=A0=C2=A0=C2=A0 was received on the correct link (the bug from above=
-).
-> > =C2=A0 * Make sure we drop robust management frames without a STA as we=
- do
-> > =C2=A0=C2=A0=C2=A0 not want to get into trouble with the next change.
-> > =C2=A0 * Change ieee80211_rx_for_interface so that it uses only
-> > =C2=A0=C2=A0=C2=A0 link_sta_info_get_bss if we are an MLD and sta_info_=
-get_bss
-> > =C2=A0=C2=A0=C2=A0 otherwise.
-> > =C2=A0=C2=A0=C2=A0 Right now, we will find the station if we see the ML=
-D Address in the
-> > =C2=A0=C2=A0=C2=A0 frame even when it is not a valid link address.
-> > =C2=A0 * Add a new nl80211 attribute NL80211_ATTR_FRAME_NO_STA to be us=
-ed
-> > =C2=A0=C2=A0=C2=A0 together with NL80211_CMD_FRAME for both TX and RX.
-> > =C2=A0=C2=A0=C2=A0=C2=A0 - In the RX case, add the attribute if we have=
- no station. If the
-> > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 attribute does not exist, then hos=
-tapd should assume the address was
-> > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 translated.
-> > =C2=A0=C2=A0=C2=A0=C2=A0 - In the TX case, plumb the information throug=
-h to mac80211 and avoid
-> > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 doing a station lookup based on th=
-e address.
-> >=20
-> > I think this would be enough to then solve the problem in hostapd.
-> >=20
->=20
-> I feel this approach should work. I'm trying to understand how it=20
-> behaves in the following scenario where the STA reconnects with the same=
-=20
-> link address but a new(different) MLD address.
->=20
-> Consider a situation where an already associated STA sends a reconnect=
-=20
-> request using the same link addresses but a different MLD address.
->=20
-> For example, assume the station was originally connected using M as the=
-=20
-> MLD address, with L1 and L2 as its link addresses. When the STA=20
-> reconnects (or roam back), it may use a new MLD address B while still
-> using the same link addresses L1 and L2.
->=20
-> In such a case, mac80211 will still find the existing STA entry based on=
-=20
-> the link address, and address translation would map the link address to=
-=20
-> the old mld address. Since the STA lookup succeeds,=20
-> NL80211_ATTR_FRAME_NO_STA would be set to 0.
->=20
-> How is this expected to be handled in hostapd? I believe hostapd will
-> also need additional logic to correctly handle this case, since the
-> link address maps to an already=E2=80=91known STA, but the MLD address ha=
-s changed.
-> Otherwise, hostapd may end up replying to the old MLD address or=20
-> associating the frame with the wrong MLD context.
+V2:
+- fix warning and fail of hwsim DFS test cases
 
-I am not sure we really need to care about this case, but, I think we
-can handle it just fine if we want to.
+V1:
+- report CAC ongoing to user mode
+- add hwsim support for background CAC
 
-In this case is mac80211 would translate the address to the MLD Address
-and would not include the NO_STA flag. hostapd can look up the MLD
-Address in its database and translate the address back to the link
-address for its internal use. It can also explicitly TX the response to
-the link address by setting the NO_STA flag.
+Janusz Dziedzic (4):
+  wifi: cfg80211: fix background CAC
+  wifi: cfg80211: set and report chandef CAC ongoing
+  wifi: cfg80211: events, report background radar
+  wifi: mac80211_hwsim: background CAC support
 
-So, I think it is an interesting corner case and we need to make sure
-to not get confused by it. But, hostapd should be able to handle it.
-Either by simply rejecting the AUTH or by making sure the MLD addresses
-are all correct if the association succeeds.
+ drivers/net/wireless/virtual/mac80211_hwsim.c | 77 +++++++++++++++++++
+ drivers/net/wireless/virtual/mac80211_hwsim.h |  2 +
+ include/net/cfg80211.h                        |  3 +
+ include/uapi/linux/nl80211.h                  |  6 ++
+ net/wireless/chan.c                           | 27 +++++++
+ net/wireless/core.h                           |  4 +
+ net/wireless/mlme.c                           | 51 ++++++------
+ net/wireless/nl80211.c                        | 14 ++++
+ 8 files changed, 162 insertions(+), 22 deletions(-)
 
-Btw. I did start looking into doing the mac80211/cfg80211 changes. How
-should we do it with hostapd? Is someone on your side maybe able to
-work on the hostapd part?
+-- 
+2.43.0
 
-Benjamin
 
