@@ -1,93 +1,92 @@
-Return-Path: <linux-wireless+bounces-31612-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-31613-lists+linux-wireless=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id MFzJNkyGhWl8DAQAu9opvQ
-	(envelope-from <linux-wireless+bounces-31612-lists+linux-wireless=lfdr.de@vger.kernel.org>)
-	for <lists+linux-wireless@lfdr.de>; Fri, 06 Feb 2026 07:12:28 +0100
+	id KPjkHaKbhWmUDwQAu9opvQ
+	(envelope-from <linux-wireless+bounces-31613-lists+linux-wireless=lfdr.de@vger.kernel.org>)
+	for <lists+linux-wireless@lfdr.de>; Fri, 06 Feb 2026 08:43:30 +0100
 X-Original-To: lists+linux-wireless@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 362CAFA931
-	for <lists+linux-wireless@lfdr.de>; Fri, 06 Feb 2026 07:12:28 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id C2165FB177
+	for <lists+linux-wireless@lfdr.de>; Fri, 06 Feb 2026 08:43:29 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 26E23302D09D
-	for <lists+linux-wireless@lfdr.de>; Fri,  6 Feb 2026 06:11:45 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 4CA1630095CF
+	for <lists+linux-wireless@lfdr.de>; Fri,  6 Feb 2026 07:43:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D65B22F6184;
-	Fri,  6 Feb 2026 06:11:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 66899328623;
+	Fri,  6 Feb 2026 07:43:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=morsemicro-com.20230601.gappssmtp.com header.i=@morsemicro-com.20230601.gappssmtp.com header.b="a1LebGjC"
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="uoG6JLKn"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-pl1-f174.google.com (mail-pl1-f174.google.com [209.85.214.174])
+Received: from mail-wm1-f66.google.com (mail-wm1-f66.google.com [209.85.128.66])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5E7433EBF05
-	for <linux-wireless@vger.kernel.org>; Fri,  6 Feb 2026 06:11:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.174
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CF95632826F
+	for <linux-wireless@vger.kernel.org>; Fri,  6 Feb 2026 07:43:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.66
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770358304; cv=none; b=TgrLI+Aek+qtoDwK1L9Qz4TN/cd3wefnXnkBN+NmsV2dO2fTk80wa1Ne4UtloXCHwYaJ72UGenVKRzCeIRmzce5kDnXYNABV8a2fZYndmRXcCr4X7zuEuP6n0tzLnOmu2PacCPyubht8VzRSiEb17k+Hmt0LdlEJBw/65Ka4T84=
+	t=1770363804; cv=none; b=qM5T5VZV0JPfS1ag5qqf5vk3TqRrz1cjFwLVdCAr8aMqqZ9wxVZUCe4/tbgIz4Cno4pOuvejp2DsKTjtLN+Ldgroy8VWxCfFnq+jrRiMHKQ/h5b9TxbHn+8pOTbAyWS2dzziV4DnyW9Tu0mZJrXWsJsk6QXyqF3ycpWvtGp8w1g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770358304; c=relaxed/simple;
-	bh=m234SRTA4UOrW/i7fMYkUhZwz1gVunthhYU6Engfog4=;
+	s=arc-20240116; t=1770363804; c=relaxed/simple;
+	bh=9RjpjFedtU0Ptyh6CRoBzII0vCDL6g1Rl3WR6pG8Wvc=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=pG0yi7Fd4Q/CvZWOdoRm72+8Wfb5aiYwfXO0u+Z15wY5s+1Ym5Mbo2tcKdbuVZXkVvwzRpZF/8f7HrRDR2zVuSaKF9ofljYnxtgBWCnps9WjZPdvWMeh4TIoAeAyNFCu+cPu6rGF03kr1hd5wdc5GWYF2Wz78P2P3CpydVaZnq4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=morsemicro.com; spf=pass smtp.mailfrom=morsemicro.com; dkim=pass (2048-bit key) header.d=morsemicro-com.20230601.gappssmtp.com header.i=@morsemicro-com.20230601.gappssmtp.com header.b=a1LebGjC; arc=none smtp.client-ip=209.85.214.174
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=morsemicro.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=morsemicro.com
-Received: by mail-pl1-f174.google.com with SMTP id d9443c01a7336-2a79998d35aso13801215ad.0
-        for <linux-wireless@vger.kernel.org>; Thu, 05 Feb 2026 22:11:44 -0800 (PST)
+	 Content-Type:Content-Disposition:In-Reply-To; b=WHHNYeutfhURLCtJoz/tiL0UZZcKaj2AtHSFKTiycoXYwsCyryidz0FOipiDCYXGomNPTu0AIhtvYIn00dk376RyW3UCLMpSHlHneW4/3euxTuWOruF7Gn693h4izauqtQXkHwUGpsrl/X4eTIGPJsydUTNLeRqsaXhljuArAW8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=uoG6JLKn; arc=none smtp.client-ip=209.85.128.66
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+Received: by mail-wm1-f66.google.com with SMTP id 5b1f17b1804b1-4806fbc6bf3so4182735e9.2
+        for <linux-wireless@vger.kernel.org>; Thu, 05 Feb 2026 23:43:23 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=morsemicro-com.20230601.gappssmtp.com; s=20230601; t=1770358304; x=1770963104; darn=vger.kernel.org;
+        d=linaro.org; s=google; t=1770363802; x=1770968602; darn=vger.kernel.org;
         h=in-reply-to:content-disposition:mime-version:references:message-id
          :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=SZphE9Yxa0PH9fiw9qf3ILYXM2QLsDre54Bjsf86RMg=;
-        b=a1LebGjC9/+kg6Sztmz7BXsVgyipYRA/GZdAX1MvFo9FlBLDFJfve/G00zZFwLAXH5
-         CQImDRoUP66sMIPGA3EY+eHyQ96JQY5Yfs2/KXiKWtFmjlmv0N8FPREJSo3M4liKImhe
-         MC+N4qXEB9TMDXSA83hIQyhQ0qMAOtEfT319rlL7I3+Gb1gA/Sz2TLkfaOwppfJNsZrR
-         3CGGPaRLuJxKeU9p6yiuTXigdgEA4swDRpBeHx3xA2+jgyyePlDuXYFzsZbtcLGye/1i
-         2qX/Q6/BdXU4o/RswayOUQi6E5hY4TxlA4vpCMpdgiq8hFhZaitcuBhd7Rvn5I6vqbe3
-         WCzA==
+        bh=KgDuS5mG4Fz7SD1w0n25gd+R6hF8xgeHoOBsycwgKWM=;
+        b=uoG6JLKnOe9qgkgL77aZz3k71iHoNHIPXZ+eidbeaouHLRsWQqQ2qo0GX9NNjJbLKu
+         qMy61H9zuHUvjpFFQuav85mQj1pTjP453DHYbLbWnRQ4SCs+brDzX5XoEamUxV0BOaVC
+         8mEu4Wl2CFJYiCdwjeAp4th/jQaelyh2iISVktSPHSIp6/g+42AfMvRqJ8bT7typRyrm
+         un/0vx8WRDR22HjzyAlo5+PcL5fcwH/68RABoIT781xdmOHLl34hfQS9f2KmFu3d3DuD
+         4SWzPHEPR4J2iujsdF/T7b85wH+RNwuShWQOP8HhCEgGWYeRA3GDz7T3wL9uHV+eF8BS
+         rM6w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1770358304; x=1770963104;
+        d=1e100.net; s=20230601; t=1770363802; x=1770968602;
         h=in-reply-to:content-disposition:mime-version:references:message-id
          :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=SZphE9Yxa0PH9fiw9qf3ILYXM2QLsDre54Bjsf86RMg=;
-        b=iNmDhIHrVMMAcpJAGeFoTWLdmnWNC6pOgWmLSk7ApL51jlrbx+EqgYTFHnZ23zyE/D
-         HvFbvqRl3LFNrgDA2GphYUWXxwsEYmAoEsLPmGQVwtrL4cZOLU5epMykmmC+yhWXWyyP
-         HBJb0lpLsCLbxz7acRA/S14Ypcj4340eXRGhxvrdv8WUxNp/rbTXGwwmnqqMslcTLLXZ
-         u7CKw+Y+LqmckBV6TxrL57oVqlIDS+4xfBIM2QNGJSeL3O0Jrp2j5L0o6oFR6wtFZ2vK
-         9uUuMb+TqcUqFb3PwWO8XFapeoHdkEgDMrTYE/QDTUCoPlB6CeIaBIdFk3vyguE27IUF
-         Esdg==
-X-Gm-Message-State: AOJu0YySs17j33XwTyWTuFJ+Ci2TCbCK4aWG8uJddUatm/zknCFCjDmW
-	Cvc3WTyOHAcVPShmiuP9b/FtdAJ/d/1+DClQMxJcAVN0qm4Agp6iFW2Afn/hUdpPLQ==
-X-Gm-Gg: AZuq6aLL9DDqijitDxNYzbq86oCIYsyc1fqnTRZDoVkCCLJ5SN3SKBtK9X4kf5md41I
-	u3uyGFOXYz/cC5e7QSeWpqgfsZWYaMYn9HykKMlCgfiZVJ+OcSewsGWiyNDrxSDkwVaIGtc5xqt
-	YnFfQmYCBAMcjuPhBtwpX17v+ueSe6cuhuYY5DYttgyHZJ2R160xeCqLOGaaN/kkScbeXszwXBr
-	0b66x3OYVIYbnJNllg3qXKd5I8ZKmdKu1mKO1CtBAs/e/VcxB9CWtMZAvsg1LwU7AIHe9GYcoWv
-	oV8c5I0ij6QfsGtGjAQhuX0u7SQ0RJQhGXAp3ScGJ5sKJY9anAYSuse8kXYRqbYDfFyty+2wCsh
-	CioVNY5pd8DBI7edMDAjkaZy6xRnX4YWA14WbZ1i/Nc2QZSTTe+E8Hj7pUzcb6VKnE0iSCzwZOz
-	5B6MJHKO02MjSkpB0A/KWIx/mU
-X-Received: by 2002:a17:903:247:b0:29e:9387:f2b0 with SMTP id d9443c01a7336-2a952209791mr17909245ad.39.1770358303538;
-        Thu, 05 Feb 2026 22:11:43 -0800 (PST)
-Received: from localhost ([14.143.244.11])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2a951c9d415sm13267185ad.42.2026.02.05.22.11.42
+        bh=KgDuS5mG4Fz7SD1w0n25gd+R6hF8xgeHoOBsycwgKWM=;
+        b=VPLgzmtqX7rmLwLdSnMZdRaX+xqdBu+gK+h04Uxbp+1XtrcBJPrkRrqa+Vs6JQjSC3
+         du08JpSeqK81+3JBYsY6M0yFCtoB0I7hc03HC7Q58O0E+TWoJzJkL27WwjLH3q0pMbGV
+         u0lQsJIItEbQ0JIQD8mn70i7aPn8EBANVcV5v8GH13oj7KI32KArYjRqIUp48Vu6SvsP
+         8y5eV3O7Kq/AzNE88MV0xGB0GVfXZcHa7Bi2hKIn80YebmMF7c8GOp4Lcd2J9kdQCBh4
+         QJjgYX/95J1qiJNaGerQxa0ngNYJ+3D+5KSGnCR/ABU42a8sxTtI9jPcptAu0mtiDmCq
+         b+LQ==
+X-Forwarded-Encrypted: i=1; AJvYcCXRiok2bZR7Q6zMrxvpV+faBK98JR/xosa+Y74SWW4BgdsIhTYl90dtTQcKAWme6cULAgahCvAYkGwM7AXhoA==@vger.kernel.org
+X-Gm-Message-State: AOJu0Yx8mji7ii8DLB15zaUQEzwDDVy98/FuRk5ztJK6Kudj4zKBF4hL
+	K2LB2jlAJ9X9Yq8HWm0OzYE50LeBc/MXXv0C+RWOCQIjcjoDHHXYHA81JKaV07rfNuo=
+X-Gm-Gg: AZuq6aK6OwYU2QYabUf8PNSlvjikh01+fPQY7mbrpaXFaWIXyftW1WyoGfoqEWiggnU
+	7eBh+xm7zAc+YZdTiQkJJvE1GX8UUnOPOewGlEyG+B/N61mBey73YRiMAk0h5PZoD6dM2UwT/uT
+	9S2owyDryjoFMb/tvxGG8oCQhbthKm0CBwmxVuCaffozaEB+6KfPqg9BoWP0WC4hPNVDMYh323s
+	e6Z5Q/GgP6sDGh6TVTSkQnwseA/EzdoWz+V+r+OuQUiROcg6BLVhcMaiz9LASzW9LOujhKuDZpK
+	c12j4hqrEriupEulrYqmrI29G6eelpP27nxQ7dcZtr0rR+sQwmuK6hThW93xK7JYqh0kq368xjQ
+	Rw7SUkzpnDwMATC0KRcB/5UKQ8WitfR4DreMo11YbcHodQC3qNEIipqOuVY+EFrBtp0zqsuqEnF
+	FCLVPBmgbgiVaHQX77
+X-Received: by 2002:a05:600c:5489:b0:47d:3ead:7440 with SMTP id 5b1f17b1804b1-4832022918dmr24764095e9.32.1770363802205;
+        Thu, 05 Feb 2026 23:43:22 -0800 (PST)
+Received: from localhost ([196.207.164.177])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-483206b8ebbsm51176895e9.1.2026.02.05.23.43.21
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 05 Feb 2026 22:11:43 -0800 (PST)
-Date: Fri, 6 Feb 2026 11:41:39 +0530
-From: Ria Thomas <ria.thomas@morsemicro.com>
-To: Johannes Berg <johannes@sipsolutions.net>
-Cc: linux-wireless@vger.kernel.org, lachlan.hodges@morsemicro.com,
-	arien.judge@morsemicro.com, pradeep.reddy@morsemicro.com,
-	simon@morsemicro.com
-Subject: Re: [PATCH wireless-next v2 1/3] wifi: cfg80211: Add support for S1G
- Response Indication Configuration
-Message-ID: <20260206061139.6fdwaazvk4swpreo@1207>
-References: <20251209062424.3926297-1-ria.thomas@morsemicro.com>
- <20251209062424.3926297-2-ria.thomas@morsemicro.com>
- <9eb13765529bac88337ab2fd1a13769fa4519f52.camel@sipsolutions.net>
- <20260109040041.tnk7e6uewo24u3tr@1207>
- <048c2715d08822d7f79b082cbe332f982d8ced61.camel@sipsolutions.net>
+        Thu, 05 Feb 2026 23:43:21 -0800 (PST)
+Date: Fri, 6 Feb 2026 10:43:18 +0300
+From: Dan Carpenter <dan.carpenter@linaro.org>
+To: bubupersonal@tutamail.com
+Cc: Linux Staging <linux-staging@lists.linux.dev>,
+	Linux Wireless <linux-wireless@vger.kernel.org>
+Subject: Re: [PATCH] rtw: btcoex: clean up style and documentation
+Message-ID: <aYWblhoLbSYCHkwH@stanley.mountain>
+References: <OkiaM3C--F-9@tutamail.com>
+ <2026020541-pectin-jujitsu-0c63@gregkh>
+ <OkipX2h--N-9@tutamail.com>
+ <2026020533-commotion-surfacing-e9ea@gregkh>
+ <OkisUHh--F-9@tutamail.com>
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
@@ -96,66 +95,44 @@ List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <048c2715d08822d7f79b082cbe332f982d8ced61.camel@sipsolutions.net>
+In-Reply-To: <OkisUHh--F-9@tutamail.com>
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-1.06 / 15.00];
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MID_RHS_NOT_FQDN(0.50)[];
-	R_DKIM_ALLOW(-0.20)[morsemicro-com.20230601.gappssmtp.com:s=20230601];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	DMARC_POLICY_ALLOW(-0.50)[linaro.org,none];
+	R_DKIM_ALLOW(-0.20)[linaro.org:s=google];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
-	DMARC_POLICY_SOFTFAIL(0.10)[morsemicro.com : SPF not aligned (relaxed), DKIM not aligned (relaxed),none];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	RECEIVED_HELO_LOCALHOST(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-31613-lists,linux-wireless=lfdr.de];
 	FROM_HAS_DN(0.00)[];
+	RECEIVED_HELO_LOCALHOST(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-31612-lists,linux-wireless=lfdr.de];
-	TO_DN_SOME(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[morsemicro-com.20230601.gappssmtp.com:+];
+	DKIM_TRACE(0.00)[linaro.org:+];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
 	MISSING_XM_UA(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[ria.thomas@morsemicro.com,linux-wireless@vger.kernel.org];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	FROM_NEQ_ENVFROM(0.00)[dan.carpenter@linaro.org,linux-wireless@vger.kernel.org];
+	RCPT_COUNT_THREE(0.00)[3];
+	NEURAL_HAM(-0.00)[-0.999];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[linux-wireless];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,morsemicro-com.20230601.gappssmtp.com:dkim]
-X-Rspamd-Queue-Id: 362CAFA931
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tutamail.com:email,linaro.org:dkim,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: C2165FB177
 X-Rspamd-Action: no action
 
- 
-> Actually, reading the spec, are you sure it's even on an *interface*
-> scope? A lot of this seems to me like it should be per intended
-> receiver, and you need to know its capabilities for generating the
-> intended response?
-> 
-> If it were per-STA then I think that'd have a much more natural lifetime
-> (since it cannot exceed that of the STA) which seems far better to me.
-> 
+On Thu, Feb 05, 2026 at 06:38:06PM +0100, bubupersonal@tutamail.com wrote:
+> Here's the correct patch.
 
-Just wanted to follow up on the earlier reply and check if you've
-had a chance to review it.
-To explain the implementation a bit more clearly: The issue is that
-response indication from a MAC perspective doesn't really make sense
-elsewhere. It's simply embedded into the PPDU for the VIF that has
-response indication configured, and the receiver uses it to determine
-which type (if any) of ACK to respond with. So it's entirely handled
-by the lower MAC besides of course setting the value from the upper MAC.
+Nope.  That's not a patch.
 
-While it may seem more ideal to sit in a per station or something similar
-where the lifetimes are more natural, there isn't a capability exchange
-that occurs - configuration is more for local transmitter config. On the
-receiver side, it isn't communicated to the upper MAC at all - so considering
-it as a STA entry dosen't really make much sense.
+regards,
+dan carpenter
 
-Please let me know if you see any issues with this approach.
-Looking forward to hear your thoughts on this whenever you have a chance
-
-Ria
 
