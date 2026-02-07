@@ -1,62 +1,88 @@
-Return-Path: <linux-wireless+bounces-31628-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-31629-lists+linux-wireless=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id kJNjCvJGhmkhLgQAu9opvQ
-	(envelope-from <linux-wireless+bounces-31628-lists+linux-wireless=lfdr.de@vger.kernel.org>)
-	for <lists+linux-wireless@lfdr.de>; Fri, 06 Feb 2026 20:54:26 +0100
+	id oH5nCwnHhmkNQwQAu9opvQ
+	(envelope-from <linux-wireless+bounces-31629-lists+linux-wireless=lfdr.de@vger.kernel.org>)
+	for <lists+linux-wireless@lfdr.de>; Sat, 07 Feb 2026 06:00:57 +0100
 X-Original-To: lists+linux-wireless@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7BEFC102EB7
-	for <lists+linux-wireless@lfdr.de>; Fri, 06 Feb 2026 20:54:25 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8BE1F104F99
+	for <lists+linux-wireless@lfdr.de>; Sat, 07 Feb 2026 06:00:56 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id B610F300A637
-	for <lists+linux-wireless@lfdr.de>; Fri,  6 Feb 2026 19:54:21 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 1C0DA3021EB4
+	for <lists+linux-wireless@lfdr.de>; Sat,  7 Feb 2026 05:00:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 06C4A32B9BC;
-	Fri,  6 Feb 2026 19:54:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A150425CC74;
+	Sat,  7 Feb 2026 05:00:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=danielhodges.dev header.i=@danielhodges.dev header.b="BBWTQ8Ek";
-	dkim=permerror (0-bit key) header.d=danielhodges.dev header.i=@danielhodges.dev header.b="RLlJy1Hn"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="eZdI1V/5"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from devnull.danielhodges.dev (vps-2f6e086e.vps.ovh.us [135.148.138.8])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pg1-f175.google.com (mail-pg1-f175.google.com [209.85.215.175])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5617326ED59;
-	Fri,  6 Feb 2026 19:54:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=135.148.138.8
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 709561D9663
+	for <linux-wireless@vger.kernel.org>; Sat,  7 Feb 2026 05:00:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.175
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770407660; cv=none; b=DKd4VtgPVwTGoPKDPZtbDMQgsfDuFCmOztsQcZApXrLZURkrultQ5CCDK+5So0ZJuecj8+suZwNFdp2ZdgVhGYB/CaO7nx6Z80bBOtkoBf7MXVH8g5CaCSB0TDSQgBg4DsHmQ/z1mXy52KZkM2yExk3MEdTq3on77Q3qEWHhYwQ=
+	t=1770440454; cv=none; b=P1SoYvuIQRbshzIj88t3pd2nHQJARQPNih4PaMT7/wUwrz3CIUVxER/QTJi03xTx+98kg32qkmo6d0/Wpoq6EABhKR6r0BJNEgkKpLix5Dav1JT8+3sLxGHtQYGpF5GYYUSXHwjkPm7XcTLgg0jrcPy+Ul95MXjrpY/8r746r6c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770407660; c=relaxed/simple;
-	bh=PRr7Hpe7c4EDtdbIbjvob9tWf81iUT4gU6SBmjVnN80=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=ktxonJ9nZF/KMwujlFweXcSDrB4iPCfNq5v9xOjPMMvYwiSuifX4QjXY7ZXXROZf41p5ywzNfK7T+t5KsMyfOVIBAjPCLeBE4MtwI8Rkm7h0sHTR1xuyd/VHxjdy2WIeEHJUqpSY1HiRzwJh2YMekkW5om6QlprCytHUuw9LRHc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=danielhodges.dev; spf=pass smtp.mailfrom=danielhodges.dev; dkim=pass (2048-bit key) header.d=danielhodges.dev header.i=@danielhodges.dev header.b=BBWTQ8Ek; dkim=permerror (0-bit key) header.d=danielhodges.dev header.i=@danielhodges.dev header.b=RLlJy1Hn; arc=none smtp.client-ip=135.148.138.8
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=danielhodges.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=danielhodges.dev
-DKIM-Signature: v=1; a=rsa-sha256; s=202510r; d=danielhodges.dev; c=relaxed/relaxed;
-	h=Message-ID:Date:Subject:To:From; t=1770407636; bh=R2zmt2rU1GHwt3meo6uTtvY
-	arMax11ycYnpUX5GS8VU=; b=BBWTQ8EkYClsNFkzh2z4h1Mj4HhZWxUEXtkpoLH/qdlcF+/ND5
-	id3ZFTNRsmAP1w+Pt0QLDuJaF6t5b8F96457EnB8IJtIF5n3PfZ6us1xg/x0LFMhzKEDWfEdJgE
-	fsjwqolZjZyFElJNK8G/FPxhuxPrWwdnICdXife4odg3F4AZTENZ1d9ElJMZ+30e1Cs55u1s4cH
-	KXOmk8du9tLLBc2O9G6sQ/Kbp98mUSu/CsNs890/1gJftSoHnpRO+5QExn3anMtEX+UP4gkNA+B
-	d70aOS8KQC36HcCDYOYQ9WtWY4QYjaQsbNkLc8/arDUDq1yDP8+ZPe7rwJXez4gM5fw==;
-DKIM-Signature: v=1; a=ed25519-sha256; s=202510e; d=danielhodges.dev; c=relaxed/relaxed;
-	h=Message-ID:Date:Subject:To:From; t=1770407636; bh=R2zmt2rU1GHwt3meo6uTtvY
-	arMax11ycYnpUX5GS8VU=; b=RLlJy1HnmnEXN63jU5pwEaKa6xUHEW33O/i4yACgDuiAtrzY5e
-	9KDq8Sc0JZqy4NpgJFrlUriCGXFpv0PuOCDg==;
-From: Daniel Hodges <git@danielhodges.dev>
-To: linux-wireless@vger.kernel.org
-Cc: libertas-dev@lists.infradead.org,
+	s=arc-20240116; t=1770440454; c=relaxed/simple;
+	bh=X8qEI1ff3VbLHD7+B6dwIVFUO82QIYblDYBEbjqBmlY=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=O2Y4W11g02o4xCmuqgEkiWf29j+Ad8YTXq0pcXJCUsrVws607/zH3Dipbu+uD9XBquMGpDT7IgWusx1ko9tW3R25/ovHrkYJoWfDVehiePjGdDn6Yclxp1c4XVJcmAZSgyBMBjl6pn9yuuRhvniOTWfTluuwz7sqK4J+zIow6F0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=eZdI1V/5; arc=none smtp.client-ip=209.85.215.175
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-pg1-f175.google.com with SMTP id 41be03b00d2f7-c613161b489so584705a12.0
+        for <linux-wireless@vger.kernel.org>; Fri, 06 Feb 2026 21:00:54 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1770440454; x=1771045254; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=nsxg3ZQLoiyLW/eFeiw5qS1ROT/9NleasWakHk+SOks=;
+        b=eZdI1V/58AuaTVvYf3KdbDsa6ucxf9acCaMGW5pN9ijIg+uwFeVzlQasEclnoRPqVI
+         Bzj6iAa00TfWgRd9L9FwpkydWOdP8MYz2l/DF+122WatbSbar80/vnNlY16xVRkTZMTk
+         6JtS4JJJEKO2HH8FAOPFVNeYg5wTYWV2q08eMjDpxdtNF5wEivhaiDxKLlFRYbnJfQkG
+         oUSBzO8/C5yNyp+rlNyUyNFl3h0cAp6dekxDVfzeEZrS2PjDxz9e7aeFkCAG6SFcWb0V
+         r1Kd1daP+HpmhLSDqiWT621n24X6Uy4uBw7NBR+OnPpdWhPHYNMGt1YDq6DM+41WWKyE
+         PDfQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1770440454; x=1771045254;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=nsxg3ZQLoiyLW/eFeiw5qS1ROT/9NleasWakHk+SOks=;
+        b=Ofm+eP8Tvmm95pKvJNiJRRKpCwoPvTI//TnbpXTHxtp7CDChMmNVW+jRSeJD+FRSE6
+         2S/vfDpODLMfPMIjcSkUSQMfDwO6ilNSNGCdL/moDRzKr4+eIOqll5Z63H5drP+TmTyZ
+         /j+CyonQKWVdbJdombotd28m29yf9iBdFSPW5pWHa2mDdBU4jknt+BhoNuC7gr0gkRg6
+         sbyMxaF/3op7a16zrOEjXJgteF0OKAtICkojOGekR/j0cfBpYGBI68rhBY77HADBlEvT
+         Rop9Hr0Z9dvAdPENcl8aMVxq+HmEiVHjjMPAOls6SPhv9wtZlr6149vZmUyjkR8ssrfE
+         VRew==
+X-Gm-Message-State: AOJu0Yx5OgduWcX53B43Frwy6z9BHdXI+2a+urZO5NNrqoX76FHhd+5o
+	G8nC1j1iT6LtDXqvmXgnWt+bGJKUS9tYQc2lJmmBxYHezS6HGvYL4Lj+TQvK1IRS
+X-Gm-Gg: AZuq6aJk9t2rINRgbLhj1CsCxWNyn9QR4nSm1mDhqxypG8h0e5cNoqRPuvM+aFmKBub
+	tfOqqnZt35tLixNfXlIj9gyXQRhrl7AxaSUBhPtxHcyCaiL5eiL9GVDRUjZfshPCBno4qg9kc3s
+	t5NDmpOlgDbaPVoflRi11UvJJiSI8PalEYQYFPAVo3RSpydsPSw45Bmw5dSeuHkkopLXdmhZa4R
+	w9QHYbP8+Nni7k7i4pRmGTxTEjlb9CXnTeWQ3R/z3PWqnDVHdml0K7iWveyiVQiSKdacmDbLL5o
+	VZ43PsgmqSSiqVuPaYivuOBZGb1eEjpnFqACaURE5QS1Ld+GkDp8WxXRBP12/R98qiWusvFQTut
+	PCEeHR5DXFD3Kb4kspb6FqQ5i208NoLlUUDgmOghXftdRp36ECSNywDxWKkGEWVoNemfdlXw4je
+	TEe7pdF08CmaM=
+X-Received: by 2002:a17:90a:dfc7:b0:32e:1b1c:f8b8 with SMTP id 98e67ed59e1d1-354b3e456fbmr4220547a91.26.1770440453478;
+        Fri, 06 Feb 2026 21:00:53 -0800 (PST)
+Received: from mint.. ([2401:4900:5635:97a4:2a92:ca6f:9799:d0b8])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3549c5955a7sm7354095a91.17.2026.02.06.21.00.50
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 06 Feb 2026 21:00:52 -0800 (PST)
+From: Dhyan K Prajapati <dhyan19022009@gmail.com>
+To: Johannes Berg <johannes@sipsolutions.net>
+Cc: linux-wireless@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org,
-	Daniel Drake <dsd@laptop.org>,
-	Dan Williams <dcbw@redhat.com>,
-	Daniel Hodges <git@danielhodges.dev>
-Subject: [PATCH] wifi: libertas: fix use-after-free in lbs_free_adapter()
-Date: Fri,  6 Feb 2026 14:53:56 -0500
-Message-ID: <20260206195356.15647-1-git@danielhodges.dev>
-X-Mailer: git-send-email 2.52.0
+	Dhyan K Prajapati <dhyaan19022009@gmail.com>,
+	Dhyan K Prajapati <dhyan19022009@gmail.com>
+Subject: [PATCH] wifi: mac80211: skip BSS_CHANGED_TXPOWER notification for monitor mode
+Date: Sat,  7 Feb 2026 10:30:35 +0530
+Message-ID: <20260207050035.6720-1-dhyan19022009@gmail.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
@@ -66,79 +92,97 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-0.66 / 15.00];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	MID_CONTAINS_FROM(1.00)[];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[danielhodges.dev,reject];
+	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
+	R_DKIM_ALLOW(-0.20)[gmail.com:s=20230601];
 	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
-	R_DKIM_ALLOW(-0.20)[danielhodges.dev:s=202510r,danielhodges.dev:s=202510e];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	RCVD_COUNT_THREE(0.00)[3];
+	FREEMAIL_FROM(0.00)[gmail.com];
+	FREEMAIL_CC(0.00)[vger.kernel.org,gmail.com];
+	TAGGED_FROM(0.00)[bounces-31629-lists,linux-wireless=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-31628-lists,linux-wireless=lfdr.de];
-	DKIM_TRACE(0.00)[danielhodges.dev:+];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	TO_DN_SOME(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[git@danielhodges.dev,linux-wireless@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
-	NEURAL_HAM(-0.00)[-0.999];
+	FROM_NEQ_ENVFROM(0.00)[dhyan19022009@gmail.com,linux-wireless@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	DKIM_TRACE(0.00)[gmail.com:+];
+	RCVD_COUNT_FIVE(0.00)[5];
 	TAGGED_RCPT(0.00)[linux-wireless];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,danielhodges.dev:email,danielhodges.dev:dkim,danielhodges.dev:mid]
-X-Rspamd-Queue-Id: 7BEFC102EB7
+	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_FIVE(0.00)[5];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 8BE1F104F99
 X-Rspamd-Action: no action
 
-The lbs_free_adapter() function uses timer_delete() (non-synchronous)
-for both command_timer and tx_lockup_timer before the structure is
-freed. This is incorrect because timer_delete() does not wait for
-any running timer callback to complete.
+From: Dhyan K Prajapati <dhyaan19022009@gmail.com>
 
-If a timer callback is executing when lbs_free_adapter() is called,
-the callback will access freed memory since lbs_cfg_free() frees the
-containing structure immediately after lbs_free_adapter() returns.
+Monitor mode interfaces don't maintain BSS context. The BSS_CHANGED_TXPOWER notification
+indicates transmit power constrains recieved from an associated access point which isn't really
+applicable to monitor mode as it does not associate with any BSS
 
-Both timer callbacks (lbs_cmd_timeout_handler and lbs_tx_lockup_handler)
-access priv->driver_lock, priv->cur_cmd, priv->dev, and other fields,
-which would all be use-after-free violations.
+after a commit back in july 2025,("wifi: mac80211: fix WARN_ON for monitor mode
+on some devices") monitor interfaces with WANT_MONITOR_VIF began recieving link
+change notifications during ieee_add_virtual_monitor(), when ieee_link_use_channel()
+assigns a channel context it triggers ieee_recalc_power() which sends BSS_CHANGED_TXPOWER
+notifications to driver, driver using legacy bss_info_changed callbeack recieve
+link->conf as the bss_conf parameter for monitor mode that points to vif.bss_conf which is not fully initialised
+in monitor interfaces, so drivers like iwldvm dereference null and crash
+since BSS_CHANGED_TXPOWER notifications are meaningless for monitor mode, we can skip
+the notification entirely,monitor mode transmit power remains configurable via
+nl80211
+Hardware: Dell Latitude E6430
+Device: Intel Centrino Advanced-N 6205 [Taylor Peak]
 
-Use timer_delete_sync() instead to ensure any running timer callback
-has completed before returning.
+Crash trace:
+  BUG: kernel NULL pointer dereference at 0000000000000000
+  RIP: iwlagn_bss_info_changed+0x19d/0x640 [iwldvm]
+  Call Trace:
+   drv_link_info_changed+0x2b5/0x2c0
+   ieee80211_link_info_change_notify+0x13d/0x160
+   __ieee80211_recalc_txpower+0x44/0xd0
+   ieee80211_recalc_txpower+0x5c/0x60
+   ieee80211_assign_link_chanctx+0x182/0x410
+   ieee80211_link_use_channel+0x413/0x450
+   ieee80211_add_virtual_monitor+0x17c/0x2b0
 
-This bug was introduced in commit 8f641d93c38a ("libertas: detect TX
-lockups and reset hardware") where del_timer() was used instead of
-del_timer_sync() in the cleanup path. The command_timer has had the
-same issue since the driver was first written.
-
-Fixes: 8f641d93c38a ("libertas: detect TX lockups and reset hardware")
-Fixes: 954ee164f4f4 ("[PATCH] libertas: reorganize and simplify init sequence")
-Cc: stable@vger.kernel.org
-Signed-off-by: Daniel Hodges <git@danielhodges.dev>
+Tested-by: Dhyan K Prajapati <dhyan19022009@gmail.com>
+Signed-off-by: Dhyan K Prajapati <dhyan19022009@gmail.com>
 ---
- drivers/net/wireless/marvell/libertas/main.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ net/mac80211/iface.c | 8 +++++++-
+ 1 file changed, 7 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/wireless/marvell/libertas/main.c b/drivers/net/wireless/marvell/libertas/main.c
-index d44e02c6fe38..dd97f1b61f4d 100644
---- a/drivers/net/wireless/marvell/libertas/main.c
-+++ b/drivers/net/wireless/marvell/libertas/main.c
-@@ -799,8 +799,8 @@ static void lbs_free_adapter(struct lbs_private *priv)
+diff --git a/net/mac80211/iface.c b/net/mac80211/iface.c
+index 515384ca2..2d5b4cc60 100644
+--- a/net/mac80211/iface.c
++++ b/net/mac80211/iface.c
+@@ -76,10 +76,16 @@ bool __ieee80211_recalc_txpower(struct ieee80211_link_data *link)
+ void ieee80211_recalc_txpower(struct ieee80211_link_data *link,
+ 			      bool update_bss)
  {
- 	lbs_free_cmd_buffer(priv);
- 	kfifo_free(&priv->event_fifo);
--	timer_delete(&priv->command_timer);
--	timer_delete(&priv->tx_lockup_timer);
-+	timer_delete_sync(&priv->command_timer);
-+	timer_delete_sync(&priv->tx_lockup_timer);
++	struct ieee80211_sub_if_data *sdata = link->sdata;
++
+ 	if (__ieee80211_recalc_txpower(link) ||
+-	    (update_bss && ieee80211_sdata_running(link->sdata)))
++	    (update_bss && ieee80211_sdata_running(link->sdata))) {
++		if (sdata->vif.type == NL80211_IFTYPE_MONITOR)
++			return;
++
+ 		ieee80211_link_info_change_notify(link->sdata, link,
+ 						  BSS_CHANGED_TXPOWER);
++	}
  }
  
- static const struct net_device_ops lbs_netdev_ops = {
+ static u32 __ieee80211_idle_off(struct ieee80211_local *local)
 -- 
-2.52.0
+2.43.0
 
 
