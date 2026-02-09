@@ -1,51 +1,51 @@
-Return-Path: <linux-wireless+bounces-31646-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-31648-lists+linux-wireless=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id MJhsL3BOiWlm6QQAu9opvQ
-	(envelope-from <linux-wireless+bounces-31646-lists+linux-wireless=lfdr.de@vger.kernel.org>)
-	for <lists+linux-wireless@lfdr.de>; Mon, 09 Feb 2026 04:03:12 +0100
+	id cBUiK3ZOiWlm6QQAu9opvQ
+	(envelope-from <linux-wireless+bounces-31648-lists+linux-wireless=lfdr.de@vger.kernel.org>)
+	for <lists+linux-wireless@lfdr.de>; Mon, 09 Feb 2026 04:03:18 +0100
 X-Original-To: lists+linux-wireless@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6876410B460
-	for <lists+linux-wireless@lfdr.de>; Mon, 09 Feb 2026 04:03:12 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4C81310B470
+	for <lists+linux-wireless@lfdr.de>; Mon, 09 Feb 2026 04:03:18 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 4A2F83007AC8
-	for <lists+linux-wireless@lfdr.de>; Mon,  9 Feb 2026 03:03:08 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 1DBB230097D5
+	for <lists+linux-wireless@lfdr.de>; Mon,  9 Feb 2026 03:03:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5E9E0296BC1;
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 861012EB860;
 	Mon,  9 Feb 2026 03:03:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=yandex.ru header.i=@yandex.ru header.b="qZ67900V"
+	dkim=pass (1024-bit key) header.d=yandex.ru header.i=@yandex.ru header.b="bZCmoPnr"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from forward103d.mail.yandex.net (forward103d.mail.yandex.net [178.154.239.214])
+Received: from forward101d.mail.yandex.net (forward101d.mail.yandex.net [178.154.239.212])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 217BB1D6193;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BF6B122836C;
 	Mon,  9 Feb 2026 03:03:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=178.154.239.214
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=178.154.239.212
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770606186; cv=none; b=EBfpD/ak3PIr0jCd82d6xhdLH6TFW8zrYUTysOnDb9BF3SGGt4zU3AIX8llClK4EME2mMaHGNbe0uyxlszLdULYeYCaONiE4zSMf9F1XwIG3xcTrHZfQW5I0KTYq4KUqWGoFyEe7gPvJLI1yqkxSBWgruzIzGMaVQeOJ350VwNk=
+	t=1770606186; cv=none; b=FtkHqLNRerYQkjhga6sV5Elv7FiFcQWHSX9i02pAQ9Jrn+ccWStu+CC63zcYLwJD7ZcXaP7WnZsS6XL423FSo1qBaFUPaRt31q7EEhm8iZyWqcUG5SYSj1xBZOHD7s2na3gvpT4BK8Dm89Cu2HZYPrSs41nUmqkT94gAz4Xa1Qg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1770606186; c=relaxed/simple;
-	bh=rcvmteF2gb00/oqKLKmzLGtIPzHXzW289FycTseOWss=;
+	bh=yiIjT8QBpch/u0ui/vy8LKtqe7lHi4xzIoxFhBemH7s=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=OVdJNlbjGs3d9CMhN4V3UUPilC9ZCmmSMn+aNQxgrORF464n5g8DdzrS+ipmS9AP8IijQiURg4+jFFsglhyqDPPdTZWQB/TwGQVWbK2r4+vQH1uElSIDC4ChCPTUbJDuhJ3t1jrrcCF96HM4jvT6WjsedyceK6Ofti3tbAnYpMk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=yandex.ru; spf=pass smtp.mailfrom=yandex.ru; dkim=pass (1024-bit key) header.d=yandex.ru header.i=@yandex.ru header.b=qZ67900V; arc=none smtp.client-ip=178.154.239.214
+	 MIME-Version; b=o9m9xmbYxc9XSiVKbYTIXtY+qWpRC6CXHdjsUNsNDUEJq9cQUiSy6QI/YF8NROONed99ulz4+PtlGfsr0SEPUp+fJdgnpqlumQEEbkFNsS5XwmKj91YMYyQ+gHjHU7t1xcsWbl5TPxBWUgIYIt0w6yMZgArcO+TzfPPfLSaafk4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=yandex.ru; spf=pass smtp.mailfrom=yandex.ru; dkim=pass (1024-bit key) header.d=yandex.ru header.i=@yandex.ru header.b=bZCmoPnr; arc=none smtp.client-ip=178.154.239.212
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=yandex.ru
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=yandex.ru
 Received: from mail-nwsmtp-smtp-production-main-92.iva.yp-c.yandex.net (mail-nwsmtp-smtp-production-main-92.iva.yp-c.yandex.net [IPv6:2a02:6b8:c0c:190d:0:640:bab5:0])
-	by forward103d.mail.yandex.net (Yandex) with ESMTPS id 83227C008A;
-	Mon, 09 Feb 2026 06:02:57 +0300 (MSK)
-Received: by mail-nwsmtp-smtp-production-main-92.iva.yp-c.yandex.net (smtp/Yandex) with ESMTPSA id s2H8uoNGO0U0-saJhHZHk;
+	by forward101d.mail.yandex.net (Yandex) with ESMTPS id 407DBC007A;
+	Mon, 09 Feb 2026 06:02:58 +0300 (MSK)
+Received: by mail-nwsmtp-smtp-production-main-92.iva.yp-c.yandex.net (smtp/Yandex) with ESMTPSA id s2H8uoNGO0U0-mHKt1Oao;
 	Mon, 09 Feb 2026 06:02:57 +0300
 X-Yandex-Fwd: 1
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yandex.ru; s=mail;
-	t=1770606177; bh=58gkicXTfl/yMiEWBrqSzSMvFG/0h6/5ysLXoi5qXWA=;
+	t=1770606177; bh=vhPBz7+tj7yd+44S6wLmgT5a0ZZddDSRoKD28qCw7Ps=;
 	h=Message-ID:Date:In-Reply-To:Cc:Subject:References:To:From;
-	b=qZ67900VQUsFfavFUU6Pf9RAn0BWh9ElivON3SIo8mPp4RYgwA7FO0D2/czMwSeLF
-	 cX5AbzPSS29BluZQxd9JLgw6sX+wOHPRSsmkE0FWFY0nGDmwKZddl/NTuGp+RVFS8r
-	 N6r6S+I1NYJMyCeGNm/tX0xBi3YYc1Gd7BDbDszY=
+	b=bZCmoPnr/0ZZ5DNdGx5ZUaLOr2AHCQ8Wl5WAAJoXcz6YDM74fJQH9g/4kaVcapoBC
+	 7+j3Oal/+vsOwJ6dJVgzFH5SFUgBljoFaWafkqkH+NRCRNVaxypZ5hTdlznaZj+YLu
+	 YImDJgkIsWmyzzOGj1stgHvY2Psgd0hNQwaqpvsY=
 Authentication-Results: mail-nwsmtp-smtp-production-main-92.iva.yp-c.yandex.net; dkim=pass header.i=@yandex.ru
 From: m.limarencko@yandex.ru
 To: jjohnson@kernel.org
@@ -53,9 +53,9 @@ Cc: linux-wireless@vger.kernel.org,
 	ath12k@lists.infradead.org,
 	linux-kernel@vger.kernel.org,
 	Mikhail Limarenko <m.limarencko@yandex.ru>
-Subject: [PATCH ath-next 2/4] wifi: ath12k: avoid long fw_stats waits on vdev stats hot path
-Date: Mon,  9 Feb 2026 06:02:41 +0300
-Message-ID: <20260209030243.1530075-3-m.limarencko@yandex.ru>
+Subject: [PATCH ath-next 3/4] wifi: ath12k: sanitize invalid MCS metadata in rx path
+Date: Mon,  9 Feb 2026 06:02:42 +0300
+Message-ID: <20260209030243.1530075-4-m.limarencko@yandex.ru>
 X-Mailer: git-send-email 2.47.3
 In-Reply-To: <20260209030243.1530075-1-m.limarencko@yandex.ru>
 References: <20260209030243.1530075-1-m.limarencko@yandex.ru>
@@ -80,7 +80,7 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	MIME_TRACE(0.00)[0:+];
 	FREEMAIL_CC(0.00)[vger.kernel.org,lists.infradead.org,yandex.ru];
 	TO_DN_SOME(0.00)[];
-	TAGGED_FROM(0.00)[bounces-31646-lists,linux-wireless=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-31648-lists,linux-wireless=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
 	FREEMAIL_FROM(0.00)[yandex.ru];
 	FORGED_SENDER_MAILLIST(0.00)[];
@@ -96,78 +96,109 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	RCPT_COUNT_FIVE(0.00)[5];
 	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 6876410B460
+X-Rspamd-Queue-Id: 4C81310B470
 X-Rspamd-Action: no action
 
 From: Mikhail Limarenko <m.limarencko@yandex.ru>
 
-Station info requests can trigger frequent VDEV stat pulls from
+Malformed or unsupported rate metadata from firmware can carry
 
-user space (iw/NM polling).
+invalid MCS values into mac80211 status handling.
 
-On affected firmware, waiting 3 seconds for fw_stats_done causes
+This was observed with HE MCS=12 and coincided with
 
-repeated stalls and visible hitches.
+ieee80211_rx_list warnings.
 
-Use a short timeout for VDEV_STAT requests and skip unnecessary
+When MCS is out of range, fall back to legacy metadata and use
 
-waits for stats types that do not need completion
-
-synchronization.
+ratelimited diagnostics.
 
 Tested-on: QCNFA765 (WCN785x), kernel 6.18.5+deb13-amd64
 Signed-off-by: Mikhail Limarenko <m.limarencko@yandex.ru>
 ---
- drivers/net/wireless/ath/ath12k/mac.c | 22 ++++++++++++++++++++--
- 1 file changed, 20 insertions(+), 2 deletions(-)
+ drivers/net/wireless/ath/ath12k/dp_rx.c | 39 +++++++++++++++----------
+ 1 file changed, 23 insertions(+), 16 deletions(-)
 
-diff --git a/drivers/net/wireless/ath/ath12k/mac.c b/drivers/net/wireless/ath/ath12k/mac.c
-index 095b49a..1b550e9 100644
---- a/drivers/net/wireless/ath/ath12k/mac.c
-+++ b/drivers/net/wireless/ath/ath12k/mac.c
-@@ -4829,6 +4829,7 @@ int ath12k_mac_get_fw_stats(struct ath12k *ar,
- {
- 	struct ath12k_base *ab = ar->ab;
- 	struct ath12k_hw *ah = ath12k_ar_to_ah(ar);
-+	unsigned long done_timeout = 3 * HZ;
- 	unsigned long time_left;
- 	int ret;
+diff --git a/drivers/net/wireless/ath/ath12k/dp_rx.c b/drivers/net/wireless/ath/ath12k/dp_rx.c
+index 99d29ed..f0c56a9 100644
+--- a/drivers/net/wireless/ath/ath12k/dp_rx.c
++++ b/drivers/net/wireless/ath/ath12k/dp_rx.c
+@@ -2534,9 +2534,11 @@ static void ath12k_dp_rx_h_rate(struct ath12k *ar, struct ath12k_dp_rx_info *rx_
+ 	case RX_MSDU_START_PKT_TYPE_11N:
+ 		rx_status->encoding = RX_ENC_HT;
+ 		if (rate_mcs > ATH12K_HT_MCS_MAX) {
+-			ath12k_warn(ar->ab,
+-				    "Received with invalid mcs in HT mode %d\n",
+-				     rate_mcs);
++			dev_warn_ratelimited(ar->ab->dev,
++					     "ath12k: invalid HT mcs %u, forcing legacy rate metadata\n",
++					     rate_mcs);
++			rx_status->encoding = RX_ENC_LEGACY;
++			rx_status->rate_idx = 0;
+ 			break;
+ 		}
+ 		rx_status->rate_idx = rate_mcs + (8 * (nss - 1));
+@@ -2546,42 +2548,47 @@ static void ath12k_dp_rx_h_rate(struct ath12k *ar, struct ath12k_dp_rx_info *rx_
+ 		break;
+ 	case RX_MSDU_START_PKT_TYPE_11AC:
+ 		rx_status->encoding = RX_ENC_VHT;
+-		rx_status->rate_idx = rate_mcs;
+ 		if (rate_mcs > ATH12K_VHT_MCS_MAX) {
+-			ath12k_warn(ar->ab,
+-				    "Received with invalid mcs in VHT mode %d\n",
+-				     rate_mcs);
++			dev_warn_ratelimited(ar->ab->dev,
++					     "ath12k: invalid VHT mcs %u, forcing legacy rate metadata\n",
++					     rate_mcs);
++			rx_status->encoding = RX_ENC_LEGACY;
++			rx_status->rate_idx = 0;
+ 			break;
+ 		}
++		rx_status->rate_idx = rate_mcs;
+ 		rx_status->nss = nss;
+ 		if (sgi)
+ 			rx_status->enc_flags |= RX_ENC_FLAG_SHORT_GI;
+ 		rx_status->bw = ath12k_mac_bw_to_mac80211_bw(bw);
+ 		break;
+ 	case RX_MSDU_START_PKT_TYPE_11AX:
+-		rx_status->rate_idx = rate_mcs;
+ 		if (rate_mcs > ATH12K_HE_MCS_MAX) {
+-			ath12k_warn(ar->ab,
+-				    "Received with invalid mcs in HE mode %d\n",
+-				    rate_mcs);
++			dev_warn_ratelimited(ar->ab->dev,
++					     "ath12k: invalid HE mcs %u, forcing legacy rate metadata\n",
++					     rate_mcs);
++			rx_status->encoding = RX_ENC_LEGACY;
++			rx_status->rate_idx = 0;
+ 			break;
+ 		}
+ 		rx_status->encoding = RX_ENC_HE;
++		rx_status->rate_idx = rate_mcs;
+ 		rx_status->nss = nss;
+ 		rx_status->he_gi = ath12k_he_gi_to_nl80211_he_gi(sgi);
+ 		rx_status->bw = ath12k_mac_bw_to_mac80211_bw(bw);
+ 		break;
+ 	case RX_MSDU_START_PKT_TYPE_11BE:
+-		rx_status->rate_idx = rate_mcs;
+-
+ 		if (rate_mcs > ATH12K_EHT_MCS_MAX) {
+-			ath12k_warn(ar->ab,
+-				    "Received with invalid mcs in EHT mode %d\n",
+-				    rate_mcs);
++			dev_warn_ratelimited(ar->ab->dev,
++					     "ath12k: invalid EHT mcs %u, forcing legacy rate metadata\n",
++					     rate_mcs);
++			rx_status->encoding = RX_ENC_LEGACY;
++			rx_status->rate_idx = 0;
+ 			break;
+ 		}
  
-@@ -4859,15 +4860,32 @@ int ath12k_mac_get_fw_stats(struct ath12k *ar,
- 		return -ETIMEDOUT;
- 	}
- 
-+	/* VDEV stats are queried frequently from station info paths (e.g. iw/NM).
-+	 * On buggy firmware this path can timeout repeatedly and block callers for
-+	 * multiple seconds; keep the hot path responsive while preserving behavior
-+	 * for other stats types.
-+	 */
-+	if (param->stats_id & WMI_REQUEST_VDEV_STAT)
-+		done_timeout = msecs_to_jiffies(200);
-+
-+	/* Non-vdev/bcn stats are handled in a single event. */
-+	if (!(param->stats_id & (WMI_REQUEST_VDEV_STAT | WMI_REQUEST_BCN_STAT)))
-+		return 0;
-+
- 	/* Firmware sends WMI_UPDATE_STATS_EVENTID back-to-back
- 	 * when stats data buffer limit is reached. fw_stats_complete
- 	 * is completed once host receives first event from firmware, but
- 	 * still there could be more events following. Below is to wait
- 	 * until firmware completes sending all the events.
- 	 */
--	time_left = wait_for_completion_timeout(&ar->fw_stats_done, 3 * HZ);
-+	time_left = wait_for_completion_timeout(&ar->fw_stats_done, done_timeout);
- 	if (!time_left) {
--		ath12k_warn(ab, "time out while waiting for fw stats done\n");
-+		if (param->stats_id & WMI_REQUEST_VDEV_STAT)
-+			ath12k_dbg(ab, ATH12K_DBG_WMI,
-+				   "time out while waiting for fw stats done (stats_id 0x%x)\n",
-+				   param->stats_id);
-+		else
-+			ath12k_warn(ab, "time out while waiting for fw stats done\n");
- 		return -ETIMEDOUT;
- 	}
- 
+ 		rx_status->encoding = RX_ENC_EHT;
++		rx_status->rate_idx = rate_mcs;
+ 		rx_status->nss = nss;
+ 		rx_status->eht.gi = ath12k_mac_eht_gi_to_nl80211_eht_gi(sgi);
+ 		rx_status->bw = ath12k_mac_bw_to_mac80211_bw(bw);
 -- 
 2.47.3
 
