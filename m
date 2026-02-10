@@ -1,79 +1,79 @@
-Return-Path: <linux-wireless+bounces-31701-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-31702-lists+linux-wireless=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id mO8+AgtCi2mfRwAAu9opvQ
-	(envelope-from <linux-wireless+bounces-31701-lists+linux-wireless=lfdr.de@vger.kernel.org>)
-	for <lists+linux-wireless@lfdr.de>; Tue, 10 Feb 2026 15:34:51 +0100
+	id iMKoLxxCi2mfRwAAu9opvQ
+	(envelope-from <linux-wireless+bounces-31702-lists+linux-wireless=lfdr.de@vger.kernel.org>)
+	for <lists+linux-wireless@lfdr.de>; Tue, 10 Feb 2026 15:35:08 +0100
 X-Original-To: lists+linux-wireless@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6571D11BF14
-	for <lists+linux-wireless@lfdr.de>; Tue, 10 Feb 2026 15:34:50 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 20AD811BF1C
+	for <lists+linux-wireless@lfdr.de>; Tue, 10 Feb 2026 15:35:08 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 34327305CA91
-	for <lists+linux-wireless@lfdr.de>; Tue, 10 Feb 2026 14:34:03 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id BCCBA3063759
+	for <lists+linux-wireless@lfdr.de>; Tue, 10 Feb 2026 14:34:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B21193803E3;
-	Tue, 10 Feb 2026 14:34:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 797ED3806C5;
+	Tue, 10 Feb 2026 14:34:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b="LT3W4/rl"
+	dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b="TS7onxQh"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-wr1-f45.google.com (mail-wr1-f45.google.com [209.85.221.45])
+Received: from mail-wm1-f54.google.com (mail-wm1-f54.google.com [209.85.128.54])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5FBD236B05B
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E992D37FF69
 	for <linux-wireless@vger.kernel.org>; Tue, 10 Feb 2026 14:34:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.45
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.54
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770734041; cv=none; b=Fo9pKXOwowpUBZPXm0DN85Ax9UrtxFqKJ9WtcEigq/y7g7w13RxQDlao4r2br6lZMz1EjHNHtvUaPADGYi8TCjXGtzWEgjWLaRUKYEG3dN9r4ENcoSgRUDlcnWHNgNPu3vZUKvPjTP/bZrAUYazCpjnl8q/OChMkFF8MXBxtkRo=
+	t=1770734042; cv=none; b=nt8FAT9znbSOyu94XA/zZ9+gd+MYM5epkbzlpCrYdKqQ9KyDCz42BD4thcI8Ak5+gbOZ+VPOdxJ2gjQuCTz3Mx6PXZyYpjTeop/hAgtYACeTbhDjZ33zP2J2to0Trx7MzIkrhVLTTdD5/+XgucG57inqG4tMaoTG28jVII/+CQk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770734041; c=relaxed/simple;
-	bh=Wlm8oyIRqWO6b8b5AG7aC9bFYh24ep+yd+J5r7l0ZuM=;
+	s=arc-20240116; t=1770734042; c=relaxed/simple;
+	bh=oVuH5Ql/WxNQ4kFSCzjsMlgfORIIPZkOqPjx7D+6+88=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=KbnsaxlYlzD9oA+6RKlcZYve94A8ulwIOjF0fKhFLwSYGMcO4KK4QE2dDR+d/ujH7LRchabxOJgaxzeFa9KAcvgF1YGXcHOidbpc8rm3cA19oJxLee2pqOU/GvsqcMqGDeSCmjzsYHh49Y1mAQdS/HD2c9RwBfINmAXF1b9M3bM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com; spf=pass smtp.mailfrom=suse.com; dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b=LT3W4/rl; arc=none smtp.client-ip=209.85.221.45
+	 MIME-Version; b=prh+zM9Un9gGhNrzl2jJXAMxvbwrGAUQiBEeHoTJUdJIl5VQiQTWRinXM+6UUH9VC8KfVnGEdYa+k8Ozj27Fv5lFsl678QvgTMink47tvSjBaT7bj0sOXgrgwd2uz+/opOWc1f6rklgB0rh0L8J5oj6C0MM0V8KDerHbfS0pwrk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com; spf=pass smtp.mailfrom=suse.com; dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b=TS7onxQh; arc=none smtp.client-ip=209.85.128.54
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.com
-Received: by mail-wr1-f45.google.com with SMTP id ffacd0b85a97d-43770c94dfaso973171f8f.2
+Received: by mail-wm1-f54.google.com with SMTP id 5b1f17b1804b1-4801bc32725so31945475e9.0
         for <linux-wireless@vger.kernel.org>; Tue, 10 Feb 2026 06:34:00 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=suse.com; s=google; t=1770734039; x=1771338839; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=iStm+JloDf5Hvq/3VIp9y1mrTCpbEIULugoCNyu96NE=;
-        b=LT3W4/rlYWqfJCxcRZjTI9dwKMAC2+dW8NWEqXad0GlknzSHtehmeYmFPDm+gFRZq6
-         ZlsU4+FkQMsBJvHj83VOIRZ5wpU42zUSs6hvd12mWWjJxUsVWF/wRlFP6ryFd4NsJZLX
-         DaSa8Gbvin08WBEgVRueB7vnbvOKBj6AWMSpbKQs696bsZ5Us0eCse8+rRXcCbDH+amT
-         mh1gIbxxl29TNVCxqPd0SVQAlb0WceNozP7V54VHuU3uOiI1csQ+k0mTjXXEK5Ghpj6Q
-         vnvKjtBFSODp4rZM11q0Fpx1ajNVUCSNO85Ifp1pOCBujSeO+UNfXcQ0tDJqytPypF9D
-         pyhw==
+        bh=ZucUQndu/p6rPTTHz/msQccYgtmt2/K9BAyl4/uUXJM=;
+        b=TS7onxQh3hN9fma8A9zuUnmLcE0mP073DfuqqqGBqmbUWkP9U8oOVGffBwAfqYnUVH
+         mn+J80VY7xP1UVv1yOQwW1Eiv1GXeVhYSLSnyuMGIcYbu7eILs54ve73GXhkkniDkJWv
+         Q1MMk6Rpz2ddw20vy24jkEqbPLUivCsqBClKzgFFsvRc2Ap3ZqaWzH8npk5/ahZS8KNZ
+         Rh/vFu6eSaMjRtbwd+q1o440hp8HCyuTVsjNWcgIYDqZjnEjCUerPrpDI0g3rAhwguJE
+         9qmFRc6pggdbpXpCQy3ObFnrAECE3I+40D1S/wyJMqiMCnACXJ1QaqMNHGEsD5Jmb6AS
+         QXKQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20230601; t=1770734039; x=1771338839;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to;
-        bh=iStm+JloDf5Hvq/3VIp9y1mrTCpbEIULugoCNyu96NE=;
-        b=mxlGkwLtXNbjfckXDISmgoTz2H4j98tmeGbG2DiDIyOON6rzE1zLYky3tdhy3CLiB5
-         lmtf72TLTx9McckYpT/klkpDgeTaNMtdST9qncWcpvrm9N3ZQPnChsUYTwS19Qs+Cwoa
-         VlbGegP44RC1k8FfbOOXxLIqrJXWoQjDqNNTo0/vVinYYv9I+F/7M9brK73jH2aVAqsq
-         x1H0ngiakiPUcKIaAR1hNqrcX/hUKbtstkOq+IYKx80CRV+ITNgDYJADhTxmcDefwhik
-         vOVcSNZFqQoEx47SNjXIznqPTh9uCrDHXab5WlsClvDb1oUqjoDBymsCquk4kgr778N3
-         uIaQ==
-X-Forwarded-Encrypted: i=1; AJvYcCVhx/AfCiXJpYbKHHBzj6MuvuuXyTtAZ2+LmDIO8b6bNayjXV3YTaAUCHDd5T+UdIXR7SiJ5fsGrxtUHayaGg==@vger.kernel.org
-X-Gm-Message-State: AOJu0YxRfd2BQ6xqqDsktm+lgqiV1RwCM1MlNAr7dsOUVliAIzLQvVmq
-	2JOa/H6dJ6TswtS5HkYOy/WSsVKREllnnMWZy7pLaI7+Re1u+sw56xJtDfBNzZG0BuA=
-X-Gm-Gg: AZuq6aIjuwfpJ1w43pzbdWkNOtctqjs8OuyKWCuIbQwbFv3u6Rq0CJMmT9eeHARyUSZ
-	BP5AdWFtFbblYpAll0uRRsUStejGRQYGB6n9/end8ILQfXIgrT77nNoB1apLnrbNsEw1l3V0s3z
-	DQ9mf6jjc1kV5JkxqxJFDaLwfLsdsSApb9D/gZ7ypsM35v9yMEn6dY1QYuuWmMNobjqsAQgJvU5
-	sBdPum5UnipOot1iTRtODZQNrIGYXu3zzkdVAcME/X+QetggdjgMxdyn5ULrmMn6IBzAkSI0LJ2
-	U0JgKp4BloMaHFJ7j9UsBd2kRUb13h52U637fxgiwUiZ4Svypn7pMOy903I0NEHok3jf9dLp9oS
-	uWsywue41+fRkgHJCPbDE1kMS3s13oquB1Sg36oilWMZi0Zhh/3MzIrqz8Fl45jKy5VWODTD1Hc
-	XmjWLHSOPnq6iBI70wvNaFxt8J
-X-Received: by 2002:a05:6000:2210:b0:435:dbc4:3af0 with SMTP id ffacd0b85a97d-43629340a63mr21854240f8f.14.1770734038406;
-        Tue, 10 Feb 2026 06:33:58 -0800 (PST)
+        bh=ZucUQndu/p6rPTTHz/msQccYgtmt2/K9BAyl4/uUXJM=;
+        b=TeDYoYvor8cIpd/h0Y99P/KB4q826NX90B4V015QWjGDT7cMO/mdjHO2xK9l7+LcQI
+         bqSvCahvXnN5pxI/AzIZ4x15SDevrh0uX04xCLIJaXkPw68VlVYLfd6PMoBALKAUYRty
+         nFDH/pgdsXt3TzKAR9+PYgPpEYloxnvINHf1zzcs9yEdx7+choaz4vKPIz89nnWboOEy
+         0bBT3jIDHfimoRcTK8w9Y0Sv/UqBxBI68dIxGhPZZidjFnOCuS/OVldZRmEU5dapnk4k
+         n/unfz9WKQTubqkLJcWMQdln0QyQ5Oi8aXPJecm8ic/nyoJ4es6v7YjgENh1W4iUtNxN
+         LYlg==
+X-Forwarded-Encrypted: i=1; AJvYcCUst4vsHeaYYXOPWlix8dw4V8UTUa83TYUcOAd1gTX+DJT4k5sBoq1CHZh50l+UpldXpMUOm6jkj3/v11VXOw==@vger.kernel.org
+X-Gm-Message-State: AOJu0YySuqwr/M+HktfJgV6NC0y8+WWhBldlF2AqhVFVwXdIn25Tqmcl
+	0HBt6ilISL2vmMelVtXd7TwAjQCR1XtL5bUp+ZQTwB+uFvEAZf6cxFv6xLZ6OHntY40=
+X-Gm-Gg: AZuq6aK6iTs2DK31eZ+xckjfnA0U9S1wkzd0PXtSEQShFx1/IKqAfF0hex1VrzNxKmA
+	soi7w1RfyDSaHPJKZxmJosEQOwyrEKmJYcv9Bn7IpR5Sn819pNyksvwmYuQttimXzIc6HcmQStA
+	hqJ2QceOo3NpA/B1zNKo+UaXsHY0Ool5fL2+KhYNskWu3okPfCsSAsyj2YQG/lsSUItWZssSqbe
+	xTzl0Kdt+oUeaxdjhCu9qGo1Jvt+0jH3gBdy7Mk0mGe4r8C0AQjHL6E0wnEE33K/HMoJTBwaig2
+	HxEFWAiBLd2OpXXTUnyhPJHI3ayjrNVSymiUi6OyFfmdtirZfA7MFEYCbWg8PhycZrY5ugVwbHA
+	QFIv8tlpdGBVPCl7APlbc44sWHJSv7wHQrKgVhWKXAE1tKY6jdoYMzvPYt+aTOtGRYxGS4wgQoy
+	x9WX2FxqN36b1s0Z8NLc9iqYTy
+X-Received: by 2002:a05:600c:5253:b0:480:6941:d38b with SMTP id 5b1f17b1804b1-4832021cdcamr203766685e9.30.1770734039244;
+        Tue, 10 Feb 2026 06:33:59 -0800 (PST)
 Received: from linux ([2a00:6d43:105:c401:e307:1a37:2e76:ce91])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-4376d3a32basm18265323f8f.14.2026.02.10.06.33.57
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-4376d3a32basm18265323f8f.14.2026.02.10.06.33.58
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
         Tue, 10 Feb 2026 06:33:58 -0800 (PST)
 From: Marco Crivellari <marco.crivellari@suse.com>
@@ -87,9 +87,9 @@ Cc: Tejun Heo <tj@kernel.org>,
 	Michal Hocko <mhocko@suse.com>,
 	Miri Korenblit <miriam.rachel.korenblit@intel.com>,
 	Johannes Berg <johannes@sipsolutions.net>
-Subject: [PATCH v3 2/3] wifi: iwlwifi: fw: replace use of system_unbound_wq with system_dfl_wq
-Date: Tue, 10 Feb 2026 15:33:31 +0100
-Message-ID: <20260210143332.206146-3-marco.crivellari@suse.com>
+Subject: [PATCH v3 3/3] wifi: iwlwifi: mvm: replace use of system_wq with system_percpu_wq
+Date: Tue, 10 Feb 2026 15:33:32 +0100
+Message-ID: <20260210143332.206146-4-marco.crivellari@suse.com>
 X-Mailer: git-send-email 2.52.0
 In-Reply-To: <20260210143332.206146-1-marco.crivellari@suse.com>
 References: <20260210143332.206146-1-marco.crivellari@suse.com>
@@ -112,7 +112,7 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-31701-lists,linux-wireless=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-31702-lists,linux-wireless=lfdr.de];
 	FREEMAIL_CC(0.00)[kernel.org,gmail.com,linutronix.de,suse.com,intel.com,sipsolutions.net];
 	RCVD_COUNT_FIVE(0.00)[5];
 	FORGED_SENDER_MAILLIST(0.00)[];
@@ -128,7 +128,7 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	TO_DN_SOME(0.00)[];
 	DBL_BLOCKED_OPENRESOLVER(0.00)[suse.com:mid,suse.com:dkim,suse.com:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 6571D11BF14
+X-Rspamd-Queue-Id: 20AD811BF1C
 X-Rspamd-Action: no action
 
 This patch continues the effort to refactor workqueue APIs, which has begun
@@ -154,31 +154,39 @@ removed in the future.
 Suggested-by: Tejun Heo <tj@kernel.org>
 Signed-off-by: Marco Crivellari <marco.crivellari@suse.com>
 ---
- drivers/net/wireless/intel/iwlwifi/fw/dbg.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/net/wireless/intel/iwlwifi/mvm/tdls.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/net/wireless/intel/iwlwifi/fw/dbg.c b/drivers/net/wireless/intel/iwlwifi/fw/dbg.c
-index 2ce55859641c..e5f31b82339a 100644
---- a/drivers/net/wireless/intel/iwlwifi/fw/dbg.c
-+++ b/drivers/net/wireless/intel/iwlwifi/fw/dbg.c
-@@ -2933,7 +2933,7 @@ int iwl_fw_dbg_collect_desc(struct iwl_fw_runtime *fwrt,
- 	IWL_WARN(fwrt, "Collecting data: trigger %d fired.\n",
- 		 le32_to_cpu(desc->trig_desc.type));
+diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/tdls.c b/drivers/net/wireless/intel/iwlwifi/mvm/tdls.c
+index 36379b738de1..0df31639fa5e 100644
+--- a/drivers/net/wireless/intel/iwlwifi/mvm/tdls.c
++++ b/drivers/net/wireless/intel/iwlwifi/mvm/tdls.c
+@@ -234,7 +234,7 @@ void iwl_mvm_rx_tdls_notif(struct iwl_mvm *mvm, struct iwl_rx_cmd_buffer *rxb)
+ 	 * Also convert TU to msec.
+ 	 */
+ 	delay = TU_TO_MS(vif->bss_conf.dtim_period * vif->bss_conf.beacon_int);
+-	mod_delayed_work(system_wq, &mvm->tdls_cs.dwork,
++	mod_delayed_work(system_percpu_wq, &mvm->tdls_cs.dwork,
+ 			 msecs_to_jiffies(delay));
  
--	queue_delayed_work(system_unbound_wq, &wk_data->wk,
-+	queue_delayed_work(system_dfl_wq, &wk_data->wk,
- 			   usecs_to_jiffies(delay));
- 
+ 	iwl_mvm_tdls_update_cs_state(mvm, IWL_MVM_TDLS_SW_ACTIVE);
+@@ -548,7 +548,7 @@ iwl_mvm_tdls_channel_switch(struct ieee80211_hw *hw,
+ 	 */
+ 	delay = 2 * TU_TO_MS(vif->bss_conf.dtim_period *
+ 			     vif->bss_conf.beacon_int);
+-	mod_delayed_work(system_wq, &mvm->tdls_cs.dwork,
++	mod_delayed_work(system_percpu_wq, &mvm->tdls_cs.dwork,
+ 			 msecs_to_jiffies(delay));
  	return 0;
-@@ -3237,7 +3237,7 @@ int iwl_fw_dbg_ini_collect(struct iwl_fw_runtime *fwrt,
- 	if (sync)
- 		iwl_fw_dbg_collect_sync(fwrt, idx);
- 	else
--		queue_delayed_work(system_unbound_wq,
-+		queue_delayed_work(system_dfl_wq,
- 				   &fwrt->dump.wks[idx].wk,
- 				   usecs_to_jiffies(delay));
- 
+ }
+@@ -659,6 +659,6 @@ iwl_mvm_tdls_recv_channel_switch(struct ieee80211_hw *hw,
+ 	/* register a timeout in case we don't succeed in switching */
+ 	delay = vif->bss_conf.dtim_period * vif->bss_conf.beacon_int *
+ 		1024 / 1000;
+-	mod_delayed_work(system_wq, &mvm->tdls_cs.dwork,
++	mod_delayed_work(system_percpu_wq, &mvm->tdls_cs.dwork,
+ 			 msecs_to_jiffies(delay));
+ }
 -- 
 2.52.0
 
