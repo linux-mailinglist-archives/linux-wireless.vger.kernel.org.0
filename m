@@ -1,81 +1,81 @@
-Return-Path: <linux-wireless+bounces-31700-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-31701-lists+linux-wireless=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id +N9hEfdBi2mfRwAAu9opvQ
-	(envelope-from <linux-wireless+bounces-31700-lists+linux-wireless=lfdr.de@vger.kernel.org>)
-	for <lists+linux-wireless@lfdr.de>; Tue, 10 Feb 2026 15:34:31 +0100
+	id mO8+AgtCi2mfRwAAu9opvQ
+	(envelope-from <linux-wireless+bounces-31701-lists+linux-wireless=lfdr.de@vger.kernel.org>)
+	for <lists+linux-wireless@lfdr.de>; Tue, 10 Feb 2026 15:34:51 +0100
 X-Original-To: lists+linux-wireless@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id BB42311BF06
-	for <lists+linux-wireless@lfdr.de>; Tue, 10 Feb 2026 15:34:30 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6571D11BF14
+	for <lists+linux-wireless@lfdr.de>; Tue, 10 Feb 2026 15:34:50 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 6CD823024979
-	for <lists+linux-wireless@lfdr.de>; Tue, 10 Feb 2026 14:34:01 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 34327305CA91
+	for <lists+linux-wireless@lfdr.de>; Tue, 10 Feb 2026 14:34:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AF06526F288;
-	Tue, 10 Feb 2026 14:34:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B21193803E3;
+	Tue, 10 Feb 2026 14:34:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b="WgpwO9fu"
+	dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b="LT3W4/rl"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-wr1-f43.google.com (mail-wr1-f43.google.com [209.85.221.43])
+Received: from mail-wr1-f45.google.com (mail-wr1-f45.google.com [209.85.221.45])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4E6F122B8AB
-	for <linux-wireless@vger.kernel.org>; Tue, 10 Feb 2026 14:33:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.43
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5FBD236B05B
+	for <linux-wireless@vger.kernel.org>; Tue, 10 Feb 2026 14:34:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.45
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770734040; cv=none; b=liWZN8DmLZoms7AkXdm0klhODf3+jnzFKg6+XlGNuVjg4/qAABvhZfXgfmv6DdiUQllf9LMIEKmAqvpoo9dMwg2t3Q6yR0WZNeENtsNIAapw/sF+8/VwKapOKd7TRk+9DvvtzjiIIOSpYAvA0GeHuhy2os9YknRHwS3kZAqRA9M=
+	t=1770734041; cv=none; b=Fo9pKXOwowpUBZPXm0DN85Ax9UrtxFqKJ9WtcEigq/y7g7w13RxQDlao4r2br6lZMz1EjHNHtvUaPADGYi8TCjXGtzWEgjWLaRUKYEG3dN9r4ENcoSgRUDlcnWHNgNPu3vZUKvPjTP/bZrAUYazCpjnl8q/OChMkFF8MXBxtkRo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770734040; c=relaxed/simple;
-	bh=nIIEsPTauyFVWtnOFk2aqKgis+M/T1iS/tVHAiy2bTA=;
+	s=arc-20240116; t=1770734041; c=relaxed/simple;
+	bh=Wlm8oyIRqWO6b8b5AG7aC9bFYh24ep+yd+J5r7l0ZuM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=UIoQ8fOOYFHH4LM2pHhxUPlbFxCq8Pn2w9DJr7B7p+8pp/rL9Q5nQrw2VapE1oRZpgIqNVoqDIueHApSPkIw3KUayjGKitDic9q9Q7mh9nK/2ySG6JhVoxwxys6trDWVoeM7ZU1xNekifrvxOu//PZy7UgPu3rxFWm9rH6nJCOQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com; spf=pass smtp.mailfrom=suse.com; dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b=WgpwO9fu; arc=none smtp.client-ip=209.85.221.43
+	 MIME-Version; b=KbnsaxlYlzD9oA+6RKlcZYve94A8ulwIOjF0fKhFLwSYGMcO4KK4QE2dDR+d/ujH7LRchabxOJgaxzeFa9KAcvgF1YGXcHOidbpc8rm3cA19oJxLee2pqOU/GvsqcMqGDeSCmjzsYHh49Y1mAQdS/HD2c9RwBfINmAXF1b9M3bM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com; spf=pass smtp.mailfrom=suse.com; dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b=LT3W4/rl; arc=none smtp.client-ip=209.85.221.45
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.com
-Received: by mail-wr1-f43.google.com with SMTP id ffacd0b85a97d-4362197d174so626347f8f.3
-        for <linux-wireless@vger.kernel.org>; Tue, 10 Feb 2026 06:33:59 -0800 (PST)
+Received: by mail-wr1-f45.google.com with SMTP id ffacd0b85a97d-43770c94dfaso973171f8f.2
+        for <linux-wireless@vger.kernel.org>; Tue, 10 Feb 2026 06:34:00 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=suse.com; s=google; t=1770734038; x=1771338838; darn=vger.kernel.org;
+        d=suse.com; s=google; t=1770734039; x=1771338839; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=Pis0fcDLAyPGpTQVut9vY+Trt4oqVjrVCWf5NczeZ4E=;
-        b=WgpwO9fuX2NWuOb8WbnQuHQrTjQzLIhf/LnntZu0g8id/4/kYMkE9nZF6TAAOajp9L
-         cFQ1nYKXRwsm1JSKvr86/uS6Cq0hqpbsBQwLFXnRy4GNboj2JNLOAwqH0pAGMLdk39wr
-         ApIrowDMrmtnQCikeIM1NDJSxbllHEmrHKERfKBgxYsJbLmady0hdpiPlv+XH5kpCUs1
-         /MJmq8MzkZkI2MQghKTpFN3++zTWY5jzlNAcBonYFuiANdzi50G6yhgqWE+6jWPrRBCM
-         rSOr3q9oucdI5G6mpTza+0v5+1hUn8RBLjCtjPzrz7xt0A524hS7CUOirF1F+mZ66vDs
-         WDqA==
+        bh=iStm+JloDf5Hvq/3VIp9y1mrTCpbEIULugoCNyu96NE=;
+        b=LT3W4/rlYWqfJCxcRZjTI9dwKMAC2+dW8NWEqXad0GlknzSHtehmeYmFPDm+gFRZq6
+         ZlsU4+FkQMsBJvHj83VOIRZ5wpU42zUSs6hvd12mWWjJxUsVWF/wRlFP6ryFd4NsJZLX
+         DaSa8Gbvin08WBEgVRueB7vnbvOKBj6AWMSpbKQs696bsZ5Us0eCse8+rRXcCbDH+amT
+         mh1gIbxxl29TNVCxqPd0SVQAlb0WceNozP7V54VHuU3uOiI1csQ+k0mTjXXEK5Ghpj6Q
+         vnvKjtBFSODp4rZM11q0Fpx1ajNVUCSNO85Ifp1pOCBujSeO+UNfXcQ0tDJqytPypF9D
+         pyhw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1770734038; x=1771338838;
+        d=1e100.net; s=20230601; t=1770734039; x=1771338839;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to;
-        bh=Pis0fcDLAyPGpTQVut9vY+Trt4oqVjrVCWf5NczeZ4E=;
-        b=DBVb9eowCTBmMsVkV0NT5iImHJcXmMR5yri4yodBxqVY/e0tMgn0RAPuzeGc27h0cO
-         tcdQU9kKsd4YI3/zz5yowri181Ns3N6e4WQWVwesh9r2JChcavB4eEQYJ8vexbFjP4W8
-         04/4j+pCc/jeK4/Cks55Gkh2OxsZeMCZEj2l4A0zSTshdcOxbXsGAuYd8i9EqYaZYE+9
-         tmdWSDenbd7kS4jJCq417zVmAsrWgPBJMycodyHUBD8k4/xALbLQZai588eA6MnIAT5Q
-         F+Tz1hQiPE8o7PdwnkiuB4s9Lbehnxpv5iTXUi7j1pacoryFU5DgsEw7yl9QzHPsVj4S
-         SxmA==
-X-Forwarded-Encrypted: i=1; AJvYcCUpTmdjWyMeE6WnQrUGgmfdI6XOpYBCGMUYl7ikuKVcpn+GggNk2krYnQ0Bk2Y2SUPjl0VxwzuYd4RIKXgXRQ==@vger.kernel.org
-X-Gm-Message-State: AOJu0YzbJL5cO77piRYdcacTfxjcOtYP6nQZ0EYywYyalz3zaMBbEoOL
-	CadfegCCKobSQRAkStdTfwOA4H6lRPCbKOro7u9WclI0gP/+A9zcEDxwkdL4aT+0bPw=
-X-Gm-Gg: AZuq6aKllUk9SRQLlZnckJaQLkxPlYPCyOox/X6ib2S35AZh8sCyvUn+fnVwQ24XsZ0
-	TsNMrhaCO9nj0UEHQrO4kUpyYHceKgaQiNOa/UKOkx5XEJpowqfWYJAvtSa0aJsdAUWZpEwlhgz
-	ki0XoHjpiHZ3oaHzIz68/o7XKQlRjyEXwGSrbGa8asKks4wQx/BAc8FCKeRdiI6usm8TOMGAmvz
-	JPgITUP5kkPrT233gFtexD0cYN2q8jXh+SNg7vroQZGcho2BBhKRPDaHNO1OV144aqsNqME3Yg0
-	DlyShyHm++4lPGswZNj3GwUGEIy5XeESibXxLftJ+Bjr1NQdWl+ceeEK6pB8tJ3ou02EXzGKVdh
-	hQH8RoRwwtcQVO2CfHSCHTvFC2fN5g6WUWLfmpedKg5ETtCKAKzsR/SjOIujTDMKcMdBBvrm20h
-	usnPi4iH8IJG7Tv6c4CeC6BGF1
-X-Received: by 2002:a5d:64e9:0:b0:436:1d80:b663 with SMTP id ffacd0b85a97d-4362938578bmr22844040f8f.58.1770734037519;
-        Tue, 10 Feb 2026 06:33:57 -0800 (PST)
+        bh=iStm+JloDf5Hvq/3VIp9y1mrTCpbEIULugoCNyu96NE=;
+        b=mxlGkwLtXNbjfckXDISmgoTz2H4j98tmeGbG2DiDIyOON6rzE1zLYky3tdhy3CLiB5
+         lmtf72TLTx9McckYpT/klkpDgeTaNMtdST9qncWcpvrm9N3ZQPnChsUYTwS19Qs+Cwoa
+         VlbGegP44RC1k8FfbOOXxLIqrJXWoQjDqNNTo0/vVinYYv9I+F/7M9brK73jH2aVAqsq
+         x1H0ngiakiPUcKIaAR1hNqrcX/hUKbtstkOq+IYKx80CRV+ITNgDYJADhTxmcDefwhik
+         vOVcSNZFqQoEx47SNjXIznqPTh9uCrDHXab5WlsClvDb1oUqjoDBymsCquk4kgr778N3
+         uIaQ==
+X-Forwarded-Encrypted: i=1; AJvYcCVhx/AfCiXJpYbKHHBzj6MuvuuXyTtAZ2+LmDIO8b6bNayjXV3YTaAUCHDd5T+UdIXR7SiJ5fsGrxtUHayaGg==@vger.kernel.org
+X-Gm-Message-State: AOJu0YxRfd2BQ6xqqDsktm+lgqiV1RwCM1MlNAr7dsOUVliAIzLQvVmq
+	2JOa/H6dJ6TswtS5HkYOy/WSsVKREllnnMWZy7pLaI7+Re1u+sw56xJtDfBNzZG0BuA=
+X-Gm-Gg: AZuq6aIjuwfpJ1w43pzbdWkNOtctqjs8OuyKWCuIbQwbFv3u6Rq0CJMmT9eeHARyUSZ
+	BP5AdWFtFbblYpAll0uRRsUStejGRQYGB6n9/end8ILQfXIgrT77nNoB1apLnrbNsEw1l3V0s3z
+	DQ9mf6jjc1kV5JkxqxJFDaLwfLsdsSApb9D/gZ7ypsM35v9yMEn6dY1QYuuWmMNobjqsAQgJvU5
+	sBdPum5UnipOot1iTRtODZQNrIGYXu3zzkdVAcME/X+QetggdjgMxdyn5ULrmMn6IBzAkSI0LJ2
+	U0JgKp4BloMaHFJ7j9UsBd2kRUb13h52U637fxgiwUiZ4Svypn7pMOy903I0NEHok3jf9dLp9oS
+	uWsywue41+fRkgHJCPbDE1kMS3s13oquB1Sg36oilWMZi0Zhh/3MzIrqz8Fl45jKy5VWODTD1Hc
+	XmjWLHSOPnq6iBI70wvNaFxt8J
+X-Received: by 2002:a05:6000:2210:b0:435:dbc4:3af0 with SMTP id ffacd0b85a97d-43629340a63mr21854240f8f.14.1770734038406;
+        Tue, 10 Feb 2026 06:33:58 -0800 (PST)
 Received: from linux ([2a00:6d43:105:c401:e307:1a37:2e76:ce91])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-4376d3a32basm18265323f8f.14.2026.02.10.06.33.49
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-4376d3a32basm18265323f8f.14.2026.02.10.06.33.57
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 10 Feb 2026 06:33:50 -0800 (PST)
+        Tue, 10 Feb 2026 06:33:58 -0800 (PST)
 From: Marco Crivellari <marco.crivellari@suse.com>
 To: linux-kernel@vger.kernel.org,
 	linux-wireless@vger.kernel.org
@@ -87,9 +87,9 @@ Cc: Tejun Heo <tj@kernel.org>,
 	Michal Hocko <mhocko@suse.com>,
 	Miri Korenblit <miriam.rachel.korenblit@intel.com>,
 	Johannes Berg <johannes@sipsolutions.net>
-Subject: [PATCH v3 1/3] wifi: iwlwifi: replace use of system_unbound_wq with system_dfl_wq
-Date: Tue, 10 Feb 2026 15:33:30 +0100
-Message-ID: <20260210143332.206146-2-marco.crivellari@suse.com>
+Subject: [PATCH v3 2/3] wifi: iwlwifi: fw: replace use of system_unbound_wq with system_dfl_wq
+Date: Tue, 10 Feb 2026 15:33:31 +0100
+Message-ID: <20260210143332.206146-3-marco.crivellari@suse.com>
 X-Mailer: git-send-email 2.52.0
 In-Reply-To: <20260210143332.206146-1-marco.crivellari@suse.com>
 References: <20260210143332.206146-1-marco.crivellari@suse.com>
@@ -106,13 +106,13 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	MID_CONTAINS_FROM(1.00)[];
 	DMARC_POLICY_ALLOW(-0.50)[suse.com,quarantine];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[suse.com:s=google];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-31700-lists,linux-wireless=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-31701-lists,linux-wireless=lfdr.de];
 	FREEMAIL_CC(0.00)[kernel.org,gmail.com,linutronix.de,suse.com,intel.com,sipsolutions.net];
 	RCVD_COUNT_FIVE(0.00)[5];
 	FORGED_SENDER_MAILLIST(0.00)[];
@@ -125,10 +125,10 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	RCPT_COUNT_SEVEN(0.00)[10];
 	DKIM_TRACE(0.00)[suse.com:+];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	TO_DN_SOME(0.00)[];
 	DBL_BLOCKED_OPENRESOLVER(0.00)[suse.com:mid,suse.com:dkim,suse.com:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: BB42311BF06
+X-Rspamd-Queue-Id: 6571D11BF14
 X-Rspamd-Action: no action
 
 This patch continues the effort to refactor workqueue APIs, which has begun
@@ -154,22 +154,31 @@ removed in the future.
 Suggested-by: Tejun Heo <tj@kernel.org>
 Signed-off-by: Marco Crivellari <marco.crivellari@suse.com>
 ---
- drivers/net/wireless/intel/iwlwifi/iwl-trans.h | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/net/wireless/intel/iwlwifi/fw/dbg.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/net/wireless/intel/iwlwifi/iwl-trans.h b/drivers/net/wireless/intel/iwlwifi/iwl-trans.h
-index a552669db6e2..2f24b639c133 100644
---- a/drivers/net/wireless/intel/iwlwifi/iwl-trans.h
-+++ b/drivers/net/wireless/intel/iwlwifi/iwl-trans.h
-@@ -1092,7 +1092,7 @@ static inline void iwl_trans_schedule_reset(struct iwl_trans *trans,
- 	 */
- 	trans->restart.during_reset = test_bit(STATUS_IN_SW_RESET,
- 					       &trans->status);
--	queue_delayed_work(system_unbound_wq, &trans->restart.wk, 0);
-+	queue_delayed_work(system_dfl_wq, &trans->restart.wk, 0);
- }
+diff --git a/drivers/net/wireless/intel/iwlwifi/fw/dbg.c b/drivers/net/wireless/intel/iwlwifi/fw/dbg.c
+index 2ce55859641c..e5f31b82339a 100644
+--- a/drivers/net/wireless/intel/iwlwifi/fw/dbg.c
++++ b/drivers/net/wireless/intel/iwlwifi/fw/dbg.c
+@@ -2933,7 +2933,7 @@ int iwl_fw_dbg_collect_desc(struct iwl_fw_runtime *fwrt,
+ 	IWL_WARN(fwrt, "Collecting data: trigger %d fired.\n",
+ 		 le32_to_cpu(desc->trig_desc.type));
  
- static inline void iwl_trans_fw_error(struct iwl_trans *trans,
+-	queue_delayed_work(system_unbound_wq, &wk_data->wk,
++	queue_delayed_work(system_dfl_wq, &wk_data->wk,
+ 			   usecs_to_jiffies(delay));
+ 
+ 	return 0;
+@@ -3237,7 +3237,7 @@ int iwl_fw_dbg_ini_collect(struct iwl_fw_runtime *fwrt,
+ 	if (sync)
+ 		iwl_fw_dbg_collect_sync(fwrt, idx);
+ 	else
+-		queue_delayed_work(system_unbound_wq,
++		queue_delayed_work(system_dfl_wq,
+ 				   &fwrt->dump.wks[idx].wk,
+ 				   usecs_to_jiffies(delay));
+ 
 -- 
 2.52.0
 
