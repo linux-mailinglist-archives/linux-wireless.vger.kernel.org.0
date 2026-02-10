@@ -1,75 +1,78 @@
-Return-Path: <linux-wireless+bounces-31709-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-31710-lists+linux-wireless=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id E0UwJt13i2kVUgAAu9opvQ
-	(envelope-from <linux-wireless+bounces-31709-lists+linux-wireless=lfdr.de@vger.kernel.org>)
-	for <lists+linux-wireless@lfdr.de>; Tue, 10 Feb 2026 19:24:29 +0100
+	id SDywNOR3i2kVUgAAu9opvQ
+	(envelope-from <linux-wireless+bounces-31710-lists+linux-wireless=lfdr.de@vger.kernel.org>)
+	for <lists+linux-wireless@lfdr.de>; Tue, 10 Feb 2026 19:24:36 +0100
 X-Original-To: lists+linux-wireless@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id DC01611E4F6
-	for <lists+linux-wireless@lfdr.de>; Tue, 10 Feb 2026 19:24:28 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 76E3311E50D
+	for <lists+linux-wireless@lfdr.de>; Tue, 10 Feb 2026 19:24:36 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 43549303AF2A
-	for <lists+linux-wireless@lfdr.de>; Tue, 10 Feb 2026 18:24:27 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 532763047016
+	for <lists+linux-wireless@lfdr.de>; Tue, 10 Feb 2026 18:24:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9588238A29A;
-	Tue, 10 Feb 2026 18:24:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2104038B7AF;
+	Tue, 10 Feb 2026 18:24:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=mediatek.com header.i=@mediatek.com header.b="VoKU4JXx"
+	dkim=pass (1024-bit key) header.d=mediatek.com header.i=@mediatek.com header.b="pUINwEDg"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from mailgw01.mediatek.com (unknown [60.244.123.138])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 39E1325A354;
-	Tue, 10 Feb 2026 18:24:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 289F63246E3;
+	Tue, 10 Feb 2026 18:24:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=60.244.123.138
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770747866; cv=none; b=LEz+Un1P0cj7U+h0JJGUGgmp0Gyk4ZRQTfJfcraPj6vtYhRU5wEo4Uac2takwZRDADF+4oOkThoA0BmlOT1NPXFHLQQnyCxeiVwSW+O1FdQ354Q81MKksS6pIxZCQ07lZnJbwCPwY/04eOvweUN9LXpGTY3I5v642lIGBdO7TSo=
+	t=1770747868; cv=none; b=YrYqLPsOUftj6JSuTo7EFKLSBb9QESZujjERjCpeteEePzIdW6+pdurrE3+9SnE3jEhItlKPIU98ws0b2a2LhGzxu4WE63IOwqGeu0LfZTG0VHWCmJwLFmg7WZ8ppDmu/JIzCuwfyqWo5eaiD5hGs4+eKT3viOOWTABBvlpd9PE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770747866; c=relaxed/simple;
-	bh=jbtjgleDK6XJs5VcXh+X9zps4nyWbJrR/T6zQ26UNCs=;
-	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=hL8/uksNEjbg9LgiQzh2i3dJo12bRhhovfPeLG3jN6C6nt8+NthsJlCj1B4jQdjmjhbcZzGZzBexrYU60chkjPOGx9GrPheOoaI1wPly/1sBZyOmi8xEFb9wxYHGDMXAt2Jal+4joVq2SEdtubqQK1nsCS1Eg61171fdSCRBG98=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=mediatek.com; spf=pass smtp.mailfrom=mediatek.com; dkim=pass (1024-bit key) header.d=mediatek.com header.i=@mediatek.com header.b=VoKU4JXx; arc=none smtp.client-ip=60.244.123.138
+	s=arc-20240116; t=1770747868; c=relaxed/simple;
+	bh=8lL+FgvgXZWClnLoSJpYz0enNpvBSDnxFiP8KQ8ENgw=;
+	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=j1pFoY1GVJU6bVPvJH0vXIexMSvkX8W66AzYv9yU3n9lh5jh9Fa41MmP1Wd26+bHreADONkvPG+VKvptDMSuwtkb0/eQchCwoDlwoNLJzE0Nb6Zce7HVahI1rhCOTnWuk1yaM7gaaQbBsG+rDlw0tNi0gIk8+KLRFY1gtLvK4js=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=mediatek.com; spf=pass smtp.mailfrom=mediatek.com; dkim=pass (1024-bit key) header.d=mediatek.com header.i=@mediatek.com header.b=pUINwEDg; arc=none smtp.client-ip=60.244.123.138
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=mediatek.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=mediatek.com
-X-UUID: 9913ed3e06ab11f185319dbc3099e8fb-20260211
+X-UUID: 9a670d4206ab11f185319dbc3099e8fb-20260211
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=mediatek.com; s=dk;
-	h=Content-Type:Content-Transfer-Encoding:MIME-Version:Message-ID:Date:Subject:CC:To:From; bh=oH3IAtOnsh2fuVtcrht4CGGicuTHa4AMS7Ui0cJNMKY=;
-	b=VoKU4JXxv8kboRYk6/4XnqA3q8SOPZnkzo258cjufaylIBRiVggWgP5fODkdwLMxTShGz+vDTmFpZDPuH/Z5V0ywglNj0mF06Pbs6+2eIlGJ9PEs284asu+kYpZf/sa6kcp/ksKRz9Mgvw3x+ZtP78PoVDhzi6A4QuBSRCO31HA=;
+	h=Content-Type:Content-Transfer-Encoding:MIME-Version:References:In-Reply-To:Message-ID:Date:Subject:CC:To:From; bh=1Wg/Oi6VHdbF/mO8kslgQtkzQWmy64Pp0f5I510coWc=;
+	b=pUINwEDgHjyyf/lvSt2YxL3zsaM/KrEpnAh5fSPPdgz2KM0+Nq3Frxk46lxZ9uOB/blCIGebsZOS9bcfAGH+7erZ74IVZDVb21MHKiA9BuDfGFDZUg2SyqRd8aoUEZEKyigAtfbHYbpdbP49spH8xrt35FcAskXmwaddMOQaKQE=;
 X-CID-P-RULE: Release_Ham
-X-CID-O-INFO: VERSION:1.3.11,REQID:35b1039c-c716-4d72-bd05-c68eddbd1a5d,IP:0,U
+X-CID-O-INFO: VERSION:1.3.11,REQID:ec11187d-a25e-425f-a1c1-2496edbed069,IP:0,U
 	RL:0,TC:0,Content:0,EDM:0,RT:0,SF:0,FILE:0,BULK:0,RULE:Release_Ham,ACTION:
 	release,TS:0
-X-CID-META: VersionHash:89c9d04,CLOUDID:734f265b-a957-4259-bcca-d3af718d7034,B
-	ulkID:nil,BulkQuantity:0,Recheck:0,SF:102|836|888|898,TC:-5,Content:0|15|5
-	0,EDM:-3,IP:nil,URL:0,File:130,RT:0,Bulk:nil,QS:nil,BEC:-1,COL:0,OSI:0,OSA
-	:0,AV:0,LES:1,SPR:NO,DKR:0,DKP:0,BRR:0,BRE:0,ARC:0
+X-CID-META: VersionHash:89c9d04,CLOUDID:7e4f265b-a957-4259-bcca-d3af718d7034,B
+	ulkID:nil,BulkQuantity:0,Recheck:0,SF:81|82|102|836|888|898,TC:-5,Content:
+	0|15|50,EDM:-3,IP:nil,URL:0,File:130,RT:0,Bulk:nil,QS:nil,BEC:-1,COL:0,OSI
+	:0,OSA:0,AV:0,LES:1,SPR:NO,DKR:0,DKP:0,BRR:0,BRE:0,ARC:0
 X-CID-BVR: 2,SSN|SDN
 X-CID-BAS: 2,SSN|SDN,0,_
 X-CID-FACTOR: TF_CID_SPAM_SNR
 X-CID-RHF: D41D8CD98F00B204E9800998ECF8427E
-X-UUID: 9913ed3e06ab11f185319dbc3099e8fb-20260211
+X-UUID: 9a670d4206ab11f185319dbc3099e8fb-20260211
 Received: from mtkmbs09n1.mediatek.inc [(172.21.101.35)] by mailgw01.mediatek.com
 	(envelope-from <ryder.lee@mediatek.com>)
 	(Generic MTA with TLSv1.2 ECDHE-RSA-AES256-GCM-SHA384 256/256)
-	with ESMTP id 743620378; Wed, 11 Feb 2026 02:09:10 +0800
+	with ESMTP id 1951395340; Wed, 11 Feb 2026 02:09:12 +0800
 Received: from mtkmbs13n2.mediatek.inc (172.21.101.108) by
- mtkmbs11n1.mediatek.inc (172.21.101.185) with Microsoft SMTP Server
+ mtkmbs13n1.mediatek.inc (172.21.101.193) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.29; Wed, 11 Feb 2026 02:09:08 +0800
+ 15.2.2562.29; Wed, 11 Feb 2026 02:09:11 +0800
 Received: from mussdccf250.eus.mediatek.inc (10.73.250.250) by
  mtkmbs13n2.mediatek.inc (172.21.101.73) with Microsoft SMTP Server id
- 15.2.2562.29 via Frontend Transport; Wed, 11 Feb 2026 02:09:07 +0800
+ 15.2.2562.29 via Frontend Transport; Wed, 11 Feb 2026 02:09:10 +0800
 From: Ryder Lee <ryder.lee@mediatek.com>
 To: Felix Fietkau <nbd@nbd.name>, Rob Herring <robh@kernel.org>
 CC: <devicetree@vger.kernel.org>, <linux-mediatek@lists.infradead.org>,
-	<linux-wireless@vger.kernel.org>, Allen Ye <allen.ye@mediatek.com>, Ryder Lee
-	<ryder.lee@mediatek.com>
-Subject: [PATCH v3 1/2] wifi: mt76: fix backoff fields and max_power calculation
-Date: Tue, 10 Feb 2026 10:08:55 -0800
-Message-ID: <8fa8ec500b3d4de7b1966c6887f1dfbe5c46a54c.1770746444.git.ryder.lee@mediatek.com>
+	<linux-wireless@vger.kernel.org>, Ryder Lee <ryder.lee@mediatek.com>, Allen
+ Ye <allen.ye@mediatek.com>
+Subject: [PATCH v3 2/2] dt-bindings: net: wireless: mt76: clarify backoff limit format
+Date: Tue, 10 Feb 2026 10:08:56 -0800
+Message-ID: <69521aebefef405bad5117d4d5d5fef4a5dfb7e8.1770746444.git.ryder.lee@mediatek.com>
 X-Mailer: git-send-email 2.45.2
+In-Reply-To: <8fa8ec500b3d4de7b1966c6887f1dfbe5c46a54c.1770746444.git.ryder.lee@mediatek.com>
+References: <8fa8ec500b3d4de7b1966c6887f1dfbe5c46a54c.1770746444.git.ryder.lee@mediatek.com>
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
@@ -91,7 +94,7 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-31709-lists,linux-wireless=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-31710-lists,linux-wireless=lfdr.de];
 	RCVD_COUNT_FIVE(0.00)[6];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
@@ -105,292 +108,61 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	TO_DN_SOME(0.00)[];
 	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: DC01611E4F6
+X-Rspamd-Queue-Id: 76E3311E50D
 X-Rspamd-Action: no action
 
-From: Allen Ye <allen.ye@mediatek.com>
+Clarify the format of path backoff limit properties in mt76 binding.
+Add explicit documentation for connac2 (mt7915, mt7981, mt7986) and
+connac3 (mt7990, mt7992, mt7996...) devices, including the difference
+in beamforming and non-beamforming entries.
 
-The maximum power value may exist in either the data or backoff field.
-Previously, backoff power limits were not considered in txpower reporting.
-This patch ensures mt76 also considers backoff values in the SKU table.
+Also reformat the description to make is more precise.
 
-Also, each RU entry (RU26, RU52, RU106, BW20, ...) in the DTS corresponds
-to 10 stream combinations (1T1ss, 2T1ss, 3T1ss, 4T1ss, 2T2ss, 3T2ss,
-4T2ss, 3T3ss, 4T3ss, 4T4ss).
-
-For beamforming tables:
-- In connac2, beamforming entries for BW20~BW160, and OFDM do not include
-  1T1ss.
-- In connac3, beamforming entries for BW20~BW160, and RU include 1T1ss,
-  but OFDM beamforming does not include 1T1ss.
-
-Non-beamforming and RU entries for both connac2 and connac3 include 1T1ss.
-
-Fixes: b05ab4be9fd7 ("wifi: mt76: mt7915: add bf backoff limit table support")
 Signed-off-by: Allen Ye <allen.ye@mediatek.com>
-Co-developed-by: Ryder Lee <ryder.lee@mediatek.com>
+Co-developed-by: Allen Ye <allen.ye@mediatek.com>
 Signed-off-by: Ryder Lee <ryder.lee@mediatek.com>
 ---
-v1:
-- Add "wifi:" prefix to the subject.
+ .../bindings/net/wireless/mediatek,mt76.yaml  | 20 +++++++++++++++++++
+ 1 file changed, 20 insertions(+)
 
-v2:
-- Fix checkpatch errors.
-- Remove unnecessary style changes.
-- Add explanation for connac2 index adjustment.
-
-v3:
-- Fix "case"s for MT76_SKU_BACKOFF_BF_OFFSET and MT76_SKU_BACKOFF.
-- add more explanation for connac2/connac3 tables.
----
- drivers/net/wireless/mediatek/mt76/eeprom.c | 154 ++++++++++++++------
- drivers/net/wireless/mediatek/mt76/mt76.h   |   1 -
- 2 files changed, 109 insertions(+), 46 deletions(-)
-
-diff --git a/drivers/net/wireless/mediatek/mt76/eeprom.c b/drivers/net/wireless/mediatek/mt76/eeprom.c
-index 573400d57..afdb73661 100644
---- a/drivers/net/wireless/mediatek/mt76/eeprom.c
-+++ b/drivers/net/wireless/mediatek/mt76/eeprom.c
-@@ -9,6 +9,13 @@
- #include <linux/nvmem-consumer.h>
- #include <linux/etherdevice.h>
- #include "mt76.h"
-+#include "mt76_connac.h"
-+
-+enum mt76_sku_type {
-+	MT76_SKU_RATE,
-+	MT76_SKU_BACKOFF,
-+	MT76_SKU_BACKOFF_BF_OFFSET,
-+};
- 
- static int mt76_get_of_eeprom_data(struct mt76_dev *dev, void *eep, int len)
- {
-@@ -292,7 +299,6 @@ mt76_find_channel_node(struct device_node *np, struct ieee80211_channel *chan)
- }
- EXPORT_SYMBOL_GPL(mt76_find_channel_node);
- 
--
- static s8
- mt76_get_txs_delta(struct device_node *np, u8 nss)
- {
-@@ -306,9 +312,24 @@ mt76_get_txs_delta(struct device_node *np, u8 nss)
- 	return be32_to_cpu(val[nss - 1]);
- }
- 
-+static inline u8 mt76_backoff_n_chains(struct mt76_dev *dev, u8 idx)
-+{
-+	/* 0:1T1ss, 1:2T1ss, ..., 14:5T5ss */
-+	static const u8 connac3_table[] = {
-+		1, 2, 3, 4, 5, 2, 3, 4, 5, 3, 4, 5, 4, 5, 5};
-+	static const u8 connac2_table[] = {
-+		1, 2, 3, 4, 2, 3, 4, 3, 4, 4, 0, 0, 0, 0, 0};
-+
-+	if (idx >= ARRAY_SIZE(connac3_table))
-+		return 0;
-+
-+	return is_mt799x(dev) ? connac3_table[idx] : connac2_table[idx];
-+}
-+
- static void
--mt76_apply_array_limit(s8 *pwr, size_t pwr_len, const s8 *data,
--		       s8 target_power, s8 nss_delta, s8 *max_power)
-+mt76_apply_array_limit(struct mt76_dev *dev, s8 *pwr, size_t pwr_len,
-+		       const s8 *data, s8 target_power, s8 nss_delta,
-+		       s8 *max_power, int n_chains, enum mt76_sku_type type)
- {
- 	int i;
- 
-@@ -316,18 +337,51 @@ mt76_apply_array_limit(s8 *pwr, size_t pwr_len, const s8 *data,
- 		return;
- 
- 	for (i = 0; i < pwr_len; i++) {
--		pwr[i] = min_t(s8, target_power, data[i] + nss_delta);
-+		u8 backoff_chain_idx = i;
-+		int backoff_n_chains;
-+		s8 backoff_delta;
-+		s8 delta;
-+
-+		switch (type) {
-+		case MT76_SKU_RATE:
-+			delta = 0;
-+			backoff_delta = 0;
-+			backoff_n_chains = 0;
-+			break;
-+		case MT76_SKU_BACKOFF_BF_OFFSET:
-+			backoff_chain_idx += 1;
-+			fallthrough;
-+		case MT76_SKU_BACKOFF:
-+			delta = mt76_tx_power_path_delta(n_chains);
-+			backoff_n_chains = mt76_backoff_n_chains(dev, backoff_chain_idx);
-+			backoff_delta = mt76_tx_power_path_delta(backoff_n_chains);
-+			break;
-+		default:
-+			return;
-+		}
-+
-+		pwr[i] = min_t(s8, target_power + delta - backoff_delta, data[i] + nss_delta);
-+
-+		/* used for padding, doesn't need to be considered */
-+		if (data[i] >= S8_MAX - 1)
-+			continue;
-+
-+		/* only consider backoff value for the configured chain number */
-+		if (type != MT76_SKU_RATE && n_chains != backoff_n_chains)
-+			continue;
-+
- 		*max_power = max(*max_power, pwr[i]);
- 	}
- }
- 
- static void
--mt76_apply_multi_array_limit(s8 *pwr, size_t pwr_len, s8 pwr_num,
--			     const s8 *data, size_t len, s8 target_power,
--			     s8 nss_delta)
-+mt76_apply_multi_array_limit(struct mt76_dev *dev, s8 *pwr, size_t pwr_len,
-+			     s8 pwr_num, const s8 *data, size_t len,
-+			     s8 target_power, s8 nss_delta, s8 *max_power,
-+			     int n_chains, enum mt76_sku_type type)
- {
-+	static const int connac2_backoff_ru_idx = 2;
- 	int i, cur;
--	s8 max_power = -128;
- 
- 	if (!data)
- 		return;
-@@ -337,8 +391,26 @@ mt76_apply_multi_array_limit(s8 *pwr, size_t pwr_len, s8 pwr_num,
- 		if (len < pwr_len + 1)
- 			break;
- 
--		mt76_apply_array_limit(pwr + pwr_len * i, pwr_len, data + 1,
--				       target_power, nss_delta, &max_power);
-+		/* Each RU entry (RU26, RU52, RU106, BW20, ...) in the DTS
-+		 * corresponds to 10 stream combinations (1T1ss, 2T1ss, 3T1ss,
-+		 * 4T1ss, 2T2ss, 3T2ss, 4T2ss, 3T3ss, 4T3ss, 4T4ss).
-+		 *
-+		 * For beamforming tables:
-+		 * - In connac2, beamforming entries for BW20~BW160 and OFDM
-+		 *   do not include 1T1ss.
-+		 * - In connac3, beamforming entries for BW20~BW160 and RU
-+		 *   include 1T1ss, but OFDM beamforming does not include 1T1ss.
-+		 *
-+		 * Non-beamforming and RU entries for both connac2 and connac3
-+		 * include 1T1ss.
-+		 */
-+		if (!is_mt799x(dev) && type == MT76_SKU_BACKOFF &&
-+		    i > connac2_backoff_ru_idx)
-+			type = MT76_SKU_BACKOFF_BF_OFFSET;
-+
-+		mt76_apply_array_limit(dev, pwr + pwr_len * i, pwr_len, data + 1,
-+				       target_power, nss_delta, max_power,
-+				       n_chains, type);
- 		if (--cur > 0)
- 			continue;
- 
-@@ -360,18 +432,11 @@ s8 mt76_get_rate_power_limits(struct mt76_phy *phy,
- 	struct device_node *np;
- 	const s8 *val;
- 	char name[16];
--	u32 mcs_rates = dev->drv->mcs_rates;
--	u32 ru_rates = ARRAY_SIZE(dest->ru[0]);
- 	char band;
- 	size_t len;
--	s8 max_power = 0;
--	s8 max_power_backoff = -127;
-+	s8 max_power = -127;
- 	s8 txs_delta;
- 	int n_chains = hweight16(phy->chainmask);
--	s8 target_power_combine = target_power + mt76_tx_power_path_delta(n_chains);
--
--	if (!mcs_rates)
--		mcs_rates = 10;
- 
- 	memset(dest, target_power, sizeof(*dest) - sizeof(dest->path));
- 	memset(&dest->path, 0, sizeof(dest->path));
-@@ -409,46 +474,45 @@ s8 mt76_get_rate_power_limits(struct mt76_phy *phy,
- 	txs_delta = mt76_get_txs_delta(np, hweight16(phy->chainmask));
- 
- 	val = mt76_get_of_array_s8(np, "rates-cck", &len, ARRAY_SIZE(dest->cck));
--	mt76_apply_array_limit(dest->cck, ARRAY_SIZE(dest->cck), val,
--			       target_power, txs_delta, &max_power);
-+	mt76_apply_array_limit(dev, dest->cck, ARRAY_SIZE(dest->cck), val,
-+			       target_power, txs_delta, &max_power, n_chains, MT76_SKU_RATE);
- 
--	val = mt76_get_of_array_s8(np, "rates-ofdm",
--				   &len, ARRAY_SIZE(dest->ofdm));
--	mt76_apply_array_limit(dest->ofdm, ARRAY_SIZE(dest->ofdm), val,
--			       target_power, txs_delta, &max_power);
-+	val = mt76_get_of_array_s8(np, "rates-ofdm", &len, ARRAY_SIZE(dest->ofdm));
-+	mt76_apply_array_limit(dev, dest->ofdm, ARRAY_SIZE(dest->ofdm), val,
-+			       target_power, txs_delta, &max_power, n_chains, MT76_SKU_RATE);
- 
--	val = mt76_get_of_array_s8(np, "rates-mcs", &len, mcs_rates + 1);
--	mt76_apply_multi_array_limit(dest->mcs[0], ARRAY_SIZE(dest->mcs[0]),
--				     ARRAY_SIZE(dest->mcs), val, len,
--				     target_power, txs_delta);
-+	val = mt76_get_of_array_s8(np, "rates-mcs", &len, ARRAY_SIZE(dest->mcs[0]) + 1);
-+	mt76_apply_multi_array_limit(dev, dest->mcs[0], ARRAY_SIZE(dest->mcs[0]),
-+				     ARRAY_SIZE(dest->mcs), val, len, target_power,
-+				     txs_delta, &max_power, n_chains, MT76_SKU_RATE);
- 
--	val = mt76_get_of_array_s8(np, "rates-ru", &len, ru_rates + 1);
--	mt76_apply_multi_array_limit(dest->ru[0], ARRAY_SIZE(dest->ru[0]),
--				     ARRAY_SIZE(dest->ru), val, len,
--				     target_power, txs_delta);
-+	val = mt76_get_of_array_s8(np, "rates-ru", &len, ARRAY_SIZE(dest->ru[0]) + 1);
-+	mt76_apply_multi_array_limit(dev, dest->ru[0], ARRAY_SIZE(dest->ru[0]),
-+				     ARRAY_SIZE(dest->ru), val, len, target_power,
-+				     txs_delta, &max_power, n_chains, MT76_SKU_RATE);
- 
--	max_power_backoff = max_power;
- 	val = mt76_get_of_array_s8(np, "paths-cck", &len, ARRAY_SIZE(dest->path.cck));
--	mt76_apply_array_limit(dest->path.cck, ARRAY_SIZE(dest->path.cck), val,
--			       target_power_combine, txs_delta, &max_power_backoff);
-+	mt76_apply_array_limit(dev, dest->path.cck, ARRAY_SIZE(dest->path.cck), val,
-+			       target_power, txs_delta, &max_power, n_chains, MT76_SKU_BACKOFF);
- 
- 	val = mt76_get_of_array_s8(np, "paths-ofdm", &len, ARRAY_SIZE(dest->path.ofdm));
--	mt76_apply_array_limit(dest->path.ofdm, ARRAY_SIZE(dest->path.ofdm), val,
--			       target_power_combine, txs_delta, &max_power_backoff);
-+	mt76_apply_array_limit(dev, dest->path.ofdm, ARRAY_SIZE(dest->path.ofdm), val,
-+			       target_power, txs_delta, &max_power, n_chains, MT76_SKU_BACKOFF);
- 
- 	val = mt76_get_of_array_s8(np, "paths-ofdm-bf", &len, ARRAY_SIZE(dest->path.ofdm_bf));
--	mt76_apply_array_limit(dest->path.ofdm_bf, ARRAY_SIZE(dest->path.ofdm_bf), val,
--			       target_power_combine, txs_delta, &max_power_backoff);
-+	mt76_apply_array_limit(dev, dest->path.ofdm_bf, ARRAY_SIZE(dest->path.ofdm_bf), val,
-+			       target_power, txs_delta, &max_power, n_chains,
-+			       MT76_SKU_BACKOFF_BF_OFFSET);
- 
- 	val = mt76_get_of_array_s8(np, "paths-ru", &len, ARRAY_SIZE(dest->path.ru[0]) + 1);
--	mt76_apply_multi_array_limit(dest->path.ru[0], ARRAY_SIZE(dest->path.ru[0]),
--				     ARRAY_SIZE(dest->path.ru), val, len,
--				     target_power_combine, txs_delta);
-+	mt76_apply_multi_array_limit(dev, dest->path.ru[0], ARRAY_SIZE(dest->path.ru[0]),
-+				     ARRAY_SIZE(dest->path.ru), val, len, target_power,
-+				     txs_delta, &max_power, n_chains, MT76_SKU_BACKOFF);
- 
- 	val = mt76_get_of_array_s8(np, "paths-ru-bf", &len, ARRAY_SIZE(dest->path.ru_bf[0]) + 1);
--	mt76_apply_multi_array_limit(dest->path.ru_bf[0], ARRAY_SIZE(dest->path.ru_bf[0]),
--				     ARRAY_SIZE(dest->path.ru_bf), val, len,
--				     target_power_combine, txs_delta);
-+	mt76_apply_multi_array_limit(dev, dest->path.ru_bf[0], ARRAY_SIZE(dest->path.ru_bf[0]),
-+				     ARRAY_SIZE(dest->path.ru_bf), val, len, target_power,
-+				     txs_delta, &max_power, n_chains, MT76_SKU_BACKOFF);
- 
- 	return max_power;
- }
-diff --git a/drivers/net/wireless/mediatek/mt76/mt76.h b/drivers/net/wireless/mediatek/mt76/mt76.h
-index d05e83ea1..32876eab2 100644
---- a/drivers/net/wireless/mediatek/mt76/mt76.h
-+++ b/drivers/net/wireless/mediatek/mt76/mt76.h
-@@ -540,7 +540,6 @@ struct mt76_driver_ops {
- 	u32 survey_flags;
- 	u16 txwi_size;
- 	u16 token_size;
--	u8 mcs_rates;
- 
- 	unsigned int link_data_size;
- 
+diff --git a/Documentation/devicetree/bindings/net/wireless/mediatek,mt76.yaml b/Documentation/devicetree/bindings/net/wireless/mediatek,mt76.yaml
+index ae6b97cdc..4156e1c97 100644
+--- a/Documentation/devicetree/bindings/net/wireless/mediatek,mt76.yaml
++++ b/Documentation/devicetree/bindings/net/wireless/mediatek,mt76.yaml
+@@ -252,6 +252,16 @@ properties:
+                       followed by 10 power limit values. The order of the
+                       channel resource unit settings is RU26, RU52, RU106,
+                       RU242/SU20, RU484/SU40, RU996/SU80 and RU2x996/SU160.
++                      - For connac2
++                        - Beamforming entries for BW20~BW160 and OFDM do not
++                          include 1T1ss.
++                        - When 1T1ss is not used, it should be filled with 0.
++                      - For connac3
++                        - Beamforming entries for BW20~BW160 and RU include
++                          1T1ss, but OFDM does not include 1T1ss.
++                        - 1T1ss is taken into account, so no need to fill with 0.
++                      Non-beamforming and RU entries for both connac2 and
++                      connac3 include 1T1ss.
+                     minItems: 1
+                     maxItems: 7
+                     items:
+@@ -270,6 +280,16 @@ properties:
+                       followed by 10 power limit values. The order of the
+                       channel resource unit settings is RU26, RU52, RU106,
+                       RU242/SU20, RU484/SU40, RU996/SU80 and RU2x996/SU160.
++                      - For connac2
++                        - Beamforming entries for BW20~BW160 and OFDM do not
++                          include 1T1ss.
++                        - When 1T1ss is not used, it should be filled with 0.
++                      - For connac3
++                        - Beamforming entries for BW20~BW160 and RU include
++                          1T1ss, but OFDM does not include 1T1ss.
++                        - 1T1ss is taken into account, so no need to fill with 0.
++                      Non-beamforming and RU entries for both connac2 and
++                      connac3 include 1T1ss.
+                     minItems: 1
+                     maxItems: 7
+                     items:
 -- 
 2.45.2
 
