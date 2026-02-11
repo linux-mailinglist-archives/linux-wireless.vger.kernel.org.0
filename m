@@ -1,221 +1,275 @@
-Return-Path: <linux-wireless+bounces-31735-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-31736-lists+linux-wireless=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id eIzSHilSjGmukgAAu9opvQ
-	(envelope-from <linux-wireless+bounces-31735-lists+linux-wireless=lfdr.de@vger.kernel.org>)
-	for <lists+linux-wireless@lfdr.de>; Wed, 11 Feb 2026 10:55:53 +0100
+	id WHtfLLZtjGlmngAAu9opvQ
+	(envelope-from <linux-wireless+bounces-31736-lists+linux-wireless=lfdr.de@vger.kernel.org>)
+	for <lists+linux-wireless@lfdr.de>; Wed, 11 Feb 2026 12:53:26 +0100
 X-Original-To: lists+linux-wireless@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id EC8271230A3
-	for <lists+linux-wireless@lfdr.de>; Wed, 11 Feb 2026 10:55:52 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3EE08123FCC
+	for <lists+linux-wireless@lfdr.de>; Wed, 11 Feb 2026 12:53:26 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id D2D6B309C1BC
-	for <lists+linux-wireless@lfdr.de>; Wed, 11 Feb 2026 09:52:35 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 112CB3005995
+	for <lists+linux-wireless@lfdr.de>; Wed, 11 Feb 2026 11:53:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5C2872F6192;
-	Wed, 11 Feb 2026 09:52:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b="XlYu8ERp"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0E74F314D36;
+	Wed, 11 Feb 2026 11:53:22 +0000 (UTC)
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-lf1-f51.google.com (mail-lf1-f51.google.com [209.85.167.51])
+Received: from mail-ot1-f69.google.com (mail-ot1-f69.google.com [209.85.210.69])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C70DB366813
-	for <linux-wireless@vger.kernel.org>; Wed, 11 Feb 2026 09:52:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.167.51
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770803553; cv=pass; b=qShZqcRpdj+QtxTKsYBZmfvG+41PZX4VYmMcid09qv/z6ZTDO6bAI4nIbnl0breqU4R1Z8edg1BjyGtzx7b0XstQYzjQ64V6kuZoAXidTMJ8v15/o6GStBxgiYI2QsprJC2Dr+fA6nDItbSB6SfxdeOHWBCGCZLpkJ2kes6h3cw=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770803553; c=relaxed/simple;
-	bh=FNM7+dqYol6CvwW/AICqCR+k1WexBtc5up187PR4V6U=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=P8mS2JndMNxnmkoNKZYvfnRJzkG7ulQMCexmEnnHWBPI5HlGVgjCVBSSYhxMkhdHoFQI4fHcuKnPVGGeB71671nGWnw7vh19jwdQ1vmFxzkwGrO8uMhEizNfMYxfY7pRYq7oFYQs9ss3mJ+NWIwDxRa4+N/rmSJ2RtF2LXPFGsQ=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org; spf=pass smtp.mailfrom=chromium.org; dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b=XlYu8ERp; arc=pass smtp.client-ip=209.85.167.51
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=chromium.org
-Received: by mail-lf1-f51.google.com with SMTP id 2adb3069b0e04-59b6c89d302so6445976e87.1
-        for <linux-wireless@vger.kernel.org>; Wed, 11 Feb 2026 01:52:31 -0800 (PST)
-ARC-Seal: i=1; a=rsa-sha256; t=1770803550; cv=none;
-        d=google.com; s=arc-20240605;
-        b=LWlnmtWO3YQGanGqJ9ou0KX4WGzEPh9iRfv5l6Y1JyOwXG0TZFELOwl2QdS2YDVczD
-         oM3uXTpUYOOJwu0ZqSxUcnZ8wN/tgbnqpmHhh1YOcuuaEgEUSXfJx0R9p2YqD3V2H298
-         iyeD8acJoi/tsP1Gm52CIntAJcrnU0Q+o2qkq8TxXaKVLdLz0WIQX1tvKud0OVeEmHXG
-         VmlABZTJ/mY/vzWcBeFIByp3SG2jnD4o+1pgJBKDbIjFfPuwlKgLrCPKdYfaYxPftGZF
-         ZAMm9oWt6BlyzZOySMfB8Q7NdKIZFvQRW07Q54AzGHDXJjRZITV2AUXmgLD/p0IjPpSa
-         z6Vg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=FNM7+dqYol6CvwW/AICqCR+k1WexBtc5up187PR4V6U=;
-        fh=+NV54Nhkq9z2GgxFtP38XeneTsIizJa69GODAcfPmsE=;
-        b=GSPzOS+BfZdoRWtPwlhioq2suVkDWfM9mNRednEeqsEC6VcyTYMi0g8KtpiHo0qu5C
-         Abb3ZUD7J3G4S/6LMhiRgWZcOamVjoLdtaMmYggq1gRA1F6jY9NwSiqF/lCMaglaS8Om
-         6Be+h+0D1UtD7KV6ZoLw5X0Q68BonXaVhR3dbqAsex4vZjP4Y1l2pES7V9bSv0wBsvEU
-         i65kaLXR693yykX8doV0NdII3T5Gqlw4+aK8UNFSBxKYxQDr3iQvNA+sTuVwTILBopFW
-         NGndxlBKtJ8lYzU/kISSBnU20gQNBOAYBak3OUTwIpRGJYnmPdEEzN3mqItcoXP3T15m
-         fMVw==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google; t=1770803550; x=1771408350; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=FNM7+dqYol6CvwW/AICqCR+k1WexBtc5up187PR4V6U=;
-        b=XlYu8ERpoebH6RfOEkEYN+jqjxYMUZKwzUA96SYwReqDBUgkEms1YtM2wvPkWIZ/Sx
-         U83t9Y4nX/N3x7of6a70e4R04QZ7TLZk9W7QkPUl+FCgmuTFs12l8YIrPEMg4XJBivDI
-         Q8s+JVUQphPjVYVor03N4gE0ntixqH/fMjcRA=
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8162631354F
+	for <linux-wireless@vger.kernel.org>; Wed, 11 Feb 2026 11:53:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.69
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1770810801; cv=none; b=S+fA+k6W+4uik/tfcWg2kzQSnPeLLJO61Qg4Bvog2RI1jRjVD2xHA2WjfYicQoKNWNH4VCL7pPcoJtG50HbJiWclZgRS57pPvP6PHr846My+xTxkpb05ShmRYJXn9KLNd+rABxVjzvGYVpBkG4uPGBPmD6k+N+tFSN1vloFPWN8=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1770810801; c=relaxed/simple;
+	bh=tMNsr1dpJkNpTIFJfoGaV6091yw716H1iXF4v1SVXHc=;
+	h=MIME-Version:Date:Message-ID:Subject:From:To:Content-Type; b=FalKCv59z51w7zxtENqNEakPxwDuEBvQHON9XwQLjseRqXXHid6ygU4xSJxTKN+FFuFfB7XyKIJqa5rWb2epY1casnSLF9MJQ88rU4VTQhH4zd4GiYOvRLW03eYZ7L1SRH56k6PEtGyOO7A2gGBQcG6jZxIdLVhEOj5lGkFytFU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com; arc=none smtp.client-ip=209.85.210.69
+Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com
+Received: by mail-ot1-f69.google.com with SMTP id 46e09a7af769-7cfd107ef0eso37529714a34.1
+        for <linux-wireless@vger.kernel.org>; Wed, 11 Feb 2026 03:53:20 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1770803550; x=1771408350;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=FNM7+dqYol6CvwW/AICqCR+k1WexBtc5up187PR4V6U=;
-        b=Fn4swmXrXhdA2IoWtA+Ig/aUvmqvFn89knlC5dCp15ed4Sd/KtzdarvjudoDgc2FqO
-         y8QVyhjhrCu3Vkq/fVp25tpjSt8C6KjmsbA8Mo7p6qnnqDy20l22z8K59Uo3emg/PeEj
-         Cb5lu9SJHUxLJ8z2HmWaJtsVZC62TMzEH+l5djw9ZECkiZha4SeSlMLz65bxxW+BRlgb
-         0NvINo3uMTToj+LKZQOeCa1z13qLo8Q4ZJACv5+u1ge6virA+rb4PlWdXgUkfOJPY9Qv
-         etNgJ8FC+KxRnm5o3RmmvJqQrO/6c3ZbgxD+K9MD96GxdU6DYLydETyl3Kz89SbPigBZ
-         HY9Q==
-X-Forwarded-Encrypted: i=1; AJvYcCV6rvFWtosGoVYWgjBptgsyeXOsQjJM/3+KiGt8TZsyDsjIgfVxVZ+VZWGItOXOafgeWp8PxTzmD+LRcU7Qkw==@vger.kernel.org
-X-Gm-Message-State: AOJu0YzydPW5V3vNiA577jW0ZWbEklCE6PLTnS86sAC8V0029Ym6ehq2
-	VX3dYqnbxR3Xvo4bZeZNCT+Nj9m3vkReiCkgCqYJW0LXsCHhLcFTmX7pfLIEIb7Tj4K1JuAOlmf
-	s8Tzoyj9ys8JmrxMeth1PqCvdraEoxrfodjXgzcSx3eiUKv60sNwsAw==
-X-Gm-Gg: AZuq6aKHryCAqgbkvq4Mp2YcIzMaZAp1djU90MSAf852dOOhh3LyxuBxDYu8qIxsZ4U
-	LgaHWPYl5I6xBWPYo+V+WGonmbemgy26E2j5Sjl0Kkfc8x07Kx9paW167FuGPNoai6Xux/53tSf
-	HGHrh2/20f4zpqWNTHrGmzRM7oFZ9S2Ibl1VAEsgzvwr5eVqGUFem33FQlnhKm3IPtK2YVjUEBP
-	4ZFjNvUfswUbX5xLc1CLJychE7pzDBIYARA/oI6xqVlUAuuvcataH4Ndvox4StkicVjZKZYko8S
-	2zMWOXVJMfmOlGVH4IBs3z9KA9xQ0CNbZveb
-X-Received: by 2002:a05:6512:2244:b0:59e:523:ddc9 with SMTP id
- 2adb3069b0e04-59e5e0805ebmr522191e87.46.1770803549951; Wed, 11 Feb 2026
- 01:52:29 -0800 (PST)
+        d=1e100.net; s=20230601; t=1770810799; x=1771415599;
+        h=to:from:subject:message-id:date:mime-version:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=crPJ7u27eyTZrNH+CpyScad4mngQ7dr0a0kUGrBeEeY=;
+        b=rXYE6p3rp9unqK+3oFcDruy8Eyn5dK9Vpz6erWlYeFOVYiMhUUMTK1uNkJy2DIZvn+
+         SbsCtA5KJDEHUj9oQ4D508H2/NnwaWALsBHfILdlfMkX3ZZiVltfdIL0g3HJj34bawgS
+         gcL6djYhek5KQauCrhCn74Tnc3jm2msxwux95uM/HO2gwxAiTL+wZ9Pf7SmueMIdUL6M
+         JAk1kVPi0RZnxfXnmt11MDZEhe4l6H3xVOqiXTC7L/WQTJJV5TcjjsrdCkwFmntrYDze
+         UrD7Ok/yaGcEwxszIpqJc2IB4lrqTHJothCuzJhvpKUcO/pVAJvbmV3ZVEHxcuooK9jv
+         9W9Q==
+X-Forwarded-Encrypted: i=1; AJvYcCXSb9l1l+UC1wWnneE4p/yCgjHSa95I2bI/rzv/SJGg2S1WEolngPcAfabIJFhfr3gWQSB0lX30yoAj/AC/Ww==@vger.kernel.org
+X-Gm-Message-State: AOJu0YyAhTYoCGpwSB83UJIjh8uxfGbDiud92VQ0XjUtasdxEJsteyUE
+	4I5Wfwltzf7qt7CvUy70q1TzEcdoQChyfJt8kmrsHfVoSkBlTACWEBMowrK4w71SY+ksQZ1zpUr
+	9h7RpE1dL8fPwLfedARwpndQZTI8RJQvMJKqRGSISrRwwo/B8vt3fjv8h4T8=
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <8fa8ec500b3d4de7b1966c6887f1dfbe5c46a54c.1770746444.git.ryder.lee@mediatek.com>
- <69521aebefef405bad5117d4d5d5fef4a5dfb7e8.1770746444.git.ryder.lee@mediatek.com>
- <20260211-miniature-chital-of-plenty-1a71df@quoll> <bd4da0a8522db2991ec0844233efe068323c2578.camel@mediatek.com>
- <b00c8c18-930b-4cb9-975d-b15118bfc854@kernel.org> <0dceffe2e1344830c12bc1f6516d13c7bb488b99.camel@mediatek.com>
- <23561f00-9f3f-4d4d-81ae-aab9958bd797@kernel.org> <0572bd6e56ca872e285729ccd4c2201517b66e18.camel@mediatek.com>
- <388e874d-d9ff-43f2-b010-ca7ac29aa065@kernel.org> <0c7b854e342e2047fbc9fc8e8fd80b67a6ec2bec.camel@mediatek.com>
-In-Reply-To: <0c7b854e342e2047fbc9fc8e8fd80b67a6ec2bec.camel@mediatek.com>
-From: Chen-Yu Tsai <wenst@chromium.org>
-Date: Wed, 11 Feb 2026 17:52:18 +0800
-X-Gm-Features: AZwV_Qjfx5xbtiM_CvuB9ceKCwswDittQ1fUg0ke-_sxFS_qlXIG8TKjT0xy2K0
-Message-ID: <CAGXv+5E=REdz0g8rfi7+KvyC7jLXO0q=yjan3mMTGtxe0NgCDQ@mail.gmail.com>
-Subject: Re: [PATCH v3 2/2] dt-bindings: net: wireless: mt76: clarify backoff
- limit format
-To: Ryder Lee <Ryder.Lee@mediatek.com>
-Cc: "krzk@kernel.org" <krzk@kernel.org>, "robh@kernel.org" <robh@kernel.org>, "nbd@nbd.name" <nbd@nbd.name>, 
-	"linux-mediatek@lists.infradead.org" <linux-mediatek@lists.infradead.org>, 
-	"devicetree@vger.kernel.org" <devicetree@vger.kernel.org>, =?UTF-8?B?QWxsZW4gWWUgKOiRieiKt+WLsyk=?= <Allen.Ye@mediatek.com>, 
-	"linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>
+X-Received: by 2002:a05:6820:80c9:b0:664:85db:66bd with SMTP id
+ 006d021491bc7-6747ee9a813mr764755eaf.7.1770810799497; Wed, 11 Feb 2026
+ 03:53:19 -0800 (PST)
+Date: Wed, 11 Feb 2026 03:53:19 -0800
+X-Google-Appengine-App-Id: s~syzkaller
+X-Google-Appengine-App-Id-Alias: syzkaller
+Message-ID: <698c6daf.050a0220.2eeac1.0098.GAE@google.com>
+Subject: [syzbot] [wireless?] KASAN: slab-out-of-bounds Read in
+ ieee80211_ie_split_ric (2)
+From: syzbot <syzbot+1d7461ceeccc7e92d309@syzkaller.appspotmail.com>
+To: johannes@sipsolutions.net, linux-kernel@vger.kernel.org, 
+	linux-wireless@vger.kernel.org, netdev@vger.kernel.org, 
+	syzkaller-bugs@googlegroups.com
 Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-2.16 / 15.00];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=2];
-	DMARC_POLICY_ALLOW(-0.50)[chromium.org,none];
-	R_DKIM_ALLOW(-0.20)[chromium.org:s=google];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+X-Spamd-Result: default: False [-0.36 / 15.00];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	URI_HIDDEN_PATH(1.00)[https://syzkaller.appspot.com/x/.config?x=e3161cabe5a361ff];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	MAILLIST(-0.15)[generic];
+	DMARC_POLICY_SOFTFAIL(0.10)[appspotmail.com : SPF not aligned (relaxed), No valid DKIM,none];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TO_DN_EQ_ADDR_SOME(0.00)[];
-	TAGGED_FROM(0.00)[bounces-31735-lists,linux-wireless=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	TO_DN_SOME(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	FROM_HAS_DN(0.00)[];
-	MISSING_XM_UA(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[wenst@chromium.org,linux-wireless@vger.kernel.org];
-	DKIM_TRACE(0.00)[chromium.org:+];
-	RCPT_COUNT_SEVEN(0.00)[8];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	TAGGED_RCPT(0.00)[linux-wireless];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,chromium.org:dkim,mail.gmail.com:mid]
-X-Rspamd-Queue-Id: EC8271230A3
+	TAGGED_FROM(0.00)[bounces-31736-lists,linux-wireless=lfdr.de,1d7461ceeccc7e92d309];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	MISSING_XM_UA(0.00)[];
+	SUBJECT_HAS_QUESTION(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[5];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[syzbot@syzkaller.appspotmail.com,linux-wireless@vger.kernel.org];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	TO_DN_NONE(0.00)[];
+	TAGGED_RCPT(0.00)[linux-wireless];
+	R_DKIM_NA(0.00)[];
+	REDIRECTOR_URL(0.00)[goo.gl];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[googlegroups.com:email,storage.googleapis.com:url,syzkaller.appspot.com:url,goo.gl:url,appspotmail.com:email]
+X-Rspamd-Queue-Id: 3EE08123FCC
 X-Rspamd-Action: no action
 
-On Wed, Feb 11, 2026 at 5:19=E2=80=AFPM Ryder Lee <Ryder.Lee@mediatek.com> =
-wrote:
->
-> On Wed, 2026-02-11 at 10:08 +0100, Krzysztof Kozlowski wrote:
-> > On 11/02/2026 09:59, Ryder Lee wrote:
-> > > On Wed, 2026-02-11 at 09:41 +0100, Krzysztof Kozlowski wrote:
-> > > > On 11/02/2026 09:33, Ryder Lee wrote:
-> > > > > > > > Why this cannot be a schema?
-> > > > > > > >
-> > > > > > > >
-> > > > > > > Well, actually, it's already a schema. This is just an
-> > > > > > > expanded
-> > > > > >
-> > > > > > Where exactly?
-> > > > > >
-> > > > >
-> > > > > How 1T1ss is used across different generations is what my
-> > > > > example
-> > > > > above
-> > > > > was talking about.
-> > > >
-> > > > Where exactly it is already a schema? Please point me line
-> > > > encoding
-> > > > this.
-> > > >
-> > > >
-> > > line 243 paths-ru
-> > > line 261 paths-ru-bf
-> >
-> > I do not see there anything like you wrote here. You just list all of
-> > them, no device constraints.
-> >
-> > Best regards,
-> > Krzysztof
-> >
->
-> The original schema is a broad description. Now a reviewer want me to
-> describe the differences for various connected devices, but I don=E2=80=
-=99t
-> know how to add a compatible string for PCIe, USB, or even SDIO devices
-> for their constraints. So I used the driver=E2=80=99s generation name... =
-can I
-> just write =E2=80=9Cmt7996=E2=80=9D? Or do I need a complete and meaningf=
-ul compatible
-> string?
+Hello,
 
-You can fill in the PCI or USB IDs as the compatible string.
+syzbot found the following issue on:
 
-See for example
-- Documentation/devicetree/bindings/net/wireless/brcm,bcm4329-fmac.yaml
-- Documentation/devicetree/bindings/net/wireless/brcm,bcm4329-fmac.yaml
-- Documentation/devicetree/bindings/net/wireless/qca,ath9k.yaml
+HEAD commit:    5d41f95f5d0b dpll: zl3073x: Fix output pin phase adjustmen..
+git tree:       net
+console output: https://syzkaller.appspot.com/x/log.txt?x=16b43d3a580000
+kernel config:  https://syzkaller.appspot.com/x/.config?x=e3161cabe5a361ff
+dashboard link: https://syzkaller.appspot.com/bug?extid=1d7461ceeccc7e92d309
+compiler:       Debian clang version 21.1.8 (++20251221033036+2078da43e25a-1~exp1~20251221153213.50), Debian LLD 21.1.8
 
-There's no equivalent for SDIO, so they just have separate compatibles.
-The bcm4329-fmac binding also has examples of these.
+Unfortunately, I don't have any reproducer for this issue yet.
 
-If the hardware has something like a chip ID register, then you can
-have a common fallback string. At the extreme end of this is the ARM
-Mali bindings, which just have one compatible string for the core GPU
-as the fallback, and per platform/SoC compatibles to cover the glue
-layer:
+Downloadable assets:
+disk image: https://storage.googleapis.com/syzbot-assets/182b4bb52a10/disk-5d41f95f.raw.xz
+vmlinux: https://storage.googleapis.com/syzbot-assets/4a86438e761e/vmlinux-5d41f95f.xz
+kernel image: https://storage.googleapis.com/syzbot-assets/29465cf28ab1/bzImage-5d41f95f.xz
 
-- Documentation/devicetree/bindings/gpu/arm,mali-bifrost.yaml
+IMPORTANT: if you fix the issue, please add the following tag to the commit:
+Reported-by: syzbot+1d7461ceeccc7e92d309@syzkaller.appspotmail.com
+
+==================================================================
+BUG: KASAN: slab-out-of-bounds in skip_ie net/wireless/util.c:1967 [inline]
+BUG: KASAN: slab-out-of-bounds in ieee80211_ie_split_ric+0x8fa/0x950 net/wireless/util.c:-1
+Read of size 1 at addr ffff88802946afa1 by task syz.3.11380/15499
+
+CPU: 0 UID: 0 PID: 15499 Comm: syz.3.11380 Not tainted syzkaller #0 PREEMPT(full) 
+Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 01/24/2026
+Call Trace:
+ <TASK>
+ dump_stack_lvl+0xe8/0x150 lib/dump_stack.c:120
+ print_address_description mm/kasan/report.c:378 [inline]
+ print_report+0xba/0x230 mm/kasan/report.c:482
+ kasan_report+0x117/0x150 mm/kasan/report.c:595
+ skip_ie net/wireless/util.c:1967 [inline]
+ ieee80211_ie_split_ric+0x8fa/0x950 net/wireless/util.c:-1
+ ieee80211_ie_split include/net/cfg80211.h:9693 [inline]
+ cfg80211_sme_get_conn_ies net/wireless/sme.c:529 [inline]
+ cfg80211_sme_connect net/wireless/sme.c:586 [inline]
+ cfg80211_connect+0x11f8/0x2140 net/wireless/sme.c:1527
+ cfg80211_mgd_wext_connect+0x4a0/0x5f0 net/wireless/wext-sme.c:57
+ cfg80211_wext_siwessid+0xc4/0x160 net/wireless/wext-compat.c:1412
+ ioctl_standard_iw_point+0x6cd/0xd90 net/wireless/wext-core.c:865
+ ioctl_standard_call+0xaf/0x1b0 net/wireless/wext-core.c:1050
+ wireless_process_ioctl net/wireless/wext-core.c:-1 [inline]
+ wext_ioctl_dispatch+0xee/0x410 net/wireless/wext-core.c:1014
+ wext_handle_ioctl+0x10f/0x1d0 net/wireless/wext-core.c:1075
+ sock_ioctl+0x159/0x7f0 net/socket.c:1307
+ vfs_ioctl fs/ioctl.c:51 [inline]
+ __do_sys_ioctl fs/ioctl.c:597 [inline]
+ __se_sys_ioctl+0xfc/0x170 fs/ioctl.c:583
+ do_syscall_x64 arch/x86/entry/syscall_64.c:63 [inline]
+ do_syscall_64+0xe2/0xf80 arch/x86/entry/syscall_64.c:94
+ entry_SYSCALL_64_after_hwframe+0x77/0x7f
+RIP: 0033:0x7fa2c219aeb9
+Code: ff c3 66 2e 0f 1f 84 00 00 00 00 00 0f 1f 44 00 00 48 89 f8 48 89 f7 48 89 d6 48 89 ca 4d 89 c2 4d 89 c8 4c 8b 4c 24 08 0f 05 <48> 3d 01 f0 ff ff 73 01 c3 48 c7 c1 e8 ff ff ff f7 d8 64 89 01 48
+RSP: 002b:00007fa2c307b028 EFLAGS: 00000246 ORIG_RAX: 0000000000000010
+RAX: ffffffffffffffda RBX: 00007fa2c2415fa0 RCX: 00007fa2c219aeb9
+RDX: 0000200000000040 RSI: 0000000000008b1a RDI: 0000000000000005
+RBP: 00007fa2c2208c1f R08: 0000000000000000 R09: 0000000000000000
+R10: 0000000000000000 R11: 0000000000000246 R12: 0000000000000000
+R13: 00007fa2c2416038 R14: 00007fa2c2415fa0 R15: 00007ffd00308408
+ </TASK>
+
+Allocated by task 5139:
+ kasan_save_stack mm/kasan/common.c:57 [inline]
+ kasan_save_track+0x3e/0x80 mm/kasan/common.c:78
+ poison_kmalloc_redzone mm/kasan/common.c:398 [inline]
+ __kasan_kmalloc+0x93/0xb0 mm/kasan/common.c:415
+ kasan_kmalloc include/linux/kasan.h:263 [inline]
+ __do_kmalloc_node mm/slub.c:5657 [inline]
+ __kmalloc_node_track_caller_noprof+0x558/0x7f0 mm/slub.c:5768
+ kmemdup_noprof+0x2b/0x70 mm/util.c:138
+ kmemdup_noprof include/linux/fortify-string.h:765 [inline]
+ cfg80211_wext_siwgenie+0x1ad/0x320 net/wireless/wext-sme.c:322
+ ioctl_standard_iw_point+0x6cd/0xd90 net/wireless/wext-core.c:865
+ ioctl_standard_call+0xaf/0x1b0 net/wireless/wext-core.c:1050
+ wireless_process_ioctl net/wireless/wext-core.c:-1 [inline]
+ wext_ioctl_dispatch+0xee/0x410 net/wireless/wext-core.c:1014
+ wext_handle_ioctl+0x10f/0x1d0 net/wireless/wext-core.c:1075
+ sock_ioctl+0x159/0x7f0 net/socket.c:1307
+ vfs_ioctl fs/ioctl.c:51 [inline]
+ __do_sys_ioctl fs/ioctl.c:597 [inline]
+ __se_sys_ioctl+0xfc/0x170 fs/ioctl.c:583
+ do_syscall_x64 arch/x86/entry/syscall_64.c:63 [inline]
+ do_syscall_64+0xe2/0xf80 arch/x86/entry/syscall_64.c:94
+ entry_SYSCALL_64_after_hwframe+0x77/0x7f
+
+The buggy address belongs to the object at ffff88802946afa0
+ which belongs to the cache kmalloc-8 of size 8
+The buggy address is located 0 bytes to the right of
+ allocated 1-byte region [ffff88802946afa0, ffff88802946afa1)
+
+The buggy address belongs to the physical page:
+page: refcount:0 mapcount:0 mapping:0000000000000000 index:0xffff88802946a1c0 pfn:0x2946a
+flags: 0xfff00000000200(workingset|node=0|zone=1|lastcpupid=0x7ff)
+page_type: f5(slab)
+raw: 00fff00000000200 ffff88813fe26500 ffffea00015f0210 ffffea0002018250
+raw: ffff88802946a1c0 0000000000800079 00000000f5000000 0000000000000000
+page dumped because: kasan: bad access detected
+page_owner tracks the page as allocated
+page last allocated via order 0, migratetype Unmovable, gfp_mask 0x52cc0(GFP_KERNEL|__GFP_NOWARN|__GFP_NORETRY|__GFP_COMP), pid 4276, tgid 4272 (syz.2.8413), ts 893909570156, free_ts 893627728021
+ set_page_owner include/linux/page_owner.h:32 [inline]
+ post_alloc_hook+0x228/0x280 mm/page_alloc.c:1884
+ prep_new_page mm/page_alloc.c:1892 [inline]
+ get_page_from_freelist+0x24dc/0x2580 mm/page_alloc.c:3945
+ __alloc_frozen_pages_noprof+0x18d/0x380 mm/page_alloc.c:5240
+ alloc_pages_mpol+0x232/0x4a0 mm/mempolicy.c:2486
+ alloc_slab_page mm/slub.c:3075 [inline]
+ allocate_slab+0x86/0x3a0 mm/slub.c:3248
+ new_slab mm/slub.c:3302 [inline]
+ ___slab_alloc+0xd82/0x1760 mm/slub.c:4656
+ __slab_alloc+0x65/0x100 mm/slub.c:4779
+ __slab_alloc_node mm/slub.c:4855 [inline]
+ slab_alloc_node mm/slub.c:5251 [inline]
+ __do_kmalloc_node mm/slub.c:5656 [inline]
+ __kmalloc_node_track_caller_noprof+0x5b7/0x7f0 mm/slub.c:5768
+ __kmemdup_nul mm/util.c:64 [inline]
+ kstrdup+0x42/0x100 mm/util.c:84
+ __kernfs_new_node+0xa9/0x8e0 fs/kernfs/dir.c:633
+ kernfs_new_node+0x102/0x210 fs/kernfs/dir.c:718
+ __kernfs_create_file+0x4b/0x2e0 fs/kernfs/file.c:1057
+ sysfs_add_file_mode_ns+0x238/0x300 fs/sysfs/file.c:313
+ create_files fs/sysfs/group.c:82 [inline]
+ internal_create_group+0x673/0x1180 fs/sysfs/group.c:189
+ internal_create_groups fs/sysfs/group.c:229 [inline]
+ sysfs_create_groups+0x59/0x120 fs/sysfs/group.c:255
+ setup_port drivers/infiniband/core/sysfs.c:1247 [inline]
+ ib_setup_port_attrs+0xe1b/0x2140 drivers/infiniband/core/sysfs.c:1433
+page last free pid 23 tgid 23 stack trace:
+ reset_page_owner include/linux/page_owner.h:25 [inline]
+ free_pages_prepare mm/page_alloc.c:1433 [inline]
+ __free_frozen_pages+0xbf8/0xd70 mm/page_alloc.c:2973
+ __tlb_remove_table_free mm/mmu_gather.c:228 [inline]
+ tlb_remove_table_rcu+0x85/0x100 mm/mmu_gather.c:291
+ rcu_do_batch kernel/rcu/tree.c:2605 [inline]
+ rcu_core+0xc9e/0x1750 kernel/rcu/tree.c:2857
+ handle_softirqs+0x22a/0x7c0 kernel/softirq.c:622
+ run_ksoftirqd+0x36/0x60 kernel/softirq.c:1063
+ smpboot_thread_fn+0x541/0xa50 kernel/smpboot.c:160
+ kthread+0x726/0x8b0 kernel/kthread.c:463
+ ret_from_fork+0x51b/0xa40 arch/x86/kernel/process.c:158
+ ret_from_fork_asm+0x1a/0x30 arch/x86/entry/entry_64.S:246
+
+Memory state around the buggy address:
+ ffff88802946ae80: fa fc fc fc 04 fc fc fc 04 fc fc fc fa fc fc fc
+ ffff88802946af00: 04 fc fc fc 04 fc fc fc 04 fc fc fc 04 fc fc fc
+>ffff88802946af80: 04 fc fc fc 01 fc fc fc 04 fc fc fc 04 fc fc fc
+                               ^
+ ffff88802946b000: ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff
+ ffff88802946b080: ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff
+==================================================================
 
 
-ChenYu
+---
+This report is generated by a bot. It may contain errors.
+See https://goo.gl/tpsmEJ for more information about syzbot.
+syzbot engineers can be reached at syzkaller@googlegroups.com.
 
-> Or maybe there=E2=80=99s no need to change the documentation at all and j=
-ust
-> let the driver handle it, so we don=E2=80=99t have to discuss these detai=
-ls.
->
-> Ryder
+syzbot will keep track of this issue. See:
+https://goo.gl/tpsmEJ#status for how to communicate with syzbot.
+
+If the report is already addressed, let syzbot know by replying with:
+#syz fix: exact-commit-title
+
+If you want to overwrite report's subsystems, reply with:
+#syz set subsystems: new-subsystem
+(See the list of subsystem names on the web dashboard)
+
+If the report is a duplicate of another one, reply with:
+#syz dup: exact-subject-of-another-report
+
+If you want to undo deduplication, reply with:
+#syz undup
 
