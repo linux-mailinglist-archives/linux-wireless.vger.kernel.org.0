@@ -1,51 +1,51 @@
-Return-Path: <linux-wireless+bounces-31732-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-31733-lists+linux-wireless=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id YL2lBexOjGmukgAAu9opvQ
-	(envelope-from <linux-wireless+bounces-31732-lists+linux-wireless=lfdr.de@vger.kernel.org>)
-	for <lists+linux-wireless@lfdr.de>; Wed, 11 Feb 2026 10:42:04 +0100
+	id iHPRGQ1PjGmukgAAu9opvQ
+	(envelope-from <linux-wireless+bounces-31733-lists+linux-wireless=lfdr.de@vger.kernel.org>)
+	for <lists+linux-wireless@lfdr.de>; Wed, 11 Feb 2026 10:42:37 +0100
 X-Original-To: lists+linux-wireless@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7A0AD122D4B
-	for <lists+linux-wireless@lfdr.de>; Wed, 11 Feb 2026 10:42:03 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8B35D122D6F
+	for <lists+linux-wireless@lfdr.de>; Wed, 11 Feb 2026 10:42:36 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 1279E306B086
-	for <lists+linux-wireless@lfdr.de>; Wed, 11 Feb 2026 09:39:08 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id A32013003BD0
+	for <lists+linux-wireless@lfdr.de>; Wed, 11 Feb 2026 09:42:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3ABA2355020;
-	Wed, 11 Feb 2026 09:39:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 05E2D357715;
+	Wed, 11 Feb 2026 09:42:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Uf10Noxv"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="k2lybdZR"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 175F7356A3E;
-	Wed, 11 Feb 2026 09:39:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D659A35770C;
+	Wed, 11 Feb 2026 09:42:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770802747; cv=none; b=bIiy/AwFGqMvKPMuIyI7kB0ws+/Kxr+1I7XZQPwwIraochg/KsznBrvIweHpnTgQh02dSVlOC6KNj0UMURU0zOK2p0j7NQf5Quxh2UcoYi5Z90CO+z+Mqkyb1cIc9HPKddvyQYi0LdsnZV6TLi/Q8iosx9cKNrVZishLr5a58LU=
+	t=1770802950; cv=none; b=KDgjJQlCgAQosPaddRSHYo+Vmwmy+82OUtubhEwFbjeqLkUqthPOTKVem8YKRvzAJj7Eu8FzufVoEIWryME8CwEdYChtWDpElm6KWbC6LTCbzE7cEuCfb0JQAyfn8DOh+1IJy4qHm9kxSSRvZQ1hsrEs1OlN2WtnbXGWYcuDAqM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770802747; c=relaxed/simple;
-	bh=Rk1TUi6yPa3m9Ykfd80vSYR6RYhc9AyAZYrgNsTq+EQ=;
+	s=arc-20240116; t=1770802950; c=relaxed/simple;
+	bh=Z7VEsZYlidKSAxy8VhmZRomxPQSUoEgpsunuR17n8no=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=HjaPcyGGK4JRUGeey4oHh+swOxTcIEhARe4TpigJNzqBMfZAsL+dKspX2n7TKWcCq5GjjsEP+39A1gRl0rw+71KBANtMkoIRd9d4waRwqawKdt6vrF3L4woLJRDgsojFiS/rxJYM44H/VJ2Fe4gPaSZS5RJx532KaCvi6MMnr6o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Uf10Noxv; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F2094C4CEF7;
-	Wed, 11 Feb 2026 09:39:04 +0000 (UTC)
+	 In-Reply-To:Content-Type; b=e5PeKJgR9Z04mX/Jh5pnFuPGbbzMFXRR/cib32kU1nQxedlU2YdLsPGkmGHETkuhWAhdvUNp8GXtTOq0+qK4j2iUhvhX8zkcajuRi/njT/GRmMHAIWHn1BWzq+YZZ8WEQBPTl1iPjU/bFaq5Ygv7LbtLjv1IElGMoCDGwMJTQw4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=k2lybdZR; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BCF76C4CEF7;
+	Wed, 11 Feb 2026 09:42:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1770802746;
-	bh=Rk1TUi6yPa3m9Ykfd80vSYR6RYhc9AyAZYrgNsTq+EQ=;
+	s=k20201202; t=1770802950;
+	bh=Z7VEsZYlidKSAxy8VhmZRomxPQSUoEgpsunuR17n8no=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=Uf10NoxvMt3srp0Wkxc/VOFTA06VEmbCu0QMNNJWy6gXDa8lGMPFCgRKJ3sN0gV/l
-	 J4ou8UQQiA4AB3mwNHmBCL1ur9JYJd4PRdVrBTNFex76xK2Z49/6x5ppsmK5hpAncz
-	 n03VyvE/vtXnRi4f00TNsmJpJ6B4p6FTW5fDasxi+o+8KsGnXLMaQbDtR1lN9/SrQX
-	 ppS3oUIYmiPowVrHudBe7y0txFwPwVbgvjPWASPxQkMkB0rhIwqADiUzCHEfW/wgNl
-	 AdIGgTtijocyyCIKwCBiEJU7niEr4EKqZ/WS6gfriM0l/xxaia/DngS9ynZWEI+tY8
-	 5ElFgykcYFKuw==
-Message-ID: <372f8174-f719-477a-b7a6-6b833f906c9e@kernel.org>
-Date: Wed, 11 Feb 2026 10:39:03 +0100
+	b=k2lybdZRx/3bKwun/ECaDRXhpZO5rBAdJBenDAwMfPeCBq84/xx+EZlNSqwpEt1lT
+	 SUo4xQeiur+ls801XEWZmDbkMPvAR7TQWzTlzddJLSJgw8XxXjh2u2IEGaMFPoAV3x
+	 5yHSYk9E2IzVYJmPglY5+PDwuGmYw8imMzenRW8NxxhVnHBlTAr2NF1q8rzQBOftVF
+	 yyd8Wt0SfXcG25frJch+uP5ODHRYJ2/nKB4EhZwUerGMj7tdWaxoBEghz2aKYRA4UG
+	 k8HIRG+xdgVw6B/JJLHYn6BSHav/hQDA4I5qZZooAEWtyAAChygMitZb/nB4M7j/hI
+	 kg7Z+5I9Al2Xg==
+Message-ID: <b1d9bc37-6078-4240-8b06-cfdc435eadd0@kernel.org>
+Date: Wed, 11 Feb 2026 10:42:27 +0100
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
@@ -53,13 +53,13 @@ List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v9 12/21] wifi: nxpwifi: introduce command and event
- handling infrastructure
-To: Jeff Chen <jeff.chen_1@nxp.com>, linux-wireless@vger.kernel.org
-Cc: linux-kernel@vger.kernel.org, briannorris@chromium.org,
- johannes@sipsolutions.net, francesco@dolcini.it, s.hauer@pengutronix.de
+Subject: Re: [PATCH v9 00/21] wifi: nxpwifi: create nxpwifi to support
+To: Jeff Chen <jeff.chen_1@nxp.com>, Johannes Berg <johannes@sipsolutions.net>
+Cc: linux-wireless@vger.kernel.org, linux-kernel@vger.kernel.org,
+ briannorris@chromium.org, francesco@dolcini.it, s.hauer@pengutronix.de
 References: <20260204180358.632281-1-jeff.chen_1@nxp.com>
- <20260204180358.632281-13-jeff.chen_1@nxp.com>
+ <3eaf27a486a80012b0be116e847f2e93f162aa1e.camel@sipsolutions.net>
+ <aYQ8EbSbln3bN9n+@nxpwireless-Inspiron-14-Plus-7440>
 From: Krzysztof Kozlowski <krzk@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=krzk@kernel.org; keydata=
@@ -105,19 +105,19 @@ Autocrypt: addr=krzk@kernel.org; keydata=
  jWt87ecuHlpL3uuQ0ZZNWqHgZoQLXoqC2ZV5KrtKWb/jyiFX/sxSrodALf0zf+tfHv0FZWT2
  zHjUqd0t4njD/UOsuIMOQn4Ig0SdivYPfZukb5cdasKJukG1NOpbW7yRNivaCnfZz6dTawXw
  XRIV/KDsHQiyVxKvN73bThKhONkcX2LWuD928tAR6XMM2G5ovxLe09vuOzzfTWQDsm++9UKF a/A=
-In-Reply-To: <20260204180358.632281-13-jeff.chen_1@nxp.com>
+In-Reply-To: <aYQ8EbSbln3bN9n+@nxpwireless-Inspiron-14-Plus-7440>
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-31732-lists,linux-wireless=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-31733-lists,linux-wireless=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
@@ -128,29 +128,64 @@ X-Spamd-Result: default: False [-2.16 / 15.00];
 	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[krzk@kernel.org,linux-wireless@vger.kernel.org];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
 	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[linux-wireless];
 	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 7A0AD122D4B
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 8B35D122D6F
 X-Rspamd-Action: no action
 
-On 04/02/2026 19:03, Jeff Chen wrote:
-> +
-> +		/*
-> +		 * Download calibration data to firmware.
-> +		 * The cal-data can be read from device tree and/or
-> +		 * a configuration file and downloaded to firmware.
-> +		 */
-> +		if (adapter->dt_node) {
-> +			if (of_property_read_u32(adapter->dt_node,
-> +						 "nxp,wakeup-pin",
+On 05/02/2026 07:48, Jeff Chen wrote:
+> On Wed, Feb 04, 2026 at 09:09:25 PM +0100, Johannes Berg wrote:
+>>>
+>>>     Devicetree bindings note
+>>>     ------------------------
+>>>
+>>>     The previous version included a devicetree binding document for
+>>>     `nxp,iw61x.yaml`. Since Device Tree support for this device is optional
+>>>     and not required for current SDIO-based bring-up, the binding has been
+>>>     dropped from this series. A proper schema will be submitted separately
+>>>     once DT usage becomes relevant, so that binding review can be handled
+>>>     in the correct subsystem and without blocking this driver introduction.
+>>
+>> You should probably have dropped _all_ the DT/OF *code* as well,
+>> otherwise what's the point of dropping the binding review when you still
+>> bake the binding into the code, no?
+>>
+>> johannes
+>>
+> 
+> Hi Johannes,
+> 
+> Thanks for the question. To clarify what changed in v9:
+> 
+> I dropped only the DT binding YAML from this wireless-only series because
+> bindings are reviewed by the Devicetree subsystem. The driver keeps minimal
 
-Don't sneak in ABI. This is not acceptable.
+Huh, what? No, since when? Read docs in the kernel, it's complete
+misinterpretation of kernel development model.
 
-NAK
+Reach to other people in NXP to guide you through basic submission
+guidelines, so you won't be upstreaming 10 year old poor code (like last
+version) or doing such trivial mistakes. They would tell you what you
+have to do.
+
+
+> and optional OF handling, but SDIO bring-up does not depend on any DT
+> properties — enumeration is via SDIO VID/PID and the driver works without a
+
+That's not true. Look at your code - you have OF calls.
+
+
+> binding.
+> 
+> The plan is to submit the binding YAML (and any DT properties we actually need,
+> e.g. OOB wake IRQ/regulators) as a separate patchset to the DT maintainers so
+
+This is not how it works. We won't be reviewing DT submission separate
+from wireless subsystem / maintainers.
 
 
 Best regards,
