@@ -1,51 +1,51 @@
-Return-Path: <linux-wireless+bounces-31731-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-31732-lists+linux-wireless=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 2H1LMTFOjGmukgAAu9opvQ
-	(envelope-from <linux-wireless+bounces-31731-lists+linux-wireless=lfdr.de@vger.kernel.org>)
-	for <lists+linux-wireless@lfdr.de>; Wed, 11 Feb 2026 10:38:57 +0100
+	id YL2lBexOjGmukgAAu9opvQ
+	(envelope-from <linux-wireless+bounces-31732-lists+linux-wireless=lfdr.de@vger.kernel.org>)
+	for <lists+linux-wireless@lfdr.de>; Wed, 11 Feb 2026 10:42:04 +0100
 X-Original-To: lists+linux-wireless@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 314B3122D0E
-	for <lists+linux-wireless@lfdr.de>; Wed, 11 Feb 2026 10:38:57 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7A0AD122D4B
+	for <lists+linux-wireless@lfdr.de>; Wed, 11 Feb 2026 10:42:03 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id B4783304704C
-	for <lists+linux-wireless@lfdr.de>; Wed, 11 Feb 2026 09:36:26 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 1279E306B086
+	for <lists+linux-wireless@lfdr.de>; Wed, 11 Feb 2026 09:39:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8EA883570B2;
-	Wed, 11 Feb 2026 09:36:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3ABA2355020;
+	Wed, 11 Feb 2026 09:39:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="KAk/ldRE"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Uf10Noxv"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6ADB63570B1;
-	Wed, 11 Feb 2026 09:36:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 175F7356A3E;
+	Wed, 11 Feb 2026 09:39:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770802586; cv=none; b=lUuZJLxnslAthyeeMfvCYODfaPQKAwelMinQk/ik3R4/2u2MlJIyjY/e4EP+Dey2GJggub1R4IXonWWh134o3ioeVUpxmg7lZx7WP5AGnaoc2cmDAaiHXAfwqAHvOOknqZpNsRHX3CUFjUXJMw/x1J6ihMuhZmfKbmnVRzydh2c=
+	t=1770802747; cv=none; b=bIiy/AwFGqMvKPMuIyI7kB0ws+/Kxr+1I7XZQPwwIraochg/KsznBrvIweHpnTgQh02dSVlOC6KNj0UMURU0zOK2p0j7NQf5Quxh2UcoYi5Z90CO+z+Mqkyb1cIc9HPKddvyQYi0LdsnZV6TLi/Q8iosx9cKNrVZishLr5a58LU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770802586; c=relaxed/simple;
-	bh=8QqyxZYtG/8EPlQUjbWaZKRe7SUl3QrqiJgPKs3YywQ=;
+	s=arc-20240116; t=1770802747; c=relaxed/simple;
+	bh=Rk1TUi6yPa3m9Ykfd80vSYR6RYhc9AyAZYrgNsTq+EQ=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=bVWi/QIFfzyXPpUiYX+ZgMFEJGSGoRRebeGRl1WGawS7VB8NH77l7R5fq/V43YFEBb2eyYrAyyLrIYoCspGbuuxxh58cv1CCwYD7NGMpTGQ2UQBqGDClJX8t1oIHAz6Gcbp/Cs+1Jjvge12i6W8SEdyv10l6q3OKZoM6T4wHvDs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=KAk/ldRE; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4EA37C4CEF7;
-	Wed, 11 Feb 2026 09:36:24 +0000 (UTC)
+	 In-Reply-To:Content-Type; b=HjaPcyGGK4JRUGeey4oHh+swOxTcIEhARe4TpigJNzqBMfZAsL+dKspX2n7TKWcCq5GjjsEP+39A1gRl0rw+71KBANtMkoIRd9d4waRwqawKdt6vrF3L4woLJRDgsojFiS/rxJYM44H/VJ2Fe4gPaSZS5RJx532KaCvi6MMnr6o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Uf10Noxv; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F2094C4CEF7;
+	Wed, 11 Feb 2026 09:39:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1770802586;
-	bh=8QqyxZYtG/8EPlQUjbWaZKRe7SUl3QrqiJgPKs3YywQ=;
+	s=k20201202; t=1770802746;
+	bh=Rk1TUi6yPa3m9Ykfd80vSYR6RYhc9AyAZYrgNsTq+EQ=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=KAk/ldREMxn7wOj0W3Bp2VNxolJJygozoEN/V95IfS2orxVAYAUVmYnB1sCGmmJ0J
-	 /6VLhB8vSSXT55LOWbyA0Btq7qbR93MQgV6lmhoBZTiTrzU52+DmcztcUZ5q5Yp9k7
-	 7T6wg/5u/rl7ekQa7CxmWtirF0qURHwpvwkwzRkt0XS/dUgmh3zXnnQOiQ3VmftY/F
-	 y3CXwH3KNcWcXe0ih7t4WhcUiAvOAUiUrbPU7yO55vq+JMsrwA7+FskioLE8U0FK1l
-	 7s70++aMcf/iZ2wlaJMycMqMZOHmJRBhwZ4R5QWBSir++Li4T8ONxXnJlpyOwesR9Y
-	 qlAjYydyLu4Wg==
-Message-ID: <57439b2a-f606-4ee5-9287-72c40bd726e8@kernel.org>
-Date: Wed, 11 Feb 2026 10:36:22 +0100
+	b=Uf10NoxvMt3srp0Wkxc/VOFTA06VEmbCu0QMNNJWy6gXDa8lGMPFCgRKJ3sN0gV/l
+	 J4ou8UQQiA4AB3mwNHmBCL1ur9JYJd4PRdVrBTNFex76xK2Z49/6x5ppsmK5hpAncz
+	 n03VyvE/vtXnRi4f00TNsmJpJ6B4p6FTW5fDasxi+o+8KsGnXLMaQbDtR1lN9/SrQX
+	 ppS3oUIYmiPowVrHudBe7y0txFwPwVbgvjPWASPxQkMkB0rhIwqADiUzCHEfW/wgNl
+	 AdIGgTtijocyyCIKwCBiEJU7niEr4EKqZ/WS6gfriM0l/xxaia/DngS9ynZWEI+tY8
+	 5ElFgykcYFKuw==
+Message-ID: <372f8174-f719-477a-b7a6-6b833f906c9e@kernel.org>
+Date: Wed, 11 Feb 2026 10:39:03 +0100
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
@@ -53,12 +53,13 @@ List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v9 18/21] wifi: nxpwifi: add core driver implementation
+Subject: Re: [PATCH v9 12/21] wifi: nxpwifi: introduce command and event
+ handling infrastructure
 To: Jeff Chen <jeff.chen_1@nxp.com>, linux-wireless@vger.kernel.org
 Cc: linux-kernel@vger.kernel.org, briannorris@chromium.org,
  johannes@sipsolutions.net, francesco@dolcini.it, s.hauer@pengutronix.de
 References: <20260204180358.632281-1-jeff.chen_1@nxp.com>
- <20260204180358.632281-19-jeff.chen_1@nxp.com>
+ <20260204180358.632281-13-jeff.chen_1@nxp.com>
 From: Krzysztof Kozlowski <krzk@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=krzk@kernel.org; keydata=
@@ -104,96 +105,52 @@ Autocrypt: addr=krzk@kernel.org; keydata=
  jWt87ecuHlpL3uuQ0ZZNWqHgZoQLXoqC2ZV5KrtKWb/jyiFX/sxSrodALf0zf+tfHv0FZWT2
  zHjUqd0t4njD/UOsuIMOQn4Ig0SdivYPfZukb5cdasKJukG1NOpbW7yRNivaCnfZz6dTawXw
  XRIV/KDsHQiyVxKvN73bThKhONkcX2LWuD928tAR6XMM2G5ovxLe09vuOzzfTWQDsm++9UKF a/A=
-In-Reply-To: <20260204180358.632281-19-jeff.chen_1@nxp.com>
+In-Reply-To: <20260204180358.632281-13-jeff.chen_1@nxp.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_RCPT(0.00)[linux-wireless];
-	TO_DN_SOME(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	MID_RHS_MATCH_FROM(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[krzk@kernel.org,linux-wireless@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
-	PRECEDENCE_BULK(0.00)[];
-	TAGGED_FROM(0.00)[bounces-31731-lists,linux-wireless=lfdr.de];
-	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-31732-lists,linux-wireless=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	DKIM_TRACE(0.00)[kernel.org:+]
-X-Rspamd-Queue-Id: 314B3122D0E
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[kernel.org:+];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	TO_DN_SOME(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[krzk@kernel.org,linux-wireless@vger.kernel.org];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[linux-wireless];
+	RCPT_COUNT_SEVEN(0.00)[7];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 7A0AD122D4B
 X-Rspamd-Action: no action
 
 On 04/02/2026 19:03, Jeff Chen wrote:
-> This patch introduces the core layer of the nxpwifi driver, which provides
-> the foundational logic and infrastructure for managing the wireless
-> adapter.
-> 
-
-Please do not use "This commit/patch/change", but imperative mood. See
-longer explanation here:
-https://elixir.bootlin.com/linux/v6.16/source/Documentation/process/submitting-patches.rst#L94
-
 > +
-> +	/* Notify PM core we are wakeup source */
-> +	pm_wakeup_event(adapter->dev, 0);
-> +	pm_system_wakeup();
-> +
-> +	return IRQ_HANDLED;
-> +}
-> +
-> +static void nxpwifi_probe_of(struct nxpwifi_adapter *adapter)
+> +		/*
+> +		 * Download calibration data to firmware.
+> +		 * The cal-data can be read from device tree and/or
+> +		 * a configuration file and downloaded to firmware.
+> +		 */
+> +		if (adapter->dt_node) {
+> +			if (of_property_read_u32(adapter->dt_node,
+> +						 "nxp,wakeup-pin",
 
-NAK, you removed DT support thus cannot keep undocumented ABI.
-
-
-> +{
-> +	int ret;
-> +	struct device *dev = adapter->dev;
-> +
-> +	if (!dev->of_node)
-> +		goto err_exit;
-> +
-> +	adapter->dt_node = dev->of_node;
+Don't sneak in ABI. This is not acceptable.
 
 NAK
-
-> +	adapter->irq_wakeup = irq_of_parse_and_map(adapter->dt_node, 0);
-> +	if (!adapter->irq_wakeup) {
-> +		nxpwifi_dbg(adapter, ERROR, "fail to parse irq_wakeup from device tree\n");
-> +		goto err_exit;
-> +	}
-> +
-> +	ret = devm_request_irq(dev, adapter->irq_wakeup,
-> +			       nxpwifi_irq_wakeup_handler,
-> +			       IRQF_TRIGGER_LOW | IRQF_NO_AUTOEN,
-> +			       "wifi_wake", adapter);
-> +	if (ret) {
-> +		nxpwifi_dbg(adapter, ERROR, "Failed to request irq_wakeup %d (%d)\n",
-> +			    adapter->irq_wakeup, ret);
-> +		goto err_exit;
-> +	}
-> +
-> +	if (device_init_wakeup(dev, true)) {
-> +		nxpwifi_dbg(adapter, ERROR, "fail to init wakeup for nxpwifi\n");
-> +		goto err_exit;
-> +	}
-> +	return;
-> +
-> +err_exit:
-> +	adapter->irq_wakeup = -1;
-> +}
 
 
 Best regards,
