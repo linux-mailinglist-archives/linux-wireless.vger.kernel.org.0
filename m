@@ -1,193 +1,143 @@
-Return-Path: <linux-wireless+bounces-31733-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-31734-lists+linux-wireless=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id iHPRGQ1PjGmukgAAu9opvQ
-	(envelope-from <linux-wireless+bounces-31733-lists+linux-wireless=lfdr.de@vger.kernel.org>)
-	for <lists+linux-wireless@lfdr.de>; Wed, 11 Feb 2026 10:42:37 +0100
+	id aLgxOj5RjGmukgAAu9opvQ
+	(envelope-from <linux-wireless+bounces-31734-lists+linux-wireless=lfdr.de@vger.kernel.org>)
+	for <lists+linux-wireless@lfdr.de>; Wed, 11 Feb 2026 10:51:58 +0100
 X-Original-To: lists+linux-wireless@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8B35D122D6F
-	for <lists+linux-wireless@lfdr.de>; Wed, 11 Feb 2026 10:42:36 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id D02EC122FDC
+	for <lists+linux-wireless@lfdr.de>; Wed, 11 Feb 2026 10:51:57 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id A32013003BD0
-	for <lists+linux-wireless@lfdr.de>; Wed, 11 Feb 2026 09:42:33 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 2ED9B303C603
+	for <lists+linux-wireless@lfdr.de>; Wed, 11 Feb 2026 09:51:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 05E2D357715;
-	Wed, 11 Feb 2026 09:42:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 50216352958;
+	Wed, 11 Feb 2026 09:51:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="k2lybdZR"
+	dkim=pass (1024-bit key) header.d=mediatek.com header.i=@mediatek.com header.b="i/tJC9Qj"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mailgw01.mediatek.com (unknown [60.244.123.138])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D659A35770C;
-	Wed, 11 Feb 2026 09:42:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C7A5B28DB71
+	for <linux-wireless@vger.kernel.org>; Wed, 11 Feb 2026 09:51:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=60.244.123.138
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770802950; cv=none; b=KDgjJQlCgAQosPaddRSHYo+Vmwmy+82OUtubhEwFbjeqLkUqthPOTKVem8YKRvzAJj7Eu8FzufVoEIWryME8CwEdYChtWDpElm6KWbC6LTCbzE7cEuCfb0JQAyfn8DOh+1IJy4qHm9kxSSRvZQ1hsrEs1OlN2WtnbXGWYcuDAqM=
+	t=1770803469; cv=none; b=gcd+kwLAMbawzTfYjYfgA4vZJ09mhvQgL3tfb88jJ241icRtQeJnKOtwZ7G9dSY6LVBLiEjCGlpwPfXczNv5b/In6ZblKpIcFP5bym66Q1esaOQDBbqYacPMkfr3GjwEnjk//LfQnQEry4RA2nacR8MppmNI89OH8r/c/iY4edE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770802950; c=relaxed/simple;
-	bh=Z7VEsZYlidKSAxy8VhmZRomxPQSUoEgpsunuR17n8no=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=e5PeKJgR9Z04mX/Jh5pnFuPGbbzMFXRR/cib32kU1nQxedlU2YdLsPGkmGHETkuhWAhdvUNp8GXtTOq0+qK4j2iUhvhX8zkcajuRi/njT/GRmMHAIWHn1BWzq+YZZ8WEQBPTl1iPjU/bFaq5Ygv7LbtLjv1IElGMoCDGwMJTQw4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=k2lybdZR; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BCF76C4CEF7;
-	Wed, 11 Feb 2026 09:42:28 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1770802950;
-	bh=Z7VEsZYlidKSAxy8VhmZRomxPQSUoEgpsunuR17n8no=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=k2lybdZRx/3bKwun/ECaDRXhpZO5rBAdJBenDAwMfPeCBq84/xx+EZlNSqwpEt1lT
-	 SUo4xQeiur+ls801XEWZmDbkMPvAR7TQWzTlzddJLSJgw8XxXjh2u2IEGaMFPoAV3x
-	 5yHSYk9E2IzVYJmPglY5+PDwuGmYw8imMzenRW8NxxhVnHBlTAr2NF1q8rzQBOftVF
-	 yyd8Wt0SfXcG25frJch+uP5ODHRYJ2/nKB4EhZwUerGMj7tdWaxoBEghz2aKYRA4UG
-	 k8HIRG+xdgVw6B/JJLHYn6BSHav/hQDA4I5qZZooAEWtyAAChygMitZb/nB4M7j/hI
-	 kg7Z+5I9Al2Xg==
-Message-ID: <b1d9bc37-6078-4240-8b06-cfdc435eadd0@kernel.org>
-Date: Wed, 11 Feb 2026 10:42:27 +0100
+	s=arc-20240116; t=1770803469; c=relaxed/simple;
+	bh=oCAuuzR+pByguBcHjUXUqMd2iVbhOoiI7NDKhvNGkxM=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=j8w/ncra77+wvxb3za9GVmV7u0A2QzeIwQfyhEUjN6IBoe2DV/bVQ7XxOEp1gKOA72LyM66SQTYqHpT/SgFjZdJLOajjydIDsTa1W/oiM9mejPPII9OBQU8tRNqBV/5IQ6quVxyWFHXu2giihlqxdBds6eDiftXq7br7x/HFOFw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=mediatek.com; spf=pass smtp.mailfrom=mediatek.com; dkim=pass (1024-bit key) header.d=mediatek.com header.i=@mediatek.com header.b=i/tJC9Qj; arc=none smtp.client-ip=60.244.123.138
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=mediatek.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=mediatek.com
+X-UUID: 2cfab3ec072f11f185319dbc3099e8fb-20260211
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=mediatek.com; s=dk;
+	h=Content-Type:Content-Transfer-Encoding:MIME-Version:Message-ID:Date:Subject:CC:To:From; bh=0mXPespncnJ9UzITI24FORXFZvqeXSWP6ZFjRHuXY0Y=;
+	b=i/tJC9Qjy5uboLhSRCoTUNuHkqEPZAAK9f1Y3sEylCTE0qNcgZGtlfIqJ5C6Rb7ezrnAEgxDBnsUfHLBPP1aWiFgThAV1bH2dP9Mts5cRePDSoxEmiUJv0wmBtOdNbHGpFg4ClrRXU5wAkFomXbVJBZlaLArOWHDdrc11+m42OI=;
+X-CID-P-RULE: Release_Ham
+X-CID-O-INFO: VERSION:1.3.11,REQID:273f1ab3-4edf-4440-8ebe-823d887f6857,IP:0,U
+	RL:0,TC:0,Content:0,EDM:0,RT:0,SF:0,FILE:0,BULK:0,RULE:Release_Ham,ACTION:
+	release,TS:0
+X-CID-META: VersionHash:89c9d04,CLOUDID:5c522e5b-a957-4259-bcca-d3af718d7034,B
+	ulkID:nil,BulkQuantity:0,Recheck:0,SF:102|836|888|898,TC:-5,Content:0|15|5
+	0,EDM:-3,IP:nil,URL:0,File:130,RT:0,Bulk:nil,QS:nil,BEC:-1,COL:0,OSI:0,OSA
+	:0,AV:0,LES:1,SPR:NO,DKR:0,DKP:0,BRR:0,BRE:0,ARC:0
+X-CID-BVR: 2,SSN|SDN
+X-CID-BAS: 2,SSN|SDN,0,_
+X-CID-FACTOR: TF_CID_SPAM_SNR
+X-CID-RHF: D41D8CD98F00B204E9800998ECF8427E
+X-UUID: 2cfab3ec072f11f185319dbc3099e8fb-20260211
+Received: from mtkmbs13n1.mediatek.inc [(172.21.101.193)] by mailgw01.mediatek.com
+	(envelope-from <leon.yen@mediatek.com>)
+	(Generic MTA with TLSv1.2 ECDHE-RSA-AES256-GCM-SHA384 256/256)
+	with ESMTP id 1503601373; Wed, 11 Feb 2026 17:51:02 +0800
+Received: from mtkmbs13n2.mediatek.inc (172.21.101.108) by
+ MTKMBS14N1.mediatek.inc (172.21.101.75) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.29; Wed, 11 Feb 2026 17:51:01 +0800
+Received: from mtksitap99.mediatek.inc (10.233.130.16) by
+ mtkmbs13n2.mediatek.inc (172.21.101.73) with Microsoft SMTP Server id
+ 15.2.2562.29 via Frontend Transport; Wed, 11 Feb 2026 17:51:01 +0800
+From: Leon Yen <leon.yen@mediatek.com>
+To: <nbd@nbd.name>, <lorenzo@kernel.org>
+CC: <linux-wireless@vger.kernel.org>, <linux-mediatek@lists.infradead.org>,
+	<deren.wu@mediatek.com>, <sean.wang@mediatek.com>,
+	<mingyen.hsieh@mediatek.com>, <michael.lo@mediatek.com>,
+	<allan.wang@mediatek.com>, <quan.zhou@mediatek.com>,
+	<sarick.jiang@mediatek.com>, <ryder.lee@mediatek.com>,
+	<shayne.chen@mediatek.com>, <leon.yen@mediatek.com>
+Subject: [PATCH] wifi: mt76: mt7921: Configure the 6GHz power type including regulatory limits and SAR power after the connection is established.
+Date: Wed, 11 Feb 2026 17:50:25 +0800
+Message-ID: <20260211095025.2415624-1-leon.yen@mediatek.com>
+X-Mailer: git-send-email 2.45.2
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v9 00/21] wifi: nxpwifi: create nxpwifi to support
-To: Jeff Chen <jeff.chen_1@nxp.com>, Johannes Berg <johannes@sipsolutions.net>
-Cc: linux-wireless@vger.kernel.org, linux-kernel@vger.kernel.org,
- briannorris@chromium.org, francesco@dolcini.it, s.hauer@pengutronix.de
-References: <20260204180358.632281-1-jeff.chen_1@nxp.com>
- <3eaf27a486a80012b0be116e847f2e93f162aa1e.camel@sipsolutions.net>
- <aYQ8EbSbln3bN9n+@nxpwireless-Inspiron-14-Plus-7440>
-From: Krzysztof Kozlowski <krzk@kernel.org>
-Content-Language: en-US
-Autocrypt: addr=krzk@kernel.org; keydata=
- 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 a/A=
-In-Reply-To: <aYQ8EbSbln3bN9n+@nxpwireless-Inspiron-14-Plus-7440>
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [-0.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
-	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
+	MID_CONTAINS_FROM(1.00)[];
+	DMARC_POLICY_ALLOW(-0.50)[mediatek.com,quarantine];
+	R_MISSING_CHARSET(0.50)[];
+	R_DKIM_ALLOW(-0.20)[mediatek.com:s=dk];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-31733-lists,linux-wireless=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-31734-lists,linux-wireless=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_COUNT_FIVE(0.00)[6];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[kernel.org:+];
 	MIME_TRACE(0.00)[0:+];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	FROM_HAS_DN(0.00)[];
-	TO_DN_SOME(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[leon.yen@mediatek.com,linux-wireless@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[krzk@kernel.org,linux-wireless@vger.kernel.org];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
-	MID_RHS_MATCH_FROM(0.00)[];
+	TO_DN_NONE(0.00)[];
+	DKIM_TRACE(0.00)[mediatek.com:+];
 	TAGGED_RCPT(0.00)[linux-wireless];
-	RCPT_COUNT_SEVEN(0.00)[7];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 8B35D122D6F
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	RCPT_COUNT_TWELVE(0.00)[14];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: D02EC122FDC
 X-Rspamd-Action: no action
 
-On 05/02/2026 07:48, Jeff Chen wrote:
-> On Wed, Feb 04, 2026 at 09:09:25 PM +0100, Johannes Berg wrote:
->>>
->>>     Devicetree bindings note
->>>     ------------------------
->>>
->>>     The previous version included a devicetree binding document for
->>>     `nxp,iw61x.yaml`. Since Device Tree support for this device is optional
->>>     and not required for current SDIO-based bring-up, the binding has been
->>>     dropped from this series. A proper schema will be submitted separately
->>>     once DT usage becomes relevant, so that binding review can be handled
->>>     in the correct subsystem and without blocking this driver introduction.
->>
->> You should probably have dropped _all_ the DT/OF *code* as well,
->> otherwise what's the point of dropping the binding review when you still
->> bake the binding into the code, no?
->>
->> johannes
->>
-> 
-> Hi Johannes,
-> 
-> Thanks for the question. To clarify what changed in v9:
-> 
-> I dropped only the DT binding YAML from this wireless-only series because
-> bindings are reviewed by the Devicetree subsystem. The driver keeps minimal
+From: Michael Lo <michael.lo@mediatek.com>
 
-Huh, what? No, since when? Read docs in the kernel, it's complete
-misinterpretation of kernel development model.
+To set the 6GHz power type and ensure compliance with regulatory limits and
+Specific Absorption Rate (SAR) after a connection, we'll need to consider
+both hardware-level configurations and software regulations ensuring
+adherence to regional standards.
 
-Reach to other people in NXP to guide you through basic submission
-guidelines, so you won't be upstreaming 10 year old poor code (like last
-version) or doing such trivial mistakes. They would tell you what you
-have to do.
+Fixes: 51ba0e3a15eb ("wifi: mt76: mt7921: add 6GHz power type support for clc")
+Signed-off-by: Michael Lo <michael.lo@mediatek.com>
+---
+ drivers/net/wireless/mediatek/mt76/mt7921/main.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7921/main.c b/drivers/net/wireless/mediatek/mt76/mt7921/main.c
+index 42b9514e04e7..3d74fabe7408 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7921/main.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7921/main.c
+@@ -800,7 +800,8 @@ mt7921_regd_set_6ghz_power_type(struct ieee80211_vif *vif, bool is_add)
+ 	}
+ 
+ out:
+-	mt7921_mcu_set_clc(dev, dev->mt76.alpha2, dev->country_ie_env);
++	if (vif->bss_conf.chanreq.oper.chan->band == NL80211_BAND_6GHZ)
++		mt7921_regd_update(dev);
+ }
+ 
+ int mt7921_mac_sta_add(struct mt76_dev *mdev, struct ieee80211_vif *vif,
+-- 
+2.45.2
 
-> and optional OF handling, but SDIO bring-up does not depend on any DT
-> properties — enumeration is via SDIO VID/PID and the driver works without a
-
-That's not true. Look at your code - you have OF calls.
-
-
-> binding.
-> 
-> The plan is to submit the binding YAML (and any DT properties we actually need,
-> e.g. OOB wake IRQ/regulators) as a separate patchset to the DT maintainers so
-
-This is not how it works. We won't be reviewing DT submission separate
-from wireless subsystem / maintainers.
-
-
-Best regards,
-Krzysztof
 
