@@ -1,64 +1,89 @@
-Return-Path: <linux-wireless+bounces-31768-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-31770-lists+linux-wireless=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id aLBpIyrGjWnT6gAAu9opvQ
-	(envelope-from <linux-wireless+bounces-31768-lists+linux-wireless=lfdr.de@vger.kernel.org>)
-	for <lists+linux-wireless@lfdr.de>; Thu, 12 Feb 2026 13:23:06 +0100
+	id uF2dKY/NjWn87AAAu9opvQ
+	(envelope-from <linux-wireless+bounces-31770-lists+linux-wireless=lfdr.de@vger.kernel.org>)
+	for <lists+linux-wireless@lfdr.de>; Thu, 12 Feb 2026 13:54:39 +0100
 X-Original-To: lists+linux-wireless@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0030112D69A
-	for <lists+linux-wireless@lfdr.de>; Thu, 12 Feb 2026 13:23:05 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 27C2E12D9D3
+	for <lists+linux-wireless@lfdr.de>; Thu, 12 Feb 2026 13:54:39 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 9D01E31DF7A2
-	for <lists+linux-wireless@lfdr.de>; Thu, 12 Feb 2026 12:18:24 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 9810F3033217
+	for <lists+linux-wireless@lfdr.de>; Thu, 12 Feb 2026 12:51:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8F531357A34;
-	Thu, 12 Feb 2026 12:18:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 777F43570A3;
+	Thu, 12 Feb 2026 12:51:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=yandex.ru header.i=@yandex.ru header.b="jFaq76L8"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="izkPJ3y0"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from forward100b.mail.yandex.net (forward100b.mail.yandex.net [178.154.239.147])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.16])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9920834C9B7;
-	Thu, 12 Feb 2026 12:18:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=178.154.239.147
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8F5FC191F84;
+	Thu, 12 Feb 2026 12:51:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.16
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770898703; cv=none; b=dVVxfI+H9LK0DQTt4wJiMpE8zsaNvR786SdC1GrqMXLzY+reuk41j6FBwWT/TgcKD7MzSfim0xFTZV3dffJz5bFOPGuaMWC95Za9Ib+t9GCxtZ2sbTVi6AA/qyB8Bv8omdErhLDTpm1H2Z/lrSjD5yvu5lUGKxgsLOpyjaPqamM=
+	t=1770900707; cv=none; b=n4Hgz5FFc36cwhc8vpxmhoXy6RBPaXYbWtArd08VX3VHIZHcsAgYOIyBzoXOWea3aODiSqGqOIeNXZ0CFEmDSWthu6f2B2qRfRLAWoWR1Qx8xyqOscCiITPKbq7PkZjHNOMG9Qe6/UdZ2cpxMBcXcOToBVFq1IryGKB0J8AfPvE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770898703; c=relaxed/simple;
-	bh=i8e0Z5t7th9323WCkMyYpegZ/+lKN0RTpwAEcQcJNzs=;
+	s=arc-20240116; t=1770900707; c=relaxed/simple;
+	bh=PyVwbo3G2WaDgrVWH5+kW9Klx0qdUxGwxHjil+oq0k4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=d9gpwv1ApjoOBO6/V0aLndtcAh1XGhLrXI2jxrv1gP2v0/XSnrc9bYc/v9VJZnVK8CrqDQxqJ6JVSQdDC29aTDaY2t0J/xqLOrmiLHdh2O6FPquf1q07PNPsXeNpwOaTjUh6Vrqf7YOeWTYaK0Ks+vqq8PcYHQ9wJ15/kgESrw8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=yandex.ru; spf=pass smtp.mailfrom=yandex.ru; dkim=pass (1024-bit key) header.d=yandex.ru header.i=@yandex.ru header.b=jFaq76L8; arc=none smtp.client-ip=178.154.239.147
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=yandex.ru
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=yandex.ru
-Received: from mail-nwsmtp-smtp-production-main-59.iva.yp-c.yandex.net (mail-nwsmtp-smtp-production-main-59.iva.yp-c.yandex.net [IPv6:2a02:6b8:c0c:489d:0:640:baa6:0])
-	by forward100b.mail.yandex.net (Yandex) with ESMTPS id 0798A80719;
-	Thu, 12 Feb 2026 15:18:14 +0300 (MSK)
-Received: by mail-nwsmtp-smtp-production-main-59.iva.yp-c.yandex.net (smtp/Yandex) with ESMTPSA id pHTFRX8GA8c0-5PwIjyTc;
-	Thu, 12 Feb 2026 15:18:13 +0300
-X-Yandex-Fwd: 1
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yandex.ru; s=mail;
-	t=1770898693; bh=l2rzyeifuTvLESFEtUsG8awO2sxZc/zhl6syNBHYDnA=;
-	h=Message-ID:Date:In-Reply-To:Cc:Subject:References:To:From;
-	b=jFaq76L8RYZUuxPYqoq9iKSkTBA4PZsTVybY+i+IHmbYbJQROVKW0tQYdqIOE1vHQ
-	 CHWbt2n2RL6jD3GaH9W2wZzKNZbJ+XFHYOrRgGCluTBhSPfELSjJ9EOgCHv1/yW2mK
-	 EaLzyjXgI2fzHZte0Jn4SS4W8AdnDuZvXKlD2qvc=
-Authentication-Results: mail-nwsmtp-smtp-production-main-59.iva.yp-c.yandex.net; dkim=pass header.i=@yandex.ru
-From: m.limarencko@yandex.ru
-To: jjohnson@kernel.org
-Cc: linux-wireless@vger.kernel.org,
-	ath12k@lists.infradead.org,
+	 MIME-Version; b=k+YDHfNRUpp68rvo6vcLCkB9+1l2DXXIc9h1YbTIcUZKGd5e+S75XIFeH6olyh6FUS9SdjXYJ1Mgm2XkFQoiMkl7eaC465HhturFJJ+JNvxEWD83sUijo0GOR9TUWaRy1A1hz35GU0/IphRiqaZNIY07N+5pHL93TudSvAtaclg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=izkPJ3y0; arc=none smtp.client-ip=198.175.65.16
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1770900705; x=1802436705;
+  h=from:to:cc:subject:date:message-id:in-reply-to:
+   references:mime-version:content-transfer-encoding;
+  bh=PyVwbo3G2WaDgrVWH5+kW9Klx0qdUxGwxHjil+oq0k4=;
+  b=izkPJ3y0Oqc3kqKDKbvedP+JzGenbpYKMUaaVIcFtrjhiA0uDuHKQjmK
+   THsatzORHZ6wzOg6gBN8K0BJ+ogXASPu8Ah5NGxdNzUgc0VcPq7FIcVk/
+   zHafuxlLSdOzTBVv5M2ZiyfzA7EZwBWLaRf6AYV/2vOfyl+pnXp4Kfgdn
+   coWQUBrQMn3gy975daoVcqMCIZUkTqGxH0ADSQYyHZ0rvfaOi8agkiWSp
+   +YjrUv/1O8pZuMQmLSP0j9XRB6juNZhNjVkesv5lPyZcYJmHPNNQCzacQ
+   ysT1WF+pWradT3O3cOj1+Ky2EueL9TcI2rW3YKtpUmKseNzLS6DePS0VU
+   g==;
+X-CSE-ConnectionGUID: YBdTq6RdTs6aGBNb2tJBIw==
+X-CSE-MsgGUID: kSe1PlgIQH+a5HWSc8JvPA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11699"; a="72254017"
+X-IronPort-AV: E=Sophos;i="6.21,286,1763452800"; 
+   d="scan'208";a="72254017"
+Received: from orviesa005.jf.intel.com ([10.64.159.145])
+  by orvoesa108.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 Feb 2026 04:51:45 -0800
+X-CSE-ConnectionGUID: FA5gVCb9QZKpXm/ZR1xihA==
+X-CSE-MsgGUID: bkpau9f3QgyODNgg6lR35A==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.21,286,1763452800"; 
+   d="scan'208";a="217553313"
+Received: from b580.bj.intel.com ([10.238.152.74])
+  by orviesa005-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 Feb 2026 04:51:41 -0800
+From: Junjie Cao <junjie.cao@intel.com>
+To: miriam.rachel.korenblit@intel.com,
+	johannes.berg@intel.com,
+	linux-wireless@vger.kernel.org,
+	richardcochran@gmail.com
+Cc: horms@kernel.org,
+	netdev@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
-	Mikhail Limarenko <m.limarencko@yandex.ru>
-Subject: [PATCH ath-next v2 4/4] wifi: ath12k: sanitize invalid MCS metadata in monitor rx path
-Date: Thu, 12 Feb 2026 15:17:46 +0300
-Message-ID: <20260212121746.329619-5-m.limarencko@yandex.ru>
-X-Mailer: git-send-email 2.47.3
-In-Reply-To: <20260212121746.329619-1-m.limarencko@yandex.ru>
-References: <20260212121746.329619-1-m.limarencko@yandex.ru>
+	yedidya.ben.shimol@intel.com,
+	avraham.stern@intel.com,
+	daniel.gabay@intel.com,
+	krishnanand.prabhu@intel.com,
+	luciano.coelho@intel.com,
+	gregory.greenman@intel.com,
+	stable@vger.kernel.org,
+	Junjie Cao <junjie.cao@intel.com>,
+	Vadim Fedorenko <vadim.fedorenko@linux.dev>
+Subject: [PATCH v2 1/2] wifi: iwlwifi: mvm: fix race condition in PTP removal
+Date: Thu, 12 Feb 2026 20:50:34 +0800
+Message-ID: <20260212125035.1345718-1-junjie.cao@intel.com>
+X-Mailer: git-send-email 2.48.1
+In-Reply-To: <DM3PPF63A6024A9E1EF4081E342AF4BED81A365A@DM3PPF63A6024A9.namprd11.prod.outlook.com>
+References: <DM3PPF63A6024A9E1EF4081E342AF4BED81A365A@DM3PPF63A6024A9.namprd11.prod.outlook.com>
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
@@ -71,121 +96,70 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	MID_CONTAINS_FROM(1.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[yandex.ru,none];
-	R_DKIM_ALLOW(-0.20)[yandex.ru:s=mail];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	DMARC_POLICY_ALLOW(-0.50)[intel.com,none];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_DKIM_ALLOW(-0.20)[intel.com:s=Intel];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	MIME_TRACE(0.00)[0:+];
-	FREEMAIL_CC(0.00)[vger.kernel.org,lists.infradead.org,yandex.ru];
-	TO_DN_SOME(0.00)[];
-	TAGGED_FROM(0.00)[bounces-31768-lists,linux-wireless=lfdr.de];
-	FREEMAIL_FROM(0.00)[yandex.ru];
+	TAGGED_FROM(0.00)[bounces-31770-lists,linux-wireless=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
+	RCPT_COUNT_TWELVE(0.00)[16];
 	FORGED_SENDER_MAILLIST(0.00)[];
+	FREEMAIL_TO(0.00)[intel.com,vger.kernel.org,gmail.com];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[5];
-	RCVD_COUNT_FIVE(0.00)[5];
+	TO_DN_SOME(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[junjie.cao@intel.com,linux-wireless@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	DKIM_TRACE(0.00)[intel.com:+];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[m.limarencko@yandex.ru,linux-wireless@vger.kernel.org];
-	DKIM_TRACE(0.00)[yandex.ru:+];
 	TAGGED_RCPT(0.00)[linux-wireless];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	FROM_NO_DN(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 0030112D69A
+	RCVD_COUNT_FIVE(0.00)[5];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:mid,intel.com:dkim,intel.com:email,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,linux.dev:email]
+X-Rspamd-Queue-Id: 27C2E12D9D3
 X-Rspamd-Action: no action
 
-From: Mikhail Limarenko <m.limarencko@yandex.ru>
+iwl_mvm_ptp_remove() calls cancel_delayed_work_sync() only after
+ptp_clock_unregister() and clearing ptp_data state (ptp_clock,
+ptp_clock_info, last_gp2).
 
-Apply the same invalid-MCS hardening in monitor path status
+This creates a race where the delayed work iwl_mvm_ptp_work() can
+execute between ptp_clock_unregister() and cancel_delayed_work_sync(),
+observing partially cleared PTP state.
 
-conversion to keep metadata handling consistent in both data and
+Move cancel_delayed_work_sync() before ptp_clock_unregister() to
+ensure the delayed work is fully stopped before any PTP cleanup
+begins.
 
-monitor pipelines.
-
-Tested-on: QCNFA765 (WCN785x), kernel 6.18.5+deb13-amd64
-Signed-off-by: Mikhail Limarenko <m.limarencko@yandex.ru>
+Fixes: 1595ecce1cf3 ("wifi: iwlwifi: mvm: add support for PTP HW clock (PHC)")
+Cc: stable@vger.kernel.org
+Reviewed-by: Simon Horman <horms@kernel.org>
+Reviewed-by: Vadim Fedorenko <vadim.fedorenko@linux.dev>
+Signed-off-by: Junjie Cao <junjie.cao@intel.com>
 ---
- drivers/net/wireless/ath/ath12k/dp_mon.c | 38 ++++++++++++++----------
- 1 file changed, 23 insertions(+), 15 deletions(-)
+ drivers/net/wireless/intel/iwlwifi/mvm/ptp.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/net/wireless/ath/ath12k/dp_mon.c b/drivers/net/wireless/ath/ath12k/dp_mon.c
-index 009c495..6e894ef 100644
---- a/drivers/net/wireless/ath/ath12k/dp_mon.c
-+++ b/drivers/net/wireless/ath/ath12k/dp_mon.c
-@@ -1922,9 +1922,11 @@ ath12k_dp_mon_fill_rx_rate(struct ath12k *ar,
- 	case RX_MSDU_START_PKT_TYPE_11N:
- 		rx_status->encoding = RX_ENC_HT;
- 		if (rate_mcs > ATH12K_HT_MCS_MAX) {
--			ath12k_warn(ar->ab,
--				    "Received with invalid mcs in HT mode %d\n",
--				     rate_mcs);
-+			dev_warn_ratelimited(ar->ab->dev,
-+					     "ath12k: invalid HT mcs %u in monitor path, forcing legacy rate metadata\n",
-+					     rate_mcs);
-+			rx_status->encoding = RX_ENC_LEGACY;
-+			rx_status->rate_idx = 0;
- 			break;
- 		}
- 		rx_status->rate_idx = rate_mcs + (8 * (nss - 1));
-@@ -1933,35 +1935,41 @@ ath12k_dp_mon_fill_rx_rate(struct ath12k *ar,
- 		break;
- 	case RX_MSDU_START_PKT_TYPE_11AC:
- 		rx_status->encoding = RX_ENC_VHT;
--		rx_status->rate_idx = rate_mcs;
- 		if (rate_mcs > ATH12K_VHT_MCS_MAX) {
--			ath12k_warn(ar->ab,
--				    "Received with invalid mcs in VHT mode %d\n",
--				     rate_mcs);
-+			dev_warn_ratelimited(ar->ab->dev,
-+					     "ath12k: invalid VHT mcs %u in monitor path, forcing legacy rate metadata\n",
-+					     rate_mcs);
-+			rx_status->encoding = RX_ENC_LEGACY;
-+			rx_status->rate_idx = 0;
- 			break;
- 		}
-+		rx_status->rate_idx = rate_mcs;
- 		if (sgi)
- 			rx_status->enc_flags |= RX_ENC_FLAG_SHORT_GI;
- 		break;
- 	case RX_MSDU_START_PKT_TYPE_11AX:
--		rx_status->rate_idx = rate_mcs;
- 		if (rate_mcs > ATH12K_HE_MCS_MAX) {
--			ath12k_warn(ar->ab,
--				    "Received with invalid mcs in HE mode %d\n",
--				    rate_mcs);
-+			dev_warn_ratelimited(ar->ab->dev,
-+					     "ath12k: invalid HE mcs %u in monitor path, forcing legacy rate metadata\n",
-+					     rate_mcs);
-+			rx_status->encoding = RX_ENC_LEGACY;
-+			rx_status->rate_idx = 0;
- 			break;
- 		}
-+		rx_status->rate_idx = rate_mcs;
- 		rx_status->encoding = RX_ENC_HE;
- 		rx_status->he_gi = ath12k_he_gi_to_nl80211_he_gi(sgi);
- 		break;
- 	case RX_MSDU_START_PKT_TYPE_11BE:
--		rx_status->rate_idx = rate_mcs;
- 		if (rate_mcs > ATH12K_EHT_MCS_MAX) {
--			ath12k_warn(ar->ab,
--				    "Received with invalid mcs in EHT mode %d\n",
--				    rate_mcs);
-+			dev_warn_ratelimited(ar->ab->dev,
-+					     "ath12k: invalid EHT mcs %u in monitor path, forcing legacy rate metadata\n",
-+					     rate_mcs);
-+			rx_status->encoding = RX_ENC_LEGACY;
-+			rx_status->rate_idx = 0;
- 			break;
- 		}
-+		rx_status->rate_idx = rate_mcs;
- 		rx_status->encoding = RX_ENC_EHT;
- 		rx_status->he_gi = ath12k_he_gi_to_nl80211_he_gi(sgi);
- 		break;
+diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/ptp.c b/drivers/net/wireless/intel/iwlwifi/mvm/ptp.c
+index ad156b82eaa9..efb291ceb0e5 100644
+--- a/drivers/net/wireless/intel/iwlwifi/mvm/ptp.c
++++ b/drivers/net/wireless/intel/iwlwifi/mvm/ptp.c
+@@ -323,11 +323,11 @@ void iwl_mvm_ptp_remove(struct iwl_mvm *mvm)
+ 			       mvm->ptp_data.ptp_clock_info.name,
+ 			       ptp_clock_index(mvm->ptp_data.ptp_clock));
+ 
++		cancel_delayed_work_sync(&mvm->ptp_data.dwork);
+ 		ptp_clock_unregister(mvm->ptp_data.ptp_clock);
+ 		mvm->ptp_data.ptp_clock = NULL;
+ 		memset(&mvm->ptp_data.ptp_clock_info, 0,
+ 		       sizeof(mvm->ptp_data.ptp_clock_info));
+ 		mvm->ptp_data.last_gp2 = 0;
+-		cancel_delayed_work_sync(&mvm->ptp_data.dwork);
+ 	}
+ }
 -- 
-2.47.3
+2.48.1
 
 
