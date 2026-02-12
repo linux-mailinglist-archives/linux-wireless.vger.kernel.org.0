@@ -1,172 +1,523 @@
-Return-Path: <linux-wireless+bounces-31758-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-31761-lists+linux-wireless=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 4OA6ItOSjWl54QAAu9opvQ
-	(envelope-from <linux-wireless+bounces-31758-lists+linux-wireless=lfdr.de@vger.kernel.org>)
-	for <lists+linux-wireless@lfdr.de>; Thu, 12 Feb 2026 09:44:03 +0100
+	id aDabJeKXjWkt5AAAu9opvQ
+	(envelope-from <linux-wireless+bounces-31761-lists+linux-wireless=lfdr.de@vger.kernel.org>)
+	for <lists+linux-wireless@lfdr.de>; Thu, 12 Feb 2026 10:05:38 +0100
 X-Original-To: lists+linux-wireless@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9F8EC12B7AB
-	for <lists+linux-wireless@lfdr.de>; Thu, 12 Feb 2026 09:44:02 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8360812BB46
+	for <lists+linux-wireless@lfdr.de>; Thu, 12 Feb 2026 10:05:37 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 2189F300BE1E
-	for <lists+linux-wireless@lfdr.de>; Thu, 12 Feb 2026 08:44:00 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id B86903028E46
+	for <lists+linux-wireless@lfdr.de>; Thu, 12 Feb 2026 09:05:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 561681D61BC;
-	Thu, 12 Feb 2026 08:43:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A09052D6E78;
+	Thu, 12 Feb 2026 09:05:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=morsemicro-com.20230601.gappssmtp.com header.i=@morsemicro-com.20230601.gappssmtp.com header.b="CmgeArnm"
+	dkim=pass (1024-bit key) header.d=mediatek.com header.i=@mediatek.com header.b="JDkjxnHh"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-pl1-f179.google.com (mail-pl1-f179.google.com [209.85.214.179])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mailgw02.mediatek.com (unknown [210.61.82.184])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EA417158535
-	for <linux-wireless@vger.kernel.org>; Thu, 12 Feb 2026 08:43:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.179
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 821A93EBF3C
+	for <linux-wireless@vger.kernel.org>; Thu, 12 Feb 2026 09:05:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=210.61.82.184
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770885837; cv=none; b=VCCmN+AvkUaPtQHoaUjgnBpYuZD/JuQ9BcPSRBga5rIrFKHaluK+wCea4/agh1UaUABAFL1hV6V0soCCqW9MreeNhOsHhPyyCi8JrfQ1UZ0Rjb+zQ4k3tJgRvC01TBRGfuARxgonSOeNxHWVQ/hhnqb26D/qh5c2yHHQ9bOFFyw=
+	t=1770887134; cv=none; b=cZqV0oBv4y6e8nSPjeHFdbI62gawdNzf4jKOggE2k8rLN19/VW3IEoQ4PQqOiu0ZTTEMZaiw96+vj0tjJgqZQZEve2aEbv7OMJB72+FRLDEyJsa3MOsi9sQ5xYBDqzLTxfVAqEyAZkiXWY3Y7XT4yJ+HhF5YrRnyHL0CrBc9HV0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770885837; c=relaxed/simple;
-	bh=GHHfbkEaw3cpzD12CYxJxXshtnvvQtZSelUu/i0WLqE=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=hlmH/U5VB7OiNuz7cox+6ZqLjG6SHkGfoxEvN8pqZs0CCDDq5r0nan/Na4X/ABc0azkVEyLJs0IiwckkxaVjwldKzH9RVYXBOAKOtQVxMjgWDjU1KS5TS+Vy6FrOKVJIG8hj8TgOecrGOXUwyLWAPuRe2mEzmFDCx604LJj0X7E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=morsemicro.com; spf=pass smtp.mailfrom=morsemicro.com; dkim=pass (2048-bit key) header.d=morsemicro-com.20230601.gappssmtp.com header.i=@morsemicro-com.20230601.gappssmtp.com header.b=CmgeArnm; arc=none smtp.client-ip=209.85.214.179
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=morsemicro.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=morsemicro.com
-Received: by mail-pl1-f179.google.com with SMTP id d9443c01a7336-2aaecf9c325so12350375ad.1
-        for <linux-wireless@vger.kernel.org>; Thu, 12 Feb 2026 00:43:55 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=morsemicro-com.20230601.gappssmtp.com; s=20230601; t=1770885835; x=1771490635; darn=vger.kernel.org;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=eWNiHEZw2DN3xmzh67cRdIkymYQbZfNrvc/HikNc8dk=;
-        b=CmgeArnmOGgu0jU4BLUMs1zMXiQsk6kucVozcFKoo6AI2J+FLEJvoXCiNn8mLjyvPA
-         L3c6inoODmRnWBuvsE04512DlLpTysUQgZRvc4g7qArAtV5vjOewXmbt9GdYBKo9qOOK
-         OUzrWaMqOGsVpcW05uZSmEetJxzzqznZZ/rxnkhRhcm076fN7mAYuNDJ1k7lqdJUtt8E
-         3ym9Kx3F2wzCfmML7v6OSLs/h/nMNTFYKm+rAlI7nNOgQJwbRD7mNe5mdNdXR3303q+t
-         mlFAvxa+1uX9mEBW0iBJJNtGJVsomKEEudxNWYIdcrVJVmYtMiRcmB9ZwgMwO+q3ICjq
-         7tXw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1770885835; x=1771490635;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=eWNiHEZw2DN3xmzh67cRdIkymYQbZfNrvc/HikNc8dk=;
-        b=KJCkzK1qik0YgIUbieXxcCd1Ba1czQNSbEEGz+6/529e79jZwM3Vi8Of1VWi6whb+B
-         IHIkUap4fvsfENwozz4fW99TXpI3O3oB43mqkT9p/IMk7Mk6w6c95TrJXmHKfI0ewjtX
-         Ee1Ud5I+BPI9/oJQsFL5oDvMzF6MXQgu6zlvdjYadkuZdnjl9ZRiZ8X15BDmpDPnaG6O
-         dZ66VQiGHThAW8EcKvFYxqWCvQojDtLdWv0IJRAyat0DUJ0VRhbw9uNSpv8US/Iym0N0
-         NBAczDBPvNInfffjh70Uu+yP1P2ghFTLlOcdRtiSnh9QIddAcEtqFyrdBaihDAHp9/OW
-         tleg==
-X-Gm-Message-State: AOJu0YxchLwAT2BRmF9t3tTRyKQaDznb87vehl1diyrU0nr6ef6cbLk3
-	ZHoB9VW/a1Vk34hFmJgmZ8mi1r86w4oI2S7VTh+hsXHXzl6KaU31jgWD1yDcL+xkixT3IK8evcg
-	WZs0=
-X-Gm-Gg: AZuq6aKEBrvtrYY2hxLnemMvS1w8FInOjoj8tN7UDTshRDN7Igzdix2dNjofPVq0b+J
-	WVwYANTqPoopuBGu/xrk6L1MqXGn8m8m6obb4svO1GPN9KdivhL3b6QcEbNtOfBKtXbWGAw5lyH
-	VxBHtUyL8hq89HlhUEST+PTjT6oUyG5FqgbupdlaSDfPc3CJFStiKagLiB+vQgihYYg3SidLnGY
-	5Gru6h8KxBuZqk7cpbPPhQO6vxuAbhDnA7z74gLXj3cROiyg9CqvpPBu/1oLBaihmEtfrHBLXgS
-	jnWnxcfijdbHFqfllFEQELlf1oANohM1hZygJoc707n6W+ddX2JxuxEabc3UoOZ0YX7GLqHDt45
-	KNf846CHaGZFXNheM9jPVJnnzV9OH6bR5b/PiHF7GZ3XCP7yjaj3APu5+ugyBskiV5Iu8kj9eus
-	Z0Hz+KmuMHcqkS+/Lj2Wd2wZhw
-X-Received: by 2002:a17:903:22d1:b0:2aa:e3d1:1430 with SMTP id d9443c01a7336-2ab3abf9da7mr16393945ad.23.1770885835168;
-        Thu, 12 Feb 2026 00:43:55 -0800 (PST)
-Received: from localhost ([14.143.244.11])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2ab2996503dsm44362215ad.44.2026.02.12.00.43.54
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 12 Feb 2026 00:43:54 -0800 (PST)
-Date: Thu, 12 Feb 2026 14:13:51 +0530
-From: Ria Thomas <ria.thomas@morsemicro.com>
-To: Johannes Berg <johannes@sipsolutions.net>
-Cc: linux-wireless@vger.kernel.org, lachlan.hodges@morsemicro.com,
-	arien.judge@morsemicro.com, pradeep.reddy@morsemicro.com,
-	simon@morsemicro.com
-Subject: Re: [PATCH wireless-next v2 1/3] wifi: cfg80211: Add support for S1G
- Response Indication Configuration
-Message-ID: <20260212084351.aqswgnvnuepun6em@1207>
-References: <20251209062424.3926297-1-ria.thomas@morsemicro.com>
- <20251209062424.3926297-2-ria.thomas@morsemicro.com>
- <9eb13765529bac88337ab2fd1a13769fa4519f52.camel@sipsolutions.net>
- <20260109040041.tnk7e6uewo24u3tr@1207>
- <048c2715d08822d7f79b082cbe332f982d8ced61.camel@sipsolutions.net>
- <20260206061139.6fdwaazvk4swpreo@1207>
- <ec999f04a965006dea6bd8e7380996b6fca980b4.camel@sipsolutions.net>
+	s=arc-20240116; t=1770887134; c=relaxed/simple;
+	bh=zQRMVprq+hhlPiiXPwHXJaLsq3/auCBMd8TtQ+zYueM=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=ZIvHeGoCoaL+d5jUXStLp5x4jVNUfvyxS/nJDz+bzTsxnU9XipeMVSPpUdLIj8eMUIA9/8HK+KVWH3lvq1/LJdm20iOwNFg6xw9j48TSC93m3q0xz8M5ZXvQGxPP/kw79yWK4m3jsnegeICU/W67ks564izJfvJEZYNTDrUPF0U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=mediatek.com; spf=pass smtp.mailfrom=mediatek.com; dkim=pass (1024-bit key) header.d=mediatek.com header.i=@mediatek.com header.b=JDkjxnHh; arc=none smtp.client-ip=210.61.82.184
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=mediatek.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=mediatek.com
+X-UUID: f7dbb63e07f111f1b7fc4fdb8733b2bc-20260212
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=mediatek.com; s=dk;
+	h=Content-Type:Content-Transfer-Encoding:MIME-Version:Message-ID:Date:Subject:CC:To:From; bh=+lJekS6s5Ztn15eyMG3EZaQrgzdtK7QJJeUMGyzfKT8=;
+	b=JDkjxnHhsDhmuD85aQbuUpayj3xa1KZFHzi9Ew0r5wQEvXgcrCeOikl3ZZ3EkOh7CJK3+HdFp97UTWaR/MjhmKaA2ZyU2rVl1NlF5+wdXoXpgbQqqq/X1qqIs5I9lDrjXPklaysEKMZZuBVoqTjt7EeVPFOIGsJt7xFyWASyJ+s=;
+X-CID-P-RULE: Release_Ham
+X-CID-O-INFO: VERSION:1.3.11,REQID:10aac92e-695a-40df-8a1d-bc1d31b9bdbe,IP:0,U
+	RL:0,TC:0,Content:-25,EDM:0,RT:0,SF:0,FILE:0,BULK:0,RULE:Release_Ham,ACTIO
+	N:release,TS:-25
+X-CID-META: VersionHash:89c9d04,CLOUDID:3b9b9ae9-ef90-4382-9c6f-55f2a0689a6b,B
+	ulkID:nil,BulkQuantity:0,Recheck:0,SF:102|836|888|898,TC:-5,Content:0|15|5
+	0,EDM:-3,IP:nil,URL:0,File:130,RT:0,Bulk:nil,QS:nil,BEC:-1,COL:0,OSI:0,OSA
+	:0,AV:0,LES:1,SPR:NO,DKR:0,DKP:0,BRR:0,BRE:0,ARC:0
+X-CID-BVR: 2,SSN|SDN
+X-CID-BAS: 2,SSN|SDN,0,_
+X-CID-FACTOR: TF_CID_SPAM_SNR
+X-CID-RHF: D41D8CD98F00B204E9800998ECF8427E
+X-UUID: f7dbb63e07f111f1b7fc4fdb8733b2bc-20260212
+Received: from mtkmbs13n2.mediatek.inc [(172.21.101.108)] by mailgw02.mediatek.com
+	(envelope-from <shayne.chen@mediatek.com>)
+	(Generic MTA with TLSv1.2 ECDHE-RSA-AES256-GCM-SHA384 256/256)
+	with ESMTP id 1338026612; Thu, 12 Feb 2026 17:05:25 +0800
+Received: from mtkmbs13n2.mediatek.inc (172.21.101.108) by
+ MTKMBS09N2.mediatek.inc (172.21.101.94) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.29; Thu, 12 Feb 2026 17:05:23 +0800
+Received: from mtksitap99.mediatek.inc (10.233.130.16) by
+ mtkmbs13n2.mediatek.inc (172.21.101.73) with Microsoft SMTP Server id
+ 15.2.2562.29 via Frontend Transport; Thu, 12 Feb 2026 17:05:23 +0800
+From: Shayne Chen <shayne.chen@mediatek.com>
+To: Felix Fietkau <nbd@nbd.name>
+CC: linux-wireless <linux-wireless@vger.kernel.org>, Lorenzo Bianconi
+	<lorenzo@kernel.org>, Ryder Lee <ryder.lee@mediatek.com>, Evelyn Tsai
+	<evelyn.tsai@mediatek.com>, Money Wang <money.wang@mediatek.com>,
+	linux-mediatek <linux-mediatek@lists.infradead.org>, StanleyYP Wang
+	<StanleyYP.Wang@mediatek.com>, Elwin Huang <s09289728096@gmail.com>, Shayne
+ Chen <shayne.chen@mediatek.com>
+Subject: [PATCH mt76 1/3] wifi: mt76: add external EEPROM support for mt799x chipsets
+Date: Thu, 12 Feb 2026 17:03:08 +0800
+Message-ID: <20260212090310.3335392-1-shayne.chen@mediatek.com>
+X-Mailer: git-send-email 2.45.2
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <ec999f04a965006dea6bd8e7380996b6fca980b4.camel@sipsolutions.net>
+Content-Type: text/plain
+X-MTK: N
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-1.06 / 15.00];
+X-Spamd-Result: default: False [-0.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MID_RHS_NOT_FQDN(0.50)[];
-	R_DKIM_ALLOW(-0.20)[morsemicro-com.20230601.gappssmtp.com:s=20230601];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
+	MID_CONTAINS_FROM(1.00)[];
+	R_MISSING_CHARSET(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[mediatek.com,quarantine];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+	R_DKIM_ALLOW(-0.20)[mediatek.com:s=dk];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
-	DMARC_POLICY_SOFTFAIL(0.10)[morsemicro.com : SPF not aligned (relaxed), DKIM not aligned (relaxed),none];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	RECEIVED_HELO_LOCALHOST(0.00)[];
-	FROM_HAS_DN(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-31758-lists,linux-wireless=lfdr.de];
+	TO_DN_ALL(0.00)[];
+	TAGGED_FROM(0.00)[bounces-31761-lists,linux-wireless=lfdr.de];
+	FREEMAIL_CC(0.00)[vger.kernel.org,kernel.org,mediatek.com,lists.infradead.org,gmail.com];
+	DKIM_TRACE(0.00)[mediatek.com:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
 	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[morsemicro-com.20230601.gappssmtp.com:+];
-	MISSING_XM_UA(0.00)[];
-	TO_DN_SOME(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[ria.thomas@morsemicro.com,linux-wireless@vger.kernel.org];
+	FROM_NEQ_ENVFROM(0.00)[shayne.chen@mediatek.com,linux-wireless@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[5];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[10];
+	RCVD_COUNT_FIVE(0.00)[6];
 	TAGGED_RCPT(0.00)[linux-wireless];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
-	RCPT_COUNT_FIVE(0.00)[6]
-X-Rspamd-Queue-Id: 9F8EC12B7AB
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,mediatek.com:mid,mediatek.com:dkim,mediatek.com:email]
+X-Rspamd-Queue-Id: 8360812BB46
 X-Rspamd-Action: no action
 
-Hi Johannes,
+From: StanleyYP Wang <StanleyYP.Wang@mediatek.com>
 
-Thanks for the feedback.
+For the MT7992 and MT7990 chipsets, efuse mode is not supported because
+there is insufficient space in the efuse to store the calibration data.
+Therefore, an additional on-chip EEPROM is added to address this
+limitation.
 
-> And for the certification test, presumably the choice for testbed STA
-> (for certain frames at least, I guess not intended to break the rules
-> for cases where there's no/less choice) is not meant to be left to the
-> implementation, but rather meant to be set, presumably to check that the
-> receiver reacts correctly.
+Co-developed-by: Elwin Huang <s09289728096@gmail.com>
+Signed-off-by: Elwin Huang <s09289728096@gmail.com>
+Co-developed-by: Shayne Chen <shayne.chen@mediatek.com>
+Signed-off-by: Shayne Chen <shayne.chen@mediatek.com>
+Signed-off-by: StanleyYP Wang <StanleyYP.Wang@mediatek.com>
+---
+ .../wireless/mediatek/mt76/mt76_connac_mcu.h  |  1 +
+ .../wireless/mediatek/mt76/mt7996/eeprom.c    | 59 +++++++------
+ .../net/wireless/mediatek/mt76/mt7996/init.c  |  3 +-
+ .../net/wireless/mediatek/mt76/mt7996/mcu.c   | 83 ++++++++++++-------
+ .../net/wireless/mediatek/mt76/mt7996/mcu.h   | 43 +++++++++-
+ .../wireless/mediatek/mt76/mt7996/mt7996.h    | 20 ++++-
+ 6 files changed, 148 insertions(+), 61 deletions(-)
 
-Yes, for certification testing this configuration is intended to verify
-that the receiver of the PPDU correctly interprets and acts upon the
-Response Indication value set by the transmitter.
+diff --git a/drivers/net/wireless/mediatek/mt76/mt76_connac_mcu.h b/drivers/net/wireless/mediatek/mt76/mt76_connac_mcu.h
+index f44977f9093d..e91966cd5efe 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt76_connac_mcu.h
++++ b/drivers/net/wireless/mediatek/mt76/mt76_connac_mcu.h
+@@ -1308,6 +1308,7 @@ enum {
+ 	MCU_UNI_CMD_PER_STA_INFO = 0x6d,
+ 	MCU_UNI_CMD_ALL_STA_INFO = 0x6e,
+ 	MCU_UNI_CMD_ASSERT_DUMP = 0x6f,
++	MCU_UNI_CMD_EXT_EEPROM_CTRL = 0x74,
+ 	MCU_UNI_CMD_RADIO_STATUS = 0x80,
+ 	MCU_UNI_CMD_SDO = 0x88,
+ };
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7996/eeprom.c b/drivers/net/wireless/mediatek/mt76/mt7996/eeprom.c
+index 8f60772913b4..00c72be8498f 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7996/eeprom.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7996/eeprom.c
+@@ -153,7 +153,7 @@ mt7996_eeprom_check_or_use_default(struct mt7996_dev *dev, bool use_default)
+ 
+ 	dev_warn(dev->mt76.dev, "eeprom load fail, use default bin\n");
+ 	memcpy(eeprom, fw->data, MT7996_EEPROM_SIZE);
+-	dev->flash_mode = true;
++	dev->eeprom_mode = EEPROM_MODE_DEFAULT_BIN;
+ 
+ out:
+ 	release_firmware(fw);
+@@ -163,26 +163,31 @@ mt7996_eeprom_check_or_use_default(struct mt7996_dev *dev, bool use_default)
+ 
+ static int mt7996_eeprom_load(struct mt7996_dev *dev)
+ {
++	u32 eeprom_blk_size, block_num;
+ 	bool use_default = false;
+-	int ret;
++	int ret, i;
+ 
+ 	ret = mt76_eeprom_init(&dev->mt76, MT7996_EEPROM_SIZE);
+ 	if (ret < 0)
+ 		return ret;
+ 
+ 	if (ret && !mt7996_check_eeprom(dev)) {
+-		dev->flash_mode = true;
++		dev->eeprom_mode = EEPROM_MODE_FLASH;
+ 		goto out;
+ 	}
+ 
+-	if (!dev->flash_mode) {
+-		u32 eeprom_blk_size = MT7996_EEPROM_BLOCK_SIZE;
+-		u32 block_num = DIV_ROUND_UP(MT7996_EEPROM_SIZE, eeprom_blk_size);
++	memset(dev->mt76.eeprom.data, 0, MT7996_EEPROM_SIZE);
++	if (mt7996_has_ext_eeprom(dev)) {
++		/* external eeprom mode */
++		dev->eeprom_mode = EEPROM_MODE_EXT;
++		eeprom_blk_size = MT7996_EXT_EEPROM_BLOCK_SIZE;
++	} else {
+ 		u8 free_block_num;
+-		int i;
+ 
+-		memset(dev->mt76.eeprom.data, 0, MT7996_EEPROM_SIZE);
+-		ret = mt7996_mcu_get_eeprom_free_block(dev, &free_block_num);
++		/* efuse mode */
++		dev->eeprom_mode = EEPROM_MODE_EFUSE;
++		eeprom_blk_size = MT7996_EEPROM_BLOCK_SIZE;
++		ret = mt7996_mcu_get_efuse_free_block(dev, &free_block_num);
+ 		if (ret < 0)
+ 			return ret;
+ 
+@@ -191,27 +196,29 @@ static int mt7996_eeprom_load(struct mt7996_dev *dev)
+ 			use_default = true;
+ 			goto out;
+ 		}
++	}
++
++	/* check if eeprom data from fw is valid */
++	if (mt7996_mcu_get_eeprom(dev, 0, NULL, eeprom_blk_size,
++				  dev->eeprom_mode) ||
++	    mt7996_check_eeprom(dev)) {
++		use_default = true;
++		goto out;
++	}
++
++	/* read eeprom data from fw */
++	block_num = DIV_ROUND_UP(MT7996_EEPROM_SIZE, eeprom_blk_size);
++	for (i = 1; i < block_num; i++) {
++		u32 len = eeprom_blk_size;
+ 
+-		/* check if eeprom data from fw is valid */
+-		if (mt7996_mcu_get_eeprom(dev, 0, NULL, 0) ||
+-		    mt7996_check_eeprom(dev)) {
++		if (i == block_num - 1)
++			len = MT7996_EEPROM_SIZE % eeprom_blk_size;
++		ret = mt7996_mcu_get_eeprom(dev, i * eeprom_blk_size,
++					    NULL, len, dev->eeprom_mode);
++		if (ret && ret != -EINVAL) {
+ 			use_default = true;
+ 			goto out;
+ 		}
+-
+-		/* read eeprom data from fw */
+-		for (i = 1; i < block_num; i++) {
+-			u32 len = eeprom_blk_size;
+-
+-			if (i == block_num - 1)
+-				len = MT7996_EEPROM_SIZE % eeprom_blk_size;
+-			ret = mt7996_mcu_get_eeprom(dev, i * eeprom_blk_size,
+-						    NULL, len);
+-			if (ret && ret != -EINVAL) {
+-				use_default = true;
+-				goto out;
+-			}
+-		}
+ 	}
+ 
+ out:
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7996/init.c b/drivers/net/wireless/mediatek/mt76/mt7996/init.c
+index 2937e89ad0c9..1fab04909831 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7996/init.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7996/init.c
+@@ -1207,7 +1207,8 @@ static int mt7996_variant_fem_init(struct mt7996_dev *dev)
+ 	if (ret)
+ 		return ret;
+ 
+-	ret = mt7996_mcu_get_eeprom(dev, MT7976C_EFUSE_OFFSET, buf, sizeof(buf));
++	ret = mt7996_mcu_get_eeprom(dev, MT7976C_EFUSE_OFFSET, buf, sizeof(buf),
++				    EEPROM_MODE_EFUSE);
+ 	if (ret && ret != -EINVAL)
+ 		return ret;
+ 
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7996/mcu.c b/drivers/net/wireless/mediatek/mt76/mt7996/mcu.c
+index 9ccf9f97c984..46099486ec09 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7996/mcu.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7996/mcu.c
+@@ -3950,7 +3950,7 @@ static int mt7996_mcu_set_eeprom_flash(struct mt7996_dev *dev)
+ #define MAX_PAGE_IDX_MASK	GENMASK(7, 5)
+ #define PAGE_IDX_MASK		GENMASK(4, 2)
+ #define PER_PAGE_SIZE		0x400
+-	struct mt7996_mcu_eeprom req = {
++	struct mt7996_mcu_eeprom_update req = {
+ 		.tag = cpu_to_le16(UNI_EFUSE_BUFFER_MODE),
+ 		.buffer_mode = EE_MODE_BUFFER
+ 	};
+@@ -3992,57 +3992,80 @@ static int mt7996_mcu_set_eeprom_flash(struct mt7996_dev *dev)
+ 
+ int mt7996_mcu_set_eeprom(struct mt7996_dev *dev)
+ {
+-	struct mt7996_mcu_eeprom req = {
++	struct mt7996_mcu_eeprom_update req = {
+ 		.tag = cpu_to_le16(UNI_EFUSE_BUFFER_MODE),
+ 		.len = cpu_to_le16(sizeof(req) - 4),
+ 		.buffer_mode = EE_MODE_EFUSE,
+ 		.format = EE_FORMAT_WHOLE
+ 	};
+ 
+-	if (dev->flash_mode)
++	if (dev->eeprom_mode != EEPROM_MODE_EFUSE)
+ 		return mt7996_mcu_set_eeprom_flash(dev);
+ 
+ 	return mt76_mcu_send_msg(&dev->mt76, MCU_WM_UNI_CMD(EFUSE_CTRL),
+ 				 &req, sizeof(req), true);
+ }
+ 
+-int mt7996_mcu_get_eeprom(struct mt7996_dev *dev, u32 offset, u8 *buf, u32 buf_len)
++int mt7996_mcu_get_eeprom(struct mt7996_dev *dev, u32 offset, u8 *buf, u32 buf_len,
++			  enum mt7996_eeprom_mode mode)
+ {
+-	struct {
+-		u8 _rsv[4];
+-
+-		__le16 tag;
+-		__le16 len;
+-		__le32 addr;
+-		__le32 valid;
+-		u8 data[16];
+-	} __packed req = {
+-		.tag = cpu_to_le16(UNI_EFUSE_ACCESS),
+-		.len = cpu_to_le16(sizeof(req) - 4),
+-		.addr = cpu_to_le32(round_down(offset,
+-				    MT7996_EEPROM_BLOCK_SIZE)),
++	struct mt7996_mcu_eeprom_access req = {
++		.info.len = cpu_to_le16(sizeof(req) - 4),
+ 	};
++	struct mt7996_mcu_eeprom_access_event *event;
+ 	struct sk_buff *skb;
+-	bool valid;
+-	int ret;
++	int ret, cmd;
++	u32 addr;
++
++	switch (mode) {
++	case EEPROM_MODE_EFUSE:
++		addr = round_down(offset, MT7996_EEPROM_BLOCK_SIZE);
++		cmd = MCU_WM_UNI_CMD_QUERY(EFUSE_CTRL);
++		req.info.tag = cpu_to_le16(UNI_EFUSE_ACCESS);
++		break;
++	case EEPROM_MODE_EXT:
++		addr = round_down(offset, MT7996_EXT_EEPROM_BLOCK_SIZE);
++		cmd = MCU_WM_UNI_CMD_QUERY(EXT_EEPROM_CTRL);
++		req.info.tag = cpu_to_le16(UNI_EXT_EEPROM_ACCESS);
++		req.eeprom.ext_eeprom.data_len = cpu_to_le32(buf_len);
++		break;
++	default:
++		return -EINVAL;
++	}
+ 
+-	ret = mt76_mcu_send_and_get_msg(&dev->mt76,
+-					MCU_WM_UNI_CMD_QUERY(EFUSE_CTRL),
+-					&req, sizeof(req), true, &skb);
++	req.info.addr = cpu_to_le32(addr);
++	ret = mt76_mcu_send_and_get_msg(&dev->mt76, cmd, &req, sizeof(req),
++					true, &skb);
+ 	if (ret)
+ 		return ret;
+ 
+-	valid = le32_to_cpu(*(__le32 *)(skb->data + 16));
+-	if (valid) {
+-		u32 addr = le32_to_cpu(*(__le32 *)(skb->data + 12));
++	event = (struct mt7996_mcu_eeprom_access_event *)skb->data;
++	if (event->valid) {
++		u32 ret_len = le32_to_cpu(event->eeprom.ext_eeprom.data_len);
++
++		addr = le32_to_cpu(event->addr);
+ 
+ 		if (!buf)
+ 			buf = (u8 *)dev->mt76.eeprom.data + addr;
+-		if (!buf_len || buf_len > MT7996_EEPROM_BLOCK_SIZE)
+-			buf_len = MT7996_EEPROM_BLOCK_SIZE;
+ 
+-		skb_pull(skb, 48);
+-		memcpy(buf, skb->data, buf_len);
++		switch (mode) {
++		case EEPROM_MODE_EFUSE:
++			if (!buf_len || buf_len > MT7996_EEPROM_BLOCK_SIZE)
++				buf_len = MT7996_EEPROM_BLOCK_SIZE;
++
++			memcpy(buf, event->eeprom.efuse, buf_len);
++			break;
++		case EEPROM_MODE_EXT:
++			if (!buf_len || buf_len > MT7996_EXT_EEPROM_BLOCK_SIZE)
++				buf_len = MT7996_EXT_EEPROM_BLOCK_SIZE;
++
++			memcpy(buf, event->eeprom.ext_eeprom.data,
++			       ret_len < buf_len ? ret_len : buf_len);
++			break;
++		default:
++			ret = -EINVAL;
++			break;
++		}
+ 	} else {
+ 		ret = -EINVAL;
+ 	}
+@@ -4052,7 +4075,7 @@ int mt7996_mcu_get_eeprom(struct mt7996_dev *dev, u32 offset, u8 *buf, u32 buf_l
+ 	return ret;
+ }
+ 
+-int mt7996_mcu_get_eeprom_free_block(struct mt7996_dev *dev, u8 *block_num)
++int mt7996_mcu_get_efuse_free_block(struct mt7996_dev *dev, u8 *block_num)
+ {
+ 	struct {
+ 		u8 _rsv[4];
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7996/mcu.h b/drivers/net/wireless/mediatek/mt76/mt7996/mcu.h
+index d70540982983..39df13679779 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7996/mcu.h
++++ b/drivers/net/wireless/mediatek/mt76/mt7996/mcu.h
+@@ -145,7 +145,7 @@ struct mt7996_mcu_background_chain_ctrl {
+ 	u8 rsv[2];
+ } __packed;
+ 
+-struct mt7996_mcu_eeprom {
++struct mt7996_mcu_eeprom_update {
+ 	u8 _rsv[4];
+ 
+ 	__le16 tag;
+@@ -155,6 +155,43 @@ struct mt7996_mcu_eeprom {
+ 	__le16 buf_len;
+ } __packed;
+ 
++union eeprom_data {
++	struct {
++		__le32 data_len;
++		DECLARE_FLEX_ARRAY(u8, data);
++	} ext_eeprom;
++	DECLARE_FLEX_ARRAY(u8, efuse);
++} __packed;
++
++struct mt7996_mcu_eeprom_info {
++	u8 _rsv[4];
++
++	__le16 tag;
++	__le16 len;
++	__le32 addr;
++	__le32 valid;
++} __packed;
++
++struct mt7996_mcu_eeprom_access {
++	struct mt7996_mcu_eeprom_info info;
++	union eeprom_data eeprom;
++} __packed;
++
++struct mt7996_mcu_eeprom_access_event {
++	u8 _rsv[4];
++
++	__le16 tag;
++	__le16 len;
++	__le32 version;
++	__le32 addr;
++	__le32 valid;
++	__le32 size;
++	__le32 magic_no;
++	__le32 type;
++	__le32 rsv[4];
++	union eeprom_data eeprom;
++} __packed;
++
+ struct mt7996_mcu_phy_rx_info {
+ 	u8 category;
+ 	u8 rate;
+@@ -875,6 +912,10 @@ enum {
+ 	UNI_EFUSE_BUFFER_RD,
+ };
+ 
++enum {
++	UNI_EXT_EEPROM_ACCESS = 1,
++};
++
+ enum {
+ 	UNI_VOW_DRR_CTRL,
+ 	UNI_VOW_RX_AT_AIRTIME_EN = 0x0b,
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7996/mt7996.h b/drivers/net/wireless/mediatek/mt76/mt7996/mt7996.h
+index 3ff730e36fa6..ea1f656a9334 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7996/mt7996.h
++++ b/drivers/net/wireless/mediatek/mt76/mt7996/mt7996.h
+@@ -85,6 +85,7 @@
+ 
+ #define MT7996_EEPROM_SIZE		7680
+ #define MT7996_EEPROM_BLOCK_SIZE	16
++#define MT7996_EXT_EEPROM_BLOCK_SIZE	1024
+ #define MT7996_TOKEN_SIZE		16384
+ #define MT7996_HW_TOKEN_SIZE		8192
+ 
+@@ -169,6 +170,13 @@ enum mt7996_fem_type {
+ 	MT7996_FEM_MIX,
+ };
+ 
++enum mt7996_eeprom_mode {
++	EEPROM_MODE_DEFAULT_BIN,
++	EEPROM_MODE_EFUSE,
++	EEPROM_MODE_FLASH,
++	EEPROM_MODE_EXT,
++};
++
+ enum mt7996_txq_id {
+ 	MT7996_TXQ_FWDL = 16,
+ 	MT7996_TXQ_MCU_WM,
+@@ -441,7 +449,7 @@ struct mt7996_dev {
+ 
+ 	u32 hw_pattern;
+ 
+-	bool flash_mode:1;
++	u8 eeprom_mode;
+ 	bool has_eht:1;
+ 
+ 	struct {
+@@ -717,8 +725,9 @@ int mt7996_mcu_set_fixed_rate_ctrl(struct mt7996_dev *dev,
+ int mt7996_mcu_set_fixed_field(struct mt7996_dev *dev, struct mt7996_sta *msta,
+ 			       void *data, u8 link_id, u32 field);
+ int mt7996_mcu_set_eeprom(struct mt7996_dev *dev);
+-int mt7996_mcu_get_eeprom(struct mt7996_dev *dev, u32 offset, u8 *buf, u32 buf_len);
+-int mt7996_mcu_get_eeprom_free_block(struct mt7996_dev *dev, u8 *block_num);
++int mt7996_mcu_get_eeprom(struct mt7996_dev *dev, u32 offset, u8 *buf, u32 buf_len,
++			  enum mt7996_eeprom_mode mode);
++int mt7996_mcu_get_efuse_free_block(struct mt7996_dev *dev, u8 *block_num);
+ int mt7996_mcu_get_chip_config(struct mt7996_dev *dev, u32 *cap);
+ int mt7996_mcu_set_ser(struct mt7996_dev *dev, u8 action, u8 set, u8 band);
+ int mt7996_mcu_set_txbf(struct mt7996_dev *dev, u8 action);
+@@ -816,6 +825,11 @@ static inline bool mt7996_has_wa(struct mt7996_dev *dev)
+ 	return !is_mt7990(&dev->mt76);
+ }
+ 
++static inline bool mt7996_has_ext_eeprom(struct mt7996_dev *dev)
++{
++	return !is_mt7996(&dev->mt76);
++}
++
+ void mt7996_mac_init(struct mt7996_dev *dev);
+ u32 mt7996_mac_wtbl_lmac_addr(struct mt7996_dev *dev, u16 wcid, u8 dw);
+ bool mt7996_mac_wtbl_update(struct mt7996_dev *dev, int idx, u32 mask);
+-- 
+2.51.0
 
-> Now that I've described it this way, I think the biggest question I have
-> is actually how, if at all, we need this in a non-testing scenario?
-
-This configuration is not expected to be used in any non-testing cases.
-
-> But we still need to decide where it should live, although in
-> that case I'd be more willing to accept an interface setting despite
-> the lifetime issues.)
-> 
-
-We think it makes the most sense to treat Response Indication as an
-interface-level setting  as it avoids introducing peer-specific state
-that is neither negotiated nor maintained by the protocol.
-
-That said as the response indication is only a test configuration there
-is expected to be some changes to the upcoming patches. I would preferably
-submit the response indication configuration as a single patch and NDP
-ADDBA/DELBA negotiations as a different patch. This would open up two different
-new mail chains for two patches which is different from the current one.
-
-Looking forward to hear your thoughts on this.
-
-Ria
 
