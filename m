@@ -1,166 +1,168 @@
-Return-Path: <linux-wireless+bounces-31815-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-31816-lists+linux-wireless=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id IPtFCH38jmmOGwEAu9opvQ
-	(envelope-from <linux-wireless+bounces-31815-lists+linux-wireless=lfdr.de@vger.kernel.org>)
-	for <lists+linux-wireless@lfdr.de>; Fri, 13 Feb 2026 11:27:09 +0100
+	id qNYSGb4uj2nTLgEAu9opvQ
+	(envelope-from <linux-wireless+bounces-31816-lists+linux-wireless=lfdr.de@vger.kernel.org>)
+	for <lists+linux-wireless@lfdr.de>; Fri, 13 Feb 2026 15:01:34 +0100
 X-Original-To: lists+linux-wireless@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7BAD513512B
-	for <lists+linux-wireless@lfdr.de>; Fri, 13 Feb 2026 11:27:08 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 22921136D8C
+	for <lists+linux-wireless@lfdr.de>; Fri, 13 Feb 2026 15:01:33 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 2C5F230166FE
-	for <lists+linux-wireless@lfdr.de>; Fri, 13 Feb 2026 10:27:07 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id C202A300DE17
+	for <lists+linux-wireless@lfdr.de>; Fri, 13 Feb 2026 14:01:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0C3AC35294F;
-	Fri, 13 Feb 2026 10:27:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 476E335FF59;
+	Fri, 13 Feb 2026 14:01:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b="QwCl8W+K"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="b7HwRUjD"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from sipsolutions.net (s3.sipsolutions.net [168.119.38.16])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f171.google.com (mail-pl1-f171.google.com [209.85.214.171])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 43799350D40
-	for <linux-wireless@vger.kernel.org>; Fri, 13 Feb 2026 10:27:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=168.119.38.16
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 261DF274B44
+	for <linux-wireless@vger.kernel.org>; Fri, 13 Feb 2026 14:01:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.171
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770978425; cv=none; b=SZ3mEH1mDS3w2NYyIHxskc8HO6zewtz/1Kf88/jZIODmSRMzWWAA91fvfE5FtuKWgfXgfxLrZOYLssMt3lGGYPG/boNL02B7cD/MsH+Ww9JgrsxkYg1dHwdcF8BuI/w8hgcIn98b1IVuYixJ/rXhRwyyUbKlI5IeVQj6lYAKsOo=
+	t=1770991267; cv=none; b=Kq9Z0NjycbVDv2l4S7o/5ipTD+LoP1PqsRi5PK5pV+8Uti9gcyceeDmzRvnGhcdn2Ub2ePCP7tlBIvEk9+EiFuezTlwBzT7aiM1tq2NXkgt1Dofhqz8Rqt0k899Iw97vdQk7OPOxkMWQh30cC9YGfK9X41LuhoFdlbPucNi7wH8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770978425; c=relaxed/simple;
-	bh=nuU36DoW3X5FKwPFJ/6M1EXAal9JqKxkKEY++HTWa2o=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=A/qb1A8GLJoP/orW+C/h5BDJ3K8ETLfMZZJKQooXcLJOQ7RXAcbk2OBz2adANnvGYkkNN6Zu5qc1bbQIvn7aFk4Dczp5cXM5yX1LAwLriWuz6C2/ZG+19ZKVV7LNT7h0PCr2RJqstamKiXYL2jSoPZ3Q2g4S2XHQ7iUCZKwYVK0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net; spf=pass smtp.mailfrom=sipsolutions.net; dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b=QwCl8W+K; arc=none smtp.client-ip=168.119.38.16
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sipsolutions.net
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=sipsolutions.net; s=mail; h=MIME-Version:Content-Transfer-Encoding:
-	Content-Type:References:In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender
-	:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
-	Resent-Cc:Resent-Message-ID; bh=DS2h1Kddm9w8T7RZLXnccTq+/EyFxF7WwBUsGnMZxOc=;
-	t=1770978423; x=1772188023; b=QwCl8W+KXrtvZH5/ef3MlZjNc1uMUL712ZtkFhJtjc1WL6q
-	XWovEaAegu1JiAKanXJT0nyKNL6bDbUq1jsAvd1KbSGBG0QTNkrnlFZIo9Z6/9JoV2kZIyQ8wT98C
-	COtLjeDgCH0xp18OrySKW+Ylh4n9z0hglK1kAYWRiAa5Qopd219nqIjjRjrWRAVmWZ458UG0OecKU
-	zydKZmV2RUalgWdMb+uLFl6nsEu3KNW/S10xF14g+nevhgocxTpRTVaYpkypZ5cQNV+UkOke4/dNK
-	45H+oo/DtdvXXPVmyxJ68g8utiybnmAx1A86u1W4lz+HnkwSfGlHspWOl3v3JTjQ==;
-Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
-	(Exim 4.98.2)
-	(envelope-from <johannes@sipsolutions.net>)
-	id 1vqqO2-00000007NB7-0SRV;
-	Fri, 13 Feb 2026 11:26:58 +0100
-Message-ID: <9576fdbc0b9b62caba88e05716d7c7028512130d.camel@sipsolutions.net>
-Subject: Re: [PATCH wireless-next v8 2/3] wifi: cfg80211: add initial UHR
- support
-From: Johannes Berg <johannes@sipsolutions.net>
-To: Harshitha Prem <harshitha.prem@oss.qualcomm.com>, 
-	linux-wireless@vger.kernel.org
-Cc: Karthikeyan Kathirvel <karthikeyan.kathirvel@oss.qualcomm.com>, 
-	vasanthakumar.thiagarajan@oss.qualcomm.com, Lorenzo Bianconi
- <lorenzo@kernel.org>, 	ath12k@lists.infradead.org, Jeff Johnson
- <jeff.johnson@oss.qualcomm.com>,  Ping-Ke Shih <pkshih@realtek.com>
-Date: Fri, 13 Feb 2026 11:26:57 +0100
-In-Reply-To: <be9ab3c7f05b0f56f19aee0ffc7c2f96138b9a05.camel@sipsolutions.net>
-References: <20260130154259.265130-5-johannes@sipsolutions.net>
-		 <20260130164259.54cc12fbb307.I26126bebd83c7ab17e99827489f946ceabb3521f@changeid>
-		 <f96125eeda23451c19067359eb9d10b4047bcdd3.camel@sipsolutions.net>
-		 <5d54feea-d0cd-4bd7-b0d2-02e42f0fe5e1@oss.qualcomm.com>
-	 <be9ab3c7f05b0f56f19aee0ffc7c2f96138b9a05.camel@sipsolutions.net>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.58.3 (3.58.3-1.fc43) 
+	s=arc-20240116; t=1770991267; c=relaxed/simple;
+	bh=VgAW1VuJWLeM5Vx/u6+gHu+VwgjVTT5c9sV7rWihXVc=;
+	h=Message-ID:Date:MIME-Version:Subject:To:References:From:
+	 In-Reply-To:Content-Type; b=tPIxX8FAZUIL3i2ajp3tWuk9T5wE3rVTiZkh9CkTUohuVq+3ctx7WzhwPsFM/5hJZRid5ZT63wyQNZ5A//Cth8RAzHca8CCpK5/VzOXq2cPT/YKYRXZzluuPqixsTyKuRbHP2IS+R5Qz55MGiLO7ePcU3Mr6e1EMJJin94mGXO4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=b7HwRUjD; arc=none smtp.client-ip=209.85.214.171
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-pl1-f171.google.com with SMTP id d9443c01a7336-2a8fba3f769so4263495ad.2
+        for <linux-wireless@vger.kernel.org>; Fri, 13 Feb 2026 06:01:05 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1770991265; x=1771596065; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:to:subject:user-agent:mime-version:date:message-id:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=1owc5fSNao93rCPFWkK7NA9JKqo3uiZe2XxwFF/zRyk=;
+        b=b7HwRUjDvIpsB38YQu40fbiX+4sUch/PKmmDYQ4rcE8jHwiMIJ9or2P0lETq3zw1nU
+         gXDmZkULKgt1clNSJYZGMlvFViJ8QFvl2O0U8pNfkmcFpL6KqG8Jz1BIT5e+vTbfIa1P
+         UfiY+Rpmo0/QDgbHnbSNMhpRYTVJedJZHKMcjwKsotgUESrwmnT4Rj5o3y62lOE++rri
+         Xn2KL0ZBPvxQ/qNGdPeIqWUlZcUYS2N3Qa2Tdef2CU7+OrwdaARiNeK+cK8kK1D7YIvZ
+         YZwq3650Q8F6DwnbDZwOwgo68YAI6r2io7On7OJxtULU/0ByVQOEojy/Z2jLvreD/TaH
+         Z1jg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1770991265; x=1771596065;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=1owc5fSNao93rCPFWkK7NA9JKqo3uiZe2XxwFF/zRyk=;
+        b=boXfNUkDNjEilAa4UySS97gJsaGSD7zGHfMrLuSNxJVZCaYD8jKwc64skkm88nVEpM
+         59NR4TvpC9qKz1WzQHXQxZN1P1JEWfQR0QAifCdfklGElSSFrjgzt/uX/Nv+PaNur7YE
+         8aobCBdtmPpIhYC0xXZlamOFYyjpb5ugMSNRp+aF1RJb2aU42rCoh6vbXUo6O5uB4t80
+         jZ3y9tmfiNb/GtaU/R8hrqLl3I78dCstJf3RY8daMYt+HutYXr7zYy69jJg80V8Z/WNI
+         llz4SoToLKoSkIPtxj5Zq6AtWK9uS6kVJSJkPIAwB4fxUPB1BHmilJo2JtB4evi4DPyJ
+         adrQ==
+X-Forwarded-Encrypted: i=1; AJvYcCVjy8vfK4Vpqej4iT9KUWbLmTE8YjfYcbM556xxhEtOX20shAAZSyW97rgNf8BFa4eQqzlOVjMRU21j8mi71Q==@vger.kernel.org
+X-Gm-Message-State: AOJu0YzUuxoliE3oJdZMJF7U87DptPn5DCSCL6+8XzkAsmi4+U4NmOkO
+	CSn3OXfHqMit8Ee5NXf6J1ailnXjfCX/oAQ4pi2aIqXgXFR/nTqICUuQ
+X-Gm-Gg: AZuq6aLfQSurNJF9FJh/1aAZOiMkRahU8B1MfhIYeDm8kNzUSBHSN3Q3eSJ2yJLOe24
+	e6WcmGDTjfQPsrJBLHnfTXLCh/rj+HhyrqpUFBKENaqfml9xXLgCRcsD6CbkHoK8hvZKS6eCJ17
+	WYYANJ13hfBtTQ1ekK9lcNwYwrT7fkx/5fwtzdFRMB0Kx+qnGAWy2uF0swVrPO7YJLhtAJ9IU9e
+	4UVagSBzDxQgs7w3gQJshi+FfnxNnVtBxEiuZk7ymmJDAwj4ZVNzgZ1BOuL2OPn2jREXzbzrU3w
+	ke1j1fZmG0xVW417TZzKSFas+jgSdu5yETTGw/baCROustblmqEeX0qEIRILr8ZHKw48axZ3iOi
+	eWyotVjsFqbQ1rFOhWNVsGTMt8qD+AACT3aHgt/UkhgvaE9qeVvoegL7rDbRB0uuJ0N+NNvENY7
+	2ROqPVYhuxqXCxwVSB0/8ptqf5xrkKHTv54rdKiM+OHmxF6KUM0Frw15Pc
+X-Received: by 2002:a17:903:1904:b0:2a9:30d4:2b0c with SMTP id d9443c01a7336-2ab5060d2b9mr18764565ad.46.1770991263619;
+        Fri, 13 Feb 2026 06:01:03 -0800 (PST)
+Received: from [10.100.120.15] ([152.193.78.90])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2ab29998eeasm88343145ad.87.2026.02.13.06.01.01
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Fri, 13 Feb 2026 06:01:02 -0800 (PST)
+Message-ID: <1c6a4aaa-b450-4843-8c44-930a8c3f6d66@gmail.com>
+Date: Fri, 13 Feb 2026 06:00:59 -0800
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-malware-bazaar: not-scanned
+User-Agent: Mozilla Thunderbird
+Subject: Re: [RFC PATCH 2/2] wifi: ath10k: only wait for response to SET_KEY
+To: Jeff Johnson <jeff.johnson@oss.qualcomm.com>,
+ Richard Acayan <mailingradian@gmail.com>, linux-wireless@vger.kernel.org,
+ ath10k@lists.infradead.org, Baochen Qiang <baochen.qiang@oss.qualcomm.com>
+References: <20260210021249.12132-1-mailingradian@gmail.com>
+ <20260210021249.12132-3-mailingradian@gmail.com>
+ <dd019903-f8d9-4bd3-a90d-b4d505f489f3@gmail.com>
+ <3e1274fd-fe95-420c-94e3-ac34f497b7ae@oss.qualcomm.com>
+Content-Language: en-US
+From: James Prestwood <prestwoj@gmail.com>
+In-Reply-To: <3e1274fd-fe95-420c-94e3-ac34f497b7ae@oss.qualcomm.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[sipsolutions.net,none];
-	R_DKIM_ALLOW(-0.20)[sipsolutions.net:s=mail];
+	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
 	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_DKIM_ALLOW(-0.20)[gmail.com:s=20230601];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_RCPT(0.00)[linux-wireless];
-	TO_DN_SOME(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	MID_RHS_MATCH_FROM(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[johannes@sipsolutions.net,linux-wireless@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[8];
-	PRECEDENCE_BULK(0.00)[];
-	TAGGED_FROM(0.00)[bounces-31815-lists,linux-wireless=lfdr.de];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	DKIM_TRACE(0.00)[sipsolutions.net:+]
-X-Rspamd-Queue-Id: 7BAD513512B
+	FREEMAIL_TO(0.00)[oss.qualcomm.com,gmail.com,vger.kernel.org,lists.infradead.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-31816-lists,linux-wireless=lfdr.de];
+	FREEMAIL_FROM(0.00)[gmail.com];
+	TO_DN_SOME(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCVD_COUNT_FIVE(0.00)[5];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[prestwoj@gmail.com,linux-wireless@vger.kernel.org];
+	DKIM_TRACE(0.00)[gmail.com:+];
+	MID_RHS_MATCH_FROM(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TAGGED_RCPT(0.00)[linux-wireless];
+	RCPT_COUNT_FIVE(0.00)[5];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 22921136D8C
 X-Rspamd-Action: no action
 
-On Fri, 2026-02-13 at 11:11 +0100, Johannes Berg wrote:
-> Hi Harshita,
->=20
-> > > Should we add a separate netlink attribute for the UHR operation, whi=
-ch
-> > > hostapd would fill with the _full_ data like it appears in associatio=
-n
-> > > response etc.?
-> > >=20
-> > > That way, hostapd doesn't need to build a separate data/attribute
-> > > structure but can just use hostapd_eid_uhr_operation(..., false) for =
-it.
-> > >=20
-> > > An alternative would be to add more attributes for everything, but it=
-'s
-> > > probably more complicated on both sides?
->=20
-> > Thank you for the suggestions.
-> >=20
-> > We feel that using separate nested attributes for each feature is the b=
-etter approach, as this allows us to reuse the attributes for the Enhanced =
-BSS Parameter Critical Update procedure, where similar information is carri=
-ed in the UHR parameters update element.
->=20
-> Heh, I'll admit I'm surprised - I'm usually the one advocating for
-> finer-grained attributes, and here I didn't ;-)
+Hi Jeff/Baochen,
 
-Wait, so I wrote a lot and forgot to circle back to this question ...
+On 2/12/26 9:56 AM, Jeff Johnson wrote:
+> On 2/11/2026 6:11 PM, James Prestwood wrote:
+>> On 2/9/26 6:12 PM, Richard Acayan wrote:
+>>> When sending DELETE_KEY, the driver times out waiting for a response
+>>> that doesn't come. Only wait for a response when sending SET_KEY.
+>> We've run into the exact same thing on the QCA6174 and have been
+>> carrying an identical patch to this for at least a year.
+>>
+>> https://lore.kernel.org/linux-wireless/b2838a23-ea30-4dee-b513-f5471d486af2@gmail.com/
+> Baochen,
+> Were we ever able to reproduce this?
+> Do we normally always get a response to DELETE_KEY but in some instances it
+> comes very late (or not at all)?
+> If we remove the wait, is there any concern that a late arriving DELETE_KEY
+> response might be processed as a response to a subsequent SET_KEY command?
 
-Basically I think that it's not going to be useful to split it up. I
-have no objections to it, but it complicates the code (especially in
-hostapd) quite a bit, because it's going to be either
+For some added color, we only see this oddly with some vendors of APs, 
+primarily "classic" Cisco Aeronet equipment (not Meraki).
 
- 1) include each thing (NPCA, DBE, ...) in its own attribute, so that
-    e.g. NPCA would be 4 or 6 bytes per spec format, but then we need
-    separate validation for each in nl80211
+Its still a mystery why certain AP vendors are able to trigger this 
+given its deleting a key locally on the device. The major issue here is 
+on roams when deleting the key from the prior BSS where we time out, 
+thereby delaying the roam for 3 seconds. This then causes downstream 
+effects like the reassociation timeout expiring on the AP which causes a 
+disassociation. With some customers using Cisco its actually happens 
+near 100% of the time, killing roaming entirely.
 
- 2) we really break it all down to each individual value, so e.g. NPCA
-    would have separate attributes for minimum duration threshold,
-    switch and switch back delay, initial QSRC and a MOPLEN flag; this
-    is a bit easier to capture in a policy, but a LOT of parameters
-    overall.
+Thanks,
 
-The thing - and why I wrote so much - is that we basically only need a
-single current, and in the case of updates additionally a single post-
-update, UHR operation.
+James
 
-So unless we're going to completely design away from beacon templates
-and create an API where including the UHR Parameters Update element is
-fully the firmware's (or driver's) responsibility across all the
-different frame types, then the split isn't really needed. And even if
-we _do_ design it completely that way, giving the post-update UHR
-operation and comparing to the pre-update one isn't a huge stretch for a
-design that just required fully rebuilding all the frames (parsing all
-the way into fragmented elements and putting them back together in a
-completely new way, including re-fragmenting elements and subelements
-etc. which all sounds very messy to me.)
-
-johannes
+>
+> /jeff
 
