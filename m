@@ -1,62 +1,60 @@
-Return-Path: <linux-wireless+bounces-31851-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-31852-lists+linux-wireless=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id MGUGNyXpkGkOdwEAu9opvQ
-	(envelope-from <linux-wireless+bounces-31851-lists+linux-wireless=lfdr.de@vger.kernel.org>)
-	for <lists+linux-wireless@lfdr.de>; Sat, 14 Feb 2026 22:29:09 +0100
+	id CLNvETHpkGkOdwEAu9opvQ
+	(envelope-from <linux-wireless+bounces-31852-lists+linux-wireless=lfdr.de@vger.kernel.org>)
+	for <lists+linux-wireless@lfdr.de>; Sat, 14 Feb 2026 22:29:21 +0100
 X-Original-To: lists+linux-wireless@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 49AFD13D76B
-	for <lists+linux-wireless@lfdr.de>; Sat, 14 Feb 2026 22:29:09 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id ABA8C13D78A
+	for <lists+linux-wireless@lfdr.de>; Sat, 14 Feb 2026 22:29:20 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id D40D53042B46
-	for <lists+linux-wireless@lfdr.de>; Sat, 14 Feb 2026 21:25:39 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 5F253304565E
+	for <lists+linux-wireless@lfdr.de>; Sat, 14 Feb 2026 21:25:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6209529ACFD;
-	Sat, 14 Feb 2026 21:25:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DE79C2D979F;
+	Sat, 14 Feb 2026 21:25:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ZHgKkXwf"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Lv5HTel7"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3EC8A3C2D;
-	Sat, 14 Feb 2026 21:25:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BB67F28134C;
+	Sat, 14 Feb 2026 21:25:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771104339; cv=none; b=EWC6Qs2Dpu/uQgUy+SeC2dYuMmiVOdBFVOsDzUBH35RuKAdbJMWGi4KZ39jL5zadFWzny6tGjwv7hT63OSI87+tEWsVDW9g/53w2Cl4Fpnycj6oZ/7SUd/k5Kd/eyPKw13RGbl4mFrDvFS0DJVJEYO7YPaPSUWbm5BZ4pQzHtiQ=
+	t=1771104345; cv=none; b=ujoZbnRlxbAtZRZNVSZGaiph00x+JR00fsHP5AIvzVpXiHOD0VtNoW5KtULqNvWwf+igwdMJ6lRFxM6ERjgBtgRwuJfaCSYFC1Qb8rDQIDGsLFSfucJpywbKwQVI51OieL3IClbAjMxRTTV4IcK7u0S1zfEQG3Za/+mBisnGbts=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771104339; c=relaxed/simple;
-	bh=b1LD+Xansm2gIBycBh5imiPFd4gz7SExWM2XaWHP+zQ=;
+	s=arc-20240116; t=1771104345; c=relaxed/simple;
+	bh=WWRUjv1aa04zQ0r3bnU5uXtUjs+j3wZYFbB5YtLB2aU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=r7Ed8Sw+73H7fHvVaChq0L6FGHaxFamcFOdr7tznom8Gv4PLMGJwTEl9VZUd4lcBCaR0SZT5tZcAnCGxh2lawUSfDmezBnUeBzdov4rck6b9j+RrF0TgN5hvcjgUMz1d+GxI+sSgjE0xScJpLMPBc9Ijvut8e/1zUBZREW3pEWE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ZHgKkXwf; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 36753C16AAE;
-	Sat, 14 Feb 2026 21:25:38 +0000 (UTC)
+	 MIME-Version; b=fg+Px9XEi6ot9tGVKJI053G1KhQlgJHQi5PlYGrOqDYsWdGugKqXV37tHGUgQXp3JEcI1ad/3tvkpgfY1smMYWe4kFkbx3Y2xT/kM2kIK1qp2g89aAH8x9VIRvPu5jmv10q7VSAwAHVK4ebyc4FAKCqmIwOlsh9lgC4oQS/MORs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Lv5HTel7; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E1F98C19423;
+	Sat, 14 Feb 2026 21:25:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1771104339;
-	bh=b1LD+Xansm2gIBycBh5imiPFd4gz7SExWM2XaWHP+zQ=;
+	s=k20201202; t=1771104345;
+	bh=WWRUjv1aa04zQ0r3bnU5uXtUjs+j3wZYFbB5YtLB2aU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ZHgKkXwfVIUJdlnWOFBjl5fb9J5W2iIGjXEJdCsdZDISFVZoCO2MsCZNT1lMAFa0o
-	 71YSxfU2m7W0F+UPOq7C6h4ut7SCmz4bGKKLCwEKveHBdTqC5a3mUYi1PVDZTlu9dT
-	 KmVjSKkm+QRq86g/97Ir8O+a+uzyQ5T73SgVn3+qbqaw1cWFzNEeNmGgoT0uevN6k6
-	 pLT0dSIu/OIU8UjuN9m1qtNTDlAqBuAAUNb7uCbxgappzDgv7+HaLs2k4Kqr7jJ3vT
-	 qFcH9MDtpzzqJka9/6EHs//F4ileZKajiBy69L735cA3yMq3p51+9HQVYsOX/VLN8M
-	 rrtDNPxBDR8EA==
+	b=Lv5HTel7qSVFi+jnlCijflUTfs+HzQ7wgF7zgIc/215kZV1jCkIzcD52MnZvP1LGb
+	 9WjL9/pwe52x09ku6s7YOcuAL3z+Kv34H0ZFJm4SOKjW0Q83AXFiKisGMmeWExUswz
+	 FdW+L/Agtr6ut2i1R2GIVX/V4KUo7be01udC6u5S3yhv1M/X99TpcD3eAGvsLvXws+
+	 pJ3U14K0S0uZ1VZ3OxvmgUaKR3Z5OrLIj0kauRPyzPkrYED+rk1Ext+FfmEZZIq5cK
+	 WfFE6FT1/5JHadIN3NqWWtWnn8aQee7xclj+9zbvgKVJ6JIYNs068TykAEvR4ZqS1e
+	 5f3zV7YpNOWkg==
 From: Sasha Levin <sashal@kernel.org>
 To: patches@lists.linux.dev,
 	stable@vger.kernel.org
-Cc: Ziyi Guo <n7l8m4@u.northwestern.edu>,
-	Baochen Qiang <baochen.qiang@oss.qualcomm.com>,
-	Jeff Johnson <jeff.johnson@oss.qualcomm.com>,
+Cc: Miri Korenblit <miriam.rachel.korenblit@intel.com>,
+	Johannes Berg <johannes.berg@intel.com>,
 	Sasha Levin <sashal@kernel.org>,
-	jjohnson@kernel.org,
-	linux-wireless@vger.kernel.org,
-	ath10k@lists.infradead.org
-Subject: [PATCH AUTOSEL 6.19-5.10] wifi: ath10k: fix lock protection in ath10k_wmi_event_peer_sta_ps_state_chg()
-Date: Sat, 14 Feb 2026 16:22:51 -0500
-Message-ID: <20260214212452.782265-26-sashal@kernel.org>
+	johannes@sipsolutions.net,
+	linux-wireless@vger.kernel.org
+Subject: [PATCH AUTOSEL 6.19-6.12] wifi: cfg80211: allow only one NAN interface, also in multi radio
+Date: Sat, 14 Feb 2026 16:22:53 -0500
+Message-ID: <20260214212452.782265-28-sashal@kernel.org>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20260214212452.782265-1-sashal@kernel.org>
 References: <20260214212452.782265-1-sashal@kernel.org>
@@ -69,199 +67,129 @@ MIME-Version: 1.0
 X-stable: review
 X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.19
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-1.16 / 15.00];
+X-Spamd-Result: default: False [-0.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	MID_CONTAINS_FROM(1.00)[];
+	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-31851-lists,linux-wireless=lfdr.de];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-31852-lists,linux-wireless=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[kernel.org:+];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	TO_DN_SOME(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,linux-wireless@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,linux-wireless@vger.kernel.org];
-	DKIM_TRACE(0.00)[kernel.org:+];
-	RCPT_COUNT_SEVEN(0.00)[9];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[linux-wireless];
-	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,msgid.link:url,qualcomm.com:email,northwestern.edu:email]
-X-Rspamd-Queue-Id: 49AFD13D76B
+	RCPT_COUNT_SEVEN(0.00)[7];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,msgid.link:url,intel.com:email]
+X-Rspamd-Queue-Id: ABA8C13D78A
 X-Rspamd-Action: no action
 
-From: Ziyi Guo <n7l8m4@u.northwestern.edu>
+From: Miri Korenblit <miriam.rachel.korenblit@intel.com>
 
-[ Upstream commit 820ba7dd6859ef8b1eaf6014897e7aa4756fc65d ]
+[ Upstream commit e69fda4d07701373354e52b0321bd40311d743d0 ]
 
-ath10k_wmi_event_peer_sta_ps_state_chg() uses lockdep_assert_held() to
-assert that ar->data_lock should be held by the caller, but neither
-ath10k_wmi_10_2_op_rx() nor ath10k_wmi_10_4_op_rx() acquire this lock
-before calling this function.
+According to Wi-Fi Aware (TM) 4.0 specification 2.8, A NAN device can
+have one NAN management interface. This applies also to multi radio
+devices.
+The current code allows a driver to support more than one NAN interface,
+if those are not in the same radio.
 
-The field arsta->peer_ps_state is documented as protected by
-ar->data_lock in core.h, and other accessors (ath10k_peer_ps_state_disable,
-ath10k_dbg_sta_read_peer_ps_state) properly acquire this lock.
+Fix it.
 
-Add spin_lock_bh()/spin_unlock_bh() around the peer_ps_state update,
-and remove the lockdep_assert_held() to be aligned with new locking,
-following the pattern used by other WMI event handlers in the driver.
-
-Signed-off-by: Ziyi Guo <n7l8m4@u.northwestern.edu>
-Reviewed-by: Baochen Qiang <baochen.qiang@oss.qualcomm.com>
-Link: https://patch.msgid.link/20260123175611.767731-1-n7l8m4@u.northwestern.edu
-[removed excess blank line]
-Signed-off-by: Jeff Johnson <jeff.johnson@oss.qualcomm.com>
+Reviewed-by: Johannes Berg <johannes.berg@intel.com>
+Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
+Link: https://patch.msgid.link/20260107135129.fdaecec0fe8a.I246b5ba6e9da3ec1481ff197e47f6ce0793d7118@changeid
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
 
 LLM Generated explanations, may be completely bogus:
 
-## Analysis of wifi: ath10k: fix lock protection in
-ath10k_wmi_event_peer_sta_ps_state_chg()
+### Key Finding: Limited Stable Tree Applicability
 
-### 1. Commit Message Analysis
+The multi-radio interface combination checking (`combined_radio`
+parameter) was introduced in commit `bd9813d13be43` which was merged in
+the v6.13 cycle. This means:
+- The bug being fixed **only exists in kernels 6.13+**
+- Older stable trees (6.12.y, 6.6.y, 6.1.y, 5.15.y, etc.) don't have the
+  multi-radio combination checking code, so they don't have this bug
+- Only 6.13.y and later stable trees would need this fix
 
-The commit message is clear and well-structured:
-- **Subject**: Explicitly says "fix lock protection" — this is a
-  locking/synchronization bug fix
-- **Body**: Explains that `lockdep_assert_held()` asserted
-  `ar->data_lock` should be held by callers, but **no caller actually
-  held it**. This means the assertion was always wrong (or always
-  disabled), and the field `arsta->peer_ps_state` was being accessed
-  without the required lock protection.
-- **Reviewed-by**: Baochen Qiang from Qualcomm reviewed it, lending
-  credibility
-- The commit references that `core.h` documents `peer_ps_state` as
-  protected by `ar->data_lock`, and other accessors properly acquire it
-  — meaning this was the only broken path.
+### Assessment
 
-### 2. Code Change Analysis
+**What the fix does**: Removes an incorrect exemption that allowed
+multi-radio Wi-Fi devices to declare support for multiple NAN
+interfaces, violating the Wi-Fi Aware specification.
 
-The change is minimal and surgical:
+**Severity**: Low-to-medium. This is a validation/spec-compliance fix.
+The practical impact depends on whether any driver actually tries to
+register multiple NAN interfaces across radios. If they do, NAN behavior
+could be undefined per spec. The fix prevents such invalid
+configurations from being accepted.
 
-1. **Removes** `lockdep_assert_held(&ar->data_lock)` — the callers never
-   held this lock, so the assertion was incorrect (and likely only
-   checked with CONFIG_LOCKDEP enabled, which is why it didn't always
-   trigger)
+**Risk**: Very low. The change is tiny (removes one condition), is in a
+validation path, and can only make the kernel *stricter* (reject invalid
+configurations that were previously accepted). It cannot introduce new
+crashes or regressions.
 
-2. **Adds** `spin_lock_bh(&ar->data_lock)` /
-   `spin_unlock_bh(&ar->data_lock)` around the single line
-   `arsta->peer_ps_state = __le32_to_cpu(ev->peer_ps_state)` — this is
-   the actual fix, properly protecting the field with the documented
-   lock
+**Meets stable criteria**:
+- Small and contained: Yes (removes ~4 lines)
+- Fixes a real bug: Yes (incorrect validation allowing spec-violating
+  configurations)
+- Obviously correct: Yes (reviewed by the wireless maintainer)
+- No new features: Correct, it tightens existing validation
 
-The lock scope is minimal — only around the single write to
-`peer_ps_state`, placed after the RCU-protected station lookup and
-before the RCU read unlock. This is clean and correct.
+**Concerns**:
+- Limited applicability (only 6.13+ stable trees)
+- Low severity - this is spec compliance rather than a crash/corruption
+  fix
+- The practical impact is limited since it only matters if a driver
+  declares >1 NAN interface across radios
 
-### 3. Bug Classification
-
-This is a **data race / missing synchronization** bug:
-- The field `peer_ps_state` is documented as requiring `ar->data_lock`
-  protection
-- Other readers/writers of this field properly acquire the lock
-- This WMI event handler was the only path that didn't hold the lock
-- Without the lock, concurrent reads (from
-  `ath10k_dbg_sta_read_peer_ps_state`) and writes could race, leading to
-  torn reads or inconsistent state
-
-### 4. Scope and Risk Assessment
-
-- **Lines changed**: ~4 lines effective (remove 2 lines, add 3 lines
-  including lock/unlock)
-- **Files changed**: 1 file (`drivers/net/wireless/ath/ath10k/wmi.c`)
-- **Risk**: Very low. The change adds proper locking around a single
-  field access, following the established pattern used by all other
-  accessors. The lock is `spin_lock_bh`, which is safe in this softirq
-  context.
-- **Could it break something?** Extremely unlikely — it adds a lock that
-  was already supposed to be held, and uses the same locking pattern as
-  other paths in the driver.
-
-### 5. User Impact
-
-- **Affected hardware**: ath10k WiFi devices (Qualcomm 802.11ac chipsets
-  — very common in laptops and embedded systems)
-- **Trigger**: WMI peer power-save state change events from firmware
-- **Consequence of bug**: Data race on `peer_ps_state` field. While this
-  is a 32-bit field and the race may not always cause visible corruption
-  on most architectures, it violates the documented locking contract and
-  could cause issues with lockdep-enabled kernels (warnings/splats). On
-  architectures without atomic 32-bit writes, it could cause torn reads.
-- **Severity**: Medium — it's a real locking bug in a commonly-used WiFi
-  driver
-
-### 6. Stability Indicators
-
-- Reviewed by Qualcomm engineer (Baochen Qiang)
-- Accepted by the ath10k maintainer (Jeff Johnson)
-- Small, obvious, and following established patterns in the same driver
-
-### 7. Dependency Check
-
-- No dependencies on other commits
-- The code being modified has existed in ath10k for a long time (the
-  `lockdep_assert_held` suggests the locking was always intended but
-  never correctly implemented in this path)
-- Should apply cleanly to any stable tree that has the ath10k driver
-  with this function
-
-### 8. Stable Kernel Criteria
-
-- **Obviously correct?** Yes — adds the documented lock around a field
-  access
-- **Fixes a real bug?** Yes — data race / missing synchronization
-- **Small and contained?** Yes — 4 lines in 1 file
-- **No new features?** Correct — pure bug fix
-- **Tested?** Reviewed by subsystem experts, accepted by maintainer
-
-### Conclusion
-
-This is a textbook stable-worthy fix: a small, surgical correction to a
-locking bug in a widely-used WiFi driver. It properly adds the lock that
-was always documented as required but never acquired in this code path.
-The risk is minimal and the fix follows established patterns in the same
-driver.
+This is a legitimate, low-risk bug fix that enforces correct Wi-Fi
+specification compliance. While the severity is not high (no
+crash/corruption), it's a clean, reviewed fix from the subsystem
+maintainer that corrects incorrect behavior. It's applicable to recent
+stable trees (6.13+) and carries essentially zero regression risk.
 
 **YES**
 
- drivers/net/wireless/ath/ath10k/wmi.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ net/wireless/core.c | 8 ++------
+ 1 file changed, 2 insertions(+), 6 deletions(-)
 
-diff --git a/drivers/net/wireless/ath/ath10k/wmi.c b/drivers/net/wireless/ath/ath10k/wmi.c
-index b4aad6604d6d9..ce22141e5efd9 100644
---- a/drivers/net/wireless/ath/ath10k/wmi.c
-+++ b/drivers/net/wireless/ath/ath10k/wmi.c
-@@ -5289,8 +5289,6 @@ ath10k_wmi_event_peer_sta_ps_state_chg(struct ath10k *ar, struct sk_buff *skb)
- 	struct ath10k_sta *arsta;
- 	u8 peer_addr[ETH_ALEN];
+diff --git a/net/wireless/core.c b/net/wireless/core.c
+index 9a420d627d3ce..2028bf5686f2b 100644
+--- a/net/wireless/core.c
++++ b/net/wireless/core.c
+@@ -661,12 +661,8 @@ int wiphy_verify_iface_combinations(struct wiphy *wiphy,
+ 				    c->limits[j].max > 1))
+ 				return -EINVAL;
  
--	lockdep_assert_held(&ar->data_lock);
--
- 	ev = (struct wmi_peer_sta_ps_state_chg_event *)skb->data;
- 	ether_addr_copy(peer_addr, ev->peer_macaddr.addr);
+-			/* Only a single NAN can be allowed, avoid this
+-			 * check for multi-radio global combination, since it
+-			 * hold the capabilities of all radio combinations.
+-			 */
+-			if (!combined_radio &&
+-			    WARN_ON(types & BIT(NL80211_IFTYPE_NAN) &&
++			/* Only a single NAN can be allowed */
++			if (WARN_ON(types & BIT(NL80211_IFTYPE_NAN) &&
+ 				    c->limits[j].max > 1))
+ 				return -EINVAL;
  
-@@ -5305,7 +5303,9 @@ ath10k_wmi_event_peer_sta_ps_state_chg(struct ath10k *ar, struct sk_buff *skb)
- 	}
- 
- 	arsta = (struct ath10k_sta *)sta->drv_priv;
-+	spin_lock_bh(&ar->data_lock);
- 	arsta->peer_ps_state = __le32_to_cpu(ev->peer_ps_state);
-+	spin_unlock_bh(&ar->data_lock);
- 
- exit:
- 	rcu_read_unlock();
 -- 
 2.51.0
 
