@@ -1,65 +1,58 @@
-Return-Path: <linux-wireless+bounces-31869-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-31870-lists+linux-wireless=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id oA2hARDpkGkadwEAu9opvQ
-	(envelope-from <linux-wireless+bounces-31869-lists+linux-wireless=lfdr.de@vger.kernel.org>)
-	for <lists+linux-wireless@lfdr.de>; Sat, 14 Feb 2026 22:28:48 +0100
+	id IJ+oAQvqkGkfdwEAu9opvQ
+	(envelope-from <linux-wireless+bounces-31870-lists+linux-wireless=lfdr.de@vger.kernel.org>)
+	for <lists+linux-wireless@lfdr.de>; Sat, 14 Feb 2026 22:32:59 +0100
 X-Original-To: lists+linux-wireless@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9CAA413D72D
-	for <lists+linux-wireless@lfdr.de>; Sat, 14 Feb 2026 22:28:47 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8FE1613D9BD
+	for <lists+linux-wireless@lfdr.de>; Sat, 14 Feb 2026 22:32:58 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id AB32E302053E
-	for <lists+linux-wireless@lfdr.de>; Sat, 14 Feb 2026 21:27:15 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 33BF030BD5F4
+	for <lists+linux-wireless@lfdr.de>; Sat, 14 Feb 2026 21:27:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 907E3311956;
-	Sat, 14 Feb 2026 21:26:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9EC2D28DB46;
+	Sat, 14 Feb 2026 21:27:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="jH13v3NM"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="KWZA4scx"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 683D32FF148;
-	Sat, 14 Feb 2026 21:26:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7B5D2311C27;
+	Sat, 14 Feb 2026 21:27:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771104419; cv=none; b=SiRwhTKQ+rbAztBS9gvDpOTc3eq5Lnz7VmZr5rLeF9W4cc9ZnAdYr5W4HxJiwd31Q0vPifjnDvGspWRN6j4RzYewj7MMVjSgBXKQVP3WACsHsi0X933ctlR7DWvRfSFp+KcWd2auotaaEPQmN3gY+/tIyYUii1rWs+HJLTs1Pzs=
+	t=1771104445; cv=none; b=Qw7TT8hopl6GrVlGiKM0n1CD5fn3Ep40pFJC73EOdPlvdbTI938Q6Un+kvFSZyf/yai2pk2XOL5R9ryv/BhklHzT8BTETbPUoz6QMEYVg8YrsMxvP7vf1+xM148+pIZOY8peIdjT+1CFxLPsE9xFZF4DMF6AGk3a0NXNq+g/6Xs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771104419; c=relaxed/simple;
-	bh=qSSLev40jQp8E4MCDlw4osAc9534SPfMV7XGo/O9KPQ=;
+	s=arc-20240116; t=1771104445; c=relaxed/simple;
+	bh=a7eqF+ZaUe+jrkHBrsCoLpAVDieK8LCjza9XqzFNOwM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=GM9O8d3jnHVdSOeaGG/Juom9HPkLx533bcoDu4lutfUXv/PLCx7ZwtALD4Qx+7d9CuVnZwV8mk7iTjwh2ir9Nj3q/lD6iPsZ4NKByiU+I3QsHDLXm5HSF9Kk9JLr3V4ZpGYud9jPaDN5UQiomXsdQ330JCjVFUZi2TAS3IVurks=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=jH13v3NM; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 22018C19422;
-	Sat, 14 Feb 2026 21:26:58 +0000 (UTC)
+	 MIME-Version:Content-Type; b=quWrWVgBTqQRjSJam7niHjVBUGAN9l5pjRfB9zEV8UBjlzP8yoSZyPHNCQV+OwjV5pWiYwM26PZu3RhQpN9Cjnodv6dGQarXFtQZAWMhUFdwVFlMJeWyxv3yu9L+vW0bOwL9UAohGyX/ETvrY6vv0+vh6D0xzCnWoGWVnW/hMSo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=KWZA4scx; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C0A2DC2BC86;
+	Sat, 14 Feb 2026 21:27:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1771104419;
-	bh=qSSLev40jQp8E4MCDlw4osAc9534SPfMV7XGo/O9KPQ=;
+	s=k20201202; t=1771104445;
+	bh=a7eqF+ZaUe+jrkHBrsCoLpAVDieK8LCjza9XqzFNOwM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=jH13v3NMUkAT4lLWAAdogQyB31U4K3lbVkaaUYxNhBX3TuEQ5B4qDxnMZ9EEY0xd3
-	 G/n5VBR4LTVWPbqH+MHt99kFgYEPEj+7LVknYA5npdEVJ65br3BgXleY2Lj/2TukvQ
-	 58xk/neG6Xl4EA469PBaVWihNDYrtb8Xtcj6iYByHcrsEABNt10XsagRnIULxuTyuN
-	 eGtzsjvQcivnghqDOgkHBTrp8z9aJci7x9fpzJTWTL3X7O85W9VFnFThPgBtvAgGWo
-	 Rbv9E5tZVqCaTUKgDZJOiviU3Io5t6WExinefGlO7TlUCGch5fm1f+6RB4yhXbLmR0
-	 GPSHNe+rtUVBQ==
+	b=KWZA4scx19ESigDiVOKaDHxaC/7Foi1bei0Z0dRHaly/IulIib6Bef85v+4626At8
+	 8trKq9/oXwTJB3cVL/5weOSNPkU5qU9Xm9O8r8+bgj2zWPCYGni1RF4vIXMCeASn7I
+	 mLF/gpPtqkzJzUqs8aqD7eMt/kz4dPXOzXDxO4AOXWH2kRk7+sbY9ex19PyNxP3R6n
+	 W3o/Zt78+dadZa6OfG8uhlZbvrA6uJGlHlz8gHweKMBiMPJ59NxtF6NP5C1MPpMrDw
+	 51VxqAyzrFDOVdPNnftxgP7aUeGd3HPAgqIK5mEbYgJM5yLshWEvW90PwE3VIf3yuS
+	 CazDLRRsvNsiA==
 From: Sasha Levin <sashal@kernel.org>
 To: patches@lists.linux.dev,
 	stable@vger.kernel.org
-Cc: Szymon Wilczek <swilczek.lx@gmail.com>,
-	syzbot+67969ab6a2551c27f71b@syzkaller.appspotmail.com,
-	Johannes Berg <johannes.berg@intel.com>,
+Cc: Ping-Ke Shih <pkshih@realtek.com>,
 	Sasha Levin <sashal@kernel.org>,
-	neil.armstrong@linaro.org,
-	mingo@kernel.org,
-	tglx@kernel.org,
-	yelangyan@huaqin.corp-partner.google.com,
-	linux-wireless@vger.kernel.org,
-	libertas-dev@lists.infradead.org
-Subject: [PATCH AUTOSEL 6.19-5.10] wifi: libertas: fix WARNING in usb_tx_block
-Date: Sat, 14 Feb 2026 16:23:39 -0500
-Message-ID: <20260214212452.782265-74-sashal@kernel.org>
+	linux-wireless@vger.kernel.org
+Subject: [PATCH AUTOSEL 6.19-6.18] wifi: rtw89: pci: validate release report content before using for RTL8922DE
+Date: Sat, 14 Feb 2026 16:23:54 -0500
+Message-ID: <20260214212452.782265-89-sashal@kernel.org>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20260214212452.782265-1-sashal@kernel.org>
 References: <20260214212452.782265-1-sashal@kernel.org>
@@ -75,176 +68,190 @@ X-stable-base: Linux 6.19
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [0.34 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+X-Spamd-Result: default: False [-1.16 / 15.00];
 	MID_CONTAINS_FROM(1.00)[];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[12];
-	TAGGED_FROM(0.00)[bounces-31869-lists,linux-wireless=lfdr.de];
-	MIME_TRACE(0.00)[0:+];
-	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[kernel.org:+];
+	TAGGED_FROM(0.00)[bounces-31870-lists,linux-wireless=lfdr.de];
 	TO_DN_SOME(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,linux-wireless@vger.kernel.org];
-	FREEMAIL_CC(0.00)[gmail.com,syzkaller.appspotmail.com,intel.com,kernel.org,linaro.org,huaqin.corp-partner.google.com,vger.kernel.org,lists.infradead.org];
-	TAGGED_RCPT(0.00)[linux-wireless,67969ab6a2551c27f71b];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	DKIM_TRACE(0.00)[kernel.org:+];
+	TAGGED_RCPT(0.00)[linux-wireless];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[appspotmail.com:email,intel.com:email,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,msgid.link:url]
-X-Rspamd-Queue-Id: 9CAA413D72D
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,realtek.com:email]
+X-Rspamd-Queue-Id: 8FE1613D9BD
 X-Rspamd-Action: no action
 
-From: Szymon Wilczek <swilczek.lx@gmail.com>
+From: Ping-Ke Shih <pkshih@realtek.com>
 
-[ Upstream commit d66676e6ca96bf8680f869a9bd6573b26c634622 ]
+[ Upstream commit 5f93d611b33a05bd03d6843c8efe8cb6a1992620 ]
 
-The function usb_tx_block() submits cardp->tx_urb without ensuring that
-any previous transmission on this URB has completed. If a second call
-occurs while the URB is still active (e.g. during rapid firmware loading),
-usb_submit_urb() detects the active state and triggers a warning:
-'URB submitted while active'.
+The commit 957eda596c76
+("wifi: rtw89: pci: validate sequence number of TX release report")
+does validation on existing chips, which somehow a release report of SKB
+becomes malformed. As no clear cause found, add rules ahead for RTL8922DE
+to avoid crash if it happens.
 
-Fix this by enforcing serialization: call usb_kill_urb() before
-submitting the new request. This ensures the URB is idle and safe to reuse.
-
-Reported-by: syzbot+67969ab6a2551c27f71b@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=67969ab6a2551c27f71b
-Signed-off-by: Szymon Wilczek <swilczek.lx@gmail.com>
-Link: https://patch.msgid.link/20251221155806.23925-1-swilczek.lx@gmail.com
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
+Link: https://patch.msgid.link/20260123013957.16418-11-pkshih@realtek.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
 
 LLM Generated explanations, may be completely bogus:
 
-## Analysis of commit: wifi: libertas: fix WARNING in usb_tx_block
+### Detailed Code Change Analysis
 
-### 1. COMMIT MESSAGE ANALYSIS
+The change modifies the `rtw89_pci_release_rpp()` function in two ways:
 
-The commit message is clear and well-structured:
-- **Subject**: Explicitly says "fix WARNING" — this is a bug fix
-- **Problem**: `usb_tx_block()` submits `cardp->tx_urb` without ensuring
-  the previous transmission completed. If called rapidly (e.g., during
-  firmware loading), the URB is still active and `usb_submit_urb()`
-  triggers a WARNING: "URB submitted while active"
-- **Solution**: Add `usb_kill_urb()` before submitting to ensure the URB
-  is idle
-- **Reported-by syzbot**: This is a fuzzer-found, reproducible bug with
-  a concrete trigger
-
-### 2. CODE CHANGE ANALYSIS
-
-The change is minimal — a single line addition:
+**OLD code:**
 ```c
-+       usb_kill_urb(cardp->tx_urb);
+if (unlikely(rpp_info.txch == RTW89_TXCH_CH12)) {
+    rtw89_warn(rtwdev, "should no fwcmd release report\n");
+    return;
+}
 ```
 
-Added right before `usb_fill_bulk_urb()` and `usb_submit_urb()`. This
-ensures the URB is in an idle state before being reused.
+**NEW code:**
+```c
+if (unlikely(rpp_info.txch >= RTW89_TXCH_NUM ||
+             info->tx_dma_ch_mask & BIT(rpp_info.txch))) {
+    rtw89_warn(rtwdev, "should no release report on txch %d\n",
+               rpp_info.txch);
+    return;
+}
+```
 
-- `usb_kill_urb()` is the standard kernel API for cancelling a pending
-  URB and waiting for its completion. It is safe to call on an already-
-  idle URB (it's a no-op in that case).
-- The fix is placed after the `surprise_removed` check but before the
-  URB fill/submit, which is the correct location.
+**What changed and why it matters:**
 
-### 3. BUG CLASSIFICATION
+1. **Bounds check strengthened**: The old check only rejected `txch ==
+   RTW89_TXCH_CH12` (value 12). The new check rejects `txch >=
+   RTW89_TXCH_NUM` (value >= 13), which catches **out-of-bounds array
+   access** when `rpp_info.txch` is used as an index into
+   `rtwpci->tx.rings[]` (which has `RTW89_TXCH_NUM` = 13 elements).
+   Without this check, a malformed report with `txch >= 13` would cause
+   an **out-of-bounds array access**, potentially leading to a crash.
 
-This is a **race condition / incorrect URB lifecycle management** bug.
-The URB can be submitted while still active from a previous call, which:
-- Triggers a kernel WARNING (stack trace in dmesg)
-- Could potentially lead to undefined behavior in the USB subsystem if
-  the URB state is corrupted
-- Is a real correctness issue, not just a cosmetic warning
+2. **Masked channel check added**: The new code also checks
+   `info->tx_dma_ch_mask & BIT(rpp_info.txch)`, which rejects release
+   reports for TX channels that are disabled/masked on the specific
+   hardware. Accessing a ring for a masked channel could reference
+   uninitialized data since those rings are not set up during
+   initialization (as confirmed by the `tx_dma_ch_mask` being used to
+   skip ring initialization).
 
-### 4. SYZBOT INDICATOR
+3. **The old CH12 check is subsumed**: RTW89_TXCH_CH12 = 12 is the
+   firmware command channel. For chips like RTL8922DE, `tx_dma_ch_mask`
+   includes `BIT(RTW89_TXCH_CH12)` (since FW CMD channel is typically
+   masked), so the old specific check is generalized into the broader
+   mask-based check.
 
-The bug was found by syzbot, which means:
-- It is **reproducible** with a concrete trigger
-- It is **reachable from userspace** (syzbot exercises syscall paths)
-- The syzkaller link confirms this is a documented, verified bug
+### 3. CLASSIFICATION
 
-### 5. SCOPE AND RISK ASSESSMENT
+This is a **bug fix** — specifically a crash prevention fix through
+input validation. It:
+- Prevents out-of-bounds array access (txch >= RTW89_TXCH_NUM)
+- Prevents access to uninitialized TX rings (masked channels)
+- The commit message explicitly says "to avoid crash if it happens"
+- This extends existing validation (from commit 957eda596c76) to cover
+  additional edge cases for RTL8922DE
 
-- **Lines changed**: 2 (one blank line + one `usb_kill_urb()` call)
-- **Files changed**: 1
-  (`drivers/net/wireless/marvell/libertas/if_usb.c`)
-- **Risk**: Very low. `usb_kill_urb()` is a well-understood, safe API.
-  Calling it on an idle URB is a no-op. The only effect is ensuring
-  serialization of URB submissions.
-- **Regression potential**: Minimal. The worst case is a slight
-  performance overhead from the synchronous kill call, but this is in a
-  firmware loading path, not a hot data path.
+### 4. SCOPE AND RISK ASSESSMENT
 
-### 6. STABLE CRITERIA CHECK
+- **Lines changed**: ~6 lines modified in a single function
+- **Files touched**: 1 file (`drivers/net/wireless/realtek/rtw89/pci.c`)
+- **Risk**: Very low. The change only adds/strengthens a bounds check
+  and an already-masked-channel check. It's purely defensive — it only
+  triggers on malformed data and returns early with a warning.
+- **Subsystem**: WiFi driver (rtw89), well-maintained by Realtek
+  engineers
+- **The old behavior (CH12 check) is subsumed**, not removed — it's
+  generalized
 
-| Criterion | Met? |
-|-----------|------|
-| Obviously correct and tested | Yes — standard pattern, syzbot-verified
-|
-| Fixes a real bug | Yes — WARNING + potential URB corruption |
-| Fixes an important issue | Yes — kernel WARNING, USB subsystem
-correctness |
-| Small and contained | Yes — 1 line in 1 file |
-| No new features | Correct — pure bug fix |
-| Applies cleanly | Very likely — minimal context dependencies |
+### 5. USER IMPACT
 
-### 7. USER IMPACT
+- **Who is affected**: Users with RTL8922DE WiFi adapters (and
+  potentially other Realtek WiFi chips using the rtw89 driver)
+- **Severity if triggered**: Kernel crash (NULL pointer dereference or
+  out-of-bounds access) — this is HIGH severity
+- **Likelihood**: The referenced commit 957eda596c76 was created because
+  this actually happened with malformed release reports — the cause was
+  unclear but the crash was real
+- **Author**: Ping-Ke Shih from Realtek, the driver maintainer — high
+  trust
 
-The libertas driver is used with Marvell wireless USB adapters. While
-not the most commonly used driver, users with this hardware would
-experience:
-- Kernel WARNING messages in dmesg during firmware loading
-- Potential instability in the USB subsystem
-- The bug is triggered during rapid firmware loading, which is a normal
-  operation
+### 6. STABILITY INDICATORS
 
-### 8. DEPENDENCY CHECK
+- The commit comes from the rtw89 maintainer at Realtek
+- It follows the pattern of an earlier validated fix (957eda596c76)
+- Small, surgical change with clear defensive purpose
 
-This is a standalone fix with no dependencies on other commits. The
-`usb_kill_urb()` API has been available for many kernel versions. The
-function `usb_tx_block()` and the `if_usb_card` structure with `tx_urb`
-have been stable for a long time.
+### 7. DEPENDENCY CHECK
 
-### CONCLUSION
+- This commit depends on `957eda596c76` being present (which added the
+  initial validation framework including the `rpp_info.seq >=
+  RTW89_PCI_TXWD_NUM_MAX` check that remains unchanged)
+- It also depends on the `tx_dma_ch_mask` field existing in `struct
+  rtw89_pci_info` and the `parse_rpp` callback mechanism
+- The RTL8922DE support needs to exist in the target stable tree
 
-This is a textbook stable backport candidate:
-- Syzbot-reported, reproducible bug
-- Tiny, surgical fix (1 line)
-- Uses well-established kernel API (`usb_kill_urb`)
-- Fixes a real correctness issue (URB submitted while active)
-- Zero risk of regression
-- No dependencies on other commits
+### Summary
+
+This is a small, surgical crash prevention fix that strengthens input
+validation for malformed TX release reports in the rtw89 WiFi driver. It
+prevents:
+1. **Out-of-bounds array access** when `txch >= RTW89_TXCH_NUM` (13)
+2. **Access to uninitialized/disabled TX rings** when the channel is
+   masked
+
+The fix is:
+- Obviously correct (bounds check + mask check before array indexing)
+- Small and contained (6 lines in one function, one file)
+- Fixes a real crash scenario (explicitly stated, and mirrors existing
+  fix for other chips)
+- Written by the driver maintainer at Realtek
+- Very low regression risk (only affects error/malformed paths)
+
+The only concern is whether the RTL8922DE support and the prerequisite
+commit exist in the target stable tree. If the RTL8922DE driver and the
+`tx_dma_ch_mask` infrastructure are present, this is straightforward to
+backport.
 
 **YES**
 
- drivers/net/wireless/marvell/libertas/if_usb.c | 2 ++
- 1 file changed, 2 insertions(+)
+ drivers/net/wireless/realtek/rtw89/pci.c | 6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/net/wireless/marvell/libertas/if_usb.c b/drivers/net/wireless/marvell/libertas/if_usb.c
-index b3c4040257a67..924ab93b7b671 100644
---- a/drivers/net/wireless/marvell/libertas/if_usb.c
-+++ b/drivers/net/wireless/marvell/libertas/if_usb.c
-@@ -426,6 +426,8 @@ static int usb_tx_block(struct if_usb_card *cardp, uint8_t *payload, uint16_t nb
- 		goto tx_ret;
+diff --git a/drivers/net/wireless/realtek/rtw89/pci.c b/drivers/net/wireless/realtek/rtw89/pci.c
+index 093960d7279f8..b8135cf15d13c 100644
+--- a/drivers/net/wireless/realtek/rtw89/pci.c
++++ b/drivers/net/wireless/realtek/rtw89/pci.c
+@@ -604,8 +604,10 @@ static void rtw89_pci_release_rpp(struct rtw89_dev *rtwdev, void *rpp)
+ 
+ 	info->parse_rpp(rtwdev, rpp, &rpp_info);
+ 
+-	if (unlikely(rpp_info.txch == RTW89_TXCH_CH12)) {
+-		rtw89_warn(rtwdev, "should no fwcmd release report\n");
++	if (unlikely(rpp_info.txch >= RTW89_TXCH_NUM ||
++		     info->tx_dma_ch_mask & BIT(rpp_info.txch))) {
++		rtw89_warn(rtwdev, "should no release report on txch %d\n",
++			   rpp_info.txch);
+ 		return;
  	}
  
-+	usb_kill_urb(cardp->tx_urb);
-+
- 	usb_fill_bulk_urb(cardp->tx_urb, cardp->udev,
- 			  usb_sndbulkpipe(cardp->udev,
- 					  cardp->ep_out),
 -- 
 2.51.0
 
