@@ -1,134 +1,196 @@
-Return-Path: <linux-wireless+bounces-31836-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-31837-lists+linux-wireless=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id aEQiHV/AkGk4cwEAu9opvQ
-	(envelope-from <linux-wireless+bounces-31836-lists+linux-wireless=lfdr.de@vger.kernel.org>)
-	for <lists+linux-wireless@lfdr.de>; Sat, 14 Feb 2026 19:35:11 +0100
+	id iLV6EkTCkGlccwEAu9opvQ
+	(envelope-from <linux-wireless+bounces-31837-lists+linux-wireless=lfdr.de@vger.kernel.org>)
+	for <lists+linux-wireless@lfdr.de>; Sat, 14 Feb 2026 19:43:16 +0100
 X-Original-To: lists+linux-wireless@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 16FED13CEAC
-	for <lists+linux-wireless@lfdr.de>; Sat, 14 Feb 2026 19:35:10 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 978B013CF00
+	for <lists+linux-wireless@lfdr.de>; Sat, 14 Feb 2026 19:43:15 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 4FE4530059BB
-	for <lists+linux-wireless@lfdr.de>; Sat, 14 Feb 2026 18:35:10 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id AAB1A301F4B7
+	for <lists+linux-wireless@lfdr.de>; Sat, 14 Feb 2026 18:43:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DAB191F5858;
-	Sat, 14 Feb 2026 18:35:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C614B256C9E;
+	Sat, 14 Feb 2026 18:43:12 +0000 (UTC)
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from mail.unwrap.rs (mail.unwrap.rs [172.232.15.166])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AA2512DEA93
-	for <linux-wireless@vger.kernel.org>; Sat, 14 Feb 2026 18:35:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7081542A9D;
+	Sat, 14 Feb 2026 18:43:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=172.232.15.166
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771094108; cv=none; b=ZYRlUP82BkgeIj6z0F2R69KC0DxgutFdmoIvMLDyAEDqcIz1zRva6haAMqCcqq8wh+hB7kcaXJrJbS2wXHocsSOftOdUu3LIjYO/LdiAm5gtf7qHtKRebE8MEMkQoBh0Z6RqsCI0ELlM30ldysINIVECoiNnXvguWSrGNSVwtws=
+	t=1771094592; cv=none; b=i8QIH+cZ12AJ+IezoEya4yn0DhUXAxqFb3scMqhFOEWGGk648L6piCeMe+GHkQ13AycaRNJ6z4zA1kCHxsRStNxc6n+Q46cMHZg0bJztRnv3h/E2ksCchswIp7mEmKS7FBbBypTUSe2CQgefZ1DzIfljhFqAiRioqVAXWc0CQ0c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771094108; c=relaxed/simple;
-	bh=v8ZHYJjceF7i6xuAovKw8lNfCnTuTBa1CP3c/+lYOn4=;
+	s=arc-20240116; t=1771094592; c=relaxed/simple;
+	bh=tlnb9P5Y13z0f4mJObtljP+6s3KeyEPGnGQYpv+oVm8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=oXEqN+VNuYKzHHlj6k0ix0YfXK1EOBEV7CgEos3muvvdMdTLLSUnf8/PSZhYnnwdF3TmRBHbI7BMfLdgGFkc89FN//LhApumeSPYjEnWh/agBAufZrjZYi+mmuc9zW9zks2bACk90D6NdHWOVmvNwnFCMcIbtWYy4ijyNqUliYg=
+	 MIME-Version:Content-Type; b=JAfuhhw91nxZ4fotVDg6QRrybw0hiCOHg54QqSlAiIxT4AC0vThdC7+Xecd01MKIrPbd/Dt9KKDOUJX6oj+VdPMWTgCjV5+SNC6+6SKZ7DXLwUVOgSKy11Hh1lJzEP1hDzB7o4WX/mjWrYOpvvhVP2D9v6R1K6UO/IVLViUTyOk=
 ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=unwrap.rs; spf=pass smtp.mailfrom=unwrap.rs; arc=none smtp.client-ip=172.232.15.166
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=unwrap.rs
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=unwrap.rs
 From: Cole Leavitt <cole@unwrap.rs>
-To: greearb@candelatech.com
-Cc: johannes.berg@intel.com,
-	miriam.rachel.korenblit@intel.com,
+To: johannes.berg@intel.com,
+	miriam.rachel.korenblit@intel.com
+Cc: greearb@candelatech.com,
 	linux-wireless@vger.kernel.org,
+	stable@vger.kernel.org,
 	Cole Leavitt <cole@unwrap.rs>
-Subject: Re: [PATCH] wifi: iwlwifi: prevent NAPI processing after firmware error
-Date: Sat, 14 Feb 2026 11:33:06 -0700
-Message-ID: <20260214183306.10188-1-cole@unwrap.rs>
+Subject: [PATCH] wifi: iwlwifi: prevent NAPI processing after firmware error
+Date: Sat, 14 Feb 2026 11:41:16 -0700
+Message-ID: <20260214184116.11250-1-cole@unwrap.rs>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <5be8a502-d53a-4cce-821f-202368c44f6d@candelatech.com>
-References: <c6f886d4-b9ed-48a6-9723-a738af055b64@candelatech.com> <20260214181018.6091-1-cole@unwrap.rs> <5be8a502-d53a-4cce-821f-202368c44f6d@candelatech.com>
+In-Reply-To: <20260214181018.6091-1-cole@unwrap.rs>
+References: <20260214181018.6091-1-cole@unwrap.rs>
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [1.54 / 15.00];
 	DMARC_POLICY_REJECT(2.00)[unwrap.rs : SPF not aligned (strict), No valid DKIM,reject];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	MID_CONTAINS_FROM(1.00)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FROM_HAS_DN(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[cole@unwrap.rs,linux-wireless@vger.kernel.org];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-31836-lists,linux-wireless=lfdr.de];
 	MIME_TRACE(0.00)[0:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	FROM_NEQ_ENVFROM(0.00)[cole@unwrap.rs,linux-wireless@vger.kernel.org];
+	TAGGED_FROM(0.00)[bounces-31837-lists,linux-wireless=lfdr.de];
+	FROM_HAS_DN(0.00)[];
+	TO_DN_SOME(0.00)[];
 	TAGGED_RCPT(0.00)[linux-wireless];
 	RCVD_COUNT_THREE(0.00)[3];
 	R_DKIM_NA(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	TO_DN_SOME(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[5]
-X-Rspamd-Queue-Id: 16FED13CEAC
+	RCPT_COUNT_FIVE(0.00)[6];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 978B013CF00
 X-Rspamd-Action: no action
 
-Ben,
+After a firmware error is detected and STATUS_FW_ERROR is set, NAPI can
+still be actively polling or get scheduled from a prior interrupt. The
+NAPI poll functions (both legacy and MSIX variants) have no check for
+STATUS_FW_ERROR and will continue processing stale RX ring entries from
+dying firmware. This can dispatch TX completion notifications containing
+corrupt SSN values to iwl_mld_handle_tx_resp_notif(), which passes them
+to iwl_trans_reclaim(). If the corrupt SSN causes reclaim to walk TX
+queue entries that were already freed by a prior correct reclaim, the
+result is an skb use-after-free or double-free.
 
-Good catch on both fronts.
+The race window opens when the MSIX IRQ handler schedules NAPI (lines
+2319-2321 in rx.c) before processing the error bit (lines 2382-2396),
+or when NAPI is already running on another CPU from a previous interrupt
+when STATUS_FW_ERROR gets set on the current CPU.
 
-On the build_tfd dangling pointer -- you're right. The failure path at
-line 775 leaves entries[idx].skb/cmd pointing at caller-owned objects
-(set at lines 763-764). The caller gets -1 and presumably frees the
-skb, so entries[idx].skb becomes a dangling pointer. While write_ptr
-not advancing means current unmap paths won't iterate to that index,
-it's a latent UAF waiting for a flush path change or future code to
-touch it. Two NULL stores inside a held spinlock cost nothing. I think
-this should go upstream as its own patch.
+Add STATUS_FW_ERROR checks to both NAPI poll functions to prevent
+processing stale RX data after firmware error, and add early-return
+guards in the TX response and compressed BA notification handlers as
+defense-in-depth. Each check uses WARN_ONCE to log if the race is
+actually hit, which aids diagnosis of the hard-to-reproduce skb
+use-after-free reported on Intel BE200.
 
-On the TOCTOU question -- this is the part I spent the most time on.
-The window you're asking about is: firmware starts producing corrupt
-completion data *before* STATUS_FW_ERROR gets set. Our NAPI/TX handler
-checks can't help there because the flag isn't set yet.
+Note that _iwl_trans_pcie_gen2_stop_device() already calls
+iwl_pcie_rx_napi_sync() to quiesce NAPI during device teardown, but that
+runs much later in the restart sequence. These checks close the window
+between error detection and device stop.
 
-The primary guard in that window is iwl_txq_used() in
-iwl_pcie_reclaim(). It validates that the firmware's SSN falls within
-[read_ptr, write_ptr). This catches wild values -- out-of-range SSNs,
-wraparound corruption, etc.
+Fixes: d1e879ec600f ("wifi: iwlwifi: add iwlmld sub-driver")
+Cc: stable@vger.kernel.org
+Signed-off-by: Cole Leavitt <cole@unwrap.rs>
+---
+ drivers/net/wireless/intel/iwlwifi/mld/tx.c   | 19 ++++++++++++++++++
+ .../wireless/intel/iwlwifi/pcie/gen1_2/rx.c   | 20 +++++++++++++++++++
+ 2 files changed, 39 insertions(+)
 
-What it can't catch is an in-range corrupt SSN -- e.g., firmware says
-reclaim up to index 15 when legitimate is 8, but write_ptr is 20.
-That passes bounds checking and the reclaim loop frees skbs for
-entries still in-flight (active DMA). The NULL skb WARN_ONCE in the
-loop catches double-reclaim but not first-time over-reclaim.
+diff --git a/drivers/net/wireless/intel/iwlwifi/mld/tx.c b/drivers/net/wireless/intel/iwlwifi/mld/tx.c
+index 3b4b575aadaa..3e99f3ded9bc 100644
+--- a/drivers/net/wireless/intel/iwlwifi/mld/tx.c
++++ b/drivers/net/wireless/intel/iwlwifi/mld/tx.c
+@@ -1071,6 +1071,18 @@ void iwl_mld_handle_tx_resp_notif(struct iwl_mld *mld,
+ 	bool mgmt = false;
+ 	bool tx_failure = (status & TX_STATUS_MSK) != TX_STATUS_SUCCESS;
+ 
++	/* Firmware is dead — the TX response may contain corrupt SSN values
++	 * from a dying firmware DMA. Processing it could cause
++	 * iwl_trans_reclaim() to free the wrong TX queue entries, leading to
++	 * skb use-after-free or double-free.
++	 */
++	if (unlikely(test_bit(STATUS_FW_ERROR, &mld->trans->status))) {
++		WARN_ONCE(1,
++			  "iwlwifi: TX resp notif (sta=%d txq=%d) after FW error\n",
++			  sta_id, txq_id);
++		return;
++	}
++
+ 	if (IWL_FW_CHECK(mld, tx_resp->frame_count != 1,
+ 			 "Invalid tx_resp notif frame_count (%d)\n",
+ 			 tx_resp->frame_count))
+@@ -1349,6 +1361,13 @@ void iwl_mld_handle_compressed_ba_notif(struct iwl_mld *mld,
+ 	u8 sta_id = ba_res->sta_id;
+ 	struct ieee80211_link_sta *link_sta;
+ 
++	if (unlikely(test_bit(STATUS_FW_ERROR, &mld->trans->status))) {
++		WARN_ONCE(1,
++			  "iwlwifi: BA notif (sta=%d) after FW error\n",
++			  sta_id);
++		return;
++	}
++
+ 	if (!tfd_cnt)
+ 		return;
+ 
+diff --git a/drivers/net/wireless/intel/iwlwifi/pcie/gen1_2/rx.c b/drivers/net/wireless/intel/iwlwifi/pcie/gen1_2/rx.c
+index 619a9505e6d9..ba18d35fa55d 100644
+--- a/drivers/net/wireless/intel/iwlwifi/pcie/gen1_2/rx.c
++++ b/drivers/net/wireless/intel/iwlwifi/pcie/gen1_2/rx.c
+@@ -1015,6 +1015,18 @@ static int iwl_pcie_napi_poll(struct napi_struct *napi, int budget)
+ 	trans_pcie = iwl_netdev_to_trans_pcie(napi->dev);
+ 	trans = trans_pcie->trans;
+ 
++	/* Stop processing RX if firmware has crashed. Stale notifications
++	 * from dying firmware (e.g. TX completions with corrupt SSN values)
++	 * can cause use-after-free in reclaim paths.
++	 */
++	if (unlikely(test_bit(STATUS_FW_ERROR, &trans->status))) {
++		WARN_ONCE(1,
++			  "iwlwifi: NAPI poll[%d] invoked after FW error\n",
++			  rxq->id);
++		napi_complete_done(napi, 0);
++		return 0;
++	}
++
+ 	ret = iwl_pcie_rx_handle(trans, rxq->id, budget);
+ 
+ 	IWL_DEBUG_ISR(trans, "[%d] handled %d, budget %d\n",
+@@ -1042,6 +1054,14 @@ static int iwl_pcie_napi_poll_msix(struct napi_struct *napi, int budget)
+ 	trans_pcie = iwl_netdev_to_trans_pcie(napi->dev);
+ 	trans = trans_pcie->trans;
+ 
++	if (unlikely(test_bit(STATUS_FW_ERROR, &trans->status))) {
++		WARN_ONCE(1,
++			  "iwlwifi: NAPI MSIX poll[%d] invoked after FW error\n",
++			  rxq->id);
++		napi_complete_done(napi, 0);
++		return 0;
++	}
++
+ 	ret = iwl_pcie_rx_handle(trans, rxq->id, budget);
+ 	IWL_DEBUG_ISR(trans, "[%d] handled %d, budget %d\n", rxq->id, ret,
+ 		      budget);
+-- 
+2.52.0
 
-The complete fix for this would be a per-entry generation counter --
-tag each entry on submit, validate on reclaim. But that adds per-entry
-overhead on the TX hot path to protect against a condition (firmware
-producing corrupt completions) that is already terminal. I think the
-right trade-off is:
-
-  1. Your build_tfd NULL fix (eliminates one dangling pointer class)
-  2. STATUS_FW_ERROR checks in NAPI poll + TX handlers (this series --
-     shrinks the detection window to near-zero)
-  3. The existing iwl_txq_used() bounds check (catches most corrupt
-     SSNs)
-
-Together these make the damage window small enough that a per-entry
-generation scheme isn't justified -- by the time firmware is sending
-corrupt SSNs, we're in dump-and-reset territory anyway.
-
-That said, if you're seeing corruption patterns in your customer
-testing where a valid-looking-but-wrong SSN gets through before
-FW_ERROR fires, I'd be very interested in the traces. That would
-change the cost/benefit on the generation counter approach.
-
-Thanks,
-Cole
 
