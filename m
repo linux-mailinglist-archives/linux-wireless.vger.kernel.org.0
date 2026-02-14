@@ -1,34 +1,34 @@
-Return-Path: <linux-wireless+bounces-31837-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-31838-lists+linux-wireless=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id iLV6EkTCkGlccwEAu9opvQ
-	(envelope-from <linux-wireless+bounces-31837-lists+linux-wireless=lfdr.de@vger.kernel.org>)
-	for <lists+linux-wireless@lfdr.de>; Sat, 14 Feb 2026 19:43:16 +0100
+	id UDV2E97CkGlccwEAu9opvQ
+	(envelope-from <linux-wireless+bounces-31838-lists+linux-wireless=lfdr.de@vger.kernel.org>)
+	for <lists+linux-wireless@lfdr.de>; Sat, 14 Feb 2026 19:45:50 +0100
 X-Original-To: lists+linux-wireless@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 978B013CF00
-	for <lists+linux-wireless@lfdr.de>; Sat, 14 Feb 2026 19:43:15 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id A347913CF28
+	for <lists+linux-wireless@lfdr.de>; Sat, 14 Feb 2026 19:45:49 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id AAB1A301F4B7
-	for <lists+linux-wireless@lfdr.de>; Sat, 14 Feb 2026 18:43:13 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 5EDA1301AD07
+	for <lists+linux-wireless@lfdr.de>; Sat, 14 Feb 2026 18:45:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C614B256C9E;
-	Sat, 14 Feb 2026 18:43:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B71183C2D;
+	Sat, 14 Feb 2026 18:45:47 +0000 (UTC)
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from mail.unwrap.rs (mail.unwrap.rs [172.232.15.166])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7081542A9D;
-	Sat, 14 Feb 2026 18:43:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7404F28FC;
+	Sat, 14 Feb 2026 18:45:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=172.232.15.166
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771094592; cv=none; b=i8QIH+cZ12AJ+IezoEya4yn0DhUXAxqFb3scMqhFOEWGGk648L6piCeMe+GHkQ13AycaRNJ6z4zA1kCHxsRStNxc6n+Q46cMHZg0bJztRnv3h/E2ksCchswIp7mEmKS7FBbBypTUSe2CQgefZ1DzIfljhFqAiRioqVAXWc0CQ0c=
+	t=1771094747; cv=none; b=CS9YkvE0dGqStAydt81motOhkQT8sGcCkPZAYgLV4LIact5hXTwFwEyk6wrFm4C9J0jri7Ro49tQ7LmtVXIVY0jKpLY9lNiXZnKo6MQzhwPrQ3dEvkDODxQ+fSDj6I7gye9mbvbWUj893Q023TlaUbKfshwbsd/HxRr7Y9hqGrc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771094592; c=relaxed/simple;
-	bh=tlnb9P5Y13z0f4mJObtljP+6s3KeyEPGnGQYpv+oVm8=;
+	s=arc-20240116; t=1771094747; c=relaxed/simple;
+	bh=TGUcWjaxbr7mhW9rdeZr9mt+NFtAcmHfstKI6s21fdk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=JAfuhhw91nxZ4fotVDg6QRrybw0hiCOHg54QqSlAiIxT4AC0vThdC7+Xecd01MKIrPbd/Dt9KKDOUJX6oj+VdPMWTgCjV5+SNC6+6SKZ7DXLwUVOgSKy11Hh1lJzEP1hDzB7o4WX/mjWrYOpvvhVP2D9v6R1K6UO/IVLViUTyOk=
+	 MIME-Version:Content-Type; b=lhEOenPhGCKUMW7DYOigRe7/ZAeWB2N/uHLskp0CkrIRfnU9bhBnPsjQDfRjWb79kcCZJhDHJ+9xIWnTV2USxMzBUupavabNQToEKvt3UbLPHsp4yru4Rj8iBMx8YbFHjvjBP+W3zWo+cEgwydmuaAGZrJ6GgAiLA0CDnktAJws=
 ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=unwrap.rs; spf=pass smtp.mailfrom=unwrap.rs; arc=none smtp.client-ip=172.232.15.166
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=unwrap.rs
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=unwrap.rs
@@ -39,9 +39,9 @@ Cc: greearb@candelatech.com,
 	linux-wireless@vger.kernel.org,
 	stable@vger.kernel.org,
 	Cole Leavitt <cole@unwrap.rs>
-Subject: [PATCH] wifi: iwlwifi: prevent NAPI processing after firmware error
-Date: Sat, 14 Feb 2026 11:41:16 -0700
-Message-ID: <20260214184116.11250-1-cole@unwrap.rs>
+Subject: [PATCH v3] wifi: iwlwifi: prevent NAPI processing after firmware error
+Date: Sat, 14 Feb 2026 11:43:52 -0700
+Message-ID: <20260214184352.11512-1-cole@unwrap.rs>
 X-Mailer: git-send-email 2.52.0
 In-Reply-To: <20260214181018.6091-1-cole@unwrap.rs>
 References: <20260214181018.6091-1-cole@unwrap.rs>
@@ -58,26 +58,26 @@ X-Spamd-Result: default: False [1.54 / 15.00];
 	DMARC_POLICY_REJECT(2.00)[unwrap.rs : SPF not aligned (strict), No valid DKIM,reject];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	MID_CONTAINS_FROM(1.00)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	FROM_NEQ_ENVFROM(0.00)[cole@unwrap.rs,linux-wireless@vger.kernel.org];
-	TAGGED_FROM(0.00)[bounces-31837-lists,linux-wireless=lfdr.de];
 	FROM_HAS_DN(0.00)[];
-	TO_DN_SOME(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[cole@unwrap.rs,linux-wireless@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-31838-lists,linux-wireless=lfdr.de];
+	MIME_TRACE(0.00)[0:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	TAGGED_RCPT(0.00)[linux-wireless];
 	RCVD_COUNT_THREE(0.00)[3];
 	R_DKIM_NA(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[6];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 978B013CF00
+	TO_DN_SOME(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[6]
+X-Rspamd-Queue-Id: A347913CF28
 X-Rspamd-Action: no action
 
 After a firmware error is detected and STATUS_FW_ERROR is set, NAPI can
@@ -111,6 +111,19 @@ Fixes: d1e879ec600f ("wifi: iwlwifi: add iwlmld sub-driver")
 Cc: stable@vger.kernel.org
 Signed-off-by: Cole Leavitt <cole@unwrap.rs>
 ---
+Changes since v1:
+  - Added Fixes: tag and Cc: stable@vger.kernel.org
+
+Tested on Intel BE200 (FW 101.6e695a70.0) by forcing NMI via debugfs.
+The WARN_ONCE fires reliably:
+
+  iwlwifi: NAPI MSIX poll[0] invoked after FW error
+  WARNING: drivers/net/wireless/intel/iwlwifi/pcie/gen1_2/rx.c:1058
+           at iwl_pcie_napi_poll_msix+0xff/0x130 [iwlwifi], CPU#22
+
+Confirming NAPI poll is invoked after STATUS_FW_ERROR is set. Without
+this patch, that poll processes stale RX ring data from dead firmware.
+
  drivers/net/wireless/intel/iwlwifi/mld/tx.c   | 19 ++++++++++++++++++
  .../wireless/intel/iwlwifi/pcie/gen1_2/rx.c   | 20 +++++++++++++++++++
  2 files changed, 39 insertions(+)
