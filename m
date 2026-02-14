@@ -1,60 +1,59 @@
-Return-Path: <linux-wireless+bounces-31845-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-31846-lists+linux-wireless=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id AChjH4/okGkOdwEAu9opvQ
-	(envelope-from <linux-wireless+bounces-31845-lists+linux-wireless=lfdr.de@vger.kernel.org>)
-	for <lists+linux-wireless@lfdr.de>; Sat, 14 Feb 2026 22:26:39 +0100
+	id IEiOJ2DokGkOdwEAu9opvQ
+	(envelope-from <linux-wireless+bounces-31846-lists+linux-wireless=lfdr.de@vger.kernel.org>)
+	for <lists+linux-wireless@lfdr.de>; Sat, 14 Feb 2026 22:25:52 +0100
 X-Original-To: lists+linux-wireless@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id D196C13D5D4
-	for <lists+linux-wireless@lfdr.de>; Sat, 14 Feb 2026 22:26:38 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 528AB13D51F
+	for <lists+linux-wireless@lfdr.de>; Sat, 14 Feb 2026 22:25:52 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id A7BEE301A3BC
-	for <lists+linux-wireless@lfdr.de>; Sat, 14 Feb 2026 21:25:15 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id F1E54301D947
+	for <lists+linux-wireless@lfdr.de>; Sat, 14 Feb 2026 21:25:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2059729DB99;
-	Sat, 14 Feb 2026 21:25:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 21CA430C60E;
+	Sat, 14 Feb 2026 21:25:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="DRtzN4sX"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="u4xRdAde"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EEEC23081A2;
-	Sat, 14 Feb 2026 21:25:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F195F28134C;
+	Sat, 14 Feb 2026 21:25:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771104315; cv=none; b=tSBMRJdMr5RsBzQO8Yox3XtZvPvLOfln3me/35962BEKXC+e0T+IXs+7FIL0MOIKCRsPLfwRX7DkW9EIt2bTNkEXzExDFT7g82JYVLVFhhzVnJYZjK0tlBddLpaXEOqB5zWD6i98pvNiIt1jmGU87YrTlXViS39GM6e16RLnN0U=
+	t=1771104316; cv=none; b=dM+hWhoZjd+W+Q6OIkp6SV+ZA1gAiuK5y8GWX4FosiMIMuZgq9Z0JZ7Ro814iVkdOpHxOhU76A8SDdx05ATQTDxXDhDPc4YAjnpc6tScHWnMnmW40Eob5KUySO5y/WSuZ+iRLhCJw/i/VofuAcu3UMPh6efAnlyJKfrzNl+3BZI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771104315; c=relaxed/simple;
-	bh=7Cyb3/2QQxunoxX8HBfiwUUMJVAL7GDCltQ+0BLoYUM=;
+	s=arc-20240116; t=1771104316; c=relaxed/simple;
+	bh=MWhNcefrLhC3Rj5lpUlVUCHDE3IjMVQY4NNTvDIKqyk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=kN8jxQkG6htDP+qZvLQqmXpwdYrRJ08J8alczhu2DpJpJa/7l6dvjZ4XhjnpaeJmE5OnHEfy3cKAldVsd1J/rPnRHgmvFyHYmlBa5SkvQQpzKWF1Fg331rzX380zsDNnAT6n7OTj/j3Q8hmlD2U1A5XRgOmnY4JpkwDWNqRgvjs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=DRtzN4sX; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E2ED0C2BCAF;
-	Sat, 14 Feb 2026 21:25:13 +0000 (UTC)
+	 MIME-Version:Content-Type; b=XkzP4mnYpucZc/ukxe/TCWdWnL1Noti221JdP+k9Ah5aeAJq7n9pdky9c0JtWEFuhD+G9orF06+mkXrgPuuMyD2+djH2bGm87jYiVneBzmHZt5E4UR5+a/u50r02ne6cNFWSMn6+2VHqYsHIvzign6bqb4NgKAgB4QrOSpJBxiQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=u4xRdAde; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 17A46C19423;
+	Sat, 14 Feb 2026 21:25:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1771104314;
-	bh=7Cyb3/2QQxunoxX8HBfiwUUMJVAL7GDCltQ+0BLoYUM=;
+	s=k20201202; t=1771104315;
+	bh=MWhNcefrLhC3Rj5lpUlVUCHDE3IjMVQY4NNTvDIKqyk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=DRtzN4sXvh6IgAa+tsDe0mM66+4LasC8dOVWjKu3q610TmTLNMo57V3OdWnECBUA3
-	 4NYUVpQ9b9MhLwJ1uRLtY9W3BvNFArXOut8G++481q2y8+R+VeLqKsGv04BKy1pHc+
-	 hoc55I29UiJukE+P67sIOZlc9+0Eux45bM3dAGT9GT15h28HHIB/EXig8iqetwpT5P
-	 xGstFK4K/FuC/MLRkNzbG+LtICRsB2XKi/brZPRUNwtRRHFLv8L6SXicmFDuJ6FUQ1
-	 3PaVsW1HhZa6QE+e38p1EXJ/4YwMg0+X3avPnct6/LHRXjDwvXKgsEd7n0EL5xVmi4
-	 e3qJV+MvuvXYw==
+	b=u4xRdAdecxoJBDOrws3J/oiJFENuuDp86YX7JpBEAnLV/TUHukRRbQ9wcuLajDfgU
+	 LC4tl6pYD1X6kLVfPKHxPs7HG5RMEJA+7N0esTZN/7SaHlpfEnGgARxKPm2VL51Vk8
+	 0oifNRn/fBHcRpnPtX+k6qaVYGNQN32jmzDnHTaM31JuIB3Vcur/o8fsvCsIRgRroj
+	 41xEjSmR7r7KNUdL+tFUdTrex5YsIZTDkjwz1RfsCXZu6NfgP/yZh3BxkUdnXy1uNZ
+	 OzobJrWE4zKoiL9H/eLXSgBz6wq9BcywdZUC33EZnXfNjyj03h8jHx7xMkskLoy6uS
+	 WlIt5zzjIe83A==
 From: Sasha Levin <sashal@kernel.org>
 To: patches@lists.linux.dev,
 	stable@vger.kernel.org
-Cc: Ziyi Guo <n7l8m4@u.northwestern.edu>,
-	Stanislaw Gruszka <stf_xl@wp.pl>,
-	Johannes Berg <johannes.berg@intel.com>,
+Cc: Hsiu-Ming Chang <cges30901@gmail.com>,
+	Ping-Ke Shih <pkshih@realtek.com>,
 	Sasha Levin <sashal@kernel.org>,
 	linux-wireless@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.19-5.10] wifi: iwlegacy: add missing mutex protection in il4965_store_tx_power()
-Date: Sat, 14 Feb 2026 16:22:35 -0500
-Message-ID: <20260214212452.782265-10-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 6.19-6.6] wifi: rtw88: rtw8821cu: Add ID for Mercusys MU6H
+Date: Sat, 14 Feb 2026 16:22:36 -0500
+Message-ID: <20260214212452.782265-11-sashal@kernel.org>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20260214212452.782265-1-sashal@kernel.org>
 References: <20260214212452.782265-1-sashal@kernel.org>
@@ -71,171 +70,129 @@ Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-1.16 / 15.00];
-	MID_CONTAINS_FROM(1.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	MID_CONTAINS_FROM(1.00)[];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-31845-lists,linux-wireless=lfdr.de];
-	FREEMAIL_CC(0.00)[u.northwestern.edu,wp.pl,intel.com,kernel.org,vger.kernel.org];
-	MIME_TRACE(0.00)[0:+];
 	RCVD_TLS_LAST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-31846-lists,linux-wireless=lfdr.de];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
 	TO_DN_SOME(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	FREEMAIL_CC(0.00)[gmail.com,realtek.com,kernel.org,vger.kernel.org];
+	DKIM_TRACE(0.00)[kernel.org:+];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,linux-wireless@vger.kernel.org];
-	DKIM_TRACE(0.00)[kernel.org:+];
-	RCPT_COUNT_SEVEN(0.00)[7];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[6];
 	TAGGED_RCPT(0.00)[linux-wireless];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,intel.com:email,wp.pl:email]
-X-Rspamd-Queue-Id: D196C13D5D4
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[realtek.com:email,msgid.link:url,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 528AB13D51F
 X-Rspamd-Action: no action
 
-From: Ziyi Guo <n7l8m4@u.northwestern.edu>
+From: Hsiu-Ming Chang <cges30901@gmail.com>
 
-[ Upstream commit e31fa691d0b1c07b6094a6cf0cce894192c462b3 ]
+[ Upstream commit 77653c327e11c71c5363b18a53fbf2b92ed21da4 ]
 
-il4965_store_tx_power() calls il_set_tx_power() without holding il->mutex.
-However, il_set_tx_power() has lockdep_assert_held(&il->mutex) indicating
-that callers must hold this lock.
+Add support for Mercusys MU6H AC650 High Gain Wireless Dual Band USB
+Adapter V1.30. It is based on RTL8811CU, usb device ID is 2c4e:0105.
 
-All other callers of il_set_tx_power() properly acquire the mutex:
-- il_bg_scan_completed() acquires mutex at common.c:1683
-- il_mac_config() acquires mutex at common.c:5006
-- il3945_commit_rxon() and il4965_commit_rxon() are called via work
-  queues that hold the mutex (like il4965_bg_alive_start)
-
-Add mutex_lock()/mutex_unlock() around the il_set_tx_power() call in
-the sysfs store function to fix the missing lock protection.
-
-Signed-off-by: Ziyi Guo <n7l8m4@u.northwestern.edu>
-Acked-by: Stanislaw Gruszka <stf_xl@wp.pl>
-Link: https://patch.msgid.link/20260125194039.1196488-1-n7l8m4@u.northwestern.edu
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Signed-off-by: Hsiu-Ming Chang <cges30901@gmail.com>
+Acked-by: Ping-Ke Shih <pkshih@realtek.com>
+Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
+Link: https://patch.msgid.link/20251205003245.5762-1-cges30901@gmail.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
 
 LLM Generated explanations, may be completely bogus:
 
-## Analysis
+## Analysis: Adding USB Device ID for Mercusys MU6H to rtw8821cu driver
 
 ### Commit Message Analysis
-
-The commit message is clear and well-documented. It identifies a
-specific bug: `il4965_store_tx_power()` calls `il_set_tx_power()`
-without holding `il->mutex`, but `il_set_tx_power()` requires this lock
-(enforced via `lockdep_assert_held`). The message also documents that
-all other callers properly acquire the mutex, making this the only call
-site that's missing the protection.
+The commit adds a USB device ID (vendor: 0x2c4e, product: 0x0105) for
+the Mercusys MU6H AC650 High Gain Wireless Dual Band USB Adapter to the
+existing rtw8821cu driver. The device is based on the RTL8811CU chipset.
 
 ### Code Change Analysis
-
-The fix is minimal and surgical — exactly 2 lines added:
+The change is a **two-line addition** to the USB device ID table in
+`drivers/net/wireless/realtek/rtw88/rtw8821cu.c`:
 ```c
-mutex_lock(&il->mutex);
-ret = il_set_tx_power(il, val, false);
-mutex_unlock(&il->mutex);
+{ USB_DEVICE_AND_INTERFACE_INFO(0x2c4e, 0x0105, 0xff, 0xff, 0xff),
+  .driver_info = (kernel_ulong_t)&(rtw8821c_hw_spec) }, /* Mercusys */
 ```
 
-This is a sysfs store handler (`il4965_store_tx_power`), which can be
-triggered from userspace by writing to the `tx_power` sysfs attribute.
-Without the mutex:
-
-1. **lockdep warning**: The `lockdep_assert_held(&il->mutex)` in
-   `il_set_tx_power()` will fire a warning/splat every time a user
-   writes to this sysfs file.
-2. **Race condition**: `il_set_tx_power()` modifies driver state that is
-   also accessed by other code paths (scan completion, mac80211 config,
-   rxon commits) which all hold the mutex. Without the mutex, concurrent
-   access from sysfs and these other paths could corrupt driver state,
-   potentially leading to firmware errors, crashes, or undefined
-   behavior.
+This follows the exact same pattern as every other entry in the table
+(D-Link, Edimax, and the various Realtek-branded variants). The entry
+uses the same `rtw8821c_hw_spec` hardware specification structure,
+meaning the driver already fully supports this chipset — it just needs
+to know about this particular vendor/product ID combination.
 
 ### Classification
+This is a **new device ID addition** to an existing driver — one of the
+explicitly listed exceptions that IS appropriate for stable backporting.
+From the stable rules:
 
-This is a **synchronization bug fix** — missing mutex protection around
-a function that requires it. It falls squarely into the "race condition"
-and "missing locking" categories of stable-worthy fixes.
+> **NEW DEVICE IDs (Very Common):** Adding PCI IDs, USB IDs, ACPI IDs,
+etc. to existing drivers. These are trivial one-line additions that
+enable hardware support. Rule: The driver must already exist in stable;
+only the ID is new.
 
-### Scope and Risk Assessment
-
-- **Lines changed**: 2 (adding mutex_lock/unlock)
-- **Files touched**: 1
-- **Risk**: Extremely low. Adding mutex protection around a single
-  function call in a sysfs handler is about as safe as it gets. The
-  mutex is already used throughout the driver, and all other callers of
-  `il_set_tx_power()` already hold it. There's no risk of deadlock since
-  this is a sysfs store handler (not called from any context that
-  already holds the mutex).
-- **Subsystem**: iwlegacy wireless driver — a mature, legacy Intel WiFi
-  driver
+### Risk Assessment
+- **Risk: Extremely low.** This is a pure data addition — a new entry in
+  a USB ID matching table. It cannot affect any existing functionality.
+- **Scope: Minimal.** Two lines added, one file changed, no logic
+  changes.
+- **Regression potential: Zero.** The new ID only matches a specific USB
+  device (0x2c4e:0x0105). No other device is affected.
 
 ### User Impact
-
-- Any user with iwlegacy hardware who writes to the `tx_power` sysfs
-  attribute will trigger a lockdep splat (if lockdep is enabled) and
-  potentially experience a race condition
-- The race could lead to corrupted driver state, firmware errors, or
-  crashes
-- The sysfs interface is a user-facing control, so this is a realistic
-  trigger path
+- Users with this specific Mercusys MU6H adapter cannot use it at all
+  without this ID entry. With the entry, the existing (and already
+  working) rtw8821cu driver will automatically bind to the device.
+- This is a consumer WiFi adapter, so real users on stable kernels would
+  benefit from this backport.
 
 ### Stability Indicators
+- Acked-by the Realtek maintainer (Ping-Ke Shih)
+- The pattern is identical to existing entries
+- The rtw88 driver and rtw8821cu sub-driver already exist in stable
+  trees
 
-- **Acked-by**: Stanislaw Gruszka (iwlegacy maintainer) — strong signal
-- **Committed by**: Johannes Berg (Intel wireless maintainer) — strong
-  signal
-- The fix pattern (adding mutex around a call that requires it) is well-
-  understood and obviously correct
-
-### Dependency Check
-
-This commit is completely self-contained. It adds standard
-mutex_lock/unlock calls around an existing function call. No other
-patches are needed. The iwlegacy driver and this specific code path have
-existed in stable kernels for a very long time.
+### Dependencies
+- None. This is a completely self-contained change.
 
 ### Conclusion
-
-This is a textbook stable backport candidate:
-- **Obviously correct**: The function requires the mutex (has lockdep
-  assertion), all other callers hold it, this one doesn't — the fix adds
-  the missing lock
-- **Fixes a real bug**: Missing synchronization causing potential races
-  and lockdep warnings
-- **Small and contained**: 2 lines added, 1 file changed
-- **No new features**: Pure bug fix
-- **Low risk**: Standard locking pattern, well-tested by maintainer
-  review
-- **Acked by subsystem maintainer**: Confirms the fix is appropriate
+This is a textbook example of a device ID addition that should be
+backported to stable. It enables hardware support for a specific USB
+WiFi adapter using an already-existing, well-tested driver. The change
+is trivial, zero-risk, and directly benefits users who own this device.
 
 **YES**
 
- drivers/net/wireless/intel/iwlegacy/4965-mac.c | 2 ++
+ drivers/net/wireless/realtek/rtw88/rtw8821cu.c | 2 ++
  1 file changed, 2 insertions(+)
 
-diff --git a/drivers/net/wireless/intel/iwlegacy/4965-mac.c b/drivers/net/wireless/intel/iwlegacy/4965-mac.c
-index 3588dec75ebdd..57fa866efd9f8 100644
---- a/drivers/net/wireless/intel/iwlegacy/4965-mac.c
-+++ b/drivers/net/wireless/intel/iwlegacy/4965-mac.c
-@@ -4606,7 +4606,9 @@ il4965_store_tx_power(struct device *d, struct device_attribute *attr,
- 	if (ret)
- 		IL_INFO("%s is not in decimal form.\n", buf);
- 	else {
-+		mutex_lock(&il->mutex);
- 		ret = il_set_tx_power(il, val, false);
-+		mutex_unlock(&il->mutex);
- 		if (ret)
- 			IL_ERR("failed setting tx power (0x%08x).\n", ret);
- 		else
+diff --git a/drivers/net/wireless/realtek/rtw88/rtw8821cu.c b/drivers/net/wireless/realtek/rtw88/rtw8821cu.c
+index 7a0fffc359e25..8cd09d66655db 100644
+--- a/drivers/net/wireless/realtek/rtw88/rtw8821cu.c
++++ b/drivers/net/wireless/realtek/rtw88/rtw8821cu.c
+@@ -37,6 +37,8 @@ static const struct usb_device_id rtw_8821cu_id_table[] = {
+ 	  .driver_info = (kernel_ulong_t)&(rtw8821c_hw_spec) }, /* Edimax */
+ 	{ USB_DEVICE_AND_INTERFACE_INFO(0x7392, 0xd811, 0xff, 0xff, 0xff),
+ 	  .driver_info = (kernel_ulong_t)&(rtw8821c_hw_spec) }, /* Edimax */
++	{ USB_DEVICE_AND_INTERFACE_INFO(0x2c4e, 0x0105, 0xff, 0xff, 0xff),
++	  .driver_info = (kernel_ulong_t)&(rtw8821c_hw_spec) }, /* Mercusys */
+ 	{},
+ };
+ MODULE_DEVICE_TABLE(usb, rtw_8821cu_id_table);
 -- 
 2.51.0
 
