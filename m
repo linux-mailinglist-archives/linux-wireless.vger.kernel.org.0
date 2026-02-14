@@ -1,59 +1,58 @@
-Return-Path: <linux-wireless+bounces-31854-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-31855-lists+linux-wireless=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id IAaZJ0vpkGkOdwEAu9opvQ
-	(envelope-from <linux-wireless+bounces-31854-lists+linux-wireless=lfdr.de@vger.kernel.org>)
-	for <lists+linux-wireless@lfdr.de>; Sat, 14 Feb 2026 22:29:47 +0100
+	id sFKJGV7pkGkOdwEAu9opvQ
+	(envelope-from <linux-wireless+bounces-31855-lists+linux-wireless=lfdr.de@vger.kernel.org>)
+	for <lists+linux-wireless@lfdr.de>; Sat, 14 Feb 2026 22:30:06 +0100
 X-Original-To: lists+linux-wireless@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2ED4F13D7D3
-	for <lists+linux-wireless@lfdr.de>; Sat, 14 Feb 2026 22:29:47 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 07BEC13D81F
+	for <lists+linux-wireless@lfdr.de>; Sat, 14 Feb 2026 22:30:06 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id C0E4A30996CA
-	for <lists+linux-wireless@lfdr.de>; Sat, 14 Feb 2026 21:25:51 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 83C1530A4FE9
+	for <lists+linux-wireless@lfdr.de>; Sat, 14 Feb 2026 21:25:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A88B03081A2;
-	Sat, 14 Feb 2026 21:25:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1D6562D2486;
+	Sat, 14 Feb 2026 21:25:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="DSoyR4cO"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="MftDr06Y"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 853F2309DB1;
-	Sat, 14 Feb 2026 21:25:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EC88B25F994;
+	Sat, 14 Feb 2026 21:25:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771104349; cv=none; b=HbMNuqMK+4gOf3o4tMf0wC94adidq8+K1YW/LXLGI3vYHMQ8TVMaoy3rC8gfLLaRyx/eKXmW1d1LhPfvAPMOFwNE+pQBYewXk9pjHQkutvPioU2MxpnBucwNFwAzi2rUmJL3dRL0hn/SrwtmKS1YW4DpxRztA+VavddSXgBLplk=
+	t=1771104352; cv=none; b=MmJM9oxt6biiIgiwB4iJqzJF9Gkk0Fx9S7hn3FhSTTt0HrZxacClyR9eLUz5lis/A6tVC014u//o8wnL194Hs8qzoexYu7D9XJfVInQY4679qDbWW9RIYTIbAVUBl/OpsgO5RlYMTnoEn1Goj6zz7hYhhlV858OvxlOkhP1b7dA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771104349; c=relaxed/simple;
-	bh=T/Svm1QtSGSSE6CRxvQBI4rvnb10QfskCp22IKsKjFs=;
+	s=arc-20240116; t=1771104352; c=relaxed/simple;
+	bh=mUbgclJqjUwPl4cKFFF63FLHgNj3UpN/LhTRwZcaGg8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=liAWTh2pi2spP2FY4vkEBJcdsUmW2nw7DPn2HZOYS7k7Cu6Xc+9ic6tc6F7l3/8m9wSJInDakBzZtJodN6v2AE3NgDO1AXN0lNy5P8dSVeALFJuns32gsBfS32rwpzX0o/YwNMPUpsJxzelQzwmCKufIGkUqNbWyr+aZb7OIVpg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=DSoyR4cO; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BEC1AC16AAE;
-	Sat, 14 Feb 2026 21:25:48 +0000 (UTC)
+	 MIME-Version:Content-Type; b=EuIMiiLJZxFleYG1dgOIcR56+HIdh1B/OAsg8Acqrr11Gk6ys3C0/OUtAAG5VoQmXPtzksV0UTZP8SM/hSQPKiwEATyOWsGH0Cb41oM/p3BL9CtzNpoiF76yM0l92kYzKhJhtnTIgTzXQxSugtRcIi8e3UfDLlM+iFj1yYDPflY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=MftDr06Y; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4AD6CC19422;
+	Sat, 14 Feb 2026 21:25:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1771104349;
-	bh=T/Svm1QtSGSSE6CRxvQBI4rvnb10QfskCp22IKsKjFs=;
+	s=k20201202; t=1771104351;
+	bh=mUbgclJqjUwPl4cKFFF63FLHgNj3UpN/LhTRwZcaGg8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=DSoyR4cO50i33zaaZA2TvkLhh7mtK8Je01yodDnjvy4U+pe45Wiqu4+1O07oOt1If
-	 yMOeknfTD5Am1v/npE+5efuwDpfnWtZUaEbeYZR0NZ67oK/rK6YQtoBufZNbp+IXVb
-	 DFur27r2IjoO1uqrxDe59pnSz52G/LBHgUO8xrTZukhCjktWjcezMYnnanP76f32kG
-	 osSpGYqahwoJHVyTpaVwfonza00sWxThd+s+f33xOOrOGrp6xc1Yq6ZT8gZOoJjFxU
-	 tYaonZdjDxBul4Dz+Oas5WOIAQWEw+AWBDP0mFTPXnMBFmkdszJaagTV1tl9qA8Jvx
-	 tlBWYlwwnBRgQ==
+	b=MftDr06YH8dkuMX9RAjsBnEc3XP++ilIDnBMXHb//s93geK648AVikBND9+GXeSkd
+	 4hHnJOojmon3lAiPioaoAuUcl6n9+LRaXrkQGs/QCxDug/5DHlH1SwudCuFSdrpIIS
+	 n6+d8wiL70xw1pU6RD1tjNkySYzIGlnpyLwATRHsUHQT90boA+RuhIZRuIrzbDA92e
+	 ixCMncQ09zqq8bdTjHSa/U54/orS8DuORtPjzjTDycje3yPbkMRVHuEU7j7NpvCPUs
+	 yMPhJEJvCCxCgW+/xNb0CKqe65CMG5j2KD4f4ohOmQgmpb4boC1J8gjHtPsHCGDktO
+	 DT0X4NoJSwSTQ==
 From: Sasha Levin <sashal@kernel.org>
 To: patches@lists.linux.dev,
 	stable@vger.kernel.org
-Cc: Roman Peshkichev <roman.peshkichev@gmail.com>,
-	Ping-Ke Shih <pkshih@realtek.com>,
+Cc: Ping-Ke Shih <pkshih@realtek.com>,
 	Sasha Levin <sashal@kernel.org>,
 	linux-wireless@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.19-6.1] wifi: rtw88: fix DTIM period handling when conf->dtim_period is zero
-Date: Sat, 14 Feb 2026 16:22:56 -0500
-Message-ID: <20260214212452.782265-31-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 6.19-6.12] wifi: rtw89: mac: correct page number for CSI response
+Date: Sat, 14 Feb 2026 16:22:58 -0500
+Message-ID: <20260214212452.782265-33-sashal@kernel.org>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20260214212452.782265-1-sashal@kernel.org>
 References: <20260214212452.782265-1-sashal@kernel.org>
@@ -69,185 +68,173 @@ X-stable-base: Linux 6.19
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [0.34 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+X-Spamd-Result: default: False [-1.16 / 15.00];
 	MID_CONTAINS_FROM(1.00)[];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
 	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	TAGGED_FROM(0.00)[bounces-31854-lists,linux-wireless=lfdr.de];
-	MIME_TRACE(0.00)[0:+];
-	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-31855-lists,linux-wireless=lfdr.de];
+	TO_DN_SOME(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
 	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[kernel.org:+];
-	RCPT_COUNT_FIVE(0.00)[6];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,linux-wireless@vger.kernel.org];
-	FREEMAIL_CC(0.00)[gmail.com,realtek.com,kernel.org,vger.kernel.org];
+	DKIM_TRACE(0.00)[kernel.org:+];
 	TAGGED_RCPT(0.00)[linux-wireless];
 	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,msgid.link:url,realtek.com:email]
-X-Rspamd-Queue-Id: 2ED4F13D7D3
+X-Rspamd-Queue-Id: 07BEC13D81F
 X-Rspamd-Action: no action
 
-From: Roman Peshkichev <roman.peshkichev@gmail.com>
+From: Ping-Ke Shih <pkshih@realtek.com>
 
-[ Upstream commit 9f68fdcdc9dbf21be2a48feced90ff7f77d07443 ]
+[ Upstream commit aa2a44d0d22d45d659b9f01638809b1735e46cff ]
 
-The function rtw_set_dtim_period() accepted an 'int' dtim_period parameter,
-while mac80211 provides dtim_period as 'u8' in struct ieee80211_bss_conf.
-In IBSS (ad-hoc) mode mac80211 may set dtim_period to 0.
+For beamforming procedure, hardware reserve memory page for CSI response.
+The unit of register is (value - 1), so add one accordingly as expected.
 
-The driver unconditionally wrote (dtim_period - 1) to
-REG_DTIM_COUNTER_ROOT, which resulted in 0xFF when dtim_period was 0. This
-caused delays in broadcast/multicast traffic processing and issues with
-ad-hoc operation.
-
-Convert the function parameter to u8 to match ieee80211_bss_conf and avoid
-the underflow by writing 0 when dtim_period is 0.
-
-Link: https://github.com/lwfinger/rtw88/issues/406
-Signed-off-by: Roman Peshkichev <roman.peshkichev@gmail.com>
-Acked-by: Ping-Ke Shih <pkshih@realtek.com>
 Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
-Link: https://patch.msgid.link/20251125180937.22977-1-roman.peshkichev@gmail.com
+Link: https://patch.msgid.link/20260110022019.2254969-7-pkshih@realtek.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
 
 LLM Generated explanations, may be completely bogus:
 
-## Analysis
+## Analysis of commit: "wifi: rtw89: mac: correct page number for CSI
+response"
 
-### Commit Message Analysis
+### 1. Commit Message Analysis
 
-The commit message clearly describes a **bug fix** for an integer
-underflow issue in the rtw88 WiFi driver. Key points:
+The commit message states that for the beamforming procedure, hardware
+reserves memory pages for CSI (Channel State Information) response. The
+register expects a value where the unit is `(value - 1)`, meaning the
+driver needs to write `pg_num + 1` to get the correct number of pages
+reserved. The current code writes `pg_num` directly, which results in
+one fewer page than intended.
 
-- **Bug mechanism**: When `dtim_period` is 0 (which happens in IBSS/ad-
-  hoc mode), the expression `dtim_period - 1` underflows. Since the
-  parameter was `int`, `0 - 1 = -1`, and when written via
-  `rtw_write8()`, this becomes `0xFF`.
-- **Impact**: Writing `0xFF` to `REG_DTIM_COUNTER_ROOT` causes "delays
-  in broadcast/multicast traffic processing and issues with ad-hoc
-  operation."
-- **Link**: References a real user-reported issue on GitHub
-  (lwfinger/rtw88#406).
-- **Acked by**: Ping-Ke Shih, the Realtek maintainer, both acked and
-  signed off, indicating this is a vetted fix.
+This is a hardware register programming bug — an off-by-one error in how
+a register value is interpreted.
 
-### Code Change Analysis
+### 2. Code Change Analysis
 
-The change is extremely small and surgical — only **2 lines of
-functional change** plus **2 lines of declaration change**:
+The change is a single-line fix:
+```c
+- rtw89_write32_mask(rtwdev, reg, B_BE_CSI_RESERVED_PAGE_NUM_MASK,
+  qt_cfg.pg_num);
++ rtw89_write32_mask(rtwdev, reg, B_BE_CSI_RESERVED_PAGE_NUM_MASK,
+qt_cfg.pg_num + 1);
+```
 
-1. **Parameter type change**: `int dtim_period` → `u8 dtim_period` —
-   matches the type in `struct ieee80211_bss_conf` (`u8`), which is
-   correct alignment with mac80211's API.
+This is about as minimal and surgical as a fix can be. It corrects the
+value written to the `R_BE_RESP_CSI_RESERVED_PAGE` register's page
+number field by adding 1 to account for the hardware's `(value - 1)`
+encoding.
 
-2. **Underflow guard**: `dtim_period - 1` → `dtim_period ? dtim_period -
-   1 : 0` — prevents the underflow when `dtim_period` is 0 by writing 0
-   instead of 0xFF.
+### 3. Bug Classification
 
-3. **Header declaration update**: Matching function signature change in
-   `main.h`.
+This is a **hardware register programming bug** (off-by-one). The
+consequence is that the hardware reserves one fewer memory page than
+needed for CSI response in beamforming. This could lead to:
+- **Beamforming failures** or degraded WiFi performance
+- Potential **memory corruption within the hardware's DLE (Data Link
+  Engine)** if CSI responses overflow the allocated pages
+- Possible **firmware/hardware hangs** if the CSI response data
+  overwrites adjacent memory regions in the hardware
 
-### Bug Classification
+### 4. Scope and Risk Assessment
 
-This is a clear **integer underflow bug** that causes real-world issues:
-- The bug is triggered in IBSS (ad-hoc) mode, which is a legitimate and
-  used WiFi mode
-- The consequence is broken broadcast/multicast traffic — a real
-  functional issue for users
-- The fix is obviously correct: check for zero before subtracting
+- **Lines changed**: 1 line
+- **Files touched**: 1 file
+  (`drivers/net/wireless/realtek/rtw89/mac_be.c`)
+- **Complexity**: Trivially simple — adds `+ 1` to a value
+- **Risk of regression**: Extremely low. The fix aligns the driver with
+  the hardware's documented register encoding. Writing the wrong value
+  was the bug.
+- **Subsystem**: WiFi driver (rtw89 — Realtek WiFi), which is a commonly
+  used wireless driver
 
-### Scope and Risk Assessment
+### 5. User Impact
 
-- **Lines changed**: ~4 (2 functional + 2 declaration)
-- **Files touched**: 2 (main.c and main.h, both in the same driver)
-- **Risk**: Extremely low. The fix adds a simple conditional check and
-  corrects a type mismatch. It cannot introduce regressions — the only
-  behavior change is when `dtim_period == 0`, where the old behavior was
-  clearly wrong (writing 0xFF).
-- **Subsystem**: WiFi driver (rtw88) — widely used Realtek WiFi chipset
-  driver
+- **Who is affected**: Users of Realtek WiFi chipsets supported by the
+  rtw89 driver (specifically the "BE" generation, likely WiFi 7 chips
+  like RTL8922AE)
+- **Severity**: Medium-high. Beamforming is important for WiFi
+  performance and reliability. With incorrect page reservation, users
+  may experience degraded throughput, connection instability, or
+  potential hardware issues
+- **Real-world impact**: Any user with this hardware would be affected
+  during beamforming operations
 
-### Stable Kernel Criteria
+### 6. Stability Indicators
 
-1. **Obviously correct and tested**: Yes — trivial fix, acked by
-   maintainer, addresses a clearly documented bug
-2. **Fixes a real bug**: Yes — integer underflow causing broken ad-hoc
-   WiFi operation
-3. **Important issue**: Yes — broken WiFi functionality for ad-hoc mode
-   users
-4. **Small and contained**: Yes — 4 lines changed in one driver
-5. **No new features**: Correct — pure bug fix
-6. **Applies cleanly**: The rtw88 driver has been in the kernel since
-   5.2, and this function is stable, so it should apply cleanly to
-   recent stable trees
+- **Author**: Ping-Ke Shih (pkshih@realtek.com) — the primary maintainer
+  of the rtw89 driver at Realtek. Highly trusted for this subsystem.
+- **Obviously correct**: The commit message clearly explains the
+  hardware register encoding, and the fix directly addresses it.
 
-### User Impact
+### 7. Dependency Check
 
-Users of rtw88 WiFi chipsets (Realtek 8822BE, 8822CE, 8723DE, 8821CE —
-very common in laptops) who use ad-hoc/IBSS mode would experience broken
-broadcast/multicast traffic without this fix.
+This is a standalone fix. It doesn't depend on other patches (it's patch
+7 of a series, but this particular change is self-contained — it just
+corrects a value written to a register). The function
+`resp_pktctl_init_be()` and the register definitions need to exist in
+the stable tree.
 
-### Dependencies
+### 8. Stable Kernel Criteria Assessment
 
-None. This is a self-contained fix with no dependencies on other
-commits.
+- **Obviously correct**: Yes — the hardware register uses `(value - 1)`
+  encoding, so writing `pg_num + 1` is the correct value
+- **Fixes a real bug**: Yes — off-by-one in hardware register
+  programming causes incorrect page reservation
+- **Small and contained**: Yes — single line change in a single file
+- **No new features**: Correct — this is purely a bug fix
+- **Tested**: From the Realtek driver maintainer, submitted through
+  proper channels
 
-### Conclusion
+### Risk vs. Benefit
 
-This is a textbook stable backport candidate: a small, obvious, low-risk
-fix for a real bug (integer underflow) that causes user-visible problems
-(broken WiFi ad-hoc mode). It's acked by the subsystem maintainer and
-has a linked bug report demonstrating real-world impact.
+- **Risk**: Negligible. A one-line arithmetic correction to a hardware
+  register value, authored by the subsystem maintainer.
+- **Benefit**: Fixes beamforming page allocation for rtw89 BE-generation
+  WiFi hardware, preventing potential performance degradation or
+  hardware issues.
+
+### Concerns
+
+The only concern is whether the `mac_be.c` file exists in the target
+stable trees. The "BE" generation support was added relatively recently,
+so this fix would only apply to stable kernels that already include
+rtw89 BE support. But if the code exists in the stable tree, this fix is
+clearly appropriate.
 
 **YES**
 
- drivers/net/wireless/realtek/rtw88/main.c | 4 ++--
- drivers/net/wireless/realtek/rtw88/main.h | 2 +-
- 2 files changed, 3 insertions(+), 3 deletions(-)
+ drivers/net/wireless/realtek/rtw89/mac_be.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/net/wireless/realtek/rtw88/main.c b/drivers/net/wireless/realtek/rtw88/main.c
-index fa0ed39cb1992..361ce0d40956d 100644
---- a/drivers/net/wireless/realtek/rtw88/main.c
-+++ b/drivers/net/wireless/realtek/rtw88/main.c
-@@ -730,10 +730,10 @@ void rtw_set_rx_freq_band(struct rtw_rx_pkt_stat *pkt_stat, u8 channel)
- }
- EXPORT_SYMBOL(rtw_set_rx_freq_band);
+diff --git a/drivers/net/wireless/realtek/rtw89/mac_be.c b/drivers/net/wireless/realtek/rtw89/mac_be.c
+index 9b9e646487346..dee5ff71b75fe 100644
+--- a/drivers/net/wireless/realtek/rtw89/mac_be.c
++++ b/drivers/net/wireless/realtek/rtw89/mac_be.c
+@@ -1175,7 +1175,7 @@ static int resp_pktctl_init_be(struct rtw89_dev *rtwdev, u8 mac_idx)
  
--void rtw_set_dtim_period(struct rtw_dev *rtwdev, int dtim_period)
-+void rtw_set_dtim_period(struct rtw_dev *rtwdev, u8 dtim_period)
- {
- 	rtw_write32_set(rtwdev, REG_TCR, BIT_TCR_UPDATE_TIMIE);
--	rtw_write8(rtwdev, REG_DTIM_COUNTER_ROOT, dtim_period - 1);
-+	rtw_write8(rtwdev, REG_DTIM_COUNTER_ROOT, dtim_period ? dtim_period - 1 : 0);
- }
+ 	reg = rtw89_mac_reg_by_idx(rtwdev, R_BE_RESP_CSI_RESERVED_PAGE, mac_idx);
+ 	rtw89_write32_mask(rtwdev, reg, B_BE_CSI_RESERVED_START_PAGE_MASK, qt_cfg.pktid);
+-	rtw89_write32_mask(rtwdev, reg, B_BE_CSI_RESERVED_PAGE_NUM_MASK, qt_cfg.pg_num);
++	rtw89_write32_mask(rtwdev, reg, B_BE_CSI_RESERVED_PAGE_NUM_MASK, qt_cfg.pg_num + 1);
  
- void rtw_update_channel(struct rtw_dev *rtwdev, u8 center_channel,
-diff --git a/drivers/net/wireless/realtek/rtw88/main.h b/drivers/net/wireless/realtek/rtw88/main.h
-index 43ed6d6b42919..1ab70214ce36e 100644
---- a/drivers/net/wireless/realtek/rtw88/main.h
-+++ b/drivers/net/wireless/realtek/rtw88/main.h
-@@ -2226,7 +2226,7 @@ enum nl80211_band rtw_hw_to_nl80211_band(enum rtw_supported_band hw_band)
+ 	return 0;
  }
- 
- void rtw_set_rx_freq_band(struct rtw_rx_pkt_stat *pkt_stat, u8 channel);
--void rtw_set_dtim_period(struct rtw_dev *rtwdev, int dtim_period);
-+void rtw_set_dtim_period(struct rtw_dev *rtwdev, u8 dtim_period);
- void rtw_get_channel_params(struct cfg80211_chan_def *chandef,
- 			    struct rtw_channel_params *ch_param);
- bool check_hw_ready(struct rtw_dev *rtwdev, u32 addr, u32 mask, u32 target);
 -- 
 2.51.0
 
