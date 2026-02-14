@@ -1,162 +1,203 @@
-Return-Path: <linux-wireless+bounces-31833-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-31835-lists+linux-wireless=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id cDrvLsWtkGmscAEAu9opvQ
-	(envelope-from <linux-wireless+bounces-31833-lists+linux-wireless=lfdr.de@vger.kernel.org>)
-	for <lists+linux-wireless@lfdr.de>; Sat, 14 Feb 2026 18:15:49 +0100
+	id 2GMOLuC7kGm8cgEAu9opvQ
+	(envelope-from <linux-wireless+bounces-31835-lists+linux-wireless=lfdr.de@vger.kernel.org>)
+	for <lists+linux-wireless@lfdr.de>; Sat, 14 Feb 2026 19:16:00 +0100
 X-Original-To: lists+linux-wireless@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 35B1113C94E
-	for <lists+linux-wireless@lfdr.de>; Sat, 14 Feb 2026 18:15:49 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1D2E413CC9D
+	for <lists+linux-wireless@lfdr.de>; Sat, 14 Feb 2026 19:15:59 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id EDBFC30120FE
-	for <lists+linux-wireless@lfdr.de>; Sat, 14 Feb 2026 17:15:47 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id D9BDF3007F41
+	for <lists+linux-wireless@lfdr.de>; Sat, 14 Feb 2026 18:12:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 02DAB2853F8;
-	Sat, 14 Feb 2026 17:15:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=candelatech.com header.i=@candelatech.com header.b="NnbObArz"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6B9722FCC06;
+	Sat, 14 Feb 2026 18:12:26 +0000 (UTC)
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from dispatch1-us1.ppe-hosted.com (dispatch1-us1.ppe-hosted.com [67.231.154.184])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mail.unwrap.rs (mail.unwrap.rs [172.232.15.166])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8BDEB1397
-	for <linux-wireless@vger.kernel.org>; Sat, 14 Feb 2026 17:15:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=67.231.154.184
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 46EC330F951
+	for <linux-wireless@vger.kernel.org>; Sat, 14 Feb 2026 18:12:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=172.232.15.166
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771089346; cv=none; b=S7w3p5qvDiny0IODyjOzUc0tF+4Ai/KaASR8dTFs2CFLQ0RQWSRxyrvQCgC0y9dr5SzBL+aqXAI6mgUsHGf+Vmd/Y4nSv8xgzSf2Rount45/vkTGfHoFo93eGNvrj0YyYYIFDCJzHVjanxs2O4ZDElxjq7mI97xO9TTryodE7tE=
+	t=1771092746; cv=none; b=FA3iTNQFLxkTPfiPYm1r9rFlRsm1cDYfBVC8N/4yILOLHN2af3tlksFlD/inqG2kbljOo7ncNKk2/KDEs2a38TINxzdNzCJRvFlkbfmRRfUyYzsqN+me5GtuodMunIqIuywyaTWP4qHxrhNZMyPKXq40Zz+oG7CnC96qqosiKZo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771089346; c=relaxed/simple;
-	bh=NN8j+fdekKBY/tAQCLNDtUkvu0cziDzhXviKo55Z9Z0=;
-	h=Message-ID:Date:MIME-Version:Subject:From:To:Cc:References:
-	 In-Reply-To:Content-Type; b=iPb231TykEBoAKNeXpb5xgLk0meuCbJWjRWQXyos8tGNZ7r9su39S8ctY2mSzdQAKiasKadiEC0C7W4YXD7zKFSCaLiIGEEEp4hIHcyVJOg2JtIuYvFT0AJQBF4e3kDCxMaXQtRXwRpiuiz5eXpqs7x8DQ5ESMA5/f1Bwu8zhGU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=candelatech.com; spf=pass smtp.mailfrom=candelatech.com; dkim=pass (1024-bit key) header.d=candelatech.com header.i=@candelatech.com header.b=NnbObArz; arc=none smtp.client-ip=67.231.154.184
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=candelatech.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=candelatech.com
-Received: from dispatch1-us1.ppe-hosted.com (ip6-localhost [127.0.0.1])
-	by dispatch1-us1.ppe-hosted.com (PPE Hosted ESMTP Server) with ESMTP id ACD2450A4F5
-	for <linux-wireless@vger.kernel.org>; Sat, 14 Feb 2026 17:15:44 +0000 (UTC)
-X-Virus-Scanned: Proofpoint Essentials engine
-Received: from mail3.candelatech.com (mail.candelatech.com [208.74.158.173])
-	by mx1-us1.ppe-hosted.com (PPE Hosted ESMTP Server) with ESMTP id 0A458800081;
-	Sat, 14 Feb 2026 17:15:36 +0000 (UTC)
-Received: from [192.168.1.23] (unknown [98.97.32.174])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-	(No client certificate requested)
-	by mail3.candelatech.com (Postfix) with ESMTPSA id B116913C2B0;
-	Sat, 14 Feb 2026 09:15:32 -0800 (PST)
-DKIM-Filter: OpenDKIM Filter v2.11.0 mail3.candelatech.com B116913C2B0
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=candelatech.com;
-	s=default; t=1771089334;
-	bh=NN8j+fdekKBY/tAQCLNDtUkvu0cziDzhXviKo55Z9Z0=;
-	h=Date:Subject:From:To:Cc:References:In-Reply-To:From;
-	b=NnbObArzWGVY77qRgxpywZ2Bg0iFq3JgBCiESyccI7/zl3b8BTTa6kLJBq4uROlhz
-	 6M24AFdrM30img3npHR7UjJ3UMR9NYmlnDwj7G8hV8CFQZXyxJHSk6i0Fuo64ptl9R
-	 a/mDO0nLs7/NgD7H/y8AwheReJTo7zTb1yc+GYQg=
-Message-ID: <1cf6d7aa-7ced-4fba-88e1-adb1cfdecadf@candelatech.com>
-Date: Sat, 14 Feb 2026 09:15:29 -0800
+	s=arc-20240116; t=1771092746; c=relaxed/simple;
+	bh=fjkLe8IFueXZBa21euR8KzjUKUPP5F1qeoHYl2cK2bE=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=S4AdnJ/p1YbwSOe17brQMG2dEPDiKNJMYTUezC7u1zlxh0XmFYcHef3TZEDeClrcEWU04vWtK3o5R3/czXDpgdxxrvwMswPLq4VMZGW/VE0ZL58UMM0nfEuShrKo+gtOpqH6CyjxkTdsFokTdnhmb80jpsijGniqZzcEdvJ5g68=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=unwrap.rs; spf=pass smtp.mailfrom=unwrap.rs; arc=none smtp.client-ip=172.232.15.166
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=unwrap.rs
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=unwrap.rs
+From: Cole Leavitt <cole@unwrap.rs>
+To: greearb@candelatech.com,
+	johannes.berg@intel.com,
+	miriam.rachel.korenblit@intel.com
+Cc: linux-wireless@vger.kernel.org,
+	Cole Leavitt <cole@unwrap.rs>
+Subject: [PATCH] wifi: iwlwifi: prevent NAPI processing after firmware error
+Date: Sat, 14 Feb 2026 11:10:18 -0700
+Message-ID: <20260214181018.6091-1-cole@unwrap.rs>
+X-Mailer: git-send-email 2.52.0
+In-Reply-To: <c6f886d4-b9ed-48a6-9723-a738af055b64@candelatech.com>
+References: <c6f886d4-b9ed-48a6-9723-a738af055b64@candelatech.com>
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: iwlmld iwl_mld_change_vif_links can return un-initilized 'err'
-From: Ben Greear <greearb@candelatech.com>
-To: "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>
-Cc: Miri Korenblit <miriam.rachel.korenblit@intel.com>
-References: <5ffe48af-e02d-4d02-b669-6a9d6797b956@candelatech.com>
-Content-Language: en-MW
-Organization: Candela Technologies
-In-Reply-To: <5ffe48af-e02d-4d02-b669-6a9d6797b956@candelatech.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-MDID: 1771089337-8kZdHK31rUIC
-X-PPE-STACK: {"stack":"us5"}
-X-MDID-O:
- us5;at1;1771089337;8kZdHK31rUIC;<greearb@candelatech.com>;b05365583a7ac22983513582f8b41fd7
-X-PPE-TRUSTED: V=1;DIR=OUT;
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [1.54 / 15.00];
+	DMARC_POLICY_REJECT(2.00)[unwrap.rs : SPF not aligned (strict), No valid DKIM,reject];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[candelatech.com,none];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
-	R_DKIM_ALLOW(-0.20)[candelatech.com:s=default];
+	MID_CONTAINS_FROM(1.00)[];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-31833-lists,linux-wireless=lfdr.de];
-	MIME_TRACE(0.00)[0:+];
-	HAS_ORG_HEADER(0.00)[];
-	RCVD_TLS_LAST(0.00)[];
-	TO_DN_EQ_ADDR_SOME(0.00)[];
-	RCPT_COUNT_TWO(0.00)[2];
-	DKIM_TRACE(0.00)[candelatech.com:+];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[greearb@candelatech.com,linux-wireless@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	RCVD_COUNT_FIVE(0.00)[6];
+	FROM_NEQ_ENVFROM(0.00)[cole@unwrap.rs,linux-wireless@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-31835-lists,linux-wireless=lfdr.de];
+	MIME_TRACE(0.00)[0:+];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	TAGGED_RCPT(0.00)[linux-wireless];
-	MID_RHS_MATCH_FROM(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,candelatech.com:mid,candelatech.com:dkim,candelatech.com:url,candelatech.com:email]
-X-Rspamd-Queue-Id: 35B1113C94E
+	RCVD_COUNT_THREE(0.00)[3];
+	R_DKIM_NA(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	TO_DN_SOME(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[5]
+X-Rspamd-Queue-Id: 1D2E413CC9D
 X-Rspamd-Action: no action
 
-On 2/14/26 09:11, Ben Greear wrote:
-> Hello,
-> 
-> I believe this method:
-> 
-> static int
-> iwl_mld_change_vif_links(struct ieee80211_hw *hw,
-> 
-> Can return un-initialized 'err' in case that this return path is taken:
-> 
->      if (WARN_ON(!iwl_mld_error_before_recovery(mld)))
->          return err;
-> 
-> I saw this warning hit, and then later kernel crashed with some debugfs
-> dentry being bogus, but not sure that is actually related.
-> 
-> Probably err should be initialized to -EINVAL at top of the method.
-> 
-> Thanks,
-> Ben
-> 
+After a firmware error is detected and STATUS_FW_ERROR is set, NAPI can
+still be actively polling or get scheduled from a prior interrupt. The
+NAPI poll functions (both legacy and MSIX variants) have no check for
+STATUS_FW_ERROR and will continue processing stale RX ring entries from
+dying firmware. This can dispatch TX completion notifications containing
+corrupt SSN values to iwl_mld_handle_tx_resp_notif(), which passes them
+to iwl_trans_reclaim(). If the corrupt SSN causes reclaim to walk TX
+queue entries that were already freed by a prior correct reclaim, the
+result is an skb use-after-free or double-free.
 
-I guess in case that error path is interesting, looks like FW stopped
-communicating and that is probably what caused the warning:
+The race window opens when the MSIX IRQ handler schedules NAPI (lines
+2319-2321 in rx.c) before processing the error bit (lines 2382-2396),
+or when NAPI is already running on another CPU from a previous interrupt
+when STATUS_FW_ERROR gets set on the current CPU.
 
-Likely at least some of this logging is from our own patches, FYI.
+Add STATUS_FW_ERROR checks to both NAPI poll functions to prevent
+processing stale RX data after firmware error, and add early-return
+guards in the TX response and compressed BA notification handlers as
+defense-in-depth. Each check uses WARN_ONCE to log if the race is
+actually hit, which aids diagnosis of the hard-to-reproduce skb
+use-after-free reported on Intel BE200.
 
-[  159.220486] wlan17: ieee80211_vif_set_links: new_links=0x4; dormant_links=0x0
-[  159.220511] iwlwifi 0000:25:00.0: Failed to send flush command (-5)
-[  159.222763] wlan17: associated
-[  159.224559] wlan18: RX AssocResp from 8a:88:81:84:d9:81 (capab=0x1511 status=0 aid=192)
-[  159.224563] wlan18: ieee80211_vif_set_links: new_links=0x4; dormant_links=0x0
-[  159.224565] wlan18: [link 2] local address 82:fa:ed:e5:1d:de, AP link address 8e:88:a1:84:d9:81 (assoc)
-[  159.224576] wlan18: ieee80211_vif_set_links: new_links=0x4; dormant_links=0x0
-[  159.225503] iwlwifi 0000:25:00.0: Failed to remove station. Id=1
-[  159.226598] wlan18: associated
-[  159.230293] iwlwifi 0000:25:00.0: Failed to send LINK_CONFIG_CMD (action:2): -5
-[  159.236374] iwlwifi 0000:25:00.0: Failed to send PHY_CONTEXT_CMD ret = -5
-[  159.241885] wlan2: ieee80211_vif_set_links: new_links=0x0; dormant_links=0x0
-[  159.254418] iwlwifi 0000:25:00.0: Failed to send LINK_CONFIG_CMD (action:3): -5
-[  159.260503] iwlwifi 0000:25:00.0: Failed to send LINK_CONFIG_CMD (action:1): -5
+Note that _iwl_trans_pcie_gen2_stop_device() already calls
+iwl_pcie_rx_napi_sync() to quiesce NAPI during device teardown, but that
+runs much later in the restart sequence. These checks close the window
+between error detection and device stop.
 
+Signed-off-by: Cole Leavitt <cole@unwrap.rs>
+---
+Tested on Intel BE200 (FW 101.6e695a70.0) by forcing NMI via debugfs.
+The WARN_ONCE fires reliably:
 
-Thanks,
-Ben
+  iwlwifi: NAPI MSIX poll[0] invoked after FW error
+  WARNING: drivers/net/wireless/intel/iwlwifi/pcie/gen1_2/rx.c:1058
+           at iwl_pcie_napi_poll_msix+0xff/0x130 [iwlwifi], CPU#22
 
+Confirming NAPI poll is invoked after STATUS_FW_ERROR is set. Without
+this patch, that poll processes stale RX ring data from dead firmware.
+
+ drivers/net/wireless/intel/iwlwifi/mld/tx.c   | 19 ++++++++++++++++++
+ .../wireless/intel/iwlwifi/pcie/gen1_2/rx.c   | 20 +++++++++++++++++++
+ 2 files changed, 39 insertions(+)
+
+diff --git a/drivers/net/wireless/intel/iwlwifi/mld/tx.c b/drivers/net/wireless/intel/iwlwifi/mld/tx.c
+index 3b4b575aadaa..3e99f3ded9bc 100644
+--- a/drivers/net/wireless/intel/iwlwifi/mld/tx.c
++++ b/drivers/net/wireless/intel/iwlwifi/mld/tx.c
+@@ -1071,6 +1071,18 @@ void iwl_mld_handle_tx_resp_notif(struct iwl_mld *mld,
+ 	bool mgmt = false;
+ 	bool tx_failure = (status & TX_STATUS_MSK) != TX_STATUS_SUCCESS;
+ 
++	/* Firmware is dead — the TX response may contain corrupt SSN values
++	 * from a dying firmware DMA. Processing it could cause
++	 * iwl_trans_reclaim() to free the wrong TX queue entries, leading to
++	 * skb use-after-free or double-free.
++	 */
++	if (unlikely(test_bit(STATUS_FW_ERROR, &mld->trans->status))) {
++		WARN_ONCE(1,
++			  "iwlwifi: TX resp notif (sta=%d txq=%d) after FW error\n",
++			  sta_id, txq_id);
++		return;
++	}
++
+ 	if (IWL_FW_CHECK(mld, tx_resp->frame_count != 1,
+ 			 "Invalid tx_resp notif frame_count (%d)\n",
+ 			 tx_resp->frame_count))
+@@ -1349,6 +1361,13 @@ void iwl_mld_handle_compressed_ba_notif(struct iwl_mld *mld,
+ 	u8 sta_id = ba_res->sta_id;
+ 	struct ieee80211_link_sta *link_sta;
+ 
++	if (unlikely(test_bit(STATUS_FW_ERROR, &mld->trans->status))) {
++		WARN_ONCE(1,
++			  "iwlwifi: BA notif (sta=%d) after FW error\n",
++			  sta_id);
++		return;
++	}
++
+ 	if (!tfd_cnt)
+ 		return;
+ 
+diff --git a/drivers/net/wireless/intel/iwlwifi/pcie/gen1_2/rx.c b/drivers/net/wireless/intel/iwlwifi/pcie/gen1_2/rx.c
+index 619a9505e6d9..ba18d35fa55d 100644
+--- a/drivers/net/wireless/intel/iwlwifi/pcie/gen1_2/rx.c
++++ b/drivers/net/wireless/intel/iwlwifi/pcie/gen1_2/rx.c
+@@ -1015,6 +1015,18 @@ static int iwl_pcie_napi_poll(struct napi_struct *napi, int budget)
+ 	trans_pcie = iwl_netdev_to_trans_pcie(napi->dev);
+ 	trans = trans_pcie->trans;
+ 
++	/* Stop processing RX if firmware has crashed. Stale notifications
++	 * from dying firmware (e.g. TX completions with corrupt SSN values)
++	 * can cause use-after-free in reclaim paths.
++	 */
++	if (unlikely(test_bit(STATUS_FW_ERROR, &trans->status))) {
++		WARN_ONCE(1,
++			  "iwlwifi: NAPI poll[%d] invoked after FW error\n",
++			  rxq->id);
++		napi_complete_done(napi, 0);
++		return 0;
++	}
++
+ 	ret = iwl_pcie_rx_handle(trans, rxq->id, budget);
+ 
+ 	IWL_DEBUG_ISR(trans, "[%d] handled %d, budget %d\n",
+@@ -1042,6 +1054,14 @@ static int iwl_pcie_napi_poll_msix(struct napi_struct *napi, int budget)
+ 	trans_pcie = iwl_netdev_to_trans_pcie(napi->dev);
+ 	trans = trans_pcie->trans;
+ 
++	if (unlikely(test_bit(STATUS_FW_ERROR, &trans->status))) {
++		WARN_ONCE(1,
++			  "iwlwifi: NAPI MSIX poll[%d] invoked after FW error\n",
++			  rxq->id);
++		napi_complete_done(napi, 0);
++		return 0;
++	}
++
+ 	ret = iwl_pcie_rx_handle(trans, rxq->id, budget);
+ 	IWL_DEBUG_ISR(trans, "[%d] handled %d, budget %d\n", rxq->id, ret,
+ 		      budget);
 -- 
-Ben Greear <greearb@candelatech.com>
-Candela Technologies Inc  http://www.candelatech.com
+2.52.0
 
 
