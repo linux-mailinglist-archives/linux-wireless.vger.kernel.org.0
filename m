@@ -1,58 +1,62 @@
-Return-Path: <linux-wireless+bounces-31850-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-31851-lists+linux-wireless=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id yOKbBJnokGkMdwEAu9opvQ
-	(envelope-from <linux-wireless+bounces-31850-lists+linux-wireless=lfdr.de@vger.kernel.org>)
-	for <lists+linux-wireless@lfdr.de>; Sat, 14 Feb 2026 22:26:49 +0100
+	id MGUGNyXpkGkOdwEAu9opvQ
+	(envelope-from <linux-wireless+bounces-31851-lists+linux-wireless=lfdr.de@vger.kernel.org>)
+	for <lists+linux-wireless@lfdr.de>; Sat, 14 Feb 2026 22:29:09 +0100
 X-Original-To: lists+linux-wireless@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id A9FF613D5F7
-	for <lists+linux-wireless@lfdr.de>; Sat, 14 Feb 2026 22:26:48 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 49AFD13D76B
+	for <lists+linux-wireless@lfdr.de>; Sat, 14 Feb 2026 22:29:09 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 81562303E759
-	for <lists+linux-wireless@lfdr.de>; Sat, 14 Feb 2026 21:25:31 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id D40D53042B46
+	for <lists+linux-wireless@lfdr.de>; Sat, 14 Feb 2026 21:25:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 41D75285061;
-	Sat, 14 Feb 2026 21:25:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6209529ACFD;
+	Sat, 14 Feb 2026 21:25:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="obsdvoqU"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ZHgKkXwf"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1DD653C2D;
-	Sat, 14 Feb 2026 21:25:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3EC8A3C2D;
+	Sat, 14 Feb 2026 21:25:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771104331; cv=none; b=aWLMUuesFGOZm7bw2lDPiyuAMXKGVxK7InkOjniP3FZJ4EazuN2pywodLxq0ITHvSsi7aeEDbufUUP/E9l2mrtpm/IyRKruG0AEaYYUOLGK7VZVURYXb3CiMt14/frdJrOqNNr8pHcSIsbLTlG9bWJAQUzzYX+hohdXs0LfYmAo=
+	t=1771104339; cv=none; b=EWC6Qs2Dpu/uQgUy+SeC2dYuMmiVOdBFVOsDzUBH35RuKAdbJMWGi4KZ39jL5zadFWzny6tGjwv7hT63OSI87+tEWsVDW9g/53w2Cl4Fpnycj6oZ/7SUd/k5Kd/eyPKw13RGbl4mFrDvFS0DJVJEYO7YPaPSUWbm5BZ4pQzHtiQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771104331; c=relaxed/simple;
-	bh=5mpOtkJruGdHyLFUXd5KfJeEA2Oq+4NYlQdoQ8Mvyms=;
+	s=arc-20240116; t=1771104339; c=relaxed/simple;
+	bh=b1LD+Xansm2gIBycBh5imiPFd4gz7SExWM2XaWHP+zQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=kcYY4Ir5vyMuayskQshoYbCSk5vk3xiQzULwjpodakWzcj55rIMD0GCUvxR1KlKdqU996v32s0ljBhg8g1RYcjOonhSbK8uDVWNZJe5B1DO1j3iQYW8JJlhayLS0ifSIyJxVdfDehE1ZkAitTlXmYvEFVjpJa4mc7w9KYZjU6sY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=obsdvoqU; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6DF1EC19422;
-	Sat, 14 Feb 2026 21:25:30 +0000 (UTC)
+	 MIME-Version:Content-Type; b=r7Ed8Sw+73H7fHvVaChq0L6FGHaxFamcFOdr7tznom8Gv4PLMGJwTEl9VZUd4lcBCaR0SZT5tZcAnCGxh2lawUSfDmezBnUeBzdov4rck6b9j+RrF0TgN5hvcjgUMz1d+GxI+sSgjE0xScJpLMPBc9Ijvut8e/1zUBZREW3pEWE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ZHgKkXwf; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 36753C16AAE;
+	Sat, 14 Feb 2026 21:25:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1771104331;
-	bh=5mpOtkJruGdHyLFUXd5KfJeEA2Oq+4NYlQdoQ8Mvyms=;
+	s=k20201202; t=1771104339;
+	bh=b1LD+Xansm2gIBycBh5imiPFd4gz7SExWM2XaWHP+zQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=obsdvoqUKx9gUQQ1t1YC1spIbUFCfmI71XOIw6WxXEnq0J8BalfYmqohZqH3PZhzd
-	 2lzd4/n/nZ9wsW1a25Ilkb+6eknXjQY6rhOMnbb+iYABig801RZONCcMMVdIjLGEAH
-	 tYhuWg/EzrIoCJTSZvfIlZBTjx22PkbFvUMcA8xQVwf5GrRjOTltTCk+QBA9Niuzjo
-	 AkjCb+Iwd35SDPEj6YDC22uZR/u5IMM8VJd5sRBv0S0P0UerB1EBgCZsNr+zJZcc9f
-	 EiNMScaKOePd129TjUYH1XZwlA6+rZQp8QhPO+lfePQUiC6O7QYL1I+ghbU4hjQPzW
-	 A6VoYzICu2jsQ==
+	b=ZHgKkXwfVIUJdlnWOFBjl5fb9J5W2iIGjXEJdCsdZDISFVZoCO2MsCZNT1lMAFa0o
+	 71YSxfU2m7W0F+UPOq7C6h4ut7SCmz4bGKKLCwEKveHBdTqC5a3mUYi1PVDZTlu9dT
+	 KmVjSKkm+QRq86g/97Ir8O+a+uzyQ5T73SgVn3+qbqaw1cWFzNEeNmGgoT0uevN6k6
+	 pLT0dSIu/OIU8UjuN9m1qtNTDlAqBuAAUNb7uCbxgappzDgv7+HaLs2k4Kqr7jJ3vT
+	 qFcH9MDtpzzqJka9/6EHs//F4ileZKajiBy69L735cA3yMq3p51+9HQVYsOX/VLN8M
+	 rrtDNPxBDR8EA==
 From: Sasha Levin <sashal@kernel.org>
 To: patches@lists.linux.dev,
 	stable@vger.kernel.org
-Cc: Ping-Ke Shih <pkshih@realtek.com>,
+Cc: Ziyi Guo <n7l8m4@u.northwestern.edu>,
+	Baochen Qiang <baochen.qiang@oss.qualcomm.com>,
+	Jeff Johnson <jeff.johnson@oss.qualcomm.com>,
 	Sasha Levin <sashal@kernel.org>,
-	linux-wireless@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.19-6.18] wifi: rtw89: disable EHT protocol by chip capabilities
-Date: Sat, 14 Feb 2026 16:22:47 -0500
-Message-ID: <20260214212452.782265-22-sashal@kernel.org>
+	jjohnson@kernel.org,
+	linux-wireless@vger.kernel.org,
+	ath10k@lists.infradead.org
+Subject: [PATCH AUTOSEL 6.19-5.10] wifi: ath10k: fix lock protection in ath10k_wmi_event_peer_sta_ps_state_chg()
+Date: Sat, 14 Feb 2026 16:22:51 -0500
+Message-ID: <20260214212452.782265-26-sashal@kernel.org>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20260214212452.782265-1-sashal@kernel.org>
 References: <20260214212452.782265-1-sashal@kernel.org>
@@ -65,229 +69,199 @@ MIME-Version: 1.0
 X-stable: review
 X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.19
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.66 / 15.00];
-	MID_CONTAINS_FROM(1.00)[];
+X-Spamd-Result: default: False [-1.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
+	MID_CONTAINS_FROM(1.00)[];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-31850-lists,linux-wireless=lfdr.de];
-	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-31851-lists,linux-wireless=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	TO_DN_SOME(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[5];
-	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,linux-wireless@vger.kernel.org];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[kernel.org:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,linux-wireless@vger.kernel.org];
+	DKIM_TRACE(0.00)[kernel.org:+];
+	RCPT_COUNT_SEVEN(0.00)[9];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[linux-wireless];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,msgid.link:url,realtek.com:email]
-X-Rspamd-Queue-Id: A9FF613D5F7
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,msgid.link:url,qualcomm.com:email,northwestern.edu:email]
+X-Rspamd-Queue-Id: 49AFD13D76B
 X-Rspamd-Action: no action
 
-From: Ping-Ke Shih <pkshih@realtek.com>
+From: Ziyi Guo <n7l8m4@u.northwestern.edu>
 
-[ Upstream commit 7fd36ffedeedc97c44a10249a3f12d471bb2dc26 ]
+[ Upstream commit 820ba7dd6859ef8b1eaf6014897e7aa4756fc65d ]
 
-For certain chip models, EHT protocol is disabled, and driver must follow
-the capabilities. Otherwise, chips become unusable.
+ath10k_wmi_event_peer_sta_ps_state_chg() uses lockdep_assert_held() to
+assert that ar->data_lock should be held by the caller, but neither
+ath10k_wmi_10_2_op_rx() nor ath10k_wmi_10_4_op_rx() acquire this lock
+before calling this function.
 
-Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
-Link: https://patch.msgid.link/20260110022019.2254969-5-pkshih@realtek.com
+The field arsta->peer_ps_state is documented as protected by
+ar->data_lock in core.h, and other accessors (ath10k_peer_ps_state_disable,
+ath10k_dbg_sta_read_peer_ps_state) properly acquire this lock.
+
+Add spin_lock_bh()/spin_unlock_bh() around the peer_ps_state update,
+and remove the lockdep_assert_held() to be aligned with new locking,
+following the pattern used by other WMI event handlers in the driver.
+
+Signed-off-by: Ziyi Guo <n7l8m4@u.northwestern.edu>
+Reviewed-by: Baochen Qiang <baochen.qiang@oss.qualcomm.com>
+Link: https://patch.msgid.link/20260123175611.767731-1-n7l8m4@u.northwestern.edu
+[removed excess blank line]
+Signed-off-by: Jeff Johnson <jeff.johnson@oss.qualcomm.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
 
 LLM Generated explanations, may be completely bogus:
 
-## Analysis of commit: "wifi: rtw89: disable EHT protocol by chip
-capabilities"
+## Analysis of wifi: ath10k: fix lock protection in
+ath10k_wmi_event_peer_sta_ps_state_chg()
 
 ### 1. Commit Message Analysis
 
-The commit message is clear and direct: "For certain chip models, EHT
-protocol is disabled, and driver must follow the capabilities.
-**Otherwise, chips become unusable.**"
-
-This is a critical statement - it means that without this patch, certain
-WiFi chips will not function at all. The word "unusable" indicates a
-severe hardware functionality bug, not a minor issue or optimization.
+The commit message is clear and well-structured:
+- **Subject**: Explicitly says "fix lock protection" — this is a
+  locking/synchronization bug fix
+- **Body**: Explains that `lockdep_assert_held()` asserted
+  `ar->data_lock` should be held by callers, but **no caller actually
+  held it**. This means the assertion was always wrong (or always
+  disabled), and the field `arsta->peer_ps_state` was being accessed
+  without the required lock protection.
+- **Reviewed-by**: Baochen Qiang from Qualcomm reviewed it, lending
+  credibility
+- The commit references that `core.h` documents `peer_ps_state` as
+  protected by `ar->data_lock`, and other accessors properly acquire it
+  — meaning this was the only broken path.
 
 ### 2. Code Change Analysis
 
-The change is spread across 4 files but is small and focused:
+The change is minimal and surgical:
 
-**fw.h**: Adds protocol level constants (11N=1, 11AC=2, 11AX=3, 11BE=4)
-for the `RTW89_C2HREG_PHYCAP_W1_PROT` field. These are just defines for
-values already communicated by firmware - not new features.
+1. **Removes** `lockdep_assert_held(&ar->data_lock)` — the callers never
+   held this lock, so the assertion was incorrect (and likely only
+   checked with CONFIG_LOCKDEP enabled, which is why it didn't always
+   trigger)
 
-**core.h**: Adds a single `bool no_eht` field to `struct rtw89_hal`.
-This is a runtime flag to track chip capability.
+2. **Adds** `spin_lock_bh(&ar->data_lock)` /
+   `spin_unlock_bh(&ar->data_lock)` around the single line
+   `arsta->peer_ps_state = __le32_to_cpu(ev->peer_ps_state)` — this is
+   the actual fix, properly protecting the field with the documented
+   lock
 
-**mac.c** (`rtw89_mac_setup_phycap_part0`): Reads the protocol
-capability from the firmware/hardware phycap register. If the chip
-reports a protocol level below 11BE (EHT), it sets `hal->no_eht = true`.
-This is reading hardware capabilities that already exist - the driver
-was previously ignoring this information.
+The lock scope is minimal — only around the single write to
+`peer_ps_state`, placed after the RCU-protected station lookup and
+before the RCU read unlock. This is clean and correct.
 
-**core.c** (`rtw89_init_eht_cap`): Adds `|| hal->no_eht` to the existing
-early-return check. Previously, only `RTW89_CHIP_AX` generation chips
-would skip EHT capability initialization. Now, chips that report they
-don't support EHT via their phycap register also skip it. Without this,
-the driver would advertise EHT capabilities to the mac80211 stack for
-hardware that doesn't support it, causing the chip to become unusable.
+### 3. Bug Classification
 
-### 3. Bug Mechanism
+This is a **data race / missing synchronization** bug:
+- The field `peer_ps_state` is documented as requiring `ar->data_lock`
+  protection
+- Other readers/writers of this field properly acquire the lock
+- This WMI event handler was the only path that didn't hold the lock
+- Without the lock, concurrent reads (from
+  `ath10k_dbg_sta_read_peer_ps_state`) and writes could race, leading to
+  torn reads or inconsistent state
 
-The bug is:
-1. Certain chip models report via firmware phycap that they don't
-   support EHT (802.11be)
-2. The driver was ignoring this capability report
-3. The driver would then advertise EHT support to mac80211/cfg80211
-4. mac80211 would try to use EHT features with the chip
-5. The chip cannot handle EHT, making it **unusable**
+### 4. Scope and Risk Assessment
 
-This is a classic hardware capability mismatch bug where the driver
-doesn't properly respect hardware-reported capabilities.
+- **Lines changed**: ~4 lines effective (remove 2 lines, add 3 lines
+  including lock/unlock)
+- **Files changed**: 1 file (`drivers/net/wireless/ath/ath10k/wmi.c`)
+- **Risk**: Very low. The change adds proper locking around a single
+  field access, following the established pattern used by all other
+  accessors. The lock is `spin_lock_bh`, which is safe in this softirq
+  context.
+- **Could it break something?** Extremely unlikely — it adds a lock that
+  was already supposed to be held, and uses the same locking pattern as
+  other paths in the driver.
 
-### 4. Classification
+### 5. User Impact
 
-This is a **bug fix** - it fixes a real hardware functionality issue.
-It's not adding a new feature; it's reading an existing hardware
-capability field that was being ignored, and using it to prevent
-advertising unsupported features.
+- **Affected hardware**: ath10k WiFi devices (Qualcomm 802.11ac chipsets
+  — very common in laptops and embedded systems)
+- **Trigger**: WMI peer power-save state change events from firmware
+- **Consequence of bug**: Data race on `peer_ps_state` field. While this
+  is a 32-bit field and the race may not always cause visible corruption
+  on most architectures, it violates the documented locking contract and
+  could cause issues with lockdep-enabled kernels (warnings/splats). On
+  architectures without atomic 32-bit writes, it could cause torn reads.
+- **Severity**: Medium — it's a real locking bug in a commonly-used WiFi
+  driver
 
-This falls into the category of **hardware quirks/workarounds** -
-respecting chip capabilities to prevent malfunction.
+### 6. Stability Indicators
 
-### 5. Scope and Risk Assessment
+- Reviewed by Qualcomm engineer (Baochen Qiang)
+- Accepted by the ath10k maintainer (Jeff Johnson)
+- Small, obvious, and following established patterns in the same driver
 
-- **Lines changed**: ~15 lines of actual logic (very small)
-- **Files touched**: 4 files in the same driver subsystem
-- **Risk**: Very low
-  - The `no_eht` flag defaults to `false` (zero-initialized), so
-    existing working chips are unaffected
-  - It only triggers for chips that explicitly report they don't support
-    EHT
-  - The check is additive (adds an OR condition to existing early-
-    return)
-  - No behavioral change for chips that already work correctly
+### 7. Dependency Check
 
-### 6. User Impact
-
-- **Severity**: HIGH - "chips become unusable" means complete loss of
-  WiFi functionality
-- **Affected users**: Users with specific Realtek WiFi chip models that
-  don't support EHT
-- **Impact without fix**: WiFi doesn't work at all on affected hardware
-
-### 7. Stability and Dependencies
-
-- The change is self-contained within the rtw89 driver
 - No dependencies on other commits
-- The `RTW89_C2HREG_PHYCAP_W1_PROT` field already existed in the
-  codebase (it was already defined); the commit just adds named
-  constants and actually uses the field
-- The rtw89 driver exists in stable trees (it's been in the kernel since
-  5.16+)
+- The code being modified has existed in ath10k for a long time (the
+  `lockdep_assert_held` suggests the locking was always intended but
+  never correctly implemented in this path)
+- Should apply cleanly to any stable tree that has the ath10k driver
+  with this function
 
-### 8. Conclusion
+### 8. Stable Kernel Criteria
 
-This commit fixes a real, severe bug where certain Realtek WiFi chips
-become completely unusable because the driver advertises EHT
-capabilities the hardware doesn't support. The fix is:
-- Small and surgical (adds one bool field, reads one existing register
-  field, adds one condition check)
-- Obviously correct (respect hardware capability reports)
-- Low risk (only affects chips that report no EHT support; no change for
-  others)
-- High impact (fixes completely broken WiFi for affected users)
+- **Obviously correct?** Yes — adds the documented lock around a field
+  access
+- **Fixes a real bug?** Yes — data race / missing synchronization
+- **Small and contained?** Yes — 4 lines in 1 file
+- **No new features?** Correct — pure bug fix
+- **Tested?** Reviewed by subsystem experts, accepted by maintainer
 
-This meets all stable kernel criteria: it fixes a real bug, is small and
-contained, doesn't add new features (it reads existing hardware data),
-and has been tested.
+### Conclusion
+
+This is a textbook stable-worthy fix: a small, surgical correction to a
+locking bug in a widely-used WiFi driver. It properly adds the lock that
+was always documented as required but never acquired in this code path.
+The risk is minimal and the fix follows established patterns in the same
+driver.
 
 **YES**
 
- drivers/net/wireless/realtek/rtw89/core.c | 2 +-
- drivers/net/wireless/realtek/rtw89/core.h | 1 +
- drivers/net/wireless/realtek/rtw89/fw.h   | 4 ++++
- drivers/net/wireless/realtek/rtw89/mac.c  | 5 +++++
- 4 files changed, 11 insertions(+), 1 deletion(-)
+ drivers/net/wireless/ath/ath10k/wmi.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/net/wireless/realtek/rtw89/core.c b/drivers/net/wireless/realtek/rtw89/core.c
-index d5b492ea76ef4..a00b5348b7622 100644
---- a/drivers/net/wireless/realtek/rtw89/core.c
-+++ b/drivers/net/wireless/realtek/rtw89/core.c
-@@ -5236,7 +5236,7 @@ static void rtw89_init_eht_cap(struct rtw89_dev *rtwdev,
- 	u8 val, val_mcs13;
- 	int sts = 8;
+diff --git a/drivers/net/wireless/ath/ath10k/wmi.c b/drivers/net/wireless/ath/ath10k/wmi.c
+index b4aad6604d6d9..ce22141e5efd9 100644
+--- a/drivers/net/wireless/ath/ath10k/wmi.c
++++ b/drivers/net/wireless/ath/ath10k/wmi.c
+@@ -5289,8 +5289,6 @@ ath10k_wmi_event_peer_sta_ps_state_chg(struct ath10k *ar, struct sk_buff *skb)
+ 	struct ath10k_sta *arsta;
+ 	u8 peer_addr[ETH_ALEN];
  
--	if (chip->chip_gen == RTW89_CHIP_AX)
-+	if (chip->chip_gen == RTW89_CHIP_AX || hal->no_eht)
- 		return;
+-	lockdep_assert_held(&ar->data_lock);
+-
+ 	ev = (struct wmi_peer_sta_ps_state_chg_event *)skb->data;
+ 	ether_addr_copy(peer_addr, ev->peer_macaddr.addr);
  
- 	if (hal->no_mcs_12_13)
-diff --git a/drivers/net/wireless/realtek/rtw89/core.h b/drivers/net/wireless/realtek/rtw89/core.h
-index a9cb47ea0b935..46344ca8fa0c8 100644
---- a/drivers/net/wireless/realtek/rtw89/core.h
-+++ b/drivers/net/wireless/realtek/rtw89/core.h
-@@ -5037,6 +5037,7 @@ struct rtw89_hal {
- 	bool support_cckpd;
- 	bool support_igi;
- 	bool no_mcs_12_13;
-+	bool no_eht;
+@@ -5305,7 +5303,9 @@ ath10k_wmi_event_peer_sta_ps_state_chg(struct ath10k *ar, struct sk_buff *skb)
+ 	}
  
- 	atomic_t roc_chanctx_idx;
- 	u8 roc_link_index;
-diff --git a/drivers/net/wireless/realtek/rtw89/fw.h b/drivers/net/wireless/realtek/rtw89/fw.h
-index cedb4a47a769c..ba7c332911310 100644
---- a/drivers/net/wireless/realtek/rtw89/fw.h
-+++ b/drivers/net/wireless/realtek/rtw89/fw.h
-@@ -42,6 +42,10 @@ struct rtw89_c2hreg_phycap {
- #define RTW89_C2HREG_PHYCAP_W0_BW GENMASK(31, 24)
- #define RTW89_C2HREG_PHYCAP_W1_TX_NSS GENMASK(7, 0)
- #define RTW89_C2HREG_PHYCAP_W1_PROT GENMASK(15, 8)
-+#define RTW89_C2HREG_PHYCAP_W1_PROT_11N 1
-+#define RTW89_C2HREG_PHYCAP_W1_PROT_11AC 2
-+#define RTW89_C2HREG_PHYCAP_W1_PROT_11AX 3
-+#define RTW89_C2HREG_PHYCAP_W1_PROT_11BE 4
- #define RTW89_C2HREG_PHYCAP_W1_NIC GENMASK(23, 16)
- #define RTW89_C2HREG_PHYCAP_W1_WL_FUNC GENMASK(31, 24)
- #define RTW89_C2HREG_PHYCAP_W2_HW_TYPE GENMASK(7, 0)
-diff --git a/drivers/net/wireless/realtek/rtw89/mac.c b/drivers/net/wireless/realtek/rtw89/mac.c
-index 6734e5d5a5e22..fbce71cd5a05c 100644
---- a/drivers/net/wireless/realtek/rtw89/mac.c
-+++ b/drivers/net/wireless/realtek/rtw89/mac.c
-@@ -3061,6 +3061,7 @@ static int rtw89_mac_setup_phycap_part0(struct rtw89_dev *rtwdev)
- 	struct rtw89_efuse *efuse = &rtwdev->efuse;
- 	struct rtw89_mac_c2h_info c2h_info = {};
- 	struct rtw89_hal *hal = &rtwdev->hal;
-+	u8 protocol;
- 	u8 tx_nss;
- 	u8 rx_nss;
- 	u8 tx_ant;
-@@ -3108,6 +3109,10 @@ static int rtw89_mac_setup_phycap_part0(struct rtw89_dev *rtwdev)
- 	rtw89_debug(rtwdev, RTW89_DBG_FW, "TX path diversity=%d\n", hal->tx_path_diversity);
- 	rtw89_debug(rtwdev, RTW89_DBG_FW, "Antenna diversity=%d\n", hal->ant_diversity);
+ 	arsta = (struct ath10k_sta *)sta->drv_priv;
++	spin_lock_bh(&ar->data_lock);
+ 	arsta->peer_ps_state = __le32_to_cpu(ev->peer_ps_state);
++	spin_unlock_bh(&ar->data_lock);
  
-+	protocol = u32_get_bits(phycap->w1, RTW89_C2HREG_PHYCAP_W1_PROT);
-+	if (protocol < RTW89_C2HREG_PHYCAP_W1_PROT_11BE)
-+		hal->no_eht = true;
-+
- 	return 0;
- }
- 
+ exit:
+ 	rcu_read_unlock();
 -- 
 2.51.0
 
