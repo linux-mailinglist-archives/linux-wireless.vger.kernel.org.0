@@ -1,72 +1,72 @@
-Return-Path: <linux-wireless+bounces-31913-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-31914-lists+linux-wireless=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id cP9CNHiSk2lu6gEAu9opvQ
-	(envelope-from <linux-wireless+bounces-31913-lists+linux-wireless=lfdr.de@vger.kernel.org>)
-	for <lists+linux-wireless@lfdr.de>; Mon, 16 Feb 2026 22:56:08 +0100
+	id eP+XNmGSk2lu6gEAu9opvQ
+	(envelope-from <linux-wireless+bounces-31914-lists+linux-wireless=lfdr.de@vger.kernel.org>)
+	for <lists+linux-wireless@lfdr.de>; Mon, 16 Feb 2026 22:55:45 +0100
 X-Original-To: lists+linux-wireless@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 962C9147D74
-	for <lists+linux-wireless@lfdr.de>; Mon, 16 Feb 2026 22:56:08 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id BCD36147D58
+	for <lists+linux-wireless@lfdr.de>; Mon, 16 Feb 2026 22:55:45 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id CCB4A30205C3
-	for <lists+linux-wireless@lfdr.de>; Mon, 16 Feb 2026 21:55:34 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id BCF9630071E7
+	for <lists+linux-wireless@lfdr.de>; Mon, 16 Feb 2026 21:55:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1E7E12C0278;
-	Mon, 16 Feb 2026 21:55:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 74C9A2C032C;
+	Mon, 16 Feb 2026 21:55:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="MmHiD+74"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="B3ZnPOSR"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.15])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 37DB32C032C
-	for <linux-wireless@vger.kernel.org>; Mon, 16 Feb 2026 21:55:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 876A92C1598
+	for <linux-wireless@vger.kernel.org>; Mon, 16 Feb 2026 21:55:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.15
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771278923; cv=none; b=H8x0NuDZjwOoUhf3cAOU9VXPp42wza/UkrMo1DN8Ci/zVjWepmQNwDIEO1EfmwGXnv1cIw2uzh+qFXqgh8cAeGuU7v9dVhaSyLbo0TiwEjp0bp9BDidNht123Mn/dqlJNd6aogolptXFMxKMwJVTJFZvWrSMgaisxm5IJRHRMRQ=
+	t=1771278924; cv=none; b=Z76bvpD9vq7pC4/pxpjQzbBlMBSbv/oLuKyuax4vi+axmzp61hXjK4U4antYcTXHwQnS0eQGLJTxEslCzvuKneb/cIUUhRv5rqcqk7zVRJWf+eXCRcHYbuqPUaXGA2E4P91MDqQ3Bxiq1rdi2XeDiiHRNHJkt3yfiqVKw5p5ZGk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771278923; c=relaxed/simple;
-	bh=u3IVnLU2iWPQbIvbeGz20OD5/S9f+iARu+cvl3mI8wo=;
+	s=arc-20240116; t=1771278924; c=relaxed/simple;
+	bh=4SZAMHPcjskXnr2tool6hAIM8DP5qxSRoilhDPGUbvw=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=ZN75tgNAA7+q+HhguOGX4hHjMFbgBD4SBwE5ACAI9OxerlV8r4cS8mMbF1KqfAsukdI2i/8i17Mh3U7nJoygXc5NtrtURTkQQADsKCvSZwJdrvm5zWK7AYJ8LHDzQWFcYGS/fik52MhhP8u0aRgU4NgjMAr8WFgytWMCOK5whLA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=MmHiD+74; arc=none smtp.client-ip=198.175.65.15
+	 MIME-Version; b=inLmio2usVmDPvRLMfB9eNtQ61BRjYmc1VfAVjBha+abqaajm6ewBagUHGfKAjVgiSoNmPVBokDyFSuu9HXcFV57sTcVslTPL60G5n8SvxyRy6b+vaeM1su1Bm4lJOqpWR6QXUN+AwpZwEEkiP322dwqMPO06zv1WjL0JpznUIM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=B3ZnPOSR; arc=none smtp.client-ip=198.175.65.15
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1771278922; x=1802814922;
+  t=1771278923; x=1802814923;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=u3IVnLU2iWPQbIvbeGz20OD5/S9f+iARu+cvl3mI8wo=;
-  b=MmHiD+74NiL2ubFt3w/Upau7iXZxdgxTwuC+5UHY+axrCQijiP6ZB2Ly
-   ZqN7wDuOIiPCdJxYsiK2yFtSH423JI2+5GGc6R7VMpDj3Wqgvj43DHl/S
-   jvAB6KWG07WlqlVNpRPvh/A1dB7M6ybOn/G2e6aIxIkIJJnRmSMfw4JkU
-   u3fXlptboNS8NVhZCRxJycMqrnE2IukMZqqzAGX6zop155FJbnYBtSjri
-   4kKa6/odgWOqOq4T9gJ73/j44mr6l1veLOCIGWMLff2CTVmfMcsg/hwxh
-   NuLuI4vHSxQVFj+T5iLbMcgNVZChvc7u/RGtdcA79MQ7IowOIGld4mVYq
-   Q==;
-X-CSE-ConnectionGUID: jS19A1i3SDyCi8qqkKSK7w==
-X-CSE-MsgGUID: lNdSecRJT9m51hCZpAmyuA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11703"; a="75980300"
+  bh=4SZAMHPcjskXnr2tool6hAIM8DP5qxSRoilhDPGUbvw=;
+  b=B3ZnPOSRpNKzGLpiGgL8icPaG2HKX3NDBiUQv4yFbavUbU3qVsISOcLN
+   Q4V1RslUxtUmQGwIpdP16Yic2Iexojy4x05OlYeZNoIENPWqQn8F8MUD9
+   vds9Elk1yBOmEWi1kj1OknH52WmtcbvwKGGlac1zNbIeijyh8zLT1jCGU
+   DaDQw9cBfR4EUOh2e4fP3eogUv5wTuonR9Gz+8EHJie0OQYSivsSraKl3
+   oK8b4mDO2TTkQ4leJEPu13hD+hDXNpScqS5j4Nt/IpaKF8GJXsRBFY9V2
+   v7Y69A3OA4VN2SsVMBPooisnG1hUwziOfsvalPYJ3JHttfAuYbuaKjFqu
+   w==;
+X-CSE-ConnectionGUID: oI7IkNofS2m2cymvTbrwIg==
+X-CSE-MsgGUID: cs1UgGihTuygZNaqVgoiNw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11703"; a="75980301"
 X-IronPort-AV: E=Sophos;i="6.21,295,1763452800"; 
-   d="scan'208";a="75980300"
+   d="scan'208";a="75980301"
 Received: from orviesa009.jf.intel.com ([10.64.159.149])
-  by orvoesa107.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 16 Feb 2026 13:55:22 -0800
-X-CSE-ConnectionGUID: rcq2AEzJRf2+lGLvMwIo8Q==
-X-CSE-MsgGUID: w4plkQ2RSIq7fwg83kjk6Q==
+  by orvoesa107.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 16 Feb 2026 13:55:23 -0800
+X-CSE-ConnectionGUID: hbBVExy9RGKNq8h4khwBcw==
+X-CSE-MsgGUID: AJICu2enQ5OA0eLgtZX1Ew==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.21,295,1763452800"; 
-   d="scan'208";a="213547371"
+   d="scan'208";a="213547374"
 Received: from weis0040.iil.intel.com ([10.12.217.108])
-  by orviesa009-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 16 Feb 2026 13:55:20 -0800
+  by orviesa009-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 16 Feb 2026 13:55:21 -0800
 From: Miri Korenblit <miriam.rachel.korenblit@intel.com>
 To: linux-wireless@vger.kernel.org
 Cc: Johannes Berg <johannes.berg@intel.com>
-Subject: [PATCH iwlwifi-next 14/15] wifi: nl80211: add NL80211_CMD_NAN_ULW_UPDATE notification
-Date: Mon, 16 Feb 2026 23:54:51 +0200
-Message-Id: <20260216234830.04128b1a58da.Ibdb6e33941afd94abf77245245f87e4338d729d3@changeid>
+Subject: [PATCH iwlwifi-next 15/15] wifi: nl80211: Add a notification to notify NAN channel evacuation
+Date: Mon, 16 Feb 2026 23:54:52 +0200
+Message-Id: <20260216234830.d1e4b5db853d.Iaaf5ef17e1ab7a38c19d60558e68fcf517e2b400@changeid>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20260216215452.1538316-1-miriam.rachel.korenblit@intel.com>
 References: <20260216215452.1538316-1-miriam.rachel.korenblit@intel.com>
@@ -84,12 +84,12 @@ X-Spamd-Result: default: False [-1.16 / 15.00];
 	MID_RHS_NOT_FQDN(0.50)[];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[intel.com,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	R_DKIM_ALLOW(-0.20)[intel.com:s=Intel];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-31913-lists,linux-wireless=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-31914-lists,linux-wireless=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
 	TO_DN_SOME(0.00)[];
 	MIME_TRACE(0.00)[0:+];
@@ -103,112 +103,165 @@ X-Spamd-Result: default: False [-1.16 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	TAGGED_RCPT(0.00)[linux-wireless];
 	RCVD_COUNT_FIVE(0.00)[5];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,intel.com:email,intel.com:dkim]
-X-Rspamd-Queue-Id: 962C9147D74
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:email,intel.com:dkim,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: BCD36147D58
 X-Rspamd-Action: no action
 
-Add a new notification command that allows drivers to notify user space
-when the device's ULW (Unaligned Schedule) blob has been updated. This
-enables user space to attach the updated ULW blob to frames sent to NAN
-peers.
+If all available channel resources are used for NAN channels, and one of
+them is shared with another interface, and that interface needs to move
+to a different channel (for example STA interface that needs to do a
+channel or a link switch), then the driver can evacuate one of the NAN
+channels (i.e. detach it from its channel resource and announce to the
+peers that this channel is ULWed). In that case, the driver needs to
+notify user space about the channel evacuation, so the user space can
+adjust the local schedule accordingly.
+
+Add a notification to let userspace know about it.
 
 Reviewed-by: Johannes Berg <johannes.berg@intel.com>
 Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
 ---
- include/net/cfg80211.h       | 14 ++++++++++++
- include/uapi/linux/nl80211.h |  5 +++++
- net/wireless/nl80211.c       | 43 ++++++++++++++++++++++++++++++++++++
- net/wireless/trace.h         | 21 ++++++++++++++++++
- 4 files changed, 83 insertions(+)
+ include/net/cfg80211.h       | 19 ++++++++++++++
+ include/uapi/linux/nl80211.h | 27 +++++++++++++++-----
+ net/wireless/nl80211.c       | 48 ++++++++++++++++++++++++++++++++++++
+ net/wireless/trace.h         | 18 ++++++++++++++
+ 4 files changed, 106 insertions(+), 6 deletions(-)
 
 diff --git a/include/net/cfg80211.h b/include/net/cfg80211.h
-index 0dee775ddbbc..f6143ef9e2d0 100644
+index f6143ef9e2d0..620869db2cc9 100644
 --- a/include/net/cfg80211.h
 +++ b/include/net/cfg80211.h
-@@ -10572,6 +10572,20 @@ void cfg80211_nan_cluster_joined(struct wireless_dev *wdev,
- 				 const u8 *cluster_id, bool new_cluster,
- 				 gfp_t gfp);
+@@ -10586,6 +10586,25 @@ void cfg80211_nan_cluster_joined(struct wireless_dev *wdev,
+ void cfg80211_nan_ulw_update(struct wireless_dev *wdev,
+ 			     const u8 *ulw, size_t ulw_len, gfp_t gfp);
  
 +/**
-+ * cfg80211_nan_ulw_update - Notify user space about ULW update
++ * cfg80211_nan_channel_evac - Notify user space about NAN channel evacuation
 + * @wdev: Pointer to the wireless device structure
-+ * @ulw: Pointer to the ULW blob data
-+ * @ulw_len: Length of the ULW blob in bytes
++ * @chandef: Pointer to the channel definition of the NAN channel that was
++ *	evacuated
 + * @gfp: Memory allocation flags
 + *
-+ * This function is used by drivers to notify user space when the device's
-+ * ULW (Unaligned Schedule) blob has been updated. User space can use this
-+ * blob to attach to frames sent to peers.
++ * This function is used by drivers to notify user space when a NAN
++ * channel has been evacuated (i.e. ULWed) due to channel resource conflicts
++ * with other interfaces.
++ * This can happen when another interface sharing the channel resource with NAN
++ * needs to move to a different channel (e.g. due to channel switch or link
++ * switch). User space may reconfigure the local schedule to exclude the
++ * evacuated channel.
 + */
-+void cfg80211_nan_ulw_update(struct wireless_dev *wdev,
-+			     const u8 *ulw, size_t ulw_len, gfp_t gfp);
++void cfg80211_nan_channel_evac(struct wireless_dev *wdev,
++			       const struct cfg80211_chan_def *chandef,
++			       gfp_t gfp);
 +
  #ifdef CONFIG_CFG80211_DEBUGFS
  /**
   * wiphy_locked_debugfs_read - do a locked read in debugfs
 diff --git a/include/uapi/linux/nl80211.h b/include/uapi/linux/nl80211.h
-index 838edc27e666..191bb2e9c7d9 100644
+index 191bb2e9c7d9..d7baf3ca751c 100644
 --- a/include/uapi/linux/nl80211.h
 +++ b/include/uapi/linux/nl80211.h
-@@ -1395,6 +1395,10 @@
-  *	completely replace the previous one.
-  *	The peer schedule is automatically removed when the NMI station is
-  *	removed.
-+ * @NL80211_CMD_NAN_ULW_UPDATE: Notification from the driver to user space
-+ *	with the updated ULW blob of the device. User space can use this blob
-+ *	to attach to frames sent to peers. This notification contains
-+ *	%NL80211_ATTR_NAN_ULW with the ULW blob.
+@@ -1399,6 +1399,15 @@
+  *	with the updated ULW blob of the device. User space can use this blob
+  *	to attach to frames sent to peers. This notification contains
+  *	%NL80211_ATTR_NAN_ULW with the ULW blob.
++ * @NL80211_CMD_NAN_CHANNEL_EVAC: Notification to indicate that a NAN
++ *	channel has been evacuated due to resource conflicts with other
++ *	interfaces. This can happen when another interface sharing the channel
++ *	resource with NAN needs to move to a different channel (e.g., channel
++ *	switch or link switch on a BSS interface).
++ *	The notification contains %NL80211_ATTR_NAN_CHANNEL attribute
++ *	identifying the evacuated channel.
++ *	User space may reconfigure the local schedule in response to this
++ *	notification.
   * @NL80211_CMD_MAX: highest used command number
   * @__NL80211_CMD_AFTER_LAST: internal use
   */
-@@ -1664,6 +1668,7 @@ enum nl80211_commands {
- 
+@@ -1669,6 +1678,9 @@ enum nl80211_commands {
  	NL80211_CMD_NAN_SET_PEER_SCHED,
  
-+	NL80211_CMD_NAN_ULW_UPDATE,
+ 	NL80211_CMD_NAN_ULW_UPDATE,
++
++	NL80211_CMD_NAN_CHANNEL_EVAC,
++
  	/* add new commands above here */
  
  	/* used to define NL80211_CMD_MAX below */
+@@ -3031,20 +3043,23 @@ enum nl80211_commands {
+  *	Currently only supported in mac80211 drivers.
+  * @NL80211_ATTR_NAN_CHANNEL: This is a nested attribute. There can be multiple
+  *	attributes of this type, each one represents a channel definition and
+- *	consists of top-level attributes like %NL80211_ATTR_WIPHY_FREQ. Must
+- *	contain %NL80211_ATTR_NAN_CHANNEL_ENTRY and
+- *	%NL80211_ATTR_NAN_RX_NSS.
+- *	This attribute is used with %NL80211_CMD_NAN_SET_LOCAL_SCHED to specify
++ *	consists of top-level attributes like %NL80211_ATTR_WIPHY_FREQ.
++ *	When used with %NL80211_CMD_NAN_SET_LOCAL_SCHED, it specifies
+  *	the channel definitions on which the radio needs to operate during
+  *	specific time slots. All of the channel definitions should be mutually
+- *	incompatible.
+- *	This is also used with %NL80211_CMD_NAN_SET_PEER_SCHED to configure the
++ *	incompatible. With this command, %NL80211_ATTR_NAN_CHANNEL_ENTRY and
++ *	%NL80211_ATTR_NAN_RX_NSS are mandatory.
++ *	When used with %NL80211_CMD_NAN_SET_PEER_SCHED, it configures the
+  *	peer NAN channels. In that case, the channel definitions can be
+  *	compatible to each other, or even identical just with different RX NSS.
++ *	With this command, %NL80211_ATTR_NAN_CHANNEL_ENTRY and
++ *	%NL80211_ATTR_NAN_RX_NSS are mandatory.
+  *	The number of channels should fit the current configuration of channels
+  *	and the possible interface combinations.
+  *	If an existing NAN channel is changed but the chandef isn't, the
+  *	channel entry must also remain unchanged.
++ *	When used with %NL80211_CMD_NAN_CHANNEL_EVAC, this identifies the
++ *	channels that were evacuated.
+  * @NL80211_ATTR_NAN_CHANNEL_ENTRY: a byte array of 6 bytes. contains the
+  *	Channel Entry as defined in Wi-Fi Aware (TM) 4.0 specification Table
+  *	100 (Channel Entry format for the NAN Availability attribute).
 diff --git a/net/wireless/nl80211.c b/net/wireless/nl80211.c
-index 7a22980aa7f0..1c885d9c578d 100644
+index 1c885d9c578d..b51f0676d7cc 100644
 --- a/net/wireless/nl80211.c
 +++ b/net/wireless/nl80211.c
-@@ -22780,6 +22780,49 @@ void cfg80211_nan_cluster_joined(struct wireless_dev *wdev,
+@@ -22823,6 +22823,54 @@ void cfg80211_nan_ulw_update(struct wireless_dev *wdev,
  }
- EXPORT_SYMBOL(cfg80211_nan_cluster_joined);
+ EXPORT_SYMBOL(cfg80211_nan_ulw_update);
  
-+void cfg80211_nan_ulw_update(struct wireless_dev *wdev,
-+			     const u8 *ulw, size_t ulw_len, gfp_t gfp)
++void cfg80211_nan_channel_evac(struct wireless_dev *wdev,
++			       const struct cfg80211_chan_def *chandef,
++			       gfp_t gfp)
 +{
 +	struct wiphy *wiphy = wdev->wiphy;
 +	struct cfg80211_registered_device *rdev = wiphy_to_rdev(wiphy);
 +	struct sk_buff *msg;
++	struct nlattr *chan_attr;
 +	void *hdr;
 +
-+	trace_cfg80211_nan_ulw_update(wiphy, wdev, ulw, ulw_len);
++	trace_cfg80211_nan_channel_evac(wiphy, wdev, chandef);
 +
 +	if (!wdev->owner_nlportid)
 +		return;
 +
-+	/* 32 for the wiphy idx, 64 for the wdev id, 100 for padding */
-+	msg = nlmsg_new(nla_total_size(sizeof(u32)) +
-+			nla_total_size(ulw_len) +
-+			nla_total_size(sizeof(u64)) + 100,
-+			gfp);
++	msg = nlmsg_new(NLMSG_DEFAULT_SIZE, gfp);
 +	if (!msg)
 +		return;
 +
-+	hdr = nl80211hdr_put(msg, 0, 0, 0, NL80211_CMD_NAN_ULW_UPDATE);
++	hdr = nl80211hdr_put(msg, 0, 0, 0, NL80211_CMD_NAN_CHANNEL_EVAC);
 +	if (!hdr)
 +		goto nla_put_failure;
 +
 +	if (nla_put_u32(msg, NL80211_ATTR_WIPHY, rdev->wiphy_idx) ||
 +	    nla_put_u64_64bit(msg, NL80211_ATTR_WDEV, wdev_id(wdev),
-+			      NL80211_ATTR_PAD) ||
-+	    (ulw && ulw_len &&
-+	     nla_put(msg, NL80211_ATTR_NAN_ULW, ulw_len, ulw)))
++			      NL80211_ATTR_PAD))
 +		goto nla_put_failure;
++
++	chan_attr = nla_nest_start(msg, NL80211_ATTR_NAN_CHANNEL);
++	if (!chan_attr)
++		goto nla_put_failure;
++
++	if (nl80211_send_chandef(msg, chandef))
++		goto nla_put_failure;
++
++	nla_nest_end(msg, chan_attr);
 +
 +	genlmsg_end(msg, hdr);
 +
@@ -219,39 +272,36 @@ index 7a22980aa7f0..1c885d9c578d 100644
 + nla_put_failure:
 +	nlmsg_free(msg);
 +}
-+EXPORT_SYMBOL(cfg80211_nan_ulw_update);
++EXPORT_SYMBOL(cfg80211_nan_channel_evac);
 +
  /* initialisation/exit functions */
  
  int __init nl80211_init(void)
 diff --git a/net/wireless/trace.h b/net/wireless/trace.h
-index 55db53fb4c5d..5ed551412119 100644
+index 5ed551412119..0ff5779d2c7e 100644
 --- a/net/wireless/trace.h
 +++ b/net/wireless/trace.h
-@@ -4323,6 +4323,27 @@ TRACE_EVENT(cfg80211_nan_sched_update_done,
- 	TP_printk(WIPHY_PR_FMT ", " WDEV_PR_FMT " success=%d",
- 		  WIPHY_PR_ARG, WDEV_PR_ARG, __entry->success)
+@@ -4344,6 +4344,24 @@ TRACE_EVENT(cfg80211_nan_ulw_update,
+ 		  __print_array(__get_dynamic_array(ulw),
+ 				__get_dynamic_array_len(ulw), 1))
  );
 +
-+TRACE_EVENT(cfg80211_nan_ulw_update,
++TRACE_EVENT(cfg80211_nan_channel_evac,
 +	TP_PROTO(struct wiphy *wiphy, struct wireless_dev *wdev,
-+		 const u8 *ulw, size_t ulw_len),
-+	TP_ARGS(wiphy, wdev, ulw, ulw_len),
++		 const struct cfg80211_chan_def *chandef),
++	TP_ARGS(wiphy, wdev, chandef),
 +	TP_STRUCT__entry(
-+		WIPHY_ENTRY
 +		WDEV_ENTRY
-+		__dynamic_array(u8, ulw, ulw_len)
++		WIPHY_ENTRY
++		CHAN_DEF_ENTRY
 +	),
 +	TP_fast_assign(
-+		WIPHY_ASSIGN;
 +		WDEV_ASSIGN;
-+		if (ulw && ulw_len)
-+			memcpy(__get_dynamic_array(ulw), ulw, ulw_len);
++		WIPHY_ASSIGN;
++		CHAN_DEF_ASSIGN(chandef);
 +	),
-+	TP_printk(WIPHY_PR_FMT ", " WDEV_PR_FMT " ulw: %s",
-+		  WIPHY_PR_ARG, WDEV_PR_ARG,
-+		  __print_array(__get_dynamic_array(ulw),
-+				__get_dynamic_array_len(ulw), 1))
++	TP_printk(WDEV_PR_FMT ", " WIPHY_PR_FMT ", " CHAN_DEF_PR_FMT,
++		  WDEV_PR_ARG, WIPHY_PR_ARG, CHAN_DEF_PR_ARG)
 +);
  #endif /* !__RDEV_OPS_TRACE || TRACE_HEADER_MULTI_READ */
  
