@@ -1,174 +1,272 @@
-Return-Path: <linux-wireless+bounces-31882-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-31915-lists+linux-wireless=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id EDD5NKvHkmm6xgEAu9opvQ
-	(envelope-from <linux-wireless+bounces-31882-lists+linux-wireless=lfdr.de@vger.kernel.org>)
-	for <lists+linux-wireless@lfdr.de>; Mon, 16 Feb 2026 08:30:51 +0100
+	id jYnrGpOzk2lE7wEAu9opvQ
+	(envelope-from <linux-wireless+bounces-31915-lists+linux-wireless=lfdr.de@vger.kernel.org>)
+	for <lists+linux-wireless@lfdr.de>; Tue, 17 Feb 2026 01:17:23 +0100
 X-Original-To: lists+linux-wireless@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 266ED141434
-	for <lists+linux-wireless@lfdr.de>; Mon, 16 Feb 2026 08:30:51 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id ED44C1483FF
+	for <lists+linux-wireless@lfdr.de>; Tue, 17 Feb 2026 01:17:22 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id D4C5C300A39B
-	for <lists+linux-wireless@lfdr.de>; Mon, 16 Feb 2026 07:30:49 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 1C81F3007525
+	for <lists+linux-wireless@lfdr.de>; Tue, 17 Feb 2026 00:17:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 59C8F213254;
-	Mon, 16 Feb 2026 07:30:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 287332206A7;
+	Tue, 17 Feb 2026 00:17:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Ck1LuR69"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ifdu8miS"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 35F0E2C027B
-	for <linux-wireless@vger.kernel.org>; Mon, 16 Feb 2026 07:30:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 012B225776;
+	Tue, 17 Feb 2026 00:17:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771227049; cv=none; b=nDNpQhBGKg1EpLdr2UBzsfDh87toQJnIcWlxza2bPLVDpyUs1Asw/bVVnLBeoJBno6mlsUsaErZWtVAeM3KirVPNGuVydwQWrV12b4QPG4ICJ6bT50PT8h8C/Qu/+SNN+xeh2pdvn1u3YnU7ux3gv0PvVBenOu+85J4caFQys4E=
+	t=1771287438; cv=none; b=PQ/9iqeBGUwgyLlrQ6oKNJRpLs0By//XxuZWDGAVPyQSPl98hwjt2t0Dq3nZZpTgmToy1VSAHMrXK5u/l6icdxJxgFNEd88VIy9f2D6URN37QGIlRVMxnGIPXovNIxiHXdw9TDHT77OvTvCP8IsHDw3oSK/LeMfAf7NQH+rg7eM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771227049; c=relaxed/simple;
-	bh=tsq/KVwy9YKJ4oi3OmOb0l5g7ov0SlwWohbKyI8PiAo=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=o17HMicZlAA5xBa/lveb6TjuOu2AHezjI8Y1vHTSe0kfFjOs0XMcXkMAK5d+WJ/RIw5pP4TTe8ebDhTY0pSl2RPUzm0/0JcXu1YHjc8eFsRUpA2x4YztTmJTcCkWTZvY/7rwp1bq0LaP7RWJVUkdLSrfMpRsRi7+W5xb0ZtYc7Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Ck1LuR69; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4D9D4C116C6;
-	Mon, 16 Feb 2026 07:30:47 +0000 (UTC)
+	s=arc-20240116; t=1771287438; c=relaxed/simple;
+	bh=HiH5NHs3zxAE4B0ZdiuYtzWsVh3H+DPSMNPduiYFaH8=;
+	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
+	 Content-Disposition; b=Yt7Du4zgOHPnIVK7SzpVpR7bfLIkhYlM11QEpXTzrey7fN6hph/N7uMvHBWSu6iwv2xA/BRF4Zq/ajqoarDyRSnCZiOnGz7260rqBhNd7v5AOwcbYO/L6Zkm6MeCzmhtXfN6rdcy6Pv5wGBSkX4YOiebp0k4BqwjyuOOTnpi7Cs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ifdu8miS; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A3D92C116C6;
+	Tue, 17 Feb 2026 00:17:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1771227048;
-	bh=tsq/KVwy9YKJ4oi3OmOb0l5g7ov0SlwWohbKyI8PiAo=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=Ck1LuR69zCi9tio0BTPXjM2qROPajJtGc2OuuqnR1Pn8io1RJBdVI9ETBB5NRJDeU
-	 ANpLlc1xPcbJn5QNVgDhiWxeezhpYlNbv5r3b5IXu90/I780lconkfPCUhWkH8O1+q
-	 P47vprKS1GLjQDRRYutFrx9qDUQCoaMB+WNs27zEmX7H2H0EeV+V6sNnhhwR5DIQy/
-	 JiWIS+v07SVYBYDo8aECY0FSUVYKIFvkEQY/sryOrH1qSQnbKx66aANTJL9ZeICEji
-	 fiZS14QL/gdU8DviLhUiEOSohqkV4NU4+L4hxocdD03nGCpRH99YYDLDOaxcr0KSS5
-	 qcDuSk4+obRwA==
-Message-ID: <b02bda4f-5d8b-4f0c-86c9-03f0a3c5d788@kernel.org>
-Date: Mon, 16 Feb 2026 08:30:45 +0100
+	s=k20201202; t=1771287437;
+	bh=HiH5NHs3zxAE4B0ZdiuYtzWsVh3H+DPSMNPduiYFaH8=;
+	h=Date:From:To:Cc:Subject:From;
+	b=ifdu8miSInSGCWm/MLtE0jlKNOjpKEJyunIM+MIYoCXQrJhVTdCyI3e+AJzeWADrh
+	 oPULg8+U99f4IN+GiiQZ9UeiJHAgYtLGu0GUdxC+8Tm+X5L1ybobUbkjbb6ijnGmJk
+	 O89Nuyr9yjBLwX1WRZbCMYFuukMbwkC+fq0vI+YQBFQ2dnytfC1W1jZfStjFOe/la/
+	 WaqVHBtC5LKQnkcBQ+KFUU2Qd8dhU9wOE5oIZhugZrsufSpBo+zT025EI/7NSeBAv0
+	 c4hzn8yXNDgQKs48l3vUt05Rrp5WNA+MqaQPWs9JgWvaI3mB98ZH5U6CTUntOCkbvS
+	 zh9jc19h8xhAw==
+Date: Mon, 16 Feb 2026 18:16:44 +0900
+From: "Gustavo A. R. Silva" <gustavoars@kernel.org>
+To: Stanislaw Gruszka <stf_xl@wp.pl>,
+	Johannes Berg <johannes@sipsolutions.net>
+Cc: linux-wireless@vger.kernel.org, linux-kernel@vger.kernel.org,
+	"Gustavo A. R. Silva" <gustavoars@kernel.org>,
+	linux-hardening@vger.kernel.org, Kees Cook <kees@kernel.org>
+Subject: [PATCH v3][next] wifi: iwlegacy: Avoid multiple
+ -Wflex-array-member-not-at-end warnings
+Message-ID: <aZLgfO6z1Gt8aiyc@kspp>
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v6 2/3] dt-bindings: net: wireless: mt76: add more PCI
- devices
-To: Ryder Lee <ryder.lee@mediatek.com>, Felix Fietkau <nbd@nbd.name>
-Cc: linux-mediatek@lists.infradead.org, linux-wireless@vger.kernel.org
-References: <8fa8ec500b3d4de7b1966c6887f1dfbe5c46a54c.1771205424.git.ryder.lee@mediatek.com>
- <5022737c82052132702004ab0fdc073f5cf6df69.1771205424.git.ryder.lee@mediatek.com>
-From: Krzysztof Kozlowski <krzk@kernel.org>
-Content-Language: en-US
-Autocrypt: addr=krzk@kernel.org; keydata=
- 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 a/A=
-In-Reply-To: <5022737c82052132702004ab0fdc073f5cf6df69.1771205424.git.ryder.lee@mediatek.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	MID_RHS_NOT_FQDN(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-31882-lists,linux-wireless=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[kernel.org:+];
+	FREEMAIL_TO(0.00)[wp.pl,sipsolutions.net];
+	TAGGED_FROM(0.00)[bounces-31915-lists,linux-wireless=lfdr.de];
 	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	MISSING_XM_UA(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[krzk@kernel.org,linux-wireless@vger.kernel.org];
-	RCPT_COUNT_THREE(0.00)[4];
-	MID_RHS_MATCH_FROM(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gustavoars@kernel.org,linux-wireless@vger.kernel.org];
+	DKIM_TRACE(0.00)[kernel.org:+];
 	TAGGED_RCPT(0.00)[linux-wireless];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 266ED141434
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: ED44C1483FF
 X-Rspamd-Action: no action
 
-On 16/02/2026 05:47, Ryder Lee wrote:
-> This adds support for mt7915/mt7916/mt7990/mt7992/mt7996 PCI devices.
-> 
-> Signed-off-by: Ryder Lee <ryder.lee@mediatek.com>
-> ---
->  .../devicetree/bindings/net/wireless/mediatek,mt76.yaml      | 5 +++++
->  1 file changed, 5 insertions(+)
+-Wflex-array-member-not-at-end was introduced in GCC-14, and we are
+getting ready to enable it, globally.
 
+Move the conflicting declarations (which in a couple of cases happen
+to be in a union, so the entire unions are moved) to the end of the
+corresponding structures, struct il_frame, and struct il3945_frame.
 
-Last time you did not Cc maintainers.
+Notice that `struct il_tx_beacon_cmd`, `struct il4965_tx_resp`, and
+`struct il3945_tx_beacon_cmd` are flexible structures, this is
+structures that contain a flexible-array member.
 
-Now, you did not even bother to CC Dt list.
+The case for struct il4965_beacon_notif is different. Since this
+structure is defined by hardware, we create the new `struct
+il4965_tx_resp_hdr` type. We then use this newly created type to
+replace the object type causing trouble in struct il4965_beacon_notif,
+namely `stryct il4965_tx_resp`.
 
-I won't be reviewing it.
+Also, once -fms-extensions is enabled, we can use transparent struct
+members in struct il4965_beacon_notif.
 
-Please use scripts/get_maintainers.pl to get a list of necessary people
-and lists to CC. It might happen, that command when run on an older
-kernel, gives you outdated entries. Therefore please be sure you base
-your patches on recent Linux kernel.
+Notice that the newly created type does not contain the flex-array
+member `agg_status`, which is the object causing the -Wfamnae warnings.
+This object is currently in a union along with `__le32 status`, so
+anything using struct il4965_beacon_notif needs to have its own view
+of `status`. To preserve the memory layout, we therefore add member
+`__le32 beacon_tx_status` to struct il4965_beacon_notif.
 
-Tools like b4 or scripts/get_maintainer.pl provide you proper list of
-people, so fix your workflow. Tools might also fail if you work on some
-ancient tree (don't, instead use mainline) or work on fork of kernel
-(don't, instead use mainline). Just use b4 and everything should be
-fine, although remember about `b4 prep --auto-to-cc` if you added new
-patches to the patchset.
+After these changes, the size of struct il4965_beacon_notif along
+with its member's offsets remain the same, hence the memory layout
+doesn't change:
 
-You missed at least devicetree list (maybe more), so this won't be
-tested by automated tooling. Performing review on untested code might be
-a waste of time.
+Before changes:
+struct il4965_beacon_notif {
+	struct il4965_tx_resp      beacon_notify_hdr;    /*     0    24 */
+	__le32                     low_tsf;              /*    24     4 */
+	__le32                     high_tsf;             /*    28     4 */
+	__le32                     ibss_mgr_status;      /*    32     4 */
 
-Please kindly resend and include all necessary To/Cc entries.
+	/* size: 36, cachelines: 1, members: 4 */
+	/* last cacheline: 36 bytes */
+};
 
-Best regards,
-Krzysztof
+After changes:
+struct il4965_beacon_notif {
+	struct il4965_tx_resp_hdr  beacon_notify_hdr;    /*     0    20 */
+	__le32                     beacon_tx_status;     /*    20     4 */
+	__le32                     low_tsf;              /*    24     4 */
+	__le32                     high_tsf;             /*    28     4 */
+	__le32                     ibss_mgr_status;      /*    32     4 */
+
+	/* size: 36, cachelines: 1, members: 5 */
+	/* last cacheline: 36 bytes */
+};
+
+Lastly, adjust the rest of the code, accordingly.
+
+With these changes fix the following warnings:
+
+11 drivers/net/wireless/intel/iwlegacy/common.h:526:11: warning: structure containing a flexible array member is not at the end of another structure [-Wflex-array-member-not-at-end]
+11 drivers/net/wireless/intel/iwlegacy/commands.h:2667:31: warning: structure containing a flexible array member is not at the end of another structure [-Wflex-array-member-not-at-end]
+4 drivers/net/wireless/intel/iwlegacy/3945.h:131:11: warning: structure containing a flexible array member is not at the end of another structure [-Wflex-array-member-not-at-end]
+
+Signed-off-by: Gustavo A. R. Silva <gustavoars@kernel.org>
+---
+Changes in v3:
+ - Create new separate struct il4965_tx_resp_hdr, and use
+   transparent struct members instead of __struct_group(). (Kees)
+ - Update subject line - Add 'wifi:' prefix. (Stanislaw)
+
+Changes in v2:
+ - Use the struct_group() helper, and update the conflicting type
+   (struct il4965_tx_resp -> struct il4965_tx_resp_hdr) in
+   struct il4965_beacon_notif.
+ - Link: https://lore.kernel.org/linux-hardening/aYlkt2WP2oQ1TgeH@kspp/
+
+v1:
+ - Link: https://lore.kernel.org/linux-hardening/aR2CtqZI3atH0HmE@kspp/
+
+ drivers/net/wireless/intel/iwlegacy/3945.h     | 4 +++-
+ drivers/net/wireless/intel/iwlegacy/4965-mac.c | 2 +-
+ drivers/net/wireless/intel/iwlegacy/commands.h | 9 +++++++--
+ drivers/net/wireless/intel/iwlegacy/common.h   | 4 +++-
+ 4 files changed, 14 insertions(+), 5 deletions(-)
+
+diff --git a/drivers/net/wireless/intel/iwlegacy/3945.h b/drivers/net/wireless/intel/iwlegacy/3945.h
+index fb1e33c89d0e..ed63b31fee9a 100644
+--- a/drivers/net/wireless/intel/iwlegacy/3945.h
++++ b/drivers/net/wireless/intel/iwlegacy/3945.h
+@@ -123,13 +123,15 @@ enum il3945_antenna {
+ #define IEEE80211_FRAME_LEN             (IEEE80211_DATA_LEN + IEEE80211_HLEN)
+ 
+ struct il3945_frame {
++	struct list_head list;
++
++	/* Must be last as it ends in a flexible-array member. */
+ 	union {
+ 		struct ieee80211_hdr frame;
+ 		struct il3945_tx_beacon_cmd beacon;
+ 		u8 raw[IEEE80211_FRAME_LEN];
+ 		u8 cmd[360];
+ 	} u;
+-	struct list_head list;
+ };
+ 
+ #define SUP_RATE_11A_MAX_NUM_CHANNELS  8
+diff --git a/drivers/net/wireless/intel/iwlegacy/4965-mac.c b/drivers/net/wireless/intel/iwlegacy/4965-mac.c
+index 57fa866efd9f..f5a99a2ee95a 100644
+--- a/drivers/net/wireless/intel/iwlegacy/4965-mac.c
++++ b/drivers/net/wireless/intel/iwlegacy/4965-mac.c
+@@ -4076,7 +4076,7 @@ il4965_hdl_beacon(struct il_priv *il, struct il_rx_buf *rxb)
+ 	u8 rate = il4965_hw_get_rate(beacon->beacon_notify_hdr.rate_n_flags);
+ 
+ 	D_RX("beacon status %x retries %d iss %d tsf:0x%.8x%.8x rate %d\n",
+-	     le32_to_cpu(beacon->beacon_notify_hdr.u.status) & TX_STATUS_MSK,
++	     le32_to_cpu(beacon->beacon_tx_status) & TX_STATUS_MSK,
+ 	     beacon->beacon_notify_hdr.failure_frame,
+ 	     le32_to_cpu(beacon->ibss_mgr_status),
+ 	     le32_to_cpu(beacon->high_tsf), le32_to_cpu(beacon->low_tsf), rate);
+diff --git a/drivers/net/wireless/intel/iwlegacy/commands.h b/drivers/net/wireless/intel/iwlegacy/commands.h
+index b61b8f377702..7aba84ac88a1 100644
+--- a/drivers/net/wireless/intel/iwlegacy/commands.h
++++ b/drivers/net/wireless/intel/iwlegacy/commands.h
+@@ -1690,7 +1690,7 @@ struct agg_tx_status {
+ 	__le16 sequence;
+ } __packed;
+ 
+-struct il4965_tx_resp {
++struct il4965_tx_resp_hdr {
+ 	u8 frame_count;		/* 1 no aggregation, >1 aggregation */
+ 	u8 bt_kill_count;	/* # blocked by bluetooth (unused for agg) */
+ 	u8 failure_rts;		/* # failures due to unsuccessful RTS */
+@@ -1707,6 +1707,10 @@ struct il4965_tx_resp {
+ 	__le16 reserved;
+ 	__le32 pa_power1;	/* RF power amplifier measurement (not used) */
+ 	__le32 pa_power2;
++} __packed;
++
++struct il4965_tx_resp {
++	struct il4965_tx_resp_hdr;
+ 
+ 	/*
+ 	 * For non-agg:  frame status TX_STATUS_*
+@@ -2664,7 +2668,8 @@ struct il3945_beacon_notif {
+ } __packed;
+ 
+ struct il4965_beacon_notif {
+-	struct il4965_tx_resp beacon_notify_hdr;
++	struct il4965_tx_resp_hdr beacon_notify_hdr;
++	__le32 beacon_tx_status;
+ 	__le32 low_tsf;
+ 	__le32 high_tsf;
+ 	__le32 ibss_mgr_status;
+diff --git a/drivers/net/wireless/intel/iwlegacy/common.h b/drivers/net/wireless/intel/iwlegacy/common.h
+index 4c9836ab11dd..21f1c7702add 100644
+--- a/drivers/net/wireless/intel/iwlegacy/common.h
++++ b/drivers/net/wireless/intel/iwlegacy/common.h
+@@ -518,13 +518,15 @@ struct il_channel_info {
+ #define IEEE80211_FRAME_LEN             (IEEE80211_DATA_LEN + IEEE80211_HLEN)
+ 
+ struct il_frame {
++	struct list_head list;
++
++	/* Must be last as it ends in a flexible-array member. */
+ 	union {
+ 		struct ieee80211_hdr frame;
+ 		struct il_tx_beacon_cmd beacon;
+ 		u8 raw[IEEE80211_FRAME_LEN];
+ 		u8 cmd[360];
+ 	} u;
+-	struct list_head list;
+ };
+ 
+ enum {
+-- 
+2.43.0
+
 
