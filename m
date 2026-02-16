@@ -1,59 +1,59 @@
-Return-Path: <linux-wireless+bounces-31915-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-31916-lists+linux-wireless=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id jYnrGpOzk2lE7wEAu9opvQ
-	(envelope-from <linux-wireless+bounces-31915-lists+linux-wireless=lfdr.de@vger.kernel.org>)
-	for <lists+linux-wireless@lfdr.de>; Tue, 17 Feb 2026 01:17:23 +0100
+	id iRn9NJC1k2l17wEAu9opvQ
+	(envelope-from <linux-wireless+bounces-31916-lists+linux-wireless=lfdr.de@vger.kernel.org>)
+	for <lists+linux-wireless@lfdr.de>; Tue, 17 Feb 2026 01:25:52 +0100
 X-Original-To: lists+linux-wireless@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id ED44C1483FF
-	for <lists+linux-wireless@lfdr.de>; Tue, 17 Feb 2026 01:17:22 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2F631148424
+	for <lists+linux-wireless@lfdr.de>; Tue, 17 Feb 2026 01:25:51 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 1C81F3007525
-	for <lists+linux-wireless@lfdr.de>; Tue, 17 Feb 2026 00:17:22 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 599203019B94
+	for <lists+linux-wireless@lfdr.de>; Tue, 17 Feb 2026 00:25:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 287332206A7;
-	Tue, 17 Feb 2026 00:17:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 66BA123BCED;
+	Tue, 17 Feb 2026 00:25:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ifdu8miS"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="gq/qYayK"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 012B225776;
-	Tue, 17 Feb 2026 00:17:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3CAA225776;
+	Tue, 17 Feb 2026 00:25:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771287438; cv=none; b=PQ/9iqeBGUwgyLlrQ6oKNJRpLs0By//XxuZWDGAVPyQSPl98hwjt2t0Dq3nZZpTgmToy1VSAHMrXK5u/l6icdxJxgFNEd88VIy9f2D6URN37QGIlRVMxnGIPXovNIxiHXdw9TDHT77OvTvCP8IsHDw3oSK/LeMfAf7NQH+rg7eM=
+	t=1771287948; cv=none; b=Y3Ou8lO9vgW5nc6jNy61fjgm8qFcKpij6t9T7Ml+U9CHY/R1e6XWiyHDEDmqrLxvpYU+7de2u+6LLX2Gf8LC97ExC1Zxu8g0IOO4/XFHmLxSD2/a/9tP3VuSmfiZ6MKlfP+7hy1L/Q2XliSPzj8k/Y0ZCVb+fI8K7s4gdYXf7WY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771287438; c=relaxed/simple;
-	bh=HiH5NHs3zxAE4B0ZdiuYtzWsVh3H+DPSMNPduiYFaH8=;
+	s=arc-20240116; t=1771287948; c=relaxed/simple;
+	bh=rkO9TeYJjXaoRqDn1C2E/hz2Ji5SnWXXcrx0UOtXIHc=;
 	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
-	 Content-Disposition; b=Yt7Du4zgOHPnIVK7SzpVpR7bfLIkhYlM11QEpXTzrey7fN6hph/N7uMvHBWSu6iwv2xA/BRF4Zq/ajqoarDyRSnCZiOnGz7260rqBhNd7v5AOwcbYO/L6Zkm6MeCzmhtXfN6rdcy6Pv5wGBSkX4YOiebp0k4BqwjyuOOTnpi7Cs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ifdu8miS; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A3D92C116C6;
-	Tue, 17 Feb 2026 00:17:16 +0000 (UTC)
+	 Content-Disposition; b=j56MiLMY/AHu1E3CfZtTHj00IesZhZRcWZobE4dw5czgp5L0vIEATIWRaTJxRCD7rsSdZ2jux6//JX+W2+2ETN3Z2rk0+WO59e0ZnEkmQLsCkd1R6eUJQOFYwOIeVeAaQUmixhQ57//pjjaczIgYWhiZa9YcW9VmGlSVmypyMu8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=gq/qYayK; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 91E8FC116C6;
+	Tue, 17 Feb 2026 00:25:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1771287437;
-	bh=HiH5NHs3zxAE4B0ZdiuYtzWsVh3H+DPSMNPduiYFaH8=;
+	s=k20201202; t=1771287947;
+	bh=rkO9TeYJjXaoRqDn1C2E/hz2Ji5SnWXXcrx0UOtXIHc=;
 	h=Date:From:To:Cc:Subject:From;
-	b=ifdu8miSInSGCWm/MLtE0jlKNOjpKEJyunIM+MIYoCXQrJhVTdCyI3e+AJzeWADrh
-	 oPULg8+U99f4IN+GiiQZ9UeiJHAgYtLGu0GUdxC+8Tm+X5L1ybobUbkjbb6ijnGmJk
-	 O89Nuyr9yjBLwX1WRZbCMYFuukMbwkC+fq0vI+YQBFQ2dnytfC1W1jZfStjFOe/la/
-	 WaqVHBtC5LKQnkcBQ+KFUU2Qd8dhU9wOE5oIZhugZrsufSpBo+zT025EI/7NSeBAv0
-	 c4hzn8yXNDgQKs48l3vUt05Rrp5WNA+MqaQPWs9JgWvaI3mB98ZH5U6CTUntOCkbvS
-	 zh9jc19h8xhAw==
-Date: Mon, 16 Feb 2026 18:16:44 +0900
+	b=gq/qYayKKSmXbrgnRUpAGxnKzybGJ01w77qP+V53ZzqJKicEc0HULJOHwBmDU/Huo
+	 QKGnTGwFSND1mSIcIK8/I0KjVThykDdcddlSqxd1oOZjxKNc7NzgFmFVSBbQyWiWpq
+	 SWUlGbiy3COwfUSRzgvKttnrkyfha/LBuO/CMnYMJ9q2AE9j9L2/9jOwG3PA43UUxu
+	 wxJDGPlvKtoSIQCwE/Z5MCdlo74wwtKJj6AsAnGRhUS2kao6BlVZge+5rII9o+iSYY
+	 JHtFvaHfoNmK+sYYDFzARAarNcxak61+OtElPSrxvDbb1Kas84+yXRaI9bS8adnrCQ
+	 6UwgKKjccXNMw==
+Date: Mon, 16 Feb 2026 18:25:14 +0900
 From: "Gustavo A. R. Silva" <gustavoars@kernel.org>
 To: Stanislaw Gruszka <stf_xl@wp.pl>,
 	Johannes Berg <johannes@sipsolutions.net>
 Cc: linux-wireless@vger.kernel.org, linux-kernel@vger.kernel.org,
 	"Gustavo A. R. Silva" <gustavoars@kernel.org>,
 	linux-hardening@vger.kernel.org, Kees Cook <kees@kernel.org>
-Subject: [PATCH v3][next] wifi: iwlegacy: Avoid multiple
+Subject: [PATCH v4][next] wifi: iwlegacy: Avoid multiple
  -Wflex-array-member-not-at-end warnings
-Message-ID: <aZLgfO6z1Gt8aiyc@kspp>
+Message-ID: <aZLienEatf9KC6Rx@kspp>
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
@@ -68,14 +68,14 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MID_RHS_NOT_FQDN(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
 	FREEMAIL_TO(0.00)[wp.pl,sipsolutions.net];
-	TAGGED_FROM(0.00)[bounces-31915-lists,linux-wireless=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-31916-lists,linux-wireless=lfdr.de];
 	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	FROM_HAS_DN(0.00)[];
@@ -86,11 +86,11 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	FROM_NEQ_ENVFROM(0.00)[gustavoars@kernel.org,linux-wireless@vger.kernel.org];
 	DKIM_TRACE(0.00)[kernel.org:+];
 	TAGGED_RCPT(0.00)[linux-wireless];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: ED44C1483FF
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 2F631148424
 X-Rspamd-Action: no action
 
 -Wflex-array-member-not-at-end was introduced in GCC-14, and we are
@@ -108,10 +108,10 @@ The case for struct il4965_beacon_notif is different. Since this
 structure is defined by hardware, we create the new `struct
 il4965_tx_resp_hdr` type. We then use this newly created type to
 replace the object type causing trouble in struct il4965_beacon_notif,
-namely `stryct il4965_tx_resp`.
+namely `struct il4965_tx_resp`.
 
 Also, once -fms-extensions is enabled, we can use transparent struct
-members in struct il4965_beacon_notif.
+members in struct il4965_tx_resp.
 
 Notice that the newly created type does not contain the flex-array
 member `agg_status`, which is the object causing the -Wfamnae warnings.
@@ -157,10 +157,16 @@ With these changes fix the following warnings:
 
 Signed-off-by: Gustavo A. R. Silva <gustavoars@kernel.org>
 ---
+Changes in v4:
+ - (Aggh...) Fix a couple of typos in changelog text:
+   		s/stryct/struct
+   		s/il4965_beacon_notif/il4965_tx_resp.
+
 Changes in v3:
  - Create new separate struct il4965_tx_resp_hdr, and use
    transparent struct members instead of __struct_group(). (Kees)
  - Update subject line - Add 'wifi:' prefix. (Stanislaw)
+ - Link: https://lore.kernel.org/linux-hardening/aZLgfO6z1Gt8aiyc@kspp/
 
 Changes in v2:
  - Use the struct_group() helper, and update the conflicting type
