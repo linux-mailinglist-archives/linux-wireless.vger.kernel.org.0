@@ -1,72 +1,72 @@
-Return-Path: <linux-wireless+bounces-31940-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-31941-lists+linux-wireless=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 8FemB6JXlGkXDAIAu9opvQ
-	(envelope-from <linux-wireless+bounces-31940-lists+linux-wireless=lfdr.de@vger.kernel.org>)
-	for <lists+linux-wireless@lfdr.de>; Tue, 17 Feb 2026 12:57:22 +0100
+	id 0MY8CZRXlGkXDAIAu9opvQ
+	(envelope-from <linux-wireless+bounces-31941-lists+linux-wireless=lfdr.de@vger.kernel.org>)
+	for <lists+linux-wireless@lfdr.de>; Tue, 17 Feb 2026 12:57:08 +0100
 X-Original-To: lists+linux-wireless@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id C668314BAC7
-	for <lists+linux-wireless@lfdr.de>; Tue, 17 Feb 2026 12:57:21 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id C012C14BA88
+	for <lists+linux-wireless@lfdr.de>; Tue, 17 Feb 2026 12:57:07 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 8B258303E4B2
-	for <lists+linux-wireless@lfdr.de>; Tue, 17 Feb 2026 11:56:52 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id C87533012BE5
+	for <lists+linux-wireless@lfdr.de>; Tue, 17 Feb 2026 11:56:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D5153336EDB;
-	Tue, 17 Feb 2026 11:56:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 247413358BD;
+	Tue, 17 Feb 2026 11:56:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="ROEs4U8G"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="Q8XydijH"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.13])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 20D1833508F
-	for <linux-wireless@vger.kernel.org>; Tue, 17 Feb 2026 11:56:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6901C33557C
+	for <linux-wireless@vger.kernel.org>; Tue, 17 Feb 2026 11:56:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.13
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771329401; cv=none; b=NIVJqVfEYstqXncycikrBXnvSywhmUuAqlEbnxWYRo0tfo+vQFQ//9GVQMUg04bdA3uLt9+6tScIHtTknPMAvJKFOXHV+OeC2QyIHeQSXd1PLyB2pB8rL1qlB8B38ohYdRVRmZCege2mxwgqzaEK+/oxHcOlobn09Upamvgglw0=
+	t=1771329403; cv=none; b=pU3x39azVkdYgsKR6gxNoF0K08XJ2yexE8u1H2GhBxwZl/i7grUtUJoZ+UqdxNLx7O5vOljryhOvPHmyO+XuPJFW9N3Vx14h0N0COXy9+8mtQW+KSIM9+mQtcn3BP+yNkwAcxaHPm2Y2KnGvtZ/v0Sp7At7kMWYU2eQLML1EU9c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771329401; c=relaxed/simple;
-	bh=vnU5I2550VT3Fp1uraIBO49ULp35TZkVTVP9KyLk+nQ=;
+	s=arc-20240116; t=1771329403; c=relaxed/simple;
+	bh=Ja7lCchDZQzOTJFyowZf2uw0ByKRKVSDtC1X9sxJFgc=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=YMYsZDHqhBrnn7xHlclzEt+LKGi7bLma9QHimZDPoPGdJwUhzI4O6LBdBfjGSJloSjwctMdyfPwX4axQjQH9Qp6/r2wQeSpzVtA/8uJ7z5P5w4ThRQQklfuX2bYmv//Tg848N5VjX5FpFgq9G52QE6oClGVH5w3nbyLr98dtJhM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=ROEs4U8G; arc=none smtp.client-ip=198.175.65.13
+	 MIME-Version; b=ec6YRxkZeEjqMJUQh3s3E9uDmLiXl0OfKBQJNhoawJh3iRJy8b+6CZm7ytgz5awuB63PACE9A2/wiu8uSaVqSZSmPHxggvHOp9WtXt3N7FF+qrgrIrYz1hTG/Rq2v/a5RsPJYRDqdmq8UXZ1IL27e5tyozqBJNaNS74Se/U9AxY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=Q8XydijH; arc=none smtp.client-ip=198.175.65.13
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1771329401; x=1802865401;
+  t=1771329402; x=1802865402;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=vnU5I2550VT3Fp1uraIBO49ULp35TZkVTVP9KyLk+nQ=;
-  b=ROEs4U8GqCnwWgN0JC1mqmSyCuirwWyySwQ3AUd1YiVmJLCrbuCk4IAs
-   0dlOBWdJtlHldeYsBU83PMZlwBgUmW8/JJojX9T24e+6YqeJXo+6annAX
-   vbeh21hvt69f0+D+6SjJKTdZnWYxvhHpncNOf/UtYqCxVauKZSBvw7RKe
-   6MfjLlG5B828t3FDtiLEszfnSZ99wuNNibxm7bmUWVSFkMNNPC002Leie
-   sm7D8cdyoPmcjkzxPpG9gFnxQqtb3howCeNZG1d4QAuuKGT0QVvet2ST5
-   1vksYcTzv4cSrDOtVPuxqbD1z9UIQeVdLqv0CCgIfjJFXO0vL2vq+cQGG
-   w==;
-X-CSE-ConnectionGUID: UEWLNMbNS5K6IeNMASS7iA==
-X-CSE-MsgGUID: iOKANU3JREKk+DttGZ1lWg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11703"; a="83495872"
+  bh=Ja7lCchDZQzOTJFyowZf2uw0ByKRKVSDtC1X9sxJFgc=;
+  b=Q8XydijH148JJ4M2xCIAENZ1FF8SUoGffr4ZJ7Qr/37lna9EdNFBUF6t
+   6RdNj0XBx9OXSl8tWajJTctMJZebHEUwUAOfYfTCkBGKoHhd3S8xa/qeV
+   WNAH7vm/ua9L7xuyGZudf4zUUr1OlkhmFT9MI+35iNY2124bt44kZ88cr
+   a0F0M1TYLbHoUzFCXHRcVgZW1hkuZWgXV3s010pB5robRsh6pePxDx8Wr
+   TjIQdZD9xmhPtYm0EOEis44g3PxdXMMb/vzSL4uSKbhj6r9RdDmgC+3XN
+   7B+FipSTtQdj2S1lQbkheqFvWcpiyVCjX/PknbH66VB8ncvAvb13yrIgw
+   g==;
+X-CSE-ConnectionGUID: UE1qf2+NTGa0XIDImwDN8w==
+X-CSE-MsgGUID: 2wV8gg+cQ5Wi7SGVaO1/kA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11703"; a="83495873"
 X-IronPort-AV: E=Sophos;i="6.21,296,1763452800"; 
-   d="scan'208";a="83495872"
+   d="scan'208";a="83495873"
 Received: from orviesa001.jf.intel.com ([10.64.159.141])
-  by orvoesa105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 17 Feb 2026 03:56:40 -0800
-X-CSE-ConnectionGUID: 7eHyj8TgTLisjQFsJuoiAw==
-X-CSE-MsgGUID: C9r7OdPASDONXvsL39IDTA==
+  by orvoesa105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 17 Feb 2026 03:56:42 -0800
+X-CSE-ConnectionGUID: RjVmmXlJS6q+KaILwX8QOw==
+X-CSE-MsgGUID: VV1Qb58pR4eYabFXPkBakQ==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.21,296,1763452800"; 
-   d="scan'208";a="251547138"
+   d="scan'208";a="251547144"
 Received: from weis0040.iil.intel.com ([10.12.217.108])
-  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 17 Feb 2026 03:56:39 -0800
+  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 17 Feb 2026 03:56:40 -0800
 From: Miri Korenblit <miriam.rachel.korenblit@intel.com>
 To: linux-wireless@vger.kernel.org
 Cc: Johannes Berg <johannes.berg@intel.com>
-Subject: [PATCH v3 wireless-next 09/15] wifi: cfg80211: separately store HT, VHT and HE capabilities for NAN
-Date: Tue, 17 Feb 2026 13:56:12 +0200
-Message-Id: <20260217134342.41ec7b4fdc54.I45422adc0df3ad4101d857a92e83f0de5cf241e1@changeid>
+Subject: [PATCH v3 wireless-next 10/15] wifi: nl80211: add support for NAN stations
+Date: Tue, 17 Feb 2026 13:56:13 +0200
+Message-Id: <20260217134342.cb9a71a609f5.I6d859eee759bb5824a9ffd2984410faf879ba00e@changeid>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20260217115618.2066972-1-miriam.rachel.korenblit@intel.com>
 References: <20260217115618.2066972-1-miriam.rachel.korenblit@intel.com>
@@ -84,12 +84,12 @@ X-Spamd-Result: default: False [-1.16 / 15.00];
 	MID_RHS_NOT_FQDN(0.50)[];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[intel.com,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	R_DKIM_ALLOW(-0.20)[intel.com:s=Intel];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-31940-lists,linux-wireless=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-31941-lists,linux-wireless=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
 	TO_DN_SOME(0.00)[];
 	MIME_TRACE(0.00)[0:+];
@@ -103,238 +103,405 @@ X-Spamd-Result: default: False [-1.16 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	TAGGED_RCPT(0.00)[linux-wireless];
 	RCVD_COUNT_FIVE(0.00)[5];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:email,intel.com:dkim,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: C668314BAC7
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: C012C14BA88
 X-Rspamd-Action: no action
 
-In NAN, unlike in other modes, there is only one set of (HT, VHT, HE)
-capabilities that is used for all channels (and bands) used in the NAN
-data path.
+There are 2 types of logical links with a NAN peer:
+- management (NMI), which is used for Tx/Rx of NAN management frames.
+- data (NDI), which is used for Tx/Rx of data frames, or non-NAN
+  management frames.
 
-This set of capabilities will have to be a special one, for example - have
-the minimum of (HT-for-5 GHz, HT-for-2.4 GHz), careful handling of the
-bits that have a different meaning for each band, etc.
+The NMI station has two roles:
+- representation of the NAN peer - for example, the peer's schedule
+  and the HT, VHT, HE capabilities - belong to the NMI station, and not to
+  the NDI ones.
+- Tx/Rx of NAN management frames to/from the peer.
 
-While we could use the exiting sband/iftype capabilities, and require
-identical capabilities for all bands (makes no sense since this means
-that we will have VHT capabilities in the 2.4 GHz slot),
-or require that only one of the sbands will be set,
-or have logic to extract the minimum and handle the conflicting bits -
-it seems simpler to add a dedicated set of capabilities which is special
-for NAN, and is band agnostic, to be populated by the driver.
+The NDI station is used for Tx/Rx data frames of a specific NDP that was
+established with the NAN peer.
 
-That way we also let the driver decide how it wants to handle the
-conflicting bits.
+Note that a peer can choose to reuse its NMI address as the NDI address.
+In that case, it is expected that two stations will be added even though
+they will have the same address.
 
-Add this special set of these capabilities to wiphy:nan_capabilities, to be
-populated by the driver.
-Send it to user space.
+- An NDI station can only be added after the corresponding NMI station
+  was configured with capabilities.
+- All the NDI stations will be removed before the NDI interface is brought
+  down.
+- All NMI stations will be removed before NAN is stopped.
+- Before NMI sta removal, all corresponding NDI stations will be removed
+
+Add support for adding, removing, and changing NMI and NDI stations.
 
 Reviewed-by: Johannes Berg <johannes.berg@intel.com>
 Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
 ---
- include/net/cfg80211.h       | 11 ++++++
- include/uapi/linux/nl80211.h | 43 ++++++++++++++++++++++++
- net/wireless/core.c          |  4 +++
- net/wireless/nl80211.c       | 65 ++++++++++++++++++++++++++++++++++++
- 4 files changed, 123 insertions(+)
+ include/net/cfg80211.h       |  56 ++++++++++++++++
+ include/uapi/linux/nl80211.h |   8 ++-
+ net/wireless/nl80211.c       | 120 ++++++++++++++++++++++++++++-------
+ 3 files changed, 161 insertions(+), 23 deletions(-)
 
 diff --git a/include/net/cfg80211.h b/include/net/cfg80211.h
-index 6ccd80868800..1eceb03892d1 100644
+index 1eceb03892d1..0581fa9538d3 100644
 --- a/include/net/cfg80211.h
 +++ b/include/net/cfg80211.h
-@@ -5911,6 +5911,12 @@ enum wiphy_nan_flags {
-  * @max_channel_switch_time: maximum channel switch time in milliseconds.
-  * @dev_capabilities: NAN device capabilities as defined in Wi-Fi Aware (TM)
-  *     specification Table 79 (Capabilities field).
-+ * @phy: Band-agnostic capabilities for NAN data interfaces. Since NAN
-+ *     operates on multiple channels simultaneously, these capabilities apply
-+ *     across all bands. Valid only if NL80211_IFTYPE_NAN_DATA is supported.
-+ * @phy.ht: HT capabilities (mandatory for NAN data)
-+ * @phy.vht: VHT capabilities (optional)
-+ * @phy.he: HE capabilities (optional)
+@@ -1828,6 +1828,7 @@ struct cfg80211_ttlm_params {
+  * @eml_cap: EML capabilities of this station
+  * @link_sta_params: link related params.
+  * @epp_peer: EPP peer indication
++ * @nmi_mac: MAC address of the NMI station of the NAN peer
   */
- struct wiphy_nan_capa {
- 	u32 flags;
-@@ -5918,6 +5924,11 @@ struct wiphy_nan_capa {
- 	u8 n_antennas;
- 	u16 max_channel_switch_time;
- 	u8 dev_capabilities;
-+	struct {
-+		struct ieee80211_sta_ht_cap ht;
-+		struct ieee80211_sta_vht_cap vht;
-+		struct ieee80211_sta_he_cap he;
-+	} phy;
+ struct station_parameters {
+ 	struct net_device *vlan;
+@@ -1855,6 +1856,7 @@ struct station_parameters {
+ 	u16 eml_cap;
+ 	struct link_station_parameters link_sta_params;
+ 	bool epp_peer;
++	const u8 *nmi_mac;
  };
  
- #define CFG80211_HW_TIMESTAMP_ALL_PEERS	0xffff
+ /**
+@@ -1894,6 +1896,8 @@ struct station_del_parameters {
+  *	entry that is operating, has been marked authorized by userspace)
+  * @CFG80211_STA_MESH_PEER_KERNEL: peer on mesh interface (kernel managed)
+  * @CFG80211_STA_MESH_PEER_USER: peer on mesh interface (user managed)
++ * @CFG80211_STA_NAN_MGMT: NAN management interface station
++ * @CFG80211_STA_NAN_DATA: NAN data path station
+  */
+ enum cfg80211_station_type {
+ 	CFG80211_STA_AP_CLIENT,
+@@ -1905,6 +1909,8 @@ enum cfg80211_station_type {
+ 	CFG80211_STA_TDLS_PEER_ACTIVE,
+ 	CFG80211_STA_MESH_PEER_KERNEL,
+ 	CFG80211_STA_MESH_PEER_USER,
++	CFG80211_STA_NAN_MGMT,
++	CFG80211_STA_NAN_DATA,
+ };
+ 
+ /**
+@@ -3996,6 +4002,56 @@ struct cfg80211_qos_map {
+  *
+  * The local schedule specifies which channels the device is available on and
+  * when. Must be cancelled before NAN is stopped.
++ *
++ * NAN Stations
++ * ~~~~~~~~~~~~
++ *
++ * There are two types of stations corresponding to the two interface types:
++ *
++ * - NMI station: Represents the NAN peer. Peer-specific data such as the peer's
++ *   schedule and the HT, VHT and HE capabilities belongs to the NMI station.
++ *   Also used for Tx/Rx of NAN management frames to/from the peer.
++ *   Added on the %NL80211_IFTYPE_NAN interface.
++ *
++ * - NDI station: Used for Tx/Rx of data frames (and non-NAN management frames)
++ *   for a specific NDP established with the NAN peer. Added on the
++ *   %NL80211_IFTYPE_NAN_DATA interface.
++ *
++ * A peer may reuse its NMI address as the NDI address. In that case, two
++ * separate stations should be added even though they share the same MAC
++ * address.
++ *
++ * HT, VHT and HE capabilities should not changes after it was set. It is the
++ * driver's responsibility to check that.
++ *
++ * An NDI station can only be added if the corresponding NMI station has already
++ * been configured with HT (and possibly VHT and HE) capabilities. It is the
++ * driver's responsibility to check that.
++ *
++ * All NDI stations must be removed before corresponding NMI station is removed.
++ * Therefore, removing a NMI station implies that the associated NDI station(s)
++ * (if any) will be removed first.
++ *
++ * NAN Dependencies
++ * ~~~~~~~~~~~~~~~~
++ *
++ * The following diagram shows the dependencies between NAN components.
++ * An arrow from A to B means A must be started/added before B, and B must be
++ * stopped/removed before A:
++ *
++ *       +-------------+
++ *       |  NMI iface  |---(local schedule)
++ *       +------+------+
++ *          /       \
++ *         v         v
++ *   +-----------+  +-------------+
++ *   | NDI iface |  |   NMI sta   |---(peer schedule)
++ *   +-----+-----+  +------+------+
++ *          \           /
++ *           v         v
++ *          +----------+
++ *          | NDI sta  |
++ *          +----------+
+  */
+ 
+ /**
 diff --git a/include/uapi/linux/nl80211.h b/include/uapi/linux/nl80211.h
-index b1584f145eac..44dff379b66b 100644
+index 44dff379b66b..7e00a31e5807 100644
 --- a/include/uapi/linux/nl80211.h
 +++ b/include/uapi/linux/nl80211.h
-@@ -4436,6 +4436,46 @@ enum nl80211_band_attr {
- 
- #define NL80211_BAND_ATTR_HT_CAPA NL80211_BAND_ATTR_HT_CAPA
- 
-+/**
-+ * enum nl80211_nan_phy_cap_attr - NAN PHY capabilities attributes
-+ * @__NL80211_NAN_PHY_CAP_ATTR_INVALID: attribute number 0 is reserved
-+ * @NL80211_NAN_PHY_CAP_ATTR_HT_MCS_SET: 16-byte attribute containing HT MCS set
-+ * @NL80211_NAN_PHY_CAP_ATTR_HT_CAPA: HT capabilities (u16)
-+ * @NL80211_NAN_PHY_CAP_ATTR_HT_AMPDU_FACTOR: HT A-MPDU factor (u8)
-+ * @NL80211_NAN_PHY_CAP_ATTR_HT_AMPDU_DENSITY: HT A-MPDU density (u8)
-+ * @NL80211_NAN_PHY_CAP_ATTR_VHT_MCS_SET: 8-byte attribute containing VHT MCS set
-+ * @NL80211_NAN_PHY_CAP_ATTR_VHT_CAPA: VHT capabilities (u32)
-+ * @NL80211_NAN_PHY_CAP_ATTR_HE_MAC: HE MAC capabilities
-+ * @NL80211_NAN_PHY_CAP_ATTR_HE_PHY: HE PHY capabilities
-+ * @NL80211_NAN_PHY_CAP_ATTR_HE_MCS_SET: HE supported NSS/MCS combinations
-+ * @NL80211_NAN_PHY_CAP_ATTR_HE_PPE: HE PPE thresholds
-+ * @NL80211_NAN_PHY_CAP_ATTR_MAX: highest NAN PHY cap attribute number
-+ * @__NL80211_NAN_PHY_CAP_ATTR_AFTER_LAST: internal use
-+ */
-+enum nl80211_nan_phy_cap_attr {
-+	__NL80211_NAN_PHY_CAP_ATTR_INVALID,
-+
-+	/* HT capabilities */
-+	NL80211_NAN_PHY_CAP_ATTR_HT_MCS_SET,
-+	NL80211_NAN_PHY_CAP_ATTR_HT_CAPA,
-+	NL80211_NAN_PHY_CAP_ATTR_HT_AMPDU_FACTOR,
-+	NL80211_NAN_PHY_CAP_ATTR_HT_AMPDU_DENSITY,
-+
-+	/* VHT capabilities */
-+	NL80211_NAN_PHY_CAP_ATTR_VHT_MCS_SET,
-+	NL80211_NAN_PHY_CAP_ATTR_VHT_CAPA,
-+
-+	/* HE capabilities */
-+	NL80211_NAN_PHY_CAP_ATTR_HE_MAC,
-+	NL80211_NAN_PHY_CAP_ATTR_HE_PHY,
-+	NL80211_NAN_PHY_CAP_ATTR_HE_MCS_SET,
-+	NL80211_NAN_PHY_CAP_ATTR_HE_PPE,
-+
-+	/* keep last */
-+	__NL80211_NAN_PHY_CAP_ATTR_AFTER_LAST,
-+	NL80211_NAN_PHY_CAP_ATTR_MAX = __NL80211_NAN_PHY_CAP_ATTR_AFTER_LAST - 1
-+};
-+
- /**
-  * enum nl80211_wmm_rule - regulatory wmm rule
+@@ -2668,7 +2668,8 @@ enum nl80211_commands {
+  *      a flow is assigned on each round of the DRR scheduler.
+  * @NL80211_ATTR_HE_CAPABILITY: HE Capability information element (from
+  *	association request when used with NL80211_CMD_NEW_STATION). Can be set
+- *	only if %NL80211_STA_FLAG_WME is set.
++ *	only if %NL80211_STA_FLAG_WME is set (except for NAN, which uses WME
++ *	anyway).
   *
-@@ -8594,6 +8634,8 @@ enum nl80211_s1g_short_beacon_attrs {
-  * @NL80211_NAN_CAPA_CAPABILITIES: u8 attribute containing the
-  *	capabilities of the device as defined in Wi-Fi Aware (TM)
-  *	specification Table 79 (Capabilities field).
-+ * @NL80211_NAN_CAPA_PHY: nested attribute containing band-agnostic
-+ *	capabilities for NAN data path. See &enum nl80211_nan_phy_cap_attr.
-  * @__NL80211_NAN_CAPABILITIES_LAST: Internal
-  * @NL80211_NAN_CAPABILITIES_MAX: Highest NAN capability attribute.
-  */
-@@ -8606,6 +8648,7 @@ enum nl80211_nan_capabilities {
- 	NL80211_NAN_CAPA_NUM_ANTENNAS,
- 	NL80211_NAN_CAPA_MAX_CHANNEL_SWITCH_TIME,
- 	NL80211_NAN_CAPA_CAPABILITIES,
-+	NL80211_NAN_CAPA_PHY,
- 	/* keep last */
- 	__NL80211_NAN_CAPABILITIES_LAST,
- 	NL80211_NAN_CAPABILITIES_MAX = __NL80211_NAN_CAPABILITIES_LAST - 1,
-diff --git a/net/wireless/core.c b/net/wireless/core.c
-index 6750efbdf34c..9b6e5305b326 100644
---- a/net/wireless/core.c
-+++ b/net/wireless/core.c
-@@ -833,6 +833,10 @@ int wiphy_register(struct wiphy *wiphy)
- 		     !(wiphy->nan_supported_bands & BIT(NL80211_BAND_2GHZ)))))
- 		return -EINVAL;
+  * @NL80211_ATTR_FTM_RESPONDER: nested attribute which user-space can include
+  *	in %NL80211_CMD_START_AP or %NL80211_CMD_SET_BEACON for fine timing
+@@ -3048,6 +3049,9 @@ enum nl80211_commands {
+  *	%NL80211_CMD_NAN_SCHED_UPDATE_DONE to indicate that the deferred
+  *	schedule update completed successfully. If this flag is not present,
+  *	the update failed.
++ * @NL80211_ATTR_NAN_NMI_MAC: The address of the NMI station to which this NDI
++ *	station belongs. Used with %NL80211_CMD_NEW_STATION when adding an NDI
++ *	station.
+  *
+  * @NUM_NL80211_ATTR: total number of nl80211_attrs available
+  * @NL80211_ATTR_MAX: highest attribute number currently defined
+@@ -3630,6 +3634,8 @@ enum nl80211_attrs {
+ 	NL80211_ATTR_NAN_SCHED_DEFERRED,
+ 	NL80211_ATTR_NAN_SCHED_UPDATE_SUCCESS,
  
-+	if (WARN_ON((wiphy->interface_modes & BIT(NL80211_IFTYPE_NAN_DATA)) &&
-+		    !wiphy->nan_capa.phy.ht.ht_supported))
-+		return -EINVAL;
++	NL80211_ATTR_NAN_NMI_MAC,
 +
- 	if (WARN_ON(wiphy->interface_modes & BIT(NL80211_IFTYPE_WDS)))
- 		return -EINVAL;
+ 	/* add attributes here, update the policy in nl80211.c */
  
+ 	__NL80211_ATTR_AFTER_LAST,
 diff --git a/net/wireless/nl80211.c b/net/wireless/nl80211.c
-index 0b2bdd1d989e..84cfd70eb8fd 100644
+index 84cfd70eb8fd..986a1db9dcfd 100644
 --- a/net/wireless/nl80211.c
 +++ b/net/wireless/nl80211.c
-@@ -2700,6 +2700,68 @@ static int nl80211_put_radios(struct wiphy *wiphy, struct sk_buff *msg)
- 	return -ENOBUFS;
- }
+@@ -988,6 +988,7 @@ static const struct nla_policy nl80211_policy[NUM_NL80211_ATTR] = {
+ 	[NL80211_ATTR_NAN_AVAIL_BLOB] =
+ 		NLA_POLICY_VALIDATE_FN(NLA_BINARY, validate_nan_avail_blob),
+ 	[NL80211_ATTR_NAN_SCHED_DEFERRED] = { .type = NLA_FLAG },
++	[NL80211_ATTR_NAN_NMI_MAC] = NLA_POLICY_ETH_ADDR,
+ };
  
-+static int nl80211_put_nan_phy_cap(struct wiphy *wiphy, struct sk_buff *msg)
-+{
-+	struct nlattr *nl_phy_cap;
-+	const struct ieee80211_sta_ht_cap *ht_cap;
-+	const struct ieee80211_sta_vht_cap *vht_cap;
-+	const struct ieee80211_sta_he_cap *he_cap;
+ /* policy for the key attributes */
+@@ -7205,6 +7206,26 @@ static int parse_station_flags(struct genl_info *info,
+ 		if ((params->sta_flags_mask |
+ 		     params->sta_flags_set) & BIT(__NL80211_STA_FLAG_INVALID))
+ 			return -EINVAL;
 +
-+	if (!cfg80211_iftype_allowed(wiphy, NL80211_IFTYPE_NAN_DATA, false, 0))
-+		return 0;
++		if ((iftype == NL80211_IFTYPE_NAN ||
++		     iftype == NL80211_IFTYPE_NAN_DATA) &&
++		    params->sta_flags_mask &
++		    ~(BIT(NL80211_STA_FLAG_AUTHENTICATED) |
++		      BIT(NL80211_STA_FLAG_ASSOCIATED) |
++		      BIT(NL80211_STA_FLAG_AUTHORIZED) |
++		      BIT(NL80211_STA_FLAG_MFP)))
++				return -EINVAL;
 +
-+	ht_cap = &wiphy->nan_capa.phy.ht;
-+	vht_cap = &wiphy->nan_capa.phy.vht;
-+	he_cap = &wiphy->nan_capa.phy.he;
++		/* WME is always used in NAN */
++		if (iftype == NL80211_IFTYPE_NAN_DATA) {
++			/* but don't let userspace control it */
++			if (params->sta_flags_mask & BIT(NL80211_STA_FLAG_WME))
++				return -EINVAL;
 +
-+	/* HT is mandatory */
-+	if (WARN_ON(!ht_cap->ht_supported))
-+		return 0;
++			params->sta_flags_mask |= BIT(NL80211_STA_FLAG_WME);
++			params->sta_flags_set |= BIT(NL80211_STA_FLAG_WME);
++		}
 +
-+	nl_phy_cap = nla_nest_start_noflag(msg, NL80211_NAN_CAPA_PHY);
-+	if (!nl_phy_cap)
-+		return -ENOBUFS;
+ 		return 0;
+ 	}
+ 
+@@ -8087,7 +8108,7 @@ static int nl80211_dump_station(struct sk_buff *skb,
+ 	/* nl80211_prepare_wdev_dump acquired it in the successful case */
+ 	__acquire(&rdev->wiphy.mtx);
+ 
+-	if (!wdev->netdev) {
++	if (!wdev->netdev && wdev->iftype != NL80211_IFTYPE_NAN) {
+ 		err = -EINVAL;
+ 		goto out_err;
+ 	}
+@@ -8274,10 +8295,12 @@ int cfg80211_check_station_change(struct wiphy *wiphy,
+ 			return -EINVAL;
+ 		if (params->link_sta_params.supported_rates)
+ 			return -EINVAL;
+-		if (params->ext_capab || params->link_sta_params.ht_capa ||
+-		    params->link_sta_params.vht_capa ||
+-		    params->link_sta_params.he_capa ||
+-		    params->link_sta_params.eht_capa ||
++		if (statype != CFG80211_STA_NAN_MGMT &&
++		    (params->link_sta_params.ht_capa ||
++		     params->link_sta_params.vht_capa ||
++		     params->link_sta_params.he_capa))
++			return -EINVAL;
++		if (params->ext_capab || params->link_sta_params.eht_capa ||
+ 		    params->link_sta_params.uhr_capa)
+ 			return -EINVAL;
+ 		if (params->sta_flags_mask & BIT(NL80211_STA_FLAG_SPP_AMSDU))
+@@ -8349,6 +8372,19 @@ int cfg80211_check_station_change(struct wiphy *wiphy,
+ 		    params->plink_action != NL80211_PLINK_ACTION_BLOCK)
+ 			return -EINVAL;
+ 		break;
++	case CFG80211_STA_NAN_MGMT:
++		if (params->sta_flags_mask &
++		    ~(BIT(NL80211_STA_FLAG_AUTHORIZED) |
++		      BIT(NL80211_STA_FLAG_MFP)))
++			return -EINVAL;
++		break;
++	case CFG80211_STA_NAN_DATA:
++		if (params->sta_flags_mask &
++		    ~(BIT(NL80211_STA_FLAG_AUTHORIZED) |
++		      BIT(NL80211_STA_FLAG_MFP) |
++		      BIT(NL80211_STA_FLAG_WME)))
++			return -EINVAL;
++		break;
+ 	}
+ 
+ 	/*
+@@ -8563,7 +8599,8 @@ static int nl80211_set_station(struct sk_buff *skb, struct genl_info *info)
+ 
+ 	memset(&params, 0, sizeof(params));
+ 
+-	if (!dev)
++	if (!dev && wdev->iftype != NL80211_IFTYPE_NAN &&
++	    wdev->iftype != NL80211_IFTYPE_NAN_DATA)
+ 		return -EINVAL;
+ 
+ 	if (!rdev->ops->change_station)
+@@ -8706,6 +8743,8 @@ static int nl80211_set_station(struct sk_buff *skb, struct genl_info *info)
+ 	case NL80211_IFTYPE_STATION:
+ 	case NL80211_IFTYPE_ADHOC:
+ 	case NL80211_IFTYPE_MESH_POINT:
++	case NL80211_IFTYPE_NAN:
++	case NL80211_IFTYPE_NAN_DATA:
+ 		break;
+ 	default:
+ 		err = -EOPNOTSUPP;
+@@ -8734,7 +8773,7 @@ static int nl80211_new_station(struct sk_buff *skb, struct genl_info *info)
+ 
+ 	memset(&params, 0, sizeof(params));
+ 
+-	if (!dev)
++	if (!dev && wdev->iftype != NL80211_IFTYPE_NAN)
+ 		return -EINVAL;
+ 
+ 	if (!rdev->ops->add_station)
+@@ -8743,15 +8782,31 @@ static int nl80211_new_station(struct sk_buff *skb, struct genl_info *info)
+ 	if (!info->attrs[NL80211_ATTR_MAC])
+ 		return -EINVAL;
+ 
+-	if (!info->attrs[NL80211_ATTR_STA_LISTEN_INTERVAL])
+-		return -EINVAL;
++	if (wdev->iftype == NL80211_IFTYPE_NAN ||
++	    wdev->iftype == NL80211_IFTYPE_NAN_DATA) {
++		if (info->attrs[NL80211_ATTR_STA_SUPPORTED_RATES])
++			return -EINVAL;
++		if (wdev->iftype == NL80211_IFTYPE_NAN_DATA) {
++			if (!info->attrs[NL80211_ATTR_NAN_NMI_MAC])
++				return -EINVAL;
+ 
+-	if (!info->attrs[NL80211_ATTR_STA_SUPPORTED_RATES])
+-		return -EINVAL;
++			/* Only NMI stations receive the HT/VHT/HE capabilities */
++			if (info->attrs[NL80211_ATTR_HT_CAPABILITY] ||
++			    info->attrs[NL80211_ATTR_VHT_CAPABILITY] ||
++			    info->attrs[NL80211_ATTR_HE_CAPABILITY])
++				return -EINVAL;
++		}
++	} else {
++		if (!info->attrs[NL80211_ATTR_STA_LISTEN_INTERVAL])
++			return -EINVAL;
+ 
+-	if (!info->attrs[NL80211_ATTR_STA_AID] &&
+-	    !info->attrs[NL80211_ATTR_PEER_AID])
+-		return -EINVAL;
++		if (!info->attrs[NL80211_ATTR_STA_SUPPORTED_RATES])
++			return -EINVAL;
 +
-+	if (nla_put(msg, NL80211_NAN_PHY_CAP_ATTR_HT_MCS_SET,
-+		    sizeof(ht_cap->mcs), &ht_cap->mcs) ||
-+	    nla_put_u16(msg, NL80211_NAN_PHY_CAP_ATTR_HT_CAPA, ht_cap->cap) ||
-+	    nla_put_u8(msg, NL80211_NAN_PHY_CAP_ATTR_HT_AMPDU_FACTOR,
-+		       ht_cap->ampdu_factor) ||
-+	    nla_put_u8(msg, NL80211_NAN_PHY_CAP_ATTR_HT_AMPDU_DENSITY,
-+		       ht_cap->ampdu_density))
-+		goto fail;
-+
-+	if (vht_cap->vht_supported) {
-+		if (nla_put(msg, NL80211_NAN_PHY_CAP_ATTR_VHT_MCS_SET,
-+			    sizeof(vht_cap->vht_mcs), &vht_cap->vht_mcs) ||
-+		    nla_put_u32(msg, NL80211_NAN_PHY_CAP_ATTR_VHT_CAPA,
-+				vht_cap->cap))
-+			goto fail;
++		if (!info->attrs[NL80211_ATTR_STA_AID] &&
++		    !info->attrs[NL80211_ATTR_PEER_AID])
++			return -EINVAL;
++	}
+ 
+ 	params.link_sta_params.link_id =
+ 		nl80211_link_id_or_invalid(info->attrs);
+@@ -8767,12 +8822,16 @@ static int nl80211_new_station(struct sk_buff *skb, struct genl_info *info)
+ 		mac_addr = nla_data(info->attrs[NL80211_ATTR_MAC]);
+ 	}
+ 
+-	params.link_sta_params.supported_rates =
+-		nla_data(info->attrs[NL80211_ATTR_STA_SUPPORTED_RATES]);
+-	params.link_sta_params.supported_rates_len =
+-		nla_len(info->attrs[NL80211_ATTR_STA_SUPPORTED_RATES]);
+-	params.listen_interval =
+-		nla_get_u16(info->attrs[NL80211_ATTR_STA_LISTEN_INTERVAL]);
++	if (info->attrs[NL80211_ATTR_STA_SUPPORTED_RATES]) {
++		params.link_sta_params.supported_rates =
++			nla_data(info->attrs[NL80211_ATTR_STA_SUPPORTED_RATES]);
++		params.link_sta_params.supported_rates_len =
++			nla_len(info->attrs[NL80211_ATTR_STA_SUPPORTED_RATES]);
 +	}
 +
-+	if (he_cap->has_he) {
-+		if (nla_put(msg, NL80211_NAN_PHY_CAP_ATTR_HE_MAC,
-+			    sizeof(he_cap->he_cap_elem.mac_cap_info),
-+			    he_cap->he_cap_elem.mac_cap_info) ||
-+		    nla_put(msg, NL80211_NAN_PHY_CAP_ATTR_HE_PHY,
-+			    sizeof(he_cap->he_cap_elem.phy_cap_info),
-+			    he_cap->he_cap_elem.phy_cap_info) ||
-+		    nla_put(msg, NL80211_NAN_PHY_CAP_ATTR_HE_MCS_SET,
-+			    sizeof(he_cap->he_mcs_nss_supp),
-+			    &he_cap->he_mcs_nss_supp) ||
-+		    nla_put(msg, NL80211_NAN_PHY_CAP_ATTR_HE_PPE,
-+			    sizeof(he_cap->ppe_thres), he_cap->ppe_thres))
-+			goto fail;
++	if (info->attrs[NL80211_ATTR_STA_LISTEN_INTERVAL])
++		params.listen_interval =
++			nla_get_u16(info->attrs[NL80211_ATTR_STA_LISTEN_INTERVAL]);
+ 
+ 	if (info->attrs[NL80211_ATTR_VLAN_ID])
+ 		params.vlan_id = nla_get_u16(info->attrs[NL80211_ATTR_VLAN_ID]);
+@@ -8791,7 +8850,7 @@ static int nl80211_new_station(struct sk_buff *skb, struct genl_info *info)
+ 
+ 	if (info->attrs[NL80211_ATTR_PEER_AID])
+ 		params.aid = nla_get_u16(info->attrs[NL80211_ATTR_PEER_AID]);
+-	else
++	else if (info->attrs[NL80211_ATTR_STA_AID])
+ 		params.aid = nla_get_u16(info->attrs[NL80211_ATTR_STA_AID]);
+ 
+ 	if (info->attrs[NL80211_ATTR_STA_CAPABILITY]) {
+@@ -8912,6 +8971,16 @@ static int nl80211_new_station(struct sk_buff *skb, struct genl_info *info)
+ 			return -EINVAL;
+ 	}
+ 
++	if (wdev->iftype == NL80211_IFTYPE_NAN ||
++	    wdev->iftype == NL80211_IFTYPE_NAN_DATA) {
++		if (params.sta_modify_mask & STATION_PARAM_APPLY_UAPSD)
++			return -EINVAL;
++		/* NAN NMI station must be added in associated or authorized state */
++		if (!(params.sta_flags_set & (BIT(NL80211_STA_FLAG_ASSOCIATED) |
++					      BIT(NL80211_STA_FLAG_AUTHENTICATED))))
++			return -EINVAL;
 +	}
 +
-+	nla_nest_end(msg, nl_phy_cap);
-+	return 0;
-+
-+fail:
-+	nla_nest_cancel(msg, nl_phy_cap);
-+	return -ENOBUFS;
-+}
-+
- static int nl80211_put_nan_capa(struct wiphy *wiphy, struct sk_buff *msg)
- {
- 	struct nlattr *nan_caps;
-@@ -2726,6 +2788,9 @@ static int nl80211_put_nan_capa(struct wiphy *wiphy, struct sk_buff *msg)
- 		       wiphy->nan_capa.dev_capabilities))
- 		goto fail;
+ 	/* Ensure that HT/VHT capabilities are not set for 6 GHz HE STA */
+ 	if (params.link_sta_params.he_6ghz_capa &&
+ 	    (params.link_sta_params.ht_capa || params.link_sta_params.vht_capa))
+@@ -9004,6 +9073,11 @@ static int nl80211_new_station(struct sk_buff *skb, struct genl_info *info)
+ 		 */
+ 		params.sta_flags_mask &= ~BIT(NL80211_STA_FLAG_AUTHORIZED);
+ 		break;
++	case NL80211_IFTYPE_NAN:
++		break;
++	case NL80211_IFTYPE_NAN_DATA:
++		params.nmi_mac = nla_data(info->attrs[NL80211_ATTR_NAN_NMI_MAC]);
++		break;
+ 	default:
+ 		return -EOPNOTSUPP;
+ 	}
+@@ -9045,7 +9119,7 @@ static int nl80211_del_station(struct sk_buff *skb, struct genl_info *info)
  
-+	if (nl80211_put_nan_phy_cap(wiphy, msg))
-+		goto fail;
-+
- 	nla_nest_end(msg, nan_caps);
+ 	memset(&params, 0, sizeof(params));
  
- 	return 0;
+-	if (!dev)
++	if (!dev && wdev->iftype != NL80211_IFTYPE_NAN)
+ 		return -EINVAL;
+ 
+ 	if (info->attrs[NL80211_ATTR_MAC])
+@@ -9056,6 +9130,8 @@ static int nl80211_del_station(struct sk_buff *skb, struct genl_info *info)
+ 	case NL80211_IFTYPE_AP_VLAN:
+ 	case NL80211_IFTYPE_MESH_POINT:
+ 	case NL80211_IFTYPE_P2P_GO:
++	case NL80211_IFTYPE_NAN:
++	case NL80211_IFTYPE_NAN_DATA:
+ 		/* always accept these */
+ 		break;
+ 	case NL80211_IFTYPE_ADHOC:
 -- 
 2.34.1
 
