@@ -1,313 +1,158 @@
-Return-Path: <linux-wireless+bounces-31923-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-31925-lists+linux-wireless=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id sA/rDp49lGmTAwIAu9opvQ
-	(envelope-from <linux-wireless+bounces-31923-lists+linux-wireless=lfdr.de@vger.kernel.org>)
-	for <lists+linux-wireless@lfdr.de>; Tue, 17 Feb 2026 11:06:22 +0100
+	id MJZ0C59MlGkNCQIAu9opvQ
+	(envelope-from <linux-wireless+bounces-31925-lists+linux-wireless=lfdr.de@vger.kernel.org>)
+	for <lists+linux-wireless@lfdr.de>; Tue, 17 Feb 2026 12:10:23 +0100
 X-Original-To: lists+linux-wireless@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id AEEC214AAD9
-	for <lists+linux-wireless@lfdr.de>; Tue, 17 Feb 2026 11:06:21 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5C6BF14B2DB
+	for <lists+linux-wireless@lfdr.de>; Tue, 17 Feb 2026 12:10:22 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 1105030166CF
-	for <lists+linux-wireless@lfdr.de>; Tue, 17 Feb 2026 10:05:44 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 8F9943008099
+	for <lists+linux-wireless@lfdr.de>; Tue, 17 Feb 2026 11:10:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 950FE2DAFBB;
-	Tue, 17 Feb 2026 10:05:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A3026330644;
+	Tue, 17 Feb 2026 11:10:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b="ov5Cgs4+"
+	dkim=pass (2048-bit key) header.d=triplefau.lt header.i=@triplefau.lt header.b="n98ZST9y"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from sipsolutions.net (s3.sipsolutions.net [168.119.38.16])
+Received: from e3i693.smtp2go.com (e3i693.smtp2go.com [158.120.86.181])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 114772E6CCD
-	for <linux-wireless@vger.kernel.org>; Tue, 17 Feb 2026 10:05:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=168.119.38.16
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3C9EF330329
+	for <linux-wireless@vger.kernel.org>; Tue, 17 Feb 2026 11:10:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=158.120.86.181
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771322743; cv=none; b=Zf+oEdhT8dyaJawTp2/V6oOfeHpq7SWJozMEyWFP9tM3KyOG254O9QYBcpYZ4IRF8iV8K6QpWViHCM8BtoSs26Me70LXz4CZeIiujO3Lzsp0dboRLR33HMHBGgds1WhR6AI9EtX9FMQsSKDvNa9Qxk/Ntp0Ogq7UYdjwQH4gKLA=
+	t=1771326605; cv=none; b=es14t6BSAa1ZBziI4FzXBjOtg4lyaIag6BeQEoXhQ4a5BT2NAHsL3JIc5XhR2iRHm396HvPf/wVoYV9gtIWg3mLsvdBDxSjbz9ri0O/BSOuFTWy+VlaoF43HT2zo4M/0QQqOvsvKCbmeEAPKuiHy8hBONbK2sXFpqAgx4WIkl7M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771322743; c=relaxed/simple;
-	bh=gkRSfsM0whc7lKJ5JqMcE1q46JWCEz/MWOkJW6XJTwM=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=Hse6R2Mp0PzN2zwC2bbDwSMu3qbxT066sji41WDdZZyd2kt6YLMir6S8QFIPy3uFf7gkRtjq7/1wsPPGjrJuhv8WzDrdUaW1p7+Ko1IpG3C/evSXFmD0z986KiQXEK5F8rH1uFLPf3tay/EuMVVu0z7bTjXTXJa3FKuFkW1Cycg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net; spf=pass smtp.mailfrom=sipsolutions.net; dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b=ov5Cgs4+; arc=none smtp.client-ip=168.119.38.16
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sipsolutions.net
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=sipsolutions.net; s=mail; h=MIME-Version:Content-Transfer-Encoding:
-	Content-Type:References:In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender
-	:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
-	Resent-Cc:Resent-Message-ID; bh=IxTlxrlVqxNJfOH2NwUf+neTFHlV4g3ByZDBv0JUBx0=;
-	t=1771322742; x=1772532342; b=ov5Cgs4+fIBAy4T0mmdkgLb/HwzncV+Rd+Nij+qzb1BNAoO
-	Y8wP2fpGD4C29xNOhxbz7D2cMQawMGs3u+rUGjNoOm9x5N2+bluvdLTaSveJzlaAT+srBikCWwqS7
-	gmvnIhC8ej1qRCGQOAD4Ihsr9n2DvbJZECQjgWLmbK9Qs7rVvniXMEv7ddd2ggo6pJSizHUhqquY4
-	dPZu3vxxdiYjhP0iXmtEq8faYQZarpYh/BNH39/JSP05sxjRyRzAnMY58pLA3s0H7xBAormvlJdfT
-	knSFhb5sm7b7FHTH/JOzj+qifc+RKC74CH3sSNhvSGdPPqmlCyNc1bdd/ho0DBOg==;
-Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
-	(Exim 4.98.2)
-	(envelope-from <johannes@sipsolutions.net>)
-	id 1vsHxP-0000000BKWE-2mTs;
-	Tue, 17 Feb 2026 11:05:29 +0100
-Message-ID: <0f4b34f0b529fd93fc608d8bbac0e98516b7a3d2.camel@sipsolutions.net>
-Subject: Re: [PATCH wireless-next v8 2/3] wifi: cfg80211: add initial UHR
- support
-From: Johannes Berg <johannes@sipsolutions.net>
-To: Harshitha Prem <harshitha.prem@oss.qualcomm.com>, 
-	linux-wireless@vger.kernel.org
-Cc: Karthikeyan Kathirvel <karthikeyan.kathirvel@oss.qualcomm.com>, 
-	vasanthakumar.thiagarajan@oss.qualcomm.com, Lorenzo Bianconi
- <lorenzo@kernel.org>, 	ath12k@lists.infradead.org, Jeff Johnson
- <jeff.johnson@oss.qualcomm.com>,  Ping-Ke Shih <pkshih@realtek.com>
-Date: Tue, 17 Feb 2026 11:05:25 +0100
-In-Reply-To: <156d6d48-d135-4acf-a5d7-c9ae80523864@oss.qualcomm.com>
-References: <20260130154259.265130-5-johannes@sipsolutions.net>
-	 <20260130164259.54cc12fbb307.I26126bebd83c7ab17e99827489f946ceabb3521f@changeid>
-	 <f96125eeda23451c19067359eb9d10b4047bcdd3.camel@sipsolutions.net>
-	 <5d54feea-d0cd-4bd7-b0d2-02e42f0fe5e1@oss.qualcomm.com>
-	 <be9ab3c7f05b0f56f19aee0ffc7c2f96138b9a05.camel@sipsolutions.net>
-	 <156d6d48-d135-4acf-a5d7-c9ae80523864@oss.qualcomm.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.58.3 (3.58.3-1.fc43) 
+	s=arc-20240116; t=1771326605; c=relaxed/simple;
+	bh=Rwa5SbZbwFw5zHzjmWHA0GCYttQW3qra5cJmckSp1rA=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=WKEyeUZLZkwrLN6+GTSgOGjD3OPxdfWRGFtsnWcaTAQC5Pzj8Uxchw478tce9ohrulIltuEl77wKeJEDAtqRlijTZzEpx8Wm2/SNB1r5UOCQyLPZeUhserS3+SWLEqNruSXWpL97rU8uF3hio9Wx3GZiHms4N2nyfh5ce6G4jyY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=triplefau.lt; spf=pass smtp.mailfrom=em510616.triplefau.lt; dkim=pass (2048-bit key) header.d=triplefau.lt header.i=@triplefau.lt header.b=n98ZST9y; arc=none smtp.client-ip=158.120.86.181
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=triplefau.lt
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=em510616.triplefau.lt
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=triplefau.lt;
+ i=@triplefau.lt; q=dns/txt; s=s510616; t=1771325695; h=from : subject
+ : to : message-id : date;
+ bh=JnYH1ptdFFHGtpfwVkqyYHfrXgSqYG4pcNvlPo4D2KE=;
+ b=n98ZST9yujDTR5w+wmfGDSrgPLgSojSrfiUzCH2BF2javfqTLw9dtCjms1ApzYUEOg/u1
+ dL/6PElLVj6CHyTRYKUcrbCY6bx83uQ+yjHjxLOBW71qBpM9jIb1IjxEMP1rFYkNVjx0Bw8
+ 8HRYE6YdNKFUec/gswN+3K/J2ciR6IsEWYHeIVVfyliAL2Lsp0I1ez37U3962UP0UQanOGg
+ 746K9XFIq+h70BH941oCEZaoK1mrHrAHfykF9HdE2JHsDzLHans4tVOBcwtUlKFhyHbKnFF
+ 4gU04VV52g+6k8RwJnPvQX7uZfcu+e2pzxRnpXSwnh6Er8z+LsP4pGtmp6vg==
+Received: from [10.12.239.196] (helo=localhost)
+	by smtpcorp.com with esmtpsa (TLS1.3:ECDHE_SECP256R1__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
+	(Exim 4.99.1-S2G)
+	(envelope-from <repk@triplefau.lt>)
+	id 1vsIj6-FnQW0hQ1cSj-la2V;
+	Tue, 17 Feb 2026 10:54:44 +0000
+From: Remi Pommarel <repk@triplefau.lt>
+To: Johannes Berg <johannes@sipsolutions.net>
+Cc: linux-wireless@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Remi Pommarel <repk@triplefau.lt>
+Subject: [PATCH wireless] wifi: mac80211: Fix ADDBA update when HW supports reordering
+Date: Tue, 17 Feb 2026 11:36:07 +0100
+Message-ID: <5806bab7e46506d3c300ab4eb66989d42936aeb0.1771323902.git.repk@triplefau.lt>
+X-Mailer: git-send-email 2.52.0
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-malware-bazaar: not-scanned
+Content-Transfer-Encoding: 8bit
+X-Report-Abuse: Please forward a copy of this message, including all headers, to <abuse-report@smtp2go.com>
+Feedback-ID: 510616m:510616apGKSTK:510616snk9QLnpdH
+X-smtpcorp-track: 1460UQuBlizn.CIweTXkbUFHk.dn8hhQLfRie
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [-0.66 / 15.00];
+	MID_CONTAINS_FROM(1.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[sipsolutions.net,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
-	R_DKIM_ALLOW(-0.20)[sipsolutions.net:s=mail];
+	R_MISSING_CHARSET(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[triplefau.lt,quarantine];
+	R_DKIM_ALLOW(-0.20)[triplefau.lt:s=s510616];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-31923-lists,linux-wireless=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[sipsolutions.net:+];
-	MIME_TRACE(0.00)[0:+];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-31925-lists,linux-wireless=lfdr.de];
+	MIME_TRACE(0.00)[0:+];
+	RCVD_TLS_LAST(0.00)[];
+	RCPT_COUNT_THREE(0.00)[4];
 	TO_DN_SOME(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[repk@triplefau.lt,linux-wireless@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	DKIM_TRACE(0.00)[triplefau.lt:+];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[johannes@sipsolutions.net,linux-wireless@vger.kernel.org];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	MID_RHS_MATCH_FROM(0.00)[];
-	TAGGED_RCPT(0.00)[linux-wireless];
-	RCPT_COUNT_SEVEN(0.00)[8];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: AEEC214AAD9
+	TAGGED_RCPT(0.00)[linux-wireless];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,triplefau.lt:mid,triplefau.lt:dkim,triplefau.lt:email]
+X-Rspamd-Queue-Id: 5C6BF14B2DB
 X-Rspamd-Action: no action
 
-Hi,
+Commit f89e07d4cf26 ("mac80211: agg-rx: refuse ADDBA Request with timeout
+update") added a check to fail when ADDBA update would change the
+timeout param.
 
-> This approach looks well suited to handling overlapping update scenarios.
->=20
-> To make sure I understand it correctly, I=E2=80=99d like to walk through =
-a
-> concise example where a UHR critical update and a CSA overlap on link 0
-> of a 3=E2=80=91link AP MLD.
+This param is kept in tid_ampdu_rx context which is only allocated on HW
+that do not set SUPPORTS_REORDERING_BUFFER. Because the timeout check
+was done regardless of this param, ADDBA update always failed on those
+HW.
 
-Well, so honestly, you should probably treat what I write as equivalent
-to a paper napkin sketch during a night of drinking ;-)
+Fix this by only checking tid_ampdu_rx->timeout only when
+SUPPORTS_REORDERING_BUFFER is not set.
 
-I surely didn't think it totally through. I was just trying to
-illustrate that I feel like we need to have some kind of new design for
-all these overlapping updates (CSA, BSS color change, EHT and UHR
-critical updates?) than the piecemeal design we have now.
+Fixes: f89e07d4cf26 ("mac80211: agg-rx: refuse ADDBA Request with timeout update")
+Signed-off-by: Remi Pommarel <repk@triplefau.lt>
+---
+ net/mac80211/agg-rx.c | 19 ++++++++++---------
+ 1 file changed, 10 insertions(+), 9 deletions(-)
 
-And, importantly, that perhaps I think that this means we need to have
-"post-update UHR operation" more than the individual UHR operation
-updates broken out - which after all is where we started from.
+diff --git a/net/mac80211/agg-rx.c b/net/mac80211/agg-rx.c
+index 7da909d78c68..099a291723e6 100644
+--- a/net/mac80211/agg-rx.c
++++ b/net/mac80211/agg-rx.c
+@@ -353,7 +353,16 @@ void __ieee80211_start_rx_ba_session(struct sta_info *sta,
+ 	       buf_size, sta->sta.addr);
+ 
+ 	if (test_bit(tid, sta->ampdu_mlme.agg_session_valid)) {
+-		if (sta->ampdu_mlme.tid_rx_token[tid] == dialog_token) {
++		if (sta->ampdu_mlme.tid_rx_token[tid] != dialog_token) {
++			ht_dbg_ratelimited(sta->sdata,
++					   "unexpected AddBA Req from %pM on tid %u\n",
++					   sta->sta.addr, tid);
++
++			/* delete existing Rx BA session on the same tid */
++			__ieee80211_stop_rx_ba_session(sta, tid, WLAN_BACK_RECIPIENT,
++						       WLAN_STATUS_UNSPECIFIED_QOS,
++						       false);
++		} else if (!ieee80211_hw_check(&local->hw, SUPPORTS_REORDERING_BUFFER)) {
+ 			struct tid_ampdu_rx *tid_rx;
+ 
+ 			ht_dbg_ratelimited(sta->sdata,
+@@ -374,14 +383,6 @@ void __ieee80211_start_rx_ba_session(struct sta_info *sta,
+ 			goto end;
+ 		}
+ 
+-		ht_dbg_ratelimited(sta->sdata,
+-				   "unexpected AddBA Req from %pM on tid %u\n",
+-				   sta->sta.addr, tid);
+-
+-		/* delete existing Rx BA session on the same tid */
+-		__ieee80211_stop_rx_ba_session(sta, tid, WLAN_BACK_RECIPIENT,
+-					       WLAN_STATUS_UNSPECIFIED_QOS,
+-					       false);
+ 	}
+ 
+ 	if (ieee80211_hw_check(&local->hw, SUPPORTS_REORDERING_BUFFER)) {
+-- 
+2.52.0
 
-
-> t1: A UHR critical update is triggered. hostapd sends
-> NL80211_CMD_START_MLD_BSS_UPDATE with an advanced notification (5
-> TBTTs), post=E2=80=91interval (5 TBTTs), and the beacon template with UHR
-> parameters update element for link 0. Timers start in mac80211, and
-> hostapd receives cookie X.
-
-Don't know if timers would be really in mac80211 - I guess if the driver
-pulls each individual beacon then mac80211 could handle the countdown,
-but otherwise this might just be given to firmware.
-
-Also I guess the counter would have offset(s) from the start, i.e. the
-beacon template would be in this operation already. Or maybe even beacon
-updates for multiple links? Don't know if that really matters much
-either way.
-
-> t2: hostapd sends NL80211_CMD_UPDATE_AP with cookie X and offset where
-> the counter is updated for link 1 (and then link 2).
->=20
-> the countdown values would be handled in mac80211 with the offset
-> mentioned similar to ieee80211_set_beacon_cntdwn().
-
-Sort of, yeah. I imagined that the CMD_UPDATE_AP would come with a list
-of "cookie X: { offset X_1, offset X_2 }, cookie Y: { offset Y_1 }" or
-something like that.
-
-> t3: Before the UHR advanced interval completes, a CSA is triggered (due
-> to radar or user=E2=80=91initiated). Another NL80211_CMD_START_MLD_BSS_UP=
-DATE is
-> issued with CSA countdown 5, including CSA and after beacon templates.
-> The after template carries cookie X and the offset. Since UHR CU is
-> already in progress, hostapd could also include an updated parameters
-> update element.=C2=A0
-
-Would have to, I think? I think in your example it's unlikely the _after
-CSA_ template still has cookie X / offset(s) X_n, since you only had 10
-beacon intervals overall for the UHR critical update and CSA might be
-longer, but we could also imagine the UHR critical update was advertised
-for a longer time.
-
-> Also, an updated UHR operation element which can be
-> modified in after beacon template if CSA finishes after the UHR CU
-> advance interval. (why to provide the UHR operation element separately
-> is because the advance notification can be before or after the CSA
-> finalize).
-> hostapd then receives cookie Y for the CSA.
-
-This could get trickier than I imagined - you now have three periods of
-time:
-
- - now
- - after CSA but before UHR update
- - after UHR update
-
-and actually all three might need different UHR operation, since the CSA
-can change the bandwidth and therefore e.g. DBE/NPCA. The intermediate
-period ("after CSA but before UHR update") can be captured by the CSA
-operation (given a template/UHR operation for after) easily.
-
-But I was imagining we capture all this in the operations already, so I
-guess to do that we would need a "NL80211_CMD_MODIFY_MLD_BSS_UPDATE"
-command that takes the cookie and updates the post-operation values, so
-that the changes due to the CSA could be taken into account in the
-previously started UHR update.
-
-FWIW, I was also kind of imagining that we'd design this combined update
-command in a way that it replaces the CSA and color change commands,
-handles the proposed link removal thing from Lorenzo, and then we don't
-need to handle overlapping operations of all kinds, just of this new
-kind that can do many different things. Not a huge difference though
-since CSA/CCA would map to a subset of the new "thing".
-
-
-> t4: hostapd issues NL80211_CMD_UPDATE_AP for link 1 with cookie X (UHR
-> offset) and cookie Y (CSA offset), followed by link 2.
-
-Not sure really about this. You also need new beacon templates for the
-two periods I mentioned above ("after CSA but before UHR update" and
-"after UHR update").
-
-
-I think in my head the beacon templates for post-operations for all
-links would've been handle by NL80211_CMD_START_MLD_BSS_UPDATE and, as I
-discovered above, NL80211_CMD_MODIFY_MLD_BSS_UPDATE, rather than by
-NL80211_CMD_UPDATE_AP.
-
-I was, however, imagining that updates to the *current* template could
-still happen via NL80211_CMD_UPDATE_AP, so - let's build a side branch
-here first, e.g.:
-
-      - we start UHR update to happen in 10 beacon intervals
-        - this comes with a post-update template and post-update UHR operat=
-ion
-      - something else happens, e.g. HT mixed mode needs updating
-        in this case, NL80211_CMD_UPDATE_AP could happen with the cookie(s)
-        and offset(s) for the _current_ beacon
-     =20
-      Although I think perhaps this ends up being racy, and in fact hostapd
-      would need to use a hypothetical NL80211_CMD_MODIFY_MLD_BSS_UPDATE ag=
-ain
-      to update the link's beacon for HT mixed mode for all of the ongoing =
-BSS
-      updates and their post beacon(s)?
-
-Anyway, back to your scenario:
-
-> t5: When the UHR advanced notification interval expires, the CSA after
-> beacon template is updated to reflect the new operation element by
-> mac80211 or getting it from hostapd.
-
-Yeah so that's also an option, if we think it'd work / not be too racy?
-As I wrote, I was thinking CSA becomes another MLD BSS update and then
-the post-CSA template is already given there.
-
-> t6: Once the CSA completes, the driver updates the after beacon template
-> along with updated counter for UHR parameter update element. (since it
-> will be in the post notification interval)
->=20
->=20
-> t7: When the UHR post=E2=80=91interval completes, the UHR parameter updat=
-e
-> element is removed. Since offsets are known, the driver can remove it
-> from the latest beacon template.
-
-I wasn't really imagining the driver would remove it I guess, but rather
-a post-update template would be provided already.
-
-Ah! I think you were maybe thinking "this is the offset where to
-insert/remove the UHR Parameter Update element", and I was thinking
-"this is the offset of the counter" so that we could also put it into
-the RNR etc.?
-
-> Please let me know if this sequence aligns with the intended behavior,
-> or if I=E2=80=99m missing any edge cases.
->=20
-> Also, CSA during NPCA parameter update seems very tricky as the channel
-> information advertised in NPCA may not be relevant when there is a CSA,
-> perhaps stop the NPCA CU (still spec has not mentioned any details on
-> the abort scenario though)
-
-Right, it's a bit tricky all over for concurrency scenarios. I hear that
-two UHR critical updates concurrently are not going to be allowed
-though.
-
-> Even, in case of link removal during UHR CU update, we need to stop the
-> UHR CU.
-
-Well if the link is removed then it probably isn't relevant to update it
-any more anyway?
-
-> Furthermore, the UHR capabilities carries the advance notification
-> interval, post notification  (i guess yet to be added in element as I
-> see it in "37-8=E2=80=94Enhanced Critical Updates Mechanism") and update
-> indication in TIM interval, these intervals can be sent in the START_AP.
-> I assume, these intervals cannot be modified dynamically as these are
-> exchanged in assoc response (Will reconfirm again).
-
-Yeah, I agree, I would tend to think these are fixed.
-
-> For beacon offloaded drivers, NL80211_CMD_START_MLD_BSS_UPDATE can be as
-> a trigger. May be we can add the updated UHR operation element in case
-> of UHR. So, that firmware/driver handle the timers as well as
-> constructing the elements since "the encoding of fields in Mode specific
-> parameters for any feature say DPS/NPCA/DBE etc.. is same as the
-> corresponding field in operation parameters field for that feature" (but
-> i see bit variations for NPCA between both)
-
-The bit variants are going to get fixed, it's just not entirely clear
-yet which way around.
-
-
-> I guess, this means the proposal of having a separate netlink attribute
-> for the UHR operation with _full_ data like is much useful.
-
-OK. We can always also just parse it out anyway, just that element
-(contents) isn't really too difficult to get at.
-
-> Still, we are thinking through on all the other cases of wifi-7/CCA etc..
-
-Of course.
-
-Thanks,
-johannes
 
