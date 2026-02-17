@@ -1,289 +1,138 @@
-Return-Path: <linux-wireless+bounces-31929-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-31930-lists+linux-wireless=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id UBbdG35SlGl3CgIAu9opvQ
-	(envelope-from <linux-wireless+bounces-31929-lists+linux-wireless=lfdr.de@vger.kernel.org>)
-	for <lists+linux-wireless@lfdr.de>; Tue, 17 Feb 2026 12:35:26 +0100
+	id qMGKEANUlGl3CgIAu9opvQ
+	(envelope-from <linux-wireless+bounces-31930-lists+linux-wireless=lfdr.de@vger.kernel.org>)
+	for <lists+linux-wireless@lfdr.de>; Tue, 17 Feb 2026 12:41:55 +0100
 X-Original-To: lists+linux-wireless@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id D07DC14B6FC
-	for <lists+linux-wireless@lfdr.de>; Tue, 17 Feb 2026 12:35:25 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 966C914B843
+	for <lists+linux-wireless@lfdr.de>; Tue, 17 Feb 2026 12:41:54 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id C05DC30117B6
-	for <lists+linux-wireless@lfdr.de>; Tue, 17 Feb 2026 11:35:24 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 4A05B30067A6
+	for <lists+linux-wireless@lfdr.de>; Tue, 17 Feb 2026 11:41:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 665E314A8B;
-	Tue, 17 Feb 2026 11:35:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AA22633373B;
+	Tue, 17 Feb 2026 11:41:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=wp.pl header.i=@wp.pl header.b="P9v5xWFw"
+	dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b="Y6jrVJ/6"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mx3.wp.pl (mx3.wp.pl [212.77.101.9])
+Received: from sipsolutions.net (s3.sipsolutions.net [168.119.38.16])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9FE79332EB2
-	for <linux-wireless@vger.kernel.org>; Tue, 17 Feb 2026 11:35:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.77.101.9
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7845D334698
+	for <linux-wireless@vger.kernel.org>; Tue, 17 Feb 2026 11:41:51 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=168.119.38.16
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771328122; cv=none; b=OemaOuDOsp4RGIhBZLSuF4qoaPcV88p39f6YpNlZaTu9045fjF5DNUJiEdPNuI6FAdatvrPemRTdZRfraybbLNDfT6RzqtdPmKWUKkqM61n3tahpzwf991B1pMYpBubLSrzXUiTIzcw9VuRUxLAlYyW/GIxsOiYtyK9KMOPvCT8=
+	t=1771328512; cv=none; b=PRPtXgqP8GBfwp46+F3dmytB96zTtWh2WVV7zWGP7sNncx8AleRbPIW0nqskKkggNkSCSPL7dUq5BE3/raQD1gZFFfzLfKwkGe1nrxiCDDWQXU/XjF/hD9kSfcXTs7Z+bHR6JNdtlRqovQUkgSyY92WAMS9a2OYFDltqHbadq1A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771328122; c=relaxed/simple;
-	bh=PoapMP4COwGoFID61t45vY1LuXY7pJvvwr04zVlx4GA=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=nvBljVMfOMpaBbZMhX66MqFZsv9Z96SM9hYaZtqw2UIr7vH4rk3h9n4U3nRLySzFlB6/P49Bnx5Wgr3DYcnFeMEjh3rtoMXJHv1Y7dRZfKiaD8WqQtZso4i/eqC/J5mYoMsRQuXVb/Daw0EXb7vOQpNRvCKgLWW2lWw5V7DblSI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=wp.pl; spf=pass smtp.mailfrom=wp.pl; dkim=pass (2048-bit key) header.d=wp.pl header.i=@wp.pl header.b=P9v5xWFw; arc=none smtp.client-ip=212.77.101.9
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=wp.pl
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=wp.pl
-Received: (wp-smtpd smtp.wp.pl 31336 invoked from network); 17 Feb 2026 12:35:10 +0100
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=wp.pl; s=20241105;
-          t=1771328110; bh=sxgF2V3nlw6uBiaZJzqx5C7V/ot6RGXS96gFNYSxWiA=;
-          h=From:To:Cc:Subject;
-          b=P9v5xWFwhwup4ogMwb+oBZlwV8B2UVO/GjrbTM9Ob7ZKozcBaPVfJC9H7MHseZQ2y
-           pIVAOKw6EKZ1sE72BNaRQ/UEG2VV3c82/TTswAkJPudOfEsN/UgR+xNn8nYTgyspTW
-           uMbqSTgrovDW/QfdQzL/O0lEM3gctV6SCtgzB2kIsHi6nvCVXXTROKdGL9ZgcxBuJ0
-           HUlvSAPibK/2WxXmXHp0ObUo8wGmQ/VjjKiwPqmWRhTElHw4KkIiFNTcyR7Ma+u6nO
-           4XbEAyGq4g+4nE7fXO9bHt0ZbYllrSaHxH3oRqU+r/TIF3TG0Q8/b0Gn2a5kL33f0b
-           LkD7WVhd3jd6w==
-Received: from 89-64-3-178.dynamic.play.pl (HELO localhost) (stf_xl@wp.pl@[89.64.3.178])
-          (envelope-sender <stf_xl@wp.pl>)
-          by smtp.wp.pl (WP-SMTPD) with TLS_AES_256_GCM_SHA384 encrypted SMTP
-          for <gustavoars@kernel.org>; 17 Feb 2026 12:35:10 +0100
-Date: Tue, 17 Feb 2026 12:35:09 +0100
-From: Stanislaw Gruszka <stf_xl@wp.pl>
-To: "Gustavo A. R. Silva" <gustavoars@kernel.org>
-Cc: Johannes Berg <johannes@sipsolutions.net>,
-	linux-wireless@vger.kernel.org, linux-kernel@vger.kernel.org,
-	linux-hardening@vger.kernel.org, Kees Cook <kees@kernel.org>
-Subject: Re: [PATCH v4][next] wifi: iwlegacy: Avoid multiple
- -Wflex-array-member-not-at-end warnings
-Message-ID: <20260217113509.GA12624@wp.pl>
-References: <aZLienEatf9KC6Rx@kspp>
+	s=arc-20240116; t=1771328512; c=relaxed/simple;
+	bh=/Qrug7C+8i1GbcO0ptty3XvHTLbxYp94FInCYKlW4+c=;
+	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=JpCvYCNzhgtX9bg5q3uW81fL3eVuM5Tur8ts2twsnOFGI6ITuXZ6C9Knya8MUeDwbiphnJEG9k/RhGm4D9Nf4UWC+C4/2wtMKhbB3pilMd8UVWP1Lv6585CWo415l42tAwM1DAyy+EsHVBoJztiNFhN//pCCYMwOC0gAH9Ahk+c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net; spf=pass smtp.mailfrom=sipsolutions.net; dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b=Y6jrVJ/6; arc=none smtp.client-ip=168.119.38.16
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sipsolutions.net
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=sipsolutions.net; s=mail; h=MIME-Version:Content-Transfer-Encoding:
+	Content-Type:References:In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender
+	:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
+	Resent-Cc:Resent-Message-ID; bh=/Qrug7C+8i1GbcO0ptty3XvHTLbxYp94FInCYKlW4+c=;
+	t=1771328511; x=1772538111; b=Y6jrVJ/6TTCQovaf1I4wmnYlEZGZf70pVShxS9u/tFHBfU8
+	xF18b2rISdt8HvF2ciiauJgYW2r/JlyWLfxhQHf++qAB0eJIrjNXcxqqFN/QuCbNvnUIg0VNElmAx
+	IcogUz1zt+feBLliP+plIA3xP1sXJr6C2Ahx9Ox668wqkXS67povyv4kKWHpJoOyFGBTpqCAnBurY
+	jyZqcf8TlcezPV94yPl6bWH9P2b5O08Vkglm9l4LaFJ2MP7bsx1ClBXpRACRsuvVn0x53N0WBNq5+
+	si1JO4jTcf04/ZBtQHV2NI6cisWxJybtJByxgyc9xMk/8UQ7i7ju1kczzhsWmJyg==;
+Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
+	(Exim 4.98.2)
+	(envelope-from <johannes@sipsolutions.net>)
+	id 1vsJSf-0000000BMtj-0Zx5;
+	Tue, 17 Feb 2026 12:41:49 +0100
+Message-ID: <ed4316fdadf5b25e9e27df355ea14eee1efd7181.camel@sipsolutions.net>
+Subject: Re: [PATCH wireless-next v2 1/3] wifi: cfg80211: Add support for
+ S1G Response Indication Configuration
+From: Johannes Berg <johannes@sipsolutions.net>
+To: Ria Thomas <ria.thomas@morsemicro.com>
+Cc: linux-wireless@vger.kernel.org, lachlan.hodges@morsemicro.com, 
+	arien.judge@morsemicro.com, pradeep.reddy@morsemicro.com,
+ simon@morsemicro.com
+Date: Tue, 17 Feb 2026 12:41:48 +0100
+In-Reply-To: <20260212084351.aqswgnvnuepun6em@1207> (sfid-20260212_094358_698471_E6882E0E)
+References: <20251209062424.3926297-1-ria.thomas@morsemicro.com>
+	 <20251209062424.3926297-2-ria.thomas@morsemicro.com>
+	 <9eb13765529bac88337ab2fd1a13769fa4519f52.camel@sipsolutions.net>
+	 <20260109040041.tnk7e6uewo24u3tr@1207>
+	 <048c2715d08822d7f79b082cbe332f982d8ced61.camel@sipsolutions.net>
+	 <20260206061139.6fdwaazvk4swpreo@1207>
+	 <ec999f04a965006dea6bd8e7380996b6fca980b4.camel@sipsolutions.net>
+	 <20260212084351.aqswgnvnuepun6em@1207>
+	 (sfid-20260212_094358_698471_E6882E0E)
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.58.3 (3.58.3-1.fc43) 
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <aZLienEatf9KC6Rx@kspp>
-X-WP-MailID: 0b6bcf5218986e2ab4df55dba7fb2fc7
-X-WP-AV: skaner antywirusowy Poczty Wirtualnej Polski
-X-WP-SPAM: NO 0000000 [MfN0]                               
+X-malware-bazaar: not-scanned
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[wp.pl,none];
-	R_DKIM_ALLOW(-0.20)[wp.pl:s=20241105];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	DMARC_POLICY_ALLOW(-0.50)[sipsolutions.net,none];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64];
+	R_DKIM_ALLOW(-0.20)[sipsolutions.net:s=mail];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-31929-lists,linux-wireless=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	TO_DN_SOME(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[johannes@sipsolutions.net,linux-wireless@vger.kernel.org];
 	MIME_TRACE(0.00)[0:+];
 	FROM_HAS_DN(0.00)[];
-	MISSING_XM_UA(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[stf_xl@wp.pl,linux-wireless@vger.kernel.org];
-	DKIM_TRACE(0.00)[wp.pl:+];
-	MID_RHS_MATCH_FROM(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	TO_DN_SOME(0.00)[];
+	TAGGED_FROM(0.00)[bounces-31930-lists,linux-wireless=lfdr.de];
 	TAGGED_RCPT(0.00)[linux-wireless];
-	FREEMAIL_FROM(0.00)[wp.pl];
-	RCPT_COUNT_FIVE(0.00)[6]
-X-Rspamd-Queue-Id: D07DC14B6FC
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MID_RHS_MATCH_FROM(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[6];
+	PRECEDENCE_BULK(0.00)[];
+	DKIM_TRACE(0.00)[sipsolutions.net:+]
+X-Rspamd-Queue-Id: 966C914B843
 X-Rspamd-Action: no action
 
-On Mon, Feb 16, 2026 at 06:25:14PM +0900, Gustavo A. R. Silva wrote:
-> -Wflex-array-member-not-at-end was introduced in GCC-14, and we are
-> getting ready to enable it, globally.
-> 
-> Move the conflicting declarations (which in a couple of cases happen
-> to be in a union, so the entire unions are moved) to the end of the
-> corresponding structures, struct il_frame, and struct il3945_frame.
-> 
-> Notice that `struct il_tx_beacon_cmd`, `struct il4965_tx_resp`, and
-> `struct il3945_tx_beacon_cmd` are flexible structures, this is
-> structures that contain a flexible-array member.
-> 
-> The case for struct il4965_beacon_notif is different. Since this
-> structure is defined by hardware, we create the new `struct
-> il4965_tx_resp_hdr` type. We then use this newly created type to
-> replace the object type causing trouble in struct il4965_beacon_notif,
-> namely `struct il4965_tx_resp`.
-> 
-> Also, once -fms-extensions is enabled, we can use transparent struct
-> members in struct il4965_tx_resp.
-> 
-> Notice that the newly created type does not contain the flex-array
-> member `agg_status`, which is the object causing the -Wfamnae warnings.
-> This object is currently in a union along with `__le32 status`, so
-> anything using struct il4965_beacon_notif needs to have its own view
-> of `status`. To preserve the memory layout, we therefore add member
-> `__le32 beacon_tx_status` to struct il4965_beacon_notif.
-> 
-> After these changes, the size of struct il4965_beacon_notif along
-> with its member's offsets remain the same, hence the memory layout
-> doesn't change:
-> 
-> Before changes:
-> struct il4965_beacon_notif {
-> 	struct il4965_tx_resp      beacon_notify_hdr;    /*     0    24 */
-> 	__le32                     low_tsf;              /*    24     4 */
-> 	__le32                     high_tsf;             /*    28     4 */
-> 	__le32                     ibss_mgr_status;      /*    32     4 */
-> 
-> 	/* size: 36, cachelines: 1, members: 4 */
-> 	/* last cacheline: 36 bytes */
-> };
-> 
-> After changes:
-> struct il4965_beacon_notif {
-> 	struct il4965_tx_resp_hdr  beacon_notify_hdr;    /*     0    20 */
-> 	__le32                     beacon_tx_status;     /*    20     4 */
-> 	__le32                     low_tsf;              /*    24     4 */
-> 	__le32                     high_tsf;             /*    28     4 */
-> 	__le32                     ibss_mgr_status;      /*    32     4 */
-> 
-> 	/* size: 36, cachelines: 1, members: 5 */
-> 	/* last cacheline: 36 bytes */
-> };
-> 
-> Lastly, adjust the rest of the code, accordingly.
-> 
-> With these changes fix the following warnings:
-> 
-> 11 drivers/net/wireless/intel/iwlegacy/common.h:526:11: warning: structure containing a flexible array member is not at the end of another structure [-Wflex-array-member-not-at-end]
-> 11 drivers/net/wireless/intel/iwlegacy/commands.h:2667:31: warning: structure containing a flexible array member is not at the end of another structure [-Wflex-array-member-not-at-end]
-> 4 drivers/net/wireless/intel/iwlegacy/3945.h:131:11: warning: structure containing a flexible array member is not at the end of another structure [-Wflex-array-member-not-at-end]
-> 
-> Signed-off-by: Gustavo A. R. Silva <gustavoars@kernel.org>
-Acked-by: Stanislaw Gruszka <stf_xl@wp.pl>
+Hi,
 
-Regards
-Stanislaw
-> ---
-> Changes in v4:
->  - (Aggh...) Fix a couple of typos in changelog text:
->    		s/stryct/struct
->    		s/il4965_beacon_notif/il4965_tx_resp.
-> 
-> Changes in v3:
->  - Create new separate struct il4965_tx_resp_hdr, and use
->    transparent struct members instead of __struct_group(). (Kees)
->  - Update subject line - Add 'wifi:' prefix. (Stanislaw)
->  - Link: https://lore.kernel.org/linux-hardening/aZLgfO6z1Gt8aiyc@kspp/
-> 
-> Changes in v2:
->  - Use the struct_group() helper, and update the conflicting type
->    (struct il4965_tx_resp -> struct il4965_tx_resp_hdr) in
->    struct il4965_beacon_notif.
->  - Link: https://lore.kernel.org/linux-hardening/aYlkt2WP2oQ1TgeH@kspp/
-> 
-> v1:
->  - Link: https://lore.kernel.org/linux-hardening/aR2CtqZI3atH0HmE@kspp/
-> 
->  drivers/net/wireless/intel/iwlegacy/3945.h     | 4 +++-
->  drivers/net/wireless/intel/iwlegacy/4965-mac.c | 2 +-
->  drivers/net/wireless/intel/iwlegacy/commands.h | 9 +++++++--
->  drivers/net/wireless/intel/iwlegacy/common.h   | 4 +++-
->  4 files changed, 14 insertions(+), 5 deletions(-)
-> 
-> diff --git a/drivers/net/wireless/intel/iwlegacy/3945.h b/drivers/net/wireless/intel/iwlegacy/3945.h
-> index fb1e33c89d0e..ed63b31fee9a 100644
-> --- a/drivers/net/wireless/intel/iwlegacy/3945.h
-> +++ b/drivers/net/wireless/intel/iwlegacy/3945.h
-> @@ -123,13 +123,15 @@ enum il3945_antenna {
->  #define IEEE80211_FRAME_LEN             (IEEE80211_DATA_LEN + IEEE80211_HLEN)
->  
->  struct il3945_frame {
-> +	struct list_head list;
-> +
-> +	/* Must be last as it ends in a flexible-array member. */
->  	union {
->  		struct ieee80211_hdr frame;
->  		struct il3945_tx_beacon_cmd beacon;
->  		u8 raw[IEEE80211_FRAME_LEN];
->  		u8 cmd[360];
->  	} u;
-> -	struct list_head list;
->  };
->  
->  #define SUP_RATE_11A_MAX_NUM_CHANNELS  8
-> diff --git a/drivers/net/wireless/intel/iwlegacy/4965-mac.c b/drivers/net/wireless/intel/iwlegacy/4965-mac.c
-> index 57fa866efd9f..f5a99a2ee95a 100644
-> --- a/drivers/net/wireless/intel/iwlegacy/4965-mac.c
-> +++ b/drivers/net/wireless/intel/iwlegacy/4965-mac.c
-> @@ -4076,7 +4076,7 @@ il4965_hdl_beacon(struct il_priv *il, struct il_rx_buf *rxb)
->  	u8 rate = il4965_hw_get_rate(beacon->beacon_notify_hdr.rate_n_flags);
->  
->  	D_RX("beacon status %x retries %d iss %d tsf:0x%.8x%.8x rate %d\n",
-> -	     le32_to_cpu(beacon->beacon_notify_hdr.u.status) & TX_STATUS_MSK,
-> +	     le32_to_cpu(beacon->beacon_tx_status) & TX_STATUS_MSK,
->  	     beacon->beacon_notify_hdr.failure_frame,
->  	     le32_to_cpu(beacon->ibss_mgr_status),
->  	     le32_to_cpu(beacon->high_tsf), le32_to_cpu(beacon->low_tsf), rate);
-> diff --git a/drivers/net/wireless/intel/iwlegacy/commands.h b/drivers/net/wireless/intel/iwlegacy/commands.h
-> index b61b8f377702..7aba84ac88a1 100644
-> --- a/drivers/net/wireless/intel/iwlegacy/commands.h
-> +++ b/drivers/net/wireless/intel/iwlegacy/commands.h
-> @@ -1690,7 +1690,7 @@ struct agg_tx_status {
->  	__le16 sequence;
->  } __packed;
->  
-> -struct il4965_tx_resp {
-> +struct il4965_tx_resp_hdr {
->  	u8 frame_count;		/* 1 no aggregation, >1 aggregation */
->  	u8 bt_kill_count;	/* # blocked by bluetooth (unused for agg) */
->  	u8 failure_rts;		/* # failures due to unsuccessful RTS */
-> @@ -1707,6 +1707,10 @@ struct il4965_tx_resp {
->  	__le16 reserved;
->  	__le32 pa_power1;	/* RF power amplifier measurement (not used) */
->  	__le32 pa_power2;
-> +} __packed;
-> +
-> +struct il4965_tx_resp {
-> +	struct il4965_tx_resp_hdr;
->  
->  	/*
->  	 * For non-agg:  frame status TX_STATUS_*
-> @@ -2664,7 +2668,8 @@ struct il3945_beacon_notif {
->  } __packed;
->  
->  struct il4965_beacon_notif {
-> -	struct il4965_tx_resp beacon_notify_hdr;
-> +	struct il4965_tx_resp_hdr beacon_notify_hdr;
-> +	__le32 beacon_tx_status;
->  	__le32 low_tsf;
->  	__le32 high_tsf;
->  	__le32 ibss_mgr_status;
-> diff --git a/drivers/net/wireless/intel/iwlegacy/common.h b/drivers/net/wireless/intel/iwlegacy/common.h
-> index 4c9836ab11dd..21f1c7702add 100644
-> --- a/drivers/net/wireless/intel/iwlegacy/common.h
-> +++ b/drivers/net/wireless/intel/iwlegacy/common.h
-> @@ -518,13 +518,15 @@ struct il_channel_info {
->  #define IEEE80211_FRAME_LEN             (IEEE80211_DATA_LEN + IEEE80211_HLEN)
->  
->  struct il_frame {
-> +	struct list_head list;
-> +
-> +	/* Must be last as it ends in a flexible-array member. */
->  	union {
->  		struct ieee80211_hdr frame;
->  		struct il_tx_beacon_cmd beacon;
->  		u8 raw[IEEE80211_FRAME_LEN];
->  		u8 cmd[360];
->  	} u;
-> -	struct list_head list;
->  };
->  
->  enum {
-> -- 
-> 2.43.0
-> 
+> > But we still need to decide where it should live, although in
+> > that case I'd be more willing to accept an interface setting despite
+> > the lifetime issues.)
+> >=20
+>=20
+> We think it makes the most sense to treat Response Indication as an
+> interface-level setting=C2=A0 as it avoids introducing peer-specific stat=
+e
+> that is neither negotiated nor maintained by the protocol.
+
+Fair. I don't really think it makes a huge difference - this state is
+not negotiated nor maintained by the protocol at the interface level
+either, after all :-) In a way I don't think it's a good argument either
+way I guess, but if it's only a debug config I also don't care much (and
+we already have things like tkip_mic_test that are in a way similar.)
+
+> That said as the response indication is only a test configuration there
+> is expected to be some changes to the upcoming patches. I would preferabl=
+y
+> submit the response indication configuration as a single patch and NDP
+> ADDBA/DELBA negotiations as a different patch. This would open up two dif=
+ferent
+> new mail chains for two patches which is different from the current one.
+
+Sure, if it can be separated I have no issues with that.
+
+johannes
 
