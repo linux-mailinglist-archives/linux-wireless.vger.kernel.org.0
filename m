@@ -1,312 +1,194 @@
-Return-Path: <linux-wireless+bounces-31914-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-31917-lists+linux-wireless=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id eP+XNmGSk2lu6gEAu9opvQ
-	(envelope-from <linux-wireless+bounces-31914-lists+linux-wireless=lfdr.de@vger.kernel.org>)
-	for <lists+linux-wireless@lfdr.de>; Mon, 16 Feb 2026 22:55:45 +0100
+	id yI4ANevSk2nb8wEAu9opvQ
+	(envelope-from <linux-wireless+bounces-31917-lists+linux-wireless=lfdr.de@vger.kernel.org>)
+	for <lists+linux-wireless@lfdr.de>; Tue, 17 Feb 2026 03:31:07 +0100
 X-Original-To: lists+linux-wireless@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id BCD36147D58
-	for <lists+linux-wireless@lfdr.de>; Mon, 16 Feb 2026 22:55:45 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 53E071487CD
+	for <lists+linux-wireless@lfdr.de>; Tue, 17 Feb 2026 03:31:07 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id BCF9630071E7
-	for <lists+linux-wireless@lfdr.de>; Mon, 16 Feb 2026 21:55:36 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id A46923015885
+	for <lists+linux-wireless@lfdr.de>; Tue, 17 Feb 2026 02:31:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 74C9A2C032C;
-	Mon, 16 Feb 2026 21:55:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EEBA214E2F2;
+	Tue, 17 Feb 2026 02:31:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="B3ZnPOSR"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="eI3A592H"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.15])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-yw1-f172.google.com (mail-yw1-f172.google.com [209.85.128.172])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 876A92C1598
-	for <linux-wireless@vger.kernel.org>; Mon, 16 Feb 2026 21:55:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.15
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9386B199FB0
+	for <linux-wireless@vger.kernel.org>; Tue, 17 Feb 2026 02:31:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771278924; cv=none; b=Z76bvpD9vq7pC4/pxpjQzbBlMBSbv/oLuKyuax4vi+axmzp61hXjK4U4antYcTXHwQnS0eQGLJTxEslCzvuKneb/cIUUhRv5rqcqk7zVRJWf+eXCRcHYbuqPUaXGA2E4P91MDqQ3Bxiq1rdi2XeDiiHRNHJkt3yfiqVKw5p5ZGk=
+	t=1771295464; cv=none; b=mZA1cb4XYtrJ2JdB/o9k+eUHbYZBvH40risgXMvWTstT6+tT7FFf/ZqbNHbEaRVhuqb5ak9IPXu29twrF6u52H6rC3QAG6B7rABxQT5r5GItrHxMSh4PFU8EXWQyYCgXFsKIcQgeNOhhlm+jIf0Q3GmLe2VmPgTnb2pcy4+vEeM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771278924; c=relaxed/simple;
-	bh=4SZAMHPcjskXnr2tool6hAIM8DP5qxSRoilhDPGUbvw=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=inLmio2usVmDPvRLMfB9eNtQ61BRjYmc1VfAVjBha+abqaajm6ewBagUHGfKAjVgiSoNmPVBokDyFSuu9HXcFV57sTcVslTPL60G5n8SvxyRy6b+vaeM1su1Bm4lJOqpWR6QXUN+AwpZwEEkiP322dwqMPO06zv1WjL0JpznUIM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=B3ZnPOSR; arc=none smtp.client-ip=198.175.65.15
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1771278923; x=1802814923;
-  h=from:to:cc:subject:date:message-id:in-reply-to:
-   references:mime-version:content-transfer-encoding;
-  bh=4SZAMHPcjskXnr2tool6hAIM8DP5qxSRoilhDPGUbvw=;
-  b=B3ZnPOSRpNKzGLpiGgL8icPaG2HKX3NDBiUQv4yFbavUbU3qVsISOcLN
-   Q4V1RslUxtUmQGwIpdP16Yic2Iexojy4x05OlYeZNoIENPWqQn8F8MUD9
-   vds9Elk1yBOmEWi1kj1OknH52WmtcbvwKGGlac1zNbIeijyh8zLT1jCGU
-   DaDQw9cBfR4EUOh2e4fP3eogUv5wTuonR9Gz+8EHJie0OQYSivsSraKl3
-   oK8b4mDO2TTkQ4leJEPu13hD+hDXNpScqS5j4Nt/IpaKF8GJXsRBFY9V2
-   v7Y69A3OA4VN2SsVMBPooisnG1hUwziOfsvalPYJ3JHttfAuYbuaKjFqu
-   w==;
-X-CSE-ConnectionGUID: oI7IkNofS2m2cymvTbrwIg==
-X-CSE-MsgGUID: cs1UgGihTuygZNaqVgoiNw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11703"; a="75980301"
-X-IronPort-AV: E=Sophos;i="6.21,295,1763452800"; 
-   d="scan'208";a="75980301"
-Received: from orviesa009.jf.intel.com ([10.64.159.149])
-  by orvoesa107.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 16 Feb 2026 13:55:23 -0800
-X-CSE-ConnectionGUID: hbBVExy9RGKNq8h4khwBcw==
-X-CSE-MsgGUID: AJICu2enQ5OA0eLgtZX1Ew==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.21,295,1763452800"; 
-   d="scan'208";a="213547374"
-Received: from weis0040.iil.intel.com ([10.12.217.108])
-  by orviesa009-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 16 Feb 2026 13:55:21 -0800
-From: Miri Korenblit <miriam.rachel.korenblit@intel.com>
-To: linux-wireless@vger.kernel.org
-Cc: Johannes Berg <johannes.berg@intel.com>
-Subject: [PATCH iwlwifi-next 15/15] wifi: nl80211: Add a notification to notify NAN channel evacuation
-Date: Mon, 16 Feb 2026 23:54:52 +0200
-Message-Id: <20260216234830.d1e4b5db853d.Iaaf5ef17e1ab7a38c19d60558e68fcf517e2b400@changeid>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20260216215452.1538316-1-miriam.rachel.korenblit@intel.com>
-References: <20260216215452.1538316-1-miriam.rachel.korenblit@intel.com>
+	s=arc-20240116; t=1771295464; c=relaxed/simple;
+	bh=kObS168gQBNE3xpbI2vaprxcEmPUWL2LSLVxVbKppr8=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=VlGUaOhQmnxX9u4R+IY1SDKP7k8yxzymrCrSKcLaZpmdiU8z1f8f5I/tcp7uS+Tm+YZIns6gML1qFirkKtVVW5EA4/ZOPWhYCZIYAFyu6lwXFUliWnRWoNw927mH3+SVZyCwMSf4/Q2fYAzfiF1t6kzgMIFA2YB4sii2iiTWBbw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=eI3A592H; arc=none smtp.client-ip=209.85.128.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-yw1-f172.google.com with SMTP id 00721157ae682-797d36fdb96so13828877b3.1
+        for <linux-wireless@vger.kernel.org>; Mon, 16 Feb 2026 18:31:02 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1771295461; x=1771900261; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=1fworB1P/Jzlnt8opUorAnuBCM+SRM92++aaBkD5qF0=;
+        b=eI3A592Hj1vFCSBKcwrw0jB9xsAgW4ZDNQX34ugMeChWPUm0eZW6gZKZsc7P8CuKHT
+         QoFK9W4j2XPEHrb7AR0IaKfx07yOWm+UBN/ysFcKz9rv33DX3+OnBkQcY0I2QXG3s5El
+         GIpIzuR5TceiRq7T+PukVDnoWDwyLIAZKPgX3iEGYGU/aWvRaL2Sn3l0r1sVmzJcNhcI
+         yg/c3jdQ5AugKbdklxX9ely/JaAlPQRynoHgUJy/pw4sVuUSzRjJ3JjDoRue7MVsQGC9
+         MBXvxBNvq3euG7wdsBfeIGU/L2f09J0fxsH8sL4po0XTuE2lr1wxbM7yuWXinh0ZsWXJ
+         P7Ow==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1771295461; x=1771900261;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=1fworB1P/Jzlnt8opUorAnuBCM+SRM92++aaBkD5qF0=;
+        b=jc4e/hWKryf2HfovIZeovN8v/aNer7RqUpDcmIBlkA/49FJi9MjfsiR8JEaOnUo6T2
+         59jdOm2yxTbySapbZ2nNAflYkSQc5bVq/aVPlRSb3OdVkPyhyIdDClrPLtJInZ+bn3Am
+         8bIM64WYXWb08VUCwPBnL0TFYq63hU7d5F3XzBVyrKl55kJ54Ofm1M7KW0gutoxFaT0J
+         YGPM5eozKOt1WnDh+HPeivKBxFYffRhHdR0h6iHd4v+0QyPWU6niJbey8MQnilYKxXB4
+         my07hY/VlD1AevLNJPP9iqxizzeO3Fn+tffmDffBrE0xmgLgS2tx8eVCcT+z/ZbY5eEm
+         rQ4w==
+X-Gm-Message-State: AOJu0YyhePjFsngj4YuZ6CTSFu4AldpCGXBoGmDEWJm6somHktmvrjYB
+	PlrX/uGxeP3YjMulyp8/uNHL+ip/3ak8k5ht3l6Bg1o0QzFUcPVAotKx
+X-Gm-Gg: AZuq6aLkBhX3/W79T40XmNiOdc3hJqSbkdTAHSQoQ5Thpd9i2GhxgDtQSvWZp9PvD7m
+	DkRTWDhX8vlZoOx6jrLnwSRiZf22bJoQzfRv/GZKhSpDrjjvlZo68c+64dL6BVZv+rrtzwl+kmn
+	s5cwxTs36oJGNQEHvzuV/TFaAa21DyYWbsShbMbcCvbtY8wpn0wuQY5ro6lrN+4ZLWRh9aO8u6/
+	TVsmqYKiiwboBle7PG1ocDBitf8jtz6WAgQD0ga8yTuD5eZaF/oBhgCAdpax4kESxrO7h+QU+ZL
+	iua6ekTImRd4dm+86axXD3No7wIlCMLipozLnFH+Wi9+UxtaEX+KeCuTS5JDzo53tTDK8bcPs+D
+	MWQ8a670B9lY87fPTvZRgVhBbfCwjNs5DjFW7+od5v7uuvTvlnth4Q5ZiVnVUlVSqQaWvRmj/ij
+	bae06NYElq3ylLv7FxxMquXeYg9rX/ZsQ6ok6FSguhkwvp5Cwr05OeHb9p8liLLjIeu2ybwaUXi
+	euw5j0tuhY0HfqZe/4Rgqy59Gyk8efzUEBREaOvGoQ=
+X-Received: by 2002:a05:690c:67c8:b0:794:c04d:bcfc with SMTP id 00721157ae682-797aa851693mr89684017b3.13.1771295461531;
+        Mon, 16 Feb 2026 18:31:01 -0800 (PST)
+Received: from tux ([2601:7c0:c37c:4c00:e3a8:26f7:7e08:88e1])
+        by smtp.gmail.com with ESMTPSA id 00721157ae682-7966c254daasm106806247b3.44.2026.02.16.18.31.00
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 16 Feb 2026 18:31:01 -0800 (PST)
+From: Ethan Tidmore <ethantidmore06@gmail.com>
+To: arend.vanspriel@broadcom.com
+Cc: linux-wireless@vger.kernel.org,
+	brcm80211@lists.linux.dev,
+	brcm80211-dev-list.pdl@broadcom.com,
+	linux-kernel@vger.kernel.org,
+	johannes.berg@intel.com,
+	Ethan Tidmore <ethantidmore06@gmail.com>
+Subject: [PATCH] brcmfmac: Fix error pointer dereference
+Date: Mon, 16 Feb 2026 20:30:43 -0600
+Message-ID: <20260217023043.73631-1-ethantidmore06@gmail.com>
+X-Mailer: git-send-email 2.53.0
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Organization: Intel Israel (74) Limited
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-1.16 / 15.00];
+X-Spamd-Result: default: False [-0.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MID_RHS_NOT_FQDN(0.50)[];
+	MID_CONTAINS_FROM(1.00)[];
 	R_MISSING_CHARSET(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[intel.com,none];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
-	R_DKIM_ALLOW(-0.20)[intel.com:s=Intel];
+	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
+	R_DKIM_ALLOW(-0.20)[gmail.com:s=20230601];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-31914-lists,linux-wireless=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	TO_DN_SOME(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	HAS_ORG_HEADER(0.00)[];
-	RCPT_COUNT_TWO(0.00)[2];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	TO_DN_SOME(0.00)[];
+	FREEMAIL_CC(0.00)[vger.kernel.org,lists.linux.dev,broadcom.com,intel.com,gmail.com];
+	TAGGED_FROM(0.00)[bounces-31917-lists,linux-wireless=lfdr.de];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[miriam.rachel.korenblit@intel.com,linux-wireless@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[intel.com:+];
+	RCVD_TLS_LAST(0.00)[];
+	DKIM_TRACE(0.00)[gmail.com:+];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	FREEMAIL_FROM(0.00)[gmail.com];
 	PRECEDENCE_BULK(0.00)[];
-	TAGGED_RCPT(0.00)[linux-wireless];
+	FROM_NEQ_ENVFROM(0.00)[ethantidmore06@gmail.com,linux-wireless@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	RCVD_COUNT_FIVE(0.00)[5];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:email,intel.com:dkim,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: BCD36147D58
+	TAGGED_RCPT(0.00)[linux-wireless];
+	RCPT_COUNT_SEVEN(0.00)[7];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 53E071487CD
 X-Rspamd-Action: no action
 
-If all available channel resources are used for NAN channels, and one of
-them is shared with another interface, and that interface needs to move
-to a different channel (for example STA interface that needs to do a
-channel or a link switch), then the driver can evacuate one of the NAN
-channels (i.e. detach it from its channel resource and announce to the
-peers that this channel is ULWed). In that case, the driver needs to
-notify user space about the channel evacuation, so the user space can
-adjust the local schedule accordingly.
+The function brcmf_chip_add_core() can return an error pointer and is
+not checked. Add checks for error pointer.
 
-Add a notification to let userspace know about it.
+Detected by Smatch:
+drivers/net/wireless/broadcom/brcm80211/brcmfmac/chip.c:1010 brcmf_chip_recognition() error:
+'core' dereferencing possible ERR_PTR()
 
-Reviewed-by: Johannes Berg <johannes.berg@intel.com>
-Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
+drivers/net/wireless/broadcom/brcm80211/brcmfmac/chip.c:1013 brcmf_chip_recognition() error:
+'core' dereferencing possible ERR_PTR()
+
+drivers/net/wireless/broadcom/brcm80211/brcmfmac/chip.c:1016 brcmf_chip_recognition() error:
+'core' dereferencing possible ERR_PTR()
+
+drivers/net/wireless/broadcom/brcm80211/brcmfmac/chip.c:1019 brcmf_chip_recognition() error:
+'core' dereferencing possible ERR_PTR()
+
+drivers/net/wireless/broadcom/brcm80211/brcmfmac/chip.c:1022 brcmf_chip_recognition() error:
+'core' dereferencing possible ERR_PTR()
+
+Fixes: cb7cf7be9eba7 ("brcmfmac: make chip related functions host interface independent")
+Signed-off-by: Ethan Tidmore <ethantidmore06@gmail.com>
 ---
- include/net/cfg80211.h       | 19 ++++++++++++++
- include/uapi/linux/nl80211.h | 27 +++++++++++++++-----
- net/wireless/nl80211.c       | 48 ++++++++++++++++++++++++++++++++++++
- net/wireless/trace.h         | 18 ++++++++++++++
- 4 files changed, 106 insertions(+), 6 deletions(-)
+ .../wireless/broadcom/brcm80211/brcmfmac/chip.c   | 15 +++++++++++++++
+ 1 file changed, 15 insertions(+)
 
-diff --git a/include/net/cfg80211.h b/include/net/cfg80211.h
-index f6143ef9e2d0..620869db2cc9 100644
---- a/include/net/cfg80211.h
-+++ b/include/net/cfg80211.h
-@@ -10586,6 +10586,25 @@ void cfg80211_nan_cluster_joined(struct wireless_dev *wdev,
- void cfg80211_nan_ulw_update(struct wireless_dev *wdev,
- 			     const u8 *ulw, size_t ulw_len, gfp_t gfp);
+diff --git a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/chip.c b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/chip.c
+index 4239f2b21e54..dcd8a296de10 100644
+--- a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/chip.c
++++ b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/chip.c
+@@ -1007,18 +1007,33 @@ static int brcmf_chip_recognition(struct brcmf_chip_priv *ci)
  
-+/**
-+ * cfg80211_nan_channel_evac - Notify user space about NAN channel evacuation
-+ * @wdev: Pointer to the wireless device structure
-+ * @chandef: Pointer to the channel definition of the NAN channel that was
-+ *	evacuated
-+ * @gfp: Memory allocation flags
-+ *
-+ * This function is used by drivers to notify user space when a NAN
-+ * channel has been evacuated (i.e. ULWed) due to channel resource conflicts
-+ * with other interfaces.
-+ * This can happen when another interface sharing the channel resource with NAN
-+ * needs to move to a different channel (e.g. due to channel switch or link
-+ * switch). User space may reconfigure the local schedule to exclude the
-+ * evacuated channel.
-+ */
-+void cfg80211_nan_channel_evac(struct wireless_dev *wdev,
-+			       const struct cfg80211_chan_def *chandef,
-+			       gfp_t gfp);
+ 		core = brcmf_chip_add_core(ci, BCMA_CORE_CHIPCOMMON,
+ 					   SI_ENUM_BASE_DEFAULT, 0);
++		if (IS_ERR(core))
++			return PTR_ERR(core);
 +
- #ifdef CONFIG_CFG80211_DEBUGFS
- /**
-  * wiphy_locked_debugfs_read - do a locked read in debugfs
-diff --git a/include/uapi/linux/nl80211.h b/include/uapi/linux/nl80211.h
-index 191bb2e9c7d9..d7baf3ca751c 100644
---- a/include/uapi/linux/nl80211.h
-+++ b/include/uapi/linux/nl80211.h
-@@ -1399,6 +1399,15 @@
-  *	with the updated ULW blob of the device. User space can use this blob
-  *	to attach to frames sent to peers. This notification contains
-  *	%NL80211_ATTR_NAN_ULW with the ULW blob.
-+ * @NL80211_CMD_NAN_CHANNEL_EVAC: Notification to indicate that a NAN
-+ *	channel has been evacuated due to resource conflicts with other
-+ *	interfaces. This can happen when another interface sharing the channel
-+ *	resource with NAN needs to move to a different channel (e.g., channel
-+ *	switch or link switch on a BSS interface).
-+ *	The notification contains %NL80211_ATTR_NAN_CHANNEL attribute
-+ *	identifying the evacuated channel.
-+ *	User space may reconfigure the local schedule in response to this
-+ *	notification.
-  * @NL80211_CMD_MAX: highest used command number
-  * @__NL80211_CMD_AFTER_LAST: internal use
-  */
-@@ -1669,6 +1678,9 @@ enum nl80211_commands {
- 	NL80211_CMD_NAN_SET_PEER_SCHED,
+ 		brcmf_chip_sb_corerev(ci, core);
+ 		core = brcmf_chip_add_core(ci, BCMA_CORE_SDIO_DEV,
+ 					   BCM4329_CORE_BUS_BASE, 0);
++		if (IS_ERR(core))
++			return PTR_ERR(core);
++
+ 		brcmf_chip_sb_corerev(ci, core);
+ 		core = brcmf_chip_add_core(ci, BCMA_CORE_INTERNAL_MEM,
+ 					   BCM4329_CORE_SOCRAM_BASE, 0);
++		if (IS_ERR(core))
++			return PTR_ERR(core);
++
+ 		brcmf_chip_sb_corerev(ci, core);
+ 		core = brcmf_chip_add_core(ci, BCMA_CORE_ARM_CM3,
+ 					   BCM4329_CORE_ARM_BASE, 0);
++		if (IS_ERR(core))
++			return PTR_ERR(core);
++
+ 		brcmf_chip_sb_corerev(ci, core);
  
- 	NL80211_CMD_NAN_ULW_UPDATE,
+ 		core = brcmf_chip_add_core(ci, BCMA_CORE_80211, 0x18001000, 0);
++		if (IS_ERR(core))
++			return PTR_ERR(core);
 +
-+	NL80211_CMD_NAN_CHANNEL_EVAC,
-+
- 	/* add new commands above here */
- 
- 	/* used to define NL80211_CMD_MAX below */
-@@ -3031,20 +3043,23 @@ enum nl80211_commands {
-  *	Currently only supported in mac80211 drivers.
-  * @NL80211_ATTR_NAN_CHANNEL: This is a nested attribute. There can be multiple
-  *	attributes of this type, each one represents a channel definition and
-- *	consists of top-level attributes like %NL80211_ATTR_WIPHY_FREQ. Must
-- *	contain %NL80211_ATTR_NAN_CHANNEL_ENTRY and
-- *	%NL80211_ATTR_NAN_RX_NSS.
-- *	This attribute is used with %NL80211_CMD_NAN_SET_LOCAL_SCHED to specify
-+ *	consists of top-level attributes like %NL80211_ATTR_WIPHY_FREQ.
-+ *	When used with %NL80211_CMD_NAN_SET_LOCAL_SCHED, it specifies
-  *	the channel definitions on which the radio needs to operate during
-  *	specific time slots. All of the channel definitions should be mutually
-- *	incompatible.
-- *	This is also used with %NL80211_CMD_NAN_SET_PEER_SCHED to configure the
-+ *	incompatible. With this command, %NL80211_ATTR_NAN_CHANNEL_ENTRY and
-+ *	%NL80211_ATTR_NAN_RX_NSS are mandatory.
-+ *	When used with %NL80211_CMD_NAN_SET_PEER_SCHED, it configures the
-  *	peer NAN channels. In that case, the channel definitions can be
-  *	compatible to each other, or even identical just with different RX NSS.
-+ *	With this command, %NL80211_ATTR_NAN_CHANNEL_ENTRY and
-+ *	%NL80211_ATTR_NAN_RX_NSS are mandatory.
-  *	The number of channels should fit the current configuration of channels
-  *	and the possible interface combinations.
-  *	If an existing NAN channel is changed but the chandef isn't, the
-  *	channel entry must also remain unchanged.
-+ *	When used with %NL80211_CMD_NAN_CHANNEL_EVAC, this identifies the
-+ *	channels that were evacuated.
-  * @NL80211_ATTR_NAN_CHANNEL_ENTRY: a byte array of 6 bytes. contains the
-  *	Channel Entry as defined in Wi-Fi Aware (TM) 4.0 specification Table
-  *	100 (Channel Entry format for the NAN Availability attribute).
-diff --git a/net/wireless/nl80211.c b/net/wireless/nl80211.c
-index 1c885d9c578d..b51f0676d7cc 100644
---- a/net/wireless/nl80211.c
-+++ b/net/wireless/nl80211.c
-@@ -22823,6 +22823,54 @@ void cfg80211_nan_ulw_update(struct wireless_dev *wdev,
- }
- EXPORT_SYMBOL(cfg80211_nan_ulw_update);
- 
-+void cfg80211_nan_channel_evac(struct wireless_dev *wdev,
-+			       const struct cfg80211_chan_def *chandef,
-+			       gfp_t gfp)
-+{
-+	struct wiphy *wiphy = wdev->wiphy;
-+	struct cfg80211_registered_device *rdev = wiphy_to_rdev(wiphy);
-+	struct sk_buff *msg;
-+	struct nlattr *chan_attr;
-+	void *hdr;
-+
-+	trace_cfg80211_nan_channel_evac(wiphy, wdev, chandef);
-+
-+	if (!wdev->owner_nlportid)
-+		return;
-+
-+	msg = nlmsg_new(NLMSG_DEFAULT_SIZE, gfp);
-+	if (!msg)
-+		return;
-+
-+	hdr = nl80211hdr_put(msg, 0, 0, 0, NL80211_CMD_NAN_CHANNEL_EVAC);
-+	if (!hdr)
-+		goto nla_put_failure;
-+
-+	if (nla_put_u32(msg, NL80211_ATTR_WIPHY, rdev->wiphy_idx) ||
-+	    nla_put_u64_64bit(msg, NL80211_ATTR_WDEV, wdev_id(wdev),
-+			      NL80211_ATTR_PAD))
-+		goto nla_put_failure;
-+
-+	chan_attr = nla_nest_start(msg, NL80211_ATTR_NAN_CHANNEL);
-+	if (!chan_attr)
-+		goto nla_put_failure;
-+
-+	if (nl80211_send_chandef(msg, chandef))
-+		goto nla_put_failure;
-+
-+	nla_nest_end(msg, chan_attr);
-+
-+	genlmsg_end(msg, hdr);
-+
-+	genlmsg_unicast(wiphy_net(wiphy), msg, wdev->owner_nlportid);
-+
-+	return;
-+
-+ nla_put_failure:
-+	nlmsg_free(msg);
-+}
-+EXPORT_SYMBOL(cfg80211_nan_channel_evac);
-+
- /* initialisation/exit functions */
- 
- int __init nl80211_init(void)
-diff --git a/net/wireless/trace.h b/net/wireless/trace.h
-index 5ed551412119..0ff5779d2c7e 100644
---- a/net/wireless/trace.h
-+++ b/net/wireless/trace.h
-@@ -4344,6 +4344,24 @@ TRACE_EVENT(cfg80211_nan_ulw_update,
- 		  __print_array(__get_dynamic_array(ulw),
- 				__get_dynamic_array_len(ulw), 1))
- );
-+
-+TRACE_EVENT(cfg80211_nan_channel_evac,
-+	TP_PROTO(struct wiphy *wiphy, struct wireless_dev *wdev,
-+		 const struct cfg80211_chan_def *chandef),
-+	TP_ARGS(wiphy, wdev, chandef),
-+	TP_STRUCT__entry(
-+		WDEV_ENTRY
-+		WIPHY_ENTRY
-+		CHAN_DEF_ENTRY
-+	),
-+	TP_fast_assign(
-+		WDEV_ASSIGN;
-+		WIPHY_ASSIGN;
-+		CHAN_DEF_ASSIGN(chandef);
-+	),
-+	TP_printk(WDEV_PR_FMT ", " WIPHY_PR_FMT ", " CHAN_DEF_PR_FMT,
-+		  WDEV_PR_ARG, WIPHY_PR_ARG, CHAN_DEF_PR_ARG)
-+);
- #endif /* !__RDEV_OPS_TRACE || TRACE_HEADER_MULTI_READ */
- 
- #undef TRACE_INCLUDE_PATH
+ 		brcmf_chip_sb_corerev(ci, core);
+ 	} else if (socitype == SOCI_AI) {
+ 		ci->iscoreup = brcmf_chip_ai_iscoreup;
 -- 
-2.34.1
+2.53.0
 
 
