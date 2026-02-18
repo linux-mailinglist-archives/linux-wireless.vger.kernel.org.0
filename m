@@ -1,34 +1,34 @@
-Return-Path: <linux-wireless+bounces-31964-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-31965-lists+linux-wireless=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id gMbVM1nQlWkaVAIAu9opvQ
-	(envelope-from <linux-wireless+bounces-31964-lists+linux-wireless=lfdr.de@vger.kernel.org>)
-	for <lists+linux-wireless@lfdr.de>; Wed, 18 Feb 2026 15:44:41 +0100
+	id gIgJNFvQlWkaVAIAu9opvQ
+	(envelope-from <linux-wireless+bounces-31965-lists+linux-wireless=lfdr.de@vger.kernel.org>)
+	for <lists+linux-wireless@lfdr.de>; Wed, 18 Feb 2026 15:44:43 +0100
 X-Original-To: lists+linux-wireless@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 309831571C3
-	for <lists+linux-wireless@lfdr.de>; Wed, 18 Feb 2026 15:44:40 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 42B4C1571CA
+	for <lists+linux-wireless@lfdr.de>; Wed, 18 Feb 2026 15:44:43 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id A61E330180A0
-	for <lists+linux-wireless@lfdr.de>; Wed, 18 Feb 2026 14:44:39 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id D7564301829C
+	for <lists+linux-wireless@lfdr.de>; Wed, 18 Feb 2026 14:44:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D54D632ED37;
-	Wed, 18 Feb 2026 14:44:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9BA9B32ED37;
+	Wed, 18 Feb 2026 14:44:41 +0000 (UTC)
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from mail.unwrap.rs (mail.unwrap.rs [172.232.15.166])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 944562D8780
-	for <linux-wireless@vger.kernel.org>; Wed, 18 Feb 2026 14:44:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 45D6A33C1B7
+	for <linux-wireless@vger.kernel.org>; Wed, 18 Feb 2026 14:44:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=172.232.15.166
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771425878; cv=none; b=T63C5iE3m+fVI2d51sy2MAO91sbXjxwzwtQjYgeXgF4uTgAJRCOkbWoVfvz8yYzQh1cjpPiNJmVaWyhKynn1rPV4L8dSk4YtrYS+H8MtuVNgoUedQp1H6anVN2msPb0WCCrtEGigEqj/5l+La8GtR/VKH0/WXPcHAnwC+CUyxtA=
+	t=1771425881; cv=none; b=QsgCSVVOnnxdJ+EVoXxw65FGmq36f/6fxHcf9+YVTGOMW3qCVvqFZ9cKA+eaF5amP/7A3yfFMT1rBvnu+T3ulnFGy/vrBY8o3V6Gl3H7gJCiv7Q9s7xeFKxNdUaj16ekNCUmPcxfoNas8DoK/mh/2rdUAW6TKLLdSJtvxiC/IBA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771425878; c=relaxed/simple;
+	s=arc-20240116; t=1771425881; c=relaxed/simple;
 	bh=JWEoSZSLymw1ptxAF0sXBut2uNDli54zqr+gVjQLOTE=;
 	h=From:To:Cc:Subject:In-Reply-To:References:MIME-Version:
-	 Content-Type; b=BHF5VKGdQIJ1MixbJfRPZY469uRrGWs7TO6NLv9HCEELgVIYBAW4vJrEG8bra4W8abpLFmNryNwOkbNqym8boA/1RfHtut8VmpGunawYybn5rcWNT2qAwuHFEadPiIeSPn/E92B+TpUIjdm1+CT23qjwZjSvJWSE8Pd6oDy+1JI=
+	 Content-Type; b=SEjKLdW4el/BWiy3ZBHnGm8hqobO0DIA/a6PlBGPyeO/zk79IyiK9XXtxx8BKRzyWvRdMgSc/JkjBGAl8Tu55FIkg3DNGLXFaB/QP/eNWnN5YvzZzKxL3zntjyhuOzKVX0CdvWQDOrdlFX2FRgIKE099tWED4sF1hhiOdPJry8A=
 ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=unwrap.rs; spf=pass smtp.mailfrom=unwrap.rs; arc=none smtp.client-ip=172.232.15.166
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=unwrap.rs
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=unwrap.rs
@@ -52,13 +52,13 @@ List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Message-Id: <20260218144438.D54D632ED37@smtp.subspace.kernel.org>
-Date: Wed, 18 Feb 2026 14:44:38 +0000 (UTC)
+Message-Id: <20260218144441.9BA9B32ED37@smtp.subspace.kernel.org>
+Date: Wed, 18 Feb 2026 14:44:41 +0000 (UTC)
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [0.54 / 15.00];
 	DMARC_POLICY_REJECT(2.00)[unwrap.rs : SPF not aligned (strict), No valid DKIM,reject];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
@@ -67,18 +67,18 @@ X-Spamd-Result: default: False [0.54 / 15.00];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	MISSING_XM_UA(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
 	MIME_TRACE(0.00)[0:+];
 	TAGGED_RCPT(0.00)[linux-wireless];
 	RCVD_COUNT_THREE(0.00)[3];
 	R_DKIM_NA(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,smtp.subspace.kernel.org:mid];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[smtp.subspace.kernel.org:mid,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns];
 	PRECEDENCE_BULK(0.00)[];
-	TAGGED_FROM(0.00)[bounces-31964-lists,linux-wireless=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-31965-lists,linux-wireless=lfdr.de];
 	TO_DN_SOME(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
 	RCPT_COUNT_THREE(0.00)[4]
-X-Rspamd-Queue-Id: 309831571C3
+X-Rspamd-Queue-Id: 42B4C1571CA
 X-Rspamd-Action: no action
 
 Ben,
