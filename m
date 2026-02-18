@@ -1,152 +1,207 @@
-Return-Path: <linux-wireless+bounces-31963-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-31964-lists+linux-wireless=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id oJVjNifKlWlfUwIAu9opvQ
-	(envelope-from <linux-wireless+bounces-31963-lists+linux-wireless=lfdr.de@vger.kernel.org>)
-	for <lists+linux-wireless@lfdr.de>; Wed, 18 Feb 2026 15:18:15 +0100
+	id gMbVM1nQlWkaVAIAu9opvQ
+	(envelope-from <linux-wireless+bounces-31964-lists+linux-wireless=lfdr.de@vger.kernel.org>)
+	for <lists+linux-wireless@lfdr.de>; Wed, 18 Feb 2026 15:44:41 +0100
 X-Original-To: lists+linux-wireless@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 37977156FF3
-	for <lists+linux-wireless@lfdr.de>; Wed, 18 Feb 2026 15:18:14 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 309831571C3
+	for <lists+linux-wireless@lfdr.de>; Wed, 18 Feb 2026 15:44:40 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id B9C683017014
-	for <lists+linux-wireless@lfdr.de>; Wed, 18 Feb 2026 14:18:13 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id A61E330180A0
+	for <lists+linux-wireless@lfdr.de>; Wed, 18 Feb 2026 14:44:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4856C330D36;
-	Wed, 18 Feb 2026 14:18:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D54D632ED37;
+	Wed, 18 Feb 2026 14:44:38 +0000 (UTC)
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from mail.unwrap.rs (mail.unwrap.rs [172.232.15.166])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E5D4B22D4DC;
-	Wed, 18 Feb 2026 14:18:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 944562D8780
+	for <linux-wireless@vger.kernel.org>; Wed, 18 Feb 2026 14:44:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=172.232.15.166
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771424293; cv=none; b=pBgDJjc3seYw//CXvSoRfhnu2e0rwVU+M40yV6IcO/vnyMy+ND/T57RKUPfnvBX6mbRPUUkcI/F1bUBQnzrJ+sIQi0KD63qYBNOAX4PkzfW9n3fTkY3visALWh8icqfSv83hgmMFVor8M6CIVCGY4+f/npRgvbKjDosCD5yDDYY=
+	t=1771425878; cv=none; b=T63C5iE3m+fVI2d51sy2MAO91sbXjxwzwtQjYgeXgF4uTgAJRCOkbWoVfvz8yYzQh1cjpPiNJmVaWyhKynn1rPV4L8dSk4YtrYS+H8MtuVNgoUedQp1H6anVN2msPb0WCCrtEGigEqj/5l+La8GtR/VKH0/WXPcHAnwC+CUyxtA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771424293; c=relaxed/simple;
-	bh=TH8ye9hyu8OpPmalyyIMAr7/zcFIBRL2aCvYHETHGnE=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=GPrwVyVIKFpEENuORoYKoUESzJSI+os7oF4wkp1NwhbYsE29tA0UL7uKdeINkS8iOkmaQemQk2ncSXnHepu6/TJCo2ljX76Uy7ZtbRqXMFnBJL8+Lb5GO1mPSZotbKQ8YtQz/VCosaHILFqsupJMO84tRzrhoSQw7Lg0ZB2NdVc=
+	s=arc-20240116; t=1771425878; c=relaxed/simple;
+	bh=JWEoSZSLymw1ptxAF0sXBut2uNDli54zqr+gVjQLOTE=;
+	h=From:To:Cc:Subject:In-Reply-To:References:MIME-Version:
+	 Content-Type; b=BHF5VKGdQIJ1MixbJfRPZY469uRrGWs7TO6NLv9HCEELgVIYBAW4vJrEG8bra4W8abpLFmNryNwOkbNqym8boA/1RfHtut8VmpGunawYybn5rcWNT2qAwuHFEadPiIeSPn/E92B+TpUIjdm1+CT23qjwZjSvJWSE8Pd6oDy+1JI=
 ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=unwrap.rs; spf=pass smtp.mailfrom=unwrap.rs; arc=none smtp.client-ip=172.232.15.166
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=unwrap.rs
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=unwrap.rs
 From: Cole Leavitt <cole@unwrap.rs>
-To: linux-wireless@vger.kernel.org
-Cc: johannes@sipsolutions.net,
-	miriam.rachel.korenblit@intel.com,
-	greearb@candelatech.com,
-	linux-kernel@vger.kernel.org,
-	Cole Leavitt <cole@unwrap.rs>
-Subject: [PATCH v2] wifi: iwlwifi: mld: skip TX when firmware is dead
-Date: Wed, 18 Feb 2026 07:17:58 -0700
-Message-ID: <20260218141758.25929-1-cole@unwrap.rs>
-X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260214060716.16394-1-cole@unwrap.rs>
-References: <20260214060716.16394-1-cole@unwrap.rs>
+To: Ben Greear <greearb@candelatech.com>
+Cc: Johannes Berg <johannes@sipsolutions.net>,
+ linux-wireless@vger.kernel.org,
+ Miri Korenblit <miriam.rachel.korenblit@intel.com>
+Subject: Re: [PATCH] wifi: iwlwifi: prevent NAPI processing after firmware error
+In-Reply-To: <9edde56d-bfdc-40f6-862c-b69950cc2f25@candelatech.com>
+References: <c6f886d4-b9ed-48a6-9723-a738af055b64@candelatech.com>
+ <20260214181018.6091-1-cole@unwrap.rs>
+ <5be8a502-d53a-4cce-821f-202368c44f6d@candelatech.com>
+ <20260214183306.10188-1-cole@unwrap.rs>
+ <9edde56d-bfdc-40f6-862c-b69950cc2f25@candelatech.com>
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
+Message-Id: <20260218144438.D54D632ED37@smtp.subspace.kernel.org>
+Date: Wed, 18 Feb 2026 14:44:38 +0000 (UTC)
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [2.04 / 15.00];
+X-Spamd-Result: default: False [0.54 / 15.00];
 	DMARC_POLICY_REJECT(2.00)[unwrap.rs : SPF not aligned (strict), No valid DKIM,reject];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MID_CONTAINS_FROM(1.00)[];
-	R_MISSING_CHARSET(0.50)[];
 	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	FROM_HAS_DN(0.00)[];
-	MIME_TRACE(0.00)[0:+];
+	FROM_NEQ_ENVFROM(0.00)[cole@unwrap.rs,linux-wireless@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	MISSING_XM_UA(0.00)[];
 	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	TO_DN_SOME(0.00)[];
+	MIME_TRACE(0.00)[0:+];
 	TAGGED_RCPT(0.00)[linux-wireless];
 	RCVD_COUNT_THREE(0.00)[3];
 	R_DKIM_NA(0.00)[];
-	TAGGED_FROM(0.00)[bounces-31963-lists,linux-wireless=lfdr.de];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,unwrap.rs:mid,unwrap.rs:email];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,smtp.subspace.kernel.org:mid];
 	PRECEDENCE_BULK(0.00)[];
+	TAGGED_FROM(0.00)[bounces-31964-lists,linux-wireless=lfdr.de];
+	TO_DN_SOME(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[6];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[cole@unwrap.rs,linux-wireless@vger.kernel.org]
-X-Rspamd-Queue-Id: 37977156FF3
+	RCPT_COUNT_THREE(0.00)[4]
+X-Rspamd-Queue-Id: 309831571C3
 X-Rspamd-Action: no action
 
-When firmware encounters an error, STATUS_FW_ERROR is set but the
-mac80211 TX path continues pulling frames from TXQs. Each frame
-fails at iwl_trans_tx() which checks STATUS_FW_ERROR and returns
--EIO, but iwl_mld_tx_from_txq() keeps looping over every queued
-frame. This burns CPU in a tight loop on dead firmware and can
-cause soft lockups during firmware error recovery.
+Ben,
 
-Add a STATUS_FW_ERROR check at the top of iwl_mld_tx_from_txq()
-to stop pulling frames from mac80211 TXQs when firmware is dead.
-Also guard iwl_mld_mac80211_tx() which bypasses the TXQ path
-entirely and would otherwise continue feeding frames to dead
-firmware.
+I've been digging into the use-after-free crash you reported on your
+BE200 running the MLD driver (tcp_shifted_skb refcount underflow,
+followed by NULL deref in tcp_rack_detect_loss). I think I found the
+root cause -- it's a missing guard in the MLD TSO segmentation path
+that lets num_subframes=0 reach skb_gso_segment(), producing the 32k+
+segment explosion you're seeing.
 
-Once STATUS_FW_ERROR is cleared during firmware restart, TX
-resumes naturally with no explicit wake needed.
+Here's the full chain:
 
-Fixes: d1e879ec600f ("wifi: iwlwifi: add iwlmld sub-driver")
-Signed-off-by: Cole Leavitt <cole@unwrap.rs>
+1) mld/tlc.c:790 -- when firmware's TLC notification disables AMSDU for
+   a TID (bit not set in amsdu_enabled), the MLD driver sets:
+
+     link_sta->agg.max_tid_amsdu_len[i] = 1;
+
+   This sentinel value 1 means "AMSDU disabled on this TID".
+
+2) mld/tx.c:836-837 -- the TSO path checks:
+
+     max_tid_amsdu_len = sta->cur->max_tid_amsdu_len[tid];
+     if (!max_tid_amsdu_len)   // <-- only catches zero, not 1
+         return iwl_tx_tso_segment(skb, 1, ...);
+
+   Value 1 passes this check.
+
+3) mld/tx.c:847 -- the division produces zero:
+
+     num_subframes = (1 + 2) / (1534 + 2) = 0
+
+   Any max_tid_amsdu_len below ~1534 (one subframe) produces 0 here.
+
+4) iwl-utils.c:27 -- gso_size is set to zero:
+
+     skb_shinfo(skb)->gso_size = num_subframes * mss = 0 * 1460 = 0
+
+5) iwl-utils.c:30 -- skb_gso_segment() with gso_size=0 creates 32001+
+   tiny segments, which is the error you're seeing:
+
+     "skbuff: ERROR: Found more than 32000 packets in skb_segment"
+     "iwl-mvm-tx-tso-segment, list gso-segment list is huge: 32001"
+
+6) mld/tx.c:912-936 -- the loop queues ~1024 of those segments to the
+   TX ring before it fills up, then purges the rest. This creates a
+   massive burst of tiny frames that stress the BA completion path.
+
+The MVM driver is immune because it checks mvmsta->amsdu_enabled (a
+separate bitmap) at tx.c:912 and tx.c:936 BEFORE ever reaching the
+num_subframes calculation. MLD has no equivalent -- it relies solely on
+max_tid_amsdu_len, and the sentinel value 1 slips through.
+
+This explains all your observations:
+- 6.18 regression: BE200 moved from MVM (has guard) to MLD (no guard)
+- AP-specific: the problem AP causes firmware to disable AMSDU for the
+  active TID (other APs enable it, so max_tid_amsdu_len gets a proper
+  value from iwl_mld_get_amsdu_size_of_tid())
+- 28min gap between TSO explosion and UAF: the ~1024 micro-frame burst
+  creates massive alloc/free churn in the skb slab, which can corrupt
+  TCP retransmit queue entries allocated from the same cache
+- No firmware error: firmware is fine, the bug is purely in MLD's TSO
+  parameter calculation
+
+Fix below. It adds a guard after the num_subframes calculation -- if
+it's zero, fall back to single-subframe TSO (num_subframes=1), which
+correctly sets gso_size=mss. This matches what MVM effectively does via
+its amsdu_enabled checks.
+
+Could you test this against the problem AP? Two things that would help
+confirm the theory:
+
+1) Before applying the fix, add this debug print to see the actual
+   max_tid_amsdu_len value with the problem AP:
+
+     // In iwl_mld_tx_tso_segment(), after line 847
+     if (!num_subframes)
+         pr_warn_once("iwlmld: num_subframes=0, max_tid_amsdu_len=%u "
+                      "subf_len=%u mss=%u\n",
+                      max_tid_amsdu_len, subf_len, mss);
+
+2) After applying the fix, run against the problem AP for 1+ day and
+   check if both the TSO explosion AND the UAF are gone.
+
+I also noticed a few secondary defense-in-depth regressions in MLD's
+TX completion path vs MVM:
+
+- MLD's iwl_mld_tx_reclaim_txq() has no per-TID reclaim tracking
+  (MVM has tid_data->next_reclaimed and validates tid_data->txq_id)
+- The transport-level reclaim_lock prevents direct double-free, but
+  MLD is missing MVM's extra safety checks
+
+These are probably not directly causing your crash, but worth noting.
+
 ---
-v2:
- - Replace ieee80211_stop_queues()/wake_queues() with STATUS_FW_ERROR
-   checks in the TX pull path, per Johannes Berg's feedback that
-   stop/wake_queues doesn't interact well with TXQ-based APIs.
- - Guard both iwl_mld_tx_from_txq() (TXQ pull path) and
-   iwl_mld_mac80211_tx() (direct mac80211 TX path).
- - Drop all changes to mld.c (no stop/wake in error/restart flows).
+ drivers/net/wireless/intel/iwlwifi/mld/tx.c | 11 +++++++++++
+ 1 file changed, 11 insertions(+)
 
- drivers/net/wireless/intel/iwlwifi/mld/mac80211.c | 5 +++++
- drivers/net/wireless/intel/iwlwifi/mld/tx.c       | 8 ++++++++
- 2 files changed, 13 insertions(+)
-
-diff --git a/drivers/net/wireless/intel/iwlwifi/mld/mac80211.c b/drivers/net/wireless/intel/iwlwifi/mld/mac80211.c
-index 3414b04a6953..1bd8411965f5 100644
---- a/drivers/net/wireless/intel/iwlwifi/mld/mac80211.c
-+++ b/drivers/net/wireless/intel/iwlwifi/mld/mac80211.c
-@@ -519,6 +519,11 @@ iwl_mld_mac80211_tx(struct ieee80211_hw *hw,
- 	u32 link_id = u32_get_bits(info->control.flags,
- 				   IEEE80211_TX_CTRL_MLO_LINK);
- 
-+	if (unlikely(test_bit(STATUS_FW_ERROR, &mld->trans->status))) {
-+		ieee80211_free_txskb(hw, skb);
-+		return;
-+	}
-+
- 	/* In AP mode, mgmt frames are sent on the bcast station,
- 	 * so the FW can't translate the MLD addr to the link addr. Do it here
- 	 */
 diff --git a/drivers/net/wireless/intel/iwlwifi/mld/tx.c b/drivers/net/wireless/intel/iwlwifi/mld/tx.c
-index 7c6a4b4e5523..fbb672f4d8c7 100644
+index fbb672f4d8c7..1d47254a4148 100644
 --- a/drivers/net/wireless/intel/iwlwifi/mld/tx.c
 +++ b/drivers/net/wireless/intel/iwlwifi/mld/tx.c
-@@ -970,6 +970,14 @@ void iwl_mld_tx_from_txq(struct iwl_mld *mld, struct ieee80211_txq *txq)
- 	struct sk_buff *skb = NULL;
- 	u8 zero_addr[ETH_ALEN] = {};
+@@ -846,6 +846,17 @@ static int iwl_mld_tx_tso_segment(struct iwl_mld *mld, struct sk_buff *skb,
+ 	 */
+ 	num_subframes = (max_tid_amsdu_len + pad) / (subf_len + pad);
  
-+	/* Firmware is dead - don't pull frames from mac80211 TXQs.
-+	 * Packets dequeued here would fail at iwl_trans_tx() anyway,
-+	 * but looping over every queued frame burns CPU and causes
-+	 * soft lockups during firmware error recovery.
++	/* If the AMSDU length limit is too small to fit even a single
++	 * subframe (e.g. max_tid_amsdu_len is the sentinel value 1 set by
++	 * the TLC notification when AMSDU is disabled for this TID), fall
++	 * back to non-AMSDU TSO segmentation. Without this guard,
++	 * num_subframes=0 causes gso_size=0 in iwl_tx_tso_segment(),
++	 * which makes skb_gso_segment() produce tens of thousands of
++	 * 1-byte segments, overloading the TX ring and completion path.
 +	 */
-+	if (unlikely(test_bit(STATUS_FW_ERROR, &mld->trans->status)))
-+		return;
++	if (!num_subframes)
++		return iwl_tx_tso_segment(skb, 1, netdev_flags, mpdus_skbs);
 +
- 	/*
- 	 * No need for threads to be pending here, they can leave the first
- 	 * taker all the work.
+ 	if (sta->max_amsdu_subframes &&
+ 	    num_subframes > sta->max_amsdu_subframes)
+ 		num_subframes = sta->max_amsdu_subframes;
 -- 
 2.52.0
+
+Cole
 
 
