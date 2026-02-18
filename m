@@ -1,188 +1,162 @@
-Return-Path: <linux-wireless+bounces-31993-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-31962-lists+linux-wireless=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id EBy1MuZblmkdeQIAu9opvQ
-	(envelope-from <linux-wireless+bounces-31993-lists+linux-wireless=lfdr.de@vger.kernel.org>)
-	for <lists+linux-wireless@lfdr.de>; Thu, 19 Feb 2026 01:40:06 +0100
+	id UN2nG3S7lWntUQIAu9opvQ
+	(envelope-from <linux-wireless+bounces-31962-lists+linux-wireless=lfdr.de@vger.kernel.org>)
+	for <lists+linux-wireless@lfdr.de>; Wed, 18 Feb 2026 14:15:32 +0100
 X-Original-To: lists+linux-wireless@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 33D0415B315
-	for <lists+linux-wireless@lfdr.de>; Thu, 19 Feb 2026 01:40:05 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id C2EE91568AC
+	for <lists+linux-wireless@lfdr.de>; Wed, 18 Feb 2026 14:15:31 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 1CBCF304CCE5
-	for <lists+linux-wireless@lfdr.de>; Thu, 19 Feb 2026 00:39:40 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 7C3EB301938C
+	for <lists+linux-wireless@lfdr.de>; Wed, 18 Feb 2026 13:15:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E343E1FCFFC;
-	Thu, 19 Feb 2026 00:39:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B2ED0274FE8;
+	Wed, 18 Feb 2026 13:15:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=fail reason="signature verification failed" (2048-bit key) header.d=embeddedor.com header.i=@embeddedor.com header.b="TFvzcemT"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="BOEIDHfy"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from omta038.useast.a.cloudfilter.net (omta038.useast.a.cloudfilter.net [44.202.169.37])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wr1-f47.google.com (mail-wr1-f47.google.com [209.85.221.47])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9B2DC1F419A
-	for <linux-wireless@vger.kernel.org>; Thu, 19 Feb 2026 00:39:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=44.202.169.37
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7F6AD28E571
+	for <linux-wireless@vger.kernel.org>; Wed, 18 Feb 2026 13:15:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.47
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771461579; cv=none; b=glP9KDChQcIWiYu/yRl+Zjcmxy5MMYFc8TpWPRASDq0CYKaxzz+HWbxCqePi1+fLY5TIL4czPp+uustFY9DoYRgxxTTKS085ZDv85nf+9405AbHYyecZZu+Dg367XLyO0N2Bdy6sG7OWzRBFn4ht4EBOZnmlVYdHy0JHhRSTZVg=
+	t=1771420529; cv=none; b=LHDjg0FNnya+Boku7z5cTU1YztZMyQE4J6a5BMfB+t5IHujo43VucxzJ7lypPjYZLm5cCCQvCa7YqyCAC1tczwfjf2HMaLx8rXblq2QNr8fLyZRW0v8U6YRbgdcNr+phD+iZM8uM7F7XP9AchfM1y24N9+Yg6t5Aj9DGKPAMcGo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771461579; c=relaxed/simple;
-	bh=z6syF4LidYTHWoLqxLqQLWmNiefVyfFzZH9TK+S8Qhk=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=ob0kwwfgLYkmZ9Jv1s7M4X5OqJVjG/PZisEiQSvE5FBdJRVy4ULMRgffY8ElJtA5qfeofFVwRbMsWn+wvg49qEmewoDHcpz77QswKOxmzTVQDIJ6KDiWAKcrp+NCa63xZTPyrozpWFnLyShZ+p8tJjw1xPbshJ2WDAj4dwnzGec=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=embeddedor.com; spf=pass smtp.mailfrom=embeddedor.com; dkim=pass (2048-bit key) header.d=embeddedor.com header.i=@embeddedor.com header.b=TFvzcemT; arc=none smtp.client-ip=44.202.169.37
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=embeddedor.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=embeddedor.com
-Received: from eig-obgw-5004b.ext.cloudfilter.net ([10.0.29.208])
-	by cmsmtp with ESMTPS
-	id soudv8Y87Skcfss4qvHxs6; Thu, 19 Feb 2026 00:39:32 +0000
-Received: from gator4166.hostgator.com ([108.167.133.22])
-	by cmsmtp with ESMTPS
-	id ss4pvFpadqfpWss4pvhlH7; Thu, 19 Feb 2026 00:39:31 +0000
-X-Authority-Analysis: v=2.4 cv=A55sP7WG c=1 sm=1 tr=0 ts=69965bc4
- a=1YbLdUo/zbTtOZ3uB5T3HA==:117 a=k5Y5iPg+dmTXVWgYE/XtfQ==:17
- a=IkcTkHD0fZMA:10 a=HzLeVaNsDn8A:10 a=7T7KSl7uo7wA:10 a=VwQbUJbxAAAA:8
- a=9YR8UghG2Mux9z_Xfx4A:9 a=QEXdDO2ut3YA:10 a=2aFnImwKRvkU0tJ3nQRT:22
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=embeddedor.com; s=default; h=Content-Transfer-Encoding:Content-Type:
-	In-Reply-To:From:References:Cc:To:Subject:MIME-Version:Date:Message-ID:Sender
-	:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
-	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:
-	List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
-	bh=+/cI9yYaTzTcqdQ58iWogswfNeVO0Pn3cSXKnRlVUwg=; b=TFvzcemTtvfbWw5mv7eH4IFz4W
-	/gVUCTw9e07wPvK/Q+SoU5UMs0ZlpWO/rCEEPaXcbjBiNViNdd6S0/SAOQMNPfq3iqC7tUQC07wW0
-	Zf1HERNpDc4C9NyNtbpUFxkU9bypsTUphtjFlhTIAkLYjOSi8RnzDO48DiTZmfNDVYBtvDETrz+JM
-	g1qb3NVVpMgApSCaaJI8KnkCLWvWI22RgecPTwSnuOqtwO5clQt/Zhhygyd3JTwRl6Gm7liyqA5J/
-	Ae6H17Vj4Fc8HgUoh934JB6KT0K//0LOZWXjUPNa7m+soVVf66Ki5p2w5TJS98DcB7pkcKajE/jRt
-	ueo11Deg==;
-Received: from [177.238.16.13] (port=37088 helo=[192.168.0.21])
-	by gator4166.hostgator.com with esmtpsa  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256
-	(Exim 4.99.1)
-	(envelope-from <gustavo@embeddedor.com>)
-	id 1vss4o-00000003gCK-41Zb;
-	Wed, 18 Feb 2026 18:39:31 -0600
-Message-ID: <6305fbc7-8210-4f4d-b719-30ba038611af@embeddedor.com>
-Date: Wed, 18 Feb 2026 18:38:41 +0900
+	s=arc-20240116; t=1771420529; c=relaxed/simple;
+	bh=qgqQM3BicoLp//iJlSD25LJvavgVBcGFV4txdNSMKCI=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=uhiqCOD6aFw+IlbRqe8S/nSXc2NdAxScCkEIkSnVQ1LhY10iR4C0xAQdjS2mua/mVxAHQCnPfrlUwOoW93YEYxDigQ8Ed8UfwUT9x71blTfe385/2nBDgGvaK+QtsPxdSxcczCWbZIHhONLIEHFHcwEpjZkOfoHP+bFeS9AoPM8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=BOEIDHfy; arc=none smtp.client-ip=209.85.221.47
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-wr1-f47.google.com with SMTP id ffacd0b85a97d-436333dcc42so543935f8f.0
+        for <linux-wireless@vger.kernel.org>; Wed, 18 Feb 2026 05:15:28 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1771420527; x=1772025327; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=bTS3P2DdO9rrBOyQJCIkcrjqmQuomaNDxfVohLWWfaM=;
+        b=BOEIDHfyJAnAb+MmVxlF7oKteh+9yF8AAjiUS1L/zSJBVnmSk1IiyJ0VpslIDNDhIU
+         /pVVl1/CGkRulDOYA0NU9ijlWhoHDsYXPGEmA3QKKd5dYdBtn1itD8aa34PERtHWIgxL
+         cYIgNl5IWS619S5Yu8GK2xH7p4twJW4Q74i/jhNBZSbGCIryeX9RY+kMSPGW5IqajR/c
+         oPesqM00beaWkNfyTF+PsfYm6ggWvlesaQ0nyVnwWeLco8nHvs74nMR05kTAICWluVRK
+         EyatqpJDwEziafERzM6Z3KmYzCqQF9pGttqzvz1p8P4fDh0sVYq63Js6+hfNa9YCk3s2
+         xImA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1771420527; x=1772025327;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=bTS3P2DdO9rrBOyQJCIkcrjqmQuomaNDxfVohLWWfaM=;
+        b=w21CP3oYtTzJuR2iZauswdBwKiHROrl/hxqcZoHT3soFnsMYSAZM6sOuHmKDXgY+bq
+         wKZSKlCYF8FqA0leq2YJ2en1I9+hA3CdBwcCHD7XBYaM5tuEua7rTdYuanmKXxeHXbE3
+         25wt9LfjjZUrh6Q558vQyoVbfZIqpXqpzmELlFyJipYTXGLqrNUnQ8J5Ik8ZEL8S0c7b
+         OKHQoNv8Av1nAHVXTSnc7/q0YmV0sSohhFtZpofeq8JG7psXDwDuzraiB3ccy/uFo1T3
+         g8k5G55tolyk0Ft8y0nu/w2GLCPq2eIsz7WmJCPy5gRuF2IoY1eOW6IzQwtw86CxQtKI
+         f0aQ==
+X-Forwarded-Encrypted: i=1; AJvYcCW0mtiv2LI6aBCOO/CbriJcTtaG6ggWkosAoAQihBAOLftnG57C+lwZmaokStdMrovN9tguEjZKSJr07sqHbA==@vger.kernel.org
+X-Gm-Message-State: AOJu0YyojR7N3CKcPn3LuT7J4b2bnFV1lwz4s0Cx23KNExAPgd+jzuly
+	urvcIfdDk/FRHSROIEaWBbgky3YU7AyN9Iq6QgPnEtcFq6FLNbZZ3K8s
+X-Gm-Gg: AZuq6aLn8v7KIDRl35J98n3PkB5TFV8NqB52GASRQBPALdKzn8XoWaThe0J0u6OgFi4
+	lHNIFPGINh8H/iNU1DoZFxZG5eya5xyyWBcFZp2/Y7G5eA38/Pe8U/LYsgWH5/61aR5ZuRYJnFL
+	BQclxdOgQ86Wl4MS2GOI/pjmZ01fMwPxgFPZ1bdhEq5aDjcL7ZXfasjULQnyZelxXB59lkWHOT1
+	+DnbxN6u9RoqaY/g/GI1fEOo1ju5xHeFfHTVdwZYiD77dhtFkswDglbclGUYsacs0ahDRSsnaM5
+	RW5oohtIByb2hoJEp+V+3pMVUZIK6HNLpNdK5WQAA8CwprUbtEXx4U+9+/FKZzVn/nmrbdXSZKT
+	VpeKTtgr8RGKieWrL/EN3ehKQcXxASaKkhSHWO1vosd/zzPj0XOYwUz+O8nGJC3pkrAAE4z1N6h
+	2gnN5sFUnUejsgBowrinOlGHcRwGF1kJh9AwvupVtigkAXUXTE0pkhhojbtNIC2EWrTmIfUCHb+
+	WOZlidtZfx/bn2EIIlIp86SmiCo9EU=
+X-Received: by 2002:a05:600c:6912:b0:477:aed0:f402 with SMTP id 5b1f17b1804b1-48371067b29mr185755875e9.8.1771420526501;
+        Wed, 18 Feb 2026 05:15:26 -0800 (PST)
+Received: from thomas-precision3591.paris.inria.fr (wifi-pro-82-204.paris.inria.fr. [128.93.82.204])
+        by smtp.googlemail.com with ESMTPSA id ffacd0b85a97d-43796acffcesm38768246f8f.37.2026.02.18.05.15.25
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 18 Feb 2026 05:15:26 -0800 (PST)
+From: Thomas Fourier <fourier.thomas@gmail.com>
+To: 
+Cc: Thomas Fourier <fourier.thomas@gmail.com>,
+	stable@vger.kernel.org,
+	Arend van Spriel <arend.vanspriel@broadcom.com>,
+	Johannes Berg <johannes.berg@intel.com>,
+	Simon Horman <horms@kernel.org>,
+	"John W. Linville" <linville@tuxdriver.com>,
+	linux-wireless@vger.kernel.org,
+	brcm80211@lists.linux.dev,
+	brcm80211-dev-list.pdl@broadcom.com,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH net] wifi: brcmsmac: Fix dma_free_coherent() size
+Date: Wed, 18 Feb 2026 14:07:37 +0100
+Message-ID: <20260218130741.46566-3-fourier.thomas@gmail.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2][next] wifi: ath6kl: wmi: Avoid
- -Wflex-array-member-not-at-end warning
-To: Jeff Johnson <jeff.johnson@oss.qualcomm.com>,
- "Gustavo A. R. Silva" <gustavoars@kernel.org>,
- Kalle Valo <quic_kvalo@quicinc.com>
-Cc: linux-wireless@vger.kernel.org, linux-kernel@vger.kernel.org,
- linux-hardening@vger.kernel.org
-References: <aZP4RI-uN2001cBh@kspp>
- <d2a02b4c-5f69-4f5e-bc0e-428b64e99d36@oss.qualcomm.com>
-Content-Language: en-US
-From: "Gustavo A. R. Silva" <gustavo@embeddedor.com>
-In-Reply-To: <d2a02b4c-5f69-4f5e-bc0e-428b64e99d36@oss.qualcomm.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
-X-AntiAbuse: Primary Hostname - gator4166.hostgator.com
-X-AntiAbuse: Original Domain - vger.kernel.org
-X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
-X-AntiAbuse: Sender Address Domain - embeddedor.com
-X-BWhitelist: no
-X-Source-IP: 177.238.16.13
-X-Source-L: No
-X-Exim-ID: 1vss4o-00000003gCK-41Zb
-X-Source: 
-X-Source-Args: 
-X-Source-Dir: 
-X-Source-Sender: ([192.168.0.21]) [177.238.16.13]:37088
-X-Source-Auth: gustavo@embeddedor.com
-X-Email-Count: 3
-X-Org: HG=hgshared;ORG=hostgator;
-X-Source-Cap: Z3V6aWRpbmU7Z3V6aWRpbmU7Z2F0b3I0MTY2Lmhvc3RnYXRvci5jb20=
-X-Local-Domain: yes
-X-CMAE-Envelope: MS4xfFyGbEr6S8eeDlMVCMumI1KTmm8S+8gMC2dK2Z9li+lomd9XWHgqenvINFn10BUee1eUaNvM24jOXQ6i1moPWaAcQfLb0T2LPXAVnS1MMJCjwd69xVd+
- 03drLjjeL3LAXu93YNoxCyXZ4250uBBWmdBnzTvSrwAiL9USAt3EmMfwPlziZqeaPtG+vWxSElhwcjJoPZ+O4q3J59fvO0Bpjvp5MAAM2L7a5XinM5tFdFdD
+Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.46 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_DKIM_REJECT(1.00)[embeddedor.com:s=default];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
+	R_MISSING_CHARSET(0.50)[];
+	R_DKIM_ALLOW(-0.20)[gmail.com:s=20230601];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-31993-lists,linux-wireless=lfdr.de];
-	DMARC_NA(0.00)[embeddedor.com];
-	HAS_X_SOURCE(0.00)[];
-	TO_DN_SOME(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
+	FROM_HAS_DN(0.00)[];
+	TAGGED_FROM(0.00)[bounces-31962-lists,linux-wireless=lfdr.de];
+	RCVD_COUNT_FIVE(0.00)[5];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[embeddedor.com:-];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	RCPT_COUNT_FIVE(0.00)[6];
-	RCVD_COUNT_FIVE(0.00)[6];
-	FROM_NEQ_ENVFROM(0.00)[gustavo@embeddedor.com,linux-wireless@vger.kernel.org];
+	MIME_TRACE(0.00)[0:+];
+	FREEMAIL_CC(0.00)[gmail.com,vger.kernel.org,broadcom.com,intel.com,kernel.org,tuxdriver.com,lists.linux.dev];
+	TO_DN_SOME(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[fourierthomas@gmail.com,linux-wireless@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	HAS_X_ANTIABUSE(0.00)[];
-	NEURAL_HAM(-0.00)[-0.997];
-	TAGGED_RCPT(0.00)[linux-wireless];
+	RCPT_COUNT_SEVEN(0.00)[10];
 	MID_RHS_MATCH_FROM(0.00)[];
+	DKIM_TRACE(0.00)[gmail.com:+];
+	TAGGED_RCPT(0.00)[linux-wireless];
+	FREEMAIL_FROM(0.00)[gmail.com];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,embeddedor.com:mid]
-X-Rspamd-Queue-Id: 33D0415B315
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: C2EE91568AC
 X-Rspamd-Action: no action
 
+dma_alloc_consistent() may change the size to align it. The new size is
+saved in alloced.
 
->> @@ -1652,7 +1656,7 @@ struct roam_ctrl_cmd {
->>   	union {
->>   		u8 bssid[ETH_ALEN]; /* WMI_FORCE_ROAM */
->>   		u8 roam_mode; /* WMI_SET_ROAM_MODE */
->> -		struct bss_bias_info bss; /* WMI_SET_HOST_BIAS */
->> +		struct bss_bias_info_hdr bss; /* WMI_SET_HOST_BIAS */
->>   		struct low_rssi_scan_params params; /* WMI_SET_LRSSI_SCAN_PARAMS
->>   						     */
->>   	} __packed info;
-> 
-> That bss member appears to be completely unused
-> (bssid, roam_mode, and params are used)
-> 
-> So IMO the better solution is to remove bss from the union.
-> And I think struct bss_bias and struct bss_bias_info can also be removed.
+Change the free size to match the allocation size.
 
-Even if they're not used, are you sure they aren't there simply	
-to define the memory layout of struct roam_ctrl_cmd?
+Fixes: 5b435de0d786 ("net: wireless: add brcm80211 drivers")
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Thomas Fourier <fourier.thomas@gmail.com>
+---
+ drivers/net/wireless/broadcom/brcm80211/brcmsmac/dma.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-As Kees commented[1], struct roam_ctrl_cmd appears to be a
-hardware interface... See below:
-
-drivers/net/wireless/ath/ath6kl/wmi.c:
-  755 /*
-  756  * Mechanism to modify the roaming behavior in the firmware. The lower rssi
-  757  * at which the station has to roam can be passed with
-  758  * WMI_SET_LRSSI_SCAN_PARAMS. Subtract 96 from RSSI to get the signal level
-  759  * in dBm.
-  760  */
-  761 int ath6kl_wmi_set_roam_lrssi_cmd(struct wmi *wmi, u8 lrssi)
-  762 {
-  763         struct sk_buff *skb;
-  764         struct roam_ctrl_cmd *cmd;
-  765
-  766         skb = ath6kl_wmi_get_new_buf(sizeof(*cmd));
-  767         if (!skb)
-  768                 return -ENOMEM;
-  769
-  770         cmd = (struct roam_ctrl_cmd *) skb->data;
-...
-}
-
-Thanks
--Gustavo
-
-[1] https://lore.kernel.org/linux-hardening/202601151627.99DFE54@keescook/
+diff --git a/drivers/net/wireless/broadcom/brcm80211/brcmsmac/dma.c b/drivers/net/wireless/broadcom/brcm80211/brcmsmac/dma.c
+index c739bf7463b3..13d0d6b68238 100644
+--- a/drivers/net/wireless/broadcom/brcm80211/brcmsmac/dma.c
++++ b/drivers/net/wireless/broadcom/brcm80211/brcmsmac/dma.c
+@@ -483,7 +483,7 @@ static void *dma_ringalloc(struct dma_info *di, u32 boundary, uint size,
+ 	if (((desc_strtaddr + size - 1) & boundary) != (desc_strtaddr
+ 							& boundary)) {
+ 		*alignbits = dma_align_sizetobits(size);
+-		dma_free_coherent(di->dmadev, size, va, *descpa);
++		dma_free_coherent(di->dmadev, *alloced, va, *descpa);
+ 		va = dma_alloc_consistent(di, size, *alignbits,
+ 			alloced, descpa);
+ 	}
+-- 
+2.43.0
 
 
