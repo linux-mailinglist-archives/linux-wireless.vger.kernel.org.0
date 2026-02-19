@@ -1,66 +1,66 @@
-Return-Path: <linux-wireless+bounces-32002-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-32003-lists+linux-wireless=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id AE8jMxZclmkdeQIAu9opvQ
-	(envelope-from <linux-wireless+bounces-32002-lists+linux-wireless=lfdr.de@vger.kernel.org>)
-	for <lists+linux-wireless@lfdr.de>; Thu, 19 Feb 2026 01:40:54 +0100
+	id QPvrLRpclmkdeQIAu9opvQ
+	(envelope-from <linux-wireless+bounces-32003-lists+linux-wireless=lfdr.de@vger.kernel.org>)
+	for <lists+linux-wireless@lfdr.de>; Thu, 19 Feb 2026 01:40:58 +0100
 X-Original-To: lists+linux-wireless@lfdr.de
 Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4E42E15B35E
-	for <lists+linux-wireless@lfdr.de>; Thu, 19 Feb 2026 01:40:54 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 71F0415B365
+	for <lists+linux-wireless@lfdr.de>; Thu, 19 Feb 2026 01:40:58 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 089F43050918
-	for <lists+linux-wireless@lfdr.de>; Thu, 19 Feb 2026 00:40:30 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id A29B63054C96
+	for <lists+linux-wireless@lfdr.de>; Thu, 19 Feb 2026 00:40:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 835281F4611;
-	Thu, 19 Feb 2026 00:40:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E01DA1F4611;
+	Thu, 19 Feb 2026 00:40:30 +0000 (UTC)
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-oa1-f41.google.com (mail-oa1-f41.google.com [209.85.160.41])
+Received: from mail-oa1-f54.google.com (mail-oa1-f54.google.com [209.85.160.54])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 481B421CA0D
-	for <linux-wireless@vger.kernel.org>; Thu, 19 Feb 2026 00:40:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.41
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A44AA217F31
+	for <linux-wireless@vger.kernel.org>; Thu, 19 Feb 2026 00:40:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.54
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771461629; cv=none; b=KZmBZh3LnRHa8L8z6jr8BBStfY8qZ2oI8qbIv/1cTJbw7fDX+GIA9/LQk7U40R7i4JOefZwSGUgkVDIE6Ao44Jq6jrxCcZN5oRLDuc2haCMNuKTK8SSo4KvPsbaH7+uEkxJhFOies5sk0zJConFBZt6v8dOe0qZSdrJjly2+QpI=
+	t=1771461630; cv=none; b=iOzb55M+XUcfOdDxOGIkCpi3Rw9TNQPZn+Hg8CCZagaLBF4ilWr3PJj2I09a+c1QES8dOhdJW+X4UN+MjRG5vWqBgsbNTIil+DNW5wg0P/ies+I6bLWcoID2BdvoMMEaYEDjk5p5j2ILAVIH31TMdzS53taweYLxl6cdRKBLuP0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771461629; c=relaxed/simple;
-	bh=gLbcxsvMfBs+N5v0NGbO8TPqMVB+Atm7jc9GjQ5hBTk=;
+	s=arc-20240116; t=1771461630; c=relaxed/simple;
+	bh=T5b7BWZwpQvP/l0ifB56jc3DgOo8jjpnV//rdmhZRHQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=VOX0SdgQU4sGdDhq1BAGHj8o9IgbBAbXkjAaH1F1Jov4FL4VoDlKrToe99FInxC11i1KYblxihUmLZNKWe99CnTRdCS+mDPS0HAHMTSVIOCVJMqdY1QE1w/0s6FEzEVzokSvuLAtre+9Fi/qwdbjS1cZEw9zyOFR3It4WXkbp34=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=quarantine dis=none) header.from=kernel.org; spf=pass smtp.mailfrom=gmail.com; arc=none smtp.client-ip=209.85.160.41
+	 MIME-Version; b=dfCcTG1nyk0POv0ANtJaFyOcwZknKGsjx/hQyPfACA7T3vf3vILQJZQJEAcgiwozzUy4Q0ggRdyOUoiXuN72yKmXL2u6vkU1oF5yLQD26mz7rKINoxsL2CGthrP4ndXnGhuG0Hf2bKNWTPeqhglFhnjsmEFDIjVKDbRx/vPCGkM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=quarantine dis=none) header.from=kernel.org; spf=pass smtp.mailfrom=gmail.com; arc=none smtp.client-ip=209.85.160.54
 Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=quarantine dis=none) header.from=kernel.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-oa1-f41.google.com with SMTP id 586e51a60fabf-40ed9a23aaeso128938fac.1
-        for <linux-wireless@vger.kernel.org>; Wed, 18 Feb 2026 16:40:28 -0800 (PST)
+Received: by mail-oa1-f54.google.com with SMTP id 586e51a60fabf-404254ffe8aso303659fac.0
+        for <linux-wireless@vger.kernel.org>; Wed, 18 Feb 2026 16:40:29 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1771461627; x=1772066427;
+        d=1e100.net; s=20230601; t=1771461628; x=1772066428;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to;
-        bh=kdvSYvr5NMYBqMkb8DQrSUZYlW2kwKMB4kHjYgxFfio=;
-        b=itCbmxLHSTHR5ElBuGJU9l1j722pbmGWGsV6liZT11p+VFLLOX+SgBX0cdg+QvuUF3
-         XtXJuVCsv6LPnUEzXEMsSsEyOoVtKaoVu/DJX8+AHw5R1RBSF6WJH/HS3Bswkubvc9La
-         +XZ+aN2XykJYbeD7v2q1AbqOpU49NjUe2mOLPpFusKhpcac8oQtQq7wtcpglJL12WCr0
-         l52qeqEYPOJ4JhfXXRZIGyScgY3dOnVYU1emDnzd9RB8buOhck/c99QfEGBo0Oj6fSmc
-         AYE2G2Z1WsfHkBmDeyVKVdq8CZhVP0F2XqsQeKhDxdLcA1t0yn7Jmr1tBsUTVPxILpxi
-         mpog==
-X-Gm-Message-State: AOJu0YxBOIZfGt52LuBU4FzlD+Rd3p6VW6xlEuH21h/Jub6ICAZOyacN
-	dBqSpE3NCP5NjwWGlEEKE40gs1X6U/rMD8hbyLaeaKa8PuTawsYeWJM6
-X-Gm-Gg: AZuq6aJ1D3tIywiLSDKfIE+BPctvNsxDz5B0j4S3O5aDU1M79tKU9cDqtDnJ4aSEKlO
-	WpNkKqY2IyuGLELdERZwOOGZVwwoq9VPiiz6RaYMTbN3ZwTF/Zf6LoLSlRj/M1vgEVwiFS8bV8j
-	pAhE8jCXZ1iYQvFbGiZW1VMReZPTNHCtVHM1bUtuYH9V05Es6xA6D9qP+0zrOUgjYsbLQpDmzxa
-	D6sqyb7x2h/s7GLiLueSWKUQr/03uTqqWDP1sEfhdkO9K9pFAlPkYXLvHgeEjusbb8j1yOp3JgE
-	YwP0aZszioY4xnQQ5i1xGKCt+dHVuiRbv7fRVr8rkMy6i23cN9FQ0m9/o/K3vXrAD8BjgX4VRCa
-	D8WZP88auLpnh7TCwAeMQHs+7fA5+4pd5ZmgLFxlKKbm8YHZ2qdDW8947NInthWds+Slnp+LR/C
-	NqTAgKtaFnpeu3pPv29CsepmLjd9pd7mkjMo3Q69TSZ6YyMYPqSPygXsCUuA==
-X-Received: by 2002:a05:6870:a0a6:b0:40e:e9f4:90f5 with SMTP id 586e51a60fabf-40f0d997a2bmr9443254fac.58.1771461627086;
-        Wed, 18 Feb 2026 16:40:27 -0800 (PST)
+        bh=R8frkFgL2LcQ46RFOXtOLVg7ByeEmIT9eU+ttG4MBVU=;
+        b=AeKinqNUL0dMl3QlFbxYpgew1Ljz2ULgzcZ779He97xWI26lnjj2z0QhExEXVP3UHL
+         nRyksBJm5XlW3k4vkN0fgbWQ8tw4HAIjtbWdBcaQG+ErO0DVJIFBoRwmvHZpyFk072OM
+         taUppZlQ9ZFyqF+4Mchhlf72GbWXvmwLhS7h1k9MOCxthK6YFVXie9+gqseRFSds8iQb
+         7aFo+bLTrgzP3oJtM/JcHya5KIgWc/A6X4vYbpV3r4TdJCGNlkymDqstmiMHmW8txWFI
+         UBKy/DVZ+Tcg/giOfhfo1h+PTFZ1CuBebxNAihbDylCzAoVIEFBCxIbrud78CV2JdNxA
+         IK3Q==
+X-Gm-Message-State: AOJu0Yz35Dc6U9H7D99fLdCpz/bu9oXQ7tZHMIaDNTQ8QDjz4XfaoBVQ
+	h8KneHFC3pcP3QtWZWA/B/tyU8zl1QaeUt07vg6vm6DK2VR07wNCj92f
+X-Gm-Gg: AZuq6aIXbhAAywH6BX1bx6vNza11twVLrpn9ZCrYnEBJ8jIZ0L59sBk/hTBvt/g7CAL
+	KuoTlmyQazg7ny+ENOYmfNUXmYD9h/9G92cP3b+te9cqeJZfHUxE0iW8hAqImSFhzbmgGMt8wEh
+	Gf6vG5g/x531vhKsVaPD4utEYrYBj3OOyX859/7yl+CeI4LrhB5c+tuwYrxHH4SPC+ueqbmmqGw
+	oaV3cKgP8z+f2v0PlF3xF1KXx7MV+44aLuN1v1SLsZRLWLr2lfYFa79l9YMd7VCKC22kmacu0UW
+	PNrh+48rVh4huIJbPG1/k7C7h/dp/O2+IYObyjcOD9l8STzyUYBjoYoYSWzTf7EKTmDk5GdJoDz
+	eABIhZMCrY2Ht6i6bnUlgTRkqazwPDhT1hOsrAQVUQMgkswxHfL8DCLzlJchIHp5tdk7rgDA8iT
+	/H4Ch3t+tG8+dJ8HZZKhU6f9sM4WkPmaGHK3oel3dh0xDbrQY=
+X-Received: by 2002:a05:6870:37cc:b0:413:9c82:8742 with SMTP id 586e51a60fabf-415458deaeemr52956fac.27.1771461628511;
+        Wed, 18 Feb 2026 16:40:28 -0800 (PST)
 Received: from sean-HP-EliteBook-830-G6.lan ([207.191.35.252])
-        by smtp.gmail.com with ESMTPSA id 586e51a60fabf-40eaee45d12sm23477659fac.1.2026.02.18.16.40.26
+        by smtp.gmail.com with ESMTPSA id 586e51a60fabf-40eaee45d12sm23477659fac.1.2026.02.18.16.40.27
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 18 Feb 2026 16:40:26 -0800 (PST)
+        Wed, 18 Feb 2026 16:40:28 -0800 (PST)
 From: sean.wang@kernel.org
 To: nbd@nbd.name,
 	lorenzo.bianconi@redhat.com
@@ -68,9 +68,9 @@ Cc: linux-wireless@vger.kernel.org,
 	linux-mediatek@lists.infradead.org,
 	Sean Wang <sean.wang@mediatek.com>,
 	Xiong Huang <xiong.huang@mediatek.com>
-Subject: [PATCH 09/11] wifi: mt76: mt792x: add MT7902 WFDMA prefetch configuration
-Date: Wed, 18 Feb 2026 18:40:05 -0600
-Message-ID: <20260219004007.19733-9-sean.wang@kernel.org>
+Subject: [PATCH 10/11] wifi: mt76: mt7921: add MT7902 PCIe device support
+Date: Wed, 18 Feb 2026 18:40:06 -0600
+Message-ID: <20260219004007.19733-10-sean.wang@kernel.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20260219004007.19733-1-sean.wang@kernel.org>
 References: <20260219004007.19733-1-sean.wang@kernel.org>
@@ -91,7 +91,7 @@ X-Spamd-Result: default: False [-0.46 / 15.00];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-32002-lists,linux-wireless=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-32003-lists,linux-wireless=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[sean.wang@kernel.org,linux-wireless@vger.kernel.org];
 	FORGED_SENDER_MAILLIST(0.00)[];
@@ -102,55 +102,49 @@ X-Spamd-Result: default: False [-0.46 / 15.00];
 	FROM_NO_DN(0.00)[];
 	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
 	R_DKIM_NA(0.00)[];
-	NEURAL_HAM(-0.00)[-0.981];
+	NEURAL_HAM(-0.00)[-0.979];
 	RCVD_COUNT_FIVE(0.00)[5];
 	TAGGED_RCPT(0.00)[linux-wireless];
 	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[mediatek.com:email,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 4E42E15B35E
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,mediatek.com:email]
+X-Rspamd-Queue-Id: 71F0415B365
 X-Rspamd-Action: no action
 
 From: Sean Wang <sean.wang@mediatek.com>
 
-Configure the RX/TX ring prefetch setting for MT7902 PCIe device.
-
-This is a prerequisite patch before enabling MT7902 PCIe support.
+Register the MT7902 PCI device ID in the mt7921 driver and add its
+corresponding firmware and ROM patch names.
 
 Co-developed-by: Xiong Huang <xiong.huang@mediatek.com>
 Signed-off-by: Xiong Huang <xiong.huang@mediatek.com>
 Signed-off-by: Sean Wang <sean.wang@mediatek.com>
 ---
- drivers/net/wireless/mediatek/mt76/mt792x_dma.c | 16 ++++++++++++++++
- 1 file changed, 16 insertions(+)
+ drivers/net/wireless/mediatek/mt76/mt7921/pci.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-diff --git a/drivers/net/wireless/mediatek/mt76/mt792x_dma.c b/drivers/net/wireless/mediatek/mt76/mt792x_dma.c
-index 34f07bd3097d..002aece857b2 100644
---- a/drivers/net/wireless/mediatek/mt76/mt792x_dma.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt792x_dma.c
-@@ -103,6 +103,22 @@ static void mt792x_dma_prefetch(struct mt792x_dev *dev)
- 		mt76_wr(dev, MT_WFDMA0_TX_RING3_EXT_CTRL, PREFETCH(0x0400, 0x10));
- 		mt76_wr(dev, MT_WFDMA0_TX_RING15_EXT_CTRL, PREFETCH(0x0500, 0x4));
- 		mt76_wr(dev, MT_WFDMA0_TX_RING16_EXT_CTRL, PREFETCH(0x0540, 0x4));
-+	} else if (is_mt7902(&dev->mt76)) {
-+		/* rx ring */
-+		mt76_wr(dev, MT_WFDMA0_RX_RING0_EXT_CTRL, PREFETCH(0x0000, 0x4));
-+		mt76_wr(dev, MT_WFDMA0_RX_RING1_EXT_CTRL, PREFETCH(0x0040, 0x4));
-+		mt76_wr(dev, MT_WFDMA0_RX_RING2_EXT_CTRL, PREFETCH(0x0080, 0x4));
-+		mt76_wr(dev, MT_WFDMA0_RX_RING3_EXT_CTRL, PREFETCH(0x00c0, 0x4));
-+		/* tx ring */
-+		mt76_wr(dev, MT_WFDMA0_TX_RING0_EXT_CTRL, PREFETCH(0x0100, 0x4));
-+		mt76_wr(dev, MT_WFDMA0_TX_RING1_EXT_CTRL, PREFETCH(0x0140, 0x4));
-+		mt76_wr(dev, MT_WFDMA0_TX_RING2_EXT_CTRL, PREFETCH(0x0180, 0x4));
-+		mt76_wr(dev, MT_WFDMA0_TX_RING3_EXT_CTRL, PREFETCH(0x01c0, 0x4));
-+		mt76_wr(dev, MT_WFDMA0_TX_RING4_EXT_CTRL, PREFETCH(0x0200, 0x4));
-+		mt76_wr(dev, MT_WFDMA0_TX_RING5_EXT_CTRL, PREFETCH(0x0240, 0x4));
-+		mt76_wr(dev, MT_WFDMA0_TX_RING6_EXT_CTRL, PREFETCH(0x0280, 0x4));
-+		mt76_wr(dev, MT_WFDMA0_TX_RING15_EXT_CTRL, PREFETCH(0x02c0, 0x4));
-+		mt76_wr(dev, MT_WFDMA0_TX_RING16_EXT_CTRL, PREFETCH(0x0300, 0x4));
- 	} else {
- 		/* rx ring */
- 		mt76_wr(dev, MT_WFDMA0_RX_RING0_EXT_CTRL, PREFETCH(0x0, 0x4));
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7921/pci.c b/drivers/net/wireless/mediatek/mt76/mt7921/pci.c
+index 6bb3c6a1cf6a..7a790ddf43bb 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7921/pci.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7921/pci.c
+@@ -26,6 +26,8 @@ static const struct pci_device_id mt7921_pci_device_table[] = {
+ 		.driver_data = (kernel_ulong_t)MT7922_FIRMWARE_WM },
+ 	{ PCI_DEVICE(PCI_VENDOR_ID_MEDIATEK, 0x7920),
+ 		.driver_data = (kernel_ulong_t)MT7920_FIRMWARE_WM },
++	{ PCI_DEVICE(PCI_VENDOR_ID_MEDIATEK, 0x7902),
++		.driver_data = (kernel_ulong_t)MT7902_FIRMWARE_WM },
+ 	{ },
+ };
+ 
+@@ -617,6 +619,8 @@ MODULE_FIRMWARE(MT7921_FIRMWARE_WM);
+ MODULE_FIRMWARE(MT7921_ROM_PATCH);
+ MODULE_FIRMWARE(MT7922_FIRMWARE_WM);
+ MODULE_FIRMWARE(MT7922_ROM_PATCH);
++MODULE_FIRMWARE(MT7902_FIRMWARE_WM);
++MODULE_FIRMWARE(MT7902_ROM_PATCH);
+ MODULE_AUTHOR("Sean Wang <sean.wang@mediatek.com>");
+ MODULE_AUTHOR("Lorenzo Bianconi <lorenzo@kernel.org>");
+ MODULE_DESCRIPTION("MediaTek MT7921E (PCIe) wireless driver");
 -- 
 2.43.0
 
