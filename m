@@ -1,247 +1,291 @@
-Return-Path: <linux-wireless+bounces-32030-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-32031-lists+linux-wireless=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id ILcrKvb3lmn4swIAu9opvQ
-	(envelope-from <linux-wireless+bounces-32030-lists+linux-wireless=lfdr.de@vger.kernel.org>)
-	for <lists+linux-wireless@lfdr.de>; Thu, 19 Feb 2026 12:45:58 +0100
+	id 4Of7E5k8l2l2vwIAu9opvQ
+	(envelope-from <linux-wireless+bounces-32031-lists+linux-wireless=lfdr.de@vger.kernel.org>)
+	for <lists+linux-wireless@lfdr.de>; Thu, 19 Feb 2026 17:38:49 +0100
 X-Original-To: lists+linux-wireless@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 24F3115E669
-	for <lists+linux-wireless@lfdr.de>; Thu, 19 Feb 2026 12:45:58 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 52749160BDB
+	for <lists+linux-wireless@lfdr.de>; Thu, 19 Feb 2026 17:38:47 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id D76D930136A4
-	for <lists+linux-wireless@lfdr.de>; Thu, 19 Feb 2026 11:45:56 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 4B1993023A5D
+	for <lists+linux-wireless@lfdr.de>; Thu, 19 Feb 2026 16:38:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4A2232BE02B;
-	Thu, 19 Feb 2026 11:45:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CC0B413957E;
+	Thu, 19 Feb 2026 16:38:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="nsH6XnKc"
+	dkim=pass (1024-bit key) header.d=candelatech.com header.i=@candelatech.com header.b="nLOelImU"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from dispatch1-us1.ppe-hosted.com (dispatch1-us1.ppe-hosted.com [67.231.154.164])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D5C912D193F
-	for <linux-wireless@vger.kernel.org>; Thu, 19 Feb 2026 11:45:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3B19D34BA59
+	for <linux-wireless@vger.kernel.org>; Thu, 19 Feb 2026 16:38:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=67.231.154.164
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771501556; cv=none; b=Dllfkf5edQ/aOoLlrt1Td2DcoP3MPrimSPNempCTRx/95gTAKlnqeu2ZB1oCTBaYewEpY4J8v4GQFNR5aUs8VJIv1bb+G2vGu0V1jsVDlUuxylkFdEh88MgvZmhXgbAJ2OFYsCMiFSy5fRca2y6ti8mxPKKQetrlIpXYdUWiJlc=
+	t=1771519123; cv=none; b=rSzhPFTSzoZRmpuGl+6iBW13YY7Ecc9xtjQCpC9xvr1YgMtq7rEur8uS7gkHzSok32+dpDmvJ8Q+YZ6qgCz589DnDLqKLZnuFFUYOqjdV47qjEMtNHPd6CcdOGOiKPQdKlucu5Fm+5GRuQJwIhTu/uY25asTPaMgZMVveAlIvpM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771501556; c=relaxed/simple;
-	bh=sq7/stbwd5kWOX2wsRlVD1tyV+ojmfiB/4cNwsTZ1Ns=;
-	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
-	 In-Reply-To:Content-Type; b=IElR4uZFHeSQgTcOqme9dFjF6Ilu4e8xBKtzSOR8P9RGTSwGCaDkCGkkHpEr7mpqheI39ZQGwOaRNZuwUC8Qtev90nzalGfIA7bWOa0iGzDLqUTi9lmCQ4lSlxmkz8cFOwgtxESfMxoIu/ry6BC52UbSFWa13xJ6XV+ASvKk8uA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=nsH6XnKc; arc=none smtp.client-ip=205.220.168.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
-Received: from pps.filterd (m0279866.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 61INlev51924876;
-	Thu, 19 Feb 2026 11:45:50 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
-	cc:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
-	maJkr9ep7JNaVi/sSOzihD4kMWcMBlhIY3X+65w5DYE=; b=nsH6XnKc6GTj3YDU
-	cKSAyFPm/WFzRB66nM6yKXs3Tx0sHK/HsKjn5SupQdhkdyzLaW+BG5xB6ubcq5fw
-	r7TWNaShFl1XHQmydEa/OcpdH9MRAbfYBs+pjUUjQGbpBHWkZua5g1BzGMVwwK+I
-	Rw1bm0PtQCf1baGwM4VSPpQoGJbsPW1Who+nFASGmA5cqLiFDQNhGH5qjwzeDiS3
-	mJF48MkaAH652/PjAwDmCqezxbIhlwI5SzKlA15Lvas3Skf0jk6TINqCvr8RMUUK
-	sDpYpcn7R4KsqKNgrVXxv2bUIn+DSNLum7FVm/I0a9gymcnfWDFi2PTvfFlRMv7f
-	4GDyyA==
-Received: from nasanppmta02.qualcomm.com (i-global254.qualcomm.com [199.106.103.254])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4cdqdg9gr0-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 19 Feb 2026 11:45:49 +0000 (GMT)
-Received: from nasanex01a.na.qualcomm.com (nasanex01a.na.qualcomm.com [10.52.223.231])
-	by NASANPPMTA02.qualcomm.com (8.18.1.2/8.18.1.2) with ESMTPS id 61JBjneO009925
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 19 Feb 2026 11:45:49 GMT
-Received: from [10.50.44.70] (10.80.80.8) by nasanex01a.na.qualcomm.com
- (10.52.223.231) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.17; Thu, 19 Feb
- 2026 03:45:47 -0800
-Message-ID: <ca1f467a-b0bb-4c3e-bda6-5f3d89451abb@quicinc.com>
-Date: Thu, 19 Feb 2026 17:15:44 +0530
+	s=arc-20240116; t=1771519123; c=relaxed/simple;
+	bh=9wKK73Vq7CCKWmpp8AJcQK8hvGUd5AVT2QF9vLcltks=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=HEMl+YF/XV6jbyzRIV6aNc8dIp2tlah3IKIn4GkHlM3Te0Qs/bMN4E+ppzfa1fpD/ooZcQPpnZ1K294yEby9dsV+4qVuh5KoBp4SMNiHPmcbo8LiY0sV1NIj34v9y7tfqxpz6P0Xa0dsJ+38fMf8GbDIH1aapTBbG9uzYlsXsEc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=candelatech.com; spf=pass smtp.mailfrom=candelatech.com; dkim=pass (1024-bit key) header.d=candelatech.com header.i=@candelatech.com header.b=nLOelImU; arc=none smtp.client-ip=67.231.154.164
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=candelatech.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=candelatech.com
+X-Virus-Scanned: Proofpoint Essentials engine
+Received: from mail3.candelatech.com (mail.candelatech.com [208.74.158.173])
+	by mx1-us1.ppe-hosted.com (PPE Hosted ESMTP Server) with ESMTP id 63391940082;
+	Thu, 19 Feb 2026 16:38:39 +0000 (UTC)
+Received: from [192.168.100.159] (firewall.candelatech.com [50.251.239.81])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+	(No client certificate requested)
+	by mail3.candelatech.com (Postfix) with ESMTPSA id DFA9D13C2B0;
+	Thu, 19 Feb 2026 08:38:36 -0800 (PST)
+DKIM-Filter: OpenDKIM Filter v2.11.0 mail3.candelatech.com DFA9D13C2B0
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=candelatech.com;
+	s=default; t=1771519116;
+	bh=9wKK73Vq7CCKWmpp8AJcQK8hvGUd5AVT2QF9vLcltks=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=nLOelImUsGg3wb8i2ZVK8gRscGRYAp7CDQIoSVftvoRYBqlII3cjxIZMy64F035d6
+	 kfM8oAUQEKlsBmpEPpz/OR56xnm9926HQCKpSPGjh2rpWjYkSVW+M1XD5Z245Humlx
+	 RhbWiDZ9dgQAifb9t7QjTW5yDUKQP5FE4bavFEyU=
+Message-ID: <5ff61419-0d65-7cdf-4033-afb43df03a2e@candelatech.com>
+Date: Thu, 19 Feb 2026 08:38:36 -0800
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH ath-next v2] wifi: ath12k: add basic hwmon temperature
- reporting
-To: Pablo MARTIN-GOMEZ <pmartin-gomez@freebox.fr>,
-        Maharaja Kennadyrajan
-	<maharaja.kennadyrajan@oss.qualcomm.com>,
-        <ath12k@lists.infradead.org>
-CC: <linux-wireless@vger.kernel.org>,
-        Aishwarya R
-	<aishwarya.r@oss.qualcomm.com>
-References: <20260219073440.19618-1-maharaja.kennadyrajan@oss.qualcomm.com>
- <541218f7-0256-4cae-9cb1-40a1a2da2bfb@freebox.fr>
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.15.1
+Subject: Re: [PATCH] wifi: iwlwifi: prevent NAPI processing after firmware
+ error
+To: Cole Leavitt <cole@unwrap.rs>
+Cc: linux-wireless@vger.kernel.org
+References: <7f72ac08-6b4a-486b-a8f9-7b78ea0f5ae1@candelatech.com>
+ <20260218184749.22675-1-cole@unwrap.rs>
 Content-Language: en-US
-From: Maharaja Kennadyrajan <quic_mkenna@quicinc.com>
-In-Reply-To: <541218f7-0256-4cae-9cb1-40a1a2da2bfb@freebox.fr>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 8bit
-X-ClientProxiedBy: nasanex01a.na.qualcomm.com (10.52.223.231) To
- nasanex01a.na.qualcomm.com (10.52.223.231)
-X-QCInternal: smtphost
-X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
-X-Proofpoint-ORIG-GUID: r29MFGfKjaYwhn3YUf_3O7hDs09PdIwI
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwMjE5MDEwOCBTYWx0ZWRfX3VctyHTYpNxs
- lqorG97isfWzsKtvKnUAIYdHniTQnjiUSXX625DWEux0zQU7N5haguqJ8AjadNgWWF/K8nXvfTI
- EfytpE47P6zhtfluTNWdOenzekB9rk9BOTg2J3ZLXmIwlnO196dTngeqH1TTa1KXGzX9sheoB66
- NtrmoEGlQ332KLm6riT2AF+Fc2tN+UK/GQ4UIKnztBDNCQKpX3mWyO5BVt57jsff2a+WuzPdtw6
- YjfBUJaW91ky+FS+tCxAoa3m3iffgL16L5Ul1JsTPkeFX0tiNp8fq1JR0pBvny1qdGYF9y1rGUe
- 55UaMAQK4LPhwRCRnRw3uTgcQOzM4iRo7fSxK4pgQ6MzOla4NK438e/9tiOCTvzbaDxl1hIoY+B
- OycWD7YsSuhZKFerQAY9GBPGo3eqiN8GlTkWZo8AnaZSiN0ctDAvYXJwMStaQ3nANT56dyGHh9N
- XCOzo2rN833u0IPNkwg==
-X-Proofpoint-GUID: r29MFGfKjaYwhn3YUf_3O7hDs09PdIwI
-X-Authority-Analysis: v=2.4 cv=W/M1lBWk c=1 sm=1 tr=0 ts=6996f7ed cx=c_pps
- a=JYp8KDb2vCoCEuGobkYCKw==:117 a=JYp8KDb2vCoCEuGobkYCKw==:17
- a=GEpy-HfZoHoA:10 a=IkcTkHD0fZMA:10 a=HzLeVaNsDn8A:10
- a=VkNPw1HP01LnGYTKEx00:22 a=Mpw57Om8IfrbqaoTuvik:22 a=GgsMoib0sEa3-_RKJdDe:22
- a=VwQbUJbxAAAA:8 a=QyXUC8HyAAAA:8 a=EUspDBNiAAAA:8 a=7YIXymX5L9svCjQrblEA:9
- a=3ZKOabzyN94A:10 a=QEXdDO2ut3YA:10
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.51,FMLib:17.12.100.49
- definitions=2026-02-19_03,2026-02-18_01,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- bulkscore=0 priorityscore=1501 adultscore=0 malwarescore=0 clxscore=1011
- suspectscore=0 impostorscore=0 lowpriorityscore=0 phishscore=0 spamscore=0
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.22.0-2601150000 definitions=main-2602190108
+From: Ben Greear <greearb@candelatech.com>
+Organization: Candela Technologies
+In-Reply-To: <20260218184749.22675-1-cole@unwrap.rs>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-MDID: 1771519120-z2P1o4YZlgDY
+X-PPE-STACK: {"stack":"us5"}
+X-MDID-O:
+ us5;at1;1771519120;z2P1o4YZlgDY;<greearb@candelatech.com>;bfe4a6ce8997d7f0952d3aefe92bd651
+X-PPE-TRUSTED: V=1;DIR=OUT;
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[quicinc.com,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
-	R_DKIM_ALLOW(-0.20)[quicinc.com:s=qcppdkim1];
+	DMARC_POLICY_ALLOW(-0.50)[candelatech.com,none];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_DKIM_ALLOW(-0.20)[candelatech.com:s=default];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	TO_DN_SOME(0.00)[];
-	TAGGED_FROM(0.00)[bounces-32030-lists,linux-wireless=lfdr.de];
-	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-32031-lists,linux-wireless=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	DKIM_TRACE(0.00)[quicinc.com:+];
+	RCPT_COUNT_TWO(0.00)[2];
+	HAS_ORG_HEADER(0.00)[];
+	DKIM_TRACE(0.00)[candelatech.com:+];
+	TO_DN_SOME(0.00)[];
+	MIME_TRACE(0.00)[0:+];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[qualcomm.com:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,quicinc.com:mid,quicinc.com:dkim];
-	RCPT_COUNT_FIVE(0.00)[5];
-	FROM_NEQ_ENVFROM(0.00)[quic_mkenna@quicinc.com,linux-wireless@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-0.999];
+	FROM_NEQ_ENVFROM(0.00)[greearb@candelatech.com,linux-wireless@vger.kernel.org];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	NEURAL_HAM(-0.00)[-1.000];
 	TAGGED_RCPT(0.00)[linux-wireless];
-	RCVD_COUNT_SEVEN(0.00)[7]
-X-Rspamd-Queue-Id: 24F3115E669
+	MID_RHS_MATCH_FROM(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,candelatech.com:mid,candelatech.com:dkim,candelatech.com:url,candelatech.com:email]
+X-Rspamd-Queue-Id: 52749160BDB
 X-Rspamd-Action: no action
 
+On 2/18/26 10:47, Cole Leavitt wrote:
+> Ben,
+> 
+> Thanks for the historical context. I dug through the git history and
+> your linux-ct repos to verify exactly what happened when. I want to
+> make sure I have this right - can you confirm whether this matches
+> what you saw?
 
-On 2/19/2026 5:01 PM, Pablo MARTIN-GOMEZ wrote:
-> Hello,
->
-> On 19/02/2026 08:34, Maharaja Kennadyrajan wrote:
->> Add initial thermal support by wiring up a per-radio (pdev) hwmon 
->> temperature
->> sensor backed by the existing WMI pdev temperature command and event.
->> When userspace reads the sysfs file temp1_input, the driver sends
->> WMI_PDEV_GET_TEMPERATURE_CMDID (tag WMI_TAG_PDEV_GET_TEMPERATURE_CMD) 
->> and waits
->> for the corresponding WMI_PDEV_TEMPERATURE_EVENTID
->> (tag WMI_TAG_PDEV_TEMPERATURE_EVENT) to get the temperature and pdev_id.
->>
->> Export the reported value in millidegrees Celsius as required by hwmon.
->> The temperature reported is per-radio (pdev). In a multi-radio wiphy 
->> under a
->> single phy, a separate hwmon device is created for each radio.
->>
->> Sample command and output:
->> $ cat /sys/devices/pci0000:00/.../ieee80211/phyX/hwmonY/temp1_input
->> $ 50000
->>
->> Tested-on: QCN9274 hw2.0 PCI WLAN.WBE.1.6-01243-QCAHKSWPL_SILICONZ-1
->> Tested-on: WCN7850 hw2.0 PCI 
->> WLAN.HMT.1.1.c5-00302-QCAHMTSWPL_V1.0_V2.0_SILICONZ-1.115823.3
->>
->> Reported-by: kernel test robot <lkp@intel.com>
->> Closes: 
->> https://lore.kernel.org/oe-kbuild-all/202602160145.YQdvbqYY-lkp@intel.com/
->> Co-developed-by: Aishwarya R <aishwarya.r@oss.qualcomm.com>
->> Signed-off-by: Aishwarya R <aishwarya.r@oss.qualcomm.com>
->> Signed-off-by: Maharaja Kennadyrajan 
->> <maharaja.kennadyrajan@oss.qualcomm.com>
->> ---
->>
->> v2: Fixed the kernel test robot reported build test error.
->>
->>   drivers/net/wireless/ath/ath12k/Makefile  |   1 +
->>   drivers/net/wireless/ath/ath12k/core.c    |  13 +++
->>   drivers/net/wireless/ath/ath12k/core.h    |   3 +
->>   drivers/net/wireless/ath/ath12k/mac.c     |   5 +
->>   drivers/net/wireless/ath/ath12k/thermal.c | 125 ++++++++++++++++++++++
->>   drivers/net/wireless/ath/ath12k/thermal.h |  44 ++++++++
->>   drivers/net/wireless/ath/ath12k/wmi.c     |  57 +++++-----
->>   7 files changed, 217 insertions(+), 31 deletions(-)
->>   create mode 100644 drivers/net/wireless/ath/ath12k/thermal.c
->>   create mode 100644 drivers/net/wireless/ath/ath12k/thermal.h
->>
-> [...]
->> +
->> +int ath12k_thermal_register(struct ath12k_base *ab)
->> +{
->> +    struct ath12k *ar;
->> +    int i, j, ret;
->> +
->> +    if (!IS_REACHABLE(CONFIG_HWMON))
->> +        return 0;
->> +
->> +    for (i = 0; i < ab->num_radios; i++) {
->> +        ar = ab->pdevs[i].ar;
->> +        if (!ar)
->> +            continue;
->> +
->> +        ar->thermal.hwmon_dev =
->> + hwmon_device_register_with_groups(&ar->ah->hw->wiphy->dev,
->> +                              "ath12k_hwmon", ar,
->> +                              ath12k_hwmon_groups);
->> +        if (IS_ERR(ar->thermal.hwmon_dev)) {
->> +            ret = PTR_ERR(ar->thermal.hwmon_dev);
->> +            ar->thermal.hwmon_dev = NULL;
->> +            ath12k_err(ar->ab, "failed to register hwmon device: %d\n",
->> +                   ret);
->> +            for (j = i - 1; j >= 0; j--) {
->> +                ar = ab->pdevs[i].ar;
-> Shouldn't it be `ar = ab->pdevs[j].ar;`?
+Bug was originally seen in mainline kernel before MLD driver was forked
+off from mvm, not in a backports kernel.
+
+Adding your patch below didn't solve the UAF in the tcp_ack path,
+at least.  I did not see the debugging indicated that code path
+in the patch was taken.  I have not seen any more instances of the 32k loops in
+packet segment loop in the last crash, so at least it is not only reason why a UAF
+would happen.
+
+The problem reproduced overnight was:
+
+BUG: kernel NULL pointer dereference, address: 0000000000000000
+#PF: supervisor write access in kernel mode
+#PF: error_code(0x0002) - not-present page
+PGD 0 P4D 0
+Oops: Oops: 0002 [#1] SMP
+CPU: 12 UID: 0 PID: 1234 Comm: irq/345-iwlwifi Tainted: G S         O        6.18.9+ #53 PREEMPT(full)
+Tainted: [S]=CPU_OUT_OF_SPEC, [O]=OOT_MODULE
+Hardware name: Default string /Default string, BIOS 5.27 11/12/2024
+RIP: 0010:rb_erase+0x173/0x350
+Code: 08 48 8b 01 a8 01 75 97 48 83 c0 01 48 89 01 c3 c3 48 89 46 10 e9 27 ff ff ff 48 8b 56 10 48 8d 41 01 48 89 51 08 48 89 4e 10 <48> 89 02 48 8b 01 48 89 06 
+48 89 31 48 83 f8 03 0f 86 8e 00 00 00
+RSP: 0018:ffffc9000038c820 EFLAGS: 00010246
+RAX: ffff8881b0646601 RBX: 000000000000000c RCX: ffff8881b0646600
+RDX: 0000000000000000 RSI: ffff8881e9cbea00 RDI: ffff8881b0646200
+------------[ cut here ]------------
+RBP: ffff8881b0646200 R08: ffff8881ce443108 R09: 0000000080200001
+R10: 0000000000010000 R11: 00000000f0eaffb7 R12: ffff8881ce442f80
+R13: 0000000000000004 R14: ffff8881b0646600 R15: 0000000000000001
+refcount_t: underflow; use-after-free.
+FS:  0000000000000000(0000) GS:ffff8888dc42e000(0000) knlGS:0000000000000000
+CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+CR2: 0000000000000000 CR3: 0000000005a36002 CR4: 0000000000772ef0
+PKRU: 55555554
+Call Trace:
+WARNING: CPU: 0 PID: 1224 at lib/refcount.c:28 refcount_warn_saturate+0xd8/0xe0
+  <IRQ>
+Modules linked in:
+  tcp_ack+0x635/0x16e0
+  nf_conntrack_netlink
+  tcp_rcv_established+0x211/0xc10
+  nf_conntrack
+  ? sk_filter_trim_cap+0x1a7/0x350
+  nfnetlink
+  tcp_v4_do_rcv+0x1bf/0x350
+  tls
+  tcp_v4_rcv+0xddf/0x1550
+  vrf
+  ? lock_timer_base+0x6d/0x90
+  nf_defrag_ipv6
+  ? raw_local_deliver+0xcc/0x280
+  nf_defrag_ipv4
+ip_protocol_deliver_rcu+0x20/0x130
+  8021q
+  ip_local_deliver_finish+0x85/0xf0
+  garp
+  ip_sublist_rcv_finish+0x35/0x50
+  mrp
+  ip_sublist_rcv+0x16f/0x200
+  stp
+  ip_list_rcv+0xfe/0x130
+  llc
+  __netif_receive_skb_list_core+0x183/0x1f0
+  macvlan
+  netif_receive_skb_list_internal+0x1c8/0x2a0
+  wanlink(O)
+  gro_receive_skb+0x12e/0x210
+  pktgen
+  ieee80211_rx_napi+0x82/0xc0 [mac80211]
+  rpcrdma
+  iwl_mld_rx_mpdu+0xd0f/0xf00 [iwlmld]
+  rdma_cm
+  iwl_pcie_rx_handle+0x394/0xa00 [iwlwifi]
+  iw_cm
+  iwl_pcie_napi_poll_msix+0x3f/0x110 [iwlwifi]
+  ib_cm
+  __napi_poll+0x25/0x1e0
+  ib_core
+  net_rx_action+0x2d3/0x340
+  qrtr
 
 
-My bad. It should by ab->pdev[j] not ab->pdev[i]. Will be addressed in 
-the next version.
+I have enough guard/debugging logic in place that I'm pretty sure the skb coming
+from iwlwifi in this particular path is fine.  It appears the problem is that
+there is an already freed skb in the socket's skb collection, and code blows up
+trying to access a bad rbtree link, or something.  I'm continuing to try to narrow
+down where skb goes bad, but it seems like probably some other thread of logic is
+racing to free the skb since the crash site moves around a lot.  Maybe I can add
+some sort of debugging to warn if skb is freed while in an rbtree...
+
+Thanks,
+Ben
+
+> 
+> 2018 Bug (Bug 199209)
+> ---------------------
+> Fixed by Emmanuel in commit 0eac9abace16 ("iwlwifi: mvm: fix TX of
+> AMSDU with fragmented SKBs"). That was a different trigger - NFS
+> created highly fragmented SKBs where nr_frags was so high that the
+> buffer descriptor limit check produced num_subframes=0. Emmanuel's
+> fix clamps that path to 1.
+> 
+> Current MLD Bug
+> ---------------
+> Different path to the same symptom. When TLC disables AMSDU for a
+> TID, both MVM and MLD set max_tid_amsdu_len[tid] = 1 as a sentinel
+> value. The key difference in protection:
+> 
+> MVM has a private mvmsta->amsdu_enabled bitmap that gates the entire
+> AMSDU path:
+> 
+>      if (!mvmsta->amsdu_enabled)
+>          return iwl_tx_tso_segment(skb, 1, ...);  // bail out early
+> 
+>      if (!(mvmsta->amsdu_enabled & BIT(tid)))
+>          return iwl_tx_tso_segment(skb, 1, ...);  // bail out early
+> 
+> MVM never reads max_tid_amsdu_len in its TX path - it uses its own
+> mvmsta->max_amsdu_len. This bitmap was added in commit 84226ca1c5d3
+> ("iwlwifi: mvm: enable AMSDU for all TIDs", Nov 2017).
+> 
+> MLD was designed to use mac80211's sta->cur->max_tid_amsdu_len
+> directly, with no equivalent bitmap:
+> 
+>      max_tid_amsdu_len = sta->cur->max_tid_amsdu_len[tid];
+>      if (!max_tid_amsdu_len)  // only catches 0, not sentinel 1!
+>          return iwl_tx_tso_segment(skb, 1, ...);
+> 
+>      num_subframes = (max_tid_amsdu_len + pad) / (subf_len + pad);
+>      // When max_tid_amsdu_len=1: num_subframes = (1 + 3) / (1534 + 3) = 0
+> 
+> What I found in your repos:
+> 
+>    - linux-ct-6.5-be200, linux-ct-6.10, linux-ct-6.14: No MLD driver,
+>      only MVM with amsdu_enabled bitmap protection
+>    - linux-ct-6.15, linux-ct-6.18: Have MLD driver
+>      (drivers/net/wireless/intel/iwlwifi/mld/)
+>    - backport-iwlwifi: MLD tx.c first appeared in commit 56f903a89
+>      (2024-07-17)
+> 
+> So MVM should have been immune to this specific sentinel-value bug
+> due to the bitmap check.
+> 
+> Question for you: When you saw TSO segment explosions in 2024, what
+> kernel and driver were you using? If it was one of your 6.5-6.14
+> kernels with MVM, then there may be a different path to
+> num_subframes=0 that I haven't identified yet. If you were using
+> backport-iwlwifi with MLD enabled, that would explain it hitting the
+> same bug I'm fixing now.
+> 
+> The commit ae6d30a71521 (Feb 2024) added better error reporting for
+> skb_gso_segment failures, which suggests people were hitting GSO
+> segment errors around that time - but I don't have visibility into
+> what specific trigger you hit.
+> 
+> My fix catches the sentinel-induced zero after the calculation, which
+> is equivalent to what MVM's bitmap check accomplishes. This should
+> prevent the current MLD bug from reaching skb_gso_segment with
+> gso_size=0.
+> 
+> Looking forward to your test results with the problem AP, and any
+> clarification on what setup you were using in 2024.
+> 
+> Cole
+> 
+
+-- 
+Ben Greear <greearb@candelatech.com>
+Candela Technologies Inc  http://www.candelatech.com
 
 
->> +                if (!ar)
->> +                    continue;
->> +
->> + hwmon_device_unregister(ar->thermal.hwmon_dev);
->> +                ar->thermal.hwmon_dev = NULL;
->> +            }
->> +            return ret;
->> +        }
->> +    }
->> +
->> +    return 0;
->> +}
->> +
->
-> [...]
->
-> Best regards,
->
-> Pablo MG
->
->
 
