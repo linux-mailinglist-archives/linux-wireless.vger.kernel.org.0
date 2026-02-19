@@ -1,75 +1,76 @@
-Return-Path: <linux-wireless+bounces-31995-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-31996-lists+linux-wireless=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id qAvSEPZblmkdeQIAu9opvQ
-	(envelope-from <linux-wireless+bounces-31995-lists+linux-wireless=lfdr.de@vger.kernel.org>)
-	for <lists+linux-wireless@lfdr.de>; Thu, 19 Feb 2026 01:40:22 +0100
+	id 4BtTC/tblmkdeQIAu9opvQ
+	(envelope-from <linux-wireless+bounces-31996-lists+linux-wireless=lfdr.de@vger.kernel.org>)
+	for <lists+linux-wireless@lfdr.de>; Thu, 19 Feb 2026 01:40:27 +0100
 X-Original-To: lists+linux-wireless@lfdr.de
 Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id B112915B323
-	for <lists+linux-wireless@lfdr.de>; Thu, 19 Feb 2026 01:40:21 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6865915B32C
+	for <lists+linux-wireless@lfdr.de>; Thu, 19 Feb 2026 01:40:26 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 5F64730233CD
-	for <lists+linux-wireless@lfdr.de>; Thu, 19 Feb 2026 00:40:18 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 0B3DA30292E9
+	for <lists+linux-wireless@lfdr.de>; Thu, 19 Feb 2026 00:40:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7B412210F59;
-	Thu, 19 Feb 2026 00:40:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 414DF1F4611;
+	Thu, 19 Feb 2026 00:40:18 +0000 (UTC)
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-oa1-f52.google.com (mail-oa1-f52.google.com [209.85.160.52])
+Received: from mail-oo1-f42.google.com (mail-oo1-f42.google.com [209.85.161.42])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5B5831FAC42
-	for <linux-wireless@vger.kernel.org>; Thu, 19 Feb 2026 00:40:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.52
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0A6A0226CF6
+	for <linux-wireless@vger.kernel.org>; Thu, 19 Feb 2026 00:40:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.161.42
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771461615; cv=none; b=EoaSxP26KEMOuASPWUQJMhxUfVe9I58j2N2iKW5OWF97WbPVE3DXUtq0tJ+1pqpDAntAT76YTzYJjH2RAH5ODYL2lkEGgx5Vv2QqR61G5kWSOuoYG7mDwIiK9Y8E4PCdlgseu/bu1t0kHzK6qv2fHxATaU2VKdamABzpw8vQgTs=
+	t=1771461618; cv=none; b=iGCa6oDjk2HSdzFzFoAfzYqr9NnXvNZSjKEiVBSSdVamHac7LyP2gx0Y1NnD+XUzZ7hBRZO1FnO9pVmHzIZSro6omPAVcwLx8+d2Lb+rjBrhi/vjvJbCvo7Jug/zgE5Fsp0MoZjIF7CRYXvgI6qqoV693M7kTw6gy2PCFq6Zgps=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771461615; c=relaxed/simple;
-	bh=PVb3kWFSh3+MEQECSeLvEjmh80ilAhH7l158hufcovU=;
+	s=arc-20240116; t=1771461618; c=relaxed/simple;
+	bh=dbHHK/HZP1ouMnI7CF2mv1xXHhr+HL2Rr0NG2Mkmggw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Kk/cDZTlZAoKd1ocxkbd4sWax9o8X3WNKz0pAyUCkw3L+1/Dlx3tu9OZ/sy0IUk8EJ+t7HIRvMXtethtQ/ndMRs8e1HlArxhAZ+AD4MQPGTCnWKV+fpYg4hpwcSQEriqcfFmmYD4Xp/GoEqnr+NB68W62VSmqYZpc33TGDQEzRo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=quarantine dis=none) header.from=kernel.org; spf=pass smtp.mailfrom=gmail.com; arc=none smtp.client-ip=209.85.160.52
+	 MIME-Version; b=DJGT9iWyNKMJzadEVcXnrZ3P7/JUc+jMjJW4lZsncp/ZMG5tLrl4V6eUubtIj9sO7wgF2SQ+9A0QqzrEfREO9T6h8WuBfCYq/myS4ltj6eRr7i3E1UdBm7F83QzfPpaQ4UTdgOlPmh0sMwFllDhNutjY64n9alCwbIg6VQ8rbHw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=quarantine dis=none) header.from=kernel.org; spf=pass smtp.mailfrom=gmail.com; arc=none smtp.client-ip=209.85.161.42
 Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=quarantine dis=none) header.from=kernel.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-oa1-f52.google.com with SMTP id 586e51a60fabf-40f387a688dso293630fac.0
-        for <linux-wireless@vger.kernel.org>; Wed, 18 Feb 2026 16:40:14 -0800 (PST)
+Received: by mail-oo1-f42.google.com with SMTP id 006d021491bc7-66ee7b9af94so181553eaf.0
+        for <linux-wireless@vger.kernel.org>; Wed, 18 Feb 2026 16:40:16 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1771461613; x=1772066413;
+        d=1e100.net; s=20230601; t=1771461616; x=1772066416;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to;
-        bh=BqnEDY5rPm6avb1ZLa7TTBT9hEe6l1pmetOvQRaRsnM=;
-        b=DgjJLxpoyHILmL8yV0lPKuFVaQouRj0hJ9U2Rug9lTCOORxWjMQZMMtUmSaFrMOGHS
-         Ec8/G/xY1Ni6iDDW8b+bGxIsU4bSBHFtb1wXuDDMJZh889PMDSwPBlp8iot8AR6TOdBC
-         R1xJjy+40m+5kc3RwW6Qs+RdRp1GpmabqMZ1b3Bja9D6EV1XrtqfXdMY7puLDJs2S03I
-         oJWMu9tb7iUTg8qfckKG2+GgCtcBiivBxvCyCM/J2KcOV61xcV/Obo4UvCoO2y2ycWWV
-         0p08E4fxbWjzvGr98RfjgEqCfkjhWOkPg+rx4XnhLnLl26vWRu+88LX30APbHn6ghQQW
-         s/NA==
-X-Gm-Message-State: AOJu0YyKMO6o2lo7jLOzXmIzGVUISIq783BxRRsT7NSwoULFMFHGQwYq
-	P6jnpyaEIA7imc7o6J5Dr/ijMsMZsLuEU5MLwqflhdmQlCMlhuTgO1BD
-X-Gm-Gg: AZuq6aLBJvMMb3bwy2gfCENHonBMFvSctRHeX0vrSF25zivNkpxpKIGzRAiVMVOUkFu
-	Nvqf79vq5D9/qqq58O5YgRT8z6I02DrhIhVq0ZteiybYgGu5V5Wj4YZeoEOP90fhxTBJtBNtzL5
-	WkRUVc3oZxV9aMYDUGN9nrNTZZRO7c27b6+HE0ludTSHDb6+pxMSjdJae0CicKd1t4JCH37fZvP
-	k4kPNHzNaX+QUQu/5w0xNWmBkj76wUpk8ThbIZtOJlw4+47qBUIv7jDVEnf6FXkXD43sOiq1z4z
-	xk+VWe+rdE+ntBBPtGdhjZM0BsMs3nCa8j7ZSP588LPebKAOlZwKP/YLHUZR3rU6DzMJ6csO0f6
-	37/kq3ZFlPl9pzf7Ib1ODTHG4RljJ0Nn0yzqDBwFV3vmk4KY5J29gFAGuktP9aQsequVe/AWivO
-	AQM125p8YuN3sVe2d1cupvO2sswH6HcJXd6NiQ1kt+zdP4J5Y=
-X-Received: by 2002:a05:6871:c941:b0:409:60ad:2b1e with SMTP id 586e51a60fabf-41539d180f1mr622220fac.18.1771461613219;
-        Wed, 18 Feb 2026 16:40:13 -0800 (PST)
+        bh=4MdudKsxJgB33L76Fge1pTGodtda68bmO9AGfbuk2GE=;
+        b=R32KPunnb8q0R+BraO174NHscXBYnvVL/a1T+U7ncxQ6JKObzEzOXXScETUwNyrCUh
+         PHeft54OwWZBYnwSmGRUMZeCEQxCvF9rtj+AHQtlT7FBhG2wGzUi011UChF1SXr/dX8S
+         q7VZSTX4PN3E2Gmt3BcOkZcIDT8WFoXOUBcc2cSnvFBZckSfiWDeYaRzLdbRwA0lOUDE
+         dhsofR5hf2bUL6CDrMX+dajkaveJv3V6/f4/Go69of9hFPUzdWMScGdVqKt/yBNxBAlz
+         O9ITcDUZv+yyM18H2HwxdHwK5MgvLLx88eos5SZ0STfHfwCMKxJtRSHal8fN7j2LZhK1
+         2o2w==
+X-Gm-Message-State: AOJu0YydnPnwpGv0PHaaAhjX2PdnI4KZcoOGlx3aXljpLbUad5PB9qMZ
+	SSxnPQHvwEjNcwedTCCUaojFZ0qDktDcmFz7mCV+UCuQB3jbbVfQvFPdHJbMWg==
+X-Gm-Gg: AZuq6aIR/ExA5MKICAMLVn//4uxjJMsqRt8iaC0di6vyzU/m1DGJm22JY5gR4uVYAwf
+	LWKYdhA9ly6HX+//cH9+Euf4nLhdFF3+zwOqQA8kZbZ9hZNdfrZWP98ixQLXu8vWnoZCQjsu2fF
+	Kj+05i/ebXWwn3DbOQ+ZipDmKcLrS1i+SU40wlvx03o7CDs3CJYs+zqCvdHCCFUfjyeDf/GcTrw
+	FJnke2seZkCtr7gP8m8q4eQuXR+ZhpySdQL/5QC6oGQdZewMoDY0KzSYAzXs4yst2edlZ4rU6Ch
+	EFhQNOYSeStEdpGmsxdsT0Ws3ncwHxNKPoNKNzPYnFLPYcxODNOE+D7RD7bgDVd3zSgPyd9JFLD
+	ELcQIBwfwsOknpzK2ryl36sTcxxuqrIS/+cAw1Y+Q7VtFR2yfZdPT1lZu5hspWpniaAMWiYvR2L
+	7ENMwQIzDKE4U3QSIY4Qty3CORdtFEKS/Mtd/dcMW2Uz6MlJQ=
+X-Received: by 2002:a05:6820:883:b0:679:8a1f:99f1 with SMTP id 006d021491bc7-6798a1f9b05mr5268000eaf.82.1771461615994;
+        Wed, 18 Feb 2026 16:40:15 -0800 (PST)
 Received: from sean-HP-EliteBook-830-G6.lan ([207.191.35.252])
-        by smtp.gmail.com with ESMTPSA id 586e51a60fabf-40eaee45d12sm23477659fac.1.2026.02.18.16.40.11
+        by smtp.gmail.com with ESMTPSA id 586e51a60fabf-40eaee45d12sm23477659fac.1.2026.02.18.16.40.14
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 18 Feb 2026 16:40:12 -0800 (PST)
+        Wed, 18 Feb 2026 16:40:14 -0800 (PST)
 From: sean.wang@kernel.org
 To: nbd@nbd.name,
 	lorenzo.bianconi@redhat.com
 Cc: linux-wireless@vger.kernel.org,
 	linux-mediatek@lists.infradead.org,
-	Sean Wang <sean.wang@mediatek.com>
-Subject: [PATCH 02/11] wifi: mt76: mt7921: use mt76_for_each_q_rx() in reset path
-Date: Wed, 18 Feb 2026 18:39:58 -0600
-Message-ID: <20260219004007.19733-2-sean.wang@kernel.org>
+	Sean Wang <sean.wang@mediatek.com>,
+	Xiong Huang <xiong.huang@mediatek.com>
+Subject: [PATCH 03/11] wifi: mt76: mt7921: handle MT7902 irq_map quirk with mutable copy
+Date: Wed, 18 Feb 2026 18:39:59 -0600
+Message-ID: <20260219004007.19733-3-sean.wang@kernel.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20260219004007.19733-1-sean.wang@kernel.org>
 References: <20260219004007.19733-1-sean.wang@kernel.org>
@@ -90,7 +91,7 @@ X-Spamd-Result: default: False [-0.46 / 15.00];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-31995-lists,linux-wireless=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-31996-lists,linux-wireless=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[sean.wang@kernel.org,linux-wireless@vger.kernel.org];
 	FORGED_SENDER_MAILLIST(0.00)[];
@@ -101,45 +102,56 @@ X-Spamd-Result: default: False [-0.46 / 15.00];
 	FROM_NO_DN(0.00)[];
 	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
 	R_DKIM_NA(0.00)[];
-	NEURAL_HAM(-0.00)[-0.975];
+	NEURAL_HAM(-0.00)[-0.976];
 	RCVD_COUNT_FIVE(0.00)[5];
 	TAGGED_RCPT(0.00)[linux-wireless];
-	RCPT_COUNT_FIVE(0.00)[5];
+	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	DBL_BLOCKED_OPENRESOLVER(0.00)[mediatek.com:email,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: B112915B323
+X-Rspamd-Queue-Id: 6865915B32C
 X-Rspamd-Action: no action
 
 From: Sean Wang <sean.wang@mediatek.com>
 
-Replace explicit napi_disable() calls for RX queues with
-mt76_for_each_q_rx() in mt7921e_mac_reset().
+MT7902 PCIe requires a different wm2_complete_mask value, so introduce a
+mutable per-device copy of the default irq_map and override the field
+only for this chip. Other devices continue using the shared const
+template.
 
-This removes hardcoded queue indices and disables all configured
-RX queues during reset.
+This is a prerequisite patch before enabling MT7902 PCIe support.
 
+Co-developed-by: Xiong Huang <xiong.huang@mediatek.com>
+Signed-off-by: Xiong Huang <xiong.huang@mediatek.com>
 Signed-off-by: Sean Wang <sean.wang@mediatek.com>
 ---
- drivers/net/wireless/mediatek/mt76/mt7921/pci_mac.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ drivers/net/wireless/mediatek/mt76/mt7921/pci.c | 14 ++++++++++++++
+ 1 file changed, 14 insertions(+)
 
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7921/pci_mac.c b/drivers/net/wireless/mediatek/mt76/mt7921/pci_mac.c
-index 5ec084432ae3..0db7acb3a637 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7921/pci_mac.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7921/pci_mac.c
-@@ -71,9 +71,9 @@ int mt7921e_mac_reset(struct mt792x_dev *dev)
- 	mt76_txq_schedule_all(&dev->mphy);
- 
- 	mt76_worker_disable(&dev->mt76.tx_worker);
--	napi_disable(&dev->mt76.napi[MT_RXQ_MAIN]);
--	napi_disable(&dev->mt76.napi[MT_RXQ_MCU]);
--	napi_disable(&dev->mt76.napi[MT_RXQ_MCU_WA]);
-+	mt76_for_each_q_rx(&dev->mt76, i) {
-+		napi_disable(&dev->mt76.napi[i]);
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7921/pci.c b/drivers/net/wireless/mediatek/mt76/mt7921/pci.c
+index 65c7fe671137..5f857a21f362 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7921/pci.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7921/pci.c
+@@ -327,6 +327,20 @@ static int mt7921_pci_probe(struct pci_dev *pdev,
+ 	dev->hif_ops = &mt7921_pcie_ops;
+ 	dev->irq_map = &irq_map;
+ 	mt76_mmio_init(&dev->mt76, regs);
++
++	if (id->device == 0x7902) {
++		struct mt792x_irq_map *map;
++
++		/* MT7902 needs a mutable copy because wm2_complete_mask differs */
++		map = devm_kmemdup(&pdev->dev, &irq_map,
++				   sizeof(irq_map), GFP_KERNEL);
++		if (!map)
++			return -ENOMEM;
++
++		map->rx.wm2_complete_mask = 0;
++		dev->irq_map = map;
 +	}
- 	napi_disable(&dev->mt76.tx_napi);
++
+ 	tasklet_init(&mdev->irq_tasklet, mt792x_irq_tasklet, (unsigned long)dev);
  
- 	mt76_connac2_tx_token_put(&dev->mt76);
+ 	dev->phy.dev = dev;
 -- 
 2.43.0
 
