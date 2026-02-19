@@ -1,75 +1,75 @@
-Return-Path: <linux-wireless+bounces-32000-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-32001-lists+linux-wireless=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id gELlNA1clmkdeQIAu9opvQ
-	(envelope-from <linux-wireless+bounces-32000-lists+linux-wireless=lfdr.de@vger.kernel.org>)
-	for <lists+linux-wireless@lfdr.de>; Thu, 19 Feb 2026 01:40:45 +0100
+	id YAfnBhJclmkdeQIAu9opvQ
+	(envelope-from <linux-wireless+bounces-32001-lists+linux-wireless=lfdr.de@vger.kernel.org>)
+	for <lists+linux-wireless@lfdr.de>; Thu, 19 Feb 2026 01:40:50 +0100
 X-Original-To: lists+linux-wireless@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8BF5A15B34F
-	for <lists+linux-wireless@lfdr.de>; Thu, 19 Feb 2026 01:40:45 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9CDC615B356
+	for <lists+linux-wireless@lfdr.de>; Thu, 19 Feb 2026 01:40:49 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id A33D33043AF6
-	for <lists+linux-wireless@lfdr.de>; Thu, 19 Feb 2026 00:40:26 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 4C52C304A8B2
+	for <lists+linux-wireless@lfdr.de>; Thu, 19 Feb 2026 00:40:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2B3E7210F59;
-	Thu, 19 Feb 2026 00:40:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0EA44210F59;
+	Thu, 19 Feb 2026 00:40:28 +0000 (UTC)
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-oa1-f53.google.com (mail-oa1-f53.google.com [209.85.160.53])
+Received: from mail-oa1-f43.google.com (mail-oa1-f43.google.com [209.85.160.43])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EAC1421FF2E
-	for <linux-wireless@vger.kernel.org>; Thu, 19 Feb 2026 00:40:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.53
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B5DE82222CB
+	for <linux-wireless@vger.kernel.org>; Thu, 19 Feb 2026 00:40:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.43
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771461626; cv=none; b=cxwFcVM0u6Xcgw0A4U6M84MfM6DNAoSffrCud6dWT5R7tykn4FRMOOSjnt7/yzAadqNZ6o0oL4nm6UUdnJCfRRRo/pLuZu6XXEgSVhM6NcTNWjWKhGZujcroejlFoYnUpG6edcQoxx8NPa/23t+gHaJldaqlOBZwHmrlGf99vMM=
+	t=1771461627; cv=none; b=FM/zTgJV/QUOWDcFzNhXz6Iw78HSbprnCY5J0cRKlzRua/1RBo4F1Wm78T8bolvE5T8sNyZX4kbGso5Hsw6Hr1ORhXPlENGC4MYwHFm8I3+KlKBk3rNA4KkvqbAHLaU++Z+1V+2BT9tRALdxv+MadOwd+R/snfa5ETO29lEV1dk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771461626; c=relaxed/simple;
-	bh=W14Gh6alDKJouiozs1MRmYZeBj9IA20q4tSL2ep7v6U=;
+	s=arc-20240116; t=1771461627; c=relaxed/simple;
+	bh=pItW0om9uskH+w1RENKqshw2IkszwpcFsrEigawb5/M=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=t2wEcVfYVmNLpj2IUFrcSA+/JX/JRrMLoYZo65FYUfnjYtD5eGgz6El2MWTeaaOrfu+tqZ+Xu4bJ/D4m66UQTuBNakAZ7oMRPB435StOYc3BOsUnTqB8JW2EP1kHPmK4/uwapIsXtvb1wlxrohzRvB9tIx3O4mbn33viMmLbo4g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=quarantine dis=none) header.from=kernel.org; spf=pass smtp.mailfrom=gmail.com; arc=none smtp.client-ip=209.85.160.53
+	 MIME-Version; b=NO/xleIliaBSV+x25NLowPbV8QhTmhV1BcE5YU6VHGc1YG7KQZUMnHi7Xosj2SN4/bgOZKPIMW6pTOlJkoyzPcyFOkS1W4uIneDby0TZUfUlHxv/AdgdDGQi+wsdCMDXkiXdEHgT6J7mB1d3U/Dgt9UnXEH5OHiSmLr4pZFTY3w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=quarantine dis=none) header.from=kernel.org; spf=pass smtp.mailfrom=gmail.com; arc=none smtp.client-ip=209.85.160.43
 Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=quarantine dis=none) header.from=kernel.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-oa1-f53.google.com with SMTP id 586e51a60fabf-40fb2789476so1415627fac.1
-        for <linux-wireless@vger.kernel.org>; Wed, 18 Feb 2026 16:40:24 -0800 (PST)
+Received: by mail-oa1-f43.google.com with SMTP id 586e51a60fabf-404254ffe8aso303632fac.0
+        for <linux-wireless@vger.kernel.org>; Wed, 18 Feb 2026 16:40:26 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1771461624; x=1772066424;
+        d=1e100.net; s=20230601; t=1771461625; x=1772066425;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to;
-        bh=B891xQfqJbMXoe3QxqQiLDv6Y0EESVbArn0hKUogRb4=;
-        b=pMJ6k51k4xzxN44uAA7vwwWmOsuriRt3ectE2l4/W1Kpcb6Lf95i0IH+DP35VTaCCI
-         0dWSoJP7//ZGqL45jvqRfKPFB3ds302xOlNPmozPaNvHquVHn3qWxz23FMMfUsLAAvdN
-         DhOyOxvszJfilY8zQYpihs47/JI5pmp7asfE8gTVv9zi+um4yVFnfTar4im61kUFYOM4
-         pEDiY5o1ehbqpOdtBcnqiJEw1Jo7my8TruKbAuayBpxWVz9JRUHWfmLBvTdV9J0zBwil
-         gezQmkCfnA92nWaDlcBpD7wIRQiqX4kh18rAJZh36gF0prg0Q1uERzee5WbJ04hE43B0
-         TbJQ==
-X-Gm-Message-State: AOJu0Yx/FK/CDD+O7f/JzOKdsGxaavVS3mIYrSMwIIV0S9j+PAmrvmau
-	7q1CWcokBqaCRT2nqqfSaP8XrkzbInPNJUsCEi2Obwedib8n4WFH6gst
-X-Gm-Gg: AZuq6aJarjiFjdthjIRvRN9tNDYxWzfdlhPmOc2DCjjA6I1OFdya5SXEK+be0JjEJQ9
-	FcfvvXAVPEhcSCD+3U8QeACUwWFUsNKOi/HaorWqICw2MSUHlV/LtZZLZ8iD+5khhKLCx8zXiZV
-	X9dQfBe9gY67K1SX4eukOf8m951zc1/WyFBfo8NKmXP93tah6xy4G636bFb1l/jUOJKghBLz5Hj
-	vxb++0srEyUZKPqCWLQ+TSOTXlBbcFDBnaHJOkSDDEsFMmseijNBBe70o7gLvg6iKP9PiYK5zSX
-	5NJPBr5lF/7Cpdfztm0eqG8YhOT2h01d7MH/BQnNGenhZiOnPHAQM4+K4AOX8YJZgBGOKO/JoxV
-	ZgR+JYXsYoqDfgpuBCQ0ZxfX5lk8gGYsiOyJ1Gs8SjI56RgdzXSPXZnV+op5R/j5ip6TBlPcFLU
-	GQcCstUPmvovPH0EVxi7VvYHxZzeIbN3M035wIUyOGhNMiyuY=
-X-Received: by 2002:a05:6871:825:b0:414:64dd:a2f3 with SMTP id 586e51a60fabf-4154591b202mr57947fac.29.1771461623726;
-        Wed, 18 Feb 2026 16:40:23 -0800 (PST)
+        bh=2Moy8wItH7hT5L0ifRQslzcMjzyFDwT/JuvFfE9ZBhY=;
+        b=ON3K97FglNPDKzpI50OEF1SZQoFarCtkUkF2u1oHv3qnLNdLiHDLU3k7N76N692nDY
+         fDZp9WeGelxAW6QfK/C88mLClc55QRUsfTh/FgWk2LPPVcWfWLfqwINaneYARLWCEKzK
+         +FfubntU3VYTZzZd4DepawxYe/v571Y0Q9Ine4oE1FFhRRWbI66mZ3ly4/QMjPxfMxXK
+         q1E+o//kQBXfuW/VKfLK7fgEcuwpH4akGD2GCdhXe21W4RaIG/HNJpcsqLFsGQuEUkRx
+         EwHsAAL0Z8NE9dgUm4GcN4VFlLGeHWSjLSw+ggpE+4he+rk/ZosaeO7LyWCqzk2oWagY
+         ElfA==
+X-Gm-Message-State: AOJu0Yw49VDnwCyHS94FPR9EiMH37DJg3subfIADYpAyjL+MWPNLYYEM
+	xMj1cHQPkybEegWaOoulCZnJk04hPVS+ylGPiPGgncmeG4IltkvLmCeY
+X-Gm-Gg: AZuq6aJ/WUxWQJTR7qMVvht8+pZ94Hn8iS0G3XzN/SA9a9URVE0DBB1nclwJsTtcEpA
+	vCD4Frkabj072CwDcxkWvLnsTj1PQ9UkWrXKttfQDMBhy1KPVky6xBv6f2CNqcecMSJ85kz7d3e
+	zUzcXtXCklTf/Phkw4RKbHi86FUCCu7uIyee8JikS1r/N2S+pIbR6PIpvvPF1w4F68ZTfNGokkg
+	5XeR1INY1WowkNF7tttyx/N/c4ovJ1MdmQLLB+cYClShQhcMpfIsn9022yG2rg0/bA/JqV9Z0r2
+	VXyYEzQs/TjRR0tXI5HWzAvlwbEhnR5SdOivekQPtL9KuxIpy4HFd0ttloB9oKMmF0jLQ6+eO7r
+	V5nBuwwK76oNLt+Qe6OnuAyO6l7TKORAQ+Eccl/gke1/+8uGfXNRt6yHAgrIDSc3Oaazhsb3Raq
+	r+b7eEFpJZ0QBnqd/T9p39+j8jENxWx71hgmV1qOIFzsKu0rI9lfyhx3t48A==
+X-Received: by 2002:a05:6870:3293:b0:3fa:aa5:be04 with SMTP id 586e51a60fabf-41545894880mr49713fac.20.1771461625565;
+        Wed, 18 Feb 2026 16:40:25 -0800 (PST)
 Received: from sean-HP-EliteBook-830-G6.lan ([207.191.35.252])
-        by smtp.gmail.com with ESMTPSA id 586e51a60fabf-40eaee45d12sm23477659fac.1.2026.02.18.16.40.23
+        by smtp.gmail.com with ESMTPSA id 586e51a60fabf-40eaee45d12sm23477659fac.1.2026.02.18.16.40.24
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 18 Feb 2026 16:40:23 -0800 (PST)
+        Wed, 18 Feb 2026 16:40:24 -0800 (PST)
 From: sean.wang@kernel.org
 To: nbd@nbd.name,
 	lorenzo.bianconi@redhat.com
 Cc: linux-wireless@vger.kernel.org,
 	linux-mediatek@lists.infradead.org,
 	Sean Wang <sean.wang@mediatek.com>
-Subject: [PATCH 07/11] wifi: mt76: mt792x: ensure MCU ready before ROM patch download
-Date: Wed, 18 Feb 2026 18:40:03 -0600
-Message-ID: <20260219004007.19733-7-sean.wang@kernel.org>
+Subject: [PATCH 08/11] wifi: mt76: mt7921: add MT7902 MCU support
+Date: Wed, 18 Feb 2026 18:40:04 -0600
+Message-ID: <20260219004007.19733-8-sean.wang@kernel.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20260219004007.19733-1-sean.wang@kernel.org>
 References: <20260219004007.19733-1-sean.wang@kernel.org>
@@ -86,11 +86,11 @@ X-Spamd-Result: default: False [-0.46 / 15.00];
 	MID_CONTAINS_FROM(1.00)[];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-32000-lists,linux-wireless=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-32001-lists,linux-wireless=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[sean.wang@kernel.org,linux-wireless@vger.kernel.org];
 	FORGED_SENDER_MAILLIST(0.00)[];
@@ -99,48 +99,108 @@ X-Spamd-Result: default: False [-0.46 / 15.00];
 	TO_DN_SOME(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	FROM_NO_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
 	R_DKIM_NA(0.00)[];
-	NEURAL_HAM(-0.00)[-0.977];
+	NEURAL_HAM(-0.00)[-0.979];
 	RCVD_COUNT_FIVE(0.00)[5];
 	TAGGED_RCPT(0.00)[linux-wireless];
 	RCPT_COUNT_FIVE(0.00)[5];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	DBL_BLOCKED_OPENRESOLVER(0.00)[mediatek.com:email,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 8BF5A15B34F
+X-Rspamd-Queue-Id: 9CDC615B356
 X-Rspamd-Action: no action
 
 From: Sean Wang <sean.wang@mediatek.com>
 
-Restart the MCU and poll FW state to ensure correct MCU status
-before downloading the ROM patch.
+Add MCU support for the MT7902 chipset.
 
-This is a prerequisite for enabling MT7902 PCIe and has been
-validated on MT7921 and MT7925 since they share the common code path.
+runtime pm is not yet supported by the driver, but normal mac80211
+operation is unaffected.
 
 Signed-off-by: Sean Wang <sean.wang@mediatek.com>
 ---
- drivers/net/wireless/mediatek/mt76/mt792x_core.c | 7 +++++++
- 1 file changed, 7 insertions(+)
+ drivers/net/wireless/mediatek/mt76/mt76_connac.h | 8 +++++++-
+ drivers/net/wireless/mediatek/mt76/mt7921/init.c | 4 +++-
+ drivers/net/wireless/mediatek/mt76/mt792x.h      | 6 ++++++
+ 3 files changed, 16 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/net/wireless/mediatek/mt76/mt792x_core.c b/drivers/net/wireless/mediatek/mt76/mt792x_core.c
-index 2142fcc4ae27..152cfcca2f90 100644
---- a/drivers/net/wireless/mediatek/mt76/mt792x_core.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt792x_core.c
-@@ -926,6 +926,13 @@ int mt792x_load_firmware(struct mt792x_dev *dev)
- {
- 	int ret;
+diff --git a/drivers/net/wireless/mediatek/mt76/mt76_connac.h b/drivers/net/wireless/mediatek/mt76/mt76_connac.h
+index d868bb7c7ab8..51423c7740bd 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt76_connac.h
++++ b/drivers/net/wireless/mediatek/mt76/mt76_connac.h
+@@ -182,6 +182,11 @@ static inline bool is_mt7920(struct mt76_dev *dev)
+ 	return mt76_chip(dev) == 0x7920;
+ }
  
-+	mt76_connac_mcu_restart(&dev->mt76);
++static inline bool is_mt7902(struct mt76_dev *dev)
++{
++	return mt76_chip(dev) == 0x7902;
++}
 +
-+	if (!mt76_poll_msec(dev, MT_CONN_ON_MISC, MT_TOP_MISC_FW_STATE,
-+			    MT_TOP_MISC2_FW_PWR_ON, 1000))
-+		dev_warn(dev->mt76.dev,
-+			 "MCU is not ready for firmware download\n");
+ static inline bool is_mt7922(struct mt76_dev *dev)
+ {
+ 	return mt76_chip(dev) == 0x7922;
+@@ -189,7 +194,8 @@ static inline bool is_mt7922(struct mt76_dev *dev)
+ 
+ static inline bool is_connac2(struct mt76_dev *dev)
+ {
+-	return mt76_chip(dev) == 0x7961 || is_mt7922(dev) || is_mt7920(dev);
++	return mt76_chip(dev) == 0x7961 || is_mt7922(dev) || is_mt7920(dev) ||
++				is_mt7902(dev);
+ }
+ 
+ static inline bool is_mt7663(struct mt76_dev *dev)
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7921/init.c b/drivers/net/wireless/mediatek/mt76/mt7921/init.c
+index 29732315af1c..8e7790702191 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7921/init.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7921/init.c
+@@ -302,7 +302,9 @@ int mt7921_register_device(struct mt792x_dev *dev)
+ 	dev->pm.idle_timeout = MT792x_PM_TIMEOUT;
+ 	dev->pm.stats.last_wake_event = jiffies;
+ 	dev->pm.stats.last_doze_event = jiffies;
+-	if (!mt76_is_usb(&dev->mt76)) {
 +
- 	ret = mt76_connac2_load_patch(&dev->mt76, mt792x_patch_name(dev));
- 	if (ret)
- 		return ret;
++	if (!mt76_is_usb(&dev->mt76) &&
++	    !is_mt7902(&dev->mt76)) {
+ 		dev->pm.enable_user = true;
+ 		dev->pm.enable = true;
+ 		dev->pm.ds_enable_user = true;
+diff --git a/drivers/net/wireless/mediatek/mt76/mt792x.h b/drivers/net/wireless/mediatek/mt76/mt792x.h
+index 8388638ed550..1f381ab356bc 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt792x.h
++++ b/drivers/net/wireless/mediatek/mt76/mt792x.h
+@@ -41,11 +41,13 @@
+ #define MT792x_MCU_INIT_RETRY_COUNT	10
+ #define MT792x_WFSYS_INIT_RETRY_COUNT	2
+ 
++#define MT7902_FIRMWARE_WM	"mediatek/WIFI_RAM_CODE_MT7902_1.bin"
+ #define MT7920_FIRMWARE_WM	"mediatek/WIFI_RAM_CODE_MT7961_1a.bin"
+ #define MT7921_FIRMWARE_WM	"mediatek/WIFI_RAM_CODE_MT7961_1.bin"
+ #define MT7922_FIRMWARE_WM	"mediatek/WIFI_RAM_CODE_MT7922_1.bin"
+ #define MT7925_FIRMWARE_WM	"mediatek/mt7925/WIFI_RAM_CODE_MT7925_1_1.bin"
+ 
++#define MT7902_ROM_PATCH	"mediatek/WIFI_MT7902_patch_mcu_1_1_hdr.bin"
+ #define MT7920_ROM_PATCH	"mediatek/WIFI_MT7961_patch_mcu_1a_2_hdr.bin"
+ #define MT7921_ROM_PATCH	"mediatek/WIFI_MT7961_patch_mcu_1_2_hdr.bin"
+ #define MT7922_ROM_PATCH	"mediatek/WIFI_MT7922_patch_mcu_1_1_hdr.bin"
+@@ -448,6 +450,8 @@ void mt792x_config_mac_addr_list(struct mt792x_dev *dev);
+ static inline char *mt792x_ram_name(struct mt792x_dev *dev)
+ {
+ 	switch (mt76_chip(&dev->mt76)) {
++	case 0x7902:
++		return MT7902_FIRMWARE_WM;
+ 	case 0x7920:
+ 		return MT7920_FIRMWARE_WM;
+ 	case 0x7922:
+@@ -462,6 +466,8 @@ static inline char *mt792x_ram_name(struct mt792x_dev *dev)
+ static inline char *mt792x_patch_name(struct mt792x_dev *dev)
+ {
+ 	switch (mt76_chip(&dev->mt76)) {
++	case 0x7902:
++		return MT7902_ROM_PATCH;
+ 	case 0x7920:
+ 		return MT7920_ROM_PATCH;
+ 	case 0x7922:
 -- 
 2.43.0
 
