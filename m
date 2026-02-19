@@ -1,71 +1,72 @@
-Return-Path: <linux-wireless+bounces-32018-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-32019-lists+linux-wireless=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id GGfSHE3clmlJpgIAu9opvQ
-	(envelope-from <linux-wireless+bounces-32018-lists+linux-wireless=lfdr.de@vger.kernel.org>)
-	for <lists+linux-wireless@lfdr.de>; Thu, 19 Feb 2026 10:47:57 +0100
+	id CEZIHqPclmlJpgIAu9opvQ
+	(envelope-from <linux-wireless+bounces-32019-lists+linux-wireless=lfdr.de@vger.kernel.org>)
+	for <lists+linux-wireless@lfdr.de>; Thu, 19 Feb 2026 10:49:23 +0100
 X-Original-To: lists+linux-wireless@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 09A9515D820
-	for <lists+linux-wireless@lfdr.de>; Thu, 19 Feb 2026 10:47:57 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id F0E2B15D853
+	for <lists+linux-wireless@lfdr.de>; Thu, 19 Feb 2026 10:49:22 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id CB90D3014410
-	for <lists+linux-wireless@lfdr.de>; Thu, 19 Feb 2026 09:47:50 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 46FC43064EA5
+	for <lists+linux-wireless@lfdr.de>; Thu, 19 Feb 2026 09:47:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DEBE72FF657;
-	Thu, 19 Feb 2026 09:47:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3F6EA30F921;
+	Thu, 19 Feb 2026 09:47:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="C/pwysX7"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="BvNOtoRG"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.13])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6CE99318EDD
-	for <linux-wireless@vger.kernel.org>; Thu, 19 Feb 2026 09:47:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C398C2ECE91
+	for <linux-wireless@vger.kernel.org>; Thu, 19 Feb 2026 09:47:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.13
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771494468; cv=none; b=k3JAxkR2pA4RogGrsJryQhPNrJGYxn1IQULhwpUhP/3v0Yd4BZoaQHMjVSx5XeIs3Ylac9AOj+td696UeMTZkpsaBseoB5oD+OYIkMXg4keCjrMCpiJJ44DrZqWw2x21OFAPvI0x9nLDTaBtQFNQ9htVCVAFncjdbUHzxV/TsL0=
+	t=1771494469; cv=none; b=GWGBJ5h1MHZyIKSaIq9k/+yhypUMx5v+w0QDLc82UVU00Pa2jKLQWNGXnXPF5CcBUw8gCg6a0MAPMm2+kAQi/gthY2MOX/c7dE4MMXWgN73yQv7L8GlrhluR8RSjvUQwg/VrMy8LQvu6ZxxrKy8K5W1N5QnOlag7nKzNO83d2vY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771494468; c=relaxed/simple;
-	bh=rlw9aPBpZdjUuGx5NWTaGD3Am2QNeWZNMNB3F2fhg0o=;
-	h=From:To:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=D5HdvnzdNgY83bBR1AK0OEljBwmzUefqO8g933KE7bnNXAgn0N50Z04rfKm3FhDndCAGrXtiRvv7TGWKiyyV5tMKI4EfiYAeOJ0NL6M2P+PW+CB/AvU1/Vvsy9WEL0Mzetrn44o987NQSoXj9rfhHbFaVvuPv4snvMc3vR6+nA4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=C/pwysX7; arc=none smtp.client-ip=198.175.65.13
+	s=arc-20240116; t=1771494469; c=relaxed/simple;
+	bh=J0gW3CdpYyQmVdO+r+DkPgB9g9yZBeu0S4A+S0Jnnzg=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version; b=EfIlFJivsnOB7bnWmAU7Kk7eWUa6dFREi7fVcfMB1zjXUWkGYuBWR8cWlWoBN4wzy2CPJ6v60Ae29em3TspG5OAZ+4G8oh7U9zceghmrwZAVffbK1p4MmWBLig74T4QkuQlVosvoD6VIyR7s8o/ku4Um3x4qsk805LZEeNshjKs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=BvNOtoRG; arc=none smtp.client-ip=198.175.65.13
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1771494467; x=1803030467;
-  h=from:to:subject:date:message-id:in-reply-to:references:
-   mime-version:content-transfer-encoding;
-  bh=rlw9aPBpZdjUuGx5NWTaGD3Am2QNeWZNMNB3F2fhg0o=;
-  b=C/pwysX7U0N5Ugb0xpd5ngbzxMkEkUxE4uV/q6NYq2pylmpIlS4qCu56
-   87pXbao215y7bSOYVWVWLmvyrDhDtL2w7LBepxWKasLVFYQSITukc9hrn
-   q78nHtwoLmErvohnLn1LzRXs1MocpkrbpdO52+2HztmCpN+VS9KQTvaZ6
-   2ZvLquthDBp8+bl75jB/ShlMqgugtu8ZN+Cti994Z7QGO4KJ2cw8MAvqU
-   rvXfd9bvgmaVq9mLgRxTXNTccoMwL336iKE/TBgcJokjSpDPKHjiaJgF6
-   muUU40AS/PBFO4DKcJxSk0OnSBfGKSMirwfA/u8Z9VKMuGGPi8okJ0P8b
+  t=1771494468; x=1803030468;
+  h=from:to:cc:subject:date:message-id:in-reply-to:
+   references:mime-version:content-transfer-encoding;
+  bh=J0gW3CdpYyQmVdO+r+DkPgB9g9yZBeu0S4A+S0Jnnzg=;
+  b=BvNOtoRG+BcCsIKf0JK3oFH5RGTIwMUERwNtSfXs/KLtdj7iDLQ5AX4E
+   kwacH5Aikf8tS66QK8QHD82aPMduIfo9phIJd7Sl0GENRAGH4Xsovqt9T
+   KZphXos9/Gg73fB8cbptNHyG5xcDaO2EXUz/Ie7mMhPRRXXPVbqFjOsLo
+   MTGyz3jFzuZAdi2wEStd6PS8n2ztaKPpMSEEjegeyBTY4GuHs0+KLU6m+
+   M9d61Jj9LmBCfGvl5DYB4HP425rLnQS87I6sSCvabQzqD3zcEzoYEUhLq
+   YDrURs5JTqA1P0RU5HDiQYa6/rkhMmM0Z/zb9xAgJFvMn/l8DqXquiJ1Z
    g==;
-X-CSE-ConnectionGUID: vYrx4OPVSde/IUC1ZyfHCw==
-X-CSE-MsgGUID: 3POg2vhHS4a7TKKkMnjP9g==
-X-IronPort-AV: E=McAfee;i="6800,10657,11705"; a="83680099"
+X-CSE-ConnectionGUID: 61XfGlxAR2KqPcBrK06N3g==
+X-CSE-MsgGUID: eJqPrLnmTruxtNmfs/UMhw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11705"; a="83680102"
 X-IronPort-AV: E=Sophos;i="6.21,299,1763452800"; 
-   d="scan'208";a="83680099"
+   d="scan'208";a="83680102"
 Received: from orviesa004.jf.intel.com ([10.64.159.144])
-  by orvoesa105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 19 Feb 2026 01:47:47 -0800
-X-CSE-ConnectionGUID: qMZXzVcMS2KQQt3gNlDdPA==
-X-CSE-MsgGUID: bcmrza94S/Ok6jJ9Ghc9Ow==
+  by orvoesa105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 19 Feb 2026 01:47:48 -0800
+X-CSE-ConnectionGUID: 71HmsdloQDamPlwxMxsOWg==
+X-CSE-MsgGUID: 5VJY6PXgR3GG1KCrB0fabQ==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.21,299,1763452800"; 
-   d="scan'208";a="218989016"
+   d="scan'208";a="218989027"
 Received: from weis0040.iil.intel.com ([10.12.217.108])
-  by orviesa004-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 19 Feb 2026 01:47:45 -0800
+  by orviesa004-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 19 Feb 2026 01:47:47 -0800
 From: Miri Korenblit <miriam.rachel.korenblit@intel.com>
 To: linux-wireless@vger.kernel.org
-Subject: [PATCH v4 wireless-next 08/15] wifi: cfg80211: add support for NAN data interface
-Date: Thu, 19 Feb 2026 11:47:18 +0200
-Message-Id: <20260219114327.0d681335c2e2.I92973483e927820ae2297853c141842fdb262747@changeid>
+Cc: Johannes Berg <johannes.berg@intel.com>
+Subject: [PATCH v4 wireless-next 09/15] wifi: cfg80211: separately store HT, VHT and HE capabilities for NAN
+Date: Thu, 19 Feb 2026 11:47:19 +0200
+Message-Id: <20260219114327.4b6f3e4a81b4.I45422adc0df3ad4101d857a92e83f0de5cf241e1@changeid>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20260219094725.3846371-1-miriam.rachel.korenblit@intel.com>
 References: <20260219094725.3846371-1-miriam.rachel.korenblit@intel.com>
@@ -80,573 +81,261 @@ Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-1.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[intel.com,none];
-	MID_RHS_NOT_FQDN(0.50)[];
 	R_MISSING_CHARSET(0.50)[];
+	MID_RHS_NOT_FQDN(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[intel.com,none];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[intel.com:s=Intel];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-32018-lists,linux-wireless=lfdr.de];
+	TO_DN_SOME(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-32019-lists,linux-wireless=lfdr.de];
+	HAS_ORG_HEADER(0.00)[];
+	RCPT_COUNT_TWO(0.00)[2];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[miriam.rachel.korenblit@intel.com,linux-wireless@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	HAS_ORG_HEADER(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[intel.com:+];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	RCVD_COUNT_FIVE(0.00)[5];
 	TAGGED_RCPT(0.00)[linux-wireless];
 	NEURAL_HAM(-0.00)[-1.000];
-	TO_DN_NONE(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[5];
-	RCPT_COUNT_ONE(0.00)[1];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:email,intel.com:dkim,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 09A9515D820
+	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:email,intel.com:dkim,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: F0E2B15D853
 X-Rspamd-Action: no action
 
-This new interface type represents a NAN data interface (NDI).
-It is used for data communication with NAN peers.
+In NAN, unlike in other modes, there is only one set of (HT, VHT, HE)
+capabilities that is used for all channels (and bands) used in the NAN
+data path.
 
-Note that the existing NL80211_IFTYPE_NAN interface, which is the NAN
-Management Interface (NMI), is used for management communication.
+This set of capabilities will have to be a special one, for example - have
+the minimum of (HT-for-5 GHz, HT-for-2.4 GHz), careful handling of the
+bits that have a different meaning for each band, etc.
 
-An NDI interface is started when a new NAN data path is about to
-be established, and is stopped after the NAN data path is terminated.
+While we could use the exiting sband/iftype capabilities, and require
+identical capabilities for all bands (makes no sense since this means
+that we will have VHT capabilities in the 2.4 GHz slot),
+or require that only one of the sbands will be set,
+or have logic to extract the minimum and handle the conflicting bits -
+it seems simpler to add a dedicated set of capabilities which is special
+for NAN, and is band agnostic, to be populated by the driver.
 
-- An NDI interface can only be started if the NMI is running, and NAN is
-  started.
-- Before the NMI is stopped, the NDI interfaces will be stopped.
+That way we also let the driver decide how it wants to handle the
+conflicting bits.
 
-Add the new interface type, handle add/remove operations for it,
-and makes sure of the conditions above.
+Add this special set of these capabilities to wiphy:nan_capabilities, to be
+populated by the driver.
+Send it to user space.
 
+Reviewed-by: Johannes Berg <johannes.berg@intel.com>
 Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
 ---
- include/net/cfg80211.h       | 21 +++++++++++
- include/uapi/linux/nl80211.h |  4 ++
- net/mac80211/cfg.c           |  1 +
- net/mac80211/chan.c          |  2 +
- net/mac80211/iface.c         |  3 ++
- net/mac80211/rx.c            |  2 +
- net/mac80211/util.c          |  1 +
- net/wireless/chan.c          |  2 +
- net/wireless/core.c          | 72 +++++++++++++++++++++++++++++++-----
- net/wireless/core.h          |  6 +++
- net/wireless/nl80211.c       | 14 ++++++-
- net/wireless/reg.c           | 12 ++++--
- net/wireless/sysfs.c         | 27 +++++++-------
- net/wireless/util.c          | 21 +++++++++--
- 14 files changed, 159 insertions(+), 29 deletions(-)
+ include/net/cfg80211.h       | 11 ++++++
+ include/uapi/linux/nl80211.h | 43 ++++++++++++++++++++++++
+ net/wireless/core.c          |  4 +++
+ net/wireless/nl80211.c       | 65 ++++++++++++++++++++++++++++++++++++
+ 4 files changed, 123 insertions(+)
 
 diff --git a/include/net/cfg80211.h b/include/net/cfg80211.h
-index ea04afa72fa4..6ccd80868800 100644
+index 6ccd80868800..1eceb03892d1 100644
 --- a/include/net/cfg80211.h
 +++ b/include/net/cfg80211.h
-@@ -3977,6 +3977,27 @@ struct cfg80211_qos_map {
- 	struct cfg80211_dscp_range up[8];
+@@ -5911,6 +5911,12 @@ enum wiphy_nan_flags {
+  * @max_channel_switch_time: maximum channel switch time in milliseconds.
+  * @dev_capabilities: NAN device capabilities as defined in Wi-Fi Aware (TM)
+  *     specification Table 79 (Capabilities field).
++ * @phy: Band-agnostic capabilities for NAN data interfaces. Since NAN
++ *     operates on multiple channels simultaneously, these capabilities apply
++ *     across all bands. Valid only if NL80211_IFTYPE_NAN_DATA is supported.
++ * @phy.ht: HT capabilities (mandatory for NAN data)
++ * @phy.vht: VHT capabilities (optional)
++ * @phy.he: HE capabilities (optional)
+  */
+ struct wiphy_nan_capa {
+ 	u32 flags;
+@@ -5918,6 +5924,11 @@ struct wiphy_nan_capa {
+ 	u8 n_antennas;
+ 	u16 max_channel_switch_time;
+ 	u8 dev_capabilities;
++	struct {
++		struct ieee80211_sta_ht_cap ht;
++		struct ieee80211_sta_vht_cap vht;
++		struct ieee80211_sta_he_cap he;
++	} phy;
  };
  
-+/**
-+ * DOC: Neighbor Awareness Networking (NAN)
-+ *
-+ * NAN uses two interface types:
-+ *
-+ * - %NL80211_IFTYPE_NAN: a non-netdev interface. This has two roles: (1) holds
-+ *   the configuration of all NAN activities (DE parameters, synchronisation
-+ *   parameters, local schedule, etc.), and (2) uses as the NAN Management
-+ *   Interface (NMI), which is used for NAN management communication.
-+ *
-+ * - %NL80211_IFTYPE_NAN_DATA: The NAN Data Interface (NDI), used for data
-+ *   communication with NAN peers.
-+ *
-+ * An NDI interface can only be started (IFF_UP) if the NMI one is running and
-+ * NAN is started. Before NAN is stopped, all associated NDI interfaces
-+ * must be stopped first.
-+ *
-+ * The local schedule specifies which channels the device is available on and
-+ * when. Must be cancelled before NAN is stopped.
-+ */
-+
- /**
-  * struct cfg80211_nan_band_config - NAN band specific configuration
-  *
+ #define CFG80211_HW_TIMESTAMP_ALL_PEERS	0xffff
 diff --git a/include/uapi/linux/nl80211.h b/include/uapi/linux/nl80211.h
-index 4edc6eb9c467..b1584f145eac 100644
+index b1584f145eac..44dff379b66b 100644
 --- a/include/uapi/linux/nl80211.h
 +++ b/include/uapi/linux/nl80211.h
-@@ -3723,6 +3723,9 @@ enum nl80211_attrs {
-  * @NL80211_IFTYPE_OCB: Outside Context of a BSS
-  *	This mode corresponds to the MIB variable dot11OCBActivated=true
-  * @NL80211_IFTYPE_NAN: NAN device interface type (not a netdev)
-+ * @NL80211_IFTYPE_NAN_DATA: NAN data interface type (netdev); NAN data
-+ *	interfaces can only be brought up (IFF_UP) when a NAN interface
-+ *	already exists and NAN has been started (using %NL80211_CMD_START_NAN).
-  * @NL80211_IFTYPE_MAX: highest interface type number currently defined
-  * @NUM_NL80211_IFTYPES: number of defined interface types
+@@ -4436,6 +4436,46 @@ enum nl80211_band_attr {
+ 
+ #define NL80211_BAND_ATTR_HT_CAPA NL80211_BAND_ATTR_HT_CAPA
+ 
++/**
++ * enum nl80211_nan_phy_cap_attr - NAN PHY capabilities attributes
++ * @__NL80211_NAN_PHY_CAP_ATTR_INVALID: attribute number 0 is reserved
++ * @NL80211_NAN_PHY_CAP_ATTR_HT_MCS_SET: 16-byte attribute containing HT MCS set
++ * @NL80211_NAN_PHY_CAP_ATTR_HT_CAPA: HT capabilities (u16)
++ * @NL80211_NAN_PHY_CAP_ATTR_HT_AMPDU_FACTOR: HT A-MPDU factor (u8)
++ * @NL80211_NAN_PHY_CAP_ATTR_HT_AMPDU_DENSITY: HT A-MPDU density (u8)
++ * @NL80211_NAN_PHY_CAP_ATTR_VHT_MCS_SET: 8-byte attribute containing VHT MCS set
++ * @NL80211_NAN_PHY_CAP_ATTR_VHT_CAPA: VHT capabilities (u32)
++ * @NL80211_NAN_PHY_CAP_ATTR_HE_MAC: HE MAC capabilities
++ * @NL80211_NAN_PHY_CAP_ATTR_HE_PHY: HE PHY capabilities
++ * @NL80211_NAN_PHY_CAP_ATTR_HE_MCS_SET: HE supported NSS/MCS combinations
++ * @NL80211_NAN_PHY_CAP_ATTR_HE_PPE: HE PPE thresholds
++ * @NL80211_NAN_PHY_CAP_ATTR_MAX: highest NAN PHY cap attribute number
++ * @__NL80211_NAN_PHY_CAP_ATTR_AFTER_LAST: internal use
++ */
++enum nl80211_nan_phy_cap_attr {
++	__NL80211_NAN_PHY_CAP_ATTR_INVALID,
++
++	/* HT capabilities */
++	NL80211_NAN_PHY_CAP_ATTR_HT_MCS_SET,
++	NL80211_NAN_PHY_CAP_ATTR_HT_CAPA,
++	NL80211_NAN_PHY_CAP_ATTR_HT_AMPDU_FACTOR,
++	NL80211_NAN_PHY_CAP_ATTR_HT_AMPDU_DENSITY,
++
++	/* VHT capabilities */
++	NL80211_NAN_PHY_CAP_ATTR_VHT_MCS_SET,
++	NL80211_NAN_PHY_CAP_ATTR_VHT_CAPA,
++
++	/* HE capabilities */
++	NL80211_NAN_PHY_CAP_ATTR_HE_MAC,
++	NL80211_NAN_PHY_CAP_ATTR_HE_PHY,
++	NL80211_NAN_PHY_CAP_ATTR_HE_MCS_SET,
++	NL80211_NAN_PHY_CAP_ATTR_HE_PPE,
++
++	/* keep last */
++	__NL80211_NAN_PHY_CAP_ATTR_AFTER_LAST,
++	NL80211_NAN_PHY_CAP_ATTR_MAX = __NL80211_NAN_PHY_CAP_ATTR_AFTER_LAST - 1
++};
++
+ /**
+  * enum nl80211_wmm_rule - regulatory wmm rule
   *
-@@ -3744,6 +3747,7 @@ enum nl80211_iftype {
- 	NL80211_IFTYPE_P2P_DEVICE,
- 	NL80211_IFTYPE_OCB,
- 	NL80211_IFTYPE_NAN,
-+	NL80211_IFTYPE_NAN_DATA,
- 
+@@ -8594,6 +8634,8 @@ enum nl80211_s1g_short_beacon_attrs {
+  * @NL80211_NAN_CAPA_CAPABILITIES: u8 attribute containing the
+  *	capabilities of the device as defined in Wi-Fi Aware (TM)
+  *	specification Table 79 (Capabilities field).
++ * @NL80211_NAN_CAPA_PHY: nested attribute containing band-agnostic
++ *	capabilities for NAN data path. See &enum nl80211_nan_phy_cap_attr.
+  * @__NL80211_NAN_CAPABILITIES_LAST: Internal
+  * @NL80211_NAN_CAPABILITIES_MAX: Highest NAN capability attribute.
+  */
+@@ -8606,6 +8648,7 @@ enum nl80211_nan_capabilities {
+ 	NL80211_NAN_CAPA_NUM_ANTENNAS,
+ 	NL80211_NAN_CAPA_MAX_CHANNEL_SWITCH_TIME,
+ 	NL80211_NAN_CAPA_CAPABILITIES,
++	NL80211_NAN_CAPA_PHY,
  	/* keep last */
- 	NUM_NL80211_IFTYPES,
-diff --git a/net/mac80211/cfg.c b/net/mac80211/cfg.c
-index 2e840330c243..f56007740bdc 100644
---- a/net/mac80211/cfg.c
-+++ b/net/mac80211/cfg.c
-@@ -726,6 +726,7 @@ static int ieee80211_add_key(struct wiphy *wiphy, struct net_device *dev,
- 	case NL80211_IFTYPE_P2P_CLIENT:
- 	case NL80211_IFTYPE_P2P_GO:
- 	case NL80211_IFTYPE_OCB:
-+	case NL80211_IFTYPE_NAN_DATA:
- 		/* shouldn't happen */
- 		WARN_ON_ONCE(1);
- 		break;
-diff --git a/net/mac80211/chan.c b/net/mac80211/chan.c
-index d8c5f11afc15..c61121416426 100644
---- a/net/mac80211/chan.c
-+++ b/net/mac80211/chan.c
-@@ -488,6 +488,7 @@ ieee80211_get_chanctx_max_required_bw(struct ieee80211_local *local,
- 		case NUM_NL80211_IFTYPES:
- 		case NL80211_IFTYPE_P2P_CLIENT:
- 		case NL80211_IFTYPE_P2P_GO:
-+		case NL80211_IFTYPE_NAN_DATA:
- 			WARN_ON_ONCE(1);
- 		}
- 
-@@ -1414,6 +1415,7 @@ ieee80211_link_chanctx_reservation_complete(struct ieee80211_link_data *link)
- 	case NL80211_IFTYPE_P2P_GO:
- 	case NL80211_IFTYPE_P2P_DEVICE:
- 	case NL80211_IFTYPE_NAN:
-+	case NL80211_IFTYPE_NAN_DATA:
- 	case NUM_NL80211_IFTYPES:
- 		WARN_ON(1);
- 		break;
-diff --git a/net/mac80211/iface.c b/net/mac80211/iface.c
-index 676b2a43c9f2..6407c33fe9c8 100644
---- a/net/mac80211/iface.c
-+++ b/net/mac80211/iface.c
-@@ -1369,6 +1369,7 @@ int ieee80211_do_open(struct wireless_dev *wdev, bool coming_up)
- 	case NL80211_IFTYPE_P2P_DEVICE:
- 	case NL80211_IFTYPE_OCB:
- 	case NL80211_IFTYPE_NAN:
-+	case NL80211_IFTYPE_NAN_DATA:
- 		/* no special treatment */
- 		break;
- 	case NL80211_IFTYPE_UNSPECIFIED:
-@@ -1937,6 +1938,8 @@ static void ieee80211_setup_sdata(struct ieee80211_sub_if_data *sdata,
- 	case NL80211_IFTYPE_P2P_DEVICE:
- 		sdata->vif.bss_conf.bssid = sdata->vif.addr;
- 		break;
-+	case NL80211_IFTYPE_NAN_DATA:
-+		break;
- 	case NL80211_IFTYPE_UNSPECIFIED:
- 	case NL80211_IFTYPE_WDS:
- 	case NUM_NL80211_IFTYPES:
-diff --git a/net/mac80211/rx.c b/net/mac80211/rx.c
-index 11d6c56c9d7e..7c854080f52a 100644
---- a/net/mac80211/rx.c
-+++ b/net/mac80211/rx.c
-@@ -4621,6 +4621,8 @@ static bool ieee80211_accept_frame(struct ieee80211_rx_data *rx)
- 			(ieee80211_is_public_action(hdr, skb->len) ||
- 			 (ieee80211_is_auth(hdr->frame_control) &&
- 			  ether_addr_equal(sdata->vif.addr, hdr->addr1)));
-+	case NL80211_IFTYPE_NAN_DATA:
-+		return false;
- 	default:
- 		break;
- 	}
-diff --git a/net/mac80211/util.c b/net/mac80211/util.c
-index a5e09c0fa6b3..194fc138bdb3 100644
---- a/net/mac80211/util.c
-+++ b/net/mac80211/util.c
-@@ -2120,6 +2120,7 @@ int ieee80211_reconfig(struct ieee80211_local *local)
- 				return res;
- 			}
- 			break;
-+		case NL80211_IFTYPE_NAN_DATA:
- 		case NL80211_IFTYPE_AP_VLAN:
- 		case NL80211_IFTYPE_MONITOR:
- 		case NL80211_IFTYPE_P2P_DEVICE:
-diff --git a/net/wireless/chan.c b/net/wireless/chan.c
-index 0dde8f3007f0..6f8386e14043 100644
---- a/net/wireless/chan.c
-+++ b/net/wireless/chan.c
-@@ -769,6 +769,7 @@ int cfg80211_chandef_dfs_required(struct wiphy *wiphy,
- 	case NL80211_IFTYPE_MONITOR:
- 	case NL80211_IFTYPE_AP_VLAN:
- 	case NL80211_IFTYPE_P2P_DEVICE:
-+	case NL80211_IFTYPE_NAN_DATA:
- 		break;
- 	case NL80211_IFTYPE_WDS:
- 	case NL80211_IFTYPE_UNSPECIFIED:
-@@ -892,6 +893,7 @@ bool cfg80211_beaconing_iface_active(struct wireless_dev *wdev)
- 	case NL80211_IFTYPE_P2P_DEVICE:
- 	/* Can NAN type be considered as beaconing interface? */
- 	case NL80211_IFTYPE_NAN:
-+	case NL80211_IFTYPE_NAN_DATA:
- 		break;
- 	case NL80211_IFTYPE_UNSPECIFIED:
- 	case NL80211_IFTYPE_WDS:
+ 	__NL80211_NAN_CAPABILITIES_LAST,
+ 	NL80211_NAN_CAPABILITIES_MAX = __NL80211_NAN_CAPABILITIES_LAST - 1,
 diff --git a/net/wireless/core.c b/net/wireless/core.c
-index e86c404b0cfa..923368ce56da 100644
+index 923368ce56da..d40dc50a34d8 100644
 --- a/net/wireless/core.c
 +++ b/net/wireless/core.c
-@@ -329,16 +329,21 @@ void cfg80211_shutdown_all_interfaces(struct wiphy *wiphy)
+@@ -835,6 +835,10 @@ int wiphy_register(struct wiphy *wiphy)
+ 		     !(wiphy->nan_supported_bands & BIT(NL80211_BAND_2GHZ)))))
+ 		return -EINVAL;
  
- 	ASSERT_RTNL();
- 
-+	/*
-+	 * Some netdev interfaces need to be closed before some non-netdev
-+	 * ones, i.e. NAN_DATA interfaces need to be closed before the NAN
-+	 * interface
-+	 */
- 	list_for_each_entry(wdev, &rdev->wiphy.wdev_list, list) {
- 		if (wdev->netdev) {
- 			dev_close(wdev->netdev);
- 			continue;
- 		}
-+	}
- 
--		/* otherwise, check iftype */
--
--		guard(wiphy)(wiphy);
-+	guard(wiphy)(wiphy);
- 
-+	list_for_each_entry(wdev, &rdev->wiphy.wdev_list, list) {
- 		switch (wdev->iftype) {
- 		case NL80211_IFTYPE_P2P_DEVICE:
- 			cfg80211_stop_p2p_device(rdev, wdev);
-@@ -396,6 +401,8 @@ void cfg80211_destroy_ifaces(struct cfg80211_registered_device *rdev)
- 
- 	list_for_each_entry_safe(wdev, tmp, &rdev->wiphy.wdev_list, list) {
- 		if (wdev->nl_owner_dead) {
-+			cfg80211_close_dependents(rdev, wdev);
++	if (WARN_ON((wiphy->interface_modes & BIT(NL80211_IFTYPE_NAN_DATA)) &&
++		    !wiphy->nan_capa.phy.ht.ht_supported))
++		return -EINVAL;
 +
- 			if (wdev->netdev)
- 				dev_close(wdev->netdev);
+ 	if (WARN_ON(wiphy->interface_modes & BIT(NL80211_IFTYPE_WDS)))
+ 		return -EINVAL;
  
-@@ -406,6 +413,21 @@ void cfg80211_destroy_ifaces(struct cfg80211_registered_device *rdev)
- 	}
- }
- 
-+void cfg80211_close_dependents(struct cfg80211_registered_device *rdev,
-+			       struct wireless_dev *wdev)
-+{
-+	ASSERT_RTNL();
-+
-+	if (wdev->iftype != NL80211_IFTYPE_NAN)
-+		return;
-+
-+	/* Close all NAN DATA interfaces */
-+	list_for_each_entry(wdev, &rdev->wiphy.wdev_list, list) {
-+		if (wdev->iftype == NL80211_IFTYPE_NAN_DATA)
-+			dev_close(wdev->netdev);
-+	}
-+}
-+
- static void cfg80211_destroy_iface_wk(struct work_struct *work)
- {
- 	struct cfg80211_registered_device *rdev;
-@@ -1419,9 +1441,8 @@ void cfg80211_update_iface_num(struct cfg80211_registered_device *rdev,
- 		rdev->num_running_monitor_ifaces += num;
- }
- 
--void cfg80211_leave(struct cfg80211_registered_device *rdev,
--		    struct wireless_dev *wdev,
--		    int link_id)
-+void cfg80211_leave_locked(struct cfg80211_registered_device *rdev,
-+			   struct wireless_dev *wdev, int link_id)
- {
- 	struct net_device *dev = wdev->netdev;
- 	struct cfg80211_sched_scan_request *pos, *tmp;
-@@ -1472,6 +1493,7 @@ void cfg80211_leave(struct cfg80211_registered_device *rdev,
- 		break;
- 	case NL80211_IFTYPE_AP_VLAN:
- 	case NL80211_IFTYPE_MONITOR:
-+	case NL80211_IFTYPE_NAN_DATA:
- 		/* nothing to do */
- 		break;
- 	case NL80211_IFTYPE_UNSPECIFIED:
-@@ -1482,6 +1504,19 @@ void cfg80211_leave(struct cfg80211_registered_device *rdev,
- 	}
- }
- 
-+void cfg80211_leave(struct cfg80211_registered_device *rdev,
-+		    struct wireless_dev *wdev, int link_id)
-+{
-+	ASSERT_RTNL();
-+
-+	/* NAN_DATA interfaces must be closed before stopping NAN */
-+	cfg80211_close_dependents(rdev, wdev);
-+
-+	guard(wiphy)(&rdev->wiphy);
-+
-+	cfg80211_leave_locked(rdev, wdev, link_id);
-+}
-+
- void cfg80211_stop_link(struct wiphy *wiphy, struct wireless_dev *wdev,
- 			int link_id, gfp_t gfp)
- {
-@@ -1497,6 +1532,9 @@ void cfg80211_stop_link(struct wiphy *wiphy, struct wireless_dev *wdev,
- 
- 	trace_cfg80211_stop_link(wiphy, wdev, link_id);
- 
-+	if (wdev->iftype == NL80211_IFTYPE_NAN)
-+		return;
-+
- 	ev = kzalloc(sizeof(*ev), gfp);
- 	if (!ev)
- 		return;
-@@ -1647,10 +1685,9 @@ static int cfg80211_netdev_notifier_call(struct notifier_block *nb,
- 		}
- 		break;
- 	case NETDEV_GOING_DOWN:
--		scoped_guard(wiphy, &rdev->wiphy) {
--			cfg80211_leave(rdev, wdev, -1);
-+		cfg80211_leave(rdev, wdev, -1);
-+		scoped_guard(wiphy, &rdev->wiphy)
- 			cfg80211_remove_links(wdev);
--		}
- 		/* since we just did cfg80211_leave() nothing to do there */
- 		cancel_work_sync(&wdev->disconnect_wk);
- 		cancel_work_sync(&wdev->pmsr_free_wk);
-@@ -1731,6 +1768,23 @@ static int cfg80211_netdev_notifier_call(struct notifier_block *nb,
- 
- 		if (rfkill_blocked(rdev->wiphy.rfkill))
- 			return notifier_from_errno(-ERFKILL);
-+
-+		/* NAN_DATA interfaces require a running NAN interface */
-+		if (wdev->iftype == NL80211_IFTYPE_NAN_DATA) {
-+			struct wireless_dev *iter;
-+			bool nan_started = false;
-+
-+			list_for_each_entry(iter, &rdev->wiphy.wdev_list, list) {
-+				if (iter->iftype == NL80211_IFTYPE_NAN &&
-+				    wdev_running(iter)) {
-+					nan_started = true;
-+					break;
-+				}
-+			}
-+
-+			if (!nan_started)
-+				return notifier_from_errno(-ENOLINK);
-+		}
- 		break;
- 	default:
- 		return NOTIFY_DONE;
-diff --git a/net/wireless/core.h b/net/wireless/core.h
-index cd8e18a33e79..ad7609770f74 100644
---- a/net/wireless/core.h
-+++ b/net/wireless/core.h
-@@ -318,6 +318,9 @@ void cfg80211_cqm_rssi_notify_work(struct wiphy *wiphy,
- 
- void cfg80211_destroy_ifaces(struct cfg80211_registered_device *rdev);
- 
-+void cfg80211_close_dependents(struct cfg80211_registered_device *rdev,
-+			       struct wireless_dev *wdev);
-+
- /* free object */
- void cfg80211_dev_free(struct cfg80211_registered_device *rdev);
- 
-@@ -537,6 +540,9 @@ int cfg80211_validate_beacon_int(struct cfg80211_registered_device *rdev,
- void cfg80211_update_iface_num(struct cfg80211_registered_device *rdev,
- 			       enum nl80211_iftype iftype, int num);
- 
-+void cfg80211_leave_locked(struct cfg80211_registered_device *rdev,
-+			   struct wireless_dev *wdev, int link_id);
-+
- void cfg80211_leave(struct cfg80211_registered_device *rdev,
- 		    struct wireless_dev *wdev,
- 		    int link_id);
 diff --git a/net/wireless/nl80211.c b/net/wireless/nl80211.c
-index ffc7e4a8a391..0b2bdd1d989e 100644
+index 0b2bdd1d989e..84cfd70eb8fd 100644
 --- a/net/wireless/nl80211.c
 +++ b/net/wireless/nl80211.c
-@@ -1743,6 +1743,7 @@ static int nl80211_key_allowed(struct wireless_dev *wdev)
- 			return 0;
- 		return -ENOLINK;
- 	case NL80211_IFTYPE_NAN:
-+	case NL80211_IFTYPE_NAN_DATA:
- 		if (wiphy_ext_feature_isset(wdev->wiphy,
- 					    NL80211_EXT_FEATURE_SECURE_NAN))
- 			return 0;
-@@ -4897,6 +4898,8 @@ static int nl80211_del_interface(struct sk_buff *skb, struct genl_info *info)
- 	else
- 		dev_close(wdev->netdev);
- 
-+	cfg80211_close_dependents(rdev, wdev);
-+
- 	mutex_lock(&rdev->wiphy.mtx);
- 
- 	return cfg80211_remove_virtual_intf(rdev, wdev);
-@@ -15932,6 +15935,10 @@ static int nl80211_stop_nan(struct sk_buff *skb, struct genl_info *info)
- 	if (wdev->iftype != NL80211_IFTYPE_NAN)
- 		return -EOPNOTSUPP;
- 
-+	cfg80211_close_dependents(rdev, wdev);
-+
-+	guard(wiphy)(&rdev->wiphy);
-+
- 	cfg80211_stop_nan(rdev, wdev);
- 
- 	return 0;
-@@ -18292,7 +18299,11 @@ nl80211_epcs_cfg(struct sk_buff *skb, struct genl_info *info)
- 		 NL80211_FLAG_NEED_RTNL)		\
- 	SELECTOR(__sel, WIPHY_CLEAR,			\
- 		 NL80211_FLAG_NEED_WIPHY |		\
--		 NL80211_FLAG_CLEAR_SKB)
-+		 NL80211_FLAG_CLEAR_SKB)		\
-+	SELECTOR(__sel, WDEV_UP_RTNL_NOMTX,		\
-+		 NL80211_FLAG_NEED_WDEV_UP |		\
-+		 NL80211_FLAG_NO_WIPHY_MTX |		\
-+		 NL80211_FLAG_NEED_RTNL)
- 
- enum nl80211_internal_flags_selector {
- #define SELECTOR(_, name, value)	NL80211_IFL_SEL_##name,
-@@ -19129,6 +19140,7 @@ static const struct genl_small_ops nl80211_small_ops[] = {
- 		.doit = nl80211_stop_nan,
- 		.flags = GENL_ADMIN_PERM,
- 		.internal_flags = IFLAGS(NL80211_FLAG_NEED_WDEV_UP |
-+					 NL80211_FLAG_NO_WIPHY_MTX |
- 					 NL80211_FLAG_NEED_RTNL),
- 	},
- 	{
-diff --git a/net/wireless/reg.c b/net/wireless/reg.c
-index 43c5193a6ed9..6cd55e534fbe 100644
---- a/net/wireless/reg.c
-+++ b/net/wireless/reg.c
-@@ -2422,6 +2422,9 @@ static bool reg_wdev_chan_valid(struct wiphy *wiphy, struct wireless_dev *wdev)
- 				continue;
- 			chandef = wdev->u.ocb.chandef;
- 			break;
-+		case NL80211_IFTYPE_NAN_DATA:
-+			/* NAN channels are checked in NL80211_IFTYPE_NAN interface */
-+			break;
- 		default:
- 			/* others not implemented for now */
- 			WARN_ON_ONCE(1);
-@@ -2458,11 +2461,14 @@ static void reg_leave_invalid_chans(struct wiphy *wiphy)
- 	struct wireless_dev *wdev;
- 	struct cfg80211_registered_device *rdev = wiphy_to_rdev(wiphy);
- 
--	guard(wiphy)(wiphy);
-+	list_for_each_entry(wdev, &rdev->wiphy.wdev_list, list) {
-+		bool valid;
- 
--	list_for_each_entry(wdev, &rdev->wiphy.wdev_list, list)
--		if (!reg_wdev_chan_valid(wiphy, wdev))
-+		scoped_guard(wiphy, wiphy)
-+			valid = reg_wdev_chan_valid(wiphy, wdev);
-+		if (!valid)
- 			cfg80211_leave(rdev, wdev, -1);
-+	}
+@@ -2700,6 +2700,68 @@ static int nl80211_put_radios(struct wiphy *wiphy, struct sk_buff *msg)
+ 	return -ENOBUFS;
  }
  
- static void reg_check_chans_work(struct work_struct *work)
-diff --git a/net/wireless/sysfs.c b/net/wireless/sysfs.c
-index 3385a27468f7..d45ddc457c30 100644
---- a/net/wireless/sysfs.c
-+++ b/net/wireless/sysfs.c
-@@ -102,25 +102,26 @@ static int wiphy_suspend(struct device *dev)
- 	if (!rdev->wiphy.registered)
- 		goto out_unlock_rtnl;
- 
--	wiphy_lock(&rdev->wiphy);
- 	if (rdev->wiphy.wowlan_config) {
--		cfg80211_process_wiphy_works(rdev, NULL);
--		if (rdev->ops->suspend)
--			ret = rdev_suspend(rdev, rdev->wiphy.wowlan_config);
--		if (ret <= 0)
--			goto out_unlock_wiphy;
-+		scoped_guard(wiphy, &rdev->wiphy) {
-+			cfg80211_process_wiphy_works(rdev, NULL);
-+			if (rdev->ops->suspend)
-+				ret = rdev_suspend(rdev,
-+						   rdev->wiphy.wowlan_config);
-+			if (ret <= 0)
-+				goto out_unlock_rtnl;
-+		}
- 	}
- 
- 	/* Driver refused to configure wowlan (ret = 1) or no wowlan */
- 
- 	cfg80211_leave_all(rdev);
--	cfg80211_process_rdev_events(rdev);
--	cfg80211_process_wiphy_works(rdev, NULL);
--	if (rdev->ops->suspend)
--		ret = rdev_suspend(rdev, NULL);
--
--out_unlock_wiphy:
--	wiphy_unlock(&rdev->wiphy);
-+	scoped_guard(wiphy, &rdev->wiphy) {
-+		cfg80211_process_rdev_events(rdev);
-+		cfg80211_process_wiphy_works(rdev, NULL);
-+		if (rdev->ops->suspend)
-+			ret = rdev_suspend(rdev, NULL);
++static int nl80211_put_nan_phy_cap(struct wiphy *wiphy, struct sk_buff *msg)
++{
++	struct nlattr *nl_phy_cap;
++	const struct ieee80211_sta_ht_cap *ht_cap;
++	const struct ieee80211_sta_vht_cap *vht_cap;
++	const struct ieee80211_sta_he_cap *he_cap;
++
++	if (!cfg80211_iftype_allowed(wiphy, NL80211_IFTYPE_NAN_DATA, false, 0))
++		return 0;
++
++	ht_cap = &wiphy->nan_capa.phy.ht;
++	vht_cap = &wiphy->nan_capa.phy.vht;
++	he_cap = &wiphy->nan_capa.phy.he;
++
++	/* HT is mandatory */
++	if (WARN_ON(!ht_cap->ht_supported))
++		return 0;
++
++	nl_phy_cap = nla_nest_start_noflag(msg, NL80211_NAN_CAPA_PHY);
++	if (!nl_phy_cap)
++		return -ENOBUFS;
++
++	if (nla_put(msg, NL80211_NAN_PHY_CAP_ATTR_HT_MCS_SET,
++		    sizeof(ht_cap->mcs), &ht_cap->mcs) ||
++	    nla_put_u16(msg, NL80211_NAN_PHY_CAP_ATTR_HT_CAPA, ht_cap->cap) ||
++	    nla_put_u8(msg, NL80211_NAN_PHY_CAP_ATTR_HT_AMPDU_FACTOR,
++		       ht_cap->ampdu_factor) ||
++	    nla_put_u8(msg, NL80211_NAN_PHY_CAP_ATTR_HT_AMPDU_DENSITY,
++		       ht_cap->ampdu_density))
++		goto fail;
++
++	if (vht_cap->vht_supported) {
++		if (nla_put(msg, NL80211_NAN_PHY_CAP_ATTR_VHT_MCS_SET,
++			    sizeof(vht_cap->vht_mcs), &vht_cap->vht_mcs) ||
++		    nla_put_u32(msg, NL80211_NAN_PHY_CAP_ATTR_VHT_CAPA,
++				vht_cap->cap))
++			goto fail;
 +	}
- out_unlock_rtnl:
- 	if (ret == 0)
- 		rdev->suspended = true;
-diff --git a/net/wireless/util.c b/net/wireless/util.c
-index 659f0b46ad82..f2ebef59a943 100644
---- a/net/wireless/util.c
-+++ b/net/wireless/util.c
-@@ -1144,8 +1144,15 @@ void cfg80211_process_wdev_events(struct wireless_dev *wdev)
- 					       ev->ij.channel);
- 			break;
- 		case EVENT_STOPPED:
--			cfg80211_leave(wiphy_to_rdev(wdev->wiphy), wdev,
--				       ev->link_id);
-+			/*
-+			 * for NAN interfaces cfg80211_leave must be called but
-+			 * locking here doesn't allow this.
-+			 */
-+			if (WARN_ON(wdev->iftype == NL80211_IFTYPE_NAN))
-+				break;
 +
-+			cfg80211_leave_locked(wiphy_to_rdev(wdev->wiphy), wdev,
-+					      ev->link_id);
- 			break;
- 		case EVENT_PORT_AUTHORIZED:
- 			__cfg80211_port_authorized(wdev, ev->pa.peer_addr,
-@@ -1184,6 +1191,13 @@ int cfg80211_change_iface(struct cfg80211_registered_device *rdev,
- 	if (otype == NL80211_IFTYPE_AP_VLAN)
- 		return -EOPNOTSUPP;
- 
-+	/*
-+	 * for NAN interfaces cfg80211_leave must be called for leaving,
-+	 * but locking here doesn't allow this.
-+	 */
-+	if (otype == NL80211_IFTYPE_NAN)
-+		return -EOPNOTSUPP;
++	if (he_cap->has_he) {
++		if (nla_put(msg, NL80211_NAN_PHY_CAP_ATTR_HE_MAC,
++			    sizeof(he_cap->he_cap_elem.mac_cap_info),
++			    he_cap->he_cap_elem.mac_cap_info) ||
++		    nla_put(msg, NL80211_NAN_PHY_CAP_ATTR_HE_PHY,
++			    sizeof(he_cap->he_cap_elem.phy_cap_info),
++			    he_cap->he_cap_elem.phy_cap_info) ||
++		    nla_put(msg, NL80211_NAN_PHY_CAP_ATTR_HE_MCS_SET,
++			    sizeof(he_cap->he_mcs_nss_supp),
++			    &he_cap->he_mcs_nss_supp) ||
++		    nla_put(msg, NL80211_NAN_PHY_CAP_ATTR_HE_PPE,
++			    sizeof(he_cap->ppe_thres), he_cap->ppe_thres))
++			goto fail;
++	}
 +
- 	/* cannot change into P2P device or NAN */
- 	if (ntype == NL80211_IFTYPE_P2P_DEVICE ||
- 	    ntype == NL80211_IFTYPE_NAN)
-@@ -1204,7 +1218,7 @@ int cfg80211_change_iface(struct cfg80211_registered_device *rdev,
- 		dev->ieee80211_ptr->use_4addr = false;
- 		rdev_set_qos_map(rdev, dev, NULL);
++	nla_nest_end(msg, nl_phy_cap);
++	return 0;
++
++fail:
++	nla_nest_cancel(msg, nl_phy_cap);
++	return -ENOBUFS;
++}
++
+ static int nl80211_put_nan_capa(struct wiphy *wiphy, struct sk_buff *msg)
+ {
+ 	struct nlattr *nan_caps;
+@@ -2726,6 +2788,9 @@ static int nl80211_put_nan_capa(struct wiphy *wiphy, struct sk_buff *msg)
+ 		       wiphy->nan_capa.dev_capabilities))
+ 		goto fail;
  
--		cfg80211_leave(rdev, dev->ieee80211_ptr, -1);
-+		cfg80211_leave_locked(rdev, dev->ieee80211_ptr, -1);
++	if (nl80211_put_nan_phy_cap(wiphy, msg))
++		goto fail;
++
+ 	nla_nest_end(msg, nan_caps);
  
- 		cfg80211_process_rdev_events(rdev);
- 		cfg80211_mlme_purge_registrations(dev->ieee80211_ptr);
-@@ -1232,6 +1246,7 @@ int cfg80211_change_iface(struct cfg80211_registered_device *rdev,
- 		case NL80211_IFTYPE_OCB:
- 		case NL80211_IFTYPE_P2P_CLIENT:
- 		case NL80211_IFTYPE_ADHOC:
-+		case NL80211_IFTYPE_NAN_DATA:
- 			dev->priv_flags |= IFF_DONT_BRIDGE;
- 			break;
- 		case NL80211_IFTYPE_P2P_GO:
+ 	return 0;
 -- 
 2.34.1
 
