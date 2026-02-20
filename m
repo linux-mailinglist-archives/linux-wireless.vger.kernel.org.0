@@ -1,62 +1,62 @@
-Return-Path: <linux-wireless+bounces-32057-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-32056-lists+linux-wireless=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id MCGhJtltmGn4IAMAu9opvQ
-	(envelope-from <linux-wireless+bounces-32057-lists+linux-wireless=lfdr.de@vger.kernel.org>)
-	for <lists+linux-wireless@lfdr.de>; Fri, 20 Feb 2026 15:21:13 +0100
+	id 6OevG9ZtmGn4IAMAu9opvQ
+	(envelope-from <linux-wireless+bounces-32056-lists+linux-wireless=lfdr.de@vger.kernel.org>)
+	for <lists+linux-wireless@lfdr.de>; Fri, 20 Feb 2026 15:21:10 +0100
 X-Original-To: lists+linux-wireless@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id EF80E1684AC
-	for <lists+linux-wireless@lfdr.de>; Fri, 20 Feb 2026 15:21:12 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id C6AA51684A5
+	for <lists+linux-wireless@lfdr.de>; Fri, 20 Feb 2026 15:21:09 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id C38BD30977E4
+	by sea.lore.kernel.org (Postfix) with ESMTP id 6EE7130847C3
 	for <lists+linux-wireless@lfdr.de>; Fri, 20 Feb 2026 14:20:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 31BCB34D904;
-	Fri, 20 Feb 2026 14:20:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BAEEE34D4E9;
+	Fri, 20 Feb 2026 14:20:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b="Vv9axnoW"
+	dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b="lOBxpSkh"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from sipsolutions.net (s3.sipsolutions.net [168.119.38.16])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4F17E34C140
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4473734B185
 	for <linux-wireless@vger.kernel.org>; Fri, 20 Feb 2026 14:20:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=168.119.38.16
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771597222; cv=none; b=cf+SQqHwCtBVy60AZ6i3VsysKfftFts0O9YRJGrodLQUOYd3hllfRFfGUA1GA1xT0O5WpjoKMlbwgvdiFpXpGjYGQhFVPpTgC8570mdrfKUH/1kZ/WoycKnQ/yhjlu0JiyWr1bWIjKiHf9Mu9e4CVGYg2x4rJfC7BnXTNxfGT58=
+	t=1771597221; cv=none; b=M6Yml98Oj6et46UmgMRc3Xo6+cTONWWU0TRfOmWBQcdajPJfdr6A1lxoY6mo/i+/B3+QVR17uqZComcW/SjToidftF0tAfGZD8GqylyWzwQZKz3VJBVzbGvgHTB8PzVsPyMw6lSV0VMP5bG2IsLVsm9ozMp8pdGau6v4qn0ALs0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771597222; c=relaxed/simple;
-	bh=kbmc3vTDtj3/PkH5XedUP/gaL2/SoJlUeEJD6rMGjiI=;
+	s=arc-20240116; t=1771597221; c=relaxed/simple;
+	bh=hlhrxD5Y4vMLdbvMZi5yQoX6unguVDHO7d6JkAXASyg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=gS1eZk5q7v3nGIn6TqnqxXv119w13mIt2L5crnNb16YT2pgvYyWrnAAYQqW6ZdZfJ2aVhifkKZpUXR5Pi8iBxrr1Ktyc1FSkD9Kqfp55XR8eDMLFOS6Rmag2nnDxm94eN88zjpahfuhCAaeUI/CDnI3yEIP4gTFlL0Z+0yvZm2s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net; spf=pass smtp.mailfrom=sipsolutions.net; dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b=Vv9axnoW; arc=none smtp.client-ip=168.119.38.16
+	 MIME-Version; b=qsCFjF8qgMsl7/b+vOPPZZQp/50MH4hOsQP/quh7SH0HZoYeRvDhpTSQ2eQ+YhwO/Px3QDp2Da+IDfiSwwD+Nr3Gv9CT7zLrv6aHbmIUcopmn/X7F5Zp5lEfjJiEgWtmoLar+pkJ5ZeViCc+FDrPAYYMpj0rgJlsnUqOGOJPalg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net; spf=pass smtp.mailfrom=sipsolutions.net; dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b=lOBxpSkh; arc=none smtp.client-ip=168.119.38.16
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sipsolutions.net
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=sipsolutions.net; s=mail; h=Content-Transfer-Encoding:MIME-Version:
 	References:In-Reply-To:Message-ID:Date:Subject:Cc:To:From:Content-Type:Sender
 	:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
-	Resent-Cc:Resent-Message-ID; bh=l58ByOIWZMTuNoUXMD6JHDf7i3Nhv8stVpQp+VvvrAw=;
-	t=1771597220; x=1772806820; b=Vv9axnoWd/TEVdNRKe0FZ1R7fUMJVumOgaQ06b2nx9nsOK+
-	eHoedPRyFBTlrpd0NMuLtsA0dXYBG9wTRYjHkkXmG2MEpnjoJb5ml6Ml30lqrE63RX5vqvWrEdvLx
-	5PPIOoXyEvDMfGzhfeqvfWQ2ItL4zCQekwVs0nB1a8U3pSfVkWbFPIdj1UHYymqSbRY8+V0HgmpOb
-	rxc6r7Uz+374OGVNHFoEeFyXH20h2CENpHpPU6kPBavnUMdLOuU2rylCsIdxX/89U7FM+1UILzMqD
-	65lb0S/zYc0ho3oQ5F1OquDiLIeHGd6evjx9wpbbwBGh46CZQRMrnoopTewuA0FA==;
+	Resent-Cc:Resent-Message-ID; bh=L7+VzXUEMEgaKOAlNXoEDub5ipxABmgGUBQBJTxZfiY=;
+	t=1771597220; x=1772806820; b=lOBxpSkhZcQ+nPD1DnXyArARN91tW67TQv0mVgcGod58GUl
+	cjUh1lI9ChrboKRwMYbHHdo0mwoMEZnqTvlcZAKeYhtCM7g7i0pNJjlpn+gqIPT0QjGp5TViZqHTn
+	xTuqCbeGHIfKebzt5BvCZyNq3M9YoIKFvWb31r1VMIwCh3lVnJMsnuR8N1wV+xDC02pB35ofKu/Tj
+	OdI52r0YrfOcc282DMQYow1qN9DWK2VznkhBCaXQu6BzGV1NbD9M0R0i0UKxkrZ5c57dwKv9jRXGQ
+	3OGoUnWeCQgf0h/I7SJKue1u3xC0gIYAJcyDf8HGoquy3+ZBByxSwddyg4+9MgLA==;
 Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
 	(Exim 4.98.2)
 	(envelope-from <benjamin@sipsolutions.net>)
-	id 1vtRMZ-0000000ECBC-0ttt;
-	Fri, 20 Feb 2026 15:20:11 +0100
+	id 1vtRMZ-0000000ECBC-3Tzx;
+	Fri, 20 Feb 2026 15:20:12 +0100
 From: Benjamin Berg <benjamin@sipsolutions.net>
 To: linux-wireless@vger.kernel.org
 Cc: Rameshkumar Sundaram <rameshkumar.sundaram@oss.qualcomm.com>,
 	Ramasamy Kaliappan <ramasamy.kaliappan@oss.qualcomm.com>,
 	Benjamin Berg <benjamin.berg@intel.com>
-Subject: [RFC PATCH 1/8] wifi: iwlwifi: use link_sta internally to the driver
-Date: Fri, 20 Feb 2026 15:19:31 +0100
-Message-ID: <20260220151929.5839057a0c69.I41df561f8129fac1327a07729cf4734b8752bcd6@changeid>
+Subject: [RFC PATCH 2/8] wifi: mac80211: change public RX API to use link stations
+Date: Fri, 20 Feb 2026 15:19:32 +0100
+Message-ID: <20260220151929.61ef722ac889.I4a2d45609e94b52654b10ec572e59a45d09c41f4@changeid>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <20260220141929.206976-10-benjamin@sipsolutions.net>
 References: <20260220141929.206976-10-benjamin@sipsolutions.net>
@@ -74,17 +74,17 @@ X-Spamd-Result: default: False [-1.16 / 15.00];
 	MID_RHS_NOT_FQDN(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[sipsolutions.net,none];
 	R_DKIM_ALLOW(-0.20)[sipsolutions.net:s=mail];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	TAGGED_FROM(0.00)[bounces-32057-lists,linux-wireless=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-32056-lists,linux-wireless=lfdr.de];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	RCPT_COUNT_THREE(0.00)[4];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[benjamin@sipsolutions.net,linux-wireless@vger.kernel.org];
@@ -95,348 +95,227 @@ X-Spamd-Result: default: False [-1.16 / 15.00];
 	TAGGED_RCPT(0.00)[linux-wireless];
 	TO_DN_SOME(0.00)[];
 	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,intel.com:email,sipsolutions.net:dkim]
-X-Rspamd-Queue-Id: EF80E1684AC
+X-Rspamd-Queue-Id: C6AA51684A5
 X-Rspamd-Action: no action
 
 From: Benjamin Berg <benjamin.berg@intel.com>
 
-Using the link_sta is a natural way to pass both the STA and the link ID
-information at the same time. Use that internally to the driver in
-preparation to mac80211 changing its API and adopting the same method.
+If a station is passed then the link ID also needs to be known. As such,
+it is a more natural API to simply pass the link station directly rather
+than pushing the link information into the RX status.
+
+Furthermore, having the link ID in the RX status is not actually correct
+because the link IDs are VIF specific and there may be multiple VIFs. In
+the case of a station this relationship is clear, but then one may as
+well use the link station.
+
+This patch only changes the API and emulates the old (incorrect)
+behaviour for now. The mac80211 RX code will be updated in later
+patches.
 
 Signed-off-by: Benjamin Berg <benjamin.berg@intel.com>
----
- drivers/net/wireless/intel/iwlwifi/mld/agg.c  | 21 +++++----
- drivers/net/wireless/intel/iwlwifi/mld/agg.h  |  4 +-
- drivers/net/wireless/intel/iwlwifi/mld/rx.c   | 45 ++++++++++---------
- drivers/net/wireless/intel/iwlwifi/mld/rx.h   |  2 +-
- .../wireless/intel/iwlwifi/mld/tests/agg.c    |  7 +--
- 5 files changed, 42 insertions(+), 37 deletions(-)
 
-diff --git a/drivers/net/wireless/intel/iwlwifi/mld/agg.c b/drivers/net/wireless/intel/iwlwifi/mld/agg.c
-index 3bf36f8f6874..c4f3552bd2ab 100644
---- a/drivers/net/wireless/intel/iwlwifi/mld/agg.c
-+++ b/drivers/net/wireless/intel/iwlwifi/mld/agg.c
-@@ -1,13 +1,14 @@
- // SPDX-License-Identifier: GPL-2.0 OR BSD-3-Clause
- /*
-- * Copyright (C) 2024-2025 Intel Corporation
-+ * Copyright (C) 2024-2026 Intel Corporation
-  */
- #include "agg.h"
- #include "sta.h"
- #include "hcmd.h"
- 
- static void
--iwl_mld_reorder_release_frames(struct iwl_mld *mld, struct ieee80211_sta *sta,
-+iwl_mld_reorder_release_frames(struct iwl_mld *mld,
-+			       struct ieee80211_link_sta *link_sta,
- 			       struct napi_struct *napi,
- 			       struct iwl_mld_baid_data *baid_data,
- 			       struct iwl_mld_reorder_buffer *reorder_buf,
-@@ -32,7 +33,7 @@ iwl_mld_reorder_release_frames(struct iwl_mld *mld, struct ieee80211_sta *sta,
- 		while ((skb = __skb_dequeue(skb_list))) {
- 			iwl_mld_pass_packet_to_mac80211(mld, napi, skb,
- 							reorder_buf->queue,
--							sta);
-+							link_sta);
- 			reorder_buf->num_stored--;
- 		}
- 	}
-@@ -71,7 +72,7 @@ static void iwl_mld_release_frames_from_notif(struct iwl_mld *mld,
- 
- 	reorder_buf = &ba_data->reorder_buf[queue];
- 
--	iwl_mld_reorder_release_frames(mld, link_sta->sta, napi, ba_data,
-+	iwl_mld_reorder_release_frames(mld, link_sta, napi, ba_data,
- 				       reorder_buf, nssn);
- out_unlock:
- 	rcu_read_unlock();
-@@ -174,7 +175,7 @@ void iwl_mld_del_ba(struct iwl_mld *mld, int queue,
- 	reorder_buf = &ba_data->reorder_buf[queue];
- 
- 	/* release all frames that are in the reorder buffer to the stack */
--	iwl_mld_reorder_release_frames(mld, link_sta->sta, NULL,
-+	iwl_mld_reorder_release_frames(mld, link_sta, NULL,
- 				       ba_data, reorder_buf,
- 				       ieee80211_sn_add(reorder_buf->head_sn,
- 							ba_data->buf_size));
-@@ -187,14 +188,14 @@ void iwl_mld_del_ba(struct iwl_mld *mld, int queue,
-  */
- enum iwl_mld_reorder_result
- iwl_mld_reorder(struct iwl_mld *mld, struct napi_struct *napi,
--		int queue, struct ieee80211_sta *sta,
-+		int queue, struct ieee80211_link_sta *link_sta,
- 		struct sk_buff *skb, struct iwl_rx_mpdu_desc *desc)
- {
- 	struct ieee80211_hdr *hdr = (void *)skb_mac_header(skb);
- 	struct iwl_mld_baid_data *baid_data;
- 	struct iwl_mld_reorder_buffer *buffer;
- 	struct iwl_mld_reorder_buf_entry *entries;
--	struct iwl_mld_sta *mld_sta = iwl_mld_sta_from_mac80211(sta);
-+	struct iwl_mld_sta *mld_sta;
- 	struct iwl_mld_link_sta *mld_link_sta;
- 	u32 reorder = le32_to_cpu(desc->reorder_data);
- 	bool amsdu, last_subframe, is_old_sn, is_dup;
-@@ -217,10 +218,12 @@ iwl_mld_reorder(struct iwl_mld *mld, struct napi_struct *napi,
- 		return IWL_MLD_PASS_SKB;
- 
- 	/* no sta yet */
--	if (WARN_ONCE(!sta,
-+	if (WARN_ONCE(!link_sta,
- 		      "Got valid BAID without a valid station assigned\n"))
- 		return IWL_MLD_PASS_SKB;
- 
-+	mld_sta = iwl_mld_sta_from_mac80211(link_sta->sta);
-+
- 	/* not a data packet */
- 	if (!ieee80211_is_data_qos(hdr->frame_control) ||
- 	    is_multicast_ether_addr(hdr->addr1))
-@@ -310,7 +313,7 @@ iwl_mld_reorder(struct iwl_mld *mld, struct napi_struct *napi,
- 	 * will be released when the frame release notification arrives.
- 	 */
- 	if (!amsdu || last_subframe)
--		iwl_mld_reorder_release_frames(mld, sta, napi, baid_data,
-+		iwl_mld_reorder_release_frames(mld, link_sta, napi, baid_data,
- 					       buffer, nssn);
- 	else if (buffer->num_stored == 1)
- 		buffer->head_sn = nssn;
-diff --git a/drivers/net/wireless/intel/iwlwifi/mld/agg.h b/drivers/net/wireless/intel/iwlwifi/mld/agg.h
-index 651c80d1c7cd..c6cd5fa219be 100644
---- a/drivers/net/wireless/intel/iwlwifi/mld/agg.h
-+++ b/drivers/net/wireless/intel/iwlwifi/mld/agg.h
-@@ -1,6 +1,6 @@
- /* SPDX-License-Identifier: GPL-2.0 OR BSD-3-Clause */
- /*
-- * Copyright (C) 2024 Intel Corporation
-+ * Copyright (C) 2024, 2026 Intel Corporation
-  */
- #ifndef __iwl_agg_h__
- #define __iwl_agg_h__
-@@ -106,7 +106,7 @@ int iwl_mld_ampdu_rx_stop(struct iwl_mld *mld, struct ieee80211_sta *sta,
- 
- enum iwl_mld_reorder_result
- iwl_mld_reorder(struct iwl_mld *mld, struct napi_struct *napi,
--		int queue, struct ieee80211_sta *sta,
-+		int queue, struct ieee80211_link_sta *link_sta,
- 		struct sk_buff *skb, struct iwl_rx_mpdu_desc *desc);
- 
- void iwl_mld_handle_frame_release_notif(struct iwl_mld *mld,
+---
+
+This is obviously incomplete. Though one can adjust drivers easily by
+passing sta->link[status->link_id] as that information has been
+prepared.
+---
+ drivers/net/wireless/intel/iwlwifi/mld/rx.c   |  7 +------
+ drivers/net/wireless/intel/iwlwifi/mvm/rx.c   |  2 +-
+ drivers/net/wireless/intel/iwlwifi/mvm/rxmq.c |  6 +++---
+ drivers/net/wireless/virtual/mac80211_hwsim.c |  3 ---
+ include/net/mac80211.h                        | 16 +++++++++++----
+ net/mac80211/rx.c                             | 20 ++++++++++++++-----
+ 6 files changed, 32 insertions(+), 22 deletions(-)
+
 diff --git a/drivers/net/wireless/intel/iwlwifi/mld/rx.c b/drivers/net/wireless/intel/iwlwifi/mld/rx.c
-index 214dcfde2fb4..de2feeb74009 100644
+index de2feeb74009..2a12ae412bfd 100644
 --- a/drivers/net/wireless/intel/iwlwifi/mld/rx.c
 +++ b/drivers/net/wireless/intel/iwlwifi/mld/rx.c
-@@ -48,7 +48,8 @@ iwl_mld_fill_phy_data_from_mpdu(struct iwl_mld *mld,
- }
- 
- static inline int iwl_mld_check_pn(struct iwl_mld *mld, struct sk_buff *skb,
--				   int queue, struct ieee80211_sta *sta)
-+				   int queue,
-+				   struct ieee80211_link_sta *link_sta)
- {
- 	struct ieee80211_hdr *hdr = (void *)skb_mac_header(skb);
- 	struct ieee80211_rx_status *stats = IEEE80211_SKB_RXCB(skb);
-@@ -72,13 +73,13 @@ static inline int iwl_mld_check_pn(struct iwl_mld *mld, struct sk_buff *skb,
- 		return 0;
- 
- 	/* if we are here - this for sure is either CCMP or GCMP */
--	if (!sta) {
-+	if (!link_sta) {
- 		IWL_DEBUG_DROP(mld,
- 			       "expected hw-decrypted unicast frame for station\n");
- 		return -1;
- 	}
- 
--	mld_sta = iwl_mld_sta_from_mac80211(sta);
-+	mld_sta = iwl_mld_sta_from_mac80211(link_sta->sta);
- 
- 	extiv = (u8 *)hdr + ieee80211_hdrlen(hdr->frame_control);
- 	keyidx = extiv[3] >> 6;
-@@ -120,17 +121,17 @@ static inline int iwl_mld_check_pn(struct iwl_mld *mld, struct sk_buff *skb,
- void iwl_mld_pass_packet_to_mac80211(struct iwl_mld *mld,
- 				     struct napi_struct *napi,
- 				     struct sk_buff *skb, int queue,
--				     struct ieee80211_sta *sta)
-+				     struct ieee80211_link_sta *link_sta)
- {
- 	KUNIT_STATIC_STUB_REDIRECT(iwl_mld_pass_packet_to_mac80211,
--				   mld, napi, skb, queue, sta);
-+				   mld, napi, skb, queue, link_sta);
- 
--	if (unlikely(iwl_mld_check_pn(mld, skb, queue, sta))) {
-+	if (unlikely(iwl_mld_check_pn(mld, skb, queue, link_sta))) {
- 		kfree_skb(skb);
+@@ -131,7 +131,7 @@ void iwl_mld_pass_packet_to_mac80211(struct iwl_mld *mld,
  		return;
  	}
  
--	ieee80211_rx_napi(mld->hw, sta, skb, napi);
-+	ieee80211_rx_napi(mld->hw, link_sta->sta, skb, napi);
+-	ieee80211_rx_napi(mld->hw, link_sta->sta, skb, napi);
++	ieee80211_rx_napi(mld->hw, link_sta, skb, napi);
  }
  EXPORT_SYMBOL_IF_IWLWIFI_KUNIT(iwl_mld_pass_packet_to_mac80211);
  
-@@ -1728,7 +1729,7 @@ static void iwl_mld_update_last_rx_timestamp(struct iwl_mld *mld, u8 baid)
-  * Sets *drop to true if the packet should be dropped.
-  * Returns the station if found, or NULL otherwise.
-  */
--static struct ieee80211_sta *
-+static struct ieee80211_link_sta *
- iwl_mld_rx_with_sta(struct iwl_mld *mld, struct ieee80211_hdr *hdr,
- 		    struct sk_buff *skb,
- 		    const struct iwl_rx_mpdu_desc *mpdu_desc,
-@@ -1803,10 +1804,10 @@ iwl_mld_rx_with_sta(struct iwl_mld *mld, struct ieee80211_hdr *hdr,
- 							    queue);
+@@ -1765,11 +1765,6 @@ iwl_mld_rx_with_sta(struct iwl_mld *mld, struct ieee80211_hdr *hdr,
+ 
+ 	rx_status = IEEE80211_SKB_RXCB(skb);
+ 
+-	if (link_sta && sta->valid_links) {
+-		rx_status->link_valid = true;
+-		rx_status->link_id = link_sta->link_id;
+-	}
+-
+ 	/* fill checksum */
+ 	if (ieee80211_is_data(hdr->frame_control) &&
+ 	    pkt->len_n_flags & cpu_to_le32(FH_RSCSR_RPA_EN)) {
+diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/rx.c b/drivers/net/wireless/intel/iwlwifi/mvm/rx.c
+index d0c0faae0122..a83bede06487 100644
+--- a/drivers/net/wireless/intel/iwlwifi/mvm/rx.c
++++ b/drivers/net/wireless/intel/iwlwifi/mvm/rx.c
+@@ -90,7 +90,7 @@ static void iwl_mvm_pass_packet_to_mac80211(struct iwl_mvm *mvm,
+ 				fraglen, rxb->truesize);
  	}
  
--	return sta;
-+	return link_sta;
+-	ieee80211_rx_napi(mvm->hw, sta, skb, napi);
++	ieee80211_rx_napi(mvm->hw, &sta->deflink, skb, napi);
  }
  
--static int iwl_mld_rx_mgmt_prot(struct ieee80211_sta *sta,
-+static int iwl_mld_rx_mgmt_prot(struct ieee80211_link_sta *link_sta,
- 				struct ieee80211_hdr *hdr,
- 				struct ieee80211_rx_status *rx_status,
- 				u32 mpdu_status,
-@@ -1820,7 +1821,6 @@ static int iwl_mld_rx_mgmt_prot(struct ieee80211_sta *sta,
- 	struct ieee80211_key_conf *key;
- 	const u8 *frame = (void *)hdr;
- 	const u8 *mmie;
--	u8 link_id;
- 
- 	if ((mpdu_status & IWL_RX_MPDU_STATUS_SEC_MASK) ==
- 	     IWL_RX_MPDU_STATUS_SEC_NONE)
-@@ -1836,10 +1836,10 @@ static int iwl_mld_rx_mgmt_prot(struct ieee80211_sta *sta,
- 	if (!ieee80211_is_beacon(hdr->frame_control))
- 		return 0;
- 
--	if (!sta)
-+	if (!link_sta)
- 		return -1;
- 
--	mld_sta = iwl_mld_sta_from_mac80211(sta);
-+	mld_sta = iwl_mld_sta_from_mac80211(link_sta->sta);
- 	mld_vif = iwl_mld_vif_from_mac80211(mld_sta->vif);
- 
- 	/* key mismatch - will also report !MIC_OK but we shouldn't count it */
-@@ -1853,8 +1853,7 @@ static int iwl_mld_rx_mgmt_prot(struct ieee80211_sta *sta,
- 		return 0;
- 	}
- 
--	link_id = rx_status->link_valid ? rx_status->link_id : 0;
--	link = rcu_dereference(mld_vif->link[link_id]);
-+	link = rcu_dereference(mld_vif->link[link_sta->link_id]);
- 	if (WARN_ON_ONCE(!link))
- 		return -1;
- 
-@@ -1905,7 +1904,7 @@ static int iwl_mld_rx_mgmt_prot(struct ieee80211_sta *sta,
- }
- 
- static int iwl_mld_rx_crypto(struct iwl_mld *mld,
--			     struct ieee80211_sta *sta,
-+			     struct ieee80211_link_sta *link_sta,
- 			     struct ieee80211_hdr *hdr,
- 			     struct ieee80211_rx_status *rx_status,
- 			     struct iwl_rx_mpdu_desc *desc, int queue,
-@@ -1915,7 +1914,7 @@ static int iwl_mld_rx_crypto(struct iwl_mld *mld,
- 
- 	if (unlikely(ieee80211_is_mgmt(hdr->frame_control) &&
- 		     !ieee80211_has_protected(hdr->frame_control)))
--		return iwl_mld_rx_mgmt_prot(sta, hdr, rx_status, status,
-+		return iwl_mld_rx_mgmt_prot(link_sta, hdr, rx_status, status,
- 					    le16_to_cpu(desc->mpdu_len));
- 
- 	if (!ieee80211_has_protected(hdr->frame_control) ||
-@@ -2023,7 +2022,7 @@ void iwl_mld_rx_mpdu(struct iwl_mld *mld, struct napi_struct *napi,
- 	struct iwl_rx_packet *pkt = rxb_addr(rxb);
- 	struct iwl_mld_rx_phy_data phy_data = {};
- 	struct iwl_rx_mpdu_desc *mpdu_desc = (void *)pkt->data;
--	struct ieee80211_sta *sta;
-+	struct ieee80211_link_sta *link_sta;
- 	struct ieee80211_hdr *hdr;
- 	struct sk_buff *skb;
- 	size_t mpdu_desc_size = sizeof(*mpdu_desc);
-@@ -2086,7 +2085,8 @@ void iwl_mld_rx_mpdu(struct iwl_mld *mld, struct napi_struct *napi,
- 
- 	rcu_read_lock();
- 
--	sta = iwl_mld_rx_with_sta(mld, hdr, skb, mpdu_desc, pkt, queue, &drop);
-+	link_sta = iwl_mld_rx_with_sta(mld, hdr, skb, mpdu_desc, pkt, queue,
-+				       &drop);
- 	if (drop)
- 		goto drop;
- 
-@@ -2127,7 +2127,7 @@ void iwl_mld_rx_mpdu(struct iwl_mld *mld, struct napi_struct *napi,
- 
- 	iwl_mld_rx_fill_status(mld, link_id, hdr, skb, &phy_data);
- 
--	if (iwl_mld_rx_crypto(mld, sta, hdr, rx_status, mpdu_desc, queue,
-+	if (iwl_mld_rx_crypto(mld, link_sta, hdr, rx_status, mpdu_desc, queue,
- 			      le32_to_cpu(pkt->len_n_flags), &crypto_len))
- 		goto drop;
- 
-@@ -2140,7 +2140,8 @@ void iwl_mld_rx_mpdu(struct iwl_mld *mld, struct napi_struct *napi,
- 	if (iwl_mld_time_sync_frame(mld, skb, hdr->addr2))
- 		goto out;
- 
--	reorder_res = iwl_mld_reorder(mld, napi, queue, sta, skb, mpdu_desc);
-+	reorder_res = iwl_mld_reorder(mld, napi, queue, link_sta, skb,
-+				      mpdu_desc);
- 	switch (reorder_res) {
- 	case IWL_MLD_PASS_SKB:
- 		break;
-@@ -2153,7 +2154,7 @@ void iwl_mld_rx_mpdu(struct iwl_mld *mld, struct napi_struct *napi,
- 		goto drop;
- 	}
- 
--	iwl_mld_pass_packet_to_mac80211(mld, napi, skb, queue, sta);
-+	iwl_mld_pass_packet_to_mac80211(mld, napi, skb, queue, link_sta);
- 
- 	goto out;
- 
-diff --git a/drivers/net/wireless/intel/iwlwifi/mld/rx.h b/drivers/net/wireless/intel/iwlwifi/mld/rx.h
-index 09dddbd40f55..a54f1a6146ee 100644
---- a/drivers/net/wireless/intel/iwlwifi/mld/rx.h
-+++ b/drivers/net/wireless/intel/iwlwifi/mld/rx.h
-@@ -64,7 +64,7 @@ void iwl_mld_handle_rx_queues_sync_notif(struct iwl_mld *mld,
- void iwl_mld_pass_packet_to_mac80211(struct iwl_mld *mld,
- 				     struct napi_struct *napi,
- 				     struct sk_buff *skb, int queue,
--				     struct ieee80211_sta *sta);
-+				     struct ieee80211_link_sta *link_sta);
- 
- void iwl_mld_handle_phy_air_sniffer_notif(struct iwl_mld *mld,
- 					  struct napi_struct *napi,
-diff --git a/drivers/net/wireless/intel/iwlwifi/mld/tests/agg.c b/drivers/net/wireless/intel/iwlwifi/mld/tests/agg.c
-index 29b0248cec3d..e9efe2996f07 100644
---- a/drivers/net/wireless/intel/iwlwifi/mld/tests/agg.c
-+++ b/drivers/net/wireless/intel/iwlwifi/mld/tests/agg.c
-@@ -2,7 +2,7 @@
  /*
-  * KUnit tests for channel helper functions
-  *
-- * Copyright (C) 2024-2025 Intel Corporation
-+ * Copyright (C) 2024-2026 Intel Corporation
+diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/rxmq.c b/drivers/net/wireless/intel/iwlwifi/mvm/rxmq.c
+index 7f0b4f5daa21..fe5a2d0a798b 100644
+--- a/drivers/net/wireless/intel/iwlwifi/mvm/rxmq.c
++++ b/drivers/net/wireless/intel/iwlwifi/mvm/rxmq.c
+@@ -1,6 +1,6 @@
+ // SPDX-License-Identifier: GPL-2.0 OR BSD-3-Clause
+ /*
+- * Copyright (C) 2012-2014, 2018-2025 Intel Corporation
++ * Copyright (C) 2012-2014, 2018-2026 Intel Corporation
+  * Copyright (C) 2013-2015 Intel Mobile Communications GmbH
+  * Copyright (C) 2015-2017 Intel Deutschland GmbH
   */
- #include <kunit/test.h>
- #include <kunit/static_stub.h>
-@@ -441,7 +441,7 @@ static void
- fake_iwl_mld_pass_packet_to_mac80211(struct iwl_mld *mld,
- 				     struct napi_struct *napi,
- 				     struct sk_buff *skb, int queue,
--				     struct ieee80211_sta *sta)
-+				     struct ieee80211_link_sta *link_sta)
- {
- 	__skb_queue_tail(&g_released_skbs, skb);
- 	g_num_released_skbs++;
-@@ -630,7 +630,8 @@ static void test_reorder_buffer(struct kunit *test)
- 	mpdu_desc = setup_mpdu_desc();
+@@ -243,7 +243,7 @@ static void iwl_mvm_pass_packet_to_mac80211(struct iwl_mvm *mvm,
+ 		return;
+ 	}
+ 
+-	ieee80211_rx_napi(mvm->hw, sta, skb, napi);
++	ieee80211_rx_napi(mvm->hw, &sta->deflink, skb, napi);
+ }
+ 
+ static bool iwl_mvm_used_average_energy(struct iwl_mvm *mvm,
+@@ -2528,7 +2528,7 @@ void iwl_mvm_rx_monitor_no_data(struct iwl_mvm *mvm, struct napi_struct *napi,
+ 	}
  
  	rcu_read_lock();
--	reorder_res = iwl_mld_reorder(mld, NULL, QUEUE, sta, skb, mpdu_desc);
-+	reorder_res = iwl_mld_reorder(mld, NULL, QUEUE, &sta->deflink, skb,
-+				      mpdu_desc);
+-	ieee80211_rx_napi(mvm->hw, sta, skb, napi);
++	ieee80211_rx_napi(mvm->hw, &sta->deflink, skb, napi);
+ 	rcu_read_unlock();
+ }
+ 
+diff --git a/drivers/net/wireless/virtual/mac80211_hwsim.c b/drivers/net/wireless/virtual/mac80211_hwsim.c
+index 4d9f5f87e814..7d529aa129f8 100644
+--- a/drivers/net/wireless/virtual/mac80211_hwsim.c
++++ b/drivers/net/wireless/virtual/mac80211_hwsim.c
+@@ -1755,9 +1755,6 @@ static void mac80211_hwsim_rx(struct mac80211_hwsim_data *data,
+ 				sp->active_links_rx &= ~BIT(link_id);
+ 			else
+ 				sp->active_links_rx |= BIT(link_id);
+-
+-			rx_status->link_valid = true;
+-			rx_status->link_id = link_id;
+ 		}
+ 		rcu_read_unlock();
+ 	}
+diff --git a/include/net/mac80211.h b/include/net/mac80211.h
+index 7f9d96939a4e..4d9dbd35369b 100644
+--- a/include/net/mac80211.h
++++ b/include/net/mac80211.h
+@@ -5207,14 +5207,18 @@ void ieee80211_restart_hw(struct ieee80211_hw *hw);
+  * mixed for a single hardware. Must not run concurrently with
+  * ieee80211_tx_status_skb() or ieee80211_tx_status_ni().
+  *
++ * For data frames, when hardware has done address translation, a link station
++ * has to be provided and the frequency information may be skipped.
++ *
+  * This function must be called with BHs disabled and RCU read lock
+  *
+  * @hw: the hardware this frame came in on
+- * @sta: the station the frame was received from, or %NULL
++ * @link_sta: the link station the data frame was received from, or %NULL
+  * @skb: the buffer to receive, owned by mac80211 after this call
+  * @list: the destination list
+  */
+-void ieee80211_rx_list(struct ieee80211_hw *hw, struct ieee80211_sta *sta,
++void ieee80211_rx_list(struct ieee80211_hw *hw,
++		       struct ieee80211_link_sta *link_sta,
+ 		       struct sk_buff *skb, struct list_head *list);
+ 
+ /**
+@@ -5232,14 +5236,18 @@ void ieee80211_rx_list(struct ieee80211_hw *hw, struct ieee80211_sta *sta,
+  * mixed for a single hardware. Must not run concurrently with
+  * ieee80211_tx_status_skb() or ieee80211_tx_status_ni().
+  *
++ * For data frames, when hardware has done address translation, a link station
++ * has to be provided and the frequency information may be skipped.
++ *
+  * This function must be called with BHs disabled.
+  *
+  * @hw: the hardware this frame came in on
+- * @sta: the station the frame was received from, or %NULL
++ * @link_sta: the link station the data frame was received from, or %NULL
+  * @skb: the buffer to receive, owned by mac80211 after this call
+  * @napi: the NAPI context
+  */
+-void ieee80211_rx_napi(struct ieee80211_hw *hw, struct ieee80211_sta *sta,
++void ieee80211_rx_napi(struct ieee80211_hw *hw,
++		       struct ieee80211_link_sta *link_sta,
+ 		       struct sk_buff *skb, struct napi_struct *napi);
+ 
+ /**
+diff --git a/net/mac80211/rx.c b/net/mac80211/rx.c
+index 11d6c56c9d7e..4098f63ec824 100644
+--- a/net/mac80211/rx.c
++++ b/net/mac80211/rx.c
+@@ -5432,7 +5432,8 @@ static void __ieee80211_rx_handle_packet(struct ieee80211_hw *hw,
+  * This is the receive path handler. It is called by a low level driver when an
+  * 802.11 MPDU is received from the hardware.
+  */
+-void ieee80211_rx_list(struct ieee80211_hw *hw, struct ieee80211_sta *pubsta,
++void ieee80211_rx_list(struct ieee80211_hw *hw,
++		       struct ieee80211_link_sta *link_pubsta,
+ 		       struct sk_buff *skb, struct list_head *list)
+ {
+ 	struct ieee80211_local *local = hw_to_local(hw);
+@@ -5440,6 +5441,7 @@ void ieee80211_rx_list(struct ieee80211_hw *hw, struct ieee80211_sta *pubsta,
+ 	struct ieee80211_supported_band *sband;
+ 	struct ieee80211_rx_status *status = IEEE80211_SKB_RXCB(skb);
+ 	struct ieee80211_hdr *hdr = (struct ieee80211_hdr *)skb->data;
++	struct ieee80211_sta *pubsta;
+ 
+ 	WARN_ON_ONCE(softirq_count() == 0);
+ 
+@@ -5562,8 +5564,15 @@ void ieee80211_rx_list(struct ieee80211_hw *hw, struct ieee80211_sta *pubsta,
+ 		}
+ 	}
+ 
+-	if (WARN_ON_ONCE(status->link_id >= IEEE80211_LINK_UNSPECIFIED))
+-		goto drop;
++	/* FIXME: Emulate the old driver behaviour for now */
++	if (link_pubsta) {
++		status->link_valid = 1;
++		status->link_id = link_pubsta->link_id;
++		pubsta = link_pubsta->sta;
++	} else {
++		status->link_valid = 0;
++		pubsta = NULL;
++	}
+ 
+ 	status->rx_flags = 0;
+ 
+@@ -5595,7 +5604,8 @@ void ieee80211_rx_list(struct ieee80211_hw *hw, struct ieee80211_sta *pubsta,
+ }
+ EXPORT_SYMBOL(ieee80211_rx_list);
+ 
+-void ieee80211_rx_napi(struct ieee80211_hw *hw, struct ieee80211_sta *pubsta,
++void ieee80211_rx_napi(struct ieee80211_hw *hw,
++		       struct ieee80211_link_sta *link_pubsta,
+ 		       struct sk_buff *skb, struct napi_struct *napi)
+ {
+ 	struct sk_buff *tmp;
+@@ -5608,7 +5618,7 @@ void ieee80211_rx_napi(struct ieee80211_hw *hw, struct ieee80211_sta *pubsta,
+ 	 * receive processing
+ 	 */
+ 	rcu_read_lock();
+-	ieee80211_rx_list(hw, pubsta, skb, &list);
++	ieee80211_rx_list(hw, link_pubsta, skb, &list);
  	rcu_read_unlock();
  
- 	KUNIT_ASSERT_EQ(test, reorder_res, param->expected.reorder_res);
+ 	if (!napi) {
 -- 
 2.53.0
 
