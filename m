@@ -1,144 +1,160 @@
-Return-Path: <linux-wireless+bounces-32050-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-32072-lists+linux-wireless=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id /hzoHdQtmGkNCQMAu9opvQ
-	(envelope-from <linux-wireless+bounces-32050-lists+linux-wireless=lfdr.de@vger.kernel.org>)
-	for <lists+linux-wireless@lfdr.de>; Fri, 20 Feb 2026 10:48:04 +0100
+	id kBMfC10CmWkVPAMAu9opvQ
+	(envelope-from <linux-wireless+bounces-32072-lists+linux-wireless=lfdr.de@vger.kernel.org>)
+	for <lists+linux-wireless@lfdr.de>; Sat, 21 Feb 2026 01:54:53 +0100
 X-Original-To: lists+linux-wireless@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8F146166673
-	for <lists+linux-wireless@lfdr.de>; Fri, 20 Feb 2026 10:48:03 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 13C4916B9F4
+	for <lists+linux-wireless@lfdr.de>; Sat, 21 Feb 2026 01:54:51 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id EF52130074CC
-	for <lists+linux-wireless@lfdr.de>; Fri, 20 Feb 2026 09:48:00 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id BB5E2302EE87
+	for <lists+linux-wireless@lfdr.de>; Sat, 21 Feb 2026 00:54:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3E897314B91;
-	Fri, 20 Feb 2026 09:47:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8E10430FF20;
+	Sat, 21 Feb 2026 00:54:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=ispras.ru header.i=@ispras.ru header.b="khMD/SJz"
+	dkim=fail reason="signature verification failed" (2048-bit key) header.d=embeddedor.com header.i=@embeddedor.com header.b="e6k1me0I"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail.ispras.ru (mail.ispras.ru [83.149.199.84])
-	(using TLSv1.2 with cipher DHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from omta34.uswest2.a.cloudfilter.net (omta34.uswest2.a.cloudfilter.net [35.89.44.33])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 95CAF2BD030;
-	Fri, 20 Feb 2026 09:47:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=83.149.199.84
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 63F2B2BD01B
+	for <linux-wireless@vger.kernel.org>; Sat, 21 Feb 2026 00:54:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=35.89.44.33
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771580879; cv=none; b=pMg6VBXPq+MzIJxRRCjnCIQbw47hSTPws93knMYLY8ZOfCGL1c+ZptnI97NufIoX4Dm0edu8sfSaybhca0hGIkof07lQuv9cgQIuYx81c/5yzkFHVxy9ImdEGUvTySQ0Xi5JTyAsVEC2f4XuE2tN8yIwT8erYruotIxDG+BCG7I=
+	t=1771635288; cv=none; b=QrqCpEOaXf1TcWURIqapVBRVwm8vQ+jHjJ9fsNMniQ32LFb4WPQ/1t14CfaM6JiHRq2xzTfH3JNAQXpmcDz9fPacZ4fvgfHRCoQ7Gp49x4XIVowMUxD0JcE6n0IXQySZgIsRZ5+Wzfl1d05FJ6wl6kJFyzTqibxh1SealwYQovI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771580879; c=relaxed/simple;
-	bh=LDXix9PN0IinDABVv8UkHXsICzMk77zfNM7DbdoMYVA=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=qKfaDRhoW3GkB4hAvK++LBIZC4LwPUFg81F2+LwtOKQt0PeN7GKcNTZnF79AmOWhrcsAvwPUMOnKmJALDkpB+CvCx1PFqAS9VXp0SMgypNclhfh8JG5bKNdJXA5cA0foXDxI1+nx73h+kgye0tF8/2ppyCr+g3eMMp/yR3bGops=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ispras.ru; spf=pass smtp.mailfrom=ispras.ru; dkim=pass (1024-bit key) header.d=ispras.ru header.i=@ispras.ru header.b=khMD/SJz; arc=none smtp.client-ip=83.149.199.84
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ispras.ru
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ispras.ru
-Received: from debian.lan (unknown [79.139.245.7])
-	by mail.ispras.ru (Postfix) with ESMTPSA id 746B440ACE0A;
-	Fri, 20 Feb 2026 09:47:47 +0000 (UTC)
-DKIM-Filter: OpenDKIM Filter v2.11.0 mail.ispras.ru 746B440ACE0A
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ispras.ru;
-	s=default; t=1771580867;
-	bh=uv2nVANfS7S6tqJoCX4h4dxXBtr6Gdnxmxsiz6IGxtc=;
-	h=From:To:Cc:Subject:Date:From;
-	b=khMD/SJz+Y3W9A/u4yhh7yzz9jtxXADq4YgWLZxModnOdqATzkUfjev/6O61BdveO
-	 MNIEwvSDKyUCCJSFVAovu9GAwxbWqDr8huV/SzUELfPY5J8nbPSsiDaqkRwm5tmpB2
-	 kcb/SZNT1hxyECrplJI0qjy8w506FZ2LIo4582jE=
-From: Fedor Pchelkin <pchelkin@ispras.ru>
-To: Ping-Ke Shih <pkshih@realtek.com>
-Cc: Fedor Pchelkin <pchelkin@ispras.ru>,
-	Jian-Hong Pan <jhp@endlessos.org>,
-	Kalle Valo <kvalo@kernel.org>,
-	Kai-Heng Feng <kai.heng.feng@canonical.com>,
-	linux-wireless@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Bitterblue Smith <rtl8821cerfe2@gmail.com>,
-	Dmitry Antipov <dmantipov@yandex.ru>,
-	lvc-project@linuxtesting.org,
-	stable@vger.kernel.org
-Subject: [PATCH rtw-next] wifi: rtw88: check for PCI upstream bridge existence
-Date: Fri, 20 Feb 2026 12:47:30 +0300
-Message-ID: <20260220094730.49791-1-pchelkin@ispras.ru>
-X-Mailer: git-send-email 2.51.0
+	s=arc-20240116; t=1771635288; c=relaxed/simple;
+	bh=Rk1vOl7cC1QEB1mXWViEHcEX7NFIEaRG3DmtgoZjEG0=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=snlVwbNZCEO2G9DIUQj1u8WlpgNgbCfYvfYfJLgJESQwajOZrkIn9kR/ld1vFGm+6/dmloW+kuFkAr0fYJ4Eq55WeRTWnC+OarRK9s08vKPznFd1JoOuQR/KnsNMfGpX52Ln0CbozgH/GGp5ezoppKGL1ZNBsuAlBzLeK3VTku8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=embeddedor.com; spf=pass smtp.mailfrom=embeddedor.com; dkim=pass (2048-bit key) header.d=embeddedor.com header.i=@embeddedor.com header.b=e6k1me0I; arc=none smtp.client-ip=35.89.44.33
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=embeddedor.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=embeddedor.com
+Received: from eig-obgw-5002b.ext.cloudfilter.net ([10.0.29.226])
+	by cmsmtp with ESMTPS
+	id tZTevPBr3KjfotbGbv9Mby; Sat, 21 Feb 2026 00:54:41 +0000
+Received: from gator4166.hostgator.com ([108.167.133.22])
+	by cmsmtp with ESMTPS
+	id tbGZvNDBbN3K1tbGavnh5a; Sat, 21 Feb 2026 00:54:40 +0000
+X-Authority-Analysis: v=2.4 cv=UdRRSLSN c=1 sm=1 tr=0 ts=69990250
+ a=1YbLdUo/zbTtOZ3uB5T3HA==:117 a=k5Y5iPg+dmTXVWgYE/XtfQ==:17
+ a=IkcTkHD0fZMA:10 a=HzLeVaNsDn8A:10 a=7T7KSl7uo7wA:10
+ a=D3g81HRkPwipA-K-4bMA:9 a=QEXdDO2ut3YA:10 a=2aFnImwKRvkU0tJ3nQRT:22
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=embeddedor.com; s=default; h=Content-Transfer-Encoding:Content-Type:
+	In-Reply-To:From:References:Cc:To:Subject:MIME-Version:Date:Message-ID:Sender
+	:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
+	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:
+	List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
+	bh=7ZekGKnfsHBBe6ha8psPApNc9SjZR4naB0905oyMxRY=; b=e6k1me0IUQrERP0YsnlawDeJFG
+	3g2lhHhnedv5tOyXiIXkTctx70gn+tT8chxHXlmdSsiNcPpOqRcnLfik9q/N8PDGvM2mzhh6ShsGl
+	EAA26zeX/jZ33n2xyxmmAs1Xcz34b2WqgW35qHI5aHLd2YjFyvlkoA7nbnNkWnFEL8Wadej8FZIcj
+	olCj1c6ajxbXgKX68vIlDUUACMFZ/pAgTLOJTKoxZ1d+6JFp9CNuY7xiFlZr+h4h+x89jn56GWjbR
+	qANs7jGtILQGe9gbnWliph+uSkAGQATHuD8UNj5bsUvI8YNCj/m5pP0F6tK/nRSfx1bjKI/7dKYPO
+	PXLtaSPw==;
+Received: from [177.238.16.13] (port=54430 helo=[192.168.0.104])
+	by gator4166.hostgator.com with esmtpsa  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256
+	(Exim 4.99.1)
+	(envelope-from <gustavo@embeddedor.com>)
+	id 1vtbGZ-00000002WIs-1ffu;
+	Fri, 20 Feb 2026 18:54:39 -0600
+Message-ID: <161c2bda-7511-4a39-b600-8bc8788c6782@embeddedor.com>
+Date: Fri, 20 Feb 2026 18:54:03 +0900
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2][next] wifi: ath6kl: wmi: Avoid
+ -Wflex-array-member-not-at-end warning
+To: Jeff Johnson <jeff.johnson@oss.qualcomm.com>,
+ "Gustavo A. R. Silva" <gustavoars@kernel.org>
+Cc: linux-wireless@vger.kernel.org, linux-kernel@vger.kernel.org,
+ linux-hardening@vger.kernel.org
+References: <aZP4RI-uN2001cBh@kspp>
+ <d2a02b4c-5f69-4f5e-bc0e-428b64e99d36@oss.qualcomm.com>
+ <6305fbc7-8210-4f4d-b719-30ba038611af@embeddedor.com>
+ <c2060e50-0e36-422f-bfe3-44a81fb96c59@oss.qualcomm.com>
+Content-Language: en-US
+From: "Gustavo A. R. Silva" <gustavo@embeddedor.com>
+In-Reply-To: <c2060e50-0e36-422f-bfe3-44a81fb96c59@oss.qualcomm.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
+X-AntiAbuse: Primary Hostname - gator4166.hostgator.com
+X-AntiAbuse: Original Domain - vger.kernel.org
+X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
+X-AntiAbuse: Sender Address Domain - embeddedor.com
+X-BWhitelist: no
+X-Source-IP: 177.238.16.13
+X-Source-L: No
+X-Exim-ID: 1vtbGZ-00000002WIs-1ffu
+X-Source: 
+X-Source-Args: 
+X-Source-Dir: 
+X-Source-Sender: ([192.168.0.104]) [177.238.16.13]:54430
+X-Source-Auth: gustavo@embeddedor.com
+X-Email-Count: 3
+X-Org: HG=hgshared;ORG=hostgator;
+X-Source-Cap: Z3V6aWRpbmU7Z3V6aWRpbmU7Z2F0b3I0MTY2Lmhvc3RnYXRvci5jb20=
+X-Local-Domain: yes
+X-CMAE-Envelope: MS4xfOk1DI4XMMBAIJDtgnytZ4E2uEKh4IQYG1OgBleEX6XzctyxnNP1L4/m+Js6KQPeooeH2FvGL6z2hUMHn7j3KIB/unoWie4bdlMNjVGoLOuN4ZOb22X3
+ Go5phxL8RS8cbm4VZ+1gewL9wgA0Dr9HQNYtfFSr1HiB0mdoa8cLxH0CGvr9gZU3zt7WkdvXCq9AKXAyh7akeG8o85ze6IjFp5SAeyEKZf25LQ+26une1nIn
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.66 / 15.00];
+X-Spamd-Result: default: False [-0.46 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MID_CONTAINS_FROM(1.00)[];
-	R_MISSING_CHARSET(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[ispras.ru,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
-	R_DKIM_ALLOW(-0.20)[ispras.ru:s=default];
+	R_DKIM_REJECT(1.00)[embeddedor.com:s=default];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	FREEMAIL_CC(0.00)[ispras.ru,endlessos.org,kernel.org,canonical.com,vger.kernel.org,gmail.com,yandex.ru,linuxtesting.org];
-	RCVD_COUNT_THREE(0.00)[4];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-32050-lists,linux-wireless=lfdr.de];
-	DKIM_TRACE(0.00)[ispras.ru:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
-	TO_DN_SOME(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[pchelkin@ispras.ru,linux-wireless@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	TAGGED_FROM(0.00)[bounces-32072-lists,linux-wireless=lfdr.de];
+	DMARC_NA(0.00)[embeddedor.com];
+	HAS_X_SOURCE(0.00)[];
+	TO_DN_SOME(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[embeddedor.com:-];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	RCPT_COUNT_FIVE(0.00)[5];
+	RCVD_COUNT_FIVE(0.00)[6];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gustavo@embeddedor.com,linux-wireless@vger.kernel.org];
+	HAS_X_ANTIABUSE(0.00)[];
+	NEURAL_HAM(-0.00)[-0.996];
 	TAGGED_RCPT(0.00)[linux-wireless];
-	RCPT_COUNT_SEVEN(0.00)[11];
+	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 8F146166673
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,embeddedor.com:mid]
+X-Rspamd-Queue-Id: 13C4916B9F4
 X-Rspamd-Action: no action
 
-pci_upstream_bridge() returns NULL if the device is on a root bus.  If
-8821CE is installed in the system with such a PCI topology, the probing
-routine will crash.  This has probably been unnoticed as 8821CE is mostly
-supplied in laptops where there is a PCI-to-PCI bridge located upstream
-from the device.  However the card might be installed on a system with
-different configuration.
+[..]
 
-Check if the bridge does exist for the specific workaround to be applied.
+> yes, it defines a hardware interface. But note the 'info' is a union, and each
+> member of the union is there to support a specific value of roam_ctrl. And
+> since the WMI_SET_HOST_BIAS roam_ctrl is not used, the only important thing to
+> consider with your patch is that the location of the roam_ctrl field must not
+> change, and hence the size of union info must not change.
+> 
 
-Found by Linux Verification Center (linuxtesting.org) with Svace static
-analysis tool.
+[..]
 
-Fixes: 24f5e38a13b5 ("rtw88: Disable PCIe ASPM while doing NAPI poll on 8821CE")
-Cc: stable@vger.kernel.org
-Signed-off-by: Fedor Pchelkin <pchelkin@ispras.ru>
----
+> So the size of the message and the location of roam_ctrl is unchanged.
 
-I don't have 8821CE but 8822CE instead and I've been able to reproduce the
-NULL bridge pointer dereference with rtwdev->chip->id manually adjusted in
-the workaround.  Wifi devices happen to be located on a root bus in most
-of the systems I have access to.
+Perfect! With that confirmation, I can proceed with v3. :)
 
- drivers/net/wireless/realtek/rtw88/pci.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+Thanks!
+-Gustavo
 
-diff --git a/drivers/net/wireless/realtek/rtw88/pci.c b/drivers/net/wireless/realtek/rtw88/pci.c
-index 56b16186d3aa..ec0a45bfb670 100644
---- a/drivers/net/wireless/realtek/rtw88/pci.c
-+++ b/drivers/net/wireless/realtek/rtw88/pci.c
-@@ -1804,7 +1804,8 @@ int rtw_pci_probe(struct pci_dev *pdev,
- 	}
- 
- 	/* Disable PCIe ASPM L1 while doing NAPI poll for 8821CE */
--	if (rtwdev->chip->id == RTW_CHIP_TYPE_8821C && bridge->vendor == PCI_VENDOR_ID_INTEL)
-+	if (rtwdev->chip->id == RTW_CHIP_TYPE_8821C &&
-+	    bridge && bridge->vendor == PCI_VENDOR_ID_INTEL)
- 		rtwpci->rx_no_aspm = true;
- 
- 	rtw_pci_phy_cfg(rtwdev);
--- 
-2.51.0
 
 
