@@ -1,66 +1,52 @@
-Return-Path: <linux-wireless+bounces-32051-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-32052-lists+linux-wireless=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id aNh0J4IwmGkzCQMAu9opvQ
-	(envelope-from <linux-wireless+bounces-32051-lists+linux-wireless=lfdr.de@vger.kernel.org>)
-	for <lists+linux-wireless@lfdr.de>; Fri, 20 Feb 2026 10:59:30 +0100
+	id yGOzBzU1mGn/CgMAu9opvQ
+	(envelope-from <linux-wireless+bounces-32052-lists+linux-wireless=lfdr.de@vger.kernel.org>)
+	for <lists+linux-wireless@lfdr.de>; Fri, 20 Feb 2026 11:19:33 +0100
 X-Original-To: lists+linux-wireless@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id EEE841668F7
-	for <lists+linux-wireless@lfdr.de>; Fri, 20 Feb 2026 10:59:29 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 93E57166C6D
+	for <lists+linux-wireless@lfdr.de>; Fri, 20 Feb 2026 11:19:32 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id D4DB130413B8
-	for <lists+linux-wireless@lfdr.de>; Fri, 20 Feb 2026 09:55:30 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 819883032DF1
+	for <lists+linux-wireless@lfdr.de>; Fri, 20 Feb 2026 10:19:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 051C6331A66;
-	Fri, 20 Feb 2026 09:55:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0037830DD1F;
+	Fri, 20 Feb 2026 10:19:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="iSG57pz/"
+	dkim=pass (2048-bit key) header.d=manjaro.org header.i=@manjaro.org header.b="iS+zoyC5"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
+Received: from mail1.manjaro.org (mail1.manjaro.org [142.132.176.110])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9C5763321B1
-	for <linux-wireless@vger.kernel.org>; Fri, 20 Feb 2026 09:55:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6E26915624B
+	for <linux-wireless@vger.kernel.org>; Fri, 20 Feb 2026 10:19:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=142.132.176.110
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771581329; cv=none; b=hB/KLn9HCwn9S4gyls9IsD7z3T3dQkma01BIP2HP2/GELj3VfJstyzGzaqMHVRm5cquWORle7BtQMjbIQlk0drcrn/WGNCKZYsyDHgf4lfWOgNa6aQ31soHa/P/qg2yCfHtpIDUy/gdBEs4cnRgmhlQwXl4GS8klZS5niME65pk=
+	t=1771582768; cv=none; b=t64i65GEgMRH8zAMLyI/kwPqcFiNpXWmdzMFJtyelthX41oeQzX8PdaCDNMydl0e0YEBrI1HMIxU3Cjc6W0SnVndBfICdknF+0FqExFnDE4vqvosKXvzP00lj7Ei+v3JIf5cG74ihW6pXdjZ7lD4Dcrm5Cg+iASg7I6mg1iZpFs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771581329; c=relaxed/simple;
-	bh=cX2LCR90B00mZLhrTMOcOqwJGyiigkkK2YYVMjvTluE=;
-	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
-	 In-Reply-To:Content-Type; b=idcPxxVH/rSzWecbAsuZC1kBV5ZlHpD4TroXYVshvyuM8zzJM3Wk/wtcwtmjbusPj6YEYQv00D4d6wVFooonXaeKb88ASzzSSTtT6eDeJTyAkVC6SsnvsaUpK+yQB/sXECxZMqYW94Wurclex3+SpjLd272MqJ+HFdmEsDq1gLM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=iSG57pz/; arc=none smtp.client-ip=205.220.180.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
-Received: from pps.filterd (m0279869.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 61K5RmYH3697705;
-	Fri, 20 Feb 2026 09:55:25 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
-	cc:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
-	JFygskVWcOk/FNfbcnCRmtfmSQU7zntYpcO68PJi84k=; b=iSG57pz/HT0xOiKX
-	HOETaPZfU/SS0ET13aa4g7ylQtJLtl1oiFpSR1dbLhpnpYh4YejRywPvddReuyOv
-	RoJ0Zx0g+iM9H+nUxWtH8TauubaU2TVXCwWni/a0SJ9JvT7QIoYq5IjbyQZsi4NS
-	coWQ2zQKPDnR+NndhrgQZ0hXvSan9XUIyQw8Xl4iH7Vnt/ylReejgwXL1vYi5VXS
-	TW4Q7/LkERIwpKASkFRGZ49r9b2Z1kXptxqX8bBKryzJcZ+IUG/dj9OAUs8iQ9Ng
-	p8ZucjZG4ltiQj9okHMsaMw9bE0mFXLB2uY2yfxaIiVURBkUDPVNGYTcQAAFjuqo
-	Tvn31g==
-Received: from nasanppmta03.qualcomm.com (i-global254.qualcomm.com [199.106.103.254])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4ceh5jgnp6-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Fri, 20 Feb 2026 09:55:25 +0000 (GMT)
-Received: from nasanex01a.na.qualcomm.com (nasanex01a.na.qualcomm.com [10.52.223.231])
-	by NASANPPMTA03.qualcomm.com (8.18.1.2/8.18.1.2) with ESMTPS id 61K9tO3Y027491
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Fri, 20 Feb 2026 09:55:24 GMT
-Received: from [10.152.205.141] (10.80.80.8) by nasanex01a.na.qualcomm.com
- (10.52.223.231) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.17; Fri, 20 Feb
- 2026 01:55:22 -0800
-Message-ID: <939f1f6a-ec52-4acf-8d8e-1ae81e2d9008@quicinc.com>
-Date: Fri, 20 Feb 2026 15:25:18 +0530
+	s=arc-20240116; t=1771582768; c=relaxed/simple;
+	bh=UnkpEkowG5e7Fdh9qGpydUmEnUzI9qD4clSZ2ZTDZ5k=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=N3d1J6LOOsdXaG6e7CoqYyNZgy09tNf3RbnL0TNFU0pA/i/Q/V+6p4Pi8FGzylH+Wrb2RdeoMGUo/nHZJeCgLwElrjGEehUuH2XLvrdY+ESaw3RpA4epBJwwFWyC0Xo1JNic2tc4jMgNVZg6NUyOvJx/L+p7tHMud2rvPBvw64A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=manjaro.org; spf=pass smtp.mailfrom=manjaro.org; dkim=pass (2048-bit key) header.d=manjaro.org header.i=@manjaro.org header.b=iS+zoyC5; arc=none smtp.client-ip=142.132.176.110
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=manjaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=manjaro.org
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 8875C41F93;
+	Fri, 20 Feb 2026 11:09:34 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=manjaro.org; s=dkim;
+	t=1771582177; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	 content-transfer-encoding:content-language:in-reply-to:references;
+	bh=ZEnBQTzrEXfGRJZ0vwGdsn5LJQVzUrtWPfVR8wUTzHo=;
+	b=iS+zoyC5cE/li4csAMJpwWo/TAfqMWhlRJ6jl+TzPXKxZy8/ATYT2bBiJRsKhD4L+IrYR1
+	acFVUQQD9i2WFKqcem/0+89Vf4U42vF7PzJJGZXX+XeqJb9yfO8yYkK1y8O6NgqOlHrl23
+	7LLP3qi1LZRdAPBRkHn6E+Z2l+JX3CJfrE5WTaEg6dJ6xtz+0t/6TJoApcKVzh4+60LV+q
+	jzTgxdnVK7cNenVUIhtS5u8gt0NoIS3o4N29RXy+Lpsx5jYOMD+ECil8nVbZIz7/SFVftM
+	qnaqnrsrTjvQxsElPDKyofeafCNFAKo7fUc3K3u/0908NbXHj73xDXhu1nYf6Q==
+Message-ID: <39e814ff-2ea2-4984-9e8a-2902fef7c4bc@manjaro.org>
+Date: Fri, 20 Feb 2026 11:09:33 +0100
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
@@ -68,149 +54,102 @@ List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH ath-next v2] wifi: ath12k: add basic hwmon temperature
- reporting
-To: Jeff Johnson <jeff.johnson@oss.qualcomm.com>,
-        Maharaja Kennadyrajan
-	<maharaja.kennadyrajan@oss.qualcomm.com>,
-        <ath12k@lists.infradead.org>
-CC: <linux-wireless@vger.kernel.org>,
-        Aishwarya R
-	<aishwarya.r@oss.qualcomm.com>
-References: <20260219073440.19618-1-maharaja.kennadyrajan@oss.qualcomm.com>
- <6d8849c2-a58c-4aea-863f-6e4c335ea4cc@oss.qualcomm.com>
+Subject: Re: [PATCH 03/11] wifi: mt76: mt7921: handle MT7902 irq_map quirk
+ with mutable copy
+To: sean.wang@kernel.org, nbd@nbd.name, lorenzo.bianconi@redhat.com
+Cc: linux-wireless@vger.kernel.org, linux-mediatek@lists.infradead.org,
+ Sean Wang <sean.wang@mediatek.com>, Xiong Huang <xiong.huang@mediatek.com>
+References: <20260219004007.19733-1-sean.wang@kernel.org>
+ <20260219004007.19733-3-sean.wang@kernel.org>
 Content-Language: en-US
-From: Maharaja Kennadyrajan <quic_mkenna@quicinc.com>
-In-Reply-To: <6d8849c2-a58c-4aea-863f-6e4c335ea4cc@oss.qualcomm.com>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 8bit
-X-ClientProxiedBy: nasanex01a.na.qualcomm.com (10.52.223.231) To
- nasanex01a.na.qualcomm.com (10.52.223.231)
-X-QCInternal: smtphost
-X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
-X-Authority-Analysis: v=2.4 cv=Raedyltv c=1 sm=1 tr=0 ts=69982f8d cx=c_pps
- a=JYp8KDb2vCoCEuGobkYCKw==:117 a=JYp8KDb2vCoCEuGobkYCKw==:17
- a=GEpy-HfZoHoA:10 a=IkcTkHD0fZMA:10 a=HzLeVaNsDn8A:10
- a=VkNPw1HP01LnGYTKEx00:22 a=Mpw57Om8IfrbqaoTuvik:22 a=GgsMoib0sEa3-_RKJdDe:22
- a=Mp5vFCwjDu8Sjic8cMYA:9 a=3ZKOabzyN94A:10 a=QEXdDO2ut3YA:10
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwMjIwMDA4NiBTYWx0ZWRfX1B7REW+zeAIo
- oAc0tK6QTelgoybMasalmhx6dkodDVqALRZqMh4QLNv8fRajX53Hs22WHZEXkKA16/VKs40IEUk
- 3RBLly1zLoe661tUoTA+p284enzEyBr2qMhakO3BY5zoqVpZt65HriSmTD0eDMr+XAUskqWKXj3
- m5AY3KCGw7zfiI7q5SmF1yLZjDCO533cdZljQgWyDONKSJ2cbm4t0J9VuSluBWyItOcS0p7CmFj
- 7VpkWeao9y16KQwF85HGhoxFLHcS+0NFOvSFRiBBA7S8f9XuZ5wb5U4xA6Tvjxfrfq4QiAtrk+N
- uivaxv9vrViTdEbq6A+KptYFpw9ftCYnxm1v3CT0hIl8kzvi+i6MDD6zniv7dkJ5KDPduHJyCkj
- rVNfMoSNeM6aMcthk4srbJEmJbuwy/QYwp57MtTp6n1uvceE2UY1+C2ELIxtuL8CIOtJUFyL8YU
- 0uIcc+gNFzYlZwl3uQQ==
-X-Proofpoint-GUID: 1vBHfxwsVif1HQ5bW1hl6LPvE3EyxOSP
-X-Proofpoint-ORIG-GUID: 1vBHfxwsVif1HQ5bW1hl6LPvE3EyxOSP
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.51,FMLib:17.12.100.49
- definitions=2026-02-20_01,2026-02-20_02,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- priorityscore=1501 lowpriorityscore=0 spamscore=0 phishscore=0 bulkscore=0
- clxscore=1015 suspectscore=0 impostorscore=0 malwarescore=0 adultscore=0
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.22.0-2601150000 definitions=main-2602200086
+From: =?UTF-8?Q?Philip_M=C3=BCller?= <philm@manjaro.org>
+Organization: Manjaro Community
+In-Reply-To: <20260219004007.19733-3-sean.wang@kernel.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Last-TLS-Session-Version: TLSv1.3
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[quicinc.com,none];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
-	R_DKIM_ALLOW(-0.20)[quicinc.com:s=qcppdkim1];
+	DMARC_POLICY_ALLOW(-0.50)[manjaro.org,quarantine];
+	R_DKIM_ALLOW(-0.20)[manjaro.org:s=dkim];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	TO_DN_SOME(0.00)[];
-	TAGGED_FROM(0.00)[bounces-32051-lists,linux-wireless=lfdr.de];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	DKIM_TRACE(0.00)[quicinc.com:+];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,quicinc.com:mid,quicinc.com:dkim];
-	RCPT_COUNT_FIVE(0.00)[5];
-	FROM_NEQ_ENVFROM(0.00)[quic_mkenna@quicinc.com,linux-wireless@vger.kernel.org];
+	TAGGED_FROM(0.00)[bounces-32052-lists,linux-wireless=lfdr.de];
+	RECEIVED_HELO_LOCALHOST(0.00)[];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	HAS_ORG_HEADER(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	TO_DN_SOME(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[manjaro.org:+];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
 	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[philm@manjaro.org,linux-wireless@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-0.999];
 	TAGGED_RCPT(0.00)[linux-wireless];
-	RCVD_COUNT_SEVEN(0.00)[7]
-X-Rspamd-Queue-Id: EEE841668F7
+	RCPT_COUNT_SEVEN(0.00)[7];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 93E57166C6D
 X-Rspamd-Action: no action
 
+Hi Sean,
 
-On 2/20/2026 3:14 AM, Jeff Johnson wrote:
-> On 2/18/2026 11:34 PM, Maharaja Kennadyrajan wrote:
->> +int ath12k_thermal_register(struct ath12k_base *ab)
->> +{
->> +	struct ath12k *ar;
->> +	int i, j, ret;
->> +
->> +	if (!IS_REACHABLE(CONFIG_HWMON))
->> +		return 0;
->> +
->> +	for (i = 0; i < ab->num_radios; i++) {
->> +		ar = ab->pdevs[i].ar;
->> +		if (!ar)
->> +			continue;
->> +
->> +		ar->thermal.hwmon_dev =
->> +			hwmon_device_register_with_groups(&ar->ah->hw->wiphy->dev,
->> +							  "ath12k_hwmon", ar,
->> +							  ath12k_hwmon_groups);
-> ath10k and ath11k use devm_hwmon_device_register_with_groups().
-> why doesn't ath12k do the same?
-> then the code below and in _unregister() that calls hwmon_device_unregister()
-> would be unnecessary since the objects would be reclaimed when the dev is
-> destroyed.
+on Linus master tree we still have 'mt76_mmio_init(&dev->mt76, 
+pcim_iomap_table(pdev)[0]);', hence your patch currently won't apply.
+
+On 2/19/26 01:39, sean.wang@kernel.org wrote:
+> From: Sean Wang <sean.wang@mediatek.com>
+>
+> MT7902 PCIe requires a different wm2_complete_mask value, so introduce a
+> mutable per-device copy of the default irq_map and override the field
+> only for this chip. Other devices continue using the shared const
+> template.
+>
+> This is a prerequisite patch before enabling MT7902 PCIe support.
+>
+> Co-developed-by: Xiong Huang <xiong.huang@mediatek.com>
+> Signed-off-by: Xiong Huang <xiong.huang@mediatek.com>
+> Signed-off-by: Sean Wang <sean.wang@mediatek.com>
+> ---
+>   drivers/net/wireless/mediatek/mt76/mt7921/pci.c | 14 ++++++++++++++
+>   1 file changed, 14 insertions(+)
+>
+> diff --git a/drivers/net/wireless/mediatek/mt76/mt7921/pci.c b/drivers/net/wireless/mediatek/mt76/mt7921/pci.c
+> index 65c7fe671137..5f857a21f362 100644
+> --- a/drivers/net/wireless/mediatek/mt76/mt7921/pci.c
+> +++ b/drivers/net/wireless/mediatek/mt76/mt7921/pci.c
+> @@ -327,6 +327,20 @@ static int mt7921_pci_probe(struct pci_dev *pdev,
+>   	dev->hif_ops = &mt7921_pcie_ops;
+>   	dev->irq_map = &irq_map;
+>   	mt76_mmio_init(&dev->mt76, regs);
+> +
+> +	if (id->device == 0x7902) {
+> +		struct mt792x_irq_map *map;
+> +
+> +		/* MT7902 needs a mutable copy because wm2_complete_mask differs */
+> +		map = devm_kmemdup(&pdev->dev, &irq_map,
+> +				   sizeof(irq_map), GFP_KERNEL);
+> +		if (!map)
+> +			return -ENOMEM;
+> +
+> +		map->rx.wm2_complete_mask = 0;
+> +		dev->irq_map = map;
+> +	}
+> +
+>   	tasklet_init(&mdev->irq_tasklet, mt792x_irq_tasklet, (unsigned long)dev);
+>   
+>   	dev->phy.dev = dev;
 
 
-ath12k_thermal_register() loops all radios and devm-registers hwmon devices. If registration fails for radio N, it returns an error that bubbles up and 'ath12k_core_pdev_create()' unwinds only DP ('ath12k_dp_pdev_free()'),
-while already-registered hwmon devices for earlier radios remain bound to `wiphy->dev` via devm. If bring-up aborts (pdev_create fails), those hwmon sysfs nodes may persist until the 'wiphy' device is finally destroyed,
-which can be much later or never if the bring-up stops early. It will impact resource/sysfs leak window and possible user-visible stale hwmon entries in failure paths.
+-- 
+Best, Philip
 
-Given this, using hwmon_device_register_with_groups() plus explicit unregister keeps lifecycle handling predictable and aligned with ath12k’s recovery paths.
-
-
->> +		if (IS_ERR(ar->thermal.hwmon_dev)) {
->> +			ret = PTR_ERR(ar->thermal.hwmon_dev);
->> +			ar->thermal.hwmon_dev = NULL;
->> +			ath12k_err(ar->ab, "failed to register hwmon device: %d\n",
->> +				   ret);
->> +			for (j = i - 1; j >= 0; j--) {
->> +				ar = ab->pdevs[i].ar;
->> +				if (!ar)
->> +					continue;
->> +
->> +				hwmon_device_unregister(ar->thermal.hwmon_dev);
->> +				ar->thermal.hwmon_dev = NULL;
->> +			}
->> +			return ret;
->> +		}
->> +	}
->> +
->> +	return 0;
->> +}
->> +
->> +void ath12k_thermal_unregister(struct ath12k_base *ab)
->> +{
->> +	struct ath12k *ar;
->> +	int i;
->> +
->> +	if (!IS_REACHABLE(CONFIG_HWMON))
->> +		return;
->> +
->> +	for (i = 0; i < ab->num_radios; i++) {
->> +		ar = ab->pdevs[i].ar;
->> +		if (!ar)
->> +			continue;
->> +
->> +		if (ar->thermal.hwmon_dev) {
->> +			hwmon_device_unregister(ar->thermal.hwmon_dev);
->> +			ar->thermal.hwmon_dev = NULL;
->> +		}
->> +	}
->> +}
 
