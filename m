@@ -1,62 +1,62 @@
-Return-Path: <linux-wireless+bounces-32062-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-32063-lists+linux-wireless=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 4B4kMvdtmGn4IAMAu9opvQ
-	(envelope-from <linux-wireless+bounces-32062-lists+linux-wireless=lfdr.de@vger.kernel.org>)
-	for <lists+linux-wireless@lfdr.de>; Fri, 20 Feb 2026 15:21:43 +0100
+	id CIG3N7dtmGn4IAMAu9opvQ
+	(envelope-from <linux-wireless+bounces-32063-lists+linux-wireless=lfdr.de@vger.kernel.org>)
+	for <lists+linux-wireless@lfdr.de>; Fri, 20 Feb 2026 15:20:39 +0100
 X-Original-To: lists+linux-wireless@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 378071684C5
-	for <lists+linux-wireless@lfdr.de>; Fri, 20 Feb 2026 15:21:43 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 50D2716848F
+	for <lists+linux-wireless@lfdr.de>; Fri, 20 Feb 2026 15:20:39 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 1F73630AB198
-	for <lists+linux-wireless@lfdr.de>; Fri, 20 Feb 2026 14:20:26 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 28CA6304246C
+	for <lists+linux-wireless@lfdr.de>; Fri, 20 Feb 2026 14:20:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E46A534D92C;
-	Fri, 20 Feb 2026 14:20:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7A43834D4E2;
+	Fri, 20 Feb 2026 14:20:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b="J/qQG5Lm"
+	dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b="A8+Hg+1U"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from sipsolutions.net (s3.sipsolutions.net [168.119.38.16])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4D57734AAF6
-	for <linux-wireless@vger.kernel.org>; Fri, 20 Feb 2026 14:20:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1C04E34CFDC
+	for <linux-wireless@vger.kernel.org>; Fri, 20 Feb 2026 14:20:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=168.119.38.16
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771597224; cv=none; b=pI1ArCseOhf7WFxDaw3VFjCMih8y8exnKtNjv2icw0wWFEmotqcRBCdaGFM2NGdiz9gnd0/ZZUSH2p4FPZncoMZWnnM83GnZrSkFhOzM5V8KaC4oETK+aeDz8y+ABiVldSIdiO4Wj9Expum6FbvaQj+lxZ/Bn0qs06SO71KL8nQ=
+	t=1771597225; cv=none; b=GQsY3DGKf5fOyYMev3oIpd+dTZ6+bEeF36cEOUiBVoJPeVfbyAo2giQZZuXYtF/Arv1iIzJMNn8Pa74jdQMB2MaW8eN3hSjXD5c2U3xC+RnVIWfnuRqT7qbCbTlzc1qvJ0ztxzSSRjv/I+4Qc/rtmsTu1ls9wNr2Djb7C6qAhPs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771597224; c=relaxed/simple;
-	bh=KegeRbTR4PqQeWHfpDUDOuUBzIkEMpiYzKdChINHnrs=;
+	s=arc-20240116; t=1771597225; c=relaxed/simple;
+	bh=YaZtf2zllswHx3JLm3J5iz2HsMgvjozeB5/RSr66jtU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=dud5Td9DAfLOIj/e4ERqIFsqPWv56Nl4aAfNvmFdFPUCnBDxdlg+9cSHouUZ7bs84iP2bm3juMTtKzmm0GUy0WylUQQAZhSFS8gdYniRZNiu3MeV3SZqYrmdugyEoLLV6rfv1R8ox635QSB+K2QthifJANA8KBihmC6chkdA9+E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net; spf=pass smtp.mailfrom=sipsolutions.net; dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b=J/qQG5Lm; arc=none smtp.client-ip=168.119.38.16
+	 MIME-Version; b=Dh9aXzd6hv+dCrzCjJk6PDhDtXZbmwwqVrA5DVR1WqUQh2JHJZa8XoieL6aHg81Zk+XtvSY+YJfRBaAJlWwCyaMwwPYGOiK/pXlOriRDNHs6UtOlugniIKBR8UvSE/7PxPeQSco1mtYNLVC6PuvdDaPgJdTc70K+QTIn1cyB6gY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net; spf=pass smtp.mailfrom=sipsolutions.net; dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b=A8+Hg+1U; arc=none smtp.client-ip=168.119.38.16
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sipsolutions.net
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=sipsolutions.net; s=mail; h=Content-Transfer-Encoding:MIME-Version:
 	References:In-Reply-To:Message-ID:Date:Subject:Cc:To:From:Content-Type:Sender
 	:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
-	Resent-Cc:Resent-Message-ID; bh=t4YyHS6GlC+2haj0GyPKOmnexv2KJIX6juTzpT5MtBU=;
-	t=1771597223; x=1772806823; b=J/qQG5LmFxnfu61SwWAqeO3RXDFdFKs626s+MJtWGUuzFpC
-	CX2fbgJ+ewi13arZDok2n72D4cJa0NmN8IYt3dB+0iZzL7r2gUPXCuHMOZHvThFVAZWF6DPes90GB
-	slzD1DMI/lA1cQZAEDkj0jzedNVQcmQ2xm1THxCfJqOyodaGTEDZg46m7TQ82GOono8GiZDsCNf3G
-	DgPBuae91EokLkmtukv5DqCTpuTUtphYyDnydc4jsmkDecm0WYLS5ZB8BV3gahnM0HXcYN9Ej+8+3
-	k3y3g3DZGV0oeWTd5ym86K1PmqvhzJOKGl/8aOV0CVPEJD8qUjfebnnI9qujIY3A==;
+	Resent-Cc:Resent-Message-ID; bh=B/FCtQJqLGakX0AAYKaj2JwN1Ou1pzOlq1l+LfNFWOM=;
+	t=1771597224; x=1772806824; b=A8+Hg+1UPiKM47MW5/pShr6A5sYFfeQ+YDEsgd3AjBjGh4W
+	FRELuEo+SnrNCVZ4dvik8yq8nqVwhjlh38HvDp5oY9adIJXdaziCCQ59m1Ky8mcka9DMiHcExm5PW
+	fI1wG0xiIobW/ZIf3zaOkMexWZtYzOZPtnS3kKr5O280Kn5ckeiHos4rAW9H2XD65MBXePPbRCWO7
+	UvY4/3yattx23YKA94EFgE18aYdVXZAvr9f1rDCdwftUG28U/o2VQY5Aw7ZQWqblmdktmyqnQHdw/
+	5MeeN762b+zVWFFpU5H0+RzA/qErjabimv3mPzXpzfeVYJGpmB7n8LZ/81ljx1nA==;
 Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
 	(Exim 4.98.2)
 	(envelope-from <benjamin@sipsolutions.net>)
-	id 1vtRMd-0000000ECBC-2AB4;
-	Fri, 20 Feb 2026 15:20:15 +0100
+	id 1vtRMe-0000000ECBC-11jP;
+	Fri, 20 Feb 2026 15:20:16 +0100
 From: Benjamin Berg <benjamin@sipsolutions.net>
 To: linux-wireless@vger.kernel.org
 Cc: Rameshkumar Sundaram <rameshkumar.sundaram@oss.qualcomm.com>,
 	Ramasamy Kaliappan <ramasamy.kaliappan@oss.qualcomm.com>,
 	Benjamin Berg <benjamin.berg@intel.com>
-Subject: [RFC PATCH 7/8] wifi: mac80211: pass station to ieee80211_tx_skb_tid
-Date: Fri, 20 Feb 2026 15:19:37 +0100
-Message-ID: <20260220151929.31978f37110f.Ib7be90db0d3712d14e7a292023ff3d922baef860@changeid>
+Subject: [RFC PATCH 8/8] wifi: mac80211: pass error station if non-STA transmit was requested
+Date: Fri, 20 Feb 2026 15:19:38 +0100
+Message-ID: <20260220151929.2a3544e13387.I5ffe7bc0d4ccefca5c1e506d5d3d482e13989cda@changeid>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <20260220141929.206976-10-benjamin@sipsolutions.net>
 References: <20260220141929.206976-10-benjamin@sipsolutions.net>
@@ -74,17 +74,17 @@ X-Spamd-Result: default: False [-1.16 / 15.00];
 	MID_RHS_NOT_FQDN(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[sipsolutions.net,none];
 	R_DKIM_ALLOW(-0.20)[sipsolutions.net:s=mail];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	TAGGED_FROM(0.00)[bounces-32062-lists,linux-wireless=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-32063-lists,linux-wireless=lfdr.de];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
 	RCPT_COUNT_THREE(0.00)[4];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[benjamin@sipsolutions.net,linux-wireless@vger.kernel.org];
@@ -94,212 +94,58 @@ X-Spamd-Result: default: False [-1.16 / 15.00];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[linux-wireless];
 	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,intel.com:email,sipsolutions.net:dkim,sourmilk.net:email]
-X-Rspamd-Queue-Id: 378071684C5
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,intel.com:email,sipsolutions.net:dkim]
+X-Rspamd-Queue-Id: 50D2716848F
 X-Rspamd-Action: no action
 
 From: Benjamin Berg <benjamin.berg@intel.com>
 
-The station may be relevant for queuing and will also generally be
-resolved in some cases. However, we want to be able to prevent looking
-up the station based on the address.
-
-Add a station parameter, which can be set to the correct station, to an
-error value to prevent station lookup or to NULL to get the old
-behaviour where the address is used to find the appropriate station.
-
-Also disable the station lookup for ieee80211_tx_skb_tid_band already as
-it does not make any sense to find a station when doing an off-channel
-transmit.
+When cfg80211 requested a transmit without a station, pass an error
+station to ieee80211_tx_skb_tid instead of the correct one.
 
 Signed-off-by: Benjamin Berg <benjamin.berg@intel.com>
 ---
- net/mac80211/agg-tx.c      |  6 +++---
- net/mac80211/ht.c          |  4 ++--
- net/mac80211/ieee80211_i.h | 14 ++++++++------
- net/mac80211/offchannel.c  |  2 +-
- net/mac80211/rx.c          |  2 +-
- net/mac80211/tdls.c        |  4 ++--
- net/mac80211/tx.c          |  8 +++++---
- 7 files changed, 22 insertions(+), 18 deletions(-)
+ net/mac80211/offchannel.c | 13 +++++++++----
+ 1 file changed, 9 insertions(+), 4 deletions(-)
 
-diff --git a/net/mac80211/agg-tx.c b/net/mac80211/agg-tx.c
-index d981b0fc57bf..6a5754351f08 100644
---- a/net/mac80211/agg-tx.c
-+++ b/net/mac80211/agg-tx.c
-@@ -9,7 +9,7 @@
-  * Copyright 2007, Michael Wu <flamingice@sourmilk.net>
-  * Copyright 2007-2010, Intel Corporation
-  * Copyright(c) 2015-2017 Intel Deutschland GmbH
-- * Copyright (C) 2018 - 2024 Intel Corporation
-+ * Copyright (C) 2018 - 2024, 2026 Intel Corporation
-  */
- 
- #include <linux/ieee80211.h>
-@@ -97,7 +97,7 @@ static void ieee80211_send_addba_request(struct sta_info *sta, u16 tid,
- 	if (sta->sta.deflink.he_cap.has_he)
- 		ieee80211_add_addbaext(skb, 0, agg_size);
- 
--	ieee80211_tx_skb_tid(sdata, skb, tid, -1);
-+	ieee80211_tx_skb_tid(sdata, skb, NULL, tid, -1);
- }
- 
- void ieee80211_send_bar(struct ieee80211_vif *vif, u8 *ra, u16 tid, u16 ssn)
-@@ -126,7 +126,7 @@ void ieee80211_send_bar(struct ieee80211_vif *vif, u8 *ra, u16 tid, u16 ssn)
- 
- 	IEEE80211_SKB_CB(skb)->flags |= IEEE80211_TX_INTFL_DONT_ENCRYPT |
- 					IEEE80211_TX_CTL_REQ_TX_STATUS;
--	ieee80211_tx_skb_tid(sdata, skb, tid, -1);
-+	ieee80211_tx_skb_tid(sdata, skb, NULL, tid, -1);
- }
- EXPORT_SYMBOL(ieee80211_send_bar);
- 
-diff --git a/net/mac80211/ht.c b/net/mac80211/ht.c
-index 1c82a28b03de..f98f5a9a2ebe 100644
---- a/net/mac80211/ht.c
-+++ b/net/mac80211/ht.c
-@@ -9,7 +9,7 @@
-  * Copyright 2007, Michael Wu <flamingice@sourmilk.net>
-  * Copyright 2007-2010, Intel Corporation
-  * Copyright 2017	Intel Deutschland GmbH
-- * Copyright(c) 2020-2025 Intel Corporation
-+ * Copyright(c) 2020-2026 Intel Corporation
-  */
- 
- #include <linux/ieee80211.h>
-@@ -571,7 +571,7 @@ int ieee80211_send_smps_action(struct ieee80211_sub_if_data *sdata,
- 	info->status_data = IEEE80211_STATUS_TYPE_SMPS |
- 			    u16_encode_bits(status_link_id << 2 | smps,
- 					    IEEE80211_STATUS_SUBDATA_MASK);
--	ieee80211_tx_skb_tid(sdata, skb, 7, link_id);
-+	ieee80211_tx_skb_tid(sdata, skb, NULL, 7, link_id);
- 
- 	return 0;
- }
-diff --git a/net/mac80211/ieee80211_i.h b/net/mac80211/ieee80211_i.h
-index e60b814dd89e..793331c1d748 100644
---- a/net/mac80211/ieee80211_i.h
-+++ b/net/mac80211/ieee80211_i.h
-@@ -2393,7 +2393,8 @@ void ieee80211_xmit(struct ieee80211_sub_if_data *sdata,
- 		    struct sta_info *sta, struct sk_buff *skb);
- 
- void __ieee80211_tx_skb_tid_band(struct ieee80211_sub_if_data *sdata,
--				 struct sk_buff *skb, int tid, int link_id,
-+				 struct sk_buff *skb, struct sta_info *sta,
-+				 int tid, int link_id,
- 				 enum nl80211_band band);
- 
- static inline bool ieee80211_require_encrypted_assoc(__le16 fc,
-@@ -2411,22 +2412,23 @@ int ieee80211_lookup_ra_sta(struct ieee80211_sub_if_data *sdata,
- 
- static inline void
- ieee80211_tx_skb_tid_band(struct ieee80211_sub_if_data *sdata,
--			  struct sk_buff *skb, int tid,
--			  enum nl80211_band band)
-+			  struct sk_buff *skb, int tid, enum nl80211_band band)
- {
- 	rcu_read_lock();
--	__ieee80211_tx_skb_tid_band(sdata, skb, tid, -1, band);
-+	__ieee80211_tx_skb_tid_band(sdata, skb, ERR_PTR(-ENOENT),
-+				    tid, -1, band);
- 	rcu_read_unlock();
- }
- 
- void ieee80211_tx_skb_tid(struct ieee80211_sub_if_data *sdata,
--			  struct sk_buff *skb, int tid, int link_id);
-+			  struct sk_buff *skb, struct sta_info *sta,
-+			  int tid, int link_id);
- 
- static inline void ieee80211_tx_skb(struct ieee80211_sub_if_data *sdata,
- 				    struct sk_buff *skb)
- {
- 	/* Send all internal mgmt frames on VO. Accordingly set TID to 7. */
--	ieee80211_tx_skb_tid(sdata, skb, 7, -1);
-+	ieee80211_tx_skb_tid(sdata, skb, NULL, 7, -1);
- }
- 
- /**
 diff --git a/net/mac80211/offchannel.c b/net/mac80211/offchannel.c
-index ae82533e3c02..0a8b4c5e8c12 100644
+index 0a8b4c5e8c12..24a55186b87f 100644
 --- a/net/mac80211/offchannel.c
 +++ b/net/mac80211/offchannel.c
-@@ -1026,7 +1026,7 @@ int ieee80211_mgmt_tx(struct wiphy *wiphy, struct wireless_dev *wdev,
+@@ -857,8 +857,10 @@ int ieee80211_mgmt_tx(struct wiphy *wiphy, struct wireless_dev *wdev,
+ 			need_offchan = true;
+ 
+ 		rcu_read_lock();
+-		sta = sta_info_get_bss(sdata, mgmt->da);
+-		mlo_sta = sta && sta->sta.mlo;
++		if (!params->no_sta) {
++			sta = sta_info_get_bss(sdata, mgmt->da);
++			mlo_sta = sta && sta->sta.mlo;
++		}
+ 
+ 		if (!ieee80211_is_action(mgmt->frame_control) ||
+ 		    mgmt->u.action.category == WLAN_CATEGORY_PUBLIC ||
+@@ -887,7 +889,8 @@ int ieee80211_mgmt_tx(struct wiphy *wiphy, struct wireless_dev *wdev,
+ 		     local->ops->remain_on_channel &&
+ 		     memcmp(sdata->vif.cfg.ap_addr, mgmt->bssid, ETH_ALEN))) {
+ 			need_offchan = true;
+-		} else if (sdata->u.mgd.associated &&
++		} else if (!params->no_sta &&
++			   sdata->u.mgd.associated &&
+ 			   ether_addr_equal(sdata->vif.cfg.ap_addr, mgmt->da)) {
+ 			sta = sta_info_get_bss(sdata, mgmt->da);
+ 			mlo_sta = sta && sta->sta.mlo;
+@@ -1026,7 +1029,9 @@ int ieee80211_mgmt_tx(struct wiphy *wiphy, struct wireless_dev *wdev,
  	}
  
  	if (!need_offchan) {
--		ieee80211_tx_skb_tid(sdata, skb, 7, link_id);
-+		ieee80211_tx_skb_tid(sdata, skb, NULL, 7, link_id);
+-		ieee80211_tx_skb_tid(sdata, skb, NULL, 7, link_id);
++		ieee80211_tx_skb_tid(sdata, skb,
++				     sta ? sta : ERR_PTR(-ENOENT),
++				     7, link_id);
  		ret = 0;
  		goto out_unlock;
  	}
-diff --git a/net/mac80211/rx.c b/net/mac80211/rx.c
-index c547ad56a539..2de8c135f169 100644
---- a/net/mac80211/rx.c
-+++ b/net/mac80211/rx.c
-@@ -4072,7 +4072,7 @@ ieee80211_rx_h_action_return(struct ieee80211_rx_data *rx)
- 					local->hw.offchannel_tx_hw_queue;
- 		}
- 
--		__ieee80211_tx_skb_tid_band(rx->sdata, nskb, 7, -1,
-+		__ieee80211_tx_skb_tid_band(rx->sdata, nskb, rx->sta, 7, -1,
- 					    status->band);
- 	}
- 
-diff --git a/net/mac80211/tdls.c b/net/mac80211/tdls.c
-index dbbfe2d6842f..39a880ab7edb 100644
---- a/net/mac80211/tdls.c
-+++ b/net/mac80211/tdls.c
-@@ -6,7 +6,7 @@
-  * Copyright 2014, Intel Corporation
-  * Copyright 2014  Intel Mobile Communications GmbH
-  * Copyright 2015 - 2016 Intel Deutschland GmbH
-- * Copyright (C) 2019, 2021-2025 Intel Corporation
-+ * Copyright (C) 2019, 2021-2026 Intel Corporation
-  */
- 
- #include <linux/ieee80211.h>
-@@ -1067,7 +1067,7 @@ ieee80211_tdls_prep_mgmt_packet(struct wiphy *wiphy, struct net_device *dev,
- 	}
- 
- 	if (action_code == WLAN_PUB_ACTION_TDLS_DISCOVER_RES) {
--		ieee80211_tx_skb_tid(sdata, skb, 7, link_id);
-+		ieee80211_tx_skb_tid(sdata, skb, sta, 7, link_id);
- 		return 0;
- 	}
- 
-diff --git a/net/mac80211/tx.c b/net/mac80211/tx.c
-index 007f5a368d41..c788d48ef365 100644
---- a/net/mac80211/tx.c
-+++ b/net/mac80211/tx.c
-@@ -6235,7 +6235,8 @@ void ieee80211_unreserve_tid(struct ieee80211_sta *pubsta, u8 tid)
- EXPORT_SYMBOL(ieee80211_unreserve_tid);
- 
- void __ieee80211_tx_skb_tid_band(struct ieee80211_sub_if_data *sdata,
--				 struct sk_buff *skb, int tid, int link_id,
-+				 struct sk_buff *skb, struct sta_info *sta,
-+				 int tid, int link_id,
- 				 enum nl80211_band band)
- {
- 	const struct ieee80211_hdr *hdr = (void *)skb->data;
-@@ -6292,7 +6293,8 @@ void __ieee80211_tx_skb_tid_band(struct ieee80211_sub_if_data *sdata,
- }
- 
- void ieee80211_tx_skb_tid(struct ieee80211_sub_if_data *sdata,
--			  struct sk_buff *skb, int tid, int link_id)
-+			  struct sk_buff *skb, struct sta_info *sta,
-+			  int tid, int link_id)
- {
- 	struct ieee80211_chanctx_conf *chanctx_conf;
- 	enum nl80211_band band;
-@@ -6317,7 +6319,7 @@ void ieee80211_tx_skb_tid(struct ieee80211_sub_if_data *sdata,
- 		band = 0;
- 	}
- 
--	__ieee80211_tx_skb_tid_band(sdata, skb, tid, link_id, band);
-+	__ieee80211_tx_skb_tid_band(sdata, skb, sta, tid, link_id, band);
- 	rcu_read_unlock();
- }
- 
 -- 
 2.53.0
 
