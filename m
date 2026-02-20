@@ -1,152 +1,120 @@
-Return-Path: <linux-wireless+bounces-32063-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-32064-lists+linux-wireless=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id CIG3N7dtmGn4IAMAu9opvQ
-	(envelope-from <linux-wireless+bounces-32063-lists+linux-wireless=lfdr.de@vger.kernel.org>)
-	for <lists+linux-wireless@lfdr.de>; Fri, 20 Feb 2026 15:20:39 +0100
+	id YAx8MCSTmGk5JwMAu9opvQ
+	(envelope-from <linux-wireless+bounces-32064-lists+linux-wireless=lfdr.de@vger.kernel.org>)
+	for <lists+linux-wireless@lfdr.de>; Fri, 20 Feb 2026 18:00:20 +0100
 X-Original-To: lists+linux-wireless@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 50D2716848F
-	for <lists+linux-wireless@lfdr.de>; Fri, 20 Feb 2026 15:20:39 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6B67F1698BB
+	for <lists+linux-wireless@lfdr.de>; Fri, 20 Feb 2026 18:00:20 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 28CA6304246C
-	for <lists+linux-wireless@lfdr.de>; Fri, 20 Feb 2026 14:20:27 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 045B03021BBB
+	for <lists+linux-wireless@lfdr.de>; Fri, 20 Feb 2026 17:00:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7A43834D4E2;
-	Fri, 20 Feb 2026 14:20:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8F8ED2877E5;
+	Fri, 20 Feb 2026 17:00:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b="A8+Hg+1U"
+	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="C5gQBEkj"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from sipsolutions.net (s3.sipsolutions.net [168.119.38.16])
+Received: from out-178.mta0.migadu.com (out-178.mta0.migadu.com [91.218.175.178])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1C04E34CFDC
-	for <linux-wireless@vger.kernel.org>; Fri, 20 Feb 2026 14:20:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=168.119.38.16
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3CA2D22DFA5
+	for <linux-wireless@vger.kernel.org>; Fri, 20 Feb 2026 17:00:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.178
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771597225; cv=none; b=GQsY3DGKf5fOyYMev3oIpd+dTZ6+bEeF36cEOUiBVoJPeVfbyAo2giQZZuXYtF/Arv1iIzJMNn8Pa74jdQMB2MaW8eN3hSjXD5c2U3xC+RnVIWfnuRqT7qbCbTlzc1qvJ0ztxzSSRjv/I+4Qc/rtmsTu1ls9wNr2Djb7C6qAhPs=
+	t=1771606816; cv=none; b=kYqOMAh1sHegsi4boW68MURU4R0ZHycajQTXM8vpkKNT0fAKDr+Iliezh4TMS/sbMSy3s0sOHo0SYDmoHYZGA6FhnQ4HHfV8vA7p1BSitZWakscc1/Xzpdl/FYNvKj/1RV+4P0h2+E6us92jQOYzQvz8nDNy/kncCNifDhhGD5A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771597225; c=relaxed/simple;
-	bh=YaZtf2zllswHx3JLm3J5iz2HsMgvjozeB5/RSr66jtU=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Dh9aXzd6hv+dCrzCjJk6PDhDtXZbmwwqVrA5DVR1WqUQh2JHJZa8XoieL6aHg81Zk+XtvSY+YJfRBaAJlWwCyaMwwPYGOiK/pXlOriRDNHs6UtOlugniIKBR8UvSE/7PxPeQSco1mtYNLVC6PuvdDaPgJdTc70K+QTIn1cyB6gY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net; spf=pass smtp.mailfrom=sipsolutions.net; dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b=A8+Hg+1U; arc=none smtp.client-ip=168.119.38.16
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sipsolutions.net
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=sipsolutions.net; s=mail; h=Content-Transfer-Encoding:MIME-Version:
-	References:In-Reply-To:Message-ID:Date:Subject:Cc:To:From:Content-Type:Sender
-	:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
-	Resent-Cc:Resent-Message-ID; bh=B/FCtQJqLGakX0AAYKaj2JwN1Ou1pzOlq1l+LfNFWOM=;
-	t=1771597224; x=1772806824; b=A8+Hg+1UPiKM47MW5/pShr6A5sYFfeQ+YDEsgd3AjBjGh4W
-	FRELuEo+SnrNCVZ4dvik8yq8nqVwhjlh38HvDp5oY9adIJXdaziCCQ59m1Ky8mcka9DMiHcExm5PW
-	fI1wG0xiIobW/ZIf3zaOkMexWZtYzOZPtnS3kKr5O280Kn5ckeiHos4rAW9H2XD65MBXePPbRCWO7
-	UvY4/3yattx23YKA94EFgE18aYdVXZAvr9f1rDCdwftUG28U/o2VQY5Aw7ZQWqblmdktmyqnQHdw/
-	5MeeN762b+zVWFFpU5H0+RzA/qErjabimv3mPzXpzfeVYJGpmB7n8LZ/81ljx1nA==;
-Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
-	(Exim 4.98.2)
-	(envelope-from <benjamin@sipsolutions.net>)
-	id 1vtRMe-0000000ECBC-11jP;
-	Fri, 20 Feb 2026 15:20:16 +0100
-From: Benjamin Berg <benjamin@sipsolutions.net>
-To: linux-wireless@vger.kernel.org
-Cc: Rameshkumar Sundaram <rameshkumar.sundaram@oss.qualcomm.com>,
-	Ramasamy Kaliappan <ramasamy.kaliappan@oss.qualcomm.com>,
-	Benjamin Berg <benjamin.berg@intel.com>
-Subject: [RFC PATCH 8/8] wifi: mac80211: pass error station if non-STA transmit was requested
-Date: Fri, 20 Feb 2026 15:19:38 +0100
-Message-ID: <20260220151929.2a3544e13387.I5ffe7bc0d4ccefca5c1e506d5d3d482e13989cda@changeid>
-X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260220141929.206976-10-benjamin@sipsolutions.net>
-References: <20260220141929.206976-10-benjamin@sipsolutions.net>
+	s=arc-20240116; t=1771606816; c=relaxed/simple;
+	bh=2OxFsATCItBc+22+SD2qdAlW/PLhtqwfva1j4C1fMYg=;
+	h=Content-Type:Mime-Version:Subject:From:In-Reply-To:Date:Cc:
+	 Message-Id:References:To; b=KwWxc6Yoq+4HD2PrtYpTh5D25vt68Dxd3xe7eaOwdHmmT9rAB5qOGxM1gFghwJusM+tAi61fmSgHibNNhYYXBWQoxHdqpUFIyRjfoQEQsxoYwnbq4ZjPubFfHAjjP8yZSD/aBsY8FLBxWofa1yjlq594M+DaZgcmmPkGgOh4CK0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=C5gQBEkj; arc=none smtp.client-ip=91.218.175.178
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
+Content-Type: text/plain;
+	charset=us-ascii
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1771606803;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=lsz36afj9Yf9FxTFLOgJtL8vxZ6vXJj8n/cdSlWhQJ0=;
+	b=C5gQBEkjQWWlrxSNARi1HEYNd77sdWyoA1+6kAibTVptY+obzOZtU3fMeCSBuQGE/pG5JX
+	bkshYuXPJZ1sQGM0hD1doYfZn5Col9pf3hHXdAiRrYUV8AFKimCTY70/nATFGfUDyIVoUu
+	ZBeseCsdGrmOgp6zMQqbWt4n0OyExG8=
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3826.700.81.1.4\))
+Subject: Re: [PATCH net-next] net: rfkill: Replace strcpy with memcpy to
+ improve rfkill_alloc
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: Thorsten Blum <thorsten.blum@linux.dev>
+In-Reply-To: <6983492c92a811b45c27bc36337e16fbd1abd94f.camel@sipsolutions.net>
+Date: Fri, 20 Feb 2026 18:00:00 +0100
+Cc: linux-wireless@vger.kernel.org,
+ linux-kernel@vger.kernel.org
+Content-Transfer-Encoding: 7bit
+Message-Id: <86C8A63A-E72F-48C9-A1C0-4E65A91CA987@linux.dev>
+References: <20251215122036.379322-2-thorsten.blum@linux.dev>
+ <6983492c92a811b45c27bc36337e16fbd1abd94f.camel@sipsolutions.net>
+To: Johannes Berg <johannes@sipsolutions.net>
+X-Migadu-Flow: FLOW_OUT
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-1.16 / 15.00];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
-	MID_RHS_NOT_FQDN(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[sipsolutions.net,none];
-	R_DKIM_ALLOW(-0.20)[sipsolutions.net:s=mail];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	MV_CASE(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[linux.dev,none];
+	R_DKIM_ALLOW(-0.20)[linux.dev:s=key1];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	TAGGED_FROM(0.00)[bounces-32063-lists,linux-wireless=lfdr.de];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_TLS_LAST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	RCPT_COUNT_THREE(0.00)[4];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[benjamin@sipsolutions.net,linux-wireless@vger.kernel.org];
+	TAGGED_FROM(0.00)[bounces-32064-lists,linux-wireless=lfdr.de];
 	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[sipsolutions.net:+];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	RCVD_COUNT_THREE(0.00)[3];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linux.dev:+];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	MISSING_XM_UA(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[thorsten.blum@linux.dev,linux-wireless@vger.kernel.org];
+	RCPT_COUNT_THREE(0.00)[3];
+	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[linux-wireless];
+	NEURAL_HAM(-0.00)[-1.000];
 	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,intel.com:email,sipsolutions.net:dkim]
-X-Rspamd-Queue-Id: 50D2716848F
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linux.dev:mid,linux.dev:dkim,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 6B67F1698BB
 X-Rspamd-Action: no action
 
-From: Benjamin Berg <benjamin.berg@intel.com>
+On 8. Jan 2026, at 13:29, Johannes Berg wrote:
+> On Mon, 2025-12-15 at 13:20 +0100, Thorsten Blum wrote:
+>> strcpy() is deprecated [1] and uses an additional strlen() internally;
+>> use memcpy() directly since we already know the length of 'name' and
+>> that it is guaranteed to be NUL-terminated.
+>> 
+>> Use struct_size(), which provides additional compile-time checks for
+>> structures with flexible array members (e.g., __must_be_array()), to
+>> determine the allocation size for a new 'struct rfkill'.
+> 
+> TBH, I don't really see that this is a real _improvement_. I guess I'll
+> take it if you sell it as "let's not use deprecated strcpy" instead,
+> although even the documentation says "no new uses"...
 
-When cfg80211 requested a transmit without a station, pass an error
-station to ieee80211_tx_skb_tid instead of the correct one.
+Yes, this is primarily a refactoring to avoid deprecated strcpy(), and
+to harden the code by using struct_size().
 
-Signed-off-by: Benjamin Berg <benjamin.berg@intel.com>
----
- net/mac80211/offchannel.c | 13 +++++++++----
- 1 file changed, 9 insertions(+), 4 deletions(-)
-
-diff --git a/net/mac80211/offchannel.c b/net/mac80211/offchannel.c
-index 0a8b4c5e8c12..24a55186b87f 100644
---- a/net/mac80211/offchannel.c
-+++ b/net/mac80211/offchannel.c
-@@ -857,8 +857,10 @@ int ieee80211_mgmt_tx(struct wiphy *wiphy, struct wireless_dev *wdev,
- 			need_offchan = true;
- 
- 		rcu_read_lock();
--		sta = sta_info_get_bss(sdata, mgmt->da);
--		mlo_sta = sta && sta->sta.mlo;
-+		if (!params->no_sta) {
-+			sta = sta_info_get_bss(sdata, mgmt->da);
-+			mlo_sta = sta && sta->sta.mlo;
-+		}
- 
- 		if (!ieee80211_is_action(mgmt->frame_control) ||
- 		    mgmt->u.action.category == WLAN_CATEGORY_PUBLIC ||
-@@ -887,7 +889,8 @@ int ieee80211_mgmt_tx(struct wiphy *wiphy, struct wireless_dev *wdev,
- 		     local->ops->remain_on_channel &&
- 		     memcmp(sdata->vif.cfg.ap_addr, mgmt->bssid, ETH_ALEN))) {
- 			need_offchan = true;
--		} else if (sdata->u.mgd.associated &&
-+		} else if (!params->no_sta &&
-+			   sdata->u.mgd.associated &&
- 			   ether_addr_equal(sdata->vif.cfg.ap_addr, mgmt->da)) {
- 			sta = sta_info_get_bss(sdata, mgmt->da);
- 			mlo_sta = sta && sta->sta.mlo;
-@@ -1026,7 +1029,9 @@ int ieee80211_mgmt_tx(struct wiphy *wiphy, struct wireless_dev *wdev,
- 	}
- 
- 	if (!need_offchan) {
--		ieee80211_tx_skb_tid(sdata, skb, NULL, 7, link_id);
-+		ieee80211_tx_skb_tid(sdata, skb,
-+				     sta ? sta : ERR_PTR(-ENOENT),
-+				     7, link_id);
- 		ret = 0;
- 		goto out_unlock;
- 	}
--- 
-2.53.0
+Thanks,
+Thorsten
 
 
