@@ -1,191 +1,190 @@
-Return-Path: <linux-wireless+bounces-32078-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-32079-lists+linux-wireless=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 6epRJ+0tm2nwugMAu9opvQ
-	(envelope-from <linux-wireless+bounces-32078-lists+linux-wireless=lfdr.de@vger.kernel.org>)
-	for <lists+linux-wireless@lfdr.de>; Sun, 22 Feb 2026 17:25:17 +0100
+	id yOqqJO5gm2kmywMAu9opvQ
+	(envelope-from <linux-wireless+bounces-32079-lists+linux-wireless=lfdr.de@vger.kernel.org>)
+	for <lists+linux-wireless@lfdr.de>; Sun, 22 Feb 2026 21:02:54 +0100
 X-Original-To: lists+linux-wireless@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id AF48316F9FC
-	for <lists+linux-wireless@lfdr.de>; Sun, 22 Feb 2026 17:25:16 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id C2B1A170438
+	for <lists+linux-wireless@lfdr.de>; Sun, 22 Feb 2026 21:02:53 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id E926F300C93D
-	for <lists+linux-wireless@lfdr.de>; Sun, 22 Feb 2026 16:25:14 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 28082300A4C4
+	for <lists+linux-wireless@lfdr.de>; Sun, 22 Feb 2026 20:02:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C648622CBC6;
-	Sun, 22 Feb 2026 16:25:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1E9451D514E;
+	Sun, 22 Feb 2026 20:02:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=fail reason="unknown key version" (0-bit key) header.d=smtpservice.net header.i=@smtpservice.net header.b="BJRF06IR";
-	dkim=pass (2048-bit key) header.d=triplefau.lt header.i=@triplefau.lt header.b="FgvpKB7C"
+	dkim=pass (2048-bit key) header.d=animalcreek.com header.i=@animalcreek.com header.b="sp2ikvR/";
+	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="NSQKd/sJ"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from e2i340.smtp2go.com (e2i340.smtp2go.com [103.2.141.84])
+Received: from fhigh-b4-smtp.messagingengine.com (fhigh-b4-smtp.messagingengine.com [202.12.124.155])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9B73C1FB1
-	for <linux-wireless@vger.kernel.org>; Sun, 22 Feb 2026 16:25:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=103.2.141.84
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 098EB2B9BA;
+	Sun, 22 Feb 2026 20:02:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=202.12.124.155
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771777513; cv=none; b=Qp453onNs5enjzWLKcAUcuzcl/AFduty43ZZhmcYr33ldpQt7RJq9PjsnEICTNn8qhN9I3Hm6utJ7mA2v3d/47CAATxkLM2VcaBg9ODm9JSLeoHUbJ8ukKIEU/8xK+7FO1/+tC7Y1R3rZyo1C8eYrvPGGods7AePoxl6kEv6n4Q=
+	t=1771790571; cv=none; b=AOPJP1XcmBr/9aohliikQi3aoka+h0Fta+c4MwU8RjDJp18iipd4rl5NVlc8uJWD7IDQbS/aflMhYLoZHrWpZ9lgyc5QXXdHMvDTIoAQAahYAa+tjAunYEHsA7vpwWxmwMyGl81drDQR7kMiHX8kwDbPhesAiGPvYfoimWLYxzE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771777513; c=relaxed/simple;
-	bh=SJsPiAbfWLW4wq9Idsd+YveXh/Utt3vKMFZBXvWIc8E=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=kLV6mhFNUofIy55g70WavZ8NvsCoTyDDlQFuytaV+n2PvqC4+x0vVqlVTxOeiVTWBKGQgR+7et0G2Qfv8L/bVzTdc9t4iZEB4Iy8FouVVrze5VuAMWJXbHO81vveTJBVqnHz09L4iTGa7+MJs7oX75/w6kIlgFI6RqT4iXa7PBQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=triplefau.lt; spf=pass smtp.mailfrom=em510616.triplefau.lt; dkim=fail (0-bit key) header.d=smtpservice.net header.i=@smtpservice.net header.b=BJRF06IR reason="unknown key version"; dkim=pass (2048-bit key) header.d=triplefau.lt header.i=@triplefau.lt header.b=FgvpKB7C; arc=none smtp.client-ip=103.2.141.84
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=triplefau.lt
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=em510616.triplefau.lt
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=smtpservice.net; s=maxzs0.a1-4.dyn; x=1771778411; h=Feedback-ID:
-	X-Smtpcorp-Track:Message-ID:Subject:To:From:Date:Reply-To:Sender:
-	List-Unsubscribe:List-Unsubscribe-Post;
-	bh=CG6CmaFogXrtFMNNsyT6tnwVb2ecRN3dNdKGuj+xzK8=; b=BJRF06IRm0gwtXWsbN1Gi2PBe+
-	xlGDq0rarZc1omCqBsIN4TUEWp4iURBkfiMw3IIC0sx6CeWV4UmPWnPTbyUcoKJjw135H6XteBM63
-	Bq/Rs7zgjdnRg0dLAXu0ytb48OVfODg29fRgXYd3mw4BZfybfvtLChGnsxo7cVhFQWpSo2b2FBfHI
-	c950aoqiECGTJhJtjGpbMETblCCKt40fL1v4P0/p2ubOjFzDXq1OGYBw93aktKH50OR/q3sz+aU8p
-	0uS7JfgRBcWRmktwPWLV47XuNd3c1xaHlDQh8FlhnVkScCTOTN/7VKPVpkdljPv8fcKZyRlBX/PLO
-	pR4egyVQ==;
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=triplefau.lt;
- i=@triplefau.lt; q=dns/txt; s=s510616; t=1771777511; h=from : subject
- : to : message-id : date;
- bh=CG6CmaFogXrtFMNNsyT6tnwVb2ecRN3dNdKGuj+xzK8=;
- b=FgvpKB7CpFs+nsDERngaXuJDmAcMDGKAe84GumrgELE1eMT6oAF5FbXxLEri8t3Ln10cL
- QRT7nikbgyJnWEyoLLz6dqtyao0ecx9i5Fq2H4L53k47xvblsPkjmQFqhfPsxm1XkB0n3WO
- +auMzLT653gRR1pLid1fnegmBANKtDHMEhv1h6wAhxgbk1KL0U/I+D3jGiFYttxz56u80YO
- 7nsqs7o4pmHZt5SgolrvTMja0aoklfcKcrD+gyPHMj68yi83EhAByjHMhduF1ktSNRBvsMB
- t47U8xcKGcSPLBzTztJd0sg9SdC8I+38Einigrac85K8QXCzTrEi3kfcHk2w==
-Received: from [10.172.233.45] (helo=SmtpCorp) by smtpcorp.com with esmtpsa
- (TLS1.3:ECDHE_SECP256R1__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
- (Exim 4.94.2-S2G) (envelope-from <repk@triplefau.lt>)
- id 1vuCGX-TRk1ql-Cs; Sun, 22 Feb 2026 16:25:05 +0000
-Received: from [10.12.239.196] (helo=localhost) by smtpcorp.com with esmtpsa
- (TLS1.3:ECDHE_SECP256R1__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
- (Exim 4.99.1-S2G) (envelope-from <repk@triplefau.lt>)
- id 1vuCGX-AIkwcC8ps6y-HJg9; Sun, 22 Feb 2026 16:25:05 +0000
-Date: Sun, 22 Feb 2026 17:06:21 +0100
-From: Remi Pommarel <repk@triplefau.lt>
-To: Johannes Berg <johannes@sipsolutions.net>
-Cc: linux-wireless@vger.kernel.org, linux-kernel@vger.kernel.org,
- Pablo MARTIN-GOMEZ <pmartin-gomez@freebox.fr>
-Subject: Re: [PATCH wireless] wifi: mac80211: Fix ADDBA update when HW
- supports reordering
-Message-ID: <aZsmk0lUpL0UBd6Q@pilgrim>
-References: <5806bab7e46506d3c300ab4eb66989d42936aeb0.1771323902.git.repk@triplefau.lt>
- <f1243e86eea72999581d33c6f97ff9015ce71542.camel@sipsolutions.net>
- <aZRnlPA_uY9uWuKr@pilgrim>
- <d142f76473a03c76c780390f0352ffbb03566e48.camel@sipsolutions.net>
- <aZR9eQlhy55iD6IN@pilgrim>
- <6ed3a0ee5e15c73f304050d303e74441cdf61659.camel@sipsolutions.net>
+	s=arc-20240116; t=1771790571; c=relaxed/simple;
+	bh=OP4O3q0tEgUsuEr5yc6i3Pk3OGco6JhTwWYBuWw8ZeY=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=thUL5MMBSV5Ezh7ND5sI4OBz3DuaYerHCtnGR9DzQaP0fGqMzNvVwXJeDahMEFu2BIx33OwmtUm/0oNf3l8Pxn3dtkanbv1SDPOXaNeNd717CQmzgce7+/WwpYIkoyMQPynmoe205jW65ZZjpBoSJJwVzOjhc0cgeAS87WmL/+Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=animalcreek.com; spf=pass smtp.mailfrom=animalcreek.com; dkim=pass (2048-bit key) header.d=animalcreek.com header.i=@animalcreek.com header.b=sp2ikvR/; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=NSQKd/sJ; arc=none smtp.client-ip=202.12.124.155
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=animalcreek.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=animalcreek.com
+Received: from phl-compute-12.internal (phl-compute-12.internal [10.202.2.52])
+	by mailfhigh.stl.internal (Postfix) with ESMTP id 0FC377A004D;
+	Sun, 22 Feb 2026 15:02:47 -0500 (EST)
+Received: from phl-frontend-04 ([10.202.2.163])
+  by phl-compute-12.internal (MEProxy); Sun, 22 Feb 2026 15:02:48 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=animalcreek.com;
+	 h=cc:cc:content-transfer-encoding:content-type:content-type
+	:date:date:from:from:in-reply-to:in-reply-to:message-id
+	:mime-version:references:reply-to:subject:subject:to:to; s=fm1;
+	 t=1771790567; x=1771876967; bh=iLfA9tYX3ZgFzd0/ew0lCDb5XE0nxrvr
+	a7ORe8E4F0I=; b=sp2ikvR/wrlvxMw2Rg04UQBeovX12toH+bjpRyb0pTJIwrbU
+	IOhGT/3fid+xVbtSzfpg8uVUB2mv+U6IH01qR8cifPea99MhsR1M8R6cLWHoeNHj
+	UReMa4X3COK71OOekdw/0O0eYSCR2tqFVLhG7W3vhdDe7FAqqaBNjWSycMal8F38
+	UCFIZ2i1nWRUNv59su2EUq+NLjF67ZFUH7YG/O3emOTa4DosPRRsCsbvbqdpaiBI
+	vSNnkgbIE2+I3xUq6KISLtngNhY+KI8popxF3wowhNlSHPXfYXaTCHyQ5DszDtza
+	DYgvYl2hQz3pq99+CUyXrU52yFPb51E8jkKkwA==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-transfer-encoding
+	:content-type:content-type:date:date:feedback-id:feedback-id
+	:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to:x-me-proxy
+	:x-me-sender:x-me-sender:x-sasl-enc; s=fm3; t=1771790567; x=
+	1771876967; bh=iLfA9tYX3ZgFzd0/ew0lCDb5XE0nxrvra7ORe8E4F0I=; b=N
+	SQKd/sJdznCJrAvSWsG6YbBEHuROoMH6RFUGFaiZ20+Vz3vl4aAkYqwIOEvSap7W
+	+A6/JPwAVwR0Z/hEzlPoAbdLpRtMJX6DPOcutYWYix2jTPosxndqamobFuTMX/IQ
+	skEU0Z7c3X+BAMCQ3UbRVrA/0MgtKEUobE2GO5yx85g3XUf/9PsNh5Ph/OiqzTee
+	Cfr1hI3mM6dGfb2V69qJOJGRPc/bX/pBrFWyAX4gN6GPgfWZsLzCPx8XdkJ0JLZw
+	OygsKqXg8+2ScdQQMhHaERSsP8ZLVecqly5LE8JhX3+JrCVzF7eK8jVo8FaeBQXH
+	aF1TfdUssixzRUNJgZWGQ==
+X-ME-Sender: <xms:52CbaSXmiUO-WUZxbWcJBuBaZ0m56xHY9RABhhvFSBeEC9eI-uQbvw>
+    <xme:52CbaXiVlOoz34fgPNZzEV4V_mY-HZYV8hXiFupcGnePoS1ulaRKuUwYc_Mw3z4ul
+    gBMqi4IMA097PITJmeOpDHxFJGCMN1B1rrTvMl-od_l5upkarISSA>
+X-ME-Received: <xmr:52CbaR-8ZpCD6cZ8eNioLyZKpJdBbvnc82rl67A-f6DrqGXT6z-xThQ8NYysZntPg7q2C-zA3YEZ6qPYBVBWgaOAyXop>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefgedrtddtgddvfeehvddvucetufdoteggodetrf
+    dotffvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfurfetoffkrfgpnffqhgenuceu
+    rghilhhouhhtmecufedttdenucenucfjughrpefkffggfgfuvfevfhfhohgjtgfgsehtje
+    ertddtvdejnecuhfhrohhmpeforghrkhcuifhrvggvrhcuoehmghhrvggvrhesrghnihhm
+    rghltghrvggvkhdrtghomheqnecuggftrfgrthhtvghrnhephfduteehueffkeelfeefke
+    efjeeuffdtuedvffeftdettdfhleduvddutdefheeinecuvehluhhsthgvrhfuihiivgep
+    tdenucfrrghrrghmpehmrghilhhfrhhomhepmhhgrhgvvghrsegrnhhimhgrlhgtrhgvvg
+    hkrdgtohhmpdhnsggprhgtphhtthhopeehpdhmohguvgepshhmthhpohhuthdprhgtphht
+    thhopehtohhmrghsiidruhhnghgvrheshigrhhhoohdrphhlpdhrtghpthhtoheplhhinh
+    hugidqfihirhgvlhgvshhssehvghgvrhdrkhgvrhhnvghlrdhorhhgpdhrtghpthhtohep
+    nhgvthguvghvsehvghgvrhdrkhgvrhhnvghlrdhorhhgpdhrtghpthhtoheplhhinhhugi
+    dqkhgvrhhnvghlsehvghgvrhdrkhgvrhhnvghlrdhorhhgpdhrtghpthhtohepmhhgrhgv
+    vghrsegrnhhimhgrlhgtrhgvvghkrdgtohhm
+X-ME-Proxy: <xmx:52CbaZY0xw7DMS0Cw5MKQlM6_XB7PUvgwLfwgV2NeaKd15hiwW3jqQ>
+    <xmx:52CbaY2CGxszxHsyF2Se7t3zMFvQp_lnwBJG-PjV9aSJNaTYbrsJxg>
+    <xmx:52Cbacaz6sXeE2ANtP093_-dKeL-LjEgNaITbxOIhQreQ5OzS__QAQ>
+    <xmx:52CbaYI-cPfDeHKCBJSV269JPkVme0DwOmVpYIfKQ3BWNhbD3QTpdw>
+    <xmx:52CbaQuvwCW4nc-UV3VtD1M9kfExyx8yDjkqOv2HjRrpspzNWWBa9YyX>
+Feedback-ID: i9cc843c7:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Sun,
+ 22 Feb 2026 15:02:46 -0500 (EST)
+Message-ID: <386f2ceb-30ae-4acf-9a62-287412fc5c79@animalcreek.com>
+Date: Sun, 22 Feb 2026 13:02:45 -0700
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <6ed3a0ee5e15c73f304050d303e74441cdf61659.camel@sipsolutions.net>
-X-Smtpcorp-Track: UniXV439jpKe.lLom5BYraKaV.3gDdOgnLTet
-Feedback-ID: 510616m:510616apGKSTK:510616sbru8S-D2W
-X-Report-Abuse: Please forward a copy of this message, including all headers,
- to <abuse-report@smtp2go.com>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] nfc: trf7970a: Fix spelling mistakes in comments
+To: tomasz.unger@yahoo.pl
+Cc: linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
+ linux-kernel@vger.kernel.org
+References: <20260219112454.46841-1-tomasz.unger.ref@yahoo.pl>
+ <20260219112454.46841-1-tomasz.unger@yahoo.pl>
+Content-Language: en-US
+From: Mark Greer <mgreer@animalcreek.com>
+Organization: Animal Creek Technologies, Inc.
+In-Reply-To: <20260219112454.46841-1-tomasz.unger@yahoo.pl>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [1.74 / 15.00];
-	SUSPICIOUS_URL_IN_SUSPICIOUS_MESSAGE(1.00)[];
-	MID_RHS_NOT_FQDN(0.50)[];
-	URIBL_RED(0.50)[triplefau.lt:dkim];
-	R_DKIM_ALLOW(-0.20)[triplefau.lt:s=s510616];
+X-Spamd-Result: default: False [-1.66 / 15.00];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_DKIM_ALLOW(-0.20)[animalcreek.com:s=fm1,messagingengine.com:s=fm3];
 	MAILLIST(-0.15)[generic];
-	HAS_ANON_DOMAIN(0.10)[];
 	MIME_GOOD(-0.10)[text/plain];
-	BAD_REP_POLICIES(0.10)[];
 	HAS_LIST_UNSUB(-0.01)[];
-	DKIM_MIXED(0.00)[];
-	TO_DN_SOME(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	DMARC_POLICY_ALLOW(0.00)[triplefau.lt,quarantine];
-	TAGGED_FROM(0.00)[bounces-32078-lists,linux-wireless=lfdr.de];
+	DMARC_NA(0.00)[animalcreek.com];
 	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-32079-lists,linux-wireless=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	R_DKIM_PERMFAIL(0.00)[smtpservice.net:s=maxzs0.a1-4.dyn];
-	DKIM_TRACE(0.00)[smtpservice.net:~,triplefau.lt:+];
+	HAS_ORG_HEADER(0.00)[];
+	FREEMAIL_TO(0.00)[yahoo.pl];
+	DKIM_TRACE(0.00)[animalcreek.com:+,messagingengine.com:+];
+	RCPT_COUNT_THREE(0.00)[4];
 	FROM_HAS_DN(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[5];
-	NEURAL_HAM(-0.00)[-1.000];
+	RCVD_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[repk@triplefau.lt,linux-wireless@vger.kernel.org];
-	RCPT_COUNT_THREE(0.00)[4];
-	TAGGED_RCPT(0.00)[linux-wireless];
+	FROM_NEQ_ENVFROM(0.00)[mgreer@animalcreek.com,linux-wireless@vger.kernel.org];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	TO_DN_NONE(0.00)[];
+	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	MISSING_XM_UA(0.00)[];
-	R_SPF_ALLOW(0.00)[+ip4:172.234.253.10];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	ARC_ALLOW(0.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: AF48316F9FC
+	TAGGED_RCPT(0.00)[linux-wireless];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[animalcreek.com:mid,animalcreek.com:dkim,animalcreek.com:email,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: C2B1A170438
 X-Rspamd-Action: no action
 
-On Tue, Feb 17, 2026 at 05:00:56PM +0100, Johannes Berg wrote:
-> On Tue, 2026-02-17 at 15:38 +0100, Remi Pommarel wrote:
-> > On Tue, Feb 17, 2026 at 02:59:34PM +0100, Johannes Berg wrote:
-> > > On Tue, 2026-02-17 at 14:05 +0100, Remi Pommarel wrote:
-> > > > On Tue, Feb 17, 2026 at 12:30:08PM +0100, Johannes Berg wrote:
-> > > > > On Tue, 2026-02-17 at 11:36 +0100, Remi Pommarel wrote:
-> > > > > > Commit f89e07d4cf26 ("mac80211: agg-rx: refuse ADDBA Request with timeout
-> > > > > > update") added a check to fail when ADDBA update would change the
-> > > > > > timeout param.
-> > > > > > 
-> > > > > > This param is kept in tid_ampdu_rx context which is only allocated on HW
-> > > > > > that do not set SUPPORTS_REORDERING_BUFFER. Because the timeout check
-> > > > > > was done regardless of this param, ADDBA update always failed on those
-> > > > > > HW.
-> > > > > 
-> > > > > Seems like a legit problem, but
-> > > > > 
-> > > > > > Fix this by only checking tid_ampdu_rx->timeout only when
-> > > > > > SUPPORTS_REORDERING_BUFFER is not set.
-> > > > > 
-> > > > > that doesn't seem right? Especially the way you implemented it, it won't
-> > > > > even respond at all when it's an update and SUPPORTS_REORDERING_BUFFER
-> > > > > is set.
-> > > > 
-> > > > I could be wrong but I think the patch format here make it difficult to
-> > > > read. If it's an update and SUPPORTS_REORDERING_BUFFER is set, the
-> > > > following "if" in the code (not fully visible in the diff here) will end
-> > > > calling drv_ampdu_action().
-> > > 
-> > > Yes, but it will be IEEE80211_AMPDU_RX_START which isn't really intended
-> > > by the state machine/API between mac80211/driver. So that doesn't seem
-> > > right.
-> > > 
-> > 
-> > That does make sense. However, if I understand correctly, it means that
-> > even if we end up storing the timeout for drivers that support
-> > reordering, a new IEEE80211_AMPDU_RX_UPDATE should still be introduced,
-> > right?
-> 
-> I guess in order to do a no-op update that doesn't change the timeout,
-> we could? But not sure it's all worth it?
+On 2/19/26 4:24 AM, tomasz.unger@yahoo.pl wrote:
+> From: Tomasz Unger <tomasz.unger@yahoo.pl>
+>
+> Fix spelling mistakes in comment block (lines 64, 69, 72):
+> - 'recieves' -> 'receives'
+> - 'recieving' -> 'receiving'
+> - 'recived' -> 'received'
+>
+> Found by manual inspection.
+>
+> Signed-off-by: Tomasz Unger <tomasz.unger@yahoo.pl>
+> ---
+>   drivers/nfc/trf7970a.c | 6 +++---
+>   1 file changed, 3 insertions(+), 3 deletions(-)
+>
+> diff --git a/drivers/nfc/trf7970a.c b/drivers/nfc/trf7970a.c
+> index d17c701c7888..c3bf48f49eca 100644
+> --- a/drivers/nfc/trf7970a.c
+> +++ b/drivers/nfc/trf7970a.c
+> @@ -61,15 +61,15 @@
+>    * support that.  So, if an abort is received before trf7970a_send_cmd()
+>    * has sent the command to the tag, it simply returns -ECANCELED.  If the
+>    * command has already been sent to the tag, then the driver continues
+> - * normally and recieves the response data (or error) but just before
+> + * normally and receives the response data (or error) but just before
+>    * sending the data upstream, it frees the rx_skb and sends -ECANCELED
+>    * upstream instead.  If the command failed, that error will be sent
+>    * upstream.
+>    *
+> - * When recieving data from a tag and the interrupt status register has
+> + * When receiving data from a tag and the interrupt status register has
+>    * only the SRX bit set, it means that all of the data has been received
+>    * (once what's in the fifo has been read).  However, depending on timing
+> - * an interrupt status with only the SRX bit set may not be recived.  In
+> + * an interrupt status with only the SRX bit set may not be received.  In
+>    * those cases, the timeout mechanism is used to wait 20 ms in case more
+>    * data arrives.  After 20 ms, it is assumed that all of the data has been
+>    * received and the accumulated rx data is sent upstream.  The
 
-I was going to say it would not be a no-op for a buf_size update but,
-if I understand correctly, even when SUPPORTS_REORDERING_BUFFER is not
-set the buf_size update is ignored completely and the reorder_buf is
-not resized yet a successful addba response is sent. Don't we need to
-check for buf_size change as well as timeout also?
 
-> Pablo seems to have looked up that it _is_ supported - which I didn't
-> expect because it's not part of the API contract, so the drivers
-> implemented something that can't actually ever get hit? Seems odd. And
-> I'm pretty sure e.g. iwlwifi wouldn't support it.
-> 
-> But I basically also think it's not worth it in practice; why try to
-> support something that's never going to happen?
+Wow... and I actually know how to spell receive. if you can believe that.
 
-Just to confirm, you mean that updating the timeout is not worth it, but
-fixing this issue is still needed right?
 
--- 
-Remi
+Acked-by: Mark Greer <mgreer@animalcreek.com>
 
 
