@@ -1,412 +1,191 @@
-Return-Path: <linux-wireless+bounces-32077-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-32078-lists+linux-wireless=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 6UvjDyktmmmzZQMAu9opvQ
-	(envelope-from <linux-wireless+bounces-32077-lists+linux-wireless=lfdr.de@vger.kernel.org>)
-	for <lists+linux-wireless@lfdr.de>; Sat, 21 Feb 2026 23:09:45 +0100
+	id 6epRJ+0tm2nwugMAu9opvQ
+	(envelope-from <linux-wireless+bounces-32078-lists+linux-wireless=lfdr.de@vger.kernel.org>)
+	for <lists+linux-wireless@lfdr.de>; Sun, 22 Feb 2026 17:25:17 +0100
 X-Original-To: lists+linux-wireless@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8D42016E117
-	for <lists+linux-wireless@lfdr.de>; Sat, 21 Feb 2026 23:09:44 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id AF48316F9FC
+	for <lists+linux-wireless@lfdr.de>; Sun, 22 Feb 2026 17:25:16 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 1410E301D327
-	for <lists+linux-wireless@lfdr.de>; Sat, 21 Feb 2026 22:09:43 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id E926F300C93D
+	for <lists+linux-wireless@lfdr.de>; Sun, 22 Feb 2026 16:25:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8C2F6274FEB;
-	Sat, 21 Feb 2026 22:09:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C648622CBC6;
+	Sun, 22 Feb 2026 16:25:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Opbw5OcW"
+	dkim=fail reason="unknown key version" (0-bit key) header.d=smtpservice.net header.i=@smtpservice.net header.b="BJRF06IR";
+	dkim=pass (2048-bit key) header.d=triplefau.lt header.i=@triplefau.lt header.b="FgvpKB7C"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-wr1-f47.google.com (mail-wr1-f47.google.com [209.85.221.47])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from e2i340.smtp2go.com (e2i340.smtp2go.com [103.2.141.84])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B15E014A8E
-	for <linux-wireless@vger.kernel.org>; Sat, 21 Feb 2026 22:09:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.47
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9B73C1FB1
+	for <linux-wireless@vger.kernel.org>; Sun, 22 Feb 2026 16:25:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=103.2.141.84
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771711780; cv=none; b=BVnjvYD8YtBakq+snKzEiaccv9f815Xn0Y+OxYhohnF9wECYulpdPeZufxUiU0h50p2BEmlH6qRVJnVp1RbhdNU7Rxyct8wvj5hzj0vdndjClGVaIlAtZ6jkM7eFpJSHPrMaH0C8eAvs8XEJLuwOiecRqfY/zz+sTFe0JJLyPbI=
+	t=1771777513; cv=none; b=Qp453onNs5enjzWLKcAUcuzcl/AFduty43ZZhmcYr33ldpQt7RJq9PjsnEICTNn8qhN9I3Hm6utJ7mA2v3d/47CAATxkLM2VcaBg9ODm9JSLeoHUbJ8ukKIEU/8xK+7FO1/+tC7Y1R3rZyo1C8eYrvPGGods7AePoxl6kEv6n4Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771711780; c=relaxed/simple;
-	bh=b+PGWBUeaDStCeIMFE07E5ZJoJ9GidwoCaCLkVXGTVw=;
-	h=Message-ID:Date:MIME-Version:From:Subject:To:Cc:References:
-	 In-Reply-To:Content-Type; b=QIgBNdNRolRUZ8abgpFMzuXrDLLjEe3OpjWBnra0sowVwL8G0rKGQsuYaMCYqBkxnBQbpXHR5deQJMTIZkBwcbMLs2d8EWl1hLfisYnOb9X+ehLZ/zReX7kOnPsFr761dt4AjkgQn9TYpcykV/OqJHEJjr3c2mM70cQmwv5ZHdA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Opbw5OcW; arc=none smtp.client-ip=209.85.221.47
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-wr1-f47.google.com with SMTP id ffacd0b85a97d-436e8758b91so2233536f8f.0
-        for <linux-wireless@vger.kernel.org>; Sat, 21 Feb 2026 14:09:38 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1771711777; x=1772316577; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:content-language:references
-         :cc:to:subject:from:user-agent:mime-version:date:message-id:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=B4zILwid9wWjFNakPuUDYiY+OVOGHxzx404RkOX+sw4=;
-        b=Opbw5OcWgDuSJPmlon6kmVugO0jzAnSn57+HzPHXKceaa0ZA3ZjM9/gzhtV4zHCVYS
-         QKK7P/ZVsHsX3u09wp9+ZVeCWcX2CG7ZemD0IFbadSTg78aCBuyYZccTOlA4pwHUN+Zx
-         loxv1LrdqEwO+tYxJxp/EmF3zH+Grr++u8cwhbKszdT2hwUbug8I4k9eyvdJnY86uN08
-         mmVLaUnulkDnffc91WZB1DHaKZNEywjAhAOXEiEUDH1vUJAEsEWUtFcWheoTS0wIKXf2
-         KI4qRXprLS6bial9BO97Rxul/ig1IfL3JgRouDJLVKtssOu8QIaGSREJUw15vdL2s9W7
-         rTzg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1771711777; x=1772316577;
-        h=content-transfer-encoding:in-reply-to:content-language:references
-         :cc:to:subject:from:user-agent:mime-version:date:message-id:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=B4zILwid9wWjFNakPuUDYiY+OVOGHxzx404RkOX+sw4=;
-        b=CekcVddNjCIwbVdQyohBJ02Sqeq32u6t5i/BF7wY+thCAATY+jpDxq0P7jvGi5Db7j
-         GdkDahnk9+9pGp5uiZtcvp97Chd9A4Fw666rBy+/uTmGPGAUYQ2dK04Tn5anh/FdKDJp
-         Sec6Kl1fn2EgraVDJuI00/oEoJF9Z+UAumhjyUTO7zx/e33t5EUsZ80OEW7PaU5gp/c7
-         EzkKLM67UH/dPr5pQtO3KPsyBz05SO/OU/Q78TMOcAWtk4426fSTO+owvzGsVnvCn3o+
-         yxFIORT2vnCgRRhGJQ+LUjCCsH5hfE334xc/egyOyndEeYbKmdf4GsInlEYu8Ei15BfF
-         7lxg==
-X-Forwarded-Encrypted: i=1; AJvYcCU87uVNuO+5oIKpAVEozMiGgAtirIpwhUzCQtUzDIQbGdtCfY3yQ+vuvNVAsOt1k0dfidg2n689MYBuc9fspg==@vger.kernel.org
-X-Gm-Message-State: AOJu0YzXIE2risQTmnDgvyZqqrdNBHB3ss2E+bwDKHDFsaqsDai5Gl98
-	8rh8XAX8UJmbvUrc5ixXP5RB4MaVqoDrCOz75RD7oA8cSWX4bFNpiRLbN+N4pw==
-X-Gm-Gg: AZuq6aJKTYWZQBflNbhWe79adi/AcYX4DCbNb3yUe0KNDIoWjwCXIgWeLUum2iqDFYr
-	hOmf9Bw/ZCWXem/iFjTn9pUpMYnfspyZTEGC9KFi4bMS7unCdFwdeEUywhU5YSIYWgDsi1VjPiP
-	PmL0StD3vclZH+SC8w/vVAP31CgL4yfMrumlYiD20ygTQzJ6gpxQdYZMgJYAAJoW16d0780QbvQ
-	hwZuENnwpZV+uPF3djlUyrfD1zt4/RwUJM/Kw00Yqo7n7F2DXr4RBfG3ZYt+f5iVuV1oBKxPmyc
-	Wl9qJFSysI33/wKmktNFsSenyVAsIOytE1eqCPYME9ycqGuRChZs6ZZyBAZH4S2dsvP8mA86c4j
-	Y81rpbJj94q1O0UFJLTrvFrxLEP0Ay6UuNkL0r61vKsrsHIB+r9CKZPc0WI82oWnK1H745F73do
-	NNGOoGEova1eMbccW0VAXX+iuWge2Q
-X-Received: by 2002:a5d:4c42:0:b0:436:8f7e:a479 with SMTP id ffacd0b85a97d-4396f15b32cmr5252841f8f.17.1771711776811;
-        Sat, 21 Feb 2026 14:09:36 -0800 (PST)
-Received: from [192.168.1.8] ([81.196.40.93])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-43970c00d95sm7751741f8f.13.2026.02.21.14.09.35
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Sat, 21 Feb 2026 14:09:36 -0800 (PST)
-Message-ID: <b47a1c95-60c4-468d-9944-c59546e082bf@gmail.com>
-Date: Sun, 22 Feb 2026 00:09:35 +0200
+	s=arc-20240116; t=1771777513; c=relaxed/simple;
+	bh=SJsPiAbfWLW4wq9Idsd+YveXh/Utt3vKMFZBXvWIc8E=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=kLV6mhFNUofIy55g70WavZ8NvsCoTyDDlQFuytaV+n2PvqC4+x0vVqlVTxOeiVTWBKGQgR+7et0G2Qfv8L/bVzTdc9t4iZEB4Iy8FouVVrze5VuAMWJXbHO81vveTJBVqnHz09L4iTGa7+MJs7oX75/w6kIlgFI6RqT4iXa7PBQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=triplefau.lt; spf=pass smtp.mailfrom=em510616.triplefau.lt; dkim=fail (0-bit key) header.d=smtpservice.net header.i=@smtpservice.net header.b=BJRF06IR reason="unknown key version"; dkim=pass (2048-bit key) header.d=triplefau.lt header.i=@triplefau.lt header.b=FgvpKB7C; arc=none smtp.client-ip=103.2.141.84
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=triplefau.lt
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=em510616.triplefau.lt
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=smtpservice.net; s=maxzs0.a1-4.dyn; x=1771778411; h=Feedback-ID:
+	X-Smtpcorp-Track:Message-ID:Subject:To:From:Date:Reply-To:Sender:
+	List-Unsubscribe:List-Unsubscribe-Post;
+	bh=CG6CmaFogXrtFMNNsyT6tnwVb2ecRN3dNdKGuj+xzK8=; b=BJRF06IRm0gwtXWsbN1Gi2PBe+
+	xlGDq0rarZc1omCqBsIN4TUEWp4iURBkfiMw3IIC0sx6CeWV4UmPWnPTbyUcoKJjw135H6XteBM63
+	Bq/Rs7zgjdnRg0dLAXu0ytb48OVfODg29fRgXYd3mw4BZfybfvtLChGnsxo7cVhFQWpSo2b2FBfHI
+	c950aoqiECGTJhJtjGpbMETblCCKt40fL1v4P0/p2ubOjFzDXq1OGYBw93aktKH50OR/q3sz+aU8p
+	0uS7JfgRBcWRmktwPWLV47XuNd3c1xaHlDQh8FlhnVkScCTOTN/7VKPVpkdljPv8fcKZyRlBX/PLO
+	pR4egyVQ==;
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=triplefau.lt;
+ i=@triplefau.lt; q=dns/txt; s=s510616; t=1771777511; h=from : subject
+ : to : message-id : date;
+ bh=CG6CmaFogXrtFMNNsyT6tnwVb2ecRN3dNdKGuj+xzK8=;
+ b=FgvpKB7CpFs+nsDERngaXuJDmAcMDGKAe84GumrgELE1eMT6oAF5FbXxLEri8t3Ln10cL
+ QRT7nikbgyJnWEyoLLz6dqtyao0ecx9i5Fq2H4L53k47xvblsPkjmQFqhfPsxm1XkB0n3WO
+ +auMzLT653gRR1pLid1fnegmBANKtDHMEhv1h6wAhxgbk1KL0U/I+D3jGiFYttxz56u80YO
+ 7nsqs7o4pmHZt5SgolrvTMja0aoklfcKcrD+gyPHMj68yi83EhAByjHMhduF1ktSNRBvsMB
+ t47U8xcKGcSPLBzTztJd0sg9SdC8I+38Einigrac85K8QXCzTrEi3kfcHk2w==
+Received: from [10.172.233.45] (helo=SmtpCorp) by smtpcorp.com with esmtpsa
+ (TLS1.3:ECDHE_SECP256R1__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
+ (Exim 4.94.2-S2G) (envelope-from <repk@triplefau.lt>)
+ id 1vuCGX-TRk1ql-Cs; Sun, 22 Feb 2026 16:25:05 +0000
+Received: from [10.12.239.196] (helo=localhost) by smtpcorp.com with esmtpsa
+ (TLS1.3:ECDHE_SECP256R1__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
+ (Exim 4.99.1-S2G) (envelope-from <repk@triplefau.lt>)
+ id 1vuCGX-AIkwcC8ps6y-HJg9; Sun, 22 Feb 2026 16:25:05 +0000
+Date: Sun, 22 Feb 2026 17:06:21 +0100
+From: Remi Pommarel <repk@triplefau.lt>
+To: Johannes Berg <johannes@sipsolutions.net>
+Cc: linux-wireless@vger.kernel.org, linux-kernel@vger.kernel.org,
+ Pablo MARTIN-GOMEZ <pmartin-gomez@freebox.fr>
+Subject: Re: [PATCH wireless] wifi: mac80211: Fix ADDBA update when HW
+ supports reordering
+Message-ID: <aZsmk0lUpL0UBd6Q@pilgrim>
+References: <5806bab7e46506d3c300ab4eb66989d42936aeb0.1771323902.git.repk@triplefau.lt>
+ <f1243e86eea72999581d33c6f97ff9015ce71542.camel@sipsolutions.net>
+ <aZRnlPA_uY9uWuKr@pilgrim>
+ <d142f76473a03c76c780390f0352ffbb03566e48.camel@sipsolutions.net>
+ <aZR9eQlhy55iD6IN@pilgrim>
+ <6ed3a0ee5e15c73f304050d303e74441cdf61659.camel@sipsolutions.net>
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-From: Bitterblue Smith <rtl8821cerfe2@gmail.com>
-Subject: Re: [PATCH v3 19/21] wifi: rtl8xxxu: add hw crypto support for AP
- mode
-To: Martin Kaistra <martin.kaistra@linutronix.de>,
- linux-wireless@vger.kernel.org
-Cc: Jes Sorensen <Jes.Sorensen@gmail.com>, Ping-Ke Shih <pkshih@realtek.com>,
- Sebastian Andrzej Siewior <bigeasy@linutronix.de>
-References: <20231222101442.626837-1-martin.kaistra@linutronix.de>
- <20231222101442.626837-20-martin.kaistra@linutronix.de>
-Content-Language: en-US
-In-Reply-To: <20231222101442.626837-20-martin.kaistra@linutronix.de>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <6ed3a0ee5e15c73f304050d303e74441cdf61659.camel@sipsolutions.net>
+X-Smtpcorp-Track: UniXV439jpKe.lLom5BYraKaV.3gDdOgnLTet
+Feedback-ID: 510616m:510616apGKSTK:510616sbru8S-D2W
+X-Report-Abuse: Please forward a copy of this message, including all headers,
+ to <abuse-report@smtp2go.com>
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.66 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
-	R_DKIM_ALLOW(-0.20)[gmail.com:s=20230601];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+X-Spamd-Result: default: False [1.74 / 15.00];
+	SUSPICIOUS_URL_IN_SUSPICIOUS_MESSAGE(1.00)[];
+	MID_RHS_NOT_FQDN(0.50)[];
+	URIBL_RED(0.50)[triplefau.lt:dkim];
+	R_DKIM_ALLOW(-0.20)[triplefau.lt:s=s510616];
 	MAILLIST(-0.15)[generic];
+	HAS_ANON_DOMAIN(0.10)[];
 	MIME_GOOD(-0.10)[text/plain];
+	BAD_REP_POLICIES(0.10)[];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-32077-lists,linux-wireless=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	FREEMAIL_CC(0.00)[gmail.com,realtek.com,linutronix.de];
-	FREEMAIL_FROM(0.00)[gmail.com];
+	DKIM_MIXED(0.00)[];
 	TO_DN_SOME(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	DMARC_POLICY_ALLOW(0.00)[triplefau.lt,quarantine];
+	TAGGED_FROM(0.00)[bounces-32078-lists,linux-wireless=lfdr.de];
+	MIME_TRACE(0.00)[0:+];
+	RCVD_TLS_LAST(0.00)[];
+	R_DKIM_PERMFAIL(0.00)[smtpservice.net:s=maxzs0.a1-4.dyn];
+	DKIM_TRACE(0.00)[smtpservice.net:~,triplefau.lt:+];
+	FROM_HAS_DN(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_COUNT_FIVE(0.00)[5];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[rtl8821cerfe2@gmail.com,linux-wireless@vger.kernel.org];
-	DKIM_TRACE(0.00)[gmail.com:+];
 	NEURAL_HAM(-0.00)[-1.000];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[repk@triplefau.lt,linux-wireless@vger.kernel.org];
+	RCPT_COUNT_THREE(0.00)[4];
 	TAGGED_RCPT(0.00)[linux-wireless];
-	MID_RHS_MATCH_FROM(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[5];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,realtek.com:email]
-X-Rspamd-Queue-Id: 8D42016E117
+	MISSING_XM_UA(0.00)[];
+	R_SPF_ALLOW(0.00)[+ip4:172.234.253.10];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	ARC_ALLOW(0.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: AF48316F9FC
 X-Rspamd-Action: no action
 
-On 22/12/2023 12:14, Martin Kaistra wrote:
-> Add a custom function for allocating entries in the sec cam. This allows
-> us to store multiple keys with the same keyidx.
+On Tue, Feb 17, 2026 at 05:00:56PM +0100, Johannes Berg wrote:
+> On Tue, 2026-02-17 at 15:38 +0100, Remi Pommarel wrote:
+> > On Tue, Feb 17, 2026 at 02:59:34PM +0100, Johannes Berg wrote:
+> > > On Tue, 2026-02-17 at 14:05 +0100, Remi Pommarel wrote:
+> > > > On Tue, Feb 17, 2026 at 12:30:08PM +0100, Johannes Berg wrote:
+> > > > > On Tue, 2026-02-17 at 11:36 +0100, Remi Pommarel wrote:
+> > > > > > Commit f89e07d4cf26 ("mac80211: agg-rx: refuse ADDBA Request with timeout
+> > > > > > update") added a check to fail when ADDBA update would change the
+> > > > > > timeout param.
+> > > > > > 
+> > > > > > This param is kept in tid_ampdu_rx context which is only allocated on HW
+> > > > > > that do not set SUPPORTS_REORDERING_BUFFER. Because the timeout check
+> > > > > > was done regardless of this param, ADDBA update always failed on those
+> > > > > > HW.
+> > > > > 
+> > > > > Seems like a legit problem, but
+> > > > > 
+> > > > > > Fix this by only checking tid_ampdu_rx->timeout only when
+> > > > > > SUPPORTS_REORDERING_BUFFER is not set.
+> > > > > 
+> > > > > that doesn't seem right? Especially the way you implemented it, it won't
+> > > > > even respond at all when it's an update and SUPPORTS_REORDERING_BUFFER
+> > > > > is set.
+> > > > 
+> > > > I could be wrong but I think the patch format here make it difficult to
+> > > > read. If it's an update and SUPPORTS_REORDERING_BUFFER is set, the
+> > > > following "if" in the code (not fully visible in the diff here) will end
+> > > > calling drv_ampdu_action().
+> > > 
+> > > Yes, but it will be IEEE80211_AMPDU_RX_START which isn't really intended
+> > > by the state machine/API between mac80211/driver. So that doesn't seem
+> > > right.
+> > > 
+> > 
+> > That does make sense. However, if I understand correctly, it means that
+> > even if we end up storing the timeout for drivers that support
+> > reordering, a new IEEE80211_AMPDU_RX_UPDATE should still be introduced,
+> > right?
 > 
-> The maximum number of sec cam entries for 8188f is 16 according to the
-> vendor driver. Add the number to rtl8xxxu_fileops, so that other chips
-> which might support more entries, can set a different number there.
+> I guess in order to do a no-op update that doesn't change the timeout,
+> we could? But not sure it's all worth it?
+
+I was going to say it would not be a no-op for a buf_size update but,
+if I understand correctly, even when SUPPORTS_REORDERING_BUFFER is not
+set the buf_size update is ignored completely and the reorder_buf is
+not resized yet a successful addba response is sent. Don't we need to
+check for buf_size change as well as timeout also?
+
+> Pablo seems to have looked up that it _is_ supported - which I didn't
+> expect because it's not part of the API contract, so the drivers
+> implemented something that can't actually ever get hit? Seems odd. And
+> I'm pretty sure e.g. iwlwifi wouldn't support it.
 > 
-> Set the bssid as mac address for group keys instead of just using the
-> ethernet broadcast address and use BIT(6) in the sec cam ctrl entry
-> for differentiating them from pairwise keys like in the vendor driver.
-> 
-> Add the TXDESC_EN_DESC_ID bit and the hw_key_idx to tx
-> broadcast/multicast packets in AP mode.
-> 
-> Finally, allow the usage of rtl8xxxu_set_key() for AP mode.
-> 
-> Signed-off-by: Martin Kaistra <martin.kaistra@linutronix.de>
-> Reviewed-by: Ping-Ke Shih <pkshih@realtek.com>
-> ---
->  .../net/wireless/realtek/rtl8xxxu/rtl8xxxu.h  |  5 ++
->  .../realtek/rtl8xxxu/rtl8xxxu_8188f.c         |  1 +
->  .../wireless/realtek/rtl8xxxu/rtl8xxxu_core.c | 48 +++++++++++++++----
->  3 files changed, 44 insertions(+), 10 deletions(-)
-> 
-> diff --git a/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu.h b/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu.h
-> index c5e6d8f7d26bd..62e6318bc0924 100644
-> --- a/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu.h
-> +++ b/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu.h
-> @@ -498,6 +498,7 @@ struct rtl8xxxu_txdesc40 {
->  #define DESC_RATE_ID_SHIFT		16
->  #define DESC_RATE_ID_MASK		0xf
->  #define TXDESC_NAVUSEHDR		BIT(20)
-> +#define TXDESC_EN_DESC_ID		BIT(21)
->  #define TXDESC_SEC_RC4			0x00400000
->  #define TXDESC_SEC_AES			0x00c00000
->  #define TXDESC_PKT_OFFSET_SHIFT		26
-> @@ -1775,6 +1776,7 @@ struct rtl8xxxu_cfo_tracking {
->  #define RTL8XXXU_MAX_MAC_ID_NUM	128
->  #define RTL8XXXU_BC_MC_MACID	0
->  #define RTL8XXXU_BC_MC_MACID1	1
-> +#define RTL8XXXU_MAX_SEC_CAM_NUM	64
->  
->  struct rtl8xxxu_priv {
->  	struct ieee80211_hw *hw;
-> @@ -1908,6 +1910,7 @@ struct rtl8xxxu_priv {
->  	char led_name[32];
->  	struct led_classdev led_cdev;
->  	DECLARE_BITMAP(mac_id_map, RTL8XXXU_MAX_MAC_ID_NUM);
-> +	DECLARE_BITMAP(cam_map, RTL8XXXU_MAX_SEC_CAM_NUM);
->  };
->  
->  struct rtl8xxxu_sta_info {
-> @@ -1919,6 +1922,7 @@ struct rtl8xxxu_sta_info {
->  
->  struct rtl8xxxu_vif {
->  	int port_num;
-> +	u8 hw_key_idx;
->  };
->  
->  struct rtl8xxxu_rx_urb {
-> @@ -1993,6 +1997,7 @@ struct rtl8xxxu_fileops {
->  	u16 max_aggr_num;
->  	u8 supports_ap:1;
->  	u16 max_macid_num;
-> +	u16 max_sec_cam_num;
->  	u32 adda_1t_init;
->  	u32 adda_1t_path_on;
->  	u32 adda_2t_path_on_a;
-> diff --git a/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_8188f.c b/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_8188f.c
-> index 1e1c8fa194cb8..574a5fe951543 100644
-> --- a/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_8188f.c
-> +++ b/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_8188f.c
-> @@ -1751,6 +1751,7 @@ struct rtl8xxxu_fileops rtl8188fu_fops = {
->  	.max_aggr_num = 0x0c14,
->  	.supports_ap = 1,
->  	.max_macid_num = 16,
-> +	.max_sec_cam_num = 16,
->  	.adda_1t_init = 0x03c00014,
->  	.adda_1t_path_on = 0x03c00014,
->  	.trxff_boundary = 0x3f7f,
-> diff --git a/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_core.c b/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_core.c
-> index ecf54eb8dba61..7aafae9fe76b8 100644
-> --- a/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_core.c
-> +++ b/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_core.c
-> @@ -4559,8 +4559,10 @@ static void rtl8xxxu_cam_write(struct rtl8xxxu_priv *priv,
->  	 * This is a bit of a hack - the lower bits of the cipher
->  	 * suite selector happens to match the cipher index in the CAM
->  	 */
-> -	addr = key->keyidx << CAM_CMD_KEY_SHIFT;
-> +	addr = key->hw_key_idx << CAM_CMD_KEY_SHIFT;
->  	ctrl = (key->cipher & 0x0f) << 2 | key->keyidx | CAM_WRITE_VALID;
-> +	if (!(key->flags & IEEE80211_KEY_FLAG_PAIRWISE))
-> +		ctrl |= BIT(6);
->  
->  	for (j = 5; j >= 0; j--) {
->  		switch (j) {
-> @@ -5546,13 +5548,14 @@ static void rtl8xxxu_tx(struct ieee80211_hw *hw,
->  	struct rtl8xxxu_tx_urb *tx_urb;
->  	struct ieee80211_sta *sta = NULL;
->  	struct ieee80211_vif *vif = tx_info->control.vif;
-> +	struct rtl8xxxu_vif *rtlvif = (struct rtl8xxxu_vif *)vif->drv_priv;
->  	struct device *dev = &priv->udev->dev;
->  	u32 queue, rts_rate;
->  	u16 pktlen = skb->len;
->  	int tx_desc_size = priv->fops->tx_desc_size;
->  	u8 macid;
->  	int ret;
-> -	bool ampdu_enable, sgi = false, short_preamble = false;
-> +	bool ampdu_enable, sgi = false, short_preamble = false, bmc = false;
->  
->  	if (skb_headroom(skb) < tx_desc_size) {
->  		dev_warn(dev,
-> @@ -5594,10 +5597,14 @@ static void rtl8xxxu_tx(struct ieee80211_hw *hw,
->  		tx_desc->txdw0 =
->  			TXDESC_OWN | TXDESC_FIRST_SEGMENT | TXDESC_LAST_SEGMENT;
->  	if (is_multicast_ether_addr(ieee80211_get_DA(hdr)) ||
-> -	    is_broadcast_ether_addr(ieee80211_get_DA(hdr)))
-> +	    is_broadcast_ether_addr(ieee80211_get_DA(hdr))) {
->  		tx_desc->txdw0 |= TXDESC_BROADMULTICAST;
-> +		bmc = true;
-> +	}
-> +
->  
->  	tx_desc->txdw1 = cpu_to_le32(queue << TXDESC_QUEUE_SHIFT);
-> +	macid = rtl8xxxu_get_macid(priv, sta);
->  
->  	if (tx_info->control.hw_key) {
->  		switch (tx_info->control.hw_key->cipher) {
-> @@ -5612,6 +5619,10 @@ static void rtl8xxxu_tx(struct ieee80211_hw *hw,
->  		default:
->  			break;
->  		}
-> +		if (bmc && rtlvif->hw_key_idx != 0xff) {
-> +			tx_desc->txdw1 |= TXDESC_EN_DESC_ID;
-> +			macid = rtlvif->hw_key_idx;
-> +		}
->  	}
->  
->  	/* (tx_info->flags & IEEE80211_TX_CTL_AMPDU) && */
-> @@ -5655,7 +5666,6 @@ static void rtl8xxxu_tx(struct ieee80211_hw *hw,
->  	else
->  		rts_rate = 0;
->  
-> -	macid = rtl8xxxu_get_macid(priv, sta);
->  	priv->fops->fill_txdesc(hw, hdr, tx_info, tx_desc, sgi, short_preamble,
->  				ampdu_enable, rts_rate, macid);
->  
-> @@ -6667,6 +6677,7 @@ static int rtl8xxxu_add_interface(struct ieee80211_hw *hw,
->  
->  	priv->vifs[port_num] = vif;
->  	rtlvif->port_num = port_num;
-> +	rtlvif->hw_key_idx = 0xff;
->  
->  	rtl8xxxu_set_linktype(priv, vif->type, port_num);
->  	ether_addr_copy(priv->mac_addr, vif->addr);
-> @@ -6843,11 +6854,19 @@ static int rtl8xxxu_set_rts_threshold(struct ieee80211_hw *hw, u32 rts)
->  	return 0;
->  }
->  
-> +static int rtl8xxxu_get_free_sec_cam(struct ieee80211_hw *hw)
-> +{
-> +	struct rtl8xxxu_priv *priv = hw->priv;
-> +
-> +	return find_first_zero_bit(priv->cam_map, priv->fops->max_sec_cam_num);
-> +}
-> +
->  static int rtl8xxxu_set_key(struct ieee80211_hw *hw, enum set_key_cmd cmd,
->  			    struct ieee80211_vif *vif,
->  			    struct ieee80211_sta *sta,
->  			    struct ieee80211_key_conf *key)
->  {
-> +	struct rtl8xxxu_vif *rtlvif = (struct rtl8xxxu_vif *)vif->drv_priv;
->  	struct rtl8xxxu_priv *priv = hw->priv;
->  	struct device *dev = &priv->udev->dev;
->  	u8 mac_addr[ETH_ALEN];
-> @@ -6859,9 +6878,6 @@ static int rtl8xxxu_set_key(struct ieee80211_hw *hw, enum set_key_cmd cmd,
->  	dev_dbg(dev, "%s: cmd %02x, cipher %08x, index %i\n",
->  		__func__, cmd, key->cipher, key->keyidx);
->  
-> -	if (vif->type != NL80211_IFTYPE_STATION)
-> -		return -EOPNOTSUPP;
-> -
->  	if (key->keyidx > 3)
->  		return -EOPNOTSUPP;
->  
-> @@ -6885,7 +6901,7 @@ static int rtl8xxxu_set_key(struct ieee80211_hw *hw, enum set_key_cmd cmd,
->  		ether_addr_copy(mac_addr, sta->addr);
->  	} else {
->  		dev_dbg(dev, "%s: group key\n", __func__);
-> -		eth_broadcast_addr(mac_addr);
-> +		ether_addr_copy(mac_addr, vif->bss_conf.bssid);
->  	}
->  
->  	val16 = rtl8xxxu_read16(priv, REG_CR);
-> @@ -6899,16 +6915,28 @@ static int rtl8xxxu_set_key(struct ieee80211_hw *hw, enum set_key_cmd cmd,
->  
->  	switch (cmd) {
->  	case SET_KEY:
-> -		key->hw_key_idx = key->keyidx;
-> +
-> +		retval = rtl8xxxu_get_free_sec_cam(hw);
-> +		if (retval < 0)
-> +			return -EOPNOTSUPP;
-> +
-> +		key->hw_key_idx = retval;
-> +
-> +		if (vif->type == NL80211_IFTYPE_AP && !(key->flags & IEEE80211_KEY_FLAG_PAIRWISE))
-> +			rtlvif->hw_key_idx = key->hw_key_idx;
-> +
->  		key->flags |= IEEE80211_KEY_FLAG_GENERATE_IV;
->  		rtl8xxxu_cam_write(priv, key, mac_addr);
-> +		set_bit(key->hw_key_idx, priv->cam_map);
+> But I basically also think it's not worth it in practice; why try to
+> support something that's never going to happen?
 
-Hi Martin,
+Just to confirm, you mean that updating the timeout is not worth it, but
+fixing this issue is still needed right?
 
-It turns out RTL8188CUS and RTL8192CU don't like this patch, specifically
-when we use iwd. After the WPA2 handshake no more data is transmitted.
+-- 
+Remi
 
-Before this patch, key->hw_key_idx was the same as key->keyidx. After
-this patch, when we use iwd, the group key is installed first. It has
-key->keyidx = 1, but it gets key->hw_key_idx = 0. The pairwise key is
-installed second. It has key->keyidx = 0, but it gets key->hw_key_idx = 1.
-Both keyidx and hw_key_idx are passed to the chip in rtl8xxxu_cam_write().
-
-It's fine with wpa_supplicant. wpa_supplicant installs the pairwise key
-first, with key->keyidx = 0, then the group key, with key->keyidx = 1.
-
-This patch imitating rtw88 makes the old chips work again with iwd.
-What do you think?
-
-diff --git a/drivers/net/wireless/realtek/rtl8xxxu/core.c b/drivers/net/wireless/realtek/rtl8xxxu/core.c
-index ee278f0548e4..f7b35655bec5 100644
---- a/drivers/net/wireless/realtek/rtl8xxxu/core.c
-+++ b/drivers/net/wireless/realtek/rtl8xxxu/core.c
-@@ -6942,7 +6942,8 @@ static int rtl8xxxu_get_free_sec_cam(struct ieee80211_hw *hw)
- {
- 	struct rtl8xxxu_priv *priv = hw->priv;
- 
--	return find_first_zero_bit(priv->cam_map, priv->fops->max_sec_cam_num);
-+	return find_next_zero_bit(priv->cam_map, priv->fops->max_sec_cam_num,
-+				  RTL8XXXU_SEC_DEFAULT_KEY_NUM);
- }
- 
- static int rtl8xxxu_set_key(struct ieee80211_hw *hw, enum set_key_cmd cmd,
-@@ -6999,12 +7000,15 @@ static int rtl8xxxu_set_key(struct ieee80211_hw *hw, enum set_key_cmd cmd,
- 
- 	switch (cmd) {
- 	case SET_KEY:
-+		if (key->flags & IEEE80211_KEY_FLAG_PAIRWISE) {
-+			retval = rtl8xxxu_get_free_sec_cam(hw);
-+			if (retval < 0)
-+				return -EOPNOTSUPP;
- 
--		retval = rtl8xxxu_get_free_sec_cam(hw);
--		if (retval < 0)
--			return -EOPNOTSUPP;
--
--		key->hw_key_idx = retval;
-+			key->hw_key_idx = retval;
-+		} else {
-+			key->hw_key_idx = key->keyidx;
-+		}
- 
- 		if (vif->type == NL80211_IFTYPE_AP && !(key->flags & IEEE80211_KEY_FLAG_PAIRWISE))
- 			rtlvif->hw_key_idx = key->hw_key_idx;
-diff --git a/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu.h b/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu.h
-index 4b05dba22e67..188f4bbe99cd 100644
---- a/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu.h
-+++ b/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu.h
-@@ -1788,6 +1788,7 @@ struct rtl8xxxu_cfo_tracking {
- #define RTL8XXXU_BC_MC_MACID	0
- #define RTL8XXXU_BC_MC_MACID1	1
- #define RTL8XXXU_MAX_SEC_CAM_NUM	64
-+#define RTL8XXXU_SEC_DEFAULT_KEY_NUM	4
- 
- struct rtl8xxxu_priv {
- 	struct ieee80211_hw *hw;
 
