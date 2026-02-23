@@ -1,240 +1,198 @@
-Return-Path: <linux-wireless+bounces-32128-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-32129-lists+linux-wireless=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id yGLsAZPYnGkFLwQAu9opvQ
-	(envelope-from <linux-wireless+bounces-32128-lists+linux-wireless=lfdr.de@vger.kernel.org>)
-	for <lists+linux-wireless@lfdr.de>; Mon, 23 Feb 2026 23:45:39 +0100
+	id CI8mM9nYnGkFLwQAu9opvQ
+	(envelope-from <linux-wireless+bounces-32129-lists+linux-wireless=lfdr.de@vger.kernel.org>)
+	for <lists+linux-wireless@lfdr.de>; Mon, 23 Feb 2026 23:46:49 +0100
 X-Original-To: lists+linux-wireless@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 58BF117E8A0
-	for <lists+linux-wireless@lfdr.de>; Mon, 23 Feb 2026 23:45:38 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 535D317E8D8
+	for <lists+linux-wireless@lfdr.de>; Mon, 23 Feb 2026 23:46:49 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 42377302D979
-	for <lists+linux-wireless@lfdr.de>; Mon, 23 Feb 2026 22:41:50 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 79B643096EFA
+	for <lists+linux-wireless@lfdr.de>; Mon, 23 Feb 2026 22:43:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 997C6378D9A;
-	Mon, 23 Feb 2026 22:41:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 006BE37AA72;
+	Mon, 23 Feb 2026 22:43:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Q90md/KO"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Ig2tXgWb"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pf1-f181.google.com (mail-pf1-f181.google.com [209.85.210.181])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7603E3783DE
-	for <linux-wireless@vger.kernel.org>; Mon, 23 Feb 2026 22:41:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CD6BB3783DE
+	for <linux-wireless@vger.kernel.org>; Mon, 23 Feb 2026 22:43:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.181
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771886509; cv=none; b=TBsWCCbDU0JatQTXLDqhISdcmlPLqA/rNW3BDCF8w1KpxWtC+wsA74QMqWpksjroyJROBHiSoyb9KITe+1f7WytTfWYx+BKw9R1FD0A01vqAcc7EOJT1d/Lh2AnB9R66pOoHuXs4pZ6go6YYjR9WFJcD5rOiD+twlzv+oMaq2rY=
+	t=1771886593; cv=none; b=ljnMdNcmxt1O6RoDq/z0yLmJZCExMfPg9Y2g7olga752GKIr/CdrdDX24e5JngczbvKZgBe7vuypzrmTr962M+J4x38ce8ti1+HrnTT7W5qL4foKnwoekn2/ZecC8MlGGBWzmPs2u3sBlmmTJiPNYwHHX9uYbu6uEiMnZHEMXb8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771886509; c=relaxed/simple;
-	bh=TeMt0AX/UmpbUNYFEiguHKbS1SjqNPE1azh8i2vqJzQ=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=hlhEMihZbDTCaWkUGyTpqCYNKGOc9RoJpaYCCsthC+rWCRVFkECOPwYxTjF8IyIqexGrKHUq8Z/IykxpdZU9HOCf6Ws/xd4P1hKVue4uSUXt/YsC4S2SFL9XkDNwtfxvAgmk32rQ+wfXhcfOcoZ+sWb3lBamJvUcj2+jlPb7I2g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Q90md/KO; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 14FBDC2BC87
-	for <linux-wireless@vger.kernel.org>; Mon, 23 Feb 2026 22:41:49 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1771886509;
-	bh=TeMt0AX/UmpbUNYFEiguHKbS1SjqNPE1azh8i2vqJzQ=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=Q90md/KOfDcrfeagom1mAd7Dnb31vbELqv/0ewQ49+oNrfvDteCcF15V2QIFcXULU
-	 2OLzBw2ngjDgswaMRmp1sqnGWkWuZgxtVyfBaWEfAbYBpbPKDjjEXC8iyUei9aM0kM
-	 MZ3yxduWuGINQouT1LlLNajEQ65zx8t8yJhww+1Hqubax+F3Hgu1snRN4VK1QVvbTG
-	 n1wHJtwowrr1tcsgwcaYYpJ5Rzb8WFOvCSC9qOIYqP451B/w3cBVq57KApTQnvk2zH
-	 tI6TCQ2Xa7xn29xn0rQLAC+5jjiwCqKGuma7QANgvvRZJpSfZMEqlL5oC7qQKTLAmG
-	 4ggxPjXV2EJVQ==
-Received: by mail-lj1-f173.google.com with SMTP id 38308e7fff4ca-385c23b88e8so40414361fa.3
-        for <linux-wireless@vger.kernel.org>; Mon, 23 Feb 2026 14:41:49 -0800 (PST)
-X-Forwarded-Encrypted: i=1; AJvYcCXpPZnXi4GUMvO06xoZVIzCAKONs5lt3W5jEGCAz67H4tmTC+95ft+OwAacIxaf+eOlGd6ZOKd4tdPf9PFM4w==@vger.kernel.org
-X-Gm-Message-State: AOJu0YxsZvRcz6lo6rav7o5h1TugH0IVb/LQ68kuPaeFxE2FBBAMtbMs
-	2MSj+A1GhdSuBID7CUD9geLWQHnbnAw5wIa0/UPkph5Cu2Td/FC7ftW8X17KGdpD3WGmGzcVywO
-	FU5FS0qIi5XaROO+xGBYrtPF5/NXfrgw=
-X-Received: by 2002:a2e:a7cf:0:b0:386:7e61:5de1 with SMTP id
- 38308e7fff4ca-389a58a71b3mr36637261fa.0.1771886507309; Mon, 23 Feb 2026
- 14:41:47 -0800 (PST)
+	s=arc-20240116; t=1771886593; c=relaxed/simple;
+	bh=fA9S2AhxnAOmqqHU0gNRU8ri57DzFNJjWsSPhJryMVQ=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=lIy1P0a0vQEuTd/X4S0TBZ5REjERMFjXn35s1XcjLVvpHCobDP8ErXEM7bmVX1hj5wFMUzR3VHZgAua6bKbN3bYYI/e8ho9VLwxFknR2l98plQXxq6Eqixxx5EHXKcA+ybXTBT9ZWV9tIDZX2gMbruC+3TgZG3D0rY1cGr4CIDE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Ig2tXgWb; arc=none smtp.client-ip=209.85.210.181
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-pf1-f181.google.com with SMTP id d2e1a72fcca58-82361bcbd8fso2478794b3a.0
+        for <linux-wireless@vger.kernel.org>; Mon, 23 Feb 2026 14:43:12 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1771886592; x=1772491392; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=zA8neqIU5RolfFhf2Lp4LEYhHtdffFh3y3a13wUOp+g=;
+        b=Ig2tXgWbE0VDLOJq6/XDlpyfMp0vMRUJM2cF4hIHw/OyFiqyQP1+a9WOM1jf2JMdWW
+         gFKkSHogQVfqfenxGxXBCt2xQk+6kYNygVIVSPMDOXL+cAQTavziu+fCKTbdcQJ9AZLj
+         xhQheZWJ8/mbNVDz/f3SmOLQYGedVGBx156L2a1UaT24HxGRBBNdJpvTp2gg/6RN1l+S
+         /bw6nVoG+uwAzSJwCkKDrlPsN+YQb9ZLuL6r57PLLqtG9jTKi04tSOcc042f390T3IaS
+         CyVtQNUwvpQKP9QuqVDe9bH6gH0bG6PDml8W8pYiKXoFWF13Eic+uWwF9nhb6dNVBMJr
+         Gg4Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1771886592; x=1772491392;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=zA8neqIU5RolfFhf2Lp4LEYhHtdffFh3y3a13wUOp+g=;
+        b=cf64YH2Ec694YDSSXJyffQnVVqIHaom+j/tGtcZ6zHzBIdsjtNwLfnUa+vD8n7U3cD
+         QOnvBe7+eOPlXbLjebWlsnI7bAQ6z65ziejbyn8ujDZBnHg8AjEjSqzy8/L/PpzmBJgm
+         dkPnRQbnQDnoxpAmvvnRtt3xbpUoi+7kaOwHlrc9IFnDrq7TwtXd4ESlYJFLmy2lVGUr
+         Y/RHyJix9QtX67Dwz1hU9Y+zosK9vrbrCfWtIJjMfgwB+tjZcbnnxXLCkIV1Zb75S0yF
+         +0OlGPfYqZLabFao+iALtOUh1Qx5yohl8lUNjj1zr1tZZJWwHs4b0/xlAdUH5C01mlGI
+         2wUQ==
+X-Gm-Message-State: AOJu0YzJFNCXTh49L1XxKIjxWjrEFLtNHO8Fm4m9VWPe/oZpn84Dgw5E
+	dJw5JOa6APGdTnGnlxEqubmTlq6LB4xG75Oyfy2rIXUNkM7NsXdW10pqYNKv4Rhj
+X-Gm-Gg: AZuq6aKxumzicpYKAN+0xQ+um97ZhCWSQGtkYq4+ZWIi4/8G0uzlB0lRwj3XcB00E5T
+	PwCFARZjk+1Ey+hsmQZSRNqhXst2ni5W0si//LMDlQvEdquPA53y5b2sN1EjlEso80eLtFUtyBk
+	E8pctCkHNsE0tP60/kY6+hBf0GDV+OeXgX+3Xv563ahWHPGRdpAgorxxVkRbQFRCKJvqhOkhiQB
+	qj3YySctGGr4PCC3wiElpSrQxHrBOs7NMFGj9woJWxO6/DthKi3+bUtnacOjMcU8cyGBm9u8aA1
+	KKP3ZtOVZ0aDrT3X7xg1e/EUZNu6CC7/QWa3xpgMg1wWX9E+3zNRtuzGFVvcx5bpjimFc5piPMT
+	N3wdt7BYxWSdolizP9+D5HTUdaQwQjlQIvQWTPNi044/lidwP1wcvANn3k4jhJ9YrQrWLqDdewJ
+	CGMzqMucfFV5ae9ahXL/w4hx/wWzPr+acLV4qtQUW1A5lCioxF/pz3YfIyBYrDoxxM
+X-Received: by 2002:a05:6a00:130c:b0:7e8:4471:8db with SMTP id d2e1a72fcca58-826daaac4c5mr8310461b3a.60.1771886591857;
+        Mon, 23 Feb 2026 14:43:11 -0800 (PST)
+Received: from ryzen ([2601:644:8000:56f5::8bd])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-826dd693845sm10614461b3a.26.2026.02.23.14.43.10
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 23 Feb 2026 14:43:11 -0800 (PST)
+From: Rosen Penev <rosenp@gmail.com>
+To: linux-wireless@vger.kernel.org
+Cc: =?UTF-8?q?Toke=20H=C3=B8iland-J=C3=B8rgensen?= <toke@toke.dk>,
+	=?UTF-8?q?Andreas=20F=C3=A4rber?= <afaerber@suse.de>,
+	Manivannan Sadhasivam <mani@kernel.org>,
+	linux-arm-kernel@lists.infradead.org (moderated list:ARM/ACTIONS SEMI ARCHITECTURE),
+	linux-actions@lists.infradead.org (moderated list:ARM/ACTIONS SEMI ARCHITECTURE),
+	linux-kernel@vger.kernel.org (open list)
+Subject: [PATCH ath-next] wifi: ath9k: owl: move name into owl_nvmem_probe
+Date: Mon, 23 Feb 2026 14:42:54 -0800
+Message-ID: <20260223224254.27081-1-rosenp@gmail.com>
+X-Mailer: git-send-email 2.53.0
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260223073854.2464232-1-jb.tsai@mediatek.com> <20260223073854.2464232-2-jb.tsai@mediatek.com>
-In-Reply-To: <20260223073854.2464232-2-jb.tsai@mediatek.com>
-From: Sean Wang <sean.wang@kernel.org>
-Date: Mon, 23 Feb 2026 16:41:34 -0600
-X-Gmail-Original-Message-ID: <CAGp9LzoJ=bi2Ao9V2byetnNCkYunHdGV4i4VUzyYC_iHHPu7WQ@mail.gmail.com>
-X-Gm-Features: AaiRm52Tkb3GZi5rcuvrRWZRAU3Z5n3dk8fj2slXJOZmMqBLAby5G5mYuaWZbxo
-Message-ID: <CAGp9LzoJ=bi2Ao9V2byetnNCkYunHdGV4i4VUzyYC_iHHPu7WQ@mail.gmail.com>
-Subject: Re: [PATCH 2/5] wifi: mt76: mt7921: refactor CLC support check flow
-To: JB Tsai <jb.tsai@mediatek.com>
-Cc: nbd@nbd.name, lorenzo@kernel.org, linux-wireless@vger.kernel.org, 
-	linux-mediatek@lists.infradead.org, Deren.Wu@mediatek.com, 
-	Sean.Wang@mediatek.com, Quan.Zhou@mediatek.com, Ryder.Lee@mediatek.com, 
-	Leon.Yen@mediatek.com, litien.chang@mediatek.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [-0.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	MID_CONTAINS_FROM(1.00)[];
+	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
+	R_MISSING_CHARSET(0.50)[];
 	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
-	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
+	R_DKIM_ALLOW(-0.20)[gmail.com:s=20230601];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[kernel.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-32128-lists,linux-wireless=lfdr.de];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	MISSING_XM_UA(0.00)[];
+	TAGGED_FROM(0.00)[bounces-32129-lists,linux-wireless=lfdr.de];
+	RCVD_COUNT_FIVE(0.00)[5];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
 	FROM_HAS_DN(0.00)[];
 	TO_DN_SOME(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[5];
+	FROM_NEQ_ENVFROM(0.00)[rosenp@gmail.com,linux-wireless@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[sean.wang@kernel.org,linux-wireless@vger.kernel.org];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[gmail.com:+];
 	TAGGED_RCPT(0.00)[linux-wireless];
-	RCPT_COUNT_SEVEN(0.00)[11];
+	FREEMAIL_FROM(0.00)[gmail.com];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[mail.gmail.com:mid,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,mediatek.com:email]
-X-Rspamd-Queue-Id: 58BF117E8A0
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 535D317E8D8
 X-Rspamd-Action: no action
 
-HI, JB
+There is no need for dynamic allocation for a simple string.
+request_firmware_nowait copies the string internally anyway.
 
-On Mon, Feb 23, 2026 at 1:40=E2=80=AFAM JB Tsai <jb.tsai@mediatek.com> wrot=
-e:
->
-> Move the disable_clc module parameter to regd.c and introduce
-> mt7925_regd_clc_supported() to centralize CLC support checks.
+The error message on failure is also wrong. It's an allocation failure,
+not a find failure.
 
-typo, s/7925/7921/
+Signed-off-by: Rosen Penev <rosenp@gmail.com>
+---
+ .../wireless/ath/ath9k/ath9k_pci_owl_loader.c | 31 +++++--------------
+ 1 file changed, 7 insertions(+), 24 deletions(-)
 
->
-> Signed-off-by: JB Tsai <jb.tsai@mediatek.com>
-> ---
->  drivers/net/wireless/mediatek/mt76/mt7921/mcu.c  | 14 ++++++++------
->  drivers/net/wireless/mediatek/mt76/mt7921/regd.c | 13 +++++++++++++
->  drivers/net/wireless/mediatek/mt76/mt7921/regd.h |  1 +
->  3 files changed, 22 insertions(+), 6 deletions(-)
->
-> diff --git a/drivers/net/wireless/mediatek/mt76/mt7921/mcu.c b/drivers/ne=
-t/wireless/mediatek/mt76/mt7921/mcu.c
-> index 8442dbd2ee23..1e2afa736cdf 100644
-> --- a/drivers/net/wireless/mediatek/mt76/mt7921/mcu.c
-> +++ b/drivers/net/wireless/mediatek/mt76/mt7921/mcu.c
-> @@ -4,6 +4,7 @@
->  #include <linux/fs.h>
->  #include <linux/firmware.h>
->  #include "mt7921.h"
-> +#include "regd.h"
->  #include "mcu.h"
->  #include "../mt76_connac2_mac.h"
->  #include "../mt792x_trace.h"
-> @@ -11,10 +12,6 @@
->  #define MT_STA_BFER                    BIT(0)
->  #define MT_STA_BFEE                    BIT(1)
->
-> -static bool mt7921_disable_clc;
-> -module_param_named(disable_clc, mt7921_disable_clc, bool, 0644);
-> -MODULE_PARM_DESC(disable_clc, "disable CLC support");
-> -
->  int mt7921_mcu_parse_response(struct mt76_dev *mdev, int cmd,
->                               struct sk_buff *skb, int seq)
->  {
-> @@ -422,8 +419,7 @@ static int mt7921_load_clc(struct mt792x_dev *dev, co=
-nst char *fw_name)
->         u8 *clc_base =3D NULL, hw_encap =3D 0;
->
->         dev->phy.clc_chan_conf =3D 0xff;
-> -       if (mt7921_disable_clc ||
-> -           mt76_is_usb(&dev->mt76))
-> +       if (!mt7921_regd_clc_supported(dev))
->                 return 0;
->
->         if (mt76_is_mmio(&dev->mt76)) {
-> @@ -470,6 +466,9 @@ static int mt7921_load_clc(struct mt792x_dev *dev, co=
-nst char *fw_name)
->         for (offset =3D 0; offset < len; offset +=3D le32_to_cpu(clc->len=
-)) {
->                 clc =3D (const struct mt7921_clc *)(clc_base + offset);
->
-> +               if (clc->idx >=3D ARRAY_SIZE(phy->clc))
-> +                       break;
-> +
+diff --git a/drivers/net/wireless/ath/ath9k/ath9k_pci_owl_loader.c b/drivers/net/wireless/ath/ath9k/ath9k_pci_owl_loader.c
+index fe1013a3a588..b9ef34709202 100644
+--- a/drivers/net/wireless/ath/ath9k/ath9k_pci_owl_loader.c
++++ b/drivers/net/wireless/ath/ath9k/ath9k_pci_owl_loader.c
+@@ -137,24 +137,6 @@ static void owl_fw_cb(const struct firmware *fw, void *context)
+ 	release_firmware(fw);
+ }
 
-I=E2=80=99d keep the refactor logic-preserving. This bounds check is a
-correctness fix (prevents OOB on phy->clc[clc->idx])
-so please send it as a separate hardening patch and describe the failure an=
-d fix
-Also, ARRAY_SIZE() is for compile-time arrays only if phy->clc were a
-pointer, it would be invalid/misleading I guess.
+-static const char *owl_get_eeprom_name(struct pci_dev *pdev)
+-{
+-	struct device *dev = &pdev->dev;
+-	char *eeprom_name;
+-
+-	dev_dbg(dev, "using auto-generated eeprom filename\n");
+-
+-	eeprom_name = devm_kzalloc(dev, EEPROM_FILENAME_LEN, GFP_KERNEL);
+-	if (!eeprom_name)
+-		return NULL;
+-
+-	/* this should match the pattern used in ath9k/init.c */
+-	scnprintf(eeprom_name, EEPROM_FILENAME_LEN, "ath9k-eeprom-pci-%s.bin",
+-		  dev_name(dev));
+-
+-	return eeprom_name;
+-}
+-
+ static void owl_nvmem_work(struct work_struct *work)
+ {
+ 	struct owl_ctx *ctx = container_of(work, struct owl_ctx, work);
+@@ -195,8 +177,9 @@ static int owl_nvmem_probe(struct owl_ctx *ctx)
+ static int owl_probe(struct pci_dev *pdev,
+ 		     const struct pci_device_id *id)
+ {
++	char eeprom_name[EEPROM_FILENAME_LEN];
++	struct device *dev = &pdev->dev;
+ 	struct owl_ctx *ctx;
+-	const char *eeprom_name;
+ 	int err = 0;
 
->                 /* do not init buf again if chip reset triggered */
->                 if (phy->clc[clc->idx])
->                         continue;
-> @@ -1403,6 +1402,9 @@ int mt7921_mcu_set_clc(struct mt792x_dev *dev, u8 *=
-alpha2,
->         struct mt792x_phy *phy =3D (struct mt792x_phy *)&dev->phy;
->         int i, ret;
->
-> +       if (!ARRAY_SIZE(phy->clc))
-> +               return -ESRCH;
-> +
+ 	if (pci_enable_device(pdev))
+@@ -215,11 +198,11 @@ static int owl_probe(struct pci_dev *pdev,
+ 	if (err <= 0)
+ 		return err;
 
-Ditto,  to keep the refactor logic-preserving, send it as a separate
-hardening patch and describe the failure and fix and also
-!ARRAY_SIZE(phy->clc) isn=E2=80=99t a meaningful runtime check I guess.
+-	eeprom_name = owl_get_eeprom_name(pdev);
+-	if (!eeprom_name) {
+-		dev_err(&pdev->dev, "no eeprom filename found.\n");
+-		return -ENODEV;
+-	}
++	dev_dbg(dev, "using auto-generated eeprom filename\n");
++
++	/* this should match the pattern used in ath9k/init.c */
++	scnprintf(eeprom_name, sizeof(eeprom_name), "ath9k-eeprom-pci-%s.bin",
++		  dev_name(dev));
 
->         /* submit all clc config */
->         for (i =3D 0; i < ARRAY_SIZE(phy->clc); i++) {
->                 ret =3D __mt7921_mcu_set_clc(dev, alpha2, env_cap,
-> diff --git a/drivers/net/wireless/mediatek/mt76/mt7921/regd.c b/drivers/n=
-et/wireless/mediatek/mt76/mt7921/regd.c
-> index 6e6c81189222..70440ab8ba82 100644
-> --- a/drivers/net/wireless/mediatek/mt76/mt7921/regd.c
-> +++ b/drivers/net/wireless/mediatek/mt76/mt7921/regd.c
-> @@ -7,6 +7,19 @@
->  #include "regd.h"
->  #include "mcu.h"
->
-> +static bool mt7921_disable_clc;
-> +module_param_named(disable_clc, mt7921_disable_clc, bool, 0644);
-> +MODULE_PARM_DESC(disable_clc, "disable CLC support");
-> +
+ 	err = request_firmware_nowait(THIS_MODULE, true, eeprom_name,
+ 				      &pdev->dev, GFP_KERNEL, ctx, owl_fw_cb);
+--
+2.53.0
 
-should we explicitly include <linux/moduleparam.h> ?
-
-> +bool mt7921_regd_clc_supported(struct mt792x_dev *dev)
-> +{
-> +       if (mt7921_disable_clc ||
-> +           mt76_is_usb(&dev->mt76))
-> +               return false;
-> +
-> +       return true;
-> +}
-> +
->  static void
->  mt7921_regd_channel_update(struct wiphy *wiphy, struct mt792x_dev *dev)
->  {
-> diff --git a/drivers/net/wireless/mediatek/mt76/mt7921/regd.h b/drivers/n=
-et/wireless/mediatek/mt76/mt7921/regd.h
-> index 0ba6161e1919..74bc2fdd532c 100644
-> --- a/drivers/net/wireless/mediatek/mt76/mt7921/regd.h
-> +++ b/drivers/net/wireless/mediatek/mt76/mt7921/regd.h
-> @@ -9,5 +9,6 @@
->  void mt7921_regd_update(struct mt792x_dev *dev);
->  void mt7921_regd_notifier(struct wiphy *wiphy,
->                           struct regulatory_request *request);
-> +bool mt7921_regd_clc_supported(struct mt792x_dev *dev);
->
->  #endif
-> --
-> 2.45.2
->
->
 
