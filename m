@@ -1,88 +1,49 @@
-Return-Path: <linux-wireless+bounces-32086-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-32087-lists+linux-wireless=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id gKf3CLvEm2lB6QMAu9opvQ
-	(envelope-from <linux-wireless+bounces-32086-lists+linux-wireless=lfdr.de@vger.kernel.org>)
-	for <lists+linux-wireless@lfdr.de>; Mon, 23 Feb 2026 04:08:43 +0100
+	id +cjgBKjGm2lN6gMAu9opvQ
+	(envelope-from <linux-wireless+bounces-32087-lists+linux-wireless=lfdr.de@vger.kernel.org>)
+	for <lists+linux-wireless@lfdr.de>; Mon, 23 Feb 2026 04:16:56 +0100
 X-Original-To: lists+linux-wireless@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9A312171803
-	for <lists+linux-wireless@lfdr.de>; Mon, 23 Feb 2026 04:08:42 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id A303317181A
+	for <lists+linux-wireless@lfdr.de>; Mon, 23 Feb 2026 04:16:54 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 635A23017272
-	for <lists+linux-wireless@lfdr.de>; Mon, 23 Feb 2026 03:08:24 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 861B7300B139
+	for <lists+linux-wireless@lfdr.de>; Mon, 23 Feb 2026 03:16:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BD7F434320A;
-	Mon, 23 Feb 2026 03:08:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="NyyRjfc4"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A23F472627;
+	Mon, 23 Feb 2026 03:16:51 +0000 (UTC)
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-pj1-f42.google.com (mail-pj1-f42.google.com [209.85.216.42])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9D71227603C
-	for <linux-wireless@vger.kernel.org>; Mon, 23 Feb 2026 03:08:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.42
+Received: from zg8tmja2lje4os4yms4ymjma.icoremail.net (zg8tmja2lje4os4yms4ymjma.icoremail.net [206.189.21.223])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 29AAD26B75B;
+	Mon, 23 Feb 2026 03:16:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=206.189.21.223
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771816103; cv=none; b=V/rZw7OUnZ/nW/UzN5vwhxRMh99ykT4GTPp6zcdHlLeMm5hT1RUdTvH44SDfy9N163m/5HCbM0wBMcDHwv6m7KHO2HSdGZvyT/wNETtjeY5jfhelF263BTIQ5M7OkETEmzOBVwLUadpdTQPcS7guytOEK6ycCL7zUGPSyDkwfxM=
+	t=1771816611; cv=none; b=e9xYwEg2rnuLbNOrjFWEY8yKpD7da0fbrvMinLO92e/YVa9WhdoJy6I73u68JBdUmsTcOCYZPrBvdQGdBB/oJXLb0XBszvugDshdM5u/6gdOYU1Sx+EUBTFHyHJDCBVkGygSRCJzMFo+KLoKOzsIV00S/3xVumk3Eb8Ylqb2gqM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771816103; c=relaxed/simple;
-	bh=+R04XDRM3J87nFo8ABDoEFj5H4PIPEXeJf38qX2Lm/Q=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=UamUYDuveSB8d2P34wI1eqXaFINVrVXzGkYz3nFOupPza/umSnVurQJtOjlsDfjX8ixu2nlz+s6ogkanjPX0/nWYjQ5wE38KFb7k9E6mpT/OgiwBCUltUWRf0h5uCae+qLFjthWXZmrj5fjjuxv1Gh7qxWbeIH5E6Q7/wEK6Cgs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=NyyRjfc4; arc=none smtp.client-ip=209.85.216.42
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pj1-f42.google.com with SMTP id 98e67ed59e1d1-35640ad94d3so3089457a91.1
-        for <linux-wireless@vger.kernel.org>; Sun, 22 Feb 2026 19:08:22 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1771816102; x=1772420902; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=Vb/gp6A5BMv0njE+FDxLMqKZqOn11Vak7JdV5uhwrbk=;
-        b=NyyRjfc4fcFf53xlAdnX/WKeEPmRl3h+RFr9UWGRw1XtKcbX5pQhuJaKOdABhqlMfb
-         IXIrBgfcsML8x292dkDuvHn9Qs3hXSIIY6HeulpBGwSHvpIbjYtXqBrJVPFiSQRrnFmh
-         KjgtAH83sd/Y8DhIUxIxSkZ0QTdM7PHEuEDkCessR84EF/YxH0RlJ1qRWKCKlIgn7+yz
-         Tc9PlDE8WJkAHQWEmBN8jHBygdZs8PL5WUEg+3duWx6Sdxwk3cXrBqKSzWtjLgYpcGwR
-         reecjeM0ukHqNjd/UOdvMeVMXjUTuVW9qfhhIev0yeH9ClxPMBM0yowygrp57qkDBujn
-         roWw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1771816102; x=1772420902;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=Vb/gp6A5BMv0njE+FDxLMqKZqOn11Vak7JdV5uhwrbk=;
-        b=gFc63vBDIrWUj6RHfm5m6EplxYtiPoaw3lzFdyNNNOjqpAoCukqQ+L2PJpw03BAqsm
-         BLLyVulocsMMUc6z/m20yRQMJuiBkQz9qYSsH1bD07S+omtHn/cGrQGR+xuqOefXNizP
-         9qmd+L/qK4CNxQA75yZE41Wiqqz+xMy4tTOA3FDk2QeW+RP9j1mTNp2/qFXBIpno0Woj
-         AvN9ZVy3VE3Bm0yrzWqXBacnEDXJL/g5MQHSPTjIrlSGWqumu5x/DsibRmcJo0x48bSM
-         j1sd/sGKzvzjxJS/qHw7naPeHtWcUcaupL/48grdLvG+LO8bDNP5RxEhXj0tTHnI7SRJ
-         2/gw==
-X-Gm-Message-State: AOJu0Yxl9NO9u3Sbv9U0ZFef/YsmEvSFghZ5WOiTcj/gtvpxuckxgszC
-	lnY0EQ4f3IIEp0+ddwID9B64Xtr8v6Rar+AXF4vaJ6+Y5JAx9eVMNuNzVP885T5F
-X-Gm-Gg: ATEYQzxAqUTA9S+4Lk2d3nscj2Lipa/u58tmj6pzwRRmroO02w+acvwQuaRPHrsEe2D
-	QC+KJQma/f5tjzhXh3SZ6HZG7cE4NiRbLFdRco1sYOUwZYO1h3pJPrHJ7kuLzhWhBZFfnLdPWjO
-	1c2gw1fxk7KY4Bjx1cUibStWE/eykwz0dWig+zdRqRRUtybdUD6otLnQ6pI2QHZ/SvVAzq1JCoL
-	1yL6QVy5fhzOKEUb80uQ57x+EoMjHz0qUf4vG93HYozWtXMl5EtO20N+vkV7eJ13ZLKMsp1UKby
-	6JVcOtPVqW3eQ3KEojwnUJoRtoIMhPrrMx1QqeJgem8CrAmSxWoDtgTAwlCXvNxNyOjn0vMvKvk
-	2kP1CgObIbwMR02tWXQK9KB74gpzoFZClVBRBWB8cUEN+YiJkk9NZJuLU5yaUVC+X7ZOtyCCWxF
-	gWBga1CPoYoVIevkrfs3zfFix9e1ANK/jh6Pb3dFVsxzBqtQMsr4GqfA/cm10b7Nck
-X-Received: by 2002:a17:90b:390f:b0:354:a284:3ff9 with SMTP id 98e67ed59e1d1-358ae8cfd90mr5507700a91.26.1771816101544;
-        Sun, 22 Feb 2026 19:08:21 -0800 (PST)
-Received: from ryzen ([2601:644:8000:56f5::8bd])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-358a19b242csm4177601a91.0.2026.02.22.19.08.20
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 22 Feb 2026 19:08:20 -0800 (PST)
-From: Rosen Penev <rosenp@gmail.com>
+	s=arc-20240116; t=1771816611; c=relaxed/simple;
+	bh=rNI1Ctt94ExtQJUlP/ljV2uCFOFr6OdYRoZhGhPGMNA=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=YfMW0pu97SWd992gK5VXgFe3wnD3T5ueMZqb4IEz4/ewXKj2ZurB/DbIlvrXnF65NplOa4aymt5t++2bLJly0u9fPNghvtJhUXgWMVxBayvkQ0fM8qD3jnwFnlBFt1KsfWc9LYXt5iXfsrBsLlcX253xYcvIg3d/OW/n3N1ByhA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=zju.edu.cn; spf=pass smtp.mailfrom=zju.edu.cn; arc=none smtp.client-ip=206.189.21.223
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=zju.edu.cn
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=zju.edu.cn
+Received: from zju.edu.cn (unknown [218.12.17.5])
+	by mtasvr (Coremail) with SMTP id _____wD3ncwNxptpeyzQAA--.11675S3;
+	Mon, 23 Feb 2026 11:14:22 +0800 (CST)
+Received: from ubuntu.localdomain (unknown [218.12.17.5])
+	by mail-app3 (Coremail) with SMTP id zS_KCgDX2GsJxptpDfBYBg--.3639S2;
+	Mon, 23 Feb 2026 11:14:20 +0800 (CST)
+From: Duoming Zhou <duoming@zju.edu.cn>
 To: linux-wireless@vger.kernel.org
-Cc: Jiri Slaby <jirislaby@kernel.org>,
-	Nick Kossifidis <mickflemm@gmail.com>,
-	Luis Chamberlain <mcgrof@kernel.org>,
-	linux-kernel@vger.kernel.org (open list)
-Subject: [PATCH ath-next] wifi: ath5k: ahb: use devm for ioremap
-Date: Sun, 22 Feb 2026 19:08:03 -0800
-Message-ID: <20260223030803.19451-1-rosenp@gmail.com>
-X-Mailer: git-send-email 2.53.0
+Cc: pkshih@realtek.com,
+	linux-kernel@vger.kernel.org,
+	Duoming Zhou <duoming@zju.edu.cn>
+Subject: [PATCH wireless] rtlwifi: rtl_pci: Fix possible use-after-free caused by unfinished tasklet
+Date: Mon, 23 Feb 2026 11:14:15 +0800
+Message-Id: <20260223031415.39221-1-duoming@zju.edu.cn>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
@@ -90,122 +51,90 @@ List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+X-CM-TRANSID:zS_KCgDX2GsJxptpDfBYBg--.3639S2
+X-CM-SenderInfo: qssqjiasttq6lmxovvfxof0/1tbiAwQJAWmYuQgE3ABfsI
+X-CM-DELIVERINFO: =?B?b08g1AXKKxbFmtjJiESix3B1w3uoVhYI+vyen2ZzBEkOnu5chDpkB+ZdGnv/zQ0PbP
+	CR12+LyrQntYVBPxnzenB0a/HJLuynotOemBLS+42EV/9BiR7EI1i6nOS40VqJ3C/AJv2U
+	sOe/FrJgocY3cm2KwE7YowI6lNkYKUD2nlrXiiWm7lSXcIQ+lDH52cqBEwkrJA==
+X-Coremail-Antispam: 1Uk129KBj93XoWxJry7Aw17uF43tryrKw4Utrc_yoW8Xr43pF
+	W3u3y3CFZ5G3Wjk3Z8Xa1ftFyrtanxtrWfGr4Fk34Sgws7ZF1Sqw4fCFZIyFWUtr48ZFZ0
+	yr18tr9xGr1kCrXCm3ZEXasCq-sJn29KB7ZKAUJUUUUU529EdanIXcx71UUUUU7KY7ZEXa
+	sCq-sGcSsGvfJ3Ic02F40EFcxC0VAKzVAqx4xG6I80ebIjqfuFe4nvWSU5nxnvy29KBjDU
+	0xBIdaVrnRJUUUvvb4IE77IF4wAFF20E14v26r1j6r4UM7CY07I20VC2zVCF04k26cxKx2
+	IYs7xG6rWj6s0DM7CIcVAFz4kK6r1j6r18M28lY4IEw2IIxxk0rwA2F7IY1VAKz4vEj48v
+	e4kI8wA2z4x0Y4vE2Ix0cI8IcVAFwI0_tr0E3s1l84ACjcxK6xIIjxv20xvEc7CjxVAFwI
+	0_Gr1j6F4UJwA2z4x0Y4vEx4A2jsIE14v26rxl6s0DM28EF7xvwVC2z280aVCY1x0267AK
+	xVW0oVCq3wAS0I0E0xvYzxvE52x082IY62kv0487Mc804VCY07AIYIkI8VC2zVCFFI0UMc
+	02F40EFcxC0VAKzVAqx4xG6I80ewAv7VC0I7IYx2IY67AKxVWUJVWUGwAv7VC2z280aVAF
+	wI0_Jr0_Gr1lOx8S6xCaFVCjc4AY6r1j6r4UM4x0Y48IcxkI7VAKI48JM4x0Y48IcxkI7V
+	AKI48G6xCjnVAKz4kxMxAIw28IcxkI7VAKI48JMxC20s026xCaFVCjc4AY6r1j6r4UMI8I
+	3I0E5I8CrVAFwI0_Jr0_Jr4lx2IqxVCjr7xvwVAFwI0_JrI_JrWlx4CE17CEb7AF67AKxV
+	WUAVWUtwCIc40Y0x0EwIxGrwCI42IY6xIIjxv20xvE14v26r1j6r1xMIIF0xvE2Ix0cI8I
+	cVCY1x0267AKxVWUJVW8JwCI42IY6xAIw20EY4v20xvaj40_Jr0_JF4lIxAIcVC2z280aV
+	AFwI0_Jr0_Gr1lIxAIcVC2z280aVCY1x0267AKxVWUJVW8JbIYCTnIWIevJa73UjIFyTuY
+	vjxU26pBDUUUU
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.66 / 15.00];
-	MID_CONTAINS_FROM(1.00)[];
+X-Spamd-Result: default: False [0.04 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	MID_CONTAINS_FROM(1.00)[];
 	R_MISSING_CHARSET(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
-	R_DKIM_ALLOW(-0.20)[gmail.com:s=20230601];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FREEMAIL_FROM(0.00)[gmail.com];
-	FREEMAIL_CC(0.00)[kernel.org,gmail.com,vger.kernel.org];
-	TAGGED_FROM(0.00)[bounces-32086-lists,linux-wireless=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[rosenp@gmail.com,linux-wireless@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[gmail.com:+];
+	TAGGED_FROM(0.00)[bounces-32087-lists,linux-wireless=lfdr.de];
 	RCVD_COUNT_FIVE(0.00)[5];
+	RCVD_TLS_LAST(0.00)[];
+	DMARC_NA(0.00)[zju.edu.cn];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	FROM_HAS_DN(0.00)[];
+	RCPT_COUNT_THREE(0.00)[4];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	PRECEDENCE_BULK(0.00)[];
+	R_DKIM_NA(0.00)[];
+	NEURAL_HAM(-0.00)[-0.951];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	TAGGED_RCPT(0.00)[linux-wireless];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_FIVE(0.00)[5];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[duoming@zju.edu.cn,linux-wireless@vger.kernel.org];
+	TO_DN_SOME(0.00)[];
 	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 9A312171803
+X-Rspamd-Queue-Id: A303317181A
 X-Rspamd-Action: no action
 
-Simplifies the code by quite a bit in probe.
+The irq_prepare_bcn_tasklet is initialized in rtl_pci_init() and
+scheduled when RTL_IMR_BCNINT interrupt is triggered by hardware.
+But it is never killed in rtl_pci_deinit(). When the rtlwifi card
+probe fails or is being detached, the ieee80211_hw is deallocated.
+However, irq_prepare_bcn_tasklet may still be running or pending,
+leading to use-after-free when the freed ieee80211_hw is accessed
+in _rtl_pci_prepare_bcn_tasklet().
 
-Also allows removing a goto and returning directly.
+Similar to irq_tasklet, add tasklet_kill() in rtl_pci_deinit() to
+ensure that irq_prepare_bcn_tasklet is properly terminated before
+the ieee80211_hw is released.
 
-Signed-off-by: Rosen Penev <rosenp@gmail.com>
+The issue was identified through static analysis.
+
+Fixes: 0c8173385e54 ("rtl8192ce: Add new driver")
+Signed-off-by: Duoming Zhou <duoming@zju.edu.cn>
 ---
- drivers/net/wireless/ath/ath5k/ahb.c | 33 ++++++----------------------
- 1 file changed, 7 insertions(+), 26 deletions(-)
+ drivers/net/wireless/realtek/rtlwifi/pci.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/net/wireless/ath/ath5k/ahb.c b/drivers/net/wireless/ath/ath5k/ahb.c
-index cb3e891ee1bd..f34313568d9c 100644
---- a/drivers/net/wireless/ath/ath5k/ahb.c
-+++ b/drivers/net/wireless/ath/ath5k/ahb.c
-@@ -87,7 +87,6 @@ static int ath_ahb_probe(struct platform_device *pdev)
- 	struct ar231x_board_config *bcfg = dev_get_platdata(&pdev->dev);
- 	struct ath5k_hw *ah;
- 	struct ieee80211_hw *hw;
--	struct resource *res;
- 	void __iomem *mem;
- 	int irq;
- 	int ret = 0;
-@@ -95,35 +94,21 @@ static int ath_ahb_probe(struct platform_device *pdev)
-
- 	if (!dev_get_platdata(&pdev->dev)) {
- 		dev_err(&pdev->dev, "no platform data specified\n");
--		ret = -EINVAL;
--		goto err_out;
-+		return -EINVAL;
- 	}
-
--	res = platform_get_resource(pdev, IORESOURCE_MEM, 0);
--	if (res == NULL) {
--		dev_err(&pdev->dev, "no memory resource found\n");
--		ret = -ENXIO;
--		goto err_out;
--	}
--
--	mem = ioremap(res->start, resource_size(res));
--	if (mem == NULL) {
--		dev_err(&pdev->dev, "ioremap failed\n");
--		ret = -ENOMEM;
--		goto err_out;
--	}
-+	mem = devm_platform_ioremap_resources(pdev, 0);
-+	if (IS_ERR(mem))
-+		return dev_err_probe(&pdev->dev, PTR_ERR(mem), "ioremap failed\n");
-
- 	irq = platform_get_irq(pdev, 0);
--	if (irq < 0) {
--		ret = irq;
--		goto err_iounmap;
--	}
-+	if (irq < 0)
-+		return irq;
-
- 	hw = ieee80211_alloc_hw(sizeof(struct ath5k_hw), &ath5k_hw_ops);
- 	if (hw == NULL) {
- 		dev_err(&pdev->dev, "no memory for ieee80211_hw\n");
--		ret = -ENOMEM;
--		goto err_iounmap;
-+		return -ENOMEM;
- 	}
-
- 	ah = hw->priv;
-@@ -179,9 +164,6 @@ static int ath_ahb_probe(struct platform_device *pdev)
-
-  err_free_hw:
- 	ieee80211_free_hw(hw);
-- err_iounmap:
--        iounmap(mem);
-- err_out:
- 	return ret;
+diff --git a/drivers/net/wireless/realtek/rtlwifi/pci.c b/drivers/net/wireless/realtek/rtlwifi/pci.c
+index d080469264c..f0010336e78 100644
+--- a/drivers/net/wireless/realtek/rtlwifi/pci.c
++++ b/drivers/net/wireless/realtek/rtlwifi/pci.c
+@@ -1674,6 +1674,7 @@ static void rtl_pci_deinit(struct ieee80211_hw *hw)
+ 
+ 	synchronize_irq(rtlpci->pdev->irq);
+ 	tasklet_kill(&rtlpriv->works.irq_tasklet);
++	tasklet_kill(&rtlpriv->works.irq_prepare_bcn_tasklet);
+ 	cancel_work_sync(&rtlpriv->works.lps_change_work);
  }
-
-@@ -213,7 +195,6 @@ static void ath_ahb_remove(struct platform_device *pdev)
- 	}
-
- 	ath5k_deinit_ah(ah);
--	iounmap(ah->iobase);
- 	ieee80211_free_hw(hw);
- }
-
---
-2.53.0
+ 
+-- 
+2.34.1
 
 
