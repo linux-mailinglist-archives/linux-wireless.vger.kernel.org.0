@@ -1,140 +1,163 @@
-Return-Path: <linux-wireless+bounces-32087-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-32088-lists+linux-wireless=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id +cjgBKjGm2lN6gMAu9opvQ
-	(envelope-from <linux-wireless+bounces-32087-lists+linux-wireless=lfdr.de@vger.kernel.org>)
-	for <lists+linux-wireless@lfdr.de>; Mon, 23 Feb 2026 04:16:56 +0100
+	id mApBNfbOm2lH7gMAu9opvQ
+	(envelope-from <linux-wireless+bounces-32088-lists+linux-wireless=lfdr.de@vger.kernel.org>)
+	for <lists+linux-wireless@lfdr.de>; Mon, 23 Feb 2026 04:52:22 +0100
 X-Original-To: lists+linux-wireless@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id A303317181A
-	for <lists+linux-wireless@lfdr.de>; Mon, 23 Feb 2026 04:16:54 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 39B31171B41
+	for <lists+linux-wireless@lfdr.de>; Mon, 23 Feb 2026 04:52:22 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 861B7300B139
-	for <lists+linux-wireless@lfdr.de>; Mon, 23 Feb 2026 03:16:52 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id B5B0A300C019
+	for <lists+linux-wireless@lfdr.de>; Mon, 23 Feb 2026 03:52:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A23F472627;
-	Mon, 23 Feb 2026 03:16:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 77A3B344050;
+	Mon, 23 Feb 2026 03:52:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=realtek.com header.i=@realtek.com header.b="VlTjzR0q"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from zg8tmja2lje4os4yms4ymjma.icoremail.net (zg8tmja2lje4os4yms4ymjma.icoremail.net [206.189.21.223])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 29AAD26B75B;
-	Mon, 23 Feb 2026 03:16:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=206.189.21.223
+Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8F9D33446B7;
+	Mon, 23 Feb 2026 03:52:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=211.75.126.72
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771816611; cv=none; b=e9xYwEg2rnuLbNOrjFWEY8yKpD7da0fbrvMinLO92e/YVa9WhdoJy6I73u68JBdUmsTcOCYZPrBvdQGdBB/oJXLb0XBszvugDshdM5u/6gdOYU1Sx+EUBTFHyHJDCBVkGygSRCJzMFo+KLoKOzsIV00S/3xVumk3Eb8Ylqb2gqM=
+	t=1771818739; cv=none; b=IC2LMgPxW1Uyv7rJ9glqenb3jWRIIwj6jlYyfXTyn7deD7x3GjUyE89hwgMWy+6naPXrat4/UQiowWoyMpB0WPb9RppRKKOW6mIRK7LrMuTQsvFOP+VF9f+zarfaruzUg8iryTQju+W+jtvCb+E8NDhlXovlOrMru8z0QAxyNK0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771816611; c=relaxed/simple;
-	bh=rNI1Ctt94ExtQJUlP/ljV2uCFOFr6OdYRoZhGhPGMNA=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=YfMW0pu97SWd992gK5VXgFe3wnD3T5ueMZqb4IEz4/ewXKj2ZurB/DbIlvrXnF65NplOa4aymt5t++2bLJly0u9fPNghvtJhUXgWMVxBayvkQ0fM8qD3jnwFnlBFt1KsfWc9LYXt5iXfsrBsLlcX253xYcvIg3d/OW/n3N1ByhA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=zju.edu.cn; spf=pass smtp.mailfrom=zju.edu.cn; arc=none smtp.client-ip=206.189.21.223
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=zju.edu.cn
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=zju.edu.cn
-Received: from zju.edu.cn (unknown [218.12.17.5])
-	by mtasvr (Coremail) with SMTP id _____wD3ncwNxptpeyzQAA--.11675S3;
-	Mon, 23 Feb 2026 11:14:22 +0800 (CST)
-Received: from ubuntu.localdomain (unknown [218.12.17.5])
-	by mail-app3 (Coremail) with SMTP id zS_KCgDX2GsJxptpDfBYBg--.3639S2;
-	Mon, 23 Feb 2026 11:14:20 +0800 (CST)
-From: Duoming Zhou <duoming@zju.edu.cn>
-To: linux-wireless@vger.kernel.org
-Cc: pkshih@realtek.com,
-	linux-kernel@vger.kernel.org,
-	Duoming Zhou <duoming@zju.edu.cn>
-Subject: [PATCH wireless] rtlwifi: rtl_pci: Fix possible use-after-free caused by unfinished tasklet
-Date: Mon, 23 Feb 2026 11:14:15 +0800
-Message-Id: <20260223031415.39221-1-duoming@zju.edu.cn>
-X-Mailer: git-send-email 2.34.1
+	s=arc-20240116; t=1771818739; c=relaxed/simple;
+	bh=z/ZOtTSKlS1MLOJr93pP/wcSbTspQJ2VQe8FW/XuzPw=;
+	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
+	 Content-Type:MIME-Version; b=AYsSeMBTXYHEoOY8JzOlRJTogVkq8MBCj4bK568poYL3X5B3RjHCtDZYUGpgdx5bGkXWrQzj0tTPAN6iVvCLPOz7PNqcJYnCNVPDbLiRp8FRSPyCkBK5/5g1v0lWeS4YpU6L96IHVl6vAJ0vynwu1RzFGbQXQnVK/P/hf2EsCW0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com; spf=pass smtp.mailfrom=realtek.com; dkim=pass (2048-bit key) header.d=realtek.com header.i=@realtek.com header.b=VlTjzR0q; arc=none smtp.client-ip=211.75.126.72
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=realtek.com
+X-SpamFilter-By: ArmorX SpamTrap 5.80 with qID 61N3q9hK5159246, This message is accepted by code: ctloc85258
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=realtek.com; s=dkim;
+	t=1771818729; bh=tay5HRuhhv1b9P0/unPr/qbbQsYmRQTqTXbll0GX5a0=;
+	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
+	 Content-Type:Content-Transfer-Encoding:MIME-Version;
+	b=VlTjzR0qV1EReTWKR1Y4qhT2OUuVctkmNVmY70ptczB5aWHsG6dklbbIoEc1EUVW7
+	 xBjsNB7+Cd7m61QAslIT5013mnUfDwyc+//hqyM6hPh6X4DUXLJmoQ7BqlN+t1T7OR
+	 6EMsHXJhOGXXCjErOLBuJQR4vSIPKL/ICFpEv163mN9k8NPJpKZ1cL1TnjgE5aqis5
+	 Sq5Po0cEbuj/Ac5AGq1gzRwiKhAbnkE+qT5eF/W3eutKnMTLGV92xjvtx2WNy6QE28
+	 RLRDfRjqywrourKS85ywZR7eq86J0aSRosIyLy2S3ySH/BT4H/bVx/XQm7kgG6hzwp
+	 a+T+QltTG0icA==
+Received: from mail.realtek.com (rtkexhmbs04.realtek.com.tw[10.21.1.54])
+	by rtits2.realtek.com.tw (8.15.2/3.21/5.94) with ESMTPS id 61N3q9hK5159246
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Mon, 23 Feb 2026 11:52:09 +0800
+Received: from RTKEXHMBS06.realtek.com.tw (10.21.1.56) by
+ RTKEXHMBS04.realtek.com.tw (10.21.1.54) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1748.10; Mon, 23 Feb 2026 11:52:10 +0800
+Received: from RTKEXHMBS06.realtek.com.tw ([fe80::4cbd:6c6c:b92b:3913]) by
+ RTKEXHMBS06.realtek.com.tw ([fe80::4cbd:6c6c:b92b:3913%10]) with mapi id
+ 15.02.1748.010; Mon, 23 Feb 2026 11:52:10 +0800
+From: Ping-Ke Shih <pkshih@realtek.com>
+To: Duoming Zhou <duoming@zju.edu.cn>,
+        "linux-wireless@vger.kernel.org"
+	<linux-wireless@vger.kernel.org>
+CC: "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
+Subject: RE: [PATCH wireless] rtlwifi: rtl_pci: Fix possible use-after-free
+ caused by unfinished tasklet
+Thread-Topic: [PATCH wireless] rtlwifi: rtl_pci: Fix possible use-after-free
+ caused by unfinished tasklet
+Thread-Index: AQHcpHKGfjGTFjWNT0uYEj5lDUOgdbWPpOsA
+Date: Mon, 23 Feb 2026 03:52:10 +0000
+Message-ID: <153117a9fd5b464baa77b5ef48daaabc@realtek.com>
+References: <20260223031415.39221-1-duoming@zju.edu.cn>
+In-Reply-To: <20260223031415.39221-1-duoming@zju.edu.cn>
+Accept-Language: en-US, zh-TW
+Content-Language: zh-TW
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:zS_KCgDX2GsJxptpDfBYBg--.3639S2
-X-CM-SenderInfo: qssqjiasttq6lmxovvfxof0/1tbiAwQJAWmYuQgE3ABfsI
-X-CM-DELIVERINFO: =?B?b08g1AXKKxbFmtjJiESix3B1w3uoVhYI+vyen2ZzBEkOnu5chDpkB+ZdGnv/zQ0PbP
-	CR12+LyrQntYVBPxnzenB0a/HJLuynotOemBLS+42EV/9BiR7EI1i6nOS40VqJ3C/AJv2U
-	sOe/FrJgocY3cm2KwE7YowI6lNkYKUD2nlrXiiWm7lSXcIQ+lDH52cqBEwkrJA==
-X-Coremail-Antispam: 1Uk129KBj93XoWxJry7Aw17uF43tryrKw4Utrc_yoW8Xr43pF
-	W3u3y3CFZ5G3Wjk3Z8Xa1ftFyrtanxtrWfGr4Fk34Sgws7ZF1Sqw4fCFZIyFWUtr48ZFZ0
-	yr18tr9xGr1kCrXCm3ZEXasCq-sJn29KB7ZKAUJUUUUU529EdanIXcx71UUUUU7KY7ZEXa
-	sCq-sGcSsGvfJ3Ic02F40EFcxC0VAKzVAqx4xG6I80ebIjqfuFe4nvWSU5nxnvy29KBjDU
-	0xBIdaVrnRJUUUvvb4IE77IF4wAFF20E14v26r1j6r4UM7CY07I20VC2zVCF04k26cxKx2
-	IYs7xG6rWj6s0DM7CIcVAFz4kK6r1j6r18M28lY4IEw2IIxxk0rwA2F7IY1VAKz4vEj48v
-	e4kI8wA2z4x0Y4vE2Ix0cI8IcVAFwI0_tr0E3s1l84ACjcxK6xIIjxv20xvEc7CjxVAFwI
-	0_Gr1j6F4UJwA2z4x0Y4vEx4A2jsIE14v26rxl6s0DM28EF7xvwVC2z280aVCY1x0267AK
-	xVW0oVCq3wAS0I0E0xvYzxvE52x082IY62kv0487Mc804VCY07AIYIkI8VC2zVCFFI0UMc
-	02F40EFcxC0VAKzVAqx4xG6I80ewAv7VC0I7IYx2IY67AKxVWUJVWUGwAv7VC2z280aVAF
-	wI0_Jr0_Gr1lOx8S6xCaFVCjc4AY6r1j6r4UM4x0Y48IcxkI7VAKI48JM4x0Y48IcxkI7V
-	AKI48G6xCjnVAKz4kxMxAIw28IcxkI7VAKI48JMxC20s026xCaFVCjc4AY6r1j6r4UMI8I
-	3I0E5I8CrVAFwI0_Jr0_Jr4lx2IqxVCjr7xvwVAFwI0_JrI_JrWlx4CE17CEb7AF67AKxV
-	WUAVWUtwCIc40Y0x0EwIxGrwCI42IY6xIIjxv20xvE14v26r1j6r1xMIIF0xvE2Ix0cI8I
-	cVCY1x0267AKxVWUJVW8JwCI42IY6xAIw20EY4v20xvaj40_Jr0_JF4lIxAIcVC2z280aV
-	AFwI0_Jr0_Gr1lIxAIcVC2z280aVCY1x0267AKxVWUJVW8JbIYCTnIWIevJa73UjIFyTuY
-	vjxU26pBDUUUU
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [0.04 / 15.00];
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MID_CONTAINS_FROM(1.00)[];
-	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10];
+	DMARC_POLICY_ALLOW(-0.50)[realtek.com,none];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_DKIM_ALLOW(-0.20)[realtek.com:s=dkim];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-32087-lists,linux-wireless=lfdr.de];
-	RCVD_COUNT_FIVE(0.00)[5];
-	RCVD_TLS_LAST(0.00)[];
-	DMARC_NA(0.00)[zju.edu.cn];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	FROM_HAS_DN(0.00)[];
-	RCPT_COUNT_THREE(0.00)[4];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	PRECEDENCE_BULK(0.00)[];
-	R_DKIM_NA(0.00)[];
-	NEURAL_HAM(-0.00)[-0.951];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	TAGGED_RCPT(0.00)[linux-wireless];
-	FROM_NEQ_ENVFROM(0.00)[duoming@zju.edu.cn,linux-wireless@vger.kernel.org];
+	TAGGED_FROM(0.00)[bounces-32088-lists,linux-wireless=lfdr.de];
+	FROM_HAS_DN(0.00)[];
+	TO_DN_EQ_ADDR_SOME(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
 	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: A303317181A
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[realtek.com:+];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	MISSING_XM_UA(0.00)[];
+	RCVD_COUNT_FIVE(0.00)[6];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[pkshih@realtek.com,linux-wireless@vger.kernel.org];
+	RCPT_COUNT_THREE(0.00)[3];
+	NEURAL_HAM(-0.00)[-0.999];
+	TAGGED_RCPT(0.00)[linux-wireless];
+	MID_RHS_MATCH_FROM(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,realtek.com:mid,realtek.com:dkim,realtek.com:email]
+X-Rspamd-Queue-Id: 39B31171B41
 X-Rspamd-Action: no action
 
-The irq_prepare_bcn_tasklet is initialized in rtl_pci_init() and
-scheduled when RTL_IMR_BCNINT interrupt is triggered by hardware.
-But it is never killed in rtl_pci_deinit(). When the rtlwifi card
-probe fails or is being detached, the ieee80211_hw is deallocated.
-However, irq_prepare_bcn_tasklet may still be running or pending,
-leading to use-after-free when the freed ieee80211_hw is accessed
-in _rtl_pci_prepare_bcn_tasklet().
+Duoming Zhou <duoming@zju.edu.cn> wrote:
+> The irq_prepare_bcn_tasklet is initialized in rtl_pci_init() and
+> scheduled when RTL_IMR_BCNINT interrupt is triggered by hardware.
+> But it is never killed in rtl_pci_deinit(). When the rtlwifi card
+> probe fails or is being detached, the ieee80211_hw is deallocated.
+> However, irq_prepare_bcn_tasklet may still be running or pending,
+> leading to use-after-free when the freed ieee80211_hw is accessed
+> in _rtl_pci_prepare_bcn_tasklet().
+>=20
+> Similar to irq_tasklet, add tasklet_kill() in rtl_pci_deinit() to
+> ensure that irq_prepare_bcn_tasklet is properly terminated before
+> the ieee80211_hw is released.
+>=20
+> The issue was identified through static analysis.
+>=20
+> Fixes: 0c8173385e54 ("rtl8192ce: Add new driver")
+> Signed-off-by: Duoming Zhou <duoming@zju.edu.cn>
 
-Similar to irq_tasklet, add tasklet_kill() in rtl_pci_deinit() to
-ensure that irq_prepare_bcn_tasklet is properly terminated before
-the ieee80211_hw is released.
+The tree selection should be "rtw-next" (may be "rtw", but I don't think
+this patch is urgent), and subject prefix should be "wifi: rtlwifi: ...".
+More, I'd point out the name of tasklet in subject. Then,
+"[PATCH rtw-next] wifi: rtlwifi: pci: fix possible use-after-free caused by=
+ unfinished irq_prepare_bcn_tasklet"
 
-The issue was identified through static analysis.
+Otherwise, looks good to me.
 
-Fixes: 0c8173385e54 ("rtl8192ce: Add new driver")
-Signed-off-by: Duoming Zhou <duoming@zju.edu.cn>
----
- drivers/net/wireless/realtek/rtlwifi/pci.c | 1 +
- 1 file changed, 1 insertion(+)
+Acked-by: Ping-Ke Shih <pkshih@realtek.com>
 
-diff --git a/drivers/net/wireless/realtek/rtlwifi/pci.c b/drivers/net/wireless/realtek/rtlwifi/pci.c
-index d080469264c..f0010336e78 100644
---- a/drivers/net/wireless/realtek/rtlwifi/pci.c
-+++ b/drivers/net/wireless/realtek/rtlwifi/pci.c
-@@ -1674,6 +1674,7 @@ static void rtl_pci_deinit(struct ieee80211_hw *hw)
- 
- 	synchronize_irq(rtlpci->pdev->irq);
- 	tasklet_kill(&rtlpriv->works.irq_tasklet);
-+	tasklet_kill(&rtlpriv->works.irq_prepare_bcn_tasklet);
- 	cancel_work_sync(&rtlpriv->works.lps_change_work);
- }
- 
--- 
-2.34.1
+
+> ---
+>  drivers/net/wireless/realtek/rtlwifi/pci.c | 1 +
+>  1 file changed, 1 insertion(+)
+>=20
+> diff --git a/drivers/net/wireless/realtek/rtlwifi/pci.c b/drivers/net/wir=
+eless/realtek/rtlwifi/pci.c
+> index d080469264c..f0010336e78 100644
+> --- a/drivers/net/wireless/realtek/rtlwifi/pci.c
+> +++ b/drivers/net/wireless/realtek/rtlwifi/pci.c
+> @@ -1674,6 +1674,7 @@ static void rtl_pci_deinit(struct ieee80211_hw *hw)
+>=20
+>         synchronize_irq(rtlpci->pdev->irq);
+>         tasklet_kill(&rtlpriv->works.irq_tasklet);
+> +       tasklet_kill(&rtlpriv->works.irq_prepare_bcn_tasklet);
+>         cancel_work_sync(&rtlpriv->works.lps_change_work);
+>  }
+>=20
+> --
+> 2.34.1
 
 
