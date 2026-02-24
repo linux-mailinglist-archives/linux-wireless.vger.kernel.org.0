@@ -1,486 +1,446 @@
-Return-Path: <linux-wireless+bounces-32141-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-32142-lists+linux-wireless=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id uKyHJ3GGnWnBQQQAu9opvQ
-	(envelope-from <linux-wireless+bounces-32141-lists+linux-wireless=lfdr.de@vger.kernel.org>)
-	for <lists+linux-wireless@lfdr.de>; Tue, 24 Feb 2026 12:07:29 +0100
+	id 2MSvDczInWk8SAQAu9opvQ
+	(envelope-from <linux-wireless+bounces-32142-lists+linux-wireless=lfdr.de@vger.kernel.org>)
+	for <lists+linux-wireless@lfdr.de>; Tue, 24 Feb 2026 16:50:36 +0100
 X-Original-To: lists+linux-wireless@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 01B83185E2D
-	for <lists+linux-wireless@lfdr.de>; Tue, 24 Feb 2026 12:07:28 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8C5E418954C
+	for <lists+linux-wireless@lfdr.de>; Tue, 24 Feb 2026 16:50:35 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id E12EE31A3E90
-	for <lists+linux-wireless@lfdr.de>; Tue, 24 Feb 2026 11:01:57 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id E40793177D57
+	for <lists+linux-wireless@lfdr.de>; Tue, 24 Feb 2026 15:43:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 699D736EAA0;
-	Tue, 24 Feb 2026 11:01:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 557013803D1;
+	Tue, 24 Feb 2026 15:43:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="RCAvJv6v";
-	dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b="U5WQ7Xaf"
+	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="zvLwvwRW";
+	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="8XyzTaii"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
+Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EDAB577F39
-	for <linux-wireless@vger.kernel.org>; Tue, 24 Feb 2026 11:01:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8CB1F3A63F0
+	for <linux-wireless@vger.kernel.org>; Tue, 24 Feb 2026 15:43:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771930916; cv=none; b=YKLpN/bfcgPEA5Ia8/g99gYJLTBM3BTv/vBEXLH00AJiZ/QiY3Xngbay8nTCI9EOrEJwhyHWJDAmGEav2/Npv2ejiwEsFLMlQ1JZN7I6XqEiKPBHnHitwfwaXaBT3VGzFSOGj26J6TGwVGA1Ab5aRer57oY5RGfCPNk1jBGqtT0=
+	t=1771947808; cv=none; b=BmtU+2nymEVlHK3NsCJ5rDRC/pTpl7Z2Kf38D621NEShcTrslojBNscLfif1pZWTHWTqSbtgFxOFKZ3csMvyONqcDJqUJCFZD0HPqnq2MkajGkQtyIZtdMFBROofhXgu8/xjlt65jT59uzhlLrRGfgGuzjmm+JR4482VlAx23Y4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771930916; c=relaxed/simple;
-	bh=mrRulaa/l4g7zZBwF/jqYg0CFQ92MLTTF1bJn7avP4o=;
+	s=arc-20240116; t=1771947808; c=relaxed/simple;
+	bh=+BVKVpjVkgHtT44KaiuXLXIqT/5lTdmC+FZB7OP1ddg=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=i4qmZ3tZ2OcFlYtJ9GC29n8WaRU0lQWg70f+5V+DxqsNdOi6FL86Uh6Es8YiJV4AEGV2GfmDEgQCkB3nGrUvLnHCPfFCC8tUU5EHKW7G2x/XhVh+KhgdmPJxmJTw38pOf5euTy/8J7JUqsqK1yU5qYBTVLJe6/egGGCVHYE3mqw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=RCAvJv6v; dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b=U5WQ7Xaf; arc=none smtp.client-ip=205.220.168.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
-Received: from pps.filterd (m0279865.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 61OAFZHE2774702
-	for <linux-wireless@vger.kernel.org>; Tue, 24 Feb 2026 11:01:54 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
-	cc:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
-	RnUsHJSbAP+pZjOOAhK5dDeUbFNSuWJ7PmHwsoLuiNA=; b=RCAvJv6v4DoJuz8q
-	2hz72yD/C+au1ZX+miO9PcYu6xDsG+Iqnrn7fFX0W+G8e5Seyg5QDqHJmxdfAr+r
-	zHeepf0K6MUxKUZpVGFcvnbJqIoYfpyi6XEi04EI5CIwzLBSXoQ9N+AVJB8FACxu
-	B+9YuQ3AazKcoY+Mn8gBvfW9sPlNXJB5avOqnjTK+52p6VHm33cchIzb8YnR6pdQ
-	H6NFxZprNaYx22mbH9arIgSO2etpULSPLZmOMd0Npp9aGBJvtVPuijQbeX7iI7Kw
-	ntyskiKY60kz8dU6K2HyRNKarQ2cSA2yF8h/uiXT5c7xE0c2Rx7TdC4iLgP7aBkp
-	nUrW+g==
-Received: from mail-pj1-f72.google.com (mail-pj1-f72.google.com [209.85.216.72])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4cgr69ke2j-1
-	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
-	for <linux-wireless@vger.kernel.org>; Tue, 24 Feb 2026 11:01:53 +0000 (GMT)
-Received: by mail-pj1-f72.google.com with SMTP id 98e67ed59e1d1-35464d7c539so5260854a91.0
-        for <linux-wireless@vger.kernel.org>; Tue, 24 Feb 2026 03:01:53 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=oss.qualcomm.com; s=google; t=1771930913; x=1772535713; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=RnUsHJSbAP+pZjOOAhK5dDeUbFNSuWJ7PmHwsoLuiNA=;
-        b=U5WQ7XafRn+BKy0Cco86E1fo/G8LjPM5b+z5j0LogVRJJd1L4rwRfHi5uUvw7H98ki
-         N/KRtbMRee+e8Jwo5iiwVP1t3t3uPUt84o54r4bvlPMUeqGo+Zw4ZnsbPrbMcArUsgNP
-         RBDHV7wgbF217YfILHwa2h96INsO2HEzA/ohdQDjNgGdlYQ+e7HII1ZwElfsvenzqc+6
-         cOYbc34RdVTq/GSwgN1Oh0nZgCwJKGcMQUDsRiO+b7iH+gIRPY6ijYjmHCDpBnlRerDN
-         RQwrN/9GGSIHXmZFYOwnp6TBi0lckWqdtlrXI1YLXZutvJCfyaZou0NEdbaoS4pxgYvB
-         uB/g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1771930913; x=1772535713;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=RnUsHJSbAP+pZjOOAhK5dDeUbFNSuWJ7PmHwsoLuiNA=;
-        b=ih9HgkKMiUjZ3e0FHeDG6VJk6VZSVsRWMRYAji6orWuKkoAf2oglp8FT2UB56pt5iU
-         uLKgTwgXxm2XOvBjqd3SjY2995jyWc4ffZ3YklyKFBXMRxtKkKqmF+I76TZwsprB9rpW
-         Cva2uPBnFrcvtqCaPOIs6DSFhz7VY4xjNaRDl80U8e1Qzv0zHkqbpQJLzpOjbsYpuUXz
-         PVsGZRS9o/tjePIVmAYQrw50fiWhN9dwjQWb1OjbK3XwjT/CACk/AA025h96VUoBI920
-         er+qfBUXmgeJWQn43xmf06xiYGX3ZsRly4Hx4A2G3KB+UK5zY4Xi//2DwdnrxfPgvI3D
-         F8tg==
-X-Forwarded-Encrypted: i=1; AJvYcCXiURU50FgtTb0dSjko0eZH0p0vDhWWSjs3FhDzQENR6yyplMtgVQiIIXkwg2uqZZWfuJU9f62KwQ8EXiZRvw==@vger.kernel.org
-X-Gm-Message-State: AOJu0YyjoEQkKFQY9tWSlKGt3oDFgT5ZWWuNe/a1i+RVcw3+QC5PEtEt
-	TSKjAwATBvCWq1H0WHQtwxLr4SKBewIOQ2Oay889S+Tuuti9tlGclpCnqvUFQ50nV1/+9Um3bVF
-	2lk6elzOCTZfHS3y3vtPFXXaWAjKI6zd5TyEXP54Q+YXSaTE5FNbBLTsOyzQzAfp55Wolhw==
-X-Gm-Gg: ATEYQzxSDjeaCHny3n2oeYAB2O1XyDXuTFJtOMyX2UC1v797KjO+qvwBqZAMv2WEsFc
-	vjVSf5YO0ladgfEmBA6AC2mpAVZLu8l/qS+DaNY7VXHT3NDKIv20yAEKwG8hZfmJym6LyHJpcuU
-	qO1xD3BDkDVvB3tfq48g5cXrzmX99xpAJ9vR/ih9S552LfFRVyB4k6z9hWMOkf38ufxeMfgsPPc
-	RcgCo1+znBUFGCVgglQljtA3+wvGhnTnl4M36SEgBBrG4mc0u2S27cVVJbZruSagV6ogXsjVJPI
-	cSIqbuZLNt2aZJtpdZlAfBhDi9PQ9ZdDMz2rJxU9snbsc5QhykuBhnA6Z7nOeEzLMTPVQTZ2Opg
-	0X1S+7FgijOn/oO+C69Oc2httws2tXty/Baul1ON0LkC8hYUydvojLA==
-X-Received: by 2002:a17:90b:2b8c:b0:356:2c7b:c010 with SMTP id 98e67ed59e1d1-358ae812409mr12203015a91.11.1771930913169;
-        Tue, 24 Feb 2026 03:01:53 -0800 (PST)
-X-Received: by 2002:a17:90b:2b8c:b0:356:2c7b:c010 with SMTP id 98e67ed59e1d1-358ae812409mr12202967a91.11.1771930912509;
-        Tue, 24 Feb 2026 03:01:52 -0800 (PST)
-Received: from [10.152.201.41] ([202.46.23.19])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-358d79e47d9sm906963a91.3.2026.02.24.03.01.49
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 24 Feb 2026 03:01:52 -0800 (PST)
-Message-ID: <f3282007-a11a-4f68-86d8-0945e4979d65@oss.qualcomm.com>
-Date: Tue, 24 Feb 2026 16:31:47 +0530
+	 In-Reply-To:Content-Type; b=Wc+YUBapdzKqEizu1hz1Lt3QkzDwoOeq+VFlUM1Bk75RF2EU+hGPtm59BtU/vpNydeyqKs3UuRGqTaMqCrVBt4mhUWRkvmmSHMYIP1QmCPtEWA8+W+3uYprYVs0joGJ9mGpW0xToN5tBsBUawJ5/VTMXWjLBBrlfkvYUNdbf2VM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=zvLwvwRW; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=8XyzTaii; arc=none smtp.client-ip=193.142.43.55
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
+Message-ID: <b8e9ad0c-c148-40a2-b114-5558e74942b0@linutronix.de>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020; t=1771947804;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=UeKh23siBL9NYqcToSZnDSqGzk1QyS7fJxALNXyBy3U=;
+	b=zvLwvwRWPyyJoABD49d/WsF/Bcgy28NExR6tlRM2VObN+KclVpfXoyCkU9deV+X6eeloDq
+	Q2TTbjIjqNZ41haT82jJHea6WVu3nJum42GvTkfb7fa10EeyZQ965fXEqxfL7/2CdcaSuX
+	1rh7cXa5WE9LSwr+ZJ5suZtMd6dFS3mkeY1T4w/7hYJE8/zVNsk2OexXn29mN3u8UjWB8W
+	9NzMb+RZ9OEyIZ+yRDPI/iQgF+MN0h36VgM1BHrWEolVAsRGaV2Ej9piRZZ3qhlVgSgkoe
+	NKssqeaDovmXmDSohW70Sxg94SGsBIoFmOJklWQiClyssQvgWjmspixRB2B2Yg==
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020e; t=1771947804;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=UeKh23siBL9NYqcToSZnDSqGzk1QyS7fJxALNXyBy3U=;
+	b=8XyzTaii0H861BwWqbAQVcR0LuV2o+Kpq/QaCMBOFnJyrIA1ymyeCRIftXe9RGSrllte7h
+	NRdLE1dqgLTrKCCA==
+Date: Tue, 24 Feb 2026 16:43:24 +0100
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH wireless-next v8 2/3] wifi: cfg80211: add initial UHR
- support
-To: Johannes Berg <johannes@sipsolutions.net>, linux-wireless@vger.kernel.org
-Cc: Karthikeyan Kathirvel <karthikeyan.kathirvel@oss.qualcomm.com>,
-        vasanthakumar.thiagarajan@oss.qualcomm.com,
-        Lorenzo Bianconi <lorenzo@kernel.org>, ath12k@lists.infradead.org,
-        Jeff Johnson <jeff.johnson@oss.qualcomm.com>,
-        Ping-Ke Shih <pkshih@realtek.com>,
-        Manish Dharanenthiran <manish.dharanenthiran@oss.qualcomm.com>
-References: <20260130154259.265130-5-johannes@sipsolutions.net>
- <20260130164259.54cc12fbb307.I26126bebd83c7ab17e99827489f946ceabb3521f@changeid>
- <f96125eeda23451c19067359eb9d10b4047bcdd3.camel@sipsolutions.net>
- <5d54feea-d0cd-4bd7-b0d2-02e42f0fe5e1@oss.qualcomm.com>
- <be9ab3c7f05b0f56f19aee0ffc7c2f96138b9a05.camel@sipsolutions.net>
- <156d6d48-d135-4acf-a5d7-c9ae80523864@oss.qualcomm.com>
- <0f4b34f0b529fd93fc608d8bbac0e98516b7a3d2.camel@sipsolutions.net>
-Content-Language: en-US
-From: Harshitha Prem <harshitha.prem@oss.qualcomm.com>
-In-Reply-To: <0f4b34f0b529fd93fc608d8bbac0e98516b7a3d2.camel@sipsolutions.net>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Authority-Analysis: v=2.4 cv=O6A0fR9W c=1 sm=1 tr=0 ts=699d8521 cx=c_pps
- a=RP+M6JBNLl+fLTcSJhASfg==:117 a=j4ogTh8yFefVWWEFDRgCtg==:17
- a=IkcTkHD0fZMA:10 a=HzLeVaNsDn8A:10 a=s4-Qcg_JpJYA:10
- a=VkNPw1HP01LnGYTKEx00:22 a=u7WPNUs3qKkmUXheDGA7:22 a=Um2Pa8k9VHT-vaBCBUpS:22
- a=yvEocR2s0TKtyDQkXLUA:9 a=3ZKOabzyN94A:10 a=QEXdDO2ut3YA:10
- a=iS9zxrgQBfv6-_F4QbHw:22
-X-Proofpoint-ORIG-GUID: DVLFrkGWGc8DiXZUGSHdcct61-OfjZrS
-X-Proofpoint-GUID: DVLFrkGWGc8DiXZUGSHdcct61-OfjZrS
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwMjI0MDA4OSBTYWx0ZWRfXw5P5IIr2hlrS
- T9jVcxdRucGmbSClT+fZQIgHRS4IK4b6Tv7FheGgX8crL79kITTJKT7fniE2C3t3jRHz20oT6sO
- z8bSnz5rWc66btasSfWkgEekwehyNCRYZ858m9TAl5KZbfZUmb6C7KoQkDKzxhFdVd+UdAKYC6j
- xt7nQ8F1r2qXCOwkISV2jvtpiLAbXDvRHFkuxvGuZ7j8YjiYB1F5P2WNWkcYsefDY5xoKh+jt2b
- tlHMpAj3Z+r97ozn6DC37hy3Zk0plCIAGnbjhxn+TJ5bfFQ+1p+gpUkcqkhE26m8+D1ntknFEU1
- Z2FgsIoxEtQzCDGX/EWmO8dxC0CKHAqgNH4ZrsqK3GFS5Hrvf29M8l6eYzEOs4TXhS8xtEj+PWA
- sFiRjgKDL2DVLWDPNm6gHRB36mfyQBPvV3BaPrE6LTxU9/CTWfPdonZtkzehK5EsVzIGyeyTHjg
- xNxGjH6M3Owjp0boE3w==
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.51,FMLib:17.12.100.49
- definitions=2026-02-24_01,2026-02-23_03,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- spamscore=0 clxscore=1015 lowpriorityscore=0 adultscore=0 priorityscore=1501
- impostorscore=0 phishscore=0 malwarescore=0 bulkscore=0 suspectscore=0
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.22.0-2602130000 definitions=main-2602240089
+Subject: Re: [PATCH v3 19/21] wifi: rtl8xxxu: add hw crypto support for AP
+ mode
+To: Bitterblue Smith <rtl8821cerfe2@gmail.com>, linux-wireless@vger.kernel.org
+Cc: Jes Sorensen <Jes.Sorensen@gmail.com>, Ping-Ke Shih <pkshih@realtek.com>,
+ Sebastian Andrzej Siewior <bigeasy@linutronix.de>
+References: <20231222101442.626837-1-martin.kaistra@linutronix.de>
+ <20231222101442.626837-20-martin.kaistra@linutronix.de>
+ <b47a1c95-60c4-468d-9944-c59546e082bf@gmail.com>
+Content-Language: de-DE
+From: Martin Kaistra <martin.kaistra@linutronix.de>
+Autocrypt: addr=martin.kaistra@linutronix.de; keydata=
+ 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
+ fORkcG4WdcVdaVwN
+In-Reply-To: <b47a1c95-60c4-468d-9944-c59546e082bf@gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [-0.66 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[qualcomm.com,reject];
-	R_DKIM_ALLOW(-0.20)[qualcomm.com:s=qcppdkim1,oss.qualcomm.com:s=google];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	DMARC_POLICY_ALLOW(-0.50)[linutronix.de,none];
+	R_DKIM_ALLOW(-0.20)[linutronix.de:s=2020,linutronix.de:s=2020e];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[qualcomm.com:+,oss.qualcomm.com:+];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,qualcomm.com:dkim];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-32141-lists,linux-wireless=lfdr.de];
-	MIME_TRACE(0.00)[0:+];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[linux-wireless];
-	FROM_NEQ_ENVFROM(0.00)[harshitha.prem@oss.qualcomm.com,linux-wireless@vger.kernel.org];
+	TAGGED_FROM(0.00)[bounces-32142-lists,linux-wireless=lfdr.de];
 	FROM_HAS_DN(0.00)[];
+	RCVD_COUNT_THREE(0.00)[3];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FREEMAIL_TO(0.00)[gmail.com,vger.kernel.org];
 	TO_DN_SOME(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	FREEMAIL_CC(0.00)[gmail.com,realtek.com,linutronix.de];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[5];
+	NEURAL_HAM(-0.00)[-0.999];
 	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[martin.kaistra@linutronix.de,linux-wireless@vger.kernel.org];
+	DKIM_TRACE(0.00)[linutronix.de:+];
 	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[9];
-	RCVD_COUNT_SEVEN(0.00)[7]
-X-Rspamd-Queue-Id: 01B83185E2D
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	TAGGED_RCPT(0.00)[linux-wireless];
+	MISSING_XM_UA(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linutronix.de:mid,linutronix.de:dkim,linutronix.de:email]
+X-Rspamd-Queue-Id: 8C5E418954C
 X-Rspamd-Action: no action
 
-
-
-On 2/17/2026 3:35 PM, Johannes Berg wrote:
-
-Hi Johannes,
-
-Thank you very much for your patience, and apologies for the delayed
-response. We spent some time discussing this internally and wanted to
-follow up thoughtfully.
-
-> Hi,
-> 
->> This approach looks well suited to handling overlapping update scenarios.
+Am 21.02.26 um 23:09 schrieb Bitterblue Smith:
+> On 22/12/2023 12:14, Martin Kaistra wrote:
+>> Add a custom function for allocating entries in the sec cam. This allows
+>> us to store multiple keys with the same keyidx.
 >>
->> To make sure I understand it correctly, I’d like to walk through a
->> concise example where a UHR critical update and a CSA overlap on link 0
->> of a 3‑link AP MLD.
-> 
-> Well, so honestly, you should probably treat what I write as equivalent
-> to a paper napkin sketch during a night of drinking ;-)
-> 
-> I surely didn't think it totally through. I was just trying to
-> illustrate that I feel like we need to have some kind of new design for
-> all these overlapping updates (CSA, BSS color change, EHT and UHR
-> critical updates?) than the piecemeal design we have now.
-> 
-> And, importantly, that perhaps I think that this means we need to have
-> "post-update UHR operation" more than the individual UHR operation
-> updates broken out - which after all is where we started from.
-> 
-> 
->> t1: A UHR critical update is triggered. hostapd sends
->> NL80211_CMD_START_MLD_BSS_UPDATE with an advanced notification (5
->> TBTTs), post‑interval (5 TBTTs), and the beacon template with UHR
->> parameters update element for link 0. Timers start in mac80211, and
->> hostapd receives cookie X.
-> 
-> Don't know if timers would be really in mac80211 - I guess if the driver
-> pulls each individual beacon then mac80211 could handle the countdown,
-> but otherwise this might just be given to firmware.
-
-Yes, agreed.
-
-> 
-> Also I guess the counter would have offset(s) from the start, i.e. the
-> beacon template would be in this operation already. Or maybe even beacon
-> updates for multiple links? Don't know if that really matters much
-> either way.
-> 
->> t2: hostapd sends NL80211_CMD_UPDATE_AP with cookie X and offset where
->> the counter is updated for link 1 (and then link 2).
+>> The maximum number of sec cam entries for 8188f is 16 according to the
+>> vendor driver. Add the number to rtl8xxxu_fileops, so that other chips
+>> which might support more entries, can set a different number there.
 >>
->> the countdown values would be handled in mac80211 with the offset
->> mentioned similar to ieee80211_set_beacon_cntdwn().
+>> Set the bssid as mac address for group keys instead of just using the
+>> ethernet broadcast address and use BIT(6) in the sec cam ctrl entry
+>> for differentiating them from pairwise keys like in the vendor driver.
+>>
+>> Add the TXDESC_EN_DESC_ID bit and the hw_key_idx to tx
+>> broadcast/multicast packets in AP mode.
+>>
+>> Finally, allow the usage of rtl8xxxu_set_key() for AP mode.
+>>
+>> Signed-off-by: Martin Kaistra <martin.kaistra@linutronix.de>
+>> Reviewed-by: Ping-Ke Shih <pkshih@realtek.com>
+>> ---
+>>   .../net/wireless/realtek/rtl8xxxu/rtl8xxxu.h  |  5 ++
+>>   .../realtek/rtl8xxxu/rtl8xxxu_8188f.c         |  1 +
+>>   .../wireless/realtek/rtl8xxxu/rtl8xxxu_core.c | 48 +++++++++++++++----
+>>   3 files changed, 44 insertions(+), 10 deletions(-)
+>>
+>> diff --git a/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu.h b/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu.h
+>> index c5e6d8f7d26bd..62e6318bc0924 100644
+>> --- a/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu.h
+>> +++ b/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu.h
+>> @@ -498,6 +498,7 @@ struct rtl8xxxu_txdesc40 {
+>>   #define DESC_RATE_ID_SHIFT		16
+>>   #define DESC_RATE_ID_MASK		0xf
+>>   #define TXDESC_NAVUSEHDR		BIT(20)
+>> +#define TXDESC_EN_DESC_ID		BIT(21)
+>>   #define TXDESC_SEC_RC4			0x00400000
+>>   #define TXDESC_SEC_AES			0x00c00000
+>>   #define TXDESC_PKT_OFFSET_SHIFT		26
+>> @@ -1775,6 +1776,7 @@ struct rtl8xxxu_cfo_tracking {
+>>   #define RTL8XXXU_MAX_MAC_ID_NUM	128
+>>   #define RTL8XXXU_BC_MC_MACID	0
+>>   #define RTL8XXXU_BC_MC_MACID1	1
+>> +#define RTL8XXXU_MAX_SEC_CAM_NUM	64
+>>   
+>>   struct rtl8xxxu_priv {
+>>   	struct ieee80211_hw *hw;
+>> @@ -1908,6 +1910,7 @@ struct rtl8xxxu_priv {
+>>   	char led_name[32];
+>>   	struct led_classdev led_cdev;
+>>   	DECLARE_BITMAP(mac_id_map, RTL8XXXU_MAX_MAC_ID_NUM);
+>> +	DECLARE_BITMAP(cam_map, RTL8XXXU_MAX_SEC_CAM_NUM);
+>>   };
+>>   
+>>   struct rtl8xxxu_sta_info {
+>> @@ -1919,6 +1922,7 @@ struct rtl8xxxu_sta_info {
+>>   
+>>   struct rtl8xxxu_vif {
+>>   	int port_num;
+>> +	u8 hw_key_idx;
+>>   };
+>>   
+>>   struct rtl8xxxu_rx_urb {
+>> @@ -1993,6 +1997,7 @@ struct rtl8xxxu_fileops {
+>>   	u16 max_aggr_num;
+>>   	u8 supports_ap:1;
+>>   	u16 max_macid_num;
+>> +	u16 max_sec_cam_num;
+>>   	u32 adda_1t_init;
+>>   	u32 adda_1t_path_on;
+>>   	u32 adda_2t_path_on_a;
+>> diff --git a/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_8188f.c b/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_8188f.c
+>> index 1e1c8fa194cb8..574a5fe951543 100644
+>> --- a/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_8188f.c
+>> +++ b/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_8188f.c
+>> @@ -1751,6 +1751,7 @@ struct rtl8xxxu_fileops rtl8188fu_fops = {
+>>   	.max_aggr_num = 0x0c14,
+>>   	.supports_ap = 1,
+>>   	.max_macid_num = 16,
+>> +	.max_sec_cam_num = 16,
+>>   	.adda_1t_init = 0x03c00014,
+>>   	.adda_1t_path_on = 0x03c00014,
+>>   	.trxff_boundary = 0x3f7f,
+>> diff --git a/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_core.c b/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_core.c
+>> index ecf54eb8dba61..7aafae9fe76b8 100644
+>> --- a/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_core.c
+>> +++ b/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_core.c
+>> @@ -4559,8 +4559,10 @@ static void rtl8xxxu_cam_write(struct rtl8xxxu_priv *priv,
+>>   	 * This is a bit of a hack - the lower bits of the cipher
+>>   	 * suite selector happens to match the cipher index in the CAM
+>>   	 */
+>> -	addr = key->keyidx << CAM_CMD_KEY_SHIFT;
+>> +	addr = key->hw_key_idx << CAM_CMD_KEY_SHIFT;
+>>   	ctrl = (key->cipher & 0x0f) << 2 | key->keyidx | CAM_WRITE_VALID;
+>> +	if (!(key->flags & IEEE80211_KEY_FLAG_PAIRWISE))
+>> +		ctrl |= BIT(6);
+>>   
+>>   	for (j = 5; j >= 0; j--) {
+>>   		switch (j) {
+>> @@ -5546,13 +5548,14 @@ static void rtl8xxxu_tx(struct ieee80211_hw *hw,
+>>   	struct rtl8xxxu_tx_urb *tx_urb;
+>>   	struct ieee80211_sta *sta = NULL;
+>>   	struct ieee80211_vif *vif = tx_info->control.vif;
+>> +	struct rtl8xxxu_vif *rtlvif = (struct rtl8xxxu_vif *)vif->drv_priv;
+>>   	struct device *dev = &priv->udev->dev;
+>>   	u32 queue, rts_rate;
+>>   	u16 pktlen = skb->len;
+>>   	int tx_desc_size = priv->fops->tx_desc_size;
+>>   	u8 macid;
+>>   	int ret;
+>> -	bool ampdu_enable, sgi = false, short_preamble = false;
+>> +	bool ampdu_enable, sgi = false, short_preamble = false, bmc = false;
+>>   
+>>   	if (skb_headroom(skb) < tx_desc_size) {
+>>   		dev_warn(dev,
+>> @@ -5594,10 +5597,14 @@ static void rtl8xxxu_tx(struct ieee80211_hw *hw,
+>>   		tx_desc->txdw0 =
+>>   			TXDESC_OWN | TXDESC_FIRST_SEGMENT | TXDESC_LAST_SEGMENT;
+>>   	if (is_multicast_ether_addr(ieee80211_get_DA(hdr)) ||
+>> -	    is_broadcast_ether_addr(ieee80211_get_DA(hdr)))
+>> +	    is_broadcast_ether_addr(ieee80211_get_DA(hdr))) {
+>>   		tx_desc->txdw0 |= TXDESC_BROADMULTICAST;
+>> +		bmc = true;
+>> +	}
+>> +
+>>   
+>>   	tx_desc->txdw1 = cpu_to_le32(queue << TXDESC_QUEUE_SHIFT);
+>> +	macid = rtl8xxxu_get_macid(priv, sta);
+>>   
+>>   	if (tx_info->control.hw_key) {
+>>   		switch (tx_info->control.hw_key->cipher) {
+>> @@ -5612,6 +5619,10 @@ static void rtl8xxxu_tx(struct ieee80211_hw *hw,
+>>   		default:
+>>   			break;
+>>   		}
+>> +		if (bmc && rtlvif->hw_key_idx != 0xff) {
+>> +			tx_desc->txdw1 |= TXDESC_EN_DESC_ID;
+>> +			macid = rtlvif->hw_key_idx;
+>> +		}
+>>   	}
+>>   
+>>   	/* (tx_info->flags & IEEE80211_TX_CTL_AMPDU) && */
+>> @@ -5655,7 +5666,6 @@ static void rtl8xxxu_tx(struct ieee80211_hw *hw,
+>>   	else
+>>   		rts_rate = 0;
+>>   
+>> -	macid = rtl8xxxu_get_macid(priv, sta);
+>>   	priv->fops->fill_txdesc(hw, hdr, tx_info, tx_desc, sgi, short_preamble,
+>>   				ampdu_enable, rts_rate, macid);
+>>   
+>> @@ -6667,6 +6677,7 @@ static int rtl8xxxu_add_interface(struct ieee80211_hw *hw,
+>>   
+>>   	priv->vifs[port_num] = vif;
+>>   	rtlvif->port_num = port_num;
+>> +	rtlvif->hw_key_idx = 0xff;
+>>   
+>>   	rtl8xxxu_set_linktype(priv, vif->type, port_num);
+>>   	ether_addr_copy(priv->mac_addr, vif->addr);
+>> @@ -6843,11 +6854,19 @@ static int rtl8xxxu_set_rts_threshold(struct ieee80211_hw *hw, u32 rts)
+>>   	return 0;
+>>   }
+>>   
+>> +static int rtl8xxxu_get_free_sec_cam(struct ieee80211_hw *hw)
+>> +{
+>> +	struct rtl8xxxu_priv *priv = hw->priv;
+>> +
+>> +	return find_first_zero_bit(priv->cam_map, priv->fops->max_sec_cam_num);
+>> +}
+>> +
+>>   static int rtl8xxxu_set_key(struct ieee80211_hw *hw, enum set_key_cmd cmd,
+>>   			    struct ieee80211_vif *vif,
+>>   			    struct ieee80211_sta *sta,
+>>   			    struct ieee80211_key_conf *key)
+>>   {
+>> +	struct rtl8xxxu_vif *rtlvif = (struct rtl8xxxu_vif *)vif->drv_priv;
+>>   	struct rtl8xxxu_priv *priv = hw->priv;
+>>   	struct device *dev = &priv->udev->dev;
+>>   	u8 mac_addr[ETH_ALEN];
+>> @@ -6859,9 +6878,6 @@ static int rtl8xxxu_set_key(struct ieee80211_hw *hw, enum set_key_cmd cmd,
+>>   	dev_dbg(dev, "%s: cmd %02x, cipher %08x, index %i\n",
+>>   		__func__, cmd, key->cipher, key->keyidx);
+>>   
+>> -	if (vif->type != NL80211_IFTYPE_STATION)
+>> -		return -EOPNOTSUPP;
+>> -
+>>   	if (key->keyidx > 3)
+>>   		return -EOPNOTSUPP;
+>>   
+>> @@ -6885,7 +6901,7 @@ static int rtl8xxxu_set_key(struct ieee80211_hw *hw, enum set_key_cmd cmd,
+>>   		ether_addr_copy(mac_addr, sta->addr);
+>>   	} else {
+>>   		dev_dbg(dev, "%s: group key\n", __func__);
+>> -		eth_broadcast_addr(mac_addr);
+>> +		ether_addr_copy(mac_addr, vif->bss_conf.bssid);
+>>   	}
+>>   
+>>   	val16 = rtl8xxxu_read16(priv, REG_CR);
+>> @@ -6899,16 +6915,28 @@ static int rtl8xxxu_set_key(struct ieee80211_hw *hw, enum set_key_cmd cmd,
+>>   
+>>   	switch (cmd) {
+>>   	case SET_KEY:
+>> -		key->hw_key_idx = key->keyidx;
+>> +
+>> +		retval = rtl8xxxu_get_free_sec_cam(hw);
+>> +		if (retval < 0)
+>> +			return -EOPNOTSUPP;
+>> +
+>> +		key->hw_key_idx = retval;
+>> +
+>> +		if (vif->type == NL80211_IFTYPE_AP && !(key->flags & IEEE80211_KEY_FLAG_PAIRWISE))
+>> +			rtlvif->hw_key_idx = key->hw_key_idx;
+>> +
+>>   		key->flags |= IEEE80211_KEY_FLAG_GENERATE_IV;
+>>   		rtl8xxxu_cam_write(priv, key, mac_addr);
+>> +		set_bit(key->hw_key_idx, priv->cam_map);
 > 
-> Sort of, yeah. I imagined that the CMD_UPDATE_AP would come with a list
-> of "cookie X: { offset X_1, offset X_2 }, cookie Y: { offset Y_1 }" or
-> something like that.
-> 
->> t3: Before the UHR advanced interval completes, a CSA is triggered (due
->> to radar or user‑initiated). Another NL80211_CMD_START_MLD_BSS_UPDATE is
->> issued with CSA countdown 5, including CSA and after beacon templates.
->> The after template carries cookie X and the offset. Since UHR CU is
->> already in progress, hostapd could also include an updated parameters
->> update element. 
-> 
-> Would have to, I think? I think in your example it's unlikely the _after
-> CSA_ template still has cookie X / offset(s) X_n, since you only had 10
-> beacon intervals overall for the UHR critical update and CSA might be
-> longer, but we could also imagine the UHR critical update was advertised
-> for a longer time.
-> 
->> Also, an updated UHR operation element which can be
->> modified in after beacon template if CSA finishes after the UHR CU
->> advance interval. (why to provide the UHR operation element separately
->> is because the advance notification can be before or after the CSA
->> finalize).
->> hostapd then receives cookie Y for the CSA.
-> 
-> This could get trickier than I imagined - you now have three periods of
-> time:
-> 
->  - now
->  - after CSA but before UHR update
->  - after UHR update
-> 
-> and actually all three might need different UHR operation, since the CSA
-> can change the bandwidth and therefore e.g. DBE/NPCA. The intermediate
-> period ("after CSA but before UHR update") can be captured by the CSA
-> operation (given a template/UHR operation for after) easily.
-> 
-> But I was imagining we capture all this in the operations already, so I
-> guess to do that we would need a "NL80211_CMD_MODIFY_MLD_BSS_UPDATE"
-> command that takes the cookie and updates the post-operation values, so
-> that the changes due to the CSA could be taken into account in the
-> previously started UHR update.
+> Hi Martin,
 
-The idea of introducing an NL80211_CMD_MODIFY_MLD_BSS_UPDATE command
-makes a lot of sense to us. In cases where
-NL80211_CMD_START_MLD_BSS_UPDATE is already in progress, having a modify
-path to update the current beacon seems easier to reason about and
-manage. From that perspective, a pairing such as
-NL80211_CMD_START_MLD_BSS_UPDATE together with
-NL80211_CMD_MODIFY_MLD_BSS_UPDATE feels quite natural.
-
-> 
-> FWIW, I was also kind of imagining that we'd design this combined update
-> command in a way that it replaces the CSA and color change commands,
-> handles the proposed link removal thing from Lorenzo, and then we don't
-> need to handle overlapping operations of all kinds, just of this new
-> kind that can do many different things. Not a huge difference though
-> since CSA/CCA would map to a subset of the new "thing".
-> 
-
-[...]
-
-Please find below the envisioned design flow for the UHR CU and CSA
-intersection.
-
-Hostapd (User)          mac80211 (Kernel)           Air / Station
-   |                           |                           |
- 1 | CMD_START_AP [Adv Notif,  |                           |
-   |  Post Notif, Upd Int]     |                           |
-   |-------------------------->|                           |
-   |                           |                           |
- 2 | CMD_START_MLD_BSS_UPDATE  |                           |
-   | [Link:0, CurTmpl+Offset   |                           |
-   |  (All), Timer, PostTmpl   |                           |
-   |  (All), Type:UHR_CU,      |                           |
-   |  Post UHR Op element]     |                           |
-   |-------------------------->|                           |
-   |                           |                           |
- 3 |                           | [Set Tmpl, Timer: Adv=10, |
-   |                           |  Post=10, TIM Update]     |
-   |                           |                           |
- 4 |         Cookie X          |                           |
-   |<--------------------------|                           |
-   |                           |                           |
- 5 | EVENT_UHR_CU (CU_START)   |                           |
-   |<--------------------------|                           |
-   |                           |                           |
- 6 |                           | Beacons: 10, 9, 8...      |
-   |                           |-------------------------->|
-   |                           |                           |
- 7 | [CSA Triggered: Link0,    |                           |
-   |  Count 10. Sees Cookie X] |                           |
-   |                           |                           |
- 8 | CMD_START_MLD_BSS_UPDATE  |                           |
-   | [Type:CSA, Link:0, Tmpls, |                           |
-   |  Cookie X + Offset,       |                           |
-   |  Post Tmpl (No UHR ele)]  |                           |
-   |-------------------------->|                           |
-   |                           |                           |
- 9 |         Cookie Y          |                           |
-   |<--------------------------|                           |
-   |                           |                           |
-10 | CMD_CH_SWITCH_STARTED_    |                           |
-   | NOTIFY                    |                           |
-   |<--------------------------|                           |
-   |                           |                           |
-11 |                           | Beacons: X=7, Y=10        |
-   |                           |-------------------------->|
-   |                           |                           |
-12 | CMD_MODIFY_MLD_BSS_UPDATE |                           |
-   | (Cookie X Post Tmpl w/    |                           |
-   |  Chan Info, 3 Links)      |                           |
-   |-------------------------->|                           |
-   |                           |                           |
-13 |                           | Beacons: X=1, Y=4         |
-   |                           |-------------------------->|
-   |                           |                           |
-14 |                           | [X=0: Modify Cur Tmpl     |
-   |                           |  w/ Post UHR Op element]  |
-   |                           |                           |
-15 | EVENT_UHR_CU              |                           |
-   | (CU_ADVANCE_COMPLETE)     |                           |
-   |<--------------------------|                           |
-   |                           |                           |
-16 | CMD_MODIFY_MLD_BSS_UPDATE |                           |
-   | (Cookie Y Post Tmpl w/    |                           |
-   |  UHR Op + Param elements) |                           |
-   |-------------------------->|                           |
-   |                           |                           |
-17 |                           | Beacons: X=127, Y=3       |
-   |                           |-------------------------->|
-   |                           |                           |
-18 |                           | Beacons: X=128/129,       |
-   |                           |          Y=2/1 (CSA done) |
-   |                           |-------------------------->|
-   |                           |                           |
-19 |                           | [Y=0: Set Post Tmpl       |
-   |                           |  cookie Y, UHR Param      |
-   |                           |  Off, X=130]              |
-   |                           |                           |
-20 | CMD_CH_SWITCH_NOTIFY      |                           |
-   |<--------------------------|                           |
-   |                           |                           |
-21 | CMD_MLD_BSS_UPDATE_NOTIFY |                           |
-   | (Complete Cookie Y)       |                           |
-   |<--------------------------|                           |
-   |                           |                           |
-22 | CMD_MODIFY_MLD_BSS_UPDATE |                           |
-   | (Cookie X Post Tmpl w/    |                           |
-   |  UpdatedChan Info)        |                           |
-   |-------------------------->|                           |
-   |                           |                           |
-23 |                           | Beacons Continue...       |
-   |                           |-------------------------->|
-   |                           |                           |
-24 |                           | Probe Request             |
-   |                           |<--------------------------|
-   |                           | [Fetch TBTT]              |
-   |     send_mgmt (TBTT)      |                           |
-   |<--------------------------|                           |
-   |                           |                           |
-25 | send_mgmt (Probe Resp     |                           |
-   |  w/ TBTT in UHR Param)    |                           |
-   |-------------------------->|                           |
-   |                           |                           |
-26 |                           | [Post Notif Complete:     |
-   |                           |  Set Post Tmpl Cookie X]  |
-   |                           |                           |
-27 | EVENT_UHR_CU              |                           |
-   | (CU_POST_NOTIF_COMPLETE)  |                           |
-   |<--------------------------|                           |
-   |                           |                           |
-28 |                           | [Continue w/ Updated TIM] |
-   |                           |                           |
-29 | EVENT_UHR_CU              |                           |
-   | (CU_SESSION_END)          |                           |
-   |<--------------------------|                           |
-   |                           |                           |
-
-
-The diagram uses a number of abbreviations, so an explanation is
-provided below for clarity.
-
-Step 2 – NL80211_CMD_START_MLD_BSS_UPDATE
-	This would include:
-		1. The affected link ID
-		2. Current beacon templates for all links, along with the offsets
-where counters need to be updated.
-		3. Post‑beacon templates for all links
-		4. The post‑UHR operation element
-		5. Countdown values
-		6. Type: UHR CU
-
-
-Step 8 – NL80211_CMD_START_MLD_BSS_UPDATE
-	This would include:
-		1. The affected link ID
-		2. Current beacon templates for all links, along with
-the offsets where counters need to be updated
-		3. Cookie X – { offset_A }
-		4. Post‑beacon templates for all links
-		5. Countdown values
-		6. Type: CSA
-
-
-Step 14
-	The driver/firmware can update the current beacon template with
-the post‑UHR operation element. Until the advance notification interval
-completes, the UHR operation element would not yet be updated.
-
-Step 12 & Step 22
-	These steps are somewhat duplicate, but keeping the latest modified
-state once hostapd receives NL80211_CMD_MLD_BSS_UPDATE_NOTIFY_COMPLETE
-seems reasonable.
-
-Step 24
-	Reporting the TBTT count back to hostapd for attribute types such as
-UHR_CU, LINK_REMOVE, etc.
-
-Cookies act as identifiers for both the post‑beacon template and the
-associated countdown values.
-
-
-A few potential concerns to consider:
-
-1. Carrying both the current and post‑beacon templates for all
-affiliated links of an MLD might make the NL message fairly large. we
-are not sure how well that fits with existing practice, since multipart
-handling seems to be used mostly for dump commands. As an alternate, can
-we have multiple commands with message id and reassemble it?
-
-2. There may be a small sequencing aspect worth thinking through. For
-example, if a UHR_CU operation is close to completion and we are about
-to apply its post‑beacon template, but before hostapd processes
-EVENT_UHR_CU with CU_POST_NOTIF_COMPLETE it issues a
-START_MLD_BSS_UPDATE for CSA, we could potentially end up using an
-unexpected version of the current beacon template. This may already be
-handled by the existing flow, but it seemed worth calling out for
-completeness.
-
-
-Thanks,
-Harshitha
+Hi Bitterblue,
 
 > 
-> Thanks,
-> johannes
+> It turns out RTL8188CUS and RTL8192CU don't like this patch, specifically
+> when we use iwd. After the WPA2 handshake no more data is transmitted.
+> 
+> Before this patch, key->hw_key_idx was the same as key->keyidx. After
+> this patch, when we use iwd, the group key is installed first. It has
+> key->keyidx = 1, but it gets key->hw_key_idx = 0. The pairwise key is
+> installed second. It has key->keyidx = 0, but it gets key->hw_key_idx = 1.
+> Both keyidx and hw_key_idx are passed to the chip in rtl8xxxu_cam_write().
+> 
+> It's fine with wpa_supplicant. wpa_supplicant installs the pairwise key
+> first, with key->keyidx = 0, then the group key, with key->keyidx = 1.
+> 
+> This patch imitating rtw88 makes the old chips work again with iwd.
+> What do you think?
+
+So you reserve the first 4 entries for group keys and use key->keyidx as 
+key->hw_key_idx directly for those, right? Does that work if 2 virtual 
+interfaces are used at the same time?
+I will do some tests in the next days, but I suspect this be an issue.
+
+> 
+> diff --git a/drivers/net/wireless/realtek/rtl8xxxu/core.c b/drivers/net/wireless/realtek/rtl8xxxu/core.c
+> index ee278f0548e4..f7b35655bec5 100644
+> --- a/drivers/net/wireless/realtek/rtl8xxxu/core.c
+> +++ b/drivers/net/wireless/realtek/rtl8xxxu/core.c
+> @@ -6942,7 +6942,8 @@ static int rtl8xxxu_get_free_sec_cam(struct ieee80211_hw *hw)
+>   {
+>   	struct rtl8xxxu_priv *priv = hw->priv;
+>   
+> -	return find_first_zero_bit(priv->cam_map, priv->fops->max_sec_cam_num);
+> +	return find_next_zero_bit(priv->cam_map, priv->fops->max_sec_cam_num,
+> +				  RTL8XXXU_SEC_DEFAULT_KEY_NUM);
+>   }
+>   
+>   static int rtl8xxxu_set_key(struct ieee80211_hw *hw, enum set_key_cmd cmd,
+> @@ -6999,12 +7000,15 @@ static int rtl8xxxu_set_key(struct ieee80211_hw *hw, enum set_key_cmd cmd,
+>   
+>   	switch (cmd) {
+>   	case SET_KEY:
+> +		if (key->flags & IEEE80211_KEY_FLAG_PAIRWISE) {
+> +			retval = rtl8xxxu_get_free_sec_cam(hw);
+> +			if (retval < 0)
+> +				return -EOPNOTSUPP;
+>   
+> -		retval = rtl8xxxu_get_free_sec_cam(hw);
+> -		if (retval < 0)
+> -			return -EOPNOTSUPP;
+> -
+> -		key->hw_key_idx = retval;
+> +			key->hw_key_idx = retval;
+> +		} else {
+> +			key->hw_key_idx = key->keyidx;
+> +		}
+>   
+>   		if (vif->type == NL80211_IFTYPE_AP && !(key->flags & IEEE80211_KEY_FLAG_PAIRWISE))
+>   			rtlvif->hw_key_idx = key->hw_key_idx;
+> diff --git a/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu.h b/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu.h
+> index 4b05dba22e67..188f4bbe99cd 100644
+> --- a/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu.h
+> +++ b/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu.h
+> @@ -1788,6 +1788,7 @@ struct rtl8xxxu_cfo_tracking {
+>   #define RTL8XXXU_BC_MC_MACID	0
+>   #define RTL8XXXU_BC_MC_MACID1	1
+>   #define RTL8XXXU_MAX_SEC_CAM_NUM	64
+> +#define RTL8XXXU_SEC_DEFAULT_KEY_NUM	4
+>   
+>   struct rtl8xxxu_priv {
+>   	struct ieee80211_hw *hw;
 
 
