@@ -1,146 +1,207 @@
-Return-Path: <linux-wireless+bounces-32156-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-32157-lists+linux-wireless=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id oMaFBF0OnmkxTQQAu9opvQ
-	(envelope-from <linux-wireless+bounces-32156-lists+linux-wireless=lfdr.de@vger.kernel.org>)
-	for <lists+linux-wireless@lfdr.de>; Tue, 24 Feb 2026 21:47:25 +0100
+	id WAsODOUXnmmcTQQAu9opvQ
+	(envelope-from <linux-wireless+bounces-32157-lists+linux-wireless=lfdr.de@vger.kernel.org>)
+	for <lists+linux-wireless@lfdr.de>; Tue, 24 Feb 2026 22:28:05 +0100
 X-Original-To: lists+linux-wireless@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id A394018C7B1
-	for <lists+linux-wireless@lfdr.de>; Tue, 24 Feb 2026 21:47:24 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id C665818CC28
+	for <lists+linux-wireless@lfdr.de>; Tue, 24 Feb 2026 22:28:04 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 67F963039CB5
-	for <lists+linux-wireless@lfdr.de>; Tue, 24 Feb 2026 20:47:19 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 1DF843038024
+	for <lists+linux-wireless@lfdr.de>; Tue, 24 Feb 2026 21:28:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E49C8334695;
-	Tue, 24 Feb 2026 20:47:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 57BF8339870;
+	Tue, 24 Feb 2026 21:28:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b="lVfAKoJR"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="W/yc/8oL"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from sipsolutions.net (s3.sipsolutions.net [168.119.38.16])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B12FD330646
-	for <linux-wireless@vger.kernel.org>; Tue, 24 Feb 2026 20:47:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=168.119.38.16
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3479D2E2DFB
+	for <linux-wireless@vger.kernel.org>; Tue, 24 Feb 2026 21:28:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771966038; cv=none; b=Vd8KVamzUYSWeMRqG7Dmx0qFGaaPjUqfkj0oEpcwGFAefLSnFZDNLIA1Qt0DxBzrLA2Y5ZI/3ZSSdorB54wKrTlE6y9a3JfNwMRLmf9Mn/VC6WDD/0ggYelj/FKo8eq3dN9WRnDtvqIFKFkc1OuQBxintokhMKUT6Pp/TP9Ci3A=
+	t=1771968481; cv=none; b=ZiLMHqOhsc77KvYq8pGZOMqK6kkHy5Jz17YmVRO03dRZ8kpMqilbN45nLMtR8YcMbRi2MPwsSk1S2ygpoM8pt0tMWBjHkHwgVrZoSTGn0xtxZz7QWlNmfWKtioRVg467nM2PDPaIUvkKFk+uNa+RbDUkc8ARZDQWxRoYTg1x2qs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771966038; c=relaxed/simple;
-	bh=zRBP75nJECOs8RCo93T991YkqzNLZf5hz/+5e8Oazoc=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=sdpBu1hisdFNqnMJjR5ghn+d36jO4/pVar1eiCWYqXIy35efen6Q6tPvBoCMQSkI6t4bXkB+IyUsoXMkAUdkKd9lR8KWKOe91HDJtkZUKFO3F3X0MkkZu9StyBFVHUjfMMjTXKnVSp0oYItpHuZfyySqIrHvOP6c6tdTmpoe+0E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net; spf=pass smtp.mailfrom=sipsolutions.net; dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b=lVfAKoJR; arc=none smtp.client-ip=168.119.38.16
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sipsolutions.net
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=sipsolutions.net; s=mail; h=MIME-Version:Content-Transfer-Encoding:
-	Content-Type:References:In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender
-	:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
-	Resent-Cc:Resent-Message-ID; bh=SK2m0+BCqZK3Z0MefFDAaeio2GM2wmtU79nlwdyGEuo=;
-	t=1771966037; x=1773175637; b=lVfAKoJRzidvvV40Nzbk6xV63X7I1WGN5m/H11pkCL5/atf
-	FdSYZwN4kNB64V6u84Nxm8WL32dPJXMtxblYxlej7DAxRTb3wQrXoq7++f+YVjduBTzxqjjqPMbvq
-	k6Sum3SBTW56J6fBe2fa6UQfiJb6KV1gfBAoH9r42Wx51IHCamLKazPbB2L9Oimq/uYYDJGxRrY6Z
-	xxITU2R/H4DWtYbrUviVwdkXDJheuQTV+eWcW7l9SoKEjeRXTeD1uCtnf2cS5A8+TQGo/eRTsr2pd
-	RNnq9Hmw/1s54ROELS9DziiUDUCQjD4XlB6AwH1vvYWqohvuylRHNaPH0c+JTwpg==;
-Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
-	(Exim 4.98.2)
-	(envelope-from <johannes@sipsolutions.net>)
-	id 1vuzJJ-00000000fr0-2SY0;
-	Tue, 24 Feb 2026 21:47:13 +0100
-Message-ID: <0877db64cce68a9c206796da7261065d5785fca6.camel@sipsolutions.net>
-Subject: Re: [PATCH wireless-next v4 1/2] wifi: UHR: define DPS/DBE/P-EDCA
- elements and fix size parsing
-From: Johannes Berg <johannes@sipsolutions.net>
-To: Karthikeyan Kathirvel <karthikeyan.kathirvel@oss.qualcomm.com>
-Cc: linux-wireless@vger.kernel.org, ath12k@lists.infradead.org
-Date: Tue, 24 Feb 2026 21:47:12 +0100
-In-Reply-To: <20260217054731.3667600-2-karthikeyan.kathirvel@oss.qualcomm.com>
-References: 
-	<20260217054731.3667600-1-karthikeyan.kathirvel@oss.qualcomm.com>
-	 <20260217054731.3667600-2-karthikeyan.kathirvel@oss.qualcomm.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.58.3 (3.58.3-1.fc43) 
+	s=arc-20240116; t=1771968481; c=relaxed/simple;
+	bh=lTDh8y9csgDy6I44Mj+9QPHtSy2wHdegXTAP6+dbdZQ=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=H+pKQqsuX2dgGYuyXxZ+bJ4uxNApHS3GzKaH57nHEcmwGMkFf/B1ofIsIROBjEEpfdQnseyJEQycJL4Mzyp8dyRbcvvtQRv96vfVdjkmw+zyRs21Knnhz03uJsZJJvxU20dxeJpcueEO2NqSldaOB4xN8zNuF9SLV9mIT2ADtho=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=W/yc/8oL; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 83642C116D0;
+	Tue, 24 Feb 2026 21:27:59 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1771968480;
+	bh=lTDh8y9csgDy6I44Mj+9QPHtSy2wHdegXTAP6+dbdZQ=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=W/yc/8oLbiPY+XflYWV/iCmeCop9Sy/1oDGYz6eyyOIl7NSS3rSrh9Iy+F0lFPpVT
+	 F6OKn0MmjHyA/fG1bxjTAfYZxSfuYMTdx3mC6Km4kX5mn7npsEF2WEvxbGVGuSkF5W
+	 TidHcAnSJtB3/Z+BwFiV1UQ3V2bu7h1HqwI+tQeVpwRVumc/X3JudZ35fPwV2+QBP7
+	 PbyS0rXfmApGh3NlbEsu7j/frP6Acl5Bl2cIK8T7AV7bM3cx14+TYMG4EM592Vclls
+	 /L1rZ+mWPfxQq16QtOYYTHb4vpL1gtlRUIXJmYbtFiMRMNmu/DyhzBaPIfGQC9KKFU
+	 mD+n74ytEH8dg==
+Date: Tue, 24 Feb 2026 22:27:56 +0100
+From: Alejandro Colomar <alx@kernel.org>
+To: Jeff Johnson <jeff.johnson@oss.qualcomm.com>
+Cc: Toke =?utf-8?Q?H=C3=B8iland-J=C3=B8rgensen?= <toke@toke.dk>, 
+	linux-wireless@vger.kernel.org, Rajkumar Manoharan <rmanohar@qti.qualcomm.com>, 
+	"John W. Linville" <linville@tuxdriver.com>, Greg KH <greg@kroah.com>
+Subject: Re: [PATCH v1] wifi: ath9k: Fix typo
+Message-ID: <aZ4Wq6h-nMt-G3pC@devuan>
+References: <6ab107cf786f9d05dc4d84ea4e2d1b219ce108c0.1766355822.git.alx@kernel.org>
+ <871pibo5fj.fsf@toke.dk>
+ <8beecde0-1280-4852-bb82-120590347fb3@oss.qualcomm.com>
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-malware-bazaar: not-scanned
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="tgsikbvgmhllw5kz"
+Content-Disposition: inline
+In-Reply-To: <8beecde0-1280-4852-bb82-120590347fb3@oss.qualcomm.com>
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [-3.76 / 15.00];
+	SIGNED_PGP(-2.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[sipsolutions.net,none];
-	R_DKIM_ALLOW(-0.20)[sipsolutions.net:s=mail];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10];
+	MID_RHS_NOT_FQDN(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
+	MIME_GOOD(-0.20)[multipart/signed,text/plain];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	MAILLIST(-0.15)[generic];
-	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-32156-lists,linux-wireless=lfdr.de];
-	DKIM_TRACE(0.00)[sipsolutions.net:+];
-	FROM_HAS_DN(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	RCPT_COUNT_THREE(0.00)[3];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	TAGGED_FROM(0.00)[bounces-32157-lists,linux-wireless=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
 	TO_DN_SOME(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[johannes@sipsolutions.net,linux-wireless@vger.kernel.org];
+	MIME_TRACE(0.00)[0:+,1:+,2:~];
+	FROM_HAS_DN(0.00)[];
+	MISSING_XM_UA(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[alx@kernel.org,linux-wireless@vger.kernel.org];
+	DKIM_TRACE(0.00)[kernel.org:+];
 	TAGGED_RCPT(0.00)[linux-wireless];
-	MID_RHS_MATCH_FROM(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,sipsolutions.net:mid,sipsolutions.net:dkim]
-X-Rspamd-Queue-Id: A394018C7B1
+	RCPT_COUNT_FIVE(0.00)[6];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,alejandro-colomar.es:url,tuxdriver.com:email,toke.dk:email]
+X-Rspamd-Queue-Id: C665818CC28
 X-Rspamd-Action: no action
 
-On Tue, 2026-02-17 at 11:17 +0530, Karthikeyan Kathirvel wrote:
+
+--tgsikbvgmhllw5kz
+Content-Type: text/plain; protected-headers=v1; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
+From: Alejandro Colomar <alx@kernel.org>
+To: Jeff Johnson <jeff.johnson@oss.qualcomm.com>
+Cc: Toke =?utf-8?Q?H=C3=B8iland-J=C3=B8rgensen?= <toke@toke.dk>, 
+	linux-wireless@vger.kernel.org, Rajkumar Manoharan <rmanohar@qti.qualcomm.com>, 
+	"John W. Linville" <linville@tuxdriver.com>, Greg KH <greg@kroah.com>
+Subject: Re: [PATCH v1] wifi: ath9k: Fix typo
+Message-ID: <aZ4Wq6h-nMt-G3pC@devuan>
+References: <6ab107cf786f9d05dc4d84ea4e2d1b219ce108c0.1766355822.git.alx@kernel.org>
+ <871pibo5fj.fsf@toke.dk>
+ <8beecde0-1280-4852-bb82-120590347fb3@oss.qualcomm.com>
+MIME-Version: 1.0
+In-Reply-To: <8beecde0-1280-4852-bb82-120590347fb3@oss.qualcomm.com>
+
+Hi Jeff,
+
+On 2026-02-24T10:45:02-0800, Jeff Johnson wrote:
+> On 2/23/2026 7:17 AM, Toke H=C3=B8iland-J=C3=B8rgensen wrote:
+> > Alejandro Colomar <alx@kernel.org> writes:
+> >=20
+> >> This only worked by chance, because all callers of this macro used the
+> >> same identifiers that were expected by the macro.
+> >>
+> >> 	$ grep -rn ath_for_each_chanctx
+> >> 	drivers/net/wireless/ath/ath9k/main.c:1576:	ath_for_each_chanctx(sc, =
+ctx)
+> >> 	drivers/net/wireless/ath/ath9k/main.c:2554:	ath_for_each_chanctx(sc, =
+ctx) {
+> >> 	drivers/net/wireless/ath/ath9k/channel.c:165:	ath_for_each_chanctx(sc=
+, ctx) {
+> >> 	drivers/net/wireless/ath/ath9k/channel.c:291:	ath_for_each_chanctx(sc=
+, ctx) {
+> >> 	drivers/net/wireless/ath/ath9k/channel.c:861:	ath_for_each_chanctx(sc=
+, ctx) {
+> >> 	drivers/net/wireless/ath/ath9k/debug.c:717:	ath_for_each_chanctx(sc, =
+ctx) {
+> >> 	drivers/net/wireless/ath/ath9k/ath9k.h:446:#define ath_for_each_chanc=
+tx(_sc, _ctx)                               \
+> >>
+> >> Fixes: c4dc0d040e35 (2014-06-19; "ath9k: Fetch appropriate operating c=
+hannel context")
 >=20
-> +/**
-> + * struct ieee80211_uhr_dps_info - DPS operation information
-> + *
-> + * This structure is the "DPS Operation Parameter field" of "UHR
-> + * Operation Element" fields as described in P802.11bn_D1.3
-> + * subclause 9.4.1.87. See Figure 9-207u.
-> + *
-> + * Refer to IEEE80211_UHR_DPS*
-> + * @dps_params:
+> I'm dropping the Fixes tag since the existing code actually works and hen=
+ce
+> there is no need to backport to LTS kernels.
 
-I think it being in a DPS specific struct, we can drop the dps_ prefix
-here?
+Sounds reasonable.  Alternatively, a line next to it saying
 
-> +/**
-> + * struct ieee80211_uhr_dbe_info - DBE operation information
-> + *
-> + * This structure is the "DBE Operation Parameters field" of
-> + * "UHR Operation Element" fields as described in P802.11bn_D1.3
-> + * subclause 9.4.2.353. See Figure 9-aa6.
-> + *
-> + * Refer to IEEE80211_UHR_DBE_OPER*
-> + * @dbe_params:
+	[Do not backport]
 
-same here
+would work, I guess.
 
-> +/**
-> + * struct ieee80211_uhr_p_edca_info - P-EDCA operation information
-> + *
-> + * This structure is the "P-EDCA Operation Parameters field" of
-> + * "UHR Operation Element" fields as described in P802.11bn_D1.3
-> + * subclause 9.4.2.353. See Figure 9-aa5.
-> + *
-> + * Refer to IEEE80211_UHR_P_EDCA*
-> + * @p_edca_ec: The P-EDCA ECWmin, P-EDCA and ECWmax
-> + *	fields indicate the CWmin and CWmax
-> + *	value that are used by a P-EDCA STA during P-EDCA contention.
-> + * @p_edca_params: The AIFSN field indicate the AIFSN value that are
+Greg, I've seen this situation already a few times.  A Fixes tag getting
+removed to avoid triggering a stable backport.  But I think keeping the
+Fixes tag could be useful.  Should we have a standard way to document
+that a patch fixes an old commit without meaning that it should be
+backported?  Maybe something like this?:
 
-and here
+	[Do not backport to stable]
+	Fixes: ...
 
-johannes
+In any case, feel free to remove it.
+
+
+Have a lovely night!
+Alex
+
+>=20
+> >> Cc: Rajkumar Manoharan <rmanohar@qti.qualcomm.com>
+> >> Cc: John W. Linville <linville@tuxdriver.com>
+> >> Cc: Toke H=C3=B8iland-J=C3=B8rgensen <toke@toke.dk>
+> >> Signed-off-by: Alejandro Colomar <alx@kernel.org>
+> >=20
+> > Yeah, looks reasonable - thanks!
+> >=20
+> > Acked-by: Toke H=C3=B8iland-J=C3=B8rgensen <toke@toke.dk>
+> >=20
+>=20
+
+--=20
+<https://www.alejandro-colomar.es>
+
+--tgsikbvgmhllw5kz
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQIzBAABCgAdFiEES7Jt9u9GbmlWADAi64mZXMKQwqkFAmmeF9YACgkQ64mZXMKQ
+wqnqhw//RlsMT8YRev3PXV3/rnrJbm5x8r97adCelDmknkCXPOOWbsRopGwiVQnD
+alJ00aLqu8TaEx36Md2LakyFcWZh/AbGFzP5f5lryWtPHYPAw6C0zb33w+x6e2pe
+isagPhPHljr8GTqpUrpNNM29dn6Ly077ErLW332IdiFr0alp7swPUHAR4GNLYcYd
+IBv+LVXoUqN2/zfxrfBzfDYXapwytoY2jJKM1eLO7UQNIpoGI7f1FaJy266V9IHj
+NIPLQaztaTHWgamgFGLI9MV7OKt4Tsewyjbd+e1nsqqjoF8EVYukLDjegBY7jn4f
+iGLb68O0egf9hgTs3av5sWJ9zKVEmSTp6Phfd0q6FUWmfujbsWtwkEE0wCyePzC9
+MVXuMTfAC16Q9UO35t4x0vryCr3B77Wkobm+CwYpuFUEdhb70G2bUZTk1G9PdxA2
+Bk8OjEjAdkzEbWhYlMawXebY9t2rrAEA+hE+3ZO33u8mFNofAcsbH5kc3KYBToGv
+5j36UnJ2J3oirfdnMRY3BQp6o2+pNrKdvvXdyQd8xGBHaSEoFCJJYMhkXuEAU+9A
+X6aw7B/PPwMEuD5xrKwvmNcqMkPBcElS99namHDUC7kuayNyQDVnjGhQIplCntG6
+EP7RQT3V9YXz3h7HPioegi6uf7XNvNWGan72JPNuudQeZl3i72I=
+=nzTu
+-----END PGP SIGNATURE-----
+
+--tgsikbvgmhllw5kz--
 
