@@ -1,58 +1,59 @@
-Return-Path: <linux-wireless+bounces-32155-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-32139-lists+linux-wireless=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id MNcYHCwAnmkfTAQAu9opvQ
-	(envelope-from <linux-wireless+bounces-32155-lists+linux-wireless=lfdr.de@vger.kernel.org>)
-	for <lists+linux-wireless@lfdr.de>; Tue, 24 Feb 2026 20:46:52 +0100
+	id WBi8ANRCnWkMOAQAu9opvQ
+	(envelope-from <linux-wireless+bounces-32139-lists+linux-wireless=lfdr.de@vger.kernel.org>)
+	for <lists+linux-wireless@lfdr.de>; Tue, 24 Feb 2026 07:19:00 +0100
 X-Original-To: lists+linux-wireless@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id E141A18C31D
-	for <lists+linux-wireless@lfdr.de>; Tue, 24 Feb 2026 20:46:51 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id 274AB1825E9
+	for <lists+linux-wireless@lfdr.de>; Tue, 24 Feb 2026 07:18:58 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 4D77A303BA5F
-	for <lists+linux-wireless@lfdr.de>; Tue, 24 Feb 2026 19:46:50 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 9E47630074DE
+	for <lists+linux-wireless@lfdr.de>; Tue, 24 Feb 2026 06:18:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3DF8532ABF1;
-	Tue, 24 Feb 2026 19:46:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F138C2DCF74;
+	Tue, 24 Feb 2026 06:18:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="kZIcStBI"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kclTd0Gh"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1B1541FC7FB;
-	Tue, 24 Feb 2026 19:46:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CEB372DECA0;
+	Tue, 24 Feb 2026 06:18:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771962409; cv=none; b=dVicBHSMl8lF1CbUl1+gu1bA+q8syMYgkwK+OVtpZzNMYgY2+x6RrOTq+BW8bmzmfu4f8ct4qbM4nisGJH5cbO2gao4TQ8HE2Gihm8Equv7BEnfSb1x2CfH5GW4Pkhq40IL7GcPgQGcRztCXlGRxxQ7YBc1cp8ygdiENrYD1YK8=
+	t=1771913928; cv=none; b=kyFEG1RkJMCG23L2bnOizKO5hemdNBBM5WzlhQ6KhAGg+IdDAmxGC7mQui1VxkgBcSyaysUoFgJ7HZJjXGKFTxolWSoQdZNfTgu28ggDo5rv7ZpVp58U8UpVdhFIJJULmjFKOoFhN9mnSOl8yIdor0WLl2WzKXayE8Dj3liCBS0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771962409; c=relaxed/simple;
-	bh=WdbkqgfLfo6zRN4JKq8jQL0DmFzINHD01rn1Bl7BB9o=;
-	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
-	 Content-Disposition; b=jDa56T5cTueL1yCsQujsM4fIQ5frjVJDsoryySqtvEokjPbltZcijTtftsnuQDXEJu3ulj0kYpakj1quERYoqX800V89XZV24sBvf1jYoePKBhqrS5EXO62ilBgIDXCzDYD46rGKg4nxaEd4SBWx+1YYb4Z8b3BdTDH8Z4iM7Ic=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=kZIcStBI; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EF238C116D0;
-	Tue, 24 Feb 2026 19:46:47 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1771962408;
-	bh=WdbkqgfLfo6zRN4JKq8jQL0DmFzINHD01rn1Bl7BB9o=;
-	h=Date:From:To:Cc:Subject:From;
-	b=kZIcStBINWtJVDs0JwFH2ISDMsaLByMFWhG/h1Eu30Eb/eaWPXF/jbDD98KuPPPVZ
-	 +zuPCEeAUnKkFL0kariqlvrF1CV4KCR2cbGdKrY0ICMi2XVfl9BMo3JPgkYM2y52X9
-	 MaxmfXopWNRmKjzn1ira3dUbk6TGtwcbOOnSe/20xBng/2+RngxF1bRO68rgbaiLFS
-	 6+ueiGFuWRN1LKInoMrLIV1QZLmIEEuYXjOAj4R95M7powViXnssf7ruFrdLqNCRBN
-	 BMIPVAk05FoeV6Bj3uwPmiWWkVHEgIBrPMRo1Jya/ax22246ukX86TCPoFxNTq0IEu
-	 BkTV1PtBUQ/Wg==
-Date: Tue, 24 Feb 2026 13:46:17 +0900
-From: "Gustavo A. R. Silva" <gustavoars@kernel.org>
-To: Jeff Johnson <jeff.johnson@oss.qualcomm.com>
-Cc: linux-wireless@vger.kernel.org, linux-kernel@vger.kernel.org,
-	"Gustavo A. R. Silva" <gustavoars@kernel.org>,
-	linux-hardening@vger.kernel.org
-Subject: [PATCH v3][next] wifi: ath6kl: wmi: Avoid
- -Wflex-array-member-not-at-end warning
-Message-ID: <aZ0tGZnmtGckKJzY@kspp>
+	s=arc-20240116; t=1771913928; c=relaxed/simple;
+	bh=oMZi+9ma14E5VJvj35TfmCuVEr3L63qMe9T30uwsfOk=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=oSMYMnZG5H0lPvztbS9wYwQQcEt0u+mSBjjWmtvNfQ2szBMRQaoVGT1JW7b3eDiH+NyLzkoMEkb2wPwO8638Pczi33ccqVry2+ckAlFep1dyoi8P0zDvEyWvxKh9a9UstQX/eCELCBTSmUdDuShc48/JgVxtZ2+Jq+wUBJ57zvE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kclTd0Gh; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4199AC116D0;
+	Tue, 24 Feb 2026 06:18:48 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1771913928;
+	bh=oMZi+9ma14E5VJvj35TfmCuVEr3L63qMe9T30uwsfOk=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=kclTd0GhmrLnmeB59amA5eQMKzTqLPuQRsb41MxGgOAZ1hq34A7kDIJknEiKS6N6M
+	 nFnrmXUKl3wrKEtv825hvPozFOPDgxE0nb+ufwZJI6jvUx3bjVtcjIE6gBkHJ733ia
+	 VzL+J3qnj7B045MfT/qIzpychSqkq5SCEcxqg5ZA=
+Date: Mon, 23 Feb 2026 22:18:46 -0800
+From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To: Ping-Ke Shih <pkshih@realtek.com>
+Cc: "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+	stable <stable@kernel.org>
+Subject: Re: [PATCH net] wifi: rtw88: properly drop usb interface reference
+ on error
+Message-ID: <2026022331-wrongly-gleeful-3d53@gregkh>
+References: <2026022333-periscope-unusual-f0a0@gregkh>
+ <0a1b75853588468d87725e4d6aad8f22@realtek.com>
+ <2026022459-robe-mutual-fc3d@gregkh>
+ <a52baa6c345c4c1689094b386e3963d5@realtek.com>
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
@@ -61,126 +62,109 @@ List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
+In-Reply-To: <a52baa6c345c4c1689094b386e3963d5@realtek.com>
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [2.34 / 15.00];
+	MID_END_EQ_FROM_USER_PART(4.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	MID_RHS_NOT_FQDN(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
+	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-32139-lists,linux-wireless=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-32155-lists,linux-wireless=lfdr.de];
+	TO_DN_EQ_ADDR_SOME(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	TO_DN_SOME(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	FROM_HAS_DN(0.00)[];
 	MISSING_XM_UA(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_THREE(0.00)[4];
 	NEURAL_HAM(-0.00)[-1.000];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gustavoars@kernel.org,linux-wireless@vger.kernel.org];
-	DKIM_TRACE(0.00)[kernel.org:+];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,linux-wireless@vger.kernel.org];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[linux-wireless];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[5];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: E141A18C31D
+	FORGED_SENDER_MAILLIST(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,linuxfoundation.org:email,linuxfoundation.org:dkim]
+X-Rspamd-Queue-Id: 274AB1825E9
 X-Rspamd-Action: no action
 
--Wflex-array-member-not-at-end was introduced in GCC-14, and we are
-getting ready to enable it, globally.
+On Tue, Feb 24, 2026 at 01:49:24AM +0000, Ping-Ke Shih wrote:
+> Greg Kroah-Hartman <gregkh@linuxfoundation.org> wrote:
+> > On Tue, Feb 24, 2026 at 12:46:02AM +0000, Ping-Ke Shih wrote:
+> > > Greg Kroah-Hartman <gregkh@linuxfoundation.org> wrote:
+> > > > If an error happens in the usb probe path, in rtw_usb_intf_init(), the
+> > > > usb interface reference needs to be properly dropped, otherwise is is
+> > > > incorrectly increased when returning to the USB core.
+> > > >
+> > > > Cc: Ping-Ke Shih <pkshih@realtek.com>
+> > > > Cc: stable <stable@kernel.org>
+> > > > Assisted-by: gkh_clanker_2000
+> > > > Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+> > > > ---
+> > > >  drivers/net/wireless/realtek/rtw88/usb.c | 8 ++++++--
+> > > >  1 file changed, 6 insertions(+), 2 deletions(-)
+> > > >
+> > > > diff --git a/drivers/net/wireless/realtek/rtw88/usb.c b/drivers/net/wireless/realtek/rtw88/usb.c
+> > > > index 433b06c8d8a6..36ac20039ce2 100644
+> > > > --- a/drivers/net/wireless/realtek/rtw88/usb.c
+> > > > +++ b/drivers/net/wireless/realtek/rtw88/usb.c
+> > > > @@ -1046,13 +1046,17 @@ static int rtw_usb_intf_init(struct rtw_dev *rtwdev,
+> > > >
+> > > >         rtwusb->udev = udev;
+> > > >         ret = rtw_usb_parse(rtwdev, intf);
+> > > > -       if (ret)
+> > > > +       if (ret) {
+> > > > +               usb_put_dev(udev);
+> > > >                 return ret;
+> > > > +       }
+> > > >
+> > > >         rtwusb->usb_data = kcalloc(RTW_USB_MAX_RXTX_COUNT, sizeof(u32),
+> > > >                                    GFP_KERNEL);
+> > > > -       if (!rtwusb->usb_data)
+> > > > +       if (!rtwusb->usb_data) {
+> > > > +               usb_put_dev(udev);
+> > > >                 return -ENOMEM;
+> > > > +       }
+> > > >
+> > > >         usb_set_intfdata(intf, rtwdev->hw);
+> > > >
+> > >
+> > > Since rtwusb->udev isn't used right after assignment in this function.
+> > > Would it be simpler that moving usb_get_dev() downward like below?
+> > 
+> > What is even simpler, and easier, is to never call usb_get_dev() at all
+> > anyway as it's not needed :)
+> > 
+> > I created that pattern a few decades ago when we thought that it was
+> > going to be required, but as long as the usb interface is bound to the
+> > driver, that pointer is going to be valid so there's no real need to
+> > increment the reference count, except to feel good about doing it.
+> > 
+> > I'll gladly do that fix instead, if you want me to, I was just trying to
+> > follow the style of the existing code and fix up the current bug.
+> 
+> Because I'm not much familiar with USB devices, I can't afford to the change
+> that is too big to me. :)
+> 
+> Let's take your version, so
+> 
+> Acked-by: Ping-Ke Shih <pkshih@realtek.com>
 
-Remove unused structures bss_bias_info and bss_bias, and member
-bss in struct roam_ctrl_cmd.
+Great, thanks!
 
-After these changes, the size of struct roam_ctrl_cmd, along
-with its member's offsets remain the same, hence the memory layout
-doesn't change:
+> This patch can go via rtw-next tree (subtree of wireless-next), right?
 
-Before changes:
-struct roam_ctrl_cmd {
-	union {
-		u8                 bssid[6];             /*     0     6 */
-		u8                 roam_mode;            /*     0     1 */
-		struct bss_bias_info bss;                /*     0     1 */
-		struct low_rssi_scan_params params;      /*     0     8 */
-	} info;                                          /*     0     8 */
-	u8                         roam_ctrl;            /*     8     1 */
+Sure, please do so.
 
-	/* size: 9, cachelines: 1, members: 2 */
-	/* last cacheline: 9 bytes */
-} __attribute__((__packed__));
+thanks,
 
-After changes:
-struct roam_ctrl_cmd {
-	union {
-		u8                 bssid[6];             /*     0     6 */
-		u8                 roam_mode;            /*     0     1 */
-		struct low_rssi_scan_params params;      /*     0     8 */
-	} info;                                          /*     0     8 */
-	u8                         roam_ctrl;            /*     8     1 */
-
-	/* size: 9, cachelines: 1, members: 2 */
-	/* last cacheline: 9 bytes */
-} __attribute__((__packed__));
-
-With these changes fix the following warning:
-
-drivers/net/wireless/ath/ath6kl/wmi.h:1658:20: warning: structure containing a flexible array member is not at the end of another structure [-Wflex-array-member-not-at-end]
-
-Signed-off-by: Gustavo A. R. Silva <gustavoars@kernel.org>
----
-Changes in v3:
- - Remove unused structures. (Jeff)
-
-Changes in v2:
- - Create new separate struct bss_bias_info_hdr, and use
-   transparent struct members (in struct bss_bias_info)
-   instead of rearranging members in struct roam_ctrl_cmd.
- - Update subject line - Add 'wifi:' prefix.
- - Link: https://lore.kernel.org/linux-hardening/aZP4RI-uN2001cBh@kspp/
-
-v1:
- - Link: https://lore.kernel.org/linux-hardening/aR153k4ExCD-QTMq@kspp/
-
- drivers/net/wireless/ath/ath6kl/wmi.h | 11 -----------
- 1 file changed, 11 deletions(-)
-
-diff --git a/drivers/net/wireless/ath/ath6kl/wmi.h b/drivers/net/wireless/ath/ath6kl/wmi.h
-index 3080d82e25cc..8fbece3fdad9 100644
---- a/drivers/net/wireless/ath/ath6kl/wmi.h
-+++ b/drivers/net/wireless/ath/ath6kl/wmi.h
-@@ -1630,16 +1630,6 @@ enum wmi_roam_mode {
- 	WMI_LOCK_BSS_MODE = 3, /* Lock to the current BSS */
- };
- 
--struct bss_bias {
--	u8 bssid[ETH_ALEN];
--	s8 bias;
--} __packed;
--
--struct bss_bias_info {
--	u8 num_bss;
--	struct bss_bias bss_bias[];
--} __packed;
--
- struct low_rssi_scan_params {
- 	__le16 lrssi_scan_period;
- 	a_sle16 lrssi_scan_threshold;
-@@ -1652,7 +1642,6 @@ struct roam_ctrl_cmd {
- 	union {
- 		u8 bssid[ETH_ALEN]; /* WMI_FORCE_ROAM */
- 		u8 roam_mode; /* WMI_SET_ROAM_MODE */
--		struct bss_bias_info bss; /* WMI_SET_HOST_BIAS */
- 		struct low_rssi_scan_params params; /* WMI_SET_LRSSI_SCAN_PARAMS
- 						     */
- 	} __packed info;
--- 
-2.43.0
-
+greg k-h
 
