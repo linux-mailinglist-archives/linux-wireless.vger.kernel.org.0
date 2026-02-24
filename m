@@ -1,61 +1,61 @@
-Return-Path: <linux-wireless+bounces-32144-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-32145-lists+linux-wireless=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id KPCFNLfSnWk0SQQAu9opvQ
-	(envelope-from <linux-wireless+bounces-32144-lists+linux-wireless=lfdr.de@vger.kernel.org>)
-	for <lists+linux-wireless@lfdr.de>; Tue, 24 Feb 2026 17:32:55 +0100
+	id EPRAAbvXnWk0SQQAu9opvQ
+	(envelope-from <linux-wireless+bounces-32145-lists+linux-wireless=lfdr.de@vger.kernel.org>)
+	for <lists+linux-wireless@lfdr.de>; Tue, 24 Feb 2026 17:54:19 +0100
 X-Original-To: lists+linux-wireless@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6A902189D1E
-	for <lists+linux-wireless@lfdr.de>; Tue, 24 Feb 2026 17:32:55 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7D01B18A210
+	for <lists+linux-wireless@lfdr.de>; Tue, 24 Feb 2026 17:54:18 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 5F77F3035008
-	for <lists+linux-wireless@lfdr.de>; Tue, 24 Feb 2026 16:32:54 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 66B8B30B9921
+	for <lists+linux-wireless@lfdr.de>; Tue, 24 Feb 2026 16:42:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C3DBE1C01;
-	Tue, 24 Feb 2026 16:32:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0FF073A1CFF;
+	Tue, 24 Feb 2026 16:42:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b="uDNF1S/g"
+	dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b="s9950PKE"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from sipsolutions.net (s3.sipsolutions.net [168.119.38.16])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6FA5D3EBF36
-	for <linux-wireless@vger.kernel.org>; Tue, 24 Feb 2026 16:32:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D173236402C
+	for <linux-wireless@vger.kernel.org>; Tue, 24 Feb 2026 16:42:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=168.119.38.16
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771950771; cv=none; b=LwW4VDRkQpjc2Fjh/QTSRQdpFXiISIi775dFFmo6ipLKfslQoyxrXvwD5f08rDp85O7TlVu3XA6zjgxWYwmYXQoevSWBSMoo3bJh7223TN7R8rYdzhuv13JluWxbiWBT5cl1UwHPAEwXmgI23n2N5HSJtKfHEQlvy043M7XtIJw=
+	t=1771951362; cv=none; b=HIM+pIlBV4OzHS19NS8uP67iSKuikB/MK7H7bJ1R8US2hJoLwFeCHdk64JKpGQsH1ZGmliWV7gZtIb90nxipBU4QX5N1ind4sub4+Y9P6ISie1UmC5DYLo7Phu8ez/MoiD9YhrInXkNWXjf9lSKxf8sTc4in7BguyA99WKBL734=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771950771; c=relaxed/simple;
-	bh=btJrIctmAeaqLJgr0KDJAy4Ei1EICttVTcBVBuIb/Jg=;
+	s=arc-20240116; t=1771951362; c=relaxed/simple;
+	bh=tgRQ0U25nWj3S5HBM1P7hi6jLwXtBR7O9gWUGOXhHxg=;
 	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=jOaFmTZdVmAExX3vc9BBOzNApp3doEKoeW/TdLRahDkfDPV8z+1BFZ56DIjYj7o/me1SycmRnirSaubXIyLesOV/81BTT9+HLbNETDVU13BV37PbbZH/fXRJp2GMNcggzZplscbDD9omG+L4NcOsGUqenPVd2VtIP1P7aGnDUZI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net; spf=pass smtp.mailfrom=sipsolutions.net; dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b=uDNF1S/g; arc=none smtp.client-ip=168.119.38.16
+	 Content-Type:MIME-Version; b=R+b0chDvxGR2wuSOd0krOfgEM6MsMQxRae1k4lpKlE66Vml1EfiWIjvDDiybErrQJviv/HiNQ5O2C2bhQkT9ZGJcucdgbIuRwApQtnpKewjQt5UJaO/rjRmtbIHJLLmZG4TpOnV7/3C7QM3AXXV3o4sUrTW95T0B30mwUJ8mQMs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net; spf=pass smtp.mailfrom=sipsolutions.net; dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b=s9950PKE; arc=none smtp.client-ip=168.119.38.16
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sipsolutions.net
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=sipsolutions.net; s=mail; h=MIME-Version:Content-Transfer-Encoding:
 	Content-Type:References:In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender
 	:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
-	Resent-Cc:Resent-Message-ID; bh=I7s68uXsBpn07ISulnoxeZXviiuIzaCDqnb/9BfZd+0=;
-	t=1771950770; x=1773160370; b=uDNF1S/gUIiPvnyesgzpl/ytFctklwOFtyOb5lIlfNIoM3L
-	ctnsXDwuRbvRD+gpi4SIRc9XyMMzbSe1uDP9YC17Bhwz/eIeXkcDJo8nlWaFQwrJS+lhy4iC5I05h
-	ghu+br5d4q5VFhNqQCnVvdtN5YGIoDXSfjwPN9WqNfJuJgqCz/ChS7aSfwx09rHr6FIvCQRu/WgCr
-	JLShOHLCDKE5dFFLhbbCwJ39H6iXS0n+hSzcQKGlzhez7fwAweBJcKhh9dZvXAPyM1UFzz+2NbRec
-	V1znJNl3zRfsiGxSlCixGjK9bcibS9WRppb7B8BVgx4dwMu7K8jdaUjcqbbmpMOg==;
+	Resent-Cc:Resent-Message-ID; bh=JUA2xBrMwgjxizEd5FMOWlQ8/O1DyXLl0e6CJAyLL2I=;
+	t=1771951360; x=1773160960; b=s9950PKEC8NJOoEmjDPcpSJDjHHqN+STNhAWTzc5wlOEL9o
+	XAwg6V4i9UIRvzszfI+BNiH9i9MMf7KVKLWNI3KamIYBJDbOr6HSny/1vXjcYmXhxN9NZO9CBtaTb
+	mkGqg00G9HRyWduR5lZekTYP722wQt5ei9KiGWB9yPBYsNP97dRUqn3IqmF+478xkoW72zuuP7HmZ
+	5nwiV0vOGZzHq+U3NQWsbr+R+6zZyr3MmksIMFmT5D8ovwTwComnmqJqeUqnjAz6HsbzcAwgdc/3z
+	sevM0Y+ey631+LnNSHnshQIlnFugluQ4kPJO1zTJKOJO3rux6F6YcxonL35vmRbw==;
 Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
 	(Exim 4.98.2)
 	(envelope-from <johannes@sipsolutions.net>)
-	id 1vuvL4-00000000a0T-1BiD;
-	Tue, 24 Feb 2026 17:32:46 +0100
-Message-ID: <6cec588857a8fa5866b3aff323c367b0096e613a.camel@sipsolutions.net>
+	id 1vuvUa-00000000aIt-2UK8;
+	Tue, 24 Feb 2026 17:42:36 +0100
+Message-ID: <c71a84fe19a632ccd748d0f1fded1a8b1277e0b1.camel@sipsolutions.net>
 Subject: Re: [PATCH wireless-next v4 1/2] wifi: UHR: define DPS/DBE/P-EDCA
  elements and fix size parsing
 From: Johannes Berg <johannes@sipsolutions.net>
 To: Karthikeyan Kathirvel <karthikeyan.kathirvel@oss.qualcomm.com>
 Cc: linux-wireless@vger.kernel.org, ath12k@lists.infradead.org
-Date: Tue, 24 Feb 2026 17:32:45 +0100
+Date: Tue, 24 Feb 2026 17:42:36 +0100
 In-Reply-To: <20260217054731.3667600-2-karthikeyan.kathirvel@oss.qualcomm.com>
 References: 
 	<20260217054731.3667600-1-karthikeyan.kathirvel@oss.qualcomm.com>
@@ -75,11 +75,11 @@ X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[sipsolutions.net,none];
 	R_DKIM_ALLOW(-0.20)[sipsolutions.net:s=mail];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-32144-lists,linux-wireless=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-32145-lists,linux-wireless=lfdr.de];
 	DKIM_TRACE(0.00)[sipsolutions.net:+];
 	FROM_HAS_DN(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
@@ -87,7 +87,7 @@ X-Spamd-Result: default: False [-2.16 / 15.00];
 	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	RCPT_COUNT_THREE(0.00)[3];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[johannes@sipsolutions.net,linux-wireless@vger.kernel.org];
@@ -96,153 +96,36 @@ X-Spamd-Result: default: False [-2.16 / 15.00];
 	TAGGED_RCPT(0.00)[linux-wireless];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,sipsolutions.net:mid,sipsolutions.net:dkim]
-X-Rspamd-Queue-Id: 6A902189D1E
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,sipsolutions.net:mid,sipsolutions.net:dkim]
+X-Rspamd-Queue-Id: 7D01B18A210
 X-Rspamd-Action: no action
 
-On Tue, 2026-02-17 at 11:17 +0530, Karthikeyan Kathirvel wrote:
->=20
-> + * Refer to IEEE80211_UHR_P_EDCA*
-> + * @p_edca_ec: The P-EDCA ECWmin, P-EDCA and ECWmax
+Oh, another thing
 
-that seems unclear?
+> + * @dbe_params:
+> + *	B0-B2 - DBE Bandwidth field is set to indicate
+> + *	expanded bandwidth for DBE mode
+> + *	Value 0 is reserved.
+> + *	Set to 1 to indicate 40 MHz DBE bandwidth.
+> + *	Set to 2 to indicate 80 MHz DBE bandwidth.
+> + *	Set to 3 to indicate 160 MHz DBE bandwidth.
+> + *	Set to 4 to indicate 320-1 MHz DBE bandwidth.
+> + *	Set to 5 to indicate 320-2 MHz DBE bandwidth.
+> + *	Values 6 to 7 are reserved.
+> + *	B3 - DBE Disabled Subchannel Bitmap Present.
+
+Seems we should have an enum for the possible bandwidth values?
 
 
-> + * @p_edca_params: The AIFSN field indicate the AIFSN value that are
+And also, it's confusing:
 
-"indicates", "value that is used"? I think it's one? Or "values that are
-used"
-
-> + *	used by a P-EDCA STA during P-EDCA contention.
-> + *	The CW DS field indicate the value used
-
-indicates
-
-> + *	for the randomization of the transmission slot of the DS-CTS
-> + *	frame. The value 3 is reserved. The value 0 indicate that
-
-indicates
-
-> + *	randomization not enabled.
-> + *	The P-EDCA PSRC threshold field indicates the maximum number
-> + *	of allowed consecutive DS-CTS transmissions. The value 0 and
-> + *	values greater than 4 are reserved
-> + *	The P-EDCA QSRC threshold field indicates the value of the
-> + *	QSRC[AC_VO] counter to be allowed to start P-EDCA contention.
-> + *	The value 0 is reserved.
-> + */
-> +struct ieee80211_uhr_p_edca_info {
-> +	u8 p_edca_ec;
-> +	__le16 p_edca_params;
-> +} __packed;
-> +
->  static inline bool ieee80211_uhr_oper_size_ok(const u8 *data, u8 len,
->  					      bool beacon)
->  {
-> @@ -47,19 +232,52 @@ static inline bool ieee80211_uhr_oper_size_ok(const =
-u8 *data, u8 len,
->  	if (beacon)
->  		return true;
-> =20
-> -	/* FIXME: DPS, DBE, P-EDCA (consider order, also relative to NPCA) */
-> +	/* DPS Operation Parameters (fixed 4 bytes) */
-> +	if (oper->params & cpu_to_le16(IEEE80211_UHR_OPER_PARAMS_DPS_ENA)) {
-> +		needed +=3D sizeof(struct ieee80211_uhr_dps_info);
-> +		if (len < needed)
-> +			return false;
-> +	}
-> =20
-> +	/* NPCA Operation Parameters (fixed 4 bytes + optional 2 bytes) */
->  	if (oper->params & cpu_to_le16(IEEE80211_UHR_OPER_PARAMS_NPCA_ENA)) {
->  		const struct ieee80211_uhr_npca_info *npca =3D
-> -			(const void *)oper->variable;
-> +			(const void *)(data + needed);
-> =20
->  		needed +=3D sizeof(*npca);
-> -
->  		if (len < needed)
->  			return false;
-> =20
-> -		if (npca->params & cpu_to_le32(IEEE80211_UHR_NPCA_PARAMS_DIS_SUBCH_BMA=
-P_PRES))
-> +		if (npca->params &
-> +		    cpu_to_le32(IEEE80211_UHR_NPCA_PARAMS_DIS_SUBCH_BMAP_PRES)) {
->  			needed +=3D sizeof(npca->dis_subch_bmap[0]);
-> +			if (len < needed)
-> +				return false;
-> +		}
-> +	}
-> +
-> +	/* P-EDCA Operation Parameters (fixed 3 bytes) */
-> +	if (oper->params & cpu_to_le16(IEEE80211_UHR_OPER_PARAMS_PEDCA_ENA)) {
-> +		needed +=3D sizeof(struct ieee80211_uhr_p_edca_info);
-> +		if (len < needed)
-> +			return false;
-> +	}
-> +
-> +	/* DBE Operation Parameters (fixed 1 byte + optional 2 bytes) */
-> +	if (oper->params & cpu_to_le16(IEEE80211_UHR_OPER_PARAMS_DBE_ENA)) {
-> +		const struct ieee80211_uhr_dbe_info *dbe =3D
-> +			(const void *)(data + needed);
-> +
-> +		needed +=3D sizeof(*dbe);
-> +		if (len < needed)
-> +			return false;
-> +
-> +		if (dbe->dbe_params &
-> +		    IEEE80211_UHR_DBE_OPER_DIS_SUBCHANNEL_BITMAP_PRES) {
-> +			needed +=3D sizeof(dbe->dis_subch_bmap[0]);
-> +			if (len < needed)
-> +				return false;
-> +		}
->  	}
-> =20
->  	return len >=3D needed;
-> @@ -72,12 +290,15 @@ static inline bool ieee80211_uhr_oper_size_ok(const =
-u8 *data, u8 len,
->  static inline const struct ieee80211_uhr_npca_info *
->  ieee80211_uhr_npca_info(const struct ieee80211_uhr_operation *oper)
->  {
-> +	const u8 *pos =3D oper->variable;
-> +
->  	if (!(oper->params & cpu_to_le16(IEEE80211_UHR_OPER_PARAMS_NPCA_ENA)))
->  		return NULL;
-> =20
-> -	/* FIXME: DPS */
-> +	if (oper->params & cpu_to_le16(IEEE80211_UHR_OPER_PARAMS_DPS_ENA))
-> +		pos +=3D sizeof(struct ieee80211_uhr_dps_info);
-> =20
-> -	return (const void *)oper->variable;
-> +	return (const void *)pos;
->  }
-> =20
->  static inline const __le16 *
-> @@ -131,6 +352,25 @@ ieee80211_uhr_npca_dis_subch_bitmap(const struct iee=
-e80211_uhr_operation *oper)
->  #define IEEE80211_UHR_MAC_CAP_DBE_EHT_MCS_MAP_160_PRES	0x08
->  #define IEEE80211_UHR_MAC_CAP_DBE_EHT_MCS_MAP_320_PRES	0x10
-> =20
 > +/**
 > + * enum ieee80211_dbe_bandwidth - DBE Bandwidth
-> + *
-> + * As per spec P802.11bn_D1.3 "Table 9-bb5=E2=80=94Encoding of the DBE M=
-aximum
-> + * Supported Bandwidth field"
-> + *
-> + * @IEEE80211_DBE_BANDWIDTH_40MHZ: Indicate 40 MHz DBE bandwidth
-> + * @IEEE80211_DBE_BANDWIDTH_80MHZ: Indicate 80 MHz DBE bandwidth
-> + * @IEEE80211_DBE_BANDWIDTH_160MHZ: Indicate 160 MHz DBE bandwidth
-> + * @IEEE80211_DBE_BANDWIDTH_320MHZ: Indicate 320 MHz DBE bandwidth
-> + *
-> + */
-> +enum ieee80211_dbe_bandwidth {
-> +	IEEE80211_DBE_BANDWIDTH_40MHZ =3D 1,
-> +	IEEE80211_DBE_BANDWIDTH_80MHZ =3D 2,
-> +	IEEE80211_DBE_BANDWIDTH_160MHZ =3D 3,
-> +	IEEE80211_DBE_BANDWIDTH_320MHZ =3D 4,
-> +};
-> +
->  struct ieee80211_uhr_cap_mac {
->  	u8 mac_cap[5];
->  } __packed;
+
+because this one is just "DBE Bandwidth" - I think you should rename
+this to "DBE Maximum Supported Bandwidth" or something related, and add
+the operational, since there's a 4/5 difference with 320 vs. 320-1/320-2
+(the latter in UHR operation)
+
+johannes
 
