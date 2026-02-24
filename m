@@ -1,118 +1,57 @@
-Return-Path: <linux-wireless+bounces-32163-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-32164-lists+linux-wireless=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id CBSMG5svnmk/UAQAu9opvQ
-	(envelope-from <linux-wireless+bounces-32163-lists+linux-wireless=lfdr.de@vger.kernel.org>)
-	for <lists+linux-wireless@lfdr.de>; Wed, 25 Feb 2026 00:09:15 +0100
+	id SJmrEw4znmlwUAQAu9opvQ
+	(envelope-from <linux-wireless+bounces-32164-lists+linux-wireless=lfdr.de@vger.kernel.org>)
+	for <lists+linux-wireless@lfdr.de>; Wed, 25 Feb 2026 00:23:58 +0100
 X-Original-To: lists+linux-wireless@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id AAABB18E122
-	for <lists+linux-wireless@lfdr.de>; Wed, 25 Feb 2026 00:09:14 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id A873618E229
+	for <lists+linux-wireless@lfdr.de>; Wed, 25 Feb 2026 00:23:57 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 164063013DFA
-	for <lists+linux-wireless@lfdr.de>; Tue, 24 Feb 2026 23:09:14 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 472083031AF1
+	for <lists+linux-wireless@lfdr.de>; Tue, 24 Feb 2026 23:23:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0CBCF343D71;
-	Tue, 24 Feb 2026 23:09:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 527CE3624AF;
+	Tue, 24 Feb 2026 23:23:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="dBWkKjVY";
-	dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b="PbN5Po94"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="QqwUwv1Y"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A494D29A9C9
-	for <linux-wireless@vger.kernel.org>; Tue, 24 Feb 2026 23:09:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2FA9E1624C5
+	for <linux-wireless@vger.kernel.org>; Tue, 24 Feb 2026 23:23:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771974550; cv=none; b=Wj2u5dcKxiEOwK6te/TYktUZ6GAgZhx9Wya+dMPlknKKHfcf5BYj0wm+nCACFivpXzZb8HEHLOAynPDKRKq250GqileyMgsBKu7kHsNa1Dm1p/LR39BrPBcIjimfn2pYX5Q6OQ+uRLIIxt/zks2ihI5gWOCI9Eb06/zw4vPwnSU=
+	t=1771975433; cv=none; b=l88rYE38LwhzA1WvzSv/pg2RD33dzpncVs2IA2xHE+4A/fQAONLJkMCs8WwLZqgsMzdyzbvt6IfM24sVXkApI6/9aO0eHiulJTt6Bvtxm4df7KWc/CMJieDHHp/TvhnSbWwCdg9hnjSq1zaOVNQRhcfV6/6qxoMa8M9F35GQ6sA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771974550; c=relaxed/simple;
-	bh=Y0iSQ7STF9zWPqDMNvY0n0Cxf/rCN/p3IcZJzRsBepg=;
-	h=Message-ID:Date:MIME-Version:Subject:From:To:Cc:References:
-	 In-Reply-To:Content-Type; b=K7gnlk22G8jhRvdcNVckwNVlvYQuPA6PoXm20/eJdaN0GR/4C6UclGbtq4hvYFIei6CJSiTNEYacKg5GbE98o6+ZfwvPRPEBdF9tjY2FSBTXpLuj5QbxQ60QwAeQOeScING+/m7e/go2cjy9dwp17XPBbsoydaIJS3ojXS6lTNs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=dBWkKjVY; dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b=PbN5Po94; arc=none smtp.client-ip=205.220.180.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
-Received: from pps.filterd (m0279870.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 61OFlGfr4044454
-	for <linux-wireless@vger.kernel.org>; Tue, 24 Feb 2026 23:09:08 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
-	cc:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
-	TytIU7UUBtasiA2tpWwYSNyfQfamatG09lzeXl0656o=; b=dBWkKjVYpdo+eLPv
-	YbGX+31ywdDfaqAU2M6oxc6d68uLmybV2vZ2S9A/Di36QYnTAMBSbd7eWkqDizgT
-	WDDyh1xJtfHsdIzt6RvWvoilI8kjDrJHbr+iViu95bP7jM3FT391hTu/PrWOjoH6
-	n40h2Pege0jdtK36CXI8V+Yxfe0mMWn1oJVxlQhF0r5yXtLQMmRb7k88+mP5i0en
-	CrMlUXfq/9DvTN0T8Si86xqF+DzTrpsxkPuQGlQVnMMY5GOpLexJenPgRpocCEp0
-	GdpZF2CBBwQ6+xg0CPYCYEhACvNTCpA0GWNzwNivGztTXSEhm3Ql9ycUm1NBUdOA
-	bJdyew==
-Received: from mail-ot1-f71.google.com (mail-ot1-f71.google.com [209.85.210.71])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4chexehexj-1
-	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
-	for <linux-wireless@vger.kernel.org>; Tue, 24 Feb 2026 23:09:08 +0000 (GMT)
-Received: by mail-ot1-f71.google.com with SMTP id 46e09a7af769-7d4c1b9061eso63686573a34.0
-        for <linux-wireless@vger.kernel.org>; Tue, 24 Feb 2026 15:09:08 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=oss.qualcomm.com; s=google; t=1771974548; x=1772579348; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:content-language:references
-         :cc:to:from:subject:user-agent:mime-version:date:message-id:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=TytIU7UUBtasiA2tpWwYSNyfQfamatG09lzeXl0656o=;
-        b=PbN5Po94hxdd4QvHz6MurdoNmZDx2d+ovBDP7Up7immy1rxvR2GWeEi18gHtov3Fc3
-         rZF+ZYu+SNNxTTE38X19pykYnHyWNMQEL7hE8bV3JKq4eqpggIrQHjAZZQqQrxtvIuuH
-         mQsJWwysryvHPVZOQfAvYe1bhVfaNsvZXkmzBN3A2i8NJBo8U3WKXhfDxqBKhv2czVcP
-         Ojb5VLaLm0GRCSurgIF0rxh71dQZTn2WfZ1FwF4uQig2wBHCnb4StStuyttM3ggwOjr8
-         e6awQWJbJRR6O8d2C+voC54wnxvjvZOG0/OWjXUpqIZcu0MwxU1FJJdUgbVcP8ppHbM9
-         afqw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1771974548; x=1772579348;
-        h=content-transfer-encoding:in-reply-to:content-language:references
-         :cc:to:from:subject:user-agent:mime-version:date:message-id:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=TytIU7UUBtasiA2tpWwYSNyfQfamatG09lzeXl0656o=;
-        b=IbYSj3y7k6UFD5X9FGs6JiIXfUR0VXX+PEDHQEX7Ow2uwLGQ3xHi5vuIBJlwUiiOtv
-         c+CgoUHvylZrNO0vEICscU78wkj6+1lEEix6kN02GzADZNEL+g8lwhBSjQfdOax9t3JA
-         poN4GULvR5MlI0mr6ABrfdf772IZk5xaw/rKZINXrCyFLoyuAOqW87+DWblXCRab5fN5
-         tXQZjKgJGiGMImqocVwxOkv+KVA0IHjdhumpnL0gpTtZ/dIn0NyqKWsAfLQbzqqSPEnE
-         /5w7O+rxowvlarZ5sDeG1Pt94CnnDC9KbdU9KhnCvlXp+1L9yIlu9Yfbs5aD3O7AWctn
-         c8Ew==
-X-Forwarded-Encrypted: i=1; AJvYcCXo/GO6gsKB9TFob/20+jw2EptZB9PLdWuJY3v+JFjbjcy4BArHFfSIMuAt4TPkFJtHo9DnZj999qM9Zf42wQ==@vger.kernel.org
-X-Gm-Message-State: AOJu0YyC8ctvcIKFomEM55wOVpntZJYe+va+Kvw5A5B9gulPfIr5CIQT
-	KFhw50KEWguyb826HXoi1LXzuAAednf32Apya86c1tUbyFfIXKANKoYvMk5i+Q+UakZZ/cUatOV
-	CS3n0i67i43k9M6wB1FLNnOIVXhCboKBZWWABKguYL5/xCecUTJzEHMGjp5yuW9kWWxR+Sg==
-X-Gm-Gg: AZuq6aIPTDt4ii7VWD7KoSs8qLbIu08WaLxXaa35U4nESFkJ2eBBcG7LzwUHKtpLjca
-	Lcbqj6HwLVelbJ/iOQHoycdie+5Kf3wSmTlzCmh09p9dZgEFtVFk6ywNulufoN1hGQryeHs8dlW
-	DMOk4907wq3EG/EGi82wZvGpspS52RST8pxBW4smx00gFd8tGSzTiF++XWroULzu/DdjH0wk9iu
-	GZri2zkOpRFvYSUQOvY5M3s7veTt57JBIavQF9YCD5mQwKoZRvo/SMHFjWechoi4QiQvWBv+BpN
-	wrqdoihwqYjm2Ro2w7r/X/tYPbrUCT+hag3OSGKibWZCFFmxCTaXIejJhEBxsGU2DIe/ZQrO/Q3
-	D1aciPbjBHiFCytJEnGCtpQV2+eYxYT+0JXxqmNyJm/JJ2+c075HvmsdqUfgjCYkwziCaSZkUa3
-	7AhbO7Fko5I98grA==
-X-Received: by 2002:a05:6830:4107:b0:7d1:9160:7b98 with SMTP id 46e09a7af769-7d52be6320cmr9065587a34.15.1771974547760;
-        Tue, 24 Feb 2026 15:09:07 -0800 (PST)
-X-Received: by 2002:a05:6830:4107:b0:7d1:9160:7b98 with SMTP id 46e09a7af769-7d52be6320cmr9065579a34.15.1771974547406;
-        Tue, 24 Feb 2026 15:09:07 -0800 (PST)
-Received: from [192.168.1.41] (c-24-130-122-79.hsd1.ca.comcast.net. [24.130.122.79])
-        by smtp.gmail.com with ESMTPSA id 46e09a7af769-7d52cf9f663sm10317593a34.11.2026.02.24.15.09.06
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 24 Feb 2026 15:09:06 -0800 (PST)
-Message-ID: <828b4d9b-268f-4f7c-ab7c-51aa49c0bde2@oss.qualcomm.com>
-Date: Tue, 24 Feb 2026 15:09:05 -0800
-Precedence: bulk
-X-Mailing-List: linux-wireless@vger.kernel.org
-List-Id: <linux-wireless.vger.kernel.org>
-List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
-List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
+	s=arc-20240116; t=1771975433; c=relaxed/simple;
+	bh=pqYOPfqw75axMkUQkhuElhFSwKQFQWu1msgVQMDsoj8=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=otUSHEdN5H75aI81tln3NWEVU+Qq32NmnPMYEaXOnw5RHEXHkrmlK5P9VNm82Es1a7qKomZ6XRbgee3nTadXcasQI8apPCc9sFhhwswzyZ5hnvSDrZTjQKnY7pUqt98hd7YvnQZUZ+vv6LwFzJ3GKVGj3pMtC5eHSsoSuNP+xVE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=QqwUwv1Y; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2D0D5C116D0;
+	Tue, 24 Feb 2026 23:23:50 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1771975432;
+	bh=pqYOPfqw75axMkUQkhuElhFSwKQFQWu1msgVQMDsoj8=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=QqwUwv1YwgNJLdE4xWKO6njHPEotEJ6xTf4xASlN7HRf+AuQnupeBhUkTv1gzGdOH
+	 CFeWtKKbcq7kHObK3r2lnjw11IEpjCFa6fY05Tloczjl6V6FZNgvkHD+6ehJ2fJpNz
+	 GnaTLZXWrc5a65qIqrM58o1YQANnT3eHwS+B0pxV6Ppoi1wruMtfWz8zWk8/a7uxas
+	 pk/lsAgV5pvnxqNhPOAlFn/oPH9zknVCQnTFU8+IT2Nr1kj9QJ61M72COB0hafJFJT
+	 nVfU/bNkwAEJ55uYfLrJ/gCvWmu0CD2ZONA+ctROnOwuYkC8Hya6ZJX3eybgvDnKF9
+	 GjabKWdz2JPyQ==
+Date: Wed, 25 Feb 2026 00:23:48 +0100
+From: Alejandro Colomar <alx@kernel.org>
+To: Jeff Johnson <jeff.johnson@oss.qualcomm.com>, Greg KH <greg@kroah.com>
+Cc: Toke =?utf-8?Q?H=C3=B8iland-J=C3=B8rgensen?= <toke@toke.dk>, 
+	linux-wireless@vger.kernel.org, Rajkumar Manoharan <rmanohar@qti.qualcomm.com>, 
+	"John W. Linville" <linville@tuxdriver.com>, Greg KH <greg@kroah.com>
 Subject: Re: [PATCH v1] wifi: ath9k: Fix typo
-From: Jeff Johnson <jeff.johnson@oss.qualcomm.com>
-To: Alejandro Colomar <alx@kernel.org>
-Cc: =?UTF-8?Q?Toke_H=C3=B8iland-J=C3=B8rgensen?= <toke@toke.dk>,
-        linux-wireless@vger.kernel.org,
-        Rajkumar Manoharan <rmanohar@qti.qualcomm.com>,
-        "John W. Linville" <linville@tuxdriver.com>, Greg KH <greg@kroah.com>
+Message-ID: <aZ4xt0TIscdxhseW@devuan>
 References: <6ab107cf786f9d05dc4d84ea4e2d1b219ce108c0.1766355822.git.alx@kernel.org>
  <871pibo5fj.fsf@toke.dk>
  <8beecde0-1280-4852-bb82-120590347fb3@oss.qualcomm.com>
@@ -120,133 +59,176 @@ References: <6ab107cf786f9d05dc4d84ea4e2d1b219ce108c0.1766355822.git.alx@kernel.
  <5e01a680-ebbc-4855-b1f9-e0381b3a8fc8@oss.qualcomm.com>
  <aZ4r6OUVCiHE-hhZ@devuan>
  <0b9635b8-05ee-4ae4-b4eb-9b83188a0917@oss.qualcomm.com>
-Content-Language: en-US
-In-Reply-To: <0b9635b8-05ee-4ae4-b4eb-9b83188a0917@oss.qualcomm.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwMjI0MDIwNSBTYWx0ZWRfX9zx/wC/LmreZ
- fo00iCne2s7QDr6gL/b6/q/KxZbPY034ua3ILorkulPYyToJiHdzzFg/PMvE7QgEw5OlM14+BDL
- Qj+yp3QGl1zs2+syd+Xta0oO5Of02wB1kL8+RLfyvIDdVo4MDnMWZi7Z2twwEUiVTn+bwt1nu1Y
- q1A4ZkRJGOBffPFU/+tY6FzNVWqrD8ZiRud5mtyOn4uijw3Xd25uZqLYaQe2g+oP0LwJsX1d4Wi
- PoI4d0MbpaWDhh3dwwsJZYTdk3SY5t1zDORnEmlwzlFm37K4cGZALlwAIN3U2jHC41x2EEZBz+z
- 6jOubbtIeAXKyuZ4cvHAdNy82bL6m9BrVRHjIUgAdJNkfStQOuHGtFi2CEK/mgvt3N/ZA6ImeeE
- LUtwbLk/xrLWq1/Mjux6TwosukHoad44SztJYdcl3SN7Ify9EQfrE3j62z6g+pMgbL51vVGp19R
- PQxLJeEfL0Y6EdsmRhA==
-X-Authority-Analysis: v=2.4 cv=V85wEOni c=1 sm=1 tr=0 ts=699e2f94 cx=c_pps
- a=OI0sxtj7PyCX9F1bxD/puw==:117 a=Tg7Z00WN3eLgNEO9NLUKUQ==:17
- a=IkcTkHD0fZMA:10 a=HzLeVaNsDn8A:10 a=s4-Qcg_JpJYA:10
- a=VkNPw1HP01LnGYTKEx00:22 a=u7WPNUs3qKkmUXheDGA7:22 a=gowsoOTTUOVcmtlkKump:22
- a=VwQbUJbxAAAA:8 a=OSmWWCcvNqIZE99VXz0A:9 a=3ZKOabzyN94A:10 a=QEXdDO2ut3YA:10
- a=Z1Yy7GAxqfX1iEi80vsk:22
-X-Proofpoint-GUID: GkcTb2YDsvUq-eAiUhlONfx4W3upBP-_
-X-Proofpoint-ORIG-GUID: GkcTb2YDsvUq-eAiUhlONfx4W3upBP-_
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.51,FMLib:17.12.100.49
- definitions=2026-02-24_03,2026-02-23_03,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- impostorscore=0 bulkscore=0 malwarescore=0 priorityscore=1501 spamscore=0
- suspectscore=0 phishscore=0 adultscore=0 lowpriorityscore=0 clxscore=1015
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.22.0-2602130000 definitions=main-2602240205
+ <828b4d9b-268f-4f7c-ab7c-51aa49c0bde2@oss.qualcomm.com>
+Precedence: bulk
+X-Mailing-List: linux-wireless@vger.kernel.org
+List-Id: <linux-wireless.vger.kernel.org>
+List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
+List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="z3fhv2q6tsxkhzkw"
+Content-Disposition: inline
+In-Reply-To: <828b4d9b-268f-4f7c-ab7c-51aa49c0bde2@oss.qualcomm.com>
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [-3.76 / 15.00];
+	SIGNED_PGP(-2.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[qualcomm.com,reject];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
-	R_DKIM_ALLOW(-0.20)[qualcomm.com:s=qcppdkim1,oss.qualcomm.com:s=google];
+	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	MID_RHS_NOT_FQDN(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	MIME_GOOD(-0.20)[multipart/signed,text/plain];
+	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
 	MAILLIST(-0.15)[generic];
-	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	TO_DN_SOME(0.00)[];
-	TAGGED_FROM(0.00)[bounces-32163-lists,linux-wireless=lfdr.de];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_TLS_LAST(0.00)[];
-	DKIM_TRACE(0.00)[qualcomm.com:+,oss.qualcomm.com:+];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,qualcomm.com:dkim,oss.qualcomm.com:mid,oss.qualcomm.com:dkim];
-	RCPT_COUNT_FIVE(0.00)[6];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[jeff.johnson@oss.qualcomm.com,linux-wireless@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	TAGGED_FROM(0.00)[bounces-32164-lists,linux-wireless=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	MIME_TRACE(0.00)[0:+,1:+,2:~];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[kernel.org:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	MISSING_XM_UA(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[linux-wireless];
-	MID_RHS_MATCH_FROM(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[alx@kernel.org,linux-wireless@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	RCVD_COUNT_SEVEN(0.00)[7]
-X-Rspamd-Queue-Id: AAABB18E122
+	TAGGED_RCPT(0.00)[linux-wireless];
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,alejandro-colomar.es:url]
+X-Rspamd-Queue-Id: A873618E229
 X-Rspamd-Action: no action
 
-On 2/24/2026 3:07 PM, Jeff Johnson wrote:
-> On 2/24/2026 2:55 PM, Alejandro Colomar wrote:
->> Hi Jeff,
->>
->> On 2026-02-24T13:34:57-0800, Jeff Johnson wrote:
->>> On 2/24/2026 1:27 PM, Alejandro Colomar wrote:
->>>> Hi Jeff,
->>>>
->>>> On 2026-02-24T10:45:02-0800, Jeff Johnson wrote:
->>>>> On 2/23/2026 7:17 AM, Toke Høiland-Jørgensen wrote:
->>>>>> Alejandro Colomar <alx@kernel.org> writes:
->>>>>>
->>>>>>> This only worked by chance, because all callers of this macro used the
->>>>>>> same identifiers that were expected by the macro.
->>>>>>>
->>>>>>> 	$ grep -rn ath_for_each_chanctx
->>>>>>> 	drivers/net/wireless/ath/ath9k/main.c:1576:	ath_for_each_chanctx(sc, ctx)
->>>>>>> 	drivers/net/wireless/ath/ath9k/main.c:2554:	ath_for_each_chanctx(sc, ctx) {
->>>>>>> 	drivers/net/wireless/ath/ath9k/channel.c:165:	ath_for_each_chanctx(sc, ctx) {
->>>>>>> 	drivers/net/wireless/ath/ath9k/channel.c:291:	ath_for_each_chanctx(sc, ctx) {
->>>>>>> 	drivers/net/wireless/ath/ath9k/channel.c:861:	ath_for_each_chanctx(sc, ctx) {
->>>>>>> 	drivers/net/wireless/ath/ath9k/debug.c:717:	ath_for_each_chanctx(sc, ctx) {
->>>>>>> 	drivers/net/wireless/ath/ath9k/ath9k.h:446:#define ath_for_each_chanctx(_sc, _ctx)                               \
->>>>>>>
->>>>>>> Fixes: c4dc0d040e35 (2014-06-19; "ath9k: Fetch appropriate operating channel context")
->>>>>
->>>>> I'm dropping the Fixes tag since the existing code actually works and hence
->>>>> there is no need to backport to LTS kernels.
->>>>
->>>> Sounds reasonable.  Alternatively, a line next to it saying
->>>>
->>>> 	[Do not backport]
->>>>
->>>> would work, I guess.
->>>>
->>>> Greg, I've seen this situation already a few times.  A Fixes tag getting
->>>> removed to avoid triggering a stable backport.  But I think keeping the
->>>> Fixes tag could be useful.  Should we have a standard way to document
->>>> that a patch fixes an old commit without meaning that it should be
->>>> backported?  Maybe something like this?:
->>>>
->>>> 	[Do not backport to stable]
->>>> 	Fixes: ...
->>>>
->>>> In any case, feel free to remove it.
->>>
->>> Looks like we have this:
->>> There furthermore is a variant of the stable tag you can use to make the
->>> stable team’s backporting tools (e.g AUTOSEL or scripts that look for commits
->>> containing a ‘Fixes:’ tag) ignore a change:
->>> Cc: <stable+noautosel@kernel.org> # reason goes here, and must be present
->>>
->>> https://www.kernel.org/doc/html/latest/process/stable-kernel-rules.html#option-1
->>>
->>> Do you want to re-spin with that?
->>
->> Would you mind amending to include the following tag?:
->>
->> 	Cc: <stable+noautosel@kernel.org> # the code worked by chance
->>
->> I don't know where I keep the patch, so I'd have to apply it from the
->> email to resend.  Could you amend it yourself?
-> 
-> sure, I'll amend the patch in my pending branch
 
-I've also updated the Fixes tag to meet the expected format...
-Fixes: c4dc0d040e35 ("ath9k: Fetch appropriate operating channel context")
+--z3fhv2q6tsxkhzkw
+Content-Type: text/plain; protected-headers=v1; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
+From: Alejandro Colomar <alx@kernel.org>
+To: Jeff Johnson <jeff.johnson@oss.qualcomm.com>, Greg KH <greg@kroah.com>
+Cc: Toke =?utf-8?Q?H=C3=B8iland-J=C3=B8rgensen?= <toke@toke.dk>, 
+	linux-wireless@vger.kernel.org, Rajkumar Manoharan <rmanohar@qti.qualcomm.com>, 
+	"John W. Linville" <linville@tuxdriver.com>, Greg KH <greg@kroah.com>
+Subject: Re: [PATCH v1] wifi: ath9k: Fix typo
+Message-ID: <aZ4xt0TIscdxhseW@devuan>
+References: <6ab107cf786f9d05dc4d84ea4e2d1b219ce108c0.1766355822.git.alx@kernel.org>
+ <871pibo5fj.fsf@toke.dk>
+ <8beecde0-1280-4852-bb82-120590347fb3@oss.qualcomm.com>
+ <aZ4Wq6h-nMt-G3pC@devuan>
+ <5e01a680-ebbc-4855-b1f9-e0381b3a8fc8@oss.qualcomm.com>
+ <aZ4r6OUVCiHE-hhZ@devuan>
+ <0b9635b8-05ee-4ae4-b4eb-9b83188a0917@oss.qualcomm.com>
+ <828b4d9b-268f-4f7c-ab7c-51aa49c0bde2@oss.qualcomm.com>
+MIME-Version: 1.0
+In-Reply-To: <828b4d9b-268f-4f7c-ab7c-51aa49c0bde2@oss.qualcomm.com>
 
-> 
-> /jeff
+Hi Jeff, Greg,
 
+On 2026-02-24T15:09:05-0800, Jeff Johnson wrote:
+> >> I don't know where I keep the patch, so I'd have to apply it from the
+> >> email to resend.  Could you amend it yourself?
+> >=20
+> > sure, I'll amend the patch in my pending branch
+
+Thanks!
+
+> I've also updated the Fixes tag to meet the expected format...
+> Fixes: c4dc0d040e35 ("ath9k: Fetch appropriate operating channel context")
+
+Greg, I CCed you in the man-pages thread where I discussed adding the
+commit date to the Fixes tags.  I was interested in your opinion, and
+also think this could be useful in the kernel.
+
+<https://lore.kernel.org/linux-man/3a656e90329f26d743d0904f56ae847951c852c7=
+=2E1770150003.git.alx@kernel.org/>
+
+Do you have any opinion about this?  Should I send a mail to some kernel
+mailing list to propose its use in the kernel?
+
+The format I used is documented in the Linux man-pages here:
+<https://git.kernel.org/pub/scm/docs/man-pages/man-pages.git/tree/CONTRIBUT=
+ING.d/patches/trailer#n16>
+
+    Fixes
+	Add 'Fixes:' tags as necessary.  'Fixes:' trailer fields should
+	have the following format.
+
+		Fixes: 12-char-hash ([author-date,] commit-date; "subject")
+
+	where the author date is optional, and only included if it's
+	somehow important.  The commit date is often more important, as
+	it's sorted, and thus can be used to find (with a binary search)
+	a commit whose hash and subject may have collisions.  For
+	example:
+
+		Fixes: bb509e6fcbae (2020-10-16; "kernel_lockdown.7: New page documenting=
+ the Kernel Lockdown feature")
+
+	See <CONTRIBUTING.d/git> for how to configure the alias.ref and
+	alias.ref2 git aliases.  The commit references can be produced
+	with them.
+
+		$ git ref bb509e6fc
+		bb509e6fcbae (2020-10-16; "kernel_lockdown.7: New page documenting the Ke=
+rnel Lockdown feature")
+
+and here:
+<https://git.kernel.org/pub/scm/docs/man-pages/man-pages.git/tree/CONTRIBUT=
+ING.d/git#n46>
+
+    alias.ref, alias.ref2
+	To produce git commit references, the following git aliases are
+	useful.
+
+		$ git config --global alias.ref \
+			"show -s --format=3Dtformat:'%C(auto)%h (%cs%x3B \"%s\")%C(reset)'"
+		$ git config --global alias.ref2 \
+			"show -s --format=3Dtformat:'%C(auto)%h (%as, %cs%x3B \"%s\")%C(reset)'"
+
+    core.abbrev
+	Use 12 characters in abbreviated hashes.
+
+		$ git config --global core.abbrev 12
+
+The Fixes tag I used in this particular patch was
+
+Fixes: c4dc0d040e35 (2014-06-19; "ath9k: Fetch appropriate operating channe=
+l context")
+
+
+Have a lovely night!
+Alex
+
+>=20
+> >=20
+> > /jeff
+>=20
+
+--=20
+<https://www.alejandro-colomar.es>
+
+--z3fhv2q6tsxkhzkw
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQIzBAABCgAdFiEES7Jt9u9GbmlWADAi64mZXMKQwqkFAmmeMv4ACgkQ64mZXMKQ
+wqmRkg//au3yaZBe7mMsA4oQDXo6OG+hmT8iwdT13IXo7TADLsAHGMs3a3eGU1hW
+FDAlcFWMyco6NoYUMRohk8ZiEBKFebPU9IY19EuzkVM0xyn8g4GXbAtdgMTuzFJ2
+mhTclPWLM1lW3fploS/BVY20pryPvSdX15xhJFy9HdCX8qAv3tuuwB//02gmJ8l8
+jl9HpN5FAfkpDQAuUfsY+HaPoSCWjTFMePJxCZOHx3zLovzgfzLoY8wiR+AltxCk
+SFwm/Spx+GWmE/aWKSgAVhZ5APcnHnRm37pK8WY4nxriM66L0O4MpAyE6xhKWpRA
+S1VzhhTSYnNNc1gfsFHOuOohIJMi2DL35CNU2gyNx0LBN3oLAyAcxT6oBavmKANb
+grgz/U6sp31HvA696D95qnGg1fKKCz8+x/aXIgLE2eo+rNGsvbeAS1ZRGihYYgNs
+Sn34fvnnPtZ3qd37E/ff6DKZG4/pA0Lq9PvEf6z2u5+M9vykjyG/iWWfGIZSrcZC
+Y9ERNCoezV29xKbjKUWI7CFoOUHqy+Ja4RtISt+sfr23/H+orw71QDek1zHe+1Fj
+VUQdB8XNmpSZ//U7+Hx9LKtxtuTA7E4CQYaj4zgo1EWIOtL9wiVcGfZgczhjZiJl
+6kHoOA7jvOjzA9my7UATpsW2Xp4OHCCVi2qnWsj3haWprxLGomk=
+=3v6h
+-----END PGP SIGNATURE-----
+
+--z3fhv2q6tsxkhzkw--
 
