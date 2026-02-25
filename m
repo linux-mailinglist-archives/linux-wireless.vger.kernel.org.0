@@ -1,126 +1,161 @@
-Return-Path: <linux-wireless+bounces-32172-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-32173-lists+linux-wireless=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id WPY8JKTDnmkuXQQAu9opvQ
-	(envelope-from <linux-wireless+bounces-32172-lists+linux-wireless=lfdr.de@vger.kernel.org>)
-	for <lists+linux-wireless@lfdr.de>; Wed, 25 Feb 2026 10:40:52 +0100
+	id sAfHMG7HnmkuXQQAu9opvQ
+	(envelope-from <linux-wireless+bounces-32173-lists+linux-wireless=lfdr.de@vger.kernel.org>)
+	for <lists+linux-wireless@lfdr.de>; Wed, 25 Feb 2026 10:57:02 +0100
 X-Original-To: lists+linux-wireless@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id C5F861952A1
-	for <lists+linux-wireless@lfdr.de>; Wed, 25 Feb 2026 10:40:51 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 746AB195612
+	for <lists+linux-wireless@lfdr.de>; Wed, 25 Feb 2026 10:57:01 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id CD1A5308E0D1
-	for <lists+linux-wireless@lfdr.de>; Wed, 25 Feb 2026 09:28:46 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 961B6300D557
+	for <lists+linux-wireless@lfdr.de>; Wed, 25 Feb 2026 09:47:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4481038E5EC;
-	Wed, 25 Feb 2026 09:28:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 30C623101D0;
+	Wed, 25 Feb 2026 09:47:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b="k2wwEDoA"
+	dkim=pass (1024-bit key) header.d=mediatek.com header.i=@mediatek.com header.b="F5Q7yqw4"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from sipsolutions.net (s3.sipsolutions.net [168.119.38.16])
+Received: from mailgw02.mediatek.com (unknown [210.61.82.184])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0DF9238E5F9
-	for <linux-wireless@vger.kernel.org>; Wed, 25 Feb 2026 09:28:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=168.119.38.16
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 58EDC3164BA;
+	Wed, 25 Feb 2026 09:47:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=210.61.82.184
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772011717; cv=none; b=hY1vbwS5EibA6iqPTYqGbJxF9d7VTDMV1fOCqazSujEEv/1+AxWjQtpgqYClVKUDtgJk45nT+8CYB/5VRrd3DtySmyG+++unr/EzdAIKcj25GP0rH+0V+Nd/groKrb7UPuaazVBozH2YoWi2cbPcNG0Iqc9hc54LjavJUfJ3Y+g=
+	t=1772012858; cv=none; b=TSZewMjusZ4lMFEXtAc/ili6yHr7fpzFuEUzhfiDaZI/bAbUQtc8lefMWRlc3jC3LK37kACmdP/DCmoP+KIqQUoJdl2rmZs1vwrIKKynklb7CnU01b0bdJXUw7Gq5c5hLRCoN/U0rY52FK0R8Wd1cYIGRaHtL5B4d3MrnKm95wE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772011717; c=relaxed/simple;
-	bh=EkQdBeNw1j79fQy1wYivNxB022XRm4cXFAtD1zCJjKs=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=bvDppW+TkxhOajRsOHUNZHsk2laQSBwjTS0LeeXSJqFOxqQfBQoi5AdY5bgogYauJ1A/MPUWH7z9KD2BLpV5GSsWpgyCvqXKPkSFPq4Z8AoK86iJ3jCyqSw24eILJ/o8kgtttC/xhN2fj+6Eqts6lKgvenGOrjp3ATfpE7HEyvw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net; spf=pass smtp.mailfrom=sipsolutions.net; dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b=k2wwEDoA; arc=none smtp.client-ip=168.119.38.16
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sipsolutions.net
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=sipsolutions.net; s=mail; h=MIME-Version:Content-Transfer-Encoding:
-	Content-Type:References:In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender
-	:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
-	Resent-Cc:Resent-Message-ID; bh=EkQdBeNw1j79fQy1wYivNxB022XRm4cXFAtD1zCJjKs=;
-	t=1772011716; x=1773221316; b=k2wwEDoAo0tZyUOLIlLDwc5n1xuHOwarDY1n467QyWuzhUi
-	ZfgR/3ZPR32dlbbSqZo5Z2DDystpaPMZ6QTuoMNzgMUrt47f8FgOD5rFhfz6bfp8NxjnkXijz3Na9
-	rlPar+9cfkTehu1p8v/bKwK8ppvZa8Pfxtr3XnxQBcrMfYXV6KSsF0/NQehiDMeB/xyXSIwk4kUbU
-	IBMM0IpKN4Y1P6KfEzIP5qDESpRU9KYSPrr0pWpaXy4+qrBWdZCXN8wAvpqHJiY0MAH/BRrUkVE8Y
-	SSwbeTv3V3aNXyK4K+ftK9vTCcZxcnZOoK4m32bqF6QSWhg5SemJRBz4ebRV5UdQ==;
-Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
-	(Exim 4.98.2)
-	(envelope-from <benjamin@sipsolutions.net>)
-	id 1vvBC4-00000001MhJ-1JOj;
-	Wed, 25 Feb 2026 10:28:32 +0100
-Message-ID: <593b5677967a24068cc92eefa3fcac23f3207079.camel@sipsolutions.net>
-Subject: Re: [RFC PATCH v2 7/8] wifi: mac80211: pass station to
- ieee80211_tx_skb_tid
-From: Benjamin Berg <benjamin@sipsolutions.net>
-To: Ramasamy Kaliappan <ramasamy.kaliappan@oss.qualcomm.com>, 
-	linux-wireless@vger.kernel.org
-Cc: Rameshkumar Sundaram <rameshkumar.sundaram@oss.qualcomm.com>
-Date: Wed, 25 Feb 2026 10:28:31 +0100
-In-Reply-To: <fbacd977-ab61-4399-b70f-554abc5afc4d@oss.qualcomm.com>
-References: <20260223123818.384184-10-benjamin@sipsolutions.net>
-	 <20260223133818.c932d807e54e.Ib7be90db0d3712d14e7a292023ff3d922baef860@changeid>
-	 <fbacd977-ab61-4399-b70f-554abc5afc4d@oss.qualcomm.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.56.2 (3.56.2-2.fc42) 
+	s=arc-20240116; t=1772012858; c=relaxed/simple;
+	bh=BjKYmZf4sTXxJcHiKV2IE5GwTtD/dQvee4BgNUMHVUI=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=M/YKG3UbGrI0ilF4umOICzY3CUjs8QI1V2fv9ofRKYQsTqt+Dvl1LQOUOZWXLsMdD6N+6Dd8dQEAgzPj03HrcexUUllUuElZLVXEIjkTbXEroT7BbAT1oMF6QgzgBWkALdRFR3oN83tKp530R5yVR1agVdSXzrN/p9P9xl2NXy8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=mediatek.com; spf=pass smtp.mailfrom=mediatek.com; dkim=pass (1024-bit key) header.d=mediatek.com header.i=@mediatek.com header.b=F5Q7yqw4; arc=none smtp.client-ip=210.61.82.184
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=mediatek.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=mediatek.com
+X-UUID: 000d622a122f11f1b7fc4fdb8733b2bc-20260225
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=mediatek.com; s=dk;
+	h=Content-Type:Content-Transfer-Encoding:MIME-Version:Message-ID:Date:Subject:CC:To:From; bh=dMi/Y4bfq04gJP60qx0132hG+kj1q74zT7Boy4YZonM=;
+	b=F5Q7yqw4oTqEoU9+tUorQWnoPo4Jd4O7BNrGFk55DkJ4GT35E0zfQPvf4sy82wT4nBirUnHSexxqzx5ASSzQpVZdfZTDh42V6AFL3lC5I5jOnwhSb/m4Sgz47RdiPdQu+KsVR3rpEkuVo11C19L6zCo/OPL4wqYGyE0ZG2Bc/v0=;
+X-CID-P-RULE: Release_Ham
+X-CID-O-INFO: VERSION:1.3.11,REQID:fb369634-a742-4c23-ab08-882b0e0d76ce,IP:0,U
+	RL:0,TC:0,Content:-25,EDM:0,RT:0,SF:0,FILE:0,BULK:0,RULE:Release_Ham,ACTIO
+	N:release,TS:-25
+X-CID-META: VersionHash:89c9d04,CLOUDID:40a1fef0-16bd-4243-b4ca-b08ca08ab1d8,B
+	ulkID:nil,BulkQuantity:0,Recheck:0,SF:102|836|888|898,TC:-5,Content:0|15|5
+	0,EDM:-3,IP:nil,URL:0,File:130,RT:0,Bulk:nil,QS:nil,BEC:-1,COL:0,OSI:0,OSA
+	:0,AV:0,LES:1,SPR:NO,DKR:0,DKP:0,BRR:0,BRE:0,ARC:0
+X-CID-BVR: 2,SSN|SDN
+X-CID-BAS: 2,SSN|SDN,0,_
+X-CID-FACTOR: TF_CID_SPAM_SNR
+X-CID-RHF: D41D8CD98F00B204E9800998ECF8427E
+X-UUID: 000d622a122f11f1b7fc4fdb8733b2bc-20260225
+Received: from mtkmbs13n2.mediatek.inc [(172.21.101.108)] by mailgw02.mediatek.com
+	(envelope-from <quan.zhou@mediatek.com>)
+	(Generic MTA with TLSv1.2 ECDHE-RSA-AES256-GCM-SHA384 256/256)
+	with ESMTP id 627496730; Wed, 25 Feb 2026 17:47:29 +0800
+Received: from mtkmbs11n1.mediatek.inc (172.21.101.185) by
+ mtkmbs13n1.mediatek.inc (172.21.101.193) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.29; Wed, 25 Feb 2026 17:47:28 +0800
+Received: from mhfsdcap04.gcn.mediatek.inc (10.17.3.154) by
+ mtkmbs11n1.mediatek.inc (172.21.101.73) with Microsoft SMTP Server id
+ 15.2.2562.29 via Frontend Transport; Wed, 25 Feb 2026 17:47:27 +0800
+From: Quan Zhou <quan.zhou@mediatek.com>
+To: Felix Fietkau <nbd@nbd.name>, Lorenzo Bianconi <lorenzo@kernel.org>
+CC: Sean Wang <sean.wang@mediatek.com>, Deren Wu <Deren.Wu@mediatek.com>,
+	Ryder Lee <ryder.lee@mediatek.com>, Shayne Chen <shayne.chen@mediatek.com>,
+	Leon Yen <Leon.Yen@mediatek.com>, Ming Yen Hsieh
+	<mingyen.hsieh@mediatek.com>, Allan Wang <allan.wang@mediatek.com>, Sarick
+ Jiang <sarick.jiang@mediatek.com>, Posh Sun <posh.sun@mediatek.com>, Shengxi
+ Xu <shengxi.xu@mediatek.com>, Eric-SY Chang <Eric-SY.Chang@mediatek.com>,
+	Michael Lo <Michael.Lo@mediatek.com>, CH Yeh <ch.yeh@mediatek.com>, Robin
+ Chiu <robin.chiu@mediatek.com>, linux-wireless
+	<linux-wireless@vger.kernel.org>, linux-mediatek
+	<linux-mediatek@lists.infradead.org>, Quan Zhou <quan.zhou@mediatek.com>,
+	<stable@vger.kernel.org>
+Subject: [patch] wifi: mt76: mt7925: fix incorrect TLV length in CLC command
+Date: Wed, 25 Feb 2026 17:47:22 +0800
+Message-ID: <f56ae0e705774dfa8aab3b99e5bbdc92cd93523e.1772011204.git.quan.zhou@mediatek.com>
+X-Mailer: git-send-email 2.46.0
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-malware-bazaar: not-scanned
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-MTK: N
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [-0.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[sipsolutions.net,none];
-	R_DKIM_ALLOW(-0.20)[sipsolutions.net:s=mail];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
+	MID_CONTAINS_FROM(1.00)[];
+	R_MISSING_CHARSET(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[mediatek.com,quarantine];
+	R_DKIM_ALLOW(-0.20)[mediatek.com:s=dk];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-32172-lists,linux-wireless=lfdr.de];
-	DKIM_TRACE(0.00)[sipsolutions.net:+];
-	FROM_HAS_DN(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	RCVD_TLS_LAST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
+	RCPT_COUNT_TWELVE(0.00)[20];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	RCPT_COUNT_THREE(0.00)[3];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-32173-lists,linux-wireless=lfdr.de];
+	DKIM_TRACE(0.00)[mediatek.com:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
 	TO_DN_SOME(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[benjamin@sipsolutions.net,linux-wireless@vger.kernel.org];
+	FROM_NEQ_ENVFROM(0.00)[quan.zhou@mediatek.com,linux-wireless@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
+	RCVD_COUNT_FIVE(0.00)[6];
 	TAGGED_RCPT(0.00)[linux-wireless];
-	MID_RHS_MATCH_FROM(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,sipsolutions.net:mid,sipsolutions.net:dkim]
-X-Rspamd-Queue-Id: C5F861952A1
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,mediatek.com:mid,mediatek.com:dkim,mediatek.com:email]
+X-Rspamd-Queue-Id: 746AB195612
 X-Rspamd-Action: no action
 
-Hi,
+The previous implementation of __mt7925_mcu_set_clc() set the TLV length
+field (.len) incorrectly during CLC command construction. The length was
+initialized as sizeof(req) - 4, regardless of the actual segment length.
+This could cause the WiFi firmware to misinterpret the command payload,
+resulting in command execution errors.
 
-On Tue, 2026-02-24 at 23:15 +0530, Ramasamy Kaliappan wrote:
-> [SNIP]
-> For the no_sta tx path, The sta lookup happens in ieee80211_tx_prepare()=
-=20
-> (invoked by ieee80211_tx). My understanding is that the skb still ends=
-=20
-> up being queued with a sta.=C2=A0 Is that correct?
+This patch moves the TLV length assignment to after the segment is
+selected, and sets .len to sizeof(req) + seg->len - 4, matching the
+actual command content. This ensures the firmware receives the
+correct TLV length and parses the command properly.
 
-Right, should have replied here maybe. Obviously, what we want is that
-the error number to be passed down to ieee80211_tx_prepare so that it
-will not do a station lookup.
+Fixes: c948b5da6bbe ("wifi: mt76: mt7925: add Mediatek Wi-Fi7 driver for mt7925 chips")
+Cc: stable@vger.kernel.org
+Signed-off-by: Quan Zhou <quan.zhou@mediatek.com>
+---
+ drivers/net/wireless/mediatek/mt76/mt7925/mcu.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-The update of the ieee80211_xmit call to pass sta is missing in this
-patch version. With that added, ieee80211_tx_prepare should get the
-error number and take the branch that sta is not NULL. However, it will
-leave rx->sta NULL as it is an error pointer.
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7925/mcu.c b/drivers/net/wireless/mediatek/mt76/mt7925/mcu.c
+index 1379bf6a26b5..abcdd0e0b3b5 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7925/mcu.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7925/mcu.c
+@@ -3380,7 +3380,6 @@ __mt7925_mcu_set_clc(struct mt792x_dev *dev, u8 *alpha2,
+ 		u8 rsvd[64];
+ 	} __packed req = {
+ 		.tag = cpu_to_le16(0x3),
+-		.len = cpu_to_le16(sizeof(req) - 4),
+ 
+ 		.idx = idx,
+ 		.env = env_cap,
+@@ -3409,6 +3408,7 @@ __mt7925_mcu_set_clc(struct mt792x_dev *dev, u8 *alpha2,
+ 		memcpy(req.type, rule->type, 2);
+ 
+ 		req.size = cpu_to_le16(seg->len);
++		req.len = cpu_to_le16(sizeof(req) + seg->len - 4);
+ 		dev->phy.clc_chan_conf = clc->ver == 1 ? 0xff : rule->flag;
+ 		skb = __mt76_mcu_msg_alloc(&dev->mt76, &req,
+ 					   le16_to_cpu(req.size) + sizeof(req),
+-- 
+2.45.2
 
-At least that is the intention.
-
-Benjamin
 
