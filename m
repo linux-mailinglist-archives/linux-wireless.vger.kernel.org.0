@@ -1,104 +1,105 @@
-Return-Path: <linux-wireless+bounces-32191-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-32192-lists+linux-wireless=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id iPN5Mv6mn2mHdAQAu9opvQ
-	(envelope-from <linux-wireless+bounces-32191-lists+linux-wireless=lfdr.de@vger.kernel.org>)
-	for <lists+linux-wireless@lfdr.de>; Thu, 26 Feb 2026 02:50:54 +0100
+	id mBduACy3n2mKdQQAu9opvQ
+	(envelope-from <linux-wireless+bounces-32192-lists+linux-wireless=lfdr.de@vger.kernel.org>)
+	for <lists+linux-wireless@lfdr.de>; Thu, 26 Feb 2026 03:59:56 +0100
 X-Original-To: lists+linux-wireless@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1888B19FF1A
-	for <lists+linux-wireless@lfdr.de>; Thu, 26 Feb 2026 02:50:53 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 558811A0436
+	for <lists+linux-wireless@lfdr.de>; Thu, 26 Feb 2026 03:59:55 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 4A9BF30107FD
-	for <lists+linux-wireless@lfdr.de>; Thu, 26 Feb 2026 01:50:33 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id B2DF23031E95
+	for <lists+linux-wireless@lfdr.de>; Thu, 26 Feb 2026 02:59:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C02C337104C;
-	Thu, 26 Feb 2026 01:50:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 29FB4378822;
+	Thu, 26 Feb 2026 02:59:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="U95bGc8M";
-	dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b="hzVHp4St"
+	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="c+cfxvUj";
+	dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b="kW05zPK0"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
+Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 879F0301708
-	for <linux-wireless@vger.kernel.org>; Thu, 26 Feb 2026 01:50:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DD0E8372B3D
+	for <linux-wireless@vger.kernel.org>; Thu, 26 Feb 2026 02:59:51 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772070632; cv=none; b=MXqPbjznMMwtyUla0xWmBTBZ2+udCbfdddioZGya5ojPUUVfsr1wktNKUl6C+c+3EzZtKkAVr+ShVVCf+Nlw+bp85/BUICaP7OW1kaF/DzG1QNl/j8xYhmko87BQvmfC2XlDeFd6ofGrEA0l4mmL9kiEVjoEEjX2NO28o/LoVQg=
+	t=1772074793; cv=none; b=I5xZuy5GGGZrfdnvbmcIbebCSBHrDtgUbtqbjFxapsS2JDiOAaKP6nlu2sOmTS9Qfcvc/Firv8wvZZuJDhIRfWV0Wh8/aZ+VcWk250enyneuGp1S+no0kWGKaBT9G6toQ/ffhPiTOS1clVlLc82qt7xE63tM4P/M3ZpTVi8iynU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772070632; c=relaxed/simple;
-	bh=M6WPq7mZbqGsLt/EumgSldBrI+rZxWlATLbJnQ93Rss=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=tkp7Hdm0XPFJioe8Pdg2VZaeoyblDt5tfypS8MEzHQw73V9EDaJDApVBMpJUESPC77WdwxMyMlpJguhLnKZWFveGcSDt0Hy34iR0YnR3cYdi23cesyOwvhpS835JFKTNuqpWbxBBjfh8BDqojIsnSiORycKxqxKqExuv1yqLfuY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=U95bGc8M; dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b=hzVHp4St; arc=none smtp.client-ip=205.220.168.131
+	s=arc-20240116; t=1772074793; c=relaxed/simple;
+	bh=0JIOtyy8nuQvTZEf7WVudvEtqBb98NrwUyHEfqzdPCs=;
+	h=Message-ID:Date:MIME-Version:Subject:To:References:From:
+	 In-Reply-To:Content-Type; b=mOCVUJlFa652yZQ54T3kfbU3MinAGu89A2xz0NTjlqeoODOpTsExDs+aoTJ5GLOUWqO38YEwL4eJUGyxa6UBK6VESQdT+ZqFMOxRcVcZPSoGrm9SzoOcH7kYUViIpnc9sq8gUfk/dgV5RtlK1868udnS78boIkX8hdLK1g3mtt8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=c+cfxvUj; dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b=kW05zPK0; arc=none smtp.client-ip=205.220.180.131
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
-Received: from pps.filterd (m0279866.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 61PH3mH41195799
-	for <linux-wireless@vger.kernel.org>; Thu, 26 Feb 2026 01:50:31 GMT
+Received: from pps.filterd (m0279869.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 61PGkG6Z3632307
+	for <linux-wireless@vger.kernel.org>; Thu, 26 Feb 2026 02:59:50 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
-	cc:content-transfer-encoding:content-type:date:from:in-reply-to
+	content-transfer-encoding:content-type:date:from:in-reply-to
 	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
-	oMgNABMClazAKP8Gmu/DAP8KsivDNJ19jCLyf5xAcXo=; b=U95bGc8Mvty1NG/K
-	CZTWWvG+VRWlhTV6C0VMTsNezId1z78Wv4WHNmx3u8sb6S+8sgpg1T5aCISUlPLU
-	H0hi0FSdElu8FpmvEq7shckpXqyxoXoUSZoQruAOlfjgWO/hRsxOEssKocJpTlkD
-	v+QEz2e3OCst28VWZ1j/pwGQn40IP3DNp5Yj9TF/xJtHJxIfuDE7CCDTcwdHjnNV
-	YfvllzzI+ELBpsE3lP9Y8g6/Y17AhGqcqqtibV85lAW2I+1Aepy/YgbsgRbHmGMS
-	6WEjRhE4Lk1W70nEW8bulmv7DaQPOaHJtpT93+R8Vufdwu3UE/uXo22ZL+SBRzZq
-	We608w==
-Received: from mail-pl1-f199.google.com (mail-pl1-f199.google.com [209.85.214.199])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4cj559hay1-1
+	ApDYTBYwmae7TLEHX3umlqwjGpIiVGPq8syu79mqRSw=; b=c+cfxvUjmGc2Xg6S
+	ybaysQ/QD0bOWY1YE5ov2x2pDpFn+VFzygFfTmPUz+izyre0zPNX/A/zhEKGqt4u
+	Hb8C+eFCNh1HIwFTLdHkgn464hxjDyH1uzppB6Tx4JQweMJAjqDRWbPY4Gh+3xbR
+	wpkWgiJm5RNQEZ3kQzeDoWzq/xvyfFQ7C5xovkv2sXWkQLJBsJz2ElY7sE2d5wzM
+	YdM7v/ipjb/FD+2/NPsQXlBHJBwJL7A5NxPlxfRg/PpsNp9XLO8+UEbvV8/cKFqm
+	hWT9gi0dG2GSfnOTs4yhjErUwRHkb2WCwOqT7lqmgk53nydlmUYhaNzUZht4NMc7
+	v0Oscw==
+Received: from mail-pj1-f72.google.com (mail-pj1-f72.google.com [209.85.216.72])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4cj4w4sky2-1
 	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
-	for <linux-wireless@vger.kernel.org>; Thu, 26 Feb 2026 01:50:30 +0000 (GMT)
-Received: by mail-pl1-f199.google.com with SMTP id d9443c01a7336-2adaa9c4b89so15057925ad.0
-        for <linux-wireless@vger.kernel.org>; Wed, 25 Feb 2026 17:50:30 -0800 (PST)
+	for <linux-wireless@vger.kernel.org>; Thu, 26 Feb 2026 02:59:50 +0000 (GMT)
+Received: by mail-pj1-f72.google.com with SMTP id 98e67ed59e1d1-358f4ed4eceso261292a91.2
+        for <linux-wireless@vger.kernel.org>; Wed, 25 Feb 2026 18:59:50 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=oss.qualcomm.com; s=google; t=1772070630; x=1772675430; darn=vger.kernel.org;
+        d=oss.qualcomm.com; s=google; t=1772074790; x=1772679590; darn=vger.kernel.org;
         h=content-transfer-encoding:in-reply-to:content-language:from
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=oMgNABMClazAKP8Gmu/DAP8KsivDNJ19jCLyf5xAcXo=;
-        b=hzVHp4StYKkZrTS90ze+v7vwfNMkbIFpRm0Q7TfRFYQoyfZmQ+gLThXQk7klfre7oD
-         dB+JurM4CrWe0j5t8v9EOrzXuFFGezm6q0ROv1jhXaKy4TwRmpLcQNF+IG+RE9B9dcBl
-         JP6+gso6PSF3xYJDIos1BU1w8bY0QEiwRzaSeczu2lxO3kRdT4khl+Zcq4TaHaa9oA2f
-         XMQVYAZoXIQrX5fgHK6Zjiqh50D4v70RNFVrjk4T9NWMHV7GKbLcLRw7kpBvvECoOj4C
-         nL1uyWbkZgTH2mSVqfRS2UPsIUSJ4XRnMFcDjkdPImjqWb/yAYWoPShax/ZnpnpK+0gA
-         dQMQ==
+         :references:to:subject:user-agent:mime-version:date:message-id:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=ApDYTBYwmae7TLEHX3umlqwjGpIiVGPq8syu79mqRSw=;
+        b=kW05zPK0gR9qSKbL7s10YXW+O9oaaESa7/UGTQXyM7yqnQ4/1a9WC94KKHbwN22dZQ
+         4QLLtP04MOvNLnAhs1oA7aXsvaX9euRUtYNvFomW8IYUEg30LMjT+sayBUHCInnXuVE9
+         PxUwYNGAGq2dwEdQpAwU23hnGUr9m3cpCLfBaWFacHiAOwhXrfyHmehdfejJLkN6+MzH
+         A8UX1XjBRn086SX8Eq1WicXTEntu4ggkjCGCIO/Axbe5sgsHgvDKddLwOPt9/yQzGee6
+         4rrCXV3NODxCDixFmbaFCGzhun3PQ5N+2qI7YDFH9douD9zXqpZgn1sTQCErp0qlr0vU
+         D+2A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1772070630; x=1772675430;
+        d=1e100.net; s=20230601; t=1772074790; x=1772679590;
         h=content-transfer-encoding:in-reply-to:content-language:from
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :references:to:subject:user-agent:mime-version:date:message-id
          :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=oMgNABMClazAKP8Gmu/DAP8KsivDNJ19jCLyf5xAcXo=;
-        b=F0F+SQQIb3zcq0YL6DniT3q8JTgwWkTDvttPAjvhNqxf5JwW0w/8KSerRVGApKY9Xq
-         lMAGQl4rGil5UrcFhqMU57crwLN0aRIMX22tdWGn+a7XEel4e1bYmxu7rdXcL3NaTVFq
-         1d4z5R2ReXRYO+axD3lJBr/hy+AKiJv7KloFStGlXcCXR4AeT8Fy4b8DBZH/pxxBt1Ek
-         sZ3gIra4XNHHHDGhPkDEAL8/zRxi1dbDBG1KwdbzKL/bbF1SCpiVcQ1Q0yRiuT3ZpX/S
-         ALEgFnwt8Uu6ihW6mDkbAMo4zBQFCz9No2UR8k0E2Udk6QF0kU/EX1rqmqiRrloG9VAD
-         MY8Q==
-X-Gm-Message-State: AOJu0Yxldz52Ff2Wjnb20tEYnojXZNKTJzOFM6iDGhK/kLBZS3+PjEtN
-	in0NKbrRTp5Bv0AHwJVqRQJlnai7erNAhEQu1GIUejqdXkPoGU294WLpmi2Vjr09IT/arZLD8ac
-	HcET4t9VE8Gxt+NKhBcO5tlkI1ntLXZV3ne4XBws8rCYR/lt4zDp42V1A6Jnh40aHpXnYKg==
-X-Gm-Gg: ATEYQzzdJebptUUSTrE/PY300vg5vURGblG7Dje5RSS2HCXYK+BWqd93pVaAY945ch7
-	LbUTBdxkvkVlsgwq7xLQloZ0bqYx9+NzhiCYYgNxhyz0kIYuXJJMnZnYzi24f75LhnEcorMVU/0
-	VotgWOF/ivZhpjXI8JkTIvwww2oH06Bv5B7BlRn5Rid221+3Uv5B9IlWuHPURbUyIHI7uBQfx4W
-	xtxzD7sOxY/DTDoXeYBZQU5SSpzyaxwpTwr24cJMmcP9I3/6oWWQAuTABAMSVOvSvwQaBRH/iGH
-	mtwX/yY3W6UxSpCPZUQTEdcYr8AdT1i1D/+FMdpc2/ER3jGYS1ESV5eiBElXE41lgoBxoGVuX8B
-	q1FO42tj/QMTjI3Nw57b764Ozjhg7pMRJBWPc3YCcvlsImxYro6QV+lHcVsQ7HkyeK3TfGI0m1g
-	h6qsU2dqg1IG0BXJN7nEs=
-X-Received: by 2002:a17:902:d541:b0:2aa:e55b:22c4 with SMTP id d9443c01a7336-2adf78fd098mr9996775ad.9.1772070629924;
-        Wed, 25 Feb 2026 17:50:29 -0800 (PST)
-X-Received: by 2002:a17:902:d541:b0:2aa:e55b:22c4 with SMTP id d9443c01a7336-2adf78fd098mr9996465ad.9.1772070629397;
-        Wed, 25 Feb 2026 17:50:29 -0800 (PST)
+        bh=ApDYTBYwmae7TLEHX3umlqwjGpIiVGPq8syu79mqRSw=;
+        b=h/ia7kWeKE14X4hs/UdYo23t1WigtoDbVZx/zNUT8KnMbA3/GdjxcWGiOnrsIvXNfv
+         LSjSJeyn5WnrIUS9IdpgaXX09Nn5BqxNKq2Teva0u67LgoQrghupaozfLrx8xmB3JzRv
+         WNEPlm6RX+QA8CQgvZdLm0MvhSTdNzP0jaucrJnUb+IZjOHzhOva/l406jR3BH7Aro0p
+         HnbAxx/fKJZAsicGiqDUcfPelPNOQsq/Pi8cozqbjhw9Go71RRVCOFsZ8GpVwBs9DRhq
+         DhCwsMedxyTAe5Q6fZLd34d6Sos9Rn69Ux/sdVE4h/nEgA5VFg1ANFwRabYyUutr6cfx
+         ajeQ==
+X-Forwarded-Encrypted: i=1; AJvYcCX0T3C61E9s3SA7VDdF7OvwIevA7kFB1w1cHCijBh8k04eISt41LwXzxsiGi65qWflolH/+hBcYKSqDuQaQpg==@vger.kernel.org
+X-Gm-Message-State: AOJu0YwYEn/DmnuApi9bJtoOJRZPKCpOQTimKXP2d2A+PxkCl8Y9zeDt
+	xPomyxblsMn8y3x7pGdYQYNvo1dhdQnmrAH54r0l8VLXZEObwmxiontzlieMYm6PrG3pK4TCLwY
+	jujM+iQuPOP0huGR6cc+Rv5NvZvtqS+NZewTq7s2GtSsPHWMrZ1I+1zy2nbe3rjJArAfpkg==
+X-Gm-Gg: ATEYQzxUeV59YUEOnvNKixfTG5epUzNMa0dLSZ+NHcjF60/u9QSz+r8ereWjOWco0Xz
+	QBnWKCukwvAjnzBx+TPzWkpekvlG0JoJVKezTprn20kOZY7h4+VACsjeLWFxZD3P2DD1rsUoEA6
+	nraHR4BxkvRP4Rihk82rsMijbxY1BuxDr5bvtnjBSRaltil/MoKDBbrXeAL11CmIDH8RB3cehwn
+	vAEUSvJmtYe8oIbGHeg1gXSg1xkSys1b5XG8/YCR9AaahsZ/fjgzcuWBTslALaYVnHcPrxad+LS
+	iVvuTk3sKRgYL4f1AGh69xiUtS+RTjECFA4o5GpwPy716S3cOsKdbr6lWPgvJrKGsReIDP59fc2
+	CE1V2oAvKiq5wSgUje3Z7KQ1T6yVzsmQa4RgjBa9nvx1eshaaTigTfkok4ToBrSOKTiBztSXsWu
+	TpbtFSIDEijWsRUXj8DqM=
+X-Received: by 2002:a17:90b:3504:b0:34c:aba2:dd95 with SMTP id 98e67ed59e1d1-3593dbf2afdmr811184a91.26.1772074789563;
+        Wed, 25 Feb 2026 18:59:49 -0800 (PST)
+X-Received: by 2002:a17:90b:3504:b0:34c:aba2:dd95 with SMTP id 98e67ed59e1d1-3593dbf2afdmr811166a91.26.1772074789068;
+        Wed, 25 Feb 2026 18:59:49 -0800 (PST)
 Received: from [10.133.33.106] (tpe-colo-wan-fw-bordernet.qualcomm.com. [103.229.16.4])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2adfb5c1976sm5861215ad.22.2026.02.25.17.50.27
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3593dda5ec8sm443651a91.12.2026.02.25.18.59.47
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 25 Feb 2026 17:50:29 -0800 (PST)
-Message-ID: <34363bc5-2439-4579-8999-67dedded39d0@oss.qualcomm.com>
-Date: Thu, 26 Feb 2026 09:50:26 +0800
+        Wed, 25 Feb 2026 18:59:48 -0800 (PST)
+Message-ID: <8b468ad4-39e3-401f-a2f2-7484759137df@oss.qualcomm.com>
+Date: Thu, 26 Feb 2026 10:59:43 +0800
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
@@ -106,42 +107,44 @@ List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH ath-next v2 2/4] wifi: ath12k: avoid long fw_stats waits
- on vdev stats hot path
-To: m.limarencko@yandex.ru, jjohnson@kernel.org
-Cc: linux-wireless@vger.kernel.org, ath12k@lists.infradead.org,
-        linux-kernel@vger.kernel.org
-References: <20260212121746.329619-1-m.limarencko@yandex.ru>
- <20260212121746.329619-3-m.limarencko@yandex.ru>
+Subject: Re: [RFC PATCH 2/2] wifi: ath10k: only wait for response to SET_KEY
+To: Jeff Johnson <jeff.johnson@oss.qualcomm.com>,
+        James Prestwood <prestwoj@gmail.com>,
+        Richard Acayan <mailingradian@gmail.com>,
+        linux-wireless@vger.kernel.org, ath10k@lists.infradead.org
+References: <20260210021249.12132-1-mailingradian@gmail.com>
+ <20260210021249.12132-3-mailingradian@gmail.com>
+ <dd019903-f8d9-4bd3-a90d-b4d505f489f3@gmail.com>
+ <3e1274fd-fe95-420c-94e3-ac34f497b7ae@oss.qualcomm.com>
 From: Baochen Qiang <baochen.qiang@oss.qualcomm.com>
 Content-Language: en-US
-In-Reply-To: <20260212121746.329619-3-m.limarencko@yandex.ru>
+In-Reply-To: <3e1274fd-fe95-420c-94e3-ac34f497b7ae@oss.qualcomm.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-Proofpoint-ORIG-GUID: c2WogQy_S55LFPsk9WQogppTNqugSMp9
-X-Proofpoint-GUID: c2WogQy_S55LFPsk9WQogppTNqugSMp9
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwMjI2MDAxNCBTYWx0ZWRfXzf0w/eTJNt2/
- LHySS3oqJvz2hvHm+T3346E0dwu2E2SegjR4MYoqb/DJ/LaCWpbIfU6gyhOye1HF2YLwOamx42i
- k+zDS20MZq0iy8NfcH7hMcRavC5mhOAOHwc2Q1aY3UX/Wyrnv+a1X+v1VOvjqAtNKTdrmykB8og
- /sbhttDrtRoVGQ7t7zO7ezLfvcv7oFDdl8mPa+cy5S0lQMMy0D8gBVXTP517N6WgWdy0MTLgIvv
- mU8EeS4UkGIOgod41RqzTGMg70pIs+t8A7vwC6YI0w0tcAIipNWzRbBBrxPk5i8mLvyiqdEJt9w
- mIuj/rSlZf9BtKQWu9h3pxJljtMzILuqDZxZ/ZuHIilT4ouYc/hwUEO9+pZlxeILxYKYWAnjE2L
- EGBzNMLV23XlsHLGjrjJxNpWZ7eIFdl3VIDzMnj9RGBzGDoCEVYqaICBekAT0TRbqRfj2O6aV1+
- Jb7v3JIW9sTj5C9BQQQ==
-X-Authority-Analysis: v=2.4 cv=TcybdBQh c=1 sm=1 tr=0 ts=699fa6e6 cx=c_pps
- a=JL+w9abYAAE89/QcEU+0QA==:117 a=nuhDOHQX5FNHPW3J6Bj6AA==:17
+X-Proofpoint-ORIG-GUID: rsRO-bp0W0ldjuZbc8CpAZhZLOue5_KX
+X-Authority-Analysis: v=2.4 cv=IqMTsb/g c=1 sm=1 tr=0 ts=699fb726 cx=c_pps
+ a=RP+M6JBNLl+fLTcSJhASfg==:117 a=nuhDOHQX5FNHPW3J6Bj6AA==:17
  a=IkcTkHD0fZMA:10 a=HzLeVaNsDn8A:10 a=s4-Qcg_JpJYA:10
- a=VkNPw1HP01LnGYTKEx00:22 a=u7WPNUs3qKkmUXheDGA7:22 a=YMgV9FUhrdKAYTUUvYB2:22
- a=VwQbUJbxAAAA:8 a=EUspDBNiAAAA:8 a=vaJtXVxTAAAA:8 a=w32g7tGSt65Kz2FTHNQA:9
- a=QEXdDO2ut3YA:10 a=324X-CrmTo6CU4MGRt3R:22
+ a=VkNPw1HP01LnGYTKEx00:22 a=u7WPNUs3qKkmUXheDGA7:22 a=_glEPmIy2e8OvE2BGh3C:22
+ a=VwQbUJbxAAAA:8 a=pGLkceISAAAA:8 a=JOXQ_UV0D9vJDna7EiIA:9 a=QEXdDO2ut3YA:10
+ a=iS9zxrgQBfv6-_F4QbHw:22
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwMjI2MDAyNCBTYWx0ZWRfX7BX3q+m3la9y
+ m1R/YT0Vl6rjkInlQho8dYD1DaWHkSbEgAokNy2fQN1qZq4QSvbXrtgnHyI+H0D1js5XgyOi08E
+ tN91kFTvfBHin32Ksj0kAhYRK5mR9gAE7Ije6f/oTnj6APii5Dg9/xylHht4yX2eG9vR5WZOs1K
+ crcXJEbsLV0N3yAIL7H0n21i93EpI8Q1HJ6YfORiENG0Un5rwMm/nh6VDBZGaCI7k/FkBSjLJ60
+ +Zxt8t8jm48svB/KoH41EUTpR6+uKslB30aUZw82UZuuoy4dkphUx4uZ9pRl0kFFm7pruF3PVUy
+ ufMAm/qkfDX24UjJlkQ8GHRRohXqfMZjepzA0VJydeirFgAPrsJSbnjW046VuXplc3OzsndmRgH
+ fTEmZPp6Isgn1xWdWFWxbNBtSpI51E/nhByTguwZsPXto8iXyvIk70ZRhRwe21grsBacdeTbdje
+ PpD97FgFXMf9QXkIEIw==
+X-Proofpoint-GUID: rsRO-bp0W0ldjuZbc8CpAZhZLOue5_KX
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.51,FMLib:17.12.100.49
  definitions=2026-02-25_04,2026-02-25_02,2025-10-01_01
 X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- suspectscore=0 bulkscore=0 malwarescore=0 lowpriorityscore=0 clxscore=1015
- spamscore=0 impostorscore=0 phishscore=0 priorityscore=1501 adultscore=0
+ phishscore=0 clxscore=1015 lowpriorityscore=0 suspectscore=0 adultscore=0
+ impostorscore=0 spamscore=0 priorityscore=1501 malwarescore=0 bulkscore=0
  classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.22.0-2602130000 definitions=main-2602260014
+ reason=mlx scancount=1 engine=8.22.0-2602130000 definitions=main-2602260024
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
@@ -151,104 +154,58 @@ X-Spamd-Result: default: False [-2.16 / 15.00];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	DKIM_TRACE(0.00)[qualcomm.com:+,oss.qualcomm.com:+];
-	TAGGED_FROM(0.00)[bounces-32191-lists,linux-wireless=lfdr.de];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,oss.qualcomm.com:mid,oss.qualcomm.com:dkim,qualcomm.com:dkim];
-	FREEMAIL_TO(0.00)[yandex.ru,kernel.org];
+	TAGGED_FROM(0.00)[bounces-32192-lists,linux-wireless=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
+	FREEMAIL_TO(0.00)[oss.qualcomm.com,gmail.com,vger.kernel.org,lists.infradead.org];
 	FORGED_SENDER_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[qualcomm.com:+,oss.qualcomm.com:+];
+	TO_DN_SOME(0.00)[];
+	MIME_TRACE(0.00)[0:+];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,oss.qualcomm.com:mid,oss.qualcomm.com:dkim,qualcomm.com:dkim];
 	RCPT_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[baochen.qiang@oss.qualcomm.com,linux-wireless@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
 	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	TO_DN_NONE(0.00)[];
-	MID_RHS_MATCH_FROM(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
 	TAGGED_RCPT(0.00)[linux-wireless];
+	MID_RHS_MATCH_FROM(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
 	RCVD_COUNT_SEVEN(0.00)[7]
-X-Rspamd-Queue-Id: 1888B19FF1A
+X-Rspamd-Queue-Id: 558811A0436
 X-Rspamd-Action: no action
 
 
 
-On 2/12/2026 8:17 PM, m.limarencko@yandex.ru wrote:
-> From: Mikhail Limarenko <m.limarencko@yandex.ru>
+On 2/13/2026 1:56 AM, Jeff Johnson wrote:
+> On 2/11/2026 6:11 PM, James Prestwood wrote:
+>> On 2/9/26 6:12 PM, Richard Acayan wrote:
+>>> When sending DELETE_KEY, the driver times out waiting for a response
+>>> that doesn't come. Only wait for a response when sending SET_KEY.
+>>
+>> We've run into the exact same thing on the QCA6174 and have been 
+>> carrying an identical patch to this for at least a year.
+>>
+>> https://lore.kernel.org/linux-wireless/b2838a23-ea30-4dee-b513-f5471d486af2@gmail.com/
 > 
-> Station info requests can trigger frequent VDEV stat pulls from
-> 
-> user space (iw/NM polling).
-> 
-> On affected firmware, waiting 3 seconds for fw_stats_done causes
-> 
-> repeated stalls and visible hitches.
-> 
-> Use a short timeout for VDEV_STAT requests and skip unnecessary
-> 
-> waits for stats types that do not need completion
-> 
-> synchronization.
+> Baochen,
+> Were we ever able to reproduce this?
 
-once again, can you please try
+unfortunately no
 
-https://lore.kernel.org/ath12k/20260129-ath12k-fw-stats-fixes-v1-0-55d66064f4d5@oss.qualcomm.com/
+> Do we normally always get a response to DELETE_KEY but in some instances it
+> comes very late (or not at all)?
+
+In my tests, I never hit this issue so seems can always get a response.
+
+> If we remove the wait, is there any concern that a late arriving DELETE_KEY
+> response might be processed as a response to a subsequent SET_KEY command?
+
+I would suggest not to remove the wait, but instead reduce the timeout to like 1s, just
+like the patch "[RFC 0/1] wifi: ath10k: improvement on key removal failure".
 
 > 
-> Tested-on: QCNFA765 (WCN785x), kernel 6.18.5+deb13-amd64
-> Signed-off-by: Mikhail Limarenko <m.limarencko@yandex.ru>
-> ---
->  drivers/net/wireless/ath/ath12k/mac.c | 22 ++++++++++++++++++++--
->  1 file changed, 20 insertions(+), 2 deletions(-)
-> 
-> diff --git a/drivers/net/wireless/ath/ath12k/mac.c b/drivers/net/wireless/ath/ath12k/mac.c
-> index 095b49a..1b550e9 100644
-> --- a/drivers/net/wireless/ath/ath12k/mac.c
-> +++ b/drivers/net/wireless/ath/ath12k/mac.c
-> @@ -4829,6 +4829,7 @@ int ath12k_mac_get_fw_stats(struct ath12k *ar,
->  {
->  	struct ath12k_base *ab = ar->ab;
->  	struct ath12k_hw *ah = ath12k_ar_to_ah(ar);
-> +	unsigned long done_timeout = 3 * HZ;
->  	unsigned long time_left;
->  	int ret;
->  
-> @@ -4859,15 +4860,32 @@ int ath12k_mac_get_fw_stats(struct ath12k *ar,
->  		return -ETIMEDOUT;
->  	}
->  
-> +	/* VDEV stats are queried frequently from station info paths (e.g. iw/NM).
-> +	 * On buggy firmware this path can timeout repeatedly and block callers for
-> +	 * multiple seconds; keep the hot path responsive while preserving behavior
-> +	 * for other stats types.
-> +	 */
-> +	if (param->stats_id & WMI_REQUEST_VDEV_STAT)
-> +		done_timeout = msecs_to_jiffies(200);
-> +
-> +	/* Non-vdev/bcn stats are handled in a single event. */
-> +	if (!(param->stats_id & (WMI_REQUEST_VDEV_STAT | WMI_REQUEST_BCN_STAT)))
-> +		return 0;
-> +
->  	/* Firmware sends WMI_UPDATE_STATS_EVENTID back-to-back
->  	 * when stats data buffer limit is reached. fw_stats_complete
->  	 * is completed once host receives first event from firmware, but
->  	 * still there could be more events following. Below is to wait
->  	 * until firmware completes sending all the events.
->  	 */
-> -	time_left = wait_for_completion_timeout(&ar->fw_stats_done, 3 * HZ);
-> +	time_left = wait_for_completion_timeout(&ar->fw_stats_done, done_timeout);
->  	if (!time_left) {
-> -		ath12k_warn(ab, "time out while waiting for fw stats done\n");
-> +		if (param->stats_id & WMI_REQUEST_VDEV_STAT)
-> +			ath12k_dbg(ab, ATH12K_DBG_WMI,
-> +				   "time out while waiting for fw stats done (stats_id 0x%x)\n",
-> +				   param->stats_id);
-> +		else
-> +			ath12k_warn(ab, "time out while waiting for fw stats done\n");
->  		return -ETIMEDOUT;
->  	}
->  
+> /jeff
 
 
