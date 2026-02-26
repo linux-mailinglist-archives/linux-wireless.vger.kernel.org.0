@@ -1,104 +1,104 @@
-Return-Path: <linux-wireless+bounces-32190-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-32191-lists+linux-wireless=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id GA2CF5Cmn2mHdAQAu9opvQ
-	(envelope-from <linux-wireless+bounces-32190-lists+linux-wireless=lfdr.de@vger.kernel.org>)
-	for <lists+linux-wireless@lfdr.de>; Thu, 26 Feb 2026 02:49:04 +0100
+	id iPN5Mv6mn2mHdAQAu9opvQ
+	(envelope-from <linux-wireless+bounces-32191-lists+linux-wireless=lfdr.de@vger.kernel.org>)
+	for <lists+linux-wireless@lfdr.de>; Thu, 26 Feb 2026 02:50:54 +0100
 X-Original-To: lists+linux-wireless@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id A116A19FEF4
-	for <lists+linux-wireless@lfdr.de>; Thu, 26 Feb 2026 02:49:03 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1888B19FF1A
+	for <lists+linux-wireless@lfdr.de>; Thu, 26 Feb 2026 02:50:53 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id CA0353010DA2
-	for <lists+linux-wireless@lfdr.de>; Thu, 26 Feb 2026 01:48:21 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 4A9BF30107FD
+	for <lists+linux-wireless@lfdr.de>; Thu, 26 Feb 2026 01:50:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D82B83624DB;
-	Thu, 26 Feb 2026 01:48:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C02C337104C;
+	Thu, 26 Feb 2026 01:50:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="RDOzlmTe";
-	dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b="FBM+CYsl"
+	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="U95bGc8M";
+	dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b="hzVHp4St"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7556A339868
-	for <linux-wireless@vger.kernel.org>; Thu, 26 Feb 2026 01:48:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 879F0301708
+	for <linux-wireless@vger.kernel.org>; Thu, 26 Feb 2026 01:50:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772070499; cv=none; b=NJ5zTkbjPl4ub11WfzdMJ8tO08k9etQcPcMd7i+9D94h4Y6Tljy9E1YA/kHzbS3OADJ3WcVmw1zAKNPfAP5HloBFM82a7RtxRPXhp1+B7BE3DNUeBC8kfLl38XJDmkYIKAmCl51JK0dfRaZm9yQdUYtE/YTniZ+qzpUH5VSLJBM=
+	t=1772070632; cv=none; b=MXqPbjznMMwtyUla0xWmBTBZ2+udCbfdddioZGya5ojPUUVfsr1wktNKUl6C+c+3EzZtKkAVr+ShVVCf+Nlw+bp85/BUICaP7OW1kaF/DzG1QNl/j8xYhmko87BQvmfC2XlDeFd6ofGrEA0l4mmL9kiEVjoEEjX2NO28o/LoVQg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772070499; c=relaxed/simple;
-	bh=LiO3glrcw44IOecKUikA742Sy1wB5j5l6N88i+plXvw=;
+	s=arc-20240116; t=1772070632; c=relaxed/simple;
+	bh=M6WPq7mZbqGsLt/EumgSldBrI+rZxWlATLbJnQ93Rss=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=SOE3IASEl5Lo4aTzIt/jyEDFODef/iPrAY4JjuR9qfFjvlE6BkLaQBkbuGDo9ajL0BDGwkBfycJAJTvv9UXYSM4c6CJS8/aKWH1vv2No2xbl8nwVu6FJ87EDiGQuKNglaYxERw6BolklqB18h+eycvAgA4cR99a2gIbFoZelIQA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=RDOzlmTe; dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b=FBM+CYsl; arc=none smtp.client-ip=205.220.168.131
+	 In-Reply-To:Content-Type; b=tkp7Hdm0XPFJioe8Pdg2VZaeoyblDt5tfypS8MEzHQw73V9EDaJDApVBMpJUESPC77WdwxMyMlpJguhLnKZWFveGcSDt0Hy34iR0YnR3cYdi23cesyOwvhpS835JFKTNuqpWbxBBjfh8BDqojIsnSiORycKxqxKqExuv1yqLfuY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=U95bGc8M; dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b=hzVHp4St; arc=none smtp.client-ip=205.220.168.131
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
 Received: from pps.filterd (m0279866.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 61PH3p1c1196101
-	for <linux-wireless@vger.kernel.org>; Thu, 26 Feb 2026 01:48:15 GMT
+	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 61PH3mH41195799
+	for <linux-wireless@vger.kernel.org>; Thu, 26 Feb 2026 01:50:31 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
 	cc:content-transfer-encoding:content-type:date:from:in-reply-to
 	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
-	Rl1QbDI2+JWHspZXnzLzk/O8BOFPU/eDoUansuFH5dI=; b=RDOzlmTedvUDGExE
-	ILHmazNwAggxV1LVn+Cp0Vse7glxIS8Fbq4dPnQLkzRI3/dekwT+bR5y4kcpawMZ
-	ShCr6HQNs9POIjLg8fSNI14EOh+BIdm22dvPYRDtTSsWwjpc5pZVGkRlp/lo3lMK
-	0bMgTjPbsvxHmor9L5aoutjGIIW02MTzR2/Gt7V3KDT5MWeBeZ5XTUIKGDETC8Tl
-	Fyfq+hr2uIgefOApeOarMISu7CxZ+WNZcC2FkPG/95eV3NLu8O4WTZvYsbtsKm1l
-	4d/7hMu3fhsieA6LqAjdHUAmIskE4OeO5iBDHTuaV4rFfN95Snxc/ZDx6QpnoO98
-	2zm86Q==
-Received: from mail-pj1-f69.google.com (mail-pj1-f69.google.com [209.85.216.69])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4cj559haqr-1
+	oMgNABMClazAKP8Gmu/DAP8KsivDNJ19jCLyf5xAcXo=; b=U95bGc8Mvty1NG/K
+	CZTWWvG+VRWlhTV6C0VMTsNezId1z78Wv4WHNmx3u8sb6S+8sgpg1T5aCISUlPLU
+	H0hi0FSdElu8FpmvEq7shckpXqyxoXoUSZoQruAOlfjgWO/hRsxOEssKocJpTlkD
+	v+QEz2e3OCst28VWZ1j/pwGQn40IP3DNp5Yj9TF/xJtHJxIfuDE7CCDTcwdHjnNV
+	YfvllzzI+ELBpsE3lP9Y8g6/Y17AhGqcqqtibV85lAW2I+1Aepy/YgbsgRbHmGMS
+	6WEjRhE4Lk1W70nEW8bulmv7DaQPOaHJtpT93+R8Vufdwu3UE/uXo22ZL+SBRzZq
+	We608w==
+Received: from mail-pl1-f199.google.com (mail-pl1-f199.google.com [209.85.214.199])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4cj559hay1-1
 	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
-	for <linux-wireless@vger.kernel.org>; Thu, 26 Feb 2026 01:48:15 +0000 (GMT)
-Received: by mail-pj1-f69.google.com with SMTP id 98e67ed59e1d1-358f4ed4eceso202240a91.2
-        for <linux-wireless@vger.kernel.org>; Wed, 25 Feb 2026 17:48:15 -0800 (PST)
+	for <linux-wireless@vger.kernel.org>; Thu, 26 Feb 2026 01:50:30 +0000 (GMT)
+Received: by mail-pl1-f199.google.com with SMTP id d9443c01a7336-2adaa9c4b89so15057925ad.0
+        for <linux-wireless@vger.kernel.org>; Wed, 25 Feb 2026 17:50:30 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=oss.qualcomm.com; s=google; t=1772070495; x=1772675295; darn=vger.kernel.org;
+        d=oss.qualcomm.com; s=google; t=1772070630; x=1772675430; darn=vger.kernel.org;
         h=content-transfer-encoding:in-reply-to:content-language:from
          :references:cc:to:subject:user-agent:mime-version:date:message-id
          :from:to:cc:subject:date:message-id:reply-to;
-        bh=Rl1QbDI2+JWHspZXnzLzk/O8BOFPU/eDoUansuFH5dI=;
-        b=FBM+CYslMQR1aWTjIjecTPFu+Ddi47oioQxcITx/2n4fKemDyQxYfZPqW/epNYdmf1
-         axcR3o4msLUXZmXXaUPIfCCqyC0Ajm1xezWZbTZe8zvznl5u4viAlVKTGq7AYXPYne4G
-         HMiV90s1SG2+XnfYbHXE7PDhKn/vSvF15BUlLF16Bn43sY6r7taUBrnz3oqm1a0nhUol
-         X/JY/AQy5hY8xmQosvDpejCUIIsk8riEZAyh95+BfrGqQtIuGihEYGffddAakPWlP2BR
-         pDs0mUXNgT0rZjHjH6UFAU/3UIasCH5RgOrrpQQy671kPl8rf9DOxHhfJOoAeSc87CRQ
-         EfpQ==
+        bh=oMgNABMClazAKP8Gmu/DAP8KsivDNJ19jCLyf5xAcXo=;
+        b=hzVHp4StYKkZrTS90ze+v7vwfNMkbIFpRm0Q7TfRFYQoyfZmQ+gLThXQk7klfre7oD
+         dB+JurM4CrWe0j5t8v9EOrzXuFFGezm6q0ROv1jhXaKy4TwRmpLcQNF+IG+RE9B9dcBl
+         JP6+gso6PSF3xYJDIos1BU1w8bY0QEiwRzaSeczu2lxO3kRdT4khl+Zcq4TaHaa9oA2f
+         XMQVYAZoXIQrX5fgHK6Zjiqh50D4v70RNFVrjk4T9NWMHV7GKbLcLRw7kpBvvECoOj4C
+         nL1uyWbkZgTH2mSVqfRS2UPsIUSJ4XRnMFcDjkdPImjqWb/yAYWoPShax/ZnpnpK+0gA
+         dQMQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1772070495; x=1772675295;
+        d=1e100.net; s=20230601; t=1772070630; x=1772675430;
         h=content-transfer-encoding:in-reply-to:content-language:from
          :references:cc:to:subject:user-agent:mime-version:date:message-id
          :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=Rl1QbDI2+JWHspZXnzLzk/O8BOFPU/eDoUansuFH5dI=;
-        b=w3okXBHT9Q75h/ChZb+COqYAQqAiHQIEY0/wF55SiI/hptmGLsY2Tj0Smjsl/Tai23
-         8kj8pKGx/JrdHbP+IR2FNuN5/DNXl3u1BnTpJY5Alf/bU/ZMpU9UFRf6AX5e/FM+Ogc3
-         LTv5AsHhP7Eu84Zq9JMCtNmhRLutgMSx15TSeqlVbCLZtLm4gUs0hRhG0HB0uCyXgqVy
-         9Lq8Qg2PY+nj744DapCyUghd1X1QrP4qQr9IB8NkcJIIAbVHF8odVoqJYip3zwdBmAQq
-         oqT5mF9xsj2ebwkbtZLqN73rP5Yr+SBQfglZxSbZnosPawPMkLIDTyBJdHxhwweroN7C
-         8lCw==
-X-Gm-Message-State: AOJu0YxKdTsbPoj0LQdenv5446s429B6Ix/4g5TUYWc4BM9sV9l302lT
-	87jwaA/TXlZNHx3BpIPGxVdK4cPcEpKnHDA4vc4YLInE5bmTF1/keZBi+jqQU+6ODmgk7z6dsR6
-	B67U+Yo/X/wmBeT/dOcvRTjr3pCVmfAvUEhdavngzjv8SyZLjL4WdQTdPYlx5PqBibkxqog==
-X-Gm-Gg: ATEYQzyQ71Uv1HPt/1YQMOcjZsRj50UJv5HIps+3/1Ro5UJk9PlqPns9jq9Ph9PRCgx
-	VrkS8G8lyxReT/K6kZGDOsqAKbpZpjlEJ+icm3GTE+VZOrezmSKBh60XLooSZqNsNu8gvz1njbI
-	PwprIWeASSUeP/sTYCToCRO7wDl/MeBuVlxJUrT0lP4B6QI7XaqsqCUXBX9smRZbq+ACFXPSc6w
-	LDHlhaSnCAcmqOGteCQXblhCl6ZICYwFQY+cuLBTFo+r14HwLwzZl9uo/0kHv+bKwmwyAL8HL2t
-	M/GYCk+GdCC54FGC+jJ8z+C1OXSleN6xNCaaqNjcoIU91ybDiQtf0zq70WqGObIbx8ZtQzQZBLx
-	R6T36ABka7XR54hrWDwk+9WSP6azLvwEJcqCDIPpmAKVDrTarXSL3/cWzcqW+o0yyGEw0ciwr41
-	RxEzunM4Q9N9NN1nLUs2w=
-X-Received: by 2002:a05:6a20:2d0e:b0:395:3677:675a with SMTP id adf61e73a8af0-395b48da4e4mr707470637.35.1772070494513;
-        Wed, 25 Feb 2026 17:48:14 -0800 (PST)
-X-Received: by 2002:a05:6a20:2d0e:b0:395:3677:675a with SMTP id adf61e73a8af0-395b48da4e4mr707434637.35.1772070493751;
-        Wed, 25 Feb 2026 17:48:13 -0800 (PST)
+        bh=oMgNABMClazAKP8Gmu/DAP8KsivDNJ19jCLyf5xAcXo=;
+        b=F0F+SQQIb3zcq0YL6DniT3q8JTgwWkTDvttPAjvhNqxf5JwW0w/8KSerRVGApKY9Xq
+         lMAGQl4rGil5UrcFhqMU57crwLN0aRIMX22tdWGn+a7XEel4e1bYmxu7rdXcL3NaTVFq
+         1d4z5R2ReXRYO+axD3lJBr/hy+AKiJv7KloFStGlXcCXR4AeT8Fy4b8DBZH/pxxBt1Ek
+         sZ3gIra4XNHHHDGhPkDEAL8/zRxi1dbDBG1KwdbzKL/bbF1SCpiVcQ1Q0yRiuT3ZpX/S
+         ALEgFnwt8Uu6ihW6mDkbAMo4zBQFCz9No2UR8k0E2Udk6QF0kU/EX1rqmqiRrloG9VAD
+         MY8Q==
+X-Gm-Message-State: AOJu0Yxldz52Ff2Wjnb20tEYnojXZNKTJzOFM6iDGhK/kLBZS3+PjEtN
+	in0NKbrRTp5Bv0AHwJVqRQJlnai7erNAhEQu1GIUejqdXkPoGU294WLpmi2Vjr09IT/arZLD8ac
+	HcET4t9VE8Gxt+NKhBcO5tlkI1ntLXZV3ne4XBws8rCYR/lt4zDp42V1A6Jnh40aHpXnYKg==
+X-Gm-Gg: ATEYQzzdJebptUUSTrE/PY300vg5vURGblG7Dje5RSS2HCXYK+BWqd93pVaAY945ch7
+	LbUTBdxkvkVlsgwq7xLQloZ0bqYx9+NzhiCYYgNxhyz0kIYuXJJMnZnYzi24f75LhnEcorMVU/0
+	VotgWOF/ivZhpjXI8JkTIvwww2oH06Bv5B7BlRn5Rid221+3Uv5B9IlWuHPURbUyIHI7uBQfx4W
+	xtxzD7sOxY/DTDoXeYBZQU5SSpzyaxwpTwr24cJMmcP9I3/6oWWQAuTABAMSVOvSvwQaBRH/iGH
+	mtwX/yY3W6UxSpCPZUQTEdcYr8AdT1i1D/+FMdpc2/ER3jGYS1ESV5eiBElXE41lgoBxoGVuX8B
+	q1FO42tj/QMTjI3Nw57b764Ozjhg7pMRJBWPc3YCcvlsImxYro6QV+lHcVsQ7HkyeK3TfGI0m1g
+	h6qsU2dqg1IG0BXJN7nEs=
+X-Received: by 2002:a17:902:d541:b0:2aa:e55b:22c4 with SMTP id d9443c01a7336-2adf78fd098mr9996775ad.9.1772070629924;
+        Wed, 25 Feb 2026 17:50:29 -0800 (PST)
+X-Received: by 2002:a17:902:d541:b0:2aa:e55b:22c4 with SMTP id d9443c01a7336-2adf78fd098mr9996465ad.9.1772070629397;
+        Wed, 25 Feb 2026 17:50:29 -0800 (PST)
 Received: from [10.133.33.106] (tpe-colo-wan-fw-bordernet.qualcomm.com. [103.229.16.4])
-        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-c70fa3756dbsm290210a12.0.2026.02.25.17.48.11
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2adfb5c1976sm5861215ad.22.2026.02.25.17.50.27
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 25 Feb 2026 17:48:13 -0800 (PST)
-Message-ID: <eca60324-aed3-4c97-a8ea-14aaf910543c@oss.qualcomm.com>
-Date: Thu, 26 Feb 2026 09:48:08 +0800
+        Wed, 25 Feb 2026 17:50:29 -0800 (PST)
+Message-ID: <34363bc5-2439-4579-8999-67dedded39d0@oss.qualcomm.com>
+Date: Thu, 26 Feb 2026 09:50:26 +0800
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
@@ -106,33 +106,34 @@ List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH ath-next] wifi: ath12k: Fix legacy rate mapping for
- monitor mode capture
-To: Thiraviyam Mariyappan <thiraviyam.mariyappan@oss.qualcomm.com>,
-        ath12k@lists.infradead.org
-Cc: linux-wireless@vger.kernel.org, P Praneesh <praneesh.p@oss.qualcomm.com>
-References: <20260209054924.2713072-1-thiraviyam.mariyappan@oss.qualcomm.com>
+Subject: Re: [PATCH ath-next v2 2/4] wifi: ath12k: avoid long fw_stats waits
+ on vdev stats hot path
+To: m.limarencko@yandex.ru, jjohnson@kernel.org
+Cc: linux-wireless@vger.kernel.org, ath12k@lists.infradead.org,
+        linux-kernel@vger.kernel.org
+References: <20260212121746.329619-1-m.limarencko@yandex.ru>
+ <20260212121746.329619-3-m.limarencko@yandex.ru>
 From: Baochen Qiang <baochen.qiang@oss.qualcomm.com>
 Content-Language: en-US
-In-Reply-To: <20260209054924.2713072-1-thiraviyam.mariyappan@oss.qualcomm.com>
+In-Reply-To: <20260212121746.329619-3-m.limarencko@yandex.ru>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-Proofpoint-ORIG-GUID: ZxfGiZuHOK0Rx4_4uT__VBaDfAigr8nI
-X-Proofpoint-GUID: ZxfGiZuHOK0Rx4_4uT__VBaDfAigr8nI
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwMjI2MDAxMyBTYWx0ZWRfX5Lnv3/lV5G7C
- 2yvz3QWcjLLJRD6vbdRbIvsxg3s4LEU5eprhxGixx2yw5uVa1XPvXlQ+NT9kefoDVWbDEgOuuNV
- J73bo63rniumZ3LIRmhWGlFZX5pwYnjEvcVZY/uwtg/NqTxVGOOW3IBhazPXgAdlVZQu3cODKpI
- OussDo6G6HmUlJjtLjLwjDIlDuuTnqI0zId09Sprg74Rgd7F3dXVi+NHfUPm0YNsi/7kn/+Ppym
- oIIlvL33K6KZM4LtPDuDNjfDHuYWV8g03OMQqbUUjSdup5lzIpVl4vDx/JqPYGraMxkbU4BnxnC
- oV1fYsPz0TscRM1aBkfQZSVJAjeAew3gIP+lrl17SmrgqIzmMUq/D1kPY5vAg8mtGFD5+KsORlV
- KHJW/2aTb2beRxi5/PsbVeQP6WxUOOyMjLByTw6s99OGXIDcYHjq/cRQz2n3RzrbK97Ad+K6vTb
- 4IwWW1kyktceJSfCtvg==
-X-Authority-Analysis: v=2.4 cv=TcybdBQh c=1 sm=1 tr=0 ts=699fa65f cx=c_pps
- a=vVfyC5vLCtgYJKYeQD43oA==:117 a=nuhDOHQX5FNHPW3J6Bj6AA==:17
+X-Proofpoint-ORIG-GUID: c2WogQy_S55LFPsk9WQogppTNqugSMp9
+X-Proofpoint-GUID: c2WogQy_S55LFPsk9WQogppTNqugSMp9
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwMjI2MDAxNCBTYWx0ZWRfXzf0w/eTJNt2/
+ LHySS3oqJvz2hvHm+T3346E0dwu2E2SegjR4MYoqb/DJ/LaCWpbIfU6gyhOye1HF2YLwOamx42i
+ k+zDS20MZq0iy8NfcH7hMcRavC5mhOAOHwc2Q1aY3UX/Wyrnv+a1X+v1VOvjqAtNKTdrmykB8og
+ /sbhttDrtRoVGQ7t7zO7ezLfvcv7oFDdl8mPa+cy5S0lQMMy0D8gBVXTP517N6WgWdy0MTLgIvv
+ mU8EeS4UkGIOgod41RqzTGMg70pIs+t8A7vwC6YI0w0tcAIipNWzRbBBrxPk5i8mLvyiqdEJt9w
+ mIuj/rSlZf9BtKQWu9h3pxJljtMzILuqDZxZ/ZuHIilT4ouYc/hwUEO9+pZlxeILxYKYWAnjE2L
+ EGBzNMLV23XlsHLGjrjJxNpWZ7eIFdl3VIDzMnj9RGBzGDoCEVYqaICBekAT0TRbqRfj2O6aV1+
+ Jb7v3JIW9sTj5C9BQQQ==
+X-Authority-Analysis: v=2.4 cv=TcybdBQh c=1 sm=1 tr=0 ts=699fa6e6 cx=c_pps
+ a=JL+w9abYAAE89/QcEU+0QA==:117 a=nuhDOHQX5FNHPW3J6Bj6AA==:17
  a=IkcTkHD0fZMA:10 a=HzLeVaNsDn8A:10 a=s4-Qcg_JpJYA:10
  a=VkNPw1HP01LnGYTKEx00:22 a=u7WPNUs3qKkmUXheDGA7:22 a=YMgV9FUhrdKAYTUUvYB2:22
- a=EUspDBNiAAAA:8 a=Xiczk5uq6A01BK9_cRwA:9 a=QEXdDO2ut3YA:10
- a=rl5im9kqc5Lf4LNbBjHf:22
+ a=VwQbUJbxAAAA:8 a=EUspDBNiAAAA:8 a=vaJtXVxTAAAA:8 a=w32g7tGSt65Kz2FTHNQA:9
+ a=QEXdDO2ut3YA:10 a=324X-CrmTo6CU4MGRt3R:22
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.51,FMLib:17.12.100.49
  definitions=2026-02-25_04,2026-02-25_02,2025-10-01_01
@@ -140,7 +141,7 @@ X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
  suspectscore=0 bulkscore=0 malwarescore=0 lowpriorityscore=0 clxscore=1015
  spamscore=0 impostorscore=0 phishscore=0 priorityscore=1501 adultscore=0
  classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.22.0-2602130000 definitions=main-2602260013
+ reason=mlx scancount=1 engine=8.22.0-2602130000 definitions=main-2602260014
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
@@ -150,352 +151,104 @@ X-Spamd-Result: default: False [-2.16 / 15.00];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	RCPT_COUNT_THREE(0.00)[4];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-32190-lists,linux-wireless=lfdr.de];
 	DKIM_TRACE(0.00)[qualcomm.com:+,oss.qualcomm.com:+];
+	TAGGED_FROM(0.00)[bounces-32191-lists,linux-wireless=lfdr.de];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,oss.qualcomm.com:mid,oss.qualcomm.com:dkim,qualcomm.com:dkim];
+	FREEMAIL_TO(0.00)[yandex.ru,kernel.org];
+	RCVD_TLS_LAST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,qualcomm.com:email,qualcomm.com:dkim,oss.qualcomm.com:mid,oss.qualcomm.com:dkim];
-	TO_DN_SOME(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[baochen.qiang@oss.qualcomm.com,linux-wireless@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
 	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	TO_DN_NONE(0.00)[];
+	MID_RHS_MATCH_FROM(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
 	TAGGED_RCPT(0.00)[linux-wireless];
-	MID_RHS_MATCH_FROM(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
 	RCVD_COUNT_SEVEN(0.00)[7]
-X-Rspamd-Queue-Id: A116A19FEF4
+X-Rspamd-Queue-Id: 1888B19FF1A
 X-Rspamd-Action: no action
 
 
 
-On 2/9/2026 1:49 PM, Thiraviyam Mariyappan wrote:
-> From: P Praneesh <praneesh.p@oss.qualcomm.com>
+On 2/12/2026 8:17 PM, m.limarencko@yandex.ru wrote:
+> From: Mikhail Limarenko <m.limarencko@yandex.ru>
 > 
-> The current implementation incorrectly reports legacy CCK and OFDM rates
-> in monitor mode radiotap headers. The rate field displays wrong values,
-> for example showing 11 Mbps when the actual rate is 1 Mbps. This occurs
-> because the HAL layer uses a unified enum for both CCK and OFDM rates
-> without distinguishing between long/short preamble variants and proper
-> rate mapping to hardware rate indices.
+> Station info requests can trigger frequent VDEV stat pulls from
 > 
-> The root cause is threefold:
+> user space (iw/NM polling).
 > 
-> 1. The hal_rx_legacy_rate enum conflates CCK and OFDM rates into a
->    single enumeration, making it impossible to differentiate between
->    802.11b CCK rates (with long/short preamble variants) and 802.11a/g
->    OFDM rates.
+> On affected firmware, waiting 3 seconds for fw_stats_done causes
 > 
-> 2. The L-SIG-B parsing function maps hardware rate values to the wrong
->    enum values. For CCK rates, it incorrectly combines long and short
->    preamble cases (e.g., cases 2 and 5 both map to 2 Mbps), losing
->    preamble information critical for proper rate identification.
+> repeated stalls and visible hitches.
 > 
-> 3. The mac layer's rate-to-index conversion function does not properly
->    handle the precedence between long preamble, short preamble, and
->    OFDM rates when matching hardware rate values.
+> Use a short timeout for VDEV_STAT requests and skip unnecessary
 > 
-> Split the hal_rx_legacy_rate enum into two separate enumerations:
-> hal_rx_legacy_rate for CCK rates with explicit long preamble (LP) and
-> short preamble (SP) variants, and hal_rx_legacy_rates_ofdm for OFDM
-> rates. This separation allows proper identification of rate types and
-> preamble modes.
+> waits for stats types that do not need completion
 > 
-> Introduce a new mapping ath12k_wifi7_hal_mon_map_legacy_rate_to_hw_rate()
-> that converts HAL CCK rate enums to hardware rate indices defined in
-> ath12k_hw_rate_cck. This ensures the rate field in ppdu_info contains
-> the correct hardware rate index that matches the mac layer's expectations.
+> synchronization.
+
+once again, can you please try
+
+https://lore.kernel.org/ath12k/20260129-ath12k-fw-stats-fixes-v1-0-55d66064f4d5@oss.qualcomm.com/
+
 > 
-> Update the L-SIG-B parsing to map each hardware rate value (1-7) to its
-> corresponding CCK rate enum with proper preamble designation:
-> - Cases 1-4: Long preamble (1, 2, 5.5, 11 Mbps)
-> - Cases 5-7: Short preamble (2, 5.5, 11 Mbps)
-> 
-> Update the L-SIG-A parsing to use the new OFDM-specific enum values,
-> maintaining the existing rate mapping for 802.11a/g OFDM rates.
-> 
-> Refactor the mac layer's ath12k_mac_hw_rate_to_idx() function to
-> implement proper matching precedence:
-> 1. First match OFDM rates using the IEEE80211_RATE_MANDATORY_A flag
-> 2. Then match CCK short preamble rates
-> 3. Finally match CCK long preamble rates as fallback
-> 
-> Add helper macros ATH12K_MAC_RATE_A_M and ATH12K_MAC_RATE_B to improve
-> readability of the rate table initialization and ensure the mandatory
-> flag is set for OFDM rates.
-> 
-> This fix ensures monitor mode captures display accurate rate information
-> in the radiotap header, correctly distinguishing between 1 Mbps and
-> 11 Mbps, and properly identifying preamble types for CCK rates.
-> 
-> Tested-on: QCN9274 hw2.0 PCI WLAN.WBE.1.6-01181-QCAHKSWPL_SILICONZ-1
-> 
-> Fixes: d889913205cf ("wifi: ath12k: driver for Qualcomm Wi-Fi 7 devices")
-> Signed-off-by: P Praneesh <praneesh.p@oss.qualcomm.com>
-> Signed-off-by: Thiraviyam Mariyappan <thiraviyam.mariyappan@oss.qualcomm.com>
+> Tested-on: QCNFA765 (WCN785x), kernel 6.18.5+deb13-amd64
+> Signed-off-by: Mikhail Limarenko <m.limarencko@yandex.ru>
 > ---
->  drivers/net/wireless/ath/ath12k/hal.h         | 31 +++++---
->  drivers/net/wireless/ath/ath12k/mac.c         | 51 +++++++------
->  .../net/wireless/ath/ath12k/wifi7/dp_mon.c    | 76 +++++++++++++++----
->  3 files changed, 108 insertions(+), 50 deletions(-)
+>  drivers/net/wireless/ath/ath12k/mac.c | 22 ++++++++++++++++++++--
+>  1 file changed, 20 insertions(+), 2 deletions(-)
 > 
-> diff --git a/drivers/net/wireless/ath/ath12k/hal.h b/drivers/net/wireless/ath/ath12k/hal.h
-> index 43e3880f8257..bf4f7dbae866 100644
-> --- a/drivers/net/wireless/ath/ath12k/hal.h
-> +++ b/drivers/net/wireless/ath/ath12k/hal.h
-> @@ -268,21 +268,28 @@ enum hal_rx_reception_type {
->  };
->  
->  enum hal_rx_legacy_rate {
-> -	HAL_RX_LEGACY_RATE_1_MBPS,
-> -	HAL_RX_LEGACY_RATE_2_MBPS,
-> -	HAL_RX_LEGACY_RATE_5_5_MBPS,
-> -	HAL_RX_LEGACY_RATE_6_MBPS,
-> -	HAL_RX_LEGACY_RATE_9_MBPS,
-> -	HAL_RX_LEGACY_RATE_11_MBPS,
-> -	HAL_RX_LEGACY_RATE_12_MBPS,
-> -	HAL_RX_LEGACY_RATE_18_MBPS,
-> -	HAL_RX_LEGACY_RATE_24_MBPS,
-> -	HAL_RX_LEGACY_RATE_36_MBPS,
-> -	HAL_RX_LEGACY_RATE_48_MBPS,
-> -	HAL_RX_LEGACY_RATE_54_MBPS,
-> +	HAL_RX_LEGACY_RATE_LP_1_MBPS,
-> +	HAL_RX_LEGACY_RATE_LP_2_MBPS,
-> +	HAL_RX_LEGACY_RATE_LP_5_5_MBPS,
-> +	HAL_RX_LEGACY_RATE_LP_11_MBPS,
-> +	HAL_RX_LEGACY_RATE_SP_2_MBPS,
-> +	HAL_RX_LEGACY_RATE_SP_5_5_MBPS,
-> +	HAL_RX_LEGACY_RATE_SP_11_MBPS,
->  	HAL_RX_LEGACY_RATE_INVALID,
->  };
->  
-> +enum hal_rx_legacy_rates_ofdm {
-> +	HAL_RX_LEGACY_RATE_OFDM_48_MBPS,
-> +	HAL_RX_LEGACY_RATE_OFDM_24_MBPS,
-> +	HAL_RX_LEGACY_RATE_OFDM_12_MBPS,
-> +	HAL_RX_LEGACY_RATE_OFDM_6_MBPS,
-> +	HAL_RX_LEGACY_RATE_OFDM_54_MBPS,
-> +	HAL_RX_LEGACY_RATE_OFDM_36_MBPS,
-> +	HAL_RX_LEGACY_RATE_OFDM_18_MBPS,
-> +	HAL_RX_LEGACY_RATE_OFDM_9_MBPS,
-> +	HAL_RX_LEGACY_RATE_OFDM_INVALID,
-> +};
-> +
->  enum hal_ring_type {
->  	HAL_REO_DST,
->  	HAL_REO_EXCEPTION,
 > diff --git a/drivers/net/wireless/ath/ath12k/mac.c b/drivers/net/wireless/ath/ath12k/mac.c
-> index 6c534f0d59ce..035937dde5c6 100644
+> index 095b49a..1b550e9 100644
 > --- a/drivers/net/wireless/ath/ath12k/mac.c
 > +++ b/drivers/net/wireless/ath/ath12k/mac.c
-> @@ -164,30 +164,31 @@ static const struct ieee80211_channel ath12k_6ghz_channels[] = {
->  	CHAN6G(233, 7115, 0),
->  };
+> @@ -4829,6 +4829,7 @@ int ath12k_mac_get_fw_stats(struct ath12k *ar,
+>  {
+>  	struct ath12k_base *ab = ar->ab;
+>  	struct ath12k_hw *ah = ath12k_ar_to_ah(ar);
+> +	unsigned long done_timeout = 3 * HZ;
+>  	unsigned long time_left;
+>  	int ret;
 >  
-> +#define ATH12K_MAC_RATE_A_M(bps, code) \
-> +	{ .bitrate = (bps), .hw_value = (code),\
-> +	  .flags = IEEE80211_RATE_MANDATORY_A }
-> +
-> +#define ATH12K_MAC_RATE_B(bps, code, code_short) \
-> +	{ .bitrate = (bps), .hw_value = (code), .hw_value_short = (code_short),\
-> +	  .flags = IEEE80211_RATE_SHORT_PREAMBLE }
-> +
->  static struct ieee80211_rate ath12k_legacy_rates[] = {
->  	{ .bitrate = 10,
->  	  .hw_value = ATH12K_HW_RATE_CCK_LP_1M },
-> -	{ .bitrate = 20,
-> -	  .hw_value = ATH12K_HW_RATE_CCK_LP_2M,
-> -	  .hw_value_short = ATH12K_HW_RATE_CCK_SP_2M,
-> -	  .flags = IEEE80211_RATE_SHORT_PREAMBLE },
-> -	{ .bitrate = 55,
-> -	  .hw_value = ATH12K_HW_RATE_CCK_LP_5_5M,
-> -	  .hw_value_short = ATH12K_HW_RATE_CCK_SP_5_5M,
-> -	  .flags = IEEE80211_RATE_SHORT_PREAMBLE },
-> -	{ .bitrate = 110,
-> -	  .hw_value = ATH12K_HW_RATE_CCK_LP_11M,
-> -	  .hw_value_short = ATH12K_HW_RATE_CCK_SP_11M,
-> -	  .flags = IEEE80211_RATE_SHORT_PREAMBLE },
-> -
-> -	{ .bitrate = 60, .hw_value = ATH12K_HW_RATE_OFDM_6M },
-> -	{ .bitrate = 90, .hw_value = ATH12K_HW_RATE_OFDM_9M },
-> -	{ .bitrate = 120, .hw_value = ATH12K_HW_RATE_OFDM_12M },
-> -	{ .bitrate = 180, .hw_value = ATH12K_HW_RATE_OFDM_18M },
-> -	{ .bitrate = 240, .hw_value = ATH12K_HW_RATE_OFDM_24M },
-> -	{ .bitrate = 360, .hw_value = ATH12K_HW_RATE_OFDM_36M },
-> -	{ .bitrate = 480, .hw_value = ATH12K_HW_RATE_OFDM_48M },
-> -	{ .bitrate = 540, .hw_value = ATH12K_HW_RATE_OFDM_54M },
-> +	ATH12K_MAC_RATE_B(20, ATH12K_HW_RATE_CCK_LP_2M,
-> +			  ATH12K_HW_RATE_CCK_SP_2M),
-> +	ATH12K_MAC_RATE_B(55, ATH12K_HW_RATE_CCK_LP_5_5M,
-> +			  ATH12K_HW_RATE_CCK_SP_5_5M),
-> +	ATH12K_MAC_RATE_B(110, ATH12K_HW_RATE_CCK_LP_11M,
-> +			  ATH12K_HW_RATE_CCK_SP_11M),
-> +	ATH12K_MAC_RATE_A_M(60, ATH12K_HW_RATE_OFDM_6M),
-> +	ATH12K_MAC_RATE_A_M(90, ATH12K_HW_RATE_OFDM_9M),
-> +	ATH12K_MAC_RATE_A_M(120, ATH12K_HW_RATE_OFDM_12M),
-> +	ATH12K_MAC_RATE_A_M(180, ATH12K_HW_RATE_OFDM_18M),
-> +	ATH12K_MAC_RATE_A_M(240, ATH12K_HW_RATE_OFDM_24M),
-> +	ATH12K_MAC_RATE_A_M(360, ATH12K_HW_RATE_OFDM_36M),
-> +	ATH12K_MAC_RATE_A_M(480, ATH12K_HW_RATE_OFDM_48M),
-> +	ATH12K_MAC_RATE_A_M(540, ATH12K_HW_RATE_OFDM_54M),
->  };
->  
->  static const int
-> @@ -732,11 +733,17 @@ u8 ath12k_mac_hw_rate_to_idx(const struct ieee80211_supported_band *sband,
->  		if (ath12k_mac_bitrate_is_cck(rate->bitrate) != cck)
->  			continue;
->  
-> -		if (rate->hw_value == hw_rate)
-> +		/* To handle 802.11a PPDU type */
-> +		if ((!cck) && (rate->hw_value == hw_rate) &&
-> +		    (rate->flags & IEEE80211_RATE_MANDATORY_A))
->  			return i;
-> +		/* To handle 802.11b short PPDU type */
->  		else if (rate->flags & IEEE80211_RATE_SHORT_PREAMBLE &&
->  			 rate->hw_value_short == hw_rate)
->  			return i;
-> +		/* To handle 802.11b long PPDU type */
-> +		else if (rate->hw_value == hw_rate)
-> +			return i;
+> @@ -4859,15 +4860,32 @@ int ath12k_mac_get_fw_stats(struct ath12k *ar,
+>  		return -ETIMEDOUT;
 >  	}
 >  
->  	return 0;
-> diff --git a/drivers/net/wireless/ath/ath12k/wifi7/dp_mon.c b/drivers/net/wireless/ath/ath12k/wifi7/dp_mon.c
-> index bd741532b7dc..074df2ab6bbf 100644
-> --- a/drivers/net/wireless/ath/ath12k/wifi7/dp_mon.c
-> +++ b/drivers/net/wireless/ath/ath12k/wifi7/dp_mon.c
-> @@ -405,6 +405,42 @@ ath12k_wifi7_dp_mon_hal_rx_parse_user_info(const struct hal_receive_user_info *r
->  	}
->  }
->  
-> +static __always_inline u8
-> +ath12k_wifi7_hal_mon_map_legacy_rate_to_hw_rate(u8 rate)
-> +{
-> +	u8 ath12k_rate;
+> +	/* VDEV stats are queried frequently from station info paths (e.g. iw/NM).
+> +	 * On buggy firmware this path can timeout repeatedly and block callers for
+> +	 * multiple seconds; keep the hot path responsive while preserving behavior
+> +	 * for other stats types.
+> +	 */
+> +	if (param->stats_id & WMI_REQUEST_VDEV_STAT)
+> +		done_timeout = msecs_to_jiffies(200);
 > +
-> +	/* Map hal_rx_legacy_rate to ath12k_hw_rate_cck */
-> +	switch (rate) {
-> +	case HAL_RX_LEGACY_RATE_LP_1_MBPS:
-> +		ath12k_rate = ATH12K_HW_RATE_CCK_LP_1M;
-> +		break;
-> +	case HAL_RX_LEGACY_RATE_LP_2_MBPS:
-> +		ath12k_rate = ATH12K_HW_RATE_CCK_LP_2M;
-> +		break;
-> +	case HAL_RX_LEGACY_RATE_LP_5_5_MBPS:
-> +		ath12k_rate = ATH12K_HW_RATE_CCK_LP_5_5M;
-> +		break;
-> +	case HAL_RX_LEGACY_RATE_LP_11_MBPS:
-> +		ath12k_rate = ATH12K_HW_RATE_CCK_LP_11M;
-> +		break;
-> +	case HAL_RX_LEGACY_RATE_SP_2_MBPS:
-> +		ath12k_rate = ATH12K_HW_RATE_CCK_SP_2M;
-> +		break;
-> +	case HAL_RX_LEGACY_RATE_SP_5_5_MBPS:
-> +		ath12k_rate = ATH12K_HW_RATE_CCK_SP_5_5M;
-> +		break;
-> +	case HAL_RX_LEGACY_RATE_SP_11_MBPS:
-> +		ath12k_rate = ATH12K_HW_RATE_CCK_SP_11M;
-> +		break;
-> +	default:
-> +		ath12k_rate = rate;
-> +		break;
-> +	}
+> +	/* Non-vdev/bcn stats are handled in a single event. */
+> +	if (!(param->stats_id & (WMI_REQUEST_VDEV_STAT | WMI_REQUEST_BCN_STAT)))
+> +		return 0;
 > +
-> +	return ath12k_rate;
-> +}
-> +
->  static void
->  ath12k_wifi7_dp_mon_parse_l_sig_b(const struct hal_rx_lsig_b_info *lsigb,
->  				  struct hal_rx_mon_ppdu_info *ppdu_info)
-> @@ -415,25 +451,32 @@ ath12k_wifi7_dp_mon_parse_l_sig_b(const struct hal_rx_lsig_b_info *lsigb,
->  	rate = u32_get_bits(info0, HAL_RX_LSIG_B_INFO_INFO0_RATE);
->  	switch (rate) {
->  	case 1:
-> -		rate = HAL_RX_LEGACY_RATE_1_MBPS;
-> +		rate = HAL_RX_LEGACY_RATE_LP_1_MBPS;
->  		break;
->  	case 2:
-> -	case 5:
-> -		rate = HAL_RX_LEGACY_RATE_2_MBPS;
-> +		rate = HAL_RX_LEGACY_RATE_LP_2_MBPS;
->  		break;
->  	case 3:
-> -	case 6:
-> -		rate = HAL_RX_LEGACY_RATE_5_5_MBPS;
-> +		rate = HAL_RX_LEGACY_RATE_LP_5_5_MBPS;
->  		break;
->  	case 4:
-> +		rate = HAL_RX_LEGACY_RATE_LP_11_MBPS;
-> +		break;
-> +	case 5:
-> +		rate = HAL_RX_LEGACY_RATE_SP_2_MBPS;
-> +		break;
-> +	case 6:
-> +		rate = HAL_RX_LEGACY_RATE_SP_5_5_MBPS;
-> +		break;
->  	case 7:
-> -		rate = HAL_RX_LEGACY_RATE_11_MBPS;
-> +		rate = HAL_RX_LEGACY_RATE_SP_11_MBPS;
->  		break;
->  	default:
->  		rate = HAL_RX_LEGACY_RATE_INVALID;
-> +		break;
+>  	/* Firmware sends WMI_UPDATE_STATS_EVENTID back-to-back
+>  	 * when stats data buffer limit is reached. fw_stats_complete
+>  	 * is completed once host receives first event from firmware, but
+>  	 * still there could be more events following. Below is to wait
+>  	 * until firmware completes sending all the events.
+>  	 */
+> -	time_left = wait_for_completion_timeout(&ar->fw_stats_done, 3 * HZ);
+> +	time_left = wait_for_completion_timeout(&ar->fw_stats_done, done_timeout);
+>  	if (!time_left) {
+> -		ath12k_warn(ab, "time out while waiting for fw stats done\n");
+> +		if (param->stats_id & WMI_REQUEST_VDEV_STAT)
+> +			ath12k_dbg(ab, ATH12K_DBG_WMI,
+> +				   "time out while waiting for fw stats done (stats_id 0x%x)\n",
+> +				   param->stats_id);
+> +		else
+> +			ath12k_warn(ab, "time out while waiting for fw stats done\n");
+>  		return -ETIMEDOUT;
 >  	}
 >  
-> -	ppdu_info->rate = rate;
-> +	ppdu_info->rate = ath12k_wifi7_hal_mon_map_legacy_rate_to_hw_rate(rate);
->  	ppdu_info->cck_flag = 1;
->  }
->  
-> @@ -447,31 +490,32 @@ ath12k_wifi7_dp_mon_parse_l_sig_a(const struct hal_rx_lsig_a_info *lsiga,
->  	rate = u32_get_bits(info0, HAL_RX_LSIG_A_INFO_INFO0_RATE);
->  	switch (rate) {
->  	case 8:
-> -		rate = HAL_RX_LEGACY_RATE_48_MBPS;
-> +		rate = HAL_RX_LEGACY_RATE_OFDM_48_MBPS;
->  		break;
->  	case 9:
-> -		rate = HAL_RX_LEGACY_RATE_24_MBPS;
-> +		rate = HAL_RX_LEGACY_RATE_OFDM_24_MBPS;
->  		break;
->  	case 10:
-> -		rate = HAL_RX_LEGACY_RATE_12_MBPS;
-> +		rate = HAL_RX_LEGACY_RATE_OFDM_12_MBPS;
->  		break;
->  	case 11:
-> -		rate = HAL_RX_LEGACY_RATE_6_MBPS;
-> +		rate = HAL_RX_LEGACY_RATE_OFDM_6_MBPS;
->  		break;
->  	case 12:
-> -		rate = HAL_RX_LEGACY_RATE_54_MBPS;
-> +		rate = HAL_RX_LEGACY_RATE_OFDM_54_MBPS;
->  		break;
->  	case 13:
-> -		rate = HAL_RX_LEGACY_RATE_36_MBPS;
-> +		rate = HAL_RX_LEGACY_RATE_OFDM_36_MBPS;
->  		break;
->  	case 14:
-> -		rate = HAL_RX_LEGACY_RATE_18_MBPS;
-> +		rate = HAL_RX_LEGACY_RATE_OFDM_18_MBPS;
->  		break;
->  	case 15:
-> -		rate = HAL_RX_LEGACY_RATE_9_MBPS;
-> +		rate = HAL_RX_LEGACY_RATE_OFDM_9_MBPS;
->  		break;
->  	default:
-> -		rate = HAL_RX_LEGACY_RATE_INVALID;
-> +		rate = HAL_RX_LEGACY_RATE_OFDM_INVALID;
-> +		break;
->  	}
->  
->  	ppdu_info->rate = rate;
-> 
-> base-commit: 2c1ba9c2adf0fda96eaaebd8799268a7506a8fc9
-
-Reviewed-by: Baochen Qiang <baochen.qiang@oss.qualcomm.com>
 
 
