@@ -1,53 +1,53 @@
-Return-Path: <linux-wireless+bounces-32223-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-32224-lists+linux-wireless=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id cOnnJ5icoGlVlAQAu9opvQ
-	(envelope-from <linux-wireless+bounces-32223-lists+linux-wireless=lfdr.de@vger.kernel.org>)
-	for <lists+linux-wireless@lfdr.de>; Thu, 26 Feb 2026 20:18:48 +0100
+	id AHG+NJycoGlVlAQAu9opvQ
+	(envelope-from <linux-wireless+bounces-32224-lists+linux-wireless=lfdr.de@vger.kernel.org>)
+	for <lists+linux-wireless@lfdr.de>; Thu, 26 Feb 2026 20:18:52 +0100
 X-Original-To: lists+linux-wireless@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id DC1781AE448
-	for <lists+linux-wireless@lfdr.de>; Thu, 26 Feb 2026 20:18:47 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6DA141AE451
+	for <lists+linux-wireless@lfdr.de>; Thu, 26 Feb 2026 20:18:52 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id CCC46301BCE3
-	for <lists+linux-wireless@lfdr.de>; Thu, 26 Feb 2026 19:11:44 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 37446305AD66
+	for <lists+linux-wireless@lfdr.de>; Thu, 26 Feb 2026 19:11:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EF961355F52;
-	Thu, 26 Feb 2026 19:11:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 89FE2355F52;
+	Thu, 26 Feb 2026 19:11:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="lsq1LBNl"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="JatKUnMr"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CDC993C2D
-	for <linux-wireless@vger.kernel.org>; Thu, 26 Feb 2026 19:11:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6794833120D
+	for <linux-wireless@vger.kernel.org>; Thu, 26 Feb 2026 19:11:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772133103; cv=none; b=MmXxPcIgqztD+pyCgLtPN/awrjj0rrCOFwIXpdFzIfi8+Z/ed7tOCgEfOU9E6QJGwnpUnTNE0FUrBqfT/7L9SkUB/PqL6u3jOfYFM9WPbZZ4jD9mB4ldu/kybl3V26iwGYPrpCuqIGsrji1dKX8Nb+hRTa5w1XXxw7xERrqsq3w=
+	t=1772133106; cv=none; b=sfUnBPDZHNFV++H6jamlWreoAp+p1e1ZGYcP0tP2qbT3O6h0G4ZJNBYenTYHMdqTy56fMb+lSUmihgxn5dOcxO1p/FMM0wS9psALY+vU/hXrvT3IhJOavBweWOCGpDole3BNdpArBPI745Rh+07lAC2bl0PN4aRbUZOv+l9XVSQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772133103; c=relaxed/simple;
-	bh=Xvc/uex8GcERGA559dxvK49CKwAjLVlFT4RI0I/QFHA=;
-	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=WR1pJ6CcSR+D3//shEr5mU6MxplJFQATvSh0bRlgLuxF52drQ4S6z+2cQ33igf6WArf+yI+XYbARgNzMI7uFAUpcFSxJSNrieX8GDXlXpdpgKjX+M6678aCxSgK9oZzX17MhqPFpW5XVOlLEkkOx3FPkuYYx6jETdM3QBVBBz1k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=lsq1LBNl; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DBB37C116C6;
-	Thu, 26 Feb 2026 19:11:42 +0000 (UTC)
+	s=arc-20240116; t=1772133106; c=relaxed/simple;
+	bh=DeI+YaVgUtkQEypV8sAz/e6KF5qCli71Iar/SiTs6mA=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
+	 In-Reply-To:To:Cc; b=PzZ0q6/cFxCT3FrHzvgAb3fAw8DceGbRJtKYlUF/eDarT39/H33MYOGBomMBktyvj/BEoMbXE6T+pPpPsP1rrXHj0fAG8h2COUcgbpHMWTcR9M2OhymypMd0o3Jhik2kXvB9t52QSVH5lW6XpjYfGxCACLgNbjTv5d3aRw+zSyw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=JatKUnMr; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A2B86C19423;
+	Thu, 26 Feb 2026 19:11:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1772133103;
-	bh=Xvc/uex8GcERGA559dxvK49CKwAjLVlFT4RI0I/QFHA=;
-	h=From:Subject:Date:To:Cc:From;
-	b=lsq1LBNlkafKUl/8E9voZBtBjfkOixZ5Whl3tPt7vQATYnt56l1DDTkQcUOFbyXMJ
-	 zJh6A8WCPisgq6noIzUpR2JT/87FazF+cu1UNrIdG26UN59Ybmeg39ZMQf+NYawRjC
-	 hHFJuKpW5/xFFRbnKFXIhwG6zrObNUVv7NbB8ezIfSSAYCJLDVe8Rq7uD6k/rH4Hf/
-	 ZgQwP1onCjsfZDPjaUX2Cqn++FNylBUlnLqWVucSJw31GgwB5Gr32rPAMS+CG8HNPr
-	 UglMOzzjXWpBnDtftBxvS9SBwJzasueXXcJ2iJKVuD47rycwnHtBSDEQiQVfyUayEk
-	 3whfnr0oX5RCg==
+	s=k20201202; t=1772133106;
+	bh=DeI+YaVgUtkQEypV8sAz/e6KF5qCli71Iar/SiTs6mA=;
+	h=From:Date:Subject:References:In-Reply-To:To:Cc:From;
+	b=JatKUnMrwPJDmP2Ct9/VHH8yp9czB83TnnosGoPViLc6+6quAbp0vV+Xa3F10ndx0
+	 PMKp/gi3+TxxUh+aCVDfqN/j2mjubVv8EOsZEKkRuEVXkrLG/9sD6YFjBNitybjY3m
+	 /w+GWES4pVRcl8gRoWNKI7hkHuf/nEx61uxBrZuKoAnlyv1v2B3/sLCH4VPGBz4pii
+	 5tbhv9CCvshfYeXLiDVqlJaAZu3JshLaA0j/I5Nk4SBT6v0/KWMf4cnS8Mae1BcYbQ
+	 L0cUCp7X4+AjN5ge784XLXBw7wmIIePKMvS8KMdjVx0NjeQzIgbTDgy/NgFgvWKdH/
+	 golWSHP5OhcCg==
 From: Lorenzo Bianconi <lorenzo@kernel.org>
-Subject: [PATCH wireless 0/3] wifi: mt76: Fix possible out-of-bound
- accesses in mt76 driver
-Date: Thu, 26 Feb 2026 20:11:13 +0100
-Message-Id: <20260226-mt76-addba-req-oob-access-v1-0-b0f6d1ad4850@kernel.org>
+Date: Thu, 26 Feb 2026 20:11:14 +0100
+Subject: [PATCH wireless 1/3] wifi: mt76: mt7996: Fix possible oob access
+ in mt7996_mac_write_txwi_80211()
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
@@ -56,10 +56,9 @@ List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-X-B4-Tracking: v=1; b=H4sIAAAAAAAC/x2M0QqDMAwAf0XybKAG6ep+ZfhQ27gFpt0S2Qbiv
- 6/4eHB3OxirsMG12UH5IyZlrdC1DaRHXO+MkisDOfKOyOOyXTzGnKeIym8sZcKYEpth6AMFN5A
- LXQ+1fynP8jvfN/iK8rNaMB7HHwOzEMp1AAAA
-X-Change-ID: 20260226-mt76-addba-req-oob-access-848280920814
+Message-Id: <20260226-mt76-addba-req-oob-access-v1-1-b0f6d1ad4850@kernel.org>
+References: <20260226-mt76-addba-req-oob-access-v1-0-b0f6d1ad4850@kernel.org>
+In-Reply-To: <20260226-mt76-addba-req-oob-access-v1-0-b0f6d1ad4850@kernel.org>
 To: Felix Fietkau <nbd@nbd.name>, Ryder Lee <ryder.lee@mediatek.com>, 
  Shayne Chen <shayne.chen@mediatek.com>, Sean Wang <sean.wang@mediatek.com>, 
  Matthias Brugger <matthias.bgg@gmail.com>, 
@@ -86,7 +85,7 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-32223-lists,linux-wireless=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-32224-lists,linux-wireless=lfdr.de];
 	FREEMAIL_TO(0.00)[nbd.name,mediatek.com,gmail.com,collabora.com];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
@@ -104,28 +103,32 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	TAGGED_RCPT(0.00)[linux-wireless];
 	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: DC1781AE448
+X-Rspamd-Queue-Id: 6DA141AE451
 X-Rspamd-Action: no action
 
-Check mgmt frame length before accessing header fields in order to avoid
-a possible oob access for injected frames.
+Check frame length before accessing the mgmt fields in
+mt7996_mac_write_txwi_80211 in order to avoid a possible oob access.
 
+Fixes: 98686cd21624c ("wifi: mt76: mt7996: add driver for MediaTek Wi-Fi 7 (802.11be) devices")
+Signed-off-by: Lorenzo Bianconi <lorenzo@kernel.org>
 ---
-Lorenzo Bianconi (3):
-      wifi: mt76: mt7996: Fix possible oob access in mt7996_mac_write_txwi_80211()
-      wifi: mt76: mt7925: Fix possible oob access in mt7925_mac_write_txwi_80211()
-      wifi: mt76: Fix possible oob access in mt76_connac2_mac_write_txwi_80211()
+ drivers/net/wireless/mediatek/mt76/mt7996/mac.c | 1 +
+ 1 file changed, 1 insertion(+)
 
- drivers/net/wireless/mediatek/mt76/mt76_connac_mac.c | 1 +
- drivers/net/wireless/mediatek/mt76/mt7925/mac.c      | 1 +
- drivers/net/wireless/mediatek/mt76/mt7996/mac.c      | 1 +
- 3 files changed, 3 insertions(+)
----
-base-commit: 8bf22c33e7a172fbc72464f4cc484d23a6b412ba
-change-id: 20260226-mt76-addba-req-oob-access-848280920814
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7996/mac.c b/drivers/net/wireless/mediatek/mt76/mt7996/mac.c
+index 2560e2f46e89a4bc46e21d796fca80b7decefa5c..d4f3ee943b4727a0e20f96a55db3bf055df20cc7 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7996/mac.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7996/mac.c
+@@ -800,6 +800,7 @@ mt7996_mac_write_txwi_80211(struct mt7996_dev *dev, __le32 *txwi,
+ 	u32 val;
+ 
+ 	if (ieee80211_is_action(fc) &&
++	    skb->len >= IEEE80211_MIN_ACTION_SIZE + 1 &&
+ 	    mgmt->u.action.category == WLAN_CATEGORY_BACK &&
+ 	    mgmt->u.action.u.addba_req.action_code == WLAN_ACTION_ADDBA_REQ) {
+ 		if (is_mt7990(&dev->mt76))
 
-Best regards,
 -- 
-Lorenzo Bianconi <lorenzo@kernel.org>
+2.53.0
 
 
