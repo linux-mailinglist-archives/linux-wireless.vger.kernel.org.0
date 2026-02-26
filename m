@@ -1,107 +1,106 @@
-Return-Path: <linux-wireless+bounces-32200-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-32201-lists+linux-wireless=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id yDL/FGHun2nYewQAu9opvQ
-	(envelope-from <linux-wireless+bounces-32200-lists+linux-wireless=lfdr.de@vger.kernel.org>)
-	for <lists+linux-wireless@lfdr.de>; Thu, 26 Feb 2026 07:55:29 +0100
+	id KKWDLF/un2kyfAQAu9opvQ
+	(envelope-from <linux-wireless+bounces-32201-lists+linux-wireless=lfdr.de@vger.kernel.org>)
+	for <lists+linux-wireless@lfdr.de>; Thu, 26 Feb 2026 07:55:27 +0100
 X-Original-To: lists+linux-wireless@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id A1D1E1A17D2
-	for <lists+linux-wireless@lfdr.de>; Thu, 26 Feb 2026 07:55:28 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 807291A17C5
+	for <lists+linux-wireless@lfdr.de>; Thu, 26 Feb 2026 07:55:27 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 366A53066828
-	for <lists+linux-wireless@lfdr.de>; Thu, 26 Feb 2026 06:55:23 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id F37183032248
+	for <lists+linux-wireless@lfdr.de>; Thu, 26 Feb 2026 06:55:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2567D38BF92;
-	Thu, 26 Feb 2026 06:55:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2718738BF94;
+	Thu, 26 Feb 2026 06:55:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="cNOMUNzA";
-	dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b="gZD9uHfc"
+	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="gVmIP5ki";
+	dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b="AJwBIzz3"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9C53438BF8C
-	for <linux-wireless@vger.kernel.org>; Thu, 26 Feb 2026 06:55:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 88FF438BF9C
+	for <linux-wireless@vger.kernel.org>; Thu, 26 Feb 2026 06:55:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772088922; cv=none; b=ZMwoP734GhEttdXZfBYmmTI60gil+oPHq9d77GRfvqxq4H8alwMwMN/G6UefwDfpI+A/Zn1dTvVz5gYQDEzL2kBj6d6Lf6Mwn222lDwesu5Gu9XX5CTIj+YOGFAU+4Z0k9LKwp7VuELz0FHYndnshn5RD0VQyBQbRTX8UwfPuUs=
+	t=1772088924; cv=none; b=H2mNtXw28v9mJLZO+rajpq11LgVqqagZKeaYtzbPVK5WKFakvbbISicCw1j4DZ/6uqmTbyGtgdFvAabK6+GQ8iDy8Qm7ERioPh7cl1UCWevyHyFHC2n+W4iH7eKg53oxJYvPXlIznvmV/bDfelFr6LyejMe4pQXFeKIjH1wYKUY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772088922; c=relaxed/simple;
-	bh=nYLUPjQsUeHRXlv9mqgkugWR7ewpD5xIvamPrGw0hO4=;
+	s=arc-20240116; t=1772088924; c=relaxed/simple;
+	bh=V4mmTWudLhbe/F5C3BeUWyx8tz+fJmW0RJcDzSVbEhw=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=ZCFbh/PdsY6iJa5FI4XFrp+MlpcrhrcDU2RjFCZXD7JLUfNgNGhJsWHb7e1qJzmW4ZQ/K+9fc5eKq8GKECn2nEqJpsu+R4rZMDs8VsExfACTxF94PJTSs8tpCotBkv8CmBQdBmYZw/U1lZPqBbCMegb/k9aj3cDQz5wKD0qtNSM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=cNOMUNzA; dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b=gZD9uHfc; arc=none smtp.client-ip=205.220.180.131
+	 MIME-Version; b=kw/zE0Y1F1bgCOzmE3kM5yTEA2loLfsE0ZZ1x/gTOzRMokx5Cjqed2M2fdH2qEEBOzDmQMvXjJXfH6r8G0LIj4OoogpjuX9gS+3Gl1XmtipC/MYwP3CrEcRV4L4UlCmMXQKSfLlT2NGlFvvYzvzwcIBRis8GtmO0adLTSj3Akc8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=gVmIP5ki; dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b=AJwBIzz3; arc=none smtp.client-ip=205.220.180.131
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
-Received: from pps.filterd (m0279870.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 61Q4VAnQ350383
-	for <linux-wireless@vger.kernel.org>; Thu, 26 Feb 2026 06:55:19 GMT
+Received: from pps.filterd (m0279869.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 61Q4V8h1918925
+	for <linux-wireless@vger.kernel.org>; Thu, 26 Feb 2026 06:55:21 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
-	cc:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
-	v/w8WYOKrZSWjh2BiqV2N6C2kB4wMP4bR1sTRH7W8Vs=; b=cNOMUNzAnRMadvqh
-	QjyYirfHK/9BABkK48tIqMMT/BiopIrGrXNEzEL/ogjzTLPjOBQjdavx3zmxMa76
-	8mLJBSB1PS/UOIlxDXwcg43u26ZKpN8fNHPQ17/j7dtt7Qv7V/O5xGCompeOynAs
-	Hd6l/7eVgLrRAFa3KCj0yYUVOjBaHpOZ8mJmbMZOylwnyJuBqOw2yOen0txdFsOx
-	+yJDHAEesBxXsggPQoWsCMdONyYe91msE+WeqI1Y7OOq0I93zMIuu/CtdroilyMS
-	d7S//1IHXD11fbbtC40zwczFiGtuylHpKEqFl/k1Rbl60mtn6X4eQv4gvkUhfWTc
-	CleI8Q==
-Received: from mail-pl1-f200.google.com (mail-pl1-f200.google.com [209.85.214.200])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4cj54pa554-1
+	cc:content-transfer-encoding:date:from:in-reply-to:message-id
+	:mime-version:references:subject:to; s=qcppdkim1; bh=WLw7lHniH9k
+	/S++EYFfVFRR83lVOnO+YmBVtSwM1soI=; b=gVmIP5ki13NbOjGXkkuKRtd7xvk
+	DPR29i698Ho17v3eHBX09h3Iw7tPo1js8e9W+qyJJWd1m91OIyjLHL8hkXrVCX3B
+	0ocPn1yUmtrWkMCI7Fx50eMhn/nRMTCAKlPoC2l/OVwbeQDzShZZwUs/A1ZrKhra
+	3CV6/Xg1Db53iAu4Q5RNJJXwbxWheBkAO0QpQtDHWFBWCniybcFO3lZjFskUDBUR
+	4ks6fPTbYFC3UeFxn15OFTQeroY1AJpcL9AggofVnI+8uW4TB5JbUBksOgcg7iNY
+	oYgYbN3iQ0ZPWnnR+XkdFDley0ywuSljP2njTF2jtTk4YR6nlVB7fV54gXQ==
+Received: from mail-pj1-f71.google.com (mail-pj1-f71.google.com [209.85.216.71])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4cj4w4t78a-1
 	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
-	for <linux-wireless@vger.kernel.org>; Thu, 26 Feb 2026 06:55:19 +0000 (GMT)
-Received: by mail-pl1-f200.google.com with SMTP id d9443c01a7336-2aad5fec175so20281695ad.2
-        for <linux-wireless@vger.kernel.org>; Wed, 25 Feb 2026 22:55:19 -0800 (PST)
+	for <linux-wireless@vger.kernel.org>; Thu, 26 Feb 2026 06:55:21 +0000 (GMT)
+Received: by mail-pj1-f71.google.com with SMTP id 98e67ed59e1d1-358f42fad0bso1798734a91.0
+        for <linux-wireless@vger.kernel.org>; Wed, 25 Feb 2026 22:55:21 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=oss.qualcomm.com; s=google; t=1772088918; x=1772693718; darn=vger.kernel.org;
+        d=oss.qualcomm.com; s=google; t=1772088920; x=1772693720; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=v/w8WYOKrZSWjh2BiqV2N6C2kB4wMP4bR1sTRH7W8Vs=;
-        b=gZD9uHfchlejQpI26hx8IqGxuMplJ9m4oIf8ZXiSU2prclDRmvAT13ZNTBXQLHyBVR
-         jAzqzCYSgEvt/W/1V88jDKmuKrjvJLQ5/puJPWd8Knlxsm0+atdZyjiPepa0FOIzkyNp
-         2kbj2et5i0H15AOBxjF8nvRIXzS+xsH1tx3YVuImWGl5C20qUc3JZBowBFvixTGMhJ4+
-         +WT+BzKT/nXzzAcnh1ZWeAv1rfn0EzE/wuOLK/GQweagEj4bkKPiKwz6b8MAXk1kJ8pP
-         Hdm84weQG63K0NrMzhi89tiVwi5vBvg6YV3SpEAM8AO3s7iuZ9KiJVile/ctHtGsPBrp
-         3BMA==
+        bh=WLw7lHniH9k/S++EYFfVFRR83lVOnO+YmBVtSwM1soI=;
+        b=AJwBIzz3ax+/93KKxxrvjV287Jy148f+7Er02uXzHLP3B6iR1YmFLPjZEa3pcs8CUX
+         Div5HdNFr9NL6DkEcK9RmKGRM2Bf2qmnP62FvYTYrD1TjfrIoOqSAaY4F1scgaRerAuE
+         iTPIVW/GwjqQqjYq3KevQ+ATaWopWTzGON5DnlEWvIRB8jAGXGdDuaSKu7Hc26tWJWXP
+         +Cr5bQdiY8DKpjYZL8G8446CGJxQPuA8z2Zh4fi81+pdbX0Nyc4a/CIJkar4EL2oKBpm
+         mb52gUcupvUzx7/Z/UrXIu0kbum7MwL/LqaHAHGZuOpa7k1Bfa2kXAYGM1rNVH/ayiZ7
+         Tdtw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1772088918; x=1772693718;
+        d=1e100.net; s=20230601; t=1772088920; x=1772693720;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to;
-        bh=v/w8WYOKrZSWjh2BiqV2N6C2kB4wMP4bR1sTRH7W8Vs=;
-        b=C9PniAEsvbpr0PAQ0+MO0fYEhzhT1upNr2+rVjjXeCzRslE5YBNcWf78QUiD6Be3T7
-         fL3CA7TQzY0ZFATRS9lSMgK9z2a6k9un48s4cw/KAQ+qmqvBbb2pgeTkvzMTR/eYkJjX
-         47NB6YkYU1ChNK2itl5M9QvETfYFATZHl7LVI42U+fQZfmsPFALHrn28t7gYF3sZH9Ew
-         CFxvfj+dqovrQpw+rNBmX7ZAl6v4CkL+zQc2Ljf4SgvATHm0x0/Htyw42zpzM4Rgsids
-         BWD9L5Qt31ST2CuyKMy2iicvftLdi9Ao9MGECFLOQVR7TwEcP6/GFACQb8uMiyUSV+BG
-         fcAQ==
-X-Gm-Message-State: AOJu0YyneCfOW3CqBtMWGJXhcdh09Nd1sTYuJbsc43xJAR1Zaimp64wT
-	Tw4jBqxHHUc3BIyz0caJhKq+80pyeXPIay1WIzclXLgdUOxs+aBgw9EjgQYs5Dz5EatGXCQz4eu
-	ybCdSkFuESTO0A7sRlHQZvlTTnfVQdrQRiteabP55L2XmFsAhnspAwjFZgrghOzGZqc66Blh9Cn
-	j7aw==
-X-Gm-Gg: ATEYQzz/98ebe3k34Js/huyOyLfj6ix8hc6EyzWcr4Kst/aTitodrRT4okyKReKp3kX
-	doMSiymBi0rIpsJfYvKGpjvnOLMAddNA4PUE7xCreaooPVhDhC9ncC9grXsc6FdIeAY+n2oWqRW
-	8cXk36NxrV1h0AbXFiZvO81qkEGuCUNRXzn7XTI3D1cH1h++7u1mEVxGz66SbiGxWrB1LtgmufF
-	bee9LnyJxBFqua0WaWQNqnBLtYkmgTp5d0e3G0/eOaPe0E1j8zSp3zg7cWkNx4FZLgTzt7RZ4Za
-	XedGJlDxYZgutUwOqgaw1x6cZ0jc9A/OSeLLTd6EC8lj2GPJf95c2gDW9zdvOKWC+SWfo+5y0BW
-	1UXy36R82c+v5ILzaFvxzmMDMZkQHwS3jBWFPCOm/MtqA/Q9GzD6NvQ==
-X-Received: by 2002:a17:902:f78f:b0:2a9:2a0b:4ef5 with SMTP id d9443c01a7336-2ae022b017bmr14823185ad.7.1772088918284;
-        Wed, 25 Feb 2026 22:55:18 -0800 (PST)
-X-Received: by 2002:a17:902:f78f:b0:2a9:2a0b:4ef5 with SMTP id d9443c01a7336-2ae022b017bmr14822985ad.7.1772088917802;
-        Wed, 25 Feb 2026 22:55:17 -0800 (PST)
+        bh=WLw7lHniH9k/S++EYFfVFRR83lVOnO+YmBVtSwM1soI=;
+        b=lTvLeutaTABhlSTGpsKraSMSGhbUqYUOJjEI5r1nL5hFd5laP5lWWW7uXqWzH6a45o
+         qBkup+cPf/QDil4K2w6IuE7d7iMvvQkd4EKy4jZVJ4ulzx49UuitfUyUUV/cmm648F6v
+         8DW6eUkIb3wBgYZnN//OnHQL8/ESFtorOGTl9Zj9oNrY55Z1UXxKHjnK/zh+J7RZkAbH
+         IVO1B3YQqOmQKOBqCi1ls3VUBgK7mdYj+4XC7EnD1gyt+0qN7XtUs4cp0m87xs+Z39Gd
+         FEgv5TDqwu/8Q4JL5AsDUNpUOs8902onDFNl57P5+QoA2iw7NMjFn3+2E2/UjUelh8QD
+         UlZQ==
+X-Gm-Message-State: AOJu0Yy4QB9oQQDKyc8v+M+2OvEc1jyeIYHkicQPLrUBLvViRJtd+Ip0
+	nfoIvehHlTH/9hVA4Z9RX1VD6WtILXlaksw0P7d0aY8J5tm593fS+um3APXcufuzJZJcXupEyD4
+	W+b92TQa32YneIbbLHEyEGOe+jV292P1xZrt9Ahyx9pGXY/E+nGKZE9sLKU+jDCkTO+VLAJsH3K
+	ErYg==
+X-Gm-Gg: ATEYQzx428iH4XLsDy4w9Mz6T6Xl1tMVAkoUGcOCUfZyn90yi+heWOqYNe0oL+WmRIL
+	KM6Uic4k5NyaTUCRYEapzh62xlmifeIlnZ8lj+F4/1t616BwY3cJGj4HcsbCsOnAWEvoA6xE+eu
+	vF3wlnaFm8bxZagqmCDGcBEao2q5qImFVSdb4s25kw6vk7px9KUfAUXIHLgekxGcoYYq3AETb+R
+	y94LmE/u5o9OmLav1ukTKToWhYrt80M0LFeEw0kQU/GIwUPkrUnNFcZufV+r0IVW6SBam0hXKBx
+	4CwqeBD/uVJJYijl+b4b9OvJZXpq/REJ9SHTf2hcLDgDezOajNExZVNVi5Yqdn/sOFo+VLVRlUn
+	Dv/oJGmrp2MPysX0dpGyG3F9LTK9+6kLHQBKcr47pHNG21EJqIY6MsA==
+X-Received: by 2002:a17:90a:dfcd:b0:352:c146:dc39 with SMTP id 98e67ed59e1d1-35928c25751mr2810945a91.30.1772088920270;
+        Wed, 25 Feb 2026 22:55:20 -0800 (PST)
+X-Received: by 2002:a17:90a:dfcd:b0:352:c146:dc39 with SMTP id 98e67ed59e1d1-35928c25751mr2810922a91.30.1772088919706;
+        Wed, 25 Feb 2026 22:55:19 -0800 (PST)
 Received: from hu-kkavita-hyd.qualcomm.com ([202.46.22.19])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-35900700e69sm4791066a91.0.2026.02.25.22.55.16
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-35900700e69sm4791066a91.0.2026.02.25.22.55.18
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 25 Feb 2026 22:55:17 -0800 (PST)
+        Wed, 25 Feb 2026 22:55:19 -0800 (PST)
 From: Kavita Kavita <kavita.kavita@oss.qualcomm.com>
 To: johannes@sipsolutions.net
 Cc: linux-wireless@vger.kernel.org, kavita.kavita@oss.qualcomm.com
-Subject: [PATCH wireless-next 1/3] wifi: cfg80211: add support for IEEE 802.1X Authentication Protocol
-Date: Thu, 26 Feb 2026 12:24:40 +0530
-Message-Id: <20260226065442.4182232-2-kavita.kavita@oss.qualcomm.com>
+Subject: [PATCH wireless-next 2/3] wifi: mac80211: Add support for IEEE 802.1X authentication protocol in non-AP STA mode
+Date: Thu, 26 Feb 2026 12:24:41 +0530
+Message-Id: <20260226065442.4182232-3-kavita.kavita@oss.qualcomm.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20260226065442.4182232-1-kavita.kavita@oss.qualcomm.com>
 References: <20260226065442.4182232-1-kavita.kavita@oss.qualcomm.com>
@@ -111,186 +110,265 @@ List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwMjI2MDA2MCBTYWx0ZWRfX+bvVjO1fpPWl
- Dbbd+4BF7TJR1Z03cGuKVD8bLDGq4mq1DAsF9/a05ZJozoxCzbnRvW53rIvtsM45qRsW9IwfILo
- Sd6e6g3g9+MVdprXd9UTi8r37hB82u2RBsC672MfAjzMwzFClM5HuyYgeYrdiJKp9pQdW4eK2WU
- 8fXfrp8fyThfd4/CusuUzuO7HXy4t+68hp54yz1mUZYpQNUzxTNJq5jkBce002JOyVbJbMI1azt
- Srm0YkOcvQHrlG5vchu8kWqXde72pTgP1ZgVIvx45yxy9FOUgXOTLQyJmcm2JxJ9eCdeSH0MXEw
- pspiv61R/a8rjZpnfw0zQ7iAc9JzN1ND7pFfJrSwRbrLK8tSV7N2PDfUMN5MSAjTz3mkvOkguvQ
- O/nn7g9C7zrjQlg7uWGDQz5GEyb8DwCasVzSX5ysArFdL/lSeXx2qNHaOix2tE0bsV+H51cKj22
- tTSPTf9D2rBdejBDGsg==
-X-Proofpoint-GUID: NOktrzEoRWazBREt1dJau9kV8MYjo1Ye
-X-Authority-Analysis: v=2.4 cv=I5Bohdgg c=1 sm=1 tr=0 ts=699fee57 cx=c_pps
- a=IZJwPbhc+fLeJZngyXXI0A==:117 a=fChuTYTh2wq5r3m49p7fHw==:17
- a=IkcTkHD0fZMA:10 a=HzLeVaNsDn8A:10 a=s4-Qcg_JpJYA:10
- a=VkNPw1HP01LnGYTKEx00:22 a=u7WPNUs3qKkmUXheDGA7:22 a=gowsoOTTUOVcmtlkKump:22
- a=EUspDBNiAAAA:8 a=Gjt06254oa6de200CNMA:9 a=3ZKOabzyN94A:10 a=QEXdDO2ut3YA:10
- a=uG9DUKGECoFWVXl0Dc02:22
-X-Proofpoint-ORIG-GUID: NOktrzEoRWazBREt1dJau9kV8MYjo1Ye
+X-Proofpoint-ORIG-GUID: PDqc71W0XmCANGdJqQIl4X9RtlQugBl-
+X-Authority-Analysis: v=2.4 cv=IqMTsb/g c=1 sm=1 tr=0 ts=699fee59 cx=c_pps
+ a=UNFcQwm+pnOIJct1K4W+Mw==:117 a=fChuTYTh2wq5r3m49p7fHw==:17
+ a=HzLeVaNsDn8A:10 a=s4-Qcg_JpJYA:10 a=VkNPw1HP01LnGYTKEx00:22
+ a=u7WPNUs3qKkmUXheDGA7:22 a=_glEPmIy2e8OvE2BGh3C:22 a=EUspDBNiAAAA:8
+ a=M2N7uHsFz5daSXWLXKkA:9 a=uKXjsCUrEbL0IQVhDsJ9:22
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwMjI2MDA2MCBTYWx0ZWRfX0siry4uD4SVY
+ JJZH2b+LyEYJ9a/z9Pt1ET1OcyOzI3NV80KLuNXZY2vuZju0cAOvhzEMEAtDsqH1BP4IyHjWM9A
+ UN7vU2O1jFpVOhjssc/PGzY+D1L3g+hRJ6q9qTkcIKiIBZOovcMxAGVLmIOagC314ztPy7fGneY
+ BsKyEK+q10xFNWbrCYVBa3D4t3bAhZjvSnciHfGGPnW+as7+eYAc02kT8JtcmmHGsjBbjxOEvcE
+ nwP/EZpQfyZQL/v2/GUs3XJFnmKiwQYGzdkBeGd37ZbLxAIgDB2l20MA0LMWEnXFY57nOg+u07F
+ Fx3EYx5/LvBbccbS8cWk+R/6hLLnw3hKoXUpDiXKUL62QK77Lyok63Vl9fiwkbzJkWqTyVvkMfL
+ wIAjpvK7K9lMNwIdE8BqC9qk9jkcDa2YgBbWKXhdk0F73F6YqaZXrl4q2n3WyDxU0JSFnWkawS3
+ owIifc/NhcTetFYO+eQ==
+X-Proofpoint-GUID: PDqc71W0XmCANGdJqQIl4X9RtlQugBl-
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.51,FMLib:17.12.100.49
  definitions=2026-02-25_04,2026-02-25_02,2025-10-01_01
 X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- clxscore=1015 adultscore=0 malwarescore=0 impostorscore=0 phishscore=0
- spamscore=0 priorityscore=1501 bulkscore=0 lowpriorityscore=0 suspectscore=0
+ phishscore=0 clxscore=1015 lowpriorityscore=0 suspectscore=0 adultscore=0
+ impostorscore=0 spamscore=0 priorityscore=1501 malwarescore=0 bulkscore=0
  classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
  reason=mlx scancount=1 engine=8.22.0-2602130000 definitions=main-2602260060
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-1.16 / 15.00];
+X-Spamd-Result: default: False [-0.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	MID_CONTAINS_FROM(1.00)[];
 	DMARC_POLICY_ALLOW(-0.50)[qualcomm.com,reject];
+	R_MISSING_CHARSET(0.50)[];
 	R_DKIM_ALLOW(-0.20)[qualcomm.com:s=qcppdkim1,oss.qualcomm.com:s=google];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	DKIM_TRACE(0.00)[qualcomm.com:+,oss.qualcomm.com:+];
-	RCPT_COUNT_THREE(0.00)[3];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-32200-lists,linux-wireless=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[qualcomm.com:email,qualcomm.com:dkim,oss.qualcomm.com:mid,oss.qualcomm.com:dkim];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-32201-lists,linux-wireless=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
+	RCPT_COUNT_THREE(0.00)[3];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[kavita.kavita@oss.qualcomm.com,linux-wireless@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
 	TO_DN_NONE(0.00)[];
-	TAGGED_RCPT(0.00)[linux-wireless];
 	NEURAL_HAM(-0.00)[-1.000];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[qualcomm.com:email,qualcomm.com:dkim,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,oss.qualcomm.com:mid,oss.qualcomm.com:dkim];
+	TAGGED_RCPT(0.00)[linux-wireless];
 	RCVD_COUNT_SEVEN(0.00)[7]
-X-Rspamd-Queue-Id: A1D1E1A17D2
+X-Rspamd-Queue-Id: 807291A17C5
 X-Rspamd-Action: no action
 
-Add an extended feature flag NL80211_EXT_FEATURE_IEEE8021X_AUTH to
-allow a driver to indicate support for the IEEE 802.1X authentication
-protocol in non-AP STA mode, as defined in
-"IEEE P802.11bi/D4.0, 12.16.5".
+Add support for the IEEE 802.1X authentication protocol in non-AP STA
+mode, as specified in "IEEE P802.11bi/D4.0, 12.16.5".
 
-In case of SME in userspace, the Authentication frame body is prepared
-in userspace while the driver finalizes the Authentication frame once
-it receives the required fields and elements. The driver indicates
-support for IEEE 802.1X authentication using the extended feature flag
-so that userspace can initiate IEEE 802.1X authentication.
+IEEE 802.1X authentication involves multiple Authentication frame
+exchanges, with the non-AP STA and AP alternating transaction
+sequence numbers. The number of Authentication frame exchanges
+depends on the EAP method in use. For IEEE 802.1X authentication,
+process only Authentication frames with the expected transaction
+sequence number.
 
-When the feature flag is set, process IEEE 802.1X Authentication frames
-from userspace in non-AP STA mode. If the flag is not set, reject
-IEEE 802.1X Authentication frames.
+For IEEE 802.1X Authentication, Table 9-71 specifies that the
+Encapsulation Length field as specified in Clause 9.4.1.82 shall be
+present in all IEEE 802.1X Authentication frames. Drop the frame in
+the mac80211 if the Encapsulation Length field is missing.
 
-Define a new authentication type NL80211_AUTHTYPE_IEEE8021X for
-IEEE 802.1X authentication.
+After receiving the final Authentication frame with status code
+WLAN_STATUS_8021X_AUTH_SUCCESS from the AP, mac80211 marks the state
+as authenticated, as it indicates the EAP handshake has completed
+successfully over the Authentication frames as specified in
+Clause 12.16.5.
+
+In the PMKSA caching case, only two Authentication frames are
+exchanged if the AP identifies a valid PMKSA, then as specified
+in Clause 12.16.8.3, the AP shall set the Status Code to
+WLAN_STATUS_SUCCESS in the final Authentication frame and must not
+include an encapsulated EAPOL PDU. This frame will be the final
+Authentication frame from the AP when PMKSA caching is enabled,
+and mac80211 marks the state as authenticated.
+
+In case of authentication success or failure, forward the
+Authentication frame to userspace(e.g. wpa_supplicant), and let
+userspace validate the Authentication frame from the AP as per the
+specification.
 
 Signed-off-by: Kavita Kavita <kavita.kavita@oss.qualcomm.com>
 ---
- include/linux/ieee80211.h    |  1 +
- include/uapi/linux/nl80211.h |  9 +++++++++
- net/wireless/nl80211.c       | 14 ++++++++++++--
- 3 files changed, 22 insertions(+), 2 deletions(-)
+ include/linux/ieee80211.h |  1 +
+ net/mac80211/mlme.c       | 78 ++++++++++++++++++++++++++++++++++++---
+ 2 files changed, 73 insertions(+), 6 deletions(-)
 
 diff --git a/include/linux/ieee80211.h b/include/linux/ieee80211.h
-index 0aa2fb8f88de..1bf806f85372 100644
+index 1bf806f85372..3651b2e6c518 100644
 --- a/include/linux/ieee80211.h
 +++ b/include/linux/ieee80211.h
-@@ -1358,6 +1358,7 @@ struct ieee80211_tdls_data {
- #define WLAN_AUTH_FILS_SK 4
- #define WLAN_AUTH_FILS_SK_PFS 5
- #define WLAN_AUTH_FILS_PK 6
-+#define WLAN_AUTH_IEEE8021X 8
- #define WLAN_AUTH_EPPKE 9
- #define WLAN_AUTH_LEAP 128
+@@ -1508,6 +1508,7 @@ enum ieee80211_statuscode {
+ 	WLAN_STATUS_SAE_PK = 127,
+ 	WLAN_STATUS_DENIED_TID_TO_LINK_MAPPING = 133,
+ 	WLAN_STATUS_PREF_TID_TO_LINK_MAPPING_SUGGESTED = 134,
++	WLAN_STATUS_8021X_AUTH_SUCCESS = 153,
+ };
  
-diff --git a/include/uapi/linux/nl80211.h b/include/uapi/linux/nl80211.h
-index b63f71850906..6802e6884800 100644
---- a/include/uapi/linux/nl80211.h
-+++ b/include/uapi/linux/nl80211.h
-@@ -5466,6 +5466,8 @@ enum nl80211_bss_status {
-  * @NL80211_AUTHTYPE_FILS_SK_PFS: Fast Initial Link Setup shared key with PFS
-  * @NL80211_AUTHTYPE_FILS_PK: Fast Initial Link Setup public key
-  * @NL80211_AUTHTYPE_EPPKE: Enhanced Privacy Protection Key Exchange
-+ * @NL80211_AUTHTYPE_IEEE8021X: IEEE 802.1X authentication utilizing
-+ *	Authentication frames
-  * @__NL80211_AUTHTYPE_NUM: internal
-  * @NL80211_AUTHTYPE_MAX: maximum valid auth algorithm
-  * @NL80211_AUTHTYPE_AUTOMATIC: determine automatically (if necessary by
-@@ -5482,6 +5484,7 @@ enum nl80211_auth_type {
- 	NL80211_AUTHTYPE_FILS_SK_PFS,
- 	NL80211_AUTHTYPE_FILS_PK,
- 	NL80211_AUTHTYPE_EPPKE,
-+	NL80211_AUTHTYPE_IEEE8021X,
  
- 	/* keep last */
- 	__NL80211_AUTHTYPE_NUM,
-@@ -6795,6 +6798,11 @@ enum nl80211_feature_flags {
-  *	frames in both non‑AP STA and AP mode as specified in
-  *	"IEEE P802.11bi/D3.0, 12.16.6".
-  *
-+ * @NL80211_EXT_FEATURE_IEEE8021X_AUTH: Driver supports IEEE 802.1X
-+ *	authentication utilizing Authentication frames with user space SME
-+ *	(NL80211_CMD_AUTHENTICATE) in non-AP STA mode, as specified in
-+ *	"IEEE P802.11bi/D4.0, 12.16.5".
-+ *
-  * @NUM_NL80211_EXT_FEATURES: number of extended features.
-  * @MAX_NL80211_EXT_FEATURES: highest extended feature index.
-  */
-@@ -6873,6 +6881,7 @@ enum nl80211_ext_feature_index {
- 	NL80211_EXT_FEATURE_BEACON_RATE_EHT,
- 	NL80211_EXT_FEATURE_EPPKE,
- 	NL80211_EXT_FEATURE_ASSOC_FRAME_ENCRYPTION,
-+	NL80211_EXT_FEATURE_IEEE8021X_AUTH,
+diff --git a/net/mac80211/mlme.c b/net/mac80211/mlme.c
+index e83582b2c377..a073451b0c94 100644
+--- a/net/mac80211/mlme.c
++++ b/net/mac80211/mlme.c
+@@ -4920,7 +4920,7 @@ static void ieee80211_rx_mgmt_auth(struct ieee80211_sub_if_data *sdata,
+ 				   struct ieee80211_mgmt *mgmt, size_t len)
+ {
+ 	struct ieee80211_if_managed *ifmgd = &sdata->u.mgd;
+-	u16 auth_alg, auth_transaction, status_code;
++	u16 auth_alg, auth_transaction, status_code, encap_len;
+ 	struct ieee80211_event event = {
+ 		.type = MLME_EVENT,
+ 		.u.mlme.data = AUTH_EVENT,
+@@ -4929,6 +4929,7 @@ static void ieee80211_rx_mgmt_auth(struct ieee80211_sub_if_data *sdata,
+ 		.subtype = IEEE80211_STYPE_AUTH,
+ 	};
+ 	bool sae_need_confirm = false;
++	bool auth_fail = false;
  
- 	/* add new features before the definition below */
- 	NUM_NL80211_EXT_FEATURES,
-diff --git a/net/wireless/nl80211.c b/net/wireless/nl80211.c
-index 6e58b238a1f8..3258ef2e3631 100644
---- a/net/wireless/nl80211.c
-+++ b/net/wireless/nl80211.c
-@@ -6542,6 +6542,10 @@ static bool nl80211_valid_auth_type(struct cfg80211_registered_device *rdev,
- 					     NL80211_EXT_FEATURE_EPPKE) &&
- 		    auth_type == NL80211_AUTHTYPE_EPPKE)
- 			return false;
-+		if (!wiphy_ext_feature_isset(&rdev->wiphy,
-+					     NL80211_EXT_FEATURE_IEEE8021X_AUTH) &&
-+		    auth_type == NL80211_AUTHTYPE_IEEE8021X)
-+			return false;
- 		return true;
- 	case NL80211_CMD_CONNECT:
- 		if (!(rdev->wiphy.features & NL80211_FEATURE_SAE) &&
-@@ -6563,6 +6567,10 @@ static bool nl80211_valid_auth_type(struct cfg80211_registered_device *rdev,
- 					     NL80211_EXT_FEATURE_EPPKE) &&
- 		    auth_type == NL80211_AUTHTYPE_EPPKE)
- 			return false;
-+		if (!wiphy_ext_feature_isset(&rdev->wiphy,
-+					     NL80211_EXT_FEATURE_IEEE8021X_AUTH) &&
-+		    auth_type == NL80211_AUTHTYPE_IEEE8021X)
-+			return false;
- 		return true;
- 	case NL80211_CMD_START_AP:
- 		if (!wiphy_ext_feature_isset(&rdev->wiphy,
-@@ -12077,7 +12085,8 @@ static int nl80211_authenticate(struct sk_buff *skb, struct genl_info *info)
- 	     auth_type == NL80211_AUTHTYPE_FILS_SK ||
- 	     auth_type == NL80211_AUTHTYPE_FILS_SK_PFS ||
- 	     auth_type == NL80211_AUTHTYPE_FILS_PK ||
--	     auth_type == NL80211_AUTHTYPE_EPPKE) &&
-+	     auth_type == NL80211_AUTHTYPE_EPPKE ||
-+	     auth_type == NL80211_AUTHTYPE_IEEE8021X) &&
- 	    !info->attrs[NL80211_ATTR_AUTH_DATA])
- 		return -EINVAL;
+ 	lockdep_assert_wiphy(sdata->local->hw.wiphy);
  
-@@ -12086,7 +12095,8 @@ static int nl80211_authenticate(struct sk_buff *skb, struct genl_info *info)
- 		    auth_type != NL80211_AUTHTYPE_FILS_SK &&
- 		    auth_type != NL80211_AUTHTYPE_FILS_SK_PFS &&
- 		    auth_type != NL80211_AUTHTYPE_FILS_PK &&
--		    auth_type != NL80211_AUTHTYPE_EPPKE)
-+		    auth_type != NL80211_AUTHTYPE_EPPKE &&
-+		    auth_type != NL80211_AUTHTYPE_IEEE8021X)
- 			return -EINVAL;
- 		req.auth_data = nla_data(info->attrs[NL80211_ATTR_AUTH_DATA]);
- 		req.auth_data_len = nla_len(info->attrs[NL80211_ATTR_AUTH_DATA]);
+@@ -4945,6 +4946,15 @@ static void ieee80211_rx_mgmt_auth(struct ieee80211_sub_if_data *sdata,
+ 	auth_transaction = le16_to_cpu(mgmt->u.auth.auth_transaction);
+ 	status_code = le16_to_cpu(mgmt->u.auth.status_code);
+ 
++	/*
++	 * IEEE 802.1X Authentication:
++	 * Header + Authentication Algorithm Number(2 byte) + Authentication
++	 * Transaction Sequence Number(2 byte) + Status Code(2 byte) +
++	 * Encapsulation Length(2 byte).
++	 */
++	if (auth_alg == WLAN_AUTH_IEEE8021X && len < 24 + 8)
++		return;
++
+ 	info.link_id = ifmgd->auth_data->link_id;
+ 
+ 	if (auth_alg != ifmgd->auth_data->algorithm ||
+@@ -4960,7 +4970,24 @@ static void ieee80211_rx_mgmt_auth(struct ieee80211_sub_if_data *sdata,
+ 		goto notify_driver;
+ 	}
+ 
+-	if (status_code != WLAN_STATUS_SUCCESS) {
++	switch (auth_alg) {
++	case WLAN_AUTH_IEEE8021X:
++		if (status_code != WLAN_STATUS_SUCCESS &&
++		    status_code != WLAN_STATUS_8021X_AUTH_SUCCESS)
++			auth_fail = true;
++
++		if (!auth_fail) {
++			/* Indicates length of encapsulated EAPOL PDU */
++			encap_len = get_unaligned_le16(mgmt->u.auth.variable);
++		}
++		break;
++	default:
++		if (status_code != WLAN_STATUS_SUCCESS)
++			auth_fail = true;
++		break;
++	}
++
++	if (auth_fail) {
+ 		cfg80211_rx_mlme_mgmt(sdata->dev, (u8 *)mgmt, len);
+ 
+ 		if (auth_alg == WLAN_AUTH_SAE &&
+@@ -4997,6 +5024,7 @@ static void ieee80211_rx_mgmt_auth(struct ieee80211_sub_if_data *sdata,
+ 	case WLAN_AUTH_FILS_SK_PFS:
+ 	case WLAN_AUTH_FILS_PK:
+ 	case WLAN_AUTH_EPPKE:
++	case WLAN_AUTH_IEEE8021X:
+ 		break;
+ 	case WLAN_AUTH_SHARED_KEY:
+ 		if (ifmgd->auth_data->expected_transaction != 4) {
+@@ -5017,8 +5045,37 @@ static void ieee80211_rx_mgmt_auth(struct ieee80211_sub_if_data *sdata,
+ 	if (ifmgd->auth_data->algorithm != WLAN_AUTH_SAE ||
+ 	    (auth_transaction == 2 &&
+ 	     ifmgd->auth_data->expected_transaction == 2)) {
+-		if (!ieee80211_mark_sta_auth(sdata))
+-			return; /* ignore frame -- wait for timeout */
++		switch (ifmgd->auth_data->algorithm) {
++		case WLAN_AUTH_IEEE8021X:
++			/*
++			 * IEEE 802.1X authentication:
++			 * - When the full EAP handshake completes over the
++			 *   Authentication process, the responder sets the
++			 *   Status Code to WLAN_STATUS_8021X_AUTH_SUCCESS as
++			 *   specified in "IEEE P802.11bi/D4.0, 12.16.5".
++			 *
++			 * - In the PMKSA caching case, only two Authentication
++			 *   frames are exchanged if the responder (e.g., AP)
++			 *   identifies a valid PMKSA, then as specified in
++			 *   "IEEE P802.11bi/D4.0, 12.16.8.3", the responder
++			 *   shall set the Status Code to SUCCESS in the final
++			 *   Authentication frame and must not include an
++			 *   encapsulated EAPOL PDU.
++			 *
++			 * Both conditions are treated as successful
++			 * authentication, so mark the state to Authenticated.
++			 */
++			if (status_code != WLAN_STATUS_8021X_AUTH_SUCCESS &&
++			    !(status_code == WLAN_STATUS_SUCCESS &&
++			      encap_len == 0))
++				break;
++			fallthrough;
++		default:
++			if (!ieee80211_mark_sta_auth(sdata))
++				return; /* ignore frame -- wait for timeout */
++
++			break;
++		}
+ 	} else if (ifmgd->auth_data->algorithm == WLAN_AUTH_SAE &&
+ 		   auth_transaction == 1) {
+ 		sae_need_confirm = true;
+@@ -8457,6 +8514,10 @@ static int ieee80211_auth(struct ieee80211_sub_if_data *sdata)
+ 	} else if (auth_data->algorithm == WLAN_AUTH_EPPKE) {
+ 		trans = auth_data->trans;
+ 		status = auth_data->status;
++	} else if (auth_data->algorithm == WLAN_AUTH_IEEE8021X) {
++		trans = auth_data->trans;
++		status = auth_data->status;
++		auth_data->expected_transaction = trans + 1;
+ 	}
+ 
+ 	if (ieee80211_hw_check(&local->hw, REPORTS_TX_ACK_STATUS))
+@@ -9114,7 +9175,8 @@ static int ieee80211_prep_connection(struct ieee80211_sub_if_data *sdata,
+ 		}
+ 
+ 		if (ifmgd->auth_data &&
+-		    ifmgd->auth_data->algorithm == WLAN_AUTH_EPPKE)
++		    (ifmgd->auth_data->algorithm == WLAN_AUTH_EPPKE ||
++		     ifmgd->auth_data->algorithm == WLAN_AUTH_IEEE8021X))
+ 			new_sta->sta.epp_peer = true;
+ 
+ 		new_sta->sta.mlo = mlo;
+@@ -9374,6 +9436,9 @@ int ieee80211_mgd_auth(struct ieee80211_sub_if_data *sdata,
+ 	case NL80211_AUTHTYPE_EPPKE:
+ 		auth_alg = WLAN_AUTH_EPPKE;
+ 		break;
++	case NL80211_AUTHTYPE_IEEE8021X:
++		auth_alg = WLAN_AUTH_IEEE8021X;
++		break;
+ 	default:
+ 		return -EOPNOTSUPP;
+ 	}
+@@ -9399,7 +9464,8 @@ int ieee80211_mgd_auth(struct ieee80211_sub_if_data *sdata,
+ 
+ 	if (req->auth_data_len >= 4) {
+ 		if (req->auth_type == NL80211_AUTHTYPE_SAE ||
+-		    req->auth_type == NL80211_AUTHTYPE_EPPKE) {
++		    req->auth_type == NL80211_AUTHTYPE_EPPKE ||
++		    req->auth_type == NL80211_AUTHTYPE_IEEE8021X) {
+ 			__le16 *pos = (__le16 *) req->auth_data;
+ 
+ 			auth_data->trans = le16_to_cpu(pos[0]);
 -- 
 2.34.1
 
