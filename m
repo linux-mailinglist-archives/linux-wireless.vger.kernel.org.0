@@ -1,198 +1,206 @@
-Return-Path: <linux-wireless+bounces-32236-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-32237-lists+linux-wireless=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id WBhsN8D2oGk8oQQAu9opvQ
-	(envelope-from <linux-wireless+bounces-32236-lists+linux-wireless=lfdr.de@vger.kernel.org>)
-	for <lists+linux-wireless@lfdr.de>; Fri, 27 Feb 2026 02:43:28 +0100
+	id iGqbA68QoWlDqAQAu9opvQ
+	(envelope-from <linux-wireless+bounces-32237-lists+linux-wireless=lfdr.de@vger.kernel.org>)
+	for <lists+linux-wireless@lfdr.de>; Fri, 27 Feb 2026 04:34:07 +0100
 X-Original-To: lists+linux-wireless@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 883181B1976
-	for <lists+linux-wireless@lfdr.de>; Fri, 27 Feb 2026 02:43:28 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 642DD1B2491
+	for <lists+linux-wireless@lfdr.de>; Fri, 27 Feb 2026 04:34:06 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 11FBD3052620
-	for <lists+linux-wireless@lfdr.de>; Fri, 27 Feb 2026 01:43:26 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 1DB0230CE869
+	for <lists+linux-wireless@lfdr.de>; Fri, 27 Feb 2026 03:33:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 91FD82882BB;
-	Fri, 27 Feb 2026 01:43:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D2D5132F747;
+	Fri, 27 Feb 2026 03:33:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="FpBRxcSH";
+	dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b="Q4OohWO7"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-oo1-f70.google.com (mail-oo1-f70.google.com [209.85.161.70])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2E0C62566F5
-	for <linux-wireless@vger.kernel.org>; Fri, 27 Feb 2026 01:43:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.161.70
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8E6B732A3C8
+	for <linux-wireless@vger.kernel.org>; Fri, 27 Feb 2026 03:33:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772156604; cv=none; b=H04N43fcmzy40FtT6iLK8LHhasTIoUoRSGDYM2JVHvYHj0lHYSuh90hG62tlTyrxCBD3OX6ViR0gK0fDCPeMbIbrZmsD/zmD/1QUh1vmJxolBikzIQTWTaTSRLoblpBP/IYMClczghvDl82itdyd5rsFTML6z26bSp25dyzxIFc=
+	t=1772163222; cv=none; b=DZNAYJL7KeaYOQjFm1I9PYC5L2ieT9doSG1nS2F+3qcnIttG9nuuN8tCLVcI1b4CxUXBjLHjOKhjKwFSnqiyHTN9EPuUbvo/su0BOPms8p+839pdlvJKIw2ban3EmXGBK4k6RuEY/feTdrpv7JvuC+EQ0901VJb0XqHQB/LgDQE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772156604; c=relaxed/simple;
-	bh=VWFtlgXmcL9/fmReO0c8ZlT3Ha+3uO+QpINtRuqmwiE=;
-	h=MIME-Version:Date:Message-ID:Subject:From:To:Content-Type; b=uXmuBZ83RQjsS5MZt6Sr3evDSKl61x4cXfws5e1qt9mpxNCHPblPjLLgxLb577WAzBpLtTcW7yduli2hSMJriwb57uI9bakCVwLX3JjHxdwQvxy006SzNe9MxJcCPiooA6kfOX5g2e/dLzY7KTYMRYb/rBUNQTBg85gx9+o880g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com; arc=none smtp.client-ip=209.85.161.70
-Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com
-Received: by mail-oo1-f70.google.com with SMTP id 006d021491bc7-679c5ed0942so23327830eaf.1
-        for <linux-wireless@vger.kernel.org>; Thu, 26 Feb 2026 17:43:23 -0800 (PST)
+	s=arc-20240116; t=1772163222; c=relaxed/simple;
+	bh=I/NoGpsqp0ZqEz8l2zrax4JuDLlzvdmsKINaoYV1fDo=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=cvOrsAdNKZQueH8WC3zdfHNbgyuUsnwEvwgAj2qnPQEutt/ZM2XDbdwGDOwUlnphir/D57x/r4b0rQzsSVRivuiimPEfKWt+O15kbfRW7vpvUtLvZv+EfQPZM05CzPFv/nQvlB6t+CJFw6UMtzOgmALcc9PGccblibR0yjWrTa8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=FpBRxcSH; dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b=Q4OohWO7; arc=none smtp.client-ip=205.220.168.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
+Received: from pps.filterd (m0279867.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 61R2KObt2414860
+	for <linux-wireless@vger.kernel.org>; Fri, 27 Feb 2026 03:33:40 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
+	cc:content-transfer-encoding:date:from:message-id:mime-version
+	:subject:to; s=qcppdkim1; bh=fthulbMmfgEPDlzeBPVe8KBnGhtcRrCDvqB
+	cv6i/VHM=; b=FpBRxcSHM3bTkG8PKTjjDUYZNCBa4lMm54B/3A+aUYfZUF5LmJ7
+	bZhggXwGSX25J2XARAuw0MRxMZVQVG2PtqX7KJtJXjurcNLXyrgUiNW4ZdoyvDje
+	AE6EP4aXdJKcCP1akxUjQeO9Mc1UY0I6RFueEW5DFuNiGLKMdYNWXAjomb1kyxQz
+	mOaoQpDhlVRNi+BgpS5Ugv4psMwv8+3Unvu2zShBysQjt3Qq2Jl+GvDGrC8XONVP
+	BYo4uCXV+LKPpEW54nluxqic2v2eQ8JRliH6oL6Ba2RwZNCERura9eri71NzwgH5
+	EOcRRAPmlzF56wyWg0PO5eANC216p3HWEaA==
+Received: from mail-pl1-f198.google.com (mail-pl1-f198.google.com [209.85.214.198])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4cjc0gctw9-1
+	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
+	for <linux-wireless@vger.kernel.org>; Fri, 27 Feb 2026 03:33:40 +0000 (GMT)
+Received: by mail-pl1-f198.google.com with SMTP id d9443c01a7336-2add1118c19so9685465ad.2
+        for <linux-wireless@vger.kernel.org>; Thu, 26 Feb 2026 19:33:40 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=oss.qualcomm.com; s=google; t=1772163220; x=1772768020; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=fthulbMmfgEPDlzeBPVe8KBnGhtcRrCDvqBcv6i/VHM=;
+        b=Q4OohWO78kuB+1XEgTyJRbNK5S6ywH0Dok+t0p6LGyN4rVaSpMSqpXo3MxcTwh3QvL
+         FKqefhX8IwlDLbDxvkphi+yhci+M0F+cmjT/kxeYeS+sWr7oOR0x/tzcjimhl7WplBgJ
+         vVuY+NxDpRkChCHibetwKOfHVrSUhOsqsj7UsDCtDxbwv5v3562jQslIcI2vmUZ/Z9wI
+         H6RWX+5QcoZ0xcRfaX36yhoQGuBB8bNwVfV2MMCgql6O9UiougLyPTkdkhF7w+B+gGFn
+         WMwOtSZYrO8mEP1IUPettbhoJOgxlZBKGuQOuxZiJZ4Z8vl7higLq45Q62gJ0PzBGaOD
+         k8Aw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1772156602; x=1772761402;
-        h=to:from:subject:message-id:date:mime-version:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=B+fVH48wga1eGVIKc9mH7KKYUjMOFbW8GCD23h+C4Vk=;
-        b=NkIPKSjoPMUauevrh41P4SSud/xoEjZ04c5/oTdTR90tPyg9RfRaDIzo1ppu4E78/Y
-         B5E5kATykERgFILC5qmggng60nheYYsPtgdtFHAy9QzrXTefO9rZBVn583x0fB2NK/SH
-         EHEb6daThkWr9vgbDt2ocEfHpawqfWCRPCttt8dgV8dFBBV6rCYRwpHJWx/+z41lka8g
-         9uLAaq9go7tgjdfGGvNztRcWuAO08Ro1EgEhrzC/i/hHj3dVEk33jExxCg3pRjDGbqhs
-         815VE8OfK7n4QBDGujeuW2s+JI+WaIRpNT7Omsc1EOExhm2wNdd+htAy+2f9scWFnCvd
-         cRBw==
-X-Forwarded-Encrypted: i=1; AJvYcCWntiqHehpPZdN4Izd27VE31Df1HFt9O6SZtp0ZmqIONEIxuGD5ISXdhJnsADhas01CA+87dAB4CWDqc3zRkg==@vger.kernel.org
-X-Gm-Message-State: AOJu0Ywg2gEkvHUEYzMGun6x3Ijn0PRuYvJSXz1slN/CIs4kZIhaT6Ri
-	HAyQpJFnIOGOgaW2un5Shl58Ko9uo81PW4+k4anxmgMaDSoDT+YMz64pBM6X9wHNeMkNEZcnm0T
-	SmEl3Bqp0ygWYgauHkPQNqmtiqwpfIDHCjtWX20e4h20ZD1+9j+xj08kJib0=
+        d=1e100.net; s=20230601; t=1772163220; x=1772768020;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=fthulbMmfgEPDlzeBPVe8KBnGhtcRrCDvqBcv6i/VHM=;
+        b=u43bHaGXEwI8bJ/7sdYlLRMw4tVFUUz4yP8FDY2Miwpq2efhbcGaYWT2BNVpac0e8V
+         4v8A5USmUHGgxrKTUgcWY3lLMFs9bmbi7khjLGx75QQJQYo/rPlMnKKVOV9ZjMhDr58D
+         LBSa9q6rf6u3G5dZIUiKqlLLQFZooumQcWrG8PdKY2hA6w7PmtZ0p0efN/AuG8LIFO9t
+         rRVdVMPV/zlxRR8jOsHHl/b1G9Q03yixnTalozcWiwfbcDc5AOYvXDWy/sHw+n6mhmGU
+         rjGROwj8u6ndJetfQEjxBP+HUnpRLW8ymptT20mBHRp9pPrAgZBDdRfjjiAO4VTextei
+         KMtg==
+X-Gm-Message-State: AOJu0Ywqv54ZdVRBjvV8OkoCUxjYsO+5F4lv41c7uv/DouXcVdpvQeP4
+	wopyrwzHHFzKwARGpPYQGCwRC2yd+mRbdbSBzQ5aXAUq6+jWGvlyBwM8JAJNqKg8y6V+aBngqDf
+	H/jVd2nLUKGbEq/059XHML1fh07sXqUptqY+Mdv4UvuAX4K+M1rXhYvvzJmxVRlDYg8kJBA==
+X-Gm-Gg: ATEYQzxwcN+dM/sld1hg4Dx2nlm0pXvSqNWYGaKsLv54H2UYlIPkRhwiiCrndgglh3b
+	oojsLvUkjwB1qIUTuLFk8rP4by4tfi2EkO5AUtq4t96tn6QNeARkzw/tXvW3smlWrbdU1abO9rr
+	7rO3LZg/S2smnkgq+9vbKCBbY/4imL5u7zBpsh/I/hxv64OR6IW2n2XRlDHF9r/0lOLmmqh07CK
+	JaptCjjkbqAi9bQEDW3BV+FCYPeWuPjGWFU6G4yOWQ/w20BZFjBpY8Dh7N3Hv3JRQslLMtuhvRw
+	5uTZtzy+sCBvv3WenGNGfpF5txoFVyXuvgLbHuyseHlQwSz/L3S57F9AOGacheBMwq4/xXU2KcG
+	SvBvjMMINVUNr/DHRQ9O2i8ZIwYpdyWJjtVPVmJln+3+luwrjCRqdCq+32VtC0Scwk54vIRmOhU
+	EUMQGeaM1nSFjzcNQjPCSx5hDlqXWsQkmLoIFB6104aXbF
+X-Received: by 2002:a17:903:4b07:b0:2ad:ad0f:bbbe with SMTP id d9443c01a7336-2ae2e4b0a5dmr14331555ad.29.1772163219692;
+        Thu, 26 Feb 2026 19:33:39 -0800 (PST)
+X-Received: by 2002:a17:903:4b07:b0:2ad:ad0f:bbbe with SMTP id d9443c01a7336-2ae2e4b0a5dmr14331285ad.29.1772163219221;
+        Thu, 26 Feb 2026 19:33:39 -0800 (PST)
+Received: from hu-aarasahu-blr.qualcomm.com (blr-bdr-fw-01_GlobalNAT_AllZones-Outside.qualcomm.com. [103.229.18.19])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2adfb5b03ffsm51839355ad.1.2026.02.26.19.33.37
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 26 Feb 2026 19:33:38 -0800 (PST)
+From: Aaradhana Sahu <aaradhana.sahu@oss.qualcomm.com>
+To: ath12k@lists.infradead.org
+Cc: linux-wireless@vger.kernel.org,
+        Aaradhana Sahu <aaradhana.sahu@oss.qualcomm.com>
+Subject: [PATCH ath-next] wifi: ath12k: Enable monitor mode support on IPQ5332
+Date: Fri, 27 Feb 2026 09:03:32 +0530
+Message-Id: <20260227033332.687805-1-aaradhana.sahu@oss.qualcomm.com>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-Received: by 2002:a05:6820:2299:b0:674:62e7:190f with SMTP id
- 006d021491bc7-679fadf3c5bmr853461eaf.17.1772156602218; Thu, 26 Feb 2026
- 17:43:22 -0800 (PST)
-Date: Thu, 26 Feb 2026 17:43:22 -0800
-X-Google-Appengine-App-Id: s~syzkaller
-X-Google-Appengine-App-Id-Alias: syzkaller
-Message-ID: <69a0f6ba.050a0220.305b49.0074.GAE@google.com>
-Subject: [syzbot] [wireless?] WARNING in ieee80211_set_disassoc (2)
-From: syzbot <syzbot+4b737df95e84787fec21@syzkaller.appspotmail.com>
-To: johannes@sipsolutions.net, linux-kernel@vger.kernel.org, 
-	linux-wireless@vger.kernel.org, netdev@vger.kernel.org, 
-	syzkaller-bugs@googlegroups.com
-Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
+X-Authority-Analysis: v=2.4 cv=XI49iAhE c=1 sm=1 tr=0 ts=69a11094 cx=c_pps
+ a=MTSHoo12Qbhz2p7MsH1ifg==:117 a=Ou0eQOY4+eZoSc0qltEV5Q==:17
+ a=HzLeVaNsDn8A:10 a=s4-Qcg_JpJYA:10 a=VkNPw1HP01LnGYTKEx00:22
+ a=u7WPNUs3qKkmUXheDGA7:22 a=eoimf2acIAo5FJnRuUoq:22 a=EUspDBNiAAAA:8
+ a=hQIrOB1egfdVivMeMI8A:9 a=GvdueXVYPmCkWapjIL-Q:22
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwMjI3MDAyNCBTYWx0ZWRfX2P/Hfmt7Iwb5
+ faJD8Ngx8BA8+4lOXTwXDltavI0zTe0bUm75xJdgzw9LsymP6T8RgmC04W7g7uUNNIMPQSOOE8o
+ m30LHhpsybMUa/Xta+yvvjx6Jz+i1/UKYjj5nCzVFMYTFH96itF6AYVd3hBhIxNAFagBcBYY3fE
+ N7W2aAhde1kctLK+QeGtkpsZln8rEGOGY+gtAOQrs8QonoO2gem+BQb3CPogIC3Wy6k6/rKLgPi
+ qnDG1K6aN29zWogOb0CHmia8WwF31DeOw9Uee8hnk7q6DXRYPfS5L7s2M8Y7Xwj8a3tZpyL+Nd6
+ AzUdfyGqpm9caYenSNUnRjrhHyxnxZK5POU61ZocAm/NGfqoclwYVJ/PG+bncOWNJ/mGe69+uYD
+ Buhz4q038egyFu6GojFs7ai+FwVv4C5WIK2yaKSRzZ/CSQoxBw0hsHMyG7/ZoVd4GTBEzuSQq+Y
+ ix3aw0kabvZZ/gXIZqA==
+X-Proofpoint-ORIG-GUID: fpue6pl4klMYXSxGEOPZXL84M1JBx2gY
+X-Proofpoint-GUID: fpue6pl4klMYXSxGEOPZXL84M1JBx2gY
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.51,FMLib:17.12.100.49
+ definitions=2026-02-26_04,2026-02-26_01,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ phishscore=0 suspectscore=0 bulkscore=0 impostorscore=0 lowpriorityscore=0
+ clxscore=1015 spamscore=0 malwarescore=0 priorityscore=1501 adultscore=0
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.22.0-2602130000 definitions=main-2602270024
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.36 / 15.00];
+X-Spamd-Result: default: False [-0.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	URI_HIDDEN_PATH(1.00)[https://syzkaller.appspot.com/x/.config?x=2208a171312e89b7];
+	MID_CONTAINS_FROM(1.00)[];
+	DMARC_POLICY_ALLOW(-0.50)[qualcomm.com,reject];
+	R_MISSING_CHARSET(0.50)[];
 	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_DKIM_ALLOW(-0.20)[qualcomm.com:s=qcppdkim1,oss.qualcomm.com:s=google];
 	MAILLIST(-0.15)[generic];
-	DMARC_POLICY_SOFTFAIL(0.10)[appspotmail.com : SPF not aligned (relaxed), No valid DKIM,none];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	MISSING_XM_UA(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-32236-lists,linux-wireless=lfdr.de,4b737df95e84787fec21];
 	RCVD_TLS_LAST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
+	TAGGED_FROM(0.00)[bounces-32237-lists,linux-wireless=lfdr.de];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	SUBJECT_HAS_QUESTION(0.00)[];
-	REDIRECTOR_URL(0.00)[goo.gl];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[syzbot@syzkaller.appspotmail.com,linux-wireless@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[5];
-	TO_DN_NONE(0.00)[];
-	R_DKIM_NA(0.00)[];
-	NEURAL_HAM(-0.00)[-0.999];
+	MIME_TRACE(0.00)[0:+];
+	FROM_NEQ_ENVFROM(0.00)[aaradhana.sahu@oss.qualcomm.com,linux-wireless@vger.kernel.org];
+	RCPT_COUNT_THREE(0.00)[3];
+	PRECEDENCE_BULK(0.00)[];
 	TAGGED_RCPT(0.00)[linux-wireless];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,goo.gl:url,storage.googleapis.com:url]
-X-Rspamd-Queue-Id: 883181B1976
+	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[qualcomm.com:+,oss.qualcomm.com:+];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	TO_DN_SOME(0.00)[];
+	RCVD_COUNT_SEVEN(0.00)[7]
+X-Rspamd-Queue-Id: 642DD1B2491
 X-Rspamd-Action: no action
 
-Hello,
+Currently, rxdma1_enable and supports_monitor are set to false in
+IPQ5332 hardware parameters, which skips monitor ring configuration
+and removes NL80211_IFTYPE_MONITOR from the supported interface modes.
 
-syzbot found the following issue on:
+Set rxdma1_enable and supports_monitor to true so that monitor rings are
+configured and monitor mode is enabled on IPQ5332.
 
-HEAD commit:    189f164e573e Convert remaining multi-line kmalloc_obj/flex..
-git tree:       upstream
-console output: https://syzkaller.appspot.com/x/log.txt?x=1750855a580000
-kernel config:  https://syzkaller.appspot.com/x/.config?x=2208a171312e89b7
-dashboard link: https://syzkaller.appspot.com/bug?extid=4b737df95e84787fec21
-compiler:       Debian clang version 21.1.8 (++20251221033036+2078da43e25a-1~exp1~20251221153213.50), Debian LLD 21.1.8
+Tested-on: IPQ5332 hw1.0 AHB WLAN.WBE.1.7-00587-QCAHKSWPL_SILICONZ-1
 
-Unfortunately, I don't have any reproducer for this issue yet.
-
-Downloadable assets:
-disk image (non-bootable): https://storage.googleapis.com/syzbot-assets/d900f083ada3/non_bootable_disk-189f164e.raw.xz
-vmlinux: https://storage.googleapis.com/syzbot-assets/669b52dbab53/vmlinux-189f164e.xz
-kernel image: https://storage.googleapis.com/syzbot-assets/51b76feb584c/bzImage-189f164e.xz
-
-IMPORTANT: if you fix the issue, please add the following tag to the commit:
-Reported-by: syzbot+4b737df95e84787fec21@syzkaller.appspotmail.com
-
-mac80211_hwsim: wmediumd released netlink socket, switching to perfect channel medium
-mac80211_hwsim: wmediumd released netlink socket, switching to perfect channel medium
-mac80211_hwsim: wmediumd released netlink socket, switching to perfect channel medium
-wlan1: deauthenticating from 08:02:11:00:00:00 by local choice (Reason: 3=DEAUTH_LEAVING)
-------------[ cut here ]------------
-!ap_sta
-WARNING: net/mac80211/mlme.c:4137 at ieee80211_set_disassoc+0x3c8/0x1a90 net/mac80211/mlme.c:4137, CPU#0: syz.0.0/5315
-Modules linked in:
-CPU: 0 UID: 0 PID: 5315 Comm: syz.0.0 Not tainted syzkaller #0 PREEMPT(full) 
-Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS 1.16.3-debian-1.16.3-2 04/01/2014
-RIP: 0010:ieee80211_set_disassoc+0x3c8/0x1a90 net/mac80211/mlme.c:4137
-Code: c4 8c f6 45 85 ff 0f 84 c9 11 00 00 e8 81 c0 8c f6 eb 2b e8 7a c0 8c f6 48 83 7c 24 48 00 0f 85 38 fe ff ff e8 69 c0 8c f6 90 <0f> 0b 90 e9 aa 10 00 00 e8 5b c0 8c f6 eb 05 e8 54 c0 8c f6 48 8d
-RSP: 0018:ffffc9000dd4efa0 EFLAGS: 00010287
-RAX: ffffffff8b38dab7 RBX: ffff888038b28dc0 RCX: 0000000000100000
-RDX: ffffc9000ec12000 RSI: 000000000001762f RDI: 0000000000017630
-RBP: ffffc9000dd4f0b0 R08: 0000000000000001 R09: 0000000000000000
-R10: ffffc9000dd4f1e0 R11: fffff52001ba9e3f R12: ffff888038b297f0
-R13: dffffc0000000000 R14: 1ffff92001ba9e04 R15: ffffc9000dd4f1e0
-FS:  00007f5691c2d6c0(0000) GS:ffff88808ca5b000(0000) knlGS:0000000000000000
-CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-CR2: 00007ffc7ffad0c8 CR3: 0000000035dd8000 CR4: 0000000000352ef0
-Call Trace:
- <TASK>
- ieee80211_mgd_deauth+0x9fa/0xe60 net/mac80211/mlme.c:10198
- rdev_deauth net/wireless/rdev-ops.h:509 [inline]
- cfg80211_mlme_deauth+0x51b/0x8f0 net/wireless/mlme.c:536
- cfg80211_sme_disconnect net/wireless/sme.c:666 [inline]
- cfg80211_disconnect+0x3b2/0x7c0 net/wireless/sme.c:1559
- cfg80211_netdev_notifier_call+0x1ba/0x1470 net/wireless/core.c:1599
- notifier_call_chain+0x1be/0x400 kernel/notifier.c:85
- call_netdevice_notifiers_extack net/core/dev.c:2287 [inline]
- call_netdevice_notifiers net/core/dev.c:2301 [inline]
- __dev_close_many+0x119/0x6d0 net/core/dev.c:1746
- netif_close_many+0x225/0x420 net/core/dev.c:1800
- netif_close+0x160/0x220 net/core/dev.c:1817
- dev_close+0x10a/0x220 net/core/dev_api.c:220
- cfg80211_shutdown_all_interfaces+0xc4/0x200 net/wireless/core.c:282
- cfg80211_rfkill_set_block+0x2d/0x50 net/wireless/core.c:312
- rfkill_set_block+0x1d2/0x440 net/rfkill/core.c:346
- rfkill_fop_write+0x461/0x5a0 net/rfkill/core.c:1301
- vfs_write+0x29a/0xb90 fs/read_write.c:686
- ksys_write+0x150/0x270 fs/read_write.c:740
- do_syscall_x64 arch/x86/entry/syscall_64.c:63 [inline]
- do_syscall_64+0x14d/0xf80 arch/x86/entry/syscall_64.c:94
- entry_SYSCALL_64_after_hwframe+0x77/0x7f
-RIP: 0033:0x7f5690d9c629
-Code: ff c3 66 2e 0f 1f 84 00 00 00 00 00 0f 1f 44 00 00 48 89 f8 48 89 f7 48 89 d6 48 89 ca 4d 89 c2 4d 89 c8 4c 8b 4c 24 08 0f 05 <48> 3d 01 f0 ff ff 73 01 c3 48 c7 c1 e8 ff ff ff f7 d8 64 89 01 48
-RSP: 002b:00007f5691c2d028 EFLAGS: 00000246 ORIG_RAX: 0000000000000001
-RAX: ffffffffffffffda RBX: 00007f5691015fa0 RCX: 00007f5690d9c629
-RDX: 0000000000000008 RSI: 0000200000000080 RDI: 0000000000000006
-RBP: 00007f5690e32b39 R08: 0000000000000000 R09: 0000000000000000
-R10: 0000000000000000 R11: 0000000000000246 R12: 0000000000000000
-R13: 00007f5691016038 R14: 00007f5691015fa0 R15: 00007fff6e9cd5a8
- </TASK>
-
-
+Signed-off-by: Aaradhana Sahu <aaradhana.sahu@oss.qualcomm.com>
 ---
-This report is generated by a bot. It may contain errors.
-See https://goo.gl/tpsmEJ for more information about syzbot.
-syzbot engineers can be reached at syzkaller@googlegroups.com.
+ drivers/net/wireless/ath/ath12k/wifi7/hw.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-syzbot will keep track of this issue. See:
-https://goo.gl/tpsmEJ#status for how to communicate with syzbot.
+diff --git a/drivers/net/wireless/ath/ath12k/wifi7/hw.c b/drivers/net/wireless/ath/ath12k/wifi7/hw.c
+index df045ddf42da..27acdfc35459 100644
+--- a/drivers/net/wireless/ath/ath12k/wifi7/hw.c
++++ b/drivers/net/wireless/ath/ath12k/wifi7/hw.c
+@@ -617,7 +617,7 @@ static const struct ath12k_hw_params ath12k_wifi7_hw_params[] = {
+ 			ath12k_wifi7_target_service_to_ce_map_wlan_ipq5332,
+ 		.svc_to_ce_map_len = 18,
+ 
+-		.rxdma1_enable = false,
++		.rxdma1_enable = true,
+ 		.num_rxdma_per_pdev = 1,
+ 		.num_rxdma_dst_ring = 0,
+ 		.rx_mac_buf_ring = false,
+@@ -626,7 +626,7 @@ static const struct ath12k_hw_params ath12k_wifi7_hw_params[] = {
+ 		.interface_modes = BIT(NL80211_IFTYPE_STATION) |
+ 				   BIT(NL80211_IFTYPE_AP) |
+ 				   BIT(NL80211_IFTYPE_MESH_POINT),
+-		.supports_monitor = false,
++		.supports_monitor = true,
+ 
+ 		.idle_ps = false,
+ 		.download_calib = true,
 
-If the report is already addressed, let syzbot know by replying with:
-#syz fix: exact-commit-title
+base-commit: 20ad0d58517073b3b683ff786c65dd3142321707
+-- 
+2.34.1
 
-If you want to overwrite report's subsystems, reply with:
-#syz set subsystems: new-subsystem
-(See the list of subsystem names on the web dashboard)
-
-If the report is a duplicate of another one, reply with:
-#syz dup: exact-subject-of-another-report
-
-If you want to undo deduplication, reply with:
-#syz undup
 
