@@ -1,82 +1,82 @@
-Return-Path: <linux-wireless+bounces-32262-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-32263-lists+linux-wireless=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 6KRTBp0coWlhqQQAu9opvQ
-	(envelope-from <linux-wireless+bounces-32262-lists+linux-wireless=lfdr.de@vger.kernel.org>)
-	for <lists+linux-wireless@lfdr.de>; Fri, 27 Feb 2026 05:25:01 +0100
+	id MA0PMbIcoWlhqQQAu9opvQ
+	(envelope-from <linux-wireless+bounces-32263-lists+linux-wireless=lfdr.de@vger.kernel.org>)
+	for <lists+linux-wireless@lfdr.de>; Fri, 27 Feb 2026 05:25:22 +0100
 X-Original-To: lists+linux-wireless@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 300B91B2A9B
-	for <lists+linux-wireless@lfdr.de>; Fri, 27 Feb 2026 05:25:00 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 278AB1B2AB7
+	for <lists+linux-wireless@lfdr.de>; Fri, 27 Feb 2026 05:25:22 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id B67083173A8E
-	for <lists+linux-wireless@lfdr.de>; Fri, 27 Feb 2026 04:14:51 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 3D68831D87AD
+	for <lists+linux-wireless@lfdr.de>; Fri, 27 Feb 2026 04:15:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E1AF9346E46;
-	Fri, 27 Feb 2026 04:14:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9868E34889F;
+	Fri, 27 Feb 2026 04:14:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=morsemicro-com.20230601.gappssmtp.com header.i=@morsemicro-com.20230601.gappssmtp.com header.b="Ik4GWRnv"
+	dkim=pass (2048-bit key) header.d=morsemicro-com.20230601.gappssmtp.com header.i=@morsemicro-com.20230601.gappssmtp.com header.b="bXPVlcEs"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-pl1-f169.google.com (mail-pl1-f169.google.com [209.85.214.169])
+Received: from mail-pg1-f176.google.com (mail-pg1-f176.google.com [209.85.215.176])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1529B34574B
-	for <linux-wireless@vger.kernel.org>; Fri, 27 Feb 2026 04:14:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.169
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 63B6734DCF2
+	for <linux-wireless@vger.kernel.org>; Fri, 27 Feb 2026 04:14:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.176
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772165653; cv=none; b=DMnCjHmQjVNOMnA3g1lyipw911Ttq0/NOz2wDBeYRie8GPAfCwwDIZWsIA7zQ2j+K/xzbmOYZ74+ZDQAKQA41BAWdcD2ABMKNWDu0vx72xA3L+KQTIedXJmB6frV94NB8OGSJv1dvY4zNpN0fY5W/v62vpS8wdr46qMLUIfLfSM=
+	t=1772165661; cv=none; b=CbjIwtk35TDgoBNvQGBGY3wwq1W3GYotr9yd0KYZl59y8IRJJtcDXvc0mSwvZOevY1ujZ5c4CLwi1JsARiZLc0ct+2DL5EAN4iJpx31xiRSKaoi5dqR3jRLdqql1KFK5TO7JVZqdSq5V71glN2x4v2DMDRUVnRoisOmKq7lrmY8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772165653; c=relaxed/simple;
-	bh=QvhRd/k3fbHAPDr6LTLRsZ6U+Lav7Gjr8aqtxWuKNqE=;
+	s=arc-20240116; t=1772165661; c=relaxed/simple;
+	bh=qw34Kp5YI1tGbvIqugk9A9lrXRzMXtRWcEhEq65BTcM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=aFaRBUEsj7uhwNvDp3iBDqecFoC+xHZx3PYv9eEIDrHsAZ/LGaIsdLbiUT4rZ1AIGG+UV/jHwIHB49NDFsEFZM4v4+BLb/zuoNePLQbkc9wKtEAF4S9EPVn50GUL2ir5btzTk2s63IQ06dgeKGvKijQ3ladU9KmEPs0W3srOWlc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=morsemicro.com; spf=pass smtp.mailfrom=morsemicro.com; dkim=pass (2048-bit key) header.d=morsemicro-com.20230601.gappssmtp.com header.i=@morsemicro-com.20230601.gappssmtp.com header.b=Ik4GWRnv; arc=none smtp.client-ip=209.85.214.169
+	 MIME-Version; b=rbygiC38PMDfBi4zEhlYLmgg7yQdpP/ACGNFgYE2WDrdtGgl2NWwavFf0U/3Es+yGJc8Lo4PkrWXe3S9cPTVC3cPLNNfT23EGGZLAOQw1gdWs6DY7bgRXw/IKBhH1tAh2bp1Z/PO9Qq3266tUp65a4f7MddYAOmsxMcCxpc/0rI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=morsemicro.com; spf=pass smtp.mailfrom=morsemicro.com; dkim=pass (2048-bit key) header.d=morsemicro-com.20230601.gappssmtp.com header.i=@morsemicro-com.20230601.gappssmtp.com header.b=bXPVlcEs; arc=none smtp.client-ip=209.85.215.176
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=morsemicro.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=morsemicro.com
-Received: by mail-pl1-f169.google.com with SMTP id d9443c01a7336-2ab232cc803so8542675ad.3
-        for <linux-wireless@vger.kernel.org>; Thu, 26 Feb 2026 20:14:11 -0800 (PST)
+Received: by mail-pg1-f176.google.com with SMTP id 41be03b00d2f7-c6e3e4e7388so603512a12.1
+        for <linux-wireless@vger.kernel.org>; Thu, 26 Feb 2026 20:14:19 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=morsemicro-com.20230601.gappssmtp.com; s=20230601; t=1772165651; x=1772770451; darn=vger.kernel.org;
+        d=morsemicro-com.20230601.gappssmtp.com; s=20230601; t=1772165659; x=1772770459; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=R2ITqWlcyWbskRFIKd0WjZ3UJROnX6P7UpySd9pdiiQ=;
-        b=Ik4GWRnv07fA103FK/d1zuzU4twk1UgwlaRpT/94dscJfcpMiZUk0fiu2YfFRCURSI
-         xJ3AvCIxF54iJZJJO+XtvOvs8w9ccJDztnV2UfbQG7aldjstx6XZEbAoD49KHjVOfv/u
-         lqtWW3AOuUhCsjgNulL8leoDEqGmyEFPpGmOsl53wmgImw56Qhb7LzOne/Q/MFMBdcfL
-         ETb26Bk6LiMT832fb00k4HVnoK2noeqUeYY+g9v6E19S3EDpyDc3WjCIenSkVCOZ/4wS
-         nz5bXkG9f5Mqh2WY+0F8ROj80k/y1ORkfx6XCT16sp7/YQ3ToFA+M8s0N7Enc3862Nq9
-         1RBw==
+        bh=TYBnNtF1ihxMJDq6a+iNE3OyoNcMd9lSpU7divWw5uA=;
+        b=bXPVlcEsWSLftDF0yPT6lKZqX5fLaQt61oKXYDfeX+8CUxkzZ8L2+ij8I/tOJ0QY2B
+         CWan8q86WFGUW5/XeB5YnaUEd74xTsOO1YcYlFcQd/zN7Vip6DU10PbtA4C3AtzETGn0
+         8jWNqvA9qUJRuyqO/h3GQFoVjQ5EscyKJHEc7XiNocp6r4LHD7F9wFl31oZK79IPkiuH
+         WlA2/BN960qJpkm5qc7g9kfBmr6cgfi3N0DLMHDl1WFyPISrWv3G0MgQ2F3Il7zeQ4n0
+         /JtavCL4Vw+22CL9pjiT+55Hw2EtaOSd5O4BVFTQ6sEL4bW++jzpvc0Uyo3VivSFKvpo
+         VBVg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1772165651; x=1772770451;
+        d=1e100.net; s=20230601; t=1772165659; x=1772770459;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to;
-        bh=R2ITqWlcyWbskRFIKd0WjZ3UJROnX6P7UpySd9pdiiQ=;
-        b=RW1G6kfWyiupoCK5sCQE8WXZXOECmk1heldg9YCZyH8CxKgo4N1R+Nh9VRE0J4bnT5
-         8oRI325U6aaK8qEY5Y5ZAIGWSiMa0X6cKoDN6j3362bmR4uG6VrJ++gZuxhTCTF6PQLh
-         VSaxIHy1fmLp8lchJqsWQDZbY2HoRvsXR6U2IobhnPMZwYHYKsxGxOS3YmZfKrqOX6iD
-         HNLWaTNvYgz0MQ00VffE+GiojVJjZkBl+hH/c5HjSQwmFUlFARc5vV9fNG+cRSvry0ci
-         VlyYMb+Xleb3Wl1Fe/4b9IlqDaoMx0RlKdEEPYzbiCEb5GeKP+y8GclooK1Uxs7kFU78
-         HQuw==
-X-Forwarded-Encrypted: i=1; AJvYcCXSaR7HCSARvf49bF4l0fsWKsW1wXW21VvpASQEDXfcxHbLs2ed4AEIIYtbn9Ywds7dzI7dD5gzNyW3eLrmlQ==@vger.kernel.org
-X-Gm-Message-State: AOJu0YyEPuSDnZKKk1F/T+CBet5NtYjXmEom6BvsZHx9CB7aDt2zkocM
-	QrkslOfGNujSbfZ4G2mNfCpBCc0YDAazvlOKWhhUzutqTjhwLA51mlUHP1xwngnffB8=
-X-Gm-Gg: ATEYQzz32YP7WLylIHd3b+jjRewt6wL/v2H2Yqiba/00oNL3UpPRd/lS9HyPL2QVsLY
-	av9ldV8QXDB+5ROYJK9FNrFzQaET7ZiDSRPM5LXh3vJ3q4ZGUYHFMrS6tuIIRciGz7yfNdzD3kJ
-	4ryKGG9lhJ5cZicyb66hqV1bv8YIOAGAhT3hTMYoUTaZWmgouF9Q40EfT8k3LQy/76NoHWrGDDm
-	F+ns+RVW7fvVbrB3yG5NgrKuE7lNNWLU1/y3K76qvsIHGlqXnJ47xR9mTebnp3/QbyZmhqfFg4K
-	pdCSRXb6bsQGtR8Ix6Suw5hOAqSR3HhIHU5In4tRDUU4oJjUD0EaQU0G3/TZpZRk8ULN2cfs3L9
-	0sICjJaDoqeiIMuklk1gMSrPOCWWbhYIWL1h+gYcXD8ooD5j3RMmTRHnjv+v7mJ5Xu3X2ftIYDZ
-	r126U+TC4sCJu3Yo6gbvUEpWjEoPtLsIrgyWNTKUKu6MAAxS+pq+aKQvC3Tf6zJJDmfrkkKz41A
-	DgwPs8CJX53oLVOoDQrhHmJwZRAyFKiA26X8/uCrA==
-X-Received: by 2002:a17:903:2289:b0:2a0:e223:f6e6 with SMTP id d9443c01a7336-2ae2e4d6622mr14213735ad.46.1772165651304;
-        Thu, 26 Feb 2026 20:14:11 -0800 (PST)
+        bh=TYBnNtF1ihxMJDq6a+iNE3OyoNcMd9lSpU7divWw5uA=;
+        b=HCHuE3WJxdn9FgsRjn/Ubd6vX8BTthycyDkSCtKCX5G2+U54DYNv19UNO9ULWNB4wq
+         pemITj5CLxAchVB5IBXdb0Im79Qh8tdbusNLd8lppz56TEX8gC2/XPWi2T2RzQdXjArA
+         +UcQ7xqpn/UZsPpQlF4QuExbNfIQHgeuRgmdpsbLW6t4xay1FN+0+AlF4V8u7hbw8yNv
+         Egpw4yTtfuUE+IFbP82NVPozZRa0xP6o/GpbF62pbyTNyZbXMdN4L8K67F31LwtdMU+h
+         uHHCpBfP3QnEzDgCgUH6XEjzB2n8S8NmYCzZnqMeV0/stGDdzF+M2iz525hznzzZ/Gci
+         MeKg==
+X-Forwarded-Encrypted: i=1; AJvYcCVM384TLijKx+yZdhdkn5a4XnecqD1FCUcVi4mXwIy8m82zY6Qq+SB6O3gw0Owi0aFz+Sd7fTX4mypTMllmHA==@vger.kernel.org
+X-Gm-Message-State: AOJu0YyHwBOfHaGprAxxO510dlk74koDNwAqS4Kv25cBoMvoLg7ASvTa
+	4dck6Kei8T9YzXXueTd22kpcKXYKEIBPUmlsvJdJyrSmFk33rNc+iuIdVrB1dyOlsbY=
+X-Gm-Gg: ATEYQzzMJG25uBHKR9Dr9K33PVOpzrtFhqzRIHWCHR3x0KMz20kCrH9sAYiXB7HWV0v
+	4e9TlbEgQ7N5VoU4f0L1pk8W694FubIrn3eXT5KK3L+VjAfN5vZT4bv149tx0TekPfQ88fxv3mA
+	QgnojXLsCmod4XGzz8GM8QERLBlrsyUo9YZIdAy7gKF+yIxrImJS4bZn1sJp3bFP0PU1LlAzFav
+	Gapz4fiE59Gjttu2bPGkEoPmVDQdJS/iXVLL2yBaiG/LbDxNaGIfRY+qGh+H/LclUrkHKgfidKs
+	jLA6qYfakT6XUyxv74gkAvcxcNmhUbImnlFwmFyYYpt+7vfS8WPnT3ji6TDshYbGNo5spkcNu61
+	F9q0PQphsvn7ePHHRFb3X5I6SyriQw22DSghHAC4bPN0NGii3q37411KoyvdARhOkCwgK0EVH+O
+	5tNjUnnv/FcH0XQtlenFJAUZJ8S7DDppYYXdUO/oPk3N4ogN2B4i43zdJnKX40mo30jcclrpZ5t
+	FCzR+PlFkoSVaxDFJADp8mwmKvXZ68=
+X-Received: by 2002:a17:903:1786:b0:2a9:47ff:101c with SMTP id d9443c01a7336-2ae2e4bb027mr16051575ad.46.1772165658613;
+        Thu, 26 Feb 2026 20:14:18 -0800 (PST)
 Received: from mma-H9MHD44.lan (60-242-93-14.static.tpgi.com.au. [60.242.93.14])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2adfb6ba5eesm41682865ad.68.2026.02.26.20.14.06
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2adfb6ba5eesm41682865ad.68.2026.02.26.20.14.13
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 26 Feb 2026 20:14:11 -0800 (PST)
+        Thu, 26 Feb 2026 20:14:18 -0800 (PST)
 From: Lachlan Hodges <lachlan.hodges@morsemicro.com>
 To: johannes@sipsolutions.net,
 	Lachlan Hodges <lachlan.hodges@morsemicro.com>,
@@ -85,9 +85,9 @@ To: johannes@sipsolutions.net,
 Cc: ayman.grais@morsemicro.com,
 	linux-wireless@vger.kernel.org,
 	linux-kernel@vger.kernel.org
-Subject: [PATCH wireless-next 23/35] wifi: mm81x: add sdio.c
-Date: Fri, 27 Feb 2026 15:10:33 +1100
-Message-ID: <20260227041108.66508-24-lachlan.hodges@morsemicro.com>
+Subject: [PATCH wireless-next 24/35] wifi: mm81x: add skbq.c
+Date: Fri, 27 Feb 2026 15:10:34 +1100
+Message-ID: <20260227041108.66508-25-lachlan.hodges@morsemicro.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20260227041108.66508-1-lachlan.hodges@morsemicro.com>
 References: <20260227041108.66508-1-lachlan.hodges@morsemicro.com>
@@ -113,7 +113,7 @@ X-Spamd-Result: default: False [-0.06 / 15.00];
 	DKIM_TRACE(0.00)[morsemicro-com.20230601.gappssmtp.com:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-32262-lists,linux-wireless=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-32263-lists,linux-wireless=lfdr.de];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TO_DN_SOME(0.00)[];
@@ -125,8 +125,8 @@ X-Spamd-Result: default: False [-0.06 / 15.00];
 	RCPT_COUNT_SEVEN(0.00)[7];
 	NEURAL_HAM(-0.00)[-1.000];
 	TAGGED_RCPT(0.00)[linux-wireless];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,morsemicro.com:mid,morsemicro.com:email,morsemicro-com.20230601.gappssmtp.com:dkim]
-X-Rspamd-Queue-Id: 300B91B2A9B
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,morsemicro.com:mid,morsemicro.com:email,morsemicro-com.20230601.gappssmtp.com:dkim,hdr.channel:url,iter.mm:url]
+X-Rspamd-Queue-Id: 278AB1B2AB7
 X-Rspamd-Action: no action
 
 (Patches split per file for review, see cover letter for more
@@ -134,818 +134,1071 @@ information)
 
 Signed-off-by: Lachlan Hodges <lachlan.hodges@morsemicro.com>
 ---
- drivers/net/wireless/morsemicro/mm81x/sdio.c | 803 +++++++++++++++++++
- 1 file changed, 803 insertions(+)
- create mode 100644 drivers/net/wireless/morsemicro/mm81x/sdio.c
+ drivers/net/wireless/morsemicro/mm81x/skbq.c | 1056 ++++++++++++++++++
+ 1 file changed, 1056 insertions(+)
+ create mode 100644 drivers/net/wireless/morsemicro/mm81x/skbq.c
 
-diff --git a/drivers/net/wireless/morsemicro/mm81x/sdio.c b/drivers/net/wireless/morsemicro/mm81x/sdio.c
+diff --git a/drivers/net/wireless/morsemicro/mm81x/skbq.c b/drivers/net/wireless/morsemicro/mm81x/skbq.c
 new file mode 100644
-index 000000000000..260d7075984e
+index 000000000000..c70eebf4cffd
 --- /dev/null
-+++ b/drivers/net/wireless/morsemicro/mm81x/sdio.c
-@@ -0,0 +1,803 @@
++++ b/drivers/net/wireless/morsemicro/mm81x/skbq.c
+@@ -0,0 +1,1056 @@
 +// SPDX-License-Identifier: GPL-2.0-only
 +/*
 + * Copyright (c) 2017-2026 Morse Micro
 + */
-+#include <linux/kernel.h>
-+#include <linux/module.h>
++#include <linux/types.h>
 +#include <linux/slab.h>
 +#include <linux/workqueue.h>
-+#include <linux/mmc/card.h>
-+#include <linux/mmc/mmc.h>
-+#include <linux/mmc/host.h>
-+#include <linux/mmc/sdio_func.h>
-+#include <linux/mmc/sdio_ids.h>
-+#include <linux/mmc/sdio.h>
-+#include <linux/mmc/sd.h>
-+#include <linux/of_gpio.h>
-+#include <linux/gpio/consumer.h>
-+#include "hw.h"
-+#include "core.h"
-+#include "bus.h"
-+#include "mac.h"
-+#include "fw.h"
-+#include "debug.h"
++#include <linux/ktime.h>
++#include <linux/skbuff.h>
++#include <linux/jiffies.h>
 +#include "hif.h"
++#include "debug.h"
++#include "skbq.h"
++#include "mac.h"
++#include "command.h"
++#include "bus.h"
++
++/* Returns number of bytes needed to word align */
++#define BYTES_NEEDED_TO_WORD_ALIGN(bytes) \
++	((bytes) & 0x3 ? (4 - ((bytes) & 0x3)) : 0)
++
++/* Rounds down to the nearest word boundary */
++#define ROUND_DOWN_TO_WORD(bytes)                                  \
++	(BYTES_NEEDED_TO_WORD_ALIGN(bytes) ?                       \
++		 bytes - (4 - BYTES_NEEDED_TO_WORD_ALIGN(bytes)) : \
++		 bytes)
++
++#define MM81X_SKBQ_MAX_TXQ_LEN 32
++#define MM81X_SKBQ_TX_QUEUED_LIFETIME_MS 1000
++#define MM81X_SKBQ_TX_STATUS_LIFETIME_MS (15 * 1000)
++
++/* Returns padding needed to align x up to a 4-byte boundary */
++#define MM81X_PAD4(x) (((x) & 0x3) ? (4 - ((x) & 0x3)) : 0)
++
++struct mm81x_tx_status_priv {
++	/*
++	 * Time (jiffies) at which this packet has spent too long the pending
++	 * queue, waiting for status notification from the firmware, and
++	 * should be considered lost.
++	 */
++	unsigned long tx_status_expiry;
++};
++
++static inline struct mm81x_tx_status_priv *
++__mm81x_skbq_tx_status_priv(struct sk_buff *skb)
++{
++	struct ieee80211_tx_info *tx_info = IEEE80211_SKB_CB(skb);
++
++	BUILD_BUG_ON(sizeof(struct mm81x_tx_status_priv) >
++		     sizeof(tx_info->status.status_driver_data));
++	return (struct mm81x_tx_status_priv *)&tx_info->status
++		.status_driver_data[0];
++}
++
++static inline bool
++__mm81x_skbq_has_pending_tx_skb_timed_out(struct sk_buff *skb)
++{
++	struct mm81x_tx_status_priv *info = __mm81x_skbq_tx_status_priv(skb);
++
++	/* If our timestamp value is in the past then we have timed out. */
++	return time_is_before_jiffies(info->tx_status_expiry);
++}
++
++static inline u32 __mm81x_skbq_size(const struct mm81x_skbq *mq)
++{
++	return mq->skbq_size;
++}
++
++static inline u32 __mm81x_skbq_space(const struct mm81x_skbq *mq)
++{
++	return MM81X_SKBQ_SIZE - __mm81x_skbq_size(mq);
++}
++
++static inline bool __mm81x_skbq_over_threshold(struct mm81x_skbq *mq)
++{
++	return skb_queue_len(&mq->skbq) >= MM81X_SKBQ_MAX_TXQ_LEN;
++}
++
++static inline bool __mm81x_skbq_under_threshold(struct mm81x_skbq *mq)
++{
++	return skb_queue_len(&mq->skbq) < (MM81X_SKBQ_MAX_TXQ_LEN - 2);
++}
++
++static void __mm81x_skbq_unlink(struct mm81x_skbq *mq,
++				struct sk_buff_head *queue, struct sk_buff *skb)
++{
++	if (queue == &mq->skbq) {
++		WARN_ON(skb->len > mq->skbq_size);
++		mq->skbq_size -= min(skb->len, mq->skbq_size);
++	}
++
++	__skb_unlink(skb, queue);
++}
++
++static int __mm81x_skbq_put(struct mm81x_skbq *mq, struct sk_buff_head *queue,
++			    struct sk_buff *skb, bool queue_at_head,
++			    struct sk_buff *queue_before)
++{
++	/* Limit the size of the Tx queue, but not the pending queue */
++	if (queue == &mq->skbq) {
++		if (skb->len > __mm81x_skbq_space(mq))
++			return -ENOMEM;
++
++		mq->skbq_size += skb->len;
++	}
++
++	if (queue_before)
++		__skb_queue_before(queue, queue_before, skb);
++	else if (queue_at_head)
++		__skb_queue_head(queue, skb);
++	else
++		__skb_queue_tail(queue, skb);
++
++	return 0;
++}
++
++static void __mm81x_skbq_pkt_id(struct mm81x_skbq *mq, struct sk_buff *skb)
++{
++	struct mm81x_skb_hdr *hdr = (struct mm81x_skb_hdr *)skb->data;
++
++	hdr->tx_info.pkt_id = cpu_to_le32(mq->pkt_seq++);
++}
++
++static struct mm81x_skbq *
++__mm81x_skbq_tx_status_to_skbq(struct mm81x *mm,
++			       const struct mm81x_skb_tx_status *tx_sts)
++{
++	int aci;
++	struct mm81x_skbq *mq = NULL;
++
++	switch (tx_sts->channel) {
++	case MM81X_SKB_CHAN_DATA:
++	case MM81X_SKB_CHAN_DATA_NOACK:
++		aci = dot11_tid_to_ac(tx_sts->tid);
++		mq = mm81x_hif_get_tx_data_queue(mm, aci);
++		break;
++	case MM81X_SKB_CHAN_MGMT:
++		mq = mm81x_hif_get_tx_mgmt_queue(mm);
++		break;
++	case MM81X_SKB_CHAN_BEACON:
++		mq = mm81x_hif_get_tx_beacon_queue(mm);
++		break;
++	default:
++		mm81x_err(mm, "unexpected channel on reported tx status [%d]",
++			  tx_sts->channel);
++	}
++
++	return mq;
++}
++
++void mm81x_skbq_pull_hdr_post_tx(struct sk_buff *skb)
++{
++	skb_pull(skb, sizeof(struct mm81x_skb_hdr) +
++			      ((struct mm81x_skb_hdr *)skb->data)->offset);
++}
++
++static void mm81x_skbq_insert_pending(struct mm81x_skbq *mq,
++				      struct sk_buff *skb, __le32 insertion_id)
++{
++	struct sk_buff *pfirst, *pnext;
++	struct mm81x_skb_hdr *mhdr;
++	struct sk_buff *tail = skb_peek_tail(&mq->skbq);
++
++	__mm81x_skbq_unlink(mq, &mq->pending, skb);
++
++	if (!tail) {
++		__mm81x_skbq_put(mq, &mq->skbq, skb, false, NULL);
++		return;
++	}
++
++	/* Check if it should just be inserted on to the end */
++	mhdr = (struct mm81x_skb_hdr *)tail->data;
++	WARN_ON(insertion_id == mhdr->tx_info.pkt_id);
++	if (le32_to_cpu(insertion_id) >= le32_to_cpu(mhdr->tx_info.pkt_id)) {
++		__mm81x_skbq_put(mq, &mq->skbq, skb, false, NULL);
++		return;
++	}
++
++	/* Otherwise, re-insert to correct spot in skbq */
++	skb_queue_walk_safe(&mq->skbq, pfirst, pnext) {
++		mhdr = (struct mm81x_skb_hdr *)pfirst->data;
++
++		WARN_ON(insertion_id == mhdr->tx_info.pkt_id);
++		if (le32_to_cpu(insertion_id) <=
++		    le32_to_cpu(mhdr->tx_info.pkt_id)) {
++			__mm81x_skbq_put(mq, &mq->skbq, skb, false, pfirst);
++			return;
++		}
++	}
++
++	WARN_ON_ONCE(1);
++}
++
++static void mm81x_skbq_sta_eosp(struct mm81x *mm, struct sk_buff *skb)
++{
++	struct ieee80211_tx_info *txi = IEEE80211_SKB_CB(skb);
++	struct ieee80211_vif *vif = txi->control.vif;
++
++	mm81x_skbq_pull_hdr_post_tx(skb);
++
++	/*
++	 * If this frame is the last frame in a PS-Poll or u-APSD SP,
++	 * then mac80211 must be informed that the SP is now over.
++	 */
++	if (txi->flags & IEEE80211_TX_STATUS_EOSP) {
++		struct ieee80211_hdr *hdr = (struct ieee80211_hdr *)skb->data;
++		struct ieee80211_sta *sta;
++
++		scoped_guard(rcu) {
++			sta = ieee80211_find_sta(vif, hdr->addr1);
++			if (sta)
++				ieee80211_sta_eosp(sta);
++		}
++	}
++}
++
++static void __mm81x_skbq_drop_pending_skb(struct mm81x_skbq *mq,
++					  struct sk_buff *skb)
++{
++	__mm81x_skbq_unlink(mq, &mq->pending, skb);
++	mm81x_skbq_sta_eosp(mq->mm, skb);
++	ieee80211_free_txskb(mq->mm->hw, skb);
++}
++
++static bool mm81x_tx_h_is_ps_filtered(struct mm81x_skbq *mq,
++				      struct sk_buff *skb,
++				      struct mm81x_skb_tx_status *tx_sts)
++{
++	struct ieee80211_tx_info *txi = IEEE80211_SKB_CB(skb);
++	struct ieee80211_vif *vif = txi->control.vif;
++
++	WARN_ON_ONCE(!(le32_to_cpu(tx_sts->flags) &
++		       MM81X_TX_STATUS_FLAGS_PS_FILTERED));
++
++	if (vif->type == NL80211_IFTYPE_AP) {
++		__mm81x_skbq_drop_pending_skb(mq, skb);
++		return true;
++	}
++
++	if (vif->type == NL80211_IFTYPE_STATION) {
++		mm81x_skbq_insert_pending(mq, skb, tx_sts->pkt_id);
++		return true;
++	}
++
++	return false;
++}
 +
 +/*
-+ * Value to indicate that the base address for bulk/register
-+ * read/writes has yet to be set
++ * Get a pending frame by its ID. This will also drop frames with
++ * older packet ids that are in the list
 + */
-+#define MM81X_SDIO_BASE_ADDR_UNSET 0xFFFFFFFF
-+
-+#define MM81X_SDIO_ALIGNMENT (8)
-+
-+#define MM81X_SDIO_REG_ADDRESS_BASE 0x10000
-+#define MM81X_SDIO_REG_ADDRESS_WINDOW_0 MM81X_SDIO_REG_ADDRESS_BASE
-+#define MM81X_SDIO_REG_ADDRESS_WINDOW_1 (MM81X_SDIO_REG_ADDRESS_BASE + 1)
-+#define MM81X_SDIO_REG_ADDRESS_CONFIG (MM81X_SDIO_REG_ADDRESS_BASE + 2)
-+
-+struct mm81x_sdio {
-+	bool enabled;
-+	u32 bulk_addr_base;
-+	u32 register_addr_base;
-+	struct sdio_func *func;
-+	const struct sdio_device_id *id;
-+};
-+
-+static void mm81x_sdio_of_probe(struct device *dev, struct mm81x_ps *ps,
-+				const struct of_device_id *match_table)
++static struct sk_buff *__mm81x_skbq_get_pending_by_id(struct mm81x *mm,
++						      struct mm81x_skbq *mq,
++						      u32 pkt_id)
 +{
-+	struct device_node *np = dev->of_node;
-+	const struct of_device_id *of_id;
++	struct sk_buff *pfirst, *pnext;
++	struct sk_buff *ret = NULL;
 +
-+	if (!np) {
-+		dev_warn(dev, "Device node not found\n");
-+		return;
++	/* Move sent packets to pending list waiting for feedback */
++	skb_queue_walk_safe(&mq->pending, pfirst, pnext) {
++		struct mm81x_skb_hdr *hdr =
++			(struct mm81x_skb_hdr *)pfirst->data;
++
++		if (le32_to_cpu(hdr->tx_info.pkt_id) == pkt_id) {
++			ret = pfirst;
++			break;
++
++		} else if (le32_to_cpu(hdr->tx_info.pkt_id) < pkt_id &&
++			   __mm81x_skbq_has_pending_tx_skb_timed_out(pfirst)) {
++			__mm81x_skbq_drop_pending_skb(mq, pfirst);
++		}
 +	}
 +
-+	of_id = of_match_node(match_table, np);
-+	if (!of_id) {
-+		dev_warn(dev, "Couldn't match device table\n");
-+		return;
++	return ret;
++}
++
++static void mm81x_skbq_tx_status_process(struct mm81x *mm, struct sk_buff *skb)
++{
++	int i;
++	struct mm81x_skb_tx_status *tx_sts =
++		(struct mm81x_skb_tx_status *)skb->data;
++	int count = skb->len / sizeof(*tx_sts);
++
++	for (i = 0; i < count; tx_sts++, i++) {
++		struct sk_buff *tx_skb;
++		struct mm81x_skbq *mq =
++			__mm81x_skbq_tx_status_to_skbq(mm, tx_sts);
++		bool is_ps_filtered = (le32_to_cpu(tx_sts->flags) &
++				       MM81X_TX_STATUS_FLAGS_PS_FILTERED);
++
++		if (!mq)
++			continue;
++
++		spin_lock_bh(&mq->lock);
++		tx_skb = __mm81x_skbq_get_pending_by_id(
++			mm, mq, le32_to_cpu(tx_sts->pkt_id));
++		if (!tx_skb) {
++			mm81x_dbg(
++				mm, MM81X_DBG_ANY,
++				"No pending pkt match found [pktid:%d chan:%d]",
++				tx_sts->pkt_id, tx_sts->channel);
++			spin_unlock_bh(&mq->lock);
++			continue;
++		}
++
++		if (le32_to_cpu(tx_sts->flags) & MM81X_TX_STATUS_PAGE_INVALID) {
++			__mm81x_skbq_drop_pending_skb(mq, tx_skb);
++			spin_unlock_bh(&mq->lock);
++			continue;
++		}
++
++		if (le32_to_cpu(tx_sts->flags) &
++		    MM81X_TX_STATUS_DUTY_CYCLE_CANT_SEND) {
++			__mm81x_skbq_drop_pending_skb(mq, tx_skb);
++			spin_unlock_bh(&mq->lock);
++			continue;
++		}
++
++		if (is_ps_filtered &&
++		    mm81x_tx_h_is_ps_filtered(mq, tx_skb, tx_sts)) {
++			/* Has been consumed by mm81x_tx_h_is_ps_filtered */
++			spin_unlock_bh(&mq->lock);
++			continue;
++		}
++
++		mm81x_skbq_pull_hdr_post_tx(tx_skb);
++		mm81x_skbq_skb_finish(mq, tx_skb, tx_sts);
++		spin_unlock_bh(&mq->lock);
 +	}
 +
-+	ps->wake_gpio = devm_gpiod_get_optional(dev, "wake", GPIOD_OUT_HIGH);
-+	ps->busy_gpio = devm_gpiod_get_optional(dev, "busy", GPIOD_IN);
-+
-+	ps->gpios_supported = (!IS_ERR_OR_NULL(ps->wake_gpio) &&
-+			       !IS_ERR_OR_NULL(ps->busy_gpio));
-+	if (!ps->gpios_supported) {
-+		dev_warn(
-+			dev,
-+			"wake-gpios and busy-gpios not defined, powersave disabled\n");
++	if (mm->ps.enable && !mm->ps.suspended &&
++	    (mm81x_hif_get_tx_buffered_count(mm) == 0)) {
++		/* Evaluate ps, check if it was gated on a pending tx status */
++		queue_delayed_work(mm->chip_wq, &mm->ps.delayed_eval_work, 0);
 +	}
 +}
 +
-+static void mm81x_sdio_remove(struct sdio_func *func);
-+
-+static void sdio_log_err(struct mm81x_sdio *sdio, const char *operation,
-+			 unsigned int fn, unsigned int address,
-+			 unsigned int len, int ret)
++static void mm81x_skbq_dispatch_work(struct work_struct *dispatch_work)
 +{
-+	struct mm81x *mm = sdio->func ? sdio_get_drvdata(sdio->func) : NULL;
++	struct mm81x_skbq *mq =
++		container_of(dispatch_work, struct mm81x_skbq, dispatch_work);
++	struct mm81x *mm = mq->mm;
++	struct mm81x_skb_hdr *hdr;
++	struct sk_buff_head skbq;
++	struct sk_buff *pfirst, *pnext;
++	u8 channel;
 +
-+	if (!mm)
-+		return;
++	__skb_queue_head_init(&skbq);
 +
-+	mm81x_err(mm, "sdio: %s fn=%d 0x%08x:%d r=0x%08x b=0x%08x (ret:%d)",
-+		  operation, fn, address, len, sdio->register_addr_base,
-+		  sdio->bulk_addr_base, ret);
++	mm81x_skbq_deq_num_skb(mq, &skbq, mm81x_skbq_count(mq));
++
++	skb_queue_walk_safe(&skbq, pfirst, pnext) {
++		__skb_unlink(pfirst, &skbq);
++		/* Header endianness has already be adjusted */
++		hdr = (struct mm81x_skb_hdr *)pfirst->data;
++		channel = hdr->channel;
++		/* Remove mm81x header and padding */
++		__skb_pull(pfirst, sizeof(*hdr) + hdr->offset);
++
++		switch (channel) {
++		case MM81X_SKB_CHAN_COMMAND:
++			mm81x_cmd_resp_process(mm, pfirst);
++			break;
++		case MM81X_SKB_CHAN_TX_STATUS:
++			mm81x_skbq_tx_status_process(mm, pfirst);
++			dev_kfree_skb_any(pfirst);
++			break;
++		default:
++			mm81x_mac_rx_skb(mm, pfirst, &hdr->rx_status);
++			break;
++		}
++	}
++
++	if (mm81x_skbq_count(mq))
++		queue_work(mm->net_wq, &mq->dispatch_work);
 +}
 +
-+static void irq_handler(struct sdio_func *func1)
-+{
-+	int handled;
-+	struct sdio_func *func = func1->card->sdio_func[1];
-+	struct mm81x *mm = sdio_get_drvdata(func);
-+	struct mm81x_sdio *sdio = (struct mm81x_sdio *)mm->drv_priv;
-+
-+	WARN_ON_ONCE(!mm);
-+
-+	(void)sdio;
-+
-+	handled = mm81x_hw_irq_handle(mm);
-+	if (!handled)
-+		mm81x_dbg(mm, MM81X_DBG_SDIO, "%s: nothing was handled\n",
-+			  __func__);
-+}
-+
-+static int mm81x_sdio_enable_irq(struct mm81x_sdio *sdio)
++int mm81x_skbq_put(struct mm81x_skbq *mq, struct sk_buff *skb)
 +{
 +	int ret;
-+	struct sdio_func *func = sdio->func;
-+	struct sdio_func *func1 = func->card->sdio_func[0];
-+	struct mm81x *mm = sdio_get_drvdata(func);
 +
-+	sdio_claim_host(func);
-+	ret = sdio_claim_irq(func1, irq_handler);
-+	if (ret)
-+		mm81x_err(mm, "Failed to enable sdio irq: %d\n", ret);
-+
-+	sdio_release_host(func);
++	spin_lock_bh(&mq->lock);
++	ret = __mm81x_skbq_put(mq, &mq->skbq, skb, false, NULL);
++	spin_unlock_bh(&mq->lock);
 +	return ret;
 +}
 +
-+static void mm81x_sdio_disable_irq(struct mm81x_sdio *sdio)
++static void mm81x_skbq_set_queued_tx_skb_expiry(struct sk_buff *skb)
 +{
-+	struct sdio_func *func = sdio->func;
-+	struct sdio_func *func1 = func->card->sdio_func[0];
++	struct ieee80211_hdr *hdr = (struct ieee80211_hdr *)skb->data;
++	struct ieee80211_tx_info *txi = IEEE80211_SKB_CB(skb);
 +
-+	sdio_claim_host(func);
-+	sdio_release_irq(func1);
-+	sdio_release_host(func);
-+}
-+
-+static void mm81x_sdio_set_irq(struct mm81x *mm, bool enable)
-+{
-+	struct mm81x_sdio *sdio = (struct mm81x_sdio *)mm->drv_priv;
-+
-+	if (enable)
-+		mm81x_sdio_enable_irq(sdio);
-+	else
-+		mm81x_sdio_disable_irq(sdio);
-+}
-+
-+static u32 mm81x_sdio_calculate_base_address(u32 address, u8 access)
-+{
-+	return (address & MM81X_SDIO_RW_ADDR_BOUNDARY_MASK) | (access & 0x3);
-+}
-+
-+static void mm81x_sdio_reset_base_address(struct mm81x_sdio *sdio)
-+{
-+	sdio->bulk_addr_base = MM81X_SDIO_BASE_ADDR_UNSET;
-+	sdio->register_addr_base = MM81X_SDIO_BASE_ADDR_UNSET;
-+}
-+
-+static int mm81x_sdio_set_func_address_base(struct mm81x_sdio *sdio,
-+					    u32 address, u8 access, bool bulk)
-+{
-+	int ret = 0;
-+	u8 base[4];
-+	const char *operation = "set_address_base";
-+	u32 calculated_addr_base =
-+		mm81x_sdio_calculate_base_address(address, access);
-+	u32 *current_addr_base = bulk ? &sdio->bulk_addr_base :
-+					&sdio->register_addr_base;
-+	bool base_addr_is_unset =
-+		(*current_addr_base == MM81X_SDIO_BASE_ADDR_UNSET);
-+	struct sdio_func *func2 = sdio->func;
-+	struct sdio_func *func1 = sdio->func->card->sdio_func[0];
-+	struct sdio_func *func_to_use = bulk ? func2 : func1;
-+	struct mm81x *mm = sdio_get_drvdata(sdio->func);
-+	int retries = 0;
-+	static const int max_retries = 3;
-+
-+	if ((*current_addr_base) == calculated_addr_base && !base_addr_is_unset)
-+		return ret;
-+
-+	base[0] = (u8)((address & 0x00FF0000) >> 16);
-+	base[1] = (u8)((address & 0xFF000000) >> 24);
-+	base[2] = access & 0x3; /* 1, 2 or 4 byte access */
-+
-+retry:
-+	if (base_addr_is_unset ||
-+	    (base[0] != (u8)(((*current_addr_base) & 0x00FF0000) >> 16))) {
-+		sdio_writeb(func_to_use, base[0],
-+			    MM81X_SDIO_REG_ADDRESS_WINDOW_0, &ret);
-+		if (ret) {
-+			sdio_log_err(sdio, operation, func_to_use->num,
-+				     MM81X_SDIO_REG_ADDRESS_WINDOW_0, 1, ret);
-+			goto err;
-+		}
-+	}
-+
-+	if (base_addr_is_unset ||
-+	    (base[1] != (u8)(((*current_addr_base) & 0xFF000000) >> 24))) {
-+		sdio_writeb(func_to_use, base[1],
-+			    MM81X_SDIO_REG_ADDRESS_WINDOW_1, &ret);
-+		if (ret) {
-+			sdio_log_err(sdio, operation, func_to_use->num,
-+				     MM81X_SDIO_REG_ADDRESS_WINDOW_1, 1, ret);
-+			goto err;
-+		}
-+	}
-+
-+	if (base_addr_is_unset ||
-+	    (base[2] != (u8)(((*current_addr_base) & 0x3)))) {
-+		sdio_writeb(func_to_use, base[2], MM81X_SDIO_REG_ADDRESS_CONFIG,
-+			    &ret);
-+		if (ret) {
-+			sdio_log_err(sdio, operation, func_to_use->num,
-+				     MM81X_SDIO_REG_ADDRESS_CONFIG, 1, ret);
-+			goto err;
-+		}
-+	}
-+
-+	*current_addr_base = calculated_addr_base;
-+	if (retries)
-+		mm81x_dbg(mm, MM81X_DBG_SDIO, "%s succeeded after %d retries\n",
-+			  __func__, retries);
-+
-+	return ret;
-+err:
-+	retries++;
-+	if (ret == -ETIMEDOUT && retries <= max_retries) {
-+		mm81x_dbg(mm, MM81X_DBG_SDIO,
-+			  "%s failed (%d), retrying (%d/%d)\n", __func__, ret,
-+			  retries, max_retries);
-+		goto retry;
-+	}
-+
-+	*current_addr_base = MM81X_SDIO_BASE_ADDR_UNSET;
-+	return ret;
-+}
-+
-+static struct sdio_func *mm81x_sdio_get_func(struct mm81x_sdio *sdio,
-+					     u32 address, ssize_t size,
-+					     u8 access)
-+{
-+	int ret = 0;
-+	u32 calculated_base_address =
-+		mm81x_sdio_calculate_base_address(address, access);
-+	struct sdio_func *func2 = sdio->func;
-+	struct sdio_func *func1 = sdio->func ? sdio->func->card->sdio_func[0] :
-+					       NULL;
-+	struct mm81x *mm = sdio->func ? sdio_get_drvdata(sdio->func) : NULL;
-+	struct sdio_func *func_to_use;
-+
-+	WARN_ON(!mm);
-+
-+	/* Order matters here, please don't re-order */
-+	if (size > sizeof(u32)) {
-+		ret = mm81x_sdio_set_func_address_base(sdio, address, access,
-+						       true);
-+		WARN_ON_ONCE(sdio->bulk_addr_base == 0);
-+		func_to_use = func2;
-+	} else if (sdio->bulk_addr_base == calculated_base_address && func2) {
-+		func_to_use = func2;
-+	} else if (func1) {
-+		ret = mm81x_sdio_set_func_address_base(sdio, address, access,
-+						       false);
-+		WARN_ON_ONCE(sdio->register_addr_base == 0);
-+		func_to_use = func1;
++	if (ieee80211_is_probe_req(hdr->frame_control) ||
++	    ieee80211_is_probe_resp(hdr->frame_control) ||
++	    ieee80211_is_auth(hdr->frame_control)) {
++		txi->control.enqueue_time = (u32)jiffies;
 +	} else {
-+		ret = mm81x_sdio_set_func_address_base(sdio, address, access,
-+						       true);
-+		WARN_ON_ONCE(sdio->bulk_addr_base == 0);
-+		func_to_use = func2;
++		txi->control.enqueue_time = 0;
 +	}
-+
-+	return ret ? NULL : func_to_use;
 +}
 +
-+static int mm81x_sdio_regl_write(struct mm81x_sdio *sdio, u32 address,
-+				 u32 value)
++static bool mm81x_skbq_has_queued_tx_skb_expired(struct sk_buff *skb)
 +{
-+	ssize_t ret = 0;
-+	struct mm81x *mm = sdio->func ? sdio_get_drvdata(sdio->func) : NULL;
-+	u32 original_address = address;
-+	struct sdio_func *func_to_use;
++	struct ieee80211_tx_info *txi = IEEE80211_SKB_CB(skb);
 +
-+	if (!mm) {
-+		ret = -EINVAL;
-+		goto exit;
++	if (txi->control.enqueue_time > 0) {
++		u32 expiry_time =
++			txi->control.enqueue_time +
++			msecs_to_jiffies(MM81X_SKBQ_TX_QUEUED_LIFETIME_MS);
++
++		return (s32)((u32)jiffies - expiry_time) > 0;
 +	}
 +
-+	func_to_use = mm81x_sdio_get_func(sdio, address, sizeof(u32),
-+					  MM81X_CONFIG_ACCESS_4BYTE);
-+	if (!func_to_use) {
-+		ret = -EIO;
-+		goto exit;
-+	}
-+
-+	address &= 0x0000FFFF; /* remove base and keep offset */
-+	sdio_writel(func_to_use, (__force u32)cpu_to_le32(value),
-+		    (__force u32)cpu_to_le32(address), (int *)&ret);
-+
-+	if (ret)
-+		sdio_log_err(sdio, "writel", func_to_use->num, address,
-+			     sizeof(u32), ret);
-+	else
-+		ret = sizeof(value);
-+
-+	if (original_address == MM81X_REG_RESET(mm) &&
-+	    value == MM81X_REG_RESET_VALUE(mm)) {
-+		mm81x_dbg(mm, MM81X_DBG_SDIO,
-+			  "SDIO reset detected, invalidating base addr\n");
-+		mm81x_sdio_reset_base_address(sdio);
-+	}
-+exit:
-+	return (int)ret;
++	return false;
 +}
 +
-+static int mm81x_sdio_regl_read(struct mm81x_sdio *sdio, u32 address,
-+				u32 *value)
++/*
++ * Drop selected frames (those with an expiry time set) that could not
++ * be sent within a reasonable timeframe due to congestion. These would
++ * only be rejected or ignored by the peer, so are only contributing to
++ * the problem.
++ */
++void mm81x_skbq_purge_aged(struct mm81x *mm, struct mm81x_skbq *mq)
 +{
-+	ssize_t ret = 0;
-+	struct mm81x *mm = sdio->func ? sdio_get_drvdata(sdio->func) : NULL;
-+	struct sdio_func *func_to_use;
++	int dropped = 0;
++	struct sk_buff *pfirst;
++	struct sk_buff *pnext;
 +
-+	if (!mm) {
-+		ret = -EINVAL;
-+		goto exit;
++	spin_lock_bh(&mq->lock);
++	skb_queue_walk_safe(&mq->skbq, pfirst, pnext) {
++		if (!mm81x_skbq_has_queued_tx_skb_expired(pfirst))
++			break;
++		__mm81x_skbq_unlink(mq, &mq->skbq, pfirst);
++		ieee80211_free_txskb(mm->hw, pfirst);
++		dropped++;
 +	}
 +
-+	func_to_use = mm81x_sdio_get_func(sdio, address, sizeof(u32),
-+					  MM81X_CONFIG_ACCESS_4BYTE);
-+	if (!func_to_use) {
-+		ret = -EIO;
-+		goto exit;
++	spin_unlock_bh(&mq->lock);
++}
++
++void mm81x_skbq_purge(struct mm81x_skbq *mq, struct sk_buff_head *skbq)
++{
++	struct sk_buff *skb;
++
++	spin_lock_bh(&mq->lock);
++	while ((skb = __skb_dequeue(skbq)))
++		dev_kfree_skb_any(skb);
++	spin_unlock_bh(&mq->lock);
++}
++
++void mm81x_skbq_enq(struct mm81x_skbq *mq, struct sk_buff_head *skbq)
++{
++	int size;
++	struct sk_buff *pfirst, *pnext;
++
++	spin_lock_bh(&mq->lock);
++	size = __mm81x_skbq_space(mq);
++	skb_queue_walk_safe(skbq, pfirst, pnext) {
++		if (pfirst->len > size)
++			break;
++		__skb_unlink(pfirst, skbq);
++		__mm81x_skbq_put(mq, &mq->skbq, pfirst, false, NULL);
++		size -= pfirst->len;
 +	}
 +
-+	address &= 0x0000FFFF; /* remove base and keep offset */
-+	*value = sdio_readl(func_to_use, (__force u32)cpu_to_le32(address),
-+			    (int *)&ret);
-+	if (ret)
-+		sdio_log_err(sdio, "readl", func_to_use->num, address,
-+			     sizeof(u32), ret);
-+	else
-+		ret = sizeof(*value);
-+exit:
-+	return (int)ret;
++	spin_unlock_bh(&mq->lock);
 +}
 +
-+static int mm81x_sdio_mem_write(struct mm81x_sdio *sdio, u32 address, u8 *data,
-+				ssize_t size)
++int mm81x_skbq_deq_num_skb(struct mm81x_skbq *mq, struct sk_buff_head *skbq,
++			   int num_skb)
 +{
-+	ssize_t ret = 0;
-+	struct mm81x *mm = sdio->func ? sdio_get_drvdata(sdio->func) : NULL;
-+	int access = (size & 0x03) ? MM81X_CONFIG_ACCESS_1BYTE :
-+				     MM81X_CONFIG_ACCESS_4BYTE;
-+	struct sdio_func *func_to_use;
++	int count = 0;
++	struct sk_buff *pfirst, *pnext;
 +
-+	if (!mm) {
-+		ret = -EINVAL;
-+		goto exit;
++	spin_lock_bh(&mq->lock);
++	skb_queue_walk_safe(&mq->skbq, pfirst, pnext) {
++		if (count >= num_skb)
++			break;
++		__mm81x_skbq_unlink(mq, &mq->skbq, pfirst);
++		__skb_queue_tail(skbq, pfirst);
++		++count;
 +	}
 +
-+	func_to_use = mm81x_sdio_get_func(sdio, address, size, access);
-+	if (!func_to_use) {
-+		ret = -EIO;
-+		goto exit;
-+	}
-+
-+	address &= 0x0000FFFF; /* remove base and keep offset */
-+	if (access == MM81X_CONFIG_ACCESS_4BYTE) {
-+		if (unlikely(!IS_ALIGNED((uintptr_t)data,
-+					 mm->bus_ops->bulk_alignment))) {
-+			ret = -EBADE;
-+			goto exit;
-+		}
-+
-+		/* Use ex write */
-+		ret = sdio_memcpy_toio(func_to_use, address, data, size);
-+
-+		if (ret) {
-+			sdio_log_err(sdio, "memcpy_toio", func_to_use->num,
-+				     address, size, ret);
-+			goto exit;
-+		}
-+	} else {
-+		int i;
-+
-+		for (i = 0; i < size; i++) {
-+			sdio_writeb(func_to_use, data[i], address + i,
-+				    (int *)&ret);
-+			if (ret) {
-+				sdio_log_err(sdio, "writeb", func_to_use->num,
-+					     address + i, 1, ret);
-+				goto exit;
-+			}
-+		}
-+	}
-+	ret = size;
-+exit:
-+	return ret;
++	spin_unlock_bh(&mq->lock);
++	return count;
 +}
 +
-+static void mm81x_sdio_claim_host(struct mm81x *mm)
++void mm81x_skbq_enq_prepend(struct mm81x_skbq *mq, struct sk_buff_head *skbq)
 +{
-+	struct mm81x_sdio *sdio = (struct mm81x_sdio *)mm->drv_priv;
-+	struct sdio_func *func = sdio->func;
++	int size;
++	struct sk_buff *pfirst, *pnext;
 +
-+	sdio_claim_host(func);
-+}
++	spin_lock_bh(&mq->lock);
++	size = __mm81x_skbq_space(mq);
 +
-+static void mm81x_sdio_release_host(struct mm81x *mm)
-+{
-+	struct mm81x_sdio *sdio = (struct mm81x_sdio *)mm->drv_priv;
-+	struct sdio_func *func = sdio->func;
-+
-+	sdio_release_host(func);
-+}
-+
-+static int mm81x_sdio_mem_read(struct mm81x_sdio *sdio, u32 address, u8 *data,
-+			       ssize_t size)
-+{
-+	ssize_t ret = 0;
-+	struct mm81x *mm = sdio->func ? sdio_get_drvdata(sdio->func) : NULL;
-+	int access = (size & 0x03) ? MM81X_CONFIG_ACCESS_1BYTE :
-+				     MM81X_CONFIG_ACCESS_4BYTE;
-+	struct sdio_func *func_to_use;
-+
-+	if (!mm) {
-+		ret = -EINVAL;
-+		goto exit;
-+	}
-+
-+	func_to_use = mm81x_sdio_get_func(sdio, address, size, access);
-+	if (!func_to_use) {
-+		ret = -EIO;
-+		goto exit;
-+	}
-+
-+	address &= 0x0000FFFF; /* remove base and keep offset */
-+	if (access == MM81X_CONFIG_ACCESS_4BYTE) {
-+		if (unlikely(!IS_ALIGNED((uintptr_t)data,
-+					 mm->bus_ops->bulk_alignment))) {
-+			ret = -EBADE;
-+			goto exit;
-+		}
-+
-+		ret = sdio_memcpy_fromio(func_to_use, data, address, size);
-+		if (ret) {
-+			sdio_log_err(sdio, "memcpy_fromio", func_to_use->num,
-+				     address, size, ret);
-+			goto exit;
-+		}
-+
-+		/*
-+		 * Observed sometimes that SDIO read repeats the first 4-bytes
-+		 * word twice, overwriting second word (hence, tail will be
-+		 * overwritten with 'sync' byte). When this happens, reading
-+		 * will fetch the correct word. NB: if repeated again, pass it
-+		 * anyway and upper layers will handle it
-+		 */
-+		if (size >= 8 && memcmp(data, data + 4, 4) == 0)
-+			sdio_memcpy_fromio(func_to_use, data, address, 8);
-+	} else {
-+		int i;
-+
-+		for (i = 0; i < size; i++) {
-+			data[i] = sdio_readb(func_to_use, address + i,
-+					     (int *)&ret);
-+			if (ret) {
-+				sdio_log_err(sdio, "readb", func_to_use->num,
-+					     address + i, 1, ret);
-+				goto exit;
-+			}
-+		}
-+	}
-+	ret = size;
-+exit:
-+	return ret;
-+}
-+
-+static int mm81x_sdio_dm_write(struct mm81x *mm, u32 address, const u8 *data,
-+			       int len)
-+{
-+	int ret = 0;
-+	struct mm81x_sdio *sdio = (struct mm81x_sdio *)mm->drv_priv;
-+	int remaining = len;
-+	int offset = 0;
-+
-+	if (WARN_ON(len < 0))
-+		return -EINVAL;
-+
-+	while (remaining > 0) {
-+		/*
-+		 * We can only write up to the end of a single window in
-+		 * each write operation.
-+		 */
-+		u32 window_end = (address + offset) |
-+				 ~MM81X_SDIO_RW_ADDR_BOUNDARY_MASK;
-+
-+		len = min(remaining, (int)(window_end + 1 - address - offset));
-+		ret = mm81x_sdio_mem_write(sdio, address + offset,
-+					   (u8 *)(data + offset), len);
-+		if (ret != len)
-+			return -EIO;
-+
-+		offset += len;
-+		WARN_ON_ONCE(len > remaining);
-+		remaining -= len;
-+	}
-+
-+	return 0;
-+}
-+
-+static int mm81x_sdio_dm_read(struct mm81x *mm, u32 address, u8 *data, int len)
-+{
-+	int ret = 0;
-+	struct mm81x_sdio *sdio = (struct mm81x_sdio *)mm->drv_priv;
-+	int remaining = len;
-+	int offset = 0;
-+
-+	if (WARN_ON(len < 0))
-+		return -EINVAL;
-+
-+	WARN_ON_ONCE(len % 4);
-+
-+	while (remaining > 0) {
-+		/*
-+		 * We can only read up to the end of a single window in
-+		 * each read operation.
-+		 */
-+		u32 window_end = (address + offset) |
-+				 ~MM81X_SDIO_RW_ADDR_BOUNDARY_MASK;
-+
-+		len = min(remaining, (int)(window_end + 1 - address - offset));
-+		ret = mm81x_sdio_mem_read(sdio, address + offset, data + offset,
-+					  len);
-+		if (ret != len)
-+			return -EIO;
-+
-+		offset += len;
-+		WARN_ON_ONCE(len > remaining);
-+		remaining -= len;
-+	}
-+
-+	return 0;
-+}
-+
-+static int mm81x_sdio_reg32_write(struct mm81x *mm, u32 address, u32 val)
-+{
-+	ssize_t ret = 0;
-+	struct mm81x_sdio *sdio = (struct mm81x_sdio *)mm->drv_priv;
-+
-+	ret = mm81x_sdio_regl_write(sdio, address, val);
-+	if (ret == sizeof(val))
-+		return 0;
-+
-+	return -EIO;
-+}
-+
-+static int mm81x_sdio_reg32_read(struct mm81x *mm, u32 address, u32 *val)
-+{
-+	ssize_t ret = 0;
-+	struct mm81x_sdio *sdio = (struct mm81x_sdio *)mm->drv_priv;
-+
-+	ret = mm81x_sdio_regl_read(sdio, address, val);
-+	if (ret == sizeof(*val)) {
-+		*val = le32_to_cpup((__le32 *)val);
-+		return 0;
-+	}
-+	return -EIO;
-+}
-+
-+static void mm81x_sdio_bus_enable(struct mm81x *mm, bool enable)
-+{
-+	struct mm81x_sdio *sdio = (struct mm81x_sdio *)mm->drv_priv;
-+	struct sdio_func *func = sdio->func;
-+	struct mmc_host *host = func->card->host;
-+
-+	sdio_claim_host(func);
-+
-+	if (enable) {
-+		/*
-+		 * No need to do anything special to re-enable the sdio bus.
-+		 * This will happen automatically when a read/write is
-+		 * attempted and sdio->bulk_addr_base == 0.
-+		 */
-+		sdio->enabled = true;
-+		host->ops->enable_sdio_irq(host, 1);
-+		mm81x_dbg(mm, MM81X_DBG_SDIO, "%s: enabling bus\n", __func__);
-+	} else {
-+		host->ops->enable_sdio_irq(host, 0);
-+		mm81x_sdio_reset_base_address(sdio);
-+		sdio->enabled = false;
-+		mm81x_dbg(mm, MM81X_DBG_SDIO, "%s: disabling bus\n", __func__);
-+	}
-+
-+	sdio_release_host(func);
-+}
-+
-+static void mm81x_sdio_reset(struct sdio_func *func)
-+{
-+	/* reset the adapter */
-+	sdio_claim_host(func);
-+	sdio_disable_func(func);
-+	sdio_release_host(func);
-+
-+	mdelay(20);
-+
-+	sdio_claim_host(func);
-+	sdio_disable_func(func);
-+	mmc_hw_reset(func->card);
-+	sdio_enable_func(func);
-+	sdio_release_host(func);
-+}
-+
-+static void mm81x_sdio_config_burst_mode(struct mm81x *mm, bool enable_burst)
-+{
-+	u8 burst_mode = (enable_burst) ? SDIO_WORD_BURST_SIZE_16 :
-+					 SDIO_WORD_BURST_DISABLE;
-+
-+	mm81x_hw_enable_burst_mode(mm, burst_mode);
-+}
-+
-+static const struct mm81x_bus_ops mm81x_sdio_ops = {
-+	.dm_read = mm81x_sdio_dm_read,
-+	.dm_write = mm81x_sdio_dm_write,
-+	.reg32_read = mm81x_sdio_reg32_read,
-+	.reg32_write = mm81x_sdio_reg32_write,
-+	.set_bus_enable = mm81x_sdio_bus_enable,
-+	.claim = mm81x_sdio_claim_host,
-+	.release = mm81x_sdio_release_host,
-+	.config_burst_mode = mm81x_sdio_config_burst_mode,
-+	.set_irq = mm81x_sdio_set_irq,
-+	.bulk_alignment = MM81X_SDIO_ALIGNMENT
-+};
-+
-+static int mm81x_sdio_enable(struct mm81x_sdio *sdio)
-+{
-+	int ret;
-+	struct sdio_func *func = sdio->func;
-+	struct mm81x *mm = sdio_get_drvdata(func);
-+
-+	sdio_claim_host(func);
-+	ret = sdio_enable_func(func);
-+	if (ret)
-+		mm81x_err(mm, "sdio_enable_func failed: %d\n", ret);
-+	sdio_release_host(func);
-+	return ret;
-+}
-+
-+static void mm81x_sdio_release(struct mm81x_sdio *sdio)
-+{
-+	struct sdio_func *func = sdio->func;
-+
-+	sdio_claim_host(func);
-+	sdio_disable_func(func);
-+	sdio_release_host(func);
-+}
-+
-+static const struct of_device_id mm81x_of_match_table[] = {
++	/*
++	 * We are doing a reverse walk here to ensure the order remains the
++	 * same. This means the last member of the queue goes in, on top of
++	 * the queue first and gets pushed down as more members get added to
++	 * the top of the queue.
++	 */
++	skb_queue_reverse_walk_safe(skbq, pfirst, pnext)
 +	{
-+		.compatible = "morsemicro,mm81x",
-+	},
-+	{},
-+};
++		if (pfirst->len > size)
++			break;
++		__skb_unlink(pfirst, skbq);
++		__mm81x_skbq_put(mq, &mq->skbq, pfirst, true, NULL);
++		size -= pfirst->len;
++	}
 +
-+static int mm81x_sdio_probe(struct sdio_func *func,
-+			    const struct sdio_device_id *id)
++	spin_unlock_bh(&mq->lock);
++}
++
++static void mm81x_skbq_stop_tx_queues(struct mm81x *mm)
 +{
-+	int ret = 0;
-+	u32 chip_id;
-+	struct mm81x *mm = NULL;
-+	struct mm81x_sdio *sdio;
-+	struct device *dev = &func->dev;
++	int queue;
 +
-+	if (func->num == 1)
++	if (!mm->started)
++		return;
++	for (queue = IEEE80211_AC_VO; queue <= IEEE80211_AC_BK; queue++)
++		ieee80211_stop_queue(mm->hw, queue);
++
++	set_bit(MM81X_STATE_DATA_QS_STOPPED, &mm->state_flags);
++}
++
++/* Wake all Tx queues if all queues are below threshold */
++void mm81x_skbq_may_wake_tx_queues(struct mm81x *mm)
++{
++	int queue;
++	struct mm81x_skbq *qs;
++	int num_qs;
++	bool could_wake;
++
++	if (!mm->started)
++		return;
++
++	could_wake = true;
++	mm81x_hif_skbq_get_tx_qs(mm, &qs, &num_qs);
++	for (queue = 0; queue < num_qs; queue++) {
++		struct mm81x_skbq *mq = &qs[queue];
++
++		if (!could_wake)
++			break;
++
++		spin_lock_bh(&mq->lock);
++		could_wake &= (__mm81x_skbq_under_threshold(mq));
++		spin_unlock_bh(&mq->lock);
++	}
++
++	if (!could_wake)
++		return;
++
++	for (queue = IEEE80211_AC_VO; queue <= IEEE80211_AC_BK; queue++)
++		ieee80211_wake_queue(mm->hw, queue);
++
++	clear_bit(MM81X_STATE_DATA_QS_STOPPED, &mm->state_flags);
++}
++
++static int mm81x_skbq_tx(struct mm81x_skbq *mq, struct sk_buff *skb, u8 channel)
++{
++	int rc;
++	bool mq_over_threshold;
++	struct mm81x *mm = mq->mm;
++
++	spin_lock_bh(&mq->lock);
++	rc = __mm81x_skbq_put(mq, &mq->skbq, skb, false, NULL);
++	if (rc) {
++		mm81x_err(mm, "skb put chan %d failed (%d)", channel, rc);
++		if (channel == MM81X_SKB_CHAN_DATA) {
++			u16 queue = skb_get_queue_mapping(skb);
++
++			mm81x_err(mm, "skb put queue %d status %d", queue,
++				  ieee80211_queue_stopped(mm->hw, queue));
++		}
++	}
++
++	/* Fill packet ID in TX info */
++	__mm81x_skbq_pkt_id(mq, skb);
++
++	mq_over_threshold = __mm81x_skbq_over_threshold(mq);
++	spin_unlock_bh(&mq->lock);
++
++	/* For data packets stop queues */
++	if (channel == MM81X_SKB_CHAN_DATA && mq_over_threshold)
++		mm81x_skbq_stop_tx_queues(mm);
++
++	switch (channel) {
++	case MM81X_SKB_CHAN_DATA:
++	case MM81X_SKB_CHAN_DATA_NOACK:
++		if (mm81x_is_data_tx_allowed(mm)) {
++			set_bit(MM81X_HIF_EVT_TX_DATA_PEND,
++				&mm->hif.event_flags);
++			queue_work(mm->chip_wq, &mm->hif_work);
++		}
++		break;
++	case MM81X_SKB_CHAN_MGMT:
++		set_bit(MM81X_HIF_EVT_TX_MGMT_PEND, &mm->hif.event_flags);
++		queue_work(mm->chip_wq, &mm->hif_work);
++		break;
++	case MM81X_SKB_CHAN_BEACON:
++		set_bit(MM81X_HIF_EVT_TX_BEACON_PEND, &mm->hif.event_flags);
++		queue_work(mm->chip_wq, &mm->hif_work);
++		break;
++	case MM81X_SKB_CHAN_COMMAND:
++		set_bit(MM81X_HIF_EVT_TX_COMMAND_PEND, &mm->hif.event_flags);
++		queue_work(mm->chip_wq, &mm->hif_work);
++		break;
++	default:
++		mm81x_err(mm, "Invalid skb channel: %d", channel);
++		break;
++	}
++
++	return rc;
++}
++
++static inline void __mm81x_skbq_tx_move_to_pending(struct mm81x_skbq *mq,
++						   struct sk_buff *skb)
++{
++	struct mm81x_tx_status_priv *pend_info =
++		__mm81x_skbq_tx_status_priv(skb);
++
++	pend_info->tx_status_expiry =
++		jiffies + msecs_to_jiffies(MM81X_SKBQ_TX_STATUS_LIFETIME_MS);
++	__mm81x_skbq_put(mq, &mq->pending, skb, false, NULL);
++}
++
++void mm81x_skbq_tx_complete(struct mm81x_skbq *mq, struct sk_buff_head *skbq)
++{
++	bool skb_awaits_tx_status = false;
++	struct mm81x *mm = mq->mm;
++	struct sk_buff *pfirst, *pnext;
++	struct sk_buff *peek = skb_peek(skbq);
++	struct mm81x_skb_hdr *hdr;
++	const bool fw_reports_bcn_tx_status =
++		mm->firmware_flags &
++		MM81X_FW_FLAGS_REPORTS_TX_BEACON_COMPLETION;
++
++	if (!peek)
++		return;
++
++	/* Move sent packets to pending list waiting for feedback */
++	spin_lock_bh(&mq->lock);
++	skb_queue_walk_safe(skbq, pfirst, pnext) {
++		__skb_unlink(pfirst, skbq);
++		hdr = (struct mm81x_skb_hdr *)pfirst->data;
++		/*
++		 * If firmware doesn't give status on beacons just free
++		 * them, otherwise queue and wait for response.
++		 */
++		switch (hdr->channel) {
++		case MM81X_SKB_CHAN_BEACON:
++			if (fw_reports_bcn_tx_status) {
++				__mm81x_skbq_tx_move_to_pending(mq, pfirst);
++				skb_awaits_tx_status = true;
++				break;
++			}
++			/*
++			 * If the FW doesn't give statuses on beacon's,
++			 * then mark them as done.
++			 */
++			mm81x_skbq_pull_hdr_post_tx(pfirst);
++			dev_kfree_skb_any(pfirst);
++			break;
++		default:
++			if (le32_to_cpu(hdr->tx_info.flags) &
++			    MM81X_TX_STATUS_FLAGS_NO_REPORT) {
++				dev_kfree_skb_any(pfirst);
++			} else {
++				/*
++				 * skb has been given to the chip. Store the
++				 * time and queue the skb onto the pending
++				 * queue while we wait for the tx_status.
++				 */
++				__mm81x_skbq_tx_move_to_pending(mq, pfirst);
++				skb_awaits_tx_status = true;
++			}
++			break;
++		}
++	}
++	spin_unlock_bh(&mq->lock);
++
++	if (skb_awaits_tx_status) {
++		spin_lock_bh(&mm->stale_status.lock);
++		mod_timer(&mm->stale_status.timer,
++			  jiffies + msecs_to_jiffies(
++					    MM81X_SKBQ_TX_STATUS_LIFETIME_MS));
++		spin_unlock_bh(&mm->stale_status.lock);
++	}
++}
++
++/* Returns the first skb in the pending list. */
++struct sk_buff *mm81x_skbq_tx_pending(struct mm81x_skbq *mq)
++{
++	struct sk_buff *pfirst;
++
++	spin_lock_bh(&mq->lock);
++	pfirst = skb_peek(&mq->pending);
++	spin_unlock_bh(&mq->lock);
++	return pfirst;
++}
++
++int mm81x_skbq_check_for_stale_tx(struct mm81x *mm, struct mm81x_skbq *mq)
++{
++	int flushed = 0;
++	struct sk_buff *pfirst;
++	struct sk_buff *pnext;
++
++	if (!skb_queue_len(&mq->pending))
 +		return 0;
 +
-+	if (func->num != 2)
-+		return -ENODEV;
++	/* Move sent packets to pending list waiting for feedback */
++	spin_lock_bh(&mq->lock);
++	skb_queue_walk_safe(&mq->pending, pfirst, pnext) {
++		struct mm81x_skb_hdr *hdr =
++			(struct mm81x_skb_hdr *)pfirst->data;
 +
-+	mm = mm81x_mac_create(sizeof(*sdio), dev);
-+	if (!mm) {
-+		dev_err(dev, "mm81x_mac_create failed\n");
-+		return -ENOMEM;
++		if (__mm81x_skbq_has_pending_tx_skb_timed_out(pfirst)) {
++			mm81x_dbg(mm, MM81X_DBG_ANY,
++				  "TX skb timed out [id:%d,chan:%d]",
++				  hdr->tx_info.pkt_id, hdr->channel);
++
++			__mm81x_skbq_drop_pending_skb(mq, pfirst);
++			flushed++;
++		}
 +	}
 +
-+	mm->bus_ops = &mm81x_sdio_ops;
-+	mm->bus_type = MM81X_BUS_TYPE_SDIO;
++	spin_unlock_bh(&mq->lock);
++	return flushed;
++}
 +
-+	sdio = (struct mm81x_sdio *)mm->drv_priv;
-+	sdio->func = func;
-+	sdio->id = id;
-+	sdio->enabled = true;
-+	mm81x_sdio_reset_base_address(sdio);
++/* Remove commands from pending (or skbq if not sent) */
++static void __skbq_cmd_finish(struct mm81x_skbq *mq, struct sk_buff *skb)
++{
++	struct mm81x *mm = mq->mm;
 +
-+	sdio_set_drvdata(func, mm);
++	if (skb_queue_len(&mq->pending)) {
++		__mm81x_skbq_unlink(mq, &mq->pending, skb);
++		dev_kfree_skb(skb);
++	} else if (skb_queue_len(&mq->skbq)) {
++		/* Command was probably timed out before being sent */
++		mm81x_dbg(mm, MM81X_DBG_SKBQ,
++			  "Command pending queue empty. Removing from SKBQ.");
++		__mm81x_skbq_unlink(mq, &mq->skbq, skb);
++		dev_kfree_skb(skb);
++	} else {
++		mm81x_dbg(mm, MM81X_DBG_SKBQ, "Command Q not found");
++	}
++}
 +
-+	ret = mm81x_sdio_enable(sdio);
-+	if (ret) {
-+		mm81x_err(mm, "mm81x_sdio_enable failed: %d\n", ret);
-+		goto err_destroy_mac;
++struct mm81x_update_sta_iter_data {
++	struct mm81x *mm;
++	struct sk_buff *skb;
++	struct mm81x_skb_tx_status *tx_sts;
++	int tx_attempts;
++	bool updated;
++};
++
++static void mm81x_tx_h_update_sta_iter(void *data, u8 *mac,
++				       struct ieee80211_vif *vif)
++{
++	struct mm81x_update_sta_iter_data *iter = data;
++	struct ieee80211_hdr *hdr;
++	struct ieee80211_sta *sta;
++
++	if (iter->updated || !iter->skb || !iter->skb->data)
++		return;
++
++	hdr = (struct ieee80211_hdr *)iter->skb->data;
++
++	/*
++	 * Note that each iteration via
++	 * ieee80211_iterate_active_interfaces_atomic is under an RCU critical
++	 * section so there is no need for a local critical section within here
++	 * when looking up the station.
++	 */
++	sta = ieee80211_find_sta(vif, hdr->addr1);
++	if (!sta)
++		return;
++
++	mm81x_rc_sta_feedback_rates(iter->mm, iter->skb, sta, iter->tx_sts,
++				    iter->tx_attempts);
++	mm81x_tx_h_check_aggr(sta, iter->skb);
++
++	/*
++	 * In situations with multiple virtual interfaces, finish iteration
++	 * once we have found our STA to prevent further iteration.
++	 */
++	iter->updated = true;
++}
++
++/* TX status/Response received remove packet from pending TX finish */
++static void __skbq_data_tx_finish(struct mm81x_skbq *mq, struct sk_buff *skb,
++				  struct mm81x_skb_tx_status *tx_sts)
++{
++	struct mm81x *mm = mq->mm;
++	struct mm81x_update_sta_iter_data iter = {};
++
++	__mm81x_skbq_unlink(mq, &mq->pending, skb);
++	iter.mm = mm;
++	iter.skb = skb;
++	iter.tx_sts = tx_sts;
++	iter.tx_attempts = mm81x_tx_h_get_attempts(mm, tx_sts);
++
++	ieee80211_iterate_active_interfaces_atomic(mm->hw,
++						   IEEE80211_IFACE_ITER_NORMAL,
++						   mm81x_tx_h_update_sta_iter,
++						   &iter);
++
++	ieee80211_tx_status_skb(mm->hw, skb);
++}
++
++void mm81x_skbq_skb_finish(struct mm81x_skbq *mq, struct sk_buff *skb,
++			   struct mm81x_skb_tx_status *tx_sts)
++{
++	if (mq->flags & MM81X_HIF_FLAGS_COMMAND)
++		__skbq_cmd_finish(mq, skb);
++	else
++		__skbq_data_tx_finish(mq, skb, tx_sts);
++}
++
++void mm81x_skbq_tx_flush(struct mm81x_skbq *mq)
++{
++	struct sk_buff *pfirst, *pnext;
++
++	spin_lock_bh(&mq->lock);
++	skb_queue_walk_safe(&mq->pending, pfirst, pnext) {
++		__mm81x_skbq_unlink(mq, &mq->pending, pfirst);
++		ieee80211_free_txskb(mq->mm->hw, pfirst);
 +	}
 +
-+	ret = mm81x_core_attach_regs(mm);
-+	if (ret) {
-+		mm81x_err(mm, "mm81x_core_attach_regs failed: %d\n", ret);
-+		goto err_destroy_sdio;
++	skb_queue_walk_safe(&mq->skbq, pfirst, pnext) {
++		__mm81x_skbq_unlink(mq, &mq->skbq, pfirst);
++		ieee80211_free_txskb(mq->mm->hw, pfirst);
 +	}
++	spin_unlock_bh(&mq->lock);
++}
 +
-+	mm81x_claim_bus(mm);
-+	ret = mm81x_reg32_read(mm, MM81X_REG_CHIP_ID(mm), &chip_id);
-+	mm81x_release_bus(mm);
-+	if (ret || chip_id != mm->chip_id) {
-+		mm81x_err(mm, "Chip ID read failed: %d\n", ret);
-+		goto err_destroy_sdio;
-+	}
++void mm81x_skbq_init(struct mm81x *mm, struct mm81x_skbq *mq, u16 flags)
++{
++	spin_lock_init(&mq->lock);
++	__skb_queue_head_init(&mq->skbq);
++	__skb_queue_head_init(&mq->pending);
++	mq->mm = mm;
++	mq->skbq_size = 0;
++	mq->flags = flags;
++	mq->pkt_seq = 0;
++	if (flags & MM81X_HIF_FLAGS_DIR_TO_HOST)
++		INIT_WORK(&mq->dispatch_work, mm81x_skbq_dispatch_work);
++}
 +
-+	mm81x_dbg(mm, MM81X_DBG_SDIO,
-+		  "Morse Micro SDIO device found, chip ID=0x%04x\n",
-+		  mm->chip_id);
++void mm81x_skbq_finish(struct mm81x_skbq *mq)
++{
++	if (mq->skbq_size > 0)
++		mm81x_dbg(mq->mm, MM81X_DBG_SKBQ,
++			  "Purging a non empty MorseQ. Dropping data!");
 +
-+	mm81x_sdio_of_probe(dev, &mm->ps, mm81x_of_match_table);
-+	mm81x_sdio_config_burst_mode(mm, true);
++	/* Clean up link to hif */
++	if (mq->flags & MM81X_HIF_FLAGS_DIR_TO_HOST)
++		cancel_work_sync(&mq->dispatch_work);
++	mm81x_skbq_purge(mq, &mq->skbq);
++	mm81x_skbq_purge(mq, &mq->pending);
++	mq->skbq_size = 0;
++}
 +
-+	mm81x_core_init_mac_addr(mm);
++u32 mm81x_skbq_size(struct mm81x_skbq *mq)
++{
++	u32 count;
 +
-+	ret = mm81x_core_create(mm);
-+	if (ret)
-+		goto err_destroy_sdio;
++	spin_lock_bh(&mq->lock);
++	count = __mm81x_skbq_size(mq);
++	spin_unlock_bh(&mq->lock);
++	return count;
++}
 +
-+	ret = mm81x_sdio_enable_irq(sdio);
-+	if (ret) {
-+		mm81x_err(mm, "mm81x_sdio_enable_irq failed: %d\n", ret);
-+		goto err_destroy_core;
-+	}
++u32 mm81x_skbq_count(struct mm81x_skbq *mq)
++{
++	u32 count = 0;
 +
-+	ret = mm81x_mac_register(mm);
-+	if (ret) {
-+		mm81x_err(mm, "mm81x_mac_register failed: %d\n", ret);
-+		goto err_disable_irq;
++	spin_lock_bh(&mq->lock);
++	count += skb_queue_len(&mq->skbq);
++	spin_unlock_bh(&mq->lock);
++	return count;
++}
++
++u32 mm81x_skbq_pending_count(struct mm81x_skbq *mq)
++{
++	u32 count;
++
++	spin_lock_bh(&mq->lock);
++	count = skb_queue_len(&mq->pending);
++	spin_unlock_bh(&mq->lock);
++	return count;
++}
++
++u32 mm81x_skbq_count_tx_ready(struct mm81x_skbq *mq)
++{
++	struct mm81x *mm = mq->mm;
++
++	if (!mm81x_is_data_tx_allowed(mm))
++		return 0;
++
++	return mm81x_skbq_count(mq);
++}
++
++u32 mm81x_skbq_space(struct mm81x_skbq *mq)
++{
++	u32 space;
++
++	spin_lock_bh(&mq->lock);
++	space = __mm81x_skbq_space(mq);
++	spin_unlock_bh(&mq->lock);
++
++	return space;
++}
++
++struct sk_buff *mm81x_skbq_alloc_skb(struct mm81x_skbq *mq, unsigned int length)
++{
++	struct sk_buff *skb;
++	int tx_headroom =
++		sizeof(struct mm81x_skb_hdr) + mm81x_bus_get_alignment(mq->mm);
++	int skb_len = tx_headroom + length + MM81X_PAD4(length);
++
++	skb = dev_alloc_skb(skb_len);
++	if (!skb)
++		return NULL;
++
++	skb_reserve(skb, tx_headroom);
++	skb_put(skb, length);
++	return skb;
++}
++
++static int mm81x_skb_tx_h_validate_channel(const struct mm81x *mm, u8 channel)
++{
++	if (channel == MM81X_SKB_CHAN_COMMAND) {
++		if (test_bit(MM81X_STATE_HOST_TO_CHIP_CMD_BLOCKED,
++			     &mm->state_flags))
++			return -EPERM;
++	} else {
++		if (test_bit(MM81X_STATE_HOST_TO_CHIP_TX_BLOCKED,
++			     &mm->state_flags))
++			return -EPERM;
 +	}
 +
 +	return 0;
-+
-+err_disable_irq:
-+	mm81x_sdio_disable_irq(sdio);
-+err_destroy_core:
-+	mm81x_core_destroy(mm);
-+err_destroy_sdio:
-+	mm81x_sdio_release(sdio);
-+err_destroy_mac:
-+	mm81x_mac_destroy(mm);
-+	return ret;
 +}
 +
-+static void mm81x_sdio_remove(struct sdio_func *func)
-+{
-+	struct mm81x *mm = sdio_get_drvdata(func);
-+	struct mm81x_sdio *sdio = (struct mm81x_sdio *)mm->drv_priv;
-+
-+	dev_info(&func->dev, "sdio removed func %d vendor 0x%x device 0x%x\n",
-+		 func->num, func->vendor, func->device);
-+
-+	if (!mm)
-+		return;
-+
-+	mm81x_mac_unregister(mm);
-+	mm81x_sdio_disable_irq(sdio);
-+	mm81x_core_destroy(mm);
-+	mm81x_sdio_release(sdio);
-+	mm81x_sdio_reset(func);
-+	mm81x_mac_destroy(mm);
-+	sdio_set_drvdata(func, NULL);
-+}
-+
-+static const struct sdio_device_id mm81x_sdio_devices[] = {
-+	{ SDIO_DEVICE(SDIO_VENDOR_ID_MORSEMICRO,
-+		      SDIO_VENDOR_ID_MORSEMICRO_MM81XB1) },
-+	{ SDIO_DEVICE(SDIO_VENDOR_ID_MORSEMICRO,
-+		      SDIO_VENDOR_ID_MORSEMICRO_MM81XB2) },
-+	{},
-+};
-+
-+MODULE_DEVICE_TABLE(sdio, mm81x_sdio_devices);
-+
-+static struct sdio_driver mm81x_sdio_driver = {
-+	.name = "mm81x_sdio",
-+	.id_table = mm81x_sdio_devices,
-+	.probe = mm81x_sdio_probe,
-+	.remove = mm81x_sdio_remove,
-+};
-+
-+int __init mm81x_sdio_init(void)
++int mm81x_skbq_skb_tx(struct mm81x_skbq *mq, struct sk_buff **skb_orig,
++		      struct mm81x_skb_tx_info *tx_info, u8 channel)
 +{
 +	int ret;
++	struct mm81x_skb_hdr hdr;
++	struct mm81x *mm = mq->mm;
++	size_t end_of_skb_pad;
++	struct sk_buff *skb = *skb_orig;
++	u8 *aligned_head, *data;
 +
-+	ret = sdio_register_driver(&mm81x_sdio_driver);
-+	if (ret)
-+		pr_err("sdio_register_driver() failed: %d\n", ret);
++	if (test_bit(MM81X_STATE_CHIP_UNRESPONSIVE, &mm->state_flags)) {
++		dev_kfree_skb_any(skb);
++		return -ENODEV;
++	}
++
++	ret = mm81x_skb_tx_h_validate_channel(mm, channel);
++	if (ret) {
++		dev_kfree_skb_any(skb);
++		return ret;
++	}
++
++	mm81x_skbq_set_queued_tx_skb_expiry(skb);
++
++	data = skb->data;
++	aligned_head = PTR_ALIGN_DOWN((data - sizeof(hdr)),
++				      mm81x_bus_get_alignment(mm));
++	hdr.sync = MM81X_SKB_HEADER_SYNC;
++	hdr.channel = channel;
++	hdr.len = cpu_to_le16(skb->len);
++	hdr.offset = data - (aligned_head + sizeof(hdr));
++	hdr.checksum_upper = 0;
++	hdr.checksum_lower = 0;
++	if (tx_info)
++		memcpy(&hdr.tx_info, tx_info, sizeof(*tx_info));
++	else
++		memset(&hdr.tx_info, 0, sizeof(hdr.tx_info));
++
++	skb_push(skb, data - aligned_head);
++	memcpy(skb->data, &hdr, sizeof(hdr));
++
++	end_of_skb_pad = MM81X_PAD4(skb->len);
++	if (end_of_skb_pad && skb_pad(skb, end_of_skb_pad))
++		return -EINVAL;
++
++	ret = mm81x_skbq_tx(mq, skb, channel);
++	if (ret) {
++		mm81x_err(mm, "mm81x_skbq_tx fail: %d", ret);
++		dev_kfree_skb_any(skb);
++	}
 +
 +	return ret;
 +}
 +
-+void __exit mm81x_sdio_exit(void)
++void mm81x_skbq_data_traffic_pause(struct mm81x *mm)
 +{
-+	sdio_unregister_driver(&mm81x_sdio_driver);
++	set_bit(MM81X_STATE_DATA_TX_STOPPED, &mm->state_flags);
++	/* power-save requirements will be re-evaluated by the caller */
++}
++
++void mm81x_skbq_data_traffic_resume(struct mm81x *mm)
++{
++	clear_bit(MM81X_STATE_DATA_TX_STOPPED, &mm->state_flags);
++
++	/* Set the TX_DATA_PEND bit. This will kick the transmission path to
++	 * send any frames pending in the TX buffers, and wake the mac80211
++	 * data Qs if they were previously stopped.
++	 */
++	set_bit(MM81X_HIF_EVT_TX_DATA_PEND, &mm->hif.event_flags);
++}
++
++bool mm81x_skbq_validate_checksum(u8 *data)
++{
++	int i;
++	u32 xor = 0;
++	struct mm81x_skb_hdr *skb_hdr = (struct mm81x_skb_hdr *)data;
++	struct ieee80211_hdr *hdr =
++		(struct ieee80211_hdr *)(data + sizeof(*skb_hdr));
++	u16 len = le16_to_cpu(skb_hdr->len) + sizeof(*skb_hdr);
++	u32 *data_to_xor = (u32 *)data;
++	u32 header_xor = (le16_to_cpu(skb_hdr->checksum_upper) << 8) |
++			 (skb_hdr->checksum_lower);
++
++	/*
++	 * For data frames the calculate the xor for skb header, mac header
++	 * and ccmp header. For all other channel the xor is calculated for
++	 * the full skb.
++	 */
++	if (skb_hdr->channel == MM81X_SKB_CHAN_DATA &&
++	    (ieee80211_is_data(hdr->frame_control) ||
++	     ieee80211_is_data_qos(hdr->frame_control))) {
++		u16 data_len = sizeof(*skb_hdr) +
++			       sizeof(struct ieee80211_qos_hdr) +
++			       IEEE80211_CCMP_HDR_LEN;
++
++		len = min(len, data_len);
++		len = ROUND_DOWN_TO_WORD(len);
++	}
++
++	skb_hdr->checksum_upper = 0;
++	skb_hdr->checksum_lower = 0;
++
++	for (i = 0; i < len; i += 4) {
++		xor ^= *data_to_xor;
++		data_to_xor++;
++	}
++
++	xor &= 0x00FFFFFF;
++
++	return xor == header_xor;
 +}
 -- 
 2.43.0
