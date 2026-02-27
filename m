@@ -1,816 +1,230 @@
-Return-Path: <linux-wireless+bounces-32296-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-32295-lists+linux-wireless=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id sDbnGKN+oWkUtgQAu9opvQ
-	(envelope-from <linux-wireless+bounces-32296-lists+linux-wireless=lfdr.de@vger.kernel.org>)
-	for <lists+linux-wireless@lfdr.de>; Fri, 27 Feb 2026 12:23:15 +0100
+	id OB5rIGJ/oWkUtgQAu9opvQ
+	(envelope-from <linux-wireless+bounces-32295-lists+linux-wireless=lfdr.de@vger.kernel.org>)
+	for <lists+linux-wireless@lfdr.de>; Fri, 27 Feb 2026 12:26:26 +0100
 X-Original-To: lists+linux-wireless@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id C6D6D1B67FF
-	for <lists+linux-wireless@lfdr.de>; Fri, 27 Feb 2026 12:23:14 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id CEE391B6899
+	for <lists+linux-wireless@lfdr.de>; Fri, 27 Feb 2026 12:26:25 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 6EDA63093246
-	for <lists+linux-wireless@lfdr.de>; Fri, 27 Feb 2026 11:22:41 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 1ACAD301494A
+	for <lists+linux-wireless@lfdr.de>; Fri, 27 Feb 2026 11:22:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BB20C3EF0B9;
-	Fri, 27 Feb 2026 11:22:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=freebox-fr.20230601.gappssmtp.com header.i=@freebox-fr.20230601.gappssmtp.com header.b="INPUoHLR"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B8D1D3EF0B0;
+	Fri, 27 Feb 2026 11:22:28 +0000 (UTC)
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-wm1-f42.google.com (mail-wm1-f42.google.com [209.85.128.42])
+Received: from mail-oi1-f200.google.com (mail-oi1-f200.google.com [209.85.167.200])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 24B9A3ED139
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3E5233ECBC0
 	for <linux-wireless@vger.kernel.org>; Fri, 27 Feb 2026 11:22:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.42
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.200
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772191351; cv=none; b=NcrEd359JT+D7eAe+yoiYZvIUJayeJWlsDIIfGUPFHFZndeC4uLs+RZPxSYeGoHQkKCSQgKzZgJjLkvVy2O0WT+7QlWwWcCCILOhur6wNtFm586gAncnVWnXAYrM19hE6A1xPmuqdDScGJgnoJ6UgwqUziaqyKeeYXiYNedfU0I=
+	t=1772191348; cv=none; b=RI9IFOpAKhDTvzabUHET2qtj6RRtPGlorv3ZHpNCezWI9aji8saNoMBOOvKPXHg4GltbLRR76Po+hYQ0qOqUPbjsa6nE0EWNpSspHRPapGJaPLP+fb/SkJA5zBtu/kjgcUHD17NWF6CaeWPjF/vx+8EzP61dohogy0sYKazT11E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772191351; c=relaxed/simple;
-	bh=MuoyN2UgZRakSrrqIqS2DzAyxFJ0zQ1CYpqEqRa+prs=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=Ow2D83Q25qHrJupYMa2Y+zlIaUGPU+19AFVu4fwNVbT05RMMTmRFQf0x55dVXH14bShSlumhxVSbZsZ7GRVcPVgdm3yQwu0c5Q82R/wnY6InXgaNHDbxvoPPz5U3mPIvc9yG1TB4/5zfw1MC1k9lIJTe4klMKqCYyys4v4lwHA4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=freebox.fr; spf=pass smtp.mailfrom=freebox.fr; dkim=pass (2048-bit key) header.d=freebox-fr.20230601.gappssmtp.com header.i=@freebox-fr.20230601.gappssmtp.com header.b=INPUoHLR; arc=none smtp.client-ip=209.85.128.42
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=freebox.fr
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=freebox.fr
-Received: by mail-wm1-f42.google.com with SMTP id 5b1f17b1804b1-4836f363ad2so22278175e9.1
+	s=arc-20240116; t=1772191348; c=relaxed/simple;
+	bh=DlLJLaL/ZKcggPk8WToHyIMnlav4U4KgOA3R6MQ4WNI=;
+	h=MIME-Version:Date:In-Reply-To:Message-ID:Subject:From:To:
+	 Content-Type; b=TryqRGyewSN0Pt5MHULDsjn2lNYsZkrj9/NrxTCs5L/S0HCSfWV63aoj8iUCjEHogWhp+f4ZLtpvQe1wA7f6JTLjn8GEEIdiqGNmzQT1VYb90w+lp61FeLFLkiumO5FFSh3UjMY+9LsdoqwNpdhb++bh+W4OSwsRfedzHg1h7Vk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com; arc=none smtp.client-ip=209.85.167.200
+Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com
+Received: by mail-oi1-f200.google.com with SMTP id 5614622812f47-45f0bfd68a3so10646987b6e.3
         for <linux-wireless@vger.kernel.org>; Fri, 27 Feb 2026 03:22:27 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=freebox-fr.20230601.gappssmtp.com; s=20230601; t=1772191346; x=1772796146; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:content-language:from
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=1smeIu7OU3wnxH078ZTR3PqKFqprq4GBKxMxhyJVsNM=;
-        b=INPUoHLRVzPeau9eCvSNRgJ6Iw5FFEFhkzfL6LM4ZQYX5IazwAHz6hkJo//+NFivmr
-         mTzPfIUqGyf62E7fiWmsrt5ycMrK4MCoP/MsX+AuvMs5hhJXr4PZQJZJA8tZsGwAeagg
-         gNhSuOGaumULKCXt2AX/bInr3nAdfZ2z6tLj5EvKxjiG9YBTzaeTHWeB4lvko+Br4J8C
-         75EfIbEwSRvrj+X8GCjaOyVuCUdVaCq1I5nOH3sqGdMKPY5cs8roNJi5DnmWSwmWtdfs
-         yYoCIUnERddu9xWXOJPeBbQ79ddHh8v7Hq0Z6OnIVRb07s3hi8R3Zd6CiXpmID63Z3AU
-         5V3w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20230601; t=1772191346; x=1772796146;
-        h=content-transfer-encoding:in-reply-to:content-language:from
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=1smeIu7OU3wnxH078ZTR3PqKFqprq4GBKxMxhyJVsNM=;
-        b=tO0F1sKXjpbnizcIVIRaZtmdqpik+J6dvZJiouxnHo6LCPuFoo7Q8Q0iC8vtG2yA/8
-         k45+wAQzbSuXs77Defk+myDLCgXvT8CnpP5pEwoREBV3PtLxMJoLQK85SoCm4Xayxxab
-         JqPNtqK2Rjbgc+QE+Rbvz+OWpcnlcRGAxHvmV2vDeE49iFGaPPr/Is9ML0PXHTsME0CN
-         gm984PgDqWd/pUL87cOB7ymAA56VslhoifDgNfZtAfvZSQQNY7TyrpGJ3U/dh5ReqkHJ
-         AQdv5flLolmetHCh+WeNPx8gPIPkM60Xd8tYJD906YXXr0052irDnm/nE3g/9ygo9CO0
-         9RXQ==
-X-Forwarded-Encrypted: i=1; AJvYcCXDUp4u7nDQKWPVacFE8Gn2UjVgDeO86ICrVAL2b5wBo4S1FvXh8uGDOMa5l4aIKAnpRsV/aSGIy6wxJyxeVQ==@vger.kernel.org
-X-Gm-Message-State: AOJu0YxnJ9lzi8Cvv3KOs9Lnq3s2I3C5ovpmevDpLEp4IKOtekoJMCDm
-	jWHD5xpxvRdrKOMnZZVJjKP0XMRZc8xvibsQ5EgIpg+JF5KkFJEqb8BSdLVU5+EmanI=
-X-Gm-Gg: ATEYQzwzL8CTUXUl0YSu0I/n0Il5bRaQRoKW+r+2cJ3DjCa6ol+EjF4DsDbq5HuZwlk
-	lDNGWhQFZHL7PzSy+wKwIzW//ZL+LtyY8QyP5jp+hFyguDig3lnhUVJcsORYhDbHV/TjNvN1xOz
-	gQABdGE7QntmsvzjBQbIhT/kbpIv044ZcKk1mK9Svl7PVgPfsJ7vg5jjombx5IIi87EXlyibL95
-	vYPxNhwHNz14TqSil+Mh/M1qBrugMx1oj5+fPf4WWzgvePuHHClQOdvmQiPhTZMLuZyHCJVGYR2
-	aFmg3pw9kHhH4OQfr5HVR0avNZ/oDMI5i5Pfa2ODeoiVqXTZAz6RNUn1O8C4zHvBAkjDlof7M5X
-	nBvK9VSnuGwAth7MpkLwDtZ1DlTSYzXH9mKyRlYmG5CQ0s/YCyk3OnKv+2EgO7r1G84iWscyQay
-	FzIvB4DWYaqHcCfxRDMr4doelBoK1svjJM4nEGtZOykhNrLMS25uviXQ==
-X-Received: by 2002:a05:6000:4021:b0:432:84f9:8bea with SMTP id ffacd0b85a97d-4399de36932mr3990649f8f.51.1772191346008;
-        Fri, 27 Feb 2026 03:22:26 -0800 (PST)
-Received: from [192.168.108.101] (freebox.vlq16.iliad.fr. [213.36.7.13])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-4399c76b40esm5723634f8f.36.2026.02.27.03.22.25
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 27 Feb 2026 03:22:25 -0800 (PST)
-Message-ID: <418d3666-6bd2-4ea7-8e1b-4d49dda255a2@freebox.fr>
-Date: Fri, 27 Feb 2026 12:22:25 +0100
+        h=to:from:subject:message-id:in-reply-to:date:mime-version
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=wOpbA34JuaoEVyB7jjFGI/wMKC491jZlDU4MLpMCtMM=;
+        b=XVUR31UbQRX0H+4XjE1+2pUVW8btpUDelC26W6CSxE4DapUHZ40a8/MUsE6dBMiaxt
+         oKuC2WoH3vOPztBrZ/0H1FDt7cH19QuKa215tfFiSP9vLiG0L4ItKFa4mV6dwOarAyWw
+         psbKdCrXd3Q/1BTENT5BIXaVKQwcIWh/N1YwSG39gYrxieAHSFO7SK4CqKQR/n3k/bMT
+         wtM1dskiV8p4vQaOIlRGjiASqGtT7FO4pYBJbKYZmu+lBaBFqGd8rs6xMU8r9zRFcDvR
+         /7U0G8N19eTJApzQEcND25ugWfja2CFdW5d8dtn/JQWA0/ZGhrLQLCoUaLrbgArIPAf4
+         B4zA==
+X-Forwarded-Encrypted: i=1; AJvYcCXdlvKm/wU34HBq4MrCrjhfCnsluMblCEvlQf9lFC/MzcEqIXBizVFq8sNqShVxdGL0trLGnvaF/j83ehXvcw==@vger.kernel.org
+X-Gm-Message-State: AOJu0YyScDYS57vA/JhyDZBseXTS9A89WdkT04QUpmWS+TCSWbmW0GS/
+	ot6WGPuQqqoKh1m83uoiGh00XK7fnJOHr4EwK4G0L909f+HCex3XcBekxRVpvkOBsEVF5rdt2EW
+	6cTG39x+vLwU32ixP30XpVtjPodGBbauW7yCXTaLvhtcmZZ+6XiXj6KD0PoY=
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2] wifi: move action code from per-type frame structs
-To: Johannes Berg <johannes@sipsolutions.net>, linux-wireless@vger.kernel.org
-Cc: Johannes Berg <johannes.berg@intel.com>
-References: <20260226183607.67e71846b59e.I9a24328e3ffcaae179466a935f1c3345029f9961@changeid>
-From: Pablo MARTIN-GOMEZ <pmartin-gomez@freebox.fr>
-Content-Language: en-US
-In-Reply-To: <20260226183607.67e71846b59e.I9a24328e3ffcaae179466a935f1c3345029f9961@changeid>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+X-Received: by 2002:a05:6820:2908:b0:679:e6eb:816 with SMTP id
+ 006d021491bc7-679faf48137mr1528326eaf.60.1772191346216; Fri, 27 Feb 2026
+ 03:22:26 -0800 (PST)
+Date: Fri, 27 Feb 2026 03:22:26 -0800
+In-Reply-To: <689daf88.050a0220.2d37a5.0001.GAE@google.com>
+X-Google-Appengine-App-Id: s~syzkaller
+X-Google-Appengine-App-Id-Alias: syzkaller
+Message-ID: <69a17e72.050a0220.305b49.00de.GAE@google.com>
+Subject: Re: [syzbot] [libertas?] INFO: task hung in lbs_remove_card
+From: syzbot <syzbot+c99d17aa44dbdba16ad2@syzkaller.appspotmail.com>
+To: libertas-dev@lists.infradead.org, linux-kernel@vger.kernel.org, 
+	linux-usb@vger.kernel.org, linux-wireless@vger.kernel.org, 
+	netdev@vger.kernel.org, syzkaller-bugs@googlegroups.com
+Content-Type: text/plain; charset="UTF-8"
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.36 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
-	R_DKIM_ALLOW(-0.20)[freebox-fr.20230601.gappssmtp.com:s=20230601];
+	URI_HIDDEN_PATH(1.00)[https://syzkaller.appspot.com/x/.config?x=f1500201919951cc];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
+	DMARC_POLICY_SOFTFAIL(0.10)[appspotmail.com : SPF not aligned (relaxed), No valid DKIM,none];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[freebox-fr.20230601.gappssmtp.com:+];
-	TAGGED_FROM(0.00)[bounces-32296-lists,linux-wireless=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	DMARC_NA(0.00)[freebox.fr];
-	RCPT_COUNT_THREE(0.00)[3];
+	MIME_TRACE(0.00)[0:+];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	TO_DN_SOME(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[5];
+	TAGGED_FROM(0.00)[bounces-32295-lists,linux-wireless=lfdr.de,c99d17aa44dbdba16ad2];
+	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
+	MISSING_XM_UA(0.00)[];
+	SUBJECT_HAS_QUESTION(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[pmartin-gomez@freebox.fr,linux-wireless@vger.kernel.org];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	FROM_NEQ_ENVFROM(0.00)[syzbot@syzkaller.appspotmail.com,linux-wireless@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	TO_DN_NONE(0.00)[];
+	R_DKIM_NA(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
 	TAGGED_RCPT(0.00)[linux-wireless];
-	MID_RHS_MATCH_FROM(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,freebox-fr.20230601.gappssmtp.com:dkim,freebox.fr:mid]
-X-Rspamd-Queue-Id: C6D6D1B67FF
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,appspotmail.com:email,storage.googleapis.com:url,syzkaller.appspot.com:url]
+X-Rspamd-Queue-Id: CEE391B6899
 X-Rspamd-Action: no action
 
-Hello,
+syzbot has found a reproducer for the following issue on:
 
-On 26/02/2026 18:36, Johannes Berg wrote:
-> From: Johannes Berg <johannes.berg@intel.com>
-> 
-> The action code actually serves to identify the type of action
-> frame, so it really isn't part of the per-type structure. Pull
-> it out and have it in the general action frame format.
-> 
-> In theory, whether or not the action code is present in this
-> way is up to each category, but all categories that are defined
-> right now all have that value.
-> 
-> While at it, and since this change requires changing all users,
-> remove the 'u' and make it an anonymous union in this case, so
-> that all code using this changes.
-> 
-> Change IEEE80211_MIN_ACTION_SIZE to take an argument which says
-> how much of the frame is needed, e.g. category, action_code or
-> the specific frame type that's defined in the union. Again this
-> also ensures that all code is updated.
-> 
-> In some cases, fix bugs where the SKB length was checked after
-> having accessed beyond the checked length, in particular in FTM
-> code, e.g. ieee80211_is_ftm().
-> 
-> Signed-off-by: Johannes Berg <johannes.berg@intel.com>
-> ---
-> v2: fix public action frame handling
-> ---
->  drivers/net/wireless/ath/ath11k/mac.c         |   4 +-
->  drivers/net/wireless/ath/ath12k/mac.c         |   4 +-
->  drivers/net/wireless/ath/ath12k/wifi7/hw.c    |   2 +-
->  .../wireless/intel/iwlwifi/mld/time_sync.c    |   6 +-
->  .../intel/iwlwifi/mvm/ftm-initiator.c         |   7 +-
->  .../wireless/intel/iwlwifi/mvm/time-sync.c    |   6 +-
->  drivers/net/wireless/marvell/mwifiex/tdls.c   |  12 +-
->  drivers/net/wireless/marvell/mwl8k.c          |   4 +-
->  .../wireless/mediatek/mt76/mt76_connac_mac.c  |   4 +-
->  .../net/wireless/mediatek/mt76/mt7925/mac.c   |   2 +-
->  .../net/wireless/mediatek/mt76/mt7996/mac.c   |   2 +-
->  drivers/net/wireless/realtek/rtl8xxxu/core.c  |  14 +-
->  drivers/net/wireless/realtek/rtlwifi/base.c   |  28 ++--
->  drivers/net/wireless/realtek/rtlwifi/pci.c    |   2 +-
->  include/linux/ieee80211.h                     |  83 +++++-------
->  net/mac80211/agg-rx.c                         |  27 ++--
->  net/mac80211/agg-tx.c                         |  28 ++--
->  net/mac80211/eht.c                            |  21 ++-
->  net/mac80211/ht.c                             |  31 ++---
->  net/mac80211/ibss.c                           |  18 +--
->  net/mac80211/iface.c                          |  18 +--
->  net/mac80211/mesh.c                           |  14 +-
->  net/mac80211/mesh_hwmp.c                      |  20 ++-
->  net/mac80211/mesh_plink.c                     |  21 ++-
->  net/mac80211/mlme.c                           |  82 +++++-------
->  net/mac80211/rx.c                             | 123 ++++++++----------
->  net/mac80211/s1g.c                            |  28 ++--
->  net/mac80211/spectmgmt.c                      |  31 ++---
->  net/mac80211/tdls.c                           |  29 ++---
->  net/mac80211/util.c                           |   5 +-
->  net/mac80211/vht.c                            |  10 +-
->  31 files changed, 301 insertions(+), 385 deletions(-)
-> 
-[...]
-> diff --git a/drivers/net/wireless/marvell/mwifiex/tdls.c b/drivers/net/wireless/marvell/mwifiex/tdls.c
-> index 77a9a6de636d..95fd5a924226 100644
-> --- a/drivers/net/wireless/marvell/mwifiex/tdls.c
-> +++ b/drivers/net/wireless/marvell/mwifiex/tdls.c
-> @@ -755,16 +755,12 @@ mwifiex_construct_tdls_action_frame(struct mwifiex_private *priv,
->  	switch (action_code) {
->  	case WLAN_PUB_ACTION_TDLS_DISCOVER_RES:
->  		/* See the layout of 'struct ieee80211_mgmt'. */
-> -		extra = sizeof(mgmt->u.action.u.tdls_discover_resp) +
-> -			sizeof(mgmt->u.action.category);
-> +		extra = IEEE80211_MIN_ACTION_SIZE(tdls_discover_resp) - 24;
-Not sure that is clearer than:
-```
-extra = sizeof(mgmt->u.action.u.tdls_discover_resp) +
-        sizeof(mgmt->u.action.category) +
-        sizeof(mgmt->u.action.action_code);
-```
->  		skb_put(skb, extra);
->  		mgmt->u.action.category = WLAN_CATEGORY_PUBLIC;
-> -		mgmt->u.action.u.tdls_discover_resp.action_code =
-> -					      WLAN_PUB_ACTION_TDLS_DISCOVER_RES;
-> -		mgmt->u.action.u.tdls_discover_resp.dialog_token =
-> -								   dialog_token;
-> -		mgmt->u.action.u.tdls_discover_resp.capability =
-> -							     cpu_to_le16(capab);
-> +		mgmt->u.action.action_code = WLAN_PUB_ACTION_TDLS_DISCOVER_RES;
-> +		mgmt->u.action.tdls_discover_resp.dialog_token = dialog_token;
-> +		mgmt->u.action.tdls_discover_resp.capability = cpu_to_le16(capab);
->  		/* move back for addr4 */
->  		memmove(pos + ETH_ALEN, &mgmt->u.action, extra);
->  		/* init address 4 */
-[...]
-> @@ -477,22 +478,22 @@ void ieee80211_process_addba_request(struct ieee80211_local *local,
->  	u8 dialog_token, addba_ext_data;
->  
->  	/* extract session parameters from addba request frame */
-> -	dialog_token = mgmt->u.action.u.addba_req.dialog_token;
-> -	timeout = le16_to_cpu(mgmt->u.action.u.addba_req.timeout);
-> +	dialog_token = mgmt->u.action.addba_req.dialog_token;
-> +	timeout = le16_to_cpu(mgmt->u.action.addba_req.timeout);
->  	start_seq_num =
-> -		le16_to_cpu(mgmt->u.action.u.addba_req.start_seq_num) >> 4;
-> +		le16_to_cpu(mgmt->u.action.addba_req.start_seq_num) >> 4;
->  
-> -	capab = le16_to_cpu(mgmt->u.action.u.addba_req.capab);
-> +	capab = le16_to_cpu(mgmt->u.action.addba_req.capab);
->  	ba_policy = (capab & IEEE80211_ADDBA_PARAM_POLICY_MASK) >> 1;
->  	tid = (capab & IEEE80211_ADDBA_PARAM_TID_MASK) >> 2;
->  	buf_size = (capab & IEEE80211_ADDBA_PARAM_BUF_SIZE_MASK) >> 6;
->  
->  	addba_ext_data =
->  		ieee80211_retrieve_addba_ext_data(sta,
-> -						  mgmt->u.action.u.addba_req.variable,
-> +						  mgmt->u.action.addba_req.variable,
->  						  len -
->  						  offsetof(typeof(*mgmt),
-> -							   u.action.u.addba_req.variable),
-> +							   u.action.addba_req.variable),
-`offsetof(typeof(*mgmt), u.action.u.type.variable` is equivalent to
-`IEEE80211_MIN_ACTION_SIZE(type)`, isn't clearer to use it?
->  						  &buf_size);
->  
->  	__ieee80211_start_rx_ba_session(sta, dialog_token, timeout,
-> diff --git a/net/mac80211/agg-tx.c b/net/mac80211/agg-tx.c
-> index d981b0fc57bf..de68f7da6f39 100644
-> --- a/net/mac80211/agg-tx.c
-> +++ b/net/mac80211/agg-tx.c
-> @@ -9,7 +9,7 @@
->   * Copyright 2007, Michael Wu <flamingice@sourmilk.net>
->   * Copyright 2007-2010, Intel Corporation
->   * Copyright(c) 2015-2017 Intel Deutschland GmbH
-> - * Copyright (C) 2018 - 2024 Intel Corporation
-> + * Copyright (C) 2018-2026 Intel Corporation
->   */
->  
->  #include <linux/ieee80211.h>
-> @@ -68,7 +68,7 @@ static void ieee80211_send_addba_request(struct sta_info *sta, u16 tid,
->  	struct ieee80211_mgmt *mgmt;
->  	u16 capab;
->  
-> -	skb = dev_alloc_skb(sizeof(*mgmt) +
-> +	skb = dev_alloc_skb(IEEE80211_MIN_ACTION_SIZE(addba_req) +
->  			    2 + sizeof(struct ieee80211_addba_ext_ie) +
->  			    local->hw.extra_tx_headroom);
->  	if (!skb)
-> @@ -77,21 +77,21 @@ static void ieee80211_send_addba_request(struct sta_info *sta, u16 tid,
->  	skb_reserve(skb, local->hw.extra_tx_headroom);
->  	mgmt = ieee80211_mgmt_ba(skb, sta->sta.addr, sdata);
->  
-> -	skb_put(skb, 1 + sizeof(mgmt->u.action.u.addba_req));
-> +	skb_put(skb, 2 + sizeof(mgmt->u.action.addba_req));
->  
->  	mgmt->u.action.category = WLAN_CATEGORY_BACK;
-> -	mgmt->u.action.u.addba_req.action_code = WLAN_ACTION_ADDBA_REQ;
-> +	mgmt->u.action.action_code = WLAN_ACTION_ADDBA_REQ;
->  
-> -	mgmt->u.action.u.addba_req.dialog_token = dialog_token;
-> +	mgmt->u.action.addba_req.dialog_token = dialog_token;
->  	capab = IEEE80211_ADDBA_PARAM_AMSDU_MASK;
->  	capab |= IEEE80211_ADDBA_PARAM_POLICY_MASK;
->  	capab |= u16_encode_bits(tid, IEEE80211_ADDBA_PARAM_TID_MASK);
->  	capab |= u16_encode_bits(agg_size, IEEE80211_ADDBA_PARAM_BUF_SIZE_MASK);
->  
-> -	mgmt->u.action.u.addba_req.capab = cpu_to_le16(capab);
-> +	mgmt->u.action.addba_req.capab = cpu_to_le16(capab);
->  
-> -	mgmt->u.action.u.addba_req.timeout = cpu_to_le16(timeout);
-> -	mgmt->u.action.u.addba_req.start_seq_num =
-> +	mgmt->u.action.addba_req.timeout = cpu_to_le16(timeout);
-> +	mgmt->u.action.addba_req.start_seq_num =
->  					cpu_to_le16(start_seq_num << 4);
->  
->  	if (sta->sta.deflink.he_cap.has_he)
-> @@ -978,15 +978,15 @@ void ieee80211_process_addba_resp(struct ieee80211_local *local,
->  
->  	lockdep_assert_wiphy(sta->local->hw.wiphy);
->  
-> -	capab = le16_to_cpu(mgmt->u.action.u.addba_resp.capab);
-> +	capab = le16_to_cpu(mgmt->u.action.addba_resp.capab);
->  	amsdu = capab & IEEE80211_ADDBA_PARAM_AMSDU_MASK;
->  	tid = u16_get_bits(capab, IEEE80211_ADDBA_PARAM_TID_MASK);
->  	buf_size = u16_get_bits(capab, IEEE80211_ADDBA_PARAM_BUF_SIZE_MASK);
->  
->  	ieee80211_retrieve_addba_ext_data(sta,
-> -					  mgmt->u.action.u.addba_resp.variable,
-> +					  mgmt->u.action.addba_resp.variable,
->  					  len - offsetof(typeof(*mgmt),
-> -							 u.action.u.addba_resp.variable),
-> +							 u.action.addba_resp.variable),
-Ditto
->  					  &buf_size);
->  
->  	buf_size = min(buf_size, local->hw.max_tx_aggregation_subframes);
-[...]
-> @@ -1613,12 +1605,12 @@ void ieee80211_ibss_rx_queued_mgmt(struct ieee80211_sub_if_data *sdata,
->  		case WLAN_CATEGORY_SPECTRUM_MGMT:
->  			ies_len = skb->len -
->  				  offsetof(struct ieee80211_mgmt,
-> -					   u.action.u.chan_switch.variable);
-> +					   u.action.chan_switch.variable);
-Ditto
->  
->  			if (ies_len < 0)
->  				break;
->  
-> -			elems = ieee802_11_parse_elems(mgmt->u.action.u.chan_switch.variable,
-> +			elems = ieee802_11_parse_elems(mgmt->u.action.chan_switch.variable,
->  						       ies_len,
->  						       IEEE80211_FTYPE_MGMT |
->  						       IEEE80211_STYPE_ACTION,
-> diff --git a/net/mac80211/iface.c b/net/mac80211/iface.c
-> index 676b2a43c9f2..2e391cec73a0 100644
-> --- a/net/mac80211/iface.c
-> +++ b/net/mac80211/iface.c
-> @@ -1579,7 +1579,7 @@ static void ieee80211_iface_process_skb(struct ieee80211_local *local,
->  
->  		sta = sta_info_get_bss(sdata, mgmt->sa);
->  		if (sta) {
-> -			switch (mgmt->u.action.u.addba_req.action_code) {
-> +			switch (mgmt->u.action.action_code) {
->  			case WLAN_ACTION_ADDBA_REQ:
->  				ieee80211_process_addba_request(local, sta,
->  								mgmt, len);
-> @@ -1599,9 +1599,9 @@ static void ieee80211_iface_process_skb(struct ieee80211_local *local,
->  		}
->  	} else if (ieee80211_is_action(mgmt->frame_control) &&
->  		   mgmt->u.action.category == WLAN_CATEGORY_HT) {
-> -		switch (mgmt->u.action.u.ht_smps.action) {
-> +		switch (mgmt->u.action.action_code) {
->  		case WLAN_HT_ACTION_NOTIFY_CHANWIDTH: {
-> -			u8 chanwidth = mgmt->u.action.u.ht_notify_cw.chanwidth;
-> +			u8 chanwidth = mgmt->u.action.ht_notify_cw.chanwidth;
->  			struct ieee80211_rx_status *status;
->  			struct link_sta_info *link_sta;
->  			struct sta_info *sta;
-> @@ -1628,7 +1628,7 @@ static void ieee80211_iface_process_skb(struct ieee80211_local *local,
->  		}
->  	} else if (ieee80211_is_action(mgmt->frame_control) &&
->  		   mgmt->u.action.category == WLAN_CATEGORY_VHT) {
-> -		switch (mgmt->u.action.u.vht_group_notif.action_code) {
-> +		switch (mgmt->u.action.action_code) {
->  		case WLAN_VHT_ACTION_OPMODE_NOTIF: {
->  			struct ieee80211_rx_status *status;
->  			enum nl80211_band band;
-> @@ -1637,7 +1637,7 @@ static void ieee80211_iface_process_skb(struct ieee80211_local *local,
->  
->  			status = IEEE80211_SKB_RXCB(skb);
->  			band = status->band;
-> -			opmode = mgmt->u.action.u.vht_opmode_notif.operating_mode;
-> +			opmode = mgmt->u.action.vht_opmode_notif.operating_mode;
->  
->  			sta = sta_info_get_bss(sdata, mgmt->sa);
->  
-> @@ -1658,7 +1658,7 @@ static void ieee80211_iface_process_skb(struct ieee80211_local *local,
->  		}
->  	} else if (ieee80211_is_action(mgmt->frame_control) &&
->  		   mgmt->u.action.category == WLAN_CATEGORY_S1G) {
-> -		switch (mgmt->u.action.u.s1g.action_code) {
-> +		switch (mgmt->u.action.action_code) {
->  		case WLAN_S1G_TWT_TEARDOWN:
->  		case WLAN_S1G_TWT_SETUP:
->  			ieee80211_s1g_rx_twt_action(sdata, skb);
-> @@ -1669,7 +1669,7 @@ static void ieee80211_iface_process_skb(struct ieee80211_local *local,
->  	} else if (ieee80211_is_action(mgmt->frame_control) &&
->  		   mgmt->u.action.category == WLAN_CATEGORY_PROTECTED_EHT) {
->  		if (sdata->vif.type == NL80211_IFTYPE_AP) {
-> -			switch (mgmt->u.action.u.eml_omn.action_code) {
-> +			switch (mgmt->u.action.action_code) {
->  			case WLAN_PROTECTED_EHT_ACTION_EML_OP_MODE_NOTIF:
->  				ieee80211_rx_eml_op_mode_notif(sdata, skb);
->  				break;
-> @@ -1677,7 +1677,7 @@ static void ieee80211_iface_process_skb(struct ieee80211_local *local,
->  				break;
->  			}
->  		} else if (sdata->vif.type == NL80211_IFTYPE_STATION) {
-> -			switch (mgmt->u.action.u.ttlm_req.action_code) {
-> +			switch (mgmt->u.action.action_code) {
->  			case WLAN_PROTECTED_EHT_ACTION_TTLM_REQ:
->  				ieee80211_process_neg_ttlm_req(sdata, mgmt,
->  							       skb->len);
-> @@ -1765,7 +1765,7 @@ static void ieee80211_iface_process_status(struct ieee80211_sub_if_data *sdata,
->  
->  	if (ieee80211_is_action(mgmt->frame_control) &&
->  	    mgmt->u.action.category == WLAN_CATEGORY_S1G) {
-> -		switch (mgmt->u.action.u.s1g.action_code) {
-> +		switch (mgmt->u.action.action_code) {
->  		case WLAN_S1G_TWT_TEARDOWN:
->  		case WLAN_S1G_TWT_SETUP:
->  			ieee80211_s1g_status_twt_action(sdata, skb);
-> diff --git a/net/mac80211/mesh.c b/net/mac80211/mesh.c
-> index 68901f1def0d..ccbf33fb23bd 100644
-> --- a/net/mac80211/mesh.c
-> +++ b/net/mac80211/mesh.c
-> @@ -1,7 +1,7 @@
->  // SPDX-License-Identifier: GPL-2.0-only
->  /*
->   * Copyright (c) 2008, 2009 open80211s Ltd.
-> - * Copyright (C) 2018 - 2025 Intel Corporation
-> + * Copyright (C) 2018-2026 Intel Corporation
->   * Authors:    Luis Carlos Cobo <luisca@cozybit.com>
->   * 	       Javier Cardona <javier@cozybit.com>
->   */
-> @@ -19,8 +19,7 @@ static struct kmem_cache *rm_cache;
->  
->  bool mesh_action_is_path_sel(struct ieee80211_mgmt *mgmt)
->  {
-> -	return (mgmt->u.action.u.mesh_action.action_code ==
-> -			WLAN_MESH_ACTION_HWMP_PATH_SELECTION);
-> +	return mgmt->u.action.action_code == WLAN_MESH_ACTION_HWMP_PATH_SELECTION;
->  }
->  
->  void ieee80211s_init(void)
-> @@ -1619,13 +1618,12 @@ static void mesh_rx_csa_frame(struct ieee80211_sub_if_data *sdata,
->  	size_t baselen;
->  	u8 *pos;
->  
-> -	if (mgmt->u.action.u.measurement.action_code !=
-> -	    WLAN_ACTION_SPCT_CHL_SWITCH)
-> +	if (mgmt->u.action.action_code != WLAN_ACTION_SPCT_CHL_SWITCH)
->  		return;
->  
-> -	pos = mgmt->u.action.u.chan_switch.variable;
-> +	pos = mgmt->u.action.chan_switch.variable;
->  	baselen = offsetof(struct ieee80211_mgmt,
-> -			   u.action.u.chan_switch.variable);
-> +			   u.action.chan_switch.variable);
-Ditto
->  	elems = ieee802_11_parse_elems(pos, len - baselen,
->  				       IEEE80211_FTYPE_MGMT |
->  				       IEEE80211_STYPE_ACTION,
-> @@ -1668,7 +1666,7 @@ static void ieee80211_mesh_rx_mgmt_action(struct ieee80211_sub_if_data *sdata,
->  {
->  	switch (mgmt->u.action.category) {
->  	case WLAN_CATEGORY_SELF_PROTECTED:
-> -		switch (mgmt->u.action.u.self_prot.action_code) {
-> +		switch (mgmt->u.action.action_code) {
->  		case WLAN_SP_MESH_PEERING_OPEN:
->  		case WLAN_SP_MESH_PEERING_CLOSE:
->  		case WLAN_SP_MESH_PEERING_CONFIRM:
-> diff --git a/net/mac80211/mesh_hwmp.c b/net/mac80211/mesh_hwmp.c
-> index a41b57bd11ff..dad311e0833a 100644
-> --- a/net/mac80211/mesh_hwmp.c
-> +++ b/net/mac80211/mesh_hwmp.c
-> @@ -1,7 +1,7 @@
->  // SPDX-License-Identifier: GPL-2.0-only
->  /*
->   * Copyright (c) 2008, 2009 open80211s Ltd.
-> - * Copyright (C) 2019, 2021-2023, 2025 Intel Corporation
-> + * Copyright (C) 2019, 2021-2023, 2025-2026 Intel Corporation
->   * Author:     Luis Carlos Cobo <luisca@cozybit.com>
->   */
->  
-> @@ -105,12 +105,11 @@ static int mesh_path_sel_frame_tx(enum mpath_frame_type action, u8 flags,
->  				  u32 lifetime, u32 metric, u32 preq_id,
->  				  struct ieee80211_sub_if_data *sdata)
->  {
-> +	int hdr_len = IEEE80211_MIN_ACTION_SIZE(mesh_action);
->  	struct ieee80211_local *local = sdata->local;
->  	struct sk_buff *skb;
->  	struct ieee80211_mgmt *mgmt;
->  	u8 *pos, ie_len;
-> -	int hdr_len = offsetofend(struct ieee80211_mgmt,
-> -				  u.action.u.mesh_action);
->  
->  	skb = dev_alloc_skb(local->tx_headroom +
->  			    hdr_len +
-> @@ -127,8 +126,7 @@ static int mesh_path_sel_frame_tx(enum mpath_frame_type action, u8 flags,
->  	/* BSSID == SA */
->  	memcpy(mgmt->bssid, sdata->vif.addr, ETH_ALEN);
->  	mgmt->u.action.category = WLAN_CATEGORY_MESH_ACTION;
-> -	mgmt->u.action.u.mesh_action.action_code =
-> -					WLAN_MESH_ACTION_HWMP_PATH_SELECTION;
-> +	mgmt->u.action.action_code = WLAN_MESH_ACTION_HWMP_PATH_SELECTION;
->  
->  	switch (action) {
->  	case MPATH_PREQ:
-> @@ -237,13 +235,12 @@ int mesh_path_error_tx(struct ieee80211_sub_if_data *sdata,
->  		       u8 ttl, const u8 *target, u32 target_sn,
->  		       u16 target_rcode, const u8 *ra)
->  {
-> +	int hdr_len = IEEE80211_MIN_ACTION_SIZE(mesh_action);
->  	struct ieee80211_local *local = sdata->local;
->  	struct sk_buff *skb;
->  	struct ieee80211_if_mesh *ifmsh = &sdata->u.mesh;
->  	struct ieee80211_mgmt *mgmt;
->  	u8 *pos, ie_len;
-> -	int hdr_len = offsetofend(struct ieee80211_mgmt,
-> -				  u.action.u.mesh_action);
->  
->  	if (time_before(jiffies, ifmsh->next_perr))
->  		return -EAGAIN;
-> @@ -265,8 +262,7 @@ int mesh_path_error_tx(struct ieee80211_sub_if_data *sdata,
->  	/* BSSID == SA */
->  	memcpy(mgmt->bssid, sdata->vif.addr, ETH_ALEN);
->  	mgmt->u.action.category = WLAN_CATEGORY_MESH_ACTION;
-> -	mgmt->u.action.u.mesh_action.action_code =
-> -					WLAN_MESH_ACTION_HWMP_PATH_SELECTION;
-> +	mgmt->u.action.action_code = WLAN_MESH_ACTION_HWMP_PATH_SELECTION;
->  	ie_len = 15;
->  	pos = skb_put(skb, 2 + ie_len);
->  	*pos++ = WLAN_EID_PERR;
-> @@ -938,7 +934,7 @@ void mesh_rx_path_sel_frame(struct ieee80211_sub_if_data *sdata,
->  	struct sta_info *sta;
->  
->  	/* need action_code */
-> -	if (len < IEEE80211_MIN_ACTION_SIZE + 1)
-> +	if (len < IEEE80211_MIN_ACTION_SIZE(mesh_action))
->  		return;
->  
->  	rcu_read_lock();
-> @@ -949,8 +945,8 @@ void mesh_rx_path_sel_frame(struct ieee80211_sub_if_data *sdata,
->  	}
->  	rcu_read_unlock();
->  
-> -	baselen = (u8 *) mgmt->u.action.u.mesh_action.variable - (u8 *) mgmt;
-> -	elems = ieee802_11_parse_elems(mgmt->u.action.u.mesh_action.variable,
-> +	baselen = mgmt->u.action.mesh_action.variable - (u8 *)mgmt;
-Another equivalent to `IEEE80211_MIN_ACTION_SIZE(type)`
-> +	elems = ieee802_11_parse_elems(mgmt->u.action.mesh_action.variable,
->  				       len - baselen,
->  				       IEEE80211_FTYPE_MGMT |
->  				       IEEE80211_STYPE_ACTION,
-> diff --git a/net/mac80211/mesh_plink.c b/net/mac80211/mesh_plink.c
-> index 04c931cd2063..7d823a55636f 100644
-> --- a/net/mac80211/mesh_plink.c
-> +++ b/net/mac80211/mesh_plink.c
-> @@ -1,7 +1,7 @@
->  // SPDX-License-Identifier: GPL-2.0-only
->  /*
->   * Copyright (c) 2008, 2009 open80211s Ltd.
-> - * Copyright (C) 2019, 2021-2025 Intel Corporation
-> + * Copyright (C) 2019, 2021-2026 Intel Corporation
->   * Author:     Luis Carlos Cobo <luisca@cozybit.com>
->   */
->  #include <linux/gfp.h>
-> @@ -13,7 +13,7 @@
->  #include "rate.h"
->  #include "mesh.h"
->  
-> -#define PLINK_CNF_AID(mgmt) ((mgmt)->u.action.u.self_prot.variable + 2)
-> +#define PLINK_CNF_AID(mgmt) ((mgmt)->u.action.self_prot.variable + 2)
->  #define PLINK_GET_LLID(p) (p + 2)
->  #define PLINK_GET_PLID(p) (p + 4)
->  
-> @@ -215,6 +215,7 @@ static int mesh_plink_frame_tx(struct ieee80211_sub_if_data *sdata,
->  			       enum ieee80211_self_protected_actioncode action,
->  			       u8 *da, u16 llid, u16 plid, u16 reason)
->  {
-> +	int hdr_len = IEEE80211_MIN_ACTION_SIZE(self_prot);
->  	struct ieee80211_local *local = sdata->local;
->  	struct sk_buff *skb;
->  	struct ieee80211_tx_info *info;
-> @@ -223,7 +224,6 @@ static int mesh_plink_frame_tx(struct ieee80211_sub_if_data *sdata,
->  	u16 peering_proto = 0;
->  	u8 *pos, ie_len = 4;
->  	u8 ie_len_he_cap, ie_len_eht_cap;
-> -	int hdr_len = offsetofend(struct ieee80211_mgmt, u.action.u.self_prot);
->  	int err = -ENOMEM;
->  
->  	ie_len_he_cap = ieee80211_ie_len_he_cap(sdata);
-> @@ -260,7 +260,7 @@ static int mesh_plink_frame_tx(struct ieee80211_sub_if_data *sdata,
->  	memcpy(mgmt->sa, sdata->vif.addr, ETH_ALEN);
->  	memcpy(mgmt->bssid, sdata->vif.addr, ETH_ALEN);
->  	mgmt->u.action.category = WLAN_CATEGORY_SELF_PROTECTED;
-> -	mgmt->u.action.u.self_prot.action_code = action;
-> +	mgmt->u.action.action_code = action;
->  
->  	if (action != WLAN_SP_MESH_PEERING_CLOSE) {
->  		struct ieee80211_supported_band *sband;
-> @@ -1141,7 +1141,7 @@ mesh_process_plink_frame(struct ieee80211_sub_if_data *sdata,
->  		return;
->  	}
->  
-> -	ftype = mgmt->u.action.u.self_prot.action_code;
-> +	ftype = mgmt->u.action.action_code;
->  	if ((ftype == WLAN_SP_MESH_PEERING_OPEN && ie_len != 4) ||
->  	    (ftype == WLAN_SP_MESH_PEERING_CONFIRM && ie_len != 6) ||
->  	    (ftype == WLAN_SP_MESH_PEERING_CLOSE && ie_len != 6
-> @@ -1224,8 +1224,8 @@ void mesh_rx_plink_frame(struct ieee80211_sub_if_data *sdata,
->  	size_t baselen;
->  	u8 *baseaddr;
->  
-> -	/* need action_code, aux */
-> -	if (len < IEEE80211_MIN_ACTION_SIZE + 3)
-> +	/* need aux */
-> +	if (len < IEEE80211_MIN_ACTION_SIZE(self_prot) + 1)
->  		return;
->  
->  	if (sdata->u.mesh.user_mpm)
-> @@ -1238,10 +1238,9 @@ void mesh_rx_plink_frame(struct ieee80211_sub_if_data *sdata,
->  		return;
->  	}
->  
-> -	baseaddr = mgmt->u.action.u.self_prot.variable;
-> -	baselen = (u8 *) mgmt->u.action.u.self_prot.variable - (u8 *) mgmt;
-> -	if (mgmt->u.action.u.self_prot.action_code ==
-> -						WLAN_SP_MESH_PEERING_CONFIRM) {
-> +	baseaddr = mgmt->u.action.self_prot.variable;
-> +	baselen = mgmt->u.action.self_prot.variable - (u8 *)mgmt;
-Ditto
-> +	if (mgmt->u.action.action_code == WLAN_SP_MESH_PEERING_CONFIRM) {
->  		baseaddr += 4;
->  		baselen += 4;
->  
-> diff --git a/net/mac80211/mlme.c b/net/mac80211/mlme.c
-> index e83582b2c377..995855d49822 100644
-> --- a/net/mac80211/mlme.c
-> +++ b/net/mac80211/mlme.c
-> @@ -7897,7 +7897,7 @@ ieee80211_send_neg_ttlm_req(struct ieee80211_sub_if_data *sdata,
->  	struct ieee80211_local *local = sdata->local;
->  	struct ieee80211_mgmt *mgmt;
->  	struct sk_buff *skb;
-> -	int hdr_len = offsetofend(struct ieee80211_mgmt, u.action.u.ttlm_req);
-> +	int hdr_len = IEEE80211_MIN_ACTION_SIZE(ttlm_req);
->  	int ttlm_max_len = 2 + 1 + sizeof(struct ieee80211_ttlm_elem) + 1 +
->  		2 * 2 * IEEE80211_TTLM_NUM_TIDS;
->  
-> @@ -7914,9 +7914,8 @@ ieee80211_send_neg_ttlm_req(struct ieee80211_sub_if_data *sdata,
->  	memcpy(mgmt->bssid, sdata->vif.cfg.ap_addr, ETH_ALEN);
->  
->  	mgmt->u.action.category = WLAN_CATEGORY_PROTECTED_EHT;
-> -	mgmt->u.action.u.ttlm_req.action_code =
-> -		WLAN_PROTECTED_EHT_ACTION_TTLM_REQ;
-> -	mgmt->u.action.u.ttlm_req.dialog_token = dialog_token;
-> +	mgmt->u.action.action_code = WLAN_PROTECTED_EHT_ACTION_TTLM_REQ;
-> +	mgmt->u.action.ttlm_req.dialog_token = dialog_token;
->  	ieee80211_neg_ttlm_add_suggested_map(skb, neg_ttlm);
->  	ieee80211_tx_skb(sdata, skb);
->  }
-> @@ -7966,7 +7965,7 @@ ieee80211_send_neg_ttlm_res(struct ieee80211_sub_if_data *sdata,
->  	struct ieee80211_local *local = sdata->local;
->  	struct ieee80211_mgmt *mgmt;
->  	struct sk_buff *skb;
-> -	int hdr_len = offsetofend(struct ieee80211_mgmt, u.action.u.ttlm_res);
-> +	int hdr_len = IEEE80211_MIN_ACTION_SIZE(ttlm_res);
->  	int ttlm_max_len = 2 + 1 + sizeof(struct ieee80211_ttlm_elem) + 1 +
->  		2 * 2 * IEEE80211_TTLM_NUM_TIDS;
->  	u16 status_code;
-> @@ -7984,9 +7983,8 @@ ieee80211_send_neg_ttlm_res(struct ieee80211_sub_if_data *sdata,
->  	memcpy(mgmt->bssid, sdata->vif.cfg.ap_addr, ETH_ALEN);
->  
->  	mgmt->u.action.category = WLAN_CATEGORY_PROTECTED_EHT;
-> -	mgmt->u.action.u.ttlm_res.action_code =
-> -		WLAN_PROTECTED_EHT_ACTION_TTLM_RES;
-> -	mgmt->u.action.u.ttlm_res.dialog_token = dialog_token;
-> +	mgmt->u.action.action_code = WLAN_PROTECTED_EHT_ACTION_TTLM_RES;
-> +	mgmt->u.action.ttlm_res.dialog_token = dialog_token;
->  	switch (ttlm_res) {
->  	default:
->  		WARN_ON(1);
-> @@ -8003,7 +8001,7 @@ ieee80211_send_neg_ttlm_res(struct ieee80211_sub_if_data *sdata,
->  		break;
->  	}
->  
-> -	mgmt->u.action.u.ttlm_res.status_code = cpu_to_le16(status_code);
-> +	mgmt->u.action.ttlm_res.status_code = cpu_to_le16(status_code);
->  	ieee80211_tx_skb(sdata, skb);
->  }
->  
-> @@ -8103,10 +8101,9 @@ void ieee80211_process_neg_ttlm_req(struct ieee80211_sub_if_data *sdata,
->  	if (!ieee80211_vif_is_mld(&sdata->vif))
->  		return;
->  
-> -	dialog_token = mgmt->u.action.u.ttlm_req.dialog_token;
-> -	ies_len  = len - offsetof(struct ieee80211_mgmt,
-> -				  u.action.u.ttlm_req.variable);
-> -	elems = ieee802_11_parse_elems(mgmt->u.action.u.ttlm_req.variable,
-> +	dialog_token = mgmt->u.action.ttlm_req.dialog_token;
-> +	ies_len  = len - IEEE80211_MIN_ACTION_SIZE(ttlm_req);
-Here you did it :)
-> +	elems = ieee802_11_parse_elems(mgmt->u.action.ttlm_req.variable,
->  				       ies_len,
->  				       IEEE80211_FTYPE_MGMT |
->  				       IEEE80211_STYPE_ACTION,
-> @@ -8157,8 +8154,7 @@ void ieee80211_process_neg_ttlm_res(struct ieee80211_sub_if_data *sdata,
->  				    struct ieee80211_mgmt *mgmt, size_t len)
->  {
->  	if (!ieee80211_vif_is_mld(&sdata->vif) ||
-> -	    mgmt->u.action.u.ttlm_req.dialog_token !=
-> -	    sdata->u.mgd.dialog_token_alloc)
-> +	    mgmt->u.action.ttlm_res.dialog_token != sdata->u.mgd.dialog_token_alloc)
->  		return;
->  
->  	wiphy_delayed_work_cancel(sdata->local->hw.wiphy,
-> @@ -8172,7 +8168,7 @@ void ieee80211_process_neg_ttlm_res(struct ieee80211_sub_if_data *sdata,
->  	 * This can be better implemented in the future, to handle request
->  	 * rejections.
->  	 */
-> -	if (le16_to_cpu(mgmt->u.action.u.ttlm_res.status_code) != WLAN_STATUS_SUCCESS)
-> +	if (le16_to_cpu(mgmt->u.action.ttlm_res.status_code) != WLAN_STATUS_SUCCESS)
->  		__ieee80211_disconnect(sdata);
->  }
->  
-> @@ -8205,12 +8201,11 @@ static void ieee80211_teardown_ttlm_work(struct wiphy *wiphy,
->  
->  void ieee80211_send_teardown_neg_ttlm(struct ieee80211_vif *vif)
->  {
-> +	int frame_len = IEEE80211_MIN_ACTION_SIZE(ttlm_tear_down);
->  	struct ieee80211_sub_if_data *sdata = vif_to_sdata(vif);
->  	struct ieee80211_local *local = sdata->local;
->  	struct ieee80211_mgmt *mgmt;
->  	struct sk_buff *skb;
-> -	int frame_len = offsetofend(struct ieee80211_mgmt,
-> -				  u.action.u.ttlm_tear_down);
->  	struct ieee80211_tx_info *info;
->  
->  	skb = dev_alloc_skb(local->hw.extra_tx_headroom + frame_len);
-> @@ -8226,8 +8221,7 @@ void ieee80211_send_teardown_neg_ttlm(struct ieee80211_vif *vif)
->  	memcpy(mgmt->bssid, sdata->vif.cfg.ap_addr, ETH_ALEN);
->  
->  	mgmt->u.action.category = WLAN_CATEGORY_PROTECTED_EHT;
-> -	mgmt->u.action.u.ttlm_tear_down.action_code =
-> -		WLAN_PROTECTED_EHT_ACTION_TTLM_TEARDOWN;
-> +	mgmt->u.action.action_code = WLAN_PROTECTED_EHT_ACTION_TTLM_TEARDOWN;
->  
->  	info = IEEE80211_SKB_CB(skb);
->  	info->flags |= IEEE80211_TX_CTL_REQ_TX_STATUS;
-> @@ -8310,13 +8304,13 @@ void ieee80211_sta_rx_queued_mgmt(struct ieee80211_sub_if_data *sdata,
->  		case WLAN_CATEGORY_SPECTRUM_MGMT:
->  			ies_len = skb->len -
->  				  offsetof(struct ieee80211_mgmt,
-> -					   u.action.u.chan_switch.variable);
-> +					   u.action.chan_switch.variable);
-Ditto
->  
->  			if (ies_len < 0)
->  				break;
->  
->  			/* CSA IE cannot be overridden, no need for BSSID */
-> -			elems = ieee802_11_parse_elems(mgmt->u.action.u.chan_switch.variable,
-> +			elems = ieee802_11_parse_elems(mgmt->u.action.chan_switch.variable,
->  						       ies_len,
->  						       IEEE80211_FTYPE_MGMT |
->  						       IEEE80211_STYPE_ACTION,
-> @@ -8338,7 +8332,7 @@ void ieee80211_sta_rx_queued_mgmt(struct ieee80211_sub_if_data *sdata,
->  		case WLAN_CATEGORY_PROTECTED_DUAL_OF_ACTION:
->  			ies_len = skb->len -
->  				  offsetof(struct ieee80211_mgmt,
-> -					   u.action.u.ext_chan_switch.variable);
-> +					   u.action.ext_chan_switch.variable);
-Ditto
->  
->  			if (ies_len < 0)
->  				break;
-> @@ -8347,7 +8341,7 @@ void ieee80211_sta_rx_queued_mgmt(struct ieee80211_sub_if_data *sdata,
->  			 * extended CSA IE can't be overridden, no need for
->  			 * BSSID
->  			 */
-> -			elems = ieee802_11_parse_elems(mgmt->u.action.u.ext_chan_switch.variable,
-> +			elems = ieee802_11_parse_elems(mgmt->u.action.ext_chan_switch.variable,
->  						       ies_len,
->  						       IEEE80211_FTYPE_MGMT |
->  						       IEEE80211_STYPE_ACTION,
-> @@ -8364,7 +8358,7 @@ void ieee80211_sta_rx_queued_mgmt(struct ieee80211_sub_if_data *sdata,
->  
->  				/* for the handling code pretend it was an IE */
->  				elems->ext_chansw_ie =
-> -					&mgmt->u.action.u.ext_chan_switch.data;
-> +					&mgmt->u.action.ext_chan_switch.data;
->  
->  				ieee80211_sta_process_chanswitch(link,
->  								 rx_status->mactime,
-> @@ -10356,25 +10350,25 @@ void ieee80211_process_ml_reconf_resp(struct ieee80211_sub_if_data *sdata,
->  	u8 *pos;
->  
->  	if (!ieee80211_vif_is_mld(&sdata->vif) ||
-> -	    len < offsetofend(typeof(*mgmt), u.action.u.ml_reconf_resp) ||
-> -	    mgmt->u.action.u.ml_reconf_resp.dialog_token !=
-> -	    sdata->u.mgd.reconf.dialog_token ||
-> +	    len < IEEE80211_MIN_ACTION_SIZE(ml_reconf_resp) ||
-> +	    mgmt->u.action.ml_reconf_resp.dialog_token !=
-> +		sdata->u.mgd.reconf.dialog_token ||
->  	    !sta_changed_links)
->  		return;
->  
-> -	pos = mgmt->u.action.u.ml_reconf_resp.variable;
-> -	len -= offsetofend(typeof(*mgmt), u.action.u.ml_reconf_resp);
-> +	pos = mgmt->u.action.ml_reconf_resp.variable;
-> +	len -= offsetofend(typeof(*mgmt), u.action.ml_reconf_resp);
-`len -= IEEE80211_MIN_ACTION_SIZE(ml_reconf_resp);`
+HEAD commit:    bb375c251ab4 dt-bindings: usb: st,st-ohci-300x: convert to..
+git tree:       https://git.kernel.org/pub/scm/linux/kernel/git/gregkh/usb.git usb-testing
+console output: https://syzkaller.appspot.com/x/log.txt?x=1141755a580000
+kernel config:  https://syzkaller.appspot.com/x/.config?x=f1500201919951cc
+dashboard link: https://syzkaller.appspot.com/bug?extid=c99d17aa44dbdba16ad2
+compiler:       gcc (Debian 14.2.0-19) 14.2.0, GNU ld (GNU Binutils for Debian) 2.44
+syz repro:      https://syzkaller.appspot.com/x/repro.syz?x=1191555a580000
+C reproducer:   https://syzkaller.appspot.com/x/repro.c?x=114a15c6580000
 
-[...]
+Downloadable assets:
+disk image: https://storage.googleapis.com/syzbot-assets/2475c3172471/disk-bb375c25.raw.xz
+vmlinux: https://storage.googleapis.com/syzbot-assets/30449aa672dd/vmlinux-bb375c25.xz
+kernel image: https://storage.googleapis.com/syzbot-assets/46d3937d1c16/bzImage-bb375c25.xz
 
-Pablo MG
+IMPORTANT: if you fix the issue, please add the following tag to the commit:
+Reported-by: syzbot+c99d17aa44dbdba16ad2@syzkaller.appspotmail.com
+
+INFO: task kworker/0:1:10 blocked for more than 143 seconds.
+      Not tainted syzkaller #0
+"echo 0 > /proc/sys/kernel/hung_task_timeout_secs" disables this message.
+task:kworker/0:1     state:D stack:26840 pid:10    tgid:10    ppid:2      task_flags:0x4288060 flags:0x00080000
+Workqueue: usb_hub_wq hub_event
+Call Trace:
+ <TASK>
+ context_switch kernel/sched/core.c:5295 [inline]
+ __schedule+0xeb1/0x41f0 kernel/sched/core.c:6907
+ __schedule_loop kernel/sched/core.c:6989 [inline]
+ schedule+0xdd/0x390 kernel/sched/core.c:7004
+ lbs_wait_for_firmware_load+0x11e/0x1e0 drivers/net/wireless/marvell/libertas/firmware.c:116
+ lbs_remove_card+0x84/0x390 drivers/net/wireless/marvell/libertas/main.c:913
+ if_usb_disconnect+0xaf/0x2e0 drivers/net/wireless/marvell/libertas/if_usb.c:316
+ usb_unbind_interface+0x1dd/0x9e0 drivers/usb/core/driver.c:458
+ device_remove drivers/base/dd.c:573 [inline]
+ device_remove+0x12a/0x180 drivers/base/dd.c:565
+ __device_release_driver drivers/base/dd.c:1284 [inline]
+ device_release_driver_internal+0x42e/0x600 drivers/base/dd.c:1307
+ bus_remove_device+0x22f/0x440 drivers/base/bus.c:616
+ device_del+0x376/0x9b0 drivers/base/core.c:3878
+ usb_disable_device+0x367/0x810 drivers/usb/core/message.c:1418
+ usb_disconnect+0x2e2/0x9a0 drivers/usb/core/hub.c:2345
+ hub_port_connect drivers/usb/core/hub.c:5407 [inline]
+ hub_port_connect_change drivers/usb/core/hub.c:5707 [inline]
+ port_event drivers/usb/core/hub.c:5871 [inline]
+ hub_event+0x1d0c/0x4af0 drivers/usb/core/hub.c:5953
+ process_one_work+0x9d7/0x1920 kernel/workqueue.c:3275
+ process_scheduled_works kernel/workqueue.c:3358 [inline]
+ worker_thread+0x5da/0xe40 kernel/workqueue.c:3439
+ kthread+0x370/0x450 kernel/kthread.c:467
+ ret_from_fork+0x6c3/0xcb0 arch/x86/kernel/process.c:158
+ ret_from_fork_asm+0x1a/0x30 arch/x86/entry/entry_64.S:245
+ </TASK>
+
+Showing all locks held in the system:
+5 locks held by kworker/0:1/10:
+ #0: ffff8881056afd48 ((wq_completion)usb_hub_wq){+.+.}-{0:0}, at: process_one_work+0x1287/0x1920 kernel/workqueue.c:3250
+ #1: ffffc900000afd18 ((work_completion)(&hub->events)){+.+.}-{0:0}, at: process_one_work+0x93c/0x1920 kernel/workqueue.c:3251
+ #2: ffff88810b795198 (&dev->mutex){....}-{4:4}, at: device_lock include/linux/device.h:895 [inline]
+ #2: ffff88810b795198 (&dev->mutex){....}-{4:4}, at: hub_event+0x1bd/0x4af0 drivers/usb/core/hub.c:5899
+ #3: ffff88811c2c3198 (&dev->mutex){....}-{4:4}, at: device_lock include/linux/device.h:895 [inline]
+ #3: ffff88811c2c3198 (&dev->mutex){....}-{4:4}, at: usb_disconnect+0x10a/0x9a0 drivers/usb/core/hub.c:2336
+ #4: ffff88811bcbf160 (&dev->mutex){....}-{4:4}, at: device_lock include/linux/device.h:895 [inline]
+ #4: ffff88811bcbf160 (&dev->mutex){....}-{4:4}, at: __device_driver_lock drivers/base/dd.c:1106 [inline]
+ #4: ffff88811bcbf160 (&dev->mutex){....}-{4:4}, at: device_release_driver_internal+0xaa/0x600 drivers/base/dd.c:1304
+2 locks held by kworker/1:0/23:
+ #0: ffff88810006b548 ((wq_completion)events){+.+.}-{0:0}, at: process_one_work+0x1287/0x1920 kernel/workqueue.c:3250
+ #1: ffffc9000018fd18 ((work_completion)(&fw_work->work)){+.+.}-{0:0}, at: process_one_work+0x93c/0x1920 kernel/workqueue.c:3251
+1 lock held by khungtaskd/30:
+ #0: ffffffff896e05a0 (rcu_read_lock){....}-{1:3}, at: rcu_lock_acquire include/linux/rcupdate.h:312 [inline]
+ #0: ffffffff896e05a0 (rcu_read_lock){....}-{1:3}, at: rcu_read_lock include/linux/rcupdate.h:850 [inline]
+ #0: ffffffff896e05a0 (rcu_read_lock){....}-{1:3}, at: debug_show_all_locks+0x3d/0x184 kernel/locking/lockdep.c:6775
+2 locks held by getty/2917:
+ #0: ffff888115dd90a0 (&tty->ldisc_sem){++++}-{0:0}, at: tty_ldisc_ref_wait+0x24/0x80 drivers/tty/tty_ldisc.c:243
+ #1: ffffc900000432f0 (&ldata->atomic_read_lock){+.+.}-{4:4}, at: n_tty_read+0x419/0x1500 drivers/tty/n_tty.c:2211
+
+=============================================
+
+NMI backtrace for cpu 0
+CPU: 0 UID: 0 PID: 30 Comm: khungtaskd Not tainted syzkaller #0 PREEMPT(full) 
+Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 02/12/2026
+Call Trace:
+ <TASK>
+ __dump_stack lib/dump_stack.c:94 [inline]
+ dump_stack_lvl+0x100/0x190 lib/dump_stack.c:120
+ nmi_cpu_backtrace.cold+0x12d/0x151 lib/nmi_backtrace.c:113
+ nmi_trigger_cpumask_backtrace+0x1d7/0x230 lib/nmi_backtrace.c:62
+ trigger_all_cpu_backtrace include/linux/nmi.h:161 [inline]
+ __sys_info lib/sys_info.c:157 [inline]
+ sys_info+0x141/0x190 lib/sys_info.c:165
+ check_hung_uninterruptible_tasks kernel/hung_task.c:346 [inline]
+ watchdog+0xd25/0x1050 kernel/hung_task.c:515
+ kthread+0x370/0x450 kernel/kthread.c:467
+ ret_from_fork+0x6c3/0xcb0 arch/x86/kernel/process.c:158
+ ret_from_fork_asm+0x1a/0x30 arch/x86/entry/entry_64.S:245
+ </TASK>
+Sending NMI from CPU 0 to CPUs 1:
+NMI backtrace for cpu 1
+CPU: 1 UID: 0 PID: 0 Comm: swapper/1 Not tainted syzkaller #0 PREEMPT(full) 
+Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 02/12/2026
+RIP: 0010:pv_native_safe_halt+0xf/0x20 arch/x86/kernel/paravirt.c:63
+Code: ae b1 01 e9 13 e8 02 00 0f 1f 00 90 90 90 90 90 90 90 90 90 90 90 90 90 90 90 90 f3 0f 1e fa 66 90 0f 00 2d d3 e1 1d 00 fb f4 <c3> cc cc cc cc 66 2e 0f 1f 84 00 00 00 00 00 66 90 90 90 90 90 90
+RSP: 0018:ffffc9000013fe00 EFLAGS: 00000242
+RAX: 000000000007f00b RBX: ffff8881022a1d00 RCX: ffffffff876898d5
+RDX: 0000000000000000 RSI: ffffffff8901db96 RDI: ffffffff87afa420
+RBP: 0000000000000001 R08: 0000000000000001 R09: ffffed103eae6725
+R10: ffff8881f573392b R11: 0000000000000000 R12: ffffed10204543a0
+R13: 0000000000000001 R14: ffffffff8aefe2d0 R15: 0000000000000000
+FS:  0000000000000000(0000) GS:ffff8882687d3000(0000) knlGS:0000000000000000
+CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+CR2: 00007f983bef5900 CR3: 0000000116d22000 CR4: 00000000003506f0
+Call Trace:
+ <TASK>
+ arch_safe_halt arch/x86/include/asm/paravirt.h:73 [inline]
+ default_idle+0x9/0x10 arch/x86/kernel/process.c:767
+ default_idle_call+0x6c/0xb0 kernel/sched/idle.c:122
+ cpuidle_idle_call kernel/sched/idle.c:191 [inline]
+ do_idle+0x35b/0x4b0 kernel/sched/idle.c:332
+ cpu_startup_entry+0x4f/0x60 kernel/sched/idle.c:430
+ start_secondary+0x21d/0x2d0 arch/x86/kernel/smpboot.c:312
+ common_startup_64+0x13e/0x148
+ </TASK>
+
+
+---
+If you want syzbot to run the reproducer, reply with:
+#syz test: git://repo/address.git branch-or-commit-hash
+If you attach or paste a git patch, syzbot will apply it before testing.
 
