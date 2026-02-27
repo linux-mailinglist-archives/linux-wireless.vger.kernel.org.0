@@ -1,82 +1,82 @@
-Return-Path: <linux-wireless+bounces-32263-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-32264-lists+linux-wireless=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id MA0PMbIcoWlhqQQAu9opvQ
-	(envelope-from <linux-wireless+bounces-32263-lists+linux-wireless=lfdr.de@vger.kernel.org>)
-	for <lists+linux-wireless@lfdr.de>; Fri, 27 Feb 2026 05:25:22 +0100
+	id qIoOALwcoWlhqQQAu9opvQ
+	(envelope-from <linux-wireless+bounces-32264-lists+linux-wireless=lfdr.de@vger.kernel.org>)
+	for <lists+linux-wireless@lfdr.de>; Fri, 27 Feb 2026 05:25:32 +0100
 X-Original-To: lists+linux-wireless@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 278AB1B2AB7
-	for <lists+linux-wireless@lfdr.de>; Fri, 27 Feb 2026 05:25:22 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9C3421B2ABE
+	for <lists+linux-wireless@lfdr.de>; Fri, 27 Feb 2026 05:25:31 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 3D68831D87AD
-	for <lists+linux-wireless@lfdr.de>; Fri, 27 Feb 2026 04:15:11 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 1AC5131DB286
+	for <lists+linux-wireless@lfdr.de>; Fri, 27 Feb 2026 04:15:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9868E34889F;
-	Fri, 27 Feb 2026 04:14:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A4CED3542CA;
+	Fri, 27 Feb 2026 04:14:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=morsemicro-com.20230601.gappssmtp.com header.i=@morsemicro-com.20230601.gappssmtp.com header.b="bXPVlcEs"
+	dkim=pass (2048-bit key) header.d=morsemicro-com.20230601.gappssmtp.com header.i=@morsemicro-com.20230601.gappssmtp.com header.b="DH4khm4Z"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-pg1-f176.google.com (mail-pg1-f176.google.com [209.85.215.176])
+Received: from mail-pl1-f174.google.com (mail-pl1-f174.google.com [209.85.214.174])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 63B6734DCF2
-	for <linux-wireless@vger.kernel.org>; Fri, 27 Feb 2026 04:14:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.176
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2E15534DCF2
+	for <linux-wireless@vger.kernel.org>; Fri, 27 Feb 2026 04:14:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.174
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772165661; cv=none; b=CbjIwtk35TDgoBNvQGBGY3wwq1W3GYotr9yd0KYZl59y8IRJJtcDXvc0mSwvZOevY1ujZ5c4CLwi1JsARiZLc0ct+2DL5EAN4iJpx31xiRSKaoi5dqR3jRLdqql1KFK5TO7JVZqdSq5V71glN2x4v2DMDRUVnRoisOmKq7lrmY8=
+	t=1772165666; cv=none; b=rPz0ZZ68OrKZYeDvsSEmtK/nU9QFnUfQFPSKOD/Wt5dY0bCnI6gRNoS0BWfR6tEyLOdzgd8uVrke0OlJXcyHiQ5Tg7qJvuw9KpATqHhjGgqnRWFwpOjVGsduvsxkrNgXG/z/DE948m3VM5XkJvjhx4GeVqJN6dh+/nYghRDPHF4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772165661; c=relaxed/simple;
-	bh=qw34Kp5YI1tGbvIqugk9A9lrXRzMXtRWcEhEq65BTcM=;
+	s=arc-20240116; t=1772165666; c=relaxed/simple;
+	bh=8B4ghXoq7ok+C23JuxbofDhYcftBC03C6LASiH4pLiE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=rbygiC38PMDfBi4zEhlYLmgg7yQdpP/ACGNFgYE2WDrdtGgl2NWwavFf0U/3Es+yGJc8Lo4PkrWXe3S9cPTVC3cPLNNfT23EGGZLAOQw1gdWs6DY7bgRXw/IKBhH1tAh2bp1Z/PO9Qq3266tUp65a4f7MddYAOmsxMcCxpc/0rI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=morsemicro.com; spf=pass smtp.mailfrom=morsemicro.com; dkim=pass (2048-bit key) header.d=morsemicro-com.20230601.gappssmtp.com header.i=@morsemicro-com.20230601.gappssmtp.com header.b=bXPVlcEs; arc=none smtp.client-ip=209.85.215.176
+	 MIME-Version; b=aK1zEOUZaOn8mjtYFrb0BrFk4GirAPXQWxiKNmM3lLX4S+drhvbrhmX+pN/xOXvI+qeVdlMgJXI6aJs7m0g9sv1UoiSM4hJeKbltONyMogxLKi+jnd+yGq576Z+bKSyAtESKVTYQNbsfKwRghC+FZqo9O2S7QgkKZyk0d1lRkYI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=morsemicro.com; spf=pass smtp.mailfrom=morsemicro.com; dkim=pass (2048-bit key) header.d=morsemicro-com.20230601.gappssmtp.com header.i=@morsemicro-com.20230601.gappssmtp.com header.b=DH4khm4Z; arc=none smtp.client-ip=209.85.214.174
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=morsemicro.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=morsemicro.com
-Received: by mail-pg1-f176.google.com with SMTP id 41be03b00d2f7-c6e3e4e7388so603512a12.1
-        for <linux-wireless@vger.kernel.org>; Thu, 26 Feb 2026 20:14:19 -0800 (PST)
+Received: by mail-pl1-f174.google.com with SMTP id d9443c01a7336-2ada721eda1so7177475ad.2
+        for <linux-wireless@vger.kernel.org>; Thu, 26 Feb 2026 20:14:25 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=morsemicro-com.20230601.gappssmtp.com; s=20230601; t=1772165659; x=1772770459; darn=vger.kernel.org;
+        d=morsemicro-com.20230601.gappssmtp.com; s=20230601; t=1772165664; x=1772770464; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=TYBnNtF1ihxMJDq6a+iNE3OyoNcMd9lSpU7divWw5uA=;
-        b=bXPVlcEsWSLftDF0yPT6lKZqX5fLaQt61oKXYDfeX+8CUxkzZ8L2+ij8I/tOJ0QY2B
-         CWan8q86WFGUW5/XeB5YnaUEd74xTsOO1YcYlFcQd/zN7Vip6DU10PbtA4C3AtzETGn0
-         8jWNqvA9qUJRuyqO/h3GQFoVjQ5EscyKJHEc7XiNocp6r4LHD7F9wFl31oZK79IPkiuH
-         WlA2/BN960qJpkm5qc7g9kfBmr6cgfi3N0DLMHDl1WFyPISrWv3G0MgQ2F3Il7zeQ4n0
-         /JtavCL4Vw+22CL9pjiT+55Hw2EtaOSd5O4BVFTQ6sEL4bW++jzpvc0Uyo3VivSFKvpo
-         VBVg==
+        bh=pN7m9qJueBxKoQd57mqyl5RqAky+iC+HY9vPH6Ht0Fw=;
+        b=DH4khm4ZTGohgBSzDLJatPhZDGHkzOYHPpDQ/IgJVbnmmr/jZpy2+lzcuf000eY6xM
+         mxWTYmswJh492RAy9UPvjcA/PQoLOjTWpWAa992rZkwV0aOzRE8dixKNNPJtmsUTfdo4
+         ek1cswl6otfqk/ex0dTYLf06DP0fPZy937FOKlJk1+hOUZv5iSyrhpGdSCE9s2HMr1Ov
+         iASugXA8cF3Fxp7NsTAI38veJs5GBGD9issKiZlcgml2RlI1Qhl3OrNCTvk1dhif4YJ1
+         9UEtrzihrTV87WWZQ9YuFcU4x+pFCl8YapWK4NXwUJE7xjkmETCW9mC2rOXMpZxTZ2OP
+         Stew==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1772165659; x=1772770459;
+        d=1e100.net; s=20230601; t=1772165664; x=1772770464;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to;
-        bh=TYBnNtF1ihxMJDq6a+iNE3OyoNcMd9lSpU7divWw5uA=;
-        b=HCHuE3WJxdn9FgsRjn/Ubd6vX8BTthycyDkSCtKCX5G2+U54DYNv19UNO9ULWNB4wq
-         pemITj5CLxAchVB5IBXdb0Im79Qh8tdbusNLd8lppz56TEX8gC2/XPWi2T2RzQdXjArA
-         +UcQ7xqpn/UZsPpQlF4QuExbNfIQHgeuRgmdpsbLW6t4xay1FN+0+AlF4V8u7hbw8yNv
-         Egpw4yTtfuUE+IFbP82NVPozZRa0xP6o/GpbF62pbyTNyZbXMdN4L8K67F31LwtdMU+h
-         uHHCpBfP3QnEzDgCgUH6XEjzB2n8S8NmYCzZnqMeV0/stGDdzF+M2iz525hznzzZ/Gci
-         MeKg==
-X-Forwarded-Encrypted: i=1; AJvYcCVM384TLijKx+yZdhdkn5a4XnecqD1FCUcVi4mXwIy8m82zY6Qq+SB6O3gw0Owi0aFz+Sd7fTX4mypTMllmHA==@vger.kernel.org
-X-Gm-Message-State: AOJu0YyHwBOfHaGprAxxO510dlk74koDNwAqS4Kv25cBoMvoLg7ASvTa
-	4dck6Kei8T9YzXXueTd22kpcKXYKEIBPUmlsvJdJyrSmFk33rNc+iuIdVrB1dyOlsbY=
-X-Gm-Gg: ATEYQzzMJG25uBHKR9Dr9K33PVOpzrtFhqzRIHWCHR3x0KMz20kCrH9sAYiXB7HWV0v
-	4e9TlbEgQ7N5VoU4f0L1pk8W694FubIrn3eXT5KK3L+VjAfN5vZT4bv149tx0TekPfQ88fxv3mA
-	QgnojXLsCmod4XGzz8GM8QERLBlrsyUo9YZIdAy7gKF+yIxrImJS4bZn1sJp3bFP0PU1LlAzFav
-	Gapz4fiE59Gjttu2bPGkEoPmVDQdJS/iXVLL2yBaiG/LbDxNaGIfRY+qGh+H/LclUrkHKgfidKs
-	jLA6qYfakT6XUyxv74gkAvcxcNmhUbImnlFwmFyYYpt+7vfS8WPnT3ji6TDshYbGNo5spkcNu61
-	F9q0PQphsvn7ePHHRFb3X5I6SyriQw22DSghHAC4bPN0NGii3q37411KoyvdARhOkCwgK0EVH+O
-	5tNjUnnv/FcH0XQtlenFJAUZJ8S7DDppYYXdUO/oPk3N4ogN2B4i43zdJnKX40mo30jcclrpZ5t
-	FCzR+PlFkoSVaxDFJADp8mwmKvXZ68=
-X-Received: by 2002:a17:903:1786:b0:2a9:47ff:101c with SMTP id d9443c01a7336-2ae2e4bb027mr16051575ad.46.1772165658613;
-        Thu, 26 Feb 2026 20:14:18 -0800 (PST)
+        bh=pN7m9qJueBxKoQd57mqyl5RqAky+iC+HY9vPH6Ht0Fw=;
+        b=NlWDKfv2RLp7hVru33z2d3k+MvsL4SPZpTvBrUZSF/lOBPMVHY1pa4tA5MCrCaKuOu
+         kigop5HQbSnSmgZPPrbiZwXn158hbeW+0PRB4zaTR78OVPNYvkoLLTw92/uPwFbFQ2G8
+         ypublLiPGhZ9rcH+CWN1IGc+dUFJdYqACwki4Q9gARvnVruxZHoXhUhZY50z6PMBpBe4
+         AdyVUwD31aimLg7CbDrqxLBlFHl7aDTqzc1aV+6xkIg50RyKZzasS2oxG2y2egun8Hzf
+         Gn4c9ju5OEMOCOIC6k1taF19+dKrgwAYklnP6dVvlxWMY2U6CJAqm7aa0/RjmFm5QbJ6
+         SFeg==
+X-Forwarded-Encrypted: i=1; AJvYcCXxTiUFJeOACVdgGMH+3j7limIDbeLSQFuCDW/P9+M/LKBqq3UDc9JHCLjUR12vt3q/bKPBNZZRNaIhWbNdhA==@vger.kernel.org
+X-Gm-Message-State: AOJu0YxmOPOPM4ljHuwulX6LrbJhnqB5RpQs7/YCs+FF5cxe7+fElVJ+
+	rSg8gMmgjrDvWwTp0k3bdVKSlNWPcOSJ+2xBVpC7oznozvsOTP14nvaQQpWkmHjav8Q=
+X-Gm-Gg: ATEYQzy7KdNK8qzz4aOdIiiJlbzydWLPmqooQ0m+GPyTujB4LcUXDuWd41Bcm0drayy
+	HmwMBP8BRBpu54Ne2VIvaFZk9GM4I9ThR6R5x/tMReMOfN07qEyGqrBLOi9/zvJ9T3AzEc5sji/
+	96D091yaK9fhxGhcA9uhJ6XDG+/kvBi/bMVjL1QdkWNPON9K8c31iyt0j1x9OFIH6Dx6qa+26OK
+	D2lDMtYM5I5KBcq9q2/ebjA+SucgQxDS+XBW9dDoGgBxwwk+K9KLG9k1q/bjwB/ubz0QG3Vi3rJ
+	N0RpoLJdO2iKa2uIIswyN+N/BT1ibP/RbRfmvJ9v0GnQfia6ztR4TmqI9BvKP8NJtko0/ausuC1
+	ZmQ/oP/1LzroV1e5vd21EznpiOmRNOS/JawNG5gMqe6AXqrsSYcuxEG3n4RnVsC/10CKlSK38Z0
+	T4mhv4wJolSg4NjrUbvdmT59GtZsRgulHhRVmCrvegyMxWpXf4gBkY4wkST6vFAVe8WniM2GTy5
+	JvgbVyVwSG424FXy/GWbMZD/z4EGt0=
+X-Received: by 2002:a17:902:cf0b:b0:2a0:9d16:5fb4 with SMTP id d9443c01a7336-2ae2e401db9mr14101225ad.18.1772165664494;
+        Thu, 26 Feb 2026 20:14:24 -0800 (PST)
 Received: from mma-H9MHD44.lan (60-242-93-14.static.tpgi.com.au. [60.242.93.14])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2adfb6ba5eesm41682865ad.68.2026.02.26.20.14.13
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2adfb6ba5eesm41682865ad.68.2026.02.26.20.14.19
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 26 Feb 2026 20:14:18 -0800 (PST)
+        Thu, 26 Feb 2026 20:14:24 -0800 (PST)
 From: Lachlan Hodges <lachlan.hodges@morsemicro.com>
 To: johannes@sipsolutions.net,
 	Lachlan Hodges <lachlan.hodges@morsemicro.com>,
@@ -85,9 +85,9 @@ To: johannes@sipsolutions.net,
 Cc: ayman.grais@morsemicro.com,
 	linux-wireless@vger.kernel.org,
 	linux-kernel@vger.kernel.org
-Subject: [PATCH wireless-next 24/35] wifi: mm81x: add skbq.c
-Date: Fri, 27 Feb 2026 15:10:34 +1100
-Message-ID: <20260227041108.66508-25-lachlan.hodges@morsemicro.com>
+Subject: [PATCH wireless-next 25/35] wifi: mm81x: add skbq.h
+Date: Fri, 27 Feb 2026 15:10:35 +1100
+Message-ID: <20260227041108.66508-26-lachlan.hodges@morsemicro.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20260227041108.66508-1-lachlan.hodges@morsemicro.com>
 References: <20260227041108.66508-1-lachlan.hodges@morsemicro.com>
@@ -113,7 +113,7 @@ X-Spamd-Result: default: False [-0.06 / 15.00];
 	DKIM_TRACE(0.00)[morsemicro-com.20230601.gappssmtp.com:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-32263-lists,linux-wireless=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-32264-lists,linux-wireless=lfdr.de];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TO_DN_SOME(0.00)[];
@@ -125,8 +125,8 @@ X-Spamd-Result: default: False [-0.06 / 15.00];
 	RCPT_COUNT_SEVEN(0.00)[7];
 	NEURAL_HAM(-0.00)[-1.000];
 	TAGGED_RCPT(0.00)[linux-wireless];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,morsemicro.com:mid,morsemicro.com:email,morsemicro-com.20230601.gappssmtp.com:dkim,hdr.channel:url,iter.mm:url]
-X-Rspamd-Queue-Id: 278AB1B2AB7
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,morsemicro.com:mid,morsemicro.com:email,morsemicro-com.20230601.gappssmtp.com:dkim]
+X-Rspamd-Queue-Id: 9C3421B2ABE
 X-Rspamd-Action: no action
 
 (Patches split per file for review, see cover letter for more
@@ -134,1072 +134,234 @@ information)
 
 Signed-off-by: Lachlan Hodges <lachlan.hodges@morsemicro.com>
 ---
- drivers/net/wireless/morsemicro/mm81x/skbq.c | 1056 ++++++++++++++++++
- 1 file changed, 1056 insertions(+)
- create mode 100644 drivers/net/wireless/morsemicro/mm81x/skbq.c
+ drivers/net/wireless/morsemicro/mm81x/skbq.h | 218 +++++++++++++++++++
+ 1 file changed, 218 insertions(+)
+ create mode 100644 drivers/net/wireless/morsemicro/mm81x/skbq.h
 
-diff --git a/drivers/net/wireless/morsemicro/mm81x/skbq.c b/drivers/net/wireless/morsemicro/mm81x/skbq.c
+diff --git a/drivers/net/wireless/morsemicro/mm81x/skbq.h b/drivers/net/wireless/morsemicro/mm81x/skbq.h
 new file mode 100644
-index 000000000000..c70eebf4cffd
+index 000000000000..0ccd1291ac95
 --- /dev/null
-+++ b/drivers/net/wireless/morsemicro/mm81x/skbq.c
-@@ -0,0 +1,1056 @@
-+// SPDX-License-Identifier: GPL-2.0-only
++++ b/drivers/net/wireless/morsemicro/mm81x/skbq.h
+@@ -0,0 +1,218 @@
++/* SPDX-License-Identifier: GPL-2.0-only */
 +/*
 + * Copyright (c) 2017-2026 Morse Micro
 + */
-+#include <linux/types.h>
-+#include <linux/slab.h>
-+#include <linux/workqueue.h>
-+#include <linux/ktime.h>
++
++#ifndef _MM81X_SKBQ_H_
++#define _MM81X_SKBQ_H_
++
 +#include <linux/skbuff.h>
-+#include <linux/jiffies.h>
-+#include "hif.h"
-+#include "debug.h"
-+#include "skbq.h"
-+#include "mac.h"
-+#include "command.h"
-+#include "bus.h"
++#include <linux/workqueue.h>
++#include "rate_code.h"
 +
-+/* Returns number of bytes needed to word align */
-+#define BYTES_NEEDED_TO_WORD_ALIGN(bytes) \
-+	((bytes) & 0x3 ? (4 - ((bytes) & 0x3)) : 0)
++/* Sync value of skb header to indicate a valid skb */
++#define MM81X_SKB_HEADER_SYNC (0xAA)
++/* Sync value indicating that the chip owns this skb */
++#define MM81X_SKB_HEADER_CHIP_OWNED_SYNC (0xBB)
 +
-+/* Rounds down to the nearest word boundary */
-+#define ROUND_DOWN_TO_WORD(bytes)                                  \
-+	(BYTES_NEEDED_TO_WORD_ALIGN(bytes) ?                       \
-+		 bytes - (4 - BYTES_NEEDED_TO_WORD_ALIGN(bytes)) : \
-+		 bytes)
-+
-+#define MM81X_SKBQ_MAX_TXQ_LEN 32
-+#define MM81X_SKBQ_TX_QUEUED_LIFETIME_MS 1000
-+#define MM81X_SKBQ_TX_STATUS_LIFETIME_MS (15 * 1000)
-+
-+/* Returns padding needed to align x up to a 4-byte boundary */
-+#define MM81X_PAD4(x) (((x) & 0x3) ? (4 - ((x) & 0x3)) : 0)
-+
-+struct mm81x_tx_status_priv {
-+	/*
-+	 * Time (jiffies) at which this packet has spent too long the pending
-+	 * queue, waiting for status notification from the firmware, and
-+	 * should be considered lost.
-+	 */
-+	unsigned long tx_status_expiry;
++enum mm81x_tx_status_and_conf_flags {
++	MM81X_TX_STATUS_FLAGS_NO_ACK = BIT(0),
++	MM81X_TX_STATUS_FLAGS_NO_REPORT = BIT(1),
++	MM81X_TX_CONF_FLAGS_CTL_AMPDU = BIT(2),
++	MM81X_TX_CONF_FLAGS_HW_ENCRYPT = BIT(3),
++	MM81X_TX_CONF_FLAGS_VIF_ID = (BIT(4) | BIT(5) | BIT(6) | BIT(7) |
++				      BIT(8) | BIT(9) | BIT(10) | BIT(11)),
++	MM81X_TX_CONF_FLAGS_KEY_IDX = (BIT(12) | BIT(13) | BIT(14)),
++	MM81X_TX_STATUS_FLAGS_PS_FILTERED = (BIT(15)),
++	MM81X_TX_CONF_IGNORE_TWT = (BIT(16)),
++	MM81X_TX_STATUS_PAGE_INVALID = (BIT(17)),
++	MM81X_TX_CONF_NO_PS_BUFFER = (BIT(18)),
++	MM81X_TX_STATUS_DUTY_CYCLE_CANT_SEND = (BIT(19)),
++	MM81X_TX_CONF_HAS_PV1_BPN_IN_BODY = (BIT(21)),
++	MM81X_TX_CONF_FLAGS_SEND_AFTER_DTIM = (BIT(22)),
++	MM81X_TX_STATUS_WAS_AGGREGATED = (BIT(23)),
++	MM81X_TX_CONF_FLAGS_FULLMAC_REPORT = BIT(24),
++	MM81X_TX_CONF_FLAGS_IMMEDIATE_REPORT = (BIT(31))
 +};
 +
-+static inline struct mm81x_tx_status_priv *
-+__mm81x_skbq_tx_status_priv(struct sk_buff *skb)
-+{
-+	struct ieee80211_tx_info *tx_info = IEEE80211_SKB_CB(skb);
++/* Getter and setter macros for vif id */
++#define MM81X_TX_CONF_FLAGS_VIF_ID_MASK (0xFF)
++#define MM81X_TX_CONF_FLAGS_VIF_ID_SET(x) \
++	(((x) & MM81X_TX_CONF_FLAGS_VIF_ID_MASK) << 4)
++#define MM81X_TX_CONF_FLAGS_VIF_ID_GET(x) \
++	(((x) & MM81X_TX_CONF_FLAGS_VIF_ID) >> 4)
 +
-+	BUILD_BUG_ON(sizeof(struct mm81x_tx_status_priv) >
-+		     sizeof(tx_info->status.status_driver_data));
-+	return (struct mm81x_tx_status_priv *)&tx_info->status
-+		.status_driver_data[0];
-+}
++/* Getter and setter macros for key index */
++#define MM81X_TX_CONF_FLAGS_KEY_IDX_SET(x) (((x) & 0x07) << 12)
++#define MM81X_TX_CONF_FLAGS_KEY_IDX_GET(x) \
++	(((x) & MM81X_TX_CONF_FLAGS_KEY_IDX) >> 12)
 +
-+static inline bool
-+__mm81x_skbq_has_pending_tx_skb_timed_out(struct sk_buff *skb)
-+{
-+	struct mm81x_tx_status_priv *info = __mm81x_skbq_tx_status_priv(skb);
++enum mm81x_rx_status_flags {
++	MM81X_RX_STATUS_FLAGS_ERROR = BIT(0),
++	MM81X_RX_STATUS_FLAGS_DECRYPTED = BIT(1),
++	MM81X_RX_STATUS_FLAGS_FCS_INCLUDED = BIT(2),
++	MM81X_RX_STATUS_FLAGS_EOF = BIT(3),
++	MM81X_RX_STATUS_FLAGS_AMPDU = BIT(4),
++	MM81X_RX_STATUS_FLAGS_NDP = BIT(7),
++	MM81X_RX_STATUS_FLAGS_UPLINK = BIT(8),
++	MM81X_RX_STATUS_FLAGS_RI = (BIT(9) | BIT(10)),
++	MM81X_RX_STATUS_FLAGS_NDP_TYPE = (BIT(11) | BIT(12) | BIT(13)),
++	MM81X_RX_STATUS_FLAGS_CRC_ERROR = BIT(14),
++	MM81X_RX_STATUS_FLAGS_VIF_ID = GENMASK(24, 17),
++};
 +
-+	/* If our timestamp value is in the past then we have timed out. */
-+	return time_is_before_jiffies(info->tx_status_expiry);
-+}
++/* Getter and Setter macros for vif id */
++#define MM81X_RX_STATUS_FLAGS_VIF_ID_MASK (0xFF)
++#define MM81X_RX_STATUS_FLAGS_VIF_ID_SET(x) \
++	(((x) & MM81X_RX_STATUS_FLAGS_VIF_ID_MASK) << 17)
++#define MM81X_RX_STATUS_FLAGS_VIF_ID_GET(x) \
++	(((x) & MM81X_RX_STATUS_FLAGS_VIF_ID) >> 17)
++#define MM81X_RX_STATUS_FLAGS_VIF_ID_CLEAR(x) \
++	((x) & ~(MM81X_RX_STATUS_FLAGS_VIF_ID_MASK << 17))
 +
-+static inline u32 __mm81x_skbq_size(const struct mm81x_skbq *mq)
-+{
-+	return mq->skbq_size;
-+}
++/* Getter macro for guard interval */
++#define MM81X_RX_STATUS_FLAGS_UPL_IND_GET(x) \
++	(((x) & MM81X_RX_STATUS_FLAGS_UPLINK) >> 8)
 +
-+static inline u32 __mm81x_skbq_space(const struct mm81x_skbq *mq)
-+{
-+	return MM81X_SKBQ_SIZE - __mm81x_skbq_size(mq);
-+}
++/* Getter macro for response indication */
++#define MM81X_RX_STATUS_FLAGS_RI_GET(x) (((x) & MM81X_RX_STATUS_FLAGS_RI) >> 9)
 +
-+static inline bool __mm81x_skbq_over_threshold(struct mm81x_skbq *mq)
-+{
-+	return skb_queue_len(&mq->skbq) >= MM81X_SKBQ_MAX_TXQ_LEN;
-+}
++/* Getter macro for NDP type */
++#define MM81X_RX_STATUS_FLAGS_NDP_TYPE_GET(x) \
++	(((x) & MM81X_RX_STATUS_FLAGS_NDP_TYPE) >> 11)
 +
-+static inline bool __mm81x_skbq_under_threshold(struct mm81x_skbq *mq)
-+{
-+	return skb_queue_len(&mq->skbq) < (MM81X_SKBQ_MAX_TXQ_LEN - 2);
-+}
++enum mm81x_skb_channel {
++	MM81X_SKB_CHAN_DATA = 0x0,
++	MM81X_SKB_CHAN_NDP_FRAMES = 0x1,
++	MM81X_SKB_CHAN_DATA_NOACK = 0x2,
++	MM81X_SKB_CHAN_BEACON = 0x3,
++	MM81X_SKB_CHAN_MGMT = 0x4,
++	MM81X_SKB_CHAN_INTERNAL_CRIT_BEACON = 0x80,
++	MM81X_SKB_CHAN_COMMAND = 0xFE,
++	MM81X_SKB_CHAN_TX_STATUS = 0xFF
++};
 +
-+static void __mm81x_skbq_unlink(struct mm81x_skbq *mq,
-+				struct sk_buff_head *queue, struct sk_buff *skb)
-+{
-+	if (queue == &mq->skbq) {
-+		WARN_ON(skb->len > mq->skbq_size);
-+		mq->skbq_size -= min(skb->len, mq->skbq_size);
-+	}
++#define MM81X_SKB_MAX_RATES (4)
 +
-+	__skb_unlink(skb, queue);
-+}
++struct mm81x_skb_rate_info {
++	mm81x_rate_code_t mm81x_ratecode;
++	u8 count;
++} __packed;
 +
-+static int __mm81x_skbq_put(struct mm81x_skbq *mq, struct sk_buff_head *queue,
-+			    struct sk_buff *skb, bool queue_at_head,
-+			    struct sk_buff *queue_before)
-+{
-+	/* Limit the size of the Tx queue, but not the pending queue */
-+	if (queue == &mq->skbq) {
-+		if (skb->len > __mm81x_skbq_space(mq))
-+			return -ENOMEM;
-+
-+		mq->skbq_size += skb->len;
-+	}
-+
-+	if (queue_before)
-+		__skb_queue_before(queue, queue_before, skb);
-+	else if (queue_at_head)
-+		__skb_queue_head(queue, skb);
-+	else
-+		__skb_queue_tail(queue, skb);
-+
-+	return 0;
-+}
-+
-+static void __mm81x_skbq_pkt_id(struct mm81x_skbq *mq, struct sk_buff *skb)
-+{
-+	struct mm81x_skb_hdr *hdr = (struct mm81x_skb_hdr *)skb->data;
-+
-+	hdr->tx_info.pkt_id = cpu_to_le32(mq->pkt_seq++);
-+}
-+
-+static struct mm81x_skbq *
-+__mm81x_skbq_tx_status_to_skbq(struct mm81x *mm,
-+			       const struct mm81x_skb_tx_status *tx_sts)
-+{
-+	int aci;
-+	struct mm81x_skbq *mq = NULL;
-+
-+	switch (tx_sts->channel) {
-+	case MM81X_SKB_CHAN_DATA:
-+	case MM81X_SKB_CHAN_DATA_NOACK:
-+		aci = dot11_tid_to_ac(tx_sts->tid);
-+		mq = mm81x_hif_get_tx_data_queue(mm, aci);
-+		break;
-+	case MM81X_SKB_CHAN_MGMT:
-+		mq = mm81x_hif_get_tx_mgmt_queue(mm);
-+		break;
-+	case MM81X_SKB_CHAN_BEACON:
-+		mq = mm81x_hif_get_tx_beacon_queue(mm);
-+		break;
-+	default:
-+		mm81x_err(mm, "unexpected channel on reported tx status [%d]",
-+			  tx_sts->channel);
-+	}
-+
-+	return mq;
-+}
-+
-+void mm81x_skbq_pull_hdr_post_tx(struct sk_buff *skb)
-+{
-+	skb_pull(skb, sizeof(struct mm81x_skb_hdr) +
-+			      ((struct mm81x_skb_hdr *)skb->data)->offset);
-+}
-+
-+static void mm81x_skbq_insert_pending(struct mm81x_skbq *mq,
-+				      struct sk_buff *skb, __le32 insertion_id)
-+{
-+	struct sk_buff *pfirst, *pnext;
-+	struct mm81x_skb_hdr *mhdr;
-+	struct sk_buff *tail = skb_peek_tail(&mq->skbq);
-+
-+	__mm81x_skbq_unlink(mq, &mq->pending, skb);
-+
-+	if (!tail) {
-+		__mm81x_skbq_put(mq, &mq->skbq, skb, false, NULL);
-+		return;
-+	}
-+
-+	/* Check if it should just be inserted on to the end */
-+	mhdr = (struct mm81x_skb_hdr *)tail->data;
-+	WARN_ON(insertion_id == mhdr->tx_info.pkt_id);
-+	if (le32_to_cpu(insertion_id) >= le32_to_cpu(mhdr->tx_info.pkt_id)) {
-+		__mm81x_skbq_put(mq, &mq->skbq, skb, false, NULL);
-+		return;
-+	}
-+
-+	/* Otherwise, re-insert to correct spot in skbq */
-+	skb_queue_walk_safe(&mq->skbq, pfirst, pnext) {
-+		mhdr = (struct mm81x_skb_hdr *)pfirst->data;
-+
-+		WARN_ON(insertion_id == mhdr->tx_info.pkt_id);
-+		if (le32_to_cpu(insertion_id) <=
-+		    le32_to_cpu(mhdr->tx_info.pkt_id)) {
-+			__mm81x_skbq_put(mq, &mq->skbq, skb, false, pfirst);
-+			return;
-+		}
-+	}
-+
-+	WARN_ON_ONCE(1);
-+}
-+
-+static void mm81x_skbq_sta_eosp(struct mm81x *mm, struct sk_buff *skb)
-+{
-+	struct ieee80211_tx_info *txi = IEEE80211_SKB_CB(skb);
-+	struct ieee80211_vif *vif = txi->control.vif;
-+
-+	mm81x_skbq_pull_hdr_post_tx(skb);
-+
-+	/*
-+	 * If this frame is the last frame in a PS-Poll or u-APSD SP,
-+	 * then mac80211 must be informed that the SP is now over.
-+	 */
-+	if (txi->flags & IEEE80211_TX_STATUS_EOSP) {
-+		struct ieee80211_hdr *hdr = (struct ieee80211_hdr *)skb->data;
-+		struct ieee80211_sta *sta;
-+
-+		scoped_guard(rcu) {
-+			sta = ieee80211_find_sta(vif, hdr->addr1);
-+			if (sta)
-+				ieee80211_sta_eosp(sta);
-+		}
-+	}
-+}
-+
-+static void __mm81x_skbq_drop_pending_skb(struct mm81x_skbq *mq,
-+					  struct sk_buff *skb)
-+{
-+	__mm81x_skbq_unlink(mq, &mq->pending, skb);
-+	mm81x_skbq_sta_eosp(mq->mm, skb);
-+	ieee80211_free_txskb(mq->mm->hw, skb);
-+}
-+
-+static bool mm81x_tx_h_is_ps_filtered(struct mm81x_skbq *mq,
-+				      struct sk_buff *skb,
-+				      struct mm81x_skb_tx_status *tx_sts)
-+{
-+	struct ieee80211_tx_info *txi = IEEE80211_SKB_CB(skb);
-+	struct ieee80211_vif *vif = txi->control.vif;
-+
-+	WARN_ON_ONCE(!(le32_to_cpu(tx_sts->flags) &
-+		       MM81X_TX_STATUS_FLAGS_PS_FILTERED));
-+
-+	if (vif->type == NL80211_IFTYPE_AP) {
-+		__mm81x_skbq_drop_pending_skb(mq, skb);
-+		return true;
-+	}
-+
-+	if (vif->type == NL80211_IFTYPE_STATION) {
-+		mm81x_skbq_insert_pending(mq, skb, tx_sts->pkt_id);
-+		return true;
-+	}
-+
-+	return false;
-+}
-+
-+/*
-+ * Get a pending frame by its ID. This will also drop frames with
-+ * older packet ids that are in the list
-+ */
-+static struct sk_buff *__mm81x_skbq_get_pending_by_id(struct mm81x *mm,
-+						      struct mm81x_skbq *mq,
-+						      u32 pkt_id)
-+{
-+	struct sk_buff *pfirst, *pnext;
-+	struct sk_buff *ret = NULL;
-+
-+	/* Move sent packets to pending list waiting for feedback */
-+	skb_queue_walk_safe(&mq->pending, pfirst, pnext) {
-+		struct mm81x_skb_hdr *hdr =
-+			(struct mm81x_skb_hdr *)pfirst->data;
-+
-+		if (le32_to_cpu(hdr->tx_info.pkt_id) == pkt_id) {
-+			ret = pfirst;
-+			break;
-+
-+		} else if (le32_to_cpu(hdr->tx_info.pkt_id) < pkt_id &&
-+			   __mm81x_skbq_has_pending_tx_skb_timed_out(pfirst)) {
-+			__mm81x_skbq_drop_pending_skb(mq, pfirst);
-+		}
-+	}
-+
-+	return ret;
-+}
-+
-+static void mm81x_skbq_tx_status_process(struct mm81x *mm, struct sk_buff *skb)
-+{
-+	int i;
-+	struct mm81x_skb_tx_status *tx_sts =
-+		(struct mm81x_skb_tx_status *)skb->data;
-+	int count = skb->len / sizeof(*tx_sts);
-+
-+	for (i = 0; i < count; tx_sts++, i++) {
-+		struct sk_buff *tx_skb;
-+		struct mm81x_skbq *mq =
-+			__mm81x_skbq_tx_status_to_skbq(mm, tx_sts);
-+		bool is_ps_filtered = (le32_to_cpu(tx_sts->flags) &
-+				       MM81X_TX_STATUS_FLAGS_PS_FILTERED);
-+
-+		if (!mq)
-+			continue;
-+
-+		spin_lock_bh(&mq->lock);
-+		tx_skb = __mm81x_skbq_get_pending_by_id(
-+			mm, mq, le32_to_cpu(tx_sts->pkt_id));
-+		if (!tx_skb) {
-+			mm81x_dbg(
-+				mm, MM81X_DBG_ANY,
-+				"No pending pkt match found [pktid:%d chan:%d]",
-+				tx_sts->pkt_id, tx_sts->channel);
-+			spin_unlock_bh(&mq->lock);
-+			continue;
-+		}
-+
-+		if (le32_to_cpu(tx_sts->flags) & MM81X_TX_STATUS_PAGE_INVALID) {
-+			__mm81x_skbq_drop_pending_skb(mq, tx_skb);
-+			spin_unlock_bh(&mq->lock);
-+			continue;
-+		}
-+
-+		if (le32_to_cpu(tx_sts->flags) &
-+		    MM81X_TX_STATUS_DUTY_CYCLE_CANT_SEND) {
-+			__mm81x_skbq_drop_pending_skb(mq, tx_skb);
-+			spin_unlock_bh(&mq->lock);
-+			continue;
-+		}
-+
-+		if (is_ps_filtered &&
-+		    mm81x_tx_h_is_ps_filtered(mq, tx_skb, tx_sts)) {
-+			/* Has been consumed by mm81x_tx_h_is_ps_filtered */
-+			spin_unlock_bh(&mq->lock);
-+			continue;
-+		}
-+
-+		mm81x_skbq_pull_hdr_post_tx(tx_skb);
-+		mm81x_skbq_skb_finish(mq, tx_skb, tx_sts);
-+		spin_unlock_bh(&mq->lock);
-+	}
-+
-+	if (mm->ps.enable && !mm->ps.suspended &&
-+	    (mm81x_hif_get_tx_buffered_count(mm) == 0)) {
-+		/* Evaluate ps, check if it was gated on a pending tx status */
-+		queue_delayed_work(mm->chip_wq, &mm->ps.delayed_eval_work, 0);
-+	}
-+}
-+
-+static void mm81x_skbq_dispatch_work(struct work_struct *dispatch_work)
-+{
-+	struct mm81x_skbq *mq =
-+		container_of(dispatch_work, struct mm81x_skbq, dispatch_work);
-+	struct mm81x *mm = mq->mm;
-+	struct mm81x_skb_hdr *hdr;
-+	struct sk_buff_head skbq;
-+	struct sk_buff *pfirst, *pnext;
++struct mm81x_skb_tx_status {
++	__le32 flags;
++	__le32 pkt_id;
++	u8 tid;
 +	u8 channel;
++	__le16 ampdu_info;
++	struct mm81x_skb_rate_info rates[MM81X_SKB_MAX_RATES];
++} __packed;
 +
-+	__skb_queue_head_init(&skbq);
++#define MM81X_TXSTS_AMPDU_INFO_GET_TAG(x) (((x) >> 10) & 0x3F)
++#define MM81X_TXSTS_AMPDU_INFO_GET_LEN(x) (((x) >> 5) & 0x1F)
++#define MM81X_TXSTS_AMPDU_INFO_GET_SUC(x) ((x) & 0x1F)
 +
-+	mm81x_skbq_deq_num_skb(mq, &skbq, mm81x_skbq_count(mq));
++struct mm81x_skb_tx_info {
++	__le32 flags;
++	__le32 pkt_id;
++	u8 tid;
++	u8 tid_params;
++	u8 mmss_params;
++	u8 padding[1];
++	struct mm81x_skb_rate_info rates[MM81X_SKB_MAX_RATES];
++} __packed;
 +
-+	skb_queue_walk_safe(&skbq, pfirst, pnext) {
-+		__skb_unlink(pfirst, &skbq);
-+		/* Header endianness has already be adjusted */
-+		hdr = (struct mm81x_skb_hdr *)pfirst->data;
-+		channel = hdr->channel;
-+		/* Remove mm81x header and padding */
-+		__skb_pull(pfirst, sizeof(*hdr) + hdr->offset);
++#define TX_INFO_TID_PARAMS_MAX_REORDER_BUF 0x1f
++#define TX_INFO_TID_PARAMS_AMPDU_ENABLED 0x20
++#define TX_INFO_TID_PARAMS_AMSDU_SUPPORTED 0x40
++#define TX_INFO_TID_PARAMS_USE_LEGACY_BA 0x80
 +
-+		switch (channel) {
-+		case MM81X_SKB_CHAN_COMMAND:
-+			mm81x_cmd_resp_process(mm, pfirst);
-+			break;
-+		case MM81X_SKB_CHAN_TX_STATUS:
-+			mm81x_skbq_tx_status_process(mm, pfirst);
-+			dev_kfree_skb_any(pfirst);
-+			break;
-+		default:
-+			mm81x_mac_rx_skb(mm, pfirst, &hdr->rx_status);
-+			break;
-+		}
-+	}
-+
-+	if (mm81x_skbq_count(mq))
-+		queue_work(mm->net_wq, &mq->dispatch_work);
-+}
-+
-+int mm81x_skbq_put(struct mm81x_skbq *mq, struct sk_buff *skb)
-+{
-+	int ret;
-+
-+	spin_lock_bh(&mq->lock);
-+	ret = __mm81x_skbq_put(mq, &mq->skbq, skb, false, NULL);
-+	spin_unlock_bh(&mq->lock);
-+	return ret;
-+}
-+
-+static void mm81x_skbq_set_queued_tx_skb_expiry(struct sk_buff *skb)
-+{
-+	struct ieee80211_hdr *hdr = (struct ieee80211_hdr *)skb->data;
-+	struct ieee80211_tx_info *txi = IEEE80211_SKB_CB(skb);
-+
-+	if (ieee80211_is_probe_req(hdr->frame_control) ||
-+	    ieee80211_is_probe_resp(hdr->frame_control) ||
-+	    ieee80211_is_auth(hdr->frame_control)) {
-+		txi->control.enqueue_time = (u32)jiffies;
-+	} else {
-+		txi->control.enqueue_time = 0;
-+	}
-+}
-+
-+static bool mm81x_skbq_has_queued_tx_skb_expired(struct sk_buff *skb)
-+{
-+	struct ieee80211_tx_info *txi = IEEE80211_SKB_CB(skb);
-+
-+	if (txi->control.enqueue_time > 0) {
-+		u32 expiry_time =
-+			txi->control.enqueue_time +
-+			msecs_to_jiffies(MM81X_SKBQ_TX_QUEUED_LIFETIME_MS);
-+
-+		return (s32)((u32)jiffies - expiry_time) > 0;
-+	}
-+
-+	return false;
-+}
-+
-+/*
-+ * Drop selected frames (those with an expiry time set) that could not
-+ * be sent within a reasonable timeframe due to congestion. These would
-+ * only be rejected or ignored by the peer, so are only contributing to
-+ * the problem.
++/* Bitmap for MMSS (Minimum MPDU start spacing) parameters
++ * +-----------+-----------+
++ * | Morse     | MMSS set  |
++ * | MMSS      | by S1G cap|
++ * | offset    | IE        |
++ * |-----------|-----------|
++ * |b7|b6|b5|b4|b3|b2|b1|b0|
 + */
-+void mm81x_skbq_purge_aged(struct mm81x *mm, struct mm81x_skbq *mq)
-+{
-+	int dropped = 0;
-+	struct sk_buff *pfirst;
-+	struct sk_buff *pnext;
++#define TX_INFO_MMSS_PARAMS_MMSS_MASK GENMASK(3, 0)
++#define TX_INFO_MMSS_PARAMS_MMSS_OFFSET_START 4
++#define TX_INFO_MMSS_PARAMS_MMSS_OFFSET_MASK GENMASK(7, 4)
++#define TX_INFO_MMSS_PARAMS_SET_MMSS(x) ((x) & TX_INFO_MMSS_PARAMS_MMSS_MASK)
++#define TX_INFO_MMSS_PARAMS_SET_MMSS_OFFSET(x)            \
++	(((x) << TX_INFO_MMSS_PARAMS_MMSS_OFFSET_START) & \
++	 TX_INFO_MMSS_PARAMS_MMSS_OFFSET_MASK)
 +
-+	spin_lock_bh(&mq->lock);
-+	skb_queue_walk_safe(&mq->skbq, pfirst, pnext) {
-+		if (!mm81x_skbq_has_queued_tx_skb_expired(pfirst))
-+			break;
-+		__mm81x_skbq_unlink(mq, &mq->skbq, pfirst);
-+		ieee80211_free_txskb(mm->hw, pfirst);
-+		dropped++;
-+	}
++struct mm81x_skb_rx_status {
++	__le32 flags;
++	mm81x_rate_code_t mm81x_ratecode;
++	__le16 rssi;
++	__le16 freq_100khz;
++	u8 bss_color;
++	s8 noise_dbm;
++	/** Padding for word alignment */
++	u8 padding[2];
++	__le64 rx_timestamp_us;
++} __packed;
 +
-+	spin_unlock_bh(&mq->lock);
-+}
++struct mm81x_skb_hdr {
++	u8 sync;
++	u8 channel;
++	__le16 len;
++	u8 offset;
++	u8 checksum_lower;
++	__le16 checksum_upper;
++	union {
++		struct mm81x_skb_tx_info tx_info;
++		struct mm81x_skb_tx_status tx_status;
++		struct mm81x_skb_rx_status rx_status;
++	};
++} __packed;
 +
-+void mm81x_skbq_purge(struct mm81x_skbq *mq, struct sk_buff_head *skbq)
-+{
-+	struct sk_buff *skb;
++#define MM81X_SKBQ_SIZE (4 * 128 * 1024)
 +
-+	spin_lock_bh(&mq->lock);
-+	while ((skb = __skb_dequeue(skbq)))
-+		dev_kfree_skb_any(skb);
-+	spin_unlock_bh(&mq->lock);
-+}
++struct mm81x;
 +
-+void mm81x_skbq_enq(struct mm81x_skbq *mq, struct sk_buff_head *skbq)
-+{
-+	int size;
-+	struct sk_buff *pfirst, *pnext;
-+
-+	spin_lock_bh(&mq->lock);
-+	size = __mm81x_skbq_space(mq);
-+	skb_queue_walk_safe(skbq, pfirst, pnext) {
-+		if (pfirst->len > size)
-+			break;
-+		__skb_unlink(pfirst, skbq);
-+		__mm81x_skbq_put(mq, &mq->skbq, pfirst, false, NULL);
-+		size -= pfirst->len;
-+	}
-+
-+	spin_unlock_bh(&mq->lock);
-+}
-+
-+int mm81x_skbq_deq_num_skb(struct mm81x_skbq *mq, struct sk_buff_head *skbq,
-+			   int num_skb)
-+{
-+	int count = 0;
-+	struct sk_buff *pfirst, *pnext;
-+
-+	spin_lock_bh(&mq->lock);
-+	skb_queue_walk_safe(&mq->skbq, pfirst, pnext) {
-+		if (count >= num_skb)
-+			break;
-+		__mm81x_skbq_unlink(mq, &mq->skbq, pfirst);
-+		__skb_queue_tail(skbq, pfirst);
-+		++count;
-+	}
-+
-+	spin_unlock_bh(&mq->lock);
-+	return count;
-+}
-+
-+void mm81x_skbq_enq_prepend(struct mm81x_skbq *mq, struct sk_buff_head *skbq)
-+{
-+	int size;
-+	struct sk_buff *pfirst, *pnext;
-+
-+	spin_lock_bh(&mq->lock);
-+	size = __mm81x_skbq_space(mq);
-+
-+	/*
-+	 * We are doing a reverse walk here to ensure the order remains the
-+	 * same. This means the last member of the queue goes in, on top of
-+	 * the queue first and gets pushed down as more members get added to
-+	 * the top of the queue.
-+	 */
-+	skb_queue_reverse_walk_safe(skbq, pfirst, pnext)
-+	{
-+		if (pfirst->len > size)
-+			break;
-+		__skb_unlink(pfirst, skbq);
-+		__mm81x_skbq_put(mq, &mq->skbq, pfirst, true, NULL);
-+		size -= pfirst->len;
-+	}
-+
-+	spin_unlock_bh(&mq->lock);
-+}
-+
-+static void mm81x_skbq_stop_tx_queues(struct mm81x *mm)
-+{
-+	int queue;
-+
-+	if (!mm->started)
-+		return;
-+	for (queue = IEEE80211_AC_VO; queue <= IEEE80211_AC_BK; queue++)
-+		ieee80211_stop_queue(mm->hw, queue);
-+
-+	set_bit(MM81X_STATE_DATA_QS_STOPPED, &mm->state_flags);
-+}
-+
-+/* Wake all Tx queues if all queues are below threshold */
-+void mm81x_skbq_may_wake_tx_queues(struct mm81x *mm)
-+{
-+	int queue;
-+	struct mm81x_skbq *qs;
-+	int num_qs;
-+	bool could_wake;
-+
-+	if (!mm->started)
-+		return;
-+
-+	could_wake = true;
-+	mm81x_hif_skbq_get_tx_qs(mm, &qs, &num_qs);
-+	for (queue = 0; queue < num_qs; queue++) {
-+		struct mm81x_skbq *mq = &qs[queue];
-+
-+		if (!could_wake)
-+			break;
-+
-+		spin_lock_bh(&mq->lock);
-+		could_wake &= (__mm81x_skbq_under_threshold(mq));
-+		spin_unlock_bh(&mq->lock);
-+	}
-+
-+	if (!could_wake)
-+		return;
-+
-+	for (queue = IEEE80211_AC_VO; queue <= IEEE80211_AC_BK; queue++)
-+		ieee80211_wake_queue(mm->hw, queue);
-+
-+	clear_bit(MM81X_STATE_DATA_QS_STOPPED, &mm->state_flags);
-+}
-+
-+static int mm81x_skbq_tx(struct mm81x_skbq *mq, struct sk_buff *skb, u8 channel)
-+{
-+	int rc;
-+	bool mq_over_threshold;
-+	struct mm81x *mm = mq->mm;
-+
-+	spin_lock_bh(&mq->lock);
-+	rc = __mm81x_skbq_put(mq, &mq->skbq, skb, false, NULL);
-+	if (rc) {
-+		mm81x_err(mm, "skb put chan %d failed (%d)", channel, rc);
-+		if (channel == MM81X_SKB_CHAN_DATA) {
-+			u16 queue = skb_get_queue_mapping(skb);
-+
-+			mm81x_err(mm, "skb put queue %d status %d", queue,
-+				  ieee80211_queue_stopped(mm->hw, queue));
-+		}
-+	}
-+
-+	/* Fill packet ID in TX info */
-+	__mm81x_skbq_pkt_id(mq, skb);
-+
-+	mq_over_threshold = __mm81x_skbq_over_threshold(mq);
-+	spin_unlock_bh(&mq->lock);
-+
-+	/* For data packets stop queues */
-+	if (channel == MM81X_SKB_CHAN_DATA && mq_over_threshold)
-+		mm81x_skbq_stop_tx_queues(mm);
-+
-+	switch (channel) {
-+	case MM81X_SKB_CHAN_DATA:
-+	case MM81X_SKB_CHAN_DATA_NOACK:
-+		if (mm81x_is_data_tx_allowed(mm)) {
-+			set_bit(MM81X_HIF_EVT_TX_DATA_PEND,
-+				&mm->hif.event_flags);
-+			queue_work(mm->chip_wq, &mm->hif_work);
-+		}
-+		break;
-+	case MM81X_SKB_CHAN_MGMT:
-+		set_bit(MM81X_HIF_EVT_TX_MGMT_PEND, &mm->hif.event_flags);
-+		queue_work(mm->chip_wq, &mm->hif_work);
-+		break;
-+	case MM81X_SKB_CHAN_BEACON:
-+		set_bit(MM81X_HIF_EVT_TX_BEACON_PEND, &mm->hif.event_flags);
-+		queue_work(mm->chip_wq, &mm->hif_work);
-+		break;
-+	case MM81X_SKB_CHAN_COMMAND:
-+		set_bit(MM81X_HIF_EVT_TX_COMMAND_PEND, &mm->hif.event_flags);
-+		queue_work(mm->chip_wq, &mm->hif_work);
-+		break;
-+	default:
-+		mm81x_err(mm, "Invalid skb channel: %d", channel);
-+		break;
-+	}
-+
-+	return rc;
-+}
-+
-+static inline void __mm81x_skbq_tx_move_to_pending(struct mm81x_skbq *mq,
-+						   struct sk_buff *skb)
-+{
-+	struct mm81x_tx_status_priv *pend_info =
-+		__mm81x_skbq_tx_status_priv(skb);
-+
-+	pend_info->tx_status_expiry =
-+		jiffies + msecs_to_jiffies(MM81X_SKBQ_TX_STATUS_LIFETIME_MS);
-+	__mm81x_skbq_put(mq, &mq->pending, skb, false, NULL);
-+}
-+
-+void mm81x_skbq_tx_complete(struct mm81x_skbq *mq, struct sk_buff_head *skbq)
-+{
-+	bool skb_awaits_tx_status = false;
-+	struct mm81x *mm = mq->mm;
-+	struct sk_buff *pfirst, *pnext;
-+	struct sk_buff *peek = skb_peek(skbq);
-+	struct mm81x_skb_hdr *hdr;
-+	const bool fw_reports_bcn_tx_status =
-+		mm->firmware_flags &
-+		MM81X_FW_FLAGS_REPORTS_TX_BEACON_COMPLETION;
-+
-+	if (!peek)
-+		return;
-+
-+	/* Move sent packets to pending list waiting for feedback */
-+	spin_lock_bh(&mq->lock);
-+	skb_queue_walk_safe(skbq, pfirst, pnext) {
-+		__skb_unlink(pfirst, skbq);
-+		hdr = (struct mm81x_skb_hdr *)pfirst->data;
-+		/*
-+		 * If firmware doesn't give status on beacons just free
-+		 * them, otherwise queue and wait for response.
-+		 */
-+		switch (hdr->channel) {
-+		case MM81X_SKB_CHAN_BEACON:
-+			if (fw_reports_bcn_tx_status) {
-+				__mm81x_skbq_tx_move_to_pending(mq, pfirst);
-+				skb_awaits_tx_status = true;
-+				break;
-+			}
-+			/*
-+			 * If the FW doesn't give statuses on beacon's,
-+			 * then mark them as done.
-+			 */
-+			mm81x_skbq_pull_hdr_post_tx(pfirst);
-+			dev_kfree_skb_any(pfirst);
-+			break;
-+		default:
-+			if (le32_to_cpu(hdr->tx_info.flags) &
-+			    MM81X_TX_STATUS_FLAGS_NO_REPORT) {
-+				dev_kfree_skb_any(pfirst);
-+			} else {
-+				/*
-+				 * skb has been given to the chip. Store the
-+				 * time and queue the skb onto the pending
-+				 * queue while we wait for the tx_status.
-+				 */
-+				__mm81x_skbq_tx_move_to_pending(mq, pfirst);
-+				skb_awaits_tx_status = true;
-+			}
-+			break;
-+		}
-+	}
-+	spin_unlock_bh(&mq->lock);
-+
-+	if (skb_awaits_tx_status) {
-+		spin_lock_bh(&mm->stale_status.lock);
-+		mod_timer(&mm->stale_status.timer,
-+			  jiffies + msecs_to_jiffies(
-+					    MM81X_SKBQ_TX_STATUS_LIFETIME_MS));
-+		spin_unlock_bh(&mm->stale_status.lock);
-+	}
-+}
-+
-+/* Returns the first skb in the pending list. */
-+struct sk_buff *mm81x_skbq_tx_pending(struct mm81x_skbq *mq)
-+{
-+	struct sk_buff *pfirst;
-+
-+	spin_lock_bh(&mq->lock);
-+	pfirst = skb_peek(&mq->pending);
-+	spin_unlock_bh(&mq->lock);
-+	return pfirst;
-+}
-+
-+int mm81x_skbq_check_for_stale_tx(struct mm81x *mm, struct mm81x_skbq *mq)
-+{
-+	int flushed = 0;
-+	struct sk_buff *pfirst;
-+	struct sk_buff *pnext;
-+
-+	if (!skb_queue_len(&mq->pending))
-+		return 0;
-+
-+	/* Move sent packets to pending list waiting for feedback */
-+	spin_lock_bh(&mq->lock);
-+	skb_queue_walk_safe(&mq->pending, pfirst, pnext) {
-+		struct mm81x_skb_hdr *hdr =
-+			(struct mm81x_skb_hdr *)pfirst->data;
-+
-+		if (__mm81x_skbq_has_pending_tx_skb_timed_out(pfirst)) {
-+			mm81x_dbg(mm, MM81X_DBG_ANY,
-+				  "TX skb timed out [id:%d,chan:%d]",
-+				  hdr->tx_info.pkt_id, hdr->channel);
-+
-+			__mm81x_skbq_drop_pending_skb(mq, pfirst);
-+			flushed++;
-+		}
-+	}
-+
-+	spin_unlock_bh(&mq->lock);
-+	return flushed;
-+}
-+
-+/* Remove commands from pending (or skbq if not sent) */
-+static void __skbq_cmd_finish(struct mm81x_skbq *mq, struct sk_buff *skb)
-+{
-+	struct mm81x *mm = mq->mm;
-+
-+	if (skb_queue_len(&mq->pending)) {
-+		__mm81x_skbq_unlink(mq, &mq->pending, skb);
-+		dev_kfree_skb(skb);
-+	} else if (skb_queue_len(&mq->skbq)) {
-+		/* Command was probably timed out before being sent */
-+		mm81x_dbg(mm, MM81X_DBG_SKBQ,
-+			  "Command pending queue empty. Removing from SKBQ.");
-+		__mm81x_skbq_unlink(mq, &mq->skbq, skb);
-+		dev_kfree_skb(skb);
-+	} else {
-+		mm81x_dbg(mm, MM81X_DBG_SKBQ, "Command Q not found");
-+	}
-+}
-+
-+struct mm81x_update_sta_iter_data {
++struct mm81x_skbq {
 +	struct mm81x *mm;
-+	struct sk_buff *skb;
-+	struct mm81x_skb_tx_status *tx_sts;
-+	int tx_attempts;
-+	bool updated;
++	u32 pkt_seq; /* SKB sequence used in tx_status */
++	u16 flags;
++	u32 skbq_size; /* current off loaded size */
++	spinlock_t lock;
++	struct sk_buff_head skbq;
++	struct sk_buff_head pending; /* packets sent pending feedback */
++	struct work_struct dispatch_work;
 +};
 +
-+static void mm81x_tx_h_update_sta_iter(void *data, u8 *mac,
-+				       struct ieee80211_vif *vif)
-+{
-+	struct mm81x_update_sta_iter_data *iter = data;
-+	struct ieee80211_hdr *hdr;
-+	struct ieee80211_sta *sta;
-+
-+	if (iter->updated || !iter->skb || !iter->skb->data)
-+		return;
-+
-+	hdr = (struct ieee80211_hdr *)iter->skb->data;
-+
-+	/*
-+	 * Note that each iteration via
-+	 * ieee80211_iterate_active_interfaces_atomic is under an RCU critical
-+	 * section so there is no need for a local critical section within here
-+	 * when looking up the station.
-+	 */
-+	sta = ieee80211_find_sta(vif, hdr->addr1);
-+	if (!sta)
-+		return;
-+
-+	mm81x_rc_sta_feedback_rates(iter->mm, iter->skb, sta, iter->tx_sts,
-+				    iter->tx_attempts);
-+	mm81x_tx_h_check_aggr(sta, iter->skb);
-+
-+	/*
-+	 * In situations with multiple virtual interfaces, finish iteration
-+	 * once we have found our STA to prevent further iteration.
-+	 */
-+	iter->updated = true;
-+}
-+
-+/* TX status/Response received remove packet from pending TX finish */
-+static void __skbq_data_tx_finish(struct mm81x_skbq *mq, struct sk_buff *skb,
-+				  struct mm81x_skb_tx_status *tx_sts)
-+{
-+	struct mm81x *mm = mq->mm;
-+	struct mm81x_update_sta_iter_data iter = {};
-+
-+	__mm81x_skbq_unlink(mq, &mq->pending, skb);
-+	iter.mm = mm;
-+	iter.skb = skb;
-+	iter.tx_sts = tx_sts;
-+	iter.tx_attempts = mm81x_tx_h_get_attempts(mm, tx_sts);
-+
-+	ieee80211_iterate_active_interfaces_atomic(mm->hw,
-+						   IEEE80211_IFACE_ITER_NORMAL,
-+						   mm81x_tx_h_update_sta_iter,
-+						   &iter);
-+
-+	ieee80211_tx_status_skb(mm->hw, skb);
-+}
-+
++void mm81x_skbq_purge(struct mm81x_skbq *mq, struct sk_buff_head *skbq);
++void mm81x_skbq_purge_aged(struct mm81x *mm, struct mm81x_skbq *mq);
++u32 mm81x_skbq_space(struct mm81x_skbq *mq);
++u32 mm81x_skbq_size(struct mm81x_skbq *mq);
++int mm81x_skbq_deq_num_skb(struct mm81x_skbq *mq, struct sk_buff_head *skbq,
++			   int num_skb);
++struct sk_buff *mm81x_skbq_alloc_skb(struct mm81x_skbq *mq,
++				     unsigned int length);
++int mm81x_skbq_skb_tx(struct mm81x_skbq *mq, struct sk_buff **skb,
++		      struct mm81x_skb_tx_info *tx_info, u8 channel);
++int mm81x_skbq_put(struct mm81x_skbq *mq, struct sk_buff *skb);
++void mm81x_skbq_enq(struct mm81x_skbq *mq, struct sk_buff_head *skbq);
++void mm81x_skbq_enq_prepend(struct mm81x_skbq *mq, struct sk_buff_head *skbq);
++void mm81x_skbq_tx_complete(struct mm81x_skbq *mq, struct sk_buff_head *skbq);
++struct sk_buff *mm81x_skbq_tx_pending(struct mm81x_skbq *mq);
++void mm81x_skbq_init(struct mm81x *mm, struct mm81x_skbq *mq, u16 flags);
++void mm81x_skbq_finish(struct mm81x_skbq *mq);
++void mm81x_skbq_pull_hdr_post_tx(struct sk_buff *skb);
++void mm81x_skbq_mon_dump(struct mm81x *mm, struct seq_file *file);
 +void mm81x_skbq_skb_finish(struct mm81x_skbq *mq, struct sk_buff *skb,
-+			   struct mm81x_skb_tx_status *tx_sts)
-+{
-+	if (mq->flags & MM81X_HIF_FLAGS_COMMAND)
-+		__skbq_cmd_finish(mq, skb);
-+	else
-+		__skbq_data_tx_finish(mq, skb, tx_sts);
-+}
++			   struct mm81x_skb_tx_status *tx_sts);
++void mm81x_skbq_tx_flush(struct mm81x_skbq *mq);
++int mm81x_skbq_check_for_stale_tx(struct mm81x *mm, struct mm81x_skbq *mq);
++void mm81x_skbq_may_wake_tx_queues(struct mm81x *mm);
++u32 mm81x_skbq_count_tx_ready(struct mm81x_skbq *mq);
++u32 mm81x_skbq_count(struct mm81x_skbq *mq);
++u32 mm81x_skbq_pending_count(struct mm81x_skbq *mq);
++void mm81x_skbq_data_traffic_pause(struct mm81x *mm);
++void mm81x_skbq_data_traffic_resume(struct mm81x *mm);
++bool mm81x_skbq_validate_checksum(u8 *data);
 +
-+void mm81x_skbq_tx_flush(struct mm81x_skbq *mq)
-+{
-+	struct sk_buff *pfirst, *pnext;
-+
-+	spin_lock_bh(&mq->lock);
-+	skb_queue_walk_safe(&mq->pending, pfirst, pnext) {
-+		__mm81x_skbq_unlink(mq, &mq->pending, pfirst);
-+		ieee80211_free_txskb(mq->mm->hw, pfirst);
-+	}
-+
-+	skb_queue_walk_safe(&mq->skbq, pfirst, pnext) {
-+		__mm81x_skbq_unlink(mq, &mq->skbq, pfirst);
-+		ieee80211_free_txskb(mq->mm->hw, pfirst);
-+	}
-+	spin_unlock_bh(&mq->lock);
-+}
-+
-+void mm81x_skbq_init(struct mm81x *mm, struct mm81x_skbq *mq, u16 flags)
-+{
-+	spin_lock_init(&mq->lock);
-+	__skb_queue_head_init(&mq->skbq);
-+	__skb_queue_head_init(&mq->pending);
-+	mq->mm = mm;
-+	mq->skbq_size = 0;
-+	mq->flags = flags;
-+	mq->pkt_seq = 0;
-+	if (flags & MM81X_HIF_FLAGS_DIR_TO_HOST)
-+		INIT_WORK(&mq->dispatch_work, mm81x_skbq_dispatch_work);
-+}
-+
-+void mm81x_skbq_finish(struct mm81x_skbq *mq)
-+{
-+	if (mq->skbq_size > 0)
-+		mm81x_dbg(mq->mm, MM81X_DBG_SKBQ,
-+			  "Purging a non empty MorseQ. Dropping data!");
-+
-+	/* Clean up link to hif */
-+	if (mq->flags & MM81X_HIF_FLAGS_DIR_TO_HOST)
-+		cancel_work_sync(&mq->dispatch_work);
-+	mm81x_skbq_purge(mq, &mq->skbq);
-+	mm81x_skbq_purge(mq, &mq->pending);
-+	mq->skbq_size = 0;
-+}
-+
-+u32 mm81x_skbq_size(struct mm81x_skbq *mq)
-+{
-+	u32 count;
-+
-+	spin_lock_bh(&mq->lock);
-+	count = __mm81x_skbq_size(mq);
-+	spin_unlock_bh(&mq->lock);
-+	return count;
-+}
-+
-+u32 mm81x_skbq_count(struct mm81x_skbq *mq)
-+{
-+	u32 count = 0;
-+
-+	spin_lock_bh(&mq->lock);
-+	count += skb_queue_len(&mq->skbq);
-+	spin_unlock_bh(&mq->lock);
-+	return count;
-+}
-+
-+u32 mm81x_skbq_pending_count(struct mm81x_skbq *mq)
-+{
-+	u32 count;
-+
-+	spin_lock_bh(&mq->lock);
-+	count = skb_queue_len(&mq->pending);
-+	spin_unlock_bh(&mq->lock);
-+	return count;
-+}
-+
-+u32 mm81x_skbq_count_tx_ready(struct mm81x_skbq *mq)
-+{
-+	struct mm81x *mm = mq->mm;
-+
-+	if (!mm81x_is_data_tx_allowed(mm))
-+		return 0;
-+
-+	return mm81x_skbq_count(mq);
-+}
-+
-+u32 mm81x_skbq_space(struct mm81x_skbq *mq)
-+{
-+	u32 space;
-+
-+	spin_lock_bh(&mq->lock);
-+	space = __mm81x_skbq_space(mq);
-+	spin_unlock_bh(&mq->lock);
-+
-+	return space;
-+}
-+
-+struct sk_buff *mm81x_skbq_alloc_skb(struct mm81x_skbq *mq, unsigned int length)
-+{
-+	struct sk_buff *skb;
-+	int tx_headroom =
-+		sizeof(struct mm81x_skb_hdr) + mm81x_bus_get_alignment(mq->mm);
-+	int skb_len = tx_headroom + length + MM81X_PAD4(length);
-+
-+	skb = dev_alloc_skb(skb_len);
-+	if (!skb)
-+		return NULL;
-+
-+	skb_reserve(skb, tx_headroom);
-+	skb_put(skb, length);
-+	return skb;
-+}
-+
-+static int mm81x_skb_tx_h_validate_channel(const struct mm81x *mm, u8 channel)
-+{
-+	if (channel == MM81X_SKB_CHAN_COMMAND) {
-+		if (test_bit(MM81X_STATE_HOST_TO_CHIP_CMD_BLOCKED,
-+			     &mm->state_flags))
-+			return -EPERM;
-+	} else {
-+		if (test_bit(MM81X_STATE_HOST_TO_CHIP_TX_BLOCKED,
-+			     &mm->state_flags))
-+			return -EPERM;
-+	}
-+
-+	return 0;
-+}
-+
-+int mm81x_skbq_skb_tx(struct mm81x_skbq *mq, struct sk_buff **skb_orig,
-+		      struct mm81x_skb_tx_info *tx_info, u8 channel)
-+{
-+	int ret;
-+	struct mm81x_skb_hdr hdr;
-+	struct mm81x *mm = mq->mm;
-+	size_t end_of_skb_pad;
-+	struct sk_buff *skb = *skb_orig;
-+	u8 *aligned_head, *data;
-+
-+	if (test_bit(MM81X_STATE_CHIP_UNRESPONSIVE, &mm->state_flags)) {
-+		dev_kfree_skb_any(skb);
-+		return -ENODEV;
-+	}
-+
-+	ret = mm81x_skb_tx_h_validate_channel(mm, channel);
-+	if (ret) {
-+		dev_kfree_skb_any(skb);
-+		return ret;
-+	}
-+
-+	mm81x_skbq_set_queued_tx_skb_expiry(skb);
-+
-+	data = skb->data;
-+	aligned_head = PTR_ALIGN_DOWN((data - sizeof(hdr)),
-+				      mm81x_bus_get_alignment(mm));
-+	hdr.sync = MM81X_SKB_HEADER_SYNC;
-+	hdr.channel = channel;
-+	hdr.len = cpu_to_le16(skb->len);
-+	hdr.offset = data - (aligned_head + sizeof(hdr));
-+	hdr.checksum_upper = 0;
-+	hdr.checksum_lower = 0;
-+	if (tx_info)
-+		memcpy(&hdr.tx_info, tx_info, sizeof(*tx_info));
-+	else
-+		memset(&hdr.tx_info, 0, sizeof(hdr.tx_info));
-+
-+	skb_push(skb, data - aligned_head);
-+	memcpy(skb->data, &hdr, sizeof(hdr));
-+
-+	end_of_skb_pad = MM81X_PAD4(skb->len);
-+	if (end_of_skb_pad && skb_pad(skb, end_of_skb_pad))
-+		return -EINVAL;
-+
-+	ret = mm81x_skbq_tx(mq, skb, channel);
-+	if (ret) {
-+		mm81x_err(mm, "mm81x_skbq_tx fail: %d", ret);
-+		dev_kfree_skb_any(skb);
-+	}
-+
-+	return ret;
-+}
-+
-+void mm81x_skbq_data_traffic_pause(struct mm81x *mm)
-+{
-+	set_bit(MM81X_STATE_DATA_TX_STOPPED, &mm->state_flags);
-+	/* power-save requirements will be re-evaluated by the caller */
-+}
-+
-+void mm81x_skbq_data_traffic_resume(struct mm81x *mm)
-+{
-+	clear_bit(MM81X_STATE_DATA_TX_STOPPED, &mm->state_flags);
-+
-+	/* Set the TX_DATA_PEND bit. This will kick the transmission path to
-+	 * send any frames pending in the TX buffers, and wake the mac80211
-+	 * data Qs if they were previously stopped.
-+	 */
-+	set_bit(MM81X_HIF_EVT_TX_DATA_PEND, &mm->hif.event_flags);
-+}
-+
-+bool mm81x_skbq_validate_checksum(u8 *data)
-+{
-+	int i;
-+	u32 xor = 0;
-+	struct mm81x_skb_hdr *skb_hdr = (struct mm81x_skb_hdr *)data;
-+	struct ieee80211_hdr *hdr =
-+		(struct ieee80211_hdr *)(data + sizeof(*skb_hdr));
-+	u16 len = le16_to_cpu(skb_hdr->len) + sizeof(*skb_hdr);
-+	u32 *data_to_xor = (u32 *)data;
-+	u32 header_xor = (le16_to_cpu(skb_hdr->checksum_upper) << 8) |
-+			 (skb_hdr->checksum_lower);
-+
-+	/*
-+	 * For data frames the calculate the xor for skb header, mac header
-+	 * and ccmp header. For all other channel the xor is calculated for
-+	 * the full skb.
-+	 */
-+	if (skb_hdr->channel == MM81X_SKB_CHAN_DATA &&
-+	    (ieee80211_is_data(hdr->frame_control) ||
-+	     ieee80211_is_data_qos(hdr->frame_control))) {
-+		u16 data_len = sizeof(*skb_hdr) +
-+			       sizeof(struct ieee80211_qos_hdr) +
-+			       IEEE80211_CCMP_HDR_LEN;
-+
-+		len = min(len, data_len);
-+		len = ROUND_DOWN_TO_WORD(len);
-+	}
-+
-+	skb_hdr->checksum_upper = 0;
-+	skb_hdr->checksum_lower = 0;
-+
-+	for (i = 0; i < len; i += 4) {
-+		xor ^= *data_to_xor;
-+		data_to_xor++;
-+	}
-+
-+	xor &= 0x00FFFFFF;
-+
-+	return xor == header_xor;
-+}
++#endif /* !_MM81X_SKBQ_H_ */
 -- 
 2.43.0
 
