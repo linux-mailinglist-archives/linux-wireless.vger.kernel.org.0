@@ -1,82 +1,82 @@
-Return-Path: <linux-wireless+bounces-32249-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-32250-lists+linux-wireless=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id MKsSOvAZoWlhqQQAu9opvQ
-	(envelope-from <linux-wireless+bounces-32249-lists+linux-wireless=lfdr.de@vger.kernel.org>)
-	for <lists+linux-wireless@lfdr.de>; Fri, 27 Feb 2026 05:13:36 +0100
+	id ePJ1AQAaoWlhqQQAu9opvQ
+	(envelope-from <linux-wireless+bounces-32250-lists+linux-wireless=lfdr.de@vger.kernel.org>)
+	for <lists+linux-wireless@lfdr.de>; Fri, 27 Feb 2026 05:13:52 +0100
 X-Original-To: lists+linux-wireless@lfdr.de
 Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5004E1B289B
-	for <lists+linux-wireless@lfdr.de>; Fri, 27 Feb 2026 05:13:36 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id A54971B28B8
+	for <lists+linux-wireless@lfdr.de>; Fri, 27 Feb 2026 05:13:51 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 22B5D30622BE
-	for <lists+linux-wireless@lfdr.de>; Fri, 27 Feb 2026 04:12:50 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id B41D13064F16
+	for <lists+linux-wireless@lfdr.de>; Fri, 27 Feb 2026 04:12:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 51F1B341AB1;
-	Fri, 27 Feb 2026 04:12:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A59543370F4;
+	Fri, 27 Feb 2026 04:12:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=morsemicro-com.20230601.gappssmtp.com header.i=@morsemicro-com.20230601.gappssmtp.com header.b="2WwZsf1q"
+	dkim=pass (2048-bit key) header.d=morsemicro-com.20230601.gappssmtp.com header.i=@morsemicro-com.20230601.gappssmtp.com header.b="z3UoKYrJ"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-pg1-f177.google.com (mail-pg1-f177.google.com [209.85.215.177])
+Received: from mail-pl1-f181.google.com (mail-pl1-f181.google.com [209.85.214.181])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 11662345CB2
-	for <linux-wireless@vger.kernel.org>; Fri, 27 Feb 2026 04:12:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.177
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6345F345CA1
+	for <linux-wireless@vger.kernel.org>; Fri, 27 Feb 2026 04:12:51 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.181
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772165567; cv=none; b=OrSOuw5tb/Fmssexg3YyYfaBPIztAdL4fuR0lRQkL3mtscR3G4eb5o40DTm/qCe/cYFZrEzSy3GAxj/UR8K+yIyfflBKxLO960qBbLWejs4BtJ+8aFZgAk12KpNdyuqe50eMblDU2j047IEL6zSwShvoBp9TMw6mcD8iaNc05GQ=
+	t=1772165572; cv=none; b=eDySRGQLBPxGBOZk9JKSAkEzhlkLr0Ap8fQ5srHcI9NxnH0OYfGwAXE1cyKEGLuMStsAF1U/3lkX3T0aQ4ig5YQoZVPSpf0hQ8zbdz4Nl1APqyiKzPqxGOJpEVBuMFg9ZrXsFuKazL6aLRn3ZXTphUQzzlIff+TxBKU/XmGh5a4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772165567; c=relaxed/simple;
-	bh=SVQBPn6DQzxSEuHRKgwRqMhg0vyE6Lv9d2v2kwxtbHY=;
+	s=arc-20240116; t=1772165572; c=relaxed/simple;
+	bh=0hpMqC7iN1GU6/HGSB7LTfJeMBImyzsfLpG74B8WG/E=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=hH9PbP27DoMvanmuJw1aAwQRCpzidPeytaC6230RK1xkoqSAqiBFCigVDsQ0tXTDNgTj5tNHfzbX8TWr8wbftNlIcvpdmF5CPrqfqbijFiARgrWAKA6FOCp+MN1/tlRS0pYtgYUVd/+N9tp9iKMojsXeBTQ/7nuG28cSAc/D5/4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=morsemicro.com; spf=pass smtp.mailfrom=morsemicro.com; dkim=pass (2048-bit key) header.d=morsemicro-com.20230601.gappssmtp.com header.i=@morsemicro-com.20230601.gappssmtp.com header.b=2WwZsf1q; arc=none smtp.client-ip=209.85.215.177
+	 MIME-Version; b=Ht/vLoUSgXpW8xzjcYcrusWfNBoOvJMpCGpO43joh2iLy/pjkBDk6wpRzkwajJ4ByllhFnuxZyQbrB2ASwnOJyPcLaucxnKYZTQjsnIb+vZB2l+B93Wlom2QwNsS5EF/HUdGVZJAXLJgmy/5QQR7WUHdDVWz4tyUlo7MYEQrCIo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=morsemicro.com; spf=pass smtp.mailfrom=morsemicro.com; dkim=pass (2048-bit key) header.d=morsemicro-com.20230601.gappssmtp.com header.i=@morsemicro-com.20230601.gappssmtp.com header.b=z3UoKYrJ; arc=none smtp.client-ip=209.85.214.181
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=morsemicro.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=morsemicro.com
-Received: by mail-pg1-f177.google.com with SMTP id 41be03b00d2f7-c70bb8ffb24so619955a12.1
-        for <linux-wireless@vger.kernel.org>; Thu, 26 Feb 2026 20:12:46 -0800 (PST)
+Received: by mail-pl1-f181.google.com with SMTP id d9443c01a7336-2ade574f05eso11129395ad.3
+        for <linux-wireless@vger.kernel.org>; Thu, 26 Feb 2026 20:12:51 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=morsemicro-com.20230601.gappssmtp.com; s=20230601; t=1772165565; x=1772770365; darn=vger.kernel.org;
+        d=morsemicro-com.20230601.gappssmtp.com; s=20230601; t=1772165571; x=1772770371; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=zUoo2b1I5ue/n++f7Rqxo7PVmXlT7y9IKhV0b0rYvvw=;
-        b=2WwZsf1qzR8MUGupJGGRpB1Hj0oIGwugaNlDmtsznyc/2yPs2jAM8edA3jY1PQLbl0
-         Q/DTD30PTo+WqLc3m0cH0l77BI9eY9ITczRRGCSwnRnZuFl0HIsxrMwQVppcG4J4VoN1
-         e2vn7Si1gB+JC5YpAy/7OYogMvdAwoaWYFtd5QVBBAINdcTOodlWQZn9NjnfL8TN4Dbw
-         raMID32esKXzaXnnHI8HBwCTFK4nJENBwM1yXcgxPOQZkvtWa3HqY4Stdyo90CNfsqqp
-         BJ7A37NLIJpA2hWC/UzxdOJ/eq1ZBav1tfceZNZfHvtJNA6OMx9jHRTAIRaxKellB/h6
-         XLJg==
+        bh=yVZ6jZaREZIiz226cNa+rAmRJUyjsVN1xL65upg+7t0=;
+        b=z3UoKYrJX67BOYU46lRUTdazGNW5w7lPswrHNYhBAsW2IycRmZOCrAouzI3x3bbook
+         TV2dHzioAqJXM1aEeqOpT9RBtBBCeGRX3Rtmb41zR/6Z01fcYgVsrWGM8z3TIoUoMK8Q
+         +DvgBOJwsYus7nj1kbf4i/RMOvt0rKqfBsBcnKgNxTNZqf4UOOAz8imtxu2YJ6pRU/B1
+         B8a4D76NKd5/1o29ISpwy3BtZ0f45YBV7xlKYeeU+HDFYwpAwfl0i1dIW2a7v9BuH8nX
+         F+IX7W3eYLNBfWvwHqTuje5kZW2nz7QleQUnmtk72HuWBLx8+Cffbe3JTBXrmQ/P58qS
+         yeQQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1772165565; x=1772770365;
+        d=1e100.net; s=20230601; t=1772165571; x=1772770371;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to;
-        bh=zUoo2b1I5ue/n++f7Rqxo7PVmXlT7y9IKhV0b0rYvvw=;
-        b=s76FFWCYV3p3mJa+d8lkf0f1ZMb+YTWiC3Jd3NxvUkgFm5a35ibMA3UkNwkF3/w5u9
-         saw+1vAuh+46CrE3lIYc4ytFptEe50fRYNuZpTZUvxxDRQ9mMwxZEq/KHFNCqeJP5p28
-         oxgY8I6Q/dEhCW/Ln94xxl5OiCG3IVvUm968lrYEjAr2pdbOTFzYrpnmVv7nBvd5Hc1M
-         jMVaUtx4Z/RzS+pXoDkoJJ373AVnu6AoZAGCzsXHFsyXzDeaQ5zR0EuG15xXAukGuiv1
-         nSIa/oM8esJDsuvlQ5lMrvXP/iP6uEjV5V13mdFtt1jHCitNw1NtmjMN0BEwQIIDSbAt
-         C37Q==
-X-Forwarded-Encrypted: i=1; AJvYcCXmzdEbAeBxM6G51WSbmc+ZMP3+dYOqax7WroTn1PLyBQ/Gh4DK85tPcV3XzzXxvNDzFITg9o9+XkQDExqNTg==@vger.kernel.org
-X-Gm-Message-State: AOJu0YyKyz3R8a29VSMeBCsDDmtzq/wEaYmBolD4SJtUk6xo5yLGuV1p
-	60yzHtieWd6/GFxfR4czg76SAHlWHM3qnqB9wUjdo47VfggYTz3QtSr8I26KzG3e6fE=
-X-Gm-Gg: ATEYQzygyZ5xXI41Gzx8clvdMhff8zw7nrijXTwL1YgOx59Aw4p8qKKrGPxjr6JFPqh
-	4VmUPUvK69Z1KS9GfOlWlALADXppXDY0U7qtP2a+vfILoacBltlBUCzt05K1Blg+BaMVi6a8Sfg
-	dAzbsEGMML8a0i6w8p3EOPYMhcI91ltF5hv+fpj9nsv8ytbLV6IvNaya7XR5UiqYzobQ3bddqNj
-	DTkPkREMyWANMqSFxMIyhNq7fe3NTnHKOfd+Ttug1WFHuxS/BhkmXGrmoW06ZrKNxeugLTlrYbH
-	EuN4VSdOqHFA+AmlzC8VkW6fUz8FgLI4HiYGPJ2XwE9W6AObOlkwHZRpIQjuYy60wlNS6CzpPqR
-	Rm4FC3X2I4/0iWE7bk2YO32VYJbcFOpAJnZfOLA87qz/Lfl4mKqyv9LKRgRB+sUvLgYCrpyhL7a
-	wfEhSvaflmE7LIA0LRz1wCYqNPhCz8hd4aia6sPCAU6T6croH2lCTQIF3ZN/rT3yYp2T0BgSsnn
-	wOZWVI6+YdVfu9UiaLTRjjtRuGDGR4=
-X-Received: by 2002:a05:6a20:9145:b0:38c:627f:872b with SMTP id adf61e73a8af0-395c3b0f8e1mr1712302637.59.1772165565498;
-        Thu, 26 Feb 2026 20:12:45 -0800 (PST)
+        bh=yVZ6jZaREZIiz226cNa+rAmRJUyjsVN1xL65upg+7t0=;
+        b=ZSZpZZ56sL12vclkoX6gf4yCthpk5mOEutQSRSrI/iUpWimLOIvRIeagDJnApWk6Oe
+         MviZWwpfIlCICfdkVRyb8eGeQpCaOJyAp1Cdh7HYVJGSDPz6FKIak/fSY80dL/LHarkQ
+         8kjXmuV1CtKkr7DQ2N7ZYPcw6K+r1HStd6O5oRGMC0TcHaxCAc+dpXz763xcqSSgR7IJ
+         Qs+D2A7yRSJQfka3iOAQVDhXk1Ha0xubU2aQ1qq7CHa1/d3sWbjp//CpMHrbwQWjJc6D
+         FA2w6iDfYL50g7aRkRaVbRYrPqq9fyEBUMFCWD4Z5cb88r1XPQsTdUBg/bGOiH2Z4O8y
+         lJvA==
+X-Forwarded-Encrypted: i=1; AJvYcCWzlFLrpMaEPQ1lTW1GOSIMU/ZxNOkRT4kVAOQlh/cxN8ksK9r7ZirIwLL83HGK1+s8VOkaGQOdsS+7Z0j6jg==@vger.kernel.org
+X-Gm-Message-State: AOJu0Yx8DmcvvBRc0CnNLel6hoQagn8R69UiAiqTj4dPW04I97GUHwem
+	1MvzBPqrRxt8Q9YDPo+kVJZJJ4rbwOKG1eyMYeDej12kFztaCWbTOd3LLYkMklV6dB8=
+X-Gm-Gg: ATEYQzz2Q2DjsWJnTZYNgDpNbUdmeZJQS4rNSA35AK9ETdewRfTv1EV+vIBPyVFJzIF
+	TtAk28TVYIee+xueIT8yguNDHRcU9L1fcArppAnElMRAGdfILCfl0HkxCUHpm51/GKBxUfjgkOm
+	OhP/iRkjVlgXgOhSlLFPHT15IThWp60AJ6HJ/yHKhM7BkvdRQx7sQofEStTl4uZh6IMxDyJD44u
+	I1BJpG/o/QCBuVQuU3PB1az2k2Q0ITZN0a+4DSC6FNMKnUEhw38IUBFAmjJYL3faCGfgeY+SfuK
+	FupYhJIAjJqSjeZ/4XCai00Croi/1KhKjlSS887qLVz/ESxhx1ZSglEWEQcjNUy4FvfoBvCey3C
+	93L+CGpSnfwonrtOqt38v3tSzbshBRRl7IeX1cvunHBvCI+7IEExy8nSl/fvMyRYioBwsaM08hT
+	MQl+4p8caQVxaa8RdCB1Qb0evxLhjQS+5H4oTl27uJzHxg/PMDEGJ7Gm0lkRHLsphupSiV4pli4
+	JkbZl5egkb7y3F2hPjqMaPgwCmsUIQ=
+X-Received: by 2002:a17:902:8210:b0:2aa:e3c2:f925 with SMTP id d9443c01a7336-2ae2e47e0a1mr8851875ad.34.1772165570786;
+        Thu, 26 Feb 2026 20:12:50 -0800 (PST)
 Received: from mma-H9MHD44.lan (60-242-93-14.static.tpgi.com.au. [60.242.93.14])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2adfb6ba5eesm41682865ad.68.2026.02.26.20.12.40
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2adfb6ba5eesm41682865ad.68.2026.02.26.20.12.46
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 26 Feb 2026 20:12:45 -0800 (PST)
+        Thu, 26 Feb 2026 20:12:50 -0800 (PST)
 From: Lachlan Hodges <lachlan.hodges@morsemicro.com>
 To: johannes@sipsolutions.net,
 	Lachlan Hodges <lachlan.hodges@morsemicro.com>,
@@ -85,9 +85,9 @@ To: johannes@sipsolutions.net,
 Cc: ayman.grais@morsemicro.com,
 	linux-wireless@vger.kernel.org,
 	linux-kernel@vger.kernel.org
-Subject: [PATCH wireless-next 10/35] wifi: mm81x: add fw.h
-Date: Fri, 27 Feb 2026 15:10:20 +1100
-Message-ID: <20260227041108.66508-11-lachlan.hodges@morsemicro.com>
+Subject: [PATCH wireless-next 11/35] wifi: mm81x: add hif.h
+Date: Fri, 27 Feb 2026 15:10:21 +1100
+Message-ID: <20260227041108.66508-12-lachlan.hodges@morsemicro.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20260227041108.66508-1-lachlan.hodges@morsemicro.com>
 References: <20260227041108.66508-1-lachlan.hodges@morsemicro.com>
@@ -113,7 +113,7 @@ X-Spamd-Result: default: False [-0.06 / 15.00];
 	DKIM_TRACE(0.00)[morsemicro-com.20230601.gappssmtp.com:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-32249-lists,linux-wireless=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-32250-lists,linux-wireless=lfdr.de];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TO_DN_SOME(0.00)[];
@@ -126,7 +126,7 @@ X-Spamd-Result: default: False [-0.06 / 15.00];
 	NEURAL_HAM(-0.00)[-1.000];
 	TAGGED_RCPT(0.00)[linux-wireless];
 	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,morsemicro.com:mid,morsemicro.com:email,morsemicro-com.20230601.gappssmtp.com:dkim]
-X-Rspamd-Queue-Id: 5004E1B289B
+X-Rspamd-Queue-Id: A54971B28B8
 X-Rspamd-Action: no action
 
 (Patches split per file for review, see cover letter for more
@@ -134,123 +134,132 @@ information)
 
 Signed-off-by: Lachlan Hodges <lachlan.hodges@morsemicro.com>
 ---
- drivers/net/wireless/morsemicro/mm81x/fw.h | 107 +++++++++++++++++++++
- 1 file changed, 107 insertions(+)
- create mode 100644 drivers/net/wireless/morsemicro/mm81x/fw.h
+ drivers/net/wireless/morsemicro/mm81x/hif.h | 116 ++++++++++++++++++++
+ 1 file changed, 116 insertions(+)
+ create mode 100644 drivers/net/wireless/morsemicro/mm81x/hif.h
 
-diff --git a/drivers/net/wireless/morsemicro/mm81x/fw.h b/drivers/net/wireless/morsemicro/mm81x/fw.h
+diff --git a/drivers/net/wireless/morsemicro/mm81x/hif.h b/drivers/net/wireless/morsemicro/mm81x/hif.h
 new file mode 100644
-index 000000000000..6d1e66934248
+index 000000000000..73c23a39d14b
 --- /dev/null
-+++ b/drivers/net/wireless/morsemicro/mm81x/fw.h
-@@ -0,0 +1,107 @@
++++ b/drivers/net/wireless/morsemicro/mm81x/hif.h
+@@ -0,0 +1,116 @@
 +/* SPDX-License-Identifier: GPL-2.0-only */
 +/*
 + * Copyright (c) 2017-2026 Morse Micro
 + */
 +
-+#ifndef _MM81X_FW_H_
-+#define _MM81X_FW_H_
++#ifndef _MM81X_HIF_H_
++#define _MM81X_HIF_H_
 +
-+#include <linux/firmware.h>
-+#include <linux/completion.h>
-+#include "yaps_hw.h"
++#include "core.h"
 +
-+#define BCF_DATABASE_SIZE (1024)
-+#define MM81X_FW_DIR "morsemicro"
-+#define MM81X_FW_EXT ".bin"
++struct mm81x_skbq;
 +
-+#define IFLASH_BASE_ADDR 0x400000
-+#define DFLASH_BASE_ADDR 0xC00000
++#define MM81X_HIF_BYPASS_TX_STATUS_IRQ_NUM (15)
++#define MM81X_HIF_BYPASS_CMD_RESP_IRQ_NUM (29)
++#define MM81X_HIF_IRQ_BYPASS_TX_STATUS_AVAILABLE \
++	BIT(MM81X_HIF_BYPASS_TX_STATUS_IRQ_NUM)
++#define MM81X_HIF_IRQ_BYPASS_CMD_RESP_AVAILABLE \
++	BIT(MM81X_HIF_BYPASS_CMD_RESP_IRQ_NUM)
 +
-+#define MAX_BCF_NAME_LEN 64
++/* Hardware IF interrupt mask. We may use any interrupts in this range */
++#define MM81X_HIF_IRQ_MASK_ALL                                       \
++	(GENMASK(13, 0) | MM81X_HIF_IRQ_BYPASS_TX_STATUS_AVAILABLE | \
++	 MM81X_HIF_IRQ_BYPASS_CMD_RESP_AVAILABLE)
 +
-+/* FW_CAPABILITIES_FLAGS_WIDTH = ceil(MM81X_CAPS_MAX_HW_LEN / 32) */
-+#define FW_CAPABILITIES_FLAGS_WIDTH (4)
-+
-+/* Checkpatch does not like Camel Case */
-+#define mm81x_elf_ehdr Elf32_Ehdr
-+#define mm81x_elf_shdr Elf32_Shdr
-+#define mm81x_elf_phdr Elf32_Phdr
-+
-+enum mm81x_fw_info_tlv_type {
-+	MM81X_FW_INFO_TLV_BCF_ADDR = 1,
++enum mm81x_hif_flags {
++	MM81X_HIF_FLAGS_DIR_TO_HOST = BIT(0),
++	MM81X_HIF_FLAGS_DIR_TO_CHIP = BIT(1),
++	MM81X_HIF_FLAGS_COMMAND = BIT(2),
++	MM81X_HIF_FLAGS_BEACON = BIT(3),
++	MM81X_HIF_FLAGS_DATA = BIT(4)
 +};
 +
-+struct mm81x_fw_info_tlv {
-+	__le16 type;
-+	__le16 length;
-+	u8 val[];
-+} __packed;
-+
-+enum mm81x_fw_ext_host_tbl_tag {
-+	/* The S1G capability tag */
-+	MM81X_FW_HOST_TABLE_TAG_S1G_CAPABILITIES = 0,
-+	MM81X_FW_HOST_TABLE_TAG_PAGER_BYPASS_TX_STATUS = 1,
-+	MM81X_FW_HOST_TABLE_TAG_INSERT_SKB_CHECKSUM = 2,
-+	MM81X_FW_HOST_TABLE_TAG_YAPS_TABLE = 3,
-+	MM81X_FW_HOST_TABLE_TAG_PAGER_PKT_MEMORY = 4,
-+	MM81X_FW_HOST_TABLE_TAG_PAGER_BYPASS_CMD_RESP = 5,
++struct mm81x_hif_ops {
++	int (*init)(struct mm81x *mm);
++	void (*flush_tx_data)(struct mm81x *mm);
++	void (*flush_cmds)(struct mm81x *mm);
++	void (*finish)(struct mm81x *mm);
++	void (*skbq_get_tx_qs)(struct mm81x *mm, struct mm81x_skbq **qs,
++			       int *num_qs);
++	struct mm81x_skbq *(*get_tx_cmd_queue)(struct mm81x *mm);
++	struct mm81x_skbq *(*get_tx_beacon_queue)(struct mm81x *mm);
++	struct mm81x_skbq *(*get_tx_mgmt_queue)(struct mm81x *mm);
++	struct mm81x_skbq *(*get_tx_data_queue)(struct mm81x *mm, int aci);
++	int (*handle_irq)(struct mm81x *mm, u32 status);
++	int (*get_tx_buffered_count)(struct mm81x *mm);
++	int (*get_tx_status_pending_count)(struct mm81x *mm);
 +};
 +
-+struct ext_host_tbl_tlv_hdr {
-+	/* The tag used to identify which capability this represents */
-+	__le16 tag;
-+	/* The length of the capability structure including this header */
-+	__le16 length;
-+} __packed;
++static inline void mm81x_hif_clear_events(struct mm81x *mm)
++{
++	mm->hif.event_flags = 0;
++}
 +
-+struct ext_host_tbl_s1g_caps {
-+	struct ext_host_tbl_tlv_hdr header;
-+	__le32 flags[FW_CAPABILITIES_FLAGS_WIDTH];
-+	/*
-+	 * The minimum A-MPDU start spacing required by firmware.
-+	 * Value | Description
-+	 * ------|------------
-+	 * 0     | No restriction
-+	 * 1     | 1/4 us
-+	 * 2     | 1/2 us
-+	 * 3     | 1 us
-+	 * 4     | 2 us
-+	 * 5     | 4 us
-+	 * 6     | 8 us
-+	 * 7     | 16 us
-+	 */
-+	u8 ampdu_mss;
-+	u8 beamformee_sts_capability;
-+	u8 number_sounding_dimensions;
-+	/*
-+	 * The maximum A-MPDU length. This is the exponent value such that
-+	 * (2^(13 + exponent) - 1) is the length
-+	 */
-+	u8 maximum_ampdu_length;
-+	/*
-+	 * Offset to apply to the specification's MMSS table to signal further
-+	 * minimum MPDU start spacing.
-+	 */
-+	u8 mm81x_mmss_offset;
-+} __packed;
++static inline int mm81x_hif_init(struct mm81x *mm)
++{
++	return mm->hif.ops->init(mm);
++}
 +
-+struct ext_host_tbl_insert_skb_checksum {
-+	struct ext_host_tbl_tlv_hdr header;
-+	u8 insert_and_validate_checksum;
-+};
++static inline void mm81x_hif_flush_tx_data(struct mm81x *mm)
++{
++	mm->hif.ops->flush_tx_data(mm);
++}
 +
-+struct ext_host_tbl_yaps_table {
-+	struct ext_host_tbl_tlv_hdr header;
-+	struct mm81x_yaps_hw_table yaps_table;
-+} __packed;
++static inline void mm81x_hif_flush_cmds(struct mm81x *mm)
++{
++	mm->hif.ops->flush_cmds(mm);
++}
 +
-+struct ext_host_tbl {
-+	__le32 ext_host_tbl_length;
-+	u8 dev_mac_addr[6];
-+	u8 ext_host_table_data_tlvs[];
-+} __packed;
++static inline void mm81x_hif_finish(struct mm81x *mm)
++{
++	mm->hif.ops->finish(mm);
++}
 +
-+int mm81x_fw_init(struct mm81x *mm, bool reset);
-+int mm81x_fw_parse_ext_host_tbl(struct mm81x *mm);
++static inline void mm81x_hif_skbq_get_tx_qs(struct mm81x *mm,
++					    struct mm81x_skbq **qs, int *num_qs)
++{
++	mm->hif.ops->skbq_get_tx_qs(mm, qs, num_qs);
++}
 +
-+#endif /* !_MM81X_FW_H_ */
++static inline struct mm81x_skbq *mm81x_hif_get_tx_cmd_queue(struct mm81x *mm)
++{
++	return mm->hif.ops->get_tx_cmd_queue(mm);
++}
++
++static inline struct mm81x_skbq *mm81x_hif_get_tx_beacon_queue(struct mm81x *mm)
++{
++	return mm->hif.ops->get_tx_beacon_queue(mm);
++}
++
++static inline struct mm81x_skbq *mm81x_hif_get_tx_mgmt_queue(struct mm81x *mm)
++{
++	return mm->hif.ops->get_tx_mgmt_queue(mm);
++}
++
++static inline struct mm81x_skbq *mm81x_hif_get_tx_data_queue(struct mm81x *mm,
++							     int aci)
++{
++	return mm->hif.ops->get_tx_data_queue(mm, aci);
++}
++
++static inline int mm81x_hif_handle_irq(struct mm81x *mm, u32 status)
++{
++	return mm->hif.ops->handle_irq(mm, status);
++}
++
++static inline int mm81x_hif_get_tx_buffered_count(struct mm81x *mm)
++{
++	return mm->hif.ops->get_tx_buffered_count(mm);
++}
++
++static inline int mm81x_hif_get_tx_status_pending_count(struct mm81x *mm)
++{
++	return mm->hif.ops->get_tx_status_pending_count(mm);
++}
++
++#endif /* _MM81X_HIF_H_ */
 -- 
 2.43.0
 
