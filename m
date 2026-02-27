@@ -1,82 +1,82 @@
-Return-Path: <linux-wireless+bounces-32255-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-32256-lists+linux-wireless=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id UNUrIowaoWlhqQQAu9opvQ
-	(envelope-from <linux-wireless+bounces-32255-lists+linux-wireless=lfdr.de@vger.kernel.org>)
-	for <lists+linux-wireless@lfdr.de>; Fri, 27 Feb 2026 05:16:12 +0100
+	id QBx/H5waoWlhqQQAu9opvQ
+	(envelope-from <linux-wireless+bounces-32256-lists+linux-wireless=lfdr.de@vger.kernel.org>)
+	for <lists+linux-wireless@lfdr.de>; Fri, 27 Feb 2026 05:16:28 +0100
 X-Original-To: lists+linux-wireless@lfdr.de
 Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6FF451B2919
-	for <lists+linux-wireless@lfdr.de>; Fri, 27 Feb 2026 05:16:11 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id D402B1B292E
+	for <lists+linux-wireless@lfdr.de>; Fri, 27 Feb 2026 05:16:27 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id B19B93075F7D
-	for <lists+linux-wireless@lfdr.de>; Fri, 27 Feb 2026 04:13:45 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id B101930786FD
+	for <lists+linux-wireless@lfdr.de>; Fri, 27 Feb 2026 04:13:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 71C6134678C;
-	Fri, 27 Feb 2026 04:13:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 655D1346A02;
+	Fri, 27 Feb 2026 04:13:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=morsemicro-com.20230601.gappssmtp.com header.i=@morsemicro-com.20230601.gappssmtp.com header.b="qYcm+M3x"
+	dkim=pass (2048-bit key) header.d=morsemicro-com.20230601.gappssmtp.com header.i=@morsemicro-com.20230601.gappssmtp.com header.b="gtiUBbMx"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-pl1-f169.google.com (mail-pl1-f169.google.com [209.85.214.169])
+Received: from mail-pl1-f179.google.com (mail-pl1-f179.google.com [209.85.214.179])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E92EB3128BE
-	for <linux-wireless@vger.kernel.org>; Fri, 27 Feb 2026 04:13:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.169
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BE976346E73
+	for <linux-wireless@vger.kernel.org>; Fri, 27 Feb 2026 04:13:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.179
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772165614; cv=none; b=M9C5TM9uUMdmmJLbIvhxMFzI/0zO7agCav94pc4yN488UHuiJkd9jmv5TIdPkKkHJSJrRcRCSE3P6oSegPahQAFASfnsnwGaNbhMZTUqM5oVo7XGZpy4RestBjps6UfeiYo4eYrwj90xG9UAF2w83KsWjr8pgTHfTuOPkgyDjsk=
+	t=1772165617; cv=none; b=teJQzzmxQ6/yzI6KGACVKBWbinEzo8LteJZ9aC0/ENnT6ETY2xcs3dlDkEV04/K8SAgXh11Pui8245/Q/1Dmmwej4iV4T/Vr2JunyU7CjR4V7S/knGgjbyzAGdUh/Lgebe4y40I0xsRQhqx99cFx85/K+BIFh3YN02om94AoI4w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772165614; c=relaxed/simple;
-	bh=PCXNh8KBIIJFrLK6EXVUV1UG5Va9IZhlZ4husqO1j1M=;
+	s=arc-20240116; t=1772165617; c=relaxed/simple;
+	bh=PJJU4pfTErqlN/HS7C/EsRWfJCHQXFF01zUnucBV794=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=IWMpOVrq6gSn0PSc/DbDqf+RXRsfxtYNlpmfrGNWZlvK9aj6o9JYxxVoKwNUp5sqU+8KJrG9R8KNeasDaOiRB5H2k/dcxNtmCtFhtaK1zUctK2bUzLaEKYEOhF1bHxA9ILhxji9C+5VscXwqD6p02dnWzVHpz+68PMhuaXKkHn0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=morsemicro.com; spf=pass smtp.mailfrom=morsemicro.com; dkim=pass (2048-bit key) header.d=morsemicro-com.20230601.gappssmtp.com header.i=@morsemicro-com.20230601.gappssmtp.com header.b=qYcm+M3x; arc=none smtp.client-ip=209.85.214.169
+	 MIME-Version; b=t+/izQlyi8EwZ84vX+rNZ4pcFIzi+nv9Fws4Lp6yGA0LNTlGv3FLSvuBJ7CNgUj/Utp7Ty+HwmS5rJRLCrOybS3UhvffxDev0gNM5Uf0y02eap8zmjIOAC8+1kuGorZ95yag+GFg1qdpLpDt9EUbFl00KCa+a90y7HoPRg1N4P8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=morsemicro.com; spf=pass smtp.mailfrom=morsemicro.com; dkim=pass (2048-bit key) header.d=morsemicro-com.20230601.gappssmtp.com header.i=@morsemicro-com.20230601.gappssmtp.com header.b=gtiUBbMx; arc=none smtp.client-ip=209.85.214.179
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=morsemicro.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=morsemicro.com
-Received: by mail-pl1-f169.google.com with SMTP id d9443c01a7336-2adec255754so10561225ad.3
-        for <linux-wireless@vger.kernel.org>; Thu, 26 Feb 2026 20:13:29 -0800 (PST)
+Received: by mail-pl1-f179.google.com with SMTP id d9443c01a7336-2adcede372cso6602595ad.0
+        for <linux-wireless@vger.kernel.org>; Thu, 26 Feb 2026 20:13:35 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=morsemicro-com.20230601.gappssmtp.com; s=20230601; t=1772165609; x=1772770409; darn=vger.kernel.org;
+        d=morsemicro-com.20230601.gappssmtp.com; s=20230601; t=1772165615; x=1772770415; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=jvkRRKqI7aHfUjiQtd8AciapsbHQ5batZXkO5Pi18bQ=;
-        b=qYcm+M3xxKBDE/NuXJ2YVW4wYahQtC+s0/qTVTdGDtaOzwMD5MvmV/juDKbSA8gnEY
-         Lzjhj0uBQGSxT/rnQuebxvB+5m94EIefiwnm2XG6qcpWsGMe1xu5+OhUL23bVoil+q2t
-         5Qizt+dfLqtXtsrAzdQvtPqAAkuOJ381qlbKT9+MeXXXq7P74RsitCKohXw0yxwZizpo
-         rsvQ2ru+d+XcH7fyxejVP69VLcNqR1pils6UrH/6+MBe4IH9n1bnLZTGAOb9hddigXV4
-         /XJho6ieoPPQqpQ7FXx0HeNK1I/fHhZ+RZMNoVJRoM1cytyd+F+zv/K1wwnWIXwIKgqD
-         KSyA==
+        bh=Vps8/QEIPf/qcHcwOq/sK3G75sunFUbRWWjibdncsVA=;
+        b=gtiUBbMxMiAO2dJCjK0HlWUOh6FrxwmdeinDC/3vxx40PSj+87ef/Enj3nKqT758Qd
+         NyQv3Zj0exsJOa4xXpb96X+Z/jGrBR3rvHuGfUEjLxAZUlSDkzL61sR7Vv62kmkuA8GE
+         FXzYFsbqHDgmdtEjruLrybgvWPfzpl81pNq3GAV116Nb+9qHrQCqR6M6UtDdfMsLotrP
+         XvrUvAPHWvUNd7zMPXXdZkPdhbB8mOzPS1cFFc0m0ESa/2fV1VD+rtppjsdS4IxxEdom
+         1mw5mhiBrM6LMLFuZBTECv9gdVACytNBM08xOC9gYkqYhlVgF6S5t+PKlz+QMSOa39vJ
+         jkbw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1772165609; x=1772770409;
+        d=1e100.net; s=20230601; t=1772165615; x=1772770415;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to;
-        bh=jvkRRKqI7aHfUjiQtd8AciapsbHQ5batZXkO5Pi18bQ=;
-        b=S1gOn/pqkB00C77W/gDWWCAGQXhVpR+T1dss+VyREsZ+xSmCOzjj0wjc6Dx6P7VVIU
-         i6mMaKD2Ph1Hxhn0i4UyKvsnwXzY1JDJA7iOvLj+09oPVQStNUSShRPAv9RUXymxglDo
-         A+Dd6rmuOsFeHBFknTUmcVVw1tlXFINf34tlwzx5GmCJhf1Z8H3XGawU2ybGXdOD3OUu
-         Pe5OAFe9Bz2LHYJVcwnQOH33BdDmw2274h8LVN0HPLXzTI3va+ymflEkZ5o8wVlBvMCv
-         jBm3+5IOC51IMyR/WJxU8RCITZ6eOl9Hi/0fGhgl8c6O54UL/o7zFC3a1H9XvFwanMsh
-         a6mg==
-X-Forwarded-Encrypted: i=1; AJvYcCUUdY2rLA079AZb3YqhosoEGiZ7P3+f9XnRrFlo7XjiYnWImMURjpg6yS8G6lhZgyRLB4yKsfCWKJKHnViunw==@vger.kernel.org
-X-Gm-Message-State: AOJu0YySIp8t8rF+VHrwl0Tq/MxkYkhdj0ltLfiT4Ttch3BB40Z2/rs0
-	1JmYcxRY3EoL7SGu+7A78RAncBIX3jlT6gsyE6n6kbvFfBZlrpaB212XjMseB+fmcZ0=
-X-Gm-Gg: ATEYQzwFWQGYCrWJ6nd4xgTeY4ruY0bnz+bp5nblw78Ed606MU0pDevtuIYJEyu7n03
-	LnTpNuyHSKOB5cjkspS25a0h9KcX9RJgQydCXUGGs9tKVOKedqW8FIAOpYPWPXLY5KZywN/KpwT
-	1IEWVPDNRphqeMSl2lMrg6ogs5WyNewwzM/lHqZc4hHsV1lj3zDz7NlmbnHNBFpoB0Gkp6pKGkS
-	huZFowhteDzvYAhJdI/5gmG66kGBw0sHflwdoS4yam7klZ2XQEoFIIfKoK6Eg/sDWpehrxyvTA0
-	pHK2bnfAoOFZUI3EczY23cPJ2TsCEAQPWQ9x3JC3CMeZDkg/UfdpNzvnPj7XznJoFOS4qIEoHx3
-	d+bPVJcY0mGACtY+/MVnt/xzsXKpmtUdpcbOMZ5axPhZaSh7U2+F0S4I5DQY+E3G7dvoBCBH0zn
-	+1SdzCciPaG82qkPSaJso7vs9CHcQb33mJq4JvdwHbB5MP5jSR20KyuhQrZ++1Ysxxl3GncLF1p
-	qEtJtRF1BPFlnrE6hT3mNRtNtBhlYzIWWZYIahXrQ==
-X-Received: by 2002:a17:902:ea06:b0:2a7:c340:4c3d with SMTP id d9443c01a7336-2ae2e407f78mr11242985ad.13.1772165609131;
-        Thu, 26 Feb 2026 20:13:29 -0800 (PST)
+        bh=Vps8/QEIPf/qcHcwOq/sK3G75sunFUbRWWjibdncsVA=;
+        b=Z+uOvHAXOMToA6EACtoyn6EmyoRRnIBzORqfNg2XOA3NnUqt9M4wMj7rebc7JDo6q7
+         OJxwKeH5azRbDqVey6g6w7bcFglr+Me5SVdbLeZKOCPCkcW8AFiyvRrJQvIUsJYqXEOy
+         NM73PclffSwxZqrUkq7Ct7YLEhjIYcg1Cl+hFq8mpV6iVnpMWK7jfqbbi/FnQcW81LnU
+         tLyCyAaA88emAjPADG8uwRS8lflP1m2MWg3ZK0z7/N7HHkAgvK6ey5i3Fd/34Ho6Dy5c
+         +a8Kq4064D45fpnwKyCK60gJwP+NJMxgaAPOlU/1qqt6y2GovObPahfVodT0Rw7a18xH
+         FkSw==
+X-Forwarded-Encrypted: i=1; AJvYcCUNNtseNFjNJy75gzVOv99xCTF1v4ofOq9e9jINYasogtx/3EiKxaWf963MI/eLAJPtMahIy0IVrRfWNm5X1Q==@vger.kernel.org
+X-Gm-Message-State: AOJu0YyKChOVF+WQ1AWRZ36iDMfDNYL+xBIZmL/Aq9sFFnkA68/SXvVN
+	3Pyzz49goifbK7xKKhgqc6WM9djWIUnP90fpf1wc3o+cS4LuksbLfLXzSl+zbbbVGUY=
+X-Gm-Gg: ATEYQzwX+pD+by79VTexpUkRUc5c7K721+YNl4+nFZZ1epr82IdUddc9B7iZjNeVSeZ
+	7ajCTm/f2gbogkB6AQ4VdPDjthEvODA/k1ykdSz6I9xwhbZq/8k8djDcVD7cXhAfueHqdG+0wWJ
+	t0C++7xA795KhW4A/diKGj0TVKSvzUsWcsgh5LUBuxA3uFdu5LiJ+rwDNnuhdS7I2RdS6NY8EyI
+	Z3xuVIlR0hPhCpFjPDZQ/EFXtHCeNhmO53L43SnljD5nMmY+odnNZaqAe6IVqLsZPUbJpeNG2MI
+	vby3aNDqMODo9uKXVBfOvH1nPaN0toOJYyTKhctqC4Se2cRuELV1BFU5GAU+CAaBW4go+8jPkXJ
+	jpPbIE/Cd0nnFvY1UX7Uypm+GebjIEu/T4wj8ghh6W/gNwOmulunuONnBfqMA3C+fYTiEBZYzZJ
+	KC/a7FYHZv0E4SaSwXKsrEuuXoFfR7QVYWiem/tlNxnsij8w2Vg7XYfZ2Wnn5g1ZV2xf3RcLjPf
+	rXm/Yg70jf5ejHv/ejhAorq4sgfvxI=
+X-Received: by 2002:a17:903:2341:b0:2a0:bb05:df55 with SMTP id d9443c01a7336-2ae2e269131mr12213095ad.21.1772165615040;
+        Thu, 26 Feb 2026 20:13:35 -0800 (PST)
 Received: from mma-H9MHD44.lan (60-242-93-14.static.tpgi.com.au. [60.242.93.14])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2adfb6ba5eesm41682865ad.68.2026.02.26.20.13.23
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2adfb6ba5eesm41682865ad.68.2026.02.26.20.13.30
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 26 Feb 2026 20:13:28 -0800 (PST)
+        Thu, 26 Feb 2026 20:13:34 -0800 (PST)
 From: Lachlan Hodges <lachlan.hodges@morsemicro.com>
 To: johannes@sipsolutions.net,
 	Lachlan Hodges <lachlan.hodges@morsemicro.com>,
@@ -85,9 +85,9 @@ To: johannes@sipsolutions.net,
 Cc: ayman.grais@morsemicro.com,
 	linux-wireless@vger.kernel.org,
 	linux-kernel@vger.kernel.org
-Subject: [PATCH wireless-next 16/35] wifi: mm81x: add mmrc.c
-Date: Fri, 27 Feb 2026 15:10:26 +1100
-Message-ID: <20260227041108.66508-17-lachlan.hodges@morsemicro.com>
+Subject: [PATCH wireless-next 17/35] wifi: mm81x: add mmrc.h
+Date: Fri, 27 Feb 2026 15:10:27 +1100
+Message-ID: <20260227041108.66508-18-lachlan.hodges@morsemicro.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20260227041108.66508-1-lachlan.hodges@morsemicro.com>
 References: <20260227041108.66508-1-lachlan.hodges@morsemicro.com>
@@ -113,7 +113,7 @@ X-Spamd-Result: default: False [-0.06 / 15.00];
 	DKIM_TRACE(0.00)[morsemicro-com.20230601.gappssmtp.com:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-32255-lists,linux-wireless=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-32256-lists,linux-wireless=lfdr.de];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TO_DN_SOME(0.00)[];
@@ -125,8 +125,8 @@ X-Spamd-Result: default: False [-0.06 / 15.00];
 	RCPT_COUNT_SEVEN(0.00)[7];
 	NEURAL_HAM(-0.00)[-1.000];
 	TAGGED_RCPT(0.00)[linux-wireless];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[morsemicro-com.20230601.gappssmtp.com:dkim,rate.ss:url,morsemicro.com:mid,morsemicro.com:email,rate.bw:url,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,fixed_rate.ss:url]
-X-Rspamd-Queue-Id: 6FF451B2919
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,morsemicro.com:mid,morsemicro.com:email,morsemicro-com.20230601.gappssmtp.com:dkim]
+X-Rspamd-Queue-Id: D402B1B292E
 X-Rspamd-Action: no action
 
 (Patches split per file for review, see cover letter for more
@@ -134,1369 +134,214 @@ information)
 
 Signed-off-by: Lachlan Hodges <lachlan.hodges@morsemicro.com>
 ---
- drivers/net/wireless/morsemicro/mm81x/mmrc.c | 1353 ++++++++++++++++++
- 1 file changed, 1353 insertions(+)
- create mode 100644 drivers/net/wireless/morsemicro/mm81x/mmrc.c
+ drivers/net/wireless/morsemicro/mm81x/mmrc.h | 198 +++++++++++++++++++
+ 1 file changed, 198 insertions(+)
+ create mode 100644 drivers/net/wireless/morsemicro/mm81x/mmrc.h
 
-diff --git a/drivers/net/wireless/morsemicro/mm81x/mmrc.c b/drivers/net/wireless/morsemicro/mm81x/mmrc.c
+diff --git a/drivers/net/wireless/morsemicro/mm81x/mmrc.h b/drivers/net/wireless/morsemicro/mm81x/mmrc.h
 new file mode 100644
-index 000000000000..237055df2f21
+index 000000000000..36b4a9cf551e
 --- /dev/null
-+++ b/drivers/net/wireless/morsemicro/mm81x/mmrc.c
-@@ -0,0 +1,1353 @@
-+// SPDX-License-Identifier: GPL-2.0-only
++++ b/drivers/net/wireless/morsemicro/mm81x/mmrc.h
+@@ -0,0 +1,198 @@
++/* SPDX-License-Identifier: GPL-2.0-only */
 +/*
 + * Copyright (c) 2017-2026 Morse Micro
 + */
-+#include "mmrc.h"
-+
-+/*
-+ * The default packet size in bits used for calculated throughput of a given
-+ * rate
-+ */
-+#define DEFAULT_PACKET_SIZE_BITS 9600
-+
-+/*
-+ * The default packet size in bytes used for calculating retries for a given
-+ * rate
-+ */
-+#define DEFAULT_PACKET_SIZE_BYTES 1200
-+
-+/* The sample frequencies at different stages */
-+#define LOOKAROUND_RATE_INIT 5
-+#define LOOKAROUND_RATE_NORMAL 50
-+#define LOOKAROUND_RATE_STABLE 100
-+
-+/* The thresholds for stability stages */
-+#define STABILITY_CNT_THRESHOLD_INIT 20
-+#define STABILITY_CNT_THRESHOLD_NORMAL 50
-+#define STABILITY_CNT_THRESHOLD_STABLE 100
-+
-+/* The backoff step size for the counter */
-+#define STABILITY_BACKOFF_STEP 2
-+
-+/*
-+ * The packet success threshold for attempting slower lookaround rates
-+ */
-+/*
-+ * Force a look around if there haven't been any for this number of cycles
-+ */
-+#define LOOKAROUND_MAX_RC_CYCLES 5
-+
-+/*
-+ * Number of attempts for each lookaround rate within at most two RC cycles
-+ * if there are enough packets
-+ */
-+#define LOOKAROUND_RATE_ATTEMPTS 4
-+
-+/*
-+ * Limit the number of times we try to pick a theoretically better rate to
-+ * sample. Necessary so we don't stall the CPU, due to constantly picking worse
-+ * rates.
-+ */
-+#define LOOKAROUND_FAIL_MAX 200
-+
-+/*
-+ * Initial and reset probability per rate in the table
-+ * Changing this value will have a severe implication on the current heuristic
-+ * It could mean that some rates will have better probability throughput even
-+ * with no edivence and so will cause unexpected changes in the rate table
-+ */
-+#define RATE_INIT_PROBABILITY 0
-+
-+/*
-+ * The lowest number of MPDUs within acknowledged AMPDUs that can be used for
-+ * rate stats
-+ */
-+#define AMPDU_STATS_MIN 2
-+
-+/*
-+ * The lowest number of stats to be used for processing in NORMAL lookaround
-+ * mode
-+ */
-+#define STATS_MIN_NORMAL 2
-+
-+/*
-+ * The lowest number of stats to be used for processing in INIT lookaround
-+ * mode
-+ */
-+#define STATS_MIN_INIT 1
-+
-+/* The lowest probability value considered for recognising a dip */
-+#define PROBABILITY_DIP_MIN 20
-+
-+/* The lowest probability value for recovering from a dip */
-+#define PROBABILITY_DIP_RECOVERY_MIN 40
-+
-+/*
-+ * The time cap on rate allocation for multiple attempts. If a single attempt
-+ * exceeds this window, no additional attempts will be generated
-+ */
-+#define MAX_WINDOW_ATTEMPT_TIME 4000
-+
-+/* The time window for all rates in rate table */
-+#define RATE_WINDOW_MICROSECONDS 24000
-+
-+/*
-+ * EWMA is the alpha coefficient in the exponential weighting moving average
-+ * filter used for probability updates.
-+ *
-+ * Y[n] = X[n] * (100 - EWMA) + (Y[n-1] * EWMA)
-+ *	  -------------------------------------
-+ *			   100
-+ *
-+ */
-+#define EWMA 75
-+
-+/*
-+ * Evidence scaling to allow for one decimal place. Needed for low
-+ * throughput, otherwise the history decays in a single cycle.
-+ */
-+#define EVIDENCE_SCALE 5
-+
-+/*
-+ * Evidence maximum to ensure history doesn't decay too slowly when
-+ * there is a lot of historical data.
-+ */
-+#define EVIDENCE_MAX 100
-+
-+/*
-+ * This fixed point conversion multiplies a value by one and shifts it
-+ * accordingly to account for the fixed point shifting at the return of a
-+ * function
-+ */
-+#define FP_8_MULT_1 256
-+
-+/* Fixed point conversion for 2.1 * 2^8 used for 4MHz symbol multiplication */
-+#define FP_8_4MHZ 537
-+
-+/* Fixed point conversion for 4.5 * 2^8 used for 8MHz symbol multiplication */
-+#define FP_8_8MHZ 1152
-+
-+/* Fixed point conversion for 9.0 * 2^8 used for 16MHz symbol multiplication */
-+#define FP_8_16MHZ 2301
-+
-+/*
-+ * Fixed point conversion for 3.6 * 2^8 used for long guard symbol tx time
-+ * multiplication
-+ */
-+#define FP_8_LONG_GUARD_SYMBOL_TIME 1024
-+
-+/*
-+ * Fixed point conversion for 4.0 * 2^8 used for short guard symbol tx time
-+ * multiplication
-+ */
-+#define FP_8_SHORT_GUARD_SYMBOL_TIME 921
-+
-+/*
-+ * Shift value to shift back our FP conversions
-+ */
-+#define FP_8_SHIFT 8
-+
-+/*
-+ * Limit to count of consecutive variations in one direction
-+ */
-+#define MAX_VARIATION_DIRECTION 5
-+
-+/*
-+ * Threshold for considering consecutive variation direction as variation
-+ * or not
-+ */
-+#define VARIATION_DIRECTION_THRESHOLD 3
-+
-+/* EWMA percentage value for averaging the best rate probability variation */
-+#define VARIATION_EWMA 95
-+
-+/* Percentage variation regarded as minor */
-+#define MINOR_VARIATION_THRESHOLD 1
-+
-+/* Percentage variation regarded as moderate */
-+#define MODERATE_VARIATION_THRESHOLD 3
-+
-+/* Percentage variation regarded as significant */
-+#define SIGNIFICANT_VARIATION_THRESHOLD 5
-+
-+/* If the best rate changes twice in this number of cycles, it is unstable */
-+#define BEST_RATE_UNSTABLE_THRESHOLD 4
-+
-+/*
-+ * Once the best rate is unchanged for this number of cycles it has
-+ * converged
-+ */
-+#define BEST_RATE_CONVERGED_THRESHOLD 10
-+
-+/* RSSI threshold for short range */
-+#define MMRC_SHORT_RANGE_RSSI_LIMIT -70
-+
-+/* RSSI threshold for mid range */
-+#define MMRC_MID_RANGE_RSSI_LIMIT -85
-+
-+#define MMRC_MAX_BW(bw_caps)                                      \
-+	(((bw_caps) & MMRC_MASK(MMRC_BW_16MHZ)) ? MMRC_BW_16MHZ : \
-+	 ((bw_caps) & MMRC_MASK(MMRC_BW_8MHZ))	? MMRC_BW_8MHZ :  \
-+	 ((bw_caps) & MMRC_MASK(MMRC_BW_4MHZ))	? MMRC_BW_4MHZ :  \
-+	 ((bw_caps) & MMRC_MASK(MMRC_BW_2MHZ))	? MMRC_BW_2MHZ :  \
-+						  MMRC_BW_1MHZ)
-+
-+/*
-+ * This table stores the number of bits per symbols used for MCS0-MCS9 based
-+ * on 20MHz and 1SS
-+ */
-+static const u32 sym_table[10] = { 24, 36, 48, 72, 96, 144, 192, 216, 256, 288 };
-+
-+/*
-+ * Calculate which bit is the nth bit set in an integer based flag.
-+ */
-+static u8 nth_bit(u16 in, u16 index)
-+{
-+	u32 i;
-+	u8 count = 0;
-+
-+	for (i = 0; count != index + 1; i++) {
-+		if (((1u << i) & in) != 0)
-+			count++;
-+	}
-+
-+	return i - 1;
-+}
-+
-+/*
-+ * Calculate the input bit's index among all the set bits in an integer
-+ * based flag.
-+ */
-+static u16 bit_index(u16 in, u32 bit_pos)
-+{
-+	u16 i;
-+	u16 index = 0;
-+
-+	for (i = 0; i != bit_pos + 1; i++) {
-+		if (((1u << i) & in) != 0)
-+			index++;
-+	}
-+
-+	if (index == 0) {
-+		/* Could not match bit pos to caps */
-+		return 0;
-+	}
-+
-+	return index - 1;
-+}
-+
-+static u16 rows_from_sta_caps(struct mmrc_sta_capabilities *caps)
-+{
-+	u16 rows = 0;
-+	u8 n_rates = BIT_COUNT(caps->rates);
-+
-+	/* Taking MCS10 into account as it is relevant for 1 MHz entries */
-+	if (caps->rates & MMRC_MASK(MMRC_MCS10)) {
-+		n_rates -= 1;
-+		rows = 2;
-+	}
-+
-+	rows += (BIT_COUNT(caps->bandwidth) * n_rates * BIT_COUNT(caps->guard) *
-+		 BIT_COUNT(caps->spatial_streams));
-+
-+	return rows;
-+}
-+
-+static void rate_update_index(struct mmrc_table *tb, struct mmrc_rate *rate)
-+{
-+	u16 index = 0;
-+	/* Information about our rates */
-+	u16 bw = BIT_COUNT(tb->caps.bandwidth);
-+	u16 streams = BIT_COUNT(tb->caps.spatial_streams);
-+	u16 guard = BIT_COUNT(tb->caps.guard);
-+	u16 rows = rows_from_sta_caps(&tb->caps);
-+
-+	index = bit_index(tb->caps.guard, rate->guard) +
-+		bit_index(tb->caps.bandwidth, rate->bw) * guard +
-+		bit_index(tb->caps.spatial_streams, rate->ss) * guard * bw +
-+		bit_index(tb->caps.rates, rate->rate) * bw * streams * guard;
-+
-+	if (index >= rows)
-+		index = 0;
-+
-+	rate->index = index;
-+}
-+
-+static struct mmrc_rate get_rate_row(struct mmrc_table *tb, u16 index)
-+{
-+	struct mmrc_rate rate;
-+	u16 ss_index;
-+
-+	/* Information about our rates */
-+	u16 mcs = BIT_COUNT(tb->caps.rates);
-+	u16 bw = BIT_COUNT(tb->caps.bandwidth);
-+	u16 streams = BIT_COUNT(tb->caps.spatial_streams);
-+	u16 guard = BIT_COUNT(tb->caps.guard);
-+	u16 total_caps = mcs * bw * streams * guard;
-+
-+	/* Find our MCS */
-+	u16 rows = total_caps / mcs;
-+	u16 mcs_index = index / rows;
-+	u16 mcs_modulo = index % rows;
-+
-+	mcs = nth_bit(tb->caps.rates, mcs_index);
-+
-+	/* Find our spatial stream */
-+	rows = rows / streams;
-+	streams = nth_bit(tb->caps.spatial_streams, mcs_modulo / rows);
-+
-+	/* Find our bandwidth */
-+	ss_index = index % rows;
-+	rows = rows / bw;
-+	bw = nth_bit(tb->caps.bandwidth, ss_index / rows);
-+
-+	/* Find our guard */
-+	guard = nth_bit(tb->caps.guard, index % guard);
-+
-+	/* Add range checks to keep scan-build happy */
-+	if (bw >= MMRC_BW_MAX)
-+		bw = MMRC_BW_1MHZ;
-+
-+	if (guard >= MMRC_GUARD_MAX)
-+		guard = MMRC_GUARD_LONG;
-+
-+	/* Validate guard against capability */
-+	if (guard == MMRC_GUARD_SHORT &&
-+	    !(tb->caps.sgi_per_bw & SGI_PER_BW(bw)))
-+		guard = MMRC_GUARD_LONG;
-+
-+	/* Create our rate row and send it */
-+	rate.bw = MMRC_BW_TO_BITFIELD(bw);
-+	rate.ss = MMRC_SS_TO_BITFIELD(streams);
-+	rate.rate = MMRC_RATE_TO_BITFIELD(mcs);
-+	rate.guard = MMRC_GUARD_TO_BITFIELD(guard);
-+	rate.attempts = 0;
-+	rate.flags = 0;
-+
-+	/* Update index as bw or guard may have changed */
-+	rate_update_index(tb, &rate);
-+
-+	return rate;
-+}
-+
-+size_t mmrc_memory_required_for_caps(struct mmrc_sta_capabilities *caps)
-+{
-+	return sizeof(struct mmrc_table) +
-+	       rows_from_sta_caps(caps) * sizeof(struct mmrc_stats_table);
-+}
-+
-+static u32 calculate_bits_per_symbol(struct mmrc_rate *rate)
-+{
-+	u32 bps;
-+
-+	/* If MCS10 is selected we return 2*MCS0 Symbols */
-+	if (rate->rate == MMRC_MCS10)
-+		return 6;
-+
-+	/* Confirm that the rate is valid for the sym_table lookup */
-+	if (rate->rate >= MMRC_MCS_UNUSED) {
-+		pr_err("%s: Invalid MCS rate %d for sym_table lookup\n",
-+		       __func__, rate->rate);
-+		return 1;
-+	}
++
++#ifndef _MM81X_MMRC_H_
++#define _MM81X_MMRC_H_
++
++#include <linux/version.h>
++#include <linux/types.h>
++#include <linux/slab.h>
++#include <linux/bitops.h>
++#include <linux/random.h>
++#include <linux/time.h>
++
++#define BIT_COUNT(_x) (hweight_long(_x))
++
++/* The max length of a retry chain for a single packet transmission */
++#define MMRC_MAX_CHAIN_LENGTH 4
++
++/* Rate minimum allowed attempts */
++#define MMRC_MIN_CHAIN_ATTEMPTS 1
++
++/* Rate upper limit for attempts */
++#define MMRC_MAX_CHAIN_ATTEMPTS 2
++
++/* The frequency of MMRC stat table updates */
++#define MMRC_UPDATE_FREQUENCY_MS 100
++
++/* Used to spehify supported features when initialising a STA */
++#define MMRC_MASK(x) (1u << (x))
++
++enum mmrc_flags {
++	MMRC_FLAGS_CTS_RTS,
++};
++
++enum mmrc_mcs_rate {
++	MMRC_MCS0,
++	MMRC_MCS1,
++	MMRC_MCS2,
++	MMRC_MCS3,
++	MMRC_MCS4,
++	MMRC_MCS5,
++	MMRC_MCS6,
++	MMRC_MCS7,
++	MMRC_MCS8,
++	MMRC_MCS9,
++	MMRC_MCS10,
++	MMRC_MCS_UNUSED,
++};
++
++enum mmrc_bw {
++	MMRC_BW_1MHZ = 0,
++	MMRC_BW_2MHZ = 1,
++	MMRC_BW_4MHZ = 2,
++	MMRC_BW_8MHZ = 3,
++	MMRC_BW_16MHZ = 4,
++	MMRC_BW_MAX = 5,
++};
++
++enum mmrc_spatial_stream {
++	MMRC_SPATIAL_STREAM_1 = 0,
++	MMRC_SPATIAL_STREAM_2 = 1,
++	MMRC_SPATIAL_STREAM_3 = 2,
++	MMRC_SPATIAL_STREAM_4 = 3,
++	MMRC_SPATIAL_STREAM_MAX,
++};
++
++enum mmrc_guard {
++	MMRC_GUARD_LONG = 0,
++	MMRC_GUARD_SHORT = 1,
++	MMRC_GUARD_MAX,
++};
++
++#define MMRC_RATE_TO_BITFIELD(x) ((x) & 0xF)
++#define MMRC_ATTEMPTS_TO_BITFIELD(x) ((x) & 0x7)
++#define MMRC_GUARD_TO_BITFIELD(x) ((x) & 0x1)
++#define MMRC_SS_TO_BITFIELD(x) ((x) & 0x3)
++#define MMRC_BW_TO_BITFIELD(x) ((x) & 0x7)
++#define MMRC_FLAGS_TO_BITFIELD(x) ((x) & 0x7)
++
++struct mmrc_rate {
++	u8 rate : 4;
++	u8 attempts : 3;
++	u8 guard : 1;
++	u8 ss : 2;
++	u8 bw : 3;
++	u8 flags : 3;
++	u16 index;
++};
++
++struct mmrc_rate_table {
++	struct mmrc_rate rates[MMRC_MAX_CHAIN_LENGTH];
++};
++
++#define SGI_PER_BW(bw) (1 << (bw))
++
++struct mmrc_sta_capabilities {
++	u8 max_rates : 3;
++	u8 max_retries : 3;
++	u8 bandwidth : 5;
++	u8 spatial_streams : 4;
++	u16 rates : 11;
++	u8 guard : 2;
++	u8 sta_flags : 4;
++	u8 sgi_per_bw : 5;
++};
++
++struct mmrc_stats_table {
++	u32 avg_throughput_counter;
++	u32 sum_throughput;
++	u32 max_throughput;
++	u16 sent;
++	u16 sent_success;
++	u16 back_mpdu_success;
++	u16 back_mpdu_failure;
++	u32 total_sent;
++	u32 total_success;
++	u16 evidence;
++	u8 prob;
++	bool have_sent_ampdus;
++};
++
++struct mmrc_table {
++	struct mmrc_sta_capabilities caps;
++	struct mmrc_rate best_tp;
++	struct mmrc_rate second_tp;
++	struct mmrc_rate baseline;
++	struct mmrc_rate best_prob;
++	struct mmrc_rate fixed_rate;
++	u32 cycle_cnt;
++	u32 last_lookaround_cycle;
++	u8 lookaround_cnt;
++
++	/* The ratio of using normal rate and sampling */
++	u8 lookaround_wrap;
 +
 +	/*
-+	 * Coversion from 20MHz as in sym_table to:
-+	 * 40MHz   ==	x 2.1
-+	 * 80MHz   ==	x 4.5
-+	 * 160MHz  ==	x 9.0
++	 * A counter that is used to determine when we should force a
++	 * lookaround. Should be a portion of the above lookaround with
++	 * less constraints
 +	 */
-+	bps = sym_table[rate->rate];
-+	switch (rate->bw) {
-+	case (MMRC_BW_4MHZ):
-+		bps *= FP_8_4MHZ;
-+		break;
-+	case (MMRC_BW_8MHZ):
-+		bps *= FP_8_8MHZ;
-+		break;
-+	case (MMRC_BW_16MHZ):
-+		bps *= FP_8_16MHZ;
-+		break;
-+	case (MMRC_BW_1MHZ):
-+		bps = sym_table[rate->rate] * 24 / 52;
-+		bps *= FP_8_MULT_1;
-+		break;
-+	case (MMRC_BW_2MHZ):
-+	case (MMRC_BW_MAX):
-+	default:
-+		bps *= FP_8_MULT_1;
-+		break;
-+	}
-+	/* SS + 1 because mmrc_spatial_stream starts at 0 */
-+	return ((rate->ss + 1) * bps) >> FP_8_SHIFT;
-+}
++	u8 forced_lookaround;
 +
-+static u32 get_tx_time(struct mmrc_rate *rate)
-+{
-+	u32 tx = 0;
-+	u32 n_sym;
-+	u32 avg_bits;
-+
-+	/* Calculate tx time based on a default packet size */
-+	avg_bits = DEFAULT_PACKET_SIZE_BITS;
-+
-+	/* Number of bits per symbol for this rate */
-+	n_sym = calculate_bits_per_symbol(rate);
-+
-+	/* In case of bad calcuation/parameter use lowest value */
-+	n_sym = n_sym == 0 ? sym_table[0] : n_sym;
-+
-+	/* number of symbols in default packet size */
-+	n_sym = avg_bits / n_sym;
-+
-+	/* tx is time to transmit average packet in us */
-+	switch (rate->guard) {
-+	case (MMRC_GUARD_LONG):
-+		tx = n_sym * FP_8_LONG_GUARD_SYMBOL_TIME;
-+		break;
-+	case (MMRC_GUARD_SHORT):
-+		tx = n_sym * FP_8_SHORT_GUARD_SYMBOL_TIME;
-+		break;
-+	default:
-+		return 0;
-+	}
-+
-+	return (tx * 10) >> FP_8_SHIFT;
-+}
-+
-+u32 mmrc_calculate_theoretical_throughput(struct mmrc_rate rate)
-+{
-+	static const u32 s1g_tpt_lgi[4][11] = {
-+		{ 300, 600, 900, 1200, 1800, 2400, 2700, 3000, 3600, 4000,
-+		  150 },
-+		{ 650, 1300, 1950, 2600, 3900, 5200, 5850, 6500, 7800, 0, 0 },
-+		{ 1350, 2700, 4050, 5400, 8100, 10800, 12150, 13500, 16200,
-+		  18000, 0 },
-+		{ 2925, 5850, 8775, 11700, 17550, 23400, 26325, 29250, 35100,
-+		  39000, 0 },
-+	};
-+
-+	static const u32 s1g_tpt_sgi[4][11] = {
-+		{ 333, 666, 1000, 1333, 2000, 2666, 3000, 3333, 4000, 4444,
-+		  166 },
-+		{ 722, 1444, 2166, 2888, 4333, 5777, 6500, 7222, 8666, 0, 0 },
-+		{ 1500, 3000, 4500, 6000, 9000, 12000, 13500, 15000, 18000,
-+		  20000, 0 },
-+		{ 3250, 6500, 9750, 13000, 19500, 26000, 29250, 32500, 39000,
-+		  43333, 0 },
-+	};
-+
-+	if (rate.guard)
-+		return s1g_tpt_sgi[rate.bw][rate.rate] * 1000 * (rate.ss + 1);
-+
-+	return s1g_tpt_lgi[rate.bw][rate.rate] * 1000 * (rate.ss + 1);
-+}
-+
-+static u32 calculate_throughput(struct mmrc_table *tb, u8 index)
-+{
-+	struct mmrc_rate rate = get_rate_row(tb, index);
++	u8 current_lookaround_rate_attempts;
++	u16 current_lookaround_rate_index;
++	u32 total_lookaround;
 +
 +	/*
-+	 * Avoid the overflow (observed for 8MHz MCS9 rate: 43333) by dividing
-+	 * first before multiplying. Should not experience any loss of
-+	 * precision as the throughput is already multiplied by 1000 in
-+	 * mmrc_calculate_theoretical_throughput (returned as bits/sec)
++	 * A counter to detect if the current best rate is optimal
++	 * and may slow down sample frequency.
 +	 */
-+	if (tb->table[rate.index].prob < 10)
-+		return 0;
-+	else if (rate.index == tb->best_tp.index && tb->interference_likely)
-+		/*
-+		 * Assist the best rate by increasing the probability by the
-+		 * averaged variation
-+		 */
-+		return (mmrc_calculate_theoretical_throughput(rate) / 100) *
-+		       (tb->table[rate.index].prob + tb->probability_variation);
-+	else
-+		return (mmrc_calculate_theoretical_throughput(rate) / 100) *
-+		       tb->table[rate.index].prob;
-+}
++	u32 stability_cnt;
 +
-+static bool validate_rate(struct mmrc_table *tb, struct mmrc_rate *rate)
-+{
-+	if (rate->rate == MMRC_MCS10 &&
-+	    (rate->bw != MMRC_BW_1MHZ || rate->ss != MMRC_SPATIAL_STREAM_1)) {
-+		/*
-+		 * 802.11ah does not support MCS10 with BW that is not 1MHz or
-+		 * not 1 spatial stream.
-+		 */
-+		return false;
-+	}
++	u32 stability_cnt_threshold;
++	u8 probability_variation;
 +
-+	if (rate->rate == MMRC_MCS9 && rate->bw == MMRC_BW_2MHZ &&
-+	    rate->ss != MMRC_SPATIAL_STREAM_3) {
-+		/*
-+		 * 802.11ah does not support MCS9 at 2MHz for 1, 2 or 4 spatial
-+		 * streams
-+		 */
-+		return false;
-+	}
++	/* The difference in MCS from each of the last 2 rate changes */
++	s8 best_rate_diff[2];
 +
-+	if (rate->guard == MMRC_GUARD_SHORT &&
-+	    !(tb->caps.sgi_per_bw & SGI_PER_BW(rate->bw)))
-+		return false;
++	/* Indication of random versus consistently one-sided variation */
++	s8 probability_variation_direction;
 +
-+	return true;
-+}
++	/* Has rate control detected possible interference */
++	bool interference_likely;
 +
-+static u16 find_baseline_index(struct mmrc_table *tb)
-+{
-+	u32 i, theoretical_tp, min_theoretical_tp;
-+	u16 row_count = rows_from_sta_caps(&tb->caps);
-+	u16 min_theoretical_tp_index = 0;
-+	struct mmrc_rate rate;
++	/* Has rate control detected the best rate is no longer converged */
++	bool unconverged;
 +
-+	if (tb->caps.rates & MMRC_MASK(MMRC_MCS10))
-+		return 0;
-+
-+	min_theoretical_tp =
-+		mmrc_calculate_theoretical_throughput(get_rate_row(tb, 0));
-+	for (i = 0; i < row_count; i++) {
-+		rate = get_rate_row(tb, i);
-+		if (!validate_rate(tb, &rate))
-+			continue;
-+
-+		theoretical_tp = mmrc_calculate_theoretical_throughput(rate);
-+		if (min_theoretical_tp > theoretical_tp) {
-+			min_theoretical_tp = theoretical_tp;
-+			min_theoretical_tp_index = rate.index;
-+		}
-+	}
-+
-+	return min_theoretical_tp_index;
-+}
-+
-+/*
-+ * Fill out the remaining rates to be used once the best rate is selected.
-+ * Normally the retry rates are one MCS lower than the previous, however in
-+ * unconverged mode we limit the 3 respective retry rates to MCS 4, 2 and 0
-+ * respectively. The last retry rate is always MCS 0
-+ */
-+static void mmrc_fill_retry_rates(struct mmrc_table *tb)
-+{
-+	tb->second_tp = tb->best_tp;
-+	if (tb->second_tp.rate != MMRC_MCS0) {
-+		tb->second_tp.rate--;
-+		if (tb->unconverged && tb->second_tp.rate > MMRC_MCS4)
-+			tb->second_tp.rate = MMRC_MCS4;
-+		rate_update_index(tb, &tb->second_tp);
-+	} else if (tb->second_tp.bw > MMRC_BW_1MHZ) {
-+		tb->second_tp.bw--;
-+		rate_update_index(tb, &tb->second_tp);
-+	}
-+
-+	tb->best_prob = tb->second_tp;
-+	if (tb->best_prob.rate != MMRC_MCS0) {
-+		tb->best_prob.rate--;
-+		if (tb->unconverged && tb->best_prob.rate > MMRC_MCS2)
-+			tb->best_prob.rate = MMRC_MCS2;
-+		rate_update_index(tb, &tb->best_prob);
-+	} else if (tb->best_prob.bw > MMRC_BW_1MHZ) {
-+		tb->best_prob.bw--;
-+		rate_update_index(tb, &tb->best_prob);
-+	}
-+
-+	tb->baseline = tb->best_prob;
-+	if (tb->baseline.rate != MMRC_MCS0) {
-+		tb->baseline.rate = MMRC_MCS0;
-+		rate_update_index(tb, &tb->baseline);
-+	} else if (tb->baseline.bw > MMRC_BW_1MHZ) {
-+		tb->baseline.bw--;
-+		rate_update_index(tb, &tb->baseline);
-+	}
-+}
-+
-+/*
-+ * Updates the mmrc_table with the appropriate rate priority based on the
-+ * latest update statistics
-+ */
-+static void generate_table_priority(struct mmrc_table *tb, u32 new_stats)
-+{
-+	u16 i;
-+	u16 best_row = tb->best_tp.index;
-+	u16 prev_best_row = best_row;
-+	u8 prev_best_rate = tb->best_tp.rate;
-+	u16 second_best_row = tb->second_tp.index;
-+	u32 best_tp = calculate_throughput(tb, best_row);
-+	u32 second_best_tp = calculate_throughput(tb, second_best_row);
-+	u32 last_nonzero_prob = 0;
-+	struct mmrc_rate tmp;
-+	u32 tmp_tp;
-+
-+	/* Use fixed rate if set */
-+	if (tb->fixed_rate.rate != MMRC_MCS_UNUSED) {
-+		tb->best_tp = tb->fixed_rate;
-+		tb->second_tp = tb->fixed_rate;
-+		tb->best_prob = tb->fixed_rate;
-+		return;
-+	}
-+
-+	for (i = 0; i < rows_from_sta_caps(&tb->caps); i++) {
-+		tmp = get_rate_row(tb, i);
-+		if (!validate_rate(tb, &tmp))
-+			continue;
-+
-+		if (tb->table[tmp.index].evidence == 0)
-+			continue;
-+
-+		/*
-+		 * Besides better throughput, also consider this rate better if
-+		 * lower rates had worse probability. That indicates the rate
-+		 * itself is not the problem. Only do the probability check for
-+		 * rates up to the previous best rate.
-+		 */
-+		tmp_tp = calculate_throughput(tb, tmp.index);
-+
-+		if (tmp_tp > best_tp ||
-+		    (tb->table[tmp.index].max_throughput <=
-+			     tb->table[prev_best_row].max_throughput &&
-+		     tb->table[tmp.index].prob >=
-+			     PROBABILITY_DIP_RECOVERY_MIN &&
-+		     tb->table[tmp.index].prob >
-+			     tb->table[last_nonzero_prob].prob)) {
-+			second_best_row = best_row;
-+			second_best_tp = best_tp;
-+
-+			best_tp = tmp_tp;
-+			best_row = tmp.index;
-+		} else if (tmp_tp > second_best_tp && best_row != tmp.index) {
-+			second_best_tp = tmp_tp;
-+			second_best_row = tmp.index;
-+		}
-+
-+		if (tb->table[tmp.index].prob >= PROBABILITY_DIP_MIN &&
-+		    tb->table[tmp.index].max_throughput >=
-+			    tb->table[last_nonzero_prob].max_throughput)
-+			last_nonzero_prob = tmp.index;
-+	}
-+
-+	/* Only update rates and stability when there are new statistics */
-+	if (!new_stats)
-+		return;
-+
-+	tb->best_tp = get_rate_row(tb, best_row);
-+	if (best_tp == 0 && tb->best_tp.rate > MMRC_MCS0) {
-+		/* Drop one rate, as the best throughput is zero */
-+		tb->best_tp.rate--;
-+		rate_update_index(tb, &tb->best_tp);
-+	}
-+	tb->second_tp = get_rate_row(tb, second_best_row);
-+	mmrc_fill_retry_rates(tb);
-+
-+	if (tb->best_tp.rate > MMRC_MCS1 && prev_best_row == best_row) {
-+		/* Increase the counter when the best rate is not changed */
-+		tb->stability_cnt++;
-+	} else if (tb->stability_cnt > STABILITY_BACKOFF_STEP) {
-+		/* Back off the counter when there is a new best rate */
-+		tb->stability_cnt -= STABILITY_BACKOFF_STEP;
-+	} else {
-+		tb->stability_cnt = 0;
-+	}
-+
-+	if (prev_best_row != best_row) {
-+		s8 latest_best_rate_diff = prev_best_rate - tb->best_tp.rate;
-+		u8 total_abs_best_rate_diff =
-+			abs(tb->best_rate_diff[0] + tb->best_rate_diff[1] +
-+			    latest_best_rate_diff);
-+
-+		if (!tb->interference_likely) {
-+			tb->probability_variation = 0;
-+			if (!tb->unconverged &&
-+			    tb->best_rate_cycle_count <=
-+				    BEST_RATE_UNSTABLE_THRESHOLD &&
-+			    total_abs_best_rate_diff >= 2) {
-+				/*
-+				 * Best rate has changed twice in a few cycles
-+				 * and moved at least 2 MCSs from where it was
-+				 * 3 best rate changes ago
-+				 */
-+				tb->unconverged = true;
-+				tb->newly_unconverged = true;
-+			}
-+		}
-+		if (tb->unconverged && !tb->newly_unconverged &&
-+		    total_abs_best_rate_diff < 2) {
-+			/*
-+			 * Best rate has been relatively stable (not moved more
-+			 * than 1 MCS after the last 3 rate changes), go back
-+			 * to converged
-+			 */
-+			tb->unconverged = false;
-+		}
-+		tb->probability_variation_direction = 0;
-+		tb->best_rate_cycle_count = 0;
-+		tb->best_rate_diff[0] = tb->best_rate_diff[1];
-+		tb->best_rate_diff[1] = latest_best_rate_diff;
-+	} else {
-+		tb->best_rate_cycle_count++;
-+		if (tb->unconverged && !tb->newly_unconverged &&
-+		    tb->best_rate_cycle_count >=
-+			    BEST_RATE_CONVERGED_THRESHOLD) {
-+			/*
-+			 * Best rate has been stable for a while, go back to
-+			 * converged
-+			 */
-+			tb->unconverged = false;
-+		}
-+	}
-+
-+	if (tb->newly_unconverged)
-+		tb->newly_unconverged = false;
-+}
-+
-+static u32 calculate_attempt_time(struct mmrc_rate *rate, size_t size)
-+{
-+	u32 time;
-+
-+	time = get_tx_time(rate);
-+
-+	if (size > DEFAULT_PACKET_SIZE_BYTES)
-+		time = (time * ((size * 1000) / DEFAULT_PACKET_SIZE_BYTES)) /
-+		       1000;
-+	else
-+		time = (time * 1000) /
-+		       ((DEFAULT_PACKET_SIZE_BYTES * 1000) / size);
-+
-+	return time;
-+}
-+
-+u32 mmrc_calculate_rate_tx_time(struct mmrc_rate *rate, size_t size)
-+{
-+	u8 i;
-+	u32 total_time = 0;
-+
-+	for (i = 0; i < rate->attempts; i++)
-+		total_time += calculate_attempt_time(rate, size);
-+
-+	return total_time;
-+}
-+
-+/*
-+ * Calculates the appropriate amount of additional attempts to make based on
-+ * packet size and theoretical throughput.
-+ */
-+static void calculate_remaining_attempts(struct mmrc_table *tb,
-+					 struct mmrc_rate_table *rate,
-+					 s32 *rem_time, size_t size)
-+{
-+	size_t i;
-+
-+	if (*rem_time <= 0)
-+		return;
-+
-+	for (i = 0; i < MMRC_MAX_CHAIN_LENGTH; i++) {
-+		u32 attempt_time;
-+		u32 attempt;
-+
-+		if (rate->rates[i].rate == MMRC_MCS_UNUSED)
-+			break;
-+
-+		/*
-+		 * The attempts for these rates were calculated in the initial
-+		 * attempt allocation
-+		 */
-+		if (tb->table[rate->rates[i].index].prob < 20)
-+			continue;
-+
-+		if (i == 0 && (calculate_throughput(tb, rate->rates[i].index) <
-+			       calculate_throughput(tb, tb->best_prob.index)))
-+			continue;
-+
-+		attempt_time = calculate_attempt_time(&rate->rates[i], size);
-+		if (!attempt_time)
-+			continue;
-+
-+		attempt = (*rem_time / tb->caps.max_rates) / attempt_time;
-+		attempt += rate->rates[i].attempts;
-+
-+		rate->rates[i].attempts = MMRC_ATTEMPTS_TO_BITFIELD(
-+			attempt > MMRC_MAX_CHAIN_ATTEMPTS ?
-+				MMRC_MAX_CHAIN_ATTEMPTS :
-+				attempt);
-+	}
-+}
-+
-+/* Allocate initial attempts to all rates in a rate table */
-+static void allocate_initial_attempts(struct mmrc_rate_table *rate,
-+				      s32 *rem_time, size_t size)
-+{
-+	u32 i;
-+
-+	for (i = 0; i < MMRC_MAX_CHAIN_LENGTH; i++) {
-+		u32 attempt_time;
-+
-+		if (rate->rates[i].rate == MMRC_MCS_UNUSED)
-+			break;
-+
-+		attempt_time = calculate_attempt_time(&rate->rates[i], size);
-+
-+		/*
-+		 * if the time for a single attempt is very long, lets just
-+		 * try once
-+		 */
-+		if (attempt_time > MAX_WINDOW_ATTEMPT_TIME) {
-+			*rem_time -= attempt_time;
-+			rate->rates[i].attempts = MMRC_ATTEMPTS_TO_BITFIELD(1);
-+		} else {
-+			*rem_time -= attempt_time * 2;
-+			rate->rates[i].attempts = MMRC_ATTEMPTS_TO_BITFIELD(2);
-+		}
-+	}
-+}
-+
-+void mmrc_get_rates(struct mmrc_table *tb, struct mmrc_rate_table *out,
-+		    size_t size)
-+{
-+	u8 i;
-+	u16 random_index;
-+	struct mmrc_rate random;
-+	struct mmrc_rate lookaround0 = tb->best_tp;
-+	struct mmrc_rate lookaround1 = tb->second_tp;
-+	bool is_lookaround;
-+	int lookaround_index = -1;
-+	int best_index = 0;
-+	int random_tp = 0;
-+	int best_tp;
-+	int lookaround_fail_count;
-+	bool try_current_lookaround = false;
-+
-+	s32 rem_time = RATE_WINDOW_MICROSECONDS;
-+
-+	memset(out, 0, sizeof(*out));
-+
-+	tb->lookaround_cnt = (tb->lookaround_cnt + 1) % tb->lookaround_wrap;
-+	/*
-+	 * Look around if the counter wraps or there has been no look around
-+	 * for a number of rate control cycles.
-+	 */
-+	is_lookaround = (tb->fixed_rate.rate == MMRC_MCS_UNUSED) &&
-+			((tb->lookaround_cnt == 0) ||
-+			 ((tb->last_lookaround_cycle +
-+			   LOOKAROUND_MAX_RC_CYCLES) <= tb->cycle_cnt));
-+
-+	/* Also skip sampling if we don't yet have data for our best rate */
-+	if (tb->table[tb->best_tp.index].evidence == 0)
-+		is_lookaround = false;
-+
-+	if (tb->lookaround_wrap != LOOKAROUND_RATE_STABLE) {
-+		if (tb->stability_cnt >= tb->stability_cnt_threshold) {
-+			tb->lookaround_wrap = LOOKAROUND_RATE_STABLE;
-+			tb->stability_cnt_threshold =
-+				STABILITY_CNT_THRESHOLD_STABLE;
-+			tb->stability_cnt = STABILITY_CNT_THRESHOLD_STABLE * 2;
-+			is_lookaround = false;
-+		}
-+	} else if (tb->stability_cnt < tb->stability_cnt_threshold) {
-+		tb->stability_cnt_threshold = STABILITY_CNT_THRESHOLD_NORMAL;
-+		tb->lookaround_wrap = LOOKAROUND_RATE_NORMAL;
-+		tb->stability_cnt = 0;
-+	}
-+
-+	/* Look around only when the fixed rate is not set */
-+	if (is_lookaround) {
-+		tb->total_lookaround++;
-+		tb->forced_lookaround =
-+			(tb->forced_lookaround + 1) % LOOKAROUND_RATE_NORMAL;
-+		tb->last_lookaround_cycle = tb->cycle_cnt;
-+
-+		if (tb->current_lookaround_rate_attempts <
-+		    LOOKAROUND_RATE_ATTEMPTS)
-+			try_current_lookaround = true;
-+
-+		best_tp = calculate_throughput(tb, tb->best_tp.index);
-+
-+		for (lookaround_fail_count = 0;
-+		     lookaround_fail_count < LOOKAROUND_FAIL_MAX;
-+		     lookaround_fail_count++) {
-+			if (try_current_lookaround) {
-+				random_index =
-+					tb->current_lookaround_rate_index;
-+				try_current_lookaround = false;
-+			} else {
-+				random_index = get_random_u32_below(
-+					rows_from_sta_caps(&tb->caps));
-+			}
-+			random = get_rate_row(tb, random_index);
-+
-+			if (!validate_rate(tb, &random))
-+				continue;
-+
-+			if (random.rate == MMRC_MCS10)
-+				continue;
-+
-+			if (tb->table[random_index].evidence > 0)
-+				random_tp =
-+					calculate_throughput(tb, random_index);
-+			else
-+				random_tp =
-+					mmrc_calculate_theoretical_throughput(
-+						random);
-+
-+			/*
-+			 * Skip rates that can only be worse than the current
-+			 * best
-+			 */
-+			if (random_tp <= best_tp)
-+				continue;
-+
-+			/*
-+			 * Force looking up the rate no more that one MCS.
-+			 * It will avoid looking for rates with very low
-+			 * success rate. In case of better environment
-+			 * conditions MMRC will collect enough statistics to
-+			 * climb up the rates one by one.
-+			 */
-+			if (random.rate > tb->best_tp.rate + 1 ||
-+			    random.bw > tb->best_tp.bw + 1 ||
-+			    (random.rate > tb->best_tp.rate &&
-+			     random.bw > tb->best_tp.bw))
-+				continue;
-+
-+			if (tb->current_lookaround_rate_index == random_index) {
-+				tb->current_lookaround_rate_attempts++;
-+			} else {
-+				tb->current_lookaround_rate_attempts = 0;
-+				tb->current_lookaround_rate_index =
-+					random_index;
-+			}
-+
-+			break;
-+		}
-+
-+		if (lookaround_fail_count >= LOOKAROUND_FAIL_MAX) {
-+			is_lookaround = false;
-+			tb->current_lookaround_rate_index = tb->best_tp.index;
-+		} else {
-+			lookaround0 = random;
-+			lookaround1 = tb->best_tp;
-+			lookaround_index = 0;
-+			best_index = 1;
-+		}
-+	}
-+
-+	if (tb->caps.max_rates == 1) {
-+		out->rates[0] = (is_lookaround) ? lookaround0 : tb->best_tp;
-+		out->rates[1].rate = MMRC_MCS_UNUSED;
-+		out->rates[2].rate = MMRC_MCS_UNUSED;
-+		out->rates[3].rate = MMRC_MCS_UNUSED;
-+	} else if (tb->caps.max_rates == 2) {
-+		out->rates[0] = (is_lookaround) ? lookaround0 : tb->best_tp;
-+		out->rates[1] = (is_lookaround) ? lookaround1 : tb->best_prob;
-+		out->rates[2].rate = MMRC_MCS_UNUSED;
-+		out->rates[3].rate = MMRC_MCS_UNUSED;
-+	} else if (tb->caps.max_rates == 3) {
-+		out->rates[0] = (is_lookaround) ? lookaround0 : tb->best_tp;
-+		out->rates[1] = (is_lookaround) ? lookaround1 : tb->second_tp;
-+		out->rates[2] = tb->best_prob;
-+		out->rates[3].rate = MMRC_MCS_UNUSED;
-+	} else {
-+		out->rates[0] = (is_lookaround) ? lookaround0 : tb->best_tp;
-+		out->rates[1] = (is_lookaround) ? lookaround1 : tb->second_tp;
-+		out->rates[2] = tb->best_prob;
-+		out->rates[3] = tb->baseline;
-+	}
-+
-+	/* For fallback rates, set RTS/CTS */
-+	for (i = 1; i < MMRC_MAX_CHAIN_LENGTH; i++)
-+		out->rates[i].flags |= MMRC_MASK(MMRC_FLAGS_CTS_RTS);
-+
-+	/* Allocate initial attempts for rate */
-+	allocate_initial_attempts(out, &rem_time, size);
-+
-+	/* Calculate and allocate remaining attempts */
-+	calculate_remaining_attempts(tb, out, &rem_time, size);
-+
-+	/* Enforce limits on each attempts */
-+	for (i = 0; i < MMRC_MAX_CHAIN_LENGTH; i++) {
-+		if (out->rates[i].rate != MMRC_MCS_UNUSED) {
-+			out->rates[i].attempts =
-+				out->rates[i].attempts == 0 ?
-+					MMRC_ATTEMPTS_TO_BITFIELD(
-+						MMRC_MIN_CHAIN_ATTEMPTS) :
-+					out->rates[i].attempts;
-+			out->rates[i].attempts =
-+				out->rates[i].attempts >
-+						MMRC_MAX_CHAIN_ATTEMPTS ?
-+					MMRC_ATTEMPTS_TO_BITFIELD(
-+						MMRC_MAX_CHAIN_ATTEMPTS) :
-+					out->rates[i].attempts;
-+			if (i == lookaround_index &&
-+			    tb->lookaround_wrap != LOOKAROUND_RATE_INIT)
-+				out->rates[i].attempts =
-+					MMRC_ATTEMPTS_TO_BITFIELD(1);
-+		}
-+	}
++	/* Is rate control just entering unconverged state */
++	bool newly_unconverged;
 +
 +	/*
-+	 * Give the best rate at least 2 attempts to keep peak throughput
-+	 * unless it is too low
++	 * Number of rate control cycles the best rate has remained
++	 * unchanged
 +	 */
-+	if (out->rates[best_index].attempts == 1 &&
-+	    out->rates[best_index].rate > MMRC_MCS1)
-+		out->rates[best_index].attempts = MMRC_ATTEMPTS_TO_BITFIELD(2);
-+	else if (out->rates[best_index].rate <= MMRC_MCS1)
-+		out->rates[best_index].attempts = 1;
-+}
-+
-+static u32 calc_ewma_average(u32 avg, u32 latest, u32 weight)
-+{
-+	WARN_ON_ONCE(!(weight <= 100));
-+
-+	if (avg == 0)
-+		return latest;
-+
-+	return ((latest * (100 - weight)) + (avg * weight)) / 100;
-+}
-+
-+static void mmrc_process_variation(struct mmrc_table *tb, u16 current_success,
-+				   u32 index)
-+{
-+	u32 current_variation;
++	s32 best_rate_cycle_count;
 +
 +	/*
-+	 * Only process probability variation for the best rate. It is likely
-+	 * the only rate to have enough data to see the variation and its
-+	 * statistics are more affected because they are usually collected over
-+	 * the full period.
++	 * The probability table for the STA. This MUST always be the last
++	 * element in the struct.
 +	 */
-+	if (index != tb->best_tp.index)
-+		return;
-+
-+	if (current_success == 0) {
-+		if (!tb->unconverged) {
-+			/*
-+			 * Best rate is failing completely, go to unconverged
-+			 * mode
-+			 */
-+			tb->unconverged = true;
-+			tb->newly_unconverged = true;
-+		}
-+		return;
-+	}
-+
-+	if (tb->table[index].prob == 0)
-+		return;
-+
-+	/* Don't process variation while converging after association */
-+	if (tb->lookaround_wrap == LOOKAROUND_RATE_INIT)
-+		return;
-+
-+	current_variation = abs(current_success - tb->table[index].prob);
-+
-+	/* Calculate the EWMA of the probability variation */
-+	tb->probability_variation = calc_ewma_average(
-+		tb->probability_variation, current_variation, VARIATION_EWMA);
-+
-+	/*
-+	 * Process the variation direction to distinguish converged and
-+	 * unconverged scenarios
-+	 */
-+	if (tb->probability_variation >= MODERATE_VARIATION_THRESHOLD ||
-+	    tb->interference_likely) {
-+		if ((current_success - tb->table[index].prob) *
-+			    tb->probability_variation_direction <
-+		    0)
-+			tb->probability_variation_direction = 0;
-+		else if (current_success > tb->table[index].prob)
-+			tb->probability_variation_direction =
-+				min(tb->probability_variation_direction + 1,
-+				    MAX_VARIATION_DIRECTION);
-+		else if (current_success < tb->table[index].prob)
-+			tb->probability_variation_direction =
-+				max(tb->probability_variation_direction - 1,
-+				    -MAX_VARIATION_DIRECTION);
-+	}
-+
-+	if (tb->best_rate_cycle_count > VARIATION_DIRECTION_THRESHOLD &&
-+	    tb->probability_variation >= SIGNIFICANT_VARIATION_THRESHOLD) {
-+		/*
-+		 * Only enter interference mode if the best rate is stable for
-+		 * enough cycles to determine the direction is random and not
-+		 * in one direction only
-+		 */
-+		if (abs(tb->probability_variation_direction) <=
-+			    VARIATION_DIRECTION_THRESHOLD &&
-+		    !tb->interference_likely) {
-+			tb->interference_likely = true;
-+		}
-+	} else if (tb->interference_likely &&
-+		   (tb->probability_variation <= MINOR_VARIATION_THRESHOLD ||
-+		    abs(tb->probability_variation_direction) ==
-+			    MAX_VARIATION_DIRECTION)) {
-+		/*
-+		 * Exit interference mode if the variability drops or the
-+		 * direction stops being random
-+		 */
-+		tb->interference_likely = false;
-+	}
-+}
-+
-+void mmrc_update(struct mmrc_table *tb)
-+{
-+	u32 i;
-+	u16 this_success;
-+	u32 scale;
-+	u32 scaled_ewma;
-+	u32 new_stats = 0;
-+	u32 attempts_for_stats;
-+	u32 success_for_stats;
-+	u32 min_stats;
-+	u32 throughput;
-+	u32 evidence_sent;
-+
-+	tb->cycle_cnt++;
-+
-+	/* Allow less minimum stats when converging */
-+	if (tb->lookaround_wrap != LOOKAROUND_RATE_INIT)
-+		min_stats = STATS_MIN_NORMAL;
-+	else
-+		min_stats = STATS_MIN_INIT;
-+
-+	for (i = 0; i < rows_from_sta_caps(&tb->caps); i++) {
-+		/* This algorithm is keeping track of the amount of evidence,
-+		 * being packets that have been recently sent at this rate.
-+		 * This value is smoothed with an EWMA function over time and
-+		 * used to update the probability of a rate succeeding
-+		 * dynamically. This method allows MMRC to react timely if a
-+		 * new rate is used that hasn't been used recently
-+		 */
-+
-+		/* Necessary to prevent a divide by 0 */
-+		if (tb->table[i].evidence == 0)
-+			scale = 0;
-+		else
-+			scale = ((tb->table[i].evidence * 2) * 100) /
-+				((tb->table[i].sent * EVIDENCE_SCALE) +
-+				 tb->table[i].evidence);
-+
-+		/* Restrict scale to appropriate values */
-+		if (scale > 100)
-+			scale = 100;
-+
-+		scaled_ewma = scale * EWMA / 100;
-+
-+		/*
-+		 * Only count new packets for evidence if we will process
-+		 * them
-+		 */
-+		evidence_sent =
-+			tb->table[i].sent >= min_stats ? tb->table[i].sent : 0;
-+		tb->table[i].evidence = calc_ewma_average(
-+			tb->table[i].evidence, evidence_sent * EVIDENCE_SCALE,
-+			scaled_ewma);
-+
-+		if (tb->table[i].evidence > EVIDENCE_MAX)
-+			tb->table[i].evidence = EVIDENCE_MAX;
-+
-+		/* Try to use statistics from acknowledged AMPDUs first */
-+		attempts_for_stats = tb->table[i].back_mpdu_success +
-+				     tb->table[i].back_mpdu_failure;
-+		success_for_stats = tb->table[i].back_mpdu_success;
-+
-+		/*
-+		 * Use the full statistics if rates are not converged or there
-+		 * were no AMPDUs for this rate or the remaining attempts are
-+		 * less than half of what we have from AMPDUs.
-+		 */
-+		if (!tb->table[i].have_sent_ampdus || tb->unconverged ||
-+		    attempts_for_stats < AMPDU_STATS_MIN ||
-+		    (tb->table[i].sent - attempts_for_stats <
-+		     attempts_for_stats / 2)) {
-+			attempts_for_stats = tb->table[i].sent;
-+			success_for_stats = tb->table[i].sent_success;
-+		}
-+
-+		if (attempts_for_stats >= min_stats ||
-+		    (attempts_for_stats > 0 && tb->table[i].prob > 0)) {
-+			new_stats = 1;
-+			this_success =
-+				(100 * success_for_stats) / attempts_for_stats;
-+
-+			if (scaled_ewma)
-+				mmrc_process_variation(tb, this_success, i);
-+
-+			tb->table[i].prob = calc_ewma_average(
-+				tb->table[i].prob, this_success, scaled_ewma);
-+
-+			/* Clear our sent statistics and update totals */
-+			tb->table[i].total_sent += tb->table[i].sent;
-+			tb->table[i].sent = 0;
-+
-+			tb->table[i].total_success += tb->table[i].sent_success;
-+			tb->table[i].sent_success = 0;
-+
-+			tb->table[i].back_mpdu_failure = 0;
-+			tb->table[i].back_mpdu_success = 0;
-+			tb->table[i].have_sent_ampdus = false;
-+		}
-+
-+		throughput = calculate_throughput(tb, i);
-+		if (tb->table[i].max_throughput < throughput)
-+			tb->table[i].max_throughput = throughput;
-+
-+		/*
-+		 * Reset the running average windows if reached collector
-+		 * limits
-+		 */
-+		if (tb->table[i].sum_throughput > (0xFFFFFFFF - throughput)) {
-+			tb->table[i].sum_throughput /=
-+				tb->table[i].avg_throughput_counter;
-+			tb->table[i].avg_throughput_counter = 1;
-+		}
-+		/* Update the sum and counter so it will be possible later to
-+		 * calculate the running average throughput
-+		 */
-+		tb->table[i].sum_throughput += throughput;
-+		tb->table[i].avg_throughput_counter++;
-+	}
-+
-+	generate_table_priority(tb, new_stats);
-+
-+	/*
-+	 * Switch to faster lookaround mode if rates drop low at very low
-+	 * bandwidth or we are in unconverged mode. Switching at low bandwidth
-+	 * and rate is to help recover quickly from rates where we would need
-+	 * to fragment standard MTU size packets.
-+	 */
-+	if (tb->lookaround_wrap != LOOKAROUND_RATE_INIT &&
-+	    (tb->unconverged || (tb->best_tp.bw == MMRC_BW_1MHZ &&
-+				 tb->best_tp.rate <= MMRC_MCS2))) {
-+		tb->lookaround_cnt = 0;
-+		tb->lookaround_wrap = LOOKAROUND_RATE_INIT;
-+		tb->stability_cnt_threshold = STABILITY_CNT_THRESHOLD_INIT;
-+	}
-+
-+	/*
-+	 * If it is unlikely we can do the lookaround attempts in two RC cycles
-+	 * choose a new rate
-+	 */
-+	if (tb->current_lookaround_rate_attempts <=
-+	    (LOOKAROUND_RATE_ATTEMPTS / 2))
-+		tb->current_lookaround_rate_attempts = LOOKAROUND_RATE_ATTEMPTS;
-+}
-+
-+void mmrc_feedback(struct mmrc_table *tb, struct mmrc_rate_table *rates,
-+		   s32 retry_count, bool was_aggregated)
-+{
-+	s32 ind = retry_count;
-+	u32 i;
-+
-+	for (i = 0; i < MMRC_MAX_CHAIN_LENGTH; i++) {
-+		rate_update_index(tb, &rates->rates[i]);
-+		tb->table[rates->rates[i].index].have_sent_ampdus |=
-+			was_aggregated;
-+
-+		if ((s32)rates->rates[i].attempts < ind) {
-+			ind = ind - rates->rates[i].attempts;
-+			tb->table[rates->rates[i].index].sent +=
-+				rates->rates[i].attempts;
-+			if (was_aggregated) {
-+				tb->table[rates->rates[i].index]
-+					.back_mpdu_failure +=
-+					rates->rates[i].attempts;
-+			}
-+		} else {
-+			tb->table[rates->rates[i].index].sent += ind;
-+			tb->table[rates->rates[i].index].sent_success += 1;
-+			if (was_aggregated) {
-+				tb->table[rates->rates[i].index]
-+					.back_mpdu_success += 1;
-+				tb->table[rates->rates[i].index]
-+					.back_mpdu_failure +=
-+					ind > 1 ? ind - 1 : 0;
-+			}
-+			return;
-+		}
-+	}
-+}
-+
-+/*
-+ * Chooses a reasonable starting rate based on range (gathered from
-+ * RSSI measurements) or bandwidth. Then fills out the 3 retry rates
-+ * so a full set of rates is available.
-+ */
-+static void mmrc_init_rates(struct mmrc_table *tb, s8 rssi)
-+{
-+	tb->best_tp.bw = MMRC_MAX_BW(tb->caps.bandwidth);
-+	if (tb->caps.sgi_per_bw & SGI_PER_BW(tb->best_tp.bw))
-+		tb->best_tp.guard = MMRC_GUARD_TO_BITFIELD(MMRC_GUARD_SHORT);
-+	else
-+		tb->best_tp.guard = MMRC_GUARD_TO_BITFIELD(MMRC_GUARD_LONG);
-+	tb->best_tp.rate = MMRC_RATE_TO_BITFIELD(MMRC_MCS0);
-+
-+	if (rssi >= MMRC_SHORT_RANGE_RSSI_LIMIT)
-+		tb->best_tp.rate = MMRC_RATE_TO_BITFIELD(MMRC_MCS7);
-+	else if (rssi < MMRC_SHORT_RANGE_RSSI_LIMIT &&
-+		 rssi >= MMRC_MID_RANGE_RSSI_LIMIT)
-+		tb->best_tp.rate = MMRC_RATE_TO_BITFIELD(MMRC_MCS3);
-+	else if (tb->best_tp.bw == MMRC_BW_1MHZ ||
-+		 tb->best_tp.bw == MMRC_BW_2MHZ)
-+		/*
-+		 * To compensate for slow feedback when running with 1 and 2
-+		 * MHz bandwidth, we start from MCS3 which will correspond to
-+		 * reasonable feedback and will avoid resetting the rate table
-+		 * evidence.
-+		 */
-+		tb->best_tp.rate = MMRC_RATE_TO_BITFIELD(MMRC_MCS3);
-+
-+	tb->best_tp.ss = MMRC_SS_TO_BITFIELD(MMRC_SPATIAL_STREAM_1);
-+	rate_update_index(tb, &tb->best_tp);
-+	/* Init every rate in case they are needed to set the retry rates */
-+	tb->second_tp = tb->best_tp;
-+	tb->best_prob = tb->best_tp;
-+	tb->baseline = tb->best_tp;
-+	mmrc_fill_retry_rates(tb);
-+}
++	struct mmrc_stats_table table[];
++};
 +
 +void mmrc_sta_init(struct mmrc_table *tb, struct mmrc_sta_capabilities *caps,
-+		   s8 rssi)
-+{
-+	u32 i;
-+	u16 row_count = rows_from_sta_caps(caps);
++		   s8 rssi);
++size_t mmrc_memory_required_for_caps(struct mmrc_sta_capabilities *caps);
++void mmrc_get_rates(struct mmrc_table *tb, struct mmrc_rate_table *out,
++		    size_t size);
++void mmrc_feedback(struct mmrc_table *tb, struct mmrc_rate_table *rates,
++		   s32 retry_count, bool was_aggregated);
++void mmrc_update(struct mmrc_table *tb);
++bool mmrc_set_fixed_rate(struct mmrc_table *tb, struct mmrc_rate fixed_rate);
++u32 mmrc_calculate_theoretical_throughput(struct mmrc_rate rate);
++u32 mmrc_calculate_rate_tx_time(struct mmrc_rate *rate, size_t size);
 +
-+	memset(tb, 0, mmrc_memory_required_for_caps(caps));
-+	memcpy(&tb->caps, caps, sizeof(tb->caps));
-+
-+	for (i = 0; i < row_count; i++) {
-+		tb->table[i].prob = RATE_INIT_PROBABILITY;
-+		tb->table[i].evidence = 0;
-+		tb->table[i].sum_throughput = 0;
-+		tb->table[i].avg_throughput_counter = 0;
-+		tb->table[i].max_throughput = 0;
-+	}
-+
-+	tb->fixed_rate.rate = MMRC_MCS_UNUSED;
-+	tb->cycle_cnt = 0;
-+	tb->last_lookaround_cycle = 0;
-+	tb->lookaround_cnt = 0;
-+	tb->lookaround_wrap = LOOKAROUND_RATE_INIT;
-+	tb->unconverged = true;
-+	tb->newly_unconverged = true;
-+	tb->stability_cnt_threshold = STABILITY_CNT_THRESHOLD_INIT;
-+	tb->baseline = get_rate_row(tb, find_baseline_index(tb));
-+	mmrc_init_rates(tb, rssi);
-+}
-+
-+bool mmrc_set_fixed_rate(struct mmrc_table *tb, struct mmrc_rate fixed_rate)
-+{
-+	bool caps_support_rate = true;
-+
-+	/* Do not accept rate which does not support the STA capabilities */
-+	if ((MMRC_MASK(fixed_rate.rate) & tb->caps.rates) == 0 ||
-+	    (MMRC_MASK(fixed_rate.bw) & tb->caps.bandwidth) == 0 ||
-+	    (MMRC_MASK(fixed_rate.ss) & tb->caps.spatial_streams) == 0 ||
-+	    (MMRC_MASK(fixed_rate.guard) & tb->caps.guard) == 0)
-+		caps_support_rate = false;
-+
-+	if (validate_rate(tb, &fixed_rate) && caps_support_rate) {
-+		tb->fixed_rate = fixed_rate;
-+		rate_update_index(tb, &tb->fixed_rate);
-+		return true;
-+	}
-+
-+	return false;
-+}
++#endif /* _MMRC_H_ */
 -- 
 2.43.0
 
