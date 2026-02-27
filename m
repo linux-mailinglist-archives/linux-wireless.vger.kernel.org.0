@@ -1,82 +1,82 @@
-Return-Path: <linux-wireless+bounces-32243-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-32244-lists+linux-wireless=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id WAsMNicaoWlhqQQAu9opvQ
-	(envelope-from <linux-wireless+bounces-32243-lists+linux-wireless=lfdr.de@vger.kernel.org>)
-	for <lists+linux-wireless@lfdr.de>; Fri, 27 Feb 2026 05:14:31 +0100
+	id 6J0UKVYaoWlhqQQAu9opvQ
+	(envelope-from <linux-wireless+bounces-32244-lists+linux-wireless=lfdr.de@vger.kernel.org>)
+	for <lists+linux-wireless@lfdr.de>; Fri, 27 Feb 2026 05:15:18 +0100
 X-Original-To: lists+linux-wireless@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 85BFA1B28DE
-	for <lists+linux-wireless@lfdr.de>; Fri, 27 Feb 2026 05:14:31 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0A3D71B28FB
+	for <lists+linux-wireless@lfdr.de>; Fri, 27 Feb 2026 05:15:18 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 65CE23169AB5
-	for <lists+linux-wireless@lfdr.de>; Fri, 27 Feb 2026 04:12:11 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 84DFE317D931
+	for <lists+linux-wireless@lfdr.de>; Fri, 27 Feb 2026 04:12:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6B904345CA1;
-	Fri, 27 Feb 2026 04:12:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5935B345731;
+	Fri, 27 Feb 2026 04:12:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=morsemicro-com.20230601.gappssmtp.com header.i=@morsemicro-com.20230601.gappssmtp.com header.b="sT6LeXAh"
+	dkim=pass (2048-bit key) header.d=morsemicro-com.20230601.gappssmtp.com header.i=@morsemicro-com.20230601.gappssmtp.com header.b="3f2dQOtS"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-pl1-f172.google.com (mail-pl1-f172.google.com [209.85.214.172])
+Received: from mail-pl1-f169.google.com (mail-pl1-f169.google.com [209.85.214.169])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 06AE2346760
-	for <linux-wireless@vger.kernel.org>; Fri, 27 Feb 2026 04:12:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.172
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1A2CE345740
+	for <linux-wireless@vger.kernel.org>; Fri, 27 Feb 2026 04:12:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.169
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772165530; cv=none; b=NNRLrKCurX8QVQvHSX3tneEttQraWTCdm2Ta4yuLDVESdyI4RMfGpHLeyNQQliUKuM36Wovo4DY7Jxv3jloiNzGN2fhaXFzS3j9o5YB87658VR7gS8AxZgken7YC97MQeXIPslE+XKKQioUTYdv5cye6hNJNK1EbtStQAWDXN1g=
+	t=1772165536; cv=none; b=ArC2nLwFA9QEMlCR7M7//eVzLfJWFUSrzu/kgFq1vxpEwZ8Kz0AVW5tCjUgzSTz6lMLZSx7gmlsGciOfODK1OiMadddPbLj8hDe3gB4U8Bkh0ZJK4VLn/anz2M9KcYDqU8lkNWkiYii/0lY5L+vIEiYmu653ud9kDIFXWExACOg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772165530; c=relaxed/simple;
-	bh=AfFojZTD1Xr7koan/o3B8JJTER7itgnPO1Kc0nwJjYU=;
+	s=arc-20240116; t=1772165536; c=relaxed/simple;
+	bh=PfaE2oykh63PRByo/98BnFbDnWqOF+gJJ/6JbYmDqZk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Mu3fbXUTRVCh+bweaSMuKdgnhR+Av7FwZ28cUqipZOCV+DU/Dh1+55UyN9p078YCDEapWaOpTcOK/hcquMkwxU7vGadMmkQu07uThGB9cMeIat164TOZqUHv35bt9zST7bpL1GPEuFjpX6kli50VK21dXls5FemUU13QJfzZ4SA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=morsemicro.com; spf=pass smtp.mailfrom=morsemicro.com; dkim=pass (2048-bit key) header.d=morsemicro-com.20230601.gappssmtp.com header.i=@morsemicro-com.20230601.gappssmtp.com header.b=sT6LeXAh; arc=none smtp.client-ip=209.85.214.172
+	 MIME-Version; b=rVgpzR0Gs4879wHfOdOyBqnJTpBafbJDxqd9tcq+23eowEBTg3lQBNk9QSorDAe/bVQpX2t/644KZwxo7xxYOs3PhR5TYeh02INmhwdQivx/cfM8sQwbNPq271lwBy974js9ypfJYKjA9CLMGG+pSQY3uH7uPo2upgEa8J0i63E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=morsemicro.com; spf=pass smtp.mailfrom=morsemicro.com; dkim=pass (2048-bit key) header.d=morsemicro-com.20230601.gappssmtp.com header.i=@morsemicro-com.20230601.gappssmtp.com header.b=3f2dQOtS; arc=none smtp.client-ip=209.85.214.169
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=morsemicro.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=morsemicro.com
-Received: by mail-pl1-f172.google.com with SMTP id d9443c01a7336-2aadc18f230so10449005ad.3
-        for <linux-wireless@vger.kernel.org>; Thu, 26 Feb 2026 20:12:08 -0800 (PST)
+Received: by mail-pl1-f169.google.com with SMTP id d9443c01a7336-2aad1bb5058so15291245ad.0
+        for <linux-wireless@vger.kernel.org>; Thu, 26 Feb 2026 20:12:14 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=morsemicro-com.20230601.gappssmtp.com; s=20230601; t=1772165528; x=1772770328; darn=vger.kernel.org;
+        d=morsemicro-com.20230601.gappssmtp.com; s=20230601; t=1772165534; x=1772770334; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=7lJyXPCVkDkCgM3QxVgeEIYgT0nrdocKVqL44vq3geA=;
-        b=sT6LeXAhmkpr5wtmsTJ4b5Yl7hN52NO3PMlsf4WcVg+nWJOMP7Cexyh1oHUNdaDffq
-         p9av+X9BkSHYMUDPj95B3aNb+wH5Uw66yZ9D9dT2IoWBhETdVN1HcgLxR0POE3t8D28x
-         heHhrsWTbxflVje1nRnpS1UYlaOIytufiLVyzOBXmJU37Y/yLHWvh8A50V0rsCrkvzMQ
-         sWmHIaRyZcu5jk80DU9KHD3MJwG1/k/9UoXu5Xcl8UCfzXKiSzwQrAITjKj/6YIq90Om
-         QkFObq/qfehZ5AfFRR2Q7tYSs+MzlW/jkLozJ5ie11ti4JqLPkhYbnGX49RcjGUyMGbR
-         esVg==
+        bh=ybBEY3wHcU2hbqLjENyuhDp73IxC8jpoAT1ZAaW6Ou0=;
+        b=3f2dQOtSjXqtk/4As0R9N2x9aIckSHzBYmJz1FTtcfTs4YEEf7BWLpGmpuo/QiE/W1
+         uZHxxEnGO7F0RknpbtkGJ2VNtY7CK8g0OwyQ2yWvuA0aYNL38ohjZD2w3J4QQ2A6z1y4
+         B6gRZ8NmeXVDhZWU4l0t3XnQ7GmhXKhufpRdDmhCAZz3KBpwIUXs9G7/Ut4rIsNfiE2q
+         du/xehBQcrPoY67xoki32D8h7FUnfb8ZB4F87hMU7kWryRXT3l/SAWcoZzDTwY/dd3Kd
+         FGm/GLqkhc39wxs1I5KznZnqD934owHeWgGg/2/7p8UmoQdcAp+rYz3TpqnEj05nxqyF
+         W7aA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1772165528; x=1772770328;
+        d=1e100.net; s=20230601; t=1772165534; x=1772770334;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to;
-        bh=7lJyXPCVkDkCgM3QxVgeEIYgT0nrdocKVqL44vq3geA=;
-        b=Ftyld1hFC6Wk33ugfhmoD+8nz/sSIvv8x5O960ARpJJXLTWjQFfICgwR95/5Zg6LdF
-         rqr0RttAy2YWkjQYfekypmtX9+6N9BldySpJElQnPxYj1jsIoEfg5ORvxggVGFtT9EXe
-         YaKdUUDqj34ULxFVzP1GgAr2OxdePmuR6WRSzSNXo3QUjZv9Gm4yOjqAID9YiQGsciOG
-         2t/H6j8rPJBlumtTJI9LDO6WnfpJK3poS7QCU8Xg/5ObTpSI/oks7urLKZPZk+HYrTER
-         VSoDYLydCEPRpg1qdMtSbcfIXwByUbSP88IgxC71lI57KbbbFcGESTI5z7BYf1aCaOpy
-         CBHg==
-X-Forwarded-Encrypted: i=1; AJvYcCWZPidEto+5Jv484ZJLB6tylPLJ6f4gAvGTXDvHDC4guG8J4vNTwQW3XhqUGMcSH7/v3oF72N/W2o2gD40K7Q==@vger.kernel.org
-X-Gm-Message-State: AOJu0YxO+0m/aI0emEivGlIbb90MOB7b/PmxTiI7lCqt0F4AQOjSPV04
-	QC2SYbLpA8BSViGXnr+Myd0yYziiv/Niz0Po1OwMeiLjyL05aiFNfFRmEItVCGYKr8Q=
-X-Gm-Gg: ATEYQzwVwPxuJWuTW6zR2JC7H0d2QWKrktiP3m2JCkmfy7tJTzdvBKHlbdadnM9wcyI
-	HuKc0W3qztlAotEJ5wy3wXy0Q9PCogTH6h8UpoI3c4YVEpOR57UU9xLsCnYER2lcYhQMMP2LIVE
-	dSuWA9zdhfofWh09oiy03P/DHtdjZABK7UFEQKauV31E7ZPelXxxki7EpuHwYu7l7PjeaiFK3+4
-	40E/rUFQr4b681YHz2/UA8tKCuBUgGpg0vNvLFO+gYAWqgd+LSApktIML9kJ/Kc5GLKiFOkAbm0
-	GFo5bPr1snj0XA9vwYceWVJ98ozC/jFYDpVjBDXHyMEn4e8EYsncN2uavBlLmSK6/gOmJiVz8Rx
-	rVae8CBBaeT7VRlaVuTyqHhfw8fOs5iSBlOCv3giNz8EoRWdyVstvJWgkRiwLA0/oKdRFbm22NP
-	Mxvfd8wL8yXPWiUxYTvMhij0lHLT3GEDF1Q8QyFjGTRBV+98sq8WKoKVQJPZVn6IR7n9PfB4DsT
-	jMFZatU+8ZVp5Ntpueu7bxzN/OwcZa1aHB8nBh4qQ==
-X-Received: by 2002:a17:902:d54a:b0:2ad:bd4c:a0 with SMTP id d9443c01a7336-2ae2e4bba1fmr13947415ad.47.1772165528286;
-        Thu, 26 Feb 2026 20:12:08 -0800 (PST)
+        bh=ybBEY3wHcU2hbqLjENyuhDp73IxC8jpoAT1ZAaW6Ou0=;
+        b=dDSD+ZjHoWhSzs9uLDR5Nqfj0zASQ0HxYFJNpLklME6Y89f1y/tkBeCwLqqKhrGuYr
+         N6mWzOGd4ok+5PMOKnFph3IzwI96A3uUBJ5+wXYd4Ix499Pzxr7LFB1UuKnQ2moZKDst
+         U5odmbqDfQuWgQoVG+TurC3ERushpk6JOVNoXI/5XCkiS54a2gLF3/CZ4tB8Y9GAlxiK
+         BwfG27KxQwJFCxe8Ro/x6UKt3hIdlGP37sxMWrOr+AlchqlQNp7oOct3xRgK2cYcq7cu
+         o3IU725IminhXYiANF6KUT9JNU5bRZ5AzN6NdOEhHTwi/dFyhbba+qyOeFMzC68DDqtc
+         4CNQ==
+X-Forwarded-Encrypted: i=1; AJvYcCWoyTNqyjTwf65105rgKymFvR25fhP1BJelb3+aKVb9d7/vt4fkBG6p7j6bpGBDptLwx6OlQjUGUz/Of8vumQ==@vger.kernel.org
+X-Gm-Message-State: AOJu0YxjpsnAPTtFRnDHFysqCbk6XV8BcUvJByPaZOHik32XrscSGXbV
+	vJOanTwQxo/yI4zkghsJLxRqL+U4XB0ydjbHvLH2QF7P8g5DuPMY+JLIckMw5zQNZBU=
+X-Gm-Gg: ATEYQzypL11O4hHV2sg8PLP7DaIm15VIN7GRZ3Zl1tvmxy3iwJKb1tFgm3nI2h89s7A
+	5UEXww5fDRs/QYm8pay9HXSRwZc9Gd9W0dNYTptdGhYbUwHkYZ0n5TtqXztQcncKCGvtYdCyU4V
+	V7RhvuUkWIdQ460jbjnDk42a8VxaXl99Aw2iSEQUX2Sjv8Tn4ayX78K0r6RWfSOMU0xLKXfA8Bc
+	1UV87BNw6IM5Uzjfw/yY5psS8bdMO7oFl9mDKd9x92pwYEYKle26r4tZeEJtLvgRZmeBDcesGXe
+	H0UbGEuBuitVqtQGWmiwOWp08l0aNva8FFqFP4PXrvJ+AdMHpxyUi80kKqvV3j6XWjfzU6fUKDc
+	pZcggJ9O0A2KSPQCy0OOt+QBW8ypYN/s7zy8L3AT2VvSvq8SikuCa4SCEeuG3lDRXiuaBJX6LT3
+	+ClSImXswiFwitvmq2ONQ76X0Mbzqy9qEebX2mQ8is1ygwOK4IWXtweDzTae4PFAqvFnvIA+WNY
+	wNFrxCcDZPrjeeR+7oi+zvWADZdWt8=
+X-Received: by 2002:a17:902:d2c1:b0:2ad:9edf:7fe5 with SMTP id d9443c01a7336-2ae2e4bce9dmr15815265ad.42.1772165534450;
+        Thu, 26 Feb 2026 20:12:14 -0800 (PST)
 Received: from mma-H9MHD44.lan (60-242-93-14.static.tpgi.com.au. [60.242.93.14])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2adfb6ba5eesm41682865ad.68.2026.02.26.20.12.03
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2adfb6ba5eesm41682865ad.68.2026.02.26.20.12.09
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 26 Feb 2026 20:12:08 -0800 (PST)
+        Thu, 26 Feb 2026 20:12:14 -0800 (PST)
 From: Lachlan Hodges <lachlan.hodges@morsemicro.com>
 To: johannes@sipsolutions.net,
 	Lachlan Hodges <lachlan.hodges@morsemicro.com>,
@@ -85,9 +85,9 @@ To: johannes@sipsolutions.net,
 Cc: ayman.grais@morsemicro.com,
 	linux-wireless@vger.kernel.org,
 	linux-kernel@vger.kernel.org
-Subject: [PATCH wireless-next 04/35] wifi: mm81x: add command.h
-Date: Fri, 27 Feb 2026 15:10:14 +1100
-Message-ID: <20260227041108.66508-5-lachlan.hodges@morsemicro.com>
+Subject: [PATCH wireless-next 05/35] wifi: mm81x: add core.c
+Date: Fri, 27 Feb 2026 15:10:15 +1100
+Message-ID: <20260227041108.66508-6-lachlan.hodges@morsemicro.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20260227041108.66508-1-lachlan.hodges@morsemicro.com>
 References: <20260227041108.66508-1-lachlan.hodges@morsemicro.com>
@@ -113,7 +113,7 @@ X-Spamd-Result: default: False [-0.06 / 15.00];
 	DKIM_TRACE(0.00)[morsemicro-com.20230601.gappssmtp.com:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-32243-lists,linux-wireless=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-32244-lists,linux-wireless=lfdr.de];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TO_DN_SOME(0.00)[];
@@ -126,7 +126,7 @@ X-Spamd-Result: default: False [-0.06 / 15.00];
 	NEURAL_HAM(-0.00)[-1.000];
 	TAGGED_RCPT(0.00)[linux-wireless];
 	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,morsemicro.com:mid,morsemicro.com:email,morsemicro-com.20230601.gappssmtp.com:dkim]
-X-Rspamd-Queue-Id: 85BFA1B28DE
+X-Rspamd-Queue-Id: 0A3D71B28FB
 X-Rspamd-Action: no action
 
 (Patches split per file for review, see cover letter for more
@@ -134,100 +134,173 @@ information)
 
 Signed-off-by: Lachlan Hodges <lachlan.hodges@morsemicro.com>
 ---
- .../net/wireless/morsemicro/mm81x/command.h   | 84 +++++++++++++++++++
- 1 file changed, 84 insertions(+)
- create mode 100644 drivers/net/wireless/morsemicro/mm81x/command.h
+ drivers/net/wireless/morsemicro/mm81x/core.c | 157 +++++++++++++++++++
+ 1 file changed, 157 insertions(+)
+ create mode 100644 drivers/net/wireless/morsemicro/mm81x/core.c
 
-diff --git a/drivers/net/wireless/morsemicro/mm81x/command.h b/drivers/net/wireless/morsemicro/mm81x/command.h
+diff --git a/drivers/net/wireless/morsemicro/mm81x/core.c b/drivers/net/wireless/morsemicro/mm81x/core.c
 new file mode 100644
-index 000000000000..67c4f6962e85
+index 000000000000..1bcb9b5a00c9
 --- /dev/null
-+++ b/drivers/net/wireless/morsemicro/mm81x/command.h
-@@ -0,0 +1,84 @@
-+/* SPDX-License-Identifier: GPL-2.0-only */
++++ b/drivers/net/wireless/morsemicro/mm81x/core.c
+@@ -0,0 +1,157 @@
++// SPDX-License-Identifier: GPL-2.0-only
 +/*
 + * Copyright (c) 2017-2026 Morse Micro
 + */
-+
-+#ifndef _MM81X_COMMAND_H_
-+#define _MM81X_COMMAND_H_
-+
-+#include <linux/skbuff.h>
-+#include <linux/workqueue.h>
++#include <linux/module.h>
 +#include "core.h"
-+#include "command_defs.h"
++#include "debug.h"
++#include "bus.h"
++#include "hif.h"
 +
-+#define HOST_CMD_IS_REQ(cmd) (le16_to_cpu((cmd)->hdr.flags) & HOST_CMD_TYPE_REQ)
-+#define HOST_CMD_IS_RESP(cmd) \
-+	(le16_to_cpu((cmd)->hdr.flags) & HOST_CMD_TYPE_RESP)
-+#define HOST_CMD_IS_EVT(cmd) (le16_to_cpu((cmd)->hdr.flags) & HOST_CMD_TYPE_EVT)
++unsigned int mm81x_debug_mask;
++module_param_named(debug_mask, mm81x_debug_mask, uint, 0644);
++MODULE_PARM_DESC(debug_mask, "mm81x debug mask");
 +
-+struct mm81x_queue_params;
++char board_config_file[BCF_SIZE_MAX] = "";
++module_param_string(bcf, board_config_file, sizeof(board_config_file), 0644);
++MODULE_PARM_DESC(bcf, "BCF filename to load");
 +
-+enum mm81x_cmd_return_code {
-+	MM81X_RET_SUCCESS = 0,
-+	MM81X_RET_EPERM = -1,
-+	MM81X_RET_ENOMEM = -12,
-+	MM81X_RET_CMD_NOT_HANDLED = -32757,
-+};
++int mm81x_core_attach_regs(struct mm81x *mm)
++{
++	int ret = 0;
 +
-+#define HOST_CMD_HOST_ID_SEQ_MAX 0xFFF
-+#define HOST_CMD_HOST_ID_RETRY_MASK 0x000F
-+#define HOST_CMD_HOST_ID_SEQ_SHIFT 4
-+#define HOST_CMD_HOST_ID_SEQ_MASK 0xFFF0
++	mm81x_claim_bus(mm);
++	ret = mm81x_reg32_read(mm, MM8108_REG_CHIP_ID, &mm->chip_id);
++	mm81x_release_bus(mm);
 +
-+struct host_cmd_req {
-+	struct host_cmd_header hdr;
-+	u8 data[];
-+} __packed;
++	if (ret < 0) {
++		mm81x_err(mm, "failed to read chip id %d", ret);
++		return ret;
++	}
 +
-+struct host_cmd_resp {
-+	struct host_cmd_header hdr;
-+	__le32 status;
-+	u8 data[];
-+} __packed;
++	switch (mm->chip_id) {
++	case (MM8108B2_ID):
++		mm->regs = &mm8108_regs;
++		mm->hif.ops = &mm81x_yaps_ops;
++		break;
++	default:
++		return -ENODEV;
++	}
 +
-+struct host_cmd_event {
-+	struct host_cmd_header hdr;
-+	u8 data[];
-+} __packed;
++	return ret;
++}
 +
-+int mm81x_cmd_resp_process(struct mm81x *mm, struct sk_buff *skb);
-+int mm81x_cmd_add_if(struct mm81x *mm, u16 *vif_id, const u8 *addr,
-+		     enum nl80211_iftype type);
-+int mm81x_cmd_get_capabilities(struct mm81x *mm, u16 vif_id,
-+			       struct mm81x_fw_caps *capabilities);
-+int mm81x_cmd_cfg_qos(struct mm81x *mm, struct mm81x_queue_params *params);
-+int mm81x_cmd_config_beacon_timer(struct mm81x *mm, void *mm81x_vif,
-+				  bool enabled);
-+int mm81x_cmd_cfg_bss(struct mm81x *mm, u16 vif_id, u16 beacon_int,
-+		      u16 dtim_period, u32 cssid);
-+int mm81x_cmd_set_channel(struct mm81x *mm, u32 op_chan_freq_hz,
-+			  u8 pri_1mhz_chan_idx, u8 op_bw_mhz, u8 pri_bw_mhz,
-+			  s32 *power_mbm);
-+int mm81x_cmd_get_max_txpower(struct mm81x *mm, s32 *out_power_mbm);
-+int mm81x_cmd_set_txpower(struct mm81x *mm, s32 *out_power_mbm,
-+			  int txpower_mbm);
-+int mm81x_cmd_hw_scan(struct mm81x *mm, struct mm81x_hw_scan_params *params,
-+		      bool store);
-+int mm81x_cmd_set_ps(struct mm81x *mm, bool enabled);
-+int mm81x_cmd_cfg_multicast_filter(struct mm81x *mm, struct mm81x_vif *mm_vif);
-+int mm81x_cmd_sta_state(struct mm81x *mm, struct mm81x_vif *mm_vif, u16 aid,
-+			struct ieee80211_sta *sta,
-+			enum ieee80211_sta_state state);
-+int mm81x_cmd_install_key(struct mm81x *mm, struct mm81x_vif *mm_vif, u16 aid,
-+			  struct ieee80211_key_conf *key,
-+			  enum host_cmd_key_cipher cipher,
-+			  enum host_cmd_aes_key_len length);
-+int mm81x_cmd_disable_key(struct mm81x *mm, struct mm81x_vif *mm_vif, u16 aid,
-+			  struct ieee80211_key_conf *key);
-+int mm81x_cmd_rm_if(struct mm81x *mm, u16 vif_id);
-+int mm81x_cmd_set_frag_threshold(struct mm81x *mm, u32 frag_threshold);
-+int mm81x_cmd_get_disabled_channels(
-+	struct mm81x *mm, struct host_cmd_resp_get_disabled_channels *resp,
-+	uint resp_len);
++static char *mm81x_core_get_revision_string(u32 chip_id)
++{
++	u8 chip_rev = MM81X_DEVICE_GET_CHIP_REV(chip_id);
 +
-+#endif /* !_MM81X_COMMAND_H_ */
++	switch (chip_rev) {
++	case MM8108B2_REV:
++		return MM8108B2_REV_STRING;
++	default:
++		return "??";
++	}
++}
++
++void mm81x_core_init_mac_addr(struct mm81x *mm)
++{
++	int ret = mm81x_hw_otp_get_mac_addr(mm);
++
++	if (ret || !is_valid_ether_addr(mm->macaddr))
++		eth_random_addr(mm->macaddr);
++}
++
++char *mm81x_core_get_fw_path(u32 chip_id)
++{
++	return kasprintf(GFP_KERNEL,
++			 MM81X_FW_DIR "/" MM8108_FW_BASE
++				      "%s" FW_ROM_LINKED_STRING MM81X_FW_EXT,
++			 mm81x_core_get_revision_string(chip_id));
++}
++
++int mm81x_core_create(struct mm81x *mm)
++{
++	int ret;
++
++	set_bit(MM81X_STATE_CHIP_UNRESPONSIVE, &mm->state_flags);
++	set_bit(MM81X_STATE_RELOAD_FW_AFTER_START, &mm->state_flags);
++
++	mm->chip_wq = create_singlethread_workqueue("chip_wq");
++	if (!mm->chip_wq) {
++		mm81x_err(mm, "create_singlethread_workqueue failed");
++		return -ENOMEM;
++	}
++
++	mm->net_wq = create_singlethread_workqueue("net_wq");
++	if (!mm->net_wq) {
++		mm81x_err(mm, "create_singlethread_workqueue failed");
++		ret = -ENOMEM;
++		goto err_chip_wq;
++	}
++
++	ret = mm81x_hif_init(mm);
++	if (ret) {
++		mm81x_err(mm, "mm81x_hif_init failed: %d", ret);
++		goto err_wqs;
++	}
++
++	return 0;
++
++err_wqs:
++	flush_workqueue(mm->net_wq);
++	destroy_workqueue(mm->net_wq);
++
++err_chip_wq:
++	flush_workqueue(mm->chip_wq);
++	destroy_workqueue(mm->chip_wq);
++
++	return ret;
++}
++
++void mm81x_core_destroy(struct mm81x *mm)
++{
++	mm81x_hif_finish(mm);
++	flush_workqueue(mm->net_wq);
++	destroy_workqueue(mm->net_wq);
++	flush_workqueue(mm->chip_wq);
++	destroy_workqueue(mm->chip_wq);
++}
++
++static int __init mm81x_init(void)
++{
++	int ret = 0;
++
++	pr_info("Morse Micro mm81x driver registration. Version %s\n",
++		DRV_VERSION);
++
++#ifdef CONFIG_MM81X_USB
++	ret = mm81x_usb_init();
++	if (ret)
++		pr_err("mm81x_usb_init() failed: %d\n", ret);
++#endif
++#ifdef CONFIG_MM81X_SDIO
++	ret = mm81x_sdio_init();
++	if (ret)
++		pr_err("mm81x_sdio_init() failed: %d\n", ret);
++#endif
++
++	return ret;
++}
++
++static void __exit mm81x_exit(void)
++{
++#ifdef CONFIG_MM81X_USB
++	mm81x_usb_exit();
++#endif
++#ifdef CONFIG_MM81X_SDIO
++	mm81x_sdio_exit();
++#endif
++}
++
++module_init(mm81x_init);
++module_exit(mm81x_exit);
++
++MODULE_AUTHOR("Morse Micro");
++MODULE_DESCRIPTION("Driver support for Morse Micro MM81X SDIO/USB devices");
++MODULE_LICENSE("Dual BSD/GPL");
++MODULE_VERSION("1.0");
 -- 
 2.43.0
 
