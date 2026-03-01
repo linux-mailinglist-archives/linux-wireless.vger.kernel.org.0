@@ -1,48 +1,48 @@
-Return-Path: <linux-wireless+bounces-32320-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-32321-lists+linux-wireless=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id WGNkF++bo2k3IQUAu9opvQ
-	(envelope-from <linux-wireless+bounces-32320-lists+linux-wireless=lfdr.de@vger.kernel.org>)
-	for <lists+linux-wireless@lfdr.de>; Sun, 01 Mar 2026 02:52:47 +0100
+	id uIMDESOeo2k3IQUAu9opvQ
+	(envelope-from <linux-wireless+bounces-32321-lists+linux-wireless=lfdr.de@vger.kernel.org>)
+	for <lists+linux-wireless@lfdr.de>; Sun, 01 Mar 2026 03:02:11 +0100
 X-Original-To: lists+linux-wireless@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id CD0621CC18C
-	for <lists+linux-wireless@lfdr.de>; Sun, 01 Mar 2026 02:52:46 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id B58A71CCAAE
+	for <lists+linux-wireless@lfdr.de>; Sun, 01 Mar 2026 03:02:10 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 7DD53307753B
-	for <lists+linux-wireless@lfdr.de>; Sun,  1 Mar 2026 01:48:04 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id BDD67311A85B
+	for <lists+linux-wireless@lfdr.de>; Sun,  1 Mar 2026 01:56:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5218B2EE5FD;
-	Sun,  1 Mar 2026 01:47:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D18192F4A18;
+	Sun,  1 Mar 2026 01:55:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="gMXetGFU"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="WmarwLhG"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2C4F7244670;
-	Sun,  1 Mar 2026 01:47:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AE0302D6407;
+	Sun,  1 Mar 2026 01:55:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772329652; cv=none; b=CS38KxwqqiXtfIujiRC3WnI1EbjkndTdiVZFNrvWoKsKYKZzCOxuR5X7TBtoyxF7Sit619HcH3GEf7X60Gjf/aJbWIVJEmPV8ZdWYp8i57Bf2PHqvAQXspqo3sLN4cLCttudrwEJiiHMyfNU3BP8YV7OBK92SSCYsNdp8x+78c4=
+	t=1772330141; cv=none; b=XSbYdIA5VvVVK1nuddUNpUvNgjNDLvRjUgzyp1uBezJiGFUrvzBbRihCvFPKrXpUc2W7RkZ+gl8zohZcNEvNjSarMMRbaheZ4dTE0XZfRsJQK/65JDozq+DqFaYorG3YroK9iq1L1uJDPaRSqUPJrfccZ9Dx9Kr0Ecjrwnt5gDM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772329652; c=relaxed/simple;
-	bh=1vvdGwV6/iaY6fwdiAj4QL+taqX3w07IyiPraPIL2X4=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=juJ1pS6aR+6++hVWtczs75bQCwH1qJEmPxXRh+CoKw9biKQwtn826qXj7jC0WGgTrJTO9cOlqHhnJaq3qdWaWPROFXg+EUaOW1x7s5jTU2b+ITXGcBt4cdmTLulZpoyW3Di3MciVnY6hbwyKmKHgj+UHVv7N8Bce0XhU/mTZ5EI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=gMXetGFU; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 33D8CC19421;
-	Sun,  1 Mar 2026 01:47:31 +0000 (UTC)
+	s=arc-20240116; t=1772330141; c=relaxed/simple;
+	bh=EVBcl/sC5fLFNg0p5i5KgIdHfSMMJfUfmmYFLj/VAK4=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=IxN5LMda0aSsGLJxNa1Weso7uCC/JUDk+y9iToREahiEWa76W/+4avxfwD8FVW5GuhjRwQ6REjjJMPD/VxAlvnMYVgXYCIFdPbew3fixObjHxAn8471sHAzoB4FabF+3W34nF+fzc+F5NH5sdzL+0pgUKhLglKXq9J8/OadjZs0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=WmarwLhG; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BC48EC19424;
+	Sun,  1 Mar 2026 01:55:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1772329652;
-	bh=1vvdGwV6/iaY6fwdiAj4QL+taqX3w07IyiPraPIL2X4=;
+	s=k20201202; t=1772330141;
+	bh=EVBcl/sC5fLFNg0p5i5KgIdHfSMMJfUfmmYFLj/VAK4=;
 	h=From:To:Cc:Subject:Date:From;
-	b=gMXetGFUty1i9uqnmxwmP9J89ruMmOgjroEUVKVC/5RrCW19FleIuRcWYacFCx2+A
-	 DADrSmsFcSwmqyMbegASsV6elJrfvAYx8DqE2IjumreT7ftqQgM4lCir8pEB3VL6Pf
-	 Z6/7t/JlQ2HZvh377IbFDOvTD3wGWJpqYOqz83EVBR64/KbLw1Bp8JDXKeDvrT8EoZ
-	 FDjIrtqZtk6b+QiQjOotLWFfL3T+ZER2hKhqK4dThDfaV3D4EL+3OO95siYIs2u/Cg
-	 QxByfap624n1Pt0XPQrmVhXNK7ecIwvohey3htBCMvqSfwWGSX/aGooX3GAkDyoXR+
-	 6mYx0eW5cfJOQ==
+	b=WmarwLhG+tNhuv7lCj8bA/8RRLK12ZRmXv3VEVYc9u1I+QByU1pRc3jCDAIuq+W2/
+	 aqZfnDKvHdX6eswfRFYMm2whewTydTtCZQKi5/zatNHwlInZ5B7WiwwjtozPvnNg4a
+	 R2ZAQGyvdHxA9lzjTY5saaEwpKQUcQyqboN1fx4+9UOWWzfF5jl6RvC+BXSxNRwJhE
+	 wv6T47TdAPRqQJdBYZkTgLsAt9EkCog8z0iTyjnj8qnwU6OVkUOuvvBh8WWqR1ePup
+	 UF8rB5ylnBBbqq6f+BWW7m50g4BBI8qoCZaCZ+mXIvbeyo8gFdU+RPerYtqJq0U07X
+	 RvamCkv8T4aQg==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org,
 	enelsonmoore@gmail.com
@@ -52,9 +52,9 @@ Cc: Johannes Berg <johannes@sipsolutions.net>,
 	intel-wired-lan@lists.osuosl.org,
 	netdev@vger.kernel.org,
 	linux-wireless@vger.kernel.org
-Subject: FAILED: Patch "net: intel: fix PCI device ID conflict between i40e and ipw2200" failed to apply to 6.1-stable tree
-Date: Sat, 28 Feb 2026 20:47:29 -0500
-Message-ID: <20260301014730.1711449-1-sashal@kernel.org>
+Subject: FAILED: Patch "net: intel: fix PCI device ID conflict between i40e and ipw2200" failed to apply to 5.15-stable tree
+Date: Sat, 28 Feb 2026 20:55:39 -0500
+Message-ID: <20260301015539.1722955-1-sashal@kernel.org>
 X-Mailer: git-send-email 2.51.0
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
@@ -72,18 +72,18 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
 	R_MISSING_CHARSET(0.50)[];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-32320-lists,linux-wireless=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-32321-lists,linux-wireless=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	FREEMAIL_TO(0.00)[vger.kernel.org,gmail.com];
 	RCVD_TLS_LAST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	DKIM_TRACE(0.00)[kernel.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
 	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,linux-wireless@vger.kernel.org];
@@ -93,11 +93,11 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	TAGGED_RCPT(0.00)[linux-wireless];
 	RCPT_COUNT_SEVEN(0.00)[8];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:email,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,msgid.link:url,sipsolutions.net:email]
-X-Rspamd-Queue-Id: CD0621CC18C
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sipsolutions.net:email,intel.com:email,msgid.link:url,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: B58A71CCAAE
 X-Rspamd-Action: no action
 
-The patch below does not apply to the 6.1-stable tree.
+The patch below does not apply to the 5.15-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
