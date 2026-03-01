@@ -1,77 +1,77 @@
-Return-Path: <linux-wireless+bounces-32326-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-32327-lists+linux-wireless=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id aIJcEJFMpGkZdAUAu9opvQ
-	(envelope-from <linux-wireless+bounces-32326-lists+linux-wireless=lfdr.de@vger.kernel.org>)
-	for <lists+linux-wireless@lfdr.de>; Sun, 01 Mar 2026 15:26:25 +0100
+	id HLOcDm1dpGmKewUAu9opvQ
+	(envelope-from <linux-wireless+bounces-32327-lists+linux-wireless=lfdr.de@vger.kernel.org>)
+	for <lists+linux-wireless@lfdr.de>; Sun, 01 Mar 2026 16:38:21 +0100
 X-Original-To: lists+linux-wireless@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7CAEC1D032C
-	for <lists+linux-wireless@lfdr.de>; Sun, 01 Mar 2026 15:26:24 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 816AD1D073C
+	for <lists+linux-wireless@lfdr.de>; Sun, 01 Mar 2026 16:38:20 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 250C1300E24D
-	for <lists+linux-wireless@lfdr.de>; Sun,  1 Mar 2026 14:26:16 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id E34E9300C021
+	for <lists+linux-wireless@lfdr.de>; Sun,  1 Mar 2026 15:38:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C18D431716E;
-	Sun,  1 Mar 2026 14:26:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CCA92221723;
+	Sun,  1 Mar 2026 15:38:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="JdKR0J/a"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="E6DndQNW"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.7])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.11])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 524A233066D
-	for <linux-wireless@vger.kernel.org>; Sun,  1 Mar 2026 14:26:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.7
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 68EBA1C1F02
+	for <linux-wireless@vger.kernel.org>; Sun,  1 Mar 2026 15:38:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.11
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772375175; cv=none; b=oDwoXO0ZM9dnYleXBM+1FV2hoZEiOvYKlwmBqSzaQtVHALt0CM35TD4GCiPDKuEVSeDUEkQzwibCJXDKW1AYKMrFzoPYUYXy+RyawuOKdllruG7mdzbVDRF2gd5jZOufcy7CvL93ltN6L7ZG04Rtt6d4phC3mEGOEosDqGAcOlc=
+	t=1772379497; cv=none; b=ZiYjFlb/zAJ4F3okQ3vEVn4yPu522XSvQxhTZ4/zwy4IUI/G0HYzoqshLacZm2UVmkkdXZUG2VP0Ju9c4+wKkFSC5xzIPyOAlIHKJ6ci+xTNvdry4gsJ08bDiDooYL6nMTK/rYEuCPTgmCQmjsAsyMANHPGie8KDpOFUpwuwvY8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772375175; c=relaxed/simple;
-	bh=iSY1TEV/Dty0aOkZfOwzkaHJETN+7met9Q3hzj+uxMI=;
+	s=arc-20240116; t=1772379497; c=relaxed/simple;
+	bh=5kWOhH6WyXRzSs/ENEI8z+UhO27xhWoDVPpnPwULGNE=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=I5cofiL/tTxlqjcwQGVWv24r0rH3ITtyJVg1AIgNeXSB5GJOuZwSXXfza7N4QQIXh0JbMNVUduyCbxjqdDv8fShv8HyzA9VmRq+IrRULUhMHm7rVvB7js6qRFJTjrJtCivDN7M2kupqeo/pKXgLEtYB6W+BPDBLMqX4hTUmdIo8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=JdKR0J/a; arc=none smtp.client-ip=192.198.163.7
+	 Content-Type:Content-Disposition:In-Reply-To; b=g+y1GlmNZaSyAb4aPb7QbvlkGzZueiUsK068nOpArlLJ0AZhrgs7p2GWCgCO1iZUPQxhrCEOIn29rcX0n2PuOwFdgTSwSexABYufTYSz/Qq6An0rWmwbjRTdyhxv6wZn7xCqoxJqztRWmew6B2W6zcIpA7vnLgnMRp3MtkgJWew=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=E6DndQNW; arc=none smtp.client-ip=198.175.65.11
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1772375173; x=1803911173;
+  t=1772379496; x=1803915496;
   h=date:from:to:cc:subject:message-id:references:
    mime-version:in-reply-to;
-  bh=iSY1TEV/Dty0aOkZfOwzkaHJETN+7met9Q3hzj+uxMI=;
-  b=JdKR0J/a8tyhoigl5Y9t3Q0qJaMUl4JX6HogsOvQVE1LG3gAd2zleYGV
-   W3j2zL4g54t7EnrOAke1v1QV7bgcSgqjE7mZM0/XjbJob97k4DDlBkiEY
-   pb1Qba6R2p1nIUMIXAF2xAo3CfBRBT9eIVM/bqZH72t2wuR/0Hqs8wNLy
-   hh0/hHv9ReEV9NcT8QPqsspaGQ+nuMnPI03P2vD9KEEq1p3aAIq/1Wv/6
-   LCrneiF+LkmhPRC4K+6+WqFopJzretJ0q3G5sSkPXdFKN2ZIfRX7KFwV7
-   TEd2yMhxELn58bU4sMdcgtj4bXay8uUOsCaIWaOEjlIO6Ky+6q9x933co
+  bh=5kWOhH6WyXRzSs/ENEI8z+UhO27xhWoDVPpnPwULGNE=;
+  b=E6DndQNWxOIPhkz5G2uGKd/iAfqWaBAp1SDxFD16/trmqgjeralaggej
+   ck1tHo9YkHFnQ/q3cobnahIHIEwIoRYQVLvFfWfHNPt6I7KgNTWXTr5KF
+   iLoOSpvqNBOZwT8Co8Hoi7q4xf7rvABWUPNZDTMrpMHI6oaHllF7ERwsM
+   8scD7muwkZrpQIMM+WYa3uZL5PzC8TeZtElY0fyHaUMcwswdtEIIl3LLj
+   XbicutRDA6F6TSnwrDdaSorn/45ZZHQPSpNcr86t9zgXfEy0/Knc6/y2C
+   P2ZOPhH9OES27ta1Uj0C7i/xlCf5n8Q8PnB3qt+qxodnXjMK+pROWbrYN
    A==;
-X-CSE-ConnectionGUID: PisZNV7NRy+hXPXANIE+rw==
-X-CSE-MsgGUID: VZzpVAr7T+2Qaru7Yxf9Ew==
-X-IronPort-AV: E=McAfee;i="6800,10657,11716"; a="98866525"
+X-CSE-ConnectionGUID: PBcChefYSxCNHjA0actGow==
+X-CSE-MsgGUID: 3NJUrAn1T1yZwE1SyNBblw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11716"; a="83734351"
 X-IronPort-AV: E=Sophos;i="6.21,318,1763452800"; 
-   d="scan'208";a="98866525"
-Received: from orviesa001.jf.intel.com ([10.64.159.141])
-  by fmvoesa101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 01 Mar 2026 06:26:13 -0800
-X-CSE-ConnectionGUID: yEuqaFQ+QP+yExq8dvOJYg==
-X-CSE-MsgGUID: DwmRXGSZS+CsNfSJqZ89Tw==
+   d="scan'208";a="83734351"
+Received: from fmviesa002.fm.intel.com ([10.60.135.142])
+  by orvoesa103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 01 Mar 2026 07:38:16 -0800
+X-CSE-ConnectionGUID: oYQ3XlsKQLueTXDk6MGRqQ==
+X-CSE-MsgGUID: hX2/96pXQc2fe+R4BrAIRA==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.21,318,1763452800"; 
-   d="scan'208";a="255219395"
+   d="scan'208";a="240403250"
 Received: from lkp-server01.sh.intel.com (HELO 59784f1c7b2a) ([10.239.97.150])
-  by orviesa001.jf.intel.com with ESMTP; 01 Mar 2026 06:26:12 -0800
+  by fmviesa002.fm.intel.com with ESMTP; 01 Mar 2026 07:38:14 -0800
 Received: from kbuild by 59784f1c7b2a with local (Exim 4.98.2)
 	(envelope-from <lkp@intel.com>)
-	id 1vwhkH-000000001VF-0rGI;
-	Sun, 01 Mar 2026 14:26:09 +0000
-Date: Sun, 1 Mar 2026 22:26:08 +0800
+	id 1vwis0-000000001XP-1fwA;
+	Sun, 01 Mar 2026 15:38:12 +0000
+Date: Sun, 1 Mar 2026 23:38:03 +0800
 From: kernel test robot <lkp@intel.com>
 To: Miri Korenblit <miriam.rachel.korenblit@intel.com>,
 	linux-wireless@vger.kernel.org
-Cc: oe-kbuild-all@lists.linux.dev
+Cc: llvm@lists.linux.dev, oe-kbuild-all@lists.linux.dev
 Subject: Re: [PATCH wireless-next] wifi: cfg80211: make cluster id an array
-Message-ID: <202603012218.ucVoRBov-lkp@intel.com>
+Message-ID: <202603012302.fG1YckJP-lkp@intel.com>
 References: <20260301131848.b0085a6b4eb3.Ib16bf5cca55463d4c89e18099cf1dfe4de95d405@changeid>
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
@@ -92,13 +92,13 @@ X-Spamd-Result: default: False [-1.16 / 15.00];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	DKIM_TRACE(0.00)[intel.com:+];
 	FROM_HAS_DN(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-32326-lists,linux-wireless=lfdr.de];
+	DKIM_TRACE(0.00)[intel.com:+];
+	TAGGED_FROM(0.00)[bounces-32327-lists,linux-wireless=lfdr.de];
 	MIME_TRACE(0.00)[0:+];
-	RCPT_COUNT_THREE(0.00)[3];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCPT_COUNT_THREE(0.00)[4];
 	MISSING_XM_UA(0.00)[];
 	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
@@ -108,8 +108,8 @@ X-Spamd-Result: default: False [-1.16 / 15.00];
 	TAGGED_RCPT(0.00)[linux-wireless];
 	NEURAL_HAM(-0.00)[-1.000];
 	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,01.org:url,intel.com:mid,intel.com:dkim,intel.com:email]
-X-Rspamd-Queue-Id: 7CAEC1D032C
+	DBL_BLOCKED_OPENRESOLVER(0.00)[git-scm.com:url,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,intel.com:mid,intel.com:dkim,intel.com:email,01.org:url]
+X-Rspamd-Queue-Id: 816AD1D073C
 X-Rspamd-Action: no action
 
 Hi Miri,
@@ -126,26 +126,21 @@ url:    https://github.com/intel-lab-lkp/linux/commits/Miri-Korenblit/wifi-cfg80
 base:   https://git.kernel.org/pub/scm/linux/kernel/git/wireless/wireless-next.git main
 patch link:    https://lore.kernel.org/r/20260301131848.b0085a6b4eb3.Ib16bf5cca55463d4c89e18099cf1dfe4de95d405%40changeid
 patch subject: [PATCH wireless-next] wifi: cfg80211: make cluster id an array
-config: m68k-allmodconfig (https://download.01.org/0day-ci/archive/20260301/202603012218.ucVoRBov-lkp@intel.com/config)
-compiler: m68k-linux-gcc (GCC) 15.2.0
-reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20260301/202603012218.ucVoRBov-lkp@intel.com/reproduce)
+config: sparc64-allmodconfig (https://download.01.org/0day-ci/archive/20260301/202603012302.fG1YckJP-lkp@intel.com/config)
+compiler: clang version 23.0.0git (https://github.com/llvm/llvm-project 9a109fbb6e184ec9bcce10615949f598f4c974a9)
+reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20260301/202603012302.fG1YckJP-lkp@intel.com/reproduce)
 
 If you fix the issue in a separate patch/commit (i.e. not just a new version of
 the same patch/commit), kindly add following tags
 | Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202603012218.ucVoRBov-lkp@intel.com/
+| Closes: https://lore.kernel.org/oe-kbuild-all/202603012302.fG1YckJP-lkp@intel.com/
 
 All warnings (new ones prefixed by >>):
 
-   drivers/net/wireless/virtual/mac80211_hwsim.c: In function 'mac80211_hwsim_start_nan':
->> drivers/net/wireless/virtual/mac80211_hwsim.c:4081:13: warning: the comparison will always evaluate as 'true' for the address of 'cluster_id' will never be NULL [-Waddress]
+>> drivers/net/wireless/virtual/mac80211_hwsim.c:4081:12: warning: address of array 'conf->cluster_id' will always evaluate to 'true' [-Wpointer-bool-conversion]
     4081 |         if (conf->cluster_id && !is_zero_ether_addr(conf->cluster_id) &&
-         |             ^~~~
-   In file included from include/net/mac80211.h:22,
-                    from drivers/net/wireless/virtual/mac80211_hwsim.c:22:
-   include/net/cfg80211.h:4038:12: note: 'cluster_id' declared here
-    4038 |         u8 cluster_id[ETH_ALEN] __aligned(2);
-         |            ^~~~~~~~~~
+         |             ~~~~~~^~~~~~~~~~ ~~
+   1 warning generated.
 
 
 vim +4081 drivers/net/wireless/virtual/mac80211_hwsim.c
