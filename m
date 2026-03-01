@@ -1,238 +1,143 @@
-Return-Path: <linux-wireless+bounces-32323-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-32324-lists+linux-wireless=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id /w1NO3+/o2nyLQUAu9opvQ
-	(envelope-from <linux-wireless+bounces-32323-lists+linux-wireless=lfdr.de@vger.kernel.org>)
-	for <lists+linux-wireless@lfdr.de>; Sun, 01 Mar 2026 05:24:31 +0100
+	id UHZFCDLbo2kNQAUAu9opvQ
+	(envelope-from <linux-wireless+bounces-32324-lists+linux-wireless=lfdr.de@vger.kernel.org>)
+	for <lists+linux-wireless@lfdr.de>; Sun, 01 Mar 2026 07:22:42 +0100
 X-Original-To: lists+linux-wireless@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3E1891CE7FE
-	for <lists+linux-wireless@lfdr.de>; Sun, 01 Mar 2026 05:24:31 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6A82A1CE9B1
+	for <lists+linux-wireless@lfdr.de>; Sun, 01 Mar 2026 07:22:41 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 91DD0300D1FB
-	for <lists+linux-wireless@lfdr.de>; Sun,  1 Mar 2026 04:24:30 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id B8E28301E20F
+	for <lists+linux-wireless@lfdr.de>; Sun,  1 Mar 2026 06:22:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8CE8C307AC7;
-	Sun,  1 Mar 2026 04:24:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="JSJTyxdn"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 64AE330FC32;
+	Sun,  1 Mar 2026 06:22:33 +0000 (UTC)
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-wm1-f41.google.com (mail-wm1-f41.google.com [209.85.128.41])
+Received: from mail-oo1-f71.google.com (mail-oo1-f71.google.com [209.85.161.71])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0D05C20D4E9
-	for <linux-wireless@vger.kernel.org>; Sun,  1 Mar 2026 04:24:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.41
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 38E7F2DC762
+	for <linux-wireless@vger.kernel.org>; Sun,  1 Mar 2026 06:22:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.161.71
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772339069; cv=none; b=kpB8q9HyVbvVBO+r6KEGY8Eh74ZKXtfMiw30INm0Jn7/8cyT/t9Ct4uNKpcCAT9mw1XdVdFBnh0B/+sVITUD1WtGuqbCRpqIGtTVvzlJQOXUbbFZ+JM5B9d7xJuWjFOONVs2Gzwbz68clKCMnK6x0KAK+E+u4h7wpeYqAe5Rmz4=
+	t=1772346153; cv=none; b=U0hiHCzPqCQVaKdGyCpaUS8swH7fGHAoQln85hyO3TR/nf4C+m39O88RvDfSnN36OkUAp4aKOt2xtkN+9/rIQOMzf44dZ4xk1Xkxjl8Atu2MIkPLgjv0SGbFFJ9f2S7IbN7faKdCMJeYJLi53jReaUBqfuPh8Zkwg4cGOzPjdNo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772339069; c=relaxed/simple;
-	bh=erwOK0x85B3Sv/3Jz8eavTh4pZ93LMW9j48/lTd59+E=;
-	h=From:To:Subject:Date:Message-ID:MIME-Version; b=Cv/P3ZMv8gyCD6nZw2Rqnm9hxvaXG7G0xLNB93hKqwMvDOMAoo9w0II+3mQWbS+u5Y2m+D8uvod5DcG3I+ia1IJ8XhQpVtNqlO+fPbBrkJtF8Htd19FFMflpfgQpDeueyrV5t+LF4IzPr42smp609e031tg5YCntgsu74qc6sU8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=JSJTyxdn; arc=none smtp.client-ip=209.85.128.41
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-wm1-f41.google.com with SMTP id 5b1f17b1804b1-483703e4b08so28521605e9.1
-        for <linux-wireless@vger.kernel.org>; Sat, 28 Feb 2026 20:24:27 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1772339066; x=1772943866; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:to
-         :from:from:to:cc:subject:date:message-id:reply-to;
-        bh=i+Ib5hsO9rUEM/HRFPWDdLfMbgIdRqz1BGP7nNb3vgY=;
-        b=JSJTyxdn0bhpSJkeIhHM2Qd5aiFAgkH5CvKDx5yoAAU6MGVgI26AoQdx+YqXRD+soQ
-         ByS/RxinYIDVVYJzR3cbvN+2f8eio5YfMTM3mhcdh3yQ0oqa7bp7ievNyyhyL86hL0oN
-         74ta3rwi5AN/MshKbA3zhqzcdJQnf6c9NzQZuhrjAUt4ZhH2Vr/EPVhUbela3pkI5tjF
-         vPap8T17vfr6aONfKBdNoBAG5jDrKQXnj13JYssc9nqYBOSVn5mxRppYDJHtftXBcdlJ
-         PSbfRWTR9VsyffuSPKCBc3zuELeNuOHfmaU1k0sZcmKrpo6GniFqhao0XAEfObi06VgK
-         z5MA==
+	s=arc-20240116; t=1772346153; c=relaxed/simple;
+	bh=f1FiQs+aGJ//S8Y94Kii5k1eQ7Z3X8sngnQBQI91bmQ=;
+	h=MIME-Version:Date:Message-ID:Subject:From:To:Content-Type; b=Kd+TK19sJHT1mu6QRjTs8CHJJe86I3NqDTPbF3/0MSNyKYo2iAc7sNc+TVzJjMjNljnq+KNwQJhRy10GXXr5zxqAvzIrlnsyn5yLKL0MePxvNyjJFi0ByxJFVVoSg/BH6ANkrK3RI5QT1nHmI1deIK7zyEouylQzC+SPBOsG3o0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com; arc=none smtp.client-ip=209.85.161.71
+Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com
+Received: by mail-oo1-f71.google.com with SMTP id 006d021491bc7-679c448d15cso54456878eaf.3
+        for <linux-wireless@vger.kernel.org>; Sat, 28 Feb 2026 22:22:32 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1772339066; x=1772943866;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:to
-         :from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=i+Ib5hsO9rUEM/HRFPWDdLfMbgIdRqz1BGP7nNb3vgY=;
-        b=ISD/SRTwYCFiK+TW4Vo3HrfKECNu0Ofhebof/HfQV6Gt6VRKIoHeM9lwDY7D6WOIRm
-         a0SWCg8v6w4bfzYPdbnDATAAOmAqBfC1iQ0N8OVdCoyehCT1vWBgwct2Yf7LJeZjAi/0
-         3V89dLSbCfFQu65QgU83ycpwqMWNDZAVniJYzp6zFNDaDsX/S6TtrZvy5w0kiYVtBNWs
-         lc7qqansm4EusAqCHiQcxCq5V2dlfG0hfBvIc7cAQ83noH8AzXyKkM/dH/rLeYqcWnJt
-         TjGxFmTTY1kBPbg3RcZVosCWOlqOu+YXarQYpH/vVyRiCr8DExnBoS+a4wjNm6SmBvjo
-         O03w==
-X-Forwarded-Encrypted: i=1; AJvYcCU/67eTgyLt2WWkowCBBVXPJtQ4z1T10b9MPgOGVPqgPgnokP6TcHLrI+WkBEc/j9EAPkFZhwEsYPkZAUw7tg==@vger.kernel.org
-X-Gm-Message-State: AOJu0YwabHPvjFosa+tnUuhHMeQXocbYijfTEG/owu5B88IZk2N7ZNcS
-	jvll0d/ChEZVPN3tlR3pIyPpccYqExaJ1OOkOuQsAA4O+207ihWNNPts
-X-Gm-Gg: ATEYQzyjjN0F6GVSHmZ/9HNrdCVSUtbgYTLPHmVjrBoactS/JPsRK6yDMs9e7f6OIdF
-	1LkGK0w7QL6ud5XIk5VgaIwRNeNb3Qb/CnRF+BvhMr4Vc1tTdPL5GV5MHgumm0jo5LU9mq8+eOU
-	sOXYhungqsh6YvPtIpJ9KewTAMSGKev3ml6vwEwW4wYzAKJJJhp778DawuMcGF40LJX9TmKwgNq
-	mwocz0/q21O/UlmvwJRvf52xv1XnXzhOYR6eNd1xyNP9BxLYqhZGuDuy7oUxofWGWGxACOtP53/
-	7wluBXt7hDFrPMc4NiQRH1GLyfBCogsj9OId+sPndzVTYtg9T4sAJgJvyrWAKepIRPLQtc85Cr5
-	CSRfEu4bWE/7YifznACs9lgRTC5ppCpQh59VTdmQeP49nTPqZgVOJXe0Gx/V0t0cZ4vWWaQFSLf
-	xc+bSuHPlbxUKr7mezslyRt0B0L5U=
-X-Received: by 2002:a05:600c:c16e:b0:475:ddad:c3a9 with SMTP id 5b1f17b1804b1-483c99348c5mr137166365e9.13.1772339066139;
-        Sat, 28 Feb 2026 20:24:26 -0800 (PST)
-Received: from toolbox.. ([87.200.95.144])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-483bd7030b9sm257836325e9.4.2026.02.28.20.24.24
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 28 Feb 2026 20:24:25 -0800 (PST)
-From: Christian Hewitt <christianshewitt@gmail.com>
-To: Ping-Ke Shih <pkshih@realtek.com>,
-	Bitterblue Smith <rtl8821cerfe2@gmail.com>,
-	linux-wireless@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH] wifi: rtw89: retry efuse physical map dump on transient failure
-Date: Sun,  1 Mar 2026 04:24:22 +0000
-Message-ID: <20260301042422.195491-1-christianshewitt@gmail.com>
-X-Mailer: git-send-email 2.43.0
+        d=1e100.net; s=20230601; t=1772346151; x=1772950951;
+        h=to:from:subject:message-id:date:mime-version:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=TCkTIOkqY5tRrpKdFM8F2itNl2AA74quBHKheHKTgHQ=;
+        b=OFjYmoXtPWhbt555t2BWlJOQA5Jp/Es0PuGKjOej21cUj8A/xrg8yRP9xdg2b0Vnkx
+         xs0DsATGffDFIegcromSjtz+BqynjJ/rLugz6hN2PW2Ui51nyQZwEpb88Zeu81hgZb06
+         VCK80rD+r+/F8SXl60WdVeKdZo41MT84AMfE8z0wbXGIfkfpfE/zSsRP942HGOC0IhDq
+         LuPUpejo3JbPb2vU+8KdFExcV4lJDIDS2xyyCyD+MhlAWEPyXbnldqjJezsJY1LAeJlR
+         C7t0yEcTiRHOODm1wyllgV0KxC63dCwCz+tms+AkjkI2kbqUL596ZF52wZOdnLxYI7hP
+         2NNQ==
+X-Forwarded-Encrypted: i=1; AJvYcCXOV/HiJmFTBDOyIque6kY+eKBxjHFnUJIpwtj5b49rKzLAdSPT9MW3WGdXwnS/Y8mRg8m8nMxOK9Ot0qoTqg==@vger.kernel.org
+X-Gm-Message-State: AOJu0Yzse7m4bkd0TTsYSGzvzauuTrIuBiY5zBTRZGq+OChkQv9aa+x8
+	xyUyNjraQMEQQQOZRsF/do27qPbSMkpRSz4LW93b33Nrnd7p55Cd7wkwXtVwLQ2sv79ZUXwakdf
+	3e44LIvcKVHCNSQO0oX0lPNJMaHv/1tKu7L6/GIGwSQkMjY3QOhAVm4VkQQs=
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+X-Received: by 2002:a05:6820:1b10:b0:672:a49f:128e with SMTP id
+ 006d021491bc7-679fadbb765mr5581714eaf.8.1772346151442; Sat, 28 Feb 2026
+ 22:22:31 -0800 (PST)
+Date: Sat, 28 Feb 2026 22:22:31 -0800
+X-Google-Appengine-App-Id: s~syzkaller
+X-Google-Appengine-App-Id-Alias: syzkaller
+Message-ID: <69a3db27.050a0220.3a55be.0053.GAE@google.com>
+Subject: [syzbot] Monthly wireless report (Mar 2026)
+From: syzbot <syzbot+list618a5750a9ad1341b093@syzkaller.appspotmail.com>
+To: linux-kernel@vger.kernel.org, linux-wireless@vger.kernel.org, 
+	netdev@vger.kernel.org, syzkaller-bugs@googlegroups.com
+Content-Type: text/plain; charset="UTF-8"
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.66 / 15.00];
-	MID_CONTAINS_FROM(1.00)[];
+X-Spamd-Result: default: False [-1.36 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74];
-	R_DKIM_ALLOW(-0.20)[gmail.com:s=20230601];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
+	DMARC_POLICY_SOFTFAIL(0.10)[appspotmail.com : SPF not aligned (relaxed), No valid DKIM,none];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-32323-lists,linux-wireless=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	FREEMAIL_TO(0.00)[realtek.com,gmail.com,vger.kernel.org];
+	MISSING_XM_UA(0.00)[];
 	RCPT_COUNT_THREE(0.00)[4];
-	FREEMAIL_FROM(0.00)[gmail.com];
-	RCVD_COUNT_FIVE(0.00)[5];
+	TAGGED_FROM(0.00)[bounces-32324-lists,linux-wireless=lfdr.de,list618a5750a9ad1341b093];
+	RCVD_TLS_LAST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	FROM_HAS_DN(0.00)[];
+	REDIRECTOR_URL(0.00)[goo.gl];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[christianshewitt@gmail.com,linux-wireless@vger.kernel.org];
-	DKIM_TRACE(0.00)[gmail.com:+];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[syzbot@syzkaller.appspotmail.com,linux-wireless@vger.kernel.org];
+	MIME_TRACE(0.00)[0:+];
+	TO_DN_NONE(0.00)[];
+	R_DKIM_NA(0.00)[];
+	NEURAL_HAM(-0.00)[-0.998];
 	TAGGED_RCPT(0.00)[linux-wireless];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
-	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: 3E1891CE7FE
+	DBL_BLOCKED_OPENRESOLVER(0.00)[googlegroups.com:email]
+X-Rspamd-Queue-Id: 6A82A1CE9B1
 X-Rspamd-Action: no action
 
-On Radxa Rock 5B with a RTL8852BE combo WiFi/BT card, the efuse
-physical map dump intermittently fails with -EBUSY during probe.
-The failure occurs in rtw89_dump_physical_efuse_map_ddv() where
-read_poll_timeout_atomic() times out waiting for the B_AX_EF_RDY
-bit after 1 second.
+Hello wireless maintainers/developers,
 
-The root cause is a timing race during boot: the WiFi driver's
-chip initialization (firmware download via PCIe) overlaps with the
-Bluetooth firmware download to the same combo chip over USB. This
-can leave the efuse controller temporarily unavailable when the
-WiFi driver attempts to read the efuse map.
+This is a 31-day syzbot report for the wireless subsystem.
+All related reports/information can be found at:
+https://syzkaller.appspot.com/upstream/s/wireless
 
-Add a retry loop (up to 3 attempts with 500ms delays) around the
-physical efuse map dump in rtw89_parse_efuse_map_ax(). The firmware
-download path already retries up to 5 times, but the efuse read
-that follows has no retry logic, making it the weak link in the
-probe sequence.
+During the period, 4 new issues were detected and 1 were fixed.
+In total, 51 issues are still open and 172 have already been fixed.
 
-Signed-off-by: Christian Hewitt <christianshewitt@gmail.com>
+Some of the still happening issues:
+
+Ref  Crashes Repro Title
+<1>  26998   Yes   WARNING in rate_control_rate_init (3)
+                   https://syzkaller.appspot.com/bug?extid=9bdc0c5998ab45b05030
+<2>  10549   Yes   WARNING in __rate_control_send_low (3)
+                   https://syzkaller.appspot.com/bug?extid=34463a129786910405dd
+<3>  10251   No    WARNING in kcov_remote_start (6)
+                   https://syzkaller.appspot.com/bug?extid=3f51ad7ac3ae57a6fdcc
+<4>  6932    Yes   WARNING in __cfg80211_ibss_joined (2)
+                   https://syzkaller.appspot.com/bug?extid=7f064ba1704c2466e36d
+<5>  1226    Yes   WARNING in ieee80211_start_next_roc
+                   https://syzkaller.appspot.com/bug?extid=c3a167b5615df4ccd7fb
+<6>  1043    Yes   INFO: task hung in reg_process_self_managed_hints
+                   https://syzkaller.appspot.com/bug?extid=1f16507d9ec05f64210a
+<7>  864     Yes   INFO: task hung in reg_check_chans_work (7)
+                   https://syzkaller.appspot.com/bug?extid=a2de4763f84f61499210
+<8>  790     Yes   INFO: rcu detected stall in ieee80211_handle_queued_frames
+                   https://syzkaller.appspot.com/bug?extid=1c991592da3ef18957c0
+<9>  691     Yes   WARNING in ieee80211_tx_h_rate_ctrl
+                   https://syzkaller.appspot.com/bug?extid=0d516b33238bd97ee864
+<10> 354     Yes   WARNING in ieee80211_tx_skb_tid
+                   https://syzkaller.appspot.com/bug?extid=8bd4574e8c52c48c2595
+
 ---
-The LibreELEC distro is minimalist and fast-booting with some
-history of exposing racy probing and timing issues that don't
-show up on the mainstream distros. Below are some before/after
-dmesg prints to support the patch:
+This report is generated by a bot. It may contain errors.
+See https://goo.gl/tpsmEJ for more information about syzbot.
+syzbot engineers can be reached at syzkaller@googlegroups.com.
 
-Before:
+To disable reminders for individual bugs, reply with the following command:
+#syz set <Ref> no-reminders
 
-ROCK5B:~ # dmesg | grep rtw89
-[    6.575383] rtw89_8852be 0002:21:00.0: loaded firmware rtw89/rtw8852b_fw-1.bin
-[    6.575538] rtw89_8852be 0002:21:00.0: enabling device (0000 -> 0003)
-[    6.585763] rtw89_8852be 0002:21:00.0: Firmware version 0.29.29.15 (6fb3ec41), cmd version 0, type 5
-[    6.585779] rtw89_8852be 0002:21:00.0: Firmware version 0.29.29.15 (6fb3ec41), cmd version 0, type 3
-[   10.174946] rtw89_8852be 0002:21:00.0: failed to dump efuse physical map
-[   10.176584] rtw89_8852be 0002:21:00.0: failed to setup chip information
-[   10.178173] rtw89_8852be 0002:21:00.0: probe with driver rtw89_8852be failed with error -16
+To change bug's subsystems, reply with:
+#syz set <Ref> subsystems: new-subsystem
 
-After:
-
-ROCK5B:~ # dmesg | grep rtw89
-[    7.393558] rtw89_8852be 0002:21:00.0: loaded firmware rtw89/rtw8852b_fw-1.bin
-[    7.393729] rtw89_8852be 0002:21:00.0: enabling device (0000 -> 0003)
-[    7.406341] rtw89_8852be 0002:21:00.0: Firmware version 0.29.29.15 (6fb3ec41), cmd version 0, type 5
-[    7.406363] rtw89_8852be 0002:21:00.0: Firmware version 0.29.29.15 (6fb3ec41), cmd version 0, type 3
-[   11.041563] rtw89_8852be 0002:21:00.0: efuse dump failed, retrying (1)
-[   11.798390] rtw89_8852be 0002:21:00.0: chip info CID: 0, CV: 1, AID: 0, ACV: 1, RFE: 1
-[   11.801013] rtw89_8852be 0002:21:00.0: rfkill hardware state changed to enable
-
-For context, firmware also fails (and recovers) sometimes:
-
-ROCK5B:~ # dmesg | grep rtw89
-[    6.436873] rtw89_8852be 0002:21:00.0: loaded firmware rtw89/rtw8852b_fw-1.bin
-[    6.437165] rtw89_8852be 0002:21:00.0: enabling device (0000 -> 0003)
-[    6.450228] rtw89_8852be 0002:21:00.0: Firmware version 0.29.29.15 (6fb3ec41), cmd version 0, type 5
-[    6.450239] rtw89_8852be 0002:21:00.0: Firmware version 0.29.29.15 (6fb3ec41), cmd version 0, type 3
-[    7.864148] rtw89_8852be 0002:21:00.0: fw security fail
-[    7.864154] rtw89_8852be 0002:21:00.0: download firmware fail
-[    7.864160] rtw89_8852be 0002:21:00.0: [ERR]fwdl 0x1E0 = 0x62
-[    7.864165] rtw89_8852be 0002:21:00.0: [ERR]fwdl 0x83F0 = 0x80011
-[    7.864173] rtw89_8852be 0002:21:00.0: [ERR]fw PC = 0xb8931150
-[    7.864188] rtw89_8852be 0002:21:00.0: [ERR]fw PC = 0xb8931150
-[    7.864203] rtw89_8852be 0002:21:00.0: [ERR]fw PC = 0xb8931154
-[    7.864219] rtw89_8852be 0002:21:00.0: [ERR]fw PC = 0xb8931154
-[    7.864234] rtw89_8852be 0002:21:00.0: [ERR]fw PC = 0xb8931154
-[    7.864250] rtw89_8852be 0002:21:00.0: [ERR]fw PC = 0xb8931150
-[    7.864265] rtw89_8852be 0002:21:00.0: [ERR]fw PC = 0xb8931150
-[    7.864281] rtw89_8852be 0002:21:00.0: [ERR]fw PC = 0xb8931150
-[    7.864296] rtw89_8852be 0002:21:00.0: [ERR]fw PC = 0xb8931154
-[    7.864311] rtw89_8852be 0002:21:00.0: [ERR]fw PC = 0xb8931154
-[    7.864327] rtw89_8852be 0002:21:00.0: [ERR]fw PC = 0xb8931154
-[    7.864342] rtw89_8852be 0002:21:00.0: [ERR]fw PC = 0xb8931150
-[    7.864358] rtw89_8852be 0002:21:00.0: [ERR]fw PC = 0xb8931154
-[    7.864373] rtw89_8852be 0002:21:00.0: [ERR]fw PC = 0xb8931154
-[    7.864387] rtw89_8852be 0002:21:00.0: [ERR]fw PC = 0xb8931154
-[    8.181342] rtw89_8852be 0002:21:00.0: chip info CID: 0, CV: 1, AID: 0, ACV: 1, RFE: 1
-[    8.184322] rtw89_8852be 0002:21:00.0: rfkill hardware state changed to enable
-
- drivers/net/wireless/realtek/rtw89/efuse.c | 13 ++++++++++++-
- 1 file changed, 12 insertions(+), 1 deletion(-)
-
-diff --git a/drivers/net/wireless/realtek/rtw89/efuse.c b/drivers/net/wireless/realtek/rtw89/efuse.c
-index a2757a88d55d..d506f04ffd6c 100644
---- a/drivers/net/wireless/realtek/rtw89/efuse.c
-+++ b/drivers/net/wireless/realtek/rtw89/efuse.c
-@@ -270,6 +270,7 @@ int rtw89_parse_efuse_map_ax(struct rtw89_dev *rtwdev)
- 	u8 *log_map = NULL;
- 	u8 *dav_phy_map = NULL;
- 	u8 *dav_log_map = NULL;
-+	int retry;
- 	int ret;
- 
- 	if (rtw89_read16(rtwdev, R_AX_SYS_WL_EFUSE_CTRL) & B_AX_AUTOLOAD_SUS)
-@@ -289,7 +290,17 @@ int rtw89_parse_efuse_map_ax(struct rtw89_dev *rtwdev)
- 		goto out_free;
- 	}
- 
--	ret = rtw89_dump_physical_efuse_map(rtwdev, phy_map, 0, phy_size, false);
-+	for (retry = 0; retry < 3; retry++) {
-+		if (retry) {
-+			rtw89_warn(rtwdev, "efuse dump failed, retrying (%d)\n",
-+				   retry);
-+			fsleep(500000);
-+		}
-+		ret = rtw89_dump_physical_efuse_map(rtwdev, phy_map, 0,
-+						    phy_size, false);
-+		if (!ret)
-+			break;
-+	}
- 	if (ret) {
- 		rtw89_warn(rtwdev, "failed to dump efuse physical map\n");
- 		goto out_free;
--- 
-2.43.0
-
+You may send multiple commands in a single email message.
 
