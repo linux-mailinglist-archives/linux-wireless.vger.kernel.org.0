@@ -1,143 +1,230 @@
-Return-Path: <linux-wireless+bounces-32324-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-32325-lists+linux-wireless=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id UHZFCDLbo2kNQAUAu9opvQ
-	(envelope-from <linux-wireless+bounces-32324-lists+linux-wireless=lfdr.de@vger.kernel.org>)
-	for <lists+linux-wireless@lfdr.de>; Sun, 01 Mar 2026 07:22:42 +0100
+	id ANMOHrMgpGnLXwUAu9opvQ
+	(envelope-from <linux-wireless+bounces-32325-lists+linux-wireless=lfdr.de@vger.kernel.org>)
+	for <lists+linux-wireless@lfdr.de>; Sun, 01 Mar 2026 12:19:15 +0100
 X-Original-To: lists+linux-wireless@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6A82A1CE9B1
-	for <lists+linux-wireless@lfdr.de>; Sun, 01 Mar 2026 07:22:41 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id C8E121CF4C5
+	for <lists+linux-wireless@lfdr.de>; Sun, 01 Mar 2026 12:19:14 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id B8E28301E20F
-	for <lists+linux-wireless@lfdr.de>; Sun,  1 Mar 2026 06:22:35 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 38293301465E
+	for <lists+linux-wireless@lfdr.de>; Sun,  1 Mar 2026 11:19:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 64AE330FC32;
-	Sun,  1 Mar 2026 06:22:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7FCC3296BCD;
+	Sun,  1 Mar 2026 11:19:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="ijRdwMMm"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-oo1-f71.google.com (mail-oo1-f71.google.com [209.85.161.71])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.11])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 38E7F2DC762
-	for <linux-wireless@vger.kernel.org>; Sun,  1 Mar 2026 06:22:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.161.71
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EBEC119C553
+	for <linux-wireless@vger.kernel.org>; Sun,  1 Mar 2026 11:19:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.11
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772346153; cv=none; b=U0hiHCzPqCQVaKdGyCpaUS8swH7fGHAoQln85hyO3TR/nf4C+m39O88RvDfSnN36OkUAp4aKOt2xtkN+9/rIQOMzf44dZ4xk1Xkxjl8Atu2MIkPLgjv0SGbFFJ9f2S7IbN7faKdCMJeYJLi53jReaUBqfuPh8Zkwg4cGOzPjdNo=
+	t=1772363951; cv=none; b=sRiUMAO2DKlkolRa/B8EGuSYNBdrup3L44/7FfcQwl4C0wTlcDAqMk1ywNHASorhsB/e5HOtwd2wwImGvc+JbvTi8Rc3zwAoD/nWZWs6bLJ+pUAWEvf+gCWZDWqjpnNBvFTAZSWpGLYOWMs98cFFt7POkAokKFrQFWKa/yNvH6Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772346153; c=relaxed/simple;
-	bh=f1FiQs+aGJ//S8Y94Kii5k1eQ7Z3X8sngnQBQI91bmQ=;
-	h=MIME-Version:Date:Message-ID:Subject:From:To:Content-Type; b=Kd+TK19sJHT1mu6QRjTs8CHJJe86I3NqDTPbF3/0MSNyKYo2iAc7sNc+TVzJjMjNljnq+KNwQJhRy10GXXr5zxqAvzIrlnsyn5yLKL0MePxvNyjJFi0ByxJFVVoSg/BH6ANkrK3RI5QT1nHmI1deIK7zyEouylQzC+SPBOsG3o0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com; arc=none smtp.client-ip=209.85.161.71
-Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com
-Received: by mail-oo1-f71.google.com with SMTP id 006d021491bc7-679c448d15cso54456878eaf.3
-        for <linux-wireless@vger.kernel.org>; Sat, 28 Feb 2026 22:22:32 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1772346151; x=1772950951;
-        h=to:from:subject:message-id:date:mime-version:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=TCkTIOkqY5tRrpKdFM8F2itNl2AA74quBHKheHKTgHQ=;
-        b=OFjYmoXtPWhbt555t2BWlJOQA5Jp/Es0PuGKjOej21cUj8A/xrg8yRP9xdg2b0Vnkx
-         xs0DsATGffDFIegcromSjtz+BqynjJ/rLugz6hN2PW2Ui51nyQZwEpb88Zeu81hgZb06
-         VCK80rD+r+/F8SXl60WdVeKdZo41MT84AMfE8z0wbXGIfkfpfE/zSsRP942HGOC0IhDq
-         LuPUpejo3JbPb2vU+8KdFExcV4lJDIDS2xyyCyD+MhlAWEPyXbnldqjJezsJY1LAeJlR
-         C7t0yEcTiRHOODm1wyllgV0KxC63dCwCz+tms+AkjkI2kbqUL596ZF52wZOdnLxYI7hP
-         2NNQ==
-X-Forwarded-Encrypted: i=1; AJvYcCXOV/HiJmFTBDOyIque6kY+eKBxjHFnUJIpwtj5b49rKzLAdSPT9MW3WGdXwnS/Y8mRg8m8nMxOK9Ot0qoTqg==@vger.kernel.org
-X-Gm-Message-State: AOJu0Yzse7m4bkd0TTsYSGzvzauuTrIuBiY5zBTRZGq+OChkQv9aa+x8
-	xyUyNjraQMEQQQOZRsF/do27qPbSMkpRSz4LW93b33Nrnd7p55Cd7wkwXtVwLQ2sv79ZUXwakdf
-	3e44LIvcKVHCNSQO0oX0lPNJMaHv/1tKu7L6/GIGwSQkMjY3QOhAVm4VkQQs=
+	s=arc-20240116; t=1772363951; c=relaxed/simple;
+	bh=iR6VCgX6OZypW1fkgTTMiwCINixW9yf0scGhLlXTI0o=;
+	h=From:To:Subject:Date:Message-Id:MIME-Version; b=SbR3xWRklyiu37vlMAZ5PS1xi6g10zJ5z7S+cJxLA9KlJXkBLP+Nd+NEay1qO+nw0cpv/ur7g40WCnFRrnD9YEIOTrnavq7Np0LUTMsOZMXJLkkalzZoHHBsuZcqLvtwLMIUy/SLZw1ZwYVWepnf4TaGS/tDRhuWhQr6Xs6/gvA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=ijRdwMMm; arc=none smtp.client-ip=192.198.163.11
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1772363948; x=1803899948;
+  h=from:to:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=iR6VCgX6OZypW1fkgTTMiwCINixW9yf0scGhLlXTI0o=;
+  b=ijRdwMMmMT5ZWcRkfbW0o136BXNm92scrFhYsD99oTip3wEXjWZXKWRH
+   y3aGfKiF7GmwqovynVHOLuzg8eb3ICXtjLk8T2fqxwVR2JPIBk8jSRShe
+   eNFnfXni+cOs5J/B6Pk3jBxXdFuaosStbFoAQZmKhVBBCs4m/Ui56Sq5U
+   5jFkQ8jOWkiEQ2yJhfoncKbDwxTmuKfEm5g6RivkAq8deMnbdLvcVDiHB
+   F7eoS6IjPKKGUp9hqsE6s0gd80ml+KPGcNGDwVQyLbCV4b4KFiyKpkpAq
+   46xzVpNzCdwR/ZUrj2obt5/FlO/tAl1BUZ9EQHot+RLqNtSRY5Tyy9a0q
+   Q==;
+X-CSE-ConnectionGUID: CBpZOqaSShCVTjYnELONqg==
+X-CSE-MsgGUID: iUAowkTbRw6RgRoPr4JtQg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11715"; a="84026818"
+X-IronPort-AV: E=Sophos;i="6.21,318,1763452800"; 
+   d="scan'208";a="84026818"
+Received: from orviesa007.jf.intel.com ([10.64.159.147])
+  by fmvoesa105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 01 Mar 2026 03:19:07 -0800
+X-CSE-ConnectionGUID: uZnYc6iYTLSZvHW3MbQxnw==
+X-CSE-MsgGUID: 1wq3Sz4GTDKhDkTGu9Ukdg==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.21,318,1763452800"; 
+   d="scan'208";a="217467221"
+Received: from weis0040.iil.intel.com ([10.12.217.108])
+  by orviesa007-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 01 Mar 2026 03:19:06 -0800
+From: Miri Korenblit <miriam.rachel.korenblit@intel.com>
+To: linux-wireless@vger.kernel.org
+Subject: [PATCH wireless-next] wifi: cfg80211: make cluster id an array
+Date: Sun,  1 Mar 2026 13:18:50 +0200
+Message-Id: <20260301131848.b0085a6b4eb3.Ib16bf5cca55463d4c89e18099cf1dfe4de95d405@changeid>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-Received: by 2002:a05:6820:1b10:b0:672:a49f:128e with SMTP id
- 006d021491bc7-679fadbb765mr5581714eaf.8.1772346151442; Sat, 28 Feb 2026
- 22:22:31 -0800 (PST)
-Date: Sat, 28 Feb 2026 22:22:31 -0800
-X-Google-Appengine-App-Id: s~syzkaller
-X-Google-Appengine-App-Id-Alias: syzkaller
-Message-ID: <69a3db27.050a0220.3a55be.0053.GAE@google.com>
-Subject: [syzbot] Monthly wireless report (Mar 2026)
-From: syzbot <syzbot+list618a5750a9ad1341b093@syzkaller.appspotmail.com>
-To: linux-kernel@vger.kernel.org, linux-wireless@vger.kernel.org, 
-	netdev@vger.kernel.org, syzkaller-bugs@googlegroups.com
-Content-Type: text/plain; charset="UTF-8"
+Organization: Intel Israel (74) Limited
+Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-1.36 / 15.00];
+X-Spamd-Result: default: False [-1.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	DMARC_POLICY_ALLOW(-0.50)[intel.com,none];
+	MID_RHS_NOT_FQDN(0.50)[];
+	R_MISSING_CHARSET(0.50)[];
+	R_DKIM_ALLOW(-0.20)[intel.com:s=Intel];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
-	DMARC_POLICY_SOFTFAIL(0.10)[appspotmail.com : SPF not aligned (relaxed), No valid DKIM,none];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	MISSING_XM_UA(0.00)[];
-	RCPT_COUNT_THREE(0.00)[4];
-	TAGGED_FROM(0.00)[bounces-32324-lists,linux-wireless=lfdr.de,list618a5750a9ad1341b093];
+	TAGGED_FROM(0.00)[bounces-32325-lists,linux-wireless=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	FROM_NEQ_ENVFROM(0.00)[miriam.rachel.korenblit@intel.com,linux-wireless@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	REDIRECTOR_URL(0.00)[goo.gl];
+	HAS_ORG_HEADER(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[syzbot@syzkaller.appspotmail.com,linux-wireless@vger.kernel.org];
 	MIME_TRACE(0.00)[0:+];
-	TO_DN_NONE(0.00)[];
-	R_DKIM_NA(0.00)[];
-	NEURAL_HAM(-0.00)[-0.998];
+	DKIM_TRACE(0.00)[intel.com:+];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	TAGGED_RCPT(0.00)[linux-wireless];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[googlegroups.com:email]
-X-Rspamd-Queue-Id: 6A82A1CE9B1
+	NEURAL_HAM(-0.00)[-1.000];
+	TO_DN_NONE(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_COUNT_FIVE(0.00)[5];
+	RCPT_COUNT_ONE(0.00)[1];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: C8E121CF4C5
 X-Rspamd-Action: no action
 
-Hello wireless maintainers/developers,
+cfg80211_nan_conf::cluster_id is currently a pointer, but there is no real
+reason to not have it an array. It makes things easier as there is no
+need to check the pointer validity each time.
+If a cluster ID wasn't provided by user space it will be randomized.
 
-This is a 31-day syzbot report for the wireless subsystem.
-All related reports/information can be found at:
-https://syzkaller.appspot.com/upstream/s/wireless
-
-During the period, 4 new issues were detected and 1 were fixed.
-In total, 51 issues are still open and 172 have already been fixed.
-
-Some of the still happening issues:
-
-Ref  Crashes Repro Title
-<1>  26998   Yes   WARNING in rate_control_rate_init (3)
-                   https://syzkaller.appspot.com/bug?extid=9bdc0c5998ab45b05030
-<2>  10549   Yes   WARNING in __rate_control_send_low (3)
-                   https://syzkaller.appspot.com/bug?extid=34463a129786910405dd
-<3>  10251   No    WARNING in kcov_remote_start (6)
-                   https://syzkaller.appspot.com/bug?extid=3f51ad7ac3ae57a6fdcc
-<4>  6932    Yes   WARNING in __cfg80211_ibss_joined (2)
-                   https://syzkaller.appspot.com/bug?extid=7f064ba1704c2466e36d
-<5>  1226    Yes   WARNING in ieee80211_start_next_roc
-                   https://syzkaller.appspot.com/bug?extid=c3a167b5615df4ccd7fb
-<6>  1043    Yes   INFO: task hung in reg_process_self_managed_hints
-                   https://syzkaller.appspot.com/bug?extid=1f16507d9ec05f64210a
-<7>  864     Yes   INFO: task hung in reg_check_chans_work (7)
-                   https://syzkaller.appspot.com/bug?extid=a2de4763f84f61499210
-<8>  790     Yes   INFO: rcu detected stall in ieee80211_handle_queued_frames
-                   https://syzkaller.appspot.com/bug?extid=1c991592da3ef18957c0
-<9>  691     Yes   WARNING in ieee80211_tx_h_rate_ctrl
-                   https://syzkaller.appspot.com/bug?extid=0d516b33238bd97ee864
-<10> 354     Yes   WARNING in ieee80211_tx_skb_tid
-                   https://syzkaller.appspot.com/bug?extid=8bd4574e8c52c48c2595
-
+Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
 ---
-This report is generated by a bot. It may contain errors.
-See https://goo.gl/tpsmEJ for more information about syzbot.
-syzbot engineers can be reached at syzkaller@googlegroups.com.
+ drivers/net/wireless/intel/iwlwifi/mld/nan.c |  5 ++---
+ include/net/cfg80211.h                       |  3 +--
+ net/mac80211/cfg.c                           | 12 ++----------
+ net/wireless/nl80211.c                       | 14 +++++++++++---
+ 4 files changed, 16 insertions(+), 18 deletions(-)
 
-To disable reminders for individual bugs, reply with the following command:
-#syz set <Ref> no-reminders
+diff --git a/drivers/net/wireless/intel/iwlwifi/mld/nan.c b/drivers/net/wireless/intel/iwlwifi/mld/nan.c
+index 2dbd3d58b0c6..4d8e85f2bd7c 100644
+--- a/drivers/net/wireless/intel/iwlwifi/mld/nan.c
++++ b/drivers/net/wireless/intel/iwlwifi/mld/nan.c
+@@ -54,9 +54,8 @@ static int iwl_mld_nan_config(struct iwl_mld *mld,
+ 	ether_addr_copy(cmd.nmi_addr, vif->addr);
+ 	cmd.master_pref = conf->master_pref;
+ 
+-	if (conf->cluster_id)
+-		memcpy(cmd.cluster_id, conf->cluster_id + 4,
+-		       sizeof(cmd.cluster_id));
++	memcpy(cmd.cluster_id, conf->cluster_id + 4,
++	       sizeof(cmd.cluster_id));
+ 
+ 	cmd.scan_period = conf->scan_period < 255 ? conf->scan_period : 255;
+ 	cmd.dwell_time =
+diff --git a/include/net/cfg80211.h b/include/net/cfg80211.h
+index fc01de19c798..73f4aa15c956 100644
+--- a/include/net/cfg80211.h
++++ b/include/net/cfg80211.h
+@@ -4020,7 +4020,6 @@ struct cfg80211_nan_band_config {
+  *	(i.e. BIT(NL80211_BAND_2GHZ)).
+  * @cluster_id: cluster ID used for NAN synchronization. This is a MAC address
+  *	that can take a value from 50-6F-9A-01-00-00 to 50-6F-9A-01-FF-FF.
+- *	If NULL, the device will pick a random Cluster ID.
+  * @scan_period: period (in seconds) between NAN scans.
+  * @scan_dwell_time: dwell time (in milliseconds) for NAN scans.
+  * @discovery_beacon_interval: interval (in TUs) for discovery beacons.
+@@ -4036,7 +4035,7 @@ struct cfg80211_nan_band_config {
+ struct cfg80211_nan_conf {
+ 	u8 master_pref;
+ 	u8 bands;
+-	const u8 *cluster_id;
++	u8 cluster_id[ETH_ALEN] __aligned(2);
+ 	u16 scan_period;
+ 	u16 scan_dwell_time;
+ 	u8 discovery_beacon_interval;
+diff --git a/net/mac80211/cfg.c b/net/mac80211/cfg.c
+index b92b4a5c2636..490e2d9b1720 100644
+--- a/net/mac80211/cfg.c
++++ b/net/mac80211/cfg.c
+@@ -330,7 +330,6 @@ static void ieee80211_stop_p2p_device(struct wiphy *wiphy,
+ 
+ static void ieee80211_nan_conf_free(struct cfg80211_nan_conf *conf)
+ {
+-	kfree(conf->cluster_id);
+ 	kfree(conf->extra_nan_attrs);
+ 	kfree(conf->vendor_elems);
+ 	memset(conf, 0, sizeof(*conf));
+@@ -372,9 +371,6 @@ static int ieee80211_nan_conf_copy(struct cfg80211_nan_conf *dst,
+ 		memcpy(&dst->band_cfgs, &src->band_cfgs,
+ 		       sizeof(dst->band_cfgs));
+ 
+-		kfree(dst->cluster_id);
+-		dst->cluster_id = NULL;
+-
+ 		kfree(dst->extra_nan_attrs);
+ 		dst->extra_nan_attrs = NULL;
+ 		dst->extra_nan_attrs_len = 0;
+@@ -383,12 +379,8 @@ static int ieee80211_nan_conf_copy(struct cfg80211_nan_conf *dst,
+ 		dst->vendor_elems = NULL;
+ 		dst->vendor_elems_len = 0;
+ 
+-		if (src->cluster_id) {
+-			dst->cluster_id = kmemdup(src->cluster_id, ETH_ALEN,
+-						  GFP_KERNEL);
+-			if (!dst->cluster_id)
+-				goto no_mem;
+-		}
++		if (is_zero_ether_addr(dst->cluster_id))
++			ether_addr_copy(dst->cluster_id, src->cluster_id);
+ 
+ 		if (src->extra_nan_attrs && src->extra_nan_attrs_len) {
+ 			dst->extra_nan_attrs = kmemdup(src->extra_nan_attrs,
+diff --git a/net/wireless/nl80211.c b/net/wireless/nl80211.c
+index b94231c8441c..e220ccbba91b 100644
+--- a/net/wireless/nl80211.c
++++ b/net/wireless/nl80211.c
+@@ -21,6 +21,7 @@
+ #include <linux/nospec.h>
+ #include <linux/etherdevice.h>
+ #include <linux/if_vlan.h>
++#include <linux/random.h>
+ #include <net/net_namespace.h>
+ #include <net/genetlink.h>
+ #include <net/cfg80211.h>
+@@ -15725,9 +15726,16 @@ static int nl80211_parse_nan_conf(struct wiphy *wiphy,
+ 		return err;
+ 
+ 	changed |= CFG80211_NAN_CONF_CHANGED_CONFIG;
+-	if (attrs[NL80211_NAN_CONF_CLUSTER_ID] && start)
+-		conf->cluster_id =
+-			nla_data(attrs[NL80211_NAN_CONF_CLUSTER_ID]);
++	if (attrs[NL80211_NAN_CONF_CLUSTER_ID] && start) {
++		ether_addr_copy(conf->cluster_id,
++				nla_data(attrs[NL80211_NAN_CONF_CLUSTER_ID]));
++	} else if (start) {
++		conf->cluster_id[0] = 0x50;
++		conf->cluster_id[1] = 0x6f;
++		conf->cluster_id[2] = 0x9a;
++		conf->cluster_id[3] = 0x01;
++		get_random_bytes(&conf->cluster_id[4], 2);
++	}
+ 
+ 	if (attrs[NL80211_NAN_CONF_EXTRA_ATTRS]) {
+ 		conf->extra_nan_attrs =
+-- 
+2.34.1
 
-To change bug's subsystems, reply with:
-#syz set <Ref> subsystems: new-subsystem
-
-You may send multiple commands in a single email message.
 
