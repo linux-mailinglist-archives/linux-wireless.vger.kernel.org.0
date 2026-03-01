@@ -1,230 +1,206 @@
-Return-Path: <linux-wireless+bounces-32325-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-32326-lists+linux-wireless=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id ANMOHrMgpGnLXwUAu9opvQ
-	(envelope-from <linux-wireless+bounces-32325-lists+linux-wireless=lfdr.de@vger.kernel.org>)
-	for <lists+linux-wireless@lfdr.de>; Sun, 01 Mar 2026 12:19:15 +0100
+	id aIJcEJFMpGkZdAUAu9opvQ
+	(envelope-from <linux-wireless+bounces-32326-lists+linux-wireless=lfdr.de@vger.kernel.org>)
+	for <lists+linux-wireless@lfdr.de>; Sun, 01 Mar 2026 15:26:25 +0100
 X-Original-To: lists+linux-wireless@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id C8E121CF4C5
-	for <lists+linux-wireless@lfdr.de>; Sun, 01 Mar 2026 12:19:14 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7CAEC1D032C
+	for <lists+linux-wireless@lfdr.de>; Sun, 01 Mar 2026 15:26:24 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 38293301465E
-	for <lists+linux-wireless@lfdr.de>; Sun,  1 Mar 2026 11:19:13 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 250C1300E24D
+	for <lists+linux-wireless@lfdr.de>; Sun,  1 Mar 2026 14:26:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7FCC3296BCD;
-	Sun,  1 Mar 2026 11:19:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C18D431716E;
+	Sun,  1 Mar 2026 14:26:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="ijRdwMMm"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="JdKR0J/a"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.11])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.7])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EBEC119C553
-	for <linux-wireless@vger.kernel.org>; Sun,  1 Mar 2026 11:19:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.11
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 524A233066D
+	for <linux-wireless@vger.kernel.org>; Sun,  1 Mar 2026 14:26:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.7
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772363951; cv=none; b=sRiUMAO2DKlkolRa/B8EGuSYNBdrup3L44/7FfcQwl4C0wTlcDAqMk1ywNHASorhsB/e5HOtwd2wwImGvc+JbvTi8Rc3zwAoD/nWZWs6bLJ+pUAWEvf+gCWZDWqjpnNBvFTAZSWpGLYOWMs98cFFt7POkAokKFrQFWKa/yNvH6Y=
+	t=1772375175; cv=none; b=oDwoXO0ZM9dnYleXBM+1FV2hoZEiOvYKlwmBqSzaQtVHALt0CM35TD4GCiPDKuEVSeDUEkQzwibCJXDKW1AYKMrFzoPYUYXy+RyawuOKdllruG7mdzbVDRF2gd5jZOufcy7CvL93ltN6L7ZG04Rtt6d4phC3mEGOEosDqGAcOlc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772363951; c=relaxed/simple;
-	bh=iR6VCgX6OZypW1fkgTTMiwCINixW9yf0scGhLlXTI0o=;
-	h=From:To:Subject:Date:Message-Id:MIME-Version; b=SbR3xWRklyiu37vlMAZ5PS1xi6g10zJ5z7S+cJxLA9KlJXkBLP+Nd+NEay1qO+nw0cpv/ur7g40WCnFRrnD9YEIOTrnavq7Np0LUTMsOZMXJLkkalzZoHHBsuZcqLvtwLMIUy/SLZw1ZwYVWepnf4TaGS/tDRhuWhQr6Xs6/gvA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=ijRdwMMm; arc=none smtp.client-ip=192.198.163.11
+	s=arc-20240116; t=1772375175; c=relaxed/simple;
+	bh=iSY1TEV/Dty0aOkZfOwzkaHJETN+7met9Q3hzj+uxMI=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=I5cofiL/tTxlqjcwQGVWv24r0rH3ITtyJVg1AIgNeXSB5GJOuZwSXXfza7N4QQIXh0JbMNVUduyCbxjqdDv8fShv8HyzA9VmRq+IrRULUhMHm7rVvB7js6qRFJTjrJtCivDN7M2kupqeo/pKXgLEtYB6W+BPDBLMqX4hTUmdIo8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=JdKR0J/a; arc=none smtp.client-ip=192.198.163.7
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1772363948; x=1803899948;
-  h=from:to:subject:date:message-id:mime-version:
-   content-transfer-encoding;
-  bh=iR6VCgX6OZypW1fkgTTMiwCINixW9yf0scGhLlXTI0o=;
-  b=ijRdwMMmMT5ZWcRkfbW0o136BXNm92scrFhYsD99oTip3wEXjWZXKWRH
-   y3aGfKiF7GmwqovynVHOLuzg8eb3ICXtjLk8T2fqxwVR2JPIBk8jSRShe
-   eNFnfXni+cOs5J/B6Pk3jBxXdFuaosStbFoAQZmKhVBBCs4m/Ui56Sq5U
-   5jFkQ8jOWkiEQ2yJhfoncKbDwxTmuKfEm5g6RivkAq8deMnbdLvcVDiHB
-   F7eoS6IjPKKGUp9hqsE6s0gd80ml+KPGcNGDwVQyLbCV4b4KFiyKpkpAq
-   46xzVpNzCdwR/ZUrj2obt5/FlO/tAl1BUZ9EQHot+RLqNtSRY5Tyy9a0q
-   Q==;
-X-CSE-ConnectionGUID: CBpZOqaSShCVTjYnELONqg==
-X-CSE-MsgGUID: iUAowkTbRw6RgRoPr4JtQg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11715"; a="84026818"
+  t=1772375173; x=1803911173;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=iSY1TEV/Dty0aOkZfOwzkaHJETN+7met9Q3hzj+uxMI=;
+  b=JdKR0J/a8tyhoigl5Y9t3Q0qJaMUl4JX6HogsOvQVE1LG3gAd2zleYGV
+   W3j2zL4g54t7EnrOAke1v1QV7bgcSgqjE7mZM0/XjbJob97k4DDlBkiEY
+   pb1Qba6R2p1nIUMIXAF2xAo3CfBRBT9eIVM/bqZH72t2wuR/0Hqs8wNLy
+   hh0/hHv9ReEV9NcT8QPqsspaGQ+nuMnPI03P2vD9KEEq1p3aAIq/1Wv/6
+   LCrneiF+LkmhPRC4K+6+WqFopJzretJ0q3G5sSkPXdFKN2ZIfRX7KFwV7
+   TEd2yMhxELn58bU4sMdcgtj4bXay8uUOsCaIWaOEjlIO6Ky+6q9x933co
+   A==;
+X-CSE-ConnectionGUID: PisZNV7NRy+hXPXANIE+rw==
+X-CSE-MsgGUID: VZzpVAr7T+2Qaru7Yxf9Ew==
+X-IronPort-AV: E=McAfee;i="6800,10657,11716"; a="98866525"
 X-IronPort-AV: E=Sophos;i="6.21,318,1763452800"; 
-   d="scan'208";a="84026818"
-Received: from orviesa007.jf.intel.com ([10.64.159.147])
-  by fmvoesa105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 01 Mar 2026 03:19:07 -0800
-X-CSE-ConnectionGUID: uZnYc6iYTLSZvHW3MbQxnw==
-X-CSE-MsgGUID: 1wq3Sz4GTDKhDkTGu9Ukdg==
+   d="scan'208";a="98866525"
+Received: from orviesa001.jf.intel.com ([10.64.159.141])
+  by fmvoesa101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 01 Mar 2026 06:26:13 -0800
+X-CSE-ConnectionGUID: yEuqaFQ+QP+yExq8dvOJYg==
+X-CSE-MsgGUID: DwmRXGSZS+CsNfSJqZ89Tw==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.21,318,1763452800"; 
-   d="scan'208";a="217467221"
-Received: from weis0040.iil.intel.com ([10.12.217.108])
-  by orviesa007-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 01 Mar 2026 03:19:06 -0800
-From: Miri Korenblit <miriam.rachel.korenblit@intel.com>
-To: linux-wireless@vger.kernel.org
-Subject: [PATCH wireless-next] wifi: cfg80211: make cluster id an array
-Date: Sun,  1 Mar 2026 13:18:50 +0200
-Message-Id: <20260301131848.b0085a6b4eb3.Ib16bf5cca55463d4c89e18099cf1dfe4de95d405@changeid>
-X-Mailer: git-send-email 2.34.1
+   d="scan'208";a="255219395"
+Received: from lkp-server01.sh.intel.com (HELO 59784f1c7b2a) ([10.239.97.150])
+  by orviesa001.jf.intel.com with ESMTP; 01 Mar 2026 06:26:12 -0800
+Received: from kbuild by 59784f1c7b2a with local (Exim 4.98.2)
+	(envelope-from <lkp@intel.com>)
+	id 1vwhkH-000000001VF-0rGI;
+	Sun, 01 Mar 2026 14:26:09 +0000
+Date: Sun, 1 Mar 2026 22:26:08 +0800
+From: kernel test robot <lkp@intel.com>
+To: Miri Korenblit <miriam.rachel.korenblit@intel.com>,
+	linux-wireless@vger.kernel.org
+Cc: oe-kbuild-all@lists.linux.dev
+Subject: Re: [PATCH wireless-next] wifi: cfg80211: make cluster id an array
+Message-ID: <202603012218.ucVoRBov-lkp@intel.com>
+References: <20260301131848.b0085a6b4eb3.Ib16bf5cca55463d4c89e18099cf1dfe4de95d405@changeid>
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Organization: Intel Israel (74) Limited
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260301131848.b0085a6b4eb3.Ib16bf5cca55463d4c89e18099cf1dfe4de95d405@changeid>
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-1.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	MID_CONTAINS_FROM(1.00)[];
 	DMARC_POLICY_ALLOW(-0.50)[intel.com,none];
-	MID_RHS_NOT_FQDN(0.50)[];
-	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64];
 	R_DKIM_ALLOW(-0.20)[intel.com:s=Intel];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-32325-lists,linux-wireless=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[miriam.rachel.korenblit@intel.com,linux-wireless@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
-	HAS_ORG_HEADER(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[intel.com:+];
+	FROM_HAS_DN(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-32326-lists,linux-wireless=lfdr.de];
+	MIME_TRACE(0.00)[0:+];
+	RCPT_COUNT_THREE(0.00)[3];
+	MISSING_XM_UA(0.00)[];
+	TO_DN_SOME(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[lkp@intel.com,linux-wireless@vger.kernel.org];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	RCVD_COUNT_FIVE(0.00)[6];
 	TAGGED_RCPT(0.00)[linux-wireless];
 	NEURAL_HAM(-0.00)[-1.000];
-	TO_DN_NONE(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[5];
-	RCPT_COUNT_ONE(0.00)[1];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: C8E121CF4C5
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,01.org:url,intel.com:mid,intel.com:dkim,intel.com:email]
+X-Rspamd-Queue-Id: 7CAEC1D032C
 X-Rspamd-Action: no action
 
-cfg80211_nan_conf::cluster_id is currently a pointer, but there is no real
-reason to not have it an array. It makes things easier as there is no
-need to check the pointer validity each time.
-If a cluster ID wasn't provided by user space it will be randomized.
+Hi Miri,
 
-Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
----
- drivers/net/wireless/intel/iwlwifi/mld/nan.c |  5 ++---
- include/net/cfg80211.h                       |  3 +--
- net/mac80211/cfg.c                           | 12 ++----------
- net/wireless/nl80211.c                       | 14 +++++++++++---
- 4 files changed, 16 insertions(+), 18 deletions(-)
+kernel test robot noticed the following build warnings:
 
-diff --git a/drivers/net/wireless/intel/iwlwifi/mld/nan.c b/drivers/net/wireless/intel/iwlwifi/mld/nan.c
-index 2dbd3d58b0c6..4d8e85f2bd7c 100644
---- a/drivers/net/wireless/intel/iwlwifi/mld/nan.c
-+++ b/drivers/net/wireless/intel/iwlwifi/mld/nan.c
-@@ -54,9 +54,8 @@ static int iwl_mld_nan_config(struct iwl_mld *mld,
- 	ether_addr_copy(cmd.nmi_addr, vif->addr);
- 	cmd.master_pref = conf->master_pref;
- 
--	if (conf->cluster_id)
--		memcpy(cmd.cluster_id, conf->cluster_id + 4,
--		       sizeof(cmd.cluster_id));
-+	memcpy(cmd.cluster_id, conf->cluster_id + 4,
-+	       sizeof(cmd.cluster_id));
- 
- 	cmd.scan_period = conf->scan_period < 255 ? conf->scan_period : 255;
- 	cmd.dwell_time =
-diff --git a/include/net/cfg80211.h b/include/net/cfg80211.h
-index fc01de19c798..73f4aa15c956 100644
---- a/include/net/cfg80211.h
-+++ b/include/net/cfg80211.h
-@@ -4020,7 +4020,6 @@ struct cfg80211_nan_band_config {
-  *	(i.e. BIT(NL80211_BAND_2GHZ)).
-  * @cluster_id: cluster ID used for NAN synchronization. This is a MAC address
-  *	that can take a value from 50-6F-9A-01-00-00 to 50-6F-9A-01-FF-FF.
-- *	If NULL, the device will pick a random Cluster ID.
-  * @scan_period: period (in seconds) between NAN scans.
-  * @scan_dwell_time: dwell time (in milliseconds) for NAN scans.
-  * @discovery_beacon_interval: interval (in TUs) for discovery beacons.
-@@ -4036,7 +4035,7 @@ struct cfg80211_nan_band_config {
- struct cfg80211_nan_conf {
- 	u8 master_pref;
- 	u8 bands;
--	const u8 *cluster_id;
-+	u8 cluster_id[ETH_ALEN] __aligned(2);
- 	u16 scan_period;
- 	u16 scan_dwell_time;
- 	u8 discovery_beacon_interval;
-diff --git a/net/mac80211/cfg.c b/net/mac80211/cfg.c
-index b92b4a5c2636..490e2d9b1720 100644
---- a/net/mac80211/cfg.c
-+++ b/net/mac80211/cfg.c
-@@ -330,7 +330,6 @@ static void ieee80211_stop_p2p_device(struct wiphy *wiphy,
- 
- static void ieee80211_nan_conf_free(struct cfg80211_nan_conf *conf)
- {
--	kfree(conf->cluster_id);
- 	kfree(conf->extra_nan_attrs);
- 	kfree(conf->vendor_elems);
- 	memset(conf, 0, sizeof(*conf));
-@@ -372,9 +371,6 @@ static int ieee80211_nan_conf_copy(struct cfg80211_nan_conf *dst,
- 		memcpy(&dst->band_cfgs, &src->band_cfgs,
- 		       sizeof(dst->band_cfgs));
- 
--		kfree(dst->cluster_id);
--		dst->cluster_id = NULL;
--
- 		kfree(dst->extra_nan_attrs);
- 		dst->extra_nan_attrs = NULL;
- 		dst->extra_nan_attrs_len = 0;
-@@ -383,12 +379,8 @@ static int ieee80211_nan_conf_copy(struct cfg80211_nan_conf *dst,
- 		dst->vendor_elems = NULL;
- 		dst->vendor_elems_len = 0;
- 
--		if (src->cluster_id) {
--			dst->cluster_id = kmemdup(src->cluster_id, ETH_ALEN,
--						  GFP_KERNEL);
--			if (!dst->cluster_id)
--				goto no_mem;
--		}
-+		if (is_zero_ether_addr(dst->cluster_id))
-+			ether_addr_copy(dst->cluster_id, src->cluster_id);
- 
- 		if (src->extra_nan_attrs && src->extra_nan_attrs_len) {
- 			dst->extra_nan_attrs = kmemdup(src->extra_nan_attrs,
-diff --git a/net/wireless/nl80211.c b/net/wireless/nl80211.c
-index b94231c8441c..e220ccbba91b 100644
---- a/net/wireless/nl80211.c
-+++ b/net/wireless/nl80211.c
-@@ -21,6 +21,7 @@
- #include <linux/nospec.h>
- #include <linux/etherdevice.h>
- #include <linux/if_vlan.h>
-+#include <linux/random.h>
- #include <net/net_namespace.h>
- #include <net/genetlink.h>
- #include <net/cfg80211.h>
-@@ -15725,9 +15726,16 @@ static int nl80211_parse_nan_conf(struct wiphy *wiphy,
- 		return err;
- 
- 	changed |= CFG80211_NAN_CONF_CHANGED_CONFIG;
--	if (attrs[NL80211_NAN_CONF_CLUSTER_ID] && start)
--		conf->cluster_id =
--			nla_data(attrs[NL80211_NAN_CONF_CLUSTER_ID]);
-+	if (attrs[NL80211_NAN_CONF_CLUSTER_ID] && start) {
-+		ether_addr_copy(conf->cluster_id,
-+				nla_data(attrs[NL80211_NAN_CONF_CLUSTER_ID]));
-+	} else if (start) {
-+		conf->cluster_id[0] = 0x50;
-+		conf->cluster_id[1] = 0x6f;
-+		conf->cluster_id[2] = 0x9a;
-+		conf->cluster_id[3] = 0x01;
-+		get_random_bytes(&conf->cluster_id[4], 2);
-+	}
- 
- 	if (attrs[NL80211_NAN_CONF_EXTRA_ATTRS]) {
- 		conf->extra_nan_attrs =
+[auto build test WARNING on wireless-next/main]
+[also build test WARNING on wireless/main linus/master v7.0-rc1 next-20260227]
+[If your patch is applied to the wrong git tree, kindly drop us a note.
+And when submitting patch, we suggest to use '--base' as documented in
+https://git-scm.com/docs/git-format-patch#_base_tree_information]
+
+url:    https://github.com/intel-lab-lkp/linux/commits/Miri-Korenblit/wifi-cfg80211-make-cluster-id-an-array/20260301-192010
+base:   https://git.kernel.org/pub/scm/linux/kernel/git/wireless/wireless-next.git main
+patch link:    https://lore.kernel.org/r/20260301131848.b0085a6b4eb3.Ib16bf5cca55463d4c89e18099cf1dfe4de95d405%40changeid
+patch subject: [PATCH wireless-next] wifi: cfg80211: make cluster id an array
+config: m68k-allmodconfig (https://download.01.org/0day-ci/archive/20260301/202603012218.ucVoRBov-lkp@intel.com/config)
+compiler: m68k-linux-gcc (GCC) 15.2.0
+reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20260301/202603012218.ucVoRBov-lkp@intel.com/reproduce)
+
+If you fix the issue in a separate patch/commit (i.e. not just a new version of
+the same patch/commit), kindly add following tags
+| Reported-by: kernel test robot <lkp@intel.com>
+| Closes: https://lore.kernel.org/oe-kbuild-all/202603012218.ucVoRBov-lkp@intel.com/
+
+All warnings (new ones prefixed by >>):
+
+   drivers/net/wireless/virtual/mac80211_hwsim.c: In function 'mac80211_hwsim_start_nan':
+>> drivers/net/wireless/virtual/mac80211_hwsim.c:4081:13: warning: the comparison will always evaluate as 'true' for the address of 'cluster_id' will never be NULL [-Waddress]
+    4081 |         if (conf->cluster_id && !is_zero_ether_addr(conf->cluster_id) &&
+         |             ^~~~
+   In file included from include/net/mac80211.h:22,
+                    from drivers/net/wireless/virtual/mac80211_hwsim.c:22:
+   include/net/cfg80211.h:4038:12: note: 'cluster_id' declared here
+    4038 |         u8 cluster_id[ETH_ALEN] __aligned(2);
+         |            ^~~~~~~~~~
+
+
+vim +4081 drivers/net/wireless/virtual/mac80211_hwsim.c
+
+a37a6f54439bf8 Ilan Peer 2025-09-08  4052  
+a37a6f54439bf8 Ilan Peer 2025-09-08  4053  static int mac80211_hwsim_start_nan(struct ieee80211_hw *hw,
+a37a6f54439bf8 Ilan Peer 2025-09-08  4054  				    struct ieee80211_vif *vif,
+a37a6f54439bf8 Ilan Peer 2025-09-08  4055  				    struct cfg80211_nan_conf *conf)
+a37a6f54439bf8 Ilan Peer 2025-09-08  4056  {
+a37a6f54439bf8 Ilan Peer 2025-09-08  4057  	struct mac80211_hwsim_data *data = hw->priv;
+a37a6f54439bf8 Ilan Peer 2025-09-08  4058  	u64 tsf = mac80211_hwsim_get_tsf(hw, NULL);
+a37a6f54439bf8 Ilan Peer 2025-09-08  4059  	u32 dw_int = 512 * 1000;
+a37a6f54439bf8 Ilan Peer 2025-09-08  4060  	u64 until_dw = dw_int - do_div(tsf, dw_int);
+a37a6f54439bf8 Ilan Peer 2025-09-08  4061  	struct wireless_dev *wdev = ieee80211_vif_to_wdev(vif);
+a37a6f54439bf8 Ilan Peer 2025-09-08  4062  
+a37a6f54439bf8 Ilan Peer 2025-09-08  4063  	if (vif->type != NL80211_IFTYPE_NAN)
+a37a6f54439bf8 Ilan Peer 2025-09-08  4064  		return -EINVAL;
+a37a6f54439bf8 Ilan Peer 2025-09-08  4065  
+a37a6f54439bf8 Ilan Peer 2025-09-08  4066  	if (data->nan_device_vif)
+a37a6f54439bf8 Ilan Peer 2025-09-08  4067  		return -EALREADY;
+a37a6f54439bf8 Ilan Peer 2025-09-08  4068  
+a37a6f54439bf8 Ilan Peer 2025-09-08  4069  	/* set this before starting the timer, as preemption might occur */
+a37a6f54439bf8 Ilan Peer 2025-09-08  4070  	data->nan_device_vif = vif;
+a37a6f54439bf8 Ilan Peer 2025-09-08  4071  	data->nan_bands = conf->bands;
+a37a6f54439bf8 Ilan Peer 2025-09-08  4072  	data->nan_curr_dw_band = NL80211_BAND_2GHZ;
+a37a6f54439bf8 Ilan Peer 2025-09-08  4073  
+a37a6f54439bf8 Ilan Peer 2025-09-08  4074  	wiphy_debug(hw->wiphy, "nan_started, next_dw=%llu\n",
+a37a6f54439bf8 Ilan Peer 2025-09-08  4075  		    until_dw);
+a37a6f54439bf8 Ilan Peer 2025-09-08  4076  
+a37a6f54439bf8 Ilan Peer 2025-09-08  4077  	hrtimer_start(&data->nan_timer,
+a37a6f54439bf8 Ilan Peer 2025-09-08  4078  		      ns_to_ktime(until_dw * NSEC_PER_USEC),
+a37a6f54439bf8 Ilan Peer 2025-09-08  4079  		      HRTIMER_MODE_REL_SOFT);
+a37a6f54439bf8 Ilan Peer 2025-09-08  4080  
+a37a6f54439bf8 Ilan Peer 2025-09-08 @4081  	if (conf->cluster_id && !is_zero_ether_addr(conf->cluster_id) &&
+a37a6f54439bf8 Ilan Peer 2025-09-08  4082  	    is_zero_ether_addr(hwsim_nan_cluster_id)) {
+a37a6f54439bf8 Ilan Peer 2025-09-08  4083  		memcpy(hwsim_nan_cluster_id, conf->cluster_id, ETH_ALEN);
+a37a6f54439bf8 Ilan Peer 2025-09-08  4084  	} else if (is_zero_ether_addr(hwsim_nan_cluster_id)) {
+a37a6f54439bf8 Ilan Peer 2025-09-08  4085  		hwsim_nan_cluster_id[0] = 0x50;
+a37a6f54439bf8 Ilan Peer 2025-09-08  4086  		hwsim_nan_cluster_id[1] = 0x6f;
+a37a6f54439bf8 Ilan Peer 2025-09-08  4087  		hwsim_nan_cluster_id[2] = 0x9a;
+a37a6f54439bf8 Ilan Peer 2025-09-08  4088  		hwsim_nan_cluster_id[3] = 0x01;
+a37a6f54439bf8 Ilan Peer 2025-09-08  4089  		hwsim_nan_cluster_id[4] = get_random_u8();
+a37a6f54439bf8 Ilan Peer 2025-09-08  4090  		hwsim_nan_cluster_id[5] = get_random_u8();
+a37a6f54439bf8 Ilan Peer 2025-09-08  4091  	}
+a37a6f54439bf8 Ilan Peer 2025-09-08  4092  
+a37a6f54439bf8 Ilan Peer 2025-09-08  4093  	data->notify_dw = conf->enable_dw_notification;
+a37a6f54439bf8 Ilan Peer 2025-09-08  4094  
+a37a6f54439bf8 Ilan Peer 2025-09-08  4095  	cfg80211_nan_cluster_joined(wdev, hwsim_nan_cluster_id, true,
+a37a6f54439bf8 Ilan Peer 2025-09-08  4096  				    GFP_KERNEL);
+a37a6f54439bf8 Ilan Peer 2025-09-08  4097  
+a37a6f54439bf8 Ilan Peer 2025-09-08  4098  	return 0;
+a37a6f54439bf8 Ilan Peer 2025-09-08  4099  }
+a37a6f54439bf8 Ilan Peer 2025-09-08  4100  
+
 -- 
-2.34.1
-
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
 
