@@ -1,150 +1,188 @@
-Return-Path: <linux-wireless+bounces-32337-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-32338-lists+linux-wireless=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id EHY3BpYopWla4wUAu9opvQ
-	(envelope-from <linux-wireless+bounces-32337-lists+linux-wireless=lfdr.de@vger.kernel.org>)
-	for <lists+linux-wireless@lfdr.de>; Mon, 02 Mar 2026 07:05:10 +0100
+	id UAKUBY8rpWkQ5AUAu9opvQ
+	(envelope-from <linux-wireless+bounces-32338-lists+linux-wireless=lfdr.de@vger.kernel.org>)
+	for <lists+linux-wireless@lfdr.de>; Mon, 02 Mar 2026 07:17:51 +0100
 X-Original-To: lists+linux-wireless@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 81B6C1D35CD
-	for <lists+linux-wireless@lfdr.de>; Mon, 02 Mar 2026 07:05:09 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6AE781D3683
+	for <lists+linux-wireless@lfdr.de>; Mon, 02 Mar 2026 07:17:50 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 9B943300CFC6
-	for <lists+linux-wireless@lfdr.de>; Mon,  2 Mar 2026 06:05:06 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 133113010DAE
+	for <lists+linux-wireless@lfdr.de>; Mon,  2 Mar 2026 06:17:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CD82C37883A;
-	Mon,  2 Mar 2026 06:05:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 30189335066;
+	Mon,  2 Mar 2026 06:17:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=realtek.com header.i=@realtek.com header.b="l6xF/xfh"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="hNyNvmr0"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
+Received: from mail-wr1-f46.google.com (mail-wr1-f46.google.com [209.85.221.46])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 63D5A30C371;
-	Mon,  2 Mar 2026 06:04:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=211.75.126.72
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7F54537B417
+	for <linux-wireless@vger.kernel.org>; Mon,  2 Mar 2026 06:17:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.46
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772431502; cv=none; b=enjAZhmTxA6Dzy3cyvW5iqIRUWADq02tPNGFLM1rntvG8pStf3r6barWw6MVE7pDCrGQjdlaY778IX89+E3fGGNYUK8BIUU08V4co1+WcO/W0vJpgxvWjTKntuVNTFoeP2pRSSjmeCYi272ocdLbvquuJGDZXwmOdKyhXCIy14c=
+	t=1772432260; cv=none; b=goiKSh0Z2tjJcpmrUAm1r6TDnqyQIn69UKdmaEmYwKOJ0xkjdwr1cV7phlEl4sTDAmOaZtgCnmedh4H2YEOb+F0WEY6S9N66D02/gYMfZM4ozgqlrq5iz1EGa1vHXrgLlLyqiWmwUo0sRpEqfHdkLi1sfZogF7zI79XhvPZSrHs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772431502; c=relaxed/simple;
-	bh=fUbRHij6DgtYURf6cEDohVQB51YcufBUpG4ybn68els=;
-	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:MIME-Version; b=nIxayiyfaR150pjcNFdfX0SRJlfkndAfH2UPzi+jhm6rwJvi/Z7VuAci/5fwdSfixw+IPos7bYgwG1Nc8tLdGBsUsAWYrd9SCNrvIptAhSlvgUBLKUElvxJj90oFNcaaaoVhAtUZmiyeJ0IcV+vFWbTRZollggmJaQW/Dw5vpT0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com; spf=pass smtp.mailfrom=realtek.com; dkim=pass (2048-bit key) header.d=realtek.com header.i=@realtek.com header.b=l6xF/xfh; arc=none smtp.client-ip=211.75.126.72
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=realtek.com
-X-SpamFilter-By: ArmorX SpamTrap 5.80 with qID 62264pGnA2475953, This message is accepted by code: ctloc85258
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=realtek.com; s=dkim;
-	t=1772431491; bh=fUbRHij6DgtYURf6cEDohVQB51YcufBUpG4ybn68els=;
-	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:Content-Transfer-Encoding:MIME-Version;
-	b=l6xF/xfh4J7Yxp2MyIq6Gf+sY/BLe1zGYIakU4Rp/hqG02nSnM8M+RzNKX38JHF2g
-	 tkKT9BuvBfevNEFck+Q0+XHGMspESUvvaE9OCskRPCcN54YoJZmestNABqX94pjcNz
-	 7gj0cDyC0i3A0SzXE4EUBksi9PWhzO5rgmlJ0A9qJAmB/Mp7z/wuT2Eb0a5CLSHRl7
-	 rDoBiqP4Ts9+6gC+mloecOgn1mBqpijiDkb3JQEd86/3+b25pZwG4hu9MlJrd60Css
-	 Wo0dtNMtrn6avwfW9otqyoTiUW/jJ4RffwY1CXO0Z4v7DWULldX515q/3UicootXnN
-	 8MAIpFG8N0YBA==
-Received: from mail.realtek.com (rtkexhmbs03.realtek.com.tw[10.21.1.53])
-	by rtits2.realtek.com.tw (8.15.2/3.21/5.94) with ESMTPS id 62264pGnA2475953
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Mon, 2 Mar 2026 14:04:51 +0800
-Received: from RTKEXHMBS05.realtek.com.tw (10.21.1.55) by
- RTKEXHMBS03.realtek.com.tw (10.21.1.53) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1748.10; Mon, 2 Mar 2026 14:04:51 +0800
-Received: from RTKEXHMBS06.realtek.com.tw (10.21.1.56) by
- RTKEXHMBS05.realtek.com.tw (10.21.1.55) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1748.10; Mon, 2 Mar 2026 14:04:51 +0800
-Received: from RTKEXHMBS06.realtek.com.tw ([fe80::4cbd:6c6c:b92b:3913]) by
- RTKEXHMBS06.realtek.com.tw ([fe80::4cbd:6c6c:b92b:3913%10]) with mapi id
- 15.02.1748.010; Mon, 2 Mar 2026 14:04:51 +0800
-From: Ping-Ke Shih <pkshih@realtek.com>
-To: Christian Hewitt <christianshewitt@gmail.com>
-CC: Bitterblue Smith <rtl8821cerfe2@gmail.com>,
-        "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
-Subject: RE: [PATCH] wifi: rtw89: retry efuse physical map dump on transient
- failure
-Thread-Topic: [PATCH] wifi: rtw89: retry efuse physical map dump on transient
- failure
-Thread-Index: AQHcqTNMihHWcqnNfk6dLicVJRRJxLWavE1Q//99hoCAAIbrQA==
-Date: Mon, 2 Mar 2026 06:04:51 +0000
-Message-ID: <c764f16a880a400686c8c5f639fa98c3@realtek.com>
-References: <20260301042422.195491-1-christianshewitt@gmail.com>
- <c751f9505a664f6895bacecb62bc534a@realtek.com>
- <E6E752BD-5F3D-4F30-9820-CB44FA767E69@gmail.com>
-In-Reply-To: <E6E752BD-5F3D-4F30-9820-CB44FA767E69@gmail.com>
-Accept-Language: en-US, zh-TW
-Content-Language: zh-TW
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+	s=arc-20240116; t=1772432260; c=relaxed/simple;
+	bh=TtbtNNtVe6CmLRXYj9faobkevBetQAKcFSHodxgHyBU=;
+	h=Content-Type:Mime-Version:Subject:From:In-Reply-To:Date:Cc:
+	 Message-Id:References:To; b=O9P2BFl6OFh+Dv6GCrnG1vOXAY7+aylJjVdq1aeXROXGmQzPrqVDUIeDkr3Z8dAuknRhBHoh1KQkXByVaLNAbcBQVsOOzYkFwF4NTm15S6b6dUCyLkMdmj1NRW6VQ6PwoAXx12SHlaXCGJaZfIHh7FqNUEuFlLFzGP3e5RmUNs0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=hNyNvmr0; arc=none smtp.client-ip=209.85.221.46
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-wr1-f46.google.com with SMTP id ffacd0b85a97d-4398f8e2837so3531940f8f.1
+        for <linux-wireless@vger.kernel.org>; Sun, 01 Mar 2026 22:17:35 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1772432254; x=1773037054; darn=vger.kernel.org;
+        h=to:references:message-id:content-transfer-encoding:cc:date
+         :in-reply-to:from:subject:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=TtbtNNtVe6CmLRXYj9faobkevBetQAKcFSHodxgHyBU=;
+        b=hNyNvmr0tj2AjJyqaJzYJYTb65O/wg4L2nOTONMm9fzmowoybqQQIzswwLJib6/bBP
+         DC8o5oXH1BQQqJTSdFRwcTwTIgEUmrr8k1+B+npvw0uDi7hy8ilboU49yR6xPbIMi83V
+         o8ZAuSVzcyw76Qa7VXEgwAYBZSyTuQGvFthpYkxCYgSBbwCTaSw8tUEf/TnIZji3WLkT
+         TwaOtl3IQ0DE5r+/7ilRidxkR3Z1n80QHZtT4ItF2KaKhCo2nPfgzAlv2uUBYZNlBuUS
+         5Hs6jKTWC2mFNO9o7ug4ixQ8NFH+xjn0ISITwejGgJEvRFrQedv6YF0XzZO+3UnckCLo
+         Gakw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1772432254; x=1773037054;
+        h=to:references:message-id:content-transfer-encoding:cc:date
+         :in-reply-to:from:subject:mime-version:x-gm-gg:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=TtbtNNtVe6CmLRXYj9faobkevBetQAKcFSHodxgHyBU=;
+        b=seCjATlGZBrsSlDDlVNGy7WZnjGZddogkF8GcMJMk2P7eh1++v65LXWvlmxqX1JVnX
+         caxoZhtNFJOklLk+AJ0S2ZNMDmJO9BIwImrrynq6R1/GXyCeRbsPpqHAgQ4m86MHA0IO
+         v1koq0btNxogqVSRrcM65XA0u3yT6MfW5nt9P7qjf9IDaSAaCA4oTq7HyJw9ilIKjvHo
+         rZ5ETt0rEk7xShNrcNtx+GxZx5LxwXXvyDBHuXA96IQ+5ygqgIdW9itwD7fMw4oGhFnH
+         nzPTCJUQzrDtA0u7Fgs/jOCZLGwU2H2nTHvL+7nwbCVUhIknKidGycRamzFUj2I8NB8D
+         Xy6A==
+X-Forwarded-Encrypted: i=1; AJvYcCWiy7H4QdextAwHwr421ELadbWeXbSfKp37WuGIj0XcuNfKq8zzpdz887VXrg3DooUKT/xhkiYIeJnsrS0fgA==@vger.kernel.org
+X-Gm-Message-State: AOJu0Ywkp1jHu1YtnYnU0a8ANwimJxAs9RveLwyomZP6AJ3XZFfEXrc3
+	no4LchKMMJtrAmDBTn2QLH/JXsXJqiBxeJAf+DG44WRSIFAkrirZo+PfRTojozM+
+X-Gm-Gg: ATEYQzxWFBQk1dJdvE2k0s3JBFQlyIqMlY7xhtFv1ib6t43cLLjS9Yk3bdxCjpVTb5L
+	BGwd5+7stPAFRquXk3Ga7fav0rhcdB3JrOpHQskKhjktViwZ8AOdk45Y/PU2RwRjp4INV9RflvH
+	lqqq84vIx0aNNgRxboNzk/y6qWHngQtn4iW6hEt89pq3HmTPo7pJ0ZpuubYw+7UD8RsiVCUsa1R
+	/oSYmT7aTbUqP6/mm3X/fMeCUVNPfU/ShJ1Gy/FrvXzQQCQb1OlGx9vPKFK8CbNulI78HyfNNQM
+	PwF3BmwtBI8OU05+13thbxEDDm6NjxjCYZEZqTHug8zFpH8iu+auGS+FoJI2duBorKKC65di7iK
+	tj1G7FcroHYh+jRfBKpa744cKCVbUM8flf3GqT/3kbr3hc64gAUbd/42gEdwVUUMl/ZzQNPEW4l
+	r/dUQmgMHWg4zwiGRcD3S610GD6ZZ3NvlVwW/V25OEExM07iVP9llqFc7EDXLMJFKPL3ckkVIMu
+	xYdRsn7TtAYLIs7sq4WLtwdZ6AS89qQUBkc2Q==
+X-Received: by 2002:a05:6000:2313:b0:439:8913:baa with SMTP id ffacd0b85a97d-4399de368bbmr19216091f8f.53.1772432253560;
+        Sun, 01 Mar 2026 22:17:33 -0800 (PST)
+Received: from smtpclient.apple (static.253.36.98.91.clients.your-server.de. [91.98.36.253])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-439ab6ebe56sm13690902f8f.15.2026.03.01.22.17.32
+        (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
+        Sun, 01 Mar 2026 22:17:33 -0800 (PST)
+Content-Type: text/plain;
+	charset=utf-8
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
+Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3864.400.21\))
+Subject: Re: [PATCH] wifi: rtw89: retry efuse physical map dump on transient
+ failure
+From: Christian Hewitt <christianshewitt@gmail.com>
+In-Reply-To: <c764f16a880a400686c8c5f639fa98c3@realtek.com>
+Date: Mon, 2 Mar 2026 10:17:20 +0400
+Cc: Bitterblue Smith <rtl8821cerfe2@gmail.com>,
+ "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
+ "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
+Content-Transfer-Encoding: quoted-printable
+Message-Id: <903C7E52-033F-455E-89DC-B78C67C0C732@gmail.com>
+References: <20260301042422.195491-1-christianshewitt@gmail.com>
+ <c751f9505a664f6895bacecb62bc534a@realtek.com>
+ <E6E752BD-5F3D-4F30-9820-CB44FA767E69@gmail.com>
+ <c764f16a880a400686c8c5f639fa98c3@realtek.com>
+To: Ping-Ke Shih <pkshih@realtek.com>
+X-Mailer: Apple Mail (2.3864.400.21)
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-2.06 / 15.00];
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[realtek.com,none];
-	R_DKIM_ALLOW(-0.20)[realtek.com:s=dkim];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
+	R_DKIM_ALLOW(-0.20)[gmail.com:s=20230601];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
-	MIME_BASE64_TEXT(0.10)[];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-32337-lists,linux-wireless=lfdr.de];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FREEMAIL_TO(0.00)[gmail.com];
-	TO_DN_SOME(0.00)[];
-	TO_DN_EQ_ADDR_SOME(0.00)[];
-	MIME_TRACE(0.00)[0:+];
 	FREEMAIL_CC(0.00)[gmail.com,vger.kernel.org];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,realtek.com:mid,realtek.com:dkim,realtek.com:email];
-	RCPT_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[pkshih@realtek.com,linux-wireless@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-32338-lists,linux-wireless=lfdr.de];
 	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[realtek.com:+];
-	NEURAL_HAM(-0.00)[-0.940];
-	TAGGED_RCPT(0.00)[linux-wireless];
+	TO_DN_EQ_ADDR_SOME(0.00)[];
+	FREEMAIL_FROM(0.00)[gmail.com];
+	RCVD_TLS_LAST(0.00)[];
+	TO_DN_SOME(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[gmail.com:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_COUNT_FIVE(0.00)[5];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[christianshewitt@gmail.com,linux-wireless@vger.kernel.org];
+	RCPT_COUNT_THREE(0.00)[4];
 	MID_RHS_MATCH_FROM(0.00)[];
-	MISSING_XM_UA(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	RCVD_COUNT_SEVEN(0.00)[7]
-X-Rspamd-Queue-Id: 81B6C1D35CD
+	APPLE_MAILER_COMMON(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TAGGED_RCPT(0.00)[linux-wireless];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[realtek.com:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 6AE781D3683
 X-Rspamd-Action: no action
 
-DQpDaHJpc3RpYW4gSGV3aXR0IDxjaHJpc3RpYW5zaGV3aXR0QGdtYWlsLmNvbT4gd3JvdGU6DQo+
-ID4gT24gMiBNYXIgMjAyNiwgYXQgOTo0N+KAr2FtLCBQaW5nLUtlIFNoaWggPHBrc2hpaEByZWFs
-dGVrLmNvbT4gd3JvdGU6DQo+ID4NCj4gPiBDaHJpc3RpYW4gSGV3aXR0IDxjaHJpc3RpYW5zaGV3
-aXR0QGdtYWlsLmNvbT4gd3JvdGU6DQo+ID4+IE9uIFJhZHhhIFJvY2sgNUIgd2l0aCBhIFJUTDg4
-NTJCRSBjb21ibyBXaUZpL0JUIGNhcmQsIHRoZSBlZnVzZQ0KPiA+PiBwaHlzaWNhbCBtYXAgZHVt
-cCBpbnRlcm1pdHRlbnRseSBmYWlscyB3aXRoIC1FQlVTWSBkdXJpbmcgcHJvYmUuDQo+ID4+IFRo
-ZSBmYWlsdXJlIG9jY3VycyBpbiBydHc4OV9kdW1wX3BoeXNpY2FsX2VmdXNlX21hcF9kZHYoKSB3
-aGVyZQ0KPiA+PiByZWFkX3BvbGxfdGltZW91dF9hdG9taWMoKSB0aW1lcyBvdXQgd2FpdGluZyBm
-b3IgdGhlIEJfQVhfRUZfUkRZDQo+ID4+IGJpdCBhZnRlciAxIHNlY29uZC4NCj4gPg0KPiA+IEkn
-bSBjaGVja2luZyBpbnRlcm5hbGx5IGhvdyB3ZSBoYW5kbGUgdGhpcyBjYXNlLg0KPiA+DQo+ID4g
-Wy4uLl0NCj4gPg0KPiA+Pg0KPiA+PiBGb3IgY29udGV4dCwgZmlybXdhcmUgYWxzbyBmYWlscyAo
-YW5kIHJlY292ZXJzKSBzb21ldGltZXM6DQo+ID4NCj4gPiBEaWQgeW91IG1lYW4gdGhpcyBkb2Vz
-bid0IGFsd2F5cyBoYXBwZW4/IHNvbWV0aW1lcz8NCj4gDQo+IEl04oCZcyBhbm90aGVyIGludGVy
-bWl0dGVudCBiZWhhdmlvdXIgb2JzZXJ2ZWQgb24gdGhpcyBib2FyZCAoYW5kIG5vdA0KPiByZWxh
-dGVkIHRvIHRoZSBpc3N1ZSB0aGlzIHBhdGNoIHRhcmdldHMpLiBJdCBvY2N1cnMgbGVzcyBmcmVx
-dWVudGx5DQo+IHRoYW4gdGhlIGVmdXNlIGlzc3VlIGFuZCB0aGUgZXhpc3RpbmcgcmV0cnkgbWVj
-aGFuaXNtIGluIHRoZSBkcml2ZXINCj4gZW5zdXJlcyBmaXJtd2FyZSBsb2FkIGFsd2F5cyBzdWNj
-ZWVkcy4NCg0KQXMgaW50ZXJtaXR0ZW50IGJlaGF2aW91ciwgaXQgbWlnaHQgYmUgbm90IHdvcnRo
-IHRvIHRyeSBETUEuIA0KDQpSZWNlbnRseSwgd2UgaGF2ZSBzb21lIHBhdGNoZXMgcmVsYXRlZCB0
-byBQQ0kgaGFyZHdhcmUgc2V0dGluZ3MuIFBsZWFzZQ0KdXNlIHRoZSBsYXRlc3QgZHJpdmVyIGlu
-Y2x1ZGluZyBwYXRjaCBbMV0gdG8gc2VlIGlmIGl0IGNhbiBiZSBzdGFibGUuDQoNClsxXSBhZjFl
-ODIyMzJiOTggKCJ3aWZpOiBydHc4OTogcGNpOiByZXN0b3JlIExETyBzZXR0aW5nIGFmdGVyIGRl
-dmljZSByZXN1bWUiKQ0KDQo+IA0KPiA+IFdlIGhhcyBzZWVuIHNpbWlsYXIgbG9nIGJlY2F1c2Ug
-b2YgMzYtYml0IERNQS4gVHJ5IGJlbG93IHRvIGZvcmNlIDMyLSBvciAzNi0NCj4gPiBiaXQgRE1B
-IHRvIHNlZSBpZiBpdCBjYW4gcmVzb2x2ZSBwcm9ibGVtIGluIHlvdXIgcGxhdGZvcm0uDQo+IA0K
-PiBJIGNhbiBleHBlcmltZW50IGJ1dCB0aGlzIGRvZXNu4oCZdCBoYXBwZW4gb2Z0ZW4gc28gSSBw
-cm9iYWJseSBjYW7igJl0DQo+IHByb3ZpZGUgbWVhbmluZ2Z1bCBmZWVkYmFjay4NCg0KDQoNCg==
+> On 2 Mar 2026, at 10:04=E2=80=AFam, Ping-Ke Shih <pkshih@realtek.com> =
+wrote:
+>=20
+> Christian Hewitt <christianshewitt@gmail.com> wrote:
+>>> On 2 Mar 2026, at 9:47=E2=80=AFam, Ping-Ke Shih <pkshih@realtek.com> =
+wrote:
+>>>=20
+>>> Christian Hewitt <christianshewitt@gmail.com> wrote:
+>>>> On Radxa Rock 5B with a RTL8852BE combo WiFi/BT card, the efuse
+>>>> physical map dump intermittently fails with -EBUSY during probe.
+>>>> The failure occurs in rtw89_dump_physical_efuse_map_ddv() where
+>>>> read_poll_timeout_atomic() times out waiting for the B_AX_EF_RDY
+>>>> bit after 1 second.
+>>>=20
+>>> I'm checking internally how we handle this case.
+>>>=20
+>>> [...]
+>>>=20
+>>>>=20
+>>>> For context, firmware also fails (and recovers) sometimes:
+>>>=20
+>>> Did you mean this doesn't always happen? sometimes?
+>>=20
+>> It=E2=80=99s another intermittent behaviour observed on this board =
+(and not
+>> related to the issue this patch targets). It occurs less frequently
+>> than the efuse issue and the existing retry mechanism in the driver
+>> ensures firmware load always succeeds.
+>=20
+> As intermittent behaviour, it might be not worth to try DMA.=20
+>=20
+> Recently, we have some patches related to PCI hardware settings. =
+Please
+> use the latest driver including patch [1] to see if it can be stable.
+>=20
+> [1] af1e82232b98 ("wifi: rtw89: pci: restore LDO setting after device =
+resume")
+
+The efuse fail snippet that I posted alongside the patch was from a
+Linux 7.0-rc1 kernel so that patch was already present.
+
+>> We has seen similar log because of 36-bit DMA. Try below to force 32- =
+or 36-
+>>> bit DMA to see if it can resolve problem in your platform.
+>>=20
+>> I can experiment but this doesn=E2=80=99t happen often so I probably =
+can=E2=80=99t
+>> provide meaningful feedback.
+
+
 
