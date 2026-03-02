@@ -1,57 +1,57 @@
-Return-Path: <linux-wireless+bounces-32362-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-32363-lists+linux-wireless=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id sAGHJn4dpmmeKQAAu9opvQ
-	(envelope-from <linux-wireless+bounces-32362-lists+linux-wireless=lfdr.de@vger.kernel.org>)
-	for <lists+linux-wireless@lfdr.de>; Tue, 03 Mar 2026 00:30:06 +0100
+	id EGKxDrIepmmeKQAAu9opvQ
+	(envelope-from <linux-wireless+bounces-32363-lists+linux-wireless=lfdr.de@vger.kernel.org>)
+	for <lists+linux-wireless@lfdr.de>; Tue, 03 Mar 2026 00:35:14 +0100
 X-Original-To: lists+linux-wireless@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id F15F31E6AA8
-	for <lists+linux-wireless@lfdr.de>; Tue, 03 Mar 2026 00:30:05 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9356E1E6B6D
+	for <lists+linux-wireless@lfdr.de>; Tue, 03 Mar 2026 00:35:13 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 97416309888C
-	for <lists+linux-wireless@lfdr.de>; Mon,  2 Mar 2026 23:06:55 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id CE67F30C2FB6
+	for <lists+linux-wireless@lfdr.de>; Mon,  2 Mar 2026 23:30:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D320C31E835;
-	Mon,  2 Mar 2026 23:06:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 531893382C8;
+	Mon,  2 Mar 2026 23:30:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=candelatech.com header.i=@candelatech.com header.b="aWQg6R9w"
+	dkim=pass (1024-bit key) header.d=candelatech.com header.i=@candelatech.com header.b="DjxXU9+5"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from dispatch1-us1.ppe-hosted.com (dispatch1-us1.ppe-hosted.com [67.231.154.184])
+Received: from dispatch1-us1.ppe-hosted.com (dispatch1-us1.ppe-hosted.com [67.231.154.183])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 924201A682F
-	for <linux-wireless@vger.kernel.org>; Mon,  2 Mar 2026 23:06:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=67.231.154.184
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BB95D337BA0
+	for <linux-wireless@vger.kernel.org>; Mon,  2 Mar 2026 23:30:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=67.231.154.183
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772492814; cv=none; b=Tb1u/xIZWoU8IYL3cNlOa+Rbe8F9w51KoaMfNJtnXBXIJri9idtg7tKsxDb/7fVrezCgMyAfVt95Q1HRG8GoyyecQ7EIEJv0ARZxI9MaYrAmKBwx9EAcclkC+8hr8OSd8ZXGLfO5kRA0QajsxZtOi2AbT1e1U5TbDeGznAzXewo=
+	t=1772494204; cv=none; b=HnXwlVNENsrkSMqOyPGLYMd290xr8xdytz0PqxMbzGOGscNRVMH224uXd011t/kNaATyQBefk7cTNQ7pIwZLd4BH+8gl1+91QCQ6p7dOjRQTLLQ8OkGEc0+7pLMzq5Ej9cGeRVDv3TKgaK3OKbmHVFpihaXX/g/QGAJYwtR9Kik=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772492814; c=relaxed/simple;
-	bh=HuAqiHYHvK83n+tTuaQOBwY7cZHeyIYx1dttPGtdvPY=;
-	h=Message-ID:Date:MIME-Version:To:From:Subject:Content-Type; b=pWPytkzM5Q2oJ0BOwUXRZBYekdwSQq4Do/e+unFX/eNsW0DpN1h0rH/y7uQZD3iVYMVkw5ktKzsxGbIaxaNjEEQZCr8W/dcgVpOdcwm7/ZC5V+qYP0TedBNaV5egYMImlIe0ZkaKzrJCi9XcnSgzMSfCHzTqPHWIP6xmx7cZYn0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=candelatech.com; spf=pass smtp.mailfrom=candelatech.com; dkim=pass (1024-bit key) header.d=candelatech.com header.i=@candelatech.com header.b=aWQg6R9w; arc=none smtp.client-ip=67.231.154.184
+	s=arc-20240116; t=1772494204; c=relaxed/simple;
+	bh=jmEnkd2JP9QeQ+3jaMuyocQLHYWGeRcWd9aGdfIWoMk=;
+	h=Message-ID:Date:MIME-Version:To:From:Subject:Content-Type; b=fYEBc77rFbTaR/Ymo7XfhpyoGl0voPAN0ZV/gucTFZzBCpp0dnmj+ActsIoTyDr+4y6MZuwJNMpYBQbDDfSh8pU0L3VsJ5w/7by4hhCjotFqZaJ4ptFt7tl8NkO0wLggIVzOvPEM6mpKuQDtHKKIx0Ssdiv1+QhEcGpfc1gLj9U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=candelatech.com; spf=pass smtp.mailfrom=candelatech.com; dkim=pass (1024-bit key) header.d=candelatech.com header.i=@candelatech.com header.b=DjxXU9+5; arc=none smtp.client-ip=67.231.154.183
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=candelatech.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=candelatech.com
 X-Virus-Scanned: Proofpoint Essentials engine
 Received: from mail3.candelatech.com (mail.candelatech.com [208.74.158.173])
-	by mx1-us1.ppe-hosted.com (PPE Hosted ESMTP Server) with ESMTP id 8900B8C0073;
-	Mon,  2 Mar 2026 23:06:51 +0000 (UTC)
+	by mx1-us1.ppe-hosted.com (PPE Hosted ESMTP Server) with ESMTP id 13AA48C007E
+	for <linux-wireless@vger.kernel.org>; Mon,  2 Mar 2026 23:29:54 +0000 (UTC)
 Received: from [192.168.100.159] (firewall.candelatech.com [50.251.239.81])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by mail3.candelatech.com (Postfix) with ESMTPSA id E1FCF13C2B0;
-	Mon,  2 Mar 2026 15:06:48 -0800 (PST)
-DKIM-Filter: OpenDKIM Filter v2.11.0 mail3.candelatech.com E1FCF13C2B0
+	by mail3.candelatech.com (Postfix) with ESMTPSA id 7BDCE13C2B0
+	for <linux-wireless@vger.kernel.org>; Mon,  2 Mar 2026 15:29:52 -0800 (PST)
+DKIM-Filter: OpenDKIM Filter v2.11.0 mail3.candelatech.com 7BDCE13C2B0
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=candelatech.com;
-	s=default; t=1772492809;
-	bh=HuAqiHYHvK83n+tTuaQOBwY7cZHeyIYx1dttPGtdvPY=;
+	s=default; t=1772494192;
+	bh=jmEnkd2JP9QeQ+3jaMuyocQLHYWGeRcWd9aGdfIWoMk=;
 	h=Date:To:From:Subject:From;
-	b=aWQg6R9w4Y9uL9eCbq7nAyy/2rebVKCYFmDafZN+SlOrOwm0ApsXummvHe8OYYd57
-	 IaYQHMVefOYsL4fISfzmbaL9eO+H7GKBQ0CGlupxoGFGNJrUGlYMvWkeji8ToG3KJg
-	 zziMPQjAAjRXAI/inQVnGOKJ7ccvknYNKmq1gLrw=
-Message-ID: <02f66cee-4892-24a3-9a07-1e722fe8888f@candelatech.com>
-Date: Mon, 2 Mar 2026 15:06:48 -0800
+	b=DjxXU9+5CWzbRnz/5Hk7siTUubg5IzayIlYfeypGLXqenikBiXgZwp7VaTDQrp9Ks
+	 gMDWO9lIYXDcfJIMsnCU2wVHVjdIs4U7DFZd9r/43x9+E0El8U9xgUuyRPClL+Oi8b
+	 2940ZcDqa5K4Z/LyI9CKfineY9uBpNJq6SkAiiVo=
+Message-ID: <51a8ef48-d1a7-098e-57c3-868d3183a650@candelatech.com>
+Date: Mon, 2 Mar 2026 15:29:52 -0800
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
@@ -61,78 +61,114 @@ MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
  Thunderbird/102.15.1
 Content-Language: en-US
-To: linux-wireless <linux-wireless@vger.kernel.org>,
- "Korenblit, Miriam Rachel" <miriam.rachel.korenblit@intel.com>
+To: linux-wireless <linux-wireless@vger.kernel.org>
 From: Ben Greear <greearb@candelatech.com>
-Subject: iwlwifi-mld: Fix fw id leak in OOM case
+Subject: RFC: Potential fix for inode use-after-free
 Organization: Candela Technologies
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-X-MDID: 1772492812-OAXVCou9GPzn
+X-MDID: 1772494195-ofwLUlvkFPsI
 X-PPE-STACK: {"stack":"us5"}
 X-MDID-O:
- us5;at1;1772492812;OAXVCou9GPzn;<greearb@candelatech.com>;b05365583a7ac22983513582f8b41fd7
+ us5;at1;1772494195;ofwLUlvkFPsI;<greearb@candelatech.com>;f7146c1849a4b08a52804beb1c1cdf45
 X-PPE-TRUSTED: V=1;DIR=OUT;
-X-Rspamd-Queue-Id: F15F31E6AA8
+X-Rspamd-Queue-Id: 9356E1E6B6D
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[candelatech.com,none];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[candelatech.com:s=default];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-32362-lists,linux-wireless=lfdr.de];
-	HAS_ORG_HEADER(0.00)[];
-	TO_DN_ALL(0.00)[];
-	RCVD_TLS_LAST(0.00)[];
-	RCPT_COUNT_TWO(0.00)[2];
 	DKIM_TRACE(0.00)[candelatech.com:+];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
+	TAGGED_FROM(0.00)[bounces-32363-lists,linux-wireless=lfdr.de];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[5];
+	RCVD_TLS_LAST(0.00)[];
+	TO_DN_ALL(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	HAS_ORG_HEADER(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	RCPT_COUNT_ONE(0.00)[1];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[greearb@candelatech.com,linux-wireless@vger.kernel.org];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[linux-wireless];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	RCVD_COUNT_FIVE(0.00)[5];
 	MID_RHS_MATCH_FROM(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	NEURAL_HAM(-0.00)[-0.999];
+	TAGGED_RCPT(0.00)[linux-wireless];
 	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
 X-Rspamd-Action: no action
 
-Hello Miriam,
+Hello,
 
-I believe you will want to add something like this to your driver to clear the
-fw_id_to_link_sta ID in case you hit the ENOMEM case.
+I was hitting a tricky case where debugfs inodes were being used
+after they were freed (more of a double free attempt, really).
 
-I have no reason to believe I am actually hitting this error case, but I saw
-this questionable code while looking for reasons for the use-after-free I am hitting.
+I tried multiple things, but this is the last thing that I tried
+and it seems to have fixed things.  I believe the other stuff I
+tried (adding a spin lock, other sanity checking) didn't actually
+make a difference, but I've left logs in place if I do run into
+more troubles...
 
-diff --git a/drivers/net/wireless/intel/iwlwifi/mld/sta.c b/drivers/net/wireless/intel/iwlwifi/mld/sta.c
-index 5fb2a46241e4..de9939ad1d58 100644
---- a/drivers/net/wireless/intel/iwlwifi/mld/sta.c
-+++ b/drivers/net/wireless/intel/iwlwifi/mld/sta.c
-@@ -535,13 +535,19 @@ iwl_mld_add_link_sta(struct iwl_mld *mld, struct ieee80211_link_sta *link_sta)
-         ret = iwl_mld_allocate_link_sta_fw_id(mld, &fw_id, link_sta);
-         if (ret)
-                 return ret;
+For reasons not entirely clear, I was seeing a logging message indicating
+that a station was being deleted while links were still active.
 
-         if (link_sta == &link_sta->sta->deflink) {
-                 mld_link_sta = &mld_sta->deflink;
-         } else {
-                 mld_link_sta = kzalloc(sizeof(*mld_link_sta), GFP_KERNEL);
--               if (!mld_link_sta)
-+               if (!mld_link_sta) {
-+                       IWL_ERR(mld, "mld-add-link-sta, OOM, clearing fw_id_to_link_sta[%d]\n",
-+                               fw_id);
-+                       RCU_INIT_POINTER(mld->fw_id_to_link_sta[fw_id], NULL);
-                         return -ENOMEM;
-+               }
-         }
+I believe that the problem then becomes when the netdev calls the
+debugfs_remove_recursive, the inodes for the link's debugfs are
+deleted, but links still have a pointer to it, and would later try
+to clear their own debugfs.
+
+So, explicitly NULL out any link inodes when removing the netdev debugfs.
+I'm not that confident that I didn't somehow break this with other
+local changes..but if someone else hits a similar problem, maybe
+it is worth cleaning this up and making a real patch.
+
+In net/mac80211/debugfs_netdev.c
+
+  void ieee80211_debugfs_remove_netdev(struct ieee80211_sub_if_data *sdata)
+  {
+-	if (!sdata->vif.debugfs_dir)
++	struct dentry* dir = sdata->vif.debugfs_dir;
++	struct ieee80211_link_data *link;
++	int i;
++
++	if (!dir)
+  		return;
+
+-	debugfs_remove_recursive(sdata->vif.debugfs_dir);
+  	sdata->vif.debugfs_dir = NULL;
++
++	/* In case where there were errors on station creation and maybe
++	 * teardown, we may get here with some links still active.  We are
++	 * about to recursively delete debugfs, so remove any pointers the
++	 * links may have.
++	 */
++	rcu_read_lock();
++
++	for (i = 0; i<IEEE80211_MLD_MAX_NUM_LINKS; i++) {
++		link = rcu_access_pointer(sdata->link[i]);
++		if (!link)
++			continue;
++
++		if (dir == link->lnk_debugfs_dir) {
++			/* Deflink sharing our pointer, probably..clear but do not warn. */
++			link->lnk_debugfs_dir = NULL;
++		} else if (link->lnk_debugfs_dir) {
++			sdata_info(sdata, "Nulling link %i debugfs dir in remove-netdev",
++				   i);
++			link->lnk_debugfs_dir = NULL;
++		}
++	}
++	rcu_read_unlock();
++
++	debugfs_remove_recursive(dir);
+  	sdata->debugfs.subdir_stations = NULL;
+  }
+
 
 Thanks,
 Ben
