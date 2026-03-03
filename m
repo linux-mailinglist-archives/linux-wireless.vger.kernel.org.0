@@ -1,139 +1,197 @@
-Return-Path: <linux-wireless+bounces-32423-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-32424-lists+linux-wireless=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id +IhmHbZOp2nKggAAu9opvQ
-	(envelope-from <linux-wireless+bounces-32423-lists+linux-wireless=lfdr.de@vger.kernel.org>)
-	for <lists+linux-wireless@lfdr.de>; Tue, 03 Mar 2026 22:12:22 +0100
+	id aA8KH4JQp2nKggAAu9opvQ
+	(envelope-from <linux-wireless+bounces-32424-lists+linux-wireless=lfdr.de@vger.kernel.org>)
+	for <lists+linux-wireless@lfdr.de>; Tue, 03 Mar 2026 22:20:02 +0100
 X-Original-To: lists+linux-wireless@lfdr.de
 Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id C17451F73C3
-	for <lists+linux-wireless@lfdr.de>; Tue, 03 Mar 2026 22:12:21 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0CE321F76A9
+	for <lists+linux-wireless@lfdr.de>; Tue, 03 Mar 2026 22:20:02 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id B8FCF306D8A3
-	for <lists+linux-wireless@lfdr.de>; Tue,  3 Mar 2026 21:12:20 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 1204430B32E1
+	for <lists+linux-wireless@lfdr.de>; Tue,  3 Mar 2026 21:17:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D5E5D386450;
-	Tue,  3 Mar 2026 21:12:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A599232AAD1;
+	Tue,  3 Mar 2026 21:17:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b="H/VJE0Jl"
+	dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b="ILePEZeb"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from sipsolutions.net (s3.sipsolutions.net [168.119.38.16])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A2498347531;
-	Tue,  3 Mar 2026 21:12:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 597793BED40
+	for <linux-wireless@vger.kernel.org>; Tue,  3 Mar 2026 21:17:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=168.119.38.16
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772572339; cv=none; b=f6r4CjglLtWKVJOy4JYUAvvA1d+1VDw59Q+D3IRlAArknb4OVWHvoKYoDBKh+si06TqgElg0iPH5nJ4GZXxfhvvWH+gPHWQ9kOBuu6p27QRtAENoOf2hwllBaaAbOT5NmUrvWdyE7CRXWxPRbYJ4wCoXGSisNMZklUUtUXUS/mc=
+	t=1772572638; cv=none; b=bI4JPTmm1nLHBTqb2N1xlvXcs6LlZ3stN/77kU/fxt+EU3Jq0J+H9OIM5EJ3bh54yY3UoP+cgM+8c8g3Xv2r5yjWIRIWLIII6Ok6rVNdEwWxlxDoYTkdVHiA6h9zzGSxLjazB/U9f9hAFxSgEkA5IdwMvkAo5ujTyAJ2wSicJAo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772572339; c=relaxed/simple;
-	bh=gZetZJNjR70T/LFjqoXtayWjEQgG9hfstgIaETdeEKA=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=GVaUzASkMO56OeHFEBO4ORRXDDarI5LAfrqfuEcLjfO/HlTdKcMc1mtqOKIm37wzbxyThM91k39X59spQi/ZlhqLtRYk8Qy2wSlrZW9va35xtLSPIpdfvd0x/nJ+N6bxCVsxzh43uOsqs3yH5ISGNbL9bFnu0i2ukdJ14n+8Jus=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net; spf=pass smtp.mailfrom=sipsolutions.net; dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b=H/VJE0Jl; arc=none smtp.client-ip=168.119.38.16
+	s=arc-20240116; t=1772572638; c=relaxed/simple;
+	bh=wP4/dZ9i8D+LWKUXJjYKmOjqIeTjJFLRtlYmk1Th6/I=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=M74QlVVw6y73jICBZ+klmJ+seomX0dPBmnA7mshCRs5kPyC2eE7RFvgk23kUqafhMglg8HHCFg/ekyBeJyOhC2S77JPXRv/4yj6gLxGSSJFTf7fXwYMnu9wz0Ni5WCoZvWv/KRZ39ZhH+ZCh6yuUJVEeMbu/QgOy+ViXJYkJ76w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net; spf=pass smtp.mailfrom=sipsolutions.net; dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b=ILePEZeb; arc=none smtp.client-ip=168.119.38.16
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sipsolutions.net
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=sipsolutions.net; s=mail; h=MIME-Version:Content-Transfer-Encoding:
-	Content-Type:References:In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender
-	:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
-	Resent-Cc:Resent-Message-ID; bh=gZetZJNjR70T/LFjqoXtayWjEQgG9hfstgIaETdeEKA=;
-	t=1772572338; x=1773781938; b=H/VJE0JliLw2EDZe2ip9cZFmISiPygr1rsur4M9yJT/9Tsq
-	n6drnklx45ap7WJ7DUDy+1fcPaudpFFiTHSxRDFTuq8P/jpODOVCZYRatZ+w/k2efuxMwh8sR3Axu
-	U1fozS6cMkcAl0ykRo9gu2UNr0fjgso5sIB4VmVV9WKcFi+/WBKYMjvJ0iiZc7xMM+0sXTw4TbIl4
-	fWj+X4WY2syGvHf+neFzypg9A9mOsTR5Mrov6P8PRiQLz/2lSI8XRjq1Uh+pHizRYn9p8nBd72ZeY
-	rGJvLc1kzuXp8WEdBYfU2xr0Cd54V/cnVx3rNJ6cZ9vwazNOsk6ZH3H9Ej/pSXPA==;
+	d=sipsolutions.net; s=mail; h=Content-Transfer-Encoding:MIME-Version:
+	Message-ID:Date:Subject:Cc:To:From:Content-Type:Sender:Reply-To:Content-ID:
+	Content-Description:Resent-Date:Resent-From:Resent-To:Resent-Cc:
+	Resent-Message-ID:In-Reply-To:References;
+	bh=4ef5LCTYWA9bEJt53//cHInidnhR5+bIF/+WvmJS/AA=; t=1772572637; x=1773782237; 
+	b=ILePEZebx2eyJIX+bs+WzoNFotWLnSnTdFV6BXTzCM8Eq2ieEKYRmirtX25dORXVLJRWJTSQyN4
+	xbEk4cOfgCDm5QN6Vi3VnCUA+wH0DcfAmA6DV2MN6jHrPoOtU768dwGeIkf/9+MrkXbnoaUEN07dr
+	KhBfCILZAye1uNObVTN1vsUVqD7wXo6EYshbgwhDbFZp5pfsFfbU6nGkxwW8vWTLaasyhO5LMLm1z
+	4vSIcQqPICeUYTqt1RkfMi4dO01NvY47SUTdXEqSNFIFn6ScNqXz2moVjbte/ggsrlo+80yj2xjvX
+	olIFGopk38jLmwCelqdj9ysaY0dGzSdPWKpA==;
 Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
 	(Exim 4.98.2)
 	(envelope-from <johannes@sipsolutions.net>)
-	id 1vxX2K-00000007KsF-3UfN;
-	Tue, 03 Mar 2026 22:12:13 +0100
-Message-ID: <3303d57a4ea6776dbc66ca72441023f76e6f1234.camel@sipsolutions.net>
-Subject: Re: 6.18.13 iwlwifi deadlock allocating cma while work-item is
- active.
+	id 1vxX7B-00000007L1S-1ge3;
+	Tue, 03 Mar 2026 22:17:13 +0100
 From: Johannes Berg <johannes@sipsolutions.net>
-To: Tejun Heo <tj@kernel.org>
-Cc: Ben Greear <greearb@candelatech.com>, linux-wireless
-	 <linux-wireless@vger.kernel.org>, "Korenblit, Miriam Rachel"
-	 <miriam.rachel.korenblit@intel.com>, linux-mm@kvack.org, 
-	linux-kernel@vger.kernel.org
-Date: Tue, 03 Mar 2026 22:12:12 +0100
-In-Reply-To: <aadKDCKGHk1Ua-7_@slm.duckdns.org>
-References: <fa4e82ee-eb14-3930-c76c-f3bd59c5f258@candelatech.com>
-	 <18c4bfed-caca-bef3-a139-63d7fa48940a@candelatech.com>
-	 <e7d92fab-9d0e-4a58-aa0b-2c6545772e68@candelatech.com>
-	 <3456b2c89f057900b39ce79ea8ca1154c5014e43.camel@sipsolutions.net>
-	 <0de6c8d1-d2fa-44ac-8025-cfcfecd87b02@candelatech.com>
-	 <bed9cc03d3c214b2601093f91e4b00f3715762b2.camel@sipsolutions.net>
-	 <c616fc41-3bc7-4ddc-b65c-a622111d8548@candelatech.com>
-	 <35779061f94c2a55bb58dcd619ae91c618509cf4.camel@sipsolutions.net>
-	 <aadKDCKGHk1Ua-7_@slm.duckdns.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.58.3 (3.58.3-1.fc43) 
+To: linux-wireless@vger.kernel.org
+Cc: Johannes Berg <johannes.berg@intel.com>
+Subject: [PATCH v2 wireless-next] wifi: nl80211: split out UHR operation information
+Date: Tue,  3 Mar 2026 22:17:09 +0100
+Message-ID: <20260303221710.866bacf82639.Iafdf37fb0f4304bdcdb824977d61e17b38c47685@changeid>
+X-Mailer: git-send-email 2.53.0
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-malware-bazaar: not-scanned
-X-Rspamd-Queue-Id: C17451F73C3
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Queue-Id: 0CE321F76A9
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [-1.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	R_MISSING_CHARSET(0.50)[];
+	MID_RHS_NOT_FQDN(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[sipsolutions.net,none];
 	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	R_DKIM_ALLOW(-0.20)[sipsolutions.net:s=mail];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	RCPT_COUNT_TWO(0.00)[2];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-32423-lists,linux-wireless=lfdr.de];
-	FROM_HAS_DN(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
+	TAGGED_FROM(0.00)[bounces-32424-lists,linux-wireless=lfdr.de];
 	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	DKIM_TRACE(0.00)[sipsolutions.net:+];
+	RCVD_COUNT_THREE(0.00)[4];
 	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	RCPT_COUNT_FIVE(0.00)[6];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[johannes@sipsolutions.net,linux-wireless@vger.kernel.org];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	DKIM_TRACE(0.00)[sipsolutions.net:+];
 	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[linux-wireless];
-	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sipsolutions.net:dkim,sipsolutions.net:mid]
+	TAGGED_RCPT(0.00)[linux-wireless];
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:email,sipsolutions.net:dkim,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo]
 X-Rspamd-Action: no action
 
-On Tue, 2026-03-03 at 10:52 -1000, Tejun Heo wrote:
-> Hello,
->=20
-> On Tue, Mar 03, 2026 at 12:49:24PM +0100, Johannes Berg wrote:
-> > Fair. I don't know, I don't think there's anything that even shows that
-> > there's a dependency between the two workqueues and the
-> > "((wq_completion)events_unbound)" and "((wq_completion)events)", and
-> > there would have to be for it to deadlock this way because of that?
-> >=20
-> > But one is mm_percpu_wq and the other is system_percpu_wq.
-> >=20
-> > Tejun, does the workqueue code somehow introduce a dependency between
-> > different per-CPU workqueues that's not modelled in lockdep?
->=20
-> Hopefully not. Kinda late to the party. Why isn't mm_percpu_wq making
-> forward progress? That should in all circumstances. What's the work item =
-and
-> kworker doing?
+From: Johannes Berg <johannes.berg@intel.com>
 
-Oh and in addition: the worker that's kicked off by
-__lru_add_drain_all() doesn't really seem to do anything long-running?
-It's lru_add_drain_per_cpu(), which is lru_add_and_bh_lrus_drain(),
-which would appear to be entirely non-sleepable code (holding either
-local locks or having irqs disabled.) It also doesn't show up in the
-log, apparently, hence my question about strange dependencies.
+The beacon doesn't contain the full UHR operation, a number
+of fields (such as NPCA) are only partially there. Add a new
+attribute to contain the full information, so it's available
+to the driver/mac80211.
 
-johannes
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+---
+v2: fix double opening bracket from backport removal
+---
+ include/uapi/linux/nl80211.h |  6 ++++++
+ net/wireless/nl80211.c       | 26 ++++++++++++++++----------
+ 2 files changed, 22 insertions(+), 10 deletions(-)
+
+diff --git a/include/uapi/linux/nl80211.h b/include/uapi/linux/nl80211.h
+index 0b7a06c2b9f7..67d764023988 100644
+--- a/include/uapi/linux/nl80211.h
++++ b/include/uapi/linux/nl80211.h
+@@ -3001,6 +3001,10 @@ enum nl80211_commands {
+  *	interference detection is not performed on these sub-channels, their
+  *	corresponding bits are consistently set to zero.
+  *
++ * @NL80211_ATTR_UHR_OPERATION: Full UHR Operation element, as it appears in
++ *	association response etc., since it's abridged in the beacon. Used
++ *	for START_AP etc.
++ *
+  * @NUM_NL80211_ATTR: total number of nl80211_attrs available
+  * @NL80211_ATTR_MAX: highest attribute number currently defined
+  * @__NL80211_ATTR_AFTER_LAST: internal use
+@@ -3576,6 +3580,8 @@ enum nl80211_attrs {
+ 
+ 	NL80211_ATTR_INCUMBENT_SIGNAL_INTERFERENCE_BITMAP,
+ 
++	NL80211_ATTR_UHR_OPERATION,
++
+ 	/* add attributes here, update the policy in nl80211.c */
+ 
+ 	__NL80211_ATTR_AFTER_LAST,
+diff --git a/net/wireless/nl80211.c b/net/wireless/nl80211.c
+index 2225f5d0b124..6b402197f1dd 100644
+--- a/net/wireless/nl80211.c
++++ b/net/wireless/nl80211.c
+@@ -342,6 +342,17 @@ static int validate_uhr_capa(const struct nlattr *attr,
+ 	return ieee80211_uhr_capa_size_ok(data, len, false);
+ }
+ 
++static int validate_uhr_operation(const struct nlattr *attr,
++				  struct netlink_ext_ack *extack)
++{
++	const u8 *data = nla_data(attr);
++	unsigned int len = nla_len(attr);
++
++	if (!ieee80211_uhr_oper_size_ok(data, len, false))
++		return -EINVAL;
++	return 0;
++}
++
+ /* policy for the attributes */
+ static const struct nla_policy nl80211_policy[NUM_NL80211_ATTR];
+ 
+@@ -947,6 +958,8 @@ static const struct nla_policy nl80211_policy[NUM_NL80211_ATTR] = {
+ 	[NL80211_ATTR_UHR_CAPABILITY] =
+ 		NLA_POLICY_VALIDATE_FN(NLA_BINARY, validate_uhr_capa, 255),
+ 	[NL80211_ATTR_DISABLE_UHR] = { .type = NLA_FLAG },
++	[NL80211_ATTR_UHR_OPERATION] =
++		NLA_POLICY_VALIDATE_FN(NLA_BINARY, validate_uhr_operation),
+ };
+ 
+ /* policy for the key attributes */
+@@ -6499,16 +6512,6 @@ static int nl80211_calculate_ap_params(struct cfg80211_ap_settings *params)
+ 			return -EINVAL;
+ 	}
+ 
+-	cap = cfg80211_find_ext_elem(WLAN_EID_EXT_UHR_OPER, ies, ies_len);
+-	if (cap) {
+-		if (!cap->datalen)
+-			return -EINVAL;
+-		params->uhr_oper = (void *)(cap->data + 1);
+-		if (!ieee80211_uhr_oper_size_ok((const u8 *)params->uhr_oper,
+-						cap->datalen - 1, true))
+-			return -EINVAL;
+-	}
+-
+ 	return 0;
+ }
+ 
+@@ -6950,6 +6953,9 @@ static int nl80211_start_ap(struct sk_buff *skb, struct genl_info *info)
+ 	if (err)
+ 		goto out;
+ 
++	if (info->attrs[NL80211_ATTR_UHR_OPERATION])
++		params->uhr_oper = nla_data(info->attrs[NL80211_ATTR_UHR_OPERATION]);
++
+ 	err = nl80211_validate_ap_phy_operation(params);
+ 	if (err)
+ 		goto out;
+-- 
+2.53.0
+
 
