@@ -1,66 +1,67 @@
-Return-Path: <linux-wireless+bounces-32375-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-32374-lists+linux-wireless=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id oLEwModzpmkuQAAAu9opvQ
-	(envelope-from <linux-wireless+bounces-32375-lists+linux-wireless=lfdr.de@vger.kernel.org>)
-	for <lists+linux-wireless@lfdr.de>; Tue, 03 Mar 2026 06:37:11 +0100
+	id 2GUrN4NzpmkuQAAAu9opvQ
+	(envelope-from <linux-wireless+bounces-32374-lists+linux-wireless=lfdr.de@vger.kernel.org>)
+	for <lists+linux-wireless@lfdr.de>; Tue, 03 Mar 2026 06:37:07 +0100
 X-Original-To: lists+linux-wireless@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6AD711E9494
-	for <lists+linux-wireless@lfdr.de>; Tue, 03 Mar 2026 06:37:11 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8A80B1E9487
+	for <lists+linux-wireless@lfdr.de>; Tue, 03 Mar 2026 06:37:07 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 0297C3074E0E
-	for <lists+linux-wireless@lfdr.de>; Tue,  3 Mar 2026 05:37:06 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 90E27302D0A0
+	for <lists+linux-wireless@lfdr.de>; Tue,  3 Mar 2026 05:37:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F24F62D46B2;
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B781C1DF261;
 	Tue,  3 Mar 2026 05:37:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=mediatek.com header.i=@mediatek.com header.b="kv5G/KZp"
+	dkim=pass (1024-bit key) header.d=mediatek.com header.i=@mediatek.com header.b="FFWTh02t"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from mailgw01.mediatek.com (unknown [60.244.123.138])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3EAE212CDA5
-	for <linux-wireless@vger.kernel.org>; Tue,  3 Mar 2026 05:37:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6D1BC40855
+	for <linux-wireless@vger.kernel.org>; Tue,  3 Mar 2026 05:37:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=60.244.123.138
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772516223; cv=none; b=GozCntf4LiqgexY0OS0l702KD4cvE9SNd5B/xvODH//RCX/A/gRTO0JEce20hZQJZDKQYMilR3k5833dsZLbW5Rvx7S6qZEC6Jft5dPLXEu2oior6g2LTuGA364a8x+xX6O17zFvSLLYNzGV9w5ksH3DucAQma4fDGMqOJ8tTDg=
+	t=1772516223; cv=none; b=oQTykIsQ79EflsybfJnR7tfxNSrVRpJ1SJwiiKLHGnaFBconszYYJVcjSz53vCtZdnrmWOX7qku6MKvEMeq9e5Nwr1aaURmNMk0vJZlJlKa9QrzUoAW5Tu0+DVRHdW42j3DGkJdMJ1qKcZwUE/knv0xlzIjrQ0Gd6uWfFN9QjX4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1772516223; c=relaxed/simple;
-	bh=CjcLAZ75dBudYbJQU2Wu+68A345ILAmE/l+JpaV9n60=;
-	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=cccpYsbvN3jKPlCkfuQ0VQBIWv8xtViOWqMdp/0HiLpELSLoZT51GGb8ytN44O+L1XwL1Vyq5JB6/yHOLf2YY14g/dj1VGeQHJDGf/pKWztiGe/OxYVhB+jEbBhOrOyWHF0Hxy5+LA/ze2UQLkmlFCpnxSahACeeYNTTHhO7rJ0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=mediatek.com; spf=pass smtp.mailfrom=mediatek.com; dkim=pass (1024-bit key) header.d=mediatek.com header.i=@mediatek.com header.b=kv5G/KZp; arc=none smtp.client-ip=60.244.123.138
+	bh=TPmmdSqMaR1Xp/kxj7bwKhUoY7xHfS/Ahn87NmW3uyM=;
+	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=I35kzYMXZMCBEZFon+x4065zL+kdtVQK/bjlGDqJdwLFYMqtlLWPwT+U47uqkR4F2LEiSG9noMoxNfn3Q6ThrxvrPl1Bojxefr7799YsEAdGpXWq9TMjPukT+SikYi6X7PtibiF2LHiD39OyP7eg3gk9wEGy0BEXtS6sahS56bM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=mediatek.com; spf=pass smtp.mailfrom=mediatek.com; dkim=pass (1024-bit key) header.d=mediatek.com header.i=@mediatek.com header.b=FFWTh02t; arc=none smtp.client-ip=60.244.123.138
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=mediatek.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=mediatek.com
-X-UUID: f9c1b70216c211f1bcd7499a721e883d-20260303
+X-UUID: facbb0f816c211f1bcd7499a721e883d-20260303
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=mediatek.com; s=dk;
-	h=Content-Type:Content-Transfer-Encoding:MIME-Version:Message-ID:Date:Subject:CC:To:From; bh=oKPlvqaM8hImZCQ5w/scQ7fp97KZPGf8mv9ivOTsvk0=;
-	b=kv5G/KZp3vsjE9+VEnc1WMeF1EXpL5Kwqtux1qHXFhyG5TwzKu10RWj8VUFG7JxTx7hjgG1LrMrg+i6aK1BSjXomG0hscgoqlsy7gecoKH5wWvXXAxF8JUe3iI+H1QJ5rW9+DMZAclpsSRWx0cx9OKGIcKmcuvAgDB9T7RVuwF4=;
+	h=Content-Type:Content-Transfer-Encoding:MIME-Version:References:In-Reply-To:Message-ID:Date:Subject:CC:To:From; bh=I5MVbiSNp2ZHifDR6N19v65FzkDq63EhGl8ZOM9pIVk=;
+	b=FFWTh02thVTpeBn0mh3vcnm1gPfA27BcLNTeNPTfTvHjW50C6EjijfIa2RqliaUlNiYGF9cqYPKMUKYLM/m2djudSQeFDnwTOENcXsBgMCWk04ac6f7pdhzmQ/hSN4E1LW2lbsGTMnyl0N5C0Tg24JXTBgbcf9hRF4UqFXLPFEE=;
 X-CID-P-RULE: Release_Ham
-X-CID-O-INFO: VERSION:1.3.11,REQID:355a0c26-beaf-4956-96a4-9cab19b0f930,IP:0,U
-	RL:0,TC:0,Content:0,EDM:0,RT:0,SF:0,FILE:0,BULK:0,RULE:Release_Ham,ACTION:
-	release,TS:0
-X-CID-META: VersionHash:89c9d04,CLOUDID:c183cb5b-a957-4259-bcca-d3af718d7034,B
-	ulkID:nil,BulkQuantity:0,Recheck:0,SF:102|836|888|898,TC:-5,Content:0|15|5
-	0,EDM:-3,IP:nil,URL:0,File:130,RT:0,Bulk:nil,QS:nil,BEC:-1,COL:0,OSI:0,OSA
-	:0,AV:0,LES:1,SPR:NO,DKR:0,DKP:0,BRR:0,BRE:0,ARC:0
+X-CID-O-INFO: VERSION:1.3.11,REQID:519538a0-0f62-4952-936f-d7ebc283edc7,IP:0,U
+	RL:0,TC:0,Content:-5,EDM:0,RT:0,SF:0,FILE:0,BULK:0,RULE:Release_Ham,ACTION
+	:release,TS:-5
+X-CID-META: VersionHash:89c9d04,CLOUDID:e839747b-8c8a-4fc4-88c0-3556e7711556,B
+	ulkID:nil,BulkQuantity:0,Recheck:0,SF:81|82|102|836|888|898,TC:-5,Content:
+	0|15|50,EDM:-3,IP:nil,URL:0,File:130,RT:0,Bulk:nil,QS:nil,BEC:-1,COL:0,OSI
+	:0,OSA:0,AV:0,LES:1,SPR:NO,DKR:0,DKP:0,BRR:0,BRE:0,ARC:0
 X-CID-BVR: 2,SSN|SDN
 X-CID-BAS: 2,SSN|SDN,0,_
 X-CID-FACTOR: TF_CID_SPAM_SNR
 X-CID-RHF: D41D8CD98F00B204E9800998ECF8427E
-X-UUID: f9c1b70216c211f1bcd7499a721e883d-20260303
-Received: from mtkmbs09n1.mediatek.inc [(172.21.101.35)] by mailgw01.mediatek.com
+X-UUID: facbb0f816c211f1bcd7499a721e883d-20260303
+Received: from mtkmbs11n1.mediatek.inc [(172.21.101.185)] by mailgw01.mediatek.com
 	(envelope-from <jb.tsai@mediatek.com>)
 	(Generic MTA with TLSv1.2 ECDHE-RSA-AES256-GCM-SHA384 256/256)
-	with ESMTP id 872988736; Tue, 03 Mar 2026 13:36:49 +0800
+	with ESMTP id 1730592745; Tue, 03 Mar 2026 13:36:51 +0800
 Received: from mtkmbs13n1.mediatek.inc (172.21.101.193) by
- mtkmbs13n1.mediatek.inc (172.21.101.193) with Microsoft SMTP Server
+ mtkmbs10n1.mediatek.inc (172.21.101.34) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.29; Tue, 3 Mar 2026 13:36:48 +0800
+ 15.2.2562.29; Tue, 3 Mar 2026 13:36:50 +0800
 Received: from mtksitap99.mediatek.inc (10.233.130.16) by
  mtkmbs13n1.mediatek.inc (172.21.101.73) with Microsoft SMTP Server id
- 15.2.2562.29 via Frontend Transport; Tue, 3 Mar 2026 13:36:48 +0800
+ 15.2.2562.29 via Frontend Transport; Tue, 3 Mar 2026 13:36:49 +0800
 From: JB Tsai <jb.tsai@mediatek.com>
 To: <nbd@nbd.name>, <lorenzo@kernel.org>
 CC: <linux-wireless@vger.kernel.org>, <linux-mediatek@lists.infradead.org>,
@@ -68,10 +69,12 @@ CC: <linux-wireless@vger.kernel.org>, <linux-mediatek@lists.infradead.org>,
 	<Ryder.Lee@mediatek.com>, <Leon.Yen@mediatek.com>,
 	<litien.chang@mediatek.com>, <jb.tsai@mediatek.com>, Sean Wang
 	<sean.wang@mediatek.com>
-Subject: [PATCH v2 1/5] wifi: mt76: mt7921: refactor regulatory domain handling to regd.[ch]
-Date: Tue, 3 Mar 2026 13:36:33 +0800
-Message-ID: <20260303053637.465465-1-jb.tsai@mediatek.com>
+Subject: [PATCH v2 2/5] wifi: mt76: mt7921: refactor CLC support check flow
+Date: Tue, 3 Mar 2026 13:36:34 +0800
+Message-ID: <20260303053637.465465-2-jb.tsai@mediatek.com>
 X-Mailer: git-send-email 2.45.2
+In-Reply-To: <20260303053637.465465-1-jb.tsai@mediatek.com>
+References: <20260303053637.465465-1-jb.tsai@mediatek.com>
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
@@ -81,7 +84,7 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Content-Type: text/plain
 X-MTK: N
-X-Rspamd-Queue-Id: 6AD711E9494
+X-Rspamd-Queue-Id: 8A80B1E9487
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-0.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
@@ -89,7 +92,7 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[mediatek.com,quarantine];
 	R_DKIM_ALLOW(-0.20)[mediatek.com:s=dk];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
@@ -97,9 +100,9 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	RCPT_COUNT_TWELVE(0.00)[12];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-32375-lists,linux-wireless=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-32374-lists,linux-wireless=lfdr.de];
 	DKIM_TRACE(0.00)[mediatek.com:+];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	TO_DN_SOME(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[jb.tsai@mediatek.com,linux-wireless@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
@@ -111,322 +114,90 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
 X-Rspamd-Action: no action
 
-Move regd logic to regd.c and regd.h files
+Move the disable_clc module parameter to regd.c and introduce
+mt7921_regd_clc_supported() to centralize CLC support checks.
 
 Co-developed-by: Sean Wang <sean.wang@mediatek.com>
 Signed-off-by: Sean Wang <sean.wang@mediatek.com>
 Signed-off-by: JB Tsai <jb.tsai@mediatek.com>
 ---
-v2: Switch SPDX to BSD-3-Clause-Clear; remove unused <linux/of_net.h>;
-decouple regd.h from mt7921.h with forward declarations
-(no functional change).
+v2: Drop the CLC ARRAY_SIZE(phy->clc) defensive checks in
+mt7921_load_clc() and mt7921_mcu_set_clc(), since phy->clc is dynamically
+allocated and ARRAY_SIZE() is not applicable.
 ---
- .../wireless/mediatek/mt76/mt7921/Makefile    |   2 +-
- .../net/wireless/mediatek/mt76/mt7921/init.c  |  98 +----------------
- .../net/wireless/mediatek/mt76/mt7921/main.c  |   1 +
- .../wireless/mediatek/mt76/mt7921/mt7921.h    |   1 -
- .../net/wireless/mediatek/mt76/mt7921/pci.c   |   1 +
- .../net/wireless/mediatek/mt76/mt7921/regd.c  | 103 ++++++++++++++++++
- .../net/wireless/mediatek/mt76/mt7921/regd.h  |  15 +++
- 7 files changed, 122 insertions(+), 99 deletions(-)
- create mode 100644 drivers/net/wireless/mediatek/mt76/mt7921/regd.c
- create mode 100644 drivers/net/wireless/mediatek/mt76/mt7921/regd.h
+ drivers/net/wireless/mediatek/mt76/mt7921/mcu.c  |  8 ++------
+ drivers/net/wireless/mediatek/mt76/mt7921/regd.c | 13 +++++++++++++
+ drivers/net/wireless/mediatek/mt76/mt7921/regd.h |  1 +
+ 3 files changed, 16 insertions(+), 6 deletions(-)
 
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7921/Makefile b/drivers/net/wireless/mediatek/mt76/mt7921/Makefile
-index 2ad3c1cc3779..3ef7c9c45386 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7921/Makefile
-+++ b/drivers/net/wireless/mediatek/mt76/mt7921/Makefile
-@@ -5,7 +5,7 @@ obj-$(CONFIG_MT7921E) += mt7921e.o
- obj-$(CONFIG_MT7921S) += mt7921s.o
- obj-$(CONFIG_MT7921U) += mt7921u.o
- 
--mt7921-common-y := mac.o mcu.o main.o init.o debugfs.o
-+mt7921-common-y := mac.o mcu.o regd.o main.o init.o debugfs.o
- mt7921-common-$(CONFIG_NL80211_TESTMODE) += testmode.o
- mt7921e-y := pci.o pci_mac.o pci_mcu.o
- mt7921s-y := sdio.o sdio_mac.o sdio_mcu.o
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7921/init.c b/drivers/net/wireless/mediatek/mt76/mt7921/init.c
-index 8e7790702191..49be2fa4e3fa 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7921/init.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7921/init.c
-@@ -9,6 +9,7 @@
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7921/mcu.c b/drivers/net/wireless/mediatek/mt76/mt7921/mcu.c
+index 8442dbd2ee23..9777c899e503 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7921/mcu.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7921/mcu.c
+@@ -4,6 +4,7 @@
+ #include <linux/fs.h>
+ #include <linux/firmware.h>
  #include "mt7921.h"
- #include "../mt76_connac2_mac.h"
- #include "mcu.h"
 +#include "regd.h"
+ #include "mcu.h"
+ #include "../mt76_connac2_mac.h"
+ #include "../mt792x_trace.h"
+@@ -11,10 +12,6 @@
+ #define MT_STA_BFER			BIT(0)
+ #define MT_STA_BFEE			BIT(1)
  
- static ssize_t mt7921_thermal_temp_show(struct device *dev,
- 					struct device_attribute *attr,
-@@ -60,103 +61,6 @@ static int mt7921_thermal_init(struct mt792x_phy *phy)
- 	return PTR_ERR_OR_ZERO(hwmon);
- }
- 
--static void
--mt7921_regd_channel_update(struct wiphy *wiphy, struct mt792x_dev *dev)
--{
--#define IS_UNII_INVALID(idx, sfreq, efreq) \
--	(!(dev->phy.clc_chan_conf & BIT(idx)) && (cfreq) >= (sfreq) && (cfreq) <= (efreq))
--	struct ieee80211_supported_band *sband;
--	struct mt76_dev *mdev = &dev->mt76;
--	struct device_node *np, *band_np;
--	struct ieee80211_channel *ch;
--	int i, cfreq;
+-static bool mt7921_disable_clc;
+-module_param_named(disable_clc, mt7921_disable_clc, bool, 0644);
+-MODULE_PARM_DESC(disable_clc, "disable CLC support");
 -
--	np = mt76_find_power_limits_node(mdev);
--
--	sband = wiphy->bands[NL80211_BAND_5GHZ];
--	band_np = np ? of_get_child_by_name(np, "txpower-5g") : NULL;
--	for (i = 0; i < sband->n_channels; i++) {
--		ch = &sband->channels[i];
--		cfreq = ch->center_freq;
--
--		if (np && (!band_np || !mt76_find_channel_node(band_np, ch))) {
--			ch->flags |= IEEE80211_CHAN_DISABLED;
--			continue;
--		}
--
--		/* UNII-4 */
--		if (IS_UNII_INVALID(0, 5845, 5925))
--			ch->flags |= IEEE80211_CHAN_DISABLED;
--	}
--
--	sband = wiphy->bands[NL80211_BAND_6GHZ];
--	if (!sband)
--		return;
--
--	band_np = np ? of_get_child_by_name(np, "txpower-6g") : NULL;
--	for (i = 0; i < sband->n_channels; i++) {
--		ch = &sband->channels[i];
--		cfreq = ch->center_freq;
--
--		if (np && (!band_np || !mt76_find_channel_node(band_np, ch))) {
--			ch->flags |= IEEE80211_CHAN_DISABLED;
--			continue;
--		}
--
--		/* UNII-5/6/7/8 */
--		if (IS_UNII_INVALID(1, 5925, 6425) ||
--		    IS_UNII_INVALID(2, 6425, 6525) ||
--		    IS_UNII_INVALID(3, 6525, 6875) ||
--		    IS_UNII_INVALID(4, 6875, 7125))
--			ch->flags |= IEEE80211_CHAN_DISABLED;
--	}
--}
--
--void mt7921_regd_update(struct mt792x_dev *dev)
--{
--	struct mt76_dev *mdev = &dev->mt76;
--	struct ieee80211_hw *hw = mdev->hw;
--	struct wiphy *wiphy = hw->wiphy;
--
--	mt7921_mcu_set_clc(dev, mdev->alpha2, dev->country_ie_env);
--	mt7921_regd_channel_update(wiphy, dev);
--	mt76_connac_mcu_set_channel_domain(hw->priv);
--	mt7921_set_tx_sar_pwr(hw, NULL);
--}
--EXPORT_SYMBOL_GPL(mt7921_regd_update);
--
--static void
--mt7921_regd_notifier(struct wiphy *wiphy,
--		     struct regulatory_request *request)
--{
--	struct ieee80211_hw *hw = wiphy_to_ieee80211_hw(wiphy);
--	struct mt792x_dev *dev = mt792x_hw_dev(hw);
--	struct mt76_connac_pm *pm = &dev->pm;
--
--	memcpy(dev->mt76.alpha2, request->alpha2, sizeof(dev->mt76.alpha2));
--	dev->mt76.region = request->dfs_region;
--	dev->country_ie_env = request->country_ie_env;
--
--	if (request->initiator == NL80211_REGDOM_SET_BY_USER) {
--		if (dev->mt76.alpha2[0] == '0' && dev->mt76.alpha2[1] == '0')
--			wiphy->regulatory_flags &= ~REGULATORY_COUNTRY_IE_IGNORE;
--		else
--			wiphy->regulatory_flags |= REGULATORY_COUNTRY_IE_IGNORE;
--	}
--
--	if (pm->suspended)
--		return;
--
--	dev->regd_in_progress = true;
--
--	mt792x_mutex_acquire(dev);
--	mt7921_regd_update(dev);
--	mt792x_mutex_release(dev);
--
--	dev->regd_in_progress = false;
--	wake_up(&dev->wait);
--}
--
- int mt7921_mac_init(struct mt792x_dev *dev)
+ int mt7921_mcu_parse_response(struct mt76_dev *mdev, int cmd,
+ 			      struct sk_buff *skb, int seq)
  {
- 	int i;
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7921/main.c b/drivers/net/wireless/mediatek/mt76/mt7921/main.c
-index 3d74fabe7408..d9925a528294 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7921/main.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7921/main.c
-@@ -7,6 +7,7 @@
- #include <linux/module.h>
- #include <net/ipv6.h>
- #include "mt7921.h"
-+#include "regd.h"
- #include "mcu.h"
+@@ -422,8 +419,7 @@ static int mt7921_load_clc(struct mt792x_dev *dev, const char *fw_name)
+ 	u8 *clc_base = NULL, hw_encap = 0;
  
- static int
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7921/mt7921.h b/drivers/net/wireless/mediatek/mt76/mt7921/mt7921.h
-index 64f60c4fc60c..fb8654b7c5e7 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7921/mt7921.h
-+++ b/drivers/net/wireless/mediatek/mt76/mt7921/mt7921.h
-@@ -260,7 +260,6 @@ mt7921_l1_rmw(struct mt792x_dev *dev, u32 addr, u32 mask, u32 val)
- #define mt7921_l1_set(dev, addr, val)	mt7921_l1_rmw(dev, addr, 0, val)
- #define mt7921_l1_clear(dev, addr, val)	mt7921_l1_rmw(dev, addr, val, 0)
+ 	dev->phy.clc_chan_conf = 0xff;
+-	if (mt7921_disable_clc ||
+-	    mt76_is_usb(&dev->mt76))
++	if (!mt7921_regd_clc_supported(dev))
+ 		return 0;
  
--void mt7921_regd_update(struct mt792x_dev *dev);
- int mt7921_mac_init(struct mt792x_dev *dev);
- bool mt7921_mac_wtbl_update(struct mt792x_dev *dev, int idx, u32 mask);
- int mt7921_mac_sta_add(struct mt76_dev *mdev, struct ieee80211_vif *vif,
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7921/pci.c b/drivers/net/wireless/mediatek/mt76/mt7921/pci.c
-index 7a790ddf43bb..64340f9b7fa4 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7921/pci.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7921/pci.c
-@@ -12,6 +12,7 @@
- #include "../mt76_connac2_mac.h"
- #include "../dma.h"
- #include "mcu.h"
-+#include "regd.h"
- 
- static const struct pci_device_id mt7921_pci_device_table[] = {
- 	{ PCI_DEVICE(PCI_VENDOR_ID_MEDIATEK, 0x7961),
+ 	if (mt76_is_mmio(&dev->mt76)) {
 diff --git a/drivers/net/wireless/mediatek/mt76/mt7921/regd.c b/drivers/net/wireless/mediatek/mt76/mt7921/regd.c
-new file mode 100644
-index 000000000000..51dbbadbc63a
---- /dev/null
+index 51dbbadbc63a..943342984965 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7921/regd.c
 +++ b/drivers/net/wireless/mediatek/mt76/mt7921/regd.c
-@@ -0,0 +1,103 @@
-+// SPDX-License-Identifier: BSD-3-Clause-Clear
-+/* Copyright (C) 2025 MediaTek Inc. */
+@@ -6,6 +6,19 @@
+ #include "regd.h"
+ #include "mcu.h"
+ 
++static bool mt7921_disable_clc;
++module_param_named(disable_clc, mt7921_disable_clc, bool, 0644);
++MODULE_PARM_DESC(disable_clc, "disable CLC support");
 +
-+#include <linux/of.h>
-+#include "mt7921.h"
-+#include "regd.h"
-+#include "mcu.h"
-+
-+static void
-+mt7921_regd_channel_update(struct wiphy *wiphy, struct mt792x_dev *dev)
++bool mt7921_regd_clc_supported(struct mt792x_dev *dev)
 +{
-+#define IS_UNII_INVALID(idx, sfreq, efreq) \
-+	(!(dev->phy.clc_chan_conf & BIT(idx)) && (cfreq) >= (sfreq) && (cfreq) <= (efreq))
-+	struct ieee80211_supported_band *sband;
-+	struct mt76_dev *mdev = &dev->mt76;
-+	struct device_node *np, *band_np;
-+	struct ieee80211_channel *ch;
-+	int i, cfreq;
++	if (mt7921_disable_clc ||
++	    mt76_is_usb(&dev->mt76))
++		return false;
 +
-+	np = mt76_find_power_limits_node(mdev);
-+
-+	sband = wiphy->bands[NL80211_BAND_5GHZ];
-+	band_np = np ? of_get_child_by_name(np, "txpower-5g") : NULL;
-+	for (i = 0; i < sband->n_channels; i++) {
-+		ch = &sband->channels[i];
-+		cfreq = ch->center_freq;
-+
-+		if (np && (!band_np || !mt76_find_channel_node(band_np, ch))) {
-+			ch->flags |= IEEE80211_CHAN_DISABLED;
-+			continue;
-+		}
-+
-+		/* UNII-4 */
-+		if (IS_UNII_INVALID(0, 5845, 5925))
-+			ch->flags |= IEEE80211_CHAN_DISABLED;
-+	}
-+
-+	sband = wiphy->bands[NL80211_BAND_6GHZ];
-+	if (!sband)
-+		return;
-+
-+	band_np = np ? of_get_child_by_name(np, "txpower-6g") : NULL;
-+	for (i = 0; i < sband->n_channels; i++) {
-+		ch = &sband->channels[i];
-+		cfreq = ch->center_freq;
-+
-+		if (np && (!band_np || !mt76_find_channel_node(band_np, ch))) {
-+			ch->flags |= IEEE80211_CHAN_DISABLED;
-+			continue;
-+		}
-+
-+		/* UNII-5/6/7/8 */
-+		if (IS_UNII_INVALID(1, 5925, 6425) ||
-+		    IS_UNII_INVALID(2, 6425, 6525) ||
-+		    IS_UNII_INVALID(3, 6525, 6875) ||
-+		    IS_UNII_INVALID(4, 6875, 7125))
-+			ch->flags |= IEEE80211_CHAN_DISABLED;
-+	}
++	return true;
 +}
 +
-+void mt7921_regd_update(struct mt792x_dev *dev)
-+{
-+	struct mt76_dev *mdev = &dev->mt76;
-+	struct ieee80211_hw *hw = mdev->hw;
-+	struct wiphy *wiphy = hw->wiphy;
-+
-+	mt7921_mcu_set_clc(dev, mdev->alpha2, dev->country_ie_env);
-+	mt7921_regd_channel_update(wiphy, dev);
-+	mt76_connac_mcu_set_channel_domain(hw->priv);
-+	mt7921_set_tx_sar_pwr(hw, NULL);
-+}
-+EXPORT_SYMBOL_GPL(mt7921_regd_update);
-+
-+void mt7921_regd_notifier(struct wiphy *wiphy,
-+			  struct regulatory_request *request)
-+{
-+	struct ieee80211_hw *hw = wiphy_to_ieee80211_hw(wiphy);
-+	struct mt792x_dev *dev = mt792x_hw_dev(hw);
-+	struct mt76_connac_pm *pm = &dev->pm;
-+
-+	memcpy(dev->mt76.alpha2, request->alpha2, sizeof(dev->mt76.alpha2));
-+	dev->mt76.region = request->dfs_region;
-+	dev->country_ie_env = request->country_ie_env;
-+
-+	if (request->initiator == NL80211_REGDOM_SET_BY_USER) {
-+		if (dev->mt76.alpha2[0] == '0' && dev->mt76.alpha2[1] == '0')
-+			wiphy->regulatory_flags &= ~REGULATORY_COUNTRY_IE_IGNORE;
-+		else
-+			wiphy->regulatory_flags |= REGULATORY_COUNTRY_IE_IGNORE;
-+	}
-+
-+	if (pm->suspended)
-+		return;
-+
-+	dev->regd_in_progress = true;
-+
-+	mt792x_mutex_acquire(dev);
-+	mt7921_regd_update(dev);
-+	mt792x_mutex_release(dev);
-+
-+	dev->regd_in_progress = false;
-+	wake_up(&dev->wait);
-+}
+ static void
+ mt7921_regd_channel_update(struct wiphy *wiphy, struct mt792x_dev *dev)
+ {
 diff --git a/drivers/net/wireless/mediatek/mt76/mt7921/regd.h b/drivers/net/wireless/mediatek/mt76/mt7921/regd.h
-new file mode 100644
-index 000000000000..2907b78d375b
---- /dev/null
+index 2907b78d375b..ece85feb7a23 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7921/regd.h
 +++ b/drivers/net/wireless/mediatek/mt76/mt7921/regd.h
-@@ -0,0 +1,15 @@
-+/* SPDX-License-Identifier: BSD-3-Clause-Clear */
-+/* Copyright (C) 2025 MediaTek Inc. */
-+
-+#ifndef __MT7921_REGD_H
-+#define __MT7921_REGD_H
-+
-+struct mt792x_dev;
-+struct wiphy;
-+struct regulatory_request;
-+
-+void mt7921_regd_update(struct mt792x_dev *dev);
-+void mt7921_regd_notifier(struct wiphy *wiphy,
-+			  struct regulatory_request *request);
-+
-+#endif
+@@ -11,5 +11,6 @@ struct regulatory_request;
+ void mt7921_regd_update(struct mt792x_dev *dev);
+ void mt7921_regd_notifier(struct wiphy *wiphy,
+ 			  struct regulatory_request *request);
++bool mt7921_regd_clc_supported(struct mt792x_dev *dev);
+ 
+ #endif
 -- 
 2.43.0
 
