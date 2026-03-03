@@ -1,190 +1,131 @@
-Return-Path: <linux-wireless+bounces-32368-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-32369-lists+linux-wireless=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id QCbpFORGpmlyNQAAu9opvQ
-	(envelope-from <linux-wireless+bounces-32368-lists+linux-wireless=lfdr.de@vger.kernel.org>)
-	for <lists+linux-wireless@lfdr.de>; Tue, 03 Mar 2026 03:26:44 +0100
+	id qE7CN2lMpmnbNgAAu9opvQ
+	(envelope-from <linux-wireless+bounces-32369-lists+linux-wireless=lfdr.de@vger.kernel.org>)
+	for <lists+linux-wireless@lfdr.de>; Tue, 03 Mar 2026 03:50:17 +0100
 X-Original-To: lists+linux-wireless@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id DEC121E7FC1
-	for <lists+linux-wireless@lfdr.de>; Tue, 03 Mar 2026 03:26:42 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5A1BC1E83CF
+	for <lists+linux-wireless@lfdr.de>; Tue, 03 Mar 2026 03:50:17 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 9BCCA305D1FC
-	for <lists+linux-wireless@lfdr.de>; Tue,  3 Mar 2026 02:26:41 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 1970E306FE2C
+	for <lists+linux-wireless@lfdr.de>; Tue,  3 Mar 2026 02:48:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4DA913750BD;
-	Tue,  3 Mar 2026 02:26:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 73622376475;
+	Tue,  3 Mar 2026 02:48:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="cRVv41zA"
+	dkim=pass (2048-bit key) header.d=realtek.com header.i=@realtek.com header.b="Svb4G5k+"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.12])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 227B830C34A
-	for <linux-wireless@vger.kernel.org>; Tue,  3 Mar 2026 02:26:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.12
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F0F09373BF2
+	for <linux-wireless@vger.kernel.org>; Tue,  3 Mar 2026 02:48:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=211.75.126.72
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772504800; cv=none; b=A8cFzG8wCd1CyB4/cgkB2eSU8e1tmHwitnh/JJgjbh24mdbQBJY1P7W52qr70451onYX/S2LMZDaotsXmX5TXitCYTJ+Y5AqZYVCc1k5yGOqnA492nI1+IMk66wA0cN1IbRMQWx+MhQAKPHhmtm5kSEWm5wk4IOZIwMor4DvZ3M=
+	t=1772506118; cv=none; b=Fe2STLY2x6pMpF/QfhHXzNoO3p2n2dI/Z6Wx0CGl/P0P3p2S3lSCdift2tSUx6hDHwMSTErvWubwm5tLUXcuVNBDkyaCSj4mNQ/BbNyZ/88jM3ugpc9gc2Tmb2Qc2s0jmZKm1EpcgGMYQrdKBoJRG3umXhAA+6u0TAzl5LOp/kk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772504800; c=relaxed/simple;
-	bh=3+Zd3iMZOiTah9QodUqgsdswSFj3MkeW0XRcMwu725k=;
-	h=Date:From:To:Cc:Subject:Message-ID; b=FwJ4s70vt7oTLVYA5Vz3TknIoccY6hjC1U3mfm2vOL5LxJlmUktQTELL0LkXnGvcpIoU46HisNVwFgddEUhkQgQpQU8Rdyh4E5ZR5DsRoWv+lCqp/U3ebk7/n7uYQety++JsNLk0dMa1rRyAC9z9xaGfMQEZ3g/gcgg/no+1j3s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=cRVv41zA; arc=none smtp.client-ip=192.198.163.12
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1772504798; x=1804040798;
-  h=date:from:to:cc:subject:message-id;
-  bh=3+Zd3iMZOiTah9QodUqgsdswSFj3MkeW0XRcMwu725k=;
-  b=cRVv41zA0iODe/JrexwMSesKbNp65Mwc6MOI0/gbhIazzoJNP0+RwYjx
-   TcHNxfYBOAROWGaWtfwOw/7TzED5y85NE6mYCq65zkY2EM7xLMu8864IK
-   Q62EkKwXne8s1xtfNFexuwXnY3y8PAOCNqLNx64tDsAA36epWSsO5t194
-   QsphL+s/RJSSzIdFPyTl2zmNCJCHkqZplQEDlcLSmKaB0u9CcZmRYHVnx
-   g12AIaXCzEc2DBedS8yV0pZvpepNPZzb6IQgY8ThvEyt9rV/mZjOYYNNi
-   SCbCpoFQmo/YxScm44hToeiXxgaedE0N5Q4CCqYLmPsfS0OcB7kBgJWrv
-   A==;
-X-CSE-ConnectionGUID: o0q5kx9ORQOr59r3n7lm5w==
-X-CSE-MsgGUID: FkqLRHzDQk6e3jSwrxAPGA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11717"; a="77395797"
-X-IronPort-AV: E=Sophos;i="6.21,321,1763452800"; 
-   d="scan'208";a="77395797"
-Received: from orviesa001.jf.intel.com ([10.64.159.141])
-  by fmvoesa106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 02 Mar 2026 18:26:37 -0800
-X-CSE-ConnectionGUID: KaXuYPBcRhCUOCSpOalhRg==
-X-CSE-MsgGUID: oso/ShbJTB6KYMWx0VYp4w==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.21,321,1763452800"; 
-   d="scan'208";a="255714627"
-Received: from lkp-server01.sh.intel.com (HELO f27a57aa7a36) ([10.239.97.150])
-  by orviesa001.jf.intel.com with ESMTP; 02 Mar 2026 18:26:36 -0800
-Received: from kbuild by f27a57aa7a36 with local (Exim 4.98.2)
-	(envelope-from <lkp@intel.com>)
-	id 1vxFSz-000000001eH-2NLf;
-	Tue, 03 Mar 2026 02:26:33 +0000
-Date: Tue, 03 Mar 2026 10:26:11 +0800
-From: kernel test robot <lkp@intel.com>
-To: Johannes Berg <johannes.berg@intel.com>
-Cc: linux-wireless@vger.kernel.org
-Subject: [wireless-next:main] BUILD SUCCESS
- 7c6084d7fa4e61dd7824c34529277a814c7b3836
-Message-ID: <202603031002.BTF9esH3-lkp@intel.com>
-User-Agent: s-nail v14.9.25
+	s=arc-20240116; t=1772506118; c=relaxed/simple;
+	bh=ivhrM0TjI7rYCiHcPKWVB3x5NidPcnJL83jfUthc58E=;
+	h=From:To:CC:Subject:In-Reply-To:References:Message-ID:Date:
+	 MIME-Version:Content-Type; b=NjEFhDUtmYImideL93itQXwn4WzLj85cQOvjYPE5+6vLxOnugWtUTPbBVWwl8W4UxUg5TzrooYPv7WFiekNjkl9b1oSdiQPNWDeiy9QRL4RVEFtDOCbKq1D3iHX6zE1guodxdaUfmltnA+4nad66/2juL1tXbiPMsGrX8M3GvXg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com; spf=pass smtp.mailfrom=realtek.com; dkim=pass (2048-bit key) header.d=realtek.com header.i=@realtek.com header.b=Svb4G5k+; arc=none smtp.client-ip=211.75.126.72
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=realtek.com
+X-SpamFilter-By: ArmorX SpamTrap 5.80 with qID 6232mYOv9258480, This message is accepted by code: ctloc85258
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=realtek.com; s=dkim;
+	t=1772506114; bh=5Ja37MwLKOppugIgfg6+gQpqKVbV2nxjPliJIO50jl0=;
+	h=From:To:CC:Subject:In-Reply-To:References:Message-ID:Date:
+	 MIME-Version:Content-Type;
+	b=Svb4G5k+EKiE+Yefc4mPL4u5Z6gCfjcisW4rSnQA4imoh1ynpLniMyR7RHVZo784V
+	 5Wn5q1NlODEGgsYaPlr36gL09qTRn+ZerRuVmivJfu4d+VkFoXM2c/eVVGIhtMYTHR
+	 rzVoNbD5rs9+UGh/ZYRLlx+DsfKuVtW1/pL7UcZH8UThFuVO00a93gMEF34k5r+0wq
+	 jSlyQf9xPCgsjOEDwKxuvBo2hgzsG1S+i+AWz9SNE0GwVCT+7ncYrReQ99SAtGmGAQ
+	 9MKck7VTq/ySfPUJHe4x9agsOyyERGo4IXZW3XAtuw2ijSPLwn9RAx/A6Lg3VAG6V4
+	 Z/m9xkksyzvfQ==
+Received: from mail.realtek.com (rtkexhmbs02.realtek.com.tw[172.21.6.41])
+	by rtits2.realtek.com.tw (8.15.2/3.21/5.94) with ESMTPS id 6232mYOv9258480
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK)
+	for <linux-wireless@vger.kernel.org>; Tue, 3 Mar 2026 10:48:34 +0800
+Received: from RTKEXHMBS05.realtek.com.tw (10.21.1.55) by
+ RTKEXHMBS02.realtek.com.tw (172.21.6.41) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1748.10; Tue, 3 Mar 2026 10:48:33 +0800
+Received: from [127.0.1.1] (172.21.40.75) by RTKEXHMBS05.realtek.com.tw
+ (10.21.1.55) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1748.10 via Frontend
+ Transport; Tue, 3 Mar 2026 10:48:33 +0800
+From: Ping-Ke Shih <pkshih@realtek.com>
+To: Ping-Ke Shih <pkshih@realtek.com>, <linux-wireless@vger.kernel.org>
+CC: <damon.chen@realtek.com>, <kevin_yang@realtek.com>
+Subject: Re: [PATCH rtw-next 01/12] wifi: rtw89: fw: add fw_def struct to put firmware name and format version
+In-Reply-To: <20260213061552.29997-2-pkshih@realtek.com>
+References: <20260213061552.29997-1-pkshih@realtek.com> <20260213061552.29997-2-pkshih@realtek.com>
+Message-ID: <c2054a59-4c42-48d7-b5bd-89fba4ecef2f@RTKEXHMBS05.realtek.com.tw>
+Date: Tue, 3 Mar 2026 10:48:33 +0800
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
-X-Rspamd-Queue-Id: DEC121E7FC1
+MIME-Version: 1.0
+Content-Type: text/plain
+X-Rspamd-Queue-Id: 5A1BC1E83CF
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.66 / 15.00];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MID_CONTAINS_FROM(1.00)[];
 	R_MISSING_CHARSET(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[intel.com,none];
-	R_DKIM_ALLOW(-0.20)[intel.com:s=Intel];
+	DMARC_POLICY_ALLOW(-0.50)[realtek.com,none];
+	R_DKIM_ALLOW(-0.20)[realtek.com:s=dkim];
 	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	RCPT_COUNT_TWO(0.00)[2];
+	DKIM_TRACE(0.00)[realtek.com:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-32369-lists,linux-wireless=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-32368-lists,linux-wireless=lfdr.de];
-	DKIM_TRACE(0.00)[intel.com:+];
+	RCPT_COUNT_THREE(0.00)[4];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	TO_DN_SOME(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[lkp@intel.com,linux-wireless@vger.kernel.org];
+	FROM_NEQ_ENVFROM(0.00)[pkshih@realtek.com,linux-wireless@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	MISSING_XM_UA(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	NEURAL_HAM(-0.00)[-0.999];
 	RCVD_COUNT_FIVE(0.00)[6];
 	TAGGED_RCPT(0.00)[linux-wireless];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,intel.com:dkim,intel.com:mid]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,realtek.com:dkim,realtek.com:email,RTKEXHMBS05.realtek.com.tw:mid]
 X-Rspamd-Action: no action
 
-tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/wireless/wireless-next.git main
-branch HEAD: 7c6084d7fa4e61dd7824c34529277a814c7b3836  wifi: cfg80211: support key installation on non-netdev wdevs
+Ping-Ke Shih <pkshih@realtek.com> wrote:
 
-elapsed time: 899m
+> The RTL8922DE has a RTL8922DE-VS variant which uses different firmware
+> name and format version, and the rule to select firmware type will be
+> needed to extend. Prepare for coming patches.
+> 
+> Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
 
-configs tested: 65
-configs skipped: 0
+12 patch(es) applied to rtw-next branch of rtw.git, thanks.
 
-The following configs have been built successfully.
-More configs may be tested in the coming days.
+abaa59fb24ca wifi: rtw89: fw: add fw_def struct to put firmware name and format version
+fdb626b79477 wifi: rtw89: fw: recognize firmware type B by AID
+888226bd560a wifi: rtw89: add general way to generate module firmware string
+1d67f1f8e9a0 wifi: rtw89: 8852b: update supported firmware format to 2
+5cfda90c6384 wifi: rtw89: 8852a: move DIG tables to rtw8852a.c
+b60796c07a79 wifi: rtw89: 8852a: update supported firmware format to 1
+6b4fe140874b wifi: rtw89: 8851b: update supported firmware format to 1
+79b3702bbc02 wifi: rtw89: add H2C command to protect TX/RX for unused PHY
+dcd2326db843 wifi: rtw89: rfk: add hardware version to rtw89_fw_h2c_rf_pre_ntfy_mcc for new WiFi 7 firmware
+a72de4d4599e wifi: rtw89: debug: add SER SW counters to count simulation
+0cae26a78b14 wifi: rtw89: ser: Wi-Fi 7 reset HALT C2H after reading it
+3d90c421341b wifi: rtw89: ser: post-recover DMAC state to prevent LPS
 
-tested configs:
-alpha         allnoconfig    gcc-15.2.0
-alpha        allyesconfig    gcc-15.2.0
-arc          allmodconfig    clang-16
-arc          allmodconfig    gcc-15.2.0
-arc           allnoconfig    gcc-15.2.0
-arc          allyesconfig    gcc-15.2.0
-arm           allnoconfig    clang-23
-arm          allyesconfig    clang-16
-arm          allyesconfig    gcc-15.2.0
-arm64        allmodconfig    clang-19
-arm64         allnoconfig    gcc-15.2.0
-csky         allmodconfig    gcc-15.2.0
-csky          allnoconfig    gcc-15.2.0
-hexagon      allmodconfig    clang-17
-hexagon      allmodconfig    gcc-15.2.0
-hexagon       allnoconfig    clang-23
-i386         allmodconfig    clang-20
-i386         allmodconfig    gcc-14
-i386          allnoconfig    gcc-14
-i386         allyesconfig    clang-20
-i386         allyesconfig    gcc-14
-loongarch    allmodconfig    clang-19
-loongarch     allnoconfig    clang-23
-m68k         allmodconfig    gcc-15.2.0
-m68k          allnoconfig    gcc-15.2.0
-m68k         allyesconfig    clang-16
-m68k         allyesconfig    gcc-15.2.0
-microblaze    allnoconfig    gcc-15.2.0
-microblaze   allyesconfig    gcc-15.2.0
-mips         allmodconfig    gcc-15.2.0
-mips          allnoconfig    gcc-15.2.0
-mips         allyesconfig    gcc-15.2.0
-nios2        allmodconfig    gcc-11.5.0
-nios2         allnoconfig    gcc-11.5.0
-openrisc     allmodconfig    gcc-15.2.0
-openrisc      allnoconfig    gcc-15.2.0
-parisc       allmodconfig    gcc-15.2.0
-parisc        allnoconfig    gcc-15.2.0
-parisc       allyesconfig    clang-19
-parisc       allyesconfig    gcc-15.2.0
-powerpc      allmodconfig    gcc-15.2.0
-powerpc       allnoconfig    gcc-15.2.0
-riscv        allmodconfig    clang-23
-riscv         allnoconfig    gcc-15.2.0
-riscv        allyesconfig    clang-16
-s390         allmodconfig    clang-18
-s390         allmodconfig    clang-19
-s390          allnoconfig    clang-23
-s390         allyesconfig    gcc-15.2.0
-sh           allmodconfig    gcc-15.2.0
-sh            allnoconfig    gcc-15.2.0
-sh           allyesconfig    clang-19
-sh           allyesconfig    gcc-15.2.0
-sparc         allnoconfig    gcc-15.2.0
-sparc64      allmodconfig    clang-23
-um           allmodconfig    clang-19
-um            allnoconfig    clang-23
-um           allyesconfig    gcc-14
-um           allyesconfig    gcc-15.2.0
-x86_64       allmodconfig    clang-20
-x86_64        allnoconfig    clang-20
-x86_64       allyesconfig    clang-20
-x86_64      rhel-9.4-rust    clang-20
-xtensa        allnoconfig    gcc-15.2.0
-xtensa       allyesconfig    gcc-15.2.0
+---
+https://github.com/pkshih/rtw.git
 
---
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
 
