@@ -1,80 +1,77 @@
-Return-Path: <linux-wireless+bounces-32373-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-32378-lists+linux-wireless=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 4DZ0JINzpmkuQAAAu9opvQ
-	(envelope-from <linux-wireless+bounces-32373-lists+linux-wireless=lfdr.de@vger.kernel.org>)
-	for <lists+linux-wireless@lfdr.de>; Tue, 03 Mar 2026 06:37:07 +0100
+	id oCKSN/11pmnDQAAAu9opvQ
+	(envelope-from <linux-wireless+bounces-32378-lists+linux-wireless=lfdr.de@vger.kernel.org>)
+	for <lists+linux-wireless@lfdr.de>; Tue, 03 Mar 2026 06:47:41 +0100
 X-Original-To: lists+linux-wireless@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6385F1E9486
-	for <lists+linux-wireless@lfdr.de>; Tue, 03 Mar 2026 06:37:06 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7DF2C1E9504
+	for <lists+linux-wireless@lfdr.de>; Tue, 03 Mar 2026 06:47:40 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 12400301E6C4
-	for <lists+linux-wireless@lfdr.de>; Tue,  3 Mar 2026 05:37:05 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id E62073037469
+	for <lists+linux-wireless@lfdr.de>; Tue,  3 Mar 2026 05:47:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B55DB1684B4;
-	Tue,  3 Mar 2026 05:37:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 59F6FE56A;
+	Tue,  3 Mar 2026 05:47:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=mediatek.com header.i=@mediatek.com header.b="YSNA8Bnd"
+	dkim=pass (1024-bit key) header.d=mediatek.com header.i=@mediatek.com header.b="gr9xYPxM"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from mailgw01.mediatek.com (unknown [60.244.123.138])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C969F5D8F0
-	for <linux-wireless@vger.kernel.org>; Tue,  3 Mar 2026 05:37:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3D0C629A2
+	for <linux-wireless@vger.kernel.org>; Tue,  3 Mar 2026 05:47:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=60.244.123.138
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772516223; cv=none; b=YtwkNUix+fFGnyKwdjfzKyMOgho+eDVgB7Gkir4cZIzCZFzDkA62Gmd7qLtr+SGpV1W/aATtn+HZY0ePRHGmmE9cJTpIgWlp2QSPBJaxeg5WcIFu5I7i3iCpaO5mELv0u1MCcpd6T2MAaSljgvar2MYMjkLTrmsPwlaKzwM0ZE8=
+	t=1772516858; cv=none; b=ImPV/oZIHGsFBnYFZTfNxNZvoJB8lzUCARR6SNiD8EyduOJiRbgeDFmZyhftC1A/+Xm2HAHj7Y9P8ipYJCHw+NoI5dSOsUdkEQoEdMeu0rAraoGsmqAlvhs+YcH9wKR+wpxHa889vBQk/Z/RzJLNq7dPVuKUxVd1OOSE0eL22Tc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772516223; c=relaxed/simple;
-	bh=P7JcA7l83dFnMp1Ya5q+ST0Y573N96zfwwaAto4sFV8=;
-	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=RcDu+3etZ2+YeaspUFYqG+0Ga4dDh41mRN2DedWe+mG4bsJUbP/1Rb0zyf5O4NiaPKWR6HTPgEYvk8gijIB0v7MXILwAXPfRYlo9RqEFFlcqqd9+4lJZ/N8gpfqpuMygnyuLe7Hp1a0mIe1HPrs91t857ErdLxjhFlGk81/qpu0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=mediatek.com; spf=pass smtp.mailfrom=mediatek.com; dkim=pass (1024-bit key) header.d=mediatek.com header.i=@mediatek.com header.b=YSNA8Bnd; arc=none smtp.client-ip=60.244.123.138
+	s=arc-20240116; t=1772516858; c=relaxed/simple;
+	bh=cGjsPqEbKK9eyv4MjchSCyjZy2b3cRLg5Mx9eRe3jJ8=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=HUqpOKxMhrYYy4Q2nXcegUkn02iOH24IrJJckuIxsndkbI5WKQCnGfOpdXO6iAM23DWUqdiOCgBkK1oSJJXAAYFEExAjUIqe+Gusyz4BCw8DNEW9UBBrXI8uAfxKCvsbG77w7eoiOYjGHRRiPOexMSZLUhqe1bk30b7seImY5eE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=mediatek.com; spf=pass smtp.mailfrom=mediatek.com; dkim=pass (1024-bit key) header.d=mediatek.com header.i=@mediatek.com header.b=gr9xYPxM; arc=none smtp.client-ip=60.244.123.138
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=mediatek.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=mediatek.com
-X-UUID: fdaa4b0416c211f1bcd7499a721e883d-20260303
+X-UUID: 76d7e14816c411f1bcd7499a721e883d-20260303
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=mediatek.com; s=dk;
-	h=Content-Type:Content-Transfer-Encoding:MIME-Version:References:In-Reply-To:Message-ID:Date:Subject:CC:To:From; bh=FCjjyYhJ4HYmnwuhzmO9x5JF1+U4F7Qc+706jJJi/dU=;
-	b=YSNA8Bndt1rXr5PqtwvacplZ+KPiyaqT2WW1diIRShf3dSB1Nw8f7gE+T8ARXXtXpbXBzzJkg72Vd3jOp3zPwdKmBCCrKlHD0UfIIM3zxYetrhL1ycPUkF7czFV2fi6sKk9KtZRtplC3lowygeAhFcLMn+0g3Ty49VqiLkAiMPQ=;
+	h=Content-Type:Content-Transfer-Encoding:MIME-Version:Message-ID:Date:Subject:CC:To:From; bh=U0pjx6MBRdmbHia5VISr9zyiGLKGVqVY7cF6epmrGjQ=;
+	b=gr9xYPxMyE8xnKVBBXdOgxItswWjL/ISheIHW9LYLIuNR4hy6Z3utLA9baBrmQZEpUdK3dmq4ed9TY1X1b8CqwRG8lPnnTxUuaaRsRrRZ0S/OwiPl4TYOrRmiostB26CYe3BcU3GKQVYpzx52GtM+VY4jGuuGcPooUbVThzlr4U=;
 X-CID-P-RULE: Release_Ham
-X-CID-O-INFO: VERSION:1.3.11,REQID:9bd2ddf3-e476-4bd3-88e5-f0efe20cecc2,IP:0,U
+X-CID-O-INFO: VERSION:1.3.11,REQID:9a9dbb3b-899f-4f87-b867-8cd8b09edf63,IP:0,U
 	RL:0,TC:0,Content:0,EDM:0,RT:0,SF:0,FILE:0,BULK:0,RULE:Release_Ham,ACTION:
 	release,TS:0
-X-CID-META: VersionHash:89c9d04,CLOUDID:4a5c2dea-ef90-4382-9c6f-55f2a0689a6b,B
-	ulkID:nil,BulkQuantity:0,Recheck:0,SF:81|82|102|836|888|898,TC:-5,Content:
-	0|15|50,EDM:-3,IP:nil,URL:0,File:130,RT:0,Bulk:nil,QS:nil,BEC:-1,COL:0,OSI
-	:0,OSA:0,AV:0,LES:1,SPR:NO,DKR:0,DKP:0,BRR:0,BRE:0,ARC:0
+X-CID-META: VersionHash:89c9d04,CLOUDID:7cd831f1-16bd-4243-b4ca-b08ca08ab1d8,B
+	ulkID:nil,BulkQuantity:0,Recheck:0,SF:102|836|888|898,TC:-5,Content:0|15|5
+	0,EDM:-3,IP:nil,URL:0,File:130,RT:0,Bulk:nil,QS:nil,BEC:-1,COL:0,OSI:0,OSA
+	:0,AV:0,LES:1,SPR:NO,DKR:0,DKP:0,BRR:0,BRE:0,ARC:0
 X-CID-BVR: 2,SSN|SDN
 X-CID-BAS: 2,SSN|SDN,0,_
 X-CID-FACTOR: TF_CID_SPAM_SNR
 X-CID-RHF: D41D8CD98F00B204E9800998ECF8427E
-X-UUID: fdaa4b0416c211f1bcd7499a721e883d-20260303
-Received: from mtkmbs14n1.mediatek.inc [(172.21.101.75)] by mailgw01.mediatek.com
-	(envelope-from <jb.tsai@mediatek.com>)
+X-UUID: 76d7e14816c411f1bcd7499a721e883d-20260303
+Received: from mtkmbs09n2.mediatek.inc [(172.21.101.94)] by mailgw01.mediatek.com
+	(envelope-from <meichia.chiu@mediatek.com>)
 	(Generic MTA with TLSv1.2 ECDHE-RSA-AES256-GCM-SHA384 256/256)
-	with ESMTP id 354844407; Tue, 03 Mar 2026 13:36:56 +0800
+	with ESMTP id 1349511451; Tue, 03 Mar 2026 13:47:28 +0800
 Received: from mtkmbs13n1.mediatek.inc (172.21.101.193) by
- mtkmbs11n1.mediatek.inc (172.21.101.185) with Microsoft SMTP Server
+ MTKMBS14N1.mediatek.inc (172.21.101.75) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.29; Tue, 3 Mar 2026 13:36:54 +0800
+ 15.2.2562.29; Tue, 3 Mar 2026 13:47:27 +0800
 Received: from mtksitap99.mediatek.inc (10.233.130.16) by
  mtkmbs13n1.mediatek.inc (172.21.101.73) with Microsoft SMTP Server id
- 15.2.2562.29 via Frontend Transport; Tue, 3 Mar 2026 13:36:54 +0800
-From: JB Tsai <jb.tsai@mediatek.com>
-To: <nbd@nbd.name>, <lorenzo@kernel.org>
-CC: <linux-wireless@vger.kernel.org>, <linux-mediatek@lists.infradead.org>,
-	<Deren.Wu@mediatek.com>, <Sean.Wang@mediatek.com>, <Quan.Zhou@mediatek.com>,
-	<Ryder.Lee@mediatek.com>, <Leon.Yen@mediatek.com>,
-	<litien.chang@mediatek.com>, <jb.tsai@mediatek.com>, Sean Wang
-	<sean.wang@mediatek.com>
-Subject: [PATCH v2 5/5] wifi: mt76: mt7921: disable auto regd changes after user set
-Date: Tue, 3 Mar 2026 13:36:37 +0800
-Message-ID: <20260303053637.465465-5-jb.tsai@mediatek.com>
+ 15.2.2562.29 via Frontend Transport; Tue, 3 Mar 2026 13:47:27 +0800
+From: MeiChia Chiu <MeiChia.Chiu@mediatek.com>
+To: Johannes Berg <johannes@sipsolutions.net>
+CC: Lorenzo Bianconi <lorenzo@kernel.org>, Felix Fietkau <nbd@nbd.name>,
+	Shayne Chen <shayne.chen@mediatek.com>, Evelyn Tsai
+	<evelyn.tsai@mediatek.com>, Money Wang <Money.Wang@mediatek.com>,
+	<linux-wireless@vger.kernel.org>, <linux-mediatek@lists.infradead.org>,
+	MeiChia Chiu <MeiChia.Chiu@mediatek.com>
+Subject: [PATCH] wifi: mac80211: fix missing ieee80211_eml_params member initialization
+Date: Tue, 3 Mar 2026 13:47:25 +0800
+Message-ID: <20260303054725.471548-1-MeiChia.Chiu@mediatek.com>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20260303053637.465465-1-jb.tsai@mediatek.com>
-References: <20260303053637.465465-1-jb.tsai@mediatek.com>
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
@@ -84,87 +81,58 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Content-Type: text/plain
 X-MTK: N
-X-Rspamd-Queue-Id: 6385F1E9486
+X-Rspamd-Queue-Id: 7DF2C1E9504
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-0.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	MID_CONTAINS_FROM(1.00)[];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[mediatek.com,quarantine];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[mediatek.com:s=dk];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	RCPT_COUNT_TWELVE(0.00)[12];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-32373-lists,linux-wireless=lfdr.de];
-	DKIM_TRACE(0.00)[mediatek.com:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	TO_DN_SOME(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[jb.tsai@mediatek.com,linux-wireless@vger.kernel.org];
+	TAGGED_FROM(0.00)[bounces-32378-lists,linux-wireless=lfdr.de];
+	RCVD_COUNT_FIVE(0.00)[6];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
 	FROM_HAS_DN(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[MeiChia.Chiu@mediatek.com,linux-wireless@vger.kernel.org];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[9];
 	NEURAL_HAM(-0.00)[-1.000];
-	RCVD_COUNT_FIVE(0.00)[6];
+	DKIM_TRACE(0.00)[mediatek.com:+];
 	TAGGED_RCPT(0.00)[linux-wireless];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,mediatek.com:dkim,mediatek.com:email,mediatek.com:mid]
 X-Rspamd-Action: no action
 
-Add regd_user flag to block automatic regulatory domain updates
-if set by user.
+The missing initialization causes driver to misinterpret the EML control bitmap,
+resulting in incorrect link bitmap handling.
 
-Co-developed-by: Sean Wang <sean.wang@mediatek.com>
-Signed-off-by: Sean Wang <sean.wang@mediatek.com>
-Signed-off-by: JB Tsai <jb.tsai@mediatek.com>
+Fixes: 0d95280a2d54e ("wifi: mac80211: Add eMLSR/eMLMR action frame parsing support")
+Signed-off-by: MeiChia Chiu <MeiChia.Chiu@mediatek.com>
 ---
-v2: no changes
----
- drivers/net/wireless/mediatek/mt76/mt7921/mcu.c  | 1 +
- drivers/net/wireless/mediatek/mt76/mt7921/regd.c | 7 ++++++-
- 2 files changed, 7 insertions(+), 1 deletion(-)
+ net/mac80211/eht.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7921/mcu.c b/drivers/net/wireless/mediatek/mt76/mt7921/mcu.c
-index 3e605a9ab919..25b9437250f7 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7921/mcu.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7921/mcu.c
-@@ -419,6 +419,7 @@ static int mt7921_load_clc(struct mt792x_dev *dev, const char *fw_name)
- 	u8 *clc_base = NULL, hw_encap = 0;
- 
- 	dev->phy.clc_chan_conf = 0xff;
-+	dev->regd_user = false;
- 	if (!mt7921_regd_clc_supported(dev))
- 		return 0;
- 
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7921/regd.c b/drivers/net/wireless/mediatek/mt76/mt7921/regd.c
-index 229aa59e60f3..f122e418d825 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7921/regd.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7921/regd.c
-@@ -117,6 +117,10 @@ void mt7921_regd_notifier(struct wiphy *wiphy,
- 	struct mt76_connac_pm *pm = &dev->pm;
- 	struct mt76_dev *mdev = &dev->mt76;
- 
-+	if (req->initiator == NL80211_REGDOM_SET_BY_USER &&
-+	    !dev->regd_user)
-+		dev->regd_user = true;
-+
- 	/* do not need to update the same country twice */
- 	if (!memcmp(req->alpha2, mdev->alpha2, 2) &&
- 	    dev->country_ie_env == req->country_ie_env)
-@@ -168,7 +172,8 @@ int mt7921_regd_change(struct mt792x_phy *phy, char *alpha2)
- 		return 0;
- 
- 	if (!mt7921_regd_is_valid_alpha2(alpha2) ||
--	    !mt7921_regd_clc_supported(dev))
-+	    !mt7921_regd_clc_supported(dev) ||
-+	    dev->regd_user)
- 		return -EINVAL;
- 
- 	if (mdev->alpha2[0] != '0' && mdev->alpha2[1] != '0')
+diff --git a/net/mac80211/eht.c b/net/mac80211/eht.c
+index 75096b2195d2..078e1e23d8d1 100644
+--- a/net/mac80211/eht.c
++++ b/net/mac80211/eht.c
+@@ -154,6 +154,7 @@ void ieee80211_rx_eml_op_mode_notif(struct ieee80211_sub_if_data *sdata,
+ 	u8 *ptr = mgmt->u.action.u.eml_omn.variable;
+ 	struct ieee80211_eml_params eml_params = {
+ 		.link_id = status->link_id,
++		.control = control,
+ 	};
+ 	struct sta_info *sta;
+ 	int opt_len = 0;
 -- 
-2.43.0
+2.45.2
 
 
