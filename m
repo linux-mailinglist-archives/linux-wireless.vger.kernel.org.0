@@ -1,226 +1,158 @@
-Return-Path: <linux-wireless+bounces-32402-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-32414-lists+linux-wireless=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id CCAwKuXwpmk/agAAu9opvQ
-	(envelope-from <linux-wireless+bounces-32402-lists+linux-wireless=lfdr.de@vger.kernel.org>)
-	for <lists+linux-wireless@lfdr.de>; Tue, 03 Mar 2026 15:32:05 +0100
+	id cEXeNDIRp2k0cwAAu9opvQ
+	(envelope-from <linux-wireless+bounces-32414-lists+linux-wireless=lfdr.de@vger.kernel.org>)
+	for <lists+linux-wireless@lfdr.de>; Tue, 03 Mar 2026 17:49:54 +0100
 X-Original-To: lists+linux-wireless@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 09CEF1F1839
-	for <lists+linux-wireless@lfdr.de>; Tue, 03 Mar 2026 15:32:04 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2EF641F41E2
+	for <lists+linux-wireless@lfdr.de>; Tue, 03 Mar 2026 17:49:53 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 44D843124FAE
-	for <lists+linux-wireless@lfdr.de>; Tue,  3 Mar 2026 14:27:33 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 4771A30B3D2D
+	for <lists+linux-wireless@lfdr.de>; Tue,  3 Mar 2026 16:44:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D0F6935B138;
-	Tue,  3 Mar 2026 14:27:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=candelatech.com header.i=@candelatech.com header.b="nWZeiiCj"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 781B73264CB;
+	Tue,  3 Mar 2026 16:44:28 +0000 (UTC)
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from dispatch1-us1.ppe-hosted.com (dispatch1-us1.ppe-hosted.com [148.163.129.49])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mout.kundenserver.de (mout.kundenserver.de [212.227.17.10])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8BBDE2459C6
-	for <linux-wireless@vger.kernel.org>; Tue,  3 Mar 2026 14:27:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.129.49
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 394CC370D6C
+	for <linux-wireless@vger.kernel.org>; Tue,  3 Mar 2026 16:44:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.227.17.10
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772548052; cv=none; b=tQ28StYIEGoETlkpbok4b3kR9ln/tOAKr/Tf2bgjJlqDVHYfO4WmEkFowqQFgd4Dqvd8tr7cY9EkSj3MjX+gC76WHJEiWH+FsA0yFAlDE07JItT4qz7UviNQM0VymhDWLTBtbGY6uQMHPZbR/E2FAUxhQx4PfTWXJAiKnY3QG9M=
+	t=1772556268; cv=none; b=DB+8cJPEWYRLqSaKk9YtpsVQbuACEM7sHM7hOm1wrJd260aioJCebyIFWdgUDgURAtMHJT1+IZUlZZmSzGMhRA3ZhBIVE5lr/ONlQ929HDLb8b0BNVtFtSKigiMcbhgxvd2Ti4gDNdC0hhIXbo6sXpizdq+nm9OY6UAcd4iO+kI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772548052; c=relaxed/simple;
-	bh=gRr4MESdFNZgPASXIWr/Eqjrn3FKORLOIZxm3vyPyA8=;
-	h=Message-ID:Date:MIME-Version:Subject:To:References:From:
-	 In-Reply-To:Content-Type; b=qYq98KWG/CC0xwR39SzZtaktzYpkkzbKaroEsbLNxUJjbnL6XqWLgeNLJB9/Ex+K1rInS95vCCevE8XT3nK3xFRCEZhJ069NPMdjdHCEuZVQcPe8wzAAKCj+apPL3w3RnF3WSbxH/kLw8IBHCoe81O6hJXfiH0YPymVGqCxG16s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=candelatech.com; spf=pass smtp.mailfrom=candelatech.com; dkim=pass (1024-bit key) header.d=candelatech.com header.i=@candelatech.com header.b=nWZeiiCj; arc=none smtp.client-ip=148.163.129.49
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=candelatech.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=candelatech.com
-X-Virus-Scanned: Proofpoint Essentials engine
-Received: from mail3.candelatech.com (mail.candelatech.com [208.74.158.173])
-	by mx1-us1.ppe-hosted.com (PPE Hosted ESMTP Server) with ESMTP id 0AFA810009D;
-	Tue,  3 Mar 2026 14:27:22 +0000 (UTC)
-Received: from [192.168.1.23] (unknown [98.97.34.48])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-	(No client certificate requested)
-	by mail3.candelatech.com (Postfix) with ESMTPSA id C287F13C2B0;
-	Tue,  3 Mar 2026 06:27:16 -0800 (PST)
-DKIM-Filter: OpenDKIM Filter v2.11.0 mail3.candelatech.com C287F13C2B0
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=candelatech.com;
-	s=default; t=1772548040;
-	bh=gRr4MESdFNZgPASXIWr/Eqjrn3FKORLOIZxm3vyPyA8=;
-	h=Date:Subject:To:References:From:In-Reply-To:From;
-	b=nWZeiiCjufr3s7hrcysK5ZvLqMSFcznu27iGnxONOMcIR7pB/ChyZt7enieOPT1xN
-	 LXu5gEYhF1aJe3QSsTiDCuEIuJ7k07YXWCJfjbuPxSWBA2fK6XL9AFr4OvREr9tbkP
-	 G2Rrx5T3AxWMJ1MVn+AN9XkRCH5S2ndSN1DqozKA=
-Message-ID: <b5803b14-c421-4a05-96c7-56ba7d1b8edb@candelatech.com>
-Date: Tue, 3 Mar 2026 06:27:13 -0800
+	s=arc-20240116; t=1772556268; c=relaxed/simple;
+	bh=zicAUpEW8baw4ChtUGe9CI+tPJqmVpO6djDZ1HH8leY=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=suSIFKpqHmSsOgbrXUyxdz0ZxeHVMZVhYa7yQpRmZeMf0MlILq6BPFJMSnEGXISsPrbenmvfD7HY0cpNfHZOxi4t4ZjLdtXE+c4Tsy4sR+x/jmf5cOtFMIWCH61/nZZBSCllNj22mhzWdp0frdRV2hLmEbVbBuP20ZdOw3LuSZA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=green-communications.fr; spf=pass smtp.mailfrom=green-communications.fr; arc=none smtp.client-ip=212.227.17.10
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=green-communications.fr
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=green-communications.fr
+Received: from client.hidden.invalid by mrelayeu.kundenserver.de (mreue108
+ [213.165.67.119]) with ESMTPSA (Nemesis) id 1N0o7f-1vj76s2A7B-00zmjb; Tue, 03
+ Mar 2026 17:19:39 +0100
+From: Nicolas Cavallari <nicolas.cavallari@green-communications.fr>
+To: Johannes Berg <johannes@sipsolutions.net>
+Cc: linux-wireless@vger.kernel.org
+Subject: [PATCH wireless v2] wifi: mac80211: use jiffies_delta_to_msecs() for sta_info inactive times
+Date: Tue,  3 Mar 2026 17:06:39 +0100
+Message-ID: <20260303161701.31808-1-nicolas.cavallari@green-communications.fr>
+X-Mailer: git-send-email 2.53.0
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: Use-after-free in iwl-mld after hardware fails to restart.
-To: "Korenblit, Miriam Rachel" <miriam.rachel.korenblit@intel.com>,
- linux-wireless <linux-wireless@vger.kernel.org>
-References: <3b570a13-7570-52c7-faff-df32c3f9ef13@candelatech.com>
- <DM3PPF63A6024A9188ACD0856EDD0826643A37FA@DM3PPF63A6024A9.namprd11.prod.outlook.com>
-Content-Language: en-MW
-From: Ben Greear <greearb@candelatech.com>
-Organization: Candela Technologies
-In-Reply-To: <DM3PPF63A6024A9188ACD0856EDD0826643A37FA@DM3PPF63A6024A9.namprd11.prod.outlook.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-MDID: 1772548044-I8yiNSqI87Qi
-X-PPE-STACK: {"stack":"us5"}
-X-MDID-O:
- us5;ut7;1772548044;I8yiNSqI87Qi;<greearb@candelatech.com>;b05365583a7ac22983513582f8b41fd7
-X-PPE-TRUSTED: V=1;DIR=OUT;
-X-Rspamd-Queue-Id: 09CEF1F1839
+Content-Transfer-Encoding: 8bit
+X-Provags-ID: V03:K1:5tWoa7ThpOKN8sHK63Mct8oNXwach6y51yyxP8INNG5kxLt+dHJ
+ Nz6WMMtu/3M/StMDRAhbHh+eYWIugN7HDJpJR4LO8dqCo1FiSuerOwgOhK7gSlZSVIdWJJZ
+ LunorFXf/fAYXnMisWlTuRcVYjMVtKj4Ks809n8Wf1KaUiA614u6LPx2KmmPFj7bJAvqyqC
+ hPO07enmXM18iwAG5uKQQ==
+X-Spam-Flag: NO
+UI-OutboundReport: notjunk:1;M01:P0:/6Wx3ketHWU=;8RIbB4kImqy1fAeM2fD4hEmkyUj
+ 7g13YIa58VPXfkrMZz6QLgO8Zdjic7Qxy+c5gEdU/et/ecfi1892lcIPEflK8ephiNieehKwg
+ jQ+gs5t6tpfvTUj8PaRWWJMdKg1mtQnJiY/dpDsc+c0uK10egTCItAkvlQkKmSjW3O/rH+Agw
+ Op3VHzs2DidgCgas0hUXtBsWZxo3tD5tH0ClVzAXviPxCLjuCfOen1l77U6196a6rQydrFi7L
+ EaIvlK7aXDTeQgMrsJi2wpRD/3lxBFcx/b+8/7W01+FNevYTJyqmb5IjuvhTkBS7hGCJ1BxCb
+ Q7coJ8LgHB01+5gAUuMr9/AFz3sKkYFfyUb+a6sIzZ2FTVCdajPDN1Ve18HIc+TaSUEMK4glx
+ 6b0o1LTSh1sH0pMclZLBJ/kPTzQJbSS5o8lcmbyJ5WEqwWQMMKcyvDOvePrXlGD91ISjMGAb1
+ ciV1SlZyycJ+RbhpIXq4go8sRWxJvJOc+Xu31pOhOa6aqKiQCJD9Hc0YecCcxX1/UmK48S7K8
+ L4PuyOsKZLNb2GF2JUrWzODGCiZqy7jI0G3QqTeuzMWz4sclWxlcvhGZnmGChlt7+9ldskCa2
+ TXK59eYIrfPeTIIOcsPP5GZ0PdDIOEJsdm7LKpyc5qv1ICyytdb1jmjcezlDwCT2JMQrwvNeU
+ MrFFqTNlxcJjj+65xR0VFJZBP8mRBSw8jgEjtqfrBe/S458RuRy+RZZNkbF7xk/VdjjuAjn+e
+ 59jSTPVD0BefXLzx1hK48rokJOnCJM1y+iQmUbA8qWALCg4A+C1P2ACYxzQzfuNaM8gVgVfN3
+ 36WcengaMl/ucXK9rIm+b23TeoWXFe/9KGxLIqDmqyObQd2e/gPMRs12OeS8rTnillf2NAuX3
+ BPkL9Rpi/1Dyk8l+YPNlhDgsxGMCFZKNfNgMbYkXg4SeUVNrtCU4ZwKCctF8J/nCs1QwZbbKO
+ 6CtyduzcjjlvNhU9Ddy9hhNqJZBfta4bD/AkZ5h6p5kfSkUD0egyQsoSR4TJ9RHVcrx5SHDnY
+ 2KVtUtB552DfFg+p1DkIBcMoG/yuPbXg8UnFBm/1z3DnT38ldsmeOZMo/ETIVbeKYjns0Yk9w
+ dpNRHNLfBqrDoBeiIWUSTHn6t/RPAziP+T8OtKfS5XYUqzuzAjF81/Cb5GR+HWIOD6Va5lNhH
+ rVxF9nVI+RQKZrYn5XCFW0zNW0F2ewhIHYZ2BfX0gB3Xj2qe6jjViTzWGTlCU4Ag0nYIu4DHQ
+ jEz+Wg3rhDtJOak41jbvzkfQPJf6bNyms3zkgiSQjh9txWszhTyPhbO7cyUCuvbhdFL/T3e6i
+ ZvZ3yopZUooj4HxI+6LpHSCHYVHAp4Vls8xkYLc7VwImjEqZKf4R6qCG8puG5y/CONvvFMskU
+ eViOWis/L01DH588ZytAmYnSnfmyhw2wpDJL7G6xdovjnFOVLTrU8qv02LSfRIMik4wRbCnBR
+ UUExEgGFi8FOByCPYnMT9ormcbaNqy/KgJmQNcC4RZkIzj5QRO4lWogZgduADu5Vxs6mGG8Ch
+ z9GKvJ1Azmt5WXJsg9d0okCJxqhvictR07dqQAgKwr7st3wE4f7ftn3W0BPap6+2H969j09Dy
+ Y+6kqPiTknNw9YQFOhf8Cj36JXP8LMhySEojdAbKiUVfWWgH+3YFMD+TyUGA5hf2Utuho+m1F
+ NWchh8+/9gZQDgc5OABHsOmWSts10zCyQKJdE2clb6zMZHwf1U8E3MFNvXZwqjuJ0=
+X-Rspamd-Queue-Id: 2EF641F41E2
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [0.04 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[candelatech.com,none];
+	MID_CONTAINS_FROM(1.00)[];
+	R_MISSING_CHARSET(0.50)[];
 	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
-	R_DKIM_ALLOW(-0.20)[candelatech.com:s=default];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCPT_COUNT_TWO(0.00)[2];
-	HAS_ORG_HEADER(0.00)[];
-	TAGGED_FROM(0.00)[bounces-32402-lists,linux-wireless=lfdr.de];
+	DMARC_NA(0.00)[green-communications.fr];
 	RCVD_TLS_LAST(0.00)[];
-	TO_DN_ALL(0.00)[];
-	DKIM_TRACE(0.00)[candelatech.com:+];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	RCVD_COUNT_FIVE(0.00)[5];
+	RCVD_COUNT_THREE(0.00)[4];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[greearb@candelatech.com,linux-wireless@vger.kernel.org];
+	RCPT_COUNT_TWO(0.00)[2];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-32414-lists,linux-wireless=lfdr.de];
+	MIME_TRACE(0.00)[0:+];
+	FROM_HAS_DN(0.00)[];
 	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	NEURAL_HAM(-0.00)[-0.999];
+	FROM_NEQ_ENVFROM(0.00)[nicolas.cavallari@green-communications.fr,linux-wireless@vger.kernel.org];
+	R_DKIM_NA(0.00)[];
+	NEURAL_HAM(-0.00)[-0.966];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	TAGGED_RCPT(0.00)[linux-wireless];
-	MID_RHS_MATCH_FROM(0.00)[];
+	TO_DN_SOME(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,green-communications.fr:mid,green-communications.fr:email]
 X-Rspamd-Action: no action
 
-On 3/2/26 23:19, Korenblit, Miriam Rachel wrote:
-> 
-> 
->> -----Original Message-----
->> From: Ben Greear <greearb@candelatech.com>
->> Sent: Monday, March 2, 2026 9:00 PM
->> To: linux-wireless <linux-wireless@vger.kernel.org>; Korenblit, Miriam Rachel
->> <miriam.rachel.korenblit@intel.com>
->> Subject: Use-after-free in iwl-mld after hardware fails to restart.
->>
->> Hello,
->>
->> Here's another failure case from my torture test system.
->>
->> This is from a patched 6.18.14+ kernel, but from a look at upstream Linux
->> kernel, the problems are there as well.
->>
->> I believe the problem is something like this:
->>
->> firmware crashes several times and cannot recover.  Maybe
->> Intel folks can tell why it is crashing?  I'd love to know if that
->> is something that can be fixed in the driver.
->>
->>   From mac80211/util.c:
->>
->> int ieee80211_reconfig(struct ieee80211_local *local)
->> is called, and gets to the failure case in this code (I see that second WARN in the
->> crash logs)
->> .....
->> 	/*
->> 	 * Upon resume hardware can sometimes be goofy due to
->> 	 * various platform / driver / bus issues, so restarting
->> 	 * the device may at times not work immediately. Propagate
->> 	 * the error.
->> 	 */
->> 	res = drv_start(local);
->> 	if (res) {
->> 		if (suspended)
->> 			WARN(1, "Hardware became unavailable upon resume.
->> This could be a software issue prior to suspend or a hardware issue.\n");
->> 		else
->> 			WARN(1, "Hardware became unavailable during
->> restart.\n");
->> 		ieee80211_wake_queues_by_reason(hw,
->> IEEE80211_MAX_QUEUE_MAP,
->>
->> 	IEEE80211_QUEUE_STOP_REASON_SUSPEND,
->> 						false);
->> 		ieee80211_handle_reconfig_failure(local);
->> 		return res;
->>
->>
->> This method has comments about cleaning things up, but I don't see where it
->> actually
->> cleans up the driver.  And it sets SDATA_IN_DRIVER to false, so a lot of the calls
->> in driver-ops.h that would otherwise tell the driver to clean up skip calls to
->> the driver.
->>
->> static void ieee80211_handle_reconfig_failure(struct ieee80211_local *local)
->> {
->> 	struct ieee80211_sub_if_data *sdata;
->> 	struct ieee80211_chanctx *ctx;
->>
->> 	lockdep_assert_wiphy(local->hw.wiphy);
->>
->> 	/*
->> 	 * We get here if during resume the device can't be restarted properly.
->> 	 * We might also get here if this happens during HW reset, which is a
->> 	 * slightly different situation and we need to drop all connections in
->> 	 * the latter case.
->> 	 *
->> 	 * Ask cfg80211 to turn off all interfaces, this will result in more
->> 	 * warnings but at least we'll then get into a clean stopped state.
->> 	 */
->>
->> 	local->resuming = false;
->> 	local->suspended = false;
->> 	local->in_reconfig = false;
->> 	local->reconfig_failure = true;
->>
->> 	ieee80211_flush_completed_scan(local, true);
->>
->> 	/* scheduled scan clearly can't be running any more, but tell
->> 	 * cfg80211 and clear local state
->> 	 */
->> 	ieee80211_sched_scan_end(local);
->>
->> 	list_for_each_entry(sdata, &local->interfaces, list)
->> 		sdata->flags &= ~IEEE80211_SDATA_IN_DRIVER;
->>
->> 	/* Mark channel contexts as not being in the driver any more to avoid
->> 	 * removing them from the driver during the shutdown process...
->> 	 */
->> 	list_for_each_entry(ctx, &local->chanctx_list, list)
->> 		ctx->driver_present = false;
->> }
->>
->>
->> So, how is the driver supposed to be cleaned up in this scenario?
-> Driver was cleaned up in drv_start. See iwl_mld_restart_cleanup.
-> Could you please share the iwlmld.ko and iwlwifi.ko files?
+Inactive times of around 0xffffffff milliseconds have been observed on
+an ath9k device on ARM.  This is likely due to a memory ordering race in
+the jiffies_to_msecs(jiffies - last_active()) calculation causing an
+overflow when the observed jiffies is below ieee80211_sta_last_active().
 
-I have already made code changes and re-compiled to try to track it down.
+Use jiffies_delta_to_msecs() instead to avoid this problem.
 
-If you can let me know what sort of information you'd like to see (like
-gdb code listings?) I can gather it next time I can reproduce the problem.
+Fixes: 7bbdd2d98797 ("mac80211: implement station stats retrieval")
+Signed-off-by: Nicolas Cavallari <nicolas.cavallari@green-communications.fr>
+---
+ net/mac80211/sta_info.c | 7 +++++--
+ 1 file changed, 5 insertions(+), 2 deletions(-)
 
-Any idea why the firmware is crashing?
+v2: reformat patch, change commit message to obey unwritten rule
 
-Thanks,
-Ben
+also, the wireless tree does not compile on ARCH=um as of d973b1039ccd
 
+diff --git a/net/mac80211/sta_info.c b/net/mac80211/sta_info.c
+index 6dc22f1593be..dd51a578fbc5 100644
+--- a/net/mac80211/sta_info.c
++++ b/net/mac80211/sta_info.c
+@@ -2782,7 +2782,9 @@ static void sta_set_link_sinfo(struct sta_info *sta,
+ 	}
+ 
+ 	link_sinfo->inactive_time =
+-		jiffies_to_msecs(jiffies - ieee80211_sta_last_active(sta, link_id));
++		jiffies_delta_to_msecs(jiffies -
++				       ieee80211_sta_last_active(sta,
++								 link_id));
+ 
+ 	if (!(link_sinfo->filled & (BIT_ULL(NL80211_STA_INFO_TX_BYTES64) |
+ 				    BIT_ULL(NL80211_STA_INFO_TX_BYTES)))) {
+@@ -3015,7 +3017,8 @@ void sta_set_sinfo(struct sta_info *sta, struct station_info *sinfo,
+ 	sinfo->connected_time = ktime_get_seconds() - sta->last_connected;
+ 	sinfo->assoc_at = sta->assoc_at;
+ 	sinfo->inactive_time =
+-		jiffies_to_msecs(jiffies - ieee80211_sta_last_active(sta, -1));
++		jiffies_delta_to_msecs(jiffies -
++				       ieee80211_sta_last_active(sta, -1));
+ 
+ 	if (!(sinfo->filled & (BIT_ULL(NL80211_STA_INFO_TX_BYTES64) |
+ 			       BIT_ULL(NL80211_STA_INFO_TX_BYTES)))) {
 
+base-commit: d973b1039ccde6b241b438d53297edce4de45b5c
 -- 
-Ben Greear <greearb@candelatech.com>
-Candela Technologies Inc  http://www.candelatech.com
+2.53.0
 
 
