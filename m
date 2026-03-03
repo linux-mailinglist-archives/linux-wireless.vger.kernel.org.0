@@ -1,138 +1,222 @@
-Return-Path: <linux-wireless+bounces-32378-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-32379-lists+linux-wireless=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id oCKSN/11pmnDQAAAu9opvQ
-	(envelope-from <linux-wireless+bounces-32378-lists+linux-wireless=lfdr.de@vger.kernel.org>)
-	for <lists+linux-wireless@lfdr.de>; Tue, 03 Mar 2026 06:47:41 +0100
+	id pZmDIat6pml8QQAAu9opvQ
+	(envelope-from <linux-wireless+bounces-32379-lists+linux-wireless=lfdr.de@vger.kernel.org>)
+	for <lists+linux-wireless@lfdr.de>; Tue, 03 Mar 2026 07:07:39 +0100
 X-Original-To: lists+linux-wireless@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7DF2C1E9504
-	for <lists+linux-wireless@lfdr.de>; Tue, 03 Mar 2026 06:47:40 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id A986A1E9653
+	for <lists+linux-wireless@lfdr.de>; Tue, 03 Mar 2026 07:07:36 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id E62073037469
-	for <lists+linux-wireless@lfdr.de>; Tue,  3 Mar 2026 05:47:38 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 64C0E3029A71
+	for <lists+linux-wireless@lfdr.de>; Tue,  3 Mar 2026 06:07:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 59F6FE56A;
-	Tue,  3 Mar 2026 05:47:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=mediatek.com header.i=@mediatek.com header.b="gr9xYPxM"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DBA68358365;
+	Tue,  3 Mar 2026 06:07:33 +0000 (UTC)
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mailgw01.mediatek.com (unknown [60.244.123.138])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-oo1-f70.google.com (mail-oo1-f70.google.com [209.85.161.70])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3D0C629A2
-	for <linux-wireless@vger.kernel.org>; Tue,  3 Mar 2026 05:47:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=60.244.123.138
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5AA1930F819
+	for <linux-wireless@vger.kernel.org>; Tue,  3 Mar 2026 06:07:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.161.70
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772516858; cv=none; b=ImPV/oZIHGsFBnYFZTfNxNZvoJB8lzUCARR6SNiD8EyduOJiRbgeDFmZyhftC1A/+Xm2HAHj7Y9P8ipYJCHw+NoI5dSOsUdkEQoEdMeu0rAraoGsmqAlvhs+YcH9wKR+wpxHa889vBQk/Z/RzJLNq7dPVuKUxVd1OOSE0eL22Tc=
+	t=1772518053; cv=none; b=j96R9xQQpbEqnKe3Wbp3OwUiZ1D4Qo5eoK25drYMSn7Oi7MndVTPnctgBrG5R0OdCTDhg3LFv4jJKiQAhCtsZE+IafrC41HsVcyo2oUIOzYcKIrXl/ByvVyRE0P+O9b46TBEV/tWt8QApf34WaHKyd2liY0ebtL6LUcMA869C3c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772516858; c=relaxed/simple;
-	bh=cGjsPqEbKK9eyv4MjchSCyjZy2b3cRLg5Mx9eRe3jJ8=;
-	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=HUqpOKxMhrYYy4Q2nXcegUkn02iOH24IrJJckuIxsndkbI5WKQCnGfOpdXO6iAM23DWUqdiOCgBkK1oSJJXAAYFEExAjUIqe+Gusyz4BCw8DNEW9UBBrXI8uAfxKCvsbG77w7eoiOYjGHRRiPOexMSZLUhqe1bk30b7seImY5eE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=mediatek.com; spf=pass smtp.mailfrom=mediatek.com; dkim=pass (1024-bit key) header.d=mediatek.com header.i=@mediatek.com header.b=gr9xYPxM; arc=none smtp.client-ip=60.244.123.138
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=mediatek.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=mediatek.com
-X-UUID: 76d7e14816c411f1bcd7499a721e883d-20260303
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=mediatek.com; s=dk;
-	h=Content-Type:Content-Transfer-Encoding:MIME-Version:Message-ID:Date:Subject:CC:To:From; bh=U0pjx6MBRdmbHia5VISr9zyiGLKGVqVY7cF6epmrGjQ=;
-	b=gr9xYPxMyE8xnKVBBXdOgxItswWjL/ISheIHW9LYLIuNR4hy6Z3utLA9baBrmQZEpUdK3dmq4ed9TY1X1b8CqwRG8lPnnTxUuaaRsRrRZ0S/OwiPl4TYOrRmiostB26CYe3BcU3GKQVYpzx52GtM+VY4jGuuGcPooUbVThzlr4U=;
-X-CID-P-RULE: Release_Ham
-X-CID-O-INFO: VERSION:1.3.11,REQID:9a9dbb3b-899f-4f87-b867-8cd8b09edf63,IP:0,U
-	RL:0,TC:0,Content:0,EDM:0,RT:0,SF:0,FILE:0,BULK:0,RULE:Release_Ham,ACTION:
-	release,TS:0
-X-CID-META: VersionHash:89c9d04,CLOUDID:7cd831f1-16bd-4243-b4ca-b08ca08ab1d8,B
-	ulkID:nil,BulkQuantity:0,Recheck:0,SF:102|836|888|898,TC:-5,Content:0|15|5
-	0,EDM:-3,IP:nil,URL:0,File:130,RT:0,Bulk:nil,QS:nil,BEC:-1,COL:0,OSI:0,OSA
-	:0,AV:0,LES:1,SPR:NO,DKR:0,DKP:0,BRR:0,BRE:0,ARC:0
-X-CID-BVR: 2,SSN|SDN
-X-CID-BAS: 2,SSN|SDN,0,_
-X-CID-FACTOR: TF_CID_SPAM_SNR
-X-CID-RHF: D41D8CD98F00B204E9800998ECF8427E
-X-UUID: 76d7e14816c411f1bcd7499a721e883d-20260303
-Received: from mtkmbs09n2.mediatek.inc [(172.21.101.94)] by mailgw01.mediatek.com
-	(envelope-from <meichia.chiu@mediatek.com>)
-	(Generic MTA with TLSv1.2 ECDHE-RSA-AES256-GCM-SHA384 256/256)
-	with ESMTP id 1349511451; Tue, 03 Mar 2026 13:47:28 +0800
-Received: from mtkmbs13n1.mediatek.inc (172.21.101.193) by
- MTKMBS14N1.mediatek.inc (172.21.101.75) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.29; Tue, 3 Mar 2026 13:47:27 +0800
-Received: from mtksitap99.mediatek.inc (10.233.130.16) by
- mtkmbs13n1.mediatek.inc (172.21.101.73) with Microsoft SMTP Server id
- 15.2.2562.29 via Frontend Transport; Tue, 3 Mar 2026 13:47:27 +0800
-From: MeiChia Chiu <MeiChia.Chiu@mediatek.com>
-To: Johannes Berg <johannes@sipsolutions.net>
-CC: Lorenzo Bianconi <lorenzo@kernel.org>, Felix Fietkau <nbd@nbd.name>,
-	Shayne Chen <shayne.chen@mediatek.com>, Evelyn Tsai
-	<evelyn.tsai@mediatek.com>, Money Wang <Money.Wang@mediatek.com>,
-	<linux-wireless@vger.kernel.org>, <linux-mediatek@lists.infradead.org>,
-	MeiChia Chiu <MeiChia.Chiu@mediatek.com>
-Subject: [PATCH] wifi: mac80211: fix missing ieee80211_eml_params member initialization
-Date: Tue, 3 Mar 2026 13:47:25 +0800
-Message-ID: <20260303054725.471548-1-MeiChia.Chiu@mediatek.com>
-X-Mailer: git-send-email 2.45.2
+	s=arc-20240116; t=1772518053; c=relaxed/simple;
+	bh=vvrILT+iq8oS4mB6nITgoC6Lmr1isJ71LVd3pdQSF6E=;
+	h=MIME-Version:Date:Message-ID:Subject:From:To:Content-Type; b=Ktd7gqwTaJXLMz1PkCvSYPefbhNmNot7YR4gNA4EuAk6i3+VkMC+y2p71J8DoaFsSy3CpwwGha+N+dn7ffpSJVIpc3Lk1JHQPilJxuo9EdGeUn5/tFLit7cSYKKEjngBHD2vrug4qUAhkmyzkqP8GOv99nxop7SYhIifBpYLGFs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com; arc=none smtp.client-ip=209.85.161.70
+Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com
+Received: by mail-oo1-f70.google.com with SMTP id 006d021491bc7-679dc77d151so90342960eaf.0
+        for <linux-wireless@vger.kernel.org>; Mon, 02 Mar 2026 22:07:32 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1772518051; x=1773122851;
+        h=to:from:subject:message-id:date:mime-version:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=EXYLFdJyo3qj8tElYEFbgHcNzB4ixy6p8N0OWxG4X4A=;
+        b=Ky8x+JssjhfPsrKNrhFIaSdpmLVYN09SUqVrkkMGiRNmgyveHQtfoL9nq2fD3iS0r6
+         G/yFo41AEKs2Fgeyli9fUU4hMO4Sej/NvrzAlUmb0g84lrMcxxtzBPxy0bNZ6vxRHruF
+         Js2SgrhBSp5vRHg+r7uQ8y7yA6oUTysJiSw3I53f0ZFGLJd/HxvFhxHW/DAJp0+xWBAI
+         2UoCZEgXEY6VEGHdEgWus0kjzdl9fkXn36ZZb5mYPxYTuJSUi/YvaOWYj14Aq2jiAlqk
+         dXx3scu4Za+Xvjc2ChIu7UjhcILa+P3dbYq5N9UlwDL5wtm1olySWlxeDoT/Xleh1I2T
+         Y75Q==
+X-Forwarded-Encrypted: i=1; AJvYcCXHsWM+xUOEd7B2WNA4EO2o94cVrW0xs/lXw8drFC3tljCc5DxAG6vTGIrw1xYvGTBc3EiJAI+92TrwtF3jew==@vger.kernel.org
+X-Gm-Message-State: AOJu0YxAZWIKvPrkEzB+3qgfQHWmbW+9Pj4OPJFBxnriyjITwxTKY1Et
+	zIkyPOYGwE4Rep8tA+nPwVCESBHUp7d4tW8GiPzN9NtcW3BJMK7QpXIDV53wJFFJXJLvLqScFT1
+	p0NFbNesc0J4xlo2U8WgUn1BwIqE7C63/J1vZ/FUwMzsK5hV6rtOANaLLhDk=
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-MTK: N
-X-Rspamd-Queue-Id: 7DF2C1E9504
+X-Received: by 2002:a05:6820:208a:b0:679:97d5:dd25 with SMTP id
+ 006d021491bc7-679faf4e60bmr8716001eaf.56.1772518051182; Mon, 02 Mar 2026
+ 22:07:31 -0800 (PST)
+Date: Mon, 02 Mar 2026 22:07:31 -0800
+X-Google-Appengine-App-Id: s~syzkaller
+X-Google-Appengine-App-Id-Alias: syzkaller
+Message-ID: <69a67aa3.a70a0220.b118c.000a.GAE@google.com>
+Subject: [syzbot] [wireless?] KMSAN: uninit-value in nl80211_send_pmsr_capa
+From: syzbot <syzbot+c686c6b197d10ff3a749@syzkaller.appspotmail.com>
+To: johannes@sipsolutions.net, linux-kernel@vger.kernel.org, 
+	linux-wireless@vger.kernel.org, netdev@vger.kernel.org, 
+	syzkaller-bugs@googlegroups.com
+Content-Type: text/plain; charset="UTF-8"
+X-Rspamd-Queue-Id: A986A1E9653
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.66 / 15.00];
+X-Spamd-Result: default: False [-0.36 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MID_CONTAINS_FROM(1.00)[];
-	DMARC_POLICY_ALLOW(-0.50)[mediatek.com,quarantine];
-	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
-	R_DKIM_ALLOW(-0.20)[mediatek.com:s=dk];
+	URI_HIDDEN_PATH(1.00)[https://syzkaller.appspot.com/x/.config?x=10f867da86e38691];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	MAILLIST(-0.15)[generic];
+	DMARC_POLICY_SOFTFAIL(0.10)[appspotmail.com : SPF not aligned (relaxed), No valid DKIM,none];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-32378-lists,linux-wireless=lfdr.de];
-	RCVD_COUNT_FIVE(0.00)[6];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	FROM_HAS_DN(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[MeiChia.Chiu@mediatek.com,linux-wireless@vger.kernel.org];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	MISSING_XM_UA(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-32379-lists,linux-wireless=lfdr.de,c686c6b197d10ff3a749];
+	RCVD_TLS_LAST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	SUBJECT_HAS_QUESTION(0.00)[];
+	REDIRECTOR_URL(0.00)[goo.gl];
 	PRECEDENCE_BULK(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[9];
-	NEURAL_HAM(-0.00)[-1.000];
-	DKIM_TRACE(0.00)[mediatek.com:+];
+	FROM_NEQ_ENVFROM(0.00)[syzbot@syzkaller.appspotmail.com,linux-wireless@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[5];
+	TO_DN_NONE(0.00)[];
+	R_DKIM_NA(0.00)[];
+	NEURAL_HAM(-0.00)[-0.931];
 	TAGGED_RCPT(0.00)[linux-wireless];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,mediatek.com:dkim,mediatek.com:email,mediatek.com:mid]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[goo.gl:url,storage.googleapis.com:url,syzkaller.appspot.com:url,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,appspotmail.com:email,googlegroups.com:email]
 X-Rspamd-Action: no action
 
-The missing initialization causes driver to misinterpret the EML control bitmap,
-resulting in incorrect link bitmap handling.
+Hello,
 
-Fixes: 0d95280a2d54e ("wifi: mac80211: Add eMLSR/eMLMR action frame parsing support")
-Signed-off-by: MeiChia Chiu <MeiChia.Chiu@mediatek.com>
+syzbot found the following issue on:
+
+HEAD commit:    eb71ab2bf722 Merge tag 'bpf-fixes' of git://git.kernel.org..
+git tree:       upstream
+console output: https://syzkaller.appspot.com/x/log.txt?x=10b7d0ba580000
+kernel config:  https://syzkaller.appspot.com/x/.config?x=10f867da86e38691
+dashboard link: https://syzkaller.appspot.com/bug?extid=c686c6b197d10ff3a749
+compiler:       Debian clang version 21.1.8 (++20251221033036+2078da43e25a-1~exp1~20251221153213.50), Debian LLD 21.1.8
+
+Unfortunately, I don't have any reproducer for this issue yet.
+
+Downloadable assets:
+disk image: https://storage.googleapis.com/syzbot-assets/fcbe8b5437ef/disk-eb71ab2b.raw.xz
+vmlinux: https://storage.googleapis.com/syzbot-assets/245a6565a05b/vmlinux-eb71ab2b.xz
+kernel image: https://storage.googleapis.com/syzbot-assets/a83b065baa80/bzImage-eb71ab2b.xz
+
+IMPORTANT: if you fix the issue, please add the following tag to the commit:
+Reported-by: syzbot+c686c6b197d10ff3a749@syzkaller.appspotmail.com
+
+=====================================================
+BUG: KMSAN: uninit-value in nl80211_send_pmsr_ftm_capa net/wireless/nl80211.c:2302 [inline]
+BUG: KMSAN: uninit-value in nl80211_send_pmsr_capa+0x6fe/0x1b50 net/wireless/nl80211.c:2404
+ nl80211_send_pmsr_ftm_capa net/wireless/nl80211.c:2302 [inline]
+ nl80211_send_pmsr_capa+0x6fe/0x1b50 net/wireless/nl80211.c:2404
+ nl80211_send_wiphy+0x1464/0x96d0 net/wireless/nl80211.c:3302
+ nl80211_dump_wiphy+0x5b6/0xc80 net/wireless/nl80211.c:3447
+ genl_dumpit+0x14e/0x2a0 net/netlink/genetlink.c:1026
+ netlink_dump+0xbaa/0x1800 net/netlink/af_netlink.c:2325
+ netlink_recvmsg+0xc8a/0xfe0 net/netlink/af_netlink.c:1976
+ sock_recvmsg_nosec+0x23e/0x2e0 net/socket.c:1078
+ ____sys_recvmsg+0x4e5/0x620 net/socket.c:2810
+ ___sys_recvmsg+0x20b/0x850 net/socket.c:2854
+ do_recvmmsg+0x40e/0xdf0 net/socket.c:2949
+ __sys_recvmmsg net/socket.c:3023 [inline]
+ __do_sys_recvmmsg net/socket.c:3046 [inline]
+ __se_sys_recvmmsg net/socket.c:3039 [inline]
+ __x64_sys_recvmmsg+0x383/0x500 net/socket.c:3039
+ x64_sys_call+0x96d/0x3ea0 arch/x86/include/generated/asm/syscalls_64.h:300
+ do_syscall_x64 arch/x86/entry/syscall_64.c:63 [inline]
+ do_syscall_64+0x134/0xf80 arch/x86/entry/syscall_64.c:94
+ entry_SYSCALL_64_after_hwframe+0x77/0x7f
+
+Uninit was stored to memory at:
+ mac80211_hwsim_new_radio+0x60b8/0x7e20 drivers/net/wireless/virtual/mac80211_hwsim.c:5837
+ hwsim_new_radio_nl+0x1839/0x3160 drivers/net/wireless/virtual/mac80211_hwsim.c:6504
+ genl_family_rcv_msg_doit+0x338/0x3f0 net/netlink/genetlink.c:1114
+ genl_family_rcv_msg net/netlink/genetlink.c:1194 [inline]
+ genl_rcv_msg+0xac5/0xc00 net/netlink/genetlink.c:1209
+ netlink_rcv_skb+0x54d/0x680 net/netlink/af_netlink.c:2550
+ genl_rcv+0x41/0x60 net/netlink/genetlink.c:1218
+ netlink_unicast_kernel net/netlink/af_netlink.c:1318 [inline]
+ netlink_unicast+0xf04/0x12b0 net/netlink/af_netlink.c:1344
+ netlink_sendmsg+0x10b2/0x1250 net/netlink/af_netlink.c:1894
+ sock_sendmsg_nosec net/socket.c:727 [inline]
+ __sock_sendmsg net/socket.c:742 [inline]
+ ____sys_sendmsg+0xfe7/0x1080 net/socket.c:2592
+ ___sys_sendmsg+0x271/0x3b0 net/socket.c:2646
+ __sys_sendmsg net/socket.c:2678 [inline]
+ __do_sys_sendmsg net/socket.c:2683 [inline]
+ __se_sys_sendmsg net/socket.c:2681 [inline]
+ __x64_sys_sendmsg+0x211/0x3e0 net/socket.c:2681
+ x64_sys_call+0x1e20/0x3ea0 arch/x86/include/generated/asm/syscalls_64.h:47
+ do_syscall_x64 arch/x86/entry/syscall_64.c:63 [inline]
+ do_syscall_64+0x134/0xf80 arch/x86/entry/syscall_64.c:94
+ entry_SYSCALL_64_after_hwframe+0x77/0x7f
+
+Uninit was created at:
+ slab_post_alloc_hook mm/slub.c:4522 [inline]
+ slab_alloc_node mm/slub.c:4844 [inline]
+ __kmalloc_cache_noprof+0x35e/0x1260 mm/slub.c:5353
+ kmalloc_noprof include/linux/slab.h:950 [inline]
+ hwsim_new_radio_nl+0x1705/0x3160 drivers/net/wireless/virtual/mac80211_hwsim.c:6492
+ genl_family_rcv_msg_doit+0x338/0x3f0 net/netlink/genetlink.c:1114
+ genl_family_rcv_msg net/netlink/genetlink.c:1194 [inline]
+ genl_rcv_msg+0xac5/0xc00 net/netlink/genetlink.c:1209
+ netlink_rcv_skb+0x54d/0x680 net/netlink/af_netlink.c:2550
+ genl_rcv+0x41/0x60 net/netlink/genetlink.c:1218
+ netlink_unicast_kernel net/netlink/af_netlink.c:1318 [inline]
+ netlink_unicast+0xf04/0x12b0 net/netlink/af_netlink.c:1344
+ netlink_sendmsg+0x10b2/0x1250 net/netlink/af_netlink.c:1894
+ sock_sendmsg_nosec net/socket.c:727 [inline]
+ __sock_sendmsg net/socket.c:742 [inline]
+ ____sys_sendmsg+0xfe7/0x1080 net/socket.c:2592
+ ___sys_sendmsg+0x271/0x3b0 net/socket.c:2646
+ __sys_sendmsg net/socket.c:2678 [inline]
+ __do_sys_sendmsg net/socket.c:2683 [inline]
+ __se_sys_sendmsg net/socket.c:2681 [inline]
+ __x64_sys_sendmsg+0x211/0x3e0 net/socket.c:2681
+ x64_sys_call+0x1e20/0x3ea0 arch/x86/include/generated/asm/syscalls_64.h:47
+ do_syscall_x64 arch/x86/entry/syscall_64.c:63 [inline]
+ do_syscall_64+0x134/0xf80 arch/x86/entry/syscall_64.c:94
+ entry_SYSCALL_64_after_hwframe+0x77/0x7f
+
+CPU: 0 UID: 0 PID: 15981 Comm: syz.5.4560 Tainted: G             L      syzkaller #0 PREEMPT(full) 
+Tainted: [L]=SOFTLOCKUP
+Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 02/12/2026
+=====================================================
+
+
 ---
- net/mac80211/eht.c | 1 +
- 1 file changed, 1 insertion(+)
+This report is generated by a bot. It may contain errors.
+See https://goo.gl/tpsmEJ for more information about syzbot.
+syzbot engineers can be reached at syzkaller@googlegroups.com.
 
-diff --git a/net/mac80211/eht.c b/net/mac80211/eht.c
-index 75096b2195d2..078e1e23d8d1 100644
---- a/net/mac80211/eht.c
-+++ b/net/mac80211/eht.c
-@@ -154,6 +154,7 @@ void ieee80211_rx_eml_op_mode_notif(struct ieee80211_sub_if_data *sdata,
- 	u8 *ptr = mgmt->u.action.u.eml_omn.variable;
- 	struct ieee80211_eml_params eml_params = {
- 		.link_id = status->link_id,
-+		.control = control,
- 	};
- 	struct sta_info *sta;
- 	int opt_len = 0;
--- 
-2.45.2
+syzbot will keep track of this issue. See:
+https://goo.gl/tpsmEJ#status for how to communicate with syzbot.
 
+If the report is already addressed, let syzbot know by replying with:
+#syz fix: exact-commit-title
+
+If you want to overwrite report's subsystems, reply with:
+#syz set subsystems: new-subsystem
+(See the list of subsystem names on the web dashboard)
+
+If the report is a duplicate of another one, reply with:
+#syz dup: exact-subject-of-another-report
+
+If you want to undo deduplication, reply with:
+#syz undup
 
