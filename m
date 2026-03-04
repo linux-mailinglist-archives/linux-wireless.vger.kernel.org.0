@@ -1,128 +1,164 @@
-Return-Path: <linux-wireless+bounces-32458-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-32459-lists+linux-wireless=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id EPKfDVkOqGk8ngAAu9opvQ
-	(envelope-from <linux-wireless+bounces-32458-lists+linux-wireless=lfdr.de@vger.kernel.org>)
-	for <lists+linux-wireless@lfdr.de>; Wed, 04 Mar 2026 11:50:01 +0100
+	id eIIPI7sWqGlTnwAAu9opvQ
+	(envelope-from <linux-wireless+bounces-32459-lists+linux-wireless=lfdr.de@vger.kernel.org>)
+	for <lists+linux-wireless@lfdr.de>; Wed, 04 Mar 2026 12:25:47 +0100
 X-Original-To: lists+linux-wireless@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id A777B1FE8B6
-	for <lists+linux-wireless@lfdr.de>; Wed, 04 Mar 2026 11:50:00 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 150D21FEF27
+	for <lists+linux-wireless@lfdr.de>; Wed, 04 Mar 2026 12:25:47 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id D357D30071CD
-	for <lists+linux-wireless@lfdr.de>; Wed,  4 Mar 2026 10:49:43 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 7ED063033AA4
+	for <lists+linux-wireless@lfdr.de>; Wed,  4 Mar 2026 11:25:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F067D342535;
-	Wed,  4 Mar 2026 10:49:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A726D3ACA74;
+	Wed,  4 Mar 2026 11:25:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b="l3a84u44"
+	dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b="geXO56BO"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from sipsolutions.net (s3.sipsolutions.net [168.119.38.16])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BEA87372ECA
-	for <linux-wireless@vger.kernel.org>; Wed,  4 Mar 2026 10:49:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 626F43A8738;
+	Wed,  4 Mar 2026 11:25:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=168.119.38.16
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772621382; cv=none; b=bJZ6z9qano+Ufsn8mJvfodqpaYhggxs2MVYAmlGSD2fXZ0RWwOOLgdxll5oKYOuV9aC+q5vNMoU/zB1Z3gvVnvSFNG9X8F94MzbH9ljEKAXOlfy0ZxN73JT30nJS5COsshmFAqBZDeyPKGPwi2c/PwEfzpskBgJiT1Wyq6Y/nEE=
+	t=1772623505; cv=none; b=cejdFnWLbOkdr/w13LqY85SuMQt4WsFPii4oEnQd1A94LA4GAvWV+WO5EraA6Cb3hZbmyIoYoHVcpa26DFX8UEJlIJCMyBxzLDrYwUTrz1dpAypfT0JmHW5dqHtYAK14nrM4bBCBcJl+tlN0PyJ9ROG3C5REz5n51cQnIoOJJ9E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772621382; c=relaxed/simple;
-	bh=eBt0hIYZwNCdbjz1sROzK94b41E1PdEEgJPIef7BZt0=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=nAbUFL8Ch+jS3T7FjETUSgvIVEmWdaOG0ZQvCn0gfTSNsWotABDYjRBfwBAgCK0iw+DuyH3nVk68LKOAppepG7ooUCh3UJv4trjnZ1QnhCax81NvHUgpHdHklqa8N7Myz4M6E2vCqU517Ojx4i9tFijswL++9pU0MLgh3TdxvZI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net; spf=pass smtp.mailfrom=sipsolutions.net; dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b=l3a84u44; arc=none smtp.client-ip=168.119.38.16
+	s=arc-20240116; t=1772623505; c=relaxed/simple;
+	bh=T1MqSj4t02fYLwrDUd4BceSRqO9Y7bt8oS2LbSoXV+w=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=loc5aKKclr4n+OkrKdyC/hVorwOmdLKJr2yRJJfFU/c+Z3oWCmUt4RPToYmiqV0aBvMmTQmeCO3bRc39PmsHhlcunY2Wcw38T11Aab3NJBQyZEjiUljE0xhGVoHiKEwf7mibi1HJ0KMGNWa8hI8CYXUtXVwtE9r+pfuL5dVklcc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net; spf=pass smtp.mailfrom=sipsolutions.net; dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b=geXO56BO; arc=none smtp.client-ip=168.119.38.16
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sipsolutions.net
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=sipsolutions.net; s=mail; h=MIME-Version:Content-Transfer-Encoding:
-	Content-Type:References:In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender
-	:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
-	Resent-Cc:Resent-Message-ID; bh=LuD5dsiX9j+Dpr5R5z8n24aMxt10pxKsVhlen7pPwfc=;
-	t=1772621381; x=1773830981; b=l3a84u44QZ5e9CCWGCyjYqCRSx0X9AbCvpvMXMQv0+cV0Ue
-	ZJUxgSMwTK2zPn5cIKGzctui0vMxKaM6JEY9SQpHg9X1NfrRiNkcPqx9aZ6NW+/+8O5z+dS9RW4Dw
-	PQ/Ql3FhH52TdV/XyX211x2ScZ3L/nUvMFYc/rSEl+s8UvCe3D2DM2CX8WJP0a+dVBWkDO+pC8X2X
-	3YQ6LbKV9pBJ++e0SjfJmLXQh1Gdh5IeO0P+5DTQuMvjw1m1KRZ3XsmUOnAf0LkUUKAdyzZxAqLWF
-	zs1rRAqd0x8evGzuBe0+sT0rKjwZJ7W+jAEYzUCYrpLYW8zVXV0OYEX8OH7TdZBg==;
+	d=sipsolutions.net; s=mail; h=Content-Transfer-Encoding:MIME-Version:
+	Message-ID:Date:Subject:Cc:To:From:Content-Type:Sender:Reply-To:Content-ID:
+	Content-Description:Resent-Date:Resent-From:Resent-To:Resent-Cc:
+	Resent-Message-ID:In-Reply-To:References;
+	bh=bkOgEIlWHb2dcsrAoQ0NNF/UqerkSCmXqlLQzBvfEZc=; t=1772623504; x=1773833104; 
+	b=geXO56BORWFfEhCgA668eetxKSULZhlcdPw+aeBUQdkxAdzU0d4lxPP7pOeOx9Wd5TKHT8UOhRB
+	ayYe+2pj+y+WYmu3Uvz85OgQHuRwjC/1E8o+8sxUxYPUHhvaVIxEaz1vuHNajKViSd+tySE6EPmzW
+	Q7VLN99y2AvJnWZ1kki78TxU42jauVUE5A7pv3PaNW94iEkCyKqUb8fbeGkjNoO1gvbgCFFAHMGAQ
+	aRRp2rQ8Nid9CfZiNt7pPnNDKgy7969eP+kSGkW8Bnd4D30Es2bFNYjyu8PNEMB69WBon2H/dMdKh
+	nuCLpenEMAvx01q8B830ujgYsSGYd35B/F8A==;
 Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
 	(Exim 4.98.2)
 	(envelope-from <johannes@sipsolutions.net>)
-	id 1vxjnN-000000081oe-31VZ;
-	Wed, 04 Mar 2026 11:49:37 +0100
-Message-ID: <f256b3e7fa9227caf0bbd6696b81aa79b145945c.camel@sipsolutions.net>
-Subject: Re: [PATCH wireless-next v5 2/2] wifi: mac80211_hwsim: Add UHR
- capabilities to the driver
+	id 1vxkLe-000000082jc-1kqN;
+	Wed, 04 Mar 2026 12:25:02 +0100
 From: Johannes Berg <johannes@sipsolutions.net>
-To: Karthikeyan Kathirvel <karthikeyan.kathirvel@oss.qualcomm.com>
-Cc: linux-wireless@vger.kernel.org, ath12k@lists.infradead.org
-Date: Wed, 04 Mar 2026 11:49:36 +0100
-In-Reply-To: <20260304085343.1093993-3-karthikeyan.kathirvel@oss.qualcomm.com>
-References: 
-	<20260304085343.1093993-1-karthikeyan.kathirvel@oss.qualcomm.com>
-	 <20260304085343.1093993-3-karthikeyan.kathirvel@oss.qualcomm.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.58.3 (3.58.3-1.fc43) 
+To: netdev@vger.kernel.org
+Cc: linux-wireless@vger.kernel.org
+Subject: [GIT PULL] wireless-2026-03-04
+Date: Wed,  4 Mar 2026 12:24:37 +0100
+Message-ID: <20260304112500.169639-3-johannes@sipsolutions.net>
+X-Mailer: git-send-email 2.53.0
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-malware-bazaar: not-scanned
-X-Rspamd-Queue-Id: A777B1FE8B6
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Queue-Id: 150D21FEF27
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [-0.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	MID_CONTAINS_FROM(1.00)[];
 	DMARC_POLICY_ALLOW(-0.50)[sipsolutions.net,none];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[sipsolutions.net:s=mail];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-32458-lists,linux-wireless=lfdr.de];
-	DKIM_TRACE(0.00)[sipsolutions.net:+];
-	FROM_HAS_DN(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-32459-lists,linux-wireless=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	TO_DN_NONE(0.00)[];
+	RCPT_COUNT_TWO(0.00)[2];
+	FROM_HAS_DN(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	RCPT_COUNT_THREE(0.00)[3];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	TO_DN_SOME(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[johannes@sipsolutions.net,linux-wireless@vger.kernel.org];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	PRECEDENCE_BULK(0.00)[];
 	TAGGED_RCPT(0.00)[linux-wireless];
-	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[sipsolutions.net:+];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	MIME_TRACE(0.00)[0:+];
 	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,sipsolutions.net:dkim,sipsolutions.net:mid]
 X-Rspamd-Action: no action
 
-On Wed, 2026-03-04 at 14:23 +0530, Karthikeyan Kathirvel wrote:
->=20
-> +++ b/drivers/net/wireless/virtual/mac80211_hwsim.c
-> @@ -4478,6 +4478,43 @@ static const struct ieee80211_sband_iftype_data sb=
-and_capa_2ghz[] =3D {
->  			},
->  			/* PPE threshold information is not supported */
->  		},
-> +		.uhr_cap =3D {
+Hi,
 
-Missing from the context, but this is non-AP side.
+A couple more fixes, I'm mostly sending this for the mt76
+fixes which conflict with some other upcoming work for
+-next, so I can put it all together next week.
 
-> +			.has_uhr =3D true,
-> +			.mac =3D {
-> +				.mac_cap[0] =3D
-> +					IEEE80211_UHR_MAC_CAP0_DPS_SUPP |
-> +					IEEE80211_UHR_MAC_CAP0_DPS_AP_STATIC_HCM_SUPP |
+Please pull and let us know if there's any problem.
 
-"Reserved for a non-AP STA."
-
-Maybe we're just better off doing this as we implement features?
-
-I've applied patch 1 with some minor edits.
-
+Thanks,
 johannes
+
+
+
+The following changes since commit b9c8fc2caea6ff7e45c6942de8fee53515c66b34:
+
+  Merge tag 'net-7.0-rc2' of git://git.kernel.org/pub/scm/linux/kernel/git/netdev/net (2026-02-26 08:00:13 -0800)
+
+are available in the Git repository at:
+
+  https://git.kernel.org/pub/scm/linux/kernel/git/wireless/wireless.git tags/wireless-2026-03-04
+
+for you to fetch changes up to 4e10a730d1b511ff49723371ed6d694dd1b2c785:
+
+  wifi: mt76: Fix possible oob access in mt76_connac2_mac_write_txwi_80211() (2026-03-03 12:13:36 +0100)
+
+----------------------------------------------------------------
+Some more fixes:
+ - mt76 gets three almost identical new length checks
+ - cw1200 & ti: locking fixes
+ - mac80211 has a fix for the recent EML frame handling
+ - rsi driver no longer oddly responds to config, which
+   had triggered a warning in mac80211
+ - ath12k has two fixes for station statistics handling
+
+----------------------------------------------------------------
+Baochen Qiang (2):
+      wifi: ath12k: use correct pdev id when requesting firmware stats
+      wifi: ath12k: fix station lookup failure when disconnecting from AP
+
+Bart Van Assche (2):
+      wifi: cw1200: Fix locking in error paths
+      wifi: wlcore: Fix a locking bug
+
+Johannes Berg (1):
+      Merge tag 'ath-current-20260302' of git://git.kernel.org/pub/scm/linux/kernel/git/ath/ath
+
+Lorenzo Bianconi (3):
+      wifi: mt76: mt7996: Fix possible oob access in mt7996_mac_write_txwi_80211()
+      wifi: mt76: mt7925: Fix possible oob access in mt7925_mac_write_txwi_80211()
+      wifi: mt76: Fix possible oob access in mt76_connac2_mac_write_txwi_80211()
+
+MeiChia Chiu (1):
+      wifi: mac80211: fix missing ieee80211_eml_params member initialization
+
+Sebastian Krzyszkowiak (1):
+      wifi: rsi: Don't default to -EOPNOTSUPP in rsi_mac80211_config
+
+ drivers/net/wireless/ath/ath12k/mac.c              |  6 ++--
+ drivers/net/wireless/ath/ath12k/wmi.c              | 36 ++++++++--------------
+ .../net/wireless/mediatek/mt76/mt76_connac_mac.c   |  1 +
+ drivers/net/wireless/mediatek/mt76/mt7925/mac.c    |  1 +
+ drivers/net/wireless/mediatek/mt76/mt7996/mac.c    |  1 +
+ drivers/net/wireless/rsi/rsi_91x_mac80211.c        |  2 +-
+ drivers/net/wireless/st/cw1200/pm.c                |  2 ++
+ drivers/net/wireless/ti/wlcore/main.c              |  4 +--
+ net/mac80211/eht.c                                 |  1 +
+ 9 files changed, 25 insertions(+), 29 deletions(-)
 
