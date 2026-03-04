@@ -1,122 +1,135 @@
-Return-Path: <linux-wireless+bounces-32460-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-32462-lists+linux-wireless=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id WDvLAOEYqGmgnwAAu9opvQ
-	(envelope-from <linux-wireless+bounces-32460-lists+linux-wireless=lfdr.de@vger.kernel.org>)
-	for <lists+linux-wireless@lfdr.de>; Wed, 04 Mar 2026 12:34:57 +0100
+	id MMPmFn0bqGmYoAAAu9opvQ
+	(envelope-from <linux-wireless+bounces-32462-lists+linux-wireless=lfdr.de@vger.kernel.org>)
+	for <lists+linux-wireless@lfdr.de>; Wed, 04 Mar 2026 12:46:05 +0100
 X-Original-To: lists+linux-wireless@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6E6D11FF0B0
-	for <lists+linux-wireless@lfdr.de>; Wed, 04 Mar 2026 12:34:56 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id BAF6D1FF389
+	for <lists+linux-wireless@lfdr.de>; Wed, 04 Mar 2026 12:46:04 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 5DE453049947
-	for <lists+linux-wireless@lfdr.de>; Wed,  4 Mar 2026 11:34:38 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 65D45307E84C
+	for <lists+linux-wireless@lfdr.de>; Wed,  4 Mar 2026 11:40:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0322934C806;
-	Wed,  4 Mar 2026 11:34:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b="M6Lvgdzh"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DFDA735CB70;
+	Wed,  4 Mar 2026 11:40:49 +0000 (UTC)
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from sipsolutions.net (s3.sipsolutions.net [168.119.38.16])
+Received: from mx3.molgen.mpg.de (mx3.molgen.mpg.de [141.14.17.11])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B1E4533E358
-	for <linux-wireless@vger.kernel.org>; Wed,  4 Mar 2026 11:34:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=168.119.38.16
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D0D593451AE
+	for <linux-wireless@vger.kernel.org>; Wed,  4 Mar 2026 11:40:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=141.14.17.11
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772624077; cv=none; b=VNV/vF/9a2UyWo7Z+HcKIX2GPHq0lrebH17tgu8kppSwg8dGE9InzKqx25lduYomVrzE/5Zcr9wk7FzfkVsm0cBD82W75bm24xUFBCOPanduBVaKFWJrrvPdnKXBhub/dMEnW/yszeDnxey1R+MuaboPPD0J7LxiiZFxaEsXOhQ=
+	t=1772624449; cv=none; b=R6gv/hLi7By9aZ25Pjax9/RgF0zFtTflqOBZXv+YYR6FerBul9Fer+zYyEn673qJ9PDVZ6GiEWit2MzFrRx6oaF1NyCSKQJb17I42onnEdZubsz7orLx1MgbEc8O1sekuIyX+wFxvVFvEd0beH+37l0oHtN3JhwNF0BtVvcE3Kk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772624077; c=relaxed/simple;
-	bh=+ydg5JekApmDwwUyG1JhY4TukpfxHfk5RCBiyF2Tx6E=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=Lhyposn9aF+Np/TngmuCMwZRn7+SIhOQjTjvGlrLFLhKygMOdm+u9mLVAon+ny54hZW51MZExunKpiwHW825Grlgljw+4qLOqwUd7jk5uYaevOKW8bxoY4zEyvLHSajF0VMPXKo1M4I+wajzMnC7qtbginkJf4lH7rCmg5u+IqY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net; spf=pass smtp.mailfrom=sipsolutions.net; dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b=M6Lvgdzh; arc=none smtp.client-ip=168.119.38.16
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sipsolutions.net
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=sipsolutions.net; s=mail; h=MIME-Version:Content-Transfer-Encoding:
-	Content-Type:References:In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender
-	:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
-	Resent-Cc:Resent-Message-ID; bh=P1Spv9yTDyLoz7LclTPXhKbpatkXvNkr6UT20YFNfZA=;
-	t=1772624076; x=1773833676; b=M6LvgdzhOSWvDNYiOThddKvJvLHp3zo+PABAvEpewmW+SF3
-	uY5uRdk2yA1GcX8T4TxC5RLa0uvboXwIstKL7SepSM+jSujNm9eNxyqnIeC8PTGsSGZTtWdAkZan1
-	0KigS8jO2KY0s8i9qD7AFOWaAdJmfOxmP4V5BjNYldCG1md7FUrdBkXNsqIm+Z+B0Yls7v/7RC1Iy
-	qvz93x5V1HuvCFa2MdtAJxJ8SiesD9zmjxIagOMFOPFSTXWiDiv/MPWf1bHNHmkROfpgUIQynclj9
-	do5DAN58mQdMpcGZ+jnIzpg5jxJJsbulJ939R1vQx4pzyBJK7dBoeLmxgtD3lctQ==;
-Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
-	(Exim 4.98.2)
-	(envelope-from <johannes@sipsolutions.net>)
-	id 1vxkUr-000000082zn-1xVN;
-	Wed, 04 Mar 2026 12:34:33 +0100
-Message-ID: <6f10a9f5daea102dc2f7780b93b8f8f7e48025fc.camel@sipsolutions.net>
-Subject: Re: pull-request: ath-next-20260303
-From: Johannes Berg <johannes@sipsolutions.net>
-To: Jeff Johnson <jeff.johnson@oss.qualcomm.com>
-Cc: linux-wireless <linux-wireless@vger.kernel.org>
-Date: Wed, 04 Mar 2026 12:34:31 +0100
-In-Reply-To: <18112483-1280-4ede-bd59-10cac700404e@oss.qualcomm.com>
-References: <79e82568-e951-43f4-ac87-2319245a5490@oss.qualcomm.com>
-	 <18112483-1280-4ede-bd59-10cac700404e@oss.qualcomm.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.58.3 (3.58.3-1.fc43) 
+	s=arc-20240116; t=1772624449; c=relaxed/simple;
+	bh=BXcX3/PnydA2zj4sDH3Ns9vFVj/R4se1MyWd2+D6Krc=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=B6nsLn9ZB8TmFricKgrqA1ZFlyBzqVxods3O55VxyFwisYZFQ+N3ZJvH3/uDjsFY8KRSdtUjdmFZSmsxO2MYBTg3Sv4nMz43RUp2xe5enXu7uVrACU9w38IKySIrnJTt3gX8hxLtpWv2pQd+aaYkMk/aIcpJincFXgSFaRAk760=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=molgen.mpg.de; spf=pass smtp.mailfrom=molgen.mpg.de; arc=none smtp.client-ip=141.14.17.11
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=molgen.mpg.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=molgen.mpg.de
+Received: from [141.14.220.42] (g42.guest.molgen.mpg.de [141.14.220.42])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	(Authenticated sender: pmenzel)
+	by mx.molgen.mpg.de (Postfix) with ESMTPSA id 433664C2C37D6E;
+	Wed, 04 Mar 2026 12:40:23 +0100 (CET)
+Message-ID: <e1a7dc91-e1c3-42e5-afd8-1e8dc4ff23c6@molgen.mpg.de>
+Date: Wed, 4 Mar 2026 12:40:22 +0100
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-malware-bazaar: not-scanned
-X-Rspamd-Queue-Id: 6E6D11FF0B0
+User-Agent: Mozilla Thunderbird
+Subject: Re: New warning `ath10k_pci 0000:3a:00.0: not found station for peer
+ stats`
+To: Baochen Qiang <baochen.qiang@oss.qualcomm.com>,
+ Jeff Johnson <jjohnson@kernel.org>
+Cc: linux-wireless@vger.kernel.org, ath10k@lists.infradead.org
+References: <57671b89-ec9f-4e6c-992c-45eb8e75929c@molgen.mpg.de>
+ <6a83fd12-edd8-4559-b7ba-75b074fa889f@molgen.mpg.de>
+ <5c152304-853d-4142-8553-55cd8907f271@oss.qualcomm.com>
+ <2c722676-98c6-4162-96cb-9bea06672153@molgen.mpg.de>
+ <badaf39e-6ab7-4be7-944a-cfc9d6757db2@oss.qualcomm.com>
+ <e71b2039-0478-4775-b221-753dc25647d5@molgen.mpg.de>
+ <80231e1b-fc6f-488f-97f7-92e792954022@oss.qualcomm.com>
+Content-Language: en-US
+From: Paul Menzel <pmenzel@molgen.mpg.de>
+In-Reply-To: <80231e1b-fc6f-488f-97f7-92e792954022@oss.qualcomm.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Queue-Id: BAF6D1FF389
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [-1.46 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[sipsolutions.net,none];
-	R_DKIM_ALLOW(-0.20)[sipsolutions.net:s=mail];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TO_DN_ALL(0.00)[];
-	TAGGED_FROM(0.00)[bounces-32460-lists,linux-wireless=lfdr.de];
 	FROM_HAS_DN(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
+	RCPT_COUNT_THREE(0.00)[4];
+	TAGGED_FROM(0.00)[bounces-32462-lists,linux-wireless=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	RCPT_COUNT_TWO(0.00)[2];
-	DKIM_TRACE(0.00)[sipsolutions.net:+];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	DMARC_NA(0.00)[mpg.de];
 	MIME_TRACE(0.00)[0:+];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[johannes@sipsolutions.net,linux-wireless@vger.kernel.org];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[linux-wireless];
-	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,sipsolutions.net:dkim,sipsolutions.net:mid]
+	TO_DN_SOME(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[pmenzel@molgen.mpg.de,linux-wireless@vger.kernel.org];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	NEURAL_HAM(-0.00)[-0.982];
+	MID_RHS_MATCH_FROM(0.00)[];
+	R_DKIM_NA(0.00)[];
+	TAGGED_RCPT(0.00)[linux-wireless];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,molgen.mpg.de:mid]
 X-Rspamd-Action: no action
 
-Hi,
 
-On Tue, 2026-03-03 at 08:34 -0800, Jeff Johnson wrote:
-> >   git://git.kernel.org/pub/scm/linux/kernel/git/ath/ath.git tags/ath-ne=
-xt-20260303
+Dear Baochen,
 
-I'm almost surprised this even still works, don't you use https://?
 
->=20
-> FYI the reason for the early PR is that I made the mistake of pulling som=
-e
-> patches into ath-next before I realized that Kees & Linux had applied the
-> treewide kmalloc_obj() feature, so now I need to merge so I can then fast
-> forward to wireless-next/main to pick that up. I don't want to take any m=
-ore
-> ath-next changes until that is in place.
+Thank you for your quick reply.
 
-Sure, that's fine, I often send almost a PR per week, so should be happy
-to accept that too :)
 
-johannes
+Am 04.03.26 um 02:47 schrieb Baochen Qiang:
+> On 3/4/2026 4:01 AM, Paul Menzel wrote:
+>> Am 11.02.26 um 06:43 schrieb Baochen Qiang:
+>>> On 2/10/2026 6:31 AM, Paul Menzel wrote:
+>>>> Am 09.02.26 um 03:44 schrieb Baochen Qiang:
+>>>>> On 2/7/2026 1:55 PM, Paul Menzel wrote:
+>>>>>> Am 19.01.26 um 17:41 schrieb Paul Menzel:
+>>>>>>
+>>>>>>> Since January 10th, I have started seeing the warning below in
+>>>>>>> my Linux logs, that reach back to September 24th, 2025:
+>>>>>>>
+>>>>>>>         [   37.108902] ath10k_pci 0000:3a:00.0: not found station for peer stats
+>>>>>>>         [   37.108906] ath10k_pci 0000:3a:00.0: failed to parse stats info tlv: -22
+[…]
+
+>>> I managed to reproduce this issue locally. Will submit a patch
+>>> fixing it.
+>>
+>> Sorry for being impatient, but as Linux 7.0-rc2 was tagged, were
+>> you able to come up with a patch, or should the commit be reverted
+>> for now to have more time to analyze this?
+> 
+> The patch is under internal review now, will submit once it is
+> approved.
+Awesome. I am looking forward to it. It’d be great, if you Cc’ed me on 
+the patch.
+
+
+Kind regards,
+
+Paul
 
