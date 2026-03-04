@@ -1,106 +1,106 @@
-Return-Path: <linux-wireless+bounces-32443-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-32444-lists+linux-wireless=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id ALLKCn7cp2lnkgAAu9opvQ
-	(envelope-from <linux-wireless+bounces-32443-lists+linux-wireless=lfdr.de@vger.kernel.org>)
-	for <lists+linux-wireless@lfdr.de>; Wed, 04 Mar 2026 08:17:18 +0100
+	id uLW/E4Pcp2lnkgAAu9opvQ
+	(envelope-from <linux-wireless+bounces-32444-lists+linux-wireless=lfdr.de@vger.kernel.org>)
+	for <lists+linux-wireless@lfdr.de>; Wed, 04 Mar 2026 08:17:23 +0100
 X-Original-To: lists+linux-wireless@lfdr.de
 Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id BDECC1FB79F
-	for <lists+linux-wireless@lfdr.de>; Wed, 04 Mar 2026 08:17:17 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id C05F81FB7A6
+	for <lists+linux-wireless@lfdr.de>; Wed, 04 Mar 2026 08:17:22 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 390BF3091AAE
-	for <lists+linux-wireless@lfdr.de>; Wed,  4 Mar 2026 07:16:32 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 020673092B9C
+	for <lists+linux-wireless@lfdr.de>; Wed,  4 Mar 2026 07:16:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AB51430CDAF;
-	Wed,  4 Mar 2026 07:16:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A278C344DA8;
+	Wed,  4 Mar 2026 07:16:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="S6zVNRNN";
-	dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b="P3/TskKm"
+	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="BSBD7vxd";
+	dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b="atnEvCU8"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1FD6F34D398
-	for <linux-wireless@vger.kernel.org>; Wed,  4 Mar 2026 07:16:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 395E62C9D
+	for <linux-wireless@vger.kernel.org>; Wed,  4 Mar 2026 07:16:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772608589; cv=none; b=qSMIPzU847hmR63YIUscTFcwLTRUmwpzGXZQB3O0ULTw2UVBBHmfuGkYsxNixh+NdAJY4zw5bEN0a2pP92uHzoDIq5Gc0W/hekZgst6TvpBYKfcZaqMJafvrZnw7/S1+AzhJL6/SgwcWoXBAaT8uElhq+OxmciHTlqt8fjfddE4=
+	t=1772608591; cv=none; b=bOyNHggChgJzEBf5EJrT3On4xVOHo9YU3D9fCnOXa1RjJGSfd63eTMRZojzIWVYxQszL9GnS8FVjfZUQ9ipVn9dg1HgH9q2gEO7XbiEmWl4RInX0yQ5HHxutookHgxj1XTY6LJlX7Y6uQ2vFSyUNidWSdGRVeNuA5TQNCMif8x8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772608589; c=relaxed/simple;
-	bh=Xw/vZYWXKIur1bEfBGgo4c1PgteXoha3zbBdrefYyl8=;
+	s=arc-20240116; t=1772608591; c=relaxed/simple;
+	bh=6SRx3/tyXm4pIaLv4xcuEVxp1D4KbtwhTjlE08D7A3Q=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=nDKkrqGdhtJ5cVXq8AwbT5Jgrf1wrBQdplEdh9D7dOK+crW/LM6SkQOSkcOQcXQ2ipqQKiIuPh6sEtn57hSag42oFdS/lEGbU7wXIDaDl+ysRkKjaAcp7sICXhKN8mEaDicU2cFJkE3OkOpUzig28hNnN6XJN/XpGAB+rAslYrE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=S6zVNRNN; dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b=P3/TskKm; arc=none smtp.client-ip=205.220.168.131
+	 MIME-Version; b=qVWYkJqh+NY2qs83iF7+IxARBTtgC/nR979uZamvwq5e/PNhm9YIsJWygd5UCF438pOF/+dhcDRDbTFuKEfDXxlQ8KdtIjb+J/bsk79wLIUiZAbkpos4TpUFNETgtcRYY9WOY16o9VO1Os7UOvlM1/CAHEgG8l+/U/Tn4FFjbsU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=BSBD7vxd; dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b=atnEvCU8; arc=none smtp.client-ip=205.220.168.131
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
-Received: from pps.filterd (m0279863.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 6246D6w91203226
-	for <linux-wireless@vger.kernel.org>; Wed, 4 Mar 2026 07:16:27 GMT
+Received: from pps.filterd (m0279862.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 6245UAk53114139
+	for <linux-wireless@vger.kernel.org>; Wed, 4 Mar 2026 07:16:29 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
 	cc:content-transfer-encoding:date:from:in-reply-to:message-id
-	:mime-version:references:subject:to; s=qcppdkim1; bh=9UwMfnszUC+
-	63XUhVNWS5dkm0JUBPy0SLykuzcR3JH8=; b=S6zVNRNNQwtk+1ccAH4LsiV8doh
-	jSi76mccsYN2a56gAR7Zg1a3bX1E3l2UOgp0OVPGMyP7r6euDfRyGK2cijNRGYHA
-	aD5JL0cLoqtJQovg8pI8HslFrit0oE9wBasx/dG4QQXNYeR38v+N16Y45ed4BcE/
-	SeBUAKinaOCV57/2Q0JVzGbiEElce/clD1eT3Mye8baS/W0p+bYyKq977ySZY3eE
-	d8qK3jj4/3G31rmg203IXnFVSv+gFVljw56pCaBIwqvkbVkxtATQ7FpnoOpE4pe/
-	Ga4MhftluKnF+eNzJgAlerYY3Ap90UO1GNZ989rqD2peSyqD3MddbQo4E7A==
-Received: from mail-pg1-f198.google.com (mail-pg1-f198.google.com [209.85.215.198])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4cpf9c05ya-1
+	:mime-version:references:subject:to; s=qcppdkim1; bh=gqz+HtkXh0L
+	Uja8OrJa3Aw/tRjNVr373QSejJW14PHY=; b=BSBD7vxdvNkXD6+5rTIVx/tHjR4
+	2thh5hTqV/Ej9Sp05Vme+1YZfhvfcSwrmOKTpyaTaJrjH9q87VcR3WFbOo5XraNp
+	X4q6TCz/PdeI1H+oyNKWXz7Ox32HwdirRLuSutFBkMM0lpNVH8196n2OKThi+uaB
+	i/wNG+YwMijoLtGIcey5Pz/WDXeRG/3dL9oX3oALt9VelH5kD9pAOw1aLxMbcGXD
+	KR+UCoViiQsJouS0q+tmEbi1wPzftEzOeNVW/yLm2CU2jJU+GVdM+ks7AboG/ZKe
+	3nyGBWXQVC1KiFtix0SVQkJyGRWYPU3SByLBnZtj8MZnQPY+Gp8cb06RheA==
+Received: from mail-pf1-f198.google.com (mail-pf1-f198.google.com [209.85.210.198])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4cp5h2a43u-1
 	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
-	for <linux-wireless@vger.kernel.org>; Wed, 04 Mar 2026 07:16:27 +0000 (GMT)
-Received: by mail-pg1-f198.google.com with SMTP id 41be03b00d2f7-c70efa3b730so3688930a12.2
-        for <linux-wireless@vger.kernel.org>; Tue, 03 Mar 2026 23:16:27 -0800 (PST)
+	for <linux-wireless@vger.kernel.org>; Wed, 04 Mar 2026 07:16:29 +0000 (GMT)
+Received: by mail-pf1-f198.google.com with SMTP id d2e1a72fcca58-8230d6d54a5so5601622b3a.1
+        for <linux-wireless@vger.kernel.org>; Tue, 03 Mar 2026 23:16:29 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=oss.qualcomm.com; s=google; t=1772608586; x=1773213386; darn=vger.kernel.org;
+        d=oss.qualcomm.com; s=google; t=1772608588; x=1773213388; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=9UwMfnszUC+63XUhVNWS5dkm0JUBPy0SLykuzcR3JH8=;
-        b=P3/TskKm8kJhJhG8sU+xQQZelWKWTtljccMgI+C8uMYUST+856Igj+/i/NRyxVpREt
-         WOaNJSECXxkwOsv34UotcFMgJv645wSH5OHCPPm/NC/7x2oB8KVENK9K0sqQq5d1m+9k
-         hCS7+wOT1hQRqBynuZw9355qqUs5CUkdfxh6mbb73lv+VlItIU+k9H0YCmcoij4olUbz
-         KJQnBxRI+SEdczEJkLzNIXHKaTD0tpdNL0zFUQCwlq7JxQFeu9OSIB2gX7VuZ3Mdaf0d
-         aSdRAJYJkX58nibFnEfQfUezGez1dQUkR+aJxryhYN8eUd8RnTELCesnE1QcZ2CtFcEQ
-         6NNw==
+        bh=gqz+HtkXh0LUja8OrJa3Aw/tRjNVr373QSejJW14PHY=;
+        b=atnEvCU8hEZt2P4T99MdOxdIuVABCP64a5SglwQYc9txzqRnfbAA/CmXckoL9TDC2E
+         ZvXNgjo27M0/bPltOb6KT1NeQCO1jQM46dMYNXwzKnBekti51Br2tKzYbXkVmuk1i5nx
+         JMqNh4CMwPbKfoZIYV2rW9xll4N4JyFheeVfyMPSFDn5zZqtR7+00wFEyWOAyONqwsGP
+         H9PKL9dN4EZp56f5gUry7eCtGevx5Mh1I9JTLP5x6GFk0NuFqCdyOBPRJnudcAvMgnTq
+         BdAhU7eVOqmSunrQVOXJfcKD0QL0unDQACeEb/MpqkH+Floumr/aZ3689/y/khVEFECO
+         67Yw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1772608586; x=1773213386;
+        d=1e100.net; s=20230601; t=1772608588; x=1773213388;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to;
-        bh=9UwMfnszUC+63XUhVNWS5dkm0JUBPy0SLykuzcR3JH8=;
-        b=ZHSUmZ/7DB2Ynt06sDrRdHm/xFT3rYsYp2wFCgVupTchNnCGYZ8qu+3Raspdt9Ln5w
-         hJm1OBak/1kaUdN3N9EuRzHfU3skHUVZxWUy8aeu6j+JTgGch+/nvR94fSupGhBg7iqL
-         9ATMaoBiMaVr6MxhWlLegAZZ2xoyU42VuDKVgP80oGToE9jFSUX68WfGOnju7cH3wl4p
-         K7qeoxvDpFKC9hHyomOLOzSb2a1MnskpRQQ4nHJBTn0FISi0CZxlAnLmSQHdiTZK+NHF
-         BoJm+m9JFYbfIN4AaiB9SX6naQv8QwU4go+8qvlA2/tjBeYnfDBVAUVT8Rsgf/RsSy8N
-         98jQ==
-X-Gm-Message-State: AOJu0YwRzZlHfEMZr6f0Geus0VReCsGklO+TF9wLFQEYLpsgelR3ZG0U
-	ilzwbQPGZ9Ok8QJmKCw5VdlW9EgJiOHs0iYhAGmAjL+e9fy5NL8fc1L5/Z7HAR6qRuupyWrD4SR
-	0P0PbkP1wG0kTPeFvm1qrWgAXUGwk2QDT0Gr+e9wf+w5PDkesuSICsqyYwOvS9SzKahHGtsXvvo
-	tJ
-X-Gm-Gg: ATEYQzwkrItwsIDzh356a+KOxAt08H6r7bGsjl9RmPet8/jvQEilgYFUY2du5laA859
-	3Alh1pvhbiK5N2Pkk3BKlMihgyHCWI4zRqOh1v/xVEiXliHteN/RkjECdQwx6JqHpfBEkegoiGi
-	dWhgcCVBZQk3l/4VKYw7kidrmt7YB5QtVFrI6kaQis/T+BIEETS/NGiQkPJVtT9JYjOJbDtZbYj
-	tVTz0BpshfIYf5o9me1yjDEnRLSRb62sjb3BbfXglQ9etiuUc6W8gps6gL0eebmjLE+wB++M7ha
-	f4EX/U0DzKGnk33DypIRRiRqKe6x0xdg8drqpWXbOzNRJi73LE3dGZU8uQHXxPdeEaBEh/iyHSN
-	nfdvnZZZn06N/JHHctw5yLCHVwj8hexx8zmCYndV9T4CeXPS0wHRevfo=
-X-Received: by 2002:a05:6a20:db8e:b0:393:c607:9d3c with SMTP id adf61e73a8af0-3982e1f03a2mr1142834637.47.1772608586454;
-        Tue, 03 Mar 2026 23:16:26 -0800 (PST)
-X-Received: by 2002:a05:6a20:db8e:b0:393:c607:9d3c with SMTP id adf61e73a8af0-3982e1f03a2mr1142803637.47.1772608585882;
-        Tue, 03 Mar 2026 23:16:25 -0800 (PST)
+        bh=gqz+HtkXh0LUja8OrJa3Aw/tRjNVr373QSejJW14PHY=;
+        b=JRBuPghxcQNwNAYRPOcZgenH/k7yuERk4MTJSin1TCkzzzu4DIKhKP755qpEH6g5WS
+         GR2xHNq898o7A5JL+KpT/NVqqrz/KRztnv9InX+k+uX5+rB8OCa3MCEpSm/0bCFwCqtY
+         P9rg82JkaTBJ3wa5KP/voaoUUDlChA4kppYBC8XYQKyjuMU3myuBMxCd8JyPuZoQugNH
+         EwcI7aEDyBiOUSsduQ+HBfWPXHjUopw34ABKqVF5CADhYpRHcFU0hLURns37gdIrihCS
+         nq4iDUanxEVKzTigNXAJkwXXwy0P/RlgZFzVVpP4U14Yh8GVfaTnTxv1ItuPnFew+eYx
+         4ulg==
+X-Gm-Message-State: AOJu0Yw7JjXnvWM9HdPBfArnwW9/DGTt8FFSCf5MLHOEjDzcT8TN1y/+
+	SrnFFHuSVARYRzdBKD/3++aWE3YjRn/2QYk6LOn3Usl+WoMc/3vxol50IURpIyw50WiSck5w1dF
+	2+Txzi+Lh9RTTsOdVJPxJ7em5HUcfzZSTUj7QmGlpN6uSAsVQ4TV6ylHlH7eXZXJUPnEBJfxGYh
+	k1
+X-Gm-Gg: ATEYQzylsdgHMrjb39ZLlvhWspBfDtONw8HMzo+vT5V3i2j+BH0972O3V5wulPDIf3w
+	x0rPB/TYJ6WNw6LghGzAwGaMkzFzCfZDHJXzyVrz/ljIB/I5lX78ZaP/kDRpmTT5uDki4GWF4M1
+	RmSOIq2HrawNMtq9ghgmSkzj+i3AdyWwh5h9pKWILGr3z5CZ+HnE91Vy/6asGtFkWeyDUwKJiiW
+	vH5/VVtJg4rXQcGwrPWFcvLW1Oe6r8P8Wp3adjP+YxkjoMDqDxxr3X8ywOJuATBw3O6IFJZm6UA
+	TWnVoIPe5s28fNJuH94uplVehJNPo95Xsta00ds9sCS3iXopqdeCKGGEl4O4x9sPsmzQRaeLiSq
+	E+KefUZPfgx+2BbjM/ck6uK40SUaeLDzzf0QJjhcJ+qRqJqu8GaSCzCo=
+X-Received: by 2002:a05:6a20:734a:b0:35f:14ae:4a7a with SMTP id adf61e73a8af0-39814396072mr4792668637.13.1772608588513;
+        Tue, 03 Mar 2026 23:16:28 -0800 (PST)
+X-Received: by 2002:a05:6a20:734a:b0:35f:14ae:4a7a with SMTP id adf61e73a8af0-39814396072mr4792650637.13.1772608588046;
+        Tue, 03 Mar 2026 23:16:28 -0800 (PST)
 Received: from hu-peddolla-hyd.qualcomm.com ([202.46.23.25])
-        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-c7378125320sm994121a12.20.2026.03.03.23.16.24
+        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-c7378125320sm994121a12.20.2026.03.03.23.16.26
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 03 Mar 2026 23:16:25 -0800 (PST)
+        Tue, 03 Mar 2026 23:16:27 -0800 (PST)
 From: Peddolla Harshavardhan Reddy <peddolla.reddy@oss.qualcomm.com>
 To: johannes@sipsolutions.net
 Cc: linux-wireless@vger.kernel.org, kavita.kavita@oss.qualcomm.com
-Subject: [PATCH wireless-next v2 07/16] wifi: cfg80211: add continuous ranging and PD request support
-Date: Wed,  4 Mar 2026 12:45:29 +0530
-Message-Id: <20260304071538.3833062-8-peddolla.reddy@oss.qualcomm.com>
+Subject: [PATCH wireless-next v2 08/16] wifi: cfg80211: extend PMSR FTM response for proximity ranging
+Date: Wed,  4 Mar 2026 12:45:30 +0530
+Message-Id: <20260304071538.3833062-9-peddolla.reddy@oss.qualcomm.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20260304071538.3833062-1-peddolla.reddy@oss.qualcomm.com>
 References: <20260304071538.3833062-1-peddolla.reddy@oss.qualcomm.com>
@@ -111,30 +111,31 @@ List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwMzA0MDA1OCBTYWx0ZWRfX3dbFx+/hRbW7
- nmVRXzQHRJuMG/bObYT6TlwTdfgaCcYMr3vyeaFHgcIR+UT9sHCFP9Nck6aMrXMg5+ZFxZjfz9g
- vVKmWWIcvQRcdEz9ZAQaT63Z4mOVRC1f2/5yAJQ8tzEeJEy+zf1amSs6SOdC7WRxEK4Tkt8OTBG
- VtHFCCgCEKnS1wFWVsi4dWNVlZyeLXh6u3CPRKGdnIpyyI8Ff56dXyddioEFidZZwmlmzwHKLj4
- Q2Dn14uEuF0buDNRFe4uubEdq5vwf1Kxv7dOP6hZQEadQ06a7yl1Txq1iIN1oioXADcLNYnz5mO
- jvJ4fECuDnB9Nlz0nXLvxbNokBYLXqLk1vU70ijZLihhcH68XQnFcENroeKkrA7RHA5NYSf0H58
- Xv9ZourZTe7NVxIJMrdwAVKU7kYm73MXHfd5R4zag4OWG8iY8zJZk8ODMJOMdR6Mv4jMlTx7wgG
- J/xe+vLaDUoO3TrhKtA==
-X-Proofpoint-GUID: G367HZkQJZp0-wOzMS6tXQGFW8YujESE
-X-Authority-Analysis: v=2.4 cv=S4LUAYsP c=1 sm=1 tr=0 ts=69a7dc4b cx=c_pps
- a=Qgeoaf8Lrialg5Z894R3/Q==:117 a=ZePRamnt/+rB5gQjfz0u9A==:17
+X-Authority-Analysis: v=2.4 cv=JqL8bc4C c=1 sm=1 tr=0 ts=69a7dc4d cx=c_pps
+ a=m5Vt/hrsBiPMCU0y4gIsQw==:117 a=ZePRamnt/+rB5gQjfz0u9A==:17
  a=Yq5XynenixoA:10 a=s4-Qcg_JpJYA:10 a=VkNPw1HP01LnGYTKEx00:22
- a=u7WPNUs3qKkmUXheDGA7:22 a=yOCtJkima9RkubShWh1s:22 a=EUspDBNiAAAA:8
- a=dR6-dSxPkkEvzmubSWgA:9 a=x9snwWr2DeNwDh03kgHS:22
-X-Proofpoint-ORIG-GUID: G367HZkQJZp0-wOzMS6tXQGFW8YujESE
+ a=u7WPNUs3qKkmUXheDGA7:22 a=_K5XuSEh1TEqbUxoQ0s3:22 a=EUspDBNiAAAA:8
+ a=TvsjVELUdtmmqoM0DT0A:9 a=IoOABgeZipijB_acs4fv:22
+X-Proofpoint-ORIG-GUID: AdpCXGH1VYXqkoPgFjPOtqEtlCKHLtGJ
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwMzA0MDA1OCBTYWx0ZWRfX0CNhXj5jWIdo
+ pyhzvAr6UYmrq2GJJcoG+iuDyS0GKqU37LEUuDsX5d0wY2RXyId+LPvPJ3eH7wO/anqHlJCIsAG
+ ay88kVbVc0h/b2iatyF3FXb0zoA8QLiAGnGpK75bocfDu+Npwy7QEFPzN3u65bgfGv6ZfPshmSP
+ z9bUJnnHKm9JBxQgf30wgZqlNRkmc8WqGZ9svrml3OKmniLFxWA6cPSa3XZhc7ZHAp/pIYfpWIN
+ UliZvFLY0N9vSp+NJBLf4NM8XtkXsDirVuICwSAnfwFu5I8mC72gUt3z7jqGFdxsfGWQnLZ2ZQl
+ jNdHulxym3PSZySTQxW483hkpMQbxz+3/t9aVprq8oFDisrmC1zaU+hq4NN0FgkPkQ6pFhMfsTI
+ vkogv7Iw2z1IrgDVkeZjxGWGWk3pmS51qxbkiLYv9d0AYcGtM2WM8eIizkGqbz2oBzG6XFWMMdj
+ WZ72M/cKUlRiaq6auhw==
+X-Proofpoint-GUID: AdpCXGH1VYXqkoPgFjPOtqEtlCKHLtGJ
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.51,FMLib:17.12.100.49
  definitions=2026-03-04_02,2026-03-03_01,2025-10-01_01
 X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- suspectscore=0 adultscore=0 impostorscore=0 spamscore=0 priorityscore=1501
- lowpriorityscore=0 malwarescore=0 clxscore=1015 phishscore=0 bulkscore=0
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.22.0-2602130000 definitions=main-2603040058
-X-Rspamd-Queue-Id: BDECC1FB79F
+ impostorscore=0 adultscore=0 priorityscore=1501 lowpriorityscore=0
+ clxscore=1015 phishscore=0 spamscore=0 suspectscore=0 malwarescore=0
+ bulkscore=0 classifier=typeunknown authscore=0 authtc= authcc= route=outbound
+ adjust=0 reason=mlx scancount=1 engine=8.22.0-2602130000
+ definitions=main-2603040058
+X-Rspamd-Queue-Id: C05F81FB7A6
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-0.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
@@ -149,7 +150,7 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	DKIM_TRACE(0.00)[qualcomm.com:+,oss.qualcomm.com:+];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-32443-lists,linux-wireless=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-32444-lists,linux-wireless=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
 	RCPT_COUNT_THREE(0.00)[3];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
@@ -165,231 +166,203 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	RCVD_COUNT_SEVEN(0.00)[7]
 X-Rspamd-Action: no action
 
-Proximity detection (PD) applications require sustained measurement
-sessions without repeated FTM negotiation overhead. Currently, each
-ranging session requires separate negotiation.
+Applications need negotiated session parameters to interpret
+proximity ranging results and perform post-processing. Currently,
+the FTM response lacks LTF repetition counts, time constraints,
+spatial stream configuration, and availability window parameters.
 
-Enable NTB continuous ranging with configurable timing and
-measurement parameters as per the specification "Proximity Ranging
-(PR) Implementation Consideration Draft 1.9 Rev 1, section 5.3".
-Add PD capability validation to support proximity detection sessions.
+Extend the FTM response structure to report these negotiated
+parameters, enabling applications to track session configuration
+and use them in post-processing to increase ranging precision.
 
 Signed-off-by: Peddolla Harshavardhan Reddy <peddolla.reddy@oss.qualcomm.com>
 ---
- include/net/cfg80211.h       | 22 +++++++++++++++++-
- include/uapi/linux/nl80211.h | 26 ++++++++++++++++++++++
- net/wireless/nl80211.c       | 10 +++++++++
- net/wireless/pmsr.c          | 43 +++++++++++++++++++++++++++++++++---
- 4 files changed, 97 insertions(+), 4 deletions(-)
+ include/net/cfg80211.h       | 61 ++++++++++++++++++++++++++++++++++--
+ include/uapi/linux/nl80211.h | 42 ++++++++++++++++++++++++-
+ net/wireless/pmsr.c          | 16 ++++++++++
+ 3 files changed, 116 insertions(+), 3 deletions(-)
 
 diff --git a/include/net/cfg80211.h b/include/net/cfg80211.h
-index 62a2139b2f37..b66300497312 100644
+index b66300497312..febd7bf50d88 100644
 --- a/include/net/cfg80211.h
 +++ b/include/net/cfg80211.h
-@@ -4369,6 +4369,19 @@ struct cfg80211_pmsr_result {
-  * @bss_color: the bss color of the responder. Optional. Set to zero to
-  *	indicate the driver should set the BSS color. Only valid if
-  *	@non_trigger_based or @trigger_based is set.
-+ * @min_time_between_measurements: minimum time between two consecutive range
-+ *	measurements in units of 100 micro seconds, applicable for
-+ *	non trigger based ranging. Only valid if @non_trigger_based is set.
-+ * @max_time_between_measurements: maximum time between two consecutive range
-+ *	measurements in units of 10 milli seconds, to avoid FTM negotiation
-+ *	applicable for non trigger based ranging. Only valid
-+ *	if @non_trigger_based is set.
-+ * @availability_window: duration of the availability window (AW) in units of
-+ *	1 millisecond (0-255 ms). Only valid if @non_trigger_based is set.
-+ * @nominal_time: Nominal duration between adjacent availability windows
-+ *	in units of milli seconds. Only valid if @non_trigger_based is set.
-+ * @measurements_per_aw: number of measurement attempts per availability window
-+ *	with a maximum value of 4. Only valid if @non_trigger_based is set.
-  *
-  * See also nl80211 for the respective attribute documentation.
+@@ -4260,6 +4260,27 @@ struct cfg80211_ftm_responder_stats {
+  *	(must have either this or @rtt_avg)
+  * @dist_variance: variance of distances measured (see also @rtt_variance)
+  * @dist_spread: spread of distances measured (see also @rtt_spread)
++ * @tx_ltf_repetition_count: negotiated value of number of tx ltf repetitions
++ *	in NDP frames
++ * @rx_ltf_repetition_count: negotiated value of number of rx ltf repetitions
++ *	in NDP frames
++ * @max_time_between_measurements: the negotiated maximum interval (in units of
++ *	10 ms) by which the ISTA must complete the next measurement cycle.
++ * @min_time_between_measurements: the negotiated minimum interval (in units of
++ *	100 us) between two consecutive range measurements initiated by the
++ *	ISTA.
++ * @num_tx_spatial_streams: number of Tx space-time streams used in the NDP
++ *	frame during the measurement sounding phase.
++ * @num_rx_spatial_streams: number of Rx space-time streams used in the NDP
++ *	frame during the measurement sounding phase.
++ * @nominal_time: negotiated nominal duration between adjacent availability
++ *	windows in units of milliseconds (u32).
++ * @availability_window: negotiated availability window time used in this
++ *	session in units of milliseconds (u32).
++ * @measurements_per_aw: negotiated number of measurement attempts per
++ *	availability window.
++ * @chan_width: band width used for measurement.
++ * @preamble: preamble used for measurement.
+  * @num_ftmr_attempts_valid: @num_ftmr_attempts is valid
+  * @num_ftmr_successes_valid: @num_ftmr_successes is valid
+  * @rssi_avg_valid: @rssi_avg is valid
+@@ -4272,6 +4293,19 @@ struct cfg80211_ftm_responder_stats {
+  * @dist_avg_valid: @dist_avg is valid
+  * @dist_variance_valid: @dist_variance is valid
+  * @dist_spread_valid: @dist_spread is valid
++ * @tx_ltf_repetition_count_valid: @tx_ltf_repetition_count is valid
++ * @rx_ltf_repetition_count_valid: @rx_ltf_repetition_count is valid
++ * @max_time_between_measurements_valid: @max_time_between_measurements is valid
++ * @min_time_between_measurements_valid: @min_time_between_measurements is valid
++ * @num_tx_spatial_streams_valid: @num_tx_spatial_streams is valid
++ * @num_rx_spatial_streams_valid: @num_rx_spatial_streams is valid
++ * @nominal_time_valid: @nominal_time is valid
++ * @availability_window_valid: @availability_window is valid
++ * @measurements_per_aw_valid: @measurements_per_aw is valid
++ * @chan_width_valid: @chan_width is valid.
++ * @preamble_valid: @preamble is valid.
++ * @is_delayed_lmr: indicates if the reported LMR is of the current burst or the
++ *	previous burst, flag.
   */
-@@ -4388,6 +4401,11 @@ struct cfg80211_pmsr_ftm_request_peer {
- 	u8 ftms_per_burst;
- 	u8 ftmr_retries;
- 	u8 bss_color;
-+	u32 min_time_between_measurements;
+ struct cfg80211_pmsr_ftm_result {
+ 	const u8 *lci;
+@@ -4295,8 +4329,19 @@ struct cfg80211_pmsr_ftm_result {
+ 	s64 dist_avg;
+ 	s64 dist_variance;
+ 	s64 dist_spread;
++	u32 tx_ltf_repetition_count;
++	u32 rx_ltf_repetition_count;
 +	u32 max_time_between_measurements;
-+	u32 availability_window;
++	u32 min_time_between_measurements;
++	u32 num_tx_spatial_streams;
++	u32 num_rx_spatial_streams;
 +	u32 nominal_time;
++	u32 availability_window;
 +	u32 measurements_per_aw;
++	enum nl80211_chan_width chan_width;
++	enum nl80211_preamble preamble;
+ 
+-	u16 num_ftmr_attempts_valid:1,
++	u32 num_ftmr_attempts_valid:1,
+ 	    num_ftmr_successes_valid:1,
+ 	    rssi_avg_valid:1,
+ 	    rssi_spread_valid:1,
+@@ -4307,7 +4352,19 @@ struct cfg80211_pmsr_ftm_result {
+ 	    rtt_spread_valid:1,
+ 	    dist_avg_valid:1,
+ 	    dist_variance_valid:1,
+-	    dist_spread_valid:1;
++	    dist_spread_valid:1,
++	    tx_ltf_repetition_count_valid:1,
++	    rx_ltf_repetition_count_valid:1,
++	    max_time_between_measurements_valid:1,
++	    min_time_between_measurements_valid:1,
++	    num_tx_spatial_streams_valid:1,
++	    num_rx_spatial_streams_valid:1,
++	    nominal_time_valid:1,
++	    availability_window_valid:1,
++	    measurements_per_aw_valid:1,
++	    chan_width_valid:1,
++	    preamble_valid:1,
++	    is_delayed_lmr:1;
  };
  
  /**
-@@ -4395,12 +4413,14 @@ struct cfg80211_pmsr_ftm_request_peer {
-  * @addr: MAC address
-  * @chandef: channel to use
-  * @report_ap_tsf: report the associated AP's TSF
-+ * @pd_request: indicates a peer-to-peer PD request
-  * @ftm: FTM data, see &struct cfg80211_pmsr_ftm_request_peer
-  */
- struct cfg80211_pmsr_request_peer {
- 	u8 addr[ETH_ALEN];
- 	struct cfg80211_chan_def chandef;
--	u8 report_ap_tsf:1;
-+	u8 report_ap_tsf:1,
-+	   pd_request:1;
- 	struct cfg80211_pmsr_ftm_request_peer ftm;
- };
- 
 diff --git a/include/uapi/linux/nl80211.h b/include/uapi/linux/nl80211.h
-index 59e8ba9c37c4..4dafaf25b0f6 100644
+index 4dafaf25b0f6..67cc1ce6d2a1 100644
 --- a/include/uapi/linux/nl80211.h
 +++ b/include/uapi/linux/nl80211.h
-@@ -7792,6 +7792,8 @@ enum nl80211_peer_measurement_resp {
-  * @NL80211_PMSR_PEER_ATTR_RESP: This is a nested attribute indexed by
-  *	measurement type, with attributes from the
-  *	&enum nl80211_peer_measurement_resp inside.
-+ * @NL80211_PMSR_PEER_ATTR_PD_REQUEST: flag attribute indicating this is a
-+ *	peer-to-peer PD request
-  *
-  * @NUM_NL80211_PMSR_PEER_ATTRS: internal
-  * @NL80211_PMSR_PEER_ATTR_MAX: highest attribute number
-@@ -7803,6 +7805,7 @@ enum nl80211_peer_measurement_peer_attrs {
- 	NL80211_PMSR_PEER_ATTR_CHAN,
- 	NL80211_PMSR_PEER_ATTR_REQ,
- 	NL80211_PMSR_PEER_ATTR_RESP,
-+	NL80211_PMSR_PEER_ATTR_PD_REQUEST,
+@@ -8145,7 +8145,35 @@ enum nl80211_peer_measurement_ftm_failure_reasons {
+  * @NL80211_PMSR_FTM_RESP_ATTR_PAD: ignore, for u64/s64 padding only
+  * @NL80211_PMSR_FTM_RESP_ATTR_BURST_PERIOD: actual burst period used by
+  *	the responder (similar to request, u16)
+- *
++ * @NL80211_PMSR_FTM_RESP_ATTR_TX_LTF_REPETITION_COUNT: negotiated value of
++ *	number of tx ltf repetitions in NDP frames (u32, optional)
++ * @NL80211_PMSR_FTM_RESP_ATTR_RX_LTF_REPETITION_COUNT: negotiated value of
++ *	number of rx ltf repetitions in NDP frames (u32, optional)
++ * @NL80211_PMSR_FTM_RESP_ATTR_MAX_TIME_BETWEEN_MEASUREMENTS: negotiated value
++ *	where latest time by which the ISTA needs to complete the next round of
++ *	measurements, in units of 10 ms (u32, optional)
++ * @NL80211_PMSR_FTM_RESP_ATTR_MIN_TIME_BETWEEN_MEASUREMENTS: negotiated
++ *	minimum time between two consecutive range measurements initiated by an
++ *	ISTA, in units of 100 us (u32, optional)
++ * @NL80211_PMSR_FTM_RESP_ATTR_NUM_TX_SPATIAL_STREAMS: number of Tx space-time
++ *	streams used in NDP frames during the measurement sounding phase
++ *	(u32, optional).
++ * @NL80211_PMSR_FTM_RESP_ATTR_NUM_RX_SPATIAL_STREAMS: number of Rx space-time
++ *	streams used in the NDP frames during the measurement sounding phase
++ *	(u32, optional)
++ * @NL80211_PMSR_FTM_RESP_ATTR_NOMINAL_TIME: negotiated nominal time used in
++ *	this session in milliseconds. (u32, optional)
++ * @NL80211_PMSR_FTM_RESP_ATTR_AVAILABILITY_WINDOW: negotiated availability
++ *	window time used in this session, in units of milli seconds.
++ *	(u32, optional)
++ * @NL80211_PMSR_FTM_RESP_ATTR_MEASUREMENTS_PER_AW: negotiated measurements
++ *	per availability window (u32, optional, max value 4)
++ * @NL80211_PMSR_FTM_RESP_ATTR_CHANNEL_WIDTH: u32 attribute indicating channel
++ *	width used for measurement, see &enum nl80211_chan_width (optional).
++ * @NL80211_PMSR_FTM_RESP_ATTR_PREAMBLE: u32 attribute indicating the preamble
++ *	type used for the measurement, see &enum nl80211_preamble (optional).
++ * @NL80211_PMSR_FTM_RESP_ATTR_IS_DELAYED_LMR: flag, indicates if the
++ *	current result is delayed LMR data.
+  * @NUM_NL80211_PMSR_FTM_RESP_ATTR: internal
+  * @NL80211_PMSR_FTM_RESP_ATTR_MAX: highest attribute number
+  */
+@@ -8174,6 +8202,18 @@ enum nl80211_peer_measurement_ftm_resp {
+ 	NL80211_PMSR_FTM_RESP_ATTR_CIVICLOC,
+ 	NL80211_PMSR_FTM_RESP_ATTR_PAD,
+ 	NL80211_PMSR_FTM_RESP_ATTR_BURST_PERIOD,
++	NL80211_PMSR_FTM_RESP_ATTR_TX_LTF_REPETITION_COUNT,
++	NL80211_PMSR_FTM_RESP_ATTR_RX_LTF_REPETITION_COUNT,
++	NL80211_PMSR_FTM_RESP_ATTR_MAX_TIME_BETWEEN_MEASUREMENTS,
++	NL80211_PMSR_FTM_RESP_ATTR_MIN_TIME_BETWEEN_MEASUREMENTS,
++	NL80211_PMSR_FTM_RESP_ATTR_NUM_TX_SPATIAL_STREAMS,
++	NL80211_PMSR_FTM_RESP_ATTR_NUM_RX_SPATIAL_STREAMS,
++	NL80211_PMSR_FTM_RESP_ATTR_NOMINAL_TIME,
++	NL80211_PMSR_FTM_RESP_ATTR_AVAILABILITY_WINDOW,
++	NL80211_PMSR_FTM_RESP_ATTR_MEASUREMENTS_PER_AW,
++	NL80211_PMSR_FTM_RESP_ATTR_CHANNEL_WIDTH,
++	NL80211_PMSR_FTM_RESP_ATTR_PREAMBLE,
++	NL80211_PMSR_FTM_RESP_ATTR_IS_DELAYED_LMR,
  
  	/* keep last */
- 	NUM_NL80211_PMSR_PEER_ATTRS,
-@@ -8012,6 +8015,24 @@ enum nl80211_peer_measurement_ftm_capa {
-  *	%NL80211_ATTR_TIMEOUT has expired.
-  *	Set %NL80211_PMSR_FTM_REQ_ATTR_LMR_FEEDBACK to ensure RSTA will have
-  *	the measurement results to report back in the FTM response.
-+ * @NL80211_PMSR_FTM_REQ_ATTR_MIN_TIME_BETWEEN_MEASUREMENTS: minimum time
-+ *	between two consecutive range measurements in units of 100 microseconds,
-+ *	applicable for non-trigger based ranging (u32). Only valid if
-+ *	%NL80211_PMSR_FTM_REQ_ATTR_NON_TRIGGER_BASED is set.
-+ * @NL80211_PMSR_FTM_REQ_ATTR_MAX_TIME_BETWEEN_MEASUREMENTS: maximum time
-+ *	between two consecutive range measurements in units of 10 milliseconds,
-+ *	to avoid FTM negotiation, applicable for non-trigger based ranging (u32)
-+ *	. Only valid if %NL80211_PMSR_FTM_REQ_ATTR_NON_TRIGGER_BASED is set.
-+ * @NL80211_PMSR_FTM_REQ_ATTR_NOMINAL_TIME: the nominal time field shall be set
-+ *	to the nominal duration between adjacent Availability Windows in units
-+ *	of milli seconds (u32). Only valid if
-+ *	%NL80211_PMSR_FTM_REQ_ATTR_NON_TRIGGER_BASED is set.
-+ * @NL80211_PMSR_FTM_REQ_ATTR_AW_DURATION: The AW duration field shall be set
-+ *	to the duration of the AW in units of 1ms (0-255 ms) (u32).
-+ *	Only valid if %NL80211_PMSR_FTM_REQ_ATTR_NON_TRIGGER_BASED is set.
-+ * @NL80211_PMSR_FTM_REQ_ATTR_MEAS_PER_AW: meas per AW field shall indicate the
-+ *	number of measurements attempts per AW with a maximum value of 4 (u32).
-+ *	Only valid if %NL80211_PMSR_FTM_REQ_ATTR_NON_TRIGGER_BASED is set.
-  *
-  * @NUM_NL80211_PMSR_FTM_REQ_ATTR: internal
-  * @NL80211_PMSR_FTM_REQ_ATTR_MAX: highest attribute number
-@@ -8033,6 +8054,11 @@ enum nl80211_peer_measurement_ftm_req {
- 	NL80211_PMSR_FTM_REQ_ATTR_LMR_FEEDBACK,
- 	NL80211_PMSR_FTM_REQ_ATTR_BSS_COLOR,
- 	NL80211_PMSR_FTM_REQ_ATTR_RSTA,
-+	NL80211_PMSR_FTM_REQ_ATTR_MIN_TIME_BETWEEN_MEASUREMENTS,
-+	NL80211_PMSR_FTM_REQ_ATTR_MAX_TIME_BETWEEN_MEASUREMENTS,
-+	NL80211_PMSR_FTM_REQ_ATTR_NOMINAL_TIME,
-+	NL80211_PMSR_FTM_REQ_ATTR_AW_DURATION,
-+	NL80211_PMSR_FTM_REQ_ATTR_MEAS_PER_AW,
- 
- 	/* keep last */
- 	NUM_NL80211_PMSR_FTM_REQ_ATTR,
-diff --git a/net/wireless/nl80211.c b/net/wireless/nl80211.c
-index 77447f63d112..2b7de56c466f 100644
---- a/net/wireless/nl80211.c
-+++ b/net/wireless/nl80211.c
-@@ -372,6 +372,15 @@ nl80211_pmsr_ftm_req_attr_policy[NL80211_PMSR_FTM_REQ_ATTR_MAX + 1] = {
- 	[NL80211_PMSR_FTM_REQ_ATTR_LMR_FEEDBACK] = { .type = NLA_FLAG },
- 	[NL80211_PMSR_FTM_REQ_ATTR_BSS_COLOR] = { .type = NLA_U8 },
- 	[NL80211_PMSR_FTM_REQ_ATTR_RSTA] = { .type = NLA_FLAG },
-+	[NL80211_PMSR_FTM_REQ_ATTR_MIN_TIME_BETWEEN_MEASUREMENTS] = {
-+		.type = NLA_U32
-+	},
-+	[NL80211_PMSR_FTM_REQ_ATTR_MAX_TIME_BETWEEN_MEASUREMENTS] = {
-+		.type = NLA_U32
-+	},
-+	[NL80211_PMSR_FTM_REQ_ATTR_NOMINAL_TIME] = { .type = NLA_U32 },
-+	[NL80211_PMSR_FTM_REQ_ATTR_AW_DURATION] = NLA_POLICY_MAX(NLA_U32, 255),
-+	[NL80211_PMSR_FTM_REQ_ATTR_MEAS_PER_AW] = NLA_POLICY_MAX(NLA_U32, 4),
- };
- 
- static const struct nla_policy
-@@ -394,6 +403,7 @@ nl80211_pmsr_peer_attr_policy[NL80211_PMSR_PEER_ATTR_MAX + 1] = {
- 	[NL80211_PMSR_PEER_ATTR_REQ] =
- 		NLA_POLICY_NESTED(nl80211_pmsr_req_attr_policy),
- 	[NL80211_PMSR_PEER_ATTR_RESP] = { .type = NLA_REJECT },
-+	[NL80211_PMSR_PEER_ATTR_PD_REQUEST] = { .type = NLA_FLAG },
- };
- 
- static const struct nla_policy
+ 	NUM_NL80211_PMSR_FTM_RESP_ATTR,
 diff --git a/net/wireless/pmsr.c b/net/wireless/pmsr.c
-index 17f0b1c97d58..4ae25b946111 100644
+index 4ae25b946111..a230bb95f5e3 100644
 --- a/net/wireless/pmsr.c
 +++ b/net/wireless/pmsr.c
-@@ -91,11 +91,10 @@ static int pmsr_parse_ftm(struct cfg80211_registered_device *rdev,
- 			nla_get_u32(tb[NL80211_PMSR_FTM_REQ_ATTR_FTMS_PER_BURST]);
- 
- 	if (capa->ftm.max_ftms_per_burst &&
--	    (out->ftm.ftms_per_burst > capa->ftm.max_ftms_per_burst ||
--	     out->ftm.ftms_per_burst == 0)) {
-+	    (out->ftm.ftms_per_burst > capa->ftm.max_ftms_per_burst)) {
- 		NL_SET_ERR_MSG_ATTR(info->extack,
- 				    tb[NL80211_PMSR_FTM_REQ_ATTR_FTMS_PER_BURST],
--				    "FTM: FTMs per burst must be set lower than the device limit but non-zero");
-+				    "FTM: FTMs per burst must be set lower than the device limit");
- 		return -EINVAL;
- 	}
- 
-@@ -196,6 +195,36 @@ static int pmsr_parse_ftm(struct cfg80211_registered_device *rdev,
- 		return -EOPNOTSUPP;
- 	}
- 
-+	if (out->ftm.non_trigger_based) {
-+		if (tb[NL80211_PMSR_FTM_REQ_ATTR_MIN_TIME_BETWEEN_MEASUREMENTS])
-+			out->ftm.min_time_between_measurements =
-+			nla_get_u32(tb[NL80211_PMSR_FTM_REQ_ATTR_MIN_TIME_BETWEEN_MEASUREMENTS]);
-+
-+		if (tb[NL80211_PMSR_FTM_REQ_ATTR_MAX_TIME_BETWEEN_MEASUREMENTS])
-+			out->ftm.max_time_between_measurements =
-+			nla_get_u32(tb[NL80211_PMSR_FTM_REQ_ATTR_MAX_TIME_BETWEEN_MEASUREMENTS]);
-+
-+		if (tb[NL80211_PMSR_FTM_REQ_ATTR_AW_DURATION])
-+			out->ftm.availability_window =
-+				nla_get_u32(tb[NL80211_PMSR_FTM_REQ_ATTR_AW_DURATION]);
-+
-+		if (tb[NL80211_PMSR_FTM_REQ_ATTR_NOMINAL_TIME])
-+			out->ftm.nominal_time =
-+				nla_get_u32(tb[NL80211_PMSR_FTM_REQ_ATTR_NOMINAL_TIME]);
-+
-+		if (tb[NL80211_PMSR_FTM_REQ_ATTR_MEAS_PER_AW])
-+			out->ftm.measurements_per_aw =
-+				nla_get_u32(tb[NL80211_PMSR_FTM_REQ_ATTR_MEAS_PER_AW]);
-+	}
-+
-+	if (!out->ftm.rsta && out->ftm.ftms_per_burst == 0 &&
-+	    out->ftm.measurements_per_aw == 0) {
-+		NL_SET_ERR_MSG_ATTR(info->extack,
-+				    ftmreq,
-+				    "FTM: Invalid parameters:Both Ftm's per burst and measurements per avail window are zero");
-+		return -EINVAL;
-+	}
-+
- 	return 0;
- }
- 
-@@ -223,6 +252,14 @@ static int pmsr_parse_peer(struct cfg80211_registered_device *rdev,
- 
- 	memcpy(out->addr, nla_data(tb[NL80211_PMSR_PEER_ATTR_ADDR]), ETH_ALEN);
- 
-+	out->pd_request = !!tb[NL80211_PMSR_PEER_ATTR_PD_REQUEST];
-+
-+	if (out->pd_request && !rdev->wiphy.pmsr_capa->pd_support) {
-+		NL_SET_ERR_MSG_ATTR(info->extack,
-+				    tb[NL80211_PMSR_PEER_ATTR_PD_REQUEST],
-+				    "PD request not supported by device");
-+		return -EINVAL;
-+	}
- 	/* reuse info->attrs */
- 	memset(info->attrs, 0, sizeof(*info->attrs) * (NL80211_ATTR_MAX + 1));
- 	err = nla_parse_nested_deprecated(info->attrs, NL80211_ATTR_MAX,
+@@ -518,6 +518,22 @@ static int nl80211_pmsr_send_ftm_res(struct sk_buff *msg,
+ 	PUTOPT_U64(DIST_AVG, dist_avg);
+ 	PUTOPT_U64(DIST_VARIANCE, dist_variance);
+ 	PUTOPT_U64(DIST_SPREAD, dist_spread);
++	PUTOPT(u32, TX_LTF_REPETITION_COUNT, tx_ltf_repetition_count);
++	PUTOPT(u32, RX_LTF_REPETITION_COUNT, rx_ltf_repetition_count);
++	PUTOPT(u32, MAX_TIME_BETWEEN_MEASUREMENTS,
++	       max_time_between_measurements);
++	PUTOPT(u32, MIN_TIME_BETWEEN_MEASUREMENTS,
++	       min_time_between_measurements);
++	PUTOPT(u32, NUM_TX_SPATIAL_STREAMS, num_tx_spatial_streams);
++	PUTOPT(u32, NUM_RX_SPATIAL_STREAMS, num_rx_spatial_streams);
++	PUTOPT(u32, NOMINAL_TIME, nominal_time);
++	PUTOPT(u32, AVAILABILITY_WINDOW, availability_window);
++	PUTOPT(u32, MEASUREMENTS_PER_AW, measurements_per_aw);
++	PUTOPT(u32, CHANNEL_WIDTH, chan_width);
++	PUTOPT(u32, PREAMBLE, preamble);
++	if (res->ftm.is_delayed_lmr &&
++	    nla_put_flag(msg, NL80211_PMSR_FTM_RESP_ATTR_IS_DELAYED_LMR))
++		goto error;
+ 	if (res->ftm.lci && res->ftm.lci_len &&
+ 	    nla_put(msg, NL80211_PMSR_FTM_RESP_ATTR_LCI,
+ 		    res->ftm.lci_len, res->ftm.lci))
 -- 
 2.34.1
 
