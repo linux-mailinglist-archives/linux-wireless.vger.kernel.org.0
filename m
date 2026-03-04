@@ -1,185 +1,165 @@
-Return-Path: <linux-wireless+bounces-32473-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-32474-lists+linux-wireless=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id mMrWAt1hqGmduAAAu9opvQ
-	(envelope-from <linux-wireless+bounces-32473-lists+linux-wireless=lfdr.de@vger.kernel.org>)
-	for <lists+linux-wireless@lfdr.de>; Wed, 04 Mar 2026 17:46:21 +0100
+	id aFG4FXFpqGl3uQAAu9opvQ
+	(envelope-from <linux-wireless+bounces-32474-lists+linux-wireless=lfdr.de@vger.kernel.org>)
+	for <lists+linux-wireless@lfdr.de>; Wed, 04 Mar 2026 18:18:41 +0100
 X-Original-To: lists+linux-wireless@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9FBF72048C5
-	for <lists+linux-wireless@lfdr.de>; Wed, 04 Mar 2026 17:46:20 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id B328F2050DA
+	for <lists+linux-wireless@lfdr.de>; Wed, 04 Mar 2026 18:18:40 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 550193011344
-	for <lists+linux-wireless@lfdr.de>; Wed,  4 Mar 2026 16:46:15 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 7F9F63073F42
+	for <lists+linux-wireless@lfdr.de>; Wed,  4 Mar 2026 17:14:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 84EA236F41D;
-	Wed,  4 Mar 2026 16:46:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6AB48361646;
+	Wed,  4 Mar 2026 17:14:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="gqViPD7A"
+	dkim=fail reason="signature verification failed" (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="pjbnSbMA"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-lj1-f176.google.com (mail-lj1-f176.google.com [209.85.208.176])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CD04F371CF5
-	for <linux-wireless@vger.kernel.org>; Wed,  4 Mar 2026 16:45:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.208.176
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772642763; cv=pass; b=a7JfOHhs0Ao147vG4yYSwI9MloQIOQq01E7LM4vUsjqtSAKh8bajzUhK6+LW/WSrXxxizrR6ZUlgAXv2wklXeWM925solcnjFT2d+lYLz0ih3z9IhJw16o2cMxV8D5KSaTiuiDTXcQnhikbHAgEuvKh8/EPixb2Z37LCEVqeYtE=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772642763; c=relaxed/simple;
-	bh=Xn4mrHZ95N428i6MZYQDXnsrCqWWD9RHngc4Mamma+w=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=FrZ4zab2oHrO4G/kPMCtuHU3G7+46Lp6q719/roFFUNQsiiWAhw4RS9PXqTMOA73Vi8J/SWmnwov+1Wk4vm3yUxZXA3nO0OdVIlJeiLIRTR9fWGb14wapksxCnU1U/rxUkIRpYWDm8ANPFBJZwCHLWEXkXV99HwVJSGiIS8tGsQ=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=gqViPD7A; arc=pass smtp.client-ip=209.85.208.176
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
-Received: by mail-lj1-f176.google.com with SMTP id 38308e7fff4ca-38a2544b52bso33283261fa.3
-        for <linux-wireless@vger.kernel.org>; Wed, 04 Mar 2026 08:45:59 -0800 (PST)
-ARC-Seal: i=1; a=rsa-sha256; t=1772642758; cv=none;
-        d=google.com; s=arc-20240605;
-        b=bzsYya3QCw0JYOJr3tswA5ibOwI8O83iWDILZYy4dBdmYrTfmMtAzzYgFbucpwksNQ
-         7x3v/efmcNUrlSgmkjhUw1S28dRktkzisn8RQK50RsaeXRLy/MTO3QSvF9pCsaxu2NQA
-         O4+ObHRdeLOidskIM5LxdYfbdLsnJaPJ0Ebudbc2TMT5e+udFwEwQ0PlqV1e9l03xe4o
-         gLi5hMzqU9F32G9L9mkAUpNXYnoKiGKDRW6ZEbO1UaAkLkmsp5ll5Gir6t7gEjBgsuJh
-         uokVgOA0FNNm0MvsSeptsEDY6nXW+P/HWw5rFlJvr4EbODI3/phQR3LVdSblDj/EZpzM
-         fotA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:dkim-signature;
-        bh=k3qxdlKEuPdrJH8Pte/wff3Ygvq/uxu8SZlFOQqhsHk=;
-        fh=lP4TrvoVOnbter2utlXMCTMmBgZGtjtIuQX6KFZr/Q4=;
-        b=k6RCSjZ/TvJVQyOQd9Tf723/PksoNQScGHL02XSqmQ65bui+FTQqylDsTwxDSC3LPr
-         0aihtUQLuA+IbE6cC8iCS/0XS+6fp6HdUHoRQnvE/u6MnyXg8DaJuKJ1JqTI4YP1vKMJ
-         O6kgoCdxkj8WEbWFlGu8FoLVPGSVgpfSFEmTe5bTxslG2/9A/lWMgWN2VAYzADRwSKMG
-         409eWxNEnd+DZdJju4gBdg9Op0CnbpwbaI5IChTNXRc8F+QbqV4BAYrrX0KI+Fkhi0Qg
-         8dfTRd6rafb+XKU5q2BgcJjhG5+c0fuKdstsMA/5P1P0OnEJk3LQ9O2hGp0covQxF7K+
-         UiWQ==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1772642758; x=1773247558; darn=vger.kernel.org;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=k3qxdlKEuPdrJH8Pte/wff3Ygvq/uxu8SZlFOQqhsHk=;
-        b=gqViPD7AjhGGcy/Uh0WRIZ9ovyrfnToge8AlufXLERIk6aooH8MwP7R1rs83cHoJx9
-         Tpfc96ZhrWpRvSpm5oZAxjiUed7s/BzEWAXEQqA7XudlOQLKtgHoVBS+TxifhZLkzbL2
-         XktVh31nriiTyKzf6qZmkK9JTEo3D27FEfXeKr5MtZljrRYHGB7sumlPkBjLkfiN3R7R
-         +BBvQEjmWSfNPUPnRQVK5lAMoOJzltsiS82ANpGwfkyE56AdpkhPG8DWo+tfemzHScEH
-         e7OVq55PXY7OA8qCqhQ5yR/IADG5MdmoTfPvmo2fhz3VbkIxVD9rNwiLa2ftp+pBwTV8
-         TWSw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1772642758; x=1773247558;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=k3qxdlKEuPdrJH8Pte/wff3Ygvq/uxu8SZlFOQqhsHk=;
-        b=cIt5pQjCO0wEGiiKUvcX0N5/wUEfBFz9hD5gP/MCe38wAZHDxvjQVI7d75gvjHp4oE
-         2p/vCtICfBKuCAZfvWtRmsfCiOxEkosbX83iGM9PS5IZrlLH9AQq0/zKJ9NgDJDOh1E0
-         Rqgbi9OKaAUzx2dn5XTPvSoA15o99N2W67AwgecU1f4vgks8sBlwf4Ub7uTXUGTxgWQ1
-         ygcwtZG5OXwVYJsbFRFyij7E4wYjaRWjnavRQGVyA05hogM5EI/6+/xXwqBOsw44tc7h
-         D8kzFywdde+IITaT8CwhXFmZQPE7WmMw7Qv6AGgO50V2NK5j0hUyuxSRo/B5AkT73OGW
-         PMzg==
-X-Forwarded-Encrypted: i=1; AJvYcCWLNAQiGyTi4VjfLFk6AwHbijDVMPVKNlnOB+KhT1aqIAihdic3B/7n6ZHW0vdorZvlKu6HJF5tD1Zpy9/hOA==@vger.kernel.org
-X-Gm-Message-State: AOJu0YyrZ6i4noV0B5gxpsGUYgHAOzCaLWiqBAD3t+emTbZLrW3+BMj8
-	FEVUog7Vzsb++x1GbIE5H37nyP4eqTSfyd0QslIj73aEhNoJxU5gQSEvZtum4KMtdQ51HNmFQvu
-	xihV7FbMyJ0xwnNTybPl9LRtkInwJgWIYVuUF4mvsIw==
-X-Gm-Gg: ATEYQzz48y/LqN3I25JhoP/OSRGaoF0Xp99QEty+XZRLIJ1dE9zHALjc+q2aqtLXZ34
-	lC2YSaPR4sik1nuxz5no6h+Q3zWcyIzYQYTkv0a1y/orGZS44lwKErKcibyFk9OMDWFS/oXAUol
-	e4i6lUpNbZMyXk5dXp0gAs7/VhQXBsF5N1hvc7hjey5dzSCFM5yVVI9FcJoHyMNfPOE2XbnCqmU
-	UL5tXe/uyeGMJTm9E/kdIGnk4Ql64JDmqbIZtQ1UOBfsxGIGkVwqqFK8IhtXx2xUPimFdLssf/Q
-	PI7UkrQU
-X-Received: by 2002:a05:651c:1509:b0:38a:2792:b4f7 with SMTP id
- 38308e7fff4ca-38a2c5b6039mr19908311fa.24.1772642757581; Wed, 04 Mar 2026
- 08:45:57 -0800 (PST)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 47DAF84039;
+	Wed,  4 Mar 2026 17:14:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1772644485; cv=none; b=HzEmZB1xYIdCdDxsJ45zoKLADkx7ONE4w+tS/KJZwLmAr2i2lvnxXhwcSNDixQLQyu+3vuN0w3fc3il/KE+m+sFyqQgmvAGCZYPTVAzXWZgNPY46DpK3Wt4yKEf+lTImTxbKIwQMVcjStZfQtOYPgZNMs9sWlAdM6YANU9N9pOQ=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1772644485; c=relaxed/simple;
+	bh=+oJjHKhWCbPsGXjJkJeOe7mOGQ8z0UHZlgUk21mKa4Y=;
+	h=Date:Message-ID:From:To:Cc:Subject:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=LCT20oLRyHyIcPr5fLJbvtC8l2XG4ImsSx1x6tirdvw+4f53iUeRS2pOqnOXLneu1KT62M0uVHMpyrP8ux/+1xwUgJRAxe449iiHPmnNSRYbqP6psdYvPjBnSQXjbXcMsnijBgE1CTQZx+RN891Kt7DKMmNEbUf0spFjWvC81fY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=pjbnSbMA; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 03FF5C4CEF7;
+	Wed,  4 Mar 2026 17:14:44 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1772644485;
+	bh=+oJjHKhWCbPsGXjJkJeOe7mOGQ8z0UHZlgUk21mKa4Y=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=pjbnSbMAKSq7Q17bm6gxIzZUe7SLk8mJOqp24lZqrxoZOWP8muu+D8pvHgKzO/Hso
+	 zNHz2YA6A/DENMS7RuxzRXMgnfwDqDyUpfQezziy0Ap//qNMbmCNSV+2AFTBx2b/bF
+	 lZk3tFRWsnnoD/Y6DPYhMawbyVEPhTQDOytuTLcSbPSdOT0wrluWQScYcD3GTtRMQI
+	 beJeqHGOcMDADjjNiJd3unhPCIi9qsX3oV8mYULON20/Lt77KvXsRpnmESYUxw7w+f
+	 5qlnayHrNGao6tUV8YGfVEJkmy9Yy7AssjsivktmQADAJIEnUrM70R1Cr5hZccSwEI
+	 Lb6PfUTLYABZQ==
+Date: Wed, 04 Mar 2026 07:14:43 -1000
+Message-ID: <68c1ca1381d1871fff72b211890a64eb@kernel.org>
+From: Tejun Heo <tj@kernel.org>
+To: Ben Greear <greearb@candelatech.com>
+Cc: Johannes Berg <johannes@sipsolutions.net>,
+	linux-wireless <linux-wireless@vger.kernel.org>,
+	Korenblit@web.codeaurora.org,
+	Miriam Rachel <miriam.rachel.korenblit@intel.com>,
+	linux-mm@kvack.org, linux-kernel@vger.kernel.org
+Subject: Re: 6.18.13 iwlwifi deadlock allocating cma while work-item
+ is active.
+In-Reply-To: <de003dc3-3e37-f238-4250-2df16eeb77d6@candelatech.com>
+References: <18c4bfed-caca-bef3-a139-63d7fa48940a@candelatech.com>
+ <e7d92fab-9d0e-4a58-aa0b-2c6545772e68@candelatech.com>
+ <3456b2c89f057900b39ce79ea8ca1154c5014e43.camel@sipsolutions.net>
+ <0de6c8d1-d2fa-44ac-8025-cfcfecd87b02@candelatech.com>
+ <bed9cc03d3c214b2601093f91e4b00f3715762b2.camel@sipsolutions.net>
+ <c616fc41-3bc7-4ddc-b65c-a622111d8548@candelatech.com>
+ <35779061f94c2a55bb58dcd619ae91c618509cf4.camel@sipsolutions.net>
+ <aadKDCKGHk1Ua-7_@slm.duckdns.org>
+ <3303d57a4ea6776dbc66ca72441023f76e6f1234.camel@sipsolutions.net>
+ <35a7ebcf-862f-0b3a-a245-c32196a58692@candelatech.com>
+ <aadYoaA_JYduCx_S@slm.duckdns.org>
+ <de003dc3-3e37-f238-4250-2df16eeb77d6@candelatech.com>
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260227041108.66508-1-lachlan.hodges@morsemicro.com> <20260227041108.66508-34-lachlan.hodges@morsemicro.com>
-In-Reply-To: <20260227041108.66508-34-lachlan.hodges@morsemicro.com>
-From: Ulf Hansson <ulf.hansson@linaro.org>
-Date: Wed, 4 Mar 2026 17:45:21 +0100
-X-Gm-Features: AaiRm52dRDirGfxBP2ZwBErVxf4sLGIJPu_ID9B-Ngv6BgEM7NPLN6E8EgHqA7U
-Message-ID: <CAPDyKFp6dhmpkMCs=ejYTpR9oNbNz0urtFD2HTvRwOp2Y7H3DA@mail.gmail.com>
-Subject: Re: [PATCH wireless-next 33/35] mmc: sdio: add Morse Micro vendor ids
-To: Lachlan Hodges <lachlan.hodges@morsemicro.com>
-Cc: johannes@sipsolutions.net, arien.judge@morsemicro.com, 
-	dan.callaghan@morsemicro.com, ayman.grais@morsemicro.com, 
-	linux-wireless@vger.kernel.org, linux-mmc@vger.kernel.org, 
-	linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-X-Rspamd-Queue-Id: 9FBF72048C5
+Content-Type: text/plain; charset=us-ascii
+X-Rspamd-Queue-Id: B328F2050DA
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-2.16 / 15.00];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=2];
-	DMARC_POLICY_ALLOW(-0.50)[linaro.org,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
-	R_DKIM_ALLOW(-0.20)[linaro.org:s=google];
+X-Spamd-Result: default: False [0.04 / 15.00];
+	ARC_REJECT(1.00)[signature check failed: fail, {[1] = sig:subspace.kernel.org:reject}];
+	DMARC_POLICY_ALLOW_WITH_FAILURES(-0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-32473-lists,linux-wireless=lfdr.de];
-	FROM_HAS_DN(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
+	NEURAL_SPAM(0.00)[0.942];
+	R_DKIM_REJECT(0.00)[kernel.org:s=k20201202];
+	TAGGED_FROM(0.00)[bounces-32474-lists,linux-wireless=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	DMARC_POLICY_ALLOW(0.00)[kernel.org,quarantine];
 	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linaro.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
-	MISSING_XM_UA(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[ulf.hansson@linaro.org,linux-wireless@vger.kernel.org];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[linux-wireless];
-	RCPT_COUNT_SEVEN(0.00)[8];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[kernel.org:-];
+	FROM_HAS_DN(0.00)[];
 	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,mail.gmail.com:mid]
+	MID_RHS_MATCH_FROM(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[tj@kernel.org,linux-wireless@vger.kernel.org];
+	PRECEDENCE_BULK(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[7];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TAGGED_RCPT(0.00)[linux-wireless];
+	MISSING_XM_UA(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
 X-Rspamd-Action: no action
 
-On Fri, 27 Feb 2026 at 05:15, Lachlan Hodges
-<lachlan.hodges@morsemicro.com> wrote:
->
-> Add the Morse Micro mm81x series vendor ids.
->
-> Signed-off-by: Lachlan Hodges <lachlan.hodges@morsemicro.com>
+Hello,
 
-I understand that those vendor ids will be used by the sdio func
-driver to match against. Although, the way the series is ordered makes
-no sense to me. Each patch doesn't compile by itself.
+(Partially drafted with the help of Claude)
 
-Anyway, feel free to add my ack, once you have sorted out how
-re-structure your series.
+On Tue, Mar 03, 2026 at 04:02:14PM -0800, Ben Greear wrote:
+> Could the logic that detects blocked work-queues instead be instrumented
+> to print out more useful information so that just reproducing the problem
+> and providing dmesg output will be sufficient?  Or does dmesg already provide
+> enough that would give you a clue as to what is going on?
 
-Acked-by: Ulf Hansson <ulf.hansson@linaro.org>
+It may not be exactly the same issue, but Breno just posted a patch that
+might help. The current watchdog only prints backtraces for workers that
+are actively running on CPU, so sleeping culprits are invisible. His
+patch removes that filter so all in-flight workers get printed:
 
-Kind regards
-Uffe
+  http://lkml.kernel.org/r/aag4tTyeiZyw0jID@gmail.com
 
+Might be worth trying.
 
-> ---
->  include/linux/mmc/sdio_ids.h | 4 ++++
->  1 file changed, 4 insertions(+)
->
-> diff --git a/include/linux/mmc/sdio_ids.h b/include/linux/mmc/sdio_ids.h
-> index 673cbdf43453..3ccfe3679c91 100644
-> --- a/include/linux/mmc/sdio_ids.h
-> +++ b/include/linux/mmc/sdio_ids.h
-> @@ -116,6 +116,10 @@
->  #define SDIO_VENDOR_ID_MICROCHIP_WILC          0x0296
->  #define SDIO_DEVICE_ID_MICROCHIP_WILC1000      0x5347
->
-> +#define SDIO_VENDOR_ID_MORSEMICRO              0x325B
-> +#define SDIO_VENDOR_ID_MORSEMICRO_MM81XB1      0x0709
-> +#define SDIO_VENDOR_ID_MORSEMICRO_MM81XB2      0x0809
-> +
->  #define SDIO_VENDOR_ID_REALTEK                 0x024c
->  #define SDIO_DEVICE_ID_REALTEK_RTW8723BS       0xb723
->  #define SDIO_DEVICE_ID_REALTEK_RTW8821BS       0xb821
-> --
-> 2.43.0
->
+> If I were to attempt to use AI on the coredump, would echoing 'c' to
+> /proc/sysrq-trigger with kdump enabled (when deadlock is happening) be
+> the appropriate action to grab the core file?
+
+Yes, that's right, but you need to set up kdump first. The quickest way
+depends on your distro:
+
+ - Fedora/RHEL: dnf install kexec-tools, then kdumpctl reset-crashkernel,
+   systemctl enable --now kdump
+ - Ubuntu/Debian: apt install kdump-tools (say Yes to enable), reboot
+ - Arch: Install kexec-tools, add crashkernel=512M to your kernel
+   cmdline, create a kdump.service that runs
+   kexec -p /boot/vmlinuz-linux --initrd=/boot/initramfs-linux.img \
+     --append="root=<your-root> irqpoll nr_cpus=1 reset_devices"
+
+After reboot, verify with: cat /sys/kernel/kexec_crash_size (should be
+non-zero). Then when the deadlock happens:
+
+  echo c > /proc/sysrq-trigger
+
+The system will panic and boot into the kdump kernel. Note that the
+kdump kernel runs with very limited memory, so you can't do much there
+directly. Use makedumpfile to save a compressed dump to disk:
+
+  makedumpfile -l -d 31 /proc/vmcore /var/crash/vmcore
+
+Most distros' kdump setups do this automatically. Once the dump is saved,
+the system reboots back to normal and you can analyze it at your leisure
+with drgn:
+
+  drgn -c /var/crash/vmcore
+
+Thanks.
+
+--
+tejun
 
