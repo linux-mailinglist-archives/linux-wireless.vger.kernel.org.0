@@ -1,158 +1,159 @@
-Return-Path: <linux-wireless+bounces-32467-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-32468-lists+linux-wireless=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id oLqXK5kfqGlQoQAAu9opvQ
-	(envelope-from <linux-wireless+bounces-32467-lists+linux-wireless=lfdr.de@vger.kernel.org>)
-	for <lists+linux-wireless@lfdr.de>; Wed, 04 Mar 2026 13:03:37 +0100
+	id sD+0AToqqGkdpAAAu9opvQ
+	(envelope-from <linux-wireless+bounces-32468-lists+linux-wireless=lfdr.de@vger.kernel.org>)
+	for <lists+linux-wireless@lfdr.de>; Wed, 04 Mar 2026 13:48:58 +0100
 X-Original-To: lists+linux-wireless@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 173EC1FF747
-	for <lists+linux-wireless@lfdr.de>; Wed, 04 Mar 2026 13:03:36 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7EF111FFD45
+	for <lists+linux-wireless@lfdr.de>; Wed, 04 Mar 2026 13:48:57 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 35A673024CA3
-	for <lists+linux-wireless@lfdr.de>; Wed,  4 Mar 2026 12:03:14 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 94ED43042752
+	for <lists+linux-wireless@lfdr.de>; Wed,  4 Mar 2026 12:48:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 093B4370D50;
-	Wed,  4 Mar 2026 12:03:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B133B1E633C;
+	Wed,  4 Mar 2026 12:47:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b="DEAKkHc+"
+	dkim=pass (2048-bit key) header.d=collabora.com header.i=@collabora.com header.b="L4wShVIq"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from sipsolutions.net (s3.sipsolutions.net [168.119.38.16])
+Received: from bali.collaboradmins.com (bali.collaboradmins.com [148.251.105.195])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 352E835F179
-	for <linux-wireless@vger.kernel.org>; Wed,  4 Mar 2026 12:03:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=168.119.38.16
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 531B51E98EF;
+	Wed,  4 Mar 2026 12:47:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.251.105.195
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772625789; cv=none; b=Fz4BkwVTHhqBBbf6PpaTK5gKC348XOPpx5TJTO3zVDrQ9BlPFX2MMCbVWg5Lke9xy7x5qU2wKzZCjNqpdjSH+Bpe4Am+ksB/0OSsGHza4Zvsmmt7AENg8K5OKtyqcge0V+Mj2dRY2j4ypzl+Xkx6KlHxfkuPNClsjXB1atpZNpA=
+	t=1772628476; cv=none; b=PXpOzHKLvjwjgOk6PE8TdeHk7j9pb3Y/DN95fxj89NqZ6Y5EASx9OBYIBfSJ9AIiS7NvmPDnzF6lJCgIqJH5oOKYZpy06DV2igiuoOzGcqvL/h6d39LemIWKVA3Sz7PiHTSO9LFc6jj7eEer7TCrgiieuzKPrwbwCgU0El5Vdgk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772625789; c=relaxed/simple;
-	bh=u8PqfmR912/aSCMaXJ1peQadPLO7ylLnBxBGXJUEKzI=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=PXeTXO2qf8CXgKhMNdPBiiZJebJ/ymwVCVsu0cilm6NvmNjHImmPk2uqdNwqhVbnMXK/TNcL/zna4xwu6eVqpxQaf52tv2Y7LlmfNEX68ABirl1GiOSP46sT7Yl/mdMnEqRIlkAgHOPZ8KUJoPNrn8VVnuc+NzII/svZ1EqFEHY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net; spf=pass smtp.mailfrom=sipsolutions.net; dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b=DEAKkHc+; arc=none smtp.client-ip=168.119.38.16
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sipsolutions.net
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=sipsolutions.net; s=mail; h=MIME-Version:Content-Transfer-Encoding:
-	Content-Type:References:In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender
-	:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
-	Resent-Cc:Resent-Message-ID; bh=C3GqBEt6MfPv8AMu2pT6WowVEpEgO2fEjab1Vz3Dkow=;
-	t=1772625785; x=1773835385; b=DEAKkHc+gIV9pfAOst4/xLTPGnmNHql/TVPDciYjHtS9x/t
-	H5Sj2Dexp8vpqM6tXsmyDLRLZwx9D/NnZ0XN2kJYX8E6jRXyrffZoz7ZOK9Z8isV6FkWnZk2xs2DU
-	gG7QqVF8pvf8BxlBBE5JSEcveduMFnLapv6rNrkwMW5HDXb0Qjf3jaNMPdF8YCg0a75fZpNtyuCTH
-	9jV7SrN12V6QhfDNxOjprSZrnSfz0+Jc09lh2aBMrzzAk7/F0L9pVvCAiCo8mmimZ56ouvXtNxCDU
-	ReIUYiXSnDm0RsMx6S1D+5Xm7zb5atNpUViMAUWidzBefI8NhHvrxVT0PIgT7CSQ==;
-Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
-	(Exim 4.98.2)
-	(envelope-from <johannes@sipsolutions.net>)
-	id 1vxkwP-000000083nN-3DkK;
-	Wed, 04 Mar 2026 13:03:01 +0100
-Message-ID: <8669fc9bcc8250ec71ddb293da5022881ba714a8.camel@sipsolutions.net>
-Subject: Re: [PATCH wireless-next v2 15/16] wifi: cfg80211: add LTF keyseed
- support for secure ranging
-From: Johannes Berg <johannes@sipsolutions.net>
-To: Peddolla Harshavardhan Reddy <peddolla.reddy@oss.qualcomm.com>
-Cc: linux-wireless@vger.kernel.org, kavita.kavita@oss.qualcomm.com
-Date: Wed, 04 Mar 2026 13:03:01 +0100
-In-Reply-To: <20260304071538.3833062-16-peddolla.reddy@oss.qualcomm.com>
-References: <20260304071538.3833062-1-peddolla.reddy@oss.qualcomm.com>
-	 <20260304071538.3833062-16-peddolla.reddy@oss.qualcomm.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.58.3 (3.58.3-1.fc43) 
+	s=arc-20240116; t=1772628476; c=relaxed/simple;
+	bh=VSlYb3du74hsNmTtTtO0NkW7h5OmhCaYzsaAbhsMwho=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=AWe/UlGbZdhyBb9ZKMATcmHHVAeRQpMft8YJ4d+6ZBweJbmwna4CyURm+J7E+aze1aGbEoRO7H3BmcVNqvfPTJqTSyyX41fJtO5GFtKslPQjMomIsWheKMsxirGlLwNsJIO3VMN2ZMc/ApYnU9poEXqkb0EKpZ54hug2c7Kjn/c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (2048-bit key) header.d=collabora.com header.i=@collabora.com header.b=L4wShVIq; arc=none smtp.client-ip=148.251.105.195
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=collabora.com;
+	s=mail; t=1772628473;
+	bh=VSlYb3du74hsNmTtTtO0NkW7h5OmhCaYzsaAbhsMwho=;
+	h=From:Subject:Date:To:Cc:From;
+	b=L4wShVIqz4qUu/Ek1Ogqw8KNpBuwjpLP/2K21tCGztyAPsGHKM2tHYQY7rUWx5lTH
+	 Qg6Rq4rYkQhNxzvlCEkPkYKn9MoKcVrtHwcvoUN0cZXvBEi/qeK8GVU1o3Ep8dxisP
+	 ek5TyQ9o8HqMfmt1U0t7rK2nAAdbGNSMjJvp8qruLFb06qkNK4VskpvnUD4UG/PTl9
+	 bgxOhSUJt/neKI1fwHFaPBc/fv5GWpgz2JafJdCv3aE7pjZeVxjGgr4M34qdodW1Kp
+	 /i30+s2Tzym8Gu/AexNit8y3NRQdQ4Dr3zE0A4AHQhoOssC/awwy6I0IOy+vXM9YO4
+	 A+HYASDePimoQ==
+Received: from [192.168.1.53] (unknown [IPv6:2a01:6243:64f:0:a5a5:9171:d9e9:ce23])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	(Authenticated sender: mattl)
+	by bali.collaboradmins.com (Postfix) with ESMTPSA id 55D8A17E0454;
+	Wed,  4 Mar 2026 13:47:53 +0100 (CET)
+From: Matthew Leach <matthew.leach@collabora.com>
+Subject: [PATCH RFC 0/3] net: ath11k: Firmware lockup detection &
+ mitigation
+Date: Wed, 04 Mar 2026 12:47:12 +0000
+Message-Id: <20260304-ath11k-lockup-fixes-v1-0-67143c2fe2a1@collabora.com>
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-malware-bazaar: not-scanned
-X-Rspamd-Queue-Id: 173EC1FF747
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAAAAAAAC/6tWKk4tykwtVrJSqFYqSi3LLM7MzwNyDHUUlJIzE
+ vPSU3UzU4B8JSMDIzMDYwMT3cSSDEPDbN2c/OTs0gLdtMyK1GLdJAsDiyTTZHNjQ4skJaDOgqJ
+ UsARQY7RSkJuzUmxtLQC25+UTagAAAA==
+X-Change-ID: 20260304-ath11k-lockup-fixes-b808b5c7318b
+To: Jeff Johnson <jjohnson@kernel.org>
+Cc: linux-wireless@vger.kernel.org, ath11k@lists.infradead.org, 
+ linux-kernel@vger.kernel.org, kernel@collabora.com, 
+ Matthew Leach <matthew.leach@collabora.com>
+X-Mailer: b4 0.14.3
+X-Rspamd-Queue-Id: 7EF111FFD45
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[sipsolutions.net,none];
-	R_DKIM_ALLOW(-0.20)[sipsolutions.net:s=mail];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	DMARC_POLICY_ALLOW(-0.50)[collabora.com,none];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_DKIM_ALLOW(-0.20)[collabora.com:s=mail];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-32467-lists,linux-wireless=lfdr.de];
-	DKIM_TRACE(0.00)[sipsolutions.net:+];
+	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-32468-lists,linux-wireless=lfdr.de];
 	FROM_HAS_DN(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	RCVD_TLS_LAST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	RCPT_COUNT_THREE(0.00)[3];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	TO_DN_SOME(0.00)[];
+	DKIM_TRACE(0.00)[collabora.com:+];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	RCPT_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[johannes@sipsolutions.net,linux-wireless@vger.kernel.org];
+	FROM_NEQ_ENVFROM(0.00)[matthew.leach@collabora.com,linux-wireless@vger.kernel.org];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
 	TAGGED_RCPT(0.00)[linux-wireless];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,sipsolutions.net:dkim,sipsolutions.net:mid]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[collabora.com:dkim,collabora.com:email,collabora.com:mid,ntp.org:url,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo]
 X-Rspamd-Action: no action
 
-On Wed, 2026-03-04 at 12:45 +0530, Peddolla Harshavardhan Reddy wrote:
->=20
->   * @NL80211_CMD_NEW_KEY: add a key with given %NL80211_ATTR_KEY_DATA,
->   *	%NL80211_ATTR_KEY_IDX, %NL80211_ATTR_MAC, %NL80211_ATTR_KEY_CIPHER,
-> - *	and %NL80211_ATTR_KEY_SEQ attributes. %NL80211_ATTR_MAC represents
-> - *	peer's MLD address for MLO pairwise key. The link to add MLO
-> - *	group key is identified by %NL80211_ATTR_MLO_LINK_ID.
-> + *	%NL80211_ATTR_KEY_SEQ and %NL80211_KEY_LTF_SEED attributes.
-> + *	%NL80211_ATTR_MAC represents peer's MLD address for MLO pairwise key.
-> + *	The link to add MLO group key is identified by
-> + *	%NL80211_ATTR_MLO_LINK_ID.
+When sat idle for approx 24 hours, a user experienced a firmware lockup on a
+ath11k chip, resulting in the following log output:
 
-I think this is a bit misleading=C2=A0since it mixes up the key attributes
-now. I think at this level it should refer to %NL80211_ATTR_KEY instead
-of the specific nested %NL80211_KEY_LTF_SEED.
+  systemd-timesyncd[558]: Timed out waiting for reply from 23.95.49.216:123 (2.arch.pool.ntp.org).
+  systemd-timesyncd[558]: Timed out waiting for reply from 23.186.168.125:123 (2.arch.pool.ntp.org).
+  systemd-timesyncd[558]: Timed out waiting for reply from 64.79.100.197:123 (2.arch.pool.ntp.org).
+  systemd-timesyncd[558]: Timed out waiting for reply from 69.89.207.199:123 (2.arch.pool.ntp.org).
+  kernel: ath11k_pci 0000:03:00.0: failed to transmit frame -12
+  kernel: ath11k_pci 0000:03:00.0: failed to transmit frame -12
+  kernel: ath11k_pci 0000:03:00.0: failed to transmit frame -12
 
->   * @NL80211_CMD_DEL_KEY: delete a key identified by %NL80211_ATTR_KEY_ID=
-X
->   *	or %NL80211_ATTR_MAC. %NL80211_ATTR_MAC represents peer's MLD address
->   *	for MLO pairwise key. The link to delete group key is identified by
-> @@ -5602,6 +5603,14 @@ enum nl80211_key_default_types {
->   * @NL80211_KEY_MODE: the mode from enum nl80211_key_mode.
->   *	Defaults to @NL80211_KEY_RX_TX.
->   * @NL80211_KEY_DEFAULT_BEACON: flag indicating default Beacon frame key
-> + * @NL80211_KEY_LTF_SEED: LTF key seed is used by the driver to generate
-> + *	secure LTF keys used in case of peer measurement request with FTM
-> + *	request type as either %NL80211_PMSR_FTM_REQ_ATTR_NON_TRIGGER_BASED
-> + *	or %NL80211_PMSR_FTM_REQ_ATTR_TRIGGER_BASED, secure LTF key seeds wil=
-l
-> + *	help enable PHY security in peer measurement session. The correspondi=
-ng
-> + *	keys need to be configured before hand to ensure peer measurement
+  [...]
 
-"beforehand"
+  kernel: ath11k_pci 0000:03:00.0: failed to flush transmit queue, data pkts pending 564
+  kernel: ath11k_pci 0000:03:00.0: wmi command 20486 timeout
+  kernel: ath11k_pci 0000:03:00.0: failed to submit WMI_VDEV_STOP cmd
+  kernel: ath11k_pci 0000:03:00.0: failed to stop WMI vdev 0: -11
+  kernel: ath11k_pci 0000:03:00.0: failed to stop vdev 0: -11
+  kernel: ath11k_pci 0000:03:00.0: failed to do early vdev stop: -11
+  kernel: ath11k_pci 0000:03:00.0: Failed to remove station: xx:xx:xx:xx:xx:xx for VDEV: 0
+  kernel: ath11k_pci 0000:03:00.0: Found peer entry xx:xx:xx:xx:xx:xx n vdev 0 after it was supposedly removed
+  kernel: ------------[ cut here ]------------
+  kernel: WARNING: CPU: 0 PID: 1229 at net/mac80211/sta_info.c:1490 __sta_info_destroy_part2+0x14e/0x180 [mac80211]
 
-> + *	session is secure. Only valid if %NL80211_EXT_FEATURE_SECURE_LTF
-> + *	is set.
+This patch series:
 
-NL80211_EXT_FEATURE_SECURE_LTF already exists today, and is set by
-iwlwifi/mvm, so I'm not convinced you can just redefine it to mean also
-LTF key seed is supported?
+ - Fixes a bug in the core reset logic which could cause a second redundant reset
+   after the original reset completes.
+ - Implements the error correlation logic and queues a chip reset when detected.
+ - Adds a simulation to the simulate_fw_crash debugfs file to test the
+   detection logic.
 
-> +++ b/net/wireless/nl80211.c
-> @@ -983,6 +983,7 @@ static const struct nla_policy nl80211_key_policy[NL8=
-0211_KEY_MAX + 1] =3D {
->  	[NL80211_KEY_TYPE] =3D NLA_POLICY_MAX(NLA_U32, NUM_NL80211_KEYTYPES - 1=
-),
->  	[NL80211_KEY_DEFAULT_TYPES] =3D { .type =3D NLA_NESTED },
->  	[NL80211_KEY_MODE] =3D NLA_POLICY_RANGE(NLA_U8, 0, NL80211_KEY_SET_TX),
-> +	[NL80211_KEY_LTF_SEED] =3D { .type =3D NLA_BINARY, .len =3D 48 },
+Signed-off-by: Matthew Leach <matthew.leach@collabora.com>
+---
+Matthew Leach (3):
+      net: ath11k: fix redundant reset from stale pending workqueue bit
+      net: ath11k: add firmware lockup detection and recovery
+      net: ath11k: add lockup simulation via debugfs
 
-This probably doesn't do what you think it does, unless you really
-wanted that it's *at most* 48 bytes. And please add a define in
-ieee80211.h for that.
+ drivers/net/wireless/ath/ath11k/core.h    |  3 +++
+ drivers/net/wireless/ath/ath11k/debugfs.c |  7 ++++++-
+ drivers/net/wireless/ath/ath11k/hal.c     |  7 +++++--
+ drivers/net/wireless/ath/ath11k/htc.c     |  2 +-
+ drivers/net/wireless/ath/ath11k/mac.c     | 10 ++++++++++
+ drivers/net/wireless/ath/ath11k/wmi.c     | 28 +++++++++++++++++++++++++++-
+ 6 files changed, 52 insertions(+), 5 deletions(-)
+---
+base-commit: 11439c4635edd669ae435eec308f4ab8a0804808
+change-id: 20260304-ath11k-lockup-fixes-b808b5c7318b
 
-johannes
+Best regards,
+-- 
+Matthew Leach <matthew.leach@collabora.com>
+
 
