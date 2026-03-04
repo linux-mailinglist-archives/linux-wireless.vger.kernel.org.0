@@ -1,64 +1,64 @@
-Return-Path: <linux-wireless+bounces-32465-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-32466-lists+linux-wireless=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 2LHGIu8dqGnyoAAAu9opvQ
-	(envelope-from <linux-wireless+bounces-32465-lists+linux-wireless=lfdr.de@vger.kernel.org>)
-	for <lists+linux-wireless@lfdr.de>; Wed, 04 Mar 2026 12:56:31 +0100
+	id 2F5CIpQeqGlQoQAAu9opvQ
+	(envelope-from <linux-wireless+bounces-32466-lists+linux-wireless=lfdr.de@vger.kernel.org>)
+	for <lists+linux-wireless@lfdr.de>; Wed, 04 Mar 2026 12:59:16 +0100
 X-Original-To: lists+linux-wireless@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id EAB461FF652
-	for <lists+linux-wireless@lfdr.de>; Wed, 04 Mar 2026 12:56:30 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 086341FF6E4
+	for <lists+linux-wireless@lfdr.de>; Wed, 04 Mar 2026 12:59:16 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 77FC93022079
-	for <lists+linux-wireless@lfdr.de>; Wed,  4 Mar 2026 11:53:00 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id A1515301A718
+	for <lists+linux-wireless@lfdr.de>; Wed,  4 Mar 2026 11:57:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 562353A8732;
-	Wed,  4 Mar 2026 11:52:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 15831282F1D;
+	Wed,  4 Mar 2026 11:57:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b="l+k+GB0t"
+	dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b="FIe+hwF8"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from sipsolutions.net (s3.sipsolutions.net [168.119.38.16])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 082873AE191
-	for <linux-wireless@vger.kernel.org>; Wed,  4 Mar 2026 11:52:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3E5C13A6413
+	for <linux-wireless@vger.kernel.org>; Wed,  4 Mar 2026 11:57:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=168.119.38.16
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772625178; cv=none; b=lMroJ0fHD88JlGXRD/h/BDeeYeeVj4V9rYOdanOTo5m+e1e0hJApiIU+4H9Piacbc1VSGJ/mVFh7p8VAIMq2FXlQxVZQ9n9h4tDR3o534wOKA36uoeHNCTv3xnONXJqUc6VkDA7XJt2xyODOeMelEzIf4iRqdMv8pruDNyEZZes=
+	t=1772625424; cv=none; b=EXz8wXgjraeLlB4/gByQ26oJ1fKjocVCRB6iGJSA8WThKzIWcg0dj8yFLHEkLOS3nlpzJYImsTgsozfwvanxjh3mOMDIcdiLO6pTVrz7L/TB/F4NVeCDh8K+xP/zPUfVaxrP869QgO/9aO1fpYotd/8vUlQAxzQQIndCMiE8a54=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772625178; c=relaxed/simple;
-	bh=K8m7V7aF5nkqHRLQwffjdVHkIQYpGJz19v8LDL74qqU=;
+	s=arc-20240116; t=1772625424; c=relaxed/simple;
+	bh=LaW29JZtZUyLilJSQbCAF5it1Nfx2R2Ed/PuPq22MVo=;
 	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=rfdkSvbFiXe0xzMbx7XYU+n41HtfwOOjkd3boNN9BqsqrRtkDoNXQBGVKwXei2DSmQ3thwcJTODp1GR0KVI+wHC7GZfiJIf5rXTl8htTSy8BWACepKECLGApU1hHJgRJQ97W3gAehZhUSOUIy33boNxf8+HYAbgbxObz9Lbikok=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net; spf=pass smtp.mailfrom=sipsolutions.net; dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b=l+k+GB0t; arc=none smtp.client-ip=168.119.38.16
+	 Content-Type:MIME-Version; b=tas2YBU2hyx/3tdaxspgydYXuXf74w3m+vqJ8wH3uG7OXfyLWVBY6XEAjvRI46x8zxP/hB9tADuM21/sx5f5cgrMOSBY7gk/WDcVBtxC4PflPcOwQgLBE4xYbJVWC4cf75RtqFmfJ8FvVHZTrWP6aLOJENkJba4+QmbrgIdKS8c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net; spf=pass smtp.mailfrom=sipsolutions.net; dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b=FIe+hwF8; arc=none smtp.client-ip=168.119.38.16
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sipsolutions.net
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=sipsolutions.net; s=mail; h=MIME-Version:Content-Transfer-Encoding:
 	Content-Type:References:In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender
 	:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
-	Resent-Cc:Resent-Message-ID; bh=W/pF2JKsYgMUiRVrwRq/YgRPAR2oYw2E7CQOYv5q//g=;
-	t=1772625176; x=1773834776; b=l+k+GB0tCcalQDGfEpW8WqiXrwTp5p/w9bLbKqtM0+37h50
-	b+NPAdlWF7y/pU/o7LDT2NJoGzAye97pOcNJ/0TF2KvCSNJmWGUEZmTgYGkeoCe592YsoLLvIvCsb
-	mrc1/aFx2C3lVjvUiuWlUHC6t2Df0gGkl1hbswjua4ampDLjkpN3KOOsnP8nVNecbknzwqrObi7H5
-	OrXGnrj2Mfk04q/jKuwwolmu0AF6MbLJm5dkPhikBXpcjKfsNg1UV0APF3LqzowDzrGJBDgnkSNeD
-	ko0urxx3fQAAljfSYh/yimdNpnxcBs1/9/d0qYg92ZvjxxvKdvZrRdVaaCXMw8xA==;
+	Resent-Cc:Resent-Message-ID; bh=LaW29JZtZUyLilJSQbCAF5it1Nfx2R2Ed/PuPq22MVo=;
+	t=1772625421; x=1773835021; b=FIe+hwF8Vn8nB0iHwolB2r8TFCL579z0zGhZQPurQ/8iLhS
+	ffcTgAurA4tXaEmIJu2+2k/6Dl5ZR4+1ixaW63mx0LhmWBJBxp4iLeTDYKjZvqnCEZIUf0w0ZtW7A
+	K4qIK3hFoDSbaVQ9s5b8O/W+h/3ZDq4xn/4jI9QqXWUJhqG3QurkH51BDuh5vpln0JUcjhhKltqI2
+	iIoowdV/Y40KFaTvt2D9x2oppnYSrnNOMebWzwoIksvLGzPxY/F2HlnrCo+qDa7e/QyyDGLsY4RBm
+	CrJvoLoQwFZVlGSJpjCq32rbyDe7t8Y8h/xf5w1dEINksd8xQRSfCCmYayzrBjZg==;
 Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
 	(Exim 4.98.2)
 	(envelope-from <johannes@sipsolutions.net>)
-	id 1vxkma-000000083Xv-3cPh;
-	Wed, 04 Mar 2026 12:52:53 +0100
-Message-ID: <e01d16bd2f890355a1edb545b4b5ab2fee265bfc.camel@sipsolutions.net>
-Subject: Re: [PATCH wireless-next v2 07/16] wifi: cfg80211: add continuous
- ranging and PD request support
+	id 1vxkqX-000000083fL-2uKs;
+	Wed, 04 Mar 2026 12:56:57 +0100
+Message-ID: <6800d54f38355fe2df248dab3da40dba4f892643.camel@sipsolutions.net>
+Subject: Re: [PATCH wireless-next v2 14/16] wifi: cfg80211: add MAC
+ randomization support for PD requests
 From: Johannes Berg <johannes@sipsolutions.net>
 To: Peddolla Harshavardhan Reddy <peddolla.reddy@oss.qualcomm.com>
 Cc: linux-wireless@vger.kernel.org, kavita.kavita@oss.qualcomm.com
-Date: Wed, 04 Mar 2026 12:52:52 +0100
-In-Reply-To: <20260304071538.3833062-8-peddolla.reddy@oss.qualcomm.com>
+Date: Wed, 04 Mar 2026 12:56:57 +0100
+In-Reply-To: <20260304071538.3833062-15-peddolla.reddy@oss.qualcomm.com>
 References: <20260304071538.3833062-1-peddolla.reddy@oss.qualcomm.com>
-	 <20260304071538.3833062-8-peddolla.reddy@oss.qualcomm.com>
+	 <20260304071538.3833062-15-peddolla.reddy@oss.qualcomm.com>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 User-Agent: Evolution 3.58.3 (3.58.3-1.fc43) 
@@ -69,61 +69,52 @@ List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 X-malware-bazaar: not-scanned
-X-Rspamd-Queue-Id: EAB461FF652
+X-Rspamd-Queue-Id: 086341FF6E4
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[sipsolutions.net,none];
-	R_DKIM_ALLOW(-0.20)[sipsolutions.net:s=mail];
 	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_DKIM_ALLOW(-0.20)[sipsolutions.net:s=mail];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-32465-lists,linux-wireless=lfdr.de];
 	DKIM_TRACE(0.00)[sipsolutions.net:+];
-	FROM_HAS_DN(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	RCVD_TLS_LAST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	TAGGED_FROM(0.00)[bounces-32466-lists,linux-wireless=lfdr.de];
 	RCPT_COUNT_THREE(0.00)[3];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	TO_DN_SOME(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	MIME_TRACE(0.00)[0:+];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[johannes@sipsolutions.net,linux-wireless@vger.kernel.org];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	NEURAL_HAM(-0.00)[-1.000];
 	TAGGED_RCPT(0.00)[linux-wireless];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,sipsolutions.net:dkim,sipsolutions.net:mid]
+	TO_DN_SOME(0.00)[]
 X-Rspamd-Action: no action
 
 On Wed, 2026-03-04 at 12:45 +0530, Peddolla Harshavardhan Reddy wrote:
+> Enable MAC address randomization for proximity detection requests to
+> maintain privacy throughout the entire PD session workflow. When
+> enabled, use the same randomized MAC address for discovery,
+> authentication, and ranging measurements, ensuring consistent identity
+> protection across all phases.
 >=20
-> +++ b/net/wireless/pmsr.c
-> @@ -91,11 +91,10 @@ static int pmsr_parse_ftm(struct cfg80211_registered_=
-device *rdev,
->  			nla_get_u32(tb[NL80211_PMSR_FTM_REQ_ATTR_FTMS_PER_BURST]);
-> =20
->  	if (capa->ftm.max_ftms_per_burst &&
-> -	    (out->ftm.ftms_per_burst > capa->ftm.max_ftms_per_burst ||
-> -	     out->ftm.ftms_per_burst =3D=3D 0)) {
-> +	    (out->ftm.ftms_per_burst > capa->ftm.max_ftms_per_burst)) {
->  		NL_SET_ERR_MSG_ATTR(info->extack,
->  				    tb[NL80211_PMSR_FTM_REQ_ATTR_FTMS_PER_BURST],
-> -				    "FTM: FTMs per burst must be set lower than the device limit but=
- non-zero");
-> +				    "FTM: FTMs per burst must be set lower than the device limit");
->  		return -EINVAL;
->  	}
+> Add a capability flag for devices to advertise PD MAC randomization
+> support and validate that randomization is only requested when the
+> device supports it. This ensures consistent MAC address usage across
+> all phases of proximity detection while preventing invalid
+> configurations where randomization is requested but not supported by
+> hardware.
 
-I really don't know anything about this protocol, but this also isn't
-described in the commit message, and zero seems odd?
-
-Maybe it should be allowed only under some additional conditions,
-otherwise you're potentially changing some check that existing
-drivers/devices rely on?
+Doesn't this basically also require NL80211_EXT_FEATURE_ROC_ADDR_FILTER
+for the setup? If so, maybe some check (core.c?) should validate that
+you don't have PD MAC randomization without it?
 
 johannes
 
