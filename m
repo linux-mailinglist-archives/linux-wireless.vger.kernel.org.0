@@ -1,106 +1,105 @@
-Return-Path: <linux-wireless+bounces-32437-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-32438-lists+linux-wireless=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id YA84HGPcp2lnkgAAu9opvQ
-	(envelope-from <linux-wireless+bounces-32437-lists+linux-wireless=lfdr.de@vger.kernel.org>)
-	for <lists+linux-wireless@lfdr.de>; Wed, 04 Mar 2026 08:16:51 +0100
+	id KFodC0jcp2lnkgAAu9opvQ
+	(envelope-from <linux-wireless+bounces-32438-lists+linux-wireless=lfdr.de@vger.kernel.org>)
+	for <lists+linux-wireless@lfdr.de>; Wed, 04 Mar 2026 08:16:24 +0100
 X-Original-To: lists+linux-wireless@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id E64121FB788
-	for <lists+linux-wireless@lfdr.de>; Wed, 04 Mar 2026 08:16:50 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id BA3A01FB755
+	for <lists+linux-wireless@lfdr.de>; Wed, 04 Mar 2026 08:16:23 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id D805E302DE4C
-	for <lists+linux-wireless@lfdr.de>; Wed,  4 Mar 2026 07:16:19 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id BA721303D108
+	for <lists+linux-wireless@lfdr.de>; Wed,  4 Mar 2026 07:16:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EB8483101A0;
-	Wed,  4 Mar 2026 07:16:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 39E9330CDAF;
+	Wed,  4 Mar 2026 07:16:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="ht/QE8mc";
-	dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b="NaFlcctf"
+	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="VPE3BkN1";
+	dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b="NpB3HFP+"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
+Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A107234D398
-	for <linux-wireless@vger.kernel.org>; Wed,  4 Mar 2026 07:16:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0C323346FC3
+	for <linux-wireless@vger.kernel.org>; Wed,  4 Mar 2026 07:16:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772608576; cv=none; b=lfed/yVBgayfnWTQL4mtv0yM0QckF3Grsk5KFluVdfGGoACZAX9/7l+dRKltlfC3uDJ7V/nCEFYJy9kBleJDwuTgOHQpRYEFTLJrRs2DOyh4khodN9pUA2KItamQajIDCXhFptzhVLp+gtqw3WxU1vUSzH7k4wAtgc1Ip/u2oAU=
+	t=1772608578; cv=none; b=o1A59AYTbroo1H16mDKr0RJWT8yQ363F/JrKKOsjoUQK3j4Zd/BN1pj84DDTrxhZXLvZPKcrXZNn2VPZTlfxno4pQ8kQLgZRvpNt2w//9ft+/E4if4hia5Ov3hQUASCac6n1g/bo2G3zWCAm+ue1Ln0OJJFlQCajotiyLAMWlNM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772608576; c=relaxed/simple;
-	bh=b1GblDm19067Sr4/CwERGPzydCktlyC29q6Y1AJ004o=;
+	s=arc-20240116; t=1772608578; c=relaxed/simple;
+	bh=xVSlKlE3W/E151tTGKNBnl/Z19jAOr0BCk0PE+TbHxM=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=jTcSgj/UlgjiMTDXW9CKy45eYbs808KPYlc2tujJj34A2/bfLB20zUe2noFF8l1aDGT8HbaUZdynO6hMSzljqEfhdTLPkbxfys+o4JfPbYBPh/T+uChwTk6uurxBEIYoqT4JJ69Zpc2R1aWLPLk0Uiaw6AdfgwmLH7JG0KC0pD0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=ht/QE8mc; dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b=NaFlcctf; arc=none smtp.client-ip=205.220.180.131
+	 MIME-Version; b=MAjLce+PtRQaeq3kmSvGwN7q0k4d5jlorK43ly+4mP3y0PAgtD2yGiJqv3+jZP8qhCTihDR5ok9QuMbozhv/wN0OdfzcPlSPo7yQuIGvFpidEBqUAoMTir+A+ZulF88iwwSXMJAS/w3x8Hcgh+1a8lwbQ6kSYIQWcW7YFrGZAA0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=VPE3BkN1; dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b=NpB3HFP+; arc=none smtp.client-ip=205.220.168.131
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
-Received: from pps.filterd (m0279868.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 6245SdIs957613
-	for <linux-wireless@vger.kernel.org>; Wed, 4 Mar 2026 07:16:14 GMT
+Received: from pps.filterd (m0279865.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 6245SQ051677919
+	for <linux-wireless@vger.kernel.org>; Wed, 4 Mar 2026 07:16:16 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
 	cc:content-transfer-encoding:date:from:in-reply-to:message-id
-	:mime-version:references:subject:to; s=qcppdkim1; bh=K9A+zIDsEkq
-	lAjsla7AKRgzmOqqxZ5Vpm3vCcX2ep/0=; b=ht/QE8mcBNrSPqFKcdbI9z5uFTp
-	fyGEFoKzACigbwGTrrBPiGvgZDjBSINbKdLHQ4IZI/egi0wkzJeuta308KgRuUSC
-	evOXpcMNORcCWwrewHtZY/l6n4/1xY2ieUy1wVL6YenxJaHc4n45SPt8j+liRzDN
-	U/4gSO8eixFYWU0mym8r1uwkAawXj7AS2Gz68v4PrtjsaIlx1ThTiMGcDCcJWY37
-	fcrtheXTtyA/vMaHzzHDC/0DqyBmRulB6PfsXhE+Wdcm56twlGXN3fCjTU7RoRmG
-	sEGD9xKX2nHYuCQzJQB03amG+hBttB8wDoue4LD/LhYokNdezT/dHyKv7ZQ==
-Received: from mail-pj1-f72.google.com (mail-pj1-f72.google.com [209.85.216.72])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4cp6qg9ta3-1
+	:mime-version:references:subject:to; s=qcppdkim1; bh=CnctMvwlzm/
+	o7EipdXW/ZjnlTfwOenuPFkUAEeIBpNI=; b=VPE3BkN1Zw5ne9Mx7hKHfWO3MQ8
+	6h9fSNEZqst23itbhRJwta00fPCiXZ7K5XuJSUk6FlNoRs+jhX0EiF2PfvqYtYQY
+	9v67U5taMQOo4Q1lAtjWOgFzE4ImMM/6w7cbTZ4vw50L/1eKi7ogHlcgEIL0vrRf
+	u79EYWXNL2J27yvfcyaGQBUU/kHRqo28wC9AKcFbU+Ip+WTHehhMojfbR/HYfIHt
+	MDwTTJcxb22vY5VSr5TMUEauEwfWPAX8fObgMmWx9VD5I/B0lj4QgEViG/6lv6hU
+	/U3MmfS/mAIyFSDy/JKgQFNYXLSWigaEIPmQt8XKGPFbUfcmwPNiO6ZYsbw==
+Received: from mail-pg1-f197.google.com (mail-pg1-f197.google.com [209.85.215.197])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4cp73h9rsk-1
 	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
-	for <linux-wireless@vger.kernel.org>; Wed, 04 Mar 2026 07:16:14 +0000 (GMT)
-Received: by mail-pj1-f72.google.com with SMTP id 98e67ed59e1d1-354490889b6so23078798a91.3
-        for <linux-wireless@vger.kernel.org>; Tue, 03 Mar 2026 23:16:14 -0800 (PST)
+	for <linux-wireless@vger.kernel.org>; Wed, 04 Mar 2026 07:16:16 +0000 (GMT)
+Received: by mail-pg1-f197.google.com with SMTP id 41be03b00d2f7-b62da7602a0so4047886a12.2
+        for <linux-wireless@vger.kernel.org>; Tue, 03 Mar 2026 23:16:16 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=oss.qualcomm.com; s=google; t=1772608574; x=1773213374; darn=vger.kernel.org;
+        d=oss.qualcomm.com; s=google; t=1772608576; x=1773213376; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=K9A+zIDsEkqlAjsla7AKRgzmOqqxZ5Vpm3vCcX2ep/0=;
-        b=NaFlcctfLrmOxqGGeVuiehK6a1HuNGVzGAhl3vao6LPvfAqEfcNUO7NrJjL04DaUeX
-         pgNTYecqXoiu6SzvzRkfw6bQrvidaejQIQoHzXIGqjNoz/8mlFmQf1u2PPd4PwJyrn1N
-         CJGcQR8Y7Xx6zms0jmQBCyy2npB0fdKznfYunfZ0PRwilflXRP4HmpeP3/NHU0dtnwdK
-         0VOF4evo5Qmry8krO9/iKaIWmtyDqH3kHXv5gG1grM37CXBqjogYoKWvTG+1nTGszK9V
-         mnaHuA0FjT48Y5FDpkBuXue8nGecv9hrfqxN5SpPxqeb/WKNqnDIOszDSUboydYmE2A/
-         etyQ==
+        bh=CnctMvwlzm/o7EipdXW/ZjnlTfwOenuPFkUAEeIBpNI=;
+        b=NpB3HFP+/Ph62MKtjNyXnby7rIN0tCKJSfwHdwG6zEoSq6MgoqUtoFEN+eco8i6kfC
+         7oX4u+vNd8HfZL4INjDHXFXpz5aqTe4a6WyhpwS4+QfkGk9cUrF/wmmSDq6gwZMklbMI
+         HndRnNvD6N4JXFvxnA73G74WKgST6fY+QsxGNCg8KNu4rEl2mz+7D5Ni6Zlt2AHwFO14
+         HZShQAjf0IId4BlSTZmBzalIFshklVjiaBW8QVKJFhZB13cQHHFxUAwOpiGnkvQ+9ru7
+         6wWBMgiqpxTFRpwFy1oP0A9nS06gs/3Fc4p4MbeBF2NnBU6eOP8aa9sHBcg4Wt8p1g+6
+         U3/A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1772608574; x=1773213374;
+        d=1e100.net; s=20230601; t=1772608576; x=1773213376;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to;
-        bh=K9A+zIDsEkqlAjsla7AKRgzmOqqxZ5Vpm3vCcX2ep/0=;
-        b=eZjZ/Bb2Dz2NtQJBJ+Ahtm89WqbEPCnDCAYsyBvytu3nO555l9TcXp7OaoDtA7+psz
-         XYCC2dvDhubwTFL8lM8qp/pll8AWT3RClOCGoSDa0iirW1VvOqzokBiCnYHRZ2OVMWHF
-         yRN9JQ9TYA/RcrWCgS/otCfoK6e2yNjZxqpKBzJ/bNcHbuDoHJz0PMfJAp7/P5HKpuln
-         0ptI83Netml0Myi1ZbMQfyrf/RPDJ6V+4MAUIeVeNBbDuKhJ055pRVHB6Fe31HwxbRTF
-         4gdkL0TlXHtmJLKEjrQe6L5CGREEwO72TVw0owF5WYy80XLGTwZjWqi9W2ByezTLoyI9
-         HcnQ==
-X-Gm-Message-State: AOJu0YwzrlJbchS9GO73mjdIrvffcHdABetr2LSlGGolC7596B80hq8p
-	vVmDhu12wZZ56h9U+Uzm8IC3iGG5CjflCGm2/AxDNV36krc3oRx18lRCbJr5ebEogT2XiA98dSq
-	s7Ue2186+DZ3UWhgThQEZPVgwM4OQHgDZ5RqM/XtiezbP0Mr0jRs+ulUvRVlOByJLSm2U9gB0QV
-	wM
-X-Gm-Gg: ATEYQzxpR9hk52EjwxzJui2vi4RcpiaRxAhZFe7fe5Q7eg2SEdZeKL7yvdjn8YFVKhv
-	nLHMjODgFWMaEY+4GQnWx8B4Ten2hNrYEuG9ppzXckpI1CHf+OM0RldIhj4NkP/DOMv218gqib0
-	ceMXI+tBkNCcyaWmXeep36tKj1jnLRqb0q7kqdncS1RKZZF/09/cxtpNHE9WbnNKiLi/wTvpupx
-	DBXpPYV6+aZjft1XcVySWA1y1z0Tlrx8Hx4h5JtLyiADX1jk1XEO4YDy3J2deNQSTWIpbdRX5wY
-	1nwacqwPzggcWJnpbZsrept7owVYtT2ub0IYD8RjLxeUxRuQfHIP020YGzRQineOd6i5J5p/XVy
-	00v4XodTiZ6YxHUKA/bVBynwq0GCRBdff+DVHZqdyjAzZcMER/Cmak9A=
-X-Received: by 2002:a17:90b:2c86:b0:356:2872:9c5d with SMTP id 98e67ed59e1d1-359a6a6648fmr1330455a91.24.1772608573510;
-        Tue, 03 Mar 2026 23:16:13 -0800 (PST)
-X-Received: by 2002:a17:90b:2c86:b0:356:2872:9c5d with SMTP id 98e67ed59e1d1-359a6a6648fmr1330410a91.24.1772608573017;
-        Tue, 03 Mar 2026 23:16:13 -0800 (PST)
+        bh=CnctMvwlzm/o7EipdXW/ZjnlTfwOenuPFkUAEeIBpNI=;
+        b=OjESg2WbKxdhSgDJdpHtzT6mNIx2UFMnIxlyaaM4+fn5GwNtYQtWyi7E2TwAgavIuG
+         azQ4O6IviUfi/n7UNz6tcrw+u5z5c0DBqQHyZdtFljjgyv09J5UVHhJj7eKuxL9UCvh3
+         7m8oJj851E0xSYqydGtKcKTbfG67wOuHK0iZnWhJ61ntEFYrMoP1pbiTs/tDvT6aRReu
+         1knRoKOxNaDwVgulLGqwtp/EeihFO4g6p4djtJfRDWNmVugQmicdoqhh0RvEjIcl7syf
+         YSwYyObP9jf5zF14cLHG9tkvCVQ305ctvSV+x63NICa/+Ac1qbkGq1EeVbYfHJ4wXT1+
+         GTiA==
+X-Gm-Message-State: AOJu0Ywe3CmWqw23obiwC1GUhv6srDLh7o6HOxsnebGZI1k6wgmQ0I5Q
+	988himTT+hauX/t91DiyIeVu0IL1jkFTAmJUNgqItRNqVojrxAc8gRe13b6OTJvcWJ469U4UIqZ
+	c4ky834HWVklL/jr1ZG6V7Guf9c58SjCCrMwFire9BLpWSPwU9sDuWAkpBXAP/ixBPt86
+X-Gm-Gg: ATEYQzzHWnd8RwZdqK4oEc6f4zT1bOrghPw2WhUOsaVYQsSBGJOHUsQszAwn/3iX8gm
+	mMGLOR1ksT0PGq78nkVPOiHXYdF8F/SZJrzKYpMx0w2AaH7BmYIDepXGOe5E1A7krZA6uoI7ojJ
+	GEjSacCgn4FiLmRHYKdp601IMflLK6DMAuss0Y4rusFbu9NepkhD8cV5qE7ccIm6WvkYc8ctfHj
+	LMpfYUwAS5ShVh+m6Yn0gjdQ9ysgpGRXufJB9h/JArqJfWKqlfK690eVrePFpe5Dn0Ru1/iVOcX
+	1EMXE1KvJheYwivqOO8urziNGnVUem++K6J9CGeXowq8GyWJnnbErgnhFE6qKy0iOyG4hJWj2SB
+	NurbToEIJ1Gi4pzexGOgPxd/NI4IeCSbGGL/vY2Ja93IHo82lD/4fhAc=
+X-Received: by 2002:a05:6a20:3d89:b0:38d:ebdc:3546 with SMTP id adf61e73a8af0-3982dda6eb0mr1198393637.6.1772608575611;
+        Tue, 03 Mar 2026 23:16:15 -0800 (PST)
+X-Received: by 2002:a05:6a20:3d89:b0:38d:ebdc:3546 with SMTP id adf61e73a8af0-3982dda6eb0mr1198365637.6.1772608575097;
+        Tue, 03 Mar 2026 23:16:15 -0800 (PST)
 Received: from hu-peddolla-hyd.qualcomm.com ([202.46.23.25])
-        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-c7378125320sm994121a12.20.2026.03.03.23.16.11
+        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-c7378125320sm994121a12.20.2026.03.03.23.16.13
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 03 Mar 2026 23:16:12 -0800 (PST)
+        Tue, 03 Mar 2026 23:16:14 -0800 (PST)
 From: Peddolla Harshavardhan Reddy <peddolla.reddy@oss.qualcomm.com>
 To: johannes@sipsolutions.net
 Cc: linux-wireless@vger.kernel.org, kavita.kavita@oss.qualcomm.com
-Subject: [PATCH wireless-next v2 01/16] wifi: cfg80211: Allow RSTA role without LMR request
-Date: Wed,  4 Mar 2026 12:45:23 +0530
-Message-Id: <20260304071538.3833062-2-peddolla.reddy@oss.qualcomm.com>
+Subject: [PATCH wireless-next v2 02/16] wifi: cfg80211: cancel pmsr_free_wk in cfg80211_pmsr_wdev_down
+Date: Wed,  4 Mar 2026 12:45:24 +0530
+Message-Id: <20260304071538.3833062-3-peddolla.reddy@oss.qualcomm.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20260304071538.3833062-1-peddolla.reddy@oss.qualcomm.com>
 References: <20260304071538.3833062-1-peddolla.reddy@oss.qualcomm.com>
@@ -111,30 +110,31 @@ List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwMzA0MDA1OCBTYWx0ZWRfX2Awi7jflMnKg
- Nhxf7f4BEVnbQSssXu0KMWYV/bjoLQmZmrY0xhBaO+LvDcLTq0f+pxsPGWxp90I7dLMiF/H26Gh
- lsjX6TWQFEsDTHEA+TuNt1OMTVmwSJIkL9x8O+qCDmCII2PYX+kUma1bweOgkcqCuGSIkpfNzpx
- Y7KndVI/o9SLV24HoF2d/sObtr9Av/kRB3fqNYYOgsSfk4NgB0pW6+H3m1ZgH3hCEoUrlnCHrho
- eb0srKo4V2hhyYx/28zqhccaS/SG86UyBK39cwUgnWQR/dfKcjrLL5n5KOrXgpP8cHasHf5PhUV
- KyFq8CIVkVdtk8oLFNtvUUikpbjhHiwgV9Ef/Aqf8jh+Tru38lRv1+Kn0bcFxwpkuHziTYAGccD
- 9jQzS/SHPkltcCD+bDtQROscfe7Gka8vWVEEfPlKoMiuSYDI2PWW5vjy50c+A+NeCLz7z0SF4Yi
- MMvoVbjhVvcjUt77BIw==
-X-Authority-Analysis: v=2.4 cv=UJ3Q3Sfy c=1 sm=1 tr=0 ts=69a7dc3e cx=c_pps
- a=RP+M6JBNLl+fLTcSJhASfg==:117 a=ZePRamnt/+rB5gQjfz0u9A==:17
+X-Proofpoint-GUID: VeFeFsEF7H9CVe9hCTXHX72oVtow9FDX
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwMzA0MDA1OCBTYWx0ZWRfX0S48lnj61lA/
+ 3uuECf8pLQEz3vFp8PQJ3GmyXYkCBybqWyTUHkmxZRWEUJHqmu26HTtTQrZXRPNjEX7ou/fUigQ
+ 7XP+eX17OdJ9yZD7TQkdSweHm25mmGkJPyEjVCt0Tdqx+3aUFar2pX0364/K3KMfwjnEnpOzQUv
+ 13lhjAJAecx2hacTMzN8Iwt1hgbqzCQRVqeZqhWHFdjeGte14m96lqoOGa3oNaL/w9xfuGoXPG7
+ NDcglTEaIanxem7XbLut85mYWZJL7l/TJP4DhPBTDBjqCloq080Gw2o9V3rRelPXuWcKW7Pzh7l
+ 2NUeSTS4OTWDiNdFeKNe7K40AJjdyDF/le0CdxKguKskEY2I80LzGBYUwX/6/ePKA9tTs/vNwWi
+ vKpHM1qkWPr6y28tZoWxTb5wOFXLa+eIHWCag3HO1QsFP+Z4E7Shn3/ldUOa3nd3gUCI5jzJZyH
+ uXhw4d/pftHKbIZhGAA==
+X-Proofpoint-ORIG-GUID: VeFeFsEF7H9CVe9hCTXHX72oVtow9FDX
+X-Authority-Analysis: v=2.4 cv=BpWQAIX5 c=1 sm=1 tr=0 ts=69a7dc40 cx=c_pps
+ a=rz3CxIlbcmazkYymdCej/Q==:117 a=ZePRamnt/+rB5gQjfz0u9A==:17
  a=Yq5XynenixoA:10 a=s4-Qcg_JpJYA:10 a=VkNPw1HP01LnGYTKEx00:22
- a=u7WPNUs3qKkmUXheDGA7:22 a=ZpdpYltYx_vBUK5n70dp:22 a=EUspDBNiAAAA:8
- a=-tftlpCPBrNBlGCn5IIA:9 a=iS9zxrgQBfv6-_F4QbHw:22
-X-Proofpoint-ORIG-GUID: l-1x9_pHox5fYvNyPWloKRaX3m1p9mIx
-X-Proofpoint-GUID: l-1x9_pHox5fYvNyPWloKRaX3m1p9mIx
+ a=u7WPNUs3qKkmUXheDGA7:22 a=Um2Pa8k9VHT-vaBCBUpS:22 a=EUspDBNiAAAA:8
+ a=b3a8TREfGNtq1x0cxikA:9 a=bFCP_H2QrGi7Okbo017w:22
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.51,FMLib:17.12.100.49
  definitions=2026-03-04_02,2026-03-03_01,2025-10-01_01
 X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- suspectscore=0 priorityscore=1501 clxscore=1015 malwarescore=0 spamscore=0
- adultscore=0 bulkscore=0 phishscore=0 impostorscore=0 lowpriorityscore=0
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.22.0-2602130000 definitions=main-2603040058
-X-Rspamd-Queue-Id: E64121FB788
+ clxscore=1015 suspectscore=0 bulkscore=0 adultscore=0 malwarescore=0
+ lowpriorityscore=0 impostorscore=0 priorityscore=1501 phishscore=0
+ spamscore=0 classifier=typeunknown authscore=0 authtc= authcc= route=outbound
+ adjust=0 reason=mlx scancount=1 engine=8.22.0-2602130000
+ definitions=main-2603040058
+X-Rspamd-Queue-Id: BA3A01FB755
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-0.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
@@ -142,14 +142,14 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	DMARC_POLICY_ALLOW(-0.50)[qualcomm.com,reject];
 	R_MISSING_CHARSET(0.50)[];
 	R_DKIM_ALLOW(-0.20)[qualcomm.com:s=qcppdkim1,oss.qualcomm.com:s=google];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	DKIM_TRACE(0.00)[qualcomm.com:+,oss.qualcomm.com:+];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-32437-lists,linux-wireless=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-32438-lists,linux-wireless=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
 	RCPT_COUNT_THREE(0.00)[3];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
@@ -157,84 +157,49 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[peddolla.reddy@oss.qualcomm.com,linux-wireless@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
 	TO_DN_NONE(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[qualcomm.com:dkim,qualcomm.com:email,oss.qualcomm.com:dkim,oss.qualcomm.com:mid,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[qualcomm.com:dkim,qualcomm.com:email,oss.qualcomm.com:dkim,oss.qualcomm.com:mid,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo];
 	TAGGED_RCPT(0.00)[linux-wireless];
 	RCVD_COUNT_SEVEN(0.00)[7]
 X-Rspamd-Action: no action
 
-Currently when enabling RSTA role in PMSR FTM requests,
-pmsr_parse_ftm() mandates LMR feedback to be requested. This
-prevents valid use cases where devices need to operate as RSTA
-without waking the host for measurement reports.
+When the nl80211 socket that originated a PMSR request is
+closed, cfg80211_release_pmsr() sets the request's nl_portid
+to zero and schedules pmsr_free_wk to process the abort
+asynchronously. If the interface is concurrently torn down
+before that work runs, cfg80211_pmsr_wdev_down() calls
+cfg80211_pmsr_process_abort() directly. However, the already-
+scheduled pmsr_free_wk work item remains pending and may run
+after the interface has been removed from the driver. This
+could cause the driver's abort_pmsr callback to operate on a
+torn-down interface, leading to undefined behavior and
+potential crashes.
 
-Remove the check that enforces LMR feedback for RSTA role and
-update the documentation to clarify that LMR feedback is optional,
-though required if measurement results are needed.
+Cancel pmsr_free_wk synchronously in cfg80211_pmsr_wdev_down()
+before calling cfg80211_pmsr_process_abort(). This ensures any
+pending or in-progress work is drained before interface teardown
+proceeds, preventing the work from invoking the driver abort
+callback after the interface is gone.
 
-This allows devices to act as RSTA for proximity detection without
-unnecessary host wakeups while maintaining the option to receive
-results when needed through LMR feedback.
-
-Fixes: 853800c746d3 ("wifi: nl80211/cfg80211: support operating as RSTA in PMSR FTM request")
+Fixes: 9bb7e0f24e7e ("cfg80211: add peer measurement with FTM initiator API")
 Signed-off-by: Peddolla Harshavardhan Reddy <peddolla.reddy@oss.qualcomm.com>
 ---
- include/net/cfg80211.h       | 5 +++--
- include/uapi/linux/nl80211.h | 5 ++---
- net/wireless/pmsr.c          | 7 -------
- 3 files changed, 5 insertions(+), 12 deletions(-)
+ net/wireless/pmsr.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/include/net/cfg80211.h b/include/net/cfg80211.h
-index 8cd870ece351..a54300b6899a 100644
---- a/include/net/cfg80211.h
-+++ b/include/net/cfg80211.h
-@@ -4363,8 +4363,9 @@ struct cfg80211_pmsr_result {
-  *		 EDCA based ranging will be used.
-  * @lmr_feedback: negotiate for I2R LMR feedback. Only valid if either
-  *		 @trigger_based or @non_trigger_based is set.
-- * @rsta: Operate as the RSTA in the measurement. Only valid if @lmr_feedback
-- *	and either @trigger_based or @non_trigger_based is set.
-+ * @rsta: Operate as the RSTA in the measurement. Only valid if either
-+ *	@trigger_based or @non_trigger_based is set. Set @lmr_feedback
-+ *	to receive measurement results in response.
-  * @bss_color: the bss color of the responder. Optional. Set to zero to
-  *	indicate the driver should set the BSS color. Only valid if
-  *	@non_trigger_based or @trigger_based is set.
-diff --git a/include/uapi/linux/nl80211.h b/include/uapi/linux/nl80211.h
-index 0b7a06c2b9f7..8e4f9192d8b7 100644
---- a/include/uapi/linux/nl80211.h
-+++ b/include/uapi/linux/nl80211.h
-@@ -7961,9 +7961,8 @@ enum nl80211_peer_measurement_ftm_capa {
-  *	channel specified in %NL80211_PMSR_PEER_ATTR_CHAN until it receives the
-  *	FTM request from the peer or the timeout specified by
-  *	%NL80211_ATTR_TIMEOUT has expired.
-- *	Only valid if %NL80211_PMSR_FTM_REQ_ATTR_LMR_FEEDBACK is set (so the
-- *	RSTA will have the measurement results to report back in the FTM
-- *	response).
-+ *	Set %NL80211_PMSR_FTM_REQ_ATTR_LMR_FEEDBACK to ensure RSTA will have
-+ *	the measurement results to report back in the FTM response.
-  *
-  * @NUM_NL80211_PMSR_FTM_REQ_ATTR: internal
-  * @NL80211_PMSR_FTM_REQ_ATTR_MAX: highest attribute number
 diff --git a/net/wireless/pmsr.c b/net/wireless/pmsr.c
-index 556f30f5d60a..b875b61c0b48 100644
+index b875b61c0b48..c2977a37add2 100644
 --- a/net/wireless/pmsr.c
 +++ b/net/wireless/pmsr.c
-@@ -195,13 +195,6 @@ static int pmsr_parse_ftm(struct cfg80211_registered_device *rdev,
- 		return -EOPNOTSUPP;
+@@ -658,6 +658,7 @@ void cfg80211_pmsr_wdev_down(struct wireless_dev *wdev)
  	}
+ 	spin_unlock_bh(&wdev->pmsr_lock);
  
--	if (out->ftm.rsta && !out->ftm.lmr_feedback) {
--		NL_SET_ERR_MSG_ATTR(info->extack,
--				    tb[NL80211_PMSR_FTM_REQ_ATTR_RSTA],
--				    "FTM: RSTA set without LMR feedback");
--		return -EINVAL;
--	}
--
- 	return 0;
- }
++	cancel_work_sync(&wdev->pmsr_free_wk);
+ 	if (found)
+ 		cfg80211_pmsr_process_abort(wdev);
  
 -- 
 2.34.1
