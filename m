@@ -1,190 +1,128 @@
-Return-Path: <linux-wireless+bounces-32457-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-32458-lists+linux-wireless=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id gMhUA7/7p2mlnAAAu9opvQ
-	(envelope-from <linux-wireless+bounces-32457-lists+linux-wireless=lfdr.de@vger.kernel.org>)
-	for <lists+linux-wireless@lfdr.de>; Wed, 04 Mar 2026 10:30:39 +0100
+	id EPKfDVkOqGk8ngAAu9opvQ
+	(envelope-from <linux-wireless+bounces-32458-lists+linux-wireless=lfdr.de@vger.kernel.org>)
+	for <lists+linux-wireless@lfdr.de>; Wed, 04 Mar 2026 11:50:01 +0100
 X-Original-To: lists+linux-wireless@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 87BFC1FD95D
-	for <lists+linux-wireless@lfdr.de>; Wed, 04 Mar 2026 10:30:38 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id A777B1FE8B6
+	for <lists+linux-wireless@lfdr.de>; Wed, 04 Mar 2026 11:50:00 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id D95C2303839D
-	for <lists+linux-wireless@lfdr.de>; Wed,  4 Mar 2026 09:30:37 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id D357D30071CD
+	for <lists+linux-wireless@lfdr.de>; Wed,  4 Mar 2026 10:49:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F3ABD3988E0;
-	Wed,  4 Mar 2026 09:30:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F067D342535;
+	Wed,  4 Mar 2026 10:49:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="PTbdpUXT"
+	dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b="l3a84u44"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.21])
+Received: from sipsolutions.net (s3.sipsolutions.net [168.119.38.16])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BCF2C3537D3
-	for <linux-wireless@vger.kernel.org>; Wed,  4 Mar 2026 09:30:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.21
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BEA87372ECA
+	for <linux-wireless@vger.kernel.org>; Wed,  4 Mar 2026 10:49:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=168.119.38.16
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772616635; cv=none; b=OtVFNyvPNMIrZMCCvelEaUgN9HdpELxctYh/PX/oR9ra5X8DBoxS+NOFTddpPfc4NBUHRKLXjteL4hVIj4moxlUusbCJhkcRjdU+jANDhpqCT16Bt0jjRwNwl3TvIqHro9/bu4cCAQZE88J8Y5bYIUC2Btihi3B/thcIT+Bt03g=
+	t=1772621382; cv=none; b=bJZ6z9qano+Ufsn8mJvfodqpaYhggxs2MVYAmlGSD2fXZ0RWwOOLgdxll5oKYOuV9aC+q5vNMoU/zB1Z3gvVnvSFNG9X8F94MzbH9ljEKAXOlfy0ZxN73JT30nJS5COsshmFAqBZDeyPKGPwi2c/PwEfzpskBgJiT1Wyq6Y/nEE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772616635; c=relaxed/simple;
-	bh=XZ0Pwy9Z1AsqtFjsQbXmBHjFmMiJFUbNHrYnRAmi8vM=;
-	h=Date:From:To:Cc:Subject:Message-ID; b=aoVgvFgDCuykmaMDGAJRw9FZ7dOtbqcDPxITukZI3n/5C6A5C1cs+HAKaNhoJyaYzqWJKC8Tq9hc7aTFfshUK5Q7s138Kv31qER31ZojqV8W1C5mCqDLsd5h2FSLe+iWTZ9liTSETmnnpy2MM4gJMW+0Z+oa92krKi0PApqniPo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=PTbdpUXT; arc=none smtp.client-ip=198.175.65.21
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1772616634; x=1804152634;
-  h=date:from:to:cc:subject:message-id;
-  bh=XZ0Pwy9Z1AsqtFjsQbXmBHjFmMiJFUbNHrYnRAmi8vM=;
-  b=PTbdpUXTJIo82TDMqC/9IhO4lF+A7rsSqCcgxsU9p++OiejrOzKuStUZ
-   X9rnzQ1gEneznAU7lW7wHBvZYV1fc32pmdtyHMtONiMZpt4yMjeKO7yMO
-   wNW+Lrf1l+FJ+vNBwXJx8Zvf31gwMrdYWW2xO2PeieT3tYu21En4CLoSB
-   KFP53l8CfFLmul+ekxD0nvcHRW/pHac+d3xkDmhYiMQ5KDZ2BS9wg1d+c
-   2Z6skBSCJEDLQFaAIxc6tlothRAXnPlgMMP/7NMelamo1GFly0GI+Qe9L
-   9BPm28Fy/S4TOXltQqh9vNKuekW807Q4s3HOFstIIqaaGm0Va2iIQnrdF
-   w==;
-X-CSE-ConnectionGUID: 1u2TMGh2TuG9bxMHo2rORw==
-X-CSE-MsgGUID: 04b5uA2/QECqkqFORXhuSQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11718"; a="73545361"
-X-IronPort-AV: E=Sophos;i="6.21,323,1763452800"; 
-   d="scan'208";a="73545361"
-Received: from orviesa001.jf.intel.com ([10.64.159.141])
-  by orvoesa113.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 04 Mar 2026 01:30:34 -0800
-X-CSE-ConnectionGUID: sNaELKxMSeyS+s7Lc1cjuw==
-X-CSE-MsgGUID: 4McO5t2VQyyjlKNwR4RaLg==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.21,323,1763452800"; 
-   d="scan'208";a="256177290"
-Received: from lkp-server01.sh.intel.com (HELO f27a57aa7a36) ([10.239.97.150])
-  by orviesa001.jf.intel.com with ESMTP; 04 Mar 2026 01:30:32 -0800
-Received: from kbuild by f27a57aa7a36 with local (Exim 4.98.2)
-	(envelope-from <lkp@intel.com>)
-	id 1vxiYm-000000003Xt-1Fj9;
-	Wed, 04 Mar 2026 09:30:28 +0000
-Date: Wed, 04 Mar 2026 17:29:38 +0800
-From: kernel test robot <lkp@intel.com>
-To: Johannes Berg <johannes.berg@intel.com>
-Cc: linux-wireless@vger.kernel.org
-Subject: [wireless-next:main] BUILD SUCCESS
- 5d048bbed1bb2bbef612dad0bb9c177c434e63a4
-Message-ID: <202603041730.U14iOHXz-lkp@intel.com>
-User-Agent: s-nail v14.9.25
+	s=arc-20240116; t=1772621382; c=relaxed/simple;
+	bh=eBt0hIYZwNCdbjz1sROzK94b41E1PdEEgJPIef7BZt0=;
+	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=nAbUFL8Ch+jS3T7FjETUSgvIVEmWdaOG0ZQvCn0gfTSNsWotABDYjRBfwBAgCK0iw+DuyH3nVk68LKOAppepG7ooUCh3UJv4trjnZ1QnhCax81NvHUgpHdHklqa8N7Myz4M6E2vCqU517Ojx4i9tFijswL++9pU0MLgh3TdxvZI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net; spf=pass smtp.mailfrom=sipsolutions.net; dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b=l3a84u44; arc=none smtp.client-ip=168.119.38.16
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sipsolutions.net
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=sipsolutions.net; s=mail; h=MIME-Version:Content-Transfer-Encoding:
+	Content-Type:References:In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender
+	:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
+	Resent-Cc:Resent-Message-ID; bh=LuD5dsiX9j+Dpr5R5z8n24aMxt10pxKsVhlen7pPwfc=;
+	t=1772621381; x=1773830981; b=l3a84u44QZ5e9CCWGCyjYqCRSx0X9AbCvpvMXMQv0+cV0Ue
+	ZJUxgSMwTK2zPn5cIKGzctui0vMxKaM6JEY9SQpHg9X1NfrRiNkcPqx9aZ6NW+/+8O5z+dS9RW4Dw
+	PQ/Ql3FhH52TdV/XyX211x2ScZ3L/nUvMFYc/rSEl+s8UvCe3D2DM2CX8WJP0a+dVBWkDO+pC8X2X
+	3YQ6LbKV9pBJ++e0SjfJmLXQh1Gdh5IeO0P+5DTQuMvjw1m1KRZ3XsmUOnAf0LkUUKAdyzZxAqLWF
+	zs1rRAqd0x8evGzuBe0+sT0rKjwZJ7W+jAEYzUCYrpLYW8zVXV0OYEX8OH7TdZBg==;
+Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
+	(Exim 4.98.2)
+	(envelope-from <johannes@sipsolutions.net>)
+	id 1vxjnN-000000081oe-31VZ;
+	Wed, 04 Mar 2026 11:49:37 +0100
+Message-ID: <f256b3e7fa9227caf0bbd6696b81aa79b145945c.camel@sipsolutions.net>
+Subject: Re: [PATCH wireless-next v5 2/2] wifi: mac80211_hwsim: Add UHR
+ capabilities to the driver
+From: Johannes Berg <johannes@sipsolutions.net>
+To: Karthikeyan Kathirvel <karthikeyan.kathirvel@oss.qualcomm.com>
+Cc: linux-wireless@vger.kernel.org, ath12k@lists.infradead.org
+Date: Wed, 04 Mar 2026 11:49:36 +0100
+In-Reply-To: <20260304085343.1093993-3-karthikeyan.kathirvel@oss.qualcomm.com>
+References: 
+	<20260304085343.1093993-1-karthikeyan.kathirvel@oss.qualcomm.com>
+	 <20260304085343.1093993-3-karthikeyan.kathirvel@oss.qualcomm.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.58.3 (3.58.3-1.fc43) 
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
-X-Rspamd-Queue-Id: 87BFC1FD95D
+MIME-Version: 1.0
+X-malware-bazaar: not-scanned
+X-Rspamd-Queue-Id: A777B1FE8B6
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.66 / 15.00];
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MID_CONTAINS_FROM(1.00)[];
-	R_MISSING_CHARSET(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[intel.com,none];
-	R_DKIM_ALLOW(-0.20)[intel.com:s=Intel];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	DMARC_POLICY_ALLOW(-0.50)[sipsolutions.net,none];
+	R_DKIM_ALLOW(-0.20)[sipsolutions.net:s=mail];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	RCPT_COUNT_TWO(0.00)[2];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-32457-lists,linux-wireless=lfdr.de];
-	DKIM_TRACE(0.00)[intel.com:+];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
-	TO_DN_SOME(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[lkp@intel.com,linux-wireless@vger.kernel.org];
+	TAGGED_FROM(0.00)[bounces-32458-lists,linux-wireless=lfdr.de];
+	DKIM_TRACE(0.00)[sipsolutions.net:+];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCPT_COUNT_THREE(0.00)[3];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[johannes@sipsolutions.net,linux-wireless@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	RCVD_COUNT_FIVE(0.00)[6];
 	TAGGED_RCPT(0.00)[linux-wireless];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:dkim,intel.com:mid,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo]
+	MID_RHS_MATCH_FROM(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,sipsolutions.net:dkim,sipsolutions.net:mid]
 X-Rspamd-Action: no action
 
-tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/wireless/wireless-next.git main
-branch HEAD: 5d048bbed1bb2bbef612dad0bb9c177c434e63a4  wifi: mac80211: give the AP more time for EPPKE as well
+On Wed, 2026-03-04 at 14:23 +0530, Karthikeyan Kathirvel wrote:
+>=20
+> +++ b/drivers/net/wireless/virtual/mac80211_hwsim.c
+> @@ -4478,6 +4478,43 @@ static const struct ieee80211_sband_iftype_data sb=
+and_capa_2ghz[] =3D {
+>  			},
+>  			/* PPE threshold information is not supported */
+>  		},
+> +		.uhr_cap =3D {
 
-elapsed time: 1345m
+Missing from the context, but this is non-AP side.
 
-configs tested: 65
-configs skipped: 2
+> +			.has_uhr =3D true,
+> +			.mac =3D {
+> +				.mac_cap[0] =3D
+> +					IEEE80211_UHR_MAC_CAP0_DPS_SUPP |
+> +					IEEE80211_UHR_MAC_CAP0_DPS_AP_STATIC_HCM_SUPP |
 
-The following configs have been built successfully.
-More configs may be tested in the coming days.
+"Reserved for a non-AP STA."
 
-tested configs:
-alpha         allnoconfig    gcc-15.2.0
-alpha        allyesconfig    gcc-15.2.0
-arc          allmodconfig    clang-16
-arc          allmodconfig    gcc-15.2.0
-arc           allnoconfig    gcc-15.2.0
-arc          allyesconfig    gcc-15.2.0
-arm           allnoconfig    clang-23
-arm          allyesconfig    clang-16
-arm          allyesconfig    gcc-15.2.0
-arm64        allmodconfig    clang-19
-arm64         allnoconfig    gcc-15.2.0
-csky         allmodconfig    gcc-15.2.0
-csky          allnoconfig    gcc-15.2.0
-hexagon      allmodconfig    clang-17
-hexagon      allmodconfig    gcc-15.2.0
-hexagon       allnoconfig    clang-23
-i386         allmodconfig    clang-20
-i386         allmodconfig    gcc-14
-i386          allnoconfig    gcc-14
-i386         allyesconfig    clang-20
-i386         allyesconfig    gcc-14
-loongarch    allmodconfig    clang-19
-loongarch     allnoconfig    clang-23
-m68k         allmodconfig    gcc-15.2.0
-m68k          allnoconfig    gcc-15.2.0
-m68k         allyesconfig    clang-16
-m68k         allyesconfig    gcc-15.2.0
-microblaze    allnoconfig    gcc-15.2.0
-microblaze   allyesconfig    gcc-15.2.0
-mips         allmodconfig    gcc-15.2.0
-mips          allnoconfig    gcc-15.2.0
-mips         allyesconfig    gcc-15.2.0
-nios2        allmodconfig    gcc-11.5.0
-nios2         allnoconfig    gcc-11.5.0
-openrisc     allmodconfig    gcc-15.2.0
-openrisc      allnoconfig    gcc-15.2.0
-parisc       allmodconfig    gcc-15.2.0
-parisc        allnoconfig    gcc-15.2.0
-parisc       allyesconfig    clang-19
-parisc       allyesconfig    gcc-15.2.0
-powerpc      allmodconfig    gcc-15.2.0
-powerpc       allnoconfig    gcc-15.2.0
-riscv        allmodconfig    clang-23
-riscv         allnoconfig    gcc-15.2.0
-riscv        allyesconfig    clang-16
-s390         allmodconfig    clang-18
-s390         allmodconfig    clang-19
-s390          allnoconfig    clang-23
-s390         allyesconfig    gcc-15.2.0
-sh           allmodconfig    gcc-15.2.0
-sh            allnoconfig    gcc-15.2.0
-sh           allyesconfig    clang-19
-sh           allyesconfig    gcc-15.2.0
-sparc         allnoconfig    gcc-15.2.0
-sparc64      allmodconfig    clang-23
-um           allmodconfig    clang-19
-um            allnoconfig    clang-23
-um           allyesconfig    gcc-14
-um           allyesconfig    gcc-15.2.0
-x86_64       allmodconfig    clang-20
-x86_64        allnoconfig    clang-20
-x86_64       allyesconfig    clang-20
-x86_64      rhel-9.4-rust    clang-20
-xtensa        allnoconfig    gcc-15.2.0
-xtensa       allyesconfig    gcc-15.2.0
+Maybe we're just better off doing this as we implement features?
 
---
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+I've applied patch 1 with some minor edits.
+
+johannes
 
