@@ -1,105 +1,105 @@
-Return-Path: <linux-wireless+bounces-32439-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-32440-lists+linux-wireless=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id SBRwJEncp2lnkgAAu9opvQ
-	(envelope-from <linux-wireless+bounces-32439-lists+linux-wireless=lfdr.de@vger.kernel.org>)
-	for <lists+linux-wireless@lfdr.de>; Wed, 04 Mar 2026 08:16:25 +0100
+	id CMqQOHLcp2lnkgAAu9opvQ
+	(envelope-from <linux-wireless+bounces-32440-lists+linux-wireless=lfdr.de@vger.kernel.org>)
+	for <lists+linux-wireless@lfdr.de>; Wed, 04 Mar 2026 08:17:06 +0100
 X-Original-To: lists+linux-wireless@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6B6791FB75D
-	for <lists+linux-wireless@lfdr.de>; Wed, 04 Mar 2026 08:16:25 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5DBB11FB78F
+	for <lists+linux-wireless@lfdr.de>; Wed, 04 Mar 2026 08:17:06 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 8D4A33037054
-	for <lists+linux-wireless@lfdr.de>; Wed,  4 Mar 2026 07:16:23 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id CF98D30825EE
+	for <lists+linux-wireless@lfdr.de>; Wed,  4 Mar 2026 07:16:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4714333E376;
-	Wed,  4 Mar 2026 07:16:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 063C829408;
+	Wed,  4 Mar 2026 07:16:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="Zc9Tvms0";
-	dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b="SBWHYfPD"
+	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="NcxKoOZe";
+	dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b="joDNiAn0"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
+Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6737B33F374
-	for <linux-wireless@vger.kernel.org>; Wed,  4 Mar 2026 07:16:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 68FEE30CDAF
+	for <linux-wireless@vger.kernel.org>; Wed,  4 Mar 2026 07:16:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772608581; cv=none; b=U8tCSvCYRESx6hOjQynywV4eAV3lT1KeVu4003voJvxMaMz7v6qES2irb5OrCIa7Rujw/g2lYLWf0lb8is0oG7BLOfVwi/DEYWHbIpBepWNwyKTxQl3LU2+nGhTt3tafsut+/cJgokckJUSdQLbRjN7AuKMeuD3uMmlBdwZfsKc=
+	t=1772608583; cv=none; b=t2S94K9+nAgfvqSiNbCgbwgyp8d8HNHnUELL4G7/L8ta1D8Y8HFdxu8UkJ7xffvS7hR9sZh6eLvbcOfcbVjOWuOw313JcYH+PYkLbnyf+UvPU1q8raHxjAIO/hxQd1pOP3Tce7mVb6IZaZgkfB8HiccexpePOWfqkEPhJsN9anw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772608581; c=relaxed/simple;
-	bh=cnMRkK6bApqEjfX5O2abMGuj/HDnAyf8BAOO9A5bnRY=;
+	s=arc-20240116; t=1772608583; c=relaxed/simple;
+	bh=ZUkLjV3jVkOSVgaqlSblvYUJxuPjKdDIAw58OAVksCw=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=LIYK+Qh4m3LZ+j3cZ5n0RT6WHsISC7N4GOn9n6FXlm4qtS2DH234lXHl8ssuzZxjlMoHOxb82DKVMlvxp11B/a5MzsqnTw2St8muuVw72SC16ppEWhA3nfbWxvqhBZKm8CB130H75zSg4Q7Ofa+srVl94anJ9IIg0hvbZYk2kRs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=Zc9Tvms0; dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b=SBWHYfPD; arc=none smtp.client-ip=205.220.168.131
+	 MIME-Version; b=ssewo7s7ywt9YOunDGQX4Goxrr8/5YffSnHOfEth1tp+neClVhLGZDCp19fUNiwFgSXdMZJ2Jq+s5kSJ7EoH27Oevzvlcr26CKqngnA30lsqRThn1B3VUcNpPZk2rQQ9Ekfsg+zI5QdAUGXhofulhhlSU8XNwahZGhHM52RwPD0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=NcxKoOZe; dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b=joDNiAn0; arc=none smtp.client-ip=205.220.180.131
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
-Received: from pps.filterd (m0279865.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 6245TKgK1679436
-	for <linux-wireless@vger.kernel.org>; Wed, 4 Mar 2026 07:16:18 GMT
+Received: from pps.filterd (m0279868.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 6245SQuk957040
+	for <linux-wireless@vger.kernel.org>; Wed, 4 Mar 2026 07:16:21 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
 	cc:content-transfer-encoding:date:from:in-reply-to:message-id
-	:mime-version:references:subject:to; s=qcppdkim1; bh=1UWIeRyKxE7
-	Xg9YjSz9WZtqx80RPocTPC3Qbh/qW+Is=; b=Zc9Tvms0h+WMp76zdfDqmxzRVvc
-	J8O3B39jl1Kf+ENGQXjiQ+ZvzgWgaCzJiFtGXHj/kiOHJuoTen73AD/820+UacrI
-	l36dXcdffzSe7qZ6viFSeRiMcmywH2JgfM4go0mEm/jx1n4NFKrvzh/oG8laewMc
-	J3SG42b9mQJqWUh/eIrb/xDnJ3OdLWLhvJz+dglezPQF9qDFVLm0w40tAOXzwqqU
-	2VCXVpR2TRZfBCD6JXRjRSClr7nXH3Ux6OXYd1VrnoYqysZRogXVR1uHgfoHxK1I
-	8XOo8DG1MeBnN+4sKuhI98eYEWpTgMxY4AtdV05VU7X0CHQuqPa7Hic/gVA==
-Received: from mail-pg1-f197.google.com (mail-pg1-f197.google.com [209.85.215.197])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4cp73h9rst-1
+	:mime-version:references:subject:to; s=qcppdkim1; bh=bBTVaygCIOW
+	1j0KcFryQQ1bMVC6nz/uj/ElfHllOocY=; b=NcxKoOZei1FZHWkkwWOFQinslUp
+	u8d5Ns1L/BMEQEr/hjFYNTKfxxpgIxSNIl5wThkNIk/yBx5zvUW606d8l2H5YUiH
+	noNY7htRu7LZNFSUiUQpMtFReLp5hL1CNeZv7tRAsK6ltoklynkFcULirWhmnasO
+	JihK1X4U1PoPm/ZRhMw78c2grJdlp5ieq3ATPMz4/fgG6hsytahP4dgHBBeSNRm3
+	blM/VqgsXqUakqc9NNR18mvg9CN/uKAul0lY9YhTIUvQ4AQBAMjs/7EjFISa45Au
+	5jiUotr6zF9UzDyiDekC4eCcFg+qgaxIjPi9HKZYif3nfDA77oe9K5jCwjQ==
+Received: from mail-pl1-f199.google.com (mail-pl1-f199.google.com [209.85.214.199])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4cp6qg9tag-1
 	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
-	for <linux-wireless@vger.kernel.org>; Wed, 04 Mar 2026 07:16:18 +0000 (GMT)
-Received: by mail-pg1-f197.google.com with SMTP id 41be03b00d2f7-c70b6a624bfso4074266a12.1
-        for <linux-wireless@vger.kernel.org>; Tue, 03 Mar 2026 23:16:18 -0800 (PST)
+	for <linux-wireless@vger.kernel.org>; Wed, 04 Mar 2026 07:16:20 +0000 (GMT)
+Received: by mail-pl1-f199.google.com with SMTP id d9443c01a7336-2ae3e462daeso18740915ad.0
+        for <linux-wireless@vger.kernel.org>; Tue, 03 Mar 2026 23:16:20 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=oss.qualcomm.com; s=google; t=1772608578; x=1773213378; darn=vger.kernel.org;
+        d=oss.qualcomm.com; s=google; t=1772608580; x=1773213380; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=1UWIeRyKxE7Xg9YjSz9WZtqx80RPocTPC3Qbh/qW+Is=;
-        b=SBWHYfPDTXjMfYBtEuXNS1nxVPaKkDZqDJ/SEJPKNM88f+GeB2XJOzo8+d5Us2WHWA
-         BJfDf2HVt/SNH1vZrN5EpW+/K4uLlq3wHFu7wtVNo5VqbZXfvx3JbrPrv6cTFAuZDmN/
-         0FDhf7IZDlqZWl4duY0qkdyMlywQatxmL4ynibMVTsDLtZWQzx8MBxew+jw0X39uuvPO
-         WO+jGp3QcU2h1dQJlNOM7hLCACS2yNJ5RUu7cHWhEIc5FK6IkpuUo0QY9tESG2PODSTD
-         82jFYVtgC8g8LFaHA4V9+BHkx1OevhS5+cGzExPIyjUILPTu2fXVc33H7HxV6x1UST1b
-         fajg==
+        bh=bBTVaygCIOW1j0KcFryQQ1bMVC6nz/uj/ElfHllOocY=;
+        b=joDNiAn0y7SKRXQVcyp2wMc4akstTE/cy20uISHYRGhWz0qc3dODM1qnjA8TaKmXY5
+         aBVwG/ZJ/TLREqGXTikRNJm5B2XdN3ZNRNI5j3F+wdDYr0+FOUJNSBrtNPTb0EDTXL9I
+         S2fPQnOgUFfEiTL1Glk0PkJ+6ASQjnpH0DmCdozUYtGiA3r2r9MeB7hPTcQHQ9cD+/ad
+         Ankmoy7BcWPkBMbeylX6Ha41N0Rrz+N15GSB9eN9m75DBmnxlT9Yvh9SMmIid71b3mBU
+         5l0+uN3bExO7vn8AijbhVbKDyY6LAAxFu94N9FWRZPyzQpah1EfX8NvjlXOVD1ZBAr2M
+         ZW+w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1772608578; x=1773213378;
+        d=1e100.net; s=20230601; t=1772608580; x=1773213380;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to;
-        bh=1UWIeRyKxE7Xg9YjSz9WZtqx80RPocTPC3Qbh/qW+Is=;
-        b=Loe0n2f60l5xbKo14v/D9GrEIjFA6sjWzV24ICzbxFfFdD8se4uEeZ6Qr35w6ergqz
-         Z3kmqELV8uENGK0dVcQrjjTPTkbCAERuKN4wbfrrOmJnN2a3wO5f09waNsYUOUG/Jwyy
-         T05tyMjbAoYIJmjgbS1bPba/7IoVbVrDw4vx9IEduyZxkEuRdkR1zQRD1GUwGJpxkSyn
-         bUrIoa/MHP1bZZgTl375gIS2rOLKxZUHIdcUjOO6wUrzeO8vOxLfQe8RgkF4lY3hojyu
-         4wd67lMekcutXBECB1Jt5KMERkBTJD5JZW7XwfjCvt7saRH0tTpAf5J5HkzYcX4119O1
-         MCDQ==
-X-Gm-Message-State: AOJu0YxwZ3di7LS3DgEEepv/kLjsqelMtkCE2hlkHimM9yV9K+4RezpU
-	KGsm2Pi4N/84983kiRCIpZb1ENqhwFvO95MFUSJL+e2odcqjzAO8HeMjfYCRV76Su6r1OGePaIF
-	FkL5ahFIzIOi/V6BV/d3wy49eNO5Z6kcE+N4tgthigcOYuga68b/4vVUt7rrufrKUNCDa
-X-Gm-Gg: ATEYQzy/5IdADL1TJUjaS2mpxsaUg3zTtLCgKM0VtNXiAhWvb191jpmexvxvZWzP9D4
-	VuAK4BfJDg5WhvUUUY7dI48thFeYcmQc90W151ABT/+vT70IxE7rmdnyPuhxW6lu4JzyBAQKtZy
-	MzYYBwCSvJNINUvpnGB+ePXIWD0xVdqyLHAqgCzazUvMWsAiRgEvJLvMMtYyFSm/7rrNzbMPOja
-	3AK6FbbNhVoyZwNDzAd9iIHaSFnWy33jwaNRYtfF8p7DBrzesFhIepnSkrOkf7tE+mZV22Np+mP
-	X30TxKvWW8PiFXAfLv8hgtf/+q8SFRAt9ySJapi9YQWR3zeZUwfCBfj06N4q/0pwrhxQzefE7JX
-	SZe5YUGU+VqxJpOQOsqW8LE57SYg9bVwd3thncaROCLDfd/7k52ECMGs=
-X-Received: by 2002:a05:6a20:72a3:b0:38e:9e19:6c6f with SMTP id adf61e73a8af0-3982d5aa2dcmr1210063637.35.1772608577862;
-        Tue, 03 Mar 2026 23:16:17 -0800 (PST)
-X-Received: by 2002:a05:6a20:72a3:b0:38e:9e19:6c6f with SMTP id adf61e73a8af0-3982d5aa2dcmr1210027637.35.1772608577275;
-        Tue, 03 Mar 2026 23:16:17 -0800 (PST)
+        bh=bBTVaygCIOW1j0KcFryQQ1bMVC6nz/uj/ElfHllOocY=;
+        b=PUnMR9YBMmrv3D0ihQfVghqNMbI6BVw1NJiLonGZvEQy00cf0BEGcMwi5VBUrCBzyY
+         9wG8ZfcOcmA8wN3OFjSxw/5vccntf8STnqCX+XgznlNDRzuLb07Nyvk6Bv8Gy7OLLBqt
+         yQcAU5iN16h7sEiumXvEhMz2nGAkZEyLNZdybD0t1p9Ek/VLxs+j/5skxgVDCOOo+59/
+         ViHHLGz+fzWQ0GogGa8Nx2rZ4B4pjxdi83iaTrx6T4oNE/JDAMSOYb/x83/A3aC4ldII
+         I+Ng/qNZBrv9GBX6jvd2mZ/Nej5bkbI2m+dVJHMqw3F7IE00VdHY+WSo+BU9EfagNkhe
+         KcrQ==
+X-Gm-Message-State: AOJu0YwYdZm3wtSw16PHdO2vTGFO2lqQPAq3Lyaq1Q3plBpeaAk0Lh09
+	AF35wgAeVzVFudQz1zPdpHxiZlf7yut2ol+TLox7BxHsgV/e21m9SzXWN7jFUl+bA8i6lsSf0HM
+	LD2UNZNLwClhyVqvCkMmGJ/1ytkmX3YIa+XTJmEqVziLpl/cHYKURqCY1TpL60Nqq7yur
+X-Gm-Gg: ATEYQzxefm1j/eBYxm+Cky5g2ETvcL+OkLI1LOImMb7DiTFgEWmdiDKozSuQjfM2ECt
+	/TifLxwrWmnFBrIe/6ajNndXZKrkyb/Hpn26ZjVMCXDxZO0J4Z7wpzQJq9YzLA6KU+TSg4p39Ag
+	LDv6itKziPxTK30op1ALvTLRu2T6SYP5V+GvmQz9qNkCbvfBpKikk6VcJcQl8FI6ITKOMQq/nmZ
+	dMJdDui234ZOvYHZWMSr4UDIc+RaDSDApHJ1hf9LGf5dz3X2SRb0Hjo2/1gXCFxuh75w9W5FnVs
+	4z9ujya877/fsa/uXqjclvP2jVjoRPSi21vXLzmdhJjqELGbw1cOJTjat2R9d4hkmSa5H2NI2A3
+	9HycWhhVfSwWHfQXxCzWinSUkb/RQKWEdudP1QLm5b8ixu1Wwd2JK5aU=
+X-Received: by 2002:a05:6a21:1fc5:b0:366:1921:c569 with SMTP id adf61e73a8af0-3982dd67044mr1064496637.4.1772608579854;
+        Tue, 03 Mar 2026 23:16:19 -0800 (PST)
+X-Received: by 2002:a05:6a21:1fc5:b0:366:1921:c569 with SMTP id adf61e73a8af0-3982dd67044mr1064477637.4.1772608579382;
+        Tue, 03 Mar 2026 23:16:19 -0800 (PST)
 Received: from hu-peddolla-hyd.qualcomm.com ([202.46.23.25])
-        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-c7378125320sm994121a12.20.2026.03.03.23.16.15
+        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-c7378125320sm994121a12.20.2026.03.03.23.16.17
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 03 Mar 2026 23:16:16 -0800 (PST)
+        Tue, 03 Mar 2026 23:16:18 -0800 (PST)
 From: Peddolla Harshavardhan Reddy <peddolla.reddy@oss.qualcomm.com>
 To: johannes@sipsolutions.net
 Cc: linux-wireless@vger.kernel.org, kavita.kavita@oss.qualcomm.com
-Subject: [PATCH wireless-next v2 03/16] wifi: cfg80211: Add MAC address filter to remain_on_channel
-Date: Wed,  4 Mar 2026 12:45:25 +0530
-Message-Id: <20260304071538.3833062-4-peddolla.reddy@oss.qualcomm.com>
+Subject: [PATCH wireless-next v2 04/16] wifi: cfg80211/mac80211: Add NL80211_IFTYPE_PD for PD PASN and PMSR operations
+Date: Wed,  4 Mar 2026 12:45:26 +0530
+Message-Id: <20260304071538.3833062-5-peddolla.reddy@oss.qualcomm.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20260304071538.3833062-1-peddolla.reddy@oss.qualcomm.com>
 References: <20260304071538.3833062-1-peddolla.reddy@oss.qualcomm.com>
@@ -110,31 +110,30 @@ List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Proofpoint-GUID: MKZuod0TJt9i6Xrr26WHBcfxvg2IZUf7
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwMzA0MDA1OCBTYWx0ZWRfX3N2brAzdNFS5
- Bj7BbEEOEmyLdVd4mxEmqeYqyNCOZn/17BcIeZvqVDfqcLMEp/QD6QHceFotJp57tHBJ5sgMa+n
- X8sWQS6AKctcShAy7MDnZTBvIcSeGRNrvueQqmVUEZVkBq2B3b/wvrxMNHB2v0nVa99Z6TnDAoi
- Iy098K0KeQWSyA3EQfHWULOmCXZidjD+fTpcH0Mt8YrO3Kfj1b49MRrrWtfQbXbNN4t3vgJ2H4i
- vMZc3ESdhuO5unFtybqu8TWWINRGcnSBjz3ZvXDy4frB+7YGmIIed5/d2rqtg17m9dfFewBH7XC
- Ni6Eiee+TPquztvksbq62ELGOIX/QlKSQ9nvTqtIyjAF+8KvqX5zXmKt4/07Lm18ol72vSYFD7i
- 2LIrojIo1nX2fSNkLQ/dQbXSeQpt9GLWLk8MWqkpRmcaoeyYwFbI/odwteyOJBY68eudIIaWXMq
- EqNCvvLKdKAaKWgO/sA==
-X-Proofpoint-ORIG-GUID: MKZuod0TJt9i6Xrr26WHBcfxvg2IZUf7
-X-Authority-Analysis: v=2.4 cv=BpWQAIX5 c=1 sm=1 tr=0 ts=69a7dc42 cx=c_pps
- a=rz3CxIlbcmazkYymdCej/Q==:117 a=ZePRamnt/+rB5gQjfz0u9A==:17
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwMzA0MDA1OCBTYWx0ZWRfX2hlsyMqTM4sO
+ LiXm+6sePRyAK5F5C/noF2XuGC9Vvd+cyzOkPKPcJ0Y8qA+M1cINTiMnp9VMAIu79u2cShGNIHo
+ Fv4GEG1iTFPN+T+nAIBD5tM2/ZAa56ckrT8XVgwrvOz6SiQWKYacCYx4euZqiE0AFS+v0efHHIl
+ b8uRNPwXgTVOW2+d4avhMbEwrNQoQYyMC2s7WBy91xWxn1p7/fWsbSb+AptkxU2vX+EviK+41wU
+ zd3YOS8P3xT0ll42tIWBtjFHlJ5B9ovBM0UxMlIVHkdxRKMj8WBQ4/64hby8sMR4rZ8HBcxfb8b
+ JAXqIZVnbH0FMQvkRQNNFEGUqN5c+XMikEaI4T7UGOwHUj4JCHcyc7vXAGIQPqDeRqeCm/9h9tc
+ 0DEFCshMiCR7oKGDU9v1YRJFw0cuPdiy8wB8C0LLM34ECwk+LXLddeLGbJsnlOa6yu6hPxoCEkN
+ YCBzb7jOZ2ZrdMhPNHA==
+X-Authority-Analysis: v=2.4 cv=UJ3Q3Sfy c=1 sm=1 tr=0 ts=69a7dc45 cx=c_pps
+ a=JL+w9abYAAE89/QcEU+0QA==:117 a=ZePRamnt/+rB5gQjfz0u9A==:17
  a=Yq5XynenixoA:10 a=s4-Qcg_JpJYA:10 a=VkNPw1HP01LnGYTKEx00:22
- a=u7WPNUs3qKkmUXheDGA7:22 a=Um2Pa8k9VHT-vaBCBUpS:22 a=EUspDBNiAAAA:8
- a=0xrcVbMI0WWvuKK7pMEA:9 a=bFCP_H2QrGi7Okbo017w:22
+ a=u7WPNUs3qKkmUXheDGA7:22 a=ZpdpYltYx_vBUK5n70dp:22 a=EUspDBNiAAAA:8
+ a=rV0gjk4EqPhYWALXcA0A:9 a=324X-CrmTo6CU4MGRt3R:22
+X-Proofpoint-ORIG-GUID: v-1Gpggd7KF_J7TCGeO_n-LFqA3SI9ma
+X-Proofpoint-GUID: v-1Gpggd7KF_J7TCGeO_n-LFqA3SI9ma
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.51,FMLib:17.12.100.49
  definitions=2026-03-04_02,2026-03-03_01,2025-10-01_01
 X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- clxscore=1015 suspectscore=0 bulkscore=0 adultscore=0 malwarescore=0
- lowpriorityscore=0 impostorscore=0 priorityscore=1501 phishscore=0
- spamscore=0 classifier=typeunknown authscore=0 authtc= authcc= route=outbound
- adjust=0 reason=mlx scancount=1 engine=8.22.0-2602130000
- definitions=main-2603040058
-X-Rspamd-Queue-Id: 6B6791FB75D
+ suspectscore=0 priorityscore=1501 clxscore=1015 malwarescore=0 spamscore=0
+ adultscore=0 bulkscore=0 phishscore=0 impostorscore=0 lowpriorityscore=0
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.22.0-2602130000 definitions=main-2603040058
+X-Rspamd-Queue-Id: 5DBB11FB78F
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-0.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
@@ -142,14 +141,14 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	DMARC_POLICY_ALLOW(-0.50)[qualcomm.com,reject];
 	R_MISSING_CHARSET(0.50)[];
 	R_DKIM_ALLOW(-0.20)[qualcomm.com:s=qcppdkim1,oss.qualcomm.com:s=google];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	DKIM_TRACE(0.00)[qualcomm.com:+,oss.qualcomm.com:+];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-32439-lists,linux-wireless=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-32440-lists,linux-wireless=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
 	RCPT_COUNT_THREE(0.00)[3];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
@@ -157,320 +156,340 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[peddolla.reddy@oss.qualcomm.com,linux-wireless@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
 	TO_DN_NONE(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[qualcomm.com:dkim,qualcomm.com:email,oss.qualcomm.com:dkim,oss.qualcomm.com:mid,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[qualcomm.com:dkim,qualcomm.com:email,oss.qualcomm.com:dkim,oss.qualcomm.com:mid,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo];
 	TAGGED_RCPT(0.00)[linux-wireless];
 	RCVD_COUNT_SEVEN(0.00)[7]
 X-Rspamd-Action: no action
 
-Currently the remain_on_channel operation does not support
-filtering incoming frames by destination MAC address. This
-prevents use cases such as PASN authentication in the
-responder side that need to receive frames addressed to a
-specific MAC during the off-channel period.
+Add a new wdev-only interface type NL80211_IFTYPE_PD to support
+Proximity Detection (PD) operations such as PASN, key install and
+peer measurement operations. This interface type operates without
+a netdev, similar to P2P_DEVICE and NAN interfaces.
 
-Add an rx_addr parameter to the remain_on_channel operation
-callback and propagate it through the call chain from nl80211
-to driver implementations. Introduce the extended feature
-NL80211_EXT_FEATURE_ROC_ADDR_FILTER as a capability gate so
-that cfg80211 rejects the request if the driver does not
-advertise support for address filtering. Extract the address
-from the NL80211_ATTR_MAC attribute when provided in the
-netlink message and update the tracing infrastructure to
-include the address in remain_on_channel trace events. The
-rx_addr parameter is optional and can be NULL, maintaining
-backward compatibility with existing drivers.
+Implement support across cfg80211 and mac80211 layers with key
+management gated by the NL80211_EXT_FEATURE_SECURE_RTT feature
+flag, management frame registration and transmission capabilities,
+and proper channel context handling where PD interfaces are
+excluded from bandwidth calculations.
+
+The PD interface provides isolated functionality for PD PASN
+and PMSR without affecting existing network operations.
 
 Signed-off-by: Peddolla Harshavardhan Reddy <peddolla.reddy@oss.qualcomm.com>
 ---
- drivers/net/wireless/ath/ath6kl/cfg80211.c           |  3 ++-
- drivers/net/wireless/ath/wil6210/cfg80211.c          |  3 ++-
- .../net/wireless/broadcom/brcm80211/brcmfmac/p2p.c   |  4 +++-
- .../net/wireless/broadcom/brcm80211/brcmfmac/p2p.h   |  3 ++-
- drivers/net/wireless/marvell/mwifiex/cfg80211.c      |  3 ++-
- drivers/net/wireless/microchip/wilc1000/cfg80211.c   |  3 ++-
- include/net/cfg80211.h                               |  2 +-
- include/uapi/linux/nl80211.h                         | 11 ++++++++++-
- net/mac80211/ieee80211_i.h                           |  3 ++-
- net/mac80211/offchannel.c                            |  3 ++-
- net/wireless/nl80211.c                               | 11 ++++++++++-
- net/wireless/rdev-ops.h                              |  7 ++++---
- net/wireless/trace.h                                 | 12 ++++++++----
- 13 files changed, 50 insertions(+), 18 deletions(-)
+ include/uapi/linux/nl80211.h |  2 ++
+ net/mac80211/cfg.c           |  2 ++
+ net/mac80211/chan.c          |  2 ++
+ net/mac80211/iface.c         |  6 +++++-
+ net/mac80211/offchannel.c    |  1 +
+ net/mac80211/rx.c            |  1 +
+ net/mac80211/util.c          |  1 +
+ net/wireless/chan.c          |  2 ++
+ net/wireless/core.c          |  1 +
+ net/wireless/mlme.c          |  1 +
+ net/wireless/nl80211.c       | 27 +++++++++++++++++++++++++--
+ net/wireless/reg.c           |  3 +++
+ net/wireless/util.c          |  4 +++-
+ 13 files changed, 49 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/net/wireless/ath/ath6kl/cfg80211.c b/drivers/net/wireless/ath/ath6kl/cfg80211.c
-index 739a24a6ad67..cc0f2c45fc3a 100644
---- a/drivers/net/wireless/ath/ath6kl/cfg80211.c
-+++ b/drivers/net/wireless/ath/ath6kl/cfg80211.c
-@@ -1,6 +1,7 @@
- /*
-  * Copyright (c) 2004-2011 Atheros Communications Inc.
-  * Copyright (c) 2011-2012 Qualcomm Atheros, Inc.
-+ * Copyright (c) Qualcomm Technologies, Inc. and/or its subsidiaries.
-  *
-  * Permission to use, copy, modify, and/or distribute this software for any
-  * purpose with or without fee is hereby granted, provided that the above
-@@ -3033,7 +3034,7 @@ static int ath6kl_remain_on_channel(struct wiphy *wiphy,
- 				    struct wireless_dev *wdev,
- 				    struct ieee80211_channel *chan,
- 				    unsigned int duration,
--				    u64 *cookie)
-+				    u64 *cookie, const u8 *rx_addr)
- {
- 	struct ath6kl_vif *vif = ath6kl_vif_from_wdev(wdev);
- 	struct ath6kl *ar = ath6kl_priv(vif->ndev);
-diff --git a/drivers/net/wireless/ath/wil6210/cfg80211.c b/drivers/net/wireless/ath/wil6210/cfg80211.c
-index 3d6e5aad48b1..d6ef92cfcbaf 100644
---- a/drivers/net/wireless/ath/wil6210/cfg80211.c
-+++ b/drivers/net/wireless/ath/wil6210/cfg80211.c
-@@ -2,6 +2,7 @@
- /*
-  * Copyright (c) 2012-2017 Qualcomm Atheros, Inc.
-  * Copyright (c) 2018-2019, The Linux Foundation. All rights reserved.
-+ * Copyright (c) Qualcomm Technologies, Inc. and/or its subsidiaries.
-  */
- 
- #include <linux/etherdevice.h>
-@@ -1734,7 +1735,7 @@ static int wil_remain_on_channel(struct wiphy *wiphy,
- 				 struct wireless_dev *wdev,
- 				 struct ieee80211_channel *chan,
- 				 unsigned int duration,
--				 u64 *cookie)
-+				 u64 *cookie, const u8 *rx_addr)
- {
- 	struct wil6210_priv *wil = wiphy_to_wil(wiphy);
- 	int rc;
-diff --git a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/p2p.c b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/p2p.c
-index e1752a513c73..92c16a317328 100644
---- a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/p2p.c
-+++ b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/p2p.c
-@@ -970,10 +970,12 @@ brcmf_p2p_discover_listen(struct brcmf_p2p_info *p2p, u16 channel, u32 duration)
-  * @channel: channel to stay on.
-  * @duration: time in ms to remain on channel.
-  * @cookie: cookie.
-+ * @rx_addr: Address to match against the destination of received frames
-  */
- int brcmf_p2p_remain_on_channel(struct wiphy *wiphy, struct wireless_dev *wdev,
- 				struct ieee80211_channel *channel,
--				unsigned int duration, u64 *cookie)
-+				unsigned int duration, u64 *cookie,
-+				const u8 *rx_addr)
- {
- 	struct brcmf_cfg80211_info *cfg = wiphy_to_cfg(wiphy);
- 	struct brcmf_p2p_info *p2p = &cfg->p2p;
-diff --git a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/p2p.h b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/p2p.h
-index d3137ebd7158..9f3f01ade2b7 100644
---- a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/p2p.h
-+++ b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/p2p.h
-@@ -157,7 +157,8 @@ int brcmf_p2p_scan_prep(struct wiphy *wiphy,
- 			struct brcmf_cfg80211_vif *vif);
- int brcmf_p2p_remain_on_channel(struct wiphy *wiphy, struct wireless_dev *wdev,
- 				struct ieee80211_channel *channel,
--				unsigned int duration, u64 *cookie);
-+				unsigned int duration, u64 *cookie,
-+				const u8 *rx_addr);
- int brcmf_p2p_notify_listen_complete(struct brcmf_if *ifp,
- 				     const struct brcmf_event_msg *e,
- 				     void *data);
-diff --git a/drivers/net/wireless/marvell/mwifiex/cfg80211.c b/drivers/net/wireless/marvell/mwifiex/cfg80211.c
-index c9a651bdf882..c9daf893472f 100644
---- a/drivers/net/wireless/marvell/mwifiex/cfg80211.c
-+++ b/drivers/net/wireless/marvell/mwifiex/cfg80211.c
-@@ -304,7 +304,8 @@ static int
- mwifiex_cfg80211_remain_on_channel(struct wiphy *wiphy,
- 				   struct wireless_dev *wdev,
- 				   struct ieee80211_channel *chan,
--				   unsigned int duration, u64 *cookie)
-+				   unsigned int duration, u64 *cookie,
-+				   const u8 *rx_addr)
- {
- 	struct mwifiex_private *priv = mwifiex_netdev_get_priv(wdev->netdev);
- 	int ret;
-diff --git a/drivers/net/wireless/microchip/wilc1000/cfg80211.c b/drivers/net/wireless/microchip/wilc1000/cfg80211.c
-index 3a774cc44b26..6654fce4ded8 100644
---- a/drivers/net/wireless/microchip/wilc1000/cfg80211.c
-+++ b/drivers/net/wireless/microchip/wilc1000/cfg80211.c
-@@ -1100,7 +1100,8 @@ static void wilc_wfi_remain_on_channel_expired(struct wilc_vif *vif, u64 cookie)
- static int remain_on_channel(struct wiphy *wiphy,
- 			     struct wireless_dev *wdev,
- 			     struct ieee80211_channel *chan,
--			     unsigned int duration, u64 *cookie)
-+			     unsigned int duration, u64 *cookie,
-+			     const u8 *rx_addr)
- {
- 	int ret = 0;
- 	struct wilc_vif *vif = netdev_priv(wdev->netdev);
-diff --git a/include/net/cfg80211.h b/include/net/cfg80211.h
-index a54300b6899a..73cfe1a14c01 100644
---- a/include/net/cfg80211.h
-+++ b/include/net/cfg80211.h
-@@ -5082,7 +5082,7 @@ struct cfg80211_ops {
- 				     struct wireless_dev *wdev,
- 				     struct ieee80211_channel *chan,
- 				     unsigned int duration,
--				     u64 *cookie);
-+				     u64 *cookie, const u8 *rx_addr);
- 	int	(*cancel_remain_on_channel)(struct wiphy *wiphy,
- 					    struct wireless_dev *wdev,
- 					    u64 cookie);
 diff --git a/include/uapi/linux/nl80211.h b/include/uapi/linux/nl80211.h
-index 8e4f9192d8b7..49f4704ce627 100644
+index 49f4704ce627..b1f0e72ec953 100644
 --- a/include/uapi/linux/nl80211.h
 +++ b/include/uapi/linux/nl80211.h
-@@ -729,7 +729,9 @@
-  *	to remain on the channel. This command is also used as an event to
-  *	notify when the requested duration starts (it may take a while for the
-  *	driver to schedule this time due to other concurrent needs for the
-- *	radio).
-+ *	radio). An optional attribute %NL80211_ATTR_MAC can be used to filter
-+ *	incoming frames during remain-on-channel, such that frames
-+ *	addressed to the specified destination MAC are reported.
-  *	When called, this operation returns a cookie (%NL80211_ATTR_COOKIE)
-  *	that will be included with any events pertaining to this request;
-  *	the cookie is also used to cancel the request.
-@@ -6828,6 +6830,12 @@ enum nl80211_feature_flags {
-  *	(NL80211_CMD_AUTHENTICATE) in non-AP STA mode, as specified in
-  *	"IEEE P802.11bi/D4.0, 12.16.5".
+@@ -3671,6 +3671,7 @@ enum nl80211_attrs {
+  * @NL80211_IFTYPE_OCB: Outside Context of a BSS
+  *	This mode corresponds to the MIB variable dot11OCBActivated=true
+  * @NL80211_IFTYPE_NAN: NAN device interface type (not a netdev)
++ * @NL80211_IFTYPE_PD: PD device interface type (not a netdev)
+  * @NL80211_IFTYPE_MAX: highest interface type number currently defined
+  * @NUM_NL80211_IFTYPES: number of defined interface types
   *
-+ * @NL80211_EXT_FEATURE_ROC_ADDR_FILTER: Driver supports MAC address
-+ *	filtering during remain-on-channel. When %NL80211_ATTR_MAC is
-+ *	provided with %NL80211_CMD_REMAIN_ON_CHANNEL, the driver will
-+ *	forward frames with a matching MAC address to userspace during
-+ *	the off-channel period.
-+ *
-  * @NUM_NL80211_EXT_FEATURES: number of extended features.
-  * @MAX_NL80211_EXT_FEATURES: highest extended feature index.
-  */
-@@ -6907,6 +6915,7 @@ enum nl80211_ext_feature_index {
- 	NL80211_EXT_FEATURE_EPPKE,
- 	NL80211_EXT_FEATURE_ASSOC_FRAME_ENCRYPTION,
- 	NL80211_EXT_FEATURE_IEEE8021X_AUTH,
-+	NL80211_EXT_FEATURE_ROC_ADDR_FILTER,
+@@ -3692,6 +3693,7 @@ enum nl80211_iftype {
+ 	NL80211_IFTYPE_P2P_DEVICE,
+ 	NL80211_IFTYPE_OCB,
+ 	NL80211_IFTYPE_NAN,
++	NL80211_IFTYPE_PD,
  
- 	/* add new features before the definition below */
- 	NUM_NL80211_EXT_FEATURES,
-diff --git a/net/mac80211/ieee80211_i.h b/net/mac80211/ieee80211_i.h
-index a4babf7624e5..c8e58877e2a3 100644
---- a/net/mac80211/ieee80211_i.h
-+++ b/net/mac80211/ieee80211_i.h
-@@ -2068,7 +2068,8 @@ void ieee80211_roc_purge(struct ieee80211_local *local,
- 			 struct ieee80211_sub_if_data *sdata);
- int ieee80211_remain_on_channel(struct wiphy *wiphy, struct wireless_dev *wdev,
- 				struct ieee80211_channel *chan,
--				unsigned int duration, u64 *cookie);
-+				unsigned int duration, u64 *cookie,
-+				const u8 *rx_addr);
- int ieee80211_cancel_remain_on_channel(struct wiphy *wiphy,
- 				       struct wireless_dev *wdev, u64 cookie);
- int ieee80211_mgmt_tx(struct wiphy *wiphy, struct wireless_dev *wdev,
+ 	/* keep last */
+ 	NUM_NL80211_IFTYPES,
+diff --git a/net/mac80211/cfg.c b/net/mac80211/cfg.c
+index ee64ac8e0f61..dac211f9a438 100644
+--- a/net/mac80211/cfg.c
++++ b/net/mac80211/cfg.c
+@@ -713,6 +713,7 @@ static int ieee80211_add_key(struct wiphy *wiphy, struct wireless_dev *wdev,
+ 	case NL80211_IFTYPE_MONITOR:
+ 	case NL80211_IFTYPE_P2P_DEVICE:
+ 	case NL80211_IFTYPE_NAN:
++	case NL80211_IFTYPE_PD:
+ 	case NL80211_IFTYPE_UNSPECIFIED:
+ 	case NUM_NL80211_IFTYPES:
+ 	case NL80211_IFTYPE_P2P_CLIENT:
+@@ -3183,6 +3184,7 @@ static int ieee80211_scan(struct wiphy *wiphy,
+ 		}
+ 		break;
+ 	case NL80211_IFTYPE_NAN:
++	case NL80211_IFTYPE_PD:
+ 	default:
+ 		return -EOPNOTSUPP;
+ 	}
+diff --git a/net/mac80211/chan.c b/net/mac80211/chan.c
+index 4447cf03c41b..00cbb13fb74b 100644
+--- a/net/mac80211/chan.c
++++ b/net/mac80211/chan.c
+@@ -473,6 +473,7 @@ ieee80211_get_chanctx_max_required_bw(struct ieee80211_local *local,
+ 			break;
+ 		case NL80211_IFTYPE_P2P_DEVICE:
+ 		case NL80211_IFTYPE_NAN:
++		case NL80211_IFTYPE_PD:
+ 			continue;
+ 		case NL80211_IFTYPE_MONITOR:
+ 			WARN_ON_ONCE(!ieee80211_hw_check(&local->hw,
+@@ -1414,6 +1415,7 @@ ieee80211_link_chanctx_reservation_complete(struct ieee80211_link_data *link)
+ 	case NL80211_IFTYPE_P2P_GO:
+ 	case NL80211_IFTYPE_P2P_DEVICE:
+ 	case NL80211_IFTYPE_NAN:
++	case NL80211_IFTYPE_PD:
+ 	case NUM_NL80211_IFTYPES:
+ 		WARN_ON(1);
+ 		break;
+diff --git a/net/mac80211/iface.c b/net/mac80211/iface.c
+index 676b2a43c9f2..b647c6394b28 100644
+--- a/net/mac80211/iface.c
++++ b/net/mac80211/iface.c
+@@ -1369,6 +1369,7 @@ int ieee80211_do_open(struct wireless_dev *wdev, bool coming_up)
+ 	case NL80211_IFTYPE_P2P_DEVICE:
+ 	case NL80211_IFTYPE_OCB:
+ 	case NL80211_IFTYPE_NAN:
++	case NL80211_IFTYPE_PD:
+ 		/* no special treatment */
+ 		break;
+ 	case NL80211_IFTYPE_UNSPECIFIED:
+@@ -1489,7 +1490,8 @@ int ieee80211_do_open(struct wireless_dev *wdev, bool coming_up)
+ 						FIF_PROBE_REQ);
+ 
+ 		if (sdata->vif.type != NL80211_IFTYPE_P2P_DEVICE &&
+-		    sdata->vif.type != NL80211_IFTYPE_NAN)
++		    sdata->vif.type != NL80211_IFTYPE_NAN &&
++		    sdata->vif.type != NL80211_IFTYPE_PD)
+ 			changed |= ieee80211_reset_erp_info(sdata);
+ 		ieee80211_link_info_change_notify(sdata, &sdata->deflink,
+ 						  changed);
+@@ -1504,6 +1506,7 @@ int ieee80211_do_open(struct wireless_dev *wdev, bool coming_up)
+ 			break;
+ 		case NL80211_IFTYPE_P2P_DEVICE:
+ 		case NL80211_IFTYPE_NAN:
++		case NL80211_IFTYPE_PD:
+ 			break;
+ 		default:
+ 			/* not reached */
+@@ -1935,6 +1938,7 @@ static void ieee80211_setup_sdata(struct ieee80211_sub_if_data *sdata,
+ 		break;
+ 	case NL80211_IFTYPE_AP_VLAN:
+ 	case NL80211_IFTYPE_P2P_DEVICE:
++	case NL80211_IFTYPE_PD:
+ 		sdata->vif.bss_conf.bssid = sdata->vif.addr;
+ 		break;
+ 	case NL80211_IFTYPE_UNSPECIFIED:
 diff --git a/net/mac80211/offchannel.c b/net/mac80211/offchannel.c
-index f60f6a58948b..5f398d38d1c9 100644
+index 5f398d38d1c9..04c6031dc46b 100644
 --- a/net/mac80211/offchannel.c
 +++ b/net/mac80211/offchannel.c
-@@ -706,7 +706,8 @@ static int ieee80211_start_roc_work(struct ieee80211_local *local,
- 
- int ieee80211_remain_on_channel(struct wiphy *wiphy, struct wireless_dev *wdev,
- 				struct ieee80211_channel *chan,
--				unsigned int duration, u64 *cookie)
-+				unsigned int duration, u64 *cookie,
-+				const u8 *rx_addr)
- {
- 	struct ieee80211_sub_if_data *sdata = IEEE80211_WDEV_TO_SUB_IF(wdev);
- 	struct ieee80211_local *local = sdata->local;
+@@ -898,6 +898,7 @@ int ieee80211_mgmt_tx(struct wiphy *wiphy, struct wireless_dev *wdev,
+ 		need_offchan = true;
+ 		break;
+ 	case NL80211_IFTYPE_NAN:
++	case NL80211_IFTYPE_PD:
+ 		break;
+ 	default:
+ 		return -EOPNOTSUPP;
+diff --git a/net/mac80211/rx.c b/net/mac80211/rx.c
+index 6c4b549444c6..ed3f7e3094ea 100644
+--- a/net/mac80211/rx.c
++++ b/net/mac80211/rx.c
+@@ -4621,6 +4621,7 @@ static bool ieee80211_accept_frame(struct ieee80211_rx_data *rx)
+ 			(ieee80211_is_public_action(hdr, skb->len) ||
+ 			 (ieee80211_is_auth(hdr->frame_control) &&
+ 			  ether_addr_equal(sdata->vif.addr, hdr->addr1)));
++	case NL80211_IFTYPE_PD:
+ 	default:
+ 		break;
+ 	}
+diff --git a/net/mac80211/util.c b/net/mac80211/util.c
+index b2e6c8b98381..2fa81fb57093 100644
+--- a/net/mac80211/util.c
++++ b/net/mac80211/util.c
+@@ -2121,6 +2121,7 @@ int ieee80211_reconfig(struct ieee80211_local *local)
+ 		case NL80211_IFTYPE_AP_VLAN:
+ 		case NL80211_IFTYPE_MONITOR:
+ 		case NL80211_IFTYPE_P2P_DEVICE:
++		case NL80211_IFTYPE_PD:
+ 			/* nothing to do */
+ 			break;
+ 		case NL80211_IFTYPE_UNSPECIFIED:
+diff --git a/net/wireless/chan.c b/net/wireless/chan.c
+index d9d4e043bb39..31b621de3f9b 100644
+--- a/net/wireless/chan.c
++++ b/net/wireless/chan.c
+@@ -796,6 +796,7 @@ int cfg80211_chandef_dfs_required(struct wiphy *wiphy,
+ 	case NL80211_IFTYPE_MONITOR:
+ 	case NL80211_IFTYPE_AP_VLAN:
+ 	case NL80211_IFTYPE_P2P_DEVICE:
++	case NL80211_IFTYPE_PD:
+ 		break;
+ 	case NL80211_IFTYPE_WDS:
+ 	case NL80211_IFTYPE_UNSPECIFIED:
+@@ -919,6 +920,7 @@ bool cfg80211_beaconing_iface_active(struct wireless_dev *wdev)
+ 	case NL80211_IFTYPE_P2P_DEVICE:
+ 	/* Can NAN type be considered as beaconing interface? */
+ 	case NL80211_IFTYPE_NAN:
++	case NL80211_IFTYPE_PD:
+ 		break;
+ 	case NL80211_IFTYPE_UNSPECIFIED:
+ 	case NL80211_IFTYPE_WDS:
+diff --git a/net/wireless/core.c b/net/wireless/core.c
+index 23afc250bc10..67a603129c42 100644
+--- a/net/wireless/core.c
++++ b/net/wireless/core.c
+@@ -1420,6 +1420,7 @@ void cfg80211_leave(struct cfg80211_registered_device *rdev,
+ 		break;
+ 	case NL80211_IFTYPE_AP_VLAN:
+ 	case NL80211_IFTYPE_MONITOR:
++	case NL80211_IFTYPE_PD:
+ 		/* nothing to do */
+ 		break;
+ 	case NL80211_IFTYPE_UNSPECIFIED:
+diff --git a/net/wireless/mlme.c b/net/wireless/mlme.c
+index 5cd86253a62e..6d13093ce449 100644
+--- a/net/wireless/mlme.c
++++ b/net/wireless/mlme.c
+@@ -939,6 +939,7 @@ int cfg80211_mlme_mgmt_tx(struct cfg80211_registered_device *rdev,
+ 			 * public action frames
+ 			 */
+ 		case NL80211_IFTYPE_NAN:
++		case NL80211_IFTYPE_PD:
+ 		default:
+ 			err = -EOPNOTSUPP;
+ 			break;
 diff --git a/net/wireless/nl80211.c b/net/wireless/nl80211.c
-index 2225f5d0b124..2d22fd405c39 100644
+index 2d22fd405c39..293fdd07ac7a 100644
 --- a/net/wireless/nl80211.c
 +++ b/net/wireless/nl80211.c
-@@ -13798,6 +13798,7 @@ static int nl80211_remain_on_channel(struct sk_buff *skb,
- 	unsigned int link_id = nl80211_link_id(info->attrs);
- 	struct wireless_dev *wdev = info->user_ptr[1];
- 	struct cfg80211_chan_def chandef;
-+	const u8 *rx_addr = NULL;
- 	struct sk_buff *msg;
- 	void *hdr;
- 	u64 cookie;
-@@ -13810,6 +13811,14 @@ static int nl80211_remain_on_channel(struct sk_buff *skb,
- 
- 	duration = nla_get_u32(info->attrs[NL80211_ATTR_DURATION]);
- 
-+	if (info->attrs[NL80211_ATTR_MAC])
-+		rx_addr = nla_data(info->attrs[NL80211_ATTR_MAC]);
-+
-+	if (rx_addr &&
-+	    !wiphy_ext_feature_isset(wdev->wiphy,
-+				     NL80211_EXT_FEATURE_ROC_ADDR_FILTER))
-+		return -EOPNOTSUPP;
-+
- 	if (!rdev->ops->remain_on_channel ||
- 	    !(rdev->wiphy.flags & WIPHY_FLAG_HAS_REMAIN_ON_CHANNEL))
+@@ -1711,6 +1711,11 @@ static int nl80211_key_allowed(struct wireless_dev *wdev)
+ 					    NL80211_EXT_FEATURE_SECURE_NAN))
+ 			return 0;
+ 		return -EINVAL;
++	case NL80211_IFTYPE_PD:
++		if (wiphy_ext_feature_isset(wdev->wiphy,
++					    NL80211_EXT_FEATURE_SECURE_RTT))
++			return 0;
++		return -EINVAL;
+ 	case NL80211_IFTYPE_UNSPECIFIED:
+ 	case NL80211_IFTYPE_OCB:
+ 	case NL80211_IFTYPE_MONITOR:
+@@ -4739,6 +4744,7 @@ static int _nl80211_new_interface(struct sk_buff *skb, struct genl_info *info)
  		return -EOPNOTSUPP;
-@@ -13857,7 +13866,7 @@ static int nl80211_remain_on_channel(struct sk_buff *skb,
+ 
+ 	if ((type == NL80211_IFTYPE_P2P_DEVICE || type == NL80211_IFTYPE_NAN ||
++	     type == NL80211_IFTYPE_PD ||
+ 	     rdev->wiphy.features & NL80211_FEATURE_MAC_ON_CREATE) &&
+ 	    info->attrs[NL80211_ATTR_MAC]) {
+ 		nla_memcpy(params.macaddr, info->attrs[NL80211_ATTR_MAC],
+@@ -4795,8 +4801,9 @@ static int _nl80211_new_interface(struct sk_buff *skb, struct genl_info *info)
+ 		break;
+ 	case NL80211_IFTYPE_NAN:
+ 	case NL80211_IFTYPE_P2P_DEVICE:
++	case NL80211_IFTYPE_PD:
+ 		/*
+-		 * P2P Device and NAN do not have a netdev, so don't go
++		 * P2P Device, NAN and PD do not have a netdev, so don't go
+ 		 * through the netdev notifier and must be added here
+ 		 */
+ 		cfg80211_init_wdev(wdev);
+@@ -10537,7 +10544,8 @@ static int nl80211_trigger_scan(struct sk_buff *skb, struct genl_info *info)
+ 
+ 	wiphy = &rdev->wiphy;
+ 
+-	if (wdev->iftype == NL80211_IFTYPE_NAN)
++	if (wdev->iftype == NL80211_IFTYPE_NAN ||
++	    wdev->iftype == NL80211_IFTYPE_PD)
+ 		return -EOPNOTSUPP;
+ 
+ 	if (!rdev->ops->scan)
+@@ -13954,6 +13962,11 @@ static int nl80211_register_mgmt(struct sk_buff *skb, struct genl_info *info)
+ 		      WIPHY_NAN_FLAGS_USERSPACE_DE))
+ 			return -EOPNOTSUPP;
+ 		break;
++	case NL80211_IFTYPE_PD:
++		if (!wiphy_ext_feature_isset(wdev->wiphy,
++					     NL80211_EXT_FEATURE_SECURE_RTT))
++			return -EOPNOTSUPP;
++		break;
+ 	default:
+ 		return -EOPNOTSUPP;
  	}
+@@ -14017,6 +14030,11 @@ static int nl80211_tx_mgmt(struct sk_buff *skb, struct genl_info *info)
+ 		      WIPHY_NAN_FLAGS_USERSPACE_DE))
+ 			return -EOPNOTSUPP;
+ 		break;
++	case NL80211_IFTYPE_PD:
++		if (!wiphy_ext_feature_isset(wdev->wiphy,
++					     NL80211_EXT_FEATURE_SECURE_RTT))
++			return -EOPNOTSUPP;
++		break;
+ 	default:
+ 		return -EOPNOTSUPP;
+ 	}
+@@ -14142,6 +14160,11 @@ static int nl80211_tx_mgmt_cancel_wait(struct sk_buff *skb, struct genl_info *in
+ 					     NL80211_EXT_FEATURE_SECURE_NAN))
+ 			return -EOPNOTSUPP;
+ 		break;
++	case NL80211_IFTYPE_PD:
++		if (!wiphy_ext_feature_isset(wdev->wiphy,
++					     NL80211_EXT_FEATURE_SECURE_RTT))
++			return -EOPNOTSUPP;
++		break;
+ 	default:
+ 		return -EOPNOTSUPP;
+ 	}
+diff --git a/net/wireless/reg.c b/net/wireless/reg.c
+index 1c5c38d18feb..fb7eaee734b4 100644
+--- a/net/wireless/reg.c
++++ b/net/wireless/reg.c
+@@ -2411,6 +2411,9 @@ static bool reg_wdev_chan_valid(struct wiphy *wiphy, struct wireless_dev *wdev)
+ 		case NL80211_IFTYPE_NAN:
+ 			/* we have no info, but NAN is also pretty universal */
+ 			continue;
++		case NL80211_IFTYPE_PD:
++			/* we have no info, but PD is also pretty universal */
++			continue;
+ 		default:
+ 			/* others not implemented for now */
+ 			WARN_ON_ONCE(1);
+diff --git a/net/wireless/util.c b/net/wireless/util.c
+index 0a0cea018fc5..d558c4bc00f0 100644
+--- a/net/wireless/util.c
++++ b/net/wireless/util.c
+@@ -1186,7 +1186,8 @@ int cfg80211_change_iface(struct cfg80211_registered_device *rdev,
  
- 	err = rdev_remain_on_channel(rdev, wdev, chandef.chan,
--				     duration, &cookie);
-+				     duration, &cookie, rx_addr);
+ 	/* cannot change into P2P device or NAN */
+ 	if (ntype == NL80211_IFTYPE_P2P_DEVICE ||
+-	    ntype == NL80211_IFTYPE_NAN)
++	    ntype == NL80211_IFTYPE_NAN ||
++	    ntype == NL80211_IFTYPE_PD)
+ 		return -EOPNOTSUPP;
  
- 	if (err)
- 		goto free_msg;
-diff --git a/net/wireless/rdev-ops.h b/net/wireless/rdev-ops.h
-index 2bad8b60b7c9..3c0fff3cb5ac 100644
---- a/net/wireless/rdev-ops.h
-+++ b/net/wireless/rdev-ops.h
-@@ -736,12 +736,13 @@ static inline int
- rdev_remain_on_channel(struct cfg80211_registered_device *rdev,
- 		       struct wireless_dev *wdev,
- 		       struct ieee80211_channel *chan,
--		       unsigned int duration, u64 *cookie)
-+		       unsigned int duration, u64 *cookie, const u8 *rx_addr)
- {
- 	int ret;
--	trace_rdev_remain_on_channel(&rdev->wiphy, wdev, chan, duration);
-+	trace_rdev_remain_on_channel(&rdev->wiphy, wdev, chan, duration,
-+				     rx_addr);
- 	ret = rdev->ops->remain_on_channel(&rdev->wiphy, wdev, chan,
--					   duration, cookie);
-+					   duration, cookie, rx_addr);
- 	trace_rdev_return_int_cookie(&rdev->wiphy, ret, *cookie);
- 	return ret;
- }
-diff --git a/net/wireless/trace.h b/net/wireless/trace.h
-index af23f4fca90a..56718e250d31 100644
---- a/net/wireless/trace.h
-+++ b/net/wireless/trace.h
-@@ -2155,22 +2155,26 @@ DEFINE_EVENT(rdev_pmksa, rdev_del_pmksa,
- TRACE_EVENT(rdev_remain_on_channel,
- 	TP_PROTO(struct wiphy *wiphy, struct wireless_dev *wdev,
- 		 struct ieee80211_channel *chan,
--		 unsigned int duration),
--	TP_ARGS(wiphy, wdev, chan, duration),
-+		 unsigned int duration, const u8 *rx_addr),
-+	TP_ARGS(wiphy, wdev, chan, duration, rx_addr),
- 	TP_STRUCT__entry(
- 		WIPHY_ENTRY
- 		WDEV_ENTRY
- 		CHAN_ENTRY
- 		__field(unsigned int, duration)
-+		MAC_ENTRY(rx_addr)
- 	),
- 	TP_fast_assign(
- 		WIPHY_ASSIGN;
- 		WDEV_ASSIGN;
- 		CHAN_ASSIGN(chan);
- 		__entry->duration = duration;
-+		MAC_ASSIGN(rx_addr, rx_addr);
- 	),
--	TP_printk(WIPHY_PR_FMT ", " WDEV_PR_FMT ", " CHAN_PR_FMT ", duration: %u",
--		  WIPHY_PR_ARG, WDEV_PR_ARG, CHAN_PR_ARG, __entry->duration)
-+	TP_printk(WIPHY_PR_FMT ", " WDEV_PR_FMT ", " CHAN_PR_FMT
-+		  ", duration: %u, %pM",
-+		  WIPHY_PR_ARG, WDEV_PR_ARG, CHAN_PR_ARG, __entry->duration,
-+		  __entry->rx_addr)
- );
- 
- TRACE_EVENT(rdev_return_int_cookie,
+ 	if (!rdev->ops->change_virtual_intf ||
+@@ -1250,6 +1251,7 @@ int cfg80211_change_iface(struct cfg80211_registered_device *rdev,
+ 		case NL80211_IFTYPE_P2P_DEVICE:
+ 		case NL80211_IFTYPE_WDS:
+ 		case NL80211_IFTYPE_NAN:
++		case NL80211_IFTYPE_PD:
+ 			WARN_ON(1);
+ 			break;
+ 		}
 -- 
 2.34.1
 
