@@ -1,232 +1,171 @@
-Return-Path: <linux-wireless+bounces-32427-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-32428-lists+linux-wireless=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id oB6BM1Nlp2mghAAAu9opvQ
-	(envelope-from <linux-wireless+bounces-32427-lists+linux-wireless=lfdr.de@vger.kernel.org>)
-	for <lists+linux-wireless@lfdr.de>; Tue, 03 Mar 2026 23:48:51 +0100
+	id sDd+Jih3p2nyhgAAu9opvQ
+	(envelope-from <linux-wireless+bounces-32428-lists+linux-wireless=lfdr.de@vger.kernel.org>)
+	for <lists+linux-wireless@lfdr.de>; Wed, 04 Mar 2026 01:04:56 +0100
 X-Original-To: lists+linux-wireless@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 906021F8287
-	for <lists+linux-wireless@lfdr.de>; Tue, 03 Mar 2026 23:48:51 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 299471F8A8E
+	for <lists+linux-wireless@lfdr.de>; Wed, 04 Mar 2026 01:04:56 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 2F4BB300C83B
-	for <lists+linux-wireless@lfdr.de>; Tue,  3 Mar 2026 22:48:33 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id EED8B306D8EA
+	for <lists+linux-wireless@lfdr.de>; Wed,  4 Mar 2026 00:02:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C98E439022D;
-	Tue,  3 Mar 2026 22:48:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4EFA425DD1E;
+	Wed,  4 Mar 2026 00:02:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=candelatech.com header.i=@candelatech.com header.b="cXLkuepr"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-oo1-f72.google.com (mail-oo1-f72.google.com [209.85.161.72])
+Received: from dispatch1-us1.ppe-hosted.com (dispatch1-us1.ppe-hosted.com [148.163.129.52])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5E16A39022B
-	for <linux-wireless@vger.kernel.org>; Tue,  3 Mar 2026 22:48:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.161.72
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9AF1A135A53;
+	Wed,  4 Mar 2026 00:02:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.129.52
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772578109; cv=none; b=V3mID+2pCMZlM+F03Ci0U3d1dC99xjkuQJFKsFdD8SFWGusGgNeUevNEMy5bS/sxtwsvDRKJROU34iK5X64zR68S97OI8b3WyaVLsZxA2M9wsQwnID1Hn84tpLVfbGTnTSdQj4kFh5+RzyEqeby2loC8kIBESC3ySqSm94x80/Y=
+	t=1772582542; cv=none; b=iHhcdGM3xzhg8HcedBdvzHYCs0ozMIjFbMNSSvWhOGQr10TO+/ozyywQ1eFueBukxSxvVW5/pSUEXmqOfuzeaWuUwnxkh5rMWEeZF0EdSyMMMYJ2xb69cp9RTGWq0A29IlZe/xCjhXUrVRjWlBXDv2qhOs5JPysanyLAUU7COYo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772578109; c=relaxed/simple;
-	bh=SLzG06fmnXklYyYJYWanS18GEPD4baSzZphAPsqBB6c=;
-	h=MIME-Version:Date:Message-ID:Subject:From:To:Content-Type; b=JIB5+ylL1WvD6QVX/PXsVI21g38f6Dc0Vo3+2Mat0PzQQbQpvWZzpjfISvfzpMablROwtJ2WI7mXGi6byqDPabCeIMleyWc1l09UOBKu9VaqltMdZ8/tzOAxjsnuGSYnjWtTVf2yh1JC18YjdGNK8miAhXduhSC7wTWshdqBjPI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com; arc=none smtp.client-ip=209.85.161.72
-Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com
-Received: by mail-oo1-f72.google.com with SMTP id 006d021491bc7-66b47c7a795so66895745eaf.2
-        for <linux-wireless@vger.kernel.org>; Tue, 03 Mar 2026 14:48:28 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1772578107; x=1773182907;
-        h=to:from:subject:message-id:date:mime-version:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=zyfmorJRasI8+9qvadPfl1VjzCk+3pZrlG6H9/L3uPY=;
-        b=CZjeiJoXsliJcuuGSTD0b/9jzgOSodkIeTdbsXCicuD2meaCchrDLLMdi3DID8wgP0
-         lynNW26WwLZtVUtRPP27FWiaxJBfxfvdMCFJYFnzShH+iZvKUMg+pEktUoNQlD45nXz1
-         JK0gl19pr6g1xkO6V2T7Q/GTY5DDSa1ql0vMBhet/c+4O1Blb1Hd7YWMOh1cr9WSMsOW
-         /YTIdJa+WywsZGXPEhxGxPJxIpVGos4VVKgDJr+/JmaEYoDYNPneGS1+HkukWXy+zZbn
-         QTWk7OOXzBcifU8NM6VEVkKmoqVtUv5j0xlgIMe4NjCGcczVfe2Ynrh2yoXllj+aruXg
-         G2ag==
-X-Forwarded-Encrypted: i=1; AJvYcCV/Wlor4qs0p6oWteqGKQaITeGFM8vQ8usFjXJYqFhOk637LTevCZmePCjNGkHgGCMSfC6aSNLCTHQSTKwUfw==@vger.kernel.org
-X-Gm-Message-State: AOJu0YwCO4TbkPX0KnQW5aNd+55zpuZGVGZiXw7zsJfXcXHQp6bc9c/Q
-	57dY5Ua3XTEMxblT0E3JqZRPdLLB13hbmSVTjN7fP9f/gVOvrKWKTWX74Bfs+6G/Lh5Ek13pv0J
-	XPv/PfMGPqKEC8VFlfEm5WwbhQRtPY41wNGfsAD7tiEF01ayh99yCRANbqmc=
+	s=arc-20240116; t=1772582542; c=relaxed/simple;
+	bh=PMlmlJTmJH+EFUFF85hcCnD7ggv7F1pWyKFzmcYHZ4g=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=j6llHURLB3I6EgbmIiAE+DEB6GZchLJ+5YjXNuPf2CeraLnIlG6eHzvBz5jd5R4ASaBi0HBcUkIM5inPRhZgIq8sXJm4Otv2RdyVYcMIEymWh6QIOoyBbD90sWcr+7pUpPE/PFLN4H/oDD0sSlNZA/AtW2O68A2O4TTHIS66Yrk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=candelatech.com; spf=pass smtp.mailfrom=candelatech.com; dkim=pass (1024-bit key) header.d=candelatech.com header.i=@candelatech.com header.b=cXLkuepr; arc=none smtp.client-ip=148.163.129.52
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=candelatech.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=candelatech.com
+X-Virus-Scanned: Proofpoint Essentials engine
+Received: from mail3.candelatech.com (mail.candelatech.com [208.74.158.173])
+	by mx1-us1.ppe-hosted.com (PPE Hosted ESMTP Server) with ESMTP id 6128B1C0075;
+	Wed,  4 Mar 2026 00:02:17 +0000 (UTC)
+Received: from [192.168.100.159] (firewall.candelatech.com [50.251.239.81])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+	(No client certificate requested)
+	by mail3.candelatech.com (Postfix) with ESMTPSA id BC95F13C2B1;
+	Tue,  3 Mar 2026 16:02:14 -0800 (PST)
+DKIM-Filter: OpenDKIM Filter v2.11.0 mail3.candelatech.com BC95F13C2B1
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=candelatech.com;
+	s=default; t=1772582534;
+	bh=PMlmlJTmJH+EFUFF85hcCnD7ggv7F1pWyKFzmcYHZ4g=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=cXLkueprkVnUZX/SGnTCV9Wf7gb5GCyzvm/1X+aEgF1WLLXhPsfNwMH0MZYIfFQNj
+	 4dRvx91uoa9krngQm1Rwz+DSuKMunp0M9c6AKYNU3fjMnC8j6sA8TVosoAWVzwnSGR
+	 lIOk8EAHeibTXBlHl0oZQWmWtTUTwTQyPmUQ7t2o=
+Message-ID: <de003dc3-3e37-f238-4250-2df16eeb77d6@candelatech.com>
+Date: Tue, 3 Mar 2026 16:02:14 -0800
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-Received: by 2002:a4a:ec4c:0:b0:679:e765:dafc with SMTP id
- 006d021491bc7-67b177035f1mr104406eaf.19.1772578107324; Tue, 03 Mar 2026
- 14:48:27 -0800 (PST)
-Date: Tue, 03 Mar 2026 14:48:27 -0800
-X-Google-Appengine-App-Id: s~syzkaller
-X-Google-Appengine-App-Id-Alias: syzkaller
-Message-ID: <69a7653b.050a0220.21ae90.000f.GAE@google.com>
-Subject: [syzbot] [wireless?] WARNING: refcount bug in rsi_91x_deinit
-From: syzbot <syzbot+ba76f6da746fd674d311@syzkaller.appspotmail.com>
-To: linux-kernel@vger.kernel.org, linux-usb@vger.kernel.org, 
-	linux-wireless@vger.kernel.org, netdev@vger.kernel.org, 
-	syzkaller-bugs@googlegroups.com
-Content-Type: text/plain; charset="UTF-8"
-X-Rspamd-Queue-Id: 906021F8287
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.15.1
+Subject: Re: 6.18.13 iwlwifi deadlock allocating cma while work-item is
+ active.
+Content-Language: en-US
+To: Tejun Heo <tj@kernel.org>
+Cc: Johannes Berg <johannes@sipsolutions.net>,
+ linux-wireless <linux-wireless@vger.kernel.org>,
+ "Korenblit, Miriam Rachel" <miriam.rachel.korenblit@intel.com>,
+ linux-mm@kvack.org, linux-kernel@vger.kernel.org
+References: <18c4bfed-caca-bef3-a139-63d7fa48940a@candelatech.com>
+ <e7d92fab-9d0e-4a58-aa0b-2c6545772e68@candelatech.com>
+ <3456b2c89f057900b39ce79ea8ca1154c5014e43.camel@sipsolutions.net>
+ <0de6c8d1-d2fa-44ac-8025-cfcfecd87b02@candelatech.com>
+ <bed9cc03d3c214b2601093f91e4b00f3715762b2.camel@sipsolutions.net>
+ <c616fc41-3bc7-4ddc-b65c-a622111d8548@candelatech.com>
+ <35779061f94c2a55bb58dcd619ae91c618509cf4.camel@sipsolutions.net>
+ <aadKDCKGHk1Ua-7_@slm.duckdns.org>
+ <3303d57a4ea6776dbc66ca72441023f76e6f1234.camel@sipsolutions.net>
+ <35a7ebcf-862f-0b3a-a245-c32196a58692@candelatech.com>
+ <aadYoaA_JYduCx_S@slm.duckdns.org>
+From: Ben Greear <greearb@candelatech.com>
+Organization: Candela Technologies
+In-Reply-To: <aadYoaA_JYduCx_S@slm.duckdns.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-MDID: 1772582538-tWDR7B38HNWO
+X-PPE-STACK: {"stack":"us5"}
+X-MDID-O:
+ us5;ut7;1772582538;tWDR7B38HNWO;<greearb@candelatech.com>;e39a4ef213bcaa75c219f509376588df
+X-PPE-TRUSTED: V=1;DIR=OUT;
+X-Rspamd-Queue-Id: 299471F8A8E
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.36 / 15.00];
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	URI_HIDDEN_PATH(1.00)[https://syzkaller.appspot.com/x/.config?x=f1500201919951cc];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	DMARC_POLICY_ALLOW(-0.50)[candelatech.com,none];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_DKIM_ALLOW(-0.20)[candelatech.com:s=default];
 	MAILLIST(-0.15)[generic];
-	DMARC_POLICY_SOFTFAIL(0.10)[appspotmail.com : SPF not aligned (relaxed), No valid DKIM,none];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	MISSING_XM_UA(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-32427-lists,linux-wireless=lfdr.de,ba76f6da746fd674d311];
+	TO_DN_SOME(0.00)[];
+	TAGGED_FROM(0.00)[bounces-32428-lists,linux-wireless=lfdr.de];
+	HAS_ORG_HEADER(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	SUBJECT_HAS_QUESTION(0.00)[];
-	REDIRECTOR_URL(0.00)[goo.gl];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[syzbot@syzkaller.appspotmail.com,linux-wireless@vger.kernel.org];
+	DKIM_TRACE(0.00)[candelatech.com:+];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	FROM_HAS_DN(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[5];
-	TO_DN_NONE(0.00)[];
-	R_DKIM_NA(0.00)[];
-	NEURAL_HAM(-0.00)[-0.999];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_COUNT_FIVE(0.00)[5];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[greearb@candelatech.com,linux-wireless@vger.kernel.org];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	NEURAL_HAM(-0.00)[-1.000];
 	TAGGED_RCPT(0.00)[linux-wireless];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[goo.gl:url,googlegroups.com:email,appspotmail.com:email,storage.googleapis.com:url,syzkaller.appspot.com:url,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo]
+	MID_RHS_MATCH_FROM(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[6]
 X-Rspamd-Action: no action
 
-Hello,
+On 3/3/26 13:54, Tejun Heo wrote:
+> Hello,
+> 
+> On Tue, Mar 03, 2026 at 01:40:54PM -0800, Ben Greear wrote:
+>> If I use a kthread to do the blocking reg_todo work, then the problem
+>> goes away, so it somehow does appear that the work flush logic down in swap.c
+>> is somehow being blocked by the reg_todo work item, not just the swap.c
+>> logic somehow blocking against itself.
+>>
+>> My kthread hack left the reg_todo work item logic in place, but instead of
+>> the work item doing any blocking work, it instead just wakes the kthread
+>> I added and has that kthread do the work under mutex.
+>>
+>> The second regulatory related work item in net/wireless/ causes the same
+>> lockup, though it was harder to reproduce.  Putting that work in the kthread
+>> also seems to have fixed it.
+>>
+>> I could only ever reproduce this with KASAN (and lockdep and other debugging options
+>> enabled), my guess is that this is because then the system runs slower and/or there
+>> is more memory pressure.
+>>
+>> I should still be able to reproduce this if I switch to upstream kernel, so
+>> if there is any debugging code you'd like me to execute, I will attempt to
+>> do so.
+> 
+> I think the main thing is findin out what state the work item is in. Is it
+> pending, running, or finished? You can enable wq tracepoints to figure that
+> out or if you can take a crashdump when it's stalled, nowadays it's really
+> easy to tell the state w/ something like claude code and drgn. Just tell
+> claude to use drgn to look at the crashdump and ask it to locate the work
+> item and what it's doing. It works surprisingly well.
 
-syzbot found the following issue on:
+Could the logic that detects blocked work-queues instead be instrumented
+to print out more useful information so that just reproducing the problem
+and providing dmesg output will be sufficient?  Or does dmesg already provide
+enough that would give you a clue as to what is going on?
 
-HEAD commit:    bb375c251ab4 dt-bindings: usb: st,st-ohci-300x: convert to..
-git tree:       https://git.kernel.org/pub/scm/linux/kernel/git/gregkh/usb.git usb-testing
-console output: https://syzkaller.appspot.com/x/log.txt?x=1416c5aa580000
-kernel config:  https://syzkaller.appspot.com/x/.config?x=f1500201919951cc
-dashboard link: https://syzkaller.appspot.com/bug?extid=ba76f6da746fd674d311
-compiler:       gcc (Debian 14.2.0-19) 14.2.0, GNU ld (GNU Binutils for Debian) 2.44
+If I were to attempt to use AI on the coredump, would echoing 'c' to /proc/sysrq-trigger
+with kdump enabled (when deadlock is happening) be the appropriate action to grab the core file?
 
-Unfortunately, I don't have any reproducer for this issue yet.
+Thanks,
+Ben
 
-Downloadable assets:
-disk image: https://storage.googleapis.com/syzbot-assets/2475c3172471/disk-bb375c25.raw.xz
-vmlinux: https://storage.googleapis.com/syzbot-assets/30449aa672dd/vmlinux-bb375c25.xz
-kernel image: https://storage.googleapis.com/syzbot-assets/46d3937d1c16/bzImage-bb375c25.xz
-
-IMPORTANT: if you fix the issue, please add the following tag to the commit:
-Reported-by: syzbot+ba76f6da746fd674d311@syzkaller.appspotmail.com
-
-------------[ cut here ]------------
-refcount_t: addition on 0; use-after-free.
-WARNING: lib/refcount.c:25 at refcount_warn_saturate+0x111/0x130 lib/refcount.c:25, CPU#0: kworker/0:1/10
-Modules linked in:
-CPU: 0 UID: 0 PID: 10 Comm: kworker/0:1 Not tainted syzkaller #0 PREEMPT(full) 
-Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 02/12/2026
-Workqueue: usb_hub_wq hub_event
-RIP: 0010:refcount_warn_saturate+0x111/0x130 lib/refcount.c:25
-Code: cc e8 43 d8 e5 fe 48 8d 3d 4c 6c 28 08 67 48 0f b9 3a e8 32 d8 e5 fe 5b 5d e9 cb 88 9f 04 e8 26 d8 e5 fe 48 8d 3d 3f 6c 28 08 <67> 48 0f b9 3a e8 15 d8 e5 fe 5b 5d c3 cc cc cc cc 48 89 df e8 46
-RSP: 0018:ffffc900000aef30 EFLAGS: 00010246
-RAX: 0000000000100000 RBX: ffff88811d6f9d28 RCX: ffffc90015361000
-RDX: 0000000000100000 RSI: ffffffff82cbe1da RDI: ffffffff8af44e20
-RBP: 0000000000000002 R08: 0000000000000005 R09: 0000000000000004
-R10: 0000000000000002 R11: ffff8881f5639708 R12: ffff88811bdf0000
-R13: ffff88811d6f9d28 R14: 0000000000000000 R15: 0000000000000002
-FS:  0000000000000000(0000) GS:ffff8882686d3000(0000) knlGS:0000000000000000
-CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-CR2: 00007f04409cb6b0 CR3: 0000000121146000 CR4: 00000000003506f0
-Call Trace:
- <TASK>
- __refcount_add include/linux/refcount.h:289 [inline]
- __refcount_inc include/linux/refcount.h:366 [inline]
- refcount_inc include/linux/refcount.h:383 [inline]
- get_task_struct include/linux/sched/task.h:116 [inline]
- kthread_stop+0x602/0x680 kernel/kthread.c:785
- rsi_kill_thread drivers/net/wireless/rsi/rsi_common.h:78 [inline]
- rsi_91x_deinit+0x102/0x1f0 drivers/net/wireless/rsi/rsi_91x_main.c:405
- rsi_probe+0xd27/0x1aa0 drivers/net/wireless/rsi/rsi_91x_usb.c:861
- usb_probe_interface+0x303/0x8f0 drivers/usb/core/driver.c:396
- call_driver_probe drivers/base/dd.c:583 [inline]
- really_probe+0x241/0xa60 drivers/base/dd.c:661
- __driver_probe_device+0x1de/0x400 drivers/base/dd.c:803
- driver_probe_device+0x4c/0x1b0 drivers/base/dd.c:833
- __device_attach_driver+0x1ff/0x3e0 drivers/base/dd.c:961
- bus_for_each_drv+0x159/0x1e0 drivers/base/bus.c:500
- __device_attach+0x1e4/0x4d0 drivers/base/dd.c:1033
- device_initial_probe+0xaf/0xd0 drivers/base/dd.c:1088
- bus_probe_device+0x64/0x160 drivers/base/bus.c:574
- device_add+0x11d9/0x1950 drivers/base/core.c:3689
- usb_set_configuration+0xd97/0x1c60 drivers/usb/core/message.c:2208
- usb_generic_driver_probe+0xa1/0xe0 drivers/usb/core/generic.c:250
- usb_probe_device+0xef/0x400 drivers/usb/core/driver.c:291
- call_driver_probe drivers/base/dd.c:583 [inline]
- really_probe+0x241/0xa60 drivers/base/dd.c:661
- __driver_probe_device+0x1de/0x400 drivers/base/dd.c:803
- driver_probe_device+0x4c/0x1b0 drivers/base/dd.c:833
- __device_attach_driver+0x1ff/0x3e0 drivers/base/dd.c:961
- bus_for_each_drv+0x159/0x1e0 drivers/base/bus.c:500
- __device_attach+0x1e4/0x4d0 drivers/base/dd.c:1033
- device_initial_probe+0xaf/0xd0 drivers/base/dd.c:1088
- bus_probe_device+0x64/0x160 drivers/base/bus.c:574
- device_add+0x11d9/0x1950 drivers/base/core.c:3689
- usb_new_device.cold+0x685/0x115c drivers/usb/core/hub.c:2695
- hub_port_connect drivers/usb/core/hub.c:5567 [inline]
- hub_port_connect_change drivers/usb/core/hub.c:5707 [inline]
- port_event drivers/usb/core/hub.c:5871 [inline]
- hub_event+0x314d/0x4af0 drivers/usb/core/hub.c:5953
- process_one_work+0x9d7/0x1920 kernel/workqueue.c:3275
- process_scheduled_works kernel/workqueue.c:3358 [inline]
- worker_thread+0x5da/0xe40 kernel/workqueue.c:3439
- kthread+0x370/0x450 kernel/kthread.c:467
- ret_from_fork+0x6c3/0xcb0 arch/x86/kernel/process.c:158
- ret_from_fork_asm+0x1a/0x30 arch/x86/entry/entry_64.S:245
- </TASK>
-----------------
-Code disassembly (best guess):
-   0:	cc                   	int3
-   1:	e8 43 d8 e5 fe       	call   0xfee5d849
-   6:	48 8d 3d 4c 6c 28 08 	lea    0x8286c4c(%rip),%rdi        # 0x8286c59
-   d:	67 48 0f b9 3a       	ud1    (%edx),%rdi
-  12:	e8 32 d8 e5 fe       	call   0xfee5d849
-  17:	5b                   	pop    %rbx
-  18:	5d                   	pop    %rbp
-  19:	e9 cb 88 9f 04       	jmp    0x49f88e9
-  1e:	e8 26 d8 e5 fe       	call   0xfee5d849
-  23:	48 8d 3d 3f 6c 28 08 	lea    0x8286c3f(%rip),%rdi        # 0x8286c69
-* 2a:	67 48 0f b9 3a       	ud1    (%edx),%rdi <-- trapping instruction
-  2f:	e8 15 d8 e5 fe       	call   0xfee5d849
-  34:	5b                   	pop    %rbx
-  35:	5d                   	pop    %rbp
-  36:	c3                   	ret
-  37:	cc                   	int3
-  38:	cc                   	int3
-  39:	cc                   	int3
-  3a:	cc                   	int3
-  3b:	48 89 df             	mov    %rbx,%rdi
-  3e:	e8                   	.byte 0xe8
-  3f:	46                   	rex.RX
+-- 
+Ben Greear <greearb@candelatech.com>
+Candela Technologies Inc  http://www.candelatech.com
 
 
----
-This report is generated by a bot. It may contain errors.
-See https://goo.gl/tpsmEJ for more information about syzbot.
-syzbot engineers can be reached at syzkaller@googlegroups.com.
-
-syzbot will keep track of this issue. See:
-https://goo.gl/tpsmEJ#status for how to communicate with syzbot.
-
-If the report is already addressed, let syzbot know by replying with:
-#syz fix: exact-commit-title
-
-If you want to overwrite report's subsystems, reply with:
-#syz set subsystems: new-subsystem
-(See the list of subsystem names on the web dashboard)
-
-If the report is a duplicate of another one, reply with:
-#syz dup: exact-subject-of-another-report
-
-If you want to undo deduplication, reply with:
-#syz undup
 
