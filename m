@@ -1,105 +1,106 @@
-Return-Path: <linux-wireless+bounces-32562-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-32563-lists+linux-wireless=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id CNZ+EYmqqWlSBwEAu9opvQ
-	(envelope-from <linux-wireless+bounces-32562-lists+linux-wireless=lfdr.de@vger.kernel.org>)
-	for <lists+linux-wireless@lfdr.de>; Thu, 05 Mar 2026 17:08:41 +0100
+	id KKItMOCqqWlSBwEAu9opvQ
+	(envelope-from <linux-wireless+bounces-32563-lists+linux-wireless=lfdr.de@vger.kernel.org>)
+	for <lists+linux-wireless@lfdr.de>; Thu, 05 Mar 2026 17:10:08 +0100
 X-Original-To: lists+linux-wireless@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5A217215249
-	for <lists+linux-wireless@lfdr.de>; Thu, 05 Mar 2026 17:08:40 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5A84E2152A1
+	for <lists+linux-wireless@lfdr.de>; Thu, 05 Mar 2026 17:10:08 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 86DA7302BBFE
-	for <lists+linux-wireless@lfdr.de>; Thu,  5 Mar 2026 16:08:39 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 726B1301778C
+	for <lists+linux-wireless@lfdr.de>; Thu,  5 Mar 2026 16:08:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A86503CF66D;
-	Thu,  5 Mar 2026 16:08:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7735B3A4F51;
+	Thu,  5 Mar 2026 16:08:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="ctfylmwd";
-	dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b="BO5+cZjW"
+	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="a1zceV16";
+	dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b="jk9JpiH/"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
+Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EE76B3CF666
-	for <linux-wireless@vger.kernel.org>; Thu,  5 Mar 2026 16:08:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0194A3CF68C
+	for <linux-wireless@vger.kernel.org>; Thu,  5 Mar 2026 16:08:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772726900; cv=none; b=ZEQoqP2pF31AH73TiPKEjOwzxtQ/w3erP7TbDGd90Zts911C0Er1WSPmByOW0ZK4nubuAxJ/QBWFkMnDvRXOHiYJNPI0Nd0yq5XPrpIg8xu9Mx5UsHtiE3Zr4q5wCD5C6mnXi8DN/VgOBBDR2seRXp0CwrGjE5O0UGBdVbrLtZ0=
+	t=1772726903; cv=none; b=sCoJJL41bYEEQ2JvJ+enVhTuEl0EB3sMWfLJcQU1AyKpSvqZqj4OBPlmAfGLXj28dV2kM7OacGUxBAofXaUZrEMHzyLhQqheP1XZbnWL0HL+rfy+keAsVJZ2xIckg2MGD9ptquAeBUad02DnmGpvjhi9VJRgojVQHT8NhMZYB1E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772726900; c=relaxed/simple;
-	bh=NDd82czOMgra/8NTHc/UhWFaFQjTX5OhctOBq2hQkEY=;
+	s=arc-20240116; t=1772726903; c=relaxed/simple;
+	bh=nSHK0UZFkmLkd9qVz9DEy4zIOKtZJMsuo5W+mhcagO0=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=t7iI+zPLtgVBLpXt18tdmC2EHcK3w92qfSiYnBXbvkS06lX0VRVeWzxIsZXQy7jYAy/p5mKVu5c+5ri0Sc4kW9AuNJZvKdx93v/gZxm3JW5RpKtJ35SoGZ/DXHQWwnIHP7gr/jw3AjYB0vWJaWk0lgeFkVI7W/5TkxhHrh1zXsM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=ctfylmwd; dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b=BO5+cZjW; arc=none smtp.client-ip=205.220.168.131
+	 MIME-Version; b=WTD4MeWye5rqOZQ7U4KrcH7PMAo1hqtmNLREXy9e+Z3XNKlX9+mht4wg5yKfWdfKOBXvnl7rYmJgfTz9d+vsqKRNUsJTEYlzICyk2VHq7RMA2oYNc2/yTF362VmWiXSFZvXNMgsNu6yuyRGzNMCYy4r0s29Ws0w6qnxjTla5vlQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=a1zceV16; dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b=jk9JpiH/; arc=none smtp.client-ip=205.220.180.131
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
-Received: from pps.filterd (m0279863.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 625AFjWl935986
-	for <linux-wireless@vger.kernel.org>; Thu, 5 Mar 2026 16:08:16 GMT
+Received: from pps.filterd (m0279871.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 625CMxEd719996
+	for <linux-wireless@vger.kernel.org>; Thu, 5 Mar 2026 16:08:18 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
 	cc:content-transfer-encoding:date:from:in-reply-to:message-id
-	:mime-version:references:subject:to; s=qcppdkim1; bh=irV1zip1NL+
-	qjHQpTrOZTZx2s3LHS9orRFceLLkIFLg=; b=ctfylmwdUF3v5oPRG4Ah8B+5Gz0
-	BnJwdBFIPJpg5xCsrayFhloj1helGCRkbCHvlpQhzVspIfJPeKCZVDuI9YqrrPqy
-	RcIjHDdYuToxk0nq6/OGHdX1fOemKSyi+UDgl2Eo9KzFTe70bqTGq/EplkHRVfCP
-	zv+1+7ZbBa/3+L361D+XY3vIxQWkb5QBVDFufqZeMp+gC1CS925epCYf6MRp0ynK
-	cK0+hEhXnYU1BbFiopA3zoNXTnKxTpwosxmX7F5B4fRmgd1/7zmmJFDVsZiyRnBJ
-	jyU+AQtkABEO3XGy4aBopBTTAK1ZE7Hxw7v5cWnYvWcvPbRfnWs2nf+0Y7Q==
+	:mime-version:references:subject:to; s=qcppdkim1; bh=ZI5Y1ccQcLv
+	qyU+exiHUdEo2grdfMFOCtFqfsJ4Gk3I=; b=a1zceV16mCGTHogi+LvhH7btchP
+	Pf8EeDAV00PdxfQL9H96bX7DJFUgK8N3HG4++fpUVDbPUClR1dz4MXmLBjOqSWf9
+	ged9v6XWbwROlvlX+VJolLNcY8i7Z1QfBS7EpgefAZvUCR5STId1GfMTa1AzBqd5
+	+ewf8eYqJBhJtvCiYJVGDZh1I8Mc12J7+NKYGAK1VVkcBhNa9XWO6AWPp4mBK/9q
+	0p2LJUHgYEr6B7QoYVzSedaRhL8MR3O3ZBpNbT6DDpuhECu3yJ4sIv+Cc6fmDexa
+	dPUWa+lFtSGnJa4YFHlNHXMlaH5GoOyr7tA2CwbWXHzQzUfJKkMjFEFYTVQ==
 Received: from mail-pl1-f198.google.com (mail-pl1-f198.google.com [209.85.214.198])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4cq04u2s40-1
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4cq9srgr06-1
 	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
-	for <linux-wireless@vger.kernel.org>; Thu, 05 Mar 2026 16:08:16 +0000 (GMT)
-Received: by mail-pl1-f198.google.com with SMTP id d9443c01a7336-2ae59e057f1so51595335ad.1
-        for <linux-wireless@vger.kernel.org>; Thu, 05 Mar 2026 08:08:16 -0800 (PST)
+	for <linux-wireless@vger.kernel.org>; Thu, 05 Mar 2026 16:08:18 +0000 (GMT)
+Received: by mail-pl1-f198.google.com with SMTP id d9443c01a7336-2ae53ec06b0so198860735ad.0
+        for <linux-wireless@vger.kernel.org>; Thu, 05 Mar 2026 08:08:18 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=oss.qualcomm.com; s=google; t=1772726896; x=1773331696; darn=vger.kernel.org;
+        d=oss.qualcomm.com; s=google; t=1772726898; x=1773331698; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=irV1zip1NL+qjHQpTrOZTZx2s3LHS9orRFceLLkIFLg=;
-        b=BO5+cZjW7EBwr8TkmCQErGPwPXs9IJ5fTsGFnDxHiDAXvKY8L/9fyT2+IgdqIOIiAl
-         r+kdlDf4s8WK6hZTEh1TLikYQ9X2CjxFGc0QPbqmJxLWIo41LbA5T9BdwZkHVpxq7jdG
-         SkZZhnOCVRnmHfhvk3oN0wdS7Ea3pg+hwGLXR0fdXTgkQs0cvH4T0OcZvt74H1xdnmHw
-         XxCnd2u5JeXBM8imjW5nlquAYsXDIEhSAqaEbwk2mR5OWan5VRW5YHHmbyUJOFDxISZ6
-         WuwKSouGUo1y84Y/zMdrGidR0I7bfjRW9jyQ9XVfC56GCGp+pc8RwyodCIcjGAiqtFCr
-         BSLQ==
+        bh=ZI5Y1ccQcLvqyU+exiHUdEo2grdfMFOCtFqfsJ4Gk3I=;
+        b=jk9JpiH/5gbkPe52yhE1fMxShlQtF7FxvLxaJKlHAdg7Z78O1K1XIjqPRw3yfltpH8
+         sozNTnT18mepB7xNd4RN9j/+YykFBuOwHFk3LMV2QU8ewawR2RfjakRN7HLWrszx0Fuv
+         qWXCQYhL2Guas0uMXtQQdOV3oxOwLzboajSp2Wqc6PV6z+PRSnxkKVog8iLx+b+wzC3X
+         247/0+mTK8jwuANLEuzWThBOBm7Sk15NX99Tw+qM88PenJkEkVt/HWRlhI960YVBhST/
+         6fFOPSeGdt96Ng/4g5VnT2RYxoty3OtwGa4K+p8N/JEDARtpFE7CRTvsuStT8suEf3nA
+         xp1g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1772726896; x=1773331696;
+        d=1e100.net; s=20230601; t=1772726898; x=1773331698;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to;
-        bh=irV1zip1NL+qjHQpTrOZTZx2s3LHS9orRFceLLkIFLg=;
-        b=QyC+R7ZO/eX/K9GZkQbsqhrzlSWMTh+D8ALwovx66imwq6pRaDjs2fToSJvqCNPzrx
-         ewj6S1dP5Npu888pJr1H1LM5INdR24pKI/wamvFbMMPZ9wPDKr+0+XMulLp0aquVjZIp
-         33VzX5ArVK+v6+eKfV74z3XN/oUD1Y3Vid/rYAjhDbhKxFGBkpN9W+tgj10JBc4ATNX3
-         yPY95uB8N4mYqFrTG+M0zxx31sH+wlPrfWnBFK2ogW52O+qv6JEGI2QKgfBaMvxVVhvq
-         C48Gu4ds/VEGsxSR3OnYNWf7qFZec90r0dxF5jTfyuUMtxqx7wslUTMUMVRCd41ZPwBi
-         VVaA==
-X-Gm-Message-State: AOJu0YzAc3/h0Qi5LdmN9CcuC7fj2mMzQ0sbj8OQyJfAIYjM/8dCxkXg
-	yvxpJFjmi+7IWvAiMf46e9qg6OcP9kgetWXrwAbov88LnFkOHGU6kkULARj7Nr6HFqG8rOij6+P
-	0KN0sBTQSvHDPyNKD4PpPmYNORPDEFZTQd0EGjEp25M8HbIObqKwbP0slmtguyKSHpbsa
-X-Gm-Gg: ATEYQzx7R07vzM+34B32N0r6y/haPA+pgTcWo7gtPEtNfNR5RT/goYotGHj0DfxMuRf
-	Np1IhXMa/JCI7IlmqJh53zHmV7cASIjFRQ5+WfCuxBPmGUtNCU0lii5LWmKn13Y3+JSL8sZzNeZ
-	BcXASJMfi1NUJ5y/Ol5PuTAJFazrkZYubjj1w5JF/YB9oYkAJ9kW2SV+DDvTidCwQ3raeGkZq/D
-	5MYtx+57O3T4qanYHDnWgkEQiyOG+Rxm2wgGKIVAbTAxs3rBwIpvrzedf4dYSAz+3TgLkskZ4X3
-	SLZYtferITDQvQ62hrkAIkVshzzxzUejyOO4rAZQzM/Ma1DNfiBhDo40Z49RsZZzf3T+ahYUXmS
-	WeXouVQ7BPdWblVao3E8BZDFnAGQ0Mc6C0tujxaiEowHEH6+gPxB1AVU=
-X-Received: by 2002:a17:903:2409:b0:2a9:62ce:1c15 with SMTP id d9443c01a7336-2ae80009331mr2059545ad.0.1772726895499;
-        Thu, 05 Mar 2026 08:08:15 -0800 (PST)
-X-Received: by 2002:a17:903:2409:b0:2a9:62ce:1c15 with SMTP id d9443c01a7336-2ae80009331mr2059235ad.0.1772726894874;
-        Thu, 05 Mar 2026 08:08:14 -0800 (PST)
+        bh=ZI5Y1ccQcLvqyU+exiHUdEo2grdfMFOCtFqfsJ4Gk3I=;
+        b=Q5/LS4kb+7m0gkDuJZKjuTnP0iHbFnVRW3boXUEminVNF1QO/WkswL7IuvbcjuuXcU
+         S/ngbbAZktmCzoOo6FkLCaE7BriiUxdUyOPtD5Wrbd4FYpuicoWJrITVNefulv7wQSHp
+         QTJNumgON/iS+XPld6jg6D/yzRkbb8CkiX2YqRzbZu+m9HEAZdqkmkqAKqwP90kam23r
+         MjSCR6eMInbYSI/XEV8gOtaI8NHF8imvcBsySbMww0OkjNH+qPP6evH2fdudehFZSJ8O
+         d7u+jKvmbMxco+k5Wsa2fpkzaMwofrmuEe9rnQEBB7Ft7iNfC3+YQQ43h6mHuikdOrWo
+         kS6g==
+X-Gm-Message-State: AOJu0YyzznJTcftIKJZ9txsm4J3CwCbHkMe00Z7XSO/guh/v6Vom36uy
+	lH6ZBfDTDt/rPuWCjP8XtqKFQbNCzPcw4nJUK8L4Rtw4voa2xxZ154KV7wI63AH/VA035A2odpr
+	KJYMQ9rWOSyk2h8YVU+SlQ3qVUiqcyNC7X3qjBcR3O6rsZlzefSsaI3jWalliC/iu0ty7hlrC7W
+	nJ
+X-Gm-Gg: ATEYQzz1gl2UMWfevD7T9K6lb6CDhT6PQZV4k/ExO6GWNjFfspBNgcuTgitnRMH4baO
+	6/f2GJVS5eBZg8KMLqaHaMGExau5Zsn2SE25r2q6/Z6Q8+WxOGv1BgFgO2eG150S7cCH3k8NjSL
+	H3CAfLrKedqnvSbqstNacp5NUswQdzsC0VjRFSDDHd2OmJ7iMaoMkh7EgcrryqRfF07Wcvf8nLT
+	UAE/kZN84ATViiWTMARY5gsiSp4Eiubk66p3EdIueuyClqluOf0c+Obb+gida3bODWIC5n3tJPR
+	KfUh25PlRNXaqoiYXocjPic2dvUhfjklyNB/aN6ecc0AK1U2hDM2rjCdXZ7BgYP/zOMqMhUzk5m
+	LQJmzGU4EnfLF5tsFq2QkotYR7op99o8gjcrBIaXAhxeCQSBX2LNVEaA=
+X-Received: by 2002:a17:902:cecf:b0:2ae:5a76:e26c with SMTP id d9443c01a7336-2ae6ab67292mr56134725ad.55.1772726897447;
+        Thu, 05 Mar 2026 08:08:17 -0800 (PST)
+X-Received: by 2002:a17:902:cecf:b0:2ae:5a76:e26c with SMTP id d9443c01a7336-2ae6ab67292mr56134405ad.55.1772726896874;
+        Thu, 05 Mar 2026 08:08:16 -0800 (PST)
 Received: from hu-peddolla-hyd.qualcomm.com ([202.46.23.25])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2ae489c3626sm133773575ad.8.2026.03.05.08.08.13
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2ae489c3626sm133773575ad.8.2026.03.05.08.08.15
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 05 Mar 2026 08:08:14 -0800 (PST)
+        Thu, 05 Mar 2026 08:08:16 -0800 (PST)
 From: Peddolla Harshavardhan Reddy <peddolla.reddy@oss.qualcomm.com>
 To: johannes@sipsolutions.net
 Cc: linux-wireless@vger.kernel.org, kavita.kavita@oss.qualcomm.com
-Subject: [PATCH wireless-next v3 13/15] wifi: cfg80211: add result reporting control for PD requests
-Date: Thu,  5 Mar 2026 21:37:10 +0530
-Message-Id: <20260305160712.1263829-14-peddolla.reddy@oss.qualcomm.com>
+Subject: [PATCH wireless-next v3 14/15] wifi: cfg80211: add LTF keyseed support for secure ranging
+Date: Thu,  5 Mar 2026 21:37:11 +0530
+Message-Id: <20260305160712.1263829-15-peddolla.reddy@oss.qualcomm.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20260305160712.1263829-1-peddolla.reddy@oss.qualcomm.com>
 References: <20260305160712.1263829-1-peddolla.reddy@oss.qualcomm.com>
@@ -110,168 +111,195 @@ List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Proofpoint-GUID: -sIDUA14sirePU3mrDJhN--LjmBoFh8V
-X-Authority-Analysis: v=2.4 cv=eqTSD4pX c=1 sm=1 tr=0 ts=69a9aa70 cx=c_pps
+X-Authority-Analysis: v=2.4 cv=a/I9NESF c=1 sm=1 tr=0 ts=69a9aa72 cx=c_pps
  a=MTSHoo12Qbhz2p7MsH1ifg==:117 a=ZePRamnt/+rB5gQjfz0u9A==:17
  a=Yq5XynenixoA:10 a=s4-Qcg_JpJYA:10 a=VkNPw1HP01LnGYTKEx00:22
- a=u7WPNUs3qKkmUXheDGA7:22 a=yOCtJkima9RkubShWh1s:22 a=EUspDBNiAAAA:8
- a=RfmHTrBQH4soxj86TAEA:9 a=GvdueXVYPmCkWapjIL-Q:22
-X-Proofpoint-ORIG-GUID: -sIDUA14sirePU3mrDJhN--LjmBoFh8V
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwMzA1MDEzMCBTYWx0ZWRfX5magivMwj9dN
- d3H8KW6cNn7lTYchaiUtqTLFjb9U3fh2ZLGuWLUw+X+5ow6nUd2yNIZoOGT6LHpQsVwGR4+bwnf
- tYOBH4aZJ3vYPNP2LlNbsu3vAynJ+QOE2DAvvWZUPcXp+TRBJK6iKU6fAwhCmBCyw/dD16pE8ZK
- Z/e49yPtii+l31ixxOIclmEB2Vla8wjJE7We/Bf6WY1N2lXjzyAL2rcgVoIsRXy1eQo9aYWvoIM
- k+tIhZMQKUD3A6Qby5fkAMaPUqi0PgtC8v150r2tS6eTZTRYCG1KDxnDdWnUrBXGXUZCUIWM8PZ
- KQ9OIkc8+evY+uu8YF6+dbkz5zt24bOLL/L6XKrbd77VxiAFOVPvVELXn8xaJjnnHo53MnX5Ksm
- xNtp7SyJNeYv458kREdWYroAruRUiqDAOABToO5O7Wd7h/LkyL9RkSLTKd7Dw0TSpWWvlmJ1p5b
- /kBsgNHuHPjh62qMdOA==
+ a=u7WPNUs3qKkmUXheDGA7:22 a=3WHJM1ZQz_JShphwDgj5:22 a=EUspDBNiAAAA:8
+ a=SKemYOvrt_e1GwWrTtoA:9 a=GvdueXVYPmCkWapjIL-Q:22
+X-Proofpoint-GUID: 1F993_13ueXd_E79PAd14LlNjTy4S_DO
+X-Proofpoint-ORIG-GUID: 1F993_13ueXd_E79PAd14LlNjTy4S_DO
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwMzA1MDEzMCBTYWx0ZWRfX55bXFeKlzzPL
+ AiWGGjxJ1TrTT+V3S0YxavPhzFCh0l8ESbh7bfgKhRjPFt63Xm1QHnDqrZ/+NLQw/QSMaGxLK/8
+ 7Ij2vd6/fWJFA0/RMzNBbzTQBD+0xw4sjzS5G9zIy2F6CSyPXghffDnhaKcBGLFPvVUEo58tqQL
+ MFRgLL9r4pzhV2dk8NfBgHMxsm5TCpQ5ZFUaDBJsM1CU/uIEGx2UqNgrPXNVNLhpTm24DO1DldQ
+ eC+lcTeQKceYlBFo5VbmxHENJTS3hEKCg88BVCRX2xhx+RJMTrzISoFuXunS3B82u5m7Z1BNBtq
+ D7wSqGW+JnAJR/vJsnbxe/5ANJiwgcovO/f/iDk05uYxNkSQ8MHV7pjChBeir0HBYk/pyyDx8bA
+ 6A5KFPrqbr496CWVINXiLHl8lbYcPWTVMMgrUqdZzXRKekn4tN5l7Yrz11H+6HMw2DZdCCuT+pH
+ CyiesFOdi2e8scaPi8Q==
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.51,FMLib:17.12.100.49
  definitions=2026-03-05_04,2026-03-04_01,2025-10-01_01
 X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- suspectscore=0 bulkscore=0 clxscore=1015 priorityscore=1501 malwarescore=0
- lowpriorityscore=0 spamscore=0 impostorscore=0 adultscore=0 phishscore=0
+ adultscore=0 priorityscore=1501 impostorscore=0 phishscore=0 bulkscore=0
+ suspectscore=0 spamscore=0 clxscore=1015 lowpriorityscore=0 malwarescore=0
  classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
  reason=mlx scancount=1 engine=8.22.0-2602130000 definitions=main-2603050130
-X-Rspamd-Queue-Id: 5A217215249
+X-Rspamd-Queue-Id: 5A84E2152A1
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-0.66 / 15.00];
-	MID_CONTAINS_FROM(1.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
+	MID_CONTAINS_FROM(1.00)[];
 	DMARC_POLICY_ALLOW(-0.50)[qualcomm.com,reject];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+	R_MISSING_CHARSET(0.50)[];
 	R_DKIM_ALLOW(-0.20)[qualcomm.com:s=qcppdkim1,oss.qualcomm.com:s=google];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_COUNT_SEVEN(0.00)[7];
-	TAGGED_FROM(0.00)[bounces-32562-lists,linux-wireless=lfdr.de];
 	DKIM_TRACE(0.00)[qualcomm.com:+,oss.qualcomm.com:+];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-32563-lists,linux-wireless=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
 	RCPT_COUNT_THREE(0.00)[3];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
 	FROM_NEQ_ENVFROM(0.00)[peddolla.reddy@oss.qualcomm.com,linux-wireless@vger.kernel.org];
-	NEURAL_HAM(-0.00)[-1.000];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	TO_DN_NONE(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,oss.qualcomm.com:dkim,oss.qualcomm.com:mid,qualcomm.com:dkim,qualcomm.com:email];
 	TAGGED_RCPT(0.00)[linux-wireless];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[oss.qualcomm.com:dkim,oss.qualcomm.com:mid,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,qualcomm.com:dkim,qualcomm.com:email]
+	RCVD_COUNT_SEVEN(0.00)[7]
 X-Rspamd-Action: no action
 
-Proximity detection applications may not need detailed ranging
-measurements for every request, yet currently receive all results
-causing unnecessary data transfer, host wakeups, and processing
-overhead. Currently, there is no mechanism for applications to
-suppress result reporting when only proximity detection is needed.
+Currently there is no way to install an LTF key seed that can be
+used in non-trigger-based (NTB) and trigger-based (TB) FTM ranging
+to protect NDP frames. Without this, drivers cannot enable PHY-layer
+security for peer measurement sessions, leaving ranging measurements
+vulnerable to eavesdropping and manipulation.
 
-Introduce optional result suppression control that drivers can use
-to implement selective result reporting. Add a flag allowing
-applications to disable ranging reports when only proximity detection
-is needed, enabling drivers to reduce unnecessary data transfer and
-host wakeups. This flag cannot be combined with range report or LMR
-feedback requests in RSTA mode as these require result reporting.
+Introduce NL80211_KEY_LTF_SEED attribute and the dedicated extended
+feature flag NL80211_EXT_FEATURE_SET_KEY_LTF_SEED to allow drivers
+to advertise and install LTF key seeds via nl80211. The key seed
+must be configured beforehand to ensure the peer measurement session
+is secure. The driver must advertise both NL80211_EXT_FEATURE_SECURE_LTF
+and NL80211_EXT_FEATURE_SET_KEY_LTF_SEED for the key seed installation
+to be permitted.
 
 Signed-off-by: Peddolla Harshavardhan Reddy <peddolla.reddy@oss.qualcomm.com>
 ---
- include/net/cfg80211.h       |  8 +++++++-
- include/uapi/linux/nl80211.h |  7 +++++++
- net/wireless/nl80211.c       |  1 +
- net/wireless/pmsr.c          | 18 ++++++++++++++++++
- 4 files changed, 33 insertions(+), 1 deletion(-)
+ include/linux/ieee80211.h    |  1 +
+ include/net/cfg80211.h       |  4 ++++
+ include/uapi/linux/nl80211.h | 14 ++++++++++++++
+ net/wireless/nl80211.c       | 13 +++++++++++++
+ 4 files changed, 32 insertions(+)
 
+diff --git a/include/linux/ieee80211.h b/include/linux/ieee80211.h
+index 3651b2e6c518..20e243cef210 100644
+--- a/include/linux/ieee80211.h
++++ b/include/linux/ieee80211.h
+@@ -2241,6 +2241,7 @@ struct ieee80211_multiple_bssid_configuration {
+ #define WLAN_AKM_SUITE_WFA_DPP			SUITE(WLAN_OUI_WFA, 2)
+ 
+ #define WLAN_MAX_KEY_LEN		32
++#define WLAN_MAX_SECURE_LTF_KEYSEED_LEN	48
+ 
+ #define WLAN_PMK_NAME_LEN		16
+ #define WLAN_PMKID_LEN			16
 diff --git a/include/net/cfg80211.h b/include/net/cfg80211.h
-index e398a594082a..8dc2ccafb88b 100644
+index 8dc2ccafb88b..66ea250f0b27 100644
 --- a/include/net/cfg80211.h
 +++ b/include/net/cfg80211.h
-@@ -4448,6 +4448,11 @@ struct cfg80211_pmsr_result {
-  *	basis in this case.
-  * @range_report: negotiate for FTM range report. Only valid for
-  *	EDCA based ranging.
-+ * @pd_suppress_range_results: flag to suppress ranging results for PD
-+ *	requests. When set, ranging measurements are performed but results
-+ *	are not reported to userspace, regardless of ranging role or type.
-+ *	Only valid when @pd_request is set. Cannot be used with @range_report
-+ *	or @lmr_feedback as these require result reporting.
-  *
-  * See also nl80211 for the respective attribute documentation.
+@@ -830,6 +830,8 @@ struct vif_params {
+  * @seq_len: length of @seq.
+  * @vlan_id: vlan_id for VLAN group key (if nonzero)
+  * @mode: key install mode (RX_TX, NO_TX or SET_TX)
++ * @ltf_keyseed: LTF key seed material
++ * @ltf_keyseed_len: length of LTF key seed material
   */
-@@ -4474,7 +4479,8 @@ struct cfg80211_pmsr_ftm_request_peer {
- 	u32 measurements_per_aw;
- 	u64 ingress_distancemm;
- 	u64 egress_distancemm;
--	u8 range_report:1;
-+	u8 range_report:1,
-+	   pd_suppress_range_results:1;
+ struct key_params {
+ 	const u8 *key;
+@@ -839,6 +841,8 @@ struct key_params {
+ 	u16 vlan_id;
+ 	u32 cipher;
+ 	enum nl80211_key_mode mode;
++	const u8 *ltf_keyseed;
++	size_t ltf_keyseed_len;
  };
  
  /**
 diff --git a/include/uapi/linux/nl80211.h b/include/uapi/linux/nl80211.h
-index a70dcb2aa111..cafa73280758 100644
+index cafa73280758..923d2396b8f6 100644
 --- a/include/uapi/linux/nl80211.h
 +++ b/include/uapi/linux/nl80211.h
-@@ -8082,6 +8082,12 @@ enum nl80211_peer_measurement_ftm_capa {
-  *	(units mm, u64)
-  * @NL80211_PMSR_FTM_REQ_ATTR_RANGE_REPORT: Negotiate Range report in case of
-  *	EDCA based ranging (flag).
-+ * @NL80211_PMSR_FTM_REQ_ATTR_PD_SUPPRESS_RESULTS: Flag to suppress ranging
-+ *	results for PD requests. When set, ranging measurements are performed
-+ *	but results are not reported to userspace, regardless of ranging role
-+ *	or type. Only valid when %NL80211_PMSR_PEER_ATTR_PD_REQUEST is set.
-+ *	Cannot be used with %NL80211_PMSR_FTM_REQ_ATTR_RANGE_REPORT or
-+ *	%NL80211_PMSR_FTM_REQ_ATTR_LMR_FEEDBACK as these require result reporting.
+@@ -5602,6 +5602,14 @@ enum nl80211_key_default_types {
+  * @NL80211_KEY_MODE: the mode from enum nl80211_key_mode.
+  *	Defaults to @NL80211_KEY_RX_TX.
+  * @NL80211_KEY_DEFAULT_BEACON: flag indicating default Beacon frame key
++ * @NL80211_KEY_LTF_SEED: LTF key seed is used by the driver to generate
++ *	secure LTF keys used in case of peer measurement request with FTM
++ *	request type as either %NL80211_PMSR_FTM_REQ_ATTR_NON_TRIGGER_BASED
++ *	or %NL80211_PMSR_FTM_REQ_ATTR_TRIGGER_BASED, secure LTF key seeds will
++ *	help enable PHY security in peer measurement session. The corresponding
++ *	keys need to be configured beforehand to ensure peer measurement
++ *	session is secure. Only valid if %NL80211_EXT_FEATURE_SET_KEY_LTF_SEED
++ *	and %NL80211_EXT_FEATURE_SECURE_LTF is set.
   *
-  * @NUM_NL80211_PMSR_FTM_REQ_ATTR: internal
-  * @NL80211_PMSR_FTM_REQ_ATTR_MAX: highest attribute number
-@@ -8112,6 +8118,7 @@ enum nl80211_peer_measurement_ftm_req {
- 	NL80211_PMSR_FTM_REQ_ATTR_INGRESS,
- 	NL80211_PMSR_FTM_REQ_ATTR_EGRESS,
- 	NL80211_PMSR_FTM_REQ_ATTR_RANGE_REPORT,
-+	NL80211_PMSR_FTM_REQ_ATTR_PD_SUPPRESS_RESULTS,
+  * @__NL80211_KEY_AFTER_LAST: internal
+  * @NL80211_KEY_MAX: highest key attribute
+@@ -5618,6 +5626,7 @@ enum nl80211_key_attributes {
+ 	NL80211_KEY_DEFAULT_TYPES,
+ 	NL80211_KEY_MODE,
+ 	NL80211_KEY_DEFAULT_BEACON,
++	NL80211_KEY_LTF_SEED,
  
  	/* keep last */
- 	NUM_NL80211_PMSR_FTM_REQ_ATTR,
+ 	__NL80211_KEY_AFTER_LAST,
+@@ -6847,6 +6856,10 @@ enum nl80211_feature_flags {
+  *	forward frames with a matching MAC address to userspace during
+  *	the off-channel period.
+  *
++ * @NL80211_EXT_FEATURE_SET_KEY_LTF_SEED: Driver supports installing the
++ *	LTF key seed via %NL80211_KEY_LTF_SEED. The seed is used to generate
++ *	secure LTF keys for secure LTF measurement sessions.
++ *
+  * @NUM_NL80211_EXT_FEATURES: number of extended features.
+  * @MAX_NL80211_EXT_FEATURES: highest extended feature index.
+  */
+@@ -6927,6 +6940,7 @@ enum nl80211_ext_feature_index {
+ 	NL80211_EXT_FEATURE_ASSOC_FRAME_ENCRYPTION,
+ 	NL80211_EXT_FEATURE_IEEE8021X_AUTH,
+ 	NL80211_EXT_FEATURE_ROC_ADDR_FILTER,
++	NL80211_EXT_FEATURE_SET_KEY_LTF_SEED,
+ 
+ 	/* add new features before the definition below */
+ 	NUM_NL80211_EXT_FEATURES,
 diff --git a/net/wireless/nl80211.c b/net/wireless/nl80211.c
-index 69f972af7e64..313bad0d4a77 100644
+index 313bad0d4a77..43dbd6faed4a 100644
 --- a/net/wireless/nl80211.c
 +++ b/net/wireless/nl80211.c
-@@ -384,6 +384,7 @@ nl80211_pmsr_ftm_req_attr_policy[NL80211_PMSR_FTM_REQ_ATTR_MAX + 1] = {
- 	[NL80211_PMSR_FTM_REQ_ATTR_INGRESS] = { .type = NLA_U64 },
- 	[NL80211_PMSR_FTM_REQ_ATTR_EGRESS] = { .type = NLA_U64 },
- 	[NL80211_PMSR_FTM_REQ_ATTR_RANGE_REPORT] = { .type = NLA_FLAG },
-+	[NL80211_PMSR_FTM_REQ_ATTR_PD_SUPPRESS_RESULTS] = { .type = NLA_FLAG },
+@@ -975,6 +975,8 @@ static const struct nla_policy nl80211_key_policy[NL80211_KEY_MAX + 1] = {
+ 	[NL80211_KEY_TYPE] = NLA_POLICY_MAX(NLA_U32, NUM_NL80211_KEYTYPES - 1),
+ 	[NL80211_KEY_DEFAULT_TYPES] = { .type = NLA_NESTED },
+ 	[NL80211_KEY_MODE] = NLA_POLICY_RANGE(NLA_U8, 0, NL80211_KEY_SET_TX),
++	[NL80211_KEY_LTF_SEED] = { .type = NLA_BINARY,
++				   .len = WLAN_MAX_SECURE_LTF_KEYSEED_LEN },
  };
  
- static const struct nla_policy
-diff --git a/net/wireless/pmsr.c b/net/wireless/pmsr.c
-index 9a2e84805a31..eb372c2a6744 100644
---- a/net/wireless/pmsr.c
-+++ b/net/wireless/pmsr.c
-@@ -277,6 +277,24 @@ static int pmsr_parse_ftm(struct cfg80211_registered_device *rdev,
- 		return -EINVAL;
- 	}
+ /* policy for the key default flags */
+@@ -1451,6 +1453,7 @@ struct key_parse {
+ static int nl80211_parse_key_new(struct genl_info *info, struct nlattr *key,
+ 				 struct key_parse *k)
+ {
++	struct cfg80211_registered_device *rdev = info->user_ptr[0];
+ 	struct nlattr *tb[NL80211_KEY_MAX + 1];
+ 	int err = nla_parse_nested_deprecated(tb, NL80211_KEY_MAX, key,
+ 					      nl80211_key_policy,
+@@ -1506,6 +1509,16 @@ static int nl80211_parse_key_new(struct genl_info *info, struct nlattr *key,
+ 	if (tb[NL80211_KEY_MODE])
+ 		k->p.mode = nla_get_u8(tb[NL80211_KEY_MODE]);
  
-+	out->ftm.pd_suppress_range_results =
-+		nla_get_flag(tb[NL80211_PMSR_FTM_REQ_ATTR_PD_SUPPRESS_RESULTS]);
-+
-+	if (!out->pd_request && out->ftm.pd_suppress_range_results) {
-+		NL_SET_ERR_MSG_ATTR(info->extack,
-+				    tb[NL80211_PMSR_FTM_REQ_ATTR_PD_SUPPRESS_RESULTS],
-+				    "FTM: suppress range result flag only valid for PD requests");
-+		return -EINVAL;
-+	}
-+
-+	if (out->ftm.pd_suppress_range_results && out->ftm.rsta &&
-+	    (out->ftm.range_report || out->ftm.lmr_feedback)) {
-+		NL_SET_ERR_MSG_ATTR(info->extack,
-+				    tb[NL80211_PMSR_FTM_REQ_ATTR_PD_SUPPRESS_RESULTS],
-+				    "FTM: cannot report with suppressed results");
-+		return -EINVAL;
++	if (tb[NL80211_KEY_LTF_SEED]) {
++		if (!wiphy_ext_feature_isset(&rdev->wiphy,
++					     NL80211_EXT_FEATURE_SECURE_LTF) ||
++		    !wiphy_ext_feature_isset(&rdev->wiphy,
++					     NL80211_EXT_FEATURE_SET_KEY_LTF_SEED))
++			return -EOPNOTSUPP;
++		k->p.ltf_keyseed = nla_data(tb[NL80211_KEY_LTF_SEED]);
++		k->p.ltf_keyseed_len = nla_len(tb[NL80211_KEY_LTF_SEED]);
 +	}
 +
  	return 0;
