@@ -1,52 +1,52 @@
-Return-Path: <linux-wireless+bounces-32504-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-32507-lists+linux-wireless=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id cHx1AgxkqWmB6gAAu9opvQ
-	(envelope-from <linux-wireless+bounces-32504-lists+linux-wireless=lfdr.de@vger.kernel.org>)
-	for <lists+linux-wireless@lfdr.de>; Thu, 05 Mar 2026 12:07:56 +0100
+	id 6I/aOV9kqWmB6gAAu9opvQ
+	(envelope-from <linux-wireless+bounces-32507-lists+linux-wireless=lfdr.de@vger.kernel.org>)
+	for <lists+linux-wireless@lfdr.de>; Thu, 05 Mar 2026 12:09:19 +0100
 X-Original-To: lists+linux-wireless@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9332E210504
-	for <lists+linux-wireless@lfdr.de>; Thu, 05 Mar 2026 12:07:55 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id A7A1421056F
+	for <lists+linux-wireless@lfdr.de>; Thu, 05 Mar 2026 12:09:19 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 8E7F5304743C
-	for <lists+linux-wireless@lfdr.de>; Thu,  5 Mar 2026 11:07:38 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 87A2C3038FD5
+	for <lists+linux-wireless@lfdr.de>; Thu,  5 Mar 2026 11:07:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7B8A8382F3E;
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 94859384259;
 	Thu,  5 Mar 2026 11:07:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="F77uYfDE"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Ti6jcZMg"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5822F366057;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7063337E2F8;
 	Thu,  5 Mar 2026 11:07:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772708857; cv=none; b=PNHON7IHQJsov86v3OP39iPH0Gcr/Y4t0jC9e9S1t+n/6h0mkPaOH1B+7JLlARV43RP86FX1SIfT0pRHsUQsJl12vWA2iXgVmPvy2X6Z4bZ4lJhalIDI10tknNr8HDdwi9TtY7cUn4lcFg+XLTjNowS6LyRkcWFpYfJpnOrm/VE=
+	t=1772708857; cv=none; b=Es51Oh2KrfjIraiNsFCVJJbek5QWuUL7otWU8sTQJDrpwy0xJrXt6sAhpNYzpdOI4iuhwo2gi7B8w9f1dgowq4d6ihYK7EsKbY0a1pkcqLWJ4/69BsauP/e9i9NBGWz4BlJSpg7cWMz6WUoCeKcORKMugKBJG7M4aP3mFbms0Pk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1772708857; c=relaxed/simple;
-	bh=Wg9PdiYnvFewTYn81qDhfXqKVkfZq7jAfwyGUQeiiBI=;
+	bh=+n2gwwI5ICbPV5XOVnFHvtm0RnUfCoQpce3aU1BVfTM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=nTp3R2sWzlSAFEq414d6/fx4Isg43c8f4KqPOuRCqwL4Kr9DTRPT+MwCEF5H0cWwi02oeUCqe6Sz1xSzyeJVNfD0pjdIcVOCjEowDuSncOkDoSJJ8NNQrglrlt5p9rnhIy5hLicnhPkjCwu3JE+iSN/sWhUAiMcs+W0qsr5odG0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=F77uYfDE; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0F1B6C2BCB1;
+	 MIME-Version; b=l6x+Vcnh/+S3Vj4ThVXUyDMqIQULTv6ZyDyNnJyIhsDaEoduDpu8ELyJmEQdQnstdLfepAIGsLl1WF6+X4mKTWVlmYrbJj+r5t4mIYNDZf0VyKjkWy5rfqlnQ/NPYUxnhICt+GxrUo1dEHKzycvjpN2y8j0jHnqjstQgI/ePHLE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Ti6jcZMg; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 18EA5C2BCB2;
 	Thu,  5 Mar 2026 11:07:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
 	s=k20201202; t=1772708857;
-	bh=Wg9PdiYnvFewTYn81qDhfXqKVkfZq7jAfwyGUQeiiBI=;
+	bh=+n2gwwI5ICbPV5XOVnFHvtm0RnUfCoQpce3aU1BVfTM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=F77uYfDEj7n+JLq8mRyTJYYoPdW+1ubYpGZn2PgSatGjS20qFwh6GygQDhfNNK83E
-	 1Zyo1blaT7IrNbibzw43jtpyeXJ+1kuIxxSFjonXgvkIgmNnKkJ3yU4S2Jykmcyk0a
-	 CEr6EESUottHfqGHLbUeD6W+NgkcCp6rfyE1m1e/kwtBtxohwQIXik2L05lKj7C4yH
-	 reX/Y4hnetBvUZG7WxunqgitL7ubLmE8NwBgZohsxuCxx/eJCuP6mq6XEL9eP8sh55
-	 sKAILbFy8FbVN6Mn8UwmsIGbpUl/ZYgAchQIQm2kgIvMOUgeXlXFgdElZD+mGN4LaO
-	 lczoS4ryWxz0g==
+	b=Ti6jcZMg9hkzFNNuRJZ8J6p+Wm6FJte19bySeGHUcqN32ZseL0DVoC3ezybWDPCk3
+	 AKhklBKc76YrcTQyj5xsbxy9PMiBq4WwyfShK8QYKuWBMkg312U3hR14U2pvz8euSX
+	 kxUi2xQcQR+Dy6YoKSd714v8Xq+O00ptptd9i8/FWUlbiTQvLxJZzJKhHGYqZhJTDF
+	 lwdCTRijWIScDb4CIKRSvi0YAHqFIPxf8+jiBJlVQpE9tx0IPK5vccwym1Kj6upeyd
+	 xTpB2Uq7cJEQDp7RHQJfwJdOR6LFBLBTEHXDh80PXT66yBJE97QZUL212kfNIZZY/h
+	 uz41RyHJAwWKQ==
 Received: from johan by xi.lan with local (Exim 4.98.2)
 	(envelope-from <johan@kernel.org>)
-	id 1vy6YI-000000004cr-2VxD;
+	id 1vy6YI-000000004ct-2YsO;
 	Thu, 05 Mar 2026 12:07:34 +0100
 From: Johan Hovold <johan@kernel.org>
 To: linux-wireless@vger.kernel.org
@@ -70,9 +70,9 @@ Cc: Brian Norris <briannorris@chromium.org>,
 	libertas-dev@lists.infradead.org,
 	linux-kernel@vger.kernel.org,
 	Johan Hovold <johan@kernel.org>
-Subject: [PATCH 03/13] wifi: libertas_tf: drop redundant device reference
-Date: Thu,  5 Mar 2026 12:07:03 +0100
-Message-ID: <20260305110713.17725-4-johan@kernel.org>
+Subject: [PATCH 04/13] wifi: mwifiex: drop redundant device reference
+Date: Thu,  5 Mar 2026 12:07:04 +0100
+Message-ID: <20260305110713.17725-5-johan@kernel.org>
 X-Mailer: git-send-email 2.52.0
 In-Reply-To: <20260305110713.17725-1-johan@kernel.org>
 References: <20260305110713.17725-1-johan@kernel.org>
@@ -83,7 +83,7 @@ List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 9332E210504
+X-Rspamd-Queue-Id: A7A1421056F
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [0.84 / 15.00];
 	SUSPICIOUS_RECIPS(1.50)[];
@@ -91,7 +91,7 @@ X-Spamd-Result: default: False [0.84 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
@@ -99,10 +99,10 @@ X-Spamd-Result: default: False [0.84 / 15.00];
 	FREEMAIL_CC(0.00)[chromium.org,dolcini.it,nbd.name,kernel.org,mediatek.com,wp.pl,gmail.com,realtek.com,microchip.com,bootlin.com,tuxon.dev,collabora.com,lists.infradead.org,vger.kernel.org];
 	RCPT_COUNT_TWELVE(0.00)[21];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-32504-lists,linux-wireless=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-32507-lists,linux-wireless=lfdr.de];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[johan@kernel.org,linux-wireless@vger.kernel.org];
@@ -113,7 +113,7 @@ X-Spamd-Result: default: False [0.84 / 15.00];
 	NEURAL_HAM(-0.00)[-1.000];
 	TO_DN_SOME(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo]
 X-Rspamd-Action: no action
 
 Driver core holds a reference to the USB interface and its parent USB
@@ -127,29 +127,31 @@ the risk of memory leaks when drivers fail to release it.
 
 Signed-off-by: Johan Hovold <johan@kernel.org>
 ---
- drivers/net/wireless/marvell/libertas_tf/if_usb.c | 2 --
- 1 file changed, 2 deletions(-)
+ drivers/net/wireless/marvell/mwifiex/usb.c | 4 ----
+ 1 file changed, 4 deletions(-)
 
-diff --git a/drivers/net/wireless/marvell/libertas_tf/if_usb.c b/drivers/net/wireless/marvell/libertas_tf/if_usb.c
-index f49151c18b79..07b38f2b8f58 100644
---- a/drivers/net/wireless/marvell/libertas_tf/if_usb.c
-+++ b/drivers/net/wireless/marvell/libertas_tf/if_usb.c
-@@ -223,7 +223,6 @@ static int if_usb_probe(struct usb_interface *intf,
- 	if (!priv)
- 		goto dealloc;
+diff --git a/drivers/net/wireless/marvell/mwifiex/usb.c b/drivers/net/wireless/marvell/mwifiex/usb.c
+index 947ecb0a7b40..f4b94a1054f6 100644
+--- a/drivers/net/wireless/marvell/mwifiex/usb.c
++++ b/drivers/net/wireless/marvell/mwifiex/usb.c
+@@ -520,8 +520,6 @@ static int mwifiex_usb_probe(struct usb_interface *intf,
+ 		return ret;
+ 	}
  
 -	usb_get_dev(udev);
- 	usb_set_intfdata(intf, cardp);
- 
+-
  	return 0;
-@@ -258,7 +257,6 @@ static void if_usb_disconnect(struct usb_interface *intf)
- 	kfree(cardp);
- 
- 	usb_set_intfdata(intf, NULL);
--	usb_put_dev(interface_to_usbdev(intf));
- 
- 	lbtf_deb_leave(LBTF_DEB_MAIN);
  }
+ 
+@@ -666,8 +664,6 @@ static void mwifiex_usb_disconnect(struct usb_interface *intf)
+ 	mwifiex_dbg(adapter, FATAL,
+ 		    "%s: removing card\n", __func__);
+ 	mwifiex_remove_card(adapter);
+-
+-	usb_put_dev(interface_to_usbdev(intf));
+ }
+ 
+ static void mwifiex_usb_coredump(struct device *dev)
 -- 
 2.52.0
 
