@@ -1,326 +1,183 @@
-Return-Path: <linux-wireless+bounces-32574-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-32576-lists+linux-wireless=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id mOR8M/39qWk1JQEAu9opvQ
-	(envelope-from <linux-wireless+bounces-32574-lists+linux-wireless=lfdr.de@vger.kernel.org>)
-	for <lists+linux-wireless@lfdr.de>; Thu, 05 Mar 2026 23:04:45 +0100
+	id kMvjAVEjqmkPMAEAu9opvQ
+	(envelope-from <linux-wireless+bounces-32576-lists+linux-wireless=lfdr.de@vger.kernel.org>)
+	for <lists+linux-wireless@lfdr.de>; Fri, 06 Mar 2026 01:44:01 +0100
 X-Original-To: lists+linux-wireless@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id CFC33218C16
-	for <lists+linux-wireless@lfdr.de>; Thu, 05 Mar 2026 23:04:44 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id AC13C219E8A
+	for <lists+linux-wireless@lfdr.de>; Fri, 06 Mar 2026 01:44:00 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 2EA49300A587
-	for <lists+linux-wireless@lfdr.de>; Thu,  5 Mar 2026 22:04:41 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 4D8FA3017BD1
+	for <lists+linux-wireless@lfdr.de>; Fri,  6 Mar 2026 00:43:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 772CB30EF92;
-	Thu,  5 Mar 2026 22:04:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3FC072E2DD2;
+	Fri,  6 Mar 2026 00:43:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="LCIl/OnO"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from omta36.uswest2.a.cloudfilter.net (omta36.uswest2.a.cloudfilter.net [35.89.44.35])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-oi1-f172.google.com (mail-oi1-f172.google.com [209.85.167.172])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 64F663612E8
-	for <linux-wireless@vger.kernel.org>; Thu,  5 Mar 2026 22:04:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=35.89.44.35
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D8D5B2DF717
+	for <linux-wireless@vger.kernel.org>; Fri,  6 Mar 2026 00:43:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772748280; cv=none; b=F+F+pXNsqDtt4X/sfhVViSkGyABWVJD7co2r04XlsxGENhJS9n1Hggx39kxLVFY8I6iWN2B1EpBw1n2XqKmk3MoFLo5l1YsTz9iIYi3+zk+WaL3WwYyOK5S0xnZuHFSgontAx9QGVGzxEn+T0Q1feFgD9TWdTs5hvsJC/+B1gAY=
+	t=1772757838; cv=none; b=PmUtIk1GK82kyHLwmE/+brqMUFTH6LAXJ9EATOMinXW/ivZIVXi4wBAP5DNlS5T/kWeyTQiq2L3N4UIENMPOvIcJu1SNaG3cJJGc7SnsY0QEAklA7cXl9yr93ZDet355hDWWdAQylu6h5lBwdzqwYE46xoycfDt7gabGEIIA7r8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772748280; c=relaxed/simple;
-	bh=JrInGjWfOAbn+j0gWU0hP+d+DL2wpu36d28HiREU7z0=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=Q5ysNigRUTlNydUnJr8h0jms+TQLsigpf9nO+hG3TfLHpxFP5TP4kvWAWX8KAHffo1BFvcROyzE25GCJcXI+HAmyfwp2sGgTU6QJCFfyM2Gsx0RNUFwrKlvhAyS5ypsM9aqZat4De+O/ilnQBMj2n8gUYukpou3wEXKdSsV4uTs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=sony.com; spf=fail smtp.mailfrom=sony.com; arc=none smtp.client-ip=35.89.44.35
-Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=sony.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=sony.com
-Received: from eig-obgw-5005b.ext.cloudfilter.net ([10.0.29.189])
-	by cmsmtp with ESMTPS
-	id yAMsvgRzVVCBNyGo8v6OWW; Thu, 05 Mar 2026 22:04:37 +0000
-Received: from host2044.hostmonster.com ([67.20.76.238])
-	by cmsmtp with ESMTPS
-	id yGo0vwoGsjAxuyGo0vYvCK; Thu, 05 Mar 2026 22:04:28 +0000
-X-Authority-Analysis: v=2.4 cv=EoDSrTcA c=1 sm=1 tr=0 ts=69a9fdf4
- a=O1AQXT3IpLm5MaED65xONQ==:117 a=uc9KWs4yn0V/JYYSH7YHpg==:17
- a=IkcTkHD0fZMA:10 a=Yq5XynenixoA:10 a=z6gsHLkEAAAA:8 a=4b9QysbXAAAA:8
- a=stkexhm8AAAA:8 a=EUspDBNiAAAA:8 a=cH6R9-kdAAAA:8 a=P9KAhAPrZ2691IDrLaYA:9
- a=3ZKOabzyN94A:10 a=QEXdDO2ut3YA:10 a=RVmHIydaz68A:10
- a=kpqFwAh5LKmhuRUZV80P:22 a=pIW3pCRaVxJDc-hWtpF8:22 a=iekntanDnrheIxGr1pkv:22
-Received: from [66.118.46.62] (port=40748 helo=timdesk..)
-	by host2044.hostmonster.com with esmtpsa  (TLS1.3) tls TLS_AES_256_GCM_SHA384
-	(Exim 4.98.2)
-	(envelope-from <tim.bird@sony.com>)
-	id 1vyGnz-00000003eKc-2yWy;
-	Thu, 05 Mar 2026 15:04:27 -0700
-From: Tim Bird <tim.bird@sony.com>
-To: johannes@sipsolutions.net,
-	andy@warmcat.com,
-	lrodriquez@atheros.com,
-	beni.lev@intel.com
-Cc: tim.bird@sony.com,
-	linux-wireless@vger.kernel.org,
-	linux-spdx@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH] wifi: radiotap: Add SPDX ids to files in the wireless subsystem
-Date: Thu,  5 Mar 2026 15:04:21 -0700
-Message-ID: <20260305220422.24161-1-tim.bird@sony.com>
-X-Mailer: git-send-email 2.43.0
+	s=arc-20240116; t=1772757838; c=relaxed/simple;
+	bh=SwKQHqFPugEY5LBsRfzbny5oSAeUyqfWxPylHIWs5QQ=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=tORMFqlZdDWNx09k+OEju75UdtscDspO1GyukmlglqtgmwsfhXHQ/H5+qwwyofi2WQr8cBO1NHv3vjMw6/9/ne4JaS3uAklox3GCcvZ1v5On8TT8iRycpHhISTEfR6o5EUBMxQkA9xFp5TLCOvXVZ+74RLe3ouVwY4ot2kxHhvE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=LCIl/OnO; arc=none smtp.client-ip=209.85.167.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-oi1-f172.google.com with SMTP id 5614622812f47-45f10d7eb81so3363670b6e.3
+        for <linux-wireless@vger.kernel.org>; Thu, 05 Mar 2026 16:43:56 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1772757835; x=1773362635; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=5AiypmAgBLdMR9CuIx3DJ9/2CMWwdsmjB28iBee1fMM=;
+        b=LCIl/OnOy9RfQ10XhstZa5HsHrYgab5cv0xfEj/fDZeK3CUE48bZCzHkBtYXcQqZCb
+         IJwtYhijdoqpLeVEjuMyQGziuR/C9jLrxYHBWfRSR/AFX1a0OLBG72rfMBS6SHE0ubEG
+         12PqrIdDBBe1z7CPa9as4c/5BuctiMaWbFGFvRRxdqFc+BAA+bDAvw8FdGJCs2ZNGio4
+         B+QGzpyGw9oJOvVGT0M/Tir4fpPlJPxVO1DNJUArw71Lm/bOhIIXFOFqKIwL/yXHBY0d
+         d8qebC5glmdhtf93nvj02Fc/hD+BCgbZIjPhx+QQdKqhU9l4cvpt7s3VJAcsotcflZUG
+         5/PA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1772757835; x=1773362635;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=5AiypmAgBLdMR9CuIx3DJ9/2CMWwdsmjB28iBee1fMM=;
+        b=HUt5ULfRkX6Kh4x3VZ7MflCP3vQ0JV7/WIxVA7pe/ODt0odvmoVqkuPNLNj+2N1Pva
+         zoSGAQPVK/tAjVwa4PegBtGGEW8uxfunYIfJxvpEM1x+Awzpo7NxkEkOnQ/lfEg8iorA
+         lLuzD4Z097IiG9stMYrJYetXFYBWFjf4MYZK3N8YW+3bad/yLoexD69CFc44z+ZoNNIu
+         sngqTkdCws0a1lcD9WG1aOOiwobyK1Ubjk/sZ+pTZp33CMiOU9MII7x0brz14DGsjjle
+         G+k5pQKubwKdbQRP+mGdD4wfy0o+l8OSIYtHIMOOPtWJuEvsdUgB991z5rLF44pzML6X
+         aYTw==
+X-Gm-Message-State: AOJu0YxHT6WnCo+2f4UFzS4ZeXErJWDZXtUqz8lYaqQP0xzGgGGpNtEK
+	6PlWC1HBoQEXeQSjvOhG4rpLXnIpUkZbq406qn4MS8jn/MX63y9n3nEGR/pfbi/co1o=
+X-Gm-Gg: ATEYQzx2OMj+oB3jEr2WX7qELh9uE2fLbtSI5IPtR5R6g7FSilWrRncvYThErZZTCIg
+	oRnF8kyyLt+KCnpUIdMv3cHbTCQgnojVZZvUr5uX8QlogA0KDJ4RfAAj/B58VMOS94oAmOvywV4
+	E1fLibqyn7jqz3bvRvE08HgGPE/DjEOsTgZZgckE9+vVkrno4WFkrw6B+x05H2Zw8athv+RWIHV
+	u5Rz3qfbulZw2T9A9KtZS5JtbioNj35BvUhEGio5F9H+DBebjcg6bTD8ZZTcS1FxslLFliiAO3v
+	HifuFTNlG0wmN27WNBOevcI8zqNiTOTYC+oEpAFDV3oMlMmNcToh5GsHTxNLBDz3B8jJTqwe2ES
+	65x1Gl2okwPWnT8DNydWElXvZzZaUsChI8HeUeIqNywAF235qUr6Weimtup7cAL8t7aMkdKBKID
+	xviIjE1EiajGMJKXU0BgaC6vHbE74lICFXmbJQa8nqlY38EJbPOCk4qoRqcaWA7+VrG8kXI880K
+	Z2RJayNgwzFbnrPhml8MitlquAUF6SaJcMYSag74A==
+X-Received: by 2002:a05:6808:c3d5:b0:45f:13fe:4a2d with SMTP id 5614622812f47-466dc9f4738mr204774b6e.4.1772757835483;
+        Thu, 05 Mar 2026 16:43:55 -0800 (PST)
+Received: from framework.misc.iastate.edu ([2610:130:110:25d:2aa4:4aff:fed7:9b19])
+        by smtp.gmail.com with ESMTPSA id 586e51a60fabf-416e65b1c82sm69335fac.5.2026.03.05.16.43.53
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 05 Mar 2026 16:43:55 -0800 (PST)
+From: Kerigan Creighton <kerigancreighton@gmail.com>
+To: linux-wireless@vger.kernel.org
+Cc: loic.poulain@oss.qualcomm.com,
+	wcn36xx@lists.infradead.org,
+	andersson@kernel.org,
+	mathieu.poirier@linaro.org,
+	linux-remoteproc@vger.kernel.org,
+	linux-arm-msm@vger.kernel.org,
+	robh@kernel.org,
+	krzk+dt@kernel.org,
+	conor+dt@kernel.org,
+	devicetree@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Kerigan Creighton <kerigancreighton@gmail.com>
+Subject: [PATCH v3 0/3] Add support for Qualcomm WCN3610
+Date: Thu,  5 Mar 2026 18:43:41 -0600
+Message-ID: <20260306004344.10968-1-kerigancreighton@gmail.com>
+X-Mailer: git-send-email 2.53.0
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
-X-AntiAbuse: Primary Hostname - host2044.hostmonster.com
-X-AntiAbuse: Original Domain - vger.kernel.org
-X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
-X-AntiAbuse: Sender Address Domain - sony.com
-X-BWhitelist: no
-X-Source-IP: 66.118.46.62
-X-Source-L: No
-X-Exim-ID: 1vyGnz-00000003eKc-2yWy
-X-Source: 
-X-Source-Args: 
-X-Source-Dir: 
-X-Source-Sender: (timdesk..) [66.118.46.62]:40748
-X-Source-Auth: tim@bird.org
-X-Email-Count: 3
-X-Org: HG=bhshared_hm;ORG=bluehost;
-X-Source-Cap: YmlyZG9yZztiaXJkb3JnO2hvc3QyMDQ0Lmhvc3Rtb25zdGVyLmNvbQ==
-X-Local-Domain: no
-X-CMAE-Envelope: MS4xfJUUAZVX8IpE8on2zf29KIbXNC0HgOM9qiDmlmsHbF2kHkBpvrl6S64X0VECKPkHOzvIFeqAG6M5DP4RB6Vh4kwFdWJCYFHMuvPirQx63Eeau66KDlu2
- A98a9fNiOA6kddyCejF1KK3EFdUXwYJ7ePpN+D4jnh6+Kh0Bp67QttoLE6/0JXOz73Z1fNRK6KVh6R69wORcPSb16TuSFD0L9ms=
-X-Rspamd-Queue-Id: CFC33218C16
+X-Rspamd-Queue-Id: AC13C219E8A
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.36 / 15.00];
+X-Spamd-Result: default: False [0.84 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	MID_CONTAINS_FROM(1.00)[];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
+	R_MISSING_CHARSET(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
+	R_DKIM_ALLOW(-0.20)[gmail.com:s=20230601];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
-	DMARC_POLICY_SOFTFAIL(0.10)[sony.com : SPF not aligned (relaxed), No valid DKIM,none];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	HAS_X_ANTIABUSE(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	HAS_X_SOURCE(0.00)[];
-	TAGGED_FROM(0.00)[bounces-32574-lists,linux-wireless=lfdr.de];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	FREEMAIL_CC(0.00)[oss.qualcomm.com,lists.infradead.org,kernel.org,linaro.org,vger.kernel.org,gmail.com];
 	RCVD_TLS_LAST(0.00)[];
-	FROM_HAS_DN(0.00)[];
+	FREEMAIL_FROM(0.00)[gmail.com];
 	MIME_TRACE(0.00)[0:+];
-	RCVD_COUNT_FIVE(0.00)[6];
+	RCPT_COUNT_TWELVE(0.00)[13];
+	TAGGED_FROM(0.00)[bounces-32576-lists,linux-wireless=lfdr.de];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[tim.bird@sony.com,linux-wireless@vger.kernel.org];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TO_DN_NONE(0.00)[];
-	R_DKIM_NA(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[kerigancreighton@gmail.com,linux-wireless@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	DKIM_TRACE(0.00)[gmail.com:+];
+	RCVD_COUNT_FIVE(0.00)[5];
+	TAGGED_RCPT(0.00)[linux-wireless,dt];
 	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[linux-wireless];
-	RCPT_COUNT_SEVEN(0.00)[8];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,qualcomm.com:email,sipsolutions.net:email,milecki.pl:email]
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo]
 X-Rspamd-Action: no action
 
-Add SPDX-License-Identifier lines to some files where
-they are missing in the net/wireless directory.
-Remove licensing text from individual files headers (where
-present) to canonicalize the library references.
+The WCN3610 is a 2.4GHz-only WLAN/BT combo chip used in some 
+cheaper Android and Windows phones such as the Lumia 550, and 
+IoT devices like the Anki Vector robot. It shares a lot in 
+common with the WCN3620.
 
-Use (mostly) either GPL-2.0 or ISC, depending on the
-license wording (or not) in the files.
+This series adds support for the WCN3610 across the necessary 
+subsystems:
 
-radiotap.c does not mention which BSD variant it intends for the
-license.  My selection of 'OR BSD-2-Clause' for radiotap.c was
-based on research into this code's history and its licensing
-elsewhere.  In OpenBSD, radiotap code (which likely either
-derived from this code, or this code was derived from) has the
-BSD-2-Clause license.  Very similar code in the radiotap library
-user space tool, by the same authors Andy Green and Johannes
-Berg, has an ISC license. Also the ISC license is used by
-Johannes for other contributions in the Linux wireless system.
-Since the radiotap.c license text here mentions BSD, but not a
-specific version, I chose the closest BSD variant to ISC, which
-is BSD-2-Clause.
+   * Document the new compatible string (patch 1).
+   * Add compatible string in qcom_wcnss_iris (patch 2).
+   * Add rf_id and CFGs for the WCN3610 in wcn36xx, disable
+     powersave for this specific chip, ensure it is 2.4GHz-only
+     (patch 3).
 
-Signed-off-by: Tim Bird <tim.bird@sony.com>
----
-Note that the ISC license says it must be retained, but we
-count the file in LICENSES/deprecated/ISC as retention of
-'this permission notice', for Linux source.
----
- net/wireless/of.c        | 13 +------------
- net/wireless/radiotap.c  | 10 +---------
- net/wireless/reg.c       | 13 +------------
- net/wireless/reg.h       | 13 +------------
- net/wireless/trace.c     |  1 +
- net/wireless/wext-core.c |  3 +--
- net/wireless/wext-priv.c |  3 +--
- net/wireless/wext-proc.c |  3 +--
- 8 files changed, 8 insertions(+), 51 deletions(-)
+Tested on an Anki Vector 1.0 and 2.0 robot. Support for other 
+WCN36xx chips has not been affected.
 
-diff --git a/net/wireless/of.c b/net/wireless/of.c
-index 60a864465331..99acbea3beee 100644
---- a/net/wireless/of.c
-+++ b/net/wireless/of.c
-@@ -1,17 +1,6 @@
-+// SPDX-License-Identifier: ISC
- /*
-  * Copyright (C) 2017 Rafał Miłecki <rafal@milecki.pl>
-- *
-- * Permission to use, copy, modify, and/or distribute this software for any
-- * purpose with or without fee is hereby granted, provided that the above
-- * copyright notice and this permission notice appear in all copies.
-- *
-- * THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHOR DISCLAIMS ALL WARRANTIES
-- * WITH REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED WARRANTIES OF
-- * MERCHANTABILITY AND FITNESS. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR
-- * ANY SPECIAL, DIRECT, INDIRECT, OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES
-- * WHATSOEVER RESULTING FROM LOSS OF USE, DATA OR PROFITS, WHETHER IN AN
-- * ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF
-- * OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
-  */
- 
- #include <linux/of.h>
-diff --git a/net/wireless/radiotap.c b/net/wireless/radiotap.c
-index c85eaa583a46..df29048a0449 100644
---- a/net/wireless/radiotap.c
-+++ b/net/wireless/radiotap.c
-@@ -1,17 +1,9 @@
-+// SPDX-License-Identifier: GPL-2.0 OR BSD-2-Clause
- /*
-  * Radiotap parser
-  *
-  * Copyright 2007		Andy Green <andy@warmcat.com>
-  * Copyright 2009		Johannes Berg <johannes@sipsolutions.net>
-- *
-- * This program is free software; you can redistribute it and/or modify
-- * it under the terms of the GNU General Public License version 2 as
-- * published by the Free Software Foundation.
-- *
-- * Alternatively, this software may be distributed under the terms of BSD
-- * license.
-- *
-- * See COPYING for more details.
-  */
- 
- #include <linux/kernel.h>
-diff --git a/net/wireless/reg.c b/net/wireless/reg.c
-index 1c5c38d18feb..20bba7e491c5 100644
---- a/net/wireless/reg.c
-+++ b/net/wireless/reg.c
-@@ -1,3 +1,4 @@
-+// SPDX-License-Identifier: ISC
- /*
-  * Copyright 2002-2005, Instant802 Networks, Inc.
-  * Copyright 2005-2006, Devicescape Software, Inc.
-@@ -6,18 +7,6 @@
-  * Copyright 2013-2014  Intel Mobile Communications GmbH
-  * Copyright      2017  Intel Deutschland GmbH
-  * Copyright (C) 2018 - 2026 Intel Corporation
-- *
-- * Permission to use, copy, modify, and/or distribute this software for any
-- * purpose with or without fee is hereby granted, provided that the above
-- * copyright notice and this permission notice appear in all copies.
-- *
-- * THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHOR DISCLAIMS ALL WARRANTIES
-- * WITH REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED WARRANTIES OF
-- * MERCHANTABILITY AND FITNESS. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR
-- * ANY SPECIAL, DIRECT, INDIRECT, OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES
-- * WHATSOEVER RESULTING FROM LOSS OF USE, DATA OR PROFITS, WHETHER IN AN
-- * ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF
-- * OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
-  */
- 
- 
-diff --git a/net/wireless/reg.h b/net/wireless/reg.h
-index e1b211c4f75c..fc31c5f9a61a 100644
---- a/net/wireless/reg.h
-+++ b/net/wireless/reg.h
-@@ -1,3 +1,4 @@
-+/* SPDX-License-Identifier: ISC */
- #ifndef __NET_WIRELESS_REG_H
- #define __NET_WIRELESS_REG_H
- 
-@@ -6,18 +7,6 @@
- /*
-  * Copyright 2008-2011	Luis R. Rodriguez <mcgrof@qca.qualcomm.com>
-  * Copyright (C) 2019, 2023 Intel Corporation
-- *
-- * Permission to use, copy, modify, and/or distribute this software for any
-- * purpose with or without fee is hereby granted, provided that the above
-- * copyright notice and this permission notice appear in all copies.
-- *
-- * THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHOR DISCLAIMS ALL WARRANTIES
-- * WITH REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED WARRANTIES OF
-- * MERCHANTABILITY AND FITNESS. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR
-- * ANY SPECIAL, DIRECT, INDIRECT, OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES
-- * WHATSOEVER RESULTING FROM LOSS OF USE, DATA OR PROFITS, WHETHER IN AN
-- * ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF
-- * OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
-  */
- 
- enum ieee80211_regd_source {
-diff --git a/net/wireless/trace.c b/net/wireless/trace.c
-index 95f997fad755..7cb93acf1a8f 100644
---- a/net/wireless/trace.c
-+++ b/net/wireless/trace.c
-@@ -1,3 +1,4 @@
-+// SPDX-License-Identifier: GPL-2.0
- #include <linux/module.h>
- 
- #ifndef __CHECKER__
-diff --git a/net/wireless/wext-core.c b/net/wireless/wext-core.c
-index 7b8e94214b07..c19dece2bc6e 100644
---- a/net/wireless/wext-core.c
-+++ b/net/wireless/wext-core.c
-@@ -1,3 +1,4 @@
-+// SPDX-License-Identifier: GPL-2.0
- /*
-  * This file implement the Wireless Extensions core API.
-  *
-@@ -5,8 +6,6 @@
-  * Copyright (c) 1997-2007 Jean Tourrilhes, All Rights Reserved.
-  * Copyright	2009 Johannes Berg <johannes@sipsolutions.net>
-  * Copyright (C) 2024 Intel Corporation
-- *
-- * (As all part of the Linux kernel, this file is GPL)
-  */
- #include <linux/kernel.h>
- #include <linux/netdevice.h>
-diff --git a/net/wireless/wext-priv.c b/net/wireless/wext-priv.c
-index 37d1147019c2..ce9022843dfd 100644
---- a/net/wireless/wext-priv.c
-+++ b/net/wireless/wext-priv.c
-@@ -1,11 +1,10 @@
-+// SPDX-License-Identifier: GPL-2.0
- /*
-  * This file implement the Wireless Extensions priv API.
-  *
-  * Authors :	Jean Tourrilhes - HPL - <jt@hpl.hp.com>
-  * Copyright (c) 1997-2007 Jean Tourrilhes, All Rights Reserved.
-  * Copyright	2009 Johannes Berg <johannes@sipsolutions.net>
-- *
-- * (As all part of the Linux kernel, this file is GPL)
-  */
- #include <linux/slab.h>
- #include <linux/wireless.h>
-diff --git a/net/wireless/wext-proc.c b/net/wireless/wext-proc.c
-index cadcf8613af2..be6b2b695bf9 100644
---- a/net/wireless/wext-proc.c
-+++ b/net/wireless/wext-proc.c
-@@ -1,10 +1,9 @@
-+// SPDX-License-Identifier: GPL-2.0
- /*
-  * This file implement the Wireless Extensions proc API.
-  *
-  * Authors :	Jean Tourrilhes - HPL - <jt@hpl.hp.com>
-  * Copyright (c) 1997-2007 Jean Tourrilhes, All Rights Reserved.
-- *
-- * (As all part of the Linux kernel, this file is GPL)
-  */
- 
- /*
+Changes in v2:
+ - Move the Documentation patch to the beginning of the patch set.
+ - Move remoteproc compatible string addition to the middle of 
+   the patch set.
+ - Add Reviewed-by Dmitry (thanks!) to remoteproc compatible patch.
+ - Move wcn36xx driver changes to the end of the patch set.
+
+Changes in v3:
+ - Describe the hardware rather than the driver in the 
+   dt-bindings patch [Krzysztof].
+ - Describe why we need a new compatible in the remoteproc 
+   patch [Krzysztof].
+ - Describe where the CFG values came from in the wcn36xx 
+   driver patch [Konrad].
+
+Kerigan Creighton (3):
+  dt-bindings: remoteproc: qcom,wcnss-pil: Add wcn3610 compatible
+  remoteproc: qcom_wcnss_iris: Add support for WCN3610
+  wifi: wcn36xx: Add support for WCN3610
+
+ .../bindings/remoteproc/qcom,wcnss-pil.yaml   |  1 +
+ drivers/net/wireless/ath/wcn36xx/main.c       |  4 +-
+ drivers/net/wireless/ath/wcn36xx/smd.c        | 61 ++++++++++++++++++-
+ drivers/net/wireless/ath/wcn36xx/wcn36xx.h    |  1 +
+ drivers/remoteproc/qcom_wcnss_iris.c          |  1 +
+ 5 files changed, 66 insertions(+), 2 deletions(-)
+
 -- 
-2.43.0
+2.53.0
 
 
