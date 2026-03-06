@@ -1,51 +1,52 @@
-Return-Path: <linux-wireless+bounces-32594-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-32611-lists+linux-wireless=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id GL/VIMaVqmkkUAEAu9opvQ
-	(envelope-from <linux-wireless+bounces-32594-lists+linux-wireless=lfdr.de@vger.kernel.org>)
-	for <lists+linux-wireless@lfdr.de>; Fri, 06 Mar 2026 09:52:22 +0100
+	id UMAlLoaWqmmIUAEAu9opvQ
+	(envelope-from <linux-wireless+bounces-32611-lists+linux-wireless=lfdr.de@vger.kernel.org>)
+	for <lists+linux-wireless@lfdr.de>; Fri, 06 Mar 2026 09:55:34 +0100
 X-Original-To: lists+linux-wireless@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 01B8021D5D3
-	for <lists+linux-wireless@lfdr.de>; Fri, 06 Mar 2026 09:52:21 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 35DF821D7FA
+	for <lists+linux-wireless@lfdr.de>; Fri, 06 Mar 2026 09:55:33 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id F3CF0301CC45
-	for <lists+linux-wireless@lfdr.de>; Fri,  6 Mar 2026 08:52:19 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 1EEB03054BB6
+	for <lists+linux-wireless@lfdr.de>; Fri,  6 Mar 2026 08:53:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E1DF7330659;
-	Fri,  6 Mar 2026 08:52:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F078237F8BA;
+	Fri,  6 Mar 2026 08:52:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="SEpDIqvv"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="W+l1wrw7"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BC2FBEEBA;
-	Fri,  6 Mar 2026 08:52:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 977A437B406;
+	Fri,  6 Mar 2026 08:52:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772787135; cv=none; b=rXb1DQbk6W2LYmTVbP3Vbz5II3214qufEwDkruTmTVcoqKzvTA6/KMbdjiwjNriY8P9SZkSvOiQGwy82aPwRdBMeMJXDoJkuR5Jv2SaZxpJqLK06/S6KUCQ2KHa+AY6UzpBDEGiYf5MX9g0oaEUrOobgkeUfAIWD+UAe9QMqlbA=
+	t=1772787136; cv=none; b=LI5nsmuMSGMFEQljEqz5ZpF2hwAmLRnhmvI0izCy2ElpKP9i4xNqOHGltkvb0hyI5TikOWP0vc2rfZKWkt8h65fEy3r20c4uqQLFnomN/YqzRpB6ExzhhOT6MNZiLhm6l9+IGoI0xGQl6qaS61hIcnllSKz7xxz5ssj41XxpexM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772787135; c=relaxed/simple;
-	bh=BC9phG/uboNPNh++ClnGxy6uWEWlwbWxQo4UxGMm2EY=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=tElSrgjgBIzUFi2/Rx7jVHu8e/DjGqaR4sA/RUOBHw5JEls32atN5m5FPSfWTLgEA4LynCSnz3oY+9HCTr1xuJUImbLJJlaP5E7qMKJnbpiaCkvrXU1kHI+6KDGSfEUs6Zqf0PZg4kJvVGDRLpUXC4dUBAvCQbncO+Nblb2gWNk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=SEpDIqvv; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7950BC19425;
+	s=arc-20240116; t=1772787136; c=relaxed/simple;
+	bh=YBI08jfhYlQX9Gx4zol78geSQz/rAVKtS3Ypl1NPKR4=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=SBlg7/ylPPFbatuR/a35UK8PPqdhwFnaqYN3TrJOGj6MAsEgB+/v1SQUantlvFyiMbWpxDKUImK3TWtN+hhQKIW2P6K8et+5g04cA0PxHNE6G8kRekRBGbtiHoOg0GyysF6A+I4iahFKlsG5TVhCU+Bi1SsxlWhuKt3zSzP0KgQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=W+l1wrw7; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6F973C19425;
 	Fri,  6 Mar 2026 08:52:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1772787135;
-	bh=BC9phG/uboNPNh++ClnGxy6uWEWlwbWxQo4UxGMm2EY=;
-	h=From:To:Cc:Subject:Date:From;
-	b=SEpDIqvvLiMR0dN4BEG/ouA8ijTft3I0xY8V7JdWUkG2dhmRaImUsEP85u1Oz2Vv4
-	 hw0Y938FmeJwem4wrq8hjbNDIS4JYsFTXgmgvEfFxSUMQTAlJJFm95PEbgJehmI7dq
-	 QUFXauzPwW9EEIPr5cZ4Kky+iwmCysLFY1RoMwIEuGKT6LIhntfrGOm8pERW9siwHl
-	 3xV3KFok7O6tWSai4GZ/CRLYbqTm8hCBplGE94Qp+VzxYxml1csNjeSPJczx9j6SO/
-	 dl+qcA+SW3ixrGiqjINMh27vbkCmEsB2Ri0oOGq2gfnaeKKwGfpBuz+XvglwUyAtfd
-	 bZpSVkAtlGHCQ==
+	s=k20201202; t=1772787136;
+	bh=YBI08jfhYlQX9Gx4zol78geSQz/rAVKtS3Ypl1NPKR4=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=W+l1wrw7DmuyZLjDSr1+P62LoEwbSVyDRBPrspuXhrMQ0kOXtNIdWRdkbPb7Ffkvw
+	 47p8Mj8Sox1nh9goSbEhBTIQpmhbbHMO+epPtTAq8mYJk+FN5Uf8r+QCerm70ZTsqy
+	 SyNue6d9w2d00z6sEA68valC+IKJmyGngtS9mBbpgcPcIwhleCVASD7HTvr3zpRHie
+	 C2ih5k3DotP4vNfV/ia7bEjA55asOe+LGMMn6hZg5mjHU/psW8MCtAHykR1krPBJJ6
+	 XZkciuRz5kbsmmGiOljHraapz53yWLbw7DslcPIzx17kKn84tD6CgI3ohbfpqLeWKz
+	 38YB7yz5saJ9Q==
 Received: from johan by xi.lan with local (Exim 4.98.2)
 	(envelope-from <johan@kernel.org>)
-	id 1vyQuq-000000003AJ-3KlN;
+	id 1vyQuq-000000003AL-3Pwh;
 	Fri, 06 Mar 2026 09:52:12 +0100
 From: Johan Hovold <johan@kernel.org>
 To: linux-wireless@vger.kernel.org
@@ -72,10 +73,12 @@ Cc: Jeff Johnson <jjohnson@kernel.org>,
 	libertas-dev@lists.infradead.org,
 	linux-kernel@vger.kernel.org,
 	Johan Hovold <johan@kernel.org>
-Subject: [PATCH v2 00/18] wifi: drop redundant USB device references
-Date: Fri,  6 Mar 2026 09:51:26 +0100
-Message-ID: <20260306085144.12064-1-johan@kernel.org>
+Subject: [PATCH v2 01/18] wifi: ath6kl: drop redundant device reference
+Date: Fri,  6 Mar 2026 09:51:27 +0100
+Message-ID: <20260306085144.12064-2-johan@kernel.org>
 X-Mailer: git-send-email 2.52.0
+In-Reply-To: <20260306085144.12064-1-johan@kernel.org>
+References: <20260306085144.12064-1-johan@kernel.org>
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
@@ -83,7 +86,7 @@ List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 01B8021D5D3
+X-Rspamd-Queue-Id: 35DF821D7FA
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [0.84 / 15.00];
 	SUSPICIOUS_RECIPS(1.50)[];
@@ -91,7 +94,7 @@ X-Spamd-Result: default: False [0.84 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
@@ -99,10 +102,10 @@ X-Spamd-Result: default: False [0.84 / 15.00];
 	FREEMAIL_CC(0.00)[kernel.org,toke.dk,chromium.org,dolcini.it,nbd.name,mediatek.com,wp.pl,gmail.com,realtek.com,microchip.com,bootlin.com,tuxon.dev,collabora.com,linuxfoundation.org,lists.infradead.org,vger.kernel.org];
 	RCPT_COUNT_TWELVE(0.00)[24];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-32594-lists,linux-wireless=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-32611-lists,linux-wireless=lfdr.de];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[johan@kernel.org,linux-wireless@vger.kernel.org];
@@ -121,72 +124,58 @@ device while the interface is bound to a driver and there is no need to
 take additional references unless the structures are needed after
 disconnect.
 
-Drop redundant device references to reduce cargo culting, make it easier
-to spot drivers where an extra reference is needed, and reduce the risk
-of memory leaks when drivers fail to release them.
+Drop the redundant device reference to reduce cargo culting, make it
+easier to spot drivers where an extra reference is needed, and reduce
+the risk of memory leaks when drivers fail to release it.
 
-Note that I sent an ath9k patch separately here:
+Signed-off-by: Johan Hovold <johan@kernel.org>
+---
+ drivers/net/wireless/ath/ath6kl/usb.c | 12 ++----------
+ 1 file changed, 2 insertions(+), 10 deletions(-)
 
-	https://lore.kernel.org/all/20260305105803.17011-1-johan@kernel.org/
-
-but I included it here in v2 for completeness.
-
-Also note that Greg had already sent a fix for rtw88 which has been
-picked up by Ping-Ke, but who asked me to send a replacement. If an
-incremental patch is preferred I can instead send a follow up for that
-one later.
-
-Johan
-
-
-Changes in v2:
- - include ath9k, previously submitted separately
- - include ath6kl and ath10k
- - rename the ath6kl and ath10k disconnect callbacks
- - fix a reference leak in rtw88 previously reported (and fixed
-   differently) by Greg
-
-
-Johan Hovold (18):
-  wifi: ath6kl: drop redundant device reference
-  wifi: ath6kl: rename disconnect callback
-  wifi: ath9k: drop redundant device reference
-  wifi: ath10k: drop redundant device reference
-  wifi: ath10k: rename disconnect callback
-  wifi: at76c50x: drop redundant device reference
-  wifi: libertas: drop redundant device reference
-  wifi: libertas_tf: drop redundant device reference
-  wifi: mwifiex: drop redundant device reference
-  wifi: mt76: drop redundant device reference
-  wifi: mt76x0u: drop redundant device reference
-  wifi: mt76x2u: drop redundant device reference
-  wifi: mt76: mt792xu: drop redundant device reference
-  wifi: mt7601u: drop redundant device reference
-  wifi: rt2x00: drop redundant device reference
-  wifi: rtl818x: drop redundant device reference
-  wifi: rtl8xxxu: drop redundant device reference
-  wifi: rtw88: fix device leak on probe failure
-
- drivers/net/wireless/ath/ath10k/usb.c            |  8 ++------
- drivers/net/wireless/ath/ath6kl/usb.c            | 16 ++++------------
- drivers/net/wireless/ath/ath9k/hif_usb.c         |  4 ----
- drivers/net/wireless/atmel/at76c50x-usb.c        | 12 ++++--------
- drivers/net/wireless/marvell/libertas/if_usb.c   |  3 ---
- .../net/wireless/marvell/libertas_tf/if_usb.c    |  2 --
- drivers/net/wireless/marvell/mwifiex/usb.c       |  4 ----
- drivers/net/wireless/mediatek/mt76/mt7615/usb.c  |  3 ---
- drivers/net/wireless/mediatek/mt76/mt76x0/usb.c  |  3 ---
- drivers/net/wireless/mediatek/mt76/mt76x2/usb.c  |  4 ----
- drivers/net/wireless/mediatek/mt76/mt7921/usb.c  |  2 --
- drivers/net/wireless/mediatek/mt76/mt7925/usb.c  |  2 --
- drivers/net/wireless/mediatek/mt76/mt792x_usb.c  |  1 -
- drivers/net/wireless/mediatek/mt7601u/usb.c      |  3 ---
- drivers/net/wireless/ralink/rt2x00/rt2x00usb.c   | 12 +-----------
- .../net/wireless/realtek/rtl818x/rtl8187/dev.c   |  4 ----
- drivers/net/wireless/realtek/rtl8xxxu/core.c     | 11 +++--------
- drivers/net/wireless/realtek/rtw88/usb.c         |  3 +--
- 18 files changed, 15 insertions(+), 82 deletions(-)
-
+diff --git a/drivers/net/wireless/ath/ath6kl/usb.c b/drivers/net/wireless/ath/ath6kl/usb.c
+index 852e77e41bde..814faf96f1ff 100644
+--- a/drivers/net/wireless/ath/ath6kl/usb.c
++++ b/drivers/net/wireless/ath/ath6kl/usb.c
+@@ -1124,8 +1124,6 @@ static int ath6kl_usb_probe(struct usb_interface *interface,
+ 	int vendor_id, product_id;
+ 	int ret = 0;
+ 
+-	usb_get_dev(dev);
+-
+ 	vendor_id = le16_to_cpu(dev->descriptor.idVendor);
+ 	product_id = le16_to_cpu(dev->descriptor.idProduct);
+ 
+@@ -1143,11 +1141,8 @@ static int ath6kl_usb_probe(struct usb_interface *interface,
+ 		ath6kl_dbg(ATH6KL_DBG_USB, "USB 1.1 Host\n");
+ 
+ 	ar_usb = ath6kl_usb_create(interface);
+-
+-	if (ar_usb == NULL) {
+-		ret = -ENOMEM;
+-		goto err_usb_put;
+-	}
++	if (ar_usb == NULL)
++		return -ENOMEM;
+ 
+ 	ar = ath6kl_core_create(&ar_usb->udev->dev);
+ 	if (ar == NULL) {
+@@ -1176,15 +1171,12 @@ static int ath6kl_usb_probe(struct usb_interface *interface,
+ 	ath6kl_core_destroy(ar);
+ err_usb_destroy:
+ 	ath6kl_usb_destroy(ar_usb);
+-err_usb_put:
+-	usb_put_dev(dev);
+ 
+ 	return ret;
+ }
+ 
+ static void ath6kl_usb_remove(struct usb_interface *interface)
+ {
+-	usb_put_dev(interface_to_usbdev(interface));
+ 	ath6kl_usb_device_detached(interface);
+ }
+ 
 -- 
 2.52.0
 
