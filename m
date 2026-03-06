@@ -1,79 +1,81 @@
-Return-Path: <linux-wireless+bounces-32576-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-32578-lists+linux-wireless=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id kMvjAVEjqmkPMAEAu9opvQ
-	(envelope-from <linux-wireless+bounces-32576-lists+linux-wireless=lfdr.de@vger.kernel.org>)
-	for <lists+linux-wireless@lfdr.de>; Fri, 06 Mar 2026 01:44:01 +0100
+	id eE6yLJsjqmkPMAEAu9opvQ
+	(envelope-from <linux-wireless+bounces-32578-lists+linux-wireless=lfdr.de@vger.kernel.org>)
+	for <lists+linux-wireless@lfdr.de>; Fri, 06 Mar 2026 01:45:15 +0100
 X-Original-To: lists+linux-wireless@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id AC13C219E8A
-	for <lists+linux-wireless@lfdr.de>; Fri, 06 Mar 2026 01:44:00 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 14652219F11
+	for <lists+linux-wireless@lfdr.de>; Fri, 06 Mar 2026 01:45:14 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 4D8FA3017BD1
-	for <lists+linux-wireless@lfdr.de>; Fri,  6 Mar 2026 00:43:59 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 0F638309E28B
+	for <lists+linux-wireless@lfdr.de>; Fri,  6 Mar 2026 00:44:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3FC072E2DD2;
-	Fri,  6 Mar 2026 00:43:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4AF1E2E8E16;
+	Fri,  6 Mar 2026 00:44:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="LCIl/OnO"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="JQGAv6Hb"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-oi1-f172.google.com (mail-oi1-f172.google.com [209.85.167.172])
+Received: from mail-oa1-f41.google.com (mail-oa1-f41.google.com [209.85.160.41])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D8D5B2DF717
-	for <linux-wireless@vger.kernel.org>; Fri,  6 Mar 2026 00:43:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.172
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 36B5C2E1F02
+	for <linux-wireless@vger.kernel.org>; Fri,  6 Mar 2026 00:43:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.41
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772757838; cv=none; b=PmUtIk1GK82kyHLwmE/+brqMUFTH6LAXJ9EATOMinXW/ivZIVXi4wBAP5DNlS5T/kWeyTQiq2L3N4UIENMPOvIcJu1SNaG3cJJGc7SnsY0QEAklA7cXl9yr93ZDet355hDWWdAQylu6h5lBwdzqwYE46xoycfDt7gabGEIIA7r8=
+	t=1772757843; cv=none; b=Obw4AvNk9nnN3jra/lvHpaVTxMK5ZOQAjSDHL+A63hiMAHOJwj2OQW+4Va5J18uSuyvpXdYawUR5TH+6t/oOZ6iY6GH3GN7SRJJRwa/W3ge4pUqdcyvUzimob+L92jOWiMzgO7xhj2XLztYItvMvM8u4HhXMVsgdjh0rEDsbh9I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772757838; c=relaxed/simple;
-	bh=SwKQHqFPugEY5LBsRfzbny5oSAeUyqfWxPylHIWs5QQ=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=tORMFqlZdDWNx09k+OEju75UdtscDspO1GyukmlglqtgmwsfhXHQ/H5+qwwyofi2WQr8cBO1NHv3vjMw6/9/ne4JaS3uAklox3GCcvZ1v5On8TT8iRycpHhISTEfR6o5EUBMxQkA9xFp5TLCOvXVZ+74RLe3ouVwY4ot2kxHhvE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=LCIl/OnO; arc=none smtp.client-ip=209.85.167.172
+	s=arc-20240116; t=1772757843; c=relaxed/simple;
+	bh=7+7vEfBpNq1FeJYJEFDLB71C+eZ7mjue1YQ1Lz4VM4g=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=bR6EQoSS81+KzmTh4t6HVyO+xr2S/ycrXgVm3+dezgLJbngn5ORafLkhl2Bl2Apmb9Fe4Wcby2McRHYfJEhL0rZOV4cpXAvL9HErb4bbJzFsHuJxdO1WccW4UdR7xu841rHrPSi7J/7ywj2xfBSkH2RYkB5MpNqMpZTg/mUfY7Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=JQGAv6Hb; arc=none smtp.client-ip=209.85.160.41
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-oi1-f172.google.com with SMTP id 5614622812f47-45f10d7eb81so3363670b6e.3
-        for <linux-wireless@vger.kernel.org>; Thu, 05 Mar 2026 16:43:56 -0800 (PST)
+Received: by mail-oa1-f41.google.com with SMTP id 586e51a60fabf-40f1a1f77a6so2450590fac.2
+        for <linux-wireless@vger.kernel.org>; Thu, 05 Mar 2026 16:43:58 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1772757835; x=1773362635; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=5AiypmAgBLdMR9CuIx3DJ9/2CMWwdsmjB28iBee1fMM=;
-        b=LCIl/OnOy9RfQ10XhstZa5HsHrYgab5cv0xfEj/fDZeK3CUE48bZCzHkBtYXcQqZCb
-         IJwtYhijdoqpLeVEjuMyQGziuR/C9jLrxYHBWfRSR/AFX1a0OLBG72rfMBS6SHE0ubEG
-         12PqrIdDBBe1z7CPa9as4c/5BuctiMaWbFGFvRRxdqFc+BAA+bDAvw8FdGJCs2ZNGio4
-         B+QGzpyGw9oJOvVGT0M/Tir4fpPlJPxVO1DNJUArw71Lm/bOhIIXFOFqKIwL/yXHBY0d
-         d8qebC5glmdhtf93nvj02Fc/hD+BCgbZIjPhx+QQdKqhU9l4cvpt7s3VJAcsotcflZUG
-         5/PA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1772757835; x=1773362635;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+        d=gmail.com; s=20230601; t=1772757837; x=1773362637; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=5AiypmAgBLdMR9CuIx3DJ9/2CMWwdsmjB28iBee1fMM=;
-        b=HUt5ULfRkX6Kh4x3VZ7MflCP3vQ0JV7/WIxVA7pe/ODt0odvmoVqkuPNLNj+2N1Pva
-         zoSGAQPVK/tAjVwa4PegBtGGEW8uxfunYIfJxvpEM1x+Awzpo7NxkEkOnQ/lfEg8iorA
-         lLuzD4Z097IiG9stMYrJYetXFYBWFjf4MYZK3N8YW+3bad/yLoexD69CFc44z+ZoNNIu
-         sngqTkdCws0a1lcD9WG1aOOiwobyK1Ubjk/sZ+pTZp33CMiOU9MII7x0brz14DGsjjle
-         G+k5pQKubwKdbQRP+mGdD4wfy0o+l8OSIYtHIMOOPtWJuEvsdUgB991z5rLF44pzML6X
-         aYTw==
-X-Gm-Message-State: AOJu0YxHT6WnCo+2f4UFzS4ZeXErJWDZXtUqz8lYaqQP0xzGgGGpNtEK
-	6PlWC1HBoQEXeQSjvOhG4rpLXnIpUkZbq406qn4MS8jn/MX63y9n3nEGR/pfbi/co1o=
-X-Gm-Gg: ATEYQzx2OMj+oB3jEr2WX7qELh9uE2fLbtSI5IPtR5R6g7FSilWrRncvYThErZZTCIg
-	oRnF8kyyLt+KCnpUIdMv3cHbTCQgnojVZZvUr5uX8QlogA0KDJ4RfAAj/B58VMOS94oAmOvywV4
-	E1fLibqyn7jqz3bvRvE08HgGPE/DjEOsTgZZgckE9+vVkrno4WFkrw6B+x05H2Zw8athv+RWIHV
-	u5Rz3qfbulZw2T9A9KtZS5JtbioNj35BvUhEGio5F9H+DBebjcg6bTD8ZZTcS1FxslLFliiAO3v
-	HifuFTNlG0wmN27WNBOevcI8zqNiTOTYC+oEpAFDV3oMlMmNcToh5GsHTxNLBDz3B8jJTqwe2ES
-	65x1Gl2okwPWnT8DNydWElXvZzZaUsChI8HeUeIqNywAF235qUr6Weimtup7cAL8t7aMkdKBKID
-	xviIjE1EiajGMJKXU0BgaC6vHbE74lICFXmbJQa8nqlY38EJbPOCk4qoRqcaWA7+VrG8kXI880K
-	Z2RJayNgwzFbnrPhml8MitlquAUF6SaJcMYSag74A==
-X-Received: by 2002:a05:6808:c3d5:b0:45f:13fe:4a2d with SMTP id 5614622812f47-466dc9f4738mr204774b6e.4.1772757835483;
-        Thu, 05 Mar 2026 16:43:55 -0800 (PST)
+        bh=DWzAa+zn92+13s1CRMtvzeiMVSLB+iLeHsYqLdK601c=;
+        b=JQGAv6HbUQNC1gjJ68whaYfxEDPpib0XsPN+2anKdPc28e2ptzxcM3hqxmzT46NpY2
+         PPtuI3H2L6L59816oobgEWbYekvQP2LfTM4/sRW1h43bIrp07lcDsuNfHX44FU+ehV+i
+         +LCuYAodD48FRk+5efGiYRV25gV5RJev5yGxBjEQzbFTQcVjGgDWBCKI9X72iLKSEKlN
+         n1/YRSCeps3tX/DcIBPfWGtCi38EX2GETIYpKuMTYWiEy8bDaISVoDKKMjvXOERox/U+
+         sU+gUy3x/O/tdjFtGYk7BcXTjEmjCxTpHSPjZRSpipJP5lzvymZQbYSrQHs54BgHDuuP
+         S1mw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1772757837; x=1773362637;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=DWzAa+zn92+13s1CRMtvzeiMVSLB+iLeHsYqLdK601c=;
+        b=QAJ8t/Te6jAGGl0A7TMJsksaG2QjPE346CxudkCRUi/3zqFNJ8QCPILYf6E6yS6XoO
+         xBpJ6gMcysNPErHupmWkBMYhEPjP0qcFXaQH9FgEHtZfct0ctLTKzQj2DsoOpLhZ8p4a
+         aDELxPBo4+AuzIY4gDYmazNRm3SXUp1XkVv9tCuef757DAPbj8JNzdgOCb2TZ9gQ2cJk
+         xB+4/w6UPIFmVyggOjuq6eNYfB0Ylcx/fd8aAaa48a/BS07zYAqscn34Xx5ZKjK6r4iv
+         cnXGFrh0ukURBq6om5zs+8NAZIKrCpGTL/L91tlbrCTgiZU3qw+iJd8QSQHeRlMA6XRu
+         Ud1Q==
+X-Gm-Message-State: AOJu0YzY7M/1ajWnz+CxqTPSyQpIplTLwvqEZWJHNgrKUArb9Hcbxe2W
+	hHd60goQYUshWqEosG+7hFS+34B9tLt4OVkacGuv7DKP0YR8guPbhkiVCyHJwXRo4jE=
+X-Gm-Gg: ATEYQzyr7vcbEIj4EgROw2MsX1zCnpWzrJaiayZ4n6CBg9U/6cEYuuT9WdBzBDdYmO/
+	cbjrL3jFXsKxV9SrhTtxPQgYzn0i03nVAod/v5DSDjLPPJfbnaBepl5Rm82PG7OCKJSBOlXtWxj
+	UCxoCTDMS82nUUNRdISsliVZbHdLWIs5IW3MOmqxVPyzrLLe1Nclh/jTZZYDYSyJaGpJDqXzN0C
+	s+MN1+ANrYolILZqRTUiqVYR+VmtduIfsPBte1nsqMwOquVD1BiGqK175drdCLuIb9iHdUArYYB
+	RA6QnGSzaTLqfPplpynkDkXy2ftT82WTh2VRVBQRzE38F7OJC3GQPVga8SVLTa+JK6V692gViMY
+	sYdLV8ONvjrQnem1omLIdDUKXx9VK428A50i3Q8fI54PdKDRS2CTUXF2UVHOHTQoiG2V+Z27ziX
+	sD3f90j0C1NwPStvXztcH3HFKHRL/7NsgigX/3XXSOncNAiFkKRVYVnW/eytrvSEyd6GDiK4IgA
+	k/M/hqnWz97Ndu0VfE35eSo+lJD54+LGXJrCkFG4DrO1SY0j987
+X-Received: by 2002:a05:6870:8252:b0:3e7:e420:6229 with SMTP id 586e51a60fabf-416e3e6fa13mr252903fac.6.1772757836776;
+        Thu, 05 Mar 2026 16:43:56 -0800 (PST)
 Received: from framework.misc.iastate.edu ([2610:130:110:25d:2aa4:4aff:fed7:9b19])
-        by smtp.gmail.com with ESMTPSA id 586e51a60fabf-416e65b1c82sm69335fac.5.2026.03.05.16.43.53
+        by smtp.gmail.com with ESMTPSA id 586e51a60fabf-416e65b1c82sm69335fac.5.2026.03.05.16.43.55
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 05 Mar 2026 16:43:55 -0800 (PST)
+        Thu, 05 Mar 2026 16:43:56 -0800 (PST)
 From: Kerigan Creighton <kerigancreighton@gmail.com>
 To: linux-wireless@vger.kernel.org
 Cc: loic.poulain@oss.qualcomm.com,
@@ -88,10 +90,12 @@ Cc: loic.poulain@oss.qualcomm.com,
 	devicetree@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
 	Kerigan Creighton <kerigancreighton@gmail.com>
-Subject: [PATCH v3 0/3] Add support for Qualcomm WCN3610
-Date: Thu,  5 Mar 2026 18:43:41 -0600
-Message-ID: <20260306004344.10968-1-kerigancreighton@gmail.com>
+Subject: [PATCH v3 1/3] dt-bindings: remoteproc: qcom,wcnss-pil: Add wcn3610 compatible
+Date: Thu,  5 Mar 2026 18:43:42 -0600
+Message-ID: <20260306004344.10968-2-kerigancreighton@gmail.com>
 X-Mailer: git-send-email 2.53.0
+In-Reply-To: <20260306004344.10968-1-kerigancreighton@gmail.com>
+References: <20260306004344.10968-1-kerigancreighton@gmail.com>
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
@@ -99,7 +103,7 @@ List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: AC13C219E8A
+X-Rspamd-Queue-Id: 14652219F11
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [0.84 / 15.00];
 	SUSPICIOUS_RECIPS(1.50)[];
@@ -108,7 +112,7 @@ X-Spamd-Result: default: False [0.84 / 15.00];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
 	R_DKIM_ALLOW(-0.20)[gmail.com:s=20230601];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
@@ -118,7 +122,7 @@ X-Spamd-Result: default: False [0.84 / 15.00];
 	FREEMAIL_FROM(0.00)[gmail.com];
 	MIME_TRACE(0.00)[0:+];
 	RCPT_COUNT_TWELVE(0.00)[13];
-	TAGGED_FROM(0.00)[bounces-32576-lists,linux-wireless=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-32578-lists,linux-wireless=lfdr.de];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
@@ -128,55 +132,42 @@ X-Spamd-Result: default: False [0.84 / 15.00];
 	RCVD_COUNT_FIVE(0.00)[5];
 	TAGGED_RCPT(0.00)[linux-wireless,dt];
 	NEURAL_HAM(-0.00)[-1.000];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
 X-Rspamd-Action: no action
 
-The WCN3610 is a 2.4GHz-only WLAN/BT combo chip used in some 
-cheaper Android and Windows phones such as the Lumia 550, and 
-IoT devices like the Anki Vector robot. It shares a lot in 
-common with the WCN3620.
+The Qualcomm WCN3610 is a 2.4GHz-only WLAN/BT combo chip.
+It's similar to the WCN3620, though more basic. Add a
+wcn3610 compatible for use in device trees.
 
-This series adds support for the WCN3610 across the necessary 
-subsystems:
+It needs its own compatible because of chip-specific
+configuration done in wcn36xx.
 
-   * Document the new compatible string (patch 1).
-   * Add compatible string in qcom_wcnss_iris (patch 2).
-   * Add rf_id and CFGs for the WCN3610 in wcn36xx, disable
-     powersave for this specific chip, ensure it is 2.4GHz-only
-     (patch 3).
-
-Tested on an Anki Vector 1.0 and 2.0 robot. Support for other 
-WCN36xx chips has not been affected.
-
+Signed-off-by: Kerigan Creighton <kerigancreighton@gmail.com>
+---
 Changes in v2:
  - Move the Documentation patch to the beginning of the patch set.
- - Move remoteproc compatible string addition to the middle of 
-   the patch set.
- - Add Reviewed-by Dmitry (thanks!) to remoteproc compatible patch.
- - Move wcn36xx driver changes to the end of the patch set.
 
 Changes in v3:
- - Describe the hardware rather than the driver in the 
+ - Describe the hardware rather than the driver in the
    dt-bindings patch [Krzysztof].
- - Describe why we need a new compatible in the remoteproc 
-   patch [Krzysztof].
- - Describe where the CFG values came from in the wcn36xx 
-   driver patch [Konrad].
+---
+ Documentation/devicetree/bindings/remoteproc/qcom,wcnss-pil.yaml | 1 +
+ 1 file changed, 1 insertion(+)
 
-Kerigan Creighton (3):
-  dt-bindings: remoteproc: qcom,wcnss-pil: Add wcn3610 compatible
-  remoteproc: qcom_wcnss_iris: Add support for WCN3610
-  wifi: wcn36xx: Add support for WCN3610
-
- .../bindings/remoteproc/qcom,wcnss-pil.yaml   |  1 +
- drivers/net/wireless/ath/wcn36xx/main.c       |  4 +-
- drivers/net/wireless/ath/wcn36xx/smd.c        | 61 ++++++++++++++++++-
- drivers/net/wireless/ath/wcn36xx/wcn36xx.h    |  1 +
- drivers/remoteproc/qcom_wcnss_iris.c          |  1 +
- 5 files changed, 66 insertions(+), 2 deletions(-)
-
+diff --git a/Documentation/devicetree/bindings/remoteproc/qcom,wcnss-pil.yaml b/Documentation/devicetree/bindings/remoteproc/qcom,wcnss-pil.yaml
+index 117fb4d0c4..018cdf5177 100644
+--- a/Documentation/devicetree/bindings/remoteproc/qcom,wcnss-pil.yaml
++++ b/Documentation/devicetree/bindings/remoteproc/qcom,wcnss-pil.yaml
+@@ -109,6 +109,7 @@ properties:
+     properties:
+       compatible:
+         enum:
++          - qcom,wcn3610
+           - qcom,wcn3620
+           - qcom,wcn3660
+           - qcom,wcn3660b
 -- 
 2.53.0
 
