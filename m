@@ -1,186 +1,199 @@
-Return-Path: <linux-wireless+bounces-32614-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-32612-lists+linux-wireless=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 4Nr1A4mZqmkxUQEAu9opvQ
-	(envelope-from <linux-wireless+bounces-32614-lists+linux-wireless=lfdr.de@vger.kernel.org>)
-	for <lists+linux-wireless@lfdr.de>; Fri, 06 Mar 2026 10:08:25 +0100
+	id EHn3GjiZqmkxUQEAu9opvQ
+	(envelope-from <linux-wireless+bounces-32612-lists+linux-wireless=lfdr.de@vger.kernel.org>)
+	for <lists+linux-wireless@lfdr.de>; Fri, 06 Mar 2026 10:07:04 +0100
 X-Original-To: lists+linux-wireless@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1519721D9FE
-	for <lists+linux-wireless@lfdr.de>; Fri, 06 Mar 2026 10:08:24 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id D05FE21D9BF
+	for <lists+linux-wireless@lfdr.de>; Fri, 06 Mar 2026 10:07:03 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 4B76D300442C
-	for <lists+linux-wireless@lfdr.de>; Fri,  6 Mar 2026 09:07:48 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id C469A302411D
+	for <lists+linux-wireless@lfdr.de>; Fri,  6 Mar 2026 09:05:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 40F7F8479;
-	Fri,  6 Mar 2026 09:07:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A7DA933AD91;
+	Fri,  6 Mar 2026 09:04:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=realtek.com header.i=@realtek.com header.b="mSShidGs"
+	dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b="QQsBorjg"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from sipsolutions.net (s3.sipsolutions.net [168.119.38.16])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0C738158DA3;
-	Fri,  6 Mar 2026 09:07:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=211.75.126.72
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D53CD3264E1;
+	Fri,  6 Mar 2026 09:04:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=168.119.38.16
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772788067; cv=none; b=Xod/W2d61M+kTtg5DE9kS4akwbApzUGvF6y9sPd58dGSPqT2cL1ZbY6tVgS8PvXoEVY85+hZClVzxyIs8rvX0bBeETxXy25CYOEC22qc6xd7rt6CIt4UpUJG20kLy3mXypg6mFzXO7gtRDL7W45Prqj/EX9RZW5cIKNPSd0ExFs=
+	t=1772787899; cv=none; b=s2RUXnPvradaGmRm9lFIHSMFr/YiYw6bMNZWthGAGiLHU1HnfIq8ALiBP0YXi7gC8t4k0oz0jeveynVVq5LwcvEG9RH2K/yG3dRJNGHi3HvYsKYHPEJuu5I3D/ulE5+yoBpOiNUQvbAwWjCjSsRKbvWpJ033DeyhruH5aT3MilU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772788067; c=relaxed/simple;
-	bh=Ibyu+M5jBYSutPZCDQaTqSZguya8pb+78+QfT8HUgLA=;
-	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:MIME-Version; b=MqjdYUM7eEsUcJSXG8TTJwjND0Tez3YXM8H/JCtYbdZFvmEBNHFRrrh6XErMtNj2hFSjRd8xYeliaYCbyiSAWrELEDRgGVrwAENZ01+qoO+1iD+dJH9UVtueXahRoNxKQfRNCx4MIb033vrvr+GR9tS3Qf/fxhl19MTwi+zEGI4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com; spf=pass smtp.mailfrom=realtek.com; dkim=pass (2048-bit key) header.d=realtek.com header.i=@realtek.com header.b=mSShidGs; arc=none smtp.client-ip=211.75.126.72
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=realtek.com
-X-SpamFilter-By: ArmorX SpamTrap 5.80 with qID 62694MwD43092504, This message is accepted by code: ctloc85258
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=realtek.com; s=dkim;
-	t=1772787862; bh=Mny1+BKvl9hHCC52gtmeAmDWz08iQHJnQohacOFyU1M=;
-	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:Content-Transfer-Encoding:MIME-Version;
-	b=mSShidGsMfn2tBvX2uCi2FLqwdn4+0D1wvfY/Q/37tX6Yur2b1Br/yO6Ln3TqhNBg
-	 xhFitETXRTfc7Cq03GpxBJUo+CBtW59UlcI3+LiY4f0QAQ6386mry6/l3p7KA++kF9
-	 fQz5c4W36TdDUzyQeYKdPMSsbnExKfu7E6QgnQqHSpjqUpeHe57Ahwfd7ZugvzsibL
-	 EkdVqDIZpnJYHwooCGXdGH9OQIjuC//HH3hvvfls6DvSlspdbKkahcfqzlycVVWUyZ
-	 +1huSrhcjmnxVEBnCxLEoRZyRug7+L2Nw+Deeh61S8Kn4wpn2sneaDWxCBsWh1AQG/
-	 e2TkSyrM1hzhw==
-Received: from mail.realtek.com (rtkexhmbs03.realtek.com.tw[10.21.1.53])
-	by rtits2.realtek.com.tw (8.15.2/3.21/5.94) with ESMTPS id 62694MwD43092504
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Fri, 6 Mar 2026 17:04:22 +0800
-Received: from RTKEXHMBS06.realtek.com.tw (10.21.1.56) by
- RTKEXHMBS03.realtek.com.tw (10.21.1.53) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1748.10; Fri, 6 Mar 2026 17:04:23 +0800
-Received: from RTKEXHMBS06.realtek.com.tw (10.21.1.56) by
- RTKEXHMBS06.realtek.com.tw (10.21.1.56) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1748.10; Fri, 6 Mar 2026 17:04:22 +0800
-Received: from RTKEXHMBS06.realtek.com.tw ([fe80::4cbd:6c6c:b92b:3913]) by
- RTKEXHMBS06.realtek.com.tw ([fe80::4cbd:6c6c:b92b:3913%10]) with mapi id
- 15.02.1748.010; Fri, 6 Mar 2026 17:04:22 +0800
-From: Ping-Ke Shih <pkshih@realtek.com>
-To: Johan Hovold <johan@kernel.org>
-CC: "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
-        "Brian
- Norris" <briannorris@chromium.org>,
-        Francesco Dolcini <francesco@dolcini.it>, Felix Fietkau <nbd@nbd.name>,
-        Lorenzo Bianconi <lorenzo@kernel.org>,
-        "Ryder
- Lee" <ryder.lee@mediatek.com>,
-        Shayne Chen <shayne.chen@mediatek.com>,
-        "Sean
- Wang" <sean.wang@mediatek.com>,
-        Jakub Kicinski <kuba@kernel.org>, "Stanislaw
- Gruszka" <stf_xl@wp.pl>,
-        Hin-Tak Leung <hintak.leung@gmail.com>,
-        Jes Sorensen
-	<Jes.Sorensen@gmail.com>,
-        Nicolas Ferre <nicolas.ferre@microchip.com>,
-        Alexandre Belloni <alexandre.belloni@bootlin.com>,
-        Claudiu Beznea
-	<claudiu.beznea@tuxon.dev>,
-        Matthias Brugger <matthias.bgg@gmail.com>,
-        AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
-        "libertas-dev@lists.infradead.org" <libertas-dev@lists.infradead.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        "Greg
- Kroah-Hartman" <gregkh@linuxfoundation.org>
-Subject: RE: [PATCH 00/13] wifi: drop redundant USB device references
-Thread-Topic: [PATCH 00/13] wifi: drop redundant USB device references
-Thread-Index: AQHcrJBJgpW9edckl0WtWY+w5y49ArWgtZSA///saICAAJSWcA==
-Date: Fri, 6 Mar 2026 09:04:22 +0000
-Message-ID: <81935da1c67a493c8313d906244dd577@realtek.com>
-References: <20260305110713.17725-1-johan@kernel.org>
- <0c75afbbe7bb419cab648f94191fe47f@realtek.com>
- <aaqL0RdwEjWWjECk@hovoldconsulting.com>
-In-Reply-To: <aaqL0RdwEjWWjECk@hovoldconsulting.com>
-Accept-Language: en-US, zh-TW
-Content-Language: zh-TW
-Content-Type: text/plain; charset="us-ascii"
+	s=arc-20240116; t=1772787899; c=relaxed/simple;
+	bh=RabxqyO2kHGqotR+whNmAB6DypHrCmeUvkmmAyh8Hrk=;
+	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=AL+xCyMIq31/Os6WjqmS45ZQrWDK+ihciN5lq2ABMXdADIMJq9Uvuz/YJ/z7Ect+zvqlj93r02ytwXqG3fLABVXDAIveN2IV153Jv0zGoqkzWddP5UuzCIGnCQDFnx/eW3RzoeEMPS5DkLgNoh1CDSFGDNi/LaJFX1UzO9WXmGw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net; spf=pass smtp.mailfrom=sipsolutions.net; dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b=QQsBorjg; arc=none smtp.client-ip=168.119.38.16
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sipsolutions.net
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=sipsolutions.net; s=mail; h=MIME-Version:Content-Transfer-Encoding:
+	Content-Type:References:In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender
+	:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
+	Resent-Cc:Resent-Message-ID; bh=foGTOnvfxWXN18BTJvhG+i9JithTiTUkvu2Z7Hh4DXs=;
+	t=1772787897; x=1773997497; b=QQsBorjgdDnKbFIHoylm6vbB1X+QJS1OUQWtHy7SSPZoGw+
+	vkjx7pActFFWAXdiAjTZ+iLyDx2ylWrieL+nsugE3dEbwB+zGi9+/LOczgwmhfL5aPETKbqUlCcmS
+	tkgMGEANnMcOPreRxx/Yx42k9c8fAaUs5KlvmUbtXajeAVt26z0KG4lZmyctIKmsv2Qm+m8p3Dg7U
+	jPellDfF5bKBg9QlkDoGf71sIW6q4fuvxGqzaJIr+19KVC6hz1qVICzC2PB/k65SBHKaEaNCD8A5A
+	uC/0wTSGnQNOVq64D9Xp21gtPg5m/VN59pjDNwgfgfRZWorkWAsBZ6SCPI3W6lvQ==;
+Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
+	(Exim 4.98.2)
+	(envelope-from <johannes@sipsolutions.net>)
+	id 1vyR77-0000000A07A-3zSU;
+	Fri, 06 Mar 2026 10:04:54 +0100
+Message-ID: <a04a91f1203609e89df97cc950bb2af37a66aee5.camel@sipsolutions.net>
+Subject: Re: [PATCH wireless-next 14/35] wifi: mm81x: add mac.c
+From: Johannes Berg <johannes@sipsolutions.net>
+To: Lachlan Hodges <lachlan.hodges@morsemicro.com>, Dan Callaghan
+	 <dan.callaghan@morsemicro.com>, Arien Judge <arien.judge@morsemicro.com>, 
+ Nathan Chancellor
+	 <nathan@kernel.org>, Nick Desaulniers <nick.desaulniers+lkml@gmail.com>, 
+ Bill Wendling <morbo@google.com>, Justin Stitt <justinstitt@google.com>
+Cc: ayman.grais@morsemicro.com, linux-wireless@vger.kernel.org, 
+	linux-kernel@vger.kernel.org
+Date: Fri, 06 Mar 2026 10:04:53 +0100
+In-Reply-To: <20260227041108.66508-15-lachlan.hodges@morsemicro.com> (sfid-20260227_051319_753159_902A846C)
+References: <20260227041108.66508-1-lachlan.hodges@morsemicro.com>
+	 <20260227041108.66508-15-lachlan.hodges@morsemicro.com>
+	 (sfid-20260227_051319_753159_902A846C)
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.58.3 (3.58.3-1.fc43) 
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-Rspamd-Queue-Id: 1519721D9FE
+X-malware-bazaar: not-scanned
+X-Rspamd-Queue-Id: D05FE21D9BF
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.66 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[realtek.com,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
-	R_DKIM_ALLOW(-0.20)[realtek.com:s=dkim];
+	DMARC_POLICY_ALLOW(-0.50)[sipsolutions.net,none];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10];
+	R_DKIM_ALLOW(-0.20)[sipsolutions.net:s=mail];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FREEMAIL_CC(0.00)[vger.kernel.org,chromium.org,dolcini.it,nbd.name,kernel.org,mediatek.com,wp.pl,gmail.com,microchip.com,bootlin.com,tuxon.dev,collabora.com,lists.infradead.org,linuxfoundation.org];
-	TAGGED_FROM(0.00)[bounces-32614-lists,linux-wireless=lfdr.de];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo];
-	TO_DN_EQ_ADDR_SOME(0.00)[];
+	TAGGED_FROM(0.00)[bounces-32612-lists,linux-wireless=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[21];
+	RCVD_COUNT_THREE(0.00)[4];
+	FREEMAIL_TO(0.00)[morsemicro.com,kernel.org,gmail.com,google.com];
+	DKIM_TRACE(0.00)[sipsolutions.net:+];
 	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[realtek.com:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
-	MISSING_XM_UA(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[pkshih@realtek.com,linux-wireless@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_HAS_DN(0.00)[];
 	TO_DN_SOME(0.00)[];
-	TAGGED_RCPT(0.00)[linux-wireless];
-	RCVD_COUNT_SEVEN(0.00)[7]
+	NEURAL_HAM(-0.00)[-1.000];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[johannes@sipsolutions.net,linux-wireless@vger.kernel.org];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[linux-wireless,lkml];
+	RCPT_COUNT_SEVEN(0.00)[10];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,sipsolutions.net:dkim,sipsolutions.net:mid]
 X-Rspamd-Action: no action
 
-Johan Hovold <johan@kernel.org> wrote:
-> On Fri, Mar 06, 2026 at 01:40:31AM +0000, Ping-Ke Shih wrote:
-> > // +Cc Greg
-> >
-> > Hi Johan,
-> >
-> > Johan Hovold <johan@kernel.org> wrote:
-> >
-> > [...]
-> >
-> > >  drivers/net/wireless/realtek/rtl818x/rtl8187/dev.c |  4 ----
-> > >  drivers/net/wireless/realtek/rtl8xxxu/core.c       | 11 +++--------
-> > >  drivers/net/wireless/realtek/rtlwifi/usb.c         |  4 ----
-> >
-> > Acked to changes of these Realtek WiFi drivers. But I'd like to know wh=
-y
-> > rtw88/rtw89 aren't included in this patchset?
+On Fri, 2026-02-27 at 15:10 +1100, Lachlan Hodges wrote:
 >=20
-> I used a more specific grep pattern to catch driver releasing references
-> in disconnect() and therefore missed a few that dropped the reference in
-> helper functions (or used non-standard names for their disconnect
-> function such as ath10k, I see now).
->=20
-> > Greg sent a patch [1] to
-> > correct error path of USB probe for rtw88. In the discussion, he also
-> > mentioned the simplest way is to drop usb_get_dev()/usb_put_dev() like
-> > this patchset does. Will you share patches for rtw88/rtw89? I so, I'd
-> > drop Greg's patch and apply yours.
-> >
-> > [1] https://lore.kernel.org/linux-wireless/2026022333-periscope-unusual=
--f0a0@gregkh/
->=20
-> Sure, I can include rtw88 (and ath10k and ath6kl) in a v2.
+> +static int mm81x_mac_ops_hw_scan(struct ieee80211_hw *hw,
+> +				 struct ieee80211_vif *vif,
+> +				 struct ieee80211_scan_request *hw_req)
+> +{
+> +	int ret =3D 0;
+> +	struct mm81x *mm =3D hw->priv;
+> +	struct cfg80211_scan_request *req =3D &hw_req->req;
+> +	struct mm81x_hw_scan_params *params;
+> +	struct ieee80211_channel **chans =3D hw_req->req.channels;
+> +
 
-Can you please also include rtw89? (I saw you have sent v2 though)
+> +	mutex_lock(&mm->lock);
 
->=20
-> Do you really prefer replacing Greg's fix or shall I send an incremental
-> patch on top?
+Seeing this, I wonder about two things:
 
-No. I'd drop Gerg's fix from my tree.
+ 1) Do you even need a mutex, given that the wiphy mutex covers all of
+    this pretty much? I can say from experience that a _lot_ of things
+    get quite significantly simpler without a separate driver mutex.
 
-Ping-Ke
+ 2) Are you going to incur the wrath of mm/ folks, where instances of
+    'struct mm_struct' are commonly called 'mm'? I can find a few
+    examples of others (struct drm_buddy *mm, struct mqd_manager *mm),
+    but you'd double the instances.
+
+> +	UNUSED(hw);
+> +	UNUSED(ctx);
+
+I think you should remove these (and the macro.)
+
+> +	/*
+> +	 * mm81x only support changing/setting the channel
+> +	 * when we create an interface.
+> +	 */
+> +	if (WARN_ON(changed & IEEE80211_CHANCTX_CHANGE_CHANNEL))
+> +		mm81x_err(mm, "Changing channel via chanctx not supported");
+
+Wait, what, why do you have chanctx support then? This seems highly
+questionable, how do you not run into this all the time?
+
+If it just has a single, wouldn't the chanctx emulation suit the driver
+better, and that'd make this more obvious? Hmm, but you _do_ support
+multiple vifs? I'm confused.
+
+> +static int mm81x_mac_ops_sta_state(struct ieee80211_hw *hw,
+> +				   struct ieee80211_vif *vif,
+> +				   struct ieee80211_sta *sta,
+> +				   enum ieee80211_sta_state old_state,
+> +				   enum ieee80211_sta_state new_state)
+> +{
+> +	u16 aid;
+> +	int ret =3D 0;
+
+nit: that =3D0 assignment is unused. I (we?) tend to not add them so the
+compiler can warn if the remaining code changes.
+
+> +		WARN_ON((key->flags & IEEE80211_KEY_FLAG_PAIRWISE));
+
+nit: extra parentheses
+
+> + * The firmware passes up NULL vifs for broadcast management frames. Fin=
+d
+> + * the first interface that best fits the frame we are rx'ing. This
+> + * has the clear downside if we have two vifs with the same interface ty=
+pe
+> + * the 2nd vif will never be targeted. For now, this will have to do.
+
+Why do you need this? Curious, because mac80211 ought to sort out the
+right vif (or even send it to multiple) anyway?
+
+The only user _appears_ to be mm81x_rx_h_update_sta() which seems you
+could just skip entirely for broadcast mgmt frames, since it's just
+statistics?
+Or look up the STA not the VIF (ieee80211_find_sta_by_ifaddr() can take
+a NULL ifaddr)?
+
+Anyway, not really important.
+
+> +	ieee80211_rx_irqsafe(hw, skb);
+
+This seems a bit pointless, you're coming from a worker already, so why
+jump through a tasklet again? Seems ieee80211_rx() would do, unless you
+have some assumptions on how fast the work must process? (but then you
+should probably document those.)
+
+(I'm not going to look in this much detail at the other stuff, this just
+because of the mac80211 interface.)
+
+johannes
 
 
