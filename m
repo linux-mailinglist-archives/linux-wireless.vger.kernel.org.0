@@ -1,52 +1,52 @@
-Return-Path: <linux-wireless+bounces-32597-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-32593-lists+linux-wireless=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id qPVoMMiVqmmIUAEAu9opvQ
-	(envelope-from <linux-wireless+bounces-32597-lists+linux-wireless=lfdr.de@vger.kernel.org>)
-	for <lists+linux-wireless@lfdr.de>; Fri, 06 Mar 2026 09:52:24 +0100
+	id k1xRKceVqmmIUAEAu9opvQ
+	(envelope-from <linux-wireless+bounces-32593-lists+linux-wireless=lfdr.de@vger.kernel.org>)
+	for <lists+linux-wireless@lfdr.de>; Fri, 06 Mar 2026 09:52:23 +0100
 X-Original-To: lists+linux-wireless@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8331721D5E8
-	for <lists+linux-wireless@lfdr.de>; Fri, 06 Mar 2026 09:52:24 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id A6CE021D5DA
+	for <lists+linux-wireless@lfdr.de>; Fri, 06 Mar 2026 09:52:22 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id ED44A303B2ED
-	for <lists+linux-wireless@lfdr.de>; Fri,  6 Mar 2026 08:52:20 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id CAE6F300B505
+	for <lists+linux-wireless@lfdr.de>; Fri,  6 Mar 2026 08:52:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EAEB3334C27;
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DFC6632ED2F;
 	Fri,  6 Mar 2026 08:52:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="cBbq+bqg"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ezpeRrkt"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C69DE32ABCA;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BC42223D7FF;
 	Fri,  6 Mar 2026 08:52:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772787135; cv=none; b=V5wKRWiRWQMdR6LRhhP7N4uiRwasrniHGlgPqdyyxz/Y+mtFqtPUUo0gfzoCdjeZEy2SKeah1GD9wgog/fDYBH+/zIcVBcaLzLtsUoV+8jDrxnpi8uuGZ1yTC6O9YZqOC6tZ0akMVrQBL/qLXbVnzfJI6MDyUi3CTNujY8eS/so=
+	t=1772787135; cv=none; b=Y8L/tyGpMWwBQ0DzEW9jO33pYGSHMmqgZhVZyxKog48HDV3OuNkYeIieodUjPEAYnO81OD0Y/PXbUWZKGSkdxyQSbQ+s2bmgwS/W5j037O8HZZnegE1+jRbCca5hQht45EBmQQpiDG+pu9VgfbmXkzPe/ugIbDu7LgoXo11gNws=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1772787135; c=relaxed/simple;
-	bh=JAu4aGrnPPyf8CrNrqLPSHkFG5LAr0AmkxM6UI5mqdE=;
+	bh=kaq0JBNHyQqQlidhi1/aPYh1/H5njyrGvo0l9Tfow5M=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=YSyAls4UhM+nQgyjsQZFutPTPK50UsmVfycpknj7lGA+hxR8EWGcXQlDHXxEODK46kS1UvmWuj2XMux/h4U0Q+PeGZMU6mnJ7PXs0XBvK8PLTo3VOcYtxJd0GgDyT23UzjnyRuwnNJ56wkAKra9JbOiWzOhIJby9HklZFkd73tM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=cBbq+bqg; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 88D94C2BC9E;
+	 MIME-Version; b=ZgOkb5JcHKBy94Wf76ogFQUOZosq+W5wgVkHmF4AiaSV7L+1nxtSe8Y9/wYs8pw+sZK3HI0MD5KzCDDyJ4q/jMazb8rNM1jBbupa/Fs96lmiVpG8i9pt9J1YitGyfS+KvB7d2wGg9phME0BUWK1OIf8klIZ17iwu/sW9VCvvrBY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ezpeRrkt; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7055CC4CEF7;
 	Fri,  6 Mar 2026 08:52:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
 	s=k20201202; t=1772787135;
-	bh=JAu4aGrnPPyf8CrNrqLPSHkFG5LAr0AmkxM6UI5mqdE=;
+	bh=kaq0JBNHyQqQlidhi1/aPYh1/H5njyrGvo0l9Tfow5M=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=cBbq+bqgGOzJohI3myC/rfmWyVTrUMYfGt24Auc7rMLkPX5htugIF32oay0ULQKj3
-	 M/7ztsuslvGQU2BRKlQbEpLeJb/0+4DjefPdOaaawI9lYQ/hM9smL801tOHLeo0X6i
-	 5UYECwfxN8dB2bD73fqskcY3G0RZFj7rPNsncA5g4Zm66sE9WW7kH91urn5X8ESQpP
-	 pDZHjlNhAA/cKob7SHkgA00ihWO38siJEvu3LpgVaaMy4LCsO6vT1U4z5Qoe1C8ata
-	 kMI3IWvmffe7R3sxlQktltQxG2ER5ly37if+2BWgVjApsnSYSbcVvtJkMl6IFmfuCl
-	 0wGveMa0liShw==
+	b=ezpeRrktOFKOzNVq65yGXnie5Ezdwl7U//BjLWxRPul4V5XZ2Wxd3quESPYHJR5xP
+	 309PaUP2Yt6zPfEYXna3tH+VKzCrmYAYpTSX0QYCAy00W6w0dCBt/VBf/Tk5RBsZT2
+	 SiMnMDkzBwkmB2cTH++4tUx/ainTE28zXAei2CNWf9RIyXS0mSvID8reru+33lCRnJ
+	 JZASEcaOEQiL6g2ZBDDYnCIUxp73XeA73j9HTYcW3GMFjZzZahCLV1oBsMI7K+nhF9
+	 dJCuF+ZbNn8V02mrERYpSHCxk0zaF5xS6Fq2bW99vKVOZwlJz3F5b+DcSMZVeWHOw6
+	 m7YzmLzmCfqXg==
 Received: from johan by xi.lan with local (Exim 4.98.2)
 	(envelope-from <johan@kernel.org>)
-	id 1vyQuq-000000003AV-3dQg;
+	id 1vyQuq-000000003AX-3g6H;
 	Fri, 06 Mar 2026 09:52:12 +0100
 From: Johan Hovold <johan@kernel.org>
 To: linux-wireless@vger.kernel.org
@@ -73,9 +73,9 @@ Cc: Jeff Johnson <jjohnson@kernel.org>,
 	libertas-dev@lists.infradead.org,
 	linux-kernel@vger.kernel.org,
 	Johan Hovold <johan@kernel.org>
-Subject: [PATCH v2 06/18] wifi: at76c50x: drop redundant device reference
-Date: Fri,  6 Mar 2026 09:51:32 +0100
-Message-ID: <20260306085144.12064-7-johan@kernel.org>
+Subject: [PATCH v2 07/18] wifi: libertas: drop redundant device reference
+Date: Fri,  6 Mar 2026 09:51:33 +0100
+Message-ID: <20260306085144.12064-8-johan@kernel.org>
 X-Mailer: git-send-email 2.52.0
 In-Reply-To: <20260306085144.12064-1-johan@kernel.org>
 References: <20260306085144.12064-1-johan@kernel.org>
@@ -86,7 +86,7 @@ List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 8331721D5E8
+X-Rspamd-Queue-Id: A6CE021D5DA
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [0.84 / 15.00];
 	SUSPICIOUS_RECIPS(1.50)[];
@@ -94,7 +94,7 @@ X-Spamd-Result: default: False [0.84 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
@@ -102,10 +102,10 @@ X-Spamd-Result: default: False [0.84 / 15.00];
 	FREEMAIL_CC(0.00)[kernel.org,toke.dk,chromium.org,dolcini.it,nbd.name,mediatek.com,wp.pl,gmail.com,realtek.com,microchip.com,bootlin.com,tuxon.dev,collabora.com,linuxfoundation.org,lists.infradead.org,vger.kernel.org];
 	RCPT_COUNT_TWELVE(0.00)[24];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-32597-lists,linux-wireless=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-32593-lists,linux-wireless=lfdr.de];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[johan@kernel.org,linux-wireless@vger.kernel.org];
@@ -116,7 +116,7 @@ X-Spamd-Result: default: False [0.84 / 15.00];
 	NEURAL_HAM(-0.00)[-1.000];
 	TO_DN_SOME(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo]
 X-Rspamd-Action: no action
 
 Driver core holds a reference to the USB interface and its parent USB
@@ -130,48 +130,37 @@ the risk of memory leaks when drivers fail to release it.
 
 Signed-off-by: Johan Hovold <johan@kernel.org>
 ---
- drivers/net/wireless/atmel/at76c50x-usb.c | 12 ++++--------
- 1 file changed, 4 insertions(+), 8 deletions(-)
+ drivers/net/wireless/marvell/libertas/if_usb.c | 3 ---
+ 1 file changed, 3 deletions(-)
 
-diff --git a/drivers/net/wireless/atmel/at76c50x-usb.c b/drivers/net/wireless/atmel/at76c50x-usb.c
-index 6445332801a4..44b04ea3cc8b 100644
---- a/drivers/net/wireless/atmel/at76c50x-usb.c
-+++ b/drivers/net/wireless/atmel/at76c50x-usb.c
-@@ -2440,13 +2440,11 @@ static int at76_probe(struct usb_interface *interface,
- 	struct mib_fw_version *fwv;
- 	int board_type = (int)id->driver_info;
+diff --git a/drivers/net/wireless/marvell/libertas/if_usb.c b/drivers/net/wireless/marvell/libertas/if_usb.c
+index 8a6bf1365cfa..05fcf9cc28fa 100644
+--- a/drivers/net/wireless/marvell/libertas/if_usb.c
++++ b/drivers/net/wireless/marvell/libertas/if_usb.c
+@@ -276,7 +276,6 @@ static int if_usb_probe(struct usb_interface *intf,
  
--	udev = usb_get_dev(interface_to_usbdev(interface));
-+	udev = interface_to_usbdev(interface);
+ 	cardp->boot2_version = udev->descriptor.bcdDevice;
  
- 	fwv = kmalloc_obj(*fwv);
--	if (!fwv) {
--		ret = -ENOMEM;
--		goto exit;
--	}
-+	if (!fwv)
-+		return -ENOMEM;
+-	usb_get_dev(udev);
+ 	usb_set_intfdata(intf, cardp);
  
- 	/* Load firmware into kernel memory */
- 	fwe = at76_load_firmware(udev, board_type);
-@@ -2534,8 +2532,7 @@ static int at76_probe(struct usb_interface *interface,
+ 	r = lbs_get_firmware_async(priv, &udev->dev, cardp->model,
+@@ -287,7 +286,6 @@ static int if_usb_probe(struct usb_interface *intf,
+ 	return 0;
  
- exit:
- 	kfree(fwv);
--	if (ret < 0)
--		usb_put_dev(udev);
-+
- 	return ret;
+ err_get_fw:
+-	usb_put_dev(udev);
+ 	lbs_remove_card(priv);
+ err_add_card:
+ 	if_usb_reset_device(cardp);
+@@ -321,7 +319,6 @@ static void if_usb_disconnect(struct usb_interface *intf)
+ 	kfree(cardp);
+ 
+ 	usb_set_intfdata(intf, NULL);
+-	usb_put_dev(interface_to_usbdev(intf));
  }
  
-@@ -2552,7 +2549,6 @@ static void at76_disconnect(struct usb_interface *interface)
- 
- 	wiphy_info(priv->hw->wiphy, "disconnecting\n");
- 	at76_delete_device(priv);
--	usb_put_dev(interface_to_usbdev(interface));
- 	dev_info(&interface->dev, "disconnected\n");
- }
- 
+ /**
 -- 
 2.52.0
 
