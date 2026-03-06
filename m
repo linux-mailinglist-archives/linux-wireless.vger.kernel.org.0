@@ -1,375 +1,388 @@
-Return-Path: <linux-wireless+bounces-32645-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-32646-lists+linux-wireless=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id MM8OEMDJqmlWXAEAu9opvQ
-	(envelope-from <linux-wireless+bounces-32645-lists+linux-wireless=lfdr.de@vger.kernel.org>)
-	for <lists+linux-wireless@lfdr.de>; Fri, 06 Mar 2026 13:34:08 +0100
+	id AOTTFaXNqmkNXQEAu9opvQ
+	(envelope-from <linux-wireless+bounces-32646-lists+linux-wireless=lfdr.de@vger.kernel.org>)
+	for <lists+linux-wireless@lfdr.de>; Fri, 06 Mar 2026 13:50:45 +0100
 X-Original-To: lists+linux-wireless@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id C1A91220B40
-	for <lists+linux-wireless@lfdr.de>; Fri, 06 Mar 2026 13:34:07 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id C87C9220FA4
+	for <lists+linux-wireless@lfdr.de>; Fri, 06 Mar 2026 13:50:44 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id C28A83095220
-	for <lists+linux-wireless@lfdr.de>; Fri,  6 Mar 2026 12:31:54 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 52C9C3195185
+	for <lists+linux-wireless@lfdr.de>; Fri,  6 Mar 2026 12:44:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C001A1E32D6;
-	Fri,  6 Mar 2026 12:31:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 642342765DF;
+	Fri,  6 Mar 2026 12:43:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="dxeyKNvE"
+	dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b="EmkNbbSF"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-oi1-f173.google.com (mail-oi1-f173.google.com [209.85.167.173])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from sipsolutions.net (s3.sipsolutions.net [168.119.38.16])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 39D581BD9C9
-	for <linux-wireless@vger.kernel.org>; Fri,  6 Mar 2026 12:31:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.167.173
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772800290; cv=pass; b=jmJyu3yFoQnpYQYwlCuF5SRGNyeG5DBfPlBd0iZaceKVVIaAhZ69KA0vKoJB+mzBQMdkvkbksDyyvdgtTngl/EzwApxH81TczxPtDJg6dxZtN8s5Jt9RolHLK4cUqyrc8DQMUF0B5h7EshYOJiXeyV+RYEI3uPs7vmJaYlqqYO4=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772800290; c=relaxed/simple;
-	bh=XMxeGdc6x+tMPZKLsFHFLv+4eFMTU9+2fPkNSbngmj8=;
-	h=MIME-Version:From:Date:Message-ID:Subject:To:Content-Type; b=dN0s2eb/1Yqii4Mr3CKHgMAeAzjFMGM7LHndoNxwOItTXen3VyeO3w5nEpK28eEJyeuw5LgGzw4wv8cIZ1rqg8Y9foj3qKqK+QSLPnO4Xujh5WMAS5z/ls199UFsiAlamVOdJRxrl3rz6qn/qySfe3b8/aKiJmBQopO9+/iNDLs=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=dxeyKNvE; arc=pass smtp.client-ip=209.85.167.173
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-oi1-f173.google.com with SMTP id 5614622812f47-46391f4c1f9so5635389b6e.0
-        for <linux-wireless@vger.kernel.org>; Fri, 06 Mar 2026 04:31:26 -0800 (PST)
-ARC-Seal: i=1; a=rsa-sha256; t=1772800286; cv=none;
-        d=google.com; s=arc-20240605;
-        b=EyHRqT2a9uPxDBXK94etX6tTBTWFxShYvRc+90CNhPDZ0YAVjHcVwjTW9EJqCRmhUj
-         i0cc+g1xVqAa72pzbuHnJKnRsSLv8/nRHh6D8TFIDN9n4gCtDAlqCGxRXR1SwE8hxdyv
-         lYsIj9SOjof0gtXxk9r5y/aeX7adWg1aUei+eBegRoyyus2zbd4XrB3Z8w2ei6hsQMtM
-         eALLJDwjfntBPuGYQcb+AbwZIFOOMvjtWxfnWjYXDYweFisvQmsiJ1j2WR2LcBlEnvnW
-         WI9VM78nDSGKFx4pi1wCgrwi+JZmei3QiQfMlFOIppk+hKccSPChZe30GvvjhvgdENQZ
-         hArQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=to:subject:message-id:date:from:mime-version:dkim-signature;
-        bh=XMxeGdc6x+tMPZKLsFHFLv+4eFMTU9+2fPkNSbngmj8=;
-        fh=qW0phhq3fb3oiohK/Mu9j1KY1zyRNiiioKFc5anvatM=;
-        b=iVAdz4H8yZ2Bm7HKddH5GY/UvGiSMyOZ0wWYidTfXGVbQ1+mYImLqfktJioAPBSkwQ
-         cyDWtYGTtsiyJ/t6aDclpLASly3FPVJEp4fFn7GjIU+2L0ozrp35H0hSL+XF9i0YB8MO
-         Qv0Vp35VyigOAD6lz/5e2obhdsT+irHsGO9IQVzfd1GfX4XT3aayzEtPiIBXYxEgJMk4
-         Z1ksAUNSfZQihsBmbxqRX9Vqx+GgGigT1WMyREDKkA/4Kmbw2kh1Yus8aENmZUv/Y78I
-         /QUaxw3N3ITicyfqfndMRfhUZNajOx5xTw6veicnxR/hdSgxn9TQ00g5lIOwM/7O2vKL
-         jVog==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1772800286; x=1773405086; darn=vger.kernel.org;
-        h=to:subject:message-id:date:from:mime-version:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=XMxeGdc6x+tMPZKLsFHFLv+4eFMTU9+2fPkNSbngmj8=;
-        b=dxeyKNvEg5vNKn2oU5Zz0WkKdpD5ydKzvNtYKVyckolr0cAxriN0TxOARGLP61kI9q
-         KBPPWiOHH4LKe1DAfwxvUPyYsoQBPo1M2J6aGqq36Ledm/HJJszlYijRkeF6Z0HYJbbN
-         AYUcXqtaahV8mkqMPqggOzXk8rjSweuFDUe/kBIrp4W2hD/l9Z+zK7bNwHEguHIm29tO
-         gQ5XF78l7Xizvr9cWmvaYuTi/x/dyPA2wa+MWWm/+u5/ICNGr+Sc8EWzYiK1xkvW/xui
-         5Ot5tT7ckvc9oXRzNyT1VEcdXxoSVHcCgCdwKt8irmExhipJURk1AHAw8rmJT1mdPkBK
-         ysaA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1772800286; x=1773405086;
-        h=to:subject:message-id:date:from:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=XMxeGdc6x+tMPZKLsFHFLv+4eFMTU9+2fPkNSbngmj8=;
-        b=arUAwzaoVAA2Jvzv0MTTyaOJKAqiNJNCn+F8wGyT8HbhUwFakXm3LS8JnSHTME8/f+
-         bRceESfl/A6uh0hPUeanIfyck4SrA49uO9a+YAmXHZdRyjYeO6Z9lqGrE8myIGygoCaF
-         hodgV8plOTVzUzG3CwmOZAsPWMAkwVmaEMFwvIBQul//gWSMbkNUjIz41crJj1BzA5gk
-         7x83Phm8t3EDsznbbLqXiw3S0KzOYLSXViCH1j3whI87dmpvrBpvFUxtJSHAQxuc9cYW
-         mbK9bXAY97fkzHlEA0NQvrx73dG35kGwMlEiin0ugRVi07ZCVZfcVELC30j1nUm9AGYy
-         wn5g==
-X-Gm-Message-State: AOJu0YxYH8B6nJ3RCTmXEPY7aKJUpmVyp3MdX+QQ6/GdQpzzuorfB7FR
-	TmHvXM7AnvmDhSPx6cW2ZAI6FAFRANAPCIe+fU3C7mxmyL1Xzkt0zntc68MrY77gTXBkBKvdAOX
-	Nm7fAvEf+1aHIvwlvQtZMC7757uHr/SbRXP/WR4g=
-X-Gm-Gg: ATEYQzwacoZGsoKA8yxsoc2DLdfgMZaCo1L0a/kBVxTh9a73MFzx7i0DLI1NFDLICdz
-	Q5o/yHH4qmbsY0+XItDVziBVWibwXtZYLAcSsWMw5CG/qdRCVkW6gyyW0Oe5gQIihMGKVOSL+3K
-	8BsszuDxbY1te8pokwFAbpDLXQxx9kdmH65oXpNKX7h7yM9Ubxyn4XJNM8nzw4nqTdcxR+KUYq9
-	/oy99Nc1Fs2/JhQmGNB6jA9LvWkqnUiotZg1bebUr7w6OsRcTO1HczoLEiXVZJkN64ytbVZdKVD
-	X1VnufPqUqfAgmqm1A==
-X-Received: by 2002:a05:6808:1184:b0:463:ab56:9ec5 with SMTP id
- 5614622812f47-466dca16d3fmr1077766b6e.16.1772800285870; Fri, 06 Mar 2026
- 04:31:25 -0800 (PST)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6CE3526B755
+	for <linux-wireless@vger.kernel.org>; Fri,  6 Mar 2026 12:43:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=168.119.38.16
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1772801026; cv=none; b=hsh5614ybOgIwkTHu/Ey68WFMbMMfV6RNUqOlUiMFpw5MPO01yYytqKKgOvq/QI30mDkXQwbGyVXRf0EHG8lK++4YqY8gwGvVjpnXOka1Od1sb2Cc53zFKW4ow0aKcKGO0kGjOZTkoFmX2ssjhUirAfaKjgjt8hydyrpc8Y+QHY=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1772801026; c=relaxed/simple;
+	bh=+3U0Y2FxPJ1q7/oEWiSVZ80hDKz7ZApCRyYcFzaz1EU=;
+	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=oDwZZVUGqodB0qdaEmgvGT/O+kkxNX0AojyWIPXc7IURzuB3i8Guf6QyR14WYZf/GFpipc3a4boDFvU3/jh4xA3Brf+R7Bi7MrIhGOeTgGDzwQvPrdo5LCmelkZMK3qHbNjNJl9zxQzfnrJPDDVRIQ4e1R1NtG/OX4C2To4DSUc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net; spf=pass smtp.mailfrom=sipsolutions.net; dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b=EmkNbbSF; arc=none smtp.client-ip=168.119.38.16
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sipsolutions.net
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=sipsolutions.net; s=mail; h=MIME-Version:Content-Transfer-Encoding:
+	Content-Type:References:In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender
+	:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
+	Resent-Cc:Resent-Message-ID; bh=xzCmgyx0haB+usOOlnGcDpFIfMv5UsYDqnPw5s4HEto=;
+	t=1772801024; x=1774010624; b=EmkNbbSFAX5fw/rhPOLQ/jefNX5hxD6u/Uj8rhN9/040/zm
+	mcqO+K6x3IVO+g65Pnx9RfTElZBqaK7lekiFNSKphFRXxyf44CxLUfvTwajkZcnDPpMVu5uk3zHws
+	F08XXWADLeVTMMRRKj3/BCYsAlSJffo28NgbCMtvrJ2oZjRzydLyOjmgWg8Td2orFm7e8/Eo0BKOv
+	2knLsD1khkCjwr6zGpL6ofwCyO7+S0oQhTvWTRm1s7q3LUxSga/PQGV7kBDO1i4y0TEA84TQiTH77
+	4rgNu5y9JDobDLcCuVlLqbvCMMG45CsS1SCn8qe0zKOtHwfEvSzcEmxAqTwQ1i3Q==;
+Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
+	(Exim 4.98.2)
+	(envelope-from <johannes@sipsolutions.net>)
+	id 1vyUWp-0000000A7d0-0Vtu;
+	Fri, 06 Mar 2026 13:43:39 +0100
+Message-ID: <d3ecf6e5580cbe50eee807b1e63109e42e3b956c.camel@sipsolutions.net>
+Subject: Re: [PATCH wireless-next v8 2/3] wifi: cfg80211: add initial UHR
+ support
+From: Johannes Berg <johannes@sipsolutions.net>
+To: Harshitha Prem <harshitha.prem@oss.qualcomm.com>, 
+	linux-wireless@vger.kernel.org
+Cc: Karthikeyan Kathirvel <karthikeyan.kathirvel@oss.qualcomm.com>, 
+	vasanthakumar.thiagarajan@oss.qualcomm.com, Lorenzo Bianconi
+ <lorenzo@kernel.org>, 	ath12k@lists.infradead.org, Jeff Johnson
+ <jeff.johnson@oss.qualcomm.com>,  Ping-Ke Shih <pkshih@realtek.com>, Manish
+ Dharanenthiran <manish.dharanenthiran@oss.qualcomm.com>
+Date: Fri, 06 Mar 2026 13:43:37 +0100
+In-Reply-To: <f3282007-a11a-4f68-86d8-0945e4979d65@oss.qualcomm.com>
+References: <20260130154259.265130-5-johannes@sipsolutions.net>
+	 <20260130164259.54cc12fbb307.I26126bebd83c7ab17e99827489f946ceabb3521f@changeid>
+	 <f96125eeda23451c19067359eb9d10b4047bcdd3.camel@sipsolutions.net>
+	 <5d54feea-d0cd-4bd7-b0d2-02e42f0fe5e1@oss.qualcomm.com>
+	 <be9ab3c7f05b0f56f19aee0ffc7c2f96138b9a05.camel@sipsolutions.net>
+	 <156d6d48-d135-4acf-a5d7-c9ae80523864@oss.qualcomm.com>
+	 <0f4b34f0b529fd93fc608d8bbac0e98516b7a3d2.camel@sipsolutions.net>
+	 <f3282007-a11a-4f68-86d8-0945e4979d65@oss.qualcomm.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.58.3 (3.58.3-1.fc43) 
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-From: Sergio <srg.llorente.bn@gmail.com>
-Date: Fri, 6 Mar 2026 13:31:14 +0100
-X-Gm-Features: AaiRm52U4bHqbrdRCPlu8KJKuspL3zHOFss6DnH8lOBQ1W9ChQMblV5qu_MZ96I
-Message-ID: <CAEhwkO8XDDT-TWsL4Mo=qc8NedojvA7JNB-PA_XiAxfk-bPWsg@mail.gmail.com>
-Subject: BUG: rtw89_8852ce firmware crash (SER catches error) on kernel 6.18.13
-To: linux-wireless@vger.kernel.org
-Content-Type: multipart/mixed; boundary="0000000000004c44b0064c5a3bb3"
-X-Rspamd-Queue-Id: C1A91220B40
+X-malware-bazaar: not-scanned
+X-Rspamd-Queue-Id: C87C9220FA4
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-1.06 / 15.00];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=2];
-	MIME_BASE64_TEXT_BOGUS(1.00)[];
-	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
-	R_DKIM_ALLOW(-0.20)[gmail.com:s=20230601];
+X-Spamd-Result: default: False [-2.16 / 15.00];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	DMARC_POLICY_ALLOW(-0.50)[sipsolutions.net,none];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_DKIM_ALLOW(-0.20)[sipsolutions.net:s=mail];
 	MAILLIST(-0.15)[generic];
-	MIME_GOOD(-0.10)[multipart/mixed,text/plain];
-	MIME_BASE64_TEXT(0.10)[];
+	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-32645-lists,linux-wireless=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-32646-lists,linux-wireless=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	RCPT_COUNT_ONE(0.00)[1];
 	RCVD_COUNT_THREE(0.00)[4];
-	FREEMAIL_FROM(0.00)[gmail.com];
-	MIME_TRACE(0.00)[0:+,1:+,2:+];
-	DKIM_TRACE(0.00)[gmail.com:+];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TO_DN_NONE(0.00)[];
+	DKIM_TRACE(0.00)[sipsolutions.net:+];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	TO_DN_SOME(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[srgllorentebn@gmail.com,linux-wireless@vger.kernel.org];
-	HAS_ATTACHMENT(0.00)[];
-	NEURAL_HAM(-0.00)[-0.999];
+	FROM_NEQ_ENVFROM(0.00)[johannes@sipsolutions.net,linux-wireless@vger.kernel.org];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[linux-wireless];
-	MID_RHS_MATCH_FROMTLD(0.00)[];
-	MISSING_XM_UA(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,mail.gmail.com:mid]
+	RCPT_COUNT_SEVEN(0.00)[9];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
 X-Rspamd-Action: no action
 
---0000000000004c44b0064c5a3bb3
-Content-Type: text/plain; charset="UTF-8"
+Hi,
 
-Hi all,
+> Thank you very much for your patience, and apologies for the delayed
+> response. We spent some time discussing this internally and wanted to
+> follow up thoughtfully.
 
-I am experiencing frequent firmware crashes and micro-disconnects with
-my RTL8852CE Wi-Fi card. The system seems to be repeatedly recovering
-from internal errors (System Error Recovery), which causes lag spikes
-and connection drops.
+Hey, no worries, I'm clearly also not always able to respond quickly, a
+lot of things are going on at any given time ...
 
-Here is my system and hardware information:
+> > This could get trickier than I imagined - you now have three periods of
+> > time:
+> >=20
+> >  - now
+> >  - after CSA but before UHR update
+> >  - after UHR update
+> >=20
+> > and actually all three might need different UHR operation, since the CS=
+A
+> > can change the bandwidth and therefore e.g. DBE/NPCA. The intermediate
+> > period ("after CSA but before UHR update") can be captured by the CSA
+> > operation (given a template/UHR operation for after) easily.
+> >=20
+> > But I was imagining we capture all this in the operations already, so I
+> > guess to do that we would need a "NL80211_CMD_MODIFY_MLD_BSS_UPDATE"
+> > command that takes the cookie and updates the post-operation values, so
+> > that the changes due to the CSA could be taken into account in the
+> > previously started UHR update.
+>=20
+> The idea of introducing an NL80211_CMD_MODIFY_MLD_BSS_UPDATE command
+> makes a lot of sense to us. In cases where
+> NL80211_CMD_START_MLD_BSS_UPDATE is already in progress, having a modify
+> path to update the current beacon seems easier to reason about and
+> manage. From that perspective, a pairing such as
+> NL80211_CMD_START_MLD_BSS_UPDATE together with
+> NL80211_CMD_MODIFY_MLD_BSS_UPDATE feels quite natural.
 
-* Kernel: Linux fedora 6.18.13-200.fc43.x86_64 [cite: 1]
-* Hardware: Realtek Semiconductor Co., Ltd. RTL8852CE PCIe 802.11ax
-Wireless Network Controller [10ec:c852]
-* Subsystem: Lenovo Device [17aa:5852]
-* Firmware: loaded rtw89/rtw8852c_fw-2.bin [cite: 2]
-* Firmware version: 0.27.129.4 (3f1a5302) [cite: 2]
+Yeah, maybe, then it wouldn't ever really go to a normal SET_BEACON any
+more, maybe?
 
-Here is a brief snippet of the dmesg output during the crash:
+I was thinking more for not having to change all the code in hostapd at
+a given time, it might be more plausible to still allow SET_BEACON and
+just keep giving the counter offsets etc., in case e.g. something "old"
+like short-preamble changes.
 
-[12391.222707] rtw89_8852ce 0000:02:00.0: SER catches error: 0x1001 [cite: 9]
-[12391.223497] rtw89_8852ce 0000:02:00.0: FW status = 0x6a008108 [cite: 9]
-[12391.223521] rtw89_8852ce 0000:02:00.0: [ERR]fw PC = 0x201465c8 [cite: 9]
-[12391.223733] rtw89_8852ce 0000:02:00.0: SER catches error: 0x1002 [cite: 10]
+But clearly hostapd would have to manage those offsets etc. anyway, so
+perhaps there's really not going to be any reason to support SET_BEACON
+while updates are in progress. But in that case I'd probably argue it
+(SET_BEACON) should be disallowed by the kernel, to catch errors.
 
-I have attached the full dmesg crash log for your review.
+> Please find below the envisioned design flow for the UHR CU and CSA
+> intersection.
+>=20
+> Hostapd (User)          mac80211 (Kernel)           Air / Station
+>    |                           |                           |
+>  1 | CMD_START_AP [Adv Notif,  |                           |
+>    |  Post Notif, Upd Int]     |                           |
+>    |-------------------------->|                           |
+>    |                           |                           |
+>  2 | CMD_START_MLD_BSS_UPDATE  |                           |
+>    | [Link:0, CurTmpl+Offset   |                           |
+>    |  (All), Timer, PostTmpl   |                           |
+>    |  (All), Type:UHR_CU,      |                           |
+>    |  Post UHR Op element]     |                           |
+>    |-------------------------->|                           |
+>    |                           |                           |
+>  3 |                           | [Set Tmpl, Timer: Adv=3D10, |
+>    |                           |  Post=3D10, TIM Update]     |
+>    |                           |                           |
+>  4 |         Cookie X          |                           |
+>    |<--------------------------|                           |
+>    |                           |                           |
+>  5 | EVENT_UHR_CU (CU_START)   |                           |
+>    |<--------------------------|                           |
 
-Please let me know if there are any specific patches I should test or
-if you need more debug information.
+Not sure what the event does really, at this point? It kind of starts
+immediately anyway, no? But it also doesn't matter for this high-level
+discussion.
 
-Best regards,
-Padilla
+>    |                           |                           |
+>  6 |                           | Beacons: 10, 9, 8...      |
+>    |                           |-------------------------->|
+>    |                           |                           |
+>  7 | [CSA Triggered: Link0,    |                           |
+>    |  Count 10. Sees Cookie X] |                           |
+>    |                           |                           |
+>  8 | CMD_START_MLD_BSS_UPDATE  |                           |
+>    | [Type:CSA, Link:0, Tmpls, |                           |
+>    |  Cookie X + Offset,       |                           |
+>    |  Post Tmpl (No UHR ele)]  |                           |
+>    |-------------------------->|                           |
 
---0000000000004c44b0064c5a3bb3
-Content-Type: text/plain; charset="US-ASCII"; name="rtw89_8852ce_dmesg_crash.txt"
-Content-Disposition: attachment; filename="rtw89_8852ce_dmesg_crash.txt"
-Content-Transfer-Encoding: base64
-Content-ID: <f_mmevhr4k0>
-X-Attachment-Id: f_mmevhr4k0
+Not sure I understand the "No UHR ele" part - surely the post template
+still has UHR? Or did you mean "UHR parameter update"?
 
-dXNlckBmZWRvcmE6fiQgdW5hbWUgLWEKTGludXggZmVkb3JhIDYuMTguMTMtMjAwLmZjNDMueDg2
-XzY0ICMxIFNNUCBQUkVFTVBUX0RZTkFNSUMgVGh1IEZlYiAxOSAxOTo1NDowMSBVVEMgMjAyNiB4
-ODZfNjQgR05VL0xpbnV4CnVzZXJAZmVkb3JhOn4kIHN1ZG8gZG1lc2cgfCBncmVwIHJ0dzg5Cltz
-dWRvXSBwYXNzd29yZCBmb3IgdXNlcjoKWyAgIDcyLjQ1NDk0OV0gcnR3ODlfODg1MmNlIDAwMDA6
-MDI6MDAuMDogbG9hZGVkIGZpcm13YXJlIHJ0dzg5L3J0dzg4NTJjX2Z3LTIuYmluClsgICA3Mi40
-NTU2MjVdIHJ0dzg5Xzg4NTJjZSAwMDAwOjAyOjAwLjA6IGVuYWJsaW5nIGRldmljZSAoMDAwMCAt
-PiAwMDAzKQpbICAgNzIuNDY0OTE5XSBydHc4OV84ODUyY2UgMDAwMDowMjowMC4wOiBGaXJtd2Fy
-ZSB2ZXJzaW9uIDAuMjcuMTI5LjQgKDNmMWE1MzAyKSwgY21kIHZlcnNpb24gMCwgdHlwZSAxClsg
-ICA3Mi40NjQ5MjldIHJ0dzg5Xzg4NTJjZSAwMDAwOjAyOjAwLjA6IEZpcm13YXJlIHZlcnNpb24g
-MC4yNy4xMjkuNCAoM2YxYTUzMDIpLCBjbWQgdmVyc2lvbiAwLCB0eXBlIDMKWyAgIDcyLjcyNDQ4
-NV0gcnR3ODlfODg1MmNlIDAwMDA6MDI6MDAuMDogY2hpcCByZmVfdHlwZSBpcyAxClsgICA3Mi43
-NDU5MjVdIHJ0dzg5Xzg4NTJjZSAwMDAwOjAyOjAwLjA6IEZpcm13YXJlIGVsZW1lbnQgQkIgdmVy
-c2lvbjogMDAgMjggMDAgMDAKWyAgIDcyLjc0NTk1NV0gcnR3ODlfODg1MmNlIDAwMDA6MDI6MDAu
-MDogRmlybXdhcmUgZWxlbWVudCByYWRpbyBBIHZlcnNpb246IDAwIDYzIDAwIDAwClsgICA3Mi43
-NDU5NzhdIHJ0dzg5Xzg4NTJjZSAwMDAwOjAyOjAwLjA6IEZpcm13YXJlIGVsZW1lbnQgTkNUTCB2
-ZXJzaW9uOiAwMCAxMSAwMCAwMApbICAgNzIuNzQ2MDQ0XSBydHc4OV84ODUyY2UgMDAwMDowMjow
-MC4wOiBGaXJtd2FyZSBlbGVtZW50IFRYUFdSIHZlcnNpb246IDAwIDc4IDAwIDAwClsgICA3Mi43
-NDYwNDldIHJ0dzg5Xzg4NTJjZSAwMDAwOjAyOjAwLjA6IEZpcm13YXJlIGVsZW1lbnQgUFdSX1RS
-SyB2ZXJzaW9uOiAwMCAyNiAwMCAwMApbICAgNzIuNzQ2MDU3XSBydHc4OV84ODUyY2UgMDAwMDow
-MjowMC4wOiBGaXJtd2FyZSBlbGVtZW50IFJFR0QgdmVyc2lvbjogMDAgNDggMDAgMzkKWyAgIDcy
-Ljc0OTgxOF0gcnR3ODlfODg1MmNlIDAwMDA6MDI6MDAuMDogcmZraWxsIGhhcmR3YXJlIHN0YXRl
-IGNoYW5nZWQgdG8gZW5hYmxlClsgICA3Mi43Njc0MzhdIHJ0dzg5Xzg4NTJjZSAwMDAwOjAyOjAw
-LjAgd2xwMnMwOiByZW5hbWVkIGZyb20gd2xhbjAKWyA4MTY1LjczNDczOF0gcnR3ODlfODg1MmNl
-IDAwMDA6MDI6MDAuMDogW1JYX0RDS10gUzEgUlhEQ0sgdGltZW91dApbMTIzOTEuMjE5MjI0XSBy
-dHc4OV84ODUyY2UgMDAwMDowMjowMC4wOiBGVyBzdGF0dXMgPSAweDZhMDAxMTA4ClsxMjM5MS4y
-MTkyMzhdIHJ0dzg5Xzg4NTJjZSAwMDAwOjAyOjAwLjA6IEZXIEJBREFERFIgPSAweDE4NjAyZjk4
-ClsxMjM5MS4yMTkyNDVdIHJ0dzg5Xzg4NTJjZSAwMDAwOjAyOjAwLjA6IEZXIEVQQy9SQSA9IDB4
-MApbMTIzOTEuMjE5MjUxXSBydHc4OV84ODUyY2UgMDAwMDowMjowMC4wOiBGVyBNSVNDID0gMHgx
-MDMwMDAwClsxMjM5MS4yMTkyNThdIHJ0dzg5Xzg4NTJjZSAwMDAwOjAyOjAwLjA6IFJfQVhfSEFM
-VF9DMkggPSAweDk5OQpbMTIzOTEuMjE5MjY0XSBydHc4OV84ODUyY2UgMDAwMDowMjowMC4wOiBS
-X0FYX1NFUl9EQkdfSU5GTyA9IDB4MTAwMDAwMApbMTIzOTEuMjE5MjczXSBydHc4OV84ODUyY2Ug
-MDAwMDowMjowMC4wOiBbRVJSXWZ3IFBDID0gMHgyMDAzYzk0NApbMTIzOTEuMjE5MzYzXSBydHc4
-OV84ODUyY2UgMDAwMDowMjowMC4wOiBbRVJSXWZ3IFBDID0gMHgyMDE0NjcwYwpbMTIzOTEuMjE5
-MzgxXSBydHc4OV84ODUyY2UgMDAwMDowMjowMC4wOiBbRVJSXWZ3IFBDID0gMHgyMDE0MWQyMgpb
-MTIzOTEuMjE5Mzk4XSBydHc4OV84ODUyY2UgMDAwMDowMjowMC4wOiBbRVJSXWZ3IFBDID0gMHgy
-MDAzYjk3YwpbMTIzOTEuMjE5NDE1XSBydHc4OV84ODUyY2UgMDAwMDowMjowMC4wOiBbRVJSXWZ3
-IFBDID0gMHgyMDE0NjZjNgpbMTIzOTEuMjE5NDMyXSBydHc4OV84ODUyY2UgMDAwMDowMjowMC4w
-OiBbRVJSXWZ3IFBDID0gMHgyMDAzYzkzMApbMTIzOTEuMjE5NDQ5XSBydHc4OV84ODUyY2UgMDAw
-MDowMjowMC4wOiBbRVJSXWZ3IFBDID0gMHgyMDAzYzkzMApbMTIzOTEuMjE5NDY2XSBydHc4OV84
-ODUyY2UgMDAwMDowMjowMC4wOiBbRVJSXWZ3IFBDID0gMHgyMDE0YmNhMApbMTIzOTEuMjE5NzE2
-XSBydHc4OV84ODUyY2UgMDAwMDowMjowMC4wOiBbRVJSXWZ3IFBDID0gMHgyMDE0NjZhNgpbMTIz
-OTEuMjE5ODA2XSBydHc4OV84ODUyY2UgMDAwMDowMjowMC4wOiBbRVJSXWZ3IFBDID0gMHgyMDAy
-ZTk1NgpbMTIzOTEuMjE5ODIzXSBydHc4OV84ODUyY2UgMDAwMDowMjowMC4wOiBbRVJSXWZ3IFBD
-ID0gMHgyMDAzYzkzNApbMTIzOTEuMjE5ODQwXSBydHc4OV84ODUyY2UgMDAwMDowMjowMC4wOiBb
-RVJSXWZ3IFBDID0gMHgyMDAzYzkzZQpbMTIzOTEuMjE5ODU4XSBydHc4OV84ODUyY2UgMDAwMDow
-MjowMC4wOiBbRVJSXWZ3IFBDID0gMHgyMDE0NjVkNApbMTIzOTEuMjE5ODc1XSBydHc4OV84ODUy
-Y2UgMDAwMDowMjowMC4wOiBbRVJSXWZ3IFBDID0gMHgyMDE0ZmVmNgpbMTIzOTEuMjE5ODkyXSBy
-dHc4OV84ODUyY2UgMDAwMDowMjowMC4wOiBbRVJSXWZ3IFBDID0gMHgyMDE0MWFkNgpbMTIzOTEu
-MjE5OTA4XSBydHc4OV84ODUyY2UgMDAwMDowMjowMC4wOiBTRVIgY2F0Y2hlcyBlcnJvcjogMHg5
-OTkKWzEyMzkxLjIyMDQ0OV0gcnR3ODlfODg1MmNlIDAwMDA6MDI6MDAuMDogRlcgc3RhdHVzID0g
-MHg2YTAwMTEwOApbMTIzOTEuMjIwNDU1XSBydHc4OV84ODUyY2UgMDAwMDowMjowMC4wOiBGVyBC
-QURBRERSID0gMHgxODYwMmY5OApbMTIzOTEuMjIwNDYxXSBydHc4OV84ODUyY2UgMDAwMDowMjow
-MC4wOiBGVyBFUEMvUkEgPSAweDAKWzEyMzkxLjIyMDQ3OV0gcnR3ODlfODg1MmNlIDAwMDA6MDI6
-MDAuMDogRlcgTUlTQyA9IDB4MjA3MDAwMApbMTIzOTEuMjIwNTU4XSBydHc4OV84ODUyY2UgMDAw
-MDowMjowMC4wOiBSX0FYX0hBTFRfQzJIID0gMHgxMDAwClsxMjM5MS4yMjA1NjRdIHJ0dzg5Xzg4
-NTJjZSAwMDAwOjAyOjAwLjA6IFJfQVhfU0VSX0RCR19JTkZPID0gMHgxMDAwMDAwClsxMjM5MS4y
-MjA1NzNdIHJ0dzg5Xzg4NTJjZSAwMDAwOjAyOjAwLjA6IFtFUlJdZncgUEMgPSAweDIwMTNmNWZj
-ClsxMjM5MS4yMjA2MTNdIHJ0dzg5Xzg4NTJjZSAwMDAwOjAyOjAwLjA6IFtFUlJdZncgUEMgPSAw
-eDIwMTNmNWY0ClsxMjM5MS4yMjA2MzBdIHJ0dzg5Xzg4NTJjZSAwMDAwOjAyOjAwLjA6IFtFUlJd
-ZncgUEMgPSAweDIwMTNmNWZhClsxMjM5MS4yMjA2NDddIHJ0dzg5Xzg4NTJjZSAwMDAwOjAyOjAw
-LjA6IFtFUlJdZncgUEMgPSAweDIwMTNmNWZjClsxMjM5MS4yMjA2NjRdIHJ0dzg5Xzg4NTJjZSAw
-MDAwOjAyOjAwLjA6IFtFUlJdZncgUEMgPSAweDIwMTNmNWZjClsxMjM5MS4yMjA2ODJdIHJ0dzg5
-Xzg4NTJjZSAwMDAwOjAyOjAwLjA6IFtFUlJdZncgUEMgPSAweDIwMTNmNWY4ClsxMjM5MS4yMjA2
-OTldIHJ0dzg5Xzg4NTJjZSAwMDAwOjAyOjAwLjA6IFtFUlJdZncgUEMgPSAweDIwMTNmNWVlClsx
-MjM5MS4yMjA3MTZdIHJ0dzg5Xzg4NTJjZSAwMDAwOjAyOjAwLjA6IFtFUlJdZncgUEMgPSAweDIw
-MTNmNWY0ClsxMjM5MS4yMjA3MzNdIHJ0dzg5Xzg4NTJjZSAwMDAwOjAyOjAwLjA6IFtFUlJdZncg
-UEMgPSAweDIwMTNmNWZjClsxMjM5MS4yMjA3NTBdIHJ0dzg5Xzg4NTJjZSAwMDAwOjAyOjAwLjA6
-IFtFUlJdZncgUEMgPSAweDIwMTNmNWZjClsxMjM5MS4yMjA3OTBdIHJ0dzg5Xzg4NTJjZSAwMDAw
-OjAyOjAwLjA6IFtFUlJdZncgUEMgPSAweDIwMTNmNWY4ClsxMjM5MS4yMjA4MDhdIHJ0dzg5Xzg4
-NTJjZSAwMDAwOjAyOjAwLjA6IFtFUlJdZncgUEMgPSAweDIwMTNmNWY4ClsxMjM5MS4yMjA4MjVd
-IHJ0dzg5Xzg4NTJjZSAwMDAwOjAyOjAwLjA6IFtFUlJdZncgUEMgPSAweDIwMTNmNWVlClsxMjM5
-MS4yMjA4NDJdIHJ0dzg5Xzg4NTJjZSAwMDAwOjAyOjAwLjA6IFtFUlJdZncgUEMgPSAweDIwMTNm
-NWZjClsxMjM5MS4yMjA4NTldIHJ0dzg5Xzg4NTJjZSAwMDAwOjAyOjAwLjA6IFtFUlJdZncgUEMg
-PSAweDIwMTNmNWZjClsxMjM5MS4yMjA4NzVdIHJ0dzg5Xzg4NTJjZSAwMDAwOjAyOjAwLjA6IC0t
-LT4KWzEyMzkxLjIyMTEwMF0gcnR3ODlfODg1MmNlIDAwMDA6MDI6MDAuMDogUl9BWF9TRVJfREJH
-X0lORk8gPTB4MDEwMDAwMDAKWzEyMzkxLjIyMTEwNF0gcnR3ODlfODg1MmNlIDAwMDA6MDI6MDAu
-MDogUl9BWF9TRVJfREJHX0lORk8gPTB4MDEwMDAwMDAKWzEyMzkxLjIyMTEwN10gcnR3ODlfODg1
-MmNlIDAwMDA6MDI6MDAuMDogREJHIENvdW50ZXIgMSAoUl9BWF9EUlZfRldfSFNLXzQpPTB4MDAw
-OTAwMDkKWzEyMzkxLjIyMTExMV0gcnR3ODlfODg1MmNlIDAwMDA6MDI6MDAuMDogREJHIENvdW50
-ZXIgMiAoUl9BWF9EUlZfRldfSFNLXzUpPTB4MDBmNjAwZjYKWzEyMzkxLjIyMTExNl0gcnR3ODlf
-ODg1MmNlIDAwMDA6MDI6MDAuMDogUl9BWF9ETUFDX0VSUl9JU1I9MHgwMDAwMDAwMgpbMTIzOTEu
-MjIxMTE5XSBydHc4OV84ODUyY2UgMDAwMDowMjowMC4wOiBSX0FYX0RNQUNfRVJSX0lNUj0weDAw
-MDAwMDAwClsxMjM5MS4yMjExMjJdIHJ0dzg5Xzg4NTJjZSAwMDAwOjAyOjAwLjA6IFJfQVhfV0RF
-X0VSUl9GTEFHX0NGRz0weDAwMDAwMDAwClsxMjM5MS4yMjExMjZdIHJ0dzg5Xzg4NTJjZSAwMDAw
-OjAyOjAwLjA6IFJfQVhfUExFX0VSUl9GTEFHX0NGRz0weDAwMDAwMDAwClsxMjM5MS4yMjExMjld
-IHJ0dzg5Xzg4NTJjZSAwMDAwOjAyOjAwLjA6IFJfQVhfUExFX0VSUkZMQUdfTVNHPTB4MDAwMDAw
-MDAKWzEyMzkxLjIyMTEzMl0gcnR3ODlfODg1MmNlIDAwMDA6MDI6MDAuMDogUl9BWF9XREVfRVJS
-RkxBR19NU0c9MHgwMDAwMDAwMApbMTIzOTEuMjIxMTM1XSBydHc4OV84ODUyY2UgMDAwMDowMjow
-MC4wOiBSX0FYX1BMRV9EQkdFUlJfTE9DS0VOPTB4MDAwMDAwMDAKWzEyMzkxLjIyMTEzOF0gcnR3
-ODlfODg1MmNlIDAwMDA6MDI6MDAuMDogUl9BWF9QTEVfREJHRVJSX1NUUz0weDAwMDAwMDAwClsx
-MjM5MS4yMjExNDJdIHJ0dzg5Xzg4NTJjZSAwMDAwOjAyOjAwLjA6IFJfQVhfU0VDX0VSUl9JTVI9
-MHgwMDAwMDAwMwpbMTIzOTEuMjIxMTQ1XSBydHc4OV84ODUyY2UgMDAwMDowMjowMC4wOiBSX0FY
-X1NFQ19FUlJfSVNSPTB4MDAwMDAwMDEKWzEyMzkxLjIyMTE0OF0gcnR3ODlfODg1MmNlIDAwMDA6
-MDI6MDAuMDogUl9BWF9TRUNfRU5HX0NUUkw9MHg4MDAwMWYzZgpbMTIzOTEuMjIxMTUxXSBydHc4
-OV84ODUyY2UgMDAwMDowMjowMC4wOiBSX0FYX1NFQ19NUERVX1BST0M9MHgwMDAwMDAwMwpbMTIz
-OTEuMjIxMTU0XSBydHc4OV84ODUyY2UgMDAwMDowMjowMC4wOiBSX0FYX1NFQ19DQU1fQUNDRVNT
-PTB4MDAwMDAwMDAKWzEyMzkxLjIyMTE1N10gcnR3ODlfODg1MmNlIDAwMDA6MDI6MDAuMDogUl9B
-WF9TRUNfQ0FNX1JEQVRBPTB4MDAwMDAwMDAKWzEyMzkxLjIyMTE2MF0gcnR3ODlfODg1MmNlIDAw
-MDA6MDI6MDAuMDogUl9BWF9TRUNfREVCVUcxPTB4MDRjYTRjNzAKWzEyMzkxLjIyMTE2NF0gcnR3
-ODlfODg1MmNlIDAwMDA6MDI6MDAuMDogUl9BWF9TRUNfVFhfREVCVUc9MHgwMDgwODAwMApbMTIz
-OTEuMjIxMTY3XSBydHc4OV84ODUyY2UgMDAwMDowMjowMC4wOiBSX0FYX1NFQ19SWF9ERUJVRz0w
-eDAyMDIzMDA0ClsxMjM5MS4yMjExNzhdIHJ0dzg5Xzg4NTJjZSAwMDAwOjAyOjAwLjA6IHNlbD0w
-LFJfQVhfU0VDX0RFQlVHMj0weDAyMDAwMDA2ClsxMjM5MS4yMjExODNdIHJ0dzg5Xzg4NTJjZSAw
-MDAwOjAyOjAwLjA6IHNlbD0xLFJfQVhfU0VDX0RFQlVHMj0weDA0MDA0ZDMwClsxMjM5MS4yMjEx
-ODhdIHJ0dzg5Xzg4NTJjZSAwMDAwOjAyOjAwLjA6IHNlbD0yLFJfQVhfU0VDX0RFQlVHMj0weDAw
-MDAwMDAwClsxMjM5MS4yMjExOTJdIHJ0dzg5Xzg4NTJjZSAwMDAwOjAyOjAwLjA6IHNlbD0zLFJf
-QVhfU0VDX0RFQlVHMj0weDAwMDAwMDAwClsxMjM5MS4yMjExOTddIHJ0dzg5Xzg4NTJjZSAwMDAw
-OjAyOjAwLjA6IHNlbD00LFJfQVhfU0VDX0RFQlVHMj0weDAwNDA0MDEwClsxMjM5MS4yMjEyMDJd
-IHJ0dzg5Xzg4NTJjZSAwMDAwOjAyOjAwLjA6IHNlbD01LFJfQVhfU0VDX0RFQlVHMj0weDAwMDg0
-ODAwClsxMjM5MS4yMjEyMDddIHJ0dzg5Xzg4NTJjZSAwMDAwOjAyOjAwLjA6IHNlbD02LFJfQVhf
-U0VDX0RFQlVHMj0weDI0ZjAyYjYwClsxMjM5MS4yMjEyMTFdIHJ0dzg5Xzg4NTJjZSAwMDAwOjAy
-OjAwLjA6IHNlbD03LFJfQVhfU0VDX0RFQlVHMj0weDRjYTAwMDAwClsxMjM5MS4yMjEyMTZdIHJ0
-dzg5Xzg4NTJjZSAwMDAwOjAyOjAwLjA6IHNlbD04LFJfQVhfU0VDX0RFQlVHMj0weDAxMDEwMDQw
-ClsxMjM5MS4yMjEyMjFdIHJ0dzg5Xzg4NTJjZSAwMDAwOjAyOjAwLjA6IHNlbD05LFJfQVhfU0VD
-X0RFQlVHMj0weDAwNTgwNDAxClsxMjM5MS4yMjEyMjZdIHJ0dzg5Xzg4NTJjZSAwMDAwOjAyOjAw
-LjA6IHNlbD1hLFJfQVhfU0VDX0RFQlVHMj0weDAwMDAwMDAwClsxMjM5MS4yMjEyMzBdIHJ0dzg5
-Xzg4NTJjZSAwMDAwOjAyOjAwLjA6IHNlbD1iLFJfQVhfU0VDX0RFQlVHMj0weDAwMDAwMzA4Clsx
-MjM5MS4yMjEyMzVdIHJ0dzg5Xzg4NTJjZSAwMDAwOjAyOjAwLjA6IHNlbD1jLFJfQVhfU0VDX0RF
-QlVHMj0weDAwMDAwMDAwClsxMjM5MS4yMjEyNDBdIHJ0dzg5Xzg4NTJjZSAwMDAwOjAyOjAwLjA6
-IHNlbD1kLFJfQVhfU0VDX0RFQlVHMj0weDAwMDAwMDAwClsxMjM5MS4yMjEyNDVdIHJ0dzg5Xzg4
-NTJjZSAwMDAwOjAyOjAwLjA6IHNlbD1lLFJfQVhfU0VDX0RFQlVHMj0weDAwMDAwMDAwClsxMjM5
-MS4yMjEyNDldIHJ0dzg5Xzg4NTJjZSAwMDAwOjAyOjAwLjA6IHNlbD1mLFJfQVhfU0VDX0RFQlVH
-Mj0weDAwMDAwMDAwClsxMjM5MS4yMjEyNTVdIHJ0dzg5Xzg4NTJjZSAwMDAwOjAyOjAwLjA6IFJf
-QVhfQ01BQ19FUlJfSVNSIFswXT0weDAwMDAwMDAwClsxMjM5MS4yMjEyNTldIHJ0dzg5Xzg4NTJj
-ZSAwMDAwOjAyOjAwLjA6IFJfQVhfQ01BQ19GVU5DX0VOIFswXT0weGYwMDA4MDNmClsxMjM5MS4y
-MjEyNjJdIHJ0dzg5Xzg4NTJjZSAwMDAwOjAyOjAwLjA6IFJfQVhfQ0tfRU4gWzBdPTB4ZmZmZmZm
-ZmYKWzEyMzkxLjIyMTI2Nl0gcnR3ODlfODg1MmNlIDAwMDA6MDI6MDAuMDogUl9BWF9DTUFDX0VS
-Ul9JTVIgWzBdPTB4MDAwMDAwMDAKWzEyMzkxLjIyMTI3MF0gcnR3ODlfODg1MmNlIDAwMDA6MDI6
-MDAuMDogW0NNQUNdIDogQ01BQzEgbm90IGVuYWJsZWQKWzEyMzkxLjIyMTI3M10gcnR3ODlfODg1
-MmNlIDAwMDA6MDI6MDAuMDogUl9BWF9EQkdfRVJSX0ZMQUc9MHgwMDAwMDA2MApbMTIzOTEuMjIx
-Mjc2XSBydHc4OV84ODUyY2UgMDAwMDowMjowMC4wOiBSX0FYX0xCQ19XQVRDSERPRz0weDAwMzBk
-ODAwClsxMjM5MS4yMjEyNzldIHJ0dzg5Xzg4NTJjZSAwMDAwOjAyOjAwLjA6IDwtLS0KWzEyMzkx
-LjIyMTI4MF0gcnR3ODlfODg1MmNlIDAwMDA6MDI6MDAuMDogU0VSIGNhdGNoZXMgZXJyb3I6IDB4
-MTAwMApbMTIzOTEuMjIyNDYwXSBydHc4OV84ODUyY2UgMDAwMDowMjowMC4wOiBGVyBzdGF0dXMg
-PSAweDZhMDAxMTA4ClsxMjM5MS4yMjI0NjRdIHJ0dzg5Xzg4NTJjZSAwMDAwOjAyOjAwLjA6IEZX
-IEJBREFERFIgPSAweDE4NjAyZjk4ClsxMjM5MS4yMjI0NzZdIHJ0dzg5Xzg4NTJjZSAwMDAwOjAy
-OjAwLjA6IEZXIEVQQy9SQSA9IDB4MApbMTIzOTEuMjIyNDgxXSBydHc4OV84ODUyY2UgMDAwMDow
-MjowMC4wOiBGVyBNSVNDID0gMHgzMWYwMDAwClsxMjM5MS4yMjI0ODVdIHJ0dzg5Xzg4NTJjZSAw
-MDAwOjAyOjAwLjA6IFJfQVhfSEFMVF9DMkggPSAweDEwMDEKWzEyMzkxLjIyMjQ4OF0gcnR3ODlf
-ODg1MmNlIDAwMDA6MDI6MDAuMDogUl9BWF9TRVJfREJHX0lORk8gPSAweDEwMDAwMDAKWzEyMzkx
-LjIyMjQ5NF0gcnR3ODlfODg1MmNlIDAwMDA6MDI6MDAuMDogW0VSUl1mdyBQQyA9IDB4MjAxM2Y1
-ZWUKWzEyMzkxLjIyMjUwOV0gcnR3ODlfODg1MmNlIDAwMDA6MDI6MDAuMDogW0VSUl1mdyBQQyA9
-IDB4MjAxM2Y1ZmEKWzEyMzkxLjIyMjUyM10gcnR3ODlfODg1MmNlIDAwMDA6MDI6MDAuMDogW0VS
-Ul1mdyBQQyA9IDB4MjAxM2Y1ZjQKWzEyMzkxLjIyMjUzN10gcnR3ODlfODg1MmNlIDAwMDA6MDI6
-MDAuMDogW0VSUl1mdyBQQyA9IDB4MjAxM2Y1ZmMKWzEyMzkxLjIyMjU1Ml0gcnR3ODlfODg1MmNl
-IDAwMDA6MDI6MDAuMDogW0VSUl1mdyBQQyA9IDB4MjAxM2Y1ZWUKWzEyMzkxLjIyMjU2Nl0gcnR3
-ODlfODg1MmNlIDAwMDA6MDI6MDAuMDogW0VSUl1mdyBQQyA9IDB4MjAxM2Y1ZmMKWzEyMzkxLjIy
-MjU4MF0gcnR3ODlfODg1MmNlIDAwMDA6MDI6MDAuMDogW0VSUl1mdyBQQyA9IDB4MjAxM2Y1ZmEK
-WzEyMzkxLjIyMjU5NF0gcnR3ODlfODg1MmNlIDAwMDA6MDI6MDAuMDogW0VSUl1mdyBQQyA9IDB4
-MjAxM2Y1ZWUKWzEyMzkxLjIyMjYwOV0gcnR3ODlfODg1MmNlIDAwMDA6MDI6MDAuMDogW0VSUl1m
-dyBQQyA9IDB4MjAxM2Y1ZjgKWzEyMzkxLjIyMjYyM10gcnR3ODlfODg1MmNlIDAwMDA6MDI6MDAu
-MDogW0VSUl1mdyBQQyA9IDB4MjAxM2Y1ZjQKWzEyMzkxLjIyMjYzN10gcnR3ODlfODg1MmNlIDAw
-MDA6MDI6MDAuMDogW0VSUl1mdyBQQyA9IDB4MjAxM2Y1ZWEKWzEyMzkxLjIyMjY1MV0gcnR3ODlf
-ODg1MmNlIDAwMDA6MDI6MDAuMDogW0VSUl1mdyBQQyA9IDB4MjAxM2Y1ZmEKWzEyMzkxLjIyMjY2
-Nl0gcnR3ODlfODg1MmNlIDAwMDA6MDI6MDAuMDogW0VSUl1mdyBQQyA9IDB4MjAxM2Y1ZjQKWzEy
-MzkxLjIyMjY4MF0gcnR3ODlfODg1MmNlIDAwMDA6MDI6MDAuMDogW0VSUl1mdyBQQyA9IDB4MjAx
-M2Y1ZWUKWzEyMzkxLjIyMjY5NF0gcnR3ODlfODg1MmNlIDAwMDA6MDI6MDAuMDogW0VSUl1mdyBQ
-QyA9IDB4MjAxM2Y1ZWEKWzEyMzkxLjIyMjcwN10gcnR3ODlfODg1MmNlIDAwMDA6MDI6MDAuMDog
-U0VSIGNhdGNoZXMgZXJyb3I6IDB4MTAwMQpbMTIzOTEuMjIzNDk3XSBydHc4OV84ODUyY2UgMDAw
-MDowMjowMC4wOiBGVyBzdGF0dXMgPSAweDZhMDA4MTA4ClsxMjM5MS4yMjM1MDFdIHJ0dzg5Xzg4
-NTJjZSAwMDAwOjAyOjAwLjA6IEZXIEJBREFERFIgPSAweDE4NjAyZjk4ClsxMjM5MS4yMjM1MDRd
-IHJ0dzg5Xzg4NTJjZSAwMDAwOjAyOjAwLjA6IEZXIEVQQy9SQSA9IDB4MApbMTIzOTEuMjIzNTA4
-XSBydHc4OV84ODUyY2UgMDAwMDowMjowMC4wOiBGVyBNSVNDID0gMHhmZjAwMDAKWzEyMzkxLjIy
-MzUxMl0gcnR3ODlfODg1MmNlIDAwMDA6MDI6MDAuMDogUl9BWF9IQUxUX0MySCA9IDB4MTAwMgpb
-MTIzOTEuMjIzNTE1XSBydHc4OV84ODUyY2UgMDAwMDowMjowMC4wOiBSX0FYX1NFUl9EQkdfSU5G
-TyA9IDB4ZjEwMDAwMDAKWzEyMzkxLjIyMzUyMV0gcnR3ODlfODg1MmNlIDAwMDA6MDI6MDAuMDog
-W0VSUl1mdyBQQyA9IDB4MjAxNDY1YzgKWzEyMzkxLjIyMzUzNV0gcnR3ODlfODg1MmNlIDAwMDA6
-MDI6MDAuMDogW0VSUl1mdyBQQyA9IDB4MjAxNDFkMjgKWzEyMzkxLjIyMzU1MF0gcnR3ODlfODg1
-MmNlIDAwMDA6MDI6MDAuMDogW0VSUl1mdyBQQyA9IDB4MjAwMmQ5NzYKWzEyMzkxLjIyMzU2NF0g
-cnR3ODlfODg1MmNlIDAwMDA6MDI6MDAuMDogW0VSUl1mdyBQQyA9IDB4MjAxNDY2MWMKWzEyMzkx
-LjIyMzU3OF0gcnR3ODlfODg1MmNlIDAwMDA6MDI6MDAuMDogW0VSUl1mdyBQQyA9IDB4MjAxNGJk
-MzYKWzEyMzkxLjIyMzU5Ml0gcnR3ODlfODg1MmNlIDAwMDA6MDI6MDAuMDogW0VSUl1mdyBQQyA9
-IDB4MjAwM2I5YzYKWzEyMzkxLjIyMzYwN10gcnR3ODlfODg1MmNlIDAwMDA6MDI6MDAuMDogW0VS
-Ul1mdyBQQyA9IDB4MjAwM2M5OTQKWzEyMzkxLjIyMzYyMV0gcnR3ODlfODg1MmNlIDAwMDA6MDI6
-MDAuMDogW0VSUl1mdyBQQyA9IDB4MjAwM2JhMTAKWzEyMzkxLjIyMzYzNV0gcnR3ODlfODg1MmNl
-IDAwMDA6MDI6MDAuMDogW0VSUl1mdyBQQyA9IDB4MjAwMmU5NzQKWzEyMzkxLjIyMzY0OV0gcnR3
-ODlfODg1MmNlIDAwMDA6MDI6MDAuMDogW0VSUl1mdyBQQyA9IDB4MjAwM2I5OGUKWzEyMzkxLjIy
-MzY2NF0gcnR3ODlfODg1MmNlIDAwMDA6MDI6MDAuMDogW0VSUl1mdyBQQyA9IDB4MjAxNGJlZjAK
-WzEyMzkxLjIyMzY3OF0gcnR3ODlfODg1MmNlIDAwMDA6MDI6MDAuMDogW0VSUl1mdyBQQyA9IDB4
-MjAwM2I5YzIKWzEyMzkxLjIyMzY5Ml0gcnR3ODlfODg1MmNlIDAwMDA6MDI6MDAuMDogW0VSUl1m
-dyBQQyA9IDB4MjAwMmU5OGMKWzEyMzkxLjIyMzcwNl0gcnR3ODlfODg1MmNlIDAwMDA6MDI6MDAu
-MDogW0VSUl1mdyBQQyA9IDB4MjAwM2JhMTQKWzEyMzkxLjIyMzcyMF0gcnR3ODlfODg1MmNlIDAw
-MDA6MDI6MDAuMDogW0VSUl1mdyBQQyA9IDB4MjAwM2M5NDQKWzEyMzkxLjIyMzczM10gcnR3ODlf
-ODg1MmNlIDAwMDA6MDI6MDAuMDogU0VSIGNhdGNoZXMgZXJyb3I6IDB4MTAwMgp1c2VyQGZlZG9y
-YTp+JCBsc3BjaSAtbm5rIHwgZ3JlcCAtaUEyIG5ldApwY2lsaWI6IEVycm9yIHJlYWRpbmcgL3N5
-cy9idXMvcGNpL2RldmljZXMvMDAwMDowMDowOC4zL2xhYmVsOiBPcGVyYXRpb24gbm90IHBlcm1p
-dHRlZAowMTowMC4wIEV0aGVybmV0IGNvbnRyb2xsZXIgWzAyMDBdOiBSZWFsdGVrIFNlbWljb25k
-dWN0b3IgQ28uLCBMdGQuIFJUTDgxMTEvODE2OC84MjExLzg0MTEgUENJIEV4cHJlc3MgR2lnYWJp
-dCBFdGhlcm5ldCBDb250cm9sbGVyIFsxMGVjOjgxNjhdIChyZXYgMTUpCiAgICAgICAgU3Vic3lz
-dGVtOiBMZW5vdm8gRGV2aWNlIFsxN2FhOjUwZWNdCiAgICAgICAgS2VybmVsIGRyaXZlciBpbiB1
-c2U6IHI4MTY5Ci0tCjAyOjAwLjAgTmV0d29yayBjb250cm9sbGVyIFswMjgwXTogUmVhbHRlayBT
-ZW1pY29uZHVjdG9yIENvLiwgTHRkLiBSVEw4ODUyQ0UgUENJZSA4MDIuMTFheCBXaXJlbGVzcyBO
-ZXR3b3JrIENvbnRyb2xsZXIgWzEwZWM6Yzg1Ml0gKHJldiAwMSkKICAgICAgICBTdWJzeXN0ZW06
-IExlbm92byBEZXZpY2UgWzE3YWE6NTg1Ml0KICAgICAgICBLZXJuZWwgZHJpdmVyIGluIHVzZTog
-cnR3ODlfODg1MmNlCnVzZXJAZmVkb3JhOn4kCg==
---0000000000004c44b0064c5a3bb3--
+Not that there's a race here - "Sees Cookie X", but who knows the cookie
+X is even still valid?
+
+But I think we can pretty much solve that racy by marking a cookie X
+invalid in the kernel (or even FW?) and rejecting the new
+CMD_START_MLD_BSS_UPDATE operation that still refers to Cookie X -
+hostapd would just have to know about that specific rejection reason (I
+guess netlink extended status would point to the wrong cookie attr or
+so) and then rebuild the templates without taking the update with cookie
+X into account.
+
+But with that race aside, yeah, seems reasonable.
+
+>    |                           |                           |
+>  9 |         Cookie Y          |                           |
+>    |<--------------------------|                           |
+>    |                           |                           |
+> 10 | CMD_CH_SWITCH_STARTED_    |                           |
+>    | NOTIFY                    |                           |
+>    |<--------------------------|                           |
+
+I don't know - this was started by CMD_START_MLD_BSS_UPDATE too, so
+probably should be some generic notification about it, or like I said
+above, maybe isn't even needed at all?
+
+(I think a good chunk of the channel switch notification is code
+unification between client and AP, does the AP even use the start
+notification?)
+
+>    |                           |                           |
+> 11 |                           | Beacons: X=3D7, Y=3D10        |
+>    |                           |-------------------------->|
+>    |                           |                           |
+> 12 | CMD_MODIFY_MLD_BSS_UPDATE |                           |
+>    | (Cookie X Post Tmpl w/    |                           |
+>    |  Chan Info, 3 Links)      |                           |
+>    |-------------------------->|                           |
+>    |                           |                           |
+> 13 |                           | Beacons: X=3D1, Y=3D4         |
+>    |                           |-------------------------->|
+>    |                           |                           |
+> 14 |                           | [X=3D0: Modify Cur Tmpl     |
+>    |                           |  w/ Post UHR Op element]  |
+>    |                           |                           |
+> 15 | EVENT_UHR_CU              |                           |
+>    | (CU_ADVANCE_COMPLETE)     |                           |
+>    |<--------------------------|                           |
+
+That should have Cookie X somehow as an attribute, of course :)
+
+Really all the events should have, but here clearly you meant X since
+the other operation isn't done yet.
+
+>    |                           |                           |
+> 16 | CMD_MODIFY_MLD_BSS_UPDATE |                           |
+>    | (Cookie Y Post Tmpl w/    |                           |
+>    |  UHR Op + Param elements) |                           |
+>    |-------------------------->|                           |
+
+What's this doing? Didn't we have post-Y templates already in the prior
+command? Otherwise isn't this quite a bit racy? Though I guess we have a
+whole beacon interval for hostapd to update everything, which really
+ought to be sufficient (though hostapd may need to stop being single-
+threaded ...)
+
+>    |                           |                           |
+> 17 |                           | Beacons: X=3D127, Y=3D3       |
+>    |                           |-------------------------->|
+>    |                           |                           |
+> 18 |                           | Beacons: X=3D128/129,       |
+>    |                           |          Y=3D2/1 (CSA done) |
+>    |                           |-------------------------->|
+>    |                           |                           |
+> 19 |                           | [Y=3D0: Set Post Tmpl       |
+>    |                           |  cookie Y, UHR Param      |
+>    |                           |  Off, X=3D130]              |
+>    |                           |                           |
+> 20 | CMD_CH_SWITCH_NOTIFY      |                           |
+>    |<--------------------------|                           |
+
+(similar comment as above wrt. what notifications are needed)
+
+>    |                           |                           |
+> 21 | CMD_MLD_BSS_UPDATE_NOTIFY |                           |
+>    | (Complete Cookie Y)       |                           |
+>    |<--------------------------|                           |
+
+Right.
+
+>    |                           |                           |
+> 22 | CMD_MODIFY_MLD_BSS_UPDATE |                           |
+>    | (Cookie X Post Tmpl w/    |                           |
+>    |  UpdatedChan Info)        |                           |
+>    |-------------------------->|                           |
+
+"X post" is a bit misleading ... it's still ongoing, because it's
+changed now but not really _after_ the update X, it's still advertising
+the update X has happened. So in some way the flow is still there.
+
+But it does point out that we need basically three (additional)
+templates for a UHR update:
+
+ - announcing the upcoming update
+ - announcing the update happened
+ - back to normal state afterwards
+
+Which, perhaps, is indeed a bit too much to offload all to the kernel
+even in terms of the API, because if you mix another operation in (here
+in your example the channel switch Y), you end up with even more
+templates ...
+
+So I'm coming around to the idea that you have a notification and
+hostapd has to update the templates at that point.
+
+>    |                           |                           |
+> 23 |                           | Beacons Continue...       |
+>    |                           |-------------------------->|
+>    |                           |                           |
+> 24 |                           | Probe Request             |
+>    |                           |<--------------------------|
+>    |                           | [Fetch TBTT]              |
+>    |     send_mgmt (TBTT)      |                           |
+>    |<--------------------------|                           |
+>    |                           |                           |
+> 25 | send_mgmt (Probe Resp     |                           |
+>    |  w/ TBTT in UHR Param)    |                           |
+>    |-------------------------->|                           |
+>    |                           |                           |
+
+Not sure I follow this part regarding the "TBTT" thing. Are you saying
+the RX of the probe request would have a TBTT attached to it? But does
+it matter, what matters is the TX? And that's probably impossible to get
+right?
+
+> The diagram uses a number of abbreviations, so an explanation is
+> provided below for clarity.
+
+Oops, sorry, didn't see that before starting to reply, so maybe I missed
+something above. I'd go back and check, but I'll have to pick up my kids
+soon.
+
+> Step 14
+> 	The driver/firmware can update the current beacon template with
+> the post=E2=80=91UHR operation element. Until the advance notification in=
+terval
+> completes, the UHR operation element would not yet be updated.
+
+Not sure I follow, are you envisioning the driver/firmware changing the
+beacon contents? I was envisioning it basically always getting the right
+template at the right time, and only filling the counters per their
+offsets.
+
+> A few potential concerns to consider:
+>=20
+> 1. Carrying both the current and post=E2=80=91beacon templates for all
+> affiliated links of an MLD might make the NL message fairly large. we
+> are not sure how well that fits with existing practice, since multipart
+> handling seems to be used mostly for dump commands. As an alternate, can
+> we have multiple commands with message id and reassemble it?
+
+It's input into the kernel, so the size doesn't matter, I think? For
+notifications that might be an issue, and dumpit is used for data going
+_out_ of the kernel so userspace doesn't have to have arbitrarily large
+buffers ready before it knows the data, but on input I don't see how it
+matters.
+
+> 2. There may be a small sequencing aspect worth thinking through. For
+> example, if a UHR_CU operation is close to completion and we are about
+> to apply its post=E2=80=91beacon template, but before hostapd processes
+> EVENT_UHR_CU with CU_POST_NOTIF_COMPLETE it issues a
+> START_MLD_BSS_UPDATE for CSA, we could potentially end up using an
+> unexpected version of the current beacon template. This may already be
+> handled by the existing flow, but it seemed worth calling out for
+> completeness.
+
+Yes, I agree, it's something we need to think about. I mentioned that a
+bit above, perhaps one way to solve the race is to have a reject built
+in based on the cookie(s) being used, that could technically even be
+pushed all the way down to the firmware if you really wanted to.
+
+johannes
 
