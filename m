@@ -1,165 +1,153 @@
-Return-Path: <linux-wireless+bounces-32580-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-32581-lists+linux-wireless=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id sbHUMF8xqmlPNAEAu9opvQ
-	(envelope-from <linux-wireless+bounces-32580-lists+linux-wireless=lfdr.de@vger.kernel.org>)
-	for <lists+linux-wireless@lfdr.de>; Fri, 06 Mar 2026 02:43:59 +0100
+	id uI+OOCY2qml+NQEAu9opvQ
+	(envelope-from <linux-wireless+bounces-32581-lists+linux-wireless=lfdr.de@vger.kernel.org>)
+	for <lists+linux-wireless@lfdr.de>; Fri, 06 Mar 2026 03:04:22 +0100
 X-Original-To: lists+linux-wireless@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 242EB21A4EE
-	for <lists+linux-wireless@lfdr.de>; Fri, 06 Mar 2026 02:43:58 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 617F821A735
+	for <lists+linux-wireless@lfdr.de>; Fri, 06 Mar 2026 03:04:22 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 7CC4B302E920
-	for <lists+linux-wireless@lfdr.de>; Fri,  6 Mar 2026 01:43:57 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 565C8301683C
+	for <lists+linux-wireless@lfdr.de>; Fri,  6 Mar 2026 02:04:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CE8EA2FC893;
-	Fri,  6 Mar 2026 01:43:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 501568635D;
+	Fri,  6 Mar 2026 02:04:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=realtek.com header.i=@realtek.com header.b="ZbKwprol"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="JIMfzVyT"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E840B149C6F;
-	Fri,  6 Mar 2026 01:43:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=211.75.126.72
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2D159749C
+	for <linux-wireless@vger.kernel.org>; Fri,  6 Mar 2026 02:04:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772761436; cv=none; b=tRpdIzB8wn9mDO3uyPA53ID5WatxMeTVsviIx+yCW00Jqo5OQMXiqvUf90hOtM79pnLe22uR3GMy8yaBmwXxgzcULycnbTpaqsGtV2+Lwf8fbmQmZxD+bdP/lRrQgPO5GyRImYMISaM4tVyTfpUxd5HZAv/eUH7OC0Uy5YwJP4A=
+	t=1772762660; cv=none; b=VFYtfOJQxMowDOq0uPsdqdyEvtymxIZ4DGKx+YGkznYw//MKUyUd25JspWgLB4+uKaG6FxMSPQZ3rkQuKMyOBsWfnB6Z54q/jW0h6C/TipzJx2YTk7SywtnVwPFi+ic6pXXtqPqwyvlBIdWdenuIExv4PRdgckWV3Lg5YwKS4uk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772761436; c=relaxed/simple;
-	bh=9ZjZmBXy47rkEVFQ0MTMMZ+4owFlcNzssZC/p/7JUP4=;
-	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:MIME-Version; b=EpRHF44r2U/MW0velmuoB4Hcuo63kvkoKDvmspoDqYMKmj1Vye4s67Z2J+afVdAHRGzHcpkZ7QSKSDKiwc3U9TbqdbfHSuPNzhe7J5rq0NYNv3Z9EX0D/mTeGa2xgip7U8OJDRBRJqIXfjQBX3Turck374VVEyvnKDFxqfaYOYk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com; spf=pass smtp.mailfrom=realtek.com; dkim=pass (2048-bit key) header.d=realtek.com header.i=@realtek.com header.b=ZbKwprol; arc=none smtp.client-ip=211.75.126.72
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=realtek.com
-X-SpamFilter-By: ArmorX SpamTrap 5.80 with qID 6261eVMY12462861, This message is accepted by code: ctloc85258
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=realtek.com; s=dkim;
-	t=1772761231; bh=w8U8sv4RgOb2NvWqxWiVPoWZ9xup2rPwC/rgrKn8kO4=;
-	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:Content-Transfer-Encoding:MIME-Version;
-	b=ZbKwprol5DaNEnOUhRXQpFu5ooLFS8fuzDMl3POBChQgQ4uNmEQ6/HuEsEShlCzeu
-	 kLmeJLJ87xXOjL4B/magetU4wQ6/UgxDJqukEArhu9z8MqRcRM9QkAl13wZuvff0GB
-	 WYlve8pXXLaMUKJwFl0/C1WEzorogDOpsbo5N6B9kc7Lhk96Uxv9gkStd3wrr4iT48
-	 6+Hz83kgMaHsEYlvUI38etif0XXyvtkzEXmBaYO52GxYn/xbzYtXsJOgbiDi3FumCC
-	 cyFBuqpCTXSwacR8Gd25u4cuJ6D6lwrdI4WLdDB216zo/iYRDynSJK2RuaSuTtkTM5
-	 MwpcFY0mSjLJw==
-Received: from mail.realtek.com (rtkexhmbs04.realtek.com.tw[10.21.1.54])
-	by rtits2.realtek.com.tw (8.15.2/3.21/5.94) with ESMTPS id 6261eVMY12462861
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Fri, 6 Mar 2026 09:40:31 +0800
-Received: from RTKEXHMBS06.realtek.com.tw (10.21.1.56) by
- RTKEXHMBS04.realtek.com.tw (10.21.1.54) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1748.10; Fri, 6 Mar 2026 09:40:31 +0800
-Received: from RTKEXHMBS06.realtek.com.tw ([fe80::4cbd:6c6c:b92b:3913]) by
- RTKEXHMBS06.realtek.com.tw ([fe80::4cbd:6c6c:b92b:3913%10]) with mapi id
- 15.02.1748.010; Fri, 6 Mar 2026 09:40:31 +0800
-From: Ping-Ke Shih <pkshih@realtek.com>
-To: Johan Hovold <johan@kernel.org>,
-        "linux-wireless@vger.kernel.org"
-	<linux-wireless@vger.kernel.org>
-CC: Brian Norris <briannorris@chromium.org>,
-        Francesco Dolcini
-	<francesco@dolcini.it>,
-        Felix Fietkau <nbd@nbd.name>, Lorenzo Bianconi
-	<lorenzo@kernel.org>,
-        Ryder Lee <ryder.lee@mediatek.com>,
-        Shayne Chen
-	<shayne.chen@mediatek.com>,
-        Sean Wang <sean.wang@mediatek.com>,
-        "Jakub
- Kicinski" <kuba@kernel.org>, Stanislaw Gruszka <stf_xl@wp.pl>,
-        Hin-Tak Leung
-	<hintak.leung@gmail.com>,
-        Jes Sorensen <Jes.Sorensen@gmail.com>,
-        "Nicolas
- Ferre" <nicolas.ferre@microchip.com>,
-        Alexandre Belloni
-	<alexandre.belloni@bootlin.com>,
-        Claudiu Beznea <claudiu.beznea@tuxon.dev>,
-        Matthias Brugger <matthias.bgg@gmail.com>,
-        AngeloGioacchino Del Regno
-	<angelogioacchino.delregno@collabora.com>,
-        "libertas-dev@lists.infradead.org"
-	<libertas-dev@lists.infradead.org>,
-        "linux-kernel@vger.kernel.org"
-	<linux-kernel@vger.kernel.org>,
-        Greg Kroah-Hartman
-	<gregkh@linuxfoundation.org>
-Subject: RE: [PATCH 00/13] wifi: drop redundant USB device references
-Thread-Topic: [PATCH 00/13] wifi: drop redundant USB device references
-Thread-Index: AQHcrJBJgpW9edckl0WtWY+w5y49ArWgtZSA
-Date: Fri, 6 Mar 2026 01:40:31 +0000
-Message-ID: <0c75afbbe7bb419cab648f94191fe47f@realtek.com>
-References: <20260305110713.17725-1-johan@kernel.org>
-In-Reply-To: <20260305110713.17725-1-johan@kernel.org>
-Accept-Language: en-US, zh-TW
-Content-Language: zh-TW
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: quoted-printable
+	s=arc-20240116; t=1772762660; c=relaxed/simple;
+	bh=Gzl6Cp4shwOz8tZHUC5g3wgEqLnlr1EAszXzG4XusGc=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=LXBk7H5jyrN88FKsY2QaVE8FhjXTQK88ohEiJlC4g8KnGsBsR7KZeNIbKTN5isTuty0kKyCIwi1GPjc7T7r8/I7LkuoTZy7fU3NfJ7HBjyZdWmHPUeKHoxDrtW68EH63HJ+UmIqukyfl1RZm5zwXE7Uk0oRxnqbWAbBhkiymBw4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=JIMfzVyT; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C033BC116C6
+	for <linux-wireless@vger.kernel.org>; Fri,  6 Mar 2026 02:04:19 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1772762659;
+	bh=Gzl6Cp4shwOz8tZHUC5g3wgEqLnlr1EAszXzG4XusGc=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+	b=JIMfzVyTFKk6s9CjuhqgGc4eLde+120cSjQgtDH3xxm3EAowcIE6f/JMwck7JWIsQ
+	 Rb8AVrmGob6EgjaUSA78BIIaQS6W5914exkQih+9PDjNZpg6mq/LXWh4B1rK3gtiGs
+	 zNI3vHQUM6d9KQxHHqEAlfq5azN97mtVhVpvVWyAgJLr8BD54gqoj3BQK/akxrtr2L
+	 428RsWYes8RwLidbCGQJUIMx3ZElDyD/AJS9N1vw3XPyLmjUTnbAeI/wCwOSDWbkUF
+	 J3G79lmztSuqQnwFqV0NZrN+9RgE6HP3622yzRxoP2B+udV5HjqCe16JbUjnH6WOUV
+	 20+K8JAaEm7Ow==
+Received: by mail-lj1-f170.google.com with SMTP id 38308e7fff4ca-38a2cc31e20so33737331fa.1
+        for <linux-wireless@vger.kernel.org>; Thu, 05 Mar 2026 18:04:19 -0800 (PST)
+X-Gm-Message-State: AOJu0YwkYNUVphIv32H8b1VVG27j5cu2kHRBQH/nUIE03Vd7K/iX3qku
+	E+sB3IV8K3XW8Ftu8dsD/xoMFgw1kpQE8M5KHC/MQ7TzA391kBqxSXkRKCxkYtKdwQKG0vOyVel
+	Qbb8jTTt5F7wuFzahvdpx5SAK9stmrBE=
+X-Received: by 2002:a2e:be23:0:b0:385:c13b:5584 with SMTP id
+ 38308e7fff4ca-38a40d6e2a7mr1251881fa.36.1772762658151; Thu, 05 Mar 2026
+ 18:04:18 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-Rspamd-Queue-Id: 242EB21A4EE
+References: <CAFktD2eaVpRAJRkaGOj4y-m0woK-sNeCM+h_7A=9GELSce6TcQ@mail.gmail.com>
+In-Reply-To: <CAFktD2eaVpRAJRkaGOj4y-m0woK-sNeCM+h_7A=9GELSce6TcQ@mail.gmail.com>
+From: Sean Wang <sean.wang@kernel.org>
+Date: Thu, 5 Mar 2026 20:04:06 -0600
+X-Gmail-Original-Message-ID: <CAGp9LzrTMALkJKrGANTCzeG4KUDGwC1YJc8SRKNRriH3a9bnRQ@mail.gmail.com>
+X-Gm-Features: AaiRm52VHwutbfFJxM44zTdXvXAmPpmSYbYRXZHR7sTvC6AbIT67eY598EbFXXg
+Message-ID: <CAGp9LzrTMALkJKrGANTCzeG4KUDGwC1YJc8SRKNRriH3a9bnRQ@mail.gmail.com>
+Subject: Re: [BUG] wifi: mt76: mt7925u: probe with driver mt7925u failed with
+ error -110
+To: Nick <morrownr@gmail.com>
+Cc: linux-wireless <linux-wireless@vger.kernel.org>, Felix Fietkau <nbd@nbd.name>, 
+	Lorenzo Bianconi <lorenzo@kernel.org>, Ryder Lee <ryder.lee@mediatek.com>, 
+	Shayne Chen <shayne.chen@mediatek.com>, Sean Wang <sean.wang@mediatek.com>, 
+	Deren Wu <deren.wu@mediatek.com>, Leon Yen <leon.yen@mediatek.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Rspamd-Queue-Id: 617F821A735
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.66 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[realtek.com,none];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
-	R_DKIM_ALLOW(-0.20)[realtek.com:s=dkim];
+	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FREEMAIL_CC(0.00)[chromium.org,dolcini.it,nbd.name,kernel.org,mediatek.com,wp.pl,gmail.com,microchip.com,bootlin.com,tuxon.dev,collabora.com,lists.infradead.org,vger.kernel.org,linuxfoundation.org];
-	TAGGED_FROM(0.00)[bounces-32580-lists,linux-wireless=lfdr.de];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TO_DN_EQ_ADDR_SOME(0.00)[];
+	DKIM_TRACE(0.00)[kernel.org:+];
+	TAGGED_FROM(0.00)[bounces-32581-lists,linux-wireless=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[21];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[realtek.com:+];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	MISSING_XM_UA(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[pkshih@realtek.com,linux-wireless@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[6];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	TO_DN_SOME(0.00)[];
+	TO_DN_ALL(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FREEMAIL_TO(0.00)[gmail.com];
+	MISSING_XM_UA(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	RCVD_COUNT_FIVE(0.00)[5];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[sean.wang@kernel.org,linux-wireless@vger.kernel.org];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	NEURAL_HAM(-0.00)[-0.999];
 	TAGGED_RCPT(0.00)[linux-wireless];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
+	RCPT_COUNT_SEVEN(0.00)[9];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[mail.gmail.com:mid]
 X-Rspamd-Action: no action
 
-// +Cc Greg
+On Thu, Mar 5, 2026 at 12:28=E2=80=AFPM Nick <morrownr@gmail.com> wrote:
+>
+> Reference: https://github.com/morrownr/USB-WiFi/issues/688#issuecomment-3=
+999038526
+>
+> The above thread is rather lengthy as we have been working on this
+> issue since Dec. 25.
+>
+> Testing with a Netgear A9000 USB WiFi adapter (mt7925u driver). Kernel
+> 7.0 rc2 and a x86_64 system. Additional testing with older kernels was
+> also performed with the same results.
+>
+> Problem description:
+>
+> Cold boot shows the adapter coming up and operating normally.
+>
+> Removing the adapter from the USB port and replacing it shows the
+> adapter coming up and operating normally.
+>
+> A warm reboot does not provide a WiFi interface and shows the
+> following in the system log:
+>
+> mt7925u 2-3.2:1.0: probe with driver mt7925u failed with error -110
+>
+> Using the commands rmmod and modeprobe do not provide a WiFi interface.
+>
+> Thoughts: The problem likely is not the module teardown. The problem
+> seems to be that the firmware (or the mt7925u driver) leaves the
+> adapter in a strange state such that a power cycle of the adapter
+> hardware is needed before the mt7925u driver can properly initialize
+> it a second time.
+>
 
-Hi Johan,
+Hi Nick,
 
-Johan Hovold <johan@kernel.org> wrote:
+Could you enable debug logs and check whether the driver can still
+read the correct chip ID after a warm reboot, and at which step the
+initialization fails before the -110 error? Thanks for continuing to
+test and gather this useful information.
 
-[...]
+         Sean
 
->  drivers/net/wireless/realtek/rtl818x/rtl8187/dev.c |  4 ----
->  drivers/net/wireless/realtek/rtl8xxxu/core.c       | 11 +++--------
->  drivers/net/wireless/realtek/rtlwifi/usb.c         |  4 ----
-
-Acked to changes of these Realtek WiFi drivers. But I'd like to know why
-rtw88/rtw89 aren't included in this patchset? Greg sent a patch [1] to
-correct error path of USB probe for rtw88. In the discussion, he also
-mentioned the simplest way is to drop usb_get_dev()/usb_put_dev() like
-this patchset does. Will you share patches for rtw88/rtw89? I so, I'd
-drop Greg's patch and apply yours.
-
-[1] https://lore.kernel.org/linux-wireless/2026022333-periscope-unusual-f0a=
-0@gregkh/
-
-Ping-Ke
-
+> Also: Testing with an adapter that uses the mt7921u driver does not
+> show this problem.
+>
 
