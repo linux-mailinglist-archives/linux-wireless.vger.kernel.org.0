@@ -1,79 +1,79 @@
-Return-Path: <linux-wireless+bounces-32692-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-32693-lists+linux-wireless=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id CN5rDeF0q2lCdQEAu9opvQ
-	(envelope-from <linux-wireless+bounces-32692-lists+linux-wireless=lfdr.de@vger.kernel.org>)
-	for <lists+linux-wireless@lfdr.de>; Sat, 07 Mar 2026 01:44:17 +0100
+	id GLuHO4h1q2kvdQEAu9opvQ
+	(envelope-from <linux-wireless+bounces-32693-lists+linux-wireless=lfdr.de@vger.kernel.org>)
+	for <lists+linux-wireless@lfdr.de>; Sat, 07 Mar 2026 01:47:05 +0100
 X-Original-To: lists+linux-wireless@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 56268229156
-	for <lists+linux-wireless@lfdr.de>; Sat, 07 Mar 2026 01:44:16 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 900882291A2
+	for <lists+linux-wireless@lfdr.de>; Sat, 07 Mar 2026 01:47:04 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 5A94431170BE
-	for <lists+linux-wireless@lfdr.de>; Sat,  7 Mar 2026 00:33:46 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 706CF314925B
+	for <lists+linux-wireless@lfdr.de>; Sat,  7 Mar 2026 00:33:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 820F926F46F;
-	Sat,  7 Mar 2026 00:33:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 81AC4219A8A;
+	Sat,  7 Mar 2026 00:33:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=jetm.me header.i=@jetm.me header.b="FQ8Mj8SA";
-	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="zkozg72i"
+	dkim=pass (2048-bit key) header.d=jetm.me header.i=@jetm.me header.b="VqUgf8l6";
+	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="PxN8a+CZ"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from flow-a2-smtp.messagingengine.com (flow-a2-smtp.messagingengine.com [103.168.172.137])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3AA0528507E;
-	Sat,  7 Mar 2026 00:33:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E8C68296BDA;
+	Sat,  7 Mar 2026 00:33:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=103.168.172.137
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772843622; cv=none; b=nca6l6rN59+pMXilfGH0lQb05QUhXzy98cOG0h7XjB4Hoe6btT2yX0XpxL7uxkITMEwZJ4tgg3Dbn02Y0obo7dhOzru1r4Ox7jKCsbGpcvDLDWg0JwJOXRek+CH2BP8X0wjXYYa26rMzazNuf0QBBFVqOkX5JkACYsEAlN1g9V8=
+	t=1772843630; cv=none; b=ZkYWLHxJFdHDVaOkA7mftxK1IBm2K9SxVpvoXbNssU1crZCF1fGZrw70DqUemgiZ3ln3Nv4XnXQvZl6Twm7EmfpqMcIhSalZBJtgRHZcurH3p16ayB+eyGIYeYzT+ohLyRIDqYq9LKf6fhJw4YLDlGsmAK6Oq7lcBPuXzTXyCDk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772843622; c=relaxed/simple;
-	bh=fB6otMGIwko1yonItoV0W4EcmOF1mpMAMxLshlLLqx4=;
+	s=arc-20240116; t=1772843630; c=relaxed/simple;
+	bh=/GuNqbGp0WkGquAlj8TXYsYcaj5pBN2o2/Bv/wZ77ng=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc:
-	 In-Reply-To:References; b=RduNamGTG93UJ6JmzRkqAUgX64Ba28OgsaVjHEj/SFyyTcZsp59C7mqxj14LSwnHvABWyOQgp8qlV/L7L6Yl65UeuiHI1TYa7g7zaU03Hv/uvwV7/PVzwuitFg9bYAglrXbkRUjY7DLdXJbkz+BugQjdYCJeE0LX9e/YJLBKNSo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=jetm.me; spf=pass smtp.mailfrom=jetm.me; dkim=pass (2048-bit key) header.d=jetm.me header.i=@jetm.me header.b=FQ8Mj8SA; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=zkozg72i; arc=none smtp.client-ip=103.168.172.137
+	 In-Reply-To:References; b=SLkP2Duh75XswXTVDxCpT5fewk2IiOrHyt4q1sOAkahfVfPTCFG3BJSOg6bb+/RS2LhZyyOvgq+SIKv0xmuhbBUlzz650+urlVu/BPvcEfb7PLRxxdV/wbX0uhB4X+ZD2aLciFXlLp3sUoKB/PGaqgKUxRIgaRLcziMeG/RqfgQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=jetm.me; spf=pass smtp.mailfrom=jetm.me; dkim=pass (2048-bit key) header.d=jetm.me header.i=@jetm.me header.b=VqUgf8l6; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=PxN8a+CZ; arc=none smtp.client-ip=103.168.172.137
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=jetm.me
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=jetm.me
 Received: from phl-compute-02.internal (phl-compute-02.internal [10.202.2.42])
-	by mailflow.phl.internal (Postfix) with ESMTP id 8B3D51380A3E;
-	Fri,  6 Mar 2026 19:33:40 -0500 (EST)
+	by mailflow.phl.internal (Postfix) with ESMTP id 61C441380A41;
+	Fri,  6 Mar 2026 19:33:43 -0500 (EST)
 Received: from phl-imap-07 ([10.202.2.97])
-  by phl-compute-02.internal (MEProxy); Fri, 06 Mar 2026 19:33:40 -0500
+  by phl-compute-02.internal (MEProxy); Fri, 06 Mar 2026 19:33:43 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=jetm.me; h=cc:cc
 	:content-transfer-encoding:content-type:content-type:date:date
 	:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to; s=fm3; t=1772843620;
-	 x=1772850820; bh=AV5pjfr8DB4LzAYJo0LZOvg+vcORVwMVJnNA5YqOM1g=; b=
-	FQ8Mj8SA/lqtFbHg4yYxEzGXo/TXW1cm45MI/fjEg6S6HRqg231tlcmdd7FCXcMC
-	p66JlQ0+DPsJYuP8k88yoN3JwL8KavoKCqrnfIlPQm5TdMis2HnjzKEnHKnVRDkS
-	zLdeRzzZXDxceQA/OiOZk/HiVdSfmdt0brSEKdRm75Y2xKeFbGZmzz5GRYKP+IL3
-	NHx1kvQFsv8KY+UY148YxKI0PYVg7iPA3EM1YBlw/lAEA53ra+cgfAv4hK5G18ai
-	15UZ7Xu5FwMRNTKuPCl0a36JUangWIYKvsh5uTT+SYA52LqFu30L8OKKhpCat5ks
-	2CWG3suK3Ii8u5+kqecPbw==
+	:references:reply-to:subject:subject:to:to; s=fm3; t=1772843623;
+	 x=1772850823; bh=xEjAv72VHfGiLkHrAlhjKdzunRhjRylRiDm2CPYMkMg=; b=
+	VqUgf8l6NKdxxYY9MfmUdJ6PUlCpH+rPu8/beBLr/Gwt0Z6l4wBEp4UbQ3O4i6SO
+	vNH6avfimdjBtmj8MZgHWqxpdFL23V+OR9V01hU1zNbJBpeQ3jrmdtTp4hvr4VES
+	MngUCxDjVyD1yBmb+Gx+rdGCo8N4QER/gYccrawCpE6cT14715/eoK6b3guQYGSG
+	d3WRsqNEP8kk/C9xA9o7pnDZYMfCtK0RGELWmjW5hJEqPRlELosN3UFyQ0myqd5h
+	vce5wo7VkfQyJOn2oR3qgJZ5NOp9KHS2T5YfwM8e1pXiV9scE4Jwykkiwetfef9L
+	vEQYXZ2Xnno3YrACM/OFHQ==
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
 	messagingengine.com; h=cc:cc:content-transfer-encoding
 	:content-type:content-type:date:date:feedback-id:feedback-id
 	:from:from:in-reply-to:in-reply-to:message-id:mime-version
 	:references:reply-to:subject:subject:to:to:x-me-proxy
-	:x-me-sender:x-me-sender:x-sasl-enc; s=fm1; t=1772843620; x=
-	1772850820; bh=AV5pjfr8DB4LzAYJo0LZOvg+vcORVwMVJnNA5YqOM1g=; b=z
-	kozg72iS6ADapSXG9DkoV+rVk0bCksC0GyhUOiVw7XJoM6F4e9YhqOuDERremdSy
-	5P7o4ge0xi8bBF47k/vr4QYYCuQcN4aRGJLPuZMC7iqDgvCIwxWW1bnX5Y5zzcPM
-	ITkj6m9zWTo6rdrLuVEhI+Z+11l5jcX4dd6QsRmUB8uw3gu6Cp7poKtQgv7XuP6R
-	+1Jt9Q6BYZUnsA00Uzg6oll8wSXO+bf/4Fvzdq3MnvBhpRHrFm93jNK9Rij1RMXL
-	NdVdgMF9YBBngLsvo7GmGySbrtSXsuTh9rsalWkdDVYYVWcwddHunhf/VxI5NTAw
-	1So+MzmTaudYk8XQv0Zcg==
-X-ME-Sender: <xms:ZHKraeUfiCW50Ex6eoB419vNw2bRtxUSJMFqJMWhU8QdoCeDhe9pWg>
-    <xme:ZHKraVYmSCBkct6dsumc8GfBwmPpDjhr1rf1kfduRCKGRCV-bhzoK_uBnWHcW2Pc2
-    CHWiOfxATn6IbTbN9QF4-VvvcZ7c_MmO99pmHWFESA8J-QB32PGxMGN>
+	:x-me-sender:x-me-sender:x-sasl-enc; s=fm1; t=1772843623; x=
+	1772850823; bh=xEjAv72VHfGiLkHrAlhjKdzunRhjRylRiDm2CPYMkMg=; b=P
+	xN8a+CZjQJDaBAsvMh45NZDG8oXXJ5t+eYp6462ZKcQvMQxVt7mJ1o9rB5LFFi1w
+	WIeKPGvaxZIRIljNS/ke32tR99S1OwAPidWf0D8EIR5DlHIoAGnmRBNaZIZtg3RM
+	Wp/EJGE1/sT6CWeHga6zVLq4PCz5cW9C4F6f6Z5CVFFCy8YjH2gCUlGIhXQO6l6W
+	Ol+c22YAFmNOL/jsypy+ZtYboCi77o+s2E2He81DVb6uYC9jwNEMbJupXD84nRg3
+	Wh3H93/p8KtKYRTM+qKH/OVeYxOhTs3SVjVPWGA8h9XEBn5fb3YXJWEpBKnxC0ay
+	WEx7p1Ip5+nLfmex9Zu+g==
+X-ME-Sender: <xms:Z3KrabsTnRIICcU1GqYBlqJihm13e7WNtopgNQCvBc7zkoumePh0hQ>
+    <xme:Z3KraXQ8jkJ77Tc6yCbKgxAgJrFBhtd0q00GFOO9hVWh635laSsPMLMO9pgT7Ybol
+    NY1btsr6EHteqOswwFcPMfcJQAYk0RD9J0KXwIRGwDp_XSDdFfb5nwS>
 X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefgedrtddtgddvjedtjeehucetufdoteggodetrf
     dotffvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfurfetoffkrfgpnffqhgenuceu
     rghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujf
     gurhepoffhfffugggtgffkvfevofgjfhesthekredtredtjeenucfhrhhomheplfgrvhhi
     vghrucfvihgruceofhhlohhsshesjhgvthhmrdhmvgeqnecuggftrfgrthhtvghrnhepve
     ektdfhffevuddtgfetieevtddvheduhfeggfekveejlefhleefieevueefiefhnecuvehl
-    uhhsthgvrhfuihiivgepfeenucfrrghrrghmpehmrghilhhfrhhomhepfhhlohhsshesjh
+    uhhsthgvrhfuihiivgepheenucfrrghrrghmpehmrghilhhfrhhomhepfhhlohhsshesjh
     gvthhmrdhmvgdpnhgspghrtghpthhtohepvdefpdhmohguvgepshhmthhpohhuthdprhgt
     phhtthhopegrnhhgvghlohhgihhorggttghhihhnohdruggvlhhrvghgnhhosegtohhllh
     grsghorhgrrdgtohhmpdhrtghpthhtohepfeduleefieefudesghhmrghilhdrtghomhdp
@@ -83,19 +83,19 @@ X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefgedrtddtgddvjedtjeehucetufdote
     hoshgrlheltdesghhmrghilhdrtghomhdprhgtphhtthhopehmrghtthhhihgrshdrsghg
     ghesghhmrghilhdrtghomhdprhgtphhtthhopehrrgguohhirdgthhhrihhssehgmhgrih
     hlrdgtohhmpdhrtghpthhtohepshgrmhhurdhtohhljhgrmhhosehgmhgrihhlrdgtohhm
-X-ME-Proxy: <xmx:ZHKraVWsp8mg3w7PwlWbHjd4K5fYEaIj7kS2_ghjl_PmzD8pgViQaQ>
-    <xmx:ZHKraaex5Rfss-j9385Jehtz58GsVlDlqhOo1wtZDiyg3e9UD6hC2g>
-    <xmx:ZHKrae--iHo9b7Jh5F0fqcLRlAtqEcI9D2ZIh6yakck0_njFYrrjOA>
-    <xmx:ZHKraabVulp8WJOfGHkWBiqWOw4BlXzwGCebNumpKDbwP58xhaFokg>
-    <xmx:ZHKraTS5DhWwQyGGNjOo6DtdAayThibaO5D7SBBVQ83f6BzbjAeixgJU>
+X-ME-Proxy: <xmx:Z3KraQvN4Eb179clXP7UqJzfDZjEI80NGiUZd5XnMy1ZitCbQTVCbg>
+    <xmx:Z3KraSUjZLi8UnWiNQic9-cNlBVpC6QVESJy4AYZwvSMvRqupyPUGQ>
+    <xmx:Z3KraZVFfk7z8Hgw02swPJLg9KG2A8XU-DctV6O4z7QRGSlxN657jw>
+    <xmx:Z3KraVRORkYizhpv5k2rnc2IM5zWfqe61Y-sXzU851cFM70ucwej0A>
+    <xmx:Z3KraWIkZQIpFyBA-CzujkSeY_2cvNS1z9ofpqskQ82imAl8MFeoGi68>
 Feedback-ID: i9dde48b3:Fastmail
 Received: by mailuser.phl.internal (Postfix, from userid 501)
-	id 5ADF61EA006B; Fri,  6 Mar 2026 19:33:40 -0500 (EST)
+	id 356C81EA006C; Fri,  6 Mar 2026 19:33:43 -0500 (EST)
 X-Mailer: MessagingEngine.com Webmail Interface
 From: Javier Tia <floss@jetm.me>
-Date: Fri, 06 Mar 2026 18:33:24 -0600
-Subject: [PATCH 05/18] wifi: mt76: mt7925: skip CLR_OWN in mt7925e_mcu_init
- for MT7927
+Date: Fri, 06 Mar 2026 18:33:25 -0600
+Subject: [PATCH 06/18] wifi: mt76: mt7925: add MT7927 power management,
+ DBDC, and CNM fixes
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
@@ -104,7 +104,7 @@ List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
-Message-Id: <20260306-mt7927-wifi-support-v1-5-c77e7445511d@jetm.me>
+Message-Id: <20260306-mt7927-wifi-support-v1-6-c77e7445511d@jetm.me>
 To: linux-wireless@vger.kernel.org, Felix Fietkau <nbd@nbd.name>,
  Lorenzo Bianconi <lorenzo@kernel.org>, Ryder Lee <ryder.lee@mediatek.com>,
  Shayne Chen <shayne.chen@mediatek.com>, Sean Wang <sean.wang@mediatek.com>,
@@ -123,22 +123,22 @@ Cc: linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
  =?utf-8?q?=E5=BC=A0=E6=97=AD=E6=B6=B5?= <Loong.0x00@gmail.com>,
  Javier Tia <floss@jetm.me>
 X-Mailer: b4 0.14.3
-X-Developer-Signature: v=1; a=openpgp-sha256; l=2063; i=floss@jetm.me;
- h=from:subject:message-id; bh=fB6otMGIwko1yonItoV0W4EcmOF1mpMAMxLshlLLqx4=;
- b=owEB7QES/pANAwAKAbXuwwuoZ3cfAcsmYgBpq3JP5Mpt9lS8a/Lf2blvrfs2Fodgx8e4mRQlI
- oSw1PgK/1uJAbMEAAEKAB0WIQSbE7ILzw7eI0VKk8m17sMLqGd3HwUCaatyTwAKCRC17sMLqGd3
- H1X8C/0VHd6bjvKOIqAdusuJtLoSCCk9t+e+vfNGLFaCw3MfemEChkITad1xYNjzb/YkVvViEnt
- iO7PWdfVTQBnk915cpdyXVErc78+SdOwa/4NOKWPnokTYjxpOldhHWcGDpebN0hg3yTxaFqzxq0
- ejd5GwBgvQHmLMZSFXaMeyM68kdGMXEF1UeWjTnWXFk63SLElkCygZ/HTp+VMSWHaU51tWk4OjW
- vvUuf5Mg6UkP2J5X5nIXCCMF4Q8GKDiCmsDFYMbMSLaQYMrcG7HGwwBZ+jKLjysdDEZ4snIUbZ7
- frH/N/8zy7kNhIIcKRyCNJQXNLk3RSm/VQLpv6sXbbWy3Y3YxEvWLzu3zQ1hhmnoN+Up+b56dfm
- p4AjqdajHcApTVCJXIO8rja/ew2qS3C75I3nlOR0p+1GlpP4yQioAlnAwBnGLv+s57a0JB0QEoV
- G38ep8746pwkjd+TvgphytWBXMVyB71uEu4JPnOFGdhNUFjqsNYGvb2/V6xUvgodyfm5I=
+X-Developer-Signature: v=1; a=openpgp-sha256; l=3842; i=floss@jetm.me;
+ h=from:subject:message-id; bh=/GuNqbGp0WkGquAlj8TXYsYcaj5pBN2o2/Bv/wZ77ng=;
+ b=owEB7QES/pANAwAKAbXuwwuoZ3cfAcsmYgBpq3JPuEuIqFx6W1+smCHLJTcMJHCbobukBVeO4
+ 0RHZ8TnRL6JAbMEAAEKAB0WIQSbE7ILzw7eI0VKk8m17sMLqGd3HwUCaatyTwAKCRC17sMLqGd3
+ H9K+DACnuG0c74GfHj4EmBIxAGgIJnHfMdAEgsHrir/61rydL2mcGJfkFp13Cu+03E68r9u+qBM
+ O/ocHHyE9zMcos/irDOrvSMTbFlt5vTYRsb53VAjLn4mivaJBCtvghRZiA9n242BH/blNqfi4CQ
+ zIKn7vrE3ThAOff/fDR5J/TqepkU1+K142oALZfY/0+spChfkzIX2kf1dR8o+S79qApzPqJZGuV
+ X/0eBlPQweihFSZ/YIO9MUBcdD5H7hf9EzX3Bky5dnNyxOKyKGib00OFsLQdeidOILzgre8CKCs
+ 2WIbx06z5K0oxzfah2A8VjSBz4+axjhskQgCzp2tsNlo07A74JVL3YcnS9z6lpmv/onn4J2eMzn
+ +VOXDzKV62NnuVE1H490fB5jWxrsF2ty31alL7Qr3n8Kix1cGeeUTGrBai4NdUO2v450F7ikR+i
+ J+4f/nzykxSescfXkMkN4RwkqBe9I0b6XCJeFtCUBgYEBeL/Yz0pQ0Qo8MjuQp6b5RdV4=
 X-Developer-Key: i=floss@jetm.me; a=openpgp;
  fpr=9B13B20BCF0EDE23454A93C9B5EEC30BA867771F
 In-Reply-To: <20260306-mt7927-wifi-support-v1-0-c77e7445511d@jetm.me>
 References: <20260306-mt7927-wifi-support-v1-0-c77e7445511d@jetm.me>
-X-Rspamd-Queue-Id: 56268229156
+X-Rspamd-Queue-Id: 900882291A2
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [8.85 / 15.00];
 	URIBL_BLACK(7.50)[jetm.me:dkim,jetm.me:email,jetm.me:mid];
@@ -148,7 +148,7 @@ X-Spamd-Result: default: False [8.85 / 15.00];
 	MIME_GOOD(-0.10)[text/plain];
 	XM_UA_NO_VERSION(0.01)[];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-32692-lists,linux-wireless=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-32693-lists,linux-wireless=lfdr.de];
 	R_DKIM_ALLOW(0.00)[jetm.me:s=fm3,messagingengine.com:s=fm1];
 	RCVD_TLS_LAST(0.00)[];
 	FROM_HAS_DN(0.00)[];
@@ -169,20 +169,28 @@ X-Spamd-Result: default: False [8.85 / 15.00];
 	ARC_ALLOW(0.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	R_SPF_ALLOW(0.00)[+ip4:172.234.253.10:c];
-	NEURAL_SPAM(0.00)[0.696];
+	NEURAL_SPAM(0.00)[0.690];
 	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	DBL_BLOCKED_OPENRESOLVER(0.00)[humeurlibre.fr:email,messagingengine.com:dkim,lgic.pl:email,jetm.me:dkim,jetm.me:email,jetm.me:mid,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
 X-Rspamd-Action: add header
 X-Spam: Yes
 
-On MT7927 hardware, every CLR_OWN triggers the ROM bootloader to
-reinitialize the WFDMA engine, destroying all DMA ring configuration
-(base addresses, prefetch settings, descriptor pointers).
+Three MT7927-specific fixes for WiFi functionality:
 
-The DMA rings are already properly initialized by mt7927_dma_init()
-which performs a controlled CLR_OWN before ring setup. Skip the
-SET_OWN/CLR_OWN cycle in mt7925e_mcu_init() to preserve that
-configuration.
+1. Disable runtime PM: Every CLR_OWN triggers the ROM to reinitialize
+   WFDMA, destroying DMA ring configuration. Disable PM until the wake
+   path properly handles MT7927.
+
+2. Enable DBDC (dual-band): MT7927 firmware defaults to single-band
+   (2.4GHz only). MT7925 firmware handles DBDC automatically, but
+   MT7927 requires an explicit MCU_UNI_CMD(SET_DBDC_PARMS) with
+   mbmc_en=1. Without this, 5GHz scan requests are silently discarded.
+
+3. Force CNM capability: MT7927 firmware lacks the connac2 feature
+   trailer, causing mt792x_get_mac80211_ops() to replace channel
+   context operations with emulated stubs. This prevents ROC (remain
+   on channel) before authentication, causing auth frames to be
+   silently dropped. Force the CNM flag and restore mt7925_ops.
 
 Tested-by: Marcin FM <marcin@lgic.pl>
 Tested-by: Cristian-Florin Radoi <radoi.chris@gmail.com>
@@ -195,40 +203,66 @@ Tested-by: Thibaut François <tibo@humeurlibre.fr>
 Tested-by: 张旭涵 <Loong.0x00@gmail.com>
 Signed-off-by: Javier Tia <floss@jetm.me>
 ---
- drivers/net/wireless/mediatek/mt76/mt7925/pci_mcu.c | 19 +++++++++++++------
- 1 file changed, 13 insertions(+), 6 deletions(-)
+ drivers/net/wireless/mediatek/mt76/mt7925/init.c | 17 ++++++++++++++++-
+ drivers/net/wireless/mediatek/mt76/mt7925/pci.c  | 10 ++++++++++
+ 2 files changed, 26 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7925/pci_mcu.c b/drivers/net/wireless/mediatek/mt76/mt7925/pci_mcu.c
-index 6cceff88c656..206d525eb550 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7925/pci_mcu.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7925/pci_mcu.c
-@@ -35,13 +35,20 @@ int mt7925e_mcu_init(struct mt792x_dev *dev)
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7925/init.c b/drivers/net/wireless/mediatek/mt76/mt7925/init.c
+index 3ce5d6fcc69d..1e9eadca3988 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7925/init.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7925/init.c
+@@ -115,6 +115,18 @@ static int __mt7925_init_hardware(struct mt792x_dev *dev)
+ 	if (ret)
+ 		goto out;
  
- 	dev->mt76.mcu_ops = &mt7925_mcu_ops;
- 
--	err = mt792xe_mcu_fw_pmctrl(dev);
--	if (err)
--		return err;
++	/* MT7927: Enable DBDC (dual-band) mode. Without this, firmware
++	 * defaults to 2.4GHz only and ignores 5GHz scan requests.
++	 * MT7925 firmware handles DBDC automatically. */
 +	if (is_mt7927(&dev->mt76)) {
-+		/* MT7927: CLR_OWN was already done in mt7927_dma_init().
-+		 * The ROM re-initializes WFDMA on every CLR_OWN, wiping
-+		 * ring and prefetch config. Skip SET_OWN/CLR_OWN here
-+		 * to preserve DMA state. */
-+	} else {
-+		err = mt792xe_mcu_fw_pmctrl(dev);
-+		if (err)
-+			return err;
- 
--	err = __mt792xe_mcu_drv_pmctrl(dev);
--	if (err)
--		return err;
-+		err = __mt792xe_mcu_drv_pmctrl(dev);
-+		if (err)
-+			return err;
++		ret = mt7925_mcu_set_dbdc(&dev->mphy, true);
++		if (ret) {
++			dev_warn(dev->mt76.dev,
++				 "MT7927 DBDC enable failed: %d\n", ret);
++			ret = 0;
++		}
 +	}
++
+ out:
+ 	return ret;
+ }
+@@ -230,7 +242,10 @@ int mt7925_register_device(struct mt792x_dev *dev)
+ 	dev->pm.idle_timeout = MT792x_PM_TIMEOUT;
+ 	dev->pm.stats.last_wake_event = jiffies;
+ 	dev->pm.stats.last_doze_event = jiffies;
+-	if (!mt76_is_usb(&dev->mt76)) {
++	/* MT7927: disable power management. Every CLR_OWN triggers the
++	 * ROM to reinitialize WFDMA, destroying DMA ring configuration.
++	 * Keep the device awake until the PM wake path handles MT7927. */
++	if (!mt76_is_usb(&dev->mt76) && !is_mt7927(&dev->mt76)) {
+ 		dev->pm.enable_user = true;
+ 		dev->pm.enable = true;
+ 		dev->pm.ds_enable_user = true;
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7925/pci.c b/drivers/net/wireless/mediatek/mt76/mt7925/pci.c
+index ca9ccfe9975c..dce9f30b68d7 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7925/pci.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7925/pci.c
+@@ -527,6 +527,16 @@ static int mt7925_pci_probe(struct pci_dev *pdev,
+ 		goto err_free_pci_vec;
+ 	}
  
- 	mt76_rmw_field(dev, MT_PCIE_MAC_PM, MT_PCIE_MAC_PM_L0S_DIS, 1);
- 
++	/* MT7927 firmware lacks the connac2 feature trailer, so
++	 * mt792x_get_mac80211_ops() can't detect CNM support and
++	 * replaces chanctx/ROC/mgd_prepare_tx ops with stubs.
++	 * Force CNM and restore the original mt7925 ops. */
++	if ((pdev->device == 0x6639 || pdev->device == 0x7927) &&
++	    !(features & MT792x_FW_CAP_CNM)) {
++		features |= MT792x_FW_CAP_CNM;
++		memcpy(ops, &mt7925_ops, sizeof(*ops));
++	}
++
+ 	mdev = mt76_alloc_device(&pdev->dev, sizeof(*dev), ops, &drv_ops);
+ 	if (!mdev) {
+ 		ret = -ENOMEM;
 
 -- 
 2.53.0
