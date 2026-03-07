@@ -1,228 +1,280 @@
-Return-Path: <linux-wireless+bounces-32705-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-32706-lists+linux-wireless=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id +I1EJll0q2kvdQEAu9opvQ
-	(envelope-from <linux-wireless+bounces-32705-lists+linux-wireless=lfdr.de@vger.kernel.org>)
-	for <lists+linux-wireless@lfdr.de>; Sat, 07 Mar 2026 01:42:01 +0100
+	id qK0WFlh1q2kvdQEAu9opvQ
+	(envelope-from <linux-wireless+bounces-32706-lists+linux-wireless=lfdr.de@vger.kernel.org>)
+	for <lists+linux-wireless@lfdr.de>; Sat, 07 Mar 2026 01:46:16 +0100
 X-Original-To: lists+linux-wireless@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3CA202290F8
-	for <lists+linux-wireless@lfdr.de>; Sat, 07 Mar 2026 01:42:01 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id B8B9B22917B
+	for <lists+linux-wireless@lfdr.de>; Sat, 07 Mar 2026 01:46:15 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id A65C4304D902
-	for <lists+linux-wireless@lfdr.de>; Sat,  7 Mar 2026 00:35:25 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 16C11303DAEC
+	for <lists+linux-wireless@lfdr.de>; Sat,  7 Mar 2026 00:46:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BABBE2E62D1;
-	Sat,  7 Mar 2026 00:34:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A1D6CEED8;
+	Sat,  7 Mar 2026 00:46:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=jetm.me header.i=@jetm.me header.b="XCxY9Mzn";
-	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="YJg5mHKn"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ugLuKkaO"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from flow-a2-smtp.messagingengine.com (flow-a2-smtp.messagingengine.com [103.168.172.137])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 730422E62B3;
-	Sat,  7 Mar 2026 00:34:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=103.168.172.137
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7E690DF76
+	for <linux-wireless@vger.kernel.org>; Sat,  7 Mar 2026 00:46:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772843665; cv=none; b=GBKn+PTt2ghbnoPm3E8aKUatEbJGflbpea4aqfy+MDN5eHBq1Jiy5C5T9LmGn8uK0ED/OkTgUiN+RtMubLjaX4MDQD+O+A7w/TuDJ7laFaGxNhiBorZJQ2UmMSysNadurTZE2ZGRj6c9UPVxybX0xKi5kGr97eCUdMrtpJJKAgQ=
+	t=1772844373; cv=none; b=r3Mv1MMilV6zuzfLM1gmv+fZcmfZL4/MTzMCcgXmAL7QUY0Quolxd2lbevqiBk9jDlrnc+Bkx9rM7riQVb+jI5Y1LijE+PTMYqz6k6LVRAr1fZs+Egvql696pFb8yJ7woCEzCbFGp2h0BA3W+/fMuERZ+eUezPjZbxiSki/biII=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772843665; c=relaxed/simple;
-	bh=76o6pFwpyjUyv3yPBBBAdI2dlELkl13ZIgHkl2UbS2A=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc:
-	 In-Reply-To:References; b=jAHGKK1Ok7AN8Xj5/bzIzuPT4m9OzGeeJwPzWIUrUjvetS7NCu4bc/op24yxV51VZeMvSZ06aSbssuxawTplJVdBg8WPaQyKeXjCsxjkEnpy1eOqCFvopJr9LLZ/YeYnecDldq+NJdbrg3Exs31G4TOezcHSzXWHgpgso0ziV8s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=jetm.me; spf=pass smtp.mailfrom=jetm.me; dkim=pass (2048-bit key) header.d=jetm.me header.i=@jetm.me header.b=XCxY9Mzn; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=YJg5mHKn; arc=none smtp.client-ip=103.168.172.137
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=jetm.me
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=jetm.me
-Received: from phl-compute-02.internal (phl-compute-02.internal [10.202.2.42])
-	by mailflow.phl.internal (Postfix) with ESMTP id E23B81380A22;
-	Fri,  6 Mar 2026 19:34:23 -0500 (EST)
-Received: from phl-imap-07 ([10.202.2.97])
-  by phl-compute-02.internal (MEProxy); Fri, 06 Mar 2026 19:34:23 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=jetm.me; h=cc:cc
-	:content-transfer-encoding:content-type:content-type:date:date
-	:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to; s=fm3; t=1772843663;
-	 x=1772850863; bh=HoAXh3SQ9Tz9LRhc8OIvPnjOzRFjWCfpsYPvBpkZEr8=; b=
-	XCxY9MznMa/MuiHsUf9e2GLh6vAnqch9tXI5SktPbF3gCC9wBXCqKGqhwLRSnJnv
-	ZCAVjIaHkxSJftmCMTrDtqkiPFDOT77EIpCJnrBz2he12ii56pbdOBhI0V7Ijs5I
-	xY9k/wOS/1FVd3nIDsMrlIYAfLP4jPHqwqXtIWinl9e3iiY7XWvFK1kHd/3PYpRQ
-	mb+AsGxRqyHc9quZ7LeUd0GpMaeGIOofMNjaUiIliaV6cLOt1go8nRAjBl9TKibX
-	CxI9C1zUNQJqGygoJIRd6jYrxVsq/2kZb7OWREV3x3mVzkHkVk9PblKboQwJa3Yy
-	e06NsPp5f0XaeJfYlDPVjg==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-transfer-encoding
-	:content-type:content-type:date:date:feedback-id:feedback-id
-	:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to:x-me-proxy
-	:x-me-sender:x-me-sender:x-sasl-enc; s=fm1; t=1772843663; x=
-	1772850863; bh=HoAXh3SQ9Tz9LRhc8OIvPnjOzRFjWCfpsYPvBpkZEr8=; b=Y
-	Jg5mHKnc8+BGp84QtGwgcF9FxzS90dmabjPU8DYTX8yiHF2PFf4VcXwLQtLEA6xw
-	nW1IBZJ03zHp7Sx9cBE2kcjdtdfehhTaimsatU/GySapFBBFunhs8/bi0somERBu
-	HhuffvWjSaWFGdhvMS11MlnbM79frpU0n2N86lETyn1rUi8In0dzOUNsT7zPHgfh
-	PooOw8JQHQowSU1yk+0iUd/OYvVFzTe55PaAr93grl8k9kQ+GHuFIuRv0PBOKCxT
-	Ih22FRgeueiERgPCIrdAwIdJFTbL4UBt3qwrEiuV8WNrGx9PJscsRVpr5Vu9JDOT
-	ZBARzbdBeIysS9eijeaUA==
-X-ME-Sender: <xms:j3KraTAU-hnNENW5g4UGGib7v8xBqGxfPKqf6aKfjEdlM8SVNqDcRw>
-    <xme:j3KraUWMbNWGqhJd4db7STpu-ilM0nIHAvOlsh85nUUrzUbQFuczY4y072SqTi6_n
-    ZQcuAlQ71CGCS8rY3sNUD-wiLHD-4QG_6zyLult-nuPYnHRRWWswzE>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefgedrtddtgddvjedtjeehucetufdoteggodetrf
-    dotffvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfurfetoffkrfgpnffqhgenuceu
-    rghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujf
-    gurhepoffhfffugggtgffkvfevofgjfhesthekredtredtjeenucfhrhhomheplfgrvhhi
-    vghrucfvihgruceofhhlohhsshesjhgvthhmrdhmvgeqnecuggftrfgrthhtvghrnhepue
-    dttdfggfdufeeiueetffegveefffevjeehvdelfeevhffhteekgfegveeuiefhnecuffho
-    mhgrihhnpehgihhthhhusgdrtghomhenucevlhhushhtvghrufhiiigvpedunecurfgrrh
-    grmhepmhgrihhlfhhrohhmpehflhhoshhssehjvghtmhdrmhgvpdhnsggprhgtphhtthho
-    pedvfedpmhhouggvpehsmhhtphhouhhtpdhrtghpthhtoheprghnghgvlhhoghhiohgrtg
-    gthhhinhhordguvghlrhgvghhnohestgholhhlrggsohhrrgdrtghomhdprhgtphhtthho
-    peefudelfeeifedusehgmhgrihhlrdgtohhmpdhrtghpthhtoheplhhoohhnghdrtdigtd
-    dtsehgmhgrihhlrdgtohhmpdhrtghpthhtoheprghrihgvlhdrrhhoshgvnhhfvghlugdr
-    jeehtdesghhmrghilhdrtghomhdprhgtphhtthhopegthhgrphhuihhsuggrrhhiohegse
-    hgmhgrihhlrdgtohhmpdhrtghpthhtohepghhiohhsrghlledtsehgmhgrihhlrdgtohhm
-    pdhrtghpthhtohepmhgrthhthhhirghsrdgsghhgsehgmhgrihhlrdgtohhmpdhrtghpth
-    htoheprhgrughoihdrtghhrhhishesghhmrghilhdrtghomhdprhgtphhtthhopehsrghm
-    uhdrthholhhjrghmohesghhmrghilhdrtghomh
-X-ME-Proxy: <xmx:j3KraUbLqOMu1hA6cw-UWeiu9gKgSKpc--opTLe8eK5ZUMBvQLf-Tw>
-    <xmx:j3KraaKBMwbOlvl67uqmV7mwaBc38ZPjPJeQn8EXXO261m09aoRbSA>
-    <xmx:j3Krad2NYPQ6c2L1sUn_98tnq0IGKSLjDzgM52GwcFAj4ijwoLE1FQ>
-    <xmx:j3KraVZOldb7g2nmU0j69fJde_8qtx1OHDjDPg_FmdrfbKi0iZZ6UA>
-    <xmx:j3KraTMa5YASg729nyEOKj3Mh47Vzow8ROdGkfqANSnyKxOENmQjQoWY>
-Feedback-ID: i9dde48b3:Fastmail
-Received: by mailuser.phl.internal (Postfix, from userid 501)
-	id BAF471EA006B; Fri,  6 Mar 2026 19:34:23 -0500 (EST)
-X-Mailer: MessagingEngine.com Webmail Interface
-From: Javier Tia <floss@jetm.me>
-Date: Fri, 06 Mar 2026 18:33:37 -0600
-Subject: [PATCH 18/18] wifi: mt76: mt7925: add 320MHz bandwidth to
- bss_rlm_tlv
+	s=arc-20240116; t=1772844373; c=relaxed/simple;
+	bh=v/ZPsdekFjG47NT8M+I56PGbX39i713MbgKkCGM/sZI=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=Gf5fIfp2hqWYCPlGQnCgc73+SIS+2588B0bGrctSOWGwwybgM7Sfgxj0eYH4OFmVabiP2dQx9N1zUfGyA47zw+py/qHmQoEP0Ezc50dY78GPsC2MkXZsh7HjH0gzhCvyG3dSYO/r5+WuyFc7DF3ONZbpUgKWkC0GgqgJNZQFAi0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ugLuKkaO; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 11627C19422
+	for <linux-wireless@vger.kernel.org>; Sat,  7 Mar 2026 00:46:13 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1772844373;
+	bh=v/ZPsdekFjG47NT8M+I56PGbX39i713MbgKkCGM/sZI=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+	b=ugLuKkaO/ZiP70ONN9oAPL7olhxrHwHKUT1G5nZjpIF9RVg6Tz0lx8oNILuGMAssO
+	 9sqNeBF5kmFNSjDBVV1IUgpdCR7i03H2J0SL3O3y6+XJad5r8yuitjbQQ0DMi4V/Gj
+	 NYmf5evzX/9cg5WUFcquY7uqz17gXEe6koD60G1FNOaS7VJx0kXpG3jSCPJSfLUtge
+	 1WXKvaUmyO+AcdSUEl/iS8LsvXkQT1FYTLn6vwBmVDe+p5ler10UM8QV/4EVRXxpij
+	 Ffl4KAqBh56/K8EE+3izuLUQ1/LKXBJjDiNye1HmWYyF2g1roOqEjixJTz4W+McCVL
+	 +c987u22QXNCA==
+Received: by mail-lj1-f169.google.com with SMTP id 38308e7fff4ca-38a3066b68bso39537201fa.3
+        for <linux-wireless@vger.kernel.org>; Fri, 06 Mar 2026 16:46:12 -0800 (PST)
+X-Gm-Message-State: AOJu0Yz/zG3lKxwwzLaz1/0ntRBv3ljqvdH2o3+iyhiJH44oTs6CcAp7
+	vA8YKPoNT3ZN/0LxvI3RJCBUz2hW9WLy9nMVgOZIS+0/PF5l/pPjNNTy7wPL7bNmxcwpaJ+JnCO
+	APwbyEjATZHus2AoYRcuIXCUSbEEsR7I=
+X-Received: by 2002:a2e:8713:0:b0:389:ef35:fb9e with SMTP id
+ 38308e7fff4ca-38a40d94bcamr10056641fa.24.1772844371411; Fri, 06 Mar 2026
+ 16:46:11 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
-Message-Id: <20260306-mt7927-wifi-support-v1-18-c77e7445511d@jetm.me>
-To: linux-wireless@vger.kernel.org, Felix Fietkau <nbd@nbd.name>,
- Lorenzo Bianconi <lorenzo@kernel.org>, Ryder Lee <ryder.lee@mediatek.com>,
- Shayne Chen <shayne.chen@mediatek.com>, Sean Wang <sean.wang@mediatek.com>,
- Matthias Brugger <matthias.bgg@gmail.com>,
- AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
- Deren Wu <deren.wu@mediatek.com>,
- Ming Yen Hsieh <mingyen.hsieh@mediatek.com>
-Cc: linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
- linux-mediatek@lists.infradead.org, Marcin FM <marcin@lgic.pl>,
- Cristian-Florin Radoi <radoi.chris@gmail.com>,
- George Salukvadze <giosal90@gmail.com>, Evgeny Kapusta <3193631@gmail.com>,
- Samu Toljamo <samu.toljamo@gmail.com>,
- Ariel Rosenfeld <ariel.rosenfeld.750@gmail.com>,
- Chapuis Dario <chapuisdario4@gmail.com>,
- =?utf-8?q?Thibaut_Fran=C3=A7ois?= <tibo@humeurlibre.fr>,
- =?utf-8?q?=E5=BC=A0=E6=97=AD=E6=B6=B5?= <Loong.0x00@gmail.com>,
- Javier Tia <floss@jetm.me>
-X-Mailer: b4 0.14.3
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1993; i=floss@jetm.me;
- h=from:subject:message-id; bh=76o6pFwpyjUyv3yPBBBAdI2dlELkl13ZIgHkl2UbS2A=;
- b=owEB7QES/pANAwAKAbXuwwuoZ3cfAcsmYgBpq3JQOB5Xx7+rlhJvXpLwxYGMyLapclMOstIQH
- E88aKo5LjmJAbMEAAEKAB0WIQSbE7ILzw7eI0VKk8m17sMLqGd3HwUCaatyUAAKCRC17sMLqGd3
- H6gDDACYdyveP2iYImYAeUIhT1CebEcBKEXBkf6+UBB9xo0vfTbrnyUiDYYgCJRD+zAuUsseDeB
- roHGHi44STPQbjBsquZDiMSDqiNQfjl5JKELfJ1Cjo2dSOKexcNKbj8YXBXzocO/oGxb4xy6L64
- +uhCJuxVJ7dpZePVEWjqFRsNIXRHoU9pxw27bTN2sdQuTcHUgUH5+KZqMBpfdlMio8MyWHj+ayH
- EOV0hYRssehxX1B7VyeTa61W9gtMEs8f5B3fkCcZ0bTjmgx/mpvd4d387Uhxjp66uTB7EjQykys
- Pr7b3PrKdJQk4Xqp2DvEs2fR030W9eRQB1Sr4rLIzOL5Y+DR8yhsk2ReBxfqsXnCcHnt3GjHaFT
- V6wKcQkHdwoG7I8vlcWT7K5HofbCHGfAeOU2gL4oUE38cPeEkP4vDt5n8TxVx/J5BjnExg+iHBB
- BDFr3nZmK8OGdnLTqP3+9jU/XF0UfjEyOw3IMdaMelFX7P+NZwv+AAR9o7jKX/C6MLwP8=
-X-Developer-Key: i=floss@jetm.me; a=openpgp;
- fpr=9B13B20BCF0EDE23454A93C9B5EEC30BA867771F
-In-Reply-To: <20260306-mt7927-wifi-support-v1-0-c77e7445511d@jetm.me>
-References: <20260306-mt7927-wifi-support-v1-0-c77e7445511d@jetm.me>
-X-Rspamd-Queue-Id: 3CA202290F8
+References: <CAFktD2eaVpRAJRkaGOj4y-m0woK-sNeCM+h_7A=9GELSce6TcQ@mail.gmail.com>
+ <CAGp9LzrTMALkJKrGANTCzeG4KUDGwC1YJc8SRKNRriH3a9bnRQ@mail.gmail.com> <CAFktD2eG+nebKcNbw2imufSOz6MCR-SUXjcUQmDqJabNfwx4sg@mail.gmail.com>
+In-Reply-To: <CAFktD2eG+nebKcNbw2imufSOz6MCR-SUXjcUQmDqJabNfwx4sg@mail.gmail.com>
+From: Sean Wang <sean.wang@kernel.org>
+Date: Fri, 6 Mar 2026 18:46:00 -0600
+X-Gmail-Original-Message-ID: <CAGp9Lzp2s675kmTJG+iYgLXS=fjiD-JC6GYjom7i-bcWFDxWoQ@mail.gmail.com>
+X-Gm-Features: AaiRm525bNABfOeNAiV8Hh2Y2gDrcESPjzzid372jWqtIntLfhkpyIrN6LZNT4c
+Message-ID: <CAGp9Lzp2s675kmTJG+iYgLXS=fjiD-JC6GYjom7i-bcWFDxWoQ@mail.gmail.com>
+Subject: Re: [BUG] wifi: mt76: mt7925u: probe with driver mt7925u failed with
+ error -110
+To: Nick <morrownr@gmail.com>
+Cc: linux-wireless <linux-wireless@vger.kernel.org>, Felix Fietkau <nbd@nbd.name>, 
+	Lorenzo Bianconi <lorenzo@kernel.org>, Ryder Lee <ryder.lee@mediatek.com>, 
+	Shayne Chen <shayne.chen@mediatek.com>, Sean Wang <sean.wang@mediatek.com>, 
+	Deren Wu <deren.wu@mediatek.com>, Leon Yen <leon.yen@mediatek.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Rspamd-Queue-Id: B8B9B22917B
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [8.85 / 15.00];
-	URIBL_BLACK(7.50)[jetm.me:dkim,jetm.me:email,jetm.me:mid];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-2.16 / 15.00];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10];
+	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
 	MAILLIST(-0.15)[generic];
-	BAD_REP_POLICIES(0.10)[];
 	MIME_GOOD(-0.10)[text/plain];
-	XM_UA_NO_VERSION(0.01)[];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-32705-lists,linux-wireless=lfdr.de];
-	R_DKIM_ALLOW(0.00)[jetm.me:s=fm3,messagingengine.com:s=fm1];
+	DKIM_TRACE(0.00)[kernel.org:+];
+	TAGGED_FROM(0.00)[bounces-32706-lists,linux-wireless=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	FREEMAIL_TO(0.00)[vger.kernel.org,nbd.name,kernel.org,mediatek.com,gmail.com,collabora.com];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	GREYLIST(0.00)[pass,body];
-	RCPT_COUNT_TWELVE(0.00)[23];
-	MIME_TRACE(0.00)[0:+];
-	FREEMAIL_CC(0.00)[vger.kernel.org,lists.infradead.org,lgic.pl,gmail.com,humeurlibre.fr,jetm.me];
-	DMARC_POLICY_ALLOW(0.00)[jetm.me,quarantine];
-	DKIM_TRACE(0.00)[jetm.me:+,messagingengine.com:+];
-	RCVD_COUNT_FIVE(0.00)[6];
-	MID_RHS_MATCH_FROM(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[floss@jetm.me,linux-wireless@vger.kernel.org];
-	TO_DN_SOME(0.00)[];
-	TAGGED_RCPT(0.00)[linux-wireless];
-	ARC_ALLOW(0.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	R_SPF_ALLOW(0.00)[+ip6:2600:3c09:e001:a7::/64:c];
-	NEURAL_SPAM(0.00)[0.667];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,messagingengine.com:dkim,humeurlibre.fr:email,anthropic.com:email,jetm.me:dkim,jetm.me:email,jetm.me:mid,lgic.pl:email]
-X-Rspamd-Action: add header
-X-Spam: Yes
+	TO_DN_ALL(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FREEMAIL_TO(0.00)[gmail.com];
+	MISSING_XM_UA(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	RCVD_COUNT_FIVE(0.00)[5];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[sean.wang@kernel.org,linux-wireless@vger.kernel.org];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	NEURAL_HAM(-0.00)[-0.956];
+	TAGGED_RCPT(0.00)[linux-wireless];
+	RCPT_COUNT_SEVEN(0.00)[9];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[mail.gmail.com:mid,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
+X-Rspamd-Action: no action
 
-bss_rlm_tlv() in mt7925_mcu_bss_rlm_tlv() has no case for
-NL80211_CHAN_WIDTH_320. When associated to a 320MHz BSS, the switch
-falls through to default and sends bw=0 (CMD_CBW_20MHZ) to firmware
-via BSS_RLM TLV. Firmware then configures the RX radio for 20MHz
-and cannot decode the AP's 320MHz frames, resulting in complete data
-path failure at 320MHz.
+Hi Nick,
 
-Add the missing NL80211_CHAN_WIDTH_320 case with CMD_CBW_320MHZ and
-center_chan2.
+Thanks for the detailed report  this is very helpful. I don't  have an
+MT7925 USB device to detail look into the issue, but based on the
+trace I wrote a small change to try a different MT7925 reset sequence.
+please help test.
 
-Tested on ASUS RT-BE92U: 320MHz throughput goes from 0 Mbps to
-841 Mbps (iperf3 -t30 -P8), PHY 4803 Mbps EHT-MCS11.
+--- a/drivers/net/wireless/mediatek/mt76/mt792x_usb.c
++++ b/drivers/net/wireless/mediatek/mt76/mt792x_usb.c
+@@ -234,6 +234,36 @@ int mt792xu_dma_init(struct mt792x_dev *dev, bool resu=
+me)
+ }
+ EXPORT_SYMBOL_GPL(mt792xu_dma_init);
 
-Reported-by: 张旭涵 <Loong.0x00@gmail.com>
-Closes: https://github.com/jetm/mediatek-mt7927-dkms/issues/15
-Assisted-by: Claude Code <noreply@anthropic.com> (claude-opus-4-6)
-Tested-by: 张旭涵 <Loong.0x00@gmail.com>
-Tested-by: Marcin FM <marcin@lgic.pl>
-Tested-by: Cristian-Florin Radoi <radoi.chris@gmail.com>
-Tested-by: George Salukvadze <giosal90@gmail.com>
-Tested-by: Evgeny Kapusta <3193631@gmail.com>
-Tested-by: Samu Toljamo <samu.toljamo@gmail.com>
-Tested-by: Ariel Rosenfeld <ariel.rosenfeld.750@gmail.com>
-Tested-by: Chapuis Dario <chapuisdario4@gmail.com>
-Tested-by: Thibaut François <tibo@humeurlibre.fr>
-Signed-off-by: Javier Tia <floss@jetm.me>
----
- drivers/net/wireless/mediatek/mt76/mt7925/mcu.c | 4 ++++
- 1 file changed, 4 insertions(+)
++static int mt7925u_wfsys_reset(struct mt792x_dev *dev)
++{
++    u32 val;
++    int i;
++
++#define MT7925_CBTOP_RGU_WF_SUBSYS_RST        0x70028600
++#define MT7925_WFSYS_SW_INIT_DONE_ADDR        0x184c1604
++#define MT7925_WFSYS_SW_INIT_DONE        0x00001d1e
++
++    val =3D mt792xu_uhw_rr(&dev->mt76, MT7925_CBTOP_RGU_WF_SUBSYS_RST);
++    val |=3D MT_CBTOP_RGU_WF_SUBSYS_RST_WF_WHOLE_PATH;
++    mt792xu_uhw_wr(&dev->mt76, MT7925_CBTOP_RGU_WF_SUBSYS_RST, val);
++
++    msleep(20);
++
++    val =3D mt792xu_uhw_rr(&dev->mt76, MT7925_CBTOP_RGU_WF_SUBSYS_RST);
++    val &=3D ~MT_CBTOP_RGU_WF_SUBSYS_RST_WF_WHOLE_PATH;
++    mt792xu_uhw_wr(&dev->mt76, MT7925_CBTOP_RGU_WF_SUBSYS_RST, val);
++
++    for (i =3D 0; i < MT792x_WFSYS_INIT_RETRY_COUNT; i++) {
++        val =3D mt792xu_uhw_rr(&dev->mt76, MT7925_WFSYS_SW_INIT_DONE_ADDR)=
+;
++        if (val =3D=3D MT7925_WFSYS_SW_INIT_DONE)
++            return 0;
++
++        msleep(100);
++    }
++
++    return -ETIMEDOUT;
++}
++
+ int mt792xu_wfsys_reset(struct mt792x_dev *dev)
+ {
+     u32 val;
+@@ -241,6 +271,9 @@ int mt792xu_wfsys_reset(struct mt792x_dev *dev)
 
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7925/mcu.c b/drivers/net/wireless/mediatek/mt76/mt7925/mcu.c
-index 3458aa8c79cb..025e6d14f7ce 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7925/mcu.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7925/mcu.c
-@@ -2363,6 +2363,10 @@ void mt7925_mcu_bss_rlm_tlv(struct sk_buff *skb, struct mt76_phy *phy,
- 	case NL80211_CHAN_WIDTH_160:
- 		req->bw = CMD_CBW_160MHZ;
- 		break;
-+	case NL80211_CHAN_WIDTH_320:
-+		req->bw = CMD_CBW_320MHZ;
-+		req->center_chan2 = ieee80211_frequency_to_channel(freq2);
-+		break;
- 	case NL80211_CHAN_WIDTH_5:
- 		req->bw = CMD_CBW_5MHZ;
- 		break;
+     mt792xu_epctl_rst_opt(dev, false);
 
--- 
-2.53.0
++    if (is_mt7925(&dev->mt76))
++        return mt7925u_wfsys_reset(dev);
++
+     val =3D mt792xu_uhw_rr(&dev->mt76, MT_CBTOP_RGU_WF_SUBSYS_RST);
 
+
+On Fri, Mar 6, 2026 at 1:24=E2=80=AFPM Nick <morrownr@gmail.com> wrote:
+>
+> > > Reference: https://github.com/morrownr/USB-WiFi/issues/688#issuecomme=
+nt-3999038526
+> > >
+> > > The above thread is rather lengthy as we have been working on this
+> > > issue since Dec. 25.
+> > >
+> > > Testing with a Netgear A9000 USB WiFi adapter (mt7925u driver). Kerne=
+l
+> > > 7.0 rc2 and a x86_64 system. Additional testing with older kernels wa=
+s
+> > > also performed with the same results.
+> > >
+> > > Problem description:
+> > >
+> > > Cold boot shows the adapter coming up and operating normally.
+> > >
+> > > Removing the adapter from the USB port and replacing it shows the
+> > > adapter coming up and operating normally.
+> > >
+> > > A warm reboot does not provide a WiFi interface and shows the
+> > > following in the system log:
+> > >
+> > > mt7925u 2-3.2:1.0: probe with driver mt7925u failed with error -110
+> > >
+> > > Using the commands rmmod and modeprobe do not provide a WiFi interfac=
+e.
+> > >
+> > > Thoughts: The problem likely is not the module teardown. The problem
+> > > seems to be that the firmware (or the mt7925u driver) leaves the
+> > > adapter in a strange state such that a power cycle of the adapter
+> > > hardware is needed before the mt7925u driver can properly initialize
+> > > it a second time.
+> > >
+> >
+> > Hi Nick,
+> >
+> > Could you enable debug logs and check whether the driver can still
+> > read the correct chip ID after a warm reboot, and at which step the
+> > initialization fails before the -110 error? Thanks for continuing to
+> > test and gather this useful information.
+> >
+> >          Sean
+>
+> Hi Sean,
+>
+> Github user @exct has performed the testing requested and provides the
+> following report:
+>
+> mt7925u Probe Failure Debug Report
+> Adapter: Netgear A9000 (USB ID 0846:9072, MediaTek MT7925)
+> Kernel: 6.19.6-2-cachyos
+>
+> Summary
+> The driver can read the correct chip ID after a warm reload. The
+> failure occurs before firmware is loaded, inside
+> mt792xu_wfsys_reset(), which times out waiting for the WiFi subsystem
+> to reinitialize. -ETIMEDOUT (-110) is returned and the probe aborts.
+>
+> Findings
+>
+> Question: Chip ID readable after warm reload?
+> Answer: Yes =E2=80=94 MT_HW_CHIPID =3D 0x7925, MT_HW_REV =3D 0x8a00
+>
+> Question: Which step fails?
+> Answer: mt792xu_wfsys_reset() =E2=80=94 WFSYS_INIT_DONE never asserted
+>
+> Question: Does it reach mt792xu_mcu_power_on()?
+> Answer: No
+>
+> Question: Does it reach mt7925_run_firmware()?
+> Answer: No
+>
+> Probe Sequence Trace
+>
+> mt7925u_probe()
+>   =E2=94=9C=E2=94=80 mt76_alloc_device()             OK
+>   =E2=94=9C=E2=94=80 __mt76u_init()                  OK
+>   =E2=94=9C=E2=94=80 read MT_HW_CHIPID (0x70010200)  =E2=86=92 0x00007925=
+  =E2=9C=93
+>   =E2=94=9C=E2=94=80 read MT_HW_REV    (0x70010204)  =E2=86=92 0x00008a00=
+  =E2=9C=93
+>   =E2=94=9C=E2=94=80 read MT_CONN_ON_MISC (0x7c0600f0) =E2=86=92 0x000000=
+03  =E2=86=90 FW_N9_RDY is SET
+>   =E2=94=9C=E2=94=80 enters mt792xu_wfsys_reset()    =E2=86=90 triggered =
+because FW_N9_RDY =3D 1
+>   =E2=94=82    =E2=94=9C=E2=94=80 write MT_CBTOP_RGU_WF_SUBSYS_RST  (asse=
+rt reset)
+>   =E2=94=82    =E2=94=9C=E2=94=80 write MT_CBTOP_RGU_WF_SUBSYS_RST  (deas=
+sert reset)
+>   =E2=94=82    =E2=94=9C=E2=94=80 poll MT_UDMA_CONN_INFRA_STATUS (0x74000=
+a20) =E2=86=92 0x00000000
+>   =E2=94=82    =E2=94=9C=E2=94=80 poll MT_UDMA_CONN_INFRA_STATUS (0x74000=
+a20) =E2=86=92 0x00000000
+>   =E2=94=82    =E2=94=94=E2=94=80 ... timeout after ~212 ms =E2=86=92 ret=
+urn -ETIMEDOUT
+>   =E2=94=94=E2=94=80 goto error:  (mt76u_queues_deinit + mt76_free_device=
+)
+>
+> Root Cause
+>
+> After rmmod, the firmware leaves FW_N9_RDY asserted in
+> MT_CONN_ON_MISC. On re-probe, the driver correctly detects this and
+> calls mt792xu_wfsys_reset() to recover. However, the WiFi subsystem
+> never signals completion =E2=80=94 WFSYS_INIT_DONE in
+> MT_UDMA_CONN_INFRA_STATUS (reg 0x74000a20) stays 0x00000000 throughout
+> the retry loop. The subsystem is stuck in a state that the software
+> reset path cannot recover from. Only a full USB power cycle clears it.
+>
+> Hope this helps,
+>
+> Nick
 
