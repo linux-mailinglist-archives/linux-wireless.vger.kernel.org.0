@@ -1,141 +1,139 @@
-Return-Path: <linux-wireless+bounces-32719-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-32720-lists+linux-wireless=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id HfFjM2d5rWmI3QEAu9opvQ
-	(envelope-from <linux-wireless+bounces-32719-lists+linux-wireless=lfdr.de@vger.kernel.org>)
-	for <lists+linux-wireless@lfdr.de>; Sun, 08 Mar 2026 14:28:07 +0100
+	id GS9dCQOdrWkn5AEAu9opvQ
+	(envelope-from <linux-wireless+bounces-32720-lists+linux-wireless=lfdr.de@vger.kernel.org>)
+	for <lists+linux-wireless@lfdr.de>; Sun, 08 Mar 2026 17:00:03 +0100
 X-Original-To: lists+linux-wireless@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1FDBC2306B7
-	for <lists+linux-wireless@lfdr.de>; Sun, 08 Mar 2026 14:28:07 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6567B230FCC
+	for <lists+linux-wireless@lfdr.de>; Sun, 08 Mar 2026 17:00:01 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id A5115300EF89
-	for <lists+linux-wireless@lfdr.de>; Sun,  8 Mar 2026 13:28:04 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 737D3301325D
+	for <lists+linux-wireless@lfdr.de>; Sun,  8 Mar 2026 16:00:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CB01B37F8A0;
-	Sun,  8 Mar 2026 13:28:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2152D285C80;
+	Sun,  8 Mar 2026 15:59:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="lQVTWvEb"
+	dkim=pass (2048-bit key) header.d=bues.ch header.i=@bues.ch header.b="Bn47Aa0f"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mail.bues.ch (bues.ch [116.203.120.240])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A807337F007
-	for <linux-wireless@vger.kernel.org>; Sun,  8 Mar 2026 13:28:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CCA8824503F
+	for <linux-wireless@vger.kernel.org>; Sun,  8 Mar 2026 15:59:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=116.203.120.240
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772976483; cv=none; b=KDGEEQFQg9fTr2M40w7ZJ4cim6Ggg8eDpjbVuztoex8vVXlWmRW/VSdfCqIH73HYA5G+I5VCfatomIIAQv103pLGEkXWdY1SDv6hxHLRC2JZOWuGgGSal9mMoUfTdHWrBnhlFQZU0DTrSaq71Dg9Oq/CNfGGsBXroCyzFq0JlX0=
+	t=1772985599; cv=none; b=iCL5ZvbK5iCbaqK/XpESSKpOXPiSxuwLUMy9PdyFG6Ef+06knJwsjoWpdSrBfpOzA6I0/7mwP3hMq0R1oIO8ygmZQDI+prHuhaAE2dnpgj4/hh96//vv9XK8NYOK1IqfdvL/lRFr6F3fu0AQQ9SY7XyAu9z4fso12I/pCwkPbHI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772976483; c=relaxed/simple;
-	bh=kqMXEL+AjqzO9zZs1WrwVKYrFSMYBdQt7xK0a+R1F1U=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=KvcHYOOn8A+P3pSdNUZ0P1fiCZNIU4bIqgEGpk8u1fiO/1nKj5qgcdHXAyoCh8lD8RWFi6MnJ/E74r0nUdU4UMCveZPHNiKmexX0GEQNeAs4sUJqrl4bfwpR+rxgUw4NRHvIcXb8mrCaDAmc8FnueRe3P/pCu1MzP5SzFghR4cI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=lQVTWvEb; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 04966C116C6;
-	Sun,  8 Mar 2026 13:28:02 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1772976483;
-	bh=kqMXEL+AjqzO9zZs1WrwVKYrFSMYBdQt7xK0a+R1F1U=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=lQVTWvEbIbWxVRB+nnQ4THO0nQMH4jhflZI83tL3wT2M8YHSX5Nq1/KPksoVgObh/
-	 064FzmJULl8UHxxgLWols5i0WKsbeQi/PduJT+ZcUTHlja3H0Tsfy5JgQ68akhdMIc
-	 ey53LGKO0GNmXrarF6SzgGg6/o9VVuj6Jije1ytlqy6xBa95bhyWn6bFvvZnoTmyCU
-	 T5t95B2KvaXYmL6+sMBU5x7cMI9iYAcPhPCnR6Y/BDuQBORf3wnF7BJms6uYES5Bea
-	 B3ZRk7nrtMy4OnupjjQG7gbULjQlYdd9HnOjs6+nCUfT/0n/at7pJj1Kl2OH3HT57I
-	 JAsdWrmPx5+Kg==
-Date: Sun, 8 Mar 2026 14:28:00 +0100
-From: Lorenzo Bianconi <lorenzo@kernel.org>
-To: Lachlan Hodges <lachlan.hodges@morsemicro.com>
-Cc: Johannes Berg <johannes@sipsolutions.net>,
-	linux-wireless@vger.kernel.org
-Subject: Re: [PATCH wireless-next] wifi: mac80211: Remove deleted sta links
- in ieee80211_ml_reconf_work()
-Message-ID: <aa15YDx5G7WN-nsH@lore-desk>
-References: <20260307-mac80211-reconf-remove-sta-link-v1-1-efe58070cd36@kernel.org>
- <jv2kdsru66rktkm6bwq3ww5wshubjtv36le5xk4ziedocc72gp@psssohaoamus>
+	s=arc-20240116; t=1772985599; c=relaxed/simple;
+	bh=QsEootamH5rYIe2PKLPjJtYKxZZmo05HWkCkmo+1XkU=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=RvQs1WA5x7Rlbea9I5Hvunsn+3Z9sPPaL8lMnBriVohfY42h2yMyJxzl8oi/NqP2Uf3DAii6X+L4hLQQL+aigV3JuooD993vfCpdEcWiy2noVRK9jnwLSyDL+QvS0MbWPvsETDay+Kb2E2DALWbVo5iNEiqLmGUqqGt3VaCSAz8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=bues.ch; spf=pass smtp.mailfrom=bues.ch; dkim=pass (2048-bit key) header.d=bues.ch header.i=@bues.ch header.b=Bn47Aa0f; arc=none smtp.client-ip=116.203.120.240
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=bues.ch
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bues.ch
+Date: Sun, 8 Mar 2026 16:50:05 +0100
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bues.ch; s=main;
+	t=1772985023;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=ol9BeCZAQq4A7ib2l3MAH4Azy3kgUQyH8nvQOy82geY=;
+	b=Bn47Aa0fmfMwXr87pkqRFoWh08+rZcLRQdtH7UPaGaMzZ9wre19UeM0i9H9o8fOx53TZzO
+	2DpdKmOeqDwAbb1Lu8Fuzf9J7zdkqUwLKNv9k2Qx1Zw51feKckSf6Aimx68ljV6Rtioy/h
+	2ULC4jvMPHgj1D9L2+++EkCxEQnZLcrxF8zpvoSboDRVJdAtAeGkvnNlVQPN8eloyrfcMk
+	QGoSRUtMYnTks57tNER34tj7zMwFSVVcwsEL2q0yo5R0/N3SE8/iPJzAf2Jtek4Xu4SAcq
+	Od0qbzwmjd9X+jUDiS9etMHogXvTXBDUT9+Oa9upCQfMpKhgNzPlbQ7tFyVgDQ==
+From: Michael =?UTF-8?B?QsO8c2No?= <m@bues.ch>
+To: Joshua Peisach <jpeisach@ubuntu.com>
+Cc: linux-wireless@vger.kernel.org, b43-dev@lists.infradead.org, Francesco
+ Dolcini <francesco.dolcini@toradex.com>, Johan Hovold <johan@kernel.org>,
+ Johannes Berg <johannes.berg@intel.com>
+Subject: Re: [PATCH] wifi: b43: use register definitions in
+ nphy_op_software_rfkill
+Message-ID: <20260308165005.20ef9b23@barney>
+In-Reply-To: <20260307170135.167460-1-jpeisach@ubuntu.com>
+References: <20260307170135.167460-1-jpeisach@ubuntu.com>
+X-Mailer: Claws Mail 4.3.1 (GTK 3.24.51; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="jnS7Ya0bgm6rJ7T1"
-Content-Disposition: inline
-In-Reply-To: <jv2kdsru66rktkm6bwq3ww5wshubjtv36le5xk4ziedocc72gp@psssohaoamus>
-X-Rspamd-Queue-Id: 1FDBC2306B7
+Content-Type: multipart/signed; boundary="Sig_/6X=jnq=CXy4.QK0L0rb9BSL";
+ protocol="application/pgp-signature"; micalg=pgp-sha512
+X-Rspamd-Queue-Id: 6567B230FCC
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-3.76 / 15.00];
 	SIGNED_PGP(-2.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
 	MID_RHS_NOT_FQDN(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[bues.ch,none];
+	R_DKIM_ALLOW(-0.20)[bues.ch:s=main];
 	MIME_GOOD(-0.20)[multipart/signed,text/plain];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
-	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64];
 	MAILLIST(-0.15)[generic];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-32719-lists,linux-wireless=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_COUNT_THREE(0.00)[3];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-32720-lists,linux-wireless=lfdr.de];
 	MIME_TRACE(0.00)[0:+,1:+,2:~];
 	FROM_HAS_DN(0.00)[];
-	MISSING_XM_UA(0.00)[];
-	RCPT_COUNT_THREE(0.00)[3];
-	NEURAL_HAM(-0.00)[-0.958];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[lorenzo@kernel.org,linux-wireless@vger.kernel.org];
-	DKIM_TRACE(0.00)[kernel.org:+];
-	TAGGED_RCPT(0.00)[linux-wireless];
 	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[m@bues.ch,linux-wireless@vger.kernel.org];
+	DKIM_TRACE(0.00)[bues.ch:+];
+	NEURAL_HAM(-0.00)[-0.952];
 	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
+	TAGGED_RCPT(0.00)[linux-wireless];
+	RCPT_COUNT_FIVE(0.00)[6]
 X-Rspamd-Action: no action
 
-
---jnS7Ya0bgm6rJ7T1
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+--Sig_/6X=jnq=CXy4.QK0L0rb9BSL
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: quoted-printable
 
-> > +	rcu_read_lock();
-> > +	sta =3D sta_info_get(sdata, sdata->vif.cfg.ap_addr);
-> > +	if (sta) {
-> > +		unsigned long removed_links =3D sdata->u.mgd.removed_links;
-> > +		unsigned int link_id;
-> > +
-> > +		for_each_set_bit(link_id, &removed_links,
-> > +				 IEEE80211_MLD_MAX_NUM_LINKS)
-> > +			ieee80211_sta_free_link(sta, link_id);
-> > +	}
-> > +	rcu_read_unlock();
-> > +
+On Sat,  7 Mar 2026 12:01:35 -0500
+Joshua Peisach <jpeisach@ubuntu.com> wrote:
+
+> Replaces uses of hardcoded register addresses with proper definitions,
+> for readability.
 >=20
-> Could use scoped_guard(rcu) instead?
+> Signed-off-by: Joshua Peisach <jpeisach@ubuntu.com>
 
-I do not have a strong opinion here.
-@Johannes: Which one do you prefer?
+Looks good to me. Generates the same object code.
 
-Regards,
-Lorenzo
+Acked-by: Michael B=C3=BCsch <m@bues.ch>
 
->=20
-> lachlan
+--=20
+Michael B=C3=BCsch
+https://bues.ch/
 
---jnS7Ya0bgm6rJ7T1
-Content-Type: application/pgp-signature; name=signature.asc
+--Sig_/6X=jnq=CXy4.QK0L0rb9BSL
+Content-Type: application/pgp-signature
+Content-Description: OpenPGP digital signature
 
 -----BEGIN PGP SIGNATURE-----
 
-iHUEABYKAB0WIQTquNwa3Txd3rGGn7Y6cBh0uS2trAUCaa15YAAKCRA6cBh0uS2t
-rJiqAP9RpKiuRbRIYHeTrzE4E92FaZAr6yhgB9orb1VbH+e2igEA87jLRXdNSJ5h
-9QWH36csDBB7GlOASJXxnwTQ+ffYJw0=
-=6hrI
+iQIzBAEBCgAdFiEEihRzkKVZOnT2ipsS9TK+HZCNiw4FAmmtmq0ACgkQ9TK+HZCN
+iw4crBAAykOe7tIE+BQLd+zMiiv6NqN0krUWBfgXBU6cgnOsWuP3VW7w9ra81N9f
+JCT5a5ZE/m+NpMLWIjMIxlxx+YU/cSlUl+1hiAWCRmHoobGj9cjRsc6OTokTQgEe
+i/wNiLycxFthhmrgimtN270IIJ9tfi5LjtfliexG4NZ9rJvzEqJll3flFnPJm08A
+HXiupCyNHmKvL9CoX96+IZkwtjUjQUJ2pwGHw3XMGn/NZySNCF19we0HTSVDnXzf
+RjAyTSBkoZ+d9ZPQyGNT2H2iuBaz0dlEdzgIsRW0hX9SMskXjLNgGX7yRsHoDGNt
+t7LLpIPXc06DPsBkaGM1DTqoSl2rqGwjAKNG/aOtximiZd5s7Ix+BXAJFn+J6fAa
+37MFd9cMM4HKQHqGbfYA0b/NFMQQjDJUIXMbOoV0Zdiz8X07U+uFnJwSic9wb0Sk
+5719fmpTOSA65MbuMMqTrUbt68B8fD8j9hKlQeYLEU4J9ggy7EsG8FbZKojnI90b
+ORSgsWIlEUnmLkya4C6wTPKtWVI6syI8fv0ii5nmNUsFDt8nEqGO9vda4HOI2sTd
+os54Ap7Sy0io5H3ktXDyf/WlddzYhoytwJb/LhFh/gKNp1sPjDEr5oLaVytqUqNB
+GTWODa1XC/H2HYbOo8s6z+CIPFCGDD8slGf4CMe0E6JlXZqCbyI=
+=blyG
 -----END PGP SIGNATURE-----
 
---jnS7Ya0bgm6rJ7T1--
+--Sig_/6X=jnq=CXy4.QK0L0rb9BSL--
 
