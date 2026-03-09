@@ -1,223 +1,171 @@
-Return-Path: <linux-wireless+bounces-32754-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-32755-lists+linux-wireless=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id UFlGGsyArmlfFQIAu9opvQ
-	(envelope-from <linux-wireless+bounces-32754-lists+linux-wireless=lfdr.de@vger.kernel.org>)
-	for <lists+linux-wireless@lfdr.de>; Mon, 09 Mar 2026 09:11:56 +0100
+	id KBzkMcCCrmlfFQIAu9opvQ
+	(envelope-from <linux-wireless+bounces-32755-lists+linux-wireless=lfdr.de@vger.kernel.org>)
+	for <lists+linux-wireless@lfdr.de>; Mon, 09 Mar 2026 09:20:16 +0100
 X-Original-To: lists+linux-wireless@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 65B942355CA
-	for <lists+linux-wireless@lfdr.de>; Mon, 09 Mar 2026 09:11:55 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4A0DE2356DD
+	for <lists+linux-wireless@lfdr.de>; Mon, 09 Mar 2026 09:20:15 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 460DA300BE15
-	for <lists+linux-wireless@lfdr.de>; Mon,  9 Mar 2026 08:10:00 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id E4EF7300AC0F
+	for <lists+linux-wireless@lfdr.de>; Mon,  9 Mar 2026 08:20:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 00D8536B053;
-	Mon,  9 Mar 2026 08:09:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A770836BCE2;
+	Mon,  9 Mar 2026 08:20:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="tyIOucgK"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="NW02B5Sa"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CC9CA2EB0F;
-	Mon,  9 Mar 2026 08:09:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8317636C0A3
+	for <linux-wireless@vger.kernel.org>; Mon,  9 Mar 2026 08:20:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773043797; cv=none; b=XzsHEQfs5saiqcZeYhGD+Dqziu5Liyf8GnG4ubUFMiR56qnke1H83t67ZKhQ1Jab0zF8KJRQ/ec0JtYAJHcG+VYQyinWTyiXslGux8YHWd6eA/PieCsQXs6iYUFMZkUCulKWAiaPTTpUbTnWRAsEKdfPSQHsoV8/MzDLgnFhVAY=
+	t=1773044412; cv=none; b=HBsL34cKg3V7gunnbAytsRcwAgcy2gIYt6f9x7MG278KxXCETy7woS5upJ/9YuyIsOn1+cXpU+3h0MeeINkpVEUxOuidzZA1g3JOU5VdlQM2GEJeM3nunyqns+ybeq2JRNumGRoCQhVB7BhB/dbiLb4rVZcwoupp4XpAkF3uzVQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773043797; c=relaxed/simple;
-	bh=32FowEX4GYXUvlI6q5fHoPOHKDUD+8ybU58sR9odc3w=;
+	s=arc-20240116; t=1773044412; c=relaxed/simple;
+	bh=qJ4w4qQRmM2ZjqtZa5UjUUiweqrIUMgHTeE5IFVGESM=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=D234cCKP4pCTzYsBNN6XAbGaiTrJ6EamYs8ZAdwmzXr0K98V1+FmtYjfbQ15KviqAdcp7vcKYuZcvjj4UTmb0iQ9Wymi65WrmD6RSmMCpb7sm59czn9dQOK6bp8tIm1rX0hFwkUq8B236YHLlcE2TBoxda2akD4DhUBD7+3VUqI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=tyIOucgK; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8C4ADC4CEF7;
-	Mon,  9 Mar 2026 08:09:42 +0000 (UTC)
+	 Content-Type:Content-Disposition:In-Reply-To; b=QMx7M4ylI+q8UBXpR8oKd6C+Tds9xe+kG2UU+BW8J43uFlOu30P3FPoBWlnokwergzZwblY3XizDCNzbPiX9DT3bw+3jpFay6EzulXjH2/rtEgVBALBW1O9uvzRLIR/Vh80H+TmcdVCPCrnCMhJIbRIpy5TRqoiVu5d6A5mI3Os=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=NW02B5Sa; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A6051C4CEF7;
+	Mon,  9 Mar 2026 08:20:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1773043797;
-	bh=32FowEX4GYXUvlI6q5fHoPOHKDUD+8ybU58sR9odc3w=;
+	s=k20201202; t=1773044412;
+	bh=qJ4w4qQRmM2ZjqtZa5UjUUiweqrIUMgHTeE5IFVGESM=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=tyIOucgKAfmefa18DFYskVEvdTUmMUUmT8HnBszC9g+/3mu1ac4DRo0flCYJxEj76
-	 p271mDlGTOPyxk4+0+GHdecUdSQAZOM+L8gTNBNBGZwQHPKV8vC1thWGJZPeZBX8pr
-	 3X16t3RsqMIU6jLyG1xNhwWvWI5MieFe0lPzQJVGZ4F14tpOazzwn0lmuYQV9/WBGI
-	 HbVW0WlB742mIaR5ZW5z1fUpVHoaFEKrkIJaxV8wBnVjVXySu/7AfHLJAFTi3Qe+Mc
-	 W8hZg9dDIi4OWOFOSpENXZiP4Xr06c8ndff9g0yDDNCYcEa/Ggxfoc0bZVbfvGxE79
-	 J4OdC2YwDMUEQ==
-Date: Mon, 9 Mar 2026 13:39:38 +0530
-From: Sumit Garg <sumit.garg@kernel.org>
-To: Mukesh Ojha <mukesh.ojha@oss.qualcomm.com>
-Cc: linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org,
-	dri-devel@lists.freedesktop.org, freedreno@lists.freedesktop.org,
-	linux-media@vger.kernel.org, netdev@vger.kernel.org,
-	linux-wireless@vger.kernel.org, ath12k@lists.infradead.org,
-	linux-remoteproc@vger.kernel.org, andersson@kernel.org,
-	konradybcio@kernel.org, robh@kernel.org, krzk+dt@kernel.org,
-	conor+dt@kernel.org, robin.clark@oss.qualcomm.com, sean@poorly.run,
-	akhilpo@oss.qualcomm.com, lumag@kernel.org, abhinav.kumar@linux.dev,
-	jesszhan0024@gmail.com, marijn.suijten@somainline.org,
-	airlied@gmail.com, simona@ffwll.ch, vikash.garodia@oss.qualcomm.com,
-	dikshita.agarwal@oss.qualcomm.com, bod@kernel.org,
-	mchehab@kernel.org, elder@kernel.org, andrew+netdev@lunn.ch,
-	davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
-	pabeni@redhat.com, jjohnson@kernel.org, mathieu.poirier@linaro.org,
-	trilokkumar.soni@oss.qualcomm.com, pavan.kondeti@oss.qualcomm.com,
-	jorge.ramirez@oss.qualcomm.com, tonyh@qti.qualcomm.com,
-	vignesh.viswanathan@oss.qualcomm.com,
-	srinivas.kandagatla@oss.qualcomm.com,
-	amirreza.zarrabi@oss.qualcomm.com, jens.wiklander@linaro.org,
-	op-tee@lists.trustedfirmware.org, apurupa@qti.qualcomm.com,
-	skare@qti.qualcomm.com, Sumit Garg <sumit.garg@oss.qualcomm.com>
-Subject: Re: [PATCH 01/14] arm64: dts: qcom: kodiak: Add EL2 overlay
-Message-ID: <aa6AQtR4oEfomWPj@sumit-xelite>
-References: <20260306105027.290375-1-sumit.garg@kernel.org>
- <20260306105027.290375-2-sumit.garg@kernel.org>
- <20260309080049.si3vzro4z6qn7ewz@hu-mojha-hyd.qualcomm.com>
+	b=NW02B5SaBqa9ZXjEazsWGqbg8ToSFwGD2OOwTf0qVPUFWlM4RncnhkqKZxxobVRu+
+	 lt/VqOxbvBPKJ+WR5B/ANY5vVHwwJg+jGhtFBKpORXrnT6ZlOZV4tr9sZzfcMpXYHj
+	 D96tthIqZejhlS++tV4xaQvTq+q9ph4iuXO4qexgnu8VAq/lhE+6lzFF2/yoq5ty35
+	 MYdYcVFjvxZPlPmA3CMe5QOkT1ZVXov/YLgPGV5r4xrK1fbbDduoJwLAuXYruv/wnA
+	 I75QK78eaHCGm/s4JKS9lJotdO4pA9bvfSC9sNqiaYosdvl/vuEvbdKw+9nz/N7Sb2
+	 S/gMD0wqEnIuw==
+Date: Mon, 9 Mar 2026 09:20:09 +0100
+From: Lorenzo Bianconi <lorenzo@kernel.org>
+To: Johannes Berg <johannes@sipsolutions.net>
+Cc: Lachlan Hodges <lachlan.hodges@morsemicro.com>,
+	linux-wireless@vger.kernel.org
+Subject: Re: [PATCH wireless-next] wifi: mac80211: Remove deleted sta links
+ in ieee80211_ml_reconf_work()
+Message-ID: <aa6CuVi3BZxLBcPA@lore-desk>
+References: <20260307-mac80211-reconf-remove-sta-link-v1-1-efe58070cd36@kernel.org>
+ <jv2kdsru66rktkm6bwq3ww5wshubjtv36le5xk4ziedocc72gp@psssohaoamus>
+ <aa15YDx5G7WN-nsH@lore-desk>
+ <be1c90f6be71f6118590b0add4d657cd79d2ea2b.camel@sipsolutions.net>
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="XsTQrGGjvwKiyfIz"
 Content-Disposition: inline
-In-Reply-To: <20260309080049.si3vzro4z6qn7ewz@hu-mojha-hyd.qualcomm.com>
-X-Rspamd-Queue-Id: 65B942355CA
+In-Reply-To: <be1c90f6be71f6118590b0add4d657cd79d2ea2b.camel@sipsolutions.net>
+X-Rspamd-Queue-Id: 4A0DE2356DD
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-3.76 / 15.00];
+	SIGNED_PGP(-2.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MID_RHS_NOT_FQDN(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	MID_RHS_NOT_FQDN(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	MIME_GOOD(-0.20)[multipart/signed,text/plain];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	MAILLIST(-0.15)[generic];
-	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-32754-lists,linux-wireless=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	RCPT_COUNT_TWELVE(0.00)[48];
-	MIME_TRACE(0.00)[0:+];
-	FREEMAIL_CC(0.00)[vger.kernel.org,lists.freedesktop.org,lists.infradead.org,kernel.org,oss.qualcomm.com,poorly.run,linux.dev,gmail.com,somainline.org,ffwll.ch,lunn.ch,davemloft.net,google.com,redhat.com,linaro.org,qti.qualcomm.com,lists.trustedfirmware.org];
+	TAGGED_FROM(0.00)[bounces-32755-lists,linux-wireless=lfdr.de];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	NEURAL_HAM(-0.00)[-0.985];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[sumit.garg@kernel.org,linux-wireless@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	DKIM_TRACE(0.00)[kernel.org:+];
-	TAGGED_RCPT(0.00)[linux-wireless,dt,netdev];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
 	MISSING_XM_UA(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[qualcomm.com:url,qualcomm.com:email,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo]
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[lorenzo@kernel.org,linux-wireless@vger.kernel.org];
+	RCPT_COUNT_THREE(0.00)[3];
+	NEURAL_HAM(-0.00)[-0.958];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TAGGED_RCPT(0.00)[linux-wireless];
+	MIME_TRACE(0.00)[0:+,1:+,2:~];
+	TO_DN_SOME(0.00)[]
 X-Rspamd-Action: no action
 
-On Mon, Mar 09, 2026 at 01:30:49PM +0530, Mukesh Ojha wrote:
-> On Fri, Mar 06, 2026 at 04:20:14PM +0530, Sumit Garg wrote:
-> > From: Mukesh Ojha <mukesh.ojha@oss.qualcomm.com>
-> > 
-> > All the existing variants Kodiak boards are using Gunyah hypervisor
-> > which means that, so far, Linux-based OS could only boot in EL1 on those
-> > devices.  However, it is possible for us to boot Linux at EL2 on these
-> > devices [1].
-> > 
-> > When running under Gunyah, the remote processor firmware IOMMU
-> > streams are controlled by Gunyah. However, without Gunyah, the IOMMU is
-> > managed by the consumer of this DeviceTree. Therefore, describe the
-> > firmware streams for each remote processor.
-> > 
-> > Add a EL2-specific DT overlay and apply it to Kodiak IOT variant
-> > devices to create -el2.dtb for each of them alongside "normal" dtb.
-> > 
-> > [1]
-> > https://docs.qualcomm.com/bundle/publicresource/topics/80-70020-4/boot-developer-touchpoints.html#uefi
-> > 
-> > Signed-off-by: Mukesh Ojha <mukesh.ojha@oss.qualcomm.com>
-> > [SG: watchdog fixup]
-> > Signed-off-by: Sumit Garg <sumit.garg@oss.qualcomm.com>
-> 
-> Thanks for posting, I was about to add kodiak to the already existing
-> list monaco, talos here
-> https://lore.kernel.org/lkml/20260127-talos-el2-overlay-v2-0-b6a2266532c4@oss.qualcomm.com/
-> 
-> but did you really miss linux-kernel@vger.kernel.org or is it
-> intentional ?
 
-Ah I see, I missed that list. Will add in v2. BTW, this patch in the
-series can be applied independently since it will work with existing
-SCM interfaces provided by QTEE.
+--XsTQrGGjvwKiyfIz
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
--Sumit
+On Mar 09, Johannes Berg wrote:
+> On Sun, 2026-03-08 at 14:28 +0100, Lorenzo Bianconi wrote:
+> > > > +	rcu_read_lock();
+> > > > +	sta =3D sta_info_get(sdata, sdata->vif.cfg.ap_addr);
+> > > > +	if (sta) {
+> > > > +		unsigned long removed_links =3D sdata->u.mgd.removed_links;
+> > > > +		unsigned int link_id;
+> > > > +
+> > > > +		for_each_set_bit(link_id, &removed_links,
+> > > > +				 IEEE80211_MLD_MAX_NUM_LINKS)
+> > > > +			ieee80211_sta_free_link(sta, link_id);
+> > > > +	}
+> > > > +	rcu_read_unlock();
+> > > > +
+> > >=20
+> > > Could use scoped_guard(rcu) instead?
+> >=20
+> > I do not have a strong opinion here.
+> > @Johannes: Which one do you prefer?
+> >=20
+>=20
+> To answer the literal question: No strong preference I guess, given that
+> there's no error path here this seems fine, and the scoped version would
+> just add another indentation level.
+>=20
+> But you really should just remove the rcu_read_lock/unlock anyway, it's
+> not needed since this holds wiphy mutex, which is sufficient to access
+> the STA table etc.
 
-> 
-> > ---
-> >  arch/arm64/boot/dts/qcom/Makefile        |  2 ++
-> >  arch/arm64/boot/dts/qcom/kodiak-el2.dtso | 35 ++++++++++++++++++++++++
-> >  2 files changed, 37 insertions(+)
-> >  create mode 100644 arch/arm64/boot/dts/qcom/kodiak-el2.dtso
-> > 
-> > diff --git a/arch/arm64/boot/dts/qcom/Makefile b/arch/arm64/boot/dts/qcom/Makefile
-> > index f80b5d9cf1e8..09a7f943190e 100644
-> > --- a/arch/arm64/boot/dts/qcom/Makefile
-> > +++ b/arch/arm64/boot/dts/qcom/Makefile
-> > @@ -139,6 +139,8 @@ dtb-$(CONFIG_ARCH_QCOM)	+= qcs404-evb-4000.dtb
-> >  dtb-$(CONFIG_ARCH_QCOM)	+= qcs615-ride.dtb
-> >  dtb-$(CONFIG_ARCH_QCOM)	+= qcs6490-radxa-dragon-q6a.dtb
-> >  dtb-$(CONFIG_ARCH_QCOM)	+= qcs6490-rb3gen2.dtb
-> > +qcs6490-rb3gen2-el2-dtbs := qcs6490-rb3gen2.dtb kodiak-el2.dtbo
-> > +dtb-$(CONFIG_ARCH_QCOM)	+= qcs6490-rb3gen2-el2.dtb
-> >  
-> >  qcs6490-rb3gen2-vision-mezzanine-dtbs := qcs6490-rb3gen2.dtb qcs6490-rb3gen2-vision-mezzanine.dtbo
-> >  qcs6490-rb3gen2-industrial-mezzanine-dtbs := qcs6490-rb3gen2.dtb qcs6490-rb3gen2-industrial-mezzanine.dtbo
-> > diff --git a/arch/arm64/boot/dts/qcom/kodiak-el2.dtso b/arch/arm64/boot/dts/qcom/kodiak-el2.dtso
-> > new file mode 100644
-> > index 000000000000..0b3a69a0d765
-> > --- /dev/null
-> > +++ b/arch/arm64/boot/dts/qcom/kodiak-el2.dtso
-> > @@ -0,0 +1,35 @@
-> > +// SPDX-License-Identifier: BSD-3-Clause
-> > +/*
-> > + * Copyright (c) Qualcomm Technologies, Inc. and/or its subsidiaries.
-> > + *
-> > + * Kodiak specific modifications required to boot in EL2.
-> > + */
-> > +
-> > +
-> > +/dts-v1/;
-> > +/plugin/;
-> > +
-> > +&gpu_zap_shader {
-> > +	status = "disabled";
-> > +};
-> > +
-> > +&remoteproc_adsp {
-> > +	iommus = <&apps_smmu 0x1800 0x0>;
-> > +};
-> > +
-> > +&remoteproc_cdsp {
-> > +	iommus = <&apps_smmu 0x11a0 0x0400>;
-> > +};
-> > +
-> > +&remoteproc_wpss {
-> > +	iommus = <&apps_smmu 0x1c03 0x1>,
-> > +		 <&apps_smmu 0x1c83 0x1>;
-> > +};
-> > +
-> > +&venus {
-> > +	status = "disabled";
-> > +};
-> > +
-> > +&watchdog {
-> > +	status = "okay";
-> > +};
-> > -- 
-> > 2.51.0
-> > 
-> 
-> -- 
-> -Mukesh Ojha
-> 
+ack, I will fix it in v2.
+
+>=20
+> Also, I think you need ieee80211_sta_remove_link() to tell the driver?
+
+I think we already inform the driver running ieee80211_set_active_links() so
+ieee80211_sta_remove_link() seems redundant, right?
+
+ieee80211_set_active_links() -> _ieee80211_set_active_links() -> drv_change=
+_sta_links()
+
+>=20
+> And I realized another thing - this needs to destroy TDLS stations that
+> were on the link being removed, but maybe that's a separate commit.
+
+Do you mean ieee80211_teardown_tdls_peers()? Is it done in
+_ieee80211_set_active_links() too?
+
+Regards,
+Lorenzo
+
+>=20
+> johannes
+
+--XsTQrGGjvwKiyfIz
+Content-Type: application/pgp-signature; name=signature.asc
+
+-----BEGIN PGP SIGNATURE-----
+
+iHUEABYKAB0WIQTquNwa3Txd3rGGn7Y6cBh0uS2trAUCaa6CuQAKCRA6cBh0uS2t
+rHmNAQCRm3oVOEAILtxk4altC1bjBCYcdGpz/X36AI2ki2CtwwD/fX7W36SmbCat
+AB6rl8QkPD17437chDjHOXTsv5Rm3QE=
+=zXBJ
+-----END PGP SIGNATURE-----
+
+--XsTQrGGjvwKiyfIz--
 
