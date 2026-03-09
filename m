@@ -1,176 +1,143 @@
-Return-Path: <linux-wireless+bounces-32747-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-32748-lists+linux-wireless=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id IMgrLdtrrmkvEAIAu9opvQ
-	(envelope-from <linux-wireless+bounces-32747-lists+linux-wireless=lfdr.de@vger.kernel.org>)
-	for <lists+linux-wireless@lfdr.de>; Mon, 09 Mar 2026 07:42:35 +0100
+	id 0ParCnBvrmn8EAIAu9opvQ
+	(envelope-from <linux-wireless+bounces-32748-lists+linux-wireless=lfdr.de@vger.kernel.org>)
+	for <lists+linux-wireless@lfdr.de>; Mon, 09 Mar 2026 07:57:52 +0100
 X-Original-To: lists+linux-wireless@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1AE942344DF
-	for <lists+linux-wireless@lfdr.de>; Mon, 09 Mar 2026 07:42:35 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 88D292348EB
+	for <lists+linux-wireless@lfdr.de>; Mon, 09 Mar 2026 07:57:51 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id B97BA3008A51
-	for <lists+linux-wireless@lfdr.de>; Mon,  9 Mar 2026 06:42:33 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 7498D3044B87
+	for <lists+linux-wireless@lfdr.de>; Mon,  9 Mar 2026 06:53:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8D0923603D6;
-	Mon,  9 Mar 2026 06:42:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C0A6B3624A6;
+	Mon,  9 Mar 2026 06:53:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="mWwiKulv"
+	dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b="ADQZbB/9"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from sipsolutions.net (s3.sipsolutions.net [168.119.38.16])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6ACAB3603F9
-	for <linux-wireless@vger.kernel.org>; Mon,  9 Mar 2026 06:42:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8BAFB35DA41;
+	Mon,  9 Mar 2026 06:53:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=168.119.38.16
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773038553; cv=none; b=kvwN9Gu8dWVZuPlEVcbjq0b3mUpWihF5Igcbxp2KrVs3zfLdJuWwsjwpTMTZIHLWsD46oMyswlfiKZa3PHQKgrOwuos9kyCIXZWBdawRUs5U30HvxYQA7+xa2e8vZLF2ZYA4RjIIMUP/8nFmDoOe2YM+kR9IDllg1+thJwPzQsc=
+	t=1773039190; cv=none; b=S8xlhWmrKS2Q1AJ7MVRScEgz8pABmPbDRxaAbBYlu1VFavS0oOgodXbEk3q0XYKx7ppzrts+ardspPoO5jF/aYFZONszDB0SWYsGNGN8rQpXQYBneFbgraxkJLkxvwLyNngAXmjE0oarKY9eFdHHZct031g/LypPljMsyXyj52Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773038553; c=relaxed/simple;
-	bh=bK4Sr5UqmtGz43bgA7L5468rrUIu5McOxaPwXrtQ7p0=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=Q/1NGiVMpIDBVqAL8TuE7drZqSoJ1VKA3fSjTdTY8aUbI/qGE5LDqfq2li+8mN6JjHWhCuzT7f7qkXR4dZ6SLb+SDz0CY4lgTMM6C9wHHHajwU+rweyv8osU+8aa8YJi6yJ8e3+WYIn/KT56YT4etdb1A00OZZ+rBza3KYl0EQk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=mWwiKulv; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0BBB9C4CEF7
-	for <linux-wireless@vger.kernel.org>; Mon,  9 Mar 2026 06:42:33 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1773038553;
-	bh=bK4Sr5UqmtGz43bgA7L5468rrUIu5McOxaPwXrtQ7p0=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=mWwiKulvCnIo8rj5DXimcH7a17H3bDJFPKPAx7tJIQ4vHIWnQrZEIQ6ywkUTm+0ok
-	 CcXNmZCQAdb+TmRvDZwbxCIF0k4T1SxdXivx+HaOWN1/xNxuGQh/pz/HIakYb9jSBP
-	 kjCYyh37QMygU26kGR1ID21XVOAogrZpbPVNIt7kUx+23eUV5MUU4X4GLwCdzHSTu1
-	 s6A4a6I7lTr7Fg0OgKcn6S/2i31i0KVJydGyu6OhiYhJwJWxOcjZS1aIQ1x9YKecTt
-	 gy8912SdEbV5PT+Te0K+UBVnuyDh5cJIuaB/oG5FVXW+92hdR+x/aLnv9W3PH1sUUO
-	 lfi6YIRC8SE9w==
-Received: by mail-lf1-f46.google.com with SMTP id 2adb3069b0e04-5a13d6a2d7bso2192306e87.1
-        for <linux-wireless@vger.kernel.org>; Sun, 08 Mar 2026 23:42:32 -0700 (PDT)
-X-Gm-Message-State: AOJu0Yz8ih3b2S3tsoxfNuM1vcykX7lEy+1nK9XpFLMmwQT2Jxr5NYfZ
-	/YdBVfIyjZXZqMhuRtYkKtrekk6SpvEvgLQ2ZF/bBjkgIBlmvqN5zN1GhhpHy88E1jxIZNsYmBm
-	tLJixdQRePvv1YL5XfOmjAW24cxeaXuk=
-X-Received: by 2002:a05:6512:2241:b0:5a1:2c19:4e83 with SMTP id
- 2adb3069b0e04-5a131f27b2fmr4547137e87.20.1773038551421; Sun, 08 Mar 2026
- 23:42:31 -0700 (PDT)
+	s=arc-20240116; t=1773039190; c=relaxed/simple;
+	bh=hG4GnsxkzseM2bRinFB1n4eJZFMddV0ip4lYdY7xYCU=;
+	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=gY/kF0aBFvPflYFc/RcH0lQqjuvIwmTqV+daLBPteR1zBAYebM0euckYvKxGN0Cyw/chhfvZmdOLipn7j3ZpXG6KSm8Shq1tB1fc+N7AjNmcmSn4majW7PeQOCzjerQiH5PLRVOiYj1OlpVcHCBrhN0DHfQ4ZYsxGH7DjiqGV/g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net; spf=pass smtp.mailfrom=sipsolutions.net; dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b=ADQZbB/9; arc=none smtp.client-ip=168.119.38.16
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sipsolutions.net
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=sipsolutions.net; s=mail; h=MIME-Version:Content-Transfer-Encoding:
+	Content-Type:References:In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender
+	:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
+	Resent-Cc:Resent-Message-ID; bh=hG4GnsxkzseM2bRinFB1n4eJZFMddV0ip4lYdY7xYCU=;
+	t=1773039189; x=1774248789; b=ADQZbB/9hFWTk3dmT3OYyKF30uXR8Geg6yCcVTwbYRDAGPV
+	rDU2BdgNgmzrSl/TWVxYno1yySdR1BBePi+pCexiF69/MM2fFKgAnUUTrWjUdK7dg7K+7pgFwGHnQ
+	K8WlejI9uRvQ4ofpWwQ6fdr/hMIKsTkw4NkZqbJkr9agUKRS6g3LNSEWlqDCsdC0CNiRKuHxhN+Wc
+	+xJTdBjnllIVIXBhp+rtNVw0gOMAlsG/Clh2zLRagLlfuxwsMk5hbj1WYx/RoD3Ho0Ai496by8JRa
+	k4KdGF2rM24KLkZ9g3vnI1OtAmSFm+O3iaKNDbqhkU4dJpbzS7tARyu8cJislIlg==;
+Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
+	(Exim 4.98.2)
+	(envelope-from <johannes@sipsolutions.net>)
+	id 1vzUUF-0000000ClUy-1MnZ;
+	Mon, 09 Mar 2026 07:53:07 +0100
+Message-ID: <8155c8f93c233e430c75c98bcdaea219b16e9596.camel@sipsolutions.net>
+Subject: Re: [PATCH] wifi: mac80211: fix monitor mode frame capture for real
+ chanctx drivers
+From: Johannes Berg <johannes@sipsolutions.net>
+To: =?UTF-8?Q?=E5=82=85=E7=BB=A7=E6=99=97?= <fjhhz1997@gmail.com>
+Cc: linux-wireless@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	stable@vger.kernel.org, =?ISO-8859-1?Q?=D3scar?= Alfonso
+ =?ISO-8859-1?Q?D=EDaz?= <oscar.alfonso.diaz@gmail.com>
+Date: Mon, 09 Mar 2026 07:53:06 +0100
+In-Reply-To: <20260308164510.5927-1-fjhhz1997@gmail.com> (sfid-20260308_174529_643449_E6D8C735)
+References: <20260308164510.5927-1-fjhhz1997@gmail.com>
+	 (sfid-20260308_174529_643449_E6D8C735)
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.58.3 (3.58.3-1.fc43) 
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <CANAPQzi3BkfnRS4CEXAA560O5cO8e6MEYxeVVx1u+xUeXS-gmA@mail.gmail.com>
-In-Reply-To: <CANAPQzi3BkfnRS4CEXAA560O5cO8e6MEYxeVVx1u+xUeXS-gmA@mail.gmail.com>
-From: Sean Wang <sean.wang@kernel.org>
-Date: Mon, 9 Mar 2026 01:42:20 -0500
-X-Gmail-Original-Message-ID: <CAGp9LzoidBL1iYYC371+Fw+drbArLRTneJKxCoFiitx=dweKCg@mail.gmail.com>
-X-Gm-Features: AaiRm535bp3mMDjGT40DMDnRmBiHn2tomilrBSmxbcjZXNAf71PJZph4xcRZiHw
-Message-ID: <CAGp9LzoidBL1iYYC371+Fw+drbArLRTneJKxCoFiitx=dweKCg@mail.gmail.com>
-Subject: Re: [PATCH 1/2] mt76: connac: fix txpower_cur not updated in mt76_connac_mcu_set_rate_txpower()
-To: bryam vargas <bryamestebanvargas@gmail.com>
-Cc: linux-wireless@vger.kernel.org, nbd@nbd.name, lorenzo@kernel.org, 
-	"moderated list:ARM/Mediatek SoC support" <linux-mediatek@lists.infradead.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Queue-Id: 1AE942344DF
+X-malware-bazaar: not-scanned
+X-Rspamd-Queue-Id: 88D292348EB
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
+	DMARC_POLICY_ALLOW(-0.50)[sipsolutions.net,none];
+	R_DKIM_ALLOW(-0.20)[sipsolutions.net:s=mail];
 	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-32747-lists,linux-wireless=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-32748-lists,linux-wireless=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FROM_HAS_DN(0.00)[];
 	FREEMAIL_TO(0.00)[gmail.com];
+	FREEMAIL_CC(0.00)[vger.kernel.org,gmail.com];
+	TO_DN_SOME(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
 	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	DKIM_TRACE(0.00)[kernel.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	MISSING_XM_UA(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[5];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[sean.wang@kernel.org,linux-wireless@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-0.956];
+	RCPT_COUNT_FIVE(0.00)[5];
+	NEURAL_HAM(-0.00)[-0.975];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[johannes@sipsolutions.net,linux-wireless@vger.kernel.org];
+	DKIM_TRACE(0.00)[sipsolutions.net:+];
+	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[linux-wireless];
-	RCPT_COUNT_FIVE(0.00)[5];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,mail.gmail.com:mid]
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,sipsolutions.net:dkim,sipsolutions.net:mid]
 X-Rspamd-Action: no action
 
-Hi,
+On Sun, 2026-03-08 at 16:45 +0000, =E5=82=85=E7=BB=A7=E6=99=97 wrote:
+> Commit 0a44dfc07074 ("wifi: mac80211: simplify non-chanctx drivers")
+> removed the fallback path in ieee80211_monitor_start_xmit() for when
+> the monitor interface has no channel context assigned. This broke frame
+> capture and injection for drivers that implement real channel context
+> ops (as opposed to the ieee80211_emulate_* helpers), such as the mt76
+> family, when a monitor interface runs alongside another interface
+> (e.g. managed mode).
 
-On Fri, Feb 27, 2026 at 3:53=E2=80=AFAM bryam vargas
-<bryamestebanvargas@gmail.com> wrote:
->
-> From 0a29ccaeb2211451b88ad71c4c0cdbc418b7d64d Mon Sep 17 00:00:00 2001
-> From: bryam <bryamestebanvargas@gmail.com>
-> Date: Fri, 27 Feb 2026 04:30:01 -0500
-> Subject: [PATCH 1/2] mt76: connac: fix txpower_cur not updated in
->  mt76_connac_mcu_set_rate_txpower()
->
-> mt76_connac_mcu_set_rate_txpower() sends the TX power SKU table to the
-> firmware but never updates mphy->txpower_cur. This causes mt76_get_txpowe=
-r()
-> to always report 3 dBm regardless of the actual configured power level,
-> since txpower_cur remains at its zero-initialized value and only the
-> path delta for 2 chains (6 units of 0.5 dBm) gets applied.
->
-> Fix this by calculating the effective TX power using the same approach
-> as mt7915: mt76_get_power_bound() applies SAR constraints and chain
-> delta, then mt76_get_rate_power_limits() applies the per-rate EEPROM
-> limits, yielding the actual value the firmware will use.
+It actually broke the others too, as you note later.
 
-I wonder if this would fit better in .get_txpower instead.
+> In that scenario the (virtual) monitor sdata does not get a chanctx of
+> its own, even though there is an active one from the other interface.
+> Before the simplification the code fell back to local->_oper_chandef;
+> after it, the code goes straight to fail_rcu and silently drops every
+> injected frame.
+>=20
+> Commit d594cc6f2c58 ("wifi: mac80211: restore non-chanctx injection
+> behaviour") restored the fallback for drivers using emulate_chanctx,
+> but explicitly left real chanctx drivers unfixed.
+>=20
+> Fix this by falling back to the first entry in local->chanctx_list
+> when the monitor vif has no chanctx and the driver uses real channel
+> contexts. This is analogous to how ieee80211_hw_conf_chan() already
+> uses the same pattern.
 
-mt76_connac_mcu_set_rate_txpower() is primarily a programming path
-that pushes the SKU table to firmware. Updating txpower_cur there
-mixes write-side configuration with reporting logic.
+I did have pretty much the same attempt at a fix:
 
-It might be cleaner to handle this in .get_txpower with an
-mt7921-specific callback that derives the reported TX power from the
-SKU limits instead of updating the cached value in the write path.
+https://lore.kernel.org/linux-wireless/20251216111909.25076-2-johannes@sips=
+olutions.net/
 
->
-> Fixes: 3b4a3bdba808 ("mt76: mt7921: add support for reporting tx power")
-> Signed-off-by: Bryam Vargas <bryamestebanvargas@gmail.com>
-> ---
->  .../net/wireless/mediatek/mt76/mt76_connac_mcu.c   | 14 ++++++++++++++
->  1 file changed, 14 insertions(+)
->
-> diff --git a/drivers/net/wireless/mediatek/mt76/mt76_connac_mcu.c
-> b/drivers/net/wireless/mediatek/mt76/mt76_connac_mcu.c
-> index fc3e672..4ed31ff 100644
-> --- a/drivers/net/wireless/mediatek/mt76/mt76_connac_mcu.c
-> +++ b/drivers/net/wireless/mediatek/mt76/mt76_connac_mcu.c
-> @@ -2272,6 +2272,20 @@ int mt76_connac_mcu_set_rate_txpower(struct
-> mt76_phy *phy)
->              return err;
->      }
->
-> +    /* Update txpower_cur so mt76_get_txpower() reports the actual
-> +     * configured TX power instead of always returning 3 dBm due to
-> +     * txpower_cur being left at its zero-initialized value.
-> +     * The value is stored in 0.5 dBm units as used by the SKU table.
-> +     */
-> +    if (phy->chandef.chan) {
-> +        struct mt76_power_limits limits;
-> +        s8 tx_power;
-> +
-> +        tx_power =3D mt76_get_power_bound(phy, phy->chandef.chan->max_po=
-wer);
-> +        tx_power =3D mt76_get_rate_power_limits(phy, phy->chandef.chan,
-> +                          &limits, tx_power);
-> +        phy->txpower_cur =3D tx_power;
-> +    }
->      return 0;
->  }
->  EXPORT_SYMBOL_GPL(mt76_connac_mcu_set_rate_txpower);
-> --
-> 2.43.0
->
+but it was reported to cause crashes on certain devices, so we didn't
+think it was very safe at the time.
+
+Is that no longer an issue?
+
+johannes
 
