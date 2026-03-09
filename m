@@ -1,66 +1,71 @@
-Return-Path: <linux-wireless+bounces-32748-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-32749-lists+linux-wireless=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 0ParCnBvrmn8EAIAu9opvQ
-	(envelope-from <linux-wireless+bounces-32748-lists+linux-wireless=lfdr.de@vger.kernel.org>)
-	for <lists+linux-wireless@lfdr.de>; Mon, 09 Mar 2026 07:57:52 +0100
+	id fpgELw1yrmkCEgIAu9opvQ
+	(envelope-from <linux-wireless+bounces-32749-lists+linux-wireless=lfdr.de@vger.kernel.org>)
+	for <lists+linux-wireless@lfdr.de>; Mon, 09 Mar 2026 08:09:01 +0100
 X-Original-To: lists+linux-wireless@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 88D292348EB
-	for <lists+linux-wireless@lfdr.de>; Mon, 09 Mar 2026 07:57:51 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5A726234A5B
+	for <lists+linux-wireless@lfdr.de>; Mon, 09 Mar 2026 08:09:00 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 7498D3044B87
-	for <lists+linux-wireless@lfdr.de>; Mon,  9 Mar 2026 06:53:11 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 46C5A30058E1
+	for <lists+linux-wireless@lfdr.de>; Mon,  9 Mar 2026 07:09:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C0A6B3624A6;
-	Mon,  9 Mar 2026 06:53:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 204AA35DA41;
+	Mon,  9 Mar 2026 07:08:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b="ADQZbB/9"
+	dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b="Ts24dMm/"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from sipsolutions.net (s3.sipsolutions.net [168.119.38.16])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8BAFB35DA41;
-	Mon,  9 Mar 2026 06:53:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D085735838A;
+	Mon,  9 Mar 2026 07:08:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=168.119.38.16
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773039190; cv=none; b=S8xlhWmrKS2Q1AJ7MVRScEgz8pABmPbDRxaAbBYlu1VFavS0oOgodXbEk3q0XYKx7ppzrts+ardspPoO5jF/aYFZONszDB0SWYsGNGN8rQpXQYBneFbgraxkJLkxvwLyNngAXmjE0oarKY9eFdHHZct031g/LypPljMsyXyj52Q=
+	t=1773040139; cv=none; b=nRpEGovPhRd2S+vidabzTRiw7ILJrXXTtV/2nVkSZE66E76PCgWncVw3RYQTxo6xWFGp9SrcqtWEd6PD0ltdRoaN8Zzj4MbPn0nR5SPFNBBZOFT2c3mvBg4IrCE/YXdQWhgHpt9033oRZ+ePOKLE5cJjTyxPFQuTvpb5CogWlX8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773039190; c=relaxed/simple;
-	bh=hG4GnsxkzseM2bRinFB1n4eJZFMddV0ip4lYdY7xYCU=;
+	s=arc-20240116; t=1773040139; c=relaxed/simple;
+	bh=XpY/t2PZhWdNCbnz6i8Ww/rhyBIIvWSYrY+/h+T7duw=;
 	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=gY/kF0aBFvPflYFc/RcH0lQqjuvIwmTqV+daLBPteR1zBAYebM0euckYvKxGN0Cyw/chhfvZmdOLipn7j3ZpXG6KSm8Shq1tB1fc+N7AjNmcmSn4majW7PeQOCzjerQiH5PLRVOiYj1OlpVcHCBrhN0DHfQ4ZYsxGH7DjiqGV/g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net; spf=pass smtp.mailfrom=sipsolutions.net; dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b=ADQZbB/9; arc=none smtp.client-ip=168.119.38.16
+	 Content-Type:MIME-Version; b=vAOx0X6INoDcfZY3kpssjtlP2kPaLl9Etkr0Xj/QZTOBveUAbfoMNMW3E8N71fWqTvIe3f4Lqyo9R5eavs7YoNpK3gKb/gEIw/JM0A7DITtdRZdxir0qa6BPfHpAwhXjm9q2a/hxyDfbZJObqRdDVIcjh0PMdPCyFfIivbEc0vI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net; spf=pass smtp.mailfrom=sipsolutions.net; dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b=Ts24dMm/; arc=none smtp.client-ip=168.119.38.16
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sipsolutions.net
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=sipsolutions.net; s=mail; h=MIME-Version:Content-Transfer-Encoding:
 	Content-Type:References:In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender
 	:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
-	Resent-Cc:Resent-Message-ID; bh=hG4GnsxkzseM2bRinFB1n4eJZFMddV0ip4lYdY7xYCU=;
-	t=1773039189; x=1774248789; b=ADQZbB/9hFWTk3dmT3OYyKF30uXR8Geg6yCcVTwbYRDAGPV
-	rDU2BdgNgmzrSl/TWVxYno1yySdR1BBePi+pCexiF69/MM2fFKgAnUUTrWjUdK7dg7K+7pgFwGHnQ
-	K8WlejI9uRvQ4ofpWwQ6fdr/hMIKsTkw4NkZqbJkr9agUKRS6g3LNSEWlqDCsdC0CNiRKuHxhN+Wc
-	+xJTdBjnllIVIXBhp+rtNVw0gOMAlsG/Clh2zLRagLlfuxwsMk5hbj1WYx/RoD3Ho0Ai496by8JRa
-	k4KdGF2rM24KLkZ9g3vnI1OtAmSFm+O3iaKNDbqhkU4dJpbzS7tARyu8cJislIlg==;
+	Resent-Cc:Resent-Message-ID; bh=gZMGKabdYzeLfhDsJ1Db2AbYSD4HGbVvgVYnxD/7438=;
+	t=1773040137; x=1774249737; b=Ts24dMm/JUDSgVn3dstv2ECeC3tTZIS9M6rfLsKqguPyFgv
+	PDVLE2M3KXsqNepw9aVA19ccVjfRqiQIfV1Q4LvJmJtIM8Y3ThaGjjzqkKzjjP/Ps1x0IMKXARfh1
+	W6GydgtwoOo+I0GNWKGUMNxQamWprUb08jFrprumN7rgQKJf0nPVzNCqoDhdwtvyLcZSqkcD6txDs
+	4gI/uXF6lxflvnX3ZsbZErR1W8wjPlkDvf4Sl1t9mEUTKLmYuLl4zyshUJuLGmMY1CTyHgs2VQ4cM
+	c5Ut++cAOBMiZZygb4IKYKLdvR86s4smOBT5QGiVVnAVeoUmMXq70Ygy5UhUvOSg==;
 Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
 	(Exim 4.98.2)
 	(envelope-from <johannes@sipsolutions.net>)
-	id 1vzUUF-0000000ClUy-1MnZ;
-	Mon, 09 Mar 2026 07:53:07 +0100
-Message-ID: <8155c8f93c233e430c75c98bcdaea219b16e9596.camel@sipsolutions.net>
-Subject: Re: [PATCH] wifi: mac80211: fix monitor mode frame capture for real
- chanctx drivers
+	id 1vzUjW-0000000Clsm-0APJ;
+	Mon, 09 Mar 2026 08:08:54 +0100
+Message-ID: <1ca86ec4a1af1edfb791ca65023ab1979507c5bc.camel@sipsolutions.net>
+Subject: Re: [PATCH wireless-next 14/35] wifi: mm81x: add mac.c
 From: Johannes Berg <johannes@sipsolutions.net>
-To: =?UTF-8?Q?=E5=82=85=E7=BB=A7=E6=99=97?= <fjhhz1997@gmail.com>
-Cc: linux-wireless@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	stable@vger.kernel.org, =?ISO-8859-1?Q?=D3scar?= Alfonso
- =?ISO-8859-1?Q?D=EDaz?= <oscar.alfonso.diaz@gmail.com>
-Date: Mon, 09 Mar 2026 07:53:06 +0100
-In-Reply-To: <20260308164510.5927-1-fjhhz1997@gmail.com> (sfid-20260308_174529_643449_E6D8C735)
-References: <20260308164510.5927-1-fjhhz1997@gmail.com>
-	 (sfid-20260308_174529_643449_E6D8C735)
+To: Lachlan Hodges <lachlan.hodges@morsemicro.com>
+Cc: Dan Callaghan <dan.callaghan@morsemicro.com>, Arien Judge	
+ <arien.judge@morsemicro.com>, Nathan Chancellor <nathan@kernel.org>, Nick
+ Desaulniers <nick.desaulniers+lkml@gmail.com>, Bill Wendling
+ <morbo@google.com>, Justin Stitt	 <justinstitt@google.com>,
+ ayman.grais@morsemicro.com, 	linux-wireless@vger.kernel.org,
+ linux-kernel@vger.kernel.org
+Date: Mon, 09 Mar 2026 08:08:53 +0100
+In-Reply-To: <vttdls7sm4h3br7y5kcea5i4teqnuiuzgq3miswg6r45asvng7@jto3tksuvofj> (sfid-20260309_054337_596627_E09272CA)
+References: <20260227041108.66508-1-lachlan.hodges@morsemicro.com>
+	 <20260227041108.66508-15-lachlan.hodges@morsemicro.com>
+	 <a04a91f1203609e89df97cc950bb2af37a66aee5.camel@sipsolutions.net>
+	 <vttdls7sm4h3br7y5kcea5i4teqnuiuzgq3miswg6r45asvng7@jto3tksuvofj>
+	 (sfid-20260309_054337_596627_E09272CA)
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 User-Agent: Evolution 3.58.3 (3.58.3-1.fc43) 
@@ -71,73 +76,104 @@ List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 X-malware-bazaar: not-scanned
-X-Rspamd-Queue-Id: 88D292348EB
+X-Rspamd-Queue-Id: 5A726234A5B
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[sipsolutions.net,none];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	R_DKIM_ALLOW(-0.20)[sipsolutions.net:s=mail];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-32748-lists,linux-wireless=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_TO(0.00)[gmail.com];
-	FREEMAIL_CC(0.00)[vger.kernel.org,gmail.com];
-	TO_DN_SOME(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
+	FREEMAIL_CC(0.00)[morsemicro.com,kernel.org,gmail.com,google.com,vger.kernel.org];
+	TAGGED_FROM(0.00)[bounces-32749-lists,linux-wireless=lfdr.de];
+	DKIM_TRACE(0.00)[sipsolutions.net:+];
+	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[5];
-	NEURAL_HAM(-0.00)[-0.975];
+	FROM_HAS_DN(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	NEURAL_HAM(-0.00)[-0.972];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[johannes@sipsolutions.net,linux-wireless@vger.kernel.org];
-	DKIM_TRACE(0.00)[sipsolutions.net:+];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
 	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[linux-wireless,lkml];
+	RCPT_COUNT_SEVEN(0.00)[10];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[linux-wireless];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,sipsolutions.net:dkim,sipsolutions.net:mid]
+	TO_DN_SOME(0.00)[]
 X-Rspamd-Action: no action
 
-On Sun, 2026-03-08 at 16:45 +0000, =E5=82=85=E7=BB=A7=E6=99=97 wrote:
-> Commit 0a44dfc07074 ("wifi: mac80211: simplify non-chanctx drivers")
-> removed the fallback path in ieee80211_monitor_start_xmit() for when
-> the monitor interface has no channel context assigned. This broke frame
-> capture and injection for drivers that implement real channel context
-> ops (as opposed to the ieee80211_emulate_* helpers), such as the mt76
-> family, when a monitor interface runs alongside another interface
-> (e.g. managed mode).
-
-It actually broke the others too, as you note later.
-
-> In that scenario the (virtual) monitor sdata does not get a chanctx of
-> its own, even though there is an active one from the other interface.
-> Before the simplification the code fell back to local->_oper_chandef;
-> after it, the code goes straight to fail_rcu and silently drops every
-> injected frame.
+On Mon, 2026-03-09 at 15:43 +1100, Lachlan Hodges wrote:
+> >  2) Are you going to incur the wrath of mm/ folks, where instances of
+> >     'struct mm_struct' are commonly called 'mm'? I can find a few
+> >     examples of others (struct drm_buddy *mm, struct mqd_manager *mm),
+> >     but you'd double the instances.
 >=20
-> Commit d594cc6f2c58 ("wifi: mac80211: restore non-chanctx injection
-> behaviour") restored the fallback for drivers using emulate_chanctx,
-> but explicitly left real chanctx drivers unfixed.
+> This.. is definitely something I did not think of. I have no issue with
+> renaming to something else.. maybe mx? I'm not sure.
+
+Yeah I really don't know. There's no 'mm->lock' (any more? for some
+reason _that_ was what caught my eye wrt. the naming) in mm/, and I
+guess soon also not in your driver. I'll try to ask around, but it's
+probably safer to rename, and shouldn't be _that_ hard with spatch I
+guess. I guess 'mx' seems reasonable, 'mmx' is also confusing perhaps,
+and 'mm81x' doesn't lend itself to obvious other abbreviations.
+
+
+> > > +	/*
+> > > +	 * mm81x only support changing/setting the channel
+> > > +	 * when we create an interface.
+> > > +	 */
+> > > +	if (WARN_ON(changed & IEEE80211_CHANCTX_CHANGE_CHANNEL))
+> > > +		mm81x_err(mm, "Changing channel via chanctx not supported");
+> >=20
+> > Wait, what, why do you have chanctx support then? This seems highly
+> > questionable, how do you not run into this all the time?
+> >=20
+> > If it just has a single, wouldn't the chanctx emulation suit the driver
+> > better, and that'd make this more obvious? Hmm, but you _do_ support
+> > multiple vifs? I'm confused.
 >=20
-> Fix this by falling back to the first entry in local->chanctx_list
-> when the monitor vif has no chanctx and the driver uses real channel
-> contexts. This is analogous to how ieee80211_hw_conf_chan() already
-> uses the same pattern.
+> We originally used chanctx emulation.. but I suppose in an effort to
+> be "modern" we use chanctx. It's probably best to switch back to the
+> chanctx emulation anyway. As for why we don't run into this is due
+> to no channel switch support yet, iirc mac80211 I think needs a minor
+> tweak to work with S1G (which further reinforces the idea that we
+> should just emulate chanctx)
 
-I did have pretty much the same attempt at a fix:
+I don't mind the emulation _that_ much to force drivers into some
+unnatural scheme for them :) This seems even more confusing and
+unexpected than the emulation perhaps.
 
-https://lore.kernel.org/linux-wireless/20251216111909.25076-2-johannes@sips=
-olutions.net/
+But I don't want to impose here either.
 
-but it was reported to cause crashes on certain devices, so we didn't
-think it was very safe at the time.
+> Thanks for the review. On the other thread [1] you mentioned sending a
+> pull request once reviews settle down, as per the documentation in [2]
+> (which I should have read earlier... :) ),
 
-Is that no longer an issue?
+Heh, I didn't really know we had that document either, Kalle did all
+that :)
+
+> can we confirm that this means
+> we are to submit subsequent patchset revisions in the same per-file
+> format until everyone is happy with the driver, and then raise the PR?
+
+I wouldn't necessarily way _everyone_, you can probably always find
+someone willing to nitpick if you look hard enough ;-)
+
+But yeah, I don't think you have a choice for how to post, the whole
+driver as one patch would not really even load well in an email client I
+guess, let alone make it possible to comment on easily.
+
+As I said there, for the merge I'd prefer just a single commit as a pull
+request.
+
+Obviously I hope/expect you're going to continue to maintaining the
+driver and we'll have to figure out the workflow for that - perhaps
+depending on how much work you're planning to put into it.
 
 johannes
 
