@@ -1,355 +1,277 @@
-Return-Path: <linux-wireless+bounces-32760-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-32761-lists+linux-wireless=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id eNAVC8KLrmnNFwIAu9opvQ
-	(envelope-from <linux-wireless+bounces-32760-lists+linux-wireless=lfdr.de@vger.kernel.org>)
-	for <lists+linux-wireless@lfdr.de>; Mon, 09 Mar 2026 09:58:42 +0100
+	id iMt0LR+PrmnVGAIAu9opvQ
+	(envelope-from <linux-wireless+bounces-32761-lists+linux-wireless=lfdr.de@vger.kernel.org>)
+	for <lists+linux-wireless@lfdr.de>; Mon, 09 Mar 2026 10:13:03 +0100
 X-Original-To: lists+linux-wireless@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id C5516235C4D
-	for <lists+linux-wireless@lfdr.de>; Mon, 09 Mar 2026 09:58:41 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 61C6C235F73
+	for <lists+linux-wireless@lfdr.de>; Mon, 09 Mar 2026 10:13:03 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 3655230059A1
-	for <lists+linux-wireless@lfdr.de>; Mon,  9 Mar 2026 08:58:41 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id B7BCC301951F
+	for <lists+linux-wireless@lfdr.de>; Mon,  9 Mar 2026 09:12:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 363F736EA99;
-	Mon,  9 Mar 2026 08:58:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5E5F5377ECC;
+	Mon,  9 Mar 2026 09:12:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=realtek.com header.i=@realtek.com header.b="HmyBxmLP"
+	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="jHru3esd";
+	dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b="G/+mXK6b"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7FAF036D9F9
-	for <linux-wireless@vger.kernel.org>; Mon,  9 Mar 2026 08:58:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=211.75.126.72
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 22A7037700B
+	for <linux-wireless@vger.kernel.org>; Mon,  9 Mar 2026 09:12:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773046714; cv=none; b=lmP/zVlgk/7vqbqHZn7hkyUJDp19MypCpmEHEx5qgRW6DSgLURRe4NZH66nKnysKy21qOdP+sNrjLXYtWENFq3+s/OttY4RA5fnvwppmMkGpoYIJc57fGF/tfVIjyYyOd7MYBkyAROQrLz9S3WiapU8wXAk0QM4gqxf/NW2w+kE=
+	t=1773047534; cv=none; b=M+PPANw4s0DVqXxno9UfZDkyRfskNDLbX6USUwjo+sBBpFFlwf9rr8HTyQc2Sh7c7qJgdUKR6hpA2w7IGsrJRyZGoTqlqJwL4gJzXQjB6scW2Q8/gqoUk6PundUDOVvmBaU8ZPtaiDIbliTazRMH3NbQ3N09L+BWoW3Hv1ENUhI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773046714; c=relaxed/simple;
-	bh=aCmZDphE7tmq1V+bbNzE/M+A/bKowo8l8RzKNYoPKn4=;
-	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=esMgyDCJsHqxLFHyfu1416hLLOYNY8aVw1lStdpLfk733tOZkf4a+O3O4FScO4fYWqv41/VPel7lFKDzgCXcS0CRjOQiQJXTODmFnan3e7y1siA+qRESPAkPLCAkjavWHTezH1OEs2i/udGYyJzFBhBgSw1U4XIGRUgkYnxD+XM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com; spf=pass smtp.mailfrom=realtek.com; dkim=pass (2048-bit key) header.d=realtek.com header.i=@realtek.com header.b=HmyBxmLP; arc=none smtp.client-ip=211.75.126.72
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=realtek.com
-X-SpamFilter-By: ArmorX SpamTrap 5.80 with qID 6298wQnY5241296, This message is accepted by code: ctloc85258
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=realtek.com; s=dkim;
-	t=1773046706; bh=xOljSjA0+gJhiAmmCngV97X1ry/t6pjJ5V2Osgdqtus=;
-	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:
-	 Content-Transfer-Encoding:Content-Type;
-	b=HmyBxmLPMfWClTIy3pQ1Uz45z4LG+vAAyy6v8pwX0JTUhV2dW148TghD539kqpuke
-	 RdghhdloLJYlpCTv8D3PGMA2zWOOmH95W4IiSgOAWSwddY6TCpgn4CB41nrS8E6rtn
-	 +thH+/y5PMRkj83Uj4MZYHNNXSeotD6YQKNd9EoP9CuYgULUpmOs/BlSXXAkxULKo2
-	 fQafPBlsAbZKWCN0417T27D1c9gyMoJy+R4utnL09r7HI6I5cu+k2OMLyhTb3ztbn3
-	 4OVJXCCunFNcH4ZkoraCnNvOlelba/2CoffZw5p63IBKevy2rztPtWpCoIIhui0irD
-	 4zxyyiVPG9usA==
-Received: from mail.realtek.com (rtkexhmbs03.realtek.com.tw[10.21.1.53])
-	by rtits2.realtek.com.tw (8.15.2/3.21/5.94) with ESMTPS id 6298wQnY5241296
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Mon, 9 Mar 2026 16:58:26 +0800
-Received: from RTKEXHMBS05.realtek.com.tw (10.21.1.55) by
- RTKEXHMBS03.realtek.com.tw (10.21.1.53) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1748.10; Mon, 9 Mar 2026 16:58:25 +0800
-Received: from [127.0.1.1] (172.21.40.75) by RTKEXHMBS05.realtek.com.tw
- (10.21.1.55) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1748.10 via Frontend
- Transport; Mon, 9 Mar 2026 16:58:25 +0800
-From: Ping-Ke Shih <pkshih@realtek.com>
-To: <linux-wireless@vger.kernel.org>
-CC: <rtl8821cerfe2@gmail.com>, <mh_chen@realtek.com>, <isaiah@realtek.com>
-Subject: [PATCH rtw-next] wifi: rtw89: usb: Rx aggregation for RTL8832CU/RTL8851BU
-Date: Mon, 9 Mar 2026 16:58:19 +0800
-Message-ID: <20260309085819.25174-1-pkshih@realtek.com>
-X-Mailer: git-send-email 2.25.1
+	s=arc-20240116; t=1773047534; c=relaxed/simple;
+	bh=Q2J+r2dSfTS2w9RcAxTqCjJw6if9TEPXLD0Hi1LfNcA=;
+	h=From:Date:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=FpU3BadAXDGyFYB39kl0qWSpxjBi2uvgHkJG0LgH7RXNcss6q1+aTHAUT+3MwCkKAKAgkJUxfJ//EXfOMbM+qJFGHZnzPKBuPmnvZpzho9xmT2Ita8HcHCyRokEU8p/9QcK09qKPwXYcFmH/IAmYcxSKTuGS6UEL/a3M+SU7QD4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=jHru3esd; dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b=G/+mXK6b; arc=none smtp.client-ip=205.220.168.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
+Received: from pps.filterd (m0279864.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 6297ktee4129718
+	for <linux-wireless@vger.kernel.org>; Mon, 9 Mar 2026 09:12:12 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
+	cc:content-type:date:from:in-reply-to:message-id:mime-version
+	:references:subject:to; s=qcppdkim1; bh=xbMtvtdOfLDdatvp+5lzCch6
+	oMIueR07h2NcUioWpFw=; b=jHru3esdNzuncTNwyW211a+aJdCkYiYxILsoZN+3
+	1GwgTcHiMn/ymHOV08WINAfoWlfYw32mmtmF+Seo9nDBKL/8faTBqtOibVjY8T1b
+	dgaY0uA7GYpKzy2BlixGrj6mN62goEwdjRuKoxo3BmtDppXIOIRCT3W6eZFhNujG
+	NUVHihFT8lC0N4D4b9D4sUu9vqiYV7661k24lzZtWboU4mtxwP07+llelKSKDhOL
+	XCCcln8fcMYU0Dbq9i5aXPPkIr1kAbbwT4ojrN+2XxrTTpUirMmL8EjgT/DODPGl
+	DyxQTsHS6r2QOpA4ooTD4DOGq2QorD2Gt3YNLkNIxsnfsg==
+Received: from mail-qk1-f199.google.com (mail-qk1-f199.google.com [209.85.222.199])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4crd6fcm80-1
+	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
+	for <linux-wireless@vger.kernel.org>; Mon, 09 Mar 2026 09:12:11 +0000 (GMT)
+Received: by mail-qk1-f199.google.com with SMTP id af79cd13be357-8cd77502295so1068377485a.1
+        for <linux-wireless@vger.kernel.org>; Mon, 09 Mar 2026 02:12:11 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=oss.qualcomm.com; s=google; t=1773047531; x=1773652331; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:date:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=xbMtvtdOfLDdatvp+5lzCch6oMIueR07h2NcUioWpFw=;
+        b=G/+mXK6b4p/ttPLc96rKIpLQx0rVatRsBeSzjF6/+gelzgZLV8+rTlRRrKkr1lDudb
+         x0XHory0GhLkH1EV4a5PpiAhY/TRwdi7lNPcuiJaJ+eroKu8I+pq8tKeZgoO9rnO8mAj
+         3GPZSRLFlKEjh4bUiOLnU4Ym4fqojvyKGzTYir5jZPGDnijSdwEZ2I//IX31gXkKEP1s
+         foFFG9rGEYwaClVPqGjcfc2PF6ChTLabjzpl33wxEpXkGgIb9BiIr8BItfX961bdKraS
+         oWN7XpKgf9b1/RiiDTdP5u2dcwofel7MwuTc+xl6KxLC9uT0LhYultFFB/xZ4sey9DTv
+         tyfw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1773047531; x=1773652331;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:date:from:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=xbMtvtdOfLDdatvp+5lzCch6oMIueR07h2NcUioWpFw=;
+        b=wTF8MdZl5pC2sQd83qIMYcnExxeOyGECTicYKRzRQRBeId4x8pjt6aO8d6oqxhZ6O+
+         PWu0kZ0YCkJ6pByTd+xq/cVI/2hPZtOo/L3mdnA4X5OOKbBdkL3KZNbm5eR4O43zXMM/
+         vgaJ6Hm4L7jrxfniSqR9SsO/06QNfgT/m8jrjvIgm437Sj4MgWL8maX1kUyRDBbhPQC/
+         SNWuYrHHCep9qrVFjBg1labg3lIHwpqdFwobq8fEJm6Ikh+/2U08Pb3u8fTp4/pR6u4j
+         NGJdMxOzPLGL+xDDVlNSulaVSfAtHMHKw6xnDHmFrsLdrhL8FANEvk7C6IIrRghjrJrm
+         rdSg==
+X-Forwarded-Encrypted: i=1; AJvYcCWFfEDGJpUB+bgJa1yQdzcd2UXsXYtDvDQAumeomC9wJkMYVT84D5HHcJCJEPXF2Im46Ygl/MzVe9dnhinJ7A==@vger.kernel.org
+X-Gm-Message-State: AOJu0Yz+sm769gZ0zzEM2RFv1e4dHWGnLSZ872IatqclzgBFb454CUMV
+	p7PMrVuJaeDORdg1EoFL/pVbbDw6df6C3cB+AY6Tm4keCZzICx1VRrjISctAKua6jPhkohSLJ3f
+	GJXVDUStWE5cU6lc9XOXTSP4VEc/5VqmQCplAukRpB9weP5v94sd4djdeLtg1k/2vhwLH6g==
+X-Gm-Gg: ATEYQzxbK32qO352uLBsvbkgqY0vcevUx6JsA5oo32aLC8cpSrg+QOyw+thYSGNT0GP
+	oQbUlqNU7DOibF8MAq2EfsrwUJJITvIJdcqahnCoCZsumLn8CRvXTt7fyTok9Qd+HzDEWkHV4U+
+	DcMrcz+7OT6orWbXc9loqU9Mln6BI4wAboR8bR7XJzlv7BxWu/81gf7vLYBxfOCgroUfSZMgFtL
+	BrRhTvi1gVmvgNo3GdsHNpHfNZa2xa0vyihxQC9uBBnQdwEBr/JteMw2Nj9verdIheTgHRgSRPH
+	O8quACs1RnOLWmduBiQz4WpSO21gDbApOC7XXzvwOPZ41bPbqIhdvCfBOsFEz2ZYzDRnSgJfvon
+	rHuvp0kW3RIKrrL1F8wRURfcYzVvY7vrNyFpcHTMtx9Naa+YYbvbw+w==
+X-Received: by 2002:a05:620a:700a:b0:8c9:f9c1:5ed with SMTP id af79cd13be357-8cd6d4d541dmr1304569585a.63.1773047530902;
+        Mon, 09 Mar 2026 02:12:10 -0700 (PDT)
+X-Received: by 2002:a05:620a:700a:b0:8c9:f9c1:5ed with SMTP id af79cd13be357-8cd6d4d541dmr1304566385a.63.1773047530429;
+        Mon, 09 Mar 2026 02:12:10 -0700 (PDT)
+Received: from trex (110.red-81-38-138.dynamicip.rima-tde.net. [81.38.138.110])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-439dae483desm23179497f8f.34.2026.03.09.02.12.07
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 09 Mar 2026 02:12:09 -0700 (PDT)
+From: Jorge Ramirez <jorge.ramirez@oss.qualcomm.com>
+X-Google-Original-From: Jorge Ramirez <JorgeRamirez-Ortiz>
+Date: Mon, 9 Mar 2026 10:12:06 +0100
+To: Sumit Garg <sumit.garg@kernel.org>
+Cc: linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org,
+        dri-devel@lists.freedesktop.org, freedreno@lists.freedesktop.org,
+        linux-media@vger.kernel.org, netdev@vger.kernel.org,
+        linux-wireless@vger.kernel.org, ath12k@lists.infradead.org,
+        linux-remoteproc@vger.kernel.org, andersson@kernel.org,
+        konradybcio@kernel.org, robh@kernel.org, krzk+dt@kernel.org,
+        conor+dt@kernel.org, robin.clark@oss.qualcomm.com, sean@poorly.run,
+        akhilpo@oss.qualcomm.com, lumag@kernel.org, abhinav.kumar@linux.dev,
+        jesszhan0024@gmail.com, marijn.suijten@somainline.org,
+        airlied@gmail.com, simona@ffwll.ch, vikash.garodia@oss.qualcomm.com,
+        dikshita.agarwal@oss.qualcomm.com, bod@kernel.org, mchehab@kernel.org,
+        elder@kernel.org, andrew+netdev@lunn.ch, davem@davemloft.net,
+        edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
+        jjohnson@kernel.org, mathieu.poirier@linaro.org,
+        trilokkumar.soni@oss.qualcomm.com, mukesh.ojha@oss.qualcomm.com,
+        pavan.kondeti@oss.qualcomm.com, jorge.ramirez@oss.qualcomm.com,
+        tonyh@qti.qualcomm.com, vignesh.viswanathan@oss.qualcomm.com,
+        srinivas.kandagatla@oss.qualcomm.com,
+        amirreza.zarrabi@oss.qualcomm.com, jens.wiklander@linaro.org,
+        op-tee@lists.trustedfirmware.org, apurupa@qti.qualcomm.com,
+        skare@qti.qualcomm.com, Sumit Garg <sumit.garg@oss.qualcomm.com>
+Subject: Re: [PATCH 11/14] media: qcom: Switch to generic PAS TZ APIs
+Message-ID: <aa6O5tir4kVIe0eZ@trex>
+References: <20260306105027.290375-1-sumit.garg@kernel.org>
+ <20260306105027.290375-12-sumit.garg@kernel.org>
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-Rspamd-Queue-Id: C5516235C4D
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260306105027.290375-12-sumit.garg@kernel.org>
+X-Proofpoint-ORIG-GUID: -QkaOCXsGnXNfTWZlsNYhJKj3P9J0_c4
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwMzA5MDA4NCBTYWx0ZWRfX79Pl6e65oWyp
+ WJsZWBsQKRm4YmEZE/m9y4mRCMTzRiW1c1aT/Kb05mkM2pDPUFR+0vxp88ImTwkdEt0jTm1ZUnh
+ h1O1edwtBzAT1AdBZ0gsYBWtH547lxbMrHj02g4i7luTHasFkNZ7dmAyysFWJi3ehkA9HX2BHjN
+ OE6RX/Lsx/jGY+9qW2sjhnDprS8zWzrMalSerDfRrgHleduGIWabpwJFVG45f8NHSdh2BIfsACX
+ MTxf1oypD1b8Eqou2Jpft4lezIZi+tBq6T7fZ4ulZSoH9HgXhSK0lSyHRbpi0kNYFgiXlYI59a2
+ YEB4ti6xd3Td2v7HKvxVZw76c/fItwwWHr4NcuEfurjgV5H0C2mWQtFGuuoxSSGTDLGrD3l0tEB
+ FgPRRn48aVScjxn/jJjdqEvlmMc4HbwrAthsqiKftfWrVsjTRuv+nQ3PsgPDTe3hXUhqWSUSOQc
+ CVH1QDbbaG7Oz4Q/+Dw==
+X-Proofpoint-GUID: -QkaOCXsGnXNfTWZlsNYhJKj3P9J0_c4
+X-Authority-Analysis: v=2.4 cv=RP++3oi+ c=1 sm=1 tr=0 ts=69ae8eec cx=c_pps
+ a=HLyN3IcIa5EE8TELMZ618Q==:117 a=P2IcWdTxk7sEx2G8DnB30w==:17
+ a=kj9zAlcOel0A:10 a=Yq5XynenixoA:10 a=s4-Qcg_JpJYA:10
+ a=VkNPw1HP01LnGYTKEx00:22 a=u7WPNUs3qKkmUXheDGA7:22 a=DJpcGTmdVt4CTyJn9g5Z:22
+ a=EUspDBNiAAAA:8 a=zah51VvIpe4vvf6E17kA:9 a=CjuIK1q_8ugA:10
+ a=bTQJ7kPSJx9SKPbeHEYW:22
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.51,FMLib:17.12.100.49
+ definitions=2026-03-09_03,2026-03-06_02,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ adultscore=0 priorityscore=1501 malwarescore=0 spamscore=0 phishscore=0
+ clxscore=1011 bulkscore=0 lowpriorityscore=0 impostorscore=0 suspectscore=0
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.22.0-2602130000 definitions=main-2603090084
+X-Rspamd-Queue-Id: 61C6C235F73
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.66 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MID_CONTAINS_FROM(1.00)[];
-	DMARC_POLICY_ALLOW(-0.50)[realtek.com,none];
-	R_MISSING_CHARSET(0.50)[];
-	R_DKIM_ALLOW(-0.20)[realtek.com:s=dkim];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+	DMARC_POLICY_ALLOW(-0.50)[qualcomm.com,reject];
+	MID_RHS_NOT_FQDN(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_DKIM_ALLOW(-0.20)[qualcomm.com:s=qcppdkim1,oss.qualcomm.com:s=google];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[6];
-	FREEMAIL_CC(0.00)[gmail.com,realtek.com];
-	TAGGED_FROM(0.00)[bounces-32760-lists,linux-wireless=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[pkshih@realtek.com,linux-wireless@vger.kernel.org];
-	RCPT_COUNT_THREE(0.00)[4];
-	PRECEDENCE_BULK(0.00)[];
-	NEURAL_HAM(-0.00)[-0.995];
-	TO_DN_NONE(0.00)[];
-	DKIM_TRACE(0.00)[realtek.com:+];
-	TAGGED_RCPT(0.00)[linux-wireless];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	TAGGED_FROM(0.00)[bounces-32761-lists,linux-wireless=lfdr.de];
+	RCPT_COUNT_TWELVE(0.00)[49];
 	MIME_TRACE(0.00)[0:+];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,realtek.com:dkim,realtek.com:email,realtek.com:mid]
+	RCVD_TLS_LAST(0.00)[];
+	FREEMAIL_CC(0.00)[vger.kernel.org,lists.freedesktop.org,lists.infradead.org,kernel.org,oss.qualcomm.com,poorly.run,linux.dev,gmail.com,somainline.org,ffwll.ch,lunn.ch,davemloft.net,google.com,redhat.com,linaro.org,qti.qualcomm.com,lists.trustedfirmware.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[oss.qualcomm.com:dkim,qualcomm.com:dkim,qualcomm.com:email,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo];
+	MISSING_XM_UA(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[jorge.ramirez@oss.qualcomm.com,linux-wireless@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	DKIM_TRACE(0.00)[qualcomm.com:+,oss.qualcomm.com:+];
+	NEURAL_HAM(-0.00)[-0.987];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TAGGED_RCPT(0.00)[linux-wireless,dt,netdev];
+	TO_DN_SOME(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	RCVD_COUNT_SEVEN(0.00)[7]
 X-Rspamd-Action: no action
 
-From: Shin-Yi Lin <isaiah@realtek.com>
+On 06/03/26 16:20:24, Sumit Garg wrote:
+> From: Sumit Garg <sumit.garg@oss.qualcomm.com>
+> 
+> Switch qcom media client drivers over to generic PAS TZ APIs. Generic PAS
+> TZ service allows to support multiple TZ implementation backends like QTEE
+> based SCM PAS service, OP-TEE based PAS service and any further future TZ
+> backend service.
+> 
+> Signed-off-by: Sumit Garg <sumit.garg@oss.qualcomm.com>
+> ---
+>  drivers/media/platform/qcom/iris/iris_firmware.c |  9 +++++----
+>  drivers/media/platform/qcom/venus/firmware.c     | 11 ++++++-----
+>  2 files changed, 11 insertions(+), 9 deletions(-)
+> 
+> diff --git a/drivers/media/platform/qcom/iris/iris_firmware.c b/drivers/media/platform/qcom/iris/iris_firmware.c
+> index 5f408024e967..b3c5281aea91 100644
+> --- a/drivers/media/platform/qcom/iris/iris_firmware.c
+> +++ b/drivers/media/platform/qcom/iris/iris_firmware.c
+> @@ -4,6 +4,7 @@
+>   */
+>  
+>  #include <linux/firmware.h>
+> +#include <linux/firmware/qcom/qcom_pas.h>
+>  #include <linux/firmware/qcom/qcom_scm.h>
+>  #include <linux/of_address.h>
+>  #include <linux/of_reserved_mem.h>
+> @@ -79,7 +80,7 @@ int iris_fw_load(struct iris_core *core)
+>  		return -ENOMEM;
+>  	}
+>  
+> -	ret = qcom_scm_pas_auth_and_reset(core->iris_platform_data->pas_id);
+> +	ret = qcom_pas_auth_and_reset(core->iris_platform_data->pas_id);
+>  	if (ret)  {
+>  		dev_err(core->dev, "auth and reset failed: %d\n", ret);
+>  		return ret;
+> @@ -93,7 +94,7 @@ int iris_fw_load(struct iris_core *core)
+>  						     cp_config->cp_nonpixel_size);
+>  		if (ret) {
+>  			dev_err(core->dev, "qcom_scm_mem_protect_video_var failed: %d\n", ret);
+> -			qcom_scm_pas_shutdown(core->iris_platform_data->pas_id);
+> +			qcom_pas_shutdown(core->iris_platform_data->pas_id);
+>  			return ret;
+>  		}
+>  	}
+> @@ -103,10 +104,10 @@ int iris_fw_load(struct iris_core *core)
+>  
+>  int iris_fw_unload(struct iris_core *core)
+>  {
+> -	return qcom_scm_pas_shutdown(core->iris_platform_data->pas_id);
+> +	return qcom_pas_shutdown(core->iris_platform_data->pas_id);
+>  }
+>
 
-USB RX Aggregation is a performance optimization technique used
-in USB network devices to increase throughput.
+are the calls to set_remote_state required?
+0 is not the IRIS/VENUS remote processor.
 
-Instead of sending every received network packet to the host computer
-individually, the device hardware groups multiple smaller packets
-into a single, large USB Bulk Transfer.
+If it is legacy, maybe they can be phased out?
 
- * toAP/toNB use iperf3 respectively.
 
-With BE6000 - iperf3 tcp 10 pair (to another NB)
-
-RTL8832CU-USB3.0
-      before   after
-TX    941      941
-RX    847      919
-
-RTL8832CU-USB2.0
-      before   after
-TX    864      877
-RX    864      902
-
-RTL8851BU
-      before   after
-TX    115      114
-RX    295      306
-
-Signed-off-by: Shin-Yi Lin <isaiah@realtek.com>
-Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
----
-This one is to add USB RX aggregation to improve performance. The other
-one is TX aggregation, which we are working on.
----
- .../net/wireless/realtek/rtw89/rtw8851bu.c    |  1 +
- .../net/wireless/realtek/rtw89/rtw8852au.c    |  1 +
- .../net/wireless/realtek/rtw89/rtw8852bu.c    |  1 +
- .../net/wireless/realtek/rtw89/rtw8852cu.c    |  1 +
- drivers/net/wireless/realtek/rtw89/usb.c      | 84 ++++++++++++++++---
- drivers/net/wireless/realtek/rtw89/usb.h      | 12 +++
- 6 files changed, 87 insertions(+), 13 deletions(-)
-
-diff --git a/drivers/net/wireless/realtek/rtw89/rtw8851bu.c b/drivers/net/wireless/realtek/rtw89/rtw8851bu.c
-index 959d62aefdd8..6a8d31544314 100644
---- a/drivers/net/wireless/realtek/rtw89/rtw8851bu.c
-+++ b/drivers/net/wireless/realtek/rtw89/rtw8851bu.c
-@@ -15,6 +15,7 @@ static const struct rtw89_usb_info rtw8851b_usb_info = {
- 	.usb3_mac_npi_config_intf_0	= R_AX_USB3_MAC_NPI_CONFIG_INTF_0,
- 	.usb_endpoint_0			= R_AX_USB_ENDPOINT_0,
- 	.usb_endpoint_2			= R_AX_USB_ENDPOINT_2,
-+	.rx_agg_alignment		= 8,
- 	.bulkout_id = {
- 		[RTW89_DMA_ACH0] = 3,
- 		[RTW89_DMA_ACH1] = 4,
-diff --git a/drivers/net/wireless/realtek/rtw89/rtw8852au.c b/drivers/net/wireless/realtek/rtw89/rtw8852au.c
-index ccdbcc178c2a..4cced4619b7d 100644
---- a/drivers/net/wireless/realtek/rtw89/rtw8852au.c
-+++ b/drivers/net/wireless/realtek/rtw89/rtw8852au.c
-@@ -15,6 +15,7 @@ static const struct rtw89_usb_info rtw8852a_usb_info = {
- 	.usb3_mac_npi_config_intf_0	= R_AX_USB3_MAC_NPI_CONFIG_INTF_0,
- 	.usb_endpoint_0			= R_AX_USB_ENDPOINT_0,
- 	.usb_endpoint_2			= R_AX_USB_ENDPOINT_2,
-+	.rx_agg_alignment		= 8,
- 	.bulkout_id = {
- 		[RTW89_DMA_ACH0] = 3,
- 		[RTW89_DMA_ACH2] = 5,
-diff --git a/drivers/net/wireless/realtek/rtw89/rtw8852bu.c b/drivers/net/wireless/realtek/rtw89/rtw8852bu.c
-index 84cd3ec971f9..37111fed276f 100644
---- a/drivers/net/wireless/realtek/rtw89/rtw8852bu.c
-+++ b/drivers/net/wireless/realtek/rtw89/rtw8852bu.c
-@@ -15,6 +15,7 @@ static const struct rtw89_usb_info rtw8852b_usb_info = {
- 	.usb3_mac_npi_config_intf_0	= R_AX_USB3_MAC_NPI_CONFIG_INTF_0,
- 	.usb_endpoint_0			= R_AX_USB_ENDPOINT_0,
- 	.usb_endpoint_2			= R_AX_USB_ENDPOINT_2,
-+	.rx_agg_alignment		= 8,
- 	.bulkout_id = {
- 		[RTW89_DMA_ACH0] = 3,
- 		[RTW89_DMA_ACH1] = 4,
-diff --git a/drivers/net/wireless/realtek/rtw89/rtw8852cu.c b/drivers/net/wireless/realtek/rtw89/rtw8852cu.c
-index 3b9825c92a0d..0c5aebaed873 100644
---- a/drivers/net/wireless/realtek/rtw89/rtw8852cu.c
-+++ b/drivers/net/wireless/realtek/rtw89/rtw8852cu.c
-@@ -15,6 +15,7 @@ static const struct rtw89_usb_info rtw8852c_usb_info = {
- 	.usb3_mac_npi_config_intf_0	= R_AX_USB3_MAC_NPI_CONFIG_INTF_0_V1,
- 	.usb_endpoint_0			= R_AX_USB_ENDPOINT_0_V1,
- 	.usb_endpoint_2			= R_AX_USB_ENDPOINT_2_V1,
-+	.rx_agg_alignment		= 8,
- 	.bulkout_id = {
- 		[RTW89_DMA_ACH0] = 3,
- 		[RTW89_DMA_ACH2] = 5,
-diff --git a/drivers/net/wireless/realtek/rtw89/usb.c b/drivers/net/wireless/realtek/rtw89/usb.c
-index da1b7ce8089e..4482ce61592b 100644
---- a/drivers/net/wireless/realtek/rtw89/usb.c
-+++ b/drivers/net/wireless/realtek/rtw89/usb.c
-@@ -408,11 +408,14 @@ static int rtw89_usb_ops_tx_write(struct rtw89_dev *rtwdev,
- static void rtw89_usb_rx_handler(struct work_struct *work)
- {
- 	struct rtw89_usb *rtwusb = container_of(work, struct rtw89_usb, rx_work);
-+	const struct rtw89_usb_info *info = rtwusb->info;
- 	struct rtw89_dev *rtwdev = rtwusb->rtwdev;
- 	struct rtw89_rx_desc_info desc_info;
-+	s32 aligned_offset, remaining;
- 	struct sk_buff *rx_skb;
- 	struct sk_buff *skb;
- 	u32 pkt_offset;
-+	u8 *pkt_ptr;
- 	int limit;
- 
- 	for (limit = 0; limit < 200; limit++) {
-@@ -425,23 +428,38 @@ static void rtw89_usb_rx_handler(struct work_struct *work)
- 			goto free_or_reuse;
- 		}
- 
--		memset(&desc_info, 0, sizeof(desc_info));
--		rtw89_chip_query_rxdesc(rtwdev, &desc_info, rx_skb->data, 0);
-+		pkt_ptr = rx_skb->data;
-+		remaining = rx_skb->len;
- 
--		skb = rtw89_alloc_skb_for_rx(rtwdev, desc_info.pkt_size);
--		if (!skb) {
--			rtw89_debug(rtwdev, RTW89_DBG_HCI,
--				    "failed to allocate RX skb of size %u\n",
--				    desc_info.pkt_size);
--			goto free_or_reuse;
--		}
-+		do {
-+			memset(&desc_info, 0, sizeof(desc_info));
-+			rtw89_chip_query_rxdesc(rtwdev, &desc_info, pkt_ptr, 0);
- 
--		pkt_offset = desc_info.offset + desc_info.rxd_len;
-+			pkt_offset = desc_info.offset + desc_info.rxd_len;
-+			if (remaining < (pkt_offset + desc_info.pkt_size)) {
-+				rtw89_debug(rtwdev, RTW89_DBG_HCI,
-+					    "Failed to get remaining RX pkt %u > %u\n",
-+					    pkt_offset + desc_info.pkt_size, remaining);
-+				goto free_or_reuse;
-+			}
- 
--		skb_put_data(skb, rx_skb->data + pkt_offset,
--			     desc_info.pkt_size);
-+			skb = rtw89_alloc_skb_for_rx(rtwdev, desc_info.pkt_size);
-+			if (!skb) {
-+				rtw89_debug(rtwdev, RTW89_DBG_HCI,
-+					    "failed to allocate RX skb of size %u\n",
-+					    desc_info.pkt_size);
-+				goto free_or_reuse;
-+			}
-+
-+			skb_put_data(skb, pkt_ptr + pkt_offset, desc_info.pkt_size);
-+			rtw89_core_rx(rtwdev, &desc_info, skb);
- 
--		rtw89_core_rx(rtwdev, &desc_info, skb);
-+			/* next frame */
-+			pkt_offset += desc_info.pkt_size;
-+			aligned_offset = ALIGN(pkt_offset, info->rx_agg_alignment);
-+			pkt_ptr += aligned_offset;
-+			remaining -= aligned_offset;
-+		} while (remaining > 0);
- 
- free_or_reuse:
- 		if (skb_queue_len(&rtwusb->rx_free_queue) >= RTW89_USB_RX_SKB_NUM)
-@@ -745,6 +763,44 @@ static int rtw89_usb_ops_mac_pre_deinit(struct rtw89_dev *rtwdev)
- 	return 0; /* Nothing to do. */
- }
- 
-+static void usb_rx_agg_cfg_v1(struct rtw89_dev *rtwdev)
-+{
-+	const u32 rxagg_0 = FIELD_PREP_CONST(B_AX_RXAGG_0_EN, 1) |
-+			    FIELD_PREP_CONST(B_AX_RXAGG_0_NUM_TH, 0) |
-+			    FIELD_PREP_CONST(B_AX_RXAGG_0_TIME_32US_TH, 32) |
-+			    FIELD_PREP_CONST(B_AX_RXAGG_0_BUF_SZ_4K, 5);
-+
-+	rtw89_write32(rtwdev, R_AX_RXAGG_0, rxagg_0);
-+}
-+
-+static void usb_rx_agg_cfg_v2(struct rtw89_dev *rtwdev)
-+{
-+	const u32 rxagg_0 = FIELD_PREP_CONST(B_AX_RXAGG_0_EN, 1) |
-+			    FIELD_PREP_CONST(B_AX_RXAGG_0_NUM_TH, 255) |
-+			    FIELD_PREP_CONST(B_AX_RXAGG_0_TIME_32US_TH, 32) |
-+			    FIELD_PREP_CONST(B_AX_RXAGG_0_BUF_SZ_K, 20);
-+
-+	rtw89_write32(rtwdev, R_AX_RXAGG_0_V1, rxagg_0);
-+	rtw89_write32(rtwdev, R_AX_RXAGG_1_V1, 0x1F);
-+}
-+
-+static void usb_rx_agg_cfg(struct rtw89_dev *rtwdev)
-+{
-+	switch (rtwdev->chip->chip_id) {
-+	case RTL8851B:
-+	case RTL8852A:
-+	case RTL8852B:
-+		usb_rx_agg_cfg_v1(rtwdev);
-+		break;
-+	case RTL8852C:
-+		usb_rx_agg_cfg_v2(rtwdev);
-+		break;
-+	default:
-+		rtw89_warn(rtwdev, "%s: USB RX agg not support\n", __func__);
-+		return;
-+	}
-+}
-+
- static int rtw89_usb_ops_mac_post_init(struct rtw89_dev *rtwdev)
- {
- 	struct rtw89_usb *rtwusb = rtw89_usb_priv(rtwdev);
-@@ -773,6 +829,8 @@ static int rtw89_usb_ops_mac_post_init(struct rtw89_dev *rtwdev)
- 		rtw89_write8(rtwdev, info->usb_endpoint_2 + 1, NUMP);
- 	}
- 
-+	usb_rx_agg_cfg(rtwdev);
-+
- 	return 0;
- }
- 
-diff --git a/drivers/net/wireless/realtek/rtw89/usb.h b/drivers/net/wireless/realtek/rtw89/usb.h
-index 203ec8e993e9..afc62c1f687f 100644
---- a/drivers/net/wireless/realtek/rtw89/usb.h
-+++ b/drivers/net/wireless/realtek/rtw89/usb.h
-@@ -20,6 +20,17 @@
- #define RTW89_MAX_ENDPOINT_NUM		9
- #define RTW89_MAX_BULKOUT_NUM		7
- 
-+#define R_AX_RXAGG_0_V1			0x6000
-+#define B_AX_RXAGG_0_EN			BIT(31)
-+#define B_AX_RXAGG_0_NUM_TH		GENMASK(23, 16)
-+#define B_AX_RXAGG_0_TIME_32US_TH	GENMASK(15, 8)
-+#define B_AX_RXAGG_0_BUF_SZ_K		GENMASK(7, 0)
-+
-+#define R_AX_RXAGG_1_V1			0x6004
-+
-+#define R_AX_RXAGG_0			0x8900
-+#define B_AX_RXAGG_0_BUF_SZ_4K		GENMASK(7, 0)
-+
- struct rtw89_usb_info {
- 	u32 usb_host_request_2;
- 	u32 usb_wlan0_1;
-@@ -27,6 +38,7 @@ struct rtw89_usb_info {
- 	u32 usb3_mac_npi_config_intf_0;
- 	u32 usb_endpoint_0;
- 	u32 usb_endpoint_2;
-+	u8 rx_agg_alignment;
- 	u8 bulkout_id[RTW89_DMA_CH_NUM];
- };
- 
-
-base-commit: 039cd522dc70151da13329a5e3ae19b1736f468a
--- 
-2.25.1
-
+>  int iris_set_hw_state(struct iris_core *core, bool resume)
+>  {
+> -	return qcom_scm_set_remote_state(resume, 0);
+> +	return qcom_pas_set_remote_state(resume, 0);
+>  }
+> diff --git a/drivers/media/platform/qcom/venus/firmware.c b/drivers/media/platform/qcom/venus/firmware.c
+> index 1de7436713ed..3a38ff985822 100644
+> --- a/drivers/media/platform/qcom/venus/firmware.c
+> +++ b/drivers/media/platform/qcom/venus/firmware.c
+> @@ -12,6 +12,7 @@
+>  #include <linux/of_reserved_mem.h>
+>  #include <linux/platform_device.h>
+>  #include <linux/of_device.h>
+> +#include <linux/firmware/qcom/qcom_pas.h>
+>  #include <linux/firmware/qcom/qcom_scm.h>
+>  #include <linux/sizes.h>
+>  #include <linux/soc/qcom/mdt_loader.h>
+> @@ -58,7 +59,7 @@ int venus_set_hw_state(struct venus_core *core, bool resume)
+>  	int ret;
+>  
+>  	if (core->use_tz) {
+> -		ret = qcom_scm_set_remote_state(resume, 0);
+> +		ret = qcom_pas_set_remote_state(resume, 0);
+>  		if (resume && ret == -EINVAL)
+>  			ret = 0;
+>  		return ret;
 
