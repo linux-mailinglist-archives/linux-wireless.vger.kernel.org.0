@@ -1,768 +1,295 @@
-Return-Path: <linux-wireless+bounces-32916-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-32917-lists+linux-wireless=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id EEYzCLBJsGnFhgIAu9opvQ
-	(envelope-from <linux-wireless+bounces-32916-lists+linux-wireless=lfdr.de@vger.kernel.org>)
-	for <lists+linux-wireless@lfdr.de>; Tue, 10 Mar 2026 17:41:20 +0100
+	id gPz3F2E+sGmohQIAu9opvQ
+	(envelope-from <linux-wireless+bounces-32917-lists+linux-wireless=lfdr.de@vger.kernel.org>)
+	for <lists+linux-wireless@lfdr.de>; Tue, 10 Mar 2026 16:53:05 +0100
 X-Original-To: lists+linux-wireless@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 20A5E254F97
-	for <lists+linux-wireless@lfdr.de>; Tue, 10 Mar 2026 17:41:19 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 01B5225402E
+	for <lists+linux-wireless@lfdr.de>; Tue, 10 Mar 2026 16:53:04 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 77E2F3046F70
-	for <lists+linux-wireless@lfdr.de>; Tue, 10 Mar 2026 15:38:13 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 1A57F319BC13
+	for <lists+linux-wireless@lfdr.de>; Tue, 10 Mar 2026 15:50:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 27C823A3831;
-	Tue, 10 Mar 2026 15:37:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8D4F53A63FD;
+	Tue, 10 Mar 2026 15:47:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="OK+rZL4d";
-	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="ZChLOkZu";
-	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="OK+rZL4d";
-	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="ZChLOkZu"
+	dkim=pass (2048-bit key) header.d=web.de header.i=markus.elfring@web.de header.b="h7K0qFC8"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mout.web.de (mout.web.de [212.227.17.12])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E421039DBEE
-	for <linux-wireless@vger.kernel.org>; Tue, 10 Mar 2026 15:37:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.130
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 04E153AA4E6;
+	Tue, 10 Mar 2026 15:47:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.227.17.12
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773157050; cv=none; b=BX1+f6bUP3W83rQCM13EVS4zrk929WuHKYJoHEcciVJmKvllYE4I8Wo3Z2biuI2wbq7bfq/giXaagcyuEoei6XPlohH5WBpB7b48dFCPq6BlmGMXuhfJOGPpChwA7GmmYCPOAl7pX52J5zVLw9K4HLhFHWDM5/uoIk6tgYoLkSo=
+	t=1773157678; cv=none; b=GJswgAn/cUqn3+eWmo0alzonFT2ZA/FYA9h/tK8X48fkW8rQOYkUvYo7QlrHKy6fcDfJi5Mu8/daN81jaDlV0jCPpJNglRPJv2VdGJAjYENU8/6oQZhFEM9LC8R7ch2a4JJoqQpRFQn/utF4XcGONtZ+Z3nSE2vrq/i4GCpQzrA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773157050; c=relaxed/simple;
-	bh=nO8/yHyaWhR7JdqziL6VRDgABIAhYAr8IqmNbwcCdsg=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=qkOt81YPKtxX2b7TZke0l9CLHQdH4kd3igbo05fNuFWVdOxIgKzzEwzLqjlDi2b9Fmgob8kPcmrPhEY8ZFHfkDvJXhF+zKbejTYa0GADJXbPLqlq/NCpt2NWqKdidPILg07cSEb4w5e42YZtSRwUbtFkSsBCP3pzU0Qw9H175xY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de; spf=pass smtp.mailfrom=suse.de; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=OK+rZL4d; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=ZChLOkZu; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=OK+rZL4d; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=ZChLOkZu; arc=none smtp.client-ip=195.135.223.130
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.de
-Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out1.suse.de (Postfix) with ESMTPS id 365393E783;
-	Tue, 10 Mar 2026 15:37:26 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1773157046; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=5WH5etI920qUPxE1d1L7Q+bHd5Betyr8Gc/npmYrBJQ=;
-	b=OK+rZL4dcnTcomSXHKXQUsQmVO14bCk9w+uqYgbG1zFM4QbTLFipLhu9zlhv3yr4AbSkMF
-	fMEnQXR04LBFbwvueQXfArorh0VVpQE5Zp3enbl1mFDFxsc1raHOP13fQ5LBYErJTZxo2X
-	q+Gpbq/XCprk4rvqzon75wOrUvyRyHk=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1773157046;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=5WH5etI920qUPxE1d1L7Q+bHd5Betyr8Gc/npmYrBJQ=;
-	b=ZChLOkZuVRQnCQ0XJrrYpvJIii6xs7EA77hP5OkIQAdRjp5+8MGsgjbpB8k74YLrxAKhwb
-	76pmeiCjNtyD94Dg==
-Authentication-Results: smtp-out1.suse.de;
-	none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1773157046; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=5WH5etI920qUPxE1d1L7Q+bHd5Betyr8Gc/npmYrBJQ=;
-	b=OK+rZL4dcnTcomSXHKXQUsQmVO14bCk9w+uqYgbG1zFM4QbTLFipLhu9zlhv3yr4AbSkMF
-	fMEnQXR04LBFbwvueQXfArorh0VVpQE5Zp3enbl1mFDFxsc1raHOP13fQ5LBYErJTZxo2X
-	q+Gpbq/XCprk4rvqzon75wOrUvyRyHk=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1773157046;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=5WH5etI920qUPxE1d1L7Q+bHd5Betyr8Gc/npmYrBJQ=;
-	b=ZChLOkZuVRQnCQ0XJrrYpvJIii6xs7EA77hP5OkIQAdRjp5+8MGsgjbpB8k74YLrxAKhwb
-	76pmeiCjNtyD94Dg==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 663433F519;
-	Tue, 10 Mar 2026 15:37:23 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id GGWpFbM6sGlKXwAAD6G6ig
-	(envelope-from <fmancera@suse.de>); Tue, 10 Mar 2026 15:37:23 +0000
-From: Fernando Fernandez Mancera <fmancera@suse.de>
-To: netdev@vger.kernel.org
-Cc: rbm@suse.com,
-	Fernando Fernandez Mancera <fmancera@suse.de>,
-	Jason Gunthorpe <jgg@ziepe.ca>,
-	Leon Romanovsky <leon@kernel.org>,
-	Zhu Yanjun <zyjzyj2000@gmail.com>,
-	Saeed Mahameed <saeedm@nvidia.com>,
-	Tariq Toukan <tariqt@nvidia.com>,
-	Mark Bloch <mbloch@nvidia.com>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Boris Pismenny <borisp@nvidia.com>,
-	Ido Schimmel <idosch@nvidia.com>,
-	Petr Machata <petrm@nvidia.com>,
-	Simon Horman <horms@kernel.org>,
-	Edward Cree <ecree.xilinx@gmail.com>,
-	Pablo Neira Ayuso <pablo@netfilter.org>,
-	Harald Welte <laforge@gnumonks.org>,
-	Antonio Quartulli <antonio@openvpn.net>,
-	Sabrina Dubroca <sd@queasysnail.net>,
-	Oliver Neukum <oliver@neukum.org>,
-	David Ahern <dsahern@kernel.org>,
-	"Jason A. Donenfeld" <Jason@zx2c4.com>,
-	Stanislav Yakovlev <stas.yakovlev@gmail.com>,
-	Nikolay Aleksandrov <razor@blackwall.org>,
-	Parav Pandit <parav@nvidia.com>,
-	Edward Srouji <edwards@nvidia.com>,
-	Vlad Dumitrescu <vdumitrescu@nvidia.com>,
-	Kees Cook <kees@kernel.org>,
-	Jianbo Liu <jianbol@nvidia.com>,
-	Gal Pressman <gal@nvidia.com>,
-	Guillaume Nault <gnault@redhat.com>,
-	Cosmin Ratiu <cratiu@nvidia.com>,
-	Carolina Jubran <cjubran@nvidia.com>,
-	Alexandre Cassen <acassen@corp.free.fr>,
-	Stanislav Fomichev <sdf@fomichev.me>,
-	linux-rdma@vger.kernel.org (open list:INFINIBAND SUBSYSTEM),
-	linux-kernel@vger.kernel.org (open list),
-	oss-drivers@corigine.com (open list:NETRONOME ETHERNET DRIVERS),
-	linux-net-drivers@amd.com (open list:SFC NETWORK DRIVER),
-	osmocom-net-gprs@lists.osmocom.org (open list:GTP (GPRS Tunneling Protocol)),
-	linux-usb@vger.kernel.org (open list:USB CDC ETHERNET DRIVER),
-	wireguard@lists.zx2c4.com (open list:WIREGUARD SECURE NETWORK TUNNEL),
-	linux-wireless@vger.kernel.org (open list:INTEL PRO/WIRELESS 2100, 2200BG, 2915ABG NETWOR...),
-	bridge@lists.linux.dev (open list:ETHERNET BRIDGE)
-Subject: [PATCH 05/10 net-next v2] drivers: net: drop ipv6_stub usage and use direct function calls
-Date: Tue, 10 Mar 2026 16:34:28 +0100
-Message-ID: <20260310153506.5181-6-fmancera@suse.de>
-X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20260310153506.5181-1-fmancera@suse.de>
-References: <20260310153506.5181-1-fmancera@suse.de>
+	s=arc-20240116; t=1773157678; c=relaxed/simple;
+	bh=nIfgenJGac4O6CqM8mWCtdayOts9dS1D2FhHmYYRcn4=;
+	h=Message-ID:Date:MIME-Version:To:Cc:References:Subject:From:
+	 In-Reply-To:Content-Type; b=VCUny37wxogF+tPnbmzvUSPBzo+0oSbqzFJKMsH2aFW75rMeXvT51hTn3cDuGzGrr7VzofXdjvj6I5aq7nPlJxNSOWOR4HHfsPYcAmQubElzCNBvlzqSVuaAfostNsOr3A1MJzGCb0G/O0JOz4g9DEhwXeKocK92yBmCIhMDHEA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=web.de; spf=pass smtp.mailfrom=web.de; dkim=pass (2048-bit key) header.d=web.de header.i=markus.elfring@web.de header.b=h7K0qFC8; arc=none smtp.client-ip=212.227.17.12
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=web.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=web.de
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=web.de;
+	s=s29768273; t=1773157662; x=1773762462; i=markus.elfring@web.de;
+	bh=ViIdeWt5br4rBsrGxHUMEkJDkD/ERSvSv/UV5SzvttY=;
+	h=X-UI-Sender-Class:Message-ID:Date:MIME-Version:To:Cc:References:
+	 Subject:From:In-Reply-To:Content-Type:Content-Transfer-Encoding:
+	 cc:content-transfer-encoding:content-type:date:from:message-id:
+	 mime-version:reply-to:subject:to;
+	b=h7K0qFC8lui0M3aEG2yhHOptmzLeK24S79cZCRktla9iVPsdh7MMZY9IQ+0fNsjy
+	 1Jmj8tPDjUYGV0N31jChpPIbrmEGAAiLmOFKWubyE3NTttjDE8UYZYzPrHWHwqRbT
+	 ZmJLoNHR6+mwIgea1XMDsroKD1VkpdbtDpYP5RQOlLeXbFM1sGNyCjcqO4VGv6oH0
+	 or7WNvOJCD7wct+ITkk6hEn2pz09hvl0HnH1IXkz/NhmxM4+GPG6PRDdXRWJwhNqD
+	 E/CyuUCmqvUAopwe+bMtAzI3unk/5Tnu7dsxuDhsN1+B/BFgi6IvYkOUfIHgIX1fz
+	 IDA+/KUXvW7fGiboiQ==
+X-UI-Sender-Class: 814a7b36-bfc1-4dae-8640-3722d8ec6cd6
+Received: from client.hidden.invalid by smtp.web.de (mrweb106
+ [213.165.67.124]) with ESMTPSA (Nemesis) id 1N5lj7-1vYM6w3zfn-012TrV; Tue, 10
+ Mar 2026 16:41:18 +0100
+Message-ID: <924acf71-45df-4ea2-9bbd-b6f5ff262b2b@web.de>
+Date: Tue, 10 Mar 2026 16:41:12 +0100
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla Thunderbird
+To: Philipp Hahn <phahn-oss@avm.de>, cocci@inria.fr,
+ Julia Lawall <Julia.Lawall@inria.fr>
+Cc: amd-gfx@lists.freedesktop.org, apparmor@lists.ubuntu.com,
+ bpf@vger.kernel.org, ceph-devel@vger.kernel.org, dm-devel@lists.linux.dev,
+ dri-devel@lists.freedesktop.org, gfs2@lists.linux.dev,
+ intel-gfx@lists.freedesktop.org, intel-wired-lan@lists.osuosl.org,
+ iommu@lists.linux.dev, kvm@vger.kernel.org,
+ linux-arm-kernel@lists.infradead.org, linux-block@vger.kernel.org,
+ linux-bluetooth@vger.kernel.org, linux-btrfs@vger.kernel.org,
+ linux-cifs@vger.kernel.org, linux-clk@vger.kernel.org,
+ linux-erofs@lists.ozlabs.org, linux-ext4@vger.kernel.org,
+ linux-fsdevel@vger.kernel.org, linux-gpio@vger.kernel.org,
+ linux-hyperv@vger.kernel.org, linux-input@vger.kernel.org,
+ linux-kernel@vger.kernel.org, linux-leds@vger.kernel.org,
+ linux-media@vger.kernel.org, linux-mips@vger.kernel.org, linux-mm@kvack.org,
+ linux-modules@vger.kernel.org, linux-mtd@lists.infradead.org,
+ linux-nfs@vger.kernel.org, linux-omap@vger.kernel.org,
+ linux-phy@lists.infradead.org, linux-pm@vger.kernel.org,
+ linux-rockchip@lists.infradead.org, linux-s390@vger.kernel.org,
+ linux-scsi@vger.kernel.org, linux-sctp@vger.kernel.org,
+ linux-security-module@vger.kernel.org, linux-sh@vger.kernel.org,
+ linux-sound@vger.kernel.org, linux-stm32@st-md-mailman.stormreply.com,
+ linux-trace-kernel@vger.kernel.org, linux-usb@vger.kernel.org,
+ linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
+ nicolas.palix@imag.fr, ntfs3@lists.linux.dev,
+ samba-technical@lists.samba.org, sched-ext@lists.linux.dev,
+ target-devel@vger.kernel.org, tipc-discussion@lists.sourceforge.net,
+ v9fs@lists.linux.dev
+References: <20260310-b4-is_err_or_null-v1-1-bd63b656022d@avm.de>
+Subject: Re: [PATCH 01/61] Coccinelle: Prefer IS_ERR_OR_NULL over manual NULL
+ check
+Content-Language: en-GB, de-DE
+From: Markus Elfring <Markus.Elfring@web.de>
+In-Reply-To: <20260310-b4-is_err_or_null-v1-1-bd63b656022d@avm.de>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
+X-Provags-ID: V03:K1:I49ufsxpBKiFBze+2Qm04f+elx94DZSymOaZcQTAnyd9Dy18WSZ
+ l5PlqGBdCeQJnqXYHB7LM8JEThQzWaqt46DhF3JOnbIEKCtwYJeZnzJMAXhMu3h78zedo+b
+ 2MDr9yfDF5xiOPbOsnoVg9HvEpZouoV7eAA1AasOX+/8mAaWp7eICgl3FZXuUGMMgTPEUmo
+ 9zEXJmftCILFnPJ5epBUQ==
 X-Spam-Flag: NO
-X-Spam-Score: -5.30
-X-Spam-Level: 
-X-Rspamd-Queue-Id: 20A5E254F97
+UI-OutboundReport: notjunk:1;M01:P0:04WXpfHKV24=;XM8484Tl0Gel7LmfPFVAhD+GUiz
+ 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
+ WH56U++o=
+X-Rspamd-Queue-Id: 01B5225402E
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [0.84 / 15.00];
+X-Spamd-Result: default: False [-0.66 / 15.00];
 	SUSPICIOUS_RECIPS(1.50)[];
-	MID_CONTAINS_FROM(1.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[suse.de,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
-	R_DKIM_ALLOW(-0.20)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
+	DMARC_POLICY_ALLOW(-0.50)[web.de,quarantine];
+	R_DKIM_ALLOW(-0.20)[web.de:s=s29768273];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FREEMAIL_CC(0.00)[suse.com,suse.de,ziepe.ca,kernel.org,gmail.com,nvidia.com,lunn.ch,davemloft.net,google.com,redhat.com,netfilter.org,gnumonks.org,openvpn.net,queasysnail.net,neukum.org,zx2c4.com,blackwall.org,corp.free.fr,fomichev.me,vger.kernel.org,corigine.com,amd.com,lists.osmocom.org];
-	RCPT_COUNT_TWELVE(0.00)[44];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-32916-lists,linux-wireless=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-32917-lists,linux-wireless=lfdr.de];
+	FROM_HAS_DN(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[fmancera@suse.de,linux-wireless@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[suse.de:+];
-	RCVD_COUNT_FIVE(0.00)[6];
-	TAGGED_RCPT(0.00)[linux-wireless,netdev];
-	NEURAL_HAM(-0.00)[-1.000];
 	TO_DN_SOME(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[web.de:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	FREEMAIL_FROM(0.00)[web.de];
+	RCPT_COUNT_GT_50(0.00)[56];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[Markus.Elfring@web.de,linux-wireless@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	TAGGED_RCPT(0.00)[linux-wireless];
+	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[suse.de:dkim,suse.de:email,suse.de:mid,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,p:email]
 X-Rspamd-Action: no action
 
-As IPv6 is built-in only, the ipv6_stub infrastructure is no longer
-necessary.
+> Find and convert uses of IS_ERR() plus NULL check to IS_ERR_OR_NULL().
+=E2=80=A6
 
-Convert all drivers currently utilizing ipv6_stub to make direct
-function calls. The fallback functions introduced previously will
-prevent linkage errors when CONFIG_IPV6 is disabled.
+Can this information trigger any more consequences on corresponding summar=
+y phrases?
 
-Signed-off-by: Fernando Fernandez Mancera <fmancera@suse.de>
----
-v2: no changes
----
- drivers/infiniband/core/addr.c                  |  3 +--
- drivers/infiniband/sw/rxe/rxe_net.c             |  6 +++---
- .../ethernet/mellanox/mlx5/core/en/rep/neigh.c  | 12 ++++++++----
- .../net/ethernet/mellanox/mlx5/core/en/tc_tun.c |  3 +--
- .../mellanox/mlx5/core/en/tc_tun_encap.c        |  2 +-
- .../mellanox/mlx5/core/en_accel/ipsec.c         |  1 -
- .../net/ethernet/mellanox/mlx5/core/en_rep.c    |  1 -
- drivers/net/ethernet/mellanox/mlx5/core/en_tc.c |  1 -
- .../ethernet/mellanox/mlxsw/spectrum_router.c   |  9 +++++----
- .../net/ethernet/mellanox/mlxsw/spectrum_span.c |  3 ++-
- .../net/ethernet/netronome/nfp/flower/action.c  |  2 +-
- .../ethernet/netronome/nfp/flower/tunnel_conf.c |  9 ++++-----
- drivers/net/ethernet/sfc/tc_counters.c          |  2 +-
- drivers/net/ethernet/sfc/tc_encap_actions.c     |  5 ++---
- drivers/net/geneve.c                            |  1 -
- drivers/net/gtp.c                               |  2 +-
- drivers/net/ovpn/peer.c                         |  3 +--
- drivers/net/ovpn/udp.c                          |  3 +--
- drivers/net/usb/cdc_mbim.c                      | 17 +++++++++--------
- drivers/net/vrf.c                               |  3 ++-
- drivers/net/vxlan/vxlan_core.c                  | 11 +++++------
- drivers/net/vxlan/vxlan_multicast.c             |  6 ++----
- drivers/net/wireguard/socket.c                  |  3 +--
- drivers/net/wireless/intel/ipw2x00/ipw2100.c    |  2 +-
- net/bridge/br_arp_nd_proxy.c                    |  3 +--
- 25 files changed, 53 insertions(+), 60 deletions(-)
 
-diff --git a/drivers/infiniband/core/addr.c b/drivers/infiniband/core/addr.c
-index 866746695712..48d4b06384ec 100644
---- a/drivers/infiniband/core/addr.c
-+++ b/drivers/infiniband/core/addr.c
-@@ -41,7 +41,6 @@
- #include <net/neighbour.h>
- #include <net/route.h>
- #include <net/netevent.h>
--#include <net/ipv6_stubs.h>
- #include <net/ip6_route.h>
- #include <rdma/ib_addr.h>
- #include <rdma/ib_cache.h>
-@@ -411,7 +410,7 @@ static int addr6_resolve(struct sockaddr *src_sock,
- 	fl6.saddr = src_in->sin6_addr;
- 	fl6.flowi6_oif = addr->bound_dev_if;
- 
--	dst = ipv6_stub->ipv6_dst_lookup_flow(addr->net, NULL, &fl6, NULL);
-+	dst = ip6_dst_lookup_flow(addr->net, NULL, &fl6, NULL);
- 	if (IS_ERR(dst))
- 		return PTR_ERR(dst);
- 
-diff --git a/drivers/infiniband/sw/rxe/rxe_net.c b/drivers/infiniband/sw/rxe/rxe_net.c
-index 0bd0902b11f7..cbc646a30003 100644
---- a/drivers/infiniband/sw/rxe/rxe_net.c
-+++ b/drivers/infiniband/sw/rxe/rxe_net.c
-@@ -138,9 +138,9 @@ static struct dst_entry *rxe_find_route6(struct rxe_qp *qp,
- 	memcpy(&fl6.daddr, daddr, sizeof(*daddr));
- 	fl6.flowi6_proto = IPPROTO_UDP;
- 
--	ndst = ipv6_stub->ipv6_dst_lookup_flow(sock_net(recv_sockets.sk6->sk),
--					       recv_sockets.sk6->sk, &fl6,
--					       NULL);
-+	ndst = ip6_dst_lookup_flow(sock_net(recv_sockets.sk6->sk),
-+				   recv_sockets.sk6->sk, &fl6,
-+				   NULL);
- 	if (IS_ERR(ndst)) {
- 		rxe_dbg_qp(qp, "no route to %pI6\n", daddr);
- 		return NULL;
-diff --git a/drivers/net/ethernet/mellanox/mlx5/core/en/rep/neigh.c b/drivers/net/ethernet/mellanox/mlx5/core/en/rep/neigh.c
-index d220b045b331..56930bad94eb 100644
---- a/drivers/net/ethernet/mellanox/mlx5/core/en/rep/neigh.c
-+++ b/drivers/net/ethernet/mellanox/mlx5/core/en/rep/neigh.c
-@@ -10,6 +10,7 @@
- #include <linux/notifier.h>
- #include <net/netevent.h>
- #include <net/arp.h>
-+#include <net/ndisc.h>
- #include "neigh.h"
- #include "tc.h"
- #include "en_rep.h"
-@@ -18,8 +19,10 @@
- 
- static unsigned long mlx5e_rep_ipv6_interval(void)
- {
--	if (IS_ENABLED(CONFIG_IPV6) && ipv6_stub->nd_tbl)
--		return NEIGH_VAR(&ipv6_stub->nd_tbl->parms, DELAY_PROBE_TIME);
-+	struct neigh_table *tbl = ipv6_get_nd_tbl();
-+
-+	if (IS_ENABLED(CONFIG_IPV6) && ipv6_mod_enabled())
-+		return NEIGH_VAR(&tbl->parms, DELAY_PROBE_TIME);
- 
- 	return ~0UL;
- }
-@@ -217,7 +220,7 @@ static int mlx5e_rep_netevent_event(struct notifier_block *nb,
- 	case NETEVENT_NEIGH_UPDATE:
- 		n = ptr;
- #if IS_ENABLED(CONFIG_IPV6)
--		if (n->tbl != ipv6_stub->nd_tbl && n->tbl != &arp_tbl)
-+		if (n->tbl != ipv6_get_nd_tbl() && n->tbl != &arp_tbl)
- #else
- 		if (n->tbl != &arp_tbl)
- #endif
-@@ -238,7 +241,8 @@ static int mlx5e_rep_netevent_event(struct notifier_block *nb,
- 		 * done per device delay prob time parameter.
- 		 */
- #if IS_ENABLED(CONFIG_IPV6)
--		if (!p->dev || (p->tbl != ipv6_stub->nd_tbl && p->tbl != &arp_tbl))
-+		if (!p->dev ||
-+		    (p->tbl != ipv6_get_nd_tbl() && p->tbl != &arp_tbl))
- #else
- 		if (!p->dev || p->tbl != &arp_tbl)
- #endif
-diff --git a/drivers/net/ethernet/mellanox/mlx5/core/en/tc_tun.c b/drivers/net/ethernet/mellanox/mlx5/core/en/tc_tun.c
-index a14f216048cd..de74dbfe7b20 100644
---- a/drivers/net/ethernet/mellanox/mlx5/core/en/tc_tun.c
-+++ b/drivers/net/ethernet/mellanox/mlx5/core/en/tc_tun.c
-@@ -453,8 +453,7 @@ static int mlx5e_route_lookup_ipv6_get(struct mlx5e_priv *priv,
- 
- 	if (tunnel && tunnel->get_remote_ifindex)
- 		attr->fl.fl6.flowi6_oif = tunnel->get_remote_ifindex(dev);
--	dst = ipv6_stub->ipv6_dst_lookup_flow(dev_net(dev), NULL, &attr->fl.fl6,
--					      NULL);
-+	dst = ip6_dst_lookup_flow(dev_net(dev), NULL, &attr->fl.fl6, NULL);
- 	if (IS_ERR(dst))
- 		return PTR_ERR(dst);
- 
-diff --git a/drivers/net/ethernet/mellanox/mlx5/core/en/tc_tun_encap.c b/drivers/net/ethernet/mellanox/mlx5/core/en/tc_tun_encap.c
-index bfd401bee9e8..ce2a27124642 100644
---- a/drivers/net/ethernet/mellanox/mlx5/core/en/tc_tun_encap.c
-+++ b/drivers/net/ethernet/mellanox/mlx5/core/en/tc_tun_encap.c
-@@ -402,7 +402,7 @@ void mlx5e_tc_update_neigh_used_value(struct mlx5e_neigh_hash_entry *nhe)
- 		tbl = &arp_tbl;
- #if IS_ENABLED(CONFIG_IPV6)
- 	else if (m_neigh->family == AF_INET6)
--		tbl = ipv6_stub->nd_tbl;
-+		tbl = ipv6_get_nd_tbl();
- #endif
- 	else
- 		return;
-diff --git a/drivers/net/ethernet/mellanox/mlx5/core/en_accel/ipsec.c b/drivers/net/ethernet/mellanox/mlx5/core/en_accel/ipsec.c
-index 64e13747084e..a52e12c3c95a 100644
---- a/drivers/net/ethernet/mellanox/mlx5/core/en_accel/ipsec.c
-+++ b/drivers/net/ethernet/mellanox/mlx5/core/en_accel/ipsec.c
-@@ -36,7 +36,6 @@
- #include <linux/inetdevice.h>
- #include <linux/netdevice.h>
- #include <net/netevent.h>
--#include <net/ipv6_stubs.h>
- 
- #include "en.h"
- #include "eswitch.h"
-diff --git a/drivers/net/ethernet/mellanox/mlx5/core/en_rep.c b/drivers/net/ethernet/mellanox/mlx5/core/en_rep.c
-index 1db4ecb2356f..5ec5cae8d229 100644
---- a/drivers/net/ethernet/mellanox/mlx5/core/en_rep.c
-+++ b/drivers/net/ethernet/mellanox/mlx5/core/en_rep.c
-@@ -38,7 +38,6 @@
- #include <net/pkt_cls.h>
- #include <net/act_api.h>
- #include <net/devlink.h>
--#include <net/ipv6_stubs.h>
- 
- #include "eswitch.h"
- #include "en.h"
-diff --git a/drivers/net/ethernet/mellanox/mlx5/core/en_tc.c b/drivers/net/ethernet/mellanox/mlx5/core/en_tc.c
-index 1434b65d4746..4e4ee1d520ce 100644
---- a/drivers/net/ethernet/mellanox/mlx5/core/en_tc.c
-+++ b/drivers/net/ethernet/mellanox/mlx5/core/en_tc.c
-@@ -40,7 +40,6 @@
- #include <linux/refcount.h>
- #include <linux/completion.h>
- #include <net/arp.h>
--#include <net/ipv6_stubs.h>
- #include <net/bareudp.h>
- #include <net/bonding.h>
- #include <net/dst_metadata.h>
-diff --git a/drivers/net/ethernet/mellanox/mlxsw/spectrum_router.c b/drivers/net/ethernet/mellanox/mlxsw/spectrum_router.c
-index 7bd87d0547d8..8531216f6389 100644
---- a/drivers/net/ethernet/mellanox/mlxsw/spectrum_router.c
-+++ b/drivers/net/ethernet/mellanox/mlxsw/spectrum_router.c
-@@ -2458,7 +2458,7 @@ static void mlxsw_sp_router_neigh_ent_ipv6_process(struct mlxsw_sp *mlxsw_sp,
- 	}
- 
- 	dev = mlxsw_sp_rif_dev(mlxsw_sp->router->rifs[rif]);
--	n = neigh_lookup(&nd_tbl, &dip, dev);
-+	n = neigh_lookup(ipv6_get_nd_tbl(), &dip, dev);
- 	if (!n)
- 		return;
- 
-@@ -3022,7 +3022,8 @@ static int mlxsw_sp_neigh_rif_made_sync(struct mlxsw_sp *mlxsw_sp,
- 		goto err_arp;
- 
- #if IS_ENABLED(CONFIG_IPV6)
--	neigh_for_each(&nd_tbl, mlxsw_sp_neigh_rif_made_sync_each, &rms);
-+	neigh_for_each(ipv6_get_nd_tbl(),
-+		       mlxsw_sp_neigh_rif_made_sync_each, &rms);
- #endif
- 	if (rms.err)
- 		goto err_nd;
-@@ -5124,7 +5125,7 @@ mlxsw_sp_nexthop_obj_init(struct mlxsw_sp *mlxsw_sp,
- 	case AF_INET6:
- 		memcpy(&nh->gw_addr, &nh_obj->ipv6, sizeof(nh_obj->ipv6));
- #if IS_ENABLED(CONFIG_IPV6)
--		nh->neigh_tbl = &nd_tbl;
-+		nh->neigh_tbl = ipv6_get_nd_tbl();
- #endif
- 		break;
- 	}
-@@ -6980,7 +6981,7 @@ static int mlxsw_sp_nexthop6_init(struct mlxsw_sp *mlxsw_sp,
- 	nh->nh_weight = rt->fib6_nh->fib_nh_weight;
- 	memcpy(&nh->gw_addr, &rt->fib6_nh->fib_nh_gw6, sizeof(nh->gw_addr));
- #if IS_ENABLED(CONFIG_IPV6)
--	nh->neigh_tbl = &nd_tbl;
-+	nh->neigh_tbl = ipv6_get_nd_tbl();
- #endif
- 
- 	err = mlxsw_sp_nexthop_counter_enable(mlxsw_sp, nh);
-diff --git a/drivers/net/ethernet/mellanox/mlxsw/spectrum_span.c b/drivers/net/ethernet/mellanox/mlxsw/spectrum_span.c
-index ae63d549b542..f05ccf3db876 100644
---- a/drivers/net/ethernet/mellanox/mlxsw/spectrum_span.c
-+++ b/drivers/net/ethernet/mellanox/mlxsw/spectrum_span.c
-@@ -576,7 +576,8 @@ mlxsw_sp_span_entry_gretap6_parms(struct mlxsw_sp *mlxsw_sp,
- 	l3edev = mlxsw_sp_span_gretap6_route(to_dev, &saddr.addr6, &gw.addr6);
- 	return mlxsw_sp_span_entry_tunnel_parms_common(l3edev, saddr, daddr, gw,
- 						       tparm.hop_limit,
--						       &nd_tbl, sparmsp);
-+						       ipv6_get_nd_tbl(),
-+						       sparmsp);
- }
- 
- static int
-diff --git a/drivers/net/ethernet/netronome/nfp/flower/action.c b/drivers/net/ethernet/netronome/nfp/flower/action.c
-index aca2a7417af3..ae2f8b31adfb 100644
---- a/drivers/net/ethernet/netronome/nfp/flower/action.c
-+++ b/drivers/net/ethernet/netronome/nfp/flower/action.c
-@@ -470,7 +470,7 @@ nfp_fl_set_tun(struct nfp_app *app, struct nfp_fl_set_tun *set_tun,
- 
- 		flow.daddr = ip_tun->key.u.ipv6.dst;
- 		flow.flowi4_proto = IPPROTO_UDP;
--		dst = ipv6_stub->ipv6_dst_lookup_flow(net, NULL, &flow, NULL);
-+		dst = ip6_dst_lookup_flow(net, NULL, &flow, NULL);
- 		if (!IS_ERR(dst)) {
- 			set_tun->ttl = ip6_dst_hoplimit(dst);
- 			dst_release(dst);
-diff --git a/drivers/net/ethernet/netronome/nfp/flower/tunnel_conf.c b/drivers/net/ethernet/netronome/nfp/flower/tunnel_conf.c
-index 0cef0e2b85d0..053265e135f6 100644
---- a/drivers/net/ethernet/netronome/nfp/flower/tunnel_conf.c
-+++ b/drivers/net/ethernet/netronome/nfp/flower/tunnel_conf.c
-@@ -277,7 +277,7 @@ void nfp_tunnel_keep_alive_v6(struct nfp_app *app, struct sk_buff *skb)
- 		if (!netdev)
- 			continue;
- 
--		n = neigh_lookup(&nd_tbl, ipv6_add, netdev);
-+		n = neigh_lookup(ipv6_get_nd_tbl(), ipv6_add, netdev);
- 		if (!n)
- 			continue;
- 
-@@ -650,7 +650,7 @@ static void nfp_tun_neigh_update(struct work_struct *work)
- 		flow6.daddr = *(struct in6_addr *)n->primary_key;
- 		if (!neigh_invalid) {
- 			struct dst_entry *dst;
--			/* Use ipv6_dst_lookup_flow to populate flow6->saddr
-+			/* Use ip6_dst_lookup_flow to populate flow6->saddr
- 			 * and other fields. This information is only needed
- 			 * for new entries, lookup can be skipped when an entry
- 			 * gets invalidated - as only the daddr is needed for
-@@ -730,7 +730,7 @@ nfp_tun_neigh_event_handler(struct notifier_block *nb, unsigned long event,
- 		return NOTIFY_DONE;
- 	}
- #if IS_ENABLED(CONFIG_IPV6)
--	if (n->tbl != ipv6_stub->nd_tbl && n->tbl != &arp_tbl)
-+	if (n->tbl != ipv6_get_nd_tbl() && n->tbl != &arp_tbl)
- #else
- 	if (n->tbl != &arp_tbl)
- #endif
-@@ -815,8 +815,7 @@ void nfp_tunnel_request_route_v6(struct nfp_app *app, struct sk_buff *skb)
- 	flow.flowi6_proto = IPPROTO_UDP;
- 
- #if IS_ENABLED(CONFIG_INET) && IS_ENABLED(CONFIG_IPV6)
--	dst = ipv6_stub->ipv6_dst_lookup_flow(dev_net(netdev), NULL, &flow,
--					      NULL);
-+	dst = ip6_dst_lookup_flow(dev_net(netdev), NULL, &flow, NULL);
- 	if (IS_ERR(dst))
- 		goto fail_rcu_unlock;
- #else
-diff --git a/drivers/net/ethernet/sfc/tc_counters.c b/drivers/net/ethernet/sfc/tc_counters.c
-index d168282f30bf..d8a5f9fd1007 100644
---- a/drivers/net/ethernet/sfc/tc_counters.c
-+++ b/drivers/net/ethernet/sfc/tc_counters.c
-@@ -112,7 +112,7 @@ static void efx_tc_counter_work(struct work_struct *work)
- 					 encap->neigh->egdev);
- 		else
- #if IS_ENABLED(CONFIG_IPV6)
--			n = neigh_lookup(ipv6_stub->nd_tbl,
-+			n = neigh_lookup(ipv6_get_nd_tbl(),
- 					 &encap->neigh->dst_ip6,
- 					 encap->neigh->egdev);
- #else
-diff --git a/drivers/net/ethernet/sfc/tc_encap_actions.c b/drivers/net/ethernet/sfc/tc_encap_actions.c
-index da35705cc5e1..63d8f794b869 100644
---- a/drivers/net/ethernet/sfc/tc_encap_actions.c
-+++ b/drivers/net/ethernet/sfc/tc_encap_actions.c
-@@ -149,8 +149,7 @@ static int efx_bind_neigh(struct efx_nic *efx,
- #if IS_ENABLED(CONFIG_IPV6)
- 			struct dst_entry *dst;
- 
--			dst = ipv6_stub->ipv6_dst_lookup_flow(net, NULL, &flow6,
--							      NULL);
-+			dst = ip6_dst_lookup_flow(net, NULL, &flow6, NULL);
- 			rc = PTR_ERR_OR_ZERO(dst);
- 			if (rc) {
- 				NL_SET_ERR_MSG_MOD(extack, "Failed to lookup route for IPv6 encap");
-@@ -531,7 +530,7 @@ static int efx_neigh_event(struct efx_nic *efx, struct neighbour *n)
- 	if (n->tbl == &arp_tbl) {
- 		keysize = sizeof(keys.dst_ip);
- #if IS_ENABLED(CONFIG_IPV6)
--	} else if (n->tbl == ipv6_stub->nd_tbl) {
-+	} else if (n->tbl == ipv6_get_nd_tbl()) {
- 		ipv6 = true;
- 		keysize = sizeof(keys.dst_ip6);
- #endif
-diff --git a/drivers/net/geneve.c b/drivers/net/geneve.c
-index 01cdd06102e0..c6563367d382 100644
---- a/drivers/net/geneve.c
-+++ b/drivers/net/geneve.c
-@@ -12,7 +12,6 @@
- #include <linux/module.h>
- #include <linux/etherdevice.h>
- #include <linux/hash.h>
--#include <net/ipv6_stubs.h>
- #include <net/dst_metadata.h>
- #include <net/gro_cells.h>
- #include <net/rtnetlink.h>
-diff --git a/drivers/net/gtp.c b/drivers/net/gtp.c
-index e8949f556209..70b9e58b9b78 100644
---- a/drivers/net/gtp.c
-+++ b/drivers/net/gtp.c
-@@ -374,7 +374,7 @@ static struct rt6_info *ip6_route_output_gtp(struct net *net,
- 	fl6->saddr		= *saddr;
- 	fl6->flowi6_proto	= sk->sk_protocol;
- 
--	dst = ipv6_stub->ipv6_dst_lookup_flow(net, sk, fl6, NULL);
-+	dst = ip6_dst_lookup_flow(net, sk, fl6, NULL);
- 	if (IS_ERR(dst))
- 		return ERR_PTR(-ENETUNREACH);
- 
-diff --git a/drivers/net/ovpn/peer.c b/drivers/net/ovpn/peer.c
-index 3716a1d82801..6dd11c71204b 100644
---- a/drivers/net/ovpn/peer.c
-+++ b/drivers/net/ovpn/peer.c
-@@ -821,8 +821,7 @@ static struct in6_addr ovpn_nexthop_from_rt6(struct ovpn_priv *ovpn,
- 		.daddr = dest,
- 	};
- 
--	entry = ipv6_stub->ipv6_dst_lookup_flow(dev_net(ovpn->dev), NULL, &fl,
--						NULL);
-+	entry = ip6_dst_lookup_flow(dev_net(ovpn->dev), NULL, &fl, NULL);
- 	if (IS_ERR(entry)) {
- 		net_dbg_ratelimited("%s: no route to host %pI6c\n",
- 				    netdev_name(ovpn->dev), &dest);
-diff --git a/drivers/net/ovpn/udp.c b/drivers/net/ovpn/udp.c
-index 272b535ecaad..059e896b4a2f 100644
---- a/drivers/net/ovpn/udp.c
-+++ b/drivers/net/ovpn/udp.c
-@@ -14,7 +14,6 @@
- #include <net/addrconf.h>
- #include <net/dst_cache.h>
- #include <net/route.h>
--#include <net/ipv6_stubs.h>
- #include <net/transp_v6.h>
- #include <net/udp.h>
- #include <net/udp_tunnel.h>
-@@ -251,7 +250,7 @@ static int ovpn_udp6_output(struct ovpn_peer *peer, struct ovpn_bind *bind,
- 		dst_cache_reset(cache);
- 	}
- 
--	dst = ipv6_stub->ipv6_dst_lookup_flow(sock_net(sk), sk, &fl, NULL);
-+	dst = ip6_dst_lookup_flow(sock_net(sk), sk, &fl, NULL);
- 	if (IS_ERR(dst)) {
- 		ret = PTR_ERR(dst);
- 		net_dbg_ratelimited("%s: no route to host %pISpc: %d\n",
-diff --git a/drivers/net/usb/cdc_mbim.c b/drivers/net/usb/cdc_mbim.c
-index dbf01210b0e7..877fb0ed7d3d 100644
---- a/drivers/net/usb/cdc_mbim.c
-+++ b/drivers/net/usb/cdc_mbim.c
-@@ -20,7 +20,6 @@
- #include <linux/usb/cdc_ncm.h>
- #include <net/ipv6.h>
- #include <net/addrconf.h>
--#include <net/ipv6_stubs.h>
- #include <net/ndisc.h>
- 
- /* alternative VLAN for IP session 0 if not untagged */
-@@ -302,6 +301,7 @@ static struct sk_buff *cdc_mbim_tx_fixup(struct usbnet *dev, struct sk_buff *skb
- 	return NULL;
- }
- 
-+#if IS_ENABLED(CONFIG_IPV6)
- /* Some devices are known to send Neighbor Solicitation messages and
-  * require Neighbor Advertisement replies.  The IPv6 core will not
-  * respond since IFF_NOARP is set, so we must handle them ourselves.
-@@ -342,12 +342,11 @@ static void do_neigh_solicit(struct usbnet *dev, u8 *buf, u16 tci)
- 	is_router = !!READ_ONCE(in6_dev->cnf.forwarding);
- 	in6_dev_put(in6_dev);
- 
--	/* ipv6_stub != NULL if in6_dev_get returned an inet6_dev */
--	ipv6_stub->ndisc_send_na(netdev, &iph->saddr, &msg->target,
--				 is_router /* router */,
--				 true /* solicited */,
--				 false /* override */,
--				 true /* inc_opt */);
-+	ndisc_send_na(netdev, &iph->saddr, &msg->target,
-+		      is_router /* router */,
-+		      true /* solicited */,
-+		      false /* override */,
-+		      true /* inc_opt */);
- out:
- 	dev_put(netdev);
- }
-@@ -362,7 +361,7 @@ static bool is_neigh_solicit(u8 *buf, size_t len)
- 		msg->icmph.icmp6_code == 0 &&
- 		msg->icmph.icmp6_type == NDISC_NEIGHBOUR_SOLICITATION);
- }
--
-+#endif /* IPV6 */
- 
- static struct sk_buff *cdc_mbim_process_dgram(struct usbnet *dev, u8 *buf, size_t len, u16 tci)
- {
-@@ -378,8 +377,10 @@ static struct sk_buff *cdc_mbim_process_dgram(struct usbnet *dev, u8 *buf, size_
- 			proto = htons(ETH_P_IP);
- 			break;
- 		case 0x60:
-+#if IS_ENABLED(CONFIG_IPV6)
- 			if (is_neigh_solicit(buf, len))
- 				do_neigh_solicit(dev, buf, tci);
-+#endif
- 			proto = htons(ETH_P_IPV6);
- 			break;
- 		default:
-diff --git a/drivers/net/vrf.c b/drivers/net/vrf.c
-index 8c009bcaa8e7..68edb47cc4eb 100644
---- a/drivers/net/vrf.c
-+++ b/drivers/net/vrf.c
-@@ -616,7 +616,8 @@ static int vrf_finish_output6(struct net *net, struct sock *sk,
- 	nexthop = rt6_nexthop(dst_rt6_info(dst), &ipv6_hdr(skb)->daddr);
- 	neigh = __ipv6_neigh_lookup_noref(dst->dev, nexthop);
- 	if (unlikely(!neigh))
--		neigh = __neigh_create(&nd_tbl, nexthop, dst->dev, false);
-+		neigh = __neigh_create(ipv6_get_nd_tbl(), nexthop,
-+				       dst->dev, false);
- 	if (!IS_ERR(neigh)) {
- 		sock_confirm_neigh(skb, neigh);
- 		ret = neigh_output(neigh, skb, false);
-diff --git a/drivers/net/vxlan/vxlan_core.c b/drivers/net/vxlan/vxlan_core.c
-index 17c941aac32d..4ab94dfe0d12 100644
---- a/drivers/net/vxlan/vxlan_core.c
-+++ b/drivers/net/vxlan/vxlan_core.c
-@@ -19,7 +19,6 @@
- #include <net/arp.h>
- #include <net/ndisc.h>
- #include <net/gro.h>
--#include <net/ipv6_stubs.h>
- #include <net/ip.h>
- #include <net/icmp.h>
- #include <net/rtnetlink.h>
-@@ -2045,7 +2044,7 @@ static int neigh_reduce(struct net_device *dev, struct sk_buff *skb, __be32 vni)
- 	    ipv6_addr_is_multicast(&msg->target))
- 		goto out;
- 
--	n = neigh_lookup(ipv6_stub->nd_tbl, &msg->target, dev);
-+	n = neigh_lookup(ipv6_get_nd_tbl(), &msg->target, dev);
- 
- 	if (n) {
- 		struct vxlan_rdst *rdst = NULL;
-@@ -2130,15 +2129,15 @@ static bool route_shortcircuit(struct net_device *dev, struct sk_buff *skb)
- 	{
- 		struct ipv6hdr *pip6;
- 
--		/* check if nd_tbl is not initiliazed due to
--		 * ipv6.disable=1 set during boot
-+		/* check if ipv6.disable=1 set during boot was set
-+		 * during booting so nd_tbl is not initialized
- 		 */
--		if (!ipv6_stub->nd_tbl)
-+		if (!ipv6_mod_enabled())
- 			return false;
- 		if (!pskb_may_pull(skb, sizeof(struct ipv6hdr)))
- 			return false;
- 		pip6 = ipv6_hdr(skb);
--		n = neigh_lookup(ipv6_stub->nd_tbl, &pip6->daddr, dev);
-+		n = neigh_lookup(ipv6_get_nd_tbl(), &pip6->daddr, dev);
- 		if (!n && (vxlan->cfg.flags & VXLAN_F_L3MISS)) {
- 			union vxlan_addr ipa = {
- 				.sin6.sin6_addr = pip6->daddr,
-diff --git a/drivers/net/vxlan/vxlan_multicast.c b/drivers/net/vxlan/vxlan_multicast.c
-index a7f2d67dc61b..b0e80bca855c 100644
---- a/drivers/net/vxlan/vxlan_multicast.c
-+++ b/drivers/net/vxlan/vxlan_multicast.c
-@@ -39,8 +39,7 @@ int vxlan_igmp_join(struct vxlan_dev *vxlan, union vxlan_addr *rip,
- 
- 		sk = sock6->sock->sk;
- 		lock_sock(sk);
--		ret = ipv6_stub->ipv6_sock_mc_join(sk, ifindex,
--						   &ip->sin6.sin6_addr);
-+		ret = ipv6_sock_mc_join(sk, ifindex, &ip->sin6.sin6_addr);
- 		release_sock(sk);
- #endif
- 	}
-@@ -73,8 +72,7 @@ int vxlan_igmp_leave(struct vxlan_dev *vxlan, union vxlan_addr *rip,
- 
- 		sk = sock6->sock->sk;
- 		lock_sock(sk);
--		ret = ipv6_stub->ipv6_sock_mc_drop(sk, ifindex,
--						   &ip->sin6.sin6_addr);
-+		ret = ipv6_sock_mc_drop(sk, ifindex, &ip->sin6.sin6_addr);
- 		release_sock(sk);
- #endif
- 	}
-diff --git a/drivers/net/wireguard/socket.c b/drivers/net/wireguard/socket.c
-index 253488f8c00f..c362c78d908e 100644
---- a/drivers/net/wireguard/socket.c
-+++ b/drivers/net/wireguard/socket.c
-@@ -136,8 +136,7 @@ static int send6(struct wg_device *wg, struct sk_buff *skb,
- 			if (cache)
- 				dst_cache_reset(cache);
- 		}
--		dst = ipv6_stub->ipv6_dst_lookup_flow(sock_net(sock), sock, &fl,
--						      NULL);
-+		dst = ip6_dst_lookup_flow(sock_net(sock), sock, &fl, NULL);
- 		if (IS_ERR(dst)) {
- 			ret = PTR_ERR(dst);
- 			net_dbg_ratelimited("%s: No route to %pISpfsc, error %d\n",
-diff --git a/drivers/net/wireless/intel/ipw2x00/ipw2100.c b/drivers/net/wireless/intel/ipw2x00/ipw2100.c
-index 248a051da52d..c11428485dcc 100644
---- a/drivers/net/wireless/intel/ipw2x00/ipw2100.c
-+++ b/drivers/net/wireless/intel/ipw2x00/ipw2100.c
-@@ -4838,7 +4838,7 @@ static int ipw2100_system_config(struct ipw2100_priv *priv, int batch_mode)
- 
- /* If IPv6 is configured in the kernel then we don't want to filter out all
-  * of the multicast packets as IPv6 needs some. */
--#if !defined(CONFIG_IPV6) && !defined(CONFIG_IPV6_MODULE)
-+#if !defined(CONFIG_IPV6)
- 	cmd.host_command = ADD_MULTICAST;
- 	cmd.host_command_sequence = 0;
- 	cmd.host_command_length = 0;
-diff --git a/net/bridge/br_arp_nd_proxy.c b/net/bridge/br_arp_nd_proxy.c
-index 1e2b51769eec..494bf69a3017 100644
---- a/net/bridge/br_arp_nd_proxy.c
-+++ b/net/bridge/br_arp_nd_proxy.c
-@@ -17,7 +17,6 @@
- #include <linux/if_vlan.h>
- #include <linux/inetdevice.h>
- #include <net/addrconf.h>
--#include <net/ipv6_stubs.h>
- #if IS_ENABLED(CONFIG_IPV6)
- #include <net/ip6_checksum.h>
- #endif
-@@ -455,7 +454,7 @@ void br_do_suppress_nd(struct sk_buff *skb, struct net_bridge *br,
- 		return;
- 	}
- 
--	n = neigh_lookup(ipv6_stub->nd_tbl, &msg->target, vlandev);
-+	n = neigh_lookup(ipv6_get_nd_tbl(), &msg->target, vlandev);
- 	if (n) {
- 		struct net_bridge_fdb_entry *f;
- 
--- 
-2.53.0
+=E2=80=A6
+> +++ b/scripts/coccinelle/api/is_err_or_null.cocci
+> @@ -0,0 +1,125 @@
+=E2=80=A6
+> +virtual patch
+> +virtual report
+> +virtual org
 
+How will interests evolve further for the support of the operation mode =
+=E2=80=9Ccontext=E2=80=9D?
+
+
+> +@p1 depends on patch@
+> +expression E;
+> +@@
+> +(
+> +-	E !=3D NULL && !IS_ERR(E)
+> ++	!IS_ERR_OR_NULL(E)
+> +|
+> +-	E =3D=3D NULL || IS_ERR(E)
+> ++	IS_ERR_OR_NULL(E)
+> +|
+> +-	!IS_ERR(E) && E !=3D NULL
+> ++	!IS_ERR_OR_NULL(E)
+> +|
+> +-	IS_ERR(E) || E =3D=3D NULL
+> ++	IS_ERR_OR_NULL(E)
+> +)
+
+Did you eventually check probabilities for the occurrence of mentioned cas=
+e distinctions?
+
+
+> +@p2 depends on patch@
+=E2=80=A6
+
+I suggest to reconsider =E2=80=9Cside effects=E2=80=9D according to the sp=
+litting of these SmPL rules
+once more.
+
+
+=E2=80=A6
+> +@r2 depends on report || org@
+> +identifier I;
+> +expression E;
+> +position p;
+> +@@
+> +(
+> +*	(I =3D E) !=3D NULL && ... && !IS_ERR@p(I)
+> +|
+> +*	(I =3D E) =3D=3D NULL || ... || IS_ERR@p(I)
+> +)
+
+I doubt that the usage of SmPL asterisks fits to these two operation modes=
+.
+
+
+=E2=80=A6
+> +@p5 depends on patch disable unlikely @
+> +expression E;
+> +@@
+> +-\( likely \| unlikely \)(
+> +(
+> + IS_ERR_OR_NULL(E)
+> +|
+> + !IS_ERR_OR_NULL(E)
+> +)
+> +-)
+
+* Would it be nicer to move such SmPL code to the end of the patch rule li=
+sting?
+
+* Can this source code search pattern matter also for further operation mo=
+des?
+
+
+Regards,
+Markus
 
