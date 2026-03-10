@@ -1,72 +1,71 @@
-Return-Path: <linux-wireless+bounces-32809-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-32810-lists+linux-wireless=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id oItQC4/Qr2kfcgIAu9opvQ
-	(envelope-from <linux-wireless+bounces-32809-lists+linux-wireless=lfdr.de@vger.kernel.org>)
-	for <lists+linux-wireless@lfdr.de>; Tue, 10 Mar 2026 09:04:31 +0100
+	id cPHPD5fQr2mVcgIAu9opvQ
+	(envelope-from <linux-wireless+bounces-32810-lists+linux-wireless=lfdr.de@vger.kernel.org>)
+	for <lists+linux-wireless@lfdr.de>; Tue, 10 Mar 2026 09:04:39 +0100
 X-Original-To: lists+linux-wireless@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 01DEC246E78
-	for <lists+linux-wireless@lfdr.de>; Tue, 10 Mar 2026 09:04:29 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9AB0D246E87
+	for <lists+linux-wireless@lfdr.de>; Tue, 10 Mar 2026 09:04:38 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id B16E43013A90
-	for <lists+linux-wireless@lfdr.de>; Tue, 10 Mar 2026 08:02:02 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 32EB8304E715
+	for <lists+linux-wireless@lfdr.de>; Tue, 10 Mar 2026 08:02:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EBE6C3ECBCD;
-	Tue, 10 Mar 2026 08:02:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7236B3ECBD5;
+	Tue, 10 Mar 2026 08:02:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=realtek.com header.i=@realtek.com header.b="R0WC3uDf"
+	dkim=pass (2048-bit key) header.d=realtek.com header.i=@realtek.com header.b="cyR9kNY5"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 623DB3ECBE9
-	for <linux-wireless@vger.kernel.org>; Tue, 10 Mar 2026 08:01:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B60CD3E959E
+	for <linux-wireless@vger.kernel.org>; Tue, 10 Mar 2026 08:02:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=211.75.126.72
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773129721; cv=none; b=V9gfuC4jNo4vx8aZiB9cvv/WXlCLTTwo7dbBdkNrgsVY+V4ii1kWDuLJ+e36wmnko+Wx+WDA9cgD5lOCC5V00P2MC2bRQ3t7crst3GeDS29jV5naL8CtGxjIVHvbqP63ZaNnK8octS+yh8OoClBW7fp1NmQ9hYMOkWQ5QkA7dBA=
+	t=1773129728; cv=none; b=a7ZyuzzGKVfYqOBCNfHouPocfRL8vUhObFoVFLMmpQtq3HBy5DvAEeN3at7d/FPM3Sq5lU/GzCdm+q+rQj6cF8V33FrHLjsLtz0Mo44U+YtW+HUJNEnA3RPI+tFt8a65IiYOnlAjcIENDR5uZM3n1kdDO3puqpW3twzme3QYaKQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773129721; c=relaxed/simple;
-	bh=0skMCWAIWcws8PW/ykTE3dNJ6ru9AjXBIEMkAsjn5I4=;
-	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=fd/fTli6Zw57AqOEMn5UVz6VNz00rTkbY0gheBboPT31TfjV/WldDIwlCVEhefXRx+LTU9Wf+GKklj7Ri3WDDrrsW/cNsdyE3KDTY9JJd8KkXJorueYKMocgkb9+5kJ1AZs9f/pRib339ERhJfedI4Zs0idYrCmigt7DbhFUUBw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com; spf=pass smtp.mailfrom=realtek.com; dkim=pass (2048-bit key) header.d=realtek.com header.i=@realtek.com header.b=R0WC3uDf; arc=none smtp.client-ip=211.75.126.72
+	s=arc-20240116; t=1773129728; c=relaxed/simple;
+	bh=l7PuFCSe1t0pYdFZxvcxfc6KED/xo6e41UJPBFmA8LE=;
+	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=qO5001WhuZRffhF1AJiNzPb6shmPCWBcYGsBDFO2qBulrG0zfMGTmNkPfCvssry+v5JWQt3HUuEU6cIifnZlkxFFBBSpRM2BZF1o0Q9pG4m5IkoFLaVZolIvaqaYb4QXm6Ukk8g8z4MSiejOJXJPFELC97OTbgKaS7IpEOhQkvQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com; spf=pass smtp.mailfrom=realtek.com; dkim=pass (2048-bit key) header.d=realtek.com header.i=@realtek.com header.b=cyR9kNY5; arc=none smtp.client-ip=211.75.126.72
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=realtek.com
-X-SpamFilter-By: ArmorX SpamTrap 5.80 with qID 62A81t2Z22208369, This message is accepted by code: ctloc85258
+X-SpamFilter-By: ArmorX SpamTrap 5.80 with qID 62A81xC722208392, This message is accepted by code: ctloc85258
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=realtek.com; s=dkim;
-	t=1773129715; bh=yLuKtnNfg7cISv+rj0M9DYdCGM8N6HqMBlOTIgaqIuI=;
-	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:
-	 Content-Transfer-Encoding:Content-Type;
-	b=R0WC3uDfQXzHDBbCrCrzl9kRBzc+yZCabsTc+wVsCxek1TVSUx3FthsBUN0mgmIXf
-	 IYKMVvUy4bbAvg2ULdGOHc2QGISlnYKjso1myrcQFGeIJ9xFLXph6BuOvD/fJMrlgf
-	 ij9a3j4EG/MQbkqrm6D4kr1ldLlCUbhjvUZI6pr/5OCPTht52pUodJaH0iGcc29hnd
-	 gFnYVm2Vhc8/hWwRhJLInDtGm6RWIsq0cRjsUl//Jb/u5+mFovLTxavBTj7gEQTedh
-	 uEV4wtvppubfRxgMpeq8mHEcgz4NGlAMp27OBD93RzETm0LdMkO3zzjictuPl7V1uH
-	 lhFM1IotKRFmA==
-Received: from mail.realtek.com (rtkexhmbs02.realtek.com.tw[172.21.6.41])
-	by rtits2.realtek.com.tw (8.15.2/3.21/5.94) with ESMTPS id 62A81t2Z22208369
+	t=1773129719; bh=v6owtRsCeBPjynIxrJ7r6af+rdBdS2aMQI4dJwPTLWk=;
+	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Transfer-Encoding:Content-Type;
+	b=cyR9kNY5v1j5E2f7DVmovYBQ1HShJJplq7l5DtjvuT6BlEKXzQJeSbg7TkQChx+tP
+	 vnzdmge62IcNWb2APyMMvQqzXtHVh5MD+EY36IRI7zafV9Ew2zstYQQ2up2iIQZplN
+	 3rJ2DmqfZRHis4Ke2XWm5uHK74Cg+tParUY4P+6R+mkx8PXwgFjfUO6OvJhTwIdLce
+	 LI4/iAxi3rYDC4NLtC1xmeZFSKL1G3rQ0znAMfWu5W92MtrzumJyLNRhbkFKvz1jLy
+	 ZVx4mV5EdaHxiJIaM/SGLcYevjQgrq6KhWELp2uYm1lCmGoqiDPXbWoB+3PboJ5LB/
+	 ws3svvMDwKzjw==
+Received: from mail.realtek.com (rtkexhmbs03.realtek.com.tw[10.21.1.53])
+	by rtits2.realtek.com.tw (8.15.2/3.21/5.94) with ESMTPS id 62A81xC722208392
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK)
-	for <linux-wireless@vger.kernel.org>; Tue, 10 Mar 2026 16:01:55 +0800
-Received: from RTKEXHMBS01.realtek.com.tw (172.21.6.40) by
- RTKEXHMBS02.realtek.com.tw (172.21.6.41) with Microsoft SMTP Server
+	for <linux-wireless@vger.kernel.org>; Tue, 10 Mar 2026 16:01:59 +0800
+Received: from RTKEXHMBS06.realtek.com.tw (10.21.1.56) by
+ RTKEXHMBS03.realtek.com.tw (10.21.1.53) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1748.10; Tue, 10 Mar 2026 16:01:53 +0800
-Received: from RTKEXHMBS05.realtek.com.tw (10.21.1.55) by
- RTKEXHMBS01.realtek.com.tw (172.21.6.40) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.17; Tue, 10 Mar 2026 16:01:53 +0800
-Received: from [127.0.1.1] (172.21.40.75) by RTKEXHMBS05.realtek.com.tw
- (10.21.1.55) with Microsoft SMTP Server (version=TLS1_2,
+ 15.2.1748.10; Tue, 10 Mar 2026 16:01:58 +0800
+Received: from [127.0.1.1] (172.21.40.75) by RTKEXHMBS06.realtek.com.tw
+ (10.21.1.56) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1748.10 via Frontend
- Transport; Tue, 10 Mar 2026 16:01:53 +0800
+ Transport; Tue, 10 Mar 2026 16:01:58 +0800
 From: Ping-Ke Shih <pkshih@realtek.com>
 To: <linux-wireless@vger.kernel.org>
 CC: <timlee@realtek.com>, <phhuang@realtek.com>, <kevin_yang@realtek.com>
-Subject: [PATCH rtw-next 00/13] wifi: rtw89: update hardware settings and tweak for MLO
-Date: Tue, 10 Mar 2026 16:01:33 +0800
-Message-ID: <20260310080146.31113-1-pkshih@realtek.com>
+Subject: [PATCH rtw-next 01/13] wifi: rtw89: mac: finish active TX immediately without waiting for DMAC
+Date: Tue, 10 Mar 2026 16:01:34 +0800
+Message-ID: <20260310080146.31113-2-pkshih@realtek.com>
 X-Mailer: git-send-email 2.25.1
+In-Reply-To: <20260310080146.31113-1-pkshih@realtek.com>
+References: <20260310080146.31113-1-pkshih@realtek.com>
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
@@ -75,7 +74,7 @@ List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Content-Type: text/plain
-X-Rspamd-Queue-Id: 01DEC246E78
+X-Rspamd-Queue-Id: 9AB0D246E87
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-0.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
@@ -83,93 +82,92 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	DMARC_POLICY_ALLOW(-0.50)[realtek.com,none];
 	R_MISSING_CHARSET(0.50)[];
 	R_DKIM_ALLOW(-0.20)[realtek.com:s=dkim];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-32809-lists,linux-wireless=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-32810-lists,linux-wireless=lfdr.de];
+	DKIM_TRACE(0.00)[realtek.com:+];
+	RCVD_COUNT_FIVE(0.00)[6];
 	FROM_HAS_DN(0.00)[];
-	TO_DN_NONE(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[pkshih@realtek.com,linux-wireless@vger.kernel.org];
 	RCVD_TLS_LAST(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[realtek.com:+];
+	FROM_NEQ_ENVFROM(0.00)[pkshih@realtek.com,linux-wireless@vger.kernel.org];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,realtek.com:dkim,realtek.com:mid];
+	TO_DN_NONE(0.00)[];
 	RCPT_COUNT_THREE(0.00)[4];
 	TAGGED_RCPT(0.00)[linux-wireless];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	MIME_TRACE(0.00)[0:+];
-	RCVD_COUNT_SEVEN(0.00)[7]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,realtek.com:dkim,realtek.com:email,realtek.com:mid]
 X-Rspamd-Action: no action
 
-Mainly, this patchset is to add hardware settings, and tweak code related
-to hardware MLO mode value. Others are almost random fixes.
+Currently active TX only finishes after ensuring PCIE and DMAC become idle.
+However, the waiting time might be long. Since the packet is already
+transmitted over the air, update the registers to finish active TX
+immediately, regardless of the PCIE/DMAC status.
 
-The first four patches are to configure hardware settings, which are
-written according to internal patches.
+Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
+---
+ drivers/net/wireless/realtek/rtw89/mac_be.c |  3 +++
+ drivers/net/wireless/realtek/rtw89/reg.h    | 28 +++++++++++++++++++++
+ 2 files changed, 31 insertions(+)
 
-Patches 5-8 are to refine hardware MLO mode.
-
-Patch 9 is WoWLAN related, which is to add retry times to let WoWLAN
-being reliable.
-
-Patch 10 is to remove mutex lock from driver. Since driver has used
-wiphy_lock, it should be not necessary.
-
-Patch 11 is a workaround to deal with AP interoperability problem.
-
-Patch 12 is to recalculate AMSDU length to improve performance.
-
-The last patch is for firmware crash simulation.
-
-Chin-Yen Lee (1):
-  wifi: rtw89: wow: add retry for ensuring packet are processed
-
-Ping-Ke Shih (4):
-  wifi: rtw89: mac: finish active TX immediately without waiting for
-    DMAC
-  wifi: rtw89: pci: update SER parameters for suspend/resume
-  wifi: rtw89: mac: remove A-die off setting for RTL8852C and RTL8922A
-  wifi: rtw89: phy: limit AMPDU number for RA try rate
-
-Po-Hao Huang (2):
-  wifi: rtw89: Drop malformed AMPDU frames with abnormal PN
-  wifi: rtw89: Recalculate station aggregates when AMSDU length changes
-    for MLO links
-
-Zong-Zhe Yang (6):
-  wifi: rtw89: move disabling dynamic mechanism functions to core
-  wifi: rtw89: tweak settings of TX power and channel for Wi-Fi 7
-  wifi: rtw89: chan: simplify link handling related to ROC
-  wifi: rtw89: chan: recalc MLO DBCC mode based on current entity mode
-  wifi: rtw89: replace RF mutex with wiphy lock assertion
-  wifi: rtw89: debug: simulate Wi-Fi 7 SER L0/L1 without PS mode
-
- drivers/net/wireless/realtek/rtw89/chan.c     |  72 +++++----
- drivers/net/wireless/realtek/rtw89/core.c     | 150 +++++++++++++++++-
- drivers/net/wireless/realtek/rtw89/core.h     |  29 ++--
- drivers/net/wireless/realtek/rtw89/debug.c    |  45 ++----
- drivers/net/wireless/realtek/rtw89/mac.c      |  17 +-
- drivers/net/wireless/realtek/rtw89/mac.h      |   2 +
- drivers/net/wireless/realtek/rtw89/mac80211.c |   6 +
- drivers/net/wireless/realtek/rtw89/mac_be.c   |   5 +
- drivers/net/wireless/realtek/rtw89/pci.h      |   1 +
- drivers/net/wireless/realtek/rtw89/pci_be.c   |  52 +++++-
- drivers/net/wireless/realtek/rtw89/phy.c      |  46 +++++-
- drivers/net/wireless/realtek/rtw89/phy.h      |   1 +
- drivers/net/wireless/realtek/rtw89/reg.h      |  28 ++++
- drivers/net/wireless/realtek/rtw89/rtw8852c.c |   2 +-
- drivers/net/wireless/realtek/rtw89/rtw8922a.c |   2 +-
- drivers/net/wireless/realtek/rtw89/util.h     |  17 ++
- drivers/net/wireless/realtek/rtw89/wow.c      |   2 +
- drivers/net/wireless/realtek/rtw89/wow.h      |   7 -
- 18 files changed, 386 insertions(+), 98 deletions(-)
-
-
-base-commit: 039cd522dc70151da13329a5e3ae19b1736f468a
+diff --git a/drivers/net/wireless/realtek/rtw89/mac_be.c b/drivers/net/wireless/realtek/rtw89/mac_be.c
+index dc66b1ee851a..ed1ea13bb98d 100644
+--- a/drivers/net/wireless/realtek/rtw89/mac_be.c
++++ b/drivers/net/wireless/realtek/rtw89/mac_be.c
+@@ -1173,6 +1173,9 @@ static int scheduler_init_be(struct rtw89_dev *rtwdev, u8 mac_idx)
+ 	if (ret)
+ 		return ret;
+ 
++	reg = rtw89_mac_reg_by_idx(rtwdev, R_BE_MISC_1, mac_idx);
++	rtw89_write32_set(rtwdev, reg, B_BE_EN_TX_FINISH_PRD_RESP);
++
+ 	if (chip->chip_id == RTL8922D) {
+ 		reg = rtw89_mac_reg_by_idx(rtwdev, R_BE_SCH_EXT_CTRL, mac_idx);
+ 		rtw89_write32_set(rtwdev, reg, B_BE_CWCNT_PLUS_MODE);
+diff --git a/drivers/net/wireless/realtek/rtw89/reg.h b/drivers/net/wireless/realtek/rtw89/reg.h
+index 9b605617c3f0..66ed847c9009 100644
+--- a/drivers/net/wireless/realtek/rtw89/reg.h
++++ b/drivers/net/wireless/realtek/rtw89/reg.h
+@@ -6745,6 +6745,34 @@
+ #define B_BE_MUEDCA_EN_MASK GENMASK(1, 0)
+ #define B_BE_MUEDCA_EN_0 BIT(0)
+ 
++#define R_BE_MISC_1 0x1037C
++#define R_BE_MISC_1_C1 0x1437C
++#define B_BE_PPS_REMAIN_TIME_MODE BIT(31)
++#define B_BE_PPS_IDLE_SORT_EN BIT(30)
++#define B_BE_SR_TXOP_USE_SR_PERIOD_EN BIT(29)
++#define B_BE_SCH_CCA_PIFS_CLK_GATING_DIS BIT(28)
++#define B_BE_SR_TXOP_EN BIT(27)
++#define B_BE_SCH_ABORT_CNT_SIFS_EN BIT(26)
++#define B_BE_SCH_ABORT_CNT_TB_EN BIT(25)
++#define B_BE_SCH_ABORT_CNT_CTN_EN BIT(24)
++#define B_BE_SR_CCA_PER20_BITMAP_EN BIT(23)
++#define B_BE_SR_CCA_S80_EN BIT(22)
++#define B_BE_SR_CCA_S40_EN BIT(21)
++#define B_BE_SR_CCA_S20_EN BIT(20)
++#define B_BE_EN_TX_FINISH_PRD_RESP BIT(18)
++#define B_BE_RESP_TX_ABORT_NON_IDLE BIT(17)
++#define B_BE_RESP_TX_ABORT_QUICK_EN BIT(16)
++#define B_BE_PREBKF_CHK_LINK_BUSY BIT(15)
++#define B_BE_SCH_MSD_PRD_RST_EDCA_EN BIT(14)
++#define B_BE_LINK_BUSY_RST_EDCA_EN_MASK GENMASK(13, 12)
++#define B_BE_RX_TSFT_SYNC_BYPASS_FCS BIT(11)
++#define B_BE_RX_TSFT_DIFF_THD_MASK GENMASK(10, 8)
++#define B_BE_CAL_TBTT_OV_EN BIT(5)
++#define B_BE_SUBBCN_MS_CNT_MODE BIT(3)
++#define B_BE_CAL_ALWAYS_EN BIT(2)
++#define B_BE_SIFS_TIMER_AUTO_RST_EN BIT(1)
++#define B_BE_CHK_HAS_SIFS_TX_ABORT BIT(0)
++
+ #define R_BE_CTN_DRV_TXEN 0x10398
+ #define R_BE_CTN_DRV_TXEN_C1 0x14398
+ #define B_BE_CTN_TXEN_TWT_3 BIT(17)
 -- 
 2.25.1
 
