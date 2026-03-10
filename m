@@ -1,202 +1,338 @@
-Return-Path: <linux-wireless+bounces-32799-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-32800-lists+linux-wireless=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id iHq2Bb1hr2kmWwIAu9opvQ
-	(envelope-from <linux-wireless+bounces-32799-lists+linux-wireless=lfdr.de@vger.kernel.org>)
-	for <lists+linux-wireless@lfdr.de>; Tue, 10 Mar 2026 01:11:41 +0100
+	id EHXHME5mr2m5XAIAu9opvQ
+	(envelope-from <linux-wireless+bounces-32800-lists+linux-wireless=lfdr.de@vger.kernel.org>)
+	for <lists+linux-wireless@lfdr.de>; Tue, 10 Mar 2026 01:31:10 +0100
 X-Original-To: lists+linux-wireless@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6A2CA242EE7
-	for <lists+linux-wireless@lfdr.de>; Tue, 10 Mar 2026 01:11:40 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id E95C02430B7
+	for <lists+linux-wireless@lfdr.de>; Tue, 10 Mar 2026 01:31:09 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id AE8E5302BBA3
-	for <lists+linux-wireless@lfdr.de>; Tue, 10 Mar 2026 00:11:35 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 9C0733034DCA
+	for <lists+linux-wireless@lfdr.de>; Tue, 10 Mar 2026 00:31:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0C5D91482E8;
-	Tue, 10 Mar 2026 00:11:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7AD4D202F71;
+	Tue, 10 Mar 2026 00:31:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="WqxwLbmW";
-	dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b="hKX6fenh"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="fF+dPqGg"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-qv1-f44.google.com (mail-qv1-f44.google.com [209.85.219.44])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CC05574C14
-	for <linux-wireless@vger.kernel.org>; Tue, 10 Mar 2026 00:11:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773101494; cv=none; b=XDE8s3ZhnRWOE+Ed9o147TvPrIGe51dAmX5RJZ2TJ2RqszOYWm0SQC4l0ySkZTZ3JaH4NoOiMp6R2cyGh6cIsK1UeJRIzTvUmUZweAUZKwrYd/HE7QGrkvjeWXY0xWDrt9q6yXlBeKBhzIm9tkpuSDEYQIcltfRJYTJK/Nxw+Ig=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773101494; c=relaxed/simple;
-	bh=m9qCDpkjy5X2THY0acR9kltKP5HQGUMAZKo/7H5omio=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=JGzK3zpzdGZ9BMqYOgFlv7WvhoOr7DVvLnuE7w3V+vJecMKz9NOgDmWpJZZ6P88Qobc+r/Pe4YsOq449NLnUC9PLnJM/r2Nj+650oyoq1JTYmNw0zrtGCdSM4H7m0Fe1EBSZ3wZ9angQycZomt83I3ju1NoZ4sFUfuORbQh3kZk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=WqxwLbmW; dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b=hKX6fenh; arc=none smtp.client-ip=205.220.180.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
-Received: from pps.filterd (m0279871.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 629HCEfL1212183
-	for <linux-wireless@vger.kernel.org>; Tue, 10 Mar 2026 00:11:32 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
-	cc:content-type:date:from:in-reply-to:message-id:mime-version
-	:references:subject:to; s=qcppdkim1; bh=Pkr/1ETbWQejqwBM4qtLfTAa
-	AxiiLLi9EmI3z7gEzag=; b=WqxwLbmWApf+MP0scmsGweu9kRuuQzlAxKa4xDS0
-	me8bCEsYRkKs0UqWwp4R59vPcDuVB+sUvSjJYiktF0Pg+GoksF/Yb9wLMbKTsSy6
-	eEvNwkXDKNb2s5O8Q9n7PJaB1PwXlA41ErXyFErlqYexgIloTKVfQBgaWmjJG5qY
-	vZkjvoz4Gc9Hw2a0R2lMbYCxaWXF0jiwiNDghAdbIFS/l/57J33Cfq5PJC0QFLDz
-	V83A0oMU9E0jnBSSPOM7pcI20Df55lyB4rTvvcc/Le0Q7hATER62nsGQGoDz1Ql6
-	a6NqXFKxHRyQRVayozXJPrejWDjiCtYw3AzN/Slg69jV0w==
-Received: from mail-qk1-f199.google.com (mail-qk1-f199.google.com [209.85.222.199])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4cswwkj5h3-1
-	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
-	for <linux-wireless@vger.kernel.org>; Tue, 10 Mar 2026 00:11:32 +0000 (GMT)
-Received: by mail-qk1-f199.google.com with SMTP id af79cd13be357-8cb4d191ef1so1700950085a.0
-        for <linux-wireless@vger.kernel.org>; Mon, 09 Mar 2026 17:11:32 -0700 (PDT)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E9A381A5B9E
+	for <linux-wireless@vger.kernel.org>; Tue, 10 Mar 2026 00:31:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.219.44
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1773102668; cv=pass; b=J2uE5TQnj/bEPmzL2ZUnu4vQGPJ9wnxjnZ8KGeSO02O83JdqfXqWGGp6uGqs5Z08AnYRttQASrdRPWrO7tfRd7bOXOOHbZp7QvqqX4uAQUjLCZxuBVnRGFh39T+B0CMFuiL5f95Zi2eLqJqYwBG+qd0v80z1V6KvZIDpB0uUjQA=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1773102668; c=relaxed/simple;
+	bh=GvBA8YCK7t+bmQHVOMeqyWfuvgsiymQwWEvMHlxa3RE=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=T4AUGUlPT86ShHSLTXTUm8mGQgsyQloDbcgLy1c5DRYOFijZlBPvTL/MStciwm0x2mhiJZg7fkCdXqC3YwUy0U2NgVNF5w3C5kNU4dd0G27iuuw/cvGoMT1fFPCQ/yw7XDf9MZhE8I0zRfGb3/Ina/Dhognl+snDfWPe0Xcucqs=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=fF+dPqGg; arc=pass smtp.client-ip=209.85.219.44
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-qv1-f44.google.com with SMTP id 6a1803df08f44-899a5db525cso114041736d6.3
+        for <linux-wireless@vger.kernel.org>; Mon, 09 Mar 2026 17:31:06 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1773102666; cv=none;
+        d=google.com; s=arc-20240605;
+        b=Io8/s/66I42OGF4j9f0mc+EK2IvkBtQqFMEuPJhwxh+UAxRjJzM0s9uz+DhplcaTWw
+         u1uHK88DYHIIC1CjYDubvgt2KZ+SY4QqGIaO511GeILb+Clwf6HTzcrFHifm03i/OtGU
+         zfbjE61AfFO4ZHWA+X8+EbHIH4/4+c3GJEbkudhI9g7xRJCk/RXpA+ThLJmxDXQdMR7o
+         PZNBXOcz6cSu55R2wWJdlocvV9tD/9Lwktrbw37x25vATGgekzNcCVKIp7hmPJxo0RQV
+         HzRZAiYjwcCaNDKA/5XlhVVBkE0ACLMVRBZMbM3QwrqsxPwDeQVgE/LnzWVAAoqXIW4B
+         bjQg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=t9wDJEseBZJT0tw4504PLVNc5jkQhgh2E19CGcQH/A4=;
+        fh=catXQ7Tn+OxyEnd2v3aLqF4uQdbmZNB9gk3U7d+3rvQ=;
+        b=js6FqBmyltYQY0x/O2iuwJCgtJZvudadOVsr+OMi2WEHuwUjf2G0vIJmSGCzAjN4ux
+         GBrvLQ4T3EndwciiIZXe9oNamlBKUHJcpMPPnaW/eAO/qj2dFAuqGVJY4nZEirRHCp97
+         k5nSoo0EHZ9fYuO018vapZ7l1GmNjAZTkGhQQzTzxeqavdHpHDNqTs4LRI0m7BPSOKnp
+         HjlEqQmTC6/Gxo1VmFy81Yrl+Xd0PCnt8mC3vvRxXVx42PALksBZlAlk24q5yw0OhbWV
+         WftsqZqfZOF48fG7QEiECXggLFsDSu0IvAAyg4GyCTFyOwDFWCPtYz48CGoQIFkYjl6f
+         sg+w==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=oss.qualcomm.com; s=google; t=1773101492; x=1773706292; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=Pkr/1ETbWQejqwBM4qtLfTAaAxiiLLi9EmI3z7gEzag=;
-        b=hKX6fenheOiLvBPZevhG9VID7p4DsmaLpZlIfdorXKat+r2czs4uFFCyDbc5iBcri7
-         m2qmd7cnB/g5GytWPA0NCMLwUjgSEV1f7vvS6rT3YaCj8CvuxLVpODJCoH/D+BOXCqey
-         1r7CxxPnek/GVzwh4PzROW9Sf3SwEmu+abu4OmbxAkDkU5FwLDd/HJ6s/t6cyKaF3uow
-         d/4JvNLVBK9gJ1+eTS8PnDr8HuJYRBiUeKUAtNyBHKGFnzUJV4JW+6FuvpsAvO9YS3In
-         +unmnhx8PkWH+xlxE8Lxfff06+qkbBB5iF1ApxoSFpg3nn2TlOovZbG07CyI8AwD1y9O
-         hnJQ==
+        d=gmail.com; s=20230601; t=1773102666; x=1773707466; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=t9wDJEseBZJT0tw4504PLVNc5jkQhgh2E19CGcQH/A4=;
+        b=fF+dPqGgr3CbHV4FscfvbpMstJsBbU81p2zl1rIWNxsWQfgYTbXVZNPInzdez4lJAc
+         G3KwjCRtEpD/LwY9Dl5Hjd1oGJ1U70yY3hUQXpNOD15GZd5uFzti0T6yC0pqDwXGR8Z2
+         ONhs6+R1j1eo2qneSdbnOt9/9XaPp2xEREyNv0CnynZJPn7dG7RpuEji5lz8TqcsSa+9
+         FU3NZUnCjdiDaauc5173ghaCedusTT9HdtUXkm++bOZ8menjfDdRmTMhfgKNiM5CCznU
+         vWSoHtwtxjHaZ4CPtOuDy5brMEy4Ouofc9eVbupODKoOprTuwixn9pdlqEx7IuqtnokF
+         LD1A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1773101492; x=1773706292;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=Pkr/1ETbWQejqwBM4qtLfTAaAxiiLLi9EmI3z7gEzag=;
-        b=vBvv35h79evq0o+sL8tEqcD7Xw8io1B1Y3Sjka/XDOfV3xXf4yn31Kx8nfk2WI/xst
-         C07h/oIr3J6XX+YDMzvPYqYxU5RpVJydCpSzgMvQGiEMEoAoacjgKAxRC5IQcznK2v/K
-         2+CgVopJkunMxGcdMxTlwchHAS7BTyOmKzITeYxQarTA71TDzqfCDt11Z+OspQZZyddz
-         OoJ1Xy3AsKDxdApHnJCqV9SB4XmEYpWUgkyKDY9PAzhKw14vQFJRwQAPeICmz/a1i9Xb
-         WwL+F6rmq42IJA9dDIWw2ID4AKvIjMPJANgaR7h91ki3+sN5tUyjlqCSLlo3CZP4aa8J
-         wvBQ==
-X-Forwarded-Encrypted: i=1; AJvYcCU30aheNcDArfqKjOgAHCDaXpHe8dRMh5CzEXc4vZPzFBE73b3572B5iWRC5h4GYFHAAwt7YjYbwl3d06Fc1Q==@vger.kernel.org
-X-Gm-Message-State: AOJu0YyOq57WedrGpVPKFlfUyplWJ8k8JGKQ3KKPRPjkjz9UdjZl7ZsR
-	IzUoEklp9xKWQpQ+Xv/5DI5ov32PY2U9Wua/xrEn+4a/fXoHgikqsgJFr72YYf1WFJcQiMW26Pe
-	27Bv7wpmbE/0UBgWETus+lcSLF+aFZxLKYbWZmHVW0cij5IVveJDyCRJSm7PdVkzKhC/D+w==
-X-Gm-Gg: ATEYQzxNHRa5MI+SVI5ByP8I8VDnlSG6DwVtjnpG19oy2gtWlTcZK+ONI5KBp7Hsr+E
-	M3OI8B4xAFXa6zwOSsephK828/px1+po9/GWB5RtVppINFDpeEtTXPYKS3lRFoQEk9DnEOY9Mri
-	prPqt2JWJQmE2Pyd1zv7vVMlEM6r/15SRXgAZj7d4gVu9JM7t+h7T44/n6Rh2PFLbkEQLhrTX18
-	cWcyWBFJehA0uTXsnQoJUc9NAHGLsZuuyEEA77ABbNHDad392bxtPz1u2tpUfeu4SAOaHuiiPhW
-	Mm1U5wegNvspc5AGbklEZrD+xE5FBN3LH+r3xEkVUQvhIGtun6hEw/EBWTQanGyzNcQhCEqzbpf
-	w6gyfT7CAlIHkl/izQTH72aCDbkV58F+y39Lz22ridGK0d8PDAHi3o1tAyqfpV0drLY1M/Fdoz9
-	Qt5OZfjiZg6IOjBtccw0kyFGoPxgNhcNrEXLQ=
-X-Received: by 2002:a05:620a:4445:b0:8cd:8635:c031 with SMTP id af79cd13be357-8cd8635c4e0mr698514585a.20.1773101492229;
-        Mon, 09 Mar 2026 17:11:32 -0700 (PDT)
-X-Received: by 2002:a05:620a:4445:b0:8cd:8635:c031 with SMTP id af79cd13be357-8cd8635c4e0mr698510485a.20.1773101491691;
-        Mon, 09 Mar 2026 17:11:31 -0700 (PDT)
-Received: from umbar.lan (2001-14ba-a073-af00-264b-feff-fe8b-be8a.rev.dnainternet.fi. [2001:14ba:a073:af00:264b:feff:fe8b:be8a])
-        by smtp.gmail.com with ESMTPSA id 38308e7fff4ca-38a5cfcb1d5sm1692581fa.16.2026.03.09.17.11.28
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 09 Mar 2026 17:11:29 -0700 (PDT)
-Date: Tue, 10 Mar 2026 02:11:26 +0200
-From: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
-To: Daniel Lezcano <daniel.lezcano@oss.qualcomm.com>
-Cc: konradybcio@kernel.org, andersson@kernel.org, linux-kernel@vger.kernel.org,
-        Alex Elder <elder@kernel.org>, Andrew Lunn <andrew+netdev@lunn.ch>,
-        "David S. Miller" <davem@davemloft.net>,
-        Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>,
-        Paolo Abeni <pabeni@redhat.com>, Jeff Johnson <jjohnson@kernel.org>,
-        Mathieu Poirier <mathieu.poirier@linaro.org>,
-        Srinivas Kandagatla <srini@kernel.org>,
-        Jaroslav Kysela <perex@perex.cz>, Takashi Iwai <tiwai@suse.com>,
-        Kees Cook <kees@kernel.org>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Arnd Bergmann <arnd@arndb.de>, Mark Brown <broonie@kernel.org>,
-        Wesley Cheng <quic_wcheng@quicinc.com>, netdev@vger.kernel.org,
-        linux-wireless@vger.kernel.org, ath10k@lists.infradead.org,
-        ath11k@lists.infradead.org, ath12k@lists.infradead.org,
-        linux-arm-msm@vger.kernel.org, linux-remoteproc@vger.kernel.org,
-        linux-sound@vger.kernel.org
-Subject: Re: [PATCH v1 0/8] Group QMI service IDs into the QMI header
-Message-ID: <ce5hwbo75dr4e7tt27bcprhpch6fx47omhn22ni6v3uzwfb2f2@fa2bebk7foct>
-References: <20260309230346.3584252-1-daniel.lezcano@oss.qualcomm.com>
+        d=1e100.net; s=20230601; t=1773102666; x=1773707466;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=t9wDJEseBZJT0tw4504PLVNc5jkQhgh2E19CGcQH/A4=;
+        b=qkpaMkd9bVp/UrNONVqFXakHSptOk3+l82UOtG1+57a2k2JNMM7f7aMS/UKXfXX4P+
+         agzv3sfJaujMpMBgQSfZOXI86bjPwFHI0nLm+7RleeaHju18A6gWCkxrkYnDCVh/7cV+
+         u+deXGM4TPBBgxI42FF4kwfam3A4jOsCr9rxzdvEnFdaix44u+VoGOQzj5KobkUegqyp
+         YNFujCm8ya9jSmOtXrCXcrMoSeF5EHVBTI4DKsRWjcRcU/GQnKZzuqM2lhoY+pSJHgSM
+         P9IKN8BHXEzf6zkBdVPE1CRFhaP6RPUnUfGy8NgwF1ZY6YCjGIHxV4x2gCrDQCgRtauS
+         chMQ==
+X-Gm-Message-State: AOJu0YyBbeeK4y5DaUy6YuSqiwI3VkA5QFVmKbBSjELHUiLC/GGMQtbc
+	Uq/Xeebyl9vaL7WfIBKnW/8FgR2+r3c05OpDTBtIn5pvG0Qx+ar8FDuWK3Qt9g3C3kzNm5oxGhJ
+	uNXxd2zXhmQRBt5KVmEsm/iNqn3btjg==
+X-Gm-Gg: ATEYQzzgCJfnFQPHy9JBnJYg0jl891t0cr7skrxZsOLcCW84bdmisZ4L/GqDQ6/NYdF
+	jn+YmfosPKzE20pBYIr8COI/9TjbUbPEHRgVOLPoYXi14rSTjGSsxjaxGWi+babbVfWcGXzaBTm
+	g43uhzY68g78EtKJ6r2xDl41JdfVjEVK2cBAYV6uKbuuZaMqueJRtya8jt9L77Q0Z62zLuwb+ig
+	CjSYZ4e1BkeUiLE/ITi9oqHaCk7jPoqMfXiKwoUOTMV+PgVr9x463hRwhL9jvVeAg1IBE+gvmwh
+	tqeYEh+WJXBuH4J9tA==
+X-Received: by 2002:ad4:5d4a:0:b0:899:f0d6:98c6 with SMTP id
+ 6a1803df08f44-89a30a9eb6bmr213356516d6.38.1773102665632; Mon, 09 Mar 2026
+ 17:31:05 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260309230346.3584252-1-daniel.lezcano@oss.qualcomm.com>
-X-Authority-Analysis: v=2.4 cv=cZ/fb3DM c=1 sm=1 tr=0 ts=69af61b4 cx=c_pps
- a=HLyN3IcIa5EE8TELMZ618Q==:117 a=xqWC_Br6kY4A:10 a=kj9zAlcOel0A:10
- a=Yq5XynenixoA:10 a=s4-Qcg_JpJYA:10 a=VkNPw1HP01LnGYTKEx00:22
- a=u7WPNUs3qKkmUXheDGA7:22 a=3WHJM1ZQz_JShphwDgj5:22 a=pNJNIoqo8oUBudG6fy8A:9
- a=CjuIK1q_8ugA:10 a=bTQJ7kPSJx9SKPbeHEYW:22
-X-Proofpoint-ORIG-GUID: S5wibvV7PdraGQd3S0XDqFOI712y6HhX
-X-Proofpoint-GUID: S5wibvV7PdraGQd3S0XDqFOI712y6HhX
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwMzA5MDIxMSBTYWx0ZWRfX/aoLAoJd/vTo
- OnNGpNfSvtYHj+hN6fc3QbtRdTfWeVJDHdKtzH5ZnYZ4phrAxabANwIxAA1eqelyYX7vzaVrv85
- vhjLHaIgka0DdqLrmGf0otIo2XRedvbiG3GSc4a9fpwlK08Oop5brxUFyau4nB4HpkWgxApkYL5
- iHHeV+mDBuxzCrCc90E7xrdMW35eVRWGDEbfYji8RqeUjBlAYVnxnIYq8o2AvNCDcDNB7gqpyd0
- BIhaIMLDtHwQDLitn9ItoLtpbW1Y87W12bSh2DTNVBfodPXkmBQPuqL5D0kNIi5KgqJ4s4jrzPB
- f0LOGPz4VPPdV4XmDEw3ml6gzPd1+p+JGhEWeMXzyAN+OptuFa4KmHf3cYzD7SQMHSl4+Kmuovd
- kF9tgf6jll3jRHoSdjtTySiZg8mCbWNeCHR6u5TWknV+ACgAVuFM89/ixY6FLqebSfKQWei0fwQ
- CrMu1D9ETXtnX2v2Z2A==
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.51,FMLib:17.12.100.49
- definitions=2026-03-09_06,2026-03-09_02,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- spamscore=0 suspectscore=0 impostorscore=0 adultscore=0 priorityscore=1501
- phishscore=0 malwarescore=0 lowpriorityscore=0 clxscore=1015 bulkscore=0
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.22.0-2602130000 definitions=main-2603090211
-X-Rspamd-Queue-Id: 6A2CA242EE7
+References: <CAFktD2eaVpRAJRkaGOj4y-m0woK-sNeCM+h_7A=9GELSce6TcQ@mail.gmail.com>
+ <CAGp9LzrTMALkJKrGANTCzeG4KUDGwC1YJc8SRKNRriH3a9bnRQ@mail.gmail.com>
+ <CAFktD2eG+nebKcNbw2imufSOz6MCR-SUXjcUQmDqJabNfwx4sg@mail.gmail.com> <CAGp9Lzp2s675kmTJG+iYgLXS=fjiD-JC6GYjom7i-bcWFDxWoQ@mail.gmail.com>
+In-Reply-To: <CAGp9Lzp2s675kmTJG+iYgLXS=fjiD-JC6GYjom7i-bcWFDxWoQ@mail.gmail.com>
+From: Nick <morrownr@gmail.com>
+Date: Mon, 9 Mar 2026 19:30:39 -0500
+X-Gm-Features: AaiRm51-SPdK-uByJlD8gIwo0gSZSGDwL9gAwLKh8EvfKXck5ZozzIINJjRopFU
+Message-ID: <CAFktD2dbdccWFodfFNya_XnbKro-O+BKrs4cZRNa0uPrK6FFfQ@mail.gmail.com>
+Subject: Re: [BUG] wifi: mt76: mt7925u: probe with driver mt7925u failed with
+ error -110
+To: Sean Wang <sean.wang@kernel.org>
+Cc: linux-wireless <linux-wireless@vger.kernel.org>, Felix Fietkau <nbd@nbd.name>, 
+	Lorenzo Bianconi <lorenzo@kernel.org>, Ryder Lee <ryder.lee@mediatek.com>, 
+	Shayne Chen <shayne.chen@mediatek.com>, Sean Wang <sean.wang@mediatek.com>, 
+	Deren Wu <deren.wu@mediatek.com>, Leon Yen <leon.yen@mediatek.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Rspamd-Queue-Id: E95C02430B7
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MID_RHS_NOT_FQDN(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[qualcomm.com,reject];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64];
-	R_DKIM_ALLOW(-0.20)[qualcomm.com:s=qcppdkim1,oss.qualcomm.com:s=google];
+X-Spamd-Result: default: False [-2.16 / 15.00];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=2];
+	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
+	R_DKIM_ALLOW(-0.20)[gmail.com:s=20230601];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-32799-lists,linux-wireless=lfdr.de];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_TLS_LAST(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[28];
-	MIME_TRACE(0.00)[0:+];
 	FROM_HAS_DN(0.00)[];
-	MISSING_XM_UA(0.00)[];
+	TAGGED_FROM(0.00)[bounces-32800-lists,linux-wireless=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
+	DKIM_TRACE(0.00)[gmail.com:+];
+	TO_DN_ALL(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[dmitry.baryshkov@oss.qualcomm.com,linux-wireless@vger.kernel.org];
-	DKIM_TRACE(0.00)[qualcomm.com:+,oss.qualcomm.com:+];
-	TAGGED_RCPT(0.00)[linux-wireless,netdev];
 	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TO_DN_SOME(0.00)[];
-	RCVD_COUNT_SEVEN(0.00)[7]
+	MIME_TRACE(0.00)[0:+];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[morrownr@gmail.com,linux-wireless@vger.kernel.org];
+	MISSING_XM_UA(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_SEVEN(0.00)[9];
+	MID_RHS_MATCH_FROMTLD(0.00)[];
+	TAGGED_RCPT(0.00)[linux-wireless];
+	FREEMAIL_FROM(0.00)[gmail.com]
 X-Rspamd-Action: no action
 
-On Tue, Mar 10, 2026 at 12:03:29AM +0100, Daniel Lezcano wrote:
-> The different subsystems implementing the QMI service protocol are
-> using their own definition of the service id. It is not a problem but
-> it results on having those duplicated with different names but the
-> same value and without consistency in their name.
-> 
-> It makes more sense to unify their names and move the definitions in
-> the QMI header file providing a consistent way to represent the
-> supported protocols. Consequently the different drivers will use them
-> instead of their own definition of the service id.
+On Fri, Mar 6, 2026 at 6:46=E2=80=AFPM Sean Wang <sean.wang@kernel.org> wro=
+te:
+>
+> Hi Nick,
+>
+> Thanks for the detailed report  this is very helpful. I don't  have an
+> MT7925 USB device to detail look into the issue, but based on the
+> trace I wrote a small change to try a different MT7925 reset sequence.
+> please help test.
+>
+> --- a/drivers/net/wireless/mediatek/mt76/mt792x_usb.c
+> +++ b/drivers/net/wireless/mediatek/mt76/mt792x_usb.c
+> @@ -234,6 +234,36 @@ int mt792xu_dma_init(struct mt792x_dev *dev, bool re=
+sume)
+>  }
+>  EXPORT_SYMBOL_GPL(mt792xu_dma_init);
+>
+> +static int mt7925u_wfsys_reset(struct mt792x_dev *dev)
+> +{
+> +    u32 val;
+> +    int i;
+> +
+> +#define MT7925_CBTOP_RGU_WF_SUBSYS_RST        0x70028600
+> +#define MT7925_WFSYS_SW_INIT_DONE_ADDR        0x184c1604
+> +#define MT7925_WFSYS_SW_INIT_DONE        0x00001d1e
+> +
+> +    val =3D mt792xu_uhw_rr(&dev->mt76, MT7925_CBTOP_RGU_WF_SUBSYS_RST);
+> +    val |=3D MT_CBTOP_RGU_WF_SUBSYS_RST_WF_WHOLE_PATH;
+> +    mt792xu_uhw_wr(&dev->mt76, MT7925_CBTOP_RGU_WF_SUBSYS_RST, val);
+> +
+> +    msleep(20);
+> +
+> +    val =3D mt792xu_uhw_rr(&dev->mt76, MT7925_CBTOP_RGU_WF_SUBSYS_RST);
+> +    val &=3D ~MT_CBTOP_RGU_WF_SUBSYS_RST_WF_WHOLE_PATH;
+> +    mt792xu_uhw_wr(&dev->mt76, MT7925_CBTOP_RGU_WF_SUBSYS_RST, val);
+> +
+> +    for (i =3D 0; i < MT792x_WFSYS_INIT_RETRY_COUNT; i++) {
+> +        val =3D mt792xu_uhw_rr(&dev->mt76, MT7925_WFSYS_SW_INIT_DONE_ADD=
+R);
+> +        if (val =3D=3D MT7925_WFSYS_SW_INIT_DONE)
+> +            return 0;
+> +
+> +        msleep(100);
+> +    }
+> +
+> +    return -ETIMEDOUT;
+> +}
+> +
+>  int mt792xu_wfsys_reset(struct mt792x_dev *dev)
+>  {
+>      u32 val;
+> @@ -241,6 +271,9 @@ int mt792xu_wfsys_reset(struct mt792x_dev *dev)
+>
+>      mt792xu_epctl_rst_opt(dev, false);
+>
+> +    if (is_mt7925(&dev->mt76))
+> +        return mt7925u_wfsys_reset(dev);
+> +
+>      val =3D mt792xu_uhw_rr(&dev->mt76, MT_CBTOP_RGU_WF_SUBSYS_RST);
+>
+>
 
-Also this looks like a first step towards providing qrtr service debugfs
-in the kernel.
+Sean,
 
-> 
+Testing complete. Results are good. You can show the following:
 
--- 
-With best wishes
-Dmitry
+Tested-by: Nick Morrow <morrownr@gmail.com>
+Tested-by: Satadru Pramanik <satadru@gmail.com>
+
+Thank you for working on this issue. If it is possible for your patch to go
+directly in to be in one of the next rc's, that would be great and setting
+it to backport would also be much appreciated.
+
+Nick Morrow
+
+> On Fri, Mar 6, 2026 at 1:24=E2=80=AFPM Nick <morrownr@gmail.com> wrote:
+> >
+> > > > Reference: https://github.com/morrownr/USB-WiFi/issues/688#issuecom=
+ment-3999038526
+> > > >
+> > > > The above thread is rather lengthy as we have been working on this
+> > > > issue since Dec. 25.
+> > > >
+> > > > Testing with a Netgear A9000 USB WiFi adapter (mt7925u driver). Ker=
+nel
+> > > > 7.0 rc2 and a x86_64 system. Additional testing with older kernels =
+was
+> > > > also performed with the same results.
+> > > >
+> > > > Problem description:
+> > > >
+> > > > Cold boot shows the adapter coming up and operating normally.
+> > > >
+> > > > Removing the adapter from the USB port and replacing it shows the
+> > > > adapter coming up and operating normally.
+> > > >
+> > > > A warm reboot does not provide a WiFi interface and shows the
+> > > > following in the system log:
+> > > >
+> > > > mt7925u 2-3.2:1.0: probe with driver mt7925u failed with error -110
+> > > >
+> > > > Using the commands rmmod and modeprobe do not provide a WiFi interf=
+ace.
+> > > >
+> > > > Thoughts: The problem likely is not the module teardown. The proble=
+m
+> > > > seems to be that the firmware (or the mt7925u driver) leaves the
+> > > > adapter in a strange state such that a power cycle of the adapter
+> > > > hardware is needed before the mt7925u driver can properly initializ=
+e
+> > > > it a second time.
+> > > >
+> > >
+> > > Hi Nick,
+> > >
+> > > Could you enable debug logs and check whether the driver can still
+> > > read the correct chip ID after a warm reboot, and at which step the
+> > > initialization fails before the -110 error? Thanks for continuing to
+> > > test and gather this useful information.
+> > >
+> > >          Sean
+> >
+> > Hi Sean,
+> >
+> > Github user @exct has performed the testing requested and provides the
+> > following report:
+> >
+> > mt7925u Probe Failure Debug Report
+> > Adapter: Netgear A9000 (USB ID 0846:9072, MediaTek MT7925)
+> > Kernel: 6.19.6-2-cachyos
+> >
+> > Summary
+> > The driver can read the correct chip ID after a warm reload. The
+> > failure occurs before firmware is loaded, inside
+> > mt792xu_wfsys_reset(), which times out waiting for the WiFi subsystem
+> > to reinitialize. -ETIMEDOUT (-110) is returned and the probe aborts.
+> >
+> > Findings
+> >
+> > Question: Chip ID readable after warm reload?
+> > Answer: Yes =E2=80=94 MT_HW_CHIPID =3D 0x7925, MT_HW_REV =3D 0x8a00
+> >
+> > Question: Which step fails?
+> > Answer: mt792xu_wfsys_reset() =E2=80=94 WFSYS_INIT_DONE never asserted
+> >
+> > Question: Does it reach mt792xu_mcu_power_on()?
+> > Answer: No
+> >
+> > Question: Does it reach mt7925_run_firmware()?
+> > Answer: No
+> >
+> > Probe Sequence Trace
+> >
+> > mt7925u_probe()
+> >   =E2=94=9C=E2=94=80 mt76_alloc_device()             OK
+> >   =E2=94=9C=E2=94=80 __mt76u_init()                  OK
+> >   =E2=94=9C=E2=94=80 read MT_HW_CHIPID (0x70010200)  =E2=86=92 0x000079=
+25  =E2=9C=93
+> >   =E2=94=9C=E2=94=80 read MT_HW_REV    (0x70010204)  =E2=86=92 0x00008a=
+00  =E2=9C=93
+> >   =E2=94=9C=E2=94=80 read MT_CONN_ON_MISC (0x7c0600f0) =E2=86=92 0x0000=
+0003  =E2=86=90 FW_N9_RDY is SET
+> >   =E2=94=9C=E2=94=80 enters mt792xu_wfsys_reset()    =E2=86=90 triggere=
+d because FW_N9_RDY =3D 1
+> >   =E2=94=82    =E2=94=9C=E2=94=80 write MT_CBTOP_RGU_WF_SUBSYS_RST  (as=
+sert reset)
+> >   =E2=94=82    =E2=94=9C=E2=94=80 write MT_CBTOP_RGU_WF_SUBSYS_RST  (de=
+assert reset)
+> >   =E2=94=82    =E2=94=9C=E2=94=80 poll MT_UDMA_CONN_INFRA_STATUS (0x740=
+00a20) =E2=86=92 0x00000000
+> >   =E2=94=82    =E2=94=9C=E2=94=80 poll MT_UDMA_CONN_INFRA_STATUS (0x740=
+00a20) =E2=86=92 0x00000000
+> >   =E2=94=82    =E2=94=94=E2=94=80 ... timeout after ~212 ms =E2=86=92 r=
+eturn -ETIMEDOUT
+> >   =E2=94=94=E2=94=80 goto error:  (mt76u_queues_deinit + mt76_free_devi=
+ce)
+> >
+> > Root Cause
+> >
+> > After rmmod, the firmware leaves FW_N9_RDY asserted in
+> > MT_CONN_ON_MISC. On re-probe, the driver correctly detects this and
+> > calls mt792xu_wfsys_reset() to recover. However, the WiFi subsystem
+> > never signals completion =E2=80=94 WFSYS_INIT_DONE in
+> > MT_UDMA_CONN_INFRA_STATUS (reg 0x74000a20) stays 0x00000000 throughout
+> > the retry loop. The subsystem is stuck in a state that the software
+> > reset path cannot recover from. Only a full USB power cycle clears it.
+> >
+> > Hope this helps,
+> >
+> > Nick
 
