@@ -1,244 +1,225 @@
-Return-Path: <linux-wireless+bounces-32827-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-32828-lists+linux-wireless=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 8OHbJIf6r2mmdwIAu9opvQ
-	(envelope-from <linux-wireless+bounces-32827-lists+linux-wireless=lfdr.de@vger.kernel.org>)
-	for <lists+linux-wireless@lfdr.de>; Tue, 10 Mar 2026 12:03:35 +0100
+	id IMNyCXT/r2mdeQIAu9opvQ
+	(envelope-from <linux-wireless+bounces-32828-lists+linux-wireless=lfdr.de@vger.kernel.org>)
+	for <lists+linux-wireless@lfdr.de>; Tue, 10 Mar 2026 12:24:36 +0100
 X-Original-To: lists+linux-wireless@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4DD9F249EEA
-	for <lists+linux-wireless@lfdr.de>; Tue, 10 Mar 2026 12:03:35 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id B453024A99A
+	for <lists+linux-wireless@lfdr.de>; Tue, 10 Mar 2026 12:24:35 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 76E32303E6AB
-	for <lists+linux-wireless@lfdr.de>; Tue, 10 Mar 2026 11:02:23 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 16DC4307DC4E
+	for <lists+linux-wireless@lfdr.de>; Tue, 10 Mar 2026 11:18:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C61EA2BF3E2;
-	Tue, 10 Mar 2026 11:02:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 50E96387588;
+	Tue, 10 Mar 2026 11:18:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Hy5D3efw"
+	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="QlYfu5XV";
+	dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b="TVbMoykL"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-ot1-f46.google.com (mail-ot1-f46.google.com [209.85.210.46])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6AE503859DC
-	for <linux-wireless@vger.kernel.org>; Tue, 10 Mar 2026 11:02:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.210.46
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773140537; cv=pass; b=aMBKSWTyNUkqJHG9MW6W4isDvxRImet1qh6Bqh7JPN5DQb30st6OalI6wdR0ziLEFuGob4SljZCMIvwE/TltVjYOh/KIyigJB6QnJkC0iKuq2eaWMRn6iACvCEJd9sJcQrj9XlSW6ur/QVgoa2tivnqgbRMkciF1lP2oP36hQvc=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773140537; c=relaxed/simple;
-	bh=DQhkWZ7vGA27UCJ7PrtZxdgKY5v5cVyIkF8OtNg+RmA=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=Ha8/46JJqmGqL2nNsGBQoeTH38Dm/cjDae87UD5XDusAHbnFVTRuyJVTapAsTumQxtffdsb7gDmMf31YojlwzuI/8cZ84xStnhTAz7Oz/6dQREAK1W3M0fw0bOZIXpv5xXSmzJQsRiAqpVdmCeGxO0vGGN4V/ZZXZYl6awC++ko=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Hy5D3efw; arc=pass smtp.client-ip=209.85.210.46
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-ot1-f46.google.com with SMTP id 46e09a7af769-7d75e74f5adso403729a34.3
-        for <linux-wireless@vger.kernel.org>; Tue, 10 Mar 2026 04:02:16 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1773140535; cv=none;
-        d=google.com; s=arc-20240605;
-        b=cKrtdnNwI48YvRRINip1ebLj3rTwLiD6WKNIx2bA1ay4Eb33wuoGSLxqPU0YCpa6he
-         u4ib5ZJ8EWPipysqz2Sw3ysF2B2ZZrcgYEOkGZZqB5JISy7gDkZFH+BTYw427FIphEtl
-         yfWGJKiUba/Sauq+TiK/tHwcLRh1+5PS+1W77fQVP1l6dDm0Q1Vw+wYi4k03nhvx52Nf
-         Vo3Fq5sYtgZuUmtx17w7AHk1ei5+G72i9+yiqTN5LoDtWOxQiylfOKaJ3KBy2k6GbYLh
-         uZvcfPLZFZzwilMsBi7WQOtJ7eKZQzkS7d+6Qxrd6c9jALSddPDRvhrv1UnpEQUfSbMj
-         Gg2w==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:dkim-signature;
-        bh=DQhkWZ7vGA27UCJ7PrtZxdgKY5v5cVyIkF8OtNg+RmA=;
-        fh=fFUQ3bDSnwWYL/1dqZwPKYywXd5TONRsAevI/mvHYbI=;
-        b=RyXR02kisgkwozCDFdUlwWKnYnbGpub5c5U99tD70b4BOnkLETDGcBKGD+rqyfwBYM
-         CozeRnsYZ60udg/JuQgZYsN+G7GYLbGlhHT/cbKoUztGtFuIT+boP0qGrlRn8YX0yIGe
-         r/NcuIfy8zCXbtHEdHYMky4KTEp12rILo5DN8zZFB1Hd9OgRMlv+HZLYnroqkGat/bAh
-         oKgrZ3yexxadmnoa6LMnsM3Z8te7/YKDP+ow04LJwzv+acNFYtRW0g4Cna9z6gIxl/FZ
-         7xNsCYiaxEu8eFkzZ8qUhnV+4kxk9O406r4By9jvpm0L2JJRsy2jC+u8zYcQyrDDvolw
-         UrUw==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 16561352C4F
+	for <linux-wireless@vger.kernel.org>; Tue, 10 Mar 2026 11:18:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1773141520; cv=none; b=XT+1VrwojdxOINO2x0qdQIuJq5dQd8bhEQNfs0LcSzTQGbfN91xIfGLg8tfkXeXEMqKOwH+xkwRl7UJz32/BZDssSaYdM5ILEOX1GNWDYjD/5WzGLCN5N3BV+fX1rzclOjAakwteI4VTh9JePILKmj46AFzTe7r10jZnywb+veU=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1773141520; c=relaxed/simple;
+	bh=VDhycqnzSIMz6WG5a+hEjX33+5RHQg0u0oIz2Hcqinw=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=hHWG+pHM8RYVkUFdXMbXffYz2/DbLUvwr+SOZ2aRaAJ75Xwatp/MuLSVWf9Xz1dfDaA8tar+bdRS6dnzn+cGQ2DfqT2OEAW6CROS7ePWfDFBhIgc1odUcT+ovUFtSXX7559CO1YP6ospv9R9pItIYHNm4hbjXc4whOCvxb1OTSs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=QlYfu5XV; dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b=TVbMoykL; arc=none smtp.client-ip=205.220.168.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
+Received: from pps.filterd (m0279866.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 62A6VZf82021721
+	for <linux-wireless@vger.kernel.org>; Tue, 10 Mar 2026 11:18:37 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
+	cc:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
+	4lKTOqMrwzdJe8MdvtBsaM2UISrCW3NHkw/GkPvpThY=; b=QlYfu5XVNEkLdax4
+	a6RFt/XIRvfaWo7pRocjrUBpjbEbQeqOXh5SHNJQ8SdbbPlqTJTKfZyByzBoHN2R
+	UQ+swfGgHjjVi6Dls7b07hgv4f461JNLHeobjgTODAQhoqlJQCII/FMcPTnD2hdk
+	5+XQuc4k/dIBotnY9whumegQUwBzME05a1AZazAoqeTBUxSCNNqD7wU1HTgbpqIC
+	sq7ZmA/s9lcP0D4x2p4zdDyp89oa54L2zr4xIRlMaj4pDZe3Z/nPpOsMDAjYqu19
+	96RrikdGvPTXcWTFV2A0jaFmjxoo7hqaIIMS/PMjLI2qyqRac2/IgyEr/IM+T4Yo
+	PQm6TQ==
+Received: from mail-qk1-f199.google.com (mail-qk1-f199.google.com [209.85.222.199])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4cte3w92pw-1
+	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
+	for <linux-wireless@vger.kernel.org>; Tue, 10 Mar 2026 11:18:37 +0000 (GMT)
+Received: by mail-qk1-f199.google.com with SMTP id af79cd13be357-8cb456d53a5so42046985a.2
+        for <linux-wireless@vger.kernel.org>; Tue, 10 Mar 2026 04:18:37 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1773140535; x=1773745335; darn=vger.kernel.org;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=DQhkWZ7vGA27UCJ7PrtZxdgKY5v5cVyIkF8OtNg+RmA=;
-        b=Hy5D3efw4Fgb4kbnCRkP/zYGlDohZRI/ZJW4zCwu9YcEVIoVdCdrfLfaIMi1VX5HPg
-         vf6HOKtEv4Cw4nvhaqEufUlrYqcLttbCQOUI/SWKWB/K3uRxhGriYtdolv3wUY6s4+X0
-         ypX0v0tndgkgtj609hyU1/TwvpTdXc3sL7hVqDow78pzgJ+2ymvP58lfJrqA+REfCoxl
-         Wrylow0430RweN5ZGEv3+ltD/1rBuZ4Xjetn21DtrEBiwkyAVGlJwXwibnREGsmnNS5q
-         KCnPj666jIgyyWVD8PW6GrRaHag8htBP8UZVcPUwu3pVyS9+QZIQi/dBeG6b8DR5/BHs
-         v/sw==
+        d=oss.qualcomm.com; s=google; t=1773141516; x=1773746316; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=4lKTOqMrwzdJe8MdvtBsaM2UISrCW3NHkw/GkPvpThY=;
+        b=TVbMoykLSkIHJh1KgQfcPtCtjWAsGk748LGdvFT47JXju7Lf59tgJFrSDfv8w/izGf
+         zZ1GStOgjazeko+Ui8UvRiRzON+AcmV8DwcNj5AJF0pNntaxxh0b1sYnQmRmO21flvT1
+         Dp2UZlAWEdRsPeqWI5obrG8b6Ln0az+syhHHc8+BhMknzoHvZgtyhyux3isXNDOzTwDC
+         sJnklS+ydpOOk96F2Dr0jfKzgcn5v1Jx3KuzoOL2f+w5Z5/SJvL/pMfOKZog/cnckopV
+         duj+sCI3sv3BndEBAVXay0HIrFdY6JU/2perA6rEYdacB7uYluA0seTeY1VVI++UMOHp
+         Vy4w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1773140535; x=1773745335;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=DQhkWZ7vGA27UCJ7PrtZxdgKY5v5cVyIkF8OtNg+RmA=;
-        b=tcI8tuI8RxwCQAg9dWLvb31x1ZIN2sFhBcWDxXSheb1zKjshV+Ca46wIhhEHZOAzbn
-         n5eWTbfIJl7ykiQTClV+kGAPx0PafytYSAoiIp1mVohUdPevB6TM8bulUm67GQ9fKq9H
-         o/0n4uxcQ70TP1IDCw302fg35oNoVS1XzrYQpCkdto4NsNaOjUxsmrgqoZ0Cu+BegLAx
-         ZnkqwJo2hVRliv4958KE3uon4V6sXJoesKT2nzTDBjWMbP4Sx+4gqLV8SBFWZJuoloGP
-         4YAKMCVfN1Gpb7ZlEyCGJ/tcsjBqgWfq6yVzpyT8RvFH+kd/bBhhw4FdureAOCrXVuvJ
-         Btrg==
-X-Gm-Message-State: AOJu0YzaGjhx9JoVkS0GAbzpiyaY1tZwmPNsJRLGkJ3uFnSWu6fPCQvQ
-	grSako0nb23Azehig6COskS7vjiWzj/m1Hpr7KNcIbxe96dPaIB117/6+wrympf4sOn2RkEw3aO
-	9YvfjTLRWqvbWRgnrwWl8k+7366C2osU=
-X-Gm-Gg: ATEYQzyfwr3g3op0QBUensGxZU+c/aQ/WIYzLXjO9CX67dE5L2rYvSl/Q7sqeHn+fZZ
-	vO0UfqfwcvFkuyP6Zu9WQJPvu0PUaku/ixsv0jdi6a96kOKGeodF6vUKxK1dMQDWnCcPJHH+qRL
-	+CGGGnn4vFpRTWEa53C0n7KEaTOGIUozcmar+xr6csvGfPl/xferQexOIuscgm+lJE0TDdSGenZ
-	5Kq7KsVHFNcoWqg6P0w4hzuGqHGjEk6jBuIlSM1ow42bOnSBBLHbXXXEPHu3IlLBp1cXeep9Vw/
-	V205ypvgheBtNE2dYA407DHX9w==
-X-Received: by 2002:a05:6830:2e05:b0:7d7:4666:69be with SMTP id
- 46e09a7af769-7d746666b8amr6106834a34.18.1773140535213; Tue, 10 Mar 2026
- 04:02:15 -0700 (PDT)
+        d=1e100.net; s=20230601; t=1773141516; x=1773746316;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=4lKTOqMrwzdJe8MdvtBsaM2UISrCW3NHkw/GkPvpThY=;
+        b=Ju0pfVC3EhNRKgUGTqvAGaN5DggauQFd5lsZloc8kfjHhJFxFpcxJaWI1av+XH7yQk
+         UGYk91h8vjIpjoQ0U/kg3uhNLpnS/7QbHZiImotbG1xd5qDR5eu1nEvsfRdjtDepl0HM
+         mJd4HEHM7cxlTzD3iUC53SMcoOsFvkwFEAJGkjuTC1AdL8eADhMedby2YSXJLy53nng1
+         kkEiStWF742ydFMPqS1j9NsPlW/tz8+BjVIIJBTmnG5+inenaJv+ctf7L5V20Sb2uY3q
+         p3KO2flu6srtbXHHiSHJ0cVnb6e6vrZhYcv0iO+NwiyXCrb8/f+zzznxIl0yU727y5WP
+         JT0A==
+X-Forwarded-Encrypted: i=1; AJvYcCW+dbCLrqLYGTriVeJQJMXygxw8n/y4esk1tAMD6JjuOZfgzkOxkWjO5eTq2A6KtHDKmmdRh1usrRj0qmswhA==@vger.kernel.org
+X-Gm-Message-State: AOJu0YzPg1iZ9gUqd0SotfAEvp1G6eDS8nV4weF4dAOi90gveaD+x8gq
+	2qA685qu3tUyNt/bBreTe4LD96D0hNwfSRI3o2T6wnR+wIOaLOKmzy+JhfjULdCiXjQP8ymMQkr
+	Td6x6dIcycUkl3H/DBI2Zi8evM1OHaY63fpfwkjk2/jpE3dvSuWBhFv3Mq19AaMm5fnUqFQ==
+X-Gm-Gg: ATEYQzx12StK/zQqRZz80eJ3vTFhmN/knG+Hjp/kLE63B3E2a2NBR80TWHvLPI0ATBR
+	/PpkjxCceX3hSYlsJVyvXfnFmQeqBQwg8lL2JXG706leY6Jr428nBde7NtVIKJ0K83SqGyUiggR
+	SzKkiGq40pUXHlnFDbq1zji4JTPSwraMrWp+Ov+bnUeiBpMnAwieZoH6OVFGcFUZxZtKHM505YQ
+	C0r8BLEMzcJHq/LaxHc5bk7oTiEDFXsU1jgDh3VN5s4n1FcDkpIzMMlvUG18vVqY6ufQwcTBqFn
+	wx9zxHKAMakw8s5Yst/VYC+eIrt7IrERpzIM9UuKIUTw5z9FtKWLKPEob2+rQJ6V1bIHQlWCmdK
+	/ufvoIZpZQ/r304FC7FSzruVbK/xDXAzqR4ewiZOYOc9JbhcPLdGTZQ8s96ZjJBPxtn4bcoooIy
+	SH/YY=
+X-Received: by 2002:a05:620a:1a83:b0:8cd:90f4:326d with SMTP id af79cd13be357-8cd90f43559mr437811585a.7.1773141516338;
+        Tue, 10 Mar 2026 04:18:36 -0700 (PDT)
+X-Received: by 2002:a05:620a:1a83:b0:8cd:90f4:326d with SMTP id af79cd13be357-8cd90f43559mr437806885a.7.1773141515744;
+        Tue, 10 Mar 2026 04:18:35 -0700 (PDT)
+Received: from [192.168.119.254] (078088045245.garwolin.vectranet.pl. [78.88.45.245])
+        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-661a4fd5e9esm4078116a12.21.2026.03.10.04.18.30
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 10 Mar 2026 04:18:34 -0700 (PDT)
+Message-ID: <a96cca02-54e4-4ed0-9fcb-816c72afe0e7@oss.qualcomm.com>
+Date: Tue, 10 Mar 2026 12:18:29 +0100
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <CALdGYqSQ1Ko2TTBhUizMu_FvLMUAuQfFrVwS10n_C-LSQJQQkQ@mail.gmail.com>
- <1e96af437fa24674b353ddb530b2d8e7@realtek.com>
-In-Reply-To: <1e96af437fa24674b353ddb530b2d8e7@realtek.com>
-From: LB F <goainwo@gmail.com>
-Date: Tue, 10 Mar 2026 13:01:36 +0200
-X-Gm-Features: AaiRm50ELWPwVRBdKOslQOL3oqEqSFLwQK1mBBMLL1RufWwV7y5_k5ioyvoDqWg
-Message-ID: <CALdGYqQb=Vt0jjqW7k8RGMV1gczL0cg-26cHgCm3MmzBjezGMQ@mail.gmail.com>
-Subject: Re: [BUG] wifi: rtw88: Hard system freeze on RTL8821CE when
- power_save is enabled (LPS/ASPM conflict)
-To: Ping-Ke Shih <pkshih@realtek.com>
-Cc: "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>, 
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-X-Rspamd-Queue-Id: 4DD9F249EEA
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 11/14] media: qcom: Switch to generic PAS TZ APIs
+To: Jorge Ramirez <jorge.ramirez@oss.qualcomm.com>,
+        Sumit Garg <sumit.garg@kernel.org>
+Cc: linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org,
+        dri-devel@lists.freedesktop.org, freedreno@lists.freedesktop.org,
+        linux-media@vger.kernel.org, netdev@vger.kernel.org,
+        linux-wireless@vger.kernel.org, ath12k@lists.infradead.org,
+        linux-remoteproc@vger.kernel.org, andersson@kernel.org,
+        konradybcio@kernel.org, robh@kernel.org, krzk+dt@kernel.org,
+        conor+dt@kernel.org, robin.clark@oss.qualcomm.com, sean@poorly.run,
+        akhilpo@oss.qualcomm.com, lumag@kernel.org, abhinav.kumar@linux.dev,
+        jesszhan0024@gmail.com, marijn.suijten@somainline.org,
+        airlied@gmail.com, simona@ffwll.ch, vikash.garodia@oss.qualcomm.com,
+        dikshita.agarwal@oss.qualcomm.com, bod@kernel.org, mchehab@kernel.org,
+        elder@kernel.org, andrew+netdev@lunn.ch, davem@davemloft.net,
+        edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
+        jjohnson@kernel.org, mathieu.poirier@linaro.org,
+        trilokkumar.soni@oss.qualcomm.com, mukesh.ojha@oss.qualcomm.com,
+        pavan.kondeti@oss.qualcomm.com, tonyh@qti.qualcomm.com,
+        vignesh.viswanathan@oss.qualcomm.com,
+        srinivas.kandagatla@oss.qualcomm.com,
+        amirreza.zarrabi@oss.qualcomm.com, jens.wiklander@linaro.org,
+        op-tee@lists.trustedfirmware.org, apurupa@qti.qualcomm.com,
+        skare@qti.qualcomm.com, Sumit Garg <sumit.garg@oss.qualcomm.com>
+References: <20260306105027.290375-1-sumit.garg@kernel.org>
+ <20260306105027.290375-12-sumit.garg@kernel.org> <aa6O5tir4kVIe0eZ@trex>
+Content-Language: en-US
+From: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
+In-Reply-To: <aa6O5tir4kVIe0eZ@trex>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwMzEwMDA5NyBTYWx0ZWRfX2um2fU6oeZna
+ 3ZSddqaqBgCYcJrEOJ9GiAe1j7I9y69RNo9MzosVgvks3LS7ZbDmkRTmzBNnqFjOw2+Qx6ADxKv
+ xRAylWS3HY93naeh0gjFFPQT8eDj5SgHcXXQFrvJdlmZaZM7LZXqM02Yw+FQuLb2nNAgV61sy1/
+ Jhz+REn5dU32ytJcVlwezd3GtuqZdikb/dPN8Mr170J3I4K7USRKoqV/L+SQkrTSX+AyhkQvpw0
+ u+emVjS+1sfSw8HtKHddTo0nwkRM/iuD/GWCPmipKa17rqftCYWOoyXhD04mB3gi2YkfgkM+xwK
+ 1AalL3nwXCsyqCDSlOlFKAMyh266+xGrLy3JMqYmf6FOxqEO3JrvAjhxtkuo14zSfz2CubTNSUy
+ qwm6o7OsSj34MYBhEbCffjvua3W7QrDuy9BzMdbIf95K/vNKHI8Gt5z3asWSzMckixdJEuJm2+D
+ a3Lm17ki9x7LX6iqU7w==
+X-Authority-Analysis: v=2.4 cv=GtFPO01C c=1 sm=1 tr=0 ts=69affe0d cx=c_pps
+ a=HLyN3IcIa5EE8TELMZ618Q==:117 a=FpWmc02/iXfjRdCD7H54yg==:17
+ a=IkcTkHD0fZMA:10 a=Yq5XynenixoA:10 a=s4-Qcg_JpJYA:10
+ a=VkNPw1HP01LnGYTKEx00:22 a=u7WPNUs3qKkmUXheDGA7:22 a=YMgV9FUhrdKAYTUUvYB2:22
+ a=EUspDBNiAAAA:8 a=1RngqAJXY2j47DovaP0A:9 a=QEXdDO2ut3YA:10
+ a=bTQJ7kPSJx9SKPbeHEYW:22
+X-Proofpoint-ORIG-GUID: w_cqRZ83vzF5BxRyPlMjC9kVshpQDKZN
+X-Proofpoint-GUID: w_cqRZ83vzF5BxRyPlMjC9kVshpQDKZN
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.51,FMLib:17.12.100.49
+ definitions=2026-03-10_02,2026-03-09_02,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ bulkscore=0 phishscore=0 malwarescore=0 clxscore=1015 lowpriorityscore=0
+ spamscore=0 suspectscore=0 priorityscore=1501 impostorscore=0 adultscore=0
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.22.0-2602130000 definitions=main-2603100097
+X-Rspamd-Queue-Id: B453024A99A
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-2.16 / 15.00];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=2];
-	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
-	R_DKIM_ALLOW(-0.20)[gmail.com:s=20230601];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+X-Spamd-Result: default: False [-0.66 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	DMARC_POLICY_ALLOW(-0.50)[qualcomm.com,reject];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_DKIM_ALLOW(-0.20)[qualcomm.com:s=qcppdkim1,oss.qualcomm.com:s=google];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-32827-lists,linux-wireless=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	TO_DN_EQ_ADDR_SOME(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FREEMAIL_FROM(0.00)[gmail.com];
-	RCVD_COUNT_THREE(0.00)[4];
-	TO_DN_SOME(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	FROM_HAS_DN(0.00)[];
-	RCPT_COUNT_THREE(0.00)[3];
+	FREEMAIL_CC(0.00)[vger.kernel.org,lists.freedesktop.org,lists.infradead.org,kernel.org,oss.qualcomm.com,poorly.run,linux.dev,gmail.com,somainline.org,ffwll.ch,lunn.ch,davemloft.net,google.com,redhat.com,linaro.org,qti.qualcomm.com,lists.trustedfirmware.org];
+	TAGGED_FROM(0.00)[bounces-32828-lists,linux-wireless=lfdr.de];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[oss.qualcomm.com:dkim,oss.qualcomm.com:mid,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,qualcomm.com:dkim,qualcomm.com:email];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	RCVD_TLS_LAST(0.00)[];
+	RCPT_COUNT_TWELVE(0.00)[49];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[qualcomm.com:+,oss.qualcomm.com:+];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[goainwo@gmail.com,linux-wireless@vger.kernel.org];
-	DKIM_TRACE(0.00)[gmail.com:+];
-	MID_RHS_MATCH_FROMTLD(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
-	TAGGED_RCPT(0.00)[linux-wireless];
-	MISSING_XM_UA(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,mail.gmail.com:mid]
+	FROM_NEQ_ENVFROM(0.00)[konrad.dybcio@oss.qualcomm.com,linux-wireless@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	NEURAL_HAM(-0.00)[-0.999];
+	TAGGED_RCPT(0.00)[linux-wireless,dt,netdev];
+	MID_RHS_MATCH_FROM(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	RCVD_COUNT_SEVEN(0.00)[7]
 X-Rspamd-Action: no action
 
-Hi Ping-Ke,
+On 3/9/26 10:12 AM, Jorge Ramirez wrote:
+> On 06/03/26 16:20:24, Sumit Garg wrote:
+>> From: Sumit Garg <sumit.garg@oss.qualcomm.com>
+>>
+>> Switch qcom media client drivers over to generic PAS TZ APIs. Generic PAS
+>> TZ service allows to support multiple TZ implementation backends like QTEE
+>> based SCM PAS service, OP-TEE based PAS service and any further future TZ
+>> backend service.
+>>
+>> Signed-off-by: Sumit Garg <sumit.garg@oss.qualcomm.com>
+>> ---
 
-Thank you for the incredibly fast response and assistance!
+[...]
 
-> Can you dig kernel log (by netconsole or ramoops) if something useful?
-> I'd like to know this is hardware level freeze or kernel can capture something wrong.
+> are the calls to set_remote_state required?
+> 0 is not the IRIS/VENUS remote processor.
+> 
+> If it is legacy, maybe they can be phased out?
 
-I managed to pull a call trace from a historic journald log just
-before the system hung. The kernel gets trapped in an IRQ thread
-inside `rtw_pci_interrupt_threadfn`, calling up into `mac80211`
-`ieee80211_rx_list` before everything freezes. Here is the relevant
-snippet:
+FWIW, in msm-3.10 (yes) QCOM_SCM_SVC_BOOT/0x0a used to be called
+'TZBSP_VIDEO_SET_STATE', taking the arguments:
 
-```text
-Call Trace:
-<IRQ>
-? __alloc_skb+0x23a/0x2a0
-? __alloc_skb+0x10c/0x2a0
-? __pfx_irq_thread_fn+0x10/0x10
-[ ... truncated module list ... ]
-Tainted: G W I 6.19.6-2-cachyos #1 PREEMPT(full)
-Hardware name: HP HP Notebook/81F0, BIOS F.50 11/20/2020
-RIP: 0010:ieee80211_rx_list+0x1012/0x1020 [mac80211]
-CPU: 2 UID: 0 PID: 765 Comm: irq/56-rtw88_pc
-rtw_pci_interrupt_threadfn+0x239/0x310 [rtw88_pci]
-```
+args[0] = suspend->0, resume->1
+args[1] = spare=0
 
-It behaves exactly like a PCIe bus deadlock or a hardware fault that
-eventually brings down the CPU handling the IRQ.
+seems like sdm845/msm-4.9 still had that and so did 8250/msm-4.19
 
-> Are these totally needed to workaround the problem? Or disable_aspm is enough?
-> I'd list them in order of power consumption impact:
-> 1. disable_aspm=y
-> 2. disable_lps_deep=y
-> 3. disable WiFi power save
-
-To verify which parameters are strictly necessary, I performed
-isolated testing today. I ensured no other modprobe configs were
-active, rebuilt the initramfs, and manually enforced that
-`wifi.powersave` was active via `iw dev wlan0 set power_save on`
-during all tests (as the OS power management profiles were defaulting
-it to off, which initially masked the issue).
-
-I tested each workaround individually across multiple sleep/wake
-cycles and active usage:
-
-**Test 1 (ASPM Disabled, LPS Deep Enabled):**
-- Kernel parameters: `rtw88_pci disable_aspm=y` (and `rtw88_core
-disable_lps_deep=n`)
-- Result: Stable. No freezes were observed during usage or transitions
-into/out of S3 sleep while power saving was enforced.
-
-**Test 2 (ASPM Enabled, LPS Deep Disabled):**
-- Kernel parameters: `rtw88_core disable_lps_deep=y` (and `rtw88_pci
-disable_aspm=n`)
-- Result: Stable. No freezes were observed under the same forced power
-save conditions.
-
-**Conclusion:** It appears we do not need both workarounds
-simultaneously for this specific hardware. Using only `disable_aspm=y`
-seems to be sufficient to prevent the system freeze. Given your note
-about the power consumption impact ranking, this looks like the
-optimal path forward.
-
-> But what does 'deadlock' mean? As I know NAPI poll is scheduled by ISR,
-> and going to receive packets. The rx_no_aspm workaround is to forcely turn
-> off ASPM during this period.
-
-By "deadlock" I meant a hardware-level bus lockup. It seems the
-physical RTL8821CE chip itself crashes or hangs the system's PCIe bus
-when trying to negotiate waking up from ASPM L1 while simultaneously
-existing in `LPS_DEEP_MODE_LCLK`. The `rx_no_aspm` workaround in NAPI
-helps during active Rx decoding, but the laptop often freezes while
-completely idle, presumably when the AP sends a basic beacon, the chip
-attempts to leave LPS Deep + L1, and the hardware simply gives up and
-halts the system.
-
-> We have not modified RTL8821CE for a long time, so I'd add workaround
-> to specific platform as mentioned above.
-
-Adding a DMI/platform quirk specifically for this laptop to disable
-ASPM would be wonderful and deeply appreciated. I agree it is safer
-than touching the global flags for hardware that is functioning
-correctly out in the wild.
-
-Here is the exact identifying information for my system:
-
-System Vendor: HP
-Product Name: HP Notebook
-SKU Number: P3S95EA#ACB
-Family: 103C_5335KV
-PCI ID: 10ec:c821
-Subsystem ID: 103c:831a
-
-I am completely ready to test any patch or quirk you send my way.
-Thank you so much for your time and helping track this down!
-
-Best regards,
-Oleksandr
+Konrad
 
