@@ -1,84 +1,84 @@
-Return-Path: <linux-wireless+bounces-32931-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-32932-lists+linux-wireless=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id MDeqFkGYsGkukgIAu9opvQ
-	(envelope-from <linux-wireless+bounces-32931-lists+linux-wireless=lfdr.de@vger.kernel.org>)
-	for <lists+linux-wireless@lfdr.de>; Tue, 10 Mar 2026 23:16:33 +0100
+	id AHk7GS2qsGmYlwIAu9opvQ
+	(envelope-from <linux-wireless+bounces-32932-lists+linux-wireless=lfdr.de@vger.kernel.org>)
+	for <lists+linux-wireless@lfdr.de>; Wed, 11 Mar 2026 00:33:01 +0100
 X-Original-To: lists+linux-wireless@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id C2A66258CE6
-	for <lists+linux-wireless@lfdr.de>; Tue, 10 Mar 2026 23:16:32 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id EA8F5259479
+	for <lists+linux-wireless@lfdr.de>; Wed, 11 Mar 2026 00:33:00 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 33C21300830B
-	for <lists+linux-wireless@lfdr.de>; Tue, 10 Mar 2026 22:16:32 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id EA2473012BF9
+	for <lists+linux-wireless@lfdr.de>; Tue, 10 Mar 2026 23:32:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 990F22C2349;
-	Tue, 10 Mar 2026 22:16:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 17F0836C5A3;
+	Tue, 10 Mar 2026 23:32:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="GF/e5au9"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="VnzDBrWE"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-wr1-f44.google.com (mail-wr1-f44.google.com [209.85.221.44])
+Received: from mail-lj1-f171.google.com (mail-lj1-f171.google.com [209.85.208.171])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D778A2D73B9
-	for <linux-wireless@vger.kernel.org>; Tue, 10 Mar 2026 22:16:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.44
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7B86037474C
+	for <linux-wireless@vger.kernel.org>; Tue, 10 Mar 2026 23:32:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.171
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773180989; cv=none; b=pTrLR3zRUs5HJ/7BnA5iPW6DJgIx0A/Jc6Vd+IDRv6pskce5u95gr5cble8d1Cm6wSV6auWQh8/ZAxjxOAacMQKGSnvpF4KuL51Ix6fXeLDBY9dNNR825nnIwe6FOykUBuR/VvkuuJM9LhmnavAHlXHxRSTdwtyotxLKWbfVc4Q=
+	t=1773185579; cv=none; b=mW9XS1366aBdO7+Yn8YaIvEasJmo00vPV7jDiTDv5tbjR6HG0Fn7KX/LoWOuMKzO7ZKjQb1RfKvIbpKRq1/N4OoVVhv10uyV3tuul7GkjPbFOYgRMZO5JkeLu8m0F5XSIqMZ+KuEcBLuhRXEHTSYdjDT8LwY2SW52PYzAmZKcR8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773180989; c=relaxed/simple;
-	bh=havpimDY8yuE8wW/Xsm0xvxbxVTXIpiqkfqS8m5C4+M=;
+	s=arc-20240116; t=1773185579; c=relaxed/simple;
+	bh=2auotPn00ocUs8uqG+YlLPOR0PrghWLuzUBUMcXL4e0=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=mF4ShpFZ7hZbUTmxV4A0y8lx6l7FheHoC1SEAG3+MlZONimFtHhMmO4VVxxGAzEiiGRmEJXaPQRHkkXm8IjtKPiwZfMWSSf01ZA7l6W5IHZRTZR6ygVntfO3fN571nkB0ljqe7QXeebrp/yFWWGcLw9stY7dRzSNvsQuv+pa2us=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=GF/e5au9; arc=none smtp.client-ip=209.85.221.44
+	 In-Reply-To:Content-Type; b=WPkJpZNvKmIIDl2UogdyADgB1B8a69cTqJ9OVUnbnFdLSCrkQNpvzPl/hIdSqLqtTmWBF3Td6/Jl/VkqcTw53AdzTL1Lobkd+bXgVTQubjs+s21DA8chbX1Mb5XjhwQ1OzSDJ69/xnmd88TzXzim0tPq25aTjIV6LnQhByVGK+4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=VnzDBrWE; arc=none smtp.client-ip=209.85.208.171
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-wr1-f44.google.com with SMTP id ffacd0b85a97d-439b7a87fb5so6524899f8f.3
-        for <linux-wireless@vger.kernel.org>; Tue, 10 Mar 2026 15:16:27 -0700 (PDT)
+Received: by mail-lj1-f171.google.com with SMTP id 38308e7fff4ca-38a42a0d7f7so3042911fa.1
+        for <linux-wireless@vger.kernel.org>; Tue, 10 Mar 2026 16:32:56 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1773180986; x=1773785786; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1773185575; x=1773790375; darn=vger.kernel.org;
         h=content-transfer-encoding:in-reply-to:from:content-language
          :references:cc:to:subject:user-agent:mime-version:date:message-id
          :from:to:cc:subject:date:message-id:reply-to;
-        bh=LUQLV3gti8q/uoS4nk7sG9jAvyCoDM8XyZQshbJgy2w=;
-        b=GF/e5au9/pZJvpzkffxIC2640Z0IjaMBU/IlA/CSBM0WcD0yDfX2nXiwoDHJqizA+P
-         c+g9rWDQxv6O/B7QFE9QhXOTRd8kE+dOWKW0RGrx6vjLEKGlxlZEhRJZ8WdyKmtOxjUz
-         +lyKbBYd8F4/iV1xha5xF7aIHroTMN6R3FvspDtGl+bHuTSGGnAAYaFxYuJ2Jm8Yaq5I
-         b8w9QeCoNKQudg+usSfbLQ5jhkWWC7W0lo3S2i999AWCXbcgHhFDOn1foMxmoZN7oN0C
-         sy3/Sma603AvFyuteljiz1ryXpCJW7FtwiFTgTZ1Wz2IUykckydTFQveLOtMgCZ6sFCE
-         /J6w==
+        bh=icUY2FVI5DAdn1/NX2m66cCU6S69HSNTFVrHKR4ltis=;
+        b=VnzDBrWEcecHU5Wxv1G+m2snVb+icEunvWexe+5P6i4Uji4E589xVlxVzeMRXQIacX
+         YH8ZctmAuSC1iAHlTVeWW2fhYIc5xydAqB4urUSA0z+V7rkCcohm01mpJveFv04F4kZB
+         1yD5ttIvVPVpjW4iOlGvMxDASyySC/wS5kj7rKjdOC3svU++sU9tCp5Gr4DitHSFv4tz
+         yiOC38N16760ySjgz9hZMlqIZqHVZDfjAbvDZpXW8b0RUcsLjRPv1jo/090AiwMhunLw
+         MC7thfq07xtuSruTCaRhfqc2fEzjrhFnBnDJ5tSdjLGEXR/o8klHJpuMW8QrPe7k5TKc
+         TFOg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1773180986; x=1773785786;
+        d=1e100.net; s=20230601; t=1773185575; x=1773790375;
         h=content-transfer-encoding:in-reply-to:from:content-language
          :references:cc:to:subject:user-agent:mime-version:date:message-id
          :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=LUQLV3gti8q/uoS4nk7sG9jAvyCoDM8XyZQshbJgy2w=;
-        b=FM5NylqgR4mZ4m5xumfXzPSbXKSY8R2ixHc9QwB+UK677fEjJ4X2xMqO15RD8gDtfZ
-         hHjzoD7d/2cfO++kG+ZL+lh1Tiafu+aH9m2favOngdvSJOlN0rn6Xr5GROSiyIQ0QdwF
-         6K3HtTKa5h95QNbD3VClir5kYv2aQCu1YE+2uGWGLsKSLJwmmzqSWD8QIFAd4pz4JCdk
-         Xf+voLy8O9epCZB45BqCsqmROjRLktVrlTftc7fEnMIZ8chWE7+0den//LybNp45eLp9
-         C+dQKzP4778fOZlqgItrLeA9Zm8gtQ0g54XGp6GgsAUI0pBQM0CpumEug59w3sQ+yN5h
-         tSng==
-X-Forwarded-Encrypted: i=1; AJvYcCUJRgQ09qXKOQboiWl/JYqHSR3jgEoXi6U4cEyH/ETeheNeXqFfJar/RO2Mbnej8doQ0QUC4e+QAv2R8cwOdg==@vger.kernel.org
-X-Gm-Message-State: AOJu0Yx7yOfB/4j0KQrU1qAzZzDul2bKzH0zeBTVHsuziEMEGdUz4cru
-	z5BPoJyzLfBaSAZbz51vCdEe+IJl4bcahgMz6XXuBe4/t3ckNxD/ECuc
-X-Gm-Gg: ATEYQzzpJMrwm6Z5DOAb13EeQDJO6+sMX9og3P9wR12g3b6BLRD/U0kJVY0z6LVmD1q
-	JCZBohm3jl+szDJ4qXkwA/cDi6VCIjVlG93DfMch97UWYeDfvr/WHC08doULybLJzTk4lnWpKIa
-	T9upfRaeo3mgOUdnKY5v5cq9Wrdnb5oHB4pq2BU6nGMerImpfqlZZqNiD3rEIcFeRM533pr6Jh/
-	zu3d+J4kCJeK1ek6YzoBUW8LAPlYq52KYMfYLFvE6x/lltyGi3S0QIRxprjUce+ziOjiYhPT/4r
-	+CzUcHO3+ZPftYwrq3v2tt0dRh5jKyqFXv4ujMSYQ76+4uj1uA90DJx+Ofv+gHgfgaXL/ylFnQ3
-	RdE4iEcgPociDg1Nq7u0ovToqDt+mxhCucQe3rta7efgnXVotot2PToHIgzkKz84n4qrxyO2IiR
-	pwoj7ETwaZLq3laQRM3BMaTfZk3RTosA==
-X-Received: by 2002:a05:6000:310b:b0:439:bc2b:cb57 with SMTP id ffacd0b85a97d-439f81f168fmr871998f8f.6.1773180985960;
-        Tue, 10 Mar 2026 15:16:25 -0700 (PDT)
+        bh=icUY2FVI5DAdn1/NX2m66cCU6S69HSNTFVrHKR4ltis=;
+        b=E1KySEsZaZxZrYqWBZxUslb+kOV5EjT/h5L4uXr5BpOXExTO975C9iN3fGKwiFOtEB
+         Yy4FeQxdAj0j8Rpw01xKt0Iztp2ZkXTL4Mli63C3RRHiGq0x0a960+1+OwdEsw1RIwCT
+         wMJVvin8QJgSHZIQDYn4TtTtnEcBKU5TJixym3XJMGBcGslE8oq369I2SAwzfraYa9Rf
+         6+3PKB0JUM/ObQDvb01OXAP4kjf26Ug3Itf47l0BHcqeIOMRbpXGFERyOU5KoWHfVWpg
+         QeOYuwE67GVEziFtY2wmqtYPIctA3CvH8wOVmyq0kLjngJoNs/o0e9iHPFM11xEt1kc1
+         nXSw==
+X-Forwarded-Encrypted: i=1; AJvYcCXSuExmusz5PfUr+sOPKgYdpg7XZtf0h7hBj3xRRQYpA2xDp36PgaThVc+IpWBOnSNNTpvi6DZKQSye74z4pw==@vger.kernel.org
+X-Gm-Message-State: AOJu0YzGCWwMHWTHfuuKpaYlzSgpsC/EMWrO4c2VxHcukmyasyDFfx/a
+	XJKaeYARf2hwS99juNWJ5X9PR6TGQaA+GKsi4wKYCt2hOqJM4SeJWJrW
+X-Gm-Gg: ATEYQzzVNZPN0rHKQtS4TKW2e8KFWctEHbFR55ExFsyJJ8LgCOhqLVObOG3yCxwq/st
+	BWAf+fAN3yraBT+daDkGpMIK2Kil/WMjOOQd6pqHUITWQqfLnkIGzVLjMrB6loQP5t7aSaocT7M
+	jnk9lrGEZoWcETIKbIfGuyqYNBWmP1SeqrNeo9IXfeO5Wp+BangU1HmigRTEER2mx4gNsbqaShu
+	3FBZLYD8lVQDHKVX5HjWGr2bAo08jK8heqCPHb1Y/KpVaSTrhbn/BKccMOaDv1mW//An0NU4aPI
+	oIn3GFPeRhzrw8s0yMBlmUKTA2qAqR4Y0lbEdrrz7SeE16gYd9GTIMG0oLPNZHnfh0pKGeI+9pz
+	OWDM+HrsW0YOxXiPXiOxxuMVtGyTfRtw3Cxol66R2bv8K0jf5UyXt0PxOrXZXboS8M5KFkTF//O
+	RSPMtbrHgKIZI2m2OivJca7/Vqc8bA6A==
+X-Received: by 2002:a2e:b8d1:0:b0:386:fd3b:f911 with SMTP id 38308e7fff4ca-38a67f78c09mr1602731fa.8.1773185574283;
+        Tue, 10 Mar 2026 16:32:54 -0700 (PDT)
 Received: from [192.168.1.50] ([81.196.40.93])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-439f81a5143sm1393505f8f.14.2026.03.10.15.16.24
+        by smtp.gmail.com with ESMTPSA id 38308e7fff4ca-38a67da7aa8sm839411fa.15.2026.03.10.16.32.50
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 10 Mar 2026 15:16:25 -0700 (PDT)
-Message-ID: <cd41b8ba-1141-43e5-88b4-917945ad56ea@gmail.com>
-Date: Wed, 11 Mar 2026 00:16:23 +0200
+        Tue, 10 Mar 2026 16:32:52 -0700 (PDT)
+Message-ID: <61d5c08b-d924-42ad-8a56-ba3ddb970297@gmail.com>
+Date: Wed, 11 Mar 2026 01:32:48 +0200
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
@@ -86,311 +86,429 @@ List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH rtw-next] wifi: rtw89: usb: Rx aggregation for
- RTL8832CU/RTL8851BU
-To: Ping-Ke Shih <pkshih@realtek.com>, linux-wireless@vger.kernel.org
-Cc: mh_chen@realtek.com, isaiah@realtek.com
-References: <20260309085819.25174-1-pkshih@realtek.com>
+Subject: Re: [PATCH v3 19/21] wifi: rtl8xxxu: add hw crypto support for AP
+ mode
+To: Ping-Ke Shih <pkshih@realtek.com>,
+ Martin Kaistra <martin.kaistra@linutronix.de>,
+ "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>
+Cc: Jes Sorensen <Jes.Sorensen@gmail.com>,
+ Sebastian Andrzej Siewior <bigeasy@linutronix.de>
+References: <20231222101442.626837-1-martin.kaistra@linutronix.de>
+ <20231222101442.626837-20-martin.kaistra@linutronix.de>
+ <b47a1c95-60c4-468d-9944-c59546e082bf@gmail.com>
+ <b8e9ad0c-c148-40a2-b114-5558e74942b0@linutronix.de>
+ <64617033bcdc445091186070350a0d20@realtek.com>
 Content-Language: en-US
 From: Bitterblue Smith <rtl8821cerfe2@gmail.com>
-In-Reply-To: <20260309085819.25174-1-pkshih@realtek.com>
+In-Reply-To: <64617033bcdc445091186070350a0d20@realtek.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-Rspamd-Queue-Id: C2A66258CE6
+X-Rspamd-Queue-Id: EA8F5259479
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [-0.66 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	R_DKIM_ALLOW(-0.20)[gmail.com:s=20230601];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TO_DN_SOME(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-32931-lists,linux-wireless=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-32932-lists,linux-wireless=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
+	TO_DN_EQ_ADDR_SOME(0.00)[];
+	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[gmail.com:+];
-	RCPT_COUNT_THREE(0.00)[4];
-	FROM_HAS_DN(0.00)[];
+	FREEMAIL_CC(0.00)[gmail.com,linutronix.de];
 	FREEMAIL_FROM(0.00)[gmail.com];
+	TO_DN_SOME(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[5];
 	RCVD_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[rtl8821cerfe2@gmail.com,linux-wireless@vger.kernel.org];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
-	NEURAL_HAM(-0.00)[-0.999];
+	DKIM_TRACE(0.00)[gmail.com:+];
+	NEURAL_HAM(-0.00)[-0.998];
 	TAGGED_RCPT(0.00)[linux-wireless];
 	MID_RHS_MATCH_FROM(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,realtek.com:email]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,realtek.com:email]
 X-Rspamd-Action: no action
 
-On 09/03/2026 10:58, Ping-Ke Shih wrote:
-> From: Shin-Yi Lin <isaiah@realtek.com>
+On 25/02/2026 04:28, Ping-Ke Shih wrote:
+> Martin Kaistra <martin.kaistra@linutronix.de> wrote:
+>> Am 21.02.26 um 23:09 schrieb Bitterblue Smith:
+>>> On 22/12/2023 12:14, Martin Kaistra wrote:
+>>>> Add a custom function for allocating entries in the sec cam. This allows
+>>>> us to store multiple keys with the same keyidx.
+>>>>
+>>>> The maximum number of sec cam entries for 8188f is 16 according to the
+>>>> vendor driver. Add the number to rtl8xxxu_fileops, so that other chips
+>>>> which might support more entries, can set a different number there.
+>>>>
+>>>> Set the bssid as mac address for group keys instead of just using the
+>>>> ethernet broadcast address and use BIT(6) in the sec cam ctrl entry
+>>>> for differentiating them from pairwise keys like in the vendor driver.
+>>>>
+>>>> Add the TXDESC_EN_DESC_ID bit and the hw_key_idx to tx
+>>>> broadcast/multicast packets in AP mode.
+>>>>
+>>>> Finally, allow the usage of rtl8xxxu_set_key() for AP mode.
+>>>>
+>>>> Signed-off-by: Martin Kaistra <martin.kaistra@linutronix.de>
+>>>> Reviewed-by: Ping-Ke Shih <pkshih@realtek.com>
+>>>> ---
+>>>>   .../net/wireless/realtek/rtl8xxxu/rtl8xxxu.h  |  5 ++
+>>>>   .../realtek/rtl8xxxu/rtl8xxxu_8188f.c         |  1 +
+>>>>   .../wireless/realtek/rtl8xxxu/rtl8xxxu_core.c | 48 +++++++++++++++----
+>>>>   3 files changed, 44 insertions(+), 10 deletions(-)
+>>>>
+>>>> diff --git a/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu.h
+>> b/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu.h
+>>>> index c5e6d8f7d26bd..62e6318bc0924 100644
+>>>> --- a/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu.h
+>>>> +++ b/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu.h
+>>>> @@ -498,6 +498,7 @@ struct rtl8xxxu_txdesc40 {
+>>>>   #define DESC_RATE_ID_SHIFT         16
+>>>>   #define DESC_RATE_ID_MASK          0xf
+>>>>   #define TXDESC_NAVUSEHDR           BIT(20)
+>>>> +#define TXDESC_EN_DESC_ID           BIT(21)
+>>>>   #define TXDESC_SEC_RC4                     0x00400000
+>>>>   #define TXDESC_SEC_AES                     0x00c00000
+>>>>   #define TXDESC_PKT_OFFSET_SHIFT            26
+>>>> @@ -1775,6 +1776,7 @@ struct rtl8xxxu_cfo_tracking {
+>>>>   #define RTL8XXXU_MAX_MAC_ID_NUM    128
+>>>>   #define RTL8XXXU_BC_MC_MACID       0
+>>>>   #define RTL8XXXU_BC_MC_MACID1      1
+>>>> +#define RTL8XXXU_MAX_SEC_CAM_NUM    64
+>>>>
+>>>>   struct rtl8xxxu_priv {
+>>>>      struct ieee80211_hw *hw;
+>>>> @@ -1908,6 +1910,7 @@ struct rtl8xxxu_priv {
+>>>>      char led_name[32];
+>>>>      struct led_classdev led_cdev;
+>>>>      DECLARE_BITMAP(mac_id_map, RTL8XXXU_MAX_MAC_ID_NUM);
+>>>> +    DECLARE_BITMAP(cam_map, RTL8XXXU_MAX_SEC_CAM_NUM);
+>>>>   };
+>>>>
+>>>>   struct rtl8xxxu_sta_info {
+>>>> @@ -1919,6 +1922,7 @@ struct rtl8xxxu_sta_info {
+>>>>
+>>>>   struct rtl8xxxu_vif {
+>>>>      int port_num;
+>>>> +    u8 hw_key_idx;
+>>>>   };
+>>>>
+>>>>   struct rtl8xxxu_rx_urb {
+>>>> @@ -1993,6 +1997,7 @@ struct rtl8xxxu_fileops {
+>>>>      u16 max_aggr_num;
+>>>>      u8 supports_ap:1;
+>>>>      u16 max_macid_num;
+>>>> +    u16 max_sec_cam_num;
+>>>>      u32 adda_1t_init;
+>>>>      u32 adda_1t_path_on;
+>>>>      u32 adda_2t_path_on_a;
+>>>> diff --git a/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_8188f.c
+>> b/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_8188f.c
+>>>> index 1e1c8fa194cb8..574a5fe951543 100644
+>>>> --- a/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_8188f.c
+>>>> +++ b/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_8188f.c
+>>>> @@ -1751,6 +1751,7 @@ struct rtl8xxxu_fileops rtl8188fu_fops = {
+>>>>      .max_aggr_num = 0x0c14,
+>>>>      .supports_ap = 1,
+>>>>      .max_macid_num = 16,
+>>>> +    .max_sec_cam_num = 16,
+>>>>      .adda_1t_init = 0x03c00014,
+>>>>      .adda_1t_path_on = 0x03c00014,
+>>>>      .trxff_boundary = 0x3f7f,
+>>>> diff --git a/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_core.c
+>> b/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_core.c
+>>>> index ecf54eb8dba61..7aafae9fe76b8 100644
+>>>> --- a/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_core.c
+>>>> +++ b/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_core.c
+>>>> @@ -4559,8 +4559,10 @@ static void rtl8xxxu_cam_write(struct rtl8xxxu_priv *priv,
+>>>>       * This is a bit of a hack - the lower bits of the cipher
+>>>>       * suite selector happens to match the cipher index in the CAM
+>>>>       */
+>>>> -    addr = key->keyidx << CAM_CMD_KEY_SHIFT;
+>>>> +    addr = key->hw_key_idx << CAM_CMD_KEY_SHIFT;
+>>>>      ctrl = (key->cipher & 0x0f) << 2 | key->keyidx | CAM_WRITE_VALID;
+>>>> +    if (!(key->flags & IEEE80211_KEY_FLAG_PAIRWISE))
+>>>> +            ctrl |= BIT(6);
+>>>>
+>>>>      for (j = 5; j >= 0; j--) {
+>>>>              switch (j) {
+>>>> @@ -5546,13 +5548,14 @@ static void rtl8xxxu_tx(struct ieee80211_hw *hw,
+>>>>      struct rtl8xxxu_tx_urb *tx_urb;
+>>>>      struct ieee80211_sta *sta = NULL;
+>>>>      struct ieee80211_vif *vif = tx_info->control.vif;
+>>>> +    struct rtl8xxxu_vif *rtlvif = (struct rtl8xxxu_vif *)vif->drv_priv;
+>>>>      struct device *dev = &priv->udev->dev;
+>>>>      u32 queue, rts_rate;
+>>>>      u16 pktlen = skb->len;
+>>>>      int tx_desc_size = priv->fops->tx_desc_size;
+>>>>      u8 macid;
+>>>>      int ret;
+>>>> -    bool ampdu_enable, sgi = false, short_preamble = false;
+>>>> +    bool ampdu_enable, sgi = false, short_preamble = false, bmc = false;
+>>>>
+>>>>      if (skb_headroom(skb) < tx_desc_size) {
+>>>>              dev_warn(dev,
+>>>> @@ -5594,10 +5597,14 @@ static void rtl8xxxu_tx(struct ieee80211_hw *hw,
+>>>>              tx_desc->txdw0 =
+>>>>                      TXDESC_OWN | TXDESC_FIRST_SEGMENT | TXDESC_LAST_SEGMENT;
+>>>>      if (is_multicast_ether_addr(ieee80211_get_DA(hdr)) ||
+>>>> -        is_broadcast_ether_addr(ieee80211_get_DA(hdr)))
+>>>> +        is_broadcast_ether_addr(ieee80211_get_DA(hdr))) {
+>>>>              tx_desc->txdw0 |= TXDESC_BROADMULTICAST;
+>>>> +            bmc = true;
+>>>> +    }
+>>>> +
+>>>>
+>>>>      tx_desc->txdw1 = cpu_to_le32(queue << TXDESC_QUEUE_SHIFT);
+>>>> +    macid = rtl8xxxu_get_macid(priv, sta);
+>>>>
+>>>>      if (tx_info->control.hw_key) {
+>>>>              switch (tx_info->control.hw_key->cipher) {
+>>>> @@ -5612,6 +5619,10 @@ static void rtl8xxxu_tx(struct ieee80211_hw *hw,
+>>>>              default:
+>>>>                      break;
+>>>>              }
+>>>> +            if (bmc && rtlvif->hw_key_idx != 0xff) {
+>>>> +                    tx_desc->txdw1 |= TXDESC_EN_DESC_ID;
+>>>> +                    macid = rtlvif->hw_key_idx;
+>>>> +            }
+>>>>      }
+>>>>
+>>>>      /* (tx_info->flags & IEEE80211_TX_CTL_AMPDU) && */
+>>>> @@ -5655,7 +5666,6 @@ static void rtl8xxxu_tx(struct ieee80211_hw *hw,
+>>>>      else
+>>>>              rts_rate = 0;
+>>>>
+>>>> -    macid = rtl8xxxu_get_macid(priv, sta);
+>>>>      priv->fops->fill_txdesc(hw, hdr, tx_info, tx_desc, sgi, short_preamble,
+>>>>                              ampdu_enable, rts_rate, macid);
+>>>>
+>>>> @@ -6667,6 +6677,7 @@ static int rtl8xxxu_add_interface(struct ieee80211_hw *hw,
+>>>>
+>>>>      priv->vifs[port_num] = vif;
+>>>>      rtlvif->port_num = port_num;
+>>>> +    rtlvif->hw_key_idx = 0xff;
+>>>>
+>>>>      rtl8xxxu_set_linktype(priv, vif->type, port_num);
+>>>>      ether_addr_copy(priv->mac_addr, vif->addr);
+>>>> @@ -6843,11 +6854,19 @@ static int rtl8xxxu_set_rts_threshold(struct ieee80211_hw *hw, u32 rts)
+>>>>      return 0;
+>>>>   }
+>>>>
+>>>> +static int rtl8xxxu_get_free_sec_cam(struct ieee80211_hw *hw)
+>>>> +{
+>>>> +    struct rtl8xxxu_priv *priv = hw->priv;
+>>>> +
+>>>> +    return find_first_zero_bit(priv->cam_map, priv->fops->max_sec_cam_num);
+>>>> +}
+>>>> +
+>>>>   static int rtl8xxxu_set_key(struct ieee80211_hw *hw, enum set_key_cmd cmd,
+>>>>                          struct ieee80211_vif *vif,
+>>>>                          struct ieee80211_sta *sta,
+>>>>                          struct ieee80211_key_conf *key)
+>>>>   {
+>>>> +    struct rtl8xxxu_vif *rtlvif = (struct rtl8xxxu_vif *)vif->drv_priv;
+>>>>      struct rtl8xxxu_priv *priv = hw->priv;
+>>>>      struct device *dev = &priv->udev->dev;
+>>>>      u8 mac_addr[ETH_ALEN];
+>>>> @@ -6859,9 +6878,6 @@ static int rtl8xxxu_set_key(struct ieee80211_hw *hw, enum set_key_cmd cmd,
+>>>>      dev_dbg(dev, "%s: cmd %02x, cipher %08x, index %i\n",
+>>>>              __func__, cmd, key->cipher, key->keyidx);
+>>>>
+>>>> -    if (vif->type != NL80211_IFTYPE_STATION)
+>>>> -            return -EOPNOTSUPP;
+>>>> -
+>>>>      if (key->keyidx > 3)
+>>>>              return -EOPNOTSUPP;
+>>>>
+>>>> @@ -6885,7 +6901,7 @@ static int rtl8xxxu_set_key(struct ieee80211_hw *hw, enum set_key_cmd cmd,
+>>>>              ether_addr_copy(mac_addr, sta->addr);
+>>>>      } else {
+>>>>              dev_dbg(dev, "%s: group key\n", __func__);
+>>>> -            eth_broadcast_addr(mac_addr);
+>>>> +            ether_addr_copy(mac_addr, vif->bss_conf.bssid);
+>>>>      }
+>>>>
+>>>>      val16 = rtl8xxxu_read16(priv, REG_CR);
+>>>> @@ -6899,16 +6915,28 @@ static int rtl8xxxu_set_key(struct ieee80211_hw *hw, enum set_key_cmd cmd,
+>>>>
+>>>>      switch (cmd) {
+>>>>      case SET_KEY:
+>>>> -            key->hw_key_idx = key->keyidx;
+>>>> +
+>>>> +            retval = rtl8xxxu_get_free_sec_cam(hw);
+>>>> +            if (retval < 0)
+>>>> +                    return -EOPNOTSUPP;
+>>>> +
+>>>> +            key->hw_key_idx = retval;
+>>>> +
+>>>> +            if (vif->type == NL80211_IFTYPE_AP && !(key->flags & IEEE80211_KEY_FLAG_PAIRWISE))
+>>>> +                    rtlvif->hw_key_idx = key->hw_key_idx;
+>>>> +
+>>>>              key->flags |= IEEE80211_KEY_FLAG_GENERATE_IV;
+>>>>              rtl8xxxu_cam_write(priv, key, mac_addr);
+>>>> +            set_bit(key->hw_key_idx, priv->cam_map);
+>>>
+>>> Hi Martin,
+>>
+>> Hi Bitterblue,
+>>
+>>>
+>>> It turns out RTL8188CUS and RTL8192CU don't like this patch, specifically
+>>> when we use iwd. After the WPA2 handshake no more data is transmitted.
+>>>
+>>> Before this patch, key->hw_key_idx was the same as key->keyidx. After
+>>> this patch, when we use iwd, the group key is installed first. It has
+>>> key->keyidx = 1, but it gets key->hw_key_idx = 0. The pairwise key is
+>>> installed second. It has key->keyidx = 0, but it gets key->hw_key_idx = 1.
+>>> Both keyidx and hw_key_idx are passed to the chip in rtl8xxxu_cam_write().
+>>>
+>>> It's fine with wpa_supplicant. wpa_supplicant installs the pairwise key
+>>> first, with key->keyidx = 0, then the group key, with key->keyidx = 1.
+>>>
+>>> This patch imitating rtw88 makes the old chips work again with iwd.
+>>> What do you think?
+>>
+>> So you reserve the first 4 entries for group keys and use key->keyidx as
+>> key->hw_key_idx directly for those, right? Does that work if 2 virtual
+>> interfaces are used at the same time?
+>> I will do some tests in the next days, but I suspect this be an issue.
 > 
-> USB RX Aggregation is a performance optimization technique used
-> in USB network devices to increase throughput.
-> 
-> Instead of sending every received network packet to the host computer
-> individually, the device hardware groups multiple smaller packets
-> into a single, large USB Bulk Transfer.
-> 
->  * toAP/toNB use iperf3 respectively.
-> 
-> With BE6000 - iperf3 tcp 10 pair (to another NB)
-> 
-> RTL8832CU-USB3.0
->       before   after
-> TX    941      941
-> RX    847      919
-> 
-> RTL8832CU-USB2.0
->       before   after
-> TX    864      877
-> RX    864      902
+> Ah. I'm not aware that rtl8xxxu can support 2 virtual interfaces, and
+> only RTL8188FU declares .supports_concurrent = 1, so maybe we can have
+> special handling for this chip?
 
-I wonder if these numbers are actually from a different scenario?
-USB 2.0 can't go that fast.
+I would like to enable supports_concurrent for more chips, if I can test
+this feature.
 
 > 
-> RTL8851BU
->       before   after
-> TX    115      114
-> RX    295      306
+> I'd share some information about security CAM for reference. Since data is
+> quite old (10+ years), I can't guarantee all are correct.
 > 
-> Signed-off-by: Shin-Yi Lin <isaiah@realtek.com>
-> Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
-> ---
-> This one is to add USB RX aggregation to improve performance. The other
-> one is TX aggregation, which we are working on.
-
-That is wonderful news.
-
-> ---
->  .../net/wireless/realtek/rtw89/rtw8851bu.c    |  1 +
->  .../net/wireless/realtek/rtw89/rtw8852au.c    |  1 +
->  .../net/wireless/realtek/rtw89/rtw8852bu.c    |  1 +
->  .../net/wireless/realtek/rtw89/rtw8852cu.c    |  1 +
->  drivers/net/wireless/realtek/rtw89/usb.c      | 84 ++++++++++++++++---
->  drivers/net/wireless/realtek/rtw89/usb.h      | 12 +++
->  6 files changed, 87 insertions(+), 13 deletions(-)
+> 1. default key switch in rtl8xxxu_set_key()
+>    SEC_CFG_TXBC_USE_DEFKEY and SEC_CFG_RXBC_USE_DEFKEY mean that
+>    broadcast/multicast packets use default key (CAM entries 0~3 for
+>    keyidx 0~3).
+>    For two interfaces case, that'd a problem, so maybe we should use
+>    software encryption/decryption for non-pairwise key.
 > 
-> diff --git a/drivers/net/wireless/realtek/rtw89/rtw8851bu.c b/drivers/net/wireless/realtek/rtw89/rtw8851bu.c
-> index 959d62aefdd8..6a8d31544314 100644
-> --- a/drivers/net/wireless/realtek/rtw89/rtw8851bu.c
-> +++ b/drivers/net/wireless/realtek/rtw89/rtw8851bu.c
-> @@ -15,6 +15,7 @@ static const struct rtw89_usb_info rtw8851b_usb_info = {
->  	.usb3_mac_npi_config_intf_0	= R_AX_USB3_MAC_NPI_CONFIG_INTF_0,
->  	.usb_endpoint_0			= R_AX_USB_ENDPOINT_0,
->  	.usb_endpoint_2			= R_AX_USB_ENDPOINT_2,
-> +	.rx_agg_alignment		= 8,
->  	.bulkout_id = {
->  		[RTW89_DMA_ACH0] = 3,
->  		[RTW89_DMA_ACH1] = 4,
-> diff --git a/drivers/net/wireless/realtek/rtw89/rtw8852au.c b/drivers/net/wireless/realtek/rtw89/rtw8852au.c
-> index ccdbcc178c2a..4cced4619b7d 100644
-> --- a/drivers/net/wireless/realtek/rtw89/rtw8852au.c
-> +++ b/drivers/net/wireless/realtek/rtw89/rtw8852au.c
-> @@ -15,6 +15,7 @@ static const struct rtw89_usb_info rtw8852a_usb_info = {
->  	.usb3_mac_npi_config_intf_0	= R_AX_USB3_MAC_NPI_CONFIG_INTF_0,
->  	.usb_endpoint_0			= R_AX_USB_ENDPOINT_0,
->  	.usb_endpoint_2			= R_AX_USB_ENDPOINT_2,
-> +	.rx_agg_alignment		= 8,
->  	.bulkout_id = {
->  		[RTW89_DMA_ACH0] = 3,
->  		[RTW89_DMA_ACH2] = 5,
-> diff --git a/drivers/net/wireless/realtek/rtw89/rtw8852bu.c b/drivers/net/wireless/realtek/rtw89/rtw8852bu.c
-> index 84cd3ec971f9..37111fed276f 100644
-> --- a/drivers/net/wireless/realtek/rtw89/rtw8852bu.c
-> +++ b/drivers/net/wireless/realtek/rtw89/rtw8852bu.c
-> @@ -15,6 +15,7 @@ static const struct rtw89_usb_info rtw8852b_usb_info = {
->  	.usb3_mac_npi_config_intf_0	= R_AX_USB3_MAC_NPI_CONFIG_INTF_0,
->  	.usb_endpoint_0			= R_AX_USB_ENDPOINT_0,
->  	.usb_endpoint_2			= R_AX_USB_ENDPOINT_2,
-> +	.rx_agg_alignment		= 8,
->  	.bulkout_id = {
->  		[RTW89_DMA_ACH0] = 3,
->  		[RTW89_DMA_ACH1] = 4,
-> diff --git a/drivers/net/wireless/realtek/rtw89/rtw8852cu.c b/drivers/net/wireless/realtek/rtw89/rtw8852cu.c
-> index 3b9825c92a0d..0c5aebaed873 100644
-> --- a/drivers/net/wireless/realtek/rtw89/rtw8852cu.c
-> +++ b/drivers/net/wireless/realtek/rtw89/rtw8852cu.c
-> @@ -15,6 +15,7 @@ static const struct rtw89_usb_info rtw8852c_usb_info = {
->  	.usb3_mac_npi_config_intf_0	= R_AX_USB3_MAC_NPI_CONFIG_INTF_0_V1,
->  	.usb_endpoint_0			= R_AX_USB_ENDPOINT_0_V1,
->  	.usb_endpoint_2			= R_AX_USB_ENDPOINT_2_V1,
-> +	.rx_agg_alignment		= 8,
->  	.bulkout_id = {
->  		[RTW89_DMA_ACH0] = 3,
->  		[RTW89_DMA_ACH2] = 5,
-> diff --git a/drivers/net/wireless/realtek/rtw89/usb.c b/drivers/net/wireless/realtek/rtw89/usb.c
-> index da1b7ce8089e..4482ce61592b 100644
-> --- a/drivers/net/wireless/realtek/rtw89/usb.c
-> +++ b/drivers/net/wireless/realtek/rtw89/usb.c
-> @@ -408,11 +408,14 @@ static int rtw89_usb_ops_tx_write(struct rtw89_dev *rtwdev,
->  static void rtw89_usb_rx_handler(struct work_struct *work)
->  {
->  	struct rtw89_usb *rtwusb = container_of(work, struct rtw89_usb, rx_work);
-> +	const struct rtw89_usb_info *info = rtwusb->info;
->  	struct rtw89_dev *rtwdev = rtwusb->rtwdev;
->  	struct rtw89_rx_desc_info desc_info;
-> +	s32 aligned_offset, remaining;
->  	struct sk_buff *rx_skb;
->  	struct sk_buff *skb;
->  	u32 pkt_offset;
-> +	u8 *pkt_ptr;
->  	int limit;
->  
->  	for (limit = 0; limit < 200; limit++) {
-> @@ -425,23 +428,38 @@ static void rtw89_usb_rx_handler(struct work_struct *work)
->  			goto free_or_reuse;
->  		}
->  
-> -		memset(&desc_info, 0, sizeof(desc_info));
-> -		rtw89_chip_query_rxdesc(rtwdev, &desc_info, rx_skb->data, 0);
-> +		pkt_ptr = rx_skb->data;
-> +		remaining = rx_skb->len;
->  
-> -		skb = rtw89_alloc_skb_for_rx(rtwdev, desc_info.pkt_size);
-> -		if (!skb) {
-> -			rtw89_debug(rtwdev, RTW89_DBG_HCI,
-> -				    "failed to allocate RX skb of size %u\n",
-> -				    desc_info.pkt_size);
-> -			goto free_or_reuse;
-> -		}
-> +		do {
-> +			memset(&desc_info, 0, sizeof(desc_info));
-> +			rtw89_chip_query_rxdesc(rtwdev, &desc_info, pkt_ptr, 0);
->  
-> -		pkt_offset = desc_info.offset + desc_info.rxd_len;
-> +			pkt_offset = desc_info.offset + desc_info.rxd_len;
-> +			if (remaining < (pkt_offset + desc_info.pkt_size)) {
-> +				rtw89_debug(rtwdev, RTW89_DBG_HCI,
-> +					    "Failed to get remaining RX pkt %u > %u\n",
-> +					    pkt_offset + desc_info.pkt_size, remaining);
-> +				goto free_or_reuse;
-> +			}
->  
-> -		skb_put_data(skb, rx_skb->data + pkt_offset,
-> -			     desc_info.pkt_size);
-> +			skb = rtw89_alloc_skb_for_rx(rtwdev, desc_info.pkt_size);
-> +			if (!skb) {
-> +				rtw89_debug(rtwdev, RTW89_DBG_HCI,
-> +					    "failed to allocate RX skb of size %u\n",
-> +					    desc_info.pkt_size);
-> +				goto free_or_reuse;
-> +			}
-> +
-> +			skb_put_data(skb, pkt_ptr + pkt_offset, desc_info.pkt_size);
-> +			rtw89_core_rx(rtwdev, &desc_info, skb);
->  
-> -		rtw89_core_rx(rtwdev, &desc_info, skb);
-> +			/* next frame */
-> +			pkt_offset += desc_info.pkt_size;
-> +			aligned_offset = ALIGN(pkt_offset, info->rx_agg_alignment);
-> +			pkt_ptr += aligned_offset;
-> +			remaining -= aligned_offset;
-> +		} while (remaining > 0);
->  
->  free_or_reuse:
->  		if (skb_queue_len(&rtwusb->rx_free_queue) >= RTW89_USB_RX_SKB_NUM)
-> @@ -745,6 +763,44 @@ static int rtw89_usb_ops_mac_pre_deinit(struct rtw89_dev *rtwdev)
->  	return 0; /* Nothing to do. */
->  }
->  
-> +static void usb_rx_agg_cfg_v1(struct rtw89_dev *rtwdev)
-
-Maybe give the new functions the usual "rtw89_" prefix?
-
-> +{
-> +	const u32 rxagg_0 = FIELD_PREP_CONST(B_AX_RXAGG_0_EN, 1) |
-> +			    FIELD_PREP_CONST(B_AX_RXAGG_0_NUM_TH, 0) |
-> +			    FIELD_PREP_CONST(B_AX_RXAGG_0_TIME_32US_TH, 32) |
-> +			    FIELD_PREP_CONST(B_AX_RXAGG_0_BUF_SZ_4K, 5);
-> +
-> +	rtw89_write32(rtwdev, R_AX_RXAGG_0, rxagg_0);
-> +}
-> +
-> +static void usb_rx_agg_cfg_v2(struct rtw89_dev *rtwdev)
-> +{
-> +	const u32 rxagg_0 = FIELD_PREP_CONST(B_AX_RXAGG_0_EN, 1) |
-> +			    FIELD_PREP_CONST(B_AX_RXAGG_0_NUM_TH, 255) |
-> +			    FIELD_PREP_CONST(B_AX_RXAGG_0_TIME_32US_TH, 32) |
-> +			    FIELD_PREP_CONST(B_AX_RXAGG_0_BUF_SZ_K, 20);
-> +
-> +	rtw89_write32(rtwdev, R_AX_RXAGG_0_V1, rxagg_0);
-> +	rtw89_write32(rtwdev, R_AX_RXAGG_1_V1, 0x1F);
-> +}
-> +
-> +static void usb_rx_agg_cfg(struct rtw89_dev *rtwdev)
-> +{
-> +	switch (rtwdev->chip->chip_id) {
-> +	case RTL8851B:
-> +	case RTL8852A:
-> +	case RTL8852B:
-> +		usb_rx_agg_cfg_v1(rtwdev);
-> +		break;
-> +	case RTL8852C:
-> +		usb_rx_agg_cfg_v2(rtwdev);
-> +		break;
-> +	default:
-> +		rtw89_warn(rtwdev, "%s: USB RX agg not support\n", __func__);
-> +		return;
-> +	}
-
-The subject only mentions RTL8832CU and RTL8851BU, but looks like you
-implemented it for every chip currently supported.
-
-> +}
-> +
->  static int rtw89_usb_ops_mac_post_init(struct rtw89_dev *rtwdev)
->  {
->  	struct rtw89_usb *rtwusb = rtw89_usb_priv(rtwdev);
-> @@ -773,6 +829,8 @@ static int rtw89_usb_ops_mac_post_init(struct rtw89_dev *rtwdev)
->  		rtw89_write8(rtwdev, info->usb_endpoint_2 + 1, NUMP);
->  	}
->  
-> +	usb_rx_agg_cfg(rtwdev);
-> +
->  	return 0;
->  }
->  
-> diff --git a/drivers/net/wireless/realtek/rtw89/usb.h b/drivers/net/wireless/realtek/rtw89/usb.h
-> index 203ec8e993e9..afc62c1f687f 100644
-> --- a/drivers/net/wireless/realtek/rtw89/usb.h
-> +++ b/drivers/net/wireless/realtek/rtw89/usb.h
-> @@ -20,6 +20,17 @@
->  #define RTW89_MAX_ENDPOINT_NUM		9
->  #define RTW89_MAX_BULKOUT_NUM		7
->  
-> +#define R_AX_RXAGG_0_V1			0x6000
-> +#define B_AX_RXAGG_0_EN			BIT(31)
-> +#define B_AX_RXAGG_0_NUM_TH		GENMASK(23, 16)
-> +#define B_AX_RXAGG_0_TIME_32US_TH	GENMASK(15, 8)
-> +#define B_AX_RXAGG_0_BUF_SZ_K		GENMASK(7, 0)
-
-Is it missing a number before the letter K ?
-
-> +
-> +#define R_AX_RXAGG_1_V1			0x6004
-> +
-> +#define R_AX_RXAGG_0			0x8900
-> +#define B_AX_RXAGG_0_BUF_SZ_4K		GENMASK(7, 0)
-> +
->  struct rtw89_usb_info {
->  	u32 usb_host_request_2;
->  	u32 usb_wlan0_1;
-> @@ -27,6 +38,7 @@ struct rtw89_usb_info {
->  	u32 usb3_mac_npi_config_intf_0;
->  	u32 usb_endpoint_0;
->  	u32 usb_endpoint_2;
-> +	u8 rx_agg_alignment;
->  	u8 bulkout_id[RTW89_DMA_CH_NUM];
->  };
->  
+> 	val8 = SEC_CFG_TX_SEC_ENABLE | SEC_CFG_TXBC_USE_DEFKEY |
+> 		SEC_CFG_RX_SEC_ENABLE | SEC_CFG_RXBC_USE_DEFKEY;
+> 	val8 |= SEC_CFG_TX_USE_DEFKEY | SEC_CFG_RX_USE_DEFKEY;
+> 	rtl8xxxu_write8(priv, REG_SECURITY_CFG, val8);
 > 
-> base-commit: 039cd522dc70151da13329a5e3ae19b1736f468a
+> 2. group key (GK) field of security CAM in rtl8xxxu_cam_write()
+>    The group key field of security CAM is BIT(6) which isn't supported
+>    by earlier chips (sorry I have no data about the exact chips).
+> 
+
+BIT 6 is used in the rtl8188eu driver, and not used in the rtl8192cu driver,
+so I assume it's just the older RTL8188CU/RTL8192CU and RTL8723AU that don't
+support it.
+
+>    If a chip can support group key field, the CAM layout with default key
+>    enabled for two interfaces (STA-1+AP-1) can be
+> 
+>    STA-1 <-> AP-10
+>    AP-1  <-> STA-20
+> 
+>    CAM  GK   MAC    KEY
+>     0
+>     1   1    00:    AP-1 (GTK)  // should be on entry 0~3 depends on key_idx
+>     2
+>     3
+>     4
+>     5   1    AP-10  AP-10 (GTK)  // can be on any entry after 4
+>     6
+> 
+
+What are the numbers 1, 10, and 20 in "AP-1", "AP-10", "STA-20" ?
+
+>     (pairwise key can be on any entry after 4)
+> 
+> 	if (!(key->flags & IEEE80211_KEY_FLAG_PAIRWISE))
+> 		ctrl |= BIT(6);
+> 
+> My perspective are
+> 1. currently default key is enabled, so we should treat CAM entry 0~3 as
+>    special cases. That means rtl8xxxu_get_free_sec_cam() should be modified
+>    as Bitterblue's version.
+> 
+> 2. For two interfaces, I guess RTL8188FU can support GK bit, so it'd be worth
+>    to try the method of example 2 above.
+> 
+>    If we want earlier chips can support two interfaces, I think we should 
+>    disable default key.
+
+Indeed, the rtl8192cu driver (out of kernel) doesn't set SEC_CFG_TXBC_USE_DEFKEY
+and SEC_CFG_RXBC_USE_DEFKEY when concurrent mode is enabled.
+
+> Seemingly, it is not possible that using hardware
+>    crypto when operating one interface and then switching to use software>    crypto when operating two interfaces. That means broadcast/multicast
+>    packets should be by software crypto entirely if we want to support two
+>    interfaces.
+> 
+> 3. I think rtw88 has similar problem for two interfaces.
+> 
+>>
+>>>
+>>> diff --git a/drivers/net/wireless/realtek/rtl8xxxu/core.c
+>> b/drivers/net/wireless/realtek/rtl8xxxu/core.c
+>>> index ee278f0548e4..f7b35655bec5 100644
+>>> --- a/drivers/net/wireless/realtek/rtl8xxxu/core.c
+>>> +++ b/drivers/net/wireless/realtek/rtl8xxxu/core.c
+>>> @@ -6942,7 +6942,8 @@ static int rtl8xxxu_get_free_sec_cam(struct ieee80211_hw *hw)
+>>>   {
+>>>       struct rtl8xxxu_priv *priv = hw->priv;
+>>>
+>>> -     return find_first_zero_bit(priv->cam_map, priv->fops->max_sec_cam_num);
+>>> +     return find_next_zero_bit(priv->cam_map, priv->fops->max_sec_cam_num,
+>>> +                               RTL8XXXU_SEC_DEFAULT_KEY_NUM);
+>>>   }
+>>>
+>>>   static int rtl8xxxu_set_key(struct ieee80211_hw *hw, enum set_key_cmd cmd,
+>>> @@ -6999,12 +7000,15 @@ static int rtl8xxxu_set_key(struct ieee80211_hw *hw, enum set_key_cmd cmd,
+>>>
+>>>       switch (cmd) {
+>>>       case SET_KEY:
+>>> +             if (key->flags & IEEE80211_KEY_FLAG_PAIRWISE) {
+>>> +                     retval = rtl8xxxu_get_free_sec_cam(hw);
+>>> +                     if (retval < 0)
+>>> +                             return -EOPNOTSUPP;
+>>>
+>>> -             retval = rtl8xxxu_get_free_sec_cam(hw);
+>>> -             if (retval < 0)
+>>> -                     return -EOPNOTSUPP;
+>>> -
+>>> -             key->hw_key_idx = retval;
+>>> +                     key->hw_key_idx = retval;
+>>> +             } else {
+>>> +                     key->hw_key_idx = key->keyidx;
+>>> +             }
+>>>
+>>>               if (vif->type == NL80211_IFTYPE_AP && !(key->flags & IEEE80211_KEY_FLAG_PAIRWISE))
+>>>                       rtlvif->hw_key_idx = key->hw_key_idx;
+>>> diff --git a/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu.h
+>> b/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu.h
+>>> index 4b05dba22e67..188f4bbe99cd 100644
+>>> --- a/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu.h
+>>> +++ b/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu.h
+>>> @@ -1788,6 +1788,7 @@ struct rtl8xxxu_cfo_tracking {
+>>>   #define RTL8XXXU_BC_MC_MACID        0
+>>>   #define RTL8XXXU_BC_MC_MACID1       1
+>>>   #define RTL8XXXU_MAX_SEC_CAM_NUM    64
+>>> +#define RTL8XXXU_SEC_DEFAULT_KEY_NUM 4
+>>>
+>>>   struct rtl8xxxu_priv {
+>>>       struct ieee80211_hw *hw;
+> 
 
 
