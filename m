@@ -1,82 +1,101 @@
-Return-Path: <linux-wireless+bounces-32896-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-32897-lists+linux-wireless=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id IOq7GyojsGmVgQIAu9opvQ
-	(envelope-from <linux-wireless+bounces-32896-lists+linux-wireless=lfdr.de@vger.kernel.org>)
-	for <lists+linux-wireless@lfdr.de>; Tue, 10 Mar 2026 14:56:58 +0100
+	id WFPiOnsjsGmVgQIAu9opvQ
+	(envelope-from <linux-wireless+bounces-32897-lists+linux-wireless=lfdr.de@vger.kernel.org>)
+	for <lists+linux-wireless@lfdr.de>; Tue, 10 Mar 2026 14:58:19 +0100
 X-Original-To: lists+linux-wireless@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 25F3725111B
-	for <lists+linux-wireless@lfdr.de>; Tue, 10 Mar 2026 14:56:58 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id C37D12511C3
+	for <lists+linux-wireless@lfdr.de>; Tue, 10 Mar 2026 14:58:19 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id C261033A7D8C
-	for <lists+linux-wireless@lfdr.de>; Tue, 10 Mar 2026 13:14:53 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 988183203C70
+	for <lists+linux-wireless@lfdr.de>; Tue, 10 Mar 2026 13:29:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8C84339DBC4;
-	Tue, 10 Mar 2026 12:54:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5C4103AF67D;
+	Tue, 10 Mar 2026 13:22:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="0+cOK+VW"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="ADQQpd+b";
+	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="DLhvlaPb"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-pl1-f170.google.com (mail-pl1-f170.google.com [209.85.214.170])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B246739936F
-	for <linux-wireless@vger.kernel.org>; Tue, 10 Mar 2026 12:54:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.170
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3F55C3AF67A
+	for <linux-wireless@vger.kernel.org>; Tue, 10 Mar 2026 13:22:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773147252; cv=none; b=DM/LNHeE8WVDFZXo8SVAfTkmE58iLGQOEwNp2676370w5eBkLn5chYeRqL3L2xpncfPE4P4SAHDrtSb95KUAxtyS4H+Err/cdoD4KxKeL7NWBL6AV1/kv+9hfiXj9Zv6eqqqNn6+SPVe5BvQ88DnkybPbsLQSqhu7b3xvMNO1y8=
+	t=1773148929; cv=none; b=XGZyz3zgf5vHSCBbtLdZQoVuzDELqk/29Oxeo8Bt6ptVNe26Q6VuONR0xNtkt/lIozpMfwReD+40qDj3kNLHOuqCInSxcLSx9Jo2IjEGJB9cDv+MM/LGppjIlkAcewGhDpshuZieOfC6fURJv7uPYwg7CkkcCuIm4INk8EA7r3I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773147252; c=relaxed/simple;
-	bh=TgoJchP8+G/BTHDKgmEWupOwORUqE0/FZPIUEYu9Z9g=;
+	s=arc-20240116; t=1773148929; c=relaxed/simple;
+	bh=7C48eJwQxF2SZSyojjO4eehKdtPdDBqSboD/LkVXOwA=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=asfQ/K/ent1JbF/QutyLNIJLFI1Rzhz775m9ZJZbgaWcVPtV8KOaNfkkp9tzFWvKDl2H2CKdD4hahAk/2CW1O7lQEmm7nReHUVaVegm9iOzV+N94L+PiOIDhG0fQ1+QY32opExhQvfxMP3PzHukA4h96JAP56dXmHCqWtojgLWA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=0+cOK+VW; arc=none smtp.client-ip=209.85.214.170
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
-Received: by mail-pl1-f170.google.com with SMTP id d9443c01a7336-2aeab6ff148so1495ad.1
-        for <linux-wireless@vger.kernel.org>; Tue, 10 Mar 2026 05:54:08 -0700 (PDT)
+	 Content-Type:Content-Disposition:In-Reply-To; b=i0S/mMXc1coMhSS+u0hnx/1c/hoLxne/tu9Q+NbGD+CFyPJNewwOq+lEYkB6nr3nAk1vwUyz0uNYpJ/+790LMWu5mUEdzMEesSvLZ0iZpAVtBCImEUL3CwHY1KUV2unbKIr6tYZfTHeIIvDGnmz6RHZd7+lTkXBtt09VJP9jzOo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=ADQQpd+b; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=DLhvlaPb; arc=none smtp.client-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1773148926;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=5/adDEbR57gUpYJcJq84OoDVxrrM3xMPFmZCRo0jKXM=;
+	b=ADQQpd+bpcMvyiI6BuK6I/AtlFPVjRaT1jbvm8x0bcg2sn4Mv+l/q+wGsOaa7zGZavpvJL
+	HOw6n0NTrJxN8BVrJlzy+3Oyq/AicE10gafpjzfnHFVMImjvlOy3qRSEO7jpexZVWETsUQ
+	RoRPrXnJkd5ZbUZ0X+x9wM3CIJYSD9c=
+Received: from mail-qk1-f198.google.com (mail-qk1-f198.google.com
+ [209.85.222.198]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-213-2Q6gMg_cPMOMLf9wJ2ISJQ-1; Tue, 10 Mar 2026 09:22:05 -0400
+X-MC-Unique: 2Q6gMg_cPMOMLf9wJ2ISJQ-1
+X-Mimecast-MFC-AGG-ID: 2Q6gMg_cPMOMLf9wJ2ISJQ_1773148925
+Received: by mail-qk1-f198.google.com with SMTP id af79cd13be357-8cd7ea0bb20so1450840285a.3
+        for <linux-wireless@vger.kernel.org>; Tue, 10 Mar 2026 06:22:05 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1773147248; x=1773752048; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=mm6hm+LHoMGo5Ew01sq1dP9YSITnoqIDxYFDqmtgvh0=;
-        b=0+cOK+VWVXA7uE31Sh5y2bmP9hRSr0LFsM2f3kDgfCZ6lyHaVbAytIQCv+2vF+eTEx
-         oUic6e9ZAVnZqnGzIPB8kHUyMA2zwpMw5U/9RUdKEhoG2/xX9/VKIHC9XNEBOVXeDKo9
-         mU/QEMBf02iFKn4H5erDKYU3pW/pqjbI7j+6ZcB0Qt9z/KGqBlkshVJTzzKx2oXtAxlL
-         E18h73O/s3dn+xBEwK308w7agQS5m2RYZzHNrLUdhfdZKeG/e+Dr27X21QpoIwd1KCAl
-         PxttLdZl6PZf2goM/cRw6Bbw12/00xnTFdgSr8ytAWjU88JMxI5kTd4reOjRdKpNjh+N
-         Ix/w==
+        d=redhat.com; s=google; t=1773148925; x=1773753725; darn=vger.kernel.org;
+        h=user-agent:in-reply-to:content-disposition:mime-version:references
+         :message-id:subject:cc:to:from:date:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=5/adDEbR57gUpYJcJq84OoDVxrrM3xMPFmZCRo0jKXM=;
+        b=DLhvlaPbwaSFQKg/FmxemLJJZifDd7cIIhpxvIrZaWROKjgqKnQK81zS2r/WSu9mvZ
+         1x4TVLhhO06glvOYJXTBYTQHe1C/lCEECiyKmpprEGkSpnbhT/+Xy+wfN5x6paEUKxsd
+         eleVUcWebznHZRscghpqRSurxi7A6fJyr8+SC/oFm4tth2mVEOc19JKZit9S00HY03E/
+         XNzQnAGkguTRFL3rrkTJWt1Ev4Xq7DVoDTHr6r9kNjeVPxV8v11X5FGr4E58NddnvLYv
+         QUA4HTbgZjVMx4thX/P6FGMyY+HUc/G2+EnczacjtLqtmfpojjqt59bZxWNPmXy2pn5x
+         ulpQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1773147248; x=1773752048;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=mm6hm+LHoMGo5Ew01sq1dP9YSITnoqIDxYFDqmtgvh0=;
-        b=JMOPBk+yR6J/X+F1dBjPwemeCWZrMHvVTPLEodjy/7v13EAANky1GY5gcVzzo5zoXq
-         F2/MJ4CVDBr0T7ot4YEU9t7o69FnIQx0o+A4vg2C9WA06G1+7+Ux0FXjb9w2nBVxa1bQ
-         mlLoHr045ruxN5nrV66HuvXyFkLHhq/ClaHGldeDHvRnDUcMqf3Nf8Kg47s5G1m3AC1x
-         2yZfrQM4ik+iktO0aYQknV0mr69sw6qdzx0Du8TBCVeNUn6hzmCYnXTIz4h++U+ZzisR
-         j7gS0u1/6Hpa/XoJCsMKKX+CIio8W4i76sJkesIzdp2/XvBKk7qi0V2gQMh6cBvZpW6A
-         zcAg==
-X-Forwarded-Encrypted: i=1; AJvYcCUqgcQSsA8T8gQkcqBsUVcbMcrd5f+i/mdNhBXqADe1bMKw1sJuuxuvnAhqczcjXTMczUebZEz9IXfZSFYKHw==@vger.kernel.org
-X-Gm-Message-State: AOJu0YxViDiuth+sMTfYL0IKALVSIOxQRISEuCKj3ou0O9ZegnjRxbLw
-	atlhY9OozMtAUP/70NfFAqD5ma50MoioyCD2sq8jEo0gWFsYAIwIDpfLe7g8kCEntA==
-X-Gm-Gg: ATEYQzz2yqiMYPYZ7/KI6Nhn/7da7PQVtuelH9lgrQCDIIEA1Vj1cAYs7GGYELv8PhB
-	vHv9/9rQCRO7TdeOxqBC6MlFGnO0+AtGwzR+siWpWJ7kFl6g7i5LE2qD72NI/pFm+raBongXb4m
-	UuS9JhFt796G/vqFOfVMJkfkySRpfewRRvxsDMO93Ji6j9c2PA1mulBUAqEK07ayO6Pgh6hhkB3
-	dmjb9qgznIfdZqx2SKxIQdOfexTAYPoK9QglleGZ3o2cps3hxUuOoY6LcseDB5Kwl12qRr3wlwd
-	iAtw3ASHWLOkLJQ0tJJYYN0AuaaSSmzXqM7qASyRtF2zGAi2j/iQ7VPR4NnY6J0cVnWtdTLEQZH
-	7rK6LIAsHcI98PqRTHWe1U3kzCa6JrZgL+EiUrepNS9Wf2EgB+ys/oyfsVCy9EPSu9lLPgHoDaj
-	E93Jlpz4PHAPFRlKhOF+Sb1t3BJ49YAhI7o9gJVVkrNdsxaWWshtt1M/Uufg==
-X-Received: by 2002:a17:902:ebd2:b0:2ae:45bb:bc4e with SMTP id d9443c01a7336-2aea30ebe48mr3008685ad.24.1773147247400;
-        Tue, 10 Mar 2026 05:54:07 -0700 (PDT)
-Received: from google.com (10.129.124.34.bc.googleusercontent.com. [34.124.129.10])
-        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-c739e0cb73dsm12445679a12.11.2026.03.10.05.53.57
+        d=1e100.net; s=20230601; t=1773148925; x=1773753725;
+        h=user-agent:in-reply-to:content-disposition:mime-version:references
+         :message-id:subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=5/adDEbR57gUpYJcJq84OoDVxrrM3xMPFmZCRo0jKXM=;
+        b=Os6A+GXBc0alImxxG1gDlAdMkDVGBOxJ7gQQKPSQW41YHhGBKKy0VDQKDK+FeMjl7G
+         dwazSRw3g1p6zZ9IhnqBdr4j3/4AvjAO7wPl4EcYvp0jHmithMexzEVtLVQmkO64AStK
+         VnzCsKoXXyftDpQGslLl3qUmzadnnEGaiB1RlJOIpoLQqXU7/ASpWD9f6kbA1I1j4/DX
+         rw/JVlauSWpGkJSIfcxXEVYrtjKSumkmA5vX+Mlb9g8lKMWqU1LOnFscLu7f1emozY4o
+         ef+pJYupRLfT8KNDxpOdLCrZKEwEkieYEhDmfpRUYAkj5serxoxuH7oVn5n5VJOR0yq/
+         v9TQ==
+X-Forwarded-Encrypted: i=1; AJvYcCVHJSVctW4FNu1dVSyfmAcPj8x8oDs3RQP5sDuCV4o+noyHZamO7d4Jt4GbmyCBSQ430VXSRJj2y3cPSWUbpg==@vger.kernel.org
+X-Gm-Message-State: AOJu0Yzaham3UcenplP59ol3hMBFZNrxV2uBv2LtZ21g7RD72yiEYEjN
+	Cld8VF1ONq0ReLSSTKRGxyTL7IzZqCdZwSsPVD/wIjhahpAlBuy1wywRNMVHL4vKFGLlOJpYSFT
+	K0xCyI5DjRc0LIGOObvhevAlval2QCrYZOcHV4+jiImCcdwT+fM6YU+qNQQ3/23b/4AQU
+X-Gm-Gg: ATEYQzzVV5St99wOBn4NowbiV6/IXf6ppIC0jsYVrTkbNdFDPeS5vqDy1khSHnGbdci
+	XGFUeLE3UEPO1xU/bLwlaR+4zQtOqdSF/GsMB/t+nWdHS5nhZu4EKPX94ptI1zCLhbRBsgRs6mJ
+	HS7su8NrBcxxtcnStC2NdVW05dgG5FsJ7IFyFadBfVtGWwxRzLo4sJe40sWw7IlOD967b2FeV6a
+	n+EVkRFZHN9enTEAL8LhRdoC6Rp27sjTDDpX/XrsWh2zJXrOKM+lcZEnXLJ3inqhsbobtWhDWbO
+	YvOKyfwTYiXZGsUoUH2Yd1h5Us6u2E6bgVVh6SZeKcTEt8DnmnOIDNb6UahE6IwDBhCwzYT/vkM
+	zr8tTMraloXNms3jzMtqjpsj6SZ9fmbX4u03S8zXCMH0C51yD2GAuMPMU
+X-Received: by 2002:a05:620a:3713:b0:8ca:1240:4991 with SMTP id af79cd13be357-8cd6d4f9469mr1830789185a.45.1773148924768;
+        Tue, 10 Mar 2026 06:22:04 -0700 (PDT)
+X-Received: by 2002:a05:620a:3713:b0:8ca:1240:4991 with SMTP id af79cd13be357-8cd6d4f9469mr1830766185a.45.1773148922638;
+        Tue, 10 Mar 2026 06:22:02 -0700 (PDT)
+Received: from redhat.com (c-73-183-52-120.hsd1.pa.comcast.net. [73.183.52.120])
+        by smtp.gmail.com with ESMTPSA id af79cd13be357-8cd8576db0esm474754485a.47.2026.03.10.06.21.59
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 10 Mar 2026 05:54:06 -0700 (PDT)
-Date: Tue, 10 Mar 2026 12:53:54 +0000
-From: Pranjal Shrivastava <praan@google.com>
+        Tue, 10 Mar 2026 06:22:01 -0700 (PDT)
+Date: Tue, 10 Mar 2026 09:21:58 -0400
+From: Brian Masney <bmasney@redhat.com>
 To: Philipp Hahn <phahn-oss@avm.de>
 Cc: amd-gfx@lists.freedesktop.org, apparmor@lists.ubuntu.com,
 	bpf@vger.kernel.org, ceph-devel@vger.kernel.org, cocci@inria.fr,
@@ -105,11 +124,14 @@ Cc: amd-gfx@lists.freedesktop.org, apparmor@lists.ubuntu.com,
 	ntfs3@lists.linux.dev, samba-technical@lists.samba.org,
 	sched-ext@lists.linux.dev, target-devel@vger.kernel.org,
 	tipc-discussion@lists.sourceforge.net, v9fs@lists.linux.dev,
-	Alex Williamson <alex@shazbot.org>
-Subject: Re: [PATCH 46/61] vfio: Prefer IS_ERR_OR_NULL over manual NULL check
-Message-ID: <abAUYvx6VEdSmInm@google.com>
+	Michael Turquette <mturquette@baylibre.com>,
+	Stephen Boyd <sboyd@kernel.org>,
+	Daniel Lezcano <daniel.lezcano@kernel.org>,
+	Thomas Gleixner <tglx@kernel.org>
+Subject: Re: [PATCH 56/61] clk: Prefer IS_ERR_OR_NULL over manual NULL check
+Message-ID: <abAa9vQg4BSxl1BJ@redhat.com>
 References: <20260310-b4-is_err_or_null-v1-0-bd63b656022d@avm.de>
- <20260310-b4-is_err_or_null-v1-46-bd63b656022d@avm.de>
+ <20260310-b4-is_err_or_null-v1-56-bd63b656022d@avm.de>
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
@@ -118,74 +140,62 @@ List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260310-b4-is_err_or_null-v1-46-bd63b656022d@avm.de>
-X-Rspamd-Queue-Id: 25F3725111B
+In-Reply-To: <20260310-b4-is_err_or_null-v1-56-bd63b656022d@avm.de>
+User-Agent: Mutt/2.2.14 (2025-02-20)
+X-Rspamd-Queue-Id: C37D12511C3
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-0.66 / 15.00];
 	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[google.com,reject];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
-	R_DKIM_ALLOW(-0.20)[google.com:s=20230601];
+	DMARC_POLICY_ALLOW(-0.50)[redhat.com,quarantine];
+	R_DKIM_ALLOW(-0.20)[redhat.com:s=mimecast20190719,redhat.com:s=google];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[google.com:+];
+	DKIM_TRACE(0.00)[redhat.com:+];
+	FROM_HAS_DN(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-32897-lists,linux-wireless=lfdr.de];
+	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-32896-lists,linux-wireless=lfdr.de];
-	MISSING_XM_UA(0.00)[];
-	FROM_HAS_DN(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TO_DN_SOME(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[5];
+	RCVD_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[praan@google.com,linux-wireless@vger.kernel.org];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	RCPT_COUNT_GT_50(0.00)[55];
+	FROM_NEQ_ENVFROM(0.00)[bmasney@redhat.com,linux-wireless@vger.kernel.org];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	RCPT_COUNT_GT_50(0.00)[58];
 	MID_RHS_MATCH_FROM(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[linux-wireless];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[avm.de:email,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[baylibre.com:email,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,avm.de:email]
 X-Rspamd-Action: no action
 
-On Tue, Mar 10, 2026 at 12:49:12PM +0100, Philipp Hahn wrote:
+On Tue, Mar 10, 2026 at 12:49:22PM +0100, Philipp Hahn wrote:
 > Prefer using IS_ERR_OR_NULL() over using IS_ERR() and a manual NULL
 > check.
 > 
-> Change generated with coccinelle.
+> Semantich change: Previously the code only printed the warning on error,
+
+Semantic ...
+
+> but not when the pointer was NULL. Now the warning is printed in both
+> cases!
 > 
-> To: Alex Williamson <alex@shazbot.org>
-> Cc: kvm@vger.kernel.org
+> Change found with coccinelle.
+> 
+> To: Michael Turquette <mturquette@baylibre.com>
+> To: Stephen Boyd <sboyd@kernel.org>
+> To: Daniel Lezcano <daniel.lezcano@kernel.org>
+> To: Thomas Gleixner <tglx@kernel.org>
+> Cc: linux-clk@vger.kernel.org
 > Cc: linux-kernel@vger.kernel.org
 > Signed-off-by: Philipp Hahn <phahn-oss@avm.de>
-> ---
->  drivers/vfio/vfio_main.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
-> 
-> diff --git a/drivers/vfio/vfio_main.c b/drivers/vfio/vfio_main.c
-> index 742477546b15d4dbaf9ebcfb2e67627db71521e0..d71922dfde5885967398deddec3e9e04b05adfec 100644
-> --- a/drivers/vfio/vfio_main.c
-> +++ b/drivers/vfio/vfio_main.c
-> @@ -923,7 +923,7 @@ vfio_ioctl_device_feature_mig_device_state(struct vfio_device *device,
->  
->  	/* Handle the VFIO_DEVICE_FEATURE_SET */
->  	filp = device->mig_ops->migration_set_state(device, mig.device_state);
-> -	if (IS_ERR(filp) || !filp)
-> +	if (IS_ERR_OR_NULL(filp))
->  		goto out_copy;
->  
->  	return vfio_ioct_mig_return_fd(filp, arg, &mig);
-> 
 
-Reviewed-by: Pranjal Shrivastava <praan@google.com>
+With the minor typo addressed:
 
-The cleanup alone looks fine, but I'm not sure if the maintainers would
-be happy about the tree-wide spam, since each patch might go through a
-different tree. I'd wait for Alex's preference/ack on that.
+Reviewed-by: Brian Masney <bmasney@redhat.com>
 
-Thanks,
-Praan
 
