@@ -1,56 +1,56 @@
-Return-Path: <linux-wireless+bounces-32859-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-32870-lists+linux-wireless=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id gOr0GIcMsGl4ewIAu9opvQ
-	(envelope-from <linux-wireless+bounces-32859-lists+linux-wireless=lfdr.de@vger.kernel.org>)
-	for <lists+linux-wireless@lfdr.de>; Tue, 10 Mar 2026 13:20:23 +0100
+	id AKm8FwgUsGl1fQIAu9opvQ
+	(envelope-from <linux-wireless+bounces-32870-lists+linux-wireless=lfdr.de@vger.kernel.org>)
+	for <lists+linux-wireless@lfdr.de>; Tue, 10 Mar 2026 13:52:24 +0100
 X-Original-To: lists+linux-wireless@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id E6CB424D492
-	for <lists+linux-wireless@lfdr.de>; Tue, 10 Mar 2026 13:20:22 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id E0E0624F08B
+	for <lists+linux-wireless@lfdr.de>; Tue, 10 Mar 2026 13:52:23 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 445983183F23
-	for <lists+linux-wireless@lfdr.de>; Tue, 10 Mar 2026 12:05:34 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 83141316BD47
+	for <lists+linux-wireless@lfdr.de>; Tue, 10 Mar 2026 12:26:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D9DD64F7989;
-	Tue, 10 Mar 2026 11:56:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 292BC3BBA0E;
+	Tue, 10 Mar 2026 11:56:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=avm.de header.i=@avm.de header.b="Iw5SuiBx"
+	dkim=pass (1024-bit key) header.d=avm.de header.i=@avm.de header.b="e+I7J8zY"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from mail.avm.de (mail.avm.de [212.42.244.120])
 	(using TLSv1.2 with cipher DHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 29A13472762;
-	Tue, 10 Mar 2026 11:55:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4F6D847DD72;
+	Tue, 10 Mar 2026 11:55:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.42.244.120
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773143750; cv=none; b=sVFEShbQNvGMFnkWPpD27bPubJaxcZ1Ma5hDMJgEJ2ao8GRewFtgxbNNafCDcBanjLs78x6Q+H5lgoSMG3/mqZw49W7X+9nlPqqwyLUkiYg0j2rOgoZ++408phCu/3bqGLoU51zrGOn+Q+W/9hhGgExbaySkAiDjISvh1ZQ7NgU=
+	t=1773143755; cv=none; b=jXBbOHP5btbWsE1C6cemX5VCrdtHDRBzGvl3ngkYQF9y4QD2uQWSkqAyCgWqvl7zFbPVjKjcwS+fLDd/gGfCgN2abhYvn514JktIcfeNP9ZMdxCzY4OVuZK6GcbFGEqIstGyed+g/9VE1RM9WwzlsIkHnzfQ34teu0vQBn14bQ0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773143750; c=relaxed/simple;
-	bh=/e9fhAri3fvWicTXaGdDwpg1S0XTbSGg5f30RLJZwGo=;
+	s=arc-20240116; t=1773143755; c=relaxed/simple;
+	bh=pDm3lCNTlSjUg9te/2qYAZpsW6tvI+d2q74vAk/3XKc=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=I7ZoJD6VMjcHe/qaJXttllFdduXo0i3/EHI1CLPiGVrccP48ToRpTwwOfXUcFjPFJWs2fALgpGd0/1o58pG65p5ZNSQKUUGBcFVf1RnXF7LKmmW0MAOFJh+gPGcmw2Co6KhQVCssl0wl17VI1DO4OUj9K46erEun1XBudXsmXLA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=avm.de; spf=pass smtp.mailfrom=avm.de; dkim=pass (1024-bit key) header.d=avm.de header.i=@avm.de header.b=Iw5SuiBx; arc=none smtp.client-ip=212.42.244.120
+	 In-Reply-To:To:Cc; b=I6ikq/wWafE3jBmNoNNX8mwgMTUxJ4zvRvGzjUq/isqI4Apdeu9VOBVlRsZiMIjg/jZlgY9YMl5Uwg3VGZSoWoui4d64dwJfkV6WlSWIHpn39vU+rIP9kz3jM4qDoN03Oo4J5yLSrO14hhAoC4evHYcGV57cNObuBWGy6M2lMD4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=avm.de; spf=pass smtp.mailfrom=avm.de; dkim=pass (1024-bit key) header.d=avm.de header.i=@avm.de header.b=e+I7J8zY; arc=none smtp.client-ip=212.42.244.120
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=avm.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=avm.de
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=avm.de; s=mail;
-	t=1773143725; bh=/e9fhAri3fvWicTXaGdDwpg1S0XTbSGg5f30RLJZwGo=;
+	t=1773143725; bh=pDm3lCNTlSjUg9te/2qYAZpsW6tvI+d2q74vAk/3XKc=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc:From;
-	b=Iw5SuiBxopICixSXdLkOSlQ5GOkdpizRbWYUv/HR17R9xl7dtP6c89fP5PHv8n30r
-	 T6fTMbYeKwdLxLBOyZ63aJzIhTGXhtGZ6HTqmFayS2C9Lgp4tc+oyOQoe1INrnROOQ
-	 9WIPysOaG3/sA3lbsQKOpV5z3uw0O3UjXf2GC3sI=
+	b=e+I7J8zYG4kAMplU/l0TKB6/F0j7su3RhIWyG4gr737IJ5xmfGmmW5IozjJq/QPkE
+	 96kS2o/muROjKn+/1eJVZiSGoRgPM6USgRYnVsV5Q5c7d3kbmkvcfFeqr7IKbEBQiq
+	 pQtkGZb5mABnT/PRpogCspoV4k5AvQzctDv8PmGw=
 Received: from [212.42.244.71] (helo=mail.avm.de)
 	by mail.avm.de with ESMTP (eXpurgate 4.55.2)
 	(envelope-from <phahn-oss@avm.de>)
-	id 69b006ad-b734-7f0000032729-7f000001c06e-1
+	id 69b006ad-b734-7f0000032729-7f000001c07a-1
 	for <multiple-recipients>; Tue, 10 Mar 2026 12:55:25 +0100
 Received: from mail-auth.avm.de (dovecot-mx-01.avm.de [212.42.244.71])
 	by mail.avm.de (Postfix) with ESMTPS;
 	Tue, 10 Mar 2026 12:55:25 +0100 (CET)
 From: Philipp Hahn <phahn-oss@avm.de>
-Date: Tue, 10 Mar 2026 12:49:01 +0100
-Subject: [PATCH 35/61] arch/mips: Prefer IS_ERR_OR_NULL over manual NULL
+Date: Tue, 10 Mar 2026 12:49:02 +0100
+Subject: [PATCH 36/61] arch/sh: Prefer IS_ERR_OR_NULL over manual NULL
  check
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
@@ -60,7 +60,7 @@ List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260310-b4-is_err_or_null-v1-35-bd63b656022d@avm.de>
+Message-Id: <20260310-b4-is_err_or_null-v1-36-bd63b656022d@avm.de>
 References: <20260310-b4-is_err_or_null-v1-0-bd63b656022d@avm.de>
 In-Reply-To: <20260310-b4-is_err_or_null-v1-0-bd63b656022d@avm.de>
 To: amd-gfx@lists.freedesktop.org, apparmor@lists.ubuntu.com, 
@@ -90,32 +90,33 @@ To: amd-gfx@lists.freedesktop.org, apparmor@lists.ubuntu.com,
  sched-ext@lists.linux.dev, target-devel@vger.kernel.org, 
  tipc-discussion@lists.sourceforge.net, v9fs@lists.linux.dev, 
  Philipp Hahn <phahn-oss@avm.de>
-Cc: John Crispin <john@phrozen.org>, 
- Thomas Bogendoerfer <tsbogend@alpha.franken.de>
-X-Developer-Signature: v=1; a=openpgp-sha256; l=861; i=phahn-oss@avm.de;
- h=from:subject:message-id; bh=/e9fhAri3fvWicTXaGdDwpg1S0XTbSGg5f30RLJZwGo=;
- b=owEBbQGS/pANAwAKATQtBlPRrKzbAcsmYgBpsAZM2fTyCYVfDSlmEmcm8t3ybPKD3MDuGKTUj
- vCjhqZWFOmJATMEAAEKAB0WIQQ5bPBtrWDUcDQCppg0LQZT0ays2wUCabAGTAAKCRA0LQZT0ays
- 2z2rCAC7oYhghVATpgjsAoGRn4N5/GCkNEQ5d/YNbMHtku5Ne/hNSs0W+K9kYWVkFPm5TlrH0DE
- 8/RGH1u5MDT7P37KNp17NEpcRPc+zR1hHTpFzNLygQMhigzbVOt/7U+vGXQh1CXjciuY8j7FckI
- dtMHKNN16hVWRN9J7DdvS7Q09vOysbfuZGn+o8hs1SmUg64a9Ig5/41sPHN38J7SQblPeyGhLri
- 3JgxiG8Mz5G70Y5/Rddk73/lgtWO+z4F7ECaPWtfktQ/wSj5ZuFGkTm2dn045+qsqR71gKKNbgQ
- /lgkcaOekPRGDC/jtk9N/uPlc4vBw/GKHnCp8LPegSQzk/iw
+Cc: Yoshinori Sato <ysato@users.sourceforge.jp>, 
+ Rich Felker <dalias@libc.org>, 
+ John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1014; i=phahn-oss@avm.de;
+ h=from:subject:message-id; bh=pDm3lCNTlSjUg9te/2qYAZpsW6tvI+d2q74vAk/3XKc=;
+ b=owEBbQGS/pANAwAKATQtBlPRrKzbAcsmYgBpsAZQlhc7PU7tZE01ILV/cgCsTY0g2y915SWo2
+ WOp3PFfMVuJATMEAAEKAB0WIQQ5bPBtrWDUcDQCppg0LQZT0ays2wUCabAGUAAKCRA0LQZT0ays
+ 25iRB/4+DNoMMW2koOlN/DfR0crLtH1nZDxAJOmf/8RHXFfdriIuA3iATU5mx4bxDWjpvaGsmVF
+ sScQl/IREquLsn2WvMNqP8VTO6O5b6dTKbFCMkwD4BQk0G2mg/TcyproVTFFc53eOopbKdhzKTm
+ Isr1LIuVwpZ0FQ6SRPCDxxmnQfxV1v9dSs1qwmVTacxHLQeT5J39Og4hMR9wi3vpAJ5eehJCv9n
+ lR3Su7JxXXqg12+uTsE16DABRCYs7reggRC+HE7/WglPKMOyMs6b/M6GTKoEx8jwE+9yNdG13UM
+ RWdxOZdqo69T8hgV/W9OJAR9jWWipbKE58eiOeRYxFyI6r6y
 X-Developer-Key: i=phahn-oss@avm.de; a=openpgp;
  fpr=58AF7C2E007CDBE62C59E078F50EFDCF8AD04B1A
-X-purgate-ID: 149429::1773143725-25DC2A3D-57771A30/0/0
+X-purgate-ID: 149429::1773143725-E6DC0A3D-2C476C73/0/0
 X-purgate-type: clean
-X-purgate-size: 863
+X-purgate-size: 1016
 X-purgate-Ad: Categorized by eleven eXpurgate (R) https://www.eleven.de
 X-purgate: This mail is considered clean (visit https://www.eleven.de for further information)
 X-purgate: clean
-X-Rspamd-Queue-Id: E6CB424D492
+X-Rspamd-Queue-Id: E0E0624F08B
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-0.66 / 15.00];
 	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[avm.de,quarantine];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	R_DKIM_ALLOW(-0.20)[avm.de:s=mail];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
@@ -125,19 +126,19 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	RCVD_TLS_LAST(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-32859-lists,linux-wireless=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-32870-lists,linux-wireless=lfdr.de];
 	MISSING_XM_UA(0.00)[];
 	FROM_HAS_DN(0.00)[];
 	TO_DN_SOME(0.00)[];
 	RCVD_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[phahn-oss@avm.de,linux-wireless@vger.kernel.org];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	RCPT_COUNT_GT_50(0.00)[56];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	RCPT_COUNT_GT_50(0.00)[57];
 	MID_RHS_MATCH_FROM(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
 	TAGGED_RCPT(0.00)[linux-wireless];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[avm.de:dkim,avm.de:email,avm.de:mid,phrozen.org:email,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,franken.de:email]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sourceforge.jp:email,avm.de:dkim,avm.de:email,avm.de:mid,libc.org:email,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,fu-berlin.de:email]
 X-Rspamd-Action: no action
 
 Prefer using IS_ERR_OR_NULL() over using IS_ERR() and a manual NULL
@@ -145,28 +146,29 @@ check.
 
 Change generated with coccinelle.
 
-To: John Crispin <john@phrozen.org>
-To: Thomas Bogendoerfer <tsbogend@alpha.franken.de>
-Cc: linux-mips@vger.kernel.org
+To: Yoshinori Sato <ysato@users.sourceforge.jp>
+To: Rich Felker <dalias@libc.org>
+To: John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>
+Cc: linux-sh@vger.kernel.org
 Cc: linux-kernel@vger.kernel.org
 Signed-off-by: Philipp Hahn <phahn-oss@avm.de>
 ---
- arch/mips/lantiq/clk.c | 2 +-
+ arch/sh/mm/ioremap.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/arch/mips/lantiq/clk.c b/arch/mips/lantiq/clk.c
-index 2d5a0bcb0cec156dc5f0daedbdd7c56ff8d62ca4..4ae271a887c39163370d070b49d9e5152a709bd7 100644
---- a/arch/mips/lantiq/clk.c
-+++ b/arch/mips/lantiq/clk.c
-@@ -60,7 +60,7 @@ EXPORT_SYMBOL_GPL(clk_get_ppe);
+diff --git a/arch/sh/mm/ioremap.c b/arch/sh/mm/ioremap.c
+index 5bbde53fb32d785607f8281f9e9cee16d16fc551..06c3bfe2511fd0d5e67e28a8882aa9159991c30a 100644
+--- a/arch/sh/mm/ioremap.c
++++ b/arch/sh/mm/ioremap.c
+@@ -97,7 +97,7 @@ void __iomem __ref *ioremap_prot(phys_addr_t phys_addr, size_t size,
+ 	 */
+ 	mapped = pmb_remap_caller(phys_addr, size, pgprot,
+ 			__builtin_return_address(0));
+-	if (mapped && !IS_ERR(mapped))
++	if (!IS_ERR_OR_NULL(mapped))
+ 		return mapped;
  
- static inline int clk_good(struct clk *clk)
- {
--	return clk && !IS_ERR(clk);
-+	return !IS_ERR_OR_NULL(clk);
- }
- 
- unsigned long clk_get_rate(struct clk *clk)
+ 	return generic_ioremap_prot(phys_addr, size, pgprot);
 
 -- 
 2.43.0
