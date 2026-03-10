@@ -1,56 +1,56 @@
-Return-Path: <linux-wireless+bounces-32866-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-32865-lists+linux-wireless=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id +Gf+D1ELsGl4ewIAu9opvQ
-	(envelope-from <linux-wireless+bounces-32866-lists+linux-wireless=lfdr.de@vger.kernel.org>)
-	for <lists+linux-wireless@lfdr.de>; Tue, 10 Mar 2026 13:15:13 +0100
+	id eNIyFB4QsGkpfAIAu9opvQ
+	(envelope-from <linux-wireless+bounces-32865-lists+linux-wireless=lfdr.de@vger.kernel.org>)
+	for <lists+linux-wireless@lfdr.de>; Tue, 10 Mar 2026 13:35:42 +0100
 X-Original-To: lists+linux-wireless@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id D857624CF0B
-	for <lists+linux-wireless@lfdr.de>; Tue, 10 Mar 2026 13:15:12 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id F042524E20B
+	for <lists+linux-wireless@lfdr.de>; Tue, 10 Mar 2026 13:35:41 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 6E4FE307AFDB
-	for <lists+linux-wireless@lfdr.de>; Tue, 10 Mar 2026 12:10:44 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 590BF31900BE
+	for <lists+linux-wireless@lfdr.de>; Tue, 10 Mar 2026 12:25:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 07DC93B38A0;
-	Tue, 10 Mar 2026 11:56:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0B2B13A1691;
+	Tue, 10 Mar 2026 11:56:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=avm.de header.i=@avm.de header.b="BoFkjZya"
+	dkim=pass (1024-bit key) header.d=avm.de header.i=@avm.de header.b="Pw5J/ZKa"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from mail.avm.de (mail.avm.de [212.42.244.94])
 	(using TLSv1.2 with cipher DHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EBB3447CC87;
-	Tue, 10 Mar 2026 11:55:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9ED74477E58;
+	Tue, 10 Mar 2026 11:55:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.42.244.94
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773143756; cv=none; b=DvCgIXCDL8LvNRoq+TSXoIaSgBEds6zRuD9f8zqxeffVmU+xgAPTOPYQMQ9zAqCIrHmbGwegasUzOfbHVl8cve9mjAYKEhdJ6z+zPKgPtc5Rccy+XczcpkWro8WaSKHwwnxwOnhVZUZRyCeLEJE6do8gToLjHVdoWRB7XJ9syII=
+	t=1773143752; cv=none; b=GqGZqktkEoBaei6A5IoBe3KV5VHTzfffD3CqodzJfF14SikzuAwKOvwTHt2Zm3Y5xny/LMOaS2lrHdLTTsWiqtaUQDaPAkPnw9Osx08tHqu168Aiof4CBBwU/vwyDb/OmzW+LQTFbIQGRrYr48ubU8IbaooGDD0LHXIaTGeORTA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773143756; c=relaxed/simple;
-	bh=a1YtuPUr/A4Jokjiqoyr22dEN0gVE+OOIk5/iCzuB9k=;
+	s=arc-20240116; t=1773143752; c=relaxed/simple;
+	bh=P8RHvB1pDU6Ba6KZR0cIN2NAbDWAknWQIRz8JMX8gns=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=B6PNs0l+TgA2lZOwBROg4z/x6d7rwCNIr/lhdsNHa7sHQceDXuVDSgtYhphHIa9Rl6H4uFPjH/l3isN7BPFscFhMU2l/3Q1cbQfxvkyJh27NurJcjyQxGyldWHqaYiMAuYF4gX9Sx6HMlysGyk2aVNK/eC/JajLh/mzgdal5msk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=avm.de; spf=pass smtp.mailfrom=avm.de; dkim=pass (1024-bit key) header.d=avm.de header.i=@avm.de header.b=BoFkjZya; arc=none smtp.client-ip=212.42.244.94
+	 In-Reply-To:To:Cc; b=gj5aBeho94To4knM2siTtrKK1BG6f795srOCfBMjF1Srq8YfAa3dzxbghni4CB8xhsNGfDSOvYjCYW/QVnVb/8IBfsL+LVWLnsEJki+bIE6D/E0lA0s8nSfo81uS0O4I9SPS25CoZYfcloPDBM1bYI1oaQOd+u5acUy81OX2lBM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=avm.de; spf=pass smtp.mailfrom=avm.de; dkim=pass (1024-bit key) header.d=avm.de header.i=@avm.de header.b=Pw5J/ZKa; arc=none smtp.client-ip=212.42.244.94
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=avm.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=avm.de
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=avm.de; s=mail;
-	t=1773143728; bh=a1YtuPUr/A4Jokjiqoyr22dEN0gVE+OOIk5/iCzuB9k=;
+	t=1773143728; bh=P8RHvB1pDU6Ba6KZR0cIN2NAbDWAknWQIRz8JMX8gns=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc:From;
-	b=BoFkjZyaKFG4I+0my0U16P/ZlsfjMrTgDD1a+wOsKM3wW6Hyckunq05e6+k99D3Gi
-	 4kV+7om5pC/Efx3ZEKmiJFTqpv4USFiYyuVuVp1V1iQJ18dYlrQIte47hFcyWAgg5r
-	 KM84isD0nokr7A5umpY1I9BsMYrFHMDwFBwVekfs=
+	b=Pw5J/ZKa7qdOD/KHliFHGAPgoeYPtxmoMsaCQF/FKai+LG5vkmyJowXsEzkD3cPot
+	 34kvrGSUxg1JnjFKHY6NsLgrOVug3M9Be4rVveawRMrk6MR1C1BR6jP8hIlA4X3hU4
+	 jr1s0kl9i2R1ifgZ0ZoS8j1AZYiWtKMhO7fCyfSs=
 Received: from [212.42.244.71] (helo=mail.avm.de)
 	by mail.avm.de with ESMTP (eXpurgate 4.55.2)
 	(envelope-from <phahn-oss@avm.de>)
-	id 69b006af-e21d-7f0000032729-7f000001baa8-1
+	id 69b006af-e21d-7f0000032729-7f000001baae-1
 	for <multiple-recipients>; Tue, 10 Mar 2026 12:55:27 +0100
 Received: from mail-auth.avm.de (dovecot-mx-01.avm.de [212.42.244.71])
 	by mail.avm.de (Postfix) with ESMTPS;
 	Tue, 10 Mar 2026 12:55:27 +0100 (CET)
 From: Philipp Hahn <phahn-oss@avm.de>
-Date: Tue, 10 Mar 2026 12:49:13 +0100
-Subject: [PATCH 47/61] nfc: Prefer IS_ERR_OR_NULL over manual NULL check
+Date: Tue, 10 Mar 2026 12:49:14 +0100
+Subject: [PATCH 48/61] mtd: Prefer IS_ERR_OR_NULL over manual NULL check
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
@@ -59,7 +59,7 @@ List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260310-b4-is_err_or_null-v1-47-bd63b656022d@avm.de>
+Message-Id: <20260310-b4-is_err_or_null-v1-48-bd63b656022d@avm.de>
 References: <20260310-b4-is_err_or_null-v1-0-bd63b656022d@avm.de>
 In-Reply-To: <20260310-b4-is_err_or_null-v1-0-bd63b656022d@avm.de>
 To: amd-gfx@lists.freedesktop.org, apparmor@lists.ubuntu.com, 
@@ -89,31 +89,32 @@ To: amd-gfx@lists.freedesktop.org, apparmor@lists.ubuntu.com,
  sched-ext@lists.linux.dev, target-devel@vger.kernel.org, 
  tipc-discussion@lists.sourceforge.net, v9fs@lists.linux.dev, 
  Philipp Hahn <phahn-oss@avm.de>
-Cc: Mark Greer <mgreer@animalcreek.com>
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1019; i=phahn-oss@avm.de;
- h=from:subject:message-id; bh=a1YtuPUr/A4Jokjiqoyr22dEN0gVE+OOIk5/iCzuB9k=;
- b=owEBbQGS/pANAwAKATQtBlPRrKzbAcsmYgBpsAZ1Y/UGouoeQcc9WQ8MxrI8d8MHBXHMF2nKS
- xW2sTsLmvSJATMEAAEKAB0WIQQ5bPBtrWDUcDQCppg0LQZT0ays2wUCabAGdQAKCRA0LQZT0ays
- 20jSB/99EGQGPGXfwgc9aoZkEd87WlbZAw/E49hsk8skwCBZpOQIbZBOjpLkfsW3KBFKwpYL6hr
- zj+vjAPS0Kbx/wu/htgTOseyb8dlXJs2DJCBqPrRUWk2pbJhfh9SL0jieoNOSPl5SCoElM11Tk7
- rVQVkuo82qw4WSlg3liLUmo4Aasw+ALrReSJUM+VyOL2Xm/NrCTSIkyRe46UeXgqxXym8K01Jiw
- UcwLAnfIONTcOH9YPD1gA7uZh9C/pYgWe8DkJu23THTdXZuc/7KopxZDLw5gOH2D1JgCmfeTZcx
- ZHAC2ZLeQRVUrAJ1qKHgI4k8WSRe11aWcTzhA96+gLBGdLHb
+Cc: Miquel Raynal <miquel.raynal@bootlin.com>, 
+ Richard Weinberger <richard@nod.at>, Vignesh Raghavendra <vigneshr@ti.com>
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1817; i=phahn-oss@avm.de;
+ h=from:subject:message-id; bh=P8RHvB1pDU6Ba6KZR0cIN2NAbDWAknWQIRz8JMX8gns=;
+ b=kA0DAAoBNC0GU9GsrNsByyZiAGmwBnnIluZqwXeZ26oYYynjfBoy02QQTmlYcSsBV5M99kkBR
+ okBMwQAAQoAHRYhBDls8G2tYNRwNAKmmDQtBlPRrKzbBQJpsAZ5AAoJEDQtBlPRrKzbhhQIALOH
+ 7GGUb7lDbOgP/8xq1PNX4SyEuog4C5Kqug0EL27yDZ5DTcHtYtEWvTOVFh3DoBIg9oWZIhltbqf
+ zQqvypi0p020OQBz5OD/FKYzR1JLtT/NpVkDjTnrh0FIsLPISsJn9k8DorrTpQE5Fk5zPEGhmlk
+ HlvpEuSvvQD0MQibzxJjUYSjgq+Ll386Twc/QQfm3hFYZT/c4I4Yb80f4z0CM2WhT7S3udW5nGM
+ BjGFdYImnQ9uAgWz45BEBVAwZb3P7349MoFLUJ9ZHvqc+4UOIWn+5d35lrOEZcvkJpfol2G0RFZ
+ WFsYepS2AbdMtsza99K9TLlncKCIQLIaXnPIWJM=
 X-Developer-Key: i=phahn-oss@avm.de; a=openpgp;
  fpr=58AF7C2E007CDBE62C59E078F50EFDCF8AD04B1A
-X-purgate-ID: 149429::1773143727-9367AF2F-C803A085/0/0
+X-purgate-ID: 149429::1773143727-A3E5BF2F-9DD0B83B/0/0
 X-purgate-type: clean
-X-purgate-size: 1021
+X-purgate-size: 1819
 X-purgate-Ad: Categorized by eleven eXpurgate (R) https://www.eleven.de
 X-purgate: This mail is considered clean (visit https://www.eleven.de for further information)
 X-purgate: clean
-X-Rspamd-Queue-Id: D857624CF0B
+X-Rspamd-Queue-Id: F042524E20B
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-0.66 / 15.00];
 	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[avm.de,quarantine];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	R_DKIM_ALLOW(-0.20)[avm.de:s=mail];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
@@ -123,19 +124,19 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	RCVD_TLS_LAST(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-32866-lists,linux-wireless=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-32865-lists,linux-wireless=lfdr.de];
 	MISSING_XM_UA(0.00)[];
 	FROM_HAS_DN(0.00)[];
 	TO_DN_SOME(0.00)[];
 	RCVD_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[phahn-oss@avm.de,linux-wireless@vger.kernel.org];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	RCPT_COUNT_GT_50(0.00)[55];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	RCPT_COUNT_GT_50(0.00)[57];
 	MID_RHS_MATCH_FROM(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
 	TAGGED_RCPT(0.00)[linux-wireless];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,animalcreek.com:email,avm.de:dkim,avm.de:email,avm.de:mid]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[infradead.org:email,bootlin.com:email,nod.at:email,ti.com:email,avm.de:dkim,avm.de:email,avm.de:mid,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo]
 X-Rspamd-Action: no action
 
 Prefer using IS_ERR_OR_NULL() over using IS_ERR() and a manual NULL
@@ -143,28 +144,54 @@ check.
 
 Change generated with coccinelle.
 
-To: Mark Greer <mgreer@animalcreek.com>
-Cc: linux-wireless@vger.kernel.org
-Cc: netdev@vger.kernel.org
+To: Miquel Raynal <miquel.raynal@bootlin.com>
+To: Richard Weinberger <richard@nod.at>
+To: Vignesh Raghavendra <vigneshr@ti.com>
+Cc: linux-mtd@lists.infradead.org
 Cc: linux-kernel@vger.kernel.org
 Signed-off-by: Philipp Hahn <phahn-oss@avm.de>
 ---
- drivers/nfc/trf7970a.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/mtd/nand/raw/gpio.c | 10 +++++-----
+ 1 file changed, 5 insertions(+), 5 deletions(-)
 
-diff --git a/drivers/nfc/trf7970a.c b/drivers/nfc/trf7970a.c
-index d17c701c7888b3be0b46cf95c4b77182313c97c0..f62fc2b80b05bd7a82269334d7f50e6394bfe80f 100644
---- a/drivers/nfc/trf7970a.c
-+++ b/drivers/nfc/trf7970a.c
-@@ -651,7 +651,7 @@ static void trf7970a_send_upstream(struct trf7970a *trf)
- 	dev_kfree_skb_any(trf->tx_skb);
- 	trf->tx_skb = NULL;
+diff --git a/drivers/mtd/nand/raw/gpio.c b/drivers/mtd/nand/raw/gpio.c
+index 69e5e43532a448aa6273f3df79f53145784ccc05..86a8b62fb9e8510d36f925b8b468ec17c77e26d8 100644
+--- a/drivers/mtd/nand/raw/gpio.c
++++ b/drivers/mtd/nand/raw/gpio.c
+@@ -276,9 +276,9 @@ static void gpio_nand_remove(struct platform_device *pdev)
+ 	nand_cleanup(chip);
  
--	if (trf->rx_skb && !IS_ERR(trf->rx_skb) && !trf->aborting)
-+	if (!IS_ERR_OR_NULL(trf->rx_skb) && !trf->aborting)
- 		print_hex_dump_debug("trf7970a rx data: ", DUMP_PREFIX_NONE,
- 				     16, 1, trf->rx_skb->data, trf->rx_skb->len,
- 				     false);
+ 	/* Enable write protection and disable the chip */
+-	if (gpiomtd->nwp && !IS_ERR(gpiomtd->nwp))
++	if (!IS_ERR_OR_NULL(gpiomtd->nwp))
+ 		gpiod_set_value(gpiomtd->nwp, 0);
+-	if (gpiomtd->nce && !IS_ERR(gpiomtd->nce))
++	if (!IS_ERR_OR_NULL(gpiomtd->nce))
+ 		gpiod_set_value(gpiomtd->nce, 0);
+ }
+ 
+@@ -358,7 +358,7 @@ static int gpio_nand_probe(struct platform_device *pdev)
+ 	platform_set_drvdata(pdev, gpiomtd);
+ 
+ 	/* Disable write protection, if wired up */
+-	if (gpiomtd->nwp && !IS_ERR(gpiomtd->nwp))
++	if (!IS_ERR_OR_NULL(gpiomtd->nwp))
+ 		gpiod_direction_output(gpiomtd->nwp, 1);
+ 
+ 	/*
+@@ -381,10 +381,10 @@ static int gpio_nand_probe(struct platform_device *pdev)
+ 		return 0;
+ 
+ err_wp:
+-	if (gpiomtd->nwp && !IS_ERR(gpiomtd->nwp))
++	if (!IS_ERR_OR_NULL(gpiomtd->nwp))
+ 		gpiod_set_value(gpiomtd->nwp, 0);
+ out_ce:
+-	if (gpiomtd->nce && !IS_ERR(gpiomtd->nce))
++	if (!IS_ERR_OR_NULL(gpiomtd->nce))
+ 		gpiod_set_value(gpiomtd->nce, 0);
+ 
+ 	return ret;
 
 -- 
 2.43.0
