@@ -1,172 +1,195 @@
-Return-Path: <linux-wireless+bounces-32935-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-32936-lists+linux-wireless=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id sD67LYa0sGlSmQIAu9opvQ
-	(envelope-from <linux-wireless+bounces-32935-lists+linux-wireless=lfdr.de@vger.kernel.org>)
-	for <lists+linux-wireless@lfdr.de>; Wed, 11 Mar 2026 01:17:10 +0100
+	id QIKGG0S3sGlvmQIAu9opvQ
+	(envelope-from <linux-wireless+bounces-32936-lists+linux-wireless=lfdr.de@vger.kernel.org>)
+	for <lists+linux-wireless@lfdr.de>; Wed, 11 Mar 2026 01:28:52 +0100
 X-Original-To: lists+linux-wireless@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5BA20259A1D
-	for <lists+linux-wireless@lfdr.de>; Wed, 11 Mar 2026 01:17:10 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id 78168259CA8
+	for <lists+linux-wireless@lfdr.de>; Wed, 11 Mar 2026 01:28:51 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 899B93009B09
-	for <lists+linux-wireless@lfdr.de>; Wed, 11 Mar 2026 00:16:26 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 1D7C43007ACE
+	for <lists+linux-wireless@lfdr.de>; Wed, 11 Mar 2026 00:28:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5F0D52D5408;
-	Wed, 11 Mar 2026 00:16:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=fail reason="signature verification failed" (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b="v5WQ+aGF"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5F99D35DA61;
+	Wed, 11 Mar 2026 00:28:31 +0000 (UTC)
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from pandora.armlinux.org.uk (pandora.armlinux.org.uk [78.32.30.218])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-oi1-f179.google.com (mail-oi1-f179.google.com [209.85.167.179])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B058778F39;
-	Wed, 11 Mar 2026 00:16:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=78.32.30.218
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0AB2535DA57
+	for <linux-wireless@vger.kernel.org>; Wed, 11 Mar 2026 00:28:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.179
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773188181; cv=none; b=i2EWN6pZMe8+Vt3a1nfivI3TDYN70wUqee/HZulAaULlezQKOJs7HxTawJBPRQHbmwD1JJ+sTqDFhZh4APZJCNgegzcdxeIMiQutwziMqBW71T2+rVkROA+OZyw96+PAW6SKCVjN3vd8ZlE4JokVdJQshqiR8O/ffkeoseKHnw4=
+	t=1773188911; cv=none; b=spJJryi9+qAAvgiDIJeuC6EJx4El7/ezzScSi02//LXcJu/QJ0DxsIoNK3OsuCU1I1I6go/UicgVJ82IR422hbgZtHvfMxMJ1SrDdtVAr+JADtJaTbxJmZEiJcHgR56hStA789jS+cnaV0lFuHiSB5AAfnQxJW+SeVU+I672RmE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773188181; c=relaxed/simple;
-	bh=HHmVVMzB7LWlN0zlKien4jBG/TuDlI4RcZGysb9m8Vk=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=fCr4TN/DbSTIZeYdqUctNJeA+l8EomJclrlIObj95OA1pv6ZpTOygP6Tea6nrZD3U8t1nKEbwVlAjbTRISh/e6ssZ439PxfUvXb5k/ABXz9hh6ENTt34TElTXWvgyx4DfaU/7j3RNYTwX3f624dl5YqTeI526pgCb0boWeIgqx4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=armlinux.org.uk; spf=none smtp.mailfrom=armlinux.org.uk; dkim=pass (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b=v5WQ+aGF; arc=none smtp.client-ip=78.32.30.218
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=armlinux.org.uk
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=armlinux.org.uk
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=armlinux.org.uk; s=pandora-2019; h=Sender:In-Reply-To:Content-Type:
-	MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
-	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:
-	List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
-	bh=G+5qjaihAOE3Wva2YLY8jATPGvyCa7CiJLk7V/SbO+c=; b=v5WQ+aGF0sps0WNhC7Zp3i4qfq
-	0Hb0SCVWpSXvSr7WdAe2bPHF4KfJ/Ed1eiaiCb8D0oCv1z5xwK7JuLf0tC0l8hY2t6eWn1tcNZSpg
-	QYrAEXTacs2n4b4dGxTmR/QZFsu7Xre8GI0M2CDH+d6uoN0gFUU9MJ/Uqp3GyqqaO1XmybhsS5lVz
-	KPXBqq6BLZCCQzpQ8jMEzm8MnKJZE/MMCDQxbCe0qlHGv5pHIS812K52VRhLCysEP1IhQjrayukQi
-	lGpFnxogge7mHLP+wP8QrSVC+xUyVfKJNzw96REdhpsHijJHvcSndISQsei/F/gJP6wWuF34GUcce
-	0I/0wllQ==;
-Received: from shell.armlinux.org.uk ([fd8f:7570:feb6:1:5054:ff:fe00:4ec]:55974)
-	by pandora.armlinux.org.uk with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.98.2)
-	(envelope-from <linux@armlinux.org.uk>)
-	id 1w07FF-000000005dP-41aF;
-	Wed, 11 Mar 2026 00:16:14 +0000
-Received: from linux by shell.armlinux.org.uk with local (Exim 4.98.2)
-	(envelope-from <linux@shell.armlinux.org.uk>)
-	id 1w07FB-000000005hj-1vhz;
-	Wed, 11 Mar 2026 00:16:09 +0000
-Date: Wed, 11 Mar 2026 00:16:09 +0000
-From: "Russell King (Oracle)" <linux@armlinux.org.uk>
-To: Philipp Hahn <phahn-oss@avm.de>
-Cc: amd-gfx@lists.freedesktop.org, apparmor@lists.ubuntu.com,
-	bpf@vger.kernel.org, ceph-devel@vger.kernel.org, cocci@inria.fr,
-	dm-devel@lists.linux.dev, dri-devel@lists.freedesktop.org,
-	gfs2@lists.linux.dev, intel-gfx@lists.freedesktop.org,
-	intel-wired-lan@lists.osuosl.org, iommu@lists.linux.dev,
-	kvm@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-	linux-block@vger.kernel.org, linux-bluetooth@vger.kernel.org,
-	linux-btrfs@vger.kernel.org, linux-cifs@vger.kernel.org,
-	linux-clk@vger.kernel.org, linux-erofs@lists.ozlabs.org,
-	linux-ext4@vger.kernel.org, linux-fsdevel@vger.kernel.org,
-	linux-gpio@vger.kernel.org, linux-hyperv@vger.kernel.org,
-	linux-input@vger.kernel.org, linux-kernel@vger.kernel.org,
-	linux-leds@vger.kernel.org, linux-media@vger.kernel.org,
-	linux-mips@vger.kernel.org, linux-mm@kvack.org,
-	linux-modules@vger.kernel.org, linux-mtd@lists.infradead.org,
-	linux-nfs@vger.kernel.org, linux-omap@vger.kernel.org,
-	linux-phy@lists.infradead.org, linux-pm@vger.kernel.org,
-	linux-rockchip@lists.infradead.org, linux-s390@vger.kernel.org,
-	linux-scsi@vger.kernel.org, linux-sctp@vger.kernel.org,
-	linux-security-module@vger.kernel.org, linux-sh@vger.kernel.org,
-	linux-sound@vger.kernel.org,
-	linux-stm32@st-md-mailman.stormreply.com,
-	linux-trace-kernel@vger.kernel.org, linux-usb@vger.kernel.org,
-	linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
-	ntfs3@lists.linux.dev, samba-technical@lists.samba.org,
-	sched-ext@lists.linux.dev, target-devel@vger.kernel.org,
-	tipc-discussion@lists.sourceforge.net, v9fs@lists.linux.dev,
-	Igor Russkikh <irusskikh@marvell.com>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	Pavan Chebbi <pavan.chebbi@broadcom.com>,
-	Michael Chan <mchan@broadcom.com>,
-	Potnuri Bharat Teja <bharat@chelsio.com>,
-	Tony Nguyen <anthony.l.nguyen@intel.com>,
-	Przemek Kitszel <przemyslaw.kitszel@intel.com>,
-	Taras Chornyi <taras.chornyi@plvision.eu>,
-	Maxime Coquelin <mcoquelin.stm32@gmail.com>,
-	Alexandre Torgue <alexandre.torgue@foss.st.com>,
-	Iyappan Subramanian <iyappan@os.amperecomputing.com>,
-	Keyur Chudgar <keyur@os.amperecomputing.com>,
-	Quan Nguyen <quan@os.amperecomputing.com>,
-	Heiner Kallweit <hkallweit1@gmail.com>
-Subject: Re: [PATCH 38/61] net: Prefer IS_ERR_OR_NULL over manual NULL check
-Message-ID: <abC0Se_cstwTWp9r@shell.armlinux.org.uk>
-References: <20260310-b4-is_err_or_null-v1-0-bd63b656022d@avm.de>
- <20260310-b4-is_err_or_null-v1-38-bd63b656022d@avm.de>
+	s=arc-20240116; t=1773188911; c=relaxed/simple;
+	bh=x1I+/ISL6OTVcLYZHXE7V55D9PZLbfhUCQpcI1iNIIs=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=PMf5q6ROn9jhIGnez1BzUMuvZDh2cfVwa6bRbKeH+rSh8+jmTI1vUj8ErSlOqw3gpVr9XajzLmwQipCc+l/SZ1XBzsGhWZgouaao192XsLLmfn9broYtVOiOw4wySI47q1UKuphfCqtE5ZSBlAuFMeXhTtAcofwHISr9xm3fxRY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=quarantine dis=none) header.from=kernel.org; spf=pass smtp.mailfrom=gmail.com; arc=none smtp.client-ip=209.85.167.179
+Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=quarantine dis=none) header.from=kernel.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-oi1-f179.google.com with SMTP id 5614622812f47-464bc03efd8so7998878b6e.2
+        for <linux-wireless@vger.kernel.org>; Tue, 10 Mar 2026 17:28:29 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1773188909; x=1773793709;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=1ATRiGzqYc/km5OI3xmsPtelJTLro5lPbW2iw0ZmTlE=;
+        b=WiZM6XnN6VQ1c3Ge+vV/7PKPgLXvbMwdRRfYBDt65vU0LIGKtMqJq/3K2QR5duxeQJ
+         W9Wb1ovMxRgvoIiM0F0XCXa/sVlHCkkZ4pQ721trefYoGb6QmA2kkFbQXEDg65KN6/U3
+         u8r78Mxjeg3Vm0FM5TxvNNLZkpoS5KaOFFxtXsDplxwqiNkYsoHZkreQYIvOONVtLZl5
+         wg5LycRGtahPRyaj8zZK1l1wwxmchu+7ql4SQCu7HMVI333gESCRM1iCSs80m2e6nSQC
+         /SSktJSMyPTvwembXvoE4bwoohzlhmUEM3r3E+pm77rAvXLnK6O8diCZASO7V10ksruo
+         l2jg==
+X-Gm-Message-State: AOJu0YwS/pRHK5ql38w+litbpc+ocr5cjrWSKLt7QA5EfYKTqNInQv7G
+	TquQZ1Fl/s0JUgxfe5FVJCc+5yj82UPOlaHL23XJzs7CblBp1pfGCZHg
+X-Gm-Gg: ATEYQzxMWApWRmURohjlQRAEbKQJzUh9FwSGDDE87zSgdgBnXMzccCd3bPGc3txh71z
+	ButX7HRTYKBps+B2T43nq6WJr3hRpOdA8ElzIIjvgIVoxdIGHqIaoktLsDdTwv9GkWAZsp6W+9p
+	RpvlqoRdrYBfe385w/W0kTuhAJVmUVgFp7OFoBcQg1TwtUFix1b72XODKo/kEnakJXLKLbLZ5Q/
+	/UoVg1nRKmXpRruCsm/qwq8NJOv/xWlR4JSN3e2W6N9WYCTOPyDQ7lFwdTYRkPyYaM5DsDY7FZc
+	Gw3obaGBJxlOMxyyrsbTLjNDhTNXQgfxpRZG4O3jYpEO+4X7cFqECA+5ktRv04rsQDj1SAgE+v+
+	YvXs1UBMzawPOXcGmhWY6Gw8eyu36zLppNE0GBa42IjZFKFO2PZ4G41raEVrpneaiIyYNWBSfP1
+	f7tsid0NpPPzutBX+nTV4fHvF69UdWfEExzL0/qFgH7RUZYvg=
+X-Received: by 2002:a05:6808:13c1:b0:450:d471:dce5 with SMTP id 5614622812f47-467333f0844mr413343b6e.6.1773188908872;
+        Tue, 10 Mar 2026 17:28:28 -0700 (PDT)
+Received: from sean-HP-EliteBook-830-G6.lan ([207.191.35.252])
+        by smtp.gmail.com with ESMTPSA id 586e51a60fabf-4177e72b40asm516497fac.20.2026.03.10.17.28.28
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 10 Mar 2026 17:28:28 -0700 (PDT)
+From: Sean Wang <sean.wang@kernel.org>
+To: nbd@nbd.name,
+	lorenzo.bianconi@redhat.com
+Cc: linux-wireless@vger.kernel.org,
+	linux-mediatek@lists.infradead.org,
+	Sean Wang <sean.wang@mediatek.com>
+Subject: [PATCH 1/2] wifi: mt76: mt792x: describe USB WFSYS reset with a descriptor
+Date: Tue, 10 Mar 2026 19:28:24 -0500
+Message-ID: <20260311002825.15502-1-sean.wang@kernel.org>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260310-b4-is_err_or_null-v1-38-bd63b656022d@avm.de>
-Sender: Russell King (Oracle) <linux@armlinux.org.uk>
-X-Rspamd-Queue-Id: 5BA20259A1D
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Queue-Id: 78168259CA8
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [1.14 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
-	R_DKIM_REJECT(1.00)[armlinux.org.uk:s=pandora-2019];
+X-Spamd-Result: default: False [-0.46 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	MID_CONTAINS_FROM(1.00)[];
+	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
-	DMARC_POLICY_SOFTFAIL(0.10)[armlinux.org.uk : SPF not aligned (relaxed),none];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[lists.freedesktop.org,lists.ubuntu.com,vger.kernel.org,inria.fr,lists.linux.dev,lists.osuosl.org,lists.infradead.org,lists.ozlabs.org,kvack.org,st-md-mailman.stormreply.com,lists.samba.org,lists.sourceforge.net,marvell.com,lunn.ch,davemloft.net,google.com,kernel.org,redhat.com,broadcom.com,chelsio.com,intel.com,plvision.eu,gmail.com,foss.st.com,os.amperecomputing.com];
-	DKIM_TRACE(0.00)[armlinux.org.uk:-];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-32935-lists,linux-wireless=lfdr.de];
-	MISSING_XM_UA(0.00)[];
-	FROM_HAS_DN(0.00)[];
 	TO_DN_SOME(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[5];
-	FROM_NEQ_ENVFROM(0.00)[linux@armlinux.org.uk,linux-wireless@vger.kernel.org];
-	PRECEDENCE_BULK(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	RCPT_COUNT_GT_50(0.00)[72];
-	MID_RHS_MATCH_FROMTLD(0.00)[];
-	NEURAL_HAM(-0.00)[-0.961];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-32936-lists,linux-wireless=lfdr.de];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[linux-wireless,netdev];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[shell.armlinux.org.uk:mid,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,armlinux.org.uk:url]
+	TAGGED_RCPT(0.00)[linux-wireless];
+	FROM_NEQ_ENVFROM(0.00)[sean.wang@kernel.org,linux-wireless@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[5];
+	PRECEDENCE_BULK(0.00)[];
+	NEURAL_HAM(-0.00)[-0.980];
+	RCVD_COUNT_FIVE(0.00)[5];
+	R_DKIM_NA(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo]
 X-Rspamd-Action: no action
 
-On Tue, Mar 10, 2026 at 12:49:04PM +0100, Philipp Hahn wrote:
-> diff --git a/drivers/net/mdio/mdio-xgene.c b/drivers/net/mdio/mdio-xgene.c
-> index a8f91a4b7fed0927ee14e408000cd3a2bfb9b09a..09b30b563295c6085dc1358ac361301e5cf6b2a8 100644
-> --- a/drivers/net/mdio/mdio-xgene.c
-> +++ b/drivers/net/mdio/mdio-xgene.c
-> @@ -265,7 +265,7 @@ struct phy_device *xgene_enet_phy_register(struct mii_bus *bus, int phy_addr)
->  	struct phy_device *phy_dev;
->  
->  	phy_dev = get_phy_device(bus, phy_addr, false);
-> -	if (!phy_dev || IS_ERR(phy_dev))
-> +	if (IS_ERR_OR_NULL(phy_dev))
+From: Sean Wang <sean.wang@mediatek.com>
 
-As noted in reply to your cover message, the check for NULL here is
-incorrect - get_phy_device() returns either a valid pointer or an
-error pointer, but never NULL.
+Prepare mt792xu_wfsys_reset() for chips that share the same USB WFSYS
+reset flow but use different register definitions.
 
+This is a pure refactor of the current mt7921u path and keeps the reset
+sequence unchanged.
+
+Signed-off-by: Sean Wang <sean.wang@mediatek.com>
+---
+ .../net/wireless/mediatek/mt76/mt792x_usb.c   | 40 +++++++++++++++----
+ 1 file changed, 32 insertions(+), 8 deletions(-)
+
+diff --git a/drivers/net/wireless/mediatek/mt76/mt792x_usb.c b/drivers/net/wireless/mediatek/mt76/mt792x_usb.c
+index 552808458138..a92e872226cf 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt792x_usb.c
++++ b/drivers/net/wireless/mediatek/mt76/mt792x_usb.c
+@@ -206,6 +206,24 @@ static void mt792xu_epctl_rst_opt(struct mt792x_dev *dev, bool reset)
+ 	mt792xu_uhw_wr(&dev->mt76, MT_SSUSB_EPCTL_CSR_EP_RST_OPT, val);
+ }
+ 
++struct mt792xu_wfsys_desc {
++	u32 rst_reg;
++	u32 done_reg;
++	u32 done_mask;
++	u32 done_val;
++	u32 delay_ms;
++	bool need_status_sel;
++};
++
++static const struct mt792xu_wfsys_desc mt7921_wfsys_desc = {
++	.rst_reg = MT_CBTOP_RGU_WF_SUBSYS_RST,
++	.done_reg = MT_UDMA_CONN_INFRA_STATUS,
++	.done_mask = MT_UDMA_CONN_WFSYS_INIT_DONE,
++	.done_val = MT_UDMA_CONN_WFSYS_INIT_DONE,
++	.delay_ms = 0,
++	.need_status_sel = true,
++};
++
+ int mt792xu_dma_init(struct mt792x_dev *dev, bool resume)
+ {
+ 	int err;
+@@ -236,25 +254,31 @@ EXPORT_SYMBOL_GPL(mt792xu_dma_init);
+ 
+ int mt792xu_wfsys_reset(struct mt792x_dev *dev)
+ {
++	const struct mt792xu_wfsys_desc *desc = &mt7921_wfsys_desc;
+ 	u32 val;
+ 	int i;
+ 
+ 	mt792xu_epctl_rst_opt(dev, false);
+ 
+-	val = mt792xu_uhw_rr(&dev->mt76, MT_CBTOP_RGU_WF_SUBSYS_RST);
++	val = mt792xu_uhw_rr(&dev->mt76, desc->rst_reg);
+ 	val |= MT_CBTOP_RGU_WF_SUBSYS_RST_WF_WHOLE_PATH;
+-	mt792xu_uhw_wr(&dev->mt76, MT_CBTOP_RGU_WF_SUBSYS_RST, val);
++	mt792xu_uhw_wr(&dev->mt76, desc->rst_reg, val);
+ 
+-	usleep_range(10, 20);
++	if (desc->delay_ms)
++		msleep(desc->delay_ms);
++	else
++		usleep_range(10, 20);
+ 
+-	val = mt792xu_uhw_rr(&dev->mt76, MT_CBTOP_RGU_WF_SUBSYS_RST);
++	val = mt792xu_uhw_rr(&dev->mt76, desc->rst_reg);
+ 	val &= ~MT_CBTOP_RGU_WF_SUBSYS_RST_WF_WHOLE_PATH;
+-	mt792xu_uhw_wr(&dev->mt76, MT_CBTOP_RGU_WF_SUBSYS_RST, val);
++	mt792xu_uhw_wr(&dev->mt76, desc->rst_reg, val);
++
++	if (desc->need_status_sel)
++		mt792xu_uhw_wr(&dev->mt76, MT_UDMA_CONN_INFRA_STATUS_SEL, 0);
+ 
+-	mt792xu_uhw_wr(&dev->mt76, MT_UDMA_CONN_INFRA_STATUS_SEL, 0);
+ 	for (i = 0; i < MT792x_WFSYS_INIT_RETRY_COUNT; i++) {
+-		val = mt792xu_uhw_rr(&dev->mt76, MT_UDMA_CONN_INFRA_STATUS);
+-		if (val & MT_UDMA_CONN_WFSYS_INIT_DONE)
++		val = mt792xu_uhw_rr(&dev->mt76, desc->done_reg);
++		if ((val & desc->done_mask) == desc->done_val)
+ 			break;
+ 
+ 		msleep(100);
 -- 
-RMK's Patch system: https://www.armlinux.org.uk/developer/patches/
-FTTP is here! 80Mbps down 10Mbps up. Decent connectivity at last!
+2.43.0
+
 
