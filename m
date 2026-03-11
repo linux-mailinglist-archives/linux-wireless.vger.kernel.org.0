@@ -1,208 +1,245 @@
-Return-Path: <linux-wireless+bounces-32939-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-32940-lists+linux-wireless=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id mKLWEc67sGlXmgIAu9opvQ
-	(envelope-from <linux-wireless+bounces-32939-lists+linux-wireless=lfdr.de@vger.kernel.org>)
-	for <lists+linux-wireless@lfdr.de>; Wed, 11 Mar 2026 01:48:14 +0100
+	id kD4yGJDPsGmLnQIAu9opvQ
+	(envelope-from <linux-wireless+bounces-32940-lists+linux-wireless=lfdr.de@vger.kernel.org>)
+	for <lists+linux-wireless@lfdr.de>; Wed, 11 Mar 2026 03:12:32 +0100
 X-Original-To: lists+linux-wireless@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id E2E3125A262
-	for <lists+linux-wireless@lfdr.de>; Wed, 11 Mar 2026 01:48:13 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id C082325AC05
+	for <lists+linux-wireless@lfdr.de>; Wed, 11 Mar 2026 03:12:31 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 105EB3009085
-	for <lists+linux-wireless@lfdr.de>; Wed, 11 Mar 2026 00:48:13 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id DC36C3256368
+	for <lists+linux-wireless@lfdr.de>; Wed, 11 Mar 2026 02:07:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9E54936308D;
-	Wed, 11 Mar 2026 00:47:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DC712372B4A;
+	Wed, 11 Mar 2026 02:07:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="MkOlvtzz"
+	dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b="SqpOgAb4"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-pj1-f51.google.com (mail-pj1-f51.google.com [209.85.216.51])
+Received: from mail-lf1-f45.google.com (mail-lf1-f45.google.com [209.85.167.45])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2024536C9FC
-	for <linux-wireless@vger.kernel.org>; Wed, 11 Mar 2026 00:47:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.51
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773190078; cv=none; b=XBj7NdsBTZW67QMiHmJrdt76n3SMVfUy7NdYm9T7K5XojiswSF6uotLXG+SblwLIAJdwe1havoDDdgpT5Ik3s7u2cnLfBzS8EowWqcx5IGibW7IvJFLRg/Ohv9lKQPMQ0qPIoF2sV/QDw3xclvY31rB8Fn7QuV2Pck7HwktRyvg=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773190078; c=relaxed/simple;
-	bh=GWfHWHTWEkbHmL8A2Gp09obkBBjV5/TvZpLBOriax/w=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=p7altDOYGxAqhc4Tcu9dwP+UWZr6oQjAdeert+evqVU7NDTP28us9GCPJuGGsFVWXCv3hu9I3Y5Yvice08ABdnclWq/r4NxqSZqPtjpLpFp7yZxWizQ8zVEG31qyAvUJ2LTRG8Gbj1g5swbaWy1T4YgvQPBqT56HE5SaIGKOPWA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=MkOlvtzz; arc=none smtp.client-ip=209.85.216.51
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pj1-f51.google.com with SMTP id 98e67ed59e1d1-359f35dfef6so916249a91.2
-        for <linux-wireless@vger.kernel.org>; Tue, 10 Mar 2026 17:47:55 -0700 (PDT)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 698B4355F37
+	for <linux-wireless@vger.kernel.org>; Wed, 11 Mar 2026 02:07:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.167.45
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1773194859; cv=pass; b=WUhxIknBo3rKL9yyRSamSjkU5QYJQesoJaHCSJrnhIG/u6qa+BUIIQD9/0UY2bTefIutdF1GiPu6cZ7KT2oSGPz52glwl/v8txAOg07rEFhrom/jSQFvPSm5T9Gyawmeq1VpL2hp2sRbdpWYZjy0fnZjPxPU2++AOAxUtrGI87I=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1773194859; c=relaxed/simple;
+	bh=8UJnLa/DDQ+b65RDSHa97nR/Rm6zetnRjswOkVb13wc=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=l2g2yzZ4Dybh6kuhvcBULVguDYhdrEOCm8tFVHG5HxZiMK4r1ieV3XC7DvFbBP/+LmMwsbfu65u9ArSpCtaVdbPZteok84/rVMReHCYXmpmbYEy9zrdrliUY8eD89Ecnaq3KiIRSp5NcaBqhT+HUD7Ww+h1VR8ou9i4C8J9QSO4=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org; spf=pass smtp.mailfrom=chromium.org; dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b=SqpOgAb4; arc=pass smtp.client-ip=209.85.167.45
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=chromium.org
+Received: by mail-lf1-f45.google.com with SMTP id 2adb3069b0e04-5a1362c9a3cso5630109e87.2
+        for <linux-wireless@vger.kernel.org>; Tue, 10 Mar 2026 19:07:34 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1773194852; cv=none;
+        d=google.com; s=arc-20240605;
+        b=ELBNbRHAOjmP6SvV2AP+o/ncqe0uyYX4mgw8QBJph1xWn7ui6qgnOC9tqxVf0xq5Cl
+         BDkLeg5HjVfvQuoxBJTiVH1pLfNWg7xA/NOeI2CH1/sVKav6qYzSFt1rzDYBPSurwn4h
+         St2G9SwyyQmyv/6sZ6dZUiTccAhm7RLw95lDd8o1bXtjPJoGrtjqCcLrb5LA8dKlBAUw
+         TvAQAw87c9ZihPZDGTxLnMZDQJ6qFYGnJUt85leNzPhJTt+AF63EiUWhTE/qMUSi+HGf
+         VRTbgxRV9N+87kMikb2kmaeXCn10ybH7wL/p7Kte8HLJtJq7slhoYdIkGLE1s+VNKedD
+         mkqQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=+zLBLQzKjcztDlxJqoLP6w+B6xnZmfHibV4jlBQCebA=;
+        fh=gkNtoruBRryY63Ex/fMEKEomBLH7r15Rk/0XJd+yCzc=;
+        b=Xo5eXFk8jcKYIR6+R/yrUhcFlwDRuO+g6XlEpX3V10F3Gr3NvlJLNKTovJBjloXK97
+         m557j8rL3aa5rTgoyjcVrqsMdinWRWxTSCFeWDGVIM4Qssjfk7gLCcBbvaiXrv8FUHa9
+         XD9YnvnqctFWibC8qknb/r7cYpmjC6EhqR3VYENY66Qv17b9kz5ByOxDWrITXK1UPVvz
+         1qmreK4I5/gC5b4xXfdzD0PWl40r5LaNZt0Wiwsl66I9uHk3yfgpU65yyot9YLhPf0kY
+         1aQX+B9C7edglStS1cwcjI/B+JM+/14fq8tK1KCguPE5OJxB1BSFhm9uNvU5bYzAJvmZ
+         jEkQ==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1773190075; x=1773794875; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=O664dCsdWRRkRc+ofehgmpux+USEDU3vAot0X1wBxCI=;
-        b=MkOlvtzzcoTpwf+ItKIB/2Y058rm/pZhOR2QTeeIt69Xesn97FOj66T3+NYKFZITJ7
-         XLo05pYknDTr/WWj2r6ceuJs9YS385+HUaM8+mruWgroVkRtwK0wzk8uw+hv3pK7akMp
-         Z7IIO6PXHEggl5u2mqprFEk8dtAyegMqrw8pkAReIHupTB1+kQ/PFdfIq49iyBrDyiyv
-         dYlvftUxyhS/B1te8Bjqf5WEJ7pJrD8NLYXARidapcx65Wca1pE/XMapbXQaWdRHVo/E
-         Hofh4KGWQyTxQWn9liRC65fGFkhh5+SBlASCF3jcEHqlm+WT0EyKs3bWkFQWu4Sm9iCV
-         CeZw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1773190075; x=1773794875;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+        d=chromium.org; s=google; t=1773194852; x=1773799652; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=O664dCsdWRRkRc+ofehgmpux+USEDU3vAot0X1wBxCI=;
-        b=CxthoR2A/XgPKmwBLpQSohyokEH3897QSnxZCY2fvABdX0eHVuhiYMWa1d3brNRkI8
-         2K0dTYKTXPEe+L8ZRSKnlHgeTl2uIFC9pCY210+sd5hkQej+yJ80l4cHS/Cx0UOu2570
-         lTfFZtWutSihRt/atZPS6UzYjbf50pcWAr+URd90X6ZTYZzvCA5/1U31VvmdYaRdMCMw
-         9vA9ho/kYiJ6hJ2EQXpiyGa3Wfy3IS/qQmZ3PjHPtTetNCqF5l8CqjxOSH2OiXi9n9mt
-         d8KL0WVANDPqwYt23NtIUt+JKoHGrgTZqVcC2d/0kZaZhXYoKseTECjZuMYyN9AD6b+V
-         oh9g==
-X-Gm-Message-State: AOJu0YxSnc+nyeaS/VD0plPvb314HpyOl81fA06C++VpscvS2NZWpeCJ
-	49ZJwYt5poywJe13FVlGye1df8TOYSdLJkEE9WPc52itv7P/JDF6GHgDmJkZGmBx
-X-Gm-Gg: ATEYQzw8BcVNIZEz27g/Sv3RXtYfxjOZfbsgYMNmOKpBnCJIItU0jP48brOa1kg/kGi
-	SZgQp+1ljV0TNHQzBW7OyQxvo1xSRBXLOhHP2spqgtL3t3E8fvsRf6Wt6E/HrFonrans4ZwXUbP
-	/AChJhCSTxWGGVC6CSOXc6kHmHUDXkHgMgNgEe9mrwMz1Zw7SogsoBpBM3QP2NV+RuAMldjU7vm
-	v1rAh34yloVyTk3NUkJ+6Ti1ExU0TniQYkpABf/ohFp/157FUtNGM4xrf0ecMRICWUBgYhjpAaR
-	eb6e7udLkyOsXbT2rNNQPEUgSTiX3uXw46/HOIIoHJ/ZSrmyug7wyFCogmYmd+qYtc+dqTk2uvS
-	pv0ZtQsTxt9hz/S11LlziQsCCDEwLsC5xfp+o5ZPuwuEXcxFE7+vcUteH46qlidDUNt/qDtC2ss
-	n1tVjoX5fv+h6OmBdPHIq2Y2nNT1JqJYl0lc4h0VDxn6JWiyKuUSWsvg==
-X-Received: by 2002:a17:90b:3dcd:b0:340:25f0:a9b with SMTP id 98e67ed59e1d1-35a019e88camr707120a91.33.1773190074956;
-        Tue, 10 Mar 2026 17:47:54 -0700 (PDT)
-Received: from ryzen ([2601:644:8000:56f5::8bd])
-        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-c73cde37ffesm373842a12.0.2026.03.10.17.47.53
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 10 Mar 2026 17:47:54 -0700 (PDT)
-From: Rosen Penev <rosenp@gmail.com>
-To: linux-wireless@vger.kernel.org
-Cc: Kees Cook <kees@kernel.org>,
-	"Gustavo A. R. Silva" <gustavoars@kernel.org>,
-	b43-dev@lists.infradead.org (open list:B43 WIRELESS DRIVER),
-	linux-kernel@vger.kernel.org (open list),
-	linux-hardening@vger.kernel.org (open list:KERNEL HARDENING (not covered by other areas):Keyword:\b__counted_by(_le|_be)?\b)
-Subject: [PATCH] wifi: b43: kzalloc + kcalloc to kzalloc_flex
-Date: Tue, 10 Mar 2026 17:47:36 -0700
-Message-ID: <20260311004736.32730-1-rosenp@gmail.com>
-X-Mailer: git-send-email 2.53.0
+        bh=+zLBLQzKjcztDlxJqoLP6w+B6xnZmfHibV4jlBQCebA=;
+        b=SqpOgAb4CQOCp6QT1IhDiJXNOENCCAthmmQiQ2Xm1LqdH6AuNnr9pWEOxoaM6J2EHp
+         TaZvrNsWvEAAdeAh3rGZCGLrxzU767HUy57VJt43+079ae3+2kuAr2+JBVbU8T9+l/BT
+         vjjO+GANIyds0bGFgUhdgNG0FnF3NJi/nWQH4=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1773194852; x=1773799652;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=+zLBLQzKjcztDlxJqoLP6w+B6xnZmfHibV4jlBQCebA=;
+        b=wY+6S2Fgj83StuFhoLxZHoHcsUu1PAn20I9QeUMt2mzq1P2XRpuoB5UFbyLr5bXQzI
+         3q/8JNeElB7fot/7xx79K2JNoOabxszsJAwXZ8wS1jJalyY7ebpIdq2fZYj3v/L9jNZM
+         fFP7aWs4RC8TbBGPYKt/KlyvEB+605nX192i2EE6juwjxCfOv/ZDFlPOu/ESQ4i/+pC2
+         F8Skb79Eu+L3bigU0poLoktyvYRMRl+ZhyOoUccmctUBCfd4CtAuY2NBSu7ZPm1bhPBp
+         X7MuZHOSK2rasY/rIbh6v0xzbP2+9veNGKH8cG5qROVzsYXuVyDU4j2p++M7sB+hA10M
+         S6tg==
+X-Forwarded-Encrypted: i=1; AJvYcCUflW2EVuRQbTSKYQt9jqlWrNTQY6HXjcrfv1kvk24xPJQ9/SLAPL3ajK+JEBfVYcLx8FFIbFGG/PCUnZCBlA==@vger.kernel.org
+X-Gm-Message-State: AOJu0YwluOf6yg4/bcRkFz6KHLiZ4Ng3TRG5TrF2Ew7lkvntq8QH4yxB
+	+9ViQS+52utuQUG/MJywo5sNgn7JXL6MY/F0VT3jx2JWi4l8LHLAnEgojBBVtzJ0SjcbOtPNU/R
+	M5TjjX4niRrWF9BvAeHbYNyn6UPe8PPGymsH735M5
+X-Gm-Gg: ATEYQzyxlldZBdldHR8is3SKNs+VoWaLdC3AuZBxyCxGbNrxUEUlLwERrmwNrphy1do
+	1/rmeGQ+X/Uq79ttUyMXPjV6VG2J0oIKtmwijzSnyUnqUu7OzBVU/RthPYg6OGvbxi5NYNzMpcG
+	TtV/nNdVIobuM4NBrGJs3m6weY/AzGVdcC8deja/eKBVk73V7C3EY5HXWOq/1FRnyWDe2ZzxNnB
+	kHUCjXfhRcx26CUDEn3sACpvE6PjX1fw/ghdPkGPSjx5GBfkHfWniprqLMPXn9Iw4mSXlY8nZnb
+	rkpLGPrwaA==
+X-Received: by 2002:ac2:4427:0:b0:5a1:3134:9bac with SMTP id
+ 2adb3069b0e04-5a156cbd1bbmr169453e87.28.1773194852284; Tue, 10 Mar 2026
+ 19:07:32 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: E2E3125A262
+References: <20260310-b4-is_err_or_null-v1-0-bd63b656022d@avm.de> <20260310-b4-is_err_or_null-v1-56-bd63b656022d@avm.de>
+In-Reply-To: <20260310-b4-is_err_or_null-v1-56-bd63b656022d@avm.de>
+From: Chen-Yu Tsai <wenst@chromium.org>
+Date: Wed, 11 Mar 2026 11:07:21 +0900
+X-Gm-Features: AaiRm5028PWt8n-JnveiRgn8oYMksdR_-_nk4JOkvxMfplWs-GDr7RRk-OxICyw
+Message-ID: <CAGXv+5FQAVaJjqhv+Xq-ysOc4SHQn2mCNTgCAp8XocmWBWGGoA@mail.gmail.com>
+Subject: Re: [PATCH 56/61] clk: Prefer IS_ERR_OR_NULL over manual NULL check
+To: Philipp Hahn <phahn-oss@avm.de>
+Cc: amd-gfx@lists.freedesktop.org, apparmor@lists.ubuntu.com, 
+	bpf@vger.kernel.org, ceph-devel@vger.kernel.org, cocci@inria.fr, 
+	dm-devel@lists.linux.dev, dri-devel@lists.freedesktop.org, 
+	gfs2@lists.linux.dev, intel-gfx@lists.freedesktop.org, 
+	intel-wired-lan@lists.osuosl.org, iommu@lists.linux.dev, kvm@vger.kernel.org, 
+	linux-arm-kernel@lists.infradead.org, linux-block@vger.kernel.org, 
+	linux-bluetooth@vger.kernel.org, linux-btrfs@vger.kernel.org, 
+	linux-cifs@vger.kernel.org, linux-clk@vger.kernel.org, 
+	linux-erofs@lists.ozlabs.org, linux-ext4@vger.kernel.org, 
+	linux-fsdevel@vger.kernel.org, linux-gpio@vger.kernel.org, 
+	linux-hyperv@vger.kernel.org, linux-input@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, linux-leds@vger.kernel.org, 
+	linux-media@vger.kernel.org, linux-mips@vger.kernel.org, linux-mm@kvack.org, 
+	linux-modules@vger.kernel.org, linux-mtd@lists.infradead.org, 
+	linux-nfs@vger.kernel.org, linux-omap@vger.kernel.org, 
+	linux-phy@lists.infradead.org, linux-pm@vger.kernel.org, 
+	linux-rockchip@lists.infradead.org, linux-s390@vger.kernel.org, 
+	linux-scsi@vger.kernel.org, linux-sctp@vger.kernel.org, 
+	linux-security-module@vger.kernel.org, linux-sh@vger.kernel.org, 
+	linux-sound@vger.kernel.org, linux-stm32@st-md-mailman.stormreply.com, 
+	linux-trace-kernel@vger.kernel.org, linux-usb@vger.kernel.org, 
+	linux-wireless@vger.kernel.org, netdev@vger.kernel.org, ntfs3@lists.linux.dev, 
+	samba-technical@lists.samba.org, sched-ext@lists.linux.dev, 
+	target-devel@vger.kernel.org, tipc-discussion@lists.sourceforge.net, 
+	v9fs@lists.linux.dev, Michael Turquette <mturquette@baylibre.com>, 
+	Stephen Boyd <sboyd@kernel.org>, Daniel Lezcano <daniel.lezcano@kernel.org>, 
+	Thomas Gleixner <tglx@kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Rspamd-Queue-Id: C082325AC05
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-0.66 / 15.00];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MID_CONTAINS_FROM(1.00)[];
-	R_MISSING_CHARSET(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
-	R_DKIM_ALLOW(-0.20)[gmail.com:s=20230601];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+	SUSPICIOUS_RECIPS(1.50)[];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=2];
+	DMARC_POLICY_ALLOW(-0.50)[chromium.org,none];
+	R_DKIM_ALLOW(-0.20)[chromium.org:s=google];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TO_DN_SOME(0.00)[];
-	FREEMAIL_FROM(0.00)[gmail.com];
-	TAGGED_FROM(0.00)[bounces-32939-lists,linux-wireless=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-32940-lists,linux-wireless=lfdr.de];
+	FROM_HAS_DN(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[gmail.com:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
-	RCPT_COUNT_FIVE(0.00)[6];
+	DKIM_TRACE(0.00)[chromium.org:+];
+	MISSING_XM_UA(0.00)[];
+	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[rosenp@gmail.com,linux-wireless@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[wenst@chromium.org,linux-wireless@vger.kernel.org];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[5];
+	RCPT_COUNT_GT_50(0.00)[58];
 	TAGGED_RCPT(0.00)[linux-wireless];
 	NEURAL_HAM(-0.00)[-1.000];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo]
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,mail.gmail.com:mid,chromium.org:dkim,avm.de:email,baylibre.com:email]
 X-Rspamd-Action: no action
 
-Simplifies allocation and allows using __counted_by for extra runtime
-analysis.
+On Tue, Mar 10, 2026 at 9:57=E2=80=AFPM Philipp Hahn <phahn-oss@avm.de> wro=
+te:
+>
+> Prefer using IS_ERR_OR_NULL() over using IS_ERR() and a manual NULL
+> check.
+>
+> Semantich change: Previously the code only printed the warning on error,
+> but not when the pointer was NULL. Now the warning is printed in both
+> cases!
+>
+> Change found with coccinelle.
+>
+> To: Michael Turquette <mturquette@baylibre.com>
+> To: Stephen Boyd <sboyd@kernel.org>
+> To: Daniel Lezcano <daniel.lezcano@kernel.org>
+> To: Thomas Gleixner <tglx@kernel.org>
+> Cc: linux-clk@vger.kernel.org
+> Cc: linux-kernel@vger.kernel.org
+> Signed-off-by: Philipp Hahn <phahn-oss@avm.de>
+> ---
+>  drivers/clk/clk.c               | 4 ++--
+>  drivers/clocksource/timer-pxa.c | 2 +-
+>  2 files changed, 3 insertions(+), 3 deletions(-)
+>
+> diff --git a/drivers/clk/clk.c b/drivers/clk/clk.c
+> index 47093cda9df32223c1120c3710261296027c4cd3..35146e3869a7dd93741d10b72=
+23d4488a9216ed1 100644
+> --- a/drivers/clk/clk.c
+> +++ b/drivers/clk/clk.c
+> @@ -4558,7 +4558,7 @@ void clk_unregister(struct clk *clk)
+>         unsigned long flags;
+>         const struct clk_ops *ops;
+>
+> -       if (!clk || WARN_ON_ONCE(IS_ERR(clk)))
+> +       if (WARN_ON_ONCE(IS_ERR_OR_NULL(clk)))
+>                 return;
+>
+>         clk_debug_unregister(clk->core);
+> @@ -4744,7 +4744,7 @@ void __clk_put(struct clk *clk)
+>  {
+>         struct module *owner;
+>
+> -       if (!clk || WARN_ON_ONCE(IS_ERR(clk)))
+> +       if (WARN_ON_ONCE(IS_ERR_OR_NULL(clk)))
 
-Signed-off-by: Rosen Penev <rosenp@gmail.com>
----
- drivers/net/wireless/broadcom/b43/dma.c | 18 ++++++++----------
- drivers/net/wireless/broadcom/b43/dma.h |  4 ++--
- 2 files changed, 10 insertions(+), 12 deletions(-)
+clk_get_optional() returns NULL if the clk isn't present.
 
-diff --git a/drivers/net/wireless/broadcom/b43/dma.c b/drivers/net/wireless/broadcom/b43/dma.c
-index 3a8df7a18042..05da6987a845 100644
---- a/drivers/net/wireless/broadcom/b43/dma.c
-+++ b/drivers/net/wireless/broadcom/b43/dma.c
-@@ -837,18 +837,19 @@ struct b43_dmaring *b43_setup_dmaring(struct b43_wldev *dev,
- 	struct b43_dmaring *ring;
- 	int i, err;
- 	dma_addr_t dma_test;
-+	size_t nr_slots;
- 
--	ring = kzalloc_obj(*ring);
-+	if (for_tx)
-+		nr_slots = B43_TXRING_SLOTS;
-+	else
-+		nr_slots = B43_RXRING_SLOTS;
-+
-+	ring = kzalloc_flex(*ring, meta, nr_slots);
- 	if (!ring)
- 		goto out;
- 
--	ring->nr_slots = B43_RXRING_SLOTS;
--	if (for_tx)
--		ring->nr_slots = B43_TXRING_SLOTS;
-+	ring->nr_slots = nr_slots;
- 
--	ring->meta = kzalloc_objs(struct b43_dmadesc_meta, ring->nr_slots);
--	if (!ring->meta)
--		goto err_kfree_ring;
- 	for (i = 0; i < ring->nr_slots; i++)
- 		ring->meta->skb = B43_DMA_PTR_POISON;
- 
-@@ -943,8 +944,6 @@ struct b43_dmaring *b43_setup_dmaring(struct b43_wldev *dev,
-       err_kfree_txhdr_cache:
- 	kfree(ring->txhdr_cache);
-       err_kfree_meta:
--	kfree(ring->meta);
--      err_kfree_ring:
- 	kfree(ring);
- 	ring = NULL;
- 	goto out;
-@@ -1004,7 +1003,6 @@ static void b43_destroy_dmaring(struct b43_dmaring *ring,
- 	free_ringmemory(ring);
- 
- 	kfree(ring->txhdr_cache);
--	kfree(ring->meta);
- 	kfree(ring);
- }
- 
-diff --git a/drivers/net/wireless/broadcom/b43/dma.h b/drivers/net/wireless/broadcom/b43/dma.h
-index c2a357219d4b..f9f65bbe2d76 100644
---- a/drivers/net/wireless/broadcom/b43/dma.h
-+++ b/drivers/net/wireless/broadcom/b43/dma.h
-@@ -228,8 +228,6 @@ struct b43_dmaring {
- 	const struct b43_dma_ops *ops;
- 	/* Kernel virtual base address of the ring memory. */
- 	void *descbase;
--	/* Meta data about all descriptors. */
--	struct b43_dmadesc_meta *meta;
- 	/* Cache of TX headers for each TX frame.
- 	 * This is to avoid an allocation on each TX.
- 	 * This is NULL for an RX ring.
-@@ -273,6 +271,8 @@ struct b43_dmaring {
- 	/* Statistics: Total number of TX plus all retries. */
- 	u64 nr_total_packet_tries;
- #endif /* CONFIG_B43_DEBUG */
-+	/* Meta data about all descriptors. */
-+	struct b43_dmadesc_meta meta[] __counted_by(nr_slots);
- };
- 
- static inline u32 b43_dma_read(struct b43_dmaring *ring, u16 offset)
--- 
-2.53.0
+Drivers would just pass this to clk_put(). Your change here would cause
+this pattern to emit a very big warning.
 
+I don't think this change should be landed.
+
+
+ChenYu
+
+>                 return;
+>
+>         clk_prepare_lock();
+> diff --git a/drivers/clocksource/timer-pxa.c b/drivers/clocksource/timer-=
+pxa.c
+> index 7ad0e5adb2ffac4125c34710fc67f4b45f30331d..f65fb0b7fc318b766227e5e7a=
+4c0fb08ba11c8f9 100644
+> --- a/drivers/clocksource/timer-pxa.c
+> +++ b/drivers/clocksource/timer-pxa.c
+> @@ -218,7 +218,7 @@ void __init pxa_timer_nodt_init(int irq, void __iomem=
+ *base)
+>
+>         timer_base =3D base;
+>         clk =3D clk_get(NULL, "OSTIMER0");
+> -       if (clk && !IS_ERR(clk)) {
+> +       if (!IS_ERR_OR_NULL(clk)) {
+>                 clk_prepare_enable(clk);
+>                 pxa_timer_common_init(irq, clk_get_rate(clk));
+>         } else {
+>
+> --
+> 2.43.0
+>
+>
 
