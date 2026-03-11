@@ -1,406 +1,319 @@
-Return-Path: <linux-wireless+bounces-32933-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-32934-lists+linux-wireless=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id wO3+JUOqsGmYlwIAu9opvQ
-	(envelope-from <linux-wireless+bounces-32933-lists+linux-wireless=lfdr.de@vger.kernel.org>)
-	for <lists+linux-wireless@lfdr.de>; Wed, 11 Mar 2026 00:33:23 +0100
+	id uMIaAVSzsGkHmQIAu9opvQ
+	(envelope-from <linux-wireless+bounces-32934-lists+linux-wireless=lfdr.de@vger.kernel.org>)
+	for <lists+linux-wireless@lfdr.de>; Wed, 11 Mar 2026 01:12:04 +0100
 X-Original-To: lists+linux-wireless@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 16B1F259480
-	for <lists+linux-wireless@lfdr.de>; Wed, 11 Mar 2026 00:33:23 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 642352598EE
+	for <lists+linux-wireless@lfdr.de>; Wed, 11 Mar 2026 01:12:03 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 179EB30120F1
-	for <lists+linux-wireless@lfdr.de>; Tue, 10 Mar 2026 23:33:22 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 5145231A0B2D
+	for <lists+linux-wireless@lfdr.de>; Wed, 11 Mar 2026 00:11:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3B4F522DFA4;
-	Tue, 10 Mar 2026 23:33:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 28DEF192B90;
+	Wed, 11 Mar 2026 00:11:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="aQFNUpyp"
+	dkim=fail reason="signature verification failed" (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b="rsZWNNzp"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-lf1-f41.google.com (mail-lf1-f41.google.com [209.85.167.41])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from pandora.armlinux.org.uk (pandora.armlinux.org.uk [78.32.30.218])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 441BF1D5CFB
-	for <linux-wireless@vger.kernel.org>; Tue, 10 Mar 2026 23:33:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.41
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 38A9C4400;
+	Wed, 11 Mar 2026 00:11:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=78.32.30.218
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773185601; cv=none; b=MAVrfybY6O1OtVfh3sRyNJUHilbTCrMs4z1bkF+HVfue69vxlm/jhubKUyQJTP+Y9BwtyJJKwv/3U7/zHLk4MkYvJzvtS+kFxZJPQjnMd57HOHV2Red4o8tSBQXxDsu/FqQaUneLJ0sAsSHk3Sxg1ft5J7FSb8i8y6M4lyMGC2E=
+	t=1773187883; cv=none; b=qI6hO86AElmdCjmkDn6KhM5nibnJbBhfYrJsZ159om5en3tK40lWSwcCdLao+1FG2I2eLRjJrDQj++0RdciH6R9xITjgKYM/Q4O74eSQva3o9YN9IuHkSSaMTKpv0qkPr4ZVhrb35ienObItNGXA5/iy8jn785DwARpwt9ei9jg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773185601; c=relaxed/simple;
-	bh=+pSef1JG9Haul964EmMsvb0o/WPIvPCrdENGK7/qAMs=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=eT2l/bipflDZByoAov1kKrdiXSS1wyF6d4FhAVci9izE62iQKUXcwSO3apd65eR9CxZnzpoUEZzC7e6FXSGxucCGSpnOCjwK1SXhS6ka9ygwMWIgWdZnYr9El1DSE5DbWeBfzO2WzBkWBBQSEzw1iO+XjrV6AfM5pDMBlpnbf6U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=aQFNUpyp; arc=none smtp.client-ip=209.85.167.41
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-lf1-f41.google.com with SMTP id 2adb3069b0e04-59de8155501so7982950e87.3
-        for <linux-wireless@vger.kernel.org>; Tue, 10 Mar 2026 16:33:18 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1773185597; x=1773790397; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=JuNpzPmymoQ4ibLd5iWSwPVLI6Ss0/KvYtvWwZeU0TQ=;
-        b=aQFNUpyp0Jy4kCtoq9HUpd8nTJ+I6N0Hxd92PttX7pEUTUrkWnRE+K27vs41xiGZX1
-         Jn95VBlk/O47oJjpY6+/btCCLRLMSEeiitVBcJZNQWwe4kcMDO6AWXsMZLl3PhGBfXM6
-         sum6S2gj4xiWubrTnP7n9xqyGJlLhXA5VCTKe6X1OerNT2VmP92cF8rF528IrO8R54Bm
-         7eM06xJfg9gnhgZaJSaksCD9cGU2zzn5F056gp4lyYdKvXk3nqRF5/vnxo4C3FzhFqfE
-         nPZ5XfC1WFRXwflLnJprTG+P5LMMNsnIiZUinc48E6aL2LeiP2HUzcoAgLb/MpO/aWgr
-         qbag==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1773185597; x=1773790397;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=JuNpzPmymoQ4ibLd5iWSwPVLI6Ss0/KvYtvWwZeU0TQ=;
-        b=oUdJXJbt0e7p+qLMTir+0Rb5iit+iO9UXPdg9SZspb2FxXczrVTkSQptFZ1jy35cc4
-         okhmsxDB+xLshMZbfmXQjcMW6oeJV0/tI7CkvuoWZ/2mMInP09GeT7M07AVzND0bi1I6
-         mW31OPNpFovSCE0hF20RVRgb/lkyMN946ODOpGCgN/ACEf8AsgstjMzVZDDbd7n6aVos
-         43P5EYuiY0TozdNJxyi9ioRMvjeyBIE4KU2vjPtJ4+DOOV7LYUQJKbtANJgiBGe5u69h
-         GshAvB4IN4qjL8iIL9Jj03ZtINMlh2JyUIH3K9LvHfLPiuYzYWmmJVrERBmPtKu01C1F
-         43mA==
-X-Forwarded-Encrypted: i=1; AJvYcCWMzrOByc6W3gc7tsuu3khrNB8CbNV7vXgLOmUCwwCqcmo4PH/ggZXBNsoJ/X0utYm0zWm8cOFhtAOEdO5Q2Q==@vger.kernel.org
-X-Gm-Message-State: AOJu0YzvBnnRSAVWaXBBriiq9OS+6P+cZg+VC+wLnIq7N08Im0Ug+qha
-	TDm9fgEgPWDDlJHdKmbtDKysiR96fGRPX4XEOx1d1hVqOk+3jYXaPuuNn7btUA==
-X-Gm-Gg: ATEYQzx5XRJsuEQKFl7ba+eGa7J1vyq+yZrow8qeQsYg/xnKizIMOQGK/8TnZyW/Q1n
-	FhdK5LQd5t8/LHEKThUD/HINyXVwy6QLqfFeUEjhmUAOITbywiQ+kCFXB87waIXuVhqfibDyq2w
-	rUThKEAQ1tJY4EChgup/GtLZtu5s0QcS53KJdaffrnMSdxkLeCXIXz1862xy8CIa8sq1abZKgDb
-	OHJgMOmT8xSPPGK1u1mqVTk8+ARYYXudV1sx58MMBBhnDa5MYsYeVhNTxQtYK1Pre0QqTX9HQfO
-	KrKfRuY+s166vouTr4WOYizCyMuAOR5/P0h1WLCftNdlXPhunaTKXX2mNT39oKr5gKx6DoT7OUg
-	Sxhon0pFAaXtGsJTiq8fqovLsUWYOLXTuz8hSI/bgywZe8qspnFcDIZz9zQxnwJAYfg/S1P9ob0
-	ngrSUgK4mPSztxjrYdJJVr4MFdr8DOVA==
-X-Received: by 2002:ac2:57ce:0:b0:5a1:427d:93ea with SMTP id 2adb3069b0e04-5a156dcda50mr72306e87.37.1773185597068;
-        Tue, 10 Mar 2026 16:33:17 -0700 (PDT)
-Received: from [192.168.1.50] ([81.196.40.93])
-        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-5a156162aadsm93661e87.43.2026.03.10.16.33.15
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 10 Mar 2026 16:33:16 -0700 (PDT)
-Message-ID: <6cd52588-b498-4239-9980-b3c659206866@gmail.com>
-Date: Wed, 11 Mar 2026 01:33:14 +0200
+	s=arc-20240116; t=1773187883; c=relaxed/simple;
+	bh=XpDMGeR0ckXhnjZNV3rQSz9hEyE7UO3BupLy8x1A3Rg=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=Q2POjgaCc+AcpHOvtoSW0BrwfDR6QSIaRWYrlhmIi5YchnMnzJGxBQBrDm4HCFsYxnlXMA5Sng+MQRaNhqgV1L5AnhxRPsjW+YMQMMg6/jdRE4JtYt2gHHQNmGeWidYA+j00BOPNr6N6a+sZ1JmnCJvtRYYXuShKFRjBCekoAlM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=armlinux.org.uk; spf=none smtp.mailfrom=armlinux.org.uk; dkim=pass (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b=rsZWNNzp; arc=none smtp.client-ip=78.32.30.218
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=armlinux.org.uk
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=armlinux.org.uk
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=armlinux.org.uk; s=pandora-2019; h=Sender:In-Reply-To:Content-Type:
+	MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
+	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:
+	List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
+	bh=7hV5LSkoaULvfWpcA92IONFe2jiU8FtnTFTGMKYHxiU=; b=rsZWNNzpN6nJksHTEkajq/n1Fi
+	36oPDej5oPfE2xw7j/8liweJ40O8Y0rBYAawwkQr0/sJRg1ts8hN1ZWdPPuu/S+9wTI5BZjFWFDn/
+	6VM0HaPK6l/WG/KwNwIc0bS6+oKrv1v0dTQCkIL4TyM4C1voCXZuHAyDW2/Bgql9xoNiDgpnuxFbm
+	Bc71fMVSzRm+pq3372pS1Xq8Ouufm8Njzwja33Sc4G+rmZ9dNuCAJtMq0TJedL4OAoV/4ImwmK35b
+	TUHQq3VDfaWDfmQ6l7uWAqtoP6Cr7hJRMUWJfb9Rs80koZ5DcRmLK8FvDMNhR9mVwMAz/6MWBcbRm
+	dCGRuMnQ==;
+Received: from shell.armlinux.org.uk ([fd8f:7570:feb6:1:5054:ff:fe00:4ec]:57602)
+	by pandora.armlinux.org.uk with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.98.2)
+	(envelope-from <linux@armlinux.org.uk>)
+	id 1w079p-000000005ZQ-1adR;
+	Wed, 11 Mar 2026 00:10:37 +0000
+Received: from linux by shell.armlinux.org.uk with local (Exim 4.98.2)
+	(envelope-from <linux@shell.armlinux.org.uk>)
+	id 1w079B-000000005hV-0rNO;
+	Wed, 11 Mar 2026 00:09:57 +0000
+Date: Wed, 11 Mar 2026 00:09:57 +0000
+From: "Russell King (Oracle)" <linux@armlinux.org.uk>
+To: Philipp Hahn <phahn-oss@avm.de>
+Cc: amd-gfx@lists.freedesktop.org, apparmor@lists.ubuntu.com,
+	bpf@vger.kernel.org, ceph-devel@vger.kernel.org, cocci@inria.fr,
+	dm-devel@lists.linux.dev, dri-devel@lists.freedesktop.org,
+	gfs2@lists.linux.dev, intel-gfx@lists.freedesktop.org,
+	intel-wired-lan@lists.osuosl.org, iommu@lists.linux.dev,
+	kvm@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+	linux-block@vger.kernel.org, linux-bluetooth@vger.kernel.org,
+	linux-btrfs@vger.kernel.org, linux-cifs@vger.kernel.org,
+	linux-clk@vger.kernel.org, linux-erofs@lists.ozlabs.org,
+	linux-ext4@vger.kernel.org, linux-fsdevel@vger.kernel.org,
+	linux-gpio@vger.kernel.org, linux-hyperv@vger.kernel.org,
+	linux-input@vger.kernel.org, linux-kernel@vger.kernel.org,
+	linux-leds@vger.kernel.org, linux-media@vger.kernel.org,
+	linux-mips@vger.kernel.org, linux-mm@kvack.org,
+	linux-modules@vger.kernel.org, linux-mtd@lists.infradead.org,
+	linux-nfs@vger.kernel.org, linux-omap@vger.kernel.org,
+	linux-phy@lists.infradead.org, linux-pm@vger.kernel.org,
+	linux-rockchip@lists.infradead.org, linux-s390@vger.kernel.org,
+	linux-scsi@vger.kernel.org, linux-sctp@vger.kernel.org,
+	linux-security-module@vger.kernel.org, linux-sh@vger.kernel.org,
+	linux-sound@vger.kernel.org,
+	linux-stm32@st-md-mailman.stormreply.com,
+	linux-trace-kernel@vger.kernel.org, linux-usb@vger.kernel.org,
+	linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
+	ntfs3@lists.linux.dev, samba-technical@lists.samba.org,
+	sched-ext@lists.linux.dev, target-devel@vger.kernel.org,
+	tipc-discussion@lists.sourceforge.net, v9fs@lists.linux.dev,
+	Julia Lawall <Julia.Lawall@inria.fr>,
+	Nicolas Palix <nicolas.palix@imag.fr>, Chris Mason <clm@fb.com>,
+	David Sterba <dsterba@suse.com>, Ilya Dryomov <idryomov@gmail.com>,
+	Alex Markuze <amarkuze@redhat.com>,
+	Viacheslav Dubeyko <slava@dubeyko.com>,
+	Theodore Ts'o <tytso@mit.edu>,
+	Andreas Dilger <adilger.kernel@dilger.ca>,
+	Steve French <sfrench@samba.org>,
+	Paulo Alcantara <pc@manguebit.org>,
+	Ronnie Sahlberg <ronniesahlberg@gmail.com>,
+	Shyam Prasad N <sprasad@microsoft.com>, Tom Talpey <tom@talpey.com>,
+	Bharath SM <bharathsm@microsoft.com>,
+	Eric Van Hensbergen <ericvh@kernel.org>,
+	Latchesar Ionkov <lucho@ionkov.net>,
+	Dominique Martinet <asmadeus@codewreck.org>,
+	Christian Schoenebeck <linux_oss@crudebyte.com>,
+	Gao Xiang <xiang@kernel.org>, Chao Yu <chao@kernel.org>,
+	Yue Hu <zbestahu@gmail.com>, Jeffle Xu <jefflexu@linux.alibaba.com>,
+	Sandeep Dhavale <dhavale@google.com>,
+	Hongbo Li <lihongbo22@huawei.com>,
+	Chunhai Guo <guochunhai@vivo.com>,
+	Miklos Szeredi <miklos@szeredi.hu>,
+	Konstantin Komarov <almaz.alexandrovich@paragon-software.com>,
+	Andreas Gruenbacher <agruenba@redhat.com>,
+	Kees Cook <kees@kernel.org>, Tony Luck <tony.luck@intel.com>,
+	"Guilherme G. Piccoli" <gpiccoli@igalia.com>,
+	Jan Kara <jack@suse.com>, Phillip Lougher <phillip@squashfs.org.uk>,
+	Alexander Viro <viro@zeniv.linux.org.uk>,
+	Christian Brauner <brauner@kernel.org>, Jan Kara <jack@suse.cz>,
+	Steven Rostedt <rostedt@goodmis.org>,
+	Masami Hiramatsu <mhiramat@kernel.org>,
+	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
+	Tejun Heo <tj@kernel.org>, David Vernet <void@manifault.com>,
+	Andrea Righi <arighi@nvidia.com>,
+	Changwoo Min <changwoo@igalia.com>, Ingo Molnar <mingo@redhat.com>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Juri Lelli <juri.lelli@redhat.com>,
+	Vincent Guittot <vincent.guittot@linaro.org>,
+	Dietmar Eggemann <dietmar.eggemann@arm.com>,
+	Ben Segall <bsegall@google.com>, Mel Gorman <mgorman@suse.de>,
+	Valentin Schneider <vschneid@redhat.com>,
+	Luis Chamberlain <mcgrof@kernel.org>,
+	Petr Pavlu <petr.pavlu@suse.com>,
+	Daniel Gomez <da.gomez@kernel.org>,
+	Sami Tolvanen <samitolvanen@google.com>,
+	Aaron Tomlin <atomlin@atomlin.com>,
+	Sylwester Nawrocki <s.nawrocki@samsung.com>,
+	Liam Girdwood <lgirdwood@gmail.com>,
+	Mark Brown <broonie@kernel.org>, Jaroslav Kysela <perex@perex.cz>,
+	Takashi Iwai <tiwai@suse.com>, Max Filippov <jcmvbkbc@gmail.com>,
+	Paolo Bonzini <pbonzini@redhat.com>,
+	John Johansen <john.johansen@canonical.com>,
+	Paul Moore <paul@paul-moore.com>, James Morris <jmorris@namei.org>,
+	"Serge E. Hallyn" <serge@hallyn.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Alasdair Kergon <agk@redhat.com>, Mike Snitzer <snitzer@kernel.org>,
+	Mikulas Patocka <mpatocka@redhat.com>,
+	Benjamin Marzinski <bmarzins@redhat.com>,
+	"David S. Miller" <davem@davemloft.net>,
+	David Ahern <dsahern@kernel.org>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	Simon Horman <horms@kernel.org>,
+	Marcel Holtmann <marcel@holtmann.org>,
+	Johan Hedberg <johan.hedberg@gmail.com>,
+	Luiz Augusto von Dentz <luiz.dentz@gmail.com>,
+	Alexei Starovoitov <ast@kernel.org>,
+	Daniel Borkmann <daniel@iogearbox.net>,
+	Jesper Dangaard Brouer <hawk@kernel.org>,
+	John Fastabend <john.fastabend@gmail.com>,
+	Stanislav Fomichev <sdf@fomichev.me>,
+	Jamal Hadi Salim <jhs@mojatatu.com>, Jiri Pirko <jiri@resnulli.us>,
+	Marcelo Ricardo Leitner <marcelo.leitner@gmail.com>,
+	Xin Long <lucien.xin@gmail.com>,
+	Trond Myklebust <trondmy@kernel.org>,
+	Anna Schumaker <anna@kernel.org>,
+	Chuck Lever <chuck.lever@oracle.com>,
+	Jeff Layton <jlayton@kernel.org>, NeilBrown <neil@brown.name>,
+	Olga Kornievskaia <okorniev@redhat.com>,
+	Dai Ngo <Dai.Ngo@oracle.com>, Jon Maloy <jmaloy@redhat.com>,
+	Johannes Berg <johannes@sipsolutions.net>,
+	Catalin Marinas <catalin.marinas@arm.com>,
+	John Crispin <john@phrozen.org>,
+	Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
+	Yoshinori Sato <ysato@users.sourceforge.jp>,
+	Rich Felker <dalias@libc.org>,
+	John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>,
+	Andrzej Hajda <andrzej.hajda@intel.com>,
+	Neil Armstrong <neil.armstrong@linaro.org>,
+	Robert Foss <rfoss@kernel.org>,
+	Laurent Pinchart <Laurent.pinchart@ideasonboard.com>,
+	Jonas Karlman <jonas@kwiboo.se>,
+	Jernej Skrabec <jernej.skrabec@gmail.com>,
+	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
+	Maxime Ripard <mripard@kernel.org>,
+	Thomas Zimmermann <tzimmermann@suse.de>,
+	David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>,
+	Zhenyu Wang <zhenyuw.linux@gmail.com>,
+	Zhi Wang <zhi.wang.linux@gmail.com>,
+	Jani Nikula <jani.nikula@linux.intel.com>,
+	Joonas Lahtinen <joonas.lahtinen@linux.intel.com>,
+	Rodrigo Vivi <rodrigo.vivi@intel.com>,
+	Tvrtko Ursulin <tursulin@ursulin.net>,
+	Alex Deucher <alexander.deucher@amd.com>,
+	Christian =?iso-8859-1?Q?K=F6nig?= <christian.koenig@amd.com>,
+	Sandy Huang <hjc@rock-chips.com>,
+	Heiko =?iso-8859-1?Q?St=FCbner?= <heiko@sntech.de>,
+	Andy Yan <andy.yan@rock-chips.com>,
+	Igor Russkikh <irusskikh@marvell.com>,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	Pavan Chebbi <pavan.chebbi@broadcom.com>,
+	Michael Chan <mchan@broadcom.com>,
+	Potnuri Bharat Teja <bharat@chelsio.com>,
+	Tony Nguyen <anthony.l.nguyen@intel.com>,
+	Przemek Kitszel <przemyslaw.kitszel@intel.com>,
+	Taras Chornyi <taras.chornyi@plvision.eu>,
+	Maxime Coquelin <mcoquelin.stm32@gmail.com>,
+	Alexandre Torgue <alexandre.torgue@foss.st.com>,
+	Iyappan Subramanian <iyappan@os.amperecomputing.com>,
+	Keyur Chudgar <keyur@os.amperecomputing.com>,
+	Quan Nguyen <quan@os.amperecomputing.com>,
+	Heiner Kallweit <hkallweit1@gmail.com>,
+	Marc Zyngier <maz@kernel.org>, Thomas Gleixner <tglx@kernel.org>,
+	Andrew Lunn <andrew@lunn.ch>,
+	Gregory Clement <gregory.clement@bootlin.com>,
+	Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>,
+	Vinod Koul <vkoul@kernel.org>, Linus Walleij <linusw@kernel.org>,
+	Ulf Hansson <ulf.hansson@linaro.org>,
+	Heiko Carstens <hca@linux.ibm.com>,
+	Vasily Gorbik <gor@linux.ibm.com>,
+	Alexander Gordeev <agordeev@linux.ibm.com>,
+	Christian Borntraeger <borntraeger@linux.ibm.com>,
+	Sven Schnelle <svens@linux.ibm.com>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>,
+	Eduardo Valentin <edubezval@gmail.com>, Keerthy <j-keerthy@ti.com>,
+	"Rafael J. Wysocki" <rafael@kernel.org>,
+	Daniel Lezcano <daniel.lezcano@kernel.org>,
+	Zhang Rui <rui.zhang@intel.com>, Lukasz Luba <lukasz.luba@arm.com>,
+	Alex Williamson <alex@shazbot.org>,
+	Mark Greer <mgreer@animalcreek.com>,
+	Miquel Raynal <miquel.raynal@bootlin.com>,
+	Richard Weinberger <richard@nod.at>,
+	Vignesh Raghavendra <vigneshr@ti.com>,
+	Shuah Khan <skhan@linuxfoundation.org>,
+	Kieran Bingham <kieran.bingham@ideasonboard.com>,
+	Mauro Carvalho Chehab <mchehab@kernel.org>,
+	Joerg Roedel <joro@8bytes.org>, Will Deacon <will@kernel.org>,
+	Robin Murphy <robin.murphy@arm.com>, Lee Jones <lee@kernel.org>,
+	Pavel Machek <pavel@kernel.org>, Dave Penkler <dpenkler@gmail.com>,
+	"K. Y. Srinivasan" <kys@microsoft.com>,
+	Haiyang Zhang <haiyangz@microsoft.com>,
+	Wei Liu <wei.liu@kernel.org>, Dexuan Cui <decui@microsoft.com>,
+	Long Li <longli@microsoft.com>, Justin Sanders <justin@coraid.com>,
+	Jens Axboe <axboe@kernel.dk>, Georgi Djakov <djakov@kernel.org>,
+	Michael Turquette <mturquette@baylibre.com>,
+	Stephen Boyd <sboyd@kernel.org>,
+	Philipp Zabel <p.zabel@pengutronix.de>,
+	Borislav Petkov <bp@alien8.de>,
+	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
+	"H. Peter Anvin" <hpa@zytor.com>,
+	Pali =?iso-8859-1?Q?Roh=E1r?= <pali@kernel.org>,
+	Dmitry Torokhov <dmitry.torokhov@gmail.com>
+Subject: Re: [PATCH 00/61] treewide: Use IS_ERR_OR_NULL over manual NULL
+ check - refactor
+Message-ID: <abCy1Xs9yQx0Sjbn@shell.armlinux.org.uk>
+References: <20260310-b4-is_err_or_null-v1-0-bd63b656022d@avm.de>
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 19/21] wifi: rtl8xxxu: add hw crypto support for AP
- mode
-To: Martin Kaistra <martin.kaistra@linutronix.de>,
- linux-wireless@vger.kernel.org
-Cc: Jes Sorensen <Jes.Sorensen@gmail.com>, Ping-Ke Shih <pkshih@realtek.com>,
- Sebastian Andrzej Siewior <bigeasy@linutronix.de>
-References: <20231222101442.626837-1-martin.kaistra@linutronix.de>
- <20231222101442.626837-20-martin.kaistra@linutronix.de>
- <b47a1c95-60c4-468d-9944-c59546e082bf@gmail.com>
- <b8e9ad0c-c148-40a2-b114-5558e74942b0@linutronix.de>
-Content-Language: en-US
-From: Bitterblue Smith <rtl8821cerfe2@gmail.com>
-In-Reply-To: <b8e9ad0c-c148-40a2-b114-5558e74942b0@linutronix.de>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 16B1F259480
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260310-b4-is_err_or_null-v1-0-bd63b656022d@avm.de>
+Sender: Russell King (Oracle) <linux@armlinux.org.uk>
+X-Rspamd-Queue-Id: 642352598EE
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.66 / 15.00];
+X-Spamd-Result: default: False [1.14 / 15.00];
 	SUSPICIOUS_RECIPS(1.50)[];
+	R_DKIM_REJECT(1.00)[armlinux.org.uk:s=pandora-2019];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
-	R_DKIM_ALLOW(-0.20)[gmail.com:s=20230601];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
+	DMARC_POLICY_SOFTFAIL(0.10)[armlinux.org.uk : SPF not aligned (relaxed),none];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-32933-lists,linux-wireless=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
+	FREEMAIL_CC(0.00)[lists.freedesktop.org,lists.ubuntu.com,vger.kernel.org,inria.fr,lists.linux.dev,lists.osuosl.org,lists.infradead.org,lists.ozlabs.org,kvack.org,st-md-mailman.stormreply.com,lists.samba.org,lists.sourceforge.net,imag.fr,fb.com,suse.com,gmail.com,redhat.com,dubeyko.com,mit.edu,dilger.ca,samba.org,manguebit.org,microsoft.com,talpey.com,kernel.org,ionkov.net,codewreck.org,crudebyte.com,linux.alibaba.com,google.com,huawei.com,vivo.com,szeredi.hu,paragon-software.com,intel.com,igalia.com,squashfs.org.uk,zeniv.linux.org.uk,suse.cz,goodmis.org,efficios.com,manifault.com,nvidia.com,infradead.org,linaro.org,arm.com,suse.de,atomlin.com,samsung.com,perex.cz,canonical.com,paul-moore.com,namei.org,hallyn.com,linux-foundation.org,davemloft.net,holtmann.org,iogearbox.net,fomichev.me,mojatatu.com,resnulli.us,oracle.com,brown.name,sipsolutions.net,phrozen.org,alpha.franken.de,users.sourceforge.jp,libc.org,physik.fu-berlin.de,ideasonboard.com,kwiboo.se,linux.intel.com,ffwll.ch,ursuli
+ n.net,amd.com,rock-chips.com,sntech.de,marvell.com,lunn.ch,broadcom.com,chelsio.com,plvision.eu,foss.st.com,os.amperecomputing.com,bootlin.com,linux.ibm.com,ti.com,shazbot.org,animalcreek.com,nod.at,linuxfoundation.org,8bytes.org,coraid.com,kernel.dk,baylibre.com,pengutronix.de,alien8.de,zytor.com];
+	DKIM_TRACE(0.00)[armlinux.org.uk:-];
 	MIME_TRACE(0.00)[0:+];
-	FREEMAIL_CC(0.00)[gmail.com,realtek.com,linutronix.de];
-	FREEMAIL_FROM(0.00)[gmail.com];
-	TO_DN_SOME(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-32934-lists,linux-wireless=lfdr.de];
+	MISSING_XM_UA(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	TO_DN_SOME(0.00)[];
 	RCVD_COUNT_FIVE(0.00)[5];
+	FROM_NEQ_ENVFROM(0.00)[linux@armlinux.org.uk,linux-wireless@vger.kernel.org];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[rtl8821cerfe2@gmail.com,linux-wireless@vger.kernel.org];
-	DKIM_TRACE(0.00)[gmail.com:+];
-	NEURAL_HAM(-0.00)[-0.999];
-	TAGGED_RCPT(0.00)[linux-wireless];
-	MID_RHS_MATCH_FROM(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[5];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	RCPT_COUNT_GT_50(0.00)[247];
+	MID_RHS_MATCH_FROMTLD(0.00)[];
+	NEURAL_HAM(-0.00)[-0.960];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,realtek.com:email,linutronix.de:email]
+	TAGGED_RCPT(0.00)[linux-wireless,netdev];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,shell.armlinux.org.uk:mid,armlinux.org.uk:url]
 X-Rspamd-Action: no action
 
-On 24/02/2026 17:43, Martin Kaistra wrote:
-> Am 21.02.26 um 23:09 schrieb Bitterblue Smith:
->> On 22/12/2023 12:14, Martin Kaistra wrote:
->>> Add a custom function for allocating entries in the sec cam. This allows
->>> us to store multiple keys with the same keyidx.
->>>
->>> The maximum number of sec cam entries for 8188f is 16 according to the
->>> vendor driver. Add the number to rtl8xxxu_fileops, so that other chips
->>> which might support more entries, can set a different number there.
->>>
->>> Set the bssid as mac address for group keys instead of just using the
->>> ethernet broadcast address and use BIT(6) in the sec cam ctrl entry
->>> for differentiating them from pairwise keys like in the vendor driver.
->>>
->>> Add the TXDESC_EN_DESC_ID bit and the hw_key_idx to tx
->>> broadcast/multicast packets in AP mode.
->>>
->>> Finally, allow the usage of rtl8xxxu_set_key() for AP mode.
->>>
->>> Signed-off-by: Martin Kaistra <martin.kaistra@linutronix.de>
->>> Reviewed-by: Ping-Ke Shih <pkshih@realtek.com>
->>> ---
->>>   .../net/wireless/realtek/rtl8xxxu/rtl8xxxu.h  |  5 ++
->>>   .../realtek/rtl8xxxu/rtl8xxxu_8188f.c         |  1 +
->>>   .../wireless/realtek/rtl8xxxu/rtl8xxxu_core.c | 48 +++++++++++++++----
->>>   3 files changed, 44 insertions(+), 10 deletions(-)
->>>
->>> diff --git a/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu.h b/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu.h
->>> index c5e6d8f7d26bd..62e6318bc0924 100644
->>> --- a/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu.h
->>> +++ b/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu.h
->>> @@ -498,6 +498,7 @@ struct rtl8xxxu_txdesc40 {
->>>   #define DESC_RATE_ID_SHIFT        16
->>>   #define DESC_RATE_ID_MASK        0xf
->>>   #define TXDESC_NAVUSEHDR        BIT(20)
->>> +#define TXDESC_EN_DESC_ID        BIT(21)
->>>   #define TXDESC_SEC_RC4            0x00400000
->>>   #define TXDESC_SEC_AES            0x00c00000
->>>   #define TXDESC_PKT_OFFSET_SHIFT        26
->>> @@ -1775,6 +1776,7 @@ struct rtl8xxxu_cfo_tracking {
->>>   #define RTL8XXXU_MAX_MAC_ID_NUM    128
->>>   #define RTL8XXXU_BC_MC_MACID    0
->>>   #define RTL8XXXU_BC_MC_MACID1    1
->>> +#define RTL8XXXU_MAX_SEC_CAM_NUM    64
->>>     struct rtl8xxxu_priv {
->>>       struct ieee80211_hw *hw;
->>> @@ -1908,6 +1910,7 @@ struct rtl8xxxu_priv {
->>>       char led_name[32];
->>>       struct led_classdev led_cdev;
->>>       DECLARE_BITMAP(mac_id_map, RTL8XXXU_MAX_MAC_ID_NUM);
->>> +    DECLARE_BITMAP(cam_map, RTL8XXXU_MAX_SEC_CAM_NUM);
->>>   };
->>>     struct rtl8xxxu_sta_info {
->>> @@ -1919,6 +1922,7 @@ struct rtl8xxxu_sta_info {
->>>     struct rtl8xxxu_vif {
->>>       int port_num;
->>> +    u8 hw_key_idx;
->>>   };
->>>     struct rtl8xxxu_rx_urb {
->>> @@ -1993,6 +1997,7 @@ struct rtl8xxxu_fileops {
->>>       u16 max_aggr_num;
->>>       u8 supports_ap:1;
->>>       u16 max_macid_num;
->>> +    u16 max_sec_cam_num;
->>>       u32 adda_1t_init;
->>>       u32 adda_1t_path_on;
->>>       u32 adda_2t_path_on_a;
->>> diff --git a/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_8188f.c b/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_8188f.c
->>> index 1e1c8fa194cb8..574a5fe951543 100644
->>> --- a/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_8188f.c
->>> +++ b/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_8188f.c
->>> @@ -1751,6 +1751,7 @@ struct rtl8xxxu_fileops rtl8188fu_fops = {
->>>       .max_aggr_num = 0x0c14,
->>>       .supports_ap = 1,
->>>       .max_macid_num = 16,
->>> +    .max_sec_cam_num = 16,
->>>       .adda_1t_init = 0x03c00014,
->>>       .adda_1t_path_on = 0x03c00014,
->>>       .trxff_boundary = 0x3f7f,
->>> diff --git a/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_core.c b/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_core.c
->>> index ecf54eb8dba61..7aafae9fe76b8 100644
->>> --- a/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_core.c
->>> +++ b/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_core.c
->>> @@ -4559,8 +4559,10 @@ static void rtl8xxxu_cam_write(struct rtl8xxxu_priv *priv,
->>>        * This is a bit of a hack - the lower bits of the cipher
->>>        * suite selector happens to match the cipher index in the CAM
->>>        */
->>> -    addr = key->keyidx << CAM_CMD_KEY_SHIFT;
->>> +    addr = key->hw_key_idx << CAM_CMD_KEY_SHIFT;
->>>       ctrl = (key->cipher & 0x0f) << 2 | key->keyidx | CAM_WRITE_VALID;
->>> +    if (!(key->flags & IEEE80211_KEY_FLAG_PAIRWISE))
->>> +        ctrl |= BIT(6);
->>>         for (j = 5; j >= 0; j--) {
->>>           switch (j) {
->>> @@ -5546,13 +5548,14 @@ static void rtl8xxxu_tx(struct ieee80211_hw *hw,
->>>       struct rtl8xxxu_tx_urb *tx_urb;
->>>       struct ieee80211_sta *sta = NULL;
->>>       struct ieee80211_vif *vif = tx_info->control.vif;
->>> +    struct rtl8xxxu_vif *rtlvif = (struct rtl8xxxu_vif *)vif->drv_priv;
->>>       struct device *dev = &priv->udev->dev;
->>>       u32 queue, rts_rate;
->>>       u16 pktlen = skb->len;
->>>       int tx_desc_size = priv->fops->tx_desc_size;
->>>       u8 macid;
->>>       int ret;
->>> -    bool ampdu_enable, sgi = false, short_preamble = false;
->>> +    bool ampdu_enable, sgi = false, short_preamble = false, bmc = false;
->>>         if (skb_headroom(skb) < tx_desc_size) {
->>>           dev_warn(dev,
->>> @@ -5594,10 +5597,14 @@ static void rtl8xxxu_tx(struct ieee80211_hw *hw,
->>>           tx_desc->txdw0 =
->>>               TXDESC_OWN | TXDESC_FIRST_SEGMENT | TXDESC_LAST_SEGMENT;
->>>       if (is_multicast_ether_addr(ieee80211_get_DA(hdr)) ||
->>> -        is_broadcast_ether_addr(ieee80211_get_DA(hdr)))
->>> +        is_broadcast_ether_addr(ieee80211_get_DA(hdr))) {
->>>           tx_desc->txdw0 |= TXDESC_BROADMULTICAST;
->>> +        bmc = true;
->>> +    }
->>> +
->>>         tx_desc->txdw1 = cpu_to_le32(queue << TXDESC_QUEUE_SHIFT);
->>> +    macid = rtl8xxxu_get_macid(priv, sta);
->>>         if (tx_info->control.hw_key) {
->>>           switch (tx_info->control.hw_key->cipher) {
->>> @@ -5612,6 +5619,10 @@ static void rtl8xxxu_tx(struct ieee80211_hw *hw,
->>>           default:
->>>               break;
->>>           }
->>> +        if (bmc && rtlvif->hw_key_idx != 0xff) {
->>> +            tx_desc->txdw1 |= TXDESC_EN_DESC_ID;
->>> +            macid = rtlvif->hw_key_idx;
->>> +        }
->>>       }
->>>         /* (tx_info->flags & IEEE80211_TX_CTL_AMPDU) && */
->>> @@ -5655,7 +5666,6 @@ static void rtl8xxxu_tx(struct ieee80211_hw *hw,
->>>       else
->>>           rts_rate = 0;
->>>   -    macid = rtl8xxxu_get_macid(priv, sta);
->>>       priv->fops->fill_txdesc(hw, hdr, tx_info, tx_desc, sgi, short_preamble,
->>>                   ampdu_enable, rts_rate, macid);
->>>   @@ -6667,6 +6677,7 @@ static int rtl8xxxu_add_interface(struct ieee80211_hw *hw,
->>>         priv->vifs[port_num] = vif;
->>>       rtlvif->port_num = port_num;
->>> +    rtlvif->hw_key_idx = 0xff;
->>>         rtl8xxxu_set_linktype(priv, vif->type, port_num);
->>>       ether_addr_copy(priv->mac_addr, vif->addr);
->>> @@ -6843,11 +6854,19 @@ static int rtl8xxxu_set_rts_threshold(struct ieee80211_hw *hw, u32 rts)
->>>       return 0;
->>>   }
->>>   +static int rtl8xxxu_get_free_sec_cam(struct ieee80211_hw *hw)
->>> +{
->>> +    struct rtl8xxxu_priv *priv = hw->priv;
->>> +
->>> +    return find_first_zero_bit(priv->cam_map, priv->fops->max_sec_cam_num);
->>> +}
->>> +
->>>   static int rtl8xxxu_set_key(struct ieee80211_hw *hw, enum set_key_cmd cmd,
->>>                   struct ieee80211_vif *vif,
->>>                   struct ieee80211_sta *sta,
->>>                   struct ieee80211_key_conf *key)
->>>   {
->>> +    struct rtl8xxxu_vif *rtlvif = (struct rtl8xxxu_vif *)vif->drv_priv;
->>>       struct rtl8xxxu_priv *priv = hw->priv;
->>>       struct device *dev = &priv->udev->dev;
->>>       u8 mac_addr[ETH_ALEN];
->>> @@ -6859,9 +6878,6 @@ static int rtl8xxxu_set_key(struct ieee80211_hw *hw, enum set_key_cmd cmd,
->>>       dev_dbg(dev, "%s: cmd %02x, cipher %08x, index %i\n",
->>>           __func__, cmd, key->cipher, key->keyidx);
->>>   -    if (vif->type != NL80211_IFTYPE_STATION)
->>> -        return -EOPNOTSUPP;
->>> -
->>>       if (key->keyidx > 3)
->>>           return -EOPNOTSUPP;
->>>   @@ -6885,7 +6901,7 @@ static int rtl8xxxu_set_key(struct ieee80211_hw *hw, enum set_key_cmd cmd,
->>>           ether_addr_copy(mac_addr, sta->addr);
->>>       } else {
->>>           dev_dbg(dev, "%s: group key\n", __func__);
->>> -        eth_broadcast_addr(mac_addr);
->>> +        ether_addr_copy(mac_addr, vif->bss_conf.bssid);
->>>       }
->>>         val16 = rtl8xxxu_read16(priv, REG_CR);
->>> @@ -6899,16 +6915,28 @@ static int rtl8xxxu_set_key(struct ieee80211_hw *hw, enum set_key_cmd cmd,
->>>         switch (cmd) {
->>>       case SET_KEY:
->>> -        key->hw_key_idx = key->keyidx;
->>> +
->>> +        retval = rtl8xxxu_get_free_sec_cam(hw);
->>> +        if (retval < 0)
->>> +            return -EOPNOTSUPP;
->>> +
->>> +        key->hw_key_idx = retval;
->>> +
->>> +        if (vif->type == NL80211_IFTYPE_AP && !(key->flags & IEEE80211_KEY_FLAG_PAIRWISE))
->>> +            rtlvif->hw_key_idx = key->hw_key_idx;
->>> +
->>>           key->flags |= IEEE80211_KEY_FLAG_GENERATE_IV;
->>>           rtl8xxxu_cam_write(priv, key, mac_addr);
->>> +        set_bit(key->hw_key_idx, priv->cam_map);
->>
->> Hi Martin,
-> 
-> Hi Bitterblue,
-> 
->>
->> It turns out RTL8188CUS and RTL8192CU don't like this patch, specifically
->> when we use iwd. After the WPA2 handshake no more data is transmitted.
->>
->> Before this patch, key->hw_key_idx was the same as key->keyidx. After
->> this patch, when we use iwd, the group key is installed first. It has
->> key->keyidx = 1, but it gets key->hw_key_idx = 0. The pairwise key is
->> installed second. It has key->keyidx = 0, but it gets key->hw_key_idx = 1.
->> Both keyidx and hw_key_idx are passed to the chip in rtl8xxxu_cam_write().
->>
->> It's fine with wpa_supplicant. wpa_supplicant installs the pairwise key
->> first, with key->keyidx = 0, then the group key, with key->keyidx = 1.
->>
->> This patch imitating rtw88 makes the old chips work again with iwd.
->> What do you think?
-> 
-> So you reserve the first 4 entries for group keys and use key->keyidx as key->hw_key_idx directly for those, right? Does that work if 2 virtual interfaces are used at the same time?
+On Tue, Mar 10, 2026 at 12:48:26PM +0100, Philipp Hahn wrote:
+> While doing some static code analysis I stumbled over a common pattern,
+> where IS_ERR() is combined with a NULL check. For that there is
+> IS_ERR_OR_NULL().
 
-Yes. I don't know if that works with 2 interfaces. How can I test?
-I never tried to use 2 interfaces at the same time.
+One thing you need to check for each of these cases is whether the tests
+are actually correct.
 
-> I will do some tests in the next days, but I suspect this be an issue.
-> 
->>
->> diff --git a/drivers/net/wireless/realtek/rtl8xxxu/core.c b/drivers/net/wireless/realtek/rtl8xxxu/core.c
->> index ee278f0548e4..f7b35655bec5 100644
->> --- a/drivers/net/wireless/realtek/rtl8xxxu/core.c
->> +++ b/drivers/net/wireless/realtek/rtl8xxxu/core.c
->> @@ -6942,7 +6942,8 @@ static int rtl8xxxu_get_free_sec_cam(struct ieee80211_hw *hw)
->>   {
->>       struct rtl8xxxu_priv *priv = hw->priv;
->>   -    return find_first_zero_bit(priv->cam_map, priv->fops->max_sec_cam_num);
->> +    return find_next_zero_bit(priv->cam_map, priv->fops->max_sec_cam_num,
->> +                  RTL8XXXU_SEC_DEFAULT_KEY_NUM);
->>   }
->>     static int rtl8xxxu_set_key(struct ieee80211_hw *hw, enum set_key_cmd cmd,
->> @@ -6999,12 +7000,15 @@ static int rtl8xxxu_set_key(struct ieee80211_hw *hw, enum set_key_cmd cmd,
->>         switch (cmd) {
->>       case SET_KEY:
->> +        if (key->flags & IEEE80211_KEY_FLAG_PAIRWISE) {
->> +            retval = rtl8xxxu_get_free_sec_cam(hw);
->> +            if (retval < 0)
->> +                return -EOPNOTSUPP;
->>   -        retval = rtl8xxxu_get_free_sec_cam(hw);
->> -        if (retval < 0)
->> -            return -EOPNOTSUPP;
->> -
->> -        key->hw_key_idx = retval;
->> +            key->hw_key_idx = retval;
->> +        } else {
->> +            key->hw_key_idx = key->keyidx;
->> +        }
->>             if (vif->type == NL80211_IFTYPE_AP && !(key->flags & IEEE80211_KEY_FLAG_PAIRWISE))
->>               rtlvif->hw_key_idx = key->hw_key_idx;
->> diff --git a/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu.h b/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu.h
->> index 4b05dba22e67..188f4bbe99cd 100644
->> --- a/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu.h
->> +++ b/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu.h
->> @@ -1788,6 +1788,7 @@ struct rtl8xxxu_cfo_tracking {
->>   #define RTL8XXXU_BC_MC_MACID    0
->>   #define RTL8XXXU_BC_MC_MACID1    1
->>   #define RTL8XXXU_MAX_SEC_CAM_NUM    64
->> +#define RTL8XXXU_SEC_DEFAULT_KEY_NUM    4
->>     struct rtl8xxxu_priv {
->>       struct ieee80211_hw *hw;
-> 
+There are certainly cases amongst those that you have identified where
+the check for NULL is redundant.
 
+For example, get_phy_device() never returns NULL, yet in your netdev
+patch, you have at least one instance where the return value of
+get_phy_device() is checked for NULL and IS_ERR() which you then
+turn into IS_ERR_OR_NULL(). Instead, the NULL check should be dropped
+(as a separate patch.)
+
+-- 
+RMK's Patch system: https://www.armlinux.org.uk/developer/patches/
+FTTP is here! 80Mbps down 10Mbps up. Decent connectivity at last!
 
