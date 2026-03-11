@@ -1,160 +1,121 @@
-Return-Path: <linux-wireless+bounces-32953-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-32954-lists+linux-wireless=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id sKMxGzMJsWnhpwIAu9opvQ
-	(envelope-from <linux-wireless+bounces-32953-lists+linux-wireless=lfdr.de@vger.kernel.org>)
-	for <lists+linux-wireless@lfdr.de>; Wed, 11 Mar 2026 07:18:27 +0100
+	id GPCCKY0KsWnhpwIAu9opvQ
+	(envelope-from <linux-wireless+bounces-32954-lists+linux-wireless=lfdr.de@vger.kernel.org>)
+	for <lists+linux-wireless@lfdr.de>; Wed, 11 Mar 2026 07:24:13 +0100
 X-Original-To: lists+linux-wireless@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id D2D0925CBFC
-	for <lists+linux-wireless@lfdr.de>; Wed, 11 Mar 2026 07:18:26 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id F297125CCE1
+	for <lists+linux-wireless@lfdr.de>; Wed, 11 Mar 2026 07:24:12 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 8F8313033398
-	for <lists+linux-wireless@lfdr.de>; Wed, 11 Mar 2026 06:18:18 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 898DA30610D2
+	for <lists+linux-wireless@lfdr.de>; Wed, 11 Mar 2026 06:24:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D095D2C11F3;
-	Wed, 11 Mar 2026 06:18:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E48103542DE;
+	Wed, 11 Mar 2026 06:24:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=morsemicro-com.20230601.gappssmtp.com header.i=@morsemicro-com.20230601.gappssmtp.com header.b="towVjvFY"
+	dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b="x6XJH0i0"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-pj1-f53.google.com (mail-pj1-f53.google.com [209.85.216.53])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from sipsolutions.net (s3.sipsolutions.net [168.119.38.16])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 61ADE1A6805
-	for <linux-wireless@vger.kernel.org>; Wed, 11 Mar 2026 06:18:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.53
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 99E78248873
+	for <linux-wireless@vger.kernel.org>; Wed, 11 Mar 2026 06:24:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=168.119.38.16
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773209896; cv=none; b=Yf82jhmcy5CsLHcf+7KtbrYHlq5nedJqeizX6Ex6BuyAm8DQbKVx2TD3MQ8lK31YZLlCwpH64eq9+GcQOKhDzlALI6MaUeqFtw/PGJPZ1J+v9ILjg9VFr5Snvhk1/6V2L+efR7St4WkoxM1c5tcTPcpPmIsHhjh8vOrLpwyjfTE=
+	t=1773210250; cv=none; b=jbU++QnWC8lgwLxs05IW5ymS8oDFY03gpvThga/0v7xRvwbP2beyInylO3H76WOkpxAboZ1m2w6J0CmnBcq7lQnDYfGE/0AXMq9CYggrmi0D8D99V7xI0oB/8U/Z4LyJQZhJf+6+AmZbcG9rJ5ypzigXRIMzzZiTZr+rslWiEA4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773209896; c=relaxed/simple;
-	bh=1M4nPsxxQWTDxhu/M7dXuvma+G0sU9p6kepXXWiNkeU=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=Nfg6O+W++MjUtd0lovaap9NMv+XdhdW30KeZzl4WLjOGtwg6OA/qrMQj9XrI9xAT6RkmnF3eha38Ung7yNG1hRMRhdxvKe07NPsf5hbk/2fD85ubRWv5ubSaghHpJemWu1t+xJp1QNgknvrbvEBEeMkP1p9jw95x3YSrLKRFzSY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=morsemicro.com; spf=pass smtp.mailfrom=morsemicro.com; dkim=pass (2048-bit key) header.d=morsemicro-com.20230601.gappssmtp.com header.i=@morsemicro-com.20230601.gappssmtp.com header.b=towVjvFY; arc=none smtp.client-ip=209.85.216.53
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=morsemicro.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=morsemicro.com
-Received: by mail-pj1-f53.google.com with SMTP id 98e67ed59e1d1-3567e2b4159so7726010a91.0
-        for <linux-wireless@vger.kernel.org>; Tue, 10 Mar 2026 23:18:15 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=morsemicro-com.20230601.gappssmtp.com; s=20230601; t=1773209895; x=1773814695; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=NRhhJySw+WLX9B9eI/5eW8K/Z0X0jSyLKlNHbs14R2k=;
-        b=towVjvFYz/dNkRQLaRlt2S3sRoch3g4bJCl/TbdCCNFhOkd8mBPXTfLmVKpQuiikZP
-         rvjnRcJ+ACExim11Qzfn5bi63RH5CJ/pxiISGNuQUWnU0DMLQ4CQY6aDPya97OJ3tO2/
-         jNTOi9uxzbNP1DEH032b/s+vlGfbz/mvRrooYes2H0ZTw9uMZirLDO6jfbBnJkjsHW62
-         o6IXaKJxitQ0LJCRh4FJ/h3mNCwISNHix4bW/lUWXTHhxFmarpmTAbA00bWipNQ1MIWN
-         w1AbWmh1UyWt/wzl32KuPttGEzYZEYJXK6dhT1Osr64ByXWul+Zu4IoTTVDuHFSeVOgp
-         MbIA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1773209895; x=1773814695;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=NRhhJySw+WLX9B9eI/5eW8K/Z0X0jSyLKlNHbs14R2k=;
-        b=kko8anNTpwj7CNlOaN6rKcVUygqUZkCy+8i963BdbrqYm0KhvLcew0Bj5BevWBIgEs
-         Q8zJFzd30a2JxqqfsHbzXhgQPJsl8m7GeMVZzJfiwdrzzAgjMyPejujgqbPTf9RyGBfA
-         aRu4DoqBCIXAII74ltI0A172hoHBLkXGnFaXu90580eCnMgDvrEZ1APFNEJXYgLX2oYR
-         Gftwythqqnonft7NO8RmadU+bESGH83n4loi/xG1A4snPWf5/vZCCLXtE8lHS8n4u4rF
-         6SluS2UaMwyhUK0h10xTK64OS4iQNCYsYe/4xurmaIwSE3w9/WAr1HkPQD8S6UQ0Xw5w
-         pyTw==
-X-Gm-Message-State: AOJu0YxfkCdHRN3jhWQUWyaDdzdnfe1hjml1aXuYYMaNJeTPavf7nzXZ
-	Ei/CETS3xg1XuSnosMlVwG+bXqrIFN8QbdFpY1zEhE8pkWdP/36VSNT26QPep9oLGXw=
-X-Gm-Gg: ATEYQzw/dbak6hqltxzvU/BDpyyQe+ncbhz1Un2MnGEWA8FZVSyXrurrUoCG9Hmi5K8
-	mC+odKj5byj7/zXi9e3o/VK7aYwBW74TXa5azFdA/MqqE9n6p5K0lplixbxO0ZnITbqtzinOVk7
-	wdLVcWlDpSMXZMx1DBqn8Cslsvx4GpCbBksJv8SS6F34eq8QOrP/rkz+BQ5fktsL/Ag1AHYm1eY
-	+T0aQaykQ05FzcHlFLKFyB3k0XF9B4v1BlsmRxjcFxkyaC2kZ0ci3jfMCtR4HD2IK5Bn+mb3s3Z
-	ZJAzQFRzBKejzpLolji8sTkY6gWzLHATOfW1Oe1v0NVprCg/N3U1P/UoTS+28e5xunX9GgirHb7
-	yNot9etEu6AZD0/wOI6Rjje6F1QDkChglxM97+lpa80CaopsceL2uuUEt6AgmvZQmzOHicYsd+t
-	qvzo5kGXDRioHq2YAFIws3TBHOoef0XP1VOYTeASWPpMrYlY5G03ddS17CVK0vA2dmTHew0df5/
-	7Sn0Z0denZk4j0VguWidoJQYWhr4Vk=
-X-Received: by 2002:a17:90a:d88d:b0:359:fd50:e733 with SMTP id 98e67ed59e1d1-35a01357ed8mr1509873a91.31.1773209894660;
-        Tue, 10 Mar 2026 23:18:14 -0700 (PDT)
-Received: from mma-H9MHD44.lan (60-242-93-14.static.tpgi.com.au. [60.242.93.14])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-359fc97356dsm1993097a91.8.2026.03.10.23.18.12
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 10 Mar 2026 23:18:14 -0700 (PDT)
-From: Lachlan Hodges <lachlan.hodges@morsemicro.com>
-To: johannes@sipsolutions.net
-Cc: linux-wireless@vger.kernel.org,
-	arien.judge@morsemicro.com,
-	Lachlan Hodges <lachlan.hodges@morsemicro.com>
-Subject: [PATCH wireless-next] wifi: cfg80211: init S1G properly when creating chandef
-Date: Wed, 11 Mar 2026 17:18:00 +1100
-Message-ID: <20260311061800.517849-1-lachlan.hodges@morsemicro.com>
-X-Mailer: git-send-email 2.43.0
+	s=arc-20240116; t=1773210250; c=relaxed/simple;
+	bh=UPr6q8MlJF981lhJMuzJwHTNHBZ/fbK3tCL40nHd3/c=;
+	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=bxoPAgR8IvSLVIg1pF+XG+/ck24yk/rPwg8NummIGTTxKo/ygBdBB+Foa/hvNlINGNOoYMhHnHtOwz1WvsqiR7UVGGDyPFJy/sU3L5pe8GktKFZ6y46THdPNO8lpzwYZUtv3K60nOpVjW9K4B+/12y/uMRrRfxSm+bMtiYFAWZk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net; spf=pass smtp.mailfrom=sipsolutions.net; dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b=x6XJH0i0; arc=none smtp.client-ip=168.119.38.16
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sipsolutions.net
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=sipsolutions.net; s=mail; h=MIME-Version:Content-Transfer-Encoding:
+	Content-Type:References:In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender
+	:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
+	Resent-Cc:Resent-Message-ID; bh=UPr6q8MlJF981lhJMuzJwHTNHBZ/fbK3tCL40nHd3/c=;
+	t=1773210249; x=1774419849; b=x6XJH0i0EVVBcqsnEXKZSnxOioNl9iX/rexlYdNv3I2radd
+	4QhUwICat1yRe/glZdMByJBWOmFL/H/A14CIG9vGYlGKqiWEbkpC5jbhsIR5lD48smy+YtNNLD+81
+	xGC0R5IeZx0BrUw0J2hWz8PIWw7c1c5NMMSEFfhzPnD/W/kNWQtFr/5lOZzEAxlutsnHRFd1TTwyu
+	M9SaUlLP2w4pqZH/WXhu2LNGiOPlBcyTod7SXzxxlXHUgimGl2gih5w+LOyP9/fvrnKRDHfiSt3WZ
+	+CtKJI88qqLcNhJyw3l3zXLsZNJ4APpMB0Qt11GpunvIZmFmZxxdwxNvlXV/Rr2Q==;
+Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
+	(Exim 4.98.2)
+	(envelope-from <johannes@sipsolutions.net>)
+	id 1w0CzA-0000000Eg3I-3ngB;
+	Wed, 11 Mar 2026 07:24:01 +0100
+Message-ID: <62057e8c13c4b6358dcb42bd639aec2996cf2bca.camel@sipsolutions.net>
+Subject: Re: [PATCH wireless-next] wifi: cfg80211: init S1G properly when
+ creating chandef
+From: Johannes Berg <johannes@sipsolutions.net>
+To: Lachlan Hodges <lachlan.hodges@morsemicro.com>
+Cc: linux-wireless@vger.kernel.org, arien.judge@morsemicro.com
+Date: Wed, 11 Mar 2026 07:24:00 +0100
+In-Reply-To: <20260311061800.517849-1-lachlan.hodges@morsemicro.com> (sfid-20260311_071817_345070_19A555FE)
+References: <20260311061800.517849-1-lachlan.hodges@morsemicro.com>
+	 (sfid-20260311_071817_345070_19A555FE)
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.58.3 (3.58.3-1.fc43) 
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: D2D0925CBFC
+X-malware-bazaar: not-scanned
+X-Rspamd-Queue-Id: F297125CCE1
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.06 / 15.00];
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MID_CONTAINS_FROM(1.00)[];
-	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
-	R_DKIM_ALLOW(-0.20)[morsemicro-com.20230601.gappssmtp.com:s=20230601];
+	DMARC_POLICY_ALLOW(-0.50)[sipsolutions.net,none];
+	R_DKIM_ALLOW(-0.20)[sipsolutions.net:s=mail];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
-	DMARC_POLICY_SOFTFAIL(0.10)[morsemicro.com : SPF not aligned (relaxed), DKIM not aligned (relaxed),none];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-32953-lists,linux-wireless=lfdr.de];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-32954-lists,linux-wireless=lfdr.de];
+	DKIM_TRACE(0.00)[sipsolutions.net:+];
 	FROM_HAS_DN(0.00)[];
-	RCPT_COUNT_THREE(0.00)[4];
-	FROM_NEQ_ENVFROM(0.00)[lachlan.hodges@morsemicro.com,linux-wireless@vger.kernel.org];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCVD_COUNT_FIVE(0.00)[5];
-	DKIM_TRACE(0.00)[morsemicro-com.20230601.gappssmtp.com:+];
-	TAGGED_RCPT(0.00)[linux-wireless];
+	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCPT_COUNT_THREE(0.00)[3];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	TO_DN_SOME(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[johannes@sipsolutions.net,linux-wireless@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	TAGGED_RCPT(0.00)[linux-wireless];
+	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,morsemicro-com.20230601.gappssmtp.com:dkim]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,sipsolutions.net:dkim,sipsolutions.net:mid]
 X-Rspamd-Action: no action
 
-When emulating channel contexts, the first chandef passed to the
-driver when starting an interface is the local->dflt_chandef
-via ieee80211_calc_hw_conf_chan(). This means that currently an
-S1G driver will be given a chandef with a width of 20MHz. This will
-lead to either the driver or firmware rejecting this configuration
-and a non-zero ret code - leading to a WARN within
-ieee80211_hw_conf_init().
+On Wed, 2026-03-11 at 17:18 +1100, Lachlan Hodges wrote:
+> When emulating channel contexts, the first chandef passed to the
+> driver when starting an interface is the local->dflt_chandef
+> via ieee80211_calc_hw_conf_chan(). This means that currently an
+> S1G driver will be given a chandef with a width of 20MHz. This will
+> lead to either the driver or firmware rejecting this configuration
+> and a non-zero ret code - leading to a WARN within
+> ieee80211_hw_conf_init().
+>=20
+> In the case of emulation, ensure we initialise with a width of
+> 1MHz for S1G channels such that the default chandef is valid.
 
-In the case of emulation, ensure we initialise with a width of
-1MHz for S1G channels such that the default chandef is valid.
+I haven't had my morning tea ;-)
 
-Signed-off-by: Lachlan Hodges <lachlan.hodges@morsemicro.com>
----
- net/wireless/chan.c | 6 ++++++
- 1 file changed, 6 insertions(+)
+But the commit message feels to me like it's conflating cfg80211 and
+mac80211 concepts? You change cfg80211 - but then start out saying "when
+emulating" which happens in mac80211?
 
-diff --git a/net/wireless/chan.c b/net/wireless/chan.c
-index 68221b1ab45e..c0c0151fe55f 100644
---- a/net/wireless/chan.c
-+++ b/net/wireless/chan.c
-@@ -32,6 +32,12 @@ void cfg80211_chandef_create(struct cfg80211_chan_def *chandef,
- 		.freq1_offset = chan->freq_offset,
- 	};
- 
-+	if (cfg80211_chandef_is_s1g(chandef)) {
-+		chandef->width = NL80211_CHAN_WIDTH_1;
-+		chandef->center_freq1 = chan->center_freq;
-+		return;
-+	}
-+
- 	switch (chan_type) {
- 	case NL80211_CHAN_NO_HT:
- 		chandef->width = NL80211_CHAN_WIDTH_20_NOHT;
--- 
-2.43.0
-
+johannes
 
