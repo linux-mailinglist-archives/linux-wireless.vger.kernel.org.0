@@ -1,142 +1,148 @@
-Return-Path: <linux-wireless+bounces-32991-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-32992-lists+linux-wireless=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id oC80LtCIsWnkDAAAu9opvQ
-	(envelope-from <linux-wireless+bounces-32991-lists+linux-wireless=lfdr.de@vger.kernel.org>)
-	for <lists+linux-wireless@lfdr.de>; Wed, 11 Mar 2026 16:22:56 +0100
+	id kNISNeiJsWnkDAAAu9opvQ
+	(envelope-from <linux-wireless+bounces-32992-lists+linux-wireless=lfdr.de@vger.kernel.org>)
+	for <lists+linux-wireless@lfdr.de>; Wed, 11 Mar 2026 16:27:36 +0100
 X-Original-To: lists+linux-wireless@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1C453266634
-	for <lists+linux-wireless@lfdr.de>; Wed, 11 Mar 2026 16:22:56 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id D6F7D2667DE
+	for <lists+linux-wireless@lfdr.de>; Wed, 11 Mar 2026 16:27:35 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id CB09330BA3D6
-	for <lists+linux-wireless@lfdr.de>; Wed, 11 Mar 2026 15:20:50 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 895193055231
+	for <lists+linux-wireless@lfdr.de>; Wed, 11 Mar 2026 15:24:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 66A6D3DF010;
-	Wed, 11 Mar 2026 15:20:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 369143DEFF2;
+	Wed, 11 Mar 2026 15:23:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="gN4YsFTs"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="JRpyXx+H"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-oa1-f43.google.com (mail-oa1-f43.google.com [209.85.160.43])
+Received: from mail-ot1-f53.google.com (mail-ot1-f53.google.com [209.85.210.53])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CBF643DF013
-	for <linux-wireless@vger.kernel.org>; Wed, 11 Mar 2026 15:20:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.160.43
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 66D433DFC9E
+	for <linux-wireless@vger.kernel.org>; Wed, 11 Mar 2026 15:23:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.210.53
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773242446; cv=pass; b=ojIH8uVpfD/YnseP+kr2pAXD8IvLFDGkhzWlfkzPpAMAPNAEis91BAlO334D0DFySa37YmdUR0vtKAYlL4bZ85QaOt9Cc260iiu/lYEh/LzED9nHG2Ifcxm3SgP5bDoPH/H/vAVWc1lPkaxRUbkmCaN/HxBNegEKXjTFCKyOSVc=
+	t=1773242618; cv=pass; b=j5+inWpQmXEFPX5H+6j6ms0vVh0arvCINME8QhMGq2YPz7YrTwscyiDC/VbV8Xw4wwSGTobAhiTRabAO52zPO5EPyn1PglyyiG95yKh2n270bqyd7oZnvTqrxyYetDxzTKfzdnPoLNQFWsIAE2U0JVXhpU9FiNv8lQuFUhCmVhY=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773242446; c=relaxed/simple;
-	bh=V+22eRHrigWrYxkHiqR9vOlR+K4gkNszfN3+2Xq9nl0=;
+	s=arc-20240116; t=1773242618; c=relaxed/simple;
+	bh=p+iclWnD+kyykRzF2SvREB99o+ZGj9rjuFfOf5xyVlI=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=ii1bNGXtIJSMH0oz3fK7/ggJxx1BQfSGdexozSwTHww2fn7iajx8JCbDTit8Nj2ML38f3qm3Lxsd+ClYIm/yfT9T94koVewmSfzUnCoFnXe9rAxv/p6lwxxgu/GEpzqsw+WoVdBf7lvkS8s4WUolEwwU3TQDQFeEr7JRnK1lKsI=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=gN4YsFTs; arc=pass smtp.client-ip=209.85.160.43
+	 To:Cc:Content-Type; b=e8nSozCR6PbeXCX4tkhZSaqgyomE+0J+qaGTvSAg5B9HM+2dyeV/dhitqo72SeYmc5/wuudBnhTZJNfu0AMjkxoDHwbGAOjZot87zuzlj2ASWXQybhSaXaDpZXLjMdzqcout71vPhmBUTDHfOk0g6KYhS5lMLxLBbque2I/SPCg=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=JRpyXx+H; arc=pass smtp.client-ip=209.85.210.53
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-oa1-f43.google.com with SMTP id 586e51a60fabf-40f1a1f77a6so5943122fac.2
-        for <linux-wireless@vger.kernel.org>; Wed, 11 Mar 2026 08:20:42 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1773242442; cv=none;
+Received: by mail-ot1-f53.google.com with SMTP id 46e09a7af769-7d74aa6bcdbso31979a34.2
+        for <linux-wireless@vger.kernel.org>; Wed, 11 Mar 2026 08:23:36 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1773242615; cv=none;
         d=google.com; s=arc-20240605;
-        b=TS8BYdJweKOwSMy9RoL7V8P2DGMz227J0KRpNjlwpc+VOcfNKCbPLJPDFTzHnn0IKy
-         llqGaA7UNxcn27bd3pBjBemkihB8u2U9A3xhtPassNt75zneNIVWrAGkj7CzKGQx9MU9
-         /Kk16tvNOFZJGNofaWpYdHl/KCrx8iXdYprpf38iElDhL57vcWZgVBC8WrM+hxAHb52Q
-         ++54jTiDR3eNcSCSenkaHuWsdkJj6M5a7z3GlXcq4tRKvEZOnj3aj2pELys+7h+7mUWn
-         yTBy5NZMQi6wVmDGA5o2X7mUJ5NjcVi1CcX42Cr7xRpj5m5nvsjTPgwSyS3lDyTBMaUa
-         5V8w==
+        b=UQXV0rKmqqIyv+xD5NtDgr4168CzZ4PAGIBeuCd8hAmvU/+3IL7zZxuTFSw5auErnw
+         FLmQHTTi/BugtotHBd7t7ka2R+MCPpf3xRZgCdV/5k856PqFgweKM3mCA0lXFp9NPL6Q
+         i+lzKeeTiSEj1G5a3exHHXTlLdL40ST5Oe9vdoax1XM4HRlEcP43/ZzYCZdN/mvzRsLM
+         saovYdEroIuoPB+Z1iqEQI2DHa+LEK3ILr+CqWMisSxWulPLUxDtlA1eLm1NMK+0HV7t
+         GRyDF6AQwWkCXXzRhKfQbZvIY8TKb7mJ8o1+mKdgpW3Yx6GrGRddGpjyHysVqEavQ8rg
+         U3fg==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:dkim-signature;
-        bh=tVwkSbkn9G+vast5MTGqqJFGzMUmMHKoqYfYCiwNZ6k=;
-        fh=E0TB4y4LMaoFv6/Nw7x0a0BXVcSkrLpEywfy4qTdIUc=;
-        b=NTlHgWR1r51AAav7QW8v506jO/OA8sc7bMhA9JnmfgXxUgBfTCjvimrcJ3IStIngja
-         OQ51Q79yPZr9MVPHwz0gQvzrpM7ZCBpA3jFkxeLpPMENpJUhlklH1uE8sW4vBKFpFgqp
-         dn8eWrWhYH6jeoFqPY8WommIVbiLiapKjJYopE3jotnR/r0kw2Nf2sc5V0OdViN2279R
-         0N/+roCmADUIyaJXtYfhUi6ZZjQhfo3xvdZvUorJ+Bjl1xfqBvtIobF7U+llQfQQaiV/
-         jl8256uoqBpqJucvfxXtIqEuyBKsGlUF7Je9Gd+4WZyTVkibWpIEzVLCnDyLUwZxfTKG
-         HroA==;
+        bh=p+iclWnD+kyykRzF2SvREB99o+ZGj9rjuFfOf5xyVlI=;
+        fh=fFUQ3bDSnwWYL/1dqZwPKYywXd5TONRsAevI/mvHYbI=;
+        b=Kf9DpOAzql5SlBWALa7co2kCaneSylRYzsRtbbYbvtj7IVPYTUHi3KUJQXMCAtArz7
+         NKp0G9IdeN7vv5SiCo4qqoJbO6pXoYa+x/xbEnS1uX6pyDLztaNO6dVoaPchICsQHfJx
+         PskWnUIoMswYdHBe47SOCjTwmmm0OeQ3+FVMlNQ+q1YbEzxYEKg9p4XN6e1mH2I9bu9j
+         khT8y+qqwWNvNjGyvgM6hyJyFCZmj54Ajb08J3PBMRMHZwRMuJQ2MVPxfjp1Q4R2T9dB
+         JqXceYbcLyYd8EiUL/tLJM5ocohOIjLkb6N1oYIDC+TW0Y2W2X5VWU/VYOoRHbTg7jcS
+         lTLA==;
         darn=vger.kernel.org
 ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1773242442; x=1773847242; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1773242615; x=1773847415; darn=vger.kernel.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=tVwkSbkn9G+vast5MTGqqJFGzMUmMHKoqYfYCiwNZ6k=;
-        b=gN4YsFTszXiKIoVJB+haLG8WmjMXpRP+/lh+ulB7HKCOLFZdbYkCXpKIdw7q6cfyUZ
-         2Io0gQHW+3tLUzbDp8Nn2gaDm2h0B5+Z16a5VRpNoPMLr/gas2vVxyhe2doTj6bTGRPy
-         AlSjGvpGeL1zZzr79uvpCi/j1GA8tOrJnugLjkHpIpa7jmsPwgnyhcE9YoSqDSj3ZUzr
-         crcHOU2Y8XsDkf6rqL9oXwE6Lv2oktZM6EKjjiktFa08mwV0i64FW+ErY4Rcyt91c1tw
-         I58DKHW5luyCd/TsZTNnL4sWPYsZd4RX+yIZCavSKGB4nb1GsLRyoR2FD04wWZ7zTp0H
-         j8ig==
+        bh=p+iclWnD+kyykRzF2SvREB99o+ZGj9rjuFfOf5xyVlI=;
+        b=JRpyXx+HMwGcD2uctjjrGxCcqkrglMTxrdLoGhTFoDz4ELSaY8tkWhyCIqIRnEVC3d
+         wm8Ovq2mIxQ5R6MLfJPUKcm0jnDYRSaeSX2Tci306/NZVOqlV9pQ+bCiv7ClIBLhEb4N
+         VfEgjEbQ0IgzMvITFx6C6PJYAWQKVzP+Zz4NskJdDW36c+qmC8vdVW8rAyLB08h4o7BU
+         Xf2qFPQKQ/GYWtovuV0hex1DY5mdVnKa/K9tj47xdb44zkFQM+ql6Mi+cb3o6jk9UECP
+         6giiCdp/7wGLe61bS8kjOAjZBHo80sJFYfuRjvkKU5euhC+//vwcvc++l6kvI4bLt/xj
+         s1lg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1773242442; x=1773847242;
+        d=1e100.net; s=20230601; t=1773242615; x=1773847415;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to;
-        bh=tVwkSbkn9G+vast5MTGqqJFGzMUmMHKoqYfYCiwNZ6k=;
-        b=LLtYWAL51TtfGU7A2bB3kR+97YDu4zCGp/nG5pyRUUxNYkXCAv36v+MMGkyIfNFzKz
-         ilHIx+LDfv+yHxzAYTe7QqTbVMkLArVv0C8cj894iMAKt4ASe8U9+oBzY26OB6TcX+/0
-         9Tw2bn90JZJHK2pBfAvIJeOBB1joB/MpiQpmpAkRMsVBLZVoRPNsB9MbkhcgJZiFZvG5
-         i4i4u7UKMl0drPMaI2XAMRlzi0GUYUdfObZinTKdLk4UVL3cwt4rkm2ZfVZLadE7vob/
-         gTuyEl7leRvdWVWxRZ67iZtsKmw1/GZeGfz4D2WAzI6U4iP3J0DO9tKoCp5ztJeJFPU+
-         ES9Q==
-X-Gm-Message-State: AOJu0YzmhMrKM8VkkvRR1pB5c43SvUE8XGLoVAMDhihotdRHAHV9dnDH
-	34bncYIqinBnpl3fzL4N63JG2vNHI8p+UtvTGaqsCxGIFSXcWrs2Q8AJlAUVOy85FNJxyjEJ09e
-	dKVA+6LKGzJzIcstGizgtM/2bwJIHCRydk+GyQmkOKK0S
-X-Gm-Gg: ATEYQzzY6vU60qCHgoNLvLlP5zUP+pGoEF+oIJvtGkS3Pg9SIuKD8E6Ize8hh1EuwPt
-	4jx3vMI2FeDzRjjsN+QG1YH3H5ts15X3rnErAdeiA4rGteep9jQOTXNPr72s9eyID6m55609vo1
-	VJVMC57FurROstOCZ3m/uA0xJ5i3hBw115bw/WRsdjfAO0ePveVj1TMXfYhNIIFS8+/kjznHqEd
-	oap+oAdMHLi0T3LxH0ImGYnKBxVHANJPpvai1k1vZYeM6vfaajyMA+WW/VAUNxJeBut2rBqMU5p
-	FTcFi7qZrZEo9jiwZNg8cv120g==
-X-Received: by 2002:a05:6870:9381:b0:3ec:3d37:87da with SMTP id
- 586e51a60fabf-4177c623092mr1789249fac.3.1773242441444; Wed, 11 Mar 2026
- 08:20:41 -0700 (PDT)
+        bh=p+iclWnD+kyykRzF2SvREB99o+ZGj9rjuFfOf5xyVlI=;
+        b=ntl9Ksrbgqt9InvOPV0pGro5LQ6uvKaxswJDZP2uiCcxB+hiqHE8vlHJYBy2knH5UV
+         D0pdCGBxMk+xFXhyQPsmhvc853bA4IX4VR1aMz7X8TafAWKRNGIJsj1b3tee1sVq4J1v
+         1hofARjE8uMwKtITxOTSCvpdjuYfpxv20M25h2zi7v4TU8QBB7g86QXBAGeKvpT6QRP8
+         ow3ghnYs+BN2kfs0qkk0CVuq+AIbmQzafXW1N7aL1gLjmwbOn5JC3fMyxRjxexTqFLCp
+         cVqAqWU2/3iIWB8EjclnOqa3Ckbp6ycu9eDocxNczpBN2/cGsYmoidm1s+lH7DWC+yVd
+         xo3w==
+X-Gm-Message-State: AOJu0Yy3Sj/6Qtuw+y3HjQxs1A5zkzqcFQM+bZ6lWYzw/YaY1uadCgzR
+	GsLZYF6vnpGXMkhI48rWdUQMIwLneM3twLLPZOgh4WszDlcr9vbnN1JKJiS0NOPAPWT3b8Vzp00
+	kAj2fSCmuCR46LzCje7HD3W2qsYFPR44=
+X-Gm-Gg: ATEYQzybY5v9Ts9sO0giRna8IsWeo0iUB0XOkF3Ap2hma1GmOmUYmM9OXkP8eC9Ynxh
+	o0wuLbSN/gKdqs6ZAnV4mLST+gZIfMxD6CWfT9GwZ6THSImaaHPEfiyULpkoNQMVjCOty3dAACK
+	T5GMkQOv6P5S2DGRV2MLgJCnQAQ11bieyC9fEUja91x68zKQeM+iJ+kUuozypZCpAIK+7Dyrld+
+	JT0pdggQ1yM8kPJQ3djt+nJuJ2TqjjRwuL1vJUE981+NIljpFB+jqG7qwbUrzlYBe8D/q32+SDc
+	L+DWET8G3NKxY9s9EDSrNnacSpLzGBF9L1Hn
+X-Received: by 2002:a05:6830:4c0d:b0:7d7:4921:897d with SMTP id
+ 46e09a7af769-7d76a46af88mr1952155a34.0.1773242614997; Wed, 11 Mar 2026
+ 08:23:34 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260311020816.7065-1-pkshih@realtek.com>
-In-Reply-To: <20260311020816.7065-1-pkshih@realtek.com>
+References: <CALdGYqSQ1Ko2TTBhUizMu_FvLMUAuQfFrVwS10n_C-LSQJQQkQ@mail.gmail.com>
+ <1e96af437fa24674b353ddb530b2d8e7@realtek.com> <CALdGYqQb=Vt0jjqW7k8RGMV1gczL0cg-26cHgCm3MmzBjezGMQ@mail.gmail.com>
+ <792645eed36041f0b3df951f1b28a08a@realtek.com> <e6720993c8c14245981432cfa4ae902b@realtek.com>
+ <CALdGYqQn8GGXXjZTsL+a5Mfdmw5HRYB2Jyvqq5M5SUwxK9yd_g@mail.gmail.com>
+In-Reply-To: <CALdGYqQn8GGXXjZTsL+a5Mfdmw5HRYB2Jyvqq5M5SUwxK9yd_g@mail.gmail.com>
 From: LB F <goainwo@gmail.com>
-Date: Wed, 11 Mar 2026 17:19:55 +0200
-X-Gm-Features: AaiRm50J_8ykD35zTZ0w2h1lCtMFhV3gupPw-MTK7i5ytHZz2CnsThxHer5WOng
-Message-ID: <CALdGYqTgNLLUNhB1_tRmZ0DBCgLXiB+REt6L1_CMm0QgjjMaAQ@mail.gmail.com>
-Subject: Re: [RFT rtw-next] wifi: rtw88: add quirks to disable PCI ASPM for HP P3S95EA#ACB
+Date: Wed, 11 Mar 2026 17:22:52 +0200
+X-Gm-Features: AaiRm533kMGVl9Z3MIboyRPgP4Dx0JyKQO4gSo1SUcPRXCyy9WHeNhNpWPeqSQ4
+Message-ID: <CALdGYqQee1sjgdBAPJSyb1gL6ksK4z8Uw_v3ANTnyXE+LXFAiA@mail.gmail.com>
+Subject: Re: [BUG] wifi: rtw88: Hard system freeze on RTL8821CE when
+ power_save is enabled (LPS/ASPM conflict)
 To: Ping-Ke Shih <pkshih@realtek.com>
-Cc: linux-wireless@vger.kernel.org
+Cc: "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>, 
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=2];
 	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
 	R_DKIM_ALLOW(-0.20)[gmail.com:s=20230601];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	TAGGED_FROM(0.00)[bounces-32992-lists,linux-wireless=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
+	TO_DN_EQ_ADDR_SOME(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FREEMAIL_FROM(0.00)[gmail.com];
 	RCVD_COUNT_THREE(0.00)[4];
-	RCPT_COUNT_TWO(0.00)[2];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-32991-lists,linux-wireless=lfdr.de];
 	TO_DN_SOME(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	FROM_HAS_DN(0.00)[];
-	MISSING_XM_UA(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_THREE(0.00)[3];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[goainwo@gmail.com,linux-wireless@vger.kernel.org];
 	DKIM_TRACE(0.00)[gmail.com:+];
 	MID_RHS_MATCH_FROMTLD(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
 	TAGGED_RCPT(0.00)[linux-wireless];
-	FREEMAIL_FROM(0.00)[gmail.com];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,mail.gmail.com:mid,realtek.com:email]
-X-Rspamd-Queue-Id: 1C453266634
+	MISSING_XM_UA(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[mail.gmail.com:mid,realtek.com:email]
+X-Rspamd-Queue-Id: D6F7D2667DE
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
@@ -220,83 +226,235 @@ Apologies for the duplicate email!)*
 Best regards,
 Oleksandr Havrylov
 
-=D1=81=D1=80, 11 =D0=BC=D0=B0=D1=80. 2026=E2=80=AF=D0=B3. =D0=B2 04:08, Pin=
-g-Ke Shih <pkshih@realtek.com>:
+=D1=81=D1=80, 11 =D0=BC=D0=B0=D1=80. 2026=E2=80=AF=D0=B3. =D0=B2 13:00, LB =
+F <goainwo@gmail.com>:
 >
-> On an HP laptop (P3S95EA#ACB) equipped with a Realtek RTL8821CE 802.11ac
-> PCIe adapter (PCI ID: 10ec:c821), the system experiences a hard lockup
-> (complete freeze of the UI and kernel, sysrq doesn't work, requires
-> holding the power button) when the WiFi adapter enters the power
-> saving state.
+> Hi Ping-Ke,
 >
-> Add a quirk to disable ASPM.
+> Thank you for the incredibly fast turnaround and for providing the RFT
+> patch with the DMI quirk!
 >
-> Reported-by: LB F <goainwo@gmail.com>
-> Closes: https://lore.kernel.org/linux-wireless/CALdGYqSQ1Ko2TTBhUizMu_FvL=
-MUAuQfFrVwS10n_C-LSQJQQkQ@mail.gmail.com/
-> Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
-> ---
->  drivers/net/wireless/realtek/rtw88/pci.c | 30 ++++++++++++++++++++++++
->  1 file changed, 30 insertions(+)
+> First, I want to mention that I am not an IT professional or a
+> programmer. I am just a regular Linux user who really wants to help
+> solve this problem. I am trying my best to verify everything
+> carefully, so please forgive me if my terminology or induction was
+> slightly off.
 >
-> diff --git a/drivers/net/wireless/realtek/rtw88/pci.c b/drivers/net/wirel=
-ess/realtek/rtw88/pci.c
-> index ec0a45bfb670..0b60a0ce96a1 100644
-> --- a/drivers/net/wireless/realtek/rtw88/pci.c
-> +++ b/drivers/net/wireless/realtek/rtw88/pci.c
-> @@ -2,6 +2,7 @@
->  /* Copyright(c) 2018-2019  Realtek Corporation
->   */
+> To answer your clarifying questions from the previous emails:
 >
-> +#include <linux/dmi.h>
->  #include <linux/module.h>
->  #include <linux/pci.h>
->  #include "main.h"
-> @@ -1744,6 +1745,34 @@ const struct pci_error_handlers rtw_pci_err_handle=
-r =3D {
->  };
->  EXPORT_SYMBOL(rtw_pci_err_handler);
+> > Just want to clarify that these logs only appear in test 3, right?
+> > No these logs in test 1/2.
 >
-> +enum rtw88_quirk_dis_pci_caps {
-> +       QUIRK_DIS_PCI_CAP_ASPM,
-> +};
-> +
-> +static int disable_pci_caps(const struct dmi_system_id *dmi)
-> +{
-> +       uintptr_t dis_caps =3D (uintptr_t)dmi->driver_data;
-> +
-> +       if (dis_caps & BIT(QUIRK_DIS_PCI_CAP_ASPM))
-> +               rtw_pci_disable_aspm =3D true;
-> +
-> +       return 1;
-> +}
-> +
-> +static const struct dmi_system_id rtw88_pci_quirks[] =3D {
-> +       {
-> +               .callback =3D disable_pci_caps,
-> +               .ident =3D "HP Notebook - P3S95EA#ACB",
-> +               .matches =3D {
-> +                       DMI_MATCH(DMI_SYS_VENDOR, "HP"),
-> +                       DMI_MATCH(DMI_PRODUCT_NAME, "HP Notebook"),
-> +                       DMI_MATCH(DMI_PRODUCT_SKU, "P3S95EA#ACB"),
-> +               },
-> +               .driver_data =3D (void *)BIT(QUIRK_DIS_PCI_CAP_ASPM),
-> +       },
-> +       {}
-> +};
-> +
->  int rtw_pci_probe(struct pci_dev *pdev,
->                   const struct pci_device_id *id)
->  {
-> @@ -1808,6 +1837,7 @@ int rtw_pci_probe(struct pci_dev *pdev,
->             bridge && bridge->vendor =3D=3D PCI_VENDOR_ID_INTEL)
->                 rtwpci->rx_no_aspm =3D true;
+> Yes, exactly. The `failed to send h2c command` errors only caused a
+> complete system freeze when no workarounds were active and the adapter
+> attempted to sleep (Test 3).
 >
-> +       dmi_check_system(rtw88_pci_quirks);
->         rtw_pci_phy_cfg(rtwdev);
+> > I think this is your perspective and induction, right? Did you measure
+> > real hardware signals?
 >
->         ret =3D rtw_register_hw(rtwdev, hw);
-> --
-> 2.25.1
+> You are entirely correct. This is just my induction based solely on
+> the timing of the logs and system behavior. I do not have access to an
+> oscilloscope or any hardware diagnostic tools. Given this, I
+> completely agree that your approach of applying a platform-specific
+> quirk is the safest and best solution.
 >
+> > Forgot to say. Could you share your full name for me as a reporter
+> > in commit message?
+>
+> My full name is Oleksandr Havrylov. I would be honored to be included
+> as the reporter in the commit message.
+>
+> ### Recent Baseline Testing Before Your Patch
+>
+> Before applying your patch today, we ran a few more controlled tests
+> to double-check our baseline. We verified that our local workaround
+> (`modprobe.d disable_aspm=3Dy`) **does indeed keep the system completely
+> stable** and prevents the hard freeze, even when NetworkManager's
+> `wifi.powersave` is set to ON (default).
+>
+> However, we noticed one interesting detail in the kernel logs: while
+> the system no longer freezes with `disable_aspm=3Dy`, `dmesg` still
+> constantly logs `firmware failed to leave lps state` and `failed to
+> send h2c command` when the laptop is completely idle. It seems the
+> firmware still crashes during LPS, but because ASPM is disabled, the
+> PCIe bus ignores the crash and the system survives perfectly fine. I
+> just wanted to mention this for completeness!
+>
+> ### Testing Plan
+>
+> I have **not** applied your RFT patch just yet. I wanted to make sure
+> our testing baseline was 100% clean and documented first.
+>
+> I will compile your patch and perform rigorous testing this evening (I
+> am in the EET timezone, Ukraine). I will test it with the native
+> `power_save` fully enabled to ensure your patch successfully prevents
+> the hard lockups as intended.
+>
+> I will stay in touch and reply back to this thread with a formal
+> `Tested-by` confirmation (and any logs if needed) as soon as my
+> testing is complete. Thank you again for all your help!
+>
+> Best regards,
+> Oleksandr Havrylov
+>
+> =D1=81=D1=80, 11 =D0=BC=D0=B0=D1=80. 2026=E2=80=AF=D0=B3. =D0=B2 04:22, P=
+ing-Ke Shih <pkshih@realtek.com>:
+> >
+> > Ping-Ke Shih <pkshih@realtek.com> wrote:
+> > >
+> > > LB F <goainwo@gmail.com> wrote:
+> > > >
+> > > > Hi Ping-Ke,
+> > > >
+> > > > Thank you for the incredibly fast response and assistance!
+> > > >
+> > > > > Can you dig kernel log (by netconsole or ramoops) if something us=
+eful?
+> > > > > I'd like to know this is hardware level freeze or kernel can capt=
+ure something
+> > > > wrong.
+> > > >
+> > > > I managed to pull a call trace from a historic journald log just
+> > > > before the system hung. The kernel gets trapped in an IRQ thread
+> > > > inside `rtw_pci_interrupt_threadfn`, calling up into `mac80211`
+> > > > `ieee80211_rx_list` before everything freezes. Here is the relevant
+> > > > snippet:
+> > > >
+> > > > ```text
+> > > > Call Trace:
+> > > > <IRQ>
+> > > > ? __alloc_skb+0x23a/0x2a0
+> > > > ? __alloc_skb+0x10c/0x2a0
+> > > > ? __pfx_irq_thread_fn+0x10/0x10
+> > > > [ ... truncated module list ... ]
+> > > > Tainted: G W I 6.19.6-2-cachyos #1 PREEMPT(full)
+> > > > Hardware name: HP HP Notebook/81F0, BIOS F.50 11/20/2020
+> > > > RIP: 0010:ieee80211_rx_list+0x1012/0x1020 [mac80211]
+> > > > CPU: 2 UID: 0 PID: 765 Comm: irq/56-rtw88_pc
+> > > > rtw_pci_interrupt_threadfn+0x239/0x310 [rtw88_pci]
+> > > > ```
+> > > >
+> > > > It behaves exactly like a PCIe bus deadlock or a hardware fault tha=
+t
+> > > > eventually brings down the CPU handling the IRQ.
+> > >
+> > > I wonder if there is a malformed data, causing this trace and the lea=
+ds
+> > > kernel freezes. If we can do validation on RX data before calling
+> > > ieee80211_rx_list(), maybe trace disappears and everything will be fi=
+ne?
+> > > Even no need workaround.
+> > >
+> > > >
+> > > > > Are these totally needed to workaround the problem? Or disable_as=
+pm is enough?
+> > > > > I'd list them in order of power consumption impact:
+> > > > > 1. disable_aspm=3Dy
+> > > > > 2. disable_lps_deep=3Dy
+> > > > > 3. disable WiFi power save
+> > > >
+> > > > To verify which parameters are strictly necessary, I performed
+> > > > isolated testing today. I ensured no other modprobe configs were
+> > > > active, rebuilt the initramfs, and manually enforced that
+> > > > `wifi.powersave` was active via `iw dev wlan0 set power_save on`
+> > > > during all tests (as the OS power management profiles were defaulti=
+ng
+> > > > it to off, which initially masked the issue).
+> > > >
+> > > > I tested each workaround individually across multiple sleep/wake
+> > > > cycles and active usage:
+> > > >
+> > > > **Test 1 (ASPM Disabled, LPS Deep Enabled):**
+> > > > - Kernel parameters: `rtw88_pci disable_aspm=3Dy` (and `rtw88_core
+> > > > disable_lps_deep=3Dn`)
+> > > > - Result: Stable. No freezes were observed during usage or transiti=
+ons
+> > > > into/out of S3 sleep while power saving was enforced.
+> > > >
+> > > > **Test 2 (ASPM Enabled, LPS Deep Disabled):**
+> > > > - Kernel parameters: `rtw88_core disable_lps_deep=3Dy` (and `rtw88_=
+pci
+> > > > disable_aspm=3Dn`)
+> > > > - Result: Stable. No freezes were observed under the same forced po=
+wer
+> > > > save conditions.
+> > > >
+> > > > **Conclusion:** It appears we do not need both workarounds
+> > > > simultaneously for this specific hardware. Using only `disable_aspm=
+=3Dy`
+> > > > seems to be sufficient to prevent the system freeze. Given your not=
+e
+> > > > about the power consumption impact ranking, this looks like the
+> > > > optimal path forward.
+> > >
+> > > Let's test my RFT patch to disable ASPM then.
+> > >
+> > > >
+> > > > > But what does 'deadlock' mean? As I know NAPI poll is scheduled b=
+y ISR,
+> > > > > and going to receive packets. The rx_no_aspm workaround is to for=
+cely turn
+> > > > > off ASPM during this period.
+> > > >
+> > > > By "deadlock" I meant a hardware-level bus lockup. It seems the
+> > > > physical RTL8821CE chip itself crashes or hangs the system's PCIe b=
+us
+> > > > when trying to negotiate waking up from ASPM L1 while simultaneousl=
+y
+> > > > existing in `LPS_DEEP_MODE_LCLK`. The `rx_no_aspm` workaround in NA=
+PI
+> > > > helps during active Rx decoding, but the laptop often freezes while
+> > > > completely idle, presumably when the AP sends a basic beacon, the c=
+hip
+> > > > attempts to leave LPS Deep + L1, and the hardware simply gives up a=
+nd
+> > > > halts the system.
+> > >
+> > > I think this is your perspective and induction, right? Did you measur=
+e
+> > > real hardware signals?
+> > >
+> > > My point is that if this is a hardware-level bus lockup, let's apply
+> > > quirk. If some malformed data causing kernel hangs, I'd add sanity ch=
+eck
+> > > on RX data, but I don't actually know what we should check for now.
+> > >
+> > > >
+> > > > > We have not modified RTL8821CE for a long time, so I'd add workar=
+ound
+> > > > > to specific platform as mentioned above.
+> > > >
+> > > > Adding a DMI/platform quirk specifically for this laptop to disable
+> > > > ASPM would be wonderful and deeply appreciated. I agree it is safer
+> > > > than touching the global flags for hardware that is functioning
+> > > > correctly out in the wild.
+> > > >
+> > > > Here is the exact identifying information for my system:
+> > > >
+> > > > System Vendor: HP
+> > > > Product Name: HP Notebook
+> > > > SKU Number: P3S95EA#ACB
+> > > > Family: 103C_5335KV
+> > > > PCI ID: 10ec:c821
+> > > > Subsystem ID: 103c:831a
+> > > >
+> > > > I am completely ready to test any patch or quirk you send my way.
+> > > > Thank you so much for your time and helping track this down!
+> > >
+> > > I sent a RFT [1] for test. Please check if it works on your HP notebo=
+ok.
+> > > If you check rtw88 log, you can see I added similar patch 5 years ago=
+,
+> > > and replaced by preferred the change of "rtwpci->rx_no_aspm", which I
+> > > think it can only resolve problem on partial notebooks though....
+> > >
+> > > [1]
+> > > https://lore.kernel.org/linux-wireless/20260311020816.7065-1-pkshih@r=
+ealtek.
+> > > com/T/#u
+> >
+> > Forgot to say. Could you share your full name for me as a reporter
+> > in commit message?
+> >
+> >
 
