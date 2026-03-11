@@ -1,263 +1,556 @@
-Return-Path: <linux-wireless+bounces-32999-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-33000-lists+linux-wireless=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id IPNRIvLXsWnVFgAAu9opvQ
-	(envelope-from <linux-wireless+bounces-32999-lists+linux-wireless=lfdr.de@vger.kernel.org>)
-	for <lists+linux-wireless@lfdr.de>; Wed, 11 Mar 2026 22:00:34 +0100
+	id KJ1eMKnpsWlxHAAAu9opvQ
+	(envelope-from <linux-wireless+bounces-33000-lists+linux-wireless=lfdr.de@vger.kernel.org>)
+	for <lists+linux-wireless@lfdr.de>; Wed, 11 Mar 2026 23:16:09 +0100
 X-Original-To: lists+linux-wireless@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id E2FF126A3BF
-	for <lists+linux-wireless@lfdr.de>; Wed, 11 Mar 2026 22:00:33 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id DA49026AD68
+	for <lists+linux-wireless@lfdr.de>; Wed, 11 Mar 2026 23:16:08 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 9B23A300C59B
-	for <lists+linux-wireless@lfdr.de>; Wed, 11 Mar 2026 20:58:41 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 9167E3009CE4
+	for <lists+linux-wireless@lfdr.de>; Wed, 11 Mar 2026 22:16:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6D078324B2D;
-	Wed, 11 Mar 2026 20:58:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0833D3624CC;
+	Wed, 11 Mar 2026 22:16:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="DhW54RxC"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="MUucg/6R"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-ed1-f44.google.com (mail-ed1-f44.google.com [209.85.208.44])
+Received: from mail-wm1-f51.google.com (mail-wm1-f51.google.com [209.85.128.51])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C53EC30E0DC
-	for <linux-wireless@vger.kernel.org>; Wed, 11 Mar 2026 20:58:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.208.44
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773262720; cv=pass; b=D3ycUmdes4mVGgpXciJc7kB3O3LQmMoQPuDMNN4Xr6PypBfj2u4vEJLw34EGOWBOW2QpbBck7IxW8DYrckYn3nkzX1j5XbaLXFoi9Gs5g17ZEHwrHAa+ERPFZoQikqJO8EZPsa2iGwOg1hrjgdCBq0Q1m5yV1q7ZUJkIJStPmqI=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773262720; c=relaxed/simple;
-	bh=J/kUKeNTENfSzP5xHVfPjLS5YjAeGuuwqJmZnN0faYA=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=Jm4lZlnREEm17O3SAbP4BASrysg9C+RNElfsEIyXY8hBvGML6+Udn/0q/I3anVucfXghFjsXS0Q27y6bnSnmPQqgQ3ngNtZdCLZMEYOIE0Jn95rzk1EvA9nBXrb+K47NlP2sItLu1dt+wlhbkq1erwpZx9eSjEFmKjldyZfMaOw=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=DhW54RxC; arc=pass smtp.client-ip=209.85.208.44
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 007C229ACFD
+	for <linux-wireless@vger.kernel.org>; Wed, 11 Mar 2026 22:16:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.51
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1773267366; cv=none; b=Gm0OQLvbOzTjVzSxPyo3qH/sPjEjZuvJYVwpLuG4JU+SIB+WPX8jgWpToYqzF2jX1Rkri+yc4YkPpdwPpQ9pWiehaaXvg0RbuuIR2MPFAJUdcZBA+MsFfXUMQ+J7mRfCRVd0kQ8x11K6KU7rFqfTrGYOLWbazRr8ixM7d5hBJFk=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1773267366; c=relaxed/simple;
+	bh=oNu3Ps+FTgG1SpOWzZUAtTyrK/7bt3GxiITSGvjhZxY=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=CU72HLViEhcj+GgncwFK2vwmHHhV5JbbQylsEo6wuJFitwzfVjqXOgxhp10Lk387P/Jl3bml71MMQHAoeibFrO9ON6o/mXfrtYnBYbQ+ifbjHAh/hyY97F+ade349xS4wdC2ZQYBH/380y4OCcW3P++Lne690mn4Jd1cb98Oj1c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=MUucg/6R; arc=none smtp.client-ip=209.85.128.51
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-ed1-f44.google.com with SMTP id 4fb4d7f45d1cf-662a1855af2so400578a12.3
-        for <linux-wireless@vger.kernel.org>; Wed, 11 Mar 2026 13:58:38 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1773262717; cv=none;
-        d=google.com; s=arc-20240605;
-        b=AAwt7vyfCzt5wu545ztZtp+RDIKQBaZJ8CjkwYz4Rh5UQJkwRU0h/HB9jTHxV68njd
-         zflAH8ehAjzccAahVsYykcmjcqggywPn3RRHr0QJaGGOCIeNOr022mUB5Fwwh87P1mpo
-         wClnEgFQXX9vSVMSyiC1RMmUOzisz9m1cr7QilAxf9nbuDOsTN3bWJkyzS9rWwlxbRnG
-         VRZ28Y2SP9IskvYYijGbq42aKJIIt4DECo05QfK/vHugaMCUDtXhiRRM26X1EHkMXosX
-         n0fYIWSzMZRsuHRS6UFftFhj8/Q9BrjQyAGzIcNKOXy64ZRBT0BdUB473dp59Ue9Tvhz
-         aNfg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:dkim-signature;
-        bh=ZFSrsAzKQ3Nc+Aho7d7gG2Ra3wQyS/1tLF/F02PD+Zo=;
-        fh=MXkW9Xo5Ym/gIF9EG8Fk1lbc8jJJ90IIrm4Se6meZo4=;
-        b=G+eBOYAQ8cBtARguzIWhyLtOo5t/6T7lS1GZfJ41yMm5kGZ9l5j0j47dtTl0jvlPPh
-         +9jDPBGcpbwuiRuFEhfBprS7L3ruothA6Zpide60V1NzOOUnYLqvufomGjGwMDsyMFEY
-         U1yxsn0IQBRBkjeDxh2PLWmDxgwAZShnGjukTY6MEmHNI1iI5BFO/FC4pqiSPaot0EmX
-         BHFkqYbN9M5FZZdgY/pcZmJ+aq7eFiP07gEXtx2qz3L9udlKw1PoRdhf5m+9YqTx/vWF
-         HkExRDoMNS398ftbsE6Mvr/QTlmMGsEf1MJeTm4+vG+rSuA+8rpJ4ZqzsPfryI8pshUW
-         NG1w==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
+Received: by mail-wm1-f51.google.com with SMTP id 5b1f17b1804b1-4852e09e23dso2688535e9.0
+        for <linux-wireless@vger.kernel.org>; Wed, 11 Mar 2026 15:16:04 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1773262717; x=1773867517; darn=vger.kernel.org;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=ZFSrsAzKQ3Nc+Aho7d7gG2Ra3wQyS/1tLF/F02PD+Zo=;
-        b=DhW54RxC4MSBGKgSTVNCQx5Zmo7i9Ixo1qwctXlqdQhJ5hW/yPE97rITmvy4QQN7cm
-         0Lz+kNpBobAGloL4Y0KnfKHYFPtXLXQC2c7NWFIX5QKgTjvy59XySJDLWPSvwmzZRoHY
-         g2LYoK2XIBoCZE2HAYKJ83zOHzVI8GtltE7cPXhFFSNWTG6O8EAKODWzJ1Q6I/ZQEZON
-         o16FNDRgWgCOOVULa4nBYtaRatAX+kyTDfOUq/DVzMphsRq8SPCZ2j5+Xg9xbIc+ON+M
-         o3cC1pNpODSlYWq7WFGnRjLLg0wGwItB+5GV9lFafFeYOhNzAKKb5/uSKssWsVMKFP0L
-         KmvQ==
+        d=gmail.com; s=20230601; t=1773267363; x=1773872163; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=cqO8xt30AEardKT2hHmCDslf4ARb6vuFpwnW/KsEZWQ=;
+        b=MUucg/6RBN78KghnHVcFU36wqRjVOmAuMdqc+HFk6sc7i0rXGK6BvI2CxD9tFrJe7I
+         p3MkT/0yML9AZp0QABt+vI36bRoEexP2nFhsKmQsbqLewxTp7a7KUS2d7vCx5BzdVD9A
+         FR3N3MWWsq1SRKInnYHt8/l3R6gbq/mxt1YgyBXv8eTf0JqpcFbneHI0ddU+23Q+ShzC
+         RbNr2oL9Z4wXvOMVZeb5JRmIwHOIltCEnnhS3lMMsD+NgiXz01rOi4+WO/RN45VPDgf8
+         OldtisEcHI2aFJRzQ2cG9vHYkpOaR0G21J9+aSyWSlX5KJy2L3Q/4/VuQb41H4E62PLw
+         uekg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1773262717; x=1773867517;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=ZFSrsAzKQ3Nc+Aho7d7gG2Ra3wQyS/1tLF/F02PD+Zo=;
-        b=LunyY8pW8iDDaC5VAwLkBmeb4w5wpaagXVKyROYjAwRQmWx2UMh+VRCREodfXzej5X
-         qf/R0NrgHd/xeDPOg9KeBadDYuhG7mX3RhDJa5kpOu8dOTVEv0c7upySZhaN1z1FDfwm
-         NmO6OLmMVRU13FS3M3L5/yUog2okP/5SYc75KolU++XW0juzKvBV9sAplxGIp+x+4/39
-         L9KXe8bYPW2yY8Kyvr0bZcxHY6sJZ5KwSIPAzHnf7K8DSNio0vxF1EjWtV1zqlfoAmO+
-         PtXNBXdxTT0HEBl/D4Cf8vH1dHg320Bi2KS78lC3f1MzFEHlvOZMEZP/GmikxNQOR7an
-         AJ3A==
-X-Gm-Message-State: AOJu0YwbDmkVOirnaQdxxHL5A0x6W4XgKfaCSJ7AYc2Kv2Dkd7WmQZNI
-	Y3lvDgTkFWrQxxK3TAVzfaQRBI40pc+04FH0Bq2eAxXxvq5Y9wkpC5tO5zhHM/WIH4LJVGSpbbn
-	Titjc8GmZFZYZK6yGH6/h9DglsUGDTZM=
-X-Gm-Gg: ATEYQzyU3D9g6tNhSE4fjPKFiYLoNpoTTjeqf8Bv3QXCVSfIMvdGng1uI6ZYF2JuHgW
-	oMkwSdHgDc0agj9n6IvgQg2/GtXjKAeBtncK26hqMDOTrpsz7v7jr65nhdacIqDD9toZscHy3jA
-	lU5REojs6yD1b1ndw2ByqXe6VscMzLz8mZZMsfKdX7L4frc25uyCg81KEMkoDacsOxsmyZI4tGH
-	kHV06p2zXPiJZv6kS0yHcdAXc0FBUqTFzdDzwWsBBcZnYmghotparMTY613iksagqhG0TYzOQb1
-	x3pyDg==
-X-Received: by 2002:a17:907:72cb:b0:b8f:a323:bda7 with SMTP id
- a640c23a62f3a-b972e52dc74mr220526566b.46.1773262716821; Wed, 11 Mar 2026
- 13:58:36 -0700 (PDT)
+        d=1e100.net; s=20230601; t=1773267363; x=1773872163;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=cqO8xt30AEardKT2hHmCDslf4ARb6vuFpwnW/KsEZWQ=;
+        b=TOs6AC9YYvaxLEWjs5+FhErywZ4io7WnMViWs4NCyAdI1kx8ElJozmr6+MletDmlF9
+         6s2s/5L/24Nn45siiBdrPeP6k8k+9DlzpnExUh5h8Oz5iaS83lj5phouoRpJFEw/r/M0
+         dS2lbrv3NLu5qu1ZYsyNu3nQpFbXruUrCPZWYmKJXL33/uIbc7x0ydJSqCbxZ7ZDJKpw
+         y+s3MxwZpTF2tWRSZ7qwYW8+HTL9k0OYG/B17KQg5bj67QxEtutWHC54CQT4A83ASynm
+         wtgF4DH05a55/lj5yHRfjNQPYMEdcgY/YJUmaJcd244xYcvKMEJpytkqK675Zx7hiOEV
+         2rIA==
+X-Forwarded-Encrypted: i=1; AJvYcCUwozKe/w8yrVBbrM2cIEw5488WAJHKVOsWG89Ua0HuEGbl4WZiBkYeJlsP8TsNjOWIEgwPuItu5Kju4tNVJw==@vger.kernel.org
+X-Gm-Message-State: AOJu0Yx6dnMslt/nQWPbTQQ86ybOewyA7MK1mDzMD3+pWUQIZgj5H+0B
+	UTxgXwKjdeKr+Ev46iIYROfOK4eP0FPDT7W/qXvWXQRh/Oa13GrkAgXHPv7VAg==
+X-Gm-Gg: ATEYQzxWmNFPXWv8zYKkFzN8hzxLm6MRzjMDBionSiqlJKouNq2B9g2S9yKgJwEkt67
+	lMa5agXby9EboDsuIsY+67hYSZMHT/FCfqg+69IAzTZ5ON7YDE2y7bnCqQJ/mDAyIxM992t9q/w
+	BJ5R6BX/n5b6zSUK2v8BDSH7/OCpZ8opLfPS7RSk9Egoh6jwW1ZoMGTnGWUR4OFS9UshHOJ0TKu
+	nBqP4LBgavLxJE7Qrl8Ifc12uEI/TBGq4zJhtjKj+Cbxgbrnoy9Bd3rXbfMgcTyx0AcfeaPwld4
+	gArM3elxDCBjWcVBqrsFwIvnVj/SM0MTgydbJry48awLlnfhpOJz5A7qGAG09OMJwC51aCMwbps
+	C6zlFjFuQ6krFc/uAYeRLEu6Rf42rgtsRmjlT9b5LmwGG+uc88aYt4jGQ7P4mDFEjKB109i9QEM
+	MGwzTAGnDAJYFf2gzRDs63TePe8E4yeA==
+X-Received: by 2002:a05:600c:1395:b0:480:6bef:63a0 with SMTP id 5b1f17b1804b1-4854b1080cfmr67096745e9.21.1773267362843;
+        Wed, 11 Mar 2026 15:16:02 -0700 (PDT)
+Received: from [192.168.1.50] ([81.196.40.93])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4854a18ddedsm78009165e9.0.2026.03.11.15.16.01
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 11 Mar 2026 15:16:02 -0700 (PDT)
+Message-ID: <89475333-8d8e-4e3d-8b16-06b2a80c876f@gmail.com>
+Date: Thu, 12 Mar 2026 00:16:00 +0200
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <CANAPQzi3BkfnRS4CEXAA560O5cO8e6MEYxeVVx1u+xUeXS-gmA@mail.gmail.com>
- <CAGp9LzoidBL1iYYC371+Fw+drbArLRTneJKxCoFiitx=dweKCg@mail.gmail.com>
- <CANAPQzjiBf8Rqphn2SypYN2O6bddj6vB=63Mp=T5YVEt2oGvyw@mail.gmail.com>
- <CANAPQzgiE1rMP3F=5NJg3hp2uBXtq44+vTRBdkHwdfHyXJ8MQQ@mail.gmail.com> <CANAPQzgD312EPSbvaQTE6U+wn85L65+xZHms7DP509ApxWvSZA@mail.gmail.com>
-In-Reply-To: <CANAPQzgD312EPSbvaQTE6U+wn85L65+xZHms7DP509ApxWvSZA@mail.gmail.com>
-From: bryam vargas <bryamestebanvargas@gmail.com>
-Date: Wed, 11 Mar 2026 15:58:25 -0500
-X-Gm-Features: AaiRm51mj2z7E16-DLghbuJqU-OBnWUBTx9_-Sl-BUmLGVcviCRtpbSjAbPv6jM
-Message-ID: <CANAPQzgXN2UOjuwV1fRofN2syxG933kSaB9S7DyFAykHHMRzew@mail.gmail.com>
-Subject: Re: [PATCH 1/2] mt76: connac: fix txpower_cur not updated in mt76_connac_mcu_set_rate_txpower()
-To: Sean Wang <sean.wang@kernel.org>
-Cc: linux-wireless@vger.kernel.org, nbd@nbd.name, lorenzo@kernel.org, 
-	"moderated list:ARM/Mediatek SoC support" <linux-mediatek@lists.infradead.org>
-Content-Type: text/plain; charset="UTF-8"
-X-Spamd-Result: default: False [-2.16 / 15.00];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=2];
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v3 19/21] wifi: rtl8xxxu: add hw crypto support for AP
+ mode
+To: Ping-Ke Shih <pkshih@realtek.com>,
+ Martin Kaistra <martin.kaistra@linutronix.de>,
+ "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>
+Cc: Jes Sorensen <Jes.Sorensen@gmail.com>,
+ Sebastian Andrzej Siewior <bigeasy@linutronix.de>
+References: <20231222101442.626837-1-martin.kaistra@linutronix.de>
+ <20231222101442.626837-20-martin.kaistra@linutronix.de>
+ <b47a1c95-60c4-468d-9944-c59546e082bf@gmail.com>
+ <b8e9ad0c-c148-40a2-b114-5558e74942b0@linutronix.de>
+ <64617033bcdc445091186070350a0d20@realtek.com>
+ <61d5c08b-d924-42ad-8a56-ba3ddb970297@gmail.com>
+ <deb687c2fd62467ebcf139acd8aae9c0@realtek.com>
+Content-Language: en-US
+From: Bitterblue Smith <rtl8821cerfe2@gmail.com>
+In-Reply-To: <deb687c2fd62467ebcf139acd8aae9c0@realtek.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Spamd-Result: default: False [-0.66 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
-	R_DKIM_ALLOW(-0.20)[gmail.com:s=20230601];
 	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_DKIM_ALLOW(-0.20)[gmail.com:s=20230601];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	TAGGED_FROM(0.00)[bounces-33000-lists,linux-wireless=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
+	TO_DN_EQ_ADDR_SOME(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-32999-lists,linux-wireless=lfdr.de];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FREEMAIL_CC(0.00)[gmail.com,linutronix.de];
 	FREEMAIL_FROM(0.00)[gmail.com];
 	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
-	MISSING_XM_UA(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[bryamestebanvargas@gmail.com,linux-wireless@vger.kernel.org];
-	DKIM_TRACE(0.00)[gmail.com:+];
-	MID_RHS_MATCH_FROMTLD(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	TAGGED_RCPT(0.00)[linux-wireless];
 	RCPT_COUNT_FIVE(0.00)[5];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: E2FF126A3BF
+	RCVD_COUNT_FIVE(0.00)[5];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[rtl8821cerfe2@gmail.com,linux-wireless@vger.kernel.org];
+	DKIM_TRACE(0.00)[gmail.com:+];
+	NEURAL_HAM(-0.00)[-1.000];
+	TAGGED_RCPT(0.00)[linux-wireless];
+	MID_RHS_MATCH_FROM(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,realtek.com:email,linutronix.de:email]
+X-Rspamd-Queue-Id: DA49026AD68
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-From 9fabc33e722f321b4048ada6d4667ddacbb1495a Mon Sep 17 00:00:00 2001
-From: bryam <bryamestebanvargas@gmail.com>
-Date: Mon, 9 Mar 2026 12:25:37 -0500
-Subject: [PATCH v2 2/2] mt76: mt7921u: trigger USB reset only on wfsys timeout
+On 11/03/2026 04:38, Ping-Ke Shih wrote:
+> Bitterblue Smith <rtl8821cerfe2@gmail.com> wrote:
+>> On 25/02/2026 04:28, Ping-Ke Shih wrote:
+>>> Martin Kaistra <martin.kaistra@linutronix.de> wrote:
+>>>> Am 21.02.26 um 23:09 schrieb Bitterblue Smith:
+>>>>> On 22/12/2023 12:14, Martin Kaistra wrote:
+>>>>>> Add a custom function for allocating entries in the sec cam. This allows
+>>>>>> us to store multiple keys with the same keyidx.
+>>>>>>
+>>>>>> The maximum number of sec cam entries for 8188f is 16 according to the
+>>>>>> vendor driver. Add the number to rtl8xxxu_fileops, so that other chips
+>>>>>> which might support more entries, can set a different number there.
+>>>>>>
+>>>>>> Set the bssid as mac address for group keys instead of just using the
+>>>>>> ethernet broadcast address and use BIT(6) in the sec cam ctrl entry
+>>>>>> for differentiating them from pairwise keys like in the vendor driver.
+>>>>>>
+>>>>>> Add the TXDESC_EN_DESC_ID bit and the hw_key_idx to tx
+>>>>>> broadcast/multicast packets in AP mode.
+>>>>>>
+>>>>>> Finally, allow the usage of rtl8xxxu_set_key() for AP mode.
+>>>>>>
+>>>>>> Signed-off-by: Martin Kaistra <martin.kaistra@linutronix.de>
+>>>>>> Reviewed-by: Ping-Ke Shih <pkshih@realtek.com>
+>>>>>> ---
+>>>>>>   .../net/wireless/realtek/rtl8xxxu/rtl8xxxu.h  |  5 ++
+>>>>>>   .../realtek/rtl8xxxu/rtl8xxxu_8188f.c         |  1 +
+>>>>>>   .../wireless/realtek/rtl8xxxu/rtl8xxxu_core.c | 48 +++++++++++++++----
+>>>>>>   3 files changed, 44 insertions(+), 10 deletions(-)
+>>>>>>
+>>>>>> diff --git a/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu.h
+>>>> b/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu.h
+>>>>>> index c5e6d8f7d26bd..62e6318bc0924 100644
+>>>>>> --- a/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu.h
+>>>>>> +++ b/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu.h
+>>>>>> @@ -498,6 +498,7 @@ struct rtl8xxxu_txdesc40 {
+>>>>>>   #define DESC_RATE_ID_SHIFT         16
+>>>>>>   #define DESC_RATE_ID_MASK          0xf
+>>>>>>   #define TXDESC_NAVUSEHDR           BIT(20)
+>>>>>> +#define TXDESC_EN_DESC_ID           BIT(21)
+>>>>>>   #define TXDESC_SEC_RC4                     0x00400000
+>>>>>>   #define TXDESC_SEC_AES                     0x00c00000
+>>>>>>   #define TXDESC_PKT_OFFSET_SHIFT            26
+>>>>>> @@ -1775,6 +1776,7 @@ struct rtl8xxxu_cfo_tracking {
+>>>>>>   #define RTL8XXXU_MAX_MAC_ID_NUM    128
+>>>>>>   #define RTL8XXXU_BC_MC_MACID       0
+>>>>>>   #define RTL8XXXU_BC_MC_MACID1      1
+>>>>>> +#define RTL8XXXU_MAX_SEC_CAM_NUM    64
+>>>>>>
+>>>>>>   struct rtl8xxxu_priv {
+>>>>>>      struct ieee80211_hw *hw;
+>>>>>> @@ -1908,6 +1910,7 @@ struct rtl8xxxu_priv {
+>>>>>>      char led_name[32];
+>>>>>>      struct led_classdev led_cdev;
+>>>>>>      DECLARE_BITMAP(mac_id_map, RTL8XXXU_MAX_MAC_ID_NUM);
+>>>>>> +    DECLARE_BITMAP(cam_map, RTL8XXXU_MAX_SEC_CAM_NUM);
+>>>>>>   };
+>>>>>>
+>>>>>>   struct rtl8xxxu_sta_info {
+>>>>>> @@ -1919,6 +1922,7 @@ struct rtl8xxxu_sta_info {
+>>>>>>
+>>>>>>   struct rtl8xxxu_vif {
+>>>>>>      int port_num;
+>>>>>> +    u8 hw_key_idx;
+>>>>>>   };
+>>>>>>
+>>>>>>   struct rtl8xxxu_rx_urb {
+>>>>>> @@ -1993,6 +1997,7 @@ struct rtl8xxxu_fileops {
+>>>>>>      u16 max_aggr_num;
+>>>>>>      u8 supports_ap:1;
+>>>>>>      u16 max_macid_num;
+>>>>>> +    u16 max_sec_cam_num;
+>>>>>>      u32 adda_1t_init;
+>>>>>>      u32 adda_1t_path_on;
+>>>>>>      u32 adda_2t_path_on_a;
+>>>>>> diff --git a/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_8188f.c
+>>>> b/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_8188f.c
+>>>>>> index 1e1c8fa194cb8..574a5fe951543 100644
+>>>>>> --- a/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_8188f.c
+>>>>>> +++ b/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_8188f.c
+>>>>>> @@ -1751,6 +1751,7 @@ struct rtl8xxxu_fileops rtl8188fu_fops = {
+>>>>>>      .max_aggr_num = 0x0c14,
+>>>>>>      .supports_ap = 1,
+>>>>>>      .max_macid_num = 16,
+>>>>>> +    .max_sec_cam_num = 16,
+>>>>>>      .adda_1t_init = 0x03c00014,
+>>>>>>      .adda_1t_path_on = 0x03c00014,
+>>>>>>      .trxff_boundary = 0x3f7f,
+>>>>>> diff --git a/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_core.c
+>>>> b/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_core.c
+>>>>>> index ecf54eb8dba61..7aafae9fe76b8 100644
+>>>>>> --- a/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_core.c
+>>>>>> +++ b/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_core.c
+>>>>>> @@ -4559,8 +4559,10 @@ static void rtl8xxxu_cam_write(struct rtl8xxxu_priv
+>> *priv,
+>>>>>>       * This is a bit of a hack - the lower bits of the cipher
+>>>>>>       * suite selector happens to match the cipher index in the CAM
+>>>>>>       */
+>>>>>> -    addr = key->keyidx << CAM_CMD_KEY_SHIFT;
+>>>>>> +    addr = key->hw_key_idx << CAM_CMD_KEY_SHIFT;
+>>>>>>      ctrl = (key->cipher & 0x0f) << 2 | key->keyidx | CAM_WRITE_VALID;
+>>>>>> +    if (!(key->flags & IEEE80211_KEY_FLAG_PAIRWISE))
+>>>>>> +            ctrl |= BIT(6);
+>>>>>>
+>>>>>>      for (j = 5; j >= 0; j--) {
+>>>>>>              switch (j) {
+>>>>>> @@ -5546,13 +5548,14 @@ static void rtl8xxxu_tx(struct ieee80211_hw *hw,
+>>>>>>      struct rtl8xxxu_tx_urb *tx_urb;
+>>>>>>      struct ieee80211_sta *sta = NULL;
+>>>>>>      struct ieee80211_vif *vif = tx_info->control.vif;
+>>>>>> +    struct rtl8xxxu_vif *rtlvif = (struct rtl8xxxu_vif *)vif->drv_priv;
+>>>>>>      struct device *dev = &priv->udev->dev;
+>>>>>>      u32 queue, rts_rate;
+>>>>>>      u16 pktlen = skb->len;
+>>>>>>      int tx_desc_size = priv->fops->tx_desc_size;
+>>>>>>      u8 macid;
+>>>>>>      int ret;
+>>>>>> -    bool ampdu_enable, sgi = false, short_preamble = false;
+>>>>>> +    bool ampdu_enable, sgi = false, short_preamble = false, bmc = false;
+>>>>>>
+>>>>>>      if (skb_headroom(skb) < tx_desc_size) {
+>>>>>>              dev_warn(dev,
+>>>>>> @@ -5594,10 +5597,14 @@ static void rtl8xxxu_tx(struct ieee80211_hw *hw,
+>>>>>>              tx_desc->txdw0 =
+>>>>>>                      TXDESC_OWN | TXDESC_FIRST_SEGMENT |
+>> TXDESC_LAST_SEGMENT;
+>>>>>>      if (is_multicast_ether_addr(ieee80211_get_DA(hdr)) ||
+>>>>>> -        is_broadcast_ether_addr(ieee80211_get_DA(hdr)))
+>>>>>> +        is_broadcast_ether_addr(ieee80211_get_DA(hdr))) {
+>>>>>>              tx_desc->txdw0 |= TXDESC_BROADMULTICAST;
+>>>>>> +            bmc = true;
+>>>>>> +    }
+>>>>>> +
+>>>>>>
+>>>>>>      tx_desc->txdw1 = cpu_to_le32(queue << TXDESC_QUEUE_SHIFT);
+>>>>>> +    macid = rtl8xxxu_get_macid(priv, sta);
+>>>>>>
+>>>>>>      if (tx_info->control.hw_key) {
+>>>>>>              switch (tx_info->control.hw_key->cipher) {
+>>>>>> @@ -5612,6 +5619,10 @@ static void rtl8xxxu_tx(struct ieee80211_hw *hw,
+>>>>>>              default:
+>>>>>>                      break;
+>>>>>>              }
+>>>>>> +            if (bmc && rtlvif->hw_key_idx != 0xff) {
+>>>>>> +                    tx_desc->txdw1 |= TXDESC_EN_DESC_ID;
+>>>>>> +                    macid = rtlvif->hw_key_idx;
+>>>>>> +            }
+>>>>>>      }
+>>>>>>
+>>>>>>      /* (tx_info->flags & IEEE80211_TX_CTL_AMPDU) && */
+>>>>>> @@ -5655,7 +5666,6 @@ static void rtl8xxxu_tx(struct ieee80211_hw *hw,
+>>>>>>      else
+>>>>>>              rts_rate = 0;
+>>>>>>
+>>>>>> -    macid = rtl8xxxu_get_macid(priv, sta);
+>>>>>>      priv->fops->fill_txdesc(hw, hdr, tx_info, tx_desc, sgi,
+>> short_preamble,
+>>>>>>                              ampdu_enable, rts_rate, macid);
+>>>>>>
+>>>>>> @@ -6667,6 +6677,7 @@ static int rtl8xxxu_add_interface(struct ieee80211_hw
+>> *hw,
+>>>>>>
+>>>>>>      priv->vifs[port_num] = vif;
+>>>>>>      rtlvif->port_num = port_num;
+>>>>>> +    rtlvif->hw_key_idx = 0xff;
+>>>>>>
+>>>>>>      rtl8xxxu_set_linktype(priv, vif->type, port_num);
+>>>>>>      ether_addr_copy(priv->mac_addr, vif->addr);
+>>>>>> @@ -6843,11 +6854,19 @@ static int rtl8xxxu_set_rts_threshold(struct
+>> ieee80211_hw *hw, u32 rts)
+>>>>>>      return 0;
+>>>>>>   }
+>>>>>>
+>>>>>> +static int rtl8xxxu_get_free_sec_cam(struct ieee80211_hw *hw)
+>>>>>> +{
+>>>>>> +    struct rtl8xxxu_priv *priv = hw->priv;
+>>>>>> +
+>>>>>> +    return find_first_zero_bit(priv->cam_map,
+>> priv->fops->max_sec_cam_num);
+>>>>>> +}
+>>>>>> +
+>>>>>>   static int rtl8xxxu_set_key(struct ieee80211_hw *hw, enum set_key_cmd
+>> cmd,
+>>>>>>                          struct ieee80211_vif *vif,
+>>>>>>                          struct ieee80211_sta *sta,
+>>>>>>                          struct ieee80211_key_conf *key)
+>>>>>>   {
+>>>>>> +    struct rtl8xxxu_vif *rtlvif = (struct rtl8xxxu_vif *)vif->drv_priv;
+>>>>>>      struct rtl8xxxu_priv *priv = hw->priv;
+>>>>>>      struct device *dev = &priv->udev->dev;
+>>>>>>      u8 mac_addr[ETH_ALEN];
+>>>>>> @@ -6859,9 +6878,6 @@ static int rtl8xxxu_set_key(struct ieee80211_hw *hw,
+>> enum set_key_cmd cmd,
+>>>>>>      dev_dbg(dev, "%s: cmd %02x, cipher %08x, index %i\n",
+>>>>>>              __func__, cmd, key->cipher, key->keyidx);
+>>>>>>
+>>>>>> -    if (vif->type != NL80211_IFTYPE_STATION)
+>>>>>> -            return -EOPNOTSUPP;
+>>>>>> -
+>>>>>>      if (key->keyidx > 3)
+>>>>>>              return -EOPNOTSUPP;
+>>>>>>
+>>>>>> @@ -6885,7 +6901,7 @@ static int rtl8xxxu_set_key(struct ieee80211_hw *hw,
+>> enum set_key_cmd cmd,
+>>>>>>              ether_addr_copy(mac_addr, sta->addr);
+>>>>>>      } else {
+>>>>>>              dev_dbg(dev, "%s: group key\n", __func__);
+>>>>>> -            eth_broadcast_addr(mac_addr);
+>>>>>> +            ether_addr_copy(mac_addr, vif->bss_conf.bssid);
+>>>>>>      }
+>>>>>>
+>>>>>>      val16 = rtl8xxxu_read16(priv, REG_CR);
+>>>>>> @@ -6899,16 +6915,28 @@ static int rtl8xxxu_set_key(struct ieee80211_hw *hw,
+>> enum set_key_cmd cmd,
+>>>>>>
+>>>>>>      switch (cmd) {
+>>>>>>      case SET_KEY:
+>>>>>> -            key->hw_key_idx = key->keyidx;
+>>>>>> +
+>>>>>> +            retval = rtl8xxxu_get_free_sec_cam(hw);
+>>>>>> +            if (retval < 0)
+>>>>>> +                    return -EOPNOTSUPP;
+>>>>>> +
+>>>>>> +            key->hw_key_idx = retval;
+>>>>>> +
+>>>>>> +            if (vif->type == NL80211_IFTYPE_AP && !(key->flags &
+>> IEEE80211_KEY_FLAG_PAIRWISE))
+>>>>>> +                    rtlvif->hw_key_idx = key->hw_key_idx;
+>>>>>> +
+>>>>>>              key->flags |= IEEE80211_KEY_FLAG_GENERATE_IV;
+>>>>>>              rtl8xxxu_cam_write(priv, key, mac_addr);
+>>>>>> +            set_bit(key->hw_key_idx, priv->cam_map);
+>>>>>
+>>>>> Hi Martin,
+>>>>
+>>>> Hi Bitterblue,
+>>>>
+>>>>>
+>>>>> It turns out RTL8188CUS and RTL8192CU don't like this patch, specifically
+>>>>> when we use iwd. After the WPA2 handshake no more data is transmitted.
+>>>>>
+>>>>> Before this patch, key->hw_key_idx was the same as key->keyidx. After
+>>>>> this patch, when we use iwd, the group key is installed first. It has
+>>>>> key->keyidx = 1, but it gets key->hw_key_idx = 0. The pairwise key is
+>>>>> installed second. It has key->keyidx = 0, but it gets key->hw_key_idx = 1.
+>>>>> Both keyidx and hw_key_idx are passed to the chip in rtl8xxxu_cam_write().
+>>>>>
+>>>>> It's fine with wpa_supplicant. wpa_supplicant installs the pairwise key
+>>>>> first, with key->keyidx = 0, then the group key, with key->keyidx = 1.
+>>>>>
+>>>>> This patch imitating rtw88 makes the old chips work again with iwd.
+>>>>> What do you think?
+>>>>
+>>>> So you reserve the first 4 entries for group keys and use key->keyidx as
+>>>> key->hw_key_idx directly for those, right? Does that work if 2 virtual
+>>>> interfaces are used at the same time?
+>>>> I will do some tests in the next days, but I suspect this be an issue.
+>>>
+>>> Ah. I'm not aware that rtl8xxxu can support 2 virtual interfaces, and
+>>> only RTL8188FU declares .supports_concurrent = 1, so maybe we can have
+>>> special handling for this chip?
+>>
+>> I would like to enable supports_concurrent for more chips, if I can test
+>> this feature.
+>>
+>>>
+>>> I'd share some information about security CAM for reference. Since data is
+>>> quite old (10+ years), I can't guarantee all are correct.
+>>>
+>>> 1. default key switch in rtl8xxxu_set_key()
+>>>    SEC_CFG_TXBC_USE_DEFKEY and SEC_CFG_RXBC_USE_DEFKEY mean that
+>>>    broadcast/multicast packets use default key (CAM entries 0~3 for
+>>>    keyidx 0~3).
+>>>    For two interfaces case, that'd a problem, so maybe we should use
+>>>    software encryption/decryption for non-pairwise key.
+>>>
+>>>       val8 = SEC_CFG_TX_SEC_ENABLE | SEC_CFG_TXBC_USE_DEFKEY |
+>>>               SEC_CFG_RX_SEC_ENABLE | SEC_CFG_RXBC_USE_DEFKEY;
+>>>       val8 |= SEC_CFG_TX_USE_DEFKEY | SEC_CFG_RX_USE_DEFKEY;
+>>>       rtl8xxxu_write8(priv, REG_SECURITY_CFG, val8);
+>>>
+>>> 2. group key (GK) field of security CAM in rtl8xxxu_cam_write()
+>>>    The group key field of security CAM is BIT(6) which isn't supported
+>>>    by earlier chips (sorry I have no data about the exact chips).
+>>>
+>>
+>> BIT 6 is used in the rtl8188eu driver, and not used in the rtl8192cu driver,
+>> so I assume it's just the older RTL8188CU/RTL8192CU and RTL8723AU that don't
+>> support it.
+>>
+>>>    If a chip can support group key field, the CAM layout with default key
+>>>    enabled for two interfaces (STA-1+AP-1) can be
+>>>
+>>>    STA-1 <-> AP-10
+>>>    AP-1  <-> STA-20
+>>>
+>>>    CAM  GK   MAC    KEY
+>>>     0
+>>>     1   1    00:    AP-1 (GTK)  // should be on entry 0~3 depends on key_idx
+>>>     2
+>>>     3
+>>>     4
+>>>     5   1    AP-10  AP-10 (GTK)  // can be on any entry after 4
+>>>     6
+>>>
+>>
+>> What are the numbers 1, 10, and 20 in "AP-1", "AP-10", "STA-20" ?
+> 
+> Just represent different roles. 
+> 
+> For rtl8xxxu, two interfaces are STA-1 and AP-1, and STA-1 connect to AP-10,
+> and AP-1 is connected from STA-20.
+> 
+> I don't add pairwise key to above example, because it is simple, just one
+> entry to a PTK. Instead, I only list group key in the example.
+> 
+> For AP role (AP-1), it can send broadcast packets to many stations, so
+> use default key.
+> (but it should not receive a broadcast packet from stations)
+> 
+> For station role (STA-1), it should receive broadcast packets from
+> specific AP-10, so add an entry with AP-10's MAC address.
+> 
 
-Instead of unconditionally scheduling a USB device reset at the start
-of the reset sequence, trigger it only when mt792xu_wfsys_reset()
-returns -ETIMEDOUT, which indicates the chip is in a latched state
-(SEFI - Single Event Functional Interrupt) where register writes over
-USB become silent no-ops.
+Oh, now I understand, thank you.
 
-This avoids the race condition where usb_queue_reset_device() was
-scheduled asynchronously while the driver continued normal reset
-operations on the same device.
+>>
+>>>     (pairwise key can be on any entry after 4)
+>>>
+>>>       if (!(key->flags & IEEE80211_KEY_FLAG_PAIRWISE))
+>>>               ctrl |= BIT(6);
+>>>
+>>> My perspective are
+>>> 1. currently default key is enabled, so we should treat CAM entry 0~3 as
+>>>    special cases. That means rtl8xxxu_get_free_sec_cam() should be modified
+>>>    as Bitterblue's version.
+>>>
+>>> 2. For two interfaces, I guess RTL8188FU can support GK bit, so it'd be worth
+>>>    to try the method of example 2 above.
+>>>
+>>>    If we want earlier chips can support two interfaces, I think we should
+>>>    disable default key.
+>>
+>> Indeed, the rtl8192cu driver (out of kernel) doesn't set SEC_CFG_TXBC_USE_DEFKEY
+>> and SEC_CFG_RXBC_USE_DEFKEY when concurrent mode is enabled.
+>>
+>>> Seemingly, it is not possible that using hardware
+>>>    crypto when operating one interface and then switching to use software>
+>> crypto when operating two interfaces. That means broadcast/multicast
+>>>    packets should be by software crypto entirely if we want to support two
+>>>    interfaces.
+>>>
+>>> 3. I think rtw88 has similar problem for two interfaces.
+>>>
+>>>>
+>>>>>
+>>>>> diff --git a/drivers/net/wireless/realtek/rtl8xxxu/core.c
+>>>> b/drivers/net/wireless/realtek/rtl8xxxu/core.c
+>>>>> index ee278f0548e4..f7b35655bec5 100644
+>>>>> --- a/drivers/net/wireless/realtek/rtl8xxxu/core.c
+>>>>> +++ b/drivers/net/wireless/realtek/rtl8xxxu/core.c
+>>>>> @@ -6942,7 +6942,8 @@ static int rtl8xxxu_get_free_sec_cam(struct
+>> ieee80211_hw *hw)
+>>>>>   {
+>>>>>       struct rtl8xxxu_priv *priv = hw->priv;
+>>>>>
+>>>>> -     return find_first_zero_bit(priv->cam_map,
+>> priv->fops->max_sec_cam_num);
+>>>>> +     return find_next_zero_bit(priv->cam_map,
+>> priv->fops->max_sec_cam_num,
+>>>>> +                               RTL8XXXU_SEC_DEFAULT_KEY_NUM);
+>>>>>   }
+>>>>>
+>>>>>   static int rtl8xxxu_set_key(struct ieee80211_hw *hw, enum set_key_cmd
+>> cmd,
+>>>>> @@ -6999,12 +7000,15 @@ static int rtl8xxxu_set_key(struct ieee80211_hw *hw,
+>> enum set_key_cmd cmd,
+>>>>>
+>>>>>       switch (cmd) {
+>>>>>       case SET_KEY:
+>>>>> +             if (key->flags & IEEE80211_KEY_FLAG_PAIRWISE) {
+>>>>> +                     retval = rtl8xxxu_get_free_sec_cam(hw);
+>>>>> +                     if (retval < 0)
+>>>>> +                             return -EOPNOTSUPP;
+>>>>>
+>>>>> -             retval = rtl8xxxu_get_free_sec_cam(hw);
+>>>>> -             if (retval < 0)
+>>>>> -                     return -EOPNOTSUPP;
+>>>>> -
+>>>>> -             key->hw_key_idx = retval;
+>>>>> +                     key->hw_key_idx = retval;
+>>>>> +             } else {
+>>>>> +                     key->hw_key_idx = key->keyidx;
+>>>>> +             }
+>>>>>
+>>>>>               if (vif->type == NL80211_IFTYPE_AP && !(key->flags &
+>> IEEE80211_KEY_FLAG_PAIRWISE))
+>>>>>                       rtlvif->hw_key_idx = key->hw_key_idx;
+>>>>> diff --git a/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu.h
+>>>> b/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu.h
+>>>>> index 4b05dba22e67..188f4bbe99cd 100644
+>>>>> --- a/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu.h
+>>>>> +++ b/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu.h
+>>>>> @@ -1788,6 +1788,7 @@ struct rtl8xxxu_cfo_tracking {
+>>>>>   #define RTL8XXXU_BC_MC_MACID        0
+>>>>>   #define RTL8XXXU_BC_MC_MACID1       1
+>>>>>   #define RTL8XXXU_MAX_SEC_CAM_NUM    64
+>>>>> +#define RTL8XXXU_SEC_DEFAULT_KEY_NUM 4
+>>>>>
+>>>>>   struct rtl8xxxu_priv {
+>>>>>       struct ieee80211_hw *hw;
+>>>
+> 
 
-Tested-on: Minisforum NAB9 (MT7921U USB adapter) at 2400m altitude,
-           Bogota, Colombia. Cosmic radiation causes periodic SEFI
-           events; USB reset restores connectivity without intervention.
-
-Signed-off-by: Bryam Vargas <bryamestebanvargas@gmail.com>
----
- .../net/wireless/mediatek/mt76/mt7921/usb.c   | 32 +++++++++----------
- .../net/wireless/mediatek/mt76/mt792x_usb.c   | 16 ++++------
- 2 files changed, 23 insertions(+), 25 deletions(-)
-
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7921/usb.c
-b/drivers/net/wireless/mediatek/mt76/mt7921/usb.c
-index 8c8c78f..44c7437 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7921/usb.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7921/usb.c
-@@ -86,33 +86,33 @@ static int mt7921u_mcu_init(struct mt792x_dev *dev)
-
- static int mt7921u_mac_reset(struct mt792x_dev *dev)
- {
--    struct usb_interface *intf = to_usb_interface(dev->mt76.dev);
-     int err;
-
-     mt76_txq_schedule_all(&dev->mphy);
-     mt76_worker_disable(&dev->mt76.tx_worker);
--
-     set_bit(MT76_RESET, &dev->mphy.state);
-     set_bit(MT76_MCU_RESET, &dev->mphy.state);
--
-     wake_up(&dev->mt76.mcu.wait);
-     skb_queue_purge(&dev->mt76.mcu.res_q);
--
-     mt76u_stop_rx(&dev->mt76);
-     mt76u_stop_tx(&dev->mt76);
-
--    /* When the chip enters a latched state (SEFI - Single Event
--     * Functional Interrupt, e.g. from cosmic radiation at altitude),
--     * all register writes over USB become silent no-ops.
--     * usb_queue_reset_device() electrically resets the chip via the
--     * USB hub regardless of internal state -- identical to probe().
--     * Async variant required to avoid deadlock in workqueue context.
--     */
--    dev_warn(dev->mt76.dev,
--         "mt7921u: scheduling USB reset for chip recovery\n");
--    usb_queue_reset_device(intf);
--
--    mt792xu_wfsys_reset(dev);
-+    err = mt792xu_wfsys_reset(dev);
-+    if (err == -ETIMEDOUT) {
-+        /* Chip is in a latched state (SEFI - Single Event Functional
-+         * Interrupt, e.g. from cosmic radiation at altitude).
-+         * Register writes over USB become silent no-ops; schedule an
-+         * electrical USB reset via the hub as last resort.
-+         * usb_queue_reset_device() is async to avoid deadlock in
-+         * workqueue context.
-+         */
-+        struct usb_interface *intf = to_usb_interface(dev->mt76.dev);
-+
-+        dev_warn(dev->mt76.dev,
-+             "mt7921u: wfsys reset timed out, scheduling USB reset\n");
-+        usb_queue_reset_device(intf);
-+        goto out;
-+    }
-
-     clear_bit(MT76_MCU_RESET, &dev->mphy.state);
-     err = mt76u_resume_rx(&dev->mt76);
-diff --git a/drivers/net/wireless/mediatek/mt76/mt792x_usb.c
-b/drivers/net/wireless/mediatek/mt76/mt792x_usb.c
-index cfd385e..4737384 100644
---- a/drivers/net/wireless/mediatek/mt76/mt792x_usb.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt792x_usb.c
-@@ -269,7 +269,6 @@ EXPORT_SYMBOL_GPL(mt792xu_wfsys_reset);
-
- int mt792xu_init_reset(struct mt792x_dev *dev)
- {
--    struct usb_interface *intf = to_usb_interface(dev->mt76.dev);
-
-     set_bit(MT76_RESET, &dev->mphy.state);
-
-@@ -279,15 +278,14 @@ int mt792xu_init_reset(struct mt792x_dev *dev)
-     mt76u_stop_rx(&dev->mt76);
-     mt76u_stop_tx(&dev->mt76);
-
--    /* Same rationale as mt7921u_mac_reset(): if the chip is in a
--     * latched state (SEFI), register writes over USB are no-ops.
--     * Schedule a USB port reset before software reset sequence.
--     */
--    dev_warn(dev->mt76.dev,
--         "mt7921u: scheduling USB device reset (init_reset path)\n");
--    usb_queue_reset_device(intf);
-+    if (mt792xu_wfsys_reset(dev) == -ETIMEDOUT) {
-+        struct usb_interface *intf = to_usb_interface(dev->mt76.dev);
-+
-+        dev_warn(dev->mt76.dev,
-+             "mt792xu: wfsys reset timed out, scheduling USB reset\n");
-+        usb_queue_reset_device(intf);
-+    }
-
--    mt792xu_wfsys_reset(dev);
-
-     clear_bit(MT76_RESET, &dev->mphy.state);
-
---
-2.43.0
 
