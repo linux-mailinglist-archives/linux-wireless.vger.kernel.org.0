@@ -1,139 +1,169 @@
-Return-Path: <linux-wireless+bounces-32986-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-32987-lists+linux-wireless=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id QM2bC09YsWmGtwIAu9opvQ
-	(envelope-from <linux-wireless+bounces-32986-lists+linux-wireless=lfdr.de@vger.kernel.org>)
-	for <lists+linux-wireless@lfdr.de>; Wed, 11 Mar 2026 12:55:59 +0100
+	id KOBrHdVtsWlVvAIAu9opvQ
+	(envelope-from <linux-wireless+bounces-32987-lists+linux-wireless=lfdr.de@vger.kernel.org>)
+	for <lists+linux-wireless@lfdr.de>; Wed, 11 Mar 2026 14:27:49 +0100
 X-Original-To: lists+linux-wireless@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9AA182633AF
-	for <lists+linux-wireless@lfdr.de>; Wed, 11 Mar 2026 12:55:58 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 160FC26482C
+	for <lists+linux-wireless@lfdr.de>; Wed, 11 Mar 2026 14:27:49 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id CCE883016294
-	for <lists+linux-wireless@lfdr.de>; Wed, 11 Mar 2026 11:55:51 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 2E9923062951
+	for <lists+linux-wireless@lfdr.de>; Wed, 11 Mar 2026 13:21:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 96B203D2FE0;
-	Wed, 11 Mar 2026 11:55:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b="srBYu2td"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CA5FC242D72;
+	Wed, 11 Mar 2026 13:21:33 +0000 (UTC)
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from sipsolutions.net (s3.sipsolutions.net [168.119.38.16])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-vk1-f179.google.com (mail-vk1-f179.google.com [209.85.221.179])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5A7AF3DE420
-	for <linux-wireless@vger.kernel.org>; Wed, 11 Mar 2026 11:55:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=168.119.38.16
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8EF441EEA3C
+	for <linux-wireless@vger.kernel.org>; Wed, 11 Mar 2026 13:21:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.179
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773230150; cv=none; b=QjBaer92R6n8XqhwIyGAefjJy2cqSNKxxCbqfgn4ZbSg8yKAPUfmS0UeBXwJozsVBAukeJ3GCO7r2iu0h7Bo3e46kkm6Ajn4wD/cZZO2M6r3Cw0E3sLzUKfhS65ESzyYPy1ybg/Kr63zlFY6xkEbQ97OO9IssJuH4rlRVbsiKCY=
+	t=1773235293; cv=none; b=UTSiYq0g8sVX1FFallkA/lROeYiyRVj4BAy/n16wU7SUKbSwleiyahAawgrRB/Y/UONa81Nzbdt1iB5+CaO3oEZrUCxkIzltEzmufc3PHKik1HKfOvgft3PmWEUtRKWfMR3aNfMmPZvetxyusd0yQ//rhBeVYhWW3XT6OIhLC9c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773230150; c=relaxed/simple;
-	bh=aKKgePj2Hdk5awUGelvL7/TV3NL6v0+frxqTVFzSfaw=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=EMjQ3ip0NNZnDgE7TS+7YwmvZR1PX0/ZLWcsjEmOvAlJ0DpBWwJexj1Zr++oOjke7dPvFC0nsVpUiMm2QSRcdDzZjANey3VvsZB8n/v0X1iN2CnWNqldkBMCuJw+F+ZRFWkfMdi8Tp2yt23OH+U9t0xs5mizw3gEk6y5U91b8m0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net; spf=pass smtp.mailfrom=sipsolutions.net; dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b=srBYu2td; arc=none smtp.client-ip=168.119.38.16
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sipsolutions.net
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=sipsolutions.net; s=mail; h=MIME-Version:Content-Transfer-Encoding:
-	Content-Type:References:In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender
-	:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
-	Resent-Cc:Resent-Message-ID; bh=aKKgePj2Hdk5awUGelvL7/TV3NL6v0+frxqTVFzSfaw=;
-	t=1773230149; x=1774439749; b=srBYu2tdkZgn57D/lCclPvmhSX6h7A5axchGiGpnpTkvI35
-	B6IOBhQ+R77NxgHUC3f/AqezLux+OOSZ4canRLOBf5HNndZV0ndSuKFjauzxZHe6xPmrqwwXNAMiF
-	wIe/nbEBvx/trU1whqWPFYcU9bogcHp/D8S3ryzM9my74r8FHzR0l3o5eMK1Zjy7CK5Vki0vf3BZl
-	PBbXj7qtAuCGLZzQotxQRTy3i8wnWpuvqL5QCdJs6JvludqiwQEDIgdnNyZwDt52FcJEGDZV88teL
-	IvtDeqTvX+72spvzHJ9ux8TsBA413tm2TzzPlagg4EgUr7dUyNI3ruxid0xhA7VA==;
-Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
-	(Exim 4.98.2)
-	(envelope-from <johannes@sipsolutions.net>)
-	id 1w0IAF-0000000EqVX-0CLH;
-	Wed, 11 Mar 2026 12:55:47 +0100
-Message-ID: <6832f8f0b516157452bd9c23b7c7af087d63d425.camel@sipsolutions.net>
-Subject: Re: [PATCH wireless-next v2] wifi: cfg80211: init S1G properly when
- creating chandef
-From: Johannes Berg <johannes@sipsolutions.net>
-To: Lachlan Hodges <lachlan.hodges@morsemicro.com>
-Cc: linux-wireless@vger.kernel.org, arien.judge@morsemicro.com
-Date: Wed, 11 Mar 2026 12:55:46 +0100
-In-Reply-To: <6eitsqhsmmhwgd3cobhpdhhzn5m5siw4ser53g3ilvd7kdhy2u@rkilpa5ek26y> (sfid-20260311_124857_985665_F5855D3D)
-References: <20260311064339.524758-1-lachlan.hodges@morsemicro.com>
-	 <791eaf8ab04dcbe01e2d71612d162f71c61e573a.camel@sipsolutions.net>
-	 <4dhrrbuvxdgve2doc7qvabzjancimtqpounngyrxspk4d4rbls@xnad5bwciz7c>
-	 <b725c0be05df1a9595c177aada4cc148bf555448.camel@sipsolutions.net>
-	 <6eitsqhsmmhwgd3cobhpdhhzn5m5siw4ser53g3ilvd7kdhy2u@rkilpa5ek26y>
-	 (sfid-20260311_124857_985665_F5855D3D)
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.58.3 (3.58.3-1.fc43) 
+	s=arc-20240116; t=1773235293; c=relaxed/simple;
+	bh=bQRlE5OR+3/41N9B/xBGXfMeOTv3hgeQ2WrY6jcTpBY=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=UN38xyfyMXtcZtQ9gFnZ6CCuVdd8RHVk3PIgTOsOOUwHm0QyRV1LEnEAd+tc/LCTY5m3zvsE0AuA6TndJtSOGDU/YHeov6prW+NkEaAUp5lMaKaB65Me7YW7ZG7yrMFz6VsHnEv26Y3WyrAMqB5l6tKOiJL8t1IS5Rsw57CrgJE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linux-m68k.org; spf=pass smtp.mailfrom=gmail.com; arc=none smtp.client-ip=209.85.221.179
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linux-m68k.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-vk1-f179.google.com with SMTP id 71dfb90a1353d-56b18f05f49so2422738e0c.1
+        for <linux-wireless@vger.kernel.org>; Wed, 11 Mar 2026 06:21:32 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1773235291; x=1773840091;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=34DR94e/1PAvLLEaib58vFA4GW0m5SGe6jvxchEhMek=;
+        b=tehVQv1wB2wtVXceIr4MWpjBDq4a6kii8BMLWMXISf3tDZBBJNt0JbGb1fUQ07REC/
+         UPgxFnW11yh8b86ahj/vWX/l1QnDK6YkD0mwaiDTfcI2rge0ysegZqV+1vWT8k71L6aW
+         MsDeRBmTOlrD4kbtMGlZRQob73RmFQzEpfeHbPjxXctn9WV5siJodY/jv3e/I4jlQf0I
+         6KUdXuh4qOXkvZIVvmMoNQ1IquC80rGMTZt8Skw/KTOKHtT3KsN6jQBsEwYC0jFuC8RW
+         TSnoI70S88EzLxxYRkXUve9CDwEd8JzsFqg8er+s05sh8qevAHXWf0M8qx+H0WnZx9vW
+         Puow==
+X-Forwarded-Encrypted: i=1; AJvYcCVl4ooiGII1udOF+sBI8ot4XOPQ5ngaxJU92UzhSVGg4I6NZO9J0qJGJSB2qJtR52gu3xETfMhZOMTQnkNcqg==@vger.kernel.org
+X-Gm-Message-State: AOJu0YwG2Q2pZzj3d3wcmL9A1lAYA2ehlgO1zkeMNlbMRNpJyiMkfJs9
+	hAOrvZ3zHm9JZnJSZ2OajPnLB+Cffe27B3bIpiqT+WoFPYvpnJhO/0POFKOMJIdUoj8=
+X-Gm-Gg: ATEYQzyV2bkFKg/JDn01PacMxr15n9vS2yverbLngqhx1J+GKZzuWd8DrxMQlhq7p5y
+	6Ry31mCBF6iHmVJWvaZn/oE9CkOo2fcM2w9nXOKG6XqRexcYGjtwfTrFs+k+mpRx3KQZUBrQ1i5
+	hNxbyAcj0xVF8INKaQK/PtkyNoo6UhrGWQkAaKwbMEbZHVmbLdBwG89mZRwgaYQgZzlUkChzq92
+	5v2q1TKWVkjuZOofrvtUPXcX0Kqo3E3uNVLKUbcRC54bi2Sw7H++tJaSFmO5WUUVZLdJIvNJ/8W
+	R3n4O9N5zhmZyNqW5vc+oNamS9KcZVuyU+pZRZDkN5V4bIqtoiMAYb7wtpL1uaRkMn/iY637bBs
+	vTKVE9phnqn3+W7B20PJkZSYYaAerNaugjvaHT38ff6tz4k6r5C3ho6UI162jpA0HhKtun6cOTJ
+	ao4aoD8cURK3gUpIzrkxGBE7uOeu14V3KcqxH5nkXmTRCXxcaQMS/uNkvCeYnFkAdi
+X-Received: by 2002:a05:6123:147:b0:56a:fb7b:7537 with SMTP id 71dfb90a1353d-56b4769d7fbmr873806e0c.19.1773235291530;
+        Wed, 11 Mar 2026 06:21:31 -0700 (PDT)
+Received: from mail-vk1-f176.google.com (mail-vk1-f176.google.com. [209.85.221.176])
+        by smtp.gmail.com with ESMTPSA id 71dfb90a1353d-56b47d7269asm690723e0c.17.2026.03.11.06.21.31
+        for <linux-wireless@vger.kernel.org>
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 11 Mar 2026 06:21:31 -0700 (PDT)
+Received: by mail-vk1-f176.google.com with SMTP id 71dfb90a1353d-56ae58f3fc6so6635104e0c.3
+        for <linux-wireless@vger.kernel.org>; Wed, 11 Mar 2026 06:21:31 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AJvYcCVQE0ka7+g32gHXdcoB/QXYzdR6ZjvWk0Hx/DghRxdoC0J5dujyLCVk43NB8uH1gNGViWtVHNd6ZIpVgUXBjA==@vger.kernel.org
+X-Received: by 2002:a05:6122:1d05:b0:55b:7494:177b with SMTP id
+ 71dfb90a1353d-56b4752d806mr922396e0c.10.1773234967338; Wed, 11 Mar 2026
+ 06:16:07 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-malware-bazaar: not-scanned
-X-Rspamd-Queue-Id: 9AA182633AF
+References: <20260310-b4-is_err_or_null-v1-0-bd63b656022d@avm.de> <20260310-b4-is_err_or_null-v1-36-bd63b656022d@avm.de>
+In-Reply-To: <20260310-b4-is_err_or_null-v1-36-bd63b656022d@avm.de>
+From: Geert Uytterhoeven <geert@linux-m68k.org>
+Date: Wed, 11 Mar 2026 14:15:56 +0100
+X-Gmail-Original-Message-ID: <CAMuHMdXQ8Q4jvkgFRJYhghz2BZRDC-9Mk6DbXxuaOc6C9DFHZQ@mail.gmail.com>
+X-Gm-Features: AaiRm52J84H77ROK64ZWWtJfaiCpnFeKyoSRmPbi-NC8CN6Ju1TJEFxJU9gZQQ8
+Message-ID: <CAMuHMdXQ8Q4jvkgFRJYhghz2BZRDC-9Mk6DbXxuaOc6C9DFHZQ@mail.gmail.com>
+Subject: Re: [PATCH 36/61] arch/sh: Prefer IS_ERR_OR_NULL over manual NULL check
+To: Philipp Hahn <phahn-oss@avm.de>
+Cc: amd-gfx@lists.freedesktop.org, apparmor@lists.ubuntu.com, 
+	bpf@vger.kernel.org, ceph-devel@vger.kernel.org, cocci@inria.fr, 
+	dm-devel@lists.linux.dev, dri-devel@lists.freedesktop.org, 
+	gfs2@lists.linux.dev, intel-gfx@lists.freedesktop.org, 
+	intel-wired-lan@lists.osuosl.org, iommu@lists.linux.dev, kvm@vger.kernel.org, 
+	linux-arm-kernel@lists.infradead.org, linux-block@vger.kernel.org, 
+	linux-bluetooth@vger.kernel.org, linux-btrfs@vger.kernel.org, 
+	linux-cifs@vger.kernel.org, linux-clk@vger.kernel.org, 
+	linux-erofs@lists.ozlabs.org, linux-ext4@vger.kernel.org, 
+	linux-fsdevel@vger.kernel.org, linux-gpio@vger.kernel.org, 
+	linux-hyperv@vger.kernel.org, linux-input@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, linux-leds@vger.kernel.org, 
+	linux-media@vger.kernel.org, linux-mips@vger.kernel.org, linux-mm@kvack.org, 
+	linux-modules@vger.kernel.org, linux-mtd@lists.infradead.org, 
+	linux-nfs@vger.kernel.org, linux-omap@vger.kernel.org, 
+	linux-phy@lists.infradead.org, linux-pm@vger.kernel.org, 
+	linux-rockchip@lists.infradead.org, linux-s390@vger.kernel.org, 
+	linux-scsi@vger.kernel.org, linux-sctp@vger.kernel.org, 
+	linux-security-module@vger.kernel.org, linux-sh@vger.kernel.org, 
+	linux-sound@vger.kernel.org, linux-stm32@st-md-mailman.stormreply.com, 
+	linux-trace-kernel@vger.kernel.org, linux-usb@vger.kernel.org, 
+	linux-wireless@vger.kernel.org, netdev@vger.kernel.org, ntfs3@lists.linux.dev, 
+	samba-technical@lists.samba.org, sched-ext@lists.linux.dev, 
+	target-devel@vger.kernel.org, tipc-discussion@lists.sourceforge.net, 
+	v9fs@lists.linux.dev, Yoshinori Sato <ysato@users.sourceforge.jp>, 
+	Rich Felker <dalias@libc.org>, John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>
+Content-Type: text/plain; charset="UTF-8"
+X-Rspamd-Queue-Id: 160FC26482C
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [0.04 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[sipsolutions.net,none];
-	R_DKIM_ALLOW(-0.20)[sipsolutions.net:s=mail];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-32986-lists,linux-wireless=lfdr.de];
-	DKIM_TRACE(0.00)[sipsolutions.net:+];
+	MISSING_XM_UA(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-32987-lists,linux-wireless=lfdr.de];
 	FROM_HAS_DN(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
+	DMARC_NA(0.00)[linux-m68k.org];
 	RCVD_TLS_LAST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	RCPT_COUNT_THREE(0.00)[3];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	TO_DN_SOME(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[johannes@sipsolutions.net,linux-wireless@vger.kernel.org];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-0.999];
-	TAGGED_RCPT(0.00)[linux-wireless];
-	MID_RHS_MATCH_FROM(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,sipsolutions.net:dkim,sipsolutions.net:mid]
+	TAGGED_RCPT(0.00)[linux-wireless];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[geert@linux-m68k.org,linux-wireless@vger.kernel.org];
+	TO_DN_SOME(0.00)[];
+	RCVD_COUNT_FIVE(0.00)[6];
+	NEURAL_HAM(-0.00)[-0.999];
+	RCPT_COUNT_GT_50(0.00)[57];
+	R_DKIM_NA(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,mail.gmail.com:mid,sourceforge.jp:email,fu-berlin.de:email,avm.de:email,glider.be:email,linux-m68k.org:email,libc.org:email]
 X-Rspamd-Action: no action
 
-On Wed, 2026-03-11 at 22:48 +1100, Lachlan Hodges wrote:
-> Initially reading this I was a bit concerned because it means any
-> path calling cfg80211_chandef_create() wouldn't work for S1G
+On Tue, 10 Mar 2026 at 12:56, Philipp Hahn <phahn-oss@avm.de> wrote:
+> Prefer using IS_ERR_OR_NULL() over using IS_ERR() and a manual NULL
+> check.
+>
+> Change generated with coccinelle.
+>
+> To: Yoshinori Sato <ysato@users.sourceforge.jp>
+> To: Rich Felker <dalias@libc.org>
+> To: John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>
+> Cc: linux-sh@vger.kernel.org
+> Cc: linux-kernel@vger.kernel.org
+> Signed-off-by: Philipp Hahn <phahn-oss@avm.de>
 
-Yes, I agree, but I tend to think it fundamentally doesn't work for S1G
-anyway the way it's defined with 20 or 40 MHz width. Now you had
-somewhat made it work by just ignoring the chantype, but that seems
-confusing too, at least in the long run.
+Reviewed-by: Geert Uytterhoeven <geert+renesas@glider.be>
 
-> But it's
-> actually only a couple of places now that call it and - being forward
-> looking - for example with channel switching we would probably have
-> an S1G specific path similar to processing a S1G connection anyway.
+Gr{oetje,eeting}s,
 
-Right, for mac80211: I don't know if you will have IBSS on S1G, if not
-that's right out, TDLS might be an issue, mesh support is probably not
-there, HT/HE operation elements (util.c) are irrelevant, which basically
-leaves the one I patched, and CSA that you mentioned.
+                        Geert
 
-For cfg80211 it's a similar story, but maybe we need to look - but
-anything that can hit 60 GHz today would already be invalid too...
+-- 
+Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
 
-
-> No
-> important paths (will confirm this) call this function anyway they
-> seem to build the chandef locally.
-
-There are a lot of places calling it in drivers so I don't think we can
-remove the function, but all existing drivers without S1G anyway. In
-mac80211 there might be paths, but then with the warning I guess syzbot
-can find them ;)
-
-johannes
+In personal conversations with technical people, I call myself a hacker. But
+when I'm talking to journalists I just say "programmer" or something like that.
+                                -- Linus Torvalds
 
