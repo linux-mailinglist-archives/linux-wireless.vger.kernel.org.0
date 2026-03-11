@@ -1,180 +1,328 @@
-Return-Path: <linux-wireless+bounces-32937-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-32938-lists+linux-wireless=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id kFVVFUm3sGlvmQIAu9opvQ
-	(envelope-from <linux-wireless+bounces-32937-lists+linux-wireless=lfdr.de@vger.kernel.org>)
-	for <lists+linux-wireless@lfdr.de>; Wed, 11 Mar 2026 01:28:57 +0100
+	id cKS/Oqu7sGlXmgIAu9opvQ
+	(envelope-from <linux-wireless+bounces-32938-lists+linux-wireless=lfdr.de@vger.kernel.org>)
+	for <lists+linux-wireless@lfdr.de>; Wed, 11 Mar 2026 01:47:39 +0100
 X-Original-To: lists+linux-wireless@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id E9509259CAF
-	for <lists+linux-wireless@lfdr.de>; Wed, 11 Mar 2026 01:28:56 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5509725A245
+	for <lists+linux-wireless@lfdr.de>; Wed, 11 Mar 2026 01:47:39 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 6BFEB307DC7D
-	for <lists+linux-wireless@lfdr.de>; Wed, 11 Mar 2026 00:28:39 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 1D343305022A
+	for <lists+linux-wireless@lfdr.de>; Wed, 11 Mar 2026 00:47:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3699635A3B9;
-	Wed, 11 Mar 2026 00:28:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 159E936C9C2;
+	Wed, 11 Mar 2026 00:47:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="lxb1RIb8"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-oi1-f174.google.com (mail-oi1-f174.google.com [209.85.167.174])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E79A01A6814
-	for <linux-wireless@vger.kernel.org>; Wed, 11 Mar 2026 00:28:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.174
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8799A36C9C1
+	for <linux-wireless@vger.kernel.org>; Wed, 11 Mar 2026 00:47:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773188918; cv=none; b=hgXEIZbpBYIck2o/Dub6L6uk9QSafGSTLCPqp5bCrxAw6oo7XiHspinjRfbHidXEBZe5lVH8BhVLzH9qEN1YYl5CV4W+rw05NkQT29rFRf5zXKT+ZThQLNyR+0lUSYnds8h2lyf+82R3qOhOJx0LlgVvVRXGs+7mrHucv/t4M6Q=
+	t=1773190056; cv=none; b=rBAdUmyeNudc8VPrbrYufKNR3FBr3BuqZRxlUljYHWbSxlna7qg4KbuIFCaDMeqYYiL9t1d87ARoOP+TD8osDOrmefS0KG/fur03dZMUmJvVC0DRXNzCrrd3CVDsopCVyMUoAcbTJIv9q4xi95lQQ8NeGi7hXh6Kmjj7v46j/wY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773188918; c=relaxed/simple;
-	bh=OkEIBxc3yBY6QPzdTqn2maD1OuzaedMvIydfn3q/lLI=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=eMOU03rSxCVwJElZPCPLdfeNnY6pWBCC8E7APpH3war9mb0y9LlVoqjdhnzr+1iuy9XuDdFJBcph+IPSdXIXEyYaoLyJtDTNjTBHJOdA89y/ltF1DWP0Mdsrmfl++Xj8TqbUcg3hs5PfPqsV4+IZ9PxPOEpjI6HtMw1e9MIo5yA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=quarantine dis=none) header.from=kernel.org; spf=pass smtp.mailfrom=gmail.com; arc=none smtp.client-ip=209.85.167.174
-Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=quarantine dis=none) header.from=kernel.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-oi1-f174.google.com with SMTP id 5614622812f47-4638e238094so6920803b6e.3
-        for <linux-wireless@vger.kernel.org>; Tue, 10 Mar 2026 17:28:36 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1773188916; x=1773793716;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=uV7lH3FIJA3CkRWr9ZibC3b+y2jhZmrH7643sTDjV0c=;
-        b=t7WjjXXfF6Idb4OuaahtERtADfutg17rGvob+eW6lsd5KM3LEULldYNXtoobaJfap6
-         k9Xn60IZl4eZRZn8RVOLr8FNWYH3bOChVsm8Hv9kREB+9I2IymxMQIB8l5ebehYK2KJH
-         homHeynaOj5hj/wfVYhV2w7TObQEJR/JZdxjoJATJWprmJWykGrxIrTNtUhkxwJSyboK
-         JICECKJ9o2OCYhPEMFUuUS78O2T3mXLWiALALoe9lahsMwAHbMBxBlxKlynPW6/GtzXb
-         vqJD/GciSKBB5wyGer8OFC6Ffdj+IAMruEabP+uNc4pYoxbAnYBxwKgBT0WT6HTF3GkM
-         XLpA==
-X-Gm-Message-State: AOJu0YxjDsSWO3ifhyM/VI1xizrcXyY9ErdZUP19k5+Bbz36xfCn46b7
-	O6ro1jP8GDJigRGkj3cPS/WvwtRhBODwNEgUGvSoZNX41w6Du5xorOFmNMJGYg==
-X-Gm-Gg: ATEYQzx/KI28roSbfk1vEqoMMGc+HUyONxbv4rkQA5ZwhNh/XKvFUNsZ1hjhmOdYs0V
-	c6Rf38ZOO6QaVz89eym9LIIZBfAvMINJYJ442MKDMAXapJsy+618kwe2xXFT1f1p/yJgpDH7XNA
-	i0z7m3b2JBkgIz6tS4XsWrROGOqTZh+6429d/BhUZxslJMl6oYYw2aeWmQRhYseeUPQ7H83n0RI
-	VRa1AFE3pqQwyh/8/vSLzOZfG2Wj2uTMZJZB2/hfwGJTZIX0YBFe41Sp3dxsi+2oBH5PxCfgIbo
-	r4nenFv7uxxvpuNhZr5o4dbhsKdPjSWme3VSM9q9iz5JA+le1INp5ye7LIVWwZgqHzJlqcX8hhl
-	1qudY4sBoCxL1n/wxXpZFK2YEu5qLgzrlT9xMR36HRs15fs2wSHKui2QvB3ylt/fS1TdEwTIjpX
-	0Aa2d7BbhbNB2DmAnE2z+TOIxKW22Iqkp9tKEfKKZQTAd/R4U=
-X-Received: by 2002:a05:6808:178d:b0:45a:9068:642a with SMTP id 5614622812f47-46733506ea9mr429126b6e.35.1773188915884;
-        Tue, 10 Mar 2026 17:28:35 -0700 (PDT)
-Received: from sean-HP-EliteBook-830-G6.lan ([207.191.35.252])
-        by smtp.gmail.com with ESMTPSA id 586e51a60fabf-4177e72b40asm516497fac.20.2026.03.10.17.28.35
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 10 Mar 2026 17:28:35 -0700 (PDT)
-From: Sean Wang <sean.wang@kernel.org>
-To: nbd@nbd.name,
-	lorenzo.bianconi@redhat.com
-Cc: linux-wireless@vger.kernel.org,
-	linux-mediatek@lists.infradead.org,
-	Sean Wang <sean.wang@mediatek.com>,
-	stable@vger.kernel.org
-Subject: [PATCH 2/2] wifi: mt76: mt792x: fix mt7925u USB WFSYS reset handling
-Date: Tue, 10 Mar 2026 19:28:25 -0500
-Message-ID: <20260311002825.15502-2-sean.wang@kernel.org>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20260311002825.15502-1-sean.wang@kernel.org>
-References: <20260311002825.15502-1-sean.wang@kernel.org>
+	s=arc-20240116; t=1773190056; c=relaxed/simple;
+	bh=b9EBZ6mQrK16ghPkVFvtoO52u0qitF8nXRbrA3sl9/0=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=G4a3kGT7FM/4cdgnaR0+IBmXjxasxe7Uwzu6A4HSaynR9Bn0xIhT47S1fnezXe3RRMu5tqEiaPFGMIdMlTGavQEP6+o2RDH42SMXwNQh0XuGHh9VcAl4IgmcRWLN00dj9bX6dfJZ1xR88HVAMdR0dL6e2DyHD++179pYNtHn89c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=lxb1RIb8; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F3B89C4AF0B
+	for <linux-wireless@vger.kernel.org>; Wed, 11 Mar 2026 00:47:35 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1773190056;
+	bh=b9EBZ6mQrK16ghPkVFvtoO52u0qitF8nXRbrA3sl9/0=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+	b=lxb1RIb8FK1SKATqpfCN48igLCYJ+7SfLf+LfqPNbAIPSMVaUDCK7LPVzCXztHu6U
+	 AieFjRagnXJeJzIBf6pxe7CLm6w2gyrPKYZgVJsOVlm+JkLKVLoaBwsZYNzha4aHO6
+	 /F9veDm5Xr5YoPv8UrfTLOEyd4noGMzSc1SBZYscZ7jMphJrmrsEqDp6T0Y0VQchO6
+	 XOCVjPQPc4usmJQV/eM5CrhnWVYuMlqNGjfbSyNHvOO5qf+U6QaMFpgiplTojiddze
+	 c1IIO0VxkLpg0Mx4i6+9QEYC/4WR74jlqQhP6AaHJDFmAqGwNv+7+pDevysnXrD5gm
+	 fB3Cy2O9PiJtQ==
+Received: by mail-lj1-f182.google.com with SMTP id 38308e7fff4ca-38a2f92fab4so66287091fa.2
+        for <linux-wireless@vger.kernel.org>; Tue, 10 Mar 2026 17:47:35 -0700 (PDT)
+X-Gm-Message-State: AOJu0YxmReUzddgE5TkHfcHa0WUSbTvk4IgsHKS7qf0sEIz6kknlNFAf
+	Ly5QTh5oZD+aC6t+yf0YfhLspwbbSK7bzqJCkv0XIsp3uDqsuNzMNoL2QGdvWoFOJ7xMzSBTMqz
+	ecemVPSZ2v46wWrpw0QyGIzGi94dg5qY=
+X-Received: by 2002:a05:651c:54d:b0:38a:523a:7fb0 with SMTP id
+ 38308e7fff4ca-38a67dabe6emr2047781fa.1.1773190054254; Tue, 10 Mar 2026
+ 17:47:34 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: E9509259CAF
+References: <CAFktD2eaVpRAJRkaGOj4y-m0woK-sNeCM+h_7A=9GELSce6TcQ@mail.gmail.com>
+ <CAGp9LzrTMALkJKrGANTCzeG4KUDGwC1YJc8SRKNRriH3a9bnRQ@mail.gmail.com>
+ <CAFktD2eG+nebKcNbw2imufSOz6MCR-SUXjcUQmDqJabNfwx4sg@mail.gmail.com>
+ <CAGp9Lzp2s675kmTJG+iYgLXS=fjiD-JC6GYjom7i-bcWFDxWoQ@mail.gmail.com> <CAFktD2dbdccWFodfFNya_XnbKro-O+BKrs4cZRNa0uPrK6FFfQ@mail.gmail.com>
+In-Reply-To: <CAFktD2dbdccWFodfFNya_XnbKro-O+BKrs4cZRNa0uPrK6FFfQ@mail.gmail.com>
+From: Sean Wang <sean.wang@kernel.org>
+Date: Tue, 10 Mar 2026 19:47:22 -0500
+X-Gmail-Original-Message-ID: <CAGp9LzqeccDhKv9+KM1tWSA0uP0zJhC9WA2Jh3GozfJtiNxDnw@mail.gmail.com>
+X-Gm-Features: AaiRm51ioNsWXVrvHJpApgBQKN3bda87LX_2LGpKJhziI8Pah1L27105Llmsbg4
+Message-ID: <CAGp9LzqeccDhKv9+KM1tWSA0uP0zJhC9WA2Jh3GozfJtiNxDnw@mail.gmail.com>
+Subject: Re: [BUG] wifi: mt76: mt7925u: probe with driver mt7925u failed with
+ error -110
+To: Nick <morrownr@gmail.com>
+Cc: linux-wireless <linux-wireless@vger.kernel.org>, Felix Fietkau <nbd@nbd.name>, 
+	Lorenzo Bianconi <lorenzo@kernel.org>, Ryder Lee <ryder.lee@mediatek.com>, 
+	Shayne Chen <shayne.chen@mediatek.com>, Sean Wang <sean.wang@mediatek.com>, 
+	Deren Wu <deren.wu@mediatek.com>, Leon Yen <leon.yen@mediatek.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Rspamd-Queue-Id: 5509725A245
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.46 / 15.00];
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MID_CONTAINS_FROM(1.00)[];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TO_DN_SOME(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-32937-lists,linux-wireless=lfdr.de];
-	FORGED_SENDER_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[kernel.org:+];
+	TAGGED_FROM(0.00)[bounces-32938-lists,linux-wireless=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[linux-wireless];
-	FROM_NEQ_ENVFROM(0.00)[sean.wang@kernel.org,linux-wireless@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	TO_DN_ALL(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FREEMAIL_TO(0.00)[gmail.com];
+	MISSING_XM_UA(0.00)[];
 	FROM_HAS_DN(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[6];
-	PRECEDENCE_BULK(0.00)[];
-	NEURAL_HAM(-0.00)[-0.972];
+	MIME_TRACE(0.00)[0:+];
 	RCVD_COUNT_FIVE(0.00)[5];
-	R_DKIM_NA(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo]
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[sean.wang@kernel.org,linux-wireless@vger.kernel.org];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	NEURAL_HAM(-0.00)[-1.000];
+	TAGGED_RCPT(0.00)[linux-wireless];
+	RCPT_COUNT_SEVEN(0.00)[9];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,mail.gmail.com:mid]
 X-Rspamd-Action: no action
 
-From: Sean Wang <sean.wang@mediatek.com>
+On Mon, Mar 9, 2026 at 7:31=E2=80=AFPM Nick <morrownr@gmail.com> wrote:
+>
+> On Fri, Mar 6, 2026 at 6:46=E2=80=AFPM Sean Wang <sean.wang@kernel.org> w=
+rote:
+> >
+> > Hi Nick,
+> >
+> > Thanks for the detailed report  this is very helpful. I don't  have an
+> > MT7925 USB device to detail look into the issue, but based on the
+> > trace I wrote a small change to try a different MT7925 reset sequence.
+> > please help test.
+> >
+> > --- a/drivers/net/wireless/mediatek/mt76/mt792x_usb.c
+> > +++ b/drivers/net/wireless/mediatek/mt76/mt792x_usb.c
+> > @@ -234,6 +234,36 @@ int mt792xu_dma_init(struct mt792x_dev *dev, bool =
+resume)
+> >  }
+> >  EXPORT_SYMBOL_GPL(mt792xu_dma_init);
+> >
+> > +static int mt7925u_wfsys_reset(struct mt792x_dev *dev)
+> > +{
+> > +    u32 val;
+> > +    int i;
+> > +
+> > +#define MT7925_CBTOP_RGU_WF_SUBSYS_RST        0x70028600
+> > +#define MT7925_WFSYS_SW_INIT_DONE_ADDR        0x184c1604
+> > +#define MT7925_WFSYS_SW_INIT_DONE        0x00001d1e
+> > +
+> > +    val =3D mt792xu_uhw_rr(&dev->mt76, MT7925_CBTOP_RGU_WF_SUBSYS_RST)=
+;
+> > +    val |=3D MT_CBTOP_RGU_WF_SUBSYS_RST_WF_WHOLE_PATH;
+> > +    mt792xu_uhw_wr(&dev->mt76, MT7925_CBTOP_RGU_WF_SUBSYS_RST, val);
+> > +
+> > +    msleep(20);
+> > +
+> > +    val =3D mt792xu_uhw_rr(&dev->mt76, MT7925_CBTOP_RGU_WF_SUBSYS_RST)=
+;
+> > +    val &=3D ~MT_CBTOP_RGU_WF_SUBSYS_RST_WF_WHOLE_PATH;
+> > +    mt792xu_uhw_wr(&dev->mt76, MT7925_CBTOP_RGU_WF_SUBSYS_RST, val);
+> > +
+> > +    for (i =3D 0; i < MT792x_WFSYS_INIT_RETRY_COUNT; i++) {
+> > +        val =3D mt792xu_uhw_rr(&dev->mt76, MT7925_WFSYS_SW_INIT_DONE_A=
+DDR);
+> > +        if (val =3D=3D MT7925_WFSYS_SW_INIT_DONE)
+> > +            return 0;
+> > +
+> > +        msleep(100);
+> > +    }
+> > +
+> > +    return -ETIMEDOUT;
+> > +}
+> > +
+> >  int mt792xu_wfsys_reset(struct mt792x_dev *dev)
+> >  {
+> >      u32 val;
+> > @@ -241,6 +271,9 @@ int mt792xu_wfsys_reset(struct mt792x_dev *dev)
+> >
+> >      mt792xu_epctl_rst_opt(dev, false);
+> >
+> > +    if (is_mt7925(&dev->mt76))
+> > +        return mt7925u_wfsys_reset(dev);
+> > +
+> >      val =3D mt792xu_uhw_rr(&dev->mt76, MT_CBTOP_RGU_WF_SUBSYS_RST);
+> >
+> >
+>
+> Sean,
+>
+> Testing complete. Results are good. You can show the following:
+>
+> Tested-by: Nick Morrow <morrownr@gmail.com>
+> Tested-by: Satadru Pramanik <satadru@gmail.com>
+>
+> Thank you for working on this issue. If it is possible for your patch to =
+go
+> directly in to be in one of the next rc's, that would be great and settin=
+g
+> it to backport would also be much appreciated.
+>
+> Nick Morrow
+>
 
-mt7925u uses different reset/status registers from mt7921u. Reusing the
-mt7921u register set causes the WFSYS reset to fail.
+Hi Nick,
 
-Add a chip-specific descriptor in mt792xu_wfsys_reset() to select the
-correct registers and fix mt7925u failing to initialize after a warm
-reboot.
+Thanks for testing!
 
-Fixes: d28e1a48952e ("wifi: mt76: mt792x: introduce mt792x-usb module")
-Cc: stable@vger.kernel.org
-Signed-off-by: Sean Wang <sean.wang@mediatek.com>
----
- drivers/net/wireless/mediatek/mt76/mt792x_regs.h |  4 ++++
- drivers/net/wireless/mediatek/mt76/mt792x_usb.c  | 13 ++++++++++++-
- 2 files changed, 16 insertions(+), 1 deletion(-)
+I=E2=80=99ve already sent the patches upstream with a few small cosmetic
+tweaks. If you have a chance to test the latest version again, that
+would be great. If it still looks good, you can just reply with the
+Tested-by tags below. I think we can let Johannes know if it is okay
+to wireless.git directly I also CC=E2=80=99d stable so the fix can make its
+way into the stable trees.
 
-diff --git a/drivers/net/wireless/mediatek/mt76/mt792x_regs.h b/drivers/net/wireless/mediatek/mt76/mt792x_regs.h
-index 7ddde9286861..d2a8b2b0df32 100644
---- a/drivers/net/wireless/mediatek/mt76/mt792x_regs.h
-+++ b/drivers/net/wireless/mediatek/mt76/mt792x_regs.h
-@@ -392,6 +392,10 @@
- #define MT_CBTOP_RGU_WF_SUBSYS_RST	MT_CBTOP_RGU(0x600)
- #define MT_CBTOP_RGU_WF_SUBSYS_RST_WF_WHOLE_PATH BIT(0)
- 
-+#define MT7925_CBTOP_RGU_WF_SUBSYS_RST	0x70028600
-+#define MT7925_WFSYS_INIT_DONE_ADDR	0x184c1604
-+#define MT7925_WFSYS_INIT_DONE		0x00001d1e
-+
- #define MT_HW_BOUND			0x70010020
- #define MT_HW_CHIPID			0x70010200
- #define MT_HW_REV			0x70010204
-diff --git a/drivers/net/wireless/mediatek/mt76/mt792x_usb.c b/drivers/net/wireless/mediatek/mt76/mt792x_usb.c
-index a92e872226cf..47827d1c5ccb 100644
---- a/drivers/net/wireless/mediatek/mt76/mt792x_usb.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt792x_usb.c
-@@ -224,6 +224,15 @@ static const struct mt792xu_wfsys_desc mt7921_wfsys_desc = {
- 	.need_status_sel = true,
- };
- 
-+static const struct mt792xu_wfsys_desc mt7925_wfsys_desc = {
-+	.rst_reg = MT7925_CBTOP_RGU_WF_SUBSYS_RST,
-+	.done_reg = MT7925_WFSYS_INIT_DONE_ADDR,
-+	.done_mask = U32_MAX,
-+	.done_val = MT7925_WFSYS_INIT_DONE,
-+	.delay_ms = 20,
-+	.need_status_sel = false,
-+};
-+
- int mt792xu_dma_init(struct mt792x_dev *dev, bool resume)
- {
- 	int err;
-@@ -254,7 +263,9 @@ EXPORT_SYMBOL_GPL(mt792xu_dma_init);
- 
- int mt792xu_wfsys_reset(struct mt792x_dev *dev)
- {
--	const struct mt792xu_wfsys_desc *desc = &mt7921_wfsys_desc;
-+	const struct mt792xu_wfsys_desc *desc = is_mt7925(&dev->mt76) ?
-+						&mt7925_wfsys_desc :
-+						&mt7921_wfsys_desc;
- 	u32 val;
- 	int i;
- 
--- 
-2.43.0
+      Sean
 
+> > On Fri, Mar 6, 2026 at 1:24=E2=80=AFPM Nick <morrownr@gmail.com> wrote:
+> > >
+> > > > > Reference: https://github.com/morrownr/USB-WiFi/issues/688#issuec=
+omment-3999038526
+> > > > >
+> > > > > The above thread is rather lengthy as we have been working on thi=
+s
+> > > > > issue since Dec. 25.
+> > > > >
+> > > > > Testing with a Netgear A9000 USB WiFi adapter (mt7925u driver). K=
+ernel
+> > > > > 7.0 rc2 and a x86_64 system. Additional testing with older kernel=
+s was
+> > > > > also performed with the same results.
+> > > > >
+> > > > > Problem description:
+> > > > >
+> > > > > Cold boot shows the adapter coming up and operating normally.
+> > > > >
+> > > > > Removing the adapter from the USB port and replacing it shows the
+> > > > > adapter coming up and operating normally.
+> > > > >
+> > > > > A warm reboot does not provide a WiFi interface and shows the
+> > > > > following in the system log:
+> > > > >
+> > > > > mt7925u 2-3.2:1.0: probe with driver mt7925u failed with error -1=
+10
+> > > > >
+> > > > > Using the commands rmmod and modeprobe do not provide a WiFi inte=
+rface.
+> > > > >
+> > > > > Thoughts: The problem likely is not the module teardown. The prob=
+lem
+> > > > > seems to be that the firmware (or the mt7925u driver) leaves the
+> > > > > adapter in a strange state such that a power cycle of the adapter
+> > > > > hardware is needed before the mt7925u driver can properly initial=
+ize
+> > > > > it a second time.
+> > > > >
+> > > >
+> > > > Hi Nick,
+> > > >
+> > > > Could you enable debug logs and check whether the driver can still
+> > > > read the correct chip ID after a warm reboot, and at which step the
+> > > > initialization fails before the -110 error? Thanks for continuing t=
+o
+> > > > test and gather this useful information.
+> > > >
+> > > >          Sean
+> > >
+> > > Hi Sean,
+> > >
+> > > Github user @exct has performed the testing requested and provides th=
+e
+> > > following report:
+> > >
+> > > mt7925u Probe Failure Debug Report
+> > > Adapter: Netgear A9000 (USB ID 0846:9072, MediaTek MT7925)
+> > > Kernel: 6.19.6-2-cachyos
+> > >
+> > > Summary
+> > > The driver can read the correct chip ID after a warm reload. The
+> > > failure occurs before firmware is loaded, inside
+> > > mt792xu_wfsys_reset(), which times out waiting for the WiFi subsystem
+> > > to reinitialize. -ETIMEDOUT (-110) is returned and the probe aborts.
+> > >
+> > > Findings
+> > >
+> > > Question: Chip ID readable after warm reload?
+> > > Answer: Yes =E2=80=94 MT_HW_CHIPID =3D 0x7925, MT_HW_REV =3D 0x8a00
+> > >
+> > > Question: Which step fails?
+> > > Answer: mt792xu_wfsys_reset() =E2=80=94 WFSYS_INIT_DONE never asserte=
+d
+> > >
+> > > Question: Does it reach mt792xu_mcu_power_on()?
+> > > Answer: No
+> > >
+> > > Question: Does it reach mt7925_run_firmware()?
+> > > Answer: No
+> > >
+> > > Probe Sequence Trace
+> > >
+> > > mt7925u_probe()
+> > >   =E2=94=9C=E2=94=80 mt76_alloc_device()             OK
+> > >   =E2=94=9C=E2=94=80 __mt76u_init()                  OK
+> > >   =E2=94=9C=E2=94=80 read MT_HW_CHIPID (0x70010200)  =E2=86=92 0x0000=
+7925  =E2=9C=93
+> > >   =E2=94=9C=E2=94=80 read MT_HW_REV    (0x70010204)  =E2=86=92 0x0000=
+8a00  =E2=9C=93
+> > >   =E2=94=9C=E2=94=80 read MT_CONN_ON_MISC (0x7c0600f0) =E2=86=92 0x00=
+000003  =E2=86=90 FW_N9_RDY is SET
+> > >   =E2=94=9C=E2=94=80 enters mt792xu_wfsys_reset()    =E2=86=90 trigge=
+red because FW_N9_RDY =3D 1
+> > >   =E2=94=82    =E2=94=9C=E2=94=80 write MT_CBTOP_RGU_WF_SUBSYS_RST  (=
+assert reset)
+> > >   =E2=94=82    =E2=94=9C=E2=94=80 write MT_CBTOP_RGU_WF_SUBSYS_RST  (=
+deassert reset)
+> > >   =E2=94=82    =E2=94=9C=E2=94=80 poll MT_UDMA_CONN_INFRA_STATUS (0x7=
+4000a20) =E2=86=92 0x00000000
+> > >   =E2=94=82    =E2=94=9C=E2=94=80 poll MT_UDMA_CONN_INFRA_STATUS (0x7=
+4000a20) =E2=86=92 0x00000000
+> > >   =E2=94=82    =E2=94=94=E2=94=80 ... timeout after ~212 ms =E2=86=92=
+ return -ETIMEDOUT
+> > >   =E2=94=94=E2=94=80 goto error:  (mt76u_queues_deinit + mt76_free_de=
+vice)
+> > >
+> > > Root Cause
+> > >
+> > > After rmmod, the firmware leaves FW_N9_RDY asserted in
+> > > MT_CONN_ON_MISC. On re-probe, the driver correctly detects this and
+> > > calls mt792xu_wfsys_reset() to recover. However, the WiFi subsystem
+> > > never signals completion =E2=80=94 WFSYS_INIT_DONE in
+> > > MT_UDMA_CONN_INFRA_STATUS (reg 0x74000a20) stays 0x00000000 throughou=
+t
+> > > the retry loop. The subsystem is stuck in a state that the software
+> > > reset path cannot recover from. Only a full USB power cycle clears it=
+.
+> > >
+> > > Hope this helps,
+> > >
+> > > Nick
 
