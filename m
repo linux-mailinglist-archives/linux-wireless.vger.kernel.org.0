@@ -1,96 +1,96 @@
-Return-Path: <linux-wireless+bounces-32998-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-32999-lists+linux-wireless=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id oH9dHt3XsWnVFgAAu9opvQ
-	(envelope-from <linux-wireless+bounces-32998-lists+linux-wireless=lfdr.de@vger.kernel.org>)
-	for <lists+linux-wireless@lfdr.de>; Wed, 11 Mar 2026 22:00:13 +0100
+	id IPNRIvLXsWnVFgAAu9opvQ
+	(envelope-from <linux-wireless+bounces-32999-lists+linux-wireless=lfdr.de@vger.kernel.org>)
+	for <lists+linux-wireless@lfdr.de>; Wed, 11 Mar 2026 22:00:34 +0100
 X-Original-To: lists+linux-wireless@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id CE70126A3B1
-	for <lists+linux-wireless@lfdr.de>; Wed, 11 Mar 2026 22:00:12 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id E2FF126A3BF
+	for <lists+linux-wireless@lfdr.de>; Wed, 11 Mar 2026 22:00:33 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 7F60D307D4E3
-	for <lists+linux-wireless@lfdr.de>; Wed, 11 Mar 2026 20:57:32 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 9B23A300C59B
+	for <lists+linux-wireless@lfdr.de>; Wed, 11 Mar 2026 20:58:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F0E53239E63;
-	Wed, 11 Mar 2026 20:57:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6D078324B2D;
+	Wed, 11 Mar 2026 20:58:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="mJNF5dQk"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="DhW54RxC"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-ed1-f53.google.com (mail-ed1-f53.google.com [209.85.208.53])
+Received: from mail-ed1-f44.google.com (mail-ed1-f44.google.com [209.85.208.44])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 21367350A08
-	for <linux-wireless@vger.kernel.org>; Wed, 11 Mar 2026 20:57:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.208.53
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C53EC30E0DC
+	for <linux-wireless@vger.kernel.org>; Wed, 11 Mar 2026 20:58:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.208.44
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773262650; cv=pass; b=jvSudjgQBCHU8lQ210rwOkx3lhrtGOxshF25sdmIFWtD9bF7SAK4EbDEgbXw1g+BJ1wi0FIZnbFOd1lDO4lDisF2aRC6pZIn0Os+z1NWYnTEDWTV+vRIrCMzzeEWOGoMPytvBI/6ZQ6e+oiodhNQ/DM9mZ70qTk/EBFmgdGMj7o=
+	t=1773262720; cv=pass; b=D3ycUmdes4mVGgpXciJc7kB3O3LQmMoQPuDMNN4Xr6PypBfj2u4vEJLw34EGOWBOW2QpbBck7IxW8DYrckYn3nkzX1j5XbaLXFoi9Gs5g17ZEHwrHAa+ERPFZoQikqJO8EZPsa2iGwOg1hrjgdCBq0Q1m5yV1q7ZUJkIJStPmqI=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773262650; c=relaxed/simple;
-	bh=cQzc+P2qKXOaph3T+6nmGSpOHj8lmyaGOBl7s45UogY=;
+	s=arc-20240116; t=1773262720; c=relaxed/simple;
+	bh=J/kUKeNTENfSzP5xHVfPjLS5YjAeGuuwqJmZnN0faYA=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=aRbx5nytbWQVoBSW+UVg1b1aMa+6GWvbu2bYQIo5uXzzjONyCyNj0Rg7KhnAxR8NIbKv/ObGdScoX1jxmpSYn4p8TGmRxFqo907Le6aWJ5Eq4P7TU9HiETxU33vTCpkOI0e+iJUzWlWIjMIsihaHYMmnL1L19AeccsyYMinFHcs=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=mJNF5dQk; arc=pass smtp.client-ip=209.85.208.53
+	 To:Cc:Content-Type; b=Jm4lZlnREEm17O3SAbP4BASrysg9C+RNElfsEIyXY8hBvGML6+Udn/0q/I3anVucfXghFjsXS0Q27y6bnSnmPQqgQ3ngNtZdCLZMEYOIE0Jn95rzk1EvA9nBXrb+K47NlP2sItLu1dt+wlhbkq1erwpZx9eSjEFmKjldyZfMaOw=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=DhW54RxC; arc=pass smtp.client-ip=209.85.208.44
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-ed1-f53.google.com with SMTP id 4fb4d7f45d1cf-661d20c9787so381832a12.0
-        for <linux-wireless@vger.kernel.org>; Wed, 11 Mar 2026 13:57:28 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1773262647; cv=none;
+Received: by mail-ed1-f44.google.com with SMTP id 4fb4d7f45d1cf-662a1855af2so400578a12.3
+        for <linux-wireless@vger.kernel.org>; Wed, 11 Mar 2026 13:58:38 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1773262717; cv=none;
         d=google.com; s=arc-20240605;
-        b=TjhRuvNlhYVKLgktKJR7GCeUx7ZhrADHdfegYbYV8zjtsHvoENnhgwo8RZdAr6EIjV
-         exYVHwfk4GLaA028XCcDOBSHi0OdN5jOQckEbrz+csi/yT6b/iaA+NMg+yAmPCQ6PpBI
-         nh9l5LcMNKNfyUSrsWo2nRfWliqCRA3RYds0vCMjNw4wuNRoPB6/2vu3qyguvMnQ6VRP
-         gOcGdCbaRYkVuBNMCnG7C7XiCzV6XOuhMhgtjtMv8Dj+/UPz5dFwecUfwnDCF6+BbLKl
-         XsMfW7NgpilAnRgcXVf0x3TydxPtkwCR7RBaZCnxXJoxanUs5/P46Y+iFfGDPsgAOlnh
-         XEdA==
+        b=AAwt7vyfCzt5wu545ztZtp+RDIKQBaZJ8CjkwYz4Rh5UQJkwRU0h/HB9jTHxV68njd
+         zflAH8ehAjzccAahVsYykcmjcqggywPn3RRHr0QJaGGOCIeNOr022mUB5Fwwh87P1mpo
+         wClnEgFQXX9vSVMSyiC1RMmUOzisz9m1cr7QilAxf9nbuDOsTN3bWJkyzS9rWwlxbRnG
+         VRZ28Y2SP9IskvYYijGbq42aKJIIt4DECo05QfK/vHugaMCUDtXhiRRM26X1EHkMXosX
+         n0fYIWSzMZRsuHRS6UFftFhj8/Q9BrjQyAGzIcNKOXy64ZRBT0BdUB473dp59Ue9Tvhz
+         aNfg==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
         h=cc:to:subject:message-id:date:from:in-reply-to:references
          :mime-version:dkim-signature;
-        bh=XFQ/QAVUt2bC4UBVG90/SucbtwxVRuUMolNaHVPHXSY=;
+        bh=ZFSrsAzKQ3Nc+Aho7d7gG2Ra3wQyS/1tLF/F02PD+Zo=;
         fh=MXkW9Xo5Ym/gIF9EG8Fk1lbc8jJJ90IIrm4Se6meZo4=;
-        b=XQM556JydYGf8GhKglovTT+C19vcuTya6kAriLvTq+Qg/QjM1jLXdJL0bnfxvfimGn
-         hnIB1xCTORGh7UyBrr5qaNisOGyzrZqYzqgohrf4eGEJMoQAWaMMNStbIk9WJtUPwGkK
-         0d9fjyCV/l+n+vBKdEwovIwXSx8JdAeUqGPedL3JwDsZC/VOQgwehU+K8WohB9A7P6kS
-         3QUSanSzs0XZ8jATzqDuMgDD7kX5cHIKWGRzQR9F3I24SmWBKriTOlbPQi+8C8eAHxQz
-         0p/p7LoePnbL6SlSWpHD2DjewSRG9HOHpMCeRhe+kAhkTabylr8suQLeiT9nm1Tdr17u
-         O79g==;
+        b=G+eBOYAQ8cBtARguzIWhyLtOo5t/6T7lS1GZfJ41yMm5kGZ9l5j0j47dtTl0jvlPPh
+         +9jDPBGcpbwuiRuFEhfBprS7L3ruothA6Zpide60V1NzOOUnYLqvufomGjGwMDsyMFEY
+         U1yxsn0IQBRBkjeDxh2PLWmDxgwAZShnGjukTY6MEmHNI1iI5BFO/FC4pqiSPaot0EmX
+         BHFkqYbN9M5FZZdgY/pcZmJ+aq7eFiP07gEXtx2qz3L9udlKw1PoRdhf5m+9YqTx/vWF
+         HkExRDoMNS398ftbsE6Mvr/QTlmMGsEf1MJeTm4+vG+rSuA+8rpJ4ZqzsPfryI8pshUW
+         NG1w==;
         darn=vger.kernel.org
 ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1773262647; x=1773867447; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1773262717; x=1773867517; darn=vger.kernel.org;
         h=cc:to:subject:message-id:date:from:in-reply-to:references
          :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=XFQ/QAVUt2bC4UBVG90/SucbtwxVRuUMolNaHVPHXSY=;
-        b=mJNF5dQkBzsUTxWKzcgOMSsN8vBA8/yXKK3vMtZOF1wYf/DGjbBjh5hg3ZTyJMGwF0
-         MqNq4VmPhhzey4bvfWPhg24686L4hS/tdqqdTgb7D6iy85hkzKbOLB5AaslKQ9XOIkh2
-         uBKfPzPWAXiZwnyo/uiJjTQZ/tXNTqxKxm4hGxv1vGm9Vf69Ly67cEmv/Vq0Chg+I50/
-         sQahlxGFFtPBCTTHn/+Ro3lTgEDjD9BhU+PJ3HUHBm/E9WLjvDImXcmLXsunMiODHfPh
-         ZWtpa/4UNENcGWPIPGtGrsveqatOtTxAT+zYZgaV9vfgzLfNi4SmeKC3MFI8SDGXk6Kd
-         cP9A==
+        bh=ZFSrsAzKQ3Nc+Aho7d7gG2Ra3wQyS/1tLF/F02PD+Zo=;
+        b=DhW54RxC4MSBGKgSTVNCQx5Zmo7i9Ixo1qwctXlqdQhJ5hW/yPE97rITmvy4QQN7cm
+         0Lz+kNpBobAGloL4Y0KnfKHYFPtXLXQC2c7NWFIX5QKgTjvy59XySJDLWPSvwmzZRoHY
+         g2LYoK2XIBoCZE2HAYKJ83zOHzVI8GtltE7cPXhFFSNWTG6O8EAKODWzJ1Q6I/ZQEZON
+         o16FNDRgWgCOOVULa4nBYtaRatAX+kyTDfOUq/DVzMphsRq8SPCZ2j5+Xg9xbIc+ON+M
+         o3cC1pNpODSlYWq7WFGnRjLLg0wGwItB+5GV9lFafFeYOhNzAKKb5/uSKssWsVMKFP0L
+         KmvQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1773262647; x=1773867447;
+        d=1e100.net; s=20230601; t=1773262717; x=1773867517;
         h=cc:to:subject:message-id:date:from:in-reply-to:references
          :mime-version:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=XFQ/QAVUt2bC4UBVG90/SucbtwxVRuUMolNaHVPHXSY=;
-        b=QYCkj7CnV9S701ogaEvgT4YsEZqPHNVuZi4rZJvw4UprnbrtryGtfDvMbGsdW4O7+f
-         jdI3sa1KXGZOE21iMNqgqe9T3QKjG3aeH59N1kfeFEToVxLFYd29zZchEVKxmB7X0VRM
-         ffiA+cxQoo/44LQRQPZTnGXQGQDVxlfbmtMm05Yrchz2r0F+jqADBhe7Fl8NBjLKkJe6
-         ay9z/91Sslpo02vxs6Bbcaf1BWjZ1ob85vm5AnRdSxnMOXhte7N0EUsqnCvn9LhvfPhU
-         V4B19YEPbqF+r4BZEI6Q+bm4G/G0tu0em4JTizVLRUazJoysDkB2oAffy0VqnJO5c4e/
-         Vgcw==
-X-Gm-Message-State: AOJu0Yw10Ztw4btIofiZzU6llfvyWWEOacHIj9G+gJvcYuf6XdjXgERP
-	MUfepOwBwcv0cxFj0MyqAHyPHUY3+8Q5TNDdP6wkQuQi/ySX2RkEyCwG8aPnUPuTgfIw+BrMfz5
-	kT7aONUBaUs8UzHn77lfwgueBi7BMG98=
-X-Gm-Gg: ATEYQzxuxPveLgoXL7I2vRisRrKp0vwm7nWWFT+djPziMeqR1lhuhHMaeK9tcNecYc3
-	thHzuUF9EtHhrjN55FN68fRMCirF3l4Ckg11t+sXkKdRMRYekulUPH3L8jqj4HPsT6N+MJoKtdY
-	Orjc4OIshP6V6RstIri8A6IWpfjfHIHNT26BNR/DV6DE55/qlRc9M4j2ZcS0bwa7J0XCW3T6N2O
-	4dfI7JK7Ah85ciCyz93HAoYusR+cP90JfC9m8etDbOwcDK+674g/g7LN8Vb/OY+cVPuj6SBr75a
-	kRRsjg==
-X-Received: by 2002:a17:906:7955:b0:b90:71a2:3e76 with SMTP id
- a640c23a62f3a-b972e70af16mr238634666b.61.1773262647344; Wed, 11 Mar 2026
- 13:57:27 -0700 (PDT)
+        bh=ZFSrsAzKQ3Nc+Aho7d7gG2Ra3wQyS/1tLF/F02PD+Zo=;
+        b=LunyY8pW8iDDaC5VAwLkBmeb4w5wpaagXVKyROYjAwRQmWx2UMh+VRCREodfXzej5X
+         qf/R0NrgHd/xeDPOg9KeBadDYuhG7mX3RhDJa5kpOu8dOTVEv0c7upySZhaN1z1FDfwm
+         NmO6OLmMVRU13FS3M3L5/yUog2okP/5SYc75KolU++XW0juzKvBV9sAplxGIp+x+4/39
+         L9KXe8bYPW2yY8Kyvr0bZcxHY6sJZ5KwSIPAzHnf7K8DSNio0vxF1EjWtV1zqlfoAmO+
+         PtXNBXdxTT0HEBl/D4Cf8vH1dHg320Bi2KS78lC3f1MzFEHlvOZMEZP/GmikxNQOR7an
+         AJ3A==
+X-Gm-Message-State: AOJu0YwbDmkVOirnaQdxxHL5A0x6W4XgKfaCSJ7AYc2Kv2Dkd7WmQZNI
+	Y3lvDgTkFWrQxxK3TAVzfaQRBI40pc+04FH0Bq2eAxXxvq5Y9wkpC5tO5zhHM/WIH4LJVGSpbbn
+	Titjc8GmZFZYZK6yGH6/h9DglsUGDTZM=
+X-Gm-Gg: ATEYQzyU3D9g6tNhSE4fjPKFiYLoNpoTTjeqf8Bv3QXCVSfIMvdGng1uI6ZYF2JuHgW
+	oMkwSdHgDc0agj9n6IvgQg2/GtXjKAeBtncK26hqMDOTrpsz7v7jr65nhdacIqDD9toZscHy3jA
+	lU5REojs6yD1b1ndw2ByqXe6VscMzLz8mZZMsfKdX7L4frc25uyCg81KEMkoDacsOxsmyZI4tGH
+	kHV06p2zXPiJZv6kS0yHcdAXc0FBUqTFzdDzwWsBBcZnYmghotparMTY613iksagqhG0TYzOQb1
+	x3pyDg==
+X-Received: by 2002:a17:907:72cb:b0:b8f:a323:bda7 with SMTP id
+ a640c23a62f3a-b972e52dc74mr220526566b.46.1773262716821; Wed, 11 Mar 2026
+ 13:58:36 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
@@ -99,12 +99,13 @@ List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 References: <CANAPQzi3BkfnRS4CEXAA560O5cO8e6MEYxeVVx1u+xUeXS-gmA@mail.gmail.com>
  <CAGp9LzoidBL1iYYC371+Fw+drbArLRTneJKxCoFiitx=dweKCg@mail.gmail.com>
- <CANAPQzjiBf8Rqphn2SypYN2O6bddj6vB=63Mp=T5YVEt2oGvyw@mail.gmail.com> <CANAPQzgiE1rMP3F=5NJg3hp2uBXtq44+vTRBdkHwdfHyXJ8MQQ@mail.gmail.com>
-In-Reply-To: <CANAPQzgiE1rMP3F=5NJg3hp2uBXtq44+vTRBdkHwdfHyXJ8MQQ@mail.gmail.com>
+ <CANAPQzjiBf8Rqphn2SypYN2O6bddj6vB=63Mp=T5YVEt2oGvyw@mail.gmail.com>
+ <CANAPQzgiE1rMP3F=5NJg3hp2uBXtq44+vTRBdkHwdfHyXJ8MQQ@mail.gmail.com> <CANAPQzgD312EPSbvaQTE6U+wn85L65+xZHms7DP509ApxWvSZA@mail.gmail.com>
+In-Reply-To: <CANAPQzgD312EPSbvaQTE6U+wn85L65+xZHms7DP509ApxWvSZA@mail.gmail.com>
 From: bryam vargas <bryamestebanvargas@gmail.com>
-Date: Wed, 11 Mar 2026 15:57:15 -0500
-X-Gm-Features: AaiRm501XYuf6_xNncggL8WilcZ-LyyUOcc71F3ioiC44yhoD1Fm0RW2lRnL-J0
-Message-ID: <CANAPQzgD312EPSbvaQTE6U+wn85L65+xZHms7DP509ApxWvSZA@mail.gmail.com>
+Date: Wed, 11 Mar 2026 15:58:25 -0500
+X-Gm-Features: AaiRm51mj2z7E16-DLghbuJqU-OBnWUBTx9_-Sl-BUmLGVcviCRtpbSjAbPv6jM
+Message-ID: <CANAPQzgXN2UOjuwV1fRofN2syxG933kSaB9S7DyFAykHHMRzew@mail.gmail.com>
 Subject: Re: [PATCH 1/2] mt76: connac: fix txpower_cur not updated in mt76_connac_mcu_set_rate_txpower()
 To: Sean Wang <sean.wang@kernel.org>
 Cc: linux-wireless@vger.kernel.org, nbd@nbd.name, lorenzo@kernel.org, 
@@ -122,7 +123,7 @@ X-Spamd-Result: default: False [-2.16 / 15.00];
 	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-32998-lists,linux-wireless=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-32999-lists,linux-wireless=lfdr.de];
 	FREEMAIL_FROM(0.00)[gmail.com];
 	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
@@ -137,77 +138,126 @@ X-Spamd-Result: default: False [-2.16 / 15.00];
 	TAGGED_RCPT(0.00)[linux-wireless];
 	RCPT_COUNT_FIVE(0.00)[5];
 	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: CE70126A3B1
+X-Rspamd-Queue-Id: E2FF126A3BF
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-From 6c75ad481f0c3667d6ae2a2c8f7c2df08b1d52b5 Mon Sep 17 00:00:00 2001
+From 9fabc33e722f321b4048ada6d4667ddacbb1495a Mon Sep 17 00:00:00 2001
 From: bryam <bryamestebanvargas@gmail.com>
-Date: Mon, 9 Mar 2026 11:52:53 -0500
-Subject: [PATCH v2 1/2] mt76: mt7921: add mt7921-specific get_txpower callback
+Date: Mon, 9 Mar 2026 12:25:37 -0500
+Subject: [PATCH v2 2/2] mt76: mt7921u: trigger USB reset only on wfsys timeout
 
-Instead of updating txpower_cur in the write path
-(mt76_connac_mcu_set_rate_txpower), implement a mt7921-specific
-.get_txpower callback that derives the reported TX power directly
-from the SKU limits at query time.
+Instead of unconditionally scheduling a USB device reset at the start
+of the reset sequence, trigger it only when mt792xu_wfsys_reset()
+returns -ETIMEDOUT, which indicates the chip is in a latched state
+(SEFI - Single Event Functional Interrupt) where register writes over
+USB become silent no-ops.
 
-This avoids mixing write-side configuration with reporting logic.
-The callback uses mt76_get_power_bound() for SAR constraints and
-chain delta, then mt76_get_rate_power_limits() for per-rate EEPROM
-limits, yielding the actual TX power value.
+This avoids the race condition where usb_queue_reset_device() was
+scheduled asynchronously while the driver continued normal reset
+operations on the same device.
 
-Fixes: 3b4a3bdba808 ("mt76: mt7921: add support for reporting tx power")
+Tested-on: Minisforum NAB9 (MT7921U USB adapter) at 2400m altitude,
+           Bogota, Colombia. Cosmic radiation causes periodic SEFI
+           events; USB reset restores connectivity without intervention.
+
 Signed-off-by: Bryam Vargas <bryamestebanvargas@gmail.com>
 ---
- .../net/wireless/mediatek/mt76/mt7921/main.c  | 27 ++++++++++++++++++-
- 1 file changed, 26 insertions(+), 1 deletion(-)
+ .../net/wireless/mediatek/mt76/mt7921/usb.c   | 32 +++++++++----------
+ .../net/wireless/mediatek/mt76/mt792x_usb.c   | 16 ++++------
+ 2 files changed, 23 insertions(+), 25 deletions(-)
 
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7921/main.c
-b/drivers/net/wireless/mediatek/mt76/mt7921/main.c
-index 67383c4..35454e5 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7921/main.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7921/main.c
-@@ -1517,6 +1517,31 @@ static void mt7921_rfkill_poll(struct ieee80211_hw *hw)
-     wiphy_rfkill_set_hw_state(hw->wiphy, ret ? false : true);
- }
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7921/usb.c
+b/drivers/net/wireless/mediatek/mt76/mt7921/usb.c
+index 8c8c78f..44c7437 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7921/usb.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7921/usb.c
+@@ -86,33 +86,33 @@ static int mt7921u_mcu_init(struct mt792x_dev *dev)
 
+ static int mt7921u_mac_reset(struct mt792x_dev *dev)
+ {
+-    struct usb_interface *intf = to_usb_interface(dev->mt76.dev);
+     int err;
+
+     mt76_txq_schedule_all(&dev->mphy);
+     mt76_worker_disable(&dev->mt76.tx_worker);
+-
+     set_bit(MT76_RESET, &dev->mphy.state);
+     set_bit(MT76_MCU_RESET, &dev->mphy.state);
+-
+     wake_up(&dev->mt76.mcu.wait);
+     skb_queue_purge(&dev->mt76.mcu.res_q);
+-
+     mt76u_stop_rx(&dev->mt76);
+     mt76u_stop_tx(&dev->mt76);
+
+-    /* When the chip enters a latched state (SEFI - Single Event
+-     * Functional Interrupt, e.g. from cosmic radiation at altitude),
+-     * all register writes over USB become silent no-ops.
+-     * usb_queue_reset_device() electrically resets the chip via the
+-     * USB hub regardless of internal state -- identical to probe().
+-     * Async variant required to avoid deadlock in workqueue context.
+-     */
+-    dev_warn(dev->mt76.dev,
+-         "mt7921u: scheduling USB reset for chip recovery\n");
+-    usb_queue_reset_device(intf);
+-
+-    mt792xu_wfsys_reset(dev);
++    err = mt792xu_wfsys_reset(dev);
++    if (err == -ETIMEDOUT) {
++        /* Chip is in a latched state (SEFI - Single Event Functional
++         * Interrupt, e.g. from cosmic radiation at altitude).
++         * Register writes over USB become silent no-ops; schedule an
++         * electrical USB reset via the hub as last resort.
++         * usb_queue_reset_device() is async to avoid deadlock in
++         * workqueue context.
++         */
++        struct usb_interface *intf = to_usb_interface(dev->mt76.dev);
 +
-+static int mt7921_get_txpower(struct ieee80211_hw *hw,
-+                  struct ieee80211_vif *vif,
-+                  unsigned int link_id, int *dbm)
-+{
-+    struct mt76_phy *phy = mt76_vif_phy(hw, vif);
-+    struct mt76_power_limits limits;
-+    int n_chains, delta;
-+    s8 tx_power;
++        dev_warn(dev->mt76.dev,
++             "mt7921u: wfsys reset timed out, scheduling USB reset\n");
++        usb_queue_reset_device(intf);
++        goto out;
++    }
+
+     clear_bit(MT76_MCU_RESET, &dev->mphy.state);
+     err = mt76u_resume_rx(&dev->mt76);
+diff --git a/drivers/net/wireless/mediatek/mt76/mt792x_usb.c
+b/drivers/net/wireless/mediatek/mt76/mt792x_usb.c
+index cfd385e..4737384 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt792x_usb.c
++++ b/drivers/net/wireless/mediatek/mt76/mt792x_usb.c
+@@ -269,7 +269,6 @@ EXPORT_SYMBOL_GPL(mt792xu_wfsys_reset);
+
+ int mt792xu_init_reset(struct mt792x_dev *dev)
+ {
+-    struct usb_interface *intf = to_usb_interface(dev->mt76.dev);
+
+     set_bit(MT76_RESET, &dev->mphy.state);
+
+@@ -279,15 +278,14 @@ int mt792xu_init_reset(struct mt792x_dev *dev)
+     mt76u_stop_rx(&dev->mt76);
+     mt76u_stop_tx(&dev->mt76);
+
+-    /* Same rationale as mt7921u_mac_reset(): if the chip is in a
+-     * latched state (SEFI), register writes over USB are no-ops.
+-     * Schedule a USB port reset before software reset sequence.
+-     */
+-    dev_warn(dev->mt76.dev,
+-         "mt7921u: scheduling USB device reset (init_reset path)\n");
+-    usb_queue_reset_device(intf);
++    if (mt792xu_wfsys_reset(dev) == -ETIMEDOUT) {
++        struct usb_interface *intf = to_usb_interface(dev->mt76.dev);
 +
-+    if (!phy)
-+        return -EINVAL;
-+
-+    if (!phy->chandef.chan)
-+        return mt76_get_txpower(hw, vif, link_id, dbm);
-+
-+    n_chains = hweight16(phy->chainmask);
-+    delta = mt76_tx_power_path_delta(n_chains);
-+    tx_power = mt76_get_power_bound(phy, phy->chandef.chan->max_power);
-+    tx_power = mt76_get_rate_power_limits(phy, phy->chandef.chan,
-+                          &limits, tx_power);
-+    *dbm = DIV_ROUND_UP(tx_power + delta, 2);
-+    return 0;
-+}
-+
- const struct ieee80211_ops mt7921_ops = {
-     .tx = mt792x_tx,
-     .start = mt7921_start,
-@@ -1541,7 +1566,7 @@ const struct ieee80211_ops mt7921_ops = {
-     .wake_tx_queue = mt76_wake_tx_queue,
-     .release_buffered_frames = mt76_release_buffered_frames,
-     .channel_switch_beacon = mt7921_channel_switch_beacon,
--    .get_txpower = mt76_get_txpower,
-+    .get_txpower = mt7921_get_txpower,
-     .get_stats = mt792x_get_stats,
-     .get_et_sset_count = mt792x_get_et_sset_count,
-     .get_et_strings = mt792x_get_et_strings,
++        dev_warn(dev->mt76.dev,
++             "mt792xu: wfsys reset timed out, scheduling USB reset\n");
++        usb_queue_reset_device(intf);
++    }
+
+-    mt792xu_wfsys_reset(dev);
+
+     clear_bit(MT76_RESET, &dev->mphy.state);
+
 --
 2.43.0
 
