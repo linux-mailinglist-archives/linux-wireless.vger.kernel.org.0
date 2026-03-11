@@ -1,206 +1,366 @@
-Return-Path: <linux-wireless+bounces-32982-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-32983-lists+linux-wireless=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 4A9hCY1LsWlCtAIAu9opvQ
-	(envelope-from <linux-wireless+bounces-32982-lists+linux-wireless=lfdr.de@vger.kernel.org>)
-	for <lists+linux-wireless@lfdr.de>; Wed, 11 Mar 2026 12:01:33 +0100
+	id SEAtJ3dLsWlCtAIAu9opvQ
+	(envelope-from <linux-wireless+bounces-32983-lists+linux-wireless=lfdr.de@vger.kernel.org>)
+	for <lists+linux-wireless@lfdr.de>; Wed, 11 Mar 2026 12:01:11 +0100
 X-Original-To: lists+linux-wireless@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1BB07262AF4
-	for <lists+linux-wireless@lfdr.de>; Wed, 11 Mar 2026 12:01:32 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0D926262AE6
+	for <lists+linux-wireless@lfdr.de>; Wed, 11 Mar 2026 12:01:10 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 8AD78307B55A
-	for <lists+linux-wireless@lfdr.de>; Wed, 11 Mar 2026 10:56:42 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 21F7730028EE
+	for <lists+linux-wireless@lfdr.de>; Wed, 11 Mar 2026 11:01:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EA86E3D47B6;
-	Wed, 11 Mar 2026 10:56:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2416131690A;
+	Wed, 11 Mar 2026 11:01:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b="XCBKV3oh"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="d7JQ3+Mi"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from sipsolutions.net (s3.sipsolutions.net [168.119.38.16])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ot1-f54.google.com (mail-ot1-f54.google.com [209.85.210.54])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9A6131F875A
-	for <linux-wireless@vger.kernel.org>; Wed, 11 Mar 2026 10:56:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=168.119.38.16
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773226601; cv=none; b=oTH+5vbai8MNlb3deHsp0lWyY89fh9GmlA3iHqOjJhC7Xnrbv9B8Piyrj2LhVnko942r8wu1B2mlLGV2geBhEiTBhKQWHvdeMqA47PDNU8e8Qol569i1BCeuxnR8p99FN/2lKL9/l+VVdvuXYqAhG67/Gsl8AMO+84fMTdvTKfo=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773226601; c=relaxed/simple;
-	bh=5PugBFKZji+CdK0QvxTnwCvJ0k5CeaH0k9ZK6Q3VGLY=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=E0BScjUG7Ez5k/gyuqG06voPfJ39OhyjmosxaVKaNE+xXc7EsNPuKcZoreOxaPSCXx5XEE88GnRE2zXIUm17Dlt2jBAHSAcNqrNMnVi+aGEN2cp02dOcaLQLmlOXR8aw4G9iKUuDgCbMwnKLRERPCy5NfGimnk4zKNDZsd312aY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net; spf=pass smtp.mailfrom=sipsolutions.net; dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b=XCBKV3oh; arc=none smtp.client-ip=168.119.38.16
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sipsolutions.net
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=sipsolutions.net; s=mail; h=MIME-Version:Content-Transfer-Encoding:
-	Content-Type:References:In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender
-	:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
-	Resent-Cc:Resent-Message-ID; bh=7AIu2CbUwA3EFNazXWfQajA59owSx0UhFpAVg3xWYiM=;
-	t=1773226600; x=1774436200; b=XCBKV3oh6UN/ucrse3fBdTePGnkAYESlAXKfM36GBfG7LkN
-	fm0JRcQGW+no4WBpWAoOEr82UpY58apxy2wxjReqgAbJMsD0++AmKS7y/lqgtOU6FEQ60OiqhxfuK
-	toknRPd/pxd7/GbSS29pxL/+7raUpTsEPtPrfxE8CplHmFDFMu3wvJNB6xB6vZbI/Fh8eWNoDPd2V
-	sDKqn89PcV9FMtoMRPZBsaTC4pw5a9IltiXA/Y3viijsUqaxYusKGEBqSyF90E9HT6DmIoT7glvw3
-	lXOMuK4drSE35AFMEMdvNDiKB1RVV/Gbb4jxxqMsxiTMaX37RJCTrIdiYKs/pA3Q==;
-Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
-	(Exim 4.98.2)
-	(envelope-from <johannes@sipsolutions.net>)
-	id 1w0HF0-0000000EoiY-1Xn4;
-	Wed, 11 Mar 2026 11:56:38 +0100
-Message-ID: <b725c0be05df1a9595c177aada4cc148bf555448.camel@sipsolutions.net>
-Subject: Re: [PATCH wireless-next v2] wifi: cfg80211: init S1G properly when
- creating chandef
-From: Johannes Berg <johannes@sipsolutions.net>
-To: Lachlan Hodges <lachlan.hodges@morsemicro.com>
-Cc: linux-wireless@vger.kernel.org, arien.judge@morsemicro.com
-Date: Wed, 11 Mar 2026 11:56:37 +0100
-In-Reply-To: <4dhrrbuvxdgve2doc7qvabzjancimtqpounngyrxspk4d4rbls@xnad5bwciz7c> (sfid-20260311_112148_368557_B2317140)
-References: <20260311064339.524758-1-lachlan.hodges@morsemicro.com>
-	 <791eaf8ab04dcbe01e2d71612d162f71c61e573a.camel@sipsolutions.net>
-	 <4dhrrbuvxdgve2doc7qvabzjancimtqpounngyrxspk4d4rbls@xnad5bwciz7c>
-	 (sfid-20260311_112148_368557_B2317140)
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.58.3 (3.58.3-1.fc43) 
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C65A528BA95
+	for <linux-wireless@vger.kernel.org>; Wed, 11 Mar 2026 11:01:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.210.54
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1773226863; cv=pass; b=RpgNizcvS2T8N5DV/weTmnOmft8j6tONx8E8VH14pPadv0qLv5+tOeFhPQKqZ288fRSNjQE/33Qg24P389L7FmUWSnrAJBsSwWLUrgp377AvpjE1Ul9zxVSqQQNql96xxwxS9sQ0bDNnVvBmT7wejL3hULFKZcXvo+LbcV1LG8A=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1773226863; c=relaxed/simple;
+	bh=I9tgMVWgii4YP8S+XXWzKjkN2jz8ZGwU5gGZ1Ljh1vA=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=WlrxjxSvFxOnxTrEUgDTNR9I1g68KjWIliHxymTlcTu1FWsvszX4UD9PEn2IPLzJ1YD4GGlLArB+miUJhUox+tKPbufHo8VVBr+1qzrvd2PaJMiGV+Uqq8olfMAN8yHcfNA8tPUCRrcq2YMXtxEy31AQRkVGG8f2l5U9CmNcgSQ=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=d7JQ3+Mi; arc=pass smtp.client-ip=209.85.210.54
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-ot1-f54.google.com with SMTP id 46e09a7af769-7d7507327d7so2470809a34.3
+        for <linux-wireless@vger.kernel.org>; Wed, 11 Mar 2026 04:01:00 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1773226860; cv=none;
+        d=google.com; s=arc-20240605;
+        b=P5Px6+RLVJe6GXPblh54QSrNpxllUAq+itUqrpzXtkV++RBGfgj4vJ7NRpefHPBocf
+         krFs+M3Dn00XD3lKqj9VsoO11qVQ287pUspX6I9ShJIE5ewGnOStmfdZ3kZtvrcNlKqN
+         K8DsJklxOU4tvFhAft3wbYnXMBHQms2Q6ubST7JxopinRBbSqJrdD4FR/ybsedOCgt6C
+         lsIBZmRhKNANDHRjNSyxPPDxogtq9NRfF5iwLGxmsDJGXZJR3qROOCdTJTOJbUNkWOv4
+         58e+jeu/Pj62lyr+v/7oQwSlFnl52qmnTPD1icZSX8g8ScwKlLBZKy/sv4KRi5WLV82/
+         MK0g==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=I9tgMVWgii4YP8S+XXWzKjkN2jz8ZGwU5gGZ1Ljh1vA=;
+        fh=fFUQ3bDSnwWYL/1dqZwPKYywXd5TONRsAevI/mvHYbI=;
+        b=jfwCcCIYTh8h+iQlgHJmXV9Q5YiJvAWQHJFA0cxXtZhf8J3cGaa3Z8j7RY+4dZvSXb
+         8fuROpEiULi8OiwBeYae/RSI/QKzwQMGpneWh1fjJXHKY6XCZUbRl0cc0aKCWb2JHU8z
+         YGLjdCS50asgcDMUeCYiEtywRe3pR3ZEUTHMEe59VWgp4r63nRttAYwSsUM1CbeVhfx/
+         3AYJzPc7OVQXS9GsW7jr5NzCuNQjbfofYkfp7c9XM21BiYR3VavZug/o7GeR8f1scGtY
+         imtxlBJxU0D5gLUEDXj6mI0ZB1ARifdxsoZL9wh5A9JyOWr1DD2PC001zwyWWKp01u2h
+         V+6w==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1773226860; x=1773831660; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=I9tgMVWgii4YP8S+XXWzKjkN2jz8ZGwU5gGZ1Ljh1vA=;
+        b=d7JQ3+MiPebxLp+vQXggDkuhdWIY/uj2qcr4ei5vHdUPYCSxkfhTUPBVOS3g5dpg7V
+         sXzo3gboVBPkG/zMrvcUl16OK26tZaxLB9gmWO5dciL3kwFe/byFCzgsNZegQyYe537h
+         03Jxi9BH0whWh+F36z4/Fv1F8WNohKoogJMJLDCkEpL/VxQQ1q0DmnyA5Fbu3VNbWo5P
+         f2IxO59zpeeU8VZzhm4/4bUT0WAdMyAv8NzK/xJGbdksM0Nh9hgPnt6a40n8nGqMJH+i
+         959O2p+W4/zGXBc5pxzGsyYqWs9bm7iJnE/cG+NOWHFcMwOibqBi444qHwKCI1SKjncl
+         LVdQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1773226860; x=1773831660;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=I9tgMVWgii4YP8S+XXWzKjkN2jz8ZGwU5gGZ1Ljh1vA=;
+        b=leO8l7uQCTpzpi7dJk16ReRyoLL85+Kx4187Vyp0MpUX1P3rY9/MPkgcMhKhNvE5Yz
+         OadBhkdtEHZU8ALgHkO+H2+IvTxGvqhDvij39uo8q+z33N7xwD6UTgm7yeORtBFad/2k
+         Wwk4Uc+muVwS3QPbeCzIFJhb/04NRrn+Zp4Z0R016y5KmsgUmNpKLtsmfLgwO1MwBLbt
+         h0WGZTmLjeikyTlbM3sAeHyMaUcKZt1SsiY/w44aL5xVBgQgTEJiVC7lyM947aAH6h55
+         kRuU203uDdPe9WaJ+iRvH0ylhV5vW0Z5iXVNm7hl5xxJdNv43Kthp9gLnrJKHl5F1aso
+         W/cQ==
+X-Gm-Message-State: AOJu0Yx/sUCk9HeYioLrkpsujz4NgVTRr75aY9K61X+kLipSoLfea31t
+	nHB4eGXtPRjqNP0yorphYNXt55sZejfbEpuifUprafT5BEi+J3Sp4dIiie6N5eIYHzhRTIqQfzy
+	0hqoQdNcjdq27coDetcdXfUSI5kFWV5E=
+X-Gm-Gg: ATEYQzwDM+R7wz8rM2HJDh5h8nr1utdhQpiwofStoAPuFc5hRbpk4teU8fSoVC0Oryb
+	JKmd6qmZO7CcvuVMYyovI+W7P/WJ1u21vCAw0oEwS66GghQsdJfrY37A6iwY1bFk4kCDvYwJCAW
+	P/vi5Y1r4EcaW1vsESyZhwvT2bJObwXZbqIBDTdmaYmVhtNHgYuS0n8IDad8eQMyIgarbHk0XzM
+	Yh+cCZ/zh6XsdIMKG/BMnF5VnTldIhuavQxV1VFz+DVFAJtUOZoXHMafpnKG/grO7Qx/wNc32UN
+	/2L9VUrhDtBhc45jY3v6dAI2DQ==
+X-Received: by 2002:a05:6830:2a91:b0:7d7:455d:1003 with SMTP id
+ 46e09a7af769-7d76a6bd729mr1442004a34.4.1773226859502; Wed, 11 Mar 2026
+ 04:00:59 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-malware-bazaar: not-scanned
-X-Rspamd-Queue-Id: 1BB07262AF4
+References: <CALdGYqSQ1Ko2TTBhUizMu_FvLMUAuQfFrVwS10n_C-LSQJQQkQ@mail.gmail.com>
+ <1e96af437fa24674b353ddb530b2d8e7@realtek.com> <CALdGYqQb=Vt0jjqW7k8RGMV1gczL0cg-26cHgCm3MmzBjezGMQ@mail.gmail.com>
+ <792645eed36041f0b3df951f1b28a08a@realtek.com> <e6720993c8c14245981432cfa4ae902b@realtek.com>
+In-Reply-To: <e6720993c8c14245981432cfa4ae902b@realtek.com>
+From: LB F <goainwo@gmail.com>
+Date: Wed, 11 Mar 2026 13:00:21 +0200
+X-Gm-Features: AaiRm51RsHJX-zT6cw4LQUmc3KZ4V7JdAsYX9aCOhUdsiipItBoiGOzfdCxTf7s
+Message-ID: <CALdGYqQn8GGXXjZTsL+a5Mfdmw5HRYB2Jyvqq5M5SUwxK9yd_g@mail.gmail.com>
+Subject: Re: [BUG] wifi: rtw88: Hard system freeze on RTL8821CE when
+ power_save is enabled (LPS/ASPM conflict)
+To: Ping-Ke Shih <pkshih@realtek.com>
+Cc: "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>, 
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Rspamd-Queue-Id: 0D926262AE6
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-2.16 / 15.00];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[sipsolutions.net,none];
-	R_DKIM_ALLOW(-0.20)[sipsolutions.net:s=mail];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=2];
+	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
+	R_DKIM_ALLOW(-0.20)[gmail.com:s=20230601];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-32982-lists,linux-wireless=lfdr.de];
-	DKIM_TRACE(0.00)[sipsolutions.net:+];
-	FROM_HAS_DN(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
+	TAGGED_FROM(0.00)[bounces-32983-lists,linux-wireless=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	RCPT_COUNT_THREE(0.00)[3];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	TO_DN_SOME(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[johannes@sipsolutions.net,linux-wireless@vger.kernel.org];
+	TO_DN_EQ_ADDR_SOME(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-0.999];
+	FREEMAIL_FROM(0.00)[gmail.com];
+	RCVD_COUNT_THREE(0.00)[4];
+	TO_DN_SOME(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	FROM_HAS_DN(0.00)[];
+	RCPT_COUNT_THREE(0.00)[3];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[goainwo@gmail.com,linux-wireless@vger.kernel.org];
+	DKIM_TRACE(0.00)[gmail.com:+];
+	MID_RHS_MATCH_FROMTLD(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
 	TAGGED_RCPT(0.00)[linux-wireless];
-	MID_RHS_MATCH_FROM(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sipsolutions.net:dkim,sipsolutions.net:mid,morsemicro.com:email,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
+	MISSING_XM_UA(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,mail.gmail.com:mid]
 X-Rspamd-Action: no action
 
-On Wed, 2026-03-11 at 21:21 +1100, Lachlan Hodges wrote:
-> On Wed, Mar 11, 2026 at 10:55:46AM +0100, Johannes Berg wrote:
-> > On Wed, 2026-03-11 at 17:43 +1100, Lachlan Hodges wrote:
-> > > When creating a chandef, the initial width is determined by the
-> > > chan_type argument leading to a default width of 20/20_NOHT/40 which
-> > > does not make sense for S1G channels. Fix this by ensuring we default
-> > > S1G chandefs to a width of 1MHz.
-> > >=20
-> > > Signed-off-by: Lachlan Hodges <lachlan.hodges@morsemicro.com>
-> > > ---
-> > > v1 -> v2:
-> > >=20
-> > > - Remove the mac80211-based wording in the commit message and keep it
-> > >   simple.
-> >=20
-> > Thanks :)
-> >=20
-> > Now with more tea and all that, do we really want it to completely
-> > ignore the width? Should that be documented? Almost feels like it shoul=
-d
-> > WARN if you use it wrong, with an S1G channel but a regular width, and
-> > mac80211 should be fixed?
-> =20
-> When you say "ignore the width"=C2=A0
+Hi Ping-Ke,
 
-Sorry, I meant the channel type (chantype argument).
+Thank you for the incredibly fast turnaround and for providing the RFT
+patch with the DMI quirk!
 
-> do you mean nothing checks it?
+First, I want to mention that I am not an IT professional or a
+programmer. I am just a regular Linux user who really wants to help
+solve this problem. I am trying my best to verify everything
+carefully, so please forgive me if my terminology or induction was
+slightly off.
 
-I meant for s1g the chantype argument would be ignored now, not that it
-wasn't checked.
+To answer your clarifying questions from the previous emails:
 
-> If
-> that's the case we probably need to add something within
-> cfg80211_chandef_valid() to ensure if we have an S1G chan we don't
-> have a non-S1G width i.e > 16MHz. That would fix mac80211 from
-> giving it to the driver in the first place.
+> Just want to clarify that these logs only appear in test 3, right?
+> No these logs in test 1/2.
 
-We don't have that? Seems like an oversight too, but I was thinking like
-this (overall changes, not split to commits), since
-cfg80211_chandef_create() really doesn't work for S1G since the chantype
-is 20MHz-non-HT, 20MHz-HT, HT40+ or HT40-.
+Yes, exactly. The `failed to send h2c command` errors only caused a
+complete system freeze when no workarounds were active and the adapter
+attempted to sleep (Test 3).
 
+> I think this is your perspective and induction, right? Did you measure
+> real hardware signals?
 
-diff --git a/net/mac80211/main.c b/net/mac80211/main.c
-index b0451f1c8e79..9a055dfb445a 100644
---- a/net/mac80211/main.c
-+++ b/net/mac80211/main.c
-@@ -1118,6 +1118,19 @@ ieee80211_ifcomb_check(const struct ieee80211_iface_=
-combination *c, int n_comb)
- 	return true;
- }
-=20
-+static void ieee80211_create_default_chandef(struct cfg80211_chan_def *cha=
-ndef,
-+					     struct ieee80211_channel *chan)
-+{
-+	*chandef =3D (struct cfg80211_chan_def) {
-+		.chan =3D chan,
-+		.width =3D chan->band =3D=3D NL80211_BAND_S1GHZ ?
-+			NL80211_CHAN_WIDTH_1 :
-+			NL80211_CHAN_WIDTH_20_NOHT,
-+		.center_freq1 =3D chan->center_freq,
-+		.freq1_offset =3D chan->freq_offset,
-+	}
-+}
-+
- int ieee80211_register_hw(struct ieee80211_hw *hw)
- {
- 	struct ieee80211_local *local =3D hw_to_local(hw);
-@@ -1261,9 +1274,8 @@ int ieee80211_register_hw(struct ieee80211_hw *hw)
- 			/* if none found then use the first anyway */
- 			if (i =3D=3D sband->n_channels)
- 				i =3D 0;
--			cfg80211_chandef_create(&dflt_chandef,
--						&sband->channels[i],
--						NL80211_CHAN_NO_HT);
-+			ieee80211_create_default_chandef(&dflt_chandef,
-+							 &sband->channels[i]);
- 			/* init channel we're on */
- 			local->monitor_chanreq.oper =3D dflt_chandef;
- 			if (local->emulate_chanctx) {
-diff --git a/net/wireless/chan.c b/net/wireless/chan.c
-index d9d4e043bb39..4ae2f6ca0378 100644
---- a/net/wireless/chan.c
-+++ b/net/wireless/chan.c
-@@ -29,9 +29,10 @@ void cfg80211_chandef_create(struct cfg80211_chan_def *c=
-handef,
-=20
- 	*chandef =3D (struct cfg80211_chan_def) {
- 		.chan =3D chan,
--		.freq1_offset =3D chan->freq_offset,
- 	};
-=20
-+	WARN_ON(chan->band =3D=3D NL80211_BAND_S1GHZ);
-+
- 	switch (chan_type) {
- 	case NL80211_CHAN_NO_HT:
- 		chandef->width =3D NL80211_CHAN_WIDTH_20_NOHT;
+You are entirely correct. This is just my induction based solely on
+the timing of the logs and system behavior. I do not have access to an
+oscilloscope or any hardware diagnostic tools. Given this, I
+completely agree that your approach of applying a platform-specific
+quirk is the safest and best solution.
 
+> Forgot to say. Could you share your full name for me as a reporter
+> in commit message?
 
-johannes
+My full name is Oleksandr Havrylov. I would be honored to be included
+as the reporter in the commit message.
+
+### Recent Baseline Testing Before Your Patch
+
+Before applying your patch today, we ran a few more controlled tests
+to double-check our baseline. We verified that our local workaround
+(`modprobe.d disable_aspm=3Dy`) **does indeed keep the system completely
+stable** and prevents the hard freeze, even when NetworkManager's
+`wifi.powersave` is set to ON (default).
+
+However, we noticed one interesting detail in the kernel logs: while
+the system no longer freezes with `disable_aspm=3Dy`, `dmesg` still
+constantly logs `firmware failed to leave lps state` and `failed to
+send h2c command` when the laptop is completely idle. It seems the
+firmware still crashes during LPS, but because ASPM is disabled, the
+PCIe bus ignores the crash and the system survives perfectly fine. I
+just wanted to mention this for completeness!
+
+### Testing Plan
+
+I have **not** applied your RFT patch just yet. I wanted to make sure
+our testing baseline was 100% clean and documented first.
+
+I will compile your patch and perform rigorous testing this evening (I
+am in the EET timezone, Ukraine). I will test it with the native
+`power_save` fully enabled to ensure your patch successfully prevents
+the hard lockups as intended.
+
+I will stay in touch and reply back to this thread with a formal
+`Tested-by` confirmation (and any logs if needed) as soon as my
+testing is complete. Thank you again for all your help!
+
+Best regards,
+Oleksandr Havrylov
+
+=D1=81=D1=80, 11 =D0=BC=D0=B0=D1=80. 2026=E2=80=AF=D0=B3. =D0=B2 04:22, Pin=
+g-Ke Shih <pkshih@realtek.com>:
+>
+> Ping-Ke Shih <pkshih@realtek.com> wrote:
+> >
+> > LB F <goainwo@gmail.com> wrote:
+> > >
+> > > Hi Ping-Ke,
+> > >
+> > > Thank you for the incredibly fast response and assistance!
+> > >
+> > > > Can you dig kernel log (by netconsole or ramoops) if something usef=
+ul?
+> > > > I'd like to know this is hardware level freeze or kernel can captur=
+e something
+> > > wrong.
+> > >
+> > > I managed to pull a call trace from a historic journald log just
+> > > before the system hung. The kernel gets trapped in an IRQ thread
+> > > inside `rtw_pci_interrupt_threadfn`, calling up into `mac80211`
+> > > `ieee80211_rx_list` before everything freezes. Here is the relevant
+> > > snippet:
+> > >
+> > > ```text
+> > > Call Trace:
+> > > <IRQ>
+> > > ? __alloc_skb+0x23a/0x2a0
+> > > ? __alloc_skb+0x10c/0x2a0
+> > > ? __pfx_irq_thread_fn+0x10/0x10
+> > > [ ... truncated module list ... ]
+> > > Tainted: G W I 6.19.6-2-cachyos #1 PREEMPT(full)
+> > > Hardware name: HP HP Notebook/81F0, BIOS F.50 11/20/2020
+> > > RIP: 0010:ieee80211_rx_list+0x1012/0x1020 [mac80211]
+> > > CPU: 2 UID: 0 PID: 765 Comm: irq/56-rtw88_pc
+> > > rtw_pci_interrupt_threadfn+0x239/0x310 [rtw88_pci]
+> > > ```
+> > >
+> > > It behaves exactly like a PCIe bus deadlock or a hardware fault that
+> > > eventually brings down the CPU handling the IRQ.
+> >
+> > I wonder if there is a malformed data, causing this trace and the leads
+> > kernel freezes. If we can do validation on RX data before calling
+> > ieee80211_rx_list(), maybe trace disappears and everything will be fine=
+?
+> > Even no need workaround.
+> >
+> > >
+> > > > Are these totally needed to workaround the problem? Or disable_aspm=
+ is enough?
+> > > > I'd list them in order of power consumption impact:
+> > > > 1. disable_aspm=3Dy
+> > > > 2. disable_lps_deep=3Dy
+> > > > 3. disable WiFi power save
+> > >
+> > > To verify which parameters are strictly necessary, I performed
+> > > isolated testing today. I ensured no other modprobe configs were
+> > > active, rebuilt the initramfs, and manually enforced that
+> > > `wifi.powersave` was active via `iw dev wlan0 set power_save on`
+> > > during all tests (as the OS power management profiles were defaulting
+> > > it to off, which initially masked the issue).
+> > >
+> > > I tested each workaround individually across multiple sleep/wake
+> > > cycles and active usage:
+> > >
+> > > **Test 1 (ASPM Disabled, LPS Deep Enabled):**
+> > > - Kernel parameters: `rtw88_pci disable_aspm=3Dy` (and `rtw88_core
+> > > disable_lps_deep=3Dn`)
+> > > - Result: Stable. No freezes were observed during usage or transition=
+s
+> > > into/out of S3 sleep while power saving was enforced.
+> > >
+> > > **Test 2 (ASPM Enabled, LPS Deep Disabled):**
+> > > - Kernel parameters: `rtw88_core disable_lps_deep=3Dy` (and `rtw88_pc=
+i
+> > > disable_aspm=3Dn`)
+> > > - Result: Stable. No freezes were observed under the same forced powe=
+r
+> > > save conditions.
+> > >
+> > > **Conclusion:** It appears we do not need both workarounds
+> > > simultaneously for this specific hardware. Using only `disable_aspm=
+=3Dy`
+> > > seems to be sufficient to prevent the system freeze. Given your note
+> > > about the power consumption impact ranking, this looks like the
+> > > optimal path forward.
+> >
+> > Let's test my RFT patch to disable ASPM then.
+> >
+> > >
+> > > > But what does 'deadlock' mean? As I know NAPI poll is scheduled by =
+ISR,
+> > > > and going to receive packets. The rx_no_aspm workaround is to force=
+ly turn
+> > > > off ASPM during this period.
+> > >
+> > > By "deadlock" I meant a hardware-level bus lockup. It seems the
+> > > physical RTL8821CE chip itself crashes or hangs the system's PCIe bus
+> > > when trying to negotiate waking up from ASPM L1 while simultaneously
+> > > existing in `LPS_DEEP_MODE_LCLK`. The `rx_no_aspm` workaround in NAPI
+> > > helps during active Rx decoding, but the laptop often freezes while
+> > > completely idle, presumably when the AP sends a basic beacon, the chi=
+p
+> > > attempts to leave LPS Deep + L1, and the hardware simply gives up and
+> > > halts the system.
+> >
+> > I think this is your perspective and induction, right? Did you measure
+> > real hardware signals?
+> >
+> > My point is that if this is a hardware-level bus lockup, let's apply
+> > quirk. If some malformed data causing kernel hangs, I'd add sanity chec=
+k
+> > on RX data, but I don't actually know what we should check for now.
+> >
+> > >
+> > > > We have not modified RTL8821CE for a long time, so I'd add workarou=
+nd
+> > > > to specific platform as mentioned above.
+> > >
+> > > Adding a DMI/platform quirk specifically for this laptop to disable
+> > > ASPM would be wonderful and deeply appreciated. I agree it is safer
+> > > than touching the global flags for hardware that is functioning
+> > > correctly out in the wild.
+> > >
+> > > Here is the exact identifying information for my system:
+> > >
+> > > System Vendor: HP
+> > > Product Name: HP Notebook
+> > > SKU Number: P3S95EA#ACB
+> > > Family: 103C_5335KV
+> > > PCI ID: 10ec:c821
+> > > Subsystem ID: 103c:831a
+> > >
+> > > I am completely ready to test any patch or quirk you send my way.
+> > > Thank you so much for your time and helping track this down!
+> >
+> > I sent a RFT [1] for test. Please check if it works on your HP notebook=
+.
+> > If you check rtw88 log, you can see I added similar patch 5 years ago,
+> > and replaced by preferred the change of "rtwpci->rx_no_aspm", which I
+> > think it can only resolve problem on partial notebooks though....
+> >
+> > [1]
+> > https://lore.kernel.org/linux-wireless/20260311020816.7065-1-pkshih@rea=
+ltek.
+> > com/T/#u
+>
+> Forgot to say. Could you share your full name for me as a reporter
+> in commit message?
+>
+>
 
