@@ -1,60 +1,60 @@
-Return-Path: <linux-wireless+bounces-33010-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-33009-lists+linux-wireless=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id yD1rG/H1sWl7HQAAu9opvQ
-	(envelope-from <linux-wireless+bounces-33010-lists+linux-wireless=lfdr.de@vger.kernel.org>)
-	for <lists+linux-wireless@lfdr.de>; Thu, 12 Mar 2026 00:08:33 +0100
+	id aKZlHdr1sWl7HQAAu9opvQ
+	(envelope-from <linux-wireless+bounces-33009-lists+linux-wireless=lfdr.de@vger.kernel.org>)
+	for <lists+linux-wireless@lfdr.de>; Thu, 12 Mar 2026 00:08:10 +0100
 X-Original-To: lists+linux-wireless@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id D2B5426B2A4
-	for <lists+linux-wireless@lfdr.de>; Thu, 12 Mar 2026 00:08:32 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 15BA426B286
+	for <lists+linux-wireless@lfdr.de>; Thu, 12 Mar 2026 00:08:10 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 5507430DCFC3
-	for <lists+linux-wireless@lfdr.de>; Wed, 11 Mar 2026 23:07:59 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 0CB7F30A29B4
+	for <lists+linux-wireless@lfdr.de>; Wed, 11 Mar 2026 23:07:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8F0F53A383D;
-	Wed, 11 Mar 2026 23:07:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F18B03A3809;
+	Wed, 11 Mar 2026 23:07:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=candelatech.com header.i=@candelatech.com header.b="PlE7CBc7"
+	dkim=pass (1024-bit key) header.d=candelatech.com header.i=@candelatech.com header.b="FxyZwAAf"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from dispatch1-us1.ppe-hosted.com (dispatch1-us1.ppe-hosted.com [67.231.154.184])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 75DBD3A1698
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 75CCF3A1696
 	for <linux-wireless@vger.kernel.org>; Wed, 11 Mar 2026 23:07:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=67.231.154.184
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773270469; cv=none; b=G1Fhkk/u0gxpHvm/iVzdsxfttwZOTY3sI+FkY9dbltCY7yv3qI6xUE0nw+MsmCXzUTaLm2BjSjJIgnk413fduxJVb3Md+LAmZoD8etCjRQRlAaYuINGrdfiJuB+ywfL2Y+3sJjgwN8f7i38cPvMjM6E4OUU1FgIe4MWyKwRxNcw=
+	t=1773270468; cv=none; b=p40kR1Vm8Y4iFMA/iuiHbXJoUOZ3dFx9NJtItblG9agaXXfTb2hzxxC4SC1C4ocog7HNnbCzMfPkwv9zY/L4f+1UAZnbN/oQ/4V8buNWwMCYaNd73LFlZBWiLl2fnFyufQYfSLSGqnBCQxNKIJbN68/EgwmW/ci5Mo+Aaek2oJs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773270469; c=relaxed/simple;
-	bh=vwY/GGcAms18Dpnp9HGaFOyKVZsyjFJJqlMhBQq18Hk=;
+	s=arc-20240116; t=1773270468; c=relaxed/simple;
+	bh=pcsIn6yyZH/7ML7oL/syusA/MfrUX8pHbDLisXHB4HU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=oF8xm+xhU/hKwkf6HJH9Fc3QYMPxwk9yHk7M4qsFAsgNn7LxHUdp9ckbWUhvpmqHTH0WV/MZUWhFzx1Vv/ri/8MCKNixrAdMRpdo1KH61q9S7l0O7PM7KC7gtET67OF0bdVJefCeW05AX3AVGL1eQlytk04ZkuYgrlpeLXxa8dM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=candelatech.com; spf=pass smtp.mailfrom=candelatech.com; dkim=pass (1024-bit key) header.d=candelatech.com header.i=@candelatech.com header.b=PlE7CBc7; arc=none smtp.client-ip=67.231.154.184
+	 MIME-Version; b=ORsDsPKGtSDuvZvdsy6S1h1u8l2Epju1fAUB7hGgsHlbR+Tv1pnloMyZpP9ox9CE30B7y6jZT7nQVDTnPQXwwPnwENWaSAkWQKw2uXWxP3qgxPvcjtvJsNduDA3AGpTkGLNu6oFfxvhfOdONjwTOSTmp20wJ1gGVZuxrznSTEBM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=candelatech.com; spf=pass smtp.mailfrom=candelatech.com; dkim=pass (1024-bit key) header.d=candelatech.com header.i=@candelatech.com header.b=FxyZwAAf; arc=none smtp.client-ip=67.231.154.184
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=candelatech.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=candelatech.com
 X-Virus-Scanned: Proofpoint Essentials engine
 Received: from mail3.candelatech.com (mail.candelatech.com [208.74.158.173])
-	by mx1-us1.ppe-hosted.com (PPE Hosted ESMTP Server) with ESMTP id B253D8C0069
+	by mx1-us1.ppe-hosted.com (PPE Hosted ESMTP Server) with ESMTP id BE4DD9C0059
 	for <linux-wireless@vger.kernel.org>; Wed, 11 Mar 2026 23:07:40 +0000 (UTC)
 Received: from ben-dt5.candelatech.com (firewall.candelatech.com [50.251.239.81])
-	by mail3.candelatech.com (Postfix) with ESMTP id 529FF13C2B6;
+	by mail3.candelatech.com (Postfix) with ESMTP id 884DD13C2B7;
 	Wed, 11 Mar 2026 16:07:37 -0700 (PDT)
-DKIM-Filter: OpenDKIM Filter v2.11.0 mail3.candelatech.com 529FF13C2B6
+DKIM-Filter: OpenDKIM Filter v2.11.0 mail3.candelatech.com 884DD13C2B7
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=candelatech.com;
 	s=default; t=1773270457;
-	bh=vwY/GGcAms18Dpnp9HGaFOyKVZsyjFJJqlMhBQq18Hk=;
+	bh=pcsIn6yyZH/7ML7oL/syusA/MfrUX8pHbDLisXHB4HU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=PlE7CBc7wS4CRQYVTh1W7wBRUsBLovQRR43H/6WUqZkWObz9PbINupkGyM+FD0T92
-	 6tkff5BRS+VZ/zzK3Pm1/ZT9sdgU/o/m9NbSuEppT6mIjK+21WmIgjdopQq90Voopt
-	 seQITM1ltQNBItzgS5+B+/P8WEFA/eNNOtc4N+Go=
+	b=FxyZwAAf1h56VgasQ9hVqk9hbm7R3qfVSQ8iz4PHZYsz0xh3IzYlLUDpC+kVRT71h
+	 G0364dFhxgMQWbQy3UokVh+ZpiFBmMFkvfg89X4eN+oGlAZ7i+PljdNED2yt1PzNK/
+	 nmKs7v1lWfHh60lnevatNzcJ1RVz8PAUQnVxAWg4=
 From: greearb@candelatech.com
 To: linux-wireless@vger.kernel.org
 Cc: Ben Greear <greearb@candelatech.com>
-Subject: [PATCH wireless-next 05/28] wifi: mac80211: do not fail taking sta to lower state.
-Date: Wed, 11 Mar 2026 16:07:07 -0700
-Message-ID: <20260311230730.163348-6-greearb@candelatech.com>
+Subject: [PATCH wireless-next 06/28] wifi: mac80211: Mark sta as uploaded if single transition succeeds.
+Date: Wed, 11 Mar 2026 16:07:08 -0700
+Message-ID: <20260311230730.163348-7-greearb@candelatech.com>
 X-Mailer: git-send-email 2.42.0
 In-Reply-To: <20260311230730.163348-1-greearb@candelatech.com>
 References: <20260311230730.163348-1-greearb@candelatech.com>
@@ -65,10 +65,10 @@ List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-MDID: 1773270461-iU2pODotX_i4
+X-MDID: 1773270461-V7lLUNRNFiAI
 X-PPE-STACK: {"stack":"us5"}
 X-MDID-O:
- us5;at1;1773270461;iU2pODotX_i4;<greearb@candelatech.com>;f7146c1849a4b08a52804beb1c1cdf45
+ us5;at1;1773270461;V7lLUNRNFiAI;<greearb@candelatech.com>;f7146c1849a4b08a52804beb1c1cdf45
 X-PPE-TRUSTED: V=1;DIR=OUT;
 X-Spamd-Result: default: False [-0.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
@@ -80,7 +80,7 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-33010-lists,linux-wireless=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-33009-lists,linux-wireless=lfdr.de];
 	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
@@ -96,39 +96,47 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	NEURAL_HAM(-0.00)[-1.000];
 	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	DBL_BLOCKED_OPENRESOLVER(0.00)[candelatech.com:dkim,candelatech.com:email,candelatech.com:mid,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: D2B5426B2A4
+X-Rspamd-Queue-Id: 15BA426B286
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
 From: Ben Greear <greearb@candelatech.com>
 
-If sdata-in-driver-check fails, then we assume STA is definitely
-not in the driver, and so going to less connected states should not
-fail.
+The hope is that this would allow cleanup code to run properly in
+case this fails halfway through.
 
 Signed-off-by: Ben Greear <greearb@candelatech.com>
 ---
- net/mac80211/driver-ops.c | 6 +++++-
- 1 file changed, 5 insertions(+), 1 deletion(-)
+ net/mac80211/sta_info.c | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/net/mac80211/driver-ops.c b/net/mac80211/driver-ops.c
-index 49753b73aba2..59998d0af3ff 100644
---- a/net/mac80211/driver-ops.c
-+++ b/net/mac80211/driver-ops.c
-@@ -143,8 +143,12 @@ int drv_sta_state(struct ieee80211_local *local,
- 	lockdep_assert_wiphy(local->hw.wiphy);
+diff --git a/net/mac80211/sta_info.c b/net/mac80211/sta_info.c
+index 4259e9c13ed7..ad211c714dbb 100644
+--- a/net/mac80211/sta_info.c
++++ b/net/mac80211/sta_info.c
+@@ -836,18 +836,18 @@ static int sta_info_insert_drv_state(struct ieee80211_local *local,
+ 		err = drv_sta_state(local, sdata, sta, state, state + 1);
+ 		if (err)
+ 			break;
+-	}
+-
+-	if (!err) {
+ 		/*
+ 		 * Drivers using legacy sta_add/sta_remove callbacks only
+ 		 * get uploaded set to true after sta_add is called.
++		 * We are at least somewhat added now.
+ 		 */
+ 		if (!local->ops->sta_add)
+ 			sta->uploaded = true;
+-		return 0;
+ 	}
  
- 	sdata = get_bss_sdata(sdata);
--	if (!check_sdata_in_driver(sdata))
-+	if (!check_sdata_in_driver(sdata)) {
-+		/* Going down should not fail in this case. */
-+		if (new_state < old_state)
-+			return 0;
- 		return -EIO;
-+	}
- 
- 	trace_drv_sta_state(local, sdata, &sta->sta, old_state, new_state);
- 	if (local->ops->sta_state) {
++	if (!err)
++		return 0;
++
+ 	if (sdata->vif.type == NL80211_IFTYPE_ADHOC) {
+ 		sdata_info(sdata,
+ 			   "failed to move IBSS STA %pM to state %d (%d) - keeping it anyway\n",
 -- 
 2.42.0
 
