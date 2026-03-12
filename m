@@ -1,213 +1,162 @@
-Return-Path: <linux-wireless+bounces-33037-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-33038-lists+linux-wireless=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id YLBJLU0wsmmzJQAAu9opvQ
-	(envelope-from <linux-wireless+bounces-33037-lists+linux-wireless=lfdr.de@vger.kernel.org>)
-	for <lists+linux-wireless@lfdr.de>; Thu, 12 Mar 2026 04:17:33 +0100
+	id eMEBLvtHsmlrLAAAu9opvQ
+	(envelope-from <linux-wireless+bounces-33038-lists+linux-wireless=lfdr.de@vger.kernel.org>)
+	for <lists+linux-wireless@lfdr.de>; Thu, 12 Mar 2026 05:58:35 +0100
 X-Original-To: lists+linux-wireless@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 553AB26CBAE
-	for <lists+linux-wireless@lfdr.de>; Thu, 12 Mar 2026 04:17:33 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id C0DCF26D3EE
+	for <lists+linux-wireless@lfdr.de>; Thu, 12 Mar 2026 05:58:34 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 8A3A63154D33
-	for <lists+linux-wireless@lfdr.de>; Thu, 12 Mar 2026 03:15:52 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id A8A36300ADBF
+	for <lists+linux-wireless@lfdr.de>; Thu, 12 Mar 2026 04:58:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0240B386426;
-	Thu, 12 Mar 2026 03:15:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8E1B039448E;
+	Thu, 12 Mar 2026 04:58:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b="Ukcq+I1D"
+	dkim=pass (2048-bit key) header.d=morsemicro-com.20230601.gappssmtp.com header.i=@morsemicro-com.20230601.gappssmtp.com header.b="JMGjBBsP"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from m16.mail.163.com (m16.mail.163.com [220.197.31.5])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pf1-f176.google.com (mail-pf1-f176.google.com [209.85.210.176])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4F8B5382281;
-	Thu, 12 Mar 2026 03:15:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=220.197.31.5
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1D0471DDC28
+	for <linux-wireless@vger.kernel.org>; Thu, 12 Mar 2026 04:58:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.176
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773285350; cv=none; b=TYpGtZrk4zoyFiMB/7oNpSCvG2NO/wpwnrld8bCQcWMifjWsOVJCn0PErOFOtbtxLBbVTRuVaE324mMm1/sOckFsgqpGniKF1hrRARrtMcOg4vPInMS2WmZuJ6uE3XeMVvBbrPVPqk4gDfbae0I6jYgOhlGEY3ieJYGbUqeCxgw=
+	t=1773291510; cv=none; b=rQs1pwnQ0aONySLUiC8P5O7UjTSAsPZmvM0NBoi9fn/msgawXO43cM3Jl7+B8fi8uFz2V+81xHsxWk5Sls1SSCrPQQGpB9Pazopuef8U1I60VcvMrn2tJL0SZGP/8gjHNmKzWX9qcYVbi9/65rQTV8r1vRPi2p7SVj8VgoWKnHM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773285350; c=relaxed/simple;
-	bh=u2XwoLw3K6BtfFJbj/jPwjHUyfbW988SPIr5ioOxFkQ=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version:Content-Type; b=NE4IipG77034zTmx4UXJmAWvTsv6ObiaMvE+xYUVpDnXHn9Yjazmxv94vSBvE92HTFCEZfIoH3U2PKdEtNAimIWZ0zUE5scK/3QOovoonYnacm7n64VgGWyMrHyM3BJb+ojIEphvgfrHfQxEas4loxjnW7Xkz/BJX3D8pJ9yQco=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com; spf=pass smtp.mailfrom=163.com; dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b=Ukcq+I1D; arc=none smtp.client-ip=220.197.31.5
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=163.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
-	s=s110527; h=From:To:Subject:Date:Message-Id:MIME-Version:
-	Content-Type; bh=/jTMC+2KJ2b94GuPAkaqYinINPkXiSH82g4rhnWCGSQ=;
-	b=Ukcq+I1DqHQ4Nv4XMYOPfjlpgW4nA/wT7EsTucOkyOpN3uk28lanqTtx8c8ObD
-	axtPwT50UNK8YqspnlEEsuEZzHryEVUk/W08CF2h7TJKUSWjcGZrlS2592rmFm+Y
-	4mDmbG2XR+SMOJBO2BySzvmbBYUV6h/ye9ua4igUcHsRc=
-Received: from pek-lpg-core5.wrs.com (unknown [])
-	by gzga-smtp-mtada-g1-1 (Coremail) with SMTP id _____wD3N36VL7Jpip3uAQ--.10515S2;
-	Thu, 12 Mar 2026 11:14:32 +0800 (CST)
-From: Robert Garcia <rob_garcia@163.com>
-To: stable@vger.kernel.org,
-	Duoming Zhou <duoming@zju.edu.cn>
-Cc: Johannes Berg <johannes.berg@intel.com>,
-	Robert Garcia <rob_garcia@163.com>,
-	Arend van Spriel <arend.vanspriel@broadcom.com>,
-	Kalle Valo <kvalo@kernel.org>,
-	Franky Lin <franky.lin@broadcom.com>,
-	Hante Meuleman <hante.meuleman@broadcom.com>,
-	"David S . Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Pieter-Paul Giesberts <pieterpg@broadcom.com>,
-	Piotr Haber <phaber@broadcom.com>,
-	"John W . Linville" <linville@tuxdriver.com>,
-	linux-wireless@vger.kernel.org,
-	brcm80211-dev-list.pdl@broadcom.com,
-	SHA-cyfmac-dev-list@infineon.com,
-	netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH 6.1.y] wifi: brcmfmac: fix use-after-free when rescheduling brcmf_btcoex_info work
-Date: Thu, 12 Mar 2026 11:14:29 +0800
-Message-Id: <20260312031429.3432419-1-rob_garcia@163.com>
-X-Mailer: git-send-email 2.34.1
+	s=arc-20240116; t=1773291510; c=relaxed/simple;
+	bh=yX+GxdEvO1hi/Wow2Y4jh93cZII6gUXqCFCa078vthI=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=Pg3W40bxeUDAWG5PJ9cEqFYYUJSFQJq8nryFk4lK94qHkd4PJYu/OfGZbLoG37S/nNzekqAuSyz6qSiMCGNjIx0wV2R+pKD7hCIj9ncW7YEfmPzsOAsHVCRxD9ySN5Y4TrVMnXv0YZhxz5TJcYcfYM6oACwVRuOKGZZ3lVqCdyY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=morsemicro.com; spf=pass smtp.mailfrom=morsemicro.com; dkim=pass (2048-bit key) header.d=morsemicro-com.20230601.gappssmtp.com header.i=@morsemicro-com.20230601.gappssmtp.com header.b=JMGjBBsP; arc=none smtp.client-ip=209.85.210.176
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=morsemicro.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=morsemicro.com
+Received: by mail-pf1-f176.google.com with SMTP id d2e1a72fcca58-82984c077b2so369233b3a.1
+        for <linux-wireless@vger.kernel.org>; Wed, 11 Mar 2026 21:58:28 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=morsemicro-com.20230601.gappssmtp.com; s=20230601; t=1773291508; x=1773896308; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=SyNRbHaLaEUBeW1M4dB+ZiFKtLVtXEisrHjMlTTw+lw=;
+        b=JMGjBBsPRDrtLNzyc5i8aOtHE6yZgfz3m1lmreIjp45CYqVryDyxm1MedQbjJ7O4rS
+         4ZzNNc3HTuefQ2ZGnMzhCJAUYCqjXEPpvCwVZ/H/NVAP1JYYQ6M7AJ6CxId/XWYxV2Pv
+         f9JGf34ufbawaFfGDWrDUYKX2ugYlU8HIBHTGcrAwUNZ3fu6joOJWREWTu1cfs/nGAPH
+         fkGiydt7ESOMAKUTGDYAczj5jjAwEO51DLLDE0LrclgpZ9SU1v6PT3CXR+KwgRRrGAAV
+         x1rYqlfQ/kSM1DLyoeH4MRufrpJfA4crAVlEk28GTiy6VoXTWPrvIcFNHPPa5VcmP35w
+         Mv5g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1773291508; x=1773896308;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=SyNRbHaLaEUBeW1M4dB+ZiFKtLVtXEisrHjMlTTw+lw=;
+        b=fl+deKEarKNeEpkZ/8jtI894KeTotAoBaFV54zKdIVYco3sOhLcFnJtsUlzEA7nj/B
+         h9bDi5tQJ3CLD5RyqNn0m4qaywJ1ddxE/In+GmBT1bwLDFQadT9bIdWtSG6l08rZ5JuX
+         G7fZ9TsrEJns8wJw4sM9PwNE79Cv+XIl5Yk2FKqZHhKwDoP0D91V4e0n06XkZ6N5EId8
+         crLFZtqlECQYh6dHxSzICh9nfzyIKNicrlWBt7GDyZ24rSGS3L4D/JFUCD1f7MryrZmY
+         /lRaMA/vCFzJZxZ9jRD+hsa/xG7TXYTMPjcscjRsClGyRO7fkUe9XbtIxczjJTbYqN9L
+         3ByQ==
+X-Gm-Message-State: AOJu0YxPwJdomeLz7MLxvUOfRqGI9zrvH3jqzOsIKRZFXpJ2D1qhzE9h
+	/LGDHXTso42Eaa968km73dlTy3jVDfW6O3NCqlJlElDaeHqrp0OnpXfJK8nzsG/WNvA=
+X-Gm-Gg: ATEYQzxUvDe1lJxDVE13DJ+sStMVFJPXljxuEWAVkc2eX++VpikQh72NvM6+h/z6LB9
+	VwqzynBpWrX1BeJ7e0LJx1fZn+jo5bO3DEUTrPjDRKExkL+WQ6hd+AFiaom4k6VNZdCU1dq5Hw8
+	+USCE5eJug+Ssa0FH0KWeq80sEGhh7N72lB7n3rAWbx1g9amR8VN5N8GXQu4iG7aveqpatXOsOh
+	RZHAgex1z4aVoRXaKxe2zIqxJSzrlZxxaH/8yfx933pCQP3j0WpBc0HXOa2X/E/AjU1eCvoGb6v
+	3Ngv3TUnhezGn3vZRr5GRbL5/ntCN8/Ekb9MfNGvTIf896Kw/fQHUmjmuxTcFVNiGJz78nbweJr
+	Hcbsqx5pyODHW4DtGUKarHFCBfqRbrk9nfWk5p2T20d+tRCdZu9UkUCM+kch1Gd8PObuzYmfuEf
+	DguFQYCjZ+3g86E+waeRwSRMrFUsJR5sVaAMxKwBZNfYioDN3glcTUMbxvRDfWlu+UTjmmlbByi
+	LOqID0SMeW/1E2nCQ/X2mHnLooyQo8=
+X-Received: by 2002:a05:6a00:92a3:b0:829:7e6d:cf19 with SMTP id d2e1a72fcca58-829f70aca8cmr5135415b3a.48.1773291508133;
+        Wed, 11 Mar 2026 21:58:28 -0700 (PDT)
+Received: from mma-H9MHD44.lan (60-242-93-14.static.tpgi.com.au. [60.242.93.14])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-82a07365090sm1382480b3a.46.2026.03.11.21.58.25
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 11 Mar 2026 21:58:27 -0700 (PDT)
+From: Lachlan Hodges <lachlan.hodges@morsemicro.com>
+To: johannes@sipsolutions.net
+Cc: linux-wireless@vger.kernel.org,
+	arien.judge@morsemicro.com,
+	Lachlan Hodges <lachlan.hodges@morsemicro.com>
+Subject: [PATCH wireless-next v3 0/3] misc chandef cleanups
+Date: Thu, 12 Mar 2026 15:58:01 +1100
+Message-ID: <20260312045804.362974-1-lachlan.hodges@morsemicro.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:_____wD3N36VL7Jpip3uAQ--.10515S2
-X-Coremail-Antispam: 1Uf129KBjvJXoWxJw1ktFWrCr4fKF4DKw43Awb_yoWrJw17pa
-	y3G34ayry0qrWakrWkJr1kZFy5KanrG3Wqyr48CF43uFsIqF1xJFW0yF12gFW7CFW09ay2
-	yF4Fqry3Jrs8tFJanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x07UI-ewUUUUU=
-X-CM-SenderInfo: 5uresw5dufxti6rwjhhfrp/xtbDAhn4ZGmyL5nOVAAA3w
-X-Spamd-Result: default: False [-1.16 / 15.00];
+X-Spamd-Result: default: False [-0.06 / 15.00];
 	MID_CONTAINS_FROM(1.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[163.com,none];
-	R_DKIM_ALLOW(-0.20)[163.com:s=s110527];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
+	R_DKIM_ALLOW(-0.20)[morsemicro-com.20230601.gappssmtp.com:s=20230601];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
+	DMARC_POLICY_SOFTFAIL(0.10)[morsemicro.com : SPF not aligned (relaxed), DKIM not aligned (relaxed),none];
 	HAS_LIST_UNSUB(-0.01)[];
-	FROM_HAS_DN(0.00)[];
-	RCVD_TLS_LAST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[20];
 	MIME_TRACE(0.00)[0:+];
-	FREEMAIL_FROM(0.00)[163.com];
-	TAGGED_FROM(0.00)[bounces-33037-lists,linux-wireless=lfdr.de];
-	DKIM_TRACE(0.00)[163.com:+];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	URIBL_MULTI_FAIL(0.00)[morsemicro-com.20230601.gappssmtp.com:server fail,morsemicro.com:server fail,sin.lore.kernel.org:server fail];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-33038-lists,linux-wireless=lfdr.de];
+	DKIM_TRACE(0.00)[morsemicro-com.20230601.gappssmtp.com:+];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
 	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[rob_garcia@163.com,linux-wireless@vger.kernel.org];
-	FREEMAIL_CC(0.00)[intel.com,163.com,broadcom.com,kernel.org,davemloft.net,google.com,redhat.com,tuxdriver.com,vger.kernel.org,infineon.com];
-	NEURAL_HAM(-0.00)[-0.997];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	FROM_NEQ_ENVFROM(0.00)[lachlan.hodges@morsemicro.com,linux-wireless@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	RCPT_COUNT_THREE(0.00)[4];
+	RCVD_COUNT_FIVE(0.00)[5];
 	TAGGED_RCPT(0.00)[linux-wireless];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[zju.edu.cn:email,msgid.link:url,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,intel.com:email]
-X-Rspamd-Queue-Id: 553AB26CBAE
+	NEURAL_HAM(-0.00)[-1.000];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[morsemicro-com.20230601.gappssmtp.com:dkim,morsemicro.com:mid,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: C0DCF26D3EE
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-From: Duoming Zhou <duoming@zju.edu.cn>
+It was discussed in [1] that calling cfg80211_create_chandef() probably
+doesn't make the most sense for non-HT based bands (that being S1G and
+60GHz currently). Even though it's called fairly frequently, most of
+those paths are unrelated or not supported yet. However creating
+the default chandef is one. So creating a helper specifically for
+creating the default chandef which is band-agnostic makes more
+sense. Additionally, insert a WARN into cfg80211_chandef_create() to
+catch any misuses by S1G and 60GHz bands.
 
-[ Upstream commit 9cb83d4be0b9b697eae93d321e0da999f9cdfcfc ]
+hwsim tests were run just to double check nothing broke on hostap
+tip 11620497a ("EPPKE: Do not start Authenticator state machine on
+reassociation") and wireless-next 97492c019da4 ("wifi: mwifiex: drop
+redundant device reference").
 
-The brcmf_btcoex_detach() only shuts down the btcoex timer, if the
-flag timer_on is false. However, the brcmf_btcoex_timerfunc(), which
-runs as timer handler, sets timer_on to false. This creates critical
-race conditions:
+The 3rd patch adds some simple validation for when we have an S1G
+chandef but a non-S1G width to catch any weird corner cases like one
+discussed in [2].
 
-1.If brcmf_btcoex_detach() is called while brcmf_btcoex_timerfunc()
-is executing, it may observe timer_on as false and skip the call to
-timer_shutdown_sync().
+[1] https://lore.kernel.org/linux-wireless/6832f8f0b516157452bd9c23b7c7af087d63d425.camel@sipsolutions.net/T/#mdd8f8115f3c8195638568cface3e20ab777f9f33
+[2] https://lore.kernel.org/linux-wireless/20260311061800.517849-1-lachlan.hodges@morsemicro.com/
 
-2.The brcmf_btcoex_timerfunc() may then reschedule the brcmf_btcoex_info
-worker after the cancel_work_sync() has been executed, resulting in
-use-after-free bugs.
+lachlan
 
-The use-after-free bugs occur in two distinct scenarios, depending on
-the timing of when the brcmf_btcoex_info struct is freed relative to
-the execution of its worker thread.
+Lachlan Hodges (3):
+  wifi: mac80211: don't use cfg80211_chandef_create() for default
+    chandef
+  wifi: cfg80211: restrict cfg80211_chandef_create() to only HT-based
+    bands
+  wifi: cfg80211: check non-S1G width with S1G chandef
 
-Scenario 1: Freed before the worker is scheduled
+ net/mac80211/main.c | 18 +++++++++++++++---
+ net/wireless/chan.c | 12 +++++++++++-
+ 2 files changed, 26 insertions(+), 4 deletions(-)
 
-The brcmf_btcoex_info is deallocated before the worker is scheduled.
-A race condition can occur when schedule_work(&bt_local->work) is
-called after the target memory has been freed. The sequence of events
-is detailed below:
-
-CPU0                           | CPU1
-brcmf_btcoex_detach            | brcmf_btcoex_timerfunc
-                               |   bt_local->timer_on = false;
-  if (cfg->btcoex->timer_on)   |
-    ...                        |
-  cancel_work_sync();          |
-  ...                          |
-  kfree(cfg->btcoex); // FREE  |
-                               |   schedule_work(&bt_local->work); // USE
-
-Scenario 2: Freed after the worker is scheduled
-
-The brcmf_btcoex_info is freed after the worker has been scheduled
-but before or during its execution. In this case, statements within
-the brcmf_btcoex_handler() — such as the container_of macro and
-subsequent dereferences of the brcmf_btcoex_info object will cause
-a use-after-free access. The following timeline illustrates this
-scenario:
-
-CPU0                            | CPU1
-brcmf_btcoex_detach             | brcmf_btcoex_timerfunc
-                                |   bt_local->timer_on = false;
-  if (cfg->btcoex->timer_on)    |
-    ...                         |
-  cancel_work_sync();           |
-  ...                           |   schedule_work(); // Reschedule
-                                |
-  kfree(cfg->btcoex); // FREE   |   brcmf_btcoex_handler() // Worker
-  /*                            |     btci = container_of(....); // USE
-   The kfree() above could      |     ...
-   also occur at any point      |     btci-> // USE
-   during the worker's execution|
-   */                           |
-
-To resolve the race conditions, drop the conditional check and call
-timer_shutdown_sync() directly. It can deactivate the timer reliably,
-regardless of its current state. Once stopped, the timer_on state is
-then set to false.
-
-Fixes: 61730d4dfffc ("brcmfmac: support critical protocol API for DHCP")
-Acked-by: Arend van Spriel <arend.vanspriel@broadcom.com>
-Signed-off-by: Duoming Zhou <duoming@zju.edu.cn>
-Link: https://patch.msgid.link/20250822050839.4413-1-duoming@zju.edu.cn
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
-[ Keep del_timer_sync() instead of timer_shutdown_sync() here. ]
-Signed-off-by: Robert Garcia <rob_garcia@163.com>
----
- drivers/net/wireless/broadcom/brcm80211/brcmfmac/btcoex.c | 6 ++----
- 1 file changed, 2 insertions(+), 4 deletions(-)
-
-diff --git a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/btcoex.c b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/btcoex.c
-index f9f18ff451ea..f46e40900217 100644
---- a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/btcoex.c
-+++ b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/btcoex.c
-@@ -392,10 +392,8 @@ void brcmf_btcoex_detach(struct brcmf_cfg80211_info *cfg)
- 	if (!cfg->btcoex)
- 		return;
- 
--	if (cfg->btcoex->timer_on) {
--		cfg->btcoex->timer_on = false;
--		del_timer_sync(&cfg->btcoex->timer);
--	}
-+	del_timer_sync(&cfg->btcoex->timer);
-+	cfg->btcoex->timer_on = false;
- 
- 	cancel_work_sync(&cfg->btcoex->work);
- 
 -- 
-2.34.1
+2.43.0
 
 
