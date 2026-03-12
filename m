@@ -1,139 +1,197 @@
-Return-Path: <linux-wireless+bounces-33043-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-33044-lists+linux-wireless=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id ONbcD8dJsmn8LAAAu9opvQ
-	(envelope-from <linux-wireless+bounces-33043-lists+linux-wireless=lfdr.de@vger.kernel.org>)
-	for <lists+linux-wireless@lfdr.de>; Thu, 12 Mar 2026 06:06:15 +0100
+	id CRpQKSpOsmlpLgAAu9opvQ
+	(envelope-from <linux-wireless+bounces-33044-lists+linux-wireless=lfdr.de@vger.kernel.org>)
+	for <lists+linux-wireless@lfdr.de>; Thu, 12 Mar 2026 06:24:58 +0100
 X-Original-To: lists+linux-wireless@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id D64D326D482
-	for <lists+linux-wireless@lfdr.de>; Thu, 12 Mar 2026 06:06:14 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0B8C626D5E3
+	for <lists+linux-wireless@lfdr.de>; Thu, 12 Mar 2026 06:24:58 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 4A724301C15A
-	for <lists+linux-wireless@lfdr.de>; Thu, 12 Mar 2026 05:06:14 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id AB8C330AD4A3
+	for <lists+linux-wireless@lfdr.de>; Thu, 12 Mar 2026 05:24:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8CA553A1681;
-	Thu, 12 Mar 2026 05:06:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D9C733947AF;
+	Thu, 12 Mar 2026 05:24:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=morsemicro-com.20230601.gappssmtp.com header.i=@morsemicro-com.20230601.gappssmtp.com header.b="MwIC1fMu"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="VH88NPNR"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-pf1-f175.google.com (mail-pf1-f175.google.com [209.85.210.175])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4EE343976B2
-	for <linux-wireless@vger.kernel.org>; Thu, 12 Mar 2026 05:06:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.175
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B76983932E9
+	for <linux-wireless@vger.kernel.org>; Thu, 12 Mar 2026 05:24:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773291972; cv=none; b=KkE8x7szXyPIVSRz3vwuM2vdYP45NGsb1tU5dlOGtmQqzIXGBNI7CdCLi5lzO6EXWDj84RA1Tz547CcQaBtY0O/9LQUiy4ESKoaOZQxx5o9DPekpb73l0V0KQj+nI7iBGMjr6ChC9UhaNmaGE83Aisje4AvPg6WDiQcFwy4rhuM=
+	t=1773293095; cv=none; b=IDELRXoOaBdkOwS+ZreabUzrLj8+1STT2WlPf/9hr47DZibo3ACNb+S9aWBslltAWnLFTconNsaVWbAW/gHUGJz9cBuhmGPvX3EBqO2YtMDPeBLseuS2fFZb+GyyiNOYQ78ikpOYimUIC5lZBcfi6FssMhzwe2cat2DJWhAYYEU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773291972; c=relaxed/simple;
-	bh=GOwASmi9jXCVcRijzrzkwH4bMsO4RxA+K48QABkjVwI=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=jz9zZAldJX3WudZjo1DwudxKrIWnGn7NM8jRWlDYBN8aV55J9WP9krILjlJCxPyg5ShMkW/a0w9oNgqoOuWvyV7uHKww3PggvbL5FMwuBITl79UMownA+FGtINTPTNUDSVjJZnydOCCHmWhDx0G3VMGHGxxM/YaOPhUpgNtWBh4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=morsemicro.com; spf=pass smtp.mailfrom=morsemicro.com; dkim=pass (2048-bit key) header.d=morsemicro-com.20230601.gappssmtp.com header.i=@morsemicro-com.20230601.gappssmtp.com header.b=MwIC1fMu; arc=none smtp.client-ip=209.85.210.175
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=morsemicro.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=morsemicro.com
-Received: by mail-pf1-f175.google.com with SMTP id d2e1a72fcca58-82985f42664so371674b3a.0
-        for <linux-wireless@vger.kernel.org>; Wed, 11 Mar 2026 22:06:11 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=morsemicro-com.20230601.gappssmtp.com; s=20230601; t=1773291971; x=1773896771; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=GwfStmmXpK96p/L60KF8aIs2+dXAuqxeTiEYEZjwryk=;
-        b=MwIC1fMuaNh6//ZBtKM0p7CKprUh6owkLWuNmqWCMOm0NUtQvKJrVQyPugWHFxFCzO
-         dVZG3Om853qLfEGZeL7s+XYiwrUjJO730fTyjgQ3ICPAoA8djbDN/ulWOExUZOdrXD/R
-         0Zv48Pm1C7Z2ln2CJN4nPiQuFh50fZma96U28AGIhcSEqhqy2Iq0sMhIwXJXajgE9iNK
-         nRHLwObUKF+k4X0uoOLh/ZFh6dKlcwmcO/WyPSuV/p2maptx0/XW1+zyx2oGyKnQL/8S
-         t9qhNkcYTZ1X3TU3lE/IFNFq0PRZGQS7cB/JVthsTFPsHLrcZGv5GVwwZEq1maYhW5vq
-         V57w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1773291971; x=1773896771;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=GwfStmmXpK96p/L60KF8aIs2+dXAuqxeTiEYEZjwryk=;
-        b=LWcrj9s5R300dQeiayHiNMryYPvx9Izdxff3e14Ku6xhcbgRAAHcIdlr13rBQQLzXs
-         N/4VetnqJpEuyEXjWm0Rz1I5QlTGuUcKo+Ur5g/v1T0jZQQGqSTKjqXez7p1kTBfHgcE
-         fko8LcjLa29+ozmZz/Nsl6iAwMKl6oUiWTpbHA8a5cRXgjB0fPl2deSyOe3S9/rbwFqM
-         VsYEIVaJx+t6oFXriHs0EuB0AYeGYE1TuE2gBF48WBKJnpC7O2LenUyY9A7DOQ5g+v0J
-         xmeVL4oOXO1sGXwSo/+Q+P1LAcFPsV3XspuQnMjv2mcHR86/jJ2r5ZU0Z059J7HzTilG
-         AodQ==
-X-Gm-Message-State: AOJu0Yxt1fsNkLGIpV+9N7cPhGvsB1jumN/Nj09stjiGjosLQ0Z5hucL
-	HmGTlxbM4ihoBNAnQjKZRhYAQ3UwCQQOL4okeAM66xLZI0BQzgJNNHvlEJA33gbgCUk=
-X-Gm-Gg: ATEYQzwI3k7QquZcWHo3yfhDPZKuL/FsjKgytwX78OklJ4J/H+eDHk1Nfu1dtg96uBA
-	VBlznOMTMhNwH3kKY3D71a80S40DphTn1gOau4csT5+eFgYuzA/AsloyBkBnsnh7wgwe1yPYXwM
-	YV1FEYdYVg1Bia1P+be9ljj78H0Iuh3FVq8D4cVrcqTaWpvueFXeqpEYHmRVIbbjxE022AWIjTH
-	IdAd5tUyD4f6+zlfwgcCGDbwKwjnShja1DVnNBJmFh2aBmtBAYyJTNVXvVnbn1jxyZP5K75+4h1
-	/vMVIgq2H37ULIV2XlvQTaFhae8dHhJM8TaQV3YyMkDV4MclRCLmnbHr8Xedl+p1uzcqqJinqgs
-	UzpDOwL/L20KndwFLPQ0I3+QcIiC8nK0ct1kIn9qDn07rbo3Uh1RUfxbyS3+bHaUjylL9PQ5CYm
-	yJ+Pyfosl2aEyd225ehT0yduqhtAH1vXEHg+1qXs5Iu5c7jXs7l/xZpwbjaRFqvfiyZ0dIxNPjB
-	sl0hVHl6femQAZEy3DA6BQ=
-X-Received: by 2002:a05:6a00:4390:b0:829:7a4b:3768 with SMTP id d2e1a72fcca58-829f6f40bb0mr4489843b3a.25.1773291970530;
-        Wed, 11 Mar 2026 22:06:10 -0700 (PDT)
-Received: from localhost (60-242-93-14.static.tpgi.com.au. [60.242.93.14])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-82a0738bca8sm1373609b3a.60.2026.03.11.22.06.09
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 11 Mar 2026 22:06:10 -0700 (PDT)
-Date: Thu, 12 Mar 2026 16:06:07 +1100
-From: Lachlan Hodges <lachlan.hodges@morsemicro.com>
-To: johannes@sipsolutions.net
-Cc: linux-wireless@vger.kernel.org, arien.judge@morsemicro.com
-Subject: Re: [PATCH wireless-next v3 0/3] misc chandef cleanups
-Message-ID: <jl5ftay42uv27aq7e22sxmd5swebafymq3uhk3spo2hm6gkx5u@jfc7uijgify3>
-References: <20260312045804.362974-1-lachlan.hodges@morsemicro.com>
+	s=arc-20240116; t=1773293095; c=relaxed/simple;
+	bh=2ecOeqfyRFrj/e+SpsihyfKp7aoNYixjg74nS+O6fK0=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=hN/ANftLfqzclsRDhVkj1Am/4kcS+7IcEmJ2oKq69FdrfcQuZO0A9beZGRBMTHvBmYCXIQsl4bPfzPSXbjwaNDigHTCfirjA5V9KK+sMvKDJnutF159XfhRiIVJ4Kqi/NVwIr8x7uHkWHsN/UaFd5K5e/+padMCTqZz9hyoU9Xs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=VH88NPNR; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 64C17C2BC9E
+	for <linux-wireless@vger.kernel.org>; Thu, 12 Mar 2026 05:24:55 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1773293095;
+	bh=2ecOeqfyRFrj/e+SpsihyfKp7aoNYixjg74nS+O6fK0=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+	b=VH88NPNRdviJuzoRjI9hjhwWp3ADXLruXwoy+UQFn0OKdYq9XD8g6lXoMx3DYwcfn
+	 B5nobsjrDlCv0jD2WGEejgipnBH5dfI8J3JiAXhB+W4VFIttUL3EUg7LhN0TgoEiu7
+	 Nc/ETQGEV2DQ676aGPHjkjBzlL/gFOJwfaat4BmebFPCmEIvhb+FnnYZeIgFlGvfuW
+	 LAbGawagq0ENlfOon7YcYkuxoHZo6uxumdHwrjcQECJl1XcjANSACKoj5mS0pfU8VM
+	 ge4EjwnWLJhJUy5C43Xh0VAwkhzQwRYqZTFAaeO3pfvtQVEq870n6ck2exDHREvNx/
+	 ouTIsnEELfl+g==
+Received: by mail-lf1-f48.google.com with SMTP id 2adb3069b0e04-5a107b387a5so836392e87.2
+        for <linux-wireless@vger.kernel.org>; Wed, 11 Mar 2026 22:24:55 -0700 (PDT)
+X-Gm-Message-State: AOJu0Yw7zY9FxFHjw6Mrlv7/ploNZ9uvgkHiQO26IucDAr62fan6n2ga
+	Fhm67IXiJNMb1F3XYaWVn3Gy7WJe+0Bfd1C4cePmkTPe5MOjSetIT01XOYXc0mpCHjiZxigxEaH
+	nV+GmM/5UM/BqvyVba1/HNQYAdN/cEO0=
+X-Received: by 2002:a05:6512:1559:20b0:5a1:59b7:8a50 with SMTP id
+ 2adb3069b0e04-5a159b78c85mr624904e87.36.1773293093701; Wed, 11 Mar 2026
+ 22:24:53 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260312045804.362974-1-lachlan.hodges@morsemicro.com>
-X-Spamd-Result: default: False [-1.06 / 15.00];
+References: <CANAPQzi3BkfnRS4CEXAA560O5cO8e6MEYxeVVx1u+xUeXS-gmA@mail.gmail.com>
+ <CAGp9LzoidBL1iYYC371+Fw+drbArLRTneJKxCoFiitx=dweKCg@mail.gmail.com>
+ <CANAPQzjiBf8Rqphn2SypYN2O6bddj6vB=63Mp=T5YVEt2oGvyw@mail.gmail.com>
+ <CANAPQzgiE1rMP3F=5NJg3hp2uBXtq44+vTRBdkHwdfHyXJ8MQQ@mail.gmail.com> <CANAPQzgD312EPSbvaQTE6U+wn85L65+xZHms7DP509ApxWvSZA@mail.gmail.com>
+In-Reply-To: <CANAPQzgD312EPSbvaQTE6U+wn85L65+xZHms7DP509ApxWvSZA@mail.gmail.com>
+From: Sean Wang <sean.wang@kernel.org>
+Date: Thu, 12 Mar 2026 00:24:42 -0500
+X-Gmail-Original-Message-ID: <CAGp9Lzqr3MU6stHOYhZAu-tNCkGrpGX5Psf3wrAxcvQEvM3ZCA@mail.gmail.com>
+X-Gm-Features: AaiRm51DcCI0nwDlLcOubrnU2kyO7tb72XQqSHUCBKcYSIvggxAZvOvuoVo5ZO8
+Message-ID: <CAGp9Lzqr3MU6stHOYhZAu-tNCkGrpGX5Psf3wrAxcvQEvM3ZCA@mail.gmail.com>
+Subject: Re: [PATCH 1/2] mt76: connac: fix txpower_cur not updated in mt76_connac_mcu_set_rate_txpower()
+To: bryam vargas <bryamestebanvargas@gmail.com>, lucid_duck@justthetip.ca
+Cc: linux-wireless@vger.kernel.org, nbd@nbd.name, lorenzo@kernel.org, 
+	"moderated list:ARM/Mediatek SoC support" <linux-mediatek@lists.infradead.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MID_RHS_NOT_FQDN(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
-	R_DKIM_ALLOW(-0.20)[morsemicro-com.20230601.gappssmtp.com:s=20230601];
+	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
-	DMARC_POLICY_SOFTFAIL(0.10)[morsemicro.com : SPF not aligned (relaxed), DKIM not aligned (relaxed),none];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-33043-lists,linux-wireless=lfdr.de];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[morsemicro-com.20230601.gappssmtp.com:+];
+	TAGGED_FROM(0.00)[bounces-33044-lists,linux-wireless=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	RECEIVED_HELO_LOCALHOST(0.00)[];
-	RCPT_COUNT_THREE(0.00)[3];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	FROM_HAS_DN(0.00)[];
+	FREEMAIL_TO(0.00)[gmail.com,justthetip.ca];
 	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TO_DN_SOME(0.00)[];
+	DKIM_TRACE(0.00)[kernel.org:+];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	MISSING_XM_UA(0.00)[];
 	RCVD_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[lachlan.hodges@morsemicro.com,linux-wireless@vger.kernel.org];
-	MISSING_XM_UA(0.00)[];
-	TO_DN_NONE(0.00)[];
-	TAGGED_RCPT(0.00)[linux-wireless];
+	FROM_NEQ_ENVFROM(0.00)[sean.wang@kernel.org,linux-wireless@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[morsemicro-com.20230601.gappssmtp.com:dkim,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: D64D326D482
+	TAGGED_RCPT(0.00)[linux-wireless];
+	RCPT_COUNT_FIVE(0.00)[6];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[mail.gmail.com:mid,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 0B8C626D5E3
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-> Lachlan Hodges (3):
->   wifi: mac80211: don't use cfg80211_chandef_create() for default
->     chandef
->   wifi: cfg80211: restrict cfg80211_chandef_create() to only HT-based
->     bands
->   wifi: cfg80211: check non-S1G width with S1G chandef
+Hi,
 
-Ah something I forgot to mention is I put the mac80211 patch first,
-otherwise maybe during some bisect or something it would break if
-we changed the cfg80211_create_chandef() without modifying the
-creation of the default one first.
+I just realized that Lucid already implemented another approach to
+obtain the TX power here:
+https://lore.kernel.org/linux-wireless/20260130215839.53270-1-lucid_duck@ju=
+stthetip.ca/
+We should respect his work. Could you also take a look at it and reply
+to his patch to avoid potential rework?
 
-lachlan
+On Wed, Mar 11, 2026 at 3:57=E2=80=AFPM bryam vargas
+<bryamestebanvargas@gmail.com> wrote:
+>
+> From 6c75ad481f0c3667d6ae2a2c8f7c2df08b1d52b5 Mon Sep 17 00:00:00 2001
+> From: bryam <bryamestebanvargas@gmail.com>
+> Date: Mon, 9 Mar 2026 11:52:53 -0500
+> Subject: [PATCH v2 1/2] mt76: mt7921: add mt7921-specific get_txpower cal=
+lback
+>
+> Instead of updating txpower_cur in the write path
+> (mt76_connac_mcu_set_rate_txpower), implement a mt7921-specific
+> .get_txpower callback that derives the reported TX power directly
+> from the SKU limits at query time.
+>
+> This avoids mixing write-side configuration with reporting logic.
+> The callback uses mt76_get_power_bound() for SAR constraints and
+> chain delta, then mt76_get_rate_power_limits() for per-rate EEPROM
+> limits, yielding the actual TX power value.
+>
+> Fixes: 3b4a3bdba808 ("mt76: mt7921: add support for reporting tx power")
+> Signed-off-by: Bryam Vargas <bryamestebanvargas@gmail.com>
+> ---
+>  .../net/wireless/mediatek/mt76/mt7921/main.c  | 27 ++++++++++++++++++-
+>  1 file changed, 26 insertions(+), 1 deletion(-)
+>
+> diff --git a/drivers/net/wireless/mediatek/mt76/mt7921/main.c
+> b/drivers/net/wireless/mediatek/mt76/mt7921/main.c
+> index 67383c4..35454e5 100644
+> --- a/drivers/net/wireless/mediatek/mt76/mt7921/main.c
+> +++ b/drivers/net/wireless/mediatek/mt76/mt7921/main.c
+> @@ -1517,6 +1517,31 @@ static void mt7921_rfkill_poll(struct ieee80211_hw=
+ *hw)
+>      wiphy_rfkill_set_hw_state(hw->wiphy, ret ? false : true);
+>  }
+>
+> +
+> +static int mt7921_get_txpower(struct ieee80211_hw *hw,
+> +                  struct ieee80211_vif *vif,
+> +                  unsigned int link_id, int *dbm)
+> +{
+> +    struct mt76_phy *phy =3D mt76_vif_phy(hw, vif);
+> +    struct mt76_power_limits limits;
+> +    int n_chains, delta;
+> +    s8 tx_power;
+> +
+> +    if (!phy)
+> +        return -EINVAL;
+> +
+> +    if (!phy->chandef.chan)
+> +        return mt76_get_txpower(hw, vif, link_id, dbm);
+> +
+> +    n_chains =3D hweight16(phy->chainmask);
+> +    delta =3D mt76_tx_power_path_delta(n_chains);
+> +    tx_power =3D mt76_get_power_bound(phy, phy->chandef.chan->max_power)=
+;
+> +    tx_power =3D mt76_get_rate_power_limits(phy, phy->chandef.chan,
+> +                          &limits, tx_power);
+> +    *dbm =3D DIV_ROUND_UP(tx_power + delta, 2);
+
+how can you make sure it is the result of the maximum rate power used
+in the loop within mt76_connac_mcu_rate_txpower_band (updated with
+each call) ?
+
+> +    return 0;
+> +}
+> +
+>  const struct ieee80211_ops mt7921_ops =3D {
+>      .tx =3D mt792x_tx,
+>      .start =3D mt7921_start,
+> @@ -1541,7 +1566,7 @@ const struct ieee80211_ops mt7921_ops =3D {
+>      .wake_tx_queue =3D mt76_wake_tx_queue,
+>      .release_buffered_frames =3D mt76_release_buffered_frames,
+>      .channel_switch_beacon =3D mt7921_channel_switch_beacon,
+> -    .get_txpower =3D mt76_get_txpower,
+> +    .get_txpower =3D mt7921_get_txpower,
+>      .get_stats =3D mt792x_get_stats,
+>      .get_et_sset_count =3D mt792x_get_et_sset_count,
+>      .get_et_strings =3D mt792x_get_et_strings,
+> --
+> 2.43.0
 
