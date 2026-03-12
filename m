@@ -1,213 +1,224 @@
-Return-Path: <linux-wireless+bounces-34248-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-33032-lists+linux-wireless=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id mNdMKs4wzGmwRAYAu9opvQ
-	(envelope-from <linux-wireless+bounces-34248-lists+linux-wireless=lfdr.de@vger.kernel.org>)
-	for <lists+linux-wireless@lfdr.de>; Tue, 31 Mar 2026 22:38:38 +0200
+	id oLY6CrgZsmmpIgAAu9opvQ
+	(envelope-from <linux-wireless+bounces-33032-lists+linux-wireless=lfdr.de@vger.kernel.org>)
+	for <lists+linux-wireless@lfdr.de>; Thu, 12 Mar 2026 02:41:12 +0100
 X-Original-To: lists+linux-wireless@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3417A371318
-	for <lists+linux-wireless@lfdr.de>; Tue, 31 Mar 2026 22:38:38 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 57A8A26BF81
+	for <lists+linux-wireless@lfdr.de>; Thu, 12 Mar 2026 02:41:11 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id A87EA3072D3B
-	for <lists+linux-wireless@lfdr.de>; Tue, 31 Mar 2026 20:38:33 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 0A71630B9839
+	for <lists+linux-wireless@lfdr.de>; Thu, 12 Mar 2026 01:41:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1547C44E043;
-	Tue, 31 Mar 2026 20:38:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=HOTMAIL.DE header.i=@HOTMAIL.DE header.b="nEoJZQh4"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1D163336ECC;
+	Thu, 12 Mar 2026 01:41:09 +0000 (UTC)
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from GV3P280CU013.outbound.protection.outlook.com (mail-swedencentralazolkn19010035.outbound.protection.outlook.com [52.103.35.35])
+Received: from mailgw.kylinos.cn (mailgw.kylinos.cn [124.126.103.232])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AD02A3B6371
-	for <linux-wireless@vger.kernel.org>; Tue, 31 Mar 2026 20:38:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.103.35.35
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774989510; cv=fail; b=c8CI7Wf6AuMpyiKo5MnHxO7qa/POlpalmxs7vpFhzUGA+2vxmNPUA6j0DvTu6JIVRBxPu0Qk3wmf2qlrz0RXhSBdhK9bPrAIPOecJiYrawyfyJNHeesLpNyIRyTUof84jBjBR6WzGB5oRwARyOlW3XWDlvBLooUt/Vb5bCBhDt8=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774989510; c=relaxed/simple;
-	bh=w3jvkNlt49N9bbbmPUo4sI2/3+2Wc3E3yOPHxunmpxo=;
-	h=Message-ID:From:Date:Subject:To:Cc:Content-Type:MIME-Version; b=anr5y1eC+sZB+IZ4XYysbD1VSnNiXOskvR1FMXrHIlA8GS4gYLkQAlz8natiSB/2Jo2v3/ODhGTfDhaxx9YPpnpJLBqg7p0Gew6zqAgycxUCcXeq9aAuRyOn55eFGZyxX36dbiLcLK0tKj7Im0jJ397MzGADI5MmaLCAFDfu/n0=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=hotmail.de; spf=pass smtp.mailfrom=hotmail.de; dkim=pass (2048-bit key) header.d=HOTMAIL.DE header.i=@HOTMAIL.DE header.b=nEoJZQh4; arc=fail smtp.client-ip=52.103.35.35
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=hotmail.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=hotmail.de
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=txYxTfxnEsTjQyJYThFWajxUiZROttYlEoT9T/E3Y0QZi/MEqGWmY49XoeUPR/nZJzlqVzA/7oAm9Yb0/HtZ6oAMBgN2bsF/T55Gv6u/xR4YgBJeseBPvAlPheiIkLkQF/Zfin8OUXDIj+02XXWLgoTL8ae2VoCQjzJqBaYHtW+3aS5qFaL+q9nG5DuwcNY0f8bZDsOxXOdc01sjMXgGPDL3GFV3gpcLcIdSAPsQ6JwU0iDskLcjSQnE8Aaq1pG1V1MB46FS1X9fcXxC5RQlWdnFBOucNJ+ErWblGLA3X+cEWiLxkpV0fT5zwspR8614BQowsi6Q4MSYkJhLfL5u1A==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=dp7WDm6vJETDjyEGFVIGQua7hM7fjv7FGQw063lOcHo=;
- b=odVhOZAAuaV5vVX+cHFNthX+70G7GtlXnhjfwVppYAq981R1p1GOFItIjjDRaiArDQdR+lSoGK4hcQ9SXX15eJzG3U1Tgjvao8FJq4EnuPs4e4OxfAQjnOqNCIVe0/ZAd9hGzZQqUal/5eA17XNtWiR59xsuTkHrRv5y5j4D35nfs6PzBzCh0h3MTa1AFVWPJcmscJdeWJv9yzgY/nVQkigzWLiFNko3A3f91xPdhFwb8FfbgRmVpXSUobDAhz2uhwAmQW2G++z5Vh23+3Avbe7o6bnOvgrd23xuWXku/4gJr/rfP8exQ1XYZYwd3+lBYtfcPsrx48L5g0JjIa4USQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=none; dmarc=none;
- dkim=none; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=HOTMAIL.DE;
- s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=dp7WDm6vJETDjyEGFVIGQua7hM7fjv7FGQw063lOcHo=;
- b=nEoJZQh4txXez8LA5k+2fhfyWJgaTC/DzNTfjj2qHlWn12qzFFvrwQmj84xD/n+rL5EQz279XrmZcVP/V0fpqHmWpeW3HGR8tjE2Sjp4pFbxZyiQuTvz1iCyJ/xu/yKaMAfpkjslacglpUibORn3aJTFiE4bTvzvUe37g347Qx63j1YwJhBreW0J3Ulinpw0L8CGiK8jPcouZH2o9g77Gr5e6X8POTKIqMnY4s4UKbiGE8edcoUEAikyuAaqtoQlM43wfWYEtIoH20HWGW1bkENSas37itW2MQECo9CaF+IueTBUJRGK0nXbrnjl0qsei4+vZAy4J+Pfg3KxId7YnA==
-Received: from GVYP280MB1518.SWEP280.PROD.OUTLOOK.COM (2603:10a6:150:19b::9)
- by MM0P280MB0851.SWEP280.PROD.OUTLOOK.COM (2603:10a6:190:3::14) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9745.28; Tue, 31 Mar
- 2026 20:38:25 +0000
-Received: from GVYP280MB1518.SWEP280.PROD.OUTLOOK.COM
- ([fe80::6328:bea5:c218:593f]) by GVYP280MB1518.SWEP280.PROD.OUTLOOK.COM
- ([fe80::6328:bea5:c218:593f%4]) with mapi id 15.20.9723.018; Tue, 31 Mar 2026
- 20:38:25 +0000
-Message-ID:
- <GVYP280MB1518D5CA4601F15C5506B66C9453A@GVYP280MB1518.SWEP280.PROD.OUTLOOK.COM>
-From: Masi Osmani <mas-i@hotmail.de>
-Date: Thu, 12 Mar 2026 02:04:02 +0100
-Subject: [PATCH v2 04/16] carl9170: rx: remove stale TODO comment in
- carl9170_rx_mac_status
-To: Christian Lamparter <chunkeey@googlemail.com>
-Cc: linux-wireless@vger.kernel.org,
-    ath9k-devel@qca.qualcomm.com
-Content-Type: text/plain
-X-ClientProxiedBy: FR2P281CA0178.DEUP281.PROD.OUTLOOK.COM
- (2603:10a6:d10:9f::7) To GVYP280MB1518.SWEP280.PROD.OUTLOOK.COM
- (2603:10a6:150:19b::9)
-X-Microsoft-Original-Message-ID: <abb5ea706dca3b97e9637095dc217b0a@hotmail.de>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8AE351A6832;
+	Thu, 12 Mar 2026 01:41:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=124.126.103.232
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1773279669; cv=none; b=FGwl19CXLRzkyap+kZ9zddum+seQfEmUqpCTtC7Ydy1fgc1n4P6svLnxUJJmCMGomh0yYRYuRMgsV5X5sfVhJnPlShoCKotdsVt2UofggJ88b65oVSaw3TBBERwlyKtyVSGCiV/jUWuAaRcRLSAo8LjaoFUBVR88dRkJqRJ6DX4=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1773279669; c=relaxed/simple;
+	bh=yLo/YY+YfuQ6BSr+REO8tabywheEmVWKKoLtLuAIyHM=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=LHTXCJyD7OitbiO+6N3aADBZyK0u0M11e31Itd/oYGEEyeFrAUPsPEDHpD9x5SjZq72zI3Uv7qYR7eqDXvlkWIyr+df7mX7kcrAgkIOYW5K9DGq+zZzhfxRZoGolmzICgJF742ybWl2rBbKa6ymVEsGJKxXAyF7TcycH3pMYQSY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kylinos.cn; spf=pass smtp.mailfrom=kylinos.cn; arc=none smtp.client-ip=124.126.103.232
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kylinos.cn
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=kylinos.cn
+X-UUID: 83356ff41db411f1a21c59e7364eecb8-20260312
+X-CID-CACHE: Type:Local,Time:202603120931+08,HitQuantity:1
+X-CID-P-RULE: Release_Ham
+X-CID-O-INFO: VERSION:1.3.11,REQID:6ecbe081-bbc8-49f5-9a7c-2efdc8cfe5c9,IP:0,U
+	RL:0,TC:0,Content:-5,EDM:25,RT:0,SF:0,FILE:0,BULK:0,RULE:Release_Ham,ACTIO
+	N:release,TS:20
+X-CID-META: VersionHash:89c9d04,CLOUDID:c01da53ef879e46a6af16c8db909bb4c,BulkI
+	D:nil,BulkQuantity:0,Recheck:0,SF:102|898,TC:nil,Content:0|15|50,EDM:5,IP:
+	nil,URL:0,File:nil,RT:nil,Bulk:nil,QS:nil,BEC:nil,COL:0,OSI:0,OSA:0,AV:0,L
+	ES:1,SPR:NO,DKR:0,DKP:0,BRR:0,BRE:0,ARC:0
+X-CID-BVR: 2,SSN|SDN
+X-CID-BAS: 2,SSN|SDN,0,_
+X-CID-FACTOR: TF_CID_SPAM_SNR
+X-CID-RHF: D41D8CD98F00B204E9800998ECF8427E
+X-UUID: 83356ff41db411f1a21c59e7364eecb8-20260312
+X-User: liujiajia@kylinos.cn
+Received: from iris.lan [(10.44.16.150)] by mailgw.kylinos.cn
+	(envelope-from <liujiajia@kylinos.cn>)
+	(Generic MTA with TLSv1.3 TLS_AES_256_GCM_SHA384 256/256)
+	with ESMTP id 400210812; Thu, 12 Mar 2026 09:40:55 +0800
+From: Jiajia Liu <liujiajia@kylinos.cn>
+To: Miri Korenblit <miriam.rachel.korenblit@intel.com>,
+	Benjamin Berg <benjamin.berg@intel.com>,
+	Johannes Berg <johannes.berg@intel.com>,
+	linux-wireless@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Cc: Jiajia Liu <liujiajia@kylinos.cn>
+Subject: [PATCH] wifi: iwlwifi: use unique thermal zone type
+Date: Thu, 12 Mar 2026 09:40:43 +0800
+Message-ID: <20260312014043.13361-1-liujiajia@kylinos.cn>
+X-Mailer: git-send-email 2.53.0
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-Exchange-MessageSentRepresentingType: 1
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: GVYP280MB1518:EE_|MM0P280MB0851:EE_
-X-MS-Office365-Filtering-Correlation-Id: 88363559-d997-4155-1059-08de8f65755a
-X-MS-Exchange-SLBlob-MailProps:
-	KW6s2gPZH1eaZMsDFrtnScTYUpn8LGIXh2GNqQbFbRRxWc+hE3nqSUzqO20DuaWwEddOej3Nxtk4hi0cMEiiwMF7QNR9RgeTDsZDoSsU2rPf+NtIz3Ft6KjbCY5EHPMeJgXW+y+1p6fl8tZp3tAsk0O3gxt7yTaT5MqQ/S0+0qJrD3TtgP6/1TXToMDh3J5kB555v5Oy8qxBqGrEsGLfu9kIa4zPa0iqHGeX60uSBvH7n5NQ0pB6pEvJz+9rX1MzN5AdC8VLlUkAfQPEX2JvrnaCtR4E3JSsAURB3pox2wrcwy7TSAJliaKXxIFPCYk7C0yHnp6zSVRWUvf816Td9zBGP6oM5Ie6E9ZiRR0f7AlAa1EvpPY86UO7oav4Mep0wShqbN8tuNMMr+RHxfSNocw6dllemnHlelUWgTRfMsfmF4liAqQtS0Vyf2OCp3DW4nU9IxDK1/zridjE1naLZ+jb2oCnUso0zer3X/ofVghaXv1wH8vmYFAWEEQoB90aW3Mnyx8yxl2jx/214XKQqasJhKWlJaPcTl798ShOc+n47u8vCaOvvPcvNdCT3VFpKcNHtTBY8L5jjXqAzRIIMWJUbibymyKNQ2Zw1HiP5Ug4tkrfGSD3IBzGHvzc7K69CWFCyHGqj66u6jLUgIlT0OovbibXsXromeh25vKDpbqfrtjyPhDHunlrpllxFOG+XvvEYZhURsiLXEq7h5iLCGoA5f1sF17nqV0YLcor3rw=
-X-Microsoft-Antispam:
-	BCL:0;ARA:14566002|51005399006|8060799015|23021999003|41001999006|5072599009|5062599005|19110799012|15080799012|461199028|26121999003|13041999003|40105399003|440099028|3412199025;
-X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?VKiKpQ18f6J3bdGrcLBEHdp2w6ZMbes8FgzNF/NWgOB2VYuqjCIA6AN7ZFpa?=
- =?us-ascii?Q?N4FMqyxmNHo3YHqED4LVqCaaYFUA6+jmc0bc9ceCIWPJOhh3cIVaY2Bzx1t2?=
- =?us-ascii?Q?FzlDVaLl4sjuF8ohtBRx6njETP3XCJYxmp2d9gPBgQ7tFnEBjiDFCgjjYVE3?=
- =?us-ascii?Q?EOTkK8SpTkxQIePqE9oqoqcGAib/qPYaPDjqdyygvl5Z/5zWpukL+W86mkwU?=
- =?us-ascii?Q?sokYO9YQ/bhfxAWMmdQJK/0NIH3KtmLecSNDirv/Bd9slfXttJteimels+tz?=
- =?us-ascii?Q?HX+hdSqoXJWGwdNbj5NgimDwQcQy4fPT9AhMnBP0nle87Sc0tP/ASwAh2naX?=
- =?us-ascii?Q?NDj3vzrmI/SJ7QZBBybypv5Jbqttw0uZqneY+dzc6lNhaB7TDzSBwc0/p4do?=
- =?us-ascii?Q?Wr9tprROVmaYdn6FWqhIBljDqOeLb0UvMw0vmBQZjIMMYV/eZV8fAEl9uHPR?=
- =?us-ascii?Q?oVvqom28UXpL2uPSEqdAK0KT1tkR3L4o0jvl0QIDJoK1ENx2RDz9HlGsFkSK?=
- =?us-ascii?Q?CZCRMQ7C77s+XR/mjPuksNodBt1+dSvAP4rs5KbJfMjtHVYSvdJBb+iFVRUu?=
- =?us-ascii?Q?zq64tvgKBdOaoaymN+OU7XoUZqVM7hKSyr9ZqE9zdMrbrzOfFpZY7QC5pk6w?=
- =?us-ascii?Q?5TKmbSpqiLE79tnzBPBJG1lN4zf682zVBffc+7JpHkSdqacAqbicvlJ+IU3g?=
- =?us-ascii?Q?oFzROKZ6170/xpdefhB35MhBSkyhD7MefThrjY0GCKNk9NEBsYEW2VI/9fHi?=
- =?us-ascii?Q?yLBOr3snrQS2d7H79X+LWYflInw6a0kd5SZ3+FGeqIBAlty1K3SGDWblSAWt?=
- =?us-ascii?Q?shf989lG2/fIHyKBjl7j+AN1NEYeehHE6J1fMXWp9uHCKAoDDhMaacPQZPPP?=
- =?us-ascii?Q?dP8tP7yidb4nlgzG2DMXSq7bQZqyIY9UTHARcBG6m7z2LbRH/3LTimSCmgGx?=
- =?us-ascii?Q?aZq8St+E0kqPH6HmG397ppZwHXU8X1uLVkcQ46i3wot6p1Wj+oFJ+5yQ8612?=
- =?us-ascii?Q?96mODM6kz0uz+j8XMM1ev9QHw9WRIthB89JvdUHf/x8Fz3U=3D?=
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?xfWbeTVSBgS8rWKmy7GHL/XiDSll7QoquN5tjbZLzi1rVnsrA/XOugTqSbxS?=
- =?us-ascii?Q?waqbcvr9hix5S8r6H8HJvK8LM54KLSAgemgnPNB8ShsmLwTeMWyPq3RieOP/?=
- =?us-ascii?Q?DHgWatkYj8WbmXc5+J0s5uNZ3DwR5T/o/Kqo7/L1N9ydggbgwmMiJ20RInZB?=
- =?us-ascii?Q?8gDBeoNzY4UoXauQi/B+LiQb7RJ3wbAunkz+wDzh+N4vbXzN9Hxx2hzXYOry?=
- =?us-ascii?Q?mUfgUQ+f1SVMj+AfGmC3U81PIXlgvw5xWLbcZV849ScS0qoHH0mfWGG4aGLY?=
- =?us-ascii?Q?QCcezDxSeVZfCARcuRWkvBvn8/pv/6Gk894AAORe+/5rteH8U2QnLGXReOKn?=
- =?us-ascii?Q?4xXRSKPBBbSzpmNiGMeWaDAkGVncJlcoxE1k4IujtNV/vigjalkR+nS8Uqqi?=
- =?us-ascii?Q?Ah4n0wpVVZoxLh2vP79J2O1Z28+lES9tHhYf/XyHo0/2EDviaadMpmt1hO5z?=
- =?us-ascii?Q?+crhLH+iDlwdFQAgSZUAUx6/lLy5xitUm1BbfHuO5lzrO5/QgPUm6dcRurH6?=
- =?us-ascii?Q?pJUm1ZRNVsaXG8CI3AJpIAHrneALLrxnR1KNiwi3TOhuv3AkCNWXMbq8nNro?=
- =?us-ascii?Q?9tga889L365qIkXv7GMFVwwlkRyoJGssAOw2kRu4ZPJFZKsElQtqTlof/A9f?=
- =?us-ascii?Q?Jfh/RirMGtSXNCkvUTBFGnCkuBFwPeGQYaEF+Gieeg7aM22cWpAxqUM+FHs+?=
- =?us-ascii?Q?riO3fHIA7I9X4iLn/6p5+nZ4L0whhzxNS644C4zO5QArh5YF5pk5+fxXNFsL?=
- =?us-ascii?Q?evgujby3+LcuC2CY1s0CZMipCV1ksDiTlTUBHQWFCVbpWFm90sb+HKMvHdWI?=
- =?us-ascii?Q?Tvcqt3CDgfCpMzbs21XF0hmaIeFMBBbmfuVIxpMGhY/gyVjVh2CqswjXWmNn?=
- =?us-ascii?Q?Nd5UUJN3SP0oVvVe1XzHCt4zrn3Tucd0MJQPZcy2eWwl+aUtosuXnzzpTTRi?=
- =?us-ascii?Q?tc3OGqfJTy6KKrffUEJDrh+szYJ7rqiKNLw0hZA1IZWXQt5QLRZedjsaHxky?=
- =?us-ascii?Q?t7z8r+OB3Wf1omwMH83laYJY/C0fWq2jCBVGx1Exdwwb9Orz6T6IqgLDkQJH?=
- =?us-ascii?Q?HzWAG/Y9e/8FJpcdv3JdQsht7ovP2mCHdGgqevj/lZszfYoBnglxUe7GCqiB?=
- =?us-ascii?Q?gTbMoC4FJxK2IJrLdnb0DZFLOu93ysHn0DQ8UpDSRjw212cAPLK6Q6i1ciAN?=
- =?us-ascii?Q?6redb0y4DcqA1UpBhnixDqj3CTtMRNk44i+8jASdAArB5aeaRqRXuQ1brL9t?=
- =?us-ascii?Q?d7auXG9mCGM6zN+pxEeCaSXKTpDO2wj+L23iILrY9vfpvm0zFXoaYzxX97d1?=
- =?us-ascii?Q?0n3asRkSlXv5ptd1FiCrR9sf9RBhNngTH8hGSbvtjqBgluT6zB0FA6oUv3nl?=
- =?us-ascii?Q?nqzrzyECp3Yc90HL9L558MMOE6cV?=
-X-OriginatorOrg: sct-15-20-9412-4-msonline-outlook-10872.templateTenant
-X-MS-Exchange-CrossTenant-Network-Message-Id: 88363559-d997-4155-1059-08de8f65755a
-X-MS-Exchange-CrossTenant-AuthSource: GVYP280MB1518.SWEP280.PROD.OUTLOOK.COM
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 31 Mar 2026 20:38:25.7998
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 84df9e7f-e9f6-40af-b435-aaaaaaaaaaaa
-X-MS-Exchange-CrossTenant-RMS-PersistedConsumerOrg:
-	00000000-0000-0000-0000-000000000000
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: MM0P280MB0851
-X-Spamd-Result: default: False [1.34 / 15.00];
-	DATE_IN_PAST(1.00)[475];
-	ARC_REJECT(1.00)[cv is fail on i=2];
-	DMARC_POLICY_ALLOW(-0.50)[hotmail.de,none];
+Content-Transfer-Encoding: 8bit
+X-Spamd-Result: default: False [0.04 / 15.00];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	MID_CONTAINS_FROM(1.00)[];
 	R_MISSING_CHARSET(0.50)[];
-	R_DKIM_ALLOW(-0.20)[HOTMAIL.DE:s=selector1];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TO_DN_SOME(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-34248-lists,linux-wireless=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FREEMAIL_TO(0.00)[googlemail.com];
-	RCPT_COUNT_THREE(0.00)[3];
-	FREEMAIL_FROM(0.00)[hotmail.de];
+	DMARC_NA(0.00)[kylinos.cn];
+	RCVD_COUNT_THREE(0.00)[4];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[mas-i@hotmail.de,linux-wireless@vger.kernel.org];
+	MIME_TRACE(0.00)[0:+];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TO_DN_SOME(0.00)[];
+	TAGGED_FROM(0.00)[bounces-33032-lists,linux-wireless=lfdr.de];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[liujiajia@kylinos.cn,linux-wireless@vger.kernel.org];
+	R_DKIM_NA(0.00)[];
+	NEURAL_HAM(-0.00)[-0.965];
 	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[HOTMAIL.DE:+];
-	RCVD_COUNT_FIVE(0.00)[5];
 	TAGGED_RCPT(0.00)[linux-wireless];
-	NEURAL_HAM(-0.00)[-1.000];
-	MISSING_XM_UA(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[hotmail.de:email,GVYP280MB1518.SWEP280.PROD.OUTLOOK.COM:mid,HOTMAIL.DE:dkim,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 3417A371318
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	RCPT_COUNT_FIVE(0.00)[6];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 57A8A26BF81
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-The TODO asked to update netdevice RX dropped statistics for frames
-dropped due to unrecognised MAC error flags.  The rx_dropped counter
-is already incremented by the caller carl9170_rx_untie_data() at the
-drop: label for all frames that carl9170_rx_mac_status() rejects with
-a non-zero return code.  Remove the stale comment.
+Unloading iwlmld or iwlmvm can trigger hung task when two devices
+using iwlmvm and iwlmld respectively on one setup. Their thermal
+zones have the same type and share the same hwmon device created
+by the first zone. The second zone indirectly holds the first zone
+through hwmon and prevents the first zone from unregistering.
+Tested with AX211 (8086:7af0) and BE200 (8086:272b).
 
-Wiring ar->rx_dropped into netdev stats (get_stats) is handled by a
-separate bugfix patch.
+INFO: task modprobe:5295 blocked for more than 120 seconds.
+      Not tainted 7.0.0-rc2-up1 #2
+Call Trace:
+ __schedule+0x4df/0xfd0
+ schedule+0x27/0xd0
+ schedule_timeout+0xbd/0x100
+ __wait_for_common+0x97/0x1b0
+ ? __pfx_schedule_timeout+0x10/0x10
+ thermal_zone_device_unregister+0x173/0x1c0
+ iwl_mld_thermal_exit+0xbb/0xd0 [iwlmld]
+ iwl_op_mode_mld_stop+0x37/0x120 [iwlmld]
+ iwl_opmode_deregister+0xc0/0x160 [iwlwifi]
+ __do_sys_delete_module+0x1b5/0x320
 
-Signed-off-by: Masi Osmani <mas-i@hotmail.de>
+Signed-off-by: Jiajia Liu <liujiajia@kylinos.cn>
 ---
-Changes in v2:
-  - Change from replacing the TODO comment with ar->rx_dropped++ to a
-    pure deletion of the comment.  The drop counter is already
-    incremented by the caller carl9170_rx_untie_data() at its drop:
-    label, which covers all error paths through carl9170_rx_mac_status().
-    Adding a second increment here would double-count dropped frames.
+ drivers/net/wireless/intel/iwlwifi/iwl-utils.c   | 10 ++++++++++
+ drivers/net/wireless/intel/iwlwifi/iwl-utils.h   |  4 ++++
+ drivers/net/wireless/intel/iwlwifi/mld/thermal.c |  4 ++--
+ drivers/net/wireless/intel/iwlwifi/mvm/tt.c      |  6 ++++--
+ 4 files changed, 20 insertions(+), 4 deletions(-)
 
- drivers/net/wireless/ath/carl9170/rx.c | 2 --
- 1 file changed, 2 deletions(-)
-
-diff --git a/drivers/net/wireless/ath/carl9170/rx.c b/drivers/net/wireless/ath/carl9170/rx.c
-index 683343013..4714ee8b6 100644
---- a/drivers/net/wireless/ath/carl9170/rx.c
-+++ b/drivers/net/wireless/ath/carl9170/rx.c
-@@ -340,8 +340,6 @@ static int carl9170_rx_mac_status(struct ar9170 *ar,
-
- 	/* drop any other error frames */
- 	if (unlikely(error)) {
--		/* TODO: update netdevice's RX dropped/errors statistics */
--
- 		if (net_ratelimit())
- 			wiphy_dbg(ar->hw->wiphy, "received frame with "
- 			       "suspicious error code (%#x).\n", error);
---
+diff --git a/drivers/net/wireless/intel/iwlwifi/iwl-utils.c b/drivers/net/wireless/intel/iwlwifi/iwl-utils.c
+index d503544fda40..fe5fa5e59664 100644
+--- a/drivers/net/wireless/intel/iwlwifi/iwl-utils.c
++++ b/drivers/net/wireless/intel/iwlwifi/iwl-utils.c
+@@ -193,3 +193,13 @@ s8 iwl_average_neg_dbm(const u8 *neg_dbm_values, u8 len)
+ 	return clamp(average_magnitude - i, -128, 0);
+ }
+ IWL_EXPORT_SYMBOL(iwl_average_neg_dbm);
++
++#ifdef CONFIG_THERMAL
++u8 iwl_thermal_zone_get_id(void)
++{
++	static atomic_t counter = ATOMIC_INIT(0);
++
++	return atomic_inc_return(&counter) & 0xFF;
++}
++IWL_EXPORT_SYMBOL(iwl_thermal_zone_get_id);
++#endif
+diff --git a/drivers/net/wireless/intel/iwlwifi/iwl-utils.h b/drivers/net/wireless/intel/iwlwifi/iwl-utils.h
+index 5172035e4d26..84a4543fd290 100644
+--- a/drivers/net/wireless/intel/iwlwifi/iwl-utils.h
++++ b/drivers/net/wireless/intel/iwlwifi/iwl-utils.h
+@@ -55,4 +55,8 @@ u32 iwl_find_ie_offset(u8 *beacon, u8 eid, u32 frame_size)
+ 
+ s8 iwl_average_neg_dbm(const u8 *neg_dbm_values, u8 len);
+ 
++#ifdef CONFIG_THERMAL
++u8 iwl_thermal_zone_get_id(void);
++#endif
++
+ #endif /* __iwl_utils_h__ */
+diff --git a/drivers/net/wireless/intel/iwlwifi/mld/thermal.c b/drivers/net/wireless/intel/iwlwifi/mld/thermal.c
+index f8a8c35066be..500028a4dbd3 100644
+--- a/drivers/net/wireless/intel/iwlwifi/mld/thermal.c
++++ b/drivers/net/wireless/intel/iwlwifi/mld/thermal.c
+@@ -5,6 +5,7 @@
+ #ifdef CONFIG_THERMAL
+ #include <linux/sort.h>
+ #include <linux/thermal.h>
++#include "iwl-utils.h"
+ #endif
+ 
+ #include "fw/api/phy.h"
+@@ -243,7 +244,6 @@ static void iwl_mld_thermal_zone_register(struct iwl_mld *mld)
+ {
+ 	int ret;
+ 	char name[16];
+-	static atomic_t counter = ATOMIC_INIT(0);
+ 	struct thermal_trip trips[IWL_MAX_DTS_TRIPS] = {
+ 		[0 ... IWL_MAX_DTS_TRIPS - 1] = {
+ 			.temperature = THERMAL_TEMP_INVALID,
+@@ -254,7 +254,7 @@ static void iwl_mld_thermal_zone_register(struct iwl_mld *mld)
+ 
+ 	BUILD_BUG_ON(ARRAY_SIZE(name) >= THERMAL_NAME_LENGTH);
+ 
+-	sprintf(name, "iwlwifi_%u", atomic_inc_return(&counter) & 0xFF);
++	sprintf(name, "iwlwifi_%u", iwl_thermal_zone_get_id());
+ 	mld->tzone =
+ 		thermal_zone_device_register_with_trips(name, trips,
+ 							IWL_MAX_DTS_TRIPS,
+diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/tt.c b/drivers/net/wireless/intel/iwlwifi/mvm/tt.c
+index 53bab21ebae2..ea8e616174db 100644
+--- a/drivers/net/wireless/intel/iwlwifi/mvm/tt.c
++++ b/drivers/net/wireless/intel/iwlwifi/mvm/tt.c
+@@ -7,6 +7,9 @@
+ #include <linux/sort.h>
+ 
+ #include "mvm.h"
++#ifdef CONFIG_THERMAL
++#include "iwl-utils.h"
++#endif
+ 
+ #define IWL_MVM_NUM_CTDP_STEPS		20
+ #define IWL_MVM_MIN_CTDP_BUDGET_MW	150
+@@ -652,7 +655,6 @@ static void iwl_mvm_thermal_zone_register(struct iwl_mvm *mvm)
+ {
+ 	int i, ret;
+ 	char name[16];
+-	static atomic_t counter = ATOMIC_INIT(0);
+ 
+ 	if (!iwl_mvm_is_tt_in_fw(mvm)) {
+ 		mvm->tz_device.tzone = NULL;
+@@ -662,7 +664,7 @@ static void iwl_mvm_thermal_zone_register(struct iwl_mvm *mvm)
+ 
+ 	BUILD_BUG_ON(ARRAY_SIZE(name) >= THERMAL_NAME_LENGTH);
+ 
+-	sprintf(name, "iwlwifi_%u", atomic_inc_return(&counter) & 0xFF);
++	sprintf(name, "iwlwifi_%u", iwl_thermal_zone_get_id());
+ 	/*
+ 	 * 0 is a valid temperature,
+ 	 * so initialize the array with S16_MIN which invalid temperature
+-- 
 2.53.0
 
 
