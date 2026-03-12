@@ -1,224 +1,209 @@
-Return-Path: <linux-wireless+bounces-33032-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-33033-lists+linux-wireless=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id oLY6CrgZsmmpIgAAu9opvQ
-	(envelope-from <linux-wireless+bounces-33032-lists+linux-wireless=lfdr.de@vger.kernel.org>)
-	for <lists+linux-wireless@lfdr.de>; Thu, 12 Mar 2026 02:41:12 +0100
+	id WaveCmkdsmldIwAAu9opvQ
+	(envelope-from <linux-wireless+bounces-33033-lists+linux-wireless=lfdr.de@vger.kernel.org>)
+	for <lists+linux-wireless@lfdr.de>; Thu, 12 Mar 2026 02:56:57 +0100
 X-Original-To: lists+linux-wireless@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 57A8A26BF81
-	for <lists+linux-wireless@lfdr.de>; Thu, 12 Mar 2026 02:41:11 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4801F26C0B0
+	for <lists+linux-wireless@lfdr.de>; Thu, 12 Mar 2026 02:56:56 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 0A71630B9839
-	for <lists+linux-wireless@lfdr.de>; Thu, 12 Mar 2026 01:41:10 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id EF275303F077
+	for <lists+linux-wireless@lfdr.de>; Thu, 12 Mar 2026 01:56:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1D163336ECC;
-	Thu, 12 Mar 2026 01:41:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6BA72346782;
+	Thu, 12 Mar 2026 01:56:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=realtek.com header.i=@realtek.com header.b="EaYCOHT8"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mailgw.kylinos.cn (mailgw.kylinos.cn [124.126.103.232])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8AE351A6832;
-	Thu, 12 Mar 2026 01:41:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=124.126.103.232
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 446A0846A;
+	Thu, 12 Mar 2026 01:56:51 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=211.75.126.72
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773279669; cv=none; b=FGwl19CXLRzkyap+kZ9zddum+seQfEmUqpCTtC7Ydy1fgc1n4P6svLnxUJJmCMGomh0yYRYuRMgsV5X5sfVhJnPlShoCKotdsVt2UofggJ88b65oVSaw3TBBERwlyKtyVSGCiV/jUWuAaRcRLSAo8LjaoFUBVR88dRkJqRJ6DX4=
+	t=1773280614; cv=none; b=eTpxYJcDR+4ss2/D2+ZWFdkiIcdE6TBU0uOUk0B0an3/Fpfm3rrx+zvyk/+g+jP11rjeoG58tf8b2jZ+g7hHFdI/HA8QRhJ7ZMHOSlRqs899v/ebd/SBxy1VzHu4HfyMRzJCpKF5oUxEDJKdbyn0gz1JYJOKMmdhPNg8TLKH4tc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773279669; c=relaxed/simple;
-	bh=yLo/YY+YfuQ6BSr+REO8tabywheEmVWKKoLtLuAIyHM=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=LHTXCJyD7OitbiO+6N3aADBZyK0u0M11e31Itd/oYGEEyeFrAUPsPEDHpD9x5SjZq72zI3Uv7qYR7eqDXvlkWIyr+df7mX7kcrAgkIOYW5K9DGq+zZzhfxRZoGolmzICgJF742ybWl2rBbKa6ymVEsGJKxXAyF7TcycH3pMYQSY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kylinos.cn; spf=pass smtp.mailfrom=kylinos.cn; arc=none smtp.client-ip=124.126.103.232
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kylinos.cn
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=kylinos.cn
-X-UUID: 83356ff41db411f1a21c59e7364eecb8-20260312
-X-CID-CACHE: Type:Local,Time:202603120931+08,HitQuantity:1
-X-CID-P-RULE: Release_Ham
-X-CID-O-INFO: VERSION:1.3.11,REQID:6ecbe081-bbc8-49f5-9a7c-2efdc8cfe5c9,IP:0,U
-	RL:0,TC:0,Content:-5,EDM:25,RT:0,SF:0,FILE:0,BULK:0,RULE:Release_Ham,ACTIO
-	N:release,TS:20
-X-CID-META: VersionHash:89c9d04,CLOUDID:c01da53ef879e46a6af16c8db909bb4c,BulkI
-	D:nil,BulkQuantity:0,Recheck:0,SF:102|898,TC:nil,Content:0|15|50,EDM:5,IP:
-	nil,URL:0,File:nil,RT:nil,Bulk:nil,QS:nil,BEC:nil,COL:0,OSI:0,OSA:0,AV:0,L
-	ES:1,SPR:NO,DKR:0,DKP:0,BRR:0,BRE:0,ARC:0
-X-CID-BVR: 2,SSN|SDN
-X-CID-BAS: 2,SSN|SDN,0,_
-X-CID-FACTOR: TF_CID_SPAM_SNR
-X-CID-RHF: D41D8CD98F00B204E9800998ECF8427E
-X-UUID: 83356ff41db411f1a21c59e7364eecb8-20260312
-X-User: liujiajia@kylinos.cn
-Received: from iris.lan [(10.44.16.150)] by mailgw.kylinos.cn
-	(envelope-from <liujiajia@kylinos.cn>)
-	(Generic MTA with TLSv1.3 TLS_AES_256_GCM_SHA384 256/256)
-	with ESMTP id 400210812; Thu, 12 Mar 2026 09:40:55 +0800
-From: Jiajia Liu <liujiajia@kylinos.cn>
-To: Miri Korenblit <miriam.rachel.korenblit@intel.com>,
-	Benjamin Berg <benjamin.berg@intel.com>,
-	Johannes Berg <johannes.berg@intel.com>,
-	linux-wireless@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Cc: Jiajia Liu <liujiajia@kylinos.cn>
-Subject: [PATCH] wifi: iwlwifi: use unique thermal zone type
-Date: Thu, 12 Mar 2026 09:40:43 +0800
-Message-ID: <20260312014043.13361-1-liujiajia@kylinos.cn>
-X-Mailer: git-send-email 2.53.0
+	s=arc-20240116; t=1773280614; c=relaxed/simple;
+	bh=ie5iY1nm997/6aN5eEDpZ/0Kenrg+jJs+mH6GMWPZ0E=;
+	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
+	 Content-Type:MIME-Version; b=nAj0DjZbBdZeUUsjcAyxmKy243TgU1P+mtKjplh51rMszpPo6W296Gx4hQ9K59VH88/O/0ZOdusCR5Ljkqfzd38abkl3I/QBlPBjo5FGQQe8jSZI9MB6AIWFHBrzzakQSB1D0QucHg/zqfqA+vObq+2nIZxUZYUzQnLGA5H8nPo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com; spf=pass smtp.mailfrom=realtek.com; dkim=pass (2048-bit key) header.d=realtek.com header.i=@realtek.com header.b=EaYCOHT8; arc=none smtp.client-ip=211.75.126.72
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=realtek.com
+X-SpamFilter-By: ArmorX SpamTrap 5.80 with qID 62C1unYtB1598801, This message is accepted by code: ctloc85258
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=realtek.com; s=dkim;
+	t=1773280609; bh=ie5iY1nm997/6aN5eEDpZ/0Kenrg+jJs+mH6GMWPZ0E=;
+	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
+	 Content-Type:Content-Transfer-Encoding:MIME-Version;
+	b=EaYCOHT8IlRwoWsznA4o+4x4SsSVXsYAKDDOk8lh1RcExmr94sfHMVJB4hP9nX1Dq
+	 u2KgdX9mzdfSHf/eJCNGxkFT4H6cwGU4CxyP7eR8BMTd+P51RTQN+PCcr2CMY0b+qb
+	 j5vyk25bsjp88RxvnUqrneWDGruDNZJE/gF/DiFBJqqJAqySTrVxtq7oidv20MkDTW
+	 2kr3QNWqSAx0g6CPiTexcAPREMbSbGnWJETf5h20KxVLj6z2Sw2ghOV1iSJR7E2t/n
+	 7n24Ecuzr69moluUfphxEqLuHmwcvy8jAkkxgf9UD5iX8i1Le/PFdyd97WvmMuFNrL
+	 DhCa9aeFR31NA==
+Received: from mail.realtek.com (rtkexhmbs02.realtek.com.tw[172.21.6.41])
+	by rtits2.realtek.com.tw (8.15.2/3.21/5.94) with ESMTPS id 62C1unYtB1598801
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Thu, 12 Mar 2026 09:56:49 +0800
+Received: from RTKEXHMBS06.realtek.com.tw (10.21.1.56) by
+ RTKEXHMBS02.realtek.com.tw (172.21.6.41) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1748.10; Thu, 12 Mar 2026 09:56:48 +0800
+Received: from RTKEXHMBS06.realtek.com.tw ([fe80::4cbd:6c6c:b92b:3913]) by
+ RTKEXHMBS06.realtek.com.tw ([fe80::4cbd:6c6c:b92b:3913%10]) with mapi id
+ 15.02.1748.010; Thu, 12 Mar 2026 09:56:48 +0800
+From: Ping-Ke Shih <pkshih@realtek.com>
+To: LB F <goainwo@gmail.com>
+CC: "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
+Subject: RE: [BUG] wifi: rtw88: Hard system freeze on RTL8821CE when
+ power_save is enabled (LPS/ASPM conflict)
+Thread-Topic: [BUG] wifi: rtw88: Hard system freeze on RTL8821CE when
+ power_save is enabled (LPS/ASPM conflict)
+Thread-Index: AQHcsA6WTRRnBRFJhEKVxaR7JwwWq7Wm+M9wgAAbfgCAAX9nAIAAB6mAgAAK64CAAElZAIABMBnA
+Date: Thu, 12 Mar 2026 01:56:47 +0000
+Message-ID: <458ed80e39734ea99610050140bb31ce@realtek.com>
+References: <CALdGYqSQ1Ko2TTBhUizMu_FvLMUAuQfFrVwS10n_C-LSQJQQkQ@mail.gmail.com>
+ <1e96af437fa24674b353ddb530b2d8e7@realtek.com>
+ <CALdGYqQb=Vt0jjqW7k8RGMV1gczL0cg-26cHgCm3MmzBjezGMQ@mail.gmail.com>
+ <792645eed36041f0b3df951f1b28a08a@realtek.com>
+ <e6720993c8c14245981432cfa4ae902b@realtek.com>
+ <CALdGYqQn8GGXXjZTsL+a5Mfdmw5HRYB2Jyvqq5M5SUwxK9yd_g@mail.gmail.com>
+ <CALdGYqQee1sjgdBAPJSyb1gL6ksK4z8Uw_v3ANTnyXE+LXFAiA@mail.gmail.com>
+In-Reply-To: <CALdGYqQee1sjgdBAPJSyb1gL6ksK4z8Uw_v3ANTnyXE+LXFAiA@mail.gmail.com>
+Accept-Language: en-US, zh-TW
+Content-Language: zh-TW
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [0.04 / 15.00];
+X-Spamd-Result: default: False [-2.06 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MID_CONTAINS_FROM(1.00)[];
-	R_MISSING_CHARSET(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[realtek.com,none];
 	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_DKIM_ALLOW(-0.20)[realtek.com:s=dkim];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
+	MIME_BASE64_TEXT(0.10)[];
 	HAS_LIST_UNSUB(-0.01)[];
-	DMARC_NA(0.00)[kylinos.cn];
-	RCVD_COUNT_THREE(0.00)[4];
-	PRECEDENCE_BULK(0.00)[];
-	MIME_TRACE(0.00)[0:+];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	TAGGED_FROM(0.00)[bounces-33032-lists,linux-wireless=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-33033-lists,linux-wireless=lfdr.de];
+	FREEMAIL_TO(0.00)[gmail.com];
+	TO_DN_EQ_ADDR_SOME(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[liujiajia@kylinos.cn,linux-wireless@vger.kernel.org];
-	R_DKIM_NA(0.00)[];
-	NEURAL_HAM(-0.00)[-0.965];
+	TO_DN_SOME(0.00)[];
+	MIME_TRACE(0.00)[0:+];
 	FROM_HAS_DN(0.00)[];
+	MISSING_XM_UA(0.00)[];
+	RCPT_COUNT_THREE(0.00)[3];
+	RCVD_COUNT_FIVE(0.00)[6];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[pkshih@realtek.com,linux-wireless@vger.kernel.org];
+	DKIM_TRACE(0.00)[realtek.com:+];
+	NEURAL_HAM(-0.00)[-1.000];
 	TAGGED_RCPT(0.00)[linux-wireless];
+	MID_RHS_MATCH_FROM(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	RCPT_COUNT_FIVE(0.00)[6];
 	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 57A8A26BF81
+X-Rspamd-Queue-Id: 4801F26C0B0
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-Unloading iwlmld or iwlmvm can trigger hung task when two devices
-using iwlmvm and iwlmld respectively on one setup. Their thermal
-zones have the same type and share the same hwmon device created
-by the first zone. The second zone indirectly holds the first zone
-through hwmon and prevents the first zone from unregistering.
-Tested with AX211 (8086:7af0) and BE200 (8086:272b).
-
-INFO: task modprobe:5295 blocked for more than 120 seconds.
-      Not tainted 7.0.0-rc2-up1 #2
-Call Trace:
- __schedule+0x4df/0xfd0
- schedule+0x27/0xd0
- schedule_timeout+0xbd/0x100
- __wait_for_common+0x97/0x1b0
- ? __pfx_schedule_timeout+0x10/0x10
- thermal_zone_device_unregister+0x173/0x1c0
- iwl_mld_thermal_exit+0xbb/0xd0 [iwlmld]
- iwl_op_mode_mld_stop+0x37/0x120 [iwlmld]
- iwl_opmode_deregister+0xc0/0x160 [iwlwifi]
- __do_sys_delete_module+0x1b5/0x320
-
-Signed-off-by: Jiajia Liu <liujiajia@kylinos.cn>
----
- drivers/net/wireless/intel/iwlwifi/iwl-utils.c   | 10 ++++++++++
- drivers/net/wireless/intel/iwlwifi/iwl-utils.h   |  4 ++++
- drivers/net/wireless/intel/iwlwifi/mld/thermal.c |  4 ++--
- drivers/net/wireless/intel/iwlwifi/mvm/tt.c      |  6 ++++--
- 4 files changed, 20 insertions(+), 4 deletions(-)
-
-diff --git a/drivers/net/wireless/intel/iwlwifi/iwl-utils.c b/drivers/net/wireless/intel/iwlwifi/iwl-utils.c
-index d503544fda40..fe5fa5e59664 100644
---- a/drivers/net/wireless/intel/iwlwifi/iwl-utils.c
-+++ b/drivers/net/wireless/intel/iwlwifi/iwl-utils.c
-@@ -193,3 +193,13 @@ s8 iwl_average_neg_dbm(const u8 *neg_dbm_values, u8 len)
- 	return clamp(average_magnitude - i, -128, 0);
- }
- IWL_EXPORT_SYMBOL(iwl_average_neg_dbm);
-+
-+#ifdef CONFIG_THERMAL
-+u8 iwl_thermal_zone_get_id(void)
-+{
-+	static atomic_t counter = ATOMIC_INIT(0);
-+
-+	return atomic_inc_return(&counter) & 0xFF;
-+}
-+IWL_EXPORT_SYMBOL(iwl_thermal_zone_get_id);
-+#endif
-diff --git a/drivers/net/wireless/intel/iwlwifi/iwl-utils.h b/drivers/net/wireless/intel/iwlwifi/iwl-utils.h
-index 5172035e4d26..84a4543fd290 100644
---- a/drivers/net/wireless/intel/iwlwifi/iwl-utils.h
-+++ b/drivers/net/wireless/intel/iwlwifi/iwl-utils.h
-@@ -55,4 +55,8 @@ u32 iwl_find_ie_offset(u8 *beacon, u8 eid, u32 frame_size)
- 
- s8 iwl_average_neg_dbm(const u8 *neg_dbm_values, u8 len);
- 
-+#ifdef CONFIG_THERMAL
-+u8 iwl_thermal_zone_get_id(void);
-+#endif
-+
- #endif /* __iwl_utils_h__ */
-diff --git a/drivers/net/wireless/intel/iwlwifi/mld/thermal.c b/drivers/net/wireless/intel/iwlwifi/mld/thermal.c
-index f8a8c35066be..500028a4dbd3 100644
---- a/drivers/net/wireless/intel/iwlwifi/mld/thermal.c
-+++ b/drivers/net/wireless/intel/iwlwifi/mld/thermal.c
-@@ -5,6 +5,7 @@
- #ifdef CONFIG_THERMAL
- #include <linux/sort.h>
- #include <linux/thermal.h>
-+#include "iwl-utils.h"
- #endif
- 
- #include "fw/api/phy.h"
-@@ -243,7 +244,6 @@ static void iwl_mld_thermal_zone_register(struct iwl_mld *mld)
- {
- 	int ret;
- 	char name[16];
--	static atomic_t counter = ATOMIC_INIT(0);
- 	struct thermal_trip trips[IWL_MAX_DTS_TRIPS] = {
- 		[0 ... IWL_MAX_DTS_TRIPS - 1] = {
- 			.temperature = THERMAL_TEMP_INVALID,
-@@ -254,7 +254,7 @@ static void iwl_mld_thermal_zone_register(struct iwl_mld *mld)
- 
- 	BUILD_BUG_ON(ARRAY_SIZE(name) >= THERMAL_NAME_LENGTH);
- 
--	sprintf(name, "iwlwifi_%u", atomic_inc_return(&counter) & 0xFF);
-+	sprintf(name, "iwlwifi_%u", iwl_thermal_zone_get_id());
- 	mld->tzone =
- 		thermal_zone_device_register_with_trips(name, trips,
- 							IWL_MAX_DTS_TRIPS,
-diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/tt.c b/drivers/net/wireless/intel/iwlwifi/mvm/tt.c
-index 53bab21ebae2..ea8e616174db 100644
---- a/drivers/net/wireless/intel/iwlwifi/mvm/tt.c
-+++ b/drivers/net/wireless/intel/iwlwifi/mvm/tt.c
-@@ -7,6 +7,9 @@
- #include <linux/sort.h>
- 
- #include "mvm.h"
-+#ifdef CONFIG_THERMAL
-+#include "iwl-utils.h"
-+#endif
- 
- #define IWL_MVM_NUM_CTDP_STEPS		20
- #define IWL_MVM_MIN_CTDP_BUDGET_MW	150
-@@ -652,7 +655,6 @@ static void iwl_mvm_thermal_zone_register(struct iwl_mvm *mvm)
- {
- 	int i, ret;
- 	char name[16];
--	static atomic_t counter = ATOMIC_INIT(0);
- 
- 	if (!iwl_mvm_is_tt_in_fw(mvm)) {
- 		mvm->tz_device.tzone = NULL;
-@@ -662,7 +664,7 @@ static void iwl_mvm_thermal_zone_register(struct iwl_mvm *mvm)
- 
- 	BUILD_BUG_ON(ARRAY_SIZE(name) >= THERMAL_NAME_LENGTH);
- 
--	sprintf(name, "iwlwifi_%u", atomic_inc_return(&counter) & 0xFF);
-+	sprintf(name, "iwlwifi_%u", iwl_thermal_zone_get_id());
- 	/*
- 	 * 0 is a valid temperature,
- 	 * so initialize the array with S16_MIN which invalid temperature
--- 
-2.53.0
-
+TEIgRiA8Z29haW53b0BnbWFpbC5jb20+IHdyb3RlOg0KPiBIaSBQaW5nLUtlLA0KPiANCj4gSSBz
+dWNjZXNzZnVsbHkgYXBwbGllZCB5b3VyIHBhdGNoIG91dC1vZi10cmVlIGFuZCBwZXJmb3JtZWQg
+cmlnb3JvdXMNCj4gdGVzdGluZyBvbiB0aGUgaG9zdCBtYWNoaW5lLg0KPiANCj4gSSBjYW4gb2Zm
+aWNpYWxseSBjb25maXJtIHRoYXQgdGhlIHBhdGNoIHdvcmtzIGZsYXdsZXNzbHkuIFRoZSBETUkN
+Cj4gcXVpcmsgdHJpZ2dlcmVkIGNvcnJlY3RseSBhbmQgc3VjY2Vzc2Z1bGx5IHByZXZlbnRlZCB0
+aGUNCj4gaGFyZHdhcmUtbGV2ZWwgUENJZSBidXMgbG9ja3VwcyBvbiBteSBIUCBQM1M5NUVBI0FD
+Qi4NCg0KVGhhbmtzIGZvciB5b3VyIHF1aWNrbHkgdGVzdCB3aXRoIG15IHBhdGNoLiA6KQ0KDQo+
+IA0KPiBUZXN0aW5nIEVudmlyb25tZW50ICYgTWV0aG9kb2xvZ3k6DQo+IC0gS2VybmVsOiBDYWNo
+eU9TIExpbnV4IDYuMTkuNi0yLWNhY2h5b3MgeDg2XzY0DQo+IC0gVG9vbGNoYWluOiBDbGFuZy9M
+TFZNIDIxLjEuOCAoYG1ha2UgQ0M9Y2xhbmcgTExWTT0xIG1vZHVsZXNgKQ0KPiAtIEV4dHJhY3Rp
+b246IFdlIGZldGNoZWQgdGhlIHN0cmljdA0KPiBgZHJpdmVycy9uZXQvd2lyZWxlc3MvcmVhbHRl
+ay9ydHc4OGAgc3ViLXRyZWUgb3V0IG9mIHRoZQ0KPiB0b3J2YWxkcy9saW51eCBgdjYuMTlgIHRy
+ZWUgdXRpbGl6aW5nIGBnaXQgc3BhcnNlLWNoZWNrb3V0YCB0byBjbGVhbmx5DQo+IGFwcGx5IHRo
+ZSBwYXRjaCB3aXRob3V0IGhhdmluZyB0byBjb21waWxlIHRoZSBlbnRpcmUgMi41R0IrIGtlcm5l
+bC4NCj4gLSBUaGUgcmVzdWx0aW5nIGAua29gIG9iamVjdCBmaWxlcyB3ZXJlIGNvbXByZXNzZWQg
+dG8gYC56c3RgIGFuZA0KPiBpbnN0YWxsZWQgc3VjY2Vzc2Z1bGx5IG92ZXIgdGhlIGdlbmVyaWMg
+Q2FjaHlPUyBzeXN0ZW0gZHJpdmVyIG9iamVjdHMuDQo+IA0KPiBWZXJpZmljYXRpb24gQ29uZGl0
+aW9uczoNCj4gLSBSZW1vdmVkIEFMTCBsb2NhbCB3b3JrYXJvdW5kcy4gYGRpc2FibGVfYXNwbT1Z
+YCBpcyBubyBsb25nZXIgZm9yY2VkDQo+IHZpYSBgL2V0Yy9tb2Rwcm9iZS5kL2Agb3ZlcnJpZGVz
+Lg0KPiAtIFBvd2VyIHNhdmluZyByZW1haW5zIG5hdGl2ZWx5IE9OIGB3aWZpLnBvd2Vyc2F2ZSA9
+IDNgIChtYW5hZ2VkIGJ5DQo+IE5ldHdvcmtNYW5hZ2VyKS4NCj4gLSBMZWZ0IHRoZSBsYXB0b3Ag
+aW4gbXVsdGlwbGUgNS0xMCBtaW51dGUgY29tcGxldGUgaWRsZSBzdGF0ZXMgdG8NCj4gZW5mb3Jj
+ZSBzbGVlcCBtb2Rlcy4NCj4gDQo+IFBvc3QtQm9vdCBMb2cgQW5hbHlzaXMgJiBQb3RlbnRpYWwg
+SW1wcm92ZW1lbnQgUHJvcG9zaXRpb246DQo+IFRoZSBzeXN0ZW0gcmVtYWluZWQgMTAwJSBzdGFi
+bGUgd2l0aG91dCBhbnkga2VybmVsIHBhbmljcyBvciBVSSBmcmVlemVzLg0KPiBIb3dldmVyLCBJ
+IGNvbnRpbnVvdXNseSBtb25pdG9yZWQgdGhlIGBkbWVzZ2AgcmluZyBidWZmZXIgYW5kIG5vdGlj
+ZWQNCj4gYW4gaW50cmlndWluZyBiZWhhdmlvci4gV2hpbGUgdGhlIGxhcHRvcCBzaXRzIGNvbXBs
+ZXRlbHkgaWRsZQ0KPiAoTmV0d29ya01hbmFnZXIgY29ubmVjdGVkLCBidXQgbm8gYWN0aXZlIHRy
+YWZmaWMpLCB0aGUgYHJ0dzg4YCBkcml2ZXINCj4gc3RhcnRzIGZsb29kZWQgdGhlIGxvZ3Mgd2l0
+aCB0aG91c2FuZHMgb2YgZmlybXdhcmUgZXJyb3JzOg0KPiANCj4gWyAxMDg0Ljc0NjQ4NV0gcnR3
+ODhfODgyMWNlIDAwMDA6MTM6MDAuMDogZmlybXdhcmUgZmFpbGVkIHRvIGxlYXZlIGxwcyBzdGF0
+ZQ0KPiBbIDEwODQuNzQ5NjYyXSBydHc4OF84ODIxY2UgMDAwMDoxMzowMC4wOiBmYWlsZWQgdG8g
+c2VuZCBoMmMgY29tbWFuZA0KPiBbIDEwODQuNzUyODk1XSBydHc4OF84ODIxY2UgMDAwMDoxMzow
+MC4wOiBmYWlsZWQgdG8gc2VuZCBoMmMgY29tbWFuZA0KPiANCj4gSWYgbXkgdW5kZXJzdGFuZGlu
+ZyBvZiB0aGlzIGFyY2hpdGVjdHVyZSBpcyBjb3JyZWN0LCBwcmV2aW91c2x5LCB3aGVuDQo+IEFT
+UE0gd2Fzbid0IGRpc2FibGVkLCB0aGlzIGV4YWN0IGZhaWx1cmUgb2YgdGhlIGFkYXB0ZXIgZmly
+bWFyZSBpbnNpZGUNCj4gYExQU19ERUVQX01PREVfTENMS2Agd291bGQgdmlvbGVudGx5IGxvY2sg
+dXAgdGhlIFBDSWUgYnVzIGFuZCBjcmFzaA0KPiB0aGUgaG9zdC4gTm93LCB0aGFua3MgdG8geW91
+ciBETUkgQVNQTSBxdWlyayBhdCB0aGUgYHJ0dzg4X3BjaWAgbGV2ZWwsDQo+IHRoZSBob3N0IFBD
+SWUgY29udHJvbGxlciBkb2Vzbid0IGVudGVyIGBMMWAgYW5kIGlzIHBlcmZlY3RseSBzaGllbGRl
+ZA0KPiBmcm9tIHRoZSBhZGFwdGVyIGxvY2tpbmcgaXRzZWxmIHVwISBUaGUgT1MgaGFuZGxlcyB0
+aGUgdGltZW91dHMNCj4gZ3JhY2VmdWxseSBhbmQgZHJpdmVyIHJlY292ZXJ5IHByZXZlbnRzIGEg
+aGFyZCBmcmVlemUuDQoNCkknbSByZWFsbHkgbm90IHN1cmUgaG93L3doeSBrZXJuZWwgYmVjb21l
+cyBmcm96ZW4uIEFzIEkgbWVudGlvbmVkIGJlZm9yZQ0KaXQgbWlnaHQgYmVjYXVzZSBvZiByZWNl
+aXZlZCBtYWxmb3JtZWQgZGF0YSBhbmQgbm8gY29tcGxldGUgdmFsaWRhdGlvbg0KYmVmb3JlIHJl
+cG9ydGluZyBSWCBwYWNrZXQgdG8gbWFjODAyMTEuDQoNCk5vdCBzdXJlIGlmIHlvdSBjYW4gdHJ5
+IHRvIGRpZyBhbmQgYWRkIHNvbWUgdmFsaWRhdGlvbj8NCg0KKEN1cnJlbnQgRE1JIHBhdGNoIGlz
+IGZpbmUgdG8gbWUuKQ0KDQo+IA0KPiBBIHF1ZXN0aW9uIGZvciB5b3VyIGNvbnNpZGVyYXRpb246
+IEdpdmVuIHRoZSBpbW1lbnNlIHZvbHVtZSBvZiB0aGVzZQ0KPiBgaDJjYCB0aW1lb3V0IGVycm9y
+cyAoYW5kIHRoZSB1bmRlcmx5aW5nIGZpcm13YXJlJ3MgZnVuZGFtZW50YWwNCj4gaW5hYmlsaXR5
+IHRvIGNsZWFubHkgZW50ZXIvZXhpdCBpdHMgb3duIHNsZWVwIHN0YXRlcyB3aXRob3V0IEwxDQo+
+IHBhcnRpY2lwYXRpb24gb24gdGhpcyBIUCBtb2RlbCksIGRvIHlvdSB0aGluayBpdCB3b3VsZCBi
+ZSBiZW5lZmljaWFsDQo+IHRvICphbHNvKiBkeW5hbWljYWxseSBkaXNhYmxlIExQUyBEZWVwIHNs
+ZWVwIHdoZW4gdGhpcyBzcGVjaWZpYyBBU1BNDQo+IHF1aXJrIGlzIHRyaWdnZXJlZD8NCj4gDQo+
+IEZvciBleGFtcGxlLCBkeW5hbWljYWxseSBmb3JjaW5nIGBydHdkZXYtPmxwc19jb25mLmRlZXBf
+bW9kZSA9DQo+IExQU19ERUVQX01PREVfTk9ORWAgd2hlbiB0aGUgRE1JIEFTUE0gZmxhZyBpcyBh
+Y3RpdmUsIHN0cmljdGx5IHRvDQo+IHByZXZlbnQgdGhlIGZpcm13YXJlIGZyb20gYXR0ZW1wdGlu
+ZyBhIHNsZWVwIGN5Y2xlIHRoYXQgaXMgZG9vbWVkIHRvDQo+IGZhaWwgYW5kIHBvbGx1dGluZyB0
+aGUgcXVldWVzIGFuZCBsb2dzPyBQZXJoYXBzIHRoaXMgbWlnaHQgYWxzbyBzYXZlDQo+IG1pY3Jv
+c2NvcGljIENQVSBpbnRlcnJ1cHRzIGZyb20gY29udGludW91cyBIMkMgcG9sbGluZyB0aW1lb3V0
+cz8NCg0KQXJlIHRoZSAnaDJjJyB0aW1lb3V0IG1lc3NhZ2VzIGZsb29kaW5nPyBvciBhcHBlYXJz
+IHBlcmlvZGljYWxseT8gDQpEb2VzIGl0IHJlYWxseSBhZmZlY3QgY29ubmVjdGlvbiBzdGFibGU/
+DQoNCklmIHlvdSBjaGFuZ2UgYW5vdGhlciBBUCBvciBjb25uZWN0aW9uIG9uIDVHSHogYmFuZCwg
+ZG9lcyB0aGUgbWVzc2FnZXMNCnN0aWxsIHByZXNlbnQ/IA0KDQpJIHRoaW5rIGl0IGlzbid0IGVh
+c3kgdG8gZmluZCBvdXQgdGhlIGNhdXNlIHdpdGhvdXQgbWVhc3VyaW5nIGhhcmR3YXJlDQpzaWdu
+YWxzLCBzaW5jZSBJIHNhdyB0aGUgbWVzc2FnZSB2ZXJ5IHZlcnkgcmFyZS4gU28sIEknZCBhZG9w
+dCB5b3VyDQpzdWdnZXN0aW9uIChkeW5hbWljIExQU19ERUVQX01PREVfTk9ORSkgaWYgdGhlIHRl
+c3QgaXMgcG9zaXRpdmUuDQoNCj4gDQo+IElmIHlvdSBiZWxpZXZlIHRoYXQgc2ltcGx5IGxldHRp
+bmcgdGhlIGRyaXZlciByZWNvdmVyIGFuZCB0b2xlcmF0aW5nDQo+IHRoZSBlcnJvciBzcGFtIGlu
+IGBkbWVzZ2AgaXMgdGhlIHByZWZlcnJlZC9zYWZlciB1cHN0cmVhbSBhcHByb2FjaCwgSQ0KPiBh
+bSBwZXJmZWN0bHkgaGFwcHkuIFRoZSBwYXRjaCBmdW5jdGlvbnMgYXMgYWR2ZXJ0aXNlZCBhbmQg
+c3lzdGVtDQo+IHN0YWJpbGl0eSBpcyB1bmVxdWl2b2NhbGx5IHJlc3RvcmVkIQ0KPiANCj4gVGhh
+bmsgeW91IGltbWVuc2VseSBmb3IgeW91ciByYXBpZCBkZWJ1Z2dpbmcgYW5kIGRlZmluaXRpdmUg
+cGF0Y2ggZm9yDQo+IHRoaXMgbG9uZy1zdGFuZGluZyBpc3N1ZSBhbmQgZm9yIGJyaW5naW5nIHN0
+YWJpbGl0eSB0byB0aGlzIG1vZGVsLg0KPiANCj4gVGVzdGVkLWJ5OiBPbGVrc2FuZHIgSGF2cnls
+b3YgPGdvYWlud29AZ21haWwuY29tPg0KDQpJIHdpbGwgYWRkIHRoaXMgdG8gbXkgcGF0Y2ggdGhl
+bi4NCg0KPiANCj4gKihOb3RlOiBJIHdhcyBhIGJpdCB1bnN1cmUgd2hpY2ggb2YgdGhlIHR3byBh
+Y3RpdmUgbWFpbGluZyBsaXN0DQo+IHRocmVhZHMgd2FzIHRoZSBtb3N0IGFwcHJvcHJpYXRlIHBs
+YWNlIGZvciB0aGlzIGZpbmFsIHJlcG9ydCDigJQgdGhlDQo+IG9yaWdpbmFsIGJ1ZyBkaXNjdXNz
+aW9uIG9yIHRoZSBuZXcgUkZUIHBhdGNoIHN1Ym1pc3Npb24gdGhyZWFkIOKAlCBzbyBJDQo+IHJl
+cGxpZWQgdG8gYm90aCBqdXN0IHRvIGVuc3VyZSBpdCBpcyBjb3JyZWN0bHkgYXR0YWNoZWQgdG8g
+dGhlIHBhdGNoLg0KPiBBcG9sb2dpZXMgZm9yIHRoZSBkdXBsaWNhdGUgZW1haWwhKSoNCj4gDQoN
+CkxldCdzIGRpc2N1c3MgaW4gdGhpcyB0aHJlYWQuIEZvciBSRlQgcGF0Y2gsIEkgc3VwcG9zZSB5
+b3Ugb25seSByZXBseQ0KbWUgYWJvdXQgdGhlIHRlc3QgcmVzdWx0IGFuZCBnaXZlIG1lIFRlc3Rl
+ZC1ieSB0YWcgaWYgaXQgd29ya3MuIA0KDQpCeSB0aGUgd2F5LCB5b3VyIHRoaXMgcmVwbHkgaXMg
+dG9wIHBvc3RpbmcgdGhhdCBtYWlsaW5nIGxpc3QgaXNuJ3QNCnByZWZlcnJlZCwgc28gSSBkZWxl
+dGUgb2xkIGRpc2N1c3Npb24uIFBsZWFzZSBhdm9pZCB0aGlzIGluIHRoZSBmdXR1cmUuDQoNClBp
+bmctS2UNCg0K
 
