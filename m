@@ -1,81 +1,81 @@
-Return-Path: <linux-wireless+bounces-33090-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-33091-lists+linux-wireless=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 0BsMNbCXsmnENwAAu9opvQ
-	(envelope-from <linux-wireless+bounces-33090-lists+linux-wireless=lfdr.de@vger.kernel.org>)
-	for <lists+linux-wireless@lfdr.de>; Thu, 12 Mar 2026 11:38:40 +0100
+	id kP0ECbSXsmnENwAAu9opvQ
+	(envelope-from <linux-wireless+bounces-33091-lists+linux-wireless=lfdr.de@vger.kernel.org>)
+	for <lists+linux-wireless@lfdr.de>; Thu, 12 Mar 2026 11:38:44 +0100
 X-Original-To: lists+linux-wireless@lfdr.de
 Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id E638E270679
-	for <lists+linux-wireless@lfdr.de>; Thu, 12 Mar 2026 11:38:39 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 69CC3270687
+	for <lists+linux-wireless@lfdr.de>; Thu, 12 Mar 2026 11:38:43 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 709383013192
-	for <lists+linux-wireless@lfdr.de>; Thu, 12 Mar 2026 10:38:25 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 1A4633013FC5
+	for <lists+linux-wireless@lfdr.de>; Thu, 12 Mar 2026 10:38:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 65A9F1FDA61;
-	Thu, 12 Mar 2026 10:38:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EA5C73090D5;
+	Thu, 12 Mar 2026 10:38:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=HOTMAIL.DE header.i=@HOTMAIL.DE header.b="MCIrooqE"
+	dkim=pass (2048-bit key) header.d=HOTMAIL.DE header.i=@HOTMAIL.DE header.b="E0bM1vCb"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from AM0PR02CU008.outbound.protection.outlook.com (mail-westeuropeazolkn19013080.outbound.protection.outlook.com [52.103.33.80])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EBE573876DA
-	for <linux-wireless@vger.kernel.org>; Thu, 12 Mar 2026 10:38:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8EEFA3BBA03
+	for <linux-wireless@vger.kernel.org>; Thu, 12 Mar 2026 10:38:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.103.33.80
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773311903; cv=fail; b=hyh646CYPPcRcbrMuNI0V7MxB3QuKHAFbN3bCCW7D5otWFl8pDG2UKhlcHbi8Fe0zyKOWJiFp3uJcutjngzgVuiWVwxHsQfRsvjAXLKoJQXWWgkA0gqYOw8t97hQHyOdUMzecwyQLSczHA2eSm3BblAZtbbgTxFpfzCh0NQtjus=
+	t=1773311904; cv=fail; b=I1DhR8vYG2bkuuU3OpkequpPunhUTOujQRKz5msjSCk3RKCJIbxi7fExoNc4Dn6a9VtIypJ6OQEDPapsnHbIdgu3R5FXwHKJ4NUe2cR5TzSQunx6tr4G+h61wc6TQpyZ/vZJLg209LtFEtuF//nEQRi8YY1uPffLzC288eS8l9M=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773311903; c=relaxed/simple;
-	bh=h85ssN8TFPuMnp+617LB0RQzKMHPpLRCrIMhfSyUzRs=;
+	s=arc-20240116; t=1773311904; c=relaxed/simple;
+	bh=Cms/xFsOc2ficofpO1Iak3Z3GerJH5hdtPM6Uf4SJBI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=Qh2DNCXWE/XXdeHM9jnvnqAiVyyDugI2HNP/S8mCddPutE09yXh2edI5hN3Qq8RQ/Ax/qvWS01gcbpoFS4B7Zbr1DRnV3uXPF6s6548Ubul/Nbvgk5vQiipU6mNm0UAYd6XquoZRuGJ1tYNjlWYXM8lVkPE9uNsCc6M+elH5cwg=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=hotmail.de; spf=pass smtp.mailfrom=hotmail.de; dkim=pass (2048-bit key) header.d=HOTMAIL.DE header.i=@HOTMAIL.DE header.b=MCIrooqE; arc=fail smtp.client-ip=52.103.33.80
+	 Content-Type:MIME-Version; b=AXyFbFICi4lgSXBpksu8QWrZeUJ/PaFjz0bQUeqlqoTfmoWVp5kD25LbkbDLSsv3my2571kqhF5Ppu3m0FuQRb4bH/24A5pZcq8sII4yYA+XXAtfwtRyVczqEBJ2nVx+t4/ZEh+3SbjtguDRZFdm1lnkP1kIvEf5pw8bzlGqfbw=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=hotmail.de; spf=pass smtp.mailfrom=hotmail.de; dkim=pass (2048-bit key) header.d=HOTMAIL.DE header.i=@HOTMAIL.DE header.b=E0bM1vCb; arc=fail smtp.client-ip=52.103.33.80
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=hotmail.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=hotmail.de
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=Ry/UnEYAH7yP+LtIo+GypNpuxdqiTD08e0XbAap1ljbsoTVdHFGwYcEUdm8kP53gmyK8g6Qj/7sVvwpeYGZno1B4Jk6jPCsVLp2EkNoH0vPKOQR+Hfni2+oJBH8avj+H4/du9VHDHgBSalE8IjFWmP3BaGIwpgiOFA0p9FhebWLxTfo7CsnGYFrmE1T/Wr5xbD9tImO8DpLvIk/EYd5y+3Eu1jAGJPc4av65Sha1YS7Xt/ByuNEx92GiFZbWELV9yfMfF+4lVXCyE75Fvxlu/5pWcT8xQXWzPMRy/Nh1TNo1j1GKYfCVJ5ixyLA2P3SPm9v0Fs2dZ0pEPLsWvhG6XA==
+ b=G3jUoV7pGnBr5nvh8Ro50SNj4vaQqZrVCFXCpXR28/7iqW33GRXh1E9Evz3rSDGafwHvIOXy1jca1YN4ZKuoJI081GmxnWrY3M6n99bxJOpuyc7inbS6fAHgfTfgWdclrHKXI6RvTaC0YkiKeAegLwIoKiTpcStDHI0GzPd1zTA3GCzKZVF5wknyVC5zSCYRXZ26KHXwuJfBQb2ao9SC21Sh43V6/yk8EPGEaEhdzZLRn7XJVrMzqBjBwq0Bz1Z3+GYQypDtkA8NKsnEDuhyUc2Jw7+CDsFbVtGQVpzr6ef9yM5t8zgVs8uzDVph7ZFimqMkZ606R/csQBlLn2xOnA==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=e+DxJ19QwP0S+7L5IhF2FJ5oQBrDSFweZwCNuCfgNgo=;
- b=rmjsI1Lly+DNkQZsxlQ+KtxzPwc+IPdNUGKWmn9gS4a+wuRlU/B+twtv6ke1B4HMTKWhka4Zq/BxGmP4pFw6NnSsy0EuON22iUwPoTKPuYnV6lSSxDSeBGjhDMMcYSEhOkZIjQ+GI/tpVDBiu/tl6dJvavDosQsdOGxFGAyEJ+6p1RXOexZvrAZivbZQR8qEt5AKfAEkVWCGXFyfE8bfiBNqIKkW+Hjj5RByvPMoBxt1A2xAqJmFEjTQX+KFF4zey2PX/Ei6tT68z3rewtzAY92Ia31LijR83hpEmr+/4IWW5H1xLEIzZTsk1ykWShMEezs7tYLplCVesacdE+l/2g==
+ bh=5ytpYsKJMf878232db8UhCLxljxDsMp3Guqx1uZVVfc=;
+ b=ccVpLn5v1YhgedV7ilWUGUt3uBrqqceHm3UoOvZxNN1kZH5HiPlTX1QI1KScthp3Ww4zuHjSDb/hmr1crY/ifeR3I3wNieX91M+OsKuW1YIAq9w2HQvlRxlmzzZhbh3k+QdDOGt/fpDGO4YOrCeM3qZEy0frdSfexsYakm/74vCyh7oNuuLbd4rkEDzx3hNpwrfj9gKKCKVoAqJDXzfwEAQRHIZpMVv9R6yOUUkbYSTTRKaiQ6fStH0XpWCFIpDdQZe9ckyQx3bp/l/x5/QrqfxIGiAuefkYpwbk6AwQ7ZK9c1HyutnWJdAapUalNf+tjDVBSdrWGMEE29TCckBamw==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=none; dmarc=none;
  dkim=none; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=HOTMAIL.DE;
  s=selector1;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=e+DxJ19QwP0S+7L5IhF2FJ5oQBrDSFweZwCNuCfgNgo=;
- b=MCIrooqEWghcLPS+VFfvc6h0rEmIwti3Cf6dnjUTrRS8KZvKsEtKWgJs2SYLoOlhIHrGtSAomm/Z+LOu0ZCMWdLHmELpFxl+vRYiHbDv7geDFST5GzqXD2PtoXoe7DIzSsFGfnmCqmwUG1B+4r4A5pl9+QB4swL+UOeWmB0LL89dczcapAJXodYb8KQ6tkgGkIOhD6i9Qf/pJU6x0qLRZgAPQQZoFWr+1uvxafcON9GVDBeX6S99yUw93xprjWMQAbqYQyr7kPhTe879M++hOF72vFK4vOMe9EIFMJtdbgfZjk1LLSD948ZFIFyp3MZirBrgWeqM3nJB/ogDnDYmYw==
+ bh=5ytpYsKJMf878232db8UhCLxljxDsMp3Guqx1uZVVfc=;
+ b=E0bM1vCbc1uUeRm1095qkzKn9UnMg6mkCzhOkJ4ogKvLnVS85fhf1vKgbDAiY6jHuuGC5I2FPfZho98PpR1AYqBUbCyoS39/fUQObOgBN3TnSHVCtUVCARL4FcBaJUpWx5QP7RTOWEOsw588AyfTgMbgdX7Gkp1QQMkrdRUc0Lf5tqT06rkCY62z9Ww+TRjw+k0L2c5xfjy7cHAkRQBbu1pob4DBGjqG0KtQ24DlZnk9YfKbyUb0KzFdDPtrq25M1bV3UDj4O1WmlmR19OwrATyQZj5Jearh1F1IuME0sk05byx3UI326IFkU/9lk0rgIHbqVxH5cNihEdsYD9Rfvw==
 Received: from AM7PPF5613FA0B6.EURP251.PROD.OUTLOOK.COM
  (2603:10a6:20f:fff1::851) by PA2P251MB1058.EURP251.PROD.OUTLOOK.COM
  (2603:10a6:102:40d::9) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9678.25; Thu, 12 Mar
- 2026 10:38:19 +0000
+ 2026 10:38:21 +0000
 Received: from AM7PPF5613FA0B6.EURP251.PROD.OUTLOOK.COM
  ([fe80::1ed:268:bd65:b36c]) by AM7PPF5613FA0B6.EURP251.PROD.OUTLOOK.COM
  ([fe80::1ed:268:bd65:b36c%8]) with mapi id 15.20.9700.010; Thu, 12 Mar 2026
- 10:38:19 +0000
+ 10:38:21 +0000
 From: Masi Osmani <mas-i@hotmail.de>
 To: Christian Lamparter <chunkeey@googlemail.com>
 Cc: linux-wireless@vger.kernel.org,
 	Masi Osmani <mas-i@hotmail.de>,
 	ath9k-devel@qca.qualcomm.com
-Subject: [PATCH 07/10] carl9170: main: add exponential restart backoff
-Date: Thu, 12 Mar 2026 11:38:02 +0100
+Subject: [PATCH 08/10] carl9170: phy: enable antenna diversity for 2-chain devices
+Date: Thu, 12 Mar 2026 11:38:03 +0100
 Message-ID:
- <AM7PPF5613FA0B6C3933233D4272D36007C9444A@AM7PPF5613FA0B6.EURP251.PROD.OUTLOOK.COM>
+ <AM7PPF5613FA0B6344DB5885359FAFC80D69444A@AM7PPF5613FA0B6.EURP251.PROD.OUTLOOK.COM>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <cover.1773277728.git.mas-i@hotmail.de>
 References: <cover.1773277728.git.mas-i@hotmail.de>
 Content-Transfer-Encoding: 8bit
 Content-Type: text/plain
-X-ClientProxiedBy: FR5P281CA0032.DEUP281.PROD.OUTLOOK.COM
- (2603:10a6:d10:f3::6) To AM7PPF5613FA0B6.EURP251.PROD.OUTLOOK.COM
+X-ClientProxiedBy: FR5P281CA0038.DEUP281.PROD.OUTLOOK.COM
+ (2603:10a6:d10:f3::8) To AM7PPF5613FA0B6.EURP251.PROD.OUTLOOK.COM
  (2603:10a6:20f:fff1::851)
 X-Microsoft-Original-Message-ID:
- <a7b861f668598df1c42b8202cf73668a22f97d1f.1773277728.git.mas-i@hotmail.de>
+ <4ddd3961caf55c2cf29c799002c73a06104d073a.1773277728.git.mas-i@hotmail.de>
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
@@ -85,58 +85,58 @@ MIME-Version: 1.0
 X-MS-Exchange-MessageSentRepresentingType: 1
 X-MS-PublicTrafficType: Email
 X-MS-TrafficTypeDiagnostic: AM7PPF5613FA0B6:EE_|PA2P251MB1058:EE_
-X-MS-Office365-Filtering-Correlation-Id: ef462647-4703-4735-7677-08de80237a0b
+X-MS-Office365-Filtering-Correlation-Id: bebb11a6-2ba1-405d-4512-08de80237b02
 X-Microsoft-Antispam:
 	BCL:0;ARA:14566002|5072599009|461199028|51005399006|19110799012|8060799015|41001999006|23021999003|15080799012|3412199025|440099028|3430499032|40105399003|1710799026;
 X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?NIZYRpxvPSykQy3QBgH+6n5uqVnYljY6ZPnPynBnz7il5cosPAfJHeXUP6Gw?=
- =?us-ascii?Q?c+TFTcTWCJgIlI8vm27Gytj3w/TlGJ2GfhIDB9NakAzAoTYVOIVGm8NMGWNq?=
- =?us-ascii?Q?/RPsQDR2Dh73IArHWMdEUJsIWQljmv3PWrkWKOW+vgNFoOoVOpjqfyD2nl/X?=
- =?us-ascii?Q?lxiSk2MJyaQMoVvLFx9HMLrL71a8v9oTJE5Fs3KgFkxjbbzNCvrpmPOXDinT?=
- =?us-ascii?Q?Glt7ZEQ29VrpDxduoWl4QWI268uNnWJW4JSDP9nSQpBYM5x2CmC0IqniBJkp?=
- =?us-ascii?Q?VUcLkWKOPDAf6aUNaY0U05vaXmw+Cu4t1ML3ClEv2ag3pLnAdl7WfDgW6r6b?=
- =?us-ascii?Q?rckZNM1qk9ofLfHshixmkG3BpcpCrEonP9IPaEgeRr8Zd9P2efZIgaMmOmfp?=
- =?us-ascii?Q?SknmgjSiaxnu6YKwTJtPag8Xcu3TIP9uO4r3Kh7pBtqdbxK/Tk/TLA7yX1JE?=
- =?us-ascii?Q?AkBK7LRtXdjGJ5It049V0Gq9IbE585Mo5Je7P17K3Ar8+uK1+4rp+pa77xeo?=
- =?us-ascii?Q?Lx7IDjZftXdhiJ4KtuZqzmWnqVN29bpVClyBklgwWfT9ka4rwVTqI/1H09YP?=
- =?us-ascii?Q?FTnwVz0P8zutKp89vuvHaO1dGA3OjlWj1NbdaTntHr8oAQJ07SLDLpI80/oM?=
- =?us-ascii?Q?2nuMCEkcxIQo8yhLDF8stqhAgnp/i02ydkQEM6Q1LLIRLG81ffP6+PlKdbgw?=
- =?us-ascii?Q?cC+05f/KNPKprDmCs0zqh4/PSUf+DGjeijiljRX9gEhG1akzdm/vyVipikoe?=
- =?us-ascii?Q?IUfGivRnttUxd+7sklfVYoDfd8uQBYaSTaAZisC5XFxOT+eu4k9+44pYqFr/?=
- =?us-ascii?Q?/ev/PgV0xyIcz/YD9Pn5Psw59vAx7JSntHQrEr+sis/FZDqp1QdEimC0qznU?=
- =?us-ascii?Q?DG16AiG1uzjTyg0NAe6NkACw7UCG2E2CoNKFuRCYiuzFwfirySI7EEegUISD?=
- =?us-ascii?Q?oj7/LvdDsBtR7acTPpFGcg=3D=3D?=
+	=?us-ascii?Q?3in2eOPm/8ra4hjdCMfBp6s9x3BJ2MPjavVCgZwYlu+w6kuSsAsjmeiObc4X?=
+ =?us-ascii?Q?QtNEwSWm2wVZuLCUtwUJk8rgJI5LNtcNt2ado07HcSPIlUJxU3l+7nl2x5gh?=
+ =?us-ascii?Q?rDObWZitr5VD19JgKk51w32WKeSdHT/+ODiy7D5RoDu8pC8EjDvPfakO+DPe?=
+ =?us-ascii?Q?wS0Pwnibl0wA0OTzbjE5BQEyNBI2EUOba5YNf4fixoGVzsLwdsR+wCMEMpeU?=
+ =?us-ascii?Q?61G/st2DYjcUXtCrOqGV3OTM9aZCVKry4PGXp3+QrltWLub5HybcJVKXsGFx?=
+ =?us-ascii?Q?0psNlOgogXIeG2jM4QVuifPIDGPX2LQkWi3WT56E5HGX7FLK4n5V0IKdpTT4?=
+ =?us-ascii?Q?84dLEegWpQZxrYefLzfxZlHlb6Ajbs3GH0qAIzGt0dm3tENTdGH1DkSf1QJd?=
+ =?us-ascii?Q?d3lBmjuhrp95xzb4c2KKUHGTtOJxqTsvixRuWTquaFaZQfjSBIZa81CDkuIH?=
+ =?us-ascii?Q?Fg83GqslDekanDTDGc3E4kbojtEQl8r1vG6ZgXu7cOwG3ueDsacfvOHGAIIv?=
+ =?us-ascii?Q?o+zvyUt7H8DSbQerLXZCpK2jSm26nbb5041M0+wm5queNQP3QWAGoU/5ruXD?=
+ =?us-ascii?Q?SHo6gfHOMfafS0Simh7IXCkZCmAxQrkFSNyDU8Bhrjxg6uTMbki0iqMKVwqZ?=
+ =?us-ascii?Q?nn16KS5JpgupzcE+QADXpXZt6LT0ilqH/vG1SdatinpZnskdFXVqDN+5PI9N?=
+ =?us-ascii?Q?eA5Egw0U9xKn+R3ooksBYRHngkU0XLP9gtid2J+N87PkJtoDCudAxqq27Z8m?=
+ =?us-ascii?Q?kSrZtd+AkkB5Wj8q8be5SZ6UvpErs1vJ+Gtz4Iu/1Xok1VTtuUOPHodS/Mcz?=
+ =?us-ascii?Q?4ukyaxByOvMiLWy1LyyJXgJh0jyB/N7zDLtezEsKUXcc0WGvBqTJ9JJoTchW?=
+ =?us-ascii?Q?YefF8GzfAU5BQ1dQ2F+MPaaFA1W4SpnXqzgf4D+fuMg5iVSaOr/gd72t4MJ4?=
+ =?us-ascii?Q?dXClN58wtwr8N959SUnjPA=3D=3D?=
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
 X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?a8UhdNLgLhpAUrysle1x6qsYqjJmgbpghZBqKxrzNZSS3vwwQDYBUEw8q3al?=
- =?us-ascii?Q?KFzDW2H2CAGaLYcXdk2AS2gLLrK02Awl3cA+VhskwHXjoQ65duAd+6MZbzA+?=
- =?us-ascii?Q?zXh8I1VB+1tljS3sX5fGvUAOZ2uYI8MRTz292MWle18NEAbR0C7etWaUjTiW?=
- =?us-ascii?Q?SSzC3IeSANnpXrQQev7Z4d8NZV6yCA/53cz4lwXjyJhfH/o2zrfohYqTNzpL?=
- =?us-ascii?Q?RfGAAsEUSM5EhSDVMcCQota0qX+WRGgrdORF/Eb9/KZHkhn+n2fVRek5x4jA?=
- =?us-ascii?Q?frgtdUbEh3GephxIkW0edUAAWc21hMcsDynv7y59qLmkndQwBT1qBJYqSFIH?=
- =?us-ascii?Q?DeeoNQJCD98a7rR0ixPCy7rCtwfQhAY5UHTKgG14aVKXn808ypWX+RNgvID2?=
- =?us-ascii?Q?EDEup3XNz1iT+GutJGvMxQjEF5BhCRI+0ah+B+RQkXM8UNm4x7nQ+nCXAzlm?=
- =?us-ascii?Q?ZMmYzQkt/CSFHHcZutxf0Rjfpoitht7TDw9GS20vz1AXlGv0SWOOd2QNmdgP?=
- =?us-ascii?Q?87Oo4uuOaVJ/RWGX3DvFjqI2paafEFVZ3+hXo7BrId51xY4z8kjLoCNzJxZG?=
- =?us-ascii?Q?u0KjEObqolT84MP/vfDSgDtaogMoUL6ZRWWrZLLIrvH8dbWeQTa0Jo6+qc5q?=
- =?us-ascii?Q?PhbLam560zWxwStgXoJtjdd6YVsjY3Ca81+nmslr1ToqOshCt6bGoBmFNY2G?=
- =?us-ascii?Q?MQAwq6CEB0wIP8ywmMegg0nfpkmBI7yFtbig83RY7nFksI4Ygmge6ZBJpf24?=
- =?us-ascii?Q?k9nxIBHImCfxpU1AD9FC5te7YQBVZ01//63ULmXQLOVRNhVWQQVnyZDlFo9g?=
- =?us-ascii?Q?j8HOYgAnt8Sg9ff0rmIVoZGpsc8NQtCO7+Eg77qfZbKbxAuVkJbLOKIkHJVu?=
- =?us-ascii?Q?TCYN5sAY2ONm2dx6d1xERXMFMcc0qOiD3l8yZ/5pQxFb/oI4Kt5k5vTyAvZp?=
- =?us-ascii?Q?gpK9fIGFKHdPe7mLdZdEhnTvG2hUZLy4cm7Dpops6ke4akW8FAj0QmnwbQu0?=
- =?us-ascii?Q?Tiumt6nhaR6TP/Ie8MaVMpg+m2Al2HqPLgwwOTrFLceYUJiFU7k/+sDmc9IJ?=
- =?us-ascii?Q?3bTpLYY4vy4GpckuQHbxEL40BGYayT8p4j+tR57pvTIyu5oBulbod39+kzYZ?=
- =?us-ascii?Q?/7sc7zM0upB0Cg23oPTFMEUl2fDU5qo4/ohzL22VssoTZWrTj+VJriUXukO5?=
- =?us-ascii?Q?YU9x/sKKdkK2/sZHQoX2pKyD5Fuw0CXTIydwmyXFjRopxX3vSjs3gBeW0n29?=
- =?us-ascii?Q?62M4lnooBADP4onTs5KNHqU4mXBKt7s3cVG6f5QiAhGhfmB+SiJ5ElgFu+oY?=
- =?us-ascii?Q?7di344BZ2IZQ4qwnb5N1+9nXk5z8sDvAE31UwogJ/a5jYBPm52sv1ysp6RKL?=
- =?us-ascii?Q?iIcICDgEZyOO+FczYPnRTkDPponu?=
+	=?us-ascii?Q?I8/v4QcHEPKGyVS4a6LwbL4a4dPRW8nMzM3Ea7JLf4I+3c9zu0xiVdIZIwUo?=
+ =?us-ascii?Q?vnVpkdBeMIoJjuXKCeciyEpeR2+FU25tNOpDg29IMNVT4Sn7cNYU+guf0DXM?=
+ =?us-ascii?Q?evh0+ZoTuU0PhPk3OkODklb9tYQCUe2yMGE43fcmv3NRaeLrPXNkVPYN7aD+?=
+ =?us-ascii?Q?XCvupDAGGFdPBb+GtnrCQ7nZ2aE/Lv+6z/ZwS1tvoQLZnhXM10gZcW2y+2Ww?=
+ =?us-ascii?Q?YjoZWzpG2/0C/codtclukRAvElrrs6YbIf1WpMRQB2onCou04ooxJzpOXaOq?=
+ =?us-ascii?Q?ujY4cVv0cf6YQaCbtDGMx1bpf4Tjc9MQcirDXiFuel9ITI0crMSKW2yaS6x2?=
+ =?us-ascii?Q?PR2TQdPt69+AJnp7cveC34Mn4xF4f7z96sDtkwx8zRrr4p3C1xVw2R9zH+ls?=
+ =?us-ascii?Q?89Jm9o0gNlyswNFqxlUPwrp1ken2uvUMswMuWmHKIDoTtBrYi7XZop73GK+X?=
+ =?us-ascii?Q?Fui2QsysHXLfdStBTAFa3iT/f59kvNCwMrpoQ/XtGdWjYmYzVCScRflFA51M?=
+ =?us-ascii?Q?0peTW9h9iSBpvqrv2+zYHOKPc/VyPCJ665b4ERMWF893CZzlDON/oefhBoV9?=
+ =?us-ascii?Q?PuSak90r/BuOLxjz2hayTfnBXGKyh3zaZVirqAQ0TnAldUUSRwzm64bxnj/r?=
+ =?us-ascii?Q?XMB7ugl5QH1Vb8ER7JQnNxjq84JpffE5Bml/TsPk0RQr5zpPfFzCMP3bwkcS?=
+ =?us-ascii?Q?xHLjDZX7cJNFdvg2ltTgd4+oREZhU9WtM9YqbrZxZtMWIHq4fqfg1csExLBi?=
+ =?us-ascii?Q?4QgjX2bL5sDLdWcENRwq9D8xySU4Ds0CQs5Obd8VUj//g7kAVM5ZeiEqRepg?=
+ =?us-ascii?Q?YTWcTXG//XQb6JXXfBE9WwEa3A9i5JnBq2zrMbqQwJmPsXGtRfnAi3eJWkKU?=
+ =?us-ascii?Q?SZlPbDevB/O51exrXYOG41Qy4bCWNzG1WZrrX0WImaSB+Bqn3E3nvW4hyP0P?=
+ =?us-ascii?Q?ALBEfbwXk0mx74nXRwwJ3rIGEoHKd/5ZPGprRC4awLuhBod7awdmEdOJbTCR?=
+ =?us-ascii?Q?a1FRabjDa+y9aQ7fQFltn6k15mgp+nMcNm4Et0w87evltRq2CNqkhZsi4lhT?=
+ =?us-ascii?Q?3qi4vjWu565UD9zE7cj63MBg/aMzf5N1BrAq8Z1zdEZhzuABZbU5C/Dvo4j/?=
+ =?us-ascii?Q?QkqentEqFriBP60/lBPciLtCOSbikH1Y2kSTu1/CYy6YJ4ip6XsP5pfVtPBY?=
+ =?us-ascii?Q?j7EGsD5664XXBU4RzUbeZiIp08cDm+HWoolnNnlKYApkRrTYWIa8v16VuGtE?=
+ =?us-ascii?Q?xarP3+Dap2SPBZuEsSjOZaLWoKr5i6sviZ83byvOO1O9ngBXXTIzzIRjWOYL?=
+ =?us-ascii?Q?ZClXpEMSMOCxusFVRboSS2CRQcxWVAORpSiTDNbtlDgawgnRwTahF0K67pHy?=
+ =?us-ascii?Q?KuyuNwU9Uz+Bg1+EINRb5bO2RKm8?=
 X-OriginatorOrg: sct-15-20-9412-3-msonline-outlook-fe3f5.templateTenant
-X-MS-Exchange-CrossTenant-Network-Message-Id: ef462647-4703-4735-7677-08de80237a0b
+X-MS-Exchange-CrossTenant-Network-Message-Id: bebb11a6-2ba1-405d-4512-08de80237b02
 X-MS-Exchange-CrossTenant-AuthSource: AM7PPF5613FA0B6.EURP251.PROD.OUTLOOK.COM
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 12 Mar 2026 10:38:19.4733
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 12 Mar 2026 10:38:21.1935
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: 84df9e7f-e9f6-40af-b435-aaaaaaaaaaaa
@@ -152,7 +152,7 @@ X-Spamd-Result: default: False [0.34 / 15.00];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-33090-lists,linux-wireless=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-33091-lists,linux-wireless=lfdr.de];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	TO_DN_SOME(0.00)[];
 	MIME_TRACE(0.00)[0:+];
@@ -168,128 +168,71 @@ X-Spamd-Result: default: False [0.34 / 15.00];
 	FREEMAIL_FROM(0.00)[hotmail.de];
 	RCVD_COUNT_FIVE(0.00)[5];
 	TAGGED_RCPT(0.00)[linux-wireless];
-	NEURAL_HAM(-0.00)[-1.000];
+	NEURAL_HAM(-0.00)[-0.999];
 	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
 	DBL_BLOCKED_OPENRESOLVER(0.00)[hotmail.de:email,HOTMAIL.DE:dkim,AM7PPF5613FA0B6.EURP251.PROD.OUTLOOK.COM:mid,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: E638E270679
+X-Rspamd-Queue-Id: 69CC3270687
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-When the AR9170 enters a bad state (firmware errors, command
-timeouts, TX queue stalls), the driver can trigger rapid-fire
-restarts that prevent the device from ever stabilizing.
+Enable fast antenna diversity on devices with two RX chains
+(rx_mask == 3).  This programs the MULTICHAIN_GAIN_CTL register
+to configure main/alternate LNA settings and enables the
+CCK fast antenna diversity bit.
 
-Add exponential backoff to carl9170_restart(): if a restart
-request arrives before the current backoff window has elapsed,
-the request is throttled.  The backoff starts at 500 ms and
-doubles on each restart, capping at 30 seconds.  A successful
-restart resets the backoff to zero.
+The AR9170 hardware has antenna diversity registers inherited
+from the AR9285/AR9287 family, but the carl9170 driver never
+programmed them.  For dual-chain devices this improves receive
+performance in multipath environments by allowing the baseband
+to quickly switch between antenna paths.
 
-Additionally, use named constants for the firmware error
-threshold (CARL9170_FW_ERROR_THRESHOLD) instead of a magic
-number, and add a window-based counting approach to avoid
-accumulating sporadic errors over long uptimes.
+The diversity configuration mirrors what ath9k uses for the
+AR9285 single-chip design:
+- Main LNA: LNA1
+- Alt LNA: LNA1+LNA2 (combined)
+- Gain table: table 0 for both paths
 
 Signed-off-by: Masi Osmani <mas-i@hotmail.de>
 ---
- drivers/net/wireless/ath/carl9170/carl9170.h |  2 ++
- drivers/net/wireless/ath/carl9170/main.c     | 27 ++++++++++++++++++++
- drivers/net/wireless/ath/carl9170/rx.c       | 10 +++++++-
- 3 files changed, 38 insertions(+), 1 deletion(-)
+ drivers/net/wireless/ath/carl9170/phy.c | 25 +++++++++++++++++++++++++
+ 1 file changed, 25 insertions(+)
 
-diff --git a/drivers/net/wireless/ath/carl9170/carl9170.h b/drivers/net/wireless/ath/carl9170/carl9170.h
-index a2ffa62..2eedb2f 100644
---- a/drivers/net/wireless/ath/carl9170/carl9170.h
-+++ b/drivers/net/wireless/ath/carl9170/carl9170.h
-@@ -301,6 +301,8 @@ struct ar9170 {
- 	bool needs_full_reset;
- 	bool force_usb_reset;
- 	atomic_t pending_restarts;
-+	unsigned long last_restart_jiffies;
-+	unsigned int restart_backoff_ms;
- 
- 	/* interface mode settings */
- 	struct list_head vif_list;
-diff --git a/drivers/net/wireless/ath/carl9170/main.c b/drivers/net/wireless/ath/carl9170/main.c
-index dcedcb1..ebf9fa9 100644
---- a/drivers/net/wireless/ath/carl9170/main.c
-+++ b/drivers/net/wireless/ath/carl9170/main.c
-@@ -492,6 +492,7 @@ static void carl9170_restart_work(struct work_struct *work)
- 	if (!err && !ar->force_usb_reset) {
- 		ar->restart_counter++;
- 		atomic_set(&ar->pending_restarts, 0);
-+		ar->restart_backoff_ms = 0;
- 
- 		ieee80211_restart_hw(ar->hw);
- 	} else {
-@@ -505,6 +506,9 @@ static void carl9170_restart_work(struct work_struct *work)
- 	}
- }
- 
-+#define CARL9170_RESTART_BACKOFF_INIT_MS	500
-+#define CARL9170_RESTART_BACKOFF_MAX_MS		30000
-+
- void carl9170_restart(struct ar9170 *ar, const enum carl9170_restart_reasons r)
- {
- 	carl9170_set_state_when(ar, CARL9170_STARTED, CARL9170_IDLE);
-@@ -519,6 +523,29 @@ void carl9170_restart(struct ar9170 *ar, const enum carl9170_restart_reasons r)
- 		return;
- 	}
+diff --git a/drivers/net/wireless/ath/carl9170/phy.c b/drivers/net/wireless/ath/carl9170/phy.c
+index 290c336..bcd9066 100644
+--- a/drivers/net/wireless/ath/carl9170/phy.c
++++ b/drivers/net/wireless/ath/carl9170/phy.c
+@@ -536,6 +536,31 @@ static int carl9170_init_phy_from_eeprom(struct ar9170 *ar,
+ 	carl9170_regwrite(AR9170_PHY_REG_RX_CHAINMASK, ar->eeprom.rx_mask);
+ 	carl9170_regwrite(AR9170_PHY_REG_CAL_CHAINMASK, ar->eeprom.rx_mask);
  
 +	/*
-+	 * Exponential backoff: if restarts are happening too frequently,
-+	 * increase the delay before accepting the next one.  This prevents
-+	 * restart storms when the device is in a bad state.
++	 * Enable fast antenna diversity for 2-chain devices.
++	 * Configure main/alt LNA with both chains for best
++	 * multipath performance.
 +	 */
-+	if (ar->last_restart_jiffies &&
-+	    time_before(jiffies, ar->last_restart_jiffies +
-+			msecs_to_jiffies(ar->restart_backoff_ms))) {
-+		dev_warn(&ar->udev->dev,
-+			 "restart (%d) throttled (backoff %u ms)\n",
-+			 r, ar->restart_backoff_ms);
-+		atomic_dec(&ar->pending_restarts);
-+		return;
++	if (ar->eeprom.rx_mask == 3) {
++		val = carl9170_def_val(AR9170_PHY_REG_MULTICHAIN_GAIN_CTL,
++				       is_2ghz, is_40mhz);
++		val |= AR9170_PHY_9285_ANT_DIV_CTL;
++		SET_VAL(AR9170_PHY_9285_ANT_DIV_ALT_LNACONF, val,
++			AR9170_PHY_9285_ANT_DIV_LNA1_PLUS_LNA2);
++		SET_VAL(AR9170_PHY_9285_ANT_DIV_MAIN_LNACONF, val,
++			AR9170_PHY_9285_ANT_DIV_LNA1);
++		SET_VAL(AR9170_PHY_9285_ANT_DIV_ALT_GAINTB, val,
++			AR9170_PHY_9285_ANT_DIV_GAINTB_0);
++		SET_VAL(AR9170_PHY_9285_ANT_DIV_MAIN_GAINTB, val,
++			AR9170_PHY_9285_ANT_DIV_GAINTB_0);
++		carl9170_regwrite(AR9170_PHY_REG_MULTICHAIN_GAIN_CTL, val);
++
++		val = carl9170_def_val(AR9170_PHY_REG_CCK_DETECT,
++				       is_2ghz, is_40mhz);
++		val |= AR9170_PHY_CCK_DETECT_BB_ENABLE_ANT_FAST_DIV;
++		carl9170_regwrite(AR9170_PHY_REG_CCK_DETECT, val);
 +	}
 +
-+	ar->last_restart_jiffies = jiffies;
-+	if (ar->restart_backoff_ms == 0)
-+		ar->restart_backoff_ms = CARL9170_RESTART_BACKOFF_INIT_MS;
-+	else
-+		ar->restart_backoff_ms = min(ar->restart_backoff_ms * 2,
-+					     (unsigned int)
-+					     CARL9170_RESTART_BACKOFF_MAX_MS);
-+
- 	ieee80211_stop_queues(ar->hw);
- 
- 	dev_err(&ar->udev->dev, "restart device (%d)\n", r);
-diff --git a/drivers/net/wireless/ath/carl9170/rx.c b/drivers/net/wireless/ath/carl9170/rx.c
-index 414d499..bb909b5 100644
---- a/drivers/net/wireless/ath/carl9170/rx.c
-+++ b/drivers/net/wireless/ath/carl9170/rx.c
-@@ -46,6 +46,14 @@
- #include "hw.h"
- #include "cmd.h"
- 
-+/*
-+ * Time window for firmware error counting.  Sporadic errors are
-+ * normal over long uptimes; only a burst of errors within a short
-+ * window warrants a restart.
-+ */
-+#define CARL9170_FW_ERROR_WINDOW_MS	10000
-+#define CARL9170_FW_ERROR_THRESHOLD	3
-+
- static void carl9170_dbg_message(struct ar9170 *ar, const char *buf, u32 len)
- {
- 	bool restart = false;
-@@ -54,7 +62,7 @@ static void carl9170_dbg_message(struct ar9170 *ar, const char *buf, u32 len)
- 	if (len > 3) {
- 		if (memcmp(buf, CARL9170_ERR_MAGIC, 3) == 0) {
- 			ar->fw.err_counter++;
--			if (ar->fw.err_counter > 3) {
-+			if (ar->fw.err_counter >= CARL9170_FW_ERROR_THRESHOLD) {
- 				restart = true;
- 				reason = CARL9170_RR_TOO_MANY_FIRMWARE_ERRORS;
- 			}
+ 	carl9170_regwrite_finish();
+ 	return carl9170_regwrite_result();
+ }
 -- 
 2.51.0
 
