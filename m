@@ -1,81 +1,81 @@
-Return-Path: <linux-wireless+bounces-33092-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-33093-lists+linux-wireless=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id aOGZK7eXsmnENwAAu9opvQ
-	(envelope-from <linux-wireless+bounces-33092-lists+linux-wireless=lfdr.de@vger.kernel.org>)
-	for <lists+linux-wireless@lfdr.de>; Thu, 12 Mar 2026 11:38:47 +0100
+	id uBIpNKeXsmnENwAAu9opvQ
+	(envelope-from <linux-wireless+bounces-33093-lists+linux-wireless=lfdr.de@vger.kernel.org>)
+	for <lists+linux-wireless@lfdr.de>; Thu, 12 Mar 2026 11:38:31 +0100
 X-Original-To: lists+linux-wireless@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id D76E427068F
-	for <lists+linux-wireless@lfdr.de>; Thu, 12 Mar 2026 11:38:46 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id A287527066A
+	for <lists+linux-wireless@lfdr.de>; Thu, 12 Mar 2026 11:38:31 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id AE10E301514A
-	for <lists+linux-wireless@lfdr.de>; Thu, 12 Mar 2026 10:38:28 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 875BF302BF6F
+	for <lists+linux-wireless@lfdr.de>; Thu, 12 Mar 2026 10:38:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 90C571FDA61;
-	Thu, 12 Mar 2026 10:38:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 246741FDA61;
+	Thu, 12 Mar 2026 10:38:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=HOTMAIL.DE header.i=@HOTMAIL.DE header.b="Zjcn6oUG"
+	dkim=pass (2048-bit key) header.d=HOTMAIL.DE header.i=@HOTMAIL.DE header.b="Qqwb4sQq"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from AM0PR02CU008.outbound.protection.outlook.com (mail-westeuropeazolkn19013080.outbound.protection.outlook.com [52.103.33.80])
+Received: from AM0PR02CU008.outbound.protection.outlook.com (mail-westeuropeazolkn19013083.outbound.protection.outlook.com [52.103.33.83])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 224222E719C
-	for <linux-wireless@vger.kernel.org>; Thu, 12 Mar 2026 10:38:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.103.33.80
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BFFE72E719C
+	for <linux-wireless@vger.kernel.org>; Thu, 12 Mar 2026 10:38:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.103.33.83
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773311906; cv=fail; b=dcB+3RInvN/FLSPbQdsXGJnmHQyIn4my6K97YPlhJwSm5644xsnuipPMdNX+DVzNyM60NgC2YpIAHYH57azJOPrmk2UqQK1/fxm12Ckudg1VbSp7C9zgkEdL0GCEv5OuERu4SdvYjvBgrzL/ue5E1gdKjnHrP+k+lfQxecLWQjk=
+	t=1773311910; cv=fail; b=DkKVuNunZY0o7/zKhw7GQ1Bm+ldsAv1O7MoJzw7eqWQlCcOZ30g4tjR2IbvjylkdsDlBG5aNy0ZxBddP6H214mth/gHqasgSaMq1qkgeGKHcJvShp2XUKAfnbaUgVuKXw61VB5Tfs+UtfhB0+WYDhy72gYXYFB+dag4xf4EkY/o=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773311906; c=relaxed/simple;
-	bh=egluC9fsTo7L6+NNGhRvgLjSco8slNC/jJujshwSPS0=;
+	s=arc-20240116; t=1773311910; c=relaxed/simple;
+	bh=/8gGU1TEoOTieD3WPU8ed63ESBd1Uo+Dtv32xbv99xI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=Lm4pmDTEYWSu2mTZAvedJ5YY6a6wbA8Kw1JBZ6OotzyrY7t4ZklOzWVXuhFaYevzHmrn0q31Ye8zHmLzvf8p/qFPPIRmrIl56Hy0ag8GyaJm7PnYMhdlYL0w2FEaDfkZY/jcOZGcNseLlxwHH+pqEnIS2EuZQjkpWsNDgRDRFyU=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=hotmail.de; spf=pass smtp.mailfrom=hotmail.de; dkim=pass (2048-bit key) header.d=HOTMAIL.DE header.i=@HOTMAIL.DE header.b=Zjcn6oUG; arc=fail smtp.client-ip=52.103.33.80
+	 Content-Type:MIME-Version; b=UpnMqEia5m8+T2pNAulIbYST1ospdiMNl+sxEbn/tSw3LiA6yCfkRjJ6KBE2vFUtpo/Q38btwoMJma3E9qHFTCrTwG0ECQ4L08W60KVkOmpfhsWfpKgTQwH6SmoL+WmP/mSe3D0wjOdc340gZSRrZ1qhJqcWl+2XvyCwY0EuI3k=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=hotmail.de; spf=pass smtp.mailfrom=hotmail.de; dkim=pass (2048-bit key) header.d=HOTMAIL.DE header.i=@HOTMAIL.DE header.b=Qqwb4sQq; arc=fail smtp.client-ip=52.103.33.83
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=hotmail.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=hotmail.de
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=PZxkV1T0vfsmu6OSirXp+QayeJ4lHwgMYiDQwfTYZRsPuJzShttwuVn11kgIF88VYzW8fefYQwpDbKhPq81sae0WK9B6C1nU5ZEEBNzscA5cM6h4wmULBM5ewMq9gWyJb/kDMJnmKdfX1nTWnR+kNGKrEtOsu+M6+9+avJmpA6D2Y7OiLcefjgOMx842HmPbFK5jR9CQ0bSiCYeuKSqo5ArVMCb37mewjQgiyrmekVTu5bmtlEbriG3cq5Odm+JEBMWT8x/I9wGeLs4xTM65+id2v4lbqAlIJq1WTbA0E2TI//bS4tF1A+k2Yl1lCzaeoI6HOQby7zTtyODD0yZ8Cg==
+ b=jvXe2Yp2cg0PID9J9Dm/5VTXc90XcAnDFBcgZUnMm0pIuizL3LaM7rv+w4pUCRa7KM4tjiyENFvYe40ZzYmQrDRkw6hZXKrxagDf5JkHx4vS0K7XHoVfI4Kykunr6NXowv0WMjZgiiVnn35BoRm7BMaGUMJQMkE20Cqpxgcgn+AzZwWOEfTumzVhsUAdF6OizOw3USC1xZ9P03jEg3SU7Bopvmo+AY7GlBStvuWd1EfRbHNPxHTlYYq1oUdhmJFBVNUQxqf66ixRB1M6rU/2lS2qnpaKPS2BDK0SDCyq4btriCymfDHGlBo8DXqLj1MeqtWIZ4kCYvBBYSLWkL2QUg==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=eqjb/KaLpfz1uqLP36IGkqaedDuIdveqXKb5oElS6uM=;
- b=vIGIcHzQj+zRjlscIa+sMYXsR0X/UWk/FKQaQC8F835E+llB+kYXDQ5sGbLcWG5EsVkH34oQzu3a7FHf+i5Fd7d0K2Rsk4nGXe4NnrV3+8gmMq/RIulCcpMjaxMYYqXwEa1E395GcEh6faFtzmuMs4h38YzUQji+hUj3G+0B1c1ONwvugKKXDCiB7lfyacJoH9UBMlRWtBCDcM1Ct7/Z+lPUZwBh0X7zLPJgAHM0hdRGYYQPwdfKRASfECwvmMP0CEEggt9LHt+FTkUmynPnWvDl9wHEn3MAfLnlR183oF6i67gMCW1OW2AYgXCEpRMdV3oAs+6yo80FxjefkNN8aA==
+ bh=yhMzbKsGpvbsMLw2b6LYmQAEKSqny3Es0Hb3BFVLsdk=;
+ b=YRcK93DfbxlXlBLY6ImQSuyXDdiLfKNFBnUX7bB1f5KXLbskp2iT27jX7MBoBFVJIDq/6ApRab+J3ErtVvSCO72MB1KYRta3j8QyOTQknBYl03uxgh5B8Jl577okItEcA4VjFxgpcge+5lebUzQrfER1RMvxVMv3GuUfX+o2nj8f6OoqgGJOXX+DLBKWc8iapRb4aqLCDyeWuDAEwMUQc5QB48gfEmIvYiUdkWmzZ5oHWNJr2w9NjXHfEftfYWDWs6m3radyrAY/3hoM7lF9mHuado0wI/C4rzxYWVsBIg/KQN9Qmp/7zF49IPKJwA2t/IljR351fRwL0i26Zz8kqA==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=none; dmarc=none;
  dkim=none; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=HOTMAIL.DE;
  s=selector1;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=eqjb/KaLpfz1uqLP36IGkqaedDuIdveqXKb5oElS6uM=;
- b=Zjcn6oUGDHo/yWtBLsCNp34yYUW1iX5ecSwR1RY+rG64NMJ/AT2Pp3pj/eTXCwJ4+6fT2/4dHCkY4jFX7F9dU2YFJNdEmmoWvwqCI4pmgHD6ZqhWvWN0eo4SuEonpUUsN1iTrb1FLJGsOJmN44RtN4OJj/3nCD9T1L2LB3kycIHIZDNdvXc4ncxHo+e7SKcx+KR+gsFn39JE4n7aGzAXd1MS/NeGUSSxWuOpbBe8QuNt3qz/w71O3uEOuM0c57+BgHsI0tsbPwjsiwQV3M79C97Q7//ut2KS5Zg3KUdlGdR4sK/fEOM2EvHNlvHo9EgM8LupGvdlvmLRCPW89MMjZw==
+ bh=yhMzbKsGpvbsMLw2b6LYmQAEKSqny3Es0Hb3BFVLsdk=;
+ b=Qqwb4sQqQsqxw5XdZM7CZGb03DL0xAXvR+bo+LFvKKot/qWO4jBCGUVuxz42KRe6gQgYjzXo/j+m+daa0VPbSBKbrLZm6f2xWOv50DbxCZPxrXwGiINZrQPGCt/A8XFt7alW0tDjO6P/uvvAi0cTjd2eMQSHFp33CH03tb3OKWpg0hvRmi456By7hdo081MvGg55ZmxF7zy9DUnxYthVcyFUbtzujxdZ2p7uv6JEwBOFmj4s6SWS1cSWfkQMAgWwzkYIqPhMHEp7R3H6oiI5hKUKseZt3yXqPz0XIkyyQdFj90GcqZQwfJOVAEP9JODSgFVMbL2U4aJn40OB1D0euw==
 Received: from AM7PPF5613FA0B6.EURP251.PROD.OUTLOOK.COM
  (2603:10a6:20f:fff1::851) by PA2P251MB1058.EURP251.PROD.OUTLOOK.COM
  (2603:10a6:102:40d::9) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9678.25; Thu, 12 Mar
- 2026 10:38:23 +0000
+ 2026 10:38:25 +0000
 Received: from AM7PPF5613FA0B6.EURP251.PROD.OUTLOOK.COM
  ([fe80::1ed:268:bd65:b36c]) by AM7PPF5613FA0B6.EURP251.PROD.OUTLOOK.COM
  ([fe80::1ed:268:bd65:b36c%8]) with mapi id 15.20.9700.010; Thu, 12 Mar 2026
- 10:38:23 +0000
+ 10:38:25 +0000
 From: Masi Osmani <mas-i@hotmail.de>
 To: Christian Lamparter <chunkeey@googlemail.com>
 Cc: linux-wireless@vger.kernel.org,
 	Masi Osmani <mas-i@hotmail.de>,
 	ath9k-devel@qca.qualcomm.com
-Subject: [PATCH 09/10] carl9170: fw: enable DFS radar detection
-Date: Thu, 12 Mar 2026 11:38:04 +0100
+Subject: [PATCH 10/10] carl9170: phy: add periodic runtime IQ calibration
+Date: Thu, 12 Mar 2026 11:38:05 +0100
 Message-ID:
- <AM7PPF5613FA0B6E8DE143A385080A72F139444A@AM7PPF5613FA0B6.EURP251.PROD.OUTLOOK.COM>
+ <AM7PPF5613FA0B6567EFD98F8FD6FE6511E9444A@AM7PPF5613FA0B6.EURP251.PROD.OUTLOOK.COM>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <cover.1773277728.git.mas-i@hotmail.de>
 References: <cover.1773277728.git.mas-i@hotmail.de>
 Content-Transfer-Encoding: 8bit
 Content-Type: text/plain
-X-ClientProxiedBy: ZR0P278CA0211.CHEP278.PROD.OUTLOOK.COM
- (2603:10a6:910:6a::24) To AM7PPF5613FA0B6.EURP251.PROD.OUTLOOK.COM
+X-ClientProxiedBy: FR2P281CA0014.DEUP281.PROD.OUTLOOK.COM
+ (2603:10a6:d10:a::24) To AM7PPF5613FA0B6.EURP251.PROD.OUTLOOK.COM
  (2603:10a6:20f:fff1::851)
 X-Microsoft-Original-Message-ID:
- <70fb191328833766a78126cd8f72c3c4fec64dc1.1773277728.git.mas-i@hotmail.de>
+ <d9ae32cbf664b0559e9029cb1b5556f155966b66.1773277728.git.mas-i@hotmail.de>
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
@@ -85,59 +85,58 @@ MIME-Version: 1.0
 X-MS-Exchange-MessageSentRepresentingType: 1
 X-MS-PublicTrafficType: Email
 X-MS-TrafficTypeDiagnostic: AM7PPF5613FA0B6:EE_|PA2P251MB1058:EE_
-X-MS-Office365-Filtering-Correlation-Id: 52f37d4f-91a9-4ddb-c7cc-08de80237c28
+X-MS-Office365-Filtering-Correlation-Id: 58605e06-fb19-4f00-410e-08de80237d62
 X-Microsoft-Antispam:
-	BCL:0;ARA:14566002|5072599009|461199028|51005399006|19110799012|8060799015|12121999013|41001999006|23021999003|15080799012|3412199025|440099028|3430499032|40105399003|1710799026;
+	BCL:0;ARA:14566002|5072599009|461199028|51005399006|19110799012|8060799015|41001999006|23021999003|15080799012|3412199025|440099028|3430499032|40105399003|1710799026;
 X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?UXwieXHnyn4PLbM1Ahpgla6JfOiAtp/h9R/UmyFvJaaF++4J1svckLQINYtA?=
- =?us-ascii?Q?xIEb2aiDX36p3lpEff69DTek94iwL3LNhbRgvQfFHArbhh1FlrxiJuU3W1oA?=
- =?us-ascii?Q?nboUDSTdPIBJdd2uQHlozrb4mlO152dfd0GmzmSPCd+uqw2A6gz1q2i4qUtl?=
- =?us-ascii?Q?dIOfxOvheHC1EVk4SN3wY7S7o5nWhUtSE/ADEUyVIsd1SAt1dY628zbaSK5q?=
- =?us-ascii?Q?lVuZ/0O8aWt0cADnusWiPwbe3GIe7CXT5a+8zTKu9AR8GQHflHtSM+tL4rwG?=
- =?us-ascii?Q?g0/zGDeSJDulavuZzfCiD7YhxZUfW+yux3A1NyUDAdrTftIBPV6X590GCBAD?=
- =?us-ascii?Q?dQunQwzHWpmoen6k496JKYJYLyJxP52I+cv+7z43VazqcUW66lV8dc9Hp024?=
- =?us-ascii?Q?w4buJ9hTJSIKNa9sHNfkuFbVnwCwauRaJ9lRsLLX1HqU2D7sUSZEYyIhIXLW?=
- =?us-ascii?Q?Hiuz26uyKi6rG6XOjWzQczVxu75qZC/Iu3vI3eU2B1tO0jd9SuqVZAqyYn0t?=
- =?us-ascii?Q?QCoZGB+4+L/xTvJqJCbR4BO0iZeH7XvJfK/moRcIz2N/HBmRwDnMDvO1SkZL?=
- =?us-ascii?Q?7Mht60rARYXmievmjmiRaJHo0Z8MLa30XzrJIrj7/ike1df3Afq7nzvr5XrI?=
- =?us-ascii?Q?0nfBQC1pZLR3sySldn+g4BJhBrLYH9ncIbFlMwyxZuvh2XspUVZOlNI2sxWX?=
- =?us-ascii?Q?QydmyRDDisiENv+h2OQi/L1oge+u/ZAIs8YKQJhQU70tUMNIFQp+Qydx8KRh?=
- =?us-ascii?Q?t45pmfrQKpBdkTRLmRFlG31pCSsYiK6oosY53WrM7MSlAHkMGzB4WC86GsEn?=
- =?us-ascii?Q?P5ROhpgkzxyruGulxYV+3EwZ8K2ov4FryVd/sGfQfxAIVjIjb7FYzGDLptkz?=
- =?us-ascii?Q?vmkY9jfmiIwPS7QMlixpK8wkKLoF408VK7o5OHyBePvDQZvP0kSfQE2nUnMh?=
- =?us-ascii?Q?m/hnKydCgcG9z+txN/qItDNu+OedDT2NNUuPKyS0yg5rZwEjoGm+GTKFYcYQ?=
- =?us-ascii?Q?TF6W?=
+	=?us-ascii?Q?sjiKm06sR01Q0pDQ1wDZghvQ4shsNTE2g64ShlxS+S0NcB1/BUeM/YE3kA9+?=
+ =?us-ascii?Q?HgI0HPHPjxhiF4hH1NkO6Ni18OiZeQ8qA2LWNeKcudruQgNR2vaRBfpPQqpA?=
+ =?us-ascii?Q?TAZCIEU1pezcT2IAnDmalRikj6N3Hh0xyp/DFfrBv8B9eka3Xfn72tuz9XZW?=
+ =?us-ascii?Q?9vOWCHG7qtTuXRH+iql3kY91v9bYHrXZFxQBoD+6f/Ro+ZgOpBnWJiIMwYJ8?=
+ =?us-ascii?Q?mUCmdxdA2ePLtxfWyJp5jM3PJ77MfwBQhB/jopG8/+b9hDBLDpeX80Pd4DoQ?=
+ =?us-ascii?Q?Vnqml122eYw0rcR2ttMrwrBHfFu2UpPX8Riq68hMEg5KFMkqLHEyRq7ZBGPO?=
+ =?us-ascii?Q?DPwN6sLK/itEqjsGIVayAI2E06maBt0E6v6tQ0w4H2Lkgs2cf3hxQkrbB6wz?=
+ =?us-ascii?Q?zaWO13e3uyl78VogXGGQBbdVwQM8NzK/5DTKYKKS8ivBmD0UnAzmX9fEFQVC?=
+ =?us-ascii?Q?2Rdle2QNso7UrmLDhu++IuwmY8mkRDqe390zS/iCdEs91nZDjJHkJG+2MZB+?=
+ =?us-ascii?Q?MtOVaSq+Uao3b8pQQKpT7qhdbdXXaOF27HuTSk5SX1FcOb1IO90Acox7heia?=
+ =?us-ascii?Q?UBUahIhuBwtPY2zbHNkiq8EjHCINJJEi28BCeqTIEE/PZqxUU77KybQwlFD+?=
+ =?us-ascii?Q?zSgKKR+UPbTrBs9WlPfHnFY4BU5cLH8lYsYdlREI56ecdyZ4lefVbaeTpcwX?=
+ =?us-ascii?Q?3dPijopKX2Y/jSzzxwq236y54PsYgs/wARZ6RrvI+5aMkGOFIRNZ/lJMjMeR?=
+ =?us-ascii?Q?VD9zrwZNj8y7pAH3xvJMFBGeh5EJtQfxPk05sKxK4Iu09TuApKsmbnu2TFGp?=
+ =?us-ascii?Q?7oZe+7UDIniZVxYUzGH0haZ27Ewd7J3DHuKoLy1QhOUVUOgLDt7GFaSSYlmi?=
+ =?us-ascii?Q?rYOc6Xm6BZHHy0RCQhh5bWc/HX0G4acFB0L7poTqWDOS2RuecBBuqDBv9eFp?=
+ =?us-ascii?Q?gZOX92Ey6TN3dzM+2u96OA=3D=3D?=
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
 X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?mvAor3Zf3Wht2ZadxXA4R3/+VeCpeKuvEYkpuZYvQ2yRpgQ0IdN/tPGO7vuW?=
- =?us-ascii?Q?jTdGEPQuCmRIZeZI8ERU5EZV1EZxD03MKeb6Cuymy/FvHv51ZumiVv1KGA1i?=
- =?us-ascii?Q?TBh7PDtKGxrJSdTs2EZQvyMD5+0LM2K8UG77y2oiokR+fGNFD0v86dxqn7v3?=
- =?us-ascii?Q?LQO7XQ9HrobqQeIhRwMAdRQGHhDXsOrDEpaFHiByPZlUEkcpWoa3eGXcHn0D?=
- =?us-ascii?Q?u1AMURmlLsI3xYaDAo32C6jayK7APrsRatFMJtWC/dzvph5Gn50Q4dpoYbPQ?=
- =?us-ascii?Q?YtjIj07Y/Uc4LrcWXpqhKDDJ8fI+5UrDNPFGzY7axQMDTKuS0GhrtXBJni2V?=
- =?us-ascii?Q?dctr3kBwHfaCaAPhm5HSht1JwoIbYvC1icP+AG2/0tsHCW15Gaij6s8lHAov?=
- =?us-ascii?Q?GXkNtvbXTkbrmNNG3p7h8iXshma0ND4GcaxjdrzCbS1dvBDBYKihOscx4y6z?=
- =?us-ascii?Q?V8pwhNZn+QgifOqrywr9d+SkVjpm/YuSaENa73LRaSVnZC4HvKHDpJ4b6vs4?=
- =?us-ascii?Q?l/REQTothCl8bzJTv1TvuTJYbLtj7E+SyQJR6jWD7DupP2CXzYJElM3bW3fJ?=
- =?us-ascii?Q?kOy0ctI3mgnSm3RnUxXtT0FaAJk7kv4RiVaqowI6Rg+aeiDbox5K8rqYGDH4?=
- =?us-ascii?Q?C+eP1JI+n8QP318eDGQy+pr+cRiC+nfU6H0L3s2H2etnsBoFEZW8MCQ34m+I?=
- =?us-ascii?Q?Inh644sg1ok+pwW9ynVcpiPbcPCxAdLA+Bt+g0uRu4nVwheERffQRDuFghEP?=
- =?us-ascii?Q?pFcmuq8bBf7hn3zwsb5+4v3E9P1oPBQUTBLY6IjCOrblFV2Ek+KqLF906QvM?=
- =?us-ascii?Q?bOxSdATthCRSh56mNseFRgWzMuSRMHfUTLKoFr/s+TPyDtg/EbVjN1ODK8vR?=
- =?us-ascii?Q?ziNiW6kjyhncrf95wc/YUe4zbK8HptfSA92yNt/RSQ1ECZP/sLtBPAcwz+VK?=
- =?us-ascii?Q?j35cb61UiczCjwQCwciLoA7XbDXSrYdlwV18bz4veH0brGFRbnjGzSvP4Qf3?=
- =?us-ascii?Q?v0cNPK+EDKR/TELEBDUPKJE6mgY25cGoc+hCKzsqj2MjZuc64I+sfmi9tDVB?=
- =?us-ascii?Q?vvqrsWg7lW4zwCOwB3Cz8Oa6e5DjqWAZT5nO2pdsiwA1HonxsQJkq7Ft/X0S?=
- =?us-ascii?Q?7YMyHIxas+GEpzTMKHh5mTpRgSebdbl4psByOjKSG9vac2Dj4LEsMF4pCv2D?=
- =?us-ascii?Q?AKZF3NTU3UfTB8xurDY8Ooad3HtREaLkrT6h01eU6gpEmj+/UCUlVP2P3QhY?=
- =?us-ascii?Q?djWvgNm8lHC6c1dTkKQ5fAZvRp08Og2SsjIKn9+fbGy/7uGl0lFpCGK8lO7q?=
- =?us-ascii?Q?1WJvq/hEn3e4OkWhlnU4p+quPdHEv+rPASLNcoCxtHz7XpZvCfkqAZmsFt67?=
- =?us-ascii?Q?gwkU+4L7aBRvQ/TJsU+xr+5PjXOY?=
+	=?us-ascii?Q?DixrgcxXpZg3avrQnxNLa72bkTsj3EtAO/2+Kp+JSxTypaXnxL4n2ZgY8nBN?=
+ =?us-ascii?Q?PFxmdfWgprEhV0oH/TfRBHNsTKmPPG/V93hmNSjEa7cI4GWkTtrYzpFQPRQy?=
+ =?us-ascii?Q?eEFDx25qtz90EWyI0IKPKQma3N1xIQNWGdtNo6ypbo6zmjXsqIsQtVn60rId?=
+ =?us-ascii?Q?bZKdF5o1LqVpQ6C3fjxm3Q0BUPayzU7QO6iS9COYZRFshcndjYbpFI0wFbjE?=
+ =?us-ascii?Q?4qftYyjscHtVoi00HgdDv5UuXJyTlMWlWd8VLKnVvKiAASULAiDDZaVFMHvn?=
+ =?us-ascii?Q?iVAK+YcZq74uqp7D0TEjxPzYAoe4/tNoKFYbPQngt8LpeDvmzfUr3kmBUL1x?=
+ =?us-ascii?Q?lkwADoOh1hI1fLpDLJnAG0WsWDLtLLoETCuBGC0fqQDwz6yoRxaUeX/Sx/Oo?=
+ =?us-ascii?Q?xFI3NRxXa5t2yalZvkDnSVLGP8A5v53mAV39KF3XXEIIi+7URdMA+FlaDugT?=
+ =?us-ascii?Q?L0usJGgEoWrC4eq4Do4bfzktF0WgwF3h1u/S683X+ekHxGjzbvX5mf9XV3F4?=
+ =?us-ascii?Q?UvHVwDbEfvpmXnjzwTz4bVYbZ317oHbX5Rt8S4XhT7/kFEg86WRVXg8/pPnv?=
+ =?us-ascii?Q?uR1hmF+aJ9dywZb5bheRyWApPIwyF/M0v2I+TVNYiqnMKUybNpgLGy2yeDKF?=
+ =?us-ascii?Q?QyXxXY/hErw2U1GaYKYBSpt3RRTsbGgFIJ/QvnC2xFV0A4+eFHtEK0VGNFxs?=
+ =?us-ascii?Q?SgApY17biLJpff5iUBjOxjCyItN7pvSS+MiowtJ3Dnp2E5QRE8i0D/2s0BWO?=
+ =?us-ascii?Q?Cchmv/oQdUW6PFmAZjYmUzwAIgy/DTUth4cDVkZgLct4IOIvBIG3SeS5CwoO?=
+ =?us-ascii?Q?CELRpB5l/TGJGb09iIuQoMG15aXA675CalWT/rIJKhrnw9/ebzv990l8DAPX?=
+ =?us-ascii?Q?G7xlDq67trRJcWFQGel/ixh5jRy+POZviQAZQzdJfmdLDq0Awa3Mssadu1TX?=
+ =?us-ascii?Q?BnHbFBiLYKbOKA0w0w/8ilGvWp1j+SAvtz2qO7rya3XjFmPA4UHD0914ZvmH?=
+ =?us-ascii?Q?TAgW4psYEqw2mhhh6TfNdcMZVX2IAez/LIzRox7sI3mkKvQzhMgPMj3+P+TH?=
+ =?us-ascii?Q?2QxxF9upkoGx1R3p+DFoT9apd6j+YxwlPKUT6cY9ETJe/YWgV82ThZS7w/Sl?=
+ =?us-ascii?Q?hZtBbcBWoPRiPYoouECpbjtjlVYD7PqgLS2cwL3IR8U2+1bYqYMROzebQuwC?=
+ =?us-ascii?Q?EBWCta7sFCKtPQtq5KEGvNMJ81pD9kMiX7nyCSgmQZ/xr6wyb3OZYsdcmFfe?=
+ =?us-ascii?Q?bVTPjnAbmEQY6p1yafzk75hJNfZ0HYnaXwepGAhrODetVts89KqspM5k1Ndp?=
+ =?us-ascii?Q?1t77+UcvJrJtWRJ2iOGtR6yXkgpSzKJuGzNmcjQCfl9gpIqobTqwFRBp1ZE2?=
+ =?us-ascii?Q?4tabFVMC9N/6ZQ7tlEbfKP+XlJwX?=
 X-OriginatorOrg: sct-15-20-9412-3-msonline-outlook-fe3f5.templateTenant
-X-MS-Exchange-CrossTenant-Network-Message-Id: 52f37d4f-91a9-4ddb-c7cc-08de80237c28
+X-MS-Exchange-CrossTenant-Network-Message-Id: 58605e06-fb19-4f00-410e-08de80237d62
 X-MS-Exchange-CrossTenant-AuthSource: AM7PPF5613FA0B6.EURP251.PROD.OUTLOOK.COM
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 12 Mar 2026 10:38:23.1202
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 12 Mar 2026 10:38:25.1321
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: 84df9e7f-e9f6-40af-b435-aaaaaaaaaaaa
@@ -149,11 +148,11 @@ X-Spamd-Result: default: False [0.34 / 15.00];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[hotmail.de,none];
 	R_DKIM_ALLOW(-0.20)[HOTMAIL.DE:s=selector1];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-33092-lists,linux-wireless=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-33093-lists,linux-wireless=lfdr.de];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	TO_DN_SOME(0.00)[];
 	MIME_TRACE(0.00)[0:+];
@@ -170,130 +169,108 @@ X-Spamd-Result: default: False [0.34 / 15.00];
 	RCVD_COUNT_FIVE(0.00)[5];
 	TAGGED_RCPT(0.00)[linux-wireless];
 	NEURAL_HAM(-0.00)[-1.000];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[hotmail.de:email,HOTMAIL.DE:dkim,AM7PPF5613FA0B6.EURP251.PROD.OUTLOOK.COM:mid,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: D76E427068F
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[hotmail.de:email,HOTMAIL.DE:dkim,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: A287527066A
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-Enable DFS (Dynamic Frequency Selection) radar detection on the
-AR9170.  The hardware has radar detection registers (RADAR_0,
-RADAR_1, RADAR_EXT) and the firmware already sends
-CARL9170_RSP_RADAR events, but the driver never programmed the
-detection parameters and only logged a "please report" message.
+Add periodic runtime I/Q calibration triggered from the existing
+survey statistics work handler (carl9170_stat_work).  The AR9170
+hardware performs initial IQ calibration during channel setup, but
+I/Q imbalance drifts with temperature over time, degrading EVM
+and increasing packet error rate.
 
-Changes:
-- Program radar detection pulse parameters in phy.c when the
-  current channel has IEEE80211_CHAN_RADAR set.  Values are
-  based on ath9k defaults for FCC/ETSI compliance.
-- Advertise radar_detect_widths in the interface combination
-  (fw.c) for 20 MHz noHT, 20 MHz HT, and 40 MHz HT.
-- Replace the old "please report" message with a call to
-  ieee80211_radar_detected() so mac80211 can trigger the
-  proper DFS state machine (channel switch / CAC).
+The new carl9170_run_iq_calibration() function sets the DO_IQCAL
+bit in PHY_TIMING_CTRL4 for both chains, which triggers the
+hardware to re-measure I/Q imbalance and update the correction
+coefficients automatically.  This is a non-blocking operation --
+the hardware runs the calibration in the background without
+interrupting normal traffic.
+
+The ath9k driver performs similar periodic calibration via its
+longcal timer (every 30s).  carl9170_stat_work runs at a
+comparable interval, making it a natural trigger point.
 
 Signed-off-by: Masi Osmani <mas-i@hotmail.de>
 ---
- drivers/net/wireless/ath/carl9170/fw.c  |  3 ++
- drivers/net/wireless/ath/carl9170/phy.c | 45 +++++++++++++++++++++++++
- drivers/net/wireless/ath/carl9170/rx.c  |  7 ++--
- 3 files changed, 50 insertions(+), 5 deletions(-)
+ drivers/net/wireless/ath/carl9170/carl9170.h |  1 +
+ drivers/net/wireless/ath/carl9170/main.c     |  2 ++
+ drivers/net/wireless/ath/carl9170/phy.c      | 36 ++++++++++++++++++++
+ 3 files changed, 39 insertions(+)
 
-diff --git a/drivers/net/wireless/ath/carl9170/fw.c b/drivers/net/wireless/ath/carl9170/fw.c
-index 419f553..a730593 100644
---- a/drivers/net/wireless/ath/carl9170/fw.c
-+++ b/drivers/net/wireless/ath/carl9170/fw.c
-@@ -215,6 +215,9 @@ static void carl9170_fw_set_if_combinations(struct ar9170 *ar,
- 	ar->if_combs[0].max_interfaces = ar->fw.vif_num;
- 	ar->if_combs[0].limits = ar->if_comb_limits;
- 	ar->if_combs[0].n_limits = ARRAY_SIZE(ar->if_comb_limits);
-+	ar->if_combs[0].radar_detect_widths = BIT(NL80211_CHAN_WIDTH_20_NOHT) |
-+					      BIT(NL80211_CHAN_WIDTH_20) |
-+					      BIT(NL80211_CHAN_WIDTH_40);
+diff --git a/drivers/net/wireless/ath/carl9170/carl9170.h b/drivers/net/wireless/ath/carl9170/carl9170.h
+index 2eedb2f..0175f8e 100644
+--- a/drivers/net/wireless/ath/carl9170/carl9170.h
++++ b/drivers/net/wireless/ath/carl9170/carl9170.h
+@@ -605,6 +605,7 @@ int carl9170_set_channel(struct ar9170 *ar, struct ieee80211_channel *channel,
+ 			 enum nl80211_channel_type bw);
+ int carl9170_get_noisefloor(struct ar9170 *ar);
+ void carl9170_update_channel_maxpower(struct ar9170 *ar);
++int carl9170_run_iq_calibration(struct ar9170 *ar);
  
- 	ar->hw->wiphy->iface_combinations = ar->if_combs;
- 	ar->hw->wiphy->n_iface_combinations = ARRAY_SIZE(ar->if_combs);
+ /* FW */
+ int carl9170_parse_firmware(struct ar9170 *ar);
+diff --git a/drivers/net/wireless/ath/carl9170/main.c b/drivers/net/wireless/ath/carl9170/main.c
+index ebf9fa9..50c0922 100644
+--- a/drivers/net/wireless/ath/carl9170/main.c
++++ b/drivers/net/wireless/ath/carl9170/main.c
+@@ -910,6 +910,8 @@ static void carl9170_stat_work(struct work_struct *work)
+ 
+ 	mutex_lock(&ar->mutex);
+ 	err = carl9170_update_survey(ar, false, true);
++	if (!err)
++		carl9170_run_iq_calibration(ar);
+ 	mutex_unlock(&ar->mutex);
+ 
+ 	if (err)
 diff --git a/drivers/net/wireless/ath/carl9170/phy.c b/drivers/net/wireless/ath/carl9170/phy.c
-index bcd9066..c294df7 100644
+index c294df7..b145e9e 100644
 --- a/drivers/net/wireless/ath/carl9170/phy.c
 +++ b/drivers/net/wireless/ath/carl9170/phy.c
-@@ -1637,6 +1637,47 @@ void carl9170_update_channel_maxpower(struct ar9170 *ar)
+@@ -1637,6 +1637,42 @@ void carl9170_update_channel_maxpower(struct ar9170 *ar)
  	}
  }
  
-+static int carl9170_set_radar_detection(struct ar9170 *ar,
-+					struct ieee80211_channel *channel)
++int carl9170_run_iq_calibration(struct ar9170 *ar)
 +{
-+	bool enable = channel->flags & IEEE80211_CHAN_RADAR;
++	u32 val;
++	int err;
 +
-+	carl9170_regwrite_begin(ar);
++	if (!ar->channel)
++		return 0;
 +
-+	if (enable) {
-+		/*
-+		 * Configure radar detection pulse parameters.
-+		 * Values based on ath9k's defaults for FCC/ETSI.
-+		 */
-+		carl9170_regwrite(AR9170_PHY_REG_RADAR_0,
-+				  AR9170_PHY_RADAR_0_ENA |
-+				  AR9170_PHY_RADAR_0_FFT_ENA |
-+				  SET_CONSTVAL(AR9170_PHY_RADAR_0_INBAND, 5) |
-+				  SET_CONSTVAL(AR9170_PHY_RADAR_0_PRSSI, 1) |
-+				  SET_CONSTVAL(AR9170_PHY_RADAR_0_HEIGHT, 6) |
-+				  SET_CONSTVAL(AR9170_PHY_RADAR_0_RRSSI, 12) |
-+				  SET_CONSTVAL(AR9170_PHY_RADAR_0_FIRPWR, 33));
-+
-+		carl9170_regwrite(AR9170_PHY_REG_RADAR_1,
-+				  AR9170_PHY_RADAR_1_MAX_RRSSI |
-+				  AR9170_PHY_RADAR_1_BLOCK_CHECK |
-+				  AR9170_PHY_RADAR_1_RELSTEP_CHECK |
-+				  SET_CONSTVAL(AR9170_PHY_RADAR_1_RELSTEP_THRESH, 8) |
-+				  SET_CONSTVAL(AR9170_PHY_RADAR_1_RELPWR_THRESH, 12) |
-+				  SET_CONSTVAL(AR9170_PHY_RADAR_1_MAXLEN, 255));
-+
-+		carl9170_regwrite(AR9170_PHY_REG_RADAR_EXT,
-+				  AR9170_PHY_RADAR_EXT_ENA);
-+	} else {
-+		carl9170_regwrite(AR9170_PHY_REG_RADAR_0, 0);
-+		carl9170_regwrite(AR9170_PHY_REG_RADAR_1, 0);
-+		carl9170_regwrite(AR9170_PHY_REG_RADAR_EXT, 0);
-+	}
-+
-+	carl9170_regwrite_finish();
-+	return carl9170_regwrite_result();
-+}
-+
- int carl9170_get_noisefloor(struct ar9170 *ar)
- {
- 	static const u32 phy_regs[] = {
-@@ -1739,6 +1780,10 @@ int carl9170_set_channel(struct ar9170 *ar, struct ieee80211_channel *channel,
- 	if (err)
- 		return err;
- 
-+	err = carl9170_set_radar_detection(ar, channel);
++	/*
++	 * Trigger runtime IQ calibration.  The hardware measures
++	 * I/Q imbalance and updates the correction coefficients
++	 * automatically when DO_IQCAL is set.  We trigger on both
++	 * chains and re-enable the IQ correction afterwards.
++	 */
++	err = carl9170_read_reg(ar, AR9170_PHY_REG_TIMING_CTRL4(0), &val);
 +	if (err)
 +		return err;
 +
- 	tmp = AR9170_PHY_TURBO_FC_SINGLE_HT_LTF1 |
- 	      AR9170_PHY_TURBO_FC_HT_EN;
- 
-diff --git a/drivers/net/wireless/ath/carl9170/rx.c b/drivers/net/wireless/ath/carl9170/rx.c
-index bb909b5..1fe727c 100644
---- a/drivers/net/wireless/ath/carl9170/rx.c
-+++ b/drivers/net/wireless/ath/carl9170/rx.c
-@@ -259,11 +259,8 @@ void carl9170_handle_command_response(struct ar9170 *ar, void *buf, u32 len)
- 		break;
- 
- 	case CARL9170_RSP_RADAR:
--		if (!net_ratelimit())
--			break;
--
--		wiphy_info(ar->hw->wiphy, "FW: RADAR! Please report this "
--		       "incident to linux-wireless@vger.kernel.org !\n");
-+		wiphy_info(ar->hw->wiphy, "FW: radar pulse detected\n");
-+		ieee80211_radar_detected(ar->hw, NULL);
- 		break;
- 
- 	case CARL9170_RSP_GPIO:
++	val |= AR9170_PHY_TIMING_CTRL4_DO_IQCAL;
++	err = carl9170_write_reg(ar, AR9170_PHY_REG_TIMING_CTRL4(0), val);
++	if (err)
++		return err;
++
++	/* chain 2 */
++	err = carl9170_read_reg(ar, AR9170_PHY_REG_TIMING_CTRL4(2), &val);
++	if (err)
++		return err;
++
++	val |= AR9170_PHY_TIMING_CTRL4_DO_IQCAL;
++	err = carl9170_write_reg(ar, AR9170_PHY_REG_TIMING_CTRL4(2), val);
++	if (err)
++		return err;
++
++	return 0;
++}
++
+ static int carl9170_set_radar_detection(struct ar9170 *ar,
+ 					struct ieee80211_channel *channel)
+ {
 -- 
 2.51.0
 
