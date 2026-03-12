@@ -1,196 +1,197 @@
-Return-Path: <linux-wireless+bounces-33120-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-33121-lists+linux-wireless=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 2DitLTPqsmljQwAAu9opvQ
-	(envelope-from <linux-wireless+bounces-33120-lists+linux-wireless=lfdr.de@vger.kernel.org>)
-	for <lists+linux-wireless@lfdr.de>; Thu, 12 Mar 2026 17:30:43 +0100
+	id +NPBKxfwsmnAQwAAu9opvQ
+	(envelope-from <linux-wireless+bounces-33121-lists+linux-wireless=lfdr.de@vger.kernel.org>)
+	for <lists+linux-wireless@lfdr.de>; Thu, 12 Mar 2026 17:55:51 +0100
 X-Original-To: lists+linux-wireless@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 98EF12759C0
-	for <lists+linux-wireless@lfdr.de>; Thu, 12 Mar 2026 17:30:43 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id E4B0A276138
+	for <lists+linux-wireless@lfdr.de>; Thu, 12 Mar 2026 17:55:50 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 03A143013DC4
-	for <lists+linux-wireless@lfdr.de>; Thu, 12 Mar 2026 16:30:43 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 8336A302AAC1
+	for <lists+linux-wireless@lfdr.de>; Thu, 12 Mar 2026 16:55:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C1BF53F99E5;
-	Thu, 12 Mar 2026 16:30:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2A87238238F;
+	Thu, 12 Mar 2026 16:54:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="M7NdcNT9"
+	dkim=pass (2048-bit key) header.d=ziepe.ca header.i=@ziepe.ca header.b="TCUycPJz"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-dl1-f43.google.com (mail-dl1-f43.google.com [74.125.82.43])
+Received: from mail-qt1-f175.google.com (mail-qt1-f175.google.com [209.85.160.175])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 345FB3F9F4A
-	for <linux-wireless@vger.kernel.org>; Thu, 12 Mar 2026 16:30:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.82.43
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773333040; cv=pass; b=Hs6qPfyQRwoO/fLx8rSyOFr32ftLeSD+CVqeE5dnzUA6/ze+imNmCU9gxpd7Uo1ADJ3s3mh1J2FxtWtc680uS7eU2rtzrrsvPNV/45xJNiyCxAcu/bgZvBaX+t7A4EpTnzn9WMBCToYacXSL1U/YmodyHS/GUooPky37dFkxJoI=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773333040; c=relaxed/simple;
-	bh=naaIlYpcftWtQ9jUH27SuU3SoPUENIuURPnppODKJfo=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=kqzlt/ktsCeMHdnwV4KkAU/P33TRPb6SwNhd7wq3E//jydCPQOxhP3jczZ0IEGJ0Q7QvvgAb1iRrbUxNQdlpDy8u28/o0oEballnLtufPAFH9bFckSgJTcrEbtqS2XlT1A2Hzl0VQj54xD6ZpzXhAG65QuqG/rAWR3oPBEZxUy4=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=M7NdcNT9; arc=pass smtp.client-ip=74.125.82.43
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-dl1-f43.google.com with SMTP id a92af1059eb24-12732165d1eso1549875c88.1
-        for <linux-wireless@vger.kernel.org>; Thu, 12 Mar 2026 09:30:33 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1773333033; cv=none;
-        d=google.com; s=arc-20240605;
-        b=h/18Vlf2hjplKPS1M1la72MbQbAxzWgUwqVI9lIISZCmM7lOd07oxHBj0TEIypqpfz
-         EH3Z/5OiM1hA6HZm5bHxVkhaN4DSTJ4cSynRv4so/RcmVd917CiBiAR9bf2pXaeRN3rR
-         dypqP9fUsnxv8sjhhIgcfCvM0cVe2Sgo7tvSOrqI9HavBtK5CTAFUfm/kmC498Czn+kl
-         HUlot81Qj+4vYkr4Wtwao2ZDCAjIdkz/uM3jtEBUjWuS7jQn9b7ZbraFTPAbybuN9UKG
-         SgSeMzwdOGBuf9A42++odr+ybJfcuKbL9AfDUor2JL76JHsgfcbr+nyy72Gqi71eAavd
-         5X6Q==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=KM8KaYwOxl26cN0NYbbOg/R+fvkWdnp9O3HOgTyJzNA=;
-        fh=MXkW9Xo5Ym/gIF9EG8Fk1lbc8jJJ90IIrm4Se6meZo4=;
-        b=PrEou8os8qdWCj2/spf+51d0DWymF5uvgQDFjw1FsmGxaazj/ZBohvQ+zDrdZ2a+ZD
-         4S4vL3UcvbR5Zq5QjbYOMsEbAL97ifezrsQSAAU32rcmkpsAN6+EMaSkOspI6xZbhPlc
-         42LLkYMcZHXq5d5zhK/1TpaofQZX0phT0rH7nEc8rkID4UBhcKxhIsLi/Gm8gtb0Bj1a
-         vGc/pVs9C31lBgpzKUBjL+6AiIIsEFabzaPn6ZFpmH1CCL8HTPRK5EtC3+FXgweuIiAT
-         PBIOcSCoP5NSK1G/TXE8hN0ZrjBpSZmyoBDFMDulH/msdBGSN2IoUM8C/KAbxpge6u95
-         ZzCQ==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A62263FBEA8
+	for <linux-wireless@vger.kernel.org>; Thu, 12 Mar 2026 16:54:51 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.175
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1773334493; cv=none; b=eGNDilPy+HOTYJHoHX1gL7lsasL6LwDFfFlkkT9LEnXw6ikcVXKLDNec6erj00ff9Q5C3MeUQFccYj18a7D6FFf3/eU36gwgKzuf3jg/LRed5O9EVBoSJOZGwfVtNs/EOXSyMYs4kPDXxssTtSGc/Z99zXAAkuLlODJKy+Phl60=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1773334493; c=relaxed/simple;
+	bh=ENv0+4bH9YdpFLGeURNwJ3+rEUsnNn74RNCtOl26SEA=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=QP6iTvng5toZXtHmkIxRhCg0rZjRcQPyWOTUwk0jJJs8Se8cPWNGYlZa+kxXRhhAK+wteDlRxDv/QMsNqmvhYW4WIvXBz2TxgE/rjqYPl+3ebCDW8RZJzbtUhuXiNBILzT6iRgufO44ZoloHCa+xSJ8iQ0lAxWExPVYgP8eBP4M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ziepe.ca; spf=pass smtp.mailfrom=ziepe.ca; dkim=pass (2048-bit key) header.d=ziepe.ca header.i=@ziepe.ca header.b=TCUycPJz; arc=none smtp.client-ip=209.85.160.175
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ziepe.ca
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ziepe.ca
+Received: by mail-qt1-f175.google.com with SMTP id d75a77b69052e-509164dce91so11154611cf.1
+        for <linux-wireless@vger.kernel.org>; Thu, 12 Mar 2026 09:54:51 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1773333033; x=1773937833; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=KM8KaYwOxl26cN0NYbbOg/R+fvkWdnp9O3HOgTyJzNA=;
-        b=M7NdcNT98JOBmKIuBpUg8DeIta/UUhkibec98PDxjknz25q+yV8Fer69NHBIsgnz2G
-         Iru5D2kpBhnz4JhJumqlgoZ53xZvtjB9WGQWOvsU+hc6F4yV6s1XMhx7ppX6A+VxNDeY
-         6kU4YZcBJ7o6CwPldv7IArVUKaAsfdx2aUgbWT5vmRfDpsN7RJE6fdp+NSH+AWE5O0kz
-         5D9oabk77jiMOJAdbpNjsk2AD3Iiq6Lv1Vw/dOmlYIUFiJHSJMlicfVhlonzKAUVtIOl
-         d8OVBeO9NAVj19qgh1ICQQFKjbYKQ9SSKk025Me2jCxPi1vEv/d8ObM+C1t9Cne0kIAO
-         bRRQ==
+        d=ziepe.ca; s=google; t=1773334491; x=1773939291; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=VQXCfPVu6b6dIVECzm0C8AUD7IL7VvpSkD5+M4S95sw=;
+        b=TCUycPJzE2fI+UEqk7FktReSuNB+qmtoLxCPQIhObf2GoM3FGGUoUzmOL4EcJ8nqrV
+         31wLWw0iuRrm5q/A3vl9oGJab4nkcB5GgE9L87TaBE5zWVhGKUEWMOYZrC4hQkz7+K+y
+         MdSN9PZxg9+VlLOffdwRmQphGTW7UoGABbBRu3CtgROAhKqAusDMmmrNFgCXGsGgS+um
+         4b3n9KF8H9mgZuxtPx/c84lVtPd3kX8R2XT1vLZ+RjANCZT5FGS44RpBGA5cN1JRJXTn
+         oCOtB2FnqO56y3+c6Fos0prISIneHSMHrQ7vAs2p/teTVBOn2DfneDCxuRpkTU9D9cja
+         6IGg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1773333033; x=1773937833;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=KM8KaYwOxl26cN0NYbbOg/R+fvkWdnp9O3HOgTyJzNA=;
-        b=WsruDRbQGbdo8irmixQgiliiQCaKfByJsFyl246YJkq6JTaQYchme31coq+ANriGLb
-         qlqARCZliJEZnG2uIsodkQjw38OM7AbbqS5S2lfynI9TzwzcUEFitljYWcHdaB7dAmb2
-         e3mUWpLAVmiSCUEcMTeaMH9XCNDrL2cBeW8pWOr7PzN4flh2RO/KteO+kmYfFfQJw+Gl
-         xwwLXy0wvCaYJLU6dAwOtQbJhN57deVsm0FuwDY2EY4t0FLU+5yrMROBxesHz0GdbRPD
-         QcPeKBy177DS0PwjIexYXMZbMrriwXCabunKVADPmzpPnfR3WWPWmzGJbSutvH4k3gvZ
-         arFQ==
-X-Gm-Message-State: AOJu0YzkIvV2V1sQxMGgB+JuI3hJLREekOuKTUk3Q6gjPGq3CZpWL99h
-	WR7eD2WRQGTbKryHP2Mg/XyNQ+vk4KLcmmZtvXoU0Y5/0U+W/v6duRPu8atKwUYMOJrnviuzf/l
-	/piUxBtbQXguX3iK+2lSSgsXsCuCgObc=
-X-Gm-Gg: ATEYQzx9rmw+ZsqEULg4G4tMGWHywIv+4F/+dY2NhlDhI/+qgsvs19WZXuj6Hq8hGul
-	uhsspxc7bMSGECO5IqACRzCcDHRSpp1TyhYQmeEnGI1epn5ppZqUsvs0pYtTKD1l/+V5Y+VMjsX
-	v38H+xQ7d58KmMG0KtBeogFSA0lcLLcjomDSEtVPFb/GTmKEyVbNisva32uoSIeUya1j9l2PDQ/
-	Bllzs95QkCg1RTjB38POXHPsegWT38LdbkIyQ/OHb0kvNFWOseiz134xu98C5quULXt+TfH1pQe
-	dvYkBJQa
-X-Received: by 2002:a05:7022:784:b0:119:e56b:98a0 with SMTP id
- a92af1059eb24-128f3d17f5amr93984c88.7.1773333032705; Thu, 12 Mar 2026
- 09:30:32 -0700 (PDT)
+        d=1e100.net; s=20230601; t=1773334491; x=1773939291;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=VQXCfPVu6b6dIVECzm0C8AUD7IL7VvpSkD5+M4S95sw=;
+        b=QgQAtyhIc/T6KYl49B2tXnojZfvKK6eMP6Ilyois0/kHubTuRB+X00LFizb0+ZScKD
+         4oswRXY0jhog15pfvo5kMUUbNwcAXcBgfmO194dhwWDWJ/VKwXA7Hs0zkD88bQJH57tP
+         iGpPXnk3+xFwFfku2TpkrBs1URmjfnF+kbBnS8CMiHoJH/RKcL/5Flr/CAqneqpEE9ay
+         PHnUAJeKyQ0MXEPxyrPf9CaYNHdlIo0LOW5zlOMl9DjQDajgsLEOryCo/CUQ1vzV9Cbh
+         /nEfRNXQV9L7AsqXZNkRAceb0dUdZEj5S+8S138rAjYilWNnbuUS89vzAYEo0rIj/8LZ
+         wQ8g==
+X-Forwarded-Encrypted: i=1; AJvYcCX5Q7rrU693MSozckQ9E2efEVkoZPXD/mlJzNKsbvwV33AljlqEblJC6MI5fRkk07UMflcbJfY0m3E0JFfm0g==@vger.kernel.org
+X-Gm-Message-State: AOJu0YyaHOCc+3amnsoAiDIX1+QTDW/uB9zjNrQoWTsWRPuWnmfCT1Cx
+	wouNxoLSS5pAuuY/bFJWzlIyVliCbkWD4WrDWsJhX5IIQK/TDWFK7+v9kZUxuBXcPlU=
+X-Gm-Gg: ATEYQzw5cwJGX35fYOF0zm/dRO3nJoC2/pdMA5txbvgtsBuaiYiI1/aMLuRyOEZIzWN
+	YAh8GxqnisNd18sGrXpATBvzOFvssa3hOu9bDLiJUH3HwGWvYmlGJgIjvG8HRrYPH0lLa443a3e
+	Lm0BO66CmdEf63vGSEXvF9DvgxQI+P3FYzWOA6dJIU1qYITB32G5JWvJbtIZt5buVLQRtc+VjLL
+	fNlZxBq+EO5jdYWjersQw8a9npWNDnl2Akqhd37Gg3m/slr3rY3H36ajiy4QhtOtRSbceNUUf7r
+	IZGwN7Ecd1FHVbg/ylJs4g2Lx5jFs8uQyJr6lKko7gMLo3LmQVq2n8olVGnpNRxHnoMtWoyQzdn
+	Y3UihJUWB4xVM6CnaJtanH1KhQEMUPj9GR8TSomAjj/bjnqPRGx4YOjwVY3Qmks/MTWqVNRqXZA
+	Hny1NNqv8OO8Uki1xxydQnL3RfXIb3ke1dfQp/Xbskh+ymT7VAeNeshhqIWM79RXzjwxrOt/rcg
+	kr+B4gy2u1VUXZcsN8=
+X-Received: by 2002:a05:622a:289:b0:509:44c3:5ffa with SMTP id d75a77b69052e-50957e10673mr1403911cf.52.1773334490530;
+        Thu, 12 Mar 2026 09:54:50 -0700 (PDT)
+Received: from ziepe.ca (hlfxns017vw-142-162-112-119.dhcp-dynamic.fibreop.ns.bellaliant.net. [142.162.112.119])
+        by smtp.gmail.com with ESMTPSA id d75a77b69052e-5093a119602sm36658181cf.28.2026.03.12.09.54.49
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 12 Mar 2026 09:54:49 -0700 (PDT)
+Received: from jgg by wakko with local (Exim 4.97)
+	(envelope-from <jgg@ziepe.ca>)
+	id 1w0jJA-00000006i8N-40X9;
+	Thu, 12 Mar 2026 13:54:48 -0300
+Date: Thu, 12 Mar 2026 13:54:48 -0300
+From: Jason Gunthorpe <jgg@ziepe.ca>
+To: James Bottomley <James.Bottomley@hansenpartnership.com>
+Cc: Kuan-Wei Chiu <visitorckw@gmail.com>, Philipp Hahn <phahn-oss@avm.de>,
+	amd-gfx@lists.freedesktop.org, apparmor@lists.ubuntu.com,
+	bpf@vger.kernel.org, ceph-devel@vger.kernel.org, cocci@inria.fr,
+	dm-devel@lists.linux.dev, dri-devel@lists.freedesktop.org,
+	gfs2@lists.linux.dev, intel-gfx@lists.freedesktop.org,
+	intel-wired-lan@lists.osuosl.org, iommu@lists.linux.dev,
+	kvm@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+	linux-block@vger.kernel.org, linux-bluetooth@vger.kernel.org,
+	linux-btrfs@vger.kernel.org, linux-cifs@vger.kernel.org,
+	linux-clk@vger.kernel.org, linux-erofs@lists.ozlabs.org,
+	linux-ext4@vger.kernel.org, linux-fsdevel@vger.kernel.org,
+	linux-gpio@vger.kernel.org, linux-hyperv@vger.kernel.org,
+	linux-input@vger.kernel.org, linux-kernel@vger.kernel.org,
+	linux-leds@vger.kernel.org, linux-media@vger.kernel.org,
+	linux-mips@vger.kernel.org, linux-mm@kvack.org,
+	linux-modules@vger.kernel.org, linux-mtd@lists.infradead.org,
+	linux-nfs@vger.kernel.org, linux-omap@vger.kernel.org,
+	linux-phy@lists.infradead.org, linux-pm@vger.kernel.org,
+	linux-rockchip@lists.infradead.org, linux-s390@vger.kernel.org,
+	linux-scsi@vger.kernel.org, linux-sctp@vger.kernel.org,
+	linux-security-module@vger.kernel.org, linux-sh@vger.kernel.org,
+	linux-sound@vger.kernel.org,
+	linux-stm32@st-md-mailman.stormreply.com,
+	linux-trace-kernel@vger.kernel.org, linux-usb@vger.kernel.org,
+	linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
+	ntfs3@lists.linux.dev, samba-technical@lists.samba.org,
+	sched-ext@lists.linux.dev, target-devel@vger.kernel.org,
+	tipc-discussion@lists.sourceforge.net, v9fs@lists.linux.dev
+Subject: Re: [PATCH 00/61] treewide: Use IS_ERR_OR_NULL over manual NULL
+ check - refactor
+Message-ID: <20260312165448.GN1469476@ziepe.ca>
+References: <20260310-b4-is_err_or_null-v1-0-bd63b656022d@avm.de>
+ <abBlpGKO842B3yl9@google.com>
+ <20260312125730.GI1469476@ziepe.ca>
+ <f5688b895eaebabae6545a0d9baf8f1404e8454e.camel@HansenPartnership.com>
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <CANAPQzi3BkfnRS4CEXAA560O5cO8e6MEYxeVVx1u+xUeXS-gmA@mail.gmail.com>
- <CAGp9LzoidBL1iYYC371+Fw+drbArLRTneJKxCoFiitx=dweKCg@mail.gmail.com>
- <CANAPQzjiBf8Rqphn2SypYN2O6bddj6vB=63Mp=T5YVEt2oGvyw@mail.gmail.com>
- <CANAPQzgiE1rMP3F=5NJg3hp2uBXtq44+vTRBdkHwdfHyXJ8MQQ@mail.gmail.com>
- <CANAPQzgD312EPSbvaQTE6U+wn85L65+xZHms7DP509ApxWvSZA@mail.gmail.com>
- <CANAPQzgXN2UOjuwV1fRofN2syxG933kSaB9S7DyFAykHHMRzew@mail.gmail.com> <CAGp9Lzr4KsXEXbj+4h+Lk2fKU7z6BqtL5krzZmu-_So2-bN4_Q@mail.gmail.com>
-In-Reply-To: <CAGp9Lzr4KsXEXbj+4h+Lk2fKU7z6BqtL5krzZmu-_So2-bN4_Q@mail.gmail.com>
-From: bryam vargas <bryamestebanvargas@gmail.com>
-Date: Thu, 12 Mar 2026 11:30:19 -0500
-X-Gm-Features: AaiRm53n6pmgqCbUrPSX8yo07dBdb14BIJ-x5VM49Aymd3MRBVn5ECKANeFOA0Q
-Message-ID: <CANAPQzj24sTgnuXMo3wqVDhA==UQ6JQLESk0AernQUUmZvTi2w@mail.gmail.com>
-Subject: Re: [PATCH 1/2] mt76: connac: fix txpower_cur not updated in mt76_connac_mcu_set_rate_txpower()
-To: Sean Wang <sean.wang@kernel.org>
-Cc: linux-wireless@vger.kernel.org, nbd@nbd.name, lorenzo@kernel.org, 
-	"moderated list:ARM/Mediatek SoC support" <linux-mediatek@lists.infradead.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Spamd-Result: default: False [-2.16 / 15.00];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=2];
-	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
-	R_DKIM_ALLOW(-0.20)[gmail.com:s=20230601];
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <f5688b895eaebabae6545a0d9baf8f1404e8454e.camel@HansenPartnership.com>
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
+	R_DKIM_ALLOW(-0.20)[ziepe.ca:s=google];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-33120-lists,linux-wireless=lfdr.de];
-	FROM_HAS_DN(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	DKIM_TRACE(0.00)[gmail.com:+];
-	MISSING_XM_UA(0.00)[];
-	FREEMAIL_FROM(0.00)[gmail.com];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[bryamestebanvargas@gmail.com,linux-wireless@vger.kernel.org];
+	DKIM_TRACE(0.00)[ziepe.ca:+];
+	FREEMAIL_CC(0.00)[gmail.com,avm.de,lists.freedesktop.org,lists.ubuntu.com,vger.kernel.org,inria.fr,lists.linux.dev,lists.osuosl.org,lists.infradead.org,lists.ozlabs.org,kvack.org,st-md-mailman.stormreply.com,lists.samba.org,lists.sourceforge.net];
+	DMARC_NA(0.00)[ziepe.ca];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-33121-lists,linux-wireless=lfdr.de];
+	MISSING_XM_UA(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	RCVD_COUNT_FIVE(0.00)[6];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[jgg@ziepe.ca,linux-wireless@vger.kernel.org];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	RCPT_COUNT_GT_50(0.00)[56];
+	MID_RHS_MATCH_FROM(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[linux-wireless];
-	MID_RHS_MATCH_FROMTLD(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
-	RCPT_COUNT_FIVE(0.00)[5]
-X-Rspamd-Queue-Id: 98EF12759C0
+	TO_DN_SOME(0.00)[]
+X-Rspamd-Queue-Id: E4B0A276138
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-Hi Sean,
+On Thu, Mar 12, 2026 at 11:32:37AM -0400, James Bottomley wrote:
+> On Thu, 2026-03-12 at 09:57 -0300, Jason Gunthorpe wrote:
+> > On Wed, Mar 11, 2026 at 02:40:36AM +0800, Kuan-Wei Chiu wrote:
+> > 
+> > > IMHO, the necessity of IS_ERR_OR_NULL() often highlights a
+> > > confusing or flawed API design. It usually implies that the caller
+> > > is unsure whether a failure results in an error pointer or a NULL
+> > > pointer. 
+> > 
+> > +1
+> > 
+> > IS_ERR_OR_NULL() should always be looked on with suspicion. Very
+> > little should be returning some tri-state 'ERR' 'NULL' 'SUCCESS'
+> > pointer. What does the middle condition even mean? IS_ERR_OR_NULL()
+> > implies ERR and NULL are semanticly the same, so fix the things to
+> > always use ERR.
+> 
+> Not in any way supporting the original patch.  However, the pattern
+> ERR, NULL, PTR is used extensively in the dentry code of filesystems. 
+> See the try_lookup..() set of functions in fs/namei.c
+> 
+> The meaning is
+> 
+> PTR - I found it
+> NULL - It definitely doesn't exist
+> ERR - something went wrong during the lookup.
+> 
+> So I don't think you can blanket say this pattern is wrong.
 
-Thanks for the thorough v2 review on both patches =E2=80=94 really helpful.
+Lots of places also would return ENOENT, I'd argue that is easier to
+use..
 
-I spent the last few days digging deeper into the txpower reporting
-path across mt76 sub-drivers (mt7615, mt7915, mt7996, mt7921, mt7925)
-to find the most efficient fix. Turns out, Razvan Grigore already
-nailed it 13 months ago:
+But yes, I did use the word "suspicion" not blanket wrong :)
 
-  https://patchwork.kernel.org/project/linux-wireless/patch/20250211081247.=
-5892-3-razvan.grigore@vampirebyte.ro/
-
-His patch adds 3 lines to mt7921_set_tx_sar_pwr() =E2=80=94 same pattern as
-mt7915 (mcu.c:3393) and mt7996 (mcu.c:4802):
-
-  tx_power =3D mt76_get_power_bound(mphy, hw->conf.power_level);
-  tx_power =3D mt76_get_rate_power_limits(mphy, mphy->chandef.chan,
-                                        &limits_array, tx_power);
-  mphy->txpower_cur =3D tx_power;
-
-This runs before mt76_connac_mcu_set_rate_txpower(), so it uses the
-same SAR-bounded, DT-capped value that the firmware receives. And
-since set_tx_sar_pwr() is called from all four paths you pointed out
-(init, config, regd_update, set_sar_specs), it covers every scenario
-=E2=80=94 including the ones Lucid Duck's BSS_CHANGED_TXPOWER approach miss=
-es
-when not associated.
-
-I'm withdrawing both of my patches. Razvan's approach is the right
-one, and I don't want to duplicate his work.
-
-What I'll focus on instead:
-
-- Testing: I'll verify Razvan's patch on my MT7921U (NAB9, 2400m
-  altitude, daily use serving real users) and provide Tested-by.
-
-- SEFI/USB reset: You're right that v2 was premature. I'll file a
-  proper bug with full dmesg, lsusb topology, and usbmon captures
-  first, then propose a fix only after the failure mode is understood.
-
-- WF_MIB over USB: Still interested in your thoughts on my March 12
-  email about MT_MIB_SDR9/36/37 returning 0 on mt7921u. From what
-  I've seen, the USB variant has several gaps beyond txpower =E2=80=94 surv=
-ey
-  data, channel time counters =E2=80=94 that I'd like to help close.
-
-Best regards,
-Bryam Vargas
+Jason
 
