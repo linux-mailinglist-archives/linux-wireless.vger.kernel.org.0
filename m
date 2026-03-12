@@ -1,365 +1,220 @@
-Return-Path: <linux-wireless+bounces-33110-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-33111-lists+linux-wireless=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id EI4yG1vZsmkAQQAAu9opvQ
-	(envelope-from <linux-wireless+bounces-33110-lists+linux-wireless=lfdr.de@vger.kernel.org>)
-	for <lists+linux-wireless@lfdr.de>; Thu, 12 Mar 2026 16:18:51 +0100
+	id wA7fH2DbsmlMQQAAu9opvQ
+	(envelope-from <linux-wireless+bounces-33111-lists+linux-wireless=lfdr.de@vger.kernel.org>)
+	for <lists+linux-wireless@lfdr.de>; Thu, 12 Mar 2026 16:27:28 +0100
 X-Original-To: lists+linux-wireless@lfdr.de
 Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id D6DCF27429D
-	for <lists+linux-wireless@lfdr.de>; Thu, 12 Mar 2026 16:18:50 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1478D2746BA
+	for <lists+linux-wireless@lfdr.de>; Thu, 12 Mar 2026 16:27:28 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 53C89300D923
-	for <lists+linux-wireless@lfdr.de>; Thu, 12 Mar 2026 15:10:02 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id C8EBE30DBE02
+	for <lists+linux-wireless@lfdr.de>; Thu, 12 Mar 2026 15:17:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9FAAE35A388;
-	Thu, 12 Mar 2026 15:09:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EA55B33263F;
+	Thu, 12 Mar 2026 15:17:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="pw6Kjv4h"
+	dkim=pass (2048-bit key) header.d=HOTMAIL.DE header.i=@HOTMAIL.DE header.b="RGVdZW0g"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from OSPPR02CU001.outbound.protection.outlook.com (mail-norwayeastazolkn19013072.outbound.protection.outlook.com [52.103.51.72])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7AC8440DFD6;
-	Thu, 12 Mar 2026 15:09:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773328199; cv=none; b=rGiw+qtq96wSxREvKFF/cCLhVYeCWaGTfuSLuLL2BMW+6FDGgLf/0nAMcFty6Ck8Kcy5HA0n88q5WRe0oXvwjwak0psDDrHzr2T8X7J98ZbMNqBoKOkv3InwBxhDgGb1e9W9Giy+0u+FitbmfgiNQyM9mLI8Tg2FdsIHwnDbrb4=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773328199; c=relaxed/simple;
-	bh=CoRWHzESR4qw1qGeEvxRt3hiqURBaGcTC8ynxq+AA0I=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=dsBQdBOOTfK6InSN5v/14EyHx+HRcpscsVDZGcpGhwFjG8/+j15FCBmfozzn2T2Uh9ZIympiICs61+Huc3sibZqO1zX1Lv8rdAMWpoj13UTKLEH9M71jYrzHldDCDPSWbIQCxWc6L4JRBRK0PX0bn0KrdS2IwOB6v6fp35KqV7w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=pw6Kjv4h; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EF6CEC4CEF7;
-	Thu, 12 Mar 2026 15:09:56 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1773328199;
-	bh=CoRWHzESR4qw1qGeEvxRt3hiqURBaGcTC8ynxq+AA0I=;
-	h=From:Date:Subject:To:Cc:From;
-	b=pw6Kjv4h8nz4EzQdQhgebDo9CKbZoV+MNDRDsKSCLhCuHvA8euD9Ijggu78apL8Hn
-	 d9zrlvB9bv7YiqTxo8Sj0FAkDN0Z9WIRoIMr4wtiRLtoN11VRBEuzdK1+pdjgHsCs6
-	 7MOps7GcjWt8+EDI8n44w6FJ381iBqI8w5py4iP1lu2aSVFYR3M5qHOnVWLEUcnKTF
-	 QM1ggTqezueXCIy8vOskG2QmXAeaxyR/GdlSbvH334k196TaD9zQlznN7SYvLYyoWK
-	 thSR0uoiirp4QVx/OGABBYH+NwWmJLbcl94s7zoXkkwOikR72NI0kL1UFXUWhWg1cw
-	 n7Sz0ub/dd/ag==
-From: Linus Walleij <linusw@kernel.org>
-Date: Thu, 12 Mar 2026 16:09:53 +0100
-Subject: [PATCH v3] wifi: ath9k: Obtain system GPIOS from descriptors
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 50B5D31F996
+	for <linux-wireless@vger.kernel.org>; Thu, 12 Mar 2026 15:17:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.103.51.72
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1773328623; cv=fail; b=HO4YOzsq7NRbG0CkRBV0BgRxdG+s5VKgyOx9M2kxSBUl5Bx46IUHqXr2av7ZQn71ZgDII0ouiXVg4JMILD0VC2FXiUK/2WJAkldELYt2QAu7ueml4idwaSK/HvGLQHk8yBO19XhdoCsg/dNPPcVr8Lzggry/+a6zGUK7T051Wrg=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1773328623; c=relaxed/simple;
+	bh=h3jkxiRWT2fz91WZNYqzYNiLuuI+keq8DyI29WLTU1I=;
+	h=From:To:Cc:Subject:Date:Message-ID:Content-Type:MIME-Version; b=lCb53+OOR4L3GUz0Wz/q0tJ8Ev1tRFKytxM1NWq6HMeCyV0eR1ehMG8p/N2wisQL0S95RQIdPmKYttgB/sEtlWSnv9Yea0ldCmTG193Fz9aQ2UR5E8hjpH7AqIZ1oqOBhFBhXrpAiyq6rSWGE6btNafTFZYvS/9JKqHSUkJUlV4=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=hotmail.de; spf=pass smtp.mailfrom=hotmail.de; dkim=pass (2048-bit key) header.d=HOTMAIL.DE header.i=@HOTMAIL.DE header.b=RGVdZW0g; arc=fail smtp.client-ip=52.103.51.72
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=hotmail.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=hotmail.de
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=Ov19VyPnv26Wx+6JK6+I6pIr5P7RqK1itFgC7yvuCHHBemsa8tJNNi/h+TtJgs4lZPzuA/bvYvKJoWuHRw44O9vXxhvPYdew6sfCKrYE23gDOw1qa3E42xwDuj9Njlm9prH2MRCXMWmQHAWClf/rYjHq06Glc6yJwsloXPUs+3T/7T1npTYYe9xhjqFPynazHH1ITrBw80fISHJBBHGIy/rYyIWgBO/bMqdB0mpmMM7OWLnL2+I1vFw578xmLz/GmM3FyO0wt4Y7rfxzzrOJM048EB4J+idFp2yjS9P3SPLpnTMfD5q2sQGXlEC6ZUhAOYds4roM8xQ/tnLkjn4w8g==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=FywSk9WQtiJttrecCTQszfaq9jxSEE8gy8bVJ0l4eI8=;
+ b=mEYKI5U3MkkkmCwkbsyXyoZXiVs6qSfu5BGZZfTUiHoGYC7dkzKEtF5elPWZLuX9PKSouA/s/UVUIZMZq/xofgnqfKyhw1CnRkdoQ8R978MvHy/I/BHBWNDRXTH7ZrOBC8WC6nf9I++FB2eHsRYVoyvW34TdnpPXGdKp+7iq67lvlIJIdLs5iyPx1ywMBKBvFrQLIM4ra8yOnuhZX5SThJ16N5gbIf8lgVdcwFbug4NhekSzsnelyVsM5QVSKKUDCeAK8ZuqOCkOmbJqLdxWUNeeFTdDxsnYGQLMeo0UzgodbLzb8xKQ+1p0P2wvL8t1xtISJuG0cZcjmv392DxLbw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=none; dmarc=none;
+ dkim=none; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=HOTMAIL.DE;
+ s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=FywSk9WQtiJttrecCTQszfaq9jxSEE8gy8bVJ0l4eI8=;
+ b=RGVdZW0gm4Q4nxDarLURCOxm+W8GZAllWjKdB/74yaR/Pu30tacDMv+c5+O/p3MAUxaVF6plYOKjLw6gXMmgNraqMdaxJlF5Fy2IsQpd9/NZg5nWLZjYl2nWoiPVMglqJ44lsCmiSnANTM+cYYORvXdMFwQSqc1Tp/ZOQSQBuizJ3eRne7vfgXZkgjJ+SL6X3xnWu61gzskrE4XsOVUMds+6ZRh17Re5unnYUWlX9Xfv9OSG5k+5qYUdL2ZGvGoXQmi4mPHW6S6ct+Jpb5BbuUFyv9mVD/s88skjvHYiFyPdl4sWrwCgw7BdD9VwjBcKZt+AIMASWyOa7GJ0WJN65g==
+Received: from AM7PPF5613FA0B6.EURP251.PROD.OUTLOOK.COM
+ (2603:10a6:20f:fff1::851) by DB9P251MB0357.EURP251.PROD.OUTLOOK.COM
+ (2603:10a6:10:2cb::5) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9700.12; Thu, 12 Mar
+ 2026 15:16:59 +0000
+Received: from AM7PPF5613FA0B6.EURP251.PROD.OUTLOOK.COM
+ ([fe80::1ed:268:bd65:b36c]) by AM7PPF5613FA0B6.EURP251.PROD.OUTLOOK.COM
+ ([fe80::1ed:268:bd65:b36c%8]) with mapi id 15.20.9700.010; Thu, 12 Mar 2026
+ 15:16:59 +0000
+From: Masi Osmani <mas-i@hotmail.de>
+To: Christian Lamparter <chunkeey@googlemail.com>
+Cc: linux-wireless@vger.kernel.org,
+	Masi Osmani <mas-i@hotmail.de>
+Subject: [PATCH] carl9170: rx: gate data frame delivery on STARTED state
+Date: Thu, 12 Mar 2026 16:16:58 +0100
+Message-ID:
+ <AM7PPF5613FA0B610E009DF7A1C575C0E599444A@AM7PPF5613FA0B6.EURP251.PROD.OUTLOOK.COM>
+X-Mailer: git-send-email 2.51.0
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: FR4P281CA0216.DEUP281.PROD.OUTLOOK.COM
+ (2603:10a6:d10:e4::20) To AM7PPF5613FA0B6.EURP251.PROD.OUTLOOK.COM
+ (2603:10a6:20f:fff1::851)
+X-Microsoft-Original-Message-ID: <20260312151658.50077-1-mas-i@hotmail.de>
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
-Message-Id: <20260312-descriptors-wireless-v3-1-5230e0870c31@kernel.org>
-X-B4-Tracking: v=1; b=H4sIAAAAAAAC/3XNywrCMBCF4VeRrI3k0puufA9xkcu0HShNmUhUS
- t/dtAgi6PIfON/MLAIhRHbazYwgYcQw5tD7HXO9GTvg6HMzJVQhpFLcQ3SE0y1Q5HckGCBGbht
- vjqV3xuqS5elE0OJjYy/X3D3GPHhuX5Jcr29Qy99gklxwkK52pa+auqjOA46GwiFQx1YxqY9SK
- P1HUVzyyksvtNXCtuZLWZblBQIknbL/AAAA
-X-Change-ID: 20240122-descriptors-wireless-b8da95dcab35
-To: Kalle Valo <kvalo@kernel.org>, 
- Andy Shevchenko <andriy.shevchenko@linux.intel.com>, 
- Arnd Bergmann <arnd@arndb.de>, Alban Bedel <albeu@free.fr>, 
- Bartosz Golaszewski <brgl@bgdev.pl>, 
- =?utf-8?q?Toke_H=C3=B8iland-J=C3=B8rgensen?= <toke@toke.dk>, 
- =?utf-8?q?Micha=C5=82_K=C4=99pie=C5=84?= <kernel@kempniu.pl>
-Cc: linux-wireless@vger.kernel.org, brcm80211-dev-list.pdl@broadcom.com, 
- linux-gpio@vger.kernel.org, Linus Walleij <linusw@kernel.org>, 
- Linus Walleij <linusw@kernel.org>
-X-Mailer: b4 0.14.3
-X-Spamd-Result: default: False [-2.16 / 15.00];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+X-MS-Exchange-MessageSentRepresentingType: 1
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: AM7PPF5613FA0B6:EE_|DB9P251MB0357:EE_
+X-MS-Office365-Filtering-Correlation-Id: 52e2a253-4eda-4c72-9ab6-08de804a680f
+X-Microsoft-Antispam:
+	BCL:0;ARA:14566002|5072599009|461199028|5062599005|41001999006|8060799015|19110799012|51005399006|21061999006|12121999013|23021999003|15080799012|440099028|3412199025|12091999003|3430499032|13041999003|40105399003|1710799026;
+X-Microsoft-Antispam-Message-Info:
+	=?us-ascii?Q?OoZBMSacqdZQOdKoJ7Sk5mKPsUuUYykPZebY5+SSrBED+HybxF4rxrabilWA?=
+ =?us-ascii?Q?V1GzA8/6w0rcOKVMXj+ax0WOLl04+ZuZjImESDsfRBvCVPKpCFXHw/Djtg20?=
+ =?us-ascii?Q?BtbRkphoRCLDjfBh96qdDlonlsvHsSLwQQOPnFcmKNpCQXymH38jfYd2tMHk?=
+ =?us-ascii?Q?8Y4jSiTSkhPUAO2KCvccRdLrmewkWd70OHi3QsZu0cC8KATEKVDjlh6Wmq46?=
+ =?us-ascii?Q?r6wqdBnNqrgGS0dVnftPvawrDuop1bZQF6ZN5HqtfAXcY9wll1w1QdrZhLsb?=
+ =?us-ascii?Q?tDyNPHFhallBbICDKv5SnoZIwYwXGRXgBy9kZ9DgKK5JNbXTJoeKM9yG86Fs?=
+ =?us-ascii?Q?fTgz4O4+w7hgLUJbnzU5BKqaWs50+Xz3wRuXlPE9ocxIdaS/WUtBlsEyyk3P?=
+ =?us-ascii?Q?dYtf0mXOlMqUEoVXar8YtUuDCZgSEPUlaDi9zrGSKw6/Ny1J2yd2Iq786D5O?=
+ =?us-ascii?Q?CiG2c05SgXwxFOvj8cDFzlidec0zFiTVFG3YKy9UuxRI+O9Ds2lPqaqByiQH?=
+ =?us-ascii?Q?zu292RndOFH8FOXFsyYSvNzRZ7G/KKSIhEX9ouR/23KB3isPb4VDUV8rfrMO?=
+ =?us-ascii?Q?ngU3r+t9qedrXz1ycP8R8chTnf2st3QmcYoMNfQj2xgYvLV+ZfhbO1VL70Vb?=
+ =?us-ascii?Q?1mjCIhhwcg9DB+BA4XPU8kvjJDLbe8q8vc8oWZQQxGBJuqP8Bhg/tlCCk2F9?=
+ =?us-ascii?Q?lHKro9raEVDtQ2uTx+aggoZxkMUvLqAMJcP1A77q1rk90apV22JcsXwVwom0?=
+ =?us-ascii?Q?arKrkYc0RICMIC9V37uOSUNDipUkKgsEHsg+YLCgQfao9XN26yo9amiJlZqP?=
+ =?us-ascii?Q?vVXRvumOo+Dipmhsr3xZxUnoohLv6QzpVKYpc64CrGqC7vGz7VfsKXneKkf1?=
+ =?us-ascii?Q?Mv5uknf741LfKtcMfTHmX2A/9edguJHbyhmZQJAmAxgmmOqJ6F9Mz4nBr75b?=
+ =?us-ascii?Q?9iIb3PRZFkStdxeleNWi/1c3mjkiZSzySylk62106QbafF0tJ13MrnZRIuRZ?=
+ =?us-ascii?Q?/HHJDchJOLBrj5GEBrJqz3imnbWjUXvZeiUUSO/v3UrDKGyHIAi2ZZ2Sy/0o?=
+ =?us-ascii?Q?M1PBaufycIOzLLRF/TH0F827Hossu652Tl/tfyIhvU3AilvsqZmBVan/OIye?=
+ =?us-ascii?Q?xgmnBEyM1ayc?=
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?o3o3bciqb+hZ9TJuGvnsiz21I/nftxDfms+KzqOiDEtUNrXQSRS300XiW0S/?=
+ =?us-ascii?Q?Q4TtygBRdfFCc+ocKweUQLbU3GR7mc8AYixlGUqWVhXDrQDeKmlQpMeuFw14?=
+ =?us-ascii?Q?qjUIhhOsb1rtLvOQM+Q+6xBlW0BBuxf8GLWMRsAwPGBod41hE4nIohC9GucO?=
+ =?us-ascii?Q?zttYDD/t4HqwUt9jh1rV3z+1S4ZorW2ZwAGEzIqkAStb8VwabkqSk50gM9PJ?=
+ =?us-ascii?Q?yw5rdZvravusCkEsjyXrqB+x00zjEN4SwlZQCfK4rPw8uUoFzhFuSJHj2SBD?=
+ =?us-ascii?Q?8jS6/AoTOBabJ5reGSCAYcaTYPfHNs0K20EJSTQ+O0ZZs114liuB2n9CmNm2?=
+ =?us-ascii?Q?rRFfUcy6AQg8VRIe0WDMVxCB7oGNj4YgxmDpDZRxndEcHTUYE1b0rhrDZCZ0?=
+ =?us-ascii?Q?B2dNqIc3H3cpNUSYFbR2DIgPpuc8gG9tuUaULmxEBI+lhrDUg0kSXb5qOxSv?=
+ =?us-ascii?Q?v5GREnxHZ+sPHC4J0H/XwwxBoHrHVCtKb4zS5CcBAC3cafU9xCEIvd2KG+j1?=
+ =?us-ascii?Q?MJvXmHXgdxTUaVMaju+SVBliy0feK0+BGhs6wEEkMxJ4lobBs8xUVM/ALb7s?=
+ =?us-ascii?Q?CeaHKP5z+hCL9QoaJMbtSQlZUA1XHF3+O+P94VwVKkxPAGYrBPQSkHBxwQGv?=
+ =?us-ascii?Q?bVevGVmDiU3DUw40qVcD+qQpSDeJ9x7ednBM9yWMn+gql+GfkIltbv3fcSZY?=
+ =?us-ascii?Q?l0aWxAvhDxt1RC6v8kiSAv+s6kVJs7X32KNVTtZY6lL/Svn7EftHgNB5tlaE?=
+ =?us-ascii?Q?BUuCuznPnwE3QAkl9USYM34TGAX3QTMIe5D7HQ09kGVers8S3NQm211w7Mjg?=
+ =?us-ascii?Q?sW/VKXGVApZui/d99P5jHrtqqdySd1M5Bp3GPIbBFQV6V/4b00d3VXCIlUxB?=
+ =?us-ascii?Q?iy3oWBRtlm2mG9yTb4OBB++f5MQgIlAoZ6MSpt/xKmhq/AUCtON+8TAKeL4m?=
+ =?us-ascii?Q?H3wugVoWA36sw4D0XtRF9/8Uvg9MhHH0EwsVKAgoqenjxVC2FK39yXjU+pix?=
+ =?us-ascii?Q?/hjLc3st3fz14ZhzAgoGBWtYdXZ4KNqKfvM/xBgApuGgg91WSROdCQ7qonQ6?=
+ =?us-ascii?Q?7pIoBmB2s8vEy4rgXBEzu72pjrh9Rs+c3qRvcfRooLPmCfrdxovz7iXEMEFO?=
+ =?us-ascii?Q?Etxqtp8ndaH4QRm+Kr37V7F6Kp1sXwkiq6aQk2Gpxiu6KCsb5LLyNbZesUJs?=
+ =?us-ascii?Q?zozJ5TrF6SLMJZcKGkdJ4YeJGxAAx0TO7pGYLePqOJc2rswLK+qll0Z2J3gV?=
+ =?us-ascii?Q?cRMmH2MFNCmqW2Q9S8HpoHU5XVm6TvW7J2iL+zwz/PlZfa8mHUUqzWr9jn02?=
+ =?us-ascii?Q?RJDjNfFJ7edWkc0RIYY225Dt6DwEjDZdmps94gYewCHzk8jXK4gknZ+DuwUP?=
+ =?us-ascii?Q?qbKNSgSy35VVmxHxdKA625EJZwD0?=
+X-OriginatorOrg: sct-15-20-9412-3-msonline-outlook-fe3f5.templateTenant
+X-MS-Exchange-CrossTenant-Network-Message-Id: 52e2a253-4eda-4c72-9ab6-08de804a680f
+X-MS-Exchange-CrossTenant-AuthSource: AM7PPF5613FA0B6.EURP251.PROD.OUTLOOK.COM
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 12 Mar 2026 15:16:59.7239
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 84df9e7f-e9f6-40af-b435-aaaaaaaaaaaa
+X-MS-Exchange-CrossTenant-RMS-PersistedConsumerOrg:
+	00000000-0000-0000-0000-000000000000
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DB9P251MB0357
+X-Spamd-Result: default: False [0.34 / 15.00];
+	ARC_REJECT(1.00)[cv is fail on i=2];
+	R_MISSING_CHARSET(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[hotmail.de,none];
+	R_DKIM_ALLOW(-0.20)[HOTMAIL.DE:s=selector1];
 	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
-	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	FREEMAIL_TO(0.00)[kernel.org,linux.intel.com,arndb.de,free.fr,bgdev.pl,toke.dk,kempniu.pl];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-33110-lists,linux-wireless=lfdr.de];
-	RCPT_COUNT_TWELVE(0.00)[12];
-	MIME_TRACE(0.00)[0:+];
-	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	TAGGED_FROM(0.00)[bounces-33111-lists,linux-wireless=lfdr.de];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[linusw@kernel.org,linux-wireless@vger.kernel.org];
-	DKIM_TRACE(0.00)[kernel.org:+];
-	MID_RHS_MATCH_FROM(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[linux-wireless];
 	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,linaro.org:email,kempniu.pl:email]
-X-Rspamd-Queue-Id: D6DCF27429D
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	FREEMAIL_TO(0.00)[googlemail.com];
+	FREEMAIL_CC(0.00)[vger.kernel.org,hotmail.de];
+	DKIM_TRACE(0.00)[HOTMAIL.DE:+];
+	RCPT_COUNT_THREE(0.00)[3];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[mas-i@hotmail.de,linux-wireless@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	FREEMAIL_FROM(0.00)[hotmail.de];
+	RCVD_COUNT_FIVE(0.00)[5];
+	TAGGED_RCPT(0.00)[linux-wireless];
+	NEURAL_HAM(-0.00)[-1.000];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,HOTMAIL.DE:dkim,hotmail.de:email]
+X-Rspamd-Queue-Id: 1478D2746BA
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-The ath9k has an odd use of system-wide GPIOs: if the chip
-does not have internal GPIO capability, it will try to obtain a
-GPIO line from the system GPIO controller:
+Do not deliver data frames to mac80211 unless the device is fully
+started.  After carl9170_op_stop() the driver state drops to IDLE,
+but the USB RX path can still receive frames from the hardware.
+Without this gate, ieee80211_rx() may reference station data that
+sta_info_destroy_part2() is concurrently freeing during interface
+teardown, causing a use-after-free kernel panic.
 
-  if (BIT(gpio) & ah->caps.gpio_mask)
-        ath9k_hw_gpio_cfg_wmac(...);
-  else if (AR_SREV_SOC(ah))
-        ath9k_hw_gpio_cfg_soc(ah, gpio, out, label);
+The race occurs when ieee80211_handle_reconfig_failure() clears
+IN_DRIVER flags without stopping the hardware: cfg80211 then tears
+down interfaces via ieee80211_do_stop() which calls sta_info_flush()
+while the driver's RX path still delivers frames.  This was observed
+when carl9170 firmware deadlocks during a restart attempt and
+ieee80211_reconfig() fails at drv_add_interface().
 
-Where ath9k_hw_gpio_cfg_soc() will attempt to issue
-gpio_request_one() passing the local GPIO number of the controller
-(0..31) to gpio_request_one().
+The gate is placed in carl9170_rx_untie_data() just before the
+ieee80211_rx() call, not in the USB layer, because firmware command
+responses (including CARL9170_RSP_BOOT needed for firmware upload)
+must still flow through the shared RX path via
+carl9170_handle_command_response() which returns before reaching
+this point.
 
-This is somewhat peculiar and possibly even dangerous: there is
-nowadays no guarantee of the numbering of these system-wide
-GPIOs, and assuming that GPIO 0..31 as used by ath9k would
-correspond to GPIOs 0..31 on the system as a whole seems a bit
-wild.
-
-Register all 32 GPIOs at index 0..31 directly in the ATH79K
-GPIO driver and associate with the NULL device (making them
-widely available) if and only if we are probing ATH79K wifi
-from the AHB bus (used for SoCs). We obtain these offsets from
-the NULL device if necessary.
-
-These GPIOs should ideally be defined in the device tree
-instead, but we have no control over that for the legacy
-code path.
-
-Testcompiled with the ath79 defconfig.
-
-Reported-by: Michał Kępień <kernel@kempniu.pl>
-Signed-off-by: Linus Walleij <linusw@kernel.org>
+Signed-off-by: Masi Osmani <mas-i@hotmail.de>
 ---
-This patch set is a long standing attempt to get rid of the global
-GPIO numbers from the ath9k Wireless driver.
+ drivers/net/wireless/ath/carl9170/rx.c | 8 ++++++++
+ 1 file changed, 8 insertions(+)
 
-Maybe Kalle can merge this to the Wireless tree if we agree on this
-hack solution.
+diff --git a/drivers/net/wireless/ath/carl9170/rx.c b/drivers/net/wireless/ath/carl9170/rx.c
+--- a/drivers/net/wireless/ath/carl9170/rx.c
++++ b/drivers/net/wireless/ath/carl9170/rx.c
+@@ -683,6 +683,14 @@
 
-Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
----
-Changes in v3:
-- Rebased on kernel v7.0-rc1
-- Fix up issues as pointed out by Michał Kępień
-- Link to v2: https://lore.kernel.org/r/20240423-descriptors-wireless-v2-1-6d1d03b30bfa@linaro.org
+ 	carl9170_ba_check(ar, buf, len);
 
-Changes in v2:
-- Define all the descriptors directly in the ATH79K
-  GPIO driver in case the driver want to request them directly.
-- Link to v1: https://lore.kernel.org/r/20240131-descriptors-wireless-v1-0-e1c7c5d68746@linaro.org
----
- drivers/gpio/gpio-ath79.c           | 57 ++++++++++++++++++++++++++++++++++++-
- drivers/net/wireless/ath/ath9k/hw.c | 36 +++++++++++++++--------
- drivers/net/wireless/ath/ath9k/hw.h |  3 +-
- 3 files changed, 82 insertions(+), 14 deletions(-)
-
-diff --git a/drivers/gpio/gpio-ath79.c b/drivers/gpio/gpio-ath79.c
-index 2ad9f6ac6636..00d8e877d1d5 100644
---- a/drivers/gpio/gpio-ath79.c
-+++ b/drivers/gpio/gpio-ath79.c
-@@ -11,6 +11,7 @@
- #include <linux/device.h>
- #include <linux/gpio/driver.h>
- #include <linux/gpio/generic.h>
-+#include <linux/gpio/machine.h> /* For WLAN GPIOs */
- #include <linux/interrupt.h>
- #include <linux/irq.h>
- #include <linux/mod_devicetable.h>
-@@ -214,6 +215,56 @@ static const struct of_device_id ath79_gpio_of_match[] = {
- };
- MODULE_DEVICE_TABLE(of, ath79_gpio_of_match);
- 
-+#if IS_ENABLED(CONFIG_ATH9K_AHB)
-+/*
-+ * This registers all of the ath79k GPIOs as descriptors to be picked
-+ * directly from the ATH79K wifi driver if the two are jitted together
-+ * in the same SoC.
-+ */
-+#define ATH79K_WIFI_DESCS 32
-+static int ath79_gpio_register_wifi_descriptors(struct device *dev,
-+						const char *label)
-+{
-+	struct gpiod_lookup_table *lookup;
-+	int i;
-+
-+	/* Create a gpiod lookup using gpiochip-local offsets + 1 for NULL */
-+	lookup = devm_kzalloc(dev,
-+			      struct_size(lookup, table, ATH79K_WIFI_DESCS + 1),
-+			      GFP_KERNEL);
-+
-+	if (!lookup)
-+		return -ENOMEM;
-+
 +	/*
-+	 * Ugly system-wide lookup for the NULL device: we know this
-+	 * is already NULL but explicitly assign it here for people to
-+	 * know what is going on. (Yes this is an ugly legacy hack, live
-+	 * with it.)
++	 * Do not deliver data frames to mac80211 unless the device is
++	 * fully started.  After carl9170_op_stop() the state drops to
++	 * IDLE, preventing a use-after-free when sta_info_destroy_part2()
++	 * races with ieee80211_rx() during interface teardown.
 +	 */
-+	lookup->dev_id = NULL;
-+
-+	for (i = 0; i < ATH79K_WIFI_DESCS; i++) {
-+		lookup->table[i] = (struct gpiod_lookup)
-+			/*
-+			 * Set the HW offset on the chip and the lookup
-+			 * index to the same value, so looking up index 0
-+			 * will get HW offset 0, index 1 HW offset 1 etc.
-+			 */
-+			GPIO_LOOKUP_IDX(label, i, "ath9k", i, GPIO_ACTIVE_HIGH);
-+	}
-+
-+	gpiod_add_lookup_table(lookup);
-+
-+	return 0;
-+}
-+#else
-+static int ath79_gpio_register_wifi_descriptors(struct device *dev,
-+						const char *label)
-+{
-+}
-+#endif
-+
- static int ath79_gpio_probe(struct platform_device *pdev)
- {
- 	struct gpio_generic_chip_config config;
-@@ -276,7 +327,11 @@ static int ath79_gpio_probe(struct platform_device *pdev)
- 		girq->handler = handle_simple_irq;
- 	}
- 
--	return devm_gpiochip_add_data(dev, &ctrl->chip.gc, ctrl);
-+	err = devm_gpiochip_add_data(dev, &ctrl->chip.gc, ctrl);
-+	if (err)
-+		return err;
-+
-+	return ath79_gpio_register_wifi_descriptors(dev, ctrl->chip.gc.label);
- }
- 
- static struct platform_driver ath79_gpio_driver = {
-diff --git a/drivers/net/wireless/ath/ath9k/hw.c b/drivers/net/wireless/ath/ath9k/hw.c
-index a45351afcf6e..04b4f0347cd9 100644
---- a/drivers/net/wireless/ath/ath9k/hw.c
-+++ b/drivers/net/wireless/ath/ath9k/hw.c
-@@ -21,7 +21,7 @@
- #include <linux/time.h>
- #include <linux/bitops.h>
- #include <linux/etherdevice.h>
--#include <linux/gpio.h>
-+#include <linux/gpio/consumer.h>
- #include <linux/unaligned.h>
- 
- #include "hw.h"
-@@ -2719,19 +2719,29 @@ static void ath9k_hw_gpio_cfg_output_mux(struct ath_hw *ah, u32 gpio, u32 type)
- static void ath9k_hw_gpio_cfg_soc(struct ath_hw *ah, u32 gpio, bool out,
- 				  const char *label)
- {
-+	enum gpiod_flags flags = out ? GPIOD_OUT_LOW : GPIOD_IN;
-+	struct gpio_desc *gpiod;
- 	int err;
- 
--	if (ah->caps.gpio_requested & BIT(gpio))
-+	if (ah->gpiods[gpio])
- 		return;
- 
--	err = devm_gpio_request_one(ah->dev, gpio, out ? GPIOF_OUT_INIT_LOW : GPIOF_IN, label);
--	if (err) {
-+	/*
-+	 * Obtains a system specific GPIO descriptor from another GPIO controller.
-+	 * Ideally this should come from the device tree, this is a legacy code
-+	 * path.
-+	 */
-+	gpiod = gpiod_get_index(NULL, "ath9k", gpio, flags);
-+
-+	if (IS_ERR(gpiod)) {
-+		err = PTR_ERR(gpiod);
- 		ath_err(ath9k_hw_common(ah), "request GPIO%d failed:%d\n",
- 			gpio, err);
- 		return;
- 	}
- 
--	ah->caps.gpio_requested |= BIT(gpio);
-+	gpiod_set_consumer_name(gpiod, label);
-+	ah->gpiods[gpio] = gpiod;
- }
- 
- static void ath9k_hw_gpio_cfg_wmac(struct ath_hw *ah, u32 gpio, bool out,
-@@ -2791,10 +2801,12 @@ void ath9k_hw_gpio_free(struct ath_hw *ah, u32 gpio)
- 	if (!AR_SREV_SOC(ah))
- 		return;
- 
--	WARN_ON(gpio >= ah->caps.num_gpio_pins);
-+	if (ah->gpiods[gpio]) {
-+		gpiod_put(ah->gpiods[gpio]);
-+		ah->gpiods[gpio] = NULL;
-+	}
- 
--	if (ah->caps.gpio_requested & BIT(gpio))
--		ah->caps.gpio_requested &= ~BIT(gpio);
-+	WARN_ON(gpio >= ah->caps.num_gpio_pins);
- }
- EXPORT_SYMBOL(ath9k_hw_gpio_free);
- 
-@@ -2822,8 +2834,8 @@ u32 ath9k_hw_gpio_get(struct ath_hw *ah, u32 gpio)
- 			val = REG_READ(ah, AR_GPIO_IN(ah)) & BIT(gpio);
- 		else
- 			val = MS_REG_READ(AR, gpio);
--	} else if (BIT(gpio) & ah->caps.gpio_requested) {
--		val = gpio_get_value(gpio) & BIT(gpio);
-+	} else if (ah->gpiods[gpio]) {
-+		val = gpiod_get_value(ah->gpiods[gpio]);
- 	} else {
- 		WARN_ON(1);
- 	}
-@@ -2846,8 +2858,8 @@ void ath9k_hw_set_gpio(struct ath_hw *ah, u32 gpio, u32 val)
- 			AR7010_GPIO_OUT : AR_GPIO_IN_OUT(ah);
- 
- 		REG_RMW(ah, out_addr, val << gpio, BIT(gpio));
--	} else if (BIT(gpio) & ah->caps.gpio_requested) {
--		gpio_set_value(gpio, val);
-+	} else if (ah->gpiods[gpio]) {
-+		gpiod_set_value(ah->gpiods[gpio], val);
- 	} else {
- 		WARN_ON(1);
- 	}
-diff --git a/drivers/net/wireless/ath/ath9k/hw.h b/drivers/net/wireless/ath/ath9k/hw.h
-index eaa07d6dbde0..d9d2f64c5570 100644
---- a/drivers/net/wireless/ath/ath9k/hw.h
-+++ b/drivers/net/wireless/ath/ath9k/hw.h
-@@ -19,6 +19,7 @@
- 
- #include <linux/if_ether.h>
- #include <linux/delay.h>
-+#include <linux/gpio/consumer.h>
- #include <linux/io.h>
- #include <linux/firmware.h>
- 
-@@ -302,7 +303,6 @@ struct ath9k_hw_capabilities {
- 	u8 max_rxchains;
- 	u8 num_gpio_pins;
- 	u32 gpio_mask;
--	u32 gpio_requested;
- 	u8 rx_hp_qdepth;
- 	u8 rx_lp_qdepth;
- 	u8 rx_status_len;
-@@ -783,6 +783,7 @@ struct ath_hw {
- 	struct ath9k_hw_capabilities caps;
- 	struct ath9k_channel channels[ATH9K_NUM_CHANNELS];
- 	struct ath9k_channel *curchan;
-+	struct gpio_desc *gpiods[32];
- 
- 	union {
- 		struct ar5416_eeprom_def def;
-
----
-base-commit: 6de23f81a5e08be8fbf5e8d7e9febc72a5b5f27f
-change-id: 20240122-descriptors-wireless-b8da95dcab35
-
-Best regards,
--- 
-Linus Walleij <linusw@kernel.org>
-
++	if (!IS_STARTED(ar))
++		return 0;
+ 	skb = carl9170_rx_copy_data(buf, len);
+ 	if (!skb)
+ 		return -ENOMEM;
 
