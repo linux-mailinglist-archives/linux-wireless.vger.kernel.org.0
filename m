@@ -1,77 +1,81 @@
-Return-Path: <linux-wireless+bounces-33083-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-33084-lists+linux-wireless=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id a+s9MpaXsmnENwAAu9opvQ
-	(envelope-from <linux-wireless+bounces-33083-lists+linux-wireless=lfdr.de@vger.kernel.org>)
-	for <lists+linux-wireless@lfdr.de>; Thu, 12 Mar 2026 11:38:14 +0100
+	id iP7rN5yXsmnENwAAu9opvQ
+	(envelope-from <linux-wireless+bounces-33084-lists+linux-wireless=lfdr.de@vger.kernel.org>)
+	for <lists+linux-wireless@lfdr.de>; Thu, 12 Mar 2026 11:38:20 +0100
 X-Original-To: lists+linux-wireless@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 66AF8270645
-	for <lists+linux-wireless@lfdr.de>; Thu, 12 Mar 2026 11:38:14 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id E3ADD27064C
+	for <lists+linux-wireless@lfdr.de>; Thu, 12 Mar 2026 11:38:19 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id CA096302BF4D
-	for <lists+linux-wireless@lfdr.de>; Thu, 12 Mar 2026 10:38:13 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id AC3FA3009E22
+	for <lists+linux-wireless@lfdr.de>; Thu, 12 Mar 2026 10:38:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 645352E719C;
-	Thu, 12 Mar 2026 10:38:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8E47E1FDA61;
+	Thu, 12 Mar 2026 10:38:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=HOTMAIL.DE header.i=@HOTMAIL.DE header.b="Jg5hf9WB"
+	dkim=pass (2048-bit key) header.d=HOTMAIL.DE header.i=@HOTMAIL.DE header.b="mYC6Lqkb"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from GVXPR05CU001.outbound.protection.outlook.com (mail-swedencentralazolkn19013082.outbound.protection.outlook.com [52.103.35.82])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D11E71FDA61
-	for <linux-wireless@vger.kernel.org>; Thu, 12 Mar 2026 10:38:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 358223BB9E6
+	for <linux-wireless@vger.kernel.org>; Thu, 12 Mar 2026 10:38:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.103.35.82
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773311891; cv=fail; b=mZYIo7xnjR8DfKGGDUgYRI5musgAN4fUIcLwyV8far1hTzzOu+hjfHr+xTubmPBQMORYyMWVYdTXaxYWL9KvtyzABVZTP4veJYRehwCcfC3zWlKksEKodP8+TSO6ZfKgXnmBAfIxTMXXmbiZmTnoas3h1rZ2RBpsQyC/3anJP/Y=
+	t=1773311893; cv=fail; b=RI3J3S18kqCMmErjS+n+/DMYGlhvQGeDStlZorYcHrwAYTrOC9bl8K9kp5KpfuaAcIVJuwm1jLffNATvbLJQ5TBEnne4o2XvWoJzFWtdF9NtMYLP6MhZTWdSha0XLg4ZTZVZ15WzpdPNVumw7uEP1I6UFXCiZI1wgXpVM5zB6Tg=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773311891; c=relaxed/simple;
-	bh=6C0Iz2JL6yGDoyq51l+BH+Qsis4C2I61r0PbZ3D+VQ8=;
-	h=From:To:Cc:Subject:Date:Message-ID:Content-Type:MIME-Version; b=QMJzTRJYaSqnJfTu6brz9yk54KbivSboyMXNqR4Gj9VwSHhSBg+mCUmi7hoii1boyj1NgSXDT7pnPtVJO9svmm5FleiowR9qw1ZalXNJMdQ+MnzJHyWfcFXU6Hi+aU/i69755JiFmnnQ7lzFOXthEIlFUZFwO2HBYlQ3/8BdIPI=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=hotmail.de; spf=pass smtp.mailfrom=hotmail.de; dkim=pass (2048-bit key) header.d=HOTMAIL.DE header.i=@HOTMAIL.DE header.b=Jg5hf9WB; arc=fail smtp.client-ip=52.103.35.82
+	s=arc-20240116; t=1773311893; c=relaxed/simple;
+	bh=z8r7LRntMgqXXcSnYddtpeB7ASIuaZ+UbWPcuXoVdG4=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=uwQIt7YgjD/Fg94OaVsHmBpUm7djADJDwgxIASwhmlbYcv2RbhMYNsl9OfKWgYUZt4jKuYS8tqt68UzQSVuOuu/UOMHo943mGjNM3RSob9u7bOqQYnnLcEW9Nb0JQ9bm41QM6pBs071WjDuHeO9zvyKvyAmX+sqivsVpgurBq6w=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=hotmail.de; spf=pass smtp.mailfrom=hotmail.de; dkim=pass (2048-bit key) header.d=HOTMAIL.DE header.i=@HOTMAIL.DE header.b=mYC6Lqkb; arc=fail smtp.client-ip=52.103.35.82
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=hotmail.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=hotmail.de
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=hqhnvGV3TQbaam4iuoY4ecuIXiZG2cHGRXPI8mVfvRrJl73qCgjdE/BLrCahpq3ehtAd4pdF5gqb8mF+5oehbqRuhzfF75CMh1xnwwrU5z92vICQqVksXlE+F5ZijGi+6LDJFR1yuUr43e1A9hgbGlfEYpulvZ+2lrDsyZlGel7IIEon5mhl5WiUNcPJMIVFhHHX7J9namrFw1aCc5E5dlbidc6S7eowGLLksGAIfVKwnoR0d4GX9O+0sWCFcInDwUGBJi9bfjqchIeFWv8ySiarKpxsOG9gvMiblObH6ULda6E8ouaZSqEQnJv2e6OofGv8+kG6h6+eJb2HwH0fdw==
+ b=HNJ1VAeJQtQMdR8sX854I5cLPfx+fNSiFkkje7FfCaSkmG8jnkAnyfX4lf2RyLe7JGlWrvSEiwnAnAfs9mf23Q+mshKo/t+vlwIino4G6pz/HqWNkArtXMXi+I6I9fu1llq/E5T9XvJPr3TUtzACPHDvZDK7hH+IAzeeLzChbDt/2s9ofp1iVK/NPsbeZrojz+5VkeZSjCAxYzhs9MLO09PmuYmAN1u9AvrhEIIrzt4hxpd9vU8Zkk6KQlSAldSCIKwoqKEUGy0nRpnpILz/0FjMNEiK1Sa/2qiwXdDZrUVFdlRnp4QDkuVoOXYw0PUjXRL6C3kaQJGrz/pW7sNKBA==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=VFMmDpmuDYJFqGziySyGcMS1H5mHSZ/0Y+2bzBJYciY=;
- b=bqBdvwTxphO3cX6Nex1bw9D/TxW+NT67hBuCqbFakeTEmwq06GsPuftfHrRJBWv4Cybl5EtF6aUmsgIDjm7lq7b0dM1Co+UfrEfWHpvT5GuMGz7JSmiZgexSIQvZv/2bB9qk4WDRyzhDj1LbuTsH0VEHhF1Y03Q7f8o4jj+XEMJFnsxL7XbRRI2H4pw1HOAH2OXLFSOJDBeobDXGCtXusYgg7tYLDFxeaqvxdb4W+zt3wQ37V4X4bjjiPf+S0VU/i1xvlRNDB0xiS/VCn3wwJJCVCzhdIaoN6qgsB35i/OUKW++PoJu0T10tYJcDWu7v6zS905rmEEJvE5qz9q58CQ==
+ bh=wEZJmoEnIdFrDmPNEtsXeYMq1pVsQTy11WonekhrysA=;
+ b=PtQn/3Db9qP0tOkAsaxA6otZ5JmrWmFieA1mgeNzLtZbMynHCACsVg8batFOQJFPosBGmDmh+pL3L/IotvLucfR3ck/lJ3uVtNgEAlqY1xPmFP+Iv5BhjUjWWWXOBVvVmXcRZrFwjAAgtP4c+zS8iS4kHrbEZrKbibew9smAowOcg0T9/7LbmeJbUrr8GgTZqJwsmShdqBfvtr9IrSGCeoHix4BhhSr4UBFMDZVsyrYul8hk3xeXVW7OlP1TxbJz4iJm8udzZon6sC5YYYgHlwVWlhsStCZYDL/xTmbaf9b8LkWa3nTBzq2lku49H6eAtRhpM0Iq1sBojeJGQ4IXeg==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=none; dmarc=none;
  dkim=none; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=HOTMAIL.DE;
  s=selector1;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=VFMmDpmuDYJFqGziySyGcMS1H5mHSZ/0Y+2bzBJYciY=;
- b=Jg5hf9WBkyssr9daUN4KHSRyRtgAI6yUnrdJIZF96OCsDN1JpJZh4TyzH/fIxvp2klUTZ9QnKOcJkE0Yc/suFzSGMF27u6ug0q2XRXj8tVMkZc4wkdtbntMfMXQjI79Ge67bIJW2thk8sybP8FmAB+jrWS/COFrO5X5gU0OAx//uDxQKkwdkCtSM0uQhKm7i5IXk3J3eGfhTUXuBqVRZGjTQqrgfrx9RUVpbUgqwW/RK14dtqMNEPd7/q7yzCiYos9jbpoOsJEFuIqnqWxCuKMnGoMViwquHck/LDbYCoiTExtq9i3+FnnFKwFtSlBtaVvfb8tOdAsWI8MH3NdAlqQ==
+ bh=wEZJmoEnIdFrDmPNEtsXeYMq1pVsQTy11WonekhrysA=;
+ b=mYC6LqkbLTqs1xs8SToS9NDbhwTT+GaGBYpFYWxPtdeDh1yKf4CJ3BgeOcqYgRbH865rhOLWCnX36jH9QvdtCKcIwu99YtMjn85gGRAQ9qmMDoWWDUD3FKbBXynI8xSq8eUVRXOpWI+VjwGpIvpHQYqUq6iG6KkZxCbRJLEVZv97+dpd4hxLlCPoa+QAJLGkh+0qD6drg60QcKKQS+3KFjWtoHpmVhLFmnav3/ZveopV5aDIPVFj+OC6a5JOcoX3txsHoXLJcUhdYg3jSXcZt8oj6vrO33y4YvJ8sFjSz47Gn0L7A4Cw4eTrdfRG89PAZmMYcvRmcVoyxFVJiXVnjg==
 Received: from AM7PPF5613FA0B6.EURP251.PROD.OUTLOOK.COM
  (2603:10a6:20f:fff1::851) by DB9P251MB0259.EURP251.PROD.OUTLOOK.COM
  (2603:10a6:10:2c0::19) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9700.12; Thu, 12 Mar
- 2026 10:38:07 +0000
+ 2026 10:38:09 +0000
 Received: from AM7PPF5613FA0B6.EURP251.PROD.OUTLOOK.COM
  ([fe80::1ed:268:bd65:b36c]) by AM7PPF5613FA0B6.EURP251.PROD.OUTLOOK.COM
  ([fe80::1ed:268:bd65:b36c%8]) with mapi id 15.20.9700.010; Thu, 12 Mar 2026
- 10:38:07 +0000
+ 10:38:09 +0000
 From: Masi Osmani <mas-i@hotmail.de>
 To: Christian Lamparter <chunkeey@googlemail.com>
 Cc: linux-wireless@vger.kernel.org,
 	Masi Osmani <mas-i@hotmail.de>,
 	ath9k-devel@qca.qualcomm.com
-Subject: [PATCH 00/10] carl9170: 802.11n compliance and driver improvements
-Date: Thu, 12 Mar 2026 11:37:55 +0100
+Subject: [PATCH 01/10] carl9170: mac80211: enable Short Guard Interval for 20 MHz
+Date: Thu, 12 Mar 2026 11:37:56 +0100
 Message-ID:
- <AM7PPF5613FA0B6D188CBDBAFC0CE13247A9444A@AM7PPF5613FA0B6.EURP251.PROD.OUTLOOK.COM>
+ <AM7PPF5613FA0B662B9909BAEB554565F499444A@AM7PPF5613FA0B6.EURP251.PROD.OUTLOOK.COM>
 X-Mailer: git-send-email 2.51.0
+In-Reply-To: <cover.1773277728.git.mas-i@hotmail.de>
+References: <cover.1773277728.git.mas-i@hotmail.de>
 Content-Transfer-Encoding: 8bit
 Content-Type: text/plain
-X-ClientProxiedBy: FR4P281CA0353.DEUP281.PROD.OUTLOOK.COM
- (2603:10a6:d10:f4::16) To AM7PPF5613FA0B6.EURP251.PROD.OUTLOOK.COM
+X-ClientProxiedBy: FR4P281CA0357.DEUP281.PROD.OUTLOOK.COM
+ (2603:10a6:d10:f4::18) To AM7PPF5613FA0B6.EURP251.PROD.OUTLOOK.COM
  (2603:10a6:20f:fff1::851)
-X-Microsoft-Original-Message-ID: <cover.1773277728.git.mas-i@hotmail.de>
+X-Microsoft-Original-Message-ID:
+ <6d4f6be270beab4488b783c1dfd9b99a4ff799bc.1773277728.git.mas-i@hotmail.de>
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
@@ -81,59 +85,42 @@ MIME-Version: 1.0
 X-MS-Exchange-MessageSentRepresentingType: 1
 X-MS-PublicTrafficType: Email
 X-MS-TrafficTypeDiagnostic: AM7PPF5613FA0B6:EE_|DB9P251MB0259:EE_
-X-MS-Office365-Filtering-Correlation-Id: b951f565-8b78-4a28-40c2-08de802372c0
+X-MS-Office365-Filtering-Correlation-Id: 190e134c-4410-4fe3-c5f0-08de802373bd
 X-Microsoft-Antispam:
-	BCL:0;ARA:14566002|8060799015|23021999003|15080799012|19110799012|5072599009|12121999013|461199028|39105399006|440099028|3412199025|12091999003|3430499032|40105399003|1710799026;
+	BCL:0;ARA:14566002|8060799015|23021999003|15080799012|19110799012|5072599009|461199028|51005399006|440099028|3412199025|3430499032|40105399003|1710799026;
 X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?QfrWP5ZL5UifmgZ3Zfyyz/ot3w9Z9uTtfL72LoyO1ir9sxq4adGZ+r90iYyC?=
- =?us-ascii?Q?Ll6i8zb0zsR4CeivqCt1CH2GoUJf5mGcIGSkF4m2eNQtf4IEOJgwz/vjqEZs?=
- =?us-ascii?Q?Jlz+LNcZxcnDms4syH12tLggrwfoDT8DXG+n/wrGBxjTL4fwbXe8kUZ689Sb?=
- =?us-ascii?Q?t77vLqtOWRC8qHkMXan5kPOmc0sR7A9v1+3HXef7jt62beVhhlnLQpbGnsHS?=
- =?us-ascii?Q?nZdT+Fe6BFEWR6A+CL17e7ykKuqRLY8BX0vjKVYU1mM1BOumf9HGqvD/Y9rx?=
- =?us-ascii?Q?xBhx28AqTccAkWTgNYMKIynMw060lF9CD4wEu8EP/9gd3WcIvZmH2Xy9b3lx?=
- =?us-ascii?Q?Gb8ukaTijFuLP0fgsMsvO1AulHpRiTSw4rvFqvn7wGDbgTl3QFOIlMt2YTmT?=
- =?us-ascii?Q?DYR91+wiztiUOeRtidtZYRxTaSB8cVZxGRSNcn1XYzR5hGhEP6gnTVgxWPVo?=
- =?us-ascii?Q?I6+J7r9lo51B9d15VhvdW68V2a3CShuZdIS5JksYW3eRGP7poZ87PwypGKqv?=
- =?us-ascii?Q?p2kQrIa+NMizK9s0onWyUpw2F6m6zLYlXgU0ifSWdkGFjHmdImTvUyH/HtQk?=
- =?us-ascii?Q?Ge+8TiGkvIRmcof138SgyC/57tb95PuRXukkS+O323x/Cp7QGmjqHIt4MqCr?=
- =?us-ascii?Q?nkduvVB/F04edtvdLXHC2yqgcUC7Zm7qoheoDyHB6WJ28uUOiuNpye883cV0?=
- =?us-ascii?Q?uWS4z1en87RKHgtSTyqEYvqM1NEwvq6BAxLla0+exLmoCaq0FpC8OT887VLI?=
- =?us-ascii?Q?qzPS9/yoCRHGotwTYV8IWX9EvpxFXhdD3srK3Pu6CKmRs/0hexWKk+xFuKd0?=
- =?us-ascii?Q?9owuAgDCyqa0UY3BXYYgJ/y6VVPI/jkqOtiIUgz1czBcibiex/6jOsxs4jCo?=
- =?us-ascii?Q?Zq0OiWJ5RHv+710/qFRutIVRJq2UKcI5dkXuomsLXbWDsI+AxdW80n1zQ0z+?=
- =?us-ascii?Q?RRAR3fIyJL0WEA2HpotbLIJ7csfs/u50FBDZDuIThLk5xzhQF0OULEzWEY5y?=
- =?us-ascii?Q?7Vfw?=
+	zOI3BbXa9faX2WeBG0hMIZZ+elnwzWqJKbKHU5v+V6o4m0KLL1oXPggV4qR/vB6ikEfseB4IK6nl+CKflxxnwOWBj8tytfsguVFjrOKs+LW7hUjQHaLUUo3qO+R8XkN1hb61ganu/NI/mu3RGMhVA3X1r2kdSxhIH7uBdM/RGRTQhtTXaKDux8cHFfgT3vwLX6ru4R0ZQaxusdbfWhdSfIC529azyfvRuvNDxESWC+k0n0h2bJOK5B94r7x+rX51k/hIRISipYs8ZRo9t/RWe8AwDn+OdM5gFbYEwRvIGEFROvbEHuarrg5A6RQuzeLoKHsutjfiqXwdm62hI+cWgOxQoGlijwDmgBGxcP9dioL36XOpJQDlgJzWvYbrR94Ai3Il6NhF0UMousFEBbcfmL9BiiE7YiLQmhBT/lj9si8AXaY6Vm2esNCBexhplIC0srZhfJZHg4gNHfRKML667EdvdxKvuoc9X+JFD33kJrNTt+VPZJFDC7efGqxtdcQQLABnITEy/HefQ4wEzQLGXQ90QixVMoGGKrMmmhNfjCvvLKSIwVMa2WK5V17/kwxFHXXutv3cdMImla9csExU9dMp2D1apBDzjRl/U5MoLvTiyal8VQdMlJI3M7pWySa7Nw8WDbQg407qFz/4/pFdSjHWFYkxdZFsxKoDOX95ecqS+tk8rWaMsSpKTn1MA+upFPwwO/G7TaNVp1NqNpw3jveEDc1x7RhgMy6nQHJU680sWVGV4BqIku2OlbWBhqlVFKm0yn9hnbyzmv7NNPgHa7IUw6JygaTlPNJuQQth9jizPSj2F22uX34JuwYv2qGPcrrTd2ASPyg7Sp10e7BVKq+nl3gyYOLFTcWz5EZU0Zlt9KntXK9MjraEKiejSLY54I/pZ6EIPH38lCHJH5HlivqgoQIn7RnbL73ponC9QT3IKr4FK5k0CQE1xgFOE45W
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
 X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?TsRia2Ly+1blorKQPiUB8VuE/SOSVPwXra7i48rUTwe07OPMucm3N4zdwAy6?=
- =?us-ascii?Q?hr77YDPv2HUIO9JldI7T1JCnOLub1bxPbFlfNjZRITjBT/i4aCdU37itVPeT?=
- =?us-ascii?Q?SXgYmYNx8BjD8y5nyWlN8UbI5pSfqf+d1szK0jRmh16beCtLaNs6MdpXZVOO?=
- =?us-ascii?Q?xb7resHwmALCvKC7DjN/fG2h2RBkqx2KRcr3TqirsC7Pnv2pm8KUTWF/TgsF?=
- =?us-ascii?Q?K5EALHfRF/pbugxS8N0XBMERC/kwwLGvuR8FMvfMU4HbpuZOMA71yIoCVH90?=
- =?us-ascii?Q?7luCScV72uiXnmi2oOMCIrceKSYSPUgMoAX1RSOaoFMvYpQJ389pA9WJAKN0?=
- =?us-ascii?Q?eAOv/GpWOFe/akzJc26RAtZnDSfGrdyVvpgyi8HvgNdidkDcWB7j6tRGsf07?=
- =?us-ascii?Q?9b5/3DSYFb3PkL0iYwIJB7F9hxq9CMDP2TOy0VafGv8e4nYGPyV/STRPI5tM?=
- =?us-ascii?Q?sAyZW68Dovei+CN5QImG7aLJ2NA3K9yedXPYZj2CQBOkHVdCva+u8H81d056?=
- =?us-ascii?Q?AodKOwgTh2tqeuCFDnupNk/qqwl4eMOLyTgkjg9MgIB0nNEwdRIqIMK8sA48?=
- =?us-ascii?Q?D8SQ8l6nETD+72a9KBPmkxuyQ8y+fb7NHv9VSBlBXEwAP+i5qOXqAeuyo2oq?=
- =?us-ascii?Q?F4wazNGiWfE7ev9Qucc+uECIDLwE7P93zrOnXChHZkVhUHAiO7kzsVww4SLO?=
- =?us-ascii?Q?kdXX/rJW1oaXGsIgW9Iv4wL2ajgYRnXSfA5V18DYdEQan9eVZbRDrjn36XOO?=
- =?us-ascii?Q?Rk0MPsJLGI9wKTKpuRw1vx/qbJUdi5QedDlUnq8Ap8LENq78ZPKD4dzQtYbD?=
- =?us-ascii?Q?DNMmx99YnU60ImupHKsgZAOsd5Y7W8bzJ+ATgyT5t0wgxopiOmc2qIr9b7YC?=
- =?us-ascii?Q?QAMFPvVvBqvFxX1B6IkM0IaaG4OgxoAVTWACeFKKdfP2GWcasSA8FSMD6jep?=
- =?us-ascii?Q?m2Ehg/Kfu2fx+X8MJL3qExmAYwi47do2CCnKjV2O3/EtdFU5ZfWu8UCenb1m?=
- =?us-ascii?Q?F33bAdrxAo691O+6Lnp5XGXWRq9yzGIcEMx1H9EljPJur5xopbJCwXOKND8x?=
- =?us-ascii?Q?gYYd5iTXvAiykRbwtVGKgTO5jHt7anE/po2tZNkXvV5sUh6oVblZ4pVkpklQ?=
- =?us-ascii?Q?0Ae58GYKHZJlnV7AlNG81SolmKEcHhcPiTeLLNTzH6do4Aw2ynVHDHPp5Odk?=
- =?us-ascii?Q?Jpwq3BFjgbfm8yilbo9Dsh/t8qU7xn4GbGPhVBW1pFJQIGelQcTpV2PlIBs7?=
- =?us-ascii?Q?12k3DbOFskW2dbVa/xkJBe9z7/CZEYucsGueYTWTZt6niXAWL71MY0jizeI3?=
- =?us-ascii?Q?IZ2ZHfih8hU7KyV1kmSC0dgDaMT4LAq4EKkONxXpM6HGwEg53YZVHixVTgvm?=
- =?us-ascii?Q?IaLDHpmiSDCuN4vDMcQD6V0MQpcg?=
+	=?us-ascii?Q?lKoXOggwcupNgzvChJNezG0172JRbU6aG8HLu1N8+F+oNhcxglR/fDt1YYrv?=
+ =?us-ascii?Q?qH7wKJtAGewLqbYWGFT3mvpLr8CfaBlTRF0t7JfL27fBy9XV3BQf2y+GGUhl?=
+ =?us-ascii?Q?rfsNxcZQ5C5kOoWOckt5g4Pyob6EUOv+XBHOe9h399Wqlr1yfgw8prZ11zpl?=
+ =?us-ascii?Q?RAavkus+Z3jgQX0XyeUcx7sa7wnRB6qZbC2wNuRn8Vpirf5b2fhjmFg3KntF?=
+ =?us-ascii?Q?mOR3MasPRlb6imewqt6Er9E+oSh6b65kdOibPW7xO92J+6scVAjRSxdzYZep?=
+ =?us-ascii?Q?nN/Z8jG91ahAUcW90HJoNUVjo0g5+w3rp1jxFumA6KHl1uSmysrcktHkR7Lw?=
+ =?us-ascii?Q?+mJa7T/zJH/jiWOuusApXaYHHsJXe2UbFEJdW4e9pC97ublnXDy8cLuyY/na?=
+ =?us-ascii?Q?1bxRgpfKXmEPLcYH5Z1wfw17qXqMAAtKyPkJsJqVp6n1IO+NU4WyczS+t4ps?=
+ =?us-ascii?Q?Lu88R1I3su6x3dXeq1ZW68UBHLhNX0PA5VgVNnQfUV3zY95hYbDIUv2zBNSJ?=
+ =?us-ascii?Q?ZXsuAvIuqeWHrA1fv2DAIHUmDuFJZ9ZDxu0Tnb2ktcpOJzf5DOqx52W7czKe?=
+ =?us-ascii?Q?VtFhx9cf3/anOzpMsoStP27H0/EqwVBDnXLuONhcZzy1gxDAx1OyI1KbPKu9?=
+ =?us-ascii?Q?3huE/Fd8nUyF1KdhjjqW2ysCGL8uhYdwXloxZXlDlva46EpzSrQG60xoMj7j?=
+ =?us-ascii?Q?Tae0AqflyxmvmjsBTaJ0WdGUQjB1DVz2lMBGFeXlZo1f+7Cd+IQN0TxucVcm?=
+ =?us-ascii?Q?BUcuf51vteo4pZUKOrVTnU4HQsQgw37qapuNOvH83xKfHlHalRIvYqbXGs9Q?=
+ =?us-ascii?Q?8gtb2jLaGFO1EuwqLpm3tIVekuwhOZgMYAUXgJUnQS7EW1VHLrbT1G7SCuZ7?=
+ =?us-ascii?Q?5IwnkfNc83BOvnD0seOOPzy3sfLGsKWKVL7apCO2oNTqj2bhcE+uTJBV0+gi?=
+ =?us-ascii?Q?M5jb/7eOYd3P/PKBMZot6iYlA7Dnwb1RYqg+fffRm7N/geDY/1Rpco3Md9LT?=
+ =?us-ascii?Q?7JMuwb2eyvJf2sAtOG7/5T+WtSqyRIM3WHv9LB+++nFMim3da7hcffQxW4KG?=
+ =?us-ascii?Q?vHJ18Hbi1429JG+TYJY7MmkKvPK3Y8qI1psPnts/a7csUv2LMkpmm4Fs34uU?=
+ =?us-ascii?Q?rveLaBmJ1Cq7VL2NT7eWyE/B2EdWVi6klV2TY3g8IihPJgLomjoDVcZLDJ69?=
+ =?us-ascii?Q?FBpSCy+CHVJM9Dbd5aizpVs55IRcIJmKBfj12eMhlEnEMZlpu4vTynSDtlyf?=
+ =?us-ascii?Q?iPpHMHdlxPSVlBee5Eed7v9IxqTLpfKS3w0JtMWmMGnL4hK3+7TrnxhgTME1?=
+ =?us-ascii?Q?6gY4EEk2lxcrBhvGmIOrrp111S9qSgbrWddNYL07yn8Aut4z/Q1myEqF4Ppr?=
+ =?us-ascii?Q?dLnd6rtXc+MkfOubCcQhuxaKR0hm?=
 X-OriginatorOrg: sct-15-20-9412-3-msonline-outlook-fe3f5.templateTenant
-X-MS-Exchange-CrossTenant-Network-Message-Id: b951f565-8b78-4a28-40c2-08de802372c0
+X-MS-Exchange-CrossTenant-Network-Message-Id: 190e134c-4410-4fe3-c5f0-08de802373bd
 X-MS-Exchange-CrossTenant-AuthSource: AM7PPF5613FA0B6.EURP251.PROD.OUTLOOK.COM
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 12 Mar 2026 10:38:07.3116
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 12 Mar 2026 10:38:08.9360
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: 84df9e7f-e9f6-40af-b435-aaaaaaaaaaaa
@@ -145,11 +132,11 @@ X-Spamd-Result: default: False [0.34 / 15.00];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[hotmail.de,none];
 	R_DKIM_ALLOW(-0.20)[HOTMAIL.DE:s=selector1];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-33083-lists,linux-wireless=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-33084-lists,linux-wireless=lfdr.de];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	TO_DN_SOME(0.00)[];
 	MIME_TRACE(0.00)[0:+];
@@ -166,74 +153,39 @@ X-Spamd-Result: default: False [0.34 / 15.00];
 	RCVD_COUNT_FIVE(0.00)[5];
 	TAGGED_RCPT(0.00)[linux-wireless];
 	NEURAL_HAM(-0.00)[-1.000];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[HOTMAIL.DE:dkim,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 66AF8270645
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[HOTMAIL.DE:dkim,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,hotmail.de:email]
+X-Rspamd-Queue-Id: E3ADD27064C
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-The carl9170 driver for Atheros AR9170-based USB WiFi adapters has been
-effectively unmaintained since 2016.  While the hardware shipped as
-Draft-N certified, several 802.11n capabilities were never advertised
-to mac80211, diagnostic counters were left as TODO stubs, and some
-hardware features were never wired up.
+The AR9170 hardware supports Short Guard Interval (400ns) for both
+20 MHz and 40 MHz channel widths.  SGI_40 was already advertised in
+the HT capabilities, but SGI_20 was missing.  This reduces the OFDM
+symbol duration from 800ns to 400ns on 20 MHz channels, increasing
+the maximum PHY rate from 130 Mbps to 144.4 Mbps (MCS 15, 2SS).
 
-This series addresses these gaps in 10 independent patches, ordered
-from simple HT capability flags to more involved PHY programming:
+ath9k (the PCI sibling for the same AR9xxx chipset family) has
+always advertised both SGI_20 and SGI_40.
 
-Patches 1-3: HT capability corrections
-  - Enable SGI_20 (was only SGI_40)
-  - Advertise RX STBC (1 spatial stream)
-  - Document the SMPS handler (replacing bare TODO)
+Signed-off-by: Masi Osmani <mas-i@hotmail.de>
+---
+ drivers/net/wireless/ath/carl9170/main.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-Patches 4-5: Diagnostic counters
-  - Wire up the RX dropped frame counter
-  - Track PHY errors via debugfs
-
-Patch 6: TX power calibration
-  - Replace hardcoded 18 dBm with per-channel EEPROM values
-
-Patch 7: Recovery hardening
-  - Add exponential backoff to prevent restart storms
-
-Patch 8: Antenna diversity
-  - Enable fast antenna diversity for 2-chain devices
-
-Patch 9: DFS radar detection
-  - Program radar registers, call ieee80211_radar_detected()
-
-Patch 10: Runtime IQ calibration
-  - Periodic I/Q recalibration via existing stat_work timer
-
-All patches are individually compile-tested and have been verified
-on real hardware (AVM Fritz!WLAN USB Stick N, AR9001U) running
-kernel 6.18.12.  Each patch applies and compiles independently on
-top of the previous ones.
-
-The ath9k PCI driver for the same chipset family serves as the
-primary reference for register programming and capability flags.
-
-Masi Osmani (10):
-  carl9170: mac80211: enable Short Guard Interval for 20 MHz
-  carl9170: mac80211: advertise RX STBC capability
-  carl9170: mac80211: document spatial multiplexing power save handler
-  carl9170: rx: wire up dropped frame counter
-  carl9170: rx: track PHY errors via debugfs
-  carl9170: phy: populate per-channel TX power from EEPROM
-  carl9170: main: add exponential restart backoff
-  carl9170: phy: enable antenna diversity for 2-chain devices
-  carl9170: fw: enable DFS radar detection
-  carl9170: phy: add periodic runtime IQ calibration
-
- drivers/net/wireless/ath/carl9170/carl9170.h |   5 +
- drivers/net/wireless/ath/carl9170/debug.c    |   2 +
- drivers/net/wireless/ath/carl9170/fw.c       |   3 +
- drivers/net/wireless/ath/carl9170/main.c     |  45 ++++-
- drivers/net/wireless/ath/carl9170/phy.c      | 194 +++++++++++++++++++
- drivers/net/wireless/ath/carl9170/rx.c       |  23 ++-
- 6 files changed, 261 insertions(+), 11 deletions(-)
-
---
+diff --git a/drivers/net/wireless/ath/carl9170/main.c b/drivers/net/wireless/ath/carl9170/main.c
+index a7a9345..aa7e481 100644
+--- a/drivers/net/wireless/ath/carl9170/main.c
++++ b/drivers/net/wireless/ath/carl9170/main.c
+@@ -154,6 +154,7 @@ static struct ieee80211_channel carl9170_5ghz_chantable[] = {
+ 	.cap		= IEEE80211_HT_CAP_MAX_AMSDU |			\
+ 			  IEEE80211_HT_CAP_SUP_WIDTH_20_40 |		\
+ 			  IEEE80211_HT_CAP_SGI_40 |			\
++			  IEEE80211_HT_CAP_SGI_20 |			\
+ 			  IEEE80211_HT_CAP_DSSSCCK40 |			\
+ 			  IEEE80211_HT_CAP_SM_PS,			\
+ 	.ampdu_factor	= IEEE80211_HT_MAX_AMPDU_64K,			\
+-- 
 2.51.0
 
 
