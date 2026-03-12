@@ -1,80 +1,80 @@
-Return-Path: <linux-wireless+bounces-33113-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-33114-lists+linux-wireless=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id mCTMK0/csmlMQQAAu9opvQ
-	(envelope-from <linux-wireless+bounces-33113-lists+linux-wireless=lfdr.de@vger.kernel.org>)
-	for <lists+linux-wireless@lfdr.de>; Thu, 12 Mar 2026 16:31:27 +0100
+	id sJcQDHHdsmmtQQAAu9opvQ
+	(envelope-from <linux-wireless+bounces-33114-lists+linux-wireless=lfdr.de@vger.kernel.org>)
+	for <lists+linux-wireless@lfdr.de>; Thu, 12 Mar 2026 16:36:17 +0100
 X-Original-To: lists+linux-wireless@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4E6D927481C
-	for <lists+linux-wireless@lfdr.de>; Thu, 12 Mar 2026 16:31:27 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8A8C7274995
+	for <lists+linux-wireless@lfdr.de>; Thu, 12 Mar 2026 16:36:16 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 4DC1C304DC83
-	for <lists+linux-wireless@lfdr.de>; Thu, 12 Mar 2026 15:26:27 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id C8B84321B89E
+	for <lists+linux-wireless@lfdr.de>; Thu, 12 Mar 2026 15:30:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DD8CA35DA73;
-	Thu, 12 Mar 2026 15:26:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6731B382396;
+	Thu, 12 Mar 2026 15:30:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="DB6URvQV"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="OACLp9L1"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-wm1-f42.google.com (mail-wm1-f42.google.com [209.85.128.42])
+Received: from mail-wm1-f53.google.com (mail-wm1-f53.google.com [209.85.128.53])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 943003845A7
-	for <linux-wireless@vger.kernel.org>; Thu, 12 Mar 2026 15:26:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.42
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0E70234FF6C
+	for <linux-wireless@vger.kernel.org>; Thu, 12 Mar 2026 15:30:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.53
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773329182; cv=none; b=g4nlVL8B99yTM5hcBTCXwvnUtrY9J5TCpjlwspEyRwuJpN2k5TdMrSWUip5J37VIYj9r+x7q/tKW00g7j2hO4+HWQBsrr2GCRDIFZXYPb+HyaPhYGk027c/Lj+rvresxIzD0v/m8WkDgSwkAreE46p0BanTwfKqugmWvcWsmNOE=
+	t=1773329435; cv=none; b=ESB8velhyk8uDGihSJ41y3A5lpvSSic/FRoHX5taiZ/IhmyotVGxjAvo5HLxtopx6Tpebmedg/qoY3om1bQozB6fScM4UaAERITywC1oVGesrirTXT1LgkI0FchC3WpwM3aXt4WqKVGHImFeRJPxNoNkWdOfkU0wT0Re0FQz0A4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773329182; c=relaxed/simple;
-	bh=a1s16tfZgscWKEF4z5FxxF9nmjEgp3xGX6fU5ouXm3M=;
+	s=arc-20240116; t=1773329435; c=relaxed/simple;
+	bh=X4TwK9wYWrjLWfl82+wdKTQsnMykfTPN0ArOX0oxONU=;
 	h=Mime-Version:Content-Type:Date:Message-Id:To:Cc:Subject:From:
-	 References:In-Reply-To; b=PrHwu20htQz+E3xvUZ0JdpfGo8OJg3lEaDH+dOdC5peDUuvRrSwMe7WjX7DLJCyUvBzQnxlQtKzKMSNEGjI/R5/KYGfFSMbX0T+5WRxg9XFkAV708rcIWxUn1QaaQV9keiiS8wjlN35AOqPQR56ihZJ6CHS1FIplUil1JHvZrlM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=DB6URvQV; arc=none smtp.client-ip=209.85.128.42
+	 References:In-Reply-To; b=Sjrbs56nFOnOD1gJ7r48UYMGLyquQUHXGWz2sOAGr5XZffTWVTzstqvn33kIEOGt4e3F3QxSB8yKyNaBvM/ySdSmpSqhy3QBnIi8ty43eW7pj2vtaDIADMP4Kf59berGSrqykKIpHrJSCY72XEGsWwLyv54e066Z3XD4KcxMc2w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=OACLp9L1; arc=none smtp.client-ip=209.85.128.53
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-wm1-f42.google.com with SMTP id 5b1f17b1804b1-4852e09e23dso9926835e9.0
-        for <linux-wireless@vger.kernel.org>; Thu, 12 Mar 2026 08:26:21 -0700 (PDT)
+Received: by mail-wm1-f53.google.com with SMTP id 5b1f17b1804b1-485410a0a8aso11033555e9.2
+        for <linux-wireless@vger.kernel.org>; Thu, 12 Mar 2026 08:30:33 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1773329180; x=1773933980; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1773329432; x=1773934232; darn=vger.kernel.org;
         h=in-reply-to:references:from:subject:cc:to:message-id:date
          :content-transfer-encoding:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=KmxvI1SLG5cByO9nSwPYtnzFrEf/m/FI7xQbZ3puZxc=;
-        b=DB6URvQVXTpmlKFog4L+Ru8boV0r1BFlRbzFHnety4CQ0qkBsOOh0YjuKHwOcCaIlW
-         PLcK05ewwlLrLs34FO8tBd+FjhgFtpZLPM91UEYYWOwoJwYKiFkaVSzRyYzBo7VSpfJj
-         QousTvYAmVw0t85X5N1BO0+15JHtnX0VkLXTgBOpsKue0kYkW9buFnAegd3E+eBgVqwn
-         N0/UerQVokjrCRux0k6jqglQHwvm3i3UpMq713e5Tfj2Z2UYgjwGLVCUXu9C0ebCXKjP
-         T3fI2RsmOxNHyd6zdrm7oNZh8PZ4lR73f9Z3uRiJyWqiUgberwS8Oe2EopFwrm5Pz0oY
-         Eu0g==
+        bh=1Ya238d2ohp10iFYuWnPLzqnu0MMHEfPVLrPGoAibNs=;
+        b=OACLp9L1SEjG29L01SoBmEtYK1J88lC6eoicjaXto+X//GB7e4uCikkzpG0Tl5hbVC
+         A0e11Ki7YAabB6IyUGX03hzsH9ChEl3BnpCQvjdD/2tQSPKP2x4QnaYSGQlAmctGCuCL
+         /HXNHwrfNAhuwcJIrU+GD/+I4rakOBIaLLzse8p4Pk6lcr7hEtQ00GN9tzsBye2Y+ppV
+         6RabHKZwDAVMExx30LnVWxhfTrZsdwt53QXWb+fz1upbBmUrA1W0wQhVCWPQm9W5x8Kf
+         PO179BJHXuWJNp0PFU5iYkB+qa1O/gTSorj70IULyXosMWpGDY/0fxqb+LpL4VFz6Ddl
+         RZhQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1773329180; x=1773933980;
+        d=1e100.net; s=20230601; t=1773329432; x=1773934232;
         h=in-reply-to:references:from:subject:cc:to:message-id:date
          :content-transfer-encoding:mime-version:x-gm-gg:x-gm-message-state
          :from:to:cc:subject:date:message-id:reply-to;
-        bh=KmxvI1SLG5cByO9nSwPYtnzFrEf/m/FI7xQbZ3puZxc=;
-        b=l8WjhVZaqVSOH6snaDDhkUeaXIwlxEIE2jexz+kozb6/CRwuBK3HhIo5VUv4/Gybzg
-         tMqbVwqUX1pJfPt92jRPfDlRWsKKxwWNT474WPr6xKmSWnUkIcG3rJUkGtu3ZQH790F+
-         6tDVj12c5b3iNrCQR/1XAXfNsnkDWUjr0gHAPyDnwt/0/Cx1qvI/yYuAK/+7YIegvB/O
-         ye6+Vffd2D8zWt96KDtO661pbw0HJ7Z+Sx8qqUo0thKZCzQE+SE8A/fbcHaL8xinbOEi
-         03VmqDGTbRZNY3hu89/xCQ5GkpiZUSqBV+bl9UrvwmmqgAcRcCOE76F/ktp1VI/S9pmg
-         hLHg==
-X-Gm-Message-State: AOJu0YytZuYm5BQ7/U9NjyMskeNg4BcwtLNSuxwcNBWGTvMLt016rCZn
-	DME4O4lj1PAUiotsdAAT7Ejx/+v8MK4g+E6eBvzZ7ojLwdIFzjb+BqcH
-X-Gm-Gg: ATEYQzznbL2N3Uax+l3g6lXxd0WdGrQbF+INHqMxM+ca72IqI+2H/MUkFcK3oQrLU7x
-	HQNPM+2H0iEEOaa5/HhfSULCoYNi6G2E8OSl7z9xdhnP7kYhN5cHPe5R5a7ng4ETBuCz3yoOreJ
-	Vl3iL6gxfjI1Rx1/5L9fYZiI73kSkF+InjBa0sn4aH33hgDNfadutKCkRhJutAUblgI578HD8Px
-	otF5zP2PmBDvpv1VxevaO/GXV+pN/CJxExNU1LUEs+zKsxGXY5M3N5E8JRSK7ndTcTY+Gd63eMt
-	4PabHzfRsGMv0I5sjx3uAnUGoHeQSbBORvWH04v9vxeN17m4tG1c+RaquGgZ/vqjPbEhwOTGokm
-	tvZFOnIAjcrBleQWbdyJ/xYz0c86FRM3dbDDzVlN08YOs+Y0aszE1ncPYgSeuKuRD+816MFBBIZ
-	J6S9ftBbhPAON0X7LnlSWZWBPk1HwIHy7l/TGuvBBQqw==
-X-Received: by 2002:a05:600c:3e10:b0:483:badb:618f with SMTP id 5b1f17b1804b1-4854b11694dmr101953265e9.25.1773329179659;
-        Thu, 12 Mar 2026 08:26:19 -0700 (PDT)
+        bh=1Ya238d2ohp10iFYuWnPLzqnu0MMHEfPVLrPGoAibNs=;
+        b=i3onG1YwLL4lDB22dXfLD6fgxcP1CLD8LIKdZ0qzprhyrn03rGk9Ihal3gi2ru5A8C
+         PZGuHdtihXWcI+rbCdMHT8awaKOd6QtsksnnS/cRwjPrZgc6TZ5jVTne1FqimFnMqcDi
+         e7N3hVxhM36OHOryq/lI3vHPDAQb/XmAxKWa532MT2hVzSHv1GH6OK+J4djRYt3K03Pi
+         J1QUE2uFvl7rGe+M/y1d8zUyGf+47sqYPIS2jaaK0YrtrAnECay4W3isvLBsXyO2SZ7Z
+         E1MFYe0nqMeslZVXcu3/4t/BoFtBhGKcM85Kzdhrndk+q6pbswl3Fkb/SIm8yR7ZOC6a
+         7uVQ==
+X-Gm-Message-State: AOJu0YzNfEAfvMOxMw199Pn9yfcTp7BNM+uL6MVvLsOtbIDRyYNRCNwM
+	wzOlU2A5JwVIi/Cy9O0yT9Oq3QNppDoWWrJyJGDa4eSYx3lorIO0RRLZ
+X-Gm-Gg: ATEYQzywAhERnySsgN6PA+2jWgCW0PASQ+y/v91cdSxeC4/fuBbmWLplYq1CZVofeus
+	xWapYm/BRcDay039Cq5tc5torXfGWnsJ1QUolIju2HBmnbAdjaYg/T1AiFdVRSb5or2TkVDEFHS
+	piuS4zgHHVBqIvsLM8L2Yug7jUw8QEd4ELhAe0ne+TIZS1NuuwAb/+7+f9ZxlG2mR4+QhJgKLEn
+	6+9e+LB3Y+qVsH+7fVofT137Dhl3G6YpCxXFMaiNGVG9XI/t9uebL+o0Lm01Ky9TR0y2GSHVqTT
+	3XzZvw135uBuAVTSmWrMG+gFEzLJUHMEeI++6hwwkl35OLSKRd/utyLm/fqY5bwPXi9aKM9++8l
+	XXBhELYJtFkngzyj/CArIiRKYdtJnNB7nyB+00ofm1Jjv2k+H55P3gUg3bXJRw9PTA2pMQ4zCUe
+	8UIk9uR7DQ8KuC10jdrFoy9xnJc4PfrwdCkDAs4UjBvw==
+X-Received: by 2002:a05:600d:6450:10b0:485:38fc:7069 with SMTP id 5b1f17b1804b1-4854b1b1a61mr86890415e9.23.1773329432326;
+        Thu, 12 Mar 2026 08:30:32 -0700 (PDT)
 Received: from localhost (freebox.vlq16.iliad.fr. [213.36.7.13])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4854b65fed7sm130000105e9.11.2026.03.12.08.26.19
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-48541b7f3cdsm265726375e9.14.2026.03.12.08.30.31
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 12 Mar 2026 08:26:19 -0700 (PDT)
+        Thu, 12 Mar 2026 08:30:31 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
@@ -83,41 +83,36 @@ List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
 Content-Transfer-Encoding: quoted-printable
 Content-Type: text/plain; charset=UTF-8
-Date: Thu, 12 Mar 2026 16:26:19 +0100
-Message-Id: <DH0WQAE5UP5T.3ND14AH29KR8A@gmail.com>
-To: "Baochen Qiang" <baochen.qiang@oss.qualcomm.com>, "Nicolas Escande"
- <nico.escande@gmail.com>, <ath12k@lists.infradead.org>
+Date: Thu, 12 Mar 2026 16:30:31 +0100
+Message-Id: <DH0WTI7WT7H4.3TVAG9RAB1QX0@gmail.com>
+To: "Nicolas Escande" <nico.escande@gmail.com>, <ath12k@lists.infradead.org>
 Cc: <linux-wireless@vger.kernel.org>
 Subject: Re: [PATCH ath-next] wifi: ath12k: avoid dynamic alloc when parsing
  wmi tb
 From: "Nicolas Escande" <nico.escande@gmail.com>
 X-Mailer: aerc 0.21.0-0-g5549850facc2
 References: <20260309152050.191820-1-nico.escande@gmail.com>
- <04d268a7-8f6e-4aa4-b366-0dc38c355de7@oss.qualcomm.com>
- <DGZ17385SNYX.3149KUG92UUU1@gmail.com>
- <adcb0245-6514-42f7-a47d-f6d8b3f79dff@oss.qualcomm.com>
-In-Reply-To: <adcb0245-6514-42f7-a47d-f6d8b3f79dff@oss.qualcomm.com>
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+In-Reply-To: <20260309152050.191820-1-nico.escande@gmail.com>
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
 	MV_CASE(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[gmail.com:s=20230601];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-33113-lists,linux-wireless=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_TO(0.00)[oss.qualcomm.com,gmail.com,lists.infradead.org];
+	TAGGED_FROM(0.00)[bounces-33114-lists,linux-wireless=lfdr.de];
+	FREEMAIL_TO(0.00)[gmail.com,lists.infradead.org];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	TO_DN_SOME(0.00)[];
 	RECEIVED_HELO_LOCALHOST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	RCPT_COUNT_THREE(0.00)[4];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	RCPT_COUNT_THREE(0.00)[3];
 	RCVD_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[nicoescande@gmail.com,linux-wireless@vger.kernel.org];
@@ -127,49 +122,46 @@ X-Spamd-Result: default: False [-0.16 / 15.00];
 	NEURAL_HAM(-0.00)[-1.000];
 	FREEMAIL_FROM(0.00)[gmail.com];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 4E6D927481C
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 8A8C7274995
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-On Wed Mar 11, 2026 at 6:46 AM CET, Baochen Qiang wrote:
-[...]
->>=20
->> But if you guys don't want it that way, I can rework it. Just tell me in=
- more
->> details what you think is the right way and I can modify it.
+On Mon Mar 9, 2026 at 4:20 PM CET, Nicolas Escande wrote:
+> On each WMI message received from the hardware, we alloc a temporary arra=
+y
+> of WMI_TAG_MAX entries of type void *. This array is then populated with
+> pointers of parsed structs depending on the WMI type, and then freed. Thi=
+s
+> alloc can fail when memory pressure in the system is high enough.
 >
-> then how about adding module init path to ath12k module and do percpu all=
-ocation there:
+> Given the fact that it is scheduled in softirq with the system_bh_wq, we
+> should not be able to parse more than one WMI message per CPU at any time
 >
-> in ath12k/core.c
+> So instead lets move to a per cpu allocated array, stored in the struct
+> ath12k_base, that is reused accros calls. The ath12k_wmi_tlv_parse_alloc(=
+)
+> is also renamed into / merged with ath12k_wmi_tlv_parse() as it no longer
+> allocs memory but returns the existing per-cpu one.
 >
-> +void __percpu *wmi_tb;
-> +
-> +static int ath12k_core_module_init(void)
-> +{
-> +       wmi_tb  =3D __alloc_percpu(WMI_TAG_MAX * sizeof(void *),
-> +                             __alignof__(void *));
-> +       if (!wmi_tb)
-> +               return -ENOMEM;
-> +
-> +       return 0;
-> +}
-> +
-> +static void ath12k_core_module_exit(void)
-> +{
-> +       free_percpu(wmi_tb);
-> +}
-> +
-> +module_init(ath12k_core_module_init);
-> +module_exit(ath12k_core_module_exit);
+> Tested-on: QCN9274 hw2.0 PCI WLAN.WBE.1.3.1-00218-QCAHKSWPL_SILICONZ-1
+>
+> Signed-off-by: Nicolas Escande <nico.escande@gmail.com>
+> ---
+> changes from RFC:
+>   - rebased on ath-next 8e0ab5b9adb7
+>   - converted missing call sites ath12k_wmi_obss_color_collision_event()
+>     & ath12k_wmi_pdev_temperature_event()
+>   - changed alloc order & cleanup path in ath12k_core_alloc() as it seems
+>     it confused people
 
-That should work, I'll try something along those lines then.
+And I just realized that this part did not make it to the actual commit
+but stayed in the stage area. I'll add it in the v2
 
+>   - used sizeof(*tb) in ath12k_wmi_tlv_parse()
 >
->
->>=20
->> Thanks
-
-Thanks for the review Baochen
+> Note I did try to move to a DEFINE_PER_CPU() allocated array but the modu=
+le
+> loader complained about the array size. So I stuck to the per ab alloc.=
+=20
 
