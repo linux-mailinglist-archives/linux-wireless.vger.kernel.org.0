@@ -1,214 +1,157 @@
-Return-Path: <linux-wireless+bounces-33076-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-33080-lists+linux-wireless=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id oCsGGqyJsml4NQAAu9opvQ
-	(envelope-from <linux-wireless+bounces-33076-lists+linux-wireless=lfdr.de@vger.kernel.org>)
-	for <lists+linux-wireless@lfdr.de>; Thu, 12 Mar 2026 10:38:52 +0100
+	id 8KjFCnmOsmlINgAAu9opvQ
+	(envelope-from <linux-wireless+bounces-33080-lists+linux-wireless=lfdr.de@vger.kernel.org>)
+	for <lists+linux-wireless@lfdr.de>; Thu, 12 Mar 2026 10:59:21 +0100
 X-Original-To: lists+linux-wireless@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 051AA26FB34
-	for <lists+linux-wireless@lfdr.de>; Thu, 12 Mar 2026 10:38:51 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id DC4F526FEFF
+	for <lists+linux-wireless@lfdr.de>; Thu, 12 Mar 2026 10:59:20 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id C1A3F3030A1D
-	for <lists+linux-wireless@lfdr.de>; Thu, 12 Mar 2026 09:38:31 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id DAB1E301A7C9
+	for <lists+linux-wireless@lfdr.de>; Thu, 12 Mar 2026 09:58:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E68EB3B8D5C;
-	Thu, 12 Mar 2026 09:37:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C55913BC680;
+	Thu, 12 Mar 2026 09:58:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b="K/FA5zxM"
+	dkim=pass (1024-bit key) header.d=mediatek.com header.i=@mediatek.com header.b="bVMT1ilH"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from sipsolutions.net (s3.sipsolutions.net [168.119.38.16])
+Received: from mailgw02.mediatek.com (unknown [210.61.82.184])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 95AB93BA232;
-	Thu, 12 Mar 2026 09:37:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=168.119.38.16
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 339803B3BF3
+	for <linux-wireless@vger.kernel.org>; Thu, 12 Mar 2026 09:58:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=210.61.82.184
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773308276; cv=none; b=r3Ko9DixdZDqC2/PlxEtx8biK4GtokTEHSZlP4Hns31Pmsw9poUwOKMSWbKBpe1D4auGfL70YtZN6+Bzg7urrB+egy1PbYAEmXl+BE1/3JyehWAkVns8H65uk0Dz4wrms1azwwqcFs3hKkLLDXpbhBgYO2DrvMOE8dJjl7yaETA=
+	t=1773309531; cv=none; b=HNaAiP5NQDd45CkZrA286S9Gcx9fJ0GlhLng8eGKvxMK9eDofxJliSxV3av+MQlUViDy/olGqOa9Qyj/T0f7OiPOJvxG3+/x1U/kspktr6dNhbJWNyKYA3MXE/c1sfITtLBpQCyajz29m8BMlVZFJ6nHw60AkPlno54BPl75n4g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773308276; c=relaxed/simple;
-	bh=7St0SgkpoCqegFRGPaU8gPTTG4NNTsHqAMxFMontZ3U=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=AYDufNZkC4E9rGymzkDN2lINFkY4YoitzRNcF73Dsi4DLz1rM/LiQy4X0NfehYF24dHAKLjxdEltayh9P4ClnSFFmD9PohPUntBc+3Fbuir3kdzAu4ADS2f9jTKoYDWyap9DvzP0ITEEcuaYUFmFKyCyzIyg/Tzd8viwzchvY8w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net; spf=pass smtp.mailfrom=sipsolutions.net; dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b=K/FA5zxM; arc=none smtp.client-ip=168.119.38.16
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sipsolutions.net
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=sipsolutions.net; s=mail; h=MIME-Version:Content-Transfer-Encoding:
-	Content-Type:References:In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender
-	:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
-	Resent-Cc:Resent-Message-ID; bh=GWyIkvOFf1wPgGGSCnpAqsN4f/t5t8iIVdsRu5KdwmU=;
-	t=1773308270; x=1774517870; b=K/FA5zxMKreNO7Sutp9DFwfX5Sl8uX2B1ytk+3FqeDZv75y
-	4DgtneOqaELl8NaQ5oBOs87SxuWT/UjXZ5glQkfDKItkgFz0fXcnk0gqZRXa/BAN8W46TqnHu/yEV
-	sObmeg7VWDK9cB8MZ/toSKelaG26nGADPBI1cKbv/PTIdUjsUGdkYrDdBX16zvg3fZ/LQA4uPybWa
-	81CBfykNNzdvOokpQJ6Zebpjc1lEfELk7c35Qo3n9w5S99p4K2ksY8xGYVBFW41EGThTlNLB/RFAz
-	JxRCF9XbDvQeJXupiKzw4R5LYC4ETfz/7uQUQh6+ahBOrBsXutvBKjGnbbEMYB4g==;
-Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
-	(Exim 4.98.2)
-	(envelope-from <johannes@sipsolutions.net>)
-	id 1w0cUE-0000000FlgF-32tr;
-	Thu, 12 Mar 2026 10:37:46 +0100
-Message-ID: <b7f4c8f1a251ea9cccb32f021828896371953143.camel@sipsolutions.net>
-Subject: Re: ath12k: handling of HE and EHT capabilities
-From: Johannes Berg <johannes@sipsolutions.net>
-To: Alexander Wilhelm <alexander.wilhelm@westermo.com>, Jeff Johnson
-	 <jjohnson@kernel.org>
-Cc: ath12k@lists.infradead.org, linux-wireless@vger.kernel.org, 
-	linux-kernel@vger.kernel.org
-Date: Thu, 12 Mar 2026 10:37:46 +0100
-In-Reply-To: <abKBOp8Jc7f7U0T8@FUE-ALEWI-WINX>
-References: <abKBOp8Jc7f7U0T8@FUE-ALEWI-WINX>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.58.3 (3.58.3-1.fc43) 
+	s=arc-20240116; t=1773309531; c=relaxed/simple;
+	bh=fIJwNvs9aXvaeStdORYDQUgGYPbScP+cZ1kAYCJMV4g=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=HgWssdQQs6qEuYlUhJI3RGyPreiQ8EZKsFW0A3YtTbtqAD0GH8KGgkpm8jomN/EAP8cX+vxvz3AVAuj96jAWbeJ9pVXRLQQt+OLR1G+X4GYwMR/VtjfrnvtR5aitwxcjY6eW7TpsCnfRnv/QVWLYM0K0qGFUmZVte2OtasUwxds=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=mediatek.com; spf=pass smtp.mailfrom=mediatek.com; dkim=pass (1024-bit key) header.d=mediatek.com header.i=@mediatek.com header.b=bVMT1ilH; arc=none smtp.client-ip=210.61.82.184
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=mediatek.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=mediatek.com
+X-UUID: 09b57fac1dfa11f1a39cd589f645bc18-20260312
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=mediatek.com; s=dk;
+	h=Content-Type:Content-Transfer-Encoding:MIME-Version:Message-ID:Date:Subject:CC:To:From; bh=qplD8CGYzuO6b35VEHxpGDhWihWOwoDLawx+46tbPcQ=;
+	b=bVMT1ilHTAXmLhRl+z/hCEDAPFLCe8JqxYRklwfhmKGhg1QETYMiFEdSkFgRl9YGtZgxqw9vh+gBst8NJQKvLIl9TcTyRsjD3+VavCy6SPU8T2Sadsj9PTFHsUkqGLCxYb03kAojdTULnoEkYwCd+VaO7fTf2OlQ3z5ffoLgbsc=;
+X-CID-P-RULE: Release_Ham
+X-CID-O-INFO: VERSION:1.3.12,REQID:dd7392c3-6963-446f-a9cd-0e68cd0aa32d,IP:0,U
+	RL:0,TC:0,Content:-5,EDM:0,RT:0,SF:0,FILE:0,BULK:0,RULE:Release_Ham,ACTION
+	:release,TS:-5
+X-CID-META: VersionHash:e7bac3a,CLOUDID:756ea4d4-060f-4ecc-9ee0-121eeeb4a682,B
+	ulkID:nil,BulkQuantity:0,Recheck:0,SF:102|836|888|898,TC:-5,Content:0|15|5
+	0,EDM:-3,IP:nil,URL:0,File:130,RT:0,Bulk:nil,QS:nil,BEC:-1,COL:0,OSI:0,OSA
+	:0,AV:0,LES:1,SPR:NO,DKR:0,DKP:0,BRR:0,BRE:0,ARC:0
+X-CID-BVR: 2,SSN|SDN
+X-CID-BAS: 2,SSN|SDN,0,_
+X-CID-FACTOR: TF_CID_SPAM_SNR
+X-CID-RHF: D41D8CD98F00B204E9800998ECF8427E
+X-UUID: 09b57fac1dfa11f1a39cd589f645bc18-20260312
+Received: from mtkmbs13n1.mediatek.inc [(172.21.101.193)] by mailgw02.mediatek.com
+	(envelope-from <shayne.chen@mediatek.com>)
+	(Generic MTA with TLSv1.2 ECDHE-RSA-AES256-GCM-SHA384 256/256)
+	with ESMTP id 1985089657; Thu, 12 Mar 2026 17:58:36 +0800
+Received: from mtkmbs13n2.mediatek.inc (172.21.101.108) by
+ MTKMBS09N2.mediatek.inc (172.21.101.94) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.29; Thu, 12 Mar 2026 17:58:35 +0800
+Received: from mtksitap99.mediatek.inc (10.233.130.16) by
+ mtkmbs13n2.mediatek.inc (172.21.101.73) with Microsoft SMTP Server id
+ 15.2.2562.29 via Frontend Transport; Thu, 12 Mar 2026 17:58:35 +0800
+From: Shayne Chen <shayne.chen@mediatek.com>
+To: Felix Fietkau <nbd@nbd.name>
+CC: linux-wireless <linux-wireless@vger.kernel.org>, Lorenzo Bianconi
+	<lorenzo@kernel.org>, Ryder Lee <ryder.lee@mediatek.com>, Evelyn Tsai
+	<evelyn.tsai@mediatek.com>, Money Wang <money.wang@mediatek.com>,
+	linux-mediatek <linux-mediatek@lists.infradead.org>, Peter Chiu
+	<chui-hao.chiu@mediatek.com>, Shayne Chen <shayne.chen@mediatek.com>
+Subject: [PATCH mt76 1/6] wifi: mt76: mt7996: fix RRO EMU configuration
+Date: Thu, 12 Mar 2026 17:57:19 +0800
+Message-ID: <20260312095724.2117448-1-shayne.chen@mediatek.com>
+X-Mailer: git-send-email 2.45.2
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-malware-bazaar: not-scanned
-X-Spamd-Result: default: False [-2.16 / 15.00];
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-MTK: N
+X-Spamd-Result: default: False [-0.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[sipsolutions.net,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
-	R_DKIM_ALLOW(-0.20)[sipsolutions.net:s=mail];
+	MID_CONTAINS_FROM(1.00)[];
+	DMARC_POLICY_ALLOW(-0.50)[mediatek.com,quarantine];
+	R_MISSING_CHARSET(0.50)[];
+	R_DKIM_ALLOW(-0.20)[mediatek.com:s=dk];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-33076-lists,linux-wireless=lfdr.de];
+	TO_DN_ALL(0.00)[];
+	TAGGED_FROM(0.00)[bounces-33080-lists,linux-wireless=lfdr.de];
+	RCVD_COUNT_FIVE(0.00)[6];
 	FROM_HAS_DN(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	MIME_TRACE(0.00)[0:+];
+	RCVD_TLS_LAST(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	DKIM_TRACE(0.00)[sipsolutions.net:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
-	RCPT_COUNT_FIVE(0.00)[5];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[johannes@sipsolutions.net,linux-wireless@vger.kernel.org];
+	FROM_NEQ_ENVFROM(0.00)[shayne.chen@mediatek.com,linux-wireless@vger.kernel.org];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[9];
 	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[mediatek.com:+];
 	TAGGED_RCPT(0.00)[linux-wireless];
-	MID_RHS_MATCH_FROM(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,sipsolutions.net:dkim,sipsolutions.net:mid]
-X-Rspamd-Queue-Id: 051AA26FB34
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	MIME_TRACE(0.00)[0:+];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[mediatek.com:dkim,mediatek.com:email,mediatek.com:mid,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: DC4F526FEFF
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-Hi,
-> For example, I use the `iw` tool to display the capabilities and their
-> descriptions. The code for that has the following function prototypes:
->=20
->     * void print_ht_capability(__u16 cap);
->     * void print_vht_info(__u32 capa, const __u8 *mcs);
->     * static void __print_he_capa(const __u16 *mac_cap,
->                                   const __u16 *phy_cap,
->                                   const __u16 *mcs_set, size_t mcs_len,
->                                   const __u8 *ppet, int ppet_len,
->                                   bool indent);
->     * static void __print_eht_capa(int band,
->                                    const __u8 *mac_cap,
->                                    const __u32 *phy_cap,
->                                    const __u8 *mcs_set, size_t mcs_len,
->                                    const __u8 *ppet, size_t ppet_len,
->                                    const __u16 *he_phy_cap,
->                                    bool indent);
+From: Peter Chiu <chui-hao.chiu@mediatek.com>
 
-This is perhaps a bit unfortunate, but note that the HE and EHT __u16
-and __u32 here are really little endian pointers, and the functions do
-byte-order conversion.
+Use the correct helper to update specific bitfields instead of
+overwriting the entire register.
 
->     struct ieee80211_sta_ht_cap {
->         u16 cap; /* use IEEE80211_HT_CAP_ */
->         bool ht_supported;
->         u8 ampdu_factor;
->         u8 ampdu_density;
->         struct ieee80211_mcs_info mcs;
->     };
->=20
->     struct ieee80211_sta_vht_cap {
->         bool vht_supported;
->         u32 cap; /* use IEEE80211_VHT_CAP_ */
->         struct ieee80211_vht_mcs_info vht_mcs;
->     };
->=20
-> The structs for HT and VHT use `u16` and `u32` data types for the `cap`
-> variable, matching what `iw` does. That part is consistent.
+Fixes: eedb427eb260 ("wifi: mt76: mt7996: Enable HW RRO for MT7992 chipset")
+Signed-off-by: Peter Chiu <chui-hao.chiu@mediatek.com>
+Signed-off-by: Shayne Chen <shayne.chen@mediatek.com>
+---
+ drivers/net/wireless/mediatek/mt76/mt7996/init.c | 3 +--
+ drivers/net/wireless/mediatek/mt76/mt7996/mac.c  | 2 +-
+ 2 files changed, 2 insertions(+), 3 deletions(-)
 
-Careful. There are different structs used in different places, notably
-HT/VHT and HE/EHT differ.
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7996/init.c b/drivers/net/wireless/mediatek/mt76/mt7996/init.c
+index 5aaa93767109..f3239f530aea 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7996/init.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7996/init.c
+@@ -873,8 +873,7 @@ void mt7996_rro_hw_init(struct mt7996_dev *dev)
+ 			}
+ 		} else {
+ 			/* set emul 3.0 function */
+-			mt76_wr(dev, MT_RRO_3_0_EMU_CONF,
+-				MT_RRO_3_0_EMU_CONF_EN_MASK);
++			mt76_set(dev, MT_RRO_3_0_EMU_CONF, MT_RRO_3_0_EMU_CONF_EN_MASK);
+ 
+ 			mt76_wr(dev, MT_RRO_ADDR_ARRAY_BASE0,
+ 				dev->wed_rro.addr_elem[0].phy_addr);
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7996/mac.c b/drivers/net/wireless/mediatek/mt76/mt7996/mac.c
+index a415cc610eee..86aaf0f29e28 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7996/mac.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7996/mac.c
+@@ -2559,7 +2559,7 @@ void mt7996_mac_reset_work(struct work_struct *work)
+ 	mt7996_dma_start(dev, false, false);
+ 
+ 	if (!is_mt7996(&dev->mt76) && dev->mt76.hwrro_mode == MT76_HWRRO_V3)
+-		mt76_wr(dev, MT_RRO_3_0_EMU_CONF, MT_RRO_3_0_EMU_CONF_EN_MASK);
++		mt76_set(dev, MT_RRO_3_0_EMU_CONF, MT_RRO_3_0_EMU_CONF_EN_MASK);
+ 
+ 	if (mtk_wed_device_active(&dev->mt76.mmio.wed)) {
+ 		u32 wed_irq_mask = MT_INT_TX_DONE_BAND2 |
+-- 
+2.51.0
 
-For HT and VHT, look at the start of nl80211_send_band_rateinfo(), which
-sends themas individual attributes, defined in enum nl80211_band_attr,
-and the values that are u16 (NL80211_BAND_ATTR_HT_CAPA) or u32
-(NL80211_BAND_ATTR_VHT_CAPA) are in host byte order, though both are
-actually documented misleadingly ("as in [V]HT information IE" is just
-all around wrong.)
-
-For HE/EHT, you have it in nl80211_send_iftype_data() since it's per
-interface type, and all the individual values are just as they appear in
-the spec, regardless of their size.
-
-Note that spec is generally in little endian, but sometimes has strange
-field lengths like MAC capabilities being 6 bytes in HE:
-
->     struct ieee80211_he_cap_elem {
->         u8 mac_cap_info[6];
->         u8 phy_cap_info[11];
->     } __packed;
->=20
->     struct ieee80211_he_6ghz_capa {
->         /* uses IEEE80211_HE_6GHZ_CAP_* below */
->         __le16 capa; }
->     __packed;
->=20
-> However, for HE the types differ from the `iw` implementation. Here, `u8`
-> arrays are used instead of `u16` for MAC and PHY capabilities. The 6 GHz
-> capabilities use `u16`, which is also different.
-
-That doesn't really matter, they're just a set of 6 or 11 bytes, and
-e.g. the HE MAC capabilities are treated by the kernel as a set of 6
-bytes, but by iw as a set of 3 __le16, which results in the same
-interpretation, or at least should.
-
->     struct ieee80211_eht_cap_elem_fixed {
->         u8 mac_cap_info[2];
->         u8 phy_cap_info[9];
->     } __packed;
->=20
-> For EHT, `u8` arrays are also used for both MAC and PHY caps, instead of
-> `u32` for the PHY caps as in the `iw` implementation.
-
-Same thing here.
-
-> The current `ath12k` implementation always uses `u32` values, which does
-> not work on big=E2=80=91endian platforms:
-
-Yeah, that seems problematic and not really fitting for something that's
-6, 11, 2 or 9 bytes long?
-
-> I want to address and fix this issue. However, I cannot apply the =E2=80=
-=9Cnever
-> break the userspace=E2=80=9D rule here, as it seems, it is already broken=
-.
-
-I don't think it's broken, why do you say so?
-
-What's (clearly) broken is how ath12k puts the data into the HE/EHT
-structs that the kernel expects, but per your dmesg:
-
->     ath12k_pci 0001:01:00.0: ieee80211 registration failed: -22
->     ath12k_pci 0001:01:00.0: failed register the radio with mac80211: -22
-
-it seems that even mac80211 doesn't like the capabilities, so the byte
-order issue already exists there.
-
-It seems to me the issue is that ath12k_band_cap is in u32, converted,
-but then memcpy()d.
-
-johannes
 
