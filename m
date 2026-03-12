@@ -1,375 +1,292 @@
-Return-Path: <linux-wireless+bounces-33047-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-33048-lists+linux-wireless=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id GL4NMNxVsmlvLwAAu9opvQ
-	(envelope-from <linux-wireless+bounces-33047-lists+linux-wireless=lfdr.de@vger.kernel.org>)
-	for <lists+linux-wireless@lfdr.de>; Thu, 12 Mar 2026 06:57:48 +0100
+	id YEnVHDNWsmlvLwAAu9opvQ
+	(envelope-from <linux-wireless+bounces-33048-lists+linux-wireless=lfdr.de@vger.kernel.org>)
+	for <lists+linux-wireless@lfdr.de>; Thu, 12 Mar 2026 06:59:15 +0100
 X-Original-To: lists+linux-wireless@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 283A426D739
-	for <lists+linux-wireless@lfdr.de>; Thu, 12 Mar 2026 06:57:48 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 15FD626D767
+	for <lists+linux-wireless@lfdr.de>; Thu, 12 Mar 2026 06:59:15 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id A596030530F3
-	for <lists+linux-wireless@lfdr.de>; Thu, 12 Mar 2026 05:57:42 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 1E7B23021960
+	for <lists+linux-wireless@lfdr.de>; Thu, 12 Mar 2026 05:59:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9E344309F1D;
-	Thu, 12 Mar 2026 05:57:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1C18E31F9BE;
+	Thu, 12 Mar 2026 05:59:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=realtek.com header.i=@realtek.com header.b="iZSkA0YA"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="REoL3Uhw"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
+Received: from mail-wr1-f46.google.com (mail-wr1-f46.google.com [209.85.221.46])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 24B5E30F7EF
-	for <linux-wireless@vger.kernel.org>; Thu, 12 Mar 2026 05:57:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=211.75.126.72
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 470ED31E846
+	for <linux-wireless@vger.kernel.org>; Thu, 12 Mar 2026 05:59:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.46
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773295061; cv=none; b=gSMhWs5sqlt0mPMyU4Sknsjjfbu1Fcz+7dz5rkskt0Phwj+cvZyuLlSbRoB1VFK7VtmGvJ5+SklQ0LKzt1X1LVmQX5RVw3sXu0w8PYRq7GiVohaK+L2UYCiAirdmZYLw4SAZNjhwFVWjXr3/Tzu1ziDO1rMzm2N3nD522aZITrw=
+	t=1773295153; cv=none; b=QxOyZPhsfXUu9OkoSO9Vc6aYkV/f/cqkc74jZkd6JJ2lejIWmpSf2cEQVojDGeE/90CkrF7V8+RXdovBk7KxcIephTGTLC3UnxZmV6gPnWi/0l7Zly2OZalDew8PDlWBRPo1KrF66msd1u75bH8BnHy0vxcHGm7p4iwLSvbMR0A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773295061; c=relaxed/simple;
-	bh=oyV9s7iqILAimvAadueACXVg6uFwrR2efxDDbpNFyCA=;
-	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=q2HQEdzEl0SUJ1uFMbemMOkCvFyrA0D8Yu1VFM1sKUdrHvxtNTz67ZbhGuRu7Mjh8nYcqBB3pu2SRdGiiuW5xS06sr/5zcTIRijm/5RBHI5MzL8GjOqhVUDU+w2CHJctXLbUOPjgaxswzkh6o2Cwo/34Nyghmi44yR/unxm4E80=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com; spf=pass smtp.mailfrom=realtek.com; dkim=pass (2048-bit key) header.d=realtek.com header.i=@realtek.com header.b=iZSkA0YA; arc=none smtp.client-ip=211.75.126.72
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=realtek.com
-X-SpamFilter-By: ArmorX SpamTrap 5.80 with qID 62C5vXGw91983292, This message is accepted by code: ctloc85258
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=realtek.com; s=dkim;
-	t=1773295054; bh=R4r5KM7qM6GGtEpv/yOkxs2vQIl2gcYNMCDpF3ZQa/A=;
-	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:
-	 Content-Transfer-Encoding:Content-Type;
-	b=iZSkA0YAeiu5JCyoICIE0bex7k3qW/AAlZ/P6L9hWknl2nR55Xu+QRQGXZRU43MsE
-	 0Bqr5qfITq8JP5V694N+MrgBp8BFLj0dV8pZWGA1x3s8dBB0jb2G3VY6XsNf9sVmdp
-	 t2GXQ8DEZHDzT4/+oOjByYGObxvsLze5OWoNSAsSE74VAzPxCrfucG4EGNzeiwXUhS
-	 qq2U2yKSLhIP8C5ERLMHh24IACrHaZ2LXlmelXIUjBdQWCkOVTWM9R5e87CYTe62LK
-	 3HTgVM/UwQsOTVDYUfBQJdd+w1sf9B6HRZiTY1d9rmedCBeAD7O8jZt9fyx6d8UU0R
-	 YnzZPUeRUUIgQ==
-Received: from mail.realtek.com (rtkexhmbs03.realtek.com.tw[10.21.1.53])
-	by rtits2.realtek.com.tw (8.15.2/3.21/5.94) with ESMTPS id 62C5vXGw91983292
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Thu, 12 Mar 2026 13:57:34 +0800
-Received: from RTKEXHMBS06.realtek.com.tw (10.21.1.56) by
- RTKEXHMBS03.realtek.com.tw (10.21.1.53) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1748.10; Thu, 12 Mar 2026 13:57:33 +0800
-Received: from [127.0.1.1] (172.21.40.75) by RTKEXHMBS06.realtek.com.tw
- (10.21.1.56) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1748.10 via Frontend
- Transport; Thu, 12 Mar 2026 13:57:32 +0800
-From: Ping-Ke Shih <pkshih@realtek.com>
-To: <linux-wireless@vger.kernel.org>
-CC: <rtl8821cerfe2@gmail.com>, <mh_chen@realtek.com>, <isaiah@realtek.com>
-Subject: [PATCH v2 rtw-next] wifi: rtw89: usb: Rx aggregation for RTL8832CU/RTL8851BU
-Date: Thu, 12 Mar 2026 13:57:24 +0800
-Message-ID: <20260312055724.12177-1-pkshih@realtek.com>
-X-Mailer: git-send-email 2.25.1
+	s=arc-20240116; t=1773295153; c=relaxed/simple;
+	bh=NLMMegbnQTHbmAF+7SbxSKcGy39ej+LeM8wtlSGWn4k=;
+	h=Content-Type:Mime-Version:Subject:From:In-Reply-To:Date:Cc:
+	 Message-Id:References:To; b=Z/DSkfFQJ91OnZRfQupdwTII+12r58szW9Um5GjcXgAz2ytgn+eX59TPWXUaxVUOKqFDUNrUUbVs1zuyWPRM+jqHvfyl0obL9JMaoWCZU2WcEva4MW3HYztUGN0ADGG0AE/vKSt2ekECWxnfDOcQmHsAE/rtHFKndwAu1nZSMVw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=REoL3Uhw; arc=none smtp.client-ip=209.85.221.46
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-wr1-f46.google.com with SMTP id ffacd0b85a97d-439af7d77f0so510412f8f.0
+        for <linux-wireless@vger.kernel.org>; Wed, 11 Mar 2026 22:59:11 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1773295150; x=1773899950; darn=vger.kernel.org;
+        h=to:references:message-id:content-transfer-encoding:cc:date
+         :in-reply-to:from:subject:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=+MSnagWEumlAjQd4aKb/Z/ZIHp+uVB86nTpw0CtuMsU=;
+        b=REoL3Uhwbsr6ma5LUE/BqQ/h9qH30yz12Mvrbd4mqAn+v+wdItZX2P/tc3dNkYqfnp
+         O9ANvRbLhuo1pf7vAepChpfc/DDjZWCEU4DTAKOAZoBADYIah9ykg+lkN0MZN5i8PkaG
+         p3vR40MCoHn4pMc0VdFVzzJAZx94USIYTIWOWdc3lsyZHjopi8vN7e5h+n1n/Gzm/JED
+         v44YDGD171KzF37h06DSBYohMo6QVi3PCP5Rq/SS85dpeDHIzvDgQ6OtRU9n01c91zGq
+         8ijvIscP4DVP81p6XorFj2tKs24LCrsD9X/EeD7PwbqiHrfB1nw+klIXT119/QU0nwYF
+         /QZg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1773295150; x=1773899950;
+        h=to:references:message-id:content-transfer-encoding:cc:date
+         :in-reply-to:from:subject:mime-version:x-gm-gg:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=+MSnagWEumlAjQd4aKb/Z/ZIHp+uVB86nTpw0CtuMsU=;
+        b=R+1B362WcKA5/4qQBbrdACgQOv/0AQra+gD4jOnJrHuNYg0N3MntEneVRBosIJzI3A
+         k7XkDIDakTX7bmjk4pKYu7sWkZCKAPNpvgHtzatnz7i7XM40eXVBPsR/tsbkiunozgF9
+         OBuQLjaV+kE2XIY1S1uCrQx0vmWt/QRlb9deuHE52qZtuEai3JuLfWNetmzCTBeFEkPD
+         4OtEw6GucTHz00PMu2fcRntPUHC4L1gv7SNsxQUqXadZSawxLXWiCCLxC2m5BZiYuZz8
+         vnvK13NFqurZqV993pCFrIBCNv5G88cNtA7VTq1iqgAy49NPdTHF2qjdnod+9TcY60A0
+         G00g==
+X-Forwarded-Encrypted: i=1; AJvYcCWdNNrDrfGC0er4sUb/ENj+nK+tCGfgRYzzB1NicxGdzYKKX30buW+AKkd/KRA4ND2vUY1rrxqyvJdP7tIVOw==@vger.kernel.org
+X-Gm-Message-State: AOJu0YxloCR33Omf5ueyxuXBVHXrc45xeCxNqDjcpg7DJag8aFm3gVcM
+	Fa6z4i4IcBFhg2jo5tbA716kjgH4HW8NrWF2e+J7DPzPDJnqHZV53WvT
+X-Gm-Gg: ATEYQzwCSX3lhpaJpURYK7wcomXYxAH0NhIsbz8SlvnB5hE/zsO2vx8VZTOe5jzx/Wy
+	QO5FkNaieAzZcHB13XBgNLqftpPxxd2IiqefpARuUs0s7pEOLwmmn4PToYm413Yk+vWru24+fpG
+	c6p+nvpzyoNP1cK02SwLoN5rMP+03xrJz7Cr7awL8QVf/BKEDyTzlqLRSd4hi23Jx3tlPNvUhcJ
+	fSZzHRzr6umR7gk16XdczFs9zvvx0y7LpdqGp4NZKd5e6dLoV+cO/8nfGwlhI8oQU34wM2HALg5
+	0gkv6IaRu0mbilwGUTj6zNEMY7nN0r2aiuu6GeziZubNInSxCLfF+20j3YI1PLzcP33jxW9/4UK
+	ZbOwGsvA9w4bxgpWj/tfiNkC/FScAykSrBh9KaIqy0F5sLom9GIEb2I7ahKt5JKYm2HVdyqSQjf
+	Fd3IJXIfbxvgEwPLacaSsh3DBELUkbmRZtbqUe0X+ZlmmyPesf0Hhe
+X-Received: by 2002:a5d:5d84:0:b0:439:b6bd:558d with SMTP id ffacd0b85a97d-439f842aab9mr9896146f8f.30.1773295149402;
+        Wed, 11 Mar 2026 22:59:09 -0700 (PDT)
+Received: from smtpclient.apple ([87.200.95.144])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-439fe20c0b4sm5848964f8f.25.2026.03.11.22.59.07
+        (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
+        Wed, 11 Mar 2026 22:59:08 -0700 (PDT)
+Content-Type: text/plain;
+	charset=utf-8
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-Spamd-Result: default: False [-0.66 / 15.00];
+Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3864.400.21\))
+Subject: Re: [PATCH] wifi: rtw89: retry efuse physical map dump on transient
+ failure
+From: Christian Hewitt <christianshewitt@gmail.com>
+In-Reply-To: <bac9b823342141bb9ed561ac5ccfd71d@realtek.com>
+Date: Thu, 12 Mar 2026 09:58:55 +0400
+Cc: Bitterblue Smith <rtl8821cerfe2@gmail.com>,
+ "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
+ "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
+Content-Transfer-Encoding: quoted-printable
+Message-Id: <62487266-6846-4E3D-9947-33CB6FE408BF@gmail.com>
+References: <20260301042422.195491-1-christianshewitt@gmail.com>
+ <c751f9505a664f6895bacecb62bc534a@realtek.com>
+ <E6E752BD-5F3D-4F30-9820-CB44FA767E69@gmail.com>
+ <c764f16a880a400686c8c5f639fa98c3@realtek.com>
+ <903C7E52-033F-455E-89DC-B78C67C0C732@gmail.com>
+ <5ad1b7d20d1745bab0638d15731e7ccd@realtek.com>
+ <CC1F2CDA-830F-4351-A855-8C921B148F8D@gmail.com>
+ <2ab692371ff94a3f960d41b04288a084@realtek.com>
+ <B9D5D4CC-0729-4867-AD1B-18D80D78841B@gmail.com>
+ <bac9b823342141bb9ed561ac5ccfd71d@realtek.com>
+To: Ping-Ke Shih <pkshih@realtek.com>
+X-Mailer: Apple Mail (2.3864.400.21)
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MID_CONTAINS_FROM(1.00)[];
-	DMARC_POLICY_ALLOW(-0.50)[realtek.com,none];
-	R_MISSING_CHARSET(0.50)[];
-	R_DKIM_ALLOW(-0.20)[realtek.com:s=dkim];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
+	R_DKIM_ALLOW(-0.20)[gmail.com:s=20230601];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	FREEMAIL_CC(0.00)[gmail.com,vger.kernel.org];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[6];
-	FREEMAIL_CC(0.00)[gmail.com,realtek.com];
-	TAGGED_FROM(0.00)[bounces-33047-lists,linux-wireless=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-33048-lists,linux-wireless=lfdr.de];
 	FROM_HAS_DN(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[pkshih@realtek.com,linux-wireless@vger.kernel.org];
-	RCPT_COUNT_THREE(0.00)[4];
-	PRECEDENCE_BULK(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	TO_DN_NONE(0.00)[];
-	DKIM_TRACE(0.00)[realtek.com:+];
-	TAGGED_RCPT(0.00)[linux-wireless];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	TO_DN_EQ_ADDR_SOME(0.00)[];
+	FREEMAIL_FROM(0.00)[gmail.com];
+	RCVD_TLS_LAST(0.00)[];
+	TO_DN_SOME(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,realtek.com:dkim,realtek.com:email,realtek.com:mid]
-X-Rspamd-Queue-Id: 283A426D739
+	DKIM_TRACE(0.00)[gmail.com:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_COUNT_FIVE(0.00)[5];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[christianshewitt@gmail.com,linux-wireless@vger.kernel.org];
+	RCPT_COUNT_THREE(0.00)[4];
+	MID_RHS_MATCH_FROM(0.00)[];
+	APPLE_MAILER_COMMON(0.00)[];
+	NEURAL_HAM(-0.00)[-0.999];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TAGGED_RCPT(0.00)[linux-wireless];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,realtek.com:email]
+X-Rspamd-Queue-Id: 15FD626D767
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-From: Shin-Yi Lin <isaiah@realtek.com>
+> On 12 Mar 2026, at 6:22=E2=80=AFam, Ping-Ke Shih <pkshih@realtek.com> =
+wrote:
+>=20
+> Christian Hewitt <christianshewitt@gmail.com> wrote:
+>>> On 11 Mar 2026, at 7:05=E2=80=AFam, Ping-Ke Shih =
+<pkshih@realtek.com> wrote:
+>>>=20
+>>> Christian Hewitt <christianshewitt@gmail.com> wrote:
+>>>>=20
+>>>>> On 9 Mar 2026, at 6:35=E2=80=AFam, Ping-Ke Shih =
+<pkshih@realtek.com> wrote:
+>>>>>=20
+>>>>> Christian Hewitt <christianshewitt@gmail.com> wrote:
+>>>>>>=20
+>>>>>>> On 2 Mar 2026, at 10:04=E2=80=AFam, Ping-Ke Shih =
+<pkshih@realtek.com> wrote:
+>>>>>>>=20
+>>>>>>> Christian Hewitt <christianshewitt@gmail.com> wrote:
+>>>>>>>>> On 2 Mar 2026, at 9:47=E2=80=AFam, Ping-Ke Shih =
+<pkshih@realtek.com> wrote:
+>>>>>>>>>=20
+>>>>>>>>> Christian Hewitt <christianshewitt@gmail.com> wrote:
+>>>>>>>>>> On Radxa Rock 5B with a RTL8852BE combo WiFi/BT card, the =
+efuse
+>>>>>>>>>> physical map dump intermittently fails with -EBUSY during =
+probe.
+>>>>>>>>>> The failure occurs in rtw89_dump_physical_efuse_map_ddv() =
+where
+>>>>>>>>>> read_poll_timeout_atomic() times out waiting for the =
+B_AX_EF_RDY
+>>>>>>>>>> bit after 1 second.
+>>>>>>>>>=20
+>>>>>>>>> I'm checking internally how we handle this case.
+>>>>>=20
+>>>>> Sorry for the late.
+>>>>>=20
+>>>>> We encountered WiFi/BT reading efuse at the same time causing =
+similar
+>>>>> problem as yours. The workaround is like yours, which adds timeout
+>>>>> time.
+>>>>>=20
+>>>>>>>>>=20
+>>>>>>>>> [...]
+>>>>>>>>>=20
+>>>>>>>>>>=20
+>>>>>>>>>> For context, firmware also fails (and recovers) sometimes:
+>>>>>>>>>=20
+>>>>>>>>> Did you mean this doesn't always happen? sometimes?
+>>>>>>>>=20
+>>>>>>>> It=E2=80=99s another intermittent behaviour observed on this =
+board (and not
+>>>>>>>> related to the issue this patch targets). It occurs less =
+frequently
+>>>>>>>> than the efuse issue and the existing retry mechanism in the =
+driver
+>>>>>>>> ensures firmware load always succeeds.
+>>>>>=20
+>>>>> This might be the same cause due to reading efuse in firmware.
+>>>>>=20
+>>>>> Though we can add more timeout and retry times as workaround, I =
+wonder
+>>>>> if you can control loading time of WiFi and BT kernel modules?
+>>>>>=20
+>>>>> More, can you do experiment that you load BT module first, and =
+then load
+>>>>> WiFi module after 10 seconds (choose a large number intentionally, =
+or
+>>>>> even larger)?
+>>>>=20
+>>>> https://paste.libreelec.tv/charmed-turkey.sh
+>>>>=20
+>>>> I=E2=80=99ve run the above script ^ which removes the wifi and bt =
+modules in
+>>>> sequence then reloads them in the reverse order with a delay =
+between
+>>>> bt and wifi modules loading, then checks for error messages. Over =
+200
+>>>> test cycles with a 10s delay all were clean (no errors). I also ran
+>>>> cycles with a 2 second delay and 0 second delay before starting =
+wifi
+>>>> module load and those were clear too. I guess that proves =
+sequencing
+>>>> avoids the efuse contention issue? - although it=E2=80=99s not =
+possible in
+>>>> the real-world so not sure there=E2=80=99s huge value in knowing =
+that :)
+>>>=20
+>>> Thanks for the experiments.
+>>>=20
+>>> Still want to know is it possible to change sequence/time of loading
+>>> kernel modules at boot time from system level? I mean can you adjust
+>>> the sequence in the Rock 5B board?
+>>=20
+>> I=E2=80=99m not a kernel expert, but I=E2=80=99ve always understood =
+module probe and
+>> load ordering to not be guaranteed; as many things run in parallel =
+and
+>> are highly subjective to the specific hardware capabilities and =
+kernel
+>> config being used.
+>=20
+> I have heard people about changing sequence/time of kernel modules, so
+> I'd like you can try this method.=20
+>=20
+> I did ask AI, it said it is possible to create a .conf file under
+> /etc/modprobe.d/ and use `softdep` syntax to ensure loading sequence.
+> Could you try this?
 
-USB RX Aggregation is a performance optimization technique used
-in USB network devices to increase throughput.
+I can test this, but even if it works it=E2=80=99s not a fix because =
+modprobe
+confs configured in userspace are only used with loadable modules that
+have been compiled with =3Dm, not build-in modules that are resident in
+kernel memory and compiled with =3Dy; and distros are free to choose how
+their kernel is configured. NB: I=E2=80=99m not sure if there are any =
+general
+kernel rules for this, but I=E2=80=99d expect there to be general =
+principle of
+modules being resilient to transient host states and not depending on
+userspace packaging to load correctly?
 
-Instead of sending every received network packet to the host computer
-individually, the device hardware groups multiple smaller packets
-into a single, large USB Bulk Transfer.
+>> In addition, did below messages not appear in these experiments?
+>>>=20
+>>> [    7.864148] rtw89_8852be 0002:21:00.0: fw security fail
+>>> [    7.864154] rtw89_8852be 0002:21:00.0: download firmware fail
+>>=20
+>> No, because even if we have a 0s delay between each group of modules
+>> being loaded, they are loaded in series, so we workaround the issue.
+>> Tweaking the script to background the module load loops so both run
+>> in parallel would be closer to normal conditions, and I would expect
+>> to start seeing failures and the retry mechanisms within the modules
+>> (as added in this patch) being triggered.
+>=20
+> Additional question for downloading firmware. As you reported this
+> issue initially (load modules at boot time in parallel), it seems=20
+> appear this message by chance. Since this driver will retry to =
+download
+> firmware, will it successfully downloads firmware finally? Or it still
+> fails to download after 5 times retry?
 
- * toAP/toNB use iperf3 respectively.
+I have only seen firmware load fail a handful of times in many hundreds
+of boots and each time one retry attempt resulted in success. To be
+clear; I have am not reporting firwmare loading as a problem, it is not
+an issue for me. I=E2=80=99ve mentioned it only for context, i.e. it =
+shows that
+a simple retry mechanism is effective at handling the similar issue with
+efuse map.
 
-With Cisco BE6000 - iperf3 tcp 10 pair (to another NB)
-
-[6G 160Mhz]:
-
- RTL8832CU-USB3.0
-       before   after
- TX    941      941
- RX    847      919
-
- RTL8832CU-USB2.0
-       before   after
- TX    293      286
- RX    342      356
-
-[5G 80Mhz]:
-
- RTL8832CU-USB3.0
-       before   after
- TX    864      877
- RX    864      902
-
- RTL8832CU-USB2.0
-       before   after
- TX    279      271
- RX    327      349
-
- RTL8851BU
-       before   after
- TX    115      114
- RX    295      306
-
-Signed-off-by: Shin-Yi Lin <isaiah@realtek.com>
-Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
----
-v2: address Bitterblue's comments
- - correct throughput value in commit message
- - add rtw89_ prefix to missed functions
- - add unit '1K' in macro naming
-
-Note:
-This one is to add USB RX aggregation to improve performance. The other
-one is TX aggregation, which we are working on.
----
- .../net/wireless/realtek/rtw89/rtw8851bu.c    |  1 +
- .../net/wireless/realtek/rtw89/rtw8852au.c    |  1 +
- .../net/wireless/realtek/rtw89/rtw8852bu.c    |  1 +
- .../net/wireless/realtek/rtw89/rtw8852cu.c    |  1 +
- drivers/net/wireless/realtek/rtw89/usb.c      | 84 ++++++++++++++++---
- drivers/net/wireless/realtek/rtw89/usb.h      | 12 +++
- 6 files changed, 87 insertions(+), 13 deletions(-)
-
-diff --git a/drivers/net/wireless/realtek/rtw89/rtw8851bu.c b/drivers/net/wireless/realtek/rtw89/rtw8851bu.c
-index 959d62aefdd8..6a8d31544314 100644
---- a/drivers/net/wireless/realtek/rtw89/rtw8851bu.c
-+++ b/drivers/net/wireless/realtek/rtw89/rtw8851bu.c
-@@ -15,6 +15,7 @@ static const struct rtw89_usb_info rtw8851b_usb_info = {
- 	.usb3_mac_npi_config_intf_0	= R_AX_USB3_MAC_NPI_CONFIG_INTF_0,
- 	.usb_endpoint_0			= R_AX_USB_ENDPOINT_0,
- 	.usb_endpoint_2			= R_AX_USB_ENDPOINT_2,
-+	.rx_agg_alignment		= 8,
- 	.bulkout_id = {
- 		[RTW89_DMA_ACH0] = 3,
- 		[RTW89_DMA_ACH1] = 4,
-diff --git a/drivers/net/wireless/realtek/rtw89/rtw8852au.c b/drivers/net/wireless/realtek/rtw89/rtw8852au.c
-index ccdbcc178c2a..4cced4619b7d 100644
---- a/drivers/net/wireless/realtek/rtw89/rtw8852au.c
-+++ b/drivers/net/wireless/realtek/rtw89/rtw8852au.c
-@@ -15,6 +15,7 @@ static const struct rtw89_usb_info rtw8852a_usb_info = {
- 	.usb3_mac_npi_config_intf_0	= R_AX_USB3_MAC_NPI_CONFIG_INTF_0,
- 	.usb_endpoint_0			= R_AX_USB_ENDPOINT_0,
- 	.usb_endpoint_2			= R_AX_USB_ENDPOINT_2,
-+	.rx_agg_alignment		= 8,
- 	.bulkout_id = {
- 		[RTW89_DMA_ACH0] = 3,
- 		[RTW89_DMA_ACH2] = 5,
-diff --git a/drivers/net/wireless/realtek/rtw89/rtw8852bu.c b/drivers/net/wireless/realtek/rtw89/rtw8852bu.c
-index 84cd3ec971f9..37111fed276f 100644
---- a/drivers/net/wireless/realtek/rtw89/rtw8852bu.c
-+++ b/drivers/net/wireless/realtek/rtw89/rtw8852bu.c
-@@ -15,6 +15,7 @@ static const struct rtw89_usb_info rtw8852b_usb_info = {
- 	.usb3_mac_npi_config_intf_0	= R_AX_USB3_MAC_NPI_CONFIG_INTF_0,
- 	.usb_endpoint_0			= R_AX_USB_ENDPOINT_0,
- 	.usb_endpoint_2			= R_AX_USB_ENDPOINT_2,
-+	.rx_agg_alignment		= 8,
- 	.bulkout_id = {
- 		[RTW89_DMA_ACH0] = 3,
- 		[RTW89_DMA_ACH1] = 4,
-diff --git a/drivers/net/wireless/realtek/rtw89/rtw8852cu.c b/drivers/net/wireless/realtek/rtw89/rtw8852cu.c
-index 3b9825c92a0d..0c5aebaed873 100644
---- a/drivers/net/wireless/realtek/rtw89/rtw8852cu.c
-+++ b/drivers/net/wireless/realtek/rtw89/rtw8852cu.c
-@@ -15,6 +15,7 @@ static const struct rtw89_usb_info rtw8852c_usb_info = {
- 	.usb3_mac_npi_config_intf_0	= R_AX_USB3_MAC_NPI_CONFIG_INTF_0_V1,
- 	.usb_endpoint_0			= R_AX_USB_ENDPOINT_0_V1,
- 	.usb_endpoint_2			= R_AX_USB_ENDPOINT_2_V1,
-+	.rx_agg_alignment		= 8,
- 	.bulkout_id = {
- 		[RTW89_DMA_ACH0] = 3,
- 		[RTW89_DMA_ACH2] = 5,
-diff --git a/drivers/net/wireless/realtek/rtw89/usb.c b/drivers/net/wireless/realtek/rtw89/usb.c
-index da1b7ce8089e..1665169f45fc 100644
---- a/drivers/net/wireless/realtek/rtw89/usb.c
-+++ b/drivers/net/wireless/realtek/rtw89/usb.c
-@@ -408,11 +408,14 @@ static int rtw89_usb_ops_tx_write(struct rtw89_dev *rtwdev,
- static void rtw89_usb_rx_handler(struct work_struct *work)
- {
- 	struct rtw89_usb *rtwusb = container_of(work, struct rtw89_usb, rx_work);
-+	const struct rtw89_usb_info *info = rtwusb->info;
- 	struct rtw89_dev *rtwdev = rtwusb->rtwdev;
- 	struct rtw89_rx_desc_info desc_info;
-+	s32 aligned_offset, remaining;
- 	struct sk_buff *rx_skb;
- 	struct sk_buff *skb;
- 	u32 pkt_offset;
-+	u8 *pkt_ptr;
- 	int limit;
- 
- 	for (limit = 0; limit < 200; limit++) {
-@@ -425,23 +428,38 @@ static void rtw89_usb_rx_handler(struct work_struct *work)
- 			goto free_or_reuse;
- 		}
- 
--		memset(&desc_info, 0, sizeof(desc_info));
--		rtw89_chip_query_rxdesc(rtwdev, &desc_info, rx_skb->data, 0);
-+		pkt_ptr = rx_skb->data;
-+		remaining = rx_skb->len;
- 
--		skb = rtw89_alloc_skb_for_rx(rtwdev, desc_info.pkt_size);
--		if (!skb) {
--			rtw89_debug(rtwdev, RTW89_DBG_HCI,
--				    "failed to allocate RX skb of size %u\n",
--				    desc_info.pkt_size);
--			goto free_or_reuse;
--		}
-+		do {
-+			memset(&desc_info, 0, sizeof(desc_info));
-+			rtw89_chip_query_rxdesc(rtwdev, &desc_info, pkt_ptr, 0);
- 
--		pkt_offset = desc_info.offset + desc_info.rxd_len;
-+			pkt_offset = desc_info.offset + desc_info.rxd_len;
-+			if (remaining < (pkt_offset + desc_info.pkt_size)) {
-+				rtw89_debug(rtwdev, RTW89_DBG_HCI,
-+					    "Failed to get remaining RX pkt %u > %u\n",
-+					    pkt_offset + desc_info.pkt_size, remaining);
-+				goto free_or_reuse;
-+			}
- 
--		skb_put_data(skb, rx_skb->data + pkt_offset,
--			     desc_info.pkt_size);
-+			skb = rtw89_alloc_skb_for_rx(rtwdev, desc_info.pkt_size);
-+			if (!skb) {
-+				rtw89_debug(rtwdev, RTW89_DBG_HCI,
-+					    "failed to allocate RX skb of size %u\n",
-+					    desc_info.pkt_size);
-+				goto free_or_reuse;
-+			}
-+
-+			skb_put_data(skb, pkt_ptr + pkt_offset, desc_info.pkt_size);
-+			rtw89_core_rx(rtwdev, &desc_info, skb);
- 
--		rtw89_core_rx(rtwdev, &desc_info, skb);
-+			/* next frame */
-+			pkt_offset += desc_info.pkt_size;
-+			aligned_offset = ALIGN(pkt_offset, info->rx_agg_alignment);
-+			pkt_ptr += aligned_offset;
-+			remaining -= aligned_offset;
-+		} while (remaining > 0);
- 
- free_or_reuse:
- 		if (skb_queue_len(&rtwusb->rx_free_queue) >= RTW89_USB_RX_SKB_NUM)
-@@ -745,6 +763,44 @@ static int rtw89_usb_ops_mac_pre_deinit(struct rtw89_dev *rtwdev)
- 	return 0; /* Nothing to do. */
- }
- 
-+static void rtw89_usb_rx_agg_cfg_v1(struct rtw89_dev *rtwdev)
-+{
-+	const u32 rxagg_0 = FIELD_PREP_CONST(B_AX_RXAGG_0_EN, 1) |
-+			    FIELD_PREP_CONST(B_AX_RXAGG_0_NUM_TH, 0) |
-+			    FIELD_PREP_CONST(B_AX_RXAGG_0_TIME_32US_TH, 32) |
-+			    FIELD_PREP_CONST(B_AX_RXAGG_0_BUF_SZ_4K, 5);
-+
-+	rtw89_write32(rtwdev, R_AX_RXAGG_0, rxagg_0);
-+}
-+
-+static void rtw89_usb_rx_agg_cfg_v2(struct rtw89_dev *rtwdev)
-+{
-+	const u32 rxagg_0 = FIELD_PREP_CONST(B_AX_RXAGG_0_EN, 1) |
-+			    FIELD_PREP_CONST(B_AX_RXAGG_0_NUM_TH, 255) |
-+			    FIELD_PREP_CONST(B_AX_RXAGG_0_TIME_32US_TH, 32) |
-+			    FIELD_PREP_CONST(B_AX_RXAGG_0_BUF_SZ_1K, 20);
-+
-+	rtw89_write32(rtwdev, R_AX_RXAGG_0_V1, rxagg_0);
-+	rtw89_write32(rtwdev, R_AX_RXAGG_1_V1, 0x1F);
-+}
-+
-+static void rtw89_usb_rx_agg_cfg(struct rtw89_dev *rtwdev)
-+{
-+	switch (rtwdev->chip->chip_id) {
-+	case RTL8851B:
-+	case RTL8852A:
-+	case RTL8852B:
-+		rtw89_usb_rx_agg_cfg_v1(rtwdev);
-+		break;
-+	case RTL8852C:
-+		rtw89_usb_rx_agg_cfg_v2(rtwdev);
-+		break;
-+	default:
-+		rtw89_warn(rtwdev, "%s: USB RX agg not support\n", __func__);
-+		return;
-+	}
-+}
-+
- static int rtw89_usb_ops_mac_post_init(struct rtw89_dev *rtwdev)
- {
- 	struct rtw89_usb *rtwusb = rtw89_usb_priv(rtwdev);
-@@ -773,6 +829,8 @@ static int rtw89_usb_ops_mac_post_init(struct rtw89_dev *rtwdev)
- 		rtw89_write8(rtwdev, info->usb_endpoint_2 + 1, NUMP);
- 	}
- 
-+	rtw89_usb_rx_agg_cfg(rtwdev);
-+
- 	return 0;
- }
- 
-diff --git a/drivers/net/wireless/realtek/rtw89/usb.h b/drivers/net/wireless/realtek/rtw89/usb.h
-index 203ec8e993e9..3d17e514e346 100644
---- a/drivers/net/wireless/realtek/rtw89/usb.h
-+++ b/drivers/net/wireless/realtek/rtw89/usb.h
-@@ -20,6 +20,17 @@
- #define RTW89_MAX_ENDPOINT_NUM		9
- #define RTW89_MAX_BULKOUT_NUM		7
- 
-+#define R_AX_RXAGG_0_V1			0x6000
-+#define B_AX_RXAGG_0_EN			BIT(31)
-+#define B_AX_RXAGG_0_NUM_TH		GENMASK(23, 16)
-+#define B_AX_RXAGG_0_TIME_32US_TH	GENMASK(15, 8)
-+#define B_AX_RXAGG_0_BUF_SZ_1K		GENMASK(7, 0)
-+
-+#define R_AX_RXAGG_1_V1			0x6004
-+
-+#define R_AX_RXAGG_0			0x8900
-+#define B_AX_RXAGG_0_BUF_SZ_4K		GENMASK(7, 0)
-+
- struct rtw89_usb_info {
- 	u32 usb_host_request_2;
- 	u32 usb_wlan0_1;
-@@ -27,6 +38,7 @@ struct rtw89_usb_info {
- 	u32 usb3_mac_npi_config_intf_0;
- 	u32 usb_endpoint_0;
- 	u32 usb_endpoint_2;
-+	u8 rx_agg_alignment;
- 	u8 bulkout_id[RTW89_DMA_CH_NUM];
- };
- 
-
-base-commit: 039cd522dc70151da13329a5e3ae19b1736f468a
--- 
-2.25.1
+Christian
 
 
