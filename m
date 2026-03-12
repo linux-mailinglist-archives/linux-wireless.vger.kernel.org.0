@@ -1,349 +1,445 @@
-Return-Path: <linux-wireless+bounces-33070-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-33071-lists+linux-wireless=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id WIUiKHp1sml/MwAAu9opvQ
-	(envelope-from <linux-wireless+bounces-33070-lists+linux-wireless=lfdr.de@vger.kernel.org>)
-	for <lists+linux-wireless@lfdr.de>; Thu, 12 Mar 2026 09:12:42 +0100
+	id mKq2JEF4sml/MwAAu9opvQ
+	(envelope-from <linux-wireless+bounces-33071-lists+linux-wireless=lfdr.de@vger.kernel.org>)
+	for <lists+linux-wireless@lfdr.de>; Thu, 12 Mar 2026 09:24:33 +0100
 X-Original-To: lists+linux-wireless@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id A3C3426EB57
-	for <lists+linux-wireless@lfdr.de>; Thu, 12 Mar 2026 09:12:41 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0DCFB26EDF7
+	for <lists+linux-wireless@lfdr.de>; Thu, 12 Mar 2026 09:24:33 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 1828930055F4
-	for <lists+linux-wireless@lfdr.de>; Thu, 12 Mar 2026 08:11:44 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 3677830457DD
+	for <lists+linux-wireless@lfdr.de>; Thu, 12 Mar 2026 08:22:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5987133121D;
-	Thu, 12 Mar 2026 08:11:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8C3EA279DAD;
+	Thu, 12 Mar 2026 08:22:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="hodzst2i"
+	dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b="xmefmJcN"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-wm1-f50.google.com (mail-wm1-f50.google.com [209.85.128.50])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from sipsolutions.net (s3.sipsolutions.net [168.119.38.16])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9EEB5314A7A
-	for <linux-wireless@vger.kernel.org>; Thu, 12 Mar 2026 08:11:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.50
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 93DE9350D46
+	for <linux-wireless@vger.kernel.org>; Thu, 12 Mar 2026 08:22:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=168.119.38.16
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773303102; cv=none; b=R3fYdUPV5Y47/hCcBbcSxpPUCJCh4mAV0Vj1u672V1hU1eonxqepzWM4T6jVxB9JTSbc7bLjW9i9DRco9WRuje32vRKH2JQH8uX2JJZTY7p7GRD5VfUdwsxDdNzGeuqD7GvT2jstWiSLgKRQnsSarbGfb8OLXEuQYOlKRUoQXNE=
+	t=1773303744; cv=none; b=odNBUJUmNs+6/8PQb0MlN4bowpMh6wToOgI1dh8M/UGeQN1e6QpgWacIaVs9wr/WnPeqsQxDkgEtJMQ32NPWwGe4W06sreIQnhEScGj+EaZgatji+X9cKOE++7GusLoYJTfza3XMHs/vcbKhqyz4F7EkQ7cU+GHydI+JKT5dLY4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773303102; c=relaxed/simple;
-	bh=aYP1Zk8ziXmo7It1ymihuYYGqI60lgoA+ejZjfkGNvs=;
-	h=Content-Type:Mime-Version:Subject:From:In-Reply-To:Date:Cc:
-	 Message-Id:References:To; b=Sp+JVg+nvzpne539WPkH8rjU/oNI9TIAglJMlbTkCV/2toOuIjxuC4RVzFNMSqaDBn6Ip66J30VL2gi6Y6uoDhEKE84Qcujh/8x6MYJeCZWs/5aK23/Z1kuplgh5VZr12GLv1aLghIoMQrRESbFWPGdp3UP5rnFy6atTWHAWF9I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=hodzst2i; arc=none smtp.client-ip=209.85.128.50
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-wm1-f50.google.com with SMTP id 5b1f17b1804b1-4852e09e23dso5571735e9.0
-        for <linux-wireless@vger.kernel.org>; Thu, 12 Mar 2026 01:11:40 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1773303099; x=1773907899; darn=vger.kernel.org;
-        h=to:references:message-id:content-transfer-encoding:cc:date
-         :in-reply-to:from:subject:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=egv5yhqOwy4tUrlRNK/UI1RMs5MElmFcDPC+yXddIvY=;
-        b=hodzst2i0//qYZGdjoR/VNKNOMySd6oAI3AkLuy5vO0gLOJXJ3gSp7xzxI1wexGneR
-         70JnuZANp9dgzEqv0bU3YrDb20T7kGcEsO+4arZDLlTrLET+L9T4n2GeenQ2hArD/sZQ
-         o396+1fkw8/aag44vG59/R8lCQJnnNlKbQyNXbZh8+FtIzzhYonLR2vW4ghtd84nCmsw
-         +IMYocN1hr6c+3gPi8SFMIyuAj3jHp/zRB2wNePqlKAPXSnvzLpM6FMdCIuzxBnqKqxw
-         77yoflKCbQAzhYdH7YlhUvuMQPbaovbdq+dtfOZyj45Y3YDlKHSmH2mapCt9g1hMyAgs
-         0O+w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1773303099; x=1773907899;
-        h=to:references:message-id:content-transfer-encoding:cc:date
-         :in-reply-to:from:subject:mime-version:x-gm-gg:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=egv5yhqOwy4tUrlRNK/UI1RMs5MElmFcDPC+yXddIvY=;
-        b=ruzBDW3B+1dH2Vv6A0quFUi8Nw2T4fZWVQIkM4gxHxnQ8nNWSqe9VZwryFOGPIdmDz
-         nde+A4gzOl4x0oPje1AFJNwDDUZ6qiU+19+TNty0kt5XUx8FLOlBJM+Vq4fubM/l9+h2
-         AS95QFLp+9TluOeOTL8mNZzCQP/7G09OHVuIRKWyonI1Pwp1ntQx7qFlmtWBuWjq4UvF
-         bQbGgtmeWEAL31En+g6m16zRYbBXPK08tdYF+59QU6YnUUAeWwQ9zJzmSCG+2yUlwRAV
-         ph0yYIwQC1dnzz53BpxoQMj6L/KNIHQwFSeFtZW1W3v+fUVUzWF7q6yot7SyujMCrrkI
-         Xh4g==
-X-Forwarded-Encrypted: i=1; AJvYcCUohEg5nYGA+NFhZq7l74r+Rm6e8ATt979pVlFohf18ATb7rD2oBqKYpY6rhXCs2ThVmABRBallwH0ZRltYkQ==@vger.kernel.org
-X-Gm-Message-State: AOJu0YwrWrMdUmHStwXALZJyIj+3nQiju+TC99qN4Gwg+ASFhKtCdZd8
-	GSW9stbMW+JfkpOhPof4+o0EXq3DcuWprLk8lynQSybxdnydlKmVxrTi
-X-Gm-Gg: ATEYQzy7nKc7Zqu0ZcUwgOhpSPPWe3vDZ0zsCeDFnfKn5YA9FEHyq7AyhzWowvI5P8d
-	nlvI7Sx/77QlpcgPYCIWqQUOhZ6wJN3auAX/4NFPogmtZiq9uQ/drtFbvrsbLdAgOhFSL6aSgUM
-	ooamPktbFFDqmobMmqMtHYPKqztn5zXFfyRKjZADtD0jmYJMpfkjfC03z8BAYj9jDeKP7SSHyzK
-	oHMsxGASbf7qeoL7CIF4ziJq/w1Dt4WwTaaEFAxUd5TGY43P237GA0dxGxi683TeXiIHdPSGHiY
-	j1pHoDlsqEtoJgoJAGXWV+g1/Uf338Erfs/CSaWgLHODhl/TZzzcR2zBXoX2fc2PIk9H93RBN3q
-	/Wl/8SZKNmMoG7MG/jcaK6G7fpF+bWIsoAc5kO+jiRCNXR5OwUmBmYMh4b68JgZdnofQG2EGVGR
-	tuqSbp7XUHQlwonxaFGwqsYw2Q/aKQK2MSiAk3jWfJDk5Us+mM28rYr5i5PkpvoL0=
-X-Received: by 2002:a05:600c:8b0a:b0:477:7b16:5f9f with SMTP id 5b1f17b1804b1-4854b12cf85mr88377465e9.31.1773303098508;
-        Thu, 12 Mar 2026 01:11:38 -0700 (PDT)
-Received: from smtpclient.apple ([87.200.95.144])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-439fe20b899sm6339423f8f.23.2026.03.12.01.11.36
-        (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
-        Thu, 12 Mar 2026 01:11:38 -0700 (PDT)
-Content-Type: text/plain;
-	charset=utf-8
+	s=arc-20240116; t=1773303744; c=relaxed/simple;
+	bh=FVp77Lw09FgH1PD5v1uOFcEhB/e49iHLHDpqG5J1JBg=;
+	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=ex3flKFxyv06/JmvHPfqfDCHNsLTThtRmFswwoEacqygVXJeDkB+0UC3LP0cgHuv9mU7JTwhzwYinsASu8LtOFYyOWJ/N7KUZmJeUEEaKPlg8tHjhDxpTDBR8ShES7QwoT4dNo1Yy3QWDYHFutjcWH0xx8EKv48Z88C9BMpJ2FQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net; spf=pass smtp.mailfrom=sipsolutions.net; dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b=xmefmJcN; arc=none smtp.client-ip=168.119.38.16
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sipsolutions.net
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=sipsolutions.net; s=mail; h=MIME-Version:Content-Transfer-Encoding:
+	Content-Type:References:In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender
+	:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
+	Resent-Cc:Resent-Message-ID; bh=mInBjNwnmOVstovthVyAp86y9JrXwEc/jfaTJc6nf50=;
+	t=1773303739; x=1774513339; b=xmefmJcNqyTYZuX3+kTAQ/xJ+aU9fUsdQRe3hqVQysqnolq
+	+JBUXuYpODtt6dpyjXqGqY/aJ1I+m7vFtM6+labf+BI7ljgql3ZI5M2/DWKcoz8ksgrq4BeEO9QOV
+	S/BEaNCWZ04YgqZrs7C5PVew8Oriw/sUwUXhN2qgQ01+MJtGyCdsOC3VaYt+2pd4hjd1uQBc+mCoB
+	uw/XeENdZk5bmC3bS5KdeYUXYvm9TckXEyGXECuWXX6VeAEkjSmconWLAsk0hs3q1feWrPsAqSuQ6
+	m1+NheT5rIA1r35aeHilv+ez8pngl+Oyezf3tEXRqim/E1bHjsYzfMC9iy155zUA==;
+Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
+	(Exim 4.98.2)
+	(envelope-from <johannes@sipsolutions.net>)
+	id 1w0bJ2-0000000Fjkr-3E48;
+	Thu, 12 Mar 2026 09:22:08 +0100
+Message-ID: <c676b2cd73463fa88f459f0416c60b03f20dd027.camel@sipsolutions.net>
+Subject: Re: [PATCH wireless-next v8 2/3] wifi: cfg80211: add initial UHR
+ support
+From: Johannes Berg <johannes@sipsolutions.net>
+To: Harshitha Prem <harshitha.prem@oss.qualcomm.com>, 
+	linux-wireless@vger.kernel.org
+Cc: Karthikeyan Kathirvel <karthikeyan.kathirvel@oss.qualcomm.com>, 
+	vasanthakumar.thiagarajan@oss.qualcomm.com, Lorenzo Bianconi
+ <lorenzo@kernel.org>, 	ath12k@lists.infradead.org, Jeff Johnson
+ <jeff.johnson@oss.qualcomm.com>,  Ping-Ke Shih <pkshih@realtek.com>, Manish
+ Dharanenthiran <manish.dharanenthiran@oss.qualcomm.com>, Jouni Malinen	
+ <j@w1.fi>
+Date: Thu, 12 Mar 2026 09:22:07 +0100
+In-Reply-To: <416d08f1-6b8d-4bf7-9a63-c3c68497d990@oss.qualcomm.com>
+References: <20260130154259.265130-5-johannes@sipsolutions.net>
+	 <20260130164259.54cc12fbb307.I26126bebd83c7ab17e99827489f946ceabb3521f@changeid>
+	 <f96125eeda23451c19067359eb9d10b4047bcdd3.camel@sipsolutions.net>
+	 <5d54feea-d0cd-4bd7-b0d2-02e42f0fe5e1@oss.qualcomm.com>
+	 <be9ab3c7f05b0f56f19aee0ffc7c2f96138b9a05.camel@sipsolutions.net>
+	 <156d6d48-d135-4acf-a5d7-c9ae80523864@oss.qualcomm.com>
+	 <0f4b34f0b529fd93fc608d8bbac0e98516b7a3d2.camel@sipsolutions.net>
+	 <f3282007-a11a-4f68-86d8-0945e4979d65@oss.qualcomm.com>
+	 <d3ecf6e5580cbe50eee807b1e63109e42e3b956c.camel@sipsolutions.net>
+	 <416d08f1-6b8d-4bf7-9a63-c3c68497d990@oss.qualcomm.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.58.3 (3.58.3-1.fc43) 
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3864.400.21\))
-Subject: Re: [PATCH] wifi: rtw89: retry efuse physical map dump on transient
- failure
-From: Christian Hewitt <christianshewitt@gmail.com>
-In-Reply-To: <3f072307ed634e878c7d9da152801aec@realtek.com>
-Date: Thu, 12 Mar 2026 12:11:25 +0400
-Cc: Bitterblue Smith <rtl8821cerfe2@gmail.com>,
- "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
- "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
-Content-Transfer-Encoding: quoted-printable
-Message-Id: <70E90B9D-4C33-46B0-92B7-46969F6AF7B0@gmail.com>
-References: <20260301042422.195491-1-christianshewitt@gmail.com>
- <c751f9505a664f6895bacecb62bc534a@realtek.com>
- <E6E752BD-5F3D-4F30-9820-CB44FA767E69@gmail.com>
- <c764f16a880a400686c8c5f639fa98c3@realtek.com>
- <903C7E52-033F-455E-89DC-B78C67C0C732@gmail.com>
- <5ad1b7d20d1745bab0638d15731e7ccd@realtek.com>
- <CC1F2CDA-830F-4351-A855-8C921B148F8D@gmail.com>
- <2ab692371ff94a3f960d41b04288a084@realtek.com>
- <B9D5D4CC-0729-4867-AD1B-18D80D78841B@gmail.com>
- <bac9b823342141bb9ed561ac5ccfd71d@realtek.com>
- <62487266-6846-4E3D-9947-33CB6FE408BF@gmail.com>
- <3f072307ed634e878c7d9da152801aec@realtek.com>
-To: Ping-Ke Shih <pkshih@realtek.com>
-X-Mailer: Apple Mail (2.3864.400.21)
+MIME-Version: 1.0
+X-malware-bazaar: not-scanned
 X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
-	R_DKIM_ALLOW(-0.20)[gmail.com:s=20230601];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
+	DMARC_POLICY_ALLOW(-0.50)[sipsolutions.net,none];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_DKIM_ALLOW(-0.20)[sipsolutions.net:s=mail];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FREEMAIL_CC(0.00)[gmail.com,vger.kernel.org];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-33070-lists,linux-wireless=lfdr.de];
-	FROM_HAS_DN(0.00)[];
-	TO_DN_EQ_ADDR_SOME(0.00)[];
-	FREEMAIL_FROM(0.00)[gmail.com];
+	TAGGED_FROM(0.00)[bounces-33071-lists,linux-wireless=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[gmail.com:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[5];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[christianshewitt@gmail.com,linux-wireless@vger.kernel.org];
-	RCPT_COUNT_THREE(0.00)[4];
-	MID_RHS_MATCH_FROM(0.00)[];
-	APPLE_MAILER_COMMON(0.00)[];
+	DKIM_TRACE(0.00)[sipsolutions.net:+];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	TO_DN_SOME(0.00)[];
 	NEURAL_HAM(-0.00)[-0.999];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[johannes@sipsolutions.net,linux-wireless@vger.kernel.org];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[linux-wireless];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,libreelec.tv:url,realtek.com:email]
-X-Rspamd-Queue-Id: A3C3426EB57
+	RCPT_COUNT_SEVEN(0.00)[10];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,sipsolutions.net:dkim,sipsolutions.net:mid]
+X-Rspamd-Queue-Id: 0DCFB26EDF7
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-> On 12 Mar 2026, at 11:39=E2=80=AFam, Ping-Ke Shih <pkshih@realtek.com> =
-wrote:
+On Thu, 2026-03-12 at 11:19 +0530, Harshitha Prem wrote:
+> > Yeah, maybe, then it wouldn't ever really go to a normal SET_BEACON any
+> > more, maybe?
+> >=20
+> > I was thinking more for not having to change all the code in hostapd at
+> > a given time, it might be more plausible to still allow SET_BEACON and
+> > just keep giving the counter offsets etc., in case e.g. something "old"
+> > like short-preamble changes.
+> >=20
+> > But clearly hostapd would have to manage those offsets etc. anyway, so
+> > perhaps there's really not going to be any reason to support SET_BEACON
+> > while updates are in progress. But in that case I'd probably argue it
+> > (SET_BEACON) should be disallowed by the kernel, to catch errors.
 >=20
-> Christian Hewitt <christianshewitt@gmail.com> wrote:
->>> On 12 Mar 2026, at 6:22=E2=80=AFam, Ping-Ke Shih =
-<pkshih@realtek.com> wrote:
->>>=20
->>> Christian Hewitt <christianshewitt@gmail.com> wrote:
->>>>> On 11 Mar 2026, at 7:05=E2=80=AFam, Ping-Ke Shih =
-<pkshih@realtek.com> wrote:
->>>>>=20
->>>>> Christian Hewitt <christianshewitt@gmail.com> wrote:
->>>>>>=20
->>>>>>> On 9 Mar 2026, at 6:35=E2=80=AFam, Ping-Ke Shih =
-<pkshih@realtek.com> wrote:
->>>>>>>=20
->>>>>>> Christian Hewitt <christianshewitt@gmail.com> wrote:
->>>>>>>>=20
->>>>>>>>> On 2 Mar 2026, at 10:04=E2=80=AFam, Ping-Ke Shih =
-<pkshih@realtek.com> wrote:
->>>>>>>>>=20
->>>>>>>>> Christian Hewitt <christianshewitt@gmail.com> wrote:
->>>>>>>>>>> On 2 Mar 2026, at 9:47=E2=80=AFam, Ping-Ke Shih =
-<pkshih@realtek.com> wrote:
->>>>>>>>>>>=20
->>>>>>>>>>> Christian Hewitt <christianshewitt@gmail.com> wrote:
->>>>>>>>>>>> On Radxa Rock 5B with a RTL8852BE combo WiFi/BT card, the =
-efuse
->>>>>>>>>>>> physical map dump intermittently fails with -EBUSY during =
-probe.
->>>>>>>>>>>> The failure occurs in rtw89_dump_physical_efuse_map_ddv() =
-where
->>>>>>>>>>>> read_poll_timeout_atomic() times out waiting for the =
-B_AX_EF_RDY
->>>>>>>>>>>> bit after 1 second.
->>>>>>>>>>>=20
->>>>>>>>>>> I'm checking internally how we handle this case.
->>>>>>>=20
->>>>>>> Sorry for the late.
->>>>>>>=20
->>>>>>> We encountered WiFi/BT reading efuse at the same time causing =
-similar
->>>>>>> problem as yours. The workaround is like yours, which adds =
-timeout
->>>>>>> time.
->>>>>>>=20
->>>>>>>>>>>=20
->>>>>>>>>>> [...]
->>>>>>>>>>>=20
->>>>>>>>>>>>=20
->>>>>>>>>>>> For context, firmware also fails (and recovers) sometimes:
->>>>>>>>>>>=20
->>>>>>>>>>> Did you mean this doesn't always happen? sometimes?
->>>>>>>>>>=20
->>>>>>>>>> It=E2=80=99s another intermittent behaviour observed on this =
-board (and not
->>>>>>>>>> related to the issue this patch targets). It occurs less =
-frequently
->>>>>>>>>> than the efuse issue and the existing retry mechanism in the =
-driver
->>>>>>>>>> ensures firmware load always succeeds.
->>>>>>>=20
->>>>>>> This might be the same cause due to reading efuse in firmware.
->>>>>>>=20
->>>>>>> Though we can add more timeout and retry times as workaround, I =
-wonder
->>>>>>> if you can control loading time of WiFi and BT kernel modules?
->>>>>>>=20
->>>>>>> More, can you do experiment that you load BT module first, and =
-then load
->>>>>>> WiFi module after 10 seconds (choose a large number =
-intentionally, or
->>>>>>> even larger)?
->>>>>>=20
->>>>>> https://paste.libreelec.tv/charmed-turkey.sh
->>>>>>=20
->>>>>> I=E2=80=99ve run the above script ^ which removes the wifi and bt =
-modules in
->>>>>> sequence then reloads them in the reverse order with a delay =
-between
->>>>>> bt and wifi modules loading, then checks for error messages. Over =
-200
->>>>>> test cycles with a 10s delay all were clean (no errors). I also =
-ran
->>>>>> cycles with a 2 second delay and 0 second delay before starting =
-wifi
->>>>>> module load and those were clear too. I guess that proves =
-sequencing
->>>>>> avoids the efuse contention issue? - although it=E2=80=99s not =
-possible in
->>>>>> the real-world so not sure there=E2=80=99s huge value in knowing =
-that :)
->>>>>=20
->>>>> Thanks for the experiments.
->>>>>=20
->>>>> Still want to know is it possible to change sequence/time of =
-loading
->>>>> kernel modules at boot time from system level? I mean can you =
-adjust
->>>>> the sequence in the Rock 5B board?
->>>>=20
->>>> I=E2=80=99m not a kernel expert, but I=E2=80=99ve always understood =
-module probe and
->>>> load ordering to not be guaranteed; as many things run in parallel =
-and
->>>> are highly subjective to the specific hardware capabilities and =
-kernel
->>>> config being used.
->>>=20
->>> I have heard people about changing sequence/time of kernel modules, =
-so
->>> I'd like you can try this method.
->>>=20
->>> I did ask AI, it said it is possible to create a .conf file under
->>> /etc/modprobe.d/ and use `softdep` syntax to ensure loading =
-sequence.
->>> Could you try this?
->>=20
->> I can test this, but even if it works it=E2=80=99s not a fix because =
-modprobe
->> confs configured in userspace are only used with loadable modules =
-that
->> have been compiled with =3Dm, not build-in modules that are resident =
-in
->> kernel memory and compiled with =3Dy; and distros are free to choose =
-how
->> their kernel is configured. NB: I=E2=80=99m not sure if there are any =
-general
->> kernel rules for this, but I=E2=80=99d expect there to be general =
-principle of
->> modules being resilient to transient host states and not depending on
->> userspace packaging to load correctly?
+> Yes, that's the idea when any MLD_BSS_UPDATE is in progress, instead of
+> sending SET_BEACON rather use MODIFY_MLD_BSS_UPDATE.
+
+I was going to say that introduces its own set of races, if it's trying
+to modify the BSS update while it _just_ finished, but actually that
+race exists anyway and we'd want to just reject updates (regardless of
+which command is used) that refer to now-invalid cookies.
+
+> >=20
+> > >    |                           |                           |
+> > >  6 |                           | Beacons: 10, 9, 8...      |
+> > >    |                           |-------------------------->|
+> > >    |                           |                           |
+> > >  7 | [CSA Triggered: Link0,    |                           |
+> > >    |  Count 10. Sees Cookie X] |                           |
+> > >    |                           |                           |
+> > >  8 | CMD_START_MLD_BSS_UPDATE  |                           |
+> > >    | [Type:CSA, Link:0, Tmpls, |                           |
+> > >    |  Cookie X + Offset,       |                           |
+> > >    |  Post Tmpl (No UHR ele)]  |                           |
+> > >    |-------------------------->|                           |
+> >=20
+> > Not sure I understand the "No UHR ele" part - surely the post template
+> > still has UHR? Or did you mean "UHR parameter update"?
+> >=20
 >=20
-> I think built-in modules will be loaded sequentially (not in parallel)
-> by device_initicall(), so BT and WiFi drivers will not read efuse=20
-> at the same time.
+> At this point, the CSA post-beacon template would not include the
+> updated UHR operation element, since hostapd needs a way to determine
+> whether that element should be added. The updated UHR operation element
+> is expected to be reflected only after the advance timer expires.
+> In a scenario where the CSA completes before the advance timer expires,
+> the CSA post-beacon may not actually require the updated UHR operation
+> element.
 
-Even if built-in modules are loaded sequentially, the kernel still has
-many dynamically loaded modules; and distros can configure that mix as
-they like, so you still cannot predict or guarantee the outcome. That
-could be changed by requiring rtw89 modules to be =3Dy, but that goes
-against the principles of a modular kernel and I=E2=80=99d expect =
-appropriately
-rude comments to the idea if submitted :)
+Oh, you were thinking of the _updated_ element only? I read it as "no
+UHR operation at all", which seems nonsensical since it's still UHR.
 
->>>> In addition, did below messages not appear in these experiments?
->>>>>=20
->>>>> [    7.864148] rtw89_8852be 0002:21:00.0: fw security fail
->>>>> [    7.864154] rtw89_8852be 0002:21:00.0: download firmware fail
->>>>=20
->>>> No, because even if we have a 0s delay between each group of =
-modules
->>>> being loaded, they are loaded in series, so we workaround the =
-issue.
->>>> Tweaking the script to background the module load loops so both run
->>>> in parallel would be closer to normal conditions, and I would =
-expect
->>>> to start seeing failures and the retry mechanisms within the =
-modules
->>>> (as added in this patch) being triggered.
->>>=20
->>> Additional question for downloading firmware. As you reported this
->>> issue initially (load modules at boot time in parallel), it seems
->>> appear this message by chance. Since this driver will retry to =
-download
->>> firmware, will it successfully downloads firmware finally? Or it =
-still
->>> fails to download after 5 times retry?
->>=20
->> I have only seen firmware load fail a handful of times in many =
-hundreds
->> of boots and each time one retry attempt resulted in success. To be
->> clear; I have am not reporting firwmare loading as a problem, it is =
-not
->> an issue for me. I=E2=80=99ve mentioned it only for context, i.e. it =
-shows that
->> a simple retry mechanism is effective at handling the similar issue =
-with
->> efuse map.
+> For example, if the UHR advance timer expires before the CSA completes,=
+=C2=A0
+
+(taking this out of the paragraph)
+
+This seems like a bit of a strange "if" though - hostapd set the timers
+in beacon countdown for both, so it can trivially predict which one is
+going to expire first, there's nothing that can stop that from happening
+the way it was predicted.
+
+It obviously has dependencies between them, but I don't see a way to
+avoid them.
+
+
+> Because of this, an event-driven approach was considered.
+[...]
+> it could
+> notify hostapd, which could then update the CSA post-beacon template
+> with the updated UHR operation element via MODIFY_MLD_BSS_UPDATE.
+
+So I think all this is an interesting question we should really decide
+on first, before we continue with the details of the design.
+
+We have been talking a lot about templates here, and associated latency
+issues, and the question of hostapd being single-threaded comes up again
+later in your email, etc.
+
+Each UHR update operation will have three pending templates:
+ - announcing the update will happen (counting down)
+ - announcing the update has happened (counting up)
+ - steady state after the operation
+
+Each additional overlapping operation adds another template (another UHR
+update operation is [currently] not permitted by the spec, so there's no
+second "counting up"):
+
+ time
+  |
+  v
+  |
+  x <-- beacon transmission
+  |
+  | UHR update starts
+  |   - template I: announcing update will happen
+  |   - template II: announcing update has happened
+  |   - template III: steady state after UHR update
+  |
+  x <-- switch current template to I, two more pending
+  |
+
+...
+
+  | CSA starts
+  |   - update current beacon I to I': include CSA
+  |   - update template II to II': include CSA
+  |   - update template III to III': include CSA
+  |     (assuming CSA finishes after UHR parameter update)
+  |   - add template IV: post UHR update and post CSA
+  |
+  x <-- current template is I' now
+  |
+  | (If now something else happens that should be reflected in
+  |  the beacon _immediately_, all four I', II', III', IV templates
+  |  need to be updated.)
+  |
+...
+  |
+  x <-- UHR update takes effect, switch to II'
+  |
+...
+  |
+  x <-- UHR update is no longer announced, switch to III'
+  |
+...
+  | channel switch actually happens
+  |
+  x <-- CSA has happened, is no longer announced, template IV
+  |
+...
+
+(and you could have more of these overlapping, say link removal happens
+at the same time, BSS color change, etc., but each new operation only
+updates all the templates and adds at most a single new one, UHR updates
+two new ones.)
+
+And if that seems complex already, I haven't drawn this up for multi-
+link! That would actually have an effect over all the links of the AP
+MLD, since they interact with each other too, and carry some information
+with counters from the other APs.
+
+So if only _one_ link is doing updates, the number of templates just
+multiplies by the number of links, and if multiple links are doing
+overlapping updates you add all of those together; three links doing two
+overlapping updates each would have four templates each and thus require
+a total of 18 templates! (But that's "only" six overlapping operations.)
+
+Oh and each of those templates would have a whole bunch of counter
+offsets, since the counter for each operation may need to be set in
+multiple places.
+
+This is clearly a *lot* of complexity, and we haven't even really talked
+about sending Probe Response, (Re)Association Response, EPP Capabilities
+and Operation Parameter Response (and perhaps other) frames, some of
+which may have to carry all of those (six) counters in various places.
+
+
+My original thought was that yes, indeed we can manage this complexity
+in the kernel - each set of these operations gets a set of counter
+offsets, and we can either do that in mac80211 or have API to let
+firmware fill in the counters, and=C2=A0even extend that so that each
+operation's cookie can be given for other frames (mentioned in the
+previous paragraph). It does get tedious though ...
+
+(I was going to write something about event-driven updates here, but
+another thing came to mind first.)
+
+Considering multi-link, event-driven updates, and all the response
+frames that I mentioned above, made me realise that we also need to
+think about the design in terms of beacon TBTTs for multiple links. I'd
+think that the spec allows having different beacon intervals for
+different links, and there are TSF offsets, but there's a question here
+if we actually want/need that in the implementation.
+
+If not, and the TBTTs for multiple links are aligned, that could
+simplify things quite significantly. If yes, perhaps due to the multi-HW
+architecture you (Qualcomm) have, it would require a more complex design
+to get it right, especially considering that you could have say 4-5
+links max and need to send the response frames.
+
+If beacon intervals are the same and TBTT aligned, then basically you
+just have to update all the link beacons once each beacon interval, and
+could send (handwaving a bit) the response frames with an indication
+that they are expected to go out during a specific period of time, and
+if that time is mispredicted by hostapd the frame would get dropped by
+the driver/FW, and hostapd could send another response instead with the
+updated counters etc.
+
+In this case, you could also make the whole beacon template update
+handling event-driven, and just have a single "beacons transmitted"
+event to hostapd while any operations are ongoing, and hostapd would
+just update all the beacon templates for all the links at that point,
+including even writing all the counters itself even, it has plenty of
+time (a whole beacon interval) to do that.
+
+However, if they're not aligned, you'd need an event per link, and then
+handling it on time is really only plausible if we can require the
+beacons to either be at the same time or have a "minimum distance",
+because otherwise you could end up with really small time intervals.
+It's still maybe possible in that case, because hostapd would know which
+link(s) got the beacon TX event, but it'd have to update all links for
+each event, and if there are beacons close to each other that could
+easily become impossible, because after any beacon TX event it has to
+update _all_ links before _any_ link transmits a new beacon, and so it
+doesn't work if they're only a short time apart.
+
+I'll stop here, I think there are a couple of system design questions in
+this that we need answers on first, particularly the question about
+beacon alignment across multiple links. But it also affects how we send
+the response frames, and it _would_ be nice to not have to offload the
+counter filling in those to the kernel/driver/firmware, since that would
+make it far more extensible (e.g. for the EPP frame that doesn't seem to
+have been considered so far.)
+
+
+
+> It might be possible to rely on a generic notification when this is
+> started via CMD_START_MLD_BSS_UPDATE. That said, since CSA has existed
+> for a long time, I was wondering whether also sending CH_SWITCH_NOTIFY
+> for backward compatibility could be considered, at least initially.
+
+Fair. I think probably easier to _not_ have it, since hostapd would
+otherwise have to figure out which one to handle, but I guess TBD.
+
+
+> That=E2=80=99s a fair point. With multiple operations potentially occurri=
+ng in
+> parallel, it does seem possible that this could gradually result in an
+> increasing number of templates being involved.
+
+Yes. I spelled it out more above :)
+
+> > So I'm coming around to the idea that you have a notification and
+> > hostapd has to update the templates at that point.
 >=20
-> I have this question because I wonder downloading firmware issue might =
-be
-> also a reading efuse issue. If so, retry might resolve as well.
+> Yes, that does seem to align with the direction here. This approach
+> would still partially rely on event=E2=80=91driven updates (for example,
+> reacting to a UHR event) to modify the BSS via CMD_MODIFY_MLD_BSS_UPDATE
+> for csa. At the same time, since such notifications would likely require
+> the beacon templates to be updated fairly promptly, it does raise some
+> open questions around prioritization and handling on the hostapd side,
+> particularly given its single=E2=80=91threaded nature.
 
-Hard to know, but it's an infrequent event and the existing retry =
-mechanism appears to work fine.
+Sure, but I think we're reaching a point where the single-threaded
+nature will need to be reconsidered anyway, if only to offload longer-
+running operations (such as SAE/EPPKE calculations) to another
+thread/CPU.
 
-> As your results, it looks like to retry reading efuse can resolve all
-> issues you found. What do you think?
+> > >    |                           |                           |
+> > > 23 |                           | Beacons Continue...       |
+> > >    |                           |-------------------------->|
+> > >    |                           |                           |
+> > > 24 |                           | Probe Request             |
+> > >    |                           |<--------------------------|
+> > >    |                           | [Fetch TBTT]              |
+> > >    |     send_mgmt (TBTT)      |                           |
+> > >    |<--------------------------|                           |
+> > >    |                           |                           |
+> > > 25 | send_mgmt (Probe Resp     |                           |
+> > >    |  w/ TBTT in UHR Param)    |                           |
+> > >    |-------------------------->|                           |
+> > >    |                           |                           |
+> >=20
+> > Not sure I follow this part regarding the "TBTT" thing. Are you saying
+> > the RX of the probe request would have a TBTT attached to it? But does
+> > it matter, what matters is the TX? And that's probably impossible to ge=
+t
+> > right?
+>=20
+> What I was trying to describe is the handling of probe and association
+> responses during an ongoing UHR CU / EHT CU.
 
-The patch submitted resolves the efuse map dump for me. If there are =
-more
-efuse accesses that need to be addressed I haven=E2=80=99t seen them in =
-tests. If
-you are hinting to abstract things further I=E2=80=99d ask you to please =
-propose
-an alternative patch that I can test for you; I=E2=80=99m firmly at the =
-novice end
-of kernel contributors and unlikely to spot where changes might be =
-needed
-without being spoon-fed rather explicit instructions :)
+Ah yes, see some thoughts about that above. I think the "fetch TBTT"
+basically inherently leaves a race - if we want to fully solve that we
+either have to have some "drop frame if it was wrong" thing like I
+described above. Perhaps that could be expressed in "don't send this
+frame after this TBTT" or something instead of linking to the
+operations.
 
-Christian
+> In such cases, when a probe request or association request is received,
+> the corresponding response may need to reflect the current countdown
+> state. For example, in the case of UHR, a probe response might need to
+> include an UHR parameters update element with the appropriate countdown
+> value.
 
+Right, across all the links.
+
+> The idea was that, at the time the response is being constructed, the
+> current countdown could be obtained from the relevant cookie and made
+> available to user space. This would allow hostapd to build the probe or
+> association response accordingly.
+
+Yeah but it's racy anyway, and if there's anything event driven hostapd
+knows the counter already. I described some thoughts above, so not going
+to elaborate more here for now.
+
+
+> > It's input into the kernel, so the size doesn't matter, I think? For
+> > notifications that might be an issue, and dumpit is used for data going
+> > _out_ of the kernel so userspace doesn't have to have arbitrarily large
+> > buffers ready before it knows the data, but on input I don't see how it
+> > matters.
+>=20
+> Based on the earlier discussion in the below thread, I had wondered
+> whether there might be a potential bottleneck here.
+>=20
+> https://lore.kernel.org/all/c7e383a9-c291-426b-a7f1-7845fabbaeeb@oss.qual=
+comm.com/
+>=20
+> We will re=E2=80=91check this internally to confirm whether that concern =
+is
+> still applicable.
+
+Looks like I never replied to that point there, but I don't think it's
+an issue on commands sent to the kernel - the in-kernel socket isn't
+limited by the size of any command like a userspace read() or recvmsg()
+call is limited to the buffer size it has allocated a priori.
+
+There's no such huge event going to userspace in the design, but I
+suppose even if there _was_ we could just mandate that hostapd increase
+the recvmsg() buffer size according to the number of links or such that
+it expects to handle, or even just use a huge size (a few dozen KiB) for
+each call, it's not really a big deal either way IMHO.
+
+We don't want to have such huge events (we really can't have them as
+multicast events), and we generally strive to keep dump message size
+reasonably small, but I don't think it's going to be a show-stopper.
+
+johannes
 
