@@ -1,167 +1,166 @@
-Return-Path: <linux-wireless+bounces-33114-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-33115-lists+linux-wireless=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id sJcQDHHdsmmtQQAAu9opvQ
-	(envelope-from <linux-wireless+bounces-33114-lists+linux-wireless=lfdr.de@vger.kernel.org>)
-	for <lists+linux-wireless@lfdr.de>; Thu, 12 Mar 2026 16:36:17 +0100
+	id QJ3XLNfdsmmtQQAAu9opvQ
+	(envelope-from <linux-wireless+bounces-33115-lists+linux-wireless=lfdr.de@vger.kernel.org>)
+	for <lists+linux-wireless@lfdr.de>; Thu, 12 Mar 2026 16:37:59 +0100
 X-Original-To: lists+linux-wireless@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8A8C7274995
-	for <lists+linux-wireless@lfdr.de>; Thu, 12 Mar 2026 16:36:16 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4D424274A76
+	for <lists+linux-wireless@lfdr.de>; Thu, 12 Mar 2026 16:37:59 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id C8B84321B89E
-	for <lists+linux-wireless@lfdr.de>; Thu, 12 Mar 2026 15:30:35 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 94A85321A660
+	for <lists+linux-wireless@lfdr.de>; Thu, 12 Mar 2026 15:32:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6731B382396;
-	Thu, 12 Mar 2026 15:30:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 369AD3CA4B4;
+	Thu, 12 Mar 2026 15:32:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="OACLp9L1"
+	dkim=pass (1024-bit key) header.d=hansenpartnership.com header.i=@hansenpartnership.com header.b="pcvJZxMl"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-wm1-f53.google.com (mail-wm1-f53.google.com [209.85.128.53])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from lamorak.hansenpartnership.com (lamorak.hansenpartnership.com [198.37.111.173])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0E70234FF6C
-	for <linux-wireless@vger.kernel.org>; Thu, 12 Mar 2026 15:30:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.53
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5489238552A;
+	Thu, 12 Mar 2026 15:32:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.37.111.173
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773329435; cv=none; b=ESB8velhyk8uDGihSJ41y3A5lpvSSic/FRoHX5taiZ/IhmyotVGxjAvo5HLxtopx6Tpebmedg/qoY3om1bQozB6fScM4UaAERITywC1oVGesrirTXT1LgkI0FchC3WpwM3aXt4WqKVGHImFeRJPxNoNkWdOfkU0wT0Re0FQz0A4=
+	t=1773329562; cv=none; b=mqHb/DJurcag11SRnS5v0eXKw/B9KYnMFAy3k0LtOleIzyizQQIZGPykWB/Fmk1pYX0+BCwlxnWPlyFL0p4IAqK1AyjV+lTgP5B2vSizwLKg+5GL0Sd0YH7qCbTM9rqMlMY4753DXbwz9x4BcwiR/xWXOdqGvIlauCtTKbZdkZU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773329435; c=relaxed/simple;
-	bh=X4TwK9wYWrjLWfl82+wdKTQsnMykfTPN0ArOX0oxONU=;
-	h=Mime-Version:Content-Type:Date:Message-Id:To:Cc:Subject:From:
-	 References:In-Reply-To; b=Sjrbs56nFOnOD1gJ7r48UYMGLyquQUHXGWz2sOAGr5XZffTWVTzstqvn33kIEOGt4e3F3QxSB8yKyNaBvM/ySdSmpSqhy3QBnIi8ty43eW7pj2vtaDIADMP4Kf59berGSrqykKIpHrJSCY72XEGsWwLyv54e066Z3XD4KcxMc2w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=OACLp9L1; arc=none smtp.client-ip=209.85.128.53
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-wm1-f53.google.com with SMTP id 5b1f17b1804b1-485410a0a8aso11033555e9.2
-        for <linux-wireless@vger.kernel.org>; Thu, 12 Mar 2026 08:30:33 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1773329432; x=1773934232; darn=vger.kernel.org;
-        h=in-reply-to:references:from:subject:cc:to:message-id:date
-         :content-transfer-encoding:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=1Ya238d2ohp10iFYuWnPLzqnu0MMHEfPVLrPGoAibNs=;
-        b=OACLp9L1SEjG29L01SoBmEtYK1J88lC6eoicjaXto+X//GB7e4uCikkzpG0Tl5hbVC
-         A0e11Ki7YAabB6IyUGX03hzsH9ChEl3BnpCQvjdD/2tQSPKP2x4QnaYSGQlAmctGCuCL
-         /HXNHwrfNAhuwcJIrU+GD/+I4rakOBIaLLzse8p4Pk6lcr7hEtQ00GN9tzsBye2Y+ppV
-         6RabHKZwDAVMExx30LnVWxhfTrZsdwt53QXWb+fz1upbBmUrA1W0wQhVCWPQm9W5x8Kf
-         PO179BJHXuWJNp0PFU5iYkB+qa1O/gTSorj70IULyXosMWpGDY/0fxqb+LpL4VFz6Ddl
-         RZhQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1773329432; x=1773934232;
-        h=in-reply-to:references:from:subject:cc:to:message-id:date
-         :content-transfer-encoding:mime-version:x-gm-gg:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=1Ya238d2ohp10iFYuWnPLzqnu0MMHEfPVLrPGoAibNs=;
-        b=i3onG1YwLL4lDB22dXfLD6fgxcP1CLD8LIKdZ0qzprhyrn03rGk9Ihal3gi2ru5A8C
-         PZGuHdtihXWcI+rbCdMHT8awaKOd6QtsksnnS/cRwjPrZgc6TZ5jVTne1FqimFnMqcDi
-         e7N3hVxhM36OHOryq/lI3vHPDAQb/XmAxKWa532MT2hVzSHv1GH6OK+J4djRYt3K03Pi
-         J1QUE2uFvl7rGe+M/y1d8zUyGf+47sqYPIS2jaaK0YrtrAnECay4W3isvLBsXyO2SZ7Z
-         E1MFYe0nqMeslZVXcu3/4t/BoFtBhGKcM85Kzdhrndk+q6pbswl3Fkb/SIm8yR7ZOC6a
-         7uVQ==
-X-Gm-Message-State: AOJu0YzNfEAfvMOxMw199Pn9yfcTp7BNM+uL6MVvLsOtbIDRyYNRCNwM
-	wzOlU2A5JwVIi/Cy9O0yT9Oq3QNppDoWWrJyJGDa4eSYx3lorIO0RRLZ
-X-Gm-Gg: ATEYQzywAhERnySsgN6PA+2jWgCW0PASQ+y/v91cdSxeC4/fuBbmWLplYq1CZVofeus
-	xWapYm/BRcDay039Cq5tc5torXfGWnsJ1QUolIju2HBmnbAdjaYg/T1AiFdVRSb5or2TkVDEFHS
-	piuS4zgHHVBqIvsLM8L2Yug7jUw8QEd4ELhAe0ne+TIZS1NuuwAb/+7+f9ZxlG2mR4+QhJgKLEn
-	6+9e+LB3Y+qVsH+7fVofT137Dhl3G6YpCxXFMaiNGVG9XI/t9uebL+o0Lm01Ky9TR0y2GSHVqTT
-	3XzZvw135uBuAVTSmWrMG+gFEzLJUHMEeI++6hwwkl35OLSKRd/utyLm/fqY5bwPXi9aKM9++8l
-	XXBhELYJtFkngzyj/CArIiRKYdtJnNB7nyB+00ofm1Jjv2k+H55P3gUg3bXJRw9PTA2pMQ4zCUe
-	8UIk9uR7DQ8KuC10jdrFoy9xnJc4PfrwdCkDAs4UjBvw==
-X-Received: by 2002:a05:600d:6450:10b0:485:38fc:7069 with SMTP id 5b1f17b1804b1-4854b1b1a61mr86890415e9.23.1773329432326;
-        Thu, 12 Mar 2026 08:30:32 -0700 (PDT)
-Received: from localhost (freebox.vlq16.iliad.fr. [213.36.7.13])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-48541b7f3cdsm265726375e9.14.2026.03.12.08.30.31
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 12 Mar 2026 08:30:31 -0700 (PDT)
+	s=arc-20240116; t=1773329562; c=relaxed/simple;
+	bh=zTDNMMg/o0AbpOakTawLJV8HRHueJx9lUWpbuHSD3BU=;
+	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=R5LzA8Ou2FAlfTxruBbGM6k/z0Mz4c/yMKAdYnzLlIPQhgSJuhcbKkZvN1DS4RRkPHUDvwVX2kkuu25gzXZl/1tiNKIgamJTw7JCYSn//2RRSauf0uGJeCv2B6mWEI1AOeDpowYKobPwyLnOI9ONcClsULIU0+ZMOVB4W4VRrAQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=HansenPartnership.com; spf=pass smtp.mailfrom=HansenPartnership.com; dkim=pass (1024-bit key) header.d=hansenpartnership.com header.i=@hansenpartnership.com header.b=pcvJZxMl; arc=none smtp.client-ip=198.37.111.173
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=HansenPartnership.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=HansenPartnership.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+	d=hansenpartnership.com; s=20151216; t=1773329560;
+	bh=zTDNMMg/o0AbpOakTawLJV8HRHueJx9lUWpbuHSD3BU=;
+	h=Message-ID:Subject:From:To:Date:In-Reply-To:References:From;
+	b=pcvJZxMlUnyDHCQWdoy7oBw4t3ApqjoLShbfu4EGfeRRF/0XvwrUC3nRWEDXXVQdM
+	 hMwbriKe/NL1VZ4m3mEc/Q/oxiEwEcX/NNUV+xlSHstrQ2AykR2/lPVz8ssLEFKVvD
+	 cNP4AXmMocQMY4pE83K1rY1dx5NyhQ9bJbZtUZWw=
+Received: from [IPv6:2601:5c4:4300:d341::a774] (unknown [IPv6:2601:5c4:4300:d341::a774])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange x25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by lamorak.hansenpartnership.com (Postfix) with ESMTPSA id 599341C02A4;
+	Thu, 12 Mar 2026 11:32:38 -0400 (EDT)
+Message-ID: <f5688b895eaebabae6545a0d9baf8f1404e8454e.camel@HansenPartnership.com>
+Subject: Re: [PATCH 00/61] treewide: Use IS_ERR_OR_NULL over manual NULL
+ check - refactor
+From: James Bottomley <James.Bottomley@HansenPartnership.com>
+To: Jason Gunthorpe <jgg@ziepe.ca>, Kuan-Wei Chiu <visitorckw@gmail.com>
+Cc: Philipp Hahn <phahn-oss@avm.de>, amd-gfx@lists.freedesktop.org, 
+ apparmor@lists.ubuntu.com, bpf@vger.kernel.org, ceph-devel@vger.kernel.org,
+  cocci@inria.fr, dm-devel@lists.linux.dev, dri-devel@lists.freedesktop.org,
+  gfs2@lists.linux.dev, intel-gfx@lists.freedesktop.org, 
+ intel-wired-lan@lists.osuosl.org, iommu@lists.linux.dev,
+ kvm@vger.kernel.org,  linux-arm-kernel@lists.infradead.org,
+ linux-block@vger.kernel.org,  linux-bluetooth@vger.kernel.org,
+ linux-btrfs@vger.kernel.org,  linux-cifs@vger.kernel.org,
+ linux-clk@vger.kernel.org,  linux-erofs@lists.ozlabs.org,
+ linux-ext4@vger.kernel.org,  linux-fsdevel@vger.kernel.org,
+ linux-gpio@vger.kernel.org,  linux-hyperv@vger.kernel.org,
+ linux-input@vger.kernel.org,  linux-kernel@vger.kernel.org,
+ linux-leds@vger.kernel.org,  linux-media@vger.kernel.org,
+ linux-mips@vger.kernel.org, linux-mm@kvack.org, 
+ linux-modules@vger.kernel.org, linux-mtd@lists.infradead.org, 
+ linux-nfs@vger.kernel.org, linux-omap@vger.kernel.org, 
+ linux-phy@lists.infradead.org, linux-pm@vger.kernel.org, 
+ linux-rockchip@lists.infradead.org, linux-s390@vger.kernel.org, 
+ linux-scsi@vger.kernel.org, linux-sctp@vger.kernel.org, 
+ linux-security-module@vger.kernel.org, linux-sh@vger.kernel.org, 
+ linux-sound@vger.kernel.org, linux-stm32@st-md-mailman.stormreply.com, 
+ linux-trace-kernel@vger.kernel.org, linux-usb@vger.kernel.org, 
+ linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
+ ntfs3@lists.linux.dev,  samba-technical@lists.samba.org,
+ sched-ext@lists.linux.dev,  target-devel@vger.kernel.org,
+ tipc-discussion@lists.sourceforge.net,  v9fs@lists.linux.dev
+Date: Thu, 12 Mar 2026 11:32:37 -0400
+In-Reply-To: <20260312125730.GI1469476@ziepe.ca>
+References: <20260310-b4-is_err_or_null-v1-0-bd63b656022d@avm.de>
+	 <abBlpGKO842B3yl9@google.com> <20260312125730.GI1469476@ziepe.ca>
+Autocrypt: addr=James.Bottomley@HansenPartnership.com;
+ prefer-encrypt=mutual;
+ keydata=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
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.50.3 
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Thu, 12 Mar 2026 16:30:31 +0100
-Message-Id: <DH0WTI7WT7H4.3TVAG9RAB1QX0@gmail.com>
-To: "Nicolas Escande" <nico.escande@gmail.com>, <ath12k@lists.infradead.org>
-Cc: <linux-wireless@vger.kernel.org>
-Subject: Re: [PATCH ath-next] wifi: ath12k: avoid dynamic alloc when parsing
- wmi tb
-From: "Nicolas Escande" <nico.escande@gmail.com>
-X-Mailer: aerc 0.21.0-0-g5549850facc2
-References: <20260309152050.191820-1-nico.escande@gmail.com>
-In-Reply-To: <20260309152050.191820-1-nico.escande@gmail.com>
-X-Spamd-Result: default: False [-1.66 / 15.00];
+MIME-Version: 1.0
+X-Spamd-Result: default: False [-0.66 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
-	MV_CASE(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
-	R_DKIM_ALLOW(-0.20)[gmail.com:s=20230601];
+	DMARC_POLICY_ALLOW(-0.50)[hansenpartnership.com,quarantine];
+	R_DKIM_ALLOW(-0.20)[hansenpartnership.com:s=20151216];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	TAGGED_FROM(0.00)[bounces-33115-lists,linux-wireless=lfdr.de];
+	FROM_HAS_DN(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	FREEMAIL_TO(0.00)[ziepe.ca,gmail.com];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-33114-lists,linux-wireless=lfdr.de];
-	FREEMAIL_TO(0.00)[gmail.com,lists.infradead.org];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	RECEIVED_HELO_LOCALHOST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	RCPT_COUNT_THREE(0.00)[3];
-	RCVD_COUNT_FIVE(0.00)[5];
+	DKIM_TRACE(0.00)[hansenpartnership.com:+];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	TO_DN_SOME(0.00)[];
+	RCPT_COUNT_GT_50(0.00)[56];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[nicoescande@gmail.com,linux-wireless@vger.kernel.org];
-	DKIM_TRACE(0.00)[gmail.com:+];
-	MID_RHS_MATCH_FROM(0.00)[];
-	TAGGED_RCPT(0.00)[linux-wireless];
+	FROM_NEQ_ENVFROM(0.00)[James.Bottomley@HansenPartnership.com,linux-wireless@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	FREEMAIL_FROM(0.00)[gmail.com];
+	TAGGED_RCPT(0.00)[linux-wireless];
+	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 8A8C7274995
+	DBL_BLOCKED_OPENRESOLVER(0.00)[HansenPartnership.com:mid,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,hansenpartnership.com:dkim]
+X-Rspamd-Queue-Id: 4D424274A76
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-On Mon Mar 9, 2026 at 4:20 PM CET, Nicolas Escande wrote:
-> On each WMI message received from the hardware, we alloc a temporary arra=
-y
-> of WMI_TAG_MAX entries of type void *. This array is then populated with
-> pointers of parsed structs depending on the WMI type, and then freed. Thi=
-s
-> alloc can fail when memory pressure in the system is high enough.
->
-> Given the fact that it is scheduled in softirq with the system_bh_wq, we
-> should not be able to parse more than one WMI message per CPU at any time
->
-> So instead lets move to a per cpu allocated array, stored in the struct
-> ath12k_base, that is reused accros calls. The ath12k_wmi_tlv_parse_alloc(=
-)
-> is also renamed into / merged with ath12k_wmi_tlv_parse() as it no longer
-> allocs memory but returns the existing per-cpu one.
->
-> Tested-on: QCN9274 hw2.0 PCI WLAN.WBE.1.3.1-00218-QCAHKSWPL_SILICONZ-1
->
-> Signed-off-by: Nicolas Escande <nico.escande@gmail.com>
-> ---
-> changes from RFC:
->   - rebased on ath-next 8e0ab5b9adb7
->   - converted missing call sites ath12k_wmi_obss_color_collision_event()
->     & ath12k_wmi_pdev_temperature_event()
->   - changed alloc order & cleanup path in ath12k_core_alloc() as it seems
->     it confused people
+On Thu, 2026-03-12 at 09:57 -0300, Jason Gunthorpe wrote:
+> On Wed, Mar 11, 2026 at 02:40:36AM +0800, Kuan-Wei Chiu wrote:
+>=20
+> > IMHO, the necessity of IS_ERR_OR_NULL() often highlights a
+> > confusing or flawed API design. It usually implies that the caller
+> > is unsure whether a failure results in an error pointer or a NULL
+> > pointer.=20
+>=20
+> +1
+>=20
+> IS_ERR_OR_NULL() should always be looked on with suspicion. Very
+> little should be returning some tri-state 'ERR' 'NULL' 'SUCCESS'
+> pointer. What does the middle condition even mean? IS_ERR_OR_NULL()
+> implies ERR and NULL are semanticly the same, so fix the things to
+> always use ERR.
 
-And I just realized that this part did not make it to the actual commit
-but stayed in the stage area. I'll add it in the v2
+Not in any way supporting the original patch.  However, the pattern
+ERR, NULL, PTR is used extensively in the dentry code of filesystems.=20
+See the try_lookup..() set of functions in fs/namei.c
 
->   - used sizeof(*tb) in ath12k_wmi_tlv_parse()
->
-> Note I did try to move to a DEFINE_PER_CPU() allocated array but the modu=
-le
-> loader complained about the array size. So I stuck to the per ab alloc.=
-=20
+The meaning is
+
+PTR - I found it
+NULL - It definitely doesn't exist
+ERR - something went wrong during the lookup.
+
+So I don't think you can blanket say this pattern is wrong.
+
+Regards,
+
+James
+
 
