@@ -1,88 +1,92 @@
-Return-Path: <linux-wireless+bounces-33038-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-33039-lists+linux-wireless=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id eMEBLvtHsmlrLAAAu9opvQ
-	(envelope-from <linux-wireless+bounces-33038-lists+linux-wireless=lfdr.de@vger.kernel.org>)
-	for <lists+linux-wireless@lfdr.de>; Thu, 12 Mar 2026 05:58:35 +0100
+	id uN4CIPpHsmlrLAAAu9opvQ
+	(envelope-from <linux-wireless+bounces-33039-lists+linux-wireless=lfdr.de@vger.kernel.org>)
+	for <lists+linux-wireless@lfdr.de>; Thu, 12 Mar 2026 05:58:34 +0100
 X-Original-To: lists+linux-wireless@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id C0DCF26D3EE
-	for <lists+linux-wireless@lfdr.de>; Thu, 12 Mar 2026 05:58:34 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0FD0126D3E7
+	for <lists+linux-wireless@lfdr.de>; Thu, 12 Mar 2026 05:58:33 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id A8A36300ADBF
-	for <lists+linux-wireless@lfdr.de>; Thu, 12 Mar 2026 04:58:31 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 485FB3020529
+	for <lists+linux-wireless@lfdr.de>; Thu, 12 Mar 2026 04:58:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8E1B039448E;
-	Thu, 12 Mar 2026 04:58:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E5E0139478F;
+	Thu, 12 Mar 2026 04:58:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=morsemicro-com.20230601.gappssmtp.com header.i=@morsemicro-com.20230601.gappssmtp.com header.b="JMGjBBsP"
+	dkim=pass (2048-bit key) header.d=morsemicro-com.20230601.gappssmtp.com header.i=@morsemicro-com.20230601.gappssmtp.com header.b="KBZT2v9d"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-pf1-f176.google.com (mail-pf1-f176.google.com [209.85.210.176])
+Received: from mail-pg1-f173.google.com (mail-pg1-f173.google.com [209.85.215.173])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1D0471DDC28
-	for <linux-wireless@vger.kernel.org>; Thu, 12 Mar 2026 04:58:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.176
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A02741DDC28
+	for <linux-wireless@vger.kernel.org>; Thu, 12 Mar 2026 04:58:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.173
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773291510; cv=none; b=rQs1pwnQ0aONySLUiC8P5O7UjTSAsPZmvM0NBoi9fn/msgawXO43cM3Jl7+B8fi8uFz2V+81xHsxWk5Sls1SSCrPQQGpB9Pazopuef8U1I60VcvMrn2tJL0SZGP/8gjHNmKzWX9qcYVbi9/65rQTV8r1vRPi2p7SVj8VgoWKnHM=
+	t=1773291512; cv=none; b=jOH06FLo72iCX+8uvclxMviBgNyjubORk70uSBdQRrt322LruV3avU8XqvL6fnshnSV6WrQEsnxMRB+xlLFV8vOTgtN++inRiEGJyNBBuPlQhOJTFpfHlP4pVc8vBMB4dZpS1wIvb5/GO8MRMJJOpGIlk+5j44hQdJLIGl8CkIM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773291510; c=relaxed/simple;
-	bh=yX+GxdEvO1hi/Wow2Y4jh93cZII6gUXqCFCa078vthI=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=Pg3W40bxeUDAWG5PJ9cEqFYYUJSFQJq8nryFk4lK94qHkd4PJYu/OfGZbLoG37S/nNzekqAuSyz6qSiMCGNjIx0wV2R+pKD7hCIj9ncW7YEfmPzsOAsHVCRxD9ySN5Y4TrVMnXv0YZhxz5TJcYcfYM6oACwVRuOKGZZ3lVqCdyY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=morsemicro.com; spf=pass smtp.mailfrom=morsemicro.com; dkim=pass (2048-bit key) header.d=morsemicro-com.20230601.gappssmtp.com header.i=@morsemicro-com.20230601.gappssmtp.com header.b=JMGjBBsP; arc=none smtp.client-ip=209.85.210.176
+	s=arc-20240116; t=1773291512; c=relaxed/simple;
+	bh=SNxAvTIl7r5LoUtI7KlKQ+NQNbjYktbwTZ3NRXBiBf0=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=MDex4P7I1nI9Jx0hlYYiTESrQstdyetQfbjUVX9JdWFktZzwuZs8GwzuuINgyE2Zb4IX0vLWfUr3n008Px2uQP95lYUUcJvbVKsuEi/turISj5qep33NBMzXjbbnRVPQ0eurSc2RJSsKmtodUSLVAEbZBs84lGQgLawUdQmtV24=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=morsemicro.com; spf=pass smtp.mailfrom=morsemicro.com; dkim=pass (2048-bit key) header.d=morsemicro-com.20230601.gappssmtp.com header.i=@morsemicro-com.20230601.gappssmtp.com header.b=KBZT2v9d; arc=none smtp.client-ip=209.85.215.173
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=morsemicro.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=morsemicro.com
-Received: by mail-pf1-f176.google.com with SMTP id d2e1a72fcca58-82984c077b2so369233b3a.1
-        for <linux-wireless@vger.kernel.org>; Wed, 11 Mar 2026 21:58:28 -0700 (PDT)
+Received: by mail-pg1-f173.google.com with SMTP id 41be03b00d2f7-c70c112cb61so362788a12.0
+        for <linux-wireless@vger.kernel.org>; Wed, 11 Mar 2026 21:58:31 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=morsemicro-com.20230601.gappssmtp.com; s=20230601; t=1773291508; x=1773896308; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=SyNRbHaLaEUBeW1M4dB+ZiFKtLVtXEisrHjMlTTw+lw=;
-        b=JMGjBBsPRDrtLNzyc5i8aOtHE6yZgfz3m1lmreIjp45CYqVryDyxm1MedQbjJ7O4rS
-         4ZzNNc3HTuefQ2ZGnMzhCJAUYCqjXEPpvCwVZ/H/NVAP1JYYQ6M7AJ6CxId/XWYxV2Pv
-         f9JGf34ufbawaFfGDWrDUYKX2ugYlU8HIBHTGcrAwUNZ3fu6joOJWREWTu1cfs/nGAPH
-         fkGiydt7ESOMAKUTGDYAczj5jjAwEO51DLLDE0LrclgpZ9SU1v6PT3CXR+KwgRRrGAAV
-         x1rYqlfQ/kSM1DLyoeH4MRufrpJfA4crAVlEk28GTiy6VoXTWPrvIcFNHPPa5VcmP35w
-         Mv5g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1773291508; x=1773896308;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+        d=morsemicro-com.20230601.gappssmtp.com; s=20230601; t=1773291511; x=1773896311; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=SyNRbHaLaEUBeW1M4dB+ZiFKtLVtXEisrHjMlTTw+lw=;
-        b=fl+deKEarKNeEpkZ/8jtI894KeTotAoBaFV54zKdIVYco3sOhLcFnJtsUlzEA7nj/B
-         h9bDi5tQJ3CLD5RyqNn0m4qaywJ1ddxE/In+GmBT1bwLDFQadT9bIdWtSG6l08rZ5JuX
-         G7fZ9TsrEJns8wJw4sM9PwNE79Cv+XIl5Yk2FKqZHhKwDoP0D91V4e0n06XkZ6N5EId8
-         crLFZtqlECQYh6dHxSzICh9nfzyIKNicrlWBt7GDyZ24rSGS3L4D/JFUCD1f7MryrZmY
-         /lRaMA/vCFzJZxZ9jRD+hsa/xG7TXYTMPjcscjRsClGyRO7fkUe9XbtIxczjJTbYqN9L
-         3ByQ==
-X-Gm-Message-State: AOJu0YxPwJdomeLz7MLxvUOfRqGI9zrvH3jqzOsIKRZFXpJ2D1qhzE9h
-	/LGDHXTso42Eaa968km73dlTy3jVDfW6O3NCqlJlElDaeHqrp0OnpXfJK8nzsG/WNvA=
-X-Gm-Gg: ATEYQzxUvDe1lJxDVE13DJ+sStMVFJPXljxuEWAVkc2eX++VpikQh72NvM6+h/z6LB9
-	VwqzynBpWrX1BeJ7e0LJx1fZn+jo5bO3DEUTrPjDRKExkL+WQ6hd+AFiaom4k6VNZdCU1dq5Hw8
-	+USCE5eJug+Ssa0FH0KWeq80sEGhh7N72lB7n3rAWbx1g9amR8VN5N8GXQu4iG7aveqpatXOsOh
-	RZHAgex1z4aVoRXaKxe2zIqxJSzrlZxxaH/8yfx933pCQP3j0WpBc0HXOa2X/E/AjU1eCvoGb6v
-	3Ngv3TUnhezGn3vZRr5GRbL5/ntCN8/Ekb9MfNGvTIf896Kw/fQHUmjmuxTcFVNiGJz78nbweJr
-	Hcbsqx5pyODHW4DtGUKarHFCBfqRbrk9nfWk5p2T20d+tRCdZu9UkUCM+kch1Gd8PObuzYmfuEf
-	DguFQYCjZ+3g86E+waeRwSRMrFUsJR5sVaAMxKwBZNfYioDN3glcTUMbxvRDfWlu+UTjmmlbByi
-	LOqID0SMeW/1E2nCQ/X2mHnLooyQo8=
-X-Received: by 2002:a05:6a00:92a3:b0:829:7e6d:cf19 with SMTP id d2e1a72fcca58-829f70aca8cmr5135415b3a.48.1773291508133;
-        Wed, 11 Mar 2026 21:58:28 -0700 (PDT)
+        bh=Tej8ijp6a77Vad+nvgoFtLvIdx4m5zOniBcUjvCi+W4=;
+        b=KBZT2v9deHKGJEwRhaw2XIzq9Gh0pwfUIYfMSUTuoYEYjACr6RJ/FGZA6LR4qyzDJo
+         svh27Ld870AzZXassECSKnD3idIFt6KzKCEBM4IiXxSprNvDnoDRoffudfYc+zXkLCuF
+         I20rrAQ3K2cUMdnb17daZCRn/s4J4ogFfKSYY/3dVsYnwql8804UESLr/lQGfi0haOra
+         +oZVMqgUrc4Qx7+tgsrNlxMzb85yTaabpjYeN5mWr2LgSMITLtJNg+xxDQDlh9mSqtJ4
+         vDRu3FFvkAPQWFaGE+1NzNvqD3Lne0y7Fg3u9pjYNapj8QAjnJSBpkTzG7GmSbSMfh4V
+         7jow==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1773291511; x=1773896311;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=Tej8ijp6a77Vad+nvgoFtLvIdx4m5zOniBcUjvCi+W4=;
+        b=nXTzMFums2Tb/UK7ZkQtExjIr8lFPb3WOHV7lQ9PZHw650xCMQchFi+3W50+Vzo8Di
+         zQyhoRqzai3BX6l7RS4W+u20Yhx45y/0dThOPfHMM579sVJFBmH4MMixkQ56DUqqiDB+
+         a5wcb9O/d7erYBrK0Kwp39dj9UJrvjXmcEz+eu6AtqzSgPV8L+eLioRBRu/4mcltq2W9
+         W040NOX01K+iIWAGbIa+I8wEgGSTxx4QvcpDZ6EcUdsmamvlijtb2IpwShoAN23JBiZi
+         3GTGRW22mLyL/47OZ87bktaVWPF3meDeZ3p/UBTFRKcbk3Xp449ypbcZb4cLUOjJrXLv
+         J6tA==
+X-Gm-Message-State: AOJu0YwEKPvA5dMMdt0o3KEcm/kl2xslij7ykDPCWKGiKZD9mYcE0MXD
+	b3nq8mkWEmxLSCm67Tp3B3ovP772RDWssm4/E52NI3SkK6/58CzYF+ho4Vuf7pDBgSk=
+X-Gm-Gg: ATEYQzzhd+ZVLlPeeEvBFsoliRQfECC4OgWNGOrJlWfXXma3ZiTIk/UZ2fd/WQSr5sq
+	tyDl6OCLBCcTKvia6OJVFDZD4sotNX7XK8UT9clPNP6uNX4v1fD1z56nsd7w3vxWFDUJ1nXCUoz
+	5CRFIfARIDbTCSZ64ayhFdpvY/DroI85EzX+nTEpAsDS/OGWsZ8StEC9+8p7ohRZ33AC0Dd+w7E
+	izHhF1Phen20qk09yBpTFY7wflNmYFTVX1Q1fi+BKcFjgAzzpWl3/QeqLxbUnvhb1Stok982kM6
+	7Uz2eWCVNE9rR+DmLOvDyfefNFcMrO0vECdsnWvgrSdEEhkH3+t2yTXmLGNlxWSOG/k2MFVwncV
+	qvJ1yZtKX68PcojGPkw4EarWl3DPDunScGHIT1ApEfuRxnoxvdhTfxmiCFGvtmbt6Rf19xMMz9w
+	VTKHaej2KcM+lhgXt4E2+P9c/4gDHwYdtHEBaCdovZ7WxqtgsNmki9Y4Bzm+fSlhj8GD5qyk5Bx
+	0Dt8r2ZiEdNMevk9ZQzok3t5VbbrM4=
+X-Received: by 2002:a05:6a20:e30b:b0:398:7d6e:27f4 with SMTP id adf61e73a8af0-398c5e58ecfmr4950459637.1.1773291510902;
+        Wed, 11 Mar 2026 21:58:30 -0700 (PDT)
 Received: from mma-H9MHD44.lan (60-242-93-14.static.tpgi.com.au. [60.242.93.14])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-82a07365090sm1382480b3a.46.2026.03.11.21.58.25
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-82a07365090sm1382480b3a.46.2026.03.11.21.58.28
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 11 Mar 2026 21:58:27 -0700 (PDT)
+        Wed, 11 Mar 2026 21:58:30 -0700 (PDT)
 From: Lachlan Hodges <lachlan.hodges@morsemicro.com>
 To: johannes@sipsolutions.net
 Cc: linux-wireless@vger.kernel.org,
 	arien.judge@morsemicro.com,
 	Lachlan Hodges <lachlan.hodges@morsemicro.com>
-Subject: [PATCH wireless-next v3 0/3] misc chandef cleanups
-Date: Thu, 12 Mar 2026 15:58:01 +1100
-Message-ID: <20260312045804.362974-1-lachlan.hodges@morsemicro.com>
+Subject: [PATCH wireless-next v3 1/3] wifi: mac80211: don't use cfg80211_chandef_create() for default chandef
+Date: Thu, 12 Mar 2026 15:58:02 +1100
+Message-ID: <20260312045804.362974-2-lachlan.hodges@morsemicro.com>
 X-Mailer: git-send-email 2.43.0
+In-Reply-To: <20260312045804.362974-1-lachlan.hodges@morsemicro.com>
+References: <20260312045804.362974-1-lachlan.hodges@morsemicro.com>
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
@@ -94,7 +98,7 @@ X-Spamd-Result: default: False [-0.06 / 15.00];
 	MID_CONTAINS_FROM(1.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	R_DKIM_ALLOW(-0.20)[morsemicro-com.20230601.gappssmtp.com:s=20230601];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
@@ -102,12 +106,12 @@ X-Spamd-Result: default: False [-0.06 / 15.00];
 	HAS_LIST_UNSUB(-0.01)[];
 	MIME_TRACE(0.00)[0:+];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	URIBL_MULTI_FAIL(0.00)[morsemicro-com.20230601.gappssmtp.com:server fail,morsemicro.com:server fail,sin.lore.kernel.org:server fail];
+	URIBL_MULTI_FAIL(0.00)[morsemicro-com.20230601.gappssmtp.com:server fail,sipsolutions.net:server fail,sto.lore.kernel.org:server fail,morsemicro.com:server fail];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-33038-lists,linux-wireless=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-33039-lists,linux-wireless=lfdr.de];
 	DKIM_TRACE(0.00)[morsemicro-com.20230601.gappssmtp.com:+];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
 	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[lachlan.hodges@morsemicro.com,linux-wireless@vger.kernel.org];
@@ -117,45 +121,62 @@ X-Spamd-Result: default: False [-0.06 / 15.00];
 	TAGGED_RCPT(0.00)[linux-wireless];
 	NEURAL_HAM(-0.00)[-1.000];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[morsemicro-com.20230601.gappssmtp.com:dkim,morsemicro.com:mid,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: C0DCF26D3EE
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,morsemicro.com:email,morsemicro.com:mid,morsemicro-com.20230601.gappssmtp.com:dkim]
+X-Rspamd-Queue-Id: 0FD0126D3E7
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-It was discussed in [1] that calling cfg80211_create_chandef() probably
-doesn't make the most sense for non-HT based bands (that being S1G and
-60GHz currently). Even though it's called fairly frequently, most of
-those paths are unrelated or not supported yet. However creating
-the default chandef is one. So creating a helper specifically for
-creating the default chandef which is band-agnostic makes more
-sense. Additionally, insert a WARN into cfg80211_chandef_create() to
-catch any misuses by S1G and 60GHz bands.
+cfg80211_chandef_create() is called universally to create the
+default chandef during hw registration, however it only really
+makes sense to be used for 2GHz, 5GHz, and 6GHz (and by extension
+the 'LC' band) as it relies on the channel type which is only
+relevant to those specific bands.
 
-hwsim tests were run just to double check nothing broke on hostap
-tip 11620497a ("EPPKE: Do not start Authenticator state machine on
-reassociation") and wireless-next 97492c019da4 ("wifi: mwifiex: drop
-redundant device reference").
+To reduce some confusion, create a generic helper for creating the
+default chandef that makes sense for all supported bands.
 
-The 3rd patch adds some simple validation for when we have an S1G
-chandef but a non-S1G width to catch any weird corner cases like one
-discussed in [2].
-
-[1] https://lore.kernel.org/linux-wireless/6832f8f0b516157452bd9c23b7c7af087d63d425.camel@sipsolutions.net/T/#mdd8f8115f3c8195638568cface3e20ab777f9f33
-[2] https://lore.kernel.org/linux-wireless/20260311061800.517849-1-lachlan.hodges@morsemicro.com/
-
-lachlan
-
-Lachlan Hodges (3):
-  wifi: mac80211: don't use cfg80211_chandef_create() for default
-    chandef
-  wifi: cfg80211: restrict cfg80211_chandef_create() to only HT-based
-    bands
-  wifi: cfg80211: check non-S1G width with S1G chandef
-
+Suggested-by: Johannes Berg <johannes@sipsolutions.net>
+Signed-off-by: Lachlan Hodges <lachlan.hodges@morsemicro.com>
+---
  net/mac80211/main.c | 18 +++++++++++++++---
- net/wireless/chan.c | 12 +++++++++++-
- 2 files changed, 26 insertions(+), 4 deletions(-)
+ 1 file changed, 15 insertions(+), 3 deletions(-)
 
+diff --git a/net/mac80211/main.c b/net/mac80211/main.c
+index 616f86b1a7e4..ed5d60328041 100644
+--- a/net/mac80211/main.c
++++ b/net/mac80211/main.c
+@@ -1117,6 +1117,19 @@ ieee80211_ifcomb_check(const struct ieee80211_iface_combination *c, int n_comb)
+ 	return true;
+ }
+ 
++static void ieee80211_create_default_chandef(struct cfg80211_chan_def *chandef,
++					     struct ieee80211_channel *chan)
++{
++	*chandef = (struct cfg80211_chan_def) {
++		.chan = chan,
++		.width = chan->band == NL80211_BAND_S1GHZ ?
++				 NL80211_CHAN_WIDTH_1 :
++				 NL80211_CHAN_WIDTH_20_NOHT,
++		.center_freq1 = chan->center_freq,
++		.freq1_offset = chan->freq_offset,
++	};
++}
++
+ int ieee80211_register_hw(struct ieee80211_hw *hw)
+ {
+ 	struct ieee80211_local *local = hw_to_local(hw);
+@@ -1260,9 +1273,8 @@ int ieee80211_register_hw(struct ieee80211_hw *hw)
+ 			/* if none found then use the first anyway */
+ 			if (i == sband->n_channels)
+ 				i = 0;
+-			cfg80211_chandef_create(&dflt_chandef,
+-						&sband->channels[i],
+-						NL80211_CHAN_NO_HT);
++			ieee80211_create_default_chandef(&dflt_chandef,
++							 &sband->channels[i]);
+ 			/* init channel we're on */
+ 			local->monitor_chanreq.oper = dflt_chandef;
+ 			if (local->emulate_chanctx) {
 -- 
 2.43.0
 
