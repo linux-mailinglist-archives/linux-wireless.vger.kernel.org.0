@@ -1,153 +1,175 @@
-Return-Path: <linux-wireless+bounces-33112-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-33113-lists+linux-wireless=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 2NvvGnncsmlMQQAAu9opvQ
-	(envelope-from <linux-wireless+bounces-33112-lists+linux-wireless=lfdr.de@vger.kernel.org>)
-	for <lists+linux-wireless@lfdr.de>; Thu, 12 Mar 2026 16:32:09 +0100
+	id mCTMK0/csmlMQQAAu9opvQ
+	(envelope-from <linux-wireless+bounces-33113-lists+linux-wireless=lfdr.de@vger.kernel.org>)
+	for <lists+linux-wireless@lfdr.de>; Thu, 12 Mar 2026 16:31:27 +0100
 X-Original-To: lists+linux-wireless@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id E3787274850
-	for <lists+linux-wireless@lfdr.de>; Thu, 12 Mar 2026 16:32:08 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4E6D927481C
+	for <lists+linux-wireless@lfdr.de>; Thu, 12 Mar 2026 16:31:27 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id D8C61303C2A5
-	for <lists+linux-wireless@lfdr.de>; Thu, 12 Mar 2026 15:26:04 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 4DC1C304DC83
+	for <lists+linux-wireless@lfdr.de>; Thu, 12 Mar 2026 15:26:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6760B238159;
-	Thu, 12 Mar 2026 15:26:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DD8CA35DA73;
+	Thu, 12 Mar 2026 15:26:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=candelatech.com header.i=@candelatech.com header.b="UYDCR6vu"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="DB6URvQV"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from dispatch1-us1.ppe-hosted.com (dispatch1-us1.ppe-hosted.com [148.163.129.48])
+Received: from mail-wm1-f42.google.com (mail-wm1-f42.google.com [209.85.128.42])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B078C36C584
-	for <linux-wireless@vger.kernel.org>; Thu, 12 Mar 2026 15:26:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.129.48
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 943003845A7
+	for <linux-wireless@vger.kernel.org>; Thu, 12 Mar 2026 15:26:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.42
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773329164; cv=none; b=BtY38er//8pPN2E3qFq36pxN9psF2IKYk5YnGO02UyaVY2N7CwPjLmvjGGaR2AtOoWJ/NS1lVkSX+si7Wkba1r4ncoaX7vjbyP44xV8rsPrc50SQ1gqOcwjzL85ODI08FTc3pG7SxOQ8DuAluTMG5mrxA7vodyeREtbQjgm6vFQ=
+	t=1773329182; cv=none; b=g4nlVL8B99yTM5hcBTCXwvnUtrY9J5TCpjlwspEyRwuJpN2k5TdMrSWUip5J37VIYj9r+x7q/tKW00g7j2hO4+HWQBsrr2GCRDIFZXYPb+HyaPhYGk027c/Lj+rvresxIzD0v/m8WkDgSwkAreE46p0BanTwfKqugmWvcWsmNOE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773329164; c=relaxed/simple;
-	bh=GxBZGsZcjbhkPfeni9/dqSoSwNOLFB7WrPvV+OQrcO8=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=UffuzdTXPi58+8crMlZs1bHG4qC7Ny5pXAHXu91P4e7kIx3GvpQBW4Uu/zTYmj6NREbfC+cHvF1vBARLCUDjoXBD8ZBKhRl+8akJXuaGiumsL2Ttib+Plcm43NAVnCoQMKXNI4jVVwYSPK6bayNzoSr04CNUau7YT2rF7PsPj0o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=candelatech.com; spf=pass smtp.mailfrom=candelatech.com; dkim=pass (1024-bit key) header.d=candelatech.com header.i=@candelatech.com header.b=UYDCR6vu; arc=none smtp.client-ip=148.163.129.48
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=candelatech.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=candelatech.com
-X-Virus-Scanned: Proofpoint Essentials engine
-Received: from mail3.candelatech.com (mail.candelatech.com [208.74.158.173])
-	by mx1-us1.ppe-hosted.com (PPE Hosted ESMTP Server) with ESMTP id 1A0DD1C0077;
-	Thu, 12 Mar 2026 15:26:00 +0000 (UTC)
-Received: from [192.168.100.159] (firewall.candelatech.com [50.251.239.81])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-	(No client certificate requested)
-	by mail3.candelatech.com (Postfix) with ESMTPSA id C351713C2B0;
-	Thu, 12 Mar 2026 08:25:57 -0700 (PDT)
-DKIM-Filter: OpenDKIM Filter v2.11.0 mail3.candelatech.com C351713C2B0
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=candelatech.com;
-	s=default; t=1773329157;
-	bh=GxBZGsZcjbhkPfeni9/dqSoSwNOLFB7WrPvV+OQrcO8=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=UYDCR6vuSeCvEigdLy8t4YPLuP94rGVvfk9KsLOu5TrTW6Z/OJxXzCjMBq5JCmRpX
-	 A+V2bxltwiXaU0AumVOCJX+QYCA/GDlotZ+P+73+JmRwYYPVC1KKNF9WNlzkn0wTg1
-	 vYhphogDuJBZOU9rJMn2Wv93PEaLhNcdsmIxqhqU=
-Message-ID: <1e6b8cbb-0f89-6b9b-b2cf-d21ca80dd7a2@candelatech.com>
-Date: Thu, 12 Mar 2026 08:25:57 -0700
+	s=arc-20240116; t=1773329182; c=relaxed/simple;
+	bh=a1s16tfZgscWKEF4z5FxxF9nmjEgp3xGX6fU5ouXm3M=;
+	h=Mime-Version:Content-Type:Date:Message-Id:To:Cc:Subject:From:
+	 References:In-Reply-To; b=PrHwu20htQz+E3xvUZ0JdpfGo8OJg3lEaDH+dOdC5peDUuvRrSwMe7WjX7DLJCyUvBzQnxlQtKzKMSNEGjI/R5/KYGfFSMbX0T+5WRxg9XFkAV708rcIWxUn1QaaQV9keiiS8wjlN35AOqPQR56ihZJ6CHS1FIplUil1JHvZrlM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=DB6URvQV; arc=none smtp.client-ip=209.85.128.42
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-wm1-f42.google.com with SMTP id 5b1f17b1804b1-4852e09e23dso9926835e9.0
+        for <linux-wireless@vger.kernel.org>; Thu, 12 Mar 2026 08:26:21 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1773329180; x=1773933980; darn=vger.kernel.org;
+        h=in-reply-to:references:from:subject:cc:to:message-id:date
+         :content-transfer-encoding:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=KmxvI1SLG5cByO9nSwPYtnzFrEf/m/FI7xQbZ3puZxc=;
+        b=DB6URvQVXTpmlKFog4L+Ru8boV0r1BFlRbzFHnety4CQ0qkBsOOh0YjuKHwOcCaIlW
+         PLcK05ewwlLrLs34FO8tBd+FjhgFtpZLPM91UEYYWOwoJwYKiFkaVSzRyYzBo7VSpfJj
+         QousTvYAmVw0t85X5N1BO0+15JHtnX0VkLXTgBOpsKue0kYkW9buFnAegd3E+eBgVqwn
+         N0/UerQVokjrCRux0k6jqglQHwvm3i3UpMq713e5Tfj2Z2UYgjwGLVCUXu9C0ebCXKjP
+         T3fI2RsmOxNHyd6zdrm7oNZh8PZ4lR73f9Z3uRiJyWqiUgberwS8Oe2EopFwrm5Pz0oY
+         Eu0g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1773329180; x=1773933980;
+        h=in-reply-to:references:from:subject:cc:to:message-id:date
+         :content-transfer-encoding:mime-version:x-gm-gg:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=KmxvI1SLG5cByO9nSwPYtnzFrEf/m/FI7xQbZ3puZxc=;
+        b=l8WjhVZaqVSOH6snaDDhkUeaXIwlxEIE2jexz+kozb6/CRwuBK3HhIo5VUv4/Gybzg
+         tMqbVwqUX1pJfPt92jRPfDlRWsKKxwWNT474WPr6xKmSWnUkIcG3rJUkGtu3ZQH790F+
+         6tDVj12c5b3iNrCQR/1XAXfNsnkDWUjr0gHAPyDnwt/0/Cx1qvI/yYuAK/+7YIegvB/O
+         ye6+Vffd2D8zWt96KDtO661pbw0HJ7Z+Sx8qqUo0thKZCzQE+SE8A/fbcHaL8xinbOEi
+         03VmqDGTbRZNY3hu89/xCQ5GkpiZUSqBV+bl9UrvwmmqgAcRcCOE76F/ktp1VI/S9pmg
+         hLHg==
+X-Gm-Message-State: AOJu0YytZuYm5BQ7/U9NjyMskeNg4BcwtLNSuxwcNBWGTvMLt016rCZn
+	DME4O4lj1PAUiotsdAAT7Ejx/+v8MK4g+E6eBvzZ7ojLwdIFzjb+BqcH
+X-Gm-Gg: ATEYQzznbL2N3Uax+l3g6lXxd0WdGrQbF+INHqMxM+ca72IqI+2H/MUkFcK3oQrLU7x
+	HQNPM+2H0iEEOaa5/HhfSULCoYNi6G2E8OSl7z9xdhnP7kYhN5cHPe5R5a7ng4ETBuCz3yoOreJ
+	Vl3iL6gxfjI1Rx1/5L9fYZiI73kSkF+InjBa0sn4aH33hgDNfadutKCkRhJutAUblgI578HD8Px
+	otF5zP2PmBDvpv1VxevaO/GXV+pN/CJxExNU1LUEs+zKsxGXY5M3N5E8JRSK7ndTcTY+Gd63eMt
+	4PabHzfRsGMv0I5sjx3uAnUGoHeQSbBORvWH04v9vxeN17m4tG1c+RaquGgZ/vqjPbEhwOTGokm
+	tvZFOnIAjcrBleQWbdyJ/xYz0c86FRM3dbDDzVlN08YOs+Y0aszE1ncPYgSeuKuRD+816MFBBIZ
+	J6S9ftBbhPAON0X7LnlSWZWBPk1HwIHy7l/TGuvBBQqw==
+X-Received: by 2002:a05:600c:3e10:b0:483:badb:618f with SMTP id 5b1f17b1804b1-4854b11694dmr101953265e9.25.1773329179659;
+        Thu, 12 Mar 2026 08:26:19 -0700 (PDT)
+Received: from localhost (freebox.vlq16.iliad.fr. [213.36.7.13])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4854b65fed7sm130000105e9.11.2026.03.12.08.26.19
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 12 Mar 2026 08:26:19 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.15.1
-Subject: Re: [syzbot ci] Re: iwlwifi + mac80211 stability
-Content-Language: en-US
-To: syzbot ci <syzbot+cibf86f11719f1261d@syzkaller.appspotmail.com>,
- linux-wireless@vger.kernel.org
-Cc: syzbot@lists.linux.dev, syzkaller-bugs@googlegroups.com
-References: <69b2ccdb.a00a0220.707e5.0016.GAE@google.com>
-From: Ben Greear <greearb@candelatech.com>
-Organization: Candela Technologies
-In-Reply-To: <69b2ccdb.a00a0220.707e5.0016.GAE@google.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-MDID: 1773329161-dDe3xVk7VNRa
-X-PPE-STACK: {"stack":"us5"}
-X-MDID-O:
- us5;ut7;1773329161;dDe3xVk7VNRa;<greearb@candelatech.com>;04bf2bda8b1ce0f817f0a112ab4abb0d
-X-PPE-TRUSTED: V=1;DIR=OUT;
-X-Spamd-Result: default: False [-0.66 / 15.00];
+Mime-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Thu, 12 Mar 2026 16:26:19 +0100
+Message-Id: <DH0WQAE5UP5T.3ND14AH29KR8A@gmail.com>
+To: "Baochen Qiang" <baochen.qiang@oss.qualcomm.com>, "Nicolas Escande"
+ <nico.escande@gmail.com>, <ath12k@lists.infradead.org>
+Cc: <linux-wireless@vger.kernel.org>
+Subject: Re: [PATCH ath-next] wifi: ath12k: avoid dynamic alloc when parsing
+ wmi tb
+From: "Nicolas Escande" <nico.escande@gmail.com>
+X-Mailer: aerc 0.21.0-0-g5549850facc2
+References: <20260309152050.191820-1-nico.escande@gmail.com>
+ <04d268a7-8f6e-4aa4-b366-0dc38c355de7@oss.qualcomm.com>
+ <DGZ17385SNYX.3149KUG92UUU1@gmail.com>
+ <adcb0245-6514-42f7-a47d-f6d8b3f79dff@oss.qualcomm.com>
+In-Reply-To: <adcb0245-6514-42f7-a47d-f6d8b3f79dff@oss.qualcomm.com>
+X-Spamd-Result: default: False [-0.16 / 15.00];
 	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[candelatech.com,none];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
-	R_DKIM_ALLOW(-0.20)[candelatech.com:s=default];
+	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
+	MV_CASE(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_DKIM_ALLOW(-0.20)[gmail.com:s=20230601];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-33112-lists,linux-wireless=lfdr.de];
-	FROM_HAS_DN(0.00)[];
-	HAS_ORG_HEADER(0.00)[];
+	TAGGED_FROM(0.00)[bounces-33113-lists,linux-wireless=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
+	FREEMAIL_TO(0.00)[oss.qualcomm.com,gmail.com,lists.infradead.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	TO_DN_SOME(0.00)[];
+	RECEIVED_HELO_LOCALHOST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[candelatech.com:+];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	FORGED_SENDER_MAILLIST(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	RCPT_COUNT_THREE(0.00)[4];
 	RCVD_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[greearb@candelatech.com,linux-wireless@vger.kernel.org];
-	RCPT_COUNT_THREE(0.00)[4];
-	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[linux-wireless,cibf86f11719f1261d];
+	FROM_NEQ_ENVFROM(0.00)[nicoescande@gmail.com,linux-wireless@vger.kernel.org];
+	DKIM_TRACE(0.00)[gmail.com:+];
 	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[linux-wireless];
+	NEURAL_HAM(-0.00)[-1.000];
+	FREEMAIL_FROM(0.00)[gmail.com];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,candelatech.com:dkim,candelatech.com:mid,candelatech.com:email,candelatech.com:url]
-X-Rspamd-Queue-Id: E3787274850
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 4E6D927481C
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-On 3/12/26 07:25, syzbot ci wrote:
-> syzbot ci has tested the following series
+On Wed Mar 11, 2026 at 6:46 AM CET, Baochen Qiang wrote:
+[...]
+>>=20
+>> But if you guys don't want it that way, I can rework it. Just tell me in=
+ more
+>> details what you think is the right way and I can modify it.
+>
+> then how about adding module init path to ath12k module and do percpu all=
+ocation there:
+>
+> in ath12k/core.c
+>
+> +void __percpu *wmi_tb;
+> +
+> +static int ath12k_core_module_init(void)
+> +{
+> +       wmi_tb  =3D __alloc_percpu(WMI_TAG_MAX * sizeof(void *),
+> +                             __alignof__(void *));
+> +       if (!wmi_tb)
+> +               return -ENOMEM;
+> +
+> +       return 0;
+> +}
+> +
+> +static void ath12k_core_module_exit(void)
+> +{
+> +       free_percpu(wmi_tb);
+> +}
+> +
+> +module_init(ath12k_core_module_init);
+> +module_exit(ath12k_core_module_exit);
 
-Thank you syzbot.
+That should work, I'll try something along those lines then.
 
-The logs show this:
+>
+>
+>>=20
+>> Thanks
 
-[   74.595871][   T64] wlan0: Created IBSS using preconfigured BSSID 50:50:50:50:50:50
-[   74.604375][   T64] wlan0: Creating new IBSS network, BSSID 50:50:50:50:50:50
-[   74.621865][ T1095] wlan1: Created IBSS using preconfigured BSSID 50:50:50:50:50:50
-[   74.624268][ T1095] wlan1: Creating new IBSS network, BSSID 50:50:50:50:50:50
-[   74.667157][ T5962] Failed to create local keys debugfs dir, rv: -13 phyd: 0xfffffffffffffff3
-[   74.673187][ T5962] wlan2: Failed to create netdev dir, rv: -13 name: netdev:wlan2 wiphy dir: 0xfffffffffffffff3
-[   74.885583][ T5553] ------------[ cut here ]------------
-
-
-Which would be triggered by this from patch 0004, I guess.   The phyd
-pointer appears to be an error code -13 instead of clean NULL, so I guess I
-need to add checks for where that is created as well.
-
---- a/net/mac80211/debugfs.c
-+++ b/net/mac80211/debugfs.c
-@@ -680,6 +680,12 @@ void debugfs_hw_add(struct ieee80211_local *local)
-  		return;
-
-  	local->debugfs.keys = debugfs_create_dir("keys", phyd);
-+	if (IS_ERR(local->debugfs.keys)) {
-+		pr_err("Failed to create local keys debugfs dir, rv: %ld phyd: 0x%px\n",
-+		       (long)(local->debugfs.keys), phyd);
-+		local->debugfs.keys = NULL;
-+		return;
-+	}
-
-Thanks,
-Ben
-
--- 
-Ben Greear <greearb@candelatech.com>
-Candela Technologies Inc  http://www.candelatech.com
-
-
+Thanks for the review Baochen
 
