@@ -1,198 +1,247 @@
-Return-Path: <linux-wireless+bounces-33202-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-33203-lists+linux-wireless=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id oCn6Ih7fs2ktcQAAu9opvQ
-	(envelope-from <linux-wireless+bounces-33202-lists+linux-wireless=lfdr.de@vger.kernel.org>)
-	for <lists+linux-wireless@lfdr.de>; Fri, 13 Mar 2026 10:55:42 +0100
+	id +CMaKfbss2m4dQAAu9opvQ
+	(envelope-from <linux-wireless+bounces-33203-lists+linux-wireless=lfdr.de@vger.kernel.org>)
+	for <lists+linux-wireless@lfdr.de>; Fri, 13 Mar 2026 11:54:46 +0100
 X-Original-To: lists+linux-wireless@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id D2829280F23
-	for <lists+linux-wireless@lfdr.de>; Fri, 13 Mar 2026 10:55:41 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4EE96281CBE
+	for <lists+linux-wireless@lfdr.de>; Fri, 13 Mar 2026 11:54:46 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 50D12328F308
-	for <lists+linux-wireless@lfdr.de>; Fri, 13 Mar 2026 09:49:06 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id AC1B53015D95
+	for <lists+linux-wireless@lfdr.de>; Fri, 13 Mar 2026 10:54:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6E3573890FB;
-	Fri, 13 Mar 2026 09:49:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id ACB9638F636;
+	Fri, 13 Mar 2026 10:54:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=morsemicro-com.20230601.gappssmtp.com header.i=@morsemicro-com.20230601.gappssmtp.com header.b="AR+T1ciW"
+	dkim=pass (2048-bit key) header.d=openvpn.net header.i=@openvpn.net header.b="WsAJB4c7"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-pl1-f179.google.com (mail-pl1-f179.google.com [209.85.214.179])
+Received: from mail-wm1-f52.google.com (mail-wm1-f52.google.com [209.85.128.52])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B2BFA36E498
-	for <linux-wireless@vger.kernel.org>; Fri, 13 Mar 2026 09:48:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.179
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 20A4631E848
+	for <linux-wireless@vger.kernel.org>; Fri, 13 Mar 2026 10:54:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.52
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773395340; cv=none; b=H7czIjNBs2M/nVEqXA+eiUTfJT/0rQrWmIKPJgT9D8gR2RGU99+WTQrRp9okRYAF7BEreL9egPS1P7Q/BHu+N/JGValsBAfBfC/S/lTakLbLs6DL0DEua/Th861XVoGWKLzXGwhWDqpQ9nFnExMlqNLOru+KbedGVbM+RZqRuq4=
+	t=1773399284; cv=none; b=RYLQoQydNiylPGlA+ZzqQ4i5nvjfim51M/YYI6fwNz6JqRykKrOQ36JhnoLcC0JxVZWSg/ujQCUpn0ZdZ04VV9oZssPcCo7n440DJvJRpw2JKLrR0LAeyFjwl1xCWmHHNMnhRrqfIC8ctTL9j7yzz7AdzEN6GD3YfuC7RIgp6xY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773395340; c=relaxed/simple;
-	bh=V4nNPy2aFr59x/RR+ByzLxeYdHhrbgCFyiySQ9Cg+/8=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=s9LxQtm/SO5XWSw6n3xJku4BzfW4WmEwKKS0Ud9sJ8rCXx9kH5C6Gy3rt7n+otBoZJKQBRGpJ7L+bTKmNic+A47h/xwObCkdEZ/y57BMpX9cm4VpJZvH89ZxOFiMJuUOpG2yQ1nF5PMwL5aJ1QmNWVoF0C4013GBmRvc6JH0Cw4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=morsemicro.com; spf=pass smtp.mailfrom=morsemicro.com; dkim=pass (2048-bit key) header.d=morsemicro-com.20230601.gappssmtp.com header.i=@morsemicro-com.20230601.gappssmtp.com header.b=AR+T1ciW; arc=none smtp.client-ip=209.85.214.179
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=morsemicro.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=morsemicro.com
-Received: by mail-pl1-f179.google.com with SMTP id d9443c01a7336-2ab39b111b9so9071475ad.1
-        for <linux-wireless@vger.kernel.org>; Fri, 13 Mar 2026 02:48:57 -0700 (PDT)
+	s=arc-20240116; t=1773399284; c=relaxed/simple;
+	bh=w3zxUJSjuu2ZTxg+olsZhOhgZVG2CW5eudoaxy9c3g8=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=k2SCcIYQNMCH52ILL6yaAmvL7exYtr145Ea6SuOrmB9wbiejTcuciQGUSaNyjwC8Sw0kiYeSKeml5RX9xTZ36F9htoWJo9AXWmiQ49bmoL7NvnRu1gxNo3iA2wYPJYuHbyQG/fADFaABEk/RJk/g3XT56q/c1LfmzMYRP3ZQkug=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=openvpn.net; spf=pass smtp.mailfrom=openvpn.com; dkim=pass (2048-bit key) header.d=openvpn.net header.i=@openvpn.net header.b=WsAJB4c7; arc=none smtp.client-ip=209.85.128.52
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=openvpn.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=openvpn.com
+Received: by mail-wm1-f52.google.com with SMTP id 5b1f17b1804b1-4853c3c2fe7so11889695e9.0
+        for <linux-wireless@vger.kernel.org>; Fri, 13 Mar 2026 03:54:42 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=morsemicro-com.20230601.gappssmtp.com; s=20230601; t=1773395337; x=1774000137; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=gU9H7Bo9roQ+prgGEiA4EB14853/ekv7Z79E0nFUk7o=;
-        b=AR+T1ciWYUQLEL50ZmFho4cSrfkGRlp5gjDSKcH8AL9x+Fz67IPgUbcvRAreFMG+nj
-         r61zPDaTVrOz4M8yP6IGPEy2Z3v8v6jsgDEBY7AdeyhKFH/GV1vWlsV0NqbEOhxA7yjW
-         qQ6sVarh4ByiryQ+9pykWQaB8ZTuTtVgS/xuZ6/7LE/ao0+8TzOexTfBbkpAk+a5OLNU
-         dCFU3Lwh5bTqxVUdGqjZ6yGGb74aUbQ0XnTofnSZ7zuQQF0xm2XbXWJIXoYMxxM7alT0
-         cX/3E4lq4AzzIApKK2ujxjXmBNFOoJDUFlwXXRGiXvaDNEcgGywE4+PSt6kPgL1itCMQ
-         p6uA==
+        d=openvpn.net; s=google; t=1773399281; x=1774004081; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:organization:autocrypt:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:from:to:cc:subject:date:message-id:reply-to;
+        bh=Xz+lAQTHg1ZrCDfzAJVJz3UjVKFh4n4P3F1q/hGkrl0=;
+        b=WsAJB4c7LexSbPtMe8CFtyvMnh0BENY9Ncy4eZYZlz6GDoJTjLtiWX9eZZ8grHcxTg
+         sYw+xItb6vP5stA3W2kPER0E4GGLr/jxQsyUKUTGsiRiP8Hs4zP2oBcpRMolbLLdpCEj
+         jfqM0rK2jZu5Zn+9bmCdHs/YAn4Fc+XBOaUDgb14ojl4eCc36pMQ2UlMG/pF2N5v6J6p
+         fPQAetMuGyQb8qzPDrfTszwhvhTEYfzwnN//a9qSr5Eqphf7Ju5tkAiCS1I6HIyaZ7kZ
+         +b/T9vvjo8GOND9pO88mDsE8y24Ry38ckcqWjCyE38TCXocD9O3RxDM7FzPJLFHkKJgp
+         B+QA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1773395337; x=1774000137;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=gU9H7Bo9roQ+prgGEiA4EB14853/ekv7Z79E0nFUk7o=;
-        b=IO/8eHpsOSt8AtZpvFaKoDr017m+TEkTQn3eUY7DvBJhZEhLW3go77/URJn6R0Lk8y
-         YAUPNJlHsRla3F4Fw2nXHnqwva2bLzqpUlRUmNZ4YnX81sD0y/NUviPQdCte2ZfoPhRw
-         lX+ONwwuWK383uBw+y6UVtrAQ8f8+nN6u0xqOcPnAaTTLcyo8z2tYtqsypGl1Knv9Pvm
-         kg1PQq3SVZ2tg1kRAo5vowqHnwGJ2f6Iilu8Z3zx3WbAi9AZHKifAg4wp5v3vPyeaFpT
-         7KHJHRllPrf6MPGXsGLlvq2tgsGTCUmqOKY8LOJFVvTM6JJVaJuZMbLNIbRl60ZG8mod
-         lcGA==
-X-Forwarded-Encrypted: i=1; AJvYcCULZ7W9+MknSBpZnAPCGvwHdhoFQyObm2pLwFPd2LTNe87bgAZx7MqcVfo3pNXj8+Ycfak7WNYZWow4xIQtGQ==@vger.kernel.org
-X-Gm-Message-State: AOJu0YxqRaTtku4MDdgoidiO87ySBF1rQ3Dml1h/AyIrbnEkUzVGGaVX
-	WgeNYISClRyATP6w+VCNEiSP1bee+QvdEzCj7MaEZMFaArBjjYkuFDyU1MDsfmQTChY=
-X-Gm-Gg: ATEYQzxgZaSXYsoj6QeuNCWmPQzNAGMEP04YqLrnDwBryrGuli27FbSHWC8W9JFeM9a
-	f5WOqTVErQ9BjIf5D7VNmQYaVzz6c9Au6nzbrWZVvPOkOGB8yaCKJcLbaDPFDAaxa8pMleSTO0K
-	8iAT/Td528xxpsU15Ek8BXq8cJD6zDywpLmJpMOOCDUrQTHLLIjTkHpaKQ3cR0Yuz4CnzFveVc1
-	+cvx36xLzIzg6a4qANkEXJV90zfbmfx0TYvrV8KRuB5J+iBVPD5OEQ9+h/qw0U5l78vt+m/pOkx
-	RFR2QL6vpPDe6VOUTWv6M0MK7pc0pyRsckATSY7N3qqgm559DTgnD0Da1mcffziDDw9V/fegytf
-	Z8pekN2nAEcom4C7IuNGqH5D3HxMUXT/aJU6XOf0WhJ3oomAQ+ffpKypCtkm7RzcAlrbGQ+IHuc
-	oYIaQpXWziFiSj41rQwsP973dibPZu8WCfr2PP9TwpW92UGzR/DyElHtoz3mzmeCJL
-X-Received: by 2002:a17:903:ac7:b0:2ae:47f9:de12 with SMTP id d9443c01a7336-2aecac84e7fmr24772455ad.46.1773395337034;
-        Fri, 13 Mar 2026 02:48:57 -0700 (PDT)
-Received: from localhost ([60.227.233.145])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2aece845022sm17450755ad.83.2026.03.13.02.48.55
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 13 Mar 2026 02:48:56 -0700 (PDT)
-Date: Fri, 13 Mar 2026 20:48:52 +1100
-From: Lachlan Hodges <lachlan.hodges@morsemicro.com>
-To: Johannes Berg <johannes@sipsolutions.net>
-Cc: syzbot ci <syzbot+ci0f91523e1d0ef709@syzkaller.appspotmail.com>, 
-	arien.judge@morsemicro.com, linux-wireless@vger.kernel.org, syzbot@lists.linux.dev, 
-	syzkaller-bugs@googlegroups.com
-Subject: Re: [syzbot ci] Re: misc chandef cleanups
-Message-ID: <sezz36jv4edclmbtrcbdwzyb5goxp2tcfneoi56ounzuled42v@o6bajqutzp33>
-References: <69b3ce9d.050a0220.12d28.010d.GAE@google.com>
- <855780e1bece0de480b7fd3e1cf67c9f70129818.camel@sipsolutions.net>
+        d=1e100.net; s=20251104; t=1773399281; x=1774004081;
+        h=content-transfer-encoding:in-reply-to:organization:autocrypt:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=Xz+lAQTHg1ZrCDfzAJVJz3UjVKFh4n4P3F1q/hGkrl0=;
+        b=EwBv/OyMpgkYskRttOq6fzWGxGeECdW6LFvpkfz9ru+iJfP3kpM+WsPtyqsuEgkVCr
+         y9R15Huql5Y7vxwJeN07pG08DTPmJdcmEfPVI2WL6XNMOgJpv94V2otvV4QtSJvDNLCI
+         SaAOexrs3066Iy/391EcAKSN6tBErOa31xnO+aPisDj2PoXP/wwZOeIpI83XgWruAB/V
+         u4aPRhfWGd99YOSbaUXVTcPYTKY7xAwZHZbYeK28gi3NPubbbK3EoEbgoHeVsytxcsWk
+         xmJ1HyJW2Qr/HUkQQNGGpRnA1H6LuZWtXoINkY//mEvPoVyG8BKL74neazvh33GT9TY3
+         TXUg==
+X-Forwarded-Encrypted: i=1; AJvYcCVxj2YBNDGewSTQLjkAYisF8/SLAtOx+9ZI/se5r/wwLzuqVECV3bQAx15p5PyQxBRNxCijhYUjZFwDQZCcXg==@vger.kernel.org
+X-Gm-Message-State: AOJu0YwwEYa5kwBjBavJlTgoJPeWlYbUFIr+Y45RERdWQ8Iy5SE7gyw6
+	lA2b8rzJ676YLG4zcTaYDDqCfREDGmM5pmhHIO+X8oXbKc4YhagTnBV3zo95yiiJO60rxZeozTc
+	bMszKGqPCZr37xxb7AbTbdfVWvHSwxj4VxDnNwRhugPqMyhXMr0G7cRVTMMOZbA==
+X-Gm-Gg: ATEYQzzFPwMt42FnUrElDsAv0sFZ8w5l0ipKRexOLy01BFx41Eai7NbAAifbjFX2Pnx
+	7TUpBEAwEzHrx45yXTKnfdeazPBumBgYxl0lk32iJhvQFYTIi8+Zb4IZrjBhopSsFCJ7fN+Rncz
+	SCSjM7O6WmXeD4iyI3SVMcrLa1Nvj5a36chGOJ68DbL5PwJ69Mw3DwrN2LYqC71y5Xy2ebOEI5o
+	+xu36h9J0eVKlUW330GcqdxNWmlKaA44jpFSz9LPXRwTgg2x9zFLh9aQRN/5gjtRNW9r4YhFJle
+	1aWbIHUEVBIyTd+J2PtumN67eMFnJWQZ93bQjUwKBaxk5e0jDXg9JmuzVK81Mi56nnIQTJLLKue
+	mm7UwntUOwsrVMt558/yjmegGf+hQKiGU1DJ6+H594xrgHjvxmE3TG2Sz0q9elRZ0a+wF6xSBlf
+	6i8eYEPzYyv7Ijt8WHFc36/r3HwmcC4FcSd4et0beAKqByGm9OtzDO8l462rR9ag==
+X-Received: by 2002:a05:600c:4e08:b0:485:3eba:ab96 with SMTP id 5b1f17b1804b1-485566ca967mr41162595e9.3.1773399281346;
+        Fri, 13 Mar 2026 03:54:41 -0700 (PDT)
+Received: from ?IPV6:2001:67c:2fbc:1:5172:7646:5893:2ac6? ([2001:67c:2fbc:1:5172:7646:5893:2ac6])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-439fe1b22e7sm16933971f8f.16.2026.03.13.03.54.39
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Fri, 13 Mar 2026 03:54:40 -0700 (PDT)
+Message-ID: <bb8b3433-f8be-4f0a-903a-1c179552658b@openvpn.net>
+Date: Fri, 13 Mar 2026 11:54:38 +0100
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <855780e1bece0de480b7fd3e1cf67c9f70129818.camel@sipsolutions.net>
-X-Spamd-Result: default: False [0.44 / 15.00];
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 05/10 net-next v2] drivers: net: drop ipv6_stub usage and
+ use direct function calls
+To: Fernando Fernandez Mancera <fmancera@suse.de>, netdev@vger.kernel.org
+Cc: rbm@suse.com, Jason Gunthorpe <jgg@ziepe.ca>,
+ Leon Romanovsky <leon@kernel.org>, Zhu Yanjun <zyjzyj2000@gmail.com>,
+ Saeed Mahameed <saeedm@nvidia.com>, Tariq Toukan <tariqt@nvidia.com>,
+ Mark Bloch <mbloch@nvidia.com>, Andrew Lunn <andrew+netdev@lunn.ch>,
+ "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
+ Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+ Boris Pismenny <borisp@nvidia.com>, Ido Schimmel <idosch@nvidia.com>,
+ Petr Machata <petrm@nvidia.com>, Simon Horman <horms@kernel.org>,
+ Edward Cree <ecree.xilinx@gmail.com>, Pablo Neira Ayuso
+ <pablo@netfilter.org>, Harald Welte <laforge@gnumonks.org>,
+ Sabrina Dubroca <sd@queasysnail.net>, Oliver Neukum <oliver@neukum.org>,
+ David Ahern <dsahern@kernel.org>, "Jason A. Donenfeld" <Jason@zx2c4.com>,
+ Stanislav Yakovlev <stas.yakovlev@gmail.com>,
+ Nikolay Aleksandrov <razor@blackwall.org>, Parav Pandit <parav@nvidia.com>,
+ Edward Srouji <edwards@nvidia.com>, Vlad Dumitrescu
+ <vdumitrescu@nvidia.com>, Kees Cook <kees@kernel.org>,
+ Jianbo Liu <jianbol@nvidia.com>, Gal Pressman <gal@nvidia.com>,
+ Guillaume Nault <gnault@redhat.com>, Cosmin Ratiu <cratiu@nvidia.com>,
+ Carolina Jubran <cjubran@nvidia.com>, Alexandre Cassen
+ <acassen@corp.free.fr>, Stanislav Fomichev <sdf@fomichev.me>,
+ "open list:INFINIBAND SUBSYSTEM" <linux-rdma@vger.kernel.org>,
+ open list <linux-kernel@vger.kernel.org>,
+ "open list:NETRONOME ETHERNET DRIVERS" <oss-drivers@corigine.com>,
+ "open list:SFC NETWORK DRIVER" <linux-net-drivers@amd.com>,
+ "open list:GTP (GPRS Tunneling Protocol)"
+ <osmocom-net-gprs@lists.osmocom.org>,
+ "open list:USB CDC ETHERNET DRIVER" <linux-usb@vger.kernel.org>,
+ "open list:WIREGUARD SECURE NETWORK TUNNEL" <wireguard@lists.zx2c4.com>,
+ "open list:INTEL PRO/WIRELESS 2100, 2200BG, 2915ABG NETWOR..."
+ <linux-wireless@vger.kernel.org>,
+ "open list:ETHERNET BRIDGE" <bridge@lists.linux.dev>
+References: <20260310153506.5181-1-fmancera@suse.de>
+ <20260310153506.5181-6-fmancera@suse.de>
+Content-Language: en-US
+From: Antonio Quartulli <antonio@openvpn.net>
+Autocrypt: addr=antonio@openvpn.net; keydata=
+ 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
+Organization: OpenVPN Inc.
+In-Reply-To: <20260310153506.5181-6-fmancera@suse.de>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Spamd-Result: default: False [-0.66 / 15.00];
 	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MID_RHS_NOT_FQDN(0.50)[];
-	R_DKIM_ALLOW(-0.20)[morsemicro-com.20230601.gappssmtp.com:s=20230601];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	DMARC_POLICY_ALLOW(-0.50)[openvpn.net,none];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+	R_DKIM_ALLOW(-0.20)[openvpn.net:s=google];
 	MAILLIST(-0.15)[generic];
-	DMARC_POLICY_SOFTFAIL(0.10)[morsemicro.com : SPF not aligned (relaxed), DKIM not aligned (relaxed),none];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TO_DN_SOME(0.00)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-33202-lists,linux-wireless=lfdr.de];
 	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	RECEIVED_HELO_LOCALHOST(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	MISSING_XM_UA(0.00)[];
+	RCPT_COUNT_TWELVE(0.00)[47];
+	FREEMAIL_CC(0.00)[suse.com,ziepe.ca,kernel.org,gmail.com,nvidia.com,lunn.ch,davemloft.net,google.com,redhat.com,netfilter.org,gnumonks.org,queasysnail.net,neukum.org,zx2c4.com,blackwall.org,corp.free.fr,fomichev.me,vger.kernel.org,corigine.com,amd.com,lists.osmocom.org,lists.zx2c4.com,lists.linux.dev];
+	HAS_ORG_HEADER(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-33203-lists,linux-wireless=lfdr.de];
+	DKIM_TRACE(0.00)[openvpn.net:+];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[5];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[lachlan.hodges@morsemicro.com,linux-wireless@vger.kernel.org];
-	DKIM_TRACE(0.00)[morsemicro-com.20230601.gappssmtp.com:+];
+	FROM_NEQ_ENVFROM(0.00)[antonio@openvpn.net,linux-wireless@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	RCVD_COUNT_FIVE(0.00)[5];
+	MID_RHS_MATCH_FROM(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[linux-wireless,ci0f91523e1d0ef709];
-	RCPT_COUNT_FIVE(0.00)[6];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,syzbot.org:url]
-X-Rspamd-Queue-Id: D2829280F23
+	TAGGED_RCPT(0.00)[linux-wireless,netdev];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,openvpn.net:dkim,openvpn.net:email,openvpn.net:mid]
+X-Rspamd-Queue-Id: 4EE96281CBE
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-On Fri, Mar 13, 2026 at 10:05:15AM +0100, Johannes Berg wrote:
-> On Fri, 2026-03-13 at 01:45 -0700, syzbot ci wrote:
-> > syzbot ci has tested the following series
-> > 
-> > [v3] misc chandef cleanups
-> > https://lore.kernel.org/all/20260312045804.362974-1-lachlan.hodges@morsemicro.com
-> > * [PATCH wireless-next v3 1/3] wifi: mac80211: don't use cfg80211_chandef_create() for default chandef
-> > * [PATCH wireless-next v3 2/3] wifi: cfg80211: restrict cfg80211_chandef_create() to only HT-based bands
-> > * [PATCH wireless-next v3 3/3] wifi: cfg80211: check non-S1G width with S1G chandef
-> > 
-> > and found the following issue:
-> > WARNING in cfg80211_chandef_create
-> > 
-> > Full report is available here:
-> > https://ci.syzbot.org/series/ce6fc7d6-d8d4-4d00-a746-db78cba13e47
-> > 
-> > ***
-> > 
-> > WARNING in cfg80211_chandef_create
-> 
-> D'oh, just after I apply it.
+On 10/03/2026 16:34, Fernando Fernandez Mancera wrote:
+> diff --git a/drivers/net/ovpn/peer.c b/drivers/net/ovpn/peer.c
+> index 3716a1d82801..6dd11c71204b 100644
+> --- a/drivers/net/ovpn/peer.c
+> +++ b/drivers/net/ovpn/peer.c
+> @@ -821,8 +821,7 @@ static struct in6_addr ovpn_nexthop_from_rt6(struct ovpn_priv *ovpn,
+>   		.daddr = dest,
+>   	};
+>   
+> -	entry = ipv6_stub->ipv6_dst_lookup_flow(dev_net(ovpn->dev), NULL, &fl,
+> -						NULL);
+> +	entry = ip6_dst_lookup_flow(dev_net(ovpn->dev), NULL, &fl, NULL);
+>   	if (IS_ERR(entry)) {
+>   		net_dbg_ratelimited("%s: no route to host %pI6c\n",
+>   				    netdev_name(ovpn->dev), &dest);
+> diff --git a/drivers/net/ovpn/udp.c b/drivers/net/ovpn/udp.c
+> index 272b535ecaad..059e896b4a2f 100644
+> --- a/drivers/net/ovpn/udp.c
+> +++ b/drivers/net/ovpn/udp.c
+> @@ -14,7 +14,6 @@
+>   #include <net/addrconf.h>
+>   #include <net/dst_cache.h>
+>   #include <net/route.h>
+> -#include <net/ipv6_stubs.h>
+>   #include <net/transp_v6.h>
+>   #include <net/udp.h>
+>   #include <net/udp_tunnel.h>
+> @@ -251,7 +250,7 @@ static int ovpn_udp6_output(struct ovpn_peer *peer, struct ovpn_bind *bind,
+>   		dst_cache_reset(cache);
+>   	}
+>   
+> -	dst = ipv6_stub->ipv6_dst_lookup_flow(sock_net(sk), sk, &fl, NULL);
+> +	dst = ip6_dst_lookup_flow(sock_net(sk), sk, &fl, NULL);
+>   	if (IS_ERR(dst)) {
+>   		ret = PTR_ERR(dst);
+>   		net_dbg_ratelimited("%s: no route to host %pISpc: %d\n",
 
-That didn't take long ^.^
+For ovpn:
 
-> diff --git a/net/wireless/nl80211.c b/net/wireless/nl80211.c
-> index 3e867930e253..7314312ec567 100644
-> --- a/net/wireless/nl80211.c
-> +++ b/net/wireless/nl80211.c
-> @@ -3634,8 +3634,6 @@ static int _nl80211_parse_chandef(struct cfg80211_registered_device *rdev,
->  		case NL80211_CHAN_HT20:
->  		case NL80211_CHAN_HT40PLUS:
->  		case NL80211_CHAN_HT40MINUS:
-> -			cfg80211_chandef_create(chandef, chandef->chan,
-> -						chantype);
->  			/* user input for center_freq is incorrect */
->  			if (attrs[NL80211_ATTR_CENTER_FREQ1] &&
->  			    chandef->center_freq1 != nla_get_u32(attrs[NL80211_ATTR_CENTER_FREQ1])) {
-> @@ -3652,6 +3650,11 @@ static int _nl80211_parse_chandef(struct cfg80211_registered_device *rdev,
->  						    "center frequency 2 can't be used");
->  				return -EINVAL;
->  			}
-> +			if (chandef->chan->band == NL80211_BAND_60GHZ ||
-> +			    chandef->chan->band == NL80211_BAND_S1GHZ)
-> +				return -EINVAL;
-> +			cfg80211_chandef_create(chandef, chandef->chan,
-> +						chantype);
->  			break;
->  		default:
->  			NL_SET_ERR_MSG_ATTR(extack,
-> 
-> 
-> I think?
+Reviewed-by: Antonio Quartulli <antonio@openvpn.net>
 
-I'm probably misunderstanding - but cfg80211_chandef_create() modifies
-chandef->center_freq1 if you have a HT40+/- chantype wouldn't you
-wanna do that before you validate against the CENTER_FREQ1 attribute?
-Since in the generic init code above it sets cf1 to the control freq?
+Regards,
 
-[...]
-chandef->center_freq1 = KHZ_TO_MHZ(control_freq);
-[...]
+-- 
+Antonio Quartulli
+OpenVPN Inc.
 
-where it wouldn't match for HT40-/+ since im guessing the CF1 sent
-down should be what it would be _after_ being set by
-cfg80211_create_chandef() based on the chantype? Or am i missing
-something?
-
-lachlan
 
