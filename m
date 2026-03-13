@@ -1,224 +1,232 @@
-Return-Path: <linux-wireless+bounces-33171-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-33172-lists+linux-wireless=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id mxStImxUs2mzVAAAu9opvQ
-	(envelope-from <linux-wireless+bounces-33171-lists+linux-wireless=lfdr.de@vger.kernel.org>)
-	for <lists+linux-wireless@lfdr.de>; Fri, 13 Mar 2026 01:03:56 +0100
+	id OExeEyZXs2kRVQAAu9opvQ
+	(envelope-from <linux-wireless+bounces-33172-lists+linux-wireless=lfdr.de@vger.kernel.org>)
+	for <lists+linux-wireless@lfdr.de>; Fri, 13 Mar 2026 01:15:34 +0100
 X-Original-To: lists+linux-wireless@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id 85D9F27B647
-	for <lists+linux-wireless@lfdr.de>; Fri, 13 Mar 2026 01:03:55 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id A289027B7ED
+	for <lists+linux-wireless@lfdr.de>; Fri, 13 Mar 2026 01:15:33 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id C7008301BD66
-	for <lists+linux-wireless@lfdr.de>; Fri, 13 Mar 2026 00:03:52 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id E6D0A3145B57
+	for <lists+linux-wireless@lfdr.de>; Fri, 13 Mar 2026 00:15:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 55E184414;
-	Fri, 13 Mar 2026 00:03:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6469118FC80;
+	Fri, 13 Mar 2026 00:14:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="e9MHqTNE"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="O76BbDku"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-oa1-f51.google.com (mail-oa1-f51.google.com [209.85.160.51])
+Received: from mail-yw1-f172.google.com (mail-yw1-f172.google.com [209.85.128.172])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F15EB2110
-	for <linux-wireless@vger.kernel.org>; Fri, 13 Mar 2026 00:03:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.160.51
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773360231; cv=pass; b=pYtQhbG6oyQHM8eLHOwRzfGmicJBBV7mGA929KzzILD2uw669jdnZoejNNaGv12k3H73Ny8wdjkW/NtpKF4KyKEyrWbfDL5aq12nWZr96vZh+rAT02iXbPlqifpAQWmEXeGBFLxc47DH2UnCdziHi8pDutH/H4SINKSmSqUo8bw=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773360231; c=relaxed/simple;
-	bh=uyZi0OmQMUsTCbO/CQ+TwUcVjAB0M2jduvnTa3gXlZs=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=mStR/sTnV9dHAowQ0ol0mUnagTk8kbQKmlmHXpTdJ/TOJrfgbSBOkCftiugrnYC4cOWKFeBrbwuK0fWxCqQ/Dy5+pRqOox7YIG+rDAVhnJdLLF3dUbwZULuAmLUWDe36OYufnGaN6TQ5Ww1Mr4ziAQm0ZzYQCJG+MwLevM1o+O4=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=e9MHqTNE; arc=pass smtp.client-ip=209.85.160.51
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9A54F13A3ED
+	for <linux-wireless@vger.kernel.org>; Fri, 13 Mar 2026 00:14:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.172
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1773360897; cv=none; b=aTA07/ZuuPxl1w6ozqKaku8fer7QeiPWkEgo7zxgg3pqzM3Atar9Ks8KqPi5M+Trf0AejtMJRfz7RvipbeCN+o2Mc5lsCN+oiqi/+yn1A7phUEhzZLrY84f3mRPHHd22cJ++1IUabPS+fnp/KnkfOO1SR+GrpOy4v6KpxvNdrag=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1773360897; c=relaxed/simple;
+	bh=MPvp3uLpYzLrrjOQiqIHZIR+DFjBEGgkZpOibNsBV8k=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=R/ao+NhHemRpJs4BvYaMb69mewBWhRJwGR3I+sO5gRiSWiN3yUkvU0En1Q3kWBR855OXUW+Zhv0hjMfdJwWDWUekIb9g2rXDYW+4XHb52LEu3cVuFsihyEAjigethZfXqvlYN7xsZupM2XEHqwvrZE1CBTEre9ZgggpDFDeVOYc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=O76BbDku; arc=none smtp.client-ip=209.85.128.172
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-oa1-f51.google.com with SMTP id 586e51a60fabf-41708f6c3feso1055943fac.3
-        for <linux-wireless@vger.kernel.org>; Thu, 12 Mar 2026 17:03:49 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1773360229; cv=none;
-        d=google.com; s=arc-20240605;
-        b=N7EuCvOp6K+6rfMR7TOmPDwZKut7q5rZp9Q+WOB3ARya7TKMHRYtpJ/s/KFbkGZo/M
-         K9SNH152rJGCswFlgLWp3iTaQFINY/AXyqPzk1Wzzf46SZS+v1Kg3ngzrbXRuh7VTLoa
-         r188e+24H0OFLX3xbe+99xh7ARuhIonQlkCdblhE7gzWZtKRsgvwJA36zO5+9yeCwF1s
-         wIt2SyIU9xLw35TlQDoFhwmbaj1Fy49JGs6klrnktrSQGIXTkA9zuURJpW6AMZm5NgnZ
-         B6JEYjfAa6Ae37NW5bVI5W6TgpvhRoRbSk+eEjL+OQ76tbPfJnxpaC83XY/Gsnq4ceUJ
-         xKvg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=uyZi0OmQMUsTCbO/CQ+TwUcVjAB0M2jduvnTa3gXlZs=;
-        fh=fFUQ3bDSnwWYL/1dqZwPKYywXd5TONRsAevI/mvHYbI=;
-        b=UveNPPUEMkjlzMYkhjlyTVe1e9WqDYaY2/QohgvmWmCYWdQyXIzAf++c6Yz0nTbs2n
-         l+Jwqrk2/+pgz02qtyR1UKu807PsMcbMmvbIuscP5/vIGEGv9JChH1BZtZ+trEEv/kyf
-         A58kQ/6Cag7TeAscGmH8iQql1Mc8zKsL1TYZHwMZStFaLlAKexjl4LUW1o3C+q1fDtr2
-         SE5/60AbmTehaRUH5fEZkUKtcFUUuIJTLJeK2XDVOtUFt3G1wYADhMR7S9/4LyKLUHZm
-         hIZ3r0wrxGfHude/nTtGuuRjX6o8VKw0wkCPZTZ8zP94Ly9DFZBDdynC4Tdli1baR2Gh
-         Dn2Q==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
+Received: by mail-yw1-f172.google.com with SMTP id 00721157ae682-7985ce90542so17733047b3.0
+        for <linux-wireless@vger.kernel.org>; Thu, 12 Mar 2026 17:14:54 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1773360229; x=1773965029; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=uyZi0OmQMUsTCbO/CQ+TwUcVjAB0M2jduvnTa3gXlZs=;
-        b=e9MHqTNE/IF9WTYAhz4I0G57ysrmtylq68Y4IrcRHn3GfNi160BR/Ko5KyDlrv34m6
-         OvPIMgfEhCsewyF4S4+yPAmlT+cfJnn/lnk9uMz5XEtYuwoxDYVb6GD+OAS9DW/0RCSp
-         RxDK+rrWpF52gl7LX8uAukCIZjnW7aJQXBaN2v0bB9mGNYHsOIqoYLxpgDycs6398URO
-         Yy29mlPzxO1FA6r/wF+Z5BuT+iE0cWz5hcPmeOMwZxgfr7YGc/RqAz78eF/tLqpt81gC
-         mSl30ZgeU7YqBA9ccqvQShwJrduwK9VerSQr6foCnLj0fVfPLnRhZ+Env9CUmg6Iqnxs
-         Z3zA==
+        d=gmail.com; s=20230601; t=1773360893; x=1773965693; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=Dc7T6F+QAAK7xJvWNMAT28cNkHEqvmKrsbYs4miggWQ=;
+        b=O76BbDkuck5vvz7A8wf9+5wypQdsSgZjWV7PzA3HgzjIigk0kIoiKe/+dKdgiaQVAa
+         Oe9kWixok3PxxopqDz8o9k8uW6ba66uZpRNJPV/amtcu99gS8lB6yE9bKY38FcSYIm1d
+         2OCpRriHUduMKb4e0k2ET/4fB4MMzPQNogHP2NiZordYGC+sWEqLSkoSa0kXrIFVjqa3
+         s349IlnEhNLI9Haf/lcFLmsCkUBe2L05bQP04i33zASuxAdW4IzGk8qllpqmDWgnrqGb
+         5T7achmq+ebfl3Zl2GuKnAY1RJ2EVFuHD30q90ve+IcPvTCTSMsWTz3JZn7EuS9u1g/g
+         /nGA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1773360229; x=1773965029;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=uyZi0OmQMUsTCbO/CQ+TwUcVjAB0M2jduvnTa3gXlZs=;
-        b=CU96njauaeg0T4i/coLw6mezBPDk9friYHLcCQEvhGJiJole4VghHAMDNKYRoqrU61
-         VaCmeIl039ousZAKhA/TTAbAyGo6LjDxd5RPkZFDJV4YbMJHqKxezlOj8TXh+vZxrYAY
-         fP83xtShrJ+eOb3eCJbmFwtgDJj3Opmv056O7mFlrRhiULbPNNjqq1MULnmoY9SxVsE6
-         4al1Wr4q9FToGcvLYxKX5VApR/2fMk7m0S7JJJD3gDmZDn1fnjXZ2ZOtWbPZXSPXR2Wx
-         O6lRnnhSuWDT66lOpB++/7/uNgXx4aRP9ugjMN/IUvJWclZpeFrDso57wNONtZJn8nje
-         +bsw==
-X-Gm-Message-State: AOJu0YyES5XMj3AN+EzSGZYYVl3/GsY6/yRtJm1wK7MST512GIPIJfxW
-	3fQXJNsnxqXVSnZtieKdsXcBjS3vPG+vt2AtJkj4w0pM9hw+adgDFs1LI4tT8VW6bNtI8WinMum
-	QLxNbtLnnxMbcCeL4dbH/wVR58pZWWl8=
-X-Gm-Gg: ATEYQzwtnCPQhMe3oR43/B/CGicN458U/V0HWsoLIS4i/3ehBfYIYkqyH3JaQKuck+T
-	Tm1bUnSse1Ju01v7EQSoD5u/nfaRNVVOXScro0d/1BprfH6AtkdGoxVfWJ08/CF1ZaHIYK58a0T
-	FYNRA/Ni++fpInG2xaDcoWZKwgeNw1k0wKslWYJHgHr++PIqwFaFUAVUgapkhOLsMuAtMDyVbHi
-	nqV4EFyUUGan+4G8FexzDcUiTRx/Jwl5gf/LXzTzRAWYEHsYV31Moz5ZcGVoB4E7sz+H1EuJzw1
-	OFwydgr/W/p97eDY1qy22P6FlQ==
-X-Received: by 2002:a05:6870:6c0f:b0:3e0:fd27:2623 with SMTP id
- 586e51a60fabf-417b9059bf0mr776997fac.4.1773360228767; Thu, 12 Mar 2026
- 17:03:48 -0700 (PDT)
+        d=1e100.net; s=20251104; t=1773360893; x=1773965693;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=Dc7T6F+QAAK7xJvWNMAT28cNkHEqvmKrsbYs4miggWQ=;
+        b=pAN6aTVAskeaB0QmiCAWOybkxPZa1QENn+qB0l4+dnQfJ08VF3k9AKGY20svVtERr7
+         gsnDK8EycJCK24w2tIClaiuBTGSZ4FMPlRPYWVHYBp+VAJXhcoGJrr7vzkYZExwnI+Nw
+         Xey3larL2zC2xGpvG1w6gv6qgjp4aM2y41lhTWgaK4/wgTGOmLwA80q0Uaz4NRtXU5t1
+         86uXeE1d0+ZozBHbCegwx3NUDHFq2YNeX2FBM5dGFHohV1rN3qdAyuEAZplCuWY29+bL
+         Odx0s+0xvXXXF/xz2GF/aDylKSoxULB2LuYurlxvgi2/5rORJpNJyZsfLZNGclm+c2xA
+         5ozA==
+X-Gm-Message-State: AOJu0Yxc/DvfU8J6QdmTpJRoTD5hcJJmmXqaFeoMAiqL/9WYLJTqMkdS
+	YnF1IY4Y31XfemCPv5KPppqT5tRhQMCwWH+NvkZpzniFt7uneel0I64psUaWLNED
+X-Gm-Gg: ATEYQzzp4Kqd5Iu/CVg/GDiki5muyge+XqS82hF+ljXyNd0zPQ1zCg28k7iOkoAwjO6
+	Ss081ehXxUBFViS5Mf9q+dgHtkjiP3hU/zmnY7I9vw4xym4NERRNh2EuIzDDkiBL62M1XDpGM72
+	Vx3sMkr1LM8pmqft2efQ5sWavErdSc3Fi8K18rr/WyqN0svAvPr4AuhdK6hkdSeQdd/icQQtifH
+	uAr+Md8XJ9FcFMsDt3LT5DWkhzPEVhIVHFHGRTUSwGOc/+g494kppkc8jdwrDfxFaG5W5j9p8ht
+	DGaLE+YFzGHDXio3/TOmXEE4aP2r4fHOVrNB78JYH+3kodM5AAr7MIFsDSMLz1sDgY9DHM60vrl
+	hJfcHy0ilCUirt2w1W1b3WWYQo7o1bVkA+xWD6pgyopTtH9zMlSwhWfjMcKJpm0YbHpbnABkYI6
+	JcoILi/nMMLgsIz5zATjW+C88NAD5a1o69llrWw5HyEbXF+s78LwhfGnB7dyUcGBD2
+X-Received: by 2002:a05:690c:6f13:b0:798:11ac:d0ac with SMTP id 00721157ae682-79a1c1e5451mr16754597b3.53.1773360893250;
+        Thu, 12 Mar 2026 17:14:53 -0700 (PDT)
+Received: from ryzen ([2601:644:8000:56f5::8bd])
+        by smtp.gmail.com with ESMTPSA id 00721157ae682-79917e1fa3esm41018377b3.18.2026.03.12.17.14.51
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 12 Mar 2026 17:14:52 -0700 (PDT)
+From: Rosen Penev <rosenp@gmail.com>
+To: linux-wireless@vger.kernel.org
+Cc: Jeff Johnson <jjohnson@kernel.org>,
+	Kees Cook <kees@kernel.org>,
+	"Gustavo A. R. Silva" <gustavoars@kernel.org>,
+	ath12k@lists.infradead.org (open list:QUALCOMM ATH12K WIRELESS DRIVER),
+	linux-kernel@vger.kernel.org (open list),
+	linux-hardening@vger.kernel.org (open list:KERNEL HARDENING (not covered by other areas):Keyword:\b__counted_by(_le|_be)?\b)
+Subject: [PATCH ath-next] wifi: ath12k: use kzalloc_flex
+Date: Thu, 12 Mar 2026 17:14:34 -0700
+Message-ID: <20260313001434.118010-1-rosenp@gmail.com>
+X-Mailer: git-send-email 2.53.0
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <CALdGYqSQ1Ko2TTBhUizMu_FvLMUAuQfFrVwS10n_C-LSQJQQkQ@mail.gmail.com>
- <1e96af437fa24674b353ddb530b2d8e7@realtek.com> <CALdGYqQb=Vt0jjqW7k8RGMV1gczL0cg-26cHgCm3MmzBjezGMQ@mail.gmail.com>
- <792645eed36041f0b3df951f1b28a08a@realtek.com> <e6720993c8c14245981432cfa4ae902b@realtek.com>
- <CALdGYqQn8GGXXjZTsL+a5Mfdmw5HRYB2Jyvqq5M5SUwxK9yd_g@mail.gmail.com>
- <CALdGYqQee1sjgdBAPJSyb1gL6ksK4z8Uw_v3ANTnyXE+LXFAiA@mail.gmail.com>
- <458ed80e39734ea99610050140bb31ce@realtek.com> <CALdGYqQykO9ZzO=-+D17R_8LC=Win5nGN6-9zFqChtNEyUzEfg@mail.gmail.com>
-In-Reply-To: <CALdGYqQykO9ZzO=-+D17R_8LC=Win5nGN6-9zFqChtNEyUzEfg@mail.gmail.com>
-From: LB F <goainwo@gmail.com>
-Date: Fri, 13 Mar 2026 02:03:12 +0200
-X-Gm-Features: AaiRm51d7o_QYFf6L9WLlwkGaUVfdNVtR1e2pjfSTzToSsaEkZ0rgfbFwrhXjW0
-Message-ID: <CALdGYqTHz5Pz3uSGLbrVuNMWAXaqniUCuOSQACXUYHSL22ySvw@mail.gmail.com>
-Subject: Re: [BUG] wifi: rtw88: Hard system freeze on RTL8821CE when
- power_save is enabled (LPS/ASPM conflict)
-To: Ping-Ke Shih <pkshih@realtek.com>
-Cc: "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>, 
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Spamd-Result: default: False [-2.16 / 15.00];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=2];
+Content-Transfer-Encoding: 8bit
+X-Spamd-Result: default: False [-0.66 / 15.00];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	MID_CONTAINS_FROM(1.00)[];
 	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64];
 	R_DKIM_ALLOW(-0.20)[gmail.com:s=20230601];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-33171-lists,linux-wireless=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	TO_DN_EQ_ADDR_SOME(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	TO_DN_SOME(0.00)[];
+	TAGGED_FROM(0.00)[bounces-33172-lists,linux-wireless=lfdr.de];
+	RCVD_COUNT_FIVE(0.00)[5];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	FROM_HAS_DN(0.00)[];
-	MISSING_XM_UA(0.00)[];
-	RCPT_COUNT_THREE(0.00)[3];
-	NEURAL_HAM(-0.00)[-1.000];
+	TO_DN_SOME(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[rosenp@gmail.com,linux-wireless@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[goainwo@gmail.com,linux-wireless@vger.kernel.org];
+	RCPT_COUNT_SEVEN(0.00)[7];
+	NEURAL_HAM(-0.00)[-0.999];
 	DKIM_TRACE(0.00)[gmail.com:+];
-	MID_RHS_MATCH_FROMTLD(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
 	TAGGED_RCPT(0.00)[linux-wireless];
 	FREEMAIL_FROM(0.00)[gmail.com];
-	FORGED_SENDER_MAILLIST(0.00)[]
-X-Rspamd-Queue-Id: 85D9F27B647
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: A289027B7ED
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-Ping-Ke Shih <pkshih@realtek.com> wrote:
-> I'm really not sure how/why kernel becomes frozen. As I mentioned before
-> it might because of received malformed data and no complete validation
-> before reporting RX packet to mac80211.
-> Not sure if you can try to dig and add some validation?
+Convert kzalloc_obj + kcalloc to kzalloc_flex to save an allocation.
 
-Hi Ping-Ke,
+Add __counted_by to get extra runtime analysis. Move counting variable
+assignment immediately after allocation as required by __counted_by.
 
-I took your advice and performed a deeper audit of the rtw88 PCI implementa=
-tion,
-focusing on both validation and concurrency. While the RX gaps I previously
-mentioned are real, I found two critical architectural issues in the TX pat=
-h
-that likely contribute to the "hard freezes" and DMA stalls we've seen.
+Signed-off-by: Rosen Penev <rosenp@gmail.com>
+---
+ drivers/net/wireless/ath/ath12k/mac.c | 29 +++++++--------------------
+ drivers/net/wireless/ath/ath12k/wmi.h |  2 +-
+ 2 files changed, 8 insertions(+), 23 deletions(-)
 
-1. Concurrency: TX Descriptor Management Race (pci.c:836)
----------------------------------------------------------
-In rtw_pci_tx_write_data(), rtw88 fetches the descriptor address based on
-the current write pointer (wp) BEFORE acquiring the irq_lock:
+diff --git a/drivers/net/wireless/ath/ath12k/mac.c b/drivers/net/wireless/ath/ath12k/mac.c
+index 553ec28b6aaa..b7c43a64e37b 100644
+--- a/drivers/net/wireless/ath/ath12k/mac.c
++++ b/drivers/net/wireless/ath/ath12k/mac.c
+@@ -5611,12 +5611,14 @@ static int ath12k_mac_initiate_hw_scan(struct ieee80211_hw *hw,
+ 	if (ret)
+ 		goto exit;
 
-```c
-/* drivers/net/wireless/realtek/rtw88/pci.c:836 */
-buf_desc =3D get_tx_buffer_desc(ring, tx_buf_desc_sz);
-memset(buf_desc, 0, tx_buf_desc_sz);
-/* ... packets are filled ... */
-spin_lock_bh(&rtwpci->irq_lock); // [!] Lock is taken too late
-```
+-	arg = kzalloc_obj(*arg);
++	arg = kzalloc_flex(*arg, chan_list, n_channels);
+ 	if (!arg) {
+ 		ret = -ENOMEM;
+ 		goto exit;
+ 	}
 
-Since mac80211 can call rtw_ops_tx and rtw_ops_wake_tx_queue (the latter
-calling __rtw_tx_work) concurrently on different CPUs=E2=80=94especially fo=
-r
-high-priority AC_VO traffic=E2=80=94two threads can fetch the same wp for t=
-he
-same queue simultaneously.
++	arg->num_chan = n_channels;
++
+ 	ath12k_wmi_start_scan_init(ar, arg);
+ 	arg->vdev_id = arvif->vdev_id;
+ 	arg->scan_id = ATH12K_SCAN_ID;
+@@ -5638,18 +5640,8 @@ static int ath12k_mac_initiate_hw_scan(struct ieee80211_hw *hw,
+ 		arg->scan_f_passive = 1;
+ 	}
 
-Result: CPU 0 prepares data in slot [N], while CPU 1 simultaneously zeros o=
-ut
-or overwrites slot [N]. This explains why we see intermittent descriptor
-corruption and subsequent DMA/firmware hangs.
+-	if (n_channels) {
+-		arg->num_chan = n_channels;
+-		arg->chan_list = kcalloc(arg->num_chan, sizeof(*arg->chan_list),
+-					 GFP_KERNEL);
+-		if (!arg->chan_list) {
+-			ret = -ENOMEM;
+-			goto exit;
+-		}
+-
+-		for (i = 0; i < arg->num_chan; i++)
+-			arg->chan_list[i] = chan_list[i]->center_freq;
+-	}
++	for (i = 0; i < arg->num_chan; i++)
++		arg->chan_list[i] = chan_list[i]->center_freq;
 
-2. Synchronization: Missing DMA Memory Barrier (pci.c:786)
-----------------------------------------------------------
-In rtw_pci_tx_kick_off_queue(), the doorbell is hit without a memory barrie=
-r:
+ 	ret = ath12k_start_scan(ar, arg);
+ 	if (ret) {
+@@ -5674,7 +5666,6 @@ static int ath12k_mac_initiate_hw_scan(struct ieee80211_hw *hw,
 
-```c
-/* drivers/net/wireless/realtek/rtw88/pci.c:786 */
-rtw_write16(rtwdev, bd_idx, ring->r.wp & TRX_BD_IDX_MASK);
-```
+ exit:
+ 	if (arg) {
+-		kfree(arg->chan_list);
+ 		kfree(arg->extraie.ptr);
+ 		kfree(arg);
+ 	}
+@@ -13735,19 +13726,13 @@ int ath12k_mac_op_remain_on_channel(struct ieee80211_hw *hw,
+ 	scan_time_msec = hw->wiphy->max_remain_on_channel_duration * 2;
 
-For PCIe DMA, it is vital to ensure descriptor RAM writes are visible to
-the device before the MMIO register doorbell hits. Standard Linux practice
-usually dictates a wmb() here. Without it, the Wi-Fi controller may read
-stale or uninitialized memory, leading to the "failed to leave lps state"
-timeouts and H2C command failures we've logged.
+ 	struct ath12k_wmi_scan_req_arg *arg __free(kfree) =
+-					kzalloc_obj(*arg);
++					kzalloc_flex(*arg, chan_list, 1);
+ 	if (!arg)
+ 		return -ENOMEM;
 
-3. Confirmed RX Limit Mismatch (rtw8821c.c:254)
------------------------------------------------
-I verified that the hardware is explicitly programmed with a 12KB limit:
+-	ath12k_wmi_start_scan_init(ar, arg);
+ 	arg->num_chan = 1;
++	ath12k_wmi_start_scan_init(ar, arg);
 
-```c
-/* drivers/net/wireless/realtek/rtw88/rtw8821c.c:254 */
-rtw_write8(rtwdev, REG_RX_PKT_LIMIT, WLAN_RX_PKT_LIMIT_512);
-```
+-	u32 *chan_list __free(kfree) = kcalloc(arg->num_chan, sizeof(*chan_list),
+-					       GFP_KERNEL);
+-	if (!chan_list)
+-		return -ENOMEM;
+-
+-	arg->chan_list = chan_list;
+ 	arg->vdev_id = arvif->vdev_id;
+ 	arg->scan_id = ATH12K_SCAN_ID;
+ 	arg->chan_list[0] = chan->center_freq;
+diff --git a/drivers/net/wireless/ath/ath12k/wmi.h b/drivers/net/wireless/ath/ath12k/wmi.h
+index 0bf0a7941cd3..190e7a4a92d0 100644
+--- a/drivers/net/wireless/ath/ath12k/wmi.h
++++ b/drivers/net/wireless/ath/ath12k/wmi.h
+@@ -3586,7 +3586,6 @@ struct ath12k_wmi_scan_req_arg {
+ 	u32 num_bssid;
+ 	u32 num_ssids;
+ 	u32 n_probes;
+-	u32 *chan_list;
+ 	u32 notify_scan_events;
+ 	struct cfg80211_ssid ssid[WLAN_SCAN_MAX_NUM_SSID];
+ 	struct ath12k_wmi_mac_addr_params bssid_list[WLAN_SCAN_MAX_NUM_BSSID];
+@@ -3595,6 +3594,7 @@ struct ath12k_wmi_scan_req_arg {
+ 	u32 num_hint_bssid;
+ 	struct ath12k_wmi_hint_short_ssid_arg hint_s_ssid[WLAN_SCAN_MAX_HINT_S_SSID];
+ 	struct ath12k_wmi_hint_bssid_arg hint_bssid[WLAN_SCAN_MAX_HINT_BSSID];
++	u32 chan_list[] __counted_by(num_chan);
+ };
 
-Since the driver's RX buffer (RTK_PCI_RX_BUF_SIZE) is only 11.2KB, any
-malformed or large packet will result in an OOB read in rtw_pci_rx_napi().
+ struct wmi_ssid_arg {
+--
+2.53.0
 
-I believe addressing these three points (TX locking, TX barriers, and
-RX buffer consistency) would significantly harden the driver against
-the stability issues reported in Bug 221195.
-
-Best regards,
-Oleksandr Havrylov
 
