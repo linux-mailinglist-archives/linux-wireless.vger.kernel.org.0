@@ -1,215 +1,242 @@
-Return-Path: <linux-wireless+bounces-33209-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-33210-lists+linux-wireless=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id GBjVNgEPtGlvfwAAu9opvQ
-	(envelope-from <linux-wireless+bounces-33209-lists+linux-wireless=lfdr.de@vger.kernel.org>)
-	for <lists+linux-wireless@lfdr.de>; Fri, 13 Mar 2026 14:20:01 +0100
+	id 0JELJOcOtGlvfwAAu9opvQ
+	(envelope-from <linux-wireless+bounces-33210-lists+linux-wireless=lfdr.de@vger.kernel.org>)
+	for <lists+linux-wireless@lfdr.de>; Fri, 13 Mar 2026 14:19:35 +0100
 X-Original-To: lists+linux-wireless@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4BF68283A12
-	for <lists+linux-wireless@lfdr.de>; Fri, 13 Mar 2026 14:20:01 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 901B62839D4
+	for <lists+linux-wireless@lfdr.de>; Fri, 13 Mar 2026 14:19:34 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 97C073201010
-	for <lists+linux-wireless@lfdr.de>; Fri, 13 Mar 2026 13:19:16 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 0C9153008C92
+	for <lists+linux-wireless@lfdr.de>; Fri, 13 Mar 2026 13:19:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 31CA038AC85;
-	Fri, 13 Mar 2026 13:19:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E955030E831;
+	Fri, 13 Mar 2026 13:19:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmx.net header.i=georgmueller@gmx.net header.b="Iyt7a6ac"
+	dkim=pass (2048-bit key) header.d=gmx.net header.i=georgmueller@gmx.net header.b="Km1Lj2Pj"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mout.gmx.net (mout.gmx.net [212.227.15.18])
+Received: from mout.gmx.net (mout.gmx.net [212.227.15.19])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 333402D63F8;
-	Fri, 13 Mar 2026 13:19:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.227.15.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E871D3BB40;
+	Fri, 13 Mar 2026 13:19:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.227.15.19
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773407955; cv=none; b=KbIRhXcYYibmN04/tQp4WNWl6IdF6Czf2VCwEUzssyqlMd9WHszqUZMAKqNahz6WsybWfvEZxgy5nLGPMbFEq45EdN7jZtsOYQZkQfC8zb6Msuux29hCTvCVKhZ1Kpz8alruSMdlx257nINVpR9EcZkFQSNgf1cuT8vs2g//WDU=
+	t=1773407961; cv=none; b=mVODbXeVCHsVe8ZbQWKvlu++Nujbn83DaoC/gCz9e3Qpk2bgyuPrU/374A0+80BBOOt5DSqn7d8VLGEYPU8K7DwA97auivN89q7AdK3wOJTrLb/uafX701QI3vgnfAb/p6KjY75lPei5ut+InQGrQNa7ykp3rBomydr6RtKUbEY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773407955; c=relaxed/simple;
-	bh=miOwccwDihMm9tqYMZqvG9CIotwBcwcIzFqggB9iL4g=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=e2MXyizuagzpcWe3fLEMTuyZwYyLgE0gv6JbWIf7w6eXpbCy3p1LiHvwB4uJXRZjIzvmNt7Piae8iUltUIViwfRlWbwJ9guvQIlDkxR+rObcpNwBlt6z3ICey9lY7uiRDTCFSAPMjhEIdPueBeGkpyPf2pNnAr/8nUQkE5j+phM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.net; spf=pass smtp.mailfrom=gmx.net; dkim=pass (2048-bit key) header.d=gmx.net header.i=georgmueller@gmx.net header.b=Iyt7a6ac; arc=none smtp.client-ip=212.227.15.18
+	s=arc-20240116; t=1773407961; c=relaxed/simple;
+	bh=cURSeb8d77uCwuTKLk8XRXcTqzI9CxyuoU6AcOisx5s=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=V8rZ8JbgHxppVbI3XBzWF/Uccbe0X9zUe0mSgHgfALYSnPBQgP8soIj8iYHz/zeylWtjwUkzVKDC0S/xsMh9y2oMgzM+PFln5ELxujOAq4vv2DSoNDblEkJx2AeoAz20ywcXJ16rfYMLQFmWQ0yqeyp23FKmpaMABp5U6DxT3v4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.net; spf=pass smtp.mailfrom=gmx.net; dkim=pass (2048-bit key) header.d=gmx.net header.i=georgmueller@gmx.net header.b=Km1Lj2Pj; arc=none smtp.client-ip=212.227.15.19
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.net
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmx.net
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmx.net;
-	s=s31663417; t=1773407951; x=1774012751; i=georgmueller@gmx.net;
-	bh=tM1X0bl9KZrY2MvKQxIerUvi9OH/1ZYmEGX3GzeprEY=;
-	h=X-UI-Sender-Class:From:To:Cc:Subject:Date:Message-ID:
-	 MIME-Version:Content-Type:Content-Transfer-Encoding:cc:
+	s=s31663417; t=1773407958; x=1774012758; i=georgmueller@gmx.net;
+	bh=sU326B81AHABSZxumkQnBI+YeMPdBupeiusVZbEaiS0=;
+	h=X-UI-Sender-Class:From:To:Cc:Subject:Date:Message-ID:In-Reply-To:
+	 References:MIME-Version:Content-Transfer-Encoding:cc:
 	 content-transfer-encoding:content-type:date:from:message-id:
 	 mime-version:reply-to:subject:to;
-	b=Iyt7a6acAzY8Ph1sE5PzNp6pEiMB0ERHvoQDMD6SM3EOuCUXb49TBXriwRfqnOXg
-	 hbmZHiBr9IKcWAQpN9YX/flrWCWebGsBg/QELW+1OhQzTvgzPJKc0q3fPPKEvqGgq
-	 nAeZtlPAcMa9+eIjMpv/tdLQBp4fMRYK5xurqecLRgIIZ665ClTqvnRtlJj2ALtvb
-	 AsoaKsTNUN+WZUaxgkYEd/CXn1Sh6/IBlJ2dW+vzSO4MlkYZaWCAPnO2W673oLWWp
-	 DDnkM9lMN97YC68ofwKsDdO3N2jJQdpZShYZeG6UW2NICtOvahviZZvV4DjbOCK0e
-	 BFUmX4Yimvnr54znwQ==
+	b=Km1Lj2Pj8j/6JxFAdpizdTlPyfGFs/NvdH1hmXwb8UswO19Z5HtOTVlQsXps1X22
+	 QMaZe27kI1uTqJ15SrzCuggVPF2A/vtCEVeoYA8RiMS1v66DoWaCEzoQfbJSEXfm/
+	 AzamvMIpL5y8gUAFbJX83lVsATtgZXgukK/CO8TslFcLV2utxtdGUG1M9vZXipUHe
+	 Fp1DXSZMyuqnfjD7sZrxbOshv9pLP3hjOq9uJReQ+8j8OEjjKA26+3Fwi7jwHNJ+8
+	 Hu3jYP0GA0TXEaNQTqp6Pj2AWWl2cR4EI0F05rU6CVOc9GyKk5rWtopXUdv+KwU/u
+	 cetzhHr6ok9Wa7ZArg==
 X-UI-Sender-Class: 724b4f7f-cbec-4199-ad4e-598c01a50d3a
 Received: from client.hidden.invalid by mail.gmx.net (mrgmx004
- [212.227.17.190]) with ESMTPSA (Nemesis) id 1N49lD-1vb9iQ1VE9-0118fR; Fri, 13
- Mar 2026 14:19:11 +0100
+ [212.227.17.190]) with ESMTPSA (Nemesis) id 1Mkpf3-1vL7hh066Z-00lFRn; Fri, 13
+ Mar 2026 14:19:18 +0100
 From: =?UTF-8?q?Georg=20M=C3=BCller?= <georgmueller@gmx.net>
 To: Jes.Sorensen@gmail.com,
 	rtl8821cerfe2@gmail.com
 Cc: linux-wireless@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
 	=?UTF-8?q?Georg=20M=C3=BCller?= <georgmueller@gmx.net>
-Subject: [RFC PATCH v2 0/4] wifi: rtl8xxxu: implement AP mode for 8188EU
-Date: Fri, 13 Mar 2026 14:18:45 +0100
-Message-ID: <20260313131849.3148013-1-georgmueller@gmx.net>
+Subject: [RFC PATCH v2 1/4] wifi: rtl8xxxu: move dynamic_tx_rpt_timing_counter from ra_info to priv
+Date: Fri, 13 Mar 2026 14:18:46 +0100
+Message-ID: <20260313131849.3148013-2-georgmueller@gmx.net>
 X-Mailer: git-send-email 2.53.0
+In-Reply-To: <20260313131849.3148013-1-georgmueller@gmx.net>
+References: <20260313131849.3148013-1-georgmueller@gmx.net>
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: quoted-printable
-X-Provags-ID: V03:K1:4LiGbsVRWHDkmpKazh2DkcfawIU9iCGJ5+eGdjemGT0T3zTfsXp
- E/+Ac2XlpAQVohBieoP/ta45epDsytcu6Ew5u5Tw8e4WBO4jf+cR7uuco0y0qtDS83yjMN6
- Q2/rpQg1kJLwParKf9sx7KRob3OFjBYdQQ2oTfVaCaft1FMCPdfIP6pCschNMhatzlRwjAZ
- /76xGLpJCQQRtQRGdXwKA==
+X-Provags-ID: V03:K1:YbVxgbGLT03AElLy8OcYyqVm2H9S6L/1GS5Ds/ttJbmLxwsJDZn
+ eqFyOZxaMhJz4SkR+1RZQYOXlY0Zy8l4rXPKKplNjp6KzwLdsQwAcCeu4Z+Np6kuPeb+IpF
+ xtZw0XqGfxK+cAsYvLWRkp0fyc48g39o/LAlr4uYYUQQTbAB+2mRpv9QmFuITP0QP0Q0HNw
+ Ck0kazoDUQsz0v87TqPXQ==
 X-Spam-Flag: NO
-UI-OutboundReport: notjunk:1;M01:P0:LHp2ErvjqdU=;WvNzpv0kRjL72A4CmAR2UKWlzt5
- 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
- QOoOk5gR8rrowI0shJ2LS5RToV/Ip
-X-Spamd-Result: default: False [-1.16 / 15.00];
+UI-OutboundReport: notjunk:1;M01:P0:WF4ppsnkgZo=;1GrJIfvp0/UMixjpjY+mZ5ag5vq
+ 8SCh4fnQ4sqtti3otpv/RUAAcuuHoM9Q6KtaRd33af3nDmHpgfdrTkq0Mc64I0dzPGG9I1fd6
+ yWc62+gZhYtnVzVv5us1c9KyNlpUti/y3/oTAMknkdPSCYuDS9+J9jUi1Yy1cANIAiAq0bSny
+ Eb93IZofOCT04t1Ok/SI/obbdlImhZacG6lNPLTuuWLaNesYd9JTDQTwDN3CtschLWXgEBpzN
+ ZJy9bJHdxXRMHR28aDX+pXSgZ2vdAKeiF9ps4lAdgXNJSPpIiL2IK6yfcIQVEn4AcnkaGjFnD
+ b3AJreMTAfBP08+UaXSIyMGL+T4Oa9OYkpbwTG6Hsg9yeGRHOusaTHQXkHbStG7wp9qI5O4mK
+ 8Q8qfTI7GP/zBRa48d/ZIQ2SX/PtC9IuxpDCCMsxu84D2L4V8+GijohNSj+iDbBx+1Tsokmhf
+ rr6ROAZVdjOFmeyFG6USiw79iZVS/zXm5Buj/GsVm1+dWKBu0llUPJ8RT64+jcqLoWFxHwR7l
+ Uuws3xs9bvL0ez5OE/kHYj4d7DcV0WepZWiRtlGMvPtW6bivVSXyTK2xkvxfwKtUZ3C1go1Mw
+ qk/XgNYKfmw4Xgt3zmTLH+FBuiYzniiCoSKLiYGD/WaC8WQsVRDYOXwfD91/yI8qLMhsfkd/1
+ rlIWtFcwoveouIj3P1itBeXFw4i7QVzcEPNWRmpRGe2PdMDuBh2FWgpjbMLvnxVyKpW/xwYaG
+ urpt5sVf2qV9hccEHKfk6TnaCJAE1l+Riyr2WLAYcXUJmMe8VCdaDlkeZaCCwDkMMCMWSkbxH
+ HGfV2CIxDAEUZhY7fq2Tpz5HP87ar9RlDLRNqbG1Flug/Huv0nlYre0T31+HYJMtwRg+6PdCS
+ dyEVvSuAB2BiquBFVaw4j3FEo9wtxSMoX6Z02kKZvWSTHtC/ItSRawmElZq6JhJjbuBkIEMxf
+ PxTAvLGZRqTfLC3YPAUFIMjkXVcMM3CIgohBbJS7iFE+pwISMPVZEdWxdXR9pXxyZ9ahv/Y3X
+ uya1BWtm7taKOSPY/aAqzl+oMEZysfQbkcMphS1pqQvEoPxaq3n5nTHApUE2pIjHxLadz/jzx
+ Xwa7NqpClWHJUMOHj13KsVQlCzzVBRREXFDRSVGC0SF6UXcUQsABjvHjLkZsoLQwZTBIwN5Am
+ B70CqTost9b3eN1C7tFGvP3ucs23hwNsA6EZd1dhHOMGvd2RLtiQaIfUPK10gawrTA4LGrDJV
+ EhBIYUYf4rO+TWbJ5+kAwVWeS1vo+Fj75PbaXrvbdTFmHHe+lwSJJ5B6V6tkVQfD8AUsxLks0
+ J0qplIfT2VrIIPj7dX51UHDJXqA1F7GnuCU2gpyCfnHmKDo0X0ccTDwHEmE2bGV7hFWMd+1KO
+ QrenGj8V450Q5MrlXqQP5HTuVYY9ia/gwAO9JcBH5H4GrFpQklMk8Rn/ep9yqMPL9tlZ/hdCk
+ z9qnT7LxQk/cBLlVEr5OspSNhoTPtDqvb08dOls56NG+vNT/fjFhdyj6RRbwQUFCNMbyfLsxZ
+ xBeYBJdvg9ZqmrrkVNslcr0jFgOBNgmWR5E4AT04d3usLrwpZHvZRJiGSRs1n1KMBQLueQeIR
+ o0HR+zpJg7rjSQwa54wZpIOVfA+dR7Ec7U44rpM9X9/T7bg54akogkDyMow7UMUqH9cFmdmw0
+ H2XegtjJluONjHFgf7Wl1DnUmnYC4POXrQfGw8NV1vDfAiagU7VvTulFCZqQuJWof5vH9Hu2f
+ G9YPhy0t20qYslzCDtsZ87Do7f/r3OG+J9bswm+881XaobOnrrPWiB32KK6mvXmnSuyvSqY/v
+ GRE1PqW4ChaqhS+o5ZZMYX0ctrYVCmjVMJNsRKkFI+mbF2eZJ1ug9khJ/tV0ujeh5qzyMyxt9
+ 5iVW+6yD2kFubyZxrlr6LymDm2lOG1JznxbuougudId54j3PH0WuPCt1f/e+HQYPDOpAS3tQG
+ 4pjdNQYbHn1JzDXZ4zJVTZuwgIZN+zWYPInCIoYvM5CSVoLfqkJhpdRAIxcTW73wdSy6KtAtI
+ R3nPaAwhDT2yt2AxaRFD1dFne8TEWZg00TN05bro+MByVWowluPN5SQGb698mFskPJ34S9ps8
+ hPDVg2X5zNVeQoan3npUX5BoqpaVJeQjwWcX4ggfyyMzYamqETMHCxRjCg2c6zvfVis6yRGFK
+ 2syKwxN9rnv9fkpZbg1DbARvKu5/zShJrZra1O8IiLPts0FNAo/P6PAduGarC6nAsmdWPPLJ8
+ ofIanYst7z95Qy1aTtxzOgwLVBUkrGBjwOormWy/HYpnYvDQoNDgtqwTQ2mE2CX7KeTPxdmm2
+ AeuRvbSTmhhByZ5mNN2+J2aXV0PEhhpOiCZlg8eNr6hH42kmV5qWT9nn1tuMe/wIuOKIdHhas
+ 6UfPdplIBVTXM0AbvjNrCmbXY0EuM2YVPID83NzByv0/6K5LxLk8DzRkc35EgdNbeHHvi2K2A
+ DLlkMXRXR01NeSwBgE5u0eqERGN59zQC8WhXeUTfKzeq+dWFcDhKI3FWcKC85uTKeE3SMqCLe
+ PwyvBHDvUgweEw+87hyye/2pNYSGsbKYHHCDqTZGed/NPY/bahvhGH8/ae9vMppfV5/lMNfeG
+ 96F4TWtIsNejOC05/Ykhv4FKjzzrDDgFFQvwhi0oJGz2jBOP40UVkV12SLmYU+m1igK64yDUA
+ GT+aqjhNIDAkokpNqOnhnx0hm7hOAcsIq9/Y31bcvuwOogPUguanelxPNveVk6B/vdmqofJDV
+ liy4EpC18CIMliZcPgpdGAEYYoRoYj/rHcsawWkxmUTuHzxCKQ0p1SB8VxftxAjrxVv0e6syv
+ HtG9LuRZqTHZQlFhs5Omj90ApSUYVZDbxa2PnUF1xMOREZpBCMg4UGX1nlhvEvd7OwCzNXHQF
+ XX3jCa98mECfh4yZrOmkM6DMYEJjEyFifxg7RlsS9d5oqTq7xq5L8D57zPxGPmL3VOzgmKTdo
+ mbr6uKdxWEtI3TefRibL4guTZL5nNoSjiTXsBp7CrS8m3JvK7a0IpJ3VXBEQk9inrAD+nb/NS
+ RyWUA1sL/M0DRx1LZ4ahOzFQdB0zAGDM2vpV25lXXEeW+s4MwAk//IbuIK/LuPL3bF/2JBLA7
+ HZUC5PICT2QiWGM7PXUxv5+hOLm/TuvLHCVSvT7Y88D+1mbCMVN2L+PpoXZQk2n5sSjfjlm8K
+ 80SsS+6Flk4XAmZOY4rCv/OZaTJuHBmwCcHbzpWcKQ3kSnKjig664O5DP89qVK5bVrtRmm2GH
+ ZZ0Fbd9d9ybwaCqT6fM/42CUsgzc08eeerLlJ9PYFcf6Vhue6L1iyfTFo7D6iosyMzebXoafm
+ 2HRh6zyV2J85mq3UO+pZ2toGiHantjRtggwEeOzyYxfnIfguTdirteklaTT/L9IBNav+zo1ak
+ 3zETGsMLQ2rAUFAoJAeso6W7C6i1739Lc0/TwuOiRcSpzNifnZneDMHG3iqfAS0aJi4EDvlEc
+ vliY+XtdA3POHy0uW3txugxDKMB1c99lDheCU6cAfWdt7+HG2FfUbCvBjGZFPVoWeX9pSuQvs
+ slTC7vHXkCmqp6mGJkDc4jX6GG12Zz7cQ865bfsaCvdTrtg3I3drBObh5BCrFoT3A+ZxDXVKE
+ GHYEXG0KnlYM+YCokJDgIQaKqz8/YlCpj/mxrmTPvb65H8+4F60pAX1liGu5195i5WoFi+b2h
+ MgIAg2EJV+qCADZKNZrRauz1EpDQHMAGcSyJYetqmCECcAdQ5PFrX5NtVYY1o16mU/ws6tF7u
+ s5QV1FyxHRBany/ZhmzIMudQegH0UkZEo8p3GT6IDHLK6QjI76rm0sTZYpp3g2hk4uWFgcGF+
+ sdHXjffilvBpKDVeVI9hdkvbFXZPOIXv3hncjktOqHrBwVTVc+HGpe2zvS5y32q1cttRUmbqN
+ YY7MY8RrMpqORrjZ3WU8eROojwvw8McDyVav/VdIxnDhIKHfNcJcgzZ/pvxXbU+McXycCZvV0
+ 2BzgAW7DZlwHqF06xuhSR8Kk6vVqh45fFMmdgN0QktBjLKp6kwjANZIClgVZI1ZY8b4YPDlkf
+ a8TTAeApkeUex1WQY5/sxe5qBzHOxJd+stGV9oNlfAninwO8PuJsI7KIXD/Zs5/SE66l2CLz7
+ Q0P6VVTqEbOHIHZlNtnv4RTJWLIs6DyOZMTQxUS5mzOjoEhm0Cly7+F9uUrcrxzQFjlMkR3cL
+ GswuSp5rnSEb+fTrgOL7Ws7/4SuijGGXDiSP8r+Idmjqbr1hXL2/UYrETj7a1ntnEmeTlS69e
+ bxqAs+S0oVnbJzUnFHEn5KwKouNTelDAgHElyXmXeiF8vXt4batG7ENvvtYRsIPywpSJjEVQ6
+ EAzXqjYbImbLeIJox04vE6D02cajccFhrM6kF8f5Z7n2nF7Hw25+r1y0si4ocd7WJUqIQ2pW5
+ NeiLYG+WYkZF10cgfIWYSRYd+booo5UXWL/0Pa2YzN2YlJ8QsGcYWTrPolhfY1jiazFu79nvT
+ JxQEkC9N4wQVP8FJ3k7oglAF30j2GFxkmyIpUZ6CQ1slU/0UUEV4XwU8YjBdO/8ljjkPtYa5Z
+ WGfKqTRlAdeLr9S6R99M3196B9mZfA7l7/pvwbcggOU2ispD20bhwzvYQ/tIvfRUD8l2BzDB3
+ pJqujdGpb9KBm2ri8lPlWlb6mV6WJ9eRv44w+0+3uZ9Q1zPebAm1uRa4+LnbS58s0vBjAnfog
+ Q9k7wHtuepysqFWOC39+GOtoQHtptVO/DHD4EBWVwpHN8lMYb2UGrj0rABLri6OMbBJVz80Np
+ EZevMH0Gi3rxoaoTsnVtzueKRuVOJUxyXaDcyKYGBfk+pG5YMb8zMMLKGFZ9vA2HPnoXKG80+
+ 4GtLwwujYhUEeLSvyhlmLNEMxx1BUmzwVgVfZ/Uo7Y6+lBWDFEGCY6XzfA2t2uY3NZlS/Z5Fj
+ 2k5XJQ9PbEqkbkfhYRNinPrGIMLN6J8HC0xZizf78i1Dgz7ZeACIoZ4JZ7iLCLvoF9+d25dqX
+ YNXcUd0ztZItv/YEkaGYJkJEhxPJ1H/SmqyPQqL3Hd0hElNp5e8ycrm6iaKSiCAQcolQKPNAn
+ AITggSk+zPBvLfm+ga5uA1i7PF4ICt46mnh/JqyfihcjU6n1l1XPRZss7/n4Hw7BcQS2/pGi6
+ ATD4WtxuBJXE4xdySoUgZ3H3Rmmz91o+drlon5JmVGvbIFLiT2/dLhBzCvBwTWMszHGQxpE2V
+ mxxRtWAf9DRnXjZms/gXMdI+rJkZVylbLcCWpIWcmfimqA6zT7vATKBPuervuiV30Ici6M/Ey
+ HSE5+QvMdTrGdMJISXwov3pc3scHWBVO4pBt6iocgA==
+X-Spamd-Result: default: False [-0.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	MID_CONTAINS_FROM(1.00)[];
+	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[gmx.net,quarantine];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	R_DKIM_ALLOW(-0.20)[gmx.net:s=s31663417];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	TAGGED_FROM(0.00)[bounces-33210-lists,linux-wireless=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	FROM_HAS_DN(0.00)[];
+	FREEMAIL_TO(0.00)[gmail.com];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	FREEMAIL_FROM(0.00)[gmx.net];
-	FREEMAIL_TO(0.00)[gmail.com];
+	RCVD_COUNT_THREE(0.00)[4];
 	TO_DN_SOME(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-33209-lists,linux-wireless=lfdr.de];
+	FREEMAIL_CC(0.00)[vger.kernel.org,gmx.net];
 	DKIM_TRACE(0.00)[gmx.net:+];
-	RCPT_COUNT_FIVE(0.00)[5];
-	NEURAL_HAM(-0.00)[-1.000];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[georgmueller@gmx.net,linux-wireless@vger.kernel.org];
-	FREEMAIL_CC(0.00)[vger.kernel.org,gmx.net];
-	TAGGED_RCPT(0.00)[linux-wireless];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	FROM_HAS_DN(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[5];
+	NEURAL_HAM(-0.00)[-1.000];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 4BF68283A12
+	TAGGED_RCPT(0.00)[linux-wireless];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 901B62839D4
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-This series tries to implement AP mode for Realtek RTL8188EU chips.
-
-This is not final. I still have issues connecting to the AP, searching for=
- some
-input on what may be the reason or how to further debug issues.
-
-Patch 1 could be picked independently as it shouldn't change anything for =
-the
-non-AP mode.
-
+dynamic_tx_rpt_timing_counter is not per mac_id, but used across all
+mac_ids.
 =2D--
-Changes in v2:
-- add patch to move dynamic_tx_rpt_timing_counter from ra_info to priv
-- convert ra_info to a dynamic array
-- update max report mac id after station add/remove
+ drivers/net/wireless/realtek/rtl8xxxu/8188e.c    | 8 ++++----
+ drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu.h | 2 +-
+ 2 files changed, 5 insertions(+), 5 deletions(-)
 
-=2D--
-Georg M=C3=BCller (4):
-  wifi: rtl8xxxu: move dynamic_tx_rpt_timing_counter from ra_info to
-    priv
-  wifi: rtl8xxxu: handle rate control for 8188e a per mac_id
-  wifi: rtl8xxxu: update max report mac id on station add / remove for
-    8188e chips
-  wifi: rtl8xxxu: Enable AP mode for RTL8188EU
-
- drivers/net/wireless/realtek/rtl8xxxu/8188e.c | 22 +++++-----
- drivers/net/wireless/realtek/rtl8xxxu/core.c  | 41 ++++++++++++++++---
- .../net/wireless/realtek/rtl8xxxu/rtl8xxxu.h  |  5 ++-
- 3 files changed, 50 insertions(+), 18 deletions(-)
-
+diff --git a/drivers/net/wireless/realtek/rtl8xxxu/8188e.c b/drivers/net/w=
+ireless/realtek/rtl8xxxu/8188e.c
+index 766a7a7c7d28..de2837a91bbe 100644
+=2D-- a/drivers/net/wireless/realtek/rtl8xxxu/8188e.c
++++ b/drivers/net/wireless/realtek/rtl8xxxu/8188e.c
+@@ -1550,14 +1550,14 @@ static void rtl8188e_rate_decision(struct rtl8xxxu=
+_ra_info *ra)
+ 	}
+=20
+ 	if (ra->decision_rate =3D=3D ra->pre_rate)
+-		ra->dynamic_tx_rpt_timing_counter++;
++		priv->dynamic_tx_rpt_timing_counter++;
+ 	else
+-		ra->dynamic_tx_rpt_timing_counter =3D 0;
++		priv->dynamic_tx_rpt_timing_counter =3D 0;
+=20
+-	if (ra->dynamic_tx_rpt_timing_counter >=3D 4) {
++	if (priv->dynamic_tx_rpt_timing_counter >=3D 4) {
+ 		/* Rate didn't change 4 times, extend RPT timing */
+ 		rtl8188e_set_tx_rpt_timing(ra, INCREASE_TIMING);
+-		ra->dynamic_tx_rpt_timing_counter =3D 0;
++		priv->dynamic_tx_rpt_timing_counter =3D 0;
+ 	}
+=20
+ 	ra->pre_rate =3D ra->decision_rate;
+diff --git a/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu.h b/drivers/ne=
+t/wireless/realtek/rtl8xxxu/rtl8xxxu.h
+index 9fb2583ffffc..4a744b5c1aec 100644
+=2D-- a/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu.h
++++ b/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu.h
+@@ -1756,7 +1756,6 @@ struct rtl8xxxu_ra_info {
+ 	u16 drop;
+ 	u16 rpt_time;
+ 	u16 pre_min_rpt_time;
+-	u8 dynamic_tx_rpt_timing_counter;
+ 	u8 ra_waiting_counter;
+ 	u8 ra_pending_counter;
+ 	u8 ra_drop_after_down;
+@@ -1917,6 +1916,7 @@ struct rtl8xxxu_priv {
+ 	struct rtl8xxxu_ra_report ra_report;
+ 	struct rtl8xxxu_cfo_tracking cfo_tracking;
+ 	struct rtl8xxxu_ra_info ra_info;
++	u8 dynamic_tx_rpt_timing_counter; // 8188e specific
+=20
+ 	bool led_registered;
+ 	char led_name[32];
 =2D-=20
 2.53.0
 
