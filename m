@@ -1,96 +1,96 @@
-Return-Path: <linux-wireless+bounces-33230-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-33231-lists+linux-wireless=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 4HjPExw+tWlEyAAAu9opvQ
-	(envelope-from <linux-wireless+bounces-33230-lists+linux-wireless=lfdr.de@vger.kernel.org>)
-	for <lists+linux-wireless@lfdr.de>; Sat, 14 Mar 2026 11:53:16 +0100
+	id IBZzHy1XtWkMzgAAu9opvQ
+	(envelope-from <linux-wireless+bounces-33231-lists+linux-wireless=lfdr.de@vger.kernel.org>)
+	for <lists+linux-wireless@lfdr.de>; Sat, 14 Mar 2026 13:40:13 +0100
 X-Original-To: lists+linux-wireless@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5FAA128CCC3
-	for <lists+linux-wireless@lfdr.de>; Sat, 14 Mar 2026 11:53:15 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 26F9428D2F7
+	for <lists+linux-wireless@lfdr.de>; Sat, 14 Mar 2026 13:40:13 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 9534E3008098
-	for <lists+linux-wireless@lfdr.de>; Sat, 14 Mar 2026 10:53:12 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 809CE301511D
+	for <lists+linux-wireless@lfdr.de>; Sat, 14 Mar 2026 12:40:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E1DFC3537FF;
-	Sat, 14 Mar 2026 10:53:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2640A3451AE;
+	Sat, 14 Mar 2026 12:40:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="FLSOLnZu"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="ctzVvJsW"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-oa1-f51.google.com (mail-oa1-f51.google.com [209.85.160.51])
+Received: from mail-oi1-f178.google.com (mail-oi1-f178.google.com [209.85.167.178])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9F6993537E8
-	for <linux-wireless@vger.kernel.org>; Sat, 14 Mar 2026 10:53:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.160.51
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D1B8F33EAF8
+	for <linux-wireless@vger.kernel.org>; Sat, 14 Mar 2026 12:40:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.167.178
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773485589; cv=pass; b=LNdBASenOYI3FI2W9NNjseHZsHKkmUCDCTR0o1x5CFX664ZUC0mR9ilSdRopWgqCiqBB5g1hxP4WrlBX/MzABDRiIVL6KwPic3ldoXgjb94PT+HzHsBaWDAIhG4Tq+5IipmMHm6NxFXolq6MZBPUQs234cZ2HhhqnXBHLnoLrGo=
+	t=1773492011; cv=pass; b=A4sW8TdgBzqMNmnYWrC2YTeR6oLQ5sVLLiInhTwhHpd07ggD2R0I+Ir3lU+l04ikOUkgFNLMxu5vsQY9hN/kVFWLv+s309EK048YPE9tuftdOqNNMJbkNn9g0uJ54oWGZ8fp+ibVtmaMLN+YDSzHkdnlsZqW5NAofgT0oMPsNxs=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773485589; c=relaxed/simple;
-	bh=HmthXqOWlKMnZVAAjcUNeFjabsKh/rVpa+Mqjl+oo5w=;
+	s=arc-20240116; t=1773492011; c=relaxed/simple;
+	bh=NPiEcpwTfzeoz08xk+oJb97Z8sjGsHwJP4jXFKLhU8g=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=lbHz2Je1STCZb+194U6RmVlmUXOC1J+/NCbtbdsVjHeBczpXYzRu/x/NlnfjwNhenJLfE4UpobPCziFJjgp6gPtxwU2oUPsAihE/b2fBoUZZ7aUCsBnTkh7AK2WdtYGT75LGf94jaFlA39AnihAaZXSmNqkK8QOah72k1o4nb9o=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=FLSOLnZu; arc=pass smtp.client-ip=209.85.160.51
+	 To:Cc:Content-Type; b=bxq5cnkGbl/2jpALN3UMJJji807+UuAttPY4p5dBg5IKAJ7cvQXAxbs+5YwjvF0GmAIa9zU0uhw5tabjkzCOu6z4zUJyII+aajrGW6althWNCXZxDiE1jjooGuTNgc3ywq0wi7X+8p0dXrM1XFGO1CVmyRXceyTBMD2ynxBNgeM=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=ctzVvJsW; arc=pass smtp.client-ip=209.85.167.178
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-oa1-f51.google.com with SMTP id 586e51a60fabf-415b23dd6e5so1045852fac.3
-        for <linux-wireless@vger.kernel.org>; Sat, 14 Mar 2026 03:53:08 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1773485587; cv=none;
+Received: by mail-oi1-f178.google.com with SMTP id 5614622812f47-4670bcc40d7so1175962b6e.2
+        for <linux-wireless@vger.kernel.org>; Sat, 14 Mar 2026 05:40:09 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1773492009; cv=none;
         d=google.com; s=arc-20240605;
-        b=VYBL1ce4Ov+H3WP1igT6lHMhO+KpL5oyYTob6JN1projhKHm368yCnrOMOmVAAOlUC
-         27nSR7BIeDCd/ZgOWk94Nd4dk+fAapBwbq9jBTa/s8LTZHnvBdN/k3aQHljEI9wBPZhj
-         QvVSYDGm2HnfT9hoxgsIWMXQ1zuTdoRlgTSBy6D6U46EoxRELfOQWJajHle7TSt+Cbyp
-         vj1q9Uu+BDspc01JzqqTo/fMTlx2CgT13TDc+Zi5XT4YYCRltMMwA80utwtu/ivSYJr3
-         IPMbBptc+nSHTDb4h4ahA4oQL3SfLJWOkRY5W5decmrLrC0pOcwRFitfbwLrOenKEvcY
-         MXnA==
+        b=ZghlZU6ovD+i67hAPuAOCn+qghKeWOlFEhLLht+eDRZ5pH/bwEBXITdINR2QGGZReI
+         ubMlAUTZOgVd7u2gZhEKqRAb4hNXO6H+Zr+F+LPddGbFmc+p5aiFgY02jyvPUi2qCqcl
+         A8GcrfV88XC3n/m9bS08sIWWyDzZnSL2Lr7osjzzQyVjH4AGdZvZDkYmi6DM5+2bjcvs
+         z+onGLT6DcOw978pc4O/xYnajCGeGSScx2y8BAdMD7CZIlU1NTnJLqE5c6fhKFSfSOaY
+         BrnYln9t5CLEAiA1ylHlolqOCppItYx9p08LAScZV6OnyKQn6DClWbikp1F3h0bBprbG
+         jBeA==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
         h=cc:to:subject:message-id:date:from:in-reply-to:references
          :mime-version:dkim-signature;
-        bh=HmthXqOWlKMnZVAAjcUNeFjabsKh/rVpa+Mqjl+oo5w=;
+        bh=hiEhmw1vcClLQd0zqzr4IDRovE6h9unJHNp2D3tJSFo=;
         fh=fFUQ3bDSnwWYL/1dqZwPKYywXd5TONRsAevI/mvHYbI=;
-        b=LSbuC1pU6pNBAYlgUxe8KFPV/z77qjTTztYn6CSUj39N+pkZTLC7y1gUDxlYw92ZAs
-         RASZ8ObSoHnDCWQkJvf/L1IDmqhQan+WYiE+vRHBGy3njWHr2ePKucrj9Q2FifQErrZP
-         4gWVv3FhVZdoiHX7vxTp9Nco6PdPNzxPvSHFPTUCbXIzUAAfYoGJs5pqB+zYUj+FximM
-         MFzDBDtbyrbQCnYDADnCD0he05yH0XL3ZbEX2CRP0w4S9EGQPSqSYUnA3MabhXfbkj6A
-         QvfUi8DpodhP8EDlKyANIcSCVbwxjVJR/AzlJvUd9YDZmxPNRHZr+cZjyARgNViHuy0V
-         PYoA==;
+        b=Bphj4pYpsC4Ec4473Ep79AlHBTgDbE8gZLLT4IC8HOWFVWG6YD7hkDOqrQIBJ+g9Cv
+         TpIi5KuexYjROxz+Pp/c+jDgS8MzACculcwiOyra3p8Rbnlf8zEenDfoKywgJEWbFQL7
+         k6DtlJaV2Ke9j2MkpjbXnzHoAFLiqFUT0sejBLXvv5+mv1+LTCrMNTSPR9a2eayevpuH
+         bdoYyIanf4LzFHFI1Y5ocQbLmHs8oSTtC0/L0slK4ufNN6Z+BzAOHPHFSiiP5DXY0jaV
+         WwneolJexSVxIGaBRGmJDcnxt8G4OQsgAhnV6d/RcftBYWqIngjwLhzx2HBnQXAZOktA
+         BPGw==;
         darn=vger.kernel.org
 ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1773485587; x=1774090387; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1773492009; x=1774096809; darn=vger.kernel.org;
         h=cc:to:subject:message-id:date:from:in-reply-to:references
          :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=HmthXqOWlKMnZVAAjcUNeFjabsKh/rVpa+Mqjl+oo5w=;
-        b=FLSOLnZuixN2xd0MZKskcWSU1DHBG0UwO9i1GS/sZW/cMQHaOoGyEX1unJJAAaqKPC
-         OXqRsIm8zPXA8cnI6DEW0jqQojcxGBO9gUHDausLjNUyg1Ab/hx6wxCd2MiK9R8P1Er2
-         PhXERD92ElydhErUll1OldncFZNrrhCKHtJ3EfWj2Jns/3XSxH1FgTy/Yb+0gQMNzKdU
-         57Hq1n4RuhRQpJzZP1bo5rRnGuRFxcJVPdi3CZC/OdncD+1T1Mi/YClXt2KAK9wWX2WT
-         sKC4rdgWbawqFpDabKwa0T7WCpOt7nHhLG0QLIufvztRY5ZaQBisKQjW5qBYWJlgdfqU
-         uwZQ==
+        bh=hiEhmw1vcClLQd0zqzr4IDRovE6h9unJHNp2D3tJSFo=;
+        b=ctzVvJsWvW3/RWGBqt/4M142f2foTeGj84kvBSr+xqMexmFmmAw2Q5YgclV2u9Mu9h
+         fIn/vD/zvRPJXG7Ej8x/vgL0IbZeMFypdK85eHqR2eZX5YYo2oq5OqmvodMaQ/vntG7y
+         PAMiQn3FQgRdk/ycMTGBs0TxmHhQkDzLjHMTJKkVEblDZrcwhUMzWqD90kJ6nfNDNvjj
+         W8N7Z0ZzPumYtIuk9UY7ogB8N+qE56zP43aNtY96bt55W+h4eAqTPjpsNkD6doBN3+V3
+         WxICF9n93A47sRjNP+IRHtI2fUzqyx88L3ExQg4KaxKiZJL1j8X7auZBqnCYTSFDApy2
+         Sg7w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1773485587; x=1774090387;
+        d=1e100.net; s=20251104; t=1773492009; x=1774096809;
         h=cc:to:subject:message-id:date:from:in-reply-to:references
          :mime-version:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=HmthXqOWlKMnZVAAjcUNeFjabsKh/rVpa+Mqjl+oo5w=;
-        b=XGtKeX63KFPkgyF45raEp8u+jHPT3FtkmDmQY748wUVHHAVDKMjsuwwYs/JI0TF+HI
-         fUj4dSqWiYMAFukoG+3gpP5v4vNu23nb4uWUU10Q1OvUDvI9fDuGO2Rc8M8nILPRIEtp
-         qrG/VqZ3nv5fjc8xvt97+k3bQ6oL75Shuw+L/1q4IokVooQHBATfZM54A7xmFcsxOv74
-         yropT8qZYq75aVOvfeUN8QAeZ0Pg5Uocd8OrD7O3OfTjQRobfTndfCHzO9ox6lvYhEvQ
-         e2Ed/zZbltGRCP72oME6JmTB+jp35ValktcW911lTRQZpDMVX8Uv7kONSQpo3PNuPfR6
-         SYqg==
-X-Gm-Message-State: AOJu0YwEZ5jrheXjLOA0XukVbgnhXZ8JglBWD4fAeN6x/fdgU4snOqUf
-	GXpgiLr4Mr0CeisABC0eDxafedKrweGjCfwioWcOHmEox8LX+Ty2fqbUZyMC4HL+kGtUUr7JV7f
-	6R+jESnfFOgXhv+8Ipc+TbHUt81ODD6g=
-X-Gm-Gg: ATEYQzxCJyOuy4kX76MnHlrmFqmqF3Rfbkg7pMHqouqDmh7+BKrnUsCnKoC7JUsxetU
-	Qq3nA1QsTlvLDd72FW5kfDmjBX1kZ360HrQafI8aSsooczxvw3JS5Hqx+FJHdRA+IO3/G9wzs3F
-	k12gnjhjShuqHhzqfl7ziacGfPLjmxPmYzbVKwpFTUpoawaG4Js44MURTL3Ji+IQvh3tPVgsDQo
-	SJlgm17H9+t7Rme7/csydIgMmVOUOG19oIeReA8b9a6tWmQzTlZ/bNnQqPBmMO2UbCoCYgOpUDD
-	2+GBdzZOwyZhe3fswQ==
-X-Received: by 2002:a05:6871:741f:b0:417:6279:37c2 with SMTP id
- 586e51a60fabf-417b9058482mr3173993fac.5.1773485587450; Sat, 14 Mar 2026
- 03:53:07 -0700 (PDT)
+        bh=hiEhmw1vcClLQd0zqzr4IDRovE6h9unJHNp2D3tJSFo=;
+        b=P3ix8rUeYvSgXewMiKsI8kopVjZpCJj8Z2gmg+TNBAi3Es6ZoHImAsSaUtxQnhbGqQ
+         j4Va0ZXGr99X+pC9knHkiSnqPgZlalh/juakYd+ofiywIjZApMpT3K0EsafaYfRlxqun
+         d4b1ZfBhHF8o/gDLH0rcJ0dDG21oNR702FzPF0CRm8tUz3mec70LCkahE3TMKni0iZxd
+         jhete0bLuPbR1kozntECzCUbYTdgWYEXI3JBZhoqe+7CffvDuh9HLpxqynx/LqROklWv
+         RwV3VfSnaqnkiqNOMxX5YVZmVzvqnwjCKzkM86Sdf0rjGi29fuc6nBmpOEOtEkojaX/m
+         L37g==
+X-Gm-Message-State: AOJu0YyZcIMpKfEN/8+LxXn4X+oJ1wAR/aojcLMKfzWbt7LT2WaVlT5R
+	F9W7gtRiTDEgP7awslfB7MwvFL14eM/mvTTPkP0BaiLBaNxmvvhtgO5/Ju328aew4b9K52XsBiA
+	Rp4XJVUj1u+ciVvhj/OXJw9+bKu3AJG5zgrTb
+X-Gm-Gg: ATEYQzyuo60ngXYK7VR+XQOhkbe2qUNsCooXvMlwmZN8tn2URD3ikY6lsQj4bDiSQJ9
+	BHde01HGz/bNyddrHue1rBkcwmVJUmn7DAQtT3oiuQS7yUSKQGnPIxF40yk/Xe6kptWQbh2Lv3w
+	PaxqcUgkaKfhdyLKl0G9MPT4jMJ3biXJ+sHbewYSoBiNG80IUYKtzWvR2/IxFYJcSsAF8ZiT1va
+	GfgltAb96r4CPxBC5vgJWR7x5ULWS3J0wrhJRWLZv53W7LSt9ymSmzi89HIU9068/CivqErCMAo
+	t7YlKOQ=
+X-Received: by 2002:a05:6808:3448:b0:45a:8cdc:669 with SMTP id
+ 5614622812f47-4675767b22cmr3348749b6e.59.1773492008644; Sat, 14 Mar 2026
+ 05:40:08 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
@@ -103,12 +103,13 @@ References: <CALdGYqSQ1Ko2TTBhUizMu_FvLMUAuQfFrVwS10n_C-LSQJQQkQ@mail.gmail.com>
  <CALdGYqQn8GGXXjZTsL+a5Mfdmw5HRYB2Jyvqq5M5SUwxK9yd_g@mail.gmail.com>
  <CALdGYqQee1sjgdBAPJSyb1gL6ksK4z8Uw_v3ANTnyXE+LXFAiA@mail.gmail.com>
  <458ed80e39734ea99610050140bb31ce@realtek.com> <CALdGYqQykO9ZzO=-+D17R_8LC=Win5nGN6-9zFqChtNEyUzEfg@mail.gmail.com>
- <CALdGYqTHz5Pz3uSGLbrVuNMWAXaqniUCuOSQACXUYHSL22ySvw@mail.gmail.com> <CALdGYqQ5K0iuxjjX4TwNLi9Km5O+YL3Y9r6Bwfk9BaiuV3BHPA@mail.gmail.com>
-In-Reply-To: <CALdGYqQ5K0iuxjjX4TwNLi9Km5O+YL3Y9r6Bwfk9BaiuV3BHPA@mail.gmail.com>
+ <CALdGYqTHz5Pz3uSGLbrVuNMWAXaqniUCuOSQACXUYHSL22ySvw@mail.gmail.com>
+ <CALdGYqQ5K0iuxjjX4TwNLi9Km5O+YL3Y9r6Bwfk9BaiuV3BHPA@mail.gmail.com> <CALdGYqRYVxGbg+qRNUvRNr9V4f2YVZ7p=amwq1ktdmZVkwxjQg@mail.gmail.com>
+In-Reply-To: <CALdGYqRYVxGbg+qRNUvRNr9V4f2YVZ7p=amwq1ktdmZVkwxjQg@mail.gmail.com>
 From: LB F <goainwo@gmail.com>
-Date: Sat, 14 Mar 2026 12:52:31 +0200
-X-Gm-Features: AaiRm50RtPZD3MBW8TqBSl8WjTh_vaMj1G0ubfohnNWl25Q3y8nJ42rKx7QW5VQ
-Message-ID: <CALdGYqRYVxGbg+qRNUvRNr9V4f2YVZ7p=amwq1ktdmZVkwxjQg@mail.gmail.com>
+Date: Sat, 14 Mar 2026 14:39:32 +0200
+X-Gm-Features: AaiRm53AQsq27s8ttjayxz_a3yKhZSkVSD9IqtiHDSiPOhkRgQWDBhQDw9kJr78
+Message-ID: <CALdGYqSq416qqqZ7t+wG5fir9NWfi3578+brdaj05q-42Gj14w@mail.gmail.com>
 Subject: Re: [BUG] wifi: rtw88: Hard system freeze on RTL8821CE when
  power_save is enabled (LPS/ASPM conflict)
 To: Ping-Ke Shih <pkshih@realtek.com>
@@ -119,11 +120,11 @@ X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=2];
 	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
 	R_DKIM_ALLOW(-0.20)[gmail.com:s=20230601];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-33230-lists,linux-wireless=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-33231-lists,linux-wireless=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
 	TO_DN_EQ_ADDR_SOME(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -139,20 +140,97 @@ X-Spamd-Result: default: False [-2.16 / 15.00];
 	FROM_NEQ_ENVFROM(0.00)[goainwo@gmail.com,linux-wireless@vger.kernel.org];
 	DKIM_TRACE(0.00)[gmail.com:+];
 	MID_RHS_MATCH_FROMTLD(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
 	TAGGED_RCPT(0.00)[linux-wireless];
 	MISSING_XM_UA(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,mail.gmail.com:mid]
-X-Rspamd-Queue-Id: 5FAA128CCC3
+	DBL_BLOCKED_OPENRESOLVER(0.00)[mail.gmail.com:mid,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 26F9428D2F7
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-After extended testing with your DMI patch applied, the hard freeze is
-gone. However, with ASPM disabled but LPS Deep still active, I observe
-periodic h2c timeouts during idle which cause occasional WiFi
-throughput drops and Bluetooth audio stuttering. When I additionally
-set disable_lps_deep=Y, all symptoms disappear completely. This
-confirms that combining the ASPM quirk with dynamic LPS_DEEP_MODE_NONE
-would be the complete fix. Ready to test an updated patch if you
-decide to include this.
+Ping-Ke Shih <pkshih@realtek.com> wrote:
+> I'd adopt your suggestion (dynamic LPS_DEEP_MODE_NONE) if the test
+> is positive.
+
+Hi Ping-Ke,
+
+Following your suggestion, I performed an additional experiment to
+validate the dynamic LPS_DEEP_MODE_NONE idea. Please treat this
+purely as a field test report -- I am not a kernel developer, and the
+implementation below is certainly not upstream-quality. I am sharing
+it only in the hope that it helps you design a proper solution.
+
+What I did:
+
+I extended your DMI quirk in pci.c with an additional capability flag
+for LPS Deep mode. The only file touched was pci.c (your patch) --
+main.c was left completely unmodified.
+
+The changes to your patch are as follows:
+
+  /* 1. Extended the capabilities enum */
+  enum rtw88_quirk_dis_pci_caps {
+          QUIRK_DIS_PCI_CAP_ASPM,
+          QUIRK_DIS_PCI_CAP_LPS_DEEP,  /* test addition */
+  };
+
+  /* 2. Extended disable_pci_caps() callback */
+  static int disable_pci_caps(const struct dmi_system_id *dmi)
+  {
+          uintptr_t dis_caps = (uintptr_t)dmi->driver_data;
+
+          if (dis_caps & BIT(QUIRK_DIS_PCI_CAP_ASPM))
+                  rtw_pci_disable_aspm = true;
+
+          if (dis_caps & BIT(QUIRK_DIS_PCI_CAP_LPS_DEEP))
+                  rtw_disable_lps_deep_mode = true;
+
+          return 1;
+  }
+
+  /* 3. Both flags set for the HP P3S95EA#ACB entry */
+  .driver_data = (void *)(BIT(QUIRK_DIS_PCI_CAP_ASPM) |
+                          BIT(QUIRK_DIS_PCI_CAP_LPS_DEEP)),
+
+I am aware that setting rtw_disable_lps_deep_mode from pci.c is
+architecturally impure -- it is a global flag that would affect all
+rtw88 devices in a hypothetical multi-adapter system. A proper
+per-device solution (e.g. a flag inside struct rtw_dev set during
+probe) would be cleaner. I simply used the existing global as the
+most straightforward way to validate the concept.
+
+Verification:
+
+Confirmed no rtw88-related entries exist in /etc/modprobe.d/,
+/lib/modprobe.d/, or /run/modprobe.d/, ruling out any external
+parameter injection.
+
+After loading the patched modules, the following was confirmed via
+sysfs:
+
+  /sys/module/rtw88_core/parameters/disable_lps_deep_mode = Y
+  /sys/module/rtw88_pci/parameters/disable_aspm = Y
+
+This confirms the DMI quirk is the sole source of both values.
+
+Results (10-minute idle observation, battery power, wifi.powersave=3):
+
+  With your ASPM patch alone (LPS Deep still active):
+    - periodic "failed to send h2c command" bursts observed
+    - occasional WiFi throughput drops and Bluetooth audio stuttering
+
+  With ASPM patch + LPS Deep disabled via the quirk:
+    - h2c=0, lps=0 across the entire observation window
+    - WiFi throughput stable, Bluetooth audio uninterrupted
+
+The result confirms that disabling LPS Deep Mode in addition to ASPM
+completely eliminates the remaining firmware timeout loop on this
+platform.
+
+I hope this experiment is useful as a data point. Please feel free to
+discard the implementation and design a proper solution -- I am ready
+to test any updated patch you send.
+
+Best regards,
+Oleksandr Havrylov
 
