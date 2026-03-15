@@ -1,220 +1,219 @@
-Return-Path: <linux-wireless+bounces-33260-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-33261-lists+linux-wireless=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 8B51MCU5t2nVOAEAu9opvQ
-	(envelope-from <linux-wireless+bounces-33260-lists+linux-wireless=lfdr.de@vger.kernel.org>)
-	for <lists+linux-wireless@lfdr.de>; Sun, 15 Mar 2026 23:56:37 +0100
+	id UMr1EkZHt2krPQEAu9opvQ
+	(envelope-from <linux-wireless+bounces-33261-lists+linux-wireless=lfdr.de@vger.kernel.org>)
+	for <lists+linux-wireless@lfdr.de>; Mon, 16 Mar 2026 00:56:54 +0100
 X-Original-To: lists+linux-wireless@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6731B292EAD
-	for <lists+linux-wireless@lfdr.de>; Sun, 15 Mar 2026 23:56:37 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id A716C293117
+	for <lists+linux-wireless@lfdr.de>; Mon, 16 Mar 2026 00:56:53 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 27F613012C42
-	for <lists+linux-wireless@lfdr.de>; Sun, 15 Mar 2026 22:56:36 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 66B90300A11F
+	for <lists+linux-wireless@lfdr.de>; Sun, 15 Mar 2026 23:56:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6874326FD9B;
-	Sun, 15 Mar 2026 22:56:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CDA7C2C11D6;
+	Sun, 15 Mar 2026 23:56:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=HOTMAIL.DE header.i=@HOTMAIL.DE header.b="DXSwQto4"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="jDmf7fc+"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from AM0PR02CU008.outbound.protection.outlook.com (mail-westeuropeazolkn19013009.outbound.protection.outlook.com [52.103.33.9])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-qt1-f173.google.com (mail-qt1-f173.google.com [209.85.160.173])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E5DF92512C8
-	for <linux-wireless@vger.kernel.org>; Sun, 15 Mar 2026 22:56:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.103.33.9
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 78F892BE7B6
+	for <linux-wireless@vger.kernel.org>; Sun, 15 Mar 2026 23:56:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.160.173
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773615395; cv=fail; b=f/J17X74MJtNVK8q8l4uTc4O6dGIvZPaJgrrwQmulc3QG6DwIJYvIel/7pdRNkNqy2VzAL7InhOmmROnTobo8R7cWbsvRkRhZEinO/HmnqLrGpCuJj2MpKNYCPwvczVT0WTJJAyCVwRv4V7UhifW4XSDNk0Y2BxCx6FSLHcG+XY=
+	t=1773619011; cv=pass; b=KIeQ2QkqxhQ+PRDSZ0TS8CaWcB1sm5AAtmikmKjZh9JM/ZY+viv0Gv91GeFyWSjYMMfmX8VD1IUbsg3Fzq6XlQXIITt+2wltkIktbm5Ej1c+/izmh9K24nofSesTeTFK4ZN28adxuxVEW5vdvXcYPICeNMqev2tJjyb4DCJW/0E=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773615395; c=relaxed/simple;
-	bh=fi1iXKYkvgiLVEEZqDJXwj0h0jdXBfC/DgoWzDaSqdM=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=JxDEd6noVexgkKB85gs+yJNBFc7x+S46u7AK8GvtcXJ9DXe0ztKZj9ozogttum+sl5Ip0ar2K6Q3HzpW6/FehBLKyKp7+nxrHMBI9zjTqVEMSkoDinq6oxO233G6zhg1Myt+b05pIdve1oefCKY9gzo34fKEhZ79lkZDdLI+AL4=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=hotmail.de; spf=pass smtp.mailfrom=hotmail.de; dkim=pass (2048-bit key) header.d=HOTMAIL.DE header.i=@HOTMAIL.DE header.b=DXSwQto4; arc=fail smtp.client-ip=52.103.33.9
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=hotmail.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=hotmail.de
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=aripveIue7EJV1ABlF8Y/EZLeyjypGy7UGHUjyTKX6FVMJZfdWyrhCvY+1nV02RzEN++xnvMTxcRaCa0AOf51xWVdcmRY7ginn9unEX1ck1efYN36deVAKJHuab3+ZIUS4eLScHyoF1z5TobLSif8EqlKfOlsSrOp4rFO6YsROQKcCQozWI/zDjc8honFsfYYdCau2S3nKt0ms3We6VyEqCw1p5HLCRxqUI8afKQAuBWjCFwIISyrxOX6OHoo6XI+ROwjA/PjS0RDkPuA0otrApb0oIZdgiaHjKF/d4gk9akqfi49AUFFWrxt5bUK/y91pasWGMJvgiJf2WU+HldKQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=GlFsugOSstT2JlFbTWRkHKm31kIFbiWoszI1k7BVfpg=;
- b=JZ4gjJn47M595Ot1a+xegmQfkXTHOqYD95isZlr8SxpBcXWDOTqp5q8z3XLrhEQ9XlOskVYVjXt8+zpLcweJGHwsf6VKyoI2w9HY8y1X+Imem0GgpH6AIUNS2HNhA/0mta0QeLSaB+GkpOXsiXAy4Rww9tg0HtTGjXLG5a5QmMWLba58fh+ylaSISr/VXAPErblPobmPFJARwM1lswjnSlzGD//cKx2ccNxl8NdaNzMQT4a2Mf/8mTDWpkoMvUs0iUhQTyx4G1mWoeoczaPikXevoVOS71NC5/qQ1Rb76u91T4F4OlMtXmVLbCrSn/hYdLMYWIdur3jrzwI7l2cU0w==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=none; dmarc=none;
- dkim=none; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=HOTMAIL.DE;
- s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=GlFsugOSstT2JlFbTWRkHKm31kIFbiWoszI1k7BVfpg=;
- b=DXSwQto4JP1atly54lxzFrhKEbAPs6FR7A67JzvhPyAetDDBSR09NQ5VgKTs6dHPMr2PmeJgB7I1RXB5dso+9Hs+eWXgf170izzssD8j+fIKC22va2VmIBEYtue8R/E8HibKUVO/LJpXEqnBkpen362kkwUA2OgzSixB+m+6qn2fRqVcNSgHRS6n2XwgCRDRvtPaRYV1QDXbVzuTmc9qbeZ0tgJo/aRIsqjfzWfsA3mF1zaI484pfX+8B5Z2sAfzgpMurWNkN69v50PPkpsQQszpUSLIk25N16BFVp/ye3XTV1Ympr10yVklbc0c2VeGFzc1bWqmsK50SiyLUzH8TQ==
-Received: from AM7PPF5613FA0B6.EURP251.PROD.OUTLOOK.COM
- (2603:10a6:20f:fff1::851) by AM9P251MB0070.EURP251.PROD.OUTLOOK.COM
- (2603:10a6:20b:41b::5) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9700.22; Sun, 15 Mar
- 2026 22:56:32 +0000
-Received: from AM7PPF5613FA0B6.EURP251.PROD.OUTLOOK.COM
- ([fe80::596d:6ad8:b60c:c9eb]) by AM7PPF5613FA0B6.EURP251.PROD.OUTLOOK.COM
- ([fe80::596d:6ad8:b60c:c9eb%4]) with mapi id 15.20.9700.020; Sun, 15 Mar 2026
- 22:56:32 +0000
-From: Masi Osmani <mas-i@hotmail.de>
-To: chunkeey@googlemail.com
-Cc: linux-wireless@vger.kernel.org,
-	Masi Osmani <mas-i@hotmail.de>
-Subject: [PATCH 12/12] carl9170: rx: handle zeroed PLCP CCK rate as corrupted frame
-Date: Sun, 15 Mar 2026 23:56:09 +0100
-Message-ID:
- <AM7PPF5613FA0B686F41D14D2742825BE219443A@AM7PPF5613FA0B6.EURP251.PROD.OUTLOOK.COM>
-X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20260315225609.61791-1-mas-i@hotmail.de>
-References: <20260315225609.61791-1-mas-i@hotmail.de>
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: FR4P281CA0066.DEUP281.PROD.OUTLOOK.COM
- (2603:10a6:d10:ce::15) To AM7PPF5613FA0B6.EURP251.PROD.OUTLOOK.COM
- (2603:10a6:20f:fff1::851)
-X-Microsoft-Original-Message-ID: <20260315225609.61791-2-mas-i@hotmail.de>
+	s=arc-20240116; t=1773619011; c=relaxed/simple;
+	bh=0v9aYL1OBh/52O29eAqygO95z0sTQ4zRbjxSU2mIdWY=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=efWeQ1yn6SH8M0hhUSn555ssLI4ItuQqJkVXr8gUNMMC4DruEO7UKmqmpissdOKkQNy9do2O/jfJLwEd9BrSDAVIdGaN/88dkcFULS20XFnHMxytZAW5f8FQfTClzw5/BFxuqGdvp882DRnrWt7M42K6UL0sJUeHZqGLEHVCtpY=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=jDmf7fc+; arc=pass smtp.client-ip=209.85.160.173
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-qt1-f173.google.com with SMTP id d75a77b69052e-50697d6a69cso20736801cf.2
+        for <linux-wireless@vger.kernel.org>; Sun, 15 Mar 2026 16:56:50 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1773619009; cv=none;
+        d=google.com; s=arc-20240605;
+        b=gfLVZaUXY2JVBMgrAzy6Ss8TmY7ULaJBhkyzI0St37r9rkepTp3peXokbS7DdyXXuU
+         pe60PpQK9nRX6OSBfDBDaWH4vyvu+BYiBdeMTgYlYvUDoAUn8g4TYeZYA4YRzD7yjenh
+         LSZtV3SZY4iccdqyWRE+rnJ9GcWiZvV3H8L1PRterXQ95AYFjatmNnRPDS7hjCDBoN55
+         rm4/lzxgmaF4AkhA8qr7SDBNxdg2dFADM9pdnPlXkD26yMoSRdP+Vg83aXzQA/49AtUP
+         yX1lzAoZ9EgquJ8LZzAOJ92xrWHtn5QCp1XRy0VY4TZb6takAzvnGP7nJCXoRPRNU+l1
+         OxGw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:dkim-signature;
+        bh=zfWc1PVuIaGjEj+v5aaxG4wWyzdFsgkmHQOoNbes2Uc=;
+        fh=xvVfPD1O50MjR8HfypDjv/9Dzn2Tjm8/W1c0/DMkGpE=;
+        b=j4x8iYn0bzIpgBVk1v79o2Je/kA+dV4htcwKW3a6aFKfbsPXcZmmeVqHfW+21qozJE
+         J3DAZBRJKQy4Pm2fvU1vlpWLW6MkzTnsx+goy/U27SqRiIEgTeKMNTQVCyAFKV/9p9Eg
+         UHUkyD798SKxVt8fjdS+gLZwVhhAtfPQq74SbYfVdDHr8HHDQEITFK+IHP2YtvvgjQMQ
+         FwMp40vT96g8bHXiR2SvcflVVr/9WDmkAaKTgerp7IhonkvoaaXYL5FeYW4H+TPVeK0w
+         gKKi4NRLR8CYfqZ3n6g4jkiHIoB7x+/Fs75mNqzdtr/cobXhh53d5oAQ1rV9pQ17p1p1
+         jl5g==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1773619009; x=1774223809; darn=vger.kernel.org;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=zfWc1PVuIaGjEj+v5aaxG4wWyzdFsgkmHQOoNbes2Uc=;
+        b=jDmf7fc+f9BCgOZW6E7rh3CD7tYKfuiycRK0gyl19AqcMOwc/NY+Eje2wEntYn+HxX
+         b0rE1Mtr/3odNc0uiqWboqoTQxoIV5LpOqy8G07Vyfo++8RNJW6Pns/P3Uc27ZsVjiz4
+         uUyhneV+z67d+0Jei07+ZMj0Rx+rcjbeZee3EH8Lpj2uZqZ1s31JvxhPOxe0Ubes0Vwp
+         AiQjO4Dji53UeL0DhdeebMeDJaxV2A/TnZeOnyLyWF+BMA6SZcHyQ8Sm+Q4UhTGzyYkR
+         dQIRhnW0GxqusGP5GhvrGSW4Qpo792Amu+626ux0cCKmMhUQCdNCVjJmNv25byekh247
+         Kucg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1773619009; x=1774223809;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=zfWc1PVuIaGjEj+v5aaxG4wWyzdFsgkmHQOoNbes2Uc=;
+        b=PgeNfLUr876S+DJdNGqGZbF/b99iOrUvoSb1RYSuZxaPTnp+2iZy0I5CvzWWmwQ4mf
+         odMzvVdxB9AHbnrfFlhQ8CaVGeD0OcQUAGnCvupaghSSAWmQUBXJqcG9+Zoi43aEGcpP
+         WcpwzlQOexzrkco41sjieypsoplzfnNyvQKOc97lWTtQPtKso/tgqfYXCHkxAViiezxo
+         Ty1J06QiUjfShR54BrxLXAh5rze15BJl6NGW6QcldvIFletPESD6W1v9N+5IrGaHrmR9
+         7aX/JzYeFM5eDW1hYiEXV1ZchAPZAIQjKBIsU5UuszoEaWUxoyl7IUbLtW5jIzhleRxr
+         /jew==
+X-Forwarded-Encrypted: i=1; AJvYcCW6/N2Bc5dcSsnJAF+WlJcPIaRtnxnYGpKbjXKS0CLzh8ZKDpdoqLrHcDv8Di+gb/d3DIB45lFrhovLg+4qtw==@vger.kernel.org
+X-Gm-Message-State: AOJu0YzeuLEJ+ZQdG9Uh7l0wK9RG4DQXJKylihOHUC8b5cKHmKX+hX/D
+	kt5plQFM+zxZMKZnPO5UnfBJHsOoIQCEu6L5zW8QuOnQM5FzpiPWDkr54O6UffV77pWEUjkdkQx
+	RhbQFOt6FZU7WdnfW67qZudofVl6NEA==
+X-Gm-Gg: ATEYQzyY/ZSCWBxariadzowHuCcYxFX6pIyIXYaGqlVOE9U78vz732p0aovtGBFO+Mj
+	eYV9qKWooHjsKCGdokHny7sVCW06YyRbide8sicV4yKZILS5ljTwRdTrS30vRnneb0+Bf3S0mDs
+	m+s+aKqtLDKEhQudaqq84ypMBBK0LMnextz7Gdqf5q2WUzrzSEG/kOMvaMGC261+MzitoSxmE67
+	JZpnctSYjWWUrQfQSH0nbdBx6Gvv/+MWFxk5iL/rLE+u2Ui/YHjdRT8I/M1L/nSygi0IIZUoFky
+	ibCr4HiXSaf6fiUSGg==
+X-Received: by 2002:a05:622a:1998:b0:509:1260:b138 with SMTP id
+ d75a77b69052e-50957e323c0mr131795091cf.58.1773619009394; Sun, 15 Mar 2026
+ 16:56:49 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-Exchange-MessageSentRepresentingType: 1
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: AM7PPF5613FA0B6:EE_|AM9P251MB0070:EE_
-X-MS-Office365-Filtering-Correlation-Id: 2ff47346-b7a1-49ad-b252-08de82e6195d
-X-Microsoft-Antispam:
-	BCL:0;ARA:14566002|41001999006|23021999003|8060799015|19110799012|15080799012|461199028|5072599009|51005399006|3412199025|440099028|3430499032|40105399003|1710799026;
-X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?04kfG3uPwpMOf1PUEEG8TT8znzT/GAu+AUk74mKeQpX3vtg1saW/A+fm2rSA?=
- =?us-ascii?Q?/LJqnf8z7N5QmStJL5tdICQmtUEjHw94su4yZXQWYPXHGJBQSG1RHURsaokf?=
- =?us-ascii?Q?mHt623+MYxWazl6xj5SAlsgifruDsyRwKrJhZLnvbs7tJ3Hf27Ezu/28lKi2?=
- =?us-ascii?Q?fSYJvRG/K8l3RsLrGpj/pHDZ8iptusiywpr8qlxNVHGfhdbVMrxPMp3mDX3O?=
- =?us-ascii?Q?LH8EkVRJYNzn4sYxbFKD6KexMMzGS9rHgaa2LeJX7ekFqJu4RUpYKyB1BNYq?=
- =?us-ascii?Q?d8Cz5kYISMcYJILrOHEReKzD3Vbs7OTWeCDGQZNPRuh+oRUk6FhU2C5ECA9h?=
- =?us-ascii?Q?jIirhh9/pQ3ju5F3Q1sS8xnA6TQBt05oh59R5GcKhaJUid0b8O2rRYF+SS8F?=
- =?us-ascii?Q?WYpbPHECsQ1dwUt4iJ0SMCxLnedFWWLh1vtVjRsgrB1cMSfZC1vDssJRT8+H?=
- =?us-ascii?Q?oJOGV4L9srE8tEqZ848BtheCS1zRfgEMrM3JJOyQ98aNjrdItIja07kJCYW+?=
- =?us-ascii?Q?LquiLDkinF9itIZONf44h72CKwLAX3lCZP1sMM7Eodqx7liotaYSas4aYkSx?=
- =?us-ascii?Q?cSCVzvTxAfP6YmtSegF8h+6tqjz382PLwuaXVfWNLnQvkjFM1sGqp7XWG52v?=
- =?us-ascii?Q?qU7EamWJE7NsT2CGduzEz3gycMEk/KpRDfA7N4jPusvgFFep5PRIuyzCSvRr?=
- =?us-ascii?Q?KHKkV/SPz0zODvnlTUXFM6hc/1n1poEdXc4tvKtC7LXkHwXmo8AohCDnmXyp?=
- =?us-ascii?Q?sHddQZHVqfJVvoLBkwRbZE54+PZq1YRkZwdCJ2Z0i35YV1307GORbU5WFIru?=
- =?us-ascii?Q?7q3FeAS/Ff9hMl6vNANsjjMEBmQy4q2T9JNPgKfy7aRhr84Xi8SfJW4+baON?=
- =?us-ascii?Q?QNTYqK0HQZypnwCQUGQgwyrcTq1OySs9Afq28glH0Zyj8IvkssLORqZU+5p5?=
- =?us-ascii?Q?gCDaRhIX7KlaJ4QqBeRchw=3D=3D?=
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?vwEJNFBDfgHUVoefeK34DS7kzXvEQP9fja7mlXjOb1i5eYlxa8W++U+2S0mi?=
- =?us-ascii?Q?1ooSJoSoRwfqid0IJ1kWJue2qhO0Gqk7oL9vY7x7PLqM4qFatFthu2n3+28Z?=
- =?us-ascii?Q?6gUvzrnH55X6+N2b7j7s6gXF4w+kw7SiliMgVgLb4cMtVAXfzgx7bU3idStQ?=
- =?us-ascii?Q?ircMDQ9EkBkQvcCzdNp/lWgIRZDjGydrnfwFj2qSKWxnE98MK8IrGuTpqeay?=
- =?us-ascii?Q?xomL6om/7f800NFJAgP6JhxNRh7Y3bGeA+1iiDvm2dIoTsGrmqLopjNokBLG?=
- =?us-ascii?Q?ZSlFTMloZDY0Re9+2bosGsp/+SatK05lrFz7zG2/m+an1mnIddL92DD/nbOc?=
- =?us-ascii?Q?R6d9sFLTBbVDLLuzy8EfUb45MOAgcVpJE5ZgZk2wQ1NVRLwGlhG29bT9YNI8?=
- =?us-ascii?Q?/D0HdF6JEyORC6TUiy1dRzdTw2pXD3GdMiDLsstkJqcJ0ZirPG1hb519RHN3?=
- =?us-ascii?Q?cn4O7NsMXSFLlDWoGexE93IeiLtTDT0Pg+dGniiAv37qFXUgprz0suaJRPZx?=
- =?us-ascii?Q?btVupb4zdMytKmJLbhHKJmuDE9ytQuo0TnEFqkbtUhEir9KfJwnQx1wOssXk?=
- =?us-ascii?Q?C4hdvwE4gT1U2PfxN4Ub73m+R5yTc6p00adOYWIVH/KzLjS2HF0eKwehqvZH?=
- =?us-ascii?Q?RbUHiKFf6IzmxJn/pthv+zW5NvcC6aGIdBQfxuTTuCrBkMuGzry2N2lLcTNU?=
- =?us-ascii?Q?E/gjFHPOzP7OcDoo6Mm9kYGnXSfyjPx+KXuZrhChnjPDi/oBqOLlgqzljzn1?=
- =?us-ascii?Q?sqjvCI73RTNzG/lylJcoeCYnKO3p/3cNOz8Uoc99fllkrFJat+65Bo3bRy87?=
- =?us-ascii?Q?xNTrUmsMWLeFu7HdVmQ7ddhabe/xIYy8Qa/jDLWOM7fadX36QnMGyj8+qYMU?=
- =?us-ascii?Q?PYg/pWxRl1aJHMNLxg6ZkYzQzxonY2kh1+v6/5iYDY+kw/p5OBn64si4D8sp?=
- =?us-ascii?Q?XU36++7CiOTDLq6AGp7j21nnWRmKu/wmLwuzVaPKjStmmQuFm9Si5I6gHhP6?=
- =?us-ascii?Q?uMG5ZsMdbdbx814aeuEvcEam59AJIOBHNN8QKZHnVYeJsGjHeFbDvtngzLXA?=
- =?us-ascii?Q?74ELoA3Qwd88utoBdoVK39oR382S99qLr1rQiZGn2m57pYyA93hakxzufVlK?=
- =?us-ascii?Q?4rC2plLqHdlywbXSxJEULf7ZnRuX1y/wkUo7yuD0ofAA9+dGRKbNdN9yLYcc?=
- =?us-ascii?Q?zgRQPazU/Ar+TC2uiIqEg2NpokfWH1hVzZIlZosvfNZmlqSrHJAZxmukyuUs?=
- =?us-ascii?Q?bXC3msClg/E+4yjJ0pKV6yhlVkQv20BXzipb32q8wi+IVVF+X3EUY4j4pbnw?=
- =?us-ascii?Q?xg9pT0+AIBom34IycaSbvzpBNLwYCQu55VhMM4IXnSinj8UvWmOD8K0ue9Ej?=
- =?us-ascii?Q?5+h3lfKZL0o6+HJzKy3sGkYm/AmB?=
-X-OriginatorOrg: sct-15-20-9412-3-msonline-outlook-fe3f5.templateTenant
-X-MS-Exchange-CrossTenant-Network-Message-Id: 2ff47346-b7a1-49ad-b252-08de82e6195d
-X-MS-Exchange-CrossTenant-AuthSource: AM7PPF5613FA0B6.EURP251.PROD.OUTLOOK.COM
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 15 Mar 2026 22:56:31.8955
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 84df9e7f-e9f6-40af-b435-aaaaaaaaaaaa
-X-MS-Exchange-CrossTenant-RMS-PersistedConsumerOrg:
-	00000000-0000-0000-0000-000000000000
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: AM9P251MB0070
-X-Spamd-Result: default: False [0.34 / 15.00];
-	ARC_REJECT(1.00)[cv is fail on i=2];
-	R_MISSING_CHARSET(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[hotmail.de,none];
-	R_DKIM_ALLOW(-0.20)[HOTMAIL.DE:s=selector1];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+References: <20260311002825.15502-1-sean.wang@kernel.org> <20260311002825.15502-2-sean.wang@kernel.org>
+ <CAFktD2cbFJrLS4ggc+yf582BYmw=jJsntfbDR65ssMpVGM2BKA@mail.gmail.com>
+ <CAFrh3J-PsVQ1u_hGFxTVKK0uOs6KxT=euK+jbGvWCueqvynAgw@mail.gmail.com> <CAFrh3J_4N5j9eZAgbP0gzj5gTGVABat9-4xWZBicKMfgL85LRA@mail.gmail.com>
+In-Reply-To: <CAFrh3J_4N5j9eZAgbP0gzj5gTGVABat9-4xWZBicKMfgL85LRA@mail.gmail.com>
+From: Nick <morrownr@gmail.com>
+Date: Sun, 15 Mar 2026 18:56:23 -0500
+X-Gm-Features: AaiRm51Qj5-6K1SxyXtVVXgAPeBMnSu9mdsfs7G65KWz5yr6fupz2hG1vMFQLVU
+Message-ID: <CAFktD2cot4QuVSs0_r2p0ajuRSDCL2u8d94Eq5vuVBfZxCsKzw@mail.gmail.com>
+Subject: Re: [PATCH 2/2] wifi: mt76: mt792x: fix mt7925u USB WFSYS reset handling
+To: Satadru Pramanik <satadru@gmail.com>
+Cc: Sean Wang <sean.wang@kernel.org>, nbd@nbd.name, lorenzo.bianconi@redhat.com, 
+	linux-wireless@vger.kernel.org, linux-mediatek@lists.infradead.org, 
+	Sean Wang <sean.wang@mediatek.com>, stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+X-Spamd-Result: default: False [-2.16 / 15.00];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=2];
+	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
+	R_DKIM_ALLOW(-0.20)[gmail.com:s=20230601];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-33260-lists,linux-wireless=lfdr.de];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-33261-lists,linux-wireless=lfdr.de];
+	FROM_HAS_DN(0.00)[];
+	FREEMAIL_TO(0.00)[gmail.com];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
 	TO_DN_SOME(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_TO(0.00)[googlemail.com];
-	FREEMAIL_CC(0.00)[vger.kernel.org,hotmail.de];
-	DKIM_TRACE(0.00)[HOTMAIL.DE:+];
-	RCPT_COUNT_THREE(0.00)[3];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[mas-i@hotmail.de,linux-wireless@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
-	FREEMAIL_FROM(0.00)[hotmail.de];
-	RCVD_COUNT_FIVE(0.00)[5];
-	TAGGED_RCPT(0.00)[linux-wireless];
+	DKIM_TRACE(0.00)[gmail.com:+];
+	MISSING_XM_UA(0.00)[];
+	FREEMAIL_FROM(0.00)[gmail.com];
 	NEURAL_HAM(-0.00)[-1.000];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[HOTMAIL.DE:dkim,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,hotmail.de:email]
-X-Rspamd-Queue-Id: 6731B292EAD
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[morrownr@gmail.com,linux-wireless@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	MID_RHS_MATCH_FROMTLD(0.00)[];
+	TAGGED_RCPT(0.00)[linux-wireless];
+	RCPT_COUNT_SEVEN(0.00)[8];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: A716C293117
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-The firmware occasionally delivers frames tagged as CCK modulation
-with a zeroed PLCP rate byte (plcp[0] == 0x00).  This typically
-happens after PHY state degradation from a failed channel change or
-from RF noise on weak signals.
+> >> > From: Sean Wang <sean.wang@mediatek.com>
+> >> >
+> >> > mt7925u uses different reset/status registers from mt7921u. Reusing the
+> >> > mt7921u register set causes the WFSYS reset to fail.
+> >> >
+> >> > Add a chip-specific descriptor in mt792xu_wfsys_reset() to select the
+> >> > correct registers and fix mt7925u failing to initialize after a warm
+> >> > reboot.
+> >> >
+> >> > Fixes: d28e1a48952e ("wifi: mt76: mt792x: introduce mt792x-usb module")
+> >> > Cc: stable@vger.kernel.org
+> >> > Signed-off-by: Sean Wang <sean.wang@mediatek.com>
+> >> > ---
+> >> >  drivers/net/wireless/mediatek/mt76/mt792x_regs.h |  4 ++++
+> >> >  drivers/net/wireless/mediatek/mt76/mt792x_usb.c  | 13 ++++++++++++-
+> >> >  2 files changed, 16 insertions(+), 1 deletion(-)
+> >> >
+> >> > diff --git a/drivers/net/wireless/mediatek/mt76/mt792x_regs.h b/drivers/net/wireless/mediatek/mt76/mt792x_regs.h
+> >> > index 7ddde9286861..d2a8b2b0df32 100644
+> >> > --- a/drivers/net/wireless/mediatek/mt76/mt792x_regs.h
+> >> > +++ b/drivers/net/wireless/mediatek/mt76/mt792x_regs.h
+> >> > @@ -392,6 +392,10 @@
+> >> >  #define MT_CBTOP_RGU_WF_SUBSYS_RST     MT_CBTOP_RGU(0x600)
+> >> >  #define MT_CBTOP_RGU_WF_SUBSYS_RST_WF_WHOLE_PATH BIT(0)
+> >> >
+> >> > +#define MT7925_CBTOP_RGU_WF_SUBSYS_RST 0x70028600
+> >> > +#define MT7925_WFSYS_INIT_DONE_ADDR    0x184c1604
+> >> > +#define MT7925_WFSYS_INIT_DONE         0x00001d1e
+> >> > +
+> >> >  #define MT_HW_BOUND                    0x70010020
+> >> >  #define MT_HW_CHIPID                   0x70010200
+> >> >  #define MT_HW_REV                      0x70010204
+> >> > diff --git a/drivers/net/wireless/mediatek/mt76/mt792x_usb.c b/drivers/net/wireless/mediatek/mt76/mt792x_usb.c
+> >> > index a92e872226cf..47827d1c5ccb 100644
+> >> > --- a/drivers/net/wireless/mediatek/mt76/mt792x_usb.c
+> >> > +++ b/drivers/net/wireless/mediatek/mt76/mt792x_usb.c
+> >> > @@ -224,6 +224,15 @@ static const struct mt792xu_wfsys_desc mt7921_wfsys_desc = {
+> >> >         .need_status_sel = true,
+> >> >  };
+> >> >
+> >> > +static const struct mt792xu_wfsys_desc mt7925_wfsys_desc = {
+> >> > +       .rst_reg = MT7925_CBTOP_RGU_WF_SUBSYS_RST,
+> >> > +       .done_reg = MT7925_WFSYS_INIT_DONE_ADDR,
+> >> > +       .done_mask = U32_MAX,
+> >> > +       .done_val = MT7925_WFSYS_INIT_DONE,
+> >> > +       .delay_ms = 20,
+> >> > +       .need_status_sel = false,
+> >> > +};
+> >> > +
+> >> >  int mt792xu_dma_init(struct mt792x_dev *dev, bool resume)
+> >> >  {
+> >> >         int err;
+> >> > @@ -254,7 +263,9 @@ EXPORT_SYMBOL_GPL(mt792xu_dma_init);
+> >> >
+> >> >  int mt792xu_wfsys_reset(struct mt792x_dev *dev)
+> >> >  {
+> >> > -       const struct mt792xu_wfsys_desc *desc = &mt7921_wfsys_desc;
+> >> > +       const struct mt792xu_wfsys_desc *desc = is_mt7925(&dev->mt76) ?
+> >> > +                                               &mt7925_wfsys_desc :
+> >> > +                                               &mt7921_wfsys_desc;
+> >> >         u32 val;
+> >> >         int i;
+> >> >
+> >> > --
+> >> > 2.43.0
 
-Currently these frames fall through to the default case and produce
-a rate-limited wiphy_err log:
+Sean, I have been testing this series of 2 patches for the last two days. I
+am no longer seeing problems with warm boot so:
 
-  ieee80211 phy3: invalid plcp cck rate (0).
+Tested-by: Nick Morrow <morrownr@gmail.com>
 
-The frame is garbage regardless of the log level.  Handle plcp[0]
-== 0x00 as a dedicated case: increment the rx_dropped counter
-(visible via debugfs) and return -EINVAL silently.  Downgrade the
-remaining default case log from wiphy_err to wiphy_dbg so that
-genuinely unexpected PLCP values can still be investigated via
-dynamic debug without polluting normal dmesg output.
-
-Signed-off-by: Masi Osmani <mas-i@hotmail.de>
----
- drivers/net/wireless/ath/carl9170/rx.c | 10 +++++++++-
- 1 file changed, 9 insertions(+), 1 deletion(-)
-
---- a/drivers/net/wireless/ath/carl9170/rx.c	2026-03-15 23:51:23.599698582 +0100
-+++ b/drivers/net/wireless/ath/carl9170/rx.c	2026-03-15 23:52:21.041912498 +0100
-@@ -372,9 +372,18 @@ static int carl9170_rx_mac_status(struct
- 		case AR9170_RX_PHY_RATE_CCK_11M:
- 			status->rate_idx = 3;
- 			break;
-+		case 0x00:
-+			/*
-+			 * Zeroed PLCP rate byte: the firmware delivered a
-+			 * corrupted frame, typically after PHY degradation
-+			 * from a failed channel change or from RF noise on
-+			 * weak signals.  Drop silently.
-+			 */
-+			ar->rx_dropped++;
-+			return -EINVAL;
- 		default:
- 			if (net_ratelimit()) {
--				wiphy_err(ar->hw->wiphy, "invalid plcp cck "
-+				wiphy_dbg(ar->hw->wiphy, "invalid plcp cck "
- 				       "rate (%x).\n", head->plcp[0]);
- 			}
- 
+Thanks.
 
