@@ -1,212 +1,181 @@
-Return-Path: <linux-wireless+bounces-33255-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-33256-lists+linux-wireless=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id wCzUIAPttmlRKQEAu9opvQ
-	(envelope-from <linux-wireless+bounces-33255-lists+linux-wireless=lfdr.de@vger.kernel.org>)
-	for <lists+linux-wireless@lfdr.de>; Sun, 15 Mar 2026 18:31:47 +0100
+	id +DR/MML4tmldLAEAu9opvQ
+	(envelope-from <linux-wireless+bounces-33256-lists+linux-wireless=lfdr.de@vger.kernel.org>)
+	for <lists+linux-wireless@lfdr.de>; Sun, 15 Mar 2026 19:21:54 +0100
 X-Original-To: lists+linux-wireless@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id E322D291C5E
-	for <lists+linux-wireless@lfdr.de>; Sun, 15 Mar 2026 18:31:46 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2AEEF291E5F
+	for <lists+linux-wireless@lfdr.de>; Sun, 15 Mar 2026 19:21:54 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 5D559308C611
-	for <lists+linux-wireless@lfdr.de>; Sun, 15 Mar 2026 17:28:09 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id CF509301700A
+	for <lists+linux-wireless@lfdr.de>; Sun, 15 Mar 2026 18:21:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A83C537756B;
-	Sun, 15 Mar 2026 17:28:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 18C17373BEE;
+	Sun, 15 Mar 2026 18:21:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="KaftvYRw"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="HzAlJRqp"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-wm1-f44.google.com (mail-wm1-f44.google.com [209.85.128.44])
+Received: from mail-dy1-f171.google.com (mail-dy1-f171.google.com [74.125.82.171])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2A658377EC5
-	for <linux-wireless@vger.kernel.org>; Sun, 15 Mar 2026 17:28:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.44
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773595684; cv=none; b=kgD35TdkFWLP8L2SSMDRe8FfhBiM3eZOiXsfHQjR95GWbBS31E5il/VEDBrxbY0uR5dOkOhI1UZLTUT0wJ+quKgFhfU0DwE/lOaHCRI8jynVxWDkr/SI5mzluhBLOUqwtFLEfEeXLXr2LQ2EqX8Sgshes2UiWzA0iRfHDOsiDwU=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773595684; c=relaxed/simple;
-	bh=QyIuFOJZx926p9XhEzOqnlY0Tjj4EaWSbZ1NmZeyRpg=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=eJuR2CyBOj4SADhXsdBsie67GDgu0+S+1GM3NurCbQYN9HNYI7H3Ej0QYLgaVO45oNFLK/IS2/gZdr5C/vcvEVMUPpTVUPdFxYPV8Iiri1EaiYGGViTNpwZqrRc/ywJYnBUp/zs5edp09WauRDKOlC/V+8p1tpHXvcfYHOeARBc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=KaftvYRw; arc=none smtp.client-ip=209.85.128.44
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DED8B1D61BC
+	for <linux-wireless@vger.kernel.org>; Sun, 15 Mar 2026 18:21:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.82.171
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1773598912; cv=pass; b=tkWqwcI91lm5q/tOs1+sY8BYxSIdq7zcU96e/Afteay/oGGrxhU5MRJgBIdojOkM9YFMiHtGMiw/+TeIs498OdNR0rsL+jbA+/+wh/Fhpaje1AoncNfqCbdIb9H51jFVIu0F6dQYJI4eZoUP2obcK47iiTBbIgce/qeo0P70MbQ=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1773598912; c=relaxed/simple;
+	bh=jDWU6AdGhvC5Yx0E6kUWqqP+61uOz52l7eF/UILatEI=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=hkq7SEyiqkERp1ej9LHL0gBmpjkFcLwlSUGlxuGViQzZMsGWPb9qIZV6fNQz2R9IE8vT4q+wL0Cw70od/uN3bsi3GNQkVqAaAQDaOBTQHJR1WKfCdJup5oZgm96QTcpGTs7kWKEM5L8/mj25Eq782m22FaSuupWCLHaxe5Qjer8=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=HzAlJRqp; arc=pass smtp.client-ip=74.125.82.171
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-wm1-f44.google.com with SMTP id 5b1f17b1804b1-4852e9ca034so34430445e9.2
-        for <linux-wireless@vger.kernel.org>; Sun, 15 Mar 2026 10:28:03 -0700 (PDT)
+Received: by mail-dy1-f171.google.com with SMTP id 5a478bee46e88-2c0c4194b2bso12316eec.2
+        for <linux-wireless@vger.kernel.org>; Sun, 15 Mar 2026 11:21:50 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1773598910; cv=none;
+        d=google.com; s=arc-20240605;
+        b=GZehw79TxtqlgMQddWlnrNMuw+d9ljiUZcypIRK+LNcgUW3DSSERv3BMPHyy2+V4QL
+         jxlKkSgLmfrv+GpNMKe0G8DPTD8ACkhvsxDPEQ8CfVXNlUG4ciJbzwzTW9w+InV0/RtY
+         azj7sol9ET9umLGcs/1JW0PG2JSw+/iWFLWEmedKMcx6lWtrdVua92scp7onsWQyp6ei
+         bcTDcerXTjK9TgnyesuqfdmltwFgYpguL//RVjZQpiAmNts3fil0u9N+sIDqdFRMbDqG
+         MMcW78N+XqMKKBhIe/kmqAwHwj1LwNplZllFfVUurb1Zx0Q9ajDUxOVcArS3P1s8QWrb
+         xhyg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=jDWU6AdGhvC5Yx0E6kUWqqP+61uOz52l7eF/UILatEI=;
+        fh=tClKMcqAHWRIAejG78fceZCke/KLUYKViRKWitkjRwc=;
+        b=NUeWZSmSIWfRQNO/L4wMNqOGWHt5PBZ8pHV4bu5gQOlBsQlKIKt1nPt2A9wk591St7
+         LxBgfCPpONOEZ+bWq9XGEiYVEmH9X04TQID176ZRpp/ckympLrlEE/tLrABAd8q/Bodc
+         +5B1WyzC2LccYF/fgBy8tc2dmkVM81nvDPrYh8FD5ebANc8CKb/Vf3B7V3QH+nrZ3vu+
+         TO3a88mvVRNp1HszVLRIibIbT10VLaHx6ffHAMJ45Ti18YSHpBDuraC8nl5RLLdd/Tfv
+         qHr7i0UncEl9VrYwWEjm+iIuERt1s0INkfuMGtx/9iwjZ0WBcugsykOU2JdNwNb+JSdj
+         q0+w==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1773595681; x=1774200481; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+        d=gmail.com; s=20230601; t=1773598910; x=1774203710; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=YIEg7cppvNlK1uJeRyCMqJFg9lbXRMhPBqnGtbbFM64=;
-        b=KaftvYRwTkpwOyTOTR15hx72rP9U1+qsLRZwEpP0661vgIcqr3lg7EBVrhFxsnDwAW
-         Ft3pAkQ+cP+XZtoiuCfViQGC+f/xf+2KTA2ggxz5v58oydL3P7jTYsWtexLlQIABT61c
-         +p5UefG2DSeCjHyaUBPTYrFFFWrTXfWlct6SnQ3KuaemwET/LzDtFMb0ppqS5oxjCSmo
-         LrMikbM9yaN+4a8pBiuoJda4Anh/iYvhBtUjFlKJmXk6hZiSGZ6nCOf7rZg0dTSv7H9e
-         zm4zmFnWaJ6yHQcjovyZ8OTAGLBPYHXB89ydhmt6rdNd0tBkYjoIWYYI86Pv3sCq5YoN
-         Ru+w==
+        bh=jDWU6AdGhvC5Yx0E6kUWqqP+61uOz52l7eF/UILatEI=;
+        b=HzAlJRqpf00I5iuQt5ArG5L+zYSPg/yyi6fxZTlxjCp8CMRwrePyDzCKJL+Mh7EWTn
+         4IJglDFQ2a/LlW0rB1AT2104r0NadyvffSV9BwRcGBMC5X8zdcvieSw6xmPf1J2w19CT
+         MiZMlT1z7h5XQ1mjNI/XDQ3MWb9++Auq54bv+AQf90hLD1mZlQTgnWhbO+pjApY/+N8o
+         7FxCHbVJDUTvRLiTdSjS8PEkoERw2lAkJFP4qHcP8JRq19iBMPtUVSy2U5oTHJ3cVLDE
+         4zGE3LJSoWMPICo7qW7d6FcrHBxrUtnFzvbbGNGdtQdEN/vPrGdifYVq3oEgGc4FF4kQ
+         zoAw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1773595681; x=1774200481;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+        d=1e100.net; s=20251104; t=1773598910; x=1774203710;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to;
-        bh=YIEg7cppvNlK1uJeRyCMqJFg9lbXRMhPBqnGtbbFM64=;
-        b=cGDTq/iv5+k6KDxofVk7nx9enxC8+Z51o9XhHVi3CoBIgvP/P5w/N05UeeXyezlVmB
-         kvV87ZSHs3HeS43nevGEILFSSztYNkAo3qXnO1i2UxlyNOvzM6T/OEk/bIvSVt9nBokb
-         oC+5hzWioWChuIyEIWshjOnQcptQzynKjDI8+veQJTjknxtLDpF/bwSXLKdPZ55LUjWH
-         ss6/1WMArrX0jgLYmhOEDv1XbUFxHjmBUDeoJlV7JQf1uYKCEfaWZ6LbapPDeCGS8q0x
-         8RhS/ZXUklISpJsfCSULa6u3CKNGvrHbaInb70C4ilFTJjQGbUtAB3awkY/wC+Elw0/H
-         lRpQ==
-X-Forwarded-Encrypted: i=1; AJvYcCXSt3dJYbWcT8vI4QMXdGi56M8xjiZiL4VVUaPZaoAh2ke24HPlFjx/vKVvnLlLTDZr2FGYGFbaPq0KyD1R1g==@vger.kernel.org
-X-Gm-Message-State: AOJu0YyqZPcyGsYtayqmiWeFhLigtlnLoipnSpTbVmU4tfWzH2DFxsZv
-	LcuwUtnXsZtZ3G9iW0tHNOXgagGgtx0eFM6ZiH3S4K2cREmoMP9/sB2X
-X-Gm-Gg: ATEYQzzClzetsO81EDuq8Fb1U3ONM2T+HA4mWUDzB0lnW6jlp+H1BmnzNzwmL13uFOO
-	1igaqQotXcJmDmn/MPzFs0UfLndC3bqXtJa/AegsT4vTY8kUrGnDGoIhP3ILxRdGY9jF+uY8bix
-	Qjo+hcFWlcfCTGqgoxHGeUeUy5oEPMWy7JPgs6kGqPyzAlS5oeQvQhZ4LipDFwMhb5B0YleJ9if
-	I87cr2CRgDoCEH6xWWaKTSK10sPp1aBiU68h1EO5dTsKZNim40AsmPkzZCO8z1PVRmoiA911Fm2
-	7ZH0PJJKGhptAIlhJaPQ8Rd4ucxOIvuD4xGyDxqyxscuBLEQ/mxdGzMQ2o47sMiiYptzxUoaqPH
-	PZbUMVVP02W2sen1XoIzg2rtONQOxyG+UZJPmwlDcQqfctnhF4wGV/OQ4LVYBhLjihbuCADpSfh
-	tP1MhOJaXgtO/YjBCsKhcsQiXptQ36jRW+Gqc=
-X-Received: by 2002:a05:600c:64cf:b0:477:561f:6fc8 with SMTP id 5b1f17b1804b1-485566cf81fmr167182995e9.5.1773595681386;
-        Sun, 15 Mar 2026 10:28:01 -0700 (PDT)
-Received: from debian.lan ([171.22.84.130])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-48557c6586csm73644905e9.20.2026.03.15.10.27.57
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 15 Mar 2026 10:28:00 -0700 (PDT)
-From: =?UTF-8?q?Adri=C3=A1n=20Garc=C3=ADa=20Casado?= <adriangarciacasado42@gmail.com>
-To: Ulf Hansson <ulf.hansson@linaro.org>,
-	Adrian Hunter <adrian.hunter@intel.com>,
-	Andreas Hindborg <a.hindborg@kernel.org>,
-	Jens Axboe <axboe@kernel.dk>,
-	Miri Korenblit <miriam.rachel.korenblit@intel.com>
-Cc: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>,
-	Haibo Chen <haibo.chen@nxp.com>,
-	Frank Li <Frank.Li@nxp.com>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Boqun Feng <boqun@kernel.org>,
-	linux-mmc@vger.kernel.org,
-	imx@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org,
-	linux-block@vger.kernel.org,
-	rust-for-linux@vger.kernel.org,
-	linux-wireless@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	=?UTF-8?q?Adri=C3=A1n=20Garc=C3=ADa=20Casado?= <adriangarciacasado42@gmail.com>,
-	=?UTF-8?q?Adri=C3=A1n=20Garc=C3=ADa=20Casado?= <adriangarciacicuelo@gmail.com>
-Subject: [PATCH v2 3/3] mmc: sdhci-esdhc-imx: consolidate imx25/35 data and add Kingston CID
-Date: Sun, 15 Mar 2026 18:26:40 +0100
-Message-ID: <20260315172746.270734-4-adriangarciacasado42@gmail.com>
-X-Mailer: git-send-email 2.47.3
-In-Reply-To: <20260315172746.270734-1-adriangarciacasado42@gmail.com>
-References: <20260315172746.270734-1-adriangarciacasado42@gmail.com>
+        bh=jDWU6AdGhvC5Yx0E6kUWqqP+61uOz52l7eF/UILatEI=;
+        b=eWmq7n0ST0cf/3213BpJJzfDkJHtqaQDGR/d3Nr0M863V3f4tGtTAJ6dN8jyQ+T46n
+         MHOJprRTEAQ+4/cq5uNwE/trv5hUPkxcUnsNszd9dCVa5DLy73AL/z8RU2opNAvcLDsL
+         bEWR0NPW5EH9eXP6Ul7jWqlp07v2rRd8M2bbvDs/LJDq0f8qqaVp8g/MJYVoyHbR75eM
+         gHA0QwbtDMVGgWa95DsB1i0u1Qo7kLMYoyhZZS15Xv+v/++SJ7SzorRUTbSRTp9RmKJD
+         f676saUAq2FhK2uH1MFbcO9vCnN9AAvngdhxu0SqsHitqkLBme6B0GI5uWKZYUayU+VZ
+         FFSQ==
+X-Forwarded-Encrypted: i=1; AJvYcCW1K+hOL9RyXmvlWXQMmwn+9mwqb2yfnxp65lAMeu/YXt3FA9ega3gVVKquRW2Fqe9tzGUuzVTOJcosw0Y5rQ==@vger.kernel.org
+X-Gm-Message-State: AOJu0YyqBxJMZv6jW3p+LvBrdZNIoqM7McK6u7QHju1fJadGjg4o8c/T
+	kIM82kAp1FV5WL+s3B3fXCRno1L6LO03A0TYSgPUm9krX+NUN+JPdjWzF8nB3JtJm76CX4woUMw
+	wY8slveiG+tRmkHIsnzUKTiVBihk2WYg=
+X-Gm-Gg: ATEYQzz6H6ZSkmB2tZy+XSffs+OxiPB8cpSePJiEBFVBZ9tpYLK37LbY1wGB7tREgC3
+	NLEe7YRQylSCIPMbSs1iPLODBfiXORttKPgpJVOWzFZvKrND10fIGCiKm/R97SPLYzkXS1EFgnG
+	J5YcOvDdWCFx1beFzdubbdUwVKH/bPYsXVd3hRA7de7tPCOZcdqls1WOqNDxaudxSye9DSM7KZM
+	2NElRmCHMXBAiOSLKTImOszyAt9OOLkWYXCpPx9txlzPBrlBwRJqJVTF3Aqd0lEL3ic2/Tzb4JN
+	4Ggm7eCg7nRgxDOQCeq9F6kIpX8iOKAkSoDbM/CGyDeCYn/9nFP+0EOcNKudl2emRkBXMgSBpPi
+	dUmBqMskbWjgtahj7VnVOMRc=
+X-Received: by 2002:a05:7300:4313:b0:2c0:bcca:e9ae with SMTP id
+ 5a478bee46e88-2c0bccaed2cmr503104eec.7.1773598909944; Sun, 15 Mar 2026
+ 11:21:49 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [0.34 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
-	MID_CONTAINS_FROM(1.00)[];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+References: <20260315172746.270734-1-adriangarciacasado42@gmail.com>
+In-Reply-To: <20260315172746.270734-1-adriangarciacasado42@gmail.com>
+From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Date: Sun, 15 Mar 2026 19:21:37 +0100
+X-Gm-Features: AaiRm504huR_jEPQjv25PhnCGlqvxnPL_8XhiojOoKqXdkJjPbWUaTm98aG9g50
+Message-ID: <CANiq72kdfYLmhojMo=vOAc5tULjjB9V4bM=iUmm5cLGpF-zj=g@mail.gmail.com>
+Subject: Re: [PATCH v2 0/3] Optimization and alignment for MMC, Rust and iwlwifi
+To: =?UTF-8?Q?Adri=C3=A1n_Garc=C3=ADa_Casado?= <adriangarciacasado42@gmail.com>
+Cc: Ulf Hansson <ulf.hansson@linaro.org>, Adrian Hunter <adrian.hunter@intel.com>, 
+	Andreas Hindborg <a.hindborg@kernel.org>, Jens Axboe <axboe@kernel.dk>, 
+	Miri Korenblit <miriam.rachel.korenblit@intel.com>, Haibo Chen <haibo.chen@nxp.com>, 
+	Frank Li <Frank.Li@nxp.com>, Sascha Hauer <s.hauer@pengutronix.de>, Boqun Feng <boqun@kernel.org>, 
+	linux-mmc@vger.kernel.org, imx@lists.linux.dev, 
+	linux-arm-kernel@lists.infradead.org, linux-block@vger.kernel.org, 
+	rust-for-linux@vger.kernel.org, linux-wireless@vger.kernel.org, 
+	linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Spamd-Result: default: False [-2.16 / 15.00];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=2];
 	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[gmail.com:s=20230601];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FREEMAIL_CC(0.00)[gmail.com,nxp.com,pengutronix.de,kernel.org,vger.kernel.org,lists.linux.dev,lists.infradead.org];
-	FREEMAIL_FROM(0.00)[gmail.com];
-	TAGGED_FROM(0.00)[bounces-33255-lists,linux-wireless=lfdr.de];
-	RCPT_COUNT_TWELVE(0.00)[19];
-	MIME_TRACE(0.00)[0:+];
 	RCVD_TLS_LAST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	FREEMAIL_TO(0.00)[gmail.com];
 	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-33256-lists,linux-wireless=lfdr.de];
+	RCPT_COUNT_TWELVE(0.00)[17];
+	MIME_TRACE(0.00)[0:+];
 	FROM_HAS_DN(0.00)[];
+	MISSING_XM_UA(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[5];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[adriangarciacasado42@gmail.com,linux-wireless@vger.kernel.org];
-	DKIM_TRACE(0.00)[gmail.com:+];
 	NEURAL_HAM(-0.00)[-1.000];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[miguelojedasandonis@gmail.com,linux-wireless@vger.kernel.org];
+	DKIM_TRACE(0.00)[gmail.com:+];
+	MID_RHS_MATCH_FROMTLD(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	TAGGED_RCPT(0.00)[linux-wireless];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: E322D291C5E
+	FREEMAIL_FROM(0.00)[gmail.com];
+	TO_DN_SOME(0.00)[]
+X-Rspamd-Queue-Id: 2AEEF291E5F
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-Consolidate esdhc_imx25 and esdhc_imx35 soc data into a single shared
-struct since they share the same flags. This reduces redundancy. Also
-add the CID_MANFID_KINGSTON definition to quirks.h for centralized
-management.
+On Sun, Mar 15, 2026 at 6:27=E2=80=AFPM Adri=C3=A1n Garc=C3=ADa Casado
+<adriangarciacasado42@gmail.com> wrote:
+>
+> These changes were previously submitted as a single monolithic patch
+> but have now been split into logical, atomic commits as requested.
+> The code style has been verified against checkpatch.pl.
 
-Signed-off-by: Adrián García Casado <adriangarciacicuelo@gmail.com>
----
- drivers/mmc/core/quirks.h          |  4 ++++
- drivers/mmc/host/sdhci-esdhc-imx.c | 12 ++++--------
- 2 files changed, 8 insertions(+), 8 deletions(-)
+Thanks for splitting it and fixing the diff, this is way better.
 
-diff --git a/drivers/mmc/core/quirks.h b/drivers/mmc/core/quirks.h
-index c417ed34c..d736bb4be 100644
---- a/drivers/mmc/core/quirks.h
-+++ b/drivers/mmc/core/quirks.h
-@@ -15,6 +15,10 @@
- 
- #include "card.h"
- 
-+#ifndef CID_MANFID_KINGSTON
-+#define CID_MANFID_KINGSTON	0x70
-+#endif
-+
- static const struct mmc_fixup __maybe_unused mmc_sd_fixups[] = {
- 	/*
- 	 * Kingston Canvas Go! Plus microSD cards never finish SD cache flush.
-diff --git a/drivers/mmc/host/sdhci-esdhc-imx.c b/drivers/mmc/host/sdhci-esdhc-imx.c
-index a7a5df673..9cfa26722 100644
---- a/drivers/mmc/host/sdhci-esdhc-imx.c
-+++ b/drivers/mmc/host/sdhci-esdhc-imx.c
-@@ -256,11 +256,7 @@ struct esdhc_soc_data {
- 	u32 quirks;
- };
- 
--static const struct esdhc_soc_data esdhc_imx25_data = {
--	.flags = ESDHC_FLAG_ERR004536,
--};
--
--static const struct esdhc_soc_data esdhc_imx35_data = {
-+static const struct esdhc_soc_data esdhc_imx25_35_data = {
- 	.flags = ESDHC_FLAG_ERR004536,
- };
- 
-@@ -391,8 +387,8 @@ struct pltfm_imx_data {
- };
- 
- static const struct of_device_id imx_esdhc_dt_ids[] = {
--	{ .compatible = "fsl,imx25-esdhc", .data = &esdhc_imx25_data, },
--	{ .compatible = "fsl,imx35-esdhc", .data = &esdhc_imx35_data, },
-+	{ .compatible = "fsl,imx25-esdhc", .data = &esdhc_imx25_35_data, },
-+	{ .compatible = "fsl,imx35-esdhc", .data = &esdhc_imx25_35_data, },
- 	{ .compatible = "fsl,imx51-esdhc", .data = &esdhc_imx51_data, },
- 	{ .compatible = "fsl,imx53-esdhc", .data = &esdhc_imx53_data, },
- 	{ .compatible = "fsl,imx6sx-usdhc", .data = &usdhc_imx6sx_data, },
-@@ -414,7 +410,7 @@ MODULE_DEVICE_TABLE(of, imx_esdhc_dt_ids);
- 
- static inline int is_imx25_esdhc(struct pltfm_imx_data *data)
- {
--	return data->socdata == &esdhc_imx25_data;
-+	return data->socdata == &esdhc_imx25_35_data;
- }
- 
- static inline int is_imx53_esdhc(struct pltfm_imx_data *data)
--- 
-2.47.3
+However, it seems you sent v2 three times. Was that intentional?
 
+In addition, it seems the patches here are independent from each
+other, right? Patches that go together in the same series are supposed
+to be related in some way and/or they need to be applied together, so
+I would suggest sending them separately.
+
+Splitting them into separate patches also means you will have a
+smaller list of maintainers to Cc, since here everyone is Cc'd for
+things that are unrelated to them.
+
+By the way, I would suggest using the `--base-commit` Git option when
+generating the patches (optional, but useful) and also Cc'ing
+reviewers as well since that will increase the chances people will see
+your patches (you may want to use `scripts/get_maintainer.pl`).
+
+I hope that helps!
+
+Cheers,
+Miguel
 
