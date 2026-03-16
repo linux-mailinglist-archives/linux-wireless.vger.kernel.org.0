@@ -1,239 +1,286 @@
-Return-Path: <linux-wireless+bounces-33310-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-33311-lists+linux-wireless=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id QALeAsZhuGlbdAEAu9opvQ
-	(envelope-from <linux-wireless+bounces-33310-lists+linux-wireless=lfdr.de@vger.kernel.org>)
-	for <lists+linux-wireless@lfdr.de>; Mon, 16 Mar 2026 21:02:14 +0100
+	id 2MpTMXFouGlEdgEAu9opvQ
+	(envelope-from <linux-wireless+bounces-33311-lists+linux-wireless=lfdr.de@vger.kernel.org>)
+	for <lists+linux-wireless@lfdr.de>; Mon, 16 Mar 2026 21:30:41 +0100
 X-Original-To: lists+linux-wireless@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4D99C2A0007
-	for <lists+linux-wireless@lfdr.de>; Mon, 16 Mar 2026 21:02:13 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4D0792A03C7
+	for <lists+linux-wireless@lfdr.de>; Mon, 16 Mar 2026 21:30:41 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 5A89D3017AAC
-	for <lists+linux-wireless@lfdr.de>; Mon, 16 Mar 2026 20:02:10 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 34E923046D88
+	for <lists+linux-wireless@lfdr.de>; Mon, 16 Mar 2026 20:28:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 470A334F244;
-	Mon, 16 Mar 2026 20:02:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 94CAF3EF0D8;
+	Mon, 16 Mar 2026 20:27:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="lk0qSiLR";
-	dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b="Q5rNQVq4"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="RokfTiEd"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ot1-f50.google.com (mail-ot1-f50.google.com [209.85.210.50])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1AE5232D45C
-	for <linux-wireless@vger.kernel.org>; Mon, 16 Mar 2026 20:02:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773691327; cv=none; b=JXDiTdJnc/sA7OzXd8DKpTRwETTkCl5qz2+8HE/sbm4k/x108K9rsjRyE2k6KUOLPmThaduqZX8krQJySAYGYUqC8eV1uc3DJRFFIr+4P45exK/Xwu1UQvLFoW0qzrZuudMC5vy5YA3HoRpEq92uciwrL9oGbI9ofWz7meRypD0=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773691327; c=relaxed/simple;
-	bh=36n0bi4fVRdSzw2/ckM1WfY6jFeDjYHWHstRyrD5L+k=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=SvKAi/gvnDlruAeL+YINA+Tf+k5SfACkywFhQYFs2utN6h8eDlZQm3Vx+wu4gn9hmGZweIQe2R68mjqrWz3Ppa9Tm4sfuH/maaLlpd/W5iKfbsyICso2rKMC5GyD2/BIzTx6SielYooHUbX3g8pO2zMqZL83HJ4PAcFiloFUcC0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=lk0qSiLR; dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b=Q5rNQVq4; arc=none smtp.client-ip=205.220.168.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
-Received: from pps.filterd (m0279865.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 62GE7wTM2375005
-	for <linux-wireless@vger.kernel.org>; Mon, 16 Mar 2026 20:02:05 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
-	cc:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
-	HQ8WifFC2j/bvDha3tINklH6CxSce1xbV+4Y4V4qj7o=; b=lk0qSiLRMJR+ijD8
-	XRuWzAePKAzhP1ahOeQuHNnkkSoq01jPC7DzvfeRxfSEgcSA8d2bjWGRaBolv5z0
-	9unnHLgJ2z4Qw9dweFCnbVYjDY8lCHADkqQZt52fwL4rJxdDVa5LecOLd0ZnWBLY
-	7oWaEhvHDviQMLrAAMg2Hw0QpRyDhjAXO6e4M6UVol54LL2PcndeXWFwsQQKdljD
-	eg0OzttNu1OgWo4qLAZ7/6tUu9aUcDr96WrMf+zEBqgrbGBCchYpICxfjFAevJhw
-	N0ayLZS3LLlC9ya6jtQ37T4r7z2uoslu6711qzKtjAMKb/3q8uPkUdaCAEN4T9UL
-	CXfE2Q==
-Received: from mail-dy1-f199.google.com (mail-dy1-f199.google.com [74.125.82.199])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4cxkby19ek-1
-	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
-	for <linux-wireless@vger.kernel.org>; Mon, 16 Mar 2026 20:02:05 +0000 (GMT)
-Received: by mail-dy1-f199.google.com with SMTP id 5a478bee46e88-2c0cb775215so17504786eec.0
-        for <linux-wireless@vger.kernel.org>; Mon, 16 Mar 2026 13:02:05 -0700 (PDT)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C5C773EE1E1
+	for <linux-wireless@vger.kernel.org>; Mon, 16 Mar 2026 20:27:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.210.50
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1773692874; cv=pass; b=EJCrfmH9QjE4Ow717mp+1nKAdiAsax6mMffNniRZj5J/CFQO6PiuSOVlO1HAF3Hx38V/MlZ3mCEr+26B8KxS+VK5KmYuQVdJUVUN6rijhABsq86TGhZbgCjb2pRhlz5w6MMB9sbg6JPxFHqOuZQuBO6EafaYTiYjwnfA2eLIfJ0=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1773692874; c=relaxed/simple;
+	bh=FP1uqErZfD76XoobcjvO1RSspkWei4fffgzfkDQKtGc=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=P9l5Z4uHVN9fzXeYGvpwRvPPXQozGcigy7i1ZpjClxaDrdc2K86VympzqvQu272E4oapOnN3UsgYY5b1yhJsk6xejDsRGopBgJNMg9iYXA5S9mgyUio5t4YqMQ0piH8XYYVZtYIeER0mZr2rLzF/8C3YyjTUI9pW4NfjSQ3HzPA=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=RokfTiEd; arc=pass smtp.client-ip=209.85.210.50
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-ot1-f50.google.com with SMTP id 46e09a7af769-7d7422b4ff1so2175789a34.3
+        for <linux-wireless@vger.kernel.org>; Mon, 16 Mar 2026 13:27:52 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1773692870; cv=none;
+        d=google.com; s=arc-20240605;
+        b=avjv94ARps+kNAaHAwSIN+iny5reMy4tM++YHQryTJSmnveFxMWoxiBwdiJ37XKBFa
+         Gly3zPTltbFl4/oMAeUdv+1ZCWXQsUwvWjaD6DG9bVTSmp7hkBIpc/Ddvln3Chx7LB/F
+         0lt6KNntwWaPETMnXBG0u6whnt6wJjPxkkaEEQ6tcn7cnlxJ/SXHlvOVegAPkRKeqDve
+         m8qbQcEuKVsYD7S6lGrJGNyAL56WJCLtaXiVD/lFKNjDCQj9KXPnKnN48o3GFb8C9Bwk
+         Wb7g+lil0p+0GgB01xf7PaDf8qcfspeDrmgZq3VXoeYSEzP0j9hJgRFHQamjPT7HZuEE
+         bDEQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:dkim-signature;
+        bh=Wpf1VtIwZa0YFIHXoYncUB78SkVzhVwwyD5F/vBb9Wk=;
+        fh=fFUQ3bDSnwWYL/1dqZwPKYywXd5TONRsAevI/mvHYbI=;
+        b=lSRRCuEHxRBblHnFv3mnTEfXGwXcsUY97unJlA4/XgCFhicfH76wAXTMgs3fKdBXIM
+         a1h1YGWurGVRaS9/gq96FGCECkhLP3nnlVjfosgJQ6U42MfMqZIuzdcYW9ITDJeARf4C
+         UW1WIthT49NZ+QNIj5M8lq/BrBeUzV2kDl3OsM1L6FRK7N7oJpx9cCvPsQr6+xN6WV32
+         oiclDSPdQJCUSWo5WrxPoU05Er5NaLYGI2aTYg7007gZwpqtLFEw5AFSf9/V0BUpx2KL
+         0SVl6f3+95ErwVlCwtw8iY8LIpucx75QEJ78/yKthLne1xZzmK77ZBZj6iDer7sT+njy
+         /H3Q==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=oss.qualcomm.com; s=google; t=1773691324; x=1774296124; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:content-language:from
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=HQ8WifFC2j/bvDha3tINklH6CxSce1xbV+4Y4V4qj7o=;
-        b=Q5rNQVq41CRZz9TgI6WD1DfiJw3CMt9Yt2zq+wrgnt/xw2gpmNX8xzecmunM+rooJi
-         ntrDE2jEA5phHqDq+2Rxx1lAFDLcFbMP8ntRKVxmavJAKU91JnFZQxvruN8Y5DL/fhU4
-         KcO0aEuC0MvlZpTCxCQdeNraAs+caNtdy1ieitsV4qj/W9kOTnG54i8wzt1J7p/EDzmQ
-         pZ3oXHCroQmW9TYJXa4iMfs5TCnguxvVLaKPihtWQkxjiHUvWo0BG/fWt1SA8MukcUP0
-         stw4hkFHWGR7DYP3rYewcjDiG7GjhUxvb9WzY9Qgrf6lwxA88QoeOGDvD3vuC9qj3ULz
-         gsgw==
+        d=gmail.com; s=20230601; t=1773692870; x=1774297670; darn=vger.kernel.org;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=Wpf1VtIwZa0YFIHXoYncUB78SkVzhVwwyD5F/vBb9Wk=;
+        b=RokfTiEdKBXNTTsBwBnxGjKwaFDAJY80xFEKivRBqUSxCC7uHuveXAT0S7ou6x/WIQ
+         5Sw9LsFGBDG3O0iAY2uKQ0PNEb6QTGUS4zk88gEbNSItWuIPEfyeCjg9nl5H5wJt7DTj
+         wDYWEq9e27vGIqxCgz3OhterDcNted8YT+sdLqiFu1LZpJKL2YQllBRyoHzz9T4yPxHb
+         bxgn/3l9QzLeaMZi0j8krDzi07L5T03UbEFjPcxLXNMdV17FTQHfTbZf8AtVzRfiYKPy
+         OLxisSgb5btMx7eZsJS7WzV6Xo1JDwEK7FbeQW4JNSFM21k9p2UP9UtG3iavRskoXCzq
+         vYeA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1773691324; x=1774296124;
-        h=content-transfer-encoding:in-reply-to:content-language:from
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=HQ8WifFC2j/bvDha3tINklH6CxSce1xbV+4Y4V4qj7o=;
-        b=L6ZjN0p5TJfgiWYpl5L3FuTyjm9CbkRFHx1u+KxP4D+Hg9BrIY/1Zgnw87w2Tst5je
-         chPHM23gcpeyJMApgUdYkxzFWRv0s6folR4HzjN1iDyLI4GH2Id8AzHrIHTG6LNAMisR
-         hmsIi3bMz/R6vImfQVM5ZLzgQQpTvjrQPfrRrPP1LegLbGEgGZACRzpXKtL2k3ZYW3oO
-         Y38FvcBEklT6PBA80q7kne7rwYIZyytAuQbgKl4KjIueEqd7qaEfs03/FBCNprGJywGs
-         80eERWhKSHWYh1s04K8ZN6igZ/Rnc/IwJiHJ7Z2jw04jhBx6a0cId5yolrKZZnkfRt0x
-         wg4A==
-X-Gm-Message-State: AOJu0YxjFw1k80RU91HH4I4Uy9mHpSkvQSTRBmpLsWOf8XO08jx9rkV4
-	HjIMmjAnzs823m6ihPDiK7i5MXLJH63rbdjj+8Kf3U/g0PGQqlbIF9oT0+9MyGR0DBMPhU9HDk7
-	eaO87WdGyRaHwog4z1XeBalLPmDsto5RDXGlep2dVw4wlc2ZbjKff5yolbvNK5/r39Gvl1stFBC
-	aulw==
-X-Gm-Gg: ATEYQzz5AmDGNGjJqETkbMd3TLy+khmKckNN+m3Go5A2cI+fzfpT343f/SIWI03lg6u
-	onvEW+XUq73zactxb8VCw6pyC7n86BuOP7xF4Bk8jLMlAM5qdlKSJCJ4dYxui4imYQX6xbkAdE/
-	bQeLT9CfHlLdBGorRtb/nepwa2vOK3Zs6mOU+VtyTth+Ns7S8jIscE2SqxsCtSG8VQ7FIeTh0eq
-	oDo0w+TKFoplbQQhJhNZRntLAVJjLEp3Hhfc54r5qECQ4Bac5pQP/edMn16CP2xgC3lX87S04wQ
-	9SotJkeBaomAy3fu5nsj1xoUfCjzk62XXSZekJ9YP+BZTuuWjdql0EFGThEnnF79uB2NJQ5Jqex
-	OJlCMGyyhbw5pRuesHr+nzhLWBlWoY9vY6gObTrnTLXj1qLy6uasAlPfSen2Fje6iOsVhtrFDbC
-	FYGPuJriMoqxZeIw==
-X-Received: by 2002:a05:7301:d8c:b0:2b9:80c1:bb5 with SMTP id 5a478bee46e88-2bea572a4aemr6611023eec.33.1773691324261;
-        Mon, 16 Mar 2026 13:02:04 -0700 (PDT)
-X-Received: by 2002:a05:7301:d8c:b0:2b9:80c1:bb5 with SMTP id 5a478bee46e88-2bea572a4aemr6610997eec.33.1773691323712;
-        Mon, 16 Mar 2026 13:02:03 -0700 (PDT)
-Received: from [192.168.1.41] (c-24-130-122-79.hsd1.ca.comcast.net. [24.130.122.79])
-        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-2beab526d61sm18944609eec.17.2026.03.16.13.02.02
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 16 Mar 2026 13:02:03 -0700 (PDT)
-Message-ID: <3c3a6273-1b4f-40c6-ae59-11a4706ac86b@oss.qualcomm.com>
-Date: Mon, 16 Mar 2026 13:02:01 -0700
+        d=1e100.net; s=20251104; t=1773692870; x=1774297670;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=Wpf1VtIwZa0YFIHXoYncUB78SkVzhVwwyD5F/vBb9Wk=;
+        b=CQq60v3HGRC8Tu+0TQ0FQX7uvbz8j2SSypI3L/CEVdjsestpwVBWiOty5lY2eaXLJI
+         H98GETpLBu2Xb2ZjTsXEPJNpmj1dJd6x07BhtOMoX5GiWmXghT/++aTCbjX0I4GFGFzX
+         zEZ7OGr54FBOU4I0xu44UYVZQC/kCVbyFCDI6bPFMc0yUsgBINJBSMUOiwVWS8HFMJ/a
+         W+yy90H2QAVLQQj++GNUGu3pH1rrqmJ+UxX/yvxvDUPHztmzkq7Lzx+dxCgaKK2M44M8
+         zhgc/vqR+YHNszGBnyyEyv9TH87f+nay0OkjuTe1FIoHvoyB3B1eaEZ+2JOB3MZUnguW
+         +lCA==
+X-Gm-Message-State: AOJu0YwJG3hC2hyj1tI7Sn7l/biQAkjn0+QPzjgPHOsWrMEBTnuBOCub
+	UbTy1PzZegao1LQJ3QavF99IcYbmKImQdaZFpUF7RLNd11rAzr/Q46e0MO2h3ewvaUpSZwLkfHo
+	0AyyGknFC2ouPNxO8XwzDBj1y4xPgxNU=
+X-Gm-Gg: ATEYQzzdaq+yRG5hLbeBdqjbPBd7Al/ssoUfv0kp9T1kDE6JPX1WxhIIScu61/ZI3NH
+	aL2ok6u71A7oDecnu1f9WvDkGjmTMQrT//DeDfvZJn9WUBjDsn3MRAoby99C/iPBo1mxdYdvAX0
+	opsqXqSFW6uzH/zxJgOLid64vSoiHrC1HNYaoYW/TIQuXLmoaCqpVU7L7/S+X1qJOd7sBsSL+3e
+	MbZGWyPpRa1rDkQHsel58y49O+WOM/SDarnsrMLaoiPNfZBYIdIM9eYu05qNuebkuUHZzGiTsU6
+	N4w3jks=
+X-Received: by 2002:a05:6830:4124:b0:7cf:d119:9953 with SMTP id
+ 46e09a7af769-7d7824cb663mr12080777a34.16.1773692869573; Mon, 16 Mar 2026
+ 13:27:49 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v4] wifi: ath9k: Obtain system GPIOS from descriptors
-To: Linus Walleij <linusw@kernel.org>,
-        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        Arnd Bergmann <arnd@arndb.de>, Alban Bedel <albeu@free.fr>,
-        Bartosz Golaszewski <brgl@bgdev.pl>,
-        =?UTF-8?B?VG9rZSBIw7hpbGFuZC1Kw7hyZ2Vu?=
- =?UTF-8?Q?sen?= <toke@toke.dk>,
-        =?UTF-8?B?TWljaGHFgiBLxJlwaWXFhA==?=
- <kernel@kempniu.pl>
-Cc: linux-wireless@vger.kernel.org, brcm80211-dev-list.pdl@broadcom.com,
-        linux-gpio@vger.kernel.org
-References: <20260313-descriptors-wireless-v4-1-07ab47c89a98@kernel.org>
-From: Jeff Johnson <jeff.johnson@oss.qualcomm.com>
-Content-Language: en-US
-In-Reply-To: <20260313-descriptors-wireless-v4-1-07ab47c89a98@kernel.org>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Proofpoint-GUID: VW-KOVJUyIljCL2M0aNKoVdxmkf9LCf-
-X-Proofpoint-ORIG-GUID: VW-KOVJUyIljCL2M0aNKoVdxmkf9LCf-
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwMzE2MDE2MSBTYWx0ZWRfX+V7ZksJxLZrh
- fhmiRqZcJEJXPySEIp/8c33r7MfFabsqhEyoocFix/yuiVbwCi5B4lp7zaDGoamVFjhARszuugp
- ARWwPygNLWI4fn+cvJ1fbeM1kSB2WK9sEXvrHhxaENSXyQuIhkPTJOTK6u1/ixmafefr4kHfiaF
- dZPqBTzYk90hDqWYcI1ULQKm65hvP11imYYaOAJBkl0+fXYetvWZKsooL1auNECzZKyVXs5enQ3
- SawCBc2xQI3B51P8NRP87wRhTiPe3RyYnlCNeCR5aGor2IoK35r/ek/7Ky9e8QoXwX33c7eu8D1
- 1Rdh4mlisahu6rNx18xeXZPU9jKybR8fRZIiiX3iuSgPWfmupYyILiFxlELg7bj5HsbtK/wjIz4
- mvkHpsB29VdfmTnzSVJN3nxApp5UVkPppH1wHFqY7tiQsbFjQbl2Dc9G435QSJxtq4jSnsm1iuM
- kA5IeEV0Pwn3RNsr3Qw==
-X-Authority-Analysis: v=2.4 cv=ZpLg6t7G c=1 sm=1 tr=0 ts=69b861bd cx=c_pps
- a=cFYjgdjTJScbgFmBucgdfQ==:117 a=Tg7Z00WN3eLgNEO9NLUKUQ==:17
- a=IkcTkHD0fZMA:10 a=Yq5XynenixoA:10 a=s4-Qcg_JpJYA:10
- a=VkNPw1HP01LnGYTKEx00:22 a=u7WPNUs3qKkmUXheDGA7:22 a=Um2Pa8k9VHT-vaBCBUpS:22
- a=VwQbUJbxAAAA:8 a=QyXUC8HyAAAA:8 a=KKAkSRfTAAAA:8 a=vSgz8sLpNFa1Q4fVfdwA:9
- a=3ZKOabzyN94A:10 a=QEXdDO2ut3YA:10 a=scEy_gLbYbu1JhEsrz4S:22
- a=cvBusfyB2V15izCimMoJ:22
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.51,FMLib:17.12.100.49
- definitions=2026-03-16_05,2026-03-16_06,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- lowpriorityscore=0 suspectscore=0 bulkscore=0 clxscore=1015
- priorityscore=1501 malwarescore=0 impostorscore=0 adultscore=0 phishscore=0
- spamscore=0 classifier=typeunknown authscore=0 authtc= authcc= route=outbound
- adjust=0 reason=mlx scancount=1 engine=8.22.0-2603050001
- definitions=main-2603160161
+References: <CALdGYqSQ1Ko2TTBhUizMu_FvLMUAuQfFrVwS10n_C-LSQJQQkQ@mail.gmail.com>
+ <1e96af437fa24674b353ddb530b2d8e7@realtek.com> <CALdGYqQb=Vt0jjqW7k8RGMV1gczL0cg-26cHgCm3MmzBjezGMQ@mail.gmail.com>
+ <792645eed36041f0b3df951f1b28a08a@realtek.com> <e6720993c8c14245981432cfa4ae902b@realtek.com>
+ <CALdGYqQn8GGXXjZTsL+a5Mfdmw5HRYB2Jyvqq5M5SUwxK9yd_g@mail.gmail.com>
+ <CALdGYqQee1sjgdBAPJSyb1gL6ksK4z8Uw_v3ANTnyXE+LXFAiA@mail.gmail.com>
+ <458ed80e39734ea99610050140bb31ce@realtek.com> <CALdGYqQykO9ZzO=-+D17R_8LC=Win5nGN6-9zFqChtNEyUzEfg@mail.gmail.com>
+ <CALdGYqTHz5Pz3uSGLbrVuNMWAXaqniUCuOSQACXUYHSL22ySvw@mail.gmail.com>
+ <CALdGYqQ5K0iuxjjX4TwNLi9Km5O+YL3Y9r6Bwfk9BaiuV3BHPA@mail.gmail.com>
+ <CALdGYqRYVxGbg+qRNUvRNr9V4f2YVZ7p=amwq1ktdmZVkwxjQg@mail.gmail.com>
+ <CALdGYqSq416qqqZ7t+wG5fir9NWfi3578+brdaj05q-42Gj14w@mail.gmail.com>
+ <CALdGYqSf66mBiufysr3tjm74A_w98LRN50fik0U9WGVvkBJ_5g@mail.gmail.com> <1bd495ffe57c47eb827eec084729afa2@realtek.com>
+In-Reply-To: <1bd495ffe57c47eb827eec084729afa2@realtek.com>
+From: LB F <goainwo@gmail.com>
+Date: Mon, 16 Mar 2026 22:27:12 +0200
+X-Gm-Features: AaiRm52lOFfZmpvisgy4CeeKVFeDzA6wEYGQc7hw9fe3htSS4KzapDilTaeJlyQ
+Message-ID: <CALdGYqSMUPnPfW-_q1RgYr0_SjoXUejAaJJr-o+jpwCk1S7ndQ@mail.gmail.com>
+Subject: Re: [BUG] wifi: rtw88: Hard system freeze on RTL8821CE when
+ power_save is enabled (LPS/ASPM conflict)
+To: Ping-Ke Shih <pkshih@realtek.com>
+Cc: "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>, 
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
 X-Spamd-Result: default: False [-2.16 / 15.00];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[qualcomm.com,reject];
-	R_DKIM_ALLOW(-0.20)[qualcomm.com:s=qcppdkim1,oss.qualcomm.com:s=google];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=2];
+	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
+	R_DKIM_ALLOW(-0.20)[gmail.com:s=20230601];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	DKIM_TRACE(0.00)[qualcomm.com:+,oss.qualcomm.com:+];
-	TAGGED_FROM(0.00)[bounces-33310-lists,linux-wireless=lfdr.de];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[oss.qualcomm.com:dkim,oss.qualcomm.com:mid,linaro.org:email,qualcomm.com:dkim,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,intel.com:email];
-	FREEMAIL_TO(0.00)[kernel.org,linux.intel.com,arndb.de,free.fr,bgdev.pl,toke.dk,kempniu.pl];
+	TAGGED_FROM(0.00)[bounces-33311-lists,linux-wireless=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
+	TO_DN_EQ_ADDR_SOME(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	FREEMAIL_FROM(0.00)[gmail.com];
+	RCVD_COUNT_THREE(0.00)[4];
 	TO_DN_SOME(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[jeff.johnson@oss.qualcomm.com,linux-wireless@vger.kernel.org];
+	MIME_TRACE(0.00)[0:+];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	RCPT_COUNT_THREE(0.00)[3];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[10];
-	MID_RHS_MATCH_FROM(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[goainwo@gmail.com,linux-wireless@vger.kernel.org];
+	DKIM_TRACE(0.00)[gmail.com:+];
+	MID_RHS_MATCH_FROMTLD(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
 	TAGGED_RCPT(0.00)[linux-wireless];
-	RCVD_COUNT_SEVEN(0.00)[7]
-X-Rspamd-Queue-Id: 4D99C2A0007
+	MISSING_XM_UA(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[mail.gmail.com:mid,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,realtek.com:email]
+X-Rspamd-Queue-Id: 4D0792A03C7
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-On 3/13/2026 2:53 PM, Linus Walleij wrote:
-> The ath9k has an odd use of system-wide GPIOs: if the chip
-> does not have internal GPIO capability, it will try to obtain a
-> GPIO line from the system GPIO controller:
-> 
->   if (BIT(gpio) & ah->caps.gpio_mask)
->         ath9k_hw_gpio_cfg_wmac(...);
->   else if (AR_SREV_SOC(ah))
->         ath9k_hw_gpio_cfg_soc(ah, gpio, out, label);
-> 
-> Where ath9k_hw_gpio_cfg_soc() will attempt to issue
-> gpio_request_one() passing the local GPIO number of the controller
-> (0..31) to gpio_request_one().
-> 
-> This is somewhat peculiar and possibly even dangerous: there is
-> nowadays no guarantee of the numbering of these system-wide
-> GPIOs, and assuming that GPIO 0..31 as used by ath9k would
-> correspond to GPIOs 0..31 on the system as a whole seems a bit
-> wild.
-> 
-> Register all 32 GPIOs at index 0..31 directly in the ATH79K
-> GPIO driver and associate with the NULL device (making them
-> widely available) if and only if we are probing ATH79K wifi
-> from the AHB bus (used for SoCs). We obtain these offsets from
-> the NULL device if necessary.
-> 
-> These GPIOs should ideally be defined in the device tree
-> instead, but we have no control over that for the legacy
-> code path.
-> 
-> Testcompiled with the ath79 defconfig.
-> 
-> Reported-by: Michał Kępień <kernel@kempniu.pl>
+Ping-Ke Shih <pkshih@realtek.com> wrote:
+> Not sure if this is because PCIE bridge has no ASPM capability?
 
-Are all of the reported issues fixed? I cab add either a Link or Fixes tag,
-presumably referencing:
-https://lore.kernel.org/all/Z3t6coHFgd9PBCeb@larwa.hq.kempniu.pl/
+That could indeed be the case -- I do not have a way to confirm
+without further hardware-level inspection.
 
-> Acked-by: Toke Høiland-Jørgensen <toke@toke.dk>
-> Reviewed-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-> Signed-off-by: Linus Walleij <linusw@kernel.org>
-> ---
-> This patch set is a long standing attempt to get rid of the global
-> GPIO numbers from the ath9k Wireless driver.
-> 
-> Maybe Kalle can merge this to the Wireless tree if we agree on this
-> hack solution.
+> LN5491 (kernel v6.19.6) is:
+>                 case RX_ENC_VHT:
+>                         if (WARN_ONCE(status->rate_idx > 11 ||
+>                                       !status->nss ||
+>                                       status->nss > 8,
+>                                       "Rate marked as a VHT rate but data is invalid: MCS: %d, NSS: %d\n",
+>                                       status->rate_idx, status->nss))
+>                                 goto drop;
+>                         break;
+> Looks like driver reports improper VHT nss/rate? But this warns once, and
+> you message isn't like this.
+> Could you check the source code LN5491 you are using?
 
--Kalle since he hasn't been a mainainer for a year now. I can take this
-through the ath tree, but would love to have a Tested-by from Michał to verify
-that the issues he saw have been addressed.
+The file net/mac80211/rx.c is not available on disk on my system
+(CachyOS ships only .h files in the headers package), but I located
+the exact warning message in journalctl:
 
-> 
-> Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
+  Rate marked as a VHT rate but data is invalid: MCS: 0, NSS: 0
 
+This confirms that line 5491 in my kernel matches exactly what you
+showed from v6.19.6 -- the RX_ENC_VHT case checking for
+status->nss == 0. The offset in my trace is slightly different
+(+0x183 vs +0x177), which is likely due to CachyOS's LTO/AutoFDO
+compiler optimizations.
+
+The warning appeared once in my initial test session:
+
+  Rate marked as a VHT rate but data is invalid: MCS: 0, NSS: 0
+  WARNING: net/mac80211/rx.c:5491 at ieee80211_rx_list+0x183/0x1020 [mac80211]
+
+However, in subsequent module reload and reconnect cycles I was unable
+to reproduce it. This is consistent with WARN_ONCE behavior -- it
+likely fired on the first invalid nss=0 packet after the initial
+driver load and has not triggered since. I cannot confirm it as a
+reliable symptom.
+
+---
+
+Regarding patch stability: the results below are from testing your
+original RFT patch [1], not any newer submission. I want to be
+explicit to avoid confusion:
+
+  [1] https://lore.kernel.org/linux-wireless/20260311020816.7065-1-pkshih@realtek.com/
+
+This is the exact diff I compiled and tested:
+
+--- a/drivers/net/wireless/realtek/rtw88/pci.c
++++ b/drivers/net/wireless/realtek/rtw88/pci.c
+@@ -2,6 +2,7 @@
+ /* Copyright(c) 2018-2019  Realtek Corporation
+  */
+
++#include <linux/dmi.h>
+ #include <linux/module.h>
+ #include <linux/pci.h>
+ #include "main.h"
+@@ -1744,6 +1745,34 @@ const struct pci_error_handlers rtw_pci_err_handler = {
+ };
+ EXPORT_SYMBOL(rtw_pci_err_handler);
+
++enum rtw88_quirk_dis_pci_caps {
++ QUIRK_DIS_PCI_CAP_ASPM,
++};
++
++static int disable_pci_caps(const struct dmi_system_id *dmi)
++{
++ uintptr_t dis_caps = (uintptr_t)dmi->driver_data;
++
++ if (dis_caps & BIT(QUIRK_DIS_PCI_CAP_ASPM))
++ rtw_pci_disable_aspm = true;
++
++ return 1;
++}
++
++static const struct dmi_system_id rtw88_pci_quirks[] = {
++ {
++ .callback = disable_pci_caps,
++ .ident = "HP Notebook - P3S95EA#ACB",
++ .matches = {
++ DMI_MATCH(DMI_SYS_VENDOR, "HP"),
++ DMI_MATCH(DMI_PRODUCT_NAME, "HP Notebook"),
++ DMI_MATCH(DMI_PRODUCT_SKU, "P3S95EA#ACB"),
++ },
++ .driver_data = (void *)BIT(QUIRK_DIS_PCI_CAP_ASPM),
++ },
++ {}
++};
++
+ int rtw_pci_probe(struct pci_dev *pdev,
+    const struct pci_device_id *id)
+ {
+@@ -1808,6 +1837,7 @@ int rtw_pci_probe(struct pci_dev *pdev,
+      bridge && bridge->vendor == PCI_VENDOR_ID_INTEL)
+  rtwpci->rx_no_aspm = true;
+
++ dmi_check_system(rtw88_pci_quirks);
+  rtw_pci_phy_cfg(rtwdev);
+
+  ret = rtw_register_hw(rtwdev, hw);
+
+Results with only this patch applied:
+
+  - The hard freeze lockup is gone.
+  - However, during idle the logs are flooded with:
+
+      rtw88_8821ce 0000:13:00.0: failed to send h2c command
+      rtw88_8821ce 0000:13:00.0: firmware failed to leave lps state
+
+  - To give a concrete sense of the volume: over an ~80-minute
+    observation window after a clean module reload, I recorded
+    11,757 "failed to send h2c command" events and 2 "firmware
+    failed to leave lps state" events -- approximately 110 errors
+    per minute during active periods.
+  - These errors cause Bluetooth audio stuttering and WiFi
+    throughput drops.
+
+When I additionally set disable_lps_deep=Y alongside your ASPM patch,
+all h2c errors vanish completely and Bluetooth/WiFi remain fully
+stable. This confirms that disabling LPS Deep is necessary for
+complete stability on this specific HP SKU.
+
+I also noticed what appears to be a new patch in a separate mailing
+list thread. I will test it shortly and report back with the results.
+
+Best regards,
+Oleksandr Havrylov
 
