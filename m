@@ -1,249 +1,185 @@
-Return-Path: <linux-wireless+bounces-33284-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-33285-lists+linux-wireless=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id gDJ4FoW2t2mMUgEAu9opvQ
-	(envelope-from <linux-wireless+bounces-33284-lists+linux-wireless=lfdr.de@vger.kernel.org>)
-	for <lists+linux-wireless@lfdr.de>; Mon, 16 Mar 2026 08:51:33 +0100
+	id IMClCwC4t2mpUgEAu9opvQ
+	(envelope-from <linux-wireless+bounces-33285-lists+linux-wireless=lfdr.de@vger.kernel.org>)
+	for <lists+linux-wireless@lfdr.de>; Mon, 16 Mar 2026 08:57:52 +0100
 X-Original-To: lists+linux-wireless@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 19B9B295D31
-	for <lists+linux-wireless@lfdr.de>; Mon, 16 Mar 2026 08:51:33 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 29185295E85
+	for <lists+linux-wireless@lfdr.de>; Mon, 16 Mar 2026 08:57:51 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 9C066301373B
-	for <lists+linux-wireless@lfdr.de>; Mon, 16 Mar 2026 07:51:31 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 9B3513003BC8
+	for <lists+linux-wireless@lfdr.de>; Mon, 16 Mar 2026 07:57:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5B91034DB41;
-	Mon, 16 Mar 2026 07:51:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CDB32353EE3;
+	Mon, 16 Mar 2026 07:57:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="HkyzNVOg"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="IgXHDetv"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.12])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2FF12139D;
-	Mon, 16 Mar 2026 07:51:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 91A7924E4AF
+	for <linux-wireless@vger.kernel.org>; Mon, 16 Mar 2026 07:57:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.12
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773647488; cv=none; b=eiaqXqRoGzgSJ9Q+nxdgSBsHQ1I95UY3YYmPaibxkdlzhOPxKTrQZsNiKq3vdnTKLspk95QODXRuASQOAmpimCk6aiXQlkadVBkzx6Kz1xm650aNLAlIEnXbEVia0/n8y/j7/eCvwcSkr/3+gxs9w8tBVUSODAZn3EqrFteUXjQ=
+	t=1773647864; cv=none; b=U7/Aaz1mqAm6jEBbTOtvMvePrBs4nIjryMUcjyP/C0joN6FMjEmLLQWx8H4zeWgywjnZ5EQLOe2B8Bot1KI3BCl2nf5YdoAkVtsnKATm2V20x51HEc6SPyxd8PW9EyDpUgdH/7yPPgCtsg8IM6/wFUxXymUIrPPBix7xL55VO48=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773647488; c=relaxed/simple;
-	bh=9toy4CW/QjLOLJ12MtuMjv+q2wUbxGxETttRIFu6ZBY=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=koIpzpwqF/lAhm4nYrNhaYK8FQiL8bj71uLTxgzSjeObPHtZ2q7qMKpXXnruR+hRerA3Xtt/BqUdgcULdxkGyQkWvuTesZVZj7SMB6poan6FkG/wKilrk7t8eGGYQdmNgFeb0AZv2/gDaNSbjjcH19J29ViA5RFDDvGRzP3oVKQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=HkyzNVOg; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E9C2AC19421;
-	Mon, 16 Mar 2026 07:51:17 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1773647487;
-	bh=9toy4CW/QjLOLJ12MtuMjv+q2wUbxGxETttRIFu6ZBY=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=HkyzNVOgNcLNNl16MC2QGLeOLdvhc5gYQiTGlP/zsx+eoGtyMORj5qPW1JZFog7lZ
-	 cPOzzr3afVQCahZV0PC4YrfQVAcgx65Tn+C268Nu7f5pN8GO6bDhYUoo04e8WGxiIJ
-	 2C57vZLaxET4pRhDE3uHhSaSor89JLIjum3k4aJgWvEODbVkSF/1IfYQvL85Rh1nwz
-	 kIUnWNTGqc02MB2MpW+XVSjEQsOFndB0WrHKjTOg6VAG/bU6R8gZBxpxzII+84OVmB
-	 Ld71iRfTum3PzEnLKh97VvmNANfmAhbEUvU5kd/FOOBDN6lrCqonHAVSxU0mM1nk2w
-	 +iEz1bnu1KabQ==
-Message-ID: <28d63822-f191-400a-8005-5185dd480dbb@kernel.org>
-Date: Mon, 16 Mar 2026 08:51:16 +0100
+	s=arc-20240116; t=1773647864; c=relaxed/simple;
+	bh=p/Wvnc+ThisvVZsoVQFkuzPkNH15kbeYs0Qn+C4f9lc=;
+	h=Date:From:To:Cc:Subject:Message-ID; b=FM6vzjPTZcmAqNpV3OIQhxMifKpVh7RxXjZFHA0k5xI7BSv3JQljSAa5iLESHPtNrVq30wwq9nFt798sOqJDipZtolNDr7fZhpfZFKwyagJ9//xIzhRS2kHNimlRI+uTunjs8MW2u0Gkkwti9mmseHmp5PFc++RCNpxIWcEmVMM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=IgXHDetv; arc=none smtp.client-ip=198.175.65.12
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1773647862; x=1805183862;
+  h=date:from:to:cc:subject:message-id;
+  bh=p/Wvnc+ThisvVZsoVQFkuzPkNH15kbeYs0Qn+C4f9lc=;
+  b=IgXHDetvuJIYRMeL0Fasgir6duq2oPyKb9kjj3q7XRxYsib47D352pWo
+   er/rU6KVN0T/z/R4iW/+yl0X8/XCgjS4UbuLYMm/uAJuttbtaU5XxRmlU
+   N+vZRlQrtVU713A1+SmHxyzpLrwacd0sYIYwcNmX1c4+Hzf/mjWoxFOAS
+   1m5lWTvAifTbajCrRjs0XqIRhbVsFpa7O3RTsOpZ8OYDlG4V2LDhXj7aL
+   fyAJ8rtC6VVlSmSwYgXVal5m63cxFyo7kdVAM2zTcDaZtMT+AADfpEZqf
+   SrdDb7BJ5wh/PHM1P4TeEpHrk0CcpYXJw1hUK6VKhEuMbYpS/iU9Eb7+g
+   A==;
+X-CSE-ConnectionGUID: rMaeUpUXS0uhKcjTnFIG4g==
+X-CSE-MsgGUID: OwSe2VUTTOqI/p2QbkZA1Q==
+X-IronPort-AV: E=McAfee;i="6800,10657,11730"; a="86135229"
+X-IronPort-AV: E=Sophos;i="6.23,123,1770624000"; 
+   d="scan'208";a="86135229"
+Received: from orviesa004.jf.intel.com ([10.64.159.144])
+  by orvoesa104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 16 Mar 2026 00:57:42 -0700
+X-CSE-ConnectionGUID: AurqCf/QRGWtealWE9EPIw==
+X-CSE-MsgGUID: uIeZ+RCUQ+u91lbw4i3aXw==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.23,123,1770624000"; 
+   d="scan'208";a="226296179"
+Received: from lkp-server01.sh.intel.com (HELO 892944969b78) ([10.239.97.150])
+  by orviesa004.jf.intel.com with ESMTP; 16 Mar 2026 00:57:41 -0700
+Received: from kbuild by 892944969b78 with local (Exim 4.98.2)
+	(envelope-from <lkp@intel.com>)
+	id 1w22pW-000000000KG-0q9H;
+	Mon, 16 Mar 2026 07:57:38 +0000
+Date: Mon, 16 Mar 2026 15:56:47 +0800
+From: kernel test robot <lkp@intel.com>
+To: Johannes Berg <johannes.berg@intel.com>
+Cc: linux-wireless@vger.kernel.org
+Subject: [wireless:for-next] BUILD SUCCESS
+ 7d73872d949c488a1d7c308031d6a9d89b5e0a8b
+Message-ID: <202603161541.nyCee0IY-lkp@intel.com>
+User-Agent: s-nail v14.9.25
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 02/15] firmware: qcom: Add a generic PAS service
-To: Sumit Garg <sumit.garg@kernel.org>, linux-arm-msm@vger.kernel.org,
- devicetree@vger.kernel.org, dri-devel@lists.freedesktop.org,
- freedreno@lists.freedesktop.org, linux-media@vger.kernel.org,
- netdev@vger.kernel.org, linux-wireless@vger.kernel.org,
- ath12k@lists.infradead.org, linux-remoteproc@vger.kernel.org
-Cc: andersson@kernel.org, konradybcio@kernel.org, robh@kernel.org,
- krzk+dt@kernel.org, conor+dt@kernel.org, robin.clark@oss.qualcomm.com,
- sean@poorly.run, akhilpo@oss.qualcomm.com, lumag@kernel.org,
- abhinav.kumar@linux.dev, jesszhan0024@gmail.com,
- marijn.suijten@somainline.org, airlied@gmail.com, simona@ffwll.ch,
- vikash.garodia@oss.qualcomm.com, dikshita.agarwal@oss.qualcomm.com,
- bod@kernel.org, mchehab@kernel.org, elder@kernel.org, andrew+netdev@lunn.ch,
- davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
- pabeni@redhat.com, jjohnson@kernel.org, mathieu.poirier@linaro.org,
- trilokkumar.soni@oss.qualcomm.com, mukesh.ojha@oss.qualcomm.com,
- pavan.kondeti@oss.qualcomm.com, jorge.ramirez@oss.qualcomm.com,
- tonyh@qti.qualcomm.com, vignesh.viswanathan@oss.qualcomm.com,
- srinivas.kandagatla@oss.qualcomm.com, amirreza.zarrabi@oss.qualcomm.com,
- jens.wiklander@linaro.org, op-tee@lists.trustedfirmware.org,
- apurupa@qti.qualcomm.com, skare@qti.qualcomm.com,
- linux-kernel@vger.kernel.org, Sumit Garg <sumit.garg@oss.qualcomm.com>
-References: <20260312062756.694390-1-sumit.garg@kernel.org>
- <20260312062756.694390-3-sumit.garg@kernel.org>
-From: Krzysztof Kozlowski <krzk@kernel.org>
-Content-Language: en-US
-Autocrypt: addr=krzk@kernel.org; keydata=
- xsFNBFVDQq4BEAC6KeLOfFsAvFMBsrCrJ2bCalhPv5+KQF2PS2+iwZI8BpRZoV+Bd5kWvN79
- cFgcqTTuNHjAvxtUG8pQgGTHAObYs6xeYJtjUH0ZX6ndJ33FJYf5V3yXqqjcZ30FgHzJCFUu
- JMp7PSyMPzpUXfU12yfcRYVEMQrmplNZssmYhiTeVicuOOypWugZKVLGNm0IweVCaZ/DJDIH
- gNbpvVwjcKYrx85m9cBVEBUGaQP6AT7qlVCkrf50v8bofSIyVa2xmubbAwwFA1oxoOusjPIE
- J3iadrwpFvsZjF5uHAKS+7wHLoW9hVzOnLbX6ajk5Hf8Pb1m+VH/E8bPBNNYKkfTtypTDUCj
- NYcd27tjnXfG+SDs/EXNUAIRefCyvaRG7oRYF3Ec+2RgQDRnmmjCjoQNbFrJvJkFHlPeHaeS
- BosGY+XWKydnmsfY7SSnjAzLUGAFhLd/XDVpb1Een2XucPpKvt9ORF+48gy12FA5GduRLhQU
- vK4tU7ojoem/G23PcowM1CwPurC8sAVsQb9KmwTGh7rVz3ks3w/zfGBy3+WmLg++C2Wct6nM
- Pd8/6CBVjEWqD06/RjI2AnjIq5fSEH/BIfXXfC68nMp9BZoy3So4ZsbOlBmtAPvMYX6U8VwD
- TNeBxJu5Ex0Izf1NV9CzC3nNaFUYOY8KfN01X5SExAoVTr09ewARAQABzSVLcnp5c3p0b2Yg
- S296bG93c2tpIDxrcnprQGtlcm5lbC5vcmc+wsGVBBMBCgA/AhsDBgsJCAcDAgYVCAIJCgsE
- FgIDAQIeAQIXgBYhBJvQfg4MUfjVlne3VBuTQ307QWKbBQJoF1BKBQkWlnSaAAoJEBuTQ307
- QWKbHukP/3t4tRp/bvDnxJfmNdNVn0gv9ep3L39IntPalBFwRKytqeQkzAju0whYWg+R/rwp
- +r2I1Fzwt7+PTjsnMFlh1AZxGDmP5MFkzVsMnfX1lGiXhYSOMP97XL6R1QSXxaWOpGNCDaUl
- ajorB0lJDcC0q3xAdwzRConxYVhlgmTrRiD8oLlSCD5baEAt5Zw17UTNDnDGmZQKR0fqLpWy
- 786Lm5OScb7DjEgcA2PRm17st4UQ1kF0rQHokVaotxRM74PPDB8bCsunlghJl1DRK9s1aSuN
- hL1Pv9VD8b4dFNvCo7b4hfAANPU67W40AaaGZ3UAfmw+1MYyo4QuAZGKzaP2ukbdCD/DYnqi
- tJy88XqWtyb4UQWKNoQqGKzlYXdKsldYqrLHGoMvj1UN9XcRtXHST/IaLn72o7j7/h/Ac5EL
- 8lSUVIG4TYn59NyxxAXa07Wi6zjVL1U11fTnFmE29ALYQEXKBI3KUO1A3p4sQWzU7uRmbuxn
- naUmm8RbpMcOfa9JjlXCLmQ5IP7Rr5tYZUCkZz08LIfF8UMXwH7OOEX87Y++EkAB+pzKZNNd
- hwoXulTAgjSy+OiaLtuCys9VdXLZ3Zy314azaCU3BoWgaMV0eAW/+gprWMXQM1lrlzvwlD/k
- whyy9wGf0AEPpLssLVt9VVxNjo6BIkt6d1pMg6mHsUEVzsFNBFVDXDQBEADNkrQYSREUL4D3
- Gws46JEoZ9HEQOKtkrwjrzlw/tCmqVzERRPvz2Xg8n7+HRCrgqnodIYoUh5WsU84N03KlLue
- MNsWLJBvBaubYN4JuJIdRr4dS4oyF1/fQAQPHh8Thpiz0SAZFx6iWKB7Qrz3OrGCjTPcW6ei
- OMheesVS5hxietSmlin+SilmIAPZHx7n242u6kdHOh+/SyLImKn/dh9RzatVpUKbv34eP1wA
- GldWsRxbf3WP9pFNObSzI/Bo3kA89Xx2rO2roC+Gq4LeHvo7ptzcLcrqaHUAcZ3CgFG88CnA
- 6z6lBZn0WyewEcPOPdcUB2Q7D/NiUY+HDiV99rAYPJztjeTrBSTnHeSBPb+qn5ZZGQwIdUW9
- YegxWKvXXHTwB5eMzo/RB6vffwqcnHDoe0q7VgzRRZJwpi6aMIXLfeWZ5Wrwaw2zldFuO4Dt
- 91pFzBSOIpeMtfgb/Pfe/a1WJ/GgaIRIBE+NUqckM+3zJHGmVPqJP/h2Iwv6nw8U+7Yyl6gU
- BLHFTg2hYnLFJI4Xjg+AX1hHFVKmvl3VBHIsBv0oDcsQWXqY+NaFahT0lRPjYtrTa1v3tem/
- JoFzZ4B0p27K+qQCF2R96hVvuEyjzBmdq2esyE6zIqftdo4MOJho8uctOiWbwNNq2U9pPWmu
- 4vXVFBYIGmpyNPYzRm0QPwARAQABwsF8BBgBCgAmAhsMFiEEm9B+DgxR+NWWd7dUG5NDfTtB
- YpsFAmgXUF8FCRaWWyoACgkQG5NDfTtBYptO0w//dlXJs5/42hAXKsk+PDg3wyEFb4NpyA1v
- qmx7SfAzk9Hf6lWwU1O6AbqNMbh6PjEwadKUk1m04S7EjdQLsj/MBSgoQtCT3MDmWUUtHZd5
- RYIPnPq3WVB47GtuO6/u375tsxhtf7vt95QSYJwCB+ZUgo4T+FV4hquZ4AsRkbgavtIzQisg
- Dgv76tnEv3YHV8Jn9mi/Bu0FURF+5kpdMfgo1sq6RXNQ//TVf8yFgRtTUdXxW/qHjlYURrm2
- H4kutobVEIxiyu6m05q3e9eZB/TaMMNVORx+1kM3j7f0rwtEYUFzY1ygQfpcMDPl7pRYoJjB
- dSsm0ZuzDaCwaxg2t8hqQJBzJCezTOIkjHUsWAK+tEbU4Z4SnNpCyM3fBqsgYdJxjyC/tWVT
- AQ18NRLtPw7tK1rdcwCl0GFQHwSwk5pDpz1NH40e6lU+NcXSeiqkDDRkHlftKPV/dV+lQXiu
- jWt87ecuHlpL3uuQ0ZZNWqHgZoQLXoqC2ZV5KrtKWb/jyiFX/sxSrodALf0zf+tfHv0FZWT2
- zHjUqd0t4njD/UOsuIMOQn4Ig0SdivYPfZukb5cdasKJukG1NOpbW7yRNivaCnfZz6dTawXw
- XRIV/KDsHQiyVxKvN73bThKhONkcX2LWuD928tAR6XMM2G5ovxLe09vuOzzfTWQDsm++9UKF a/A=
-In-Reply-To: <20260312062756.694390-3-sumit.garg@kernel.org>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
 X-Spamd-Result: default: False [-0.66 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
-	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
+	MID_CONTAINS_FROM(1.00)[];
+	R_MISSING_CHARSET(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[intel.com,none];
+	R_DKIM_ALLOW(-0.20)[intel.com:s=Intel];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FREEMAIL_CC(0.00)[kernel.org,oss.qualcomm.com,poorly.run,linux.dev,gmail.com,somainline.org,ffwll.ch,lunn.ch,davemloft.net,google.com,redhat.com,linaro.org,qti.qualcomm.com,lists.trustedfirmware.org,vger.kernel.org];
-	TAGGED_FROM(0.00)[bounces-33284-lists,linux-wireless=lfdr.de];
-	FROM_HAS_DN(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	RCVD_TLS_LAST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[kernel.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	MIME_TRACE(0.00)[0:+];
+	RCPT_COUNT_TWO(0.00)[2];
+	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-33285-lists,linux-wireless=lfdr.de];
+	DKIM_TRACE(0.00)[intel.com:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
 	TO_DN_SOME(0.00)[];
-	RCPT_COUNT_GT_50(0.00)[50];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[krzk@kernel.org,linux-wireless@vger.kernel.org];
+	FROM_NEQ_ENVFROM(0.00)[lkp@intel.com,linux-wireless@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[linux-wireless,dt,netdev];
-	MID_RHS_MATCH_FROM(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,qualcomm.com:email]
-X-Rspamd-Queue-Id: 19B9B295D31
+	RCVD_COUNT_FIVE(0.00)[6];
+	TAGGED_RCPT(0.00)[linux-wireless];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:dkim,intel.com:mid,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 29185295E85
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-On 12/03/2026 07:27, Sumit Garg wrote:
-> From: Sumit Garg <sumit.garg@oss.qualcomm.com>
-> 
-> Qcom platforms has the legacy of using non-standard SCM calls
-> splintered over the various kernel drivers. These SCM calls aren't
-> compliant with the standard SMC calling conventions which is a
-> prerequisite to enable migration to the FF-A specifications from Arm.
-> 
-> OP-TEE as an alternative trusted OS to Qualcomm TEE (QTEE) can't
-> support these non-standard SCM calls. And even for newer architectures
-> with S-EL2 and Hafnium support, QTEE won't be able to support SCM
-> calls either with FF-A requirements coming in. And with both OP-TEE
-> and QTEE drivers well integrated in the TEE subsystem, it makes further
-> sense to reuse the TEE bus client drivers infrastructure.
-> 
-> The added benefit of TEE bus infrastructure is that there is support
-> for discoverable/enumerable services. With that client drivers don't
-> have to manually invoke a special SCM call to know the service status.
-> 
-> So enable the generic Peripheral Authentication Service (PAS) provided
-> by the firmware. It acts as the common layer with different TZ
-> backends plugged in whether it's an SCM implementation or a proper
-> TEE bus based PAS service implementation.
-> 
-> Signed-off-by: Sumit Garg <sumit.garg@oss.qualcomm.com>
-> ---
->  drivers/firmware/qcom/Kconfig          |   8 +
->  drivers/firmware/qcom/Makefile         |   1 +
->  drivers/firmware/qcom/qcom_pas.c       | 298 +++++++++++++++++++++++++
->  drivers/firmware/qcom/qcom_pas.h       |  53 +++++
->  include/linux/firmware/qcom/qcom_pas.h |  41 ++++
->  5 files changed, 401 insertions(+)
->  create mode 100644 drivers/firmware/qcom/qcom_pas.c
->  create mode 100644 drivers/firmware/qcom/qcom_pas.h
->  create mode 100644 include/linux/firmware/qcom/qcom_pas.h
-> 
-> diff --git a/drivers/firmware/qcom/Kconfig b/drivers/firmware/qcom/Kconfig
-> index b477d54b495a..8653639d06db 100644
-> --- a/drivers/firmware/qcom/Kconfig
-> +++ b/drivers/firmware/qcom/Kconfig
-> @@ -6,6 +6,14 @@
->  
->  menu "Qualcomm firmware drivers"
->  
-> +config QCOM_PAS
-> +	tristate
-> +	help
-> +	  Enable the generic Peripheral Authentication Service (PAS) provided
-> +	  by the firmware. It acts as the common layer with different TZ
-> +	  backends plugged in whether it's an SCM implementation or a proper
-> +	  TEE bus based PAS service implementation.
-> +
->  config QCOM_SCM
->  	select QCOM_TZMEM
->  	tristate
-> diff --git a/drivers/firmware/qcom/Makefile b/drivers/firmware/qcom/Makefile
-> index 0be40a1abc13..dc5ab45f906a 100644
-> --- a/drivers/firmware/qcom/Makefile
-> +++ b/drivers/firmware/qcom/Makefile
-> @@ -8,3 +8,4 @@ qcom-scm-objs += qcom_scm.o qcom_scm-smc.o qcom_scm-legacy.o
->  obj-$(CONFIG_QCOM_TZMEM)	+= qcom_tzmem.o
->  obj-$(CONFIG_QCOM_QSEECOM)	+= qcom_qseecom.o
->  obj-$(CONFIG_QCOM_QSEECOM_UEFISECAPP) += qcom_qseecom_uefisecapp.o
-> +obj-$(CONFIG_QCOM_PAS)		+= qcom_pas.o
-> diff --git a/drivers/firmware/qcom/qcom_pas.c b/drivers/firmware/qcom/qcom_pas.c
-> new file mode 100644
-> index 000000000000..beb1bae55546
-> --- /dev/null
-> +++ b/drivers/firmware/qcom/qcom_pas.c
-> @@ -0,0 +1,298 @@
-> +// SPDX-License-Identifier: GPL-2.0
-> +/*
-> + * Copyright (c) Qualcomm Technologies, Inc. and/or its subsidiaries.
-> + */
-> +
-> +#include <linux/device/devres.h>
-> +#include <linux/firmware/qcom/qcom_pas.h>
-> +#include <linux/kernel.h>
-> +#include <linux/module.h>
-> +
-> +#include "qcom_pas.h"
-> +
-> +struct qcom_pas_ops *ops_ptr;
+tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/wireless/wireless.git for-next
+branch HEAD: 7d73872d949c488a1d7c308031d6a9d89b5e0a8b  wifi: mac80211: check tdls flag in ieee80211_tdls_oper
 
-Same comment as before. Don't create singletons. And for sure not global
-ones.
+elapsed time: 762m
 
-Best regards,
-Krzysztof
+configs tested: 60
+configs skipped: 0
+
+The following configs have been built successfully.
+More configs may be tested in the coming days.
+
+tested configs:
+alpha                   allnoconfig    gcc-15.2.0
+alpha                  allyesconfig    gcc-15.2.0
+arc                    allmodconfig    gcc-15.2.0
+arc                     allnoconfig    gcc-15.2.0
+arc                    allyesconfig    gcc-15.2.0
+arm                     allnoconfig    clang-23
+arm                    allyesconfig    gcc-15.2.0
+arm64                  allmodconfig    clang-19
+arm64                   allnoconfig    gcc-15.2.0
+csky                   allmodconfig    gcc-15.2.0
+csky                    allnoconfig    gcc-15.2.0
+hexagon                allmodconfig    clang-17
+hexagon                 allnoconfig    clang-23
+i386                   allmodconfig    gcc-14
+i386                    allnoconfig    gcc-14
+i386                   allyesconfig    gcc-14
+loongarch              allmodconfig    clang-19
+loongarch               allnoconfig    clang-23
+m68k                   allmodconfig    gcc-15.2.0
+m68k                    allnoconfig    gcc-15.2.0
+m68k                   allyesconfig    gcc-15.2.0
+microblaze              allnoconfig    gcc-15.2.0
+microblaze             allyesconfig    gcc-15.2.0
+mips                   allmodconfig    gcc-15.2.0
+mips                    allnoconfig    gcc-15.2.0
+mips                   allyesconfig    gcc-15.2.0
+nios2                  allmodconfig    gcc-11.5.0
+nios2                   allnoconfig    gcc-11.5.0
+openrisc               allmodconfig    gcc-15.2.0
+openrisc                allnoconfig    gcc-15.2.0
+parisc                 allmodconfig    gcc-15.2.0
+parisc                  allnoconfig    gcc-15.2.0
+parisc                 allyesconfig    gcc-15.2.0
+powerpc                allmodconfig    gcc-15.2.0
+powerpc                 allnoconfig    gcc-15.2.0
+riscv                  allmodconfig    clang-23
+riscv                   allnoconfig    gcc-15.2.0
+riscv                  allyesconfig    clang-16
+s390                   allmodconfig    clang-18
+s390                    allnoconfig    clang-23
+s390                   allyesconfig    gcc-15.2.0
+sh                     allmodconfig    gcc-15.2.0
+sh                      allnoconfig    gcc-15.2.0
+sh                     allyesconfig    gcc-15.2.0
+sparc                   allnoconfig    gcc-15.2.0
+sparc       randconfig-001-20260316    gcc-8.5.0
+sparc       randconfig-002-20260316    gcc-12.5.0
+sparc64                allmodconfig    clang-23
+sparc64     randconfig-001-20260316    gcc-8.5.0
+sparc64     randconfig-002-20260316    gcc-15.2.0
+um                     allmodconfig    clang-19
+um                      allnoconfig    clang-23
+um                     allyesconfig    gcc-14
+um          randconfig-001-20260316    gcc-14
+x86_64                 allmodconfig    clang-20
+x86_64                  allnoconfig    clang-20
+x86_64                 allyesconfig    clang-20
+x86_64                rhel-9.4-rust    clang-20
+xtensa                  allnoconfig    gcc-15.2.0
+xtensa                 allyesconfig    gcc-15.2.0
+
+--
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
 
