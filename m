@@ -1,180 +1,216 @@
-Return-Path: <linux-wireless+bounces-33288-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-33289-lists+linux-wireless=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id wH93B87Nt2mDVgEAu9opvQ
-	(envelope-from <linux-wireless+bounces-33288-lists+linux-wireless=lfdr.de@vger.kernel.org>)
-	for <lists+linux-wireless@lfdr.de>; Mon, 16 Mar 2026 10:30:54 +0100
+	id cABgAszNt2mDVgEAu9opvQ
+	(envelope-from <linux-wireless+bounces-33289-lists+linux-wireless=lfdr.de@vger.kernel.org>)
+	for <lists+linux-wireless@lfdr.de>; Mon, 16 Mar 2026 10:30:52 +0100
 X-Original-To: lists+linux-wireless@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 796BD297057
-	for <lists+linux-wireless@lfdr.de>; Mon, 16 Mar 2026 10:30:53 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9DEE0297050
+	for <lists+linux-wireless@lfdr.de>; Mon, 16 Mar 2026 10:30:51 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 4B19F3033D18
-	for <lists+linux-wireless@lfdr.de>; Mon, 16 Mar 2026 09:29:21 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 555103003813
+	for <lists+linux-wireless@lfdr.de>; Mon, 16 Mar 2026 09:30:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A910C386C24;
-	Mon, 16 Mar 2026 09:29:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5B48325228D;
+	Mon, 16 Mar 2026 09:30:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="QGNlWh6p"
+	dkim=pass (2048-bit key) header.d=gmx.net header.i=georgmueller@gmx.net header.b="dPkHjyhw"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.17])
+Received: from mout.gmx.net (mout.gmx.net [212.227.15.19])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ADF68182D0;
-	Mon, 16 Mar 2026 09:29:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.17
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5F52CEEBA;
+	Mon, 16 Mar 2026 09:30:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.227.15.19
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773653360; cv=none; b=EdJtQFsF25g0CL6ob/q1f6AT05VcoLG/EEO08vF64HESfAy6z50+3PFbW71gwRDe7L7BkS1XGFFQBVE2VXp+6yHYuouwYLXiZNvx0Dmnac2DftH3WipvChiXZ+5Z0+c8/x1l1oO6C4eGKq+AqEidYySEhzG0CYICw1OlbwIom0w=
+	t=1773653449; cv=none; b=GYi8i35QrQgcMdDEEpleuhV60vYdlf/7k93M4mOMq0xEtglIigKEA1YuTIPWnp1jx5C5X/Bmhzil9oV7bqqaofw4Vhf1Cmb3K+4QTIOjHkQLCzpQIJkP5B5KtUuE462nCS6MAfcLmLZnbBKVWWuSJDCh1JXPboGBL0sRByVDKrg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773653360; c=relaxed/simple;
-	bh=PYSyaABDE9FCBpORP7Yb8TmbH+eE0gPZ7nOryR4YMVY=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=jhotQ1311GIbAKiU39I77PygY6WjKuPg4NjiuHyTXOzwr97cX6zw7WHWreEVNfm7GUP16TfceJU/uHOIsRq8OJhfMK0RmK3QnW6z5tj0bEsEVRo+g0d4mqiaDBw6PHjEPFSlCfeqrL0ivOxJlMqe0/y0rhsvU0CPefLnYAHGENw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=QGNlWh6p; arc=none smtp.client-ip=192.198.163.17
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1773653358; x=1805189358;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:content-transfer-encoding:in-reply-to;
-  bh=PYSyaABDE9FCBpORP7Yb8TmbH+eE0gPZ7nOryR4YMVY=;
-  b=QGNlWh6pvZoQkFny6Xxy70mkIulSasNk7ANyvqssFXxzC8UR6CptbjVR
-   VzC0rat6g9ZaXsiJDR9fNirbcSecT41e40tvF97laeUjf8iHBfn55AK9r
-   2DckkEXZSDdk8s2BN36CL2AZ3pUkVsSHCEwxzYY2OFL7HjJGZUIbJSEXV
-   XyO7uamRf76RtOL13LDiCzYPL+11Ro4+LfRBxg8s32E7woQanWEh8j1tW
-   1LSjsgggAb3oSGFinoq/rf8YRr/P4HwSdLl/SIBMII0czeZyeBcbLMCd6
-   GGQV20rMUceOVdV3SLIuqsp0KANKXf702OKXslZRxfEE3f9xJtHA0TwhI
-   w==;
-X-CSE-ConnectionGUID: NgbPZq/TRYGYaAWBpNUeJw==
-X-CSE-MsgGUID: iaVrFkK/S7acSvJnzS8UQA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11730"; a="74581426"
-X-IronPort-AV: E=Sophos;i="6.23,123,1770624000"; 
-   d="scan'208";a="74581426"
-Received: from fmviesa005.fm.intel.com ([10.60.135.145])
-  by fmvoesa111.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 16 Mar 2026 02:29:18 -0700
-X-CSE-ConnectionGUID: a4g6kxQqT2aozanqYYNhWg==
-X-CSE-MsgGUID: Kmm6JFaRQcS5k9gC9TyQwg==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.23,123,1770624000"; 
-   d="scan'208";a="226522964"
-Received: from vpanait-mobl.ger.corp.intel.com (HELO localhost) ([10.245.244.237])
-  by fmviesa005-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 16 Mar 2026 02:29:15 -0700
-Date: Mon, 16 Mar 2026 11:29:13 +0200
-From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-To: Bartosz Golaszewski <brgl@kernel.org>
-Cc: Linus Walleij <linusw@kernel.org>, linux-wireless@vger.kernel.org,
-	brcm80211-dev-list.pdl@broadcom.com, linux-gpio@vger.kernel.org,
-	Kalle Valo <kvalo@kernel.org>, Arnd Bergmann <arnd@arndb.de>,
-	Alban Bedel <albeu@free.fr>, Bartosz Golaszewski <brgl@bgdev.pl>,
-	Toke =?iso-8859-1?Q?H=F8iland-J=F8rgensen?= <toke@toke.dk>,
-	=?utf-8?B?TWljaGHFgiBLxJlwaWXFhA==?= <kernel@kempniu.pl>
-Subject: Re: [PATCH v4] wifi: ath9k: Obtain system GPIOS from descriptors
-Message-ID: <abfNaRH10hnXug4l@ashevche-desk.local>
-References: <20260313-descriptors-wireless-v4-1-07ab47c89a98@kernel.org>
- <CAMRc=MdJXhXyid1a4ycmKv6nwOf3FYd=rFEaBqQ7k3SFq_j4FQ@mail.gmail.com>
+	s=arc-20240116; t=1773653449; c=relaxed/simple;
+	bh=RA5akNJMdz38Uq9J939H0rhBqEtcmL2xZcP7ommNiLo=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=Y0tRfo9wK+2VcR4YzONjJntswwKW5fFw8luiabZoEQUw3FXEiZhI8RYQjX+/4aDOt04ksRgB49bJZabMufTJ5Hn80wMW+2IGARP8Ch6n4GuBJ7c5qphf2LrV8i02jR4ErL0o3sdcABAPyzjaBNUB1dKThu+bwfel0rMFK7eZeRQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.net; spf=pass smtp.mailfrom=gmx.net; dkim=pass (2048-bit key) header.d=gmx.net header.i=georgmueller@gmx.net header.b=dPkHjyhw; arc=none smtp.client-ip=212.227.15.19
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmx.net
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmx.net;
+	s=s31663417; t=1773653445; x=1774258245; i=georgmueller@gmx.net;
+	bh=RA5akNJMdz38Uq9J939H0rhBqEtcmL2xZcP7ommNiLo=;
+	h=X-UI-Sender-Class:Message-ID:Date:MIME-Version:Subject:To:Cc:
+	 References:From:In-Reply-To:Content-Type:
+	 Content-Transfer-Encoding:cc:content-transfer-encoding:
+	 content-type:date:from:message-id:mime-version:reply-to:subject:
+	 to;
+	b=dPkHjyhwsPGLjvx2n3cAPw/ooJnMlrHPf6jxZr8KC2I+hsHx+u0zymzFpjVPmNeK
+	 mnQgH3lXBkG2vmPQZV85HAqXCSt1SJ2PhJNMWcOP6qQFXTqMgjzpgNFRFZo2b7c0d
+	 f65J8ykfO/ZF+QoDPVWsKF+lMaEfYu/DHkFSmXdNF1Qf7CkdbG597AGjau+zl563h
+	 PTefaKI41N63WAfz5nxnXWTu2Zy16xTIVKWPClGpYh8NOZCTpQoRMKuJNf93FmiPx
+	 mexJo4ROfR4GsFowDiOAYjNECgnBLj0TLa0/8w2Xyyk7pkHIIkuNskMA26MfuLciU
+	 w/OwfcG3Pw34bMfNkA==
+X-UI-Sender-Class: 724b4f7f-cbec-4199-ad4e-598c01a50d3a
+Received: from client.hidden.invalid by mail.gmx.net (mrgmx005
+ [212.227.17.190]) with ESMTPSA (Nemesis) id 1N33Ed-1vcJAn0Nhd-013cXb; Mon, 16
+ Mar 2026 10:30:44 +0100
+Message-ID: <3724d77a-8aa4-40ec-9a4a-644cb1439837@gmx.net>
+Date: Mon, 16 Mar 2026 10:30:43 +0100
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <CAMRc=MdJXhXyid1a4ycmKv6nwOf3FYd=rFEaBqQ7k3SFq_j4FQ@mail.gmail.com>
-Organization: Intel Finland Oy - BIC 0357606-4 - c/o Alberga Business Park, 6
- krs, Bertel Jungin Aukio 5, 02600 Espoo
+User-Agent: Mozilla Thunderbird
+Subject: Re: [RFC PATCH v3 1/4] wifi: rtl8xxxu: move
+ dynamic_tx_rpt_timing_counter from ra_info to priv
+To: Ping-Ke Shih <pkshih@realtek.com>,
+ "Jes.Sorensen@gmail.com" <Jes.Sorensen@gmail.com>,
+ "rtl8821cerfe2@gmail.com" <rtl8821cerfe2@gmail.com>
+Cc: "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
+ "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
+References: <20260313135321.3196688-1-georgmueller@gmx.net>
+ <20260313135321.3196688-2-georgmueller@gmx.net>
+ <fbd2420985544f858374468d25e848f5@realtek.com>
+Content-Language: en-US, de-DE
+From: =?UTF-8?Q?Georg_M=C3=BCller?= <georgmueller@gmx.net>
+In-Reply-To: <fbd2420985544f858374468d25e848f5@realtek.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: quoted-printable
+X-Provags-ID: V03:K1:cW6T5nNe7TgpKMi7tI35hM5VDoZuokLpP/pQ7Z/hodjax7AvmmF
+ x8G1xvJDUydCeZbk1wsrZe6fKqtCSn+Jtj+FxqXxvBBebQH4rfKxJblnUzCxPS5gR9I7XAh
+ NPdhBDwiVpqa8IKfPXxZ4tQ4aQVVDZjAjro5/MVuEFlWz8OGbIG2BcPPzM/uaFpZGH/+pY0
+ rrlU0G6H7xGaC0JD36Nsg==
+X-Spam-Flag: NO
+UI-OutboundReport: notjunk:1;M01:P0:qo/rLLMtkG0=;54UtrWGRlBQFrJEyWVW+LB/Dt5p
+ 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
+ Fbk1kXmctkwe4UU9ksCp6ZK+FFC5Mbapg==
 X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[intel.com,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
-	R_DKIM_ALLOW(-0.20)[intel.com:s=Intel];
+	DMARC_POLICY_ALLOW(-0.50)[gmx.net,quarantine];
+	R_DKIM_ALLOW(-0.20)[gmx.net:s=s31663417];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FREEMAIL_CC(0.00)[kernel.org,vger.kernel.org,broadcom.com,arndb.de,free.fr,bgdev.pl,toke.dk,kempniu.pl];
-	TAGGED_FROM(0.00)[bounces-33288-lists,linux-wireless=lfdr.de];
 	FROM_HAS_DN(0.00)[];
-	HAS_ORG_HEADER(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	FREEMAIL_TO(0.00)[realtek.com,gmail.com];
+	TO_DN_EQ_ADDR_SOME(0.00)[];
 	TO_DN_SOME(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[intel.com:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	MISSING_XM_UA(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[5];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[andriy.shevchenko@linux.intel.com,linux-wireless@vger.kernel.org];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[linux-wireless];
-	RCPT_COUNT_SEVEN(0.00)[11];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:dkim,intel.com:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linaro.org:email,kempniu.pl:email]
-X-Rspamd-Queue-Id: 796BD297057
+	FREEMAIL_FROM(0.00)[gmx.net];
+	TAGGED_FROM(0.00)[bounces-33289-lists,linux-wireless=lfdr.de];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[5];
+	NEURAL_HAM(-0.00)[-0.998];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[georgmueller@gmx.net,linux-wireless@vger.kernel.org];
+	DKIM_TRACE(0.00)[gmx.net:+];
+	MID_RHS_MATCH_FROM(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TAGGED_RCPT(0.00)[linux-wireless];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 9DEE0297050
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-On Mon, Mar 16, 2026 at 05:09:22AM -0400, Bartosz Golaszewski wrote:
-> On Fri, 13 Mar 2026 22:53:43 +0100, Linus Walleij <linusw@kernel.org> said:
-> > The ath9k has an odd use of system-wide GPIOs: if the chip
-> > does not have internal GPIO capability, it will try to obtain a
-> > GPIO line from the system GPIO controller:
-> >
-> >   if (BIT(gpio) & ah->caps.gpio_mask)
-> >         ath9k_hw_gpio_cfg_wmac(...);
-> >   else if (AR_SREV_SOC(ah))
-> >         ath9k_hw_gpio_cfg_soc(ah, gpio, out, label);
-> >
-> > Where ath9k_hw_gpio_cfg_soc() will attempt to issue
-> > gpio_request_one() passing the local GPIO number of the controller
-> > (0..31) to gpio_request_one().
-> >
-> > This is somewhat peculiar and possibly even dangerous: there is
-> > nowadays no guarantee of the numbering of these system-wide
-> > GPIOs, and assuming that GPIO 0..31 as used by ath9k would
-> > correspond to GPIOs 0..31 on the system as a whole seems a bit
-> > wild.
-> >
-> > Register all 32 GPIOs at index 0..31 directly in the ATH79K
-> > GPIO driver and associate with the NULL device (making them
-> > widely available) if and only if we are probing ATH79K wifi
-> > from the AHB bus (used for SoCs). We obtain these offsets from
-> > the NULL device if necessary.
-> >
-> > These GPIOs should ideally be defined in the device tree
-> > instead, but we have no control over that for the legacy
-> > code path.
-> >
-> > Testcompiled with the ath79 defconfig.
-> >
-> > Reported-by: Michał Kępień <kernel@kempniu.pl>
-> > Acked-by: Toke Høiland-Jørgensen <toke@toke.dk>
-> > Reviewed-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-> > Signed-off-by: Linus Walleij <linusw@kernel.org>
-> > ---
-> > This patch set is a long standing attempt to get rid of the global
-> > GPIO numbers from the ath9k Wireless driver.
-> >
-> > Maybe Kalle can merge this to the Wireless tree if we agree on this
-> > hack solution.
-> >
-> > Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
-> > ---
-> > Changes in v4:
-> > - Fix review comments from Andy.
-> > - Collect ACKs.
-> 
-> I think this did not work. :)
 
-It's just extra SoB where it's not needed, but the tags are collected in
-the proper commit message.
+Am 16.03.26 um 07:17 schrieb Ping-Ke Shih:
+>=20
+> Georg M=C3=BCller <georgmueller@gmx.net> wrote:
+>> dynamic_tx_rpt_timing_counter is not per mac_id, but used across all
+>> mac_ids.
+>=20
+> I don't know the purpose of dynamic_tx_rpt_timing_counter. Could you
+> share your study?
+>=20
+It is used globally (not per mac) like this in the vendor driver as well [=
+1][2].
+Bitterblue Smith gave the hint that this should not be per macid [3], so i=
+t should move
+out of struct ra_info.
 
--- 
-With Best Regards,
-Andy Shevchenko
-
+[1] https://github.com/lwfinger/rtl8188eu/blob/master/hal/Hal8188ERateAdap=
+tive.c#L248
+[2] https://github.com/lwfinger/rtl8188eu/blob/v5.2.2.4/hal8188erateadapti=
+ve.c#L285
+[3] https://lore.kernel.org/linux-wireless/938ae608-a865-4056-06de-c230d74=
+e1847@gmail.com/
 
 
