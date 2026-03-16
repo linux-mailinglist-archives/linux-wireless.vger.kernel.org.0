@@ -1,135 +1,165 @@
-Return-Path: <linux-wireless+bounces-33299-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-33300-lists+linux-wireless=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id CEj5ODHtt2mzWwEAu9opvQ
-	(envelope-from <linux-wireless+bounces-33299-lists+linux-wireless=lfdr.de@vger.kernel.org>)
-	for <lists+linux-wireless@lfdr.de>; Mon, 16 Mar 2026 12:44:49 +0100
+	id 8CVyGHQGuGkWYQEAu9opvQ
+	(envelope-from <linux-wireless+bounces-33300-lists+linux-wireless=lfdr.de@vger.kernel.org>)
+	for <lists+linux-wireless@lfdr.de>; Mon, 16 Mar 2026 14:32:36 +0100
 X-Original-To: lists+linux-wireless@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 585C1298DA7
-	for <lists+linux-wireless@lfdr.de>; Mon, 16 Mar 2026 12:44:49 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id D2FE129A717
+	for <lists+linux-wireless@lfdr.de>; Mon, 16 Mar 2026 14:32:35 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 5036E30062EE
-	for <lists+linux-wireless@lfdr.de>; Mon, 16 Mar 2026 11:44:48 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 926AE30547F4
+	for <lists+linux-wireless@lfdr.de>; Mon, 16 Mar 2026 13:30:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A9B56391829;
-	Mon, 16 Mar 2026 11:44:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="pBoxM5mn"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E9AE239890C;
+	Mon, 16 Mar 2026 13:30:34 +0000 (UTC)
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6145639150A
-	for <linux-wireless@vger.kernel.org>; Mon, 16 Mar 2026 11:44:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3B2DB280A21;
+	Mon, 16 Mar 2026 13:30:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773661485; cv=none; b=XTNjwsNy5hk68A9A206JewpaVQOrClyrwEUxMuIVU8ZOfzNyJqanOi36ePPy7vSSXxJP5TUtAvMgP8mrKS340qZAZ6DoycQOmuRTlFwAQEuoAxefsYUmP9zSrLzn8aOLHX0GSVvOJ6ljNq2GBhCn6sSu1jJBKfxS50OR4cVmRnU=
+	t=1773667834; cv=none; b=K5gvf5XQbTBizT3WuXzexYkhDA1Nh5Bo9hbtZvuNydNefoU1jmo6zu/B277aM/k6HOOpCKsQac5Hy8PyKQHviCXuhAbzc4f1bA+LTrUbNOI+yd7duOWRZ9picaOnzTsYrBeHK+jP4XgbJDVfp7Gpji2P/VtesDyGGYeJXtyA5ok=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773661485; c=relaxed/simple;
-	bh=inHV9Ped4ZMhwGK3rfrUQhkpL5mQU4uwMhKJpzqlqNQ=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=XFka9gjONpGOqvt7oICismIM1B5ih6Y7PuJjYePxWVMMv2JjGEj5caI3rYr1y8vXCLicLjC44JDANa0ZjgxzxrBH2/Uo50QKqRpVP9F5AZIl2zEp8mIRDMHkfUNQSHCVWikRPeH6sRGtU4d6d4Ej2cVl3QGiYZI3EUGfM+VmyjA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=pBoxM5mn; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AAB61C19424;
-	Mon, 16 Mar 2026 11:44:44 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1773661485;
-	bh=inHV9Ped4ZMhwGK3rfrUQhkpL5mQU4uwMhKJpzqlqNQ=;
-	h=From:Date:Subject:To:Cc:From;
-	b=pBoxM5mnt3SKQXoXnj1AUM3wwwa4VZhnSSvPQ4ilJDVxPPl1Lbr/3I7mX4sgVVYpB
-	 d4FfZ1sj+dYucs83o6kUYjQ8gtQJL+A3Za9AhJZaypiHijl8R4yTwIe/S/J3KUGP7P
-	 mE1lm5TGSp5W6JazCR19NsjDWqOQ1Bwh2giS2q7LsbFdaFg4UoUjVSDCX2AjslnsMe
-	 84w3C56kWv6FG9xv75PVK2/5PuZZtAbfo2QEKViYCrznx+VEjq8vvsrfPXw7hc7Q1J
-	 1iAEhnURDZOFWth+nz4dbEg9oCWMV7m8flWcgR9ekoIGVws63HRGQw5SlT4DhamGgV
-	 6qe1isiqgzQBw==
-From: Lorenzo Bianconi <lorenzo@kernel.org>
-Date: Mon, 16 Mar 2026 12:44:27 +0100
-Subject: [PATCH mt76] wifi: mt76: mt7996: fix frequency separation for
- station STR mode
+	s=arc-20240116; t=1773667834; c=relaxed/simple;
+	bh=12QmHVFW6kvGAsAEHlRgc6k9FaOX+eCOvB+1XSjB85g=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=kTAIgrBHQLrgcO4IFIEbx3nTnmQSE0phOOz114/pc+rrT/bu6Sus3DbJ3f6KNZ/ivlu8tuYKx6DbFSlX+pJNpoh14rw5qLxKcpQEZ8J9fVri7fDrcDkZbHB7ID4BOpjvr0rL26JS5jA3WasQh7RkKZ7WAMT5gvSuisutlTRLPsw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; arc=none smtp.client-ip=217.140.110.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 369FC14BF;
+	Mon, 16 Mar 2026 06:30:25 -0700 (PDT)
+Received: from [10.57.61.116] (unknown [10.57.61.116])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 9D4953F778;
+	Mon, 16 Mar 2026 06:30:22 -0700 (PDT)
+Message-ID: <2c7466f5-d952-4356-9b55-9d2ebb3471f2@arm.com>
+Date: Mon, 16 Mar 2026 13:30:19 +0000
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 50/61] iommu: Prefer IS_ERR_OR_NULL over manual NULL check
+To: Philipp Hahn <phahn-oss@avm.de>, amd-gfx@lists.freedesktop.org,
+ apparmor@lists.ubuntu.com, bpf@vger.kernel.org, ceph-devel@vger.kernel.org,
+ cocci@inria.fr, dm-devel@lists.linux.dev, dri-devel@lists.freedesktop.org,
+ gfs2@lists.linux.dev, intel-gfx@lists.freedesktop.org,
+ intel-wired-lan@lists.osuosl.org, iommu@lists.linux.dev,
+ kvm@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+ linux-block@vger.kernel.org, linux-bluetooth@vger.kernel.org,
+ linux-btrfs@vger.kernel.org, linux-cifs@vger.kernel.org,
+ linux-clk@vger.kernel.org, linux-erofs@lists.ozlabs.org,
+ linux-ext4@vger.kernel.org, linux-fsdevel@vger.kernel.org,
+ linux-gpio@vger.kernel.org, linux-hyperv@vger.kernel.org,
+ linux-input@vger.kernel.org, linux-kernel@vger.kernel.org,
+ linux-leds@vger.kernel.org, linux-media@vger.kernel.org,
+ linux-mips@vger.kernel.org, linux-mm@kvack.org,
+ linux-modules@vger.kernel.org, linux-mtd@lists.infradead.org,
+ linux-nfs@vger.kernel.org, linux-omap@vger.kernel.org,
+ linux-phy@lists.infradead.org, linux-pm@vger.kernel.org,
+ linux-rockchip@lists.infradead.org, linux-s390@vger.kernel.org,
+ linux-scsi@vger.kernel.org, linux-sctp@vger.kernel.org,
+ linux-security-module@vger.kernel.org, linux-sh@vger.kernel.org,
+ linux-sound@vger.kernel.org, linux-stm32@st-md-mailman.stormreply.com,
+ linux-trace-kernel@vger.kernel.org, linux-usb@vger.kernel.org,
+ linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
+ ntfs3@lists.linux.dev, samba-technical@lists.samba.org,
+ sched-ext@lists.linux.dev, target-devel@vger.kernel.org,
+ tipc-discussion@lists.sourceforge.net, v9fs@lists.linux.dev
+Cc: Joerg Roedel <joro@8bytes.org>, Will Deacon <will@kernel.org>
+References: <20260310-b4-is_err_or_null-v1-0-bd63b656022d@avm.de>
+ <20260310-b4-is_err_or_null-v1-50-bd63b656022d@avm.de>
+From: Robin Murphy <robin.murphy@arm.com>
+Content-Language: en-GB
+In-Reply-To: <20260310-b4-is_err_or_null-v1-50-bd63b656022d@avm.de>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260316-mt7996-sta-str-v1-1-666814e6ab2d@kernel.org>
-X-B4-Tracking: v=1; b=H4sIAAAAAAAC/x2MQQqAIBBFrxKzTtAUy64SLaymmkUWKhFId29o8
- RYP3v8FEkbCBH1VIOJNic7AouoK5t2HDQUt7NDIxkqtrDhy65wVKXsmCt2t7WS8cVpp4NEVcaX
- nPxyAWwvj+35Nw0zRZgAAAA==
-X-Change-ID: 20260316-mt7996-sta-str-38f7b4a49313
-To: Felix Fietkau <nbd@nbd.name>, Ryder Lee <ryder.lee@mediatek.com>, 
- Shayne Chen <shayne.chen@mediatek.com>, Sean Wang <sean.wang@mediatek.com>, 
- Matthias Brugger <matthias.bgg@gmail.com>, 
- AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
-Cc: linux-wireless@vger.kernel.org, linux-arm-kernel@lists.infradead.org, 
- linux-mediatek@lists.infradead.org, Peter Chiu <chui-hao.chiu@mediatek.com>, 
- Lorenzo Bianconi <lorenzo@kernel.org>
-X-Mailer: b4 0.14.2
-X-Spamd-Result: default: False [-0.66 / 15.00];
+X-Spamd-Result: default: False [0.14 / 15.00];
 	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
-	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
+	DMARC_POLICY_SOFTFAIL(0.10)[arm.com : SPF not aligned (relaxed), No valid DKIM,none];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-33299-lists,linux-wireless=lfdr.de];
-	FROM_HAS_DN(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	FREEMAIL_TO(0.00)[nbd.name,mediatek.com,gmail.com,collabora.com];
-	RCVD_TLS_LAST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[kernel.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	TO_DN_SOME(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[lorenzo@kernel.org,linux-wireless@vger.kernel.org];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	MID_RHS_MATCH_FROM(0.00)[];
-	TAGGED_RCPT(0.00)[linux-wireless];
-	RCPT_COUNT_SEVEN(0.00)[11];
+	FROM_HAS_DN(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-33300-lists,linux-wireless=lfdr.de];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,mediatek.com:email]
-X-Rspamd-Queue-Id: 585C1298DA7
+	TAGGED_RCPT(0.00)[linux-wireless];
+	MID_RHS_MATCH_FROM(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[robin.murphy@arm.com,linux-wireless@vger.kernel.org];
+	MIME_TRACE(0.00)[0:+];
+	RCVD_COUNT_FIVE(0.00)[5];
+	NEURAL_HAM(-0.00)[-0.781];
+	RCPT_COUNT_GT_50(0.00)[56];
+	R_DKIM_NA(0.00)[];
+	TO_DN_SOME(0.00)[]
+X-Rspamd-Queue-Id: D2FE129A717
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-From: Peter Chiu <chui-hao.chiu@mediatek.com>
+On 2026-03-10 11:49 am, Philipp Hahn wrote:
+> Prefer using IS_ERR_OR_NULL() over using IS_ERR() and a manual NULL
+> check.
 
-Fix frequency separation field for STR in MLD capabilities
-to allow prpl get correct chip capability.
+AFAICS it doesn't look possible for the argument to be anything other 
+than valid at both callsites, so *both* conditions here seem in fact to 
+be entirely redundant.
 
-Signed-off-by: Peter Chiu <chui-hao.chiu@mediatek.com>
-Signed-off-by: Lorenzo Bianconi <lorenzo@kernel.org>
----
- drivers/net/wireless/mediatek/mt76/mt7996/init.c | 1 +
- 1 file changed, 1 insertion(+)
+> Change generated with coccinelle.
 
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7996/init.c b/drivers/net/wireless/mediatek/mt76/mt7996/init.c
-index 8dfb81eabc9aef9b54fd3b34e13114a1d5214541..d6f9aa1ab52d1258e3923783c8eac2ad5daf2b90 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7996/init.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7996/init.c
-@@ -99,6 +99,7 @@ static const struct wiphy_iftype_ext_capab iftypes_ext_capa[] = {
- 		.extended_capabilities_mask = if_types_ext_capa_ap,
- 		.extended_capabilities_len = sizeof(if_types_ext_capa_ap),
- 		.mld_capa_and_ops =
-+			FIELD_PREP_CONST(IEEE80211_MLD_CAP_OP_FREQ_SEP_TYPE_IND, 1) |
- 			FIELD_PREP_CONST(IEEE80211_MLD_CAP_OP_MAX_SIMUL_LINKS,
- 					 MT7996_MAX_RADIOS - 1),
- 	},
+Please use coccinelle responsibly. Mechanical changes are great for 
+scripted API updates, but for cleanup, whilst it's ideal for *finding* 
+areas of code that are worth looking at, the code then wants actually 
+looking at, in its whole context, because meaningful cleanup often goes 
+deeper than trivial replacement.
 
----
-base-commit: dab5edc5546c90674cfff033abc2b797b3ad4bf4
-change-id: 20260316-mt7996-sta-str-38f7b4a49313
+In particular, anywhere IS_ERR_OR_NULL() is genuinely relevant is 
+usually a sign of bad interface design, so if you're looking at this 
+then you really should be looking first and foremost to remove any 
+checks that are already unnecessary, and for the remainder, to see if 
+the thing being checked can be improved to not mix the two different 
+styles. That would be constructive and (usually) welcome cleanup. Simply 
+churning a bunch of code with this ugly macro that's arguably less 
+readable than what it replaces, not so much.
 
-Best regards,
--- 
-Lorenzo Bianconi <lorenzo@kernel.org>
+Thanks,
+Robin.
+
+> To: Joerg Roedel <joro@8bytes.org>
+> To: Will Deacon <will@kernel.org>
+> To: Robin Murphy <robin.murphy@arm.com>
+> Cc: iommu@lists.linux.dev
+> Cc: linux-kernel@vger.kernel.org
+> Signed-off-by: Philipp Hahn <phahn-oss@avm.de>
+> ---
+>   drivers/iommu/omap-iommu.c | 2 +-
+>   1 file changed, 1 insertion(+), 1 deletion(-)
+> 
+> diff --git a/drivers/iommu/omap-iommu.c b/drivers/iommu/omap-iommu.c
+> index 8231d7d6bb6a9202025643639a6b28e6faa84659..500a42b57a997696ff37c76f028a717ab71d01f9 100644
+> --- a/drivers/iommu/omap-iommu.c
+> +++ b/drivers/iommu/omap-iommu.c
+> @@ -881,7 +881,7 @@ static int omap_iommu_attach(struct omap_iommu *obj, u32 *iopgd)
+>    **/
+>   static void omap_iommu_detach(struct omap_iommu *obj)
+>   {
+> -	if (!obj || IS_ERR(obj))
+> +	if (IS_ERR_OR_NULL(obj))
+>   		return;
+>   
+>   	spin_lock(&obj->iommu_lock);
+> 
 
 
