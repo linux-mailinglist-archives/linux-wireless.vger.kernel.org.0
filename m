@@ -1,219 +1,249 @@
-Return-Path: <linux-wireless+bounces-33283-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-33284-lists+linux-wireless=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 2Ee6IDqst2nkUAEAu9opvQ
-	(envelope-from <linux-wireless+bounces-33283-lists+linux-wireless=lfdr.de@vger.kernel.org>)
-	for <lists+linux-wireless@lfdr.de>; Mon, 16 Mar 2026 08:07:38 +0100
+	id gDJ4FoW2t2mMUgEAu9opvQ
+	(envelope-from <linux-wireless+bounces-33284-lists+linux-wireless=lfdr.de@vger.kernel.org>)
+	for <lists+linux-wireless@lfdr.de>; Mon, 16 Mar 2026 08:51:33 +0100
 X-Original-To: lists+linux-wireless@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2452F295644
-	for <lists+linux-wireless@lfdr.de>; Mon, 16 Mar 2026 08:07:38 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 19B9B295D31
+	for <lists+linux-wireless@lfdr.de>; Mon, 16 Mar 2026 08:51:33 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 7E36430065DA
-	for <lists+linux-wireless@lfdr.de>; Mon, 16 Mar 2026 07:07:37 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 9C066301373B
+	for <lists+linux-wireless@lfdr.de>; Mon, 16 Mar 2026 07:51:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BB01B279324;
-	Mon, 16 Mar 2026 07:07:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5B91034DB41;
+	Mon, 16 Mar 2026 07:51:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=realtek.com header.i=@realtek.com header.b="g0gbLvQ7"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="HkyzNVOg"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E1AF0322C88;
-	Mon, 16 Mar 2026 07:07:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=211.75.126.72
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2FF12139D;
+	Mon, 16 Mar 2026 07:51:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773644854; cv=none; b=bvwj0dB6sD7rKkZVhHpDnMocO7Y/nGctAY65iXKhh9WbuJg9x+B8DFKYg6gW4r5dHlGOGphvFkpOCgSO0D/L77mylZoEdr4oM4YhtZq+nSLgHjtzEHpBI/4yuUsBVbJsjdwvxx1knHp07I7nHD0dhdbJNc2IJaByeGFty9alaKc=
+	t=1773647488; cv=none; b=eiaqXqRoGzgSJ9Q+nxdgSBsHQ1I95UY3YYmPaibxkdlzhOPxKTrQZsNiKq3vdnTKLspk95QODXRuASQOAmpimCk6aiXQlkadVBkzx6Kz1xm650aNLAlIEnXbEVia0/n8y/j7/eCvwcSkr/3+gxs9w8tBVUSODAZn3EqrFteUXjQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773644854; c=relaxed/simple;
-	bh=iVge2eeLTLA9NzLPi0zmyiVu+BFhlWDvIA4dl4zNe1M=;
-	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:MIME-Version; b=V8AxMKKTn39O0/q/q6CppABr6gk4uBqrRDKE+9hCw7KOhOG9DowYAMxnwpeCOsQ7V3rdt/y+4RoUStGYAZanZm/oR7IgdUqyqxScjswNC6hHoe1o3lb6WA9R64Ejhh4p+LpSurSsc8zhVCbKLQ7dNt2ylJwtCcVwU9Qgy6+St5k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com; spf=pass smtp.mailfrom=realtek.com; dkim=pass (2048-bit key) header.d=realtek.com header.i=@realtek.com header.b=g0gbLvQ7; arc=none smtp.client-ip=211.75.126.72
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=realtek.com
-X-SpamFilter-By: ArmorX SpamTrap 5.80 with qID 62G77PC801440547, This message is accepted by code: ctloc85258
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=realtek.com; s=dkim;
-	t=1773644845; bh=v/45E4Z6vR1ZmTiMiOINAQRlNcO+j87tWj/EhzcFIeg=;
-	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:Content-Transfer-Encoding:MIME-Version;
-	b=g0gbLvQ7aLTNHJ14KEzA31TSzSNsUqHsL69yEeIyIzRZGeI3VaoshpbdgdHA1sSVY
-	 u9XLqlfh0CzhKlxre1nVM8ReDQKCPDAgVMYeivhdsqJwcUfG6N+ZR6g+ybG7bFPXNI
-	 u/EQU9YjU+aOuuwy2fDbxNwCr8hjZEHtDrQJGnnB4G1UcdURGz2Bxfb2cqRm+KcofE
-	 Mi88rwKzNq3/klOF8n+dAOL9h0AqjjR3m2sswO+wNHkkG1mfcJaUUH9+kYpZP+Ofjy
-	 h1ijFPmaQDPzlEWLZgbXzqmzY702tw2PiLCTvf4jJGVarudMNOW/bsskcHMY+dK2zS
-	 RZIIwFNI1LGOA==
-Received: from mail.realtek.com (rtkexhmbs04.realtek.com.tw[10.21.1.54])
-	by rtits2.realtek.com.tw (8.15.2/3.21/5.94) with ESMTPS id 62G77PC801440547
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Mon, 16 Mar 2026 15:07:25 +0800
-Received: from RTKEXHMBS06.realtek.com.tw (10.21.1.56) by
- RTKEXHMBS04.realtek.com.tw (10.21.1.54) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1748.10; Mon, 16 Mar 2026 15:07:25 +0800
-Received: from RTKEXHMBS06.realtek.com.tw (10.21.1.56) by
- RTKEXHMBS06.realtek.com.tw (10.21.1.56) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1748.10; Mon, 16 Mar 2026 15:07:24 +0800
-Received: from RTKEXHMBS06.realtek.com.tw ([fe80::4cbd:6c6c:b92b:3913]) by
- RTKEXHMBS06.realtek.com.tw ([fe80::4cbd:6c6c:b92b:3913%10]) with mapi id
- 15.02.1748.010; Mon, 16 Mar 2026 15:07:24 +0800
-From: Ping-Ke Shih <pkshih@realtek.com>
-To: =?iso-8859-1?Q?Georg_M=FCller?= <georgmueller@gmx.net>,
-        "Jes.Sorensen@gmail.com" <Jes.Sorensen@gmail.com>,
-        "rtl8821cerfe2@gmail.com"
-	<rtl8821cerfe2@gmail.com>
-CC: "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
-Subject: RE: [RFC PATCH v3 3/4] wifi: rtl8xxxu: update max report mac id on
- station add / remove for 8188e chips
-Thread-Topic: [RFC PATCH v3 3/4] wifi: rtl8xxxu: update max report mac id on
- station add / remove for 8188e chips
-Thread-Index: AQHcsvUZDJ+nmebUe0aVFgNy5ItEobWwvsfA
-Date: Mon, 16 Mar 2026 07:07:24 +0000
-Message-ID: <186032c2b7c94327bd6867936852b45e@realtek.com>
-References: <20260313135321.3196688-1-georgmueller@gmx.net>
- <20260313135321.3196688-4-georgmueller@gmx.net>
-In-Reply-To: <20260313135321.3196688-4-georgmueller@gmx.net>
-Accept-Language: en-US, zh-TW
-Content-Language: zh-TW
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Transfer-Encoding: quoted-printable
+	s=arc-20240116; t=1773647488; c=relaxed/simple;
+	bh=9toy4CW/QjLOLJ12MtuMjv+q2wUbxGxETttRIFu6ZBY=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=koIpzpwqF/lAhm4nYrNhaYK8FQiL8bj71uLTxgzSjeObPHtZ2q7qMKpXXnruR+hRerA3Xtt/BqUdgcULdxkGyQkWvuTesZVZj7SMB6poan6FkG/wKilrk7t8eGGYQdmNgFeb0AZv2/gDaNSbjjcH19J29ViA5RFDDvGRzP3oVKQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=HkyzNVOg; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E9C2AC19421;
+	Mon, 16 Mar 2026 07:51:17 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1773647487;
+	bh=9toy4CW/QjLOLJ12MtuMjv+q2wUbxGxETttRIFu6ZBY=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=HkyzNVOgNcLNNl16MC2QGLeOLdvhc5gYQiTGlP/zsx+eoGtyMORj5qPW1JZFog7lZ
+	 cPOzzr3afVQCahZV0PC4YrfQVAcgx65Tn+C268Nu7f5pN8GO6bDhYUoo04e8WGxiIJ
+	 2C57vZLaxET4pRhDE3uHhSaSor89JLIjum3k4aJgWvEODbVkSF/1IfYQvL85Rh1nwz
+	 kIUnWNTGqc02MB2MpW+XVSjEQsOFndB0WrHKjTOg6VAG/bU6R8gZBxpxzII+84OVmB
+	 Ld71iRfTum3PzEnLKh97VvmNANfmAhbEUvU5kd/FOOBDN6lrCqonHAVSxU0mM1nk2w
+	 +iEz1bnu1KabQ==
+Message-ID: <28d63822-f191-400a-8005-5185dd480dbb@kernel.org>
+Date: Mon, 16 Mar 2026 08:51:16 +0100
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-Spamd-Result: default: False [-2.16 / 15.00];
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 02/15] firmware: qcom: Add a generic PAS service
+To: Sumit Garg <sumit.garg@kernel.org>, linux-arm-msm@vger.kernel.org,
+ devicetree@vger.kernel.org, dri-devel@lists.freedesktop.org,
+ freedreno@lists.freedesktop.org, linux-media@vger.kernel.org,
+ netdev@vger.kernel.org, linux-wireless@vger.kernel.org,
+ ath12k@lists.infradead.org, linux-remoteproc@vger.kernel.org
+Cc: andersson@kernel.org, konradybcio@kernel.org, robh@kernel.org,
+ krzk+dt@kernel.org, conor+dt@kernel.org, robin.clark@oss.qualcomm.com,
+ sean@poorly.run, akhilpo@oss.qualcomm.com, lumag@kernel.org,
+ abhinav.kumar@linux.dev, jesszhan0024@gmail.com,
+ marijn.suijten@somainline.org, airlied@gmail.com, simona@ffwll.ch,
+ vikash.garodia@oss.qualcomm.com, dikshita.agarwal@oss.qualcomm.com,
+ bod@kernel.org, mchehab@kernel.org, elder@kernel.org, andrew+netdev@lunn.ch,
+ davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
+ pabeni@redhat.com, jjohnson@kernel.org, mathieu.poirier@linaro.org,
+ trilokkumar.soni@oss.qualcomm.com, mukesh.ojha@oss.qualcomm.com,
+ pavan.kondeti@oss.qualcomm.com, jorge.ramirez@oss.qualcomm.com,
+ tonyh@qti.qualcomm.com, vignesh.viswanathan@oss.qualcomm.com,
+ srinivas.kandagatla@oss.qualcomm.com, amirreza.zarrabi@oss.qualcomm.com,
+ jens.wiklander@linaro.org, op-tee@lists.trustedfirmware.org,
+ apurupa@qti.qualcomm.com, skare@qti.qualcomm.com,
+ linux-kernel@vger.kernel.org, Sumit Garg <sumit.garg@oss.qualcomm.com>
+References: <20260312062756.694390-1-sumit.garg@kernel.org>
+ <20260312062756.694390-3-sumit.garg@kernel.org>
+From: Krzysztof Kozlowski <krzk@kernel.org>
+Content-Language: en-US
+Autocrypt: addr=krzk@kernel.org; keydata=
+ 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 a/A=
+In-Reply-To: <20260312062756.694390-3-sumit.garg@kernel.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Spamd-Result: default: False [-0.66 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[realtek.com,none];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
-	R_DKIM_ALLOW(-0.20)[realtek.com:s=dkim];
+	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-33283-lists,linux-wireless=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,realtek.com:dkim,realtek.com:mid];
-	TO_DN_EQ_ADDR_SOME(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	FREEMAIL_TO(0.00)[gmx.net,gmail.com];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	DKIM_TRACE(0.00)[realtek.com:+];
-	MISSING_XM_UA(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[5];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[pkshih@realtek.com,linux-wireless@vger.kernel.org];
+	FREEMAIL_CC(0.00)[kernel.org,oss.qualcomm.com,poorly.run,linux.dev,gmail.com,somainline.org,ffwll.ch,lunn.ch,davemloft.net,google.com,redhat.com,linaro.org,qti.qualcomm.com,lists.trustedfirmware.org,vger.kernel.org];
+	TAGGED_FROM(0.00)[bounces-33284-lists,linux-wireless=lfdr.de];
 	FROM_HAS_DN(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[kernel.org:+];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	TO_DN_SOME(0.00)[];
+	RCPT_COUNT_GT_50(0.00)[50];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[krzk@kernel.org,linux-wireless@vger.kernel.org];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[linux-wireless];
+	TAGGED_RCPT(0.00)[linux-wireless,dt,netdev];
 	MID_RHS_MATCH_FROM(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
-	RCVD_COUNT_SEVEN(0.00)[7]
-X-Rspamd-Queue-Id: 2452F295644
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,qualcomm.com:email]
+X-Rspamd-Queue-Id: 19B9B295D31
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-Georg M=FCller <georgmueller@gmx.net> wrote:
-
-remember to add commit messages when you send formal patch.
-
->=20
+On 12/03/2026 07:27, Sumit Garg wrote:
+> From: Sumit Garg <sumit.garg@oss.qualcomm.com>
+> 
+> Qcom platforms has the legacy of using non-standard SCM calls
+> splintered over the various kernel drivers. These SCM calls aren't
+> compliant with the standard SMC calling conventions which is a
+> prerequisite to enable migration to the FF-A specifications from Arm.
+> 
+> OP-TEE as an alternative trusted OS to Qualcomm TEE (QTEE) can't
+> support these non-standard SCM calls. And even for newer architectures
+> with S-EL2 and Hafnium support, QTEE won't be able to support SCM
+> calls either with FF-A requirements coming in. And with both OP-TEE
+> and QTEE drivers well integrated in the TEE subsystem, it makes further
+> sense to reuse the TEE bus client drivers infrastructure.
+> 
+> The added benefit of TEE bus infrastructure is that there is support
+> for discoverable/enumerable services. With that client drivers don't
+> have to manually invoke a special SCM call to know the service status.
+> 
+> So enable the generic Peripheral Authentication Service (PAS) provided
+> by the firmware. It acts as the common layer with different TZ
+> backends plugged in whether it's an SCM implementation or a proper
+> TEE bus based PAS service implementation.
+> 
+> Signed-off-by: Sumit Garg <sumit.garg@oss.qualcomm.com>
 > ---
->  drivers/net/wireless/realtek/rtl8xxxu/core.c | 23 +++++++++++++++++++-
->  1 file changed, 22 insertions(+), 1 deletion(-)
->=20
-> diff --git a/drivers/net/wireless/realtek/rtl8xxxu/core.c
-> b/drivers/net/wireless/realtek/rtl8xxxu/core.c
-> index 5ad23c5c9305..15fc4843edb2 100644
-> --- a/drivers/net/wireless/realtek/rtl8xxxu/core.c
-> +++ b/drivers/net/wireless/realtek/rtl8xxxu/core.c
-> @@ -3884,6 +3884,15 @@ void rtl8xxxu_init_burst(struct rtl8xxxu_priv *pri=
-v)
->         rtl8xxxu_write8(priv, REG_RSV_CTRL, val8);
->  }
->=20
-> +static u8 rtl8xxxu_max_acquired_macid(struct rtl8xxxu_priv *priv)
-> +{
-> +       u8 macid;
+>  drivers/firmware/qcom/Kconfig          |   8 +
+>  drivers/firmware/qcom/Makefile         |   1 +
+>  drivers/firmware/qcom/qcom_pas.c       | 298 +++++++++++++++++++++++++
+>  drivers/firmware/qcom/qcom_pas.h       |  53 +++++
+>  include/linux/firmware/qcom/qcom_pas.h |  41 ++++
+>  5 files changed, 401 insertions(+)
+>  create mode 100644 drivers/firmware/qcom/qcom_pas.c
+>  create mode 100644 drivers/firmware/qcom/qcom_pas.h
+>  create mode 100644 include/linux/firmware/qcom/qcom_pas.h
+> 
+> diff --git a/drivers/firmware/qcom/Kconfig b/drivers/firmware/qcom/Kconfig
+> index b477d54b495a..8653639d06db 100644
+> --- a/drivers/firmware/qcom/Kconfig
+> +++ b/drivers/firmware/qcom/Kconfig
+> @@ -6,6 +6,14 @@
+>  
+>  menu "Qualcomm firmware drivers"
+>  
+> +config QCOM_PAS
+> +	tristate
+> +	help
+> +	  Enable the generic Peripheral Authentication Service (PAS) provided
+> +	  by the firmware. It acts as the common layer with different TZ
+> +	  backends plugged in whether it's an SCM implementation or a proper
+> +	  TEE bus based PAS service implementation.
 > +
-> +       macid =3D find_last_bit(priv->mac_id_map, RTL8XXXU_MAX_MAC_ID_NUM=
-);
+>  config QCOM_SCM
+>  	select QCOM_TZMEM
+>  	tristate
+> diff --git a/drivers/firmware/qcom/Makefile b/drivers/firmware/qcom/Makefile
+> index 0be40a1abc13..dc5ab45f906a 100644
+> --- a/drivers/firmware/qcom/Makefile
+> +++ b/drivers/firmware/qcom/Makefile
+> @@ -8,3 +8,4 @@ qcom-scm-objs += qcom_scm.o qcom_scm-smc.o qcom_scm-legacy.o
+>  obj-$(CONFIG_QCOM_TZMEM)	+= qcom_tzmem.o
+>  obj-$(CONFIG_QCOM_QSEECOM)	+= qcom_qseecom.o
+>  obj-$(CONFIG_QCOM_QSEECOM_UEFISECAPP) += qcom_qseecom_uefisecapp.o
+> +obj-$(CONFIG_QCOM_PAS)		+= qcom_pas.o
+> diff --git a/drivers/firmware/qcom/qcom_pas.c b/drivers/firmware/qcom/qcom_pas.c
+> new file mode 100644
+> index 000000000000..beb1bae55546
+> --- /dev/null
+> +++ b/drivers/firmware/qcom/qcom_pas.c
+> @@ -0,0 +1,298 @@
+> +// SPDX-License-Identifier: GPL-2.0
+> +/*
+> + * Copyright (c) Qualcomm Technologies, Inc. and/or its subsidiaries.
+> + */
 > +
-> +       return macid;
-> +}
+> +#include <linux/device/devres.h>
+> +#include <linux/firmware/qcom/qcom_pas.h>
+> +#include <linux/kernel.h>
+> +#include <linux/module.h>
 > +
->  static u8 rtl8xxxu_acquire_macid(struct rtl8xxxu_priv *priv)
->  {
->         u8 macid;
-> @@ -7499,6 +7508,7 @@ static int rtl8xxxu_sta_add(struct ieee80211_hw *hw=
-,
->         struct rtl8xxxu_sta_info *sta_info =3D (struct rtl8xxxu_sta_info
-> *)sta->drv_priv;
->         struct rtl8xxxu_vif *rtlvif =3D (struct rtl8xxxu_vif *)vif->drv_p=
-riv;
->         struct rtl8xxxu_priv *priv =3D hw->priv;
-> +       u8 max_mac_id;
->=20
->         mutex_lock(&priv->sta_mutex);
->         ewma_rssi_init(&sta_info->avg_rssi);
-> @@ -7510,6 +7520,11 @@ static int rtl8xxxu_sta_add(struct ieee80211_hw *h=
-w,
->                         return -ENOSPC;
->                 }
->=20
-> +               if (priv->rtl_chip =3D=3D RTL8188E) {
-> +                       max_mac_id =3D rtl8xxxu_max_acquired_macid(priv);
-> +                       rtl8xxxu_write8(priv, REG_TX_REPORT_CTRL + 1,
-> max_mac_id + 1);
-> +               }
+> +#include "qcom_pas.h"
 > +
->                 rtl8xxxu_refresh_rate_mask(priv, 0, sta, true);
->                 priv->fops->report_connect(priv, sta_info->macid,
-> H2C_MACID_ROLE_STA, true);
->         } else {
-> @@ -7535,10 +7550,16 @@ static int rtl8xxxu_sta_remove(struct ieee80211_h=
-w *hw,
->  {
->         struct rtl8xxxu_sta_info *sta_info =3D (struct rtl8xxxu_sta_info
-> *)sta->drv_priv;
->         struct rtl8xxxu_priv *priv =3D hw->priv;
-> +       u8 max_mac_id;
->=20
->         mutex_lock(&priv->sta_mutex);
-> -       if (vif->type =3D=3D NL80211_IFTYPE_AP)
-> +       if (vif->type =3D=3D NL80211_IFTYPE_AP) {
->                 rtl8xxxu_release_macid(priv, sta_info->macid);
-> +               if (priv->rtl_chip =3D=3D RTL8188E) {
-> +                       max_mac_id =3D rtl8xxxu_max_acquired_macid(priv);
-> +                       rtl8xxxu_write8(priv, REG_TX_REPORT_CTRL + 1,
-> max_mac_id + 1);
-> +               }
-> +       }
+> +struct qcom_pas_ops *ops_ptr;
 
-At first glance, I'd say should we consider STA+AP concurrent case?=20
-Because days ago, we talked about that in another thread.=20
+Same comment as before. Don't create singletons. And for sure not global
+ones.
 
-It looks like MAC ID is another problem for concurrent case, because
-rtl8xxxu_max_acquired_macid() returns MAC ID starting from 0.
-
-But special MAC IDs are defined for non-AP vif:
-
-#define RTL8XXXU_BC_MC_MACID	0
-#define RTL8XXXU_BC_MC_MACID1	1
-
-(But this is not scope of this patch.)
-
->         mutex_unlock(&priv->sta_mutex);
->=20
->         return 0;
-> --
-> 2.53.0
->=20
-
+Best regards,
+Krzysztof
 
