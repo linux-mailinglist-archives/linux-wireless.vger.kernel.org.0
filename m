@@ -1,213 +1,180 @@
-Return-Path: <linux-wireless+bounces-33286-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-33287-lists+linux-wireless=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id sNlHATy7t2mpUgEAu9opvQ
-	(envelope-from <linux-wireless+bounces-33286-lists+linux-wireless=lfdr.de@vger.kernel.org>)
-	for <lists+linux-wireless@lfdr.de>; Mon, 16 Mar 2026 09:11:40 +0100
+	id YEKeFOvIt2kRVQEAu9opvQ
+	(envelope-from <linux-wireless+bounces-33287-lists+linux-wireless=lfdr.de@vger.kernel.org>)
+	for <lists+linux-wireless@lfdr.de>; Mon, 16 Mar 2026 10:10:03 +0100
 X-Original-To: lists+linux-wireless@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7133F295FC7
-	for <lists+linux-wireless@lfdr.de>; Mon, 16 Mar 2026 09:11:39 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id C969A296BF0
+	for <lists+linux-wireless@lfdr.de>; Mon, 16 Mar 2026 10:10:02 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 3DCA03018D68
-	for <lists+linux-wireless@lfdr.de>; Mon, 16 Mar 2026 08:11:28 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 1FB73300C996
+	for <lists+linux-wireless@lfdr.de>; Mon, 16 Mar 2026 09:09:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 51F72355F50;
-	Mon, 16 Mar 2026 08:11:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D80B1382F31;
+	Mon, 16 Mar 2026 09:09:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="IETys/ZG"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="YahZNhhJ"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-dl1-f42.google.com (mail-dl1-f42.google.com [74.125.82.42])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1860E34CFD0
-	for <linux-wireless@vger.kernel.org>; Mon, 16 Mar 2026 08:11:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.82.42
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773648687; cv=pass; b=NZvat4Z7Wkym4U8ZRxjzlQl1CH0UN1oZj9pXNiMGTKNW/JVm27UbrCDpW50/TeAw2U/AQxIvUk0iZxv0HdO/zXo9dT3KAHwtlsLFOKixlhcD5ZSMjMb/lrgcLT/whwHZa+P8nniYpeRxhhgCeGqrR/I+m/ShmWco5Q+VN9LYxig=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773648687; c=relaxed/simple;
-	bh=s19fIheyHKeaZL2EAKo+JjF7jvo4kQbOQZZGSFXaNIs=;
-	h=MIME-Version:From:Date:Message-ID:Subject:To:Cc:Content-Type; b=hxRBGjT2Nl1E2uUcFQd2ECHuTFNCywaC6zt133id5EGT30zl23pheL091RhUQlQX1ueckIbomhyxXH1PIr0axuYPDi8pBA9tKQqm5RwW21wTfrsB310IHAAykCJDIUx638ZGMPc+CmKGmI8DRLHlxLFj6LrUXQEmv4848mZ+YE8=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=IETys/ZG; arc=pass smtp.client-ip=74.125.82.42
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-dl1-f42.google.com with SMTP id a92af1059eb24-1273349c56bso6126227c88.0
-        for <linux-wireless@vger.kernel.org>; Mon, 16 Mar 2026 01:11:25 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1773648685; cv=none;
-        d=google.com; s=arc-20240605;
-        b=ccz2yM9h6GFguajANIGDfqu7pJm2JiN5oTQ0Msg6heq/aYBVl65NAunbT0afAECJWl
-         3JyffnQzGcrCHifdeE1Qe35OBMn9ig8kV3SlIrmpPCYskl+vyoDCO+BHcLA63DKDgrzq
-         jhBnwe/Cdyejy1ded3DPPh5IwM7h73g5JhD/IZc6SOt8kO/hSFvXIVJaprS2veZIEv0z
-         b6Btjm76TrRdxndoKXNKtMSInvwnXlIzYNviCsWgOB3jTLb/5l7zY5MPqzJeycBCyX33
-         tWEsswUbOyEuKoodCkoElOnhRiFXDuSCtLMUyJJByOut9gpfgE30ymBxoDwhK30oPBWc
-         oxGQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :mime-version:dkim-signature;
-        bh=s19fIheyHKeaZL2EAKo+JjF7jvo4kQbOQZZGSFXaNIs=;
-        fh=2jA5PPwosZxFhPFPdgCPwBZHEAXdqudcGn+YPUiUbaY=;
-        b=cZOKQ5E7tMx2iCUoazeIz4ulebUPRLq1VZRJF0hs0Mz3gafGJ9qKHO3y/s2s7dho1U
-         XDdbh/GJh3fNdJHRKjvN8AqaESLdxelgUzVBvkK4FixGBg+ZqBXwsMqIu9BqsSkoLNeR
-         AVEQZcLTKpcA2YlmDgM0LrxKJyXEJQeMHhz4G83unJhy14ZW94GnMYqSfNSLbusCJIlM
-         u6LLfQU/tE+/NRGGMhcXqGYwhOXKHOeKMKd5t2EHwLt200jxG5DX+zQED2uJ7bP9etAo
-         YFxLob7peXCr47KzlgAkGweJARsGr6GVFbZHLdHohL6rQkV+JF6B+Gu1AdSd7loSK6Xf
-         PdeA==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1773648685; x=1774253485; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=s19fIheyHKeaZL2EAKo+JjF7jvo4kQbOQZZGSFXaNIs=;
-        b=IETys/ZGLxJCXz/C7ClqnbdQmmxgYAS7Rw+xLpBb6YGEA9jgPXZ20GcuzMJNNIUl/4
-         QesDN1RerbiRnCV1lnzpWvd9fBjuKwIklS05gOYXOLHQIKnniZ6S8wZS0sNXcxrNHIK8
-         t0pmegyUSGcoFJ9bcgxxtVH78ZpKUI8g/YHKsQoSQ+ZD3H4leRIGrO94g/n1DnZqidIr
-         zmTRHvUKo94DktjhXlF5i0EryI7+AN2TQzPTZzhN82ebpvRP6RXJSbXIi+qWSwfJPWug
-         02wLGRhhB/EaD0tqRwlDEBTfZjECXR+qDviaaLDDEoQYz5b0qZ1cMPzUKaa1MQsST23L
-         lDHA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1773648685; x=1774253485;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :mime-version:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=s19fIheyHKeaZL2EAKo+JjF7jvo4kQbOQZZGSFXaNIs=;
-        b=kmonkkvJE0SNfE2jOwCwuALB1FHsuZWaH5xh9rKtMtwSlstlurNSuBBmkBCeA19AkS
-         l1vMENPOPKeXZC1Q3w4/qxJDlFp87d4cORyFwW2u6AlUFn8M+QaFSRUuYUICCsUcms8B
-         RkHdNwDPFhqn2TOZpeQfo8QETL69mIDGWgdXX7YCuyH5mCRgOEG6KHs0Gw4IBlrtW0AQ
-         ssaNwhDr5Bk3cMx98spDZwyb8ep5R3Ilq5xs2YJT2CYHcpw2yLkeYttFseRUEKRcYlC7
-         n97vos5FQ0A0P5Up37E7gWjVlQXTk+DGf0P0xnT+bJ7+MwQiJMw/Fqmjv7oWsxoWO5OO
-         RpKQ==
-X-Gm-Message-State: AOJu0YxwCGGFk4Ak9dqyYX0UafBbquSwRc3bjlr6pj4kF5mCILOfEcwC
-	gZwOukKE/RSurDJfyeTGwKEGS/5EQ8W6C95GCtSJXd47zdZA7GJ/UHHYbgmkGjpJEsZNC+tmgmW
-	F6rv4d56kcHfzq5iqUz69MVq7a93toA==
-X-Gm-Gg: ATEYQzwQhztQm5m4wDFzEtcBDQojkCGJeZejn76evg9Jfe0t4yoZ+K0FDl2TADL4te8
-	fPkDvYtOGzQZ6znOwyaVf5SlKuojFfw0FmTc7MsB+G1qI73P6C9iKy/LaQRYRCpacUz+tKUkjBj
-	GKhSXRPPB3Z1o0MXV9oSA7IAFRU5xXwiZlgvCnzdHfcNQVOWoVG8hRsIzxfJ2y3iE8c8WFEw0Jg
-	T27Yf80som4G0D/4DnLIscDgdmBtWkBB0t6urEksgOwkEKIWvIXPZoYFviG+tJNDhQQL0hOnkbe
-	zJ/EGj8m8nJ30ATraAs2op+5R8EYSck139JuGkE=
-X-Received: by 2002:a05:7022:698d:b0:128:dcbd:e27c with SMTP id
- a92af1059eb24-128f3d5a938mr5673294c88.20.1773648684987; Mon, 16 Mar 2026
- 01:11:24 -0700 (PDT)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B5079355F2D
+	for <linux-wireless@vger.kernel.org>; Mon, 16 Mar 2026 09:09:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1773652165; cv=none; b=JI6oknW7SU9DmzR6hpDl6iOFJChMaONHDarQHbt44hyRE19htHGRVFOXDx7jgetMx62TtZxWHix2SU5LLOzzKMyNHN6/RvZlSlSgIdWx8+lHJc22tQUxA60Nv4FAb2ML6BH3CRV//NXxDlDF6ZGLCloan/oa70aYuV9K94YGhxs=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1773652165; c=relaxed/simple;
+	bh=b/v2YK1Ny0iCGdh1uKhLo31haI200+Khn2gytgyltlc=;
+	h=From:In-Reply-To:MIME-Version:References:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=n46EVQQ3DXARNn9lwJD4/YakgUGo9ACn2vJFFjgUs1TovFrXqtwPG45oaaQ5bl9KPy/e90MYOHXe7ozMJ/OXV17DZkCru2hwLX2STik5tnetvqqCZH7l+ZGNyNlYAViQDhMijzkOyuAF0DVoeK1s7bG0U6oFcEJAdk+rHQ786Fk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=YahZNhhJ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 756F4C4AF0D
+	for <linux-wireless@vger.kernel.org>; Mon, 16 Mar 2026 09:09:25 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1773652165;
+	bh=b/v2YK1Ny0iCGdh1uKhLo31haI200+Khn2gytgyltlc=;
+	h=From:In-Reply-To:References:Date:Subject:To:Cc:From;
+	b=YahZNhhJ3/iamDBtfHsrE3+vtZY6pAFMKyIsYsLjyVKzreB5aiwuNjFTYbWL5aMxM
+	 UTa67fi67NmucwHIcNs6xLXr1MPYjsUwXw4CipJnBY9A/yL/4QHnXxZ3cLbq2uPhPo
+	 TJnnbi648EopYGjP7ixrfqoBptD9u/TxuM9dzMpxjOsrxwkTLbdkZQ5BBHd2aUXOyb
+	 o6MvWxllkb9ks4ZGsB0sGueG7qsW35uX7/LT4Wc2xAoDFSJJqQs2FLrn/2sXxUUAUV
+	 OaZxIqNrKMHWwuvIkMid5W2jhpYUuSaXk/rwJPcav5nCZUz1UarNAC75jD8MqQw9f+
+	 c4W4kKGE3wM1A==
+Received: by mail-lf1-f49.google.com with SMTP id 2adb3069b0e04-59de8155501so4303265e87.3
+        for <linux-wireless@vger.kernel.org>; Mon, 16 Mar 2026 02:09:25 -0700 (PDT)
+X-Gm-Message-State: AOJu0YwkM7iNGEBfF36wyjkZeHJd5q27r49IJMI9AEYbeBvxvLgItl6Z
+	kwGDDIjjNscfJvTeUgRazDjmjRdV0E6iad4021O4uAXkhzgZW4UJh6jqbnVFU4hCGBUcJTc/k92
+	PYN5b7UCm93fXqjmNxLAA6nYUA1qnHG5xFjhIlkACwg==
+X-Received: by 2002:a05:6512:606:10b0:5a1:378c:11ea with SMTP id
+ 2adb3069b0e04-5a162702d43mr3088735e87.13.1773652164132; Mon, 16 Mar 2026
+ 02:09:24 -0700 (PDT)
+Received: from 969154062570 named unknown by gmailapi.google.com with
+ HTTPREST; Mon, 16 Mar 2026 05:09:22 -0400
+Received: from 969154062570 named unknown by gmailapi.google.com with
+ HTTPREST; Mon, 16 Mar 2026 05:09:22 -0400
+From: Bartosz Golaszewski <brgl@kernel.org>
+In-Reply-To: <20260313-descriptors-wireless-v4-1-07ab47c89a98@kernel.org>
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-From: Kaushal Kansara <kskansara79@gmail.com>
-Date: Mon, 16 Mar 2026 13:41:13 +0530
-X-Gm-Features: AaiRm52GObCrQw376pp3jmf1IY7_1kyJ55cuNMzRjXBnzYEM0WQDQY6jG0qRRKs
-Message-ID: <CAHFM2E+d6KiOfAgejK+hEUMvyAwx+uCwZLM3dVSBgjXiDoxoQQ@mail.gmail.com>
-Subject: [REGRESSION] mac80211 WARN during CSA finalize on mt7915e after 20240129194108.bad8ec1e76c8
-To: johannes@sipsolutions.net
-Cc: linux-wireless@vger.kernel.org, miriam.rachel.korenblit@intel.com, 
-	johannes.berg@intel.co, kaushal.kansara@sophos.com
+References: <20260313-descriptors-wireless-v4-1-07ab47c89a98@kernel.org>
+Date: Mon, 16 Mar 2026 05:09:22 -0400
+X-Gmail-Original-Message-ID: <CAMRc=MdJXhXyid1a4ycmKv6nwOf3FYd=rFEaBqQ7k3SFq_j4FQ@mail.gmail.com>
+X-Gm-Features: AaiRm50E8GRHGkdeiQAzZ_1v88_i8nLlnialk2yAEGDF-41oOttxzoscFG9qkpU
+Message-ID: <CAMRc=MdJXhXyid1a4ycmKv6nwOf3FYd=rFEaBqQ7k3SFq_j4FQ@mail.gmail.com>
+Subject: Re: [PATCH v4] wifi: ath9k: Obtain system GPIOS from descriptors
+To: Linus Walleij <linusw@kernel.org>
+Cc: linux-wireless@vger.kernel.org, brcm80211-dev-list.pdl@broadcom.com, 
+	linux-gpio@vger.kernel.org, Kalle Valo <kvalo@kernel.org>, 
+	Andy Shevchenko <andriy.shevchenko@linux.intel.com>, Arnd Bergmann <arnd@arndb.de>, 
+	Alban Bedel <albeu@free.fr>, Bartosz Golaszewski <brgl@bgdev.pl>, =?UTF-8?B?VG9rZSBIw7hpbGFuZC1Kw7hyZ2Vuc2Vu?= <toke@toke.dk>, 
+	=?UTF-8?B?TWljaGHFgiBLxJlwaWXFhA==?= <kernel@kempniu.pl>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 X-Spamd-Result: default: False [-2.16 / 15.00];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=2];
-	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
-	R_DKIM_ALLOW(-0.20)[gmail.com:s=20230601];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FROM_HAS_DN(0.00)[];
-	TAGGED_FROM(0.00)[bounces-33286-lists,linux-wireless=lfdr.de];
+	DKIM_TRACE(0.00)[kernel.org:+];
+	FREEMAIL_CC(0.00)[vger.kernel.org,broadcom.com,kernel.org,linux.intel.com,arndb.de,free.fr,bgdev.pl,toke.dk,kempniu.pl];
 	RCVD_TLS_LAST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-33287-lists,linux-wireless=lfdr.de];
 	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FREEMAIL_FROM(0.00)[gmail.com];
-	DKIM_TRACE(0.00)[gmail.com:+];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	MISSING_XM_UA(0.00)[];
-	TO_DN_NONE(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:email,mail.gmail.com:mid,qualcomm.com:email,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,linaro.org:email];
+	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[kskansara79@gmail.com,linux-wireless@vger.kernel.org];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[brgl@kernel.org,linux-wireless@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
 	NEURAL_HAM(-0.00)[-1.000];
 	TAGGED_RCPT(0.00)[linux-wireless];
-	MID_RHS_MATCH_FROMTLD(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[5];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[mail.gmail.com:mid,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 7133F295FC7
+	RCPT_COUNT_SEVEN(0.00)[11];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	RCVD_COUNT_SEVEN(0.00)[7]
+X-Rspamd-Queue-Id: C969A296BF0
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-Hi all,
+On Fri, 13 Mar 2026 22:53:43 +0100, Linus Walleij <linusw@kernel.org> said:
+> The ath9k has an odd use of system-wide GPIOs: if the chip
+> does not have internal GPIO capability, it will try to obtain a
+> GPIO line from the system GPIO controller:
+>
+>   if (BIT(gpio) & ah->caps.gpio_mask)
+>         ath9k_hw_gpio_cfg_wmac(...);
+>   else if (AR_SREV_SOC(ah))
+>         ath9k_hw_gpio_cfg_soc(ah, gpio, out, label);
+>
+> Where ath9k_hw_gpio_cfg_soc() will attempt to issue
+> gpio_request_one() passing the local GPIO number of the controller
+> (0..31) to gpio_request_one().
+>
+> This is somewhat peculiar and possibly even dangerous: there is
+> nowadays no guarantee of the numbering of these system-wide
+> GPIOs, and assuming that GPIO 0..31 as used by ath9k would
+> correspond to GPIOs 0..31 on the system as a whole seems a bit
+> wild.
+>
+> Register all 32 GPIOs at index 0..31 directly in the ATH79K
+> GPIO driver and associate with the NULL device (making them
+> widely available) if and only if we are probing ATH79K wifi
+> from the AHB bus (used for SoCs). We obtain these offsets from
+> the NULL device if necessary.
+>
+> These GPIOs should ideally be defined in the device tree
+> instead, but we have no control over that for the legacy
+> code path.
+>
+> Testcompiled with the ath79 defconfig.
+>
+> Reported-by: Micha=C5=82 K=C4=99pie=C5=84 <kernel@kempniu.pl>
+> Acked-by: Toke H=C3=B8iland-J=C3=B8rgensen <toke@toke.dk>
+> Reviewed-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+> Signed-off-by: Linus Walleij <linusw@kernel.org>
+> ---
+> This patch set is a long standing attempt to get rid of the global
+> GPIO numbers from the ath9k Wireless driver.
+>
+> Maybe Kalle can merge this to the Wireless tree if we agree on this
+> hack solution.
+>
+> Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
+> ---
+> Changes in v4:
+> - Fix review comments from Andy.
+> - Collect ACKs.
 
-I=E2=80=99m reporting a regression seen on mt7915e during AP channel switch
-handling and it is related to:
+I think this did not work. :)
 
-https://lore.kernel.org/all/20240129194108.bad8ec1e76c8.I12287452f42c54baf7=
-5821e75491cf6d021af20a@changeid/#t
+> - Link to v3: https://lore.kernel.org/r/20260312-descriptors-wireless-v3-=
+1-5230e0870c31@kernel.org
+>
+> Changes in v3:
+> - Rebased on kernel v7.0-rc1
+> - Fix up issues as pointed out by Micha=C5=82 K=C4=99pie=C5=84
+> - Link to v2: https://lore.kernel.org/r/20240423-descriptors-wireless-v2-=
+1-6d1d03b30bfa@linaro.org
+>
+> Changes in v2:
+> - Define all the descriptors directly in the ATH79K
+>   GPIO driver in case the driver want to request them directly.
+> - Link to v1: https://lore.kernel.org/r/20240131-descriptors-wireless-v1-=
+0-e1c7c5d68746@linaro.org
+> ---
 
-
-Environment:
-
-
-Kernel: 6.6.116
-
-Driver/chipset: mt7915e
-
-Platform: Sophos XGS
-
-Trigger: concurrent AP CSA activity (e.g. WLAN9/WLAN10)
-
-Observed warning:
-
-
-WARNING at chan.c:92
-
-Function in trace: ieee80211_vif_use_reserved_switch
-
-Worker context: ieee80211_csa_finalize_work
-
-Relevant log excerpt:
-
-
-WLAN9: IEEE 802.11 driver starting channel switch: ... width=3D3 (80
-MHz), cf1=3D5210, cf2=3D0
-
-WLAN10: IEEE 802.11 driver starting channel switch: ... width=3D3 (80
-MHz), cf1=3D5210, cf2=3D0
-
-WARNING: CPU: 2 PID: 8713 at linux-kernel/net/mac80211/chan.c#L92
-ieee80211_vif_use_reserved_switch+0x546/0x8d0 [mac80211]
-
-Call trace:
-
-ieee80211_link_use_reserved_context
-
-__ieee80211_csa_finalize
-
-ieee80211_csa_finalize_work
-
-process_one_work
-
-worker_thread
-
-
-I can consistently reproduce this under CSA churn; please let me know
-if you want full dmesg, .config, or additional instrumentation around
-reserved channel-context transitions.
-
-
-If I revert this patch, the warning goes away.
-
-#regzbot introduced: 20240129194108.bad8ec1e76c8
-
-#regzbot title: mac80211 WARN in ieee80211_vif_use_reserved_switch on
-mt7915e during CSA finalize
-
-#regzbot link: https://lore.kernel.org/all/20240129194108.bad8ec1e76c8.I122=
-87452f42c54baf75821e75491cf6d021af20a@changeid/#t
-
-
-Thanks,
-
-Kaushal Kansara
+Acked-by: Bartosz Golaszewski <bartosz.golaszewski@oss.qualcomm.com>
 
