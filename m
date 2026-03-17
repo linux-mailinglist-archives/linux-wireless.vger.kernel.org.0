@@ -1,78 +1,79 @@
-Return-Path: <linux-wireless+bounces-33343-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-33344-lists+linux-wireless=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 4C88McI2uWnVvQEAu9opvQ
-	(envelope-from <linux-wireless+bounces-33343-lists+linux-wireless=lfdr.de@vger.kernel.org>)
-	for <lists+linux-wireless@lfdr.de>; Tue, 17 Mar 2026 12:10:58 +0100
+	id QIqpDso2uWmcvAEAu9opvQ
+	(envelope-from <linux-wireless+bounces-33344-lists+linux-wireless=lfdr.de@vger.kernel.org>)
+	for <lists+linux-wireless@lfdr.de>; Tue, 17 Mar 2026 12:11:06 +0100
 X-Original-To: lists+linux-wireless@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6C5AE2A8847
-	for <lists+linux-wireless@lfdr.de>; Tue, 17 Mar 2026 12:10:58 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 989082A884E
+	for <lists+linux-wireless@lfdr.de>; Tue, 17 Mar 2026 12:11:05 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id A52A630B7031
-	for <lists+linux-wireless@lfdr.de>; Tue, 17 Mar 2026 11:06:42 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id AFC6B30BB958
+	for <lists+linux-wireless@lfdr.de>; Tue, 17 Mar 2026 11:06:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DDB2C34DCD1;
-	Tue, 17 Mar 2026 11:06:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8D34034DCD1;
+	Tue, 17 Mar 2026 11:06:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=HOTMAIL.DE header.i=@HOTMAIL.DE header.b="WbJeYU4t"
+	dkim=pass (2048-bit key) header.d=HOTMAIL.DE header.i=@HOTMAIL.DE header.b="DIhVYvUX"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from AM0PR02CU008.outbound.protection.outlook.com (mail-westeuropeazolkn19013081.outbound.protection.outlook.com [52.103.33.81])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 934FB3A6EE6
-	for <linux-wireless@vger.kernel.org>; Tue, 17 Mar 2026 11:06:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 10D283A7F48
+	for <linux-wireless@vger.kernel.org>; Tue, 17 Mar 2026 11:06:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.103.33.81
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773745601; cv=fail; b=AcS/++04SdKRs4G2ph3litc5sDVkWkupWhxIM20lWLB74Gn8FPQIqz5fem8CF3yTvkcRdAX9b7Gcw2eJatxzwApV/O0wycRuZBJ7ELxwOSQLjTrRkIUG+ugL3WLncnWocvVXpeTp10ZOu8l34ON9XkgsD9ysYhlap32O+aCPsQs=
+	t=1773745603; cv=fail; b=aGzZnTsLHV+0BKrqruy7JmgNiLr3u+t946d4AEBxzKAJx/4keScnQt6rG68fpHn/gbrA/SGyN9UfvHykjAoorSQy2oBQ4ywkRSjTjdO+WOSQs3gaKMO6oHHO+Oaax/s8BWfm9zhPB993b6LyBU1GTHENWtfWKI8mm/+DTqxLZ9Q=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773745601; c=relaxed/simple;
-	bh=vOpJ8ZkXGNHvSQ5UgQg12j+4cudff8UEfBpxl946uhI=;
+	s=arc-20240116; t=1773745603; c=relaxed/simple;
+	bh=CRKE8NL6Zyzpux3wxP62hCKBIuH8lvaqvpd5ThTvrnw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=QZx0jILOtV4MpfVj8UFaxjXDvFe0wu+mzrCbKErpR/T9mx/JVaa1Aup+OOyT1uuT8ARIM5iLBEXVe6dgGuSjhxUGN7SEbvibOf4NrHdlWxbree5od+rooqvlQvQACP1Q0CH7BEJZEM3VvNOvaUGGuM4JPeGKKMMmSx8M9D4RFHg=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=hotmail.de; spf=pass smtp.mailfrom=hotmail.de; dkim=pass (2048-bit key) header.d=HOTMAIL.DE header.i=@HOTMAIL.DE header.b=WbJeYU4t; arc=fail smtp.client-ip=52.103.33.81
+	 Content-Type:MIME-Version; b=WOAlp38Y/Mm0+9Px28WxV+nT4lEMnzN/8l2A5dvByT/Coir9eZKY11L87YPtyWt/idu6XwLgookBkncn7bFJgcENuk6hkABH6IZ9+YeItu3iLSvnegnbVa87FTIX0TKOoymVlA3ep2yCI/q2Ii3KSdbYlef9TZnU2n3gAgw/69U=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=hotmail.de; spf=pass smtp.mailfrom=hotmail.de; dkim=pass (2048-bit key) header.d=HOTMAIL.DE header.i=@HOTMAIL.DE header.b=DIhVYvUX; arc=fail smtp.client-ip=52.103.33.81
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=hotmail.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=hotmail.de
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=xnsmBSaSWn9o1WUzHwLFf6ZYcZfb29VKBW7T2mW4XNXE3wKmGQAxMzxs1vPgsR1DVCAX9l62/aJU9pb/U799RWpTvsSGPWnM0bH88i/o+vQ0C7EsJmpNM5x5/4nwqFpeQoyJe7QnzoVZXWwkcCxiC9lNKPrsoFqOoW9GSA7COie6EpyayP4c48MJp4BK+b8H6BtJI+JQSxdJJF2XpYCW6o+EghmYD6FhHWQOcL7dexDWmPTdX5EnxDq1IO6DLV42whvImlCjv6xID2WvLFpL8rMAE1RJdZoneJ26YtOnLCnpb1eCxuMqiyjPn0JuLU7ONA3o2CZV0alDemx65BMAPg==
+ b=iqT8e3nb2IMH6vISHjqSyKKQ4Y6aeNXxXt9Xn171E7eoTfByHGQSoO2JA+ym+fXgnFVCCzca1X3X3HcdFXr0sLz1zdDOt4hm0KCIqwfQZoVS2IXQ4iBhAnbKEh95AWjZjDSvF8dkQszrALNYxXJYYv85N+BfVDMC2Qt+0ln4jZplHTG71IE9qxT7B61wd8OsW/lcySIRk8Fw4CfI9Iiv7xIayomTrIlbzJRB1QD3Bjv9B79MWNCTk0bHc809t1O0B2w7TATfKFRmt9Z2l6JZwocEdVrwYj3rId+e7oNOTQL7Aj4nVjyLoKdQl0NOK+lt8Y4Wmbrv0/RKrvo+0o0ZBA==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=8abGgS/xrx6YQp3KDdYmsMu0zgReQnol0a7T2eHE47M=;
- b=APanpag8ZpQhxgxusRWSQKwjthGlXKjnoLs4EUdGEkfznSARAGxCWeEwcYDNClsAzL3GsmBL6WqLD/I2fBlGyjRK+dBETEFDfS9dgTk3F6cC68pm169w54H2R2hwtrkAtYI/Ocfc8I8DqKxRrG7qdSn90NS6Bh6x1XQ09yWgIgqg+iINq/lSj/6mYI9LIlo8ox0yPYCs9sw0KHC7tSMJUs+SuToQKDkZVMWaLIJwAg5x+AhNVh3KUDkqbGwSFIyFeJprK4XotELRLu3c79gCDMyU5uka6xNcJCVm6kSNBC+9U46ifFNlO/gbUvk0A8PUANwPYbCkRuQAJ1Pz2AQ60g==
+ bh=7hRm5yL5HruSio23ux/vG4l1Zz9ly4n82ZMT4vcW2Yw=;
+ b=cVjApz27XXmjj615YFcAAA4MK2CoDDy0oHeDrfOh+Q+Y1jt1oacnxA3psuURTWMdgN4Sd9ZWCHixDl3gMiF3krV7pfcU8B+UBMKFjJCfiUvdk19cgTYIEIwApdfmqIDJ29TapvdrpRQgieSryjQNnmnuqKtNn0U7VYVxSpkrpY0JbG6lv8mE0cThBHN1pzexPW4m9Zc//0jK+v3/ZfT6RxergjRB6zK2RVvCdKAcueetrT6Xy4u9B8xo/yV0+zArYs5I1iKoKnKzQIPkiNpqZ0/xoeRMdkprXHMnAJa1gTZrF1Kz7QXr0YlrZG3MV6PqfKuIx7jO4C5gAbL7xZPGQg==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=none; dmarc=none;
  dkim=none; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=HOTMAIL.DE;
  s=selector1;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=8abGgS/xrx6YQp3KDdYmsMu0zgReQnol0a7T2eHE47M=;
- b=WbJeYU4tlBlaETcZfG18hGDna4wurIp67X0WDUV6F2sHvmexkFBFxPRTWlo+Tqd8tdV8zDxrekNbzkVQR8axJErqaLCjFdAku2GpFeKSw1ExJPuRAoAQd4ZdxIXmPcChV0MSBI16a7kUawWcsfD5ZAftuFlLIROahTiHdTZUlnNV8QVuAUw+bG+zh+uVN/nuE5rw9RJOkkUhSJDBcekaxDHCU1oqLj8YH1pd11S1foSBYLO41bROD5wmrvREl9cyrO3wdd1R3b2kKmIzqGzhS37yHEBMqgTeZgBJ/SmtDVp78HIm1ewAT0qO0jVY+26Zl2M9D+Gfb4ffBqBmZ8nzTg==
+ bh=7hRm5yL5HruSio23ux/vG4l1Zz9ly4n82ZMT4vcW2Yw=;
+ b=DIhVYvUXHO8zwUYnGixXwBYGwAxMsl87+n5FB7FJgszVk773CQSldK2orHqy11B7I91TctrP04ZQd8wXSz870HNBR3VP8DMeY5DJpCGYxtgv5iDi6Hc8IHJn4NdFMNuOYeHoT6o233u6+o46WzIpVgJxyyubHslEEsS0FY4/gxxRe2A+scMtm6VC3y8bCgxWcdfrv7YHb1gvD8mSaRtkWfDosl/nUbXl9E1kQ29WXhcHFwszXqftJ6UHHJzZPk+gJ6UV5K8r20Xv+ZqdIcSspIYRNtiFjIzdvSkeo1ApQa1RajPJMeYZwNCZlWtnjfhAQ5GIVZx7d3yR2B1nw43mYg==
 Received: from AM7PPF5613FA0B6.EURP251.PROD.OUTLOOK.COM
  (2603:10a6:20f:fff1::851) by AM9P251MB0007.EURP251.PROD.OUTLOOK.COM
  (2603:10a6:20b:412::15) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9700.24; Tue, 17 Mar
- 2026 11:06:38 +0000
+ 2026 11:06:40 +0000
 Received: from AM7PPF5613FA0B6.EURP251.PROD.OUTLOOK.COM
  ([fe80::596d:6ad8:b60c:c9eb]) by AM7PPF5613FA0B6.EURP251.PROD.OUTLOOK.COM
  ([fe80::596d:6ad8:b60c:c9eb%4]) with mapi id 15.20.9700.020; Tue, 17 Mar 2026
- 11:06:38 +0000
+ 11:06:40 +0000
 From: Masi Osmani <mas-i@hotmail.de>
 To: Christian Lamparter <chunkeey@googlemail.com>
 Cc: linux-wireless@vger.kernel.org,
 	Masi Osmani <mas-i@hotmail.de>
-Subject: [PATCH 14/16] carl9170: main: guard op_config and bss_info_changed against non-STARTED state
-Date: Tue, 17 Mar 2026 12:06:32 +0100
+Subject: [PATCH 15/16] carl9170: phy: warm BB reset and same-channel no-op
+Date: Tue, 17 Mar 2026 12:06:33 +0100
 Message-ID:
- <AM7PPF5613FA0B6FDA6759CDCBE2421A8039441A@AM7PPF5613FA0B6.EURP251.PROD.OUTLOOK.COM>
+ <AM7PPF5613FA0B60E4BC1593D4C3693644B9441A@AM7PPF5613FA0B6.EURP251.PROD.OUTLOOK.COM>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20260317110634.70347-1-mas-i@hotmail.de>
 References: <20260317110634.70347-1-mas-i@hotmail.de>
 Content-Transfer-Encoding: 8bit
 Content-Type: text/plain
-X-ClientProxiedBy: FRYP281CA0002.DEUP281.PROD.OUTLOOK.COM (2603:10a6:d10::12)
- To AM7PPF5613FA0B6.EURP251.PROD.OUTLOOK.COM (2603:10a6:20f:fff1::851)
-X-Microsoft-Original-Message-ID: <20260317110634.70347-2-mas-i@hotmail.de>
+X-ClientProxiedBy: FR4P281CA0018.DEUP281.PROD.OUTLOOK.COM
+ (2603:10a6:d10:c9::10) To AM7PPF5613FA0B6.EURP251.PROD.OUTLOOK.COM
+ (2603:10a6:20f:fff1::851)
+X-Microsoft-Original-Message-ID: <20260317110634.70347-3-mas-i@hotmail.de>
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
@@ -82,58 +83,59 @@ MIME-Version: 1.0
 X-MS-Exchange-MessageSentRepresentingType: 1
 X-MS-PublicTrafficType: Email
 X-MS-TrafficTypeDiagnostic: AM7PPF5613FA0B6:EE_|AM9P251MB0007:EE_
-X-MS-Office365-Filtering-Correlation-Id: 3ea66751-9513-4a37-cba3-08de841542f2
+X-MS-Office365-Filtering-Correlation-Id: c822e7e1-2b2a-4c10-2818-08de84154421
 X-Microsoft-Antispam:
-	BCL:0;ARA:14566002|8060799015|461199028|41001999006|15080799012|5072599009|23021999003|19110799012|51005399006|3412199025|440099028|40105399003|1710799026;
+	BCL:0;ARA:14566002|21061999006|8060799015|461199028|41001999006|15080799012|5072599009|23021999003|19110799012|51005399006|3412199025|440099028|40105399003|1710799026;
 X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?MyNL6BdSjPHtvl2HpJQ9qjpbz4Boy8i8atDBcXNgQsXGO0KdAIE0WzB2Sjjf?=
- =?us-ascii?Q?GXRVwoiEK+ZNjt7IVxu8gCHCUSDf0/QXDIg56LpREvxa1qZdydIw2CCwCMWv?=
- =?us-ascii?Q?w73BRamhLh2cdxQ/sEBRMxPUUDYAnLIZhQ0DlbITpi8+CvMcgDAmDvTuCUpT?=
- =?us-ascii?Q?3KYRbvbEVAOGveTNn/2lLLPZK+D94VkhzapovncupejIbEhSsRX3rVl1sMbs?=
- =?us-ascii?Q?C7k43XAyKmV4q3oxHX7bGMw5VNGQz7195pJm471MQinIgv0GusOK+mmWJUQu?=
- =?us-ascii?Q?xo4YzTipfl/Hwx4uWup7Ojm5H4dvMJJslio/X0AKsQ2MKNBoE1Xboeg8o6DY?=
- =?us-ascii?Q?sGNH1k8O/Vduy4Ukzzo8En4iapCTpXZ+k26O4iXY9E3KKaRUVlD6F10eTqQ+?=
- =?us-ascii?Q?EjCdhvWuuIQ4Pbu7ejMOWQemzgmIy9Iou2CdxZTGPna/Dp7W+m+sNlpeAHGT?=
- =?us-ascii?Q?ZAscDAqMK68W10TJAGpAPAK65aug9mwro8bkJFzF6lNWb90nX4RXBQjoVavO?=
- =?us-ascii?Q?+RWFMbabVNwp/otQubK8GLP7uhw49D3qyQ0KS9esb2DtjlPoLhc4SSZ0sVdC?=
- =?us-ascii?Q?2rKtoL+EeYl9tWROEDMVzUFG6v34aMRP5ZWsWvqEzq3T83ilSJRZkolj3EPf?=
- =?us-ascii?Q?mEWfF0+q9zKI9U/iSy/rkMj9zhkKj8BNqtBHgsRX6VnWAOJsNWeh9GKGaCtQ?=
- =?us-ascii?Q?0dsG2cVu8UZjrw1tHkOogdfZ2cyFbY7PyY8rA3v0bYSQorWHApWDqS7RG4bN?=
- =?us-ascii?Q?WwGO0xZt6GblKhUc4siU+1rKPtH41Ckp+vel6+jneaW84IGvmmQ1fd5XQLX9?=
- =?us-ascii?Q?nQKPRrNYIhzrvHYzUMffkKbpwUgBU7hd17/nR1w6+ZknKKDDz2ZDbftjFC1l?=
- =?us-ascii?Q?n0l1wcW8Vr1jdVcRbA5Ti4GZvXd7gZOiOji4IZ3ZeC2WGMiptJ/7xT//Dbw7?=
- =?us-ascii?Q?6c0R0sEblXSc8gHNKIVEyg=3D=3D?=
+	=?us-ascii?Q?JJRcwVH/8/osoNjUa/2nQG3gba8CcYM+kyBs5EvVRo8zjtpE1k7vLebLEZb4?=
+ =?us-ascii?Q?NrmMd8JmB9r71gcxKoTg5UInDbZkn96sZlE9svmnwgm2ieuhs69Bzd9KLEvU?=
+ =?us-ascii?Q?+7HpGJffa7hIxOFYpxBbgVN7P03Me6yRjBb1HA+lE7kv9vIds748e6XL3loS?=
+ =?us-ascii?Q?WpZfavyMkFUwxwZuyKfIqK/zMr1Ix+rcRdjN7rJHPz2hzgNMqd/pvIlgA8O8?=
+ =?us-ascii?Q?XgZCc7ziDw6zjI9RliE5LEW/eVSbjFIwIdWpWbG4ozqcrlsN0kuzAWuTxweb?=
+ =?us-ascii?Q?huDwEXsjqFUag0CiDcdnC76vsk+PBV1wvuqyI7TDQjLxn9rtf/9T8Qv72ht/?=
+ =?us-ascii?Q?le6K6wKblA+/jp6QedvMma0eHRhLtd9t1WKdYliVOtXCEwPU9oYEoFHiN219?=
+ =?us-ascii?Q?hz9ZnvPfQ9tLeYGy86zi/2pFCO+vOHXzxh9L+KMBzwy7gcH6xd12awIaTwXo?=
+ =?us-ascii?Q?aHsllPYmNBsABiQcvJDxpW42eYl0HdaxbPo4W11diigPHzK4P5n4mPNq7R53?=
+ =?us-ascii?Q?NY+OquZO9b6YLtihgRZlcfsKM8Ac12WAhx3KmePCHn96KsWqkC+ITPj/UL5Z?=
+ =?us-ascii?Q?Mm9myAqrT5/QX1S/t5WVtPpOntly2HUIgJu55z5ff9cu0SVY0ZhyFomfoR06?=
+ =?us-ascii?Q?1C9LhM0FNIwji+UL4WVRLkj0qBJP5xQPcGc1imola2fsEDb8icnift18FHn5?=
+ =?us-ascii?Q?bRaPrCYTYQ6l7WxzCsu81mOET87WWjW+MEFv3C21YOuu1L8E3KStQ0W9MCcq?=
+ =?us-ascii?Q?hawwnAL7P8wOXCSKvBbv8ogxvzk5Lgapy3d711RymuNa9W92GYGxT8/TyJK5?=
+ =?us-ascii?Q?DQ/Ma/3hSZhMFHFvks2UeXC6z2KQb1VHiNEBSyV8vObbpD31URM6LsyPoGln?=
+ =?us-ascii?Q?8wSuBctO2Lc/UYF0PFQrE5bA1w9e/M6TVvV4LbCI2kW3OIoIa64WESFRa4vr?=
+ =?us-ascii?Q?JKFcr9nreFpdvAvU3H4uLwP5motOK3tclMNzjr5n35iNi14HobHhvxyV3O+o?=
+ =?us-ascii?Q?8c5s?=
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
 X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?/n9S/L22UEADrsZX+gMVKb07YFmaLCs9Qctr/kYl4yPkbOD+SyFTs3Z3UaET?=
- =?us-ascii?Q?PG38ogQAhzlVEw4UdQ07jyaGFqSHnw7cLYrbQqRrsKgsrWZEMNXOoA3Jle1l?=
- =?us-ascii?Q?OLDwRH/N0DiEFw8yhLb0hFspfCWJXEhO5JcywOP0vJ3+kv6np6PUKi7i4hO6?=
- =?us-ascii?Q?8gCcFS1uFB2i6WuolwlCVHMNNv+6ilUnT5qwMO7bNrru7si6wnhEYJmDnY3k?=
- =?us-ascii?Q?YPKFLIHHOynwOmC0beFC+caBNMcKb9H8WrykYYoRta65mzEax9zuYOv6Y8YP?=
- =?us-ascii?Q?ZHvPisT37HkQyyN6QLMuHdOhtBFw5M4+u8dqgGatnt3wAygKMxh0LELhyjvb?=
- =?us-ascii?Q?Rtw/UTipy1hS/CcIY57HHInL3q0Q33jOLQ7l438bYk5LJ0ixXr00biTsTLng?=
- =?us-ascii?Q?P/Ar9LBb8JDl8iV1j9tbLjzoKpne69892634GFOFzGP9NanL/J+/SqsFR7Dv?=
- =?us-ascii?Q?SrcNlCxMsdMNg4aYU4tDlNnMn6lTLt2g5xr33RzRcmpozBrqk9BXQPjLO4jY?=
- =?us-ascii?Q?sTlqE5mrH3nzZ6/aJTZdUF/KKkfcfuMOqGmkhITP4Yd7SNRiPTltSQazB8pW?=
- =?us-ascii?Q?3x9u3H7A+r7Nee+holYGRii/URRnvYnlwD0x1PAsBAnz4X2dWp962ZDhhEga?=
- =?us-ascii?Q?kcyc9APqFdnHuq/rL+JATwMqHkc42pG2/cToVxYBcMq/lpFCnx1o4hlq02Su?=
- =?us-ascii?Q?NYpyB0hZATig7AvCtK6bcbCTCzA/oJtzliA91enU7NRLUAiJ4zlIpBzUoLuW?=
- =?us-ascii?Q?gAalQ3nrcFlTT6fV+vksNOUPRTnxqxrgCq0LNNdpwEuXHXJjhX29rECeCi3L?=
- =?us-ascii?Q?7A+WbbeReDFXLPb2V7MM5sYMMTTcMClzV2N5gWVsyZt9RJpWO9gqwscIjb+M?=
- =?us-ascii?Q?WbQjs+U+Z55trsZwXtviAFGDx3EUfpjHfOCYDsSGzZmOWwVNFf1Vr8fNCixM?=
- =?us-ascii?Q?wzr7BHzK9nnpKDWCQNZoW7GGv1+2eyNflu+I4Qb9GioUpijkI8eM9WWET8+H?=
- =?us-ascii?Q?WA/KAF1WKN0UTH11cJGHeyYsn/V0FCYXDjXis7mbvb+tdkq++ubUWUP8/T3r?=
- =?us-ascii?Q?UNNKi7W7nfQmP/I+x16QnfgpYOWxr9Ff9fxmTX+KTBdVmWPQDv/C5laF8tIY?=
- =?us-ascii?Q?lp1b/sipUGYD9E7hPMqvkTz1FpLHg2FKng5Aiie4FpcTP3HKCzn1YHElGSoR?=
- =?us-ascii?Q?XtAc30SbuOta9+otC804xdpeWJfx7wSDKFykXYSXHHP/cre6VIzh+yteh3yX?=
- =?us-ascii?Q?a+kNZnrzfqxp6ycD5uU0N6df0bDrHoLdKxQsZmIyUg/71QirCD/uTuM1153p?=
- =?us-ascii?Q?LefChU7SxzKClCNjMXOfRtfBrCKgyW+G4PK903y3AA6yWvqhAIIKHYb6v86N?=
- =?us-ascii?Q?5wVhUoY=3D?=
+	=?us-ascii?Q?VnUwKGX3j9t0pZKF/y8gP8hEDDtkt/1fxoA9mfYKPkyuCigim/D7eBRiB4PE?=
+ =?us-ascii?Q?vl1B2brw9lOnGwxTvj5pWeaxAr1NVg11y8qYeqtdZE8MINVk1ac5alzpNNIW?=
+ =?us-ascii?Q?Z566mCGKow5jZ3/8AByoidklujHN/GNfFJ0/ojd7hFsKVx0OBpTw41ytNy9M?=
+ =?us-ascii?Q?HZieJjnaBdIdoB4iHGqU6bSZafHhzCD86lovYoL2Z31yEHgdtcMZF/X4M1GN?=
+ =?us-ascii?Q?Doe86ZiREFgY/fatnA2GOmQwFz0pKZcmNSTUwfY04PpYmEJpT9SNn1t1MImd?=
+ =?us-ascii?Q?yMJFkP9NgzOHJGX4jxretGq0HM8oCncXUh1EtvxiS0cWRGZdG2vIj5hRNvdc?=
+ =?us-ascii?Q?AI0Xk3b47WRtdHB3qVmWhsFgkarof0QOD4BOfzncIbYHhEGvS/Nt2zX7yvF5?=
+ =?us-ascii?Q?B/wxuH8UMY6b1j0KdHk8GC+a1V+W4fYtFLQ8giUDiw2tW4BhelvsJ9tY8Z+6?=
+ =?us-ascii?Q?P4wNJsJ8HBcvpY5zs0V6t6au+XVKI/H2IYdiIWgFCBpuLIj6i5nYVbF0NRBe?=
+ =?us-ascii?Q?c0OdqqFs7C9FOTRuuAJQqDGrNqNLpNzaGanNPyaIUECKxcGqWzRnLUzFScXj?=
+ =?us-ascii?Q?v8W3BTF+yB1dqd5ajUPPMnvyNXOFrzvA5QJn1v/HRysysZiOi354nnvvGa/W?=
+ =?us-ascii?Q?PLHkrrp05MozZE2FfFgIqoWIB+Q+4Rr56fKzuFccAF7zLYRzNFXlhqkTrKzr?=
+ =?us-ascii?Q?6bHJQyXl8g8bhLiRpiEghR7geBsXg0LXR9EN+xiCLv9L6boZ298eKEU9gKMt?=
+ =?us-ascii?Q?gTo8fgxZ8KxjplLScg1nqvQhQn/vNefinLalTVPqIloWFXqmbNFm+YYqed2g?=
+ =?us-ascii?Q?5BKmfter1idAmM2TkRFUn0501mSV1CcmDyWllc79chbwGDNEChIymxik0sJm?=
+ =?us-ascii?Q?PMXpUxC4xbyE/itVmvlVj3Cie1UCsJa/WqF8STK5faHpp6ePaNIMeiFANWv3?=
+ =?us-ascii?Q?N5Tz+XQrlduqZGuy0HIRL+ccBDPLBgJOUU2/4l02BumacnG9U2BXH+L6s5S9?=
+ =?us-ascii?Q?MzLGY7XX4K1KjNEuuCTzd3i5q1zzYML6Uk5buTySNgAQBgnJvSQoNNjTfmEF?=
+ =?us-ascii?Q?O0euZXDbo5PA8AHpo6oyXCEHQFRc54aRGJh9ThIGR3U9LVZwfRCjZAeAedjh?=
+ =?us-ascii?Q?mqTt19xTbK2YZ7/xdj0ActtL0xZShLyqLdy2RECT3/HOekrNGnmOyRYFHrqZ?=
+ =?us-ascii?Q?nfSTNwRLWDurSjttn7G6LrXB+aK5gniaPp1GXXM38KuA+PkV4h68eHeP6HDN?=
+ =?us-ascii?Q?Ak/vq1RCc+MTNU6PSWBETI9vZGKGJchjbSCZA7UkrPEnq5Qb3A+gMJ7P+wYy?=
+ =?us-ascii?Q?OgFIPtq1ylT+2jdMH6s/Ou33qrqVU9eAauQxXyoy+cF0XP3oZJG7mzosAfzL?=
+ =?us-ascii?Q?zVV1q7Y=3D?=
 X-OriginatorOrg: sct-15-20-9412-3-msonline-outlook-fe3f5.templateTenant
-X-MS-Exchange-CrossTenant-Network-Message-Id: 3ea66751-9513-4a37-cba3-08de841542f2
+X-MS-Exchange-CrossTenant-Network-Message-Id: c822e7e1-2b2a-4c10-2818-08de84154421
 X-MS-Exchange-CrossTenant-AuthSource: AM7PPF5613FA0B6.EURP251.PROD.OUTLOOK.COM
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 17 Mar 2026 11:06:38.8458
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 17 Mar 2026 11:06:40.7605
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: 84df9e7f-e9f6-40af-b435-aaaaaaaaaaaa
@@ -149,7 +151,7 @@ X-Spamd-Result: default: False [0.34 / 15.00];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-33343-lists,linux-wireless=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-33344-lists,linux-wireless=lfdr.de];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	TO_DN_SOME(0.00)[];
 	MIME_TRACE(0.00)[0:+];
@@ -168,67 +170,119 @@ X-Spamd-Result: default: False [0.34 / 15.00];
 	NEURAL_HAM(-0.00)[-1.000];
 	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	DBL_BLOCKED_OPENRESOLVER(0.00)[hotmail.de:email,AM7PPF5613FA0B6.EURP251.PROD.OUTLOOK.COM:mid,HOTMAIL.DE:dkim,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 6C5AE2A8847
+X-Rspamd-Queue-Id: 989082A884E
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-During driver deregistration (USB unbind or restart), mac80211 calls
-carl9170_op_config() and carl9170_op_bss_info_changed() which write
-hardware registers such as AR9170_MAC_REG_SLOT_TIME (0x1c36f0) via
-carl9170_set_slot_time().  At this point the firmware is already dead:
-carl9170_restart() has transitioned the state machine from STARTED to
-IDLE, and IS_ACCEPTING_CMD() returns true for IDLE (state >= IDLE),
-so the USB command is attempted but times out with -EIO:
+Three optimizations to carl9170_set_channel():
 
-  ieee80211 phy31: writing reg 0x1c36f0 (val 0x2400) failed (-5)
-  ieee80211 phy31: writing reg 0x1c36f0 (val 0x5000) failed (-5)
+1. Same-channel no-op: return immediately if already on the
+   requested channel and bandwidth. mac80211 sometimes sends
+   redundant channel change requests.
 
-When wavemon or NetworkManager trigger rapid USB unbind/rebind
-recovery cycles, each deregistration produces these -EIO errors.
-Over 30+ cycles this exhausts mac80211 resources and causes a
-kernel panic.
+2. Same-band warm BB reset: use AR9170_PWR_RESET_BB_WARM_RESET
+   (BIT 10) instead of BB_COLD_RESET (BIT 11) for channel
+   changes within the same band and HT mode. Warm reset
+   preserves PHY state, skipping init_phy (20+ register writes)
+   and init_rf_banks_0_7. Cross-band switches still use cold
+   reset with full RF re-init.
 
-Add early returns if !IS_STARTED(ar) to both carl9170_op_config()
-and carl9170_op_bss_info_changed() to prevent all hardware register
-writes when the device is not fully operational.
+3. Post-restart guard: null ar->channel and ar->chan_fail in
+   carl9170_restart_work() to force cold reset after crash.
+
+This replaces the previous cross-band scan skip approach
+(BUG-003) which blocked all 5 GHz scanning while associated
+on 2.4 GHz. The warm BB reset provides sufficient protection
+against AGC calibration timeouts without preventing cross-band
+scans.
 
 Signed-off-by: Masi Osmani <mas-i@hotmail.de>
 ---
- drivers/net/wireless/ath/carl9170/main.c | 14 ++++++++++++++
- 1 file changed, 14 insertions(+)
-
-diff --git a/drivers/net/wireless/ath/carl9170/main.c b/drivers/net/wireless/ath/carl9170/main.c
-index dcedcb1..a1b2c3d 100644
---- a/drivers/net/wireless/ath/carl9170/main.c
-+++ b/drivers/net/wireless/ath/carl9170/main.c
-@@ -926,6 +926,13 @@ static int carl9170_op_config(struct ieee80211_hw *hw, int radio_idx, u32 change
- 	struct ar9170 *ar = hw->priv;
- 	int err = 0;
-
-+	/*
-+	 * All register writes below require running firmware.
-+	 * Bail out early during teardown or restart (state != STARTED).
-+	 */
-+	if (!IS_STARTED(ar))
-+		return 0;
+--- a/drivers/net/wireless/ath/carl9170/phy.c	2026-03-16 12:31:43.146715685 +0100
++++ b/drivers/net/wireless/ath/carl9170/phy.c	2026-03-16 12:32:14.020745785 +0100
+@@ -1779,27 +1779,49 @@ int carl9170_set_channel(struct ar9170 *
+ 	/* may be NULL at first setup */
+ 	if (ar->channel) {
+ 		old_channel = ar->channel;
 +
- 	mutex_lock(&ar->mutex);
- 	if (changed & IEEE80211_CONF_CHANGE_LISTEN_INTERVAL) {
- 		/* TODO */
-@@ -1077,6 +1084,13 @@ static void carl9170_op_bss_info_changed(struct ieee80211_hw *hw,
- 	struct carl9170_vif_info *vif_priv;
- 	struct ieee80211_vif *main_vif;
-
-+	/*
-+	 * All register writes below require running firmware.
-+	 * Bail out early during teardown or restart (state != STARTED).
-+	 */
-+	if (!IS_STARTED(ar))
-+		return;
++		/* No-op if already on the requested channel and bandwidth */
++		if (old_channel == channel && ar->ht_settings == new_ht)
++			return 0;
 +
+ 		ar->channel = NULL;
+ 	}
+ 
+-	/* cold reset BB/ADDA */
+-	err = carl9170_write_reg(ar, AR9170_PWR_REG_RESET,
+-				 AR9170_PWR_RESET_BB_COLD_RESET);
+-	if (err)
+-		return err;
++	/*
++	 * Same-band warm path (inspired by ath9k FastCC):
++	 * Use warm BB reset to preserve PHY state, skipping
++	 * init_phy (20+ reg writes) and init_rf_banks_0_7.
++	 * Cold reset for first setup, cross-band, HT changes.
++	 */
++	if (old_channel && old_channel->band == channel->band &&
++	    ar->ht_settings == new_ht) {
++		err = carl9170_write_reg(ar, AR9170_PWR_REG_RESET,
++					 AR9170_PWR_RESET_BB_WARM_RESET);
++		if (err)
++			return err;
+ 
+-	err = carl9170_write_reg(ar, AR9170_PWR_REG_RESET, 0x0);
+-	if (err)
+-		return err;
++		err = carl9170_write_reg(ar, AR9170_PWR_REG_RESET, 0x0);
++		if (err)
++			return err;
++	} else {
++		err = carl9170_write_reg(ar, AR9170_PWR_REG_RESET,
++					 AR9170_PWR_RESET_BB_COLD_RESET);
++		if (err)
++			return err;
+ 
+-	err = carl9170_init_phy(ar, channel->band);
+-	if (err)
+-		return err;
++		err = carl9170_write_reg(ar, AR9170_PWR_REG_RESET, 0x0);
++		if (err)
++			return err;
+ 
+-	err = carl9170_init_rf_banks_0_7(ar,
+-					 channel->band == NL80211_BAND_5GHZ);
+-	if (err)
+-		return err;
++		err = carl9170_init_phy(ar, channel->band);
++		if (err)
++			return err;
++
++		err = carl9170_init_rf_banks_0_7(ar,
++						 channel->band == NL80211_BAND_5GHZ);
++		if (err)
++			return err;
++	}
+ 
+ 	err = carl9170_exec_cmd(ar, CARL9170_CMD_FREQ_START, 0, NULL, 0, NULL);
+ 	if (err)
+--- a/drivers/net/wireless/ath/carl9170/main.c	2026-03-16 12:31:43.148358482 +0100
++++ b/drivers/net/wireless/ath/carl9170/main.c	2026-03-16 12:32:14.025829134 +0100
+@@ -355,6 +355,8 @@ static int carl9170_op_start(struct ieee
+ 	/* "The first key is unique." */
+ 	ar->usedkeys = 1;
+ 	ar->filter_state = 0;
++	ar->channel = NULL;
++	ar->chan_fail = 0;
+ 	ar->ps.last_action = jiffies;
+ 	ar->ps.last_slept = jiffies;
+ 	ar->erp_mode = CARL9170_ERP_AUTO;
+@@ -474,6 +476,8 @@ static void carl9170_restart_work(struct
+ 
+ 	ar->usedkeys = 0;
+ 	ar->filter_state = 0;
++	ar->channel = NULL;
++	ar->chan_fail = 0;
+ 	carl9170_cancel_worker(ar);
+ 
  	mutex_lock(&ar->mutex);
- 	vif_priv = (void *) vif->drv_priv;
- 	main_vif = carl9170_get_main_vif(ar);
---
-2.51.0
 
