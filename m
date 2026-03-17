@@ -1,79 +1,79 @@
-Return-Path: <linux-wireless+bounces-33344-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-33345-lists+linux-wireless=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id QIqpDso2uWmcvAEAu9opvQ
-	(envelope-from <linux-wireless+bounces-33344-lists+linux-wireless=lfdr.de@vger.kernel.org>)
-	for <lists+linux-wireless@lfdr.de>; Tue, 17 Mar 2026 12:11:06 +0100
+	id wAYDNsY1uWmcvAEAu9opvQ
+	(envelope-from <linux-wireless+bounces-33345-lists+linux-wireless=lfdr.de@vger.kernel.org>)
+	for <lists+linux-wireless@lfdr.de>; Tue, 17 Mar 2026 12:06:46 +0100
 X-Original-To: lists+linux-wireless@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 989082A884E
-	for <lists+linux-wireless@lfdr.de>; Tue, 17 Mar 2026 12:11:05 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7F1342A875D
+	for <lists+linux-wireless@lfdr.de>; Tue, 17 Mar 2026 12:06:46 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id AFC6B30BB958
-	for <lists+linux-wireless@lfdr.de>; Tue, 17 Mar 2026 11:06:43 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 688ED3020530
+	for <lists+linux-wireless@lfdr.de>; Tue, 17 Mar 2026 11:06:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8D34034DCD1;
-	Tue, 17 Mar 2026 11:06:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0E01134DCD1;
+	Tue, 17 Mar 2026 11:06:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=HOTMAIL.DE header.i=@HOTMAIL.DE header.b="DIhVYvUX"
+	dkim=pass (2048-bit key) header.d=HOTMAIL.DE header.i=@HOTMAIL.DE header.b="I9sJnY7R"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from AM0PR02CU008.outbound.protection.outlook.com (mail-westeuropeazolkn19013081.outbound.protection.outlook.com [52.103.33.81])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 10D283A7F48
-	for <linux-wireless@vger.kernel.org>; Tue, 17 Mar 2026 11:06:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B4B7D3A5E72
+	for <linux-wireless@vger.kernel.org>; Tue, 17 Mar 2026 11:06:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.103.33.81
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773745603; cv=fail; b=aGzZnTsLHV+0BKrqruy7JmgNiLr3u+t946d4AEBxzKAJx/4keScnQt6rG68fpHn/gbrA/SGyN9UfvHykjAoorSQy2oBQ4ywkRSjTjdO+WOSQs3gaKMO6oHHO+Oaax/s8BWfm9zhPB993b6LyBU1GTHENWtfWKI8mm/+DTqxLZ9Q=
+	t=1773745604; cv=fail; b=LWaAwEjg5s2cvA3KeJHK5hhFN3pB+ydI3nlAmo8fy3CWqTXSFMXmyGEUyR86BLE7RQJejrUaKK+KUlPiLBd8MiEWB1jG/Jo60xhwp2rfvu8mfkIywK2XPwlrnEt3GHe5BjUooHraz+D89FrPfE8z2N3B2ARaplxPJyfxR8ECOLA=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773745603; c=relaxed/simple;
-	bh=CRKE8NL6Zyzpux3wxP62hCKBIuH8lvaqvpd5ThTvrnw=;
+	s=arc-20240116; t=1773745604; c=relaxed/simple;
+	bh=T+vLjeK3k4jMZFivSIDsYvRKR+Omnw89VheJmhpSuGk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=WOAlp38Y/Mm0+9Px28WxV+nT4lEMnzN/8l2A5dvByT/Coir9eZKY11L87YPtyWt/idu6XwLgookBkncn7bFJgcENuk6hkABH6IZ9+YeItu3iLSvnegnbVa87FTIX0TKOoymVlA3ep2yCI/q2Ii3KSdbYlef9TZnU2n3gAgw/69U=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=hotmail.de; spf=pass smtp.mailfrom=hotmail.de; dkim=pass (2048-bit key) header.d=HOTMAIL.DE header.i=@HOTMAIL.DE header.b=DIhVYvUX; arc=fail smtp.client-ip=52.103.33.81
+	 Content-Type:MIME-Version; b=XEPGFUYIYp0KRaTGsvoP6Qi8nBaPO6uPG0QLlwakm/hDoHBpv68ogMEbA/VCP11oQ2OKqardHEk/elKHdfp02wwecIOLYl6r5/IkukP6uM8XnlQ5SF+QeR9A1NunmIulGxSggwvFcSsDeYrzKkVt+5lhsyoY3A0QD5R1XMIYEdY=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=hotmail.de; spf=pass smtp.mailfrom=hotmail.de; dkim=pass (2048-bit key) header.d=HOTMAIL.DE header.i=@HOTMAIL.DE header.b=I9sJnY7R; arc=fail smtp.client-ip=52.103.33.81
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=hotmail.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=hotmail.de
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=iqT8e3nb2IMH6vISHjqSyKKQ4Y6aeNXxXt9Xn171E7eoTfByHGQSoO2JA+ym+fXgnFVCCzca1X3X3HcdFXr0sLz1zdDOt4hm0KCIqwfQZoVS2IXQ4iBhAnbKEh95AWjZjDSvF8dkQszrALNYxXJYYv85N+BfVDMC2Qt+0ln4jZplHTG71IE9qxT7B61wd8OsW/lcySIRk8Fw4CfI9Iiv7xIayomTrIlbzJRB1QD3Bjv9B79MWNCTk0bHc809t1O0B2w7TATfKFRmt9Z2l6JZwocEdVrwYj3rId+e7oNOTQL7Aj4nVjyLoKdQl0NOK+lt8Y4Wmbrv0/RKrvo+0o0ZBA==
+ b=nKtX8spAbD+eNFFNvghi6ATf1XG+eyJTC91B5Kdq206ecIigRyxnRTlt/DAsNc6pCwEXnFrT1qMQKqHkio9SldLPN6Neb8d8u10/9kYERwlPLzu/zLXx/faggT3OXO6CEm9BMjzaXWiWWkk0JYpDzOhcfdWkbAq90T5FjCtt3TbSJqo8w401SyGglSN6e/EPvD4OlXLRMIq10BReOT3ngroNxwxHC3zzaobwTvunjoY+EgWlNcg37Q/o4M0r7BCL6+l0XA0uHN0y1TbrDCSwwmedSuSUThHRLbgU2yYjXxa1Os29b0Xy98AVInhpUhUuEr8XaDPlsp3VubdPeK+p+Q==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=7hRm5yL5HruSio23ux/vG4l1Zz9ly4n82ZMT4vcW2Yw=;
- b=cVjApz27XXmjj615YFcAAA4MK2CoDDy0oHeDrfOh+Q+Y1jt1oacnxA3psuURTWMdgN4Sd9ZWCHixDl3gMiF3krV7pfcU8B+UBMKFjJCfiUvdk19cgTYIEIwApdfmqIDJ29TapvdrpRQgieSryjQNnmnuqKtNn0U7VYVxSpkrpY0JbG6lv8mE0cThBHN1pzexPW4m9Zc//0jK+v3/ZfT6RxergjRB6zK2RVvCdKAcueetrT6Xy4u9B8xo/yV0+zArYs5I1iKoKnKzQIPkiNpqZ0/xoeRMdkprXHMnAJa1gTZrF1Kz7QXr0YlrZG3MV6PqfKuIx7jO4C5gAbL7xZPGQg==
+ bh=b9QlqslVqhbUF9QAKMrQWROIVQtnNvcHpt2k3tXv1GY=;
+ b=N/b5m9DRh9h9dA4ROZHTN3uvi0tn7EKJJuiOtImbDxjVbPrtiIjWHvPgrONweMoeBMjDWziI8dlFTEZmrLR5XmGuOkMMqhsws2URhbirCuezuU6hN2p5O5VoWuefk1VatgcWwLzVmkVDKx2g2QJS8Olreidz+MWa+3/GNiRmVrrQrsfBjM3nbbs0FInVcki7AU7DcdyKjgip3q9wire99GBu2lLYiVMonEMAN05IGZ6jSxXxbfP32fqW4zN86O3yqWhth+hfi+pcL0xXvkiwfguuPfQ7KF5X4Iz5iNXEiApb0U1f3aeQLg87BF7D9GGCEe4e4P4zpsNH1mn6WICmdg==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=none; dmarc=none;
  dkim=none; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=HOTMAIL.DE;
  s=selector1;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=7hRm5yL5HruSio23ux/vG4l1Zz9ly4n82ZMT4vcW2Yw=;
- b=DIhVYvUXHO8zwUYnGixXwBYGwAxMsl87+n5FB7FJgszVk773CQSldK2orHqy11B7I91TctrP04ZQd8wXSz870HNBR3VP8DMeY5DJpCGYxtgv5iDi6Hc8IHJn4NdFMNuOYeHoT6o233u6+o46WzIpVgJxyyubHslEEsS0FY4/gxxRe2A+scMtm6VC3y8bCgxWcdfrv7YHb1gvD8mSaRtkWfDosl/nUbXl9E1kQ29WXhcHFwszXqftJ6UHHJzZPk+gJ6UV5K8r20Xv+ZqdIcSspIYRNtiFjIzdvSkeo1ApQa1RajPJMeYZwNCZlWtnjfhAQ5GIVZx7d3yR2B1nw43mYg==
+ bh=b9QlqslVqhbUF9QAKMrQWROIVQtnNvcHpt2k3tXv1GY=;
+ b=I9sJnY7RfGc3Ch5d2Z8VYngT+RTaQVQyMuECeM3GibfXVBrEBGs/Fbbehi5eGNTMFyYlcIF/iAETFulcTH6SyXuVbgZ8CkjZ2gqGlPzT3eCcXMREUag62OVHfC4Sbpkk1MOZp4idWHx9lqGd7YNZE/G8w99myL6KXXJ/TUs5cD6SnobpPUDJIKB9e25MY6q8BMrLAVPo6Mq07IWU83JqKPmOrdGtQQqX/+71eMiRinjWj4oZNJ5CYwu2hJSyjx/I6qeooYYFXMUdxqbh59miPKT/bL1ssWgWoH3DbvBp109K4K7/YaGjrN+pnvi6c9M+IP3xRTuF5yjIcHEASOA3lg==
 Received: from AM7PPF5613FA0B6.EURP251.PROD.OUTLOOK.COM
  (2603:10a6:20f:fff1::851) by AM9P251MB0007.EURP251.PROD.OUTLOOK.COM
  (2603:10a6:20b:412::15) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9700.24; Tue, 17 Mar
- 2026 11:06:40 +0000
+ 2026 11:06:42 +0000
 Received: from AM7PPF5613FA0B6.EURP251.PROD.OUTLOOK.COM
  ([fe80::596d:6ad8:b60c:c9eb]) by AM7PPF5613FA0B6.EURP251.PROD.OUTLOOK.COM
  ([fe80::596d:6ad8:b60c:c9eb%4]) with mapi id 15.20.9700.020; Tue, 17 Mar 2026
- 11:06:40 +0000
+ 11:06:42 +0000
 From: Masi Osmani <mas-i@hotmail.de>
 To: Christian Lamparter <chunkeey@googlemail.com>
 Cc: linux-wireless@vger.kernel.org,
 	Masi Osmani <mas-i@hotmail.de>
-Subject: [PATCH 15/16] carl9170: phy: warm BB reset and same-channel no-op
-Date: Tue, 17 Mar 2026 12:06:33 +0100
+Subject: [PATCH 16/16] carl9170: cmd: downgrade transient register I/O errors to wiphy_dbg
+Date: Tue, 17 Mar 2026 12:06:34 +0100
 Message-ID:
- <AM7PPF5613FA0B60E4BC1593D4C3693644B9441A@AM7PPF5613FA0B6.EURP251.PROD.OUTLOOK.COM>
+ <AM7PPF5613FA0B67FB95CB5305CEF9DAA209441A@AM7PPF5613FA0B6.EURP251.PROD.OUTLOOK.COM>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20260317110634.70347-1-mas-i@hotmail.de>
 References: <20260317110634.70347-1-mas-i@hotmail.de>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: FR4P281CA0018.DEUP281.PROD.OUTLOOK.COM
- (2603:10a6:d10:c9::10) To AM7PPF5613FA0B6.EURP251.PROD.OUTLOOK.COM
+X-ClientProxiedBy: FR2P281CA0100.DEUP281.PROD.OUTLOOK.COM
+ (2603:10a6:d10:9c::14) To AM7PPF5613FA0B6.EURP251.PROD.OUTLOOK.COM
  (2603:10a6:20f:fff1::851)
-X-Microsoft-Original-Message-ID: <20260317110634.70347-3-mas-i@hotmail.de>
+X-Microsoft-Original-Message-ID: <20260317110634.70347-4-mas-i@hotmail.de>
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
@@ -83,206 +83,141 @@ MIME-Version: 1.0
 X-MS-Exchange-MessageSentRepresentingType: 1
 X-MS-PublicTrafficType: Email
 X-MS-TrafficTypeDiagnostic: AM7PPF5613FA0B6:EE_|AM9P251MB0007:EE_
-X-MS-Office365-Filtering-Correlation-Id: c822e7e1-2b2a-4c10-2818-08de84154421
+X-MS-Office365-Filtering-Correlation-Id: f7a35bb5-5924-4248-46a1-08de84154540
 X-Microsoft-Antispam:
-	BCL:0;ARA:14566002|21061999006|8060799015|461199028|41001999006|15080799012|5072599009|23021999003|19110799012|51005399006|3412199025|440099028|40105399003|1710799026;
+	BCL:0;ARA:14566002|8060799015|461199028|41001999006|15080799012|5072599009|6090799003|23021999003|19110799012|51005399006|3412199025|440099028|40105399003|1710799026;
 X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?JJRcwVH/8/osoNjUa/2nQG3gba8CcYM+kyBs5EvVRo8zjtpE1k7vLebLEZb4?=
- =?us-ascii?Q?NrmMd8JmB9r71gcxKoTg5UInDbZkn96sZlE9svmnwgm2ieuhs69Bzd9KLEvU?=
- =?us-ascii?Q?+7HpGJffa7hIxOFYpxBbgVN7P03Me6yRjBb1HA+lE7kv9vIds748e6XL3loS?=
- =?us-ascii?Q?WpZfavyMkFUwxwZuyKfIqK/zMr1Ix+rcRdjN7rJHPz2hzgNMqd/pvIlgA8O8?=
- =?us-ascii?Q?XgZCc7ziDw6zjI9RliE5LEW/eVSbjFIwIdWpWbG4ozqcrlsN0kuzAWuTxweb?=
- =?us-ascii?Q?huDwEXsjqFUag0CiDcdnC76vsk+PBV1wvuqyI7TDQjLxn9rtf/9T8Qv72ht/?=
- =?us-ascii?Q?le6K6wKblA+/jp6QedvMma0eHRhLtd9t1WKdYliVOtXCEwPU9oYEoFHiN219?=
- =?us-ascii?Q?hz9ZnvPfQ9tLeYGy86zi/2pFCO+vOHXzxh9L+KMBzwy7gcH6xd12awIaTwXo?=
- =?us-ascii?Q?aHsllPYmNBsABiQcvJDxpW42eYl0HdaxbPo4W11diigPHzK4P5n4mPNq7R53?=
- =?us-ascii?Q?NY+OquZO9b6YLtihgRZlcfsKM8Ac12WAhx3KmePCHn96KsWqkC+ITPj/UL5Z?=
- =?us-ascii?Q?Mm9myAqrT5/QX1S/t5WVtPpOntly2HUIgJu55z5ff9cu0SVY0ZhyFomfoR06?=
- =?us-ascii?Q?1C9LhM0FNIwji+UL4WVRLkj0qBJP5xQPcGc1imola2fsEDb8icnift18FHn5?=
- =?us-ascii?Q?bRaPrCYTYQ6l7WxzCsu81mOET87WWjW+MEFv3C21YOuu1L8E3KStQ0W9MCcq?=
- =?us-ascii?Q?hawwnAL7P8wOXCSKvBbv8ogxvzk5Lgapy3d711RymuNa9W92GYGxT8/TyJK5?=
- =?us-ascii?Q?DQ/Ma/3hSZhMFHFvks2UeXC6z2KQb1VHiNEBSyV8vObbpD31URM6LsyPoGln?=
- =?us-ascii?Q?8wSuBctO2Lc/UYF0PFQrE5bA1w9e/M6TVvV4LbCI2kW3OIoIa64WESFRa4vr?=
- =?us-ascii?Q?JKFcr9nreFpdvAvU3H4uLwP5motOK3tclMNzjr5n35iNi14HobHhvxyV3O+o?=
- =?us-ascii?Q?8c5s?=
+	=?utf-8?B?cWZsbStiZWJ6aC9rMHNwYnRtK1p3UEdSRjkzYVlJS3A5THZhbzRrY0ZmVkxE?=
+ =?utf-8?B?cTlXVXV5UmJMYVFBWlRKWUtPRFlXazFvcFpEU3BGY0pNWUhtL1o3Q0RFN2Q1?=
+ =?utf-8?B?aUlCTmNIV3lZY09JMGJhbWYyd29zL2tyK2p5RE1qeSswbnAzYlpTMWZNeFlU?=
+ =?utf-8?B?T3ZWK2ZxdC9xQ1N6TkVwYm1wYjZrOWszWVlQTnNHcGdVeDRiVG5Dak5YcG92?=
+ =?utf-8?B?RnZQTnVMSFo0R3o5dzgwOUlhSFVmRGxpdkhna3FLTUpxbFFUdHdhZnViRWNQ?=
+ =?utf-8?B?L3FZQUNiS1RiZjJUTll6dTU5OC92RGtEM2pJZERBd2Z1VjlPaklIZ1ZDc1Iv?=
+ =?utf-8?B?ZXExL2tFZE5uRXFqV2FrSzhCRnVxbzVGRkNWYXM1SUlZT25xWjlhWXc1NUMv?=
+ =?utf-8?B?VEJXeGJ2M0VoaTQxdGtzZWgveDNtbHlDYmZPam1xN2JJVEdQNzUyd0Q2MWEx?=
+ =?utf-8?B?dlFNL0NjTHZoczJWRE0rUHYyRFhOb3VJMU9VUVdnUEcxZmxmOWY3OFU3Ynhl?=
+ =?utf-8?B?M1NwV2U4Umw1WXgveXByYnlDTU82dk5OYkhrMWdleWY1c0NCanFLbDIxbjNw?=
+ =?utf-8?B?RXZLT2RQcTFLcDJpQnZ4N0t2NnVJdWk2a1pHUTdlekxqZy9zWWxnMGdUQXVW?=
+ =?utf-8?B?bmtIT0hkRWZZZ0pGRFNlVVBXN3huZ1gxRlQzQStCM1lFV04yb3gwcDdLdlRo?=
+ =?utf-8?B?a1RWRFZmRjFjVGZpcjlvOGZGbE1uQlpjRUt0cmwyRVltMmxad1JIdzI0eWty?=
+ =?utf-8?B?THoyRzBiOEdnTW9GUTYrOXQ0ZEVqanptTDB2YnZGcGwxdkhqd2FuT2o3K2ZR?=
+ =?utf-8?B?b2hHVEg2N2s2elRoNGdNa0c5M1FETTNrZmRMeGpwanNqTVFibDJuUTdtNVBC?=
+ =?utf-8?B?OXVDZHRIdUViU1pxMTF1S0M5NlRCblp3clJLZGxObHdaQjNMYVpHRmxMbGxZ?=
+ =?utf-8?B?cFZnL3JmZ1h6NlR3QkJMeWdEazFPbHJqNEZPQ012S2NVL3lEejk5eUhENktK?=
+ =?utf-8?B?UGRrRFlEU3Z4QnlqalNFdTBDRzlhVFdORHVwSEtQbTVtQkMrY2dmSXZlSE0v?=
+ =?utf-8?B?YzNnY3ZCVFpXbmhYSFgwbW4wRWxlbWVwWnBPbWllbjhOZG0zb1YyVVI4RHJu?=
+ =?utf-8?B?b2xJTExIcStzNEU0Vm9iR0V6ZXBIZXZKR2YreTZlWHJscW5RRk1mMENkQlJz?=
+ =?utf-8?B?NWdsQVZZVVJuUUJIWE1kQXMxellpQ2tibjVwbmZUOVppMW5uOGd1Tk0rWGZn?=
+ =?utf-8?B?ZlNsQnRRSnZqY3JKckw3eERJb1IvWnU1MnJnZlpad3c2WVpuMENtNkJPa24w?=
+ =?utf-8?Q?ZATrg62Rk8+Ul+oJ0PMUI+8Y5/HgQ9RfLF?=
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
 X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?VnUwKGX3j9t0pZKF/y8gP8hEDDtkt/1fxoA9mfYKPkyuCigim/D7eBRiB4PE?=
- =?us-ascii?Q?vl1B2brw9lOnGwxTvj5pWeaxAr1NVg11y8qYeqtdZE8MINVk1ac5alzpNNIW?=
- =?us-ascii?Q?Z566mCGKow5jZ3/8AByoidklujHN/GNfFJ0/ojd7hFsKVx0OBpTw41ytNy9M?=
- =?us-ascii?Q?HZieJjnaBdIdoB4iHGqU6bSZafHhzCD86lovYoL2Z31yEHgdtcMZF/X4M1GN?=
- =?us-ascii?Q?Doe86ZiREFgY/fatnA2GOmQwFz0pKZcmNSTUwfY04PpYmEJpT9SNn1t1MImd?=
- =?us-ascii?Q?yMJFkP9NgzOHJGX4jxretGq0HM8oCncXUh1EtvxiS0cWRGZdG2vIj5hRNvdc?=
- =?us-ascii?Q?AI0Xk3b47WRtdHB3qVmWhsFgkarof0QOD4BOfzncIbYHhEGvS/Nt2zX7yvF5?=
- =?us-ascii?Q?B/wxuH8UMY6b1j0KdHk8GC+a1V+W4fYtFLQ8giUDiw2tW4BhelvsJ9tY8Z+6?=
- =?us-ascii?Q?P4wNJsJ8HBcvpY5zs0V6t6au+XVKI/H2IYdiIWgFCBpuLIj6i5nYVbF0NRBe?=
- =?us-ascii?Q?c0OdqqFs7C9FOTRuuAJQqDGrNqNLpNzaGanNPyaIUECKxcGqWzRnLUzFScXj?=
- =?us-ascii?Q?v8W3BTF+yB1dqd5ajUPPMnvyNXOFrzvA5QJn1v/HRysysZiOi354nnvvGa/W?=
- =?us-ascii?Q?PLHkrrp05MozZE2FfFgIqoWIB+Q+4Rr56fKzuFccAF7zLYRzNFXlhqkTrKzr?=
- =?us-ascii?Q?6bHJQyXl8g8bhLiRpiEghR7geBsXg0LXR9EN+xiCLv9L6boZ298eKEU9gKMt?=
- =?us-ascii?Q?gTo8fgxZ8KxjplLScg1nqvQhQn/vNefinLalTVPqIloWFXqmbNFm+YYqed2g?=
- =?us-ascii?Q?5BKmfter1idAmM2TkRFUn0501mSV1CcmDyWllc79chbwGDNEChIymxik0sJm?=
- =?us-ascii?Q?PMXpUxC4xbyE/itVmvlVj3Cie1UCsJa/WqF8STK5faHpp6ePaNIMeiFANWv3?=
- =?us-ascii?Q?N5Tz+XQrlduqZGuy0HIRL+ccBDPLBgJOUU2/4l02BumacnG9U2BXH+L6s5S9?=
- =?us-ascii?Q?MzLGY7XX4K1KjNEuuCTzd3i5q1zzYML6Uk5buTySNgAQBgnJvSQoNNjTfmEF?=
- =?us-ascii?Q?O0euZXDbo5PA8AHpo6oyXCEHQFRc54aRGJh9ThIGR3U9LVZwfRCjZAeAedjh?=
- =?us-ascii?Q?mqTt19xTbK2YZ7/xdj0ActtL0xZShLyqLdy2RECT3/HOekrNGnmOyRYFHrqZ?=
- =?us-ascii?Q?nfSTNwRLWDurSjttn7G6LrXB+aK5gniaPp1GXXM38KuA+PkV4h68eHeP6HDN?=
- =?us-ascii?Q?Ak/vq1RCc+MTNU6PSWBETI9vZGKGJchjbSCZA7UkrPEnq5Qb3A+gMJ7P+wYy?=
- =?us-ascii?Q?OgFIPtq1ylT+2jdMH6s/Ou33qrqVU9eAauQxXyoy+cF0XP3oZJG7mzosAfzL?=
- =?us-ascii?Q?zVV1q7Y=3D?=
+	=?utf-8?B?MCswWFMreDdJczdPTmlDYVNSY3FmcTdoRW5yYUs4anNoaFZrdUkwbCtlclJK?=
+ =?utf-8?B?K0tQc1daSCszYVpOVVNmbFdBWHFpMzRrN3ZBQ1k4WlE3aHZiL1NaV05LcTk5?=
+ =?utf-8?B?S1h4d0JPcUh6SDVxQ0VTMFh0dTRUMHNBRTB6Z1orMlFnTVJuQnhQd3BSVHdj?=
+ =?utf-8?B?dllPSHhodVZ2U0NzRXFXV01SSTZIOHpyU0JiNkN4OGludFF2UWF4NW1pM2FP?=
+ =?utf-8?B?M2cxY0xnd1psYWhZSzJTcVZFRG5SOHhsVGYvZkd2a2hXOWMyVWZCaVkySld0?=
+ =?utf-8?B?QWY3aWlFSDZScUY5WmxlTUdBK1VQSkZpM1RyZ2lMT2VWay9xNzJxUDNFT3I2?=
+ =?utf-8?B?NkJ2U3kxVWZlV2V0ZU9RcmpiK0p0YTFrNXpzYnNlTDZ4djFzS2d4NmF6ckRD?=
+ =?utf-8?B?a1hpbjl4R2t2cTNCWCtOalRwam11bDJFb3F1aUpUTTlNbjhSMkNMOWNIeGxw?=
+ =?utf-8?B?b1gzL1dVM3NNMVdkaFQzSWQvb2swOTVYcDNBTEV0OEZ1R3A4cGFMc2lNWmZh?=
+ =?utf-8?B?T3N4UGJTQUljSUJWY2d4bWxuaUZLUk1DM2F4QzhRbFdSdGU5TjYrN2dteXgz?=
+ =?utf-8?B?TmhvYTBGVjNIT1BKTk11TTh3NVMwZ2pPYXkzeDhHRXI4TmwreHFvWjBlTTg0?=
+ =?utf-8?B?THA2MVlsTXBQbmxvTHFZblVkL1ZmYk13RU81b3NRSGtHQ2xsLzk2ZFQ0T2ZF?=
+ =?utf-8?B?ZXlucElYUnlRcE1PZXZUQkpUSkxLM1BQTVRkYUE4Vk41MzY4ZkpwTFVhVVZ0?=
+ =?utf-8?B?WlcrYmNmdGFDVXZHUGxocXpqTjNYcjJqY3VCR3oxMmlaRFBpUmRtY3FJYzBN?=
+ =?utf-8?B?WGxrK3oyOHpsTHF2YitmUlNxU0kvSUxDMjBjQUR4UmRwZVpwWmdvUVZzMStY?=
+ =?utf-8?B?QWlxZGIvdlZYTEdmczQ2MmQvc3lLck1KeENwTGJMSnczRDJ1eDRySGNiYnJC?=
+ =?utf-8?B?VmZhZnlla0tIYVlva21ZN2MzaCtKdFpMM0U2RjhPRjY2bzFXcFRiQkZFem9E?=
+ =?utf-8?B?MWo5MTAyKzdNR1VybWVLY0crbUhISmNqQXVnZ3B5c0xwazQ0WlJ4YmhwaS9y?=
+ =?utf-8?B?cEc5Rytoclk4elV6M0tmaXJPL2V3bERzOVZMWkhiaVV6d1NJOVdUeXNxRlly?=
+ =?utf-8?B?WDVOYmV5MkdpaWJqV1ZsbVpmd3F0bUJrakxSRUdIemdMV2g5OTVRamlnUi9V?=
+ =?utf-8?B?NCtkZE5vVk4rQ0RGdzNMOHE3Q1FJeUVzRmZXSEwyRkNLWGhIdzRZYndqRTZy?=
+ =?utf-8?B?V2hZQWJ3dmNSMGp0eW9uMGxDbitWd2E0YzJ0L1VZSDFMNkFWTm92WGhNckZF?=
+ =?utf-8?B?NGJkVE5Rby9XQmlld2pVUXVnQlgxdWN3dEpDbE9aeFB5RTBBbklPVFd2RXZG?=
+ =?utf-8?B?OTA5VlRkWDlEakF0TStMdjR6cElqWHdTbTlSdElvSzVPSUppeFRaWDJSb3Rn?=
+ =?utf-8?B?WkxseUpSd1c5TjJMOVY4cWc4TjVObHBRZ3VtMmtXZ2FnRnY2ZXIvUnpDNnRm?=
+ =?utf-8?B?OXA3N0thRzlUbHhlZDJlbnRxcDJpVFY3ak0xT051bjBmRDZmKzd4YzhBNWJu?=
+ =?utf-8?B?TzhIbFRqMWtRSkkyZVQzbnZlME5PZ0dzM25HdDczRG91UlJCbllscEhST2oy?=
+ =?utf-8?B?ajNhWC9MY3lEL29OV3ZJcFZxQnpNWTJTZnBveUl6SCtiRE9qRHY1SGV5VHB6?=
+ =?utf-8?B?STF3NDFrcStDV3pwcS9pRkdsUGdSbTNLYStNUmx6ZnpjYkJYZ2lvK1ZtRHBL?=
+ =?utf-8?B?emozeU9kK0d4aTQ0L2dCME9HWmppV0xuSHNxUWVpVFpTMzNYcjk3UURDUEdM?=
+ =?utf-8?Q?PuEM+eDsqe+YRtht63teboSlN9HyxHACc31LI=3D?=
 X-OriginatorOrg: sct-15-20-9412-3-msonline-outlook-fe3f5.templateTenant
-X-MS-Exchange-CrossTenant-Network-Message-Id: c822e7e1-2b2a-4c10-2818-08de84154421
+X-MS-Exchange-CrossTenant-Network-Message-Id: f7a35bb5-5924-4248-46a1-08de84154540
 X-MS-Exchange-CrossTenant-AuthSource: AM7PPF5613FA0B6.EURP251.PROD.OUTLOOK.COM
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 17 Mar 2026 11:06:40.7605
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 17 Mar 2026 11:06:42.6320
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: 84df9e7f-e9f6-40af-b435-aaaaaaaaaaaa
 X-MS-Exchange-CrossTenant-RMS-PersistedConsumerOrg:
 	00000000-0000-0000-0000-000000000000
 X-MS-Exchange-Transport-CrossTenantHeadersStamped: AM9P251MB0007
-X-Spamd-Result: default: False [0.34 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
 	ARC_REJECT(1.00)[cv is fail on i=2];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[hotmail.de,none];
 	R_DKIM_ALLOW(-0.20)[HOTMAIL.DE:s=selector1];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-33344-lists,linux-wireless=lfdr.de];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	TO_DN_SOME(0.00)[];
+	TAGGED_FROM(0.00)[bounces-33345-lists,linux-wireless=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	FREEMAIL_TO(0.00)[googlemail.com];
 	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_TO(0.00)[googlemail.com];
-	FREEMAIL_CC(0.00)[vger.kernel.org,hotmail.de];
+	TO_DN_SOME(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	DKIM_TRACE(0.00)[HOTMAIL.DE:+];
-	RCPT_COUNT_THREE(0.00)[3];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[mas-i@hotmail.de,linux-wireless@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
 	FREEMAIL_FROM(0.00)[hotmail.de];
 	RCVD_COUNT_FIVE(0.00)[5];
-	TAGGED_RCPT(0.00)[linux-wireless];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[mas-i@hotmail.de,linux-wireless@vger.kernel.org];
+	FREEMAIL_CC(0.00)[vger.kernel.org,hotmail.de];
 	NEURAL_HAM(-0.00)[-1.000];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[hotmail.de:email,AM7PPF5613FA0B6.EURP251.PROD.OUTLOOK.COM:mid,HOTMAIL.DE:dkim,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 989082A884E
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	TAGGED_RCPT(0.00)[linux-wireless];
+	RCPT_COUNT_THREE(0.00)[3];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[hotmail.de:email,HOTMAIL.DE:dkim,AM7PPF5613FA0B6.EURP251.PROD.OUTLOOK.COM:mid]
+X-Rspamd-Queue-Id: 7F1342A875D
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-Three optimizations to carl9170_set_channel():
+Register read/write failures during deauth/teardown transitions are
+harmless — mac80211 tries to read survey stats or write slot_time
+while the firmware is in a transitional state.  The command times
+out with -EIO but the adapter recovers and re-authenticates normally.
 
-1. Same-channel no-op: return immediately if already on the
-   requested channel and bandwidth. mac80211 sometimes sends
-   redundant channel change requests.
-
-2. Same-band warm BB reset: use AR9170_PWR_RESET_BB_WARM_RESET
-   (BIT 10) instead of BB_COLD_RESET (BIT 11) for channel
-   changes within the same band and HT mode. Warm reset
-   preserves PHY state, skipping init_phy (20+ register writes)
-   and init_rf_banks_0_7. Cross-band switches still use cold
-   reset with full RF re-init.
-
-3. Post-restart guard: null ar->channel and ar->chan_fail in
-   carl9170_restart_work() to force cold reset after crash.
-
-This replaces the previous cross-band scan skip approach
-(BUG-003) which blocked all 5 GHz scanning while associated
-on 2.4 GHz. The warm BB reset provides sufficient protection
-against AGC calibration timeouts without preventing cross-band
-scans.
+Downgrade both "writing reg ... failed" and "reading regs failed"
+from wiphy_err to wiphy_dbg to reduce dmesg noise.  The errors are
+still visible with dynamic debug enabled for investigation.
 
 Signed-off-by: Masi Osmani <mas-i@hotmail.de>
 ---
---- a/drivers/net/wireless/ath/carl9170/phy.c	2026-03-16 12:31:43.146715685 +0100
-+++ b/drivers/net/wireless/ath/carl9170/phy.c	2026-03-16 12:32:14.020745785 +0100
-@@ -1779,27 +1779,49 @@ int carl9170_set_channel(struct ar9170 *
- 	/* may be NULL at first setup */
- 	if (ar->channel) {
- 		old_channel = ar->channel;
-+
-+		/* No-op if already on the requested channel and bandwidth */
-+		if (old_channel == channel && ar->ht_settings == new_ht)
-+			return 0;
-+
- 		ar->channel = NULL;
+ drivers/net/wireless/ath/carl9170/cmd.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/drivers/net/wireless/ath/carl9170/cmd.c b/drivers/net/wireless/ath/carl9170/cmd.c
+--- a/drivers/net/wireless/ath/carl9170/cmd.c
++++ b/drivers/net/wireless/ath/carl9170/cmd.c
+@@ -52,7 +52,7 @@
+ 				(u8 *) buf, 0, NULL);
+ 	if (err) {
+ 		if (net_ratelimit()) {
+-			wiphy_err(ar->hw->wiphy, "writing reg %#x "
++			wiphy_dbg(ar->hw->wiphy, "writing reg %#x "
+ 				"(val %#x) failed (%d)\n", reg, val, err);
+ 		}
  	}
- 
--	/* cold reset BB/ADDA */
--	err = carl9170_write_reg(ar, AR9170_PWR_REG_RESET,
--				 AR9170_PWR_RESET_BB_COLD_RESET);
--	if (err)
--		return err;
-+	/*
-+	 * Same-band warm path (inspired by ath9k FastCC):
-+	 * Use warm BB reset to preserve PHY state, skipping
-+	 * init_phy (20+ reg writes) and init_rf_banks_0_7.
-+	 * Cold reset for first setup, cross-band, HT changes.
-+	 */
-+	if (old_channel && old_channel->band == channel->band &&
-+	    ar->ht_settings == new_ht) {
-+		err = carl9170_write_reg(ar, AR9170_PWR_REG_RESET,
-+					 AR9170_PWR_RESET_BB_WARM_RESET);
-+		if (err)
-+			return err;
- 
--	err = carl9170_write_reg(ar, AR9170_PWR_REG_RESET, 0x0);
--	if (err)
--		return err;
-+		err = carl9170_write_reg(ar, AR9170_PWR_REG_RESET, 0x0);
-+		if (err)
-+			return err;
-+	} else {
-+		err = carl9170_write_reg(ar, AR9170_PWR_REG_RESET,
-+					 AR9170_PWR_RESET_BB_COLD_RESET);
-+		if (err)
-+			return err;
- 
--	err = carl9170_init_phy(ar, channel->band);
--	if (err)
--		return err;
-+		err = carl9170_write_reg(ar, AR9170_PWR_REG_RESET, 0x0);
-+		if (err)
-+			return err;
- 
--	err = carl9170_init_rf_banks_0_7(ar,
--					 channel->band == NL80211_BAND_5GHZ);
--	if (err)
--		return err;
-+		err = carl9170_init_phy(ar, channel->band);
-+		if (err)
-+			return err;
-+
-+		err = carl9170_init_rf_banks_0_7(ar,
-+						 channel->band == NL80211_BAND_5GHZ);
-+		if (err)
-+			return err;
-+	}
- 
- 	err = carl9170_exec_cmd(ar, CARL9170_CMD_FREQ_START, 0, NULL, 0, NULL);
- 	if (err)
---- a/drivers/net/wireless/ath/carl9170/main.c	2026-03-16 12:31:43.148358482 +0100
-+++ b/drivers/net/wireless/ath/carl9170/main.c	2026-03-16 12:32:14.025829134 +0100
-@@ -355,6 +355,8 @@ static int carl9170_op_start(struct ieee
- 	/* "The first key is unique." */
- 	ar->usedkeys = 1;
- 	ar->filter_state = 0;
-+	ar->channel = NULL;
-+	ar->chan_fail = 0;
- 	ar->ps.last_action = jiffies;
- 	ar->ps.last_slept = jiffies;
- 	ar->erp_mode = CARL9170_ERP_AUTO;
-@@ -474,6 +476,8 @@ static void carl9170_restart_work(struct
- 
- 	ar->usedkeys = 0;
- 	ar->filter_state = 0;
-+	ar->channel = NULL;
-+	ar->chan_fail = 0;
- 	carl9170_cancel_worker(ar);
- 
- 	mutex_lock(&ar->mutex);
+@@ -78,7 +78,7 @@
+ 				4 * nregs, (u8 *)res);
+ 	if (err) {
+ 		if (net_ratelimit()) {
+-			wiphy_err(ar->hw->wiphy, "reading regs failed (%d)\n",
++			wiphy_dbg(ar->hw->wiphy, "reading regs failed (%d)\n",
+ 				  err);
+ 		}
+ 		return err;
 
