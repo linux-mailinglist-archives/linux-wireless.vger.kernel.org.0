@@ -1,333 +1,382 @@
-Return-Path: <linux-wireless+bounces-33325-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-33326-lists+linux-wireless=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id cKy5H5/xuGmTmAEAu9opvQ
-	(envelope-from <linux-wireless+bounces-33325-lists+linux-wireless=lfdr.de@vger.kernel.org>)
-	for <lists+linux-wireless@lfdr.de>; Tue, 17 Mar 2026 07:15:59 +0100
+	id 0GdyFF8VuWmOpgEAu9opvQ
+	(envelope-from <linux-wireless+bounces-33326-lists+linux-wireless=lfdr.de@vger.kernel.org>)
+	for <lists+linux-wireless@lfdr.de>; Tue, 17 Mar 2026 09:48:31 +0100
 X-Original-To: lists+linux-wireless@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 10CAA2A43DB
-	for <lists+linux-wireless@lfdr.de>; Tue, 17 Mar 2026 07:15:58 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id A672D2A5E94
+	for <lists+linux-wireless@lfdr.de>; Tue, 17 Mar 2026 09:48:30 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 487CE303BA57
-	for <lists+linux-wireless@lfdr.de>; Tue, 17 Mar 2026 06:15:19 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id EEDCE30783BA
+	for <lists+linux-wireless@lfdr.de>; Tue, 17 Mar 2026 08:45:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 999744315F;
-	Tue, 17 Mar 2026 06:15:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 807B137DE91;
+	Tue, 17 Mar 2026 08:45:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="kKcNtuNc"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="I3ZZFs1P"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-wm1-f53.google.com (mail-wm1-f53.google.com [209.85.128.53])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 079A3247DE1
-	for <linux-wireless@vger.kernel.org>; Tue, 17 Mar 2026 06:15:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.53
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5E1411B4257;
+	Tue, 17 Mar 2026 08:45:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773728118; cv=none; b=EwxYe5w5lZtGmiZRVcK3lYBPHcOrFgR9HaX0BcJ7a8PSiTKiOJbdHv6JFuezxJlA6WxrGQ3dwoHsGlgRqawlLmBb4NqRtDYMBoklLt+8s0W0/qvJJoD43o6rlGG8ZeMCinn5Or2kZD5j5+ynrBe3lzHqnET7cu0NjbsUhqdtPNw=
+	t=1773737126; cv=none; b=BFAMdTe8UPQnYuJOUtww+GHKIVXNQ1TJeLKb13qevbbYeygtLEf4AwjI+kdmfyNaT3zCaPNgtSCwjztxhclvR7qJ8adkFhz3rz9iP0ZGm2NiTaKx+fKXNLhCAJicad2jKuKcROHDoZ4BwdA8PHg0daLQM76+gBGfc7jtwH42jV8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773728118; c=relaxed/simple;
-	bh=9ayYyUpxUGmQhqTBRAZNSjJWWGEc1x7Gh9JnB3iWmK8=;
-	h=Content-Type:Mime-Version:Subject:From:In-Reply-To:Date:Cc:
-	 Message-Id:References:To; b=EGFwD8a7fA2dPLQmW+Yu/22xoY2Dl8aw9YAOPLs4AmDtkVEYDE+lGPtzHhRsdNfNwQV4MNr5eSY3qdkLLXLlbUow9q2uWT96BhhzTp6uXglFjry18KXeNqomGdXQzDBcSipc83jtbXOzSDeUa0l1ygCaPaNpJcF2NPC1+tpZfn0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=kKcNtuNc; arc=none smtp.client-ip=209.85.128.53
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-wm1-f53.google.com with SMTP id 5b1f17b1804b1-48540355459so50742425e9.3
-        for <linux-wireless@vger.kernel.org>; Mon, 16 Mar 2026 23:15:16 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1773728115; x=1774332915; darn=vger.kernel.org;
-        h=to:references:message-id:content-transfer-encoding:cc:date
-         :in-reply-to:from:subject:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=ul6lc9W/ihLxzzyBefn2mCQEb+lh1IHjN9jY4TWkSzA=;
-        b=kKcNtuNcYOSV7/4x2PLxuZC/KC08HjyzaX0XAuBn8Pzxyha9VQw9NNUk4tlby0MBO4
-         JTuZPysewHDANX+HdgdDJ3OY1u1/U6dsLR8GG9oOH7Wgi/io8MMHz6HbbuAfGpd1Aw29
-         KZRK8245KDzoCqycqXoj3H69Fr/6r/2H9GLWPCHYdL2efJ92tIdH+U88QFHYqOqThWpw
-         Oxu6h8DYH106aMRiu8+5tjwZhpeIEScCZJj8dFRHDEsfm1mIwjh2VnnCbGT7xr5knjlz
-         GlYJtS1rrBuj0uJcPqnc6OivNy2+dPstQysBBZ5AzJGIuTOm9kOmjubCoeHl6WyQMBmg
-         RmZA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1773728115; x=1774332915;
-        h=to:references:message-id:content-transfer-encoding:cc:date
-         :in-reply-to:from:subject:mime-version:x-gm-gg:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=ul6lc9W/ihLxzzyBefn2mCQEb+lh1IHjN9jY4TWkSzA=;
-        b=NiqFzg1WABUA4VFxTSfCi5BAla2l8s9/ijLInq+AbcSQO7BDAL2SmG1Hvq5NoH4xkc
-         9cLPKxbS0J0l9DIv/Lb+ojJ22hgYUeJdsjaiLebDOytg1x54x+UEAmsyY5KvrovOG9w8
-         OSigPEq4DPWMHZ5nwBjFoWFkw6I6Tm5/YXdG1TBJd7TlTiQbApZhBkzXdAAhKew0C7sn
-         g5X+NgN6+MSPPGS16977Fu+0cF6stR/tejFh1JVLFbMcyOEtkJvObT+t0V8eQfIeWxBP
-         h4RVX5PKG/+cvGgOwk+olFyDXdy81b1txhODzYCRaGt1PEkI/PmX1UD6DIHiTdJnj0tx
-         lsig==
-X-Forwarded-Encrypted: i=1; AJvYcCV8orYRcfRBXwtxjCDpBfnw7uTkarJi/4hDQET3KjxaXwcfuw8VNnULxGXvlr1CaEdoRYMJVFhxTJ53gn7crA==@vger.kernel.org
-X-Gm-Message-State: AOJu0YyPH331rhq1W8uLQ/cvaNzEsP9qgDDTlW+io+cPpdPJmyts9/Go
-	Vq6elVFhd5lENO0/37hP40SF9wG9MfM/GVbj8H1CtHcUYwnYcX8coFhj
-X-Gm-Gg: ATEYQzzdTak8ySzFHHOVutmsChxJmMo572yalSbthmfoTR64gee9FxxhYNttOwCnnfw
-	lOOgLfy+Ufj3IM/2b67Csqtn7egNwByXIrMhRtLcf94wVBHkGvrR+/ja119DKJAB0UUjZM1OKUJ
-	O3Gn9CatYghOz2ey0B0j2q3FwiXeJnkhkUb8uL9ZEy1PRm4D0v5DG8L/bbDhCb9pEJFYTKyRPje
-	jkRwqRSre6XAuP64rwH2nLRRNiPtQfDaYKhr5TUhEr2QSr8X4dcd4ZT6gMChBSQN+6JbItT7epM
-	K+QoHCqkOq0QOGJ8QUichq2uNDXxQ5w0rdIE4eaD8kdfdYb0EzT1ovkkcywy77bUCnrNS/6xayO
-	Zdc52uP8ysxab2JHyzetOJHtnTH5pOkxZQIEWxqlv6u4WKMXNxjP4evz/4oo3QhqGbVSaX4nFpM
-	/QgATHfIovK28X0ElLbkoN2ZuSsZAtB8IHaPfqAN8vBBi7bh2tvbZ379r8jfHW4XYrYHxmW9aJ5
-	Il3YxJa2jvnC0BP5pvgTv5gTEi+tgydwgkw3g==
-X-Received: by 2002:a05:600c:154b:b0:485:40ed:2d1 with SMTP id 5b1f17b1804b1-48556706676mr261782455e9.17.1773728115122;
-        Mon, 16 Mar 2026 23:15:15 -0700 (PDT)
-Received: from smtpclient.apple (static.253.36.98.91.clients.your-server.de. [91.98.36.253])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-439fe19aec5sm48752066f8f.4.2026.03.16.23.15.13
-        (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
-        Mon, 16 Mar 2026 23:15:14 -0700 (PDT)
-Content-Type: text/plain;
-	charset=utf-8
+	s=arc-20240116; t=1773737126; c=relaxed/simple;
+	bh=bG2QMyFtCPxrCde+WV94qaWM5BIHp30o0Z4obMH9Imc=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=b7XP5SMuC5oa5sxJgOlP8tTJInbsfr4VamHQpebwX3CpziwE5pn7N22FSa6/SFbce+8hFHQOoYDxtvYOWruFxRhCBmXIichr8CrWKfyHTex0Bgypfi6bXmvACkEOngIptbExZfaR5Sd/7Y7i+UBZcg/lu/nIxBst8VfyBPpDcnY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=I3ZZFs1P; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D6BC1C2BC9E;
+	Tue, 17 Mar 2026 08:45:23 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1773737126;
+	bh=bG2QMyFtCPxrCde+WV94qaWM5BIHp30o0Z4obMH9Imc=;
+	h=From:Date:Subject:To:Cc:From;
+	b=I3ZZFs1PQA2sKkHnWY3pAVvPS9jrCHRKVjnVZUGxtGdPQ7sqpOfNftZgTrpXKAG5K
+	 fCWwqS09jtLWLBeibXauO8MVGXnJ7unD2dfBP8iGvkaVs5KfCdfmJFwcdD2wuA5C75
+	 92ut7V6LMoKRfBX1WPncVgZVAI91Yj0o/eGgDEPsDRdHnG1eFT9/M9vbqrg+vGP9+d
+	 y5/jWZ3U8fsv3iFWU5VZg0FXotdqYrzw909SxGsf+N6lLL+PRtf1qJLXVCSy3MGeqD
+	 sxRmx7bi8q+McAa/8VCMpvJXp8D+M9gdYITju9L95s01xomv3oY+rHz8odO1RGZfC3
+	 97ueyfZ147DeA==
+From: Linus Walleij <linusw@kernel.org>
+Date: Tue, 17 Mar 2026 09:45:20 +0100
+Subject: [PATCH v6] wifi: ath9k: Obtain system GPIOS from descriptors
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3864.400.21\))
-Subject: Re: [PATCH] wifi: rtw89: retry efuse physical map dump on transient
- failure
-From: Christian Hewitt <christianshewitt@gmail.com>
-In-Reply-To: <43c8229cbe284b25bd1fd6b3a66a753d@realtek.com>
-Date: Tue, 17 Mar 2026 10:15:01 +0400
-Cc: Bitterblue Smith <rtl8821cerfe2@gmail.com>,
- "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
- "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
-Content-Transfer-Encoding: quoted-printable
-Message-Id: <BE076023-7D25-4AF0-B01C-4AA69E3666CD@gmail.com>
-References: <20260301042422.195491-1-christianshewitt@gmail.com>
- <a7d421b1d3074a00968f2902c9debb42@realtek.com>
- <86F91944-A4B0-46D6-B2DE-7391EB5B38A7@gmail.com>
- <43c8229cbe284b25bd1fd6b3a66a753d@realtek.com>
-To: Ping-Ke Shih <pkshih@realtek.com>
-X-Mailer: Apple Mail (2.3864.400.21)
+MIME-Version: 1.0
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
+Message-Id: <20260317-descriptors-wireless-v6-1-b19ecff9cd2b@kernel.org>
+X-B4-Tracking: v=1; b=H4sIAAAAAAAC/3XPy2rDMBAF0F8JWldlpNHDzir/UbrQY5yIGjtIR
+ UkJ/vcqoSUpqZd34J6ZubBCOVFh282FZaqppHlqwbxsWDi4aU88xZaZBKlASMkjlZDT8XPOhZ9
+ SppFK4b6LrtcxOI+ateox05DON/btveVDKq3wddtSxXX6A6L4H6yCAycRbNDRdFaZ3Zgml+fXO
+ e/ZVazyriiJK4rkgpsoIqBH8IN7UvBXMYBi5bmKTdESgaCzEFDsPihPNN4V9ais3aKaAtZ5ZUP
+ Xu757UvSjYlYU3RQcbC+C8RC8+6Msy/INdnaU9dEBAAA=
+X-Change-ID: 20240122-descriptors-wireless-b8da95dcab35
+To: Jeff Johnson <jeff.johnson@oss.qualcomm.com>, 
+ Andy Shevchenko <andriy.shevchenko@linux.intel.com>, 
+ Arnd Bergmann <arnd@arndb.de>, Alban Bedel <albeu@free.fr>, 
+ Bartosz Golaszewski <brgl@bgdev.pl>, 
+ =?utf-8?q?Toke_H=C3=B8iland-J=C3=B8rgensen?= <toke@toke.dk>, 
+ =?utf-8?q?Micha=C5=82_K=C4=99pie=C5=84?= <kernel@kempniu.pl>
+Cc: linux-wireless@vger.kernel.org, brcm80211-dev-list.pdl@broadcom.com, 
+ linux-gpio@vger.kernel.org, 
+ Bartosz Golaszewski <bartosz.golaszewski@oss.qualcomm.com>, 
+ Linus Walleij <linusw@kernel.org>
+X-Mailer: b4 0.14.3
 X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
-	R_DKIM_ALLOW(-0.20)[gmail.com:s=20230601];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FREEMAIL_CC(0.00)[gmail.com,vger.kernel.org];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-33325-lists,linux-wireless=lfdr.de];
-	FROM_HAS_DN(0.00)[];
-	TO_DN_EQ_ADDR_SOME(0.00)[];
-	FREEMAIL_FROM(0.00)[gmail.com];
 	RCVD_TLS_LAST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[gmail.com:+];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	RCVD_COUNT_THREE(0.00)[4];
+	FREEMAIL_TO(0.00)[oss.qualcomm.com,linux.intel.com,arndb.de,free.fr,bgdev.pl,toke.dk,kempniu.pl];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[5];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[christianshewitt@gmail.com,linux-wireless@vger.kernel.org];
-	RCPT_COUNT_THREE(0.00)[4];
-	MID_RHS_MATCH_FROM(0.00)[];
-	APPLE_MAILER_COMMON(0.00)[];
+	TAGGED_FROM(0.00)[bounces-33326-lists,linux-wireless=lfdr.de];
+	RCPT_COUNT_TWELVE(0.00)[12];
+	MIME_TRACE(0.00)[0:+];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[linusw@kernel.org,linux-wireless@vger.kernel.org];
+	DKIM_TRACE(0.00)[kernel.org:+];
+	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[linux-wireless];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 10CAA2A43DB
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[qualcomm.com:email,toke.dk:email,kempniu.pl:email,intel.com:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: A672D2A5E94
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-> On 17 Mar 2026, at 5:37=E2=80=AFam, Ping-Ke Shih <pkshih@realtek.com> =
-wrote:
->=20
-> Christian Hewitt <christianshewitt@gmail.com> wrote:
->>> On 16 Mar 2026, at 9:32=E2=80=AFam, Ping-Ke Shih =
-<pkshih@realtek.com> wrote:
->>>=20
->>> Christian Hewitt <christianshewitt@gmail.com> wrote:
->>>> On Radxa Rock 5B with a RTL8852BE combo WiFi/BT card, the efuse
->>>> physical map dump intermittently fails with -EBUSY during probe.
->>>> The failure occurs in rtw89_dump_physical_efuse_map_ddv() where
->>>> read_poll_timeout_atomic() times out waiting for the B_AX_EF_RDY
->>>> bit after 1 second.
->>>>=20
->>>> The root cause is a timing race during boot: the WiFi driver's
->>>> chip initialization (firmware download via PCIe) overlaps with the
->>>> Bluetooth firmware download to the same combo chip over USB. This
->>>> can leave the efuse controller temporarily unavailable when the
->>>> WiFi driver attempts to read the efuse map.
->>>>=20
->>>> Add a retry loop (up to 3 attempts with 500ms delays) around the
->>>> physical efuse map dump in rtw89_parse_efuse_map_ax(). The firmware
->>>> download path already retries up to 5 times, but the efuse read
->>>> that follows has no retry logic, making it the weak link in the
->>>> probe sequence.
->>>=20
->>> I'd prefer adding a wrapper to retry 5 times without delay as bottom
->>> changes for reference. If you want to limit retry only for
->>> 'dav =3D=3D false' case, it is also fine to me.
->>>=20
->>>>=20
->>>> Signed-off-by: Christian Hewitt <christianshewitt@gmail.com>
->>>=20
->>> [...]
->>>=20
->>>>=20
->>>> drivers/net/wireless/realtek/rtw89/efuse.c | 13 ++++++++++++-
->>>> 1 file changed, 12 insertions(+), 1 deletion(-)
->>>>=20
->>>> diff --git a/drivers/net/wireless/realtek/rtw89/efuse.c
->>>> b/drivers/net/wireless/realtek/rtw89/efuse.c
->>>> index a2757a88d55d..d506f04ffd6c 100644
->>>> --- a/drivers/net/wireless/realtek/rtw89/efuse.c
->>>> +++ b/drivers/net/wireless/realtek/rtw89/efuse.c
->>>> @@ -270,6 +270,7 @@ int rtw89_parse_efuse_map_ax(struct rtw89_dev =
-*rtwdev)
->>>>       u8 *log_map =3D NULL;
->>>>       u8 *dav_phy_map =3D NULL;
->>>>       u8 *dav_log_map =3D NULL;
->>>> +       int retry;
->>>>       int ret;
->>>>=20
->>>>       if (rtw89_read16(rtwdev, R_AX_SYS_WL_EFUSE_CTRL) &
->> B_AX_AUTOLOAD_SUS)
->>>> @@ -289,7 +290,17 @@ int rtw89_parse_efuse_map_ax(struct rtw89_dev =
-*rtwdev)
->>>>               goto out_free;
->>>>       }
->>>>=20
->>>> -       ret =3D rtw89_dump_physical_efuse_map(rtwdev, phy_map, 0, =
-phy_size,
->>>> false);
->>>> +       for (retry =3D 0; retry < 3; retry++) {
->>>> +               if (retry) {
->>>> +                       rtw89_warn(rtwdev, "efuse dump failed, =
-retrying
->>>> (%d)\n",
->>>> +                                  retry);
->>>> +                       fsleep(500000);
->>>> +               }
->>>> +               ret =3D rtw89_dump_physical_efuse_map(rtwdev, =
-phy_map, 0,
->>>> +                                                   phy_size, =
-false);
->>>> +               if (!ret)
->>>> +                       break;
->>>> +       }
->>>>       if (ret) {
->>>>               rtw89_warn(rtwdev, "failed to dump efuse physical =
-map\n");
->>>>               goto out_free;
->>>> --
->>>> 2.43.0
->>>=20
->>> How about retrying 5 times without fsleep(500000)?
->>>=20
->>> diff --git a/drivers/net/wireless/realtek/rtw89/efuse.c
->> b/drivers/net/wireless/realtek/rtw89/efuse.c
->>> index a2757a88d55d..89d4b1b865f8 100644
->>> --- a/drivers/net/wireless/realtek/rtw89/efuse.c
->>> +++ b/drivers/net/wireless/realtek/rtw89/efuse.c
->>> @@ -185,8 +185,8 @@ static int =
-rtw89_dump_physical_efuse_map_dav(struct
->> rtw89_dev *rtwdev, u8 *map,
->>>       return 0;
->>> }
->>>=20
->>> -static int rtw89_dump_physical_efuse_map(struct rtw89_dev *rtwdev, =
-u8 *map,
->>> -                                        u32 dump_addr, u32 =
-dump_size, bool
->> dav)
->>> +static int __rtw89_dump_physical_efuse_map(struct rtw89_dev =
-*rtwdev, u8
->> *map,
->>> +                                          u32 dump_addr, u32 =
-dump_size,
->> bool dav)
->>> {
->>>       int ret;
->>>=20
->>> @@ -208,6 +208,25 @@ static int rtw89_dump_physical_efuse_map(struct =
-rtw89_dev
->> *rtwdev, u8 *map,
->>>       return 0;
->>> }
->>>=20
->>> +static int rtw89_dump_physical_efuse_map(struct rtw89_dev *rtwdev, =
-u8 *map,
->>> +                                        u32 dump_addr, u32 =
-dump_size, bool
->> dav)
->>> +{
->>> +       int retry;
->>> +       int ret;
->>> +
->>> +       for (retry =3D 0; retry < 5; retry++) {
->>> +               ret =3D __rtw89_dump_physical_efuse_map(rtwdev, map,
->> dump_addr,
->>> +                                                     dump_size, =
-dav);
->>> +               if (!ret)
->>> +                       return 0;
->>> +
->>> +               rtw89_warn(rtwdev, "efuse dump (dav=3D%d) failed, =
-retrying
->> (%d)\n",
->>> +                          dav, retry);
->>> +       }
->>> +
->>> +       return ret;
->>> +}
->>> +
->>> #define invalid_efuse_header(hdr1, hdr2) \
->>>       ((hdr1) =3D=3D 0xff || (hdr2) =3D=3D 0xff)
->>> #define invalid_efuse_content(word_en, i) \
->>=20
->> I=E2=80=99ve run some boot tests and this also resolves my efuse map =
-use-case, e.g.
->>=20
->> ROCK5B:~ # dmesg | grep rtw89
->> [    6.506375] rtw89_8852be 0002:21:00.0: loaded firmware
->> rtw89/rtw8852b_fw-1.bin
->> [    6.506539] rtw89_8852be 0002:21:00.0: enabling device (0000 -> =
-0003)
->> [    6.516069] rtw89_8852be 0002:21:00.0: Firmware version 0.29.29.15
->> (6fb3ec41), cmd version 0, type 5
->> [    6.516083] rtw89_8852be 0002:21:00.0: Firmware version 0.29.29.15
->> (6fb3ec41), cmd version 0, type 3
->> [   10.153731] rtw89_8852be 0002:21:00.0: efuse dump (dav=3D0) =
-failed, retrying
->> (0)
->> [   10.405347] rtw89_8852be 0002:21:00.0: chip info CID: 0, CV: 1, =
-AID: 0, ACV:
->> 1, RFE: 1
->> [   10.408311] rtw89_8852be 0002:21:00.0: rfkill hardware state =
-changed to
->> enable
->>=20
->> So far I haven=E2=80=99t observed more than 1x retry being required, =
-and there are no
->> issues with loading the BT module.
->=20
-> My changes do retry for 5 times, because your patch does 3 times retry =
-plus
-> additional 500ms delay. I feel you want around 5 seconds for loading =
-BT module.
+The ath9k has an odd use of system-wide GPIOs: if the chip
+does not have internal GPIO capability, it will try to obtain a
+GPIO line from the system GPIO controller:
 
-Understood.
+  if (BIT(gpio) & ah->caps.gpio_mask)
+        ath9k_hw_gpio_cfg_wmac(...);
+  else if (AR_SREV_SOC(ah))
+        ath9k_hw_gpio_cfg_soc(ah, gpio, out, label);
 
-> Did you mean for now you can't reproduce the situation that long =
-loading
-> time of BT module? (But it took long time days ago?)
+Where ath9k_hw_gpio_cfg_soc() will attempt to issue
+gpio_request_one() passing the local GPIO number of the controller
+(0..31) to gpio_request_one().
 
-I=E2=80=99ve never noticed a long loading time for the BT module and =
-timings seem
-to be consistent both with and without the patch (and not a problem).
+This is somewhat peculiar and possibly even dangerous: there is
+nowadays no guarantee of the numbering of these system-wide
+GPIOs, and assuming that GPIO 0..31 as used by ath9k would
+correspond to GPIOs 0..31 on the system as a whole seems a bit
+wild.
 
->> Would you like me to send a v2 using your revised version? - or?
->=20
-> Yes, please help v2.
+Register all 32 GPIOs at index 0..31 directly in the ATH79K
+GPIO driver and associate with the NULL device (making them
+widely available) if and only if we are probing ATH79K wifi
+from the AHB bus (used for SoCs). We obtain these offsets from
+the NULL device if necessary.
 
-Thanks, will send v2 later today.
+These GPIOs should ideally be defined in the device tree
+instead, but we have no control over that for the legacy
+code path.
 
-Christian=
+Testcompiled with the ath79 defconfig.
+
+Reported-by: Michał Kępień <kernel@kempniu.pl>
+Acked-by: Toke Høiland-Jørgensen <toke@toke.dk>
+Reviewed-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Acked-by: Bartosz Golaszewski <bartosz.golaszewski@oss.qualcomm.com>
+Signed-off-by: Linus Walleij <linusw@kernel.org>
+---
+This patch set is a long standing attempt to get rid of the global
+GPIO numbers from the ath9k Wireless driver.
+
+Maybe Jeff can merge this to the Wireless tree if we agree on this
+hack solution.
+
+Michal: can you test this? It would be great.
+---
+Changes in v6:
+- Fix the kernel test robot warning that I missed...
+- Link to v5: https://lore.kernel.org/r/20260316-descriptors-wireless-v5-1-3f791c6b0cba@kernel.org
+
+Changes in v5:
+- Collect Bartosz ACK
+- Switch Kalle->Jeff as maintainer.
+- Link to v4: https://lore.kernel.org/r/20260313-descriptors-wireless-v4-1-07ab47c89a98@kernel.org
+
+Changes in v4:
+- Fix review comments from Andy.
+- Collect ACKs.
+- Link to v3: https://lore.kernel.org/r/20260312-descriptors-wireless-v3-1-5230e0870c31@kernel.org
+
+Changes in v3:
+- Rebased on kernel v7.0-rc1
+- Fix up issues as pointed out by Michał Kępień
+- Link to v2: https://lore.kernel.org/r/20240423-descriptors-wireless-v2-1-6d1d03b30bfa@linaro.org
+
+Changes in v2:
+- Define all the descriptors directly in the ATH79K
+  GPIO driver in case the driver want to request them directly.
+- Link to v1: https://lore.kernel.org/r/20240131-descriptors-wireless-v1-0-e1c7c5d68746@linaro.org
+---
+ drivers/gpio/gpio-ath79.c           | 57 ++++++++++++++++++++++++++++++++++++-
+ drivers/net/wireless/ath/ath9k/hw.c | 33 ++++++++++++++-------
+ drivers/net/wireless/ath/ath9k/hw.h |  3 +-
+ 3 files changed, 80 insertions(+), 13 deletions(-)
+
+diff --git a/drivers/gpio/gpio-ath79.c b/drivers/gpio/gpio-ath79.c
+index 2ad9f6ac6636..85bd994d15d4 100644
+--- a/drivers/gpio/gpio-ath79.c
++++ b/drivers/gpio/gpio-ath79.c
+@@ -11,6 +11,7 @@
+ #include <linux/device.h>
+ #include <linux/gpio/driver.h>
+ #include <linux/gpio/generic.h>
++#include <linux/gpio/machine.h> /* For WLAN GPIOs */
+ #include <linux/interrupt.h>
+ #include <linux/irq.h>
+ #include <linux/mod_devicetable.h>
+@@ -214,6 +215,56 @@ static const struct of_device_id ath79_gpio_of_match[] = {
+ };
+ MODULE_DEVICE_TABLE(of, ath79_gpio_of_match);
+ 
++#if IS_ENABLED(CONFIG_ATH9K_AHB)
++/*
++ * This registers all of the ath79k GPIOs as descriptors to be picked
++ * directly from the ATH79K wifi driver if the two are jitted together
++ * in the same SoC.
++ */
++#define ATH79K_WIFI_DESCS 32
++static int ath79_gpio_register_wifi_descriptors(struct device *dev,
++						const char *label)
++{
++	struct gpiod_lookup_table *lookup;
++	int i;
++
++	/* Create a gpiod lookup using gpiochip-local offsets + 1 for NULL */
++	lookup = devm_kzalloc(dev,
++			      struct_size(lookup, table, ATH79K_WIFI_DESCS + 1),
++			      GFP_KERNEL);
++	if (!lookup)
++		return -ENOMEM;
++
++	/*
++	 * Ugly system-wide lookup for the NULL device: we know this
++	 * is already NULL but explicitly assign it here for people to
++	 * know what is going on. (Yes this is an ugly legacy hack, live
++	 * with it.)
++	 */
++	lookup->dev_id = NULL;
++
++	for (i = 0; i < ATH79K_WIFI_DESCS; i++) {
++		lookup->table[i] =
++			/*
++			 * Set the HW offset on the chip and the lookup
++			 * index to the same value, so looking up index 0
++			 * will get HW offset 0, index 1 HW offset 1 etc.
++			 */
++			GPIO_LOOKUP_IDX(label, i, "ath9k", i, GPIO_ACTIVE_HIGH);
++	}
++
++	gpiod_add_lookup_table(lookup);
++
++	return 0;
++}
++#else
++static int ath79_gpio_register_wifi_descriptors(struct device *dev,
++						const char *label)
++{
++	return 0;
++}
++#endif
++
+ static int ath79_gpio_probe(struct platform_device *pdev)
+ {
+ 	struct gpio_generic_chip_config config;
+@@ -276,7 +327,11 @@ static int ath79_gpio_probe(struct platform_device *pdev)
+ 		girq->handler = handle_simple_irq;
+ 	}
+ 
+-	return devm_gpiochip_add_data(dev, &ctrl->chip.gc, ctrl);
++	err = devm_gpiochip_add_data(dev, &ctrl->chip.gc, ctrl);
++	if (err)
++		return err;
++
++	return ath79_gpio_register_wifi_descriptors(dev, ctrl->chip.gc.label);
+ }
+ 
+ static struct platform_driver ath79_gpio_driver = {
+diff --git a/drivers/net/wireless/ath/ath9k/hw.c b/drivers/net/wireless/ath/ath9k/hw.c
+index a45351afcf6e..05c95e67a853 100644
+--- a/drivers/net/wireless/ath/ath9k/hw.c
++++ b/drivers/net/wireless/ath/ath9k/hw.c
+@@ -21,7 +21,7 @@
+ #include <linux/time.h>
+ #include <linux/bitops.h>
+ #include <linux/etherdevice.h>
+-#include <linux/gpio.h>
++#include <linux/gpio/consumer.h>
+ #include <linux/unaligned.h>
+ 
+ #include "hw.h"
+@@ -2719,19 +2719,28 @@ static void ath9k_hw_gpio_cfg_output_mux(struct ath_hw *ah, u32 gpio, u32 type)
+ static void ath9k_hw_gpio_cfg_soc(struct ath_hw *ah, u32 gpio, bool out,
+ 				  const char *label)
+ {
++	enum gpiod_flags flags = out ? GPIOD_OUT_LOW : GPIOD_IN;
++	struct gpio_desc *gpiod;
+ 	int err;
+ 
+-	if (ah->caps.gpio_requested & BIT(gpio))
++	if (ah->gpiods[gpio])
+ 		return;
+ 
+-	err = devm_gpio_request_one(ah->dev, gpio, out ? GPIOF_OUT_INIT_LOW : GPIOF_IN, label);
++	/*
++	 * Obtains a system specific GPIO descriptor from another GPIO controller.
++	 * Ideally this should come from the device tree, this is a legacy code
++	 * path.
++	 */
++	gpiod = gpiod_get_index(NULL, "ath9k", gpio, flags);
++	err = PTR_ERR_OR_ZERO(gpiod);
+ 	if (err) {
+ 		ath_err(ath9k_hw_common(ah), "request GPIO%d failed:%d\n",
+ 			gpio, err);
+ 		return;
+ 	}
+ 
+-	ah->caps.gpio_requested |= BIT(gpio);
++	gpiod_set_consumer_name(gpiod, label);
++	ah->gpiods[gpio] = gpiod;
+ }
+ 
+ static void ath9k_hw_gpio_cfg_wmac(struct ath_hw *ah, u32 gpio, bool out,
+@@ -2791,10 +2800,12 @@ void ath9k_hw_gpio_free(struct ath_hw *ah, u32 gpio)
+ 	if (!AR_SREV_SOC(ah))
+ 		return;
+ 
+-	WARN_ON(gpio >= ah->caps.num_gpio_pins);
++	if (ah->gpiods[gpio]) {
++		gpiod_put(ah->gpiods[gpio]);
++		ah->gpiods[gpio] = NULL;
++	}
+ 
+-	if (ah->caps.gpio_requested & BIT(gpio))
+-		ah->caps.gpio_requested &= ~BIT(gpio);
++	WARN_ON(gpio >= ah->caps.num_gpio_pins);
+ }
+ EXPORT_SYMBOL(ath9k_hw_gpio_free);
+ 
+@@ -2822,8 +2833,8 @@ u32 ath9k_hw_gpio_get(struct ath_hw *ah, u32 gpio)
+ 			val = REG_READ(ah, AR_GPIO_IN(ah)) & BIT(gpio);
+ 		else
+ 			val = MS_REG_READ(AR, gpio);
+-	} else if (BIT(gpio) & ah->caps.gpio_requested) {
+-		val = gpio_get_value(gpio) & BIT(gpio);
++	} else if (ah->gpiods[gpio]) {
++		val = gpiod_get_value(ah->gpiods[gpio]);
+ 	} else {
+ 		WARN_ON(1);
+ 	}
+@@ -2846,8 +2857,8 @@ void ath9k_hw_set_gpio(struct ath_hw *ah, u32 gpio, u32 val)
+ 			AR7010_GPIO_OUT : AR_GPIO_IN_OUT(ah);
+ 
+ 		REG_RMW(ah, out_addr, val << gpio, BIT(gpio));
+-	} else if (BIT(gpio) & ah->caps.gpio_requested) {
+-		gpio_set_value(gpio, val);
++	} else if (ah->gpiods[gpio]) {
++		gpiod_set_value(ah->gpiods[gpio], val);
+ 	} else {
+ 		WARN_ON(1);
+ 	}
+diff --git a/drivers/net/wireless/ath/ath9k/hw.h b/drivers/net/wireless/ath/ath9k/hw.h
+index eaa07d6dbde0..d9d2f64c5570 100644
+--- a/drivers/net/wireless/ath/ath9k/hw.h
++++ b/drivers/net/wireless/ath/ath9k/hw.h
+@@ -19,6 +19,7 @@
+ 
+ #include <linux/if_ether.h>
+ #include <linux/delay.h>
++#include <linux/gpio/consumer.h>
+ #include <linux/io.h>
+ #include <linux/firmware.h>
+ 
+@@ -302,7 +303,6 @@ struct ath9k_hw_capabilities {
+ 	u8 max_rxchains;
+ 	u8 num_gpio_pins;
+ 	u32 gpio_mask;
+-	u32 gpio_requested;
+ 	u8 rx_hp_qdepth;
+ 	u8 rx_lp_qdepth;
+ 	u8 rx_status_len;
+@@ -783,6 +783,7 @@ struct ath_hw {
+ 	struct ath9k_hw_capabilities caps;
+ 	struct ath9k_channel channels[ATH9K_NUM_CHANNELS];
+ 	struct ath9k_channel *curchan;
++	struct gpio_desc *gpiods[32];
+ 
+ 	union {
+ 		struct ar5416_eeprom_def def;
+
+---
+base-commit: 6de23f81a5e08be8fbf5e8d7e9febc72a5b5f27f
+change-id: 20240122-descriptors-wireless-b8da95dcab35
+
+Best regards,
+-- 
+Linus Walleij <linusw@kernel.org>
+
 
