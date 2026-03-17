@@ -1,159 +1,118 @@
-Return-Path: <linux-wireless+bounces-33346-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-33347-lists+linux-wireless=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 4CMUOOs3uWk8vgEAu9opvQ
-	(envelope-from <linux-wireless+bounces-33346-lists+linux-wireless=lfdr.de@vger.kernel.org>)
-	for <lists+linux-wireless@lfdr.de>; Tue, 17 Mar 2026 12:15:55 +0100
+	id MNL3MmY3uWnVvQEAu9opvQ
+	(envelope-from <linux-wireless+bounces-33347-lists+linux-wireless=lfdr.de@vger.kernel.org>)
+	for <lists+linux-wireless@lfdr.de>; Tue, 17 Mar 2026 12:13:42 +0100
 X-Original-To: lists+linux-wireless@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4338A2A893D
-	for <lists+linux-wireless@lfdr.de>; Tue, 17 Mar 2026 12:15:55 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id EEAB62A88F0
+	for <lists+linux-wireless@lfdr.de>; Tue, 17 Mar 2026 12:13:41 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 7F23B306C472
-	for <lists+linux-wireless@lfdr.de>; Tue, 17 Mar 2026 11:12:09 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 2A2D6300C7EC
+	for <lists+linux-wireless@lfdr.de>; Tue, 17 Mar 2026 11:13:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B26713A7F5D;
-	Tue, 17 Mar 2026 11:12:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B5D2634F486;
+	Tue, 17 Mar 2026 11:13:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ew.tq-group.com header.i=@ew.tq-group.com header.b="AbeO/2KI"
+	dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b="j/A0og7E"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from www537.your-server.de (www537.your-server.de [188.40.3.216])
+Received: from sipsolutions.net (s3.sipsolutions.net [168.119.38.16])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9C9C934A775;
-	Tue, 17 Mar 2026 11:12:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=188.40.3.216
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 74781371CF2
+	for <linux-wireless@vger.kernel.org>; Tue, 17 Mar 2026 11:13:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=168.119.38.16
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773745928; cv=none; b=iCH/M5/iTHEIHQol2JvJMtpwRewi+0mDDvYKgU2SrtZE+bMnF6Hl0YXzqDkxS6dPTQFsNZXCySc0RR79Y0i/hPMh6577ixa20sOp/hsqxHCOvoMNEDH1b2+Ycf3D5iOIUIoSrdtqiUcm9ZiuktmZSEh0G/enC7v7o3xP6qJiKyw=
+	t=1773745985; cv=none; b=e22oSg+1MSV+SFL0ICYnW6S0kR8Yc8s4An+6J7cnD3CQRMFTx76HbLzDvK2FwJUWLjeYXfnXzx0oSPW+EeYb/qnz1xcppAiHBvILeEg7b29ihXNSSK25MMKnY346F/co55UUwOeXWXqJO4cAG10q2Yn5y5ecMSjQNaX5lOFGbSw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773745928; c=relaxed/simple;
-	bh=UpMbgdGpif1VYGxms0CsIIG4VYoqm+CrqUZVO+7ixKg=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=Ks3p3OIsilPJYnuSvAjlIEt05bVrEQvAlyU7PR8dG/I/JbwN2VWByQoVObCJWK3g8dgKyN3bvVrBpw1SVkWT1bU11DiyRnYH6mhmAKlVQCul/Do9dEEyTm2W4Jus83uIjs/9o9RRPuYk30p3k89Oqgg1p1eP0AcQg38E/rdeIfQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ew.tq-group.com; spf=pass smtp.mailfrom=ew.tq-group.com; dkim=pass (2048-bit key) header.d=ew.tq-group.com header.i=@ew.tq-group.com header.b=AbeO/2KI; arc=none smtp.client-ip=188.40.3.216
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ew.tq-group.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ew.tq-group.com
+	s=arc-20240116; t=1773745985; c=relaxed/simple;
+	bh=hRedNgl1KKhzzXq2myT78vzMd/AhdkWrW2cUDx+D98I=;
+	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=D50pUwQA/UwVeZe6EKr3ABJ7IIarDTLkowR5QTMQJjCxWFxsqminUR5aO22h2pUpaqAzbj0vgi55++fhrTFY6hZ30bD/4dquEGR9/VsapxrbAtFt9Np0oyI31IytT9Mqoifq+9VDC1/fxWy9IUHOVrLHNxMZNGVXomlM1AXj9iw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net; spf=pass smtp.mailfrom=sipsolutions.net; dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b=j/A0og7E; arc=none smtp.client-ip=168.119.38.16
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sipsolutions.net
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=ew.tq-group.com; s=default2602; h=Content-Transfer-Encoding:MIME-Version:
-	Message-ID:Date:Subject:Cc:To:From:Sender:Reply-To:Content-Type:Content-ID:
-	Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
-	:Resent-Message-ID:In-Reply-To:References;
-	bh=cWxcmL/wzD9sIbxY9dY33pmEH2ZkxNt9cL7up/78YR4=; b=AbeO/2KIxISN9bz4EwO+aNxxrp
-	2SpEtQUK0o7Um0w4cLmLHfy/F8TWd7XEOEDPLFVVslPlzRN7TcesbuFo25UgAPj6ZLdrv6KuNhqgX
-	2fY8l6B3QoCSg7FSGwxgqs93X7FoGFeM4b+OBiKzTkMu5aoKJPOnen825QJr9B68ptSvOvCoD57/L
-	RDSszh/QtDRl38TjmCKl5sY6W0aPvsZSHNthISb86rOm8FvnVNfmPBQK/jJZdOGDIQ5JGL/89Xo+u
-	odT/Xz9TUhdQJjORS/HhJSiUg7tZzdcQGneoKzGkYGk0/ZeRwgCzk2baJn3VIscV6g9nuy9M+5ejb
-	ovKYTQ8Q==;
-Received: from sslproxy04.your-server.de ([78.46.152.42])
-	by www537.your-server.de with esmtpsa  (TLS1.3) tls TLS_AES_256_GCM_SHA384
-	(Exim 4.96.2)
-	(envelope-from <alexander.stein@ew.tq-group.com>)
-	id 1w2SLE-0007KF-1x;
-	Tue, 17 Mar 2026 12:12:04 +0100
-Received: from localhost ([127.0.0.1])
-	by sslproxy04.your-server.de with esmtpsa  (TLS1.3) tls TLS_AES_256_GCM_SHA384
-	(Exim 4.96)
-	(envelope-from <alexander.stein@ew.tq-group.com>)
-	id 1w2SLD-0005Ox-30;
-	Tue, 17 Mar 2026 12:12:04 +0100
-From: Alexander Stein <alexander.stein@ew.tq-group.com>
-To: Arend van Spriel <arend.vanspriel@broadcom.com>
-Cc: Alexander Stein <alexander.stein@ew.tq-group.com>,
-	linux-wireless@vger.kernel.org,
-	brcm80211@lists.linux.dev,
-	brcm80211-dev-list.pdl@broadcom.com,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH 1/1] wifi: brcmfmac: silence warning for non-existent, optional firmware
-Date: Tue, 17 Mar 2026 12:12:01 +0100
-Message-ID: <20260317111202.1074675-1-alexander.stein@ew.tq-group.com>
-X-Mailer: git-send-email 2.43.0
+	d=sipsolutions.net; s=mail; h=MIME-Version:Content-Transfer-Encoding:
+	Content-Type:References:In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender
+	:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
+	Resent-Cc:Resent-Message-ID; bh=0QdBqsEjf2sOpnX3xwGjARphjEs2NJRM3lce1KpcN+4=;
+	t=1773745984; x=1774955584; b=j/A0og7EMvG5yzBKaaDH8lD1uy417Ydb+qqjeJ9+bwk+TQ+
+	qmrcA2VINg4v86m0xQm6FaYU0Eu10YMb05El5gJF1Eyt8TLONBiMARTZdPO/jRmbX+I/o5CFHlXD9
+	x6C6d3tyThLXS08+ZFJC/hschrP1IhwFjIPDtQ+TjXmebPTQjQnbvznw0XX/7gh8QEDyQPUlRckf0
+	X/Gh6oYH0ufY8fSkYRzeMQvMloZugbVet9p/Lyn9NBbsnqyeYGl6TsSfLvMqzsTFibm3XVc/z+vIK
+	1EV6CWnjSDcl/EIh/FoHqUdxbiYPUdFKMXQAzIuuAVtp4IkCa9WF/s2r97H7lN3w==;
+Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
+	(Exim 4.98.2)
+	(envelope-from <johannes@sipsolutions.net>)
+	id 1w2SM4-00000003Evv-3X2U;
+	Tue, 17 Mar 2026 12:12:57 +0100
+Message-ID: <14dbba2a612dbff4058ac36b6a581f66e4ad6b7d.camel@sipsolutions.net>
+Subject: Re: [PATCH 13/16] carl9170: rx: gate data frame delivery on STARTED
+ state
+From: Johannes Berg <johannes@sipsolutions.net>
+To: Masi Osmani <mas-i@hotmail.de>, Christian Lamparter
+	 <chunkeey@googlemail.com>
+Cc: linux-wireless@vger.kernel.org
+Date: Tue, 17 Mar 2026 12:12:56 +0100
+In-Reply-To: <AM7PPF5613FA0B6ADFF8016B03CAA1A9DEB9441A@AM7PPF5613FA0B6.EURP251.PROD.OUTLOOK.COM>
+References: 
+	<AM7PPF5613FA0B6ADFF8016B03CAA1A9DEB9441A@AM7PPF5613FA0B6.EURP251.PROD.OUTLOOK.COM>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.58.3 (3.58.3-1.fc43) 
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Virus-Scanned: Clear (ClamAV 1.4.3/27943/Tue Mar 17 07:24:09 2026)
-X-Spamd-Result: default: False [-0.66 / 15.00];
+X-malware-bazaar: not-scanned
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MID_CONTAINS_FROM(1.00)[];
-	R_MISSING_CHARSET(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[ew.tq-group.com,quarantine];
-	R_DKIM_ALLOW(-0.20)[ew.tq-group.com:s=default2602];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	DMARC_POLICY_ALLOW(-0.50)[sipsolutions.net,none];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
+	R_DKIM_ALLOW(-0.20)[sipsolutions.net:s=mail];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	TO_DN_SOME(0.00)[];
-	TAGGED_FROM(0.00)[bounces-33346-lists,linux-wireless=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	RECEIVED_HELO_LOCALHOST(0.00)[];
-	DKIM_TRACE(0.00)[ew.tq-group.com:+];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	RCPT_COUNT_FIVE(0.00)[6];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[alexander.stein@ew.tq-group.com,linux-wireless@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
+	TAGGED_FROM(0.00)[bounces-33347-lists,linux-wireless=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	FREEMAIL_TO(0.00)[hotmail.de,googlemail.com];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[5];
-	TAGGED_RCPT(0.00)[linux-wireless];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	RCPT_COUNT_THREE(0.00)[3];
 	NEURAL_HAM(-0.00)[-1.000];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[johannes@sipsolutions.net,linux-wireless@vger.kernel.org];
+	DKIM_TRACE(0.00)[sipsolutions.net:+];
+	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,tq-group.com:email]
-X-Rspamd-Queue-Id: 4338A2A893D
+	TAGGED_RCPT(0.00)[linux-wireless];
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,sipsolutions.net:dkim,sipsolutions.net:mid]
+X-Rspamd-Queue-Id: EEAB62A88F0
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-The driver tries to load optional firmware files, specific to
-the actual board compatible. These might not exist resulting in a warning
-like this:
-brcmfmac mmc2:0001:1: Direct firmware load for brcm/brcmfmac4373-sdio.tq,imx93-tqma9352-mba93xxla-mini.bin failed with error -2
+On Tue, 2026-03-17 at 12:06 +0100, Masi Osmani wrote:
+> Do not deliver data frames to mac80211 unless the device is fully
+> started.  After carl9170_op_stop() the driver state drops to IDLE,
+> but the USB RX path can still receive frames from the hardware.
+> Without this gate, ieee80211_rx() may reference station data that
+> sta_info_destroy_part2() is concurrently freeing during interface
+> teardown, causing a use-after-free kernel panic.
 
-Silence this by using firmware_request_nowait_nowarn() for all firmware
-loads which use brcmf_fw_request_done_alt_path() as callback. This one
-handles optional firmware files.
+You keep claiming this without ever showing how it happened, that's not
+so useful ... I really don't think that should happen given there's RCU
+protection involved everywhere. Please show what happens so we can fix
+_that_ issue instead of papering over it.
 
-Signed-off-by: Alexander Stein <alexander.stein@ew.tq-group.com>
----
- .../broadcom/brcm80211/brcmfmac/firmware.c         | 14 ++++++++------
- 1 file changed, 8 insertions(+), 6 deletions(-)
-
-diff --git a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/firmware.c b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/firmware.c
-index 4bacd83db052e..e84cec58470c5 100644
---- a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/firmware.c
-+++ b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/firmware.c
-@@ -714,9 +714,10 @@ static void brcmf_fw_request_done_alt_path(const struct firmware *fw, void *ctx)
- 		if (!alt_path)
- 			goto fallback;
- 
--		ret = request_firmware_nowait(THIS_MODULE, true, alt_path,
--					      fwctx->dev, GFP_KERNEL, fwctx,
--					      brcmf_fw_request_done_alt_path);
-+		ret = firmware_request_nowait_nowarn(THIS_MODULE,
-+						     alt_path, fwctx->dev,
-+						     GFP_KERNEL, fwctx,
-+						     brcmf_fw_request_done_alt_path);
- 		kfree(alt_path);
- 
- 		if (ret < 0)
-@@ -779,9 +780,10 @@ int brcmf_fw_get_firmwares(struct device *dev, struct brcmf_fw_request *req,
- 					    fwctx->req->board_types[0]);
- 	if (alt_path) {
- 		fwctx->board_index++;
--		ret = request_firmware_nowait(THIS_MODULE, true, alt_path,
--					      fwctx->dev, GFP_KERNEL, fwctx,
--					      brcmf_fw_request_done_alt_path);
-+		ret = firmware_request_nowait_nowarn(THIS_MODULE,
-+						     alt_path, fwctx->dev,
-+						     GFP_KERNEL, fwctx,
-+						     brcmf_fw_request_done_alt_path);
- 		kfree(alt_path);
- 	} else {
- 		ret = request_firmware_nowait(THIS_MODULE, true, first->path,
--- 
-2.43.0
-
+johannes
 
