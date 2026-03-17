@@ -1,188 +1,130 @@
-Return-Path: <linux-wireless+bounces-33330-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-33331-lists+linux-wireless=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id MHh3NS4auWkBqgEAu9opvQ
-	(envelope-from <linux-wireless+bounces-33330-lists+linux-wireless=lfdr.de@vger.kernel.org>)
-	for <lists+linux-wireless@lfdr.de>; Tue, 17 Mar 2026 10:09:02 +0100
+	id 6I4fMuwZuWn5qgEAu9opvQ
+	(envelope-from <linux-wireless+bounces-33331-lists+linux-wireless=lfdr.de@vger.kernel.org>)
+	for <lists+linux-wireless@lfdr.de>; Tue, 17 Mar 2026 10:07:56 +0100
 X-Original-To: lists+linux-wireless@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3BA912A6419
-	for <lists+linux-wireless@lfdr.de>; Tue, 17 Mar 2026 10:09:02 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 538F82A63F1
+	for <lists+linux-wireless@lfdr.de>; Tue, 17 Mar 2026 10:07:56 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id C2F96302E410
-	for <lists+linux-wireless@lfdr.de>; Tue, 17 Mar 2026 09:07:25 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 4C1DB304434C
+	for <lists+linux-wireless@lfdr.de>; Tue, 17 Mar 2026 09:07:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D4E3235836F;
-	Tue, 17 Mar 2026 09:07:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 10351355F41;
+	Tue, 17 Mar 2026 09:07:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="QTsRRDYM";
-	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="sEhq3izu";
-	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="QTsRRDYM";
-	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="sEhq3izu"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ndPpBm00"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5F17034DB66
-	for <linux-wireless@vger.kernel.org>; Tue, 17 Mar 2026 09:07:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.130
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DA193346763;
+	Tue, 17 Mar 2026 09:07:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773738444; cv=none; b=PZtCJyHWKMyBlBDsMD9+GvW1puGGMxDc1xBOI3/DAv5lDYoNzEf8xsn/EpJQ20uatmtH7HdaJ10eJUkBXICh3lWie43fGGLqVZpr9xhOaUYKjRlc0edYh3g0/zJB6lf9zBz18Ac5Ryu7hUFjqbC8TqQzkzLEJIyZymMjG1k937o=
+	t=1773738466; cv=none; b=iQ+400AvAsxW2kD10K/mwpFvKmfqRrKFfbk3URfkaVU7j08apA6moxB3ZnEf6c9RpVO3M3VFvaleCnxEAbzn1eL9c+SaNQChR909b7P41jGlzuFV8yv9yNmMP3DG0wupZirgUKe2WtK2T1VZWzeEJjom7Cr9IsP3jqHHrUgQlvc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773738444; c=relaxed/simple;
-	bh=QuYrBAsBv7vcdizE/S4T63R7Qg05vTZjRNFb3DPTF7o=;
-	h=Date:Message-ID:From:To:Cc:Subject:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=UWDNxFkNzQScGwaN7lNO65AvknhFtglbWSm5o6J9CYuA+9VJ1xllgByN1cZtB2pZdDD8edTxLae28+vijnM+wmdUjDyjThclMSlVFk+wqcwlSMFmKsUdXafzfodiiZWLA7JKow+ZhwNxXJrCrFAJt9gKR7Js9pqG4bb8VBRYkaM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de; spf=pass smtp.mailfrom=suse.de; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=QTsRRDYM; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=sEhq3izu; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=QTsRRDYM; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=sEhq3izu; arc=none smtp.client-ip=195.135.223.130
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.de
-Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out1.suse.de (Postfix) with ESMTPS id 8E5F54D301;
-	Tue, 17 Mar 2026 09:07:21 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1773738441; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=H6iQDme+4pl0VVtlEzwn4J0Z5GPchMZ4qJMefnm2uWA=;
-	b=QTsRRDYMLYhsJNdBEPITMfAVz818hsTy9ECgT4e9MaQNJOwNAS31S+qtDfZlm8BtE65kWT
-	hLxRqWxmcm5rkQ2iC/QcL+0yE+0vVZIhmnk18tASSgWKXfZhTFuRPKcL1NXaDtoJOYAz7X
-	oGtvuaxJWTQfLq8QfD2Wu0rJe8RNaf4=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1773738441;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=H6iQDme+4pl0VVtlEzwn4J0Z5GPchMZ4qJMefnm2uWA=;
-	b=sEhq3izugF5n7YcaEZFEsBVf+7dmR7cXPGILdBbnajzu50dYzKaJOz+alDwJkKTXal6V7N
-	wShGAzLpvEbJztAw==
-Authentication-Results: smtp-out1.suse.de;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=QTsRRDYM;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=sEhq3izu
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1773738441; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=H6iQDme+4pl0VVtlEzwn4J0Z5GPchMZ4qJMefnm2uWA=;
-	b=QTsRRDYMLYhsJNdBEPITMfAVz818hsTy9ECgT4e9MaQNJOwNAS31S+qtDfZlm8BtE65kWT
-	hLxRqWxmcm5rkQ2iC/QcL+0yE+0vVZIhmnk18tASSgWKXfZhTFuRPKcL1NXaDtoJOYAz7X
-	oGtvuaxJWTQfLq8QfD2Wu0rJe8RNaf4=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1773738441;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=H6iQDme+4pl0VVtlEzwn4J0Z5GPchMZ4qJMefnm2uWA=;
-	b=sEhq3izugF5n7YcaEZFEsBVf+7dmR7cXPGILdBbnajzu50dYzKaJOz+alDwJkKTXal6V7N
-	wShGAzLpvEbJztAw==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id C778B4273B;
-	Tue, 17 Mar 2026 09:07:20 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id FtMGLsgZuWkjEgAAD6G6ig
-	(envelope-from <tiwai@suse.de>); Tue, 17 Mar 2026 09:07:20 +0000
-Date: Tue, 17 Mar 2026 10:07:20 +0100
-Message-ID: <875x6ug6yf.wl-tiwai@suse.de>
-From: Takashi Iwai <tiwai@suse.de>
+	s=arc-20240116; t=1773738466; c=relaxed/simple;
+	bh=ZrKKE8ny7s5IpYiTG6uvqZyrDNosiYUjWstBwT2fgd4=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=eTylScv++DcFLynCltMZFPR4xJvLN1+4niBnCpGDHuFEDuYCI1gfCDPhj6VPMPPApSZVEAj+ACOaRlF1wbkNXQpx8faydmEM2OMluTgyy7oNHAVgCeYnqyFazevPxn7H6zB8yoVBgVpoKaujgsDd+KG5OgohNuLnkBkckJXuPdA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ndPpBm00; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4788EC4CEF7;
+	Tue, 17 Mar 2026 09:07:45 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1773738466;
+	bh=ZrKKE8ny7s5IpYiTG6uvqZyrDNosiYUjWstBwT2fgd4=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=ndPpBm00/1/NTma8rKwc9SM+YUkIDM0gVjUwn4PhvzD64ijd6S+3FlDMvccFEaGsd
+	 wPVJkOxEaZGVGAslWLDul+t387VwYV4TMxw1IUnTv9wN2LdTNrt9df+llf0Sm14dSD
+	 7heb3H/0QH3ZjEdlPFaIPKHnoEdkhZgT31fVlZoc=
+Date: Tue, 17 Mar 2026 10:07:41 +0100
+From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: Daniel Lezcano <daniel.lezcano@oss.qualcomm.com>
-Cc: konradybcio@kernel.org,
-	andersson@kernel.org,
-	linux-kernel@vger.kernel.org,
-	Alex Elder <elder@kernel.org>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
+Cc: Jakub Kicinski <kuba@kernel.org>, konradybcio@kernel.org,
+	andersson@kernel.org, linux-kernel@vger.kernel.org,
+	Alex Elder <elder@kernel.org>, Andrew Lunn <andrew+netdev@lunn.ch>,
 	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
+	Eric Dumazet <edumazet@google.com>, Paolo Abeni <pabeni@redhat.com>,
 	Jeff Johnson <jjohnson@kernel.org>,
 	Mathieu Poirier <mathieu.poirier@linaro.org>,
 	Srinivas Kandagatla <srini@kernel.org>,
-	Jaroslav Kysela <perex@perex.cz>,
-	Takashi Iwai <tiwai@suse.com>,
-	Kees Cook <kees@kernel.org>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	Arnd Bergmann <arnd@arndb.de>,
+	Jaroslav Kysela <perex@perex.cz>, Takashi Iwai <tiwai@suse.com>,
+	Kees Cook <kees@kernel.org>, Arnd Bergmann <arnd@arndb.de>,
 	Mark Brown <broonie@kernel.org>,
-	Wesley Cheng <quic_wcheng@quicinc.com>,
-	netdev@vger.kernel.org,
-	linux-wireless@vger.kernel.org,
-	ath10k@lists.infradead.org,
-	ath11k@lists.infradead.org,
-	ath12k@lists.infradead.org,
-	linux-arm-msm@vger.kernel.org,
-	linux-remoteproc@vger.kernel.org,
-	linux-sound@vger.kernel.org,
-	Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>,
-	Dan Carpenter <dan.carpenter@linaro.org>
-Subject: Re: [PATCH v2 4/4] ALSA: usb-audio: qcom: Use the unified QMI service ID instead of defining it locally
-In-Reply-To: <20260316171419.2619620-5-daniel.lezcano@oss.qualcomm.com>
+	Wesley Cheng <quic_wcheng@quicinc.com>, netdev@vger.kernel.org,
+	linux-wireless@vger.kernel.org, ath10k@lists.infradead.org,
+	ath11k@lists.infradead.org, ath12k@lists.infradead.org,
+	linux-arm-msm@vger.kernel.org, linux-remoteproc@vger.kernel.org,
+	linux-sound@vger.kernel.org
+Subject: Re: [PATCH v2 0/4] Use the QMI service IDs from the QMI header
+Message-ID: <2026031717-ethanol-zoning-80b5@gregkh>
 References: <20260316171419.2619620-1-daniel.lezcano@oss.qualcomm.com>
-	<20260316171419.2619620-5-daniel.lezcano@oss.qualcomm.com>
-User-Agent: Wanderlust/2.15.9 (Almost Unreal) Emacs/30.2 Mule/6.0
+ <20260316172251.2d57d0aa@kernel.org>
+ <8757aec7-8c36-446a-9a34-f0717f64202a@oss.qualcomm.com>
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0 (generated by SEMI-EPG 1.14.7 - "Harue")
-Content-Type: text/plain; charset=US-ASCII
-X-Spam-Flag: NO
-X-Spam-Score: -2.01
-X-Spam-Level: 
-X-Spamd-Result: default: False [0.34 / 15.00];
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <8757aec7-8c36-446a-9a34-f0717f64202a@oss.qualcomm.com>
+X-Spamd-Result: default: False [3.84 / 15.00];
+	MID_END_EQ_FROM_USER_PART(4.00)[];
 	SUSPICIOUS_RECIPS(1.50)[];
-	MID_CONTAINS_FROM(1.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[suse.de,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
-	R_DKIM_ALLOW(-0.20)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
+	MID_RHS_NOT_FQDN(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	RCPT_COUNT_TWELVE(0.00)[30];
-	TAGGED_FROM(0.00)[bounces-33330-lists,linux-wireless=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-33331-lists,linux-wireless=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
+	RCPT_COUNT_TWELVE(0.00)[27];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	MISSING_XM_UA(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[6];
+	NEURAL_HAM(-0.00)[-0.993];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[tiwai@suse.de,linux-wireless@vger.kernel.org];
-	DKIM_TRACE(0.00)[suse.de:+];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,linux-wireless@vger.kernel.org];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[linux-wireless,netdev];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,qualcomm.com:email,suse.de:dkim,suse.de:email,suse.de:mid]
-X-Rspamd-Queue-Id: 3BA912A6419
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 538F82A63F1
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-On Mon, 16 Mar 2026 18:14:14 +0100,
-Daniel Lezcano wrote:
+On Tue, Mar 17, 2026 at 09:51:32AM +0100, Daniel Lezcano wrote:
+> On 3/17/26 01:22, Jakub Kicinski wrote:
+> > On Mon, 16 Mar 2026 18:14:10 +0100 Daniel Lezcano wrote:
+> > > This series is based on the immutable branch [1] containing the QMI
+> > > service id definitions along with some drivers using them.
+> > > 
+> > > How a patch can be merged ?
+> > 
+> > Wait for the dependency to appear in respective trees after the merge
+> > window then repost the patches individually. I'm starting to get
+> > annoyed with all this cross-tree QMI/MHI noise.
 > 
-> Instead of defining a local macro with a custom name for the QMI
-> service identifier, use the one provided in qmi.h and remove the
-> locally defined macro.
-> 
-> Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
-> Signed-off-by: Daniel Lezcano <daniel.lezcano@oss.qualcomm.com>
+> An ack is simpler for everyone, especially when they are trivial
 
-For the sound bits,
+Why isn't this 4 different patches, all for different branches/trees as
+there does not seem to be any dependencies here?
 
-Reviewed-by: Takashi Iwai <tiwai@suse.de>
+confused,
 
-
-thanks,
-
-Takashi
+greg k-h
 
