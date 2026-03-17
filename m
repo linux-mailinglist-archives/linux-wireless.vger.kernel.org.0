@@ -1,76 +1,79 @@
-Return-Path: <linux-wireless+bounces-33333-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-33334-lists+linux-wireless=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id II2xAJcbuWm+qwEAu9opvQ
-	(envelope-from <linux-wireless+bounces-33333-lists+linux-wireless=lfdr.de@vger.kernel.org>)
-	for <lists+linux-wireless@lfdr.de>; Tue, 17 Mar 2026 10:15:03 +0100
+	id +HPAGaUauWn5qgEAu9opvQ
+	(envelope-from <linux-wireless+bounces-33334-lists+linux-wireless=lfdr.de@vger.kernel.org>)
+	for <lists+linux-wireless@lfdr.de>; Tue, 17 Mar 2026 10:11:01 +0100
 X-Original-To: lists+linux-wireless@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6453F2A6504
-	for <lists+linux-wireless@lfdr.de>; Tue, 17 Mar 2026 10:15:02 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id D1E902A645A
+	for <lists+linux-wireless@lfdr.de>; Tue, 17 Mar 2026 10:11:00 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id EACA3303FA9E
-	for <lists+linux-wireless@lfdr.de>; Tue, 17 Mar 2026 09:10:56 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 5ECE7302C750
+	for <lists+linux-wireless@lfdr.de>; Tue, 17 Mar 2026 09:10:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8ABAE359A9F;
-	Tue, 17 Mar 2026 09:10:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 28A5335836F;
+	Tue, 17 Mar 2026 09:10:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=HOTMAIL.DE header.i=@HOTMAIL.DE header.b="cmJ/Cd6k"
+	dkim=pass (2048-bit key) header.d=HOTMAIL.DE header.i=@HOTMAIL.DE header.b="ld3dxqJW"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from AM0PR02CU008.outbound.protection.outlook.com (mail-westeuropeazolkn19013087.outbound.protection.outlook.com [52.103.33.87])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EB9913563C2
-	for <linux-wireless@vger.kernel.org>; Tue, 17 Mar 2026 09:10:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B5E5C355F41
+	for <linux-wireless@vger.kernel.org>; Tue, 17 Mar 2026 09:10:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.103.33.87
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773738656; cv=fail; b=aW7/4ATCaVej8ufOyupqT951kN8qYSyp0LwXVKpioe1rtHVAPvQ9u+xLNFGr0uRxTUt9hu8zNWykddjF2bxYrff1p1bBBihJjsNjoumorMw7K4euzN2gScSyVBpy86uBP2ublQxPGSvE0yI5HraT8vL21ydyWD8qap9gnoBNceU=
+	t=1773738658; cv=fail; b=QM7ZYr4UjNagYfr2QUj6spDms8Q/LP+Jc9Q7rcaFLM08r5+XqjRq0cITQXUItaUlKnVV7N531DZl2S+DJplMvzLMcqMoq6LouSSc+NBzjRyNnvNfHeZAPKdKzc1toyIrV14iJqwZRhRY0iBZghGzvUpPQ74o49wi0W5jX8O9Ivo=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773738656; c=relaxed/simple;
-	bh=20AgJEu5gQWdKuyVYnUcuBzrocAvE7yZUMFBQUKGZ0k=;
-	h=From:To:Cc:Subject:Date:Message-ID:Content-Type:MIME-Version; b=SnjaS0xDNYxWy/UGGMCaTNGCRdqm361ZS68oOTfzLy+5MaTB3xIui7ED7a9spfrPqZudibzyEYV7nmiaAu9TX8ih8U8A9mmVnQ5JW6AR/Xe2A3eNftfLx1CImSVHxZ1/gjtcIDYXuef7Qo5XMkDnQbUm9jIprIa7vjgQqfRx+Kw=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=hotmail.de; spf=pass smtp.mailfrom=hotmail.de; dkim=pass (2048-bit key) header.d=HOTMAIL.DE header.i=@HOTMAIL.DE header.b=cmJ/Cd6k; arc=fail smtp.client-ip=52.103.33.87
+	s=arc-20240116; t=1773738658; c=relaxed/simple;
+	bh=fi1iXKYkvgiLVEEZqDJXwj0h0jdXBfC/DgoWzDaSqdM=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=JVHaXavUbBiJH+c7HGewuaGRKpaEwjKVCCu+FBQIix5yzxfoOnqALojq0pkE5ku3nOO8Sz4K7d2nQWUlq4odVF5uc6Lk66w6GcONiaHkprJhjXwtX75YU6rJIaZ1Ejsj1zvZfR3dwuE3HE89cL/2hLB+BrovKrrGK3XI3o7zGKc=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=hotmail.de; spf=pass smtp.mailfrom=hotmail.de; dkim=pass (2048-bit key) header.d=HOTMAIL.DE header.i=@HOTMAIL.DE header.b=ld3dxqJW; arc=fail smtp.client-ip=52.103.33.87
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=hotmail.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=hotmail.de
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=wS25IUCZ59vtkw3ZxLwSTb/rJ/IelAZhk0cha1064n9dN0rWWCs7PML4RgQ23YebkA3qUBAV0GxfhH/cwA2eZFS0QlrPMimwe42buXF3AviecHGvaZxIMDVKeJP+eAB3FjH0HnhjkWlhk4Wu0x44YZiJAckTZmeS7+YtJ1eanhPep0PNUDmumdrwLIfrMQI6y3QeFkHYfaugWlBUz5Zdi2VrzBg8Z1KYYfWGMGf1RuF0hiN7L+Q7NFLeUX3Xf4cSCIOQi/od6SyQlCkNrc/bjCRWM8lVVdrHZHV+IMfxADgIVULm4u48srJZCm59F3ks4iFZWyUARdMoP/Et2FTbbQ==
+ b=E0UzrlnyctKR1RoQiL6i5sfZKyWN/nnKGl/DveV6FlfpidgPpysZvGsTXenT71Lmo672SkyS6iE9uwZNHo6gAkRml40h8NrN/4uvXaGTXZQ/ogyhBoU9RaryyAHMI28SmusUsoYsB9A0RAarHDEhh1AcfXh1w3j8Qqh6pubE2KoBoNRapkHHvmFsLQleEnDSQYQYXPR56JfpcyiHNg3BmMSP+FCTbhvZddSA26aMBNxHukaOLZ1g6mGmDALICbddvWp8FKahQF2sfEfUYMqr2fKswGR/IJl6GOtTkjRMr0t2S0bBz6cuCbpg+fvShyvKgS+E0CSBSxn9gp55Za2F1w==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=ihtXr2xlSZs9wDF1YtfmSECY02i4yj7DjxAzjSf7n6c=;
- b=oo5IUjOTZxMSclt2vCniVUkeVoVG9XDWq0d5minWiexMlkowTA0v9IbsuBmzz7vJbSZBKTtEhkIjHhKAZqd8Mp0983Bw824ScSEFPPeTs4N/ANFf/cUj9ovsLA+tHMrnEQV3RelLjzScbnfBB7xdAlF8BJTtKK9zV0Z9J2fsPBt8rV/NVoWq9YAMG9xd6j2EfVcd3qKyYvMQ6L6ZfZj6w6h9inJ5uik03nr6lf3Eb+9AMsAREOs0qo2QU0Jjw0uR8nReU4IAyQLEUQFcHWeGnF400AC3Ntv0XvfBbMSHjCFrwxoxZO5gaBj02Ckevi4OtA2E7zUGsO2VZNYWOxRQFw==
+ bh=GlFsugOSstT2JlFbTWRkHKm31kIFbiWoszI1k7BVfpg=;
+ b=mXhflH8tNHGdtl1o8SWiKhMj2sgr3wGjYI/zouvROGCh+XTlZY0v1de5V38EiRG8b2RsmSWRq5ECgHJjvMWw5Cx0T8GH37HLDpR/swo5OnVqMcjFuVpUcVme18CwsQ7icdoLSXVGxTrDa+iIURn3tfFqa5InUSKu3orJi1I4pqjCN+Cb7bWqN+OjbOcDdWaW9cYJUZLyZcM/xmepBMx3nJrWmXH1dMJUCAFv/WNp0mncak5VFmCe3EGVumqJ6V3LiYat1+0MgYTIBBqbruQ0NQZBCWycJPn5j4uD2oKCADFwBbLG/3masPZiYo2v/aV3CcXFdwsvAOv/5norIEaruw==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=none; dmarc=none;
  dkim=none; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=HOTMAIL.DE;
  s=selector1;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=ihtXr2xlSZs9wDF1YtfmSECY02i4yj7DjxAzjSf7n6c=;
- b=cmJ/Cd6kXq+bLaelR7gUW7Vv/GfqkVGm4TUFHHZbjcD2VvnLijChkGEfdTXzJFl69piEGWCwIKuW08yHYHbqI0NMezTD+H0/te6ejl8nukg9V6QhdX5phe5qmIWz8ziVfb+zjc+FZiBEFqRuck4AFmt1uYyXKXPRdG+808CBwcoaOXboDY0f0442wqlYdgrGrMndl/ABRteiUYMespta7fpNDSrXhgVTocKTNUtW2HrNaW0HGwlE0pGIXRK7oO4dXetbiwduERh4zYwMXkmbdPmzlKGCj+XTMgLJkLtJLOHqaAqukG7eMRxAN82sgCpXbp+4ZTCh8F7s2uvjnNEpCQ==
+ bh=GlFsugOSstT2JlFbTWRkHKm31kIFbiWoszI1k7BVfpg=;
+ b=ld3dxqJWUbHlMg0HIARAu4pjGwjlsZOiB1nYep7iNTHujs3+MMAdM6mcf/TPyp8DStc1D3ZIizYxKFy/azGWBNw1B3KnatFC8Ye21/QDjsFjw3jymq16vi8y2tt/PpAPhJAtmAV6F6kxKE9hgrXRXBExfr/p5A71Oj2VeWC0irX48buJIgExH32d/VWZc4kdRBVjPWBP9Vuuq+vuYbcrIAPUKeLzjw5Uu2KLNwvqsfw2fdgC1SRlz9svnzNpzIcWN04tHPDPEtLNsCxLs4LQVqzkt4OvRUNcrHsiM+pwF3xG5kPSGHTm00q2j7HbWGFfYK2jPbcclsppg5C5aVXRLg==
 Received: from AM7PPF5613FA0B6.EURP251.PROD.OUTLOOK.COM
  (2603:10a6:20f:fff1::851) by PAXP251MB0579.EURP251.PROD.OUTLOOK.COM
  (2603:10a6:102:284::14) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9700.18; Tue, 17 Mar
- 2026 09:10:52 +0000
+ 2026 09:10:54 +0000
 Received: from AM7PPF5613FA0B6.EURP251.PROD.OUTLOOK.COM
  ([fe80::596d:6ad8:b60c:c9eb]) by AM7PPF5613FA0B6.EURP251.PROD.OUTLOOK.COM
  ([fe80::596d:6ad8:b60c:c9eb%4]) with mapi id 15.20.9700.020; Tue, 17 Mar 2026
- 09:10:52 +0000
+ 09:10:54 +0000
 From: Masi Osmani <mas-i@hotmail.de>
 To: Christian Lamparter <chunkeey@googlemail.com>
 Cc: linux-wireless@vger.kernel.org,
 	Masi Osmani <mas-i@hotmail.de>
-Subject: [PATCH 11/12] carl9170: skip cross-band channel changes during software scan
-Date: Tue, 17 Mar 2026 10:10:44 +0100
+Subject: [PATCH 12/12] carl9170: rx: handle zeroed PLCP CCK rate as corrupted frame
+Date: Tue, 17 Mar 2026 10:10:45 +0100
 Message-ID:
- <AM7PPF5613FA0B64618E70AB9ECAA3B65FB9441A@AM7PPF5613FA0B6.EURP251.PROD.OUTLOOK.COM>
+ <AM7PPF5613FA0B634D22FBBEDB37F553E039441A@AM7PPF5613FA0B6.EURP251.PROD.OUTLOOK.COM>
 X-Mailer: git-send-email 2.51.0
+In-Reply-To: <20260317091045.23696-1-mas-i@hotmail.de>
+References: <20260317091045.23696-1-mas-i@hotmail.de>
 Content-Transfer-Encoding: 8bit
 Content-Type: text/plain
-X-ClientProxiedBy: FR2P281CA0070.DEUP281.PROD.OUTLOOK.COM
- (2603:10a6:d10:9a::9) To AM7PPF5613FA0B6.EURP251.PROD.OUTLOOK.COM
+X-ClientProxiedBy: FR0P281CA0009.DEUP281.PROD.OUTLOOK.COM
+ (2603:10a6:d10:15::14) To AM7PPF5613FA0B6.EURP251.PROD.OUTLOOK.COM
  (2603:10a6:20f:fff1::851)
-X-Microsoft-Original-Message-ID: <20260317091045.23696-1-mas-i@hotmail.de>
+X-Microsoft-Original-Message-ID: <20260317091045.23696-2-mas-i@hotmail.de>
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
@@ -80,60 +83,58 @@ MIME-Version: 1.0
 X-MS-Exchange-MessageSentRepresentingType: 1
 X-MS-PublicTrafficType: Email
 X-MS-TrafficTypeDiagnostic: AM7PPF5613FA0B6:EE_|PAXP251MB0579:EE_
-X-MS-Office365-Filtering-Correlation-Id: 460e86c7-7d38-4fbe-3b55-08de84051651
+X-MS-Office365-Filtering-Correlation-Id: 75e882ee-bea2-484d-7eb3-08de84051799
 X-Microsoft-Antispam:
-	BCL:0;ARA:14566002|51005399006|5062599005|5072599009|461199028|41001999006|19110799012|8060799015|13031999003|12121999013|23021999003|15080799012|3412199025|440099028|3430499032|40105399003|1710799026;
+	BCL:0;ARA:14566002|51005399006|5072599009|461199028|41001999006|19110799012|8060799015|23021999003|15080799012|3412199025|440099028|40105399003|1710799026;
 X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?/G66AMJzd9+XAhcLmC/jhgNQqVpgAd+tA5Yftt7tvN7NkUpu+06reCOADFy3?=
- =?us-ascii?Q?LYKyYnDFt6VHm1/AaWrJ+2bxxBpNNN8oO96sMWMr8hwNtyPv+ToDR1dZ7wnd?=
- =?us-ascii?Q?AitSjXcyvIYo0tzUiry5V3jqCrvR2pGownBuE9ikyylWs5g1HuKFtGTTZr3+?=
- =?us-ascii?Q?fz7X2dddmDqirbkKyIaMEubvQJHrI64vGSxxkbrthKc2728bmajMb7aetwTL?=
- =?us-ascii?Q?vl/zdEFrJ8+wZfLShVvhfs7xLJ5QB9HkqwxbOjHWhWF+7FHsJpAjq6HHTn2I?=
- =?us-ascii?Q?jVIAI5x7XbSf5YIkeuu3X5i0ycd+und/Vj/GyuxgMZ4Q3AyTHc5U7YSwotP6?=
- =?us-ascii?Q?yQQcw3yp/zJdB6D9w31Oi+e30qOrgVJjqb45cVxjIwCRarrewjYnUvLiuKtI?=
- =?us-ascii?Q?GyICf3zsMW+0Bw++g0PgeDZex9FVkKS/6zqLJcU9v8hfcpp43uSEEPiOngif?=
- =?us-ascii?Q?kW01aQWFekfeK9VVIX/fWFnqaB7N0R+BOL0C9SD+DNF2JmIIeUP8Hi6P4xZU?=
- =?us-ascii?Q?5fEV/MXRl1Sj8VAsnpg3dCFfKQU1pnyxSI9s00VVnaiPIzVsdDSOdcOsM/z/?=
- =?us-ascii?Q?h11z8SnYZfk9FXiV1vYBYzYkyhYy/zBiXeKaARnVysKkgLnebafHNKgBSv8L?=
- =?us-ascii?Q?3/nXul72/ysRMBLDkJqghFaf+Lt+3TK/ttcHONFIj/j7EBDDYtu+z2/Y0EcG?=
- =?us-ascii?Q?VbR3l5iYsgBsBUxI7JoyyoC5K9lTZ50u/xNFxn5m6Jz8SEGmnJW2o4xxqya8?=
- =?us-ascii?Q?fdvvu66Xq9+mND6sYF3758+Xe05YyfdQRoLwUx55VfI8cNwwrXZSJRa1COBu?=
- =?us-ascii?Q?4kAQjl2IkMz3gScI2e52+9SqOAgvW8cXMjCSt6d1NENROjZgyUlp3Ljg0wIh?=
- =?us-ascii?Q?0lQNnRxWRRepzxnTuTzQL0QhXOIqRBoSzp5yHrz7KGojnY3g6zakKasvoc1z?=
- =?us-ascii?Q?Lg/s5RU9ixKo5HdHCMuEqw4g6DcQ1bdNAI3wldXRM9XcUO/ZLsyN9E2M+z9i?=
- =?us-ascii?Q?/SancUmd+K+pGvrkMgHjuHNA+sIfCoEM6WMU8gIgpd4+Zv6a/wj0xlQeYRdu?=
- =?us-ascii?Q?pUDPlOza?=
+	=?us-ascii?Q?0MBnXMcaoOWQKGAUrUjnpCiSbEPSvzCn4lph+AFrWx9csPS9w4XbrPMIxp8n?=
+ =?us-ascii?Q?2y23izEtOviMeBE4v7UxKitN0nP45DUxdHTg5TKzPqnizFlL8gJ8nN973SE9?=
+ =?us-ascii?Q?Q0+61CLbWttYQ+E4edsqtNRYIfSvpxeQpUlkdB9L5j4JgH6bhN8XEllx1MkA?=
+ =?us-ascii?Q?dIPPCC/iRLk2tqomTKJEGkVKPF7ueYXhsmWPTACPmWuoRkFGIp+kMC+Olvm+?=
+ =?us-ascii?Q?fiw8k9rIMnoJQYZ1CdHDlJrfghYglHgD0MWYZL71MPaOd/BhsG5Hp6F2onTQ?=
+ =?us-ascii?Q?2BneowjUh3h3m+njqqo9NvP4xf+OoPpSAV02GYWkToGC3S2xXPYouLMfxLLy?=
+ =?us-ascii?Q?ETmoQ380DICQeShHpqLOMAtS375fUH9e2c1AeEdGq+j6uuM4JKfeis0sPF+3?=
+ =?us-ascii?Q?Ks7E4chYCEeO1ic3FkhyBM103Gxc2w99DHYDd93amdRB7aYh7xHfHm1fXgnb?=
+ =?us-ascii?Q?MpAoL263SX/v8dsVwdGjZzEBTXssS8QEqLGsxQOZ65Wj/pmWEF4U3osS/fAg?=
+ =?us-ascii?Q?OMK86FS5ytUb/m3VwZWEDIvuuq2Rz9foz+I4UiHuV5il6kE/Vb7oVHjFgqAz?=
+ =?us-ascii?Q?0CBDngq3ZKyEvG2hlLw9CwaCPjfRJ0Kg/efdiYGhptoTy5sO2VLVPTDnBdmd?=
+ =?us-ascii?Q?/yv12+taCCh/xR60fx/Dh647S+VZ1ofAvw47fHvMDTS2z9TMUinnJdjkr4uJ?=
+ =?us-ascii?Q?vrXbyHF1XGoJVPpwz9ecxK5d6NqXAT9DwAkIrchr1iXCKmKky28kwtBoLasd?=
+ =?us-ascii?Q?0foO/mHuHc0254nAuHiRbqPa5I9MxsfKr1Sn9P+GAT7tsz0JmdKAqtW07G7B?=
+ =?us-ascii?Q?6ARad56jP5dObdJx40rpS2ZRXMz7UvWRNWw2COV8NdUq0OayhfNvofWVGxbI?=
+ =?us-ascii?Q?/q70GrskG0TrAOcpCglYagVXmm+An8+GH4U4M8MLYzenpHgfX9wThwEFo6lq?=
+ =?us-ascii?Q?BlLUy4B1+AhWTKXd08hmpA=3D=3D?=
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
 X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?jdX+XhhsWx/j/lTO6bT41j2Afv6llLLZ+rHelIqJqtubr4yxjddDFyjw1dQc?=
- =?us-ascii?Q?IUQDYh6oiFpiYCEGV0pJTWKL1gvI3BtKRpShXdLX2/cAXRthdNuFZ9Mr0f4p?=
- =?us-ascii?Q?dACyR3zbdt7QpXmVg42OjridA/TplJc6jx0Nplm+H4pXW66SIckzYCNRSwsN?=
- =?us-ascii?Q?kP28AnY0TFlrmaBKASBPJc/gVPBoQCCXq+joRsiU4Br8kMus1Yy587WuGFBQ?=
- =?us-ascii?Q?khAbAN6ha/VIU6sLHCIA3rVdIUkYHtODMoHk/qwHxXRtgvwkL1WJPiNE/st5?=
- =?us-ascii?Q?ir7aSG3R7c8J01U1sQtNqtNNr0+7U91J6ovtpqen09NyVRowv7j3NH4QQtdZ?=
- =?us-ascii?Q?a0dJpUA5BZ4mxkB/p5jHCX0TnVuuxUqPPRGyRDRdrLXW3q33yFtRuhis26t1?=
- =?us-ascii?Q?iW20Dm8/6JGFqS3JGY6GukwriwhRu4A1SyW+gnH7DFQnNZ0W9Jmyf2RTX73q?=
- =?us-ascii?Q?PD0BW6Gtm0gF1cGU/VYeSR1ywqV+KRXQP0bm+hUaVrGj1whYw98KPVwnGl8o?=
- =?us-ascii?Q?aC4VFtm01b473Vt796NZnyNfACSCfLaQE65bHP/mY15FALTHwOkMMjME1XRH?=
- =?us-ascii?Q?qh2gUnlrNb5e+xUm14Q6KnAgvWjPMca5csyGmB5kY0zc4HjAqkbfKmZifU8s?=
- =?us-ascii?Q?EQb3H7OkLkPzezI9H56BFCyGIk0NYEkxXIHpOrF/pXeCV7cWIPmN0GgBr8s9?=
- =?us-ascii?Q?EH2ZW59ak1LTSDLw2HXBnDAKM8HynMSzwkCU/GVYbWAnIz884dSnnQAxqyYG?=
- =?us-ascii?Q?XuoMPqSUr32e0wzFMzrryhON6K86L8oLfWeMvuIV3szXJ9umpxKS1ZmkgZlC?=
- =?us-ascii?Q?eFqfKHJfSVBG0jwiiCm5EnXEMCcVZUlLeI5xP8e3o99MHbEPOdD1UA5KFAgn?=
- =?us-ascii?Q?V19LVqEymjuN6eKEDNqQyVChu2T/YJBjmKDMagUxt/ZR2ReebzX5gFuKmSTr?=
- =?us-ascii?Q?zB5oqoFbZT8dhoGavKjqwMcLdSAZ7bdwkxtP0li0vDm5NebBVTG0zcHp/FFr?=
- =?us-ascii?Q?Q2WVPDCShV891J6OKFhdCDJ6bc8CGyhrraZt6LpodT9Sk1/YOLSzo7Q7/y8n?=
- =?us-ascii?Q?1cHRAX/QYEc1L0RHuswlpaYuo7k3oG1dApcvENGfk615Ynd8VYIVyxbGLLHM?=
- =?us-ascii?Q?HnDjvdogQI0xYr2T4pzhC5pLgh48A8M2fnREvudzMDm4j6FEiheIa+5KSHyt?=
- =?us-ascii?Q?jyDqNxCBerL1DOPYzITfYj95wK4JdevKTAaIV6CMUN/17lCbTEeFmiPrA+gY?=
- =?us-ascii?Q?sBuvoEruPzYVU1M4lQW+QVCPVucNPb8qeH4LlDEJyFo6v0jV09xvSIsWQvoS?=
- =?us-ascii?Q?JAUdE1TXAFqFxLhCgP65weGnU4irRket5P5VZ5jTwaajtD2apVRpUgfVnk2b?=
- =?us-ascii?Q?YScTtu/nPGifbCla+Pa3/1IUZG46?=
+	=?us-ascii?Q?ZoMBZeVg6F0GNb6bvypHupKjVM34cRH+nG/REZbmRFWlqv/xIFxQPdCLAuya?=
+ =?us-ascii?Q?QxN228+UIIEsLiH7orfPvdpYdQeUCAJVEGxgvTtpxE6sJPlYu8de9IFfaiug?=
+ =?us-ascii?Q?dDcL1vQwWfPNoGqxbyyF5hLG93uVMwzIWeN6qktZap5br8h3SOJh2VXc84Pr?=
+ =?us-ascii?Q?nk3+rkFlmN+TRiEPiiZJ3u8eR0c+3rm1zD11co/BBPeuI0Q4Dz8r56XKGmsf?=
+ =?us-ascii?Q?Pna5509aNd9iZKHTf6W30EHmh+gayZ56OsGy3QtNvVDzuorhm4RZL4mHBGR6?=
+ =?us-ascii?Q?hLi7CZZ2fFKc+PTbs9L2FC5BWoAZqE+fkRrxz3kkseHauTfdKzR/i7YWvUmf?=
+ =?us-ascii?Q?UWPP947b07tpjBJimOL1eA84YAwYfDTZlnR77qrlh7FVq67rCGcMVs8EcY8L?=
+ =?us-ascii?Q?HkbbJ49gQF4MBv9slZNUGRsKNh0sJ8gYGgqMaWQ8TAi+M+SnQ9QAiaphu7Pi?=
+ =?us-ascii?Q?mkzaP9qOUtCL53iz9Yb2KdmOKo2yf2gkKvbb+8TtmhwGRaDI9x+wy9yQE0+T?=
+ =?us-ascii?Q?yfQuIIYLqHM80oWZUFtWEe1z618SW5nojaYJK0M9PGcjYi+xtbF75vSbpSzd?=
+ =?us-ascii?Q?R5HSBwAV6UK5/vYmzdPZbD3Zs9UYhOyloRKcupiAtQfm3pYHJ8891MO5cAVp?=
+ =?us-ascii?Q?CjZjvZ5c4Nae6mgqdS47CcmAEyStPSPvlG/fmh+wmNObEwZkrz3PENKURioY?=
+ =?us-ascii?Q?vMvx8iTnZzvSV+FNknqO1Dvu5XnNbrSmXt2zSKGXPT1U0F8nUcf7n44XIzU5?=
+ =?us-ascii?Q?GN9ldRU71OfVGCcIokS8oRYBuIhPDVdYkwAeHSIH+xc6lINQB1cOBVEnGuOs?=
+ =?us-ascii?Q?I+w1IkIXsBLua8Cj2zcpYozTR5FmyFwJn76TXMev5srgE/jfReAU0WTGbiG5?=
+ =?us-ascii?Q?c1pSrZnF/lxWbahDihuytJXHCC6HJEeqfzdmfvZA5LDgKCCMCUUpJVCf9hb3?=
+ =?us-ascii?Q?w4vCnA9AuB3vaPZ/SiUlfHhQ/co39xVtRCfvwiiaYciLJGDf4UI41sOc9SZE?=
+ =?us-ascii?Q?oUXj7f1QDxwQrplAuTIabMXb9O6i17dfryJf4MweYjJku2V+TeHe69A5+DmI?=
+ =?us-ascii?Q?R88c/tcNq3SLcfVfmHc9OT5MoVwoKOpro3AneDsy1sFcM1Nbji2NXvqs+fTV?=
+ =?us-ascii?Q?yQ1KL7RrbQEj1S07tgHI81RZD7frY7+t9UadroBHPrbPf8z1mOT/sKNJ9438?=
+ =?us-ascii?Q?L5X+bQbs8ueR2rCZk09/BVcoGfmM0rbeW+iNTFTeAdGcMGUwm1u1EsiFQ2Hq?=
+ =?us-ascii?Q?goLD7a7GRKFrhqL2R9Zm4xEGP0JTdsJd1B2f0ZZaYi27FMCJDs/HbtlO5uRn?=
+ =?us-ascii?Q?Yco1oFwu6dUsMPx36facRit+ExME9/orGRBAErg9W2rE02gZwNHtUaRPXG5T?=
+ =?us-ascii?Q?I4Xdd9LKTrdxvsgAc7gTvmu1AG7n?=
 X-OriginatorOrg: sct-15-20-9412-3-msonline-outlook-fe3f5.templateTenant
-X-MS-Exchange-CrossTenant-Network-Message-Id: 460e86c7-7d38-4fbe-3b55-08de84051651
+X-MS-Exchange-CrossTenant-Network-Message-Id: 75e882ee-bea2-484d-7eb3-08de84051799
 X-MS-Exchange-CrossTenant-AuthSource: AM7PPF5613FA0B6.EURP251.PROD.OUTLOOK.COM
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 17 Mar 2026 09:10:52.2608
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 17 Mar 2026 09:10:54.2190
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: 84df9e7f-e9f6-40af-b435-aaaaaaaaaaaa
@@ -145,11 +146,11 @@ X-Spamd-Result: default: False [0.34 / 15.00];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[hotmail.de,none];
 	R_DKIM_ALLOW(-0.20)[HOTMAIL.DE:s=selector1];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-33333-lists,linux-wireless=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-33334-lists,linux-wireless=lfdr.de];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	TO_DN_SOME(0.00)[];
 	MIME_TRACE(0.00)[0:+];
@@ -166,125 +167,54 @@ X-Spamd-Result: default: False [0.34 / 15.00];
 	RCVD_COUNT_FIVE(0.00)[5];
 	TAGGED_RCPT(0.00)[linux-wireless];
 	NEURAL_HAM(-0.00)[-1.000];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[hotmail.de:email,AM7PPF5613FA0B6.EURP251.PROD.OUTLOOK.COM:mid,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,HOTMAIL.DE:dkim]
-X-Rspamd-Queue-Id: 6453F2A6504
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,HOTMAIL.DE:dkim,hotmail.de:email,AM7PPF5613FA0B6.EURP251.PROD.OUTLOOK.COM:mid]
+X-Rspamd-Queue-Id: D1E902A645A
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-The carl9170 relies on mac80211 software scanning because it does not
-implement a hw_scan callback.  During a scan, mac80211 iterates all
-supported channels across both bands, calling carl9170_op_config()
-with IEEE80211_CONF_CHANGE_CHANNEL for each one.
+The firmware occasionally delivers frames tagged as CCK modulation
+with a zeroed PLCP rate byte (plcp[0] == 0x00).  This typically
+happens after PHY state degradation from a failed channel change or
+from RF noise on weak signals.
 
-Every channel change triggers a full baseband cold reset, RF bank
-re-initialisation and AGC calibration via the firmware RF_INIT command
-with a 200 ms timeout.  Cross-band switches (2.4 GHz <-> 5 GHz) are
-especially expensive and error-prone: the AGC calibration frequently
-times out (firmware returns error code 2), leaving the PHY in a
-degraded state.  Subsequent channel changes -- even within the same
-band -- then also fail, and after three consecutive failures the
-driver restarts the device, causing a multi-second connectivity gap.
+Currently these frames fall through to the default case and produce
+a rate-limited wiphy_err log:
 
-When the adapter is associated on a specific band, scanning channels
-on the other band produces no useful roaming candidates for the
-current BSS.  Add sw_scan_start/sw_scan_complete callbacks to track
-the scanning state and skip cross-band channel changes while a
-software scan is in progress.  Intentional cross-band association
-changes (e.g. roaming from 2.4 GHz to 5 GHz on a dual-band SSID)
-are not affected because they occur outside the scanning window.
+  ieee80211 phy3: invalid plcp cck rate (0).
 
-Tested on Fritz\!WLAN N (AR9170) with 2.4 GHz association and
-concurrent full-band scans: no channel change failures, no device
-restarts, no PHY corruption.
+The frame is garbage regardless of the log level.  Handle plcp[0]
+== 0x00 as a dedicated case: increment the rx_dropped counter
+(visible via debugfs) and return -EINVAL silently.  Downgrade the
+remaining default case log from wiphy_err to wiphy_dbg so that
+genuinely unexpected PLCP values can still be investigated via
+dynamic debug without polluting normal dmesg output.
 
 Signed-off-by: Masi Osmani <mas-i@hotmail.de>
 ---
- drivers/net/wireless/ath/carl9170/carl9170.h |  1 +
- drivers/net/wireless/ath/carl9170/main.c     | 42 +++++++++++++++++++
- 2 files changed, 43 insertions(+)
+ drivers/net/wireless/ath/carl9170/rx.c | 10 +++++++++-
+ 1 file changed, 9 insertions(+), 1 deletion(-)
 
---- a/drivers/net/wireless/ath/carl9170/carl9170.h	2026-03-15 23:51:23.598565789 +0100
-+++ b/drivers/net/wireless/ath/carl9170/carl9170.h	2026-03-15 23:51:39.769123563 +0100
-@@ -333,6 +333,7 @@ struct ar9170 {
- 	/* PHY */
- 	struct ieee80211_channel *channel;
- 	unsigned int num_channels;
-+	bool scanning;
- 	int noise[4];
- 	unsigned int chan_fail;
- 	unsigned int total_chan_fail;
---- a/drivers/net/wireless/ath/carl9170/main.c	2026-03-15 23:51:23.597355728 +0100
-+++ b/drivers/net/wireless/ath/carl9170/main.c	2026-03-15 23:52:02.845563524 +0100
-@@ -916,6 +916,33 @@ static int carl9170_op_config(struct iee
- 		enum nl80211_channel_type channel_type =
- 			cfg80211_get_chandef_type(&hw->conf.chandef);
+--- a/drivers/net/wireless/ath/carl9170/rx.c	2026-03-15 23:51:23.599698582 +0100
++++ b/drivers/net/wireless/ath/carl9170/rx.c	2026-03-15 23:52:21.041912498 +0100
+@@ -372,9 +372,18 @@ static int carl9170_rx_mac_status(struct
+ 		case AR9170_RX_PHY_RATE_CCK_11M:
+ 			status->rate_idx = 3;
+ 			break;
++		case 0x00:
++			/*
++			 * Zeroed PLCP rate byte: the firmware delivered a
++			 * corrupted frame, typically after PHY degradation
++			 * from a failed channel change or from RF noise on
++			 * weak signals.  Drop silently.
++			 */
++			ar->rx_dropped++;
++			return -EINVAL;
+ 		default:
+ 			if (net_ratelimit()) {
+-				wiphy_err(ar->hw->wiphy, "invalid plcp cck "
++				wiphy_dbg(ar->hw->wiphy, "invalid plcp cck "
+ 				       "rate (%x).\n", head->plcp[0]);
+ 			}
  
-+		/*
-+		 * Skip cross-band channel changes during software scan.
-+		 *
-+		 * mac80211 sw_scan iterates all channels including the
-+		 * other band.  Each channel change requires a full BB
-+		 * cold reset and AGC calibration via the firmware RF_INIT
-+		 * command (200 ms timeout).  Cross-band switches
-+		 * frequently cause AGC calibration timeouts (firmware
-+		 * returns error 2), leaving the PHY in a degraded state
-+		 * that cascades into failures on subsequent intra-band
-+		 * channel changes and ultimately triggers a device
-+		 * restart after three consecutive failures.
-+		 *
-+		 * When associated, scanning the other band yields no
-+		 * useful roaming candidates for the current BSS.  Skip
-+		 * the channel change so mac80211 advances to the next
-+		 * scan channel harmlessly.
-+		 */
-+		if (ar->scanning && ar->channel &&
-+		    hw->conf.chandef.chan->band != ar->channel->band) {
-+			wiphy_dbg(ar->hw->wiphy,
-+				  "skip cross-band scan: %d MHz -> %d MHz\n",
-+				  ar->channel->center_freq,
-+				  hw->conf.chandef.chan->center_freq);
-+			goto out;
-+		}
-+
- 		/* adjust slot time for 5 GHz */
- 		err = carl9170_set_slot_time(ar);
- 		if (err)
-@@ -954,6 +981,27 @@ out:
- 	return err;
- }
- 
-+static void carl9170_op_sw_scan_start(struct ieee80211_hw *hw,
-+				      struct ieee80211_vif *vif,
-+				      const u8 *mac_addr)
-+{
-+	struct ar9170 *ar = hw->priv;
-+
-+	mutex_lock(&ar->mutex);
-+	ar->scanning = true;
-+	mutex_unlock(&ar->mutex);
-+}
-+
-+static void carl9170_op_sw_scan_complete(struct ieee80211_hw *hw,
-+					 struct ieee80211_vif *vif)
-+{
-+	struct ar9170 *ar = hw->priv;
-+
-+	mutex_lock(&ar->mutex);
-+	ar->scanning = false;
-+	mutex_unlock(&ar->mutex);
-+}
-+
- static u64 carl9170_op_prepare_multicast(struct ieee80211_hw *hw,
- 					 struct netdev_hw_addr_list *mc_list)
- {
-@@ -1723,6 +1771,8 @@ static const struct ieee80211_ops carl91
- 	.add_interface		= carl9170_op_add_interface,
- 	.remove_interface	= carl9170_op_remove_interface,
- 	.config			= carl9170_op_config,
-+	.sw_scan_start		= carl9170_op_sw_scan_start,
-+	.sw_scan_complete	= carl9170_op_sw_scan_complete,
- 	.prepare_multicast	= carl9170_op_prepare_multicast,
- 	.configure_filter	= carl9170_op_configure_filter,
- 	.conf_tx		= carl9170_op_conf_tx,
 
