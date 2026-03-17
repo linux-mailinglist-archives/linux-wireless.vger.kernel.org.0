@@ -1,236 +1,333 @@
-Return-Path: <linux-wireless+bounces-33324-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-33325-lists+linux-wireless=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id BqFiEz/LuGkSjgEAu9opvQ
-	(envelope-from <linux-wireless+bounces-33324-lists+linux-wireless=lfdr.de@vger.kernel.org>)
-	for <lists+linux-wireless@lfdr.de>; Tue, 17 Mar 2026 04:32:15 +0100
+	id cKy5H5/xuGmTmAEAu9opvQ
+	(envelope-from <linux-wireless+bounces-33325-lists+linux-wireless=lfdr.de@vger.kernel.org>)
+	for <lists+linux-wireless@lfdr.de>; Tue, 17 Mar 2026 07:15:59 +0100
 X-Original-To: lists+linux-wireless@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id A92162A33AC
-	for <lists+linux-wireless@lfdr.de>; Tue, 17 Mar 2026 04:32:14 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 10CAA2A43DB
+	for <lists+linux-wireless@lfdr.de>; Tue, 17 Mar 2026 07:15:58 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 3DB5630094EC
-	for <lists+linux-wireless@lfdr.de>; Tue, 17 Mar 2026 03:32:13 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 487CE303BA57
+	for <lists+linux-wireless@lfdr.de>; Tue, 17 Mar 2026 06:15:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DA6CA2FD1D0;
-	Tue, 17 Mar 2026 03:32:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 999744315F;
+	Tue, 17 Mar 2026 06:15:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="KxGHS7Er";
-	dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b="K/Ktab7T"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="kKcNtuNc"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f53.google.com (mail-wm1-f53.google.com [209.85.128.53])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 97EF92C21C0
-	for <linux-wireless@vger.kernel.org>; Tue, 17 Mar 2026 03:32:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 079A3247DE1
+	for <linux-wireless@vger.kernel.org>; Tue, 17 Mar 2026 06:15:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.53
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773718330; cv=none; b=sPoDid/if1EkFEFbbrVQGsjspL9H+TQPzl/GhV/mZEu4akoh2KHGmIgFMyVli9f66xW2ZkgdWwsgM2n4/h/qbr1jjPbjJbdWqzycW0/SRdQWA53IPnCg1WQfDheA6yWB9vibTB9cMi9MTW0hoZU/ePgJ3hhzlVfk5xkrq6Wollc=
+	t=1773728118; cv=none; b=EwxYe5w5lZtGmiZRVcK3lYBPHcOrFgR9HaX0BcJ7a8PSiTKiOJbdHv6JFuezxJlA6WxrGQ3dwoHsGlgRqawlLmBb4NqRtDYMBoklLt+8s0W0/qvJJoD43o6rlGG8ZeMCinn5Or2kZD5j5+ynrBe3lzHqnET7cu0NjbsUhqdtPNw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773718330; c=relaxed/simple;
-	bh=oxTRSDoMdq/mzlUnUw1ZrlN02txBqamdfEjr1nmc84I=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=dfFuV3LkZp4dkgejEupWDuHy+2ZtzVFK7SoH3oxAOPMFD3bYBF1NxqYYAuiSpKPJcP92DZuiNbBt1+I2QtYu6YJANE7sT1iSkQdbOqbAdwfarf7ZrXf0hHG+sBW66IElTG0aNUC32S0hVUNS5EkvNLD5kRIcLevVT/E7Mua1gQA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=KxGHS7Er; dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b=K/Ktab7T; arc=none smtp.client-ip=205.220.180.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
-Received: from pps.filterd (m0279873.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 62H1QjsG1534048
-	for <linux-wireless@vger.kernel.org>; Tue, 17 Mar 2026 03:32:08 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
-	cc:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
-	Z5d7SpaThv2YlpB2AIVm1TAoC97B3vVdAG0MkkHD9h4=; b=KxGHS7EraghVe/vP
-	GoIDcjYK4hu6Ag2Mg9EBwGAnBF9rcTt1T6sOX9VhNEpGMq+fJru0yBFZnWbNA4zx
-	2ubqrTOHrCXgmaj7Z8NnUrfT0SLRsKHDmSZG5/VxZkrgwM9DcoTKs1z1FjNzjqN+
-	MqNDsMrIKeRNilKwOBhnrNEn4wrtMpLl4MfbSX9OZ98amzaaFqBLXlPVrFh4G6G5
-	SC7vciumpz6kiutwMkhPFd7OmUMGtTPkseub6UjgmvfbDZHcAy+ScK+2HEXTCSW1
-	MNsXkbFSIwNKjOwSQ3FtpM/tftYe7vaCWF+eNz+g/nuaRwtNR/H+mveRD/WWMluc
-	Ni9EXA==
-Received: from mail-pf1-f197.google.com (mail-pf1-f197.google.com [209.85.210.197])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4cxm5k26u9-1
-	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
-	for <linux-wireless@vger.kernel.org>; Tue, 17 Mar 2026 03:32:08 +0000 (GMT)
-Received: by mail-pf1-f197.google.com with SMTP id d2e1a72fcca58-829942cf9deso4160006b3a.0
-        for <linux-wireless@vger.kernel.org>; Mon, 16 Mar 2026 20:32:08 -0700 (PDT)
+	s=arc-20240116; t=1773728118; c=relaxed/simple;
+	bh=9ayYyUpxUGmQhqTBRAZNSjJWWGEc1x7Gh9JnB3iWmK8=;
+	h=Content-Type:Mime-Version:Subject:From:In-Reply-To:Date:Cc:
+	 Message-Id:References:To; b=EGFwD8a7fA2dPLQmW+Yu/22xoY2Dl8aw9YAOPLs4AmDtkVEYDE+lGPtzHhRsdNfNwQV4MNr5eSY3qdkLLXLlbUow9q2uWT96BhhzTp6uXglFjry18KXeNqomGdXQzDBcSipc83jtbXOzSDeUa0l1ygCaPaNpJcF2NPC1+tpZfn0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=kKcNtuNc; arc=none smtp.client-ip=209.85.128.53
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-wm1-f53.google.com with SMTP id 5b1f17b1804b1-48540355459so50742425e9.3
+        for <linux-wireless@vger.kernel.org>; Mon, 16 Mar 2026 23:15:16 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=oss.qualcomm.com; s=google; t=1773718327; x=1774323127; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:content-language:from
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=Z5d7SpaThv2YlpB2AIVm1TAoC97B3vVdAG0MkkHD9h4=;
-        b=K/Ktab7TcnmTmPbtvp7aOJKM5Rpq16Rd+Shl9EaGeN/uSFYwChfjHfKHvIRoEoVbYP
-         a1MLXUWJcnIZnJhd4IiNs2fKc1UutkyMDtO/1SJc+LIXI1xcxcKdsBOVztJeStwGd18Z
-         QC3w4IGdnyuYJmsf7OGPKHVTLKXl36LFxRp91xfsBuxUMJs5kKfpQOWPQYU1BZNfFcHu
-         hcADoSxHPwk7AOzsu/mTA3j5IHsH2nIyTo92WLfBPTf61/NemZcMudQpUHhwWdrQC+GC
-         34aYlNa3Cy46NT+O6uzLdlLrl2p1fOlWblGd8qjGKbT7peV/TiVYLef3O5H+gAV0TIVM
-         LeUg==
+        d=gmail.com; s=20230601; t=1773728115; x=1774332915; darn=vger.kernel.org;
+        h=to:references:message-id:content-transfer-encoding:cc:date
+         :in-reply-to:from:subject:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=ul6lc9W/ihLxzzyBefn2mCQEb+lh1IHjN9jY4TWkSzA=;
+        b=kKcNtuNcYOSV7/4x2PLxuZC/KC08HjyzaX0XAuBn8Pzxyha9VQw9NNUk4tlby0MBO4
+         JTuZPysewHDANX+HdgdDJ3OY1u1/U6dsLR8GG9oOH7Wgi/io8MMHz6HbbuAfGpd1Aw29
+         KZRK8245KDzoCqycqXoj3H69Fr/6r/2H9GLWPCHYdL2efJ92tIdH+U88QFHYqOqThWpw
+         Oxu6h8DYH106aMRiu8+5tjwZhpeIEScCZJj8dFRHDEsfm1mIwjh2VnnCbGT7xr5knjlz
+         GlYJtS1rrBuj0uJcPqnc6OivNy2+dPstQysBBZ5AzJGIuTOm9kOmjubCoeHl6WyQMBmg
+         RmZA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1773718327; x=1774323127;
-        h=content-transfer-encoding:in-reply-to:content-language:from
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=Z5d7SpaThv2YlpB2AIVm1TAoC97B3vVdAG0MkkHD9h4=;
-        b=DL1HcwPpifITm+M+6E6AY9erzNYVbmtnbZ0w5NTquFowEtSnWoDOxkK6GxbjrOhOaT
-         8++plPaF6f8SEVuJd1BUbdtlPj8WqUFLL/QZGc9WKD24o3m61y8oAby9Uy7oXVR5z0bO
-         6Hp1lP+N84+GYnRh5YQnhHkbe9Bh49Usj4Zl8fArarN6SE6TkKt4luEhxL7qro1g9BV4
-         SYF9ZUhpnFXl1SyjnVsuP3r+4xMBko+c/gBtXK8b46WG0jGOlYRytO5sUUDH7COjuqUs
-         U2/MO6lsHomQg12oyZLJIrKbN+7apBS1qCxZXOOA6U1BEZ8sPsPc1NGK4tyfNwWVurRr
-         IEBg==
-X-Gm-Message-State: AOJu0Yxd3AvhQy+0ngZQ2oCKSS+bIHToljX3+AZJgZN/0CRHTGNSqG7G
-	lvt7E8O1hVL07wnjmCSRwe2F2mcmO8HLsure51DRrqz8bV+PD6qX2jtp9A2jjmqr83s28sLnGXo
-	Y/Re4UpWFvZuamrgwUGkOiD7EHwQN1nsiKBkTGMXWujIb/1KieLor3krPByDJQqZFY1ofoQ==
-X-Gm-Gg: ATEYQzwBUN/KrlVWyMl7w7aoKvaDiNhwjuZ4lNTnoRYQ3pM4P0fH/qBuen6r5cvFsPq
-	FGD8/IdMY7xUU8ni0xqJzRRdhO6GM2WHWaw8gEB0WXLIyZLpoxoMOT3nakcOkMqphuvs0pCifrk
-	z2ZItcNqg8bPjhRwEMreJ2DZYhblCM9/PT1KQI07WI4OsEIO1kUwnmvTBTyMmAXFZWz+kLeM0xj
-	DjGXIiZCy3r5p9bVTXaoQjfzsZqdIUn8/z1zoaWfBd4M/IbTM9t4zQdRDSR48aV3lfmm2WxubyS
-	y98BMq9+m6ILB2thcfy3imfRFJWh1CPIlIugXl1zoew30aJMPQZT3aJ0APwXxy/uVDYxPbKAKMN
-	TBNT6qp+tEfQw3x0MK6R53D8fZ3PRor0osApWn5jM1YDOkoo7lP7nT6SsiGoxD1qMXijU4gXisl
-	qP1jJ2Q+PyieMR9kZ7pdE=
-X-Received: by 2002:a05:6a00:7704:b0:827:2891:c17b with SMTP id d2e1a72fcca58-82a196d723cmr10511209b3a.17.1773718327360;
-        Mon, 16 Mar 2026 20:32:07 -0700 (PDT)
-X-Received: by 2002:a05:6a00:7704:b0:827:2891:c17b with SMTP id d2e1a72fcca58-82a196d723cmr10511189b3a.17.1773718326726;
-        Mon, 16 Mar 2026 20:32:06 -0700 (PDT)
-Received: from [10.133.33.128] (tpe-colo-wan-fw-bordernet.qualcomm.com. [103.229.16.4])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-82a06fe211csm15255762b3a.0.2026.03.16.20.32.05
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 16 Mar 2026 20:32:06 -0700 (PDT)
-Message-ID: <bf6b4377-1673-4273-8d7d-6163f0109e33@oss.qualcomm.com>
-Date: Tue, 17 Mar 2026 11:32:01 +0800
+        d=1e100.net; s=20251104; t=1773728115; x=1774332915;
+        h=to:references:message-id:content-transfer-encoding:cc:date
+         :in-reply-to:from:subject:mime-version:x-gm-gg:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=ul6lc9W/ihLxzzyBefn2mCQEb+lh1IHjN9jY4TWkSzA=;
+        b=NiqFzg1WABUA4VFxTSfCi5BAla2l8s9/ijLInq+AbcSQO7BDAL2SmG1Hvq5NoH4xkc
+         9cLPKxbS0J0l9DIv/Lb+ojJ22hgYUeJdsjaiLebDOytg1x54x+UEAmsyY5KvrovOG9w8
+         OSigPEq4DPWMHZ5nwBjFoWFkw6I6Tm5/YXdG1TBJd7TlTiQbApZhBkzXdAAhKew0C7sn
+         g5X+NgN6+MSPPGS16977Fu+0cF6stR/tejFh1JVLFbMcyOEtkJvObT+t0V8eQfIeWxBP
+         h4RVX5PKG/+cvGgOwk+olFyDXdy81b1txhODzYCRaGt1PEkI/PmX1UD6DIHiTdJnj0tx
+         lsig==
+X-Forwarded-Encrypted: i=1; AJvYcCV8orYRcfRBXwtxjCDpBfnw7uTkarJi/4hDQET3KjxaXwcfuw8VNnULxGXvlr1CaEdoRYMJVFhxTJ53gn7crA==@vger.kernel.org
+X-Gm-Message-State: AOJu0YyPH331rhq1W8uLQ/cvaNzEsP9qgDDTlW+io+cPpdPJmyts9/Go
+	Vq6elVFhd5lENO0/37hP40SF9wG9MfM/GVbj8H1CtHcUYwnYcX8coFhj
+X-Gm-Gg: ATEYQzzdTak8ySzFHHOVutmsChxJmMo572yalSbthmfoTR64gee9FxxhYNttOwCnnfw
+	lOOgLfy+Ufj3IM/2b67Csqtn7egNwByXIrMhRtLcf94wVBHkGvrR+/ja119DKJAB0UUjZM1OKUJ
+	O3Gn9CatYghOz2ey0B0j2q3FwiXeJnkhkUb8uL9ZEy1PRm4D0v5DG8L/bbDhCb9pEJFYTKyRPje
+	jkRwqRSre6XAuP64rwH2nLRRNiPtQfDaYKhr5TUhEr2QSr8X4dcd4ZT6gMChBSQN+6JbItT7epM
+	K+QoHCqkOq0QOGJ8QUichq2uNDXxQ5w0rdIE4eaD8kdfdYb0EzT1ovkkcywy77bUCnrNS/6xayO
+	Zdc52uP8ysxab2JHyzetOJHtnTH5pOkxZQIEWxqlv6u4WKMXNxjP4evz/4oo3QhqGbVSaX4nFpM
+	/QgATHfIovK28X0ElLbkoN2ZuSsZAtB8IHaPfqAN8vBBi7bh2tvbZ379r8jfHW4XYrYHxmW9aJ5
+	Il3YxJa2jvnC0BP5pvgTv5gTEi+tgydwgkw3g==
+X-Received: by 2002:a05:600c:154b:b0:485:40ed:2d1 with SMTP id 5b1f17b1804b1-48556706676mr261782455e9.17.1773728115122;
+        Mon, 16 Mar 2026 23:15:15 -0700 (PDT)
+Received: from smtpclient.apple (static.253.36.98.91.clients.your-server.de. [91.98.36.253])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-439fe19aec5sm48752066f8f.4.2026.03.16.23.15.13
+        (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
+        Mon, 16 Mar 2026 23:15:14 -0700 (PDT)
+Content-Type: text/plain;
+	charset=utf-8
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH ath-next v3] wifi: ath12k: avoid dynamic alloc when
- parsing wmi tb
-To: Nicolas Escande <nico.escande@gmail.com>, ath12k@lists.infradead.org
-Cc: linux-wireless@vger.kernel.org
-References: <20260316103248.3042158-1-nico.escande@gmail.com>
- <d38acb9f-60dc-4d37-a3b5-8cd09f76939e@oss.qualcomm.com>
- <DH45I9X47H77.74AIOL6V8R49@gmail.com>
-From: Baochen Qiang <baochen.qiang@oss.qualcomm.com>
-Content-Language: en-US
-In-Reply-To: <DH45I9X47H77.74AIOL6V8R49@gmail.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Authority-Analysis: v=2.4 cv=fJ00HJae c=1 sm=1 tr=0 ts=69b8cb38 cx=c_pps
- a=rEQLjTOiSrHUhVqRoksmgQ==:117 a=nuhDOHQX5FNHPW3J6Bj6AA==:17
- a=IkcTkHD0fZMA:10 a=Yq5XynenixoA:10 a=s4-Qcg_JpJYA:10
- a=VkNPw1HP01LnGYTKEx00:22 a=u7WPNUs3qKkmUXheDGA7:22 a=rJkE3RaqiGZ5pbrm-msn:22
- a=ByHDnCq9wcmhMw9lLjoA:9 a=QEXdDO2ut3YA:10 a=2VI0MkxyNR6bbpdq8BZq:22
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwMzE3MDAyNyBTYWx0ZWRfX2uO0SM9Yai+B
- YFzqV5wGczmuPznLHKGDWO56FRWxJ/RwsA0HOVj7sEKjRuG+iQQITSgcl3irp/XswtvDUiwCU3l
- YpZBMrSbBCHJGRZJ78S46aDBAgVxkElTgpHnzr6sZFDLCI+PLz/aszoQxASSys74qgNEBxZ4NxS
- DlagVSr9tCvDHRq+ieX4S/Eaz8rujxWJZ6mIgZGCrS1RtmQc5nCj/5Gxb7eraY5RbN6+WKf4K3g
- 3DXfkXJ9pF1BWUu0e4hb9yEwTnozDlmzIKuF0utx7aAOcnK9ud0g0APw//AafcRsddBwYIS29kZ
- MhQ33X57enpklk1IvNDg3H7nNWr/uVjl/nwDo74LCCCpr+6tRRn9r9n635pp62DN4ZbCoBtSHHL
- 0Xbk4lDWPhgtieInLa1usyiexmFh50G9j1+7OIkVQEj+2Zf6VKUoMnmqXxWJUo53dENVdV9AeJf
- V6/GS2yvdlJIMQrruwA==
-X-Proofpoint-GUID: IR3f9JOuekCedi4Kc39A-Vt6YnHMDH7e
-X-Proofpoint-ORIG-GUID: IR3f9JOuekCedi4Kc39A-Vt6YnHMDH7e
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.51,FMLib:17.12.100.49
- definitions=2026-03-17_01,2026-03-16_06,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- spamscore=0 clxscore=1015 malwarescore=0 suspectscore=0 phishscore=0
- lowpriorityscore=0 priorityscore=1501 impostorscore=0 adultscore=0
- bulkscore=0 classifier=typeunknown authscore=0 authtc= authcc= route=outbound
- adjust=0 reason=mlx scancount=1 engine=8.22.0-2603050001
- definitions=main-2603170027
+Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3864.400.21\))
+Subject: Re: [PATCH] wifi: rtw89: retry efuse physical map dump on transient
+ failure
+From: Christian Hewitt <christianshewitt@gmail.com>
+In-Reply-To: <43c8229cbe284b25bd1fd6b3a66a753d@realtek.com>
+Date: Tue, 17 Mar 2026 10:15:01 +0400
+Cc: Bitterblue Smith <rtl8821cerfe2@gmail.com>,
+ "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
+ "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
+Content-Transfer-Encoding: quoted-printable
+Message-Id: <BE076023-7D25-4AF0-B01C-4AA69E3666CD@gmail.com>
+References: <20260301042422.195491-1-christianshewitt@gmail.com>
+ <a7d421b1d3074a00968f2902c9debb42@realtek.com>
+ <86F91944-A4B0-46D6-B2DE-7391EB5B38A7@gmail.com>
+ <43c8229cbe284b25bd1fd6b3a66a753d@realtek.com>
+To: Ping-Ke Shih <pkshih@realtek.com>
+X-Mailer: Apple Mail (2.3864.400.21)
 X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[qualcomm.com,reject];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
-	R_DKIM_ALLOW(-0.20)[qualcomm.com:s=qcppdkim1,oss.qualcomm.com:s=google];
+	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
+	R_DKIM_ALLOW(-0.20)[gmail.com:s=20230601];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
+	FREEMAIL_CC(0.00)[gmail.com,vger.kernel.org];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-33324-lists,linux-wireless=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_TO(0.00)[gmail.com,lists.infradead.org];
-	DKIM_TRACE(0.00)[qualcomm.com:+,oss.qualcomm.com:+];
-	RCPT_COUNT_THREE(0.00)[3];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[qualcomm.com:dkim,oss.qualcomm.com:dkim,oss.qualcomm.com:mid,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns];
-	TO_DN_SOME(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[baochen.qiang@oss.qualcomm.com,linux-wireless@vger.kernel.org];
+	TAGGED_FROM(0.00)[bounces-33325-lists,linux-wireless=lfdr.de];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[linux-wireless];
+	TO_DN_EQ_ADDR_SOME(0.00)[];
+	FREEMAIL_FROM(0.00)[gmail.com];
+	RCVD_TLS_LAST(0.00)[];
+	TO_DN_SOME(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[gmail.com:+];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_COUNT_FIVE(0.00)[5];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[christianshewitt@gmail.com,linux-wireless@vger.kernel.org];
+	RCPT_COUNT_THREE(0.00)[4];
 	MID_RHS_MATCH_FROM(0.00)[];
+	APPLE_MAILER_COMMON(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	RCVD_COUNT_SEVEN(0.00)[7]
-X-Rspamd-Queue-Id: A92162A33AC
+	TAGGED_RCPT(0.00)[linux-wireless];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 10CAA2A43DB
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-
-
-On 3/16/2026 6:57 PM, Nicolas Escande wrote:
-> On Mon Mar 16, 2026 at 11:42 AM CET, Baochen Qiang wrote:
-> [...]
->>> --- a/drivers/net/wireless/ath/ath12k/core.c
->>> +++ b/drivers/net/wireless/ath/ath12k/core.c
->>> @@ -2321,5 +2321,24 @@ struct ath12k_base *ath12k_core_alloc(struct device *dev, size_t priv_size,
->>>  	return NULL;
->>>  }
->>>  
->>> +static int ath12k_init(void)
+> On 17 Mar 2026, at 5:37=E2=80=AFam, Ping-Ke Shih <pkshih@realtek.com> =
+wrote:
+>=20
+> Christian Hewitt <christianshewitt@gmail.com> wrote:
+>>> On 16 Mar 2026, at 9:32=E2=80=AFam, Ping-Ke Shih =
+<pkshih@realtek.com> wrote:
+>>>=20
+>>> Christian Hewitt <christianshewitt@gmail.com> wrote:
+>>>> On Radxa Rock 5B with a RTL8852BE combo WiFi/BT card, the efuse
+>>>> physical map dump intermittently fails with -EBUSY during probe.
+>>>> The failure occurs in rtw89_dump_physical_efuse_map_ddv() where
+>>>> read_poll_timeout_atomic() times out waiting for the B_AX_EF_RDY
+>>>> bit after 1 second.
+>>>>=20
+>>>> The root cause is a timing race during boot: the WiFi driver's
+>>>> chip initialization (firmware download via PCIe) overlaps with the
+>>>> Bluetooth firmware download to the same combo chip over USB. This
+>>>> can leave the efuse controller temporarily unavailable when the
+>>>> WiFi driver attempts to read the efuse map.
+>>>>=20
+>>>> Add a retry loop (up to 3 attempts with 500ms delays) around the
+>>>> physical efuse map dump in rtw89_parse_efuse_map_ax(). The firmware
+>>>> download path already retries up to 5 times, but the efuse read
+>>>> that follows has no retry logic, making it the weak link in the
+>>>> probe sequence.
+>>>=20
+>>> I'd prefer adding a wrapper to retry 5 times without delay as bottom
+>>> changes for reference. If you want to limit retry only for
+>>> 'dav =3D=3D false' case, it is also fine to me.
+>>>=20
+>>>>=20
+>>>> Signed-off-by: Christian Hewitt <christianshewitt@gmail.com>
+>>>=20
+>>> [...]
+>>>=20
+>>>>=20
+>>>> drivers/net/wireless/realtek/rtw89/efuse.c | 13 ++++++++++++-
+>>>> 1 file changed, 12 insertions(+), 1 deletion(-)
+>>>>=20
+>>>> diff --git a/drivers/net/wireless/realtek/rtw89/efuse.c
+>>>> b/drivers/net/wireless/realtek/rtw89/efuse.c
+>>>> index a2757a88d55d..d506f04ffd6c 100644
+>>>> --- a/drivers/net/wireless/realtek/rtw89/efuse.c
+>>>> +++ b/drivers/net/wireless/realtek/rtw89/efuse.c
+>>>> @@ -270,6 +270,7 @@ int rtw89_parse_efuse_map_ax(struct rtw89_dev =
+*rtwdev)
+>>>>       u8 *log_map =3D NULL;
+>>>>       u8 *dav_phy_map =3D NULL;
+>>>>       u8 *dav_log_map =3D NULL;
+>>>> +       int retry;
+>>>>       int ret;
+>>>>=20
+>>>>       if (rtw89_read16(rtwdev, R_AX_SYS_WL_EFUSE_CTRL) &
+>> B_AX_AUTOLOAD_SUS)
+>>>> @@ -289,7 +290,17 @@ int rtw89_parse_efuse_map_ax(struct rtw89_dev =
+*rtwdev)
+>>>>               goto out_free;
+>>>>       }
+>>>>=20
+>>>> -       ret =3D rtw89_dump_physical_efuse_map(rtwdev, phy_map, 0, =
+phy_size,
+>>>> false);
+>>>> +       for (retry =3D 0; retry < 3; retry++) {
+>>>> +               if (retry) {
+>>>> +                       rtw89_warn(rtwdev, "efuse dump failed, =
+retrying
+>>>> (%d)\n",
+>>>> +                                  retry);
+>>>> +                       fsleep(500000);
+>>>> +               }
+>>>> +               ret =3D rtw89_dump_physical_efuse_map(rtwdev, =
+phy_map, 0,
+>>>> +                                                   phy_size, =
+false);
+>>>> +               if (!ret)
+>>>> +                       break;
+>>>> +       }
+>>>>       if (ret) {
+>>>>               rtw89_warn(rtwdev, "failed to dump efuse physical =
+map\n");
+>>>>               goto out_free;
+>>>> --
+>>>> 2.43.0
+>>>=20
+>>> How about retrying 5 times without fsleep(500000)?
+>>>=20
+>>> diff --git a/drivers/net/wireless/realtek/rtw89/efuse.c
+>> b/drivers/net/wireless/realtek/rtw89/efuse.c
+>>> index a2757a88d55d..89d4b1b865f8 100644
+>>> --- a/drivers/net/wireless/realtek/rtw89/efuse.c
+>>> +++ b/drivers/net/wireless/realtek/rtw89/efuse.c
+>>> @@ -185,8 +185,8 @@ static int =
+rtw89_dump_physical_efuse_map_dav(struct
+>> rtw89_dev *rtwdev, u8 *map,
+>>>       return 0;
+>>> }
+>>>=20
+>>> -static int rtw89_dump_physical_efuse_map(struct rtw89_dev *rtwdev, =
+u8 *map,
+>>> -                                        u32 dump_addr, u32 =
+dump_size, bool
+>> dav)
+>>> +static int __rtw89_dump_physical_efuse_map(struct rtw89_dev =
+*rtwdev, u8
+>> *map,
+>>> +                                          u32 dump_addr, u32 =
+dump_size,
+>> bool dav)
+>>> {
+>>>       int ret;
+>>>=20
+>>> @@ -208,6 +208,25 @@ static int rtw89_dump_physical_efuse_map(struct =
+rtw89_dev
+>> *rtwdev, u8 *map,
+>>>       return 0;
+>>> }
+>>>=20
+>>> +static int rtw89_dump_physical_efuse_map(struct rtw89_dev *rtwdev, =
+u8 *map,
+>>> +                                        u32 dump_addr, u32 =
+dump_size, bool
+>> dav)
 >>> +{
->>> +	int ret;
+>>> +       int retry;
+>>> +       int ret;
 >>> +
->>> +	ret = ath12k_wmi_alloc();
->>> +	if (ret)
->>> +		return ret;
+>>> +       for (retry =3D 0; retry < 5; retry++) {
+>>> +               ret =3D __rtw89_dump_physical_efuse_map(rtwdev, map,
+>> dump_addr,
+>>> +                                                     dump_size, =
+dav);
+>>> +               if (!ret)
+>>> +                       return 0;
 >>> +
->>> +	return 0;
->>
->> nit: you can simply
->>
->> 	return ath12k_wmi_alloc();
-> 
-> Yes we can, but I did this in case we need to add more stuff in that function at
-> some later point. It would generate less code chrun. But I'm ok with a direct
-> return statement if you think that's better. Just tell me and I'll send the v4.
-
-I would prefer a direct return for now. After all We can always change to your style if
-necessary in the future.
-
-> 
->>
+>>> +               rtw89_warn(rtwdev, "efuse dump (dav=3D%d) failed, =
+retrying
+>> (%d)\n",
+>>> +                          dav, retry);
+>>> +       }
+>>> +
+>>> +       return ret;
 >>> +}
 >>> +
->>> +static void ath12k_exit(void)
->>> +{
->>> +	ath12k_wmi_free();
->>> +}
->>> +
->>> +module_init(ath12k_init);
->>> +module_exit(ath12k_exit);
->>> +
->>>  MODULE_DESCRIPTION("Driver support for Qualcomm Technologies WLAN devices");
->>>  MODULE_LICENSE("Dual BSD/GPL");
->>> diff --git a/drivers/net/wireless/ath/ath12k/core.h b/drivers/net/wireless/ath/ath12k/core.h
->>> index 59c193b24764..02ee6c718621 100644
->>> --- a/drivers/net/wireless/ath/ath12k/core.h
->>> +++ b/drivers/net/wireless/ath/ath12k/core.h
->>> @@ -19,6 +19,7 @@
->>>  #include <linux/average.h>
->>>  #include <linux/of.h>
->>>  #include <linux/rhashtable.h>
->>> +#include <linux/percpu.h>
->>
->> does it make more sense to add this to wmi.c instead?
-> 
-> Indeed it does. I'll fix it.
+>>> #define invalid_efuse_header(hdr1, hdr2) \
+>>>       ((hdr1) =3D=3D 0xff || (hdr2) =3D=3D 0xff)
+>>> #define invalid_efuse_content(word_en, i) \
+>>=20
+>> I=E2=80=99ve run some boot tests and this also resolves my efuse map =
+use-case, e.g.
+>>=20
+>> ROCK5B:~ # dmesg | grep rtw89
+>> [    6.506375] rtw89_8852be 0002:21:00.0: loaded firmware
+>> rtw89/rtw8852b_fw-1.bin
+>> [    6.506539] rtw89_8852be 0002:21:00.0: enabling device (0000 -> =
+0003)
+>> [    6.516069] rtw89_8852be 0002:21:00.0: Firmware version 0.29.29.15
+>> (6fb3ec41), cmd version 0, type 5
+>> [    6.516083] rtw89_8852be 0002:21:00.0: Firmware version 0.29.29.15
+>> (6fb3ec41), cmd version 0, type 3
+>> [   10.153731] rtw89_8852be 0002:21:00.0: efuse dump (dav=3D0) =
+failed, retrying
+>> (0)
+>> [   10.405347] rtw89_8852be 0002:21:00.0: chip info CID: 0, CV: 1, =
+AID: 0, ACV:
+>> 1, RFE: 1
+>> [   10.408311] rtw89_8852be 0002:21:00.0: rfkill hardware state =
+changed to
+>> enable
+>>=20
+>> So far I haven=E2=80=99t observed more than 1x retry being required, =
+and there are no
+>> issues with loading the BT module.
+>=20
+> My changes do retry for 5 times, because your patch does 3 times retry =
+plus
+> additional 500ms delay. I feel you want around 5 seconds for loading =
+BT module.
 
+Understood.
+
+> Did you mean for now you can't reproduce the situation that long =
+loading
+> time of BT module? (But it took long time days ago?)
+
+I=E2=80=99ve never noticed a long loading time for the BT module and =
+timings seem
+to be consistent both with and without the patch (and not a problem).
+
+>> Would you like me to send a v2 using your revised version? - or?
+>=20
+> Yes, please help v2.
+
+Thanks, will send v2 later today.
+
+Christian=
 
