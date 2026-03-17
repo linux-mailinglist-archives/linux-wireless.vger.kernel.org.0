@@ -1,239 +1,198 @@
-Return-Path: <linux-wireless+bounces-33354-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-33355-lists+linux-wireless=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id OEqUEU6QuWk5KQIAu9opvQ
-	(envelope-from <linux-wireless+bounces-33354-lists+linux-wireless=lfdr.de@vger.kernel.org>)
-	for <lists+linux-wireless@lfdr.de>; Tue, 17 Mar 2026 18:33:02 +0100
+	id QLiILnSTuWk5KQIAu9opvQ
+	(envelope-from <linux-wireless+bounces-33355-lists+linux-wireless=lfdr.de@vger.kernel.org>)
+	for <lists+linux-wireless@lfdr.de>; Tue, 17 Mar 2026 18:46:28 +0100
 X-Original-To: lists+linux-wireless@lfdr.de
 Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 86B5E2AFC7D
-	for <lists+linux-wireless@lfdr.de>; Tue, 17 Mar 2026 18:33:01 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2A9F82B01CB
+	for <lists+linux-wireless@lfdr.de>; Tue, 17 Mar 2026 18:46:28 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id CCCD2303EF9E
-	for <lists+linux-wireless@lfdr.de>; Tue, 17 Mar 2026 17:30:32 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 726FD3006B2F
+	for <lists+linux-wireless@lfdr.de>; Tue, 17 Mar 2026 17:43:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4319637998A;
-	Tue, 17 Mar 2026 17:30:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=justthetip.ca header.i=@justthetip.ca header.b="KEYfGPXh"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0AAD037B40E;
+	Tue, 17 Mar 2026 17:43:33 +0000 (UTC)
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from out-176.mta1.migadu.com (out-176.mta1.migadu.com [95.215.58.176])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-oo1-f80.google.com (mail-oo1-f80.google.com [209.85.161.80])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 37C9D1A6820
-	for <linux-wireless@vger.kernel.org>; Tue, 17 Mar 2026 17:30:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.215.58.176
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9CF613346A0
+	for <linux-wireless@vger.kernel.org>; Tue, 17 Mar 2026 17:43:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.161.80
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773768632; cv=none; b=j5aBNlNNCpRph2uSidYUSmzGQEiaG3wpFgJgr/HbKEhtl2n96fvJ1E3AzZ22FxowB+tBEfN8SOF0+x2z2Ep7C0o7DV8KGu7+jVtzDfYVRsyqZhQcDtsKTtBRkfi76KW7yzl+K5kh+KMGhfptej4xeNac+53PM4tshx4by22Hb+o=
+	t=1773769412; cv=none; b=CJBmw8a62zbqMZHmfr2HNI9My9SLxAmNa9g66YtYTWraPt6UGLQNwiT3MHMig2aFKlPEBERu7Vl2oIO0hzp5obpkXboUuSW87E4aUpi6ad8BccWAccc7xTdVvdqpaGoCMX3opTL8/WZxFHSyPRSRL+1OiXv65xPc5wrWwpXqcHM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773768632; c=relaxed/simple;
-	bh=ZLM8JlT4gWHzo6JpQLH/igkQh2XIDLodYhACrufzsq4=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=FMU4RbP7zyxZpgXaVUD2C26Z26I3wMwmhZ6imgJqHTTw00V9RHFAYUceTQYwSj3HJ2j+Af8nILrcFI1rCh+wVD52Ffkf4nROUy6I7m+KEiYo7j/9ZYi1KR33mPrdEqabCkk8Zh87WEYMHJwM4S0626IbFIpirE29B4cOFQOMUnY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=justthetip.ca; spf=pass smtp.mailfrom=justthetip.ca; dkim=pass (2048-bit key) header.d=justthetip.ca header.i=@justthetip.ca header.b=KEYfGPXh; arc=none smtp.client-ip=95.215.58.176
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=justthetip.ca
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=justthetip.ca
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=justthetip.ca;
-	s=key1; t=1773768628;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=y1Sa/OI14235f1o3BnTehycDoIrodctjm5BQzxUDkn0=;
-	b=KEYfGPXhOTukL2f/O139Z4+EwlxumRNfGlocS2yKOwqsdK2I7vXICDP/na3srp+ARKhSx4
-	+8XQy1//DHXr8tPZV/0jT2P8/Sg34A5DrP5ApZjI1F01iqwNv3W9aZdHeIAGEJTrWJl52R
-	t+c6Qip6VebFt83TFRyGRwUub1DG5dmjVbh7I+U5WIaCEzOBr5mZceDZ6wOsobW0KrYJZy
-	T0dbwsUeGxaYw+e77Ef87KY1vS+MOG0dAS4g6j77mvd1aiB8cgqo6fg2DzNCoDeLd+2Ejs
-	HiE+P3Tvgsx2v//p/mrc2HM7LBwKi2PfgTaRXisK5/Bx+0IMYo91bLVSN0/HHw==
-From: Lucid Duck <lucid_duck@justthetip.ca>
-To: linux-wireless@vger.kernel.org
-Cc: nbd@nbd.name,
-	sean.wang@kernel.org,
-	lorenzo@kernel.org,
-	linux-mediatek@lists.infradead.org,
-	morrownr@gmail.com,
-	Lucid Duck <lucid_duck@justthetip.ca>
-Subject: [PATCH v3 1/1] wifi: mt76: mt7921: fix txpower reporting from rate power configuration
-Date: Tue, 17 Mar 2026 10:30:16 -0700
-Message-ID: <20260317173016.136975-2-lucid_duck@justthetip.ca>
-In-Reply-To: <20260317173016.136975-1-lucid_duck@justthetip.ca>
-References: <20260317173016.136975-1-lucid_duck@justthetip.ca>
+	s=arc-20240116; t=1773769412; c=relaxed/simple;
+	bh=+SXVrqZI0qMsIBsgCyQfCxi3fESHXlzzXdpTBR29ovk=;
+	h=MIME-Version:Date:Message-ID:Subject:From:To:Content-Type; b=GqgwqzJNZq6Sgi2zjLRbvLZocJGyzHmNZUfMbv6e2/kXSFf0UDTVMHCrkHWF7U7bZYQ0rEFtdt/s8EAIFTPvwSh/jPBXtUWZdlZk5ia1fJUp7zqeYkWjaoUC54fXDe+WZvkOt5KmAGC26yJip3B3Ti1p+AiaxIoXJm61wpXTwWI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com; arc=none smtp.client-ip=209.85.161.80
+Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com
+Received: by mail-oo1-f80.google.com with SMTP id 006d021491bc7-67bb5dbf5bbso36932884eaf.2
+        for <linux-wireless@vger.kernel.org>; Tue, 17 Mar 2026 10:43:31 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1773769410; x=1774374210;
+        h=to:from:subject:message-id:date:mime-version:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=7FNF9bTbNaLSfoRgrdQVVr2etTEHLQhXtfiXec0IJH8=;
+        b=X4fcjeCOPJJOWcSXmtRvFyq82hsM2mTiwY7+PrpS9zF5ZqUoxZqn12q6YGhwDqb+kK
+         OQMEsEBa7OogWKTN1fesDTvAkwx/nUhU9d4ZxHPu78Kk5/gegtrRyZWSodc+PPEOrNpB
+         3o/IMKPF4moMKjts/Tbk4oUMJ9qXkvnjnyNA2RF6/IKcgiqZsZOw82+l3Fu2K2eXjT8b
+         nnMivpRMkz3fHnPa/XdqlHsFypfuOOY6ior84JyqiNiPc6zH9uFDgN0sFD135D1JMmFj
+         t+yG1S6eGg1Wf+K/AhcdN4hY7EC6TtJ+c0mtiiZYXCSpv+mfglMeL6YXs/xGmiK/W8E9
+         GB7g==
+X-Forwarded-Encrypted: i=1; AJvYcCUrXUOTKXlzBLim6FXvdrIV0AJdxUUvH76qXlY5lp/9Ft7arfe2ojzBdoFNO/v/8JOPwrJN2q3xxVb5/821kw==@vger.kernel.org
+X-Gm-Message-State: AOJu0Yw+FY6o0EXJs4XeEfFFwBX4fqwXQ1aRTGKZuj6DdDcdGRkYsuEs
+	IAH6u+7OvJ9Zukrmk0okJud4O7+1REK89bVTzJRN5kSGXji4X1xGrV+hUhpIhWC5t2qz1euJR8U
+	pe9CmZMytysfHkcn7Ug+lBbToUqndHBU8VjRyppjDH0cfcV1+HY1h8styw0M=
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Migadu-Flow: FLOW_OUT
-X-Spamd-Result: default: False [-0.66 / 15.00];
+X-Received: by 2002:a05:6820:20b:b0:67b:f24a:a53f with SMTP id
+ 006d021491bc7-67c0dabe1e5mr119000eaf.24.1773769410643; Tue, 17 Mar 2026
+ 10:43:30 -0700 (PDT)
+Date: Tue, 17 Mar 2026 10:43:30 -0700
+X-Google-Appengine-App-Id: s~syzkaller
+X-Google-Appengine-App-Id-Alias: syzkaller
+Message-ID: <69b992c2.050a0220.248e02.0132.GAE@google.com>
+Subject: [syzbot] [wireless?] WARNING in cfg80211_chandef_create
+From: syzbot <syzbot+d9f5fabbbcf4b377d01f@syzkaller.appspotmail.com>
+To: johannes@sipsolutions.net, linux-kernel@vger.kernel.org, 
+	linux-wireless@vger.kernel.org, netdev@vger.kernel.org, 
+	syzkaller-bugs@googlegroups.com
+Content-Type: text/plain; charset="UTF-8"
+X-Spamd-Result: default: False [-0.36 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MID_CONTAINS_FROM(1.00)[];
-	R_MISSING_CHARSET(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[justthetip.ca,quarantine];
+	URI_HIDDEN_PATH(1.00)[https://syzkaller.appspot.com/x/.config?x=e7280ad1f68b2dce];
 	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
-	R_DKIM_ALLOW(-0.20)[justthetip.ca:s=key1];
 	MAILLIST(-0.15)[generic];
+	DMARC_POLICY_SOFTFAIL(0.10)[appspotmail.com : SPF not aligned (relaxed), No valid DKIM,none];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FREEMAIL_CC(0.00)[nbd.name,kernel.org,lists.infradead.org,gmail.com,justthetip.ca];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[3];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-33354-lists,linux-wireless=lfdr.de];
-	DKIM_TRACE(0.00)[justthetip.ca:+];
-	MISSING_XM_UA(0.00)[];
-	TO_DN_SOME(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[lucid_duck@justthetip.ca,linux-wireless@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[linux-wireless];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	MISSING_XM_UA(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-33355-lists,linux-wireless=lfdr.de,d9f5fabbbcf4b377d01f];
+	RCVD_TLS_LAST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,sku_tlbv.channel:url,justthetip.ca:dkim,justthetip.ca:email,justthetip.ca:mid]
-X-Rspamd-Queue-Id: 86B5E2AFC7D
+	SUBJECT_HAS_QUESTION(0.00)[];
+	REDIRECTOR_URL(0.00)[goo.gl];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[syzbot@syzkaller.appspotmail.com,linux-wireless@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[5];
+	TO_DN_NONE(0.00)[];
+	R_DKIM_NA(0.00)[];
+	NEURAL_HAM(-0.00)[-0.981];
+	TAGGED_RCPT(0.00)[linux-wireless];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[googlegroups.com:email,goo.gl:url,storage.googleapis.com:url,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,appspotmail.com:email,syzkaller.appspot.com:url]
+X-Rspamd-Queue-Id: 2A9F82B01CB
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-The mt7921 driver never updates phy->txpower_cur
-when TX power rate configuration is sent to firmware. This causes
-mt76_get_txpower() to report bogus values to userspace (typically
-3 dBm) regardless of actual regulatory or SAR limits. User-set
-txpower limits via iw are also not reflected.
+Hello,
 
-Three root causes are addressed:
+syzbot found the following issue on:
 
-1. The rate power loop in mt76_connac_mcu_rate_txpower_band() computes
-   the correct bounded TX power for each channel but discards the return
-   value of mt76_get_rate_power_limits(). Fix: capture the return value
-   and store it to phy->txpower_cur when processing the current channel.
+HEAD commit:    b84a0ebe421c Add linux-next specific files for 20260313
+git tree:       linux-next
+console output: https://syzkaller.appspot.com/x/log.txt?x=11308216580000
+kernel config:  https://syzkaller.appspot.com/x/.config?x=e7280ad1f68b2dce
+dashboard link: https://syzkaller.appspot.com/bug?extid=d9f5fabbbcf4b377d01f
+compiler:       Debian clang version 21.1.8 (++20251221033036+2078da43e25a-1~exp1~20251221153213.50), Debian LLD 21.1.8
+syz repro:      https://syzkaller.appspot.com/x/repro.syz?x=1090c8da580000
+C reproducer:   https://syzkaller.appspot.com/x/repro.c?x=179338da580000
 
-2. mt7921 uses the chanctx model but its add_chanctx callback bypasses
-   the common mt76_phy_update_channel(), leaving phy->chandef stale.
-   Fix: update phy->chandef from ctx->def in both add_chanctx and
-   change_chanctx, and trigger the rate power path to refresh
-   txpower_cur. Also trigger on IEEE80211_CONF_CHANGE_CHANNEL in
-   config(), matching mt7915.
+Downloadable assets:
+disk image: https://storage.googleapis.com/syzbot-assets/09145161a8a9/disk-b84a0ebe.raw.xz
+vmlinux: https://storage.googleapis.com/syzbot-assets/b64c254e474c/vmlinux-b84a0ebe.xz
+kernel image: https://storage.googleapis.com/syzbot-assets/a7c33f5f7f45/bzImage-b84a0ebe.xz
 
-3. For chanctx drivers, mac80211 routes user txpower changes through
-   BSS_CHANGED_TXPOWER in bss_info_changed() -- not through
-   IEEE80211_CONF_CHANGE_POWER in config(). hw->conf.power_level is
-   never updated. Fix: handle BSS_CHANGED_TXPOWER in
-   mt7921_bss_info_changed(), bridge bss_conf.txpower to
-   hw->conf.power_level, and re-trigger the rate power path.
+IMPORTANT: if you fix the issue, please add the following tag to the commit:
+Reported-by: syzbot+d9f5fabbbcf4b377d01f@syzkaller.appspotmail.com
 
-Tested on Alfa AWUS036AXML (MT7921AU), kernel 6.17.1-300.fc43:
+------------[ cut here ]------------
+chan->band == NL80211_BAND_60GHZ || chan->band == NL80211_BAND_S1GHZ
+WARNING: net/wireless/chan.c:35 at cfg80211_chandef_create+0x99/0x3d0 net/wireless/chan.c:34, CPU#1: syz.0.17/6021
+Modules linked in:
+CPU: 1 UID: 0 PID: 6021 Comm: syz.0.17 Not tainted syzkaller #0 PREEMPT(full) 
+Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 02/12/2026
+RIP: 0010:cfg80211_chandef_create+0x99/0x3d0 net/wireless/chan.c:34
+Code: 8b 26 4c 89 e7 48 c7 c6 20 78 26 90 e8 60 be ad f6 49 83 fc 04 74 0d 41 83 fc 02 75 12 e8 cf b8 ad f6 eb 05 e8 c8 b8 ad f6 90 <0f> 0b 90 eb 05 e8 bd b8 ad f6 89 ef 48 c7 c6 40 78 26 90 e8 2f be
+RSP: 0018:ffffc90003986f30 EFLAGS: 00010293
+RAX: ffffffff8b193a38 RBX: ffffc900039870a0 RCX: ffff888032143d00
+RDX: 0000000000000000 RSI: ffffffff90267820 RDI: 0000000000000004
+RBP: 0000000000000002 R08: ffff888032143d00 R09: 0000000000000002
+R10: 0000000000000004 R11: 0000000000000000 R12: 0000000000000004
+R13: dffffc0000000000 R14: ffff888012a762f8 R15: ffffc900039870a8
+FS:  0000555592955500(0000) GS:ffff888124ee0000(0000) knlGS:0000000000000000
+CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+CR2: 00007fbf5f187600 CR3: 0000000077436000 CR4: 00000000003526f0
+Call Trace:
+ <TASK>
+ _nl80211_parse_chandef+0x437/0x1300 net/wireless/nl80211.c:3637
+ __nl80211_set_channel+0x248/0x880 net/wireless/nl80211.c:3761
+ nl80211_set_wiphy+0x116b/0x2fa0 net/wireless/nl80211.c:-1
+ genl_family_rcv_msg_doit+0x22a/0x330 net/netlink/genetlink.c:1114
+ genl_family_rcv_msg net/netlink/genetlink.c:1194 [inline]
+ genl_rcv_msg+0x61c/0x7a0 net/netlink/genetlink.c:1209
+ netlink_rcv_skb+0x232/0x4b0 net/netlink/af_netlink.c:2550
+ genl_rcv+0x28/0x40 net/netlink/genetlink.c:1218
+ netlink_unicast_kernel net/netlink/af_netlink.c:1318 [inline]
+ netlink_unicast+0x80f/0x9b0 net/netlink/af_netlink.c:1344
+ netlink_sendmsg+0x813/0xb40 net/netlink/af_netlink.c:1894
+ sock_sendmsg_nosec+0x112/0x150 net/socket.c:796
+ __sock_sendmsg net/socket.c:811 [inline]
+ ____sys_sendmsg+0x589/0x8c0 net/socket.c:2668
+ ___sys_sendmsg+0x2a5/0x360 net/socket.c:2722
+ __sys_sendmsg net/socket.c:2754 [inline]
+ __do_sys_sendmsg net/socket.c:2759 [inline]
+ __se_sys_sendmsg net/socket.c:2757 [inline]
+ __x64_sys_sendmsg+0x1bd/0x2a0 net/socket.c:2757
+ do_syscall_x64 arch/x86/entry/syscall_64.c:63 [inline]
+ do_syscall_64+0x14d/0xf80 arch/x86/entry/syscall_64.c:94
+ entry_SYSCALL_64_after_hwframe+0x77/0x7f
+RIP: 0033:0x7fbf5f19c799
+Code: ff c3 66 2e 0f 1f 84 00 00 00 00 00 0f 1f 44 00 00 48 89 f8 48 89 f7 48 89 d6 48 89 ca 4d 89 c2 4d 89 c8 4c 8b 4c 24 08 0f 05 <48> 3d 01 f0 ff ff 73 01 c3 48 c7 c1 e8 ff ff ff f7 d8 64 89 01 48
+RSP: 002b:00007ffe1eb2d0b8 EFLAGS: 00000246 ORIG_RAX: 000000000000002e
+RAX: ffffffffffffffda RBX: 00007fbf5f415fa0 RCX: 00007fbf5f19c799
+RDX: 0000000000000000 RSI: 0000200000000040 RDI: 0000000000000004
+RBP: 00007fbf5f232c99 R08: 0000000000000000 R09: 0000000000000000
+R10: 0000000000000000 R11: 0000000000000246 R12: 0000000000000000
+R13: 00007fbf5f415fac R14: 00007fbf5f415fa0 R15: 00007fbf5f415fa0
+ </TASK>
 
-  Before: iw dev wlan0 info shows "txpower 3.00 dBm" (wrong)
-  After:  correct per-band values, user limits reflected
 
-Test results (regulatory domain: Canada/CA):
-  - 2.4GHz ch6:  33 dBm (30 dBm limit + 3 dBm 2x2 path delta)
-  - 5GHz ch36:   26 dBm (23 dBm limit + 3 dBm path delta)
-  - 6GHz ch5:    15 dBm (12 dBm limit + 3 dBm path delta)
-  - Band switch: 100 cycles, 0 failures
-  - Module reload: 50 cycles, 0 failures
-  - 2-hour soak: 480 samples, zero drift
-  - Regdomain switching: 10 countries, all correct
-  - User txpower limits: reflected on all bands
-  - Monitor mode: correct on all tested channels
-
-Signed-off-by: Lucid Duck <lucid_duck@justthetip.ca>
 ---
- .../wireless/mediatek/mt76/mt76_connac_mcu.c  | 12 +++++++---
- .../net/wireless/mediatek/mt76/mt7921/main.c  | 22 ++++++++++++++++++-
- 2 files changed, 30 insertions(+), 4 deletions(-)
+This report is generated by a bot. It may contain errors.
+See https://goo.gl/tpsmEJ for more information about syzbot.
+syzbot engineers can be reached at syzkaller@googlegroups.com.
 
-diff --git a/drivers/net/wireless/mediatek/mt76/mt76_connac_mcu.c b/drivers/net/wireless/mediatek/mt76/mt76_connac_mcu.c
-index 16db0f208..5856924a9 100644
---- a/drivers/net/wireless/mediatek/mt76/mt76_connac_mcu.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt76_connac_mcu.c
-@@ -2193,14 +2193,20 @@ mt76_connac_mcu_rate_txpower_band(struct mt76_phy *phy,
- 				.hw_value = ch_list[idx],
- 				.band = band,
- 			};
--			s8 reg_power, sar_power;
-+			s8 reg_power, sar_power, max_power;
- 
- 			reg_power = mt76_connac_get_ch_power(phy, &chan,
- 							     tx_power);
- 			sar_power = mt76_get_sar_power(phy, &chan, reg_power);
- 
--			mt76_get_rate_power_limits(phy, &chan, limits,
--						   sar_power);
-+			max_power = mt76_get_rate_power_limits(phy, &chan,
-+							       limits,
-+							       sar_power);
-+
-+			if (phy->chandef.chan &&
-+			    phy->chandef.chan->hw_value == ch_list[idx] &&
-+			    phy->chandef.chan->band == band)
-+				phy->txpower_cur = max_power;
- 
- 			tx_power_tlv.last_msg = ch_list[idx] == last_ch;
- 			sku_tlbv.channel = ch_list[idx];
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7921/main.c b/drivers/net/wireless/mediatek/mt76/mt7921/main.c
-index 5881040ac..38a59c6f2 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7921/main.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7921/main.c
-@@ -638,7 +638,8 @@ static int mt7921_config(struct ieee80211_hw *hw, int radio_idx, u32 changed)
- 
- 	mt792x_mutex_acquire(dev);
- 
--	if (changed & IEEE80211_CONF_CHANGE_POWER) {
-+	if (changed & (IEEE80211_CONF_CHANGE_POWER |
-+		       IEEE80211_CONF_CHANGE_CHANNEL)) {
- 		ret = mt7921_set_tx_sar_pwr(hw, NULL);
- 		if (ret)
- 			goto out;
-@@ -719,6 +720,14 @@ static void mt7921_bss_info_changed(struct ieee80211_hw *hw,
- 	if (changed & BSS_CHANGED_CQM)
- 		mt7921_mcu_set_rssimonitor(dev, vif);
- 
-+	if (changed & BSS_CHANGED_TXPOWER) {
-+		int tx_power = info->txpower;
-+
-+		if (tx_power != INT_MIN && tx_power > 0)
-+			hw->conf.power_level = tx_power;
-+		mt7921_set_tx_sar_pwr(hw, NULL);
-+	}
-+
- 	if (changed & BSS_CHANGED_ASSOC) {
- 		mt7921_mcu_sta_update(dev, NULL, vif, true,
- 				      MT76_STA_INFO_STATE_ASSOC);
-@@ -1360,8 +1369,15 @@ mt7921_add_chanctx(struct ieee80211_hw *hw,
- 		   struct ieee80211_chanctx_conf *ctx)
- {
- 	struct mt792x_dev *dev = mt792x_hw_dev(hw);
-+	struct mt76_phy *mphy = hw->priv;
- 
- 	dev->new_ctx = ctx;
-+	mphy->chandef = ctx->def;
-+
-+	mt792x_mutex_acquire(dev);
-+	mt7921_set_tx_sar_pwr(hw, NULL);
-+	mt792x_mutex_release(dev);
-+
- 	return 0;
- }
- 
-@@ -1396,6 +1412,10 @@ mt7921_change_chanctx(struct ieee80211_hw *hw,
- 		mt7921_mcu_config_sniffer(mvif, ctx);
- 	else
- 		mt76_connac_mcu_uni_set_chctx(mvif->phy->mt76, &mvif->bss_conf.mt76, ctx);
-+
-+	phy->mt76->chandef = ctx->def;
-+	mt7921_set_tx_sar_pwr(hw, NULL);
-+
- 	mt792x_mutex_release(phy->dev);
- }
- 
--- 
-2.51.0
+syzbot will keep track of this issue. See:
+https://goo.gl/tpsmEJ#status for how to communicate with syzbot.
 
+If the report is already addressed, let syzbot know by replying with:
+#syz fix: exact-commit-title
+
+If you want syzbot to run the reproducer, reply with:
+#syz test: git://repo/address.git branch-or-commit-hash
+If you attach or paste a git patch, syzbot will apply it before testing.
+
+If you want to overwrite report's subsystems, reply with:
+#syz set subsystems: new-subsystem
+(See the list of subsystem names on the web dashboard)
+
+If the report is a duplicate of another one, reply with:
+#syz dup: exact-subject-of-another-report
+
+If you want to undo deduplication, reply with:
+#syz undup
 
