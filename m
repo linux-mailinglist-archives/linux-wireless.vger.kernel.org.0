@@ -1,166 +1,264 @@
-Return-Path: <linux-wireless+bounces-33373-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-33374-lists+linux-wireless=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id AFhoCFRKummqTwIAu9opvQ
-	(envelope-from <linux-wireless+bounces-33373-lists+linux-wireless=lfdr.de@vger.kernel.org>)
-	for <lists+linux-wireless@lfdr.de>; Wed, 18 Mar 2026 07:46:44 +0100
+	id oGAZBNpKummWTwIAu9opvQ
+	(envelope-from <linux-wireless+bounces-33374-lists+linux-wireless=lfdr.de@vger.kernel.org>)
+	for <lists+linux-wireless@lfdr.de>; Wed, 18 Mar 2026 07:48:58 +0100
 X-Original-To: lists+linux-wireless@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5EB3C2B68A5
-	for <lists+linux-wireless@lfdr.de>; Wed, 18 Mar 2026 07:46:43 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5F7572B68C3
+	for <lists+linux-wireless@lfdr.de>; Wed, 18 Mar 2026 07:48:57 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id EAF31301053E
-	for <lists+linux-wireless@lfdr.de>; Wed, 18 Mar 2026 06:46:41 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 1D9A03012C52
+	for <lists+linux-wireless@lfdr.de>; Wed, 18 Mar 2026 06:48:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5BA522FF160;
-	Wed, 18 Mar 2026 06:46:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 83E0E4A02;
+	Wed, 18 Mar 2026 06:48:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="iAmMubZB"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="ZU0/ncZr"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-pf1-f172.google.com (mail-pf1-f172.google.com [209.85.210.172])
+Received: from mail-pf1-f171.google.com (mail-pf1-f171.google.com [209.85.210.171])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E49AE4A02
-	for <linux-wireless@vger.kernel.org>; Wed, 18 Mar 2026 06:46:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.172
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 31066337B81
+	for <linux-wireless@vger.kernel.org>; Wed, 18 Mar 2026 06:48:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.171
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773816401; cv=none; b=Aml4EfSf6Wvj+teLq0mYm99PIs02Z9V1nNEqmYvPWs+MqAzDPfDC8ufC5MAmWnDMSue1TRZTULbfPbmk47n8+Y+TTivYUSOLc7Jv/TCnwYyoXXfgm5xf2mkFr6jkXb8GgADAA+e4XMxpgffRgHJFS+P5ET9lyB9phYLyiWGjFPQ=
+	t=1773816535; cv=none; b=CmGl4Ofusaj1XzOYfwVKG/J7uSoeK593XO7O/5CHWKXefC7nuySvzRDApwwW1E122JEXZq7viQ5/zp+wxwxxITEy/Kx6qsCLXv1xLjzRFoY1gWLOYgbdHfs8wQpj5KQ7s8M5E916OoUKh4LpP11v5RR5xsVZ/2iiJVM5VjmF4Y4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773816401; c=relaxed/simple;
-	bh=wvTTufyUHvLeOcDl36cL2uDZBGETrwNV+11FiFZdK3U=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=rup+BNoXI4mBVbAF8wbV3hVqhSj+sZD5owLVjvrE2M/dazJLzHK8tjrpFS7iPMh2ifeyy0bHfEy3V8RaVvuulgoQnHB0rjjoVNVlnt4kyGsGFMv69mQHmSJJnBe298c9Jv8Y8/iwbI0e7sJ/EUwOIt2zmmS+ZCPIIoPt6llgmtQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=roeck-us.net; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=iAmMubZB; arc=none smtp.client-ip=209.85.210.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=roeck-us.net
+	s=arc-20240116; t=1773816535; c=relaxed/simple;
+	bh=vWUOxXCIopxE7m4cEHgcLnIzPzKbsRFmBfEjsZ6TSMM=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version:Content-Type; b=cTGFXd9wYmAKnmru0gtPtds3JSDKdtRwCAEN1jQIC2zbnLMXUd99eqKkP8RxiZXXm3CEZ/fTRxeDOtnI4xSfmygzLILgolU4d2NEg+IE+6s3geYIICDaBkdmmb/N9mFVEVGHFnOMcxAgefOJE2uLP/4uHH9WnjL85b2vtKnyHvI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=ZU0/ncZr; arc=none smtp.client-ip=209.85.210.171
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pf1-f172.google.com with SMTP id d2e1a72fcca58-829ac4670c4so5001116b3a.0
-        for <linux-wireless@vger.kernel.org>; Tue, 17 Mar 2026 23:46:39 -0700 (PDT)
+Received: by mail-pf1-f171.google.com with SMTP id d2e1a72fcca58-82a3d3235c9so2538029b3a.2
+        for <linux-wireless@vger.kernel.org>; Tue, 17 Mar 2026 23:48:54 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1773816399; x=1774421199; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1773816533; x=1774421333; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:sender:from:to:cc:subject:date:message-id:reply-to;
-        bh=o4CbwMpn5fv86NkuOD8DdCT6N1212S5p3GRVvtF61FQ=;
-        b=iAmMubZBDT989X3Pq65dMqcIFKHZkjwMIEK5qCJY1ltMMlZJejCJRGY6RQ4KLXGHrA
-         +C4Q61491kqiK1cspBfZ6rrpI0d9jAUBgVdY+NCpzFUHnOT/9Y0mO16ZLIw+4MDvIH3A
-         nVy8Qui5SlMa5IeFCasGcghvhUuOptXUZHmOCzLyF5YzuG/5o+33iRDVBxMWoIkqR695
-         rU2JXitZft1yRoeMZUtprVrx54vzw8m8GrFBVp5JGIyppr6idtiKouh8bsaHdDW9bHfa
-         0Lzxx0pxcR99U2jl0GM/1ccUChz2PeFUHvM9R8wV567Sw1VcMNCZdA8754JIcayYuEpt
-         FUjA==
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=LlC4k9fcBpkR2TeWfp5WdwMkkhT+G6+tLfuISegqKHk=;
+        b=ZU0/ncZrhwhdaW2PRc+x+9+e+UENBcu5xQynYu5TnNz2ElAoLZRv27SEh6rCCOL5Ap
+         /HCZVISxBph9qXYaVbrg7yBrvw6NSgYISOp8V54ugGsUB+asKMK6cxqBatW+0b/V8TYM
+         FgdzptxIb6/tCIFThV5YhlPIrElKrLsIiNn9+tabPvXt6/1qI69GJ6jfErptTteIHe6Q
+         FstfT6bOvRMaMz5IvMbLVIIcU7MkOh+BntgPAp37OMUlHXZwCWLWZzScJeljupRvNah+
+         U9QhdEnmTFf/zlyYe6vP/dKhb6KOIcY0TASKebnnFUp5BOzptNAwzdNjlaVh0DGZw6H8
+         C1lw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1773816399; x=1774421199;
+        d=1e100.net; s=20251104; t=1773816533; x=1774421333;
         h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:sender:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=o4CbwMpn5fv86NkuOD8DdCT6N1212S5p3GRVvtF61FQ=;
-        b=G1LpCJyGxgAyH9n/dqDxtmBMIK7sc1qd0B7uqJ+PPC10jKf9Zpsxu89tIwHlJKxMwu
-         TaIkaeKTM4VdmyUKkMHHV0O1yNvjP31xETC1HHkliUT1dxjY8PG7hGqQQc//JJF1vVsU
-         woBySGSl3ENyxzyJ7VPuX5xf4A5GEsUSRM0hJLhsjnb/zFNWXfgpWyNMJgBQDIaa/bQh
-         mq1HWor2bUM4B4+1CPyDNcFfhdp6QPG1HQ+fjG90haT0BS3ZVm39tb/BQG8JFpBR4t5r
-         eUT5lqgy/h76BKoGZbdQdy+cSGHq7FS7wAyAegzaYuEnpxEIITAXMNy1EfEmYtz4fFtX
-         rR3w==
-X-Gm-Message-State: AOJu0Yxx9vREToh1zTC7vA5HA4EHFSlc++XhAfFXsgpzwqS6whfwIHPV
-	mWUJISaqS7WW1CQwtxQS0obcBl78Nfy3DdJ8o3eBBtD7Jej7sNyfexD4
-X-Gm-Gg: ATEYQzy+KvdrEViDI/ZkXFjnwaDrPvFNTF0eVCk9HVRIXV7SJx7yJKaFCvROIpynpMA
-	2oKIOCa4ATRMgaq++J+JwcjBEG4uFNtPMYwwcZU6nZWnaPlROoWHCtKDefbGZN8aIqKIAitC8zC
-	ijBbcuGmkkzNvEdb2x4/4KK1WdRGWQZOVPxjzaOS9eqeWkzG2+gtbTt2vRS1eV7iJs4klJahTKP
-	B9Me7dFGAEHFctEEiwDhpVXeVGcSW+S/tvpaiiGQnfVVwp5uTwHGb3wpai038UlGQDJ5fBI0UC9
-	LcMBatZHEKk+wJuqOz4ZYeUH26q91kptl5LEF20Jo4+RI9VkfPP9ADbmmFAV/Z6vG68rO1tGrav
-	2pMDtLqOHozF6bSqcdo38SzEzdPQWGmgsClw4xDhZmLLuGs3wYNHuHpjOxAK9lNXeUqJA/f9Oas
-	ALN2VsqaYyYUgxEKfWma4vLb/qQUx7BSUGBr+X
-X-Received: by 2002:a05:6a00:2342:b0:823:1c3e:95cf with SMTP id d2e1a72fcca58-82a6aca9554mr2066000b3a.18.1773816399240;
-        Tue, 17 Mar 2026 23:46:39 -0700 (PDT)
-Received: from server.roeck-us.net ([2600:1700:e321:62f0:da43:aeff:fecc:bfd5])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-82a6c63808fsm1688506b3a.23.2026.03.17.23.46.38
+        bh=LlC4k9fcBpkR2TeWfp5WdwMkkhT+G6+tLfuISegqKHk=;
+        b=sCJ3YFHh5uAi4OH8XjVqaThi2A96QFc1TegbX39ccGdPdaOKxUq39ZVI/dqomBknx0
+         Ur7kth/LRWdE7exUvcTrKhmXFYuZNhkOMG41GpIFDbSK2T7u25jTdlKYDwFq4ixo8Y0G
+         /eYZdM7XfvmvKddHU0RRKSxVDmjNcIqK++h74tNYNS4ouR41qnsAJUIKuYXANbKUNFK5
+         PgqKSna/syI9EjX/gyoOJFChEQ8v+L87qBhoN6A+wHhiP7KuDePj0u2Tbg16iyfhoWRL
+         3yy33zNn0KbPdu6hqQy8+z4DvJ6hq90sqYVWAUNIjpcenNuxKK4std+z+g6t2unZSMB7
+         cz4Q==
+X-Gm-Message-State: AOJu0YwoWXzcwOBz47dNhhmWmZe/Y+wwX777bweFUE0Js5WqIbLnLSG0
+	helgeNjtwkpalRq3PTnpqc2sYpLtkAjOafNmFQk5aAEAYI87KOnWkTfQxk7fjGo4
+X-Gm-Gg: ATEYQzzeif2NT+6LQ9/V2BeALpuuMiRtcnG9KIy7FJ0+8tl/stBKcWh1cmksQTw96c7
+	pIw5c7w8zL9Sg2Y0Q5s6Unzp9VQe3PyeGw9MYR4gl2EvwjbjBy6DkEL614pYaTLvZixu8UyPy4t
+	SsdNw+S3A4af6QRnyPEEuqiNvIqDZoG2s1WJutyxuG/PSlKRyo4n2ROoOw1pasNDGo4fI9ZobOz
+	HUmFwqe7TWYYQgXkLgClK1V7ufjCdVleCatLQ5rQ+5Vq8Cd0Z5jN3UynUrvPLl1XkHK3kj17HpB
+	+PvD85t/Q/xbtUAsF/Nu3rxy8vB+2FsiiPWGCsS1GgSJLgeVeFQTF+jODiUVZz7zjwtaQLi9c97
+	eNWFl5ex146JDFOrFcKSeQl98MaS/ctKUNhr4l30DUEs8tdOPSydK8v7aAhDSKlgB8xLYGXy/Y4
+	x7FReYBG4a7UgIKIArCUypYk1ZliSMdg0yK3gRyDOb69UXNSI4feyXj373aSKVRLBHX2jJQF4jw
+	Wd3Uel3jQ==
+X-Received: by 2002:a05:6a00:1590:b0:829:8af4:5eb0 with SMTP id d2e1a72fcca58-82a6ae088edmr1787175b3a.26.1773816533523;
+        Tue, 17 Mar 2026 23:48:53 -0700 (PDT)
+Received: from localhost.localdomain (125-227-180-151.hinet-ip.hinet.net. [125.227.180.151])
+        by smtp.googlemail.com with ESMTPSA id d2e1a72fcca58-82a6b541cdfsm1508764b3a.1.2026.03.17.23.48.51
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 17 Mar 2026 23:46:38 -0700 (PDT)
-Sender: Guenter Roeck <groeck7@gmail.com>
-From: Guenter Roeck <linux@roeck-us.net>
-To: Johannes Berg <johannes.berg@intel.com>
+        Tue, 17 Mar 2026 23:48:52 -0700 (PDT)
+From: Ping-Ke Shih <pkshih@gmail.com>
+To: wens@kernel.org
 Cc: linux-wireless@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Guenter Roeck <linux@roeck-us.net>,
-	Peter Astrand <astrand@lysator.liu.se>
-Subject: [PATCH] wifi: wlcore: Return -ENOMEM instead of -EAGAIN if there is not enough headroom
-Date: Tue, 17 Mar 2026 23:46:36 -0700
-Message-ID: <20260318064636.3065925-1-linux@roeck-us.net>
-X-Mailer: git-send-email 2.45.2
+	wireless-regdb@lists.infradead.org
+Subject: [PATCH] wireless-regdb: Add regulatory info for CEPT countries FO, GI, IM, SM and VA listed by WiFi Alliance
+Date: Wed, 18 Mar 2026 14:48:34 +0800
+Message-Id: <20260318064834.103731-1-pkshih@gmail.com>
+X-Mailer: git-send-email 2.25.1
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-0.16 / 15.00];
+X-Spamd-Result: default: False [-1.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	MID_CONTAINS_FROM(1.00)[];
-	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64];
+	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
 	R_DKIM_ALLOW(-0.20)[gmail.com:s=20230601];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	DMARC_NA(0.00)[roeck-us.net];
-	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-33373-lists,linux-wireless=lfdr.de];
-	TO_DN_SOME(0.00)[];
-	FROM_HAS_DN(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-33374-lists,linux-wireless=lfdr.de];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[linux@roeck-us.net,linux-wireless@vger.kernel.org];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCVD_COUNT_FIVE(0.00)[5];
 	DKIM_TRACE(0.00)[gmail.com:+];
-	TAGGED_RCPT(0.00)[linux-wireless];
-	RCPT_COUNT_FIVE(0.00)[5];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	RCPT_COUNT_THREE(0.00)[3];
+	FROM_HAS_DN(0.00)[];
+	FREEMAIL_FROM(0.00)[gmail.com];
+	RCVD_COUNT_FIVE(0.00)[5];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[pkshih@gmail.com,linux-wireless@vger.kernel.org];
 	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,liu.se:email]
-X-Rspamd-Queue-Id: 5EB3C2B68A5
+	TO_DN_NONE(0.00)[];
+	TAGGED_RCPT(0.00)[linux-wireless];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,europa.eu:url,wi-fi.org:url]
+X-Rspamd-Queue-Id: 5F7572B68C3
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-Since upstream commit e75665dd0968 ("wifi: wlcore: ensure skb headroom
-before skb_push"), wl1271_tx_allocate() and with it
-wl1271_prepare_tx_frame() returns -EAGAIN if pskb_expand_head() fails.
-However, in wlcore_tx_work_locked(), a return value of -EAGAIN from
-wl1271_prepare_tx_frame() is interpreted as the aggregation buffer being
-full. This causes the code to flush the buffer, put the skb back at the
-head of the queue, and immediately retry the same skb in a tight while
-loop.
+From: Ping-Ke Shih <pkshih@realtek.com>
 
-Because wlcore_tx_work_locked() holds wl->mutex, and the retry happens
-immediately with GFP_ATOMIC, this will result in an infinite loop and a
-CPU soft lockup. Return -ENOMEM instead so the packet is dropped and
-the loop terminates.
+In commit 5a8ced5ad313 ("wireless-regdb: Update regulatory info for CEPT
+countries for 6GHz listed by WiFi Alliance"), the following are skipped as
+they do not have corresponding entries in the database yet.
 
-The problem was found by an experimental code review agent based on
-gemini-3.1-pro while reviewing backports into v6.18.y.
+     - Faroe Islands (FO)
+     - Gibraltar (GI)
+     - Isle of Man (IM)
+     - San Marino (SM)
+     - Holy See (Vatican City State) (VA)
 
-Assisted-by: Gemini:gemini-3.1-pro
-Fixes: e75665dd0968 ("wifi: wlcore: ensure skb headroom before skb_push")
-Cc: Peter Astrand <astrand@lysator.liu.se>
-Signed-off-by: Guenter Roeck <linux@roeck-us.net>
+Look up the CEPT decisions [2], and add entries along with decisions [3],
+[4] and [5] for 2/5/6 GHz regulations.
+
+The 2 GHz band by ECC Decision (11)05 [3], which the adoption of ERC
+Recommendation 70-03 [6], the regulations and the frequency bands to be
+used for Short Range Devices (SRDs) are included in specific annexes to
+this Recommendation. By ERC Recommendation 70-03 annex 3 (WIDEBAND DATA
+TRANSMISSION SYSTEMS):
+
+ * 2400-2483.5 MHz
+   - 100 mW
+
+The 5 GHz band by ECC Decision (04)08 [4]:
+
+ * 5150-5250 MHz
+   - 200 mW
+   - Indoor use
+ * 5250-5350 MHz
+   - 200 mW (due to TPC required, -3dBm, 100 mW is adopted)
+   - DFS, TPC
+   - Indoor use
+ * 5470-5725 MHz
+   - 1 W (due to TPC required, -3dBm, 500 mW is adopted)
+   - DFS, TPC
+   - Indoor and outdoor use
+
+The 6 GHz band by ECC Decision (20)01 [5]:
+
+ * LPI devices (adopted)
+   - 5945-6425 MHz
+   - Restricted to indoor use only
+   - Maximum mean e.i.r.p.: 23 dBm
+   - Maximum mean e.i.r.p. density: 10 dBm/MHz
+ * VLP devices
+   - 5945-6425 MHz
+   - Indoors and outdoors
+   - Maximum mean e.i.r.p.: 14 dBm
+   - Maximum mean e.i.r.p. density: 1 dBm/MHz
+
+[1] https://www.wi-fi.org/regulations-enabling-6-ghz-wi-fi
+[2] https://docdb.cept.org/document/category/ECC_Decisions?status=ACTIVE
+[3] https://docdb.cept.org/download/1535
+[4] https://docdb.cept.org/download/4501
+[5] https://docdb.cept.org/download/4685
+[6] https://docdb.cept.org/download/3700
+
+Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
 ---
- drivers/net/wireless/ti/wlcore/tx.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ db.txt | 35 +++++++++++++++++++++++++++++++++++
+ 1 file changed, 35 insertions(+)
 
-diff --git a/drivers/net/wireless/ti/wlcore/tx.c b/drivers/net/wireless/ti/wlcore/tx.c
-index 6241866d39df..75cfbcfb7626 100644
---- a/drivers/net/wireless/ti/wlcore/tx.c
-+++ b/drivers/net/wireless/ti/wlcore/tx.c
-@@ -210,7 +210,7 @@ static int wl1271_tx_allocate(struct wl1271 *wl, struct wl12xx_vif *wlvif,
- 		if (skb_headroom(skb) < (total_len - skb->len) &&
- 		    pskb_expand_head(skb, (total_len - skb->len), 0, GFP_ATOMIC)) {
- 			wl1271_free_tx_id(wl, id);
--			return -EAGAIN;
-+			return -ENOMEM;
- 		}
- 		desc = skb_push(skb, total_len - skb->len);
+diff --git a/db.txt b/db.txt
+index d54ef78e0da8..e2afb145ede5 100644
+--- a/db.txt
++++ b/db.txt
+@@ -731,6 +731,13 @@ country FM: DFS-FCC
+ 	(5490 - 5730 @ 160), (24), DFS
+ 	(5735 - 5835 @ 80), (30)
  
++country FO: DFS-ETSI
++	(2402 - 2483.5 @ 40), (100 mW)
++	(5150 - 5250 @ 80), (200 mW), NO-OUTDOOR, AUTO-BW
++	(5250 - 5350 @ 80), (100 mW), DFS, NO-OUTDOOR, AUTO-BW
++	(5470 - 5725 @ 160), (500 mW), DFS
++	(5945 - 6425 @ 320), (23), NO-OUTDOOR
++
+ # FR as part of EU/CEPT accepted decisions 2005/513/EC (5GHz RLAN, EN 301 893)
+ # and 2006/771/EC (amended by 2008/432/EC, Short-Range Devices, EN 300 440)
+ #  EU decision 2005/513/EC: https://eur-lex.europa.eu/legal-content/EN/TXT/?uri=CELEX:02005D0513-20070213
+@@ -801,6 +808,13 @@ country GH: DFS-FCC
+ 	(5490 - 5730 @ 160), (24), DFS
+ 	(5735 - 5835 @ 80), (30)
+ 
++country GI: DFS-ETSI
++	(2402 - 2483.5 @ 40), (100 mW)
++	(5150 - 5250 @ 80), (200 mW), NO-OUTDOOR, AUTO-BW
++	(5250 - 5350 @ 80), (100 mW), DFS, NO-OUTDOOR, AUTO-BW
++	(5470 - 5725 @ 160), (500 mW), DFS
++	(5945 - 6425 @ 320), (23), NO-OUTDOOR
++
+ country GL: DFS-ETSI
+ 	(2402 - 2482 @ 40), (20)
+ 	(5170 - 5250 @ 80), (20), AUTO-BW, wmmrule=ETSI
+@@ -976,6 +990,13 @@ country IL: DFS-ETSI
+ 	(5725 - 5875 @ 80), (25 mW), AUTO-BW
+ 	(5945 - 6425 @ 320), (200 mW), NO-OUTDOOR
+ 
++country IM: DFS-ETSI
++	(2402 - 2483.5 @ 40), (100 mW)
++	(5150 - 5250 @ 80), (200 mW), NO-OUTDOOR, AUTO-BW
++	(5250 - 5350 @ 80), (100 mW), DFS, NO-OUTDOOR, AUTO-BW
++	(5470 - 5725 @ 160), (500 mW), DFS
++	(5945 - 6425 @ 320), (23), NO-OUTDOOR
++
+ # Source:
+ # https://dot.gov.in/spectrummanagement/delicensing-24-24835-ghz-band-gsr-45-e-5150-5350-ghz-gsr-46-e-and-5725-5875-ghz
+ # https://dot.gov.in/spectrummanagement/license-exemption-5-ghz-gsr-1048e-dated-22102018
+@@ -1855,6 +1876,13 @@ country SK: DFS-ETSI
+ 	# 60 GHz band channels 1-4 (ETSI EN 302 567)
+ 	(57000 - 66000 @ 2160), (40)
+ 
++country SM: DFS-ETSI
++	(2402 - 2483.5 @ 40), (100 mW)
++	(5150 - 5250 @ 80), (200 mW), NO-OUTDOOR, AUTO-BW
++	(5250 - 5350 @ 80), (100 mW), DFS, NO-OUTDOOR, AUTO-BW
++	(5470 - 5725 @ 160), (500 mW), DFS
++	(5945 - 6425 @ 320), (23), NO-OUTDOOR
++
+ # Source:
+ # Regulation N° 2004-005 ART/DG/DRC/D.Rég
+ country SN: DFS-FCC
+@@ -2072,6 +2100,13 @@ country UZ: DFS-ETSI
+ 	(5170 - 5250 @ 80), (20), AUTO-BW
+ 	(5250 - 5330 @ 80), (20), DFS, AUTO-BW
+ 
++country VA: DFS-ETSI
++	(2402 - 2483.5 @ 40), (100 mW)
++	(5150 - 5250 @ 80), (200 mW), NO-OUTDOOR, AUTO-BW
++	(5250 - 5350 @ 80), (100 mW), DFS, NO-OUTDOOR, AUTO-BW
++	(5470 - 5725 @ 160), (500 mW), DFS
++	(5945 - 6425 @ 320), (23), NO-OUTDOOR
++
+ # Source:
+ # http://www.ntrc.vc/regulations/Jun_2006_Spectrum_Managment_Regulations.pdf
+ country VC: DFS-ETSI
 -- 
-2.45.2
+2.25.1
 
 
