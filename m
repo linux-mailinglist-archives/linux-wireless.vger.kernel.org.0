@@ -1,193 +1,166 @@
-Return-Path: <linux-wireless+bounces-33372-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-33373-lists+linux-wireless=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 8IvdLdxBumnMTQIAu9opvQ
-	(envelope-from <linux-wireless+bounces-33372-lists+linux-wireless=lfdr.de@vger.kernel.org>)
-	for <lists+linux-wireless@lfdr.de>; Wed, 18 Mar 2026 07:10:36 +0100
+	id AFhoCFRKummqTwIAu9opvQ
+	(envelope-from <linux-wireless+bounces-33373-lists+linux-wireless=lfdr.de@vger.kernel.org>)
+	for <lists+linux-wireless@lfdr.de>; Wed, 18 Mar 2026 07:46:44 +0100
 X-Original-To: lists+linux-wireless@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2164F2B6373
-	for <lists+linux-wireless@lfdr.de>; Wed, 18 Mar 2026 07:10:36 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5EB3C2B68A5
+	for <lists+linux-wireless@lfdr.de>; Wed, 18 Mar 2026 07:46:43 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id BBD4E3007CAB
-	for <lists+linux-wireless@lfdr.de>; Wed, 18 Mar 2026 06:10:24 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id EAF31301053E
+	for <lists+linux-wireless@lfdr.de>; Wed, 18 Mar 2026 06:46:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3FABB364043;
-	Wed, 18 Mar 2026 06:10:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5BA522FF160;
+	Wed, 18 Mar 2026 06:46:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=fail reason="signature verification failed" (2048-bit key) header.d=nummela.org header.i=@nummela.org header.b="Vn5g4S9/"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="iAmMubZB"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from vps-8cfc3056.vps.ovh.net (chai.nummela.org [51.195.103.228])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pf1-f172.google.com (mail-pf1-f172.google.com [209.85.210.172])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A289436405F
-	for <linux-wireless@vger.kernel.org>; Wed, 18 Mar 2026 06:10:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=51.195.103.228
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E49AE4A02
+	for <linux-wireless@vger.kernel.org>; Wed, 18 Mar 2026 06:46:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773814223; cv=none; b=D4WmT9rKq13f5k9ApLtPcKj5kKUbLyI5J5JA4JL4zgepYzfTsEkzvo4jrpzesFXbTWASNqY9BnNDNKB2ZkHrWxAqauiD1GIY0h8y3G+JIiM2kiEle74pe0UvTXpIDx02J3EtQZAFZeV0EhbDVEfDN7uAdFB6HNIgmaJ2u6OADPU=
+	t=1773816401; cv=none; b=Aml4EfSf6Wvj+teLq0mYm99PIs02Z9V1nNEqmYvPWs+MqAzDPfDC8ufC5MAmWnDMSue1TRZTULbfPbmk47n8+Y+TTivYUSOLc7Jv/TCnwYyoXXfgm5xf2mkFr6jkXb8GgADAA+e4XMxpgffRgHJFS+P5ET9lyB9phYLyiWGjFPQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773814223; c=relaxed/simple;
-	bh=PZoKvpUGgQWo7+AWXDAhh2hg6ju0irPvhToARl9BZ8M=;
-	h=Date:Message-ID:From:To:Subject:Content-Type:MIME-Version:
-	 Content-Disposition; b=D6o0narHp4t3zWKechPNLNgMsJR6h2TtYA/F7C5eDW4RTlIOsFsCJQ3wwBhDYM4lNLlr8Sp5FvYrNw1ek8F/vaQh0bVNmJYB84TM/NqrD7kB8nB/h6nvvdn8XJqgFPITExxDu/SldDMDIHjb1mKy9GnqbhkN5cenjCN28Uwd84s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nummela.org; spf=pass smtp.mailfrom=nummela.org; dkim=pass (2048-bit key) header.d=nummela.org header.i=@nummela.org header.b=Vn5g4S9/; arc=none smtp.client-ip=51.195.103.228
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nummela.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nummela.org
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=nummela.org
-	; s=20250215; h=MIME-Version:Content-Type:Subject:To:From:Message-ID:Date:
-	Sender:Reply-To:Cc:Content-Transfer-Encoding:Content-ID:Content-Description:
-	Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:
-	In-Reply-To:References:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
-	List-Post:List-Owner:List-Archive;
-	bh=o6yuJGmmK6cQYgJlvy6zmZ+i9aI+lmgMCydHwy+w3Ws=; b=Vn5g4S9//br8zqtUW2lPjEwy4f
-	wmBUSd8wU+7HE7g897fCLcuroXkKJxDe+VZGl5s9NprTEjTAwGraOMzQnMHpyNICng0l4o56lj9Bo
-	VGlrJBm6ExhYmeirOP91c/VsSD3Xg2jpUpyTDf5uGUVvCJYoQYEmi7Iv0yFzsjkgcd+epQEN+ZY2H
-	ac1gcXuOsYrJJwWg07hxlZ8erD/Jne3vconDAvwv0BBZGaHK5YLqziP/LRkzjOAUiOxjlD9/wCdjG
-	vHWif26eXtlvapEkAS8rHmN4/0OsC0YF/pz2Ub3Wm6vwHcIAKnWRn2rAVXjU+HgKjJF5RFtIJRQv/
-	tdQyvzrA==;
-Received: from chai.nummela.org ([2001:41d0:701:1100::a7eb] helo=vps-8cfc3056)
-	by vps-8cfc3056.vps.ovh.net with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.96)
-	(envelope-from <ville@nummela.org>)
-	id 1w2k6k-0000uL-1G
-	for linux-wireless@vger.kernel.org;
-	Wed, 18 Mar 2026 06:10:18 +0000
-Received: from 109-204-177-37.cust.valoonet.fi
- (109-204-177-37.cust.valoonet.fi [109.204.177.37]) by www.nummela.org (Horde
- Framework) with HTTPS; Wed, 18 Mar 2026 06:10:18 +0000
-Date: Wed, 18 Mar 2026 06:10:18 +0000
-Message-ID: <20260318061018.Horde.a06VxaHRNwVUkzqm2u-EwFA@www.nummela.org>
-From: Ville Nummela <ville@nummela.org>
-To: linux-wireless@vger.kernel.org
-Subject: [PATCH v2] wifi: rsi_91x_usb: do not pause rfkill polling when
- stopping mac80211
-User-Agent: Horde Application Framework 5
-Content-Type: text/plain; charset=utf-8; format=flowed; DelSp=Yes
+	s=arc-20240116; t=1773816401; c=relaxed/simple;
+	bh=wvTTufyUHvLeOcDl36cL2uDZBGETrwNV+11FiFZdK3U=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=rup+BNoXI4mBVbAF8wbV3hVqhSj+sZD5owLVjvrE2M/dazJLzHK8tjrpFS7iPMh2ifeyy0bHfEy3V8RaVvuulgoQnHB0rjjoVNVlnt4kyGsGFMv69mQHmSJJnBe298c9Jv8Y8/iwbI0e7sJ/EUwOIt2zmmS+ZCPIIoPt6llgmtQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=roeck-us.net; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=iAmMubZB; arc=none smtp.client-ip=209.85.210.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=roeck-us.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-pf1-f172.google.com with SMTP id d2e1a72fcca58-829ac4670c4so5001116b3a.0
+        for <linux-wireless@vger.kernel.org>; Tue, 17 Mar 2026 23:46:39 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1773816399; x=1774421199; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:sender:from:to:cc:subject:date:message-id:reply-to;
+        bh=o4CbwMpn5fv86NkuOD8DdCT6N1212S5p3GRVvtF61FQ=;
+        b=iAmMubZBDT989X3Pq65dMqcIFKHZkjwMIEK5qCJY1ltMMlZJejCJRGY6RQ4KLXGHrA
+         +C4Q61491kqiK1cspBfZ6rrpI0d9jAUBgVdY+NCpzFUHnOT/9Y0mO16ZLIw+4MDvIH3A
+         nVy8Qui5SlMa5IeFCasGcghvhUuOptXUZHmOCzLyF5YzuG/5o+33iRDVBxMWoIkqR695
+         rU2JXitZft1yRoeMZUtprVrx54vzw8m8GrFBVp5JGIyppr6idtiKouh8bsaHdDW9bHfa
+         0Lzxx0pxcR99U2jl0GM/1ccUChz2PeFUHvM9R8wV567Sw1VcMNCZdA8754JIcayYuEpt
+         FUjA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1773816399; x=1774421199;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:sender:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=o4CbwMpn5fv86NkuOD8DdCT6N1212S5p3GRVvtF61FQ=;
+        b=G1LpCJyGxgAyH9n/dqDxtmBMIK7sc1qd0B7uqJ+PPC10jKf9Zpsxu89tIwHlJKxMwu
+         TaIkaeKTM4VdmyUKkMHHV0O1yNvjP31xETC1HHkliUT1dxjY8PG7hGqQQc//JJF1vVsU
+         woBySGSl3ENyxzyJ7VPuX5xf4A5GEsUSRM0hJLhsjnb/zFNWXfgpWyNMJgBQDIaa/bQh
+         mq1HWor2bUM4B4+1CPyDNcFfhdp6QPG1HQ+fjG90haT0BS3ZVm39tb/BQG8JFpBR4t5r
+         eUT5lqgy/h76BKoGZbdQdy+cSGHq7FS7wAyAegzaYuEnpxEIITAXMNy1EfEmYtz4fFtX
+         rR3w==
+X-Gm-Message-State: AOJu0Yxx9vREToh1zTC7vA5HA4EHFSlc++XhAfFXsgpzwqS6whfwIHPV
+	mWUJISaqS7WW1CQwtxQS0obcBl78Nfy3DdJ8o3eBBtD7Jej7sNyfexD4
+X-Gm-Gg: ATEYQzy+KvdrEViDI/ZkXFjnwaDrPvFNTF0eVCk9HVRIXV7SJx7yJKaFCvROIpynpMA
+	2oKIOCa4ATRMgaq++J+JwcjBEG4uFNtPMYwwcZU6nZWnaPlROoWHCtKDefbGZN8aIqKIAitC8zC
+	ijBbcuGmkkzNvEdb2x4/4KK1WdRGWQZOVPxjzaOS9eqeWkzG2+gtbTt2vRS1eV7iJs4klJahTKP
+	B9Me7dFGAEHFctEEiwDhpVXeVGcSW+S/tvpaiiGQnfVVwp5uTwHGb3wpai038UlGQDJ5fBI0UC9
+	LcMBatZHEKk+wJuqOz4ZYeUH26q91kptl5LEF20Jo4+RI9VkfPP9ADbmmFAV/Z6vG68rO1tGrav
+	2pMDtLqOHozF6bSqcdo38SzEzdPQWGmgsClw4xDhZmLLuGs3wYNHuHpjOxAK9lNXeUqJA/f9Oas
+	ALN2VsqaYyYUgxEKfWma4vLb/qQUx7BSUGBr+X
+X-Received: by 2002:a05:6a00:2342:b0:823:1c3e:95cf with SMTP id d2e1a72fcca58-82a6aca9554mr2066000b3a.18.1773816399240;
+        Tue, 17 Mar 2026 23:46:39 -0700 (PDT)
+Received: from server.roeck-us.net ([2600:1700:e321:62f0:da43:aeff:fecc:bfd5])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-82a6c63808fsm1688506b3a.23.2026.03.17.23.46.38
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 17 Mar 2026 23:46:38 -0700 (PDT)
+Sender: Guenter Roeck <groeck7@gmail.com>
+From: Guenter Roeck <linux@roeck-us.net>
+To: Johannes Berg <johannes.berg@intel.com>
+Cc: linux-wireless@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Guenter Roeck <linux@roeck-us.net>,
+	Peter Astrand <astrand@lysator.liu.se>
+Subject: [PATCH] wifi: wlcore: Return -ENOMEM instead of -EAGAIN if there is not enough headroom
+Date: Tue, 17 Mar 2026 23:46:36 -0700
+Message-ID: <20260318064636.3065925-1-linux@roeck-us.net>
+X-Mailer: git-send-email 2.45.2
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Disposition: inline
-X-Spamd-Result: default: False [0.14 / 15.00];
+Content-Transfer-Encoding: 8bit
+X-Spamd-Result: default: False [-0.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_DKIM_REJECT(1.00)[nummela.org:s=20250215];
-	MID_RHS_WWW(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	MID_CONTAINS_FROM(1.00)[];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64];
+	R_DKIM_ALLOW(-0.20)[gmail.com:s=20230601];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
-	DMARC_POLICY_SOFTFAIL(0.10)[nummela.org : SPF not aligned (relaxed),none];
 	HAS_LIST_UNSUB(-0.01)[];
-	DKIM_TRACE(0.00)[nummela.org:-];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-33372-lists,linux-wireless=lfdr.de];
-	RCPT_COUNT_ONE(0.00)[1];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	DMARC_NA(0.00)[roeck-us.net];
 	RCVD_TLS_LAST(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[ville@nummela.org,linux-wireless@vger.kernel.org];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TO_DN_NONE(0.00)[];
-	MID_RHS_MATCH_FROMTLD(0.00)[];
-	NEURAL_HAM(-0.00)[-0.858];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-33373-lists,linux-wireless=lfdr.de];
+	TO_DN_SOME(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[linux@roeck-us.net,linux-wireless@vger.kernel.org];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCVD_COUNT_FIVE(0.00)[5];
+	DKIM_TRACE(0.00)[gmail.com:+];
 	TAGGED_RCPT(0.00)[linux-wireless];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 2164F2B6373
+	RCPT_COUNT_FIVE(0.00)[5];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,liu.se:email]
+X-Rspamd-Queue-Id: 5EB3C2B68A5
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
+Since upstream commit e75665dd0968 ("wifi: wlcore: ensure skb headroom
+before skb_push"), wl1271_tx_allocate() and with it
+wl1271_prepare_tx_frame() returns -EAGAIN if pskb_expand_head() fails.
+However, in wlcore_tx_work_locked(), a return value of -EAGAIN from
+wl1271_prepare_tx_frame() is interpreted as the aggregation buffer being
+full. This causes the code to flush the buffer, put the skb back at the
+head of the queue, and immediately retry the same skb in a tight while
+loop.
 
-Removing rsi_91x USB adapter could cause rtnetlink to lock up.
-When rsi_mac80211_stop is called, wiphy_lock is locked. Call to
-wiphy_rfkill_stop_polling would wait until the work queue has
-finished, but because the work queue waits for wiphy_lock, that
-would never happen.
+Because wlcore_tx_work_locked() holds wl->mutex, and the retry happens
+immediately with GFP_ATOMIC, this will result in an infinite loop and a
+CPU soft lockup. Return -ENOMEM instead so the packet is dropped and
+the loop terminates.
 
-Moving the call to rsi_disconnect avoids the lock up.
+The problem was found by an experimental code review agent based on
+gemini-3.1-pro while reviewing backports into v6.18.y.
 
-Signed-off-by: Ville Nummela <ville.nummela@kempower.com>
+Assisted-by: Gemini:gemini-3.1-pro
+Fixes: e75665dd0968 ("wifi: wlcore: ensure skb headroom before skb_push")
+Cc: Peter Astrand <astrand@lysator.liu.se>
+Signed-off-by: Guenter Roeck <linux@roeck-us.net>
 ---
-Changes since v1:
-  - Fix issues reported by checkpatch
+ drivers/net/wireless/ti/wlcore/tx.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-  drivers/net/wireless/rsi/rsi_91x_mac80211.c | 17 ++++++++++++++++-
-  drivers/net/wireless/rsi/rsi_91x_usb.c      |  2 ++
-  drivers/net/wireless/rsi/rsi_common.h       |  1 +
-  3 files changed, 19 insertions(+), 1 deletion(-)
-
-diff --git a/drivers/net/wireless/rsi/rsi_91x_mac80211.c  
-b/drivers/net/wireless/rsi/rsi_91x_mac80211.c
-index c7ae8031436a..3faf2235728b 100644
---- a/drivers/net/wireless/rsi/rsi_91x_mac80211.c
-+++ b/drivers/net/wireless/rsi/rsi_91x_mac80211.c
-@@ -325,6 +325,22 @@ void rsi_mac80211_detach(struct rsi_hw *adapter)
-  }
-  EXPORT_SYMBOL_GPL(rsi_mac80211_detach);
-
-+/**
-+ * rsi_mac80211_rfkill_exit() - This function is used to stop rfkill polling
-+ *                              when the device is removed.
-+ * @adapter: Pointer to the adapter structure.
-+ *
-+ * Return: None.
-+ */
-+void rsi_mac80211_rfkill_exit(struct rsi_hw *adapter)
-+{
-+       struct ieee80211_hw *hw = adapter->hw;
-+
-+       if (hw)
-+               wiphy_rfkill_stop_polling(hw->wiphy);
-+}
-+EXPORT_SYMBOL_GPL(rsi_mac80211_rfkill_exit);
-+
-  /**
-   * rsi_indicate_tx_status() - This function indicates the transmit status.
-   * @adapter: Pointer to the adapter structure.
-@@ -422,7 +438,6 @@ static void rsi_mac80211_stop(struct ieee80211_hw  
-*hw, bool suspend)
-         rsi_dbg(ERR_ZONE, "===> Interface DOWN <===\n");
-         mutex_lock(&common->mutex);
-         common->iface_down = true;
--       wiphy_rfkill_stop_polling(hw->wiphy);
-
-         /* Block all rx frames */
-         rsi_send_rx_filter_frame(common, 0xffff);
-diff --git a/drivers/net/wireless/rsi/rsi_91x_usb.c  
-b/drivers/net/wireless/rsi/rsi_91x_usb.c
-index d83204701e27..8765cac6f875 100644
---- a/drivers/net/wireless/rsi/rsi_91x_usb.c
-+++ b/drivers/net/wireless/rsi/rsi_91x_usb.c
-@@ -877,6 +877,8 @@ static void rsi_disconnect(struct usb_interface  
-*pfunction)
-         if (!adapter)
-                 return;
-
-+       rsi_mac80211_rfkill_exit(adapter);
-+
-         rsi_mac80211_detach(adapter);
-
-         if (IS_ENABLED(CONFIG_RSI_COEX) && adapter->priv->coex_mode > 1 &&
-diff --git a/drivers/net/wireless/rsi/rsi_common.h  
-b/drivers/net/wireless/rsi/rsi_common.h
-index 7aa5124575cf..591602beeec6 100644
---- a/drivers/net/wireless/rsi/rsi_common.h
-+++ b/drivers/net/wireless/rsi/rsi_common.h
-@@ -79,6 +79,7 @@ static inline int rsi_kill_thread(struct rsi_thread *handle)
-  }
-
-  void rsi_mac80211_detach(struct rsi_hw *hw);
-+void rsi_mac80211_rfkill_exit(struct rsi_hw *hw);
-  u16 rsi_get_connected_channel(struct ieee80211_vif *vif);
-  struct rsi_hw *rsi_91x_init(u16 oper_mode);
-  void rsi_91x_deinit(struct rsi_hw *adapter);
+diff --git a/drivers/net/wireless/ti/wlcore/tx.c b/drivers/net/wireless/ti/wlcore/tx.c
+index 6241866d39df..75cfbcfb7626 100644
+--- a/drivers/net/wireless/ti/wlcore/tx.c
++++ b/drivers/net/wireless/ti/wlcore/tx.c
+@@ -210,7 +210,7 @@ static int wl1271_tx_allocate(struct wl1271 *wl, struct wl12xx_vif *wlvif,
+ 		if (skb_headroom(skb) < (total_len - skb->len) &&
+ 		    pskb_expand_head(skb, (total_len - skb->len), 0, GFP_ATOMIC)) {
+ 			wl1271_free_tx_id(wl, id);
+-			return -EAGAIN;
++			return -ENOMEM;
+ 		}
+ 		desc = skb_push(skb, total_len - skb->len);
+ 
 -- 
-2.34.1
-
+2.45.2
 
 
