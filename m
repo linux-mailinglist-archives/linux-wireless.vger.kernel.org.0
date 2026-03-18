@@ -1,264 +1,273 @@
-Return-Path: <linux-wireless+bounces-33374-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-33375-lists+linux-wireless=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id oGAZBNpKummWTwIAu9opvQ
-	(envelope-from <linux-wireless+bounces-33374-lists+linux-wireless=lfdr.de@vger.kernel.org>)
-	for <lists+linux-wireless@lfdr.de>; Wed, 18 Mar 2026 07:48:58 +0100
+	id 8G6jNHlSumkAUQIAu9opvQ
+	(envelope-from <linux-wireless+bounces-33375-lists+linux-wireless=lfdr.de@vger.kernel.org>)
+	for <lists+linux-wireless@lfdr.de>; Wed, 18 Mar 2026 08:21:29 +0100
 X-Original-To: lists+linux-wireless@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5F7572B68C3
-	for <lists+linux-wireless@lfdr.de>; Wed, 18 Mar 2026 07:48:57 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 55B052B6D70
+	for <lists+linux-wireless@lfdr.de>; Wed, 18 Mar 2026 08:21:29 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 1D9A03012C52
-	for <lists+linux-wireless@lfdr.de>; Wed, 18 Mar 2026 06:48:56 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id C063F309179E
+	for <lists+linux-wireless@lfdr.de>; Wed, 18 Mar 2026 07:15:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 83E0E4A02;
-	Wed, 18 Mar 2026 06:48:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D89D236A01B;
+	Wed, 18 Mar 2026 07:15:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="ZU0/ncZr"
+	dkim=pass (2048-bit key) header.d=westermo.com header.i=@westermo.com header.b="i3EnkJPL";
+	dkim=pass (1024-bit key) header.d=beijerelectronicsab.onmicrosoft.com header.i=@beijerelectronicsab.onmicrosoft.com header.b="hAVGWTgN"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-pf1-f171.google.com (mail-pf1-f171.google.com [209.85.210.171])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx07-0057a101.pphosted.com (mx07-0057a101.pphosted.com [205.220.184.10])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 31066337B81
-	for <linux-wireless@vger.kernel.org>; Wed, 18 Mar 2026 06:48:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.171
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773816535; cv=none; b=CmGl4Ofusaj1XzOYfwVKG/J7uSoeK593XO7O/5CHWKXefC7nuySvzRDApwwW1E122JEXZq7viQ5/zp+wxwxxITEy/Kx6qsCLXv1xLjzRFoY1gWLOYgbdHfs8wQpj5KQ7s8M5E916OoUKh4LpP11v5RR5xsVZ/2iiJVM5VjmF4Y4=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773816535; c=relaxed/simple;
-	bh=vWUOxXCIopxE7m4cEHgcLnIzPzKbsRFmBfEjsZ6TSMM=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version:Content-Type; b=cTGFXd9wYmAKnmru0gtPtds3JSDKdtRwCAEN1jQIC2zbnLMXUd99eqKkP8RxiZXXm3CEZ/fTRxeDOtnI4xSfmygzLILgolU4d2NEg+IE+6s3geYIICDaBkdmmb/N9mFVEVGHFnOMcxAgefOJE2uLP/4uHH9WnjL85b2vtKnyHvI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=ZU0/ncZr; arc=none smtp.client-ip=209.85.210.171
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pf1-f171.google.com with SMTP id d2e1a72fcca58-82a3d3235c9so2538029b3a.2
-        for <linux-wireless@vger.kernel.org>; Tue, 17 Mar 2026 23:48:54 -0700 (PDT)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E117436AB57;
+	Wed, 18 Mar 2026 07:15:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=205.220.184.10
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1773818144; cv=fail; b=Y/WDTrQGMyW3NwyakVOrSNUW9NbGDTQ84f11klixiGwY7aShLqmcABuPFM8M1AyVEOII8phD4JbXQC5GSYMjJeOLou1l2oLDsJTzF0N9ONfopYzD3+LemDrwtL/zKKkqWWS/+GOc6pMgxJhue8xuDHNGKIU/kx2DfxlyxZ0PGdA=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1773818144; c=relaxed/simple;
+	bh=PBhIjvwfE6aUO77RWvaKkwg4s0Rx+iHbyqe0c8RLNWU=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
+	 Content-Disposition:In-Reply-To:MIME-Version; b=hrWiUd12H0eHFHUv1xwrqDn7h8J6GaivUcATrsKa4f2zpSBmP4FsTwhzf79/oE6+7ci65s6HqWGwt+faOn8fEiV5+uyy4Vxl6xV1hoSnmzb8tYGolClTvFT5C1zAouCkshnW89UKXRpAMizNyfor/8X+9FfOMTiNtz9e23/ia9M=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=westermo.com; spf=pass smtp.mailfrom=westermo.com; dkim=pass (2048-bit key) header.d=westermo.com header.i=@westermo.com header.b=i3EnkJPL; dkim=pass (1024-bit key) header.d=beijerelectronicsab.onmicrosoft.com header.i=@beijerelectronicsab.onmicrosoft.com header.b=hAVGWTgN; arc=fail smtp.client-ip=205.220.184.10
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=westermo.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=westermo.com
+Received: from pps.filterd (m0214197.ppops.net [127.0.0.1])
+	by mx07-0057a101.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 62I602ZW1158337;
+	Wed, 18 Mar 2026 08:15:28 +0100
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=westermo.com; h=
+	cc:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=270620241; bh=
+	ryVYKV8Xv70R4cwV8avNaf+XvIi/3k6lArECAyWbkdE=; b=i3EnkJPL26Gl6EFx
+	z24GBq3DgpkBUYNdVzv8Nu/De5F/z5xobMA7e261L+WW8IrfLPrkvl+F/s7a9fCp
+	KwYXU5ZqgMQXGIdGmWEU/XobAI3ghEL5ST2YirI1qHelrtOfxkolFn+QsLIMYNF0
+	jfTk+o8SFaMF3GbtZ7DRO0IFfA8qXe1OOr19LtqOGfqvxnyS6IiX+C6/bTaWzjzE
+	hk+2w6C6Y9ZuarEL4AOZagsskIU108Gk1s6ZLOcUwBneYrYZeYmtln9Yu9O/V++G
+	y8hWx17Bb4eG6wdahlDbiHJsH1UgsoCMsKFeb6RIlqa+Gp8MrWl6qgzAcoj9oX3H
+	3tHm7Q==
+Received: from db3pr0202cu003.outbound.protection.outlook.com (mail-northeuropeazon11020081.outbound.protection.outlook.com [52.101.84.81])
+	by mx07-0057a101.pphosted.com (PPS) with ESMTPS id 4cxnkj1rqm-1
+	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NOT);
+	Wed, 18 Mar 2026 08:15:28 +0100 (CET)
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=pQwlmu8nNo05r6izPIsEHRc/zoX2R8qVGtgmkWw3KXXZ5TkzB/DRVtz8PXXgGz7lHNd1n5VfvbVw0V0J3tlHcAQX0bWvEYsbmqx5+ro33LitUKtExvpprLamdRYHP8ly1cy5FAzY9AZJ9Txdb2s9JcyCWi9+29r04bc2GfCMQX8YeG6wzhnvGd+Kvl+YrYG74eOZmm6KZuHVeaUYx36oA/dlduK/hCyOIGXRpJLJ9cO9AIk///0hJSVdLBYILb2dESfLahGIJOVEgQSA3OokR0N8WTNP4keJ/LKUTQKaF9R0T9Scv5e+MM4mh6pAV1EAXKiVsoDX4s0r8P5TO7l0Jw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=ryVYKV8Xv70R4cwV8avNaf+XvIi/3k6lArECAyWbkdE=;
+ b=sXdT9lfOZY9s/k9SUeq+tyuIFQl/CvJ45d61p/1xT6eJhxmLWd088D5Pt+tPvMJse//7oSeO10h6k7rtaGls8xkGeQf4AHiAnVjiVrZcTyDjvEgSPB8fFyEuPixvAwYdzbPPVTpkoLYw7gPwxqbVuJj1MC4tSA/XcJHYfmPx7EO+Q1moR70WTZGfx1ozv8jZWNGSr0y0wu4cmIa0XEjkAXzCydo2dDx0YZ8RgpyvnuVtq+pMMx3SgTIJ7oePJ7NQPlBksyTxT9EyOGuY6B5ljHhgoD9t89rPBxUoNxYPvl+xDYR10LnzdYWuP3qa/lCsYXPmHpl+7vmtCzKNwXhAEA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=westermo.com; dmarc=pass action=none header.from=westermo.com;
+ dkim=pass header.d=westermo.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1773816533; x=1774421333; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=LlC4k9fcBpkR2TeWfp5WdwMkkhT+G6+tLfuISegqKHk=;
-        b=ZU0/ncZrhwhdaW2PRc+x+9+e+UENBcu5xQynYu5TnNz2ElAoLZRv27SEh6rCCOL5Ap
-         /HCZVISxBph9qXYaVbrg7yBrvw6NSgYISOp8V54ugGsUB+asKMK6cxqBatW+0b/V8TYM
-         FgdzptxIb6/tCIFThV5YhlPIrElKrLsIiNn9+tabPvXt6/1qI69GJ6jfErptTteIHe6Q
-         FstfT6bOvRMaMz5IvMbLVIIcU7MkOh+BntgPAp37OMUlHXZwCWLWZzScJeljupRvNah+
-         U9QhdEnmTFf/zlyYe6vP/dKhb6KOIcY0TASKebnnFUp5BOzptNAwzdNjlaVh0DGZw6H8
-         C1lw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1773816533; x=1774421333;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=LlC4k9fcBpkR2TeWfp5WdwMkkhT+G6+tLfuISegqKHk=;
-        b=sCJ3YFHh5uAi4OH8XjVqaThi2A96QFc1TegbX39ccGdPdaOKxUq39ZVI/dqomBknx0
-         Ur7kth/LRWdE7exUvcTrKhmXFYuZNhkOMG41GpIFDbSK2T7u25jTdlKYDwFq4ixo8Y0G
-         /eYZdM7XfvmvKddHU0RRKSxVDmjNcIqK++h74tNYNS4ouR41qnsAJUIKuYXANbKUNFK5
-         PgqKSna/syI9EjX/gyoOJFChEQ8v+L87qBhoN6A+wHhiP7KuDePj0u2Tbg16iyfhoWRL
-         3yy33zNn0KbPdu6hqQy8+z4DvJ6hq90sqYVWAUNIjpcenNuxKK4std+z+g6t2unZSMB7
-         cz4Q==
-X-Gm-Message-State: AOJu0YwoWXzcwOBz47dNhhmWmZe/Y+wwX777bweFUE0Js5WqIbLnLSG0
-	helgeNjtwkpalRq3PTnpqc2sYpLtkAjOafNmFQk5aAEAYI87KOnWkTfQxk7fjGo4
-X-Gm-Gg: ATEYQzzeif2NT+6LQ9/V2BeALpuuMiRtcnG9KIy7FJ0+8tl/stBKcWh1cmksQTw96c7
-	pIw5c7w8zL9Sg2Y0Q5s6Unzp9VQe3PyeGw9MYR4gl2EvwjbjBy6DkEL614pYaTLvZixu8UyPy4t
-	SsdNw+S3A4af6QRnyPEEuqiNvIqDZoG2s1WJutyxuG/PSlKRyo4n2ROoOw1pasNDGo4fI9ZobOz
-	HUmFwqe7TWYYQgXkLgClK1V7ufjCdVleCatLQ5rQ+5Vq8Cd0Z5jN3UynUrvPLl1XkHK3kj17HpB
-	+PvD85t/Q/xbtUAsF/Nu3rxy8vB+2FsiiPWGCsS1GgSJLgeVeFQTF+jODiUVZz7zjwtaQLi9c97
-	eNWFl5ex146JDFOrFcKSeQl98MaS/ctKUNhr4l30DUEs8tdOPSydK8v7aAhDSKlgB8xLYGXy/Y4
-	x7FReYBG4a7UgIKIArCUypYk1ZliSMdg0yK3gRyDOb69UXNSI4feyXj373aSKVRLBHX2jJQF4jw
-	Wd3Uel3jQ==
-X-Received: by 2002:a05:6a00:1590:b0:829:8af4:5eb0 with SMTP id d2e1a72fcca58-82a6ae088edmr1787175b3a.26.1773816533523;
-        Tue, 17 Mar 2026 23:48:53 -0700 (PDT)
-Received: from localhost.localdomain (125-227-180-151.hinet-ip.hinet.net. [125.227.180.151])
-        by smtp.googlemail.com with ESMTPSA id d2e1a72fcca58-82a6b541cdfsm1508764b3a.1.2026.03.17.23.48.51
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 17 Mar 2026 23:48:52 -0700 (PDT)
-From: Ping-Ke Shih <pkshih@gmail.com>
-To: wens@kernel.org
-Cc: linux-wireless@vger.kernel.org,
-	wireless-regdb@lists.infradead.org
-Subject: [PATCH] wireless-regdb: Add regulatory info for CEPT countries FO, GI, IM, SM and VA listed by WiFi Alliance
-Date: Wed, 18 Mar 2026 14:48:34 +0800
-Message-Id: <20260318064834.103731-1-pkshih@gmail.com>
-X-Mailer: git-send-email 2.25.1
+ d=beijerelectronicsab.onmicrosoft.com;
+ s=selector1-beijerelectronicsab-onmicrosoft-com;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=ryVYKV8Xv70R4cwV8avNaf+XvIi/3k6lArECAyWbkdE=;
+ b=hAVGWTgNekX+MAP2WXYvy4MFTSdWOqVc6hvJ3ZAyF+8J1Ee+5Ky0zMQCx2t6UCc+MSMoS1yiqz1YeM53kAxxPWjel6Bgy99kqTo4lzRHA4bhTOC8iy1W4kNTwl2bRES6zd71W0nDEE9sFNNg81nGAeZAfJqPXg9pMfmR4jzz1uI=
+Received: from DB9P192MB3090.EURP192.PROD.OUTLOOK.COM (2603:10a6:10:5e2::11)
+ by VI0P192MB2833.EURP192.PROD.OUTLOOK.COM (2603:10a6:800:2b8::12) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9700.27; Wed, 18 Mar
+ 2026 07:15:23 +0000
+Received: from DB9P192MB3090.EURP192.PROD.OUTLOOK.COM
+ ([fe80::656d:42d4:bdce:a46b]) by DB9P192MB3090.EURP192.PROD.OUTLOOK.COM
+ ([fe80::656d:42d4:bdce:a46b%5]) with mapi id 15.20.9723.018; Wed, 18 Mar 2026
+ 07:15:23 +0000
+Date: Wed, 18 Mar 2026 08:15:20 +0100
+From: Alexander Wilhelm <alexander.wilhelm@westermo.com>
+To: Jeff Johnson <jeff.johnson@oss.qualcomm.com>
+Cc: Jeff Johnson <jjohnson@kernel.org>, linux-wireless@vger.kernel.org,
+        ath12k@lists.infradead.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] wifi: ath12k: fix HE/EHT capability handling on big
+ endian
+Message-ID: <abpRCHDDgrorZBa-@FUE-ALEWI-WINX>
+References: <20260317-fix-he-eht-capabilities-on-big-endian-v1-1-e7b937b32768@westermo.com>
+ <bd262372-9930-4abe-8917-fd037623ed01@oss.qualcomm.com>
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <bd262372-9930-4abe-8917-fd037623ed01@oss.qualcomm.com>
+User-Agent: Mutt/2.2.12 (2023-09-09)
+X-ClientProxiedBy: GV2PEPF0002396E.SWEP280.PROD.OUTLOOK.COM
+ (2603:10a6:158:400::32f) To DB9P192MB3090.EURP192.PROD.OUTLOOK.COM
+ (2603:10a6:10:5e2::11)
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-1.16 / 15.00];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MID_CONTAINS_FROM(1.00)[];
-	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
-	R_DKIM_ALLOW(-0.20)[gmail.com:s=20230601];
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: DB9P192MB3090:EE_|VI0P192MB2833:EE_
+X-MS-Office365-Filtering-Correlation-Id: f4acde30-4cb2-4ee7-ac69-08de84be1f23
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|376014|366016|1800799024|56012099003|22082099003|18092099006|18002099003;
+X-Microsoft-Antispam-Message-Info:
+	IbXBhYlz04id3smOTFeUmLwCnHTQXFnkYgAKsOGmQnfIWK3KFFprk5yjLfaf1P+8QuGvdnfhXnNpjuVkSc/KWAFPx7Y+vX0yTfjiNsPcfB5gG82bhG3k0k49MQlAu0evax+4ZLCjHIgayHoVWCdBdMn1JVvfXSjhE2qF3ee+6ghuEygeMOGLV2aEuwpCTLKn4pTJqvU/A6uRhLreLqTeie/zX0qSuNIYNkl7Mj7HTlPn+mUjYXYiwycPtLmMjPe5O8rbKVRs9frA/wl1xY/IkJAcqAqe8TQnpgAunGsrJH/kdaWd3kkZpi7PDSr+0zoNk+k9TBZu1Jcv0N0AZ5RJjXgyxTsaT872lsCyEON8WqlzUgMv1Wac8IBNGROjWAqOUpgMEJ7zehwihsqNxVnEzzU4or7ybh8a/w8rkAlPtyD12gfpJbQcuYJMxSX1taMU4pzmKQZ2dAPyItWOxkFczOmuhedqf56JleupfQTMUV1ltqIEOX5t3Xi4/pMQL3cscOWRc8GPNheARqwdcyfAB8f8yMENP97xakmUkd5w6n99kEGs5R0B6Chy/7Xa0SMqJotFzhYujuLYs3Viue2ybzaajf06sAApHomIQ1s7e3hK5JGbZECIsIYl4Tn8KVX+X+i/TelPknbIGtkKDGFfirVf2FSMIS0QeyvSw1y3nCVD6FFtScIegjMDFlEPmwUkiccK7Ae0iE1TPGypR1/wXdTB+VF/QsAc4rL5wxI5SiE=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DB9P192MB3090.EURP192.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230040)(376014)(366016)(1800799024)(56012099003)(22082099003)(18092099006)(18002099003);DIR:OUT;SFP:1102;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?MzJVWEFGdWNxR3U3RkhvVHhuTjQ3WU5US1dETml1dEU4SUxMajZQSENpcVJ0?=
+ =?utf-8?B?N0dTcmRUN0lKb1kxdmxQT3ZzclJVYTlDTGxRS05JdCtQODVZTjZQLzRRWnNk?=
+ =?utf-8?B?OFhpRVJqQnY1V0k2emtKd0NKVFFUYVhWNnBuRDg1MithUWV5RVNlNXZlcjBi?=
+ =?utf-8?B?QWsxYXl0cllvUWR5dUNIeDNEL1JLTkkxN2tvc2NXTEVhUHR1bWxzb2c5SFJL?=
+ =?utf-8?B?YmJzeEVRb1BPNXlML2VaelU1Z3c0azNUNldUZUtYVnl0SkdyTWNLRUFZODF4?=
+ =?utf-8?B?Y0VlSDlwc3RHNFBEeDBFMzdFbmVaQmcyeEJvNTV2cDZ1QlNZb2FLNjZGa2dP?=
+ =?utf-8?B?bGhEU200RUM2YW56dGZXMWIvak82cWpydzZIV2hwT3pDT3NYWGhOOXRxUUhp?=
+ =?utf-8?B?Vm1xdy9iRWNCaE41SjB3K3JHa1gza1I0WXRBM3VzNFhLN1VzN1IzNDViNElW?=
+ =?utf-8?B?T3pRRDVKRHAxM1RDWmFIVkJ2SCtabHZqdGFURTBxbUtjSGliN0VESklYSmRt?=
+ =?utf-8?B?UW0ycGhwbWFVbDJtY0lIZzJFcTkyVUkydW56eW9XVUUveWl5WFpaUE1TWnhX?=
+ =?utf-8?B?Yk9MaHZZOWd0SHgzdFVZMlJvSnJqMWpwUktMQkFiL3UyRG1uZzVkdWFRdklk?=
+ =?utf-8?B?NDhINW1UMDd4ZVRMM20wZDcycjRPYWtOSzhFUHRJYnNDOU9yWU45OVp4bjhx?=
+ =?utf-8?B?b2MwWlRGL2VlVnFsZXJXV2huUlQrOVhmY0JYZXdPUGdsZ1l1bDlHN1BVZ0Fw?=
+ =?utf-8?B?WE83eEZDdVlOQWpjOWg0Vm15cVJKM0RRWWEzdk9YN2YwckVYUCtlWEprWG84?=
+ =?utf-8?B?dGIxbDFEU1VJOVlZaVFicng2eHROT0tvWkJxYWt1b2ZscEpDM3lQSUVLcWU5?=
+ =?utf-8?B?cEZIb3lJMU1RM1Z3VXVld0FScmVLaEZaMERMQm5KbnVucUhjeW5Gdkp4RDlB?=
+ =?utf-8?B?T0RiSllFT1h6NXhsbjV6bTFybHprOExjN0N5bzBWeGI1RS95Y0xsNnIxc3Jx?=
+ =?utf-8?B?eFhWU1cybCs5VXg2ZUIxUmVqR0laSzVwcWRBOUVMekJzUElJZUoyblpjV2ps?=
+ =?utf-8?B?S2VRNm1lcmREUHoyVWpvWGhaWEQxZW9Bdlh3bC9yam15V2hIUjk1VWZFQlk0?=
+ =?utf-8?B?V3pnaFRIYzV0MjV6MzhjREZralJ4aGNERlBPeXBHdXRuK0tqTTc1Uzl4M3ZH?=
+ =?utf-8?B?Q21tRGlIR1lZM3BHdmxFUzlzblVaOEhqbXlmVE82cE96S3ZZSlVTYUJDVVQz?=
+ =?utf-8?B?dGFKbVIyOGVaR2dQQjVhM1BiL0k1Z3FvTUNUaGozdEVRMGx1UVNlTUp0OURM?=
+ =?utf-8?B?U282TkxaUVpGSzBzejVCS0hMWjBKVWcrMkFGVzYzc2NYM0RURFBKNlFaQ2M0?=
+ =?utf-8?B?WlF5bkNjVVdqa0Uwdk02T3loT05yQUI5Qk1pM0tzelBBdUNiSnZKdkdzUHZR?=
+ =?utf-8?B?NkdIdVA3L3phczhZL2FkSzVwN1J6Sms0RzlFbEJNRFVTalBGeCt3ejB5WXRG?=
+ =?utf-8?B?dE5NU1l6VEpHbzRRL2VrWEdhd2F6VEVmd1UvQlVqSmM2cFFuTkp3OU5aVlN3?=
+ =?utf-8?B?MEluTGdNOFcxaXNONTFvUkZqN3FDVHNqTDlKbEQ2RlBtOHJUOFBMTkcrdkhs?=
+ =?utf-8?B?MVpmU2FmSFpnVE53dzZubmxQWDhWOG1uOU4rbDIxQXVsZlZ3ak9VUzVLR0pY?=
+ =?utf-8?B?YTI1NktFcjRTWjkwc2VEd20vUUF1MnMyQjhsZ3RjT3FILzQ5MktXaVViQ0Rv?=
+ =?utf-8?B?VnpINnZJa1k0ZTZQYTlFSVdaL0pCRVdpc241MzRNZzd3dEUzRTNoSXUvOEEv?=
+ =?utf-8?B?ejZ0UmM2Wm9xUU9zL2lVRnNMMVc5ZW9hMkpuY3RuZjJUZzM3NUVkM25oUmVY?=
+ =?utf-8?B?aXAwQzdISlJOdWJ4R1QxNmJuc1Q2aVlyS0UxNlRIc1hTNUh4MldpVlZZdGhM?=
+ =?utf-8?B?SGpRdTFxR1Q1Rzg4bGx3OVhtQUNlbzdTdHZCU2xxeitkSzdUVVFzc3JVZktp?=
+ =?utf-8?B?ZVJoYldLT0F1cmc2eUV3dEQ1Rk1qRUpMNm5FUFBiVk53OEI3b05meU9DNUtG?=
+ =?utf-8?B?NU03UTF6djhTMVdkLzBkZGxyaUFZQ3lhUGxjMW5uZ0FSSHJpR3BoRk12LzQz?=
+ =?utf-8?B?dnVRQytxT2VXaUtxMWhYN1B4SHBORnFSMmJXaS9sK1hsK0lzVkM0dXlUOEFF?=
+ =?utf-8?B?ZGpUZGJzUGFISW9Ic3NUNWkyRG1GRWs1MmpjM2FwSGpvcVgrMDVwVWl0RHUv?=
+ =?utf-8?B?MEZ6YXlPVG1qQWNIR2RXSVFBK3d2Yjd0bVZtNEw4TXpMNkJ1TGVNcWlaM0h4?=
+ =?utf-8?B?MHpqT0t6OFQySUhzNjMwQmxWQnMyaHQvN25hYmsvOXJROEh3bUxIZz09?=
+X-Exchange-RoutingPolicyChecked:
+	B0FYLeOXUY4Ba0sDiGT+hpqbq/ZfhoQcR1Ogrr4Z+/T17jRfm8tvaxqLbbBtiqtAsnRWdQeEN1pqJH+b+rboqv1yswqggmbLrHuNB1di+cDQLbZ+vKioVgUByo/ZUF1rCFKbZrLj7qTSlLaEeDYA9FMGNeGGU8F/lxofqcfH5pRCtPOqsIei0b8dVj5WKTamfBV9qF+A0AAoCLtTZS6DgIyxxDpKh8wdPoJtkJzEf4bUEFSocbXOLB86ran6AIHezT5AdYNxO5Cii2Ieq0Q6F1lF9VKmFEJvOFGvbo49xfpr6I1ApuCsLzvsGd+RbuvM34VMwg3Lv0/kZ3VXLsPMBA==
+X-MS-Exchange-AntiSpam-ExternalHop-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-ExternalHop-MessageData-0:
+	2wP3UcrCfMJNG/tmhvf/3GJsfIZNX7DeoFrY+1wZru8yzVGvCAGRvFNMoAus3AeiLirt3q/Ejbp1TjCa5Be0i0cMmFDta1q6g+c/s2UjskDLaXOCMohk9XyOtol49dfVEDivAIJMMa3JgCZeCbOjqHKu8tNWgAyCIzoIWrHrBz7vHpvr6Lb56oavp6rX6BDBsJHxLUuBWuBUingpSAkTa55J0fkJ+t0z2phllQw9D/p8z0LnOAHBK3FtaTfGG9dsP9+DuLouSTirpQeUm4PFdokILeDUC0azzKnL+wJ4/bOKL8Lxmg0ARzJN/f9K9gd38x/ZkHw64wfGATSqGvjtIwDabYHXjtdbb2VyP+2jIg0PTytF016AIWoT/GAQfz6HA1rFb7uGGfeHCNnda47sU1ONlzP2Qph4Wu/JuJYgnoS8MTs36yJYL6ZH/6+Yj1zbMHyw/C42p9lulsaL6Cy1DFQF2411NaZ06vTmJs+SYyWk17UweSJpeBR2XDvQAb9ddwkpDZwXUj/xOkg/Rn1eZn+Y81zMetG8GrqlgkvFDwOhhDJjNerbM2AgcRzxq6OzAXm3XM8d7VOtlFiu32jvDdrKdpuKuiiyKXaH3q0nap9Bnlpn0rIpV2K7IPUbz6PP
+X-OriginatorOrg: westermo.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: f4acde30-4cb2-4ee7-ac69-08de84be1f23
+X-MS-Exchange-CrossTenant-AuthSource: DB9P192MB3090.EURP192.PROD.OUTLOOK.COM
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 18 Mar 2026 07:15:23.5467
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 4b2e9b91-de77-4ca7-8130-c80faee67059
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: w8/+z1aCAY9omrcym92jlxV15vncnPtblrTY81wPCVA+3Z+CHvsg0JnyYiT9Ge/iLDgPH0/TKfzqFIn9JReczw==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: VI0P192MB2833
+X-MS-Exchange-CrossPremises-AuthSource: DB9P192MB3090.EURP192.PROD.OUTLOOK.COM
+X-MS-Exchange-CrossPremises-AuthAs: Internal
+X-MS-Exchange-CrossPremises-AuthMechanism: 14
+X-MS-Exchange-CrossPremises-Mapi-Admin-Submission:
+X-MS-Exchange-CrossPremises-MessageSource: StoreDriver
+X-MS-Exchange-CrossPremises-BCC:
+X-MS-Exchange-CrossPremises-OriginalClientIPAddress: 104.151.95.196
+X-MS-Exchange-CrossPremises-TransportTrafficType: Email
+X-MS-Exchange-CrossPremises-Antispam-ScanContext:
+	DIR:Originating;SFV:NSPM;SKIP:0;
+X-MS-Exchange-CrossPremises-SCL: 1
+X-MS-Exchange-CrossPremises-Processed-By-Journaling: Journal Agent
+X-OrganizationHeadersPreserved: VI0P192MB2833.EURP192.PROD.OUTLOOK.COM
+X-Authority-Analysis: v=2.4 cv=PO8COPqC c=1 sm=1 tr=0 ts=69ba5110 cx=c_pps
+ a=ftZSLPtEb78rP1Exs/vLAQ==:117 a=6eWqkTHjU83fiwn7nKZWdM+Sl24=:19
+ a=z/mQ4Ysz8XfWz/Q5cLBRGdckG28=:19 a=lCpzRmAYbLLaTzLvsPZ7Mbvzbb8=:19
+ a=xqWC_Br6kY4A:10 a=IkcTkHD0fZMA:10 a=Yq5XynenixoA:10 a=8gLI3H-aZtYA:10
+ a=VkNPw1HP01LnGYTKEx00:22 a=tr3XZvuDWTETL0Uaxejn:22 a=8ys4xmT3Mru1TjC2zVq1:22
+ a=N9GNhs4bAAAA:8 a=0E8yrLkJ4B81AYfMwHcA:9 a=3ZKOabzyN94A:10 a=QEXdDO2ut3YA:10
+ a=PZhj9NlD-CKO8hVp7yCs:22
+X-Proofpoint-GUID: oKRBoriiqZ4CcMGq7eDwU-6SUN6958-e
+X-Proofpoint-ORIG-GUID: oKRBoriiqZ4CcMGq7eDwU-6SUN6958-e
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwMzE4MDA2MCBTYWx0ZWRfX4IcPNNVSKJcB
+ /8v6DVGzFbfipts+fSzULISN/NPO2B0RnG7LpSsv/yFef3l8Iu2gbWLMn/e+r/5UVkqfglIZEpz
+ WcYFbQYDzKQ+nzS+bI/TGIyKlLMp6vhovAwHOGNvoK5IhBGrRxQSezRID0aExjwKA7Y0ZzUPkmx
+ S38OzxOpAuEGFdZD8x7TRMVTR0StI/v3ZiCtNRW4ftmAtSWCcStE0bgkCi9s3ttDsxgA8bFbyVu
+ r7MyyZuhU3/hQveCPTwSJyCdV+RCM3aeEboyBWz459Gm15xUYFDk4OSHN65O6quxw78I01Z6L+0
+ K0VCp08NNGenupI99xJW7DZGRdkZYdTZG5Qj38LPBM9YdxdJfVnqgziC4qdVdQMwJ76IZf8wWjs
+ 4tiaS5QyIZ9058aGNLenMZPJlS8K3Nq8uOWRVnrvHakRJZLPLFiWSkgDkNwYusH8iC+3ZJJhvLz
+ KucxzKZpTvfOOobEUKQ==
+X-Spamd-Result: default: False [0.34 / 15.00];
+	ARC_REJECT(1.00)[cv is fail on i=2];
+	MID_RHS_NOT_FQDN(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[westermo.com,quarantine];
 	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_DKIM_ALLOW(-0.20)[westermo.com:s=270620241,beijerelectronicsab.onmicrosoft.com:s=selector1-beijerelectronicsab-onmicrosoft-com];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-33375-lists,linux-wireless=lfdr.de];
+	TO_DN_SOME(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-33374-lists,linux-wireless=lfdr.de];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[westermo.com:dkim,westermo.com:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,beijerelectronicsab.onmicrosoft.com:dkim];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[gmail.com:+];
-	RCPT_COUNT_THREE(0.00)[3];
+	RCPT_COUNT_FIVE(0.00)[5];
+	FROM_NEQ_ENVFROM(0.00)[alexander.wilhelm@westermo.com,linux-wireless@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	FREEMAIL_FROM(0.00)[gmail.com];
-	RCVD_COUNT_FIVE(0.00)[5];
+	DKIM_TRACE(0.00)[westermo.com:+,beijerelectronicsab.onmicrosoft.com:+];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[pkshih@gmail.com,linux-wireless@vger.kernel.org];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	TO_DN_NONE(0.00)[];
 	TAGGED_RCPT(0.00)[linux-wireless];
 	NEURAL_HAM(-0.00)[-1.000];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,europa.eu:url,wi-fi.org:url]
-X-Rspamd-Queue-Id: 5F7572B68C3
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	RCVD_COUNT_SEVEN(0.00)[7]
+X-Rspamd-Queue-Id: 55B052B6D70
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-From: Ping-Ke Shih <pkshih@realtek.com>
+On Tue, Mar 17, 2026 at 05:17:43PM -0700, Jeff Johnson wrote:
+> On 3/17/2026 3:59 AM, Alexander Wilhelm wrote:
+> > Currently the driver uses u32 data types for the HE/EHT capabilities in
+> > CPU‑native order. However, the ieee80211.h header defines these fields as
+> > u8 arrays. This causes the ieee80211 registration failure on big‑endian
+> > platforms, as shown in the following log:
+> > 
+> >     ath12k_pci 0001:01:00.0: BAR 0: assigned [mem 0xc00000000-0xc001fffff 64bit]
+> >     ath12k_pci 0001:01:00.0: MSI vectors: 1
+> >     ath12k_pci 0001:01:00.0: Hardware name: qcn9274 hw2.0
+> >     ath12k_pci 0001:01:00.0: qmi dma allocation failed (29360128 B type 1), will try later with small size
+> >     ath12k_pci 0001:01:00.0: memory type 10 not supported
+> >     ath12k_pci 0001:01:00.0: chip_id 0x0 chip_family 0xb board_id 0x1005 soc_id 0x401a2200
+> >     ath12k_pci 0001:01:00.0: fw_version 0x111300d6 fw_build_timestamp 2024-08-06 08:43 fw_build_id QC_IMAGE_VERSION_STRING=WLAN.WBE.1.1.1-00214-QCAHKSWPL_SILICONZ-1
+> >     ath12k_pci 0001:01:00.0: leaving PCI ASPM disabled to avoid MHI M2 problems
+> >     ath12k_pci 0001:01:00.0: Invalid module id 2
+> >     ath12k_pci 0001:01:00.0: failed to parse tlv -22
+> >     ath12k_pci 0001:01:00.0: ieee80211 registration failed: -22
+> >     ath12k_pci 0001:01:00.0: failed register the radio with mac80211: -22
+> >     ath12k_pci 0001:01:00.0: failed to create pdev core: -22
+> >     ath12k_pci 0001:01:00.0: qmi failed set mode request, mode: 4, err = -110
+> >     ath12k_pci 0001:01:00.0: qmi failed to send wlan mode off
+> > 
+> > Use the __le32 data type for the HE/EHT capabilities instead and avoid
+> > swapping, so that both platform endiannesses are supported.
+> > 
+> > Signed-off-by: Alexander Wilhelm <alexander.wilhelm@westermo.com>
+> 
+> With this series applied I see with make W=1 C=1:
+> drivers/net/wireless/ath/ath12k/debugfs.c:413:65: warning: incorrect type in argument 1 (different base types)
+> drivers/net/wireless/ath/ath12k/debugfs.c:413:65:    expected unsigned int [usertype] v
+> drivers/net/wireless/ath/ath12k/debugfs.c:413:65:    got restricted __le32
+> 
+> From existing code:
+> f5c90ff80b4c0 (Sowmiya Sree Elavalagan 2025-01-30 11:41:04 +0530  413)  extra_mcs_supported = u32_get_bits(cap_band->he_cap_info[1],
 
-In commit 5a8ced5ad313 ("wireless-regdb: Update regulatory info for CEPT
-countries for 6GHz listed by WiFi Alliance"), the following are skipped as
-they do not have corresponding entries in the database yet.
+Sorry, I had `ATH12K_DEBUGFS` disabled when I ran the sparse check. I’ll
+fix this in the next version.
 
-     - Faroe Islands (FO)
-     - Gibraltar (GI)
-     - Isle of Man (IM)
-     - San Marino (SM)
-     - Holy See (Vatican City State) (VA)
 
-Look up the CEPT decisions [2], and add entries along with decisions [3],
-[4] and [5] for 2/5/6 GHz regulations.
-
-The 2 GHz band by ECC Decision (11)05 [3], which the adoption of ERC
-Recommendation 70-03 [6], the regulations and the frequency bands to be
-used for Short Range Devices (SRDs) are included in specific annexes to
-this Recommendation. By ERC Recommendation 70-03 annex 3 (WIDEBAND DATA
-TRANSMISSION SYSTEMS):
-
- * 2400-2483.5 MHz
-   - 100 mW
-
-The 5 GHz band by ECC Decision (04)08 [4]:
-
- * 5150-5250 MHz
-   - 200 mW
-   - Indoor use
- * 5250-5350 MHz
-   - 200 mW (due to TPC required, -3dBm, 100 mW is adopted)
-   - DFS, TPC
-   - Indoor use
- * 5470-5725 MHz
-   - 1 W (due to TPC required, -3dBm, 500 mW is adopted)
-   - DFS, TPC
-   - Indoor and outdoor use
-
-The 6 GHz band by ECC Decision (20)01 [5]:
-
- * LPI devices (adopted)
-   - 5945-6425 MHz
-   - Restricted to indoor use only
-   - Maximum mean e.i.r.p.: 23 dBm
-   - Maximum mean e.i.r.p. density: 10 dBm/MHz
- * VLP devices
-   - 5945-6425 MHz
-   - Indoors and outdoors
-   - Maximum mean e.i.r.p.: 14 dBm
-   - Maximum mean e.i.r.p. density: 1 dBm/MHz
-
-[1] https://www.wi-fi.org/regulations-enabling-6-ghz-wi-fi
-[2] https://docdb.cept.org/document/category/ECC_Decisions?status=ACTIVE
-[3] https://docdb.cept.org/download/1535
-[4] https://docdb.cept.org/download/4501
-[5] https://docdb.cept.org/download/4685
-[6] https://docdb.cept.org/download/3700
-
-Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
----
- db.txt | 35 +++++++++++++++++++++++++++++++++++
- 1 file changed, 35 insertions(+)
-
-diff --git a/db.txt b/db.txt
-index d54ef78e0da8..e2afb145ede5 100644
---- a/db.txt
-+++ b/db.txt
-@@ -731,6 +731,13 @@ country FM: DFS-FCC
- 	(5490 - 5730 @ 160), (24), DFS
- 	(5735 - 5835 @ 80), (30)
- 
-+country FO: DFS-ETSI
-+	(2402 - 2483.5 @ 40), (100 mW)
-+	(5150 - 5250 @ 80), (200 mW), NO-OUTDOOR, AUTO-BW
-+	(5250 - 5350 @ 80), (100 mW), DFS, NO-OUTDOOR, AUTO-BW
-+	(5470 - 5725 @ 160), (500 mW), DFS
-+	(5945 - 6425 @ 320), (23), NO-OUTDOOR
-+
- # FR as part of EU/CEPT accepted decisions 2005/513/EC (5GHz RLAN, EN 301 893)
- # and 2006/771/EC (amended by 2008/432/EC, Short-Range Devices, EN 300 440)
- #  EU decision 2005/513/EC: https://eur-lex.europa.eu/legal-content/EN/TXT/?uri=CELEX:02005D0513-20070213
-@@ -801,6 +808,13 @@ country GH: DFS-FCC
- 	(5490 - 5730 @ 160), (24), DFS
- 	(5735 - 5835 @ 80), (30)
- 
-+country GI: DFS-ETSI
-+	(2402 - 2483.5 @ 40), (100 mW)
-+	(5150 - 5250 @ 80), (200 mW), NO-OUTDOOR, AUTO-BW
-+	(5250 - 5350 @ 80), (100 mW), DFS, NO-OUTDOOR, AUTO-BW
-+	(5470 - 5725 @ 160), (500 mW), DFS
-+	(5945 - 6425 @ 320), (23), NO-OUTDOOR
-+
- country GL: DFS-ETSI
- 	(2402 - 2482 @ 40), (20)
- 	(5170 - 5250 @ 80), (20), AUTO-BW, wmmrule=ETSI
-@@ -976,6 +990,13 @@ country IL: DFS-ETSI
- 	(5725 - 5875 @ 80), (25 mW), AUTO-BW
- 	(5945 - 6425 @ 320), (200 mW), NO-OUTDOOR
- 
-+country IM: DFS-ETSI
-+	(2402 - 2483.5 @ 40), (100 mW)
-+	(5150 - 5250 @ 80), (200 mW), NO-OUTDOOR, AUTO-BW
-+	(5250 - 5350 @ 80), (100 mW), DFS, NO-OUTDOOR, AUTO-BW
-+	(5470 - 5725 @ 160), (500 mW), DFS
-+	(5945 - 6425 @ 320), (23), NO-OUTDOOR
-+
- # Source:
- # https://dot.gov.in/spectrummanagement/delicensing-24-24835-ghz-band-gsr-45-e-5150-5350-ghz-gsr-46-e-and-5725-5875-ghz
- # https://dot.gov.in/spectrummanagement/license-exemption-5-ghz-gsr-1048e-dated-22102018
-@@ -1855,6 +1876,13 @@ country SK: DFS-ETSI
- 	# 60 GHz band channels 1-4 (ETSI EN 302 567)
- 	(57000 - 66000 @ 2160), (40)
- 
-+country SM: DFS-ETSI
-+	(2402 - 2483.5 @ 40), (100 mW)
-+	(5150 - 5250 @ 80), (200 mW), NO-OUTDOOR, AUTO-BW
-+	(5250 - 5350 @ 80), (100 mW), DFS, NO-OUTDOOR, AUTO-BW
-+	(5470 - 5725 @ 160), (500 mW), DFS
-+	(5945 - 6425 @ 320), (23), NO-OUTDOOR
-+
- # Source:
- # Regulation N° 2004-005 ART/DG/DRC/D.Rég
- country SN: DFS-FCC
-@@ -2072,6 +2100,13 @@ country UZ: DFS-ETSI
- 	(5170 - 5250 @ 80), (20), AUTO-BW
- 	(5250 - 5330 @ 80), (20), DFS, AUTO-BW
- 
-+country VA: DFS-ETSI
-+	(2402 - 2483.5 @ 40), (100 mW)
-+	(5150 - 5250 @ 80), (200 mW), NO-OUTDOOR, AUTO-BW
-+	(5250 - 5350 @ 80), (100 mW), DFS, NO-OUTDOOR, AUTO-BW
-+	(5470 - 5725 @ 160), (500 mW), DFS
-+	(5945 - 6425 @ 320), (23), NO-OUTDOOR
-+
- # Source:
- # http://www.ntrc.vc/regulations/Jun_2006_Spectrum_Managment_Regulations.pdf
- country VC: DFS-ETSI
--- 
-2.25.1
-
+Best regards
+Alexander Wilhelm
 
