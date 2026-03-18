@@ -1,179 +1,290 @@
-Return-Path: <linux-wireless+bounces-33381-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-33382-lists+linux-wireless=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id sJs4IUNgumnFUgIAu9opvQ
-	(envelope-from <linux-wireless+bounces-33381-lists+linux-wireless=lfdr.de@vger.kernel.org>)
-	for <lists+linux-wireless@lfdr.de>; Wed, 18 Mar 2026 09:20:19 +0100
+	id cBmkMb1kumklWAIAu9opvQ
+	(envelope-from <linux-wireless+bounces-33382-lists+linux-wireless=lfdr.de@vger.kernel.org>)
+	for <lists+linux-wireless@lfdr.de>; Wed, 18 Mar 2026 09:39:25 +0100
 X-Original-To: lists+linux-wireless@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 28E482B7C7E
-	for <lists+linux-wireless@lfdr.de>; Wed, 18 Mar 2026 09:20:19 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3374A2B82FC
+	for <lists+linux-wireless@lfdr.de>; Wed, 18 Mar 2026 09:39:25 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id AFB4F3012BEC
-	for <lists+linux-wireless@lfdr.de>; Wed, 18 Mar 2026 08:19:49 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 36E5C304483A
+	for <lists+linux-wireless@lfdr.de>; Wed, 18 Mar 2026 08:34:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CF6F137AA6F;
-	Wed, 18 Mar 2026 08:19:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A499536920E;
+	Wed, 18 Mar 2026 08:34:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=fail reason="signature verification failed" (2048-bit key) header.d=nummela.org header.i=@nummela.org header.b="aKB4R1gE"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Z9ZDRoRv"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from vps-8cfc3056.vps.ovh.net (chai.nummela.org [51.195.103.228])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A4670377544
-	for <linux-wireless@vger.kernel.org>; Wed, 18 Mar 2026 08:19:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=51.195.103.228
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 81D4E2459DC
+	for <linux-wireless@vger.kernel.org>; Wed, 18 Mar 2026 08:34:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773821986; cv=none; b=urJOmzmmyyLaEATAurMFkKvFiXihzpXlxqstBkZSXlIYYdfr+9C6G1mzOc03EFHLAnKf/mfL0RkbA42Qt0ijJtVUVo5mzhLJOOlXxF38RbyGPQIpYiHo/cP2sG3yRnK+MTbZMK32cZBhrmXEpFFOwxfIMEpp4fcZ9lO4nl/qtcY=
+	t=1773822841; cv=none; b=bc+pyjvY/djLBm6jPqxCQZpZ1HrTUNII47pMfYBoNEpmhzDRuUzk3flT38aYq60YYf9VJBpLhdMei8QcncJAOQXrvUExf1/MGzK6MUZeETOJXmESI8GrsX6H8vyp1j9arUGDQ3Bccz0hFaZyl05EIEgQe50wM+wCDjICjXfmUKU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773821986; c=relaxed/simple;
-	bh=FpRbdc3HDsOSqOTz9pwbO89vBDY/p+22PsENIVxBf3I=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=oCJEBQWpdBmoBEM+HqHlF5vEejPpzF8hP/kl+/V7UWgylL/jec4q1xw54tOo6PUP45NDT0yeotLdFGn874Az/tIGOIhnLx2kmLwnftyVyliJLHZDOed21iOUQTDFFo+jwEjOsCzQdGvnRHbVc/gX9K3xHIad3I0O8KtJnaNQ/cI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=reject dis=none) header.from=kempower.com; spf=fail smtp.mailfrom=kempower.com; dkim=pass (2048-bit key) header.d=nummela.org header.i=@nummela.org header.b=aKB4R1gE; arc=none smtp.client-ip=51.195.103.228
-Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=reject dis=none) header.from=kempower.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=kempower.com
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=nummela.org
-	; s=20250215; h=Content-Transfer-Encoding:MIME-Version:Message-Id:Date:
-	Subject:Cc:To:From:Sender:Reply-To:Content-Type:Content-ID:
-	Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
-	:Resent-Message-ID:In-Reply-To:References:List-Id:List-Help:List-Unsubscribe:
-	List-Subscribe:List-Post:List-Owner:List-Archive;
-	bh=pcyZ2BZoXNVrrRh8CINMT1A158yGcjcaYxEAdjxiCuU=; b=aKB4R1gEugaD//tBsAnEXxUW1x
-	b/uY3QmFQh+apL4gIkt3xAmS7mw/dzrsysYeiZQhDFzi2LNTtrRgel9eQoMz+Jl1ihlhAozIUDu5F
-	GktFvVZ/O9V1jYY1T/gBkJuIIcBbcL2wejzqu7HJ+/5DgJ2EOSaAh1zSg2cHn1FfMV/2p91TtEST8
-	HFVBofd5Jycw/qr5R+TUTFxe8GUieWwklU7Z2EJYv1Hur/kYUOHcoQnTi7wZZROEsblH2VBkazGqW
-	0e4XCJo6jdPC0BGX8nCf9c1FvQ9/2vU9l98DDztMsy98VjR62q2E3NDCVvAjRRl5MSCAvP4JcBVta
-	fWYX6/Mg==;
-Received: from 109-204-177-37.cust.valoonet.fi ([109.204.177.37] helo=vige-ThinkPad-P16-Gen-2.nummela.org)
-	by vps-8cfc3056.vps.ovh.net with esmtpa (Exim 4.96)
-	(envelope-from <ville.nummela@kempower.com>)
-	id 1w2m7v-0000vr-2d;
-	Wed, 18 Mar 2026 08:19:39 +0000
-From: Ville Nummela <ville.nummela@kempower.com>
-To: linux-wireless@vger.kernel.org
-Cc: Ville Nummela <ville.nummela@kempower.com>
-Subject: [PATCH v3] wifi: rsi_91x_usb: do not pause rfkill polling when stopping mac80211
-Date: Wed, 18 Mar 2026 10:19:12 +0200
-Message-Id: <20260318081912.87744-1-ville.nummela@kempower.com>
-X-Mailer: git-send-email 2.34.1
+	s=arc-20240116; t=1773822841; c=relaxed/simple;
+	bh=Rr7V3Tp0SLbeQUYmplQKFnVGM5fyp0F7ROgB9ujybFg=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=U0n1ODWGh+zVEWlPpBkRHayWeL7ZdYZvD1f8j4Zy9wTQ9mI0w1e0JrJERna35X3mivBZOYbrfrpp8GkUIK+qOzb4xyNIXwn9IQjpcQAyvNjTRmBLFa9OB0jVAp8aBtO5N55A3feHuIGaT4igibWdj1SXknurnN4bqQpfAMUI/h8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Z9ZDRoRv; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1B2C9C4AF0B
+	for <linux-wireless@vger.kernel.org>; Wed, 18 Mar 2026 08:34:01 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1773822841;
+	bh=Rr7V3Tp0SLbeQUYmplQKFnVGM5fyp0F7ROgB9ujybFg=;
+	h=References:In-Reply-To:Reply-To:From:Date:Subject:To:Cc:From;
+	b=Z9ZDRoRv7CSlJOWS76mL8Cf6WqRLE/uKVF6WyzbZ4Mt1Ew8oh/z86LuBJiXt4WlsN
+	 kM6e/VUscvGZEB8FwUcO7ceTHZa3hmQIQ+gC2Lk6u2nozTKPye7vHqJKsnXhMGSzVL
+	 mgjO/1SCH6R0fvdnIvSrtZ4419cu8nZjkVYoxP+rMAEo8VOGx+57WaeKLUBp718dKt
+	 S3QQ4PGNpXtbTwYDyjLmATk5xQvBrcu3ctL65qgm4w5G38N/p3ElyPIi6K6t8liFwO
+	 R44mtXkQmdRgaHoFEYPrHoQWjHBs4NWUv0rthXGCwM27iQ1/Z6R+tIjfenFmkGCTt2
+	 y2i0GtRjmdsUA==
+Received: by mail-lj1-f179.google.com with SMTP id 38308e7fff4ca-38b50c79f2fso13780331fa.3
+        for <linux-wireless@vger.kernel.org>; Wed, 18 Mar 2026 01:34:01 -0700 (PDT)
+X-Gm-Message-State: AOJu0YzfaxDlRevYSrel8YLzOv1/MPb3205pCKpDQuaOcCJWNvqieJr4
+	6jwS06s5Wd4yVcDsNg8+icsujylWLzN1ocmDRndZqCRwNlmYIXrXXtazFHdBLcEujQBmIpMcG/4
+	tuOjTkhS2cYeHA2V2U78hpkwHSNt4gw8=
+X-Received: by 2002:a2e:3218:0:b0:38a:56d0:9d24 with SMTP id
+ 38308e7fff4ca-38bd5850543mr8541301fa.18.1773822839319; Wed, 18 Mar 2026
+ 01:33:59 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [3.04 / 15.00];
-	DMARC_POLICY_REJECT(2.00)[kempower.com : SPF not aligned (relaxed),reject];
-	MID_CONTAINS_FROM(1.00)[];
-	R_DKIM_REJECT(1.00)[nummela.org:s=20250215];
+References: <20260318064834.103731-1-pkshih@gmail.com>
+In-Reply-To: <20260318064834.103731-1-pkshih@gmail.com>
+Reply-To: wens@kernel.org
+From: Chen-Yu Tsai <wens@kernel.org>
+Date: Wed, 18 Mar 2026 16:33:47 +0800
+X-Gmail-Original-Message-ID: <CAGb2v65PcZcBYg7qaeFaVH0=1fowOkW+7gL5wWA0wTMBu74JHg@mail.gmail.com>
+X-Gm-Features: AaiRm515ymUQV6NzLLrYHCEkgTiS1JHZNlqKJwthyqKeaiTWpsK5F7tEKWkQZko
+Message-ID: <CAGb2v65PcZcBYg7qaeFaVH0=1fowOkW+7gL5wWA0wTMBu74JHg@mail.gmail.com>
+Subject: Re: [PATCH] wireless-regdb: Add regulatory info for CEPT countries
+ FO, GI, IM, SM and VA listed by WiFi Alliance
+To: Ping-Ke Shih <pkshih@gmail.com>
+Cc: linux-wireless@vger.kernel.org, wireless-regdb@lists.infradead.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-33381-lists,linux-wireless=lfdr.de];
-	MIME_TRACE(0.00)[0:+];
-	RCVD_COUNT_THREE(0.00)[4];
-	FROM_HAS_DN(0.00)[];
-	RCPT_COUNT_TWO(0.00)[2];
-	PRECEDENCE_BULK(0.00)[];
-	DKIM_TRACE(0.00)[nummela.org:-];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	TAGGED_RCPT(0.00)[linux-wireless];
-	NEURAL_HAM(-0.00)[-0.950];
-	FROM_NEQ_ENVFROM(0.00)[ville.nummela@kempower.com,linux-wireless@vger.kernel.org];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	TAGGED_FROM(0.00)[bounces-33382-lists,linux-wireless=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	FREEMAIL_TO(0.00)[gmail.com];
 	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,kempower.com:email,kempower.com:mid]
-X-Rspamd-Queue-Id: 28E482B7C7E
+	DKIM_TRACE(0.00)[kernel.org:+];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	REPLYTO_DOM_NEQ_TO_DOM(0.00)[];
+	MISSING_XM_UA(0.00)[];
+	HAS_REPLYTO(0.00)[wens@kernel.org];
+	RCVD_COUNT_FIVE(0.00)[5];
+	REPLYTO_ADDR_EQ_FROM(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[wens@kernel.org,linux-wireless@vger.kernel.org];
+	RCPT_COUNT_THREE(0.00)[3];
+	PRECEDENCE_BULK(0.00)[];
+	TAGGED_RCPT(0.00)[linux-wireless];
+	NEURAL_HAM(-0.00)[-1.000];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,europa.eu:url,ui.com:url,mail.gmail.com:mid,cept.org:url,realtek.com:email]
+X-Rspamd-Queue-Id: 3374A2B82FC
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-Removing rsi_91x USB adapter could cause rtnetlink to lock up.
-When rsi_mac80211_stop is called, wiphy_lock is locked. Call to
-wiphy_rfkill_stop_polling would wait until the work queue has
-finished, but because the work queue waits for wiphy_lock, that
-would never happen.
+On Wed, Mar 18, 2026 at 2:48=E2=80=AFPM Ping-Ke Shih <pkshih@gmail.com> wro=
+te:
+>
+> From: Ping-Ke Shih <pkshih@realtek.com>
+>
+> In commit 5a8ced5ad313 ("wireless-regdb: Update regulatory info for CEPT
+> countries for 6GHz listed by WiFi Alliance"), the following are skipped a=
+s
+> they do not have corresponding entries in the database yet.
+>
+>      - Faroe Islands (FO)
+>      - Gibraltar (GI)
+>      - Isle of Man (IM)
+>      - San Marino (SM)
+>      - Holy See (Vatican City State) (VA)
 
-Moving the call to rsi_disconnect avoids the lock up.
+Confirmed the list. Also checked against another source [1].
 
-Signed-off-by: Ville Nummela <ville.nummela@kempower.com>
----
-Changes since v2:
- - Fix whitespaces
- 
- drivers/net/wireless/rsi/rsi_91x_mac80211.c | 17 ++++++++++++++++-
- drivers/net/wireless/rsi/rsi_91x_usb.c      |  2 ++
- drivers/net/wireless/rsi/rsi_common.h       |  1 +
- 3 files changed, 19 insertions(+), 1 deletion(-)
+[1] https://help.ui.com/hc/en-us/articles/8691786444567-Regions-Supporting-=
+6-GHz
 
-diff --git a/drivers/net/wireless/rsi/rsi_91x_mac80211.c b/drivers/net/wireless/rsi/rsi_91x_mac80211.c
-index c7ae8031436a..3faf2235728b 100644
---- a/drivers/net/wireless/rsi/rsi_91x_mac80211.c
-+++ b/drivers/net/wireless/rsi/rsi_91x_mac80211.c
-@@ -325,6 +325,22 @@ void rsi_mac80211_detach(struct rsi_hw *adapter)
- }
- EXPORT_SYMBOL_GPL(rsi_mac80211_detach);
- 
-+/**
-+ * rsi_mac80211_rfkill_exit() - This function is used to stop rfkill polling
-+ *                              when the device is removed.
-+ * @adapter: Pointer to the adapter structure.
-+ *
-+ * Return: None.
-+ */
-+void rsi_mac80211_rfkill_exit(struct rsi_hw *adapter)
-+{
-+	struct ieee80211_hw *hw = adapter->hw;
-+
-+	if (hw)
-+		wiphy_rfkill_stop_polling(hw->wiphy);
-+}
-+EXPORT_SYMBOL_GPL(rsi_mac80211_rfkill_exit);
-+
- /**
-  * rsi_indicate_tx_status() - This function indicates the transmit status.
-  * @adapter: Pointer to the adapter structure.
-@@ -422,7 +438,6 @@ static void rsi_mac80211_stop(struct ieee80211_hw *hw, bool suspend)
- 	rsi_dbg(ERR_ZONE, "===> Interface DOWN <===\n");
- 	mutex_lock(&common->mutex);
- 	common->iface_down = true;
--	wiphy_rfkill_stop_polling(hw->wiphy);
- 
- 	/* Block all rx frames */
- 	rsi_send_rx_filter_frame(common, 0xffff);
-diff --git a/drivers/net/wireless/rsi/rsi_91x_usb.c b/drivers/net/wireless/rsi/rsi_91x_usb.c
-index d83204701e27..8765cac6f875 100644
---- a/drivers/net/wireless/rsi/rsi_91x_usb.c
-+++ b/drivers/net/wireless/rsi/rsi_91x_usb.c
-@@ -877,6 +877,8 @@ static void rsi_disconnect(struct usb_interface *pfunction)
- 	if (!adapter)
- 		return;
- 
-+	rsi_mac80211_rfkill_exit(adapter);
-+
- 	rsi_mac80211_detach(adapter);
- 
- 	if (IS_ENABLED(CONFIG_RSI_COEX) && adapter->priv->coex_mode > 1 &&
-diff --git a/drivers/net/wireless/rsi/rsi_common.h b/drivers/net/wireless/rsi/rsi_common.h
-index 7aa5124575cf..591602beeec6 100644
---- a/drivers/net/wireless/rsi/rsi_common.h
-+++ b/drivers/net/wireless/rsi/rsi_common.h
-@@ -79,6 +79,7 @@ static inline int rsi_kill_thread(struct rsi_thread *handle)
- }
- 
- void rsi_mac80211_detach(struct rsi_hw *hw);
-+void rsi_mac80211_rfkill_exit(struct rsi_hw *hw);
- u16 rsi_get_connected_channel(struct ieee80211_vif *vif);
- struct rsi_hw *rsi_91x_init(u16 oper_mode);
- void rsi_91x_deinit(struct rsi_hw *adapter);
--- 
-2.34.1
+> Look up the CEPT decisions [2], and add entries along with decisions [3],
+> [4] and [5] for 2/5/6 GHz regulations.
+>
+> The 2 GHz band by ECC Decision (11)05 [3], which the adoption of ERC
+> Recommendation 70-03 [6], the regulations and the frequency bands to be
+> used for Short Range Devices (SRDs) are included in specific annexes to
 
+The 2 GHz band is now governed by ERC Recommendation 70-03 [6] with the
+withdrawal of ERC Decision ERC/DEC/(01)07 by ECC Decision (11)05 [3].
+
+> this Recommendation. By ERC Recommendation 70-03 annex 3 (WIDEBAND DATA
+> TRANSMISSION SYSTEMS):
+>
+>  * 2400-2483.5 MHz
+>    - 100 mW
+
+Looks correct.
+
+ERC Recommendation 70-03 annex 3 also includes the 60GHz range (57-71 GHz).
+Can you check that? We would need some other source of information like
+the WiFi Alliance page to verify that the countries have adopted the
+decision. I don't think the CEPT decisions are directly binding.
+
+The end of the document also has a table of the implementation status
+of some bands in some countries. It is obvious the table is not complete.
+
+> The 5 GHz band by ECC Decision (04)08 [4]:
+>
+>  * 5150-5250 MHz
+>    - 200 mW
+>    - Indoor use
+>  * 5250-5350 MHz
+>    - 200 mW (due to TPC required, -3dBm, 100 mW is adopted)
+>    - DFS, TPC
+>    - Indoor use
+>  * 5470-5725 MHz
+>    - 1 W (due to TPC required, -3dBm, 500 mW is adopted)
+>    - DFS, TPC
+>    - Indoor and outdoor use
+>
+> The 6 GHz band by ECC Decision (20)01 [5]:
+>
+>  * LPI devices (adopted)
+>    - 5945-6425 MHz
+>    - Restricted to indoor use only
+>    - Maximum mean e.i.r.p.: 23 dBm
+>    - Maximum mean e.i.r.p. density: 10 dBm/MHz
+>  * VLP devices
+>    - 5945-6425 MHz
+>    - Indoors and outdoors
+>    - Maximum mean e.i.r.p.: 14 dBm
+>    - Maximum mean e.i.r.p. density: 1 dBm/MHz
+
+Looks correct.
+
+> [1] https://www.wi-fi.org/regulations-enabling-6-ghz-wi-fi
+> [2] https://docdb.cept.org/document/category/ECC_Decisions?status=3DACTIV=
+E
+> [3] https://docdb.cept.org/download/1535
+> [4] https://docdb.cept.org/download/4501
+> [5] https://docdb.cept.org/download/4685
+> [6] https://docdb.cept.org/download/3700
+
+This doesn't seem to be the latest version. The online version is here:
+
+    https://docdb.cept.org/document/845
+
+and shows the latest revision was published on Feb 13, 2026.
+
+> Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
+> ---
+>  db.txt | 35 +++++++++++++++++++++++++++++++++++
+>  1 file changed, 35 insertions(+)
+>
+> diff --git a/db.txt b/db.txt
+> index d54ef78e0da8..e2afb145ede5 100644
+> --- a/db.txt
+> +++ b/db.txt
+> @@ -731,6 +731,13 @@ country FM: DFS-FCC
+>         (5490 - 5730 @ 160), (24), DFS
+>         (5735 - 5835 @ 80), (30)
+>
+> +country FO: DFS-ETSI
+> +       (2402 - 2483.5 @ 40), (100 mW)
+
+This should start at 2400 for all the newly added countries.
+
+> +       (5150 - 5250 @ 80), (200 mW), NO-OUTDOOR, AUTO-BW
+> +       (5250 - 5350 @ 80), (100 mW), DFS, NO-OUTDOOR, AUTO-BW
+> +       (5470 - 5725 @ 160), (500 mW), DFS
+> +       (5945 - 6425 @ 320), (23), NO-OUTDOOR
+> +
+>  # FR as part of EU/CEPT accepted decisions 2005/513/EC (5GHz RLAN, EN 30=
+1 893)
+>  # and 2006/771/EC (amended by 2008/432/EC, Short-Range Devices, EN 300 4=
+40)
+>  #  EU decision 2005/513/EC: https://eur-lex.europa.eu/legal-content/EN/T=
+XT/?uri=3DCELEX:02005D0513-20070213
+> @@ -801,6 +808,13 @@ country GH: DFS-FCC
+>         (5490 - 5730 @ 160), (24), DFS
+>         (5735 - 5835 @ 80), (30)
+>
+> +country GI: DFS-ETSI
+> +       (2402 - 2483.5 @ 40), (100 mW)
+> +       (5150 - 5250 @ 80), (200 mW), NO-OUTDOOR, AUTO-BW
+> +       (5250 - 5350 @ 80), (100 mW), DFS, NO-OUTDOOR, AUTO-BW
+> +       (5470 - 5725 @ 160), (500 mW), DFS
+> +       (5945 - 6425 @ 320), (23), NO-OUTDOOR
+> +
+>  country GL: DFS-ETSI
+>         (2402 - 2482 @ 40), (20)
+>         (5170 - 5250 @ 80), (20), AUTO-BW, wmmrule=3DETSI
+> @@ -976,6 +990,13 @@ country IL: DFS-ETSI
+>         (5725 - 5875 @ 80), (25 mW), AUTO-BW
+>         (5945 - 6425 @ 320), (200 mW), NO-OUTDOOR
+>
+> +country IM: DFS-ETSI
+> +       (2402 - 2483.5 @ 40), (100 mW)
+> +       (5150 - 5250 @ 80), (200 mW), NO-OUTDOOR, AUTO-BW
+> +       (5250 - 5350 @ 80), (100 mW), DFS, NO-OUTDOOR, AUTO-BW
+> +       (5470 - 5725 @ 160), (500 mW), DFS
+> +       (5945 - 6425 @ 320), (23), NO-OUTDOOR
+> +
+>  # Source:
+>  # https://dot.gov.in/spectrummanagement/delicensing-24-24835-ghz-band-gs=
+r-45-e-5150-5350-ghz-gsr-46-e-and-5725-5875-ghz
+>  # https://dot.gov.in/spectrummanagement/license-exemption-5-ghz-gsr-1048=
+e-dated-22102018
+> @@ -1855,6 +1876,13 @@ country SK: DFS-ETSI
+>         # 60 GHz band channels 1-4 (ETSI EN 302 567)
+>         (57000 - 66000 @ 2160), (40)
+>
+> +country SM: DFS-ETSI
+> +       (2402 - 2483.5 @ 40), (100 mW)
+> +       (5150 - 5250 @ 80), (200 mW), NO-OUTDOOR, AUTO-BW
+> +       (5250 - 5350 @ 80), (100 mW), DFS, NO-OUTDOOR, AUTO-BW
+> +       (5470 - 5725 @ 160), (500 mW), DFS
+> +       (5945 - 6425 @ 320), (23), NO-OUTDOOR
+> +
+>  # Source:
+>  # Regulation N=C2=B0 2004-005 ART/DG/DRC/D.R=C3=A9g
+>  country SN: DFS-FCC
+> @@ -2072,6 +2100,13 @@ country UZ: DFS-ETSI
+>         (5170 - 5250 @ 80), (20), AUTO-BW
+>         (5250 - 5330 @ 80), (20), DFS, AUTO-BW
+>
+> +country VA: DFS-ETSI
+> +       (2402 - 2483.5 @ 40), (100 mW)
+> +       (5150 - 5250 @ 80), (200 mW), NO-OUTDOOR, AUTO-BW
+> +       (5250 - 5350 @ 80), (100 mW), DFS, NO-OUTDOOR, AUTO-BW
+> +       (5470 - 5725 @ 160), (500 mW), DFS
+> +       (5945 - 6425 @ 320), (23), NO-OUTDOOR
+> +
+>  # Source:
+>  # http://www.ntrc.vc/regulations/Jun_2006_Spectrum_Managment_Regulations=
+.pdf
+>  country VC: DFS-ETSI
+> --
+> 2.25.1
+>
 
