@@ -1,179 +1,196 @@
-Return-Path: <linux-wireless+bounces-33368-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-33369-lists+linux-wireless=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id +JXxAtX9uWnZQAIAu9opvQ
-	(envelope-from <linux-wireless+bounces-33368-lists+linux-wireless=lfdr.de@vger.kernel.org>)
-	for <lists+linux-wireless@lfdr.de>; Wed, 18 Mar 2026 02:20:21 +0100
+	id eA7JIzwfuml8RwIAu9opvQ
+	(envelope-from <linux-wireless+bounces-33369-lists+linux-wireless=lfdr.de@vger.kernel.org>)
+	for <lists+linux-wireless@lfdr.de>; Wed, 18 Mar 2026 04:42:52 +0100
 X-Original-To: lists+linux-wireless@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7A5082B4EAE
-	for <lists+linux-wireless@lfdr.de>; Wed, 18 Mar 2026 02:20:20 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id E66012B58E9
+	for <lists+linux-wireless@lfdr.de>; Wed, 18 Mar 2026 04:42:51 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 55D8A30C8174
-	for <lists+linux-wireless@lfdr.de>; Wed, 18 Mar 2026 01:19:06 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 8DD3C303F7C2
+	for <lists+linux-wireless@lfdr.de>; Wed, 18 Mar 2026 03:42:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AC1F023AB88;
-	Wed, 18 Mar 2026 01:19:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1DF602E88AE;
+	Wed, 18 Mar 2026 03:42:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=realtek.com header.i=@realtek.com header.b="fMd4uvuI"
+	dkim=pass (2048-bit key) header.d=asu.edu header.i=@asu.edu header.b="S099G4Q9"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
+Received: from mail-dy1-f171.google.com (mail-dy1-f171.google.com [74.125.82.171])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BFB61238C1A
-	for <linux-wireless@vger.kernel.org>; Wed, 18 Mar 2026 01:19:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=211.75.126.72
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 887FD15E8B
+	for <linux-wireless@vger.kernel.org>; Wed, 18 Mar 2026 03:42:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.82.171
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773796745; cv=none; b=W1HDLxzohpJuxKPnvYPzIrmG4Z6Yv4vxJAEVJIdlFMFA0zIiF3GCngBxBOLgM9evR6o4CqJYvIi1bmQJ0ccsaMj53r1UR9X8y6/z0LbCCuy4cSEf/JqvCLp7OW+pCHoh6s2W1v4sPCLE3tFtswLRisdFgHRpb8tewpAlCnfzp3A=
+	t=1773805370; cv=none; b=LsNjIu1mSsx17+6wJQNbC6WP+q9ABE1ukxYbO1eDaPCuHVUh+bkRwU2D3Wbv0DbdyE/vgUoSUM7NBlPUNsDhavGCrIN/TB0OB7xB4BQrKMG7fHbxYn/9wbpKfr1ehZt3qgmf8jPw7XDytTuPO7jzMykrC0O6dqZCqkHpyuXu3uI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773796745; c=relaxed/simple;
-	bh=aabhniP1PzR4hdZy8+1EYVqwIH8mlU+UXY1oSmm665E=;
-	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:MIME-Version; b=qfViw2cPohUtq+5k2zDRA7ov62Y9drnvGQCqCPCnit6VjBhcAXY3HtJGag+TiX0kC3b9mDVoM6mzb4E3RQW7cR1DMoQsU9n5Oa61gB3WETKf05Lzjqa6cLzLPRrq/NpOnUoPvuP8Nud/d7xuHJXnQldcyhDIE8nY8fK05MyxymY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com; spf=pass smtp.mailfrom=realtek.com; dkim=pass (2048-bit key) header.d=realtek.com header.i=@realtek.com header.b=fMd4uvuI; arc=none smtp.client-ip=211.75.126.72
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=realtek.com
-X-SpamFilter-By: ArmorX SpamTrap 5.80 with qID 62I1IwOX2810374, This message is accepted by code: ctloc85258
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=realtek.com; s=dkim;
-	t=1773796739; bh=aabhniP1PzR4hdZy8+1EYVqwIH8mlU+UXY1oSmm665E=;
-	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:Content-Transfer-Encoding:MIME-Version;
-	b=fMd4uvuI52unzK317xCcheBwB6t9HXnHq7u9m539X7oY8HLhoxHtx9KZqmfk5zWMD
-	 bQrisHjP/qpB7VaUjcRA4DDSu7erBeRm3Ny++ys4JsbBBJbq/SCXl3OkWCBK4BRAvh
-	 qQ3Dkqzt4mMu3Z7zOgCa5kP39opc1YjDKocBGWV1aZSyHc5mg+bYzyMJYzhd78iHhV
-	 DaXGoF93DOhh7NmPb4am329S6x1oTiTZ5j3PEs6XpEfyQgm4T3JQFA1dur2fR5T+OR
-	 jP1LAP4l3pKsFA4i7ZFvRWIusrXzRc5J6Zt6EZ6LpS8Vbi6DA/uz/H2PUK4+DXc/uE
-	 6cz8fDk8SuMTQ==
-Received: from mail.realtek.com (rtkexhmbs03.realtek.com.tw[10.21.1.53])
-	by rtits2.realtek.com.tw (8.15.2/3.21/5.94) with ESMTPS id 62I1IwOX2810374
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Wed, 18 Mar 2026 09:18:58 +0800
-Received: from RTKEXHMBS06.realtek.com.tw (10.21.1.56) by
- RTKEXHMBS03.realtek.com.tw (10.21.1.53) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1748.10; Wed, 18 Mar 2026 09:18:59 +0800
-Received: from RTKEXHMBS06.realtek.com.tw ([fe80::4cbd:6c6c:b92b:3913]) by
- RTKEXHMBS06.realtek.com.tw ([fe80::4cbd:6c6c:b92b:3913%10]) with mapi id
- 15.02.1748.010; Wed, 18 Mar 2026 09:18:59 +0800
-From: Ping-Ke Shih <pkshih@realtek.com>
-To: Jason Kakandris <ikakandris@gmail.com>
-CC: "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>
-Subject: RE: RTL8852BE fails to power on: "xtal si not ready" on ASUS TUF
- GAMING B650-PLUS WIFI
-Thread-Topic: RTL8852BE fails to power on: "xtal si not ready" on ASUS TUF
- GAMING B650-PLUS WIFI
-Thread-Index: AQHctU7OgydTptlp0UKTntkNNhXUfLWyCTcggAAIM4CAAWxCsA==
-Date: Wed, 18 Mar 2026 01:18:59 +0000
-Message-ID: <c3b224cabe564969ba4258b2b89efdfb@realtek.com>
-References: <CAFR=mzkTDNVwypi_PvUw2PX0MM_ck0H61+PUAdJoo6h3yZfggw@mail.gmail.com>
- <b8cb73b5c8bf42b38ad275220b1d559e@realtek.com>
- <CAFR=mzmENf-SqdFYzfdjb3KtA153rGT1VDVXUrXTvK+Dd6teSg@mail.gmail.com>
-In-Reply-To: <CAFR=mzmENf-SqdFYzfdjb3KtA153rGT1VDVXUrXTvK+Dd6teSg@mail.gmail.com>
-Accept-Language: en-US, zh-TW
-Content-Language: zh-TW
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+	s=arc-20240116; t=1773805370; c=relaxed/simple;
+	bh=xOOE7va9TffbAWN85eqBLYmwrHyH1fj7Va+S6RRhA64=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=nEU7tIN4I9Brzd3CyG8URnQus/jPLZOr5M2Xg31BEW3vYgjSiXgYvS7giWbBu9UUcZ7psnS2pV9OyMbJltOeJzIjxllKpH2TsiR0wqzKijNh7FMQEgYo1//iKmgvMbnBFE5nkzy5f2rC0vQ+M2imTA1Bs8j1DGWcqZDrHzI7zZs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=asu.edu; spf=pass smtp.mailfrom=asu.edu; dkim=pass (2048-bit key) header.d=asu.edu header.i=@asu.edu header.b=S099G4Q9; arc=none smtp.client-ip=74.125.82.171
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=asu.edu
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=asu.edu
+Received: by mail-dy1-f171.google.com with SMTP id 5a478bee46e88-2c0c955a481so1606152eec.1
+        for <linux-wireless@vger.kernel.org>; Tue, 17 Mar 2026 20:42:48 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=asu.edu; s=google; t=1773805368; x=1774410168; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=hMND4iZBCjF3ZpZm5tJpOZ8N3/z6tWKz9s4tH24eRNc=;
+        b=S099G4Q9qij/pcbO8AH4NXa6QZHgTXlmA2wzvfI4zdiIQLZqNvIuBXOpQqu8PChutz
+         8/SzIezdc/Wj4s59C6ljcuPmvGCQG92EkzdmHaumvQA6l5YzYmW74z3AhJCGhyuzqMof
+         KATjD60HKJrwbsn6JTbf1lIERQJftcwgctzCBUTI3OGFAD4Kvo8+aogZc8kDOx168dYb
+         3CeqSpVhr6SBTLHIqZKlhQtMms0T3X6PNXWF+9i8gnfkVm4gV980Zvd0oXll/hZR7ZjJ
+         /eDQOvKjcEPSZEg8dOPOse9z2WjHX6SpDcFgB9y6OSlxku3QsIlVibCPPZSHfhxXggLn
+         BxZw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1773805368; x=1774410168;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=hMND4iZBCjF3ZpZm5tJpOZ8N3/z6tWKz9s4tH24eRNc=;
+        b=WxDj/tb5/i5oVJV9z9UUiTHLCiCG0v3CDZSWA3RhGIAJRaij50E8vXBvgdkM/fBH/2
+         dBivlHLgGb3LGZi4DBHYiR9pR1IqA5CVLVB/8RoIWEFkwBTT3iesCZvZO8FzXeCwoOrr
+         GRPr0y5aKE2iSt6v8QrGJAt6QRHA7oOK+KpRB/4IgEHEb20o3BJiT2I1YWibP0STYAVL
+         /SBKg9Db2ws8xnOCduwLwxrd0OicLjFn8vnNZ84Nnc4cfR43wrqCx1oc14M93ausN5GI
+         GWs36VGOTFNms1rtD3sxPOOZ/czz+EQ0cWkQ4JEHKbA2pcJs8JVqGHyNJ4sjsEJl8eQG
+         7M8Q==
+X-Forwarded-Encrypted: i=1; AJvYcCU0ZEqyelUM+zM++/QafecNZt/DXULLR/8vLCe8vLq02WsXJOsMgZqdguHGhNO8jb/Zy7A9jbsO7xIgO+ZDQg==@vger.kernel.org
+X-Gm-Message-State: AOJu0YzEhk7jRopkSf2pro8+IEKylLA2udgHbH2l7LClF9dZPODNyooo
+	HiVEddLy/9iCcyo1B+ekbI/BkOrfCVGdGteAXYRFxR6Tc2hB5yQnttAbxVKC/CPnOA==
+X-Gm-Gg: ATEYQzx3aboxCP9B9RhJz7rIkvbswBWcUx9tWvhO599tatwBiNMsT54tM6wEdfKMczB
+	IhJATbjmwMEYfe98DnomT6eoNDUFx1vOJABFNvZ3OtPLBB2XY3FhtCqAGn+c2Yjkm1AxJ02Jc8i
+	q+epUIoaWqfCLPhMSfuVe3FUL7+qSeDh5VE45lcPphhq3o7vcYfCfTAZ+kXnA/wXxktFcw8st+s
+	Zb+kI/pZ7RiVCOShckEoTNa3oOiR7mfpsHj0Fw2erdJretIuItMjIuXHAnlGzYoOfh8mAZ7dGCq
+	Bkb7l54Iju9F4UmqtDaMDhTbQjKi4C3OgmHhUM16jW/fk9qZY14C9X2lHFQS0MGwfJrQl57iKW/
+	dCMyXnxMQFyCZV0JPcEgP0OJ9bz5OxBQfj5ZrrCYv+fXLxMlHrW579Oy7BDsopbnYa0zqCTysKk
+	BfJwWl+R/bj15DBS0MMuDVq5viv27UflzdaAtU8uYZJ775bx2TPIUwDQ==
+X-Received: by 2002:a05:7300:a2ca:b0:2ba:a2fa:84a6 with SMTP id 5a478bee46e88-2c0e5101a34mr956014eec.24.1773805367538;
+        Tue, 17 Mar 2026 20:42:47 -0700 (PDT)
+Received: from p1.scai.dhcp.asu.edu (209-147-138-15.nat.asu.edu. [209.147.138.15])
+        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-2c0e55a2be4sm2578693eec.22.2026.03.17.20.42.47
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 17 Mar 2026 20:42:47 -0700 (PDT)
+From: Xiang Mei <xmei5@asu.edu>
+To: security@kernel.org
+Cc: netdev@vger.kernel.org,
+	johannes@sipsolutions.net,
+	linux-wireless@vger.kernel.org,
+	bestswngs@gmail.com,
+	Xiang Mei <xmei5@asu.edu>
+Subject: [PATCH net] wifi: mac80211: fix NULL deref in mesh_matches_local()
+Date: Tue, 17 Mar 2026 20:42:44 -0700
+Message-ID: <20260318034244.2595020-1-xmei5@asu.edu>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-Spamd-Result: default: False [-2.06 / 15.00];
+Content-Transfer-Encoding: 8bit
+X-Spamd-Result: default: False [-0.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[realtek.com,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
-	R_DKIM_ALLOW(-0.20)[realtek.com:s=dkim];
+	MID_CONTAINS_FROM(1.00)[];
+	R_MISSING_CHARSET(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[asu.edu,none];
+	R_DKIM_ALLOW(-0.20)[asu.edu:s=google];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
-	MIME_BASE64_TEXT(0.10)[];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_TO(0.00)[gmail.com];
-	TAGGED_FROM(0.00)[bounces-33368-lists,linux-wireless=lfdr.de];
-	TO_DN_SOME(0.00)[];
-	RCPT_COUNT_TWO(0.00)[2];
 	MIME_TRACE(0.00)[0:+];
-	TO_DN_EQ_ADDR_SOME(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	MISSING_XM_UA(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[6];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[pkshih@realtek.com,linux-wireless@vger.kernel.org];
-	DKIM_TRACE(0.00)[realtek.com:+];
-	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[linux-wireless];
-	MID_RHS_MATCH_FROM(0.00)[];
+	TO_DN_SOME(0.00)[];
+	FREEMAIL_CC(0.00)[vger.kernel.org,sipsolutions.net,gmail.com,asu.edu];
+	TAGGED_FROM(0.00)[bounces-33369-lists,linux-wireless=lfdr.de];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,realtek.com:dkim,realtek.com:email,realtek.com:mid]
-X-Rspamd-Queue-Id: 7A5082B4EAE
+	RCVD_TLS_LAST(0.00)[];
+	DKIM_TRACE(0.00)[asu.edu:+];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	RCPT_COUNT_FIVE(0.00)[6];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[xmei5@asu.edu,linux-wireless@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCVD_COUNT_FIVE(0.00)[5];
+	TAGGED_RCPT(0.00)[linux-wireless];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,asu.edu:dkim,asu.edu:email,asu.edu:mid]
+X-Rspamd-Queue-Id: E66012B58E9
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-Ly8gbWFpbGluZyBsaXN0IGRvZXNuJ3Qgd2FudCB0b3AtcG9zdGluZy4gSSBtb3ZlIHRoZSBwb3N0
-IHRvIGJvdHRvbS4gDQoNCkphc29uIEtha2FuZHJpcyA8aWtha2FuZHJpc0BnbWFpbC5jb20+IHdy
-b3RlOg0KPiDOo8+EzrnPgiDOpM+Bzq8gMTcgzpzOsc+BIDIwMjYgz4PPhM65z4IgNTowM+KAr8+A
-Ls68Liwgzr8vzrcgUGluZy1LZSBTaGloDQo+IDxwa3NoaWhAcmVhbHRlay5jb20+IM6tzrPPgc6x
-z4jOtToNCj4gPg0KPiA+IEphc29uIEtha2FuZHJpcyA8aWtha2FuZHJpc0BnbWFpbC5jb20+IHdy
-b3RlOg0KPiA+ID4gU3lzdGVtIEluZm8NCj4gPiA+DQo+ID4gPiBEaXN0cm86IExpbnV4IE1pbnQg
-MjIuMyBaZW5hIChVYnVudHUgMjQuMDQgYmFzZSkNCj4gPiA+IEtlcm5lbHMgdGVzdGVkOiA2LjE0
-LjAtMzctZ2VuZXJpYywgNi4xNy4wLTE0LWdlbmVyaWMgKHNhbWUgZmFpbHVyZSBvbiBib3RoKQ0K
-PiA+ID4gTW90aGVyYm9hcmQ6IEFTVVMgVFVGIEdBTUlORyBCNjUwLVBMVVMgV0lGSSAoUmV2IDEu
-eHgpDQo+ID4gPiBCSU9TOiB2MzgyNyAoRmViIDIwMjYpDQo+ID4gPiBDUFU6IEFNRCBSeXplbiA3
-IDc3MDBYDQo+ID4gPiBEcml2ZXI6IHJ0dzg5IHY3LjAgKGdpdCBjb21taXQgZDJmMTc1ZQ0KPiA+
-ID4NCj4gaHR0cHM6Ly9naXRodWIuY29tL21vcnJvd25yL3J0dzg5L2NvbW1pdC9kMmYxNzVlYWZh
-MGE0ZWY5Y2M2NWU3MDczYTc3ZTYwMjM4Yw0KPiA+ID4gYWU2MTQpDQo+ID4gPiBXaUZpIHdvcmtz
-IGluIFdpbmRvd3M6IFllcw0KPiA+ID4NCj4gPiA+DQo+ID4gPiBQcm9ibGVtDQo+ID4gPiBUaGUg
-UlRMODg1MkJFIFdpRmkgY2FyZCBmYWlscyB0byBpbml0aWFsaXplIHdpdGggeHRhbCBzaSBub3Qg
-cmVhZHkgZXJyb3IuDQo+IE5vDQo+ID4gPiB3aXJlbGVzcyBpbnRlcmZhY2UgaXMgY3JlYXRlZC4N
-Cj4gPiA+DQo+ID4gPg0KPiA+ID4gZG1lc2cgb3V0cHV0DQo+ID4gPg0KPiA+ID4gcnR3ODlfODg1
-MmJlX2dpdCAwMDAwOjA4OjAwLjA6IGxvYWRlZCBmaXJtd2FyZSBydHc4OS9ydHc4ODUyYl9mdy0x
-LmJpbg0KPiA+ID4gcnR3ODlfODg1MmJlX2dpdCAwMDAwOjA4OjAwLjA6IGVuYWJsaW5nIGRldmlj
-ZSAoMDAwMCAtPiAwMDAzKQ0KPiA+DQo+ID4gSXQgbG9va3MgbGlrZSB5b3UgZGlkbid0IGVuY291
-bnRlciBEM0NvbGQgcHJvYmxlbSwgYnV0IEkgdGhpbmsgeW91IGNhbg0KPiA+IGdpdmUgaXQgYSB0
-cnkgWzFdLg0KPiA+DQo+ID4gWzFdIGh0dHBzOi8vYnVnemlsbGEua2VybmVsLm9yZy9zaG93X2J1
-Zy5jZ2k/aWQ9MjIxMjEzDQo+ID4NCj4gPiA+IHJ0dzg5Xzg4NTJiZV9naXQgMDAwMDowODowMC4w
-OiB4dGFsIHNpIG5vdCByZWFkeShSKTogb2Zmc2V0PTQxDQo+ID4gPiBydHc4OV84ODUyYmVfZ2l0
-IDAwMDA6MDg6MDAuMDogeHRhbCBzaSBub3QgcmVhZHkoVyk6IG9mZnNldD05MCB2YWw9MTAgbWFz
-az0xMA0KPiA+ID4gcnR3ODlfODg1MmJlX2dpdCAwMDAwOjA4OjAwLjA6IGZhaWxlZCB0byBwb3dl
-ciBvbg0KPiA+ID4gcnR3ODlfODg1MmJlX2dpdCAwMDAwOjA4OjAwLjA6IGZhaWxlZCB0byBzZXR1
-cCBjaGlwIGluZm9ybWF0aW9uDQo+ID4gPiBydHc4OV84ODUyYmVfZ2l0IDAwMDA6MDg6MDAuMDog
-cHJvYmUgd2l0aCBkcml2ZXIgcnR3ODlfODg1MmJlX2dpdCBmYWlsZWQNCj4gd2l0aA0KPiA+ID4g
-ZXJyb3IgLTExMA0KPiA+DQo+ID4gVGhlc2UgbWVzc2FnZXMgYXBwZWFyIHdoZW4gZmlyc3QgYm9v
-dGluZyBvciBhZnRlciBzeXN0ZW0gcmVzdW1lPw0KPiA+IFJlY2VudGx5IHdlIHVwZGF0ZSBzb21l
-dGhpbmcgcmVsYXRlZCB0byBzdXNwZW5kL3Jlc3VtZSBwcm9ibGVtLg0KPiA+IFBsZWFzZSB1c2Ug
-dGhlIGxhdGVzdCBkcml2ZXIgKGtlcm5lbCA3LjAtcmM0KSB3aXRoIHRoZSBsYXRlc3QNCj4gPiBm
-aXJtd2FyZSAodjAuMjkuMjkuMTUpLg0KPiA+DQo+ID4gPg0KPiA+ID4NCj4gPiA+IGxzcGNpDQo+
-ID4gPg0KPiA+ID4gMDg6MDAuMCBOZXR3b3JrIGNvbnRyb2xsZXIgWzAyODBdOiBSZWFsdGVrIFNl
-bWljb25kdWN0b3IgQ28uLCBMdGQuIFJUTDg4NTJCRQ0KPiA+ID4gUENJZSA4MDIuMTFheCBXaXJl
-bGVzcyBOZXR3b3JrIENvbnRyb2xsZXIgWzEwZWM6Yjg1Ml0NCj4gPiA+IFN1YnN5c3RlbTogQXp1
-cmVXYXZlIFJUTDg4NTJCRSBQQ0llIDgwMi4xMWF4IFdpcmVsZXNzIE5ldHdvcmsgQ29udHJvbGxl
-cg0KPiA+ID4gWzFhM2I6NTQ3MV0NCj4gPiA+DQo+ID4gPiBXaGF0IEkndmUgdHJpZWQNCj4gPiA+
-DQo+ID4gPiBLZXJuZWwgcGFyYW1ldGVyIHBjaWVfYXNwbT1vZmYNCj4gPiA+IE1vZHVsZSBwYXJh
-bWV0ZXJzOiBkaXNhYmxlX2Nsa3JlcT1ZIGRpc2FibGVfYXNwbV9sMT1ZIGRpc2FibGVfYXNwbV9s
-MXNzPVkNCj4gPiA+IGRpc2FibGVfcHNfbW9kZT15DQo+ID4NCj4gPiBBcyB5b3UgdHJ5IHRoaXMs
-IHBsZWFzZSBlbnN1cmUgdGhhdCBhZGQgYSBjb25maWd1cmF0aW9uIGZpbGUgdG8gL2V0Yy9tb2R1
-bGUuZC8sDQo+ID4gYW5kIGNvbGQgcmVib290Lg0KPiA+DQo+ID4gPiBVcGRhdGVkIEJJT1MgZnJv
-bSB2MzA1NyB0byB2MzgyNw0KPiA+ID4gVXBkYXRlZCBmaXJtd2FyZSBmaWxlcyB2aWEgbWFrZSBp
-bnN0YWxsX2Z3DQo+ID4gPiBUZXN0ZWQgb24ga2VybmVscyA2LjE0IGFuZCA2LjE3IOKAlCBzYW1l
-IGZhaWx1cmUgb24gYm90aA0KPiA+ID4gSW4ta2VybmVsIGRyaXZlciBhbmQgbW9ycm93bnIgb3V0
-LW9mLXRyZWUgZHJpdmVyIOKAlCBzYW1lIGZhaWx1cmUNCj4gPiA+IFdpRmkgd29ya3MgZmluZSBp
-biBXaW5kb3dzIG9uIHRoZSBzYW1lIGhhcmR3YXJlDQo+ID4NCj4gLSBUaGUgZXJyb3IgYXBwZWFy
-cyBvbiBmaXJzdCBib290LCBub3QgYWZ0ZXIgcmVzdW1lLiBJdCBoYXMgbmV2ZXINCj4gd29ya2Vk
-IG9uIExpbnV4Lg0KPiAtIEkgaGF2ZSBzZXQgdXAgYSB1ZGV2IHJ1bGUgdG8gZGlzYWJsZSBEM0Nv
-bGQgZm9yIHRoZSBkZXZpY2UgYW5kIHdpbGwNCj4gdGVzdCB3aXRoIGEgY29sZCBib290LiBJIHdp
-bGwgYWxzbyB0cnkgdGhlIGxhdGVzdCBmaXJtd2FyZQ0KPiAodjAuMjkuMjkuMTUpIGFuZCByZXBv
-cnQgYmFjay4NCj4gV2hlcmUgY2FuIEkgb2J0YWluIGZpcm13YXJlIHYwLjI5LjI5LjE1PyBJcyBp
-dCBydHc4ODUyYl9mdy0yLmJpbiBmcm9tDQo+IGxpbnV4LWZpcm13YXJlLmdpdD8NCj4NCg0KWWVz
-LiANCg0KSSByZXZpZXcgdGhlICJ4dGFsIHNpIG5vdCByZWFkeSIgbWVzc2FnZXMgYWdhaW4uIEl0
-IGxvb2tzIGxpa2UgaXQgZmFpbHMgdG8NCnBvd2VyLW9uIGJlZm9yZSBkb3dubG9hZGluZyBmaXJt
-d2FyZSwgc28gZmlybXdhcmUgbWlnaHQgbm90IHRoZSBjYXVzZQ0KeW91IGFyZSBlbmNvdW50ZXJp
-bmcuIA0KDQpQbGVhc2UgdHJ5IHRvIHJlbW92ZSBtb2R1bGUgYW5kIHJlaW5zdGFsbCBtb2R1bGUg
-YWZ0ZXIgYm9vdGluZyB0byBzZWUgaG93DQppdCB3aWxsIGJlLiBPcGVuIGEgdGVybWluYWwsIG1h
-bnVhbGx5IGRvIGJlbG93IGNvbW1hbmRzICh0cnkgbW9yZSB0aGFuDQpvbmUgdGltZXMpLCBhbmQg
-c2hhcmUga2VybmVsIGxvZyB0byB1cw0KDQogIHJtbW9kIHJ0dzg5Xzg4NTJiZQ0KICBtb2Rwcm9i
-ZSBydHc4OV84ODUyYmUNCg0KUGluZy1LZQ0KDQo=
+mesh_matches_local() unconditionally dereferences ie->mesh_config to
+compare mesh configuration parameters. When called from
+mesh_rx_csa_frame(), the parsed action-frame elements may not contain a
+Mesh Configuration IE, leaving ie->mesh_config NULL and triggering a
+kernel NULL pointer dereference.
+
+The other two callers are already safe:
+  - ieee80211_mesh_rx_bcn_presp() checks !elems->mesh_config before
+    calling mesh_matches_local()
+  - mesh_plink_get_event() is only reached through
+    mesh_process_plink_frame(), which checks !elems->mesh_config, too
+
+mesh_rx_csa_frame() is the only caller that passes raw parsed elements
+to mesh_matches_local() without guarding mesh_config. An adjacent
+attacker can exploit this by sending a crafted CSA action frame that
+includes a valid Mesh ID IE but omits the Mesh Configuration IE,
+crashing the kernel.
+
+The captured crash log:
+
+Oops: general protection fault, probably for non-canonical address ...
+KASAN: null-ptr-deref in range [0x0000000000000000-0x0000000000000007]
+Workqueue: events_unbound cfg80211_wiphy_work
+[...]
+Call Trace:
+ <TASK>
+ ? __pfx_mesh_matches_local (net/mac80211/mesh.c:65)
+ ieee80211_mesh_rx_queued_mgmt (net/mac80211/mesh.c:1686)
+ [...]
+ ieee80211_iface_work (net/mac80211/iface.c:1754 net/mac80211/iface.c:1802)
+ [...]
+ cfg80211_wiphy_work (net/wireless/core.c:426)
+ process_one_work (net/kernel/workqueue.c:3280)
+ ? assign_work (net/kernel/workqueue.c:1219)
+ worker_thread (net/kernel/workqueue.c:3352)
+ ? __pfx_worker_thread (net/kernel/workqueue.c:3385)
+ kthread (net/kernel/kthread.c:436)
+ [...]
+ ret_from_fork_asm (net/arch/x86/entry/entry_64.S:255)
+ </TASK>
+
+This patch adds a NULL check for ie->mesh_config at the top of
+mesh_matches_local() to return false early when the Mesh Configuration
+IE is absent.
+
+Fixes: 2e3c8736820b ("mac80211: support functions for mesh")
+Reported-by: Weiming Shi <bestswngs@gmail.com>
+Signed-off-by: Xiang Mei <xmei5@asu.edu>
+---
+ net/mac80211/mesh.c | 3 +++
+ 1 file changed, 3 insertions(+)
+
+diff --git a/net/mac80211/mesh.c b/net/mac80211/mesh.c
+index 28624e57aa499..8fdbdf9ba2a9e 100644
+--- a/net/mac80211/mesh.c
++++ b/net/mac80211/mesh.c
+@@ -79,6 +79,9 @@ bool mesh_matches_local(struct ieee80211_sub_if_data *sdata,
+ 	 *   - MDA enabled
+ 	 * - Power management control on fc
+ 	 */
++	if (!ie->mesh_config)
++		return false;
++
+ 	if (!(ifmsh->mesh_id_len == ie->mesh_id_len &&
+ 	     memcmp(ifmsh->mesh_id, ie->mesh_id, ie->mesh_id_len) == 0 &&
+ 	     (ifmsh->mesh_pp_id == ie->mesh_config->meshconf_psel) &&
+-- 
+2.43.0
+
 
