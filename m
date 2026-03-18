@@ -1,364 +1,210 @@
-Return-Path: <linux-wireless+bounces-33363-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-33364-lists+linux-wireless=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id +PLLJUrruWlmPgIAu9opvQ
-	(envelope-from <linux-wireless+bounces-33363-lists+linux-wireless=lfdr.de@vger.kernel.org>)
-	for <lists+linux-wireless@lfdr.de>; Wed, 18 Mar 2026 01:01:14 +0100
+	id iFHLFDDvuWkFPwIAu9opvQ
+	(envelope-from <linux-wireless+bounces-33364-lists+linux-wireless=lfdr.de@vger.kernel.org>)
+	for <lists+linux-wireless@lfdr.de>; Wed, 18 Mar 2026 01:17:52 +0100
 X-Original-To: lists+linux-wireless@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id 910A72B47DF
-	for <lists+linux-wireless@lfdr.de>; Wed, 18 Mar 2026 01:01:13 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id A7D1F2B4999
+	for <lists+linux-wireless@lfdr.de>; Wed, 18 Mar 2026 01:17:51 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id B24EF30157CA
-	for <lists+linux-wireless@lfdr.de>; Wed, 18 Mar 2026 00:01:09 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id E40BA304023F
+	for <lists+linux-wireless@lfdr.de>; Wed, 18 Mar 2026 00:17:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5AD9978F59;
-	Wed, 18 Mar 2026 00:01:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3097E18DB0D;
+	Wed, 18 Mar 2026 00:17:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="FSJvan/z"
+	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="KmGyGi1o";
+	dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b="IbfgPOgS"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-oa1-f46.google.com (mail-oa1-f46.google.com [209.85.160.46])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BC56818C2C
-	for <linux-wireless@vger.kernel.org>; Wed, 18 Mar 2026 00:01:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.160.46
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773792068; cv=pass; b=E9qPXjQZG/DQLFnc42ccqh7WH5g9FpZk4GqlxUz1FgM/jvALEFi9HVgcNG22Oum9jwy1LYz+buNmT0yZAWMNpLMQ5GXkqW4A0EKVr8Zl6S5VUT5n9PnnxpD4VWibD8lxQkfDbGkTtCDyJ8XTderhCvgBS4VD+QrLZQ7KZ4CKaUA=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773792068; c=relaxed/simple;
-	bh=dOJ5MHKagkP75at+FV1I0jenFRaEBbwnC0ssPLbWGTk=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=Gtbplc/H5fSDvmvyC5QW8GPUZUTYYtMcAm6C0lt+3+ZMuqSGlmcibZnmYPPmtq5AfpskKEebFUaDTVifA4fp075pwwOkpH1SpjDu/16hrzkcHJqc9W2XwsUxSg60+UtogZrVy/W1t9GlMnYmH8UQo1816iQ7321twY3vqgz32Wg=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=FSJvan/z; arc=pass smtp.client-ip=209.85.160.46
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-oa1-f46.google.com with SMTP id 586e51a60fabf-40ea611d1a4so2538280fac.2
-        for <linux-wireless@vger.kernel.org>; Tue, 17 Mar 2026 17:01:06 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1773792065; cv=none;
-        d=google.com; s=arc-20240605;
-        b=V9VjFP7ZbGDiCUSHbjpWaA/BUCfYclwWj6lw6g5YOYN+cOhpjRGz6pIt1u0MGHynje
-         hd3SSINIT68DkI1VSQnEScdoiz/1lq49z5ZUZ/nJa8rHgPp8omLlA/zZl3Oii9ikQWDG
-         xjzT4QLX+LoaFFYp2TZujV8rpDj9VN0qfhMgSukxzvfgEHTnTAL5LUS/XN7EOUywDuDx
-         FeVQO4D0AFejZlLEjoku2WioMbX5hc/4xh2jblrSSMMT0Z2t/4NtmqDQtgA7qmxNVpi8
-         zkv+vS8v/QOyT2bCgGBid0n8sip7sKr3XwCtV/xiPFEmgdfZvMA67NCvDyXYrZMajHqW
-         HtHw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=ueFNgbMJNHxikmVVGpFUvWlEwEZGN1fl+3lj1B8ybD8=;
-        fh=fFUQ3bDSnwWYL/1dqZwPKYywXd5TONRsAevI/mvHYbI=;
-        b=kaQ/RzZP5PMCLjHAmcR/jZ4EydQXdV4g4GX5hrB84cWW5K+TpnqbEANNImCmMyGlZi
-         rCOUQUiHBsNhN3Tt66BGfqKTAQsLHHFWKvAb5lanRlEb3qcVsxWk+VS1EVk47FpLbpxi
-         uwMzofOk83UXliWAlBmkx5Fkg8/EktRSR4QJixtQRucsk0yiPdB6veB48kuJwBKOUf/f
-         caCyZiJa9sNrUQ3vaMJN0efweENsxTFUxVBuGCA6hLAGKlpXYBuLqJo9C6VdKwYwfqaL
-         e/KabeOg4lJJsBO9cC5GVlsxyLPXtCA/roY3TqHjEXuGrT65XpAUGm8l1b+VWAXJzOsP
-         0Euw==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CFD3F70830
+	for <linux-wireless@vger.kernel.org>; Wed, 18 Mar 2026 00:17:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1773793069; cv=none; b=KwV+l05YMDUjZ6qbyCAp8DI29CdSM8VLuRZwRfF5r1/YK7Y/LKXzrRxPTwTxBeH5kToTbNZsxBFcj/U9VjM8zWVMuXj3EfsBHGKCJY+rlhHAK187jdLiBNOHgOhPBOCigSWvWka5sJJMHKdBFLOpWTs7lcL3FxKGE9e1pXLtitg=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1773793069; c=relaxed/simple;
+	bh=pMzEFpBgPkJUxC29kYMMi15r+hM4G9FRX3nLEfSPDN0=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=e6T0jysf6JHio9mqpZMPXkXn6RaLErQiuhRx377bzbZneMd/xDR659FLJS68r2CR/lVH52phyfcd4qh5avCaHTNDV0w0WTJcsjWVmAN2vII+iarGVQRyhjrz+t3tILz+TcCV1PaM+tVvdfnz2k6Q66PSZ4tqjbkKc1Y6zXv7kD0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=KmGyGi1o; dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b=IbfgPOgS; arc=none smtp.client-ip=205.220.180.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
+Received: from pps.filterd (m0279871.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 62HIJRjj1370904
+	for <linux-wireless@vger.kernel.org>; Wed, 18 Mar 2026 00:17:46 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
+	cc:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
+	OsEuIeYeunUYsxBkTNU3Sm5E54z1MAxMRTKCi/1j9sI=; b=KmGyGi1o9NzO7og5
+	oqnSYYow0dmSh652yLmJVOP4f10dL1IcOPxreXJvDG6/7ycLDJ9jUf5RBVNHxNmn
+	cCkI4fSv2IkHR9Y+gqgsXhrIVcDYaK/O3yAB9lTgos2H7pY1qQbWvZpBa2JdhzYf
+	1wMOzySSgkxRP62E0LTRqMIyDSLkmXq84nRHgxKZ+ZecOsUi199Ji0cDVeabcDzZ
+	FVNM1F4t6nK3X9cMD9gYwkwBCGoMAOeR1387TXgnNYcjzz7i0e5IqiIv+3q1lUG5
+	Mp81eGNb5MmPHjVVXSPTSW+AI70O6/Gg3SKLCzZGlqdsF4KGfKK9kOdI/HeF9D0S
+	hyE8GA==
+Received: from mail-dy1-f197.google.com (mail-dy1-f197.google.com [74.125.82.197])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4cy7he2grv-1
+	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
+	for <linux-wireless@vger.kernel.org>; Wed, 18 Mar 2026 00:17:46 +0000 (GMT)
+Received: by mail-dy1-f197.google.com with SMTP id 5a478bee46e88-2bea3b0d83bso13189676eec.1
+        for <linux-wireless@vger.kernel.org>; Tue, 17 Mar 2026 17:17:46 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1773792065; x=1774396865; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=ueFNgbMJNHxikmVVGpFUvWlEwEZGN1fl+3lj1B8ybD8=;
-        b=FSJvan/zUou9PdRcMW9WXZBoVx8SlkvfZL1F9giO4FgqxlC58+NJ2T2d01s9e84rdM
-         9cXcjwET7OfhiJ1OnMo+s8IO5mjLj8ltn513fCniIyEmA4BLuRtsrL9Zi4OlbuQoIryX
-         SuQnSdOcaS8JRg0w14bVzXpuf7Psj0ALhNhpJrDvn6Lbq9s27sF9KAc9LUYa6ivcn3CS
-         SQ5A8nFE2jBomoEnr/oQyzA3SfTzYlzMGbCpn/XQpPC6abHZOukbUtBXB9JTh1jut3qQ
-         m+sDCR3qvcm0R44wLFdEE4ONfczkwchRuVuzKWI2KWefHC89Dv3X4d4dmydGX42Lkx3D
-         CpEQ==
+        d=oss.qualcomm.com; s=google; t=1773793066; x=1774397866; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:content-language:from
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=OsEuIeYeunUYsxBkTNU3Sm5E54z1MAxMRTKCi/1j9sI=;
+        b=IbfgPOgSjDJhjfvdR7/ybnH0ljqdYOmBMCVSY5m98ZJBV/Os1ga4mUvanlkOmhfnzf
+         nr688GKEH5EZlY4M5AuzLeyAPPB5qbhHkb7ZXhErt5rfxpK/hyLgAxZcuatnMTrrxWfT
+         xPgH5nCMvwUlND5IFVAPPOguqw/hyOnHY8uurrbA9kAH2NZmyF73ibqYiq2KUM/bJW01
+         CpKjx5e613pwnhLcVEAX42yZQId4UVjiRoj///2XkgSeq0b5LLMBG7RfCzHAZFP7d4rU
+         +CZ9Zb+6fa9w8b4/DvzUSMeDSPzgdOQJfwY5TUS18OOJQF0MYYiF3rNoD8fBCw30qpB1
+         GYxw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1773792065; x=1774396865;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=ueFNgbMJNHxikmVVGpFUvWlEwEZGN1fl+3lj1B8ybD8=;
-        b=QWrutotssnkV+musfVeB27hzd8AXx0ij0zxAmoxpA0qvz6Ocnc+6TCAjyH0Fz+b97+
-         jvpILEpJBl7u07g4LOzsQuNAxuLvH+hlIo5imDxfnvUK5sNZce0sPL3CV0YV/HQMo+7Y
-         VeS/s/sEdHw80cAK+ZSQ6Pq47pm1dIEUG/XjhHJScEqi7M5bx1CfD9E0zFybLcL0X+JQ
-         DdbCCwFIytQSPETIaDrK93WyAPmZ/tLI3hYICYyKro9omWYM6r0mFGfNUpCLHOd6qatW
-         qmdypPlQ0bWqlTHhSfRZnHms/m5ze4H1FaKLnQqsUIgKKGi6TCRwP/YHNFHnR1Q/kfQk
-         Sh9g==
-X-Gm-Message-State: AOJu0YxOgUuPkE5c/Mv/7Ai/0DHY6iOmXsC7b3Mmgr6sYk+JRLzp7a1A
-	x/KdqPOiWoB2Z7lzEgsgnuZcZ7DKYTk/xWMrAr7YPv9CHif3qKP9V7MdyIQNl0JY+MNjh04UcIP
-	DOorKZB3BpoCrrGsCjyc7Q+XfsWS8bWUBUOF1hJ2vflK7
-X-Gm-Gg: ATEYQzxn8PPBddJERj0QoAZBydVwJkfgQzXQ7bhpn6Gj8upMXt0LF3yLlrIovlHX/np
-	jTyO5VUdnNnyrkNpyjTrqxmsPXVCcdWbbM+bNqEIyoSY13QJltid9d4OozRf4ye74GMa9vtaxeM
-	53NFrmhX/GdfGVEfK8Qye4IYxLPrBe3WwKamDK0fPtynzGbJgy4vkkNH84LFczsShtRM0auz2H1
-	iAvH3YuQ7t2XxT0OMXHpUYNqxK7gNQ6+GJdaPc4NNwY0su32v4vR1TrKxy6ZN0rXXH2FBUC3L4t
-	k9FwjmR1pL13p86iog==
-X-Received: by 2002:a05:6870:d414:b0:409:8ccb:bc12 with SMTP id
- 586e51a60fabf-41bd3e9a091mr931950fac.10.1773792064948; Tue, 17 Mar 2026
- 17:01:04 -0700 (PDT)
+        d=1e100.net; s=20251104; t=1773793066; x=1774397866;
+        h=content-transfer-encoding:in-reply-to:content-language:from
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=OsEuIeYeunUYsxBkTNU3Sm5E54z1MAxMRTKCi/1j9sI=;
+        b=VhU9NPQXrBVf7xEqL3/sL1eIbNY5vfSwqTnNkId/xSVXlOK95G5mTzey9U66TN3rvW
+         DSkMGSdB7zdNkGk7oA3f2cvpOPtgfkO8hH2WGiqaFuWVjAc9wUeCb5BUfVNj48GBPfXr
+         Wf43cy7w1P1r6KhgwPxAHpLf66OH5wB/CG9UWeAFUzdLs3GmQEMtV2bFTxcATHaM9ldM
+         Ix1hq/OHmnLOdT2qps6cwJ2wEUIdppDheuTYAgf/9bWwMzGp7GpQJi7MJ+Q/8ps2R2JC
+         B0FqrpGvaY+2n5/B9Iqx7fDZ95GmcBXAlMIx40rKnSSwqflqP7JkqPJdukJhhPGSMIxf
+         Gc6Q==
+X-Gm-Message-State: AOJu0YzKd9Ip+4+0xt6kMmvXvYSXv5hQ5a9NNftnYwdmrX67cVBjIXUF
+	9Up9fYS2qowf8/HaEUQaCgVWa2iGNBI4IsLoQgi5rRPGEDo4R7uxTkvZf00SEWfWCDWI2eiPYdC
+	/PMZPN0wC4KNXpJdhXP1/t862p1mqvrTbZii7WYFw5gnh1X1PfSlYdEGKaUrfl7/4B/4adg==
+X-Gm-Gg: ATEYQzydudG5dpQgx983ZckOJ9Mlic+TrdnjJbSHqNdZftmSyiDyX8HgSAsz9yzwEzP
+	KQfkKdHRXeEHQ/3IVm6wP5/YGrH6RZusKQwgDoyOSSSasv/5Y880ea0hZ8n+Tji0X/a4TU+yqDb
+	sn2a5Egj0Ct4uVN7pu+WQERYMwD7xnob4fAVLYIQGiPgmpyGFHGe8V+QRQ1ziOC0tIVUqlaZlTf
+	KbsbkNDk3FhVmPPUue4wWnEH55wiSaLe1djsw5M57anIhfG1gviQN8yBJE6tN1+73mWQmF/1TkZ
+	0l8baAQUPUqG4RSUFdc6J7J4I15rK+1zGIbYQtUG4CVuXI3Iu2jVoXwX+Z5ga/hQ2VQkHMSe2a1
+	n31hG+Gm5PxxDj4iLQdoMFlizpnMA0jGvaQc9lnfb4BnIlXx/FAdDL7m0q8BCbtT9g6DT2hxnNy
+	1rzld042KfdcF5Ug==
+X-Received: by 2002:a05:7301:4b03:b0:2b7:32a6:82d1 with SMTP id 5a478bee46e88-2c0e4f90b9dmr829576eec.13.1773793065583;
+        Tue, 17 Mar 2026 17:17:45 -0700 (PDT)
+X-Received: by 2002:a05:7301:4b03:b0:2b7:32a6:82d1 with SMTP id 5a478bee46e88-2c0e4f90b9dmr829557eec.13.1773793064958;
+        Tue, 17 Mar 2026 17:17:44 -0700 (PDT)
+Received: from [192.168.1.41] (c-24-130-122-79.hsd1.ca.comcast.net. [24.130.122.79])
+        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-2c0e560fb5fsm1907343eec.31.2026.03.17.17.17.44
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 17 Mar 2026 17:17:44 -0700 (PDT)
+Message-ID: <bd262372-9930-4abe-8917-fd037623ed01@oss.qualcomm.com>
+Date: Tue, 17 Mar 2026 17:17:43 -0700
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <CALdGYqSQ1Ko2TTBhUizMu_FvLMUAuQfFrVwS10n_C-LSQJQQkQ@mail.gmail.com>
- <1e96af437fa24674b353ddb530b2d8e7@realtek.com> <CALdGYqQb=Vt0jjqW7k8RGMV1gczL0cg-26cHgCm3MmzBjezGMQ@mail.gmail.com>
- <792645eed36041f0b3df951f1b28a08a@realtek.com> <e6720993c8c14245981432cfa4ae902b@realtek.com>
- <CALdGYqQn8GGXXjZTsL+a5Mfdmw5HRYB2Jyvqq5M5SUwxK9yd_g@mail.gmail.com>
- <CALdGYqQee1sjgdBAPJSyb1gL6ksK4z8Uw_v3ANTnyXE+LXFAiA@mail.gmail.com>
- <458ed80e39734ea99610050140bb31ce@realtek.com> <CALdGYqQykO9ZzO=-+D17R_8LC=Win5nGN6-9zFqChtNEyUzEfg@mail.gmail.com>
- <CALdGYqTHz5Pz3uSGLbrVuNMWAXaqniUCuOSQACXUYHSL22ySvw@mail.gmail.com>
- <CALdGYqQ5K0iuxjjX4TwNLi9Km5O+YL3Y9r6Bwfk9BaiuV3BHPA@mail.gmail.com>
- <CALdGYqRYVxGbg+qRNUvRNr9V4f2YVZ7p=amwq1ktdmZVkwxjQg@mail.gmail.com>
- <CALdGYqSq416qqqZ7t+wG5fir9NWfi3578+brdaj05q-42Gj14w@mail.gmail.com>
- <CALdGYqSf66mBiufysr3tjm74A_w98LRN50fik0U9WGVvkBJ_5g@mail.gmail.com>
- <1bd495ffe57c47eb827eec084729afa2@realtek.com> <CALdGYqSMUPnPfW-_q1RgYr0_SjoXUejAaJJr-o+jpwCk1S7ndQ@mail.gmail.com>
- <e5f00d0a42994812b42df867718fa087@realtek.com>
-In-Reply-To: <e5f00d0a42994812b42df867718fa087@realtek.com>
-From: LB F <goainwo@gmail.com>
-Date: Wed, 18 Mar 2026 02:00:28 +0200
-X-Gm-Features: AaiRm50VNIV5W9cuJozISOK5LW5GCasdXgrQ_3huMW9ceqbUxAG9XubVBfCMF6c
-Message-ID: <CALdGYqRbkV7_w7WDiqD-vYMa8MUFV7nSYz-=q2FzotgLHRy=HA@mail.gmail.com>
-Subject: Re: [BUG] wifi: rtw88: Hard system freeze on RTL8821CE when
- power_save is enabled (LPS/ASPM conflict)
-To: Ping-Ke Shih <pkshih@realtek.com>
-Cc: "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>, 
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] wifi: ath12k: fix HE/EHT capability handling on big
+ endian
+To: Alexander Wilhelm <alexander.wilhelm@westermo.com>,
+        Jeff Johnson <jjohnson@kernel.org>
+Cc: linux-wireless@vger.kernel.org, ath12k@lists.infradead.org,
+        linux-kernel@vger.kernel.org
+References: <20260317-fix-he-eht-capabilities-on-big-endian-v1-1-e7b937b32768@westermo.com>
+From: Jeff Johnson <jeff.johnson@oss.qualcomm.com>
+Content-Language: en-US
+In-Reply-To: <20260317-fix-he-eht-capabilities-on-big-endian-v1-1-e7b937b32768@westermo.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-Proofpoint-GUID: ReiB_xaiPZf-rBGW7ho2WICzGnnHhyMe
+X-Proofpoint-ORIG-GUID: ReiB_xaiPZf-rBGW7ho2WICzGnnHhyMe
+X-Authority-Analysis: v=2.4 cv=QsVTHFyd c=1 sm=1 tr=0 ts=69b9ef2a cx=c_pps
+ a=Uww141gWH0fZj/3QKPojxA==:117 a=Tg7Z00WN3eLgNEO9NLUKUQ==:17
+ a=IkcTkHD0fZMA:10 a=Yq5XynenixoA:10 a=s4-Qcg_JpJYA:10
+ a=VkNPw1HP01LnGYTKEx00:22 a=u7WPNUs3qKkmUXheDGA7:22 a=3WHJM1ZQz_JShphwDgj5:22
+ a=N9GNhs4bAAAA:8 a=YmICAkyFvM6EgTkIZ6oA:9 a=3ZKOabzyN94A:10 a=QEXdDO2ut3YA:10
+ a=PxkB5W3o20Ba91AHUih5:22 a=PZhj9NlD-CKO8hVp7yCs:22
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwMzE4MDAwMSBTYWx0ZWRfXxPHzlB3/UOxD
+ axwt4Fo1VGyP9UE5YySwIJmo6Q1PrNB4s4bCtq/RcyvqLZutU4Bni5SeJYzI972IV5NOEQnXljQ
+ zwikna6Ns3RVzBGa1eb0bjqtYl9P6qkpWqxUPNohe9Oq/XxPxpA3mho7rq2ju1L2tk4ResQlCuN
+ feT3q2LdxiuqwqjVb/4telYn7SQseD5NNKvMbJvQn/eb911o+QpLDHYAgVH3E2MP2FvvBUq34/d
+ hRS52RanRVjqEB55aLXzsDADYjJrFwAtZ+AbW/nKCoxEJpUKJj/txXwfNfBPmJaT0RHxaZQ9qpu
+ mQxlJkY6nlBEPKmtLnwgXzR3tXM8CUDV1LvMbFNdWoph3QmD9sYKS/qSh5z+7EvG/2H1YahD08t
+ z2zCrJCEqv7xwnJBLCDdoFrQsWLarIMv8jT+URnrtkDF3ZcqMg6UyI34UhNuzM6lWJUUcsSAHWr
+ RUQByXnoUR9Try9uICg==
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.51,FMLib:17.12.100.49
+ definitions=2026-03-17_05,2026-03-17_02,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ suspectscore=0 bulkscore=0 priorityscore=1501 spamscore=0 adultscore=0
+ clxscore=1015 lowpriorityscore=0 malwarescore=0 impostorscore=0 phishscore=0
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.22.0-2603050001 definitions=main-2603180001
 X-Spamd-Result: default: False [-2.16 / 15.00];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=2];
-	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
-	R_DKIM_ALLOW(-0.20)[gmail.com:s=20230601];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	DMARC_POLICY_ALLOW(-0.50)[qualcomm.com,reject];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_DKIM_ALLOW(-0.20)[qualcomm.com:s=qcppdkim1,oss.qualcomm.com:s=google];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-33363-lists,linux-wireless=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	TO_DN_EQ_ADDR_SOME(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FREEMAIL_FROM(0.00)[gmail.com];
-	RCVD_COUNT_THREE(0.00)[4];
-	TO_DN_SOME(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	FROM_HAS_DN(0.00)[];
-	RCPT_COUNT_THREE(0.00)[3];
+	TO_DN_SOME(0.00)[];
+	TAGGED_FROM(0.00)[bounces-33364-lists,linux-wireless=lfdr.de];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	RCVD_TLS_LAST(0.00)[];
+	DKIM_TRACE(0.00)[qualcomm.com:+,oss.qualcomm.com:+];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,westermo.com:email];
+	RCPT_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[goainwo@gmail.com,linux-wireless@vger.kernel.org];
-	DKIM_TRACE(0.00)[gmail.com:+];
-	MID_RHS_MATCH_FROMTLD(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	FROM_NEQ_ENVFROM(0.00)[jeff.johnson@oss.qualcomm.com,linux-wireless@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	NEURAL_HAM(-0.00)[-1.000];
 	TAGGED_RCPT(0.00)[linux-wireless];
-	MISSING_XM_UA(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[mail.gmail.com:mid,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 910A72B47DF
+	MID_RHS_MATCH_FROM(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	RCVD_COUNT_SEVEN(0.00)[7]
+X-Rspamd-Queue-Id: A7D1F2B4999
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-Ping-Ke Shih <pkshih@realtek.com> wrote:
-> To reproduce this reliable, you need to remove driver ko and mac80211.ko,
-> and reinstall them.
->
-> However, you have confirmed this is the symptom. I think only if you
-> want to dig why the rate reported by hardware is weird, otherwise we
-> can ignore this warning.
+On 3/17/2026 3:59 AM, Alexander Wilhelm wrote:
+> Currently the driver uses u32 data types for the HE/EHT capabilities in
+> CPU‑native order. However, the ieee80211.h header defines these fields as
+> u8 arrays. This causes the ieee80211 registration failure on big‑endian
+> platforms, as shown in the following log:
+> 
+>     ath12k_pci 0001:01:00.0: BAR 0: assigned [mem 0xc00000000-0xc001fffff 64bit]
+>     ath12k_pci 0001:01:00.0: MSI vectors: 1
+>     ath12k_pci 0001:01:00.0: Hardware name: qcn9274 hw2.0
+>     ath12k_pci 0001:01:00.0: qmi dma allocation failed (29360128 B type 1), will try later with small size
+>     ath12k_pci 0001:01:00.0: memory type 10 not supported
+>     ath12k_pci 0001:01:00.0: chip_id 0x0 chip_family 0xb board_id 0x1005 soc_id 0x401a2200
+>     ath12k_pci 0001:01:00.0: fw_version 0x111300d6 fw_build_timestamp 2024-08-06 08:43 fw_build_id QC_IMAGE_VERSION_STRING=WLAN.WBE.1.1.1-00214-QCAHKSWPL_SILICONZ-1
+>     ath12k_pci 0001:01:00.0: leaving PCI ASPM disabled to avoid MHI M2 problems
+>     ath12k_pci 0001:01:00.0: Invalid module id 2
+>     ath12k_pci 0001:01:00.0: failed to parse tlv -22
+>     ath12k_pci 0001:01:00.0: ieee80211 registration failed: -22
+>     ath12k_pci 0001:01:00.0: failed register the radio with mac80211: -22
+>     ath12k_pci 0001:01:00.0: failed to create pdev core: -22
+>     ath12k_pci 0001:01:00.0: qmi failed set mode request, mode: 4, err = -110
+>     ath12k_pci 0001:01:00.0: qmi failed to send wlan mode off
+> 
+> Use the __le32 data type for the HE/EHT capabilities instead and avoid
+> swapping, so that both platform endiannesses are supported.
+> 
+> Signed-off-by: Alexander Wilhelm <alexander.wilhelm@westermo.com>
 
-Following your suggestion, I performed a full stack reload including
-mac80211.ko and cfg80211.ko, and was able to reproduce the warning:
+With this series applied I see with make W=1 C=1:
+drivers/net/wireless/ath/ath12k/debugfs.c:413:65: warning: incorrect type in argument 1 (different base types)
+drivers/net/wireless/ath/ath12k/debugfs.c:413:65:    expected unsigned int [usertype] v
+drivers/net/wireless/ath/ath12k/debugfs.c:413:65:    got restricted __le32
 
-  [152.226055] Rate marked as a VHT rate but data is invalid: MCS: 0, NSS: =
-0
-  [152.226057] WARNING: net/mac80211/rx.c:5491 at
-ieee80211_rx_list+0x177/0x1020 [mac80211]
-  [152.226336] CPU: 2 UID: 0 PID: 638 Comm: irq/56-rtw_pci Tainted: G
-IOE 6.19.7-1-cachyos
-  [152.226344] Hardware name: HP HP Notebook/81F0, BIOS F.50 11/20/2020
+From existing code:
+f5c90ff80b4c0 (Sowmiya Sree Elavalagan 2025-01-30 11:41:04 +0530  413)  extra_mcs_supported = u32_get_bits(cap_band->he_cap_info[1],
 
-One observation worth mentioning: the warning triggered approximately
-72 seconds after initial association, coinciding with a Bluetooth
-device connecting to the system. This may suggest the NSS=3D0 condition
-occurs during BT coexistence negotiation rather than during normal
-WiFi traffic. I am not sure if this is relevant, but I wanted to
-mention it in case it helps narrow down the root cause.
-
-I also noticed the offset is now +0x177, which matches exactly what
-you showed from v6.19.6. The earlier +0x183 was likely an artifact of
-CachyOS's LTO optimizations while mac80211 had been resident for a
-long time.
-
-As you noted, this appears to be a separate issue from the freeze and
-h2c timeout problems, so I leave it to your judgment whether it
-warrants further investigation.
-
----
-
-I would like to take this opportunity to thank you sincerely for your
-time, patience, and expertise throughout this whole process. From your
-very first response to the final v2 patch, your guidance made it
-possible to properly identify and resolve a bug that had been causing
-real frustration for users of this hardware for a long time.
-
-If any further testing of the rtw88 driver is needed -- whether for
-this hardware or for other patches -- I am happy to help to the best
-of my abilities and available time. This HP Notebook with RTL8821CE
-will remain available for testing whenever it is useful.
-
-Best regards,
-Oleksandr Havrylov
-
-=D0=B2=D1=82, 17 =D0=BC=D0=B0=D1=80. 2026=E2=80=AF=D0=B3. =D0=B2 03:28, Pin=
-g-Ke Shih <pkshih@realtek.com>:
->
-> LB F <goainwo@gmail.com> wrote:
-> >
-> > Ping-Ke Shih <pkshih@realtek.com> wrote:
-> > > Not sure if this is because PCIE bridge has no ASPM capability?
-> >
-> > That could indeed be the case -- I do not have a way to confirm
-> > without further hardware-level inspection.
-> >
-> > > LN5491 (kernel v6.19.6) is:
-> > >                 case RX_ENC_VHT:
-> > >                         if (WARN_ONCE(status->rate_idx > 11 ||
-> > >                                       !status->nss ||
-> > >                                       status->nss > 8,
-> > >                                       "Rate marked as a VHT rate but =
-data is
-> > invalid: MCS: %d, NSS: %d\n",
-> > >                                       status->rate_idx, status->nss))
-> > >                                 goto drop;
-> > >                         break;
-> > > Looks like driver reports improper VHT nss/rate? But this warns once,=
- and
-> > > you message isn't like this.
-> > > Could you check the source code LN5491 you are using?
-> >
-> > The file net/mac80211/rx.c is not available on disk on my system
-> > (CachyOS ships only .h files in the headers package), but I located
-> > the exact warning message in journalctl:
-> >
-> >   Rate marked as a VHT rate but data is invalid: MCS: 0, NSS: 0
-> >
-> > This confirms that line 5491 in my kernel matches exactly what you
-> > showed from v6.19.6 -- the RX_ENC_VHT case checking for
-> > status->nss =3D=3D 0. The offset in my trace is slightly different
-> > (+0x183 vs +0x177), which is likely due to CachyOS's LTO/AutoFDO
-> > compiler optimizations.
-> >
-> > The warning appeared once in my initial test session:
-> >
-> >   Rate marked as a VHT rate but data is invalid: MCS: 0, NSS: 0
-> >   WARNING: net/mac80211/rx.c:5491 at ieee80211_rx_list+0x183/0x1020 [ma=
-c80211]
-> >
-> > However, in subsequent module reload and reconnect cycles I was unable
-> > to reproduce it. This is consistent with WARN_ONCE behavior -- it
-> > likely fired on the first invalid nss=3D0 packet after the initial
-> > driver load and has not triggered since. I cannot confirm it as a
-> > reliable symptom.
->
-> To reproduce this reliable, you need to remove driver ko and mac80211.ko,
-> and reinstall them.
->
-> However, you have confirmed this is the symptom. I think only if you
-> want to dig why the rate reported by hardware is weird, otherwise we
-> can ignore this warning.
->
-> >
-> > ---
-> >
-> > Regarding patch stability: the results below are from testing your
-> > original RFT patch [1], not any newer submission. I want to be
-> > explicit to avoid confusion:
-> >
-> >   [1]
-> > https://lore.kernel.org/linux-wireless/20260311020816.7065-1-pkshih@rea=
-ltek.
-> > com/
-> >
-> > This is the exact diff I compiled and tested:
-> >
-> > --- a/drivers/net/wireless/realtek/rtw88/pci.c
-> > +++ b/drivers/net/wireless/realtek/rtw88/pci.c
-> > @@ -2,6 +2,7 @@
-> >  /* Copyright(c) 2018-2019  Realtek Corporation
-> >   */
-> >
-> > +#include <linux/dmi.h>
-> >  #include <linux/module.h>
-> >  #include <linux/pci.h>
-> >  #include "main.h"
-> > @@ -1744,6 +1745,34 @@ const struct pci_error_handlers rtw_pci_err_hand=
-ler =3D {
-> >  };
-> >  EXPORT_SYMBOL(rtw_pci_err_handler);
-> >
-> > +enum rtw88_quirk_dis_pci_caps {
-> > + QUIRK_DIS_PCI_CAP_ASPM,
-> > +};
-> > +
-> > +static int disable_pci_caps(const struct dmi_system_id *dmi)
-> > +{
-> > + uintptr_t dis_caps =3D (uintptr_t)dmi->driver_data;
-> > +
-> > + if (dis_caps & BIT(QUIRK_DIS_PCI_CAP_ASPM))
-> > + rtw_pci_disable_aspm =3D true;
-> > +
-> > + return 1;
-> > +}
-> > +
-> > +static const struct dmi_system_id rtw88_pci_quirks[] =3D {
-> > + {
-> > + .callback =3D disable_pci_caps,
-> > + .ident =3D "HP Notebook - P3S95EA#ACB",
-> > + .matches =3D {
-> > + DMI_MATCH(DMI_SYS_VENDOR, "HP"),
-> > + DMI_MATCH(DMI_PRODUCT_NAME, "HP Notebook"),
-> > + DMI_MATCH(DMI_PRODUCT_SKU, "P3S95EA#ACB"),
-> > + },
-> > + .driver_data =3D (void *)BIT(QUIRK_DIS_PCI_CAP_ASPM),
-> > + },
-> > + {}
-> > +};
-> > +
-> >  int rtw_pci_probe(struct pci_dev *pdev,
-> >     const struct pci_device_id *id)
-> >  {
-> > @@ -1808,6 +1837,7 @@ int rtw_pci_probe(struct pci_dev *pdev,
-> >       bridge && bridge->vendor =3D=3D PCI_VENDOR_ID_INTEL)
-> >   rtwpci->rx_no_aspm =3D true;
-> >
-> > + dmi_check_system(rtw88_pci_quirks);
-> >   rtw_pci_phy_cfg(rtwdev);
-> >
-> >   ret =3D rtw_register_hw(rtwdev, hw);
-> >
-> > Results with only this patch applied:
-> >
-> >   - The hard freeze lockup is gone.
-> >   - However, during idle the logs are flooded with:
-> >
-> >       rtw88_8821ce 0000:13:00.0: failed to send h2c command
-> >       rtw88_8821ce 0000:13:00.0: firmware failed to leave lps state
-> >
-> >   - To give a concrete sense of the volume: over an ~80-minute
-> >     observation window after a clean module reload, I recorded
-> >     11,757 "failed to send h2c command" events and 2 "firmware
-> >     failed to leave lps state" events -- approximately 110 errors
-> >     per minute during active periods.
-> >   - These errors cause Bluetooth audio stuttering and WiFi
-> >     throughput drops.
-> >
-> > When I additionally set disable_lps_deep=3DY alongside your ASPM patch,
-> > all h2c errors vanish completely and Bluetooth/WiFi remain fully
-> > stable. This confirms that disabling LPS Deep is necessary for
-> > complete stability on this specific HP SKU.
-> >
-> > I also noticed what appears to be a new patch in a separate mailing
-> > list thread. I will test it shortly and report back with the results.
->
-> Thanks for your experiments in detail. :)
->
-> Ping-Ke
->
 
