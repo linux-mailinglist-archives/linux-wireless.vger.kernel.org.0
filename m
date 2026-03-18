@@ -1,72 +1,72 @@
-Return-Path: <linux-wireless+bounces-33435-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-33436-lists+linux-wireless=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id EKrzAYsRu2nGegIAu9opvQ
-	(envelope-from <linux-wireless+bounces-33435-lists+linux-wireless=lfdr.de@vger.kernel.org>)
-	for <lists+linux-wireless@lfdr.de>; Wed, 18 Mar 2026 21:56:43 +0100
+	id yCL1JJERu2nGegIAu9opvQ
+	(envelope-from <linux-wireless+bounces-33436-lists+linux-wireless=lfdr.de@vger.kernel.org>)
+	for <lists+linux-wireless@lfdr.de>; Wed, 18 Mar 2026 21:56:49 +0100
 X-Original-To: lists+linux-wireless@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 599352C2C00
-	for <lists+linux-wireless@lfdr.de>; Wed, 18 Mar 2026 21:56:42 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 18E4D2C2C07
+	for <lists+linux-wireless@lfdr.de>; Wed, 18 Mar 2026 21:56:49 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 2E5E931B38D6
-	for <lists+linux-wireless@lfdr.de>; Wed, 18 Mar 2026 20:55:03 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 3C57A31B7EBF
+	for <lists+linux-wireless@lfdr.de>; Wed, 18 Mar 2026 20:55:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2AC5237267E;
-	Wed, 18 Mar 2026 20:55:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 04A89372B3C;
+	Wed, 18 Mar 2026 20:55:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="R0m8R2nE"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="IFMV4ui0"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.14])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1919636EAB8
-	for <linux-wireless@vger.kernel.org>; Wed, 18 Mar 2026 20:54:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7F38736F41F
+	for <linux-wireless@vger.kernel.org>; Wed, 18 Mar 2026 20:54:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.14
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773867300; cv=none; b=pe+sI4SCUQULSRuo1t2iYqD6VoZsQ+FM+LUphWhqcaBazuhUa4/xuJX7k/7NdBDQe0DiXO9Vnq0F6C8T6pz6auRm+vgoeb8lctcGTDGcgHVS10MXWNMgvjWMFoaek9duZGn1hf2Fp5Sx2oZ4hqhXuMg8srNIfcwcVH+6lSx69Ss=
+	t=1773867300; cv=none; b=bH7iSWdwpWCEs1pkRm1eJr8PffmH2CwdrsgqIc2XiIe0SuuGM3zT8oCxKZ+GsN5S1rI2erfmpB4xfQOgexKuEryVB4sF5huyQI4BS64tTXzu8+TmXp2t2hmF3TQglvssjDF2w0qHd2zLTYX4IGjocny8SK4MTtNgY36tXGmKA+U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1773867300; c=relaxed/simple;
-	bh=yLSysYn5qI+6IOI/+tbT1PKqC7rPv2Xr4flGUPg6H6k=;
+	bh=yw/l4xdo4ifPwusFCqfuCfN829S+2wn6Kh7rgL7b5O4=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=pnsuJfXEROO1Sgk3pBMll4XsvlWHWKrEeySQ7N9cu1WfNr4pvggZWhw5f0MADXp5CUPl8c3n+DYRg/NgYPQkE8Y6L6XQiqMNc4pOeqUZa+DGQUEvWoPd/YpwQddu/kc9Olz2UK1S/klQRdIzjW40j7IW3vuhSk4cYnCTtjI5VMk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=R0m8R2nE; arc=none smtp.client-ip=192.198.163.14
+	 MIME-Version; b=nMUUiqCXxj0OxYU8YqZSmcCe+tsLmhblBXLDG+AZRbAK/IIdvNuZ40bhIcJcZU/bQMm0hcn+gomxmjNNr9fADloE/tTXv66ApE7tzSySKbi2apnjw+eP+a29nCjsp6gs30jtWv2YPGoKm7gxsZEWcq/qkC9ncU03xP6ReX83sZw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=IFMV4ui0; arc=none smtp.client-ip=192.198.163.14
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1773867298; x=1805403298;
+  t=1773867299; x=1805403299;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=yLSysYn5qI+6IOI/+tbT1PKqC7rPv2Xr4flGUPg6H6k=;
-  b=R0m8R2nEiPEwzbkbQM0Z9vLu4oaHgXaKgR8BI2DZiVrfhhntQY33f6wB
-   X503KZ6mRcjvfxQEyascDP0D+m5MFt33JP9KA/xZaBSvYQBz7z1rvelvg
-   1rO/tQ9oG7WVr566T8iZ5Q1MsnyuDCc1pAmJw+waT6nrX5vqesx39ckg2
-   xnplm6kE4O1ZPbjfwnLppxKwfEM/JW8H1NnHqwcoNaBUyjMQUZtmU83Vj
-   mV8B2ALX+4eULBl9SKaMfBO2DZx/t0WQPcVvS7pMPqiY9wlTRdNaA/V8F
-   6XsmyOhg07nl2zXa1+VUDgs4Q2wtFOZd9vPFwTg/2ewISxPFLthmb79YA
-   A==;
-X-CSE-ConnectionGUID: JLOPgvFPTnGwcUOMCqSpcQ==
-X-CSE-MsgGUID: Q6VNay1VTImh+ew6hhYLEg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11733"; a="75010030"
+  bh=yw/l4xdo4ifPwusFCqfuCfN829S+2wn6Kh7rgL7b5O4=;
+  b=IFMV4ui0KZAFtJnqa8stkl+XRu3S2vpqMdFQQG8GPrLfLKHO5sb0ifTc
+   i+wYS+9NJwiu1A43uvZimPvV6Ywd9A66XV37QDnjO6cPOwGLtYk1qZ8UZ
+   TXVl21JwCYKqrDQRoCWOoc15Zi+WaAlihlJQrGkhG0oCRmcS/Zf8W0Ek2
+   IMbbWPCuM5qkFoG5HRXJFSgscEtlq85rVhxU9GRzt11gYGPR60fJ+RE2y
+   islmQqXAYEbRzRq+FDsbZQbpWiP+L5+F/K4nAlvAxiTY187v+Z0vJEus6
+   PYcYWNPpQ782JVm2yu3mk+oOUl6iKr5Klrh9/W9Onb6sGNMU7XljOUBtD
+   w==;
+X-CSE-ConnectionGUID: pMKuz6UUQyWHPBDnuBD2AA==
+X-CSE-MsgGUID: iPtk/G6wRwq5nRjAaeTBPw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11733"; a="75010033"
 X-IronPort-AV: E=Sophos;i="6.23,128,1770624000"; 
-   d="scan'208";a="75010030"
+   d="scan'208";a="75010033"
 Received: from orviesa008.jf.intel.com ([10.64.159.148])
-  by fmvoesa108.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 18 Mar 2026 13:54:57 -0700
-X-CSE-ConnectionGUID: xxuS8qW/TJyb8bg5RkEYHw==
-X-CSE-MsgGUID: wDQ7kyE/RIKFgmhrR8zy/w==
+  by fmvoesa108.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 18 Mar 2026 13:54:59 -0700
+X-CSE-ConnectionGUID: po6ezJajQwuLP4ffaNes1w==
+X-CSE-MsgGUID: 9ioXG5goQBqt1woHH0AyFA==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.23,128,1770624000"; 
-   d="scan'208";a="222793919"
+   d="scan'208";a="222793935"
 Received: from weis0040.iil.intel.com ([10.12.217.108])
-  by orviesa008-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 18 Mar 2026 13:54:57 -0700
+  by orviesa008-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 18 Mar 2026 13:54:58 -0700
 From: Miri Korenblit <miriam.rachel.korenblit@intel.com>
 To: linux-wireless@vger.kernel.org
 Cc: Johannes Berg <johannes.berg@intel.com>
-Subject: [PATCH iwlwifi-next 11/15] wifi: iwlwifi: mld: add support for sta command version 3
-Date: Wed, 18 Mar 2026 22:54:26 +0200
-Message-Id: <20260318225236.382a30bd1b70.Id6271e7eba233a11dc214ed2e07c2b186b167c66@changeid>
+Subject: [PATCH iwlwifi-next 12/15] wifi: iwlwifi: mld: correctly set wifi generation data
+Date: Wed, 18 Mar 2026 22:54:27 +0200
+Message-Id: <20260318225236.404713b22177.Ic972b5e557d011a5438f8f97c1e793cc829e2ea9@changeid>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20260318205430.614577-1-miriam.rachel.korenblit@intel.com>
 References: <20260318205430.614577-1-miriam.rachel.korenblit@intel.com>
@@ -83,7 +83,7 @@ X-Spamd-Result: default: False [-1.16 / 15.00];
 	R_MISSING_CHARSET(0.50)[];
 	MID_RHS_NOT_FQDN(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[intel.com,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[intel.com:s=Intel];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
@@ -91,10 +91,10 @@ X-Spamd-Result: default: False [-1.16 / 15.00];
 	TO_DN_SOME(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-33435-lists,linux-wireless=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-33436-lists,linux-wireless=lfdr.de];
 	HAS_ORG_HEADER(0.00)[];
 	RCPT_COUNT_TWO(0.00)[2];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[miriam.rachel.korenblit@intel.com,linux-wireless@vger.kernel.org];
@@ -104,265 +104,206 @@ X-Spamd-Result: default: False [-1.16 / 15.00];
 	TAGGED_RCPT(0.00)[linux-wireless];
 	NEURAL_HAM(-0.00)[-0.998];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:dkim,intel.com:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 599352C2C00
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,intel.com:dkim,intel.com:email]
+X-Rspamd-Queue-Id: 18E4D2C2C07
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-In this version, the link_id becomes a link_mask to support multiple
-links that are used to communicate with the station in question.
-This is needed for NAN, in which we can communicate on multiple channels
-with the same station.
-Also add a new STA type - NAN peer.
+From: Johannes Berg <johannes.berg@intel.com>
 
-Reviewed-by: Johannes Berg <johannes.berg@intel.com>
+In each MAC context, the firmware expects the wifi generation
+data, i.e. whether or not HE/EHT (and in the future UHR) is
+enabled on that MAC.
+
+However, this is currently handled wrong in two ways:
+ - EHT is only enabled when the interface is also an MLD, but
+   we currently allow (despite the spec) connecting with EHT
+   but without MLO.
+ - when HE or EHT are used by TDLS peers, the firmware needs
+   to have them enabled regardless of the AP
+
+Fix this by iterating setting up the data depending on the
+interface type:
+ - for AP, just set it according to the BSS configuration
+ - for monitor, set it according to HW capabilities
+ - otherwise, particularly for client, iterate all stations
+   and then their links on the interface in question and set
+   according to their capabilities, this handles the AP and
+   TDLS peers. Re-calculate this whenever a TDLS station is
+   marked associated or removed so that it's kept updated,
+   for the AP it's already updated on assoc/disassoc.
+
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
 ---
- .../wireless/intel/iwlwifi/fw/api/mac-cfg.h   | 94 ++++++++++++++++++-
- drivers/net/wireless/intel/iwlwifi/mld/sta.c  | 42 +++++++--
- .../net/wireless/intel/iwlwifi/mvm/mld-sta.c  |  6 +-
- 3 files changed, 129 insertions(+), 13 deletions(-)
+ .../net/wireless/intel/iwlwifi/mld/iface.c    | 101 ++++++++++++------
+ .../net/wireless/intel/iwlwifi/mld/mac80211.c |  19 ++++
+ 2 files changed, 88 insertions(+), 32 deletions(-)
 
-diff --git a/drivers/net/wireless/intel/iwlwifi/fw/api/mac-cfg.h b/drivers/net/wireless/intel/iwlwifi/fw/api/mac-cfg.h
-index c7a833f8041a..444d60a05a98 100644
---- a/drivers/net/wireless/intel/iwlwifi/fw/api/mac-cfg.h
-+++ b/drivers/net/wireless/intel/iwlwifi/fw/api/mac-cfg.h
-@@ -42,7 +42,8 @@ enum iwl_mac_conf_subcmd_ids {
- 	 */
- 	LINK_CONFIG_CMD = 0x9,
- 	/**
--	 * @STA_CONFIG_CMD: &struct iwl_sta_cfg_cmd
-+	 * @STA_CONFIG_CMD: &struct iwl_sta_cfg_cmd_v1,
-+	 *	&struct iwl_sta_cfg_cmd_v2, or struct iwl_sta_cfg_cmd
- 	 */
- 	STA_CONFIG_CMD = 0xA,
- 	/**
-@@ -664,13 +665,21 @@ struct iwl_link_config_cmd {
-  *	power save state and the DTIM timing
-  * @STATION_TYPE_AUX: aux sta. In the FW there is no need for a special type
-  *	for the aux sta, so this type is only for driver - internal use.
-+ * @STATION_TYPE_NAN_PEER_NMI: NAN management peer station type. A station
-+ *	of this type can have any number of links (even none) set in the
-+ *	link_mask. (Supported since version 3.)
-+ * @STATION_TYPE_NAN_PEER_NDI: NAN data peer station type. A station
-+ *	of this type can have any number of links (even none) set in the
-+ *	link_mask. (Supported since version 3.)
-  */
- enum iwl_fw_sta_type {
- 	STATION_TYPE_PEER,
- 	STATION_TYPE_BCAST_MGMT,
- 	STATION_TYPE_MCAST,
- 	STATION_TYPE_AUX,
--}; /* STATION_TYPE_E_VER_1 */
-+	STATION_TYPE_NAN_PEER_NMI,
-+	STATION_TYPE_NAN_PEER_NDI,
-+}; /* STATION_TYPE_E_VER_1, _VER_2 */
- 
- /**
-  * struct iwl_sta_cfg_cmd_v1 - cmd structure to add a peer sta to the uCode's
-@@ -729,7 +738,7 @@ struct iwl_sta_cfg_cmd_v1 {
- } __packed; /* STA_CMD_API_S_VER_1 */
- 
- /**
-- * struct iwl_sta_cfg_cmd - cmd structure to add a peer sta to the uCode's
-+ * struct iwl_sta_cfg_cmd_v2 - cmd structure to add a peer sta to the uCode's
-  *	station table
-  * ( STA_CONFIG_CMD = 0xA )
-  *
-@@ -769,7 +778,7 @@ struct iwl_sta_cfg_cmd_v1 {
-  * @mic_compute_pad_delay: MIC compute time padding
-  * @reserved: Reserved for alignment
-  */
--struct iwl_sta_cfg_cmd {
-+struct iwl_sta_cfg_cmd_v2 {
- 	__le32 sta_id;
- 	__le32 link_id;
- 	u8 peer_mld_address[ETH_ALEN];
-@@ -799,6 +808,83 @@ struct iwl_sta_cfg_cmd {
- 	u8 reserved[2];
- } __packed; /* STA_CMD_API_S_VER_2 */
- 
-+/**
-+ * struct iwl_sta_cfg_cmd - cmd structure to add a peer sta to the uCode's
-+ *	station table
-+ * ( STA_CONFIG_CMD = 0xA )
-+ *
-+ * @sta_id: index of station in uCode's station table
-+ * @link_mask: bitmap of link FW IDs used with this STA
-+ * @peer_mld_address: the peers mld address
-+ * @reserved_for_peer_mld_address: reserved
-+ * @peer_link_address: the address of the link that is used to communicate
-+ *	with this sta
-+ * @reserved_for_peer_link_address: reserved
-+ * @station_type: type of this station. See &enum iwl_fw_sta_type
-+ * @assoc_id: for GO only
-+ * @beamform_flags: beam forming controls
-+ * @mfp: indicates whether the STA uses management frame protection or not.
-+ * @mimo: indicates whether the sta uses mimo or not
-+ * @mimo_protection: indicates whether the sta uses mimo protection or not
-+ * @ack_enabled: indicates that the AP supports receiving ACK-
-+ *	enabled AGG, i.e. both BACK and non-BACK frames in a single AGG
-+ * @trig_rnd_alloc: indicates that trigger based random allocation
-+ *	is enabled according to UORA element existence
-+ * @tx_ampdu_spacing: minimum A-MPDU spacing:
-+ *	4 - 2us density, 5 - 4us density, 6 - 8us density, 7 - 16us density
-+ * @tx_ampdu_max_size: maximum A-MPDU length: 0 - 8K, 1 - 16K, 2 - 32K,
-+ *	3 - 64K, 4 - 128K, 5 - 256K, 6 - 512K, 7 - 1024K.
-+ * @sp_length: the size of the SP in actual number of frames
-+ * @uapsd_acs:  4 LS bits are trigger enabled ACs, 4 MS bits are the deliver
-+ *	enabled ACs.
-+ * @pkt_ext: optional, exists according to PPE-present bit in the HE/EHT-PHY
-+ *	capa
-+ * @htc_flags: which features are supported in HTC
-+ * @use_ldpc_x2_cw: Indicates whether to use LDPC with double CW
-+ * @use_icf: Indicates whether to use ICF instead of RTS
-+ * @dps_pad_time: DPS (Dynamic Power Save) padding delay resolution to ensure
-+ *	proper timing alignment
-+ * @dps_trans_delay: DPS minimal time that takes the peer to return to low power
-+ * @dps_enabled: flag indicating whether or not DPS is enabled
-+ * @mic_prep_pad_delay: MIC prep time padding
-+ * @mic_compute_pad_delay: MIC compute time padding
-+ * @nmi_sta_id: for an NDI peer STA, the NMI peer STA ID it relates to
-+ * @ndi_local_addr: for an NDI peer STA, the local NDI interface MAC address
-+ * @reserved: Reserved for alignment
-+ */
-+struct iwl_sta_cfg_cmd {
-+	__le32 sta_id;
-+	__le32 link_mask;
-+	u8 peer_mld_address[ETH_ALEN];
-+	__le16 reserved_for_peer_mld_address;
-+	u8 peer_link_address[ETH_ALEN];
-+	__le16 reserved_for_peer_link_address;
-+	__le32 station_type;
-+	__le32 assoc_id;
-+	__le32 beamform_flags;
-+	__le32 mfp;
-+	__le32 mimo;
-+	__le32 mimo_protection;
-+	__le32 ack_enabled;
-+	__le32 trig_rnd_alloc;
-+	__le32 tx_ampdu_spacing;
-+	__le32 tx_ampdu_max_size;
-+	__le32 sp_length;
-+	__le32 uapsd_acs;
-+	struct iwl_he_pkt_ext_v2 pkt_ext;
-+	__le32 htc_flags;
-+	u8 use_ldpc_x2_cw;
-+	u8 use_icf;
-+	u8 dps_pad_time;
-+	u8 dps_trans_delay;
-+	u8 dps_enabled;
-+	u8 mic_prep_pad_delay;
-+	u8 mic_compute_pad_delay;
-+	u8 nmi_sta_id;
-+	u8 ndi_local_addr[ETH_ALEN];
-+	u8 reserved[2];
-+} __packed; /* STA_CMD_API_S_VER_3 */
-+
- /**
-  * struct iwl_aux_sta_cmd - command for AUX STA configuration
-  * ( AUX_STA_CMD = 0xB )
-diff --git a/drivers/net/wireless/intel/iwlwifi/mld/sta.c b/drivers/net/wireless/intel/iwlwifi/mld/sta.c
-index 6b7a89e050e6..f40c49377466 100644
---- a/drivers/net/wireless/intel/iwlwifi/mld/sta.c
-+++ b/drivers/net/wireless/intel/iwlwifi/mld/sta.c
-@@ -398,12 +398,42 @@ static u32 iwl_mld_get_htc_flags(struct ieee80211_link_sta *link_sta)
- 	return htc_flags;
+diff --git a/drivers/net/wireless/intel/iwlwifi/mld/iface.c b/drivers/net/wireless/intel/iwlwifi/mld/iface.c
+index 29df747c8938..9215fc7e2eca 100644
+--- a/drivers/net/wireless/intel/iwlwifi/mld/iface.c
++++ b/drivers/net/wireless/intel/iwlwifi/mld/iface.c
+@@ -111,14 +111,75 @@ static bool iwl_mld_is_nic_ack_enabled(struct iwl_mld *mld,
+ 			       IEEE80211_HE_MAC_CAP2_ACK_EN);
  }
  
-+/* Note: modifies the command depending on FW command version */
- static int iwl_mld_send_sta_cmd(struct iwl_mld *mld,
--				const struct iwl_sta_cfg_cmd *cmd)
-+				struct iwl_sta_cfg_cmd *cmd)
+-static void iwl_mld_set_he_support(struct iwl_mld *mld,
+-				   struct ieee80211_vif *vif,
+-				   struct iwl_mac_config_cmd *cmd)
++struct iwl_mld_mac_wifi_gen_sta_iter_data {
++	struct ieee80211_vif *vif;
++	struct iwl_mac_wifi_gen_support *support;
++};
++
++static void iwl_mld_mac_wifi_gen_sta_iter(void *_data,
++					  struct ieee80211_sta *sta)
  {
--	int ret = iwl_mld_send_cmd_pdu(mld,
--				       WIDE_ID(MAC_CONF_GROUP, STA_CONFIG_CMD),
--				       cmd);
-+	int cmd_id = WIDE_ID(MAC_CONF_GROUP, STA_CONFIG_CMD);
-+	int cmd_ver = iwl_fw_lookup_cmd_ver(mld->fw, cmd_id, 0);
-+	int len = sizeof(*cmd);
-+	int ret;
+-	if (vif->type == NL80211_IFTYPE_AP)
+-		cmd->wifi_gen.he_ap_support = 1;
+-	else
+-		cmd->wifi_gen.he_support = 1;
++	struct iwl_mld_sta *mld_sta = iwl_mld_sta_from_mac80211(sta);
++	struct iwl_mld_mac_wifi_gen_sta_iter_data *data = _data;
++	struct ieee80211_link_sta *link_sta;
++	unsigned int link_id;
 +
-+	if (cmd_ver < 2) {
-+		IWL_ERR(mld, "Unsupported STA_CONFIG_CMD version %d\n",
-+			cmd_ver);
-+		return -EINVAL;
-+	} else if (cmd_ver == 2) {
-+		struct iwl_sta_cfg_cmd_v2 *cmd_v2 = (void *)cmd;
++	if (mld_sta->vif != data->vif)
++		return;
 +
-+		if (WARN_ON(cmd->station_type == cpu_to_le32(STATION_TYPE_NAN_PEER_NMI) ||
-+			    cmd->station_type == cpu_to_le32(STATION_TYPE_NAN_PEER_NDI) ||
-+			    hweight32(le32_to_cpu(cmd->link_mask)) != 1))
-+			return -EINVAL;
-+		/*
-+		 * These fields are located in a different place in the struct of v2.
-+		 * The assumption is that UHR won't be used with FW that has v2.
-+		 */
-+		if (WARN_ON(cmd->mic_prep_pad_delay || cmd->mic_compute_pad_delay))
-+			return -EINVAL;
-+
-+		len = sizeof(struct iwl_sta_cfg_cmd_v2);
-+		cmd_v2->link_id = cpu_to_le32(__ffs(le32_to_cpu(cmd->link_mask)));
-+	} else if (WARN_ON(cmd->station_type != cpu_to_le32(STATION_TYPE_NAN_PEER_NMI) &&
-+			   cmd->station_type != cpu_to_le32(STATION_TYPE_NAN_PEER_NDI) &&
-+			   hweight32(le32_to_cpu(cmd->link_mask)) != 1)) {
-+		return -EINVAL;
++	for_each_sta_active_link(data->vif, sta, link_sta, link_id) {
++		if (link_sta->he_cap.has_he)
++			data->support->he_support = 1;
++		if (link_sta->eht_cap.has_eht)
++			data->support->eht_support = 1;
 +	}
++}
 +
-+	ret = iwl_mld_send_cmd_pdu(mld, cmd_id, cmd, len);
- 	if (ret)
- 		IWL_ERR(mld, "STA_CONFIG_CMD send failed, ret=0x%x\n", ret);
- 	return ret;
-@@ -431,8 +461,8 @@ iwl_mld_add_modify_sta_cmd(struct iwl_mld *mld,
- 		return -EINVAL;
- 
- 	cmd.sta_id = cpu_to_le32(fw_id);
-+	cmd.link_mask = cpu_to_le32(BIT(mld_link->fw_id));
- 	cmd.station_type = cpu_to_le32(mld_sta->sta_type);
--	cmd.link_id = cpu_to_le32(mld_link->fw_id);
- 
- 	memcpy(&cmd.peer_mld_address, sta->addr, ETH_ALEN);
- 	memcpy(&cmd.peer_link_address, link_sta->addr, ETH_ALEN);
-@@ -982,7 +1012,7 @@ iwl_mld_add_internal_sta_to_fw(struct iwl_mld *mld,
- 		return iwl_mld_send_aux_sta_cmd(mld, internal_sta);
- 
- 	cmd.sta_id = cpu_to_le32((u8)internal_sta->sta_id);
--	cmd.link_id = cpu_to_le32(fw_link_id);
-+	cmd.link_mask = cpu_to_le32(BIT(fw_link_id));
- 	cmd.station_type = cpu_to_le32(internal_sta->sta_type);
- 
- 	/* FW doesn't allow to add a IGTK/BIGTK if the sta isn't marked as MFP.
-diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/mld-sta.c b/drivers/net/wireless/intel/iwlwifi/mvm/mld-sta.c
-index 44e16ee9514e..da7ed4639a93 100644
---- a/drivers/net/wireless/intel/iwlwifi/mvm/mld-sta.c
-+++ b/drivers/net/wireless/intel/iwlwifi/mvm/mld-sta.c
-@@ -20,7 +20,7 @@ u32 iwl_mvm_sta_fw_id_mask(struct iwl_mvm *mvm, struct ieee80211_sta *sta,
++static void iwl_mld_set_wifi_gen(struct iwl_mld *mld,
++				 struct ieee80211_vif *vif,
++				 struct iwl_mac_wifi_gen_support *support)
++{
++	struct iwl_mld_mac_wifi_gen_sta_iter_data sta_iter_data = {
++		.vif = vif,
++		.support = support,
++	};
++	struct ieee80211_bss_conf *link_conf;
++	unsigned int link_id;
++
++	switch (vif->type) {
++	case NL80211_IFTYPE_MONITOR:
++		/* for sniffer, set to HW capabilities */
++		support->he_support = 1;
++		support->eht_support = mld->trans->cfg->eht_supported;
++		break;
++	case NL80211_IFTYPE_AP:
++		/* for AP set according to the link configs */
++		for_each_vif_active_link(vif, link_conf, link_id) {
++			support->he_ap_support |= link_conf->he_support;
++			support->eht_support |= link_conf->eht_support;
++		}
++		break;
++	default:
++		/*
++		 * If we have MLO enabled, then the firmware needs to enable
++		 * address translation for the station(s) we add. That depends
++		 * on having EHT enabled in firmware, which in turn depends on
++		 * mac80211 in the iteration below.
++		 * However, mac80211 doesn't enable capabilities on the AP STA
++		 * until it has parsed the association response successfully,
++		 * so set EHT (and HE as a pre-requisite for EHT) when the vif
++		 * is an MLD.
++		 */
++		if (ieee80211_vif_is_mld(vif)) {
++			support->he_support = 1;
++			support->eht_support = 1;
++		}
++
++		ieee80211_iterate_stations_mtx(mld->hw,
++					       iwl_mld_mac_wifi_gen_sta_iter,
++					       &sta_iter_data);
++		break;
++	}
  }
  
- static int iwl_mvm_mld_send_sta_cmd(struct iwl_mvm *mvm,
--				    struct iwl_sta_cfg_cmd *cmd)
-+				    struct iwl_sta_cfg_cmd_v2 *cmd)
+ /* fill the common part for all interface types */
+@@ -128,8 +189,6 @@ static void iwl_mld_mac_cmd_fill_common(struct iwl_mld *mld,
+ 					u32 action)
  {
- 	u32 cmd_id = WIDE_ID(MAC_CONF_GROUP, STA_CONFIG_CMD);
- 	int cmd_len = iwl_fw_lookup_cmd_ver(mvm->fw, cmd_id, 0) > 1 ?
-@@ -41,7 +41,7 @@ static int iwl_mvm_mld_add_int_sta_to_fw(struct iwl_mvm *mvm,
- 					 struct iwl_mvm_int_sta *sta,
- 					 const u8 *addr, int link_id)
- {
--	struct iwl_sta_cfg_cmd cmd;
-+	struct iwl_sta_cfg_cmd_v2 cmd;
+ 	struct iwl_mld_vif *mld_vif = iwl_mld_vif_from_mac80211(vif);
+-	struct ieee80211_bss_conf *link_conf;
+-	unsigned int link_id;
  
- 	lockdep_assert_held(&mvm->mutex);
+ 	lockdep_assert_wiphy(mld->wiphy);
  
-@@ -416,7 +416,7 @@ static int iwl_mvm_mld_cfg_sta(struct iwl_mvm *mvm, struct ieee80211_sta *sta,
- 	struct iwl_mvm_vif *mvm_vif = iwl_mvm_vif_from_mac80211(vif);
- 	struct iwl_mvm_vif_link_info *link_info =
- 					mvm_vif->link[link_conf->link_id];
--	struct iwl_sta_cfg_cmd cmd = {
-+	struct iwl_sta_cfg_cmd_v2 cmd = {
- 		.sta_id = cpu_to_le32(mvm_link_sta->sta_id),
- 		.station_type = cpu_to_le32(mvm_sta->sta_type),
- 	};
+@@ -147,29 +206,7 @@ static void iwl_mld_mac_cmd_fill_common(struct iwl_mld *mld,
+ 	cmd->nic_not_ack_enabled =
+ 		cpu_to_le32(!iwl_mld_is_nic_ack_enabled(mld, vif));
+ 
+-	/* If we have MLO enabled, then the firmware needs to enable
+-	 * address translation for the station(s) we add. That depends
+-	 * on having EHT enabled in firmware, which in turn depends on
+-	 * mac80211 in the code below.
+-	 * However, mac80211 doesn't enable HE/EHT until it has parsed
+-	 * the association response successfully, so just skip all that
+-	 * and enable both when we have MLO.
+-	 */
+-	if (ieee80211_vif_is_mld(vif)) {
+-		iwl_mld_set_he_support(mld, vif, cmd);
+-		cmd->wifi_gen.eht_support = 1;
+-		return;
+-	}
+-
+-	for_each_vif_active_link(vif, link_conf, link_id) {
+-		if (!link_conf->he_support)
+-			continue;
+-
+-		iwl_mld_set_he_support(mld, vif, cmd);
+-
+-		/* EHT, if supported, was already set above */
+-		break;
+-	}
++	iwl_mld_set_wifi_gen(mld, vif, &cmd->wifi_gen);
+ }
+ 
+ static void iwl_mld_fill_mac_cmd_sta(struct iwl_mld *mld,
+diff --git a/drivers/net/wireless/intel/iwlwifi/mld/mac80211.c b/drivers/net/wireless/intel/iwlwifi/mld/mac80211.c
+index 0c53d6bd9651..71a9a72c9ac0 100644
+--- a/drivers/net/wireless/intel/iwlwifi/mld/mac80211.c
++++ b/drivers/net/wireless/intel/iwlwifi/mld/mac80211.c
+@@ -1761,6 +1761,16 @@ static int iwl_mld_move_sta_state_up(struct iwl_mld *mld,
+ 
+ 		if (vif->type == NL80211_IFTYPE_STATION)
+ 			iwl_mld_link_set_2mhz_block(mld, vif, sta);
++
++		if (sta->tdls) {
++			/*
++			 * update MAC since wifi generation flags may change,
++			 * we also update MAC on association to the AP via the
++			 * vif assoc change
++			 */
++			iwl_mld_mac_fw_action(mld, vif, FW_CTXT_ACTION_MODIFY);
++		}
++
+ 		/* Now the link_sta's capabilities are set, update the FW */
+ 		iwl_mld_config_tlc(mld, vif, sta);
+ 
+@@ -1873,6 +1883,15 @@ static int iwl_mld_move_sta_state_down(struct iwl_mld *mld,
+ 			/* just removed last TDLS STA, so enable PM */
+ 			iwl_mld_update_mac_power(mld, vif, false);
+ 		}
++
++		if (sta->tdls) {
++			/*
++			 * update MAC since wifi generation flags may change,
++			 * we also update MAC on disassociation to the AP via
++			 * the vif assoc change
++			 */
++			iwl_mld_mac_fw_action(mld, vif, FW_CTXT_ACTION_MODIFY);
++		}
+ 	} else {
+ 		return -EINVAL;
+ 	}
 -- 
 2.34.1
 
