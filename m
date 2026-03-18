@@ -1,212 +1,132 @@
-Return-Path: <linux-wireless+bounces-33419-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-33420-lists+linux-wireless=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id cLYABlXfumk3cwIAu9opvQ
-	(envelope-from <linux-wireless+bounces-33419-lists+linux-wireless=lfdr.de@vger.kernel.org>)
-	for <lists+linux-wireless@lfdr.de>; Wed, 18 Mar 2026 18:22:29 +0100
+	id oIbjBAjruml0dAIAu9opvQ
+	(envelope-from <linux-wireless+bounces-33420-lists+linux-wireless=lfdr.de@vger.kernel.org>)
+	for <lists+linux-wireless@lfdr.de>; Wed, 18 Mar 2026 19:12:24 +0100
 X-Original-To: lists+linux-wireless@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8F1622C02A4
-	for <lists+linux-wireless@lfdr.de>; Wed, 18 Mar 2026 18:22:28 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id 17ABF2C10D1
+	for <lists+linux-wireless@lfdr.de>; Wed, 18 Mar 2026 19:12:22 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 38FCD336EF39
-	for <lists+linux-wireless@lfdr.de>; Wed, 18 Mar 2026 16:37:11 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id BCD21320D704
+	for <lists+linux-wireless@lfdr.de>; Wed, 18 Mar 2026 17:06:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 55AE73F87FE;
-	Wed, 18 Mar 2026 16:16:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DF87A32ED54;
+	Wed, 18 Mar 2026 17:06:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="AoSz+IWV"
+	dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b="JdJKyAbV"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-dy1-f175.google.com (mail-dy1-f175.google.com [74.125.82.175])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from sipsolutions.net (s3.sipsolutions.net [168.119.38.16])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6F16E3ED12E
-	for <linux-wireless@vger.kernel.org>; Wed, 18 Mar 2026 16:16:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.82.175
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 49A8032F742
+	for <linux-wireless@vger.kernel.org>; Wed, 18 Mar 2026 17:06:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=168.119.38.16
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773850596; cv=none; b=LovPM8xsBV9gYQ4m3dB1PdH6emfTLMsTl1s99yNiBUWmmIVfhnKSAJ9wfNfmEQgy2BxZ5GH9ilm2FBhtUIvkpW0zI2pIxuPRCJSJnF/Vu1gNsrGZF315b5hTnrrm/K27cP60yL5E9yPO4FzHiZ8MDSdYb3+orVwYKQ9RxnnnDro=
+	t=1773853595; cv=none; b=Alop7a8/xf8s0hcHhMVO8mL8rpnndf+8mR6AVGCZZsg4NP1nlozKuN8HNlRn4FbT+jApePWLi1MWc2AgGy7OAe4ASqQ8BcGEB8Yfi5EIm5It23PFR3HoQtoSl9AslEny5v6k/D5C47hTnFhMAcuL9E1LJmN1MBPg7U5TdXYEeG8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773850596; c=relaxed/simple;
-	bh=cVJluK3TyDFVcOJa07LmzKrKJzuXgnk0YMFEuT5VkI4=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=u4JQRN8ODiWZ+nFo8E6dGllTU3sPRjHWqt6OoPaCos9i+YxKact4HxBmMsl+z9jqGM5XT13/s0vr2WdKPjqp2ivRlNLEAFrLnLDvJUVa8befKXys349kxPQ9ajRK2YgeGrRC6ja6VwlYUMQbCP+RjV6rsf22EV1a7DdsECsmg94=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=AoSz+IWV; arc=none smtp.client-ip=74.125.82.175
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-dy1-f175.google.com with SMTP id 5a478bee46e88-2ba9c484e5eso101775eec.1
-        for <linux-wireless@vger.kernel.org>; Wed, 18 Mar 2026 09:16:28 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1773850587; x=1774455387; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references
-         :mail-followup-to:message-id:subject:cc:to:from:date:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=Dla1BTbyc4l54nWX3/vfHTdXPEelTK/vnnV7aOlfzTg=;
-        b=AoSz+IWVLDGje93UL+/laOx3Mm0bxjDxLZJaDpknBN4X8GKG9GRLRfG7DxLwpZjh+5
-         dJV1k8J7EkT4oSMBi2qaQTnxP8BhAtdYbcLnuf75ASSnQ8dmIc+Lyh8cElL5B02r13Po
-         LOZ4JY7M6r+bLWm7dHU0ExjewkvCEXrXAWzJdHMiQvti0m7mOkrONr/hn/m1pmpQGSrk
-         GTydgAkOkKDELZQ2TztMxAnRJnEvqdes/NdSkDwOHACBTXTCEM3QIYyy/JKWlQlwyucA
-         ycNIKH81TaqjKFEiaSmD1KzL+/zx1SaBO2bYv7IwkRw5Vh1CvAKBaM9VhN/1+xtGkYs2
-         FuOw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1773850587; x=1774455387;
-        h=in-reply-to:content-disposition:mime-version:references
-         :mail-followup-to:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=Dla1BTbyc4l54nWX3/vfHTdXPEelTK/vnnV7aOlfzTg=;
-        b=SNZR5S9eOTjEhsdXPt6YJxg/hOxbA9xUIgev11PfreYAiNAKPMBxXEBaGhLFzN/WDa
-         ntNUEVj9orjb+BIjMW70veRX6Pp30OU5ypq+ayoupsn/onec33NPZcfC+w/Vdvefh3K0
-         5EQNcXezB6r8bV87vH+cRyvKENJxLJAk5P3yccViJQ+l24qYnP/rqfXPTMUzi7rB+xGt
-         wk8bKEJd9XOKEqrTtkJYcvFSFp9OuEdRrr0jYUwfg7FYKY9s6DPyTOO+QFq34M4aa2Il
-         4X/9neNGevC964CLpSlG1183UeA5KDD9ZDCrVRsvuaZmlomN0ETjH73Zr4V64TFurxmA
-         heBw==
-X-Forwarded-Encrypted: i=1; AJvYcCUZagrkMH1dFT8sYQwk9LZtf4lLVrTkw5mbl0RI8PhBkFnA21Ma5/At3U9ZF382xZdOwPDMiZjYgKKlSsqXhw==@vger.kernel.org
-X-Gm-Message-State: AOJu0Yz1RiX+7VjN2s5TeG8ryaf+YuWwoGB1SCKWecZRcWp5vQA8eTs/
-	DVhWzEgHvh8Oohzw2L6KyJ6CsGoguybl7REDnqwKnLCkGS8y0SmLvVw=
-X-Gm-Gg: ATEYQzx/WIqroNziosSnE7PM/4gpHJvPHkeP7FFwJF804XYnh+jWHGtt34JPGwSy6I2
-	1QsZVGdIkiGIacjBHw9XzABuHJZ3hFnOVnFr+lDz0kQqKBmN0p/8RW7He+AJpmoAwq5CDJoIPz4
-	EmTiIT6FbHYcu1QV92XjxmtzjkE4/Fy0Z5iwZuWp24hmtEiktczwAuqUo2aWdBMZZw7AnMt98Z2
-	sBACVKsZ2AmSJcCwdXYf38mNEB6WowKhMWyZ+isd3VBW8C+kMWa6hfhmB2346N7mK64sFKzCUg0
-	kJ4G/38AuswHMkTp5flhp1YxKt6b5+P/aYDsR4+LEFT+VnB/gYZQFcyptb/yI8A9lPGckp71qkB
-	RW4o1fzNcMR6s4xXISr3ra5Ia/RBjFpDu9DUlGQeZ7/wkofgBliIC7IgOHRKy/ENcOcBR7qY6Fm
-	DYthLnWH0gX6XbAbopnd4w2pXSTjipNGdfBMaK1lELaOuifYKEg7bVD+NUOgJ8VbwdL5b6l+WPL
-	yDqyyCEJ07anNc4wg==
-X-Received: by 2002:a05:7022:6a5:b0:128:d471:8c1 with SMTP id a92af1059eb24-1299ba3e555mr1770451c88.17.1773850586365;
-        Wed, 18 Mar 2026 09:16:26 -0700 (PDT)
-Received: from localhost (c-76-102-12-149.hsd1.ca.comcast.net. [76.102.12.149])
-        by smtp.gmail.com with ESMTPSA id a92af1059eb24-129b41289e7sm3582603c88.10.2026.03.18.09.16.25
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 18 Mar 2026 09:16:25 -0700 (PDT)
-Date: Wed, 18 Mar 2026 09:16:24 -0700
-From: Stanislav Fomichev <stfomichev@gmail.com>
-To: Stanislav Fomichev <sdf@fomichev.me>
-Cc: netdev@vger.kernel.org, davem@davemloft.net, edumazet@google.com,
-	kuba@kernel.org, pabeni@redhat.com, horms@kernel.org,
-	corbet@lwn.net, skhan@linuxfoundation.org, andrew+netdev@lunn.ch,
-	michael.chan@broadcom.com, pavan.chebbi@broadcom.com,
-	anthony.l.nguyen@intel.com, przemyslaw.kitszel@intel.com,
-	saeedm@nvidia.com, tariqt@nvidia.com, mbloch@nvidia.com,
-	alexanderduyck@fb.com, kernel-team@meta.com,
-	johannes@sipsolutions.net, sd@queasysnail.net, jianbol@nvidia.com,
-	dtatulea@nvidia.com, mohsin.bashr@gmail.com,
-	jacob.e.keller@intel.com, willemb@google.com, skhawaja@google.com,
-	bestswngs@gmail.com, linux-doc@vger.kernel.org,
-	linux-kernel@vger.kernel.org, intel-wired-lan@lists.osuosl.org,
-	linux-rdma@vger.kernel.org, linux-wireless@vger.kernel.org,
-	linux-kselftest@vger.kernel.org, leon@kernel.org
-Subject: Re: [PATCH net-next v2 02/13] wifi: cfg80211: use __rtnl_unlock in
- nl80211_pre_doit
-Message-ID: <abrP2NavLA4f5iHE@mini-arch>
-Mail-Followup-To: Stanislav Fomichev <stfomichev@gmail.com>,
-	Stanislav Fomichev <sdf@fomichev.me>, netdev@vger.kernel.org,
-	davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
-	pabeni@redhat.com, horms@kernel.org, corbet@lwn.net,
-	skhan@linuxfoundation.org, andrew+netdev@lunn.ch,
-	michael.chan@broadcom.com, pavan.chebbi@broadcom.com,
-	anthony.l.nguyen@intel.com, przemyslaw.kitszel@intel.com,
-	saeedm@nvidia.com, tariqt@nvidia.com, mbloch@nvidia.com,
-	alexanderduyck@fb.com, kernel-team@meta.com,
-	johannes@sipsolutions.net, sd@queasysnail.net, jianbol@nvidia.com,
-	dtatulea@nvidia.com, mohsin.bashr@gmail.com,
-	jacob.e.keller@intel.com, willemb@google.com, skhawaja@google.com,
-	bestswngs@gmail.com, linux-doc@vger.kernel.org,
-	linux-kernel@vger.kernel.org, intel-wired-lan@lists.osuosl.org,
-	linux-rdma@vger.kernel.org, linux-wireless@vger.kernel.org,
-	linux-kselftest@vger.kernel.org, leon@kernel.org
-References: <20260318150305.123900-1-sdf@fomichev.me>
- <20260318150305.123900-3-sdf@fomichev.me>
+	s=arc-20240116; t=1773853595; c=relaxed/simple;
+	bh=gF3gwPfU9Ibyg2Bnl7mOtjAEH7ISwIOubNpAbAg4p5Y=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=Ei13zAs9UWDmq7CBPV3gPNXCrl1a1ToOPTXOfTOhpItfilk8ehd4/ni9BAy2UDzL3PWPE3crk/XdRCAF7X6dkPsiIqPpqI6w7P/K0S46khNl/q17Csh3vOPz6ZdbLUC79IVY553bM7dmHxW7khDnYKkNL5+3sOzkfUvYKKyA57c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net; spf=pass smtp.mailfrom=sipsolutions.net; dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b=JdJKyAbV; arc=none smtp.client-ip=168.119.38.16
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sipsolutions.net
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=sipsolutions.net; s=mail; h=Content-Transfer-Encoding:MIME-Version:
+	Message-ID:Date:Subject:Cc:To:From:Content-Type:Sender:Reply-To:Content-ID:
+	Content-Description:Resent-Date:Resent-From:Resent-To:Resent-Cc:
+	Resent-Message-ID:In-Reply-To:References;
+	bh=/d7Jc1IjKbum5Xm4JaYjzkh7CkRJVynXPZOZGFl9Ff0=; t=1773853594; x=1775063194; 
+	b=JdJKyAbVnQ2vMT777fft8hOAC85QhB3CT6HV6c2vi3/5DSUiSmX9BQTDULxW01wZoGpuyC18ACf
+	t43K58wbIUebghDVpPEIm6QOB4x/w6EAhL8YFGw1f88lVwR+XFOTUaXVh2Q0en5qr9gYvyJWbGYV5
+	A2edT4MIY8FXJw3dzatdpSzTg5hx9ulssnpSz26KW4fbLVVzphnqcXJJ0Mjm6SU7I/FYCxfcyPKm4
+	k7swTNVovGH11kZlW7ot/ZndwGz23MsHczRGmzP7mTJ1/U/X8uF/9XjKC5iH4eZCKq2Fbh44nwytR
+	WUBF4OOi4kvTSLnCLd4jhfipqLpBmEvfneJg==;
+Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
+	(Exim 4.98.2)
+	(envelope-from <johannes@sipsolutions.net>)
+	id 1w2uLh-00000004Z9q-39Gy;
+	Wed, 18 Mar 2026 18:06:25 +0100
+From: Johannes Berg <johannes@sipsolutions.net>
+To: linux-wireless@vger.kernel.org
+Cc: Lorenzo Bianconi <lorenzo@kernel.org>,
+	Johannes Berg <johannes.berg@intel.com>,
+	Jouni Malinen <j@w1.fi>
+Subject: [PATCH wireless-next] wifi: mac80211: fix STA link removal during link removal
+Date: Wed, 18 Mar 2026 18:06:22 +0100
+Message-ID: <20260318180622.9240067117e9.I45fb2b7f04d75e48d2f3e9c6650ef9f54a314f5b@changeid>
+X-Mailer: git-send-email 2.53.0
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20260318150305.123900-3-sdf@fomichev.me>
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+Content-Transfer-Encoding: 8bit
+X-Spamd-Result: default: False [-1.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	R_MISSING_CHARSET(0.50)[];
 	MID_RHS_NOT_FQDN(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
-	R_DKIM_ALLOW(-0.20)[gmail.com:s=20230601];
+	DMARC_POLICY_ALLOW(-0.50)[sipsolutions.net,none];
+	R_DKIM_ALLOW(-0.20)[sipsolutions.net:s=mail];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-33419-lists,linux-wireless=lfdr.de];
-	FROM_HAS_DN(0.00)[];
-	RECEIVED_HELO_LOCALHOST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
+	RCVD_COUNT_THREE(0.00)[4];
+	TAGGED_FROM(0.00)[bounces-33420-lists,linux-wireless=lfdr.de];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FREEMAIL_FROM(0.00)[gmail.com];
-	RCPT_COUNT_TWELVE(0.00)[35];
-	FREEMAIL_CC(0.00)[vger.kernel.org,davemloft.net,google.com,kernel.org,redhat.com,lwn.net,linuxfoundation.org,lunn.ch,broadcom.com,intel.com,nvidia.com,fb.com,meta.com,sipsolutions.net,queasysnail.net,gmail.com,lists.osuosl.org];
+	MIME_TRACE(0.00)[0:+];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[5];
+	RCVD_TLS_LAST(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	RCPT_COUNT_THREE(0.00)[4];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[stfomichev@gmail.com,linux-wireless@vger.kernel.org];
-	DKIM_TRACE(0.00)[gmail.com:+];
-	NEURAL_HAM(-0.00)[-0.832];
+	FROM_NEQ_ENVFROM(0.00)[johannes@sipsolutions.net,linux-wireless@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	DKIM_TRACE(0.00)[sipsolutions.net:+];
+	NEURAL_HAM(-0.00)[-0.997];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[linux-wireless,netdev];
-	MISSING_XM_UA(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,fomichev.me:email]
-X-Rspamd-Queue-Id: 8F1622C02A4
+	TAGGED_RCPT(0.00)[linux-wireless];
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:email,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,sipsolutions.net:dkim]
+X-Rspamd-Queue-Id: 17ABF2C10D1
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-On 03/18, Stanislav Fomichev wrote:
-> nl80211_pre_doit acquires rtnl_lock and then wiphy_lock, releasing
-> rtnl while keeping wiphy_lock held until post_doit. With the
-> introduction of rx_mode_wq and its flush in netdev_run_todo, calling
-> rtnl_unlock here creates a circular lock dependency:
-> 
->   Chain exists of:
->     (wq_completion)rx_mode_wq --> rtnl_mutex --> &rdev->wiphy.mtx
-> 
->    Possible unsafe locking scenario:
-> 
->          CPU0                    CPU1
->          ----                    ----
->     lock(&rdev->wiphy.mtx);
->                                  lock(rtnl_mutex);
->                                  lock(&rdev->wiphy.mtx);
->     lock((wq_completion)rx_mode_wq);
-> 
-> Switch to __rtnl_unlock to skip netdev_run_todo in nl80211_pre_doit.
-> This seems safe because we run before the op.
-> 
-> Link: http://lore.kernel.org/netdev/69b5ad67.a00a0220.3b25d1.001a.GAE@google.com
-> Signed-off-by: Stanislav Fomichev <sdf@fomichev.me>
-> ---
->  net/wireless/nl80211.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
-> 
-> diff --git a/net/wireless/nl80211.c b/net/wireless/nl80211.c
-> index 2225f5d0b124..ce5f25d4c87e 100644
-> --- a/net/wireless/nl80211.c
-> +++ b/net/wireless/nl80211.c
-> @@ -18192,7 +18192,7 @@ static int nl80211_pre_doit(const struct genl_split_ops *ops,
->  		__release(&rdev->wiphy.mtx);
->  	}
->  	if (!(internal_flags & NL80211_FLAG_NEED_RTNL))
-> -		rtnl_unlock();
-> +		__rtnl_unlock();
->  
->  	return 0;
->  out_unlock:
-> -- 
-> 2.53.0
-> 
+From: Johannes Berg <johannes.berg@intel.com>
 
-ERROR: modpost: "__rtnl_unlock" [net/wireless/cfg80211.ko] undefined!
+ieee80211_sta_free_link() only frees the link and doesn't
+unhash it, so it can't be used here. Instead this needs
+to use ieee80211_sta_remove_link(), which unhashes it. An
+argument against it was that it also calls the driver and
+that already happened, but calls to the driver removing a
+link that's already removed are suppressed, so that's not
+actually an issue. Use it to fix the hashtable.
 
-Gonna re-run local nipa ingest locally to see if anything else pops up.
-
+Reported-and-tested-by: Jouni Malinen <j@w1.fi>
+Fixes: 84674b03d8bf ("wifi: mac80211: Remove deleted sta links in ieee80211_ml_reconf_work()")
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 ---
-pw-bot: cr
+ net/mac80211/mlme.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/net/mac80211/mlme.c b/net/mac80211/mlme.c
+index f279bdb03aca..0cd8d07bf668 100644
+--- a/net/mac80211/mlme.c
++++ b/net/mac80211/mlme.c
+@@ -7119,7 +7119,7 @@ static void ieee80211_ml_reconf_work(struct wiphy *wiphy,
+ 
+ 		for_each_set_bit(link_id, &removed_links,
+ 				 IEEE80211_MLD_MAX_NUM_LINKS)
+-			ieee80211_sta_free_link(sta, link_id);
++			ieee80211_sta_remove_link(sta, link_id);
+ 	}
+ 
+ 	new_dormant_links = sdata->vif.dormant_links & ~sdata->u.mgd.removed_links;
+-- 
+2.53.0
+
 
