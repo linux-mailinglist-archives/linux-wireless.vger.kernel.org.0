@@ -1,72 +1,72 @@
-Return-Path: <linux-wireless+bounces-33432-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-33433-lists+linux-wireless=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 8P4/F3ARu2nGegIAu9opvQ
-	(envelope-from <linux-wireless+bounces-33432-lists+linux-wireless=lfdr.de@vger.kernel.org>)
-	for <lists+linux-wireless@lfdr.de>; Wed, 18 Mar 2026 21:56:16 +0100
+	id 4A8rEnURu2nGegIAu9opvQ
+	(envelope-from <linux-wireless+bounces-33433-lists+linux-wireless=lfdr.de@vger.kernel.org>)
+	for <lists+linux-wireless@lfdr.de>; Wed, 18 Mar 2026 21:56:21 +0100
 X-Original-To: lists+linux-wireless@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id EC9262C2BF1
-	for <lists+linux-wireless@lfdr.de>; Wed, 18 Mar 2026 21:56:15 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id CCBE22C2BF9
+	for <lists+linux-wireless@lfdr.de>; Wed, 18 Mar 2026 21:56:20 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 0651F319C93C
-	for <lists+linux-wireless@lfdr.de>; Wed, 18 Mar 2026 20:54:56 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 0261831A27AF
+	for <lists+linux-wireless@lfdr.de>; Wed, 18 Mar 2026 20:54:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B8F3636F438;
-	Wed, 18 Mar 2026 20:54:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D3B4B2DB781;
+	Wed, 18 Mar 2026 20:54:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="caFQEg3z"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="RHFz1RHO"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.14])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 235F736F41F
-	for <linux-wireless@vger.kernel.org>; Wed, 18 Mar 2026 20:54:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7782B371051
+	for <linux-wireless@vger.kernel.org>; Wed, 18 Mar 2026 20:54:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.14
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773867295; cv=none; b=i1O64Js96rIEx53P3cKKK+tqibpTZFuAMGnWltzvNzJA8i0/ZsFW+Qsnyt4AKzlItD6csttWf11SKQEjfDc165OMnOLphOntaJp8Sl8Q1Vjjfgt6VrqntJjOZoJgHc5Sjm7wcPHWOJ6NwEj+dcVdg57Mrgt1BwHjCcLLPwfLggo=
+	t=1773867296; cv=none; b=QYzQZgr4z2Az+IGjgydaD2P3GVYADS8GyS1ZtzkqyOclhVcONO/aN6AOqqxsb0eXeEwuZ1sdonAOsIEcmXu3jtKxvznbHnjMHDjdi2GUbibzNK/EsE+Vcpo1/t8btN6Hxi8ib9Uw4vZhleRlQbOTrK2esfq4bC0PO90QZx8Fbos=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773867295; c=relaxed/simple;
-	bh=S3ef25JEgyt8x+gTBJlcJyYRBHZX3CV14Ew6hfzOcX4=;
+	s=arc-20240116; t=1773867296; c=relaxed/simple;
+	bh=2Hm0v4mg9kbPayj1gBHKaxMAysswBEFgXGoN+NOIHsg=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=uq1COGWEZsVKWNCTDms9UgVhPNi9FI3/7Zwq0aibqQWA53wUVAythmX87Lf0iHQpaDSpr3mHxVPNRKUFqdgvlNFJbrwWC5TaJUSOpp9wmJEKndXYBKhpuFrdiUfBoOQc0pIAhndJDG4h2e6/B0Ixv1kIx4kbUgAugwpnLqGaTs4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=caFQEg3z; arc=none smtp.client-ip=192.198.163.14
+	 MIME-Version; b=gOpEXHmtMtVTRGA7bGtkVOJD706s1THcRIwLIIpOUZX/lD8bEBPg1J7YAC/Hzr8lY3ebs0GokIUQjyo+WPtavXDJ42OpX6OPgOyX5STz9niWgZ7ekUJH/4HFEG4QbnAEqGanx2KQqNyXUYp0uHsv2odO5ZGioWmWk6PvAU4f+b4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=RHFz1RHO; arc=none smtp.client-ip=192.198.163.14
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1773867294; x=1805403294;
+  t=1773867295; x=1805403295;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=S3ef25JEgyt8x+gTBJlcJyYRBHZX3CV14Ew6hfzOcX4=;
-  b=caFQEg3zuxMZfKCmCWEtmhPy5eoGogV1nerDWDFMudixcX+HVTcgn1y+
-   ygDsD74WBaIGbFtaqxn8YaZ/y7SyzEANr5e5+3cGQb4bdit4aAPddVhUR
-   MvwBReYUyR96bujxqJwc67dnaYE8r0RMSQ0NIw0ndJp+OqiRttVr6WX6M
-   wONTAqVcWKTjmpB3Zx8RYeRKR/Em3aanlsmu10iKex2TMtZ3CyqosJPH1
-   tYK0X/SAwxVCSYOsGfO/3wvfDIgfT+SFt3SQNon/m33EDSTMbvSVUiJib
-   DZa1D+/PTGZjVdqejpVQO+ZGecZNand6Hkprc79wFqX/lCJW0zcOJqffY
+  bh=2Hm0v4mg9kbPayj1gBHKaxMAysswBEFgXGoN+NOIHsg=;
+  b=RHFz1RHO0k815vyTHAk5XQIzQUCjR7MPJf0Yk8huEOGZcWlRwCl4P6GP
+   T5NaUhfsRUA0moCuACG+YduEP4RjmkYdI1z4IJsvtbkTJ+9pkMQRyguX9
+   5OmbzY3ab9arx92QMGzFU1Q4tLsMDVIMQ0Xvq4CeGoYE31wVtJ3R+0re2
+   m0RdCgXLr94pIgQXrkN6o+HspXynTB4dDb3YJYfuCerRiLYrDNp7FpZnA
+   NQmEwyIsTEu8QnAHT74QdSXeAlE/6oYmow/t88yCiTKdmFoji0d9LNNmk
+   XHVCcH1uT/OxE9P88yeMFPSiGuy4KSEiz0Skh2Ifsjj0bISvfBemzBua0
    w==;
-X-CSE-ConnectionGUID: 0z3xRwu6RK29OTEE8vFzFg==
-X-CSE-MsgGUID: rqAD8KTYQECNviu7e7JKsQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11733"; a="75010022"
+X-CSE-ConnectionGUID: dgm1pE/uQqmVO15CIzzPaA==
+X-CSE-MsgGUID: WaPfRJluTQu38iPrwPLarw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11733"; a="75010026"
 X-IronPort-AV: E=Sophos;i="6.23,128,1770624000"; 
-   d="scan'208";a="75010022"
+   d="scan'208";a="75010026"
 Received: from orviesa008.jf.intel.com ([10.64.159.148])
-  by fmvoesa108.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 18 Mar 2026 13:54:53 -0700
-X-CSE-ConnectionGUID: bAeJ2muMRpeecfBDy6Kv5w==
-X-CSE-MsgGUID: 4FYHYWgNTNKOsvqw6qtjuw==
+  by fmvoesa108.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 18 Mar 2026 13:54:55 -0700
+X-CSE-ConnectionGUID: D54W2JG7TIClcSwE2dpqYQ==
+X-CSE-MsgGUID: CRQwMwbJSE2Fhj6Q1fzV6g==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.23,128,1770624000"; 
-   d="scan'208";a="222793893"
+   d="scan'208";a="222793902"
 Received: from weis0040.iil.intel.com ([10.12.217.108])
-  by orviesa008-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 18 Mar 2026 13:54:53 -0700
+  by orviesa008-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 18 Mar 2026 13:54:54 -0700
 From: Miri Korenblit <miriam.rachel.korenblit@intel.com>
 To: linux-wireless@vger.kernel.org
-Cc: Ilan Peer <ilan.peer@intel.com>
-Subject: [PATCH iwlwifi-next 08/15] wifi: iwlwifi: mld: Introduce scan command version 18
-Date: Wed, 18 Mar 2026 22:54:23 +0200
-Message-Id: <20260318225236.c995b4e8bbc5.Ie401d9cf02daaa5e6adf2b3c309643589e3ead71@changeid>
+Cc: Emmanuel Grumbach <emmanuel.grumbach@intel.com>
+Subject: [PATCH iwlwifi-next 09/15] wifi: iwlwifi: uefi: open code the PPAG table store operation
+Date: Wed, 18 Mar 2026 22:54:24 +0200
+Message-Id: <20260318225236.61e729ea2bde.I9d9cda29f576290bf966f780bf7ad5af34970e6f@changeid>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20260318205430.614577-1-miriam.rachel.korenblit@intel.com>
 References: <20260318205430.614577-1-miriam.rachel.korenblit@intel.com>
@@ -83,7 +83,7 @@ X-Spamd-Result: default: False [-1.16 / 15.00];
 	R_MISSING_CHARSET(0.50)[];
 	MID_RHS_NOT_FQDN(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[intel.com,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[intel.com:s=Intel];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
@@ -91,10 +91,10 @@ X-Spamd-Result: default: False [-1.16 / 15.00];
 	TO_DN_SOME(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-33432-lists,linux-wireless=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-33433-lists,linux-wireless=lfdr.de];
 	HAS_ORG_HEADER(0.00)[];
 	RCPT_COUNT_TWO(0.00)[2];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[miriam.rachel.korenblit@intel.com,linux-wireless@vger.kernel.org];
@@ -105,272 +105,119 @@ X-Spamd-Result: default: False [-1.16 / 15.00];
 	NEURAL_HAM(-0.00)[-0.996];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:dkim,intel.com:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: EC9262C2BF1
+X-Rspamd-Queue-Id: CCBE22C2BF9
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-From: Ilan Peer <ilan.peer@intel.com>
+From: Emmanuel Grumbach <emmanuel.grumbach@intel.com>
 
-The FW scan logic was extended to support new channels in the
-7 GHz band, as such, the scan command was modified to support
-scanning more PSC channels.
+The structure in firmware runtime will need to grow because we're adding
+a subband for UNII-9.
+This means that we will soon no longer be able to just memcpy the data
+from the UEFI table. The layout of the array will change.
+Tediously copy the data byte-byte to make sure things get to the right
+place even when we'll increase the number of subbands.
+Make it easier for the uefi_cnv_var_ppag structure to grow by
+simpiflying the layout it becomes an array of s8.
+The layout of the structure becomes less obvious from the structure's
+declaration, but then the code is more flexible.
 
-Introduce scan command version 18 handling, which is different
-from scan command version 17 only in the number of supported
-channel configurations.
+Don't use UEFI_SAR_MAX_SUB_BANDS_NUM for the number of bands for PPAG.
+Of course, SAR related structures will grow in future patches, but
+decouple SAR and PPAG to make the work easier.
 
-Signed-off-by: Ilan Peer <ilan.peer@intel.com>
+Signed-off-by: Emmanuel Grumbach <emmanuel.grumbach@intel.com>
 Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
 ---
- .../net/wireless/intel/iwlwifi/fw/api/scan.h  | 45 ++++++++++
- drivers/net/wireless/intel/iwlwifi/mld/scan.c | 87 +++++++++++++++----
- 2 files changed, 115 insertions(+), 17 deletions(-)
+ drivers/net/wireless/intel/iwlwifi/fw/uefi.c | 23 ++++++++++++++++----
+ drivers/net/wireless/intel/iwlwifi/fw/uefi.h | 16 +++++---------
+ 2 files changed, 25 insertions(+), 14 deletions(-)
 
-diff --git a/drivers/net/wireless/intel/iwlwifi/fw/api/scan.h b/drivers/net/wireless/intel/iwlwifi/fw/api/scan.h
-index 60f0a4924ddf..c2bb400c834c 100644
---- a/drivers/net/wireless/intel/iwlwifi/fw/api/scan.h
-+++ b/drivers/net/wireless/intel/iwlwifi/fw/api/scan.h
-@@ -985,6 +985,7 @@ struct iwl_scan_probe_params_v4 {
- } __packed; /* SCAN_PROBE_PARAMS_API_S_VER_4 */
- 
- #define SCAN_MAX_NUM_CHANS_V3 67
-+#define SCAN_MAX_NUM_CHANS_V4 68
- 
- /**
-  * struct iwl_scan_channel_params_v4 - channel params
-@@ -1027,6 +1028,24 @@ struct iwl_scan_channel_params_v7 {
- 	struct iwl_scan_channel_cfg_umac channel_config[SCAN_MAX_NUM_CHANS_V3];
- } __packed; /* SCAN_CHANNEL_PARAMS_API_S_VER_6 */
- 
-+/**
-+ * struct iwl_scan_channel_params_v8 - channel params
-+ * @flags: channel flags &enum iwl_scan_channel_flags
-+ * @count: num of channels in scan request
-+ * @n_aps_override: override the number of APs the FW uses to calculate dwell
-+ *	time when adaptive dwell is used.
-+ *	Channel k will use n_aps_override[i] when BIT(20 + i) is set in
-+ *	channel_config[k].flags
-+ * @channel_config: array of explicit channel configurations
-+ *      for 2.4Ghz and 5.2Ghz bands
-+ */
-+struct iwl_scan_channel_params_v8 {
-+	u8 flags;
-+	u8 count;
-+	u8 n_aps_override[2];
-+	struct iwl_scan_channel_cfg_umac channel_config[SCAN_MAX_NUM_CHANS_V4];
-+} __packed; /* SCAN_CHANNEL_PARAMS_API_S_VER_8 */
-+
- /**
-  * struct iwl_scan_general_params_v11 - channel params
-  * @flags: &enum iwl_umac_scan_general_flags_v2
-@@ -1109,6 +1128,20 @@ struct iwl_scan_req_params_v17 {
- 	struct iwl_scan_probe_params_v4 probe_params;
- } __packed; /* SCAN_REQUEST_PARAMS_API_S_VER_17 - 14 */
- 
-+/**
-+ * struct iwl_scan_req_params_v18 - scan request parameters (v18)
-+ * @general_params: &struct iwl_scan_general_params_v11
-+ * @channel_params: &struct iwl_scan_channel_params_v8
-+ * @periodic_params: &struct iwl_scan_periodic_parms_v1
-+ * @probe_params: &struct iwl_scan_probe_params_v4
-+ */
-+struct iwl_scan_req_params_v18 {
-+	struct iwl_scan_general_params_v11 general_params;
-+	struct iwl_scan_channel_params_v8 channel_params;
-+	struct iwl_scan_periodic_parms_v1 periodic_params;
-+	struct iwl_scan_probe_params_v4 probe_params;
-+} __packed; /* SCAN_REQUEST_PARAMS_API_S_VER_18 */
-+
- /**
-  * struct iwl_scan_req_umac_v12 - scan request command (v12)
-  * @uid: scan id, &enum iwl_umac_scan_uid_offsets
-@@ -1133,6 +1166,18 @@ struct iwl_scan_req_umac_v17 {
- 	struct iwl_scan_req_params_v17 scan_params;
- } __packed; /* SCAN_REQUEST_CMD_UMAC_API_S_VER_17 - 14 */
- 
-+/**
-+ * struct iwl_scan_req_umac_v18 - scan request command (v18)
-+ * @uid: scan id, &enum iwl_umac_scan_uid_offsets
-+ * @ooc_priority: out of channel priority - &enum iwl_scan_priority
-+ * @scan_params: scan parameters
-+ */
-+struct iwl_scan_req_umac_v18 {
-+	__le32 uid;
-+	__le32 ooc_priority;
-+	struct iwl_scan_req_params_v18 scan_params;
-+} __packed; /* SCAN_REQUEST_CMD_UMAC_API_S_VER_18 */
-+
- /**
-  * struct iwl_umac_scan_abort - scan abort command
-  * @uid: scan id, &enum iwl_umac_scan_uid_offsets
-diff --git a/drivers/net/wireless/intel/iwlwifi/mld/scan.c b/drivers/net/wireless/intel/iwlwifi/mld/scan.c
-index 7f4679134def..96cd970cceb4 100644
---- a/drivers/net/wireless/intel/iwlwifi/mld/scan.c
-+++ b/drivers/net/wireless/intel/iwlwifi/mld/scan.c
-@@ -118,7 +118,7 @@ struct iwl_mld_scan_params {
- 
- struct iwl_scan_req_params_ptrs {
- 	struct iwl_scan_general_params_v11 *general_params;
--	struct iwl_scan_channel_params_v7 *channel_params;
-+	struct iwl_scan_channel_params_v8 *channel_params;
- 	struct iwl_scan_periodic_parms_v1 *periodic_params;
- 	struct iwl_scan_probe_params_v4 *probe_params;
- };
-@@ -840,7 +840,7 @@ iwl_mld_scan_cmd_set_channels(struct iwl_mld *mld,
- 			      int n_channels, u32 flags,
- 			      enum nl80211_iftype vif_type)
+diff --git a/drivers/net/wireless/intel/iwlwifi/fw/uefi.c b/drivers/net/wireless/intel/iwlwifi/fw/uefi.c
+index d4e1ab1f7c84..38f9d9adf90e 100644
+--- a/drivers/net/wireless/intel/iwlwifi/fw/uefi.c
++++ b/drivers/net/wireless/intel/iwlwifi/fw/uefi.c
+@@ -571,9 +571,11 @@ int iwl_uefi_get_ppag_table(struct iwl_fw_runtime *fwrt)
  {
--	struct iwl_scan_channel_params_v7 *cp = scan_ptrs->channel_params;
-+	struct iwl_scan_channel_params_v8 *cp = scan_ptrs->channel_params;
+ 	struct uefi_cnv_var_ppag *data;
+ 	int ret = 0;
++	int data_sz = sizeof(*data) + sizeof(data->vals[0]) *
++		IWL_NUM_CHAIN_LIMITS * UEFI_PPAG_SUB_BANDS_NUM;
  
- 	for (int i = 0; i < n_channels; i++) {
- 		enum nl80211_band band = channels[i]->band;
-@@ -883,7 +883,7 @@ iwl_mld_scan_cfg_channels_6g(struct iwl_mld *mld,
- 			     enum nl80211_iftype vif_type)
- {
- 	struct iwl_scan_probe_params_v4 *pp = scan_ptrs->probe_params;
--	struct iwl_scan_channel_params_v7 *cp = scan_ptrs->channel_params;
-+	struct iwl_scan_channel_params_v8 *cp = scan_ptrs->channel_params;
- 	struct cfg80211_scan_6ghz_params *scan_6ghz_params =
- 		params->scan_6ghz_params;
- 	u32 i;
-@@ -1083,7 +1083,7 @@ iwl_mld_scan_cmd_set_6ghz_chan_params(struct iwl_mld *mld,
- 				      struct ieee80211_vif *vif,
- 				      struct iwl_scan_req_params_ptrs *scan_ptrs)
- {
--	struct iwl_scan_channel_params_v7 *cp = scan_ptrs->channel_params;
-+	struct iwl_scan_channel_params_v8 *cp = scan_ptrs->channel_params;
- 
- 	/* Explicitly clear the flags since most of them are not
- 	 * relevant for 6 GHz scan.
-@@ -1111,7 +1111,7 @@ iwl_mld_scan_cmd_set_chan_params(struct iwl_mld *mld,
- 				 enum iwl_mld_scan_status scan_status,
- 				 u32 channel_cfg_flags)
- {
--	struct iwl_scan_channel_params_v7 *cp = scan_ptrs->channel_params;
-+	struct iwl_scan_channel_params_v8 *cp = scan_ptrs->channel_params;
- 	struct ieee80211_supported_band *sband =
- 		&mld->nvm_data->bands[NL80211_BAND_6GHZ];
- 
-@@ -1173,39 +1173,89 @@ struct iwl_scan_umac_handler {
- 	.handler = iwl_mld_scan_umac_v##_ver,	\
- }
- 
--static int iwl_mld_scan_umac_v17(struct iwl_mld *mld, struct ieee80211_vif *vif,
-+static int iwl_mld_scan_umac_common(struct iwl_mld *mld,
-+				    struct ieee80211_vif *vif,
-+				    struct iwl_mld_scan_params *params,
-+				    struct iwl_scan_req_params_ptrs *scan_ptrs,
-+				    enum iwl_mld_scan_status scan_status,
-+				    bool low_latency)
-+{
-+	u32 bitmap_ssid = 0;
-+	int ret;
-+
-+	iwl_mld_scan_cmd_set_gen_params(mld, params, vif, scan_ptrs,
-+					scan_status);
-+
-+	ret = iwl_mld_scan_cmd_set_sched_params(params, scan_ptrs);
-+	if (ret)
-+		return ret;
-+
-+	iwl_mld_scan_cmd_set_probe_params(params, scan_ptrs, &bitmap_ssid);
-+
-+	return iwl_mld_scan_cmd_set_chan_params(mld, params, vif, scan_ptrs,
-+						low_latency, scan_status,
-+						bitmap_ssid);
-+}
-+
-+static int iwl_mld_scan_umac_v18(struct iwl_mld *mld, struct ieee80211_vif *vif,
- 				 struct iwl_mld_scan_params *params,
- 				 enum iwl_mld_scan_status scan_status,
- 				 int uid, u32 ooc_priority, bool low_latency)
- {
--	struct iwl_scan_req_umac_v17 *cmd = mld->scan.cmd;
-+	struct iwl_scan_req_umac_v18 *cmd = mld->scan.cmd;
- 	struct iwl_scan_req_params_ptrs scan_ptrs = {
- 		.general_params = &cmd->scan_params.general_params,
- 		.probe_params = &cmd->scan_params.probe_params,
- 		.channel_params = &cmd->scan_params.channel_params,
- 		.periodic_params = &cmd->scan_params.periodic_params
- 	};
--	u32 bitmap_ssid = 0;
- 	int ret;
- 
--	if (WARN_ON(params->n_channels > SCAN_MAX_NUM_CHANS_V3))
-+	if (WARN_ON(params->n_channels > SCAN_MAX_NUM_CHANS_V4))
+ 	data = iwl_uefi_get_verified_variable(fwrt->trans, IWL_UEFI_PPAG_NAME,
+-					      "PPAG", sizeof(*data), NULL);
++					      "PPAG", data_sz, NULL);
+ 	if (IS_ERR(data))
  		return -EINVAL;
  
- 	cmd->uid = cpu_to_le32(uid);
- 	cmd->ooc_priority = cpu_to_le32(ooc_priority);
+@@ -589,9 +591,22 @@ int iwl_uefi_get_ppag_table(struct iwl_fw_runtime *fwrt)
+ 	fwrt->ppag_flags = iwl_bios_get_ppag_flags(data->ppag_modes,
+ 						   fwrt->ppag_bios_rev);
  
--	iwl_mld_scan_cmd_set_gen_params(mld, params, vif, &scan_ptrs,
--					scan_status);
+-	BUILD_BUG_ON(sizeof(fwrt->ppag_chains) != sizeof(data->ppag_chains));
+-	memcpy(&fwrt->ppag_chains, &data->ppag_chains,
+-	       sizeof(data->ppag_chains));
++	/*
++	 * Make sure fwrt has enough room to hold
++	 * data coming from the UEFI table
++	 */
++	BUILD_BUG_ON(ARRAY_SIZE(fwrt->ppag_chains) *
++		     ARRAY_SIZE(fwrt->ppag_chains[0].subbands) <
++		     IWL_NUM_CHAIN_LIMITS * UEFI_PPAG_SUB_BANDS_NUM);
++
++	for (int chain = 0; chain < IWL_NUM_CHAIN_LIMITS; chain++) {
++		for (int subband = 0;
++		     subband < UEFI_PPAG_SUB_BANDS_NUM;
++		     subband++)
++			fwrt->ppag_chains[chain].subbands[subband] =
++				data->vals[chain * UEFI_PPAG_SUB_BANDS_NUM + subband];
++	}
++
+ 	fwrt->ppag_bios_source = BIOS_SOURCE_UEFI;
+ out:
+ 	kfree(data);
+diff --git a/drivers/net/wireless/intel/iwlwifi/fw/uefi.h b/drivers/net/wireless/intel/iwlwifi/fw/uefi.h
+index c6940a3c03ea..4f0ce068a589 100644
+--- a/drivers/net/wireless/intel/iwlwifi/fw/uefi.h
++++ b/drivers/net/wireless/intel/iwlwifi/fw/uefi.h
+@@ -77,6 +77,7 @@ struct uefi_cnv_common_step_data {
+ } __packed;
+ 
+ #define UEFI_SAR_MAX_SUB_BANDS_NUM	11
++#define UEFI_PPAG_SUB_BANDS_NUM		11
+ #define UEFI_SAR_MAX_CHAINS_PER_PROFILE	4
+ 
+ /*
+@@ -136,24 +137,19 @@ struct uefi_cnv_var_wgds {
+ 	struct iwl_geo_profile geo_profiles[BIOS_GEO_MAX_PROFILE_NUM];
+ } __packed;
+ 
+-/*
+- * struct uefi_ppag_chain - PPAG table for a specific chain
+- * @subbands: the PPAG values for band
+- */
+-struct uefi_ppag_chain {
+-	s8 subbands[UEFI_SAR_MAX_SUB_BANDS_NUM];
+-};
 -
--	ret = iwl_mld_scan_cmd_set_sched_params(params, &scan_ptrs);
-+	ret = iwl_mld_scan_umac_common(mld, vif, params, &scan_ptrs,
-+				       scan_status, low_latency);
- 	if (ret)
- 		return ret;
+ /*
+  * struct uefi_cnv_var_ppag - PPAG table as defined in UEFI
+  * @revision: the revision of the table
+  * @ppag_modes: values from &enum iwl_ppag_flags
+- * @ppag_chains: the PPAG values per chain and band
++ * @vals: the PPAG values per chain and band as an array.
++ *	vals[chain * num_of_subbands + subband] will return the right value.
++ *	num_of_subbands is %UEFI_PPAG_SUB_BANDS_NUM.
++ *	the max number of chains is currently 2
+  */
+ struct uefi_cnv_var_ppag {
+ 	u8 revision;
+ 	u32 ppag_modes;
+-	struct uefi_ppag_chain ppag_chains[IWL_NUM_CHAIN_LIMITS];
++	s8 vals[];
+ } __packed;
  
--	iwl_mld_scan_cmd_set_probe_params(params, &scan_ptrs, &bitmap_ssid);
-+	return uid;
-+}
-+
-+static int iwl_mld_scan_umac_v17(struct iwl_mld *mld, struct ieee80211_vif *vif,
-+				 struct iwl_mld_scan_params *params,
-+				 enum iwl_mld_scan_status scan_status,
-+				 int uid, u32 ooc_priority, bool low_latency)
-+{
-+	struct iwl_scan_req_umac_v17 *cmd = mld->scan.cmd;
-+	struct iwl_scan_req_params_ptrs scan_ptrs = {
-+		.general_params = &cmd->scan_params.general_params,
-+		.probe_params = &cmd->scan_params.probe_params,
-+
-+		/* struct iwl_scan_channel_params_v8 and struct
-+		 * iwl_scan_channel_params_v7 are almost identical. The only
-+		 * difference is that the newer version allows configuration of
-+		 * more channels. So casting here is ok as long as we ensure
-+		 * that we don't exceed the max number of channels supported by
-+		 * the older version (see the WARN_ON below).
-+		 */
-+		.channel_params = (struct iwl_scan_channel_params_v8 *)
-+			&cmd->scan_params.channel_params,
-+		.periodic_params = &cmd->scan_params.periodic_params
-+	};
-+	int ret;
-+
-+	if (WARN_ON(params->n_channels > SCAN_MAX_NUM_CHANS_V3))
-+		return -EINVAL;
-+
-+	cmd->uid = cpu_to_le32(uid);
-+	cmd->ooc_priority = cpu_to_le32(ooc_priority);
- 
--	ret = iwl_mld_scan_cmd_set_chan_params(mld, params, vif, &scan_ptrs,
--					       low_latency, scan_status,
--					       bitmap_ssid);
-+	ret = iwl_mld_scan_umac_common(mld, vif, params, &scan_ptrs,
-+				       scan_status, low_latency);
- 	if (ret)
- 		return ret;
- 
-@@ -1214,6 +1264,7 @@ static int iwl_mld_scan_umac_v17(struct iwl_mld *mld, struct ieee80211_vif *vif,
- 
- static const struct iwl_scan_umac_handler iwl_scan_umac_handlers[] = {
- 	/* set the newest version first to shorten the list traverse time */
-+	IWL_SCAN_UMAC_HANDLER(18),
- 	IWL_SCAN_UMAC_HANDLER(17),
- };
- 
-@@ -2095,6 +2146,8 @@ int iwl_mld_alloc_scan_cmd(struct iwl_mld *mld)
- 
- 	if (scan_cmd_ver == 17) {
- 		scan_cmd_size = sizeof(struct iwl_scan_req_umac_v17);
-+	} else if (scan_cmd_ver == 18) {
-+		scan_cmd_size = sizeof(struct iwl_scan_req_umac_v18);
- 	} else {
- 		IWL_ERR(mld, "Unexpected scan cmd version %d\n", scan_cmd_ver);
- 		return -EINVAL;
+ /* struct uefi_cnv_var_wtas - WTAS tabled as defined in UEFI
 -- 
 2.34.1
 
