@@ -1,101 +1,102 @@
-Return-Path: <linux-wireless+bounces-33517-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-33518-lists+linux-wireless=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id wPyyEq93vGmFzAIAu9opvQ
-	(envelope-from <linux-wireless+bounces-33517-lists+linux-wireless=lfdr.de@vger.kernel.org>)
-	for <lists+linux-wireless@lfdr.de>; Thu, 19 Mar 2026 23:24:47 +0100
+	id IJHrEsB3vGmFzAIAu9opvQ
+	(envelope-from <linux-wireless+bounces-33518-lists+linux-wireless=lfdr.de@vger.kernel.org>)
+	for <lists+linux-wireless@lfdr.de>; Thu, 19 Mar 2026 23:25:04 +0100
 X-Original-To: lists+linux-wireless@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id C10412D2F06
-	for <lists+linux-wireless@lfdr.de>; Thu, 19 Mar 2026 23:24:46 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 047FC2D2F1B
+	for <lists+linux-wireless@lfdr.de>; Thu, 19 Mar 2026 23:25:03 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id A5E5F3029C0D
-	for <lists+linux-wireless@lfdr.de>; Thu, 19 Mar 2026 22:24:45 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 952ED3028350
+	for <lists+linux-wireless@lfdr.de>; Thu, 19 Mar 2026 22:25:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 69F843D47A9;
-	Thu, 19 Mar 2026 22:24:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1FBBC3FF881;
+	Thu, 19 Mar 2026 22:24:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=jetm.me header.i=@jetm.me header.b="R8Mv7Cx5";
-	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="H5hw9ndQ"
+	dkim=pass (2048-bit key) header.d=jetm.me header.i=@jetm.me header.b="T/oMt3gL";
+	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="17Mzejps"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from flow-b3-smtp.messagingengine.com (flow-b3-smtp.messagingengine.com [202.12.124.138])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B0BB53BC660;
-	Thu, 19 Mar 2026 22:24:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BBDD73BAD83;
+	Thu, 19 Mar 2026 22:24:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=202.12.124.138
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773959067; cv=none; b=j02Qx7Gh1SX6FRDrmFm4ibLo74E1sUHj2aY8la1STOuy3w32WMrVAqF/Q2HoRTLgQoYHWu4BPWpS5skx1zAYSpW1NE+5etKBI4624r3ggMFsfz7J8UbqCRSglNviaa/Y3cufRbZxS9+rb5xn0ncrTpky6bOsVUPI90EzZtNjtII=
+	t=1773959070; cv=none; b=jgC8dJUrySX2iTy1lnEb80O0mludv58r8MtdnKRMjda6Ci4cItCv34Rdv7Tu3Tdx13U7dSovpk+8n1cS8g6Kx1MZmByDCKHN7DT/bk+m0zPxL8qBkZm7xiwR57N8E8eShTQ1A1qotxbxYrLix0hBjorUUvAG+EDxzNbtZ6dhz5M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773959067; c=relaxed/simple;
-	bh=DizT/ddlZFD7KX9YeoKrBVdFFWkgs3dXjw0pBgdRG1k=;
+	s=arc-20240116; t=1773959070; c=relaxed/simple;
+	bh=oL0xrbX2LUVp9Q4JBTD78nnciF3VWT3fiWIhBG52oaU=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc:
-	 In-Reply-To:References; b=kvZrywjnR8TAx4vGZpKYMCGFhk/Hdyf7b/sT+5N9B3MZRVHOf+WfTZ6WseRprbyjhhJnYPkTZ/Wu5naz0EpBjq0NHcXvNm28rsbw55J9Qg3w8Rji131K+v6vSEI0hrBViqdJS+F/1qmG1TWUyChDgHN9wu1VF5SjyGwo0RepIXo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=jetm.me; spf=pass smtp.mailfrom=jetm.me; dkim=pass (2048-bit key) header.d=jetm.me header.i=@jetm.me header.b=R8Mv7Cx5; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=H5hw9ndQ; arc=none smtp.client-ip=202.12.124.138
+	 In-Reply-To:References; b=SWxti97YDiEbWslIjck8aq/PyWuUq79mEGrcX/NVFUYXajXl1eoKOZkl4jbhH3VeKVU+fVxpYTBfaAFJnhHsG4TxDPkDB8mrkpsKxUWEavPmwa1LB1MPUeWgbNcaT+Ta2fygeZLAKZpBen1DsqGRRiqjLNjtC6uGKoqE5ITQigI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=jetm.me; spf=pass smtp.mailfrom=jetm.me; dkim=pass (2048-bit key) header.d=jetm.me header.i=@jetm.me header.b=T/oMt3gL; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=17Mzejps; arc=none smtp.client-ip=202.12.124.138
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=jetm.me
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=jetm.me
 Received: from phl-compute-02.internal (phl-compute-02.internal [10.202.2.42])
-	by mailflow.stl.internal (Postfix) with ESMTP id 8B0221300092;
-	Thu, 19 Mar 2026 18:24:21 -0400 (EDT)
+	by mailflow.stl.internal (Postfix) with ESMTP id 553FA1300099;
+	Thu, 19 Mar 2026 18:24:24 -0400 (EDT)
 Received: from phl-imap-07 ([10.202.2.97])
-  by phl-compute-02.internal (MEProxy); Thu, 19 Mar 2026 18:24:22 -0400
+  by phl-compute-02.internal (MEProxy); Thu, 19 Mar 2026 18:24:24 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=jetm.me; h=cc:cc
 	:content-transfer-encoding:content-type:content-type:date:date
 	:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to; s=fm3; t=1773959061;
-	 x=1773966261; bh=cvt3lJ9bUn/nS9x0h5+rL6WI6mE1I309IFcyKJoRia4=; b=
-	R8Mv7Cx5F4KphjYg5Te06q3GICfi1OVK0mA6wu+CWFeZihur3s9HMXXJbyj+4/OU
-	S8obxUz4xPrnTTL376SDOwyl+zqHmnu+eA3p0hHLPi1S8VnLx19xGTXAdT910Vu8
-	Tf8B9cCzIuDezYjjkIKhwTfbKpSszn3HS7Uc0cJcIj5UJHwYLoKJfffywv3lUIz1
-	UBKGMIgDbTEWmQ64k6jTjwkezW5PI2KM0sc4krVr2vcKISOfJmmm0kzcWS6XEdA1
-	zjSRxjtrNNyL7k/WAKXCfq5jgZhTTGA4yBfZGzX9hdwH4gHRwDNoVrrtzWa8504/
-	4etlxOI+enFMOcnT7xTeBw==
+	:references:reply-to:subject:subject:to:to; s=fm3; t=1773959064;
+	 x=1773966264; bh=HOxwP/LFDi9G4GG/ESf696AKYCs6uY6IFgrUHF+9MxA=; b=
+	T/oMt3gL6vM5XXXD5iGStXtepG7MEvbatbKheqegwW7Vg764fLCnhmbcN4FYeJe1
+	Lk4a/1Rx1zMQWhz8uIjoUImsW4lKbfgwZ9bzZyIgKN4bTnmdpt73wIChGGLJ2B6U
+	Ume1BeGOfaYxzmM8Y5pkrNjqi+BJ3DfENwu+ydY6BWGPIY1JsmezEzKB+5SvZwF8
+	pn42YKI95c1haR64+yiI+BTUa/PJxJmjCB1ZKGN7rLE5VnQgGMUYXoGWgNPtVTep
+	1gfCkuw/0YPqBMB6H8oi/X/yAeOrtZgGKV+yHlrpvBclNHkMCeOdY2jfBsOiOqmA
+	wrOMJ1+A4/7PMwp+2e0A9w==
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
 	messagingengine.com; h=cc:cc:content-transfer-encoding
 	:content-type:content-type:date:date:feedback-id:feedback-id
 	:from:from:in-reply-to:in-reply-to:message-id:mime-version
 	:references:reply-to:subject:subject:to:to:x-me-proxy
-	:x-me-sender:x-me-sender:x-sasl-enc; s=fm1; t=1773959061; x=
-	1773966261; bh=cvt3lJ9bUn/nS9x0h5+rL6WI6mE1I309IFcyKJoRia4=; b=H
-	5hw9ndQf3J0zoni9OhrC8aICkuhLQj+lEH553Pca5iGA6rGyxxW+2YkwEJ1OUSwB
-	B5ye0M6bOO72D9Oj7A2PfranAbJhEdP3npU8wydqQkdgIjTgbCmzrqPkvOOBowYf
-	uI0b4bmpLKSm16/Xlrbnn3Fik+1+WOpxz+3rc132feRT/t4SqNKrPc7CDFjLmEHP
-	ZPipPyaca+sfRJ3q4JwGk8sNDPAxlWt+/+hSwSowsoyWMTFKyuMbPhcz5/NqQMO0
-	1IffJHV+6y9sD1dQgDDq/UvAyLCAaBxizhhT/hHrcDQ8+Ad2LTZnjHXdd89Y3RgD
-	9r0RZ+WZTUPjHKmV3LZYw==
-X-ME-Sender: <xms:lXe8aRq7XXfH62QHG1Eo6iVXYvp7W3MbWSJzPwoGig-Ti9paUopnCQ>
-    <xme:lXe8aefZiOzCc19OsoPrapH62OLeItba1m5Gs3fPFxL1Yk2SSzNQGqBiS4Bv_MUDk
-    GyZbWbwht8JvuIR2xUOd4Kk62HvGaKgiv1owF1pkJG4qAg_7NoC9iI>
+	:x-me-sender:x-me-sender:x-sasl-enc; s=fm1; t=1773959064; x=
+	1773966264; bh=HOxwP/LFDi9G4GG/ESf696AKYCs6uY6IFgrUHF+9MxA=; b=1
+	7Mzejps7pfm4JolCitPkFvEMYpOECckpx2Xxv2G5+gr9rztvjKA1QkdIzKMrAcez
+	a4RStBPIJDsrIZbsDh3HU/Q2EC+qZOO1LQCOsMkLkB+AFOFc6zcwFt7mLm7C3aHs
+	t55nb3ru6ALzTTo/j5fT5S1bUWiWbY6wt/OM1hZWQ2haDVu2/yj7/6HEdXUYOQHq
+	THAqfvXAn6boOV8jdMKyQFkGbmAYNnFSk27BngNRD6QbCj+pbvESLpErEkfHVDv4
+	J4zVXW19rtx2kFiOSsi96zJ8QrwC8sNvZQ7i/JRZhzPGcttn2apbyfeehMNlLtCM
+	t6N5NFTOS3e7tZ4lTa7Fg==
+X-ME-Sender: <xms:mHe8aXB2Wi0nInlKHZnaVx21FGYv6qiTwu3kXEpWojxP5NS_CUe17g>
+    <xme:mHe8aYXhu8DaIypZXm43LNtC9J0pHl4EUvzydo1rvgwqlgyvByxYR0aru6oEqPVuQ
+    a8EEFrynHfiBH3zdrsg_sgSTrrrv6ARdgM_JTHb3eHos70gu1t3QOg>
 X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefgedrtddtgdeftdekvddtucetufdoteggodetrf
     dotffvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfurfetoffkrfgpnffqhgenuceu
     rghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujf
     gurhepoffhfffugggtgffkvfevofgjfhesthekredtredtjeenucfhrhhomheplfgrvhhi
-    vghrucfvihgruceofhhlohhsshesjhgvthhmrdhmvgeqnecuggftrfgrthhtvghrnhepve
-    ektdfhffevuddtgfetieevtddvheduhfeggfekveejlefhleefieevueefiefhnecuvehl
-    uhhsthgvrhfuihiivgeptdenucfrrghrrghmpehmrghilhhfrhhomhepfhhlohhsshesjh
-    gvthhmrdhmvgdpnhgspghrtghpthhtohepvddvpdhmohguvgepshhmthhpohhuthdprhgt
-    phhtthhopegrnhhgvghlohhgihhorggttghhihhnohdruggvlhhrvghgnhhosegtohhllh
-    grsghorhgrrdgtohhmpdhrtghpthhtohepfeduleefieefudesghhmrghilhdrtghomhdp
-    rhgtphhtthhopehlohhonhhgrddtgidttdesghhmrghilhdrtghomhdprhgtphhtthhope
-    grrhhivghlrdhrohhsvghnfhgvlhgurdejhedtsehgmhgrihhlrdgtohhmpdhrtghpthht
-    oheptghhrghpuhhishgurghrihhogeesghhmrghilhdrtghomhdprhgtphhtthhopehgih
-    hoshgrlheltdesghhmrghilhdrtghomhdprhgtphhtthhopehmrghtthhhihgrshdrsghg
-    ghesghhmrghilhdrtghomhdprhgtphhtthhopehrrgguohhirdgthhhrihhssehgmhgrih
-    hlrdgtohhmpdhrtghpthhtohepshgrmhhurdhtohhljhgrmhhosehgmhgrihhlrdgtohhm
-X-ME-Proxy: <xmx:lXe8afbhmW4q_w2VNssGoXD64Fu-Rje7qStDCBkVK2ovPU0b8t5h5A>
-    <xmx:lXe8abmQiBF7Ca2e0IrSkFtBDDilqxZpTuzK6k0apiJZ_T_5dP8ycg>
-    <xmx:lXe8aWdNb_n4ZPD5J-Yb1jX0Me0DgRjWNFGvLmg168FqZ6wCl3qQKw>
-    <xmx:lXe8aR2Gq_ZlhS02e-GuN64H8kykrSdLhfjBjOmkIturyVUpheCFQw>
-    <xmx:lXe8adR1q8Aduma-lGb37yWLie2Zne4817MU72grsMo6idwHm94gcYvH>
+    vghrucfvihgruceofhhlohhsshesjhgvthhmrdhmvgeqnecuggftrfgrthhtvghrnhepue
+    dttdfggfdufeeiueetffegveefffevjeehvdelfeevhffhteekgfegveeuiefhnecuffho
+    mhgrihhnpehgihhthhhusgdrtghomhenucevlhhushhtvghrufhiiigvpedtnecurfgrrh
+    grmhepmhgrihhlfhhrohhmpehflhhoshhssehjvghtmhdrmhgvpdhnsggprhgtphhtthho
+    pedvvddpmhhouggvpehsmhhtphhouhhtpdhrtghpthhtoheprghnghgvlhhoghhiohgrtg
+    gthhhinhhordguvghlrhgvghhnohestgholhhlrggsohhrrgdrtghomhdprhgtphhtthho
+    peefudelfeeifedusehgmhgrihhlrdgtohhmpdhrtghpthhtoheplhhoohhnghdrtdigtd
+    dtsehgmhgrihhlrdgtohhmpdhrtghpthhtoheprghrihgvlhdrrhhoshgvnhhfvghlugdr
+    jeehtdesghhmrghilhdrtghomhdprhgtphhtthhopegthhgrphhuihhsuggrrhhiohegse
+    hgmhgrihhlrdgtohhmpdhrtghpthhtohepghhiohhsrghlledtsehgmhgrihhlrdgtohhm
+    pdhrtghpthhtohepmhgrthhthhhirghsrdgsghhgsehgmhgrihhlrdgtohhmpdhrtghpth
+    htoheprhgrughoihdrtghhrhhishesghhmrghilhdrtghomhdprhgtphhtthhopehsrghm
+    uhdrthholhhjrghmohesghhmrghilhdrtghomh
+X-ME-Proxy: <xmx:mHe8aVwNloYeBmD6iy8w1XbRZKTESA0ZCjLgAa-IhUL4p8YANYd0mQ>
+    <xmx:mHe8aSev7Ew-aFBx-08S3PKjHa2zkQd_c9Om5VF2HMeKKHi7sWHLCg>
+    <xmx:mHe8aT0Wz6eg-bsjNbSPSIzM1eujrhpDWQ1Q5z8qrjwKToRSb0HtFA>
+    <xmx:mHe8aTtNLP1ukgfki_ooo7c0tWmkJ-7StRZHszX-LQrPG0AuKpzqTg>
+    <xmx:mHe8aTTBiPAinZ6bu6JrtsNkuU_b-VNIklB-pT0HzqchHXVlVGTRvtus>
 Feedback-ID: i9dde48b3:Fastmail
 Received: by mailuser.phl.internal (Postfix, from userid 501)
-	id 3B15C1EA006C; Thu, 19 Mar 2026 18:24:21 -0400 (EDT)
+	id 079371EA006B; Thu, 19 Mar 2026 18:24:24 -0400 (EDT)
 X-Mailer: MessagingEngine.com Webmail Interface
 From: Javier Tia <floss@jetm.me>
-Date: Thu, 19 Mar 2026 16:24:17 -0600
-Subject: [PATCH v2 01/13] wifi: mt76: mt7925: fix stale pointer comparisons
- in change_vif_links
+Date: Thu, 19 Mar 2026 16:24:18 -0600
+Subject: [PATCH v2 02/13] wifi: mt76: mt7925: add 320MHz bandwidth to
+ bss_rlm_tlv
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
@@ -104,7 +105,7 @@ List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
-Message-Id: <20260319-mt7927-wifi-support-v2-v2-1-d627a7fad70d@jetm.me>
+Message-Id: <20260319-mt7927-wifi-support-v2-v2-2-d627a7fad70d@jetm.me>
 To: Felix Fietkau <nbd@nbd.name>, Lorenzo Bianconi <lorenzo@kernel.org>,
  Ryder Lee <ryder.lee@mediatek.com>, Shayne Chen <shayne.chen@mediatek.com>,
  Sean Wang <sean.wang@mediatek.com>,
@@ -114,25 +115,25 @@ To: Felix Fietkau <nbd@nbd.name>, Lorenzo Bianconi <lorenzo@kernel.org>,
  Ming Yen Hsieh <mingyen.hsieh@mediatek.com>
 Cc: linux-wireless@vger.kernel.org, linux-kernel@vger.kernel.org,
  linux-arm-kernel@lists.infradead.org, linux-mediatek@lists.infradead.org,
+ =?utf-8?q?=E5=BC=A0=E6=97=AD=E6=B6=B5?= <Loong.0x00@gmail.com>,
  Marcin FM <marcin@lgic.pl>, Cristian-Florin Radoi <radoi.chris@gmail.com>,
  George Salukvadze <giosal90@gmail.com>, Evgeny Kapusta <3193631@gmail.com>,
  Samu Toljamo <samu.toljamo@gmail.com>,
  Ariel Rosenfeld <ariel.rosenfeld.750@gmail.com>,
  Chapuis Dario <chapuisdario4@gmail.com>,
- =?utf-8?q?Thibaut_Fran=C3=A7ois?= <tibo@humeurlibre.fr>,
- =?utf-8?q?=E5=BC=A0=E6=97=AD=E6=B6=B5?= <Loong.0x00@gmail.com>
+ =?utf-8?q?Thibaut_Fran=C3=A7ois?= <tibo@humeurlibre.fr>
 X-Mailer: b4 0.14.3
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1810; i=floss@jetm.me;
- h=from:subject:message-id; bh=DizT/ddlZFD7KX9YeoKrBVdFFWkgs3dXjw0pBgdRG1k=;
- b=owEB7QES/pANAwAKAbXuwwuoZ3cfAcsmYgBpvHeQLAEYKacw2gZHHInwwSGuqAs3PNfX4ugdx
- LEsTNqv5OKJAbMEAAEKAB0WIQSbE7ILzw7eI0VKk8m17sMLqGd3HwUCabx3kAAKCRC17sMLqGd3
- H1fBC/9KPA6rElLV7oP7qIWoscZFIglo65pC1Yw08WqMN2abP1gEhVtoJbclzmn8uI6zNhWugmU
- hNyWMAOiZUWPUzPqOTSwIQA81ELfLR9OTDsvl+eRHLajkpCEG1ZtuMO7NSVCyQHmkTs6PpV3ssj
- GOBGfmpa3mvh0AO2zigkyJdBAH1fqqfF1/83LIFyOHaYuwISvO590gIpEy6fdiwbc+RiRX2VsVP
- 21lben5hTemr/aw7RaNi+GfLxAk4tW4137GJ1ntChEZNly/Er11cmPAFU+kss3dA7aA2BfYIDqw
- qmx0u/oLIPm354fc0cwywEA7d/31VOTQfGmGPw+gYnsHJBSq7wrYpt69U3ZlLlkaKETCirvdEA2
- pANymSKkjudeTsABKSwKypSjAck/35IJUieqA2tDOvlsraWsByxwnM38lan6q4CjJb8YFzxhL2S
- AK5Z7tl0sCKRmanvjr6mWMdXZ4jlFrv/Wol0iuiDS//QTsLFiZOsnnhUfRXqj+TmpJzu0=
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1913; i=floss@jetm.me;
+ h=from:subject:message-id; bh=oL0xrbX2LUVp9Q4JBTD78nnciF3VWT3fiWIhBG52oaU=;
+ b=owEB7QES/pANAwAKAbXuwwuoZ3cfAcsmYgBpvHeQM1UeD5VnQ9wjqUu6j/sz7dtyOhS1NJNEN
+ lYq+/tgNP6JAbMEAAEKAB0WIQSbE7ILzw7eI0VKk8m17sMLqGd3HwUCabx3kAAKCRC17sMLqGd3
+ H80aC/wNHmTjAL+3tuCHYF3BJwsK1kXW2AJneZctvf+yz6XnZplPXeP7GVTKx4FRlCySIe3j19Q
+ fL0rxBVomu481PG0T5dbnnc4xfQUAAU/XCWSPO0Uvq91v2AFqWd5WT62TV7mfnPIz6lWKEEeHDA
+ uBY1W3X8wMx4Tsyg0daublZniuAb/BIExbmt/EvEdoAd9nc+M7DG/LUawdCsrLs6kjqcqm9hnvT
+ vc4LS5j8am88h9FLdmLfrMWraELq1ljKr0FtNDrwHNyobVSal/B6/ODqNpaQ+g0bEpHplo3BuTf
+ MMSVYmMawfcU5K+v0TY2mzEld2/PwQWVeW0O4kZT192QEDqvejbaU/JbXhkveyI5LkEFtc5fMGq
+ g8NbBV2KvoCHR1DcMC2JPLD3lOGSI7P0SS9fLJOsD8L7RQ/P1wX4n7SKWA6Hdcd6yXJZ6IMzTvI
+ 9iRjrCgvWPfZCuRVUWkcFqBxn/02CmmhAO8OkNKzhFucqogxIIDCbwK/2kcCm76UgddUM=
 X-Developer-Key: i=floss@jetm.me; a=openpgp;
  fpr=9B13B20BCF0EDE23454A93C9B5EEC30BA867771F
 In-Reply-To: <20260319-mt7927-wifi-support-v2-v2-0-d627a7fad70d@jetm.me>
@@ -142,43 +143,50 @@ X-Spamd-Result: default: False [-0.65 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[jetm.me,quarantine];
 	R_DKIM_ALLOW(-0.20)[jetm.me:s=fm3,messagingengine.com:s=fm1];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	XM_UA_NO_VERSION(0.01)[];
-	TAGGED_FROM(0.00)[bounces-33517-lists,linux-wireless=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-33518-lists,linux-wireless=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
 	FROM_HAS_DN(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	FREEMAIL_TO(0.00)[nbd.name,kernel.org,mediatek.com,gmail.com,collabora.com];
 	RCPT_COUNT_TWELVE(0.00)[22];
 	MIME_TRACE(0.00)[0:+];
-	FREEMAIL_CC(0.00)[vger.kernel.org,lists.infradead.org,lgic.pl,gmail.com,humeurlibre.fr];
+	FREEMAIL_CC(0.00)[vger.kernel.org,lists.infradead.org,gmail.com,lgic.pl,humeurlibre.fr];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	TO_DN_SOME(0.00)[];
 	RCVD_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[floss@jetm.me,linux-wireless@vger.kernel.org];
 	DKIM_TRACE(0.00)[jetm.me:+,messagingengine.com:+];
-	NEURAL_HAM(-0.00)[-0.432];
+	NEURAL_HAM(-0.00)[-0.146];
 	TAGGED_RCPT(0.00)[linux-wireless];
 	MID_RHS_MATCH_FROM(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[messagingengine.com:dkim,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,lgic.pl:email]
-X-Rspamd-Queue-Id: C10412D2F06
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[messagingengine.com:dkim,lgic.pl:email,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,humeurlibre.fr:email]
+X-Rspamd-Queue-Id: 047FC2D2F1B
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-In the error path of mt7925_change_vif_links(), the free: label iterates
-over link_ids to clean up, but compares against `mconf` and `mlink`
-which hold stale values from the last loop iteration rather than the
-current link_id being freed.
+bss_rlm_tlv() in mt7925_mcu_bss_rlm_tlv() has no case for
+NL80211_CHAN_WIDTH_320. When associated to a 320MHz BSS, the switch
+falls through to default and sends bw=0 (CMD_CBW_20MHZ) to firmware
+via BSS_RLM TLV. Firmware then configures the RX radio for 20MHz
+and cannot decode the AP's 320MHz frames, resulting in complete data
+path failure at 320MHz.
 
-Use array-indexed access (mconfs[link_id] / mlinks[link_id]) to compare
-against the correct per-link pointers.
+Add the missing NL80211_CHAN_WIDTH_320 case with CMD_CBW_320MHZ and
+center_chan2.
 
-Fixes: 69acd6d910b0 ("wifi: mt76: mt7925: add mt7925_change_vif_links")
+Tested on ASUS RT-BE92U: 320MHz throughput goes from 0 Mbps to
+841 Mbps (iperf3 -t30 -P8), PHY 4803 Mbps EHT-MCS11.
+
+Reported-by: 张旭涵 <Loong.0x00@gmail.com>
+Closes: https://github.com/openwrt/mt76/issues/927
+Tested-by: 张旭涵 <Loong.0x00@gmail.com>
 Tested-by: Marcin FM <marcin@lgic.pl>
 Tested-by: Cristian-Florin Radoi <radoi.chris@gmail.com>
 Tested-by: George Salukvadze <giosal90@gmail.com>
@@ -187,28 +195,26 @@ Tested-by: Samu Toljamo <samu.toljamo@gmail.com>
 Tested-by: Ariel Rosenfeld <ariel.rosenfeld.750@gmail.com>
 Tested-by: Chapuis Dario <chapuisdario4@gmail.com>
 Tested-by: Thibaut François <tibo@humeurlibre.fr>
-Tested-by: 张旭涵 <Loong.0x00@gmail.com>
 Signed-off-by: Javier Tia <floss@jetm.me>
 ---
- drivers/net/wireless/mediatek/mt76/mt7925/main.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/net/wireless/mediatek/mt76/mt7925/mcu.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7925/main.c b/drivers/net/wireless/mediatek/mt76/mt7925/main.c
-index 2d358a96640c..f128a198f81d 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7925/main.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7925/main.c
-@@ -2047,9 +2047,9 @@ mt7925_change_vif_links(struct ieee80211_hw *hw, struct ieee80211_vif *vif,
- 		rcu_assign_pointer(mvif->link_conf[link_id], NULL);
- 		rcu_assign_pointer(mvif->sta.link[link_id], NULL);
- 
--		if (mconf != &mvif->bss_conf)
-+		if (mconfs[link_id] != &mvif->bss_conf)
- 			devm_kfree(dev->mt76.dev, mconfs[link_id]);
--		if (mlink != &mvif->sta.deflink)
-+		if (mlinks[link_id] != &mvif->sta.deflink)
- 			devm_kfree(dev->mt76.dev, mlinks[link_id]);
- 	}
- 
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7925/mcu.c b/drivers/net/wireless/mediatek/mt76/mt7925/mcu.c
+index cf0fdea45cf7..dd5ecb07947b 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7925/mcu.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7925/mcu.c
+@@ -2331,6 +2331,10 @@ void mt7925_mcu_bss_rlm_tlv(struct sk_buff *skb, struct mt76_phy *phy,
+ 	case NL80211_CHAN_WIDTH_160:
+ 		req->bw = CMD_CBW_160MHZ;
+ 		break;
++	case NL80211_CHAN_WIDTH_320:
++		req->bw = CMD_CBW_320MHZ;
++		req->center_chan2 = ieee80211_frequency_to_channel(freq2);
++		break;
+ 	case NL80211_CHAN_WIDTH_5:
+ 		req->bw = CMD_CBW_5MHZ;
+ 		break;
 
 -- 
 2.53.0
