@@ -1,73 +1,73 @@
-Return-Path: <linux-wireless+bounces-33497-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-33499-lists+linux-wireless=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id sCVfAjRFvGkJwQIAu9opvQ
-	(envelope-from <linux-wireless+bounces-33497-lists+linux-wireless=lfdr.de@vger.kernel.org>)
-	for <lists+linux-wireless@lfdr.de>; Thu, 19 Mar 2026 19:49:24 +0100
+	id QDw4I0xFvGkJwQIAu9opvQ
+	(envelope-from <linux-wireless+bounces-33499-lists+linux-wireless=lfdr.de@vger.kernel.org>)
+	for <lists+linux-wireless@lfdr.de>; Thu, 19 Mar 2026 19:49:48 +0100
 X-Original-To: lists+linux-wireless@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 973F92D14B9
-	for <lists+linux-wireless@lfdr.de>; Thu, 19 Mar 2026 19:49:23 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8934B2D14EC
+	for <lists+linux-wireless@lfdr.de>; Thu, 19 Mar 2026 19:49:47 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id EACAC301B7AA
-	for <lists+linux-wireless@lfdr.de>; Thu, 19 Mar 2026 18:49:22 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 9F497300C54C
+	for <lists+linux-wireless@lfdr.de>; Thu, 19 Mar 2026 18:49:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id ACB86336EF1;
-	Thu, 19 Mar 2026 18:49:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AA3043451B3;
+	Thu, 19 Mar 2026 18:49:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="j4a9wY66"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="duhS9NMn"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.11])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 369213451B3
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A849A347BC9
 	for <linux-wireless@vger.kernel.org>; Thu, 19 Mar 2026 18:49:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.11
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773946155; cv=none; b=V1VqNMYPxLFCXOST5u9yXcoOtnLvJ9RQFuvy5mldPcz4LY51AEOQ/48xBBeL6K6cwVakvbToVjasq3ZTHbpn0zjikGbbpMwNoBXUS0wKfW5ryer/oPdiyhZE9UFHehwUPyJt+2swKzYBNB0AOlha61VOWyWR1xcrbixW8w66D7Q=
+	t=1773946156; cv=none; b=CK+iYvk4gsv5V30jPDTT+OcW8cADglPRq9qVmEftoSG1kKhg0xP6IhDsAHoZmVKd/i/8mQQXYkvT96Co016H03XIrPea2XUFiFUYNpkttKJMCwElaDLLHWGV0JFR9Y1PlnNZ/4UYe4VTJwJrRFY3WjN09crbRa/YeYiyVZ/+Ed4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773946155; c=relaxed/simple;
-	bh=sV9f79W3pZgxciLXBGORvOb85JVh+LHOirRYLd5KmP0=;
+	s=arc-20240116; t=1773946156; c=relaxed/simple;
+	bh=9yuz3iq3PeYwVJvbLg6CNkXMkDGa4bqYqvLm8F7gERw=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=RlnbXFUduHwzYlLqvfpnNpe8gxT/TzH1xxo6j+8vjr/oD9WR10lUr0iVEcFh8gzV1EGbv/wCzk52sGFG1WYPQSVp497ZxjiEOqbVLLq2opbtydXMdfClniv6UPQV9c9UiweWrKj6Ii/FSItdD8TP6DnjlStbInMw9IggHqe8Qi8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=j4a9wY66; arc=none smtp.client-ip=192.198.163.11
+	 MIME-Version; b=IUgxdG5dL1huYynLdjLQ2naywdr2kgCvzAC8Xr0r/31L8kFxtbBzQUAUZxv6AwgK4axRzxHCbssebr4CTpQ/jbt2yE3/illab+cCYxKft2vbvz/YvoQG/oFQfPCAghTgFVkoz40OxgYHNCAaT8qd56fqkV3mXOuo3QCgy77dNpM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=duhS9NMn; arc=none smtp.client-ip=192.198.163.11
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1773946154; x=1805482154;
+  t=1773946155; x=1805482155;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=sV9f79W3pZgxciLXBGORvOb85JVh+LHOirRYLd5KmP0=;
-  b=j4a9wY66TTegj0j4z8dUqDfyoF2UznqACyrQkC8HbDXs5cSX5Xl6yOkf
-   M7WYIbab/ToE/Sf/o0F8YJxqC9/sD4JXepdslNRd8yFrVDfsFjGP9Bm6S
-   vE6HFBoucqMeq721JbNtDNT4SWjGX0g+nJtNrLkhxPAH18acgRtZLQYiZ
-   8etye7WLaplW5UVbh+OG9GvCM19FsOT1HB35/QLuVmOIENkb0rFJ/bj0J
-   f/QFhUd7EqD3Odh/qm/ENdpPgT8ayZdkv6DRIxVzxW9979JLAMCiWthu3
-   bGRXV+O5iihaJewnn4x/U7Cfnu01LOlzdXetUtzahXhZhCaPVIq9X6FL4
+  bh=9yuz3iq3PeYwVJvbLg6CNkXMkDGa4bqYqvLm8F7gERw=;
+  b=duhS9NMnqjCgLYTK9YnzKoqHjO1fSYK29OKWvbW1MZOl3HvH373jwwOL
+   +mN4H9UZjFYIe8wm9kgh784di6TBsi5VUCLo1ygwY8k1HNigCiLyMmXbZ
+   LyY0H9mfgCcT03aI8um1Gg5SKtIj2nWfG7JYRfbA+u1OPxGB5n+KNChYp
+   fdBMaCa+NOhrq2fzGVwpMHMN+a62lKHDQX7aMJO0iCFx6dBdys7VquqWX
+   Caf0HHiXG9DGJoDPs1Z638cb6CH6K0j5TLPW/GW4jJz0NNOsTUmq22qNv
+   PnPa+chv2HoJHAQWZuHKJkFXIqvE5XqxOKSfGC3nqthVpG5lbO3+gfELM
    Q==;
-X-CSE-ConnectionGUID: uTQLRNWdSoyeWtGOcVOttw==
-X-CSE-MsgGUID: hRI1T7TBQJem07DDyWbUbw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11734"; a="85656479"
+X-CSE-ConnectionGUID: tEtIKbKaThC+M3rxhI2V+A==
+X-CSE-MsgGUID: nLPz3TDpSk2qMW0phzIPhA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11734"; a="85656480"
 X-IronPort-AV: E=Sophos;i="6.23,129,1770624000"; 
-   d="scan'208";a="85656479"
+   d="scan'208";a="85656480"
 Received: from orviesa005.jf.intel.com ([10.64.159.145])
-  by fmvoesa105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 19 Mar 2026 11:49:13 -0700
-X-CSE-ConnectionGUID: ld6CTj1MSVe35M7dVCRmGQ==
-X-CSE-MsgGUID: VCgI+if9SIKPGGJr4pjVNQ==
+  by fmvoesa105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 19 Mar 2026 11:49:15 -0700
+X-CSE-ConnectionGUID: gyBVh3vITSO6I8frixa8Ow==
+X-CSE-MsgGUID: vpnNDqLWQLOUKv1tPa/coA==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.23,129,1770624000"; 
-   d="scan'208";a="227998512"
+   d="scan'208";a="227998516"
 Received: from weis0040.iil.intel.com ([10.12.217.108])
-  by orviesa005-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 19 Mar 2026 11:49:11 -0700
+  by orviesa005-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 19 Mar 2026 11:49:13 -0700
 From: Miri Korenblit <miriam.rachel.korenblit@intel.com>
 To: linux-wireless@vger.kernel.org
 Cc: Emmanuel Grumbach <emmanuel.grumbach@intel.com>,
 	Johannes Berg <johannes.berg@intel.com>
-Subject: [PATCH iwlwifi-next 04/15] wifi: iwlwifi: uefi: support the new WRDS and EWRD tables
-Date: Thu, 19 Mar 2026 20:48:44 +0200
-Message-Id: <20260319204647.6948f69e6ae4.Icf990e13de6905c35a8de69f1445f8eb4aa43ee4@changeid>
+Subject: [PATCH iwlwifi-next 05/15] wifi: iwlwifi: acpi: add support for WRDS rev 3 table
+Date: Thu, 19 Mar 2026 20:48:45 +0200
+Message-Id: <20260319204647.06543ec65e00.I73135c7d61bff9b46ad9862d93f4faf923983fd4@changeid>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20260319184855.1981384-1-miriam.rachel.korenblit@intel.com>
 References: <20260319184855.1981384-1-miriam.rachel.korenblit@intel.com>
@@ -85,17 +85,17 @@ X-Spamd-Result: default: False [-1.16 / 15.00];
 	MID_RHS_NOT_FQDN(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[intel.com,none];
 	R_DKIM_ALLOW(-0.20)[intel.com:s=Intel];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	TO_DN_SOME(0.00)[];
-	TAGGED_FROM(0.00)[bounces-33497-lists,linux-wireless=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-33499-lists,linux-wireless=lfdr.de];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	HAS_ORG_HEADER(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
 	RCPT_COUNT_THREE(0.00)[3];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[miriam.rachel.korenblit@intel.com,linux-wireless@vger.kernel.org];
@@ -103,301 +103,89 @@ X-Spamd-Result: default: False [-1.16 / 15.00];
 	DKIM_TRACE(0.00)[intel.com:+];
 	RCVD_COUNT_FIVE(0.00)[5];
 	TAGGED_RCPT(0.00)[linux-wireless];
-	NEURAL_HAM(-0.00)[-0.997];
+	NEURAL_HAM(-0.00)[-0.998];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:dkim,intel.com:email,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 973F92D14B9
+	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:dkim,intel.com:email,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 8934B2D14EC
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
 From: Emmanuel Grumbach <emmanuel.grumbach@intel.com>
 
-Those tables now have support for UNII-9 subband.
-Refactor iwl_uefi_set_sar_profile to get an array of values that makes
-it easier to use when the number of subbands can vary.
-Revamp a bit the code that fetches the tables to ask for the smaller
-table, then we can check the size of the object that we got and compare
-to the expected sizes to determine what revision to expect.
+This table includes another sub-band for UNII-9.
 
 Signed-off-by: Emmanuel Grumbach <emmanuel.grumbach@intel.com>
 Reviewed-by: Johannes Berg <johannes.berg@intel.com>
 Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
 ---
- .../wireless/intel/iwlwifi/fw/regulatory.h    |  2 +-
- drivers/net/wireless/intel/iwlwifi/fw/uefi.c  | 92 +++++++++++++++----
- drivers/net/wireless/intel/iwlwifi/fw/uefi.h  | 62 ++++++++-----
- 3 files changed, 116 insertions(+), 40 deletions(-)
+ drivers/net/wireless/intel/iwlwifi/fw/acpi.c | 25 +++++++++++++++++++-
+ drivers/net/wireless/intel/iwlwifi/fw/acpi.h |  3 +++
+ 2 files changed, 27 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/wireless/intel/iwlwifi/fw/regulatory.h b/drivers/net/wireless/intel/iwlwifi/fw/regulatory.h
-index 446c8a2c4f9d..a3684514c904 100644
---- a/drivers/net/wireless/intel/iwlwifi/fw/regulatory.h
-+++ b/drivers/net/wireless/intel/iwlwifi/fw/regulatory.h
-@@ -21,7 +21,7 @@
-  */
- #define BIOS_SAR_MAX_CHAINS_PER_PROFILE 4
- #define BIOS_SAR_NUM_CHAINS             2
--#define BIOS_SAR_MAX_SUB_BANDS_NUM      11
-+#define BIOS_SAR_MAX_SUB_BANDS_NUM      12
- #define BIOS_PPAG_MAX_SUB_BANDS_NUM     12
- 
- #define BIOS_GEO_NUM_CHAINS		2
-diff --git a/drivers/net/wireless/intel/iwlwifi/fw/uefi.c b/drivers/net/wireless/intel/iwlwifi/fw/uefi.c
-index 84b6f8b7eda9..3d3d698bacd0 100644
---- a/drivers/net/wireless/intel/iwlwifi/fw/uefi.c
-+++ b/drivers/net/wireless/intel/iwlwifi/fw/uefi.c
-@@ -460,11 +460,30 @@ void iwl_uefi_get_uneb_table(struct iwl_trans *trans,
- IWL_EXPORT_SYMBOL(iwl_uefi_get_uneb_table);
- 
- static void iwl_uefi_set_sar_profile(struct iwl_fw_runtime *fwrt,
--				     struct uefi_sar_profile *uefi_sar_prof,
--				     u8 prof_index, bool enabled)
-+				     const u8 *vals, u8 prof_index,
-+				     u8 num_subbands, bool enabled)
- {
--	memcpy(&fwrt->sar_profiles[prof_index].chains, uefi_sar_prof,
--	       sizeof(struct uefi_sar_profile));
-+	struct iwl_sar_profile *sar_prof = &fwrt->sar_profiles[prof_index];
-+
-+	/*
-+	 * Make sure fwrt has enough room to hold the data
-+	 * coming from the UEFI table
-+	 */
-+	if (WARN_ON(ARRAY_SIZE(sar_prof->chains) *
-+		    ARRAY_SIZE(sar_prof->chains[0].subbands)  <
-+		    UEFI_SAR_MAX_CHAINS_PER_PROFILE * num_subbands))
-+		return;
-+
-+	BUILD_BUG_ON(ARRAY_SIZE(sar_prof->chains) !=
-+		     UEFI_SAR_MAX_CHAINS_PER_PROFILE);
-+
-+	for (int chain = 0;
-+	     chain < UEFI_SAR_MAX_CHAINS_PER_PROFILE;
-+	     chain++) {
-+		for (int subband = 0; subband < num_subbands; subband++)
-+			sar_prof->chains[chain].subbands[subband] =
-+				vals[chain * num_subbands + subband];
-+	}
- 
- 	fwrt->sar_profiles[prof_index].enabled = enabled & IWL_SAR_ENABLE_MSK;
- }
-@@ -472,24 +491,46 @@ static void iwl_uefi_set_sar_profile(struct iwl_fw_runtime *fwrt,
- int iwl_uefi_get_wrds_table(struct iwl_fw_runtime *fwrt)
- {
- 	struct uefi_cnv_var_wrds *data;
-+	unsigned long size;
-+	unsigned long expected_size;
-+	int num_subbands;
- 	int ret = 0;
- 
- 	data = iwl_uefi_get_verified_variable(fwrt->trans, IWL_UEFI_WRDS_NAME,
--					      "WRDS", sizeof(*data), NULL);
-+					      "WRDS",
-+					      UEFI_SAR_WRDS_TABLE_SIZE_REV2,
-+					      &size);
-+
+diff --git a/drivers/net/wireless/intel/iwlwifi/fw/acpi.c b/drivers/net/wireless/intel/iwlwifi/fw/acpi.c
+index 4d0a93832336..debbba22a909 100644
+--- a/drivers/net/wireless/intel/iwlwifi/fw/acpi.c
++++ b/drivers/net/wireless/intel/iwlwifi/fw/acpi.c
+@@ -535,7 +535,23 @@ int iwl_acpi_get_wrds_table(struct iwl_fw_runtime *fwrt)
  	if (IS_ERR(data))
- 		return -EINVAL;
+ 		return PTR_ERR(data);
  
--	if (data->revision != IWL_UEFI_WRDS_REVISION) {
--		ret = -EINVAL;
--		IWL_DEBUG_RADIO(fwrt, "Unsupported UEFI WRDS revision:%d\n",
-+	switch (data->revision) {
-+	case 2:
-+		expected_size = UEFI_SAR_WRDS_TABLE_SIZE_REV2;
-+		num_subbands = UEFI_SAR_SUB_BANDS_NUM_REV2;
-+		break;
-+	case 3:
-+		expected_size = UEFI_SAR_WRDS_TABLE_SIZE_REV3;
-+		num_subbands = UEFI_SAR_SUB_BANDS_NUM_REV3;
-+		break;
-+	default:
-+		IWL_DEBUG_RADIO(fwrt,
-+				"Unsupported UEFI WRDS revision:%d\n",
- 				data->revision);
-+		ret = -EINVAL;
-+		goto out;
+-	/* start by trying to read revision 2 */
++	/* start by trying to read revision 3 */
++	wifi_pkg = iwl_acpi_get_wifi_pkg(fwrt->dev, data,
++					 ACPI_WRDS_WIFI_DATA_SIZE_REV3,
++					 &tbl_rev);
++	if (!IS_ERR(wifi_pkg)) {
++		if (tbl_rev != 3) {
++			ret = -EINVAL;
++			goto out_free;
++		}
++
++		num_chains = ACPI_SAR_NUM_CHAINS_REV2;
++		num_sub_bands = ACPI_SAR_NUM_SUB_BANDS_REV3;
++
++		goto read_table;
 +	}
 +
-+	if (size != expected_size) {
++	/* then try revision 2 */
+ 	wifi_pkg = iwl_acpi_get_wifi_pkg(fwrt->dev, data,
+ 					 ACPI_WRDS_WIFI_DATA_SIZE_REV2,
+ 					 &tbl_rev);
+@@ -592,6 +608,13 @@ int iwl_acpi_get_wrds_table(struct iwl_fw_runtime *fwrt)
+ 		goto out_free;
+ 	}
+ 
++	if (WARN_ON(num_chains * num_sub_bands >
++		    ARRAY_SIZE(fwrt->sar_profiles[0].chains) *
++		    ARRAY_SIZE(fwrt->sar_profiles[0].chains[0].subbands))) {
 +		ret = -EINVAL;
- 		goto out;
- 	}
- 
- 	/* The profile from WRDS is officially profile 1, but goes
- 	 * into sar_profiles[0] (because we don't have a profile 0).
- 	 */
--	iwl_uefi_set_sar_profile(fwrt, &data->sar_profile, 0, data->mode);
-+	iwl_uefi_set_sar_profile(fwrt, data->vals, 0,
-+				 num_subbands, data->mode);
- out:
- 	kfree(data);
- 	return ret;
-@@ -498,21 +539,40 @@ int iwl_uefi_get_wrds_table(struct iwl_fw_runtime *fwrt)
- int iwl_uefi_get_ewrd_table(struct iwl_fw_runtime *fwrt)
- {
- 	struct uefi_cnv_var_ewrd *data;
-+	unsigned long expected_size;
- 	int i, ret = 0;
-+	unsigned long size;
-+	int num_subbands;
-+	int profile_size;
- 
- 	data = iwl_uefi_get_verified_variable(fwrt->trans, IWL_UEFI_EWRD_NAME,
--					      "EWRD", sizeof(*data), NULL);
-+					      "EWRD",
-+					      UEFI_SAR_EWRD_TABLE_SIZE_REV2,
-+					      &size);
- 	if (IS_ERR(data))
- 		return -EINVAL;
- 
--	if (data->revision != IWL_UEFI_EWRD_REVISION) {
--		ret = -EINVAL;
--		IWL_DEBUG_RADIO(fwrt, "Unsupported UEFI EWRD revision:%d\n",
-+	switch (data->revision) {
-+	case 2:
-+		expected_size = UEFI_SAR_EWRD_TABLE_SIZE_REV2;
-+		num_subbands = UEFI_SAR_SUB_BANDS_NUM_REV2;
-+		profile_size = UEFI_SAR_PROFILE_SIZE_REV2;
-+		break;
-+	case 3:
-+		expected_size = UEFI_SAR_EWRD_TABLE_SIZE_REV3;
-+		num_subbands = UEFI_SAR_SUB_BANDS_NUM_REV3;
-+		profile_size = UEFI_SAR_PROFILE_SIZE_REV3;
-+		break;
-+	default:
-+		IWL_DEBUG_RADIO(fwrt,
-+				"Unsupported UEFI EWRD revision:%d\n",
- 				data->revision);
-+		ret = -EINVAL;
- 		goto out;
- 	}
- 
--	if (data->num_profiles >= BIOS_SAR_MAX_PROFILE_NUM) {
-+	if (size != expected_size ||
-+	    data->num_profiles >= BIOS_SAR_MAX_PROFILE_NUM) {
- 		ret = -EINVAL;
- 		goto out;
- 	}
-@@ -522,8 +582,8 @@ int iwl_uefi_get_ewrd_table(struct iwl_fw_runtime *fwrt)
- 		 * save them in sar_profiles[1-3] (because we don't
- 		 * have profile 0).  So in the array we start from 1.
- 		 */
--		iwl_uefi_set_sar_profile(fwrt, &data->sar_profiles[i], i + 1,
--					 data->mode);
-+		iwl_uefi_set_sar_profile(fwrt, &data->vals[i * profile_size],
-+					 i + 1, num_subbands, data->mode);
- 
- out:
- 	kfree(data);
-diff --git a/drivers/net/wireless/intel/iwlwifi/fw/uefi.h b/drivers/net/wireless/intel/iwlwifi/fw/uefi.h
-index 5046b6a45419..aa5a4c5a7392 100644
---- a/drivers/net/wireless/intel/iwlwifi/fw/uefi.h
-+++ b/drivers/net/wireless/intel/iwlwifi/fw/uefi.h
-@@ -31,8 +31,6 @@
- #define IWL_SGOM_MAP_SIZE		339
- #define IWL_UATS_MAP_SIZE		339
- 
--#define IWL_UEFI_WRDS_REVISION		2
--#define IWL_UEFI_EWRD_REVISION		2
- #define IWL_UEFI_WGDS_REVISION		3
- #define IWL_UEFI_MIN_WTAS_REVISION	1
- #define IWL_UEFI_MAX_WTAS_REVISION	2
-@@ -74,56 +72,74 @@ struct uefi_cnv_common_step_data {
- 	u8 radio2;
- } __packed;
- 
--#define UEFI_SAR_MAX_SUB_BANDS_NUM	11
- #define UEFI_PPAG_SUB_BANDS_NUM_REV4	11
- #define UEFI_PPAG_SUB_BANDS_NUM_REV5	12
- #define UEFI_PPAG_NUM_CHAINS		2
--#define UEFI_SAR_MAX_CHAINS_PER_PROFILE	4
- 
--/*
-- * struct uefi_sar_profile_chain - per-chain values of a SAR profile
-- * @subbands: the SAR value for each subband
-- */
--struct uefi_sar_profile_chain {
--	u8 subbands[UEFI_SAR_MAX_SUB_BANDS_NUM];
--};
-+#define UEFI_SAR_SUB_BANDS_NUM_REV2	11
-+#define UEFI_SAR_SUB_BANDS_NUM_REV3	12
- 
--/*
-- * struct uefi_sar_profile - a SAR profile as defined in UEFI
-- *
-- * @chains: a per-chain table of SAR values
-- */
--struct uefi_sar_profile {
--	struct uefi_sar_profile_chain chains[UEFI_SAR_MAX_CHAINS_PER_PROFILE];
--} __packed;
-+#define UEFI_SAR_MAX_CHAINS_PER_PROFILE	4
- 
- /*
-  * struct uefi_cnv_var_wrds - WRDS table as defined in UEFI
-  *
-  * @revision: the revision of the table
-  * @mode: is WRDS enbaled/disabled
-- * @sar_profile: sar profile #1
-+ * @vals: values for sar profile #1 as an array:
-+ *	vals[chain * num_of_subbands + subband] will return the right value.
-+ *	num_of_subbands depends on the revision. For revision 3, it is
-+ *	%UEFI_SAR_SUB_BANDS_NUM_REV3, for earlier revision, it is
-+ *	%UEFI_SAR_SUB_BANDS_NUM_REV2.
-+ *	The max number of chains is currently 2
-  */
- struct uefi_cnv_var_wrds {
- 	u8 revision;
- 	u32 mode;
--	struct uefi_sar_profile sar_profile;
-+	u8 vals[];
- } __packed;
- 
-+#define UEFI_SAR_PROFILE_SIZE_REV2			\
-+	(sizeof(u8) * UEFI_SAR_MAX_CHAINS_PER_PROFILE *	\
-+	 UEFI_SAR_SUB_BANDS_NUM_REV2)
++		goto out_free;
++	}
 +
-+#define UEFI_SAR_PROFILE_SIZE_REV3			\
-+	(sizeof(u8) * UEFI_SAR_MAX_CHAINS_PER_PROFILE *	\
-+	 UEFI_SAR_SUB_BANDS_NUM_REV3)
-+
-+#define UEFI_SAR_WRDS_TABLE_SIZE_REV2			\
-+	(offsetof(struct uefi_cnv_var_wrds, vals) +	\
-+	 UEFI_SAR_PROFILE_SIZE_REV2)
-+
-+#define UEFI_SAR_WRDS_TABLE_SIZE_REV3			\
-+	(offsetof(struct uefi_cnv_var_wrds, vals) +	\
-+	 UEFI_SAR_PROFILE_SIZE_REV3)
-+
- /*
-  * struct uefi_cnv_var_ewrd - EWRD table as defined in UEFI
-  * @revision: the revision of the table
-  * @mode: is WRDS enbaled/disabled
-  * @num_profiles: how many additional profiles we have in this table (0-3)
-- * @sar_profiles: the additional SAR profiles (#2-#4)
-+ * @vals: the additional SAR profiles (#2-#4) as an array of SAR profiles.
-+ *	A SAR profile is defined the &struct uefi_cnv_var_wrds::vals. The size
-+ *	of each profile depends on the number of subbands which depends on the
-+ *	revision. This is explained in &struct uefi_cnv_var_wrds.
-  */
- struct uefi_cnv_var_ewrd {
- 	u8 revision;
- 	u32 mode;
- 	u32 num_profiles;
--	struct uefi_sar_profile sar_profiles[BIOS_SAR_MAX_PROFILE_NUM - 1];
-+	u8 vals[];
- } __packed;
+ 	IWL_DEBUG_RADIO(fwrt, "Reading WRDS tbl_rev=%d\n", tbl_rev);
  
-+#define UEFI_SAR_EWRD_TABLE_SIZE_REV2				\
-+	(offsetof(struct uefi_cnv_var_ewrd, vals) +		\
-+	 UEFI_SAR_PROFILE_SIZE_REV2 * (BIOS_SAR_MAX_PROFILE_NUM - 1))
-+
-+#define UEFI_SAR_EWRD_TABLE_SIZE_REV3				\
-+	(offsetof(struct uefi_cnv_var_ewrd, vals) +		\
-+	 UEFI_SAR_PROFILE_SIZE_REV3 * (BIOS_SAR_MAX_PROFILE_NUM - 1))
-+
- /*
-  * struct uefi_cnv_var_wgds - WGDS table as defined in UEFI
-  * @revision: the revision of the table
+ 	flags = wifi_pkg->package.elements[1].integer.value;
+diff --git a/drivers/net/wireless/intel/iwlwifi/fw/acpi.h b/drivers/net/wireless/intel/iwlwifi/fw/acpi.h
+index 138fdb9a5273..ec6af1b58098 100644
+--- a/drivers/net/wireless/intel/iwlwifi/fw/acpi.h
++++ b/drivers/net/wireless/intel/iwlwifi/fw/acpi.h
+@@ -39,6 +39,7 @@
+ #define ACPI_SAR_NUM_SUB_BANDS_REV0	5
+ #define ACPI_SAR_NUM_SUB_BANDS_REV1	11
+ #define ACPI_SAR_NUM_SUB_BANDS_REV2	11
++#define ACPI_SAR_NUM_SUB_BANDS_REV3	12
+ 
+ #define ACPI_WRDS_WIFI_DATA_SIZE_REV0	(ACPI_SAR_NUM_CHAINS_REV0 * \
+ 					 ACPI_SAR_NUM_SUB_BANDS_REV0 + 2)
+@@ -46,6 +47,8 @@
+ 					 ACPI_SAR_NUM_SUB_BANDS_REV1 + 2)
+ #define ACPI_WRDS_WIFI_DATA_SIZE_REV2	(ACPI_SAR_NUM_CHAINS_REV2 * \
+ 					 ACPI_SAR_NUM_SUB_BANDS_REV2 + 2)
++#define ACPI_WRDS_WIFI_DATA_SIZE_REV3	(ACPI_SAR_NUM_CHAINS_REV2 * \
++					 ACPI_SAR_NUM_SUB_BANDS_REV3 + 2)
+ #define ACPI_EWRD_WIFI_DATA_SIZE_REV0	((ACPI_SAR_PROFILE_NUM - 1) * \
+ 					 ACPI_SAR_NUM_CHAINS_REV0 * \
+ 					 ACPI_SAR_NUM_SUB_BANDS_REV0 + 3)
 -- 
 2.34.1
 
