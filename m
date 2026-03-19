@@ -1,202 +1,228 @@
-Return-Path: <linux-wireless+bounces-33483-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-33484-lists+linux-wireless=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id OLJHFMkEvGmurAIAu9opvQ
-	(envelope-from <linux-wireless+bounces-33483-lists+linux-wireless=lfdr.de@vger.kernel.org>)
-	for <lists+linux-wireless@lfdr.de>; Thu, 19 Mar 2026 15:14:33 +0100
+	id kGvbBTUFvGmurAIAu9opvQ
+	(envelope-from <linux-wireless+bounces-33484-lists+linux-wireless=lfdr.de@vger.kernel.org>)
+	for <lists+linux-wireless@lfdr.de>; Thu, 19 Mar 2026 15:16:21 +0100
 X-Original-To: lists+linux-wireless@lfdr.de
 Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id BA2392CC7F4
-	for <lists+linux-wireless@lfdr.de>; Thu, 19 Mar 2026 15:14:32 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8647C2CC8C7
+	for <lists+linux-wireless@lfdr.de>; Thu, 19 Mar 2026 15:16:20 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 5E8CE3022F6C
-	for <lists+linux-wireless@lfdr.de>; Thu, 19 Mar 2026 14:14:15 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 5FDA4302C36C
+	for <lists+linux-wireless@lfdr.de>; Thu, 19 Mar 2026 14:14:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1F846322533;
-	Thu, 19 Mar 2026 14:13:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0067531AA8F;
+	Thu, 19 Mar 2026 14:14:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b="qJFdgiFw";
-	dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b="4jpB79yc";
-	dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b="OrcSAEzL";
-	dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b="HXVk5/yP"
+	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="DH3Z8IaR";
+	dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b="EP27yWRK"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E28BA312826
-	for <linux-wireless@vger.kernel.org>; Thu, 19 Mar 2026 14:13:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.130
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BC2AD30E83F
+	for <linux-wireless@vger.kernel.org>; Thu, 19 Mar 2026 14:14:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773929637; cv=none; b=XB8OFe6yLZ3kNMTXr+mwv53V1/j+kB6zmVz56yegUt6eJRVsluMSfwKTnIQrzsoXWUgyNELsZ5SX7TUsi5a5j/g2RG5ccEzUPu5eE/GANaUADSBks5N/fOIKfsS+j5ujLtiSfuKJIdkcFO6m62MlMqyWV0owg/iEhWpyIhuibYc=
+	t=1773929671; cv=none; b=YQCqjoWFvjVxVnFH7UXkjqI71RcFtg9lLOdf/uq9SUoSNe38+Yxc0kS3pSFhueiKMBRCUPa/fBg6sN2pNE1k/ewtGsiVfnrWw8y2duVj6XmfeP2MdbAna7AT/CIIfbxY0MCDKtMZhxPsnh6K0WXvnTs5+MFixzJb3DnMeo5ynEQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773929637; c=relaxed/simple;
-	bh=4zAon2/wL1xkF183JwLxXVvEK05OvlwLI29zwOFhq2E=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=rzTwE6LyBzmA6JQ1f06So+hoMrdkt48sNg6riCh6W+6KzBufQYD0xJjTgTsJ8hSZYg/MbJdXOXmU50ugi2orATp/TR5wkjj+p7GrIYdV83Lcp9PjRjRmoAKu/J1eVZyxJcVso9xTv8y/z43hDuA1wrTa/Y83jgFg43ENMwX7/W4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=suse.cz; spf=pass smtp.mailfrom=suse.cz; dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b=qJFdgiFw; dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b=4jpB79yc; dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b=OrcSAEzL; dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b=HXVk5/yP; arc=none smtp.client-ip=195.135.223.130
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=suse.cz
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.cz
-Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out1.suse.de (Postfix) with ESMTPS id 313F04D1E9;
-	Thu, 19 Mar 2026 14:13:51 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1773929632; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=4fUFXPph0d+U/6GDmGbgLZ/FXBjYuxpYsgD69WTKZEc=;
-	b=qJFdgiFwZof840urwELAyJUPmqr5R5KSb1T4rwYuc7bb8XNbCm/kv+M5FkrKSBEOM1bZiu
-	/MGyuwm/OFnFKmJm/t/Uz/+GbEcAEAQCMtEWioCbgwKOh4DWZ0qNVZOg9g66xDY+m4U+fD
-	w9Xqoe30eNI+goFz62hSwZMzWorThdA=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1773929632;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=4fUFXPph0d+U/6GDmGbgLZ/FXBjYuxpYsgD69WTKZEc=;
-	b=4jpB79ycXSQsxOkgtV3HKUa6Dm/vQ/wRir8pmFsiYnB6qgK3LbPe12RtulXb4tol7/E3ij
-	faYPra8B4GTfZjDQ==
-Authentication-Results: smtp-out1.suse.de;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=OrcSAEzL;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b="HXVk5/yP"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1773929631; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=4fUFXPph0d+U/6GDmGbgLZ/FXBjYuxpYsgD69WTKZEc=;
-	b=OrcSAEzL/6c4UDB40dZmtUkHL2UKN/t418W/3/WLfRE3VUYtttdOTA1LBRs2LexriSZBXr
-	IUCLAcO9QxQoLCNXA0PSitgNb7BC5cuH9t+EXroQLbXGhfbC1mTChSWj64vc6V41FfYy8R
-	mio6pb/J12e+5TPnOnmBoDRex83ce1A=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1773929631;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=4fUFXPph0d+U/6GDmGbgLZ/FXBjYuxpYsgD69WTKZEc=;
-	b=HXVk5/yPJtxIjyky0dtujMNvVHE9KONXRU8D1O6wb4LBxoqwDaKPYOnkGEkCrYDJmYyVOA
-	klxEA++oJw6AsaAw==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 214C74273C;
-	Thu, 19 Mar 2026 14:13:51 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id IQkXCJ8EvGlRZwAAD6G6ig
-	(envelope-from <jack@suse.cz>); Thu, 19 Mar 2026 14:13:51 +0000
-Received: by quack3.suse.cz (Postfix, from userid 1000)
-	id C850FA0B32; Thu, 19 Mar 2026 15:13:46 +0100 (CET)
-Date: Thu, 19 Mar 2026 15:13:46 +0100
-From: Jan Kara <jack@suse.cz>
-To: Philipp Hahn <phahn-oss@avm.de>
-Cc: amd-gfx@lists.freedesktop.org, apparmor@lists.ubuntu.com, 
-	bpf@vger.kernel.org, ceph-devel@vger.kernel.org, cocci@inria.fr, 
-	dm-devel@lists.linux.dev, dri-devel@lists.freedesktop.org, gfs2@lists.linux.dev, 
-	intel-gfx@lists.freedesktop.org, intel-wired-lan@lists.osuosl.org, iommu@lists.linux.dev, 
-	kvm@vger.kernel.org, linux-arm-kernel@lists.infradead.org, 
-	linux-block@vger.kernel.org, linux-bluetooth@vger.kernel.org, linux-btrfs@vger.kernel.org, 
-	linux-cifs@vger.kernel.org, linux-clk@vger.kernel.org, linux-erofs@lists.ozlabs.org, 
-	linux-ext4@vger.kernel.org, linux-fsdevel@vger.kernel.org, linux-gpio@vger.kernel.org, 
-	linux-hyperv@vger.kernel.org, linux-input@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	linux-leds@vger.kernel.org, linux-media@vger.kernel.org, linux-mips@vger.kernel.org, 
-	linux-mm@kvack.org, linux-modules@vger.kernel.org, linux-mtd@lists.infradead.org, 
-	linux-nfs@vger.kernel.org, linux-omap@vger.kernel.org, linux-phy@lists.infradead.org, 
-	linux-pm@vger.kernel.org, linux-rockchip@lists.infradead.org, linux-s390@vger.kernel.org, 
-	linux-scsi@vger.kernel.org, linux-sctp@vger.kernel.org, 
-	linux-security-module@vger.kernel.org, linux-sh@vger.kernel.org, linux-sound@vger.kernel.org, 
-	linux-stm32@st-md-mailman.stormreply.com, linux-trace-kernel@vger.kernel.org, linux-usb@vger.kernel.org, 
-	linux-wireless@vger.kernel.org, netdev@vger.kernel.org, ntfs3@lists.linux.dev, 
-	samba-technical@lists.samba.org, sched-ext@lists.linux.dev, target-devel@vger.kernel.org, 
-	tipc-discussion@lists.sourceforge.net, v9fs@lists.linux.dev, Jan Kara <jack@suse.com>
-Subject: Re: [PATCH 12/61] quota: Prefer IS_ERR_OR_NULL over manual NULL check
-Message-ID: <ol2d7c5z7yfyuwo5tyfxurgqedruhr6bzmuv37bx5phhrmmoyh@4zjspbtexid3>
-References: <20260310-b4-is_err_or_null-v1-0-bd63b656022d@avm.de>
- <20260310-b4-is_err_or_null-v1-12-bd63b656022d@avm.de>
+	s=arc-20240116; t=1773929671; c=relaxed/simple;
+	bh=4czNDYSaKmynd9iftkMiE0ugn6+t+5jSgjCXfybUZPE=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=Vc7zTEXVzmdWddVtZNc9e7qaZMkLBI17/XE6cY/FgxPlvsVvrU4G6ryPAHYF0rYpvHD+r3ambFDMTPgxxKcLPV63PPNWSfdJY20GMcDwRPRRmlkBYbxzJrNYFZYm5/PW3yNjsAr5NvK/voDUoxGvWdsH7K1dp5mXo1A+1b5oyDU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=DH3Z8IaR; dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b=EP27yWRK; arc=none smtp.client-ip=205.220.168.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
+Received: from pps.filterd (m0279867.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 62J73uob1770604
+	for <linux-wireless@vger.kernel.org>; Thu, 19 Mar 2026 14:14:30 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
+	cc:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
+	Bt5S92KQQ206jKW4aSaTmm+Ht5CJzX8Upbglh6zGhlE=; b=DH3Z8IaRGUVTFyKq
+	3WSRk7s23ijnlTyxesx6MiSEhfpr13h9B8sMgY6gqpa9VdE4QjFT/2Kv3zeUvo2y
+	G1RFwWG6L4Hjq2ghswHSZNYXxHh+dzIawD64NXGKROtXplQhNqfQajxex3tycGOT
+	K7GeIpyxgzfPdnnLlO6E6o/k8361Sd6ujBn2AAsYM9QofZJUXktyfH4zvSGewOAn
+	XTHyYdLVq1+qXlT2M7r4erVu9arV2x6pIsRFdAl5dR+sLgPgwghzkD0nyWisAaBh
+	W3EaUxN6PYqmMyeeupOrv7C7PE4KRNFACyxbSKxtCE2m/mvrE+CNN9hzNnN/hM/9
+	lyLGaw==
+Received: from mail-pl1-f200.google.com (mail-pl1-f200.google.com [209.85.214.200])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4cyy75uqe0-1
+	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
+	for <linux-wireless@vger.kernel.org>; Thu, 19 Mar 2026 14:14:30 +0000 (GMT)
+Received: by mail-pl1-f200.google.com with SMTP id d9443c01a7336-2b04db6c138so13584375ad.0
+        for <linux-wireless@vger.kernel.org>; Thu, 19 Mar 2026 07:14:30 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=oss.qualcomm.com; s=google; t=1773929669; x=1774534469; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:content-language:from
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=Bt5S92KQQ206jKW4aSaTmm+Ht5CJzX8Upbglh6zGhlE=;
+        b=EP27yWRKw+n8YJVRhxUVLw/+tQZWGGO2LaGGMXU3+iYAOa0bmjTIQe7DulO0WTx23N
+         PZTrhwMxUI1ioSk5dYd9DvCRjXSmTrTykXXr1GB00TpPshGUslQ3LYWiIGzvF9D1PBaq
+         X4SzHy/yJ8hiDgKUWudq/cewwvKhW+WzbccHe8nmtCdtL3Enh4gZS4+2HVGsPUHEzO2g
+         WiCPTzo/IrwHvtLQL/iogUxolxogh9zENbrbEj758Zvljc6SOO4SnWIQDE+oJSQGbO/X
+         tJRgxANkpd29ajzWyke68jSvZUNsWCUPL0gUceILC/DF10fbjqDQM/0W/J9u9wGXljPm
+         qLbg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1773929669; x=1774534469;
+        h=content-transfer-encoding:in-reply-to:content-language:from
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=Bt5S92KQQ206jKW4aSaTmm+Ht5CJzX8Upbglh6zGhlE=;
+        b=U0bn5jJa9+edBnkd9MSkdMp89RjaSwTGc1hYUuyfw6lboW0FhvSuqtjqXKGnJahCCv
+         H0XjGdTjOpynJDOpIkB2xoCgoX0cH9vegSslCZNNaGnLTujiEM4if3FfKWNYusQ/0Jyw
+         bCnh4gQvmHYrtw9tg97NV5KaWp1PE7CrbnbaAMDD7SeDCZ4dURSxI2uwAffqGf6OEAaP
+         vT4JIsbwaaRbL4ZfJ9tvpjtV1sW4dpG7nvGSHWyUAfssYt2OgeSHEtR32qKcjj0TCuPV
+         jqN4FJ9uaRFPJPHvo+DLvqamEed2E46PA4wQlBwJWTG8SRwMCR7B4QDCUHBwzjcRdPn8
+         VeCA==
+X-Gm-Message-State: AOJu0Ywsynqmkxm0RjP188xtBDlhq4WbFHvYsisAI4D6bClggnJp5H+H
+	osOmnMnxfgr48g7DN0UU+ec4NHReIq/1NR8NEywAgnL6/2C/dSRRpxzJUHPIAmlgGqJznGeomYk
+	5b84XmpBORI470oV9aF9JwuhcV4c4n3eAu/5/vps4aRKAzfkwIltzn2wpsAgpixninTeASR86PR
+	coow==
+X-Gm-Gg: ATEYQzxCLdbDyE5K1oM1Cyp4FzA/xeGOj/NBZYVWE9XONqlgWB9DN73E2EAvTRaynIK
+	9Dbb6+8ga3+y5ETRUL5xQfyNb0JLVTpKTHdtgrWgsnD14S8EZ1/gFhFU6gpCLuhyT0GUosjvSL4
+	vIRUBe/5hsfRN1E+UfqbMuoxu6/fNOm1PG8xZYypb0UkY3LqJMUT/PkJbPj+/D1PEmfV+6ZlQ8E
+	blPK7GbmycmacqhOXzniU4AWGiJL/5aZZju8ipntIGcnGeDctDPorPyiOjTB1vPTemWXv6xu4R4
+	7vwLW461AMTlm2Kh9f600ZZxWjL/f7Vo2VobA4uMeyLef/4tcr2xtkDy2cnucpC0n+2m2x/Ckmh
+	JPCtbEfskaJaHnPCiU0U0vsGk5y+aaVPP6P1hvc9bSmtd+UuyGuXmIYd7rmXTAExA+Og16/fuGF
+	6mSZBgWQn6tz2DpA==
+X-Received: by 2002:a17:903:1ac8:b0:2ae:471b:e55 with SMTP id d9443c01a7336-2b06e3c5c83mr76302035ad.30.1773929669309;
+        Thu, 19 Mar 2026 07:14:29 -0700 (PDT)
+X-Received: by 2002:a17:903:1ac8:b0:2ae:471b:e55 with SMTP id d9443c01a7336-2b06e3c5c83mr76301695ad.30.1773929668767;
+        Thu, 19 Mar 2026 07:14:28 -0700 (PDT)
+Received: from [192.168.1.41] (c-24-130-122-79.hsd1.ca.comcast.net. [24.130.122.79])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2b06e5ef519sm60441445ad.49.2026.03.19.07.14.27
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 19 Mar 2026 07:14:28 -0700 (PDT)
+Message-ID: <1a037a6b-f39d-4624-8f3d-1298da8c50bf@oss.qualcomm.com>
+Date: Thu, 19 Mar 2026 07:14:23 -0700
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260310-b4-is_err_or_null-v1-12-bd63b656022d@avm.de>
-X-Spam-Flag: NO
-X-Spam-Score: -2.51
-X-Spam-Level: 
-X-Spamd-Result: default: False [0.34 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH ath-current] wifi: ath12k: prepare REO update element only
+ for primary link
+To: Vasanthakumar Thiagarajan <vasanthakumar.thiagarajan@oss.qualcomm.com>,
+        Baochen Qiang <baochen.qiang@oss.qualcomm.com>,
+        Jeff Johnson <jjohnson@kernel.org>
+Cc: linux-wireless@vger.kernel.org, ath12k@lists.infradead.org,
+        linux-kernel@vger.kernel.org
+References: <20260210-ath12k-rxtid-double-free-v1-1-8b523fb2886d@oss.qualcomm.com>
+ <8056cb5f-cdde-4890-b8cf-3b37d1c3483f@oss.qualcomm.com>
+From: Jeff Johnson <jeff.johnson@oss.qualcomm.com>
+Content-Language: en-US
+In-Reply-To: <8056cb5f-cdde-4890-b8cf-3b37d1c3483f@oss.qualcomm.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwMzE5MDExMiBTYWx0ZWRfX/HTmqocPJ/I1
+ jHlPspNKIrMV23EIAhcmfoIMdR3/6Y0QSZONOTc83w1CXgxROF+tgOKmcU5fuiefvBWQsDMXJLB
+ iR8LpWGp8Ef70EzRKlZJ4ct8KuZwhhpgkfSL7zJBs8Eus3J4kgIAwfqhdqwtfoWonsh98rTCDaL
+ P/p68shDD+7Tze/bE4pI91H5wQLtfGoj/gINMaC76RAhgEoyipvgSOvhnHm8hr4i1m0r0/pLu5e
+ 83QAWoRJMKn72eVgSnsb0Z5l1gj02pzkQrOtM3/BA5X1NilCy8IS0UAfGjweMGjpOiFdRrpVBoH
+ P+mK38zNCKD6NFY5yeVZuR+ZlfoaE/lUdrIsrgsvaTtzskRZbpHoEdbxBDPQ9T6B6wz6XzIPANy
+ gVW/GSThRWWLcUqENpjgMQ2HFYp+5d8TobbEamRZ2cLQVVohIrVcSgkDT20xJV+Ui8CWtzZoUxD
+ F68Jxr87glh47fckXSQ==
+X-Proofpoint-ORIG-GUID: 9hkOGP4Xr2NHDcCui64BNyIPwVkGDBtX
+X-Authority-Analysis: v=2.4 cv=A7hh/qWG c=1 sm=1 tr=0 ts=69bc04c6 cx=c_pps
+ a=IZJwPbhc+fLeJZngyXXI0A==:117 a=Tg7Z00WN3eLgNEO9NLUKUQ==:17
+ a=IkcTkHD0fZMA:10 a=Yq5XynenixoA:10 a=s4-Qcg_JpJYA:10
+ a=VkNPw1HP01LnGYTKEx00:22 a=u7WPNUs3qKkmUXheDGA7:22 a=eoimf2acIAo5FJnRuUoq:22
+ a=VwQbUJbxAAAA:8 a=EUspDBNiAAAA:8 a=ALmzmtPoW6pM4TZLvQEA:9 a=QEXdDO2ut3YA:10
+ a=uG9DUKGECoFWVXl0Dc02:22
+X-Proofpoint-GUID: 9hkOGP4Xr2NHDcCui64BNyIPwVkGDBtX
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.51,FMLib:17.12.100.49
+ definitions=2026-03-19_01,2026-03-19_05,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ priorityscore=1501 lowpriorityscore=0 clxscore=1015 bulkscore=0
+ suspectscore=0 impostorscore=0 spamscore=0 phishscore=0 adultscore=0
+ malwarescore=0 classifier=typeunknown authscore=0 authtc= authcc=
+ route=outbound adjust=0 reason=mlx scancount=1 engine=8.22.0-2603050001
+ definitions=main-2603190112
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MID_RHS_NOT_FQDN(0.50)[];
-	R_DKIM_ALLOW(-0.20)[suse.cz:s=susede2_rsa,suse.cz:s=susede2_ed25519];
+	DMARC_POLICY_ALLOW(-0.50)[qualcomm.com,reject];
 	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_DKIM_ALLOW(-0.20)[qualcomm.com:s=qcppdkim1,oss.qualcomm.com:s=google];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-33483-lists,linux-wireless=lfdr.de];
-	URIBL_MULTI_FAIL(0.00)[avm.de:server fail,tor.lore.kernel.org:server fail,suse.com:server fail,suse.cz:server fail];
+	TAGGED_FROM(0.00)[bounces-33484-lists,linux-wireless=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FROM_HAS_DN(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	DMARC_NA(0.00)[suse.cz];
 	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[suse.cz:+];
-	MISSING_XM_UA(0.00)[];
+	DKIM_TRACE(0.00)[qualcomm.com:+,oss.qualcomm.com:+];
 	TO_DN_SOME(0.00)[];
-	RCPT_COUNT_GT_50(0.00)[55];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[jack@suse.cz,linux-wireless@vger.kernel.org];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-0.990];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[linux-wireless];
+	FROM_HAS_DN(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[6];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[jeff.johnson@oss.qualcomm.com,linux-wireless@vger.kernel.org];
 	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	NEURAL_HAM(-0.00)[-0.999];
+	TAGGED_RCPT(0.00)[linux-wireless];
+	MID_RHS_MATCH_FROM(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
 	RCVD_COUNT_SEVEN(0.00)[7]
-X-Rspamd-Queue-Id: BA2392CC7F4
+X-Rspamd-Queue-Id: 8647C2CC8C7
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-On Tue 10-03-26 12:48:38, Philipp Hahn wrote:
-> Prefer using IS_ERR_OR_NULL() over using IS_ERR() and a manual NULL
-> check.
+On 3/18/2026 8:46 PM, Vasanthakumar Thiagarajan wrote:
 > 
-> Change generated with coccinelle.
 > 
-> To: Jan Kara <jack@suse.com>
-> Cc: linux-kernel@vger.kernel.org
-> Signed-off-by: Philipp Hahn <phahn-oss@avm.de>
+> On 2/10/2026 8:37 AM, Baochen Qiang wrote:
+>> Commit [1] introduces dp->reo_cmd_update_rx_queue_list for the purpose
+>> of tracking all pending REO queue flush commands. The helper
+>> ath12k_dp_prepare_reo_update_elem() allocates an element and populates
+>> it with REO queue information, then add it to the list. The element would
+>> be helpful during clean up stage to finally unmap/free the corresponding
+>> REO queue buffer.
+>>
+>> In MLO scenarios with more than one links, for non dp_primary_link_only
+>> chips like WCN7850, that helper is called for each link peer. This
+>> results in multiple elements added to the list but all of them pointing
+>> to the same REO queue buffer. Consequently the same buffer gets
+>> unmap/freed multiple times:
+>>
+>> BUG kmalloc-2k (Tainted: G    B   W  O       ): Object already free
+>> -----------------------------------------------------------------------------
+>> Allocated in ath12k_wifi7_dp_rx_assign_reoq+0xce/0x280 [ath12k_wifi7] age=7436 cpu=10 pid=16130
+>>   __kmalloc_noprof
+>>   ath12k_wifi7_dp_rx_assign_reoq
+>>   ath12k_dp_rx_peer_tid_setup
+>>   ath12k_dp_peer_setup
+>>   ath12k_mac_station_add
+>>   ath12k_mac_op_sta_state
+>>   [...]
+>> Freed in ath12k_dp_rx_tid_cleanup.part.0+0x25/0x40 [ath12k] age=1 cpu=27 pid=16137
+>>   kfree
+>>   ath12k_dp_rx_tid_cleanup.part.0
+>>   ath12k_dp_rx_reo_cmd_list_cleanup
+>>   ath12k_dp_cmn_device_deinit
+>>   ath12k_core_stop
+>>   ath12k_core_hw_group_cleanup
+>>   ath12k_pci_remove
+>>
+>> Fix this by allowing list addition for primary link only. Note
+>> dp_primary_link_only chips like QCN9274 are not affected by this change,
+>> because that's what they were doing in the first place.
+>>
+>> Tested-on: WCN7850 hw2.0 PCI WLAN.HMT.1.1.c5-00302-QCAHMTSWPL_V1.0_V2.0_SILICONZ-1.115823.3
+>>
+>> Fixes: 3bf2e57e7d6c ("wifi: ath12k: Add Retry Mechanism for REO RX Queue Update Failures") # [1]
+>> Closes: https://bugzilla.kernel.org/show_bug.cgi?id=221011
+>> Signed-off-by: Baochen Qiang <baochen.qiang@oss.qualcomm.com>
+> 
+> Vasanthakumar Thiagarajan <vasanthakumar.thiagarajan@oss.qualcomm.com>
 
-Thanks for the patch but frankly I find the original variant clearer wrt
-what is going on. So I prefer to keep the code as is.
+Was there supposed to be a tag in front of that?
 
-								Honza
-
-> ---
->  fs/quota/quota.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
-> 
-> diff --git a/fs/quota/quota.c b/fs/quota/quota.c
-> index 33bacd70758007129e0375bab44d7431195ec441..2e09fc247d0cf45b9e83a4f8a0be7ea694c8c2a1 100644
-> --- a/fs/quota/quota.c
-> +++ b/fs/quota/quota.c
-> @@ -965,7 +965,7 @@ SYSCALL_DEFINE4(quotactl, unsigned int, cmd, const char __user *, special,
->  	else
->  		drop_super_exclusive(sb);
->  out:
-> -	if (pathp && !IS_ERR(pathp))
-> +	if (!IS_ERR_OR_NULL(pathp))
->  		path_put(pathp);
->  	return ret;
->  }
-> 
-> -- 
-> 2.43.0
-> 
--- 
-Jan Kara <jack@suse.com>
-SUSE Labs, CR
 
