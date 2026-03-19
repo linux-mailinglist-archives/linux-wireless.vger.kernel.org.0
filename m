@@ -1,102 +1,101 @@
-Return-Path: <linux-wireless+bounces-33527-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-33529-lists+linux-wireless=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id EJHgMtZ5vGnOzAIAu9opvQ
-	(envelope-from <linux-wireless+bounces-33527-lists+linux-wireless=lfdr.de@vger.kernel.org>)
-	for <lists+linux-wireless@lfdr.de>; Thu, 19 Mar 2026 23:33:58 +0100
+	id 0DWXK5uAvGnfzQIAu9opvQ
+	(envelope-from <linux-wireless+bounces-33529-lists+linux-wireless=lfdr.de@vger.kernel.org>)
+	for <lists+linux-wireless@lfdr.de>; Fri, 20 Mar 2026 00:02:51 +0100
 X-Original-To: lists+linux-wireless@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 492A22D3247
-	for <lists+linux-wireless@lfdr.de>; Thu, 19 Mar 2026 23:33:58 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id B15632D3F39
+	for <lists+linux-wireless@lfdr.de>; Fri, 20 Mar 2026 00:02:50 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id E54CE302AF17
-	for <lists+linux-wireless@lfdr.de>; Thu, 19 Mar 2026 22:27:39 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 192DB304F474
+	for <lists+linux-wireless@lfdr.de>; Thu, 19 Mar 2026 22:28:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BAA0C40B6CE;
-	Thu, 19 Mar 2026 22:24:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B39883BBA14;
+	Thu, 19 Mar 2026 22:24:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=jetm.me header.i=@jetm.me header.b="j7oNWlNE";
-	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="0Kdn/7P2"
+	dkim=pass (2048-bit key) header.d=jetm.me header.i=@jetm.me header.b="cevtMucL";
+	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="w+yXR61z"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from flow-b3-smtp.messagingengine.com (flow-b3-smtp.messagingengine.com [202.12.124.138])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F24B83BC66D;
-	Thu, 19 Mar 2026 22:24:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4EC6140B6D1;
+	Thu, 19 Mar 2026 22:24:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=202.12.124.138
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773959091; cv=none; b=K19mqFDR5yxJ3kku5d1JsTDUea+v4nFcX7KM2nK0B2fofdGu3/tUQxDmMV8nukIM2wU8Ox1auSYHDH+uQC6DZVyX5naWVFdSK9mnHMzqDcfJyJ+6+Q4UvTKvFY2vWYivc3N6JTN+wF5DJw1JpkDDvHbZXV5+OXKVC/7fH3skPok=
+	t=1773959093; cv=none; b=ARKmlMgzjn/+c8ZpIGAvfr1wwfdCy5Qv9CV//NQF3mr2kQPzRHp6MlUVrBf5T0ohF4a8gQMScSk6tk1Vjky3EAqfzfSy1SAEAl5HbOPW2c2ylYQbo3UposjevjS4t1hPbHuDhtzK4Blxi0uUYHynBYBDKxpg2tOKIGUlska5DR4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773959091; c=relaxed/simple;
-	bh=uQ1a1G+lRE1F+q+YVMCHkXinyGF8yjF8AUl5IYMWZrQ=;
+	s=arc-20240116; t=1773959093; c=relaxed/simple;
+	bh=PYlAslJCMZr5+HVdvaUdUa19VFxbM+K5DE/+iCdWcok=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc:
-	 In-Reply-To:References; b=VJNKd5l1tdCG21L1C/G4okQ5dLv15NvzI+xIAJe2nPcxqzdalCg+cYSImDQgeI+zwEo07BKgIHIIleF+nmWo+xyKqyzeE4ZBjepYhn7KYJi5TjPILnEjm3G2P4XUfxfF84y6aeUiKHGzs0Hcro1v7E1vrvY7HqkL9fYmOClaL/M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=jetm.me; spf=pass smtp.mailfrom=jetm.me; dkim=pass (2048-bit key) header.d=jetm.me header.i=@jetm.me header.b=j7oNWlNE; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=0Kdn/7P2; arc=none smtp.client-ip=202.12.124.138
+	 In-Reply-To:References; b=I2jWTVfPLnyBDBjtPL8bS4gUP5IWpmKWc++yUmSJwqapFHBF48SFVhK64q/r7eR4S02sfut5XXswFDPViuQUzazWiYUx6fjG2WyaFc+NW6J5az6EpkInCAUJuFvteIEqCELCGtk8DSJjOfm5Epps9AWdsVhm6L3VoR8fqfEKOrw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=jetm.me; spf=pass smtp.mailfrom=jetm.me; dkim=pass (2048-bit key) header.d=jetm.me header.i=@jetm.me header.b=cevtMucL; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=w+yXR61z; arc=none smtp.client-ip=202.12.124.138
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=jetm.me
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=jetm.me
 Received: from phl-compute-02.internal (phl-compute-02.internal [10.202.2.42])
-	by mailflow.stl.internal (Postfix) with ESMTP id 3385213000BD;
-	Thu, 19 Mar 2026 18:24:43 -0400 (EDT)
+	by mailflow.stl.internal (Postfix) with ESMTP id ECD951300161;
+	Thu, 19 Mar 2026 18:24:44 -0400 (EDT)
 Received: from phl-imap-07 ([10.202.2.97])
-  by phl-compute-02.internal (MEProxy); Thu, 19 Mar 2026 18:24:43 -0400
+  by phl-compute-02.internal (MEProxy); Thu, 19 Mar 2026 18:24:45 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=jetm.me; h=cc:cc
 	:content-transfer-encoding:content-type:content-type:date:date
 	:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to; s=fm3; t=1773959083;
-	 x=1773966283; bh=/yRhuFGZGZrTj2kPKFgXclQoMf/ev6Z+NOFxeNH1k6c=; b=
-	j7oNWlNEPXaW038KeL+K3IwPv1DsNivvSdQjhF8N0hH3P+giTT8aOmGkdgq3Q5e6
-	ov8d58/q9mW7zoRExDdwxVmNGHj7iJUFGbm6MTKEpQA/0CgT50TTUkUE7jKmwdLO
-	HF30dxw4UdgKhAnVgrHDChdHSehEcxVDwLgDn5iDsz+k0JaM3CEX1LyH2StGDh3h
-	42pLLdWoBoCkL4GXVNcYwqZZD8ng7VfWHUmT8/cma2Lrd8q/IU/DQSGF0MP1pHN/
-	ausaVZfy+VMuW6t69B7/A804gkHYRNBe6t0Wti8HSfM4uP7DgxMqnMueamn4NETm
-	QaQb7H5NNJZBPXronheFMA==
+	:references:reply-to:subject:subject:to:to; s=fm3; t=1773959084;
+	 x=1773966284; bh=6BCjacgyBBQfzI6KlQ7yHr92rvcdU94u/TkCmemPomE=; b=
+	cevtMucLzLJxleQXCszJxKVovnBj3gTno4K9Mb4qtvtRzxkuM4uJ7u8rXhfUGku0
+	9L65v76WDbI1gUErykxR/V02Op59YKX2ZKCwM5+AscDnjFjPmSyP5RGMi+MYuQO+
+	tbw0VKnjXQ4mu9hyCDjlcQ/vhKvWaPBmofgZ/S+zsfDv38Rgt0GxWixJTXghGs41
+	fBxTZJDKq3jpZfiDZ9yzofxePXKLdsXhw1WGQTMf7QUEG11VJsvSz3z3zHY1P174
+	w4109WvPQN8TnicmVm5rR3tQ3z/cBYoHuhbSKDmGmAC4NL09d27ocX3VGDdHUcBq
+	xxqSo21J2wFkHpTaDLkNKQ==
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
 	messagingengine.com; h=cc:cc:content-transfer-encoding
 	:content-type:content-type:date:date:feedback-id:feedback-id
 	:from:from:in-reply-to:in-reply-to:message-id:mime-version
 	:references:reply-to:subject:subject:to:to:x-me-proxy
-	:x-me-sender:x-me-sender:x-sasl-enc; s=fm1; t=1773959083; x=
-	1773966283; bh=/yRhuFGZGZrTj2kPKFgXclQoMf/ev6Z+NOFxeNH1k6c=; b=0
-	Kdn/7P21f8UMISDFHzTNG2vS4kxFXsEYDjFjS3NEuwiolsgtfXjIgAm0Y84l1wUM
-	/OSSmTtCfcdVA4juVqzEgFb7GJXY0aviyAADv9Flm+CDfvhkua4Wa3jE0jgRtlJf
-	5fSbKzLYACUWZZdmt2hwKCcwaiA+2nimSjtaXcPoS6KiYGg3QxbTLxOtfz6j/ZRd
-	39A+M3Owlf9xc1A6yrQ4uiyGqj46bgFBW1iRTOQqN71e8OPNnhENTWLAXDmh0bEm
-	b2Llqz5GplOVnUMGyblsFsTgf6YPMvfKzxcAHYgICHx8Bu9aNFczPmgWnpdWWj9u
-	OQCjJV1RAqRK8mplvKiog==
-X-ME-Sender: <xms:qne8aXdvP-Vgj62WELDuMlHAgtagySAO1rRmL4IqP126sgkjHMhOEA>
-    <xme:qne8aYAzamktIkO7y4dO7vQPgbnpENsIRXh6QtJ4mkaqXxoXrkGKccmeofUsan4f9
-    VyeURD1JC6PoMClUYKH895wz35sBIFI0vHJrnpseWJ1oqC7OgPv5co>
+	:x-me-sender:x-me-sender:x-sasl-enc; s=fm1; t=1773959084; x=
+	1773966284; bh=6BCjacgyBBQfzI6KlQ7yHr92rvcdU94u/TkCmemPomE=; b=w
+	+yXR61zsxbWkpFV0EjrBNFwIXp1/d7/L95Lfb1nzZNmexQaFlSLJ3vn/AorUvT7y
+	66pt6jGS7297YvwRhR4av6fchVEVJGazdxbOB52TcM2Dp+ev1bavOoquRwFqfFQ+
+	WTJOX5405maqnvzYdUpumoXAPO3u8xTlwEaNHp9qOSxHoyvXKQuAiX/1gosYGur9
+	AL3pPWvcBHf2MGmO9qg9sD7eCabgf5mLkYdbTvtzyEMom314HiYPxRx3sM3RNm7s
+	GPIjIONzyBazcmzQFjs9zfwJrJz6OBkWhvqhkGZfiEJM23pT3CnEMwgxgXgo5EsR
+	5F8RRYoI+TLSYhytdLMTg==
+X-ME-Sender: <xms:rHe8aczeiBXceQm1scrprSfdIpZDJuKDJNRLaBt-qepaW2l1UBI9pQ>
+    <xme:rHe8abH4EEvdVl5RZYMTq_WStWQs1bFH4YZXLPPqPKX3EUTIiLYTFgRF7h5ZE0f8U
+    V0zDXBUqN9_DTDI7S2BURoyEoLMPNnrC5h8D9nYp50wP5a-E6LyANo>
 X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefgedrtddtgdeftdekvddtucetufdoteggodetrf
     dotffvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfurfetoffkrfgpnffqhgenuceu
     rghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujf
     gurhepoffhfffugggtgffkvfevofgjfhesthekredtredtjeenucfhrhhomheplfgrvhhi
-    vghrucfvihgruceofhhlohhsshesjhgvthhmrdhmvgeqnecuggftrfgrthhtvghrnhepte
-    egveefkeetvdfhteduueehgfehhfeiveeifeeflefgteeuhfelfeefjeeikeeunecuffho
-    mhgrihhnpehmthejiedrsggrnhgunecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrg
-    hmpehmrghilhhfrhhomhepfhhlohhsshesjhgvthhmrdhmvgdpnhgspghrtghpthhtohep
-    vddvpdhmohguvgepshhmthhpohhuthdprhgtphhtthhopegrnhhgvghlohhgihhorggttg
-    hhihhnohdruggvlhhrvghgnhhosegtohhllhgrsghorhgrrdgtohhmpdhrtghpthhtohep
-    feduleefieefudesghhmrghilhdrtghomhdprhgtphhtthhopehlohhonhhgrddtgidttd
-    esghhmrghilhdrtghomhdprhgtphhtthhopegrrhhivghlrdhrohhsvghnfhgvlhgurdej
-    hedtsehgmhgrihhlrdgtohhmpdhrtghpthhtoheptghhrghpuhhishgurghrihhogeesgh
-    hmrghilhdrtghomhdprhgtphhtthhopehgihhoshgrlheltdesghhmrghilhdrtghomhdp
-    rhgtphhtthhopehmrghtthhhihgrshdrsghgghesghhmrghilhdrtghomhdprhgtphhtth
-    hopehrrgguohhirdgthhhrihhssehgmhgrihhlrdgtohhmpdhrtghpthhtohepshgrmhhu
-    rdhtohhljhgrmhhosehgmhgrihhlrdgtohhm
-X-ME-Proxy: <xmx:qne8aQsPRLAsawKGP2xGSXMXM5s3OaGhrmYju7PzqiA_jTY7lfxRpw>
-    <xmx:q3e8aaqg2rANkfu2nRm0TfAdbervb-Uo_hw24aevAzk5AhVmSFO56A>
-    <xmx:q3e8aQSd3jkBLhWM2YJuLS60gDc9qwAYm1rOaAI6JHEEm32GcnBXtQ>
-    <xmx:q3e8afZ5U_IzLx8W5t0xTrUuIxkJspyYXie_xyKxVVYfMOxjYbmrwA>
-    <xmx:q3e8aesSRWfHafs7dhrJbXKHEhxQiANfn8bj1HJN5uteUM_sgNO7dtG->
+    vghrucfvihgruceofhhlohhsshesjhgvthhmrdhmvgeqnecuggftrfgrthhtvghrnhepve
+    ektdfhffevuddtgfetieevtddvheduhfeggfekveejlefhleefieevueefiefhnecuvehl
+    uhhsthgvrhfuihiivgepkeenucfrrghrrghmpehmrghilhhfrhhomhepfhhlohhsshesjh
+    gvthhmrdhmvgdpnhgspghrtghpthhtohepvddvpdhmohguvgepshhmthhpohhuthdprhgt
+    phhtthhopegrnhhgvghlohhgihhorggttghhihhnohdruggvlhhrvghgnhhosegtohhllh
+    grsghorhgrrdgtohhmpdhrtghpthhtohepfeduleefieefudesghhmrghilhdrtghomhdp
+    rhgtphhtthhopehlohhonhhgrddtgidttdesghhmrghilhdrtghomhdprhgtphhtthhope
+    grrhhivghlrdhrohhsvghnfhgvlhgurdejhedtsehgmhgrihhlrdgtohhmpdhrtghpthht
+    oheptghhrghpuhhishgurghrihhogeesghhmrghilhdrtghomhdprhgtphhtthhopehgih
+    hoshgrlheltdesghhmrghilhdrtghomhdprhgtphhtthhopehmrghtthhhihgrshdrsghg
+    ghesghhmrghilhdrtghomhdprhgtphhtthhopehrrgguohhirdgthhhrihhssehgmhgrih
+    hlrdgtohhmpdhrtghpthhtohepshgrmhhurdhtohhljhgrmhhosehgmhgrihhlrdgtohhm
+X-ME-Proxy: <xmx:rHe8aVj-2OgPzTNRPjVPJEMtMAQFmCu7c1-yC1OjuWMJ1eqmeRPt9A>
+    <xmx:rHe8aXOyP_h8QPgn7NlBzRUuAEekfkLDYO1eMYdRFbe6swphwlYi1Q>
+    <xmx:rHe8aZnFLSFpuTZJKX0Qe9y8p1fQmnerI8Z2Yh0ut4DTH3YwKQuLvQ>
+    <xmx:rHe8aWef2SyUPsiT9hG2fbfleA_z3NXjpFgVO69zgL-rprXlo0yUig>
+    <xmx:rHe8aVBA_YijLhGrF-ndlWy7SHO85xGuMGvdWqnHRP3jrqM-GRpsgT-u>
 Feedback-ID: i9dde48b3:Fastmail
 Received: by mailuser.phl.internal (Postfix, from userid 501)
-	id D6FB31EA006C; Thu, 19 Mar 2026 18:24:42 -0400 (EDT)
+	id A278C1EA006B; Thu, 19 Mar 2026 18:24:44 -0400 (EDT)
 X-Mailer: MessagingEngine.com Webmail Interface
 From: Javier Tia <floss@jetm.me>
-Date: Thu, 19 Mar 2026 16:24:27 -0600
-Subject: [PATCH v2 11/13] wifi: mt76: mt7925: fix band_idx for stable
- 5GHz/6GHz operation
+Date: Thu, 19 Mar 2026 16:24:28 -0600
+Subject: [PATCH v2 12/13] wifi: mt76: mt7925: enable low power support for
+ MT7927
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
@@ -105,7 +104,7 @@ List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
-Message-Id: <20260319-mt7927-wifi-support-v2-v2-11-d627a7fad70d@jetm.me>
+Message-Id: <20260319-mt7927-wifi-support-v2-v2-12-d627a7fad70d@jetm.me>
 To: Felix Fietkau <nbd@nbd.name>, Lorenzo Bianconi <lorenzo@kernel.org>,
  Ryder Lee <ryder.lee@mediatek.com>, Shayne Chen <shayne.chen@mediatek.com>,
  Sean Wang <sean.wang@mediatek.com>,
@@ -115,26 +114,25 @@ To: Felix Fietkau <nbd@nbd.name>, Lorenzo Bianconi <lorenzo@kernel.org>,
  Ming Yen Hsieh <mingyen.hsieh@mediatek.com>
 Cc: linux-wireless@vger.kernel.org, linux-kernel@vger.kernel.org,
  linux-arm-kernel@lists.infradead.org, linux-mediatek@lists.infradead.org,
- Marcin FM <marcin@lgic.pl>,
- =?utf-8?q?=E5=BC=A0=E6=97=AD=E6=B6=B5?= <Loong.0x00@gmail.com>,
- Cristian-Florin Radoi <radoi.chris@gmail.com>,
+ Marcin FM <marcin@lgic.pl>, Cristian-Florin Radoi <radoi.chris@gmail.com>,
  George Salukvadze <giosal90@gmail.com>, Evgeny Kapusta <3193631@gmail.com>,
  Samu Toljamo <samu.toljamo@gmail.com>,
  Ariel Rosenfeld <ariel.rosenfeld.750@gmail.com>,
  Chapuis Dario <chapuisdario4@gmail.com>,
- =?utf-8?q?Thibaut_Fran=C3=A7ois?= <tibo@humeurlibre.fr>
+ =?utf-8?q?Thibaut_Fran=C3=A7ois?= <tibo@humeurlibre.fr>,
+ =?utf-8?q?=E5=BC=A0=E6=97=AD=E6=B6=B5?= <Loong.0x00@gmail.com>
 X-Mailer: b4 0.14.3
-X-Developer-Signature: v=1; a=openpgp-sha256; l=8944; i=floss@jetm.me;
- h=from:subject:message-id; bh=uQ1a1G+lRE1F+q+YVMCHkXinyGF8yjF8AUl5IYMWZrQ=;
- b=owEB7QES/pANAwAKAbXuwwuoZ3cfAcsmYgBpvHeRCORlkzEHkL2BxLTLVSIZNnrUd85b7+MHm
- mtX5OyRRN2JAbMEAAEKAB0WIQSbE7ILzw7eI0VKk8m17sMLqGd3HwUCabx3kQAKCRC17sMLqGd3
- H4kwC/9NkPhymTfP8freC3WRvVYMipev9KDJJbZY03wWgILjhdYkqy7MRaDyZSGWMLNqXeVHGbu
- F2K3xnr2ZbYqwYAKwq8TqhsIvd6jWYGNnYRWKiCOb+WzvBuYTgRSfDRIwZC0nfwXBQlDl5dyvo3
- bOZo+mk/nJvo0vXPL0Y7vVr4xwx1koRGaDi+5k0nOqEi59mjY0qpD4P4tBSFQKPCBCmhwZ0MHjC
- fzR34mQYayFa7Y7MMSBq6WSwCh/wdK+2VGLOilus9pzr0oPzcweslsCP8AHV7wFhs0FW0aNwZqc
- AXkQubeUJqtJ8OTxdlhikNf9AfEDBKpv3ye3TsaSBFlPLaeqZzizyvPNbVn+B+WGFHMO6QvaR6M
- xzvoPheWTiVHesjgRDGwlwb0WpbkIHrOC43IqpBUbiN4QRttntqUMk7pNAVEP21LbF7lP91dDNj
- 2tDIZcTlRtq7yX5AKKh7uf0g9k7cRtLeRPg44RdX/w5CNtNTa2MwLyQe41jdD2tvgiCOE=
+X-Developer-Signature: v=1; a=openpgp-sha256; l=2465; i=floss@jetm.me;
+ h=from:subject:message-id; bh=PYlAslJCMZr5+HVdvaUdUa19VFxbM+K5DE/+iCdWcok=;
+ b=owEB7QES/pANAwAKAbXuwwuoZ3cfAcsmYgBpvHeRc4cmYJPBln9OK9QdhGO7p49+QnY5d7Sib
+ wETU9ysHtKJAbMEAAEKAB0WIQSbE7ILzw7eI0VKk8m17sMLqGd3HwUCabx3kQAKCRC17sMLqGd3
+ H8BJDACyBzfw/ms19DMpM9SYwG47V11JEsvTkPt0AFM5YZcG+7QowV3LhaRAryaBinvBHORFqNa
+ rIWxqyzxSxaBQf0zipQC1ZiHIX/wk8BX1TXcAKDDJ8JFUUYu4XKiAUcuu/51wg16MgwTeoWj4l/
+ IqRzMd6XoT3dZA5XUi1q5fTSM+eovVOTf3VtIq3ZsFDDzh+e0a4KaiHwj4+1LGs0R9F8lp2uYHY
+ USH8k4KHIx0Ik1Pun3qYBpha1L9gIOSsKBirimhv/huaiks5U5qbFRWjHDHnxF6GjFdC9jUjAUz
+ U9A/HEplrp9AsAmK0ptSc4JTySlsxDCG3N8HLO6sXh2KbDH3IWkYJaDFeuymJvM2L+XMoblv9Z4
+ 8UPLHiKtnEz9+lAnHZCtOfJ5Rv6rCVjkoCtiMcXsd8h14SHHlIUXvnbWE7nCQsiBOaXbjctTY1r
+ OX7uA9QyaExri5SwZHrNdXIOSgqlmj5gVa8QGWaw85Qn+q5ExwuEbNx1gKqDG4LGKOP4M=
 X-Developer-Key: i=floss@jetm.me; a=openpgp;
  fpr=9B13B20BCF0EDE23454A93C9B5EEC30BA867771F
 In-Reply-To: <20260319-mt7927-wifi-support-v2-v2-0-d627a7fad70d@jetm.me>
@@ -147,7 +145,7 @@ X-Spamd-Result: default: False [8.85 / 15.00];
 	MIME_GOOD(-0.10)[text/plain];
 	XM_UA_NO_VERSION(0.01)[];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-33527-lists,linux-wireless=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-33529-lists,linux-wireless=lfdr.de];
 	R_DKIM_ALLOW(0.00)[jetm.me:s=fm3,messagingengine.com:s=fm1];
 	RCVD_TLS_LAST(0.00)[];
 	FROM_HAS_DN(0.00)[];
@@ -167,40 +165,26 @@ X-Spamd-Result: default: False [8.85 / 15.00];
 	TAGGED_RCPT(0.00)[linux-wireless];
 	ARC_ALLOW(0.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	R_SPF_ALLOW(0.00)[+ip6:2600:3c04:e001:36c::/64:c];
-	NEURAL_SPAM(0.00)[0.998];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[humeurlibre.fr:email,messagingengine.com:dkim,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,jetm.me:dkim,jetm.me:email,jetm.me:mid,lgic.pl:email]
-X-Rspamd-Queue-Id: 492A22D3247
+	R_SPF_ALLOW(0.00)[+ip4:104.64.211.4:c];
+	NEURAL_SPAM(0.00)[0.997];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[messagingengine.com:dkim,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,humeurlibre.fr:email]
+X-Rspamd-Queue-Id: B15632D3F39
 X-Rspamd-Action: add header
 X-Rspamd-Server: lfdr
 X-Spam: Yes
 
-The MT7927 firmware requires explicit band_idx assignment (0 for 2.4GHz,
-1 for 5GHz/6GHz) instead of 0xff (auto-select) used by MT7925. Without
-this, the firmware selects the wrong radio for 5GHz and 6GHz
-connections, causing WPA 4-way handshake timeout and data plane failures
-on those bands.
+Enable runtime PM and deep sleep for MT7927 now that the DMA wake path
+properly restores all MT7927-specific GLO_CFG bits (ADDR_EXT_EN,
+CSR_LBK_RX_Q_SEL_EN, FW_DWLD_BYPASS_DMASHDL) via the DMA config
+struct on every PM wake cycle.
 
-Introduce mt7925_band_idx(dev, band) helper that encapsulates the
-chip check: returns the hardware band index for MT7927, or 0xff
-(auto-select) for MT7925. Replace all scattered is_mt7927() + band
-mapping patterns with the unified helper across BSS creation, channel
-context assignment, ROC requests, and BSS info TLVs.
+Disable PCIe ASPM unconditionally for MT7927. The CONNINFRA power
+domain and WFDMA register access are unreliable with PCIe L1 active,
+causing throughput to drop from 1+ Gbps to ~200 Mbps. L0s savings are
+negligible for a PCIe WLAN card, and mt76_pci_disable_aspm() handles
+both device and parent bridge in one call.
 
-For ROC requests on MT7925, the helper returns 0xff which is then
-refined to 0xfe (BAND_ALL with DBDC) for JOIN-type requests.
-
-Also clamp invalid grant band_idx values using rfband as fallback, and
-process grants for all MT7927 request types (not just JOIN).
-
-Originally discovered and fixed by marcin-fm; Loong0x00 contributed
-additional improvements based on marcin-fm's patch.
-
-Co-developed-by: Marcin FM <marcin@lgic.pl>
-Signed-off-by: Marcin FM <marcin@lgic.pl>
-Co-developed-by: 张旭涵 <Loong.0x00@gmail.com>
-Signed-off-by: 张旭涵 <Loong.0x00@gmail.com>
 Tested-by: Marcin FM <marcin@lgic.pl>
 Tested-by: Cristian-Florin Radoi <radoi.chris@gmail.com>
 Tested-by: George Salukvadze <giosal90@gmail.com>
@@ -212,205 +196,36 @@ Tested-by: Thibaut François <tibo@humeurlibre.fr>
 Tested-by: 张旭涵 <Loong.0x00@gmail.com>
 Signed-off-by: Javier Tia <floss@jetm.me>
 ---
- drivers/net/wireless/mediatek/mt76/mt7925/main.c   | 35 ++++++++++++++-
- drivers/net/wireless/mediatek/mt76/mt7925/mcu.c    | 50 +++++++++++++++++-----
- drivers/net/wireless/mediatek/mt76/mt7925/mt7925.h |  7 +++
- 3 files changed, 80 insertions(+), 12 deletions(-)
+ drivers/net/wireless/mediatek/mt76/mt7925/pci.c | 9 +++++++--
+ 1 file changed, 7 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7925/main.c b/drivers/net/wireless/mediatek/mt76/mt7925/main.c
-index cd043ac266fb..25f8c5a28e5c 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7925/main.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7925/main.c
-@@ -400,7 +400,19 @@ static int mt7925_mac_link_bss_add(struct mt792x_dev *dev,
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7925/pci.c b/drivers/net/wireless/mediatek/mt76/mt7925/pci.c
+index 393d9f408b84..693e08f35d68 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7925/pci.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7925/pci.c
+@@ -530,7 +530,13 @@ static int mt7925_pci_probe(struct pci_dev *pdev,
+ 	if (ret)
+ 		goto err_free_pci_vec;
  
- 	mconf->mt76.omac_idx = ieee80211_vif_is_mld(vif) ?
- 			       0 : mconf->mt76.idx;
--	mconf->mt76.band_idx = 0xff;
+-	if (mt7925_disable_aspm)
++	is_mt7927_hw = (pdev->device == 0x6639 || pdev->device == 0x7927);
 +
-+	{
-+		struct ieee80211_channel *chan = NULL;
-+
-+		if (link_conf->chanreq.oper.chan)
-+			chan = link_conf->chanreq.oper.chan;
-+		else if (mvif->phy->mt76->chandef.chan)
-+			chan = mvif->phy->mt76->chandef.chan;
-+
-+		mconf->mt76.band_idx = chan ?
-+			mt7925_band_idx(&dev->mt76, chan->band) : 0xff;
-+	}
-+
- 	mconf->mt76.wmm_idx = ieee80211_vif_is_mld(vif) ?
- 			      0 : mconf->mt76.idx % MT76_CONNAC_MAX_WMM_SETS;
- 	mconf->mt76.link_idx = hweight16(mvif->valid_links);
-@@ -417,7 +429,8 @@ static int mt7925_mac_link_bss_add(struct mt792x_dev *dev,
- 
- 	mlink->wcid.idx = idx;
- 	mlink->wcid.tx_info |= MT_WCID_TX_INFO_SET;
--	mt76_wcid_init(&mlink->wcid, 0);
-+	mt76_wcid_init(&mlink->wcid,
-+		       mconf->mt76.band_idx == 0xff ? 0 : mconf->mt76.band_idx);
- 
- 	mt7925_mac_wtbl_update(dev, idx,
- 			       MT_WTBL_UPDATE_ADM_COUNT_CLEAR);
-@@ -2119,9 +2132,12 @@ static int mt7925_assign_vif_chanctx(struct ieee80211_hw *hw,
- {
- 	struct mt792x_chanctx *mctx = (struct mt792x_chanctx *)ctx->drv_priv;
- 	struct mt792x_vif *mvif = (struct mt792x_vif *)vif->drv_priv;
-+	struct mt792x_link_sta *mlink;
- 	struct mt792x_dev *dev = mt792x_hw_dev(hw);
- 	struct ieee80211_bss_conf *pri_link_conf;
- 	struct mt792x_bss_conf *mconf;
-+	u8 band_idx;
-+	u8 old_band;
- 
- 	mutex_lock(&dev->mt76.mutex);
- 
-@@ -2137,6 +2153,21 @@ static int mt7925_assign_vif_chanctx(struct ieee80211_hw *hw,
- 		mconf = &mvif->bss_conf;
- 	}
- 
-+	old_band = mconf->mt76.band_idx;
-+	if (ctx->def.chan) {
-+		band_idx = mt7925_band_idx(&dev->mt76, ctx->def.chan->band);
-+		mconf->mt76.band_idx = band_idx;
-+		mlink = mt792x_sta_to_link(&mvif->sta, mconf->link_id);
-+		if (mlink)
-+			mlink->wcid.phy_idx = band_idx;
-+
-+		if (old_band != band_idx && vif->type == NL80211_IFTYPE_STATION &&
-+		    mlink)
-+			mt76_connac_mcu_uni_add_dev(&dev->mphy, link_conf,
-+						    &mconf->mt76, &mlink->wcid,
-+						    true);
-+	}
-+
- 	mconf->mt76.ctx = ctx;
- 	mctx->bss_conf = mconf;
- 	mutex_unlock(&dev->mt76.mutex);
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7925/mcu.c b/drivers/net/wireless/mediatek/mt76/mt7925/mcu.c
-index a7f27c5014d5..0755fee6cdff 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7925/mcu.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7925/mcu.c
-@@ -301,16 +301,36 @@ mt7925_mcu_connection_loss_event(struct mt792x_dev *dev, struct sk_buff *skb)
- static void
- mt7925_mcu_roc_iter(void *priv, u8 *mac, struct ieee80211_vif *vif)
- {
--	struct mt76_vif_link *mvif = (struct mt76_vif_link *)vif->drv_priv;
-+	struct mt792x_vif *mvif = (struct mt792x_vif *)vif->drv_priv;
- 	struct mt7925_roc_grant_tlv *grant = priv;
-+	u8 band_idx = grant->dbdcband;
- 
- 	if (ieee80211_vif_is_mld(vif) && vif->type == NL80211_IFTYPE_STATION)
- 		return;
- 
--	if (mvif->idx != grant->bss_idx)
-+	if (mvif->bss_conf.mt76.idx != grant->bss_idx)
- 		return;
- 
--	mvif->band_idx = grant->dbdcband;
-+	/* MT7927 firmware requires band_idx 0 (2.4G) or 1 (5/6G).
-+	 * Clamp invalid grant values using rfband as fallback.
++	/* MT7927: CONNINFRA power domain and WFDMA register access are
++	 * unreliable with PCIe L1 active, causing throughput to drop
++	 * from 1+ Gbps to ~200 Mbps. Disable ASPM unconditionally.
 +	 */
-+	if (is_mt7927(&mvif->phy->dev->mt76) && band_idx > 1) {
-+		switch (grant->rfband) {
-+		case 1: /* 2.4 GHz */
-+			band_idx = 0;
-+			break;
-+		case 2: /* 5 GHz */
-+		case 3: /* 6 GHz */
-+			band_idx = 1;
-+			break;
-+		default:
-+			band_idx = mvif->bss_conf.mt76.band_idx <= 1 ?
-+				   mvif->bss_conf.mt76.band_idx : 0;
-+			break;
-+		}
-+	}
-+
-+	mvif->bss_conf.mt76.band_idx = band_idx;
- }
++	if (mt7925_disable_aspm || is_mt7927_hw)
+ 		mt76_pci_disable_aspm(pdev);
  
- static void mt7925_mcu_roc_handle_grant(struct mt792x_dev *dev,
-@@ -327,10 +347,11 @@ static void mt7925_mcu_roc_handle_grant(struct mt792x_dev *dev,
- 
- 	if (grant->reqtype == MT7925_ROC_REQ_ROC)
- 		ieee80211_ready_on_channel(hw);
--	else if (grant->reqtype == MT7925_ROC_REQ_JOIN)
-+	else if (is_mt7927(&dev->mt76) || grant->reqtype == MT7925_ROC_REQ_JOIN)
- 		ieee80211_iterate_active_interfaces_atomic(hw,
- 						IEEE80211_IFACE_ITER_RESUME_ALL,
- 						mt7925_mcu_roc_iter, grant);
-+
- 	dev->phy.roc_grant = true;
- 	wake_up(&dev->phy.roc_wait);
- 	duration = le32_to_cpu(grant->max_interval);
-@@ -1378,10 +1399,14 @@ int mt7925_mcu_set_mlo_roc(struct mt792x_bss_conf *mconf, u16 sel_links,
- 		req.roc[i].center_chan2 = 0;
- 		req.roc[i].center_chan2_from_ap = 0;
- 
--		/* STR : 0xfe indicates BAND_ALL with enabling DBDC
--		 * EMLSR : 0xff indicates (BAND_AUTO) without DBDC
--		 */
--		req.roc[i].dbdcband = type == MT7925_ROC_REQ_JOIN ? 0xfe : 0xff;
-+		req.roc[i].dbdcband =
-+			mt7925_band_idx(&mvif->phy->dev->mt76, chan->band);
-+		if (req.roc[i].dbdcband == 0xff)
-+			/* STR : 0xfe indicates BAND_ALL with enabling DBDC
-+			 * EMLSR : 0xff indicates (BAND_AUTO) without DBDC
-+			 */
-+			req.roc[i].dbdcband = type == MT7925_ROC_REQ_JOIN ?
-+					      0xfe : 0xff;
- 
- 		if (chan->hw_value < center_ch)
- 			req.roc[i].sco = 1; /* SCA */
-@@ -1419,7 +1444,8 @@ int mt7925_mcu_set_roc(struct mt792x_phy *phy, struct mt792x_bss_conf *mconf,
- 			.bw_from_ap = CMD_CBW_20MHZ,
- 			.center_chan = center_ch,
- 			.center_chan_from_ap = center_ch,
--			.dbdcband = 0xff, /* auto */
-+			.dbdcband = mt7925_band_idx(&dev->mt76,
-+						    chan->band),
- 		},
- 	};
- 
-@@ -1466,7 +1492,9 @@ int mt7925_mcu_abort_roc(struct mt792x_phy *phy, struct mt792x_bss_conf *mconf,
- 			.len = cpu_to_le16(sizeof(struct roc_abort_tlv)),
- 			.tokenid = token_id,
- 			.bss_idx = mconf->mt76.idx,
--			.dbdcband = 0xff, /* auto*/
-+			.dbdcband = mconf->mt76.band_idx <= 1 ?
-+					    mconf->mt76.band_idx :
-+					    0xff, /* auto */
- 		},
- 	};
- 
-@@ -2499,6 +2527,8 @@ mt7925_mcu_bss_basic_tlv(struct sk_buff *skb,
- 	basic_req->phymode_ext = mt7925_get_phy_mode_ext(phy, vif, band,
- 							 link_sta);
- 
-+	mconf->mt76.band_idx = mt7925_band_idx(phy->dev, band);
-+
- 	if (band == NL80211_BAND_2GHZ)
- 		basic_req->nonht_basic_phy = cpu_to_le16(PHY_TYPE_ERP_INDEX);
- 	else
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7925/mt7925.h b/drivers/net/wireless/mediatek/mt76/mt7925/mt7925.h
-index 6b9bf1b89032..2f908d159e30 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7925/mt7925.h
-+++ b/drivers/net/wireless/mediatek/mt76/mt7925/mt7925.h
-@@ -63,6 +63,13 @@ enum mt7925_roc_req {
- 	MT7925_ROC_REQ_NUM
- };
- 
-+static inline u8 mt7925_band_idx(struct mt76_dev *dev, enum nl80211_band band)
-+{
-+	if (is_mt7927(dev))
-+		return band == NL80211_BAND_2GHZ ? 0 : 1;
-+	return 0xff; /* auto-select for mt7925 */
-+}
-+
- enum {
- 	UNI_EVENT_ROC_GRANT = 0,
- 	UNI_EVENT_ROC_GRANT_SUB_LINK = 4,
+ 	ops = mt792x_get_mac80211_ops(&pdev->dev, &mt7925_ops,
+@@ -562,7 +568,6 @@ static int mt7925_pci_probe(struct pci_dev *pdev,
+ 	dev = container_of(mdev, struct mt792x_dev, mt76);
+ 	dev->fw_features = features;
+ 	dev->hif_ops = &mt7925_pcie_ops;
+-	is_mt7927_hw = (pdev->device == 0x6639 || pdev->device == 0x7927);
+ 	dev->irq_map = is_mt7927_hw ? &mt7927_irq_map : &irq_map;
+ 	dev->dma_config = is_mt7927_hw ? &mt7927_dma_cfg : &mt7925_dma_cfg;
+ 	mt76_mmio_init(&dev->mt76, pcim_iomap_table(pdev)[0]);
 
 -- 
 2.53.0
