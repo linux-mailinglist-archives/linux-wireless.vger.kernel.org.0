@@ -1,200 +1,247 @@
-Return-Path: <linux-wireless+bounces-33510-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-33511-lists+linux-wireless=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id qE4LF5dFvGkJwQIAu9opvQ
-	(envelope-from <linux-wireless+bounces-33510-lists+linux-wireless=lfdr.de@vger.kernel.org>)
-	for <lists+linux-wireless@lfdr.de>; Thu, 19 Mar 2026 19:51:03 +0100
+	id mAggAyVYvGkUxQIAu9opvQ
+	(envelope-from <linux-wireless+bounces-33511-lists+linux-wireless=lfdr.de@vger.kernel.org>)
+	for <lists+linux-wireless@lfdr.de>; Thu, 19 Mar 2026 21:10:13 +0100
 X-Original-To: lists+linux-wireless@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id DCA6E2D1595
-	for <lists+linux-wireless@lfdr.de>; Thu, 19 Mar 2026 19:51:02 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id 05BC72D1EF4
+	for <lists+linux-wireless@lfdr.de>; Thu, 19 Mar 2026 21:10:11 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 3F30B3050433
-	for <lists+linux-wireless@lfdr.de>; Thu, 19 Mar 2026 18:50:47 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id B18D43003820
+	for <lists+linux-wireless@lfdr.de>; Thu, 19 Mar 2026 20:09:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 91E423559DF;
-	Thu, 19 Mar 2026 18:50:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0F8B8364953;
+	Thu, 19 Mar 2026 20:09:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="YSopD4qg";
-	dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b="H7Mh6joC"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="CbaNFdY9"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wr1-f46.google.com (mail-wr1-f46.google.com [209.85.221.46])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4E11034DB7F
-	for <linux-wireless@vger.kernel.org>; Thu, 19 Mar 2026 18:50:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8F98F3644C5
+	for <linux-wireless@vger.kernel.org>; Thu, 19 Mar 2026 20:09:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.46
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773946236; cv=none; b=D8/MN6beUlOSwCemQaDBhYDPPb35m3dsC25oqo2LYvmgC7H1+zEzEUqz4afZzsch9uZ7DR4UUyO9xyzsWepsNiqc8Uc0K18oM0oaIQyNXHrZZ32xR46dxc7EdiOV1TyCLvrd5BUqta0BcxS9BCiS3YGvOWEleUHIArZlKHOiwA0=
+	t=1773950984; cv=none; b=hKJZ+JJb4SE/EjFEIjzavWSk7SWbCIzrTmRAX1PgRX9SG+T9cjGjiyo5rxdVE0RBqHiQbb3ChCGS0fgo9H20aPdvjy+vejl9L/SMfbb8VaD/pvneCndZJvw0JpfqgTZVGuqsjTToYKphyjvlJAs/pnUwjVDh7DlRnERMphBMmsk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773946236; c=relaxed/simple;
-	bh=gr/9NeEAFUkbVQbfw4Mz4GNhFZSSp1BkHRJt9tIUqz4=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=U0PIg8+ueH8JbXsqMW6ohHSNSH1+9Hfp/rAUAOONwNoQjjmKQd2019jsL7xHwu+PWJhvqjgXzP0PXFF13B6TO7KRYCZF2AT6+uYlz33RMq5PTolAOABZOQeALovB1j7CrLhzEzmj7coA03vfCggL2DyEai4ZyhXY+eeku4ZXCpY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=YSopD4qg; dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b=H7Mh6joC; arc=none smtp.client-ip=205.220.180.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
-Received: from pps.filterd (m0279868.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 62JEcCSP1027121
-	for <linux-wireless@vger.kernel.org>; Thu, 19 Mar 2026 18:50:34 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
-	cc:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
-	gr/9NeEAFUkbVQbfw4Mz4GNhFZSSp1BkHRJt9tIUqz4=; b=YSopD4qgHwbIVIpz
-	oqUx2FZRfeiSp7FyrEuC83/50T28HT1CW/+rdOV51TEMTWaSNRq9bzKd1MhOCm4J
-	exV3MwIj+etMLmexHrYnot72cf4c2CK5T/atE43P/CqkUbchc26SJNtKSlrAse+8
-	Q/zuMIynH442jCSbWYEOeIeJyHf5RtdxYX8vLcKkfVwUYZjlrPMGDc3sveQ7367I
-	zXzE4So2vvHPQAtkA4GzJ4pOfbjiXQRlgcv71fT8gzfuC/UETr66Rgh1pQP2whqO
-	/eEpqAt+JrvAP/J8Mv2tpxuEZw0eIFebSnta3takZmBbelOCBQD29h3o6hWD4L+T
-	0MMUzA==
-Received: from mail-dy1-f198.google.com (mail-dy1-f198.google.com [74.125.82.198])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4d0032mjqw-1
-	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
-	for <linux-wireless@vger.kernel.org>; Thu, 19 Mar 2026 18:50:34 +0000 (GMT)
-Received: by mail-dy1-f198.google.com with SMTP id 5a478bee46e88-2bda35eab74so867975eec.0
-        for <linux-wireless@vger.kernel.org>; Thu, 19 Mar 2026 11:50:34 -0700 (PDT)
+	s=arc-20240116; t=1773950984; c=relaxed/simple;
+	bh=bisf0XchOZYoXALYu8CjuqBhG93r4tfWvdbSWvyUWLs=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=VkdlSRM5EkxOjc1Vf18ehT6cFNKrIytD3NwYuFsS5Dzhv8xrzHvlGHTb7N6kwPi5cwNyqczPshWNI8xQtJr2e8QqPkLEYAHCT2TjyPZJPH6nkEcVm3YLwCuzA4KEYntHmiFBAIIRo5Y6ff5eap+kTY3x8CFudb4NaEpu+H4bFp8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=CbaNFdY9; arc=none smtp.client-ip=209.85.221.46
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-wr1-f46.google.com with SMTP id ffacd0b85a97d-439c6fc2910so887707f8f.0
+        for <linux-wireless@vger.kernel.org>; Thu, 19 Mar 2026 13:09:42 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=oss.qualcomm.com; s=google; t=1773946233; x=1774551033; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=gr/9NeEAFUkbVQbfw4Mz4GNhFZSSp1BkHRJt9tIUqz4=;
-        b=H7Mh6joCJ/H1sjDeT5PXpC4yDNnZVyKGegg8qigTKeCGbWVvZ5ia/pqnjRSgIiBUzX
-         irqSyEYoPhVHKTWE47bAzzE1exc3inq61KKN1MxVWfd8dXEoA/m1k0T5uvvutSexY5vd
-         WM5UXgcOcGbiK45ufsvW180uGxXIlzgs1281Y1Q8msGm7pCq+XSzAA9KwRplDfbd+FBW
-         SuFs5Npgcj3ObHG6eV+C+1MeYMZjPPS1znE9cCm+7kjRErGsXNaHYNNZWljgWxVX+8hR
-         Fd+IRsdrnUY/4C2omfyic5k6JFoiZcFWkDFVL2bMXged3mWCVeBX6sb83v63xYmNGbQA
-         R/Gw==
+        d=gmail.com; s=20230601; t=1773950981; x=1774555781; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=lPIk/0st22ZS1OzuVSWsQ+rWgA1iBUqCVtU5Rvk+tKU=;
+        b=CbaNFdY9dDHp5mfQQ0VVwZXGP8jc5G/LJwSJhhWBnoGp3H+1V3rqNHn1zA46I2oQUA
+         tQHVLUSUfT4VrcDjh/9dtB6isD89rNJ2J1II/Vo/U1XlB7+hq1EIodUDon/pcZq2+EAR
+         LHh13Wi5ResL/s6BfDe2dLZiQYaSeqAAT032pXRUIGDoG/ls7gqrU8JjWjFlTA3tuCn6
+         6iOKFs7sJEi+AEOM4meeJBIYzYqaPprTEGEEOZhzx4GNEFYYHeH9dwfRqewpQHGQnzhj
+         yJNnjSghyYL1xQ8mnptye3XixD+/OG+HogdZRtNVEOQiZ+vx1vgIbG6zeFThWhgn3NOC
+         Fgyg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1773946233; x=1774551033;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=gr/9NeEAFUkbVQbfw4Mz4GNhFZSSp1BkHRJt9tIUqz4=;
-        b=ZSTHOmetFTjwJf8EYL8NYD7h2O3qY2DJ9nW0TZ3AxBjDpl6eAhAYIK1deunRXlc6z3
-         ukiUJXtN1n+82E+zOgIBdnyhh2yROU1j3xqzvmKxRfZvChb/zozdZ27ISqup3bN88Jz9
-         2FD+5vMm4UeEpyWDfo2V+HKpvabQ5EKlWJ3qoH2v5vaPBfdr//FPwC90oMdjwz1+nePj
-         m8kkwxltdaodcm50WW6BwrP0z+iPOvcJNgbK4FQC6vI+piP045/wxiGEyEmOYjeAwVzj
-         pcX7vp4HfESvU9xVDMvMqoAesyWVfoXYai/iNMMlYC36muvHyXJlzqiWQq+iFyFeSdlL
-         HHdA==
-X-Gm-Message-State: AOJu0Yy4m/O9npdzesEScqwS4XFdH453BM0+54NX+K+27Cxk7qhQYc7d
-	WjFNCoridQaJXiq3ZPc/b/KRMChF795WgT84lxVnKkvvBJkstuuwY3YpPZ3vxBRo54coaAJ1dng
-	7BP+hiK6DVbyeyNFwrcacJGR7tMAERIGZJL/HmrjPHkdcyI/L5l7BVo1xkdhB/ZiXwk8iMg==
-X-Gm-Gg: ATEYQzziU5O1TQwNYw9Z6SASCC+m9t0q34djnHziwng0JaC6UOUe2FK8KyF9jnFLsG/
-	/u4nkcny/bEX530aRLltNXy67H0OoZxtw2+hXLMnveQAVusNpHaTNwlRz4Do7SnWj5hdsntPwGX
-	GyQGqZ2nhpCALqxy+FmBw/+aBbDuLbsL5KdPYBN2EvO154KwoMDNsFNTEGmX3rkZ/gm7UXg2v/Z
-	2fusfrCxT7jpBCRSQ4l8qYq2wWgkGKWTkJMxywEw/07exrEgx/0p6wiat+HkrMztprZvV/uqpHX
-	fkCK9tlhfZFNlqb6Q9JHYKzT+Bp5P7ZqC6PEmg0rjn1P68HZuE703dGlL8U5br1jKoaLBeieYrU
-	7qcmZRmBl0ViH0bRpUkejr1woqcD1omoSiVZd6GfgaQNr+/d+kfdjEjFc29xvLcww2FXI9cGmtp
-	BmPqTewTbInWx0Fw==
-X-Received: by 2002:a05:7300:fb8d:b0:2c0:ca48:3107 with SMTP id 5a478bee46e88-2c0f3eb5664mr1959237eec.15.1773946233167;
-        Thu, 19 Mar 2026 11:50:33 -0700 (PDT)
-X-Received: by 2002:a05:7300:fb8d:b0:2c0:ca48:3107 with SMTP id 5a478bee46e88-2c0f3eb5664mr1959219eec.15.1773946232576;
-        Thu, 19 Mar 2026 11:50:32 -0700 (PDT)
-Received: from [192.168.1.41] (c-24-130-122-79.hsd1.ca.comcast.net. [24.130.122.79])
-        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-2c0e536894bsm10154217eec.5.2026.03.19.11.50.31
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 19 Mar 2026 11:50:31 -0700 (PDT)
-Message-ID: <17507b59-c688-4a3c-9eb5-a907e297a10a@oss.qualcomm.com>
-Date: Thu, 19 Mar 2026 11:50:30 -0700
+        d=1e100.net; s=20251104; t=1773950981; x=1774555781;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=lPIk/0st22ZS1OzuVSWsQ+rWgA1iBUqCVtU5Rvk+tKU=;
+        b=Y3I9xj1XwwxpiEHZs3h/9cle60BEPVihw0DlXO1TynaQiwnywwuk6I5mEVpQouuefj
+         jRlUSa0UrQg3AtfU/KMs2/tU6MDqI81AqxEwlrawVIwH5sabEIwgzVjjGu+lQ3cnDaEi
+         7cfIhlg0icFKtDh/xTJ3hB11LZ8wcaOlLMoN9XA+DYE6lF1FSYB664nvLKrVDpPUhAA3
+         BXMR2Q26k/4kGPiCun46yMNsaLH3Fco9OO9dw9LtZweelABMrWMo4rm/eFObG9rX2Dgz
+         en4fc8GAelv389tfPkKUuXdKo47FEbO/uNLp01Chme0FHbN7PdW6SVYRR1f7lQLbGJfV
+         zurA==
+X-Gm-Message-State: AOJu0Yz7hphK4PPV3+2XQlDtrJ6NdU2lCXGu08R2xY9CKhOOiAV7FVm2
+	ACGdnTuGkRuC3cjTYApRMuu4dSmYyo6OaKc5FjUpPig4JqXPUmJ7nHnq
+X-Gm-Gg: ATEYQzzBkJL/PLzuBo1goOisBRIJpeRhb2b2L1HqvVc6Zu8trTYwWrYlKXC+X7EzPRv
+	Icg8RrnsPLVoBbNWGNyEsv4/Ufr3uPc0Yv0n1Wb1JxaqF1+fafj7NNCs+wYe+u3Qu+o4Jiiel5t
+	tD9AK0HvIAJRd9jmXmhBJojgge65TnqM32Cu/7cQHOLREo6ACGhYCEcqmpT3mszl2tNzwt1UAu2
+	BocpBb7+qSxi46pzCFCGQ07hp4yYqAaLrj6Tt4SQa1i2G5ZSbQPqZTiWtvGB21YHk8ri5bEIUES
+	PPlIuYFiEyhr9Lzp/V9vsIkqMZuGbuXWXkpu0wNw8qjntrml8mhcE0SFNdvtLbckq2r40riYGE3
+	8pIWn3d97FhtdXWkC+704HBeF5QEHY1itQO5khHGnIGc0s8wMhU2GVM1ZbEZP1O887AoJHtkgXc
+	MPzzJEiScchDIS+vIlVTl0MtCi62CHwaq+AwbOfIE6JI8/
+X-Received: by 2002:a05:6000:290b:b0:439:c67d:9fe8 with SMTP id ffacd0b85a97d-43b6424ef8bmr1184861f8f.22.1773950980293;
+        Thu, 19 Mar 2026 13:09:40 -0700 (PDT)
+Received: from debian.lan ([171.22.85.208])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-43b6471a27csm1012550f8f.36.2026.03.19.13.09.38
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 19 Mar 2026 13:09:39 -0700 (PDT)
+From: =?UTF-8?q?Adri=C3=A1n=20Garc=C3=ADa=20Casado?= <adriangarciacasado42@gmail.com>
+To: Miri Korenblit <miriam.rachel.korenblit@intel.com>
+Cc: linux-wireless@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>,
+	=?UTF-8?q?Adri=C3=A1n=20Garc=C3=ADa=20Casado?= <adriangarciacasado42@gmail.com>
+Subject: [PATCH v8 1/3] wifi: iwlwifi: pcie: migrate to modern pci_alloc_irq_vectors API
+Date: Thu, 19 Mar 2026 21:09:35 +0100
+Message-ID: <20260319200935.23253-1-adriangarciacasado42@gmail.com>
+X-Mailer: git-send-email 2.47.3
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v7 1/3] wifi: iwlwifi: pcie: migrate to modern
- pci_alloc_irq_vectors API
-To: =?UTF-8?Q?Adri=C3=A1n_Garc=C3=ADa_Casado?=
- <adriangarciacasado42@gmail.com>,
-        Miri Korenblit <miriam.rachel.korenblit@intel.com>
-Cc: linux-wireless@vger.kernel.org, linux-kernel@vger.kernel.org,
-        Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-References: <20260319182925.19436-1-adriangarciacasado42@gmail.com>
-Content-Language: en-US
-From: Jeff Johnson <jeff.johnson@oss.qualcomm.com>
-In-Reply-To: <20260319182925.19436-1-adriangarciacasado42@gmail.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Proofpoint-ORIG-GUID: yMX41W6TKvEB11vxRNJpq7jRicvmgJ40
-X-Proofpoint-GUID: yMX41W6TKvEB11vxRNJpq7jRicvmgJ40
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwMzE5MDE1MSBTYWx0ZWRfX+tLmIA08vgPa
- BqDblbZMcKID6aueI2+38PMOV/R2rNiJx31a6kneqvXZ+iBA4VpP/jTiw2HSTjp/voNLDqGvHKy
- 71hvS3CMr2HFZ++xVFPJkz+m8ApgOVDH9pLRiA1PMdnK+VPaMs1SXmNn/B6H1NJ5fu3P6Q5Y7iY
- M035R9mp7yWucCkKsZbOlsv2TVun0hCai5LiEXsYdAUxfgT0Zure6grc2SGQ27dduARD41qvP6d
- VbN3A79dYUx7AZaGIk6EaMotLQ2lQO8ph3Xw9S4Z1SLcWliBWnKZ4W7nYz84vvBRqHGrWs3Kq4l
- 2f6FxkoCTQMnnLltXXlVgyatAZBlMKA+FvQBmq7e8R875afdfPj2R6JYACYPWe5t78TuVjFdMp2
- /9XhC1SHaf+8+G/Th92HtY2bJRHeDfQNvTV3mYqB7QKFRetahaKT5/VAr7sRXAYY1ubcKEM6rLk
- pJNYrSt1a9ajYQS8OcQ==
-X-Authority-Analysis: v=2.4 cv=WO9yn3sR c=1 sm=1 tr=0 ts=69bc457a cx=c_pps
- a=wEP8DlPgTf/vqF+yE6f9lg==:117 a=Tg7Z00WN3eLgNEO9NLUKUQ==:17
- a=IkcTkHD0fZMA:10 a=Yq5XynenixoA:10 a=s4-Qcg_JpJYA:10
- a=VkNPw1HP01LnGYTKEx00:22 a=u7WPNUs3qKkmUXheDGA7:22 a=ZpdpYltYx_vBUK5n70dp:22
- a=VwQbUJbxAAAA:8 a=jSEP3iq8ptvKKmpwVf0A:9 a=3ZKOabzyN94A:10 a=QEXdDO2ut3YA:10
- a=bBxd6f-gb0O0v-kibOvt:22
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.51,FMLib:17.12.100.49
- definitions=2026-03-19_03,2026-03-19_05,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- priorityscore=1501 suspectscore=0 lowpriorityscore=0 impostorscore=0
- adultscore=0 clxscore=1015 spamscore=0 malwarescore=0 phishscore=0
- bulkscore=0 classifier=typeunknown authscore=0 authtc= authcc= route=outbound
- adjust=0 reason=mlx scancount=1 engine=8.22.0-2603050001
- definitions=main-2603190151
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [-0.53 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[qualcomm.com,reject];
-	R_DKIM_ALLOW(-0.20)[qualcomm.com:s=qcppdkim1,oss.qualcomm.com:s=google];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	MID_CONTAINS_FROM(1.00)[];
+	R_MIXED_CHARSET(0.63)[subject];
+	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
+	R_DKIM_ALLOW(-0.20)[gmail.com:s=20230601];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	TAGGED_FROM(0.00)[bounces-33511-lists,linux-wireless=lfdr.de];
 	FREEMAIL_CC(0.00)[vger.kernel.org,gmail.com];
-	TAGGED_FROM(0.00)[bounces-33510-lists,linux-wireless=lfdr.de];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,qualcomm.com:dkim,oss.qualcomm.com:dkim,oss.qualcomm.com:mid];
-	FREEMAIL_TO(0.00)[gmail.com,intel.com];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	TO_DN_SOME(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[qualcomm.com:+,oss.qualcomm.com:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	RCPT_COUNT_FIVE(0.00)[5];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[jeff.johnson@oss.qualcomm.com,linux-wireless@vger.kernel.org];
+	FREEMAIL_FROM(0.00)[gmail.com];
 	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-0.998];
-	TAGGED_RCPT(0.00)[linux-wireless];
-	MID_RHS_MATCH_FROM(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	RCVD_COUNT_FIVE(0.00)[5];
+	FROM_NEQ_ENVFROM(0.00)[adriangarciacasado42@gmail.com,linux-wireless@vger.kernel.org];
+	DKIM_TRACE(0.00)[gmail.com:+];
+	NEURAL_HAM(-0.00)[-0.989];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	RCVD_COUNT_SEVEN(0.00)[7]
-X-Rspamd-Queue-Id: DCA6E2D1595
+	TAGGED_RCPT(0.00)[linux-wireless];
+	RCPT_COUNT_FIVE(0.00)[5];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 05BC72D1EF4
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-On 3/19/2026 11:29 AM, Adrián García Casado wrote:
-> Johannes Berg suggested using pci_alloc_irq_vectors() and delegating
-> affinity management to the kernel. This patch replaces
-> pci_enable_msix_range() with the modern API and leverages
-> PCI_IRQ_AFFINITY. The manual affinity loop is removed as it's now
-> redundant.
+The iwlwifi driver currently uses the deprecated pci_enable_msix_range()
+API and implements a manual loop for interrupt affinity distribution.
+This manual approach is less robust than the kernel's core affinity
+management and increases maintenance complexity.
 
-I see from the archive that you've been pointed to this link, but I'm going to
-do so again...
+Migrate the driver to the modern pci_alloc_irq_vectors() API. Use the
+PCI_IRQ_AFFINITY flag to delegate MSI-X affinity distribution to the
+kernel core. Remove the manual iwl_pcie_irq_set_affinity() loop as it
+is now redundant.
 
-https://www.kernel.org/doc/html/latest/process/submitting-patches.html#describe-your-changes
+Additionally, remove the unused 'offset' variable to resolve a
+previously reported kbuild warning.
 
-"Describe your problem. Whether your patch is a one-line bug fix or 5000 lines
-of a new feature, there must be an underlying problem that motivated you to do
-this work. Convince the reviewer that there is a problem worth fixing and that
-it makes sense for them to read past the first paragraph."
+Signed-off-by: Adrián García Casado <adriangarciacasado42@gmail.com>
+---
+ .../intel/iwlwifi/pcie/gen1_2/trans.c         | 46 ++++++-------------
+ 1 file changed, 13 insertions(+), 33 deletions(-)
 
-"Describe your changes in imperative mood, e.g. “make xyzzy do frotz” instead
-of “[This patch] makes xyzzy do frotz” or “[I] changed xyzzy to do frotz”, as
-if you are giving orders to the codebase to change its behaviour."
+diff --git a/drivers/net/wireless/intel/iwlwifi/pcie/gen1_2/trans.c b/drivers/net/wireless/intel/iwlwifi/pcie/gen1_2/trans.c
+index 4560d92d76fe0..e4808cfe1caef 100644
+--- a/drivers/net/wireless/intel/iwlwifi/pcie/gen1_2/trans.c
++++ b/drivers/net/wireless/intel/iwlwifi/pcie/gen1_2/trans.c
+@@ -1274,7 +1274,7 @@ void iwl_pcie_synchronize_irqs(struct iwl_trans *trans)
+ 		int i;
+ 
+ 		for (i = 0; i < trans_pcie->alloc_vecs; i++)
+-			synchronize_irq(trans_pcie->msix_entries[i].vector);
++			synchronize_irq(pci_irq_vector(trans_pcie->pci_dev, i));
+ 	} else {
+ 		synchronize_irq(trans_pcie->pci_dev->irq);
+ 	}
+@@ -1608,18 +1608,20 @@ iwl_pcie_set_interrupt_capa(struct pci_dev *pdev,
+ 		max_rx_queues = IWL_9000_MAX_RX_HW_QUEUES;
+ 
+ 	max_irqs = min_t(u32, num_online_cpus() + 2, max_rx_queues);
+-	for (i = 0; i < max_irqs; i++)
+-		trans_pcie->msix_entries[i].entry = i;
+-
+-	num_irqs = pci_enable_msix_range(pdev, trans_pcie->msix_entries,
+-					 MSIX_MIN_INTERRUPT_VECTORS,
+-					 max_irqs);
++	num_irqs = pci_alloc_irq_vectors(pdev, MSIX_MIN_INTERRUPT_VECTORS,
++					 max_irqs, PCI_IRQ_MSIX | PCI_IRQ_AFFINITY);
+ 	if (num_irqs < 0) {
+ 		IWL_DEBUG_INFO(trans,
+ 			       "Failed to enable msi-x mode (ret %d). Moving to msi mode.\n",
+ 			       num_irqs);
+ 		goto enable_msi;
+ 	}
++
++	trans_pcie->msix_enabled = true;
++	trans_pcie->alloc_vecs = num_irqs;
++	for (i = 0; i < num_irqs; i++)
++		trans_pcie->msix_entries[i].entry = i;
++
+ 	trans_pcie->def_irq = (num_irqs == max_irqs) ? num_irqs - 1 : 0;
+ 
+ 	IWL_DEBUG_INFO(trans,
+@@ -1671,28 +1673,7 @@ iwl_pcie_set_interrupt_capa(struct pci_dev *pdev,
+ static void iwl_pcie_irq_set_affinity(struct iwl_trans *trans,
+ 				      struct iwl_trans_info *info)
+ {
+-#if defined(CONFIG_SMP)
+-	int iter_rx_q, i, ret, cpu, offset;
+-	struct iwl_trans_pcie *trans_pcie = IWL_TRANS_GET_PCIE_TRANS(trans);
+-
+-	i = trans_pcie->shared_vec_mask & IWL_SHARED_IRQ_FIRST_RSS ? 0 : 1;
+-	iter_rx_q = info->num_rxqs - 1 + i;
+-	offset = 1 + i;
+-	for (; i < iter_rx_q ; i++) {
+-		/*
+-		 * Get the cpu prior to the place to search
+-		 * (i.e. return will be > i - 1).
+-		 */
+-		cpu = cpumask_next(i - offset, cpu_online_mask);
+-		cpumask_set_cpu(cpu, &trans_pcie->affinity_mask[i]);
+-		ret = irq_set_affinity_hint(trans_pcie->msix_entries[i].vector,
+-					    &trans_pcie->affinity_mask[i]);
+-		if (ret)
+-			IWL_ERR(trans_pcie->trans,
+-				"Failed to set affinity mask for IRQ %d\n",
+-				trans_pcie->msix_entries[i].vector);
+-	}
+-#endif
++	/* Handled by PCI_IRQ_AFFINITY in pci_alloc_irq_vectors() */
+ }
+ 
+ static int iwl_pcie_init_msix_handler(struct pci_dev *pdev,
+@@ -1703,15 +1684,14 @@ static int iwl_pcie_init_msix_handler(struct pci_dev *pdev,
+ 
+ 	for (i = 0; i < trans_pcie->alloc_vecs; i++) {
+ 		int ret;
+-		struct msix_entry *msix_entry;
++		struct msix_entry *msix_entry = &trans_pcie->msix_entries[i];
+ 		const char *qname = queue_name(&pdev->dev, trans_pcie, i);
+ 
+ 		if (!qname)
+ 			return -ENOMEM;
+ 
+-		msix_entry = &trans_pcie->msix_entries[i];
+ 		ret = devm_request_threaded_irq(&pdev->dev,
+-						msix_entry->vector,
++						pci_irq_vector(pdev, i),
+ 						iwl_pcie_msix_isr,
+ 						(i == trans_pcie->def_irq) ?
+ 						iwl_pcie_irq_msix_handler :
+@@ -1988,7 +1968,7 @@ void iwl_trans_pcie_free(struct iwl_trans *trans)
+ 	if (trans_pcie->msix_enabled) {
+ 		for (i = 0; i < trans_pcie->alloc_vecs; i++) {
+ 			irq_set_affinity_hint(
+-				trans_pcie->msix_entries[i].vector,
++				pci_irq_vector(trans_pcie->pci_dev, i),
+ 				NULL);
+ 		}
+ 
+
+base-commit: f338e77383789c0cae23ca3d48adcc5e9e137e3c
+-- 
+2.47.3
 
 
