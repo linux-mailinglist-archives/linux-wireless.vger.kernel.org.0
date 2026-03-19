@@ -1,101 +1,102 @@
-Return-Path: <linux-wireless+bounces-33525-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-33526-lists+linux-wireless=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 2MhyHgN5vGnOzAIAu9opvQ
-	(envelope-from <linux-wireless+bounces-33525-lists+linux-wireless=lfdr.de@vger.kernel.org>)
-	for <lists+linux-wireless@lfdr.de>; Thu, 19 Mar 2026 23:30:27 +0100
+	id gMLLGdd5vGkFzQIAu9opvQ
+	(envelope-from <linux-wireless+bounces-33526-lists+linux-wireless=lfdr.de@vger.kernel.org>)
+	for <lists+linux-wireless@lfdr.de>; Thu, 19 Mar 2026 23:33:59 +0100
 X-Original-To: lists+linux-wireless@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7AA422D2FA3
-	for <lists+linux-wireless@lfdr.de>; Thu, 19 Mar 2026 23:30:26 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 082F12D3244
+	for <lists+linux-wireless@lfdr.de>; Thu, 19 Mar 2026 23:33:54 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 9787E3038D6A
-	for <lists+linux-wireless@lfdr.de>; Thu, 19 Mar 2026 22:27:16 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 339993028C17
+	for <lists+linux-wireless@lfdr.de>; Thu, 19 Mar 2026 22:27:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EA51340B6EB;
-	Thu, 19 Mar 2026 22:24:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6EEAB3E0C47;
+	Thu, 19 Mar 2026 22:24:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=jetm.me header.i=@jetm.me header.b="WgTOauF1";
-	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="PPhHwpCE"
+	dkim=pass (2048-bit key) header.d=jetm.me header.i=@jetm.me header.b="f/q76d0z";
+	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="D+Mz2j0n"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from flow-b3-smtp.messagingengine.com (flow-b3-smtp.messagingengine.com [202.12.124.138])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 238DF407599;
-	Thu, 19 Mar 2026 22:24:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 20545407577;
+	Thu, 19 Mar 2026 22:24:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=202.12.124.138
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773959088; cv=none; b=PybD9FV1hesM5Guk2vsABpN+mRL+IDi2grBwOp7fcT85T0vfgtc6mdwzMqnAVqcvO38lFROLX9KMnVcErGd+3wWIZadCaQD35eaI5iWPzEJ+bBMGFbZP+ceuvEcMQsoSmp/HuuBDcG87vBQfHhsBif3hTVU6umICslStc9RrsmM=
+	t=1773959089; cv=none; b=pXb6EfY7rYcv2LQBB092Kt2Wl+LsaUCug/Z9PAMSJEUuj/BpCQQYXqXMLl/MlbSeFMfdwhhdEfx0U9JLeGrKd6dcM3ApNN7cdieOUcp4JMO8NaAJJBUc9UXyaDV7dvJjA1deOibWtNiQpsCHY4nbw+W/rJ+DDtATHnazG3NMLLE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773959088; c=relaxed/simple;
-	bh=wWU757xwqx0hIgj80GlHGMOCQOT/7mAO0JYyHm76zMY=;
+	s=arc-20240116; t=1773959089; c=relaxed/simple;
+	bh=/gjiel5869rYGCVjZwRZFG03XJXO8FEsTHwufAYf8os=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc:
-	 In-Reply-To:References; b=R4T8gH+mkziuytk2gbWxQ+x8wU7VddAogRHjdndFzGSm7Cp2k7Ts2pWChEIHwckFgonJ/Kl4vB9AZ1f+1GlR1nGGuH1G5vOX82TPJeYeOBCqEMwAqdsXbrzOZ5nkG+lfYZblkm8LF/kap8/+uHA1kzwqaurc3UQgW/iEl7zC1Ew=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=jetm.me; spf=pass smtp.mailfrom=jetm.me; dkim=pass (2048-bit key) header.d=jetm.me header.i=@jetm.me header.b=WgTOauF1; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=PPhHwpCE; arc=none smtp.client-ip=202.12.124.138
+	 In-Reply-To:References; b=DJfdMvzkHIeFdtuhLeNZXLpTsJjakPZrOcahJL8QZ53CmFLqeoPADA3BE167JsbXfHUOXrk5kSMHZyDqDElrdFwMVysyP5O+TVApgpIgJUcSMeklRCV0n2mHB6CQPqCoA/UO4tnGOFdM5DnMFDX841l9kKMbB49T/Msw3wFaF6Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=jetm.me; spf=pass smtp.mailfrom=jetm.me; dkim=pass (2048-bit key) header.d=jetm.me header.i=@jetm.me header.b=f/q76d0z; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=D+Mz2j0n; arc=none smtp.client-ip=202.12.124.138
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=jetm.me
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=jetm.me
 Received: from phl-compute-02.internal (phl-compute-02.internal [10.202.2.42])
-	by mailflow.stl.internal (Postfix) with ESMTP id C599913000B8;
-	Thu, 19 Mar 2026 18:24:39 -0400 (EDT)
+	by mailflow.stl.internal (Postfix) with ESMTP id B91F613000BA;
+	Thu, 19 Mar 2026 18:24:41 -0400 (EDT)
 Received: from phl-imap-07 ([10.202.2.97])
-  by phl-compute-02.internal (MEProxy); Thu, 19 Mar 2026 18:24:40 -0400
+  by phl-compute-02.internal (MEProxy); Thu, 19 Mar 2026 18:24:42 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=jetm.me; h=cc:cc
 	:content-transfer-encoding:content-type:content-type:date:date
 	:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to; s=fm3; t=1773959079;
-	 x=1773966279; bh=Cv1Q21xYQCzqAdOrD0pUBrfpzc3E8jkE3eBpHTTz4LM=; b=
-	WgTOauF1IbI4pckz7dq/ysMtl6er7hMTK4hJd6s4YZketEUld3sViDjrHUI4GfqM
-	2R5WzFqgwJM4klw+cwfYtpotZpV52KE7ZkEp3s0ufoFsH7zFxDd0blZQTns8oEAj
-	aJnlrxW/3ZflVSGFVdnHb/iqS7wz6Wyk+kwandsHwCMCU3LkuCi71kXK2e+4YJaB
-	U+8Re0ptv7VuqeYhFIVLpj0v2BB259l4D/tIKs9KrNpBZcoeMjDUC5qU2DqFjASn
-	ghr3/D3Y1G5nNcIK03Z9aiczwuH49xOmvFN+h0J4gYm0GlnI7fHZbbuxopH6AD/q
-	8LlebrUdAogmnQEK29WI1g==
+	:references:reply-to:subject:subject:to:to; s=fm3; t=1773959081;
+	 x=1773966281; bh=FmXZ9AWojJY1aMvgCUXzZGGkyVWJ2/d5Ccx43mIJnaI=; b=
+	f/q76d0zqSLgaEWiJFVdGd9BdZQt5Djoe3REvmWm67Nc4qfeSWw9kwT83DwjbPKb
+	fz8HJgoENN0rm21kUeweptvzThkQBSNeq04HHpEDxSs/lZwW09dqlvE6RUoX5M+P
+	4jC1cq8pumqpsi1eqk+Zk1UQdy62TbxpL0v/EUKCbtXO9KJ68fDVoiiPiNGkXXYu
+	TK/BPcaEeQD3yWdD1obYlmrToizofl4jRToBzvp4qwjYaWB85awRUNxG819oHY45
+	5Stsjg5bSuPgKUyFM4GYSmZCOhVgZWabagwq+ACqncIBzyB6+UFWHbw2aUptREv1
+	8xMurSF1qI0KA7ZNRCp3Ww==
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
 	messagingengine.com; h=cc:cc:content-transfer-encoding
 	:content-type:content-type:date:date:feedback-id:feedback-id
 	:from:from:in-reply-to:in-reply-to:message-id:mime-version
 	:references:reply-to:subject:subject:to:to:x-me-proxy
-	:x-me-sender:x-me-sender:x-sasl-enc; s=fm1; t=1773959079; x=
-	1773966279; bh=Cv1Q21xYQCzqAdOrD0pUBrfpzc3E8jkE3eBpHTTz4LM=; b=P
-	PhHwpCEV2Yi9UrV4e+CviH4rYMTiL3G5LK7gxtOKd/O0ceXYuo7GtAF9Rtq41Bso
-	CrlkzW17hVccH04e0HoTIjGn4+Yhl86mA5LLSvEE8qNJ2IIGAh+7feHFhz+4lRuW
-	z+U1m8xwvvqkZQaeuMh46aoBX9B/NM8WOzrWxkalz1DkJaTITEdFBhGMVFGTaQ8/
-	STATJzkCtoy+U4NTJIrinF2Wh7keEgX2IgZNQ3qftmoCIAbseH3NqTxYgEzBZMz7
-	5bmfo6sOicr+Emk3GaRi8+3Q4UFjkO+lblEk1cZIBGlhDufPz67oDvwiiXwZkSbL
-	9N8PdYIBMOfjQvGNs8EoA==
-X-ME-Sender: <xms:p3e8aXEdipFaQS82pUg2gm3BSOARol1ijjA1obPdrJ-vPQMxtWJbzA>
-    <xme:p3e8afLi_As9uvmkbCvZ2wXEgslJrGMbh3wng6CV0UX6qArRJdf7W32Dsdx4VKu0c
-    rUIia8MXMm8vZcgf-ilLw3MArBy92JkXMRAp5MfWcSU7FX2uT8-ppY>
+	:x-me-sender:x-me-sender:x-sasl-enc; s=fm1; t=1773959081; x=
+	1773966281; bh=FmXZ9AWojJY1aMvgCUXzZGGkyVWJ2/d5Ccx43mIJnaI=; b=D
+	+Mz2j0nWcv3jocWe9nLGYtHwOsT3H20nmtB/lcukqSVtNhvKD0bNoucQxXPynCnr
+	50bO0KczF0DhQKLK9U/875fsYuKi2+11jlbzYHJ3g4on5ItdU65aA/3CjVMegFsM
+	fprg+TI4ipwlM0lBVzCGCiufq2SgI+/j+X4aWcUrjd9PAcJtZKI9gMUTXvhCl8qV
+	zv+jM0yLf5RRrDqRZ1kVzafFPuCuvpa0wfg6P14Dc7JaWvJdlH5sRXwtBBM/MIm6
+	3fNe07sf1o3FNoe6GCmkQwTVdLCicZyCMdBe9c71zXO6ScoE5JuFGRgFwOQoEVbO
+	DTh+RVh9T7Pc8Cl6a1BnQ==
+X-ME-Sender: <xms:qXe8aX7oYvaV8UWckGwcLqjqtS_Uxko4Fli1cirZEZqe8-8CFxbftA>
+    <xme:qXe8aXsFtTiG-dk3iniQwhFvUFqZ1lZaGqLR7UDZbRJNHOflT1vQ8rYN79dkIZsN6
+    M89-tXsPjAxGq8cPMziD0osyDhxoIPp6SMpsOFF1F6ttNr2noB4FSM>
 X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefgedrtddtgdeftdekvddtucetufdoteggodetrf
     dotffvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfurfetoffkrfgpnffqhgenuceu
     rghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujf
     gurhepoffhfffugggtgffkvfevofgjfhesthekredtredtjeenucfhrhhomheplfgrvhhi
-    vghrucfvihgruceofhhlohhsshesjhgvthhmrdhmvgeqnecuggftrfgrthhtvghrnhepve
-    ektdfhffevuddtgfetieevtddvheduhfeggfekveejlefhleefieevueefiefhnecuvehl
-    uhhsthgvrhfuihiivgepheenucfrrghrrghmpehmrghilhhfrhhomhepfhhlohhsshesjh
-    gvthhmrdhmvgdpnhgspghrtghpthhtohepvddvpdhmohguvgepshhmthhpohhuthdprhgt
-    phhtthhopegrnhhgvghlohhgihhorggttghhihhnohdruggvlhhrvghgnhhosegtohhllh
-    grsghorhgrrdgtohhmpdhrtghpthhtohepfeduleefieefudesghhmrghilhdrtghomhdp
-    rhgtphhtthhopehlohhonhhgrddtgidttdesghhmrghilhdrtghomhdprhgtphhtthhope
-    grrhhivghlrdhrohhsvghnfhgvlhgurdejhedtsehgmhgrihhlrdgtohhmpdhrtghpthht
-    oheptghhrghpuhhishgurghrihhogeesghhmrghilhdrtghomhdprhgtphhtthhopehgih
-    hoshgrlheltdesghhmrghilhdrtghomhdprhgtphhtthhopehmrghtthhhihgrshdrsghg
-    ghesghhmrghilhdrtghomhdprhgtphhtthhopehrrgguohhirdgthhhrihhssehgmhgrih
-    hlrdgtohhmpdhrtghpthhtohepshgrmhhurdhtohhljhgrmhhosehgmhgrihhlrdgtohhm
-X-ME-Proxy: <xmx:p3e8aXUsEvb_Ek3FIJiX1Bca9-ySHy7b1yOgyE7x91m8_-IciFncYw>
-    <xmx:p3e8acxiwqGcYg9SGDaAoG-fIpxz7m4XXDb-DQOUkob83h85lttXhg>
-    <xmx:p3e8aX7RTnjIAg5dd5v65SuJDzC0GyezqRD8zlnC3vEol0Eh1HakcA>
-    <xmx:p3e8aehtt4O2ipvm7pTr8CPD5-6KxWkHbVR3FAvjMNOZ170VGalKsQ>
-    <xmx:p3e8aQU-jKGPvO8dUCa4gUKpaPrub_9JnCoOSz3WAT-CUe9yQbl4fnB0>
+    vghrucfvihgruceofhhlohhsshesjhgvthhmrdhmvgeqnecuggftrfgrthhtvghrnhepue
+    dttdfggfdufeeiueetffegveefffevjeehvdelfeevhffhteekgfegveeuiefhnecuffho
+    mhgrihhnpehgihhthhhusgdrtghomhenucevlhhushhtvghrufhiiigvpedunecurfgrrh
+    grmhepmhgrihhlfhhrohhmpehflhhoshhssehjvghtmhdrmhgvpdhnsggprhgtphhtthho
+    pedvvddpmhhouggvpehsmhhtphhouhhtpdhrtghpthhtoheprghnghgvlhhoghhiohgrtg
+    gthhhinhhordguvghlrhgvghhnohestgholhhlrggsohhrrgdrtghomhdprhgtphhtthho
+    peefudelfeeifedusehgmhgrihhlrdgtohhmpdhrtghpthhtoheplhhoohhnghdrtdigtd
+    dtsehgmhgrihhlrdgtohhmpdhrtghpthhtoheprghrihgvlhdrrhhoshgvnhhfvghlugdr
+    jeehtdesghhmrghilhdrtghomhdprhgtphhtthhopegthhgrphhuihhsuggrrhhiohegse
+    hgmhgrihhlrdgtohhmpdhrtghpthhtohepghhiohhsrghlledtsehgmhgrihhlrdgtohhm
+    pdhrtghpthhtohepmhgrthhthhhirghsrdgsghhgsehgmhgrihhlrdgtohhmpdhrtghpth
+    htoheprhgrughoihdrtghhrhhishesghhmrghilhdrtghomhdprhgtphhtthhopehsrghm
+    uhdrthholhhjrghmohesghhmrghilhdrtghomh
+X-ME-Proxy: <xmx:qXe8abqQDFn0_N-_SeatG2WsodyTajjbYtZLoTRVORBJCWv4QUO6VQ>
+    <xmx:qXe8aS0SEQLf0j8jUhVlSPke7spvOYK8Ukl5kLU81RgAeEPNkhOQ5w>
+    <xmx:qXe8acujzPYqDgga3WZarBJ4V2fVTr0nTZjt9Kn9ELvMzY3SLi0KgQ>
+    <xmx:qXe8abEmNw-QTfvdI_2WajSGOuS9ENj3dlyy-zABgIK9A2xwdRQrRQ>
+    <xmx:qXe8aaLkh0LEv_a9hx7Dc8ojDo7mpah0eZkRFkTWI6DyaZSbYhRwF95L>
 Feedback-ID: i9dde48b3:Fastmail
 Received: by mailuser.phl.internal (Postfix, from userid 501)
-	id 738511EA006B; Thu, 19 Mar 2026 18:24:39 -0400 (EDT)
+	id 27A6F1EA006C; Thu, 19 Mar 2026 18:24:41 -0400 (EDT)
 X-Mailer: MessagingEngine.com Webmail Interface
 From: Javier Tia <floss@jetm.me>
-Date: Thu, 19 Mar 2026 16:24:25 -0600
-Subject: [PATCH v2 09/13] wifi: mt76: mt7925: add chip-specific DMA
- configuration
+Date: Thu, 19 Mar 2026 16:24:26 -0600
+Subject: [PATCH v2 10/13] wifi: mt76: mt7925: add MT7927 hardware
+ initialization
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
@@ -104,7 +105,7 @@ List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
-Message-Id: <20260319-mt7927-wifi-support-v2-v2-9-d627a7fad70d@jetm.me>
+Message-Id: <20260319-mt7927-wifi-support-v2-v2-10-d627a7fad70d@jetm.me>
 To: Felix Fietkau <nbd@nbd.name>, Lorenzo Bianconi <lorenzo@kernel.org>,
  Ryder Lee <ryder.lee@mediatek.com>, Shayne Chen <shayne.chen@mediatek.com>,
  Sean Wang <sean.wang@mediatek.com>,
@@ -114,84 +115,106 @@ To: Felix Fietkau <nbd@nbd.name>, Lorenzo Bianconi <lorenzo@kernel.org>,
  Ming Yen Hsieh <mingyen.hsieh@mediatek.com>
 Cc: linux-wireless@vger.kernel.org, linux-kernel@vger.kernel.org,
  linux-arm-kernel@lists.infradead.org, linux-mediatek@lists.infradead.org,
+ =?utf-8?q?=E5=BC=A0=E6=97=AD=E6=B6=B5?= <Loong.0x00@gmail.com>,
  Marcin FM <marcin@lgic.pl>, Cristian-Florin Radoi <radoi.chris@gmail.com>,
  George Salukvadze <giosal90@gmail.com>, Evgeny Kapusta <3193631@gmail.com>,
  Samu Toljamo <samu.toljamo@gmail.com>,
  Ariel Rosenfeld <ariel.rosenfeld.750@gmail.com>,
  Chapuis Dario <chapuisdario4@gmail.com>,
- =?utf-8?q?Thibaut_Fran=C3=A7ois?= <tibo@humeurlibre.fr>,
- =?utf-8?q?=E5=BC=A0=E6=97=AD=E6=B6=B5?= <Loong.0x00@gmail.com>
+ =?utf-8?q?Thibaut_Fran=C3=A7ois?= <tibo@humeurlibre.fr>
 X-Mailer: b4 0.14.3
-X-Developer-Signature: v=1; a=openpgp-sha256; l=15351; i=floss@jetm.me;
- h=from:subject:message-id; bh=wWU757xwqx0hIgj80GlHGMOCQOT/7mAO0JYyHm76zMY=;
- b=owEB7QES/pANAwAKAbXuwwuoZ3cfAcsmYgBpvHeRk5L8bLqemJVkHg048H/m7S/ySdOZjwHAL
- Kx+qdNHm+KJAbMEAAEKAB0WIQSbE7ILzw7eI0VKk8m17sMLqGd3HwUCabx3kQAKCRC17sMLqGd3
- H6MHDACKqS6CSqcHB29kjIqeXpfUJy4LZjxohA5nRH2e2ydbOTJp7TW7vfV+fOgPHm0tEgPL9ZX
- eTt+EGuZPSxwW4eZKWTCqjWSmNm/ae7CcwOeWO9mk425czgZiitPmE3Csj606AeKRxZ/CJ5Qc4g
- H/g9OIP4DLMM9xzqTIlTBGOppfhx6UaUYSaOufLfoVdCQzTR8fAKPkHuppgsa2jR3X0Lh/8lP4V
- FlmTzlFxBSV05jwLH95bIlCqhO1ohgJpZ8lohpR7UBCJ+uEmcsARSMfHEtgN4v/jtkpPtzhoDOX
- VHT9+KCzJyQwtctXhYnD8Pn4uOfb+NgPmFotVRbhbYrvZpUpEXsCCHX4MLyRZc6hPLpIYCEYogW
- 3zLkBA5hELvRTP5AV733oLD1XPOZLGlJyBfFUmIQKcgqIZKV+KgJt1CVLlWIcC+8beFZsUfKaz0
- 4ByX1zCdHLI4aMZGti7hLzM4TdeY9C4yXPVrJ1lWFfn3Hu7x1vhEJtHswF88jHCI061bk=
+X-Developer-Signature: v=1; a=openpgp-sha256; l=10527; i=floss@jetm.me;
+ h=from:subject:message-id; bh=/gjiel5869rYGCVjZwRZFG03XJXO8FEsTHwufAYf8os=;
+ b=owEB7QES/pANAwAKAbXuwwuoZ3cfAcsmYgBpvHeR2w1DkIuJrbkOygUy5D9atwjadjhCjVIIo
+ DbVywuclWKJAbMEAAEKAB0WIQSbE7ILzw7eI0VKk8m17sMLqGd3HwUCabx3kQAKCRC17sMLqGd3
+ H42FC/4msAplLp8BrK1e1KTKrdd2iO9NN8QAQUQE7O6QiDnbAjhPm6GxoKvd1NdhX/aSQcEFCVg
+ c9tSYGNxxeV7K3YFAt7mNreux2DrJdkdnFLSvw2RWpPyIwFYXbs78LWKXLx69N+qk06r/0CTfnM
+ fHVfCjAZ7bBtCTWMnL9FVBU1oMrgi73MSTPOUKXNFo3+WIyxr8r2WUd+wxTkI5B6VgPRkMnaFmc
+ kbmox3cAu4mPhm58fYrmPlBMDPnX4NJUwvUgV/U9ZMrxxl2G1Fp43kMthGRqTu+jwfaesN3IXiV
+ ibdJVzV21MmwAeZ5mmq4HuW0Vuxto0/yOpnFxnP1E3Rwz0JrJ4ESZLoFwiVTs7M8iNIYwSOPAuj
+ z85YV6IWwfM5QFA0M/4M3jNj4u0Y6bqAVM946h5erEu+F1VPqwNOCdergJToA6v80NBPgD2k1oD
+ 7OkOCd4cnkEvfuQjbdnV+C3KcpTDoekMRss5xbE4D9L7AjFgwChPeja3mwgoDGPw5KW3o=
 X-Developer-Key: i=floss@jetm.me; a=openpgp;
  fpr=9B13B20BCF0EDE23454A93C9B5EEC30BA867771F
 In-Reply-To: <20260319-mt7927-wifi-support-v2-v2-0-d627a7fad70d@jetm.me>
 References: <20260319-mt7927-wifi-support-v2-v2-0-d627a7fad70d@jetm.me>
-X-Spamd-Result: default: False [-0.65 / 15.00];
+X-Spamd-Result: default: False [8.85 / 15.00];
+	URIBL_BLACK(7.50)[jetm.me:dkim,jetm.me:email,jetm.me:mid];
 	SUSPICIOUS_RECIPS(1.50)[];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[jetm.me,quarantine];
-	R_DKIM_ALLOW(-0.20)[jetm.me:s=fm3,messagingengine.com:s=fm1];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4];
 	MAILLIST(-0.15)[generic];
+	BAD_REP_POLICIES(0.10)[];
 	MIME_GOOD(-0.10)[text/plain];
-	HAS_LIST_UNSUB(-0.01)[];
 	XM_UA_NO_VERSION(0.01)[];
-	TAGGED_FROM(0.00)[bounces-33525-lists,linux-wireless=lfdr.de];
+	HAS_LIST_UNSUB(-0.01)[];
+	TAGGED_FROM(0.00)[bounces-33526-lists,linux-wireless=lfdr.de];
+	R_DKIM_ALLOW(0.00)[jetm.me:s=fm3,messagingengine.com:s=fm1];
 	RCVD_TLS_LAST(0.00)[];
 	FROM_HAS_DN(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	FREEMAIL_TO(0.00)[nbd.name,kernel.org,mediatek.com,gmail.com,collabora.com];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	GREYLIST(0.00)[pass,body];
 	RCPT_COUNT_TWELVE(0.00)[22];
 	MIME_TRACE(0.00)[0:+];
-	FREEMAIL_CC(0.00)[vger.kernel.org,lists.infradead.org,lgic.pl,gmail.com,humeurlibre.fr];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	TO_DN_SOME(0.00)[];
+	FREEMAIL_CC(0.00)[vger.kernel.org,lists.infradead.org,gmail.com,lgic.pl,humeurlibre.fr];
+	DMARC_POLICY_ALLOW(0.00)[jetm.me,quarantine];
+	DKIM_TRACE(0.00)[jetm.me:+,messagingengine.com:+];
 	RCVD_COUNT_FIVE(0.00)[6];
+	MID_RHS_MATCH_FROM(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[floss@jetm.me,linux-wireless@vger.kernel.org];
-	DKIM_TRACE(0.00)[jetm.me:+,messagingengine.com:+];
-	NEURAL_HAM(-0.00)[-0.331];
+	TO_DN_SOME(0.00)[];
 	TAGGED_RCPT(0.00)[linux-wireless];
-	MID_RHS_MATCH_FROM(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[messagingengine.com:dkim,lgic.pl:email,jetm.me:dkim,jetm.me:email,jetm.me:mid,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,humeurlibre.fr:email]
-X-Rspamd-Queue-Id: 7AA422D2FA3
-X-Rspamd-Action: no action
+	ARC_ALLOW(0.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	R_SPF_ALLOW(0.00)[+ip4:172.105.105.114:c];
+	NEURAL_SPAM(0.00)[0.999];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[humeurlibre.fr:email,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,jetm.me:dkim,jetm.me:email,jetm.me:mid,messagingengine.com:dkim,lgic.pl:email]
+X-Rspamd-Queue-Id: 082F12D3244
+X-Rspamd-Action: add header
 X-Rspamd-Server: lfdr
+X-Spam: Yes
 
-MT7927 uses different DMA ring indices (RX rings 4, 6, 7 vs MT7925's
-0, 1, 2), a different prefetch register layout, and requires additional
-GLO_CFG bits (ADDR_EXT_EN, FW_DWLD_BYPASS_DMASHDL) that must be
-restored after every PM wake cycle.
+Add MT7927-specific hardware initialization for the Filogic 380 combo
+chip, which has an additional CBInfra (ConnectaBus Infrastructure) bus
+fabric between PCIe and the WiFi subsystem.
 
-Introduce struct mt792x_dma_config to parameterize per-chip DMA
-differences:
-  - RX ring indices for MCU events, data, and auxiliary queues
-  - Prefetch configuration callback
-  - GLO_CFG quirk bits (set/clear masks applied after DMA enable)
-  - Pre-ring-setup hook for MT7927's SET_OWN/CLR_OWN sequence
+CBTOP remap: configure PCIe address mapping so MMIO reads to WiFi
+registers return valid data instead of zero.
 
-Refactor mt7925_dma_init() to read ring indices from the config struct,
-eliminating the need for a standalone mt7927_dma_init(). The single
-init function handles both chips by dispatching through the config.
+Chip initialization sequence:
+  1. WF subsystem reset via CBInfra RGU
+  2. MCU ownership acquisition
+  3. Poll ROMCODE_INDEX for MCU idle (0x1D1E)
+  4. MCIF remap for host DMA
+  5. PCIe sleep disable
 
-Update mt792x_dma_enable() to apply chip-specific GLO_CFG bits from the
-config and select the correct GLO_CFG_EXT1 register address per chip.
+Probe flow changes for MT7927:
+  - Skip early CLR_OWN (CBTOP not yet configured)
+  - Force chip ID if CHIPID register returns stale value
+  - Replace wfsys_reset with mt7927_chip_init
 
-Ring layout and prefetch values derived from Loong0x00's
-reverse-engineered MT7927 driver.
+CLR_OWN skip in mt7925e_mcu_init(): every CLR_OWN triggers the ROM to
+reinitialize WFDMA, destroying ring configuration set up by DMA init.
+The controlled SET_OWN/CLR_OWN is already handled in the DMA pre-ring
+setup hook.
 
+DBDC enable: MT7927 firmware defaults to single-band (2.4GHz only).
+Send explicit SET_DBDC_PARMS to enable dual-band operation.
+
+CNM force: MT7927 firmware lacks the connac2 feature trailer, causing
+channel context ops to be replaced with stubs. Force the CNM flag at
+probe to preserve ROC support needed for authentication.
+
+mac_reset guard: return -EOPNOTSUPP for MT7927 since the reset path
+performs CLR_OWN and logic reset that destroy DMA configuration. Full
+reset recovery is follow-up work.
+
+Register values derived from Loong0x00's reverse-engineered MT7927
+driver.
+
+Reported-by: 张旭涵 <Loong.0x00@gmail.com>
+Closes: https://github.com/openwrt/mt76/issues/927
 Tested-by: Marcin FM <marcin@lgic.pl>
 Tested-by: Cristian-Florin Radoi <radoi.chris@gmail.com>
 Tested-by: George Salukvadze <giosal90@gmail.com>
@@ -203,353 +226,255 @@ Tested-by: Thibaut François <tibo@humeurlibre.fr>
 Tested-by: 张旭涵 <Loong.0x00@gmail.com>
 Signed-off-by: Javier Tia <floss@jetm.me>
 ---
- drivers/net/wireless/mediatek/mt76/mt7925/pci.c  | 137 +++++++++++++++++++++--
- drivers/net/wireless/mediatek/mt76/mt792x.h      |  21 ++++
- drivers/net/wireless/mediatek/mt76/mt792x_dma.c  |  68 +++++------
- drivers/net/wireless/mediatek/mt76/mt792x_regs.h |  12 ++
- 4 files changed, 198 insertions(+), 40 deletions(-)
+ drivers/net/wireless/mediatek/mt76/mt7925/init.c   |  13 +++
+ drivers/net/wireless/mediatek/mt76/mt7925/pci.c    | 103 +++++++++++++++++++--
+ .../net/wireless/mediatek/mt76/mt7925/pci_mac.c    |   9 ++
+ .../net/wireless/mediatek/mt76/mt7925/pci_mcu.c    |  20 ++--
+ drivers/net/wireless/mediatek/mt76/mt792x_regs.h   |  18 ++++
+ 5 files changed, 149 insertions(+), 14 deletions(-)
 
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7925/init.c b/drivers/net/wireless/mediatek/mt76/mt7925/init.c
+index 3ce5d6fcc69d..c4c99380f5b5 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7925/init.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7925/init.c
+@@ -115,6 +115,19 @@ static int __mt7925_init_hardware(struct mt792x_dev *dev)
+ 	if (ret)
+ 		goto out;
+ 
++	/* MT7927: Enable DBDC (dual-band) mode. Without this, firmware
++	 * defaults to 2.4GHz only and ignores 5GHz scan requests.
++	 * MT7925 firmware handles DBDC automatically.
++	 */
++	if (is_mt7927(&dev->mt76)) {
++		ret = mt7925_mcu_set_dbdc(&dev->mphy, true);
++		if (ret) {
++			dev_warn(dev->mt76.dev,
++				 "MT7927 DBDC enable failed: %d\n", ret);
++			ret = 0;
++		}
++	}
++
+ out:
+ 	return ret;
+ }
 diff --git a/drivers/net/wireless/mediatek/mt76/mt7925/pci.c b/drivers/net/wireless/mediatek/mt76/mt7925/pci.c
-index 604c0e9ae7ba..415194a440f8 100644
+index 415194a440f8..393d9f408b84 100644
 --- a/drivers/net/wireless/mediatek/mt76/mt7925/pci.c
 +++ b/drivers/net/wireless/mediatek/mt76/mt7925/pci.c
-@@ -210,17 +210,128 @@ static u32 mt7925_rmw(struct mt76_dev *mdev, u32 offset, u32 mask, u32 val)
- 	return dev->bus_ops->rmw(mdev, addr, mask, val);
- }
- 
-+/* MT7927 uses different RX ring indices than MT7925 */
-+enum mt7927_rxq_id {
-+	MT7927_RXQ_BAND0 = 4,
-+	MT7927_RXQ_MCU_WM = 6,
-+	MT7927_RXQ_DATA2 = 7,
-+};
+@@ -400,6 +400,64 @@ static const struct mt792x_irq_map mt7927_irq_map = {
+ 		.wm2_complete_mask = MT7927_RX_DONE_INT_ENA7,
+ 	},
+ };
 +
-+#define PREFETCH(base, depth)	((base) << 16 | (depth))
-+
-+static void mt7925_dma_prefetch(struct mt792x_dev *dev)
++static int mt7927_chip_init(struct mt792x_dev *dev)
 +{
-+	/* rx ring */
-+	mt76_wr(dev, MT_WFDMA0_RX_RING0_EXT_CTRL, PREFETCH(0x0000, 0x4));
-+	mt76_wr(dev, MT_WFDMA0_RX_RING1_EXT_CTRL, PREFETCH(0x0040, 0x4));
-+	mt76_wr(dev, MT_WFDMA0_RX_RING2_EXT_CTRL, PREFETCH(0x0080, 0x4));
-+	mt76_wr(dev, MT_WFDMA0_RX_RING3_EXT_CTRL, PREFETCH(0x00c0, 0x4));
-+	/* tx ring */
-+	mt76_wr(dev, MT_WFDMA0_TX_RING0_EXT_CTRL, PREFETCH(0x0100, 0x10));
-+	mt76_wr(dev, MT_WFDMA0_TX_RING1_EXT_CTRL, PREFETCH(0x0200, 0x10));
-+	mt76_wr(dev, MT_WFDMA0_TX_RING2_EXT_CTRL, PREFETCH(0x0300, 0x10));
-+	mt76_wr(dev, MT_WFDMA0_TX_RING3_EXT_CTRL, PREFETCH(0x0400, 0x10));
-+	mt76_wr(dev, MT_WFDMA0_TX_RING15_EXT_CTRL, PREFETCH(0x0500, 0x4));
-+	mt76_wr(dev, MT_WFDMA0_TX_RING16_EXT_CTRL, PREFETCH(0x0540, 0x4));
-+}
++	struct mt76_dev *mdev = &dev->mt76;
++	u32 val;
 +
-+static void mt7927_dma_prefetch(struct mt792x_dev *dev)
-+{
-+	/* Trigger prefetch controller reset before reprogramming */
-+	mt76_wr(dev, MT_WFDMA_PREFETCH_CTRL,
-+		mt76_rr(dev, MT_WFDMA_PREFETCH_CTRL));
-+	/* MT7927 uses packed prefetch registers */
-+	mt76_wr(dev, MT_WFDMA_PREFETCH_CFG0, 0x660077);
-+	mt76_wr(dev, MT_WFDMA_PREFETCH_CFG1, 0x1100);
-+	mt76_wr(dev, MT_WFDMA_PREFETCH_CFG2, 0x30004f);
-+	mt76_wr(dev, MT_WFDMA_PREFETCH_CFG3, 0x542200);
-+	/* per-ring EXT_CTRL */
-+	mt76_wr(dev, MT_WFDMA0_RX_RING4_EXT_CTRL, PREFETCH(0x0000, 0x8));
-+	mt76_wr(dev, MT_WFDMA0_RX_RING6_EXT_CTRL, PREFETCH(0x0080, 0x8));
-+	mt76_wr(dev, MT_WFDMA0_RX_RING7_EXT_CTRL, PREFETCH(0x0100, 0x4));
-+	mt76_wr(dev, MT_WFDMA0_TX_RING16_EXT_CTRL, PREFETCH(0x0140, 0x4));
-+	mt76_wr(dev, MT_WFDMA0_TX_RING15_EXT_CTRL, PREFETCH(0x0180, 0x10));
-+	mt76_wr(dev, MT_WFDMA0_TX_RING0_EXT_CTRL, PREFETCH(0x0280, 0x4));
-+}
++	/* EMI sleep protect */
++	mt76_rmw_field(dev, MT_HW_EMI_CTL, MT_HW_EMI_CTL_SLPPROT_EN, 1);
 +
-+static int mt7927_pre_ring_setup(struct mt792x_dev *dev)
-+{
-+	int ret;
++	/* WF subsystem reset via CBInfra RGU */
++	mt76_set(dev, MT7927_CBINFRA_RGU_WF_RST,
++		 MT7927_CBINFRA_RGU_WF_RST_WF_SUBSYS);
++	msleep(1);
++	mt76_clear(dev, MT7927_CBINFRA_RGU_WF_RST,
++		   MT7927_CBINFRA_RGU_WF_RST_WF_SUBSYS);
++	msleep(5);
 +
-+	/* SET_OWN -> CLR_OWN: triggers ROM to initialize WFDMA */
-+	ret = mt792xe_mcu_fw_pmctrl(dev);
-+	if (ret)
-+		return ret;
++	/* MCU ownership */
++	mt76_wr(dev, MT7927_CBINFRA_MCU_OWN_SET, BIT(0));
 +
-+	ret = __mt792xe_mcu_drv_pmctrl(dev);
-+	if (ret)
-+		return ret;
++	/* Poll ROMCODE_INDEX for MCU idle */
++	if (!__mt76_poll_msec(mdev, MT7927_ROMCODE_INDEX,
++			      0xffff, MT7927_MCU_IDLE_VALUE, 2000)) {
++		val = mt76_rr(dev, MT7927_ROMCODE_INDEX);
++		dev_err(mdev->dev,
++			"MT7927 MCU idle timeout (ROMCODE_INDEX=0x%04x)\n",
++			val & 0xffff);
++		return -ETIMEDOUT;
++	}
 +
-+	/* Clear pending interrupts from previous state */
-+	mt76_wr(dev, MT_WFDMA0_HOST_INT_STA, ~0);
++	/* MCIF remap - MCU needs this to DMA to host memory */
++	mt76_wr(dev, MT7927_MCIF_REMAP_WF_1_BA,
++		MT7927_MCIF_REMAP_WF_1_BA_VAL);
++
++	/* Disable PCIe sleep */
++	mt76_wr(dev, MT7927_CBINFRA_SLP_CTRL, 0xffffffff);
++
++	/* Clear CONNINFRA wakeup */
++	mt76_wr(dev, MT7927_CBINFRA_WAKEPU_TOP, 0x0);
 +
 +	return 0;
 +}
 +
-+static const struct mt792x_dma_config mt7925_dma_cfg = {
-+	.rxq_band0 = MT7925_RXQ_BAND0,		/* 2 */
-+	.rxq_mcu_wm = MT7925_RXQ_MCU_WM,	/* 0 */
-+	.dma_prefetch = mt7925_dma_prefetch,
-+	.glo_cfg_ext1 = MT_UWFDMA0_GLO_CFG_EXT1,
-+};
++static void mt7927_cbtop_remap(struct mt792x_dev *dev)
++{
++	/* CONNINFRA wakeup - required before CBInfra register access */
++	mt76_wr(dev, MT7927_CBINFRA_WAKEPU_TOP, 0x1);
++	usleep_range(1000, 2000);
 +
-+static const struct mt792x_dma_config mt7927_dma_cfg = {
-+	.rxq_band0 = MT7927_RXQ_BAND0,		/* 4 */
-+	.rxq_mcu_wm = MT7927_RXQ_MCU_WM,	/* 6 */
-+	.rxq_data2 = MT7927_RXQ_DATA2,		/* 7 */
-+	.dma_prefetch = mt7927_dma_prefetch,
-+	.glo_cfg_set = MT_WFDMA0_GLO_CFG_ADDR_EXT_EN |
-+		       MT_WFDMA0_GLO_CFG_FW_DWLD_BYPASS_DMASHDL,
-+	.glo_cfg_clear = MT_WFDMA0_GLO_CFG_CSR_LBK_RX_Q_SEL_EN,
-+	.glo_cfg_ext1 = MT_WFDMA0_GLO_CFG_EXT1,
-+	.pre_ring_setup = mt7927_pre_ring_setup,
-+};
++	/* Configure CBTOP PCIe address remap for WF and BT */
++	mt76_wr(dev, MT7927_CBINFRA_MISC0_REMAP_WF,
++		MT7927_CBINFRA_REMAP_WF_VAL);
++	mt76_wr(dev, MT7927_CBINFRA_MISC0_REMAP_BT,
++		MT7927_CBINFRA_REMAP_BT_VAL);
 +
- static int mt7925_dma_init(struct mt792x_dev *dev)
++	/* Readback to push writes */
++	mt76_rr(dev, MT7927_CBINFRA_MISC0_REMAP_WF);
++}
+ static int mt7925_pci_probe(struct pci_dev *pdev,
+ 			    const struct pci_device_id *id)
  {
-+	const struct mt792x_dma_config *cfg = dev->dma_config;
- 	int ret;
+@@ -482,6 +540,17 @@ static int mt7925_pci_probe(struct pci_dev *pdev,
+ 		goto err_free_pci_vec;
+ 	}
  
- 	mt76_dma_attach(&dev->mt76);
++	/* MT7927 firmware lacks the connac2 feature trailer, so
++	 * mt792x_get_mac80211_ops() can't detect CNM support and
++	 * replaces chanctx/ROC/mgd_prepare_tx ops with stubs.
++	 * Force CNM and restore the original mt7925 ops.
++	 */
++	if ((pdev->device == 0x6639 || pdev->device == 0x7927) &&
++	    !(features & MT792x_FW_CAP_CNM)) {
++		features |= MT792x_FW_CAP_CNM;
++		memcpy(ops, &mt7925_ops, sizeof(*ops));
++	}
++
+ 	mdev = mt76_alloc_device(&pdev->dev, sizeof(*dev), ops, &drv_ops);
+ 	if (!mdev) {
+ 		ret = -ENOMEM;
+@@ -517,25 +586,43 @@ static int mt7925_pci_probe(struct pci_dev *pdev,
  
--	ret = mt792x_dma_disable(dev, true);
+ 	if (!mt7925_disable_aspm && mt76_pci_aspm_supported(pdev))
+ 		dev->aspm_supported = true;
+-
+ 	ret = __mt792x_mcu_fw_pmctrl(dev);
+ 	if (ret)
+ 		goto err_free_dev;
+ 
+-	ret = __mt792xe_mcu_drv_pmctrl(dev);
 -	if (ret)
--		return ret;
-+	if (cfg->pre_ring_setup) {
-+		ret = cfg->pre_ring_setup(dev);
+-		goto err_free_dev;
++	if (!is_mt7927_hw) {
++		ret = __mt792xe_mcu_drv_pmctrl(dev);
 +		if (ret)
-+			return ret;
++			goto err_free_dev;
++	}
++
++	if (is_mt7927_hw)
++		mt7927_cbtop_remap(dev);
  
--	/* init tx queue */
-+		/* Disable DMA before ring allocation */
-+		mt76_clear(dev, MT_WFDMA0_GLO_CFG,
-+			   MT_WFDMA0_GLO_CFG_TX_DMA_EN |
-+			   MT_WFDMA0_GLO_CFG_RX_DMA_EN |
-+			   MT_WFDMA0_GLO_CFG_CSR_DISP_BASE_PTR_CHAIN_EN |
-+			   MT_WFDMA0_GLO_CFG_OMIT_TX_INFO |
-+			   MT_WFDMA0_GLO_CFG_OMIT_RX_INFO_PFET2);
-+		/* Ensure all DMA writes complete before polling status. */
-+		wmb();
-+
-+		if (!mt76_poll_msec_tick(dev, MT_WFDMA0_GLO_CFG,
-+					MT_WFDMA0_GLO_CFG_TX_DMA_BUSY |
-+					MT_WFDMA0_GLO_CFG_RX_DMA_BUSY,
-+					0, 100, 1))
-+			return -ETIMEDOUT;
-+
-+		mt76_wr(dev, MT_WFDMA0_RST_DTX_PTR, ~0);
-+		mt76_wr(dev, MT_WFDMA0_RST_DRX_PTR, ~0);
-+		/* Ensure all DMA writes complete before polling status. */
-+		wmb();
-+		msleep(10);
+ 	mdev->rev = (mt76_rr(dev, MT_HW_CHIPID) << 16) |
+ 		    (mt76_rr(dev, MT_HW_REV) & 0xff);
+ 
+ 	dev_info(mdev->dev, "ASIC revision: %04x\n", mdev->rev);
+ 
+-	mt76_rmw_field(dev, MT_HW_EMI_CTL, MT_HW_EMI_CTL_SLPPROT_EN, 1);
++	/* Force chip ID for MT7927 hardware if CHIPID read returns garbage */
++	if (is_mt7927_hw && (mdev->rev >> 16) != 0x7927) {
++		dev_info(mdev->dev,
++			 "MT7927 raw CHIPID=0x%04x, forcing chip=0x7927\n",
++			 (u16)(mdev->rev >> 16));
++		mdev->rev = (0x7927 << 16) | (mdev->rev & 0xff);
++	}
+ 
+-	ret = mt792x_wfsys_reset(dev);
+-	if (ret)
+-		goto err_free_dev;
++	if (is_mt7927_hw) {
++		ret = mt7927_chip_init(dev);
++		if (ret)
++			goto err_free_dev;
 +	} else {
-+		ret = mt792x_dma_disable(dev, true);
++		mt76_rmw_field(dev, MT_HW_EMI_CTL,
++			       MT_HW_EMI_CTL_SLPPROT_EN, 1);
++		ret = mt792x_wfsys_reset(dev);
 +		if (ret)
-+			return ret;
++			goto err_free_dev;
++	}
+ 
+ 	mt76_wr(dev, irq_map.host_irq_enable, 0);
+ 
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7925/pci_mac.c b/drivers/net/wireless/mediatek/mt76/mt7925/pci_mac.c
+index 1626a3684082..9b3eeb1328f6 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7925/pci_mac.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7925/pci_mac.c
+@@ -72,6 +72,15 @@ int mt7925e_mac_reset(struct mt792x_dev *dev)
+ 	const struct mt792x_irq_map *irq_map = dev->irq_map;
+ 	int i, err;
+ 
++	/* MT7927: CLR_OWN and WPDMA reset destroy DMA ring configuration.
++	 * A full reset requires re-running mt7927_dma_init() which is not
++	 * yet implemented in the recovery path.
++	 */
++	if (is_mt7927(&dev->mt76)) {
++		dev_warn(dev->mt76.dev, "MT7927 mac_reset not supported, reload module to recover\n");
++		return -EOPNOTSUPP;
 +	}
 +
-+	/* init tx queue - ring 0 */
- 	ret = mt76_connac_init_tx_queues(dev->phy.mt76, MT7925_TXQ_BAND0,
- 					 MT7925_TX_RING_SIZE,
- 					 MT_TX_RING_BASE, NULL, 0);
-@@ -241,20 +352,31 @@ static int mt7925_dma_init(struct mt792x_dev *dev)
- 	if (ret)
- 		return ret;
+ 	mt792xe_mcu_drv_pmctrl(dev);
  
--	/* rx event */
-+	/* rx MCU events */
- 	ret = mt76_queue_alloc(dev, &dev->mt76.q_rx[MT_RXQ_MCU],
--			       MT7925_RXQ_MCU_WM, MT7925_RX_MCU_RING_SIZE,
-+			       cfg->rxq_mcu_wm, MT7925_RX_MCU_RING_SIZE,
- 			       MT_RX_BUF_SIZE, MT_RX_EVENT_RING_BASE);
- 	if (ret)
- 		return ret;
+ 	mt76_connac_free_pending_tx_skbs(&dev->pm, NULL);
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7925/pci_mcu.c b/drivers/net/wireless/mediatek/mt76/mt7925/pci_mcu.c
+index 6cceff88c656..1f50d1ef6fb6 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7925/pci_mcu.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7925/pci_mcu.c
+@@ -35,13 +35,21 @@ int mt7925e_mcu_init(struct mt792x_dev *dev)
  
- 	/* rx data */
- 	ret = mt76_queue_alloc(dev, &dev->mt76.q_rx[MT_RXQ_MAIN],
--			       MT7925_RXQ_BAND0, MT7925_RX_RING_SIZE,
-+			       cfg->rxq_band0, MT7925_RX_RING_SIZE,
- 			       MT_RX_BUF_SIZE, MT_RX_DATA_RING_BASE);
- 	if (ret)
- 		return ret;
+ 	dev->mt76.mcu_ops = &mt7925_mcu_ops;
  
-+	/* rx auxiliary data (MT7927: management frames on ring 7) */
-+	if (cfg->rxq_data2) {
-+		ret = mt76_queue_alloc(dev, &dev->mt76.q_rx[MT_RXQ_MCU_WA],
-+				       cfg->rxq_data2,
-+				       MT7925_RX_MCU_RING_SIZE,
-+				       MT_RX_BUF_SIZE,
-+				       MT_RX_DATA_RING_BASE);
-+		if (ret)
-+			return ret;
+-	err = mt792xe_mcu_fw_pmctrl(dev);
+-	if (err)
+-		return err;
++	if (is_mt7927(&dev->mt76)) {
++		/* MT7927: CLR_OWN was already done in mt7927_dma_init().
++		 * The ROM re-initializes WFDMA on every CLR_OWN, wiping
++		 * ring and prefetch config. Skip SET_OWN/CLR_OWN here
++		 * to preserve DMA state.
++		 */
++	} else {
++		err = mt792xe_mcu_fw_pmctrl(dev);
++		if (err)
++			return err;
+ 
+-	err = __mt792xe_mcu_drv_pmctrl(dev);
+-	if (err)
+-		return err;
++		err = __mt792xe_mcu_drv_pmctrl(dev);
++		if (err)
++			return err;
 +	}
-+
- 	ret = mt76_init_queues(dev, mt792x_poll_rx);
- 	if (ret < 0)
- 		return ret;
-@@ -373,6 +495,7 @@ static int mt7925_pci_probe(struct pci_dev *pdev,
- 	dev->hif_ops = &mt7925_pcie_ops;
- 	is_mt7927_hw = (pdev->device == 0x6639 || pdev->device == 0x7927);
- 	dev->irq_map = is_mt7927_hw ? &mt7927_irq_map : &irq_map;
-+	dev->dma_config = is_mt7927_hw ? &mt7927_dma_cfg : &mt7925_dma_cfg;
- 	mt76_mmio_init(&dev->mt76, pcim_iomap_table(pdev)[0]);
- 	tasklet_init(&mdev->irq_tasklet, mt792x_irq_tasklet, (unsigned long)dev);
  
-diff --git a/drivers/net/wireless/mediatek/mt76/mt792x.h b/drivers/net/wireless/mediatek/mt76/mt792x.h
-index 38790ef83e51..8a10438e26f9 100644
---- a/drivers/net/wireless/mediatek/mt76/mt792x.h
-+++ b/drivers/net/wireless/mediatek/mt76/mt792x.h
-@@ -203,6 +203,26 @@ struct mt792x_irq_map {
- 	} rx;
- };
+ 	mt76_rmw_field(dev, MT_PCIE_MAC_PM, MT_PCIE_MAC_PM_L0S_DIS, 1);
  
-+struct mt792x_dma_config {
-+	/* RX ring indices */
-+	u8 rxq_band0;
-+	u8 rxq_mcu_wm;
-+	u8 rxq_data2;		/* 0 = not used */
-+
-+	/* Prefetch configuration */
-+	void (*dma_prefetch)(struct mt792x_dev *dev);
-+
-+	/* GLO_CFG quirk bits to set/clear after DMA enable */
-+	u32 glo_cfg_set;
-+	u32 glo_cfg_clear;
-+
-+	/* GLO_CFG_EXT1 register address (chip-specific MMIO base) */
-+	u32 glo_cfg_ext1;
-+
-+	/* Pre-ring-setup hook (NULL = not needed) */
-+	int (*pre_ring_setup)(struct mt792x_dev *dev);
-+};
-+
- #define mt792x_init_reset(dev)		((dev)->hif_ops->init_reset(dev))
- #define mt792x_dev_reset(dev)		((dev)->hif_ops->reset(dev))
- #define mt792x_mcu_init(dev)		((dev)->hif_ops->mcu_init(dev))
-@@ -250,6 +270,7 @@ struct mt792x_dev {
- 	struct mt76_connac_coredump coredump;
- 	const struct mt792x_hif_ops *hif_ops;
- 	const struct mt792x_irq_map *irq_map;
-+	const struct mt792x_dma_config *dma_config;
- 
- 	struct work_struct ipv6_ns_work;
- 	struct delayed_work mlo_pm_work;
-diff --git a/drivers/net/wireless/mediatek/mt76/mt792x_dma.c b/drivers/net/wireless/mediatek/mt76/mt792x_dma.c
-index 1ddec7788b66..4a6794ca86b9 100644
---- a/drivers/net/wireless/mediatek/mt76/mt792x_dma.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt792x_dma.c
-@@ -90,42 +90,36 @@ EXPORT_SYMBOL_GPL(mt792x_rx_poll_complete);
- #define PREFETCH(base, depth)	((base) << 16 | (depth))
- static void mt792x_dma_prefetch(struct mt792x_dev *dev)
- {
--	if (is_mt7925(&dev->mt76)) {
--		/* rx ring */
--		mt76_wr(dev, MT_WFDMA0_RX_RING0_EXT_CTRL, PREFETCH(0x0000, 0x4));
--		mt76_wr(dev, MT_WFDMA0_RX_RING1_EXT_CTRL, PREFETCH(0x0040, 0x4));
--		mt76_wr(dev, MT_WFDMA0_RX_RING2_EXT_CTRL, PREFETCH(0x0080, 0x4));
--		mt76_wr(dev, MT_WFDMA0_RX_RING3_EXT_CTRL, PREFETCH(0x00c0, 0x4));
--		/* tx ring */
--		mt76_wr(dev, MT_WFDMA0_TX_RING0_EXT_CTRL, PREFETCH(0x0100, 0x10));
--		mt76_wr(dev, MT_WFDMA0_TX_RING1_EXT_CTRL, PREFETCH(0x0200, 0x10));
--		mt76_wr(dev, MT_WFDMA0_TX_RING2_EXT_CTRL, PREFETCH(0x0300, 0x10));
--		mt76_wr(dev, MT_WFDMA0_TX_RING3_EXT_CTRL, PREFETCH(0x0400, 0x10));
--		mt76_wr(dev, MT_WFDMA0_TX_RING15_EXT_CTRL, PREFETCH(0x0500, 0x4));
--		mt76_wr(dev, MT_WFDMA0_TX_RING16_EXT_CTRL, PREFETCH(0x0540, 0x4));
--	} else {
--		/* rx ring */
--		mt76_wr(dev, MT_WFDMA0_RX_RING0_EXT_CTRL, PREFETCH(0x0, 0x4));
--		mt76_wr(dev, MT_WFDMA0_RX_RING2_EXT_CTRL, PREFETCH(0x40, 0x4));
--		mt76_wr(dev, MT_WFDMA0_RX_RING3_EXT_CTRL, PREFETCH(0x80, 0x4));
--		mt76_wr(dev, MT_WFDMA0_RX_RING4_EXT_CTRL, PREFETCH(0xc0, 0x4));
--		mt76_wr(dev, MT_WFDMA0_RX_RING5_EXT_CTRL, PREFETCH(0x100, 0x4));
--		/* tx ring */
--		mt76_wr(dev, MT_WFDMA0_TX_RING0_EXT_CTRL, PREFETCH(0x140, 0x4));
--		mt76_wr(dev, MT_WFDMA0_TX_RING1_EXT_CTRL, PREFETCH(0x180, 0x4));
--		mt76_wr(dev, MT_WFDMA0_TX_RING2_EXT_CTRL, PREFETCH(0x1c0, 0x4));
--		mt76_wr(dev, MT_WFDMA0_TX_RING3_EXT_CTRL, PREFETCH(0x200, 0x4));
--		mt76_wr(dev, MT_WFDMA0_TX_RING4_EXT_CTRL, PREFETCH(0x240, 0x4));
--		mt76_wr(dev, MT_WFDMA0_TX_RING5_EXT_CTRL, PREFETCH(0x280, 0x4));
--		mt76_wr(dev, MT_WFDMA0_TX_RING6_EXT_CTRL, PREFETCH(0x2c0, 0x4));
--		mt76_wr(dev, MT_WFDMA0_TX_RING16_EXT_CTRL, PREFETCH(0x340, 0x4));
--		mt76_wr(dev, MT_WFDMA0_TX_RING17_EXT_CTRL, PREFETCH(0x380, 0x4));
-+	/* mt7925 family uses per-chip prefetch via dma_config callback */
-+	if (dev->dma_config && dev->dma_config->dma_prefetch) {
-+		dev->dma_config->dma_prefetch(dev);
-+		return;
- 	}
-+
-+	/* mt7921/mt7922 legacy prefetch */
-+	/* rx ring */
-+	mt76_wr(dev, MT_WFDMA0_RX_RING0_EXT_CTRL, PREFETCH(0x0, 0x4));
-+	mt76_wr(dev, MT_WFDMA0_RX_RING2_EXT_CTRL, PREFETCH(0x40, 0x4));
-+	mt76_wr(dev, MT_WFDMA0_RX_RING3_EXT_CTRL, PREFETCH(0x80, 0x4));
-+	mt76_wr(dev, MT_WFDMA0_RX_RING4_EXT_CTRL, PREFETCH(0xc0, 0x4));
-+	mt76_wr(dev, MT_WFDMA0_RX_RING5_EXT_CTRL, PREFETCH(0x100, 0x4));
-+	/* tx ring */
-+	mt76_wr(dev, MT_WFDMA0_TX_RING0_EXT_CTRL, PREFETCH(0x140, 0x4));
-+	mt76_wr(dev, MT_WFDMA0_TX_RING1_EXT_CTRL, PREFETCH(0x180, 0x4));
-+	mt76_wr(dev, MT_WFDMA0_TX_RING2_EXT_CTRL, PREFETCH(0x1c0, 0x4));
-+	mt76_wr(dev, MT_WFDMA0_TX_RING3_EXT_CTRL, PREFETCH(0x200, 0x4));
-+	mt76_wr(dev, MT_WFDMA0_TX_RING4_EXT_CTRL, PREFETCH(0x240, 0x4));
-+	mt76_wr(dev, MT_WFDMA0_TX_RING5_EXT_CTRL, PREFETCH(0x280, 0x4));
-+	mt76_wr(dev, MT_WFDMA0_TX_RING6_EXT_CTRL, PREFETCH(0x2c0, 0x4));
-+	mt76_wr(dev, MT_WFDMA0_TX_RING16_EXT_CTRL, PREFETCH(0x340, 0x4));
-+	mt76_wr(dev, MT_WFDMA0_TX_RING17_EXT_CTRL, PREFETCH(0x380, 0x4));
- }
- 
- int mt792x_dma_enable(struct mt792x_dev *dev)
- {
--	/* configure perfetch settings */
-+	const struct mt792x_dma_config *cfg = dev->dma_config;
-+
-+	/* configure prefetch settings */
- 	mt792x_dma_prefetch(dev);
- 
- 	/* reset dma idx */
-@@ -150,8 +144,16 @@ int mt792x_dma_enable(struct mt792x_dev *dev)
- 	mt76_set(dev, MT_WFDMA0_GLO_CFG,
- 		 MT_WFDMA0_GLO_CFG_TX_DMA_EN | MT_WFDMA0_GLO_CFG_RX_DMA_EN);
- 
--	if (is_mt7925(&dev->mt76)) {
--		mt76_rmw(dev, MT_UWFDMA0_GLO_CFG_EXT1, BIT(28), BIT(28));
-+	/* Apply chip-specific GLO_CFG quirk bits from DMA config */
-+	if (cfg) {
-+		if (cfg->glo_cfg_set)
-+			mt76_set(dev, MT_WFDMA0_GLO_CFG, cfg->glo_cfg_set);
-+		if (cfg->glo_cfg_clear)
-+			mt76_clear(dev, MT_WFDMA0_GLO_CFG, cfg->glo_cfg_clear);
-+	}
-+
-+	if (cfg && cfg->glo_cfg_ext1) {
-+		mt76_rmw(dev, cfg->glo_cfg_ext1, BIT(28), BIT(28));
- 		mt76_set(dev, MT_WFDMA0_INT_RX_PRI, 0x0F00);
- 		mt76_set(dev, MT_WFDMA0_INT_TX_PRI, 0x7F00);
- 	}
 diff --git a/drivers/net/wireless/mediatek/mt76/mt792x_regs.h b/drivers/net/wireless/mediatek/mt76/mt792x_regs.h
-index a8c8d7d6f565..1b9b51d43f79 100644
+index 1b9b51d43f79..9c4bbbe898f3 100644
 --- a/drivers/net/wireless/mediatek/mt76/mt792x_regs.h
 +++ b/drivers/net/wireless/mediatek/mt76/mt792x_regs.h
-@@ -299,7 +299,9 @@
- #define MT_WFDMA0_GLO_CFG_FIFO_LITTLE_ENDIAN	BIT(12)
- #define MT_WFDMA0_GLO_CFG_RX_WB_DDONE	BIT(13)
- #define MT_WFDMA0_GLO_CFG_CSR_DISP_BASE_PTR_CHAIN_EN BIT(15)
-+#define MT_WFDMA0_GLO_CFG_CSR_LBK_RX_Q_SEL_EN	BIT(20)
- #define MT_WFDMA0_GLO_CFG_OMIT_RX_INFO_PFET2	BIT(21)
-+#define MT_WFDMA0_GLO_CFG_ADDR_EXT_EN		BIT(26)
- #define MT_WFDMA0_GLO_CFG_OMIT_RX_INFO	BIT(27)
- #define MT_WFDMA0_GLO_CFG_OMIT_TX_INFO	BIT(28)
- #define MT_WFDMA0_GLO_CFG_CLK_GAT_DIS	BIT(30)
-@@ -366,6 +368,16 @@
- #define MT_WFDMA_EXT_CSR_HIF_MISC	MT_WFDMA_EXT_CSR(0x44)
- #define MT_WFDMA_EXT_CSR_HIF_MISC_BUSY	BIT(0)
+@@ -499,4 +499,22 @@
+ #define WFSYS_SW_RST_B			BIT(0)
+ #define WFSYS_SW_INIT_DONE		BIT(4)
  
-+/* MT7927 packed prefetch registers */
-+#define MT_WFDMA_PREFETCH_CTRL		MT_WFDMA_EXT_CSR(0x30)
-+#define MT_WFDMA_PREFETCH_CFG0		MT_WFDMA_EXT_CSR(0xf0)
-+#define MT_WFDMA_PREFETCH_CFG1		MT_WFDMA_EXT_CSR(0xf4)
-+#define MT_WFDMA_PREFETCH_CFG2		MT_WFDMA_EXT_CSR(0xf8)
-+#define MT_WFDMA_PREFETCH_CFG3		MT_WFDMA_EXT_CSR(0xfc)
++/* CBInfra registers - MT7927 combo chip */
++#define MT7927_CBINFRA_WAKEPU_TOP		0xe01a0
++#define MT7927_CBINFRA_MISC0_REMAP_WF		0x1f6554
++#define MT7927_CBINFRA_MISC0_REMAP_BT		0x1f6558
++#define MT7927_CBINFRA_RGU_WF_RST		0x1f8600
++#define MT7927_CBINFRA_RGU_WF_RST_WF_SUBSYS	BIT(4)
++#define MT7927_CBINFRA_MCU_OWN_SET		0x1f5034
++#define MT7927_CBINFRA_SLP_CTRL			0x1f5018
++#define MT7927_ROMCODE_INDEX			0xc1604
++#define MT7927_MCU_IDLE_VALUE			0x1d1e
++#define MT7927_MCIF_REMAP_WF_1_BA		0xd1034
 +
-+/* MT7927 GLO_CFG extended register */
-+#define MT_WFDMA0_GLO_CFG_EXT1		MT_WFDMA0(0x2b4)
++/* CBInfra CBTOP remap values */
++#define MT7927_CBINFRA_REMAP_WF_VAL		0x74037001
++#define MT7927_CBINFRA_REMAP_BT_VAL		0x70007000
 +
- #define MT_SWDEF_BASE			0x41f200
- #define MT_SWDEF(ofs)			(MT_SWDEF_BASE + (ofs))
- #define MT_SWDEF_MODE			MT_SWDEF(0x3c)
++#define MT7927_MCIF_REMAP_WF_1_BA_VAL		0x18051803
++
+ #endif /* __MT792X_REGS_H */
 
 -- 
 2.53.0
