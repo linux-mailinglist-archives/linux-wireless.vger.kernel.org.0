@@ -1,284 +1,252 @@
-Return-Path: <linux-wireless+bounces-33454-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-33455-lists+linux-wireless=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id QEmTEKuSu2mYlgIAu9opvQ
-	(envelope-from <linux-wireless+bounces-33454-lists+linux-wireless=lfdr.de@vger.kernel.org>)
-	for <lists+linux-wireless@lfdr.de>; Thu, 19 Mar 2026 07:07:39 +0100
+	id ePGOKiieu2mclwIAu9opvQ
+	(envelope-from <linux-wireless+bounces-33455-lists+linux-wireless=lfdr.de@vger.kernel.org>)
+	for <lists+linux-wireless@lfdr.de>; Thu, 19 Mar 2026 07:56:40 +0100
 X-Original-To: lists+linux-wireless@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 91E412C687A
-	for <lists+linux-wireless@lfdr.de>; Thu, 19 Mar 2026 07:07:38 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 131422C6EFC
+	for <lists+linux-wireless@lfdr.de>; Thu, 19 Mar 2026 07:56:39 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 8DF2D322D406
-	for <lists+linux-wireless@lfdr.de>; Thu, 19 Mar 2026 06:01:24 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 7461E30699A5
+	for <lists+linux-wireless@lfdr.de>; Thu, 19 Mar 2026 06:56:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 755A119A2A3;
-	Thu, 19 Mar 2026 06:00:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DC7703624D7;
+	Thu, 19 Mar 2026 06:56:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="tNnCCA3i"
+	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="FMW02Pfw";
+	dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b="XXPT5xyc"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3CB363128B8
-	for <linux-wireless@vger.kernel.org>; Thu, 19 Mar 2026 06:00:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 78EF353E0B
+	for <linux-wireless@vger.kernel.org>; Thu, 19 Mar 2026 06:56:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773900036; cv=none; b=BNIGHtIZfZCH6mwQs+2RJZDt31++RqqcLpXhc+43B9dPFfxiTk6xeDe9FMTbvjk2KcdKtpm+ldEnCfP5ge+GkZf46QrcWWuokG5XbFKimx1tGZrvGa/ohkc5LbDf/B3itfxuzSL8rA5imL3zKEqWJvzO4dT8HIjAc+W/iCuCXUU=
+	t=1773903379; cv=none; b=Jb59kP36u9oTtHfsRZ218bGXcppbfWA1e2izfPSLUyBevh7bOtnL7FJOCJ9vQIwTEZ9MHdpAXSdRDrRb5r11J3EIvvv+YUN1WGe2Im3l/Rb0BKfJTfJhmoTTibVob0uMKWQ4rrkJBr2W64T7zx1rIcqJixILbTjIx8Yf4K0vyJY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773900036; c=relaxed/simple;
-	bh=AuWihEjS4Na7P8c7/Ns1+pfE5wBeUB1/pngLuFfpbcs=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=g0KfCJvMfVaIyG1V5YzY3BrpUMWPt3xTIrYmbOI2Sg4rHrQ061NiRtRzf8GLQvnL/+SFSphfFGFawBbIzWEQkrGqRdr1ApD21BkXksNDHSJmcZV7ELmfwczOEajo1o5A75wTl99itraKosLK9esz2OAOU082ecZiMDCZKSD4/xU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=tNnCCA3i; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C1882C19425
-	for <linux-wireless@vger.kernel.org>; Thu, 19 Mar 2026 06:00:35 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1773900035;
-	bh=AuWihEjS4Na7P8c7/Ns1+pfE5wBeUB1/pngLuFfpbcs=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=tNnCCA3ik0KvW0zvCbUHJmnV4mMOfkrLiosjuMIQshYCPkAHPwtR8aNSmEcTwm1QF
-	 8w8dGHsBTr14xhkrOgLeghdHVI+iT1xeFofv2I9arr9FzRsBkOnTubZy6gJl+GJ1Vy
-	 OZ7oBrSgz2TipKmLa2l+8+0a4aW/D5lD1HI4ZHJhqXEeEP8/X8zZ3aAcsIUeyLGelY
-	 RAAZCkUqqOXaiSaIHRiUTC+zTOQKFXjVt2W7AzWk3c/ae9qvHjC65WP1uJxSor/GN+
-	 MLbJxd+PenKmHkCMb0AAtH6HHtV7f2TVXXrCgxsjVulUQwqOIplRuuDUqDXh2vyjKK
-	 Nn3KKpjUql3BA==
-Received: by mail-lj1-f174.google.com with SMTP id 38308e7fff4ca-38a723b2b29so4762431fa.2
-        for <linux-wireless@vger.kernel.org>; Wed, 18 Mar 2026 23:00:35 -0700 (PDT)
-X-Gm-Message-State: AOJu0YzWpysOK5m3UkccV9k5BgwpHA/g7vrbRJhvHmNXrzh4qp1iRNAi
-	rLts0gfwiIT0ZQYwz0skZG/rKk/JEVKwfF0MkTUljhV363gw92BXVhEz3k74s79fTKakGP3hxD7
-	xX0R0Dk8I1sqib7UzOdYRdbKArtEAxcU=
-X-Received: by 2002:a05:6512:31d5:b0:5a2:78f2:3ade with SMTP id
- 2adb3069b0e04-5a2796a2b69mr2368923e87.20.1773900034065; Wed, 18 Mar 2026
- 23:00:34 -0700 (PDT)
+	s=arc-20240116; t=1773903379; c=relaxed/simple;
+	bh=ZHp0NI0zVd5rXj2O0HIm72xLUyfMQCEDbvRyJEcGKXU=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=ZJoPEUwv9UO73xEEk2IzVpt1oNzXVrhVxz8CglN0cF90K62SBCPAt7JRx9dcnHauqXECfcrA4IStlj+SysiDUrBbDWHXtKgmbAVXLQZ6Kpsohw/Mc+LZSt+ctudX2oY1FtqbwAfwWmOoj+gmTr9iESViE3VBOGCvfC4zYT+eTnM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=FMW02Pfw; dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b=XXPT5xyc; arc=none smtp.client-ip=205.220.180.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
+Received: from pps.filterd (m0279873.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 62J5XIEa1369704
+	for <linux-wireless@vger.kernel.org>; Thu, 19 Mar 2026 06:56:17 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
+	cc:content-transfer-encoding:date:from:message-id:mime-version
+	:subject:to; s=qcppdkim1; bh=kDL4GcIf7vkqMUVqyyXog+v/pbycVtTqd3k
+	v4sU5Zg4=; b=FMW02PfwyAZSj+X9IA9gdAqsRCeenSU7BewnFtYPzkls4x+37dc
+	BXQlmuo9v8UEZMsaACXft0Jyp1OBeeoKjR9yA+nIjp+Ex1t7+R9IbxdaaEpSrwGs
+	NoK34rtCKCdxkZ+p8zjNkh0b+W+oaSTEI5Ofoi0KtRqD5Qpbpnp+RI5Z2HB9QX/1
+	y552boR/B1Ee6+pC6Yjxl/o81qeD7zLB3RcZvxil2vGFU6uI1bRvE43nGft4NzBy
+	bqwlMGP2W3Ca8iY5Ifob7hFei98PBqgRyvid2Nio1HO/Ri2EN/JM8UQCWACA0q+C
+	6QNXoiYd7m78VwJp5vMrRYkZ3PKKI5cvEiA==
+Received: from mail-pj1-f69.google.com (mail-pj1-f69.google.com [209.85.216.69])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4d0akxgb1n-1
+	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
+	for <linux-wireless@vger.kernel.org>; Thu, 19 Mar 2026 06:56:17 +0000 (GMT)
+Received: by mail-pj1-f69.google.com with SMTP id 98e67ed59e1d1-3594620fe97so3455976a91.1
+        for <linux-wireless@vger.kernel.org>; Wed, 18 Mar 2026 23:56:17 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=oss.qualcomm.com; s=google; t=1773903376; x=1774508176; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=kDL4GcIf7vkqMUVqyyXog+v/pbycVtTqd3kv4sU5Zg4=;
+        b=XXPT5xyc7vShYSnyppmtQtQPRSQQ8/Qgz+dRRv7aasDuu8nBLMM7MlUwVEUvRwIT7P
+         6lNQyzyiV28gbB66DJaN7bSJygfGjB0c5JwMILtXK5VaSEJN+mpsviTxm5vPY7Y3VZyN
+         lCPpgUahyhtrUKEkQsrEN6LlaHQJE5EiqtJwF1H8rB/BHA1xwlvfIh35eDY9a3rFMOyP
+         Azdea3aPy/0nbI4PBqcwJA1OR4nU5wrZyDhvCMDifz3QQ2qFVCyRY8UfRkflZcR5STcM
+         ghTRlt7lWyeFWLam3DVkYX4U/0WNl3ooSYif/gui05pDvWgRGkWX1xuMd7/iTbZKD5nR
+         Domw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1773903376; x=1774508176;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=kDL4GcIf7vkqMUVqyyXog+v/pbycVtTqd3kv4sU5Zg4=;
+        b=kNfEJKFbQpHwZmsp+faloNm8hqnsvOlqQViGbV2wwTKYvaIf+epHF6NOVTnXwGRD0M
+         DPrOaZ/tyu6OyMMRjvVHRu2Pqf1ScK3GK+xEM23ZXTl3paNY3awUIXBc1YFjej5K3H4N
+         EUma/6aYJPI3kWVMdoO+Bko26BK1BhtvgZMKClUDAZy7OVMiHCkXSYpSHO5JvKWTmy7k
+         Ply3NjZA6AU7Ku0KpcQdrptz2U9xZ2wWZYD+uJA+ExKUsUxb6QCiivhI4d/May6r6jFZ
+         jBoAe6nR6nTHYSAyIPouMg7Wz0GeWBIy5A1ZrVisTWwMIITry5RuKcQxCffFVsBV2w4+
+         S2ng==
+X-Gm-Message-State: AOJu0YxqECZcSvOjaXzNWZi8sR+qjGC1Ra2CVxGsZw5ZBxPZoQTwUntz
+	dkzDxjT+5dU4Z8XkUJ1rtzo5kmmOdXKLrHzaS5gByYwk5QOR8VBEPehkaQGX37CdTvW3XIWEYCe
+	EqpZi8muPGyLW/nN9ZWIfBZSmKVEatu77VWOIoTih+iOUZWeTvmF2nvYWcgNQe2IboGzyfA==
+X-Gm-Gg: ATEYQzwfNWZOqXX4n13BvC9SIG62zxZ+ZX3jmTEumpqWwlYz2Y0FEaDHCHTfLnKHWup
+	Q8ydXIsbRjZGEDNqisnJRXGQWXPAZv7IUjOaKdlvxxYVScMkFQhUPyBqHmjHlJw8idrsI9jJABT
+	3dJPZhYFR9Pv2tHjtFyDEFPrgXr/fH0j87tfgPP4T1kw1nWyN0niQSuE/mv++W6oDTEjN9HKdYr
+	XrUSh6c3OLCRkd+I5KRaqPyI+mXTwLprQQCSUKv58IJSndOJftLbpwUOO11pzOyWyqo3U7+wJed
+	3fWPR6cs2H6uo61+cICzxNGpLOqT5oO1rvV+InwCHyD4MphJgHtZzEh/DTqldCyxhoTOWYs6eze
+	LHpecxs3ysj65FJg3yWgnEmeGyWNa4WF7chc3tAZS1JxqXw9O1o/snvzU1jN0+FpLUW5B1oOoex
+	pR/w8iRxdbUD6RRY/Lk7cPsspElFA6usp1wmeaO2Gg8ImaQg==
+X-Received: by 2002:a05:6a20:d504:b0:398:7a23:2779 with SMTP id adf61e73a8af0-39b99ff5f44mr5798908637.52.1773903376227;
+        Wed, 18 Mar 2026 23:56:16 -0700 (PDT)
+X-Received: by 2002:a05:6a20:d504:b0:398:7a23:2779 with SMTP id adf61e73a8af0-39b99ff5f44mr5798883637.52.1773903375660;
+        Wed, 18 Mar 2026 23:56:15 -0700 (PDT)
+Received: from hu-rrajkuma-blr.qualcomm.com (blr-bdr-fw-01_GlobalNAT_AllZones-Outside.qualcomm.com. [103.229.18.19])
+        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-c741e583626sm4223557a12.30.2026.03.18.23.56.13
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 18 Mar 2026 23:56:15 -0700 (PDT)
+From: Reshma Immaculate Rajkumar <reshma.rajkumar@oss.qualcomm.com>
+To: ath11k@lists.infradead.org
+Cc: linux-wireless@vger.kernel.org,
+        Reshma Immaculate Rajkumar <reshma.rajkumar@oss.qualcomm.com>
+Subject: [PATCH ath-next v3] wifi: ath11k: Pass the correct value of each TID during a stop AMPDU session
+Date: Thu, 19 Mar 2026 12:26:08 +0530
+Message-Id: <20260319065608.2408179-1-reshma.rajkumar@oss.qualcomm.com>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260317173016.136975-1-lucid_duck@justthetip.ca> <20260317173016.136975-2-lucid_duck@justthetip.ca>
-In-Reply-To: <20260317173016.136975-2-lucid_duck@justthetip.ca>
-From: Sean Wang <sean.wang@kernel.org>
-Date: Thu, 19 Mar 2026 01:00:18 -0500
-X-Gmail-Original-Message-ID: <CAGp9LzqLbdEb25ocObMMuFPZitrL-UnC7uhaLOkYQN=TgSTmnA@mail.gmail.com>
-X-Gm-Features: AaiRm53QdOUvnbNx-i8dM1p_P0LtvYl7pIHuSWO3YbYIIHqfYJ72DeFNeS7VzAo
-Message-ID: <CAGp9LzqLbdEb25ocObMMuFPZitrL-UnC7uhaLOkYQN=TgSTmnA@mail.gmail.com>
-Subject: Re: [PATCH v3 1/1] wifi: mt76: mt7921: fix txpower reporting from
- rate power configuration
-To: Lucid Duck <lucid_duck@justthetip.ca>
-Cc: linux-wireless@vger.kernel.org, nbd@nbd.name, lorenzo@kernel.org, 
-	linux-mediatek@lists.infradead.org, morrownr@gmail.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Spamd-Result: default: False [-2.16 / 15.00];
+Content-Transfer-Encoding: 8bit
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwMzE5MDA1MyBTYWx0ZWRfX7+6c7hTbPaZO
+ leTGRqFkJ1y4wxS9V1AaT1fpj0RUaMCiLD12tzj8q/ICkPuK3H/gwI8o3wyn47GoUaoS2psuVBq
+ O5vn9QKGx8F+mlNvX/0G3glC8A8nIsfnmx51bBcs1n2dbT9/884LnFNcJgniuLtCXr6ws5GSdtP
+ OErOVdkn+MDuckMsdr76Zy7CuQCOH/idCGO8Wk0FDwZWCpvE/Lh13OUK/wMhPvGurVbYYBvhWi4
+ DKNVEGfB8AcKCuGR/pve1TkqSDmdPGJ7b+QjBfPYoI2ThDGNX41Dx7ch0HSQHJIpNg4Uk/W7JGY
+ g0FoAUHec0bEM1lkGMPqKa8qRrzrJ6SH4AMHoFuFJ8MELWmpb0iyNFBcVkBqVlvz7TPiF6zdZtW
+ 8Db6pZGDPNDQyD20S+cKWf7CRDKfd2bj50iTvJ+dJttwvw39cw/0Y7d90Yi7LfWGc0Ul6hsk728
+ 5ZI7/JR662cvkvDsE9Q==
+X-Proofpoint-GUID: nnA737DkEXhwDW9A0KSHryg7PfcC1Qcw
+X-Authority-Analysis: v=2.4 cv=ZeMQ98VA c=1 sm=1 tr=0 ts=69bb9e11 cx=c_pps
+ a=vVfyC5vLCtgYJKYeQD43oA==:117 a=Ou0eQOY4+eZoSc0qltEV5Q==:17
+ a=vkfXM0Oplov9zySb:21 a=Yq5XynenixoA:10 a=s4-Qcg_JpJYA:10
+ a=VkNPw1HP01LnGYTKEx00:22 a=u7WPNUs3qKkmUXheDGA7:22 a=rJkE3RaqiGZ5pbrm-msn:22
+ a=EUspDBNiAAAA:8 a=JY0uwkuL_i1N_za9zYAA:9 a=rl5im9kqc5Lf4LNbBjHf:22
+X-Proofpoint-ORIG-GUID: nnA737DkEXhwDW9A0KSHryg7PfcC1Qcw
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.51,FMLib:17.12.100.49
+ definitions=2026-03-19_01,2026-03-17_02,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ lowpriorityscore=0 impostorscore=0 malwarescore=0 priorityscore=1501
+ adultscore=0 bulkscore=0 clxscore=1015 spamscore=0 suspectscore=0
+ phishscore=0 classifier=typeunknown authscore=0 authtc= authcc=
+ route=outbound adjust=0 reason=mlx scancount=1 engine=8.22.0-2603050001
+ definitions=main-2603190053
+X-Spamd-Result: default: False [-0.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	MID_CONTAINS_FROM(1.00)[];
+	DMARC_POLICY_ALLOW(-0.50)[qualcomm.com,reject];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_DKIM_ALLOW(-0.20)[qualcomm.com:s=qcppdkim1,oss.qualcomm.com:s=google];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-33454-lists,linux-wireless=lfdr.de];
-	FREEMAIL_CC(0.00)[vger.kernel.org,nbd.name,kernel.org,lists.infradead.org,gmail.com];
-	FROM_HAS_DN(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[kernel.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	MISSING_XM_UA(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[5];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[sean.wang@kernel.org,linux-wireless@vger.kernel.org];
+	TAGGED_FROM(0.00)[bounces-33455-lists,linux-wireless=lfdr.de];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-0.987];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[qualcomm.com:dkim,qualcomm.com:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,oss.qualcomm.com:dkim,oss.qualcomm.com:mid];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	FROM_NEQ_ENVFROM(0.00)[reshma.rajkumar@oss.qualcomm.com,linux-wireless@vger.kernel.org];
+	RCPT_COUNT_THREE(0.00)[3];
+	PRECEDENCE_BULK(0.00)[];
 	TAGGED_RCPT(0.00)[linux-wireless];
-	RCPT_COUNT_FIVE(0.00)[6];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,justthetip.ca:email,sku_tlbv.channel:url]
-X-Rspamd-Queue-Id: 91E412C687A
+	NEURAL_HAM(-0.00)[-0.995];
+	DKIM_TRACE(0.00)[qualcomm.com:+,oss.qualcomm.com:+];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	TO_DN_SOME(0.00)[];
+	RCVD_COUNT_SEVEN(0.00)[7]
+X-Rspamd-Queue-Id: 131422C6EFC
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-Hi,
+During ongoing traffic, a request to stop an AMPDU session
+for one TID could incorrectly affect other active sessions.
+This can happen because an incorrect TID reference would be
+passed when updating the BA session state, causing the wrong
+session to be stopped. As a result, the affected session would
+be reduced to a minimal BA size, leading to a noticeable
+throughput degradation.
 
-On Tue, Mar 17, 2026 at 12:30=E2=80=AFPM Lucid Duck <lucid_duck@justthetip.=
-ca> wrote:
->
-> The mt7921 driver never updates phy->txpower_cur
-> when TX power rate configuration is sent to firmware. This causes
-> mt76_get_txpower() to report bogus values to userspace (typically
-> 3 dBm) regardless of actual regulatory or SAR limits. User-set
-> txpower limits via iw are also not reflected.
->
-> Three root causes are addressed:
->
-> 1. The rate power loop in mt76_connac_mcu_rate_txpower_band() computes
->    the correct bounded TX power for each channel but discards the return
->    value of mt76_get_rate_power_limits(). Fix: capture the return value
->    and store it to phy->txpower_cur when processing the current channel.
->
-> 2. mt7921 uses the chanctx model but its add_chanctx callback bypasses
->    the common mt76_phy_update_channel(), leaving phy->chandef stale.
->    Fix: update phy->chandef from ctx->def in both add_chanctx and
->    change_chanctx, and trigger the rate power path to refresh
->    txpower_cur. Also trigger on IEEE80211_CONF_CHANGE_CHANNEL in
->    config(), matching mt7915.
->
-> 3. For chanctx drivers, mac80211 routes user txpower changes through
->    BSS_CHANGED_TXPOWER in bss_info_changed() -- not through
->    IEEE80211_CONF_CHANGE_POWER in config(). hw->conf.power_level is
->    never updated. Fix: handle BSS_CHANGED_TXPOWER in
->    mt7921_bss_info_changed(), bridge bss_conf.txpower to
->    hw->conf.power_level, and re-trigger the rate power path.
->
-> Tested on Alfa AWUS036AXML (MT7921AU), kernel 6.17.1-300.fc43:
->
->   Before: iw dev wlan0 info shows "txpower 3.00 dBm" (wrong)
->   After:  correct per-band values, user limits reflected
->
-> Test results (regulatory domain: Canada/CA):
->   - 2.4GHz ch6:  33 dBm (30 dBm limit + 3 dBm 2x2 path delta)
->   - 5GHz ch36:   26 dBm (23 dBm limit + 3 dBm path delta)
->   - 6GHz ch5:    15 dBm (12 dBm limit + 3 dBm path delta)
->   - Band switch: 100 cycles, 0 failures
->   - Module reload: 50 cycles, 0 failures
->   - 2-hour soak: 480 samples, zero drift
->   - Regdomain switching: 10 countries, all correct
->   - User txpower limits: reflected on all bands
->   - Monitor mode: correct on all tested channels
->
-> Signed-off-by: Lucid Duck <lucid_duck@justthetip.ca>
-> ---
->  .../wireless/mediatek/mt76/mt76_connac_mcu.c  | 12 +++++++---
->  .../net/wireless/mediatek/mt76/mt7921/main.c  | 22 ++++++++++++++++++-
->  2 files changed, 30 insertions(+), 4 deletions(-)
->
-> diff --git a/drivers/net/wireless/mediatek/mt76/mt76_connac_mcu.c b/drive=
-rs/net/wireless/mediatek/mt76/mt76_connac_mcu.c
-> index 16db0f208..5856924a9 100644
-> --- a/drivers/net/wireless/mediatek/mt76/mt76_connac_mcu.c
-> +++ b/drivers/net/wireless/mediatek/mt76/mt76_connac_mcu.c
-> @@ -2193,14 +2193,20 @@ mt76_connac_mcu_rate_txpower_band(struct mt76_phy=
- *phy,
->                                 .hw_value =3D ch_list[idx],
->                                 .band =3D band,
->                         };
-> -                       s8 reg_power, sar_power;
-> +                       s8 reg_power, sar_power, max_power;
->
->                         reg_power =3D mt76_connac_get_ch_power(phy, &chan=
-,
->                                                              tx_power);
->                         sar_power =3D mt76_get_sar_power(phy, &chan, reg_=
-power);
->
-> -                       mt76_get_rate_power_limits(phy, &chan, limits,
-> -                                                  sar_power);
-> +                       max_power =3D mt76_get_rate_power_limits(phy, &ch=
-an,
-> +                                                              limits,
-> +                                                              sar_power)=
-;
-> +
-> +                       if (phy->chandef.chan &&
-> +                           phy->chandef.chan->hw_value =3D=3D ch_list[id=
-x] &&
-> +                           phy->chandef.chan->band =3D=3D band)
-> +                               phy->txpower_cur =3D max_power;
->
->                         tx_power_tlv.last_msg =3D ch_list[idx] =3D=3D las=
-t_ch;
->                         sku_tlbv.channel =3D ch_list[idx];
-> diff --git a/drivers/net/wireless/mediatek/mt76/mt7921/main.c b/drivers/n=
-et/wireless/mediatek/mt76/mt7921/main.c
-> index 5881040ac..38a59c6f2 100644
-> --- a/drivers/net/wireless/mediatek/mt76/mt7921/main.c
-> +++ b/drivers/net/wireless/mediatek/mt76/mt7921/main.c
-> @@ -638,7 +638,8 @@ static int mt7921_config(struct ieee80211_hw *hw, int=
- radio_idx, u32 changed)
->
->         mt792x_mutex_acquire(dev);
->
-> -       if (changed & IEEE80211_CONF_CHANGE_POWER) {
-> +       if (changed & (IEEE80211_CONF_CHANGE_POWER |
-> +                      IEEE80211_CONF_CHANGE_CHANNEL)) {
->                 ret =3D mt7921_set_tx_sar_pwr(hw, NULL);
->                 if (ret)
->                         goto out;
-> @@ -719,6 +720,14 @@ static void mt7921_bss_info_changed(struct ieee80211=
-_hw *hw,
->         if (changed & BSS_CHANGED_CQM)
->                 mt7921_mcu_set_rssimonitor(dev, vif);
->
-> +       if (changed & BSS_CHANGED_TXPOWER) {
-> +               int tx_power =3D info->txpower;
-> +
-> +               if (tx_power !=3D INT_MIN && tx_power > 0)
-> +                       hw->conf.power_level =3D tx_power;
-> +               mt7921_set_tx_sar_pwr(hw, NULL);
-> +       }
-> +
->         if (changed & BSS_CHANGED_ASSOC) {
->                 mt7921_mcu_sta_update(dev, NULL, vif, true,
->                                       MT76_STA_INFO_STATE_ASSOC);
-> @@ -1360,8 +1369,15 @@ mt7921_add_chanctx(struct ieee80211_hw *hw,
->                    struct ieee80211_chanctx_conf *ctx)
->  {
->         struct mt792x_dev *dev =3D mt792x_hw_dev(hw);
-> +       struct mt76_phy *mphy =3D hw->priv;
->
->         dev->new_ctx =3D ctx;
-> +       mphy->chandef =3D ctx->def;
-> +
-> +       mt792x_mutex_acquire(dev);
-> +       mt7921_set_tx_sar_pwr(hw, NULL);
-> +       mt792x_mutex_release(dev);
-> +
->         return 0;
->  }
->
-> @@ -1396,6 +1412,10 @@ mt7921_change_chanctx(struct ieee80211_hw *hw,
->                 mt7921_mcu_config_sniffer(mvif, ctx);
->         else
->                 mt76_connac_mcu_uni_set_chctx(mvif->phy->mt76, &mvif->bss=
-_conf.mt76, ctx);
-> +
-> +       phy->mt76->chandef =3D ctx->def;
-> +       mt7921_set_tx_sar_pwr(hw, NULL);
-> +
+Fix this issue by passing the correct argument from
+ath11k_dp_rx_ampdu_stop() to ath11k_peer_rx_tid_reo_update()
+during a stop AMPDU session. Instead of passing peer->tx_tid, which
+is the base address of the array, corresponding to TID 0; pass
+the value of &peer->rx_tid[params->tid], where the different TID numbers
+are accounted for.
 
-I do not think the additional mt7921_set_tx_sar_pwr() calls are justified.
+Tested-on: QCN9074 hw1.0 PCI WLAN.HK.2.9.0.1-02146-QCAHKSWPL_SILICONZ-1
 
-mt7921_set_tx_sar_pwr() is not a lightweight per-channel refresh. It
-rebuilds and pushes the rate txpower table for all channels in the band
-through the MCU path. This is appropriate when the underlying power
-constraints change (e.g. SAR, regulatory limits, or user-configured
-txpower), but not for pure channel/chanctx transitions.
+Fixes: d5c65159f2895 ("ath11k: driver for Qualcomm IEEE 802.11ax devices")
+Signed-off-by: Reshma Immaculate Rajkumar <reshma.rajkumar@oss.qualcomm.com>
+---
+v2:
+* Added QTI yearless copyright
+v3:
+* Removed QUIC copyright information
+---
+ drivers/net/wireless/ath/ath11k/dp_rx.c | 15 +++++++--------
+ 1 file changed, 7 insertions(+), 8 deletions(-)
 
-add_chanctx(), change_chanctx(), and IEEE80211_CONF_CHANGE_CHANNEL only
-reflect channel/context changes and do not imply that the firmware
-txpower table needs to be recomputed. Using mt7921_set_tx_sar_pwr() here
-effectively turns it into a catch-all sync path.
+diff --git a/drivers/net/wireless/ath/ath11k/dp_rx.c b/drivers/net/wireless/ath/ath11k/dp_rx.c
+index 49d959b2e148..85defe11750d 100644
+--- a/drivers/net/wireless/ath/ath11k/dp_rx.c
++++ b/drivers/net/wireless/ath/ath11k/dp_rx.c
+@@ -1,7 +1,7 @@
+ // SPDX-License-Identifier: BSD-3-Clause-Clear
+ /*
+  * Copyright (c) 2018-2019 The Linux Foundation. All rights reserved.
+- * Copyright (c) 2021-2025 Qualcomm Innovation Center, Inc. All rights reserved.
++ * Copyright (c) Qualcomm Technologies, Inc. and/or its subsidiaries.
+  */
+ 
+ #include <linux/ieee80211.h>
+@@ -1110,9 +1110,8 @@ int ath11k_dp_rx_ampdu_stop(struct ath11k *ar,
+ 	struct ath11k_base *ab = ar->ab;
+ 	struct ath11k_peer *peer;
+ 	struct ath11k_sta *arsta = ath11k_sta_to_arsta(params->sta);
++	struct dp_rx_tid *rx_tid;
+ 	int vdev_id = arsta->arvif->vdev_id;
+-	dma_addr_t paddr;
+-	bool active;
+ 	int ret;
+ 
+ 	spin_lock_bh(&ab->base_lock);
+@@ -1124,15 +1123,14 @@ int ath11k_dp_rx_ampdu_stop(struct ath11k *ar,
+ 		return -ENOENT;
+ 	}
+ 
+-	paddr = peer->rx_tid[params->tid].paddr;
+-	active = peer->rx_tid[params->tid].active;
++	rx_tid = &peer->rx_tid[params->tid];
+ 
+-	if (!active) {
++	if (!rx_tid->active) {
+ 		spin_unlock_bh(&ab->base_lock);
+ 		return 0;
+ 	}
+ 
+-	ret = ath11k_peer_rx_tid_reo_update(ar, peer, peer->rx_tid, 1, 0, false);
++	ret = ath11k_peer_rx_tid_reo_update(ar, peer, rx_tid, 1, 0, false);
+ 	spin_unlock_bh(&ab->base_lock);
+ 	if (ret) {
+ 		ath11k_warn(ab, "failed to update reo for rx tid %d: %d\n",
+@@ -1141,7 +1139,8 @@ int ath11k_dp_rx_ampdu_stop(struct ath11k *ar,
+ 	}
+ 
+ 	ret = ath11k_wmi_peer_rx_reorder_queue_setup(ar, vdev_id,
+-						     params->sta->addr, paddr,
++						     params->sta->addr,
++						     rx_tid->paddr,
+ 						     params->tid, 1, 1);
+ 	if (ret)
+ 		ath11k_warn(ab, "failed to send wmi to delete rx tid %d\n",
 
-If the issue is stale txpower reporting after a channel switch, it should
-be fixed by updating phy->txpower_cur from the already computed bounded
-max power for the current channel, rather than re-triggering full table
-programming on every chanctx/channel event.
+base-commit: 7bbb578fc43e7dcb8690cfc98844bd67bc311e8a
+-- 
+2.34.1
 
-BSS_CHANGED_TXPOWER is also problematic. It is a per-BSS (per-vif) event,
-while hw->conf.power_level is shared per-HW state. Writing
-info->txpower into hw->conf.power_level allows one interface to affect
-the effective txpower of others sharing the same PHY, which breaks
-multi-vif semantics.
-
->         mt792x_mutex_release(phy->dev);
->  }
->
-> --
-> 2.51.0
->
 
