@@ -1,320 +1,250 @@
-Return-Path: <linux-wireless+bounces-33595-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-33596-lists+linux-wireless=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id CIJuFo1svWnL9gIAu9opvQ
-	(envelope-from <linux-wireless+bounces-33595-lists+linux-wireless=lfdr.de@vger.kernel.org>)
-	for <lists+linux-wireless@lfdr.de>; Fri, 20 Mar 2026 16:49:33 +0100
+	id gCQsKqCLvWnY+wIAu9opvQ
+	(envelope-from <linux-wireless+bounces-33596-lists+linux-wireless=lfdr.de@vger.kernel.org>)
+	for <lists+linux-wireless@lfdr.de>; Fri, 20 Mar 2026 19:02:08 +0100
 X-Original-To: lists+linux-wireless@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 438D42DCDF5
-	for <lists+linux-wireless@lfdr.de>; Fri, 20 Mar 2026 16:49:33 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2262F2DF145
+	for <lists+linux-wireless@lfdr.de>; Fri, 20 Mar 2026 19:02:08 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id A3D4630098BE
-	for <lists+linux-wireless@lfdr.de>; Fri, 20 Mar 2026 15:49:32 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id A42633056177
+	for <lists+linux-wireless@lfdr.de>; Fri, 20 Mar 2026 18:00:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 329673CCFC2;
-	Fri, 20 Mar 2026 15:49:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C317730EF89;
+	Fri, 20 Mar 2026 18:00:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="TqsD+V0e"
+	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="E9wOoR5G";
+	dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b="GVNnQQXc"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-dy1-f171.google.com (mail-dy1-f171.google.com [74.125.82.171])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 994183CD8BB
-	for <linux-wireless@vger.kernel.org>; Fri, 20 Mar 2026 15:49:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.82.171
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 440E63112D2
+	for <linux-wireless@vger.kernel.org>; Fri, 20 Mar 2026 18:00:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774021768; cv=none; b=M3PlFmc1Ih8AznprV1dycWFTEwNouKFqs6BkfqI7OTlqubD4HTMbk3zozPJCkNet+SvAy++X/LEsLJGW6OBjSAGUe01FFOVZpuBw8mkNpRSZgNnV+q3qq8CMNjrNG/2SBvKlS1hf1H3oaVZq7JP3qdiqKZjYCAV3YfW5t27+jqY=
+	t=1774029633; cv=none; b=c+n6y/vV4l8zya7uiUQUTU/YbwFo3iI2TyyGA4ZZXng9pWS2AdjNbSNwiKg+UZlkYOHrnQG78+77M0MUqxv1LXn73DjplEQtthTfGhu/jJVPFoozMgOgTdwyvyaty9nwpRTlEV0QN0bMjktY2NsLwrK1DELHS1jxihHJ9PctI3k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774021768; c=relaxed/simple;
-	bh=5bNAXGs4cIMFl6Jp32gKXXVAunXQc+McFM1c11Lf6k8=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=VKg+K3FOvNZWf0Dh8YW8GRegBLfcvEsJZphuk89Lq+uAKif680SOOH9YvlVNq9hr3Q8LtA+6FJakObhPniY1zhYojYB6pGjcnp+LZR1FkqgZmS7fAkWGSsLqFkLZJ8dvmRgqWZfrmhFuccY3AWS93wlsXKXxxTT/rG7S7H2yzLQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=TqsD+V0e; arc=none smtp.client-ip=74.125.82.171
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-dy1-f171.google.com with SMTP id 5a478bee46e88-2c0ea57fea7so2315590eec.0
-        for <linux-wireless@vger.kernel.org>; Fri, 20 Mar 2026 08:49:23 -0700 (PDT)
+	s=arc-20240116; t=1774029633; c=relaxed/simple;
+	bh=N6a5IhD4WmDNLDCn7xzaTiHcKGK7AYaBCgpK27R/7VM=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=qEbjYAwhlke6bBk0B+CY9giC6O0pQiyFoeiAqOiFA5txy07l+hPFj8lcWWZ0k6UHI8/e8+YD5e+Pv9w/eywajGfsTWgVLUmiJiaEJ9JnUxDWvV1Mr0aOJPoabmUVPD598nVdSYStvIMwyGHcgatZAYqEV2PRPRa7LU4DXDgelYU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=E9wOoR5G; dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b=GVNnQQXc; arc=none smtp.client-ip=205.220.180.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
+Received: from pps.filterd (m0279868.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 62KEcj943557763
+	for <linux-wireless@vger.kernel.org>; Fri, 20 Mar 2026 18:00:31 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
+	cc:content-transfer-encoding:date:from:message-id:mime-version
+	:subject:to; s=qcppdkim1; bh=wp/i8MNH632OLRQKJYuEmZ+Dnhpf5F16T94
+	YMcKgjw0=; b=E9wOoR5GdAXv64htaKQ/VIYrr3NvbxDRZEwb6mvSCPYOs1etBuG
+	SQTNyTAADzVrKXOfBCN3Id/JbLKWsKTt7MLR15JKeeemPMN2KZzBadJbjOWQhdDN
+	ZsB60WgfpPOTQSH59en/NfnQRY1keY3TbXLCSbaeuXUtmBVOnl7UbXgzqPsxdl/d
+	xUwMUCXNcj7NN1yD1kytrOf0wfPptK5dSSUYRZmmf1o2cZUfWwh85BVciPNJndG4
+	nSoudcXKiG0jA7eCQDDDApE8N5Pi+d/ngydYCQ9EIbm81VZ+8qpppINNT0ISRAU8
+	kZR+MjZS5SRXNjTBVEYVDQ3/VaUaA8JqtJA==
+Received: from mail-pl1-f199.google.com (mail-pl1-f199.google.com [209.85.214.199])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4d0r1gtys8-1
+	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
+	for <linux-wireless@vger.kernel.org>; Fri, 20 Mar 2026 18:00:31 +0000 (GMT)
+Received: by mail-pl1-f199.google.com with SMTP id d9443c01a7336-2aeb90532f6so11448295ad.0
+        for <linux-wireless@vger.kernel.org>; Fri, 20 Mar 2026 11:00:30 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1774021762; x=1774626562; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references
-         :mail-followup-to:message-id:subject:cc:to:from:date:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=1noh5STaRC1HybhuYlkIMhR1r7TUdhM17pEfO/82ZhA=;
-        b=TqsD+V0efLCtHkR1v28WRt0ZjiiW/DszxVXs02Ss3Npx+nBeLDXahfbuKHiLDCTLSe
-         inyjk1ptvRR6l54nMhspWFgyvXYAUxbWUYiolNYh9Qa1qGeooZziXfx+RfI9uXO2njsA
-         PIpZtIu7oWFT6pEsus+o8J8qjU+m5TpUDuoHorrWyc0ytHXUY8FhseaZTO8w+V5uKNYY
-         a7o8ojWZZeV2eg031HmOhxAtE60w6Jg0HANc8MKeFab2GPPV44poRCB9TV1I26WLeYov
-         WLaN85UITDG7rFc9tb0RrZC4GSNptfEm1lkkFmW71Hpg0Y6NXP4QijvMFvn72cUC5MRc
-         tQgA==
+        d=oss.qualcomm.com; s=google; t=1774029630; x=1774634430; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=wp/i8MNH632OLRQKJYuEmZ+Dnhpf5F16T94YMcKgjw0=;
+        b=GVNnQQXc8bYAffvFC8mTeE4oDYyvCAOnLfsjPq91pJNel11s+VifH9JqZNP+nvJbxv
+         AhE8o0l3lipNU9LmxMMAaUs/ijM+f/vjtHX82WRk80zoDJ4oIuiBBU27pcZKez72djDn
+         lc03eztuIxHS4ytFXV+xtP9ec/XGZRBhy2UIvKgTk4bP8V052FwNx3zZeOl5br7x57Iz
+         vPrNyXVTxLoSlSYVbER40PAt93NLYg2ayxruwJHhmbR8ghjuQ/xj9trWcDOQA8l9tVj9
+         PITDrGXuIzh3nLGsrEDifRjeVua3xXWVDRKdoqREAwTo4VJ9NUwqaGKkfhRE2O7gpJka
+         Kmpg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1774021762; x=1774626562;
-        h=in-reply-to:content-disposition:mime-version:references
-         :mail-followup-to:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=1noh5STaRC1HybhuYlkIMhR1r7TUdhM17pEfO/82ZhA=;
-        b=ltTh62r/DkCilsGCsGxJEtvj0ZaNEH6dgP+RfBYfgLhl6/0tJrztPyPJ4lOtuazopV
-         YrLfH0wmw/o5WEu+QWrTdOP9AYoH0Gij1aI8Xsk09c41T1aFy2X32cMAD/btlV5zoWz5
-         RO1SjKw5Cl8hBUkqpensv2QATgXY89kl58QEsPqQi9PdHIpZ67y3yNQXPQ6tY7Q9ag/5
-         fAAe119Udh9kbx3WFFlgkETF7aM70Hya40Wb1qaefHYgTewalvPq2HAYemJoNNsqxYvT
-         4yJzaaYhqbya3+Ocu7AWezINtFniYBJJWWQginE3AuTWd2CJnunK309VZOj+JQAiuaNf
-         TOPw==
-X-Forwarded-Encrypted: i=1; AJvYcCVqSTE9PD7Q0IliMeAR+vRb+aYhIuK7psh7wFjip3JRKLh6abn+L1YEhtIm7TazoBUFeiJ8syo+zQqTEydltg==@vger.kernel.org
-X-Gm-Message-State: AOJu0Yyd8f6kyUzoguR0AJoK8j+SZe3DusxnAt8LP6ymU6SXBR5HC5n8
-	AuRAJRWm7FFTg6JdmFxM4yXY52dlQBfz0Pjk92rNCfucvMk8F3uZqPI=
-X-Gm-Gg: ATEYQzypTlWy8QF/Pkt2jCEel+vD/dxEAbhzWhXknbaAAfzu6ahDTW3VJsyM/TBkerI
-	UCc4F9hQY7IZ2Xa3aoZRV/rTIHoXOD4HGyOFAbo+9Vf9oyIl9X+H3D/i4e5z/G/yaexKBbNrmIN
-	+yfYTqtButEbDlZJPLxD1mE3WVyS7zlfCIhLC0K//U9DNGXcVPMNzDEFEZvEe3NojLCtvj4Fb/i
-	rSPVQRzaQNQCtS/UvOEfTQsOIKfjx850nMGe6eTsSKolgkCsemMEP4upeAjZjCkASCb4aaBynHd
-	ndevahLzJtEelimvBYE02iV8gdE+dtVFLDnkShx9r5SRBEbmHzTSQWDAPRa8mg2jpFvOkM2IadT
-	zyIwBC1NiUjVTQiJdSHNfXLIOU8tpX2enAd0ZwSTgDfU/xEPWuyMcfSRUgGsEFsiIGhwATWNPUM
-	TVdfoFnxZetXBNBSoKHOOwjTzNg4ZjleE4Tm9hZ/dublVmvUqMRn4Q4RsL/Fc0PwIbmeMgDER32
-	OUxpZ9X2mk7RSqJyaVYHpEotjgi
-X-Received: by 2002:a05:693c:3106:b0:2b7:b7e7:9025 with SMTP id 5a478bee46e88-2c10980a36dmr1639723eec.31.1774021762125;
-        Fri, 20 Mar 2026 08:49:22 -0700 (PDT)
-Received: from localhost (c-76-102-12-149.hsd1.ca.comcast.net. [76.102.12.149])
-        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-2c10b17b1b8sm3724371eec.8.2026.03.20.08.49.21
+        d=1e100.net; s=20251104; t=1774029630; x=1774634430;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=wp/i8MNH632OLRQKJYuEmZ+Dnhpf5F16T94YMcKgjw0=;
+        b=dlPxdNDlDRLBpSsc5Que6GfMKCjSfHBlN0QP8kaZZ7wXjFPcxiRfFf2GXlqJo30qGl
+         1VZ4sXrBoLrWVFtHebidDuQPzZhQXYlAmchvKtCcIjS8hrz6yMmNXg08GGi2aWR2cfok
+         XQUlmAmtEh9sz6fPGlYrsUkU3zWA0TWgCGAFarWHw7AYiS3m+wHdkuBYvmOx9VEhpLIC
+         m1gAdOOMcECZLi9TicFDacQ3ValiMhuQRfsjbPVvdJUQsubdHoGZLDVJAXSd/b689OWi
+         zGIYaxy1Y+0acje0ooshLLWlIDdx4YySADePoEwMMSFjfkrH3+ninzUyba7zwFZTZwv7
+         Ug1Q==
+X-Gm-Message-State: AOJu0YwjsikiVKnURYfyr0WkNG1+UqhTKR8lXBZprsIGIECvDLNV13Hh
+	CplAqQUxHjoJL9yFFj7t/kYRodA9QPUJ5MTGCQlzSMzdH6MgmyyA4w959/ze11s7buP+frbzpbv
+	pVpsgHlJm6yYrytldLjchmxkBFVEFITscFbJCXN+5ha7bebRRfpYwvng8XklLHJHFv0aToN681P
+	gK
+X-Gm-Gg: ATEYQzxOvFS+icjmfmFekZUJvSGtSb4Gz2irVDjXlYU9enZA5euT2xlqDw+cMmgw2Zq
+	dxsReSH18hvmFkA2x0HOQL96D/XCpEwM7HgSsV/WI+nTJ8SRU/H60XJTpZzan+vP2SU2X3GbdSh
+	SETWQrbp/GDbCRkEIOk1sMpw8+fVeGq8JXZPEafwb/Ii93dWb9ZDJbNSM5PuCKn4/hRY9HqbUDK
+	VUlb5uBxWEjOYx5GY8LMDz4RTr16/c82+ajXDAaAdENdJQhevcAd62tjDU8QHEWxRpnOhVPkD4A
+	Qv2F1IAFZVYIYWd/+FSxbZFComeXl9CDgYvDFe5GHtzbrfDwO/d7oF7XesCmtcxB3180aZC25c9
+	vKEfH9PGx0hks+4dKplwteh5HNJ5HSumgfStq7Bbe/JLLt9fhj1LGNrE=
+X-Received: by 2002:a17:903:94f:b0:2ae:c862:3a2 with SMTP id d9443c01a7336-2b082733d15mr32673585ad.17.1774029630121;
+        Fri, 20 Mar 2026 11:00:30 -0700 (PDT)
+X-Received: by 2002:a17:903:94f:b0:2ae:c862:3a2 with SMTP id d9443c01a7336-2b082733d15mr32673375ad.17.1774029629571;
+        Fri, 20 Mar 2026 11:00:29 -0700 (PDT)
+Received: from hu-peddolla-hyd.qualcomm.com ([202.46.23.25])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2b083529e8asm29926225ad.20.2026.03.20.11.00.27
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 20 Mar 2026 08:49:21 -0700 (PDT)
-Date: Fri, 20 Mar 2026 08:49:20 -0700
-From: Stanislav Fomichev <stfomichev@gmail.com>
-To: "Loktionov, Aleksandr" <aleksandr.loktionov@intel.com>
-Cc: Stanislav Fomichev <sdf@fomichev.me>,
-	"netdev@vger.kernel.org" <netdev@vger.kernel.org>,
-	"davem@davemloft.net" <davem@davemloft.net>,
-	"edumazet@google.com" <edumazet@google.com>,
-	"kuba@kernel.org" <kuba@kernel.org>,
-	"pabeni@redhat.com" <pabeni@redhat.com>,
-	"horms@kernel.org" <horms@kernel.org>,
-	"corbet@lwn.net" <corbet@lwn.net>,
-	"skhan@linuxfoundation.org" <skhan@linuxfoundation.org>,
-	"andrew+netdev@lunn.ch" <andrew+netdev@lunn.ch>,
-	"michael.chan@broadcom.com" <michael.chan@broadcom.com>,
-	"pavan.chebbi@broadcom.com" <pavan.chebbi@broadcom.com>,
-	"Nguyen, Anthony L" <anthony.l.nguyen@intel.com>,
-	"Kitszel, Przemyslaw" <przemyslaw.kitszel@intel.com>,
-	"saeedm@nvidia.com" <saeedm@nvidia.com>,
-	"tariqt@nvidia.com" <tariqt@nvidia.com>,
-	"mbloch@nvidia.com" <mbloch@nvidia.com>,
-	"alexanderduyck@fb.com" <alexanderduyck@fb.com>,
-	"kernel-team@meta.com" <kernel-team@meta.com>,
-	"johannes@sipsolutions.net" <johannes@sipsolutions.net>,
-	"sd@queasysnail.net" <sd@queasysnail.net>,
-	"jianbol@nvidia.com" <jianbol@nvidia.com>,
-	"dtatulea@nvidia.com" <dtatulea@nvidia.com>,
-	"mohsin.bashr@gmail.com" <mohsin.bashr@gmail.com>,
-	"Keller, Jacob E" <jacob.e.keller@intel.com>,
-	"willemb@google.com" <willemb@google.com>,
-	"skhawaja@google.com" <skhawaja@google.com>,
-	"bestswngs@gmail.com" <bestswngs@gmail.com>,
-	"kees@kernel.org" <kees@kernel.org>,
-	"linux-doc@vger.kernel.org" <linux-doc@vger.kernel.org>,
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-	"intel-wired-lan@lists.osuosl.org" <intel-wired-lan@lists.osuosl.org>,
-	"linux-rdma@vger.kernel.org" <linux-rdma@vger.kernel.org>,
-	"linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
-	"linux-kselftest@vger.kernel.org" <linux-kselftest@vger.kernel.org>,
-	"leon@kernel.org" <leon@kernel.org>
-Subject: Re: [Intel-wired-lan] [PATCH net-next v3 03/13] net: introduce
- ndo_set_rx_mode_async and dev_rx_mode_work
-Message-ID: <ab1sgEg9ii3se1Zq@mini-arch>
-Mail-Followup-To: Stanislav Fomichev <stfomichev@gmail.com>,
-	"Loktionov, Aleksandr" <aleksandr.loktionov@intel.com>,
-	Stanislav Fomichev <sdf@fomichev.me>,
-	"netdev@vger.kernel.org" <netdev@vger.kernel.org>,
-	"davem@davemloft.net" <davem@davemloft.net>,
-	"edumazet@google.com" <edumazet@google.com>,
-	"kuba@kernel.org" <kuba@kernel.org>,
-	"pabeni@redhat.com" <pabeni@redhat.com>,
-	"horms@kernel.org" <horms@kernel.org>,
-	"corbet@lwn.net" <corbet@lwn.net>,
-	"skhan@linuxfoundation.org" <skhan@linuxfoundation.org>,
-	"andrew+netdev@lunn.ch" <andrew+netdev@lunn.ch>,
-	"michael.chan@broadcom.com" <michael.chan@broadcom.com>,
-	"pavan.chebbi@broadcom.com" <pavan.chebbi@broadcom.com>,
-	"Nguyen, Anthony L" <anthony.l.nguyen@intel.com>,
-	"Kitszel, Przemyslaw" <przemyslaw.kitszel@intel.com>,
-	"saeedm@nvidia.com" <saeedm@nvidia.com>,
-	"tariqt@nvidia.com" <tariqt@nvidia.com>,
-	"mbloch@nvidia.com" <mbloch@nvidia.com>,
-	"alexanderduyck@fb.com" <alexanderduyck@fb.com>,
-	"kernel-team@meta.com" <kernel-team@meta.com>,
-	"johannes@sipsolutions.net" <johannes@sipsolutions.net>,
-	"sd@queasysnail.net" <sd@queasysnail.net>,
-	"jianbol@nvidia.com" <jianbol@nvidia.com>,
-	"dtatulea@nvidia.com" <dtatulea@nvidia.com>,
-	"mohsin.bashr@gmail.com" <mohsin.bashr@gmail.com>,
-	"Keller, Jacob E" <jacob.e.keller@intel.com>,
-	"willemb@google.com" <willemb@google.com>,
-	"skhawaja@google.com" <skhawaja@google.com>,
-	"bestswngs@gmail.com" <bestswngs@gmail.com>,
-	"kees@kernel.org" <kees@kernel.org>,
-	"linux-doc@vger.kernel.org" <linux-doc@vger.kernel.org>,
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-	"intel-wired-lan@lists.osuosl.org" <intel-wired-lan@lists.osuosl.org>,
-	"linux-rdma@vger.kernel.org" <linux-rdma@vger.kernel.org>,
-	"linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
-	"linux-kselftest@vger.kernel.org" <linux-kselftest@vger.kernel.org>,
-	"leon@kernel.org" <leon@kernel.org>
-References: <20260320012501.2033548-1-sdf@fomichev.me>
- <20260320012501.2033548-4-sdf@fomichev.me>
- <IA3PR11MB89865C96824F6518F4A01B9CE54CA@IA3PR11MB8986.namprd11.prod.outlook.com>
+        Fri, 20 Mar 2026 11:00:29 -0700 (PDT)
+From: Peddolla Harshavardhan Reddy <peddolla.reddy@oss.qualcomm.com>
+To: johannes@sipsolutions.net
+Cc: linux-wireless@vger.kernel.org, kavita.kavita@oss.qualcomm.com
+Subject: [PATCH wireless-next v4 00/14] wifi: Ranging support enhancements
+Date: Fri, 20 Mar 2026 23:29:24 +0530
+Message-Id: <20260320175938.2547288-1-peddolla.reddy@oss.qualcomm.com>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <IA3PR11MB89865C96824F6518F4A01B9CE54CA@IA3PR11MB8986.namprd11.prod.outlook.com>
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+Content-Transfer-Encoding: 8bit
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwMzIwMDE0NCBTYWx0ZWRfXwj1vGzXuXFFa
+ E1wxG9QvCGF9QOOgOiUT6NiYn6vJkMVHhFisHsnsOvp5Gcqta4XwGy8Zl1UNMRKGAY3TFF4ArbP
+ qJlP3Ecpd3Vo9/9lOiY8gOoBj/NqW0kC7yI1Ro6esu3FtlC6ZTxvy0yYQVg3AYgRvUSvHAQwPpu
+ dcEr1aeUixYOL/+SV2DUJR7hbY0Y7fRkEcAYqU5z4OfwodQH95HjdAiyN2XFQezQYxqHt8NkQXP
+ J+JEQyrbBqOFh+MkDArsTZOV1vW7uJeID5sXJ/8aTbndq064uV6JphEcO2j3fgwBqce0MJu7FHH
+ Y8jKgHlEO1b+ndMSasqXLIFf1rbkti0ilCt9bPWWhUtXSHnFzcR8Z+3/orhbAidx3g2DM+JGyCm
+ BdaIuRAvLtPcIApt4Qx9XcTNPdkaRypqAqpZipZf1igYNc2LN2mlyaBF8Qbsf2pz+yWq+8W0Yb0
+ rPQc2u3zvI1DvRB6Kag==
+X-Proofpoint-GUID: gkavM2IT0Yf09FxL5EdSM0lSMkK5aPw1
+X-Proofpoint-ORIG-GUID: gkavM2IT0Yf09FxL5EdSM0lSMkK5aPw1
+X-Authority-Analysis: v=2.4 cv=Y/D1cxeN c=1 sm=1 tr=0 ts=69bd8b3f cx=c_pps
+ a=JL+w9abYAAE89/QcEU+0QA==:117 a=ZePRamnt/+rB5gQjfz0u9A==:17
+ a=Yq5XynenixoA:10 a=s4-Qcg_JpJYA:10 a=VkNPw1HP01LnGYTKEx00:22
+ a=u7WPNUs3qKkmUXheDGA7:22 a=ZpdpYltYx_vBUK5n70dp:22 a=gexI4FMgWFwkBSOqGDAA:9
+ a=324X-CrmTo6CU4MGRt3R:22
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.51,FMLib:17.12.100.49
+ definitions=2026-03-20_03,2026-03-20_02,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ suspectscore=0 spamscore=0 priorityscore=1501 adultscore=0 lowpriorityscore=0
+ malwarescore=0 clxscore=1015 phishscore=0 bulkscore=0 impostorscore=0
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.22.0-2603050001 definitions=main-2603200144
+X-Spamd-Result: default: False [-0.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MID_RHS_NOT_FQDN(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
-	R_DKIM_ALLOW(-0.20)[gmail.com:s=20230601];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	MID_CONTAINS_FROM(1.00)[];
+	DMARC_POLICY_ALLOW(-0.50)[qualcomm.com,reject];
+	R_MISSING_CHARSET(0.50)[];
+	R_DKIM_ALLOW(-0.20)[qualcomm.com:s=qcppdkim1,oss.qualcomm.com:s=google];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-33595-lists,linux-wireless=lfdr.de];
-	RECEIVED_HELO_LOCALHOST(0.00)[];
-	TO_DN_EQ_ADDR_SOME(0.00)[];
-	FREEMAIL_FROM(0.00)[gmail.com];
-	FREEMAIL_CC(0.00)[fomichev.me,vger.kernel.org,davemloft.net,google.com,kernel.org,redhat.com,lwn.net,linuxfoundation.org,lunn.ch,broadcom.com,intel.com,nvidia.com,fb.com,meta.com,sipsolutions.net,queasysnail.net,gmail.com,lists.osuosl.org];
-	RCPT_COUNT_TWELVE(0.00)[37];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[5];
-	FROM_NEQ_ENVFROM(0.00)[stfomichev@gmail.com,linux-wireless@vger.kernel.org];
+	TAGGED_FROM(0.00)[bounces-33596-lists,linux-wireless=lfdr.de];
 	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[gmail.com:+];
-	NEURAL_HAM(-0.00)[-0.876];
+	RCVD_TLS_LAST(0.00)[];
+	TO_DN_NONE(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[peddolla.reddy@oss.qualcomm.com,linux-wireless@vger.kernel.org];
+	DKIM_TRACE(0.00)[qualcomm.com:+,oss.qualcomm.com:+];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	TAGGED_RCPT(0.00)[linux-wireless];
+	NEURAL_HAM(-0.00)[-0.995];
+	RCPT_COUNT_THREE(0.00)[3];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[linux-wireless,netdev];
-	MISSING_XM_UA(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 438D42DCDF5
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	MIME_TRACE(0.00)[0:+];
+	RCVD_COUNT_SEVEN(0.00)[7]
+X-Rspamd-Queue-Id: 2262F2DF145
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-On 03/20, Loktionov, Aleksandr wrote:
-> 
-> 
-> > -----Original Message-----
-> > From: Intel-wired-lan <intel-wired-lan-bounces@osuosl.org> On Behalf
-> > Of Stanislav Fomichev
-> > Sent: Friday, March 20, 2026 2:25 AM
-> > To: netdev@vger.kernel.org
-> > Cc: davem@davemloft.net; edumazet@google.com; kuba@kernel.org;
-> > pabeni@redhat.com; horms@kernel.org; corbet@lwn.net;
-> > skhan@linuxfoundation.org; andrew+netdev@lunn.ch;
-> > michael.chan@broadcom.com; pavan.chebbi@broadcom.com; Nguyen, Anthony
-> > L <anthony.l.nguyen@intel.com>; Kitszel, Przemyslaw
-> > <przemyslaw.kitszel@intel.com>; saeedm@nvidia.com; tariqt@nvidia.com;
-> > mbloch@nvidia.com; alexanderduyck@fb.com; kernel-team@meta.com;
-> > johannes@sipsolutions.net; sd@queasysnail.net; jianbol@nvidia.com;
-> > dtatulea@nvidia.com; sdf@fomichev.me; mohsin.bashr@gmail.com; Keller,
-> > Jacob E <jacob.e.keller@intel.com>; willemb@google.com;
-> > skhawaja@google.com; bestswngs@gmail.com; Loktionov, Aleksandr
-> > <aleksandr.loktionov@intel.com>; kees@kernel.org; linux-
-> > doc@vger.kernel.org; linux-kernel@vger.kernel.org; intel-wired-
-> > lan@lists.osuosl.org; linux-rdma@vger.kernel.org; linux-
-> > wireless@vger.kernel.org; linux-kselftest@vger.kernel.org;
-> > leon@kernel.org
-> > Subject: [Intel-wired-lan] [PATCH net-next v3 03/13] net: introduce
-> > ndo_set_rx_mode_async and dev_rx_mode_work
-> > 
-> > Add ndo_set_rx_mode_async callback that drivers can implement instead
-> > of the legacy ndo_set_rx_mode. The legacy callback runs under the
-> > netif_addr_lock spinlock with BHs disabled, preventing drivers from
-> > sleeping. The async variant runs from a work queue with rtnl_lock and
-> > netdev_lock_ops held, in fully sleepable context.
-> > 
-> > When __dev_set_rx_mode() sees ndo_set_rx_mode_async, it schedules
-> > dev_rx_mode_work instead of calling the driver inline. The work
-> > function takes two snapshots of each address list (uc/mc) under the
-> > addr_lock, then drops the lock and calls the driver with the work
-> > copies. After the driver returns, it reconciles the snapshots back to
-> > the real lists under the lock.
-> > 
-> > Reviewed-by: Aleksandr Loktionov <aleksandr.loktionov@intel.com>
-> > Signed-off-by: Stanislav Fomichev <sdf@fomichev.me>
-> > ---
-> >  Documentation/networking/netdevices.rst |  8 +++
-> >  include/linux/netdevice.h               | 20 ++++++
-> >  net/core/dev.c                          | 95 +++++++++++++++++++++++-
-> > -
-> >  3 files changed, 116 insertions(+), 7 deletions(-)
-> > 
-> > diff --git a/Documentation/networking/netdevices.rst
-> > b/Documentation/networking/netdevices.rst
-> > index 35704d115312..dc83d78d3b27 100644
-> > --- a/Documentation/networking/netdevices.rst
-> > +++ b/Documentation/networking/netdevices.rst
-> > @@ -289,6 +289,14 @@ struct net_device synchronization rules
-> >  ndo_set_rx_mode:
-> >  	Synchronization: netif_addr_lock spinlock.
-> >  	Context: BHs disabled
-> 
-> ...
-> 
-> > to
-> > +device
-> > + * and configure RX filtering.
-> > + * @dev: device
-> > + *
-> > + * When the device doesn't support unicast filtering it is put in
-> > +promiscuous
-> > + * mode while unicast addresses are present.
-> >   */
-> >  void __dev_set_rx_mode(struct net_device *dev)  {
-> >  	const struct net_device_ops *ops = dev->netdev_ops;
-> > 
-> >  	/* dev_open will call this function so the list will stay sane.
-> > */
-> > -	if (!(dev->flags&IFF_UP))
-> > +	if (!netif_up_and_present(dev))
-> >  		return;
-> > 
-> > -	if (!netif_device_present(dev))
-> > +	if (ops->ndo_set_rx_mode_async) {
-> > +		queue_work(rx_mode_wq, &dev->rx_mode_work);
-> >  		return;
-> This early return skips the legacy core fallback below.
-> Before this patch, __dev_set_rx_mode() continued into the
-> existing unicast-filter handling when the device did not
-> advertise IFF_UNICAST_FLT.
-> 
-> After this patch, any driver that implements
-> ndo_set_rx_mode_async but does not set IFF_UNICAST_FLT
-> will never hit that fallback path.
+This patch series introduces Fine Timing Measurement (FTM)
+enhancements and Proximity Detection (PD) capabilities. The
+implementation follows the Wi-Fi Alliance "PR Implementation
+Consideration Draft 1.9 Rev 1" specification and extends the
+existing peer measurement framework with advanced ranging
+features.
+---
+Changes in v4:
+- Addressed comments.
+- Dropped patch "[PATCH wireless-next v3 12/15] wifi: cfg80211: add
+  FTM range report negotiation support" as it is no longer needed since
+  FTM range report is mandatory for PD EDCA based ranging.
+- Added a new attribute for number of measurements to be performed in
+  total for NTB ranging.
+---
+Changes in v3:
+- Addressed comments.
+- Dropped patch "wifi: cfg80211: add MAC randomization support for PD
+  requests" as it is no longer needed with the introduction of PD iface
+  type.
+- Restored altered checks in "wifi: cfg80211: add continuous ranging
+  and PD request support" and added additional conditions to ensure
+  backward compatibility.
+- Added a new extended feature flag to support Secure LTF keyseed
+  installation.
+---
+Changes in v2:
+- Addressed comments.
+- Removed ABORT command implementation as it is not needed.
+- Added a patch for enhancement of Remain on channel command.
+- Intoduced a new interface type PD.
+- Added a patch for suppressing ranging results when requested.
+---
 
-I believe this is addressed later in "net: move promiscuity handling into
-dev_rx_mode_work"? That should take care of doing __dev_set_promiscuity
-for !IFF_UNICAST_FLT+ndo_set_rx_mode_async. Not sure if there is a
-better way to rearrange the chunks in the patches.
+Kavita Kavita (1):
+  wifi: mac80211_hwsim: Add support for extended FTM ranging
 
-        if (ops->ndo_set_rx_mode_async) {
-                ...
+Peddolla Harshavardhan Reddy (13):
+  wifi: cfg80211: restrict LMR feedback check to TB and non-TB ranging
+  wifi: cfg80211: cancel pmsr_free_wk in cfg80211_pmsr_wdev_down
+  wifi: cfg80211: Add MAC address filter to remain_on_channel
+  wifi: cfg80211/mac80211: Add NL80211_IFTYPE_PD for PD PASN and PMSR
+    operations
+  wifi: cfg80211: add start/stop proximity detection commands
+  wifi: cfg80211: add proximity detection capabilities to PMSR
+  wifi: cfg80211: add NTB continuous ranging and FTM PD request support
+  wifi: cfg80211: extend PMSR FTM response for proximity ranging
+  wifi: cfg80211: add role-based PD peer limits
+  wifi: cfg80211: add ingress/egress distance thresholds for FTM
+  wifi: cfg80211: add PD-specific preamble and bandwidth capabilities
+  wifi: cfg80211: allow suppressing FTM result reporting for PD requests
+  wifi: cfg80211: add LTF keyseed support for secure ranging
 
-+		promisc_inc = dev_uc_promisc_update(dev);
-+
-+		netif_addr_unlock_bh(dev);
-+	} else {
-+		netif_addr_lock_bh(dev);
-+		promisc_inc = dev_uc_promisc_update(dev);
-+		netif_addr_unlock_bh(dev);
-+	}
-+
-+	if (promisc_inc)
-+		__dev_set_promiscuity(dev, promisc_inc, false);
-+
+ drivers/net/wireless/ath/ath6kl/cfg80211.c    |   3 +-
+ drivers/net/wireless/ath/wil6210/cfg80211.c   |   3 +-
+ .../broadcom/brcm80211/brcmfmac/p2p.c         |   4 +-
+ .../broadcom/brcm80211/brcmfmac/p2p.h         |   3 +-
+ .../net/wireless/marvell/mwifiex/cfg80211.c   |   3 +-
+ .../wireless/microchip/wilc1000/cfg80211.c    |   3 +-
+ drivers/net/wireless/virtual/mac80211_hwsim.c | 200 +++++++++++++++
+ include/linux/ieee80211.h                     |   1 +
+ include/net/cfg80211.h                        | 198 ++++++++++++++-
+ include/uapi/linux/nl80211.h                  | 229 +++++++++++++++++-
+ net/mac80211/cfg.c                            |   2 +
+ net/mac80211/chan.c                           |   2 +
+ net/mac80211/ieee80211_i.h                    |   3 +-
+ net/mac80211/iface.c                          |   7 +-
+ net/mac80211/offchannel.c                     |   4 +-
+ net/mac80211/rx.c                             |   6 +
+ net/mac80211/util.c                           |   1 +
+ net/wireless/chan.c                           |   2 +
+ net/wireless/core.c                           |  31 +++
+ net/wireless/core.h                           |   2 +
+ net/wireless/mlme.c                           |   1 +
+ net/wireless/nl80211.c                        | 209 +++++++++++++++-
+ net/wireless/pmsr.c                           | 181 ++++++++++++--
+ net/wireless/rdev-ops.h                       |  26 +-
+ net/wireless/reg.c                            |   3 +
+ net/wireless/trace.h                          |  22 +-
+ net/wireless/util.c                           |  19 +-
+ 27 files changed, 1117 insertions(+), 51 deletions(-)
+
+
+base-commit: 9ac76f3d0bb2940db3a9684d596b9c8f301ef315
+-- 
+2.34.1
+
 
