@@ -1,335 +1,152 @@
-Return-Path: <linux-wireless+bounces-33592-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-33593-lists+linux-wireless=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id oO84KOVqvWnL9gIAu9opvQ
-	(envelope-from <linux-wireless+bounces-33592-lists+linux-wireless=lfdr.de@vger.kernel.org>)
-	for <lists+linux-wireless@lfdr.de>; Fri, 20 Mar 2026 16:42:29 +0100
+	id +AZjLyFrvWnL9gIAu9opvQ
+	(envelope-from <linux-wireless+bounces-33593-lists+linux-wireless=lfdr.de@vger.kernel.org>)
+	for <lists+linux-wireless@lfdr.de>; Fri, 20 Mar 2026 16:43:29 +0100
 X-Original-To: lists+linux-wireless@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 19C1F2DCCD1
-	for <lists+linux-wireless@lfdr.de>; Fri, 20 Mar 2026 16:42:29 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4480F2DCD05
+	for <lists+linux-wireless@lfdr.de>; Fri, 20 Mar 2026 16:43:29 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id D64E2306F0EB
-	for <lists+linux-wireless@lfdr.de>; Fri, 20 Mar 2026 15:41:29 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 88CCE30342B1
+	for <lists+linux-wireless@lfdr.de>; Fri, 20 Mar 2026 15:41:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0646F3C3423;
-	Fri, 20 Mar 2026 15:41:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 24963199D8;
+	Fri, 20 Mar 2026 15:41:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="QEVWGRrS"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="DBIwxK7z"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-pl1-f182.google.com (mail-pl1-f182.google.com [209.85.214.182])
+Received: from mail-pl1-f173.google.com (mail-pl1-f173.google.com [209.85.214.173])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B3A903CD8AF
-	for <linux-wireless@vger.kernel.org>; Fri, 20 Mar 2026 15:41:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.182
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 96F88308F36
+	for <linux-wireless@vger.kernel.org>; Fri, 20 Mar 2026 15:41:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.173
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774021278; cv=none; b=LVHKYZM0FArVxC2F6EZ1DMrQ3K1OrF45IHU5ZV3ZFldtXvpbsng5i2jYnlvocMWMsi1ajxeYWgeYh7essylJlsx0MbC+suRn38SAt/4fWH71Wt5YH+DLA9TKw4BPa75nBKzXDkeTx2OFhpRNi3ShrjFulsIc2x2M+FgoPvzwpp4=
+	t=1774021308; cv=none; b=LKJ+ozieFiV8P6AQCbcf6adiuTxUj7f3j5iloZOyWCEgLNVHvOrfEwVmUAQc/cRAZz0BFOQAwaFIXPfmpGmh+ENFtj2at6j5JjsGgRDOFpQEQGB8fpoF9fCs8ITqbEI6dS8JEZsH/PtdDn/Zk1MqHjCPkOipeFD7y9IxZ5ouzlw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774021278; c=relaxed/simple;
-	bh=7W8Zh+eJcNEP6cSAx/szdWUQ7Euc/dI9gMu3jX8uY4k=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=cjm/yyKfZMLAjCN8ojQPyERWo1vxn8WovDisA8QUhux7vHIjvIDYMX4uunYx6gvSG3/e4kO8Z6bqEmUsdlcsMPcU+6A76G0cjptNJzi378LTYpE2UGb+2azZPKifuhahCNSsSzcaXPcT2wyQrSG8GUa5AfXP6buXM5/q6l37gzU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=QEVWGRrS; arc=none smtp.client-ip=209.85.214.182
+	s=arc-20240116; t=1774021308; c=relaxed/simple;
+	bh=gx1YhthFDXzHnIMSPmRZkb4BdhQAaIFeZdl1SLV8HQg=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=lnWiGaPMnY14gmbu/d+JMOlGvyFf6+8muhf21A8yiVzEgQEELTCTm2K9M9GPkevf8C9bhbT+I+lnT0RyLzK5EVDPCwmnBrSqILKsHARkdqzHl/u2H7MBVi3yl8YNXKBx5GoC6xLpzeQwP21I7pFMbpuDU4rdlA6PDsp+siiYXv4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=DBIwxK7z; arc=none smtp.client-ip=209.85.214.173
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pl1-f182.google.com with SMTP id d9443c01a7336-2adbfab4501so3301055ad.2
-        for <linux-wireless@vger.kernel.org>; Fri, 20 Mar 2026 08:41:12 -0700 (PDT)
+Received: by mail-pl1-f173.google.com with SMTP id d9443c01a7336-2adff872068so3649545ad.1
+        for <linux-wireless@vger.kernel.org>; Fri, 20 Mar 2026 08:41:45 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1774021272; x=1774626072; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references
-         :mail-followup-to:message-id:subject:cc:to:from:date:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=zNUDTw6UmasFeJqzydufaazuaNtX8ofv0HS08KI6BZg=;
-        b=QEVWGRrSmxHnKPGQYHSTm35KrVIkNuhUhtVZqtFWsblmKA7DHQKR2rIT2cnJuBmZOG
-         YO+zMiPVsPKIBu8sCHK8QHu4gA3Z2uQD1Joiuah3re1W9fzTkbI0sP/vmhTOABCwfXrc
-         j57B59ZbeaMcOsHpdQ3Yi9z6ovLhQaRZoS+2YyRd5LfJKFXPobwUkRXoRxpwYNFJSuYc
-         iuvXchq3Zl+QqRbQJ7vDLWQbZ5SGVxCnYcpua6E+sa1P78S83QRFjbOWJ+WepF6HmYD6
-         9DE0jI1Y/JRlhlqdhguZhOkSn64nL6NkhfjyOxAr2KPnnlWBebT+jg24b42YsoY2eNbu
-         qdgw==
+        d=gmail.com; s=20230601; t=1774021304; x=1774626104; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=AIpW+vFvHCzKF+T2hKfffBvDeXS4/VHT4dzFoY20ou0=;
+        b=DBIwxK7zC1A2a2hH0Ag73WR9r8nCNQvOI4MIfVKdYZSk2/YamrfVOfxwmVZ4WdF9II
+         tw9oLS9D9rMmQrMg6RO+oeluOa3DTc3H7nSnjIJN8gu6FlXrNdOxjNsdQkDPDIfPGAoD
+         8ye6vrQdCeIMDPS5yRXDqYdtIzH/Ya+/3m4C36W1j2FkatOsYoJfjL/4nxaADzRUXiAf
+         ukA2MKA0GIrl/4Ynjy1YBeh7ZlBfbD2CBc77+cvOoeRSGgr8xU8KuVMtYiWdkOREj8Dj
+         y2GUb43EufrM1nYkCR3EP8l2z7OSXvQCZjfCnSXuUB3pvPOLNWa4SPug5M6Jtm7ATbSU
+         eZOA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1774021272; x=1774626072;
-        h=in-reply-to:content-disposition:mime-version:references
-         :mail-followup-to:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=zNUDTw6UmasFeJqzydufaazuaNtX8ofv0HS08KI6BZg=;
-        b=d0OYsFzFaiYO1TNs5LkWm/oqCWCS7s3331szZqfKM5X1enaccigqZb4pNW+q93aYnB
-         +jDW+Mj3EolflXSiTOrjhh8H2+qHub7SkaX1PuP9gXb8frU/Dh8ktctkWlVvuGGSHMCp
-         fx9z80tfpi/js6IXKUN++QE4Qilzhb0sq7Gog8bK8Yq13kbcTqAtRmWvOoo4VhMR1/L3
-         zwbFlOkToB2+ApJAt2yxJT56mHAJhUEZdHgeGpoouwVFtGkR1nQ8tdpVY+fxtcfYiCa0
-         /aKEF7+3u1F0l9BXJDfWB86GWdMv5YNvChFL4D3kIqZ04VoKtMF/5rxvTFKGNixQiu1A
-         at6Q==
-X-Forwarded-Encrypted: i=1; AJvYcCU7kxotxhVLSEfDy0Gc4Y8kelOaYZraZYIGUoP8JoVLmgqAgKyzMV5hv8Nnph2XLYZuTSegYyxWR08ZzC+/Ow==@vger.kernel.org
-X-Gm-Message-State: AOJu0YwpGjdlIaIiqLwNSObz6JBICiId7OYBEWfm8xw0Fzh7MrsbNykt
-	7FuOthbmDJ9VO8FGVo6h6tWn8IWi9A/BfM60xECJ5VdmDZJ9HHX/664=
-X-Gm-Gg: ATEYQzwxkAblPMiKHNlebyI/bO0lrL57yzZq81ebkWiko50QanNFrBE4k6YHldlU6YY
-	KdtoIEwzAef/muWhmaJmC1qr+Lb8r6oeFwE2ajzuh+Zt6ppSuJUoMNtEhYE3mWB6Lfikz/k4fER
-	lAVcBFHGYbdTLoh97IXVQxYCBlEhAAdwxziMY/dwQ9cpRIb1yk2SXRlzHnFq5X332UCIIZChDVZ
-	2Ol1RHGQKOx9rjfk0oWo2x4rq3WsIkyVqvaH0muS2sbWpGXXOGEGmOULTYUlVVc4rGvbln60B+j
-	STj6YltTQUB3PYiwaqbII4yR1n9MutAlAvnq06YqnYAbjOgFrBnlTLoetcouEWPWXrwCdHo68nV
-	4kj2P0wUHa1XNTldBnkwIpbakeljODDzfo1/y+lkTH4h+geyU0rawE/T7DyLvcmj3cC/vaezjQL
-	o2kj2ZMJbFWZ1Jb6G6zMztKD1Ef5wAf1rzZR64cchG3gYwSbfni/x6AzAAIFuxqUzVWbRfjP9Dq
-	W0AwGFIWYM85OW6bw==
-X-Received: by 2002:a17:903:38cf:b0:2ae:47c9:68c4 with SMTP id d9443c01a7336-2b0827f7629mr35987865ad.50.1774021271829;
-        Fri, 20 Mar 2026 08:41:11 -0700 (PDT)
-Received: from localhost (c-76-102-12-149.hsd1.ca.comcast.net. [76.102.12.149])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2b0835429afsm26089295ad.26.2026.03.20.08.41.11
+        d=1e100.net; s=20251104; t=1774021304; x=1774626104;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=AIpW+vFvHCzKF+T2hKfffBvDeXS4/VHT4dzFoY20ou0=;
+        b=k71RgEGpOLKbNyIJiZ1ppCJdKEreftkXhRFiZbEvoo8pQw5X2VDk6xvODBmiEwoKtV
+         c4KZzVkvTEyJKP05GsA9DnNnWqZW5gF9c9B7Xm28J+V0pmqiYttmF637DNqrTSR301zw
+         pHQUuPh/8dtnSdDyxhxckS6CI8mCGYmkNoBgcJOUGwZOYaOKhQ13Vz5PVRN0f3Q6dmoh
+         3Y04OFbPEvficVzLiJoQYmPFfamQ1gy94NgDDnZErB1sYpe/ytNGqmWE1ilpdpOtV+os
+         z7X6221dqQ4J5kNAFGoj77vD0a5TijE9Vztx21l8ZURF+O3dryoTwIh0Cq2BDvwIvDNv
+         7Teg==
+X-Gm-Message-State: AOJu0Yy8QwBI9pXk/fFX8Q/7fCuulZ5jyfnfKseqF4UX/CB+GXZhgG4r
+	/Qngp/RwWrUPTbTE86izwpYQj7Q2kkafrKHPS/7uU+PeJuNVNXEVac7AFl4qs2Cm
+X-Gm-Gg: ATEYQzxrFnSTJc+OvNshcjCsnSYqemt1vbB7g39pD1424E66EfQswu8+qR34UrY8/Dd
+	W1tbfEBagTaxB/0d5DEc3H4QZqIZDvQr+pzaN1P8Wms4/L73Khp4hBYKxUtFupAi0qEmiMmJK+5
+	uxGxt8et7ClSx40BFD7yim9ro3HIKxNy7H/lKIrmAdLVzPnLHccvkPTaP09k89y7o/wfbV91BO4
+	pOJsqftCVlGP6UQL19iaIUxx5e58RFQcscvAFhnUInNWcpgMwdApydenMGO5yYw7nOrNJCkNK4Q
+	mHq1/5ZpWXzV1jAbfx6BT34Z+S/IV7VfpVLlOr4MKx3SnlfGs6yNhcmQW7iA8Fu5x7J6+/M88ta
+	pIclNcnvWRqsFjdUslpbhohgNfPGxKkENRPrwHYqRbb+BWCFEpwUPd2mUFGokQg5qNKX6nqM2Tu
+	IIG79JJkI7u9dBVBOcinN9/ozSRIJ4RBTTOdatvLad1pl3LmGRx8dzQRjaQqicC+Q=
+X-Received: by 2002:a17:902:ec85:b0:2b0:4ec8:fb92 with SMTP id d9443c01a7336-2b0827d8deamr31938955ad.39.1774021304503;
+        Fri, 20 Mar 2026 08:41:44 -0700 (PDT)
+Received: from BM5220 (118-232-8-190.dynamic.kbronet.com.tw. [118.232.8.190])
+        by smtp.googlemail.com with ESMTPSA id d9443c01a7336-2b08354bce3sm33197205ad.32.2026.03.20.08.41.42
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 20 Mar 2026 08:41:11 -0700 (PDT)
-Date: Fri, 20 Mar 2026 08:41:10 -0700
-From: Stanislav Fomichev <stfomichev@gmail.com>
-To: "Loktionov, Aleksandr" <aleksandr.loktionov@intel.com>
-Cc: Stanislav Fomichev <sdf@fomichev.me>,
-	"netdev@vger.kernel.org" <netdev@vger.kernel.org>,
-	"davem@davemloft.net" <davem@davemloft.net>,
-	"edumazet@google.com" <edumazet@google.com>,
-	"kuba@kernel.org" <kuba@kernel.org>,
-	"pabeni@redhat.com" <pabeni@redhat.com>,
-	"horms@kernel.org" <horms@kernel.org>,
-	"corbet@lwn.net" <corbet@lwn.net>,
-	"skhan@linuxfoundation.org" <skhan@linuxfoundation.org>,
-	"andrew+netdev@lunn.ch" <andrew+netdev@lunn.ch>,
-	"michael.chan@broadcom.com" <michael.chan@broadcom.com>,
-	"pavan.chebbi@broadcom.com" <pavan.chebbi@broadcom.com>,
-	"Nguyen, Anthony L" <anthony.l.nguyen@intel.com>,
-	"Kitszel, Przemyslaw" <przemyslaw.kitszel@intel.com>,
-	"saeedm@nvidia.com" <saeedm@nvidia.com>,
-	"tariqt@nvidia.com" <tariqt@nvidia.com>,
-	"mbloch@nvidia.com" <mbloch@nvidia.com>,
-	"alexanderduyck@fb.com" <alexanderduyck@fb.com>,
-	"kernel-team@meta.com" <kernel-team@meta.com>,
-	"johannes@sipsolutions.net" <johannes@sipsolutions.net>,
-	"sd@queasysnail.net" <sd@queasysnail.net>,
-	"jianbol@nvidia.com" <jianbol@nvidia.com>,
-	"dtatulea@nvidia.com" <dtatulea@nvidia.com>,
-	"mohsin.bashr@gmail.com" <mohsin.bashr@gmail.com>,
-	"Keller, Jacob E" <jacob.e.keller@intel.com>,
-	"willemb@google.com" <willemb@google.com>,
-	"skhawaja@google.com" <skhawaja@google.com>,
-	"bestswngs@gmail.com" <bestswngs@gmail.com>,
-	"kees@kernel.org" <kees@kernel.org>,
-	"linux-doc@vger.kernel.org" <linux-doc@vger.kernel.org>,
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-	"intel-wired-lan@lists.osuosl.org" <intel-wired-lan@lists.osuosl.org>,
-	"linux-rdma@vger.kernel.org" <linux-rdma@vger.kernel.org>,
-	"linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
-	"linux-kselftest@vger.kernel.org" <linux-kselftest@vger.kernel.org>,
-	"leon@kernel.org" <leon@kernel.org>
-Subject: Re: [PATCH net-next v3 04/13] net: move promiscuity handling into
- dev_rx_mode_work
-Message-ID: <ab1qllbwt2zCnQhI@mini-arch>
-Mail-Followup-To: Stanislav Fomichev <stfomichev@gmail.com>,
-	"Loktionov, Aleksandr" <aleksandr.loktionov@intel.com>,
-	Stanislav Fomichev <sdf@fomichev.me>,
-	"netdev@vger.kernel.org" <netdev@vger.kernel.org>,
-	"davem@davemloft.net" <davem@davemloft.net>,
-	"edumazet@google.com" <edumazet@google.com>,
-	"kuba@kernel.org" <kuba@kernel.org>,
-	"pabeni@redhat.com" <pabeni@redhat.com>,
-	"horms@kernel.org" <horms@kernel.org>,
-	"corbet@lwn.net" <corbet@lwn.net>,
-	"skhan@linuxfoundation.org" <skhan@linuxfoundation.org>,
-	"andrew+netdev@lunn.ch" <andrew+netdev@lunn.ch>,
-	"michael.chan@broadcom.com" <michael.chan@broadcom.com>,
-	"pavan.chebbi@broadcom.com" <pavan.chebbi@broadcom.com>,
-	"Nguyen, Anthony L" <anthony.l.nguyen@intel.com>,
-	"Kitszel, Przemyslaw" <przemyslaw.kitszel@intel.com>,
-	"saeedm@nvidia.com" <saeedm@nvidia.com>,
-	"tariqt@nvidia.com" <tariqt@nvidia.com>,
-	"mbloch@nvidia.com" <mbloch@nvidia.com>,
-	"alexanderduyck@fb.com" <alexanderduyck@fb.com>,
-	"kernel-team@meta.com" <kernel-team@meta.com>,
-	"johannes@sipsolutions.net" <johannes@sipsolutions.net>,
-	"sd@queasysnail.net" <sd@queasysnail.net>,
-	"jianbol@nvidia.com" <jianbol@nvidia.com>,
-	"dtatulea@nvidia.com" <dtatulea@nvidia.com>,
-	"mohsin.bashr@gmail.com" <mohsin.bashr@gmail.com>,
-	"Keller, Jacob E" <jacob.e.keller@intel.com>,
-	"willemb@google.com" <willemb@google.com>,
-	"skhawaja@google.com" <skhawaja@google.com>,
-	"bestswngs@gmail.com" <bestswngs@gmail.com>,
-	"kees@kernel.org" <kees@kernel.org>,
-	"linux-doc@vger.kernel.org" <linux-doc@vger.kernel.org>,
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-	"intel-wired-lan@lists.osuosl.org" <intel-wired-lan@lists.osuosl.org>,
-	"linux-rdma@vger.kernel.org" <linux-rdma@vger.kernel.org>,
-	"linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
-	"linux-kselftest@vger.kernel.org" <linux-kselftest@vger.kernel.org>,
-	"leon@kernel.org" <leon@kernel.org>
-References: <20260320012501.2033548-1-sdf@fomichev.me>
- <20260320012501.2033548-5-sdf@fomichev.me>
- <IA3PR11MB89866C27B28AE7D7D807F37EE54CA@IA3PR11MB8986.namprd11.prod.outlook.com>
+        Fri, 20 Mar 2026 08:41:44 -0700 (PDT)
+From: Zenm Chen <zenmchen@gmail.com>
+To: linux-wireless@vger.kernel.org,
+	pkshih@realtek.com,
+	rtl8821cerfe2@gmail.com
+Cc: usbwifi2024@gmail.com,
+	Zenm Chen <zenmchen@gmail.com>
+Subject: [PATCH rtw-next] wifi: rtw89: Add support for Buffalo WI-U3-2400XE2
+Date: Fri, 20 Mar 2026 23:41:36 +0800
+Message-ID: <20260320154136.5750-1-zenmchen@gmail.com>
+X-Mailer: git-send-email 2.53.0
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <IA3PR11MB89866C27B28AE7D7D807F37EE54CA@IA3PR11MB8986.namprd11.prod.outlook.com>
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+Content-Transfer-Encoding: 8bit
+X-Spamd-Result: default: False [-0.66 / 15.00];
+	MID_CONTAINS_FROM(1.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MID_RHS_NOT_FQDN(0.50)[];
+	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[gmail.com:s=20230601];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-33592-lists,linux-wireless=lfdr.de];
-	RECEIVED_HELO_LOCALHOST(0.00)[];
-	TO_DN_EQ_ADDR_SOME(0.00)[];
+	TAGGED_FROM(0.00)[bounces-33593-lists,linux-wireless=lfdr.de];
+	FREEMAIL_CC(0.00)[gmail.com];
 	FREEMAIL_FROM(0.00)[gmail.com];
-	FREEMAIL_CC(0.00)[fomichev.me,vger.kernel.org,davemloft.net,google.com,kernel.org,redhat.com,lwn.net,linuxfoundation.org,lunn.ch,broadcom.com,intel.com,nvidia.com,fb.com,meta.com,sipsolutions.net,queasysnail.net,gmail.com,lists.osuosl.org];
-	RCPT_COUNT_TWELVE(0.00)[37];
-	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	RCVD_TLS_LAST(0.00)[];
 	TO_DN_SOME(0.00)[];
+	FREEMAIL_TO(0.00)[vger.kernel.org,realtek.com,gmail.com];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[5];
-	FROM_NEQ_ENVFROM(0.00)[stfomichev@gmail.com,linux-wireless@vger.kernel.org];
+	FROM_NEQ_ENVFROM(0.00)[zenmchen@gmail.com,linux-wireless@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
 	DKIM_TRACE(0.00)[gmail.com:+];
-	NEURAL_HAM(-0.00)[-0.888];
+	RCVD_COUNT_FIVE(0.00)[5];
+	TAGGED_RCPT(0.00)[linux-wireless];
+	NEURAL_HAM(-0.00)[-0.898];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[linux-wireless,netdev];
-	MISSING_XM_UA(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 19C1F2DCCD1
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 4480F2DCD05
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-On 03/20, Loktionov, Aleksandr wrote:
-> 
-> 
-> > -----Original Message-----
-> > From: Stanislav Fomichev <sdf@fomichev.me>
-> > Sent: Friday, March 20, 2026 2:25 AM
-> > To: netdev@vger.kernel.org
-> > Cc: davem@davemloft.net; edumazet@google.com; kuba@kernel.org;
-> > pabeni@redhat.com; horms@kernel.org; corbet@lwn.net;
-> > skhan@linuxfoundation.org; andrew+netdev@lunn.ch;
-> > michael.chan@broadcom.com; pavan.chebbi@broadcom.com; Nguyen, Anthony
-> > L <anthony.l.nguyen@intel.com>; Kitszel, Przemyslaw
-> > <przemyslaw.kitszel@intel.com>; saeedm@nvidia.com; tariqt@nvidia.com;
-> > mbloch@nvidia.com; alexanderduyck@fb.com; kernel-team@meta.com;
-> > johannes@sipsolutions.net; sd@queasysnail.net; jianbol@nvidia.com;
-> > dtatulea@nvidia.com; sdf@fomichev.me; mohsin.bashr@gmail.com; Keller,
-> > Jacob E <jacob.e.keller@intel.com>; willemb@google.com;
-> > skhawaja@google.com; bestswngs@gmail.com; Loktionov, Aleksandr
-> > <aleksandr.loktionov@intel.com>; kees@kernel.org; linux-
-> > doc@vger.kernel.org; linux-kernel@vger.kernel.org; intel-wired-
-> > lan@lists.osuosl.org; linux-rdma@vger.kernel.org; linux-
-> > wireless@vger.kernel.org; linux-kselftest@vger.kernel.org;
-> > leon@kernel.org
-> > Subject: [PATCH net-next v3 04/13] net: move promiscuity handling into
-> > dev_rx_mode_work
-> > 
-> > Move unicast promiscuity tracking into dev_rx_mode_work so it runs
-> > under netdev_ops_lock instead of under the addr_lock spinlock. This is
-> > required because __dev_set_promiscuity calls dev_change_rx_flags and
-> > __dev_notify_flags, both of which may need to sleep.
-> > 
-> > Change ASSERT_RTNL() to netdev_ops_assert_locked() in
-> > __dev_set_promiscuity, netif_set_allmulti and __dev_change_flags since
-> > these are now called from the work queue under the ops lock.
-> > 
-> > Reviewed-by: Aleksandr Loktionov <aleksandr.loktionov@intel.com>
-> > Signed-off-by: Stanislav Fomichev <sdf@fomichev.me>
-> > ---
-> >  Documentation/networking/netdevices.rst |  4 ++
-> >  net/core/dev.c                          | 79 +++++++++++++++++-------
-> > -
-> >  2 files changed, 57 insertions(+), 26 deletions(-)
-> > 
-> > diff --git a/Documentation/networking/netdevices.rst
-> > b/Documentation/networking/netdevices.rst
-> > index dc83d78d3b27..5cdaa1a3dcc8 100644
-> > --- a/Documentation/networking/netdevices.rst
-> > +++ b/Documentation/networking/netdevices.rst
-> > @@ -298,6 +298,10 @@ struct net_device synchronization rules
-> >  	Notes: Sleepable version of ndo_set_rx_mode. Receives snapshots
-> >  	of the unicast and multicast address lists.
-> > 
-> > +ndo_change_rx_flags:
-> > +	Synchronization: rtnl_lock() semaphore. In addition, netdev
-> > instance
-> > +	lock if the driver implements queue management or shaper API.
-> > +
-> >  ndo_setup_tc:
-> >  	``TC_SETUP_BLOCK`` and ``TC_SETUP_FT`` are running under NFT
-> > locks
-> >  	(i.e. no ``rtnl_lock`` and no device instance lock). The rest
-> > of diff --git a/net/core/dev.c b/net/core/dev.c index
-> > fedc423306fc..fc5c9b14faa0 100644
-> > --- a/net/core/dev.c
-> > +++ b/net/core/dev.c
-> > @@ -9574,7 +9574,7 @@ static int __dev_set_promiscuity(struct
-> > net_device *dev, int inc, bool notify)
-> >  	kuid_t uid;
-> >  	kgid_t gid;
-> > 
-> > -	ASSERT_RTNL();
-> > +	netdev_ops_assert_locked(dev);
-> Can you explain why do you add new hard precondition of ops lock must be held?
+Add the ID 0411:03a6 to the table to support an additional RTL8832CU
+adapter: Buffalo WI-U3-2400XE2.
 
-The context is that in f792709e0baa ("selftests: net: validate team flags
-propagation") I had to add locking around NETDEV_CHANGE notifiers and
-add that ugly `if (notify) netdev_ops_assert_locked` check. After this
-patch I believe we are consistently calling __dev_set_promiscuity
-with the ops lock (for ops locked netdev), so we can cleanup this enforcement
-part. 
+Link: https://github.com/morrownr/rtw89/commit/506d193b8cb7d6394509aebcf8de1531629f6100
+Signed-off-by: Zenm Chen <zenmchen@gmail.com>
+---
+ drivers/net/wireless/realtek/rtw89/rtw8852cu.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-> >  	promiscuity = dev->promiscuity + inc;
-> >  	if (promiscuity == 0) {
-> > @@ -9610,16 +9610,8 @@ static int __dev_set_promiscuity(struct
-> > net_device *dev, int inc, bool notify)
-> > 
-> >  		dev_change_rx_flags(dev, IFF_PROMISC);
-> >  	}
-> 
-> ...
-> 
-> >  	__hw_addr_init(&uc_snap);
-> > @@ -9704,16 +9720,29 @@ static void dev_rx_mode_work(struct
-> > work_struct *work)
-> >  		if (!err)
-> >  			err = __hw_addr_list_snapshot(&mc_ref, &dev->mc,
-> >  						      dev->addr_len);
-> > -		netif_addr_unlock_bh(dev);
-> > 
-> >  		if (err) {
-> >  			netdev_WARN(dev, "failed to sync uc/mc
-> > addresses\n");
-> >  			__hw_addr_flush(&uc_snap);
-> >  			__hw_addr_flush(&uc_ref);
-> >  			__hw_addr_flush(&mc_snap);
-> > +			netif_addr_unlock_bh(dev);
-> >  			goto out;
-> >  		}
-> > 
-> > +		promisc_inc = dev_uc_promisc_update(dev);
-> > +
-> > +		netif_addr_unlock_bh(dev);
-> > +	} else {
-> > +		netif_addr_lock_bh(dev);
-> > +		promisc_inc = dev_uc_promisc_update(dev);
-> > +		netif_addr_unlock_bh(dev);
-> > +	}
-> > +
-> > +	if (promisc_inc)
-> > +		__dev_set_promiscuity(dev, promisc_inc, false);
-> But it's being called here without any netdev_lock_ops(dev) ?
+diff --git a/drivers/net/wireless/realtek/rtw89/rtw8852cu.c b/drivers/net/wireless/realtek/rtw89/rtw8852cu.c
+index 0c5aebaed..86be0981a 100644
+--- a/drivers/net/wireless/realtek/rtw89/rtw8852cu.c
++++ b/drivers/net/wireless/realtek/rtw89/rtw8852cu.c
+@@ -39,6 +39,8 @@ static const struct rtw89_driver_info rtw89_8852cu_info = {
+ };
+ 
+ static const struct usb_device_id rtw_8852cu_id_table[] = {
++	{ USB_DEVICE_AND_INTERFACE_INFO(0x0411, 0x03a6, 0xff, 0xff, 0xff),
++	  .driver_info = (kernel_ulong_t)&rtw89_8852cu_info },
+ 	{ USB_DEVICE_AND_INTERFACE_INFO(0x0bda, 0xc832, 0xff, 0xff, 0xff),
+ 	  .driver_info = (kernel_ulong_t)&rtw89_8852cu_info },
+ 	{ USB_DEVICE_AND_INTERFACE_INFO(0x0bda, 0xc85a, 0xff, 0xff, 0xff),
+-- 
+2.53.0
 
-We have the following at the start of dev_rx_mode_work:
-  rtnl_lock();
-  netdev_lock_ops(dev);
-
-Or am I looking at something else?
 
