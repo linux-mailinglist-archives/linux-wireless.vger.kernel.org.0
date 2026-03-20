@@ -1,72 +1,74 @@
-Return-Path: <linux-wireless+bounces-33571-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-33572-lists+linux-wireless=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id yEGCHpICvWkO5gIAu9opvQ
-	(envelope-from <linux-wireless+bounces-33571-lists+linux-wireless=lfdr.de@vger.kernel.org>)
-	for <lists+linux-wireless@lfdr.de>; Fri, 20 Mar 2026 09:17:22 +0100
+	id gEWnH7oBvWkO5gIAu9opvQ
+	(envelope-from <linux-wireless+bounces-33572-lists+linux-wireless=lfdr.de@vger.kernel.org>)
+	for <lists+linux-wireless@lfdr.de>; Fri, 20 Mar 2026 09:13:46 +0100
 X-Original-To: lists+linux-wireless@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id D136A2D7120
-	for <lists+linux-wireless@lfdr.de>; Fri, 20 Mar 2026 09:17:21 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3A4952D7011
+	for <lists+linux-wireless@lfdr.de>; Fri, 20 Mar 2026 09:13:46 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 28005310B07B
-	for <lists+linux-wireless@lfdr.de>; Fri, 20 Mar 2026 08:11:24 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 9AC633049E7D
+	for <lists+linux-wireless@lfdr.de>; Fri, 20 Mar 2026 08:11:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8AD4C37187C;
-	Fri, 20 Mar 2026 08:09:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 76968371891;
+	Fri, 20 Mar 2026 08:09:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="UftBDx2j"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="SBYjzkSk"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.13])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9D78E37B3EC
-	for <linux-wireless@vger.kernel.org>; Fri, 20 Mar 2026 08:09:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 394BE36F401
+	for <linux-wireless@vger.kernel.org>; Fri, 20 Mar 2026 08:09:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.13
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773994187; cv=none; b=LxHyqNeo7Bmnsty98vfbZeBJv5CAwqh7z5yRoONWbdS1RUQV5iIfKu02Btihvkwv3OE3bvXdhUSLujmf8pz3C5/fvCZRuqRYSwkLvQGyS+4HvqclfAgjM85YHrmRGII2wGbDdOl1jAPr281A0sd9+rJr1o807/hF/QQQUgxAgSQ=
+	t=1773994188; cv=none; b=EwKGqoRdv+Ba6z7e5OKm3yCcMqpIPyYg5Fih307OjGD/RJOy8VfcQ711aUB6V+/xI+vyZRmlEct6buOGcBDaZGh09f5EvdaYZ6hfMeFIgdkW/jfx3GXbwB3tShDn9l3OUEyeWyBP9cYfUAtt4LEFeGkR0zY21F1M45poAMTf9/I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773994187; c=relaxed/simple;
-	bh=aiOKOuVZ3Un9pOzs2Vpulh3UgcYz2zifFdp4veuv/Bw=;
+	s=arc-20240116; t=1773994188; c=relaxed/simple;
+	bh=6fMqFl4C67R3a12f+oW5g2628/BN7q64SU5pUefGg/k=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=TTtlnpTN+67DMTtUN15Z6+WP7yAJrJ9P2Ia04mpYWCH3tichgPBKJGddQ975Azez2R8xMTVm4ofuZZuM+2LG8IPBWa/V3EY3BNzyR3pHOBfBs7QUr1B5J8ZmMfmcPYN+iQfxqGTkYwm7xe0HRU/F4FDucL+/LDTm8qP7jYzwYWA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=UftBDx2j; arc=none smtp.client-ip=198.175.65.13
+	 MIME-Version; b=ZjvPa+geyIRfo2MrGE+Wlbt4C/o8++Cq/xQmsW9bK91gj1MVJvW+SpJF8Pd+dR+JArNcN+Fu2ElaIR1TkRqTSPHRRNwhFD5Uy2ZUDneeC9TSBEANcT+/t3TV60OskNq4BVq+rZN4foAbaQIImrnOYBIiG/EhOyxd0lAEXRq40ss=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=SBYjzkSk; arc=none smtp.client-ip=198.175.65.13
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1773994185; x=1805530185;
+  t=1773994187; x=1805530187;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=aiOKOuVZ3Un9pOzs2Vpulh3UgcYz2zifFdp4veuv/Bw=;
-  b=UftBDx2j+uEOuiU+D/d8zBsHoEqmBTBTVuUYI542mOXeimwoURYb5P9Q
-   yacdgE2x404iPpBcBFUNzuqEuuMuTTA1YxhM7FDDszP6mB0CwwmB80YQL
-   Kdxhyi/9PFJZPlgtkAu+X/AANBRib4YrvCItN2Lfn/PhnbvHK1iv54Nvr
-   dDe+vZCXvvL5UUxXMlcJe3ONqTQrEDXQlR19s5yqmaayj2e7aO2b6nBUW
-   00exk3PxWUeIm2ZuE/lG8Oo7gk/ohPW0fPsGte09A+ovskMWiGSexWdIe
-   v4H4T1c8J9MzoN8B91EnJfxJ77vter+8MqthZHGIycpsuntMLQjVX2t9M
-   A==;
-X-CSE-ConnectionGUID: p4jFc29cQUiNE6x+dw+d+Q==
-X-CSE-MsgGUID: UeZKmdMPQ6a+ZfV6Rb6epA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11734"; a="86154144"
+  bh=6fMqFl4C67R3a12f+oW5g2628/BN7q64SU5pUefGg/k=;
+  b=SBYjzkSkfbrPJI7PWJ4ASQssipvRJQ1PGr3zWSDHUb/XIUIM8H642nvf
+   ngVAbbDRmcZ6FdEaAlX1QnVS+kwkF5/TSnGT/Fk1Mim1iPC+vDBxJdEVV
+   yHdLM1XZaPyEYtD/+7B8oZG9pmgmHk0nwtSlESTSJO5pR04gt/YluGp5u
+   kqfqu8cOpfDZsgIS2NduJa33zayStoaGi9xEXu6zpj4EOBljTb674NZKn
+   NymEjJriGukYiO5OYha+90qPQn/ejuavVXXmwOEftmHF7vPRI0UGhBu7O
+   jFftISfDeh/YAnQJJGXSIdINyz5sdOUjHNnCH1juYNznrER5M3oSUDoHi
+   w==;
+X-CSE-ConnectionGUID: fFOubwUsTP+xjZ/ta2o0Tg==
+X-CSE-MsgGUID: nsz2WvlKS8m/IF3J7+2/3g==
+X-IronPort-AV: E=McAfee;i="6800,10657,11734"; a="86154148"
 X-IronPort-AV: E=Sophos;i="6.23,130,1770624000"; 
-   d="scan'208";a="86154144"
+   d="scan'208";a="86154148"
 Received: from orviesa004.jf.intel.com ([10.64.159.144])
-  by orvoesa105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 20 Mar 2026 01:09:45 -0700
-X-CSE-ConnectionGUID: SQYgykHKSXaUptVy0vsJqg==
-X-CSE-MsgGUID: yuY1R8xXTDyHh5ZAKdEaaA==
+  by orvoesa105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 20 Mar 2026 01:09:47 -0700
+X-CSE-ConnectionGUID: wK0C/dH3RpiiX1Pam8V6eQ==
+X-CSE-MsgGUID: DKkU/LazR4aNkrew/S3qGA==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.23,130,1770624000"; 
-   d="scan'208";a="227692601"
+   d="scan'208";a="227692614"
 Received: from weis0040.iil.intel.com ([10.12.217.108])
-  by orviesa004-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 20 Mar 2026 01:09:45 -0700
+  by orviesa004-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 20 Mar 2026 01:09:46 -0700
 From: Miri Korenblit <miriam.rachel.korenblit@intel.com>
 To: linux-wireless@vger.kernel.org
-Cc: Johannes Berg <johannes.berg@intel.com>
-Subject: [PATCH iwlwifi-next 10/15] wifi: iwlwifi: validate the channels received in iwl_mcc_update_resp_v*
-Date: Fri, 20 Mar 2026 10:09:13 +0200
-Message-Id: <20260320100746.0e83cdd88cea.Ic86852e622ed3ec06110f9e6525f72679236cf1e@changeid>
+Cc: Pagadala Yesu Anjaneyulu <pagadala.yesu.anjaneyulu@intel.com>,
+	Emmanuel Grumbach <emmanuel.grumbach@intel.com>,
+	Johannes Berg <johannes.berg@intel.com>
+Subject: [PATCH iwlwifi-next 11/15] wifi: iwlwifi: mld: add BIOS revision compatibility check for PPAG command
+Date: Fri, 20 Mar 2026 10:09:14 +0200
+Message-Id: <20260320100746.79bf2bf398d0.I8161dbe1a04af3738e00ab0fc13fe3dbfa9094ec@changeid>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20260320080918.2567780-1-miriam.rachel.korenblit@intel.com>
 References: <20260320080918.2567780-1-miriam.rachel.korenblit@intel.com>
@@ -80,71 +82,100 @@ Organization: Intel Israel (74) Limited
 Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-1.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MID_RHS_NOT_FQDN(0.50)[];
 	R_MISSING_CHARSET(0.50)[];
+	MID_RHS_NOT_FQDN(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[intel.com,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	R_DKIM_ALLOW(-0.20)[intel.com:s=Intel];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	HAS_ORG_HEADER(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-33571-lists,linux-wireless=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-33572-lists,linux-wireless=lfdr.de];
 	TO_DN_SOME(0.00)[];
+	HAS_ORG_HEADER(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	RCPT_COUNT_TWO(0.00)[2];
+	DKIM_TRACE(0.00)[intel.com:+];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[miriam.rachel.korenblit@intel.com,linux-wireless@vger.kernel.org];
-	DKIM_TRACE(0.00)[intel.com:+];
+	RCPT_COUNT_THREE(0.00)[4];
 	RCVD_COUNT_FIVE(0.00)[5];
 	TAGGED_RCPT(0.00)[linux-wireless];
-	NEURAL_HAM(-0.00)[-0.999];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	NEURAL_HAM(-0.00)[-0.998];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
 	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: D136A2D7120
+X-Rspamd-Queue-Id: 3A4952D7011
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-Check with IWL_FW_CHECK that the FW doesn't send a channel that we don't
-support. Otherwise, the center frequency will be 0, leading to a
-warning since is_valid_reg_rule will return false, of course.
-Although the warning is verbose enough, the IWL_FW_CHECK will spare some
-of the debug.
+From: Pagadala Yesu Anjaneyulu <pagadala.yesu.anjaneyulu@intel.com>
 
+Prevent potential issues when newer BIOS revisions
+are used with firmware that doesn't support them for
+PER_PLATFORM_ANT_GAIN_CMD.
+
+Without this check, the driver may attempt to use
+BIOS configurations that are incompatible with the
+current firmware version, leading to dropping of
+command in firmware without any failure notification
+to driver.
+
+Signed-off-by: Pagadala Yesu Anjaneyulu <pagadala.yesu.anjaneyulu@intel.com>
+Reviewed-by: Emmanuel Grumbach <emmanuel.grumbach@intel.com>
 Reviewed-by: Johannes Berg <johannes.berg@intel.com>
 Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
 ---
- drivers/net/wireless/intel/iwlwifi/iwl-nvm-parse.c | 7 +++++++
- 1 file changed, 7 insertions(+)
+ .../net/wireless/intel/iwlwifi/mld/regulatory.c   | 15 +++++++++++++++
+ 1 file changed, 15 insertions(+)
 
-diff --git a/drivers/net/wireless/intel/iwlwifi/iwl-nvm-parse.c b/drivers/net/wireless/intel/iwlwifi/iwl-nvm-parse.c
-index e8f7d258b622..b78805ef3c8b 100644
---- a/drivers/net/wireless/intel/iwlwifi/iwl-nvm-parse.c
-+++ b/drivers/net/wireless/intel/iwlwifi/iwl-nvm-parse.c
-@@ -23,6 +23,8 @@
- #include "fw/api/commands.h"
- #include "fw/api/cmdhdr.h"
- #include "fw/img.h"
-+#include "fw/dbg.h"
-+
- #include "mei/iwl-mei.h"
+diff --git a/drivers/net/wireless/intel/iwlwifi/mld/regulatory.c b/drivers/net/wireless/intel/iwlwifi/mld/regulatory.c
+index f91f61ca9b2e..1633c8aa2e5d 100644
+--- a/drivers/net/wireless/intel/iwlwifi/mld/regulatory.c
++++ b/drivers/net/wireless/intel/iwlwifi/mld/regulatory.c
+@@ -214,6 +214,7 @@ static int iwl_mld_ppag_send_cmd(struct iwl_mld *mld)
+ 	u32 cmd_id = WIDE_ID(PHY_OPS_GROUP, PER_PLATFORM_ANT_GAIN_CMD);
+ 	int cmd_ver = iwl_fw_lookup_cmd_ver(mld->fw, cmd_id, 1);
+ 	int cmd_len = sizeof(cmd.v8);
++	u8 cmd_bios_rev;
+ 	int ret;
  
- /* NVM offsets (in words) definitions */
-@@ -1737,6 +1739,11 @@ iwl_parse_nvm_mcc_info(struct iwl_trans *trans,
- 							     band);
- 		new_rule = false;
+ 	BUILD_BUG_ON(offsetof(typeof(cmd), v8.ppag_config_info.hdr) !=
+@@ -249,6 +250,10 @@ static int iwl_mld_ppag_send_cmd(struct iwl_mld *mld)
+ 			}
+ 		}
+ 		cmd_len = sizeof(cmd.v7);
++		cmd_bios_rev =
++			iwl_fw_lookup_cmd_bios_supported_revision(fwrt->fw,
++								  fwrt->ppag_bios_source,
++								  cmd_id, 4);
+ 	} else if (cmd_ver == 8) {
+ 		for (int chain = 0; chain < ARRAY_SIZE(cmd.v8.gain); chain++) {
+ 			for (int subband = 0;
+@@ -262,12 +267,22 @@ static int iwl_mld_ppag_send_cmd(struct iwl_mld *mld)
+ 						cmd.v8.gain[chain][subband]);
+ 			}
+ 		}
++		cmd_bios_rev =
++			iwl_fw_lookup_cmd_bios_supported_revision(fwrt->fw,
++								  fwrt->ppag_bios_source,
++								  cmd_id, 5);
+ 	} else {
+ 		WARN(1, "Bad version for PER_PLATFORM_ANT_GAIN_CMD %d\n",
+ 		     cmd_ver);
+ 		return -EINVAL;
+ 	}
  
-+		if (IWL_FW_CHECK(trans, !center_freq,
-+				 "Invalid channel %d (idx %d) in NVM\n",
-+				 nvm_chan[ch_idx], ch_idx))
-+			continue;
++	if (cmd_bios_rev < fwrt->ppag_bios_rev) {
++		IWL_ERR(mld, "BIOS revision compatibility check failed - Supported: %d, Current: %d\n",
++			cmd_bios_rev, fwrt->ppag_bios_rev);
++		return 0;
++	}
 +
- 		if (!(ch_flags & NVM_CHANNEL_VALID)) {
- 			iwl_nvm_print_channel_flags(dev, IWL_DL_LAR,
- 						    nvm_chan[ch_idx], ch_flags);
+ 	IWL_DEBUG_RADIO(mld, "Sending PER_PLATFORM_ANT_GAIN_CMD\n");
+ 	ret = iwl_mld_send_cmd_pdu(mld, cmd_id, &cmd, cmd_len);
+ 	if (ret < 0)
 -- 
 2.34.1
 
