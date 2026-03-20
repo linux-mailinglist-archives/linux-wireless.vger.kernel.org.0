@@ -1,96 +1,96 @@
-Return-Path: <linux-wireless+bounces-33530-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-33531-lists+linux-wireless=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id HIJ5Er+NvGkQ0gIAu9opvQ
-	(envelope-from <linux-wireless+bounces-33530-lists+linux-wireless=lfdr.de@vger.kernel.org>)
-	for <lists+linux-wireless@lfdr.de>; Fri, 20 Mar 2026 00:58:55 +0100
+	id 0KO8BsqXvGkN1AIAu9opvQ
+	(envelope-from <linux-wireless+bounces-33531-lists+linux-wireless=lfdr.de@vger.kernel.org>)
+	for <lists+linux-wireless@lfdr.de>; Fri, 20 Mar 2026 01:41:46 +0100
 X-Original-To: lists+linux-wireless@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 91A0B2D454C
-	for <lists+linux-wireless@lfdr.de>; Fri, 20 Mar 2026 00:58:54 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 73B152D47BF
+	for <lists+linux-wireless@lfdr.de>; Fri, 20 Mar 2026 01:41:45 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 317F230D5E9F
-	for <lists+linux-wireless@lfdr.de>; Thu, 19 Mar 2026 23:58:53 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 2B17E306FE22
+	for <lists+linux-wireless@lfdr.de>; Fri, 20 Mar 2026 00:41:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2829339FCC5;
-	Thu, 19 Mar 2026 23:58:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AF493222584;
+	Fri, 20 Mar 2026 00:41:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="aM5wPn8U"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="P/bBQnQx"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-oi1-f174.google.com (mail-oi1-f174.google.com [209.85.167.174])
+Received: from mail-oi1-f176.google.com (mail-oi1-f176.google.com [209.85.167.176])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D02FF37F73D
-	for <linux-wireless@vger.kernel.org>; Thu, 19 Mar 2026 23:58:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.167.174
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7577D1F5847
+	for <linux-wireless@vger.kernel.org>; Fri, 20 Mar 2026 00:41:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.167.176
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773964732; cv=pass; b=I2OIGX7tZWdMjKYx4sPZxcgvHNCMsWDhII/+F5b2i6NGvzP/kl+43F9PKjcZOYnxOSpdktYxc7ETnxFTIokfcj2c9Fg5hIq63TkiCu5oFWsWfuZDERn+c2M6bsxuMkm1vF0TRMl/kUNpTl4YoNuXFwvvJDpz8tlj/VJBqpSGm5o=
+	t=1773967303; cv=pass; b=PusAjzO23VbzyZSu9AgCbR99Y0YwBbv8nqQapvE5gAYiqzYWq9yRtL4rWwXYT8vMGdyqn0pz+BtebQCMttmz5HsQXvsoGqOXf+8Gb5ZPmguxmBJqkCe34hw2mCg7BUnk8g+kZY9j33YRrd5Bu7ZohSpNtLUBu/nOhq9s3yFUtvA=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773964732; c=relaxed/simple;
-	bh=qBjA8cX0wGWtIAHiuXxD2bFal/kkFcexgu2D8X6q9gg=;
+	s=arc-20240116; t=1773967303; c=relaxed/simple;
+	bh=I0oCFLUCbjXYDU9XAxYwhJSxv6GrX40yQbmEOJDblvA=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=c3p82OtUV/W57IjKaohAu1ztdxat+ETtZ/R2hWQIq36Gwp40f1WJdAthFT3rqW78LVyRTASEX4cs9D8Hfat06rAktiFkPrPE5fdNQZs7K3P03VsIEMzQzy8336V9/JT1fc3Zpqo+TWJv6jTdo0y1HgNU0V7zXRW8wpU/fEhe8m4=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=aM5wPn8U; arc=pass smtp.client-ip=209.85.167.174
+	 To:Cc:Content-Type; b=PjPswp9k5tXLqy7gQ0mH0luGrRrIyC/85hdawtvTC/ZMnkD7WRdkprhLgMo/FjLz6gEF579yZhzohw+gLiUW8nKya/pze9HO9NgK8C8ght5hNH/TlkTNfPwBZuilRA6EsGiYPLFdpWrXMHVe6oVit4XYsnyTAzqWlwpmZESC53M=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=P/bBQnQx; arc=pass smtp.client-ip=209.85.167.176
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-oi1-f174.google.com with SMTP id 5614622812f47-466f1c3c627so84049b6e.1
-        for <linux-wireless@vger.kernel.org>; Thu, 19 Mar 2026 16:58:50 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1773964730; cv=none;
+Received: by mail-oi1-f176.google.com with SMTP id 5614622812f47-467161c4ba7so991992b6e.0
+        for <linux-wireless@vger.kernel.org>; Thu, 19 Mar 2026 17:41:42 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1773967301; cv=none;
         d=google.com; s=arc-20240605;
-        b=QduqrNp6HJlry4QUEX7+kQJOrFiPgyY+sLrTCVfajUso7XsS3+04duhkNwq+WrTZ0h
-         polFQJFjaWP3HtHdFVsoTI9elON0KMOs44aHf5kY0QlhezI34oCaWN30KIMdu4GDwqH/
-         j9gmiw0+3MqtUacs1aLtEeHmmILGehtm6u3WD0B5VhH1C2Szj6ouqa5PdZtAJ/9hg1Iy
-         EwDWLbh7PgC2xwsCJs4lpH91dVc6z3d8JkMs71+YlNArv5LKeclfQCO74Vm82pAG5m9C
-         vcf+RbMzDKbHRb7XQXjp/G23PnICb53SKfc42BaP5GPqLcIDmwHI05BKs4eE1ztD9FPj
-         RIlA==
+        b=WtYZl/QmYKVe1+f5RqCUaxLRDGBZBeUfTl0H1Q7RLZeWjnYLgaV+9QS36TzSanQyOA
+         q3lom7EM1lEEoSJtgbvTLUvKMcPeFlUFxxBtGXvFCBYHAG9JCEud7NEEzepbW9AKgvQ9
+         hLBlafnvMjSmfCMFHONJXKlNVf8A55f091Aj8xAnzhzw2TUa2TiLYHOk+2tl5W+B7KZF
+         1D5qg4+NJPDmX5lmfAZR7B85ykb0G9Uxp4htYie8UxhbAO6LQPsOXWBwB9FxoU7FAFB8
+         zYIqLQ8QZUprk4LpCigERKL5QH+/xbLJqVbCQYYHB94O2iLlLXQwrdM+swPzueEE52sM
+         2LXg==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
         h=cc:to:subject:message-id:date:from:in-reply-to:references
          :mime-version:dkim-signature;
-        bh=09dt1W9Q838znUdBswhk+Ubmk3etxZx0mf/5nmJBCXw=;
+        bh=BzErQot0/zdrjb/Mn2QlytuNQv1XXJau0yRhppIVFUE=;
         fh=fFUQ3bDSnwWYL/1dqZwPKYywXd5TONRsAevI/mvHYbI=;
-        b=csCFrVUN0XxmKBjRlhY993RszP7SgmuzbZgIttqcDSLCIybSFL81KpsWZyaGY/2Mh0
-         Xhpi7T43xUHP7XMEjk9tRu9y1dMt7iG2kiNKiV/LyatA79VYAluxBnFDsAgl3Q6PUqLp
-         tglEAE2NxyaonziBicLhocV05OaocC16iDxk72Ez/2xVd2eghoBmpjW+Kffe2BCQ5N7L
-         1Q6iTowbP9yGlGt3Yo6AFu51FHYNUbkkKHgJML49sng9r4Ba3ib9qzqGnfS3mkKx8f1v
-         WJj6YFwZS4ZDE+RWtCx8kLAEWZ52JTIhwhgvapx9QpWLueM7H24sEoiXjyfoTxNfQvxl
-         EZ2A==;
+        b=idPJztH8/j9DW8YlFC4zasasKP8Sd/R5Ns0aZLQxnTh5M5YVpzt7uLyuqL0H7XarQg
+         RAdf8pjRRVhX3RhJqUEQ+4VXNY/qChLTSpbrD3/sVnb6n8vFKq5JJTpm6vGJecX1tQiQ
+         oMMp9feGY2iDd63snYGm0wMQBeFWvsxcTDlTUsC1MDiIsZfiu3c88jX6VDPQ9txhcdaG
+         C7i/U3hr+ADyNHnZQzrExQINj9gAjseMLtc33DVeqxUYaOwgMjPGut6GCbIcjm4U7vE4
+         dZNzkYO86GIO2f2TmRbs1C2N9pLEuGIYX4/HsmE/u0POQ5TfTdbVhbd9UFk/38wroAvk
+         sJYw==;
         darn=vger.kernel.org
 ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1773964730; x=1774569530; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1773967301; x=1774572101; darn=vger.kernel.org;
         h=cc:to:subject:message-id:date:from:in-reply-to:references
          :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=09dt1W9Q838znUdBswhk+Ubmk3etxZx0mf/5nmJBCXw=;
-        b=aM5wPn8U358ZWV98MWYEG9i1ag1b2G/WFrEFIrL2zBAEe4u8XP5Xs3S9X5FxVIvZXs
-         prOHv7XXvWA5JdyGcKDcx7e+WjeXMSJU9AnZUjzxsZ4DyyxCel1bnlj5V9NWt11RJrej
-         wDI0KRjVtbRs6yuyDA50Zb86I7g96PvPRt8YMo/gwkl554aih0ukCbZJmBuvvsKHqDxD
-         Tbk9YDCWZ2fn3XKyYRw+SyDwx0WtxLWDBGBrO/vS4y8fTq5sy5GaSMe97gOMtJ+Apb+z
-         GmG1UJeHL9a8xNrlryFKccTv0bELfOT25ilYLSEnphWenRP6rVrWBRGz+5QT3tfdFKau
-         wz2Q==
+        bh=BzErQot0/zdrjb/Mn2QlytuNQv1XXJau0yRhppIVFUE=;
+        b=P/bBQnQx9wiW3a3rhFENvPugZrYW9E8+UzOzd5le9UYeQU9FcF7bpPBSA/RxjOg8LG
+         UJz2J/WYIdkpd+Sc+6BGdLAxmd8MQBInE2RNsPFkYwyoqx8F1iO88+T1GcA0Fyv1ZNPu
+         f7c6ZIgadHY6OcHK+7REMzcDYDp0mwdVl39xiF/5vsHduEjQ5HOHpU6zEI0CCF5lFO3R
+         8a1TFAhWg8NJVnr06KhAukX9n3T+btBuoop4jIthBFLnD5elZT3HoWjFP1/7p/rI1/Vq
+         nn3MuY9vXoaWdGOUWLZT7tpunVEyzfUSjGiu5sftAYVs2altw1YXdpPOSi4iVyxcKTb5
+         H8bA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1773964730; x=1774569530;
+        d=1e100.net; s=20251104; t=1773967301; x=1774572101;
         h=cc:to:subject:message-id:date:from:in-reply-to:references
          :mime-version:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=09dt1W9Q838znUdBswhk+Ubmk3etxZx0mf/5nmJBCXw=;
-        b=Z03na4E/qU2/qBJ91ujnrXOq3RgfVQk5MfYM2U6tPnbp51rvTRvCQi/Qz0+Hvsxx1m
-         39aemLiDNJdJY2gxGGwYFbsEhmbfkIBh3R0RKwRB4d+3pB1WJ07RYMtx+q5UAWaWpqzm
-         KT4mmYEqSYEF23p39iQvJKGDyI3ZD1RmKfQfZNUo/oFbJQpmzsJXqIR+HVbKaWmE9Ra3
-         C98GGLaSVqyY1vq6mQ+x87iRW09LuVVZn5csHPm9hKxA3KhiLOos60FHWTWibk9f58bO
-         tJx5l2MVQFriHZiC+sq+4wS6FaSuUVt5LjjFjfr54sJvtqy7zTzgmKOyx+sqr5mxNvp4
-         fxgg==
-X-Gm-Message-State: AOJu0YwA/R41MDvEnYKgO0AYknUpj/AXNANbl8kiDfqO3db2Z7ObqgW+
-	L0P6B2/VAp3FI30yC30fUKpjsxncAsJ8hPoamsKBN9K4Hd+cDnXkO/hjTUGlizVfqfGnBtTs0gt
-	TnwSnZvWH0ZPxiJppyxyuMaUq4sAV+9Y=
-X-Gm-Gg: ATEYQzzqAMCc5PtFbebAA9PN8sHkoMdOB32TXYmdkG5b8DpUb+Ag6JWlHHbFOKnqCq2
-	tfjSvSjizi0EuJXQ29YYfbo7IpXPNNrUxHBneGCwmK5msZNnCrwy3w49FP8IVm+mT5LLexkMHq+
-	Xxqt+IRaK2TNHYUs/b728+srnunOSMevMwwnYhBaQ0CTouJOyKnJb9aJCrr7Olo6qfmYrlebR8/
-	d64/U3tTZjuF504TJE5mqXNkMQkwJKOjkJn/uE4qqY+fvLUc6KKVQ3lHxwQTLSFVHkJa1FveCHA
-	8aRGq/QXo3+XF59Oe48=
-X-Received: by 2002:a05:6808:4483:b0:466:f57b:2ae2 with SMTP id
- 5614622812f47-467e600292cmr768423b6e.52.1773964729647; Thu, 19 Mar 2026
- 16:58:49 -0700 (PDT)
+        bh=BzErQot0/zdrjb/Mn2QlytuNQv1XXJau0yRhppIVFUE=;
+        b=Z30a8FBYH/8tgYUom+DobxMUXjd0GC1KpPb9em2RtgLJPjdF3/OzJ86gkKpx5B1j/L
+         KzSLts+H4020dnLCinO1cmKFANlGQfd/AA3Q6GOxwo/aiHGFMOM4RByVOO7WeHOeWJPw
+         Wz6S9ficG+ZI9CqokMbgy6iQk6Ydtcq484PnPN2/YwuFswVQ8kFdpw3A0wmbpzqGx6RJ
+         rmQSSTfIaA2/TyTJ5RY8T9CMX/pM0aDiCpI3BYEmtEHFy4QP4gX0qJD4vKpZrKnSv/wV
+         c7xpIBWyxzfKEN6u4W/kPuEcJtUB+Kd6B0ty0lTgsXKVSX+vhm2SqWlP2UaAQMfPl+Hh
+         /90w==
+X-Gm-Message-State: AOJu0YxmU5Qk30GbidBZT+h1c0XB0wiJUBHDOaiS5pfNGqtlvxIS593A
+	+ESCztiAgGiNVce1Zn3B0R1BiToHdewJYwjOwM+HJ16p5yKpk51Orw/8YDdlA5zKLRF6lAth5qG
+	OPN7GsmeaXSWRIt8WltDTqWnhqJKkgaeUw8skVV/gRQiD
+X-Gm-Gg: ATEYQzwWHzt5Aafh1vxKImJ6DQtSVJy0JtHTrnFM2qR442KelqA4BlL3DgntAAZYrTO
+	8Fy/Ui7UCseHGtvDdrJQRsC4wrKGRWb8rtHRPeyfKkdB4ht5nrO8F+SojAFYK5cYQqX6mTBg5Lw
+	4JHmSsXnJkXeuhz63pvLro8vlljagIXm3KCHGfMWqrKcQaU9D10r1li3t5WJW3U7B9l1xBKLRJ6
+	NKYX7/bwxa8qwuS10+jDourcigHZ+jVRNd9xMsr67QmZz86RPMRd8NQpL8Xk5VrY5v3VRm4Ezdw
+	inGVuvvf
+X-Received: by 2002:a05:6808:50a2:b0:45f:318:adb8 with SMTP id
+ 5614622812f47-467cd76830fmr3159089b6e.28.1773967301249; Thu, 19 Mar 2026
+ 17:41:41 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
@@ -111,12 +111,12 @@ References: <CALdGYqSQ1Ko2TTBhUizMu_FvLMUAuQfFrVwS10n_C-LSQJQQkQ@mail.gmail.com>
  <1bd495ffe57c47eb827eec084729afa2@realtek.com> <CALdGYqSMUPnPfW-_q1RgYr0_SjoXUejAaJJr-o+jpwCk1S7ndQ@mail.gmail.com>
  <e5f00d0a42994812b42df867718fa087@realtek.com> <CALdGYqRbkV7_w7WDiqD-vYMa8MUFV7nSYz-=q2FzotgLHRy=HA@mail.gmail.com>
  <cb32c1eefb614a8bb96ef6fe2c4f4989@realtek.com> <CALdGYqQ3tS_aQpmf7xLkaCG9W55ATQXP=tnRNdjBAG8waqg8yA@mail.gmail.com>
- <dbe78a09fafe4a0ab16cd691049896a8@realtek.com>
-In-Reply-To: <dbe78a09fafe4a0ab16cd691049896a8@realtek.com>
+ <dbe78a09fafe4a0ab16cd691049896a8@realtek.com> <CALdGYqQ3JQgFvvjiqh-ck8UqUQpAoJ0zeUzEL4i4Un8qPmqxJA@mail.gmail.com>
+In-Reply-To: <CALdGYqQ3JQgFvvjiqh-ck8UqUQpAoJ0zeUzEL4i4Un8qPmqxJA@mail.gmail.com>
 From: LB F <goainwo@gmail.com>
-Date: Fri, 20 Mar 2026 01:58:13 +0200
-X-Gm-Features: AaiRm50uYhmZW-U34lUzJQ6hyZoENsUk8WmXyZJls2V_w9gd0LmqwFIaANUE7DQ
-Message-ID: <CALdGYqQ3JQgFvvjiqh-ck8UqUQpAoJ0zeUzEL4i4Un8qPmqxJA@mail.gmail.com>
+Date: Fri, 20 Mar 2026 02:41:04 +0200
+X-Gm-Features: AaiRm516uh2X9MUTqw7BqwQgnJSp2d99IHl6vw8hXpNYF5Qk8zfqeY2F3cq7ALc
+Message-ID: <CALdGYqQuS5EOWCaeimr6PY758feF-DPo5i3XFwoQ8ewf4xnm7A@mail.gmail.com>
 Subject: Re: [BUG] wifi: rtw88: Hard system freeze on RTL8821CE when
  power_save is enabled (LPS/ASPM conflict)
 To: Ping-Ke Shih <pkshih@realtek.com>
@@ -127,11 +127,11 @@ X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=2];
 	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
 	R_DKIM_ALLOW(-0.20)[gmail.com:s=20230601];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-33530-lists,linux-wireless=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-33531-lists,linux-wireless=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
 	TO_DN_EQ_ADDR_SOME(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -142,7 +142,7 @@ X-Spamd-Result: default: False [-2.16 / 15.00];
 	FROM_HAS_DN(0.00)[];
 	RCPT_COUNT_THREE(0.00)[3];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-0.943];
+	NEURAL_HAM(-0.00)[-0.916];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[goainwo@gmail.com,linux-wireless@vger.kernel.org];
 	DKIM_TRACE(0.00)[gmail.com:+];
@@ -150,52 +150,36 @@ X-Spamd-Result: default: False [-2.16 / 15.00];
 	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	TAGGED_RCPT(0.00)[linux-wireless];
 	MISSING_XM_UA(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[mail.gmail.com:mid,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,realtek.com:email]
-X-Rspamd-Queue-Id: 91A0B2D454C
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,mail.gmail.com:mid,realtek.com:email]
+X-Rspamd-Queue-Id: 73B152D47BF
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
 Ping-Ke Shih <pkshih@realtek.com> wrote:
-> Maybe we should check the capabilities of PCI bridge side?
-> I think there are two problems. One is ASPM causing system frozen,
-> and the other is LPS deep mode causing H2C timeouts.
+> Not sure what hardware get wrong. Let's validate rate when reading
+> from hardware.
 
 Hi Ping-Ke,
 
-You were right on both counts. Here are the PCI bridge capabilities.
+One additional observation while monitoring logs with your rate
+validation patch installed.
 
-The upstream bridge for the RTL8821CE (13:00.0) is:
-  Intel Corporation Wildcat Point-LP PCI Express Root Port #5 (00:1c.4)
+During normal usage with Wi-Fi connected and a Bluetooth A2DP device
+connecting to the system, the following message appeared in dmesg:
 
-Bridge (00:1c.4):
-  LnkCap: Port #5, Speed 5GT/s, Width x1, ASPM L0s L1,
-          Exit Latency L0s <512ns, L1 <16us
-  LnkCtl: ASPM L0s L1 Enabled
+  [180.420000] rtw_8821ce 0000:13:00.0: unused phy status page (11)
 
-WiFi card (13:00.0):
-  LnkCap: Port #0, Speed 2.5GT/s, Width x1, ASPM L0s L1,
-          Exit Latency L0s <2us, L1 <64us
-  LnkCtl: ASPM L0s L1 Enabled
+Looking at rtw_rx_fill_phy_info() in rx.c, this message is emitted
+when the firmware sends a PHY status report with a page number that
+the driver does not recognize. In this case page 11 appeared at the
+moment the Bluetooth device was establishing its connection.
 
-So ASPM L0s and L1 are enabled by the BIOS on both ends of the bus,
-despite the ACPI FADT claiming the OS has no ASPM control. ASPM was
-active on this machine all along. I apologize for the incorrect
-earlier conclusion that ASPM was not active.
-
-This confirms your analysis: there are indeed two separate problems --
-ASPM causing the hard freeze, and LPS Deep Mode causing the H2C
-timeouts. The v2 patch correctly addresses both.
-
----
-
-Regarding your rate validation patch: I applied it (removing the
-earlier pr_err block and inserting the new check in
-rtw_rx_query_rx_desc). The patch compiled and installed correctly --
-verified via strings on the installed .zst module.
-
-I was unable to reproduce the "weird rate" condition or the WARNING
-during this test session. The diagnostic module remains installed and
-active -- I will report back immediately if I manage to catch it.
+We have not observed any stability issues or connectivity drops
+associated with this message -- the driver appears to handle it
+gracefully by ignoring it. We are not sure whether this is related
+to the rate=0x65 issue or is simply a separate artifact of BT/Wi-Fi
+coexistence on this chip. We wanted to mention it in case it is
+useful context.
 
 Best regards,
 Oleksandr Havrylov
