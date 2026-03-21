@@ -1,72 +1,72 @@
-Return-Path: <linux-wireless+bounces-33633-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-33634-lists+linux-wireless=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id SK3vFZXVvmlwewMAu9opvQ
-	(envelope-from <linux-wireless+bounces-33633-lists+linux-wireless=lfdr.de@vger.kernel.org>)
-	for <lists+linux-wireless@lfdr.de>; Sat, 21 Mar 2026 18:29:57 +0100
+	id 8D2SEpnVvmlwewMAu9opvQ
+	(envelope-from <linux-wireless+bounces-33634-lists+linux-wireless=lfdr.de@vger.kernel.org>)
+	for <lists+linux-wireless@lfdr.de>; Sat, 21 Mar 2026 18:30:01 +0100
 X-Original-To: lists+linux-wireless@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0F8612E688B
-	for <lists+linux-wireless@lfdr.de>; Sat, 21 Mar 2026 18:29:57 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id 67FBD2E6893
+	for <lists+linux-wireless@lfdr.de>; Sat, 21 Mar 2026 18:30:00 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id E7D84301BEFB
-	for <lists+linux-wireless@lfdr.de>; Sat, 21 Mar 2026 17:29:44 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id DEAEC300B50F
+	for <lists+linux-wireless@lfdr.de>; Sat, 21 Mar 2026 17:29:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1DD162836BE;
-	Sat, 21 Mar 2026 17:29:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4955633B6D5;
+	Sat, 21 Mar 2026 17:29:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="Uk+tzxY3"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="GiNACLHL"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.14])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8122A33D6D3
-	for <linux-wireless@vger.kernel.org>; Sat, 21 Mar 2026 17:29:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3BFAA33B97D
+	for <linux-wireless@vger.kernel.org>; Sat, 21 Mar 2026 17:29:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.14
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774114183; cv=none; b=EgRBrROnUKGt7ojHusfEGIYn1+cDFPOLXWI9xKbzj9kjRXm0cBtN9FN6PelDfN4p40t+TQ2MQ2BjcnPOdRHm1fC0nVGcjdMGLALU4LhuPlKmyxoaFnzGivAr79o/5cU/exs04zh6gBfdtWYaQUGAWp8KIlZZxRtad4+XMsUvd70=
+	t=1774114185; cv=none; b=OUZ9bzj652iEPgFvx9QbAQSWP9rad4hGiNckbRNX2LqRxrxKFEDrlixOkGtTJpY8XPE9OJAZWHgwMjUpcOkql9bxf8rLUhfAcKmuf/Pmu6gK00fWEi5xc/iGvu3wUrRFmFXVMJUkzHjWyTKx86GtalM8ATTHB0pNnqcId3P1oNU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774114183; c=relaxed/simple;
-	bh=XXtw2ZYTRIJYvo6hhMtE7Xs1naKY8d1TmU+hx2q4ofI=;
+	s=arc-20240116; t=1774114185; c=relaxed/simple;
+	bh=JD4DWzQnJ+ZUikoLDdQkV/qQgDRpyBtWPXrYDwz7xXk=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=FGWRwblUNNcWRfCSGgmJf+D0wKovKU6qvajp7cG56zmYqBasUxEe8DMj7gfAQ3FMSj8WuGzinsK7jJI2p/b3mqttF5aOOwew9zB+QOjzVcvFOQshL/Ai2Ct9h089CikE+cT1DdlITHM7mvu/4bgBunK2Jz92cPw1FuokhazcIBo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=Uk+tzxY3; arc=none smtp.client-ip=192.198.163.14
+	 MIME-Version; b=EpbHvpbmL6/vaWUOMeuy9tO3DGxqxAnOo21aF7HEx3JDNVotGYcDB94jYXn+Xk0A7oOQ+/eg0QQeS7iESrd5iHI5Stx5UzztRu3RZJGKsJgioGLKQqGVbjjW1LAcEmnyUwTUiM8CplAfICMLGC+5XJnnu6JfEwnNR2t6wZBEeE8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=GiNACLHL; arc=none smtp.client-ip=192.198.163.14
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1774114181; x=1805650181;
+  t=1774114183; x=1805650183;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=XXtw2ZYTRIJYvo6hhMtE7Xs1naKY8d1TmU+hx2q4ofI=;
-  b=Uk+tzxY3hl1thSh9O5z4xlIoiqhNkgI4rdJJcP7/se4AS2k3/a8kE+LT
-   Z62QZH5MawEnFtcbk3vuEQRrAnQDWv/4baqBNvDE1HGc8U0+RLaVR7xP0
-   S81Rk9zLXxVbcjtOcTV0aEJhxvbgzakqWvJl8yDYBkd9S5miN2Bvwh3LC
-   KXmJbBc6V6MO5lpFto0HtwHq6G44HDlzmFqn9r7hvP7QxILcz+Sn4WAa0
-   7XDU0OiZU18FKLDBzrUw/+Kpt1omTULChrjWJrUorwicDZ2os/aGMgeuA
-   /fLvmDdSPjzXIaB/MY87z37yVMPnAKuGPACA0c7bzYxagMQcWkfUdQ0V5
-   w==;
-X-CSE-ConnectionGUID: e3h0rUgKSfyC9ET+GmHT5Q==
-X-CSE-MsgGUID: BrSjLn3VReyQhwEO9mkdMQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11736"; a="75244590"
+  bh=JD4DWzQnJ+ZUikoLDdQkV/qQgDRpyBtWPXrYDwz7xXk=;
+  b=GiNACLHLHJVRD13unXHxEzEK/NIJ/pne5xDg2939X2OJWveVh4iAAonW
+   en8BGudmc6hxqaieTas1cke0UaW4rOHvFGqnU9WmAhU9+3xZJAkjJof4b
+   i0lUackZ8aOPsfzXo4XgKCeuhPcNBzN9xWr8MOftECIpyZlgjMvjAV7/r
+   cZs2MUEPRiJGUxEDXJzPtxEGpRcUxEJbu725QZC/KzjJxF9NWHHmBTrbL
+   HWIpk3uvDu+XnDOly8WvZNhcZdB0oy9pXRt46iDO5SFfz9DCO7B7+W3dZ
+   k+wsLxnHtQgHdxm2i+CSg6moENetzlZFfuQUJspRudBFb6YOAn5PasYY+
+   g==;
+X-CSE-ConnectionGUID: wxtFGC3dRgyu6O0OJCF/4w==
+X-CSE-MsgGUID: v4sZQpFwREGFuOKBRSvbQw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11736"; a="75244591"
 X-IronPort-AV: E=Sophos;i="6.23,133,1770624000"; 
-   d="scan'208";a="75244590"
+   d="scan'208";a="75244591"
 Received: from orviesa007.jf.intel.com ([10.64.159.147])
-  by fmvoesa108.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 21 Mar 2026 10:29:41 -0700
-X-CSE-ConnectionGUID: 4i6+iNVaQ/qPCKO40ZTQwA==
-X-CSE-MsgGUID: HzEnsZN/QxeHTFaBl0GGhw==
+  by fmvoesa108.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 21 Mar 2026 10:29:42 -0700
+X-CSE-ConnectionGUID: MfzaVhBTS4eMvywagQczNA==
+X-CSE-MsgGUID: w2t3xCOZQEW5WIiWRT9fcA==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.23,133,1770624000"; 
-   d="scan'208";a="223813589"
+   d="scan'208";a="223813592"
 Received: from weis0040.iil.intel.com ([10.12.217.108])
-  by orviesa007-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 21 Mar 2026 10:29:40 -0700
+  by orviesa007-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 21 Mar 2026 10:29:41 -0700
 From: Miri Korenblit <miriam.rachel.korenblit@intel.com>
 To: linux-wireless@vger.kernel.org
 Cc: Emmanuel Grumbach <emmanuel.grumbach@intel.com>
-Subject: [PATCH iwlwifi-next 06/15] wifi: iwlwifi: mld: use the dedicated helper to extract a link
-Date: Sat, 21 Mar 2026 19:29:13 +0200
-Message-Id: <20260321192637.f8da2cd2a873.I7fbd3b4a86a5695206bb5083fdac49de9acc9dca@changeid>
+Subject: [PATCH iwlwifi-next 07/15] wifi: iwlwifi: mld: always assign a fw id to a vif
+Date: Sat, 21 Mar 2026 19:29:14 +0200
+Message-Id: <20260321192637.f3b5cc59098f.I3d1dbe66bd224cbb786c2b0ab3d1c9f7ec9003e4@changeid>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20260321172922.3938740-1-miriam.rachel.korenblit@intel.com>
 References: <20260321172922.3938740-1-miriam.rachel.korenblit@intel.com>
@@ -83,7 +83,7 @@ X-Spamd-Result: default: False [-1.16 / 15.00];
 	R_MISSING_CHARSET(0.50)[];
 	MID_RHS_NOT_FQDN(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[intel.com,none];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	R_DKIM_ALLOW(-0.20)[intel.com:s=Intel];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
@@ -91,10 +91,10 @@ X-Spamd-Result: default: False [-1.16 / 15.00];
 	TO_DN_SOME(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-33633-lists,linux-wireless=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-33634-lists,linux-wireless=lfdr.de];
 	HAS_ORG_HEADER(0.00)[];
 	RCPT_COUNT_TWO(0.00)[2];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[miriam.rachel.korenblit@intel.com,linux-wireless@vger.kernel.org];
@@ -104,64 +104,55 @@ X-Spamd-Result: default: False [-1.16 / 15.00];
 	TAGGED_RCPT(0.00)[linux-wireless];
 	NEURAL_HAM(-0.00)[-1.000];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,intel.com:dkim,intel.com:email]
-X-Rspamd-Queue-Id: 0F8612E688B
+	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:dkim,intel.com:email,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 67FBD2E6893
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-There is a helper, iwl_mld_fw_id_to_link_conf, that converts a fw link
-id into the bss_conf structure. Use it in two more places instead of
-retrieving the bss_conf directly from the fw-id-to-bss_conf mapping array.
+We used to have a fw id assignment in iwl_mld_init_vif since all interface
+types that were added to the driver was immediately added to the FW as
+well.
+Since NAN was introduced, this is no longer the case - the NAN interface
+is not added to the fw until a local schedule is configured.
 
-This required changing the loop bound in iwl_mld_process_per_link_stats()
-to ucode_capa.num_links, to avoid hitting a IWL_FW_CHECK for link ids
-> ucode_capa.num_links and < ARRAY_SIZE(fw_id_to_bss_conf), but this
-change makes sense anyway (there is no reason to iterate links that
-cannot be valid).
+For this vif we don't assign a fw id so it is 0 by default.
+But later, when the vif is removed from the driver, we think that it has
+a valid fw id (0) and we point fw_id_to_vif[0] to NULL.
+fw_id_to_vif[0] might actually point to another vif with a valid fw id
+0. In this case, we end up messing fw_id_to_vif.
+
+Fix this by initializing a vif with a special invalid fw id, and by
+exiting iwl_mld_rm_vif early for NAN interfaces.
 
 Reviewed-by: Emmanuel Grumbach <emmanuel.grumbach@intel.com>
 Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
 ---
- drivers/net/wireless/intel/iwlwifi/mld/scan.c  | 4 +---
- drivers/net/wireless/intel/iwlwifi/mld/stats.c | 5 ++---
- 2 files changed, 3 insertions(+), 6 deletions(-)
+ drivers/net/wireless/intel/iwlwifi/mld/iface.c | 5 +++++
+ 1 file changed, 5 insertions(+)
 
-diff --git a/drivers/net/wireless/intel/iwlwifi/mld/scan.c b/drivers/net/wireless/intel/iwlwifi/mld/scan.c
-index 17e0b13b5ce8..7ed107fb0e8d 100644
---- a/drivers/net/wireless/intel/iwlwifi/mld/scan.c
-+++ b/drivers/net/wireless/intel/iwlwifi/mld/scan.c
-@@ -2055,9 +2055,7 @@ void iwl_mld_handle_scan_complete_notif(struct iwl_mld *mld,
- 		struct ieee80211_bss_conf *link_conf = NULL;
+diff --git a/drivers/net/wireless/intel/iwlwifi/mld/iface.c b/drivers/net/wireless/intel/iwlwifi/mld/iface.c
+index d3b850259569..5c435d6ffa90 100644
+--- a/drivers/net/wireless/intel/iwlwifi/mld/iface.c
++++ b/drivers/net/wireless/intel/iwlwifi/mld/iface.c
+@@ -445,6 +445,7 @@ iwl_mld_init_vif(struct iwl_mld *mld, struct ieee80211_vif *vif)
+ 	lockdep_assert_wiphy(mld->wiphy);
  
- 		if (fw_link_id != IWL_MLD_INVALID_FW_ID)
--			link_conf =
--				wiphy_dereference(mld->wiphy,
--						  mld->fw_id_to_bss_conf[fw_link_id]);
-+			link_conf = iwl_mld_fw_id_to_link_conf(mld, fw_link_id);
+ 	mld_vif->mld = mld;
++	mld_vif->fw_id = IWL_MLD_INVALID_FW_ID;
+ 	mld_vif->roc_activity = ROC_NUM_ACTIVITIES;
  
- 		/* It is possible that by the time the scan is complete the
- 		 * link was already removed and is not valid.
-diff --git a/drivers/net/wireless/intel/iwlwifi/mld/stats.c b/drivers/net/wireless/intel/iwlwifi/mld/stats.c
-index 9b3149b9d2c2..54eb0ead78ee 100644
---- a/drivers/net/wireless/intel/iwlwifi/mld/stats.c
-+++ b/drivers/net/wireless/intel/iwlwifi/mld/stats.c
-@@ -431,14 +431,13 @@ iwl_mld_process_per_link_stats(struct iwl_mld *mld,
- 	u32 total_airtime_usec = 0;
+ 	if (!mld->fw_status.in_hw_restart) {
+@@ -492,6 +493,10 @@ void iwl_mld_rm_vif(struct iwl_mld *mld, struct ieee80211_vif *vif)
  
- 	for (u32 fw_id = 0;
--	     fw_id < ARRAY_SIZE(mld->fw_id_to_bss_conf);
-+	     fw_id < mld->fw->ucode_capa.num_links;
- 	     fw_id++) {
- 		const struct iwl_stats_ntfy_per_link *link_stats;
- 		struct ieee80211_bss_conf *bss_conf;
- 		int sig;
+ 	lockdep_assert_wiphy(mld->wiphy);
  
--		bss_conf = wiphy_dereference(mld->wiphy,
--					     mld->fw_id_to_bss_conf[fw_id]);
-+		bss_conf = iwl_mld_fw_id_to_link_conf(mld, fw_id);
- 		if (!bss_conf || bss_conf->vif->type != NL80211_IFTYPE_STATION)
- 			continue;
++	/* NAN interface type is not known to FW */
++	if (vif->type == NL80211_IFTYPE_NAN)
++		return;
++
+ 	iwl_mld_mac_fw_action(mld, vif, FW_CTXT_ACTION_REMOVE);
  
+ 	if (WARN_ON(mld_vif->fw_id >= ARRAY_SIZE(mld->fw_id_to_vif)))
 -- 
 2.34.1
 
