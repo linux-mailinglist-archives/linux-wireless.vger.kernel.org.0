@@ -1,73 +1,72 @@
-Return-Path: <linux-wireless+bounces-33641-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-33642-lists+linux-wireless=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id +HxQIQrWvmlwewMAu9opvQ
-	(envelope-from <linux-wireless+bounces-33641-lists+linux-wireless=lfdr.de@vger.kernel.org>)
-	for <lists+linux-wireless@lfdr.de>; Sat, 21 Mar 2026 18:31:54 +0100
+	id WAGHBhPWvmlwewMAu9opvQ
+	(envelope-from <linux-wireless+bounces-33642-lists+linux-wireless=lfdr.de@vger.kernel.org>)
+	for <lists+linux-wireless@lfdr.de>; Sat, 21 Mar 2026 18:32:03 +0100
 X-Original-To: lists+linux-wireless@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id DE16C2E68DE
-	for <lists+linux-wireless@lfdr.de>; Sat, 21 Mar 2026 18:31:53 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id AD88D2E68E5
+	for <lists+linux-wireless@lfdr.de>; Sat, 21 Mar 2026 18:32:02 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id A402F301E947
-	for <lists+linux-wireless@lfdr.de>; Sat, 21 Mar 2026 17:29:53 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 72387303BB19
+	for <lists+linux-wireless@lfdr.de>; Sat, 21 Mar 2026 17:29:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 178B933C528;
-	Sat, 21 Mar 2026 17:29:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4E80C317171;
+	Sat, 21 Mar 2026 17:29:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="YN4hiDQi"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="NYldh4jx"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.14])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7E1E83368A5
-	for <linux-wireless@vger.kernel.org>; Sat, 21 Mar 2026 17:29:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AB77533B951
+	for <linux-wireless@vger.kernel.org>; Sat, 21 Mar 2026 17:29:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.14
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774114192; cv=none; b=ZuU6nLfCZKKlAc8HXbcUSwpsccDU53CVd3rkkk1ajb4xP6LnIlKzhcQVcuVIu6BloxY5Cmhe2J4qbdheV4lJ5mWiF+xvgKTl7zsWqCl9/RISbGE7Fye63HBprRaYdmwQ49xN8JlfnUWUvlr2ZN8dvZZBo+qAYXfIlh/v3Rb8O4Y=
+	t=1774114194; cv=none; b=NLxT2sr9dH3edfiRs9dCXuQwFLEw6KHHQvPPllOZMkF27QKoMfVqqAsMRQY6MZ4Rks7JtaxPqptrfCIsotobdOIeIZXVU2BnVJXXnqFEyoD0UzUjjqJXFQHg3yzyzy1SsHOHofH5gDbKBcy4Op8Y/QkL0QeavSyGwfQwC5KWxeM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774114192; c=relaxed/simple;
-	bh=Vbpc/yC603n2kDA1IpsXNn1zd0x2CweGzgmWcJl8ilI=;
+	s=arc-20240116; t=1774114194; c=relaxed/simple;
+	bh=ba9+R/qRiB2GuXbHDegzFAoysUsOMOyde8RQAToynK4=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=OrVL4K82aUfaH1TayVcsFrdnm7cUqcUCk7u9pu3/XFHmb5e45nInZ4fwP1e2qE2hHznx0O8wdphRSpInWp5t+Xl7v20kvUbK8HSbkutf68dXwMLKyxeIt1fh2EKlWksqxnl+R+R96ZGEKtr7g4KN2pSn0b7CK115v+HMaADd+Po=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=YN4hiDQi; arc=none smtp.client-ip=192.198.163.14
+	 MIME-Version; b=Y0M23J7/wjxQNodQj99SA92CZhMAlMq8xvAnA5tv8qaZlQiRW7bC5Fbllok2U+CGUL1QeCDSA1Q9GbHYGPtFrkupBZfOvnPQx9XeADXR1nlxNrRsdpbEMsVlSVF8+Ipc4Zsknzvoel1KA2veyY8E/MVUM6pNuZaUd32Fz0xWn/c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=NYldh4jx; arc=none smtp.client-ip=192.198.163.14
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1774114191; x=1805650191;
+  t=1774114192; x=1805650192;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=Vbpc/yC603n2kDA1IpsXNn1zd0x2CweGzgmWcJl8ilI=;
-  b=YN4hiDQiPYvg2MjlsZYOPnlnp0jtKHLk0sdpBevrOVlxKkawfgzNqzoH
-   WQqEJxjsuHDoY9rp7PHpDyBzvzYFDUdePQvl7kRvG1jezi6krmRSSNJtD
-   1n8jq02EChnUTtD8R9U14bBxdIfvVpQpLrrR3vXGRbMTpEcpFRujPseOR
-   0cmM+d3nN2jWNi6VZmvm0aNO/2rz+pOH+S9QlOk1QYFgTs+MQ4e9BTS9h
-   L3VDfIPM0dZllEhYqXbY3yAzvynjoiLWAV32arRijQFZYpE+BbD3EQQgh
-   bVHnWjOSTcLIC595zP/ZP3S4K7YaKRHXXUhjfZ6XNV9VJAoGKC2xdC7dF
+  bh=ba9+R/qRiB2GuXbHDegzFAoysUsOMOyde8RQAToynK4=;
+  b=NYldh4jxpCQLVehQTjsKfEWsO90RE7LaAY2gcGvph5X3KhgJAMzuPY7t
+   YKWFjXkCQGCqG6idBLf45oPhe+wtnnb0UoX1gI3R08w7JLQjvjUMqeYGt
+   +r40o28E8BEgqZlhGE+E5KwwqTEBRYTpYPcFBzFKmsIlGiqxGHi3S7CzY
+   ubJx4H6dhJIYZ2Zv6WiOuT+SElrAG+ZFDthbpg7LLktgVEUKzumc1CZEw
+   KA04eOhvtnAGnqd1nVZS/tnOhOgBOaaYKYBPkJfBuFfo+snd/NZ6n3Qjn
+   rZD2yrgEZxr4qzNr/mDiBAKc+9ZZ7SWygfmPFuLsIY0l8+jtoS09TenoZ
    Q==;
-X-CSE-ConnectionGUID: gWYHmAIySjSaB2NjzE6D2w==
-X-CSE-MsgGUID: 8vFJsSIlSwyh50reh/tQow==
-X-IronPort-AV: E=McAfee;i="6800,10657,11736"; a="75244598"
+X-CSE-ConnectionGUID: idXnbHZ2RAaH7U9U5I0YkA==
+X-CSE-MsgGUID: UEWea4CIS+Gcz6A7lDaEbg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11736"; a="75244599"
 X-IronPort-AV: E=Sophos;i="6.23,133,1770624000"; 
-   d="scan'208";a="75244598"
+   d="scan'208";a="75244599"
 Received: from orviesa007.jf.intel.com ([10.64.159.147])
-  by fmvoesa108.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 21 Mar 2026 10:29:51 -0700
-X-CSE-ConnectionGUID: lrLVh7PUQqafpAYJH6X2iQ==
-X-CSE-MsgGUID: Nr7RQLfgTu+evyuERVIymw==
+  by fmvoesa108.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 21 Mar 2026 10:29:52 -0700
+X-CSE-ConnectionGUID: 0ixCsP0JRyiOPFiobMcwbg==
+X-CSE-MsgGUID: hcZR3euaRhCAYvhQXzziyQ==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.23,133,1770624000"; 
-   d="scan'208";a="223813615"
+   d="scan'208";a="223813618"
 Received: from weis0040.iil.intel.com ([10.12.217.108])
-  by orviesa007-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 21 Mar 2026 10:29:50 -0700
+  by orviesa007-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 21 Mar 2026 10:29:51 -0700
 From: Miri Korenblit <miriam.rachel.korenblit@intel.com>
 To: linux-wireless@vger.kernel.org
-Cc: Emmanuel Grumbach <emmanuel.grumbach@intel.com>,
-	Eilon Rinat <eilon.rinat@intel.com>
-Subject: [PATCH iwlwifi-next 14/15] wifi: iwlwifi: reduce the number of prints upon firmware crash
-Date: Sat, 21 Mar 2026 19:29:21 +0200
-Message-Id: <20260321192637.3bb8b142ff48.Ieacb12bf3bc930a4c28824e31d8e06eda177ba78@changeid>
+Cc: Johannes Berg <johannes.berg@intel.com>
+Subject: [PATCH iwlwifi-next 15/15] wifi: iwlwifi: mld: set RX_FLAG_RADIOTAP_TLV_AT_END generically
+Date: Sat, 21 Mar 2026 19:29:22 +0200
+Message-Id: <20260321192637.31eff369ccf2.If5cee8f7c767b937891abb6cccf2692068ba7758@changeid>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20260321172922.3938740-1-miriam.rachel.korenblit@intel.com>
 References: <20260321172922.3938740-1-miriam.rachel.korenblit@intel.com>
@@ -84,19 +83,19 @@ X-Spamd-Result: default: False [-1.16 / 15.00];
 	R_MISSING_CHARSET(0.50)[];
 	MID_RHS_NOT_FQDN(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[intel.com,none];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[intel.com:s=Intel];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	TO_DN_SOME(0.00)[];
-	TAGGED_FROM(0.00)[bounces-33641-lists,linux-wireless=lfdr.de];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	HAS_ORG_HEADER(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	RCPT_COUNT_THREE(0.00)[3];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-33642-lists,linux-wireless=lfdr.de];
+	HAS_ORG_HEADER(0.00)[];
+	RCPT_COUNT_TWO(0.00)[2];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[miriam.rachel.korenblit@intel.com,linux-wireless@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
@@ -106,157 +105,86 @@ X-Spamd-Result: default: False [-1.16 / 15.00];
 	NEURAL_HAM(-0.00)[-1.000];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,intel.com:dkim,intel.com:email]
-X-Rspamd-Queue-Id: DE16C2E68DE
+X-Rspamd-Queue-Id: AD88D2E68E5
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-From: Emmanuel Grumbach <emmanuel.grumbach@intel.com>
+From: Johannes Berg <johannes.berg@intel.com>
 
-When the firmware crashes, we print data to be able to know what
-happened. The problem is that those prints became excessive as during
-the course of the years, we added more data without ever removing the
-prints that were no longer useful.
-Instead of spamming the log with data that will not help anyone, limit
-the prints to what is really needed.
+Instead of setting this flag in the iwl_mld_radiotap_put_tlv()
+users, and not even all of them, set it inside the function.
 
-Signed-off-by: Emmanuel Grumbach <emmanuel.grumbach@intel.com>
-Reviewed-by: Eilon Rinat <eilon.rinat@intel.com>
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
 ---
- drivers/net/wireless/intel/iwlwifi/fw/dump.c | 69 +-------------------
- 1 file changed, 1 insertion(+), 68 deletions(-)
+ drivers/net/wireless/intel/iwlwifi/mld/rx.c | 13 ++++---------
+ 1 file changed, 4 insertions(+), 9 deletions(-)
 
-diff --git a/drivers/net/wireless/intel/iwlwifi/fw/dump.c b/drivers/net/wireless/intel/iwlwifi/fw/dump.c
-index ddd714cff2f4..c2af66899a78 100644
---- a/drivers/net/wireless/intel/iwlwifi/fw/dump.c
-+++ b/drivers/net/wireless/intel/iwlwifi/fw/dump.c
+diff --git a/drivers/net/wireless/intel/iwlwifi/mld/rx.c b/drivers/net/wireless/intel/iwlwifi/mld/rx.c
+index 6f40d6e47083..a2e586c6ea67 100644
+--- a/drivers/net/wireless/intel/iwlwifi/mld/rx.c
++++ b/drivers/net/wireless/intel/iwlwifi/mld/rx.c
 @@ -1,6 +1,6 @@
  // SPDX-License-Identifier: GPL-2.0 OR BSD-3-Clause
  /*
-- * Copyright (C) 2012-2014, 2018-2025 Intel Corporation
-+ * Copyright (C) 2012-2014, 2018-2026 Intel Corporation
-  * Copyright (C) 2013-2014 Intel Mobile Communications GmbH
-  * Copyright (C) 2015-2017 Intel Deutschland GmbH
+- * Copyright (C) 2024-2025 Intel Corporation
++ * Copyright (C) 2024-2026 Intel Corporation
   */
-@@ -128,19 +128,11 @@ static void iwl_fwrt_dump_umac_error_log(struct iwl_fw_runtime *fwrt)
  
- 	IWL_ERR(fwrt, "0x%08X | %s\n", table.error_id,
- 		iwl_fw_lookup_assert_desc(table.error_id));
--	IWL_ERR(fwrt, "0x%08X | umac branchlink1\n", table.blink1);
--	IWL_ERR(fwrt, "0x%08X | umac branchlink2\n", table.blink2);
--	IWL_ERR(fwrt, "0x%08X | umac interruptlink1\n", table.ilink1);
- 	IWL_ERR(fwrt, "0x%08X | umac interruptlink2\n", table.ilink2);
- 	IWL_ERR(fwrt, "0x%08X | umac data1\n", table.data1);
- 	IWL_ERR(fwrt, "0x%08X | umac data2\n", table.data2);
- 	IWL_ERR(fwrt, "0x%08X | umac data3\n", table.data3);
--	IWL_ERR(fwrt, "0x%08X | umac major\n", table.umac_major);
--	IWL_ERR(fwrt, "0x%08X | umac minor\n", table.umac_minor);
--	IWL_ERR(fwrt, "0x%08X | frame pointer\n", table.frame_pointer);
--	IWL_ERR(fwrt, "0x%08X | stack pointer\n", table.stack_pointer);
- 	IWL_ERR(fwrt, "0x%08X | last host cmd\n", table.cmd_header);
--	IWL_ERR(fwrt, "0x%08X | isr status reg\n", table.nic_isr_pref);
+ #include <net/mac80211.h>
+@@ -791,6 +791,9 @@ static void *
+ iwl_mld_radiotap_put_tlv(struct sk_buff *skb, u16 type, u16 len)
+ {
+ 	struct ieee80211_radiotap_tlv *tlv;
++	struct ieee80211_rx_status *rx_status = IEEE80211_SKB_RXCB(skb);
++
++	rx_status->flag |= RX_FLAG_RADIOTAP_TLV_AT_END;
+ 
+ 	tlv = skb_put(skb, sizeof(*tlv));
+ 	tlv->type = cpu_to_le16(type);
+@@ -1234,8 +1237,6 @@ static void iwl_mld_rx_eht(struct iwl_mld *mld, struct sk_buff *skb,
+ 
+ 	eht = iwl_mld_radiotap_put_tlv(skb, IEEE80211_RADIOTAP_EHT, eht_len);
+ 
+-	rx_status->flag |= RX_FLAG_RADIOTAP_TLV_AT_END;
+-
+ 	switch (u32_get_bits(rate_n_flags, RATE_MCS_HE_GI_LTF_MSK)) {
+ 	case 0:
+ 		if (he_type == RATE_MCS_HE_TYPE_TRIG) {
+@@ -1329,7 +1330,6 @@ static void iwl_mld_rx_eht(struct iwl_mld *mld, struct sk_buff *skb,
+ static void iwl_mld_add_rtap_sniffer_config(struct iwl_mld *mld,
+ 					    struct sk_buff *skb)
+ {
+-	struct ieee80211_rx_status *rx_status = IEEE80211_SKB_RXCB(skb);
+ 	struct ieee80211_radiotap_vendor_content *radiotap;
+ 	const u16 vendor_data_len = sizeof(mld->monitor.cur_aid);
+ 
+@@ -1353,8 +1353,6 @@ static void iwl_mld_add_rtap_sniffer_config(struct iwl_mld *mld,
+ 	/* fill the data now */
+ 	memcpy(radiotap->data, &mld->monitor.cur_aid,
+ 	       sizeof(mld->monitor.cur_aid));
+-
+-	rx_status->flag |= RX_FLAG_RADIOTAP_TLV_AT_END;
+ }
+ #endif
+ 
+@@ -1362,7 +1360,6 @@ static void iwl_mld_add_rtap_sniffer_phy_data(struct iwl_mld *mld,
+ 					      struct sk_buff *skb,
+ 					      struct iwl_rx_phy_air_sniffer_ntfy *ntfy)
+ {
+-	struct ieee80211_rx_status *rx_status = IEEE80211_SKB_RXCB(skb);
+ 	struct ieee80211_radiotap_vendor_content *radiotap;
+ 	const u16 vendor_data_len = sizeof(*ntfy);
+ 
+@@ -1382,8 +1379,6 @@ static void iwl_mld_add_rtap_sniffer_phy_data(struct iwl_mld *mld,
+ 
+ 	/* fill the data now */
+ 	memcpy(radiotap->data, ntfy, vendor_data_len);
+-
+-	rx_status->flag |= RX_FLAG_RADIOTAP_TLV_AT_END;
  }
  
- static void iwl_fwrt_dump_lmac_error_log(struct iwl_fw_runtime *fwrt, u8 lmac_num)
-@@ -200,39 +192,10 @@ static void iwl_fwrt_dump_lmac_error_log(struct iwl_fw_runtime *fwrt, u8 lmac_nu
- 
- 	IWL_ERR(fwrt, "0x%08X | %-28s\n", table.error_id,
- 		iwl_fw_lookup_assert_desc(table.error_id));
--	IWL_ERR(fwrt, "0x%08X | trm_hw_status0\n", table.trm_hw_status0);
--	IWL_ERR(fwrt, "0x%08X | trm_hw_status1\n", table.trm_hw_status1);
--	IWL_ERR(fwrt, "0x%08X | branchlink2\n", table.blink2);
--	IWL_ERR(fwrt, "0x%08X | interruptlink1\n", table.ilink1);
- 	IWL_ERR(fwrt, "0x%08X | interruptlink2\n", table.ilink2);
- 	IWL_ERR(fwrt, "0x%08X | data1\n", table.data1);
- 	IWL_ERR(fwrt, "0x%08X | data2\n", table.data2);
- 	IWL_ERR(fwrt, "0x%08X | data3\n", table.data3);
--	IWL_ERR(fwrt, "0x%08X | beacon time\n", table.bcon_time);
--	IWL_ERR(fwrt, "0x%08X | tsf low\n", table.tsf_low);
--	IWL_ERR(fwrt, "0x%08X | tsf hi\n", table.tsf_hi);
--	IWL_ERR(fwrt, "0x%08X | time gp1\n", table.gp1);
--	IWL_ERR(fwrt, "0x%08X | time gp2\n", table.gp2);
--	IWL_ERR(fwrt, "0x%08X | uCode revision type\n", table.fw_rev_type);
--	IWL_ERR(fwrt, "0x%08X | uCode version major\n", table.major);
--	IWL_ERR(fwrt, "0x%08X | uCode version minor\n", table.minor);
--	IWL_ERR(fwrt, "0x%08X | hw version\n", table.hw_ver);
--	IWL_ERR(fwrt, "0x%08X | board version\n", table.brd_ver);
--	IWL_ERR(fwrt, "0x%08X | hcmd\n", table.hcmd);
--	IWL_ERR(fwrt, "0x%08X | isr0\n", table.isr0);
--	IWL_ERR(fwrt, "0x%08X | isr1\n", table.isr1);
--	IWL_ERR(fwrt, "0x%08X | isr2\n", table.isr2);
--	IWL_ERR(fwrt, "0x%08X | isr3\n", table.isr3);
--	IWL_ERR(fwrt, "0x%08X | isr4\n", table.isr4);
--	IWL_ERR(fwrt, "0x%08X | last cmd Id\n", table.last_cmd_id);
--	IWL_ERR(fwrt, "0x%08X | wait_event\n", table.wait_event);
--	IWL_ERR(fwrt, "0x%08X | l2p_control\n", table.l2p_control);
--	IWL_ERR(fwrt, "0x%08X | l2p_duration\n", table.l2p_duration);
--	IWL_ERR(fwrt, "0x%08X | l2p_mhvalid\n", table.l2p_mhvalid);
--	IWL_ERR(fwrt, "0x%08X | l2p_addr_match\n", table.l2p_addr_match);
--	IWL_ERR(fwrt, "0x%08X | lmpm_pmg_sel\n", table.lmpm_pmg_sel);
--	IWL_ERR(fwrt, "0x%08X | timestamp\n", table.u_timestamp);
--	IWL_ERR(fwrt, "0x%08X | flow_handler\n", table.flow_handler);
- }
- 
- /*
-@@ -264,7 +227,6 @@ static void iwl_fwrt_dump_tcm_error_log(struct iwl_fw_runtime *fwrt, int idx)
- 	struct iwl_trans *trans = fwrt->trans;
- 	struct iwl_tcm_error_event_table table = {};
- 	u32 base = fwrt->trans->dbg.tcm_error_event_table[idx];
--	int i;
- 	u32 flag = idx ? IWL_ERROR_EVENT_TABLE_TCM2 :
- 			 IWL_ERROR_EVENT_TABLE_TCM1;
- 
-@@ -275,23 +237,10 @@ static void iwl_fwrt_dump_tcm_error_log(struct iwl_fw_runtime *fwrt, int idx)
- 
- 	IWL_ERR(fwrt, "TCM%d status:\n", idx + 1);
- 	IWL_ERR(fwrt, "0x%08X | error ID\n", table.error_id);
--	IWL_ERR(fwrt, "0x%08X | tcm branchlink2\n", table.blink2);
--	IWL_ERR(fwrt, "0x%08X | tcm interruptlink1\n", table.ilink1);
- 	IWL_ERR(fwrt, "0x%08X | tcm interruptlink2\n", table.ilink2);
- 	IWL_ERR(fwrt, "0x%08X | tcm data1\n", table.data1);
- 	IWL_ERR(fwrt, "0x%08X | tcm data2\n", table.data2);
- 	IWL_ERR(fwrt, "0x%08X | tcm data3\n", table.data3);
--	IWL_ERR(fwrt, "0x%08X | tcm log PC\n", table.logpc);
--	IWL_ERR(fwrt, "0x%08X | tcm frame pointer\n", table.frame_pointer);
--	IWL_ERR(fwrt, "0x%08X | tcm stack pointer\n", table.stack_pointer);
--	IWL_ERR(fwrt, "0x%08X | tcm msg ID\n", table.msgid);
--	IWL_ERR(fwrt, "0x%08X | tcm ISR status\n", table.isr);
--	for (i = 0; i < ARRAY_SIZE(table.hw_status); i++)
--		IWL_ERR(fwrt, "0x%08X | tcm HW status[%d]\n",
--			table.hw_status[i], i);
--	for (i = 0; i < ARRAY_SIZE(table.sw_status); i++)
--		IWL_ERR(fwrt, "0x%08X | tcm SW status[%d]\n",
--			table.sw_status[i], i);
- }
- 
- /*
-@@ -338,26 +287,10 @@ static void iwl_fwrt_dump_rcm_error_log(struct iwl_fw_runtime *fwrt, int idx)
- 
- 	IWL_ERR(fwrt, "RCM%d status:\n", idx + 1);
- 	IWL_ERR(fwrt, "0x%08X | error ID\n", table.error_id);
--	IWL_ERR(fwrt, "0x%08X | rcm branchlink2\n", table.blink2);
--	IWL_ERR(fwrt, "0x%08X | rcm interruptlink1\n", table.ilink1);
- 	IWL_ERR(fwrt, "0x%08X | rcm interruptlink2\n", table.ilink2);
- 	IWL_ERR(fwrt, "0x%08X | rcm data1\n", table.data1);
- 	IWL_ERR(fwrt, "0x%08X | rcm data2\n", table.data2);
- 	IWL_ERR(fwrt, "0x%08X | rcm data3\n", table.data3);
--	IWL_ERR(fwrt, "0x%08X | rcm log PC\n", table.logpc);
--	IWL_ERR(fwrt, "0x%08X | rcm frame pointer\n", table.frame_pointer);
--	IWL_ERR(fwrt, "0x%08X | rcm stack pointer\n", table.stack_pointer);
--	IWL_ERR(fwrt, "0x%08X | rcm msg ID\n", table.msgid);
--	IWL_ERR(fwrt, "0x%08X | rcm ISR status\n", table.isr);
--	IWL_ERR(fwrt, "0x%08X | frame HW status\n", table.frame_hw_status);
--	IWL_ERR(fwrt, "0x%08X | LMAC-to-RCM request mbox\n",
--		table.mbx_lmac_to_rcm_req);
--	IWL_ERR(fwrt, "0x%08X | RCM-to-LMAC request mbox\n",
--		table.mbx_rcm_to_lmac_req);
--	IWL_ERR(fwrt, "0x%08X | MAC header control\n", table.mh_ctl);
--	IWL_ERR(fwrt, "0x%08X | MAC header addr1 low\n", table.mh_addr1_lo);
--	IWL_ERR(fwrt, "0x%08X | MAC header info\n", table.mh_info);
--	IWL_ERR(fwrt, "0x%08X | MAC header error\n", table.mh_err);
- }
- 
- static void iwl_fwrt_dump_iml_error_log(struct iwl_fw_runtime *fwrt)
+ static void
 -- 
 2.34.1
 
