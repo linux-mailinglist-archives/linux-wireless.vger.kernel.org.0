@@ -1,89 +1,89 @@
-Return-Path: <linux-wireless+bounces-33648-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-33649-lists+linux-wireless=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 4FouBT33vmmFmQMAu9opvQ
-	(envelope-from <linux-wireless+bounces-33648-lists+linux-wireless=lfdr.de@vger.kernel.org>)
-	for <lists+linux-wireless@lfdr.de>; Sat, 21 Mar 2026 20:53:33 +0100
+	id 6OGFN3L7vmlknQMAu9opvQ
+	(envelope-from <linux-wireless+bounces-33649-lists+linux-wireless=lfdr.de@vger.kernel.org>)
+	for <lists+linux-wireless@lfdr.de>; Sat, 21 Mar 2026 21:11:30 +0100
 X-Original-To: lists+linux-wireless@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4F96A2E714C
-	for <lists+linux-wireless@lfdr.de>; Sat, 21 Mar 2026 20:53:32 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 403312E720C
+	for <lists+linux-wireless@lfdr.de>; Sat, 21 Mar 2026 21:11:30 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id DD3AB300D6AC
-	for <lists+linux-wireless@lfdr.de>; Sat, 21 Mar 2026 19:53:25 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id DFAB1300BD97
+	for <lists+linux-wireless@lfdr.de>; Sat, 21 Mar 2026 20:11:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3A06F35C19B;
-	Sat, 21 Mar 2026 19:53:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 352A636AB72;
+	Sat, 21 Mar 2026 20:11:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="R7FEWGiX"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="aPmZKSj5"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-wm1-f46.google.com (mail-wm1-f46.google.com [209.85.128.46])
+Received: from mail-wr1-f41.google.com (mail-wr1-f41.google.com [209.85.221.41])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A807C35A397
-	for <linux-wireless@vger.kernel.org>; Sat, 21 Mar 2026 19:53:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.46
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8D452361679
+	for <linux-wireless@vger.kernel.org>; Sat, 21 Mar 2026 20:11:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.41
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774122805; cv=none; b=mcaPZugtfTPRpscyV1H2WLB/j7uK0s/g+cGUU1lWFjrsQcIThXfB5FILeNqaZb5pBQRbBO8CMhJ2YZpqmjKNR6/jN33KcIKkevMlz66x7+ttO/rGwiEn+7cCyx3hcW8+0N5DEV5EcX7cPmybDrPmGAqgSkVC2+xQ30hMmI8feVM=
+	t=1774123888; cv=none; b=X+hCXBkBLoynuyrUj1GHX8NUahM3GNd9m66lELD/VvEcbbT6ez+3gRBmcgt20bqNi60puz/FCRAtS0X67o4K+VTHBWS9zczpNw7NkrlxMCwSMWEheM+DX2hIT2VD9nJRJGwSeeCRr2Qb0CyrUKvr89l2kcatmSbHCg0v/tfr6dY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774122805; c=relaxed/simple;
-	bh=rDOCgPteM6TTfYDf1LRsHenu5dlLPKhzMVaEHhMWwYk=;
+	s=arc-20240116; t=1774123888; c=relaxed/simple;
+	bh=cBuHMpy5UUKizEIEYvpxPdsMht/LloxUfefqT5HPX/c=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=ZqmEJh//XaIn+7TkY01+BUvP3t7kHvob23HWtdZr9cugXoWUdXJidD+dSSTkJ/3+CUsAIhsBytsIljnesLxcsPm2x/PYiyvadNgRT6gvOfec6iPZb9NckU2ewBkdI/NlMz0wXCRjtmKSssDvcltir5iCFdwGM1afPWc2cDS6V/c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=R7FEWGiX; arc=none smtp.client-ip=209.85.128.46
+	 In-Reply-To:Content-Type; b=rql8t05hWtY1CFpg7Dlogx6TIqHzItHNoHApeIu5+ZfW4yBicXzTaWty28ND2cu4n/MLOcyFOVdZujCQLQco2JbsMlbuZzEyIJDQDY2xQmQxSZ7uOLwsh5KAW+GpJ0t/4xaR1ro248BPwDLxkoP35h3bCgFOghdBbW7KZOH0taU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=aPmZKSj5; arc=none smtp.client-ip=209.85.221.41
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-wm1-f46.google.com with SMTP id 5b1f17b1804b1-486ff201041so12183935e9.1
-        for <linux-wireless@vger.kernel.org>; Sat, 21 Mar 2026 12:53:23 -0700 (PDT)
+Received: by mail-wr1-f41.google.com with SMTP id ffacd0b85a97d-439cd6b0aedso1967082f8f.1
+        for <linux-wireless@vger.kernel.org>; Sat, 21 Mar 2026 13:11:26 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1774122802; x=1774727602; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1774123885; x=1774728685; darn=vger.kernel.org;
         h=content-transfer-encoding:in-reply-to:from:content-language
          :references:cc:to:subject:user-agent:mime-version:date:message-id
          :from:to:cc:subject:date:message-id:reply-to;
-        bh=o1dlVIx15gjsKJLQ9KZvIUV9xECqc7wV00dn76mdAGU=;
-        b=R7FEWGiXj0HWWFBrUsQl8DHna7/Xx2PvRHihb2Mw9+x5ogHjFQHFS1JWvFDHXAgsv+
-         8+9LCOFLZZxD7veQ99gFjnFIB4vxXHYSzw01Kd1tLf5e0WcHqki5tv2iIvO05lEI4awr
-         tp5SqR/EY0f3jujpJREqk91jIXn6rGpL0pUxYIItbWzAy/LsUKY6MBr5UkDW1KIAl0rN
-         Psv4Qo4ZYwJDVCwX/QM0vfVhIBrbdG9z3/uyS6H6oVFerC1PCUwrCDpfF3aTEFJ0Nhtp
-         nOWsSqMQidbGaUoXP6Mw3B++8kTeKZXTxqZEtr+Ax776TXpIU4mJoihMK+RuKH9eqam/
-         Oifw==
+        bh=JVjjk03GALD+cgsNgifk6fqg2nyEid7i6csmiC3UezY=;
+        b=aPmZKSj5bOIad6RABhZQ4ucB4jcxif3bDrfrZQJJn8euIBIXt8K55gn/hDvLq8DNHI
+         b2PGQNpDuRtmpeB6mum1wpC2X129CsqigF6a8b9sa3Hcnk26KSOBlflcBa36oJHHalms
+         CRDbxeQmU6LBBKFlKJPvqQu1AaPTOqaSoxTOEpe11Sy24s/zJ7MAeddqIZFY8EpO8Wd6
+         be29UCf6UJBeYYZvD5FEMdJMWTInqEQFoy15xwaGU8B0shpAn6yYZxGHIDMNDzy9kywj
+         EObl+aGhqwcv0VSJ1CUYFs5uft1URDZU0g1adJNi5tAbQ7DulNkUqA3HKF+JYDLfT2Fr
+         QYpA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1774122802; x=1774727602;
+        d=1e100.net; s=20251104; t=1774123885; x=1774728685;
         h=content-transfer-encoding:in-reply-to:from:content-language
          :references:cc:to:subject:user-agent:mime-version:date:message-id
          :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=o1dlVIx15gjsKJLQ9KZvIUV9xECqc7wV00dn76mdAGU=;
-        b=h7LGTW4QoCt1Vc7XYhNZwj7O5/JGV64bXMmmJC9LmwVkubuakHvO/6FO8FPdj5/avd
-         7HbtgfVYBwOpOp2W2K8S32NR6N5tt8Ts4Ip/NS2um7nilnR+LFPhv8arNPbd20ZaAV9Z
-         lU1QkCvSkjBQqcIaevmvyKwcJ5XSR9qKWTUvrqFfnOuMe3AwmIDJ5Waxt9pKgYVVcjj6
-         6xDYKsr96Als2XDW7RhTzQEUl5GNZhM5O0OrktkonqpTUsUysOHtMMs3bq4QwmZ3wCD7
-         4wDvHav0umLSnvuKhxQCWn1oVrero0YV3S1DedufULU8VIhUqeRca7SfCm+k1xFgweA5
-         HvGw==
-X-Gm-Message-State: AOJu0Yxqo+Gfe/UIbHmeJvYUcbrZk8F9R3S6cQD2KaOq0P6pGaIkGlDJ
-	P807SpLMsXIXFJrOi4DQddlmeQMgf4SA9QeFqWtDpjy4UwrSkuxiOHbE
-X-Gm-Gg: ATEYQzx5GEja9QH9mjITdE7i/DvnMh/QURdY7Iw5hErXlpapiJeKAXEOHbxT4Z359jw
-	DyLQ8zhNFdRM6vZeYCsZ1DNRtu4wKpiTe7tKnLJEjerA22vfpgv9brbm8VurWgnWXRk+XQWBUJJ
-	oUnk+bWWKt8o+odB3HvJWdAPfGXTPria7XaxnGzoKxJBrT36Pq2ehk1lVv30ZAXxLnSCE/RoBxH
-	BhhiR22v0hfnRyNgBJL421oQWXlqCB/DB+RX7nNA9IU8PEaIAIfEqyhRORiPCwkEFaI9to1G4Oz
-	zPGjMJgC3ypgV2L7spRdU4ykKokbbSZ2w+Gwb/MOyn2AbLSTpIgBetL/tElgj47S/MswfWhIFU+
-	/CDJWad9oBsJyDxlIejtumWExUop5A0O+nyXnHnlgejY1rmP+wvH6c2tczJ805Gc3hm+o1StRZj
-	ybJxS9VeaA/IiKbxRFisuoxux0FHEaQSjfvrPd4GKquNGpGX3qeKxhyLnatueoeHVhuaqAmmYrv
-	caN6oZPQm3wGBAf5eRNxLOEmlHWQjyz
-X-Received: by 2002:a05:600c:a08:b0:480:4a8f:2d5c with SMTP id 5b1f17b1804b1-486fee2b3e1mr104963465e9.29.1774122801859;
-        Sat, 21 Mar 2026 12:53:21 -0700 (PDT)
+        bh=JVjjk03GALD+cgsNgifk6fqg2nyEid7i6csmiC3UezY=;
+        b=g+VLMLYW9BvyXx16/WK5w8P+wbQvNf02oXyee/f6F2Ztsx32iizUGFZ6ofd+5sLql4
+         HIblLmU8460Sns+8+JahlLWkq70k7zbmx7snUhM0sgSvZbuVCrUROOqmIE/X+1P3KJd3
+         WDj6z1J6m2diOgtDGLt0GdBbFz2oBf4jjzCU4s4f5vpEDh9UBQR7EFX9kSEolNTnNCGg
+         FqvO0NTjE9CJXsbzY2bbXjlCJ0RrH1jlk5LJF85+PgrlWbpPlOpIymlbeobVfCzDfAJ0
+         OB6avh4HefreHO7LDctE4PZtvOFbF59RLXuEPocR+GlX69PyGFqS+Ry1/r08D5b3IVa9
+         UYvw==
+X-Gm-Message-State: AOJu0YxDFIb1WDKzpYh5O1m2KVRHWZ5J/GwWh/by4HOaH0U3EY961clW
+	S9s83RAdquTLQPb7zFAgsNOQTfuFIPI2K/ws6FF8nRkgMJgIeqr8lOfCqE/emg==
+X-Gm-Gg: ATEYQzxb7Kenm1s4hSRIKnvnao/ZTJH8k6ST9yAZk7Zl1G8P/J4fJnlohOOwUpuLTQN
+	+zgWAXNcvwIAPV0okszMmv6wBiQZz/0BAfjjKTPBe5tqGrLoeu4QwD733hZ4UkWYYVMq5+AUWLC
+	BkYqt4jUikzgS/xEaQws4HhOW8wmCarpLpof463QDbdDp5uPhqbVbhmjKh6xfypMxkJSRt3HkZZ
+	INTQxElzOB+nOl0ea+yri6AHwBwibRFf/kKcrVjLG6ju+NQwNp+l8cziqHFg0a3TM/3yGQp7UV5
+	Pb7rP8CytXeFkngvOfN/mNXBQEYSZuKp+HOT3r2fu+S4j7W5nIUrZdVBuXDUS7NaTBd5XyjA2aD
+	BYaKqs11TWhsVfy2/+25xqTa23Jf1A5meKyb9m0pyvqsn01tEZhBunROVxxF2AGP5AmMV9WxJk2
+	PfuvPNxui8Yob4Di9rZQmjHHIj0ZMTGsWrbH7/hfTntV+AVHT4WTZZlnfyVo+tDVCwzNf/38fLG
+	Wt9MXRPtVxf11Ye9xQJwIlGaEfokGZs
+X-Received: by 2002:a05:600c:3514:b0:483:a27e:6706 with SMTP id 5b1f17b1804b1-486fedb54cdmr101881855e9.9.1774123884791;
+        Sat, 21 Mar 2026 13:11:24 -0700 (PDT)
 Received: from shift.daheim (p200300d5ff07e00050f496fffe46beef.dip0.t-ipconnect.de. [2003:d5:ff07:e000:50f4:96ff:fe46:beef])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-48703e26408sm103516245e9.11.2026.03.21.12.53.21
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-486fd9845a2sm292393045e9.6.2026.03.21.13.11.24
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 21 Mar 2026 12:53:21 -0700 (PDT)
+        Sat, 21 Mar 2026 13:11:24 -0700 (PDT)
 Received: from localhost ([127.0.0.1])
 	by shift.daheim with esmtp (Exim 4.99.1)
 	(envelope-from <chunkeey@gmail.com>)
-	id 1w42LG-00000001NlI-15jS;
-	Sat, 21 Mar 2026 20:53:20 +0100
-Message-ID: <46d3a248-bc59-4c60-85ba-88d80afa8dc3@gmail.com>
-Date: Sat, 21 Mar 2026 20:53:20 +0100
+	id 1w42ci-00000001NvL-3ASr;
+	Sat, 21 Mar 2026 21:11:22 +0100
+Message-ID: <093b7bad-2ecc-47af-9763-958283a102d6@gmail.com>
+Date: Sat, 21 Mar 2026 21:11:22 +0100
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
@@ -91,123 +91,197 @@ List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 08/10] carl9170: phy: enable antenna diversity for 2-chain
- devices
-To: Masi Osmani <mas-i@hotmail.de>
+Subject: Re: [PATCH 09/10] carl9170: fw: enable DFS radar detection
+To: Masi Osmani <mas-i@hotmail.de>,
+ Christian Lamparter <chunkeey@googlemail.com>
 Cc: linux-wireless@vger.kernel.org, ath9k-devel@qca.qualcomm.com
 References: <cover.1773277728.git.mas-i@hotmail.de>
- <AM7PPF5613FA0B6344DB5885359FAFC80D69444A@AM7PPF5613FA0B6.EURP251.PROD.OUTLOOK.COM>
+ <AM7PPF5613FA0B6E8DE143A385080A72F139444A@AM7PPF5613FA0B6.EURP251.PROD.OUTLOOK.COM>
 Content-Language: de-DE
 From: Christian Lamparter <chunkeey@gmail.com>
-In-Reply-To: <AM7PPF5613FA0B6344DB5885359FAFC80D69444A@AM7PPF5613FA0B6.EURP251.PROD.OUTLOOK.COM>
+In-Reply-To: <AM7PPF5613FA0B6E8DE143A385080A72F139444A@AM7PPF5613FA0B6.EURP251.PROD.OUTLOOK.COM>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
 X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[gmail.com:s=20230601];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-33648-lists,linux-wireless=lfdr.de];
-	FREEMAIL_TO(0.00)[hotmail.de];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	TO_DN_SOME(0.00)[];
+	TAGGED_FROM(0.00)[bounces-33649-lists,linux-wireless=lfdr.de];
+	FROM_HAS_DN(0.00)[];
 	RECEIVED_HELO_LOCALHOST(0.00)[];
+	FREEMAIL_TO(0.00)[hotmail.de,googlemail.com];
+	RCVD_TLS_LAST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	RCPT_COUNT_THREE(0.00)[3];
+	DKIM_TRACE(0.00)[gmail.com:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	TO_DN_SOME(0.00)[];
 	RCVD_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[chunkeey@gmail.com,linux-wireless@vger.kernel.org];
-	DKIM_TRACE(0.00)[gmail.com:+];
+	RCPT_COUNT_THREE(0.00)[4];
 	NEURAL_HAM(-0.00)[-1.000];
 	TAGGED_RCPT(0.00)[linux-wireless];
 	MID_RHS_MATCH_FROM(0.00)[];
-	FREEMAIL_FROM(0.00)[gmail.com];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 4F96A2E714C
+	FREEMAIL_FROM(0.00)[gmail.com]
+X-Rspamd-Queue-Id: 403312E720C
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
 On 3/12/26 11:38 AM, Masi Osmani wrote:
-> Enable fast antenna diversity on devices with two RX chains
-> (rx_mask == 3).  This programs the MULTICHAIN_GAIN_CTL register
-> to configure main/alternate LNA settings and enables the
-> CCK fast antenna diversity bit.
+> Enable DFS (Dynamic Frequency Selection) radar detection on the
+> AR9170.  The hardware has radar detection registers (RADAR_0,
+> RADAR_1, RADAR_EXT) and the firmware already sends
+> CARL9170_RSP_RADAR events, but the driver never programmed the
+> detection parameters and only logged a "please report" message.
 > 
-> The AR9170 hardware has antenna diversity registers inherited
-> from the AR9285/AR9287 family, but the carl9170 driver never
-> programmed them.  For dual-chain devices this improves receive
-> performance in multipath environments by allowing the baseband
-> to quickly switch between antenna paths.
+> Changes:
+> - Program radar detection pulse parameters in phy.c when the
+>    current channel has IEEE80211_CHAN_RADAR set.  Values are
+>    based on ath9k defaults for FCC/ETSI compliance.
 
-Oh, no. It does program them! It's part of the ar5416_phy_init array in phy.c.
+Which values did you use? The best I can find are in ar5008_phy.c
+<https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/drivers/net/wireless/ath/ath9k/ar5008_phy.c?h=v7.0-rc4#n1268>
 
-So. From what I remember, this was the reason why I copied the definitions
-over from the ath9k driver to carl9170. Because this register must be important
-if they are part of the init values. But I don't know if these definitions
-are the same for AR9170 and AR9285. That's why the AR9285 is there.
 
-As for ar5416_phy_init values. They came from the original OTUS driver.
+|	conf->fir_power = -33;
+|	conf->radar_rssi = 20;
+|	conf->pulse_height = 10;
+|	conf->pulse_rssi = 15;
+|	conf->pulse_inband = 15;
+|	conf->pulse_maxlen = 255;
+|	conf->pulse_inband_step = 12;
+|	conf->radar_inband = 8;
 
-Hope this helps.
+the one in the patch look a little bit different.
+Can I ask, how did you tune them? Do you have a setup to mimic
+those air-port or weather radars? Or are you living close to one?
 
-If possible, this feature should be governed by something like the experimental
-module parameter?
-
-> 
-> The diversity configuration mirrors what ath9k uses for the
-> AR9285 single-chip design:
-> - Main LNA: LNA1
-> - Alt LNA: LNA1+LNA2 (combined)
-> - Gain table: table 0 for both paths
+> - Advertise radar_detect_widths in the interface combination
+>    (fw.c) for 20 MHz noHT, 20 MHz HT, and 40 MHz HT.
+> - Replace the old "please report" message with a call to
+>    ieee80211_radar_detected() so mac80211 can trigger the
+>    proper DFS state machine (channel switch / CAC).
 > 
 > Signed-off-by: Masi Osmani <mas-i@hotmail.de>
 > ---
->   drivers/net/wireless/ath/carl9170/phy.c | 25 +++++++++++++++++++++++++
->   1 file changed, 25 insertions(+)
+>   drivers/net/wireless/ath/carl9170/fw.c  |  3 ++
+>   drivers/net/wireless/ath/carl9170/phy.c | 45 +++++++++++++++++++++++++
+>   drivers/net/wireless/ath/carl9170/rx.c  |  7 ++--
+>   3 files changed, 50 insertions(+), 5 deletions(-)
 > 
+> diff --git a/drivers/net/wireless/ath/carl9170/fw.c b/drivers/net/wireless/ath/carl9170/fw.c
+> index 419f553..a730593 100644
+> --- a/drivers/net/wireless/ath/carl9170/fw.c
+> +++ b/drivers/net/wireless/ath/carl9170/fw.c
+> @@ -215,6 +215,9 @@ static void carl9170_fw_set_if_combinations(struct ar9170 *ar,
+>   	ar->if_combs[0].max_interfaces = ar->fw.vif_num;
+>   	ar->if_combs[0].limits = ar->if_comb_limits;
+>   	ar->if_combs[0].n_limits = ARRAY_SIZE(ar->if_comb_limits);
+> +	ar->if_combs[0].radar_detect_widths = BIT(NL80211_CHAN_WIDTH_20_NOHT) |
+> +					      BIT(NL80211_CHAN_WIDTH_20) |
+> +					      BIT(NL80211_CHAN_WIDTH_40);
+>   
+>   	ar->hw->wiphy->iface_combinations = ar->if_combs;
+>   	ar->hw->wiphy->n_iface_combinations = ARRAY_SIZE(ar->if_combs);
 > diff --git a/drivers/net/wireless/ath/carl9170/phy.c b/drivers/net/wireless/ath/carl9170/phy.c
-> index 290c336..bcd9066 100644
+> index bcd9066..c294df7 100644
 > --- a/drivers/net/wireless/ath/carl9170/phy.c
 > +++ b/drivers/net/wireless/ath/carl9170/phy.c
-> @@ -536,6 +536,31 @@ static int carl9170_init_phy_from_eeprom(struct ar9170 *ar,
->   	carl9170_regwrite(AR9170_PHY_REG_RX_CHAINMASK, ar->eeprom.rx_mask);
->   	carl9170_regwrite(AR9170_PHY_REG_CAL_CHAINMASK, ar->eeprom.rx_mask);
+> @@ -1637,6 +1637,47 @@ void carl9170_update_channel_maxpower(struct ar9170 *ar)
+>   	}
+>   }
 >   
-> +	/*
-> +	 * Enable fast antenna diversity for 2-chain devices.
-> +	 * Configure main/alt LNA with both chains for best
-> +	 * multipath performance.
-> +	 */
-> +	if (ar->eeprom.rx_mask == 3) {
-> +		val = carl9170_def_val(AR9170_PHY_REG_MULTICHAIN_GAIN_CTL,
-> +				       is_2ghz, is_40mhz);
-> +		val |= AR9170_PHY_9285_ANT_DIV_CTL;
-> +		SET_VAL(AR9170_PHY_9285_ANT_DIV_ALT_LNACONF, val,
-> +			AR9170_PHY_9285_ANT_DIV_LNA1_PLUS_LNA2);
-> +		SET_VAL(AR9170_PHY_9285_ANT_DIV_MAIN_LNACONF, val,
-> +			AR9170_PHY_9285_ANT_DIV_LNA1);
-> +		SET_VAL(AR9170_PHY_9285_ANT_DIV_ALT_GAINTB, val,
-> +			AR9170_PHY_9285_ANT_DIV_GAINTB_0);
-> +		SET_VAL(AR9170_PHY_9285_ANT_DIV_MAIN_GAINTB, val,
-> +			AR9170_PHY_9285_ANT_DIV_GAINTB_0);
-> +		carl9170_regwrite(AR9170_PHY_REG_MULTICHAIN_GAIN_CTL, val);
+> +static int carl9170_set_radar_detection(struct ar9170 *ar,
+> +					struct ieee80211_channel *channel)
+> +{
+> +	bool enable = channel->flags & IEEE80211_CHAN_RADAR;
 > +
-> +		val = carl9170_def_val(AR9170_PHY_REG_CCK_DETECT,
-> +				       is_2ghz, is_40mhz);
-> +		val |= AR9170_PHY_CCK_DETECT_BB_ENABLE_ANT_FAST_DIV;
-> +		carl9170_regwrite(AR9170_PHY_REG_CCK_DETECT, val);
+> +	carl9170_regwrite_begin(ar);
+> +
+> +	if (enable) {
+> +		/*
+> +		 * Configure radar detection pulse parameters.
+> +		 * Values based on ath9k's defaults for FCC/ETSI.
+> +		 */
+> +		carl9170_regwrite(AR9170_PHY_REG_RADAR_0,
+> +				  AR9170_PHY_RADAR_0_ENA |
+> +				  AR9170_PHY_RADAR_0_FFT_ENA |
+> +				  SET_CONSTVAL(AR9170_PHY_RADAR_0_INBAND, 5) |
+> +				  SET_CONSTVAL(AR9170_PHY_RADAR_0_PRSSI, 1) |
+> +				  SET_CONSTVAL(AR9170_PHY_RADAR_0_HEIGHT, 6) |
+> +				  SET_CONSTVAL(AR9170_PHY_RADAR_0_RRSSI, 12) |
+> +				  SET_CONSTVAL(AR9170_PHY_RADAR_0_FIRPWR, 33));
+> +
+> +		carl9170_regwrite(AR9170_PHY_REG_RADAR_1,
+> +				  AR9170_PHY_RADAR_1_MAX_RRSSI |
+> +				  AR9170_PHY_RADAR_1_BLOCK_CHECK |
+> +				  AR9170_PHY_RADAR_1_RELSTEP_CHECK |
+> +				  SET_CONSTVAL(AR9170_PHY_RADAR_1_RELSTEP_THRESH, 8) |
+> +				  SET_CONSTVAL(AR9170_PHY_RADAR_1_RELPWR_THRESH, 12) |
+> +				  SET_CONSTVAL(AR9170_PHY_RADAR_1_MAXLEN, 255));
+> +
+> +		carl9170_regwrite(AR9170_PHY_REG_RADAR_EXT,
+> +				  AR9170_PHY_RADAR_EXT_ENA);
+
+
+This seems to be based on ar5008_hw_set_radar_params except that:
+
+|	if (conf->ext_channel)
+|		REG_SET_BIT(ah, AR_PHY_RADAR_EXT, AR_PHY_RADAR_EXT_ENA);
+|	else
+|		REG_CLR_BIT(ah, AR_PHY_RADAR_EXT, AR_PHY_RADAR_EXT_ENA);
+
+you always set the EXT_ENA bit?
+
+
+> +	} else {
+> +		carl9170_regwrite(AR9170_PHY_REG_RADAR_0, 0);
+> +		carl9170_regwrite(AR9170_PHY_REG_RADAR_1, 0);
+> +		carl9170_regwrite(AR9170_PHY_REG_RADAR_EXT, 0);
 > +	}
 > +
->   	carl9170_regwrite_finish();
->   	return carl9170_regwrite_result();
->   }
+> +	carl9170_regwrite_finish();
+> +	return carl9170_regwrite_result();
+> +}
+> +
+>   int carl9170_get_noisefloor(struct ar9170 *ar)
+>   {
+>   	static const u32 phy_regs[] = {
+> @@ -1739,6 +1780,10 @@ int carl9170_set_channel(struct ar9170 *ar, struct ieee80211_channel *channel,
+>   	if (err)
+>   		return err;
+>   
+> +	err = carl9170_set_radar_detection(ar, channel);
+> +	if (err)
+> +		return err;
+> +
+>   	tmp = AR9170_PHY_TURBO_FC_SINGLE_HT_LTF1 |
+>   	      AR9170_PHY_TURBO_FC_HT_EN;
+>   
+> diff --git a/drivers/net/wireless/ath/carl9170/rx.c b/drivers/net/wireless/ath/carl9170/rx.c
+> index bb909b5..1fe727c 100644
+> --- a/drivers/net/wireless/ath/carl9170/rx.c
+> +++ b/drivers/net/wireless/ath/carl9170/rx.c
+> @@ -259,11 +259,8 @@ void carl9170_handle_command_response(struct ar9170 *ar, void *buf, u32 len)
+>   		break;
+>   
+>   	case CARL9170_RSP_RADAR:
+> -		if (!net_ratelimit())
+> -			break;
+> -
+> -		wiphy_info(ar->hw->wiphy, "FW: RADAR! Please report this "
+> -		       "incident to linux-wireless@vger.kernel.org !\n");
+> +		wiphy_info(ar->hw->wiphy, "FW: radar pulse detected\n");
+> +		ieee80211_radar_detected(ar->hw, NULL);
+>   		break;
+>   
+>   	case CARL9170_RSP_GPIO:
 
 
