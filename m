@@ -1,89 +1,89 @@
-Return-Path: <linux-wireless+bounces-33656-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-33657-lists+linux-wireless=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id uupxCV0av2kPugMAu9opvQ
-	(envelope-from <linux-wireless+bounces-33656-lists+linux-wireless=lfdr.de@vger.kernel.org>)
-	for <lists+linux-wireless@lfdr.de>; Sat, 21 Mar 2026 23:23:25 +0100
+	id xYcPLo8bv2kZuwMAu9opvQ
+	(envelope-from <linux-wireless+bounces-33657-lists+linux-wireless=lfdr.de@vger.kernel.org>)
+	for <lists+linux-wireless@lfdr.de>; Sat, 21 Mar 2026 23:28:31 +0100
 X-Original-To: lists+linux-wireless@lfdr.de
 Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id A2D5D2E768F
-	for <lists+linux-wireless@lfdr.de>; Sat, 21 Mar 2026 23:23:24 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id A826A2E76B9
+	for <lists+linux-wireless@lfdr.de>; Sat, 21 Mar 2026 23:28:29 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id E85573008311
-	for <lists+linux-wireless@lfdr.de>; Sat, 21 Mar 2026 22:23:23 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id EFAE63008326
+	for <lists+linux-wireless@lfdr.de>; Sat, 21 Mar 2026 22:28:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A1B3D242D9D;
-	Sat, 21 Mar 2026 22:23:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4B75B2DEA7B;
+	Sat, 21 Mar 2026 22:28:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="V5JV9GFX"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="VUEESDco"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-wr1-f46.google.com (mail-wr1-f46.google.com [209.85.221.46])
+Received: from mail-wr1-f48.google.com (mail-wr1-f48.google.com [209.85.221.48])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1E52A53E0B
-	for <linux-wireless@vger.kernel.org>; Sat, 21 Mar 2026 22:23:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.46
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D9698136672
+	for <linux-wireless@vger.kernel.org>; Sat, 21 Mar 2026 22:28:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.48
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774131800; cv=none; b=DRZKkn7Gt5sGSdldqsKIKF50Jh6/eF7ZFS/qYyYnJlozL1ou2VedAgT3ZXeDi3cIx1+Ody/LJfw+Of6KnkgZ8PHHVyyHGiW7RzxCJYXEfcxEHI4q/w+zvceaYmNb6SEARqEd9nhV66XZRAemSy/KoD65gN1RwXkkRc4C+Egk2pc=
+	t=1774132105; cv=none; b=gi6EdxL5gmAOQZPXkuWusMFZJLtqo0xIlrzkzDUe4zhrEZq62SPHYS34tm5Ke/dFcyAEEV8s18BZ9saESGdukwb76U/9JKn/u9Q1q0o2SWGRpvjWa9bPSyLrMrcT1Zt0PZwZXreiNRN8ltgOfkkb9Dw7wG/LywT16+/n8OYsGoU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774131800; c=relaxed/simple;
-	bh=c01jiOmrG1c8cy/VdJuGeWopyxusxfBO2ybRMNYY3ZA=;
+	s=arc-20240116; t=1774132105; c=relaxed/simple;
+	bh=ZB8AMEepItOTLBvlzO0Y8gDHjfPYD/n/ODMqPQ1+8Yk=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=MTZVjLmW5Y5lUoRtDe4DRgzJuqTyFiClhOKEzevHEgEaouhTJtAFga/xIapoMXVswy7Ln9+Bp3o1u4cxN8SDXAL3Sk10FouLjuX4LXSL6DvspeiEfLTFo/JWnQGvX9iN1rqoHIfQGSqyNF7kNZQKhpwifAQachMz+iujDbRbGHs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=V5JV9GFX; arc=none smtp.client-ip=209.85.221.46
+	 In-Reply-To:Content-Type; b=GcYNn4MmpyfuFyjTN2o0ycJ4WG9DjHPlb7vwVQ54AspjIR+6qjY2yCB560UPFIUqvjK1F7Xwc0gN8fxyq+VsdmFoOulcpKViZUM/GjJRxOuULEwNQqpoh8oRrJU5wKW3cwLDyi7gJYlDUTa+udP7dsYNbKf4DeR9x3VSReILo+o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=VUEESDco; arc=none smtp.client-ip=209.85.221.48
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-wr1-f46.google.com with SMTP id ffacd0b85a97d-439b97a8a8cso1814028f8f.1
-        for <linux-wireless@vger.kernel.org>; Sat, 21 Mar 2026 15:23:18 -0700 (PDT)
+Received: by mail-wr1-f48.google.com with SMTP id ffacd0b85a97d-439c56e822eso3036443f8f.2
+        for <linux-wireless@vger.kernel.org>; Sat, 21 Mar 2026 15:28:23 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1774131797; x=1774736597; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1774132102; x=1774736902; darn=vger.kernel.org;
         h=content-transfer-encoding:in-reply-to:from:content-language
          :references:cc:to:subject:user-agent:mime-version:date:message-id
          :from:to:cc:subject:date:message-id:reply-to;
-        bh=TVe9pU0IW4S2F5pE6WIuxp7cdRW72xZGOAqcPYR4Gc4=;
-        b=V5JV9GFXlqxp/usU/mUrcydbYYZYqOTH1knkRsUbtPcbYzsrrLVnG9ykJXhSTaHXGq
-         yD9B+7AcrzTB2zOQC6fbPifgCIH16l0pttzEGG/EQsq88+9unZ9GPbsP3FOu5iX+yZvR
-         N1Mvrftbk4j+cqy+xjTAG5hMUACzl2lBh2Plqw2OcJ15nSBiQubEWhuao3A2PXAFBXV7
-         0k0TiuG8kr5t0wg1NQ9ProqWTZ83LiI5GQSJRVAV7sVvKtF8KLbyaQMlOkUVAPWhBpWo
-         VjJXaFNKPPbL6mrzcZovfbRI6DDDnjhMtBQS6/7yt5+gRsseYAbIuf6IFBjVDf5lSwsr
-         KBVw==
+        bh=ZB8AMEepItOTLBvlzO0Y8gDHjfPYD/n/ODMqPQ1+8Yk=;
+        b=VUEESDco5C0lN2pROiiov/X2QWBcE1kc6z+cOCN06S7lYte2H7vtxf2N0POsy+qkWl
+         Gx5ctZoAw6AjlkAdtKt+o2elVGdpEsn6oyxDvSNL0u65fhfsXGX8fLfLQ8sGH+Fr/NgA
+         l972zmTJu+mIh44tMR1U7n4fHll4kQlS92+aBW7ToKn0DBqCv8QBZD+eEk37xUqg231d
+         4BFd/wM1MqQrGleN81ygUyGOFDytKbE7ur181jAzf/4SirGq8xT/fkBiQZ3d4Df4RQVk
+         bfw9nDLX+vFiC9c6M1Dwan4Y+lPkL6sPQKmNe0ReJnYwWRYWa5geBHjuSaGjim+3BVY+
+         mGiw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1774131797; x=1774736597;
+        d=1e100.net; s=20251104; t=1774132102; x=1774736902;
         h=content-transfer-encoding:in-reply-to:from:content-language
          :references:cc:to:subject:user-agent:mime-version:date:message-id
          :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=TVe9pU0IW4S2F5pE6WIuxp7cdRW72xZGOAqcPYR4Gc4=;
-        b=VYYDZ9GsOak3x/mrLNMXPU/YgLOVy5JlICsQvrFjDgaGkC8jDXDQKOnb4Xanj9xjZk
-         oupIx90x6aRUAn+pSrnSWoxwbmKSA76WGqgk21FstsD5EIaBEoDRdD6H4bjTncMP1mAt
-         gpAcWE7zRrLj9/7hnw3M30Y3bOVLBfBn00ouobeEv8MAhD4dvx10SVybBJnULWa3DBm1
-         Q6/gyOUglt0we5VQMqniA4RtU7zq1yuOWGdGR6oVqF/wHw4Jna1pp1cToU1uqE3BC7ww
-         358Oz7hOH4mysejln2qQ1R0/Gc//HacYIyHAVBmW1mCvzkaUoTP252vU8nudfPN5gn1F
-         esWw==
-X-Gm-Message-State: AOJu0YyHSjtI55rOIk1sq9L7w5/enMOEsA8rTvKY6UF0OfBg9GWp4qnw
-	kIvRvKbKOPeo858CyXLBTNMGcmYeodqhTEDvwgFXZMudV898mx2plL2zouvM7Q==
-X-Gm-Gg: ATEYQzzjnd4eXpHGPX+Hto+L9UknHHsNt6R9Imq1s67doCaMBm6NHxahWlbNtp2BRGd
-	2oxDSVdbbbOd3RNEfs4JEFT5ZQ8OwKYIMM+o7QGM5TODZAR+yQLWstBDBpJKeEOx900svzl9Eq7
-	4k66065+jElc2Dx74/SHKh7BSl4kTBnYta0KRU1Ywbl6E+f+ssNFWgQf6jH+W0a1KhGi80GT0Z0
-	6SBiXCes7pf/GJXVPKIUm3ABdvWT7J+LgcHoh2WVIF+Fyskq/64wL56yyHDvRUr+EoJFW6wlTnf
-	aa3toqrAfAl+Evqmcmzq2lwjNCry/ABFB6IRoLWHlaqDjf7foR1mDBgkdSi9Kabs+/82eRWo7HM
-	5G5Crr7pl8wjF4fVJDAG3n7ZmDEgU5hAz8/hLdj+NYgmh8iwZoEGQ1HNiRbEn0i/odcYVEO63NF
-	g6yUrMhxujKPSY55elIQsOj0GBpg4J6/vCUpQrB0IOo7/D0bC1/sN/MLQrAcrv66glyxVBc7qMV
-	R1kp/LgmKbEgx5Oh4HiW5tjA767Rgx8
-X-Received: by 2002:a05:6000:2502:b0:43b:4989:869d with SMTP id ffacd0b85a97d-43b64263f27mr11993260f8f.33.1774131797280;
-        Sat, 21 Mar 2026 15:23:17 -0700 (PDT)
+        bh=ZB8AMEepItOTLBvlzO0Y8gDHjfPYD/n/ODMqPQ1+8Yk=;
+        b=du8orr4eXk/NXia4YIVaIyGquXa80qRZMtnjdZrhGYx/sOFvDhl4nL9T85MCQBIR+1
+         2M1FzXee3aNqC1aBL2m4yEecDh3DbNScGdowqxEB8ohEWIYIwkmu1u4A4+yjiCEkry1z
+         nDV2sdjwKv9lbmF+bhAWd961RWjRIqyuzlgqeNeT7QkE6ppKE6A/xEcudlEm1w0pknpn
+         7Nn0UwP8dtKElxYxvmCf9IT4suzRtZEMSkGVPSMQ9OyubHADpsJRnsAvmHiGhkLGm88x
+         xz8sSZuV+pZ08CXIBOcjlmwu3ASXzEgcwHv+hYHxZST/DHqO0Ys2oA7R1f7kZnZs/hYv
+         VRfw==
+X-Gm-Message-State: AOJu0YzBNnOY3lzpx6ZuERkLyoWgwjMUwWxi3AtWwDGXaSN+yVYYyKpf
+	aR8GOL/FZf5YW2UZXpQP0iUihPIkLo1gmHDcBAgGPaQRJB7aav92Xlur
+X-Gm-Gg: ATEYQzywzcA/IT5yuZEGAi+Mi3TMOg1cuddl15+YUgkpp9DvlWjkSD8JKUy8Sa0471D
+	Hnf+DzdoxkUbbLibsBdVjol3zB/iMDWw5PGL8SGeqZinLYy6QFJP0zgn/0y8xFJ6ILt8xRRWo8C
+	ajlpQXfq/PokXzdw9EZoMRY1W53W5gM5mYhaVhzFZkOXmWrhs1uO0mJdE7vBL/+Tlcoq4rzV/TS
+	CX8nU/jQ+WmXi1qGaq6VpkO4uGMQ4+4SWY6JuwqzpNR+giOfSX/Zgsn8OfB/oK9lxWqy1Zn2Sri
+	d9xTfYZYljFWkV98VCh1DXZnfYkds/rBeXVS9ECf7GJZoubry+O/G9V0mWXhGFaodt6DbsJCo9e
+	RY5I8yylGo6ElyMu37xd/B+lGIIlp6AfNtvwIunHmx++ZF+KvEhEeNa8Jp5P7x8ycvQkE8tTihZ
+	90rMs88JdqF3kWGv4/zIH5tjwUqvASDO9UGYgsTT1Ek3JE8NypgfzSQUq1crdc6V6cUIs4gJ++x
+	KiH4VU3yXaGDCpAVT7llrkQbXs+3dEs
+X-Received: by 2002:a5d:5f87:0:b0:439:b057:cb05 with SMTP id ffacd0b85a97d-43b64282876mr11724066f8f.49.1774132102060;
+        Sat, 21 Mar 2026 15:28:22 -0700 (PDT)
 Received: from shift.daheim (p200300d5ff07e00050f496fffe46beef.dip0.t-ipconnect.de. [2003:d5:ff07:e000:50f4:96ff:fe46:beef])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-43b644bd0dcsm15602800f8f.11.2026.03.21.15.23.15
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-43b644ae16fsm18616724f8f.8.2026.03.21.15.28.21
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 21 Mar 2026 15:23:16 -0700 (PDT)
+        Sat, 21 Mar 2026 15:28:21 -0700 (PDT)
 Received: from localhost ([127.0.0.1])
 	by shift.daheim with esmtp (Exim 4.99.1)
 	(envelope-from <chunkeey@gmail.com>)
-	id 1w44gL-00000001QLk-2mef;
-	Sat, 21 Mar 2026 23:23:15 +0100
-Message-ID: <4304625e-76fc-4570-b114-1a4f177a69f6@gmail.com>
-Date: Sat, 21 Mar 2026 23:23:15 +0100
+	id 1w44lH-00000001QRp-0mmB;
+	Sat, 21 Mar 2026 23:28:21 +0100
+Message-ID: <4558729b-1248-476d-8262-56ddb228812a@gmail.com>
+Date: Sat, 21 Mar 2026 23:28:21 +0100
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
@@ -91,17 +91,17 @@ List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 3/3] carlfw: disable buggy PSM to prevent USB command
- timeouts
-To: iamdevnull <mas-i@hotmail.de>
+Subject: Re: [PATCH 14/16] carl9170: main: guard op_config and
+ bss_info_changed against non-STARTED state
+To: Masi Osmani <mas-i@hotmail.de>
 Cc: linux-wireless@vger.kernel.org
-References: <20260317091102.23894-1-mas-i@hotmail.de>
- <AM7PPF5613FA0B6CAD9AE8898D13A62F8CF9441A@AM7PPF5613FA0B6.EURP251.PROD.OUTLOOK.COM>
-Content-Language: de-DE
+References: <20260317110634.70347-1-mas-i@hotmail.de>
+ <AM7PPF5613FA0B6FDA6759CDCBE2421A8039441A@AM7PPF5613FA0B6.EURP251.PROD.OUTLOOK.COM>
+Content-Language: de-DE, en-US
 From: Christian Lamparter <chunkeey@gmail.com>
-In-Reply-To: <AM7PPF5613FA0B6CAD9AE8898D13A62F8CF9441A@AM7PPF5613FA0B6.EURP251.PROD.OUTLOOK.COM>
+In-Reply-To: <AM7PPF5613FA0B6FDA6759CDCBE2421A8039441A@AM7PPF5613FA0B6.EURP251.PROD.OUTLOOK.COM>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+Content-Transfer-Encoding: 7bit
 X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
@@ -113,7 +113,7 @@ X-Spamd-Result: default: False [-2.16 / 15.00];
 	RCVD_TLS_LAST(0.00)[];
 	RCPT_COUNT_TWO(0.00)[2];
 	FREEMAIL_TO(0.00)[hotmail.de];
-	TAGGED_FROM(0.00)[bounces-33656-lists,linux-wireless=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-33657-lists,linux-wireless=lfdr.de];
 	TO_DN_SOME(0.00)[];
 	RECEIVED_HELO_LOCALHOST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
@@ -130,98 +130,23 @@ X-Spamd-Result: default: False [-2.16 / 15.00];
 	MID_RHS_MATCH_FROM(0.00)[];
 	FREEMAIL_FROM(0.00)[gmail.com];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[hotmail.de:email]
-X-Rspamd-Queue-Id: A2D5D2E768F
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: A826A2E76B9
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-On 3/17/26 10:11 AM, iamdevnull wrote:
-> From: Masi Osmani <mas-i@hotmail.de>
-> 
-> The carl9170 firmware power save implementation causes the SH-2
-> processor to stop responding to USB commands after entering PS mode.
-> Powering down the ADDAC and synthesizer via rf_psm() makes the
-> device miss host command responses, triggering -ETIMEDOUT (-110)
-> on the host every 45-135 seconds during normal operation.
-> 
-> The kernel.org driver documentation confirms:
-> "Power Save Mode, It's implemented but buggy"
-> 
-> Three changes:
-> - fw.c: remove CARL9170FW_PSM and CARL9170FW_FIXED_5GHZ_PSM from
->    firmware capability bitmask so the driver never enables PS
-> - rf.c: rf_psm() early return — never power down ADDAC/synthesizer
-> - hostif.c: accept but ignore CARL9170_CMD_PSM commands gracefully
-> 
-> With PSM disabled, the adapter stays fully responsive on USB.
-> Tested: 0 crashes in 180s (previously every 45-135s). The host
-> cannot force PS on even via iw set power_save on since the
-> firmware no longer advertises the capability.
+On 3/17/26 12:06 PM, Masi Osmani wrote:
+> When wavemon or NetworkManager trigger rapid USB unbind/rebind
+> recovery cycles, each deregistration produces these -EIO errors.
+> Over 30+ cycles this exhausts mac80211 resources and causes a
+> kernel panic.
 
-I have an idea here: Can you please add a new
-config option (i.e. CARL9170FW_POWERSAVEMANAGEMENT),
-let it depend on CARL9170FW_BROKEN_FEATURES (default n)
-and then #ifdef / #endif around the feature flags and
-make a rf_psm() stub when that feature isn't set?
+Resources exhaustion? Kernel Panic? This does sound like an embedded device!
 
-Thanks
+Have you checked for leaks? ( https://docs.kernel.org/dev-tools/kmemleak.html )
+Can you please post such a panic? You could be looking at as of yet undiscovered,
+bonafide bug.... that needs squashing.
+
+Regards,
 Christian
-
-> Signed-off-by: Masi Osmani <mas-i@hotmail.de>
-> ---
->   carlfw/src/fw.c     | 6 ++++--
->   carlfw/src/hostif.c | 4 ++--
->   carlfw/src/rf.c     | 7 +++++++
->   3 files changed, 13 insertions(+), 4 deletions(-)
-> 
-> --- a/carlfw/src/fw.c	2026-03-16 23:38:46.184137155 +0100
-> +++ b/carlfw/src/fw.c	2026-03-16 23:38:59.714232929 +0100
-> @@ -48,8 +48,10 @@ const struct carl9170_firmware_descripto
->   #endif /* CONFIG_CARL9170FW_USB_DOWN_STREAM */
->   #ifdef CONFIG_CARL9170FW_RADIO_FUNCTIONS
->   					BIT(CARL9170FW_COMMAND_PHY) |
-> -					BIT(CARL9170FW_PSM) |
-> -					BIT(CARL9170FW_FIXED_5GHZ_PSM) |
-> +					/*
-> +					 * PSM capability removed — firmware
-> +					 * PS causes USB command timeouts.
-> +					 */
->   #endif /* CONFIG_CARL9170FW_RADIO_FUNCTIONS */
->   #ifdef CONFIG_CARL9170FW_SECURITY_ENGINE
->   					BIT(CARL9170FW_COMMAND_CAM) |
-> --- a/carlfw/src/rf.c	2026-03-16 23:38:46.188101929 +0100
-> +++ b/carlfw/src/rf.c	2026-03-16 23:39:12.970421845 +0100
-> @@ -237,6 +237,13 @@ void rf_psm(void)
->   {
->   	u32 bank3;
->   
-> +	/*
-> +	 * PSM disabled — powering down ADDAC/synthesizer causes the
-> +	 * SH-2 to miss USB command responses, triggering host-side
-> +	 * -ETIMEDOUT and device crash. Always stay awake.
-> +	 */
-> +	return;
-> +
->   	if (fw.phy.psm.state == CARL9170_PSM_SOFTWARE) {
->   		/* not enabled by the driver */
->   		return;
-> --- a/carlfw/src/hostif.c	2026-03-16 23:38:46.192102245 +0100
-> +++ b/carlfw/src/hostif.c	2026-03-16 23:39:27.262628301 +0100
-> @@ -285,9 +285,9 @@ void handle_cmd(struct carl9170_rsp *res
->   		break;
->   
->   	case CARL9170_CMD_PSM:
-> +		/* PSM commands accepted but ignored — PS is disabled
-> +		 * to prevent USB command timeout crashes. */
->   		resp->hdr.len = 0;
-> -		fw.phy.psm.state = le32_to_cpu(cmd->psm.state);
-> -		rf_psm();
-
-Hmm this removal of rf_psm() seems to be a leftover then.. since you
-added the return; in the function too?
-
->   		break;
->   #endif /* CONFIG_CARL9170FW_RADIO_FUNCTIONS */
->   
-
 
