@@ -1,206 +1,254 @@
-Return-Path: <linux-wireless+bounces-33620-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-33621-lists+linux-wireless=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id gPiqHcqdvWmW/gIAu9opvQ
-	(envelope-from <linux-wireless+bounces-33620-lists+linux-wireless=lfdr.de@vger.kernel.org>)
-	for <lists+linux-wireless@lfdr.de>; Fri, 20 Mar 2026 20:19:38 +0100
+	id 0MIAIZYSvmnFFwMAu9opvQ
+	(envelope-from <linux-wireless+bounces-33621-lists+linux-wireless=lfdr.de@vger.kernel.org>)
+	for <lists+linux-wireless@lfdr.de>; Sat, 21 Mar 2026 04:37:58 +0100
 X-Original-To: lists+linux-wireless@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id DA1AB2DFD74
-	for <lists+linux-wireless@lfdr.de>; Fri, 20 Mar 2026 20:19:37 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id A3B162E323D
+	for <lists+linux-wireless@lfdr.de>; Sat, 21 Mar 2026 04:37:57 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 7771A3033D09
-	for <lists+linux-wireless@lfdr.de>; Fri, 20 Mar 2026 19:18:32 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id E96173011C98
+	for <lists+linux-wireless@lfdr.de>; Sat, 21 Mar 2026 03:37:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8BA3F33C1AD;
-	Fri, 20 Mar 2026 19:18:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E864D318B83;
+	Sat, 21 Mar 2026 03:37:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="BCCFEgkJ";
-	dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b="NtwUj485"
+	dkim=pass (2048-bit key) header.d=justthetip.ca header.i=@justthetip.ca header.b="KFYWlsej"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
+Received: from out-181.mta0.migadu.com (out-181.mta0.migadu.com [91.218.175.181])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 510481DE4E0
-	for <linux-wireless@vger.kernel.org>; Fri, 20 Mar 2026 19:18:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 14F8331D367
+	for <linux-wireless@vger.kernel.org>; Sat, 21 Mar 2026 03:37:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.181
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774034311; cv=none; b=JrBOZC3LxvIsRSg5NyJw5H4ITLYfjLOZSx/TMWss7HaVkM9Y0i+huRxJZKh24ezVTW7EVZJo8qNl+JKWVdawQ/B3+j3H5quNjXSymq1Lp+8Lmkc6TU9g/qWSa0fEtcalVMPSHRVEHmaF+f/t5Ot4/7rw4pOD2RVM/gMIjyY3lhQ=
+	t=1774064272; cv=none; b=laDvSG3nVyI23AHpXZ9CFO0ANnWtd12uPIwnBSA3EgdgZORVntsez7bK4vT8UdFXoelLt8/aWrc2U1bhVKkil2wsZXEjfT43+DlhfolbBRW3QuZjju7Iv8JnxR+baN3EymRb0+oNXTGNlqIf/BUsBLWR93aRHqF8nxM684fxIWE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774034311; c=relaxed/simple;
-	bh=v6Iz0At26NL4SQVwHOr+hdXpPZ68R3+zizxosbCs7O8=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=TR23GRxkyb0OPI/QKJA/dy2ObpQZoEF5gjPQN4gJugN/eaS/rJzFLj+F+qeQ9925tErBgz6tT4bslBu1ku+tJyX2Ro2454bePS2Vq4qMMsfDllj6tcXtltB7AHETPYb0UhTi3GBgtY5F/HXNX7SUSdD9t99M+aqbQH8p/Hv5zDs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=BCCFEgkJ; dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b=NtwUj485; arc=none smtp.client-ip=205.220.180.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
-Received: from pps.filterd (m0279870.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 62KEXatn1691830
-	for <linux-wireless@vger.kernel.org>; Fri, 20 Mar 2026 19:18:29 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
-	cc:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
-	vYxWqiqEBKAvcbgcD70qMUhuhVypXuVwcKQlcTRFtns=; b=BCCFEgkJwibwxu3I
-	fBva+5PX+NWtJr+iVG50BrO4y63r0QsnYR1+zsbXGDXNw1LYN4E53j/LR1kIeHjz
-	LEi6C0Fu0ccWJLKkvHLgfcEFJweKkJQaaN0rALoCrnGmSYB+Fx2Dxmycz3gDKdG7
-	WSxNfanDQ8fxrK3WdNxsvBaKEdoAAxoI4HGV300L3nzf/rBX2Bx3R/3wEHfxXe2A
-	DLvKxjcCtkQ9KTCOcoo/YciYjTu+poBOyTWMIi2gtY7KZw9sXMJ7e+ZsfYzpc6lj
-	CcvG1UEqGvZVyP22SJOt32Ae5wIz54/k2x686GOHAfLWMHWHqxUhLVBiKE4n1rto
-	1AlUxg==
-Received: from mail-pg1-f199.google.com (mail-pg1-f199.google.com [209.85.215.199])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4d0s5d30a8-1
-	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
-	for <linux-wireless@vger.kernel.org>; Fri, 20 Mar 2026 19:18:29 +0000 (GMT)
-Received: by mail-pg1-f199.google.com with SMTP id 41be03b00d2f7-c7424d91b2dso1342745a12.1
-        for <linux-wireless@vger.kernel.org>; Fri, 20 Mar 2026 12:18:29 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=oss.qualcomm.com; s=google; t=1774034308; x=1774639108; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=vYxWqiqEBKAvcbgcD70qMUhuhVypXuVwcKQlcTRFtns=;
-        b=NtwUj485FcrMXZtsUllyKsQVGj9EBO0lVfV650akoEXxRTlV+cg1sYMs67khADr/03
-         mrzEODo2ObsdMNkiz1wRJKJHWABHpSqaw1YYFrrN/n2PAfvv7XHDTW9Fk6gWlHOcE5ZV
-         oHXNIYhLwKu4ivUP0FylzMlLaOrNIQDjJr+S/I1g4FlwOiLDw1T/CO0Yd+Q0IRRPHcCk
-         VxAaivLx+XQRLTyr3kFyY6wrRdIVLNnSiXDskz9YJMIOUmwTbpUuDsT2XK0nyRf+ybqb
-         CUSXG2EHG/lMtGkn2GbphcmBdBLEoAxuEQsAEwtn7T8EeZ2d/yAyxrCd+6U31akOr+ju
-         ovog==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1774034308; x=1774639108;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=vYxWqiqEBKAvcbgcD70qMUhuhVypXuVwcKQlcTRFtns=;
-        b=mDUGR+nFsZcn/w3m9rrDS9PBlNP3teBETcGekzSlEXRK6mpO3y/wJP+Yve2Hl88mwr
-         7VEeN0OrvY7Xe2d7rL6XPdeu6hHFSXO1xXPe7Q5a8VoiUdLUYiVEEPUlWs9iTDci0Xxz
-         m3ZURu7HrJkJEVE1p0zSF40LMWNSZXuXpXWIHWh744os5L9fULLNw088qnmGwkjo+j3o
-         MCWCzGjH98I0upvlC+EvfNNjEfMRnVbW1fHZnp5w9CBeH8Q9ra3vu9883P/iaa1Cg4+o
-         zens4G9ppzGqhkbW2JG4w0JoycopjglIte38KTL56viPFSaYcduGNYsRJHlpFrg30LB4
-         It4A==
-X-Gm-Message-State: AOJu0Yw1AdzSVO7VBUCdEEU6E00dWawUomOn1NpgeJQpQfk4zi0+WFVp
-	sIZKbME5jbmBT0A17C8Hga8Ir7LOARBcvxpIMZYwdmpFIgG312fKGcu15RPMIl/SFdIg1yV3EA6
-	jXSINpyjcwu5OndNpjAyBTgUJjWeV6u6GZbUcojN+PpU+ogAulLGwNS0LTnS8U4ALALcjULfylP
-	Ty
-X-Gm-Gg: ATEYQzwqDQINjnGxQ46hFshnV7E72rmNJtwC5+YIKO+hSfoiLbi/TbLfu2nsGJ5jjG+
-	pbXFEaPxwMrnwWrgz0TAymyzFWaVsspAhNg6Fk1i47muBqPBXtlXQ1A4WQITEEDch5jD1+8d2hr
-	+L2ClEnC7qtfZgT7y2SDqv0ziwyP3D3xzceX+VHCICzMGC6S7yXVMo9hm90UjJ2LMEYR+3p8bl9
-	CvIaoKQtAymVln2CDFHIXiqon1RcLkw9glIeIYUXCgCRXwb6n+3zY5O54Y+tn8AiAStM9SPF0BG
-	PIpLDSQLyVliJr2bCFYWoRzRz0vcmss94TGnzZQPXXKaGzpBta/QL62vTaVvUkc1W9dBZkUUqVV
-	r9dl+/kGo/il04gp8xUmSy5mL1ii7Aeqze4MuU56OqbU3PYlEnjyyq84=
-X-Received: by 2002:a05:6a21:6da6:b0:398:7ffe:472f with SMTP id adf61e73a8af0-39bce97cfd8mr3896325637.2.1774034308447;
-        Fri, 20 Mar 2026 12:18:28 -0700 (PDT)
-X-Received: by 2002:a05:6a21:6da6:b0:398:7ffe:472f with SMTP id adf61e73a8af0-39bce97cfd8mr3896304637.2.1774034307980;
-        Fri, 20 Mar 2026 12:18:27 -0700 (PDT)
-Received: from [192.168.0.109] ([103.88.239.214])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-82b040da3dfsm2653687b3a.45.2026.03.20.12.18.26
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 20 Mar 2026 12:18:27 -0700 (PDT)
-Message-ID: <55051906-cc13-4dd2-ab15-99b4e3226b7c@oss.qualcomm.com>
-Date: Sat, 21 Mar 2026 00:48:24 +0530
+	s=arc-20240116; t=1774064272; c=relaxed/simple;
+	bh=JmqrJDiFCvTIKqqwS5uG96MjLZV17S2UQk0aegECK9s=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=uWWrQhpbL20os+ppHXzTuUZUX8E1PD+WM0bRicPgZ151QAZ1TZQEL6CDxPX8fLdTUxEJvCRILo4phz8gAAGnhiPmG0Pjta1RVo4l4JqkhCfNmsfPiIZB1r3pKoRLdmk6QTySNcWT6KhIbcDqO70jock3Tl3eKLwf9TpvaIEPw8E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=justthetip.ca; spf=pass smtp.mailfrom=justthetip.ca; dkim=pass (2048-bit key) header.d=justthetip.ca header.i=@justthetip.ca header.b=KFYWlsej; arc=none smtp.client-ip=91.218.175.181
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=justthetip.ca
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=justthetip.ca
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=justthetip.ca;
+	s=key1; t=1774064266;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=oEK2KGVNaSSHaOcIpmP2J4fenxmGwUNmQpzBoLtU5Z4=;
+	b=KFYWlsejgg0+XpkvSR3c7mbYz6jfPqaYc/LmkO7vqRkEJ0IUScLHYrRzxXRahtS9rlUkiw
+	oOTZzPa4TpYI9d8g2MLk7JbrcmqyYvK+8LpsMyDyM/clAoLLsXYzSk1XM1QBMZuJ7j2HZg
+	+00sUCQ3uh1F4kXB9HvvPNZK23jgibYI12E1uhV5KNFgxC3r5PqS7TTF1GwgawW3HIv7kw
+	xdCGdSK1HOR3uS2F3Ja2G5/jaucLGilVli0Lg/SpQk31cts/PN2H29OEgz/L94onL7kxWg
+	bHxBrvU7EcXyzJe3L+qb+5WriTaRki7PRGYLoFofsr1hwtPrjq9NmgQgKooWuw==
+From: Lucid Duck <lucid_duck@justthetip.ca>
+To: linux-wireless@vger.kernel.org
+Cc: Ping-Ke Shih <pkshih@realtek.com>,
+	Bitterblue Smith <rtl8821cerfe2@gmail.com>
+Subject: [PATCH v2] wifi: rtw89: usb: fix TX flow control by tracking in-flight URBs
+Date: Fri, 20 Mar 2026 20:37:42 -0700
+Message-ID: <20260321040000.31192-1-lucid_duck@justthetip.ca>
+In-Reply-To: <20260125221943.36001-1-lucid_duck@justthetip.ca>
+References: <20260125221943.36001-1-lucid_duck@justthetip.ca>
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH wireless-next v3 10/15] wifi: cfg80211: add ingress/egress
- distance thresholds for FTM
-To: "Stern, Avraham" <avraham.stern@intel.com>,
-        "johannes@sipsolutions.net" <johannes@sipsolutions.net>
-Cc: "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
-        "kavita.kavita@oss.qualcomm.com" <kavita.kavita@oss.qualcomm.com>
-References: <20260305160712.1263829-1-peddolla.reddy@oss.qualcomm.com>
- <20260305160712.1263829-11-peddolla.reddy@oss.qualcomm.com>
- <CH3PR11MB8383572815565E924067C267FF44A@CH3PR11MB8383.namprd11.prod.outlook.com>
-Content-Language: en-US
-From: Peddolla Harshavardhan Reddy <peddolla.reddy@oss.qualcomm.com>
-In-Reply-To: <CH3PR11MB8383572815565E924067C267FF44A@CH3PR11MB8383.namprd11.prod.outlook.com>
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Proofpoint-ORIG-GUID: hXaKwvLeouEbQ4ZVaWOoG6wdj3p5ikVV
-X-Proofpoint-GUID: hXaKwvLeouEbQ4ZVaWOoG6wdj3p5ikVV
-X-Authority-Analysis: v=2.4 cv=CqCys34D c=1 sm=1 tr=0 ts=69bd9d85 cx=c_pps
- a=Oh5Dbbf/trHjhBongsHeRQ==:117 a=VSCeRQfBNntvLL3gq5i/+A==:17
- a=IkcTkHD0fZMA:10 a=Yq5XynenixoA:10 a=s4-Qcg_JpJYA:10
- a=VkNPw1HP01LnGYTKEx00:22 a=u7WPNUs3qKkmUXheDGA7:22 a=gowsoOTTUOVcmtlkKump:22
- a=EUspDBNiAAAA:8 a=stkexhm8AAAA:8 a=VwQbUJbxAAAA:8 a=OtRVinzrR0dndKCyBQEA:9
- a=QEXdDO2ut3YA:10 a=_Vgx9l1VpLgwpw_dHYaR:22 a=pIW3pCRaVxJDc-hWtpF8:22
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwMzIwMDE1NyBTYWx0ZWRfXwTiZuKFepugV
- bHiYc0mjLRGFt+AXSq4ZDTBuCv5NQqzWz8MLO2R4zGtORM+wBHHgzYSHTtsgwdDiYSUc6iiQpJU
- jYwP+MhnzL3FFgzay4u+KwTC8VobeJFdh+RsolpkuW0mgqGF6488I5SgA3xsIaROP3cnI5irUFW
- sCEUgI3DzEmd2BqDFz5J9zfgaOOCZTv08XhE2B9d3Q9GLe1PjGaQDC6aVXTV+2565IlVrIwImat
- fXn7XCp+iG422AJmeu3ZvxABw+38WaSpI6Sq5den8ve3YfspGoutyyT1PZsIe2E5UsR/rLuLtiD
- 03yZkqjktiHAmp2kwxogQlbPinE3YLrQNEqCdjWPvWLA5iZ/l/fD+6lWVVGHikF3sN9wBlb+4Yp
- 4rMklcf1mca/Gv0WeqkJWPkO1tIkJa8OH4Vw+NW6h0B/3tkBCYqe274RvvBt+q7hr/FxOukwgzT
- vcIKYqDp0wq7/9RLrQA==
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.51,FMLib:17.12.100.49
- definitions=2026-03-20_03,2026-03-20_02,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- clxscore=1015 lowpriorityscore=0 bulkscore=0 malwarescore=0 suspectscore=0
- impostorscore=0 phishscore=0 priorityscore=1501 adultscore=0 spamscore=0
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.22.0-2603050001 definitions=main-2603200157
-X-Spamd-Result: default: False [-2.16 / 15.00];
+Content-Transfer-Encoding: 8bit
+X-Migadu-Flow: FLOW_OUT
+X-Spamd-Result: default: False [-1.16 / 15.00];
+	MID_CONTAINS_FROM(1.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[qualcomm.com,reject];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
-	R_DKIM_ALLOW(-0.20)[qualcomm.com:s=qcppdkim1,oss.qualcomm.com:s=google];
+	DMARC_POLICY_ALLOW(-0.50)[justthetip.ca,quarantine];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	R_DKIM_ALLOW(-0.20)[justthetip.ca:s=key1];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TO_DN_SOME(0.00)[];
+	FREEMAIL_CC(0.00)[realtek.com,gmail.com];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-33620-lists,linux-wireless=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-33621-lists,linux-wireless=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	TO_DN_EQ_ADDR_SOME(0.00)[];
-	DKIM_TRACE(0.00)[qualcomm.com:+,oss.qualcomm.com:+];
-	RCPT_COUNT_THREE(0.00)[4];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,qualcomm.com:dkim,qualcomm.com:email,sipsolutions.net:email,oss.qualcomm.com:dkim,oss.qualcomm.com:mid];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[peddolla.reddy@oss.qualcomm.com,linux-wireless@vger.kernel.org];
+	MIME_TRACE(0.00)[0:+];
+	RCVD_COUNT_THREE(0.00)[3];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	NEURAL_HAM(-0.00)[-0.999];
+	RCPT_COUNT_THREE(0.00)[3];
+	TO_DN_SOME(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[lucid_duck@justthetip.ca,linux-wireless@vger.kernel.org];
+	DKIM_TRACE(0.00)[justthetip.ca:+];
+	NEURAL_HAM(-0.00)[-1.000];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
 	TAGGED_RCPT(0.00)[linux-wireless];
-	MID_RHS_MATCH_FROM(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	RCVD_COUNT_SEVEN(0.00)[7]
-X-Rspamd-Queue-Id: DA1AB2DFD74
+	MISSING_XM_UA(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,justthetip.ca:dkim,justthetip.ca:email,justthetip.ca:mid]
+X-Rspamd-Queue-Id: A3B162E323D
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
+From: Lucid Duck <lucid_duck@justthetip.ca>
+Date: Thu, 20 Mar 2026 20:00:00 -0700
+Subject: [PATCH v2] wifi: rtw89: usb: fix TX flow control by tracking
+ in-flight URBs
 
-On 13-Mar-26 2:44 AM, Stern, Avraham wrote:
->
->> From: Peddolla Harshavardhan Reddy <peddolla.reddy@oss.qualcomm.com> 
->> Sent: Thursday, March 5, 2026 6:07 PM
->> To: johannes@sipsolutions.net
->> Cc: linux-wireless@vger.kernel.org; kavita.kavita@oss.qualcomm.com
->> Subject: [PATCH wireless-next v3 10/15] wifi: cfg80211: add ingress/egress distance thresholds for FTM
->> + * @egress_distancemm: the measurement result of the peer needs
->> + *	to be indicated in case the device moves out of this range.
->> + *	(units mm, u64). measurement results need to be sent on a burst index
->> + *	basis in this case.
-> Not sure it makes sense to keep reporting results if the device keeps moving away.
->
-This is the real-time usecase.
+rtw89_usb_ops_check_and_reclaim_tx_resource() returns a hardcoded
+placeholder value (42) instead of actual TX resource availability.
+This violates mac80211's flow control contract, preventing backpressure
+and causing uncontrolled URB accumulation under sustained TX load.
 
->> + * @NL80211_PMSR_FTM_REQ_ATTR_INGRESS: the measurement result of the peer needs
->> + *	to be indicated in case the device moves into this range.(units mm, u64)
-> Need to add "measurement results need to be sent on a burst index basis in this case"
-Updated in the next version.
-> ---------------------------------------------------------------------
-> A member of the Intel Corporation group of companies
->
-> This e-mail and any attachments may contain confidential material for
-> the sole use of the intended recipient(s). Any review or distribution
-> by others is strictly prohibited. If you are not the intended
-> recipient, please contact the sender and delete all copies.
->
+Fix by adding per-channel atomic counters (tx_inflight[]) that track
+in-flight URBs:
+
+- Increment before usb_submit_urb() with rollback on failure
+- Decrement in completion callback
+- Return (MAX_URBS - inflight) to mac80211, or 0 when at capacity
+- Exclude firmware command channel (CH12) from tracking
+
+The pre-increment pattern prevents a race where the USB core completes
+the URB (possibly on another CPU) before the submitting code increments
+the counter.
+
+Tested on D-Link DWA-X1850 (RTL8832AU), kernel 6.18.3:
+
+                     Unpatched -> Patched
+  USB3 5GHz DL:      494 -> 709 Mbps (+44%)
+  USB3 5GHz retx:    8 -> 1 (-88%)
+  USB3 2.4GHz DL:    54 -> 68 Mbps (+25%)
+  USB2 5GHz DL:      196 -> 225 Mbps (+15%)
+  USB2 2.4GHz DL:    123 -> 131 Mbps (+6%)
+
+Signed-off-by: Lucid Duck <lucid_duck@justthetip.ca>
+---
+Resending v2. This was prepared in late January after addressing v1
+review feedback, but the send failed silently (SMTP misconfiguration)
+and never appeared on lore.kernel.org. Apologies for the delay.
+
+Changes since v1:
+- Removed duplicate "TX flow control" comment (Ping-Ke Shih)
+- Added test results to commit message (Ping-Ke Shih)
+
+Bitterblue's CH12 question from v1: the CH12 guards in tx_kick_off()
+and write_port_complete() are a matched pair. tx_kick_off() skips
+atomic_inc for CH12, so the completion handler must skip atomic_dec
+to match. Removing only the completion side causes counter underflow.
+
+Additional validation: 100-iteration stress test, 50-iteration
+teardown (rmmod/modprobe under load), 10x hot-unplug during active
+TX, and 30-minute soak -- all pass with counters balanced at idle.
+
+The 32-URB-per-channel limit is based on similar USB wireless drivers
+(mt76, ath9k_htc). The fixed value works well for both USB2 and USB3.
+
+ drivers/net/wireless/realtek/rtw89/usb.c | 26 ++++++++++++++++++-----
+ drivers/net/wireless/realtek/rtw89/usb.h |  6 ++++++
+ 2 files changed, 27 insertions(+), 5 deletions(-)
+
+diff --git a/drivers/net/wireless/realtek/rtw89/usb.c b/drivers/net/wireless/realtek/rtw89/usb.c
+index eb489df..faafa3c 100644
+--- a/drivers/net/wireless/realtek/rtw89/usb.c
++++ b/drivers/net/wireless/realtek/rtw89/usb.c
+@@ -161,16 +161,25 @@ static u32
+ rtw89_usb_ops_check_and_reclaim_tx_resource(struct rtw89_dev *rtwdev,
+ 					    u8 txch)
+ {
++	struct rtw89_usb *rtwusb = rtw89_usb_priv(rtwdev);
++	int inflight;
++
++	/* Firmware command channel is not tracked */
+ 	if (txch == RTW89_TXCH_CH12)
+ 		return 1;
+
+-	return 42; /* TODO some kind of calculation? */
++	inflight = atomic_read(&rtwusb->tx_inflight[txch]);
++	if (inflight >= RTW89_USB_MAX_TX_URBS_PER_CH)
++		return 0;
++
++	return RTW89_USB_MAX_TX_URBS_PER_CH - inflight;
+ }
+
+ static void rtw89_usb_write_port_complete(struct urb *urb)
+ {
+ 	struct rtw89_usb_tx_ctrl_block *txcb = urb->context;
+ 	struct rtw89_dev *rtwdev = txcb->rtwdev;
++	struct rtw89_usb *rtwusb = rtw89_usb_priv(rtwdev);
+ 	struct ieee80211_tx_info *info;
+ 	struct rtw89_txwd_body *txdesc;
+ 	struct sk_buff *skb;
+@@ -229,6 +238,10 @@ static void rtw89_usb_write_port_complete(struct urb *urb)
+ 		break;
+ 	}
+
++	/* Decrement in-flight counter (skip firmware command channel) */
++	if (txcb->txch != RTW89_TXCH_CH12)
++		atomic_dec(&rtwusb->tx_inflight[txcb->txch]);
++
+ 	kfree(txcb);
+ }
+
+@@ -306,9 +319,17 @@ static void rtw89_usb_ops_tx_kick_off(struct rtw89_dev *rtwdev, u8 txch)
+
+ 		skb_queue_tail(&txcb->tx_ack_queue, skb);
+
++		/* Increment BEFORE submit to avoid race with completion */
++		if (txch != RTW89_TXCH_CH12)
++			atomic_inc(&rtwusb->tx_inflight[txch]);
++
+ 		ret = rtw89_usb_write_port(rtwdev, txch, skb->data, skb->len,
+ 					   txcb);
+ 		if (ret) {
++			/* Rollback increment on failure */
++			if (txch != RTW89_TXCH_CH12)
++				atomic_dec(&rtwusb->tx_inflight[txch]);
++
+ 			if (ret != -ENODEV)
+ 				rtw89_err(rtwdev, "write port txch %d failed: %d\n",
+ 					  txch, ret);
+@@ -666,8 +687,10 @@ static void rtw89_usb_init_tx(struct rtw89_dev *rtwdev)
+ 	struct rtw89_usb *rtwusb = rtw89_usb_priv(rtwdev);
+ 	int i;
+
+-	for (i = 0; i < ARRAY_SIZE(rtwusb->tx_queue); i++)
++	for (i = 0; i < ARRAY_SIZE(rtwusb->tx_queue); i++) {
+ 		skb_queue_head_init(&rtwusb->tx_queue[i]);
++		atomic_set(&rtwusb->tx_inflight[i], 0);
++	}
+ }
+
+ static void rtw89_usb_deinit_tx(struct rtw89_dev *rtwdev)
+diff --git a/drivers/net/wireless/realtek/rtw89/usb.h b/drivers/net/wireless/realtek/rtw89/usb.h
+index 9f554b5..1459122 100644
+--- a/drivers/net/wireless/realtek/rtw89/usb.h
++++ b/drivers/net/wireless/realtek/rtw89/usb.h
+@@ -20,6 +20,9 @@
+ #define RTW89_MAX_ENDPOINT_NUM		9
+ #define RTW89_MAX_BULKOUT_NUM		7
+
++/* TX flow control: max in-flight URBs per channel */
++#define RTW89_USB_MAX_TX_URBS_PER_CH	32
++
+ struct rtw89_usb_info {
+ 	u32 usb_host_request_2;
+ 	u32 usb_wlan0_1;
+@@ -63,6 +66,9 @@ struct rtw89_usb {
+ 	struct usb_anchor tx_submitted;
+
+ 	struct sk_buff_head tx_queue[RTW89_TXCH_NUM];
++
++	/* TX flow control: track in-flight URBs per channel */
++	atomic_t tx_inflight[RTW89_TXCH_NUM];
+ };
+
+ static inline struct rtw89_usb *rtw89_usb_priv(struct rtw89_dev *rtwdev)
+--
+2.53.0
 
