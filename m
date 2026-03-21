@@ -1,89 +1,89 @@
-Return-Path: <linux-wireless+bounces-33654-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-33655-lists+linux-wireless=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id wwCkI5IUv2nQtQMAu9opvQ
-	(envelope-from <linux-wireless+bounces-33654-lists+linux-wireless=lfdr.de@vger.kernel.org>)
-	for <lists+linux-wireless@lfdr.de>; Sat, 21 Mar 2026 22:58:42 +0100
+	id 6AMGFa8Xv2kduAMAu9opvQ
+	(envelope-from <linux-wireless+bounces-33655-lists+linux-wireless=lfdr.de@vger.kernel.org>)
+	for <lists+linux-wireless@lfdr.de>; Sat, 21 Mar 2026 23:11:59 +0100
 X-Original-To: lists+linux-wireless@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id D83492E75C7
-	for <lists+linux-wireless@lfdr.de>; Sat, 21 Mar 2026 22:58:41 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id E2AF42E765D
+	for <lists+linux-wireless@lfdr.de>; Sat, 21 Mar 2026 23:11:58 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 4CB733010B8B
-	for <lists+linux-wireless@lfdr.de>; Sat, 21 Mar 2026 21:58:40 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 45A61300831D
+	for <lists+linux-wireless@lfdr.de>; Sat, 21 Mar 2026 22:11:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AB381303A0D;
-	Sat, 21 Mar 2026 21:58:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 112991FDA61;
+	Sat, 21 Mar 2026 22:11:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Ur4zK/+g"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="L56TLMMT"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-wr1-f50.google.com (mail-wr1-f50.google.com [209.85.221.50])
+Received: from mail-wr1-f46.google.com (mail-wr1-f46.google.com [209.85.221.46])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 076331A9F91
-	for <linux-wireless@vger.kernel.org>; Sat, 21 Mar 2026 21:58:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.50
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 79E9B136672
+	for <linux-wireless@vger.kernel.org>; Sat, 21 Mar 2026 22:11:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.46
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774130319; cv=none; b=X1q2TI4ut2maR4s3vnP1u78UNu73Q78Q5i1krA8eI5dKpWt3hFg1pIaloYOEr/YNpbL/dTjpqGkSaJWHzvyKDmC59bidrPoFGvI/cKexKfMLQ0I3FtiAg7oGH+98mFPN8YorpM89xPUEInRo38ixQDfwL8pkyg37ALsbR2HxD2s=
+	t=1774131114; cv=none; b=aFiBhAMXbbmvXOnQhhovWkrXa8/iTwDCX+Ao/yTHXlc3DnWMNAfkgseKJYV5zb/j9J4gWaCr1dFiLsC3zohC3QitjKQSsEfxD8PJrBvmVl9tSoXYj7xw60KSvutd/PEcXB32rzoQNX6K6XS/E5vJ3yekxnj+jDcuxGaDiRJPpG0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774130319; c=relaxed/simple;
-	bh=op3jJNcZsY2iDFPAV3tsfou4jP0OU3+BhZdrGoHdUeA=;
+	s=arc-20240116; t=1774131114; c=relaxed/simple;
+	bh=Pe05LUWbq1NDIkHqgh3H3itqEr2VvoD19K9RGa/TXDg=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=ZuK0Sxq13y3jH9ch9wWnVsKkusAQi1OgPOL0kDXoPAPQCrBlhtwYa1twqcd3puS6LJiX6nMzYaRpA6lfgFmcKtWaof0EYdNoTwharWfsjUSyfq6LnNCHAwHeEqCIK+vsvyfGpE5pa3J/wVFMcRvROFx5XTB7OdIHAbuAdxOELkI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Ur4zK/+g; arc=none smtp.client-ip=209.85.221.50
+	 In-Reply-To:Content-Type; b=g3bJbzMN43qOD5CtZ/ggG0OK7rT0O+RQle242VFeACWftZW8bIKld9ynWua9HlevTYb1UMklXdqmP8mtYlpsMtFxK419Xz0d7MVJ73d7OoxQUSWcmEO4F+vHTm7714UbLTkZV4Dj4ZWl6356rZVzgiwm9ag93FDWjmEw4YctNSo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=L56TLMMT; arc=none smtp.client-ip=209.85.221.46
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-wr1-f50.google.com with SMTP id ffacd0b85a97d-439b611274bso1603641f8f.3
-        for <linux-wireless@vger.kernel.org>; Sat, 21 Mar 2026 14:58:37 -0700 (PDT)
+Received: by mail-wr1-f46.google.com with SMTP id ffacd0b85a97d-43b4f48c47cso1276482f8f.0
+        for <linux-wireless@vger.kernel.org>; Sat, 21 Mar 2026 15:11:53 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1774130316; x=1774735116; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1774131112; x=1774735912; darn=vger.kernel.org;
         h=content-transfer-encoding:in-reply-to:from:content-language
          :references:cc:to:subject:user-agent:mime-version:date:message-id
          :from:to:cc:subject:date:message-id:reply-to;
-        bh=yFqFuU1mA9wSPwIp81LzkipH0sID9zeFkJtqFLBhlLM=;
-        b=Ur4zK/+gBJB4p4bB9ZDQnyBLo+OYByHPng8Zyy5ZmrHnNit0rtkMiHxZdtDIbmmRe+
-         kjPAeP5IbecC7H7M1ibh1OHxkN5uh8QUZtwIqghetODCxLezdnjEF6VLWbi/aOZFbj83
-         UTc2+huh0aOUlSq2kag6WeWPfyE6lHggODYHCGNFnF/T6fnZ15yR7BZAjfqNwZ0lFg6m
-         a7dqyF0nl7AYxLT1kJf64Yaij87nQ5DEJVmZ/QLoY0kYBBTIlQ9Iw9FLTmQPt1jVFiwd
-         q85zfjo8ftVVU69cl86sQJBUwu6ZG0ssp6b3ncesaZj3JsaVNOC9HC0ujMaTIZwHSGyi
-         gBcQ==
+        bh=5yVtmIuUF5W6UvFxyUEdv2aK4BWioE57/D+TzdEfvMM=;
+        b=L56TLMMTr83ZH8A3QtTbYZPXp+zPb+quQG0KFiejj0exHyXwR29UPH26yvM2KFLc5L
+         BxiKj+N/OAeWVjohunHphjzKMVsS9cpe5fxXqa5a54ptjEsVsnj943py5rWva41lbbxz
+         682Ys4JaGlr3W/TBd84LWX0nHvCYIy0Q8Uk28WnNd7JSINoxTlN7zPFOBxoOJhSygIF2
+         ovGsJ0OtGe5Us/wzh7sGum9AIo4v5FR1meAIR9hL3Nzao95nD5EkUFLC+senYygnk3Vv
+         k+ITLbm8br3NBZtZ/hqPyyQ9+1dlYbfS+UJMZ7tkWARSR26MJ+5VeWpi1j2k187xvuGf
+         H0cg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1774130316; x=1774735116;
+        d=1e100.net; s=20251104; t=1774131112; x=1774735912;
         h=content-transfer-encoding:in-reply-to:from:content-language
          :references:cc:to:subject:user-agent:mime-version:date:message-id
          :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=yFqFuU1mA9wSPwIp81LzkipH0sID9zeFkJtqFLBhlLM=;
-        b=ralJ8MCI7pHihZahTIlIcHGpQXZw5tCWoFpi98eiolcDNETPnK3Qjmveh/r0scppKr
-         vvXa9iFCQ32Ok2ch9qs68k0t8ESlL/Hq2TE2W50rEhxvG5n7BLmBdCpBmGNHQozgsyEw
-         mbdLxOYY8wRzWzHYtQpj0fN1gBV2UMO9wnL0SLzlYVwk2g9xdOPTf9jQYK5/KYf1p4RH
-         fYXnw3/jQKWn3NUu1X1USf01Fb+ptl1T7y4g8K2g2yVB4DKdbxP8/UB8wxYLXtRq5Ae8
-         C9T3h/8ZDRMe+CWwK8GZaLtclnD7rz/FssFbOa3Muaq8FkMKzwqUykBOqXqraRen2PYM
-         FQrg==
-X-Gm-Message-State: AOJu0Yw3BHMhQsUh27k7sZAKp8rw4jPleruSjch/S7Hrs6q4sxo+EdLA
-	vDMyNEzUwH69FhP/1DnyaGMA3OT2yQw8fn80+a+Khk2IqoYhdUI22fqg
-X-Gm-Gg: ATEYQzyr1Ac6HgUBo+SYX9XoJTby2lkC0XJBzQZzsqdfbFBZarBEsb5LIQOZEy2Lgfz
-	8aNrM0LbDoeMJNUkd0dqbzlHhw6O/Mey5DZQac+jjJXZkLAxnwxZilWz7q65oqfhqWKrqgsSiJF
-	LyCFsvjTamdcOcaVeMWr8xnCO5yrBV7CZMM9PjlZe/n1NL0q13Q8VE4sA3Fukb2c/GWmtDQKck8
-	RfhocUfbm+oiGlMtD+tWJJFI/tHASYLyHIclmt730dknobWhtgZvEJ5Gt0RIqU+SrJT7Mu2FFVM
-	ZVSCZlPlxB+6v2omb7oi7lUHOrx430SNcO1KpI9018uuSINxIbydDKc86BggW9qsAqZQkbsYXGk
-	xeihDmIv8OCBLzoDxBmdItKc0uZOeZIib1z6DP1GVhZBYg8+ZVmb4Bk+jeNgu6v7AZ8nHVJafR7
-	/l8xreGFDmD8KsfVoT6nZVb8SqZJttOkGgjo7IICvev9/1elHSCfw8Al16s8oYGDWFbQeWEEfxC
-	/EagvyZd1G/ppwMIxEjqDmeyMvr76Yh
-X-Received: by 2002:a05:6000:4381:b0:439:c550:d920 with SMTP id ffacd0b85a97d-43b642895a0mr11714204f8f.47.1774130316089;
-        Sat, 21 Mar 2026 14:58:36 -0700 (PDT)
+        bh=5yVtmIuUF5W6UvFxyUEdv2aK4BWioE57/D+TzdEfvMM=;
+        b=YidGVguIynoXvCVcaeVwiIUAHUEo+mAvcx1otvlRc6DLtggCHKCkOYKSsjfwDKYG3d
+         R/0NiKhozmBVOb/DRercsPg5uQl360Y6avwzc9cSxXofHc+VFCglE4EHZZNwO/qbezJ0
+         22+sDrW/hOh03aUvVMbyp1QT8Xmpc4OPHNUqBSvYhWMVsTUBWBKrjdifXOXs37gOzVtQ
+         InzxYk51PvFj3TBUHSX0AvcdZDWQkE8EmJb1ll+Uh7+dr8KTsrQCuRf1hQ2JB+uLgw0G
+         r8wyVbMo7lDpsZbXTtt3D5Wn820VGE2C0ASWjCDbq5YCtLpE+UfyfkvWHVQOiF3175gv
+         Gr8g==
+X-Gm-Message-State: AOJu0YywR4c70+P6MHlWlr203EwtzmDhzKjKIrNWscS7pzjq+gTrUCTG
+	eqcVMOlKOGPaOAIX+b9cOlvhRuNBkcBw65kisq6jGVZCRGDhd25Hp/Il
+X-Gm-Gg: ATEYQzyQjrc/wKDQDKfBxeD2bi3DTW98QzpiQU1eXovLFtqrgurmsWaLF9pe6cvd4c0
+	DOQOd36rEcDdTND9LqO3YM7x4n/9AceWV0RRAlLA4h9g2gm4WLtVbR3VP0hzA0Uz1NkC/iRgy/P
+	eJA7eO/y6E2bwZDA0QqYuO+J2uu6xOoTnX4/BTub1y40gI8eT2o4Lnjo/o3TH3BmwqMFUnlychm
+	UX2vWdOEUoiBdQyfYevUFhs3dxVSWb2OfdLTe5OyrJn2jBh2pbwP98HCbzf6GAsX4A97UkSA78X
+	8xMS1gLdmGbm7LGrTe23hC185QCPEkGilcQDibAKe7xJmRHZomocG2ZK2Ld7lXaxQErhGkREPsJ
+	HtWWyf2XlueMeoDNDcfMoI7OgDUd7gi34jJESbCUl2vM54Pe8HtJA8CpR92PBK9oZ0T1EwHSJWT
+	WXg0/uVnK8PKWBK9sZ6Zzi6cjdzfsAOq/uPI2eh12dTfQr5Io6NoWv8I+zwTjNIjSqdz3Wm4SrA
+	OyqIj/fPT91TU5h7FaftRzxS7lzZJs7
+X-Received: by 2002:a05:6000:2007:b0:43b:4f7d:e08b with SMTP id ffacd0b85a97d-43b642869ecmr11797826f8f.36.1774131111691;
+        Sat, 21 Mar 2026 15:11:51 -0700 (PDT)
 Received: from shift.daheim (p200300d5ff07e00050f496fffe46beef.dip0.t-ipconnect.de. [2003:d5:ff07:e000:50f4:96ff:fe46:beef])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-43b6cdfdfa9sm7255170f8f.9.2026.03.21.14.58.35
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-43b646b0d3dsm17482398f8f.16.2026.03.21.15.11.50
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 21 Mar 2026 14:58:35 -0700 (PDT)
+        Sat, 21 Mar 2026 15:11:51 -0700 (PDT)
 Received: from localhost ([127.0.0.1])
 	by shift.daheim with esmtp (Exim 4.99.1)
 	(envelope-from <chunkeey@gmail.com>)
-	id 1w44IT-00000001Q3S-0nB0;
-	Sat, 21 Mar 2026 22:58:35 +0100
-Message-ID: <73153743-e0e8-4f2d-8774-066f53460511@gmail.com>
-Date: Sat, 21 Mar 2026 22:58:35 +0100
+	id 1w44VI-00000001QFA-0IWp;
+	Sat, 21 Mar 2026 23:11:50 +0100
+Message-ID: <6303a0c5-068d-47b5-9d65-a99fefc8f991@gmail.com>
+Date: Sat, 21 Mar 2026 23:11:49 +0100
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
@@ -91,34 +91,35 @@ List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 11/12] carl9170: skip cross-band channel changes during
- software scan
-To: Masi Osmani <mas-i@hotmail.de>
-Cc: linux-wireless@vger.kernel.org, Johannes Berg <johannes@sipsolutions.net>
-References: <AM7PPF5613FA0B68A6825857195D5EF51B59443A@AM7PPF5613FA0B6.EURP251.PROD.OUTLOOK.COM>
+Subject: Re: [PATCH 2/3] carlfw: wlanrx: batch RX frame upload triggers
+To: iamdevnull <mas-i@hotmail.de>,
+ Christian Lamparter <chunkeey@googlemail.com>
+Cc: linux-wireless@vger.kernel.org
+References: <20260317091102.23894-1-mas-i@hotmail.de>
+ <AM7PPF5613FA0B6DF41F140DFB83D1B53649441A@AM7PPF5613FA0B6.EURP251.PROD.OUTLOOK.COM>
 Content-Language: de-DE
 From: Christian Lamparter <chunkeey@gmail.com>
-In-Reply-To: <AM7PPF5613FA0B68A6825857195D5EF51B59443A@AM7PPF5613FA0B6.EURP251.PROD.OUTLOOK.COM>
+In-Reply-To: <AM7PPF5613FA0B6DF41F140DFB83D1B53649441A@AM7PPF5613FA0B6.EURP251.PROD.OUTLOOK.COM>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
 X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74];
 	R_DKIM_ALLOW(-0.20)[gmail.com:s=20230601];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-33654-lists,linux-wireless=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	RECEIVED_HELO_LOCALHOST(0.00)[];
-	FREEMAIL_TO(0.00)[hotmail.de];
-	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-33655-lists,linux-wireless=lfdr.de];
+	FREEMAIL_TO(0.00)[hotmail.de,googlemail.com];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	TO_DN_SOME(0.00)[];
+	RECEIVED_HELO_LOCALHOST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
 	RCPT_COUNT_THREE(0.00)[3];
 	RCVD_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
@@ -129,144 +130,68 @@ X-Spamd-Result: default: False [-2.16 / 15.00];
 	MID_RHS_MATCH_FROM(0.00)[];
 	FREEMAIL_FROM(0.00)[gmail.com];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,hotmail.de:email]
-X-Rspamd-Queue-Id: D83492E75C7
+	DBL_BLOCKED_OPENRESOLVER(0.00)[hotmail.de:email]
+X-Rspamd-Queue-Id: E2AF42E765D
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-On 3/15/26 11:56 PM, Masi Osmani wrote:
-> The carl9170 relies on mac80211 software scanning because it does not
-> implement a hw_scan callback.  During a scan, mac80211 iterates all
-> supported channels across both bands, calling carl9170_op_config()
-> with IEEE80211_CONF_CHANGE_CHANNEL for each one.
+On 3/17/26 10:11 AM, iamdevnull wrote:
+> From: Masi Osmani <mas-i@hotmail.de>
 > 
-> Every channel change triggers a full baseband cold reset, RF bank
-> re-initialisation and AGC calibration via the firmware RF_INIT command
-> with a 200 ms timeout.  Cross-band switches (2.4 GHz <-> 5 GHz) are
-> especially expensive and error-prone: the AGC calibration frequently
-> times out (firmware returns error code 2), leaving the PHY in a
-> degraded state.  Subsequent channel changes -- even within the same
-> band -- then also fail, and after three consecutive failures the
-> driver restarts the device, causing a multi-second connectivity gap.
+> Call up_trigger() once after processing all pending RX descriptors
+> instead of per-frame. The PTA DMA transfers all queued descriptors
+> in a single USB transaction, reducing interrupt overhead on the host
+> by up to N (where N = frames per RX burst).
 > 
-> When the adapter is associated on a specific band, scanning channels
-> on the other band produces no useful roaming candidates for the
-> current BSS.  Add sw_scan_start/sw_scan_complete callbacks to track
-> the scanning state and skip cross-band channel changes while a
-> software scan is in progress.  Intentional cross-band association
-> changes (e.g. roaming from 2.4 GHz to 5 GHz on a dual-band SSID)
-> are not affected because they occur outside the scanning window.
-> 
-> Tested on Fritz\!WLAN N (AR9170) with 2.4 GHz association and
-> concurrent full-band scans: no channel change failures, no device
-> restarts, no PHY corruption.
+> On a busy 2.4 GHz channel with 10+ APs visible, this reduces USB
+> interrupt rate during scan sweeps from ~200/s to ~30/s.
 
-Dealing with hardware misbehaving... Yeah!
+Interesting. Are you willing to share what PC/device you connected
+your Fritz!WLAN N adapter to?
 
-I always suspected that the reason for this misbehaving are clock glitches.
-This is because the whole device gets reclocked when switching between 2.4GHz (44/88MHz)
-and 5GHz (40/80MHz) band and also HT40 (88/80MHz) vs HT20/Legacy(40/44MHz) too).
+Because yes, I tried this before and I didn't see such a big difference.
+This was back with my AMD Athlon X2, Core2Duo T7200 and i7 2630qm, It
+became irrelevant with the i7 4770 (which I still have... but with a
+new 2018-ish MB).
 
-I do see the point here and I can confirm that to this day, this causes the
-described annoyances.
+Cheers,
+Christian
 
-@Johannes: Is this "stay within the band" something the driver should do,
-or could this be moved up to mac80211/cfg80211?
 
-(The way I did it was with wpa_supplicant since it allows one to specifiy
-the scanning frequencies with scan_freq ... or even limit the frequencies
-with freq_list. That said, this doesn't work great with NetworkManager
-and the likes)
-
-> 
 > Signed-off-by: Masi Osmani <mas-i@hotmail.de>
 > ---
->   drivers/net/wireless/ath/carl9170/carl9170.h |  1 +
->   drivers/net/wireless/ath/carl9170/main.c     | 42 +++++++++++++++++++
->   2 files changed, 43 insertions(+)
+>   carlfw/src/wlanrx.c | 12 ++++++++++--
+>   1 file changed, 10 insertions(+), 2 deletions(-)
 > 
-> --- a/drivers/net/wireless/ath/carl9170/carl9170.h	2026-03-15 23:51:23.598565789 +0100
-> +++ b/drivers/net/wireless/ath/carl9170/carl9170.h	2026-03-15 23:51:39.769123563 +0100
-> @@ -333,6 +333,7 @@ struct ar9170 {
->   	/* PHY */
->   	struct ieee80211_channel *channel;
->   	unsigned int num_channels;
-> +	bool scanning;
->   	int noise[4];
->   	unsigned int chan_fail;
->   	unsigned int total_chan_fail;
-> --- a/drivers/net/wireless/ath/carl9170/main.c	2026-03-15 23:51:23.597355728 +0100
-> +++ b/drivers/net/wireless/ath/carl9170/main.c	2026-03-15 23:52:02.845563524 +0100
-> @@ -916,6 +916,33 @@ static int carl9170_op_config(struct iee
->   		enum nl80211_channel_type channel_type =
->   			cfg80211_get_chandef_type(&hw->conf.chandef);
->   
-> +		/*
-> +		 * Skip cross-band channel changes during software scan.
-> +		 *
-> +		 * mac80211 sw_scan iterates all channels including the
-> +		 * other band.  Each channel change requires a full BB
-> +		 * cold reset and AGC calibration via the firmware RF_INIT
-> +		 * command (200 ms timeout).  Cross-band switches
-> +		 * frequently cause AGC calibration timeouts (firmware
-> +		 * returns error 2), leaving the PHY in a degraded state
-> +		 * that cascades into failures on subsequent intra-band
-> +		 * channel changes and ultimately triggers a device
-> +		 * restart after three consecutive failures.
-> +		 *
-> +		 * When associated, scanning the other band yields no
-> +		 * useful roaming candidates for the current BSS.  Skip
-> +		 * the channel change so mac80211 advances to the next
-> +		 * scan channel harmlessly.
-> +		 */
-> +		if (ar->scanning && ar->channel &&
-> +		    hw->conf.chandef.chan->band != ar->channel->band) {
-> +			wiphy_dbg(ar->hw->wiphy,
-> +				  "skip cross-band scan: %d MHz -> %d MHz\n",
-> +				  ar->channel->center_freq,
-> +				  hw->conf.chandef.chan->center_freq);
-> +			goto out;
-> +		}
-> +
->   		/* adjust slot time for 5 GHz */
->   		err = carl9170_set_slot_time(ar);
->   		if (err)
-> @@ -954,6 +981,27 @@ out:
->   	return err;
->   }
->   
-> +static void carl9170_op_sw_scan_start(struct ieee80211_hw *hw,
-> +				      struct ieee80211_vif *vif,
-> +				      const u8 *mac_addr)
-> +{
-> +	struct ar9170 *ar = hw->priv;
-> +
-> +	mutex_lock(&ar->mutex);
-> +	ar->scanning = true;
-> +	mutex_unlock(&ar->mutex);
-> +}
-> +
-> +static void carl9170_op_sw_scan_complete(struct ieee80211_hw *hw,
-> +					 struct ieee80211_vif *vif)
-> +{
-> +	struct ar9170 *ar = hw->priv;
-> +
-> +	mutex_lock(&ar->mutex);
-> +	ar->scanning = false;
-> +	mutex_unlock(&ar->mutex);
-> +}
-> +
->   static u64 carl9170_op_prepare_multicast(struct ieee80211_hw *hw,
->   					 struct netdev_hw_addr_list *mc_list)
+> diff --git a/carlfw/src/wlanrx.c b/carlfw/src/wlanrx.c
+> index 1234567..abcdefg 100644
+> --- a/carlfw/src/wlanrx.c
+> +++ b/carlfw/src/wlanrx.c
+> @@ -160,14 +160,24 @@
+>   void handle_wlan_rx(void)
 >   {
-> @@ -1723,6 +1771,8 @@ static const struct ieee80211_ops carl91
->   	.add_interface		= carl9170_op_add_interface,
->   	.remove_interface	= carl9170_op_remove_interface,
->   	.config			= carl9170_op_config,
-> +	.sw_scan_start		= carl9170_op_sw_scan_start,
-> +	.sw_scan_complete	= carl9170_op_sw_scan_complete,
->   	.prepare_multicast	= carl9170_op_prepare_multicast,
->   	.configure_filter	= carl9170_op_configure_filter,
->   	.conf_tx		= carl9170_op_conf_tx,
+>   	struct dma_desc *desc;
+> +	bool queued = false;
+> 
+>   	for_each_desc_not_bits(desc, &fw.wlan.rx_queue, AR9170_OWN_BITS_HW) {
+>   		if (!(wlan_rx_filter(desc) & fw.wlan.rx_filter)) {
+>   			dma_put(&fw.pta.up_queue, desc);
+> -			up_trigger();
+> +			queued = true;
+>   		} else {
+>   			dma_reclaim(&fw.wlan.rx_queue, desc);
+>   			wlan_trigger(AR9170_DMA_TRIGGER_RXQ);
+>   		}
+>   	}
+> +
+> +	/*
+> +	 * Trigger USB upload once for the entire batch rather than
+> +	 * per frame.  The PTA DMA will transfer all queued descriptors
+> +	 * in a single USB transaction, reducing interrupt overhead on
+> +	 * the host by up to N (where N = frames per RX burst).
+> +	 */
+> +	if (queued)
+> +		up_trigger();
+>   }
 
 
