@@ -1,73 +1,73 @@
-Return-Path: <linux-wireless+bounces-33631-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-33632-lists+linux-wireless=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id UCUgBpDVvmlwewMAu9opvQ
-	(envelope-from <linux-wireless+bounces-33631-lists+linux-wireless=lfdr.de@vger.kernel.org>)
-	for <lists+linux-wireless@lfdr.de>; Sat, 21 Mar 2026 18:29:52 +0100
+	id GNwmK5PVvmlwewMAu9opvQ
+	(envelope-from <linux-wireless+bounces-33632-lists+linux-wireless=lfdr.de@vger.kernel.org>)
+	for <lists+linux-wireless@lfdr.de>; Sat, 21 Mar 2026 18:29:55 +0100
 X-Original-To: lists+linux-wireless@lfdr.de
 Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7D4F72E6876
-	for <lists+linux-wireless@lfdr.de>; Sat, 21 Mar 2026 18:29:51 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 53CAB2E6884
+	for <lists+linux-wireless@lfdr.de>; Sat, 21 Mar 2026 18:29:55 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 9454D3014687
-	for <lists+linux-wireless@lfdr.de>; Sat, 21 Mar 2026 17:29:41 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 05764301724C
+	for <lists+linux-wireless@lfdr.de>; Sat, 21 Mar 2026 17:29:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 487B233ADB9;
-	Sat, 21 Mar 2026 17:29:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 14FC533AD85;
+	Sat, 21 Mar 2026 17:29:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="jA+uzx9d"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="amCgI4oN"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.14])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E54E733B6D5
-	for <linux-wireless@vger.kernel.org>; Sat, 21 Mar 2026 17:29:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5E3C1334C33
+	for <linux-wireless@vger.kernel.org>; Sat, 21 Mar 2026 17:29:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.14
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774114181; cv=none; b=DOxygavISOqVkVLQf4VfRRZSK0wRVC212pgTMHXTdde9HcazOhqwLvwSxArgboPTiyAg87ghZTzz5ZXTfF0trErhQ/ydWME6NIL72+hfOVsWtWqlasA1tz/a6Kf8epR+cr3pHT/w+t7vk+dh79xTeJPb72PkYLgkjgbQbq4x8Yg=
+	t=1774114182; cv=none; b=P54PZqF7NUJ2i+cP0pSxPO5mKNe0ovyv6ywpeT2Pn8b1dlG3JTmo+7GdcDmdHdDiTIpIykkCAXlfhEa4IpCBebLCydf/Y3jvh/fa1zeZklTHZ02vAt9gFVbnXvMXyPyu2GsaaEUdKAPP4WJodTFUr1fwGY6zihov232jHdGvp7M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774114181; c=relaxed/simple;
-	bh=RYDVsSS88eb853/WH9CvJvU6hlcVuEIPS4HIjkfMsO8=;
+	s=arc-20240116; t=1774114182; c=relaxed/simple;
+	bh=8/8Nm0Tej7P2LvyPAh/TyRMBUg+j4O974fl4xeSgmjc=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=NtaHhaqgixv1u11RFB7v3ivRpYURV4ZTXE/Ex8JvUrNKGjsIloLvxEhjPJ/HoOcJ2cpeN0aSf5oXrfrqWqKuGslen2QVsm43UKXHp0PThd142mex4NiEtIvJrN9ZCL0C+9W9mbVICpfFJ6NcYTkciUhiHi2mKlhR1zs0cHFEBw4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=jA+uzx9d; arc=none smtp.client-ip=192.198.163.14
+	 MIME-Version; b=CX8PqSlflgICZoNNsZo3quAbFn7lgH2a1lCcalPyrTy3EY5FEvZKtzBfqsEO/HisyE1mTmu6fqD/yTqzSC3wZ46zHGi/F/kn+pekyEhHxyG2Yz+jkDuMow9Kp/nLFb/4tlEn2N/I6MXewTzFeSfWZyiqIST4SOlrbRCzAQsE4i0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=amCgI4oN; arc=none smtp.client-ip=192.198.163.14
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1774114179; x=1805650179;
+  t=1774114180; x=1805650180;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=RYDVsSS88eb853/WH9CvJvU6hlcVuEIPS4HIjkfMsO8=;
-  b=jA+uzx9ddbtAe2fO/G9TYdV3ZWDqM3lseOjrjPZoYRNNJEROnJbKCy9x
-   cTqTF4fgEDb1WjvKfCc1isFegtwfBiYv3DyjWZoZOx6FeUKi1mt4aUKc+
-   khu46su54keG1mNRO1byQDr9O5qSMf+x2pLxsli1Zoei9pK8epcmRj1MT
-   gxVJPAWHTVNPgE2g/NOgxnv4AFr01TzEaP03UcetC4QJ2FJyCq/9ZssWo
-   Vz4+R938koC6nTyQZiJ5Ez0KMltk7SDyeW9XPsKtqZy7YxdghW2qC0byr
-   txBa61HMQ6zwGTBrG4aQLd39HyF9dUhXTA8WxMtCE+8SsHAH/wMllUryd
-   w==;
-X-CSE-ConnectionGUID: Fmscl5rDT0uT4Id5T3JrbQ==
-X-CSE-MsgGUID: eGdRKiBGSt+iQyYgA9vXOg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11736"; a="75244588"
+  bh=8/8Nm0Tej7P2LvyPAh/TyRMBUg+j4O974fl4xeSgmjc=;
+  b=amCgI4oNVqHAGoUo/T2AFzjFQ6KrgEGgA1SmfcjU7mEd4fk5jc/+71k8
+   /KwW9BZBTqumEiyiU6zxjiBxVT0tuHAGXZHBl1H0C0W8LyDXwTtAHLjib
+   YN3siClFNyqKSVEJ3WJ/Wco6Xy+1qyrxByrPq+mxqyjD6nCanKDC5zv8F
+   wpxPE9bc1Mt0m2urdnvo/Ad1LyuuewrzJ7KMhp3vmRo32bDfjBORNc/DY
+   umsweUsKciH/JZ88MVPQTlrMvPbzrb+MdJHk2SdqrBvOgMi64+81BZK9Y
+   F+4t+1XbVQ2QPlnQNVFeMdWNjzR3dt/U55AbVYzng7j0yVWeTMwTDUkFX
+   A==;
+X-CSE-ConnectionGUID: 1dtRqpT8RI2KYE1LnJssUg==
+X-CSE-MsgGUID: BtTwotPyR8aNDbYzgWwFpg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11736"; a="75244589"
 X-IronPort-AV: E=Sophos;i="6.23,133,1770624000"; 
-   d="scan'208";a="75244588"
+   d="scan'208";a="75244589"
 Received: from orviesa007.jf.intel.com ([10.64.159.147])
-  by fmvoesa108.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 21 Mar 2026 10:29:38 -0700
-X-CSE-ConnectionGUID: Qn5BNxZrS7e5Spu3aDRotg==
-X-CSE-MsgGUID: SWF5ose0SuaroWmHJGu0JQ==
+  by fmvoesa108.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 21 Mar 2026 10:29:40 -0700
+X-CSE-ConnectionGUID: QAHbmliRQ1+/oM644ivQWg==
+X-CSE-MsgGUID: iY9C8OtoRKGTn5hr5fK8hw==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.23,133,1770624000"; 
-   d="scan'208";a="223813573"
+   d="scan'208";a="223813585"
 Received: from weis0040.iil.intel.com ([10.12.217.108])
-  by orviesa007-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 21 Mar 2026 10:29:37 -0700
+  by orviesa007-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 21 Mar 2026 10:29:38 -0700
 From: Miri Korenblit <miriam.rachel.korenblit@intel.com>
 To: linux-wireless@vger.kernel.org
-Cc: Avinash Bhatt <avinash.bhatt@intel.com>,
-	Johannes Berg <johannes.berg@intel.com>
-Subject: [PATCH iwlwifi-next 04/15] wifi: iwlwifi: handle NULL/ERR returns from ptp_clock_register()
-Date: Sat, 21 Mar 2026 19:29:11 +0200
-Message-Id: <20260321192637.adea594600e8.I0e3d3f7ce897c54fff8ace6dd0faf55b4f39832b@changeid>
+Cc: Johannes Berg <johannes.berg@intel.com>,
+	Emmanuel Grumbach <emmanuel.grumbach@intel.com>
+Subject: [PATCH iwlwifi-next 05/15] wifi: iwlwifi: add MAC context command version 4
+Date: Sat, 21 Mar 2026 19:29:12 +0200
+Message-Id: <20260321192637.5ab609ca1966.I860737f952865bd0b997f1c190c3891864c7c6ba@changeid>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20260321172922.3938740-1-miriam.rachel.korenblit@intel.com>
 References: <20260321172922.3938740-1-miriam.rachel.korenblit@intel.com>
@@ -90,7 +90,7 @@ X-Spamd-Result: default: False [-1.16 / 15.00];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	TO_DN_SOME(0.00)[];
-	TAGGED_FROM(0.00)[bounces-33631-lists,linux-wireless=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-33632-lists,linux-wireless=lfdr.de];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	HAS_ORG_HEADER(0.00)[];
@@ -106,57 +106,260 @@ X-Spamd-Result: default: False [-1.16 / 15.00];
 	NEURAL_HAM(-0.00)[-1.000];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,intel.com:dkim,intel.com:email]
-X-Rspamd-Queue-Id: 7D4F72E6876
+X-Rspamd-Queue-Id: 53CAB2E6884
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-From: Avinash Bhatt <avinash.bhatt@intel.com>
+From: Johannes Berg <johannes.berg@intel.com>
 
-ptp_clock_register() returns NULL when PTP support is disabled and may
-return an ERR_PTR() on other failures. Reduce Log severity for NULL
-return cases to avoid misleading errors when PTP is unavailable.
+Due to NAN additions, this command needs to grow. In iwlmvm
+we just need to use the old _v3 (or v2) version, but iwlmld
+needs to handle the difference and send both.  Do that as a
+first step towards adding NAN support.
 
-Signed-off-by: Avinash Bhatt <avinash.bhatt@intel.com>
-Reviewed-by: Johannes Berg <johannes.berg@intel.com>
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Reviewed-by: Emmanuel Grumbach <emmanuel.grumbach@intel.com>
 Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
 ---
- drivers/net/wireless/intel/iwlwifi/mld/ptp.c | 4 +++-
- drivers/net/wireless/intel/iwlwifi/mvm/ptp.c | 4 +++-
- 2 files changed, 6 insertions(+), 2 deletions(-)
+ .../wireless/intel/iwlwifi/fw/api/mac-cfg.h   | 64 +++++++++++++++++--
+ .../net/wireless/intel/iwlwifi/fw/api/mac.h   |  6 +-
+ .../net/wireless/intel/iwlwifi/mld/iface.c    | 13 +++-
+ .../net/wireless/intel/iwlwifi/mvm/mld-mac.c  | 18 +++---
+ 4 files changed, 81 insertions(+), 20 deletions(-)
 
-diff --git a/drivers/net/wireless/intel/iwlwifi/mld/ptp.c b/drivers/net/wireless/intel/iwlwifi/mld/ptp.c
-index 231920425c06..c65f4b56a327 100644
---- a/drivers/net/wireless/intel/iwlwifi/mld/ptp.c
-+++ b/drivers/net/wireless/intel/iwlwifi/mld/ptp.c
-@@ -301,10 +301,12 @@ void iwl_mld_ptp_init(struct iwl_mld *mld)
- 	mld->ptp_data.ptp_clock =
- 		ptp_clock_register(&mld->ptp_data.ptp_clock_info, mld->dev);
+diff --git a/drivers/net/wireless/intel/iwlwifi/fw/api/mac-cfg.h b/drivers/net/wireless/intel/iwlwifi/fw/api/mac-cfg.h
+index 2e3f437686b9..180eb8227582 100644
+--- a/drivers/net/wireless/intel/iwlwifi/fw/api/mac-cfg.h
++++ b/drivers/net/wireless/intel/iwlwifi/fw/api/mac-cfg.h
+@@ -34,7 +34,8 @@ enum iwl_mac_conf_subcmd_ids {
+ 	 */
+ 	CANCEL_CHANNEL_SWITCH_CMD = 0x6,
+ 	/**
+-	 * @MAC_CONFIG_CMD: &struct iwl_mac_config_cmd
++	 * @MAC_CONFIG_CMD: &struct iwl_mac_config_cmd_v3 or
++	 *	&struct iwl_mac_config_cmd
+ 	 */
+ 	MAC_CONFIG_CMD = 0x8,
+ 	/**
+@@ -357,7 +358,7 @@ struct iwl_mac_wifi_gen_support {
+ } __packed;
  
--	if (IS_ERR_OR_NULL(mld->ptp_data.ptp_clock)) {
-+	if (IS_ERR(mld->ptp_data.ptp_clock)) {
- 		IWL_ERR(mld, "Failed to register PHC clock (%ld)\n",
- 			PTR_ERR(mld->ptp_data.ptp_clock));
- 		mld->ptp_data.ptp_clock = NULL;
-+	} else if (!mld->ptp_data.ptp_clock) {
-+		IWL_DEBUG_INFO(mld, "PTP module unavailable on this kernel\n");
- 	} else {
- 		IWL_DEBUG_INFO(mld, "Registered PHC clock: %s, with index: %d\n",
- 			       mld->ptp_data.ptp_clock_info.name,
-diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/ptp.c b/drivers/net/wireless/intel/iwlwifi/mvm/ptp.c
-index ad156b82eaa9..f7b620136c85 100644
---- a/drivers/net/wireless/intel/iwlwifi/mvm/ptp.c
-+++ b/drivers/net/wireless/intel/iwlwifi/mvm/ptp.c
-@@ -304,7 +304,9 @@ void iwl_mvm_ptp_init(struct iwl_mvm *mvm)
- 		IWL_ERR(mvm, "Failed to register PHC clock (%ld)\n",
- 			PTR_ERR(mvm->ptp_data.ptp_clock));
- 		mvm->ptp_data.ptp_clock = NULL;
--	} else if (mvm->ptp_data.ptp_clock) {
-+	} else if (!mvm->ptp_data.ptp_clock) {
-+		IWL_DEBUG_INFO(mvm, "PTP module unavailable on this kernel\n");
-+	} else {
- 		IWL_DEBUG_INFO(mvm, "Registered PHC clock: %s, with index: %d\n",
- 			       mvm->ptp_data.ptp_clock_info.name,
- 			       ptp_clock_index(mvm->ptp_data.ptp_clock));
+ /**
+- * struct iwl_mac_config_cmd - command structure to configure MAC contexts in
++ * struct iwl_mac_config_cmd_v3 - command structure to configure MAC contexts in
+  *	MLD API for versions 2 and 3
+  * ( MAC_CONTEXT_CONFIG_CMD = 0x8 )
+  *
+@@ -376,7 +377,7 @@ struct iwl_mac_wifi_gen_support {
+  * @client: client mac data
+  * @p2p_dev: mac data for p2p device
+  */
+-struct iwl_mac_config_cmd {
++struct iwl_mac_config_cmd_v3 {
+ 	__le32 id_and_color;
+ 	__le32 action;
+ 	/* MAC_CONTEXT_TYPE_API_E */
+@@ -394,7 +395,62 @@ struct iwl_mac_config_cmd {
+ 		struct iwl_mac_client_data client;
+ 		struct iwl_mac_p2p_dev_data p2p_dev;
+ 	};
+-} __packed; /* MAC_CONTEXT_CONFIG_CMD_API_S_VER_2_VER_3 */
++} __packed; /* MAC_CONTEXT_CONFIG_CMD_API_S_VER_2, _VER_3 */
++
++/**
++ * struct iwl_mac_nan_data - NAN specific MAC data
++ * @ndi_addrs: extra NDI addresses being used
++ * @ndi_addrs_count: number of extra NDI addresses
++ */
++struct iwl_mac_nan_data {
++	struct {
++		u8 addr[ETH_ALEN];
++		__le16 reserved;
++	} __packed ndi_addrs[2];
++	__le32 ndi_addrs_count;
++} __packed; /* MAC_CONTEXT_CONFIG_NAN_DATA_API_S_VER_1 */
++
++/**
++ * struct iwl_mac_config_cmd - command structure to configure MAC contexts in
++ *	MLD API for versions 4
++ * ( MAC_CONTEXT_CONFIG_CMD = 0x8 )
++ *
++ * @id_and_color: ID and color of the MAC
++ * @action: action to perform, see &enum iwl_ctxt_action
++ * @mac_type: one of &enum iwl_mac_types
++ * @local_mld_addr: mld address
++ * @reserved_for_local_mld_addr: reserved
++ * @filter_flags: combination of &enum iwl_mac_config_filter_flags
++ * @wifi_gen_v2: he/eht parameters as in cmd version 2
++ * @wifi_gen: he/eht/uhr parameters as in cmd version 3
++ * @nic_not_ack_enabled: mark that the NIC doesn't support receiving
++ *	ACK-enabled AGG, (i.e. both BACK and non-BACK frames in single AGG).
++ *	If the NIC is not ACK_ENABLED it may use the EOF-bit in first non-0
++ *	len delim to determine if AGG or single.
++ * @client: client mac data
++ * @p2p_dev: mac data for p2p device
++ * @nan: NAN specific data (NAN data interface addresses)
++ */
++struct iwl_mac_config_cmd {
++	__le32 id_and_color;
++	__le32 action;
++	/* MAC_CONTEXT_TYPE_API_E */
++	__le32 mac_type;
++	u8 local_mld_addr[6];
++	__le16 reserved_for_local_mld_addr;
++	__le32 filter_flags;
++	union {
++		struct iwl_mac_wifi_gen_support_v2 wifi_gen_v2;
++		struct iwl_mac_wifi_gen_support wifi_gen;
++	};
++	__le32 nic_not_ack_enabled;
++	/* MAC_CONTEXT_CONFIG_SPECIFIC_DATA_API_U_VER_3 */
++	union {
++		struct iwl_mac_client_data client;
++		struct iwl_mac_p2p_dev_data p2p_dev;
++		struct iwl_mac_nan_data nan;
++	};
++} __packed; /* MAC_CONTEXT_CONFIG_CMD_API_S_VER_4 */
+ 
+ /**
+  * enum iwl_link_ctx_modify_flags - indicate to the fw what fields are being
+diff --git a/drivers/net/wireless/intel/iwlwifi/fw/api/mac.h b/drivers/net/wireless/intel/iwlwifi/fw/api/mac.h
+index 2a174c00b712..439a4530ec9f 100644
+--- a/drivers/net/wireless/intel/iwlwifi/fw/api/mac.h
++++ b/drivers/net/wireless/intel/iwlwifi/fw/api/mac.h
+@@ -57,8 +57,7 @@ enum iwl_mac_protection_flags {
+  * @FW_MAC_TYPE_P2P_DEVICE: P2P Device
+  * @FW_MAC_TYPE_P2P_STA: P2P client
+  * @FW_MAC_TYPE_GO: P2P GO
+- * @FW_MAC_TYPE_TEST: ?
+- * @FW_MAC_TYPE_MAX: highest support MAC type
++ * @FW_MAC_TYPE_NAN: NAN (since version 4)
+  */
+ enum iwl_mac_types {
+ 	FW_MAC_TYPE_FIRST = 1,
+@@ -70,8 +69,7 @@ enum iwl_mac_types {
+ 	FW_MAC_TYPE_P2P_DEVICE,
+ 	FW_MAC_TYPE_P2P_STA,
+ 	FW_MAC_TYPE_GO,
+-	FW_MAC_TYPE_TEST,
+-	FW_MAC_TYPE_MAX = FW_MAC_TYPE_TEST
++	FW_MAC_TYPE_NAN,
+ }; /* MAC_CONTEXT_TYPE_API_E_VER_1 */
+ 
+ /**
+diff --git a/drivers/net/wireless/intel/iwlwifi/mld/iface.c b/drivers/net/wireless/intel/iwlwifi/mld/iface.c
+index 4d8052e65f93..d3b850259569 100644
+--- a/drivers/net/wireless/intel/iwlwifi/mld/iface.c
++++ b/drivers/net/wireless/intel/iwlwifi/mld/iface.c
+@@ -61,13 +61,20 @@ void iwl_mld_cleanup_vif(void *data, u8 *mac, struct ieee80211_vif *vif)
+ static int iwl_mld_send_mac_cmd(struct iwl_mld *mld,
+ 				struct iwl_mac_config_cmd *cmd)
+ {
++	u16 cmd_id = WIDE_ID(MAC_CONF_GROUP, MAC_CONFIG_CMD);
++	int len = sizeof(*cmd);
+ 	int ret;
+ 
+ 	lockdep_assert_wiphy(mld->wiphy);
+ 
+-	ret = iwl_mld_send_cmd_pdu(mld,
+-				   WIDE_ID(MAC_CONF_GROUP, MAC_CONFIG_CMD),
+-				   cmd);
++	if (iwl_fw_lookup_cmd_ver(mld->fw, cmd_id, 0) < 4) {
++		if (WARN_ON(cmd->mac_type == cpu_to_le32(FW_MAC_TYPE_NAN)))
++			return -EINVAL;
++
++		len = sizeof(struct iwl_mac_config_cmd_v3);
++	}
++
++	ret = iwl_mld_send_cmd_pdu(mld, cmd_id, cmd, len);
+ 	if (ret)
+ 		IWL_ERR(mld, "Failed to send MAC_CONFIG_CMD ret = %d\n", ret);
+ 
+diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/mld-mac.c b/drivers/net/wireless/intel/iwlwifi/mvm/mld-mac.c
+index bf54b90a7c51..b65825747b9d 100644
+--- a/drivers/net/wireless/intel/iwlwifi/mvm/mld-mac.c
++++ b/drivers/net/wireless/intel/iwlwifi/mvm/mld-mac.c
+@@ -6,7 +6,7 @@
+ 
+ static void iwl_mvm_mld_set_he_support(struct iwl_mvm *mvm,
+ 				       struct ieee80211_vif *vif,
+-				       struct iwl_mac_config_cmd *cmd,
++				       struct iwl_mac_config_cmd_v3 *cmd,
+ 				       int cmd_ver)
+ {
+ 	if (vif->type == NL80211_IFTYPE_AP) {
+@@ -24,7 +24,7 @@ static void iwl_mvm_mld_set_he_support(struct iwl_mvm *mvm,
+ 
+ static void iwl_mvm_mld_mac_ctxt_cmd_common(struct iwl_mvm *mvm,
+ 					    struct ieee80211_vif *vif,
+-					    struct iwl_mac_config_cmd *cmd,
++					    struct iwl_mac_config_cmd_v3 *cmd,
+ 					    u32 action)
+ {
+ 	struct iwl_mvm_vif *mvmvif = iwl_mvm_vif_from_mac80211(vif);
+@@ -83,7 +83,7 @@ static void iwl_mvm_mld_mac_ctxt_cmd_common(struct iwl_mvm *mvm,
+ }
+ 
+ static int iwl_mvm_mld_mac_ctxt_send_cmd(struct iwl_mvm *mvm,
+-					 struct iwl_mac_config_cmd *cmd)
++					 struct iwl_mac_config_cmd_v3 *cmd)
+ {
+ 	int ret = iwl_mvm_send_cmd_pdu(mvm,
+ 				       WIDE_ID(MAC_CONF_GROUP, MAC_CONFIG_CMD),
+@@ -98,7 +98,7 @@ static int iwl_mvm_mld_mac_ctxt_cmd_sta(struct iwl_mvm *mvm,
+ 					struct ieee80211_vif *vif,
+ 					u32 action, bool force_assoc_off)
+ {
+-	struct iwl_mac_config_cmd cmd = {};
++	struct iwl_mac_config_cmd_v3 cmd = {};
+ 
+ 	WARN_ON(vif->type != NL80211_IFTYPE_STATION);
+ 
+@@ -151,7 +151,7 @@ static int iwl_mvm_mld_mac_ctxt_cmd_listener(struct iwl_mvm *mvm,
+ 					     struct ieee80211_vif *vif,
+ 					     u32 action)
+ {
+-	struct iwl_mac_config_cmd cmd = {};
++	struct iwl_mac_config_cmd_v3 cmd = {};
+ 
+ 	WARN_ON(vif->type != NL80211_IFTYPE_MONITOR);
+ 
+@@ -170,7 +170,7 @@ static int iwl_mvm_mld_mac_ctxt_cmd_ibss(struct iwl_mvm *mvm,
+ 					 struct ieee80211_vif *vif,
+ 					 u32 action)
+ {
+-	struct iwl_mac_config_cmd cmd = {};
++	struct iwl_mac_config_cmd_v3 cmd = {};
+ 
+ 	WARN_ON(vif->type != NL80211_IFTYPE_ADHOC);
+ 
+@@ -187,7 +187,7 @@ static int iwl_mvm_mld_mac_ctxt_cmd_p2p_device(struct iwl_mvm *mvm,
+ 					       struct ieee80211_vif *vif,
+ 					       u32 action)
+ {
+-	struct iwl_mac_config_cmd cmd = {};
++	struct iwl_mac_config_cmd_v3 cmd = {};
+ 
+ 	WARN_ON(vif->type != NL80211_IFTYPE_P2P_DEVICE);
+ 
+@@ -210,7 +210,7 @@ static int iwl_mvm_mld_mac_ctxt_cmd_ap_go(struct iwl_mvm *mvm,
+ 					  u32 action)
+ {
+ 	struct iwl_mvm_vif *mvmvif = iwl_mvm_vif_from_mac80211(vif);
+-	struct iwl_mac_config_cmd cmd = {};
++	struct iwl_mac_config_cmd_v3 cmd = {};
+ 
+ 	WARN_ON(vif->type != NL80211_IFTYPE_AP);
+ 
+@@ -286,7 +286,7 @@ int iwl_mvm_mld_mac_ctxt_changed(struct iwl_mvm *mvm,
+ int iwl_mvm_mld_mac_ctxt_remove(struct iwl_mvm *mvm, struct ieee80211_vif *vif)
+ {
+ 	struct iwl_mvm_vif *mvmvif = iwl_mvm_vif_from_mac80211(vif);
+-	struct iwl_mac_config_cmd cmd = {
++	struct iwl_mac_config_cmd_v3 cmd = {
+ 		.action = cpu_to_le32(FW_CTXT_ACTION_REMOVE),
+ 		.id_and_color = cpu_to_le32(mvmvif->id),
+ 	};
 -- 
 2.34.1
 
