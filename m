@@ -1,161 +1,181 @@
-Return-Path: <linux-wireless+bounces-33659-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-33660-lists+linux-wireless=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id sOCnF7odv2mavAMAu9opvQ
-	(envelope-from <linux-wireless+bounces-33659-lists+linux-wireless=lfdr.de@vger.kernel.org>)
-	for <lists+linux-wireless@lfdr.de>; Sat, 21 Mar 2026 23:37:46 +0100
+	id TBsfML0ev2luvQMAu9opvQ
+	(envelope-from <linux-wireless+bounces-33660-lists+linux-wireless=lfdr.de@vger.kernel.org>)
+	for <lists+linux-wireless@lfdr.de>; Sat, 21 Mar 2026 23:42:05 +0100
 X-Original-To: lists+linux-wireless@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id B7CAF2E77F3
-	for <lists+linux-wireless@lfdr.de>; Sat, 21 Mar 2026 23:37:45 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id B4C6A2E786A
+	for <lists+linux-wireless@lfdr.de>; Sat, 21 Mar 2026 23:42:04 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id ADDE7300DF4D
-	for <lists+linux-wireless@lfdr.de>; Sat, 21 Mar 2026 22:37:27 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id AF1B830093A8
+	for <lists+linux-wireless@lfdr.de>; Sat, 21 Mar 2026 22:42:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5D9A829B793;
-	Sat, 21 Mar 2026 22:37:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A288C241CB7;
+	Sat, 21 Mar 2026 22:41:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b="uvhjkTFa"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="icSDnDjg"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from sipsolutions.net (s3.sipsolutions.net [168.119.38.16])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f42.google.com (mail-wm1-f42.google.com [209.85.128.42])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 08F67282F0B
-	for <linux-wireless@vger.kernel.org>; Sat, 21 Mar 2026 22:37:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=168.119.38.16
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 32F57242D9D
+	for <linux-wireless@vger.kernel.org>; Sat, 21 Mar 2026 22:41:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.42
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774132646; cv=none; b=BQy1oYAha9wa56XmziCJowhxo4sN4/2fjT1MY0npFVSR8ZMxf5v2SzaCUyhlzhsTfaUBAXRmVOZ1+FzLlJxWaHeA4Tvj4vex/k05DOnVn9UAzWu3QvXiqJFT0jOHYkQ2U6dc85TwE8iiy/XdT3K2s1XHmjVq/ysZyCpInHPn11k=
+	t=1774132919; cv=none; b=na4Zi9dIIm5YT+Kr9+9r0Kv7V3sxY9TfWR+jTrHeodRxl1iEgrdzgHqVeV6I9h7pbZsOtpVkMNnxWUND3V276K4LPjJSxUfy1L3nRp3NxmyOp2tiHhn2uSTXq4Bus3qP8dMJjh9hrRvvU3CWOIyt+d4gnUH3TitirrMTzUT2ws4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774132646; c=relaxed/simple;
-	bh=Bu/dOxuGpgan0gVJpXUKdYnZnMAFHXN95DLlIufj8Jo=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=MsWuFQXUhXAldrBaDZj/3MyGrVWrT8rzm4uJZb4cIv/5YHPFMPPYUhchFLwzuJbTMtsNTt4mbnGufDuq9dWXzCKCnkAPmBFaJL1S9YtKrNSM5UMYL4c6bcqP5eUb7Rcv91ZFdQ94wAaFM17Hck8dVMfGPLBZHvW8vkSwAPVT7l0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net; spf=pass smtp.mailfrom=sipsolutions.net; dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b=uvhjkTFa; arc=none smtp.client-ip=168.119.38.16
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sipsolutions.net
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=sipsolutions.net; s=mail; h=MIME-Version:Content-Transfer-Encoding:
-	Content-Type:References:In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender
-	:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
-	Resent-Cc:Resent-Message-ID; bh=ycJFp9TwqNlqxtaXvfuZJuB+1FImsEFLXlJLabYA1cE=;
-	t=1774132645; x=1775342245; b=uvhjkTFasTypWrNCVu4E9bQTnpuGMIww2oczK316/QuCJqL
-	uP0wRZsPpT9NuBsHBUeYPZSkqw2o3Ivf5hIdwowiK9nscAupnPI/iAt5l236749eVIFyvbOeWuuSS
-	uQ2AU80+auVerC2sGSUiOk4UhnbxBZdlFW4WV7OCVT29xI24j7lyl8w6JHcLe8nZbsdAYtGrcq+Uy
-	//P804ZHtoBq1xWF56YOTiAH4xUcGETqYXFw6IafqWEWR7672DAIlGYEqkF/s3L8yKQzLs09ETFkj
-	iyflMOLTQCOJhckNANaTSgt1P5jTBHEL8k8G2LuIN4agiuBvu2ujSWeEAkDRNTzg==;
-Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
-	(Exim 4.98.2)
-	(envelope-from <johannes@sipsolutions.net>)
-	id 1w44wV-0000000811Q-2vAl;
-	Sat, 21 Mar 2026 23:37:16 +0100
-Message-ID: <7f9e4e4409f8406ec70a80441d049c5f6c6958fa.camel@sipsolutions.net>
-Subject: Re: [PATCH 13/16] carl9170: rx: gate data frame delivery on STARTED
- state
-From: Johannes Berg <johannes@sipsolutions.net>
-To: Christian Lamparter <chunkeey@gmail.com>, Masi Osmani <mas-i@hotmail.de>
-Cc: linux-wireless@vger.kernel.org
-Date: Sat, 21 Mar 2026 23:37:14 +0100
-In-Reply-To: <17fe2464-e8a1-4f2b-a024-a78bcf460bcd@gmail.com>
-References: 
-	<AM7PPF5613FA0B6ADFF8016B03CAA1A9DEB9441A@AM7PPF5613FA0B6.EURP251.PROD.OUTLOOK.COM>
-	 <17fe2464-e8a1-4f2b-a024-a78bcf460bcd@gmail.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.58.3 (3.58.3-1.fc43) 
+	s=arc-20240116; t=1774132919; c=relaxed/simple;
+	bh=vNNwgmtjkPeT7iVunquUyx1AtzmJo9kc/1a1OFMY6tg=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=Vr2sBFp4xjM+nERgLYrmqbudHJOBPn2sKMcjXg15ZPQ2TfBXnd5GjT5rl5Usg/c37B3eg1qB8FbBkNg84gb0+t72wCkGVvsFHwP1aDjKojaaLuvv1DZDt1uavEENA3ueU4DORAUodeNEWtlyr5rP1iMl4mx14BvNjsJ2dAbNb2c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=icSDnDjg; arc=none smtp.client-ip=209.85.128.42
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-wm1-f42.google.com with SMTP id 5b1f17b1804b1-486fc4725f0so24114565e9.1
+        for <linux-wireless@vger.kernel.org>; Sat, 21 Mar 2026 15:41:57 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1774132916; x=1774737716; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=bEu3F/1WSwP+uP501dKOCH3i4oNbCzx3X/c+Qj9v7z0=;
+        b=icSDnDjgvR3sUyc3uCI7QxT0Sn9rQow0xvBTSrZBIwAcbKtEzYZf/6722DI28649fU
+         RnifgGgrOJMksfdYtXqmE5z09abklEaiTA82emlnMCkx8TDAkYkY/zejQAMfebD+5n7x
+         OHxdZQLKMw9hl3Z+K8hbwqavnok4ZFDQU7cfdARRKwWU2bc7ncaMmdxUuOqOjw3A7P+d
+         u03Euuu1QMQdblmshWtEFw4JzUnvWdj2HbYwD89kAOIHaoHwrHKk7tuI1wkTh140n1lR
+         aUunct8vW0txxX5aF20QgoYzIt8O/DM1rnYQ7s9En0ljuHXw/SzkMsYdl5Zdcn/sTahj
+         HyaA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1774132916; x=1774737716;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=bEu3F/1WSwP+uP501dKOCH3i4oNbCzx3X/c+Qj9v7z0=;
+        b=NqCnoTyGCzmKvyj5zdyqfz75ND+Ne664PnfrrmBnXtJsoG9SvQMHG8rsLtv1GP8NYl
+         HlzeS/QwIRTrmOt82mvkxXDcpJuC8/H+imflqeaWXaru/T0YqWHZ0JseqU8xiPKlAmT7
+         XK/37VdRdXK3MURjDLivH4+tZEW8p2oAMTdYgdqeN6PtNkoXdit0MwOuLOam0wCEl0WE
+         oTWAh/5Fm52DBSOhW6YDSLt1aSMVjyEtKxo4fpopkgCOj/VRW51P+Q+eU07X9xSGRnA/
+         BL1KAAH90TSQ8MTBpPnts84639soiC0pMKYLpjA8MAbE2B08O3kXnG/pX2FOq8DdDZXp
+         TSWw==
+X-Gm-Message-State: AOJu0YzkUBLL3V5Tr1rnort6uXas/sY+EPSATf1ffW3mqJjvJSTbJI3p
+	Ek0MEGATwMR4rVY9j/TlthsykDACyMXXop8wMRpJea36+/3LXcS5TG2F
+X-Gm-Gg: ATEYQzzw6Z12gWRXQwPT5IzPMBr2JuVdBCgeLO+iVMlifNkxTe4iR2nQeE9bN0YBEzJ
+	BxdHjd4GjnksjDAI/BvdXm1vFtqVbLRYIEeHJtytrnSjQVNQSs4DuQjYO7Yr5St75pthE+vsk9t
+	zjinsTH1/xKy3ESvaUC/2qeS8cE0w7bcJMbaITpHn3WnmjE2tlqLCFu18JI/dHGK5Zr2cihEUWN
+	ARNvbJ4VdmnH7R7G4LYK93Vh+OrG7lxmxdinmYB7E7SRDNW/X+oVMTkzzX7r7faJqc8GISAM+fg
+	5Mla4+LlZiArEVeBrB2eaCOlrCR3mtG/iNTJCu9ifj35KwI6ajEtKFBacT/pZXyE3nuFyiz370s
+	+wKoj62NENrSrudjAhXRVw4fYnUWFBy2IRJ/S13ya0D90Ljei29wj5vP9R0qUb/ZWISj4fLgalN
+	eVLlpK8Cf5JeYqpion8iBibL+j3g9/1tt2Q5Hn6tAT9Gr9NEzQQdOJjPUoLg6RaelD4kfO0vhmI
+	PLr+VmMbFH2argM9bby0lEfONoB9kbH
+X-Received: by 2002:a05:600c:1383:b0:486:fbc4:8fe2 with SMTP id 5b1f17b1804b1-486fe8fb2b2mr113587475e9.15.1774132916435;
+        Sat, 21 Mar 2026 15:41:56 -0700 (PDT)
+Received: from shift.daheim (p200300d5ff07e00050f496fffe46beef.dip0.t-ipconnect.de. [2003:d5:ff07:e000:50f4:96ff:fe46:beef])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-486ff1aeafdsm45562545e9.21.2026.03.21.15.41.55
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sat, 21 Mar 2026 15:41:55 -0700 (PDT)
+Received: from localhost ([127.0.0.1])
+	by shift.daheim with esmtp (Exim 4.99.1)
+	(envelope-from <chunkeey@gmail.com>)
+	id 1w44yO-00000001Qaf-39uk;
+	Sat, 21 Mar 2026 23:41:54 +0100
+Message-ID: <4b7b0e25-dc71-4f69-9908-cd19113822ce@gmail.com>
+Date: Sat, 21 Mar 2026 23:41:54 +0100
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-malware-bazaar: not-scanned
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 16/16] carl9170: cmd: downgrade transient register I/O
+ errors to wiphy_dbg
+To: Masi Osmani <mas-i@hotmail.de>
+Cc: linux-wireless@vger.kernel.org
+References: <20260317110634.70347-1-mas-i@hotmail.de>
+ <AM7PPF5613FA0B67FB95CB5305CEF9DAA209441A@AM7PPF5613FA0B6.EURP251.PROD.OUTLOOK.COM>
+Content-Language: de-DE
+From: Christian Lamparter <chunkeey@gmail.com>
+In-Reply-To: <AM7PPF5613FA0B67FB95CB5305CEF9DAA209441A@AM7PPF5613FA0B6.EURP251.PROD.OUTLOOK.COM>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[sipsolutions.net,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
-	R_DKIM_ALLOW(-0.20)[sipsolutions.net:s=mail];
+	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
+	R_DKIM_ALLOW(-0.20)[gmail.com:s=20230601];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-33659-lists,linux-wireless=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	FREEMAIL_TO(0.00)[gmail.com,hotmail.de];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_TWO(0.00)[2];
+	FREEMAIL_TO(0.00)[hotmail.de];
+	TAGGED_FROM(0.00)[bounces-33660-lists,linux-wireless=lfdr.de];
+	TO_DN_SOME(0.00)[];
+	RECEIVED_HELO_LOCALHOST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	RCPT_COUNT_THREE(0.00)[3];
-	NEURAL_HAM(-0.00)[-1.000];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCVD_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[johannes@sipsolutions.net,linux-wireless@vger.kernel.org];
-	DKIM_TRACE(0.00)[sipsolutions.net:+];
-	MID_RHS_MATCH_FROM(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[chunkeey@gmail.com,linux-wireless@vger.kernel.org];
+	DKIM_TRACE(0.00)[gmail.com:+];
+	NEURAL_HAM(-0.00)[-1.000];
 	TAGGED_RCPT(0.00)[linux-wireless];
-	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[hotmail.de:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: B7CAF2E77F3
+	MID_RHS_MATCH_FROM(0.00)[];
+	FREEMAIL_FROM(0.00)[gmail.com];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,hotmail.de:email]
+X-Rspamd-Queue-Id: B4C6A2E786A
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-On Sat, 2026-03-21 at 23:34 +0100, Christian Lamparter wrote:
-> On 3/17/26 12:06 PM, Masi Osmani wrote:
-> > Do not deliver data frames to mac80211 unless the device is fully
-> > started.  After carl9170_op_stop() the driver state drops to IDLE,
-> > but the USB RX path can still receive frames from the hardware.
-> > Without this gate, ieee80211_rx() may reference station data that
-> > sta_info_destroy_part2() is concurrently freeing during interface
-> > teardown, causing a use-after-free kernel panic.
-> >=20
-> > The race occurs when ieee80211_handle_reconfig_failure() clears
-> > IN_DRIVER flags without stopping the hardware: cfg80211 then tears
-> > down interfaces via ieee80211_do_stop() which calls sta_info_flush()
-> > while the driver's RX path still delivers frames.  This was observed
-> > when carl9170 firmware deadlocks during a restart attempt and
-> > ieee80211_reconfig() fails at drv_add_interface().
-> >=20
-> > The gate is placed in carl9170_rx_untie_data() just before the
-> > ieee80211_rx() call, not in the USB layer, because firmware command
-> > responses (including CARL9170_RSP_BOOT needed for firmware upload)
-> > must still flow through the shared RX path via
-> > carl9170_handle_command_response() which returns before reaching
-> > this point.
-> >=20
-> > Signed-off-by: Masi Osmani <mas-i@hotmail.de>
-> > ---
-> >   drivers/net/wireless/ath/carl9170/rx.c | 8 ++++++++
-> >   1 file changed, 8 insertions(+)
-> >=20
-> > diff --git a/drivers/net/wireless/ath/carl9170/rx.c b/drivers/net/wirel=
-ess/ath/carl9170/rx.c
-> > index 683343013..19c6bd418 100644
-> > --- a/drivers/net/wireless/ath/carl9170/rx.c
-> > +++ b/drivers/net/wireless/ath/carl9170/rx.c
-> > @@ -676,6 +676,14 @@ static int carl9170_handle_mpdu(struct ar9170 *ar,=
- u8 *buf, int len,
-> >  =20
-> >   	carl9170_ba_check(ar, buf, len);
-> >  =20
-> > +	/*
-> > +	 * Do not deliver data frames to mac80211 unless the device is
-> > +	 * fully started.  After carl9170_op_stop() the state drops to
-> > +	 * IDLE, preventing a use-after-free when sta_info_destroy_part2()
-> > +	 * races with ieee80211_rx() during interface teardown.
-> > +	 */
->=20
-> If what you write is true for an up-to-date kernel, this needs to be addr=
-essed in mac80211.
-> Under no circumstance should mac80211 behave that way... for any driver, =
-in any case.
->=20
-> Can you please post the panics/errors/warnings?
+On 3/17/26 12:06 PM, Masi Osmani wrote:
+> Register read/write failures during deauth/teardown transitions are
+> harmless — mac80211 tries to read survey stats or write slot_time
+> while the firmware is in a transitional state.  The command times
+> out with -EIO but the adapter recovers and re-authenticates normally.
+> 
+> Downgrade both "writing reg ... failed" and "reading regs failed"
+> from wiphy_err to wiphy_dbg to reduce dmesg noise.  The errors are
+> still visible with dynamic debug enabled for investigation.
 
-Yeah, this whole use-after-free is super fishy since we have RCU for it
-all. Masi proposed a patch to mac80211 with similar strange reasoning
-which I rejected, and never provided the errors that were happening ...
 
-johannes
+Sure
+
+Acked-By: Christian Lamparter <chunkeey@gmail.com>
+
+> 
+> Signed-off-by: Masi Osmani <mas-i@hotmail.de>
+> ---
+>   drivers/net/wireless/ath/carl9170/cmd.c | 4 ++--
+>   1 file changed, 2 insertions(+), 2 deletions(-)
+> 
+> diff --git a/drivers/net/wireless/ath/carl9170/cmd.c b/drivers/net/wireless/ath/carl9170/cmd.c
+> --- a/drivers/net/wireless/ath/carl9170/cmd.c
+> +++ b/drivers/net/wireless/ath/carl9170/cmd.c
+> @@ -52,7 +52,7 @@
+>   				(u8 *) buf, 0, NULL);
+>   	if (err) {
+>   		if (net_ratelimit()) {
+> -			wiphy_err(ar->hw->wiphy, "writing reg %#x "
+> +			wiphy_dbg(ar->hw->wiphy, "writing reg %#x "
+>   				"(val %#x) failed (%d)\n", reg, val, err);
+>   		}
+>   	}
+> @@ -78,7 +78,7 @@
+>   				4 * nregs, (u8 *)res);
+>   	if (err) {
+>   		if (net_ratelimit()) {
+> -			wiphy_err(ar->hw->wiphy, "reading regs failed (%d)\n",
+> +			wiphy_dbg(ar->hw->wiphy, "reading regs failed (%d)\n",
+>   				  err);
+>   		}
+>   		return err;
+
 
