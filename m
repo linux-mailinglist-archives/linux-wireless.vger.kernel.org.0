@@ -1,92 +1,53 @@
-Return-Path: <linux-wireless+bounces-33667-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-33668-lists+linux-wireless=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id U41sKKXzv2l7BQQAu9opvQ
-	(envelope-from <linux-wireless+bounces-33667-lists+linux-wireless=lfdr.de@vger.kernel.org>)
-	for <lists+linux-wireless@lfdr.de>; Sun, 22 Mar 2026 14:50:29 +0100
+	id CNhZJSw1wGmUEwQAu9opvQ
+	(envelope-from <linux-wireless+bounces-33668-lists+linux-wireless=lfdr.de@vger.kernel.org>)
+	for <lists+linux-wireless@lfdr.de>; Sun, 22 Mar 2026 19:30:04 +0100
 X-Original-To: lists+linux-wireless@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id F3F982E9842
-	for <lists+linux-wireless@lfdr.de>; Sun, 22 Mar 2026 14:50:28 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id 887782EA49C
+	for <lists+linux-wireless@lfdr.de>; Sun, 22 Mar 2026 19:30:03 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 0EB5E301C8B0
-	for <lists+linux-wireless@lfdr.de>; Sun, 22 Mar 2026 13:49:29 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 92FE130034B5
+	for <lists+linux-wireless@lfdr.de>; Sun, 22 Mar 2026 18:30:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0A57C358364;
-	Sun, 22 Mar 2026 13:49:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B1C9A368974;
+	Sun, 22 Mar 2026 18:29:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="U6lFFD+s"
+	dkim=pass (2048-bit key) header.d=icloud.com header.i=@icloud.com header.b="V/k36Ml3"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-wm1-f42.google.com (mail-wm1-f42.google.com [209.85.128.42])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from outbound.qs.icloud.com (qs-2006i-snip4-11.eps.apple.com [57.103.85.221])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9291C1A6830
-	for <linux-wireless@vger.kernel.org>; Sun, 22 Mar 2026 13:49:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.42
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 861A23321DC
+	for <linux-wireless@vger.kernel.org>; Sun, 22 Mar 2026 18:29:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=57.103.85.221
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774187367; cv=none; b=r7FuacGnjp8S8WMn9ubfJkhqMSAzSuPit5dmFwcoKmcMA3uhVZnWyoESK1fkGJlhoXBFCih/eD3gjJ24eq4rNUMnJsVyxFtNYJ+ZJ1d3H6ulLGzK8MRzey386ncy4fsk6Z69peE+iM4E+ae76Eu/4h1wCON7Kqi9oEeJl0Zt65E=
+	t=1774204198; cv=none; b=Mjwh6bdqe/JA/JGyA7A1JEX6LgB5YlJD//yTp31j1NnmHz9PvOGP/QM21UrzxIQDeS4pndjVWfkUs2/A4WYXePv9eZwltJQeegWZGkPlF8QyyZpS49qaebAzh5Pqkf2lmgXA84nXUgN344N3Ye5z1w/4WmhztMxJrwkQGVhdAQM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774187367; c=relaxed/simple;
-	bh=zKm9C68yGe+LNdtvfQE50xg0MjkcXA1Mc+sGWFF7iQ4=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=FGxC+ZnrIs02ONQUjm9OKDHkekGvoZ8c/nW26zVQhm5N8zv+S7wIDq0TAslEUJ/1erRLVIzTZebtzCMBqL1ffc8wGSlTsc7Gl1krluhaTplpMXDyVmy7VVB8ivBjpQHfsfsUMi5doI2ZsTWPI+NQKNzvXmPAoVxvR4CdpUbhfzw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=U6lFFD+s; arc=none smtp.client-ip=209.85.128.42
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-wm1-f42.google.com with SMTP id 5b1f17b1804b1-48540d21f7dso23594585e9.0
-        for <linux-wireless@vger.kernel.org>; Sun, 22 Mar 2026 06:49:26 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1774187365; x=1774792165; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=CvG7vaVxYt7j8HH9LHHGlNM2wx2cXGwZObQrBCXRyTk=;
-        b=U6lFFD+sxGChTHkVAcezOGZfrOJy/LUeHiNGwNBU1tH3ry1AjFIie33EXhNZFY90rp
-         WFbmU4oAi1sJ+ft3msrCzWMIvmVPOjMZIIBOGEBqjPdVDVSwUW6ZAYwiFTY3rn6Aq4t7
-         GCD9Ejzeu+8nPaVAPE3x5sQM76c0vAlTLwjmYRf66le0iQ63RFkAuzGeuRl9YTMm9x71
-         Gn3BBot41mnbX2AsuAYZlIpJEAtJZYYCraoDZWf5A+jzegV2Lla71iqgpJdG43OVL3ng
-         bcYxYpP4+ndPOqtl4OS9AfylcSba7IpDEmlm90BZbwDnshyzBjcdtuRd3UAvEtYNS6mo
-         /2AQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1774187365; x=1774792165;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=CvG7vaVxYt7j8HH9LHHGlNM2wx2cXGwZObQrBCXRyTk=;
-        b=Bm+3rpNCr19L58tYlPixGcjt1b651fSyK2InFVa+Zyg8oq8U6nr6CeOyYbBgvrvV56
-         +uvwJauhkv0IrOiLbIG2EgSOh14+5wP5fVwIOgU0XZ5OdnohpeDV31WPB21rLHxIiNTS
-         OaRGXjwggQmzANgyCLEBovN7cGKifnu9z3zfn77WCyM6hiOp8pIfqZOciNy1baqGIQu2
-         /9jpaAfxNM2QJReqG+vLn0VkLI0tK51/QWiL/EDHzD3snHyC4qmIafEVBuOxhI7FyjLD
-         OYEBVIeoolM3/+02yHQ/h/G5BuPQIrU2YsFtSb7Wg4zmgKu7F/W+VOYDz5+SFX1wH7jL
-         gU7A==
-X-Gm-Message-State: AOJu0YzxKJIdVZU/Vgkg1nw6PWVcE5vgVudteMK4KiJPpP8+4NlVb6BC
-	KFbSLZX3GXr28pHymjXBA31jwNVaR7l8TcVVZaC8JVdcBX1AkDgNccoDteGHG9QVkas=
-X-Gm-Gg: ATEYQzwakbgKPwjuCtFfSSLG7VKrdNEKRbl1tb5NhQvOaXPjpTpKMwxHUnmt+Y+4+Qv
-	DiZ9DHMf3bacuhJbanWVaoA0Kyfmoos7I7AA2mLbZDWhcsCOKKyra9N0xj2vvvm5KXb1fWIt+bi
-	Vyx0cs7JbXv1I9/vkyfdFN8lV/6/7XIbFjL6oZ88KSqRYdtXhcoIYyK1/EKpvOPm3k0kxj0Y/xS
-	ai3UO1yl+huSoSasODkmfQGnRoF93LGFXrQmhng/jZFHhWifBLlmqWFgjbJEBapCdHPYfJ83xOb
-	RkGVwwsO0BdCEUijOoxnFjQpvLc7CcDGOGg1LueSI8RWL9nIPHthzRwak1UTfbkENddNg4yWWE1
-	37qa9UTz3ayRVUbSS236IYd24V0kIIK/MPg92BLS/maPRlx59jmw18cUSVn7NpklLUDJ82PqTEM
-	Ppjd8vJ0sEG484TEbmlzJtGQd0bkHZIFHzWlCcF4Bjo/9xFYGs5JvyNMKdW4Ie9fSl/78n4G3Rp
-	CG+LqCX7t1DyHAtzT2WU8HhDg==
-X-Received: by 2002:a05:600c:3b8c:b0:486:d76c:fa51 with SMTP id 5b1f17b1804b1-486ff03ffa5mr121948785e9.27.1774187364780;
-        Sun, 22 Mar 2026 06:49:24 -0700 (PDT)
-Received: from DA4-DEB.fritz.box (p200300de871aef00290206c667fbb9b3.dip0.t-ipconnect.de. [2003:de:871a:ef00:2902:6c6:67fb:b9b3])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-48700658441sm268260335e9.4.2026.03.22.06.49.23
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 22 Mar 2026 06:49:24 -0700 (PDT)
-From: Malte Schababerle <m.schababerle@gmail.com>
-To: Jeff Johnson <jjohnson@kernel.org>
+	s=arc-20240116; t=1774204198; c=relaxed/simple;
+	bh=X8Lew4GjcIp5oo8OTKz7rPaWjyNo187KJ463gcFNIWU=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=nQp6iikP+ldiFUPO0KQPM7/QsGeNNefG2/1DxOsf7ByUsvW1Hl3gtKlIen89AGVRXPIvkQZEjWNbXJGZp0oL/vskQU3yFrRRvVHQ+v25+AOEvHlCFXoVoj3n2PBPJWdFtC20bhVlxMP1ksM5B1qvPpKz1bKtOeClTSJ311v1Was=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=icloud.com; spf=pass smtp.mailfrom=icloud.com; dkim=pass (2048-bit key) header.d=icloud.com header.i=@icloud.com header.b=V/k36Ml3; arc=none smtp.client-ip=57.103.85.221
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=icloud.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=icloud.com
+Received: from outbound.qs.icloud.com (unknown [127.0.0.2])
+	by p00-icloudmta-asmtp-us-east-2d-60-percent-8 (Postfix) with ESMTPS id 63CD01800109;
+	Sun, 22 Mar 2026 18:29:54 +0000 (UTC)
+Dkim-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=icloud.com; s=1a1hai; t=1774204196; x=1776796196; bh=twXhlK/h8Ab18z0e8lFhdWtxTfN1A1j02Ip52ArXzbs=; h=From:To:Subject:Date:Message-ID:MIME-Version:x-icloud-hme; b=V/k36Ml3t57VaMEIxkdQ22/JhQSuK21yMKCdYBzgs0JJvZF5dl7xZhimnCBJ9GfUC9X7iHQGBwlOSV4qSmK1bwgvpqu5WKZBQVE9A/xuPu+QJJpoAK6C7ioMy1HETnMEZ/ThIGaQQUudFxL9WF0zVHkRX5F2f0f/kzcNAaO80t76qU7cQxQNV8ex5rH01pF/0fkFe2dYq6qZ8stk2WgU3s0UX+7f6OWv0YJ5FbW8F7DL0wyM8HQ4hiLauStyK+DDrS1Hg6cgYJeSFy8fVmkWX0zb062xN/TyfmDSsVJYFr8Uu9VbCkgltpNaWJOk/dduPonJzCI0TxL8gTlJC7+T0A==
+Received: from arrendajo.lan (unknown [17.57.155.37])
+	by p00-icloudmta-asmtp-us-east-2d-60-percent-8 (Postfix) with ESMTPSA id 39E111800099;
+	Sun, 22 Mar 2026 18:29:53 +0000 (UTC)
+From: Alex Gavin <a_gavin@icloud.com>
+To: johannes@sipsolutions.net
 Cc: linux-wireless@vger.kernel.org,
-	ath10k@lists.infradead.org,
-	Malte Schababerle <m.schababerle@gmail.com>
-Subject: [PATCH 2/2] ath10k: force passive scan on 5GHz for WCN3990
-Date: Sun, 22 Mar 2026 13:48:22 +0100
-Message-ID: <20260322124822.230492-3-m.schababerle@gmail.com>
-X-Mailer: git-send-email 2.47.3
-In-Reply-To: <20260322124822.230492-1-m.schababerle@gmail.com>
-References: <20260322124822.230492-1-m.schababerle@gmail.com>
+	Alex Gavin <a_gavin@icloud.com>
+Subject: [PATCH] iw: fix station dump beacon RX indent
+Date: Sun, 22 Mar 2026 11:29:48 -0700
+Message-ID: <20260322182948.13604-1-a_gavin@icloud.com>
+X-Mailer: git-send-email 2.51.2
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
@@ -94,84 +55,79 @@ List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Proofpoint-GUID: 0D-VcoNwqYBtgHqlDbA-3qsMTpugk_28
+X-Proofpoint-ORIG-GUID: 0D-VcoNwqYBtgHqlDbA-3qsMTpugk_28
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwMzIyMDE2MSBTYWx0ZWRfX2GR8I5kLDtEN
+ IC8eV84MUftsiyrfS6Evsjt1KCtwRJeuOWRZDOa3WjGAwlmsmfcspAapm+HiDTo6Bi2944b1+VL
+ HinQ2R0BUYZgIuJZdvHi70LdIZIeI6FiNSH46Cyhrfk9jtxQmFf5wF9PvTUy3cqoXCtrGWzJfN3
+ KM3zQ03CtCCIsbyRwEnO5Xxvg5VmJM50pW+2iIdFJYgmLOzCriZxFNMtQ+l1sDA4vcPdnLJQ+Xk
+ 2XaxfQ4hynDH1MEJRmqEm5FRmV9OQj+u3TXKzwrQGJrlX8QMGi3yNR1V/Wyo15PYf0t737Pr4Vb
+ wEJzCNQcj5hspuIOXi2EVVXpr9MN/Ka2XdM42JoEr7tZlQSucFt4dqCXpRruvg=
+X-Authority-Info-Out: v=2.4 cv=ZMTaWH7b c=1 sm=1 tr=0 ts=69c03522
+ cx=c_apl:c_pps:t_out a=bsP7O+dXZ5uKcj+dsLqiMw==:117
+ a=bsP7O+dXZ5uKcj+dsLqiMw==:17 a=Yq5XynenixoA:10 a=x7bEGLp0ZPQA:10
+ a=h3XwevFeXowA:10 a=VkNPw1HP01LnGYTKEx00:22 a=v3ZZPjhaAAAA:8
+ a=I57DmmJRBRbeKvPDISgA:9
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.51,FMLib:17.12.100.49
+ definitions=2026-03-22_05,2026-03-20_02,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 clxscore=1015
+ spamscore=0 malwarescore=0 lowpriorityscore=0 bulkscore=0 phishscore=0
+ mlxscore=0 mlxlogscore=999 suspectscore=0 adultscore=0 classifier=spam
+ authscore=0 adjust=0 reason=mlx scancount=1 engine=8.22.0-2601150000
+ definitions=main-2603220161
+X-Spamd-Result: default: False [-0.66 / 15.00];
+	MID_CONTAINS_FROM(1.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
-	R_DKIM_ALLOW(-0.20)[gmail.com:s=20230601];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10];
+	DMARC_POLICY_ALLOW(-0.50)[icloud.com,quarantine];
+	R_DKIM_ALLOW(-0.20)[icloud.com:s=1a1hai];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FREEMAIL_CC(0.00)[vger.kernel.org,lists.infradead.org,gmail.com];
-	TAGGED_FROM(0.00)[bounces-33667-lists,linux-wireless=lfdr.de];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_TLS_LAST(0.00)[];
 	TO_DN_SOME(0.00)[];
+	FREEMAIL_CC(0.00)[vger.kernel.org,icloud.com];
 	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[gmail.com:+];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	FREEMAIL_FROM(0.00)[gmail.com];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-33668-lists,linux-wireless=lfdr.de];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	RCPT_COUNT_THREE(0.00)[3];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[mschababerle@gmail.com,linux-wireless@vger.kernel.org];
+	FROM_NEQ_ENVFROM(0.00)[a_gavin@icloud.com,linux-wireless@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	RCPT_COUNT_THREE(0.00)[4];
+	DKIM_TRACE(0.00)[icloud.com:+];
 	RCVD_COUNT_FIVE(0.00)[5];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[linux-wireless];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: F3F982E9842
+	NEURAL_HAM(-0.00)[-1.000];
+	FREEMAIL_FROM(0.00)[icloud.com];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,icloud.com:dkim,icloud.com:email,icloud.com:mid]
+X-Rspamd-Queue-Id: 887782EA49C
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-WCN3990 firmware (WLAN.HL.3.2) has a bug where active scan does not
-tune the radio on 5GHz non-DFS channels. The radio reports identical
-rx_clear_count values across channels, indicating no RF tuning occurs.
-As a result, no 5GHz networks are discovered during active scan.
-
-Passive scan works correctly on all 5GHz channels: the radio tunes
-properly and rx_clear_count varies as expected.
-
-Force passive scan mode for all 5GHz channels on WCN3990 using
-QCA_REV_WCN3990(). DFS channels are already passive, so the effective
-change is for non-DFS 5GHz channels only. This follows the pattern
-established for WCN3990 firmware workarounds in thermal.c.
-
-Tested on OnePlus 7T (SM8150/WCN3990) with WLAN.HL.3.2.0.c2-00006
-and WLAN.HL.3.2.0.c2-00011:
-- 5GHz passive scan discovers APs reliably (e.g. ch116/5580 MHz)
-- Association to 5GHz networks succeeds
-- No change to 2.4GHz or DFS channel behavior
-
-Signed-off-by: Malte Schababerle <m.schababerle@gmail.com>
+Signed-off-by: Alex Gavin <a_gavin@icloud.com>
 ---
- drivers/net/wireless/ath/ath10k/mac.c | 8 ++++++++
- 1 file changed, 8 insertions(+)
+ station.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/net/wireless/ath/ath10k/mac.c b/drivers/net/wireless/ath/ath10k/mac.c
-index 24dd794e31ea2..f6829232f6b15 100644
---- a/drivers/net/wireless/ath/ath10k/mac.c
-+++ b/drivers/net/wireless/ath/ath10k/mac.c
-@@ -3441,6 +3441,14 @@ static int ath10k_update_channel_list(struct ath10k *ar)
- 			passive = channel->flags & IEEE80211_CHAN_NO_IR;
- 			ch->passive = passive;
- 
-+			/* Force passive scan on 5GHz to work around WCN3990
-+			 * firmware bug where active scan doesn't tune the
-+			 * radio on 5GHz non-DFS channels.
-+			 */
-+			if (QCA_REV_WCN3990(ar) &&
-+			    band == NL80211_BAND_5GHZ)
-+				ch->passive = true;
-+
- 			/* the firmware is ignoring the "radar" flag of the
- 			 * channel and is scanning actively using Probe Requests
- 			 * on "Radar detection"/DFS channels which are not
+diff --git a/station.c b/station.c
+index 5adf6bf..0f992d5 100644
+--- a/station.c
++++ b/station.c
+@@ -354,7 +354,7 @@ static void print_nested_sta_handler(struct nlattr *link_sinfo[NL80211_STA_INFO_
+ 		printf("%sbeacon loss:\t%u", indent,
+ 		       nla_get_u32(link_sinfo[NL80211_STA_INFO_BEACON_LOSS]));
+ 	if (link_sinfo[NL80211_STA_INFO_BEACON_RX])
+-		printf("\n\t\tbeacon rx:\t%llu",
++		printf("%sbeacon rx:\t%llu", indent,
+ 		       (unsigned long long)nla_get_u64(link_sinfo[NL80211_STA_INFO_BEACON_RX]));
+ 	if (link_sinfo[NL80211_STA_INFO_RX_DROP_MISC])
+ 		printf("%srx drop misc:\t%llu", indent,
 -- 
-2.47.3
+2.51.2
 
 
