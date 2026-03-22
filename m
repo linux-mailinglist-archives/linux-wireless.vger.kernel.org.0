@@ -1,133 +1,252 @@
-Return-Path: <linux-wireless+bounces-33668-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-33669-lists+linux-wireless=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id CNhZJSw1wGmUEwQAu9opvQ
-	(envelope-from <linux-wireless+bounces-33668-lists+linux-wireless=lfdr.de@vger.kernel.org>)
-	for <lists+linux-wireless@lfdr.de>; Sun, 22 Mar 2026 19:30:04 +0100
+	id qNH3LsFkwGmHHQQAu9opvQ
+	(envelope-from <linux-wireless+bounces-33669-lists+linux-wireless=lfdr.de@vger.kernel.org>)
+	for <lists+linux-wireless@lfdr.de>; Sun, 22 Mar 2026 22:53:05 +0100
 X-Original-To: lists+linux-wireless@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id 887782EA49C
-	for <lists+linux-wireless@lfdr.de>; Sun, 22 Mar 2026 19:30:03 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id B6FEA2EAEB4
+	for <lists+linux-wireless@lfdr.de>; Sun, 22 Mar 2026 22:53:04 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 92FE130034B5
-	for <lists+linux-wireless@lfdr.de>; Sun, 22 Mar 2026 18:30:00 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 9EB2B3002B79
+	for <lists+linux-wireless@lfdr.de>; Sun, 22 Mar 2026 21:53:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B1C9A368974;
-	Sun, 22 Mar 2026 18:29:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 65359365A0F;
+	Sun, 22 Mar 2026 21:53:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=icloud.com header.i=@icloud.com header.b="V/k36Ml3"
+	dkim=pass (1024-bit key) header.d=NETORGFT1705183.onmicrosoft.com header.i=@NETORGFT1705183.onmicrosoft.com header.b="EI399i8f"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from outbound.qs.icloud.com (qs-2006i-snip4-11.eps.apple.com [57.103.85.221])
+Received: from CY3PR05CU001.outbound.protection.outlook.com (mail-westcentralusazon11023083.outbound.protection.outlook.com [40.93.201.83])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 861A23321DC
-	for <linux-wireless@vger.kernel.org>; Sun, 22 Mar 2026 18:29:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=57.103.85.221
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774204198; cv=none; b=Mjwh6bdqe/JA/JGyA7A1JEX6LgB5YlJD//yTp31j1NnmHz9PvOGP/QM21UrzxIQDeS4pndjVWfkUs2/A4WYXePv9eZwltJQeegWZGkPlF8QyyZpS49qaebAzh5Pqkf2lmgXA84nXUgN344N3Ye5z1w/4WmhztMxJrwkQGVhdAQM=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774204198; c=relaxed/simple;
-	bh=X8Lew4GjcIp5oo8OTKz7rPaWjyNo187KJ463gcFNIWU=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=nQp6iikP+ldiFUPO0KQPM7/QsGeNNefG2/1DxOsf7ByUsvW1Hl3gtKlIen89AGVRXPIvkQZEjWNbXJGZp0oL/vskQU3yFrRRvVHQ+v25+AOEvHlCFXoVoj3n2PBPJWdFtC20bhVlxMP1ksM5B1qvPpKz1bKtOeClTSJ311v1Was=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=icloud.com; spf=pass smtp.mailfrom=icloud.com; dkim=pass (2048-bit key) header.d=icloud.com header.i=@icloud.com header.b=V/k36Ml3; arc=none smtp.client-ip=57.103.85.221
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=icloud.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=icloud.com
-Received: from outbound.qs.icloud.com (unknown [127.0.0.2])
-	by p00-icloudmta-asmtp-us-east-2d-60-percent-8 (Postfix) with ESMTPS id 63CD01800109;
-	Sun, 22 Mar 2026 18:29:54 +0000 (UTC)
-Dkim-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=icloud.com; s=1a1hai; t=1774204196; x=1776796196; bh=twXhlK/h8Ab18z0e8lFhdWtxTfN1A1j02Ip52ArXzbs=; h=From:To:Subject:Date:Message-ID:MIME-Version:x-icloud-hme; b=V/k36Ml3t57VaMEIxkdQ22/JhQSuK21yMKCdYBzgs0JJvZF5dl7xZhimnCBJ9GfUC9X7iHQGBwlOSV4qSmK1bwgvpqu5WKZBQVE9A/xuPu+QJJpoAK6C7ioMy1HETnMEZ/ThIGaQQUudFxL9WF0zVHkRX5F2f0f/kzcNAaO80t76qU7cQxQNV8ex5rH01pF/0fkFe2dYq6qZ8stk2WgU3s0UX+7f6OWv0YJ5FbW8F7DL0wyM8HQ4hiLauStyK+DDrS1Hg6cgYJeSFy8fVmkWX0zb062xN/TyfmDSsVJYFr8Uu9VbCkgltpNaWJOk/dduPonJzCI0TxL8gTlJC7+T0A==
-Received: from arrendajo.lan (unknown [17.57.155.37])
-	by p00-icloudmta-asmtp-us-east-2d-60-percent-8 (Postfix) with ESMTPSA id 39E111800099;
-	Sun, 22 Mar 2026 18:29:53 +0000 (UTC)
-From: Alex Gavin <a_gavin@icloud.com>
-To: johannes@sipsolutions.net
-Cc: linux-wireless@vger.kernel.org,
-	Alex Gavin <a_gavin@icloud.com>
-Subject: [PATCH] iw: fix station dump beacon RX indent
-Date: Sun, 22 Mar 2026 11:29:48 -0700
-Message-ID: <20260322182948.13604-1-a_gavin@icloud.com>
-X-Mailer: git-send-email 2.51.2
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0F51618050;
+	Sun, 22 Mar 2026 21:52:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.93.201.83
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1774216380; cv=fail; b=KxVAKLvBCJgkRbROnNcXuP2pv5RSpFwDa/3W9CU2Bo7PJZexe4lktUbuBeg0PZimGrRwrBXo3VG5b0tQdJdoLu1cFIq5xqpwJGQXLPi9b2wZTpnvo/TnktROHSqhvGRUkQ/Ft5eEcF4daxPX1qw9xpgMWup8nllmxyMsDzw2m5E=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1774216380; c=relaxed/simple;
+	bh=NqUy6izrCzh7AfkxjiMfYiLcbeacCgSwy1SiWwWOYUA=;
+	h=Message-ID:Date:To:Cc:From:Subject:Content-Type:MIME-Version; b=EjYGGbjURM+bUmh0kwjzy/GGtK7JICy3YtUdqTmUhVq4b/RK9DrUhlUFTQj94qWjFDnyfB9XN9I2v+d3IZyEoWh08ZOqneXROfvRqnlpDiRHoKISWmoKJyim6r2ghDAV8Mo2BcKjf5G49m5Xb+7kRZ6Z6qeiWKLinG3ibOqTp1Y=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=borderelliptic.com; spf=pass smtp.mailfrom=borderelliptic.com; dkim=pass (1024-bit key) header.d=NETORGFT1705183.onmicrosoft.com header.i=@NETORGFT1705183.onmicrosoft.com header.b=EI399i8f; arc=fail smtp.client-ip=40.93.201.83
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=borderelliptic.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=borderelliptic.com
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=d90ua+e/BeGPZiMPDUHqWVcGXDfSMPUQzFEqvR6D5jg3hZUSVEMiQC+aiK+7S17XYoETOrtw1rhOavAgeTzrPQkmsJBuioM24A9CDIOJXii7QC7xMamduGkMfPp/560WkuXSxM+xSORJcv3Cp5Uf8Tp6vVwUua02ncJTQJMS7dRzRV5euqaln+Am8pS+nAX/YSffYtsg787n3IrXIGOcAZylEzk5pZ2BO5DP8ctOkpgSyed3X9rAQE3BD483Ku0krH78aCJiPe6ccogsIMX9Grwa7+ZaOe1lM5N1Rzlix0JFONJGkIX4MMAA/X8P45ZCniCS1M8AVUH8R2k0LmKHZw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=sOlXis5N+XwibS9zstvtYr1yWetI8AWhsVKbMskV6eo=;
+ b=MbJ3i9cRjsEz+zMe9kEMogyo4GkGdGwmFeqFP3Sq/rrchvWx/UYErCeHFw+Q+QApxJWMaB7Xj6r7Lc9coyQ+IC0AOUeSlE3RFqH/lDNMhSH0ufWwWkFfURkoxk98uoCLIGvps46gw0P9vj7mm0Tgo4ehW0+gImkalkzyUlVAEbwxQQ4T6NVoGTDJRNGZtdqdUy4/aroNRjNqOZ+ftwlfYN0ghLi9uJH/qJGcIqu6Ff2iMN4GlzawzPHyLQil7h2q9/qKBvzTNiGIFbegfX5uec+HqalRp4IM0L9rvz3NFJnC+os54T1JfJSjLq1YFCXK9Sdl0dKF94KrK53zNjROdA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=borderelliptic.com; dmarc=pass action=none
+ header.from=borderelliptic.com; dkim=pass header.d=borderelliptic.com;
+ arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=NETORGFT1705183.onmicrosoft.com;
+ s=selector1-NETORGFT1705183-onmicrosoft-com;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=sOlXis5N+XwibS9zstvtYr1yWetI8AWhsVKbMskV6eo=;
+ b=EI399i8fkWl3htpaGekMQG9MCQqfclYSiTYBcr0OSNGuJqsQ4O5Ac4m9DrUpG+J2IcHf86SLgRnViOEgL3aG+mPMxe7NFMus7xfm50es1Mmf6rur7Wdt1SlYTv7OxhjC1CTRIKwyUAZunH1BQx9TgvWiVkGyeiGYFJ1CgaMRoyo=
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=borderelliptic.com;
+Received: from BY5PR17MB3732.namprd17.prod.outlook.com (2603:10b6:a03:239::7)
+ by DS0PR17MB6175.namprd17.prod.outlook.com (2603:10b6:8:c0::19) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9723.25; Sun, 22 Mar
+ 2026 21:52:55 +0000
+Received: from BY5PR17MB3732.namprd17.prod.outlook.com
+ ([fe80::816c:f79e:c7c0:459]) by BY5PR17MB3732.namprd17.prod.outlook.com
+ ([fe80::816c:f79e:c7c0:459%5]) with mapi id 15.20.9723.022; Sun, 22 Mar 2026
+ 21:52:55 +0000
+Message-ID: <ce155d4e-2e01-46a2-b607-2d238644ef01@borderelliptic.com>
+Date: Sun, 22 Mar 2026 17:52:54 -0400
+User-Agent: Mozilla Thunderbird
+Content-Language: en-US
+To: miriam.rachel.korenblit@intel.com
+Cc: linux-wireless@vger.kernel.org, linux-kernel@vger.kernel.org
+From: Jonathan Brown <jonny@borderelliptic.com>
+Subject: [RFC PATCH 0/1] wifi: iwlmvm: introduce iwl_mvm_has_gcmp_support()
+ helper
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-ClientProxiedBy: MW4PR03CA0182.namprd03.prod.outlook.com
+ (2603:10b6:303:b8::7) To BY5PR17MB3732.namprd17.prod.outlook.com
+ (2603:10b6:a03:239::7)
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Proofpoint-GUID: 0D-VcoNwqYBtgHqlDbA-3qsMTpugk_28
-X-Proofpoint-ORIG-GUID: 0D-VcoNwqYBtgHqlDbA-3qsMTpugk_28
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwMzIyMDE2MSBTYWx0ZWRfX2GR8I5kLDtEN
- IC8eV84MUftsiyrfS6Evsjt1KCtwRJeuOWRZDOa3WjGAwlmsmfcspAapm+HiDTo6Bi2944b1+VL
- HinQ2R0BUYZgIuJZdvHi70LdIZIeI6FiNSH46Cyhrfk9jtxQmFf5wF9PvTUy3cqoXCtrGWzJfN3
- KM3zQ03CtCCIsbyRwEnO5Xxvg5VmJM50pW+2iIdFJYgmLOzCriZxFNMtQ+l1sDA4vcPdnLJQ+Xk
- 2XaxfQ4hynDH1MEJRmqEm5FRmV9OQj+u3TXKzwrQGJrlX8QMGi3yNR1V/Wyo15PYf0t737Pr4Vb
- wEJzCNQcj5hspuIOXi2EVVXpr9MN/Ka2XdM42JoEr7tZlQSucFt4dqCXpRruvg=
-X-Authority-Info-Out: v=2.4 cv=ZMTaWH7b c=1 sm=1 tr=0 ts=69c03522
- cx=c_apl:c_pps:t_out a=bsP7O+dXZ5uKcj+dsLqiMw==:117
- a=bsP7O+dXZ5uKcj+dsLqiMw==:17 a=Yq5XynenixoA:10 a=x7bEGLp0ZPQA:10
- a=h3XwevFeXowA:10 a=VkNPw1HP01LnGYTKEx00:22 a=v3ZZPjhaAAAA:8
- a=I57DmmJRBRbeKvPDISgA:9
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.51,FMLib:17.12.100.49
- definitions=2026-03-22_05,2026-03-20_02,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 clxscore=1015
- spamscore=0 malwarescore=0 lowpriorityscore=0 bulkscore=0 phishscore=0
- mlxscore=0 mlxlogscore=999 suspectscore=0 adultscore=0 classifier=spam
- authscore=0 adjust=0 reason=mlx scancount=1 engine=8.22.0-2601150000
- definitions=main-2603220161
-X-Spamd-Result: default: False [-0.66 / 15.00];
-	MID_CONTAINS_FROM(1.00)[];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[icloud.com,quarantine];
-	R_DKIM_ALLOW(-0.20)[icloud.com:s=1a1hai];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: BY5PR17MB3732:EE_|DS0PR17MB6175:EE_
+X-MS-Office365-Filtering-Correlation-Id: e0295c4e-6d24-4c8a-e948-08de885d5fe9
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|366016|1800799024|10070799003|376014|18002099003|56012099003;
+X-Microsoft-Antispam-Message-Info:
+	ELkwPlcybtRPzN77hPmyb0dYQTAcyUtTzAD4OItBAppL8eCCKqSgPBOtJv4I/aoQdjbOzTNaVd05ArrhZ1SVcBeZwtMsGpVTLdqe9WqDLDLJQZ0bQprZYt2n2ndDEo61X6hvzcc1oDXw9JGJW5jaLPHkOpu6Uy2QA+y1zusvPV3aaMNxQrYJjx/HFIgz3VtAmJtffJiZLH2MEXAfVtAoWzDEwvPvCcUdPlUKrYRjIWHKXnuf//lTiFLQxGNmQI+1W3NR0Jq4vbqrBEAV4+052pv4ZxXlR4iRoc52MRHbbKLA55Xp+HAd4EWbRwlHJXLnHE+ToRF57iBbKlwc45suCRlrmkbYQv5hOHejfuX7EdxFtJ/9Qn/r+NKJJG2ly8tN+ZMMWtRplgso6eyqQnNtB5sKnJCYpHPg5Msup4M6taDXzbcUsdiW6gDiyRdnTrbZyort27EDD0uIhv2fwH9c5oWIAFNf87JVbGjoe61KbL8tpNeWDQn6mfb4Hab6p0iELD6EBuG/pY4pLMBzHTHpqmnZcMpZ/bE3I6nNpv381V53pVAj0gLT9+q0rzK3BJtK5mqknka+E++oznfNFDpsYB1L143UYV84+ZvLaKnN42ldq2yILIg9SCMjX3w9KGE3WojyPOSjcRt5jxkgef+2lVBdBLO/7QZ0pOH8LkwSjJQItGVSZZHYaTkjp1rWI/5GvXy16YMpJVEiCk1IUqe9XMQ+DGSD/Z36h5sk8UJ0rY0=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:BY5PR17MB3732.namprd17.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(1800799024)(10070799003)(376014)(18002099003)(56012099003);DIR:OUT;SFP:1102;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 2
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?RWZXZUx2b3hxbXBmUFdBMGo2dURJdmFUK29UdTlOMmZBMWp3eThoMzhDdkFC?=
+ =?utf-8?B?YXFGclZTOGpPV29PbjFXZ1hQQWpPWXR4T0ZFbWFoVGR4TURpbVE4dXNScnhj?=
+ =?utf-8?B?dFBFRnQ2RjJmOFk4K0lldStYYkpHbnk0cUIzUzBadS8xekpXUHlJb1kzVDBM?=
+ =?utf-8?B?ZUxjcHNHNVArWUgzSEJpeUs0VTFta2ozUjhNVVU3dEZ0MzM4NlpvUTRLbVFx?=
+ =?utf-8?B?Yi9OUzVoKzlKcFBkSnpUeElwSWtWVG1ZZW5rQjlCQkNucGN0dEh5dHJUUkd6?=
+ =?utf-8?B?QVU4bDI2NkhUZ21KU3lhVDVuKzNtV04rZXNNYkIvUExlUnZRbFhmb0tUbGJL?=
+ =?utf-8?B?bVZtVG9GTGcvRkNUZERSWnFiQ1JvMG9aamV0VGM0eGFDTnJhVHpVWStYanhK?=
+ =?utf-8?B?SzNDU1FZbGkrbU9MenRKaWl4SFdJT1ZIWlJCMitxQ1lLQ2E5ZDhpUE9jV2dt?=
+ =?utf-8?B?TXdQV0ZlVVNiaGM2V0JRbjRvZkc0OC96UFV6OTJrbzZNM01FR0xPaDVwSGR4?=
+ =?utf-8?B?YklPL1NLbWZrSEdsalFkMlgyV1ppOFFPdXJTWDJMcFp2N0JqSTRNWEwxVTlv?=
+ =?utf-8?B?YjB0YWd0WGxuWlZldWlmOHF0b2NhV3hwRVA0K3lwc240NnZZY0c4Zkx3UFox?=
+ =?utf-8?B?OWp4S3A2WE1mbWNmWTluVnpjcjgwaGRFckdlQlM2VCsxcGVib3o1MXVHVlNm?=
+ =?utf-8?B?OUQzTTkyb1JqcDdsQ1NYb00wVTNDV1YxQk5BRXhNM0M5SVUvMXZ1aWtXWmIv?=
+ =?utf-8?B?dU00clR1eEdhM0dWTmFHTncrYlpndHBmd0k2Y3BVUldETVV3dWN2RVVTNzMx?=
+ =?utf-8?B?N2tnYnhRZkk5bHRHNzl1V1JvS2s3T2VlSUFZekVsTVFheFhKcCtrNFZHcW02?=
+ =?utf-8?B?Mm9KSlh5ZE04N0ZzMFRIVGdkVUdNN2NoMC9ldUdtdmZIbXVtbEFNMDNZUDdv?=
+ =?utf-8?B?K3h0TDJLaUJWV2pXeVZUWXVTYnROcGh5VDdtaUdYYlBrUFg3dUx5Nk5OZjRa?=
+ =?utf-8?B?RHUrVUViNlJuRmF4eGl5aEpJTzVUbUlncyt2c2RlTktFNG1vYzh6OWk1MkxO?=
+ =?utf-8?B?eVBHcFlDS1JLNEh1TWVpZm5YNldBKzhKQmwrVmNIUHArZzE2L2ptcDJuSTl5?=
+ =?utf-8?B?VkFveTl6QU1CUnNrdjkwZkUwcUhoZ0g0WVMrVkg2bG5FQ2JGVE40K3pjZGlF?=
+ =?utf-8?B?M3FMMXBXUWVmTTBPc0RpZ09ZZVNLYk9VbGlGSjdKSWx3eVNIa3hYRHI2eDFY?=
+ =?utf-8?B?bmtOUXd5TDN6WjlnRklJYWFQU3hUNmpPOVJib21BRjJFSDJUTjJ4YmVtVHZa?=
+ =?utf-8?B?MUI1eXdYQ0h2c3VQQXBQWGVyVGY0TCtlUUdScnBSeW5QOTRuWGI5VU9pNXJU?=
+ =?utf-8?B?bXQzSkJmZHRzN1JKVWpBZzFmUTBiK1VmVmFac2FBdVpCQS9ZdjltM1BmaG1X?=
+ =?utf-8?B?NjR1MjZCK1pqUkpnOGtRNXg2bkg3bUJpQUJtZmlMdjhsNDJhNExIVmU5K2pz?=
+ =?utf-8?B?M1JocUJvQ2FIOUg2UEo3YnUzbDBZcFlOQmJqTGVkRkxNUmJ0eXVhWGpUeGxL?=
+ =?utf-8?B?UFVqV2h2QUM4dFVDUk9QS2dvTHBTMzhGTklPdDV1SzlScFlWNmJ2dWR3aEEz?=
+ =?utf-8?B?Q3BKY0dVTXhsN3NwZ0w0L3lkOWJoSW1RbDNRblQvdFhhU2J5cGZZM284MUN2?=
+ =?utf-8?B?amdQNzJsTGp4QThsSTRaSUsrR0lVQUJycklpaWhlVUlsUVVNc3BqZjVIK3lG?=
+ =?utf-8?B?blN0aXpwaTRTckh0bW5NYVEyYkI2WVY0ZUVsemF1Uk5uTFhCV0JsQTJPQUY4?=
+ =?utf-8?B?WlNPS1hkanlCcDQxSXRaTDQwbWx1eExwbE16UERGaDhDcFBMdEk1UlZvNkVC?=
+ =?utf-8?B?d1FMTHJwUHZkWDVoRE0vWFVYS2RSdkFPUURleW9Qd0gyYUNvNVc2Wmh6TU93?=
+ =?utf-8?B?a2hNNGloOVN1aWlsa1dWYWhvc0F0QlJsQVRWdUY1OGl3L215Mjg3cUttdkpl?=
+ =?utf-8?B?d2RnQWdKZXUvMzdiZnBzdjdsSGlnbUlrYXZNYXZxZWxKclFJVWhvWmRlUW1W?=
+ =?utf-8?B?U1ZNUFFYWnZ1aktHRWJwZFFFNkVORXhsYnJyZTI2QnRNMFdZTzA3Ly9OcGlE?=
+ =?utf-8?B?SXg4c3FVMG5Qcks1b0JlSVM1enVOU1h2cnN2SlhpNm1qSVduOHJWNEcyMUlZ?=
+ =?utf-8?B?eFVJcFZYeitPcWMzWGJjcGFXR0FSSEhsQmZmdFdvVG9OZDNYMFo4Rno1Rytp?=
+ =?utf-8?B?Q3VwYzh2VXRQZ0RscnlWTi9LVXdQNlJZNUs4S0F2dDRxdS80UzlTdHJOK1pR?=
+ =?utf-8?B?TUZsWjMvU2E0ZktVZVpaZW1QSFRNMEFsOU5UUnBKcGlYWTB4alBlTnpUSm9J?=
+ =?utf-8?Q?X0bJGwzG0VgUkXQAJCpYHyVJeIVjcnG5GGoPFC2t4HgFa?=
+X-MS-Exchange-AntiSpam-MessageData-1: xuPYIecVxRfVyQ==
+X-OriginatorOrg: borderelliptic.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: e0295c4e-6d24-4c8a-e948-08de885d5fe9
+X-MS-Exchange-CrossTenant-AuthSource: BY5PR17MB3732.namprd17.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 22 Mar 2026 21:52:55.6464
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: a902ac00-4ea6-4f14-a7d1-5889052f0cd8
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: GpKwxFFjyU6GILRTJhO309Rg3UZzCEkrXvdIUwOuew3p3srTRVuZRypKiLDaMWSkmL1o7AD9ovyu/3d/XM4TaMRWLip8msjmYClHg4LR/nE=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DS0PR17MB6175
+X-Spamd-Result: default: False [0.34 / 15.00];
+	ARC_REJECT(1.00)[cv is fail on i=2];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
+	R_DKIM_ALLOW(-0.20)[NETORGFT1705183.onmicrosoft.com:s=selector1-NETORGFT1705183-onmicrosoft-com];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TO_DN_SOME(0.00)[];
-	FREEMAIL_CC(0.00)[vger.kernel.org,icloud.com];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_TLS_LAST(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-33668-lists,linux-wireless=lfdr.de];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	DKIM_TRACE(0.00)[NETORGFT1705183.onmicrosoft.com:+];
+	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-33669-lists,linux-wireless=lfdr.de];
 	RCPT_COUNT_THREE(0.00)[3];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[a_gavin@icloud.com,linux-wireless@vger.kernel.org];
+	DMARC_NA(0.00)[borderelliptic.com];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[icloud.com:+];
+	MIME_TRACE(0.00)[0:+];
 	RCVD_COUNT_FIVE(0.00)[5];
-	TAGGED_RCPT(0.00)[linux-wireless];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[jonny@borderelliptic.com,linux-wireless@vger.kernel.org];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	TO_DN_NONE(0.00)[];
+	MID_RHS_MATCH_FROM(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	FREEMAIL_FROM(0.00)[icloud.com];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,icloud.com:dkim,icloud.com:email,icloud.com:mid]
-X-Rspamd-Queue-Id: 887782EA49C
+	TAGGED_RCPT(0.00)[linux-wireless];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[NETORGFT1705183.onmicrosoft.com:dkim,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: B6FEA2EAEB4
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-Signed-off-by: Alex Gavin <a_gavin@icloud.com>
----
- station.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ From a9fa945246619b35e1e1302aa05f9106d7207dc7 Mon Sep 17 00:00:00 2001
+From: Jonathan Brown <jonny@borderelliptic.com>
+Date: Sun, 22 Mar 2026 17:09:24 -0400
+Subject: [RFC PATCH 0/1] wifi: iwlmvm: introduce 
+iwl_mvm_has_gcmp_support() helper
 
-diff --git a/station.c b/station.c
-index 5adf6bf..0f992d5 100644
---- a/station.c
-+++ b/station.c
-@@ -354,7 +354,7 @@ static void print_nested_sta_handler(struct nlattr *link_sinfo[NL80211_STA_INFO_
- 		printf("%sbeacon loss:\t%u", indent,
- 		       nla_get_u32(link_sinfo[NL80211_STA_INFO_BEACON_LOSS]));
- 	if (link_sinfo[NL80211_STA_INFO_BEACON_RX])
--		printf("\n\t\tbeacon rx:\t%llu",
-+		printf("%sbeacon rx:\t%llu", indent,
- 		       (unsigned long long)nla_get_u64(link_sinfo[NL80211_STA_INFO_BEACON_RX]));
- 	if (link_sinfo[NL80211_STA_INFO_RX_DROP_MISC])
- 		printf("%srx drop misc:\t%llu", indent,
+Jonathan Brown (1):
+   wifi: iwlmvm: introduce iwl_mvm_has_gcmp_support() helper
+
+  drivers/net/wireless/intel/iwlwifi/mvm/mac80211.c |  4 ++--
+  drivers/net/wireless/intel/iwlwifi/mvm/mvm.h      | 11 +++++++++++
+  2 files changed, 13 insertions(+), 2 deletions(-)
+
+---
+This patch introduces a named capability helper for GCMP cipher support
+in the iwlmvm driver.
+
+Background
+----------
+During review of cipher suite registration in iwl_mvm_mac_setup_register()
+(mac80211.c), GCMP-128, GCMP-256, BIP-GMAC-128, and BIP-GMAC-256
+registration is gated on iwl_mvm_has_new_rx_api(). That function tests for
+IWL_UCODE_TLV_CAPA_MULTI_QUEUE_RX_SUPPORT (capability bit 68).
+
+The relationship between multi-queue RX support and GCMP hardware offload
+is architectural: GCMP requires per-MSDU PN checking, which depends on the
+extended descriptor format introduced with the MQ RX path. On current
+hardware this coupling is correct.
+
+Problem
+-------
+Using iwl_mvm_has_new_rx_api() to gate GCMP registration conflates two
+distinct capabilities under one function name. A reader of mac80211.c has
+no indication from the call site that the condition is GCMP-specific.
+If future hardware supports GCMP offload without the full MQ RX path,
+cipher registration would be silently denied with no obvious point of
+correction.
+
+This patch
+----------
+Introduces iwl_mvm_has_gcmp_support() as a named wrapper around
+iwl_mvm_has_new_rx_api() and uses it at both cipher registration sites
+in iwl_mvm_mac_setup_register(). No behaviour change is intended or
+introduced for any current hardware. The wrapper allows the underlying
+condition to be updated independently of the MQ RX check if future
+hardware warrants it.
+
+Testing
+-------
+The patch was compiled against the wireless-next tree using Ubuntu
+6.17.0-19-generic kernel headers. Compilation of mac80211.c succeeded
+past both modified sites (lines 449 and 470) before failing at an
+unrelated kzalloc_flex() call at line 4351 -- a symbol present in
+wireless-next but absent from the installed headers. The patch changes
+themselves compiled without error or warning.
+
+Full module build requires a matching kernel build tree. A complete
+compile-tested version can be provided if the approach is accepted.
+
+The patch passes scripts/checkpatch.pl --strict with zero errors,
+warnings, or checks.
+
+RFC rationale
+-------------
+First submission from this contributor. Submitting as RFC to invite
+feedback on the abstraction approach before requesting merge.
+
+
+base-commit: 9ac76f3d0bb2940db3a9684d596b9c8f301ef315
 -- 
-2.51.2
+2.43.0
+
+
 
 
