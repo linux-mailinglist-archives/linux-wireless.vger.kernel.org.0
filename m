@@ -1,89 +1,52 @@
-Return-Path: <linux-wireless+bounces-33660-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-33662-lists+linux-wireless=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id TBsfML0ev2luvQMAu9opvQ
-	(envelope-from <linux-wireless+bounces-33660-lists+linux-wireless=lfdr.de@vger.kernel.org>)
-	for <lists+linux-wireless@lfdr.de>; Sat, 21 Mar 2026 23:42:05 +0100
+	id 2F3lNDKlv2mi7AMAu9opvQ
+	(envelope-from <linux-wireless+bounces-33662-lists+linux-wireless=lfdr.de@vger.kernel.org>)
+	for <lists+linux-wireless@lfdr.de>; Sun, 22 Mar 2026 09:15:46 +0100
 X-Original-To: lists+linux-wireless@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id B4C6A2E786A
-	for <lists+linux-wireless@lfdr.de>; Sat, 21 Mar 2026 23:42:04 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3B2F12E897F
+	for <lists+linux-wireless@lfdr.de>; Sun, 22 Mar 2026 09:15:46 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id AF1B830093A8
-	for <lists+linux-wireless@lfdr.de>; Sat, 21 Mar 2026 22:42:01 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id BDADC301017E
+	for <lists+linux-wireless@lfdr.de>; Sun, 22 Mar 2026 08:15:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A288C241CB7;
-	Sat, 21 Mar 2026 22:41:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 536E12DD60E;
+	Sun, 22 Mar 2026 08:15:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="icSDnDjg"
+	dkim=pass (2048-bit key) header.d=manjaro.org header.i=@manjaro.org header.b="aIffeeDz"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-wm1-f42.google.com (mail-wm1-f42.google.com [209.85.128.42])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mail1.manjaro.org (mail1.manjaro.org [142.132.176.110])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 32F57242D9D
-	for <linux-wireless@vger.kernel.org>; Sat, 21 Mar 2026 22:41:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.42
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7DC33226D18
+	for <linux-wireless@vger.kernel.org>; Sun, 22 Mar 2026 08:15:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=142.132.176.110
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774132919; cv=none; b=na4Zi9dIIm5YT+Kr9+9r0Kv7V3sxY9TfWR+jTrHeodRxl1iEgrdzgHqVeV6I9h7pbZsOtpVkMNnxWUND3V276K4LPjJSxUfy1L3nRp3NxmyOp2tiHhn2uSTXq4Bus3qP8dMJjh9hrRvvU3CWOIyt+d4gnUH3TitirrMTzUT2ws4=
+	t=1774167306; cv=none; b=FlvRm72bN5cLRk50eO/hSBGITHKToBcNyx2NRX9muUL3eNeze5dXCF4fO+4x9N60sahHDpPi8Uh8hb3MY2ZLlhRatSRDVl7f9vOUQRSWS05W8ozxDz5DgLZU4FEZnUo3Qgub3f/DVxMCFw0tO7EdyXotn//0ho0SeFBTqlI6Tug=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774132919; c=relaxed/simple;
-	bh=vNNwgmtjkPeT7iVunquUyx1AtzmJo9kc/1a1OFMY6tg=;
+	s=arc-20240116; t=1774167306; c=relaxed/simple;
+	bh=1OWRApit93tDm/8Q0QbeYs24eCd9hjS1a55cen2hKHE=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=Vr2sBFp4xjM+nERgLYrmqbudHJOBPn2sKMcjXg15ZPQ2TfBXnd5GjT5rl5Usg/c37B3eg1qB8FbBkNg84gb0+t72wCkGVvsFHwP1aDjKojaaLuvv1DZDt1uavEENA3ueU4DORAUodeNEWtlyr5rP1iMl4mx14BvNjsJ2dAbNb2c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=icSDnDjg; arc=none smtp.client-ip=209.85.128.42
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-wm1-f42.google.com with SMTP id 5b1f17b1804b1-486fc4725f0so24114565e9.1
-        for <linux-wireless@vger.kernel.org>; Sat, 21 Mar 2026 15:41:57 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1774132916; x=1774737716; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=bEu3F/1WSwP+uP501dKOCH3i4oNbCzx3X/c+Qj9v7z0=;
-        b=icSDnDjgvR3sUyc3uCI7QxT0Sn9rQow0xvBTSrZBIwAcbKtEzYZf/6722DI28649fU
-         RnifgGgrOJMksfdYtXqmE5z09abklEaiTA82emlnMCkx8TDAkYkY/zejQAMfebD+5n7x
-         OHxdZQLKMw9hl3Z+K8hbwqavnok4ZFDQU7cfdARRKwWU2bc7ncaMmdxUuOqOjw3A7P+d
-         u03Euuu1QMQdblmshWtEFw4JzUnvWdj2HbYwD89kAOIHaoHwrHKk7tuI1wkTh140n1lR
-         aUunct8vW0txxX5aF20QgoYzIt8O/DM1rnYQ7s9En0ljuHXw/SzkMsYdl5Zdcn/sTahj
-         HyaA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1774132916; x=1774737716;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=bEu3F/1WSwP+uP501dKOCH3i4oNbCzx3X/c+Qj9v7z0=;
-        b=NqCnoTyGCzmKvyj5zdyqfz75ND+Ne664PnfrrmBnXtJsoG9SvQMHG8rsLtv1GP8NYl
-         HlzeS/QwIRTrmOt82mvkxXDcpJuC8/H+imflqeaWXaru/T0YqWHZ0JseqU8xiPKlAmT7
-         XK/37VdRdXK3MURjDLivH4+tZEW8p2oAMTdYgdqeN6PtNkoXdit0MwOuLOam0wCEl0WE
-         oTWAh/5Fm52DBSOhW6YDSLt1aSMVjyEtKxo4fpopkgCOj/VRW51P+Q+eU07X9xSGRnA/
-         BL1KAAH90TSQ8MTBpPnts84639soiC0pMKYLpjA8MAbE2B08O3kXnG/pX2FOq8DdDZXp
-         TSWw==
-X-Gm-Message-State: AOJu0YzkUBLL3V5Tr1rnort6uXas/sY+EPSATf1ffW3mqJjvJSTbJI3p
-	Ek0MEGATwMR4rVY9j/TlthsykDACyMXXop8wMRpJea36+/3LXcS5TG2F
-X-Gm-Gg: ATEYQzzw6Z12gWRXQwPT5IzPMBr2JuVdBCgeLO+iVMlifNkxTe4iR2nQeE9bN0YBEzJ
-	BxdHjd4GjnksjDAI/BvdXm1vFtqVbLRYIEeHJtytrnSjQVNQSs4DuQjYO7Yr5St75pthE+vsk9t
-	zjinsTH1/xKy3ESvaUC/2qeS8cE0w7bcJMbaITpHn3WnmjE2tlqLCFu18JI/dHGK5Zr2cihEUWN
-	ARNvbJ4VdmnH7R7G4LYK93Vh+OrG7lxmxdinmYB7E7SRDNW/X+oVMTkzzX7r7faJqc8GISAM+fg
-	5Mla4+LlZiArEVeBrB2eaCOlrCR3mtG/iNTJCu9ifj35KwI6ajEtKFBacT/pZXyE3nuFyiz370s
-	+wKoj62NENrSrudjAhXRVw4fYnUWFBy2IRJ/S13ya0D90Ljei29wj5vP9R0qUb/ZWISj4fLgalN
-	eVLlpK8Cf5JeYqpion8iBibL+j3g9/1tt2Q5Hn6tAT9Gr9NEzQQdOJjPUoLg6RaelD4kfO0vhmI
-	PLr+VmMbFH2argM9bby0lEfONoB9kbH
-X-Received: by 2002:a05:600c:1383:b0:486:fbc4:8fe2 with SMTP id 5b1f17b1804b1-486fe8fb2b2mr113587475e9.15.1774132916435;
-        Sat, 21 Mar 2026 15:41:56 -0700 (PDT)
-Received: from shift.daheim (p200300d5ff07e00050f496fffe46beef.dip0.t-ipconnect.de. [2003:d5:ff07:e000:50f4:96ff:fe46:beef])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-486ff1aeafdsm45562545e9.21.2026.03.21.15.41.55
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 21 Mar 2026 15:41:55 -0700 (PDT)
-Received: from localhost ([127.0.0.1])
-	by shift.daheim with esmtp (Exim 4.99.1)
-	(envelope-from <chunkeey@gmail.com>)
-	id 1w44yO-00000001Qaf-39uk;
-	Sat, 21 Mar 2026 23:41:54 +0100
-Message-ID: <4b7b0e25-dc71-4f69-9908-cd19113822ce@gmail.com>
-Date: Sat, 21 Mar 2026 23:41:54 +0100
+	 In-Reply-To:Content-Type; b=H7ZKb/PA+8oL34qKOYxt0rMS2gauYNqGf3bEM3FHb/HgrkCJ+lB6DEp7EMDiC43mUCjtha5Usxby30O9jhm924uAYHyVLwaDws+d62kjPL2NLnVBn36nEdYvaNRB9A8jTOJzcg/F6D6yyBtLl8qB+5IZirJGW7ul2/OeWuPkess=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=manjaro.org; spf=pass smtp.mailfrom=manjaro.org; dkim=pass (2048-bit key) header.d=manjaro.org header.i=@manjaro.org header.b=aIffeeDz; arc=none smtp.client-ip=142.132.176.110
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=manjaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=manjaro.org
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 92697422AA;
+	Sun, 22 Mar 2026 09:04:57 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=manjaro.org; s=dkim;
+	t=1774166701; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	 content-transfer-encoding:content-language:in-reply-to:references:
+	 disposition-notification-to; bh=XHCc8YdbXAd4tT2+dhaomC2NfJx3IFIemBPUrXZaJMc=;
+	b=aIffeeDz8Z7ukSglxBiFW2JVW4etELCMzU6hX2Sv0BB7pT7eFSrFJPOKs6l146Olefvzjn
+	ZMf1a5NtvFT0aLsexQpORxaFdoJ78qMgvF8qEbyiP4tvc790P6nZV8TguiB1S0Imx/skpR
+	m/3dezGwUvg28ajXknhRwLAF3nGVqopU8aoCHNve/CzXF7XKRseenlwCMYVsv733w8M43V
+	YZ2UUDEggx80VeqDrcOYrhYnULQuxu7MtfnFbo4p6uzfMndJVcOnkpzbUX1BOjvb4QVFx7
+	EFPvVaAvVNmJLRoRiZGO04wa0BCR8CGic3Tp7TH/ZgR/8UTFnUSofhnzBKdmGA==
+Message-ID: <4041383f-5ce3-4904-b03f-1084c72c7c8d@manjaro.org>
+Date: Sun, 22 Mar 2026 09:04:56 +0100
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
@@ -91,91 +54,63 @@ List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 16/16] carl9170: cmd: downgrade transient register I/O
- errors to wiphy_dbg
-To: Masi Osmani <mas-i@hotmail.de>
-Cc: linux-wireless@vger.kernel.org
-References: <20260317110634.70347-1-mas-i@hotmail.de>
- <AM7PPF5613FA0B67FB95CB5305CEF9DAA209441A@AM7PPF5613FA0B6.EURP251.PROD.OUTLOOK.COM>
-Content-Language: de-DE
-From: Christian Lamparter <chunkeey@gmail.com>
-In-Reply-To: <AM7PPF5613FA0B67FB95CB5305CEF9DAA209441A@AM7PPF5613FA0B6.EURP251.PROD.OUTLOOK.COM>
+Subject: Re: [PATCH 01/11] wifi: mt76: connac: use is_connac2() to replace
+ is_mt7921() checks
+To: Sean Wang <sean.wang@kernel.org>
+Cc: nbd@nbd.name, lorenzo.bianconi@redhat.com,
+ linux-wireless@vger.kernel.org, linux-mediatek@lists.infradead.org,
+ Sean Wang <sean.wang@mediatek.com>
+References: <20260219004007.19733-1-sean.wang@kernel.org>
+ <cab3c9a6-5563-40f5-9389-42ae3ac877ac@manjaro.org>
+ <CAGp9Lzr85cNvveAzpb6SaB2TofY06SGcVRuUq_xTWpURuc1AxA@mail.gmail.com>
+Content-Language: en-US
+From: =?UTF-8?Q?Philip_M=C3=BCller?= <philm@manjaro.org>
+Organization: Manjaro Community
+Disposition-Notification-To: =?UTF-8?Q?Philip_M=C3=BCller?=
+ <philm@manjaro.org>
+In-Reply-To: <CAGp9Lzr85cNvveAzpb6SaB2TofY06SGcVRuUq_xTWpURuc1AxA@mail.gmail.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Last-TLS-Session-Version: TLSv1.3
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	HEADER_FORGED_MDN(2.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
-	R_DKIM_ALLOW(-0.20)[gmail.com:s=20230601];
+	DMARC_POLICY_ALLOW(-0.50)[manjaro.org,quarantine];
+	R_DKIM_ALLOW(-0.20)[manjaro.org:s=dkim];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	RCPT_COUNT_TWO(0.00)[2];
-	FREEMAIL_TO(0.00)[hotmail.de];
-	TAGGED_FROM(0.00)[bounces-33660-lists,linux-wireless=lfdr.de];
-	TO_DN_SOME(0.00)[];
 	RECEIVED_HELO_LOCALHOST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	HAS_ORG_HEADER(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-33662-lists,linux-wireless=lfdr.de];
+	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[6];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[chunkeey@gmail.com,linux-wireless@vger.kernel.org];
-	DKIM_TRACE(0.00)[gmail.com:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[linux-wireless];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[philm@manjaro.org,linux-wireless@vger.kernel.org];
+	DKIM_TRACE(0.00)[manjaro.org:+];
 	MID_RHS_MATCH_FROM(0.00)[];
-	FREEMAIL_FROM(0.00)[gmail.com];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,hotmail.de:email]
-X-Rspamd-Queue-Id: B4C6A2E786A
+	TAGGED_RCPT(0.00)[linux-wireless];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	RCPT_COUNT_FIVE(0.00)[6]
+X-Rspamd-Queue-Id: 3B2F12E897F
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-On 3/17/26 12:06 PM, Masi Osmani wrote:
-> Register read/write failures during deauth/teardown transitions are
-> harmless — mac80211 tries to read survey stats or write slot_time
-> while the firmware is in a transitional state.  The command times
-> out with -EIO but the adapter recovers and re-authenticates normally.
-> 
-> Downgrade both "writing reg ... failed" and "reading regs failed"
-> from wiphy_err to wiphy_dbg to reduce dmesg noise.  The errors are
-> still visible with dynamic debug enabled for investigation.
+On 2/21/26 21:19, Sean Wang wrote:
+> Thanks for the catch I’ll update this in the next version.
 
+Hi Sean, thx. Do you have already an updated version of this driver and 
+a rough idea when all of this might reach wireless-next branch?
 
-Sure
-
-Acked-By: Christian Lamparter <chunkeey@gmail.com>
-
-> 
-> Signed-off-by: Masi Osmani <mas-i@hotmail.de>
-> ---
->   drivers/net/wireless/ath/carl9170/cmd.c | 4 ++--
->   1 file changed, 2 insertions(+), 2 deletions(-)
-> 
-> diff --git a/drivers/net/wireless/ath/carl9170/cmd.c b/drivers/net/wireless/ath/carl9170/cmd.c
-> --- a/drivers/net/wireless/ath/carl9170/cmd.c
-> +++ b/drivers/net/wireless/ath/carl9170/cmd.c
-> @@ -52,7 +52,7 @@
->   				(u8 *) buf, 0, NULL);
->   	if (err) {
->   		if (net_ratelimit()) {
-> -			wiphy_err(ar->hw->wiphy, "writing reg %#x "
-> +			wiphy_dbg(ar->hw->wiphy, "writing reg %#x "
->   				"(val %#x) failed (%d)\n", reg, val, err);
->   		}
->   	}
-> @@ -78,7 +78,7 @@
->   				4 * nregs, (u8 *)res);
->   	if (err) {
->   		if (net_ratelimit()) {
-> -			wiphy_err(ar->hw->wiphy, "reading regs failed (%d)\n",
-> +			wiphy_dbg(ar->hw->wiphy, "reading regs failed (%d)\n",
->   				  err);
->   		}
->   		return err;
+-- 
+Best, Philip
 
 
