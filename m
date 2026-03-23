@@ -1,116 +1,169 @@
-Return-Path: <linux-wireless+bounces-33740-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-33741-lists+linux-wireless=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id KJdKKC/LwWlUWgQAu9opvQ
-	(envelope-from <linux-wireless+bounces-33740-lists+linux-wireless=lfdr.de@vger.kernel.org>)
-	for <lists+linux-wireless@lfdr.de>; Tue, 24 Mar 2026 00:22:23 +0100
+	id +OlgA+DNwWnhWwQAu9opvQ
+	(envelope-from <linux-wireless+bounces-33741-lists+linux-wireless=lfdr.de@vger.kernel.org>)
+	for <lists+linux-wireless@lfdr.de>; Tue, 24 Mar 2026 00:33:52 +0100
 X-Original-To: lists+linux-wireless@lfdr.de
 Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4644D2FEE37
-	for <lists+linux-wireless@lfdr.de>; Tue, 24 Mar 2026 00:22:23 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7F4DA2FEFDD
+	for <lists+linux-wireless@lfdr.de>; Tue, 24 Mar 2026 00:33:51 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 28D16303AC14
-	for <lists+linux-wireless@lfdr.de>; Mon, 23 Mar 2026 23:21:18 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 727CB302B195
+	for <lists+linux-wireless@lfdr.de>; Mon, 23 Mar 2026 23:33:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9FCB3385500;
-	Mon, 23 Mar 2026 23:20:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 440F2370D48;
+	Mon, 23 Mar 2026 23:33:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ZdlTOt1M"
+	dkim=pass (2048-bit key) header.d=justthetip.ca header.i=@justthetip.ca header.b="SEeQ1hmt"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from out-173.mta1.migadu.com (out-173.mta1.migadu.com [95.215.58.173])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7A2993845CF;
-	Mon, 23 Mar 2026 23:20:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 528D81DF248
+	for <linux-wireless@vger.kernel.org>; Mon, 23 Mar 2026 23:33:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.215.58.173
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774308056; cv=none; b=o3Bb8u0b/X3yevYYWURi/i/RBeSql4T9WUwCPAQvaSXRKgB7Yw96ovQmyQH8UeQKRBQcAfi+p3uexUPR71zIZp9Sv1JigyKdUIpdC1ZJnW9BwykQQA2Q0B/MUh5vcp+Ei9qK0bomnzhoYJNtVpGzL5xQL6XxRMYM+54riruD1qE=
+	t=1774308826; cv=none; b=ooSNBM6AozJsj6ciUIO8KEnb/n31W1bN9PBXqboV73JQ+vU5YGo+IJrKJ1uuhGMgxZ6syvrTOxQeu4E8qzlbvSfOuiIlA9hWdMI61rbW85Y/wf7cjzuPs740AZnEEdYE3H3XCJwH16AhXkpYOuRjxqY8eklLRYZIXIQuV6YcLVY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774308056; c=relaxed/simple;
-	bh=CXejRXkyFv8rzwbuR+qRhnfSeAcHAubW4BagLISel5c=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=bGkl6vLDavXf8oBX12g63rvz7MHG3YV2IzvggddLP092It8GIr52NqTcFlZAEQALqz7MFjPx489ybQshs2eN87N+u4ffmdhgb39IpU/U25FUEmBdXWS6C9EPZA5BF2rCIZvIZrpDwMQvNC6U62gpCJ3vp9qpawc5nqAnXoNDvf4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ZdlTOt1M; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7CADCC4CEF7;
-	Mon, 23 Mar 2026 23:20:54 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1774308056;
-	bh=CXejRXkyFv8rzwbuR+qRhnfSeAcHAubW4BagLISel5c=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=ZdlTOt1MVA50vXHQJe1+nFkk5CqbYNEGEHbm1Jh/Zbvbs8K08YUviCmu7EibRkZV6
-	 bb94ryBxk95AElS9QWgt1wWP4P56O+KGnzsw82Xa+o01uMWuZO5JoppSrVCl/Q5HL0
-	 gt/Ey6dGjRO74d3MSJTkpnGBtzNnC/+5id2o7yo5y4zVDEAb20PmUtL3Z49BWLoggk
-	 NgHoF07Tg5iV8d0qblBTT7euugeW2kFY7bWgWqqb/uo/TqF2b9N37m0QwIfpnqi0ac
-	 N8psFvp2TG+lYLONfU0ghuKdwV/PRZc4greILDVF7Hq42eLVp7jZf/ZjtnXodPzF4L
-	 o08Gjtn9Br5Ng==
-Date: Mon, 23 Mar 2026 16:20:53 -0700
-From: Jakub Kicinski <kuba@kernel.org>
-To: Stanislav Fomichev <sdf@fomichev.me>
-Cc: netdev@vger.kernel.org, davem@davemloft.net, edumazet@google.com,
- pabeni@redhat.com, horms@kernel.org, corbet@lwn.net,
- skhan@linuxfoundation.org, andrew+netdev@lunn.ch,
- michael.chan@broadcom.com, pavan.chebbi@broadcom.com,
- anthony.l.nguyen@intel.com, przemyslaw.kitszel@intel.com,
- saeedm@nvidia.com, tariqt@nvidia.com, mbloch@nvidia.com,
- alexanderduyck@fb.com, kernel-team@meta.com, johannes@sipsolutions.net,
- sd@queasysnail.net, jianbol@nvidia.com, dtatulea@nvidia.com,
- mohsin.bashr@gmail.com, jacob.e.keller@intel.com, willemb@google.com,
- skhawaja@google.com, bestswngs@gmail.com, aleksandr.loktionov@intel.com,
- kees@kernel.org, linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org,
- intel-wired-lan@lists.osuosl.org, linux-rdma@vger.kernel.org,
- linux-wireless@vger.kernel.org, linux-kselftest@vger.kernel.org,
- leon@kernel.org
-Subject: Re: [PATCH net-next v3 01/13] net: add address list snapshot and
- reconciliation infrastructure
-Message-ID: <20260323162053.62a148c2@kernel.org>
-In-Reply-To: <20260320012501.2033548-2-sdf@fomichev.me>
-References: <20260320012501.2033548-1-sdf@fomichev.me>
-	<20260320012501.2033548-2-sdf@fomichev.me>
+	s=arc-20240116; t=1774308826; c=relaxed/simple;
+	bh=mD0aI2DC6Ci9Ew+PcONZiULA8QDyw1TXWELBFbCSJ4o=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=t2ZpEcrtHr1qZoo+brddc714yTRdbWwXZaJ3csOJUipX9A8qrggT0+dRW7SmAmfkbURtqPzGrZ1jDSCtUaN7LnDcnYPTJGzo/+doKoeCYEZXYEUFhNo1M2vwPaFy16RH+kHT3J662p1+cSTuSa5b23mK52Y5KJZqSKhgRv5Phdo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=justthetip.ca; spf=pass smtp.mailfrom=justthetip.ca; dkim=pass (2048-bit key) header.d=justthetip.ca header.i=@justthetip.ca header.b=SEeQ1hmt; arc=none smtp.client-ip=95.215.58.173
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=justthetip.ca
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=justthetip.ca
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=justthetip.ca;
+	s=key1; t=1774308822;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=azF3cTtkuinStvpRWIQNBNOnRFYSYk8ZehEiTsjh1pk=;
+	b=SEeQ1hmt+gd3+NHTVI4HTorVmqPWWiZFArWkCd6bbN0Nb8BfTHLGWk3LEy8MevF85adSYS
+	XNKo9z/0DAk9J9ykwoTqUV28rbsge5XribwbWC36MBe2is0Yvue+E0qAv5Ip2M3QTNkCUi
+	aGAkKFxwx2wyauaHEzQA3xML14EqIbEpVZsGm696NNpsRtJe2e+yLQW2NkVBUe29zqiRZK
+	Uh7t+MJrO61hbrpZOQlxofwsgZcdRR5EZoVqiVsPNlZ+c/TujcZzmCpbMZmKMnWXFIa/6n
+	Y9CMQgMwftIMMkBZQU5c/NYj1BAtAyl+sP8E5mDftqbdOZtXcOHSoAfyUR6qpA==
+From: Lucid Duck <lucid_duck@justthetip.ca>
+To: Ping-Ke Shih <pkshih@realtek.com>,
+	linux-wireless@vger.kernel.org
+Cc: Bitterblue Smith <rtl8821cerfe2@gmail.com>
+Subject: Re: [PATCH v2] wifi: rtw89: usb: fix TX flow control by tracking in-flight URBs
+Date: Mon, 23 Mar 2026 16:33:34 -0700
+Message-ID: <20260323233334.158678-1-lucid_duck@justthetip.ca>
+In-Reply-To: <f2fca9db9deb445c91b1973c6b7ca72a@realtek.com>
+References: <f2fca9db9deb445c91b1973c6b7ca72a@realtek.com>
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
+X-Migadu-Flow: FLOW_OUT
 X-Spamd-Result: default: False [-0.66 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+	MID_CONTAINS_FROM(1.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
+	R_MISSING_CHARSET(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[justthetip.ca,quarantine];
+	R_DKIM_ALLOW(-0.20)[justthetip.ca:s=key1];
 	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-33740-lists,linux-wireless=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[3];
+	FREEMAIL_CC(0.00)[gmail.com];
 	RCVD_TLS_LAST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FREEMAIL_CC(0.00)[vger.kernel.org,davemloft.net,google.com,redhat.com,kernel.org,lwn.net,linuxfoundation.org,lunn.ch,broadcom.com,intel.com,nvidia.com,fb.com,meta.com,sipsolutions.net,queasysnail.net,gmail.com,lists.osuosl.org];
-	RCPT_COUNT_TWELVE(0.00)[36];
-	MIME_TRACE(0.00)[0:+];
-	FROM_HAS_DN(0.00)[];
-	MISSING_XM_UA(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[kuba@kernel.org,linux-wireless@vger.kernel.org];
-	DKIM_TRACE(0.00)[kernel.org:+];
-	MID_RHS_MATCH_FROM(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[linux-wireless,netdev];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-33741-lists,linux-wireless=lfdr.de];
+	MIME_TRACE(0.00)[0:+];
+	RCPT_COUNT_THREE(0.00)[3];
 	TO_DN_SOME(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[lucid_duck@justthetip.ca,linux-wireless@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	DKIM_TRACE(0.00)[justthetip.ca:+];
+	NEURAL_HAM(-0.00)[-1.000];
 	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 4644D2FEE37
+	TAGGED_RCPT(0.00)[linux-wireless];
+	MISSING_XM_UA(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,justthetip.ca:dkim,justthetip.ca:mid]
+X-Rspamd-Queue-Id: 7F4DA2FEFDD
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-On Thu, 19 Mar 2026 18:24:49 -0700 Stanislav Fomichev wrote:
-> +EXPORT_SYMBOL(__hw_addr_list_snapshot);
-> +EXPORT_SYMBOL(__hw_addr_list_reconcile);
+Hi Ping-Ke,
 
-Why?  For the kunit tests?
+Thank you for the review. Answers to each point below.
+
+Mailer: I use a direct SMTP script -- git send-email had a hang
+issue on Fedora 43 that has since been resolved. v3 is sent via
+git send-email. The patch applies cleanly with git am.
+
+Uplink data (USB3 5GHz, 10 runs each, DWA-X1850 RTL8832AU,
+kernel 6.19.8):
+
+                     Unpatched    Patched-32    Patched-64
+  UL avg:            844 Mbps     763 Mbps      840 Mbps
+  UL retransmits:    3            0             0
+
+32 URBs shows a ~10% upload regression on USB3 5GHz. 64 URBs
+recovers to stock with zero retransmits.
+
+> Can increasing 32 get better performance? The stress test with
+> small packets might yield low throughput?
+
+Yes. I tested 32, 64, and 128 URBs per channel. The difference
+is most visible under parallel streams (USB3 5GHz upload):
+
+                     Stock    32 URBs    64 URBs    128 URBs
+  4-stream:          858      556        837        849
+  8-stream:          872      565        830        833
+
+32 URBs drops 35% under multi-stream load. 64 URBs recovers
+fully. 128 URBs shows no further gain -- 64 is the sweet spot
+for USB3.
+
+On USB2, URB count does not matter -- the bus is the bottleneck:
+
+                     Stock    32 URBs    64 URBs    128 URBs
+  UL avg (USB2):     250      252        248        253
+
+Small packets (USB3 5GHz upload, 3 runs each avg Mbps):
+
+                     Stock    32 URBs    64 URBs
+  64 bytes:          139      128        126
+  256 bytes:         441      444        442
+  1024 bytes:        845      786        846
+
+Small packets are CPU/USB-framing limited, not URB-count limited.
+No throughput difference at 64 or 256 bytes. At 1024 bytes, 32
+URBs constrains throughput; 64 recovers.
+
+> Out of curiosity. Is it possible inflight >
+> RTW89_USB_MAX_TX_URBS_PER_CH?
+
+No. check_and_reclaim is called before tx_kick_off, and each call
+submits at most one URB. The >= is defensive only.
+
+> I think the code self-explain this already.
+> I'd not prefer this comment neither.
+
+Both comments removed in v3.
+
+v3 follows with MAX_TX_URBS_PER_CH increased from 32 to 64.
+
+Additional validation at 64 URBs: UDP flood (0% loss across 4M
+datagrams at 930 Mbps), bidirectional (zero retransmits), and
+60-second soak (844 Mbps sustained, zero degradation).
+
+Full test data:
+https://github.com/Lucid-Duck/tx-resources-flow-control/blob/main/test-results/2026-03-23-ping-ke-v2-review.md
+
+Thanks,
+Lucid Duck
 
