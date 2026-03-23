@@ -1,49 +1,49 @@
-Return-Path: <linux-wireless+bounces-33697-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-33696-lists+linux-wireless=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id KLt/M/wPwWk7QQQAu9opvQ
-	(envelope-from <linux-wireless+bounces-33697-lists+linux-wireless=lfdr.de@vger.kernel.org>)
-	for <lists+linux-wireless@lfdr.de>; Mon, 23 Mar 2026 11:03:40 +0100
+	id YKWQHowPwWk7QQQAu9opvQ
+	(envelope-from <linux-wireless+bounces-33696-lists+linux-wireless=lfdr.de@vger.kernel.org>)
+	for <lists+linux-wireless@lfdr.de>; Mon, 23 Mar 2026 11:01:48 +0100
 X-Original-To: lists+linux-wireless@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 783192EF9BB
-	for <lists+linux-wireless@lfdr.de>; Mon, 23 Mar 2026 11:03:40 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6F67E2EF91F
+	for <lists+linux-wireless@lfdr.de>; Mon, 23 Mar 2026 11:01:44 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id C4BD230065DB
-	for <lists+linux-wireless@lfdr.de>; Mon, 23 Mar 2026 10:03:39 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 9633B3059E81
+	for <lists+linux-wireless@lfdr.de>; Mon, 23 Mar 2026 09:58:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1F78E388E6A;
-	Mon, 23 Mar 2026 10:03:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EFFAD389447;
+	Mon, 23 Mar 2026 09:58:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=aliel.fr header.i=@aliel.fr header.b="l6CQeCcL"
+	dkim=pass (1024-bit key) header.d=aliel.fr header.i=@aliel.fr header.b="Jh2jvney"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from courrier.aliel.fr (pouet.aliel.fr [65.21.61.41])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E31AA388385;
-	Mon, 23 Mar 2026 10:03:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1C5D827AC48;
+	Mon, 23 Mar 2026 09:58:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=65.21.61.41
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774260218; cv=none; b=EqpOne0LvcM1xk3DgV0hWjs886uYFLXopJ4dWKZEyldIpAyqBVx5DPlsM31oP46UDW7gSDSz5p0fOeTPK99vm8CxxcRTXHQEROv9axcfR+/WCKzwl3uRPjM1wcGMfGqJZBe7EmsOinL2qvjV1XXVw+rwBqG+dYjiRbO1YGtQ58Q=
+	t=1774259910; cv=none; b=YbfmL2SxfocRAv6PTGRmiBp2oUR+ZGxZFWbOlLg/w0IG6+IRY/G4BlJkHmxdiUYQ1kvOshGrOiHv8if0m4sniY2eVGOLDPR1tRCv5RE6tV1nSYHVTxFfykvmrqZOfK5yQOyRr0Zxk0BZhzZR82Fsi/9JIIxiwXbj4s8Mtg9VJzM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774260218; c=relaxed/simple;
-	bh=pJsgY+KSWWLicmvVu+uNg6L7gVLTJaTUGgkV3XkKSJc=;
+	s=arc-20240116; t=1774259910; c=relaxed/simple;
+	bh=AO4tgBsQ5yd9Qo2dDaY+wcNu1us7EFs06fTrqRlHBYM=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=W15SDpQLGHMpjSb77xYN1Qt8MM6czXhwOo1QAVU8fGeIqY5uKUa+aXZ0zs2kTOU/ExTcldeL49FzY3ClBsghpavvZSCquYLzUFCM7WebnJ9mYcAS4k1JH3gKyn5pBgMdin7RYRF2IEErybevompQEcOSEGjEF3tAPrvaxYM9l6I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=aliel.fr; spf=pass smtp.mailfrom=aliel.fr; dkim=pass (1024-bit key) header.d=aliel.fr header.i=@aliel.fr header.b=l6CQeCcL; arc=none smtp.client-ip=65.21.61.41
+	 In-Reply-To:To:Cc; b=QKTH8OxQapqt0b9nNLG9hZFT5PASAled8DNISUVrdXqv3rdVTtEP2e4eSq+afjlAtirJ4gpu6px1X6G4FaNkpNw5HgraagSOGE6TmoS+5lyz+r/u+wVHkgvK8ggrmNHU+zIEUN11mrzGVIBmS9QuaBFWmJ0AVmGqQzU7462OAqw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=aliel.fr; spf=pass smtp.mailfrom=aliel.fr; dkim=pass (1024-bit key) header.d=aliel.fr header.i=@aliel.fr header.b=Jh2jvney; arc=none smtp.client-ip=65.21.61.41
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=aliel.fr
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=aliel.fr
 From: Ronald Claveau <linux-kernel-dev@aliel.fr>
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=aliel.fr;
-	s=courrier-s1; t=1774259900;
-	bh=pJsgY+KSWWLicmvVu+uNg6L7gVLTJaTUGgkV3XkKSJc=;
+	s=courrier-s1; t=1774259901;
+	bh=AO4tgBsQ5yd9Qo2dDaY+wcNu1us7EFs06fTrqRlHBYM=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc;
-	b=l6CQeCcLdUN7XaS5IL++cjUxIj3IgL2VreeTAOdLUMUruVXh93IvgugBZwgCXN7vU
-	 0kEUmrnDY1NaxbelC06QJFO6ZeciSXD465lkbilg78kAVeg8S5vzlr56XixjfTaXYK
-	 C5oCfUBkBErz+FIV0g2jVN6NxVzOQN9Yr1n2sn5M=
-Date: Mon, 23 Mar 2026 10:55:29 +0100
-Subject: [PATCH v3 4/9] arm64: dts: amlogic: t7: Add PWM pinctrl nodes
+	b=Jh2jvneyE74Am2thzy9WlW47Gi0DtfluNkcEjr7ZRHfcR5zVN/4audqf7fagm2pxO
+	 FsV+ySupdlB3PiRryb3FNbCKtX9bgfEE5kagpR0auZ9JbbGjMVMYz1ATDj6yY1n611
+	 4tp1es03xYgthWOnCQsMmdVRobzSMAH6yIb/EltE=
+Date: Mon, 23 Mar 2026 10:55:30 +0100
+Subject: [PATCH v3 5/9] arm64: dts: amlogic: t7: Add PWM controller nodes
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
@@ -52,7 +52,7 @@ List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260323-add-emmc-t7-vim4-v3-4-5159d90a984c@aliel.fr>
+Message-Id: <20260323-add-emmc-t7-vim4-v3-5-5159d90a984c@aliel.fr>
 References: <20260323-add-emmc-t7-vim4-v3-0-5159d90a984c@aliel.fr>
 In-Reply-To: <20260323-add-emmc-t7-vim4-v3-0-5159d90a984c@aliel.fr>
 To: Neil Armstrong <neil.armstrong@linaro.org>, 
@@ -64,22 +64,22 @@ To: Neil Armstrong <neil.armstrong@linaro.org>,
 Cc: linux-arm-kernel@lists.infradead.org, linux-amlogic@lists.infradead.org, 
  devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, 
  linux-mmc@vger.kernel.org, linux-wireless@vger.kernel.org, 
- Ronald Claveau <linux-kernel-dev@aliel.fr>
+ Ronald Claveau <linux-kernel-dev@aliel.fr>, Nick Xie <nick@khadas.com>
 X-Mailer: b4 0.14.3
-X-Developer-Signature: v=1; a=openssh-sha256; t=1774259895; l=3146;
+X-Developer-Signature: v=1; a=openssh-sha256; t=1774259895; l=2868;
  i=linux-kernel-dev@aliel.fr; s=id_ed25519; h=from:subject:message-id;
- bh=pJsgY+KSWWLicmvVu+uNg6L7gVLTJaTUGgkV3XkKSJc=;
+ bh=AO4tgBsQ5yd9Qo2dDaY+wcNu1us7EFs06fTrqRlHBYM=;
  b=U1NIU0lHAAAAAQAAADMAAAALc3NoLWVkMjU1MTkAAAAgMGec55oxeeisqykQiUedekMYyOnR9
  BG9E/7rDWyqdNoAAAAGcGF0YXR0AAAAAAAAAAZzaGE1MTIAAABTAAAAC3NzaC1lZDI1NTE5AAAA
- QAgJNqI6dHgYz2BYCWrAJelofszt6Z8Ktugb/OvW0PNquLU2R5UcRCc5/h3cgghQOUbSY8iYjIk
- CbLxUJSsxBws=
+ QJZSR1SMHxPM+6QdLs5pPY8OawAIsaGLhfGtKLJB4Nlbb0tJsEL5bhXobDp4DjYkDd1IsmXRpDo
+ CrkA2mHLA/A8=
 X-Developer-Key: i=linux-kernel-dev@aliel.fr; a=openssh;
  fpr=SHA256:kch4osYZ6A1BrPps5AUs6KnfdE2wm4ocMtyTc8TmZMs
 X-Spamd-Result: default: False [-0.16 / 15.00];
 	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_DKIM_ALLOW(-0.20)[aliel.fr:s=courrier-s1];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
@@ -89,9 +89,9 @@ X-Spamd-Result: default: False [-0.16 / 15.00];
 	FREEMAIL_TO(0.00)[linaro.org,baylibre.com,googlemail.com,kernel.org,sipsolutions.net,broadcom.com];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	DMARC_NA(0.00)[aliel.fr];
-	RCPT_COUNT_TWELVE(0.00)[17];
+	RCPT_COUNT_TWELVE(0.00)[18];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-33697-lists,linux-wireless=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-33696-lists,linux-wireless=lfdr.de];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
@@ -100,167 +100,98 @@ X-Spamd-Result: default: False [-0.16 / 15.00];
 	NEURAL_HAM(-0.00)[-1.000];
 	TAGGED_RCPT(0.00)[linux-wireless,dt];
 	MID_RHS_MATCH_FROM(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[aliel.fr:dkim,aliel.fr:email,aliel.fr:mid,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 783192EF9BB
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 6F67E2EF91F
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-These pinctrl nodes are required by the PWM drivers to configure
-pin muxing at runtime.
+Add device tree nodes for the seven PWM controllers available
+on the Amlogic T7 SoC, using amlogic,meson-s4-pwm as fallback compatible.
+All nodes are disabled by default and should be
+enabled in the board-specific DTS file.
 
+Co-developed-by: Nick Xie <nick@khadas.com>
+Signed-off-by: Nick Xie <nick@khadas.com>
 Signed-off-by: Ronald Claveau <linux-kernel-dev@aliel.fr>
 ---
- arch/arm64/boot/dts/amlogic/amlogic-t7.dtsi | 136 ++++++++++++++++++++++++++++
- 1 file changed, 136 insertions(+)
+ arch/arm64/boot/dts/amlogic/amlogic-t7.dtsi | 63 +++++++++++++++++++++++++++++
+ 1 file changed, 63 insertions(+)
 
 diff --git a/arch/arm64/boot/dts/amlogic/amlogic-t7.dtsi b/arch/arm64/boot/dts/amlogic/amlogic-t7.dtsi
-index b3898669c9571..6d41de6f895b4 100644
+index 6d41de6f895b4..a0261cd8eadfc 100644
 --- a/arch/arm64/boot/dts/amlogic/amlogic-t7.dtsi
 +++ b/arch/arm64/boot/dts/amlogic/amlogic-t7.dtsi
-@@ -307,6 +307,142 @@ mux {
- 					};
- 				};
+@@ -511,6 +511,69 @@ sec_ao: ao-secure@10220 {
+ 				amlogic,has-chip-id;
+ 			};
  
-+				pwm_a_pins: pwm-a {
-+					mux {
-+						groups = "pwm_a";
-+						function = "pwm_a";
-+						bias-disable;
-+					};
-+				};
++			pwm_ao_ef: pwm@30000 {
++				compatible = "amlogic,t7-pwm", "amlogic,meson-s4-pwm";
++				reg = <0x0 0x30000 0x0 0x24>;
++				clocks = <&clkc_periphs CLKID_PWM_AO_E>,
++					 <&clkc_periphs CLKID_PWM_AO_F>;
++				#pwm-cells = <3>;
++				status = "disabled";
++			};
 +
-+				pwm_ao_a_pins: pwm-ao-a {
-+					mux {
-+						groups = "pwm_ao_a";
-+						function = "pwm_ao_a";
-+						bias-disable;
-+					};
-+				};
++			pwm_ao_gh: pwm@32000 {
++				compatible = "amlogic,t7-pwm", "amlogic,meson-s4-pwm";
++				reg = <0x0 0x32000 0x0 0x24>;
++				clocks = <&clkc_periphs CLKID_PWM_AO_G>,
++					 <&clkc_periphs CLKID_PWM_AO_H>;
++				#pwm-cells = <3>;
++				status = "disabled";
++			};
 +
-+				pwm_ao_b_pins: pwm-ao-b {
-+					mux {
-+						groups = "pwm_ao_b";
-+						function = "pwm_ao_b";
-+						bias-disable;
-+					};
-+				};
++			pwm_ab: pwm@58000 {
++				compatible = "amlogic,t7-pwm", "amlogic,meson-s4-pwm";
++				reg = <0x0 0x58000 0x0 0x24>;
++				clocks = <&clkc_periphs CLKID_PWM_A>,
++					 <&clkc_periphs CLKID_PWM_B>;
++				#pwm-cells = <3>;
++				status = "disabled";
++			};
 +
-+				pwm_ao_c_pins: pwm-ao-c {
-+					mux {
-+						groups = "pwm_ao_c";
-+						function = "pwm_ao_c";
-+						bias-disable;
-+					};
-+				};
++			pwm_cd: pwm@5a000 {
++				compatible = "amlogic,t7-pwm", "amlogic,meson-s4-pwm";
++				reg = <0x0 0x5a000 0x0 0x24>;
++				clocks = <&clkc_periphs CLKID_PWM_C>,
++					 <&clkc_periphs CLKID_PWM_D>;
++				#pwm-cells = <3>;
++				status = "disabled";
++			};
 +
-+				pwm_ao_c_hiz_pins: pwm-ao-c-hiz {
-+					mux {
-+						groups = "pwm_ao_c_hiz";
-+						function = "pwm_ao_c_hiz";
-+						bias-disable;
-+					};
-+				};
++			pwm_ef: pwm@5c000 {
++				compatible = "amlogic,t7-pwm", "amlogic,meson-s4-pwm";
++				reg = <0x0 0x5c000 0x0 0x24>;
++				clocks = <&clkc_periphs CLKID_PWM_E>,
++					 <&clkc_periphs CLKID_PWM_F>;
++				#pwm-cells = <3>;
++				status = "disabled";
++			};
 +
-+				pwm_ao_d_pins: pwm-ao-d {
-+					mux {
-+						groups = "pwm_ao_d";
-+						function = "pwm_ao_d";
-+						bias-disable;
-+					};
-+				};
++			pwm_ao_ab: pwm@5e000 {
++				compatible = "amlogic,t7-pwm", "amlogic,meson-s4-pwm";
++				reg = <0x0 0x5e000 0x0 0x24>;
++				clocks = <&clkc_periphs CLKID_PWM_AO_A>,
++					 <&clkc_periphs CLKID_PWM_AO_B>;
++				#pwm-cells = <3>;
++				status = "disabled";
++			};
 +
-+				pwm_ao_e_pins: pwm-ao-e {
-+					mux {
-+						groups = "pwm_ao_e";
-+						function = "pwm_ao_e";
-+						bias-disable;
-+					};
-+				};
++			pwm_ao_cd: pwm@60000 {
++				compatible = "amlogic,t7-pwm", "amlogic,meson-s4-pwm";
++				reg = <0x0 0x60000 0x0 0x24>;
++				clocks = <&clkc_periphs CLKID_PWM_AO_C>,
++					 <&clkc_periphs CLKID_PWM_AO_D>;
++				#pwm-cells = <3>;
++				status = "disabled";
++			};
 +
-+				pwm_ao_f_pins: pwm-ao-f {
-+					mux {
-+						groups = "pwm_ao_f";
-+						function = "pwm_ao_f";
-+						bias-disable;
-+					};
-+				};
-+
-+				pwm_ao_g_pins: pwm-ao-g {
-+					mux {
-+						groups = "pwm_ao_g";
-+						function = "pwm_ao_g";
-+						bias-disable;
-+					};
-+				};
-+
-+				pwm_ao_g_hiz_pins: pwm-ao-g-hiz {
-+					mux {
-+						groups = "pwm_ao_g_hiz";
-+						function = "pwm_ao_g_hiz";
-+						bias-disable;
-+					};
-+				};
-+
-+				pwm_ao_h_pins: pwm-ao-h {
-+					mux {
-+						groups = "pwm_ao_h";
-+						function = "pwm_ao_h";
-+						bias-disable;
-+					};
-+				};
-+
-+				pwm_b_pins: pwm-b {
-+					mux {
-+						groups = "pwm_b";
-+						function = "pwm_b";
-+						bias-disable;
-+					};
-+				};
-+
-+				pwm_c_pins: pwm-c {
-+					mux {
-+						groups = "pwm_c";
-+						function = "pwm_c";
-+						bias-disable;
-+					};
-+				};
-+
-+				pwm_d_pins: pwm-d {
-+					mux {
-+						groups = "pwm_d";
-+						function = "pwm_d";
-+						bias-disable;
-+					};
-+				};
-+
-+				pwm_e_pins: pwm-e {
-+					mux {
-+						groups = "pwm_e";
-+						function = "pwm_e";
-+						bias-disable;
-+					};
-+				};
-+
-+				pwm_f_pins: pwm-f {
-+					mux {
-+						groups = "pwm_f";
-+						function = "pwm_f";
-+						bias-disable;
-+					};
-+				};
-+
-+				pwm_vs_pins: pwm-vs {
-+					mux {
-+						groups = "pwm_vs";
-+						function = "pwm_vs";
-+						bias-disable;
-+					};
-+				};
-+
- 				sdcard_pins: sdcard {
- 					mux {
- 						groups = "sdcard_d0",
+ 			sd_emmc_a: mmc@88000 {
+ 				compatible = "amlogic,t7-mmc", "amlogic,meson-axg-mmc";
+ 				reg = <0x0 0x88000 0x0 0x800>;
 
 -- 
 2.49.0
