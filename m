@@ -1,71 +1,71 @@
-Return-Path: <linux-wireless+bounces-33673-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-33674-lists+linux-wireless=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id yHXALvSywGm5KAQAu9opvQ
-	(envelope-from <linux-wireless+bounces-33673-lists+linux-wireless=lfdr.de@vger.kernel.org>)
-	for <lists+linux-wireless@lfdr.de>; Mon, 23 Mar 2026 04:26:44 +0100
+	id sIrmAf2ywGm5KAQAu9opvQ
+	(envelope-from <linux-wireless+bounces-33674-lists+linux-wireless=lfdr.de@vger.kernel.org>)
+	for <lists+linux-wireless@lfdr.de>; Mon, 23 Mar 2026 04:26:53 +0100
 X-Original-To: lists+linux-wireless@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 220922EC322
-	for <lists+linux-wireless@lfdr.de>; Mon, 23 Mar 2026 04:26:44 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7CA052EC329
+	for <lists+linux-wireless@lfdr.de>; Mon, 23 Mar 2026 04:26:52 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 037493011C42
-	for <lists+linux-wireless@lfdr.de>; Mon, 23 Mar 2026 03:26:24 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 36AC23017C3F
+	for <lists+linux-wireless@lfdr.de>; Mon, 23 Mar 2026 03:26:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8105A15539A;
-	Mon, 23 Mar 2026 03:26:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A04C51514F8;
+	Mon, 23 Mar 2026 03:26:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=realtek.com header.i=@realtek.com header.b="rbh+zhoV"
+	dkim=pass (2048-bit key) header.d=realtek.com header.i=@realtek.com header.b="m56Xo3US"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8B18C1514F8
-	for <linux-wireless@vger.kernel.org>; Mon, 23 Mar 2026 03:26:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D6EF514A8B
+	for <linux-wireless@vger.kernel.org>; Mon, 23 Mar 2026 03:26:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=211.75.126.72
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774236383; cv=none; b=H4WZdJxUpIepQv0zJilhA2r68nXI8b6RYCw6+AWjm4LOsVrMyDukATW+zvBp6EjhH07CyIuKkcGWQK6nbj5B8MlbuxnNztwx7xOM+Lv+bWZXPgr5lOSBsqZDC7OJ0dNI4XewD6qekfVrSPlXr3+Q2ZkqKI0HRzeJmB4bxzFmG0s=
+	t=1774236388; cv=none; b=Qk+rgVay/p89myKS6ssKAnDbIsdPGp5u/1++vRWVBzPDnG8USPtBSGypwcVREVGt3T1v9teGpc9yrVHq8T3UnL7j/LLGZG6ciGaBQBam7M8+8KkhhTYYBjKrbg/cJdmYK79jFzIeNYYqv4hNglsISnxPKAmwx4ZYM+InF9zgMgg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774236383; c=relaxed/simple;
-	bh=THSppKKuGzbyKZ0JNTmwVosZbxwBwVVVPySihVHhUDg=;
+	s=arc-20240116; t=1774236388; c=relaxed/simple;
+	bh=FNg09PpozNZRCjUSXhqIOyPKVE2nZcusQ/Um7AVuEII=;
 	h=From:To:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=kNzrUYSjBsUDZabdOjbS3G+zQCSzt/tQYLiDSbNRWs0vHKUkYenMeTOUNwWwuWZkpQiy4GDVz+hhSYDav9VN4R1PjBW97ZSOUhOh4gl3//wdsIU16T6gyQvcQ+xuvUcFwxHl4NhkG1+2Lkk2J8NZa1lATAZSBqW35nkmN6CqF/E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com; spf=pass smtp.mailfrom=realtek.com; dkim=pass (2048-bit key) header.d=realtek.com header.i=@realtek.com header.b=rbh+zhoV; arc=none smtp.client-ip=211.75.126.72
+	 MIME-Version:Content-Type; b=D+jwSguouUVex8QHv3NctTW4nocO94eqUDncmmlb0MvVCttuhvn/87f9/5N2yq6R000+YHsJeJ9VGDqsaNoj8dsz5d3wjcxMzfApaDXPMilQlT+Immyckmckd4qB4aUMP36xCZjK65nX91T0C0w+hlIN2RQbZTxzbj2XxwApmAE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com; spf=pass smtp.mailfrom=realtek.com; dkim=pass (2048-bit key) header.d=realtek.com header.i=@realtek.com header.b=m56Xo3US; arc=none smtp.client-ip=211.75.126.72
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=realtek.com
-X-SpamFilter-By: ArmorX SpamTrap 5.80 with qID 62N3QJRY02375076, This message is accepted by code: ctloc85258
+X-SpamFilter-By: ArmorX SpamTrap 5.80 with qID 62N3QO8a82375588, This message is accepted by code: ctloc85258
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=realtek.com; s=dkim;
-	t=1774236379; bh=Nl/J4b9E9mDRS9+5MolnvxrI9dX+0tneYE3dWtBAbmE=;
+	t=1774236384; bh=zZOfhQPq/F6CMyQ8admE2m+y838WF8bTcBQIWyGboZw=;
 	h=From:To:Subject:Date:Message-ID:In-Reply-To:References:
 	 MIME-Version:Content-Transfer-Encoding:Content-Type;
-	b=rbh+zhoVYQ2jq9GQr8s32/Aw60hIVg5h3kFjAi1OECT49IebSHftRS7ckXpNS76X5
-	 o0b9nDNANgrBjnmfPP57eFwNfUZLYJ8EO8fBE7XGM0YGyAEeL4o/Xqoenn2kReDbHU
-	 wBcmuL1ABIlMS22Sqs7ETm2UFrifxLf4uS6fet0B9/LWuK8qxsPSCeMSDbwSSUAiSi
-	 T2mo5YlMZB6U3Vfj9bCQs9p699ikDVz4n6el/GC8OgjtzUG22bc1v2sQFuHE5YB3Ct
-	 sfjGUYMEYGYsm1PPqRrPRROWtnV714W9pWh9zbFPQFaB29Ow+SBKeOCFSYQHfDU4qp
-	 e87PGxgRwZzUA==
-Received: from mail.realtek.com (rtkexhmbs04.realtek.com.tw[10.21.1.54])
-	by rtits2.realtek.com.tw (8.15.2/3.21/5.94) with ESMTPS id 62N3QJRY02375076
+	b=m56Xo3UST7u8x5Y/BQHxZ9l2dPiugOJc0eRXXZ/1Eae7HFtdnmjSC35xRtO5z3qXZ
+	 KpUaSqcsKUDIq0pxBCV0bJpXYT4pd4wLNyOT4dZ8lD+o3s6kb7DzhZ0m421mbWhM8V
+	 MyZwzSbiIifXELq1X2tL3OkhaeM/jPtIbcu9ErIGq+6f8B8o8BFWCXokpetuMXhHzY
+	 JSuqBRQgzUBZ2ouG3Ok2phhqbbe7DsZX7k6iMPhJRLmJGa7PVwtTrGU9ru2CAbRcrN
+	 ZttgO/f4Yebux8+CojAx8RZbeHis233qMU9ExmfNjRevBdjvi3Tf6K1uGWsgW2h6iG
+	 NC5f5F2ZRGDYg==
+Received: from mail.realtek.com (rtkexhmbs03.realtek.com.tw[10.21.1.53])
+	by rtits2.realtek.com.tw (8.15.2/3.21/5.94) with ESMTPS id 62N3QO8a82375588
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK)
-	for <linux-wireless@vger.kernel.org>; Mon, 23 Mar 2026 11:26:19 +0800
+	for <linux-wireless@vger.kernel.org>; Mon, 23 Mar 2026 11:26:24 +0800
 Received: from RTKEXHMBS06.realtek.com.tw (10.21.1.56) by
- RTKEXHMBS04.realtek.com.tw (10.21.1.54) with Microsoft SMTP Server
+ RTKEXHMBS03.realtek.com.tw (10.21.1.53) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1748.10; Mon, 23 Mar 2026 11:26:19 +0800
+ 15.2.1748.10; Mon, 23 Mar 2026 11:26:25 +0800
 Received: from RTKEXHMBS06.realtek.com.tw (10.21.1.56) by
  RTKEXHMBS06.realtek.com.tw (10.21.1.56) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1748.10; Mon, 23 Mar 2026 11:26:19 +0800
+ 15.2.1748.10; Mon, 23 Mar 2026 11:26:24 +0800
 Received: from [127.0.1.1] (172.21.40.75) by RTKEXHMBS06.realtek.com.tw
  (10.21.1.56) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1748.10 via Frontend
- Transport; Mon, 23 Mar 2026 11:26:19 +0800
+ Transport; Mon, 23 Mar 2026 11:26:24 +0800
 From: Ping-Ke Shih <pkshih@realtek.com>
 To: <linux-wireless@vger.kernel.org>
-Subject: [PATCH rtw-next 1/7] wifi: rtw89: 8922d: add definition of quota, registers and efuse block
-Date: Mon, 23 Mar 2026 11:25:50 +0800
-Message-ID: <20260323032556.19825-2-pkshih@realtek.com>
+Subject: [PATCH rtw-next 2/7] wifi: rtw89: 8922d: add power on/off functions
+Date: Mon, 23 Mar 2026 11:25:51 +0800
+Message-ID: <20260323032556.19825-3-pkshih@realtek.com>
 X-Mailer: git-send-email 2.25.1
 In-Reply-To: <20260323032556.19825-1-pkshih@realtek.com>
 References: <20260323032556.19825-1-pkshih@realtek.com>
@@ -82,12 +82,12 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	MID_CONTAINS_FROM(1.00)[];
 	DMARC_POLICY_ALLOW(-0.50)[realtek.com,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[realtek.com:s=dkim];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-33673-lists,linux-wireless=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-33674-lists,linux-wireless=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
 	TO_DN_NONE(0.00)[];
 	RCPT_COUNT_ONE(0.00)[1];
@@ -100,407 +100,355 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	DBL_BLOCKED_OPENRESOLVER(0.00)[realtek.com:dkim,realtek.com:email,realtek.com:mid];
 	DKIM_TRACE(0.00)[realtek.com:+];
 	TAGGED_RCPT(0.00)[linux-wireless];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_COUNT_SEVEN(0.00)[7]
-X-Rspamd-Queue-Id: 220922EC322
+X-Rspamd-Queue-Id: 7CA052EC329
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-The quota is used to configure memory size for TX/RX, and the definition
-of registers includes H2C command, C2H event, WoWLAN reason, IMR of CMAC
-and DMAC, ACK rate selector, RF kill GPIO, and BB functions of dynamic
-initial gain and EDCCA. The layout of efuse block is to define logic
-map of efuse, such as MAC address and RF calibration values.
+The power on function is the first entry to power on hardware including
+all MAC/BB/RF circuits, and then it becomes possible to do high level
+operations, such as WiFi scan, connection.
+
+If connection becomes unavailable, device stays into idle mode, calling
+power off function to cut power.
 
 Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
 ---
- drivers/net/wireless/realtek/rtw89/reg.h      |  30 +++
- drivers/net/wireless/realtek/rtw89/rtw8922d.c | 238 ++++++++++++++++++
- drivers/net/wireless/realtek/rtw89/rtw8922d.h |  10 +
- 3 files changed, 278 insertions(+)
- create mode 100644 drivers/net/wireless/realtek/rtw89/rtw8922d.c
- create mode 100644 drivers/net/wireless/realtek/rtw89/rtw8922d.h
+ drivers/net/wireless/realtek/rtw89/reg.h      |  63 +++++
+ drivers/net/wireless/realtek/rtw89/rtw8922d.c | 237 ++++++++++++++++++
+ 2 files changed, 300 insertions(+)
 
 diff --git a/drivers/net/wireless/realtek/rtw89/reg.h b/drivers/net/wireless/realtek/rtw89/reg.h
-index 9b605617c3f0..2cb35458a822 100644
+index 2cb35458a822..b6fd7b434de9 100644
 --- a/drivers/net/wireless/realtek/rtw89/reg.h
 +++ b/drivers/net/wireless/realtek/rtw89/reg.h
-@@ -8737,6 +8737,7 @@
- #define R_PHY_STS_BITMAP_EHT 0x0788
- #define R_PHY_STS_BITMAP_EHT_BE4 0x20788
- #define R_EDCCA_RPTREG_SEL_BE 0x078C
-+#define R_EDCCA_RPTREG_SEL_BE4 0x2078C
- #define B_EDCCA_RPTREG_SEL_BE_MSK GENMASK(22, 20)
- #define R_PMAC_GNT 0x0980
- #define B_PMAC_GNT_TXEN BIT(0)
-@@ -8850,6 +8851,7 @@
- #define R_UDP_COEEF 0x0CBC
- #define B_UDP_COEEF BIT(19)
- #define R_TX_COLLISION_T2R_ST_BE 0x0CC8
-+#define R_TX_COLLISION_T2R_ST_BE4 0x20CC8
- #define B_TX_COLLISION_T2R_ST_BE_M GENMASK(13, 8)
- #define R_RXHT_MCS_LIMIT 0x0D18
- #define B_RXHT_MCS_LIMIT GENMASK(9, 8)
-@@ -9078,7 +9080,11 @@
- #define R_P1_EN_SOUND_WO_NDP 0x2D7C
- #define B_P1_EN_SOUND_WO_NDP BIT(1)
- #define R_EDCCA_RPT_A_BE 0x2E38
-+#define R_EDCCA_RPT_A_BE4 0x2EE30
-+#define R_EDCCA_RPT_A_BE4_C1 0x2FE30
- #define R_EDCCA_RPT_B_BE 0x2E3C
-+#define R_EDCCA_RPT_B_BE4 0x2EE34
-+#define R_EDCCA_RPT_B_BE4_C1 0x2FE34
- #define R_EDCCA_RPT_P1_A_BE 0x2E40
- #define R_EDCCA_RPT_P1_B_BE 0x2E44
- #define R_S1_HW_SI_DIS 0x3200
-@@ -9262,11 +9268,13 @@
- #define R_PATH0_P20_FOLLOW_BY_PAGCUGC_V1 0x4C24
- #define R_PATH0_P20_FOLLOW_BY_PAGCUGC_V2 0x46E8
- #define R_PATH0_P20_FOLLOW_BY_PAGCUGC_V3 0x41C8
-+#define R_PATH0_P20_FOLLOW_BY_PAGCUGC_BE4 0x241C8
- #define B_PATH0_P20_FOLLOW_BY_PAGCUGC_EN_MSK BIT(5)
- #define R_PATH0_S20_FOLLOW_BY_PAGCUGC 0x46A4
- #define R_PATH0_S20_FOLLOW_BY_PAGCUGC_V1 0x4C28
- #define R_PATH0_S20_FOLLOW_BY_PAGCUGC_V2 0x46EC
- #define R_PATH0_S20_FOLLOW_BY_PAGCUGC_V3 0x41CC
-+#define R_PATH0_S20_FOLLOW_BY_PAGCUGC_BE4 0x241CC
- #define B_PATH0_S20_FOLLOW_BY_PAGCUGC_EN_MSK BIT(5)
- #define R_PATH0_RXB_INIT_V1 0x46A8
- #define B_PATH0_RXB_INIT_IDX_MSK_V1 GENMASK(14, 10)
-@@ -9313,11 +9321,13 @@
- #define R_PATH1_P20_FOLLOW_BY_PAGCUGC_V1 0x4CE8
- #define R_PATH1_P20_FOLLOW_BY_PAGCUGC_V2 0x47A8
- #define R_PATH1_P20_FOLLOW_BY_PAGCUGC_V3 0x45C8
-+#define R_PATH1_P20_FOLLOW_BY_PAGCUGC_BE4 0x245C8
- #define B_PATH1_P20_FOLLOW_BY_PAGCUGC_EN_MSK BIT(5)
- #define R_PATH1_S20_FOLLOW_BY_PAGCUGC 0x4778
- #define R_PATH1_S20_FOLLOW_BY_PAGCUGC_V1 0x4CEC
- #define R_PATH1_S20_FOLLOW_BY_PAGCUGC_V2 0x47AC
- #define R_PATH1_S20_FOLLOW_BY_PAGCUGC_V3 0x45CC
-+#define R_PATH1_S20_FOLLOW_BY_PAGCUGC_BE4 0x245CC
- #define B_PATH1_S20_FOLLOW_BY_PAGCUGC_EN_MSK BIT(5)
- #define R_PATH1_G_TIA0_LNA6_OP1DB_V1 0x4778
- #define B_PATH1_G_TIA0_LNA6_OP1DB_V1 GENMASK(7, 0)
-@@ -9338,6 +9348,7 @@
- #define R_SEG0R_PD 0x481C
- #define R_SEG0R_PD_V1 0x4860
- #define R_SEG0R_PD_V2 0x6A74
-+#define R_SEG0R_PD_BE4 0x26210
- #define R_SEG0R_EDCCA_LVL 0x4840
- #define R_SEG0R_EDCCA_LVL_V1 0x4884
- #define B_EDCCA_LVL_MSK3 GENMASK(31, 24)
-@@ -9476,9 +9487,11 @@
- #define B_DCFO_COMP_S0_V1_MSK GENMASK(13, 0)
- #define R_BMODE_PDTH_V1 0x4B64
- #define R_BMODE_PDTH_V2 0x6708
-+#define R_BMODE_PDTH_BE4 0x26040
- #define B_BMODE_PDTH_LOWER_BOUND_MSK_V1 GENMASK(31, 24)
- #define R_BMODE_PDTH_EN_V1 0x4B74
- #define R_BMODE_PDTH_EN_V2 0x6718
-+#define R_BMODE_PDTH_EN_BE4 0x26050
- #define B_BMODE_PDTH_LIMIT_EN_MSK_V1 BIT(30)
- #define R_BSS_CLR_VLD_V2 0x4EBC
- #define B_BSS_CLR_VLD0_V2 BIT(2)
-@@ -9653,7 +9666,9 @@
- #define R_CCK_FC0INV 0x675c
- #define B_CCK_FC0INV GENMASK(18, 0)
- #define R_SEG0R_EDCCA_LVL_BE 0x69EC
-+#define R_SEG0R_EDCCA_LVL_BE4 0x2623C
- #define R_SEG0R_PPDU_LVL_BE 0x69F0
-+#define R_SEG0R_PPDU_LVL_BE4 0x26240
- #define R_SEGSND 0x6A14
- #define B_SEGSND_EN BIT(31)
- #define R_DBCC 0x6B48
-@@ -10380,6 +10395,9 @@
- #define B_SW_SI_DATA_DAT_BE4 GENMASK(19, 0)
- #define R_SW_SI_READ_ADDR_BE4 0x20378
- #define B_SW_SI_READ_ADDR_BE4 GENMASK(10, 0)
-+#define R_EDCCA_RPT_SEL_BE4 0x20780
-+#define R_EDCCA_RPT_SEL_BE4_C1 0x21780
-+#define B_EDCCA_RPT_SEL_BE4_MSK 0xE0000
- #define R_IFS_T1_AVG_BE4 0x20EDC
- #define B_IFS_T1_AVG_BE4 GENMASK(15, 0)
- #define B_IFS_T2_AVG_BE4 GENMASK(31, 16)
-@@ -10402,6 +10420,18 @@
- #define B_IFS_T3_HIS_BE4 GENMASK(15, 0)
- #define B_IFS_T4_HIS_BE4 GENMASK(31, 16)
+@@ -4403,6 +4403,31 @@
+ #define B_BE_FS_GPIO17_INT_EN BIT(1)
+ #define B_BE_FS_GPIO16_INT_EN BIT(0)
  
-+#define R_PATH0_RXIDX_INIT_BE4 0x24108
-+#define B_PATH0_RXIDX_INIT_BE4 GENMASK(29, 25)
-+#define R_PATH0_LNA_INIT_BE4 0x24158
-+#define B_PATH0_LNA_INIT_IDX_BE4 GENMASK(14, 12)
-+#define R_PATH0_TIA_INIT_BE4 0x24168
-+#define B_PATH0_TIA_INIT_IDX_BE4 BIT(18)
-+#define R_PATH1_RXIDX_INIT_BE4 0x24508
-+#define B_PATH1_RXIDX_INIT_BE4 GENMASK(29, 25)
-+#define R_PATH1_LNA_INIT_BE4 0x24558
-+#define B_PATH1_LNA_INIT_IDX_BE4 GENMASK(14, 12)
-+#define R_PATH1_TIA_INIT_BE4 0x24568
-+#define B_PATH1_TIA_INIT_IDX_BE4 BIT(18)
- #define R_TX_CFR_MANUAL_EN_BE4 0x2483C
- #define B_TX_CFR_MANUAL_EN_BE4_M BIT(30)
++#define R_BE_FWS1ISR 0x019C
++#define B_BE_FS_WL_HW_RADIO_OFF_INT BIT(28)
++#define B_BE_SWRD_BOD_INT BIT(27)
++#define B_BE_HCIDBG_INT BIT(25)
++#define B_BE_FS_RPWM_INT_V1 BIT(24)
++#define B_BE_PCIE_HOTRST BIT(22)
++#define B_BE_PCIE_SER_TIMEOUT_INDIC BIT(21)
++#define B_BE_PCIE_RXI300_SLVTOUT_INDIC BIT(20)
++#define B_BE_AON_PCIE_FLR_INT BIT(19)
++#define B_BE_PCIE_ERR_INDIC BIT(18)
++#define B_BE_SDIO_ERR_INDIC BIT(17)
++#define B_BE_USB_ERR_INDIC BIT(16)
++#define B_BE_FS_GPIO27_INT BIT(11)
++#define B_BE_FS_GPIO26_INT BIT(10)
++#define B_BE_FS_GPIO25_INT BIT(9)
++#define B_BE_FS_GPIO24_INT BIT(8)
++#define B_BE_FS_GPIO23_INT BIT(7)
++#define B_BE_FS_GPIO22_INT BIT(6)
++#define B_BE_FS_GPIO21_INT BIT(5)
++#define B_BE_FS_GPIO20_INT BIT(4)
++#define B_BE_FS_GPIO19_INT BIT(3)
++#define B_BE_FS_GPIO18_INT BIT(2)
++#define B_BE_FS_GPIO17_INT BIT(1)
++#define B_BE_FS_GPIO16_INT BIT(0)
++
+ #define R_BE_HIMR0 0x01A0
+ #define B_BE_WDT_DATACPU_TIMEOUT_INT_EN BIT(25)
+ #define B_BE_HALT_D2H_INT_EN BIT(24)
+@@ -4503,6 +4528,44 @@
+ #define R_BE_UDM2 0x01F8
+ #define B_BE_UDM2_EPC_RA_MASK GENMASK(31, 0)
  
++#define R_BE_SPS_DIG_ON_CTRL1 0x0204
++#define B_BE_SN_N_L_MASK GENMASK(31, 28)
++#define B_BE_SP_N_L_MASK GENMASK(27, 24)
++#define B_BE_SN_P_L_MASK GENMASK(23, 20)
++#define B_BE_SP_P_L_MASK GENMASK(19, 16)
++#define B_BE_VO_DISCHG_PWM_H BIT(15)
++#define B_BE_REG_MODE_PREDRIVER BIT(14)
++#define B_BE_VREFOCP_MASK GENMASK(13, 10)
++#define B_BE_POWOCP_L1 BIT(9)
++#define B_BE_PWM_FORCE BIT(8)
++#define B_BE_PFM_PD_RST BIT(7)
++#define B_BE_VC_PFM_RSTB BIT(6)
++#define B_BE_PFM_IN_SEL BIT(5)
++#define B_BE_VC_RSTB BIT(4)
++#define B_BE_FPWMDELAY BIT(3)
++#define B_BE_ENFPWMDELAY_H BIT(2)
++#define B_BE_REG_MOS_HALF_L BIT(1)
++#define B_BE_CURRENT_SENSE_MOS BIT(0)
++
++#define R_BE_SPS_ANA_ON_CTRL1 0x0224
++#define B_BE_SN_N_L_ANA_MASK GENMASK(31, 28)
++#define B_BE_SP_N_L_ANA_MASK GENMASK(27, 24)
++#define B_BE_SN_P_L_ANA_MASK GENMASK(23, 20)
++#define B_BE_SP_P_L_ANA_MASK GENMASK(19, 16)
++#define B_BE_VO_DISCHG_PWM_H_ANA BIT(15)
++#define B_BE_REG_MODE_PREDRIVER_ANA BIT(14)
++#define B_BE_VREFOCP_ANA_MASK GENMASK(13, 10)
++#define B_BE_POWOCP_L1_ANA BIT(9)
++#define B_BE_PWM_FORCE_ANA BIT(8)
++#define B_BE_PFM_PD_RST_ANA BIT(7)
++#define B_BE_VC_PFM_RSTB_ANA BIT(6)
++#define B_BE_PFM_IN_SEL_ANA BIT(5)
++#define B_BE_VC_RSTB_ANA BIT(4)
++#define B_BE_FPWMDELAY_ANA BIT(3)
++#define B_BE_ENFPWMDELAY_H_ANA BIT(2)
++#define B_BE_REG_MOS_HALF_L_ANA BIT(1)
++#define B_BE_CURRENT_SENSE_MOS_ANA BIT(0)
++
+ #define R_BE_AFE_ON_CTRL0 0x0240
+ #define B_BE_REG_LPF_R3_3_0_MASK GENMASK(31, 29)
+ #define B_BE_REG_LPF_R2_MASK GENMASK(28, 24)
 diff --git a/drivers/net/wireless/realtek/rtw89/rtw8922d.c b/drivers/net/wireless/realtek/rtw89/rtw8922d.c
-new file mode 100644
-index 000000000000..6a90ded1b33e
---- /dev/null
+index 6a90ded1b33e..194e2901232b 100644
+--- a/drivers/net/wireless/realtek/rtw89/rtw8922d.c
 +++ b/drivers/net/wireless/realtek/rtw89/rtw8922d.c
-@@ -0,0 +1,238 @@
-+// SPDX-License-Identifier: GPL-2.0 OR BSD-3-Clause
-+/* Copyright(c) 2026  Realtek Corporation
-+ */
+@@ -231,6 +231,243 @@ static const struct rtw89_efuse_block_cfg rtw8922d_efuse_blocks[] = {
+ 	[RTW89_EFUSE_BLOCK_ADIE]		= {.offset = 0x70000, .size = 0x10},
+ };
+ 
++static int rtw8922d_pwr_on_func(struct rtw89_dev *rtwdev)
++{
++	struct rtw89_hal *hal = &rtwdev->hal;
++	u32 val32;
++	int ret;
 +
-+#include "efuse.h"
-+#include "mac.h"
-+#include "reg.h"
-+#include "rtw8922d.h"
++	if (hal->cid != RTL8922D_CID7025)
++		goto begin;
 +
-+#define RTW8922D_FW_FORMAT_MAX 0
-+#define RTW8922D_FW_BASENAME "rtw89/rtw8922d_fw"
-+#define RTW8922D_MODULE_FIRMWARE \
-+	RTW89_GEN_MODULE_FWNAME(RTW8922D_FW_BASENAME, RTW8922D_FW_FORMAT_MAX)
++	switch (hal->cv) {
++	case CHIP_CAV:
++	case CHIP_CBV:
++		rtw89_write32_set(rtwdev, R_BE_SPS_DIG_ON_CTRL1, B_BE_PWM_FORCE);
++		rtw89_write32_set(rtwdev, R_BE_SPS_ANA_ON_CTRL1, B_BE_PWM_FORCE_ANA);
++		break;
++	default:
++		break;
++	}
 +
-+#define RTW8922DS_FW_FORMAT_MAX 0
-+#define RTW8922DS_FW_BASENAME "rtw89/rtw8922ds_fw"
-+#define RTW8922DS_MODULE_FIRMWARE \
-+	RTW89_GEN_MODULE_FWNAME(RTW8922DS_FW_BASENAME, RTW8922DS_FW_FORMAT_MAX)
++begin:
++	rtw89_write32_clr(rtwdev, R_BE_SYS_PW_CTRL, B_BE_AFSM_WLSUS_EN |
++						    B_BE_AFSM_PCIE_SUS_EN);
++	rtw89_write32_set(rtwdev, R_BE_SYS_PW_CTRL, B_BE_DIS_WLBT_PDNSUSEN_SOPC);
++	rtw89_write32_set(rtwdev, R_BE_WLLPS_CTRL, B_BE_DIS_WLBT_LPSEN_LOPC);
++	if (hal->cid != RTL8922D_CID7090)
++		rtw89_write32_clr(rtwdev, R_BE_SYS_PW_CTRL, B_BE_APDM_HPDN);
++	rtw89_write32_clr(rtwdev, R_BE_FWS1ISR, B_BE_FS_WL_HW_RADIO_OFF_INT);
++	rtw89_write32_clr(rtwdev, R_BE_SYS_PW_CTRL, B_BE_APFM_SWLPS);
 +
-+static const struct rtw89_hfc_ch_cfg rtw8922d_hfc_chcfg_pcie[] = {
-+	{2, 603, 0}, /* ACH 0 */
-+	{0, 601, 0}, /* ACH 1 */
-+	{2, 603, 0}, /* ACH 2 */
-+	{0, 601, 0}, /* ACH 3 */
-+	{2, 603, 0}, /* ACH 4 */
-+	{0, 601, 0}, /* ACH 5 */
-+	{2, 603, 0}, /* ACH 6 */
-+	{0, 601, 0}, /* ACH 7 */
-+	{2, 603, 0}, /* B0MGQ */
-+	{0, 601, 0}, /* B0HIQ */
-+	{2, 603, 0}, /* B1MGQ */
-+	{0, 601, 0}, /* B1HIQ */
-+	{0, 0, 0}, /* FWCMDQ */
-+	{0, 0, 0}, /* BMC */
-+	{0, 0, 0}, /* H2D */
-+};
++	ret = read_poll_timeout(rtw89_read32, val32, val32 & B_BE_RDY_SYSPWR,
++				1000, 3000000, false, rtwdev, R_BE_SYS_PW_CTRL);
++	if (ret)
++		return ret;
 +
-+static const struct rtw89_hfc_pub_cfg rtw8922d_hfc_pubcfg_pcie = {
-+	613, /* Group 0 */
-+	0, /* Group 1 */
-+	613, /* Public Max */
-+	0, /* WP threshold */
-+};
++	rtw89_write32_set(rtwdev, R_BE_SYS_PW_CTRL, B_BE_EN_WLON);
++	rtw89_write32_set(rtwdev, R_BE_WLRESUME_CTRL, B_BE_LPSROP_CMAC0 |
++						      B_BE_LPSROP_CMAC1);
++	rtw89_write32_set(rtwdev, R_BE_SYS_PW_CTRL, B_BE_APFN_ONMAC);
 +
-+static const struct rtw89_hfc_param_ini rtw8922d_hfc_param_ini_pcie[] = {
-+	[RTW89_QTA_SCC] = {rtw8922d_hfc_chcfg_pcie, &rtw8922d_hfc_pubcfg_pcie,
-+			   &rtw89_mac_size.hfc_prec_cfg_c0, RTW89_HCIFC_POH},
-+	[RTW89_QTA_DBCC] = {rtw8922d_hfc_chcfg_pcie, &rtw8922d_hfc_pubcfg_pcie,
-+			   &rtw89_mac_size.hfc_prec_cfg_c0, RTW89_HCIFC_POH},
-+	[RTW89_QTA_DLFW] = {NULL, NULL, &rtw89_mac_size.hfc_prec_cfg_c2,
-+			    RTW89_HCIFC_POH},
-+	[RTW89_QTA_INVALID] = {NULL},
-+};
++	ret = read_poll_timeout(rtw89_read32, val32, !(val32 & B_BE_APFN_ONMAC),
++				1000, 3000000, false, rtwdev, R_BE_SYS_PW_CTRL);
++	if (ret)
++		return ret;
 +
-+static const struct rtw89_dle_mem rtw8922d_dle_mem_pcie[] = {
-+	[RTW89_QTA_SCC] = {RTW89_QTA_SCC, &rtw89_mac_size.wde_size16_v1,
-+			   &rtw89_mac_size.ple_size20_v1, &rtw89_mac_size.wde_qt19_v1,
-+			   &rtw89_mac_size.wde_qt19_v1, &rtw89_mac_size.ple_qt42_v2,
-+			   &rtw89_mac_size.ple_qt43_v2, &rtw89_mac_size.ple_rsvd_qt9,
-+			   &rtw89_mac_size.rsvd0_size6, &rtw89_mac_size.rsvd1_size2,
-+			   &rtw89_mac_size.dle_input18},
-+	[RTW89_QTA_DBCC] = {RTW89_QTA_DBCC, &rtw89_mac_size.wde_size16_v1,
-+			   &rtw89_mac_size.ple_size20_v1, &rtw89_mac_size.wde_qt19_v1,
-+			   &rtw89_mac_size.wde_qt19_v1, &rtw89_mac_size.ple_qt42_v2,
-+			   &rtw89_mac_size.ple_qt43_v2, &rtw89_mac_size.ple_rsvd_qt9,
-+			   &rtw89_mac_size.rsvd0_size6, &rtw89_mac_size.rsvd1_size2,
-+			   &rtw89_mac_size.dle_input18},
-+	[RTW89_QTA_DLFW] = {RTW89_QTA_DLFW, &rtw89_mac_size.wde_size18_v1,
-+			    &rtw89_mac_size.ple_size22_v1, &rtw89_mac_size.wde_qt3,
-+			    &rtw89_mac_size.wde_qt3, &rtw89_mac_size.ple_qt5_v2,
-+			    &rtw89_mac_size.ple_qt5_v2, &rtw89_mac_size.ple_rsvd_qt1,
-+			    &rtw89_mac_size.rsvd0_size6, &rtw89_mac_size.rsvd1_size2,
-+			    &rtw89_mac_size.dle_input3},
-+	[RTW89_QTA_INVALID] = {RTW89_QTA_INVALID, NULL, NULL, NULL, NULL, NULL,
-+			       NULL},
-+};
++	rtw89_write8_set(rtwdev, R_BE_PLATFORM_ENABLE, B_BE_PLATFORM_EN);
++	rtw89_write32_set(rtwdev, R_BE_HCI_OPT_CTRL, B_BE_HAXIDMA_IO_EN);
 +
-+static const u32 rtw8922d_h2c_regs[RTW89_H2CREG_MAX] = {
-+	R_BE_H2CREG_DATA0, R_BE_H2CREG_DATA1, R_BE_H2CREG_DATA2,
-+	R_BE_H2CREG_DATA3
-+};
++	ret = read_poll_timeout(rtw89_read32, val32, val32 & B_BE_HAXIDMA_IO_ST,
++				1000, 3000000, false, rtwdev, R_BE_HCI_OPT_CTRL);
++	if (ret)
++		return ret;
 +
-+static const u32 rtw8922d_c2h_regs[RTW89_H2CREG_MAX] = {
-+	R_BE_C2HREG_DATA0, R_BE_C2HREG_DATA1, R_BE_C2HREG_DATA2,
-+	R_BE_C2HREG_DATA3
-+};
++	ret = read_poll_timeout(rtw89_read32, val32, !(val32 & B_BE_HAXIDMA_BACKUP_RESTORE_ST),
++				1000, 3000000, false, rtwdev, R_BE_HCI_OPT_CTRL);
++	if (ret)
++		return ret;
 +
-+static const u32 rtw8922d_wow_wakeup_regs[RTW89_WOW_REASON_NUM] = {
-+	R_BE_DBG_WOW, R_BE_DBG_WOW,
-+};
++	rtw89_write32_set(rtwdev, R_BE_HCI_OPT_CTRL, B_BE_HCI_WLAN_IO_EN);
 +
-+static const struct rtw89_page_regs rtw8922d_page_regs = {
-+	.hci_fc_ctrl	= R_BE_HCI_FC_CTRL,
-+	.ch_page_ctrl	= R_BE_CH_PAGE_CTRL,
-+	.ach_page_ctrl	= R_BE_CH0_PAGE_CTRL,
-+	.ach_page_info	= R_BE_CH0_PAGE_INFO,
-+	.pub_page_info3	= R_BE_PUB_PAGE_INFO3,
-+	.pub_page_ctrl1	= R_BE_PUB_PAGE_CTRL1,
-+	.pub_page_ctrl2	= R_BE_PUB_PAGE_CTRL2,
-+	.pub_page_info1	= R_BE_PUB_PAGE_INFO1,
-+	.pub_page_info2 = R_BE_PUB_PAGE_INFO2,
-+	.wp_page_ctrl1	= R_BE_WP_PAGE_CTRL1,
-+	.wp_page_ctrl2	= R_BE_WP_PAGE_CTRL2,
-+	.wp_page_info1	= R_BE_WP_PAGE_INFO1,
-+};
++	ret = read_poll_timeout(rtw89_read32, val32, val32 & B_BE_HCI_WLAN_IO_ST,
++				1000, 3000000, false, rtwdev, R_BE_HCI_OPT_CTRL);
++	if (ret)
++		return ret;
 +
-+static const struct rtw89_reg_imr rtw8922d_imr_dmac_regs[] = {
-+	{R_BE_HCI_BUF_IMR, B_BE_HCI_BUF_IMR_CLR, B_BE_HCI_BUF_IMR_SET},
-+	{R_BE_DISP_HOST_IMR, B_BE_DISP_HOST_IMR_CLR_V1, B_BE_DISP_HOST_IMR_SET_V1},
-+	{R_BE_DISP_CPU_IMR, B_BE_DISP_CPU_IMR_CLR_V1, B_BE_DISP_CPU_IMR_SET_V1},
-+	{R_BE_DISP_OTHER_IMR, B_BE_DISP_OTHER_IMR_CLR_V1, B_BE_DISP_OTHER_IMR_SET_V1},
-+	{R_BE_PKTIN_ERR_IMR, B_BE_PKTIN_ERR_IMR_CLR, B_BE_PKTIN_ERR_IMR_SET},
-+	{R_BE_MLO_ERR_IDCT_IMR, B_BE_MLO_ERR_IDCT_IMR_CLR, B_BE_MLO_ERR_IDCT_IMR_SET},
-+	{R_BE_MPDU_TX_ERR_IMR, B_BE_MPDU_TX_ERR_IMR_CLR, B_BE_MPDU_TX_ERR_IMR_SET},
-+	{R_BE_MPDU_RX_ERR_IMR, B_BE_MPDU_RX_ERR_IMR_CLR, B_BE_MPDU_RX_ERR_IMR_SET},
-+	{R_BE_SEC_ERROR_IMR, B_BE_SEC_ERROR_IMR_CLR, B_BE_SEC_ERROR_IMR_SET},
-+	{R_BE_CPUIO_ERR_IMR, B_BE_CPUIO_ERR_IMR_CLR, B_BE_CPUIO_ERR_IMR_SET},
-+	{R_BE_WDE_ERR_IMR, B_BE_WDE_ERR_IMR_CLR, B_BE_WDE_ERR_IMR_SET},
-+	{R_BE_PLE_ERR_IMR, B_BE_PLE_ERR_IMR_CLR, B_BE_PLE_ERR_IMR_SET},
-+	{R_BE_WDRLS_ERR_IMR, B_BE_WDRLS_ERR_IMR_CLR, B_BE_WDRLS_ERR_IMR_SET},
-+	{R_BE_TXPKTCTL_B0_ERRFLAG_IMR, B_BE_TXPKTCTL_B0_ERRFLAG_IMR_CLR,
-+	 B_BE_TXPKTCTL_B0_ERRFLAG_IMR_SET},
-+	{R_BE_TXPKTCTL_B1_ERRFLAG_IMR, B_BE_TXPKTCTL_B1_ERRFLAG_IMR_CLR,
-+	 B_BE_TXPKTCTL_B1_ERRFLAG_IMR_SET},
-+	{R_BE_BBRPT_COM_ERR_IMR, B_BE_BBRPT_COM_ERR_IMR_CLR, B_BE_BBRPT_COM_ERR_IMR_SET},
-+	{R_BE_BBRPT_CHINFO_ERR_IMR, B_BE_BBRPT_CHINFO_ERR_IMR_CLR,
-+	 B_BE_BBRPT_CHINFO_ERR_IMR_SET},
-+	{R_BE_BBRPT_DFS_ERR_IMR, B_BE_BBRPT_DFS_ERR_IMR_CLR, B_BE_BBRPT_DFS_ERR_IMR_SET},
-+	{R_BE_LA_ERRFLAG_IMR, B_BE_LA_ERRFLAG_IMR_CLR, B_BE_LA_ERRFLAG_IMR_SET},
-+	{R_BE_CH_INFO_DBGFLAG_IMR, B_BE_CH_INFO_DBGFLAG_IMR_CLR, B_BE_CH_INFO_DBGFLAG_IMR_SET},
-+	{R_BE_PLRLS_ERR_IMR_V1, B_BE_PLRLS_ERR_IMR_V1_CLR, B_BE_PLRLS_ERR_IMR_V1_SET},
-+	{R_BE_HAXI_IDCT_MSK, B_BE_HAXI_IDCT_MSK_CLR, B_BE_HAXI_IDCT_MSK_SET},
-+};
++	rtw89_write32_clr(rtwdev, R_BE_SYS_SDIO_CTRL, B_BE_PCIE_FORCE_IBX_EN);
 +
-+static const struct rtw89_imr_table rtw8922d_imr_dmac_table = {
-+	.regs = rtw8922d_imr_dmac_regs,
-+	.n_regs = ARRAY_SIZE(rtw8922d_imr_dmac_regs),
-+};
++	ret = rtw89_mac_write_xtal_si(rtwdev, XTAL_SI_NORMAL_WRITE, 0x10, 0x10);
++	if (ret)
++		return ret;
 +
-+static const struct rtw89_reg_imr rtw8922d_imr_cmac_regs[] = {
-+	{R_BE_RESP_IMR, B_BE_RESP_IMR_CLR_V1, B_BE_RESP_IMR_SET_V1},
-+	{R_BE_RESP_IMR1, B_BE_RESP_IMR1_CLR, B_BE_RESP_IMR1_SET},
-+	{R_BE_RX_ERROR_FLAG_IMR, B_BE_RX_ERROR_FLAG_IMR_CLR_V1, B_BE_RX_ERROR_FLAG_IMR_SET_V1},
-+	{R_BE_TX_ERROR_FLAG_IMR, B_BE_TX_ERROR_FLAG_IMR_CLR, B_BE_TX_ERROR_FLAG_IMR_SET},
-+	{R_BE_RX_ERROR_FLAG_IMR_1, B_BE_TX_ERROR_FLAG_IMR_1_CLR, B_BE_TX_ERROR_FLAG_IMR_1_SET},
-+	{R_BE_PTCL_IMR1, B_BE_PTCL_IMR1_CLR, B_BE_PTCL_IMR1_SET},
-+	{R_BE_PTCL_IMR0, B_BE_PTCL_IMR0_CLR, B_BE_PTCL_IMR0_SET},
-+	{R_BE_PTCL_IMR_2, B_BE_PTCL_IMR_2_CLR, B_BE_PTCL_IMR_2_SET},
-+	{R_BE_SCHEDULE_ERR_IMR, B_BE_SCHEDULE_ERR_IMR_CLR, B_BE_SCHEDULE_ERR_IMR_SET},
-+	{R_BE_C0_TXPWR_IMR, B_BE_C0_TXPWR_IMR_CLR, B_BE_C0_TXPWR_IMR_SET},
-+	{R_BE_TRXPTCL_ERROR_INDICA_MASK, B_BE_TRXPTCL_ERROR_INDICA_MASK_CLR,
-+	 B_BE_TRXPTCL_ERROR_INDICA_MASK_SET},
-+	{R_BE_RX_ERR_IMR, B_BE_RX_ERR_IMR_CLR, B_BE_RX_ERR_IMR_SET},
-+	{R_BE_PHYINFO_ERR_IMR_V1, B_BE_PHYINFO_ERR_IMR_V1_CLR, B_BE_PHYINFO_ERR_IMR_V1_SET},
-+};
++	rtw89_write32_set(rtwdev, R_BE_SYS_ADIE_PAD_PWR_CTRL, B_BE_SYM_PADPDN_WL_RFC1_1P3);
 +
-+static const struct rtw89_imr_table rtw8922d_imr_cmac_table = {
-+	.regs = rtw8922d_imr_cmac_regs,
-+	.n_regs = ARRAY_SIZE(rtw8922d_imr_cmac_regs),
-+};
++	ret = rtw89_mac_write_xtal_si(rtwdev, XTAL_SI_ANAPAR_WL, 0x40, 0x40);
++	if (ret)
++		return ret;
 +
-+static const struct rtw89_rrsr_cfgs rtw8922d_rrsr_cfgs = {
-+	.ref_rate = {R_BE_TRXPTCL_RESP_1, B_BE_WMAC_RESP_REF_RATE_SEL, 0},
-+	.rsc = {R_BE_PTCL_RRSR1, B_BE_RSC_MASK, 2},
-+};
++	rtw89_write32_set(rtwdev, R_BE_SYS_ADIE_PAD_PWR_CTRL, B_BE_SYM_PADPDN_WL_RFC0_1P3);
 +
-+static const struct rtw89_rfkill_regs rtw8922d_rfkill_regs = {
-+	.pinmux = {R_BE_GPIO8_15_FUNC_SEL,
-+		   B_BE_PINMUX_GPIO9_FUNC_SEL_MASK,
-+		   0xf},
-+	.mode = {R_BE_GPIO_EXT_CTRL + 2,
-+		 (B_BE_GPIO_MOD_9 | B_BE_GPIO_IO_SEL_9) >> 16,
-+		 0x0},
-+};
++	ret = rtw89_mac_write_xtal_si(rtwdev, XTAL_SI_ANAPAR_WL, 0x20, 0x20);
++	if (ret)
++		return ret;
++	ret = rtw89_mac_write_xtal_si(rtwdev, XTAL_SI_ANAPAR_WL, 0x04, 0x04);
++	if (ret)
++		return ret;
++	ret = rtw89_mac_write_xtal_si(rtwdev, XTAL_SI_ANAPAR_WL, 0x08, 0x08);
++	if (ret)
++		return ret;
++	ret = rtw89_mac_write_xtal_si(rtwdev, XTAL_SI_ANAPAR_WL, 0, 0x10);
++	if (ret)
++		return ret;
++	ret = rtw89_mac_write_xtal_si(rtwdev, XTAL_SI_WL_RFC_S0, 0xEB, 0xFF);
++	if (ret)
++		return ret;
++	ret = rtw89_mac_write_xtal_si(rtwdev, XTAL_SI_WL_RFC_S1, 0xEB, 0xFF);
++	if (ret)
++		return ret;
++	ret = rtw89_mac_write_xtal_si(rtwdev, XTAL_SI_ANAPAR_WL, 0x01, 0x01);
++	if (ret)
++		return ret;
++	ret = rtw89_mac_write_xtal_si(rtwdev, XTAL_SI_ANAPAR_WL, 0x02, 0x02);
++	if (ret)
++		return ret;
++	ret = rtw89_mac_write_xtal_si(rtwdev, XTAL_SI_ANAPAR_WL, 0, 0x80);
++	if (ret)
++		return ret;
++	ret = rtw89_mac_write_xtal_si(rtwdev, XTAL_SI_XTAL_XMD_2, 0, 0x70);
++	if (ret)
++		return ret;
++	ret = rtw89_mac_write_xtal_si(rtwdev, XTAL_SI_SRAM_CTRL, 0, 0x02);
++	if (ret)
++		return ret;
 +
-+static const struct rtw89_dig_regs rtw8922d_dig_regs = {
-+	.seg0_pd_reg = R_SEG0R_PD_BE4,
-+	.pd_lower_bound_mask = B_SEG0R_PD_LOWER_BOUND_MSK,
-+	.pd_spatial_reuse_en = B_SEG0R_PD_SPATIAL_REUSE_EN_MSK_V1,
-+	.bmode_pd_reg = R_BMODE_PDTH_EN_BE4,
-+	.bmode_cca_rssi_limit_en = B_BMODE_PDTH_LIMIT_EN_MSK_V1,
-+	.bmode_pd_lower_bound_reg = R_BMODE_PDTH_BE4,
-+	.bmode_rssi_nocca_low_th_mask = B_BMODE_PDTH_LOWER_BOUND_MSK_V1,
-+	.p0_lna_init = {R_PATH0_LNA_INIT_BE4, B_PATH0_LNA_INIT_IDX_BE4},
-+	.p1_lna_init = {R_PATH1_LNA_INIT_BE4, B_PATH1_LNA_INIT_IDX_BE4},
-+	.p0_tia_init = {R_PATH0_TIA_INIT_BE4, B_PATH0_TIA_INIT_IDX_BE4},
-+	.p1_tia_init = {R_PATH1_TIA_INIT_BE4, B_PATH1_TIA_INIT_IDX_BE4},
-+	.p0_rxb_init = {R_PATH0_RXIDX_INIT_BE4, B_PATH0_RXIDX_INIT_BE4},
-+	.p1_rxb_init = {R_PATH1_RXIDX_INIT_BE4, B_PATH1_RXIDX_INIT_BE4},
-+	.p0_p20_pagcugc_en = {R_PATH0_P20_FOLLOW_BY_PAGCUGC_BE4,
-+			      B_PATH0_P20_FOLLOW_BY_PAGCUGC_EN_MSK},
-+	.p0_s20_pagcugc_en = {R_PATH0_S20_FOLLOW_BY_PAGCUGC_BE4,
-+			      B_PATH0_S20_FOLLOW_BY_PAGCUGC_EN_MSK},
-+	.p1_p20_pagcugc_en = {R_PATH1_P20_FOLLOW_BY_PAGCUGC_BE4,
-+			      B_PATH1_P20_FOLLOW_BY_PAGCUGC_EN_MSK},
-+	.p1_s20_pagcugc_en = {R_PATH1_S20_FOLLOW_BY_PAGCUGC_BE4,
-+			      B_PATH1_S20_FOLLOW_BY_PAGCUGC_EN_MSK},
-+};
++	rtw89_write32_set(rtwdev, R_BE_PMC_DBG_CTRL2, B_BE_SYSON_DIS_PMCR_BE_WRMSK);
++	rtw89_write32_set(rtwdev, R_BE_SYS_ISO_CTRL, B_BE_ISO_EB2CORE);
++	rtw89_write32_clr(rtwdev, R_BE_SYS_ISO_CTRL, B_BE_PWC_EV2EF_B);
 +
-+static const struct rtw89_edcca_regs rtw8922d_edcca_regs = {
-+	.edcca_level			= R_SEG0R_EDCCA_LVL_BE4,
-+	.edcca_mask			= B_EDCCA_LVL_MSK0,
-+	.edcca_p_mask			= B_EDCCA_LVL_MSK1,
-+	.ppdu_level			= R_SEG0R_PPDU_LVL_BE4,
-+	.ppdu_mask			= B_EDCCA_LVL_MSK1,
-+	.p = {{
-+		.rpt_a			= R_EDCCA_RPT_A_BE4,
-+		.rpt_b			= R_EDCCA_RPT_B_BE4,
-+		.rpt_sel		= R_EDCCA_RPT_SEL_BE4,
-+		.rpt_sel_mask		= B_EDCCA_RPT_SEL_BE4_MSK,
-+	}, {
-+		.rpt_a			= R_EDCCA_RPT_A_BE4_C1,
-+		.rpt_b			= R_EDCCA_RPT_A_BE4_C1,
-+		.rpt_sel		= R_EDCCA_RPT_SEL_BE4_C1,
-+		.rpt_sel_mask		= B_EDCCA_RPT_SEL_BE4_MSK,
-+	}},
-+	.rpt_sel_be			= R_EDCCA_RPTREG_SEL_BE4,
-+	.rpt_sel_be_mask		= B_EDCCA_RPTREG_SEL_BE_MSK,
-+	.tx_collision_t2r_st		= R_TX_COLLISION_T2R_ST_BE4,
-+	.tx_collision_t2r_st_mask	= B_TX_COLLISION_T2R_ST_BE_M,
-+};
++	mdelay(1);
 +
-+static const struct rtw89_efuse_block_cfg rtw8922d_efuse_blocks[] = {
-+	[RTW89_EFUSE_BLOCK_SYS]			= {.offset = 0x00000, .size = 0x310},
-+	[RTW89_EFUSE_BLOCK_RF]			= {.offset = 0x10000, .size = 0x240},
-+	[RTW89_EFUSE_BLOCK_HCI_DIG_PCIE_SDIO]	= {.offset = 0x20000, .size = 0x4800},
-+	[RTW89_EFUSE_BLOCK_HCI_DIG_USB]		= {.offset = 0x30000, .size = 0x890},
-+	[RTW89_EFUSE_BLOCK_HCI_PHY_PCIE]	= {.offset = 0x40000, .size = 0x400},
-+	[RTW89_EFUSE_BLOCK_HCI_PHY_USB3]	= {.offset = 0x50000, .size = 0x80},
-+	[RTW89_EFUSE_BLOCK_HCI_PHY_USB2]	= {.offset = 0x60000, .size = 0x50},
-+	[RTW89_EFUSE_BLOCK_ADIE]		= {.offset = 0x70000, .size = 0x10},
-+};
++	rtw89_write32_clr(rtwdev, R_BE_SYS_ISO_CTRL, B_BE_PWC_EV2EF_S);
++	rtw89_write32_clr(rtwdev, R_BE_PMC_DBG_CTRL2, B_BE_SYSON_DIS_PMCR_BE_WRMSK);
 +
-+MODULE_FIRMWARE(RTW8922D_MODULE_FIRMWARE);
-+MODULE_FIRMWARE(RTW8922DS_MODULE_FIRMWARE);
-+MODULE_AUTHOR("Realtek Corporation");
-+MODULE_DESCRIPTION("Realtek 802.11be wireless 8922D driver");
-+MODULE_LICENSE("Dual BSD/GPL");
-diff --git a/drivers/net/wireless/realtek/rtw89/rtw8922d.h b/drivers/net/wireless/realtek/rtw89/rtw8922d.h
-new file mode 100644
-index 000000000000..7ef3f263274e
---- /dev/null
-+++ b/drivers/net/wireless/realtek/rtw89/rtw8922d.h
-@@ -0,0 +1,10 @@
-+/* SPDX-License-Identifier: GPL-2.0 OR BSD-3-Clause */
-+/* Copyright(c) 2026  Realtek Corporation
-+ */
++	rtw89_write32_set(rtwdev, R_BE_DMAC_FUNC_EN,
++			  B_BE_MAC_FUNC_EN | B_BE_DMAC_FUNC_EN |
++			  B_BE_MPDU_PROC_EN | B_BE_WD_RLS_EN |
++			  B_BE_DLE_WDE_EN | B_BE_TXPKT_CTRL_EN |
++			  B_BE_STA_SCH_EN | B_BE_DLE_PLE_EN |
++			  B_BE_PKT_BUF_EN | B_BE_DMAC_TBL_EN |
++			  B_BE_PKT_IN_EN | B_BE_DLE_CPUIO_EN |
++			  B_BE_DISPATCHER_EN | B_BE_BBRPT_EN |
++			  B_BE_MAC_SEC_EN | B_BE_H_AXIDMA_EN |
++			  B_BE_DMAC_MLO_EN | B_BE_PLRLS_EN |
++			  B_BE_P_AXIDMA_EN | B_BE_DLE_DATACPUIO_EN |
++			  B_BE_LTR_CTL_EN);
 +
-+#ifndef __RTW89_8922D_H__
-+#define __RTW89_8922D_H__
++	set_bit(RTW89_FLAG_DMAC_FUNC, rtwdev->flags);
 +
-+#include "core.h"
++	rtw89_write32_set(rtwdev, R_BE_CMAC_SHARE_FUNC_EN,
++			  B_BE_CMAC_SHARE_EN | B_BE_RESPBA_EN |
++			  B_BE_ADDRSRCH_EN | B_BE_BTCOEX_EN);
 +
-+#endif
++	rtw89_write32_set(rtwdev, R_BE_CMAC_FUNC_EN,
++			  B_BE_CMAC_EN | B_BE_CMAC_TXEN |
++			  B_BE_CMAC_RXEN | B_BE_SIGB_EN |
++			  B_BE_PHYINTF_EN | B_BE_CMAC_DMA_EN |
++			  B_BE_PTCLTOP_EN | B_BE_SCHEDULER_EN |
++			  B_BE_TMAC_EN | B_BE_RMAC_EN |
++			  B_BE_TXTIME_EN | B_BE_RESP_PKTCTL_EN);
++
++	set_bit(RTW89_FLAG_CMAC0_FUNC, rtwdev->flags);
++
++	rtw89_write32_set(rtwdev, R_BE_FEN_RST_ENABLE,
++			  B_BE_FEN_BB_IP_RSTN | B_BE_FEN_BBPLAT_RSTB);
++
++	return 0;
++}
++
++static int rtw8922d_pwr_off_func(struct rtw89_dev *rtwdev)
++{
++	u32 val32;
++	int ret;
++
++	ret = rtw89_mac_write_xtal_si(rtwdev, XTAL_SI_ANAPAR_WL, 0x10, 0x10);
++	if (ret)
++		return ret;
++	ret = rtw89_mac_write_xtal_si(rtwdev, XTAL_SI_ANAPAR_WL, 0, 0x08);
++	if (ret)
++		return ret;
++	ret = rtw89_mac_write_xtal_si(rtwdev, XTAL_SI_ANAPAR_WL, 0, 0x04);
++	if (ret)
++		return ret;
++	ret = rtw89_mac_write_xtal_si(rtwdev, XTAL_SI_WL_RFC_S0, 0, 0x01);
++	if (ret)
++		return ret;
++	ret = rtw89_mac_write_xtal_si(rtwdev, XTAL_SI_WL_RFC_S1, 0, 0x01);
++	if (ret)
++		return ret;
++	ret = rtw89_mac_write_xtal_si(rtwdev, XTAL_SI_ANAPAR_WL, 0x80, 0x80);
++	if (ret)
++		return ret;
++	ret = rtw89_mac_write_xtal_si(rtwdev, XTAL_SI_ANAPAR_WL, 0, 0x02);
++	if (ret)
++		return ret;
++	ret = rtw89_mac_write_xtal_si(rtwdev, XTAL_SI_ANAPAR_WL, 0, 0x01);
++	if (ret)
++		return ret;
++
++	rtw89_write32_set(rtwdev, R_BE_SYS_PW_CTRL, B_BE_EN_WLON);
++	rtw89_write8_clr(rtwdev, R_BE_FEN_RST_ENABLE, B_BE_FEN_BB_IP_RSTN |
++						      B_BE_FEN_BBPLAT_RSTB);
++	rtw89_write32_clr(rtwdev, R_BE_SYS_ADIE_PAD_PWR_CTRL,
++			  B_BE_SYM_PADPDN_WL_RFC0_1P3);
++
++	ret = rtw89_mac_write_xtal_si(rtwdev, XTAL_SI_ANAPAR_WL, 0, 0x20);
++	if (ret)
++		return ret;
++
++	rtw89_write32_clr(rtwdev, R_BE_SYS_ADIE_PAD_PWR_CTRL,
++			  B_BE_SYM_PADPDN_WL_RFC1_1P3);
++
++	ret = rtw89_mac_write_xtal_si(rtwdev, XTAL_SI_ANAPAR_WL, 0, 0x40);
++	if (ret)
++		return ret;
++
++	rtw89_write32_clr(rtwdev, R_BE_HCI_OPT_CTRL, B_BE_HAXIDMA_IO_EN);
++
++	ret = read_poll_timeout(rtw89_read32, val32, !(val32 & B_BE_HAXIDMA_IO_ST),
++				1000, 3000000, false, rtwdev, R_BE_HCI_OPT_CTRL);
++	if (ret)
++		return ret;
++	ret = read_poll_timeout(rtw89_read32, val32,
++				!(val32 & B_BE_HAXIDMA_BACKUP_RESTORE_ST),
++				1000, 3000000, false, rtwdev, R_BE_HCI_OPT_CTRL);
++	if (ret)
++		return ret;
++
++	rtw89_write32_clr(rtwdev, R_BE_HCI_OPT_CTRL, B_BE_HCI_WLAN_IO_EN);
++
++	ret = read_poll_timeout(rtw89_read32, val32, !(val32 & B_BE_HCI_WLAN_IO_ST),
++				1000, 3000000, false, rtwdev, R_BE_HCI_OPT_CTRL);
++	if (ret)
++		return ret;
++
++	rtw89_write32_set(rtwdev, R_BE_SYS_PW_CTRL, B_BE_APFM_OFFMAC);
++
++	ret = read_poll_timeout(rtw89_read32, val32, !(val32 & B_BE_APFM_OFFMAC),
++				1000, 3000000, false, rtwdev, R_BE_SYS_PW_CTRL);
++	if (ret)
++		return ret;
++
++	rtw89_write32(rtwdev, R_BE_WLLPS_CTRL, 0x00015002);
++	rtw89_write32_clr(rtwdev, R_BE_SYS_PW_CTRL, B_BE_XTAL_OFF_A_DIE);
++	rtw89_write32_set(rtwdev, R_BE_SYS_PW_CTRL, B_BE_APFM_SWLPS);
++	rtw89_write32(rtwdev, R_BE_UDM1, 0);
++
++	return 0;
++}
++
+ MODULE_FIRMWARE(RTW8922D_MODULE_FIRMWARE);
+ MODULE_FIRMWARE(RTW8922DS_MODULE_FIRMWARE);
+ MODULE_AUTHOR("Realtek Corporation");
 -- 
 2.25.1
 
