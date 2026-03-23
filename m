@@ -1,71 +1,72 @@
-Return-Path: <linux-wireless+bounces-33736-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-33737-lists+linux-wireless=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id YEi/OHSswWmUUQQAu9opvQ
-	(envelope-from <linux-wireless+bounces-33736-lists+linux-wireless=lfdr.de@vger.kernel.org>)
-	for <lists+linux-wireless@lfdr.de>; Mon, 23 Mar 2026 22:11:16 +0100
+	id gOYBEGKtwWmUUQQAu9opvQ
+	(envelope-from <linux-wireless+bounces-33737-lists+linux-wireless=lfdr.de@vger.kernel.org>)
+	for <lists+linux-wireless@lfdr.de>; Mon, 23 Mar 2026 22:15:14 +0100
 X-Original-To: lists+linux-wireless@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5CEEF2FD9F4
-	for <lists+linux-wireless@lfdr.de>; Mon, 23 Mar 2026 22:11:16 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 305412FDA48
+	for <lists+linux-wireless@lfdr.de>; Mon, 23 Mar 2026 22:15:13 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 7E5C13023300
-	for <lists+linux-wireless@lfdr.de>; Mon, 23 Mar 2026 21:10:00 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id C953C302DA16
+	for <lists+linux-wireless@lfdr.de>; Mon, 23 Mar 2026 21:12:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 49128369225;
-	Mon, 23 Mar 2026 21:10:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6029A372661;
+	Mon, 23 Mar 2026 21:12:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="ZGQtcYbO"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="PPH1C91W"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.14])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.8])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C457D29BD9A
-	for <linux-wireless@vger.kernel.org>; Mon, 23 Mar 2026 21:09:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.14
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D38CE378D6B
+	for <linux-wireless@vger.kernel.org>; Mon, 23 Mar 2026 21:12:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.8
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774300200; cv=none; b=GWCy10i9K0kYBo8Rav3q14wniW4JcOBZ48z+7mpmg5ig1XywY9E01FetZZcg0FNQllYADqNQuqT/FBdS0TsI7Wg0DGMgE5w9L2KtGKwO1d+9tgpUw9vO5bINM4iSX6VTzgeBWwPXNLiClQGePR464PwiYV7ZV2K/JljnEzbHSFQ=
+	t=1774300360; cv=none; b=WzlXyuGfhZNOMyyLRuf6o4TGCufgPylWhRHqJsCfRiiuVFPok202+iUiHDTs+HUaHmWmz62RwXVUGuot1zg8ZFgbJCmhV3e0NSuerPgxX0Fs1CsnOgcNGxrJhZFMa0KzHTrMTupRmDUsl03UUpCUsgcxuJ7141/o/A/tAgM4HVY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774300200; c=relaxed/simple;
-	bh=dRFy2KWIKa7o5R9KI+cmFEkG3ZJFEwXi9oDGiAK6NJc=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=WTbN6RVK81rZpM891GSGv74prdCzH5rcpZq72BCKVj3mtK4u6/WhyM1llw6FJriuu6JrcKU8fyOPWDLip5+Bu3mCaXN48zGSukAlBNy9fLg8n8jpSOHgiRCr8sROQnzCyB62n63eRiOTBaBaQhsxJTyQIxU1jJ/JyVLFDEPrlTw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=ZGQtcYbO; arc=none smtp.client-ip=198.175.65.14
+	s=arc-20240116; t=1774300360; c=relaxed/simple;
+	bh=Bre6fdU2XENHUKZ5hkgvUH6YH9BuXrNPQqmtvnfElr0=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=doRtV3AsijAWY087QSVpF4EvFWECTV5GEDi4lwUCDjd5hHl4IKqULPyEilZrQYGhcFlJLykN6unb7cUwh5HEnOzmZSgDJbw3p2GmtzBTGNF/xQq2h8wGdZ1VhqOiVzoJlMtuqaT55jHrmvuow7pxOuTF4mv47Yh+6R11HIxBehs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=PPH1C91W; arc=none smtp.client-ip=192.198.163.8
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1774300198; x=1805836198;
+  t=1774300359; x=1805836359;
   h=from:to:cc:subject:date:message-id:mime-version:
    content-transfer-encoding;
-  bh=dRFy2KWIKa7o5R9KI+cmFEkG3ZJFEwXi9oDGiAK6NJc=;
-  b=ZGQtcYbOcCBztd9FtEqnxDw/8HjvQSl8tSK++szA1BXkbD97WDKHl+D4
-   Tiyx1lFe9St+1LdVnch+1pNGN2JCjFmXszKsU4/6QZLeXgAjm9w+bidoa
-   jSf0/mytnlVrNO4/WcvmxQQx4+d+R2f9pE5ahcjKhPG0oeJb6osB7BCJO
-   LI8nXbCocJ3utO37IEDWbswjPLU8rVexTER/f1LMajEdfnPSud3F/xSJB
-   e/sRnHMULD5Peh2H8YKsYGDZeFBhm7VQTTGJfoQv5wcFMYujH8c8XIOdb
-   lysO9JcWlFly8H4g3hvnsRbh/ZF5VyEkmRT/O5qlmhs4ObqAXKK2Ey24G
-   A==;
-X-CSE-ConnectionGUID: TI17WwOuQHO6YZP0JNc7dg==
-X-CSE-MsgGUID: 7bwsrJjvQvqMj5MzRDJLxw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11738"; a="79163757"
+  bh=Bre6fdU2XENHUKZ5hkgvUH6YH9BuXrNPQqmtvnfElr0=;
+  b=PPH1C91WFYy2sf/yGZcSRr55RSCymZcP4TWL3AEn1iZO4oymjuBbh9ct
+   RdYJQGJxmdny/jecb+rvLGrAATY4yRaAqk/Fd7EqJMV67tgHwE4XQ3qDL
+   s5qxmEXVnalTLdJxHxlun/45mLa8TaXZ/v+pV16mTJg80A4ImSX+KOBLq
+   uN4yE5psB7ZKcwu8ig065Vi81k+KbdaqpYqqSKeyCSWLPA5ALDTNGJFtW
+   qSPtx7JDNe+iqMhEfJLsvD4YLlzJtyLgiMjZ0/omDcQ+NWwyuRpCEKfz/
+   rNp9P6tNkTkMSZCBSYb9i62tk8t9CEem76CVbMvI0rg6lfSLaON5CKBXH
+   w==;
+X-CSE-ConnectionGUID: Hxd2LqeWQTeGVS/ANF6Srw==
+X-CSE-MsgGUID: lYUtTRrNRkeHWUxqt/7z3g==
+X-IronPort-AV: E=McAfee;i="6800,10657,11738"; a="92883251"
 X-IronPort-AV: E=Sophos;i="6.23,137,1770624000"; 
-   d="scan'208";a="79163757"
-Received: from orviesa002.jf.intel.com ([10.64.159.142])
-  by orvoesa106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 Mar 2026 14:09:58 -0700
-X-CSE-ConnectionGUID: tbCF7MKdQC2qe9guUhY8jg==
-X-CSE-MsgGUID: C7r2RJtmSjiYmnT033wAAw==
+   d="scan'208";a="92883251"
+Received: from orviesa009.jf.intel.com ([10.64.159.149])
+  by fmvoesa102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 Mar 2026 14:12:38 -0700
+X-CSE-ConnectionGUID: O4+g4wm/SHalm4HCTJeUaQ==
+X-CSE-MsgGUID: 7UN3+dYrTWG/3MWNrzhTog==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.23,137,1770624000"; 
-   d="scan'208";a="254621746"
+   d="scan'208";a="224118613"
 Received: from weis0040.iil.intel.com ([10.12.217.108])
-  by orviesa002-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 Mar 2026 14:09:57 -0700
+  by orviesa009-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 Mar 2026 14:12:37 -0700
 From: Miri Korenblit <miriam.rachel.korenblit@intel.com>
 To: linux-wireless@vger.kernel.org
-Cc: Benjamin Berg <benjamin.berg@intel.com>
-Subject: [PATCH wireless-next] wifi: radiotap: add field for information about observed energy
-Date: Mon, 23 Mar 2026 23:09:46 +0200
-Message-Id: <20260323230634.9dec62e53f3a.Id8d5f0036705f42e496984c269956088bd85e067@changeid>
+Cc: Benjamin Berg <benjamin.berg@intel.com>,
+	Johannes Berg <johannes.berg@intel.com>
+Subject: [PATCH wireless-next] wifi: radiotap: add a field for PHY SERVICE field related data
+Date: Mon, 23 Mar 2026 23:12:26 +0200
+Message-Id: <20260323231012.c7b1cb1b3405.Ic11e92b56b2b1df6c202ec9442f25bd78206a4e8@changeid>
 X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
@@ -80,19 +81,19 @@ X-Spamd-Result: default: False [-1.16 / 15.00];
 	R_MISSING_CHARSET(0.50)[];
 	MID_RHS_NOT_FQDN(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[intel.com,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	R_DKIM_ALLOW(-0.20)[intel.com:s=Intel];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	TO_DN_SOME(0.00)[];
-	RCVD_TLS_LAST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-33736-lists,linux-wireless=lfdr.de];
-	HAS_ORG_HEADER(0.00)[];
-	RCPT_COUNT_TWO(0.00)[2];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	TAGGED_FROM(0.00)[bounces-33737-lists,linux-wireless=lfdr.de];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	HAS_ORG_HEADER(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	RCPT_COUNT_THREE(0.00)[3];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[miriam.rachel.korenblit@intel.com,linux-wireless@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
@@ -101,66 +102,81 @@ X-Spamd-Result: default: False [-1.16 / 15.00];
 	TAGGED_RCPT(0.00)[linux-wireless];
 	NEURAL_HAM(-0.00)[-1.000];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:dkim,intel.com:email,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,radiotap.org:url]
-X-Rspamd-Queue-Id: 5CEEF2FD9F4
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,radiotap.org:url,intel.com:dkim,intel.com:email]
+X-Rspamd-Queue-Id: 305412FDA48
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
 From: Benjamin Berg <benjamin.berg@intel.com>
 
-This can be used to report some information about frames that are
-duplicated across multiple channels. The reported information may just
-be an estimate based on the energy observed on each subchannel. An
-example of such duplication are RTS frames that are sent using a legacy
-rate but are duplicated into multiple subchannels for compatibility.
+For certain frames bits are encoded into the DATA field of the PHY
+header in a way that cannot be properly reported in other ways. Add a
+new field to be able to report the SERVICE field and scrambler
+initialization value as well as the bandwidth signalling information
+that may be encoded here.
 
 Signed-off-by: Benjamin Berg <benjamin.berg@intel.com>
+Reviewed-by: Johannes Berg <johannes.berg@intel.com>
 Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
 ---
- include/net/ieee80211_radiotap.h | 22 +++++++++++++++++++++-
- 1 file changed, 21 insertions(+), 1 deletion(-)
+ include/net/ieee80211_radiotap.h | 42 ++++++++++++++++++++++++++++++++
+ 1 file changed, 42 insertions(+)
 
 diff --git a/include/net/ieee80211_radiotap.h b/include/net/ieee80211_radiotap.h
-index 6c2210a253cd..11c1544bc449 100644
+index 11c1544bc449..34419d4fd898 100644
 --- a/include/net/ieee80211_radiotap.h
 +++ b/include/net/ieee80211_radiotap.h
-@@ -1,6 +1,6 @@
- /*
-  * Copyright (c) 2017		Intel Deutschland GmbH
-- * Copyright (c) 2018-2019, 2021-2022, 2025 Intel Corporation
-+ * Copyright (c) 2018-2019, 2021-2022, 2025-2026 Intel Corporation
-  *
-  * Permission to use, copy, modify, and/or distribute this software for any
-  * purpose with or without fee is hereby granted, provided that the above
-@@ -95,6 +95,7 @@ enum ieee80211_radiotap_presence {
- 	IEEE80211_RADIOTAP_EXT = 31,
+@@ -96,6 +96,7 @@ enum ieee80211_radiotap_presence {
  	IEEE80211_RADIOTAP_EHT_USIG = 33,
  	IEEE80211_RADIOTAP_EHT = 34,
-+	IEEE80211_RADIOTAP_OBSERVED_ENERGY = 35,
+ 	IEEE80211_RADIOTAP_OBSERVED_ENERGY = 35,
++	IEEE80211_RADIOTAP_SERVICE_FIELD = 36,
  	IEEE80211_RADIOTAP_UHR_ELR = 37,
  	IEEE80211_RADIOTAP_UHR = 38,
  };
-@@ -604,6 +605,25 @@ enum ieee80211_radiotap_eht_usig_tb {
- 	IEEE80211_RADIOTAP_EHT_USIG2_TB_B20_B25_TAIL		= 0xfc000000,
- };
+@@ -624,6 +625,47 @@ struct ieee80211_radiotap_observed_energy {
+ 	__le16 bw;
+ } __packed;
  
-+/* for IEEE80211_RADIOTAP_OBSERVED_ENERGY */
-+enum ieee80211_radiotap_observed_energy_known {
-+	IEEE80211_RADIOTAP_OBSERVED_ENERGY_KNOWN_BW		= 0x0001,
++enum ieee80211_radiotap_service_field_known {
++	IEEE80211_RADIOTAP_SERVICE_FIELD_KNOWN_SERVICE_FIELD	= 0x01,
++	IEEE80211_RADIOTAP_SERVICE_FIELD_KNOWN_SCRAMBLER_INIT	= 0x02,
++	IEEE80211_RADIOTAP_SERVICE_FIELD_KNOWN_DYN_BW_IN_NON_HT	= 0x04,
++	IEEE80211_RADIOTAP_SERVICE_FIELD_KNOWN_CH_BW_IN_NON_HT	= 0x08,
++};
++
++enum ieee80211_radiotap_service_field_flags {
++	IEEE80211_RADIOTAP_SERVICE_FIELD_FLAG_DYN_BW_IN_NON_HT	= 0x01,
++	IEEE80211_RADIOTAP_SERVICE_FIELD_FLAG_SCRAMBLER_INIT_11	= 0x02,
 +};
 +
 +/**
-+ * struct ieee80211_radiotap_observed_energy - Observed Energy (type 35)
-+ * see www.radiotap.org/fields/observed%20energy.html for details.
++ * struct ieee80211_radiotap_service_field - SERVICE field information (type 36)
++ * see www.radiotap.org/fields/SERVICE%20field.html for details.
++ *
++ * For certain frames, information may be encoded early in the SERVICE field of
++ * the PHY header. This information may be reported here.
++ *
++ * The DYN_BANDWIDTH_IN_NON_HT and CH_BANDWIDTH_IN_NON_HT may be reported
++ * separately if the other bits cannot be reported. These fields are only valid
++ * for certain frames when bandwidth signalling is in use.
 + *
 + * @known: Bitmap indicating which information is present
-+ * @bw: The bandwidth in MHz sufficient to contain all subchannels where energy
-+ *	likely belonging to the same transmission was observed. This may
-+ *	indicate that the transmission was duplicated on multiple channels.
++ * @flags: Bitmap of flags
++ * @service_field: SERVICE field, the lower bits are used to store the
++ *	scrambler initialization as the SERVICE field must be all zero there.
++ *	The scrambler initialization may be 7 or 11 bit long depending on the
++ *	PHY type of the frame. If it is 11 bit, then
++ *	%IEEE80211_RADIOTAP_SERVICE_FIELD_FLAG_SCRAMBLER_INIT_11 is set.
++ * @ch_bw_in_non_ht: Value of CH_BANDWIDTH_IN_NON_HT as defined in
++ *	IEEE802.11REVmf-D1.0, Table 17-8 - TXVECTOR parameter
++ *	CH_BANDWIDTH_IN_NON_HT values.
 + */
-+struct ieee80211_radiotap_observed_energy {
-+	__le16 known;
-+	__le16 bw;
++struct ieee80211_radiotap_service_field {
++	u8 known;
++	u8 flags;
++	__le16 service_field;
++	u8 ch_bw_in_non_ht;
 +} __packed;
 +
  /*
