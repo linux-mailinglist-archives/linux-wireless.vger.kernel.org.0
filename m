@@ -1,250 +1,397 @@
-Return-Path: <linux-wireless+bounces-33690-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-33691-lists+linux-wireless=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id YCYMO+MIwWmtPwQAu9opvQ
-	(envelope-from <linux-wireless+bounces-33690-lists+linux-wireless=lfdr.de@vger.kernel.org>)
-	for <lists+linux-wireless@lfdr.de>; Mon, 23 Mar 2026 10:33:23 +0100
+	id KNtSCTAKwWmtPwQAu9opvQ
+	(envelope-from <linux-wireless+bounces-33691-lists+linux-wireless=lfdr.de@vger.kernel.org>)
+	for <lists+linux-wireless@lfdr.de>; Mon, 23 Mar 2026 10:38:56 +0100
 X-Original-To: lists+linux-wireless@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5274D2EF216
-	for <lists+linux-wireless@lfdr.de>; Mon, 23 Mar 2026 10:33:23 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5EC3B2EF331
+	for <lists+linux-wireless@lfdr.de>; Mon, 23 Mar 2026 10:38:55 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id D2680302D120
-	for <lists+linux-wireless@lfdr.de>; Mon, 23 Mar 2026 09:31:49 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 9A45D302D123
+	for <lists+linux-wireless@lfdr.de>; Mon, 23 Mar 2026 09:33:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0F3B6387349;
-	Mon, 23 Mar 2026 09:31:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0C44938552C;
+	Mon, 23 Mar 2026 09:33:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=realtek.com header.i=@realtek.com header.b="aDYqtESG"
+	dkim=fail reason="signature verification failed" (1024-bit key) header.d=nbd.name header.i=@nbd.name header.b="FvTLhxaB"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from nbd.name (nbd.name [46.4.11.11])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0124438657F
-	for <linux-wireless@vger.kernel.org>; Mon, 23 Mar 2026 09:31:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=211.75.126.72
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 780EA2DC762
+	for <linux-wireless@vger.kernel.org>; Mon, 23 Mar 2026 09:33:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=46.4.11.11
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774258308; cv=none; b=I5O56GNMZmToDZxhucaFNjUhin5gaIfsuWSlko8paJgs1Eye5dJ4AA+OUgb0m3RH/CKTKxzxDfJ4zISQyNB/CWqz6CZRjSRF0bRzoJREMRLzcbBpK6ZIvcNeEoO5D7ivtw5s8PTIDUFhzZVfkq7/mqbncsHxUIArZruX5Z701GU=
+	t=1774258404; cv=none; b=j271jFex8CQNcVDoGE5KMGeOIhZkSPFklQ37ksGS1qhI92EnNdFEagpEpGWx67C6FiA8aB7eUC2M7/cfhi41HwaNGVWibNMu9N7K6SBoEHQ2hx7BOvxdxl9kpBa8+IDZSPTFm1ljBkYt1XmoLH0U19UH0/CGWWzikB/HeCLmib0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774258308; c=relaxed/simple;
-	bh=7JU/NtzCg9lqw30pud6sxq1Iw2T9TthZU20DPbDOTPg=;
-	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:MIME-Version; b=YAK1ATmUXlJuK788NjUgPZX27sNvJ3NHZo1RH16PB1EkD0BMtEMj9ZZvUhzTv1GF/+ZByZgjpU3p++Qv/IPdeY5XzrXVWccJOrVCVd1ZO8XdfEv29Mzm8GSoC6fFrG33eiHjyDawRwRWKNqmw5oeacquv/19OpoZ8gLHXKvJ6g8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com; spf=pass smtp.mailfrom=realtek.com; dkim=pass (2048-bit key) header.d=realtek.com header.i=@realtek.com header.b=aDYqtESG; arc=none smtp.client-ip=211.75.126.72
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=realtek.com
-X-SpamFilter-By: ArmorX SpamTrap 5.80 with qID 62N9V8dX42877691, This message is accepted by code: ctloc85258
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=realtek.com; s=dkim;
-	t=1774258268; bh=7JU/NtzCg9lqw30pud6sxq1Iw2T9TthZU20DPbDOTPg=;
-	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:Content-Transfer-Encoding:MIME-Version;
-	b=aDYqtESG7SFyftbuNfqDDVo485Pdj1AQMbLTHVnkgrbSZYs4CSJxfNQ7OVAMWY9Xt
-	 lO1HNF/fLbr/fBwLf3hEJTs6WuJ0wqFsr8bu9YDLcc/49dw8E6Qe5S3FIpcjDyDI+k
-	 KpEWfxoH0PGnegBi/5Ns4F34PwEl6Qvj4LVdEHGzEbCRfXn040h4wHNTPKjDkCPwBo
-	 nYIrv8AGbwiTm1stuo5UmZppBZBNFMj2WoIEI8Tsy874bxUnMLDSJDuqddxUk/f2V0
-	 x5TR/HLsnAaLs4M3JPzWtJ+IGvX/+PRtso2OcMHBTv/S1J0GdvJSD153hDi87mGdmf
-	 /K2eLfpHyGvgA==
-Received: from mail.realtek.com (rtkexhmbs04.realtek.com.tw[10.21.1.54])
-	by rtits2.realtek.com.tw (8.15.2/3.21/5.94) with ESMTPS id 62N9V8dX42877691
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Mon, 23 Mar 2026 17:31:08 +0800
-Received: from RTKEXHMBS06.realtek.com.tw (10.21.1.56) by
- RTKEXHMBS04.realtek.com.tw (10.21.1.54) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1748.10; Mon, 23 Mar 2026 17:31:08 +0800
-Received: from RTKEXHMBS06.realtek.com.tw (10.21.1.56) by
- RTKEXHMBS06.realtek.com.tw (10.21.1.56) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1748.10; Mon, 23 Mar 2026 17:31:08 +0800
-Received: from RTKEXHMBS06.realtek.com.tw ([fe80::4cbd:6c6c:b92b:3913]) by
- RTKEXHMBS06.realtek.com.tw ([fe80::4cbd:6c6c:b92b:3913%10]) with mapi id
- 15.02.1748.010; Mon, 23 Mar 2026 17:31:08 +0800
-From: Ping-Ke Shih <pkshih@realtek.com>
-To: Lucid Duck <lucid_duck@justthetip.ca>,
-        "linux-wireless@vger.kernel.org"
-	<linux-wireless@vger.kernel.org>
-CC: Bitterblue Smith <rtl8821cerfe2@gmail.com>
-Subject: RE: [PATCH v2] wifi: rtw89: usb: fix TX flow control by tracking
- in-flight URBs
-Thread-Topic: [PATCH v2] wifi: rtw89: usb: fix TX flow control by tracking
- in-flight URBs
-Thread-Index: AQHcuOQb90SZVl0Vy0mC7JoZ7Dgc1LW71zvA
-Date: Mon, 23 Mar 2026 09:31:08 +0000
-Message-ID: <f2fca9db9deb445c91b1973c6b7ca72a@realtek.com>
-References: <20260125221943.36001-1-lucid_duck@justthetip.ca>
- <20260321040000.31192-1-lucid_duck@justthetip.ca>
-In-Reply-To: <20260321040000.31192-1-lucid_duck@justthetip.ca>
-Accept-Language: en-US, zh-TW
-Content-Language: zh-TW
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+	s=arc-20240116; t=1774258404; c=relaxed/simple;
+	bh=JCdgOxOYioijtO4FKsfO6bPNxvjJZG63dvLITS588Ew=;
+	h=Message-ID:Date:MIME-Version:From:Subject:To:Cc:Content-Type; b=UaI4UAO5VxMvu1hMB5EYpDs5HT1DN45m9OA0d7U+Gec0Ygv9ngU7XeXWMSQVcq/cFmmTOFC/Skpp2KXoYvSzdUo93suK3ghFNYgTBWxo2BUiQ8ZV2yGFYzrsiVO9TFAwptookkTFKqy80A4dP0NkF0drQYHF1KmxlVkcte6G6AY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nbd.name; spf=pass smtp.mailfrom=nbd.name; dkim=pass (1024-bit key) header.d=nbd.name header.i=@nbd.name header.b=FvTLhxaB; arc=none smtp.client-ip=46.4.11.11
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nbd.name
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nbd.name
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=nbd.name;
+	s=20160729; h=Content-Transfer-Encoding:Content-Type:Cc:To:Subject:From:
+	MIME-Version:Date:Message-ID:Sender:Reply-To:Content-ID:Content-Description:
+	Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:
+	In-Reply-To:References:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
+	List-Post:List-Owner:List-Archive;
+	bh=QEe474bMYfDW9GnvAzhQ62In3HQ7a4pWTazMFY02NUA=; b=FvTLhxaB7dxnpROXt5XVaSw3UM
+	cnB26NAXzfrGLJopqJPs2ktWU9dIEkGQchHlMsrVBxxcpVqxmOusmdh9OIH7KaUJFWOwPZCgkzrcp
+	2GgfWJnN/KQD1hBM9kVShPrioA2tpw4iYIlZNQOX7esOWKaQLxhFkZpbO2JGWK2fyqqo=;
+Received: from p5b0151bb.dip0.t-ipconnect.de ([91.1.81.187] helo=nf.local)
+	by ds12 with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256
+	(Exim 4.96)
+	(envelope-from <nbd@nbd.name>)
+	id 1w4bes-00AL0K-2L;
+	Mon, 23 Mar 2026 10:33:14 +0100
+Message-ID: <bf6858fc-98f0-4523-bca4-8da7ecf3738c@nbd.name>
+Date: Mon, 23 Mar 2026 10:33:14 +0100
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-Spamd-Result: default: False [-1.06 / 15.00];
-	MIME_BASE64_TEXT_BOGUS(1.00)[];
+User-Agent: Mozilla Thunderbird
+From: Felix Fietkau <nbd@nbd.name>
+Subject: pull request: mt76-next 2026-03-23
+To: linux-wireless <linux-wireless@vger.kernel.org>
+Cc: Johannes Berg <johannes@sipsolutions.net>
+Content-Language: en-US
+Autocrypt: addr=nbd@nbd.name; keydata=
+ xsDiBEah5CcRBADIY7pu4LIv3jBlyQ/2u87iIZGe6f0f8pyB4UjzfJNXhJb8JylYYRzIOSxh
+ ExKsdLCnJqsG1PY1mqTtoG8sONpwsHr2oJ4itjcGHfn5NJSUGTbtbbxLro13tHkGFCoCr4Z5
+ Pv+XRgiANSpYlIigiMbOkide6wbggQK32tC20QxUIwCg4k6dtV/4kwEeiOUfErq00TVqIiEE
+ AKcUi4taOuh/PQWx/Ujjl/P1LfJXqLKRPa8PwD4j2yjoc9l+7LptSxJThL9KSu6gtXQjcoR2
+ vCK0OeYJhgO4kYMI78h1TSaxmtImEAnjFPYJYVsxrhay92jisYc7z5R/76AaELfF6RCjjGeP
+ wdalulG+erWju710Bif7E1yjYVWeA/9Wd1lsOmx6uwwYgNqoFtcAunDaMKi9xVQW18FsUusM
+ TdRvTZLBpoUAy+MajAL+R73TwLq3LnKpIcCwftyQXK5pEDKq57OhxJVv1Q8XkA9Dn1SBOjNB
+ l25vJDFAT9ntp9THeDD2fv15yk4EKpWhu4H00/YX8KkhFsrtUs69+vZQwc0cRmVsaXggRmll
+ dGthdSA8bmJkQG5iZC5uYW1lPsJgBBMRAgAgBQJGoeQnAhsjBgsJCAcDAgQVAggDBBYCAwEC
+ HgECF4AACgkQ130UHQKnbvXsvgCgjsAIIOsY7xZ8VcSm7NABpi91yTMAniMMmH7FRenEAYMa
+ VrwYTIThkTlQzsFNBEah5FQQCACMIep/hTzgPZ9HbCTKm9xN4bZX0JjrqjFem1Nxf3MBM5vN
+ CYGBn8F4sGIzPmLhl4xFeq3k5irVg/YvxSDbQN6NJv8o+tP6zsMeWX2JjtV0P4aDIN1pK2/w
+ VxcicArw0VYdv2ZCarccFBgH2a6GjswqlCqVM3gNIMI8ikzenKcso8YErGGiKYeMEZLwHaxE
+ Y7mTPuOTrWL8uWWRL5mVjhZEVvDez6em/OYvzBwbkhImrryF29e3Po2cfY2n7EKjjr3/141K
+ DHBBdgXlPNfDwROnA5ugjjEBjwkwBQqPpDA7AYPvpHh5vLbZnVGu5CwG7NAsrb2isRmjYoqk
+ wu++3117AAMFB/9S0Sj7qFFQcD4laADVsabTpNNpaV4wAgVTRHKV/kC9luItzwDnUcsZUPdQ
+ f3MueRJ3jIHU0UmRBG3uQftqbZJj3ikhnfvyLmkCNe+/hXhPu9sGvXyi2D4vszICvc1KL4RD
+ aLSrOsROx22eZ26KqcW4ny7+va2FnvjsZgI8h4sDmaLzKczVRIiLITiMpLFEU/VoSv0m1F4B
+ FtRgoiyjFzigWG0MsTdAN6FJzGh4mWWGIlE7o5JraNhnTd+yTUIPtw3ym6l8P+gbvfoZida0
+ TspgwBWLnXQvP5EDvlZnNaKa/3oBes6z0QdaSOwZCRA3QSLHBwtgUsrT6RxRSweLrcabwkkE
+ GBECAAkFAkah5FQCGwwACgkQ130UHQKnbvW2GgCeMncXpbbWNT2AtoAYICrKyX5R3iMAoMhw
+ cL98efvrjdstUfTCP2pfetyN
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Spamd-Result: default: False [-0.36 / 15.00];
+	R_DKIM_REJECT(1.00)[nbd.name:s=20160729];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[realtek.com,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
-	R_DKIM_ALLOW(-0.20)[realtek.com:s=dkim];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
-	MIME_BASE64_TEXT(0.10)[];
 	MIME_GOOD(-0.10)[text/plain];
+	DMARC_POLICY_SOFTFAIL(0.10)[nbd.name : SPF not aligned (relaxed),none];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-33690-lists,linux-wireless=lfdr.de];
-	TO_DN_SOME(0.00)[];
-	TO_DN_EQ_ADDR_SOME(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	FREEMAIL_CC(0.00)[gmail.com];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[realtek.com:dkim,realtek.com:mid,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,justthetip.ca:email];
-	RCPT_COUNT_THREE(0.00)[3];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[pkshih@realtek.com,linux-wireless@vger.kernel.org];
+	TO_DN_ALL(0.00)[];
+	TAGGED_FROM(0.00)[bounces-33691-lists,linux-wireless=lfdr.de];
 	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[realtek.com:+];
-	NEURAL_HAM(-0.00)[-0.999];
+	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCPT_COUNT_TWO(0.00)[2];
+	DKIM_TRACE(0.00)[nbd.name:-];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	MIME_TRACE(0.00)[0:+];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[nbd@nbd.name,linux-wireless@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	NEURAL_HAM(-0.00)[-0.970];
 	TAGGED_RCPT(0.00)[linux-wireless];
 	MID_RHS_MATCH_FROM(0.00)[];
-	MISSING_XM_UA(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	RCVD_COUNT_SEVEN(0.00)[7]
-X-Rspamd-Queue-Id: 5274D2EF216
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,nbd.name:mid]
+X-Rspamd-Queue-Id: 5EC3B2EF331
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-THVjaWQgRHVjayA8bHVjaWRfZHVja0BqdXN0dGhldGlwLmNhPiB3cm90ZToNCj4gRnJvbTogTHVj
-aWQgRHVjayA8bHVjaWRfZHVja0BqdXN0dGhldGlwLmNhPg0KPiBEYXRlOiBUaHUsIDIwIE1hciAy
-MDI2IDIwOjAwOjAwIC0wNzAwDQo+IFN1YmplY3Q6IFtQQVRDSCB2Ml0gd2lmaTogcnR3ODk6IHVz
-YjogZml4IFRYIGZsb3cgY29udHJvbCBieSB0cmFja2luZw0KPiAgaW4tZmxpZ2h0IFVSQnMNCg0K
-V2hhdCBpcyB5b3VyIG1haWxlcj8gTm90ICdnaXQgc2VuZC1lbWFpbCc/DQpJJ20gbm90IHN1cmUg
-aWYgSSBjYW4gYXBwbHkgdGhpcyBieSBwYXRjaHdvcmsgdG9vbC4NCg0KPiANCj4gcnR3ODlfdXNi
-X29wc19jaGVja19hbmRfcmVjbGFpbV90eF9yZXNvdXJjZSgpIHJldHVybnMgYSBoYXJkY29kZWQN
-Cj4gcGxhY2Vob2xkZXIgdmFsdWUgKDQyKSBpbnN0ZWFkIG9mIGFjdHVhbCBUWCByZXNvdXJjZSBh
-dmFpbGFiaWxpdHkuDQo+IFRoaXMgdmlvbGF0ZXMgbWFjODAyMTEncyBmbG93IGNvbnRyb2wgY29u
-dHJhY3QsIHByZXZlbnRpbmcgYmFja3ByZXNzdXJlDQo+IGFuZCBjYXVzaW5nIHVuY29udHJvbGxl
-ZCBVUkIgYWNjdW11bGF0aW9uIHVuZGVyIHN1c3RhaW5lZCBUWCBsb2FkLg0KPiANCj4gRml4IGJ5
-IGFkZGluZyBwZXItY2hhbm5lbCBhdG9taWMgY291bnRlcnMgKHR4X2luZmxpZ2h0W10pIHRoYXQg
-dHJhY2sNCj4gaW4tZmxpZ2h0IFVSQnM6DQo+IA0KPiAtIEluY3JlbWVudCBiZWZvcmUgdXNiX3N1
-Ym1pdF91cmIoKSB3aXRoIHJvbGxiYWNrIG9uIGZhaWx1cmUNCj4gLSBEZWNyZW1lbnQgaW4gY29t
-cGxldGlvbiBjYWxsYmFjaw0KPiAtIFJldHVybiAoTUFYX1VSQlMgLSBpbmZsaWdodCkgdG8gbWFj
-ODAyMTEsIG9yIDAgd2hlbiBhdCBjYXBhY2l0eQ0KPiAtIEV4Y2x1ZGUgZmlybXdhcmUgY29tbWFu
-ZCBjaGFubmVsIChDSDEyKSBmcm9tIHRyYWNraW5nDQo+IA0KPiBUaGUgcHJlLWluY3JlbWVudCBw
-YXR0ZXJuIHByZXZlbnRzIGEgcmFjZSB3aGVyZSB0aGUgVVNCIGNvcmUgY29tcGxldGVzDQo+IHRo
-ZSBVUkIgKHBvc3NpYmx5IG9uIGFub3RoZXIgQ1BVKSBiZWZvcmUgdGhlIHN1Ym1pdHRpbmcgY29k
-ZSBpbmNyZW1lbnRzDQo+IHRoZSBjb3VudGVyLg0KPiANCj4gVGVzdGVkIG9uIEQtTGluayBEV0Et
-WDE4NTAgKFJUTDg4MzJBVSksIGtlcm5lbCA2LjE4LjM6DQo+IA0KPiAgICAgICAgICAgICAgICAg
-ICAgICBVbnBhdGNoZWQgLT4gUGF0Y2hlZA0KPiAgIFVTQjMgNUdIeiBETDogICAgICA0OTQgLT4g
-NzA5IE1icHMgKCs0NCUpDQo+ICAgVVNCMyA1R0h6IHJldHg6ICAgIDggLT4gMSAoLTg4JSkNCj4g
-ICBVU0IzIDIuNEdIeiBETDogICAgNTQgLT4gNjggTWJwcyAoKzI1JSkNCj4gICBVU0IyIDVHSHog
-REw6ICAgICAgMTk2IC0+IDIyNSBNYnBzICgrMTUlKQ0KPiAgIFVTQjIgMi40R0h6IERMOiAgICAx
-MjMgLT4gMTMxIE1icHMgKCs2JSkNCg0KQXMgdGhpcyBwYXRjaCBkb2VzIFRYIGZsb3cgY29udHJv
-bCwgY291bGQgeW91IHNoYXJlIHRoZSB1cGxpbmsgZGF0YQ0KYXMgd2VsbD8NCg0KPiANCj4gU2ln
-bmVkLW9mZi1ieTogTHVjaWQgRHVjayA8bHVjaWRfZHVja0BqdXN0dGhldGlwLmNhPg0KPiAtLS0N
-Cj4gUmVzZW5kaW5nIHYyLiBUaGlzIHdhcyBwcmVwYXJlZCBpbiBsYXRlIEphbnVhcnkgYWZ0ZXIg
-YWRkcmVzc2luZyB2MQ0KPiByZXZpZXcgZmVlZGJhY2ssIGJ1dCB0aGUgc2VuZCBmYWlsZWQgc2ls
-ZW50bHkgKFNNVFAgbWlzY29uZmlndXJhdGlvbikNCj4gYW5kIG5ldmVyIGFwcGVhcmVkIG9uIGxv
-cmUua2VybmVsLm9yZy4gQXBvbG9naWVzIGZvciB0aGUgZGVsYXkuDQo+IA0KPiBDaGFuZ2VzIHNp
-bmNlIHYxOg0KPiAtIFJlbW92ZWQgZHVwbGljYXRlICJUWCBmbG93IGNvbnRyb2wiIGNvbW1lbnQg
-KFBpbmctS2UgU2hpaCkNCj4gLSBBZGRlZCB0ZXN0IHJlc3VsdHMgdG8gY29tbWl0IG1lc3NhZ2Ug
-KFBpbmctS2UgU2hpaCkNCj4gDQo+IEJpdHRlcmJsdWUncyBDSDEyIHF1ZXN0aW9uIGZyb20gdjE6
-IHRoZSBDSDEyIGd1YXJkcyBpbiB0eF9raWNrX29mZigpDQo+IGFuZCB3cml0ZV9wb3J0X2NvbXBs
-ZXRlKCkgYXJlIGEgbWF0Y2hlZCBwYWlyLiB0eF9raWNrX29mZigpIHNraXBzDQo+IGF0b21pY19p
-bmMgZm9yIENIMTIsIHNvIHRoZSBjb21wbGV0aW9uIGhhbmRsZXIgbXVzdCBza2lwIGF0b21pY19k
-ZWMNCj4gdG8gbWF0Y2guIFJlbW92aW5nIG9ubHkgdGhlIGNvbXBsZXRpb24gc2lkZSBjYXVzZXMg
-Y291bnRlciB1bmRlcmZsb3cuDQo+IA0KPiBBZGRpdGlvbmFsIHZhbGlkYXRpb246IDEwMC1pdGVy
-YXRpb24gc3RyZXNzIHRlc3QsIDUwLWl0ZXJhdGlvbg0KPiB0ZWFyZG93biAocm1tb2QvbW9kcHJv
-YmUgdW5kZXIgbG9hZCksIDEweCBob3QtdW5wbHVnIGR1cmluZyBhY3RpdmUNCj4gVFgsIGFuZCAz
-MC1taW51dGUgc29hayAtLSBhbGwgcGFzcyB3aXRoIGNvdW50ZXJzIGJhbGFuY2VkIGF0IGlkbGUu
-DQo+IA0KPiBUaGUgMzItVVJCLXBlci1jaGFubmVsIGxpbWl0IGlzIGJhc2VkIG9uIHNpbWlsYXIg
-VVNCIHdpcmVsZXNzIGRyaXZlcnMNCj4gKG10NzYsIGF0aDlrX2h0YykuIFRoZSBmaXhlZCB2YWx1
-ZSB3b3JrcyB3ZWxsIGZvciBib3RoIFVTQjIgYW5kIFVTQjMuDQoNCkNhbiBpbmNyZWFzaW5nIDMy
-IGdldCBiZXR0ZXIgcGVyZm9ybWFuY2U/IFRoZSBzdHJlc3MgdGVzdCB3aXRoIHNtYWxsDQpwYWNr
-ZXRzIG1pZ2h0IHlpZWxkIGxvdyB0aHJvdWdocHV0PyAoSnVzdCBhIHF1ZXN0aW9uKQ0KDQo+IA0K
-PiAgZHJpdmVycy9uZXQvd2lyZWxlc3MvcmVhbHRlay9ydHc4OS91c2IuYyB8IDI2ICsrKysrKysr
-KysrKysrKysrKy0tLS0tDQo+ICBkcml2ZXJzL25ldC93aXJlbGVzcy9yZWFsdGVrL3J0dzg5L3Vz
-Yi5oIHwgIDYgKysrKysrDQo+ICAyIGZpbGVzIGNoYW5nZWQsIDI3IGluc2VydGlvbnMoKyksIDUg
-ZGVsZXRpb25zKC0pDQo+IA0KPiBkaWZmIC0tZ2l0IGEvZHJpdmVycy9uZXQvd2lyZWxlc3MvcmVh
-bHRlay9ydHc4OS91c2IuYw0KPiBiL2RyaXZlcnMvbmV0L3dpcmVsZXNzL3JlYWx0ZWsvcnR3ODkv
-dXNiLmMNCj4gaW5kZXggZWI0ODlkZi4uZmFhZmEzYyAxMDA2NDQNCj4gLS0tIGEvZHJpdmVycy9u
-ZXQvd2lyZWxlc3MvcmVhbHRlay9ydHc4OS91c2IuYw0KPiArKysgYi9kcml2ZXJzL25ldC93aXJl
-bGVzcy9yZWFsdGVrL3J0dzg5L3VzYi5jDQo+IEBAIC0xNjEsMTYgKzE2MSwyNSBAQCBzdGF0aWMg
-dTMyDQo+ICBydHc4OV91c2Jfb3BzX2NoZWNrX2FuZF9yZWNsYWltX3R4X3Jlc291cmNlKHN0cnVj
-dCBydHc4OV9kZXYgKnJ0d2RldiwNCj4gICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAg
-ICAgICAgICAgICB1OCB0eGNoKQ0KPiAgew0KPiArICAgICAgIHN0cnVjdCBydHc4OV91c2IgKnJ0
-d3VzYiA9IHJ0dzg5X3VzYl9wcml2KHJ0d2Rldik7DQo+ICsgICAgICAgaW50IGluZmxpZ2h0Ow0K
-PiArDQo+ICsgICAgICAgLyogRmlybXdhcmUgY29tbWFuZCBjaGFubmVsIGlzIG5vdCB0cmFja2Vk
-ICovDQo+ICAgICAgICAgaWYgKHR4Y2ggPT0gUlRXODlfVFhDSF9DSDEyKQ0KPiAgICAgICAgICAg
-ICAgICAgcmV0dXJuIDE7DQo+IA0KPiAtICAgICAgIHJldHVybiA0MjsgLyogVE9ETyBzb21lIGtp
-bmQgb2YgY2FsY3VsYXRpb24/ICovDQo+ICsgICAgICAgaW5mbGlnaHQgPSBhdG9taWNfcmVhZCgm
-cnR3dXNiLT50eF9pbmZsaWdodFt0eGNoXSk7DQo+ICsgICAgICAgaWYgKGluZmxpZ2h0ID49IFJU
-Vzg5X1VTQl9NQVhfVFhfVVJCU19QRVJfQ0gpDQoNCk91dCBvZiBjdXJpb3NpdHkuIElzIGl0IHBv
-c3NpYmxlIGluZmxpZ2h0ID4gUlRXODlfVVNCX01BWF9UWF9VUkJTX1BFUl9DSD8NCg0KPiArICAg
-ICAgICAgICAgICAgcmV0dXJuIDA7DQo+ICsNCj4gKyAgICAgICByZXR1cm4gUlRXODlfVVNCX01B
-WF9UWF9VUkJTX1BFUl9DSCAtIGluZmxpZ2h0Ow0KPiAgfQ0KPiANCj4gIHN0YXRpYyB2b2lkIHJ0
-dzg5X3VzYl93cml0ZV9wb3J0X2NvbXBsZXRlKHN0cnVjdCB1cmIgKnVyYikNCj4gIHsNCj4gICAg
-ICAgICBzdHJ1Y3QgcnR3ODlfdXNiX3R4X2N0cmxfYmxvY2sgKnR4Y2IgPSB1cmItPmNvbnRleHQ7
-DQo+ICAgICAgICAgc3RydWN0IHJ0dzg5X2RldiAqcnR3ZGV2ID0gdHhjYi0+cnR3ZGV2Ow0KPiAr
-ICAgICAgIHN0cnVjdCBydHc4OV91c2IgKnJ0d3VzYiA9IHJ0dzg5X3VzYl9wcml2KHJ0d2Rldik7
-DQo+ICAgICAgICAgc3RydWN0IGllZWU4MDIxMV90eF9pbmZvICppbmZvOw0KPiAgICAgICAgIHN0
-cnVjdCBydHc4OV90eHdkX2JvZHkgKnR4ZGVzYzsNCj4gICAgICAgICBzdHJ1Y3Qgc2tfYnVmZiAq
-c2tiOw0KPiBAQCAtMjI5LDYgKzIzOCwxMCBAQCBzdGF0aWMgdm9pZCBydHc4OV91c2Jfd3JpdGVf
-cG9ydF9jb21wbGV0ZShzdHJ1Y3QgdXJiICp1cmIpDQo+ICAgICAgICAgICAgICAgICBicmVhazsN
-Cj4gICAgICAgICB9DQo+IA0KPiArICAgICAgIC8qIERlY3JlbWVudCBpbi1mbGlnaHQgY291bnRl
-ciAoc2tpcCBmaXJtd2FyZSBjb21tYW5kIGNoYW5uZWwpICovDQo+ICsgICAgICAgaWYgKHR4Y2It
-PnR4Y2ggIT0gUlRXODlfVFhDSF9DSDEyKQ0KPiArICAgICAgICAgICAgICAgYXRvbWljX2RlYygm
-cnR3dXNiLT50eF9pbmZsaWdodFt0eGNiLT50eGNoXSk7DQo+ICsNCj4gICAgICAgICBrZnJlZSh0
-eGNiKTsNCj4gIH0NCj4gDQo+IEBAIC0zMDYsOSArMzE5LDE3IEBAIHN0YXRpYyB2b2lkIHJ0dzg5
-X3VzYl9vcHNfdHhfa2lja19vZmYoc3RydWN0IHJ0dzg5X2Rldg0KPiAqcnR3ZGV2LCB1OCB0eGNo
-KQ0KPiANCj4gICAgICAgICAgICAgICAgIHNrYl9xdWV1ZV90YWlsKCZ0eGNiLT50eF9hY2tfcXVl
-dWUsIHNrYik7DQo+IA0KPiArICAgICAgICAgICAgICAgLyogSW5jcmVtZW50IEJFRk9SRSBzdWJt
-aXQgdG8gYXZvaWQgcmFjZSB3aXRoIGNvbXBsZXRpb24gKi8NCj4gKyAgICAgICAgICAgICAgIGlm
-ICh0eGNoICE9IFJUVzg5X1RYQ0hfQ0gxMikNCj4gKyAgICAgICAgICAgICAgICAgICAgICAgYXRv
-bWljX2luYygmcnR3dXNiLT50eF9pbmZsaWdodFt0eGNoXSk7DQo+ICsNCj4gICAgICAgICAgICAg
-ICAgIHJldCA9IHJ0dzg5X3VzYl93cml0ZV9wb3J0KHJ0d2RldiwgdHhjaCwgc2tiLT5kYXRhLCBz
-a2ItPmxlbiwNCj4gICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIHR4
-Y2IpOw0KPiAgICAgICAgICAgICAgICAgaWYgKHJldCkgew0KPiArICAgICAgICAgICAgICAgICAg
-ICAgICAvKiBSb2xsYmFjayBpbmNyZW1lbnQgb24gZmFpbHVyZSAqLw0KPiArICAgICAgICAgICAg
-ICAgICAgICAgICBpZiAodHhjaCAhPSBSVFc4OV9UWENIX0NIMTIpDQo+ICsgICAgICAgICAgICAg
-ICAgICAgICAgICAgICAgICAgYXRvbWljX2RlYygmcnR3dXNiLT50eF9pbmZsaWdodFt0eGNoXSk7
-DQo+ICsNCj4gICAgICAgICAgICAgICAgICAgICAgICAgaWYgKHJldCAhPSAtRU5PREVWKQ0KPiAg
-ICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIHJ0dzg5X2VycihydHdkZXYsICJ3cml0ZSBw
-b3J0IHR4Y2ggJWQgZmFpbGVkOg0KPiAlZFxuIiwNCj4gICAgICAgICAgICAgICAgICAgICAgICAg
-ICAgICAgICAgICAgICAgICAgdHhjaCwgcmV0KTsNCj4gQEAgLTY2Niw4ICs2ODcsMTAgQEAgc3Rh
-dGljIHZvaWQgcnR3ODlfdXNiX2luaXRfdHgoc3RydWN0IHJ0dzg5X2RldiAqcnR3ZGV2KQ0KPiAg
-ICAgICAgIHN0cnVjdCBydHc4OV91c2IgKnJ0d3VzYiA9IHJ0dzg5X3VzYl9wcml2KHJ0d2Rldik7
-DQo+ICAgICAgICAgaW50IGk7DQo+IA0KPiAtICAgICAgIGZvciAoaSA9IDA7IGkgPCBBUlJBWV9T
-SVpFKHJ0d3VzYi0+dHhfcXVldWUpOyBpKyspDQo+ICsgICAgICAgZm9yIChpID0gMDsgaSA8IEFS
-UkFZX1NJWkUocnR3dXNiLT50eF9xdWV1ZSk7IGkrKykgew0KPiAgICAgICAgICAgICAgICAgc2ti
-X3F1ZXVlX2hlYWRfaW5pdCgmcnR3dXNiLT50eF9xdWV1ZVtpXSk7DQo+ICsgICAgICAgICAgICAg
-ICBhdG9taWNfc2V0KCZydHd1c2ItPnR4X2luZmxpZ2h0W2ldLCAwKTsNCj4gKyAgICAgICB9DQo+
-ICB9DQo+IA0KPiAgc3RhdGljIHZvaWQgcnR3ODlfdXNiX2RlaW5pdF90eChzdHJ1Y3QgcnR3ODlf
-ZGV2ICpydHdkZXYpDQo+IGRpZmYgLS1naXQgYS9kcml2ZXJzL25ldC93aXJlbGVzcy9yZWFsdGVr
-L3J0dzg5L3VzYi5oDQo+IGIvZHJpdmVycy9uZXQvd2lyZWxlc3MvcmVhbHRlay9ydHc4OS91c2Iu
-aA0KPiBpbmRleCA5ZjU1NGI1Li4xNDU5MTIyIDEwMDY0NA0KPiAtLS0gYS9kcml2ZXJzL25ldC93
-aXJlbGVzcy9yZWFsdGVrL3J0dzg5L3VzYi5oDQo+ICsrKyBiL2RyaXZlcnMvbmV0L3dpcmVsZXNz
-L3JlYWx0ZWsvcnR3ODkvdXNiLmgNCj4gQEAgLTIwLDYgKzIwLDkgQEANCj4gICNkZWZpbmUgUlRX
-ODlfTUFYX0VORFBPSU5UX05VTSAgICAgICAgIDkNCj4gICNkZWZpbmUgUlRXODlfTUFYX0JVTEtP
-VVRfTlVNICAgICAgICAgIDcNCj4gDQo+ICsvKiBUWCBmbG93IGNvbnRyb2w6IG1heCBpbi1mbGln
-aHQgVVJCcyBwZXIgY2hhbm5lbCAqLw0KDQpJIHRoaW5rIHRoZSBjb2RlIHNlbGYtZXhwbGFpbiB0
-aGlzIGFscmVhZHkuIE5vIG5lZWQgdGhpcyBjb21tZW50LiANCkl0J2QgYmUgaGVscGZ1bCBpZiB5
-b3UgY2FuIGV4cGxhaW4gaG93IHlvdSBkZWNpZGUgMzIuIA0KKEluIGNvbW1pdCBtZXNzYWdlLCB5
-b3UgbWVudGlvbmVkIHRoaXMgaW1pdGF0ZSBvdGhlciBkcml2ZXJzLCBzbw0Kbm8gbmVlZCBjb21t
-ZW50IGFib3V0IHRoYXQuKQ0KDQo+ICsjZGVmaW5lIFJUVzg5X1VTQl9NQVhfVFhfVVJCU19QRVJf
-Q0ggICAzMg0KPiArDQo+ICBzdHJ1Y3QgcnR3ODlfdXNiX2luZm8gew0KPiAgICAgICAgIHUzMiB1
-c2JfaG9zdF9yZXF1ZXN0XzI7DQo+ICAgICAgICAgdTMyIHVzYl93bGFuMF8xOw0KPiBAQCAtNjMs
-NiArNjYsOSBAQCBzdHJ1Y3QgcnR3ODlfdXNiIHsNCj4gICAgICAgICBzdHJ1Y3QgdXNiX2FuY2hv
-ciB0eF9zdWJtaXR0ZWQ7DQo+IA0KPiAgICAgICAgIHN0cnVjdCBza19idWZmX2hlYWQgdHhfcXVl
-dWVbUlRXODlfVFhDSF9OVU1dOw0KPiArDQo+ICsgICAgICAgLyogVFggZmxvdyBjb250cm9sOiB0
-cmFjayBpbi1mbGlnaHQgVVJCcyBwZXIgY2hhbm5lbCAqLw0KDQpJJ2Qgbm90IHByZWZlciB0aGlz
-IGNvbW1lbnQgbmVpdGhlci4gDQoNCj4gKyAgICAgICBhdG9taWNfdCB0eF9pbmZsaWdodFtSVFc4
-OV9UWENIX05VTV07DQo+ICB9Ow0KPiANCj4gIHN0YXRpYyBpbmxpbmUgc3RydWN0IHJ0dzg5X3Vz
-YiAqcnR3ODlfdXNiX3ByaXYoc3RydWN0IHJ0dzg5X2RldiAqcnR3ZGV2KQ0KPiAtLQ0KPiAyLjUz
-LjANCg==
+Hi,
+
+Here's my mt76 pull request for 7.1
+
+- Felix
+
+The following changes since commit 9ac76f3d0bb2940db3a9684d596b9c8f301ef315:
+
+   Merge tag 'wireless-next-2026-03-19' of https://git.kernel.org/pub/scm/linux/kernel/git/wireless/wireless-next (2026-03-19 15:30:20 +0100)
+
+are available in the Git repository at:
+
+   https://github.com/nbd168/wireless tags/mt76-next-2026-03-23
+
+for you to fetch changes up to 61fe246f396e411b356535a5f8a3ad2412e1dfa8:
+
+   wifi: mt76: mt7996: Destroy active sta links in mt7996_mac_sta_remove() (2026-03-23 09:23:05 +0000)
+
+----------------------------------------------------------------
+mt76 patches for 7.1
+
+- fixes
+- mt7996/mt7925 MLO fixes/improvements
+- mt7996 NPU support
+- mt7996 external EEPROM support
+
+----------------------------------------------------------------
+Allen Ye (1):
+       wifi: mt76: fix backoff fields and max_power calculation
+
+Alok Tiwari (1):
+       wifi: mt76: mt7996: fix FCS error flag check in RX descriptor
+
+Chad Monroe (5):
+       wifi: mt76: fix deadlock in remain-on-channel
+       wifi: mt76: mt7996: reset device after MCU message timeout
+       wifi: mt76: mt7996: increase txq memory limit to 32 MiB
+       wifi: mt76: fix multi-radio on-channel scanning
+       wifi: mt76: support upgrading passive scans to active
+
+Christian Hewitt (1):
+       wifi: mt7601u: check multiple firmware paths
+
+Colin Ian King (1):
+       wifi: mt76: mt7996: Fix spelling mistake "retriving" -> "retrieving"
+
+David Bauer (2):
+       wifi: mt76: mt76x02: wake queues after reconfig
+       wifi: mt76: don't return TXQ when exceeding max non-AQL packets
+
+Duoming Zhou (2):
+       wifi: mt76: mt7915: fix use-after-free bugs in mt7915_mac_dump_work()
+       wifi: mt76: mt7996: fix use-after-free bugs in mt7996_mac_dump_work()
+
+Felix Fietkau (9):
+       wifi: mt76: add offchannel check to mt76_roc_complete
+       wifi: mt76: check chanctx before restoring channel after ROC
+       wifi: mt76: abort ROC on chanctx changes
+       wifi: mt76: optimize ROC for same-channel case
+       wifi: mt76: send nullfunc PS frames on offchannel transitions
+       wifi: mt76: flush pending TX before channel switch
+       wifi: mt76: route nullfunc frames to PSD/ALTX queue
+       wifi: mt76: wait for firmware TX completion of mgmt frames before channel switch
+       wifi: mt76: add per-link beacon monitoring for MLO
+
+Howard Hsu (1):
+       wifi: mt76: mt7996: support critical packet mode for MT7990 chipsets
+
+Leon Yen (5):
+       wifi: mt76: mt7925: introduce CSA support in non-MLO mode
+       wifi: mt76: mt7925: Fix incorrect MLO mode in firmware control
+       wifi: mt76: mt792x: Fix a potential deadlock in high-load situations
+       wifi: mt76: mt7921: fix a potential clc buffer length underflow
+       wifi: mt76: mt7925: fix tx power setting failure after chip reset
+
+Lorenzo Bianconi (30):
+       wifi: mt76: mt7996: Set mtxq->wcid just for primary link
+       wifi: mt76: mt7996: Reset mtxq->idx if primary link is removed in mt7996_vif_link_remove()
+       wifi: mt76: mt7996: Switch to the secondary link if the default one is removed
+       wifi: mt76: mt7996: Clear wcid pointer in mt7996_mac_sta_deinit_link()
+       wifi: mt76: mt7996: Reset ampdu_state state in case of failure in mt7996_tx_check_aggr()
+       wifi: mt76: Fix memory leak destroying device
+       wifi: mt76: mt7996: Fix NPU stop procedure
+       wifi: mt76: npu: Add missing rx_token_size initialization
+       wifi: mt76: always enable RRO queues for non-MT7992 chipset
+       wifi: mt76: mt7996: Fix BAND2 tx queues initialization when NPU is enabled
+       wifi: mt76: mt7996: Fix wdma_idx for MT7996 device if NPU is enabled
+       wifi: mt76: mt7996: Add mt7992_npu_txrx_offload_init routine
+       wifi: mt76: mt7996: Rename mt7996_npu_rxd_init() in mt7992_npu_rxd_init()
+       wifi: mt76: mt7996: Add NPU support for MT7990 chipset
+       wifi: mt76: mt7996: Integrate NPU in RRO session management
+       wifi: mt76: mt7996: Integrate MT7990 init configuration for NPU
+       wifi: mt76: mt7996: Integrate MT7990 dma configuration for NPU
+       wifi: mt76: mt7996: Add __mt7996_npu_hw_init routine
+       wifi: mt76: mt7996: Move RRO dma start in a dedicated routine
+       wifi: mt76: Do not reset idx for NPU tx queues during reset
+       wifi: mt76: mt7996: Do not schedule RRO and TxFree queues during reset for NPU
+       wifi: mt76: mt7996: Store DMA mapped buffer addresses in mt7996_npu_hw_init()
+       wifi: mt76: Enable NPU support for MT7996 devices
+       wifi: mt76: mt7996: Add missing CHANCTX_STA_CSA property
+       wifi: mt76: mt7996: Remove link pointer dependency in mt7996_mac_sta_remove_links()
+       wifi: mt76: mt7996: Remove unnecessary phy filed in mt7996_vif_link struct
+       wifi: mt76: mt7996: Decrement sta counter removing the link in mt7996_mac_reset_sta_iter()
+       wifi: mt76: mt7996: Rely on msta_link link_id in mt7996_vif_link_remove()
+       wifi: mt76: mt7996: Destroy vif active links in mt7996_remove_interface()
+       wifi: mt76: mt7996: Destroy active sta links in mt7996_mac_sta_remove()
+
+Madhur Kumar (1):
+       wifi: mt76: mt7921: Replace deprecated PCI function
+
+MeiChia Chiu (1):
+       wifi: mt76: mt7996: Add eMLSR support
+
+Michael Lo (2):
+       wifi: mt76: mt7925: Skip scan process during suspend.
+       wifi: mt76: mt7921: fix 6GHz regulatory update on connection
+
+Ming Yen Hsieh (3):
+       wifi: mt76: mt7925: fix incorrect length field in txpower command
+       wifi: mt76: mt7925: prevent NULL pointer dereference in mt7925_tx_check_aggr()
+       wifi: mt76: mt7925: prevent NULL vif dereference in mt7925_mac_write_txwi
+
+Peter Chiu (3):
+       wifi: mt76: mt7996: fix RRO EMU configuration
+       wifi: mt76: mt7996: update WFSYS reset flow for MT7990 chipsets
+       wifi: mt76: mt7996: fix frequency separation for station STR mode
+
+Quan Zhou (3):
+       wifi: mt76: mt7925: fix AMPDU state handling in mt7925_tx_check_aggr
+       wifi: mt76: mt7921: fix ROC abort flow interruption in mt7921_roc_work
+       wifi: mt76: mt7925: fix incorrect TLV length in CLC command
+
+Rex Lu (1):
+       wifi: mt76: mt7996: adjust timeout value for boot-up calibration commands
+
+Rory Little (1):
+       wifi: mt76: mt7921: Place upper limit on station AID
+
+Ryder Lee (6):
+       wifi: mt76: mt7615: fix use_cts_prot support
+       wifi: mt76: mt7915: fix use_cts_prot support
+       wifi: mt76: mt7996: add support for ERP CTS & HT protection
+       dt-bindings: net: wireless: mt76: add mt79 PCI devices
+       dt-bindings: net: wireless: mt76: clarify backoff limit usage
+       wifi: mt76: mt7996: Disable Rx hdr_trans in monitor mode
+
+Sean Wang (36):
+       wifi: mt76: mt7921: Reset ampdu_state state in case of failure in mt76_connac2_tx_check_aggr()
+       wifi: mt76: mt7925: drop puncturing handling from BSS change path
+       wifi: mt76: mt7925: fix potential deadlock in mt7925_roc_abort_sync
+       wifi: mt76: mt7921: fix potential deadlock in mt7921_roc_abort_sync
+       wifi: mt76: connac: use is_connac2() to replace is_mt7921() checks
+       wifi: mt76: mt7921: use mt76_for_each_q_rx() in reset path
+       wifi: mt76: mt7921: handle MT7902 irq_map quirk with mutable copy
+       wifi: mt76: mt7921: add MT7902e DMA layout support
+       wifi: mt76: connac: mark MT7902 as hw txp devices
+       wifi: mt76: mt792x: add PSE handling barrier for the large MCU cmd
+       wifi: mt76: mt792x: ensure MCU ready before ROM patch download
+       wifi: mt76: mt7921: add MT7902 MCU support
+       wifi: mt76: mt792x: add MT7902 WFDMA prefetch configuration
+       wifi: mt76: mt7921: add MT7902 PCIe device support
+       wifi: mt76: mt7921: add MT7902 SDIO device support
+       wifi: mt76: mt792x: describe USB WFSYS reset with a descriptor
+       wifi: mt76: mt792x: fix mt7925u USB WFSYS reset handling
+       wifi: mt76: mt7925: pass mlink to sta_amsdu_tlv()
+       wifi: mt76: mt7925: pass WCID indices to bss_basic_tlv()
+       wifi: mt76: mt7925: pass mlink and mconf to sta_mld_tlv()
+       wifi: mt76: mt7925: pass mlink to mcu_sta_update()
+       wifi: mt76: mt7925: resolve primary mlink via def_wcid
+       wifi: mt76: mt7925: pass mlink to mac_link_sta_remove()
+       wifi: mt76: mt7925: pass mlink to sta_hdr_trans_tlv()
+       wifi: mt76: mt7925: validate mlink in sta_hdr_trans_tlv()
+       wifi: mt76: mt7925: pass mlink to wtbl_update_hdr_trans()
+       wifi: mt76: mt7925: pass mlink to set_link_key()
+       wifi: mt76: mt7925: resolve link after acquiring mt76 mutex
+       wifi: mt76: mt7925: pass mconf and mlink to wtbl_update_hdr_trans()
+       wifi: mt76: mt7925: make WCID cleanup unconditional in sta_remove_links()
+       wifi: mt76: mt7925: unwind WCID setup on link STA add failure
+       wifi: mt76: mt7925: drop WCID reinit after publish
+       wifi: mt76: mt7925: move WCID teardown into link_sta_remove()
+       wifi: mt76: mt7925: switch link STA allocation to RCU lifetime
+       wifi: mt76: mt7925: publish msta->link after successful link add
+       wifi: mt76: mt7925: host-only unwind published links on add failure
+
+Shayne Chen (8):
+       wifi: mt76: mt7996: extend CSA and CCA support for MLO
+       wifi: mt76: mt7996: add duplicated WTBL command
+       wifi: mt76: mt7996: fix iface combination for different chipsets
+       wifi: mt76: mt7996: add variant for MT7992 chipsets
+       wifi: mt76: mt7996: fix wrong DMAD length when using MAC TXP
+       wifi: mt76: mt7996: Account active links in valid_links fields
+       wifi: mt76: mt7996: Move mlink deallocation in mt7996_vif_link_remove()
+       wifi: mt76: mt7996: Add mcu APIs to enable/disable vif links.
+
+StanleyYP Wang (10):
+       wifi: mt76: mt7996: fix the behavior of radar detection
+       wifi: mt76: mt7996: set specific BSSINFO and STAREC commands after channel switch
+       wifi: mt76: mt7996: abort CCA when CSA is starting
+       wifi: mt76: mt7996: offload radar threshold initialization
+       wifi: mt76: add external EEPROM support for mt799x chipsets
+       wifi: mt76: mt7996: apply calibration-free data from OTP
+       wifi: mt76: mt7996: fix struct mt7996_mcu_uni_event
+       wifi: mt76: avoid to set ACK for MCU command if wait_resp is not set
+       wifi: mt76: mt7996: fix queue pause after scan due to wrong channel switch reason
+       wifi: mt76: mt7996: fix issues with manually triggered radar detection
+
+Zac Bowling (1):
+       wifi: mt76: fix list corruption in mt76_wcid_cleanup
+
+Zilin Guan (1):
+       wifi: mt76: Fix memory leak after mt76_connac_mcu_alloc_sta_req()
+
+Ziyi Guo (1):
+       wifi: mt76: add missing lock protection in mt76_sta_state for sta_event callback
+
+  Documentation/devicetree/bindings/net/wireless/mediatek,mt76.yaml |  21 ++
+  drivers/net/wireless/mediatek/mt76/channel.c                      |  39 ++-
+  drivers/net/wireless/mediatek/mt76/dma.c                          |  33 +-
+  drivers/net/wireless/mediatek/mt76/dma.h                          |   4 +-
+  drivers/net/wireless/mediatek/mt76/eeprom.c                       | 154 ++++++---
+  drivers/net/wireless/mediatek/mt76/mac80211.c                     | 230 ++++++++++++-
+  drivers/net/wireless/mediatek/mt76/mcu.c                          |   2 +-
+  drivers/net/wireless/mediatek/mt76/mt76.h                         |  47 ++-
+  drivers/net/wireless/mediatek/mt76/mt7615/mac.c                   |  15 -
+  drivers/net/wireless/mediatek/mt76/mt7615/main.c                  |   7 +-
+  drivers/net/wireless/mediatek/mt76/mt7615/mcu.c                   |  47 +++
+  drivers/net/wireless/mediatek/mt76/mt7615/mt7615.h                |   5 +-
+  drivers/net/wireless/mediatek/mt76/mt7615/regs.h                  |   2 -
+  drivers/net/wireless/mediatek/mt76/mt76_connac.h                  |  11 +-
+  drivers/net/wireless/mediatek/mt76/mt76_connac_mac.c              |  28 +-
+  drivers/net/wireless/mediatek/mt76/mt76_connac_mcu.c              |  46 ++-
+  drivers/net/wireless/mediatek/mt76/mt76_connac_mcu.h              |  15 +-
+  drivers/net/wireless/mediatek/mt76/mt76x02_mmio.c                 |   1 +
+  drivers/net/wireless/mediatek/mt76/mt7915/init.c                  |   1 +
+  drivers/net/wireless/mediatek/mt76/mt7915/mac.c                   |  13 -
+  drivers/net/wireless/mediatek/mt76/mt7915/main.c                  |   9 +-
+  drivers/net/wireless/mediatek/mt76/mt7915/mcu.c                   |  66 +++-
+  drivers/net/wireless/mediatek/mt76/mt7915/mcu.h                   |  11 +
+  drivers/net/wireless/mediatek/mt76/mt7915/mt7915.h                |   4 +
+  drivers/net/wireless/mediatek/mt76/mt7921/init.c                  |   4 +-
+  drivers/net/wireless/mediatek/mt76/mt7921/main.c                  |  29 +-
+  drivers/net/wireless/mediatek/mt76/mt7921/mcu.c                   |   3 +
+  drivers/net/wireless/mediatek/mt76/mt7921/mt7921.h                |  16 +
+  drivers/net/wireless/mediatek/mt76/mt7921/pci.c                   |  70 +++-
+  drivers/net/wireless/mediatek/mt76/mt7921/pci_mac.c               |   6 +-
+  drivers/net/wireless/mediatek/mt76/mt7921/sdio.c                  |   4 +
+  drivers/net/wireless/mediatek/mt76/mt7925/init.c                  |   2 +
+  drivers/net/wireless/mediatek/mt76/mt7925/mac.c                   |  18 +-
+  drivers/net/wireless/mediatek/mt76/mt7925/main.c                  | 394 ++++++++++++++++++----
+  drivers/net/wireless/mediatek/mt76/mt7925/mcu.c                   | 194 ++++++-----
+  drivers/net/wireless/mediatek/mt76/mt7925/mcu.h                   |   7 +
+  drivers/net/wireless/mediatek/mt76/mt7925/mt7925.h                |  13 +-
+  drivers/net/wireless/mediatek/mt76/mt7925/regd.c                  |   3 +-
+  drivers/net/wireless/mediatek/mt76/mt792x.h                       |   7 +
+  drivers/net/wireless/mediatek/mt76/mt792x_core.c                  |  14 +-
+  drivers/net/wireless/mediatek/mt76/mt792x_dma.c                   |  18 +-
+  drivers/net/wireless/mediatek/mt76/mt792x_mac.c                   |   2 +-
+  drivers/net/wireless/mediatek/mt76/mt792x_regs.h                  |   6 +
+  drivers/net/wireless/mediatek/mt76/mt792x_usb.c                   |  51 ++-
+  drivers/net/wireless/mediatek/mt76/mt7996/debugfs.c               |  36 +-
+  drivers/net/wireless/mediatek/mt76/mt7996/dma.c                   | 208 +++++++-----
+  drivers/net/wireless/mediatek/mt76/mt7996/eeprom.c                |  64 ++--
+  drivers/net/wireless/mediatek/mt76/mt7996/init.c                  | 110 +++++--
+  drivers/net/wireless/mediatek/mt76/mt7996/mac.c                   | 161 +++------
+  drivers/net/wireless/mediatek/mt76/mt7996/mac.h                   |   5 -
+  drivers/net/wireless/mediatek/mt76/mt7996/main.c                  | 439 +++++++++++++++++++------
+  drivers/net/wireless/mediatek/mt76/mt7996/mcu.c                   | 823 ++++++++++++++++++++++++++++++++++++++--------
+  drivers/net/wireless/mediatek/mt76/mt7996/mcu.h                   | 112 ++++++-
+  drivers/net/wireless/mediatek/mt76/mt7996/mt7996.h                |  70 +++-
+  drivers/net/wireless/mediatek/mt76/mt7996/npu.c                   | 469 ++++++++++++++++++++------
+  drivers/net/wireless/mediatek/mt76/mt7996/regs.h                  |  11 +
+  drivers/net/wireless/mediatek/mt76/npu.c                          |  37 ++-
+  drivers/net/wireless/mediatek/mt76/scan.c                         |  70 +++-
+  drivers/net/wireless/mediatek/mt76/tx.c                           |  34 +-
+  drivers/net/wireless/mediatek/mt7601u/mcu.c                       |  15 +-
+  drivers/net/wireless/mediatek/mt7601u/usb.h                       |   1 +
+  61 files changed, 3368 insertions(+), 969 deletions(-)
 
