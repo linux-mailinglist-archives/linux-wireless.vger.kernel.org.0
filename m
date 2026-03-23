@@ -1,181 +1,370 @@
-Return-Path: <linux-wireless+bounces-33738-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-33739-lists+linux-wireless=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id QDUaAuOtwWmUUQQAu9opvQ
-	(envelope-from <linux-wireless+bounces-33738-lists+linux-wireless=lfdr.de@vger.kernel.org>)
-	for <lists+linux-wireless@lfdr.de>; Mon, 23 Mar 2026 22:17:23 +0100
+	id uLleKqvKwWlUWgQAu9opvQ
+	(envelope-from <linux-wireless+bounces-33739-lists+linux-wireless=lfdr.de@vger.kernel.org>)
+	for <lists+linux-wireless@lfdr.de>; Tue, 24 Mar 2026 00:20:11 +0100
 X-Original-To: lists+linux-wireless@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9524E2FDAB1
-	for <lists+linux-wireless@lfdr.de>; Mon, 23 Mar 2026 22:17:22 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id A27D42FEDD5
+	for <lists+linux-wireless@lfdr.de>; Tue, 24 Mar 2026 00:20:10 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 8983B3069048
-	for <lists+linux-wireless@lfdr.de>; Mon, 23 Mar 2026 21:16:08 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 8ED8330095E9
+	for <lists+linux-wireless@lfdr.de>; Mon, 23 Mar 2026 23:20:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5EB2E37DE93;
-	Mon, 23 Mar 2026 21:16:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 809643793AC;
+	Mon, 23 Mar 2026 23:20:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="kOOHGCjt"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Lp7UlBxp"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.8])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 016DF37C0FD
-	for <linux-wireless@vger.kernel.org>; Mon, 23 Mar 2026 21:16:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.8
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5C7952ECD3A;
+	Mon, 23 Mar 2026 23:20:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774300563; cv=none; b=c/q+bgtpsYLOitdYyqEUlS2H/bW8Mj6oRXOC3AUMtJTKQSixRWhfRunYwnOEa3jNCzNuqC3It7IdtV3YQnv/PwfgyhLlvxpUEHzgq9kKMFS67DIHSHzXM9yEU2Lq+bsnywM1H3xTGlQ3iBrwA+LAAJveGHXV8Twbp971EVTOSno=
+	t=1774308006; cv=none; b=D7qKX3CoNhygo/ZbgFHdvevvYWqmRlyLe5r7qsDh/zoaam0So/7hvNZegjmfysEBr8wHZVKHCC0dCK0C9eJgrYYrGD3yrZIf/uOItrI+/GtycQMVLTZq/Mh2R8TukevaxwwfW07/JLTRt3e4q1TWVad914VvL6DQJ084CAJOSag=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774300563; c=relaxed/simple;
-	bh=Te0OZmSdIyniJaVestYG6eDvoL9CtWZwIYB7QhRzNMQ=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=l6T/hDOZdi1r8joSvFQcGfviConybMqzsz6yzNj5pK9WDQPmADNMUd72bOTG4vtgdOymVmK+PGOb7ebG7dgJGIS+pqsAkW6iMdIwQjKRrWHozRswy62hQKdCGMzIrEIVkti/7x8AXo2dxAx6UgblFgPouV6ckI9P3P/E7J8Tkt0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=kOOHGCjt; arc=none smtp.client-ip=192.198.163.8
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1774300562; x=1805836562;
-  h=from:to:cc:subject:date:message-id:mime-version:
-   content-transfer-encoding;
-  bh=Te0OZmSdIyniJaVestYG6eDvoL9CtWZwIYB7QhRzNMQ=;
-  b=kOOHGCjt9h8dsuqFfL4HHY1kPQm/pAteybLsvYwvqWaKIjh/cz4y/Or2
-   75rRL5YsUfXxwcASGMTkFj0kQHylRJm8yH6P29W1pGOO31fbhi4IPR+8s
-   2nuZlbG4oa9RSNzxRAawfpT/jwFybvsgOUfiSe/TpS5Esn43lqq6BEATc
-   rJfk174/6dLJj/jt2YpC/UE3z1S4UBoNpGhIHPOpULufZe5aB+rxAI6dq
-   yKwlUgKcYYJuPnuK7P4K/x5V4uvB03tQLYwW0IRwp8OIFcjTltlJJ63Jv
-   B2jUzq3vtH4dH/1sky9pehU1J2q6oAKKByHLSPrpWPzF5yCT7prBTsAyq
-   A==;
-X-CSE-ConnectionGUID: yhakqvHwToaTFFhA772q8g==
-X-CSE-MsgGUID: 8CLcIHUGSv2hXgltL8XOjg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11738"; a="92883567"
-X-IronPort-AV: E=Sophos;i="6.23,137,1770624000"; 
-   d="scan'208";a="92883567"
-Received: from orviesa003.jf.intel.com ([10.64.159.143])
-  by fmvoesa102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 Mar 2026 14:16:01 -0700
-X-CSE-ConnectionGUID: NhYN81jtQIy9mFEd5FFn+A==
-X-CSE-MsgGUID: oHJ3O7/NQ5WA4XE/3qfOcA==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.23,137,1770624000"; 
-   d="scan'208";a="228208729"
-Received: from weis0040.iil.intel.com ([10.12.217.108])
-  by ORVIESA003-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 Mar 2026 14:15:59 -0700
-From: Miri Korenblit <miriam.rachel.korenblit@intel.com>
-To: linux-wireless@vger.kernel.org
-Cc: Emmanuel Grumbach <emmanuel.grumbach@intel.com>,
-	Johannes Berg <johannes.berg@intel.com>
-Subject: [PATCH wireless-next] wifi: mac80211: fix AEAD functions not handling errors
-Date: Mon, 23 Mar 2026 23:15:48 +0200
-Message-Id: <20260323231539.aa9f1db285a8.Icf2051ed1acac174b85b99158cc2b0757310765a@changeid>
-X-Mailer: git-send-email 2.34.1
+	s=arc-20240116; t=1774308006; c=relaxed/simple;
+	bh=PpHcw3oFZN4iT1D2TENT8YsgkPFR1CPpHVPuhH/9Q38=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=ZccCfwn4+4nGaTGdUYj+L2TnY+dNbtEMewM0Npn7uOwL/F1LgvpU7mcJwlP04T1PLqyMRSCcqT6km90ejYAVRa58jNJCuXD9f66OY/1/aqHvEMsEXFSk4wHl2GUZVFNaPPDANjvSrz8endLC8iXEoro5LFPNH8BqHbJJl6cSUu8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Lp7UlBxp; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 97F9CC4CEF7;
+	Mon, 23 Mar 2026 23:20:04 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1774308006;
+	bh=PpHcw3oFZN4iT1D2TENT8YsgkPFR1CPpHVPuhH/9Q38=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=Lp7UlBxpQSS9F616nGQR666fPAc0eOseTKxGcglN/NjreqiNtXuSDZWFEqoRy9Y/9
+	 sab0zBoCpJg8h+is+LJDKgZzWKAgErn3aVOYtv2sErqbk3MfYhaFiGaJXE+scWJIjx
+	 MLSOkKX0Kng8PY8DUiUMi6WjgF8pU2BzFN2Esp4e5slwJekQxOUhWXZYLRhTZ8bzXi
+	 JTEe3j32GpLMIdhr4DcvjfloXGN3EmP5i8XEVAJ7fcffdzFMRxR8gYpeuUVV4NaHnK
+	 WEoZGIBG/E+u56jlstsTO1XhymK5URy4c9+qghCHudTrDB0+SgNFb1OD13CoN+hoIM
+	 9j8FNAbNqyWqw==
+Date: Mon, 23 Mar 2026 16:20:03 -0700
+From: Jakub Kicinski <kuba@kernel.org>
+To: Stanislav Fomichev <sdf@fomichev.me>
+Cc: netdev@vger.kernel.org, davem@davemloft.net, edumazet@google.com,
+ pabeni@redhat.com, horms@kernel.org, corbet@lwn.net,
+ skhan@linuxfoundation.org, andrew+netdev@lunn.ch,
+ michael.chan@broadcom.com, pavan.chebbi@broadcom.com,
+ anthony.l.nguyen@intel.com, przemyslaw.kitszel@intel.com,
+ saeedm@nvidia.com, tariqt@nvidia.com, mbloch@nvidia.com,
+ alexanderduyck@fb.com, kernel-team@meta.com, johannes@sipsolutions.net,
+ sd@queasysnail.net, jianbol@nvidia.com, dtatulea@nvidia.com,
+ mohsin.bashr@gmail.com, jacob.e.keller@intel.com, willemb@google.com,
+ skhawaja@google.com, bestswngs@gmail.com, aleksandr.loktionov@intel.com,
+ kees@kernel.org, linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org,
+ intel-wired-lan@lists.osuosl.org, linux-rdma@vger.kernel.org,
+ linux-wireless@vger.kernel.org, linux-kselftest@vger.kernel.org,
+ leon@kernel.org
+Subject: Re: [PATCH net-next v3 03/13] net: introduce ndo_set_rx_mode_async
+ and dev_rx_mode_work
+Message-ID: <20260323162003.0d155055@kernel.org>
+In-Reply-To: <20260320012501.2033548-4-sdf@fomichev.me>
+References: <20260320012501.2033548-1-sdf@fomichev.me>
+	<20260320012501.2033548-4-sdf@fomichev.me>
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Organization: Intel Israel (74) Limited
-Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-1.16 / 15.00];
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+X-Spamd-Result: default: False [-0.66 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
-	MID_RHS_NOT_FQDN(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[intel.com,none];
-	R_DKIM_ALLOW(-0.20)[intel.com:s=Intel];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TO_DN_SOME(0.00)[];
-	TAGGED_FROM(0.00)[bounces-33738-lists,linux-wireless=lfdr.de];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	HAS_ORG_HEADER(0.00)[];
+	TAGGED_FROM(0.00)[bounces-33739-lists,linux-wireless=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	RCPT_COUNT_THREE(0.00)[3];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[miriam.rachel.korenblit@intel.com,linux-wireless@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[intel.com:+];
-	RCVD_COUNT_FIVE(0.00)[5];
-	TAGGED_RCPT(0.00)[linux-wireless];
-	NEURAL_HAM(-0.00)[-1.000];
+	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,intel.com:dkim,intel.com:email]
-X-Rspamd-Queue-Id: 9524E2FDAB1
+	FREEMAIL_CC(0.00)[vger.kernel.org,davemloft.net,google.com,redhat.com,kernel.org,lwn.net,linuxfoundation.org,lunn.ch,broadcom.com,intel.com,nvidia.com,fb.com,meta.com,sipsolutions.net,queasysnail.net,gmail.com,lists.osuosl.org];
+	RCPT_COUNT_TWELVE(0.00)[36];
+	MIME_TRACE(0.00)[0:+];
+	FROM_HAS_DN(0.00)[];
+	MISSING_XM_UA(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[kuba@kernel.org,linux-wireless@vger.kernel.org];
+	DKIM_TRACE(0.00)[kernel.org:+];
+	MID_RHS_MATCH_FROM(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TAGGED_RCPT(0.00)[linux-wireless,netdev];
+	TO_DN_SOME(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: A27D42FEDD5
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-From: Emmanuel Grumbach <emmanuel.grumbach@intel.com>
+On Thu, 19 Mar 2026 18:24:51 -0700 Stanislav Fomichev wrote:
+> diff --git a/Documentation/networking/netdevices.rst b/Documentation/networking/netdevices.rst
+> index 35704d115312..dc83d78d3b27 100644
+> --- a/Documentation/networking/netdevices.rst
+> +++ b/Documentation/networking/netdevices.rst
+> @@ -289,6 +289,14 @@ struct net_device synchronization rules
+>  ndo_set_rx_mode:
+>  	Synchronization: netif_addr_lock spinlock.
+>  	Context: BHs disabled
+> +	Notes: Deprecated in favor of sleepable ndo_set_rx_mode_async.
+> 
+> +ndo_set_rx_mode_async:
+> +	Synchronization: rtnl_lock() semaphore. In addition, netdev instance
+> +	lock if the driver implements queue management or shaper API.
+> +	Context: process (from a work queue)
+> +	Notes: Sleepable version of ndo_set_rx_mode. Receives snapshots
 
-This was done for CMAC but not for AEAD.
-This was spotted by Coverity.
+It's probably just my weirdness but I find creating adjectives out 
+of random nouns by adding "-able" to be in poor taste. "sleepable"
+took root in certain three letter subsystems but I hope it won't
+in netdev.
 
-Fixes: 26717828b75d ("mac80211: aes-cmac: switch to shash CMAC driver")
-Signed-off-by: Emmanuel Grumbach <emmanuel.grumbach@intel.com>
-Reviewed-by: Johannes Berg <johannes.berg@intel.com>
-Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
----
- net/mac80211/fils_aead.c | 22 +++++++++++++++-------
- 1 file changed, 15 insertions(+), 7 deletions(-)
+Please use your words:
 
-diff --git a/net/mac80211/fils_aead.c b/net/mac80211/fils_aead.c
-index 912c46f74d24..a24c0d0a2b2a 100644
---- a/net/mac80211/fils_aead.c
-+++ b/net/mac80211/fils_aead.c
-@@ -28,25 +28,35 @@ static int aes_s2v(struct crypto_shash *tfm,
- 	u8 d[AES_BLOCK_SIZE], tmp[AES_BLOCK_SIZE] = {};
- 	SHASH_DESC_ON_STACK(desc, tfm);
- 	size_t i;
-+	int err;
- 
- 	desc->tfm = tfm;
- 
- 	/* D = AES-CMAC(K, <zero>) */
--	crypto_shash_digest(desc, tmp, AES_BLOCK_SIZE, d);
-+	err = crypto_shash_digest(desc, tmp, AES_BLOCK_SIZE, d);
-+	if (err)
-+		return err;
- 
- 	for (i = 0; i < num_elem - 1; i++) {
- 		/* D = dbl(D) xor AES_CMAC(K, Si) */
- 		gf_mulx(d); /* dbl */
--		crypto_shash_digest(desc, addr[i], len[i], tmp);
-+		err = crypto_shash_digest(desc, addr[i], len[i], tmp);
-+		if (err)
-+			return err;
- 		crypto_xor(d, tmp, AES_BLOCK_SIZE);
- 	}
- 
--	crypto_shash_init(desc);
-+	err = crypto_shash_init(desc);
-+	if (err)
-+		return err;
- 
- 	if (len[i] >= AES_BLOCK_SIZE) {
- 		/* len(Sn) >= 128 */
- 		/* T = Sn xorend D */
--		crypto_shash_update(desc, addr[i], len[i] - AES_BLOCK_SIZE);
-+		err = crypto_shash_update(desc, addr[i],
-+					  len[i] - AES_BLOCK_SIZE);
-+		if (err)
-+			return err;
- 		crypto_xor(d, addr[i] + len[i] - AES_BLOCK_SIZE,
- 			   AES_BLOCK_SIZE);
- 	} else {
-@@ -57,9 +67,7 @@ static int aes_s2v(struct crypto_shash *tfm,
- 		d[len[i]] ^= 0x80;
- 	}
- 	/* V = AES-CMAC(K, T) */
--	crypto_shash_finup(desc, d, AES_BLOCK_SIZE, v);
--
--	return 0;
-+	return crypto_shash_finup(desc, d, AES_BLOCK_SIZE, v);
- }
- 
- /* Note: addr[] and len[] needs to have one extra slot at the end. */
--- 
-2.34.1
+	Notes: Async version of ndo_set_rx_mode which runs in process
+	context. Receives snapshots f the unicast and multicast address lists.
+
+> +	of the unicast and multicast address lists.
+>  
+>  ndo_setup_tc:
+>  	``TC_SETUP_BLOCK`` and ``TC_SETUP_FT`` are running under NFT locks
+> diff --git a/include/linux/netdevice.h b/include/linux/netdevice.h
+> index 469b7cdb3237..b05bdd67b807 100644
+> --- a/include/linux/netdevice.h
+> +++ b/include/linux/netdevice.h
+> @@ -1117,6 +1117,16 @@ struct netdev_net_notifier {
+>   *	This function is called device changes address list filtering.
+>   *	If driver handles unicast address filtering, it should set
+>   *	IFF_UNICAST_FLT in its priv_flags.
+> + *	Cannot sleep, called with netif_addr_lock_bh held.
+> + *	Deprecated in favor of sleepable ndo_set_rx_mode_async.
+> + *
+> + * void (*ndo_set_rx_mode_async)(struct net_device *dev,
+> + *				 struct netdev_hw_addr_list *uc,
+> + *				 struct netdev_hw_addr_list *mc);
+> + *	Sleepable version of ndo_set_rx_mode. Called from a work queue
+> + *	with rtnl_lock and netdev_lock_ops(dev) held. The uc/mc parameters
+> + *	are snapshots of the address lists - iterate with
+> + *	netdev_hw_addr_list_for_each(ha, uc).
+>   *
+>   * int (*ndo_set_mac_address)(struct net_device *dev, void *addr);
+>   *	This function  is called when the Media Access Control address
+> @@ -1437,6 +1447,9 @@ struct net_device_ops {
+>  	void			(*ndo_change_rx_flags)(struct net_device *dev,
+>  						       int flags);
+>  	void			(*ndo_set_rx_mode)(struct net_device *dev);
+> +	void			(*ndo_set_rx_mode_async)(struct net_device *dev,
+> +							 struct netdev_hw_addr_list *uc,
+> +							 struct netdev_hw_addr_list *mc);
+>  	int			(*ndo_set_mac_address)(struct net_device *dev,
+>  						       void *addr);
+>  	int			(*ndo_validate_addr)(struct net_device *dev);
+> @@ -1903,6 +1916,7 @@ enum netdev_reg_state {
+>   *				has been enabled due to the need to listen to
+>   *				additional unicast addresses in a device that
+>   *				does not implement ndo_set_rx_mode()
+> + *	@rx_mode_work:		Work queue entry for ndo_set_rx_mode_async()
+>   *	@uc:			unicast mac addresses
+>   *	@mc:			multicast mac addresses
+>   *	@dev_addrs:		list of device hw addresses
+> @@ -2293,6 +2307,7 @@ struct net_device {
+>  	unsigned int		promiscuity;
+>  	unsigned int		allmulti;
+>  	bool			uc_promisc;
+> +	struct work_struct	rx_mode_work;
+>  #ifdef CONFIG_LOCKDEP
+>  	unsigned char		nested_level;
+>  #endif
+> @@ -4661,6 +4676,11 @@ static inline bool netif_device_present(const struct net_device *dev)
+>  	return test_bit(__LINK_STATE_PRESENT, &dev->state);
+>  }
+>  
+> +static inline bool netif_up_and_present(const struct net_device *dev)
+> +{
+> +	return (dev->flags & IFF_UP) && netif_device_present(dev);
+
+Is this really worth a dedicated helper? What are you trying to express
+here semantically?
+
+> +
+>  void netif_device_detach(struct net_device *dev);
+>  
+>  void netif_device_attach(struct net_device *dev);
+> diff --git a/net/core/dev.c b/net/core/dev.c
+> index 200d44883fc1..fedc423306fc 100644
+> --- a/net/core/dev.c
+> +++ b/net/core/dev.c
+> @@ -2381,6 +2381,8 @@ static void netstamp_clear(struct work_struct *work)
+>  static DECLARE_WORK(netstamp_work, netstamp_clear);
+>  #endif
+>  
+> +static struct workqueue_struct *rx_mode_wq;
+> +
+>  void net_enable_timestamp(void)
+>  {
+>  #ifdef CONFIG_JUMP_LABEL
+> @@ -9669,22 +9671,84 @@ int netif_set_allmulti(struct net_device *dev, int inc, bool notify)
+>  	return 0;
+>  }
+>  
+> -/*
+> - *	Upload unicast and multicast address lists to device and
+> - *	configure RX filtering. When the device doesn't support unicast
+> - *	filtering it is put in promiscuous mode while unicast addresses
+> - *	are present.
+> +static void dev_rx_mode_work(struct work_struct *work)
+> +{
+> +	struct net_device *dev = container_of(work, struct net_device,
+> +					      rx_mode_work);
+> +	struct netdev_hw_addr_list uc_snap, mc_snap, uc_ref, mc_ref;
+> +	const struct net_device_ops *ops = dev->netdev_ops;
+> +	int err;
+> +
+> +	__hw_addr_init(&uc_snap);
+> +	__hw_addr_init(&mc_snap);
+> +	__hw_addr_init(&uc_ref);
+> +	__hw_addr_init(&mc_ref);
+> +
+> +	rtnl_lock();
+> +	netdev_lock_ops(dev);
+> +
+> +	if (!netif_up_and_present(dev))
+> +		goto out;
+> +
+> +	if (ops->ndo_set_rx_mode_async) {
+
+How did we get here if we don't have this op?
+Are you planning to plumb more code thru this work in the future?
+If yes the whole rx_mode handling should be in a dedicated helper
+rather than indenting most of the function.
+
+> +		netif_addr_lock_bh(dev);
+> +
+> +		err = __hw_addr_list_snapshot(&uc_snap, &dev->uc,
+> +					      dev->addr_len);
+> +		if (!err)
+> +			err = __hw_addr_list_snapshot(&uc_ref, &dev->uc,
+> +						      dev->addr_len);
+> +		if (!err)
+> +			err = __hw_addr_list_snapshot(&mc_snap, &dev->mc,
+> +						      dev->addr_len);
+> +		if (!err)
+> +			err = __hw_addr_list_snapshot(&mc_ref, &dev->mc,
+> +						      dev->addr_len);
+
+This doesn't get slow with a few thousands of addresses?
+
+> +		netif_addr_unlock_bh(dev);
+> +
+> +		if (err) {
+> +			netdev_WARN(dev, "failed to sync uc/mc addresses\n");
+> +			__hw_addr_flush(&uc_snap);
+> +			__hw_addr_flush(&uc_ref);
+> +			__hw_addr_flush(&mc_snap);
+> +			goto out;
+> +		}
+> +
+> +		ops->ndo_set_rx_mode_async(dev, &uc_snap, &mc_snap);
+> +
+> +		netif_addr_lock_bh(dev);
+> +		__hw_addr_list_reconcile(&dev->uc, &uc_snap,
+> +					 &uc_ref, dev->addr_len);
+> +		__hw_addr_list_reconcile(&dev->mc, &mc_snap,
+> +					 &mc_ref, dev->addr_len);
+> +		netif_addr_unlock_bh(dev);
+> +	}
+> +
+> +out:
+> +	netdev_unlock_ops(dev);
+> +	rtnl_unlock();
+> +}
+> +
+> +/**
+> + * __dev_set_rx_mode() - upload unicast and multicast address lists to device
+> + * and configure RX filtering.
+> + * @dev: device
+> + *
+> + * When the device doesn't support unicast filtering it is put in promiscuous
+> + * mode while unicast addresses are present.
+>   */
+>  void __dev_set_rx_mode(struct net_device *dev)
+>  {
+>  	const struct net_device_ops *ops = dev->netdev_ops;
+>  
+>  	/* dev_open will call this function so the list will stay sane. */
+> -	if (!(dev->flags&IFF_UP))
+> +	if (!netif_up_and_present(dev))
+>  		return;
+>  
+> -	if (!netif_device_present(dev))
+> +	if (ops->ndo_set_rx_mode_async) {
+> +		queue_work(rx_mode_wq, &dev->rx_mode_work);
+>  		return;
+> +	}
+>  
+>  	if (!(dev->priv_flags & IFF_UNICAST_FLT)) {
+>  		/* Unicast addresses changes may only happen under the rtnl,
+> @@ -11708,6 +11772,16 @@ void netdev_run_todo(void)
+>  
+>  	__rtnl_unlock();
+>  
+> +	/* Make sure all pending rx_mode work completes before returning.
+> +	 *
+> +	 * rx_mode_wq may be NULL during early boot:
+> +	 * core_initcall(netlink_proto_init) vs subsys_initcall(net_dev_init).
+> +	 *
+> +	 * Check current_work() to avoid flushing from the wq.
+> +	 */
+> +	if (rx_mode_wq && !current_work())
+> +		flush_workqueue(rx_mode_wq);
+
+Can we give the work a reference on the netdev (at init time) and
+cancel + release it here instead of flushing / waiting?
+
+>  	/* Wait for rcu callbacks to finish before next phase */
+>  	if (!list_empty(&list))
+>  		rcu_barrier();
+> @@ -12099,6 +12173,7 @@ struct net_device *alloc_netdev_mqs(int sizeof_priv, const char *name,
+>  #endif
+>  
+>  	mutex_init(&dev->lock);
+> +	INIT_WORK(&dev->rx_mode_work, dev_rx_mode_work);
+>  
+>  	dev->priv_flags = IFF_XMIT_DST_RELEASE | IFF_XMIT_DST_RELEASE_PERM;
+>  	setup(dev);
+> @@ -12203,6 +12278,8 @@ void free_netdev(struct net_device *dev)
+>  
+>  	kfree(rcu_dereference_protected(dev->ingress_queue, 1));
+>  
+> +	cancel_work_sync(&dev->rx_mode_work);
+
+Should never happen so maybe wrap it in a WARN ?
+
+
+>  	/* Flush device addresses */
+>  	dev_addr_flush(dev);
+>  
+> @@ -13296,6 +13373,10 @@ static int __init net_dev_init(void)
+>  	if (register_pernet_device(&default_device_ops))
+>  		goto out;
+>  
+> +	rx_mode_wq = alloc_ordered_workqueue("rx_mode_wq", 0);
+> +	if (!rx_mode_wq)
+> +		goto out;
+> +
+>  	open_softirq(NET_TX_SOFTIRQ, net_tx_action);
+>  	open_softirq(NET_RX_SOFTIRQ, net_rx_action);
+>  
 
 
