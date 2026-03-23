@@ -1,164 +1,157 @@
-Return-Path: <linux-wireless+bounces-33703-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-33706-lists+linux-wireless=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id bo6XATUUwWn5QQQAu9opvQ
-	(envelope-from <linux-wireless+bounces-33703-lists+linux-wireless=lfdr.de@vger.kernel.org>)
-	for <lists+linux-wireless@lfdr.de>; Mon, 23 Mar 2026 11:21:41 +0100
+	id YImEBesYwWn5QQQAu9opvQ
+	(envelope-from <linux-wireless+bounces-33706-lists+linux-wireless=lfdr.de@vger.kernel.org>)
+	for <lists+linux-wireless@lfdr.de>; Mon, 23 Mar 2026 11:41:47 +0100
 X-Original-To: lists+linux-wireless@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 91DFD2EFEA4
-	for <lists+linux-wireless@lfdr.de>; Mon, 23 Mar 2026 11:21:40 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6A0D72F05D8
+	for <lists+linux-wireless@lfdr.de>; Mon, 23 Mar 2026 11:41:46 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 05CC6301A785
-	for <lists+linux-wireless@lfdr.de>; Mon, 23 Mar 2026 10:21:07 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 91A6B3052894
+	for <lists+linux-wireless@lfdr.de>; Mon, 23 Mar 2026 10:35:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D667E38C2D6;
-	Mon, 23 Mar 2026 10:20:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4597638BF92;
+	Mon, 23 Mar 2026 10:35:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=fail reason="signature verification failed" (1024-bit key) header.d=nbd.name header.i=@nbd.name header.b="liU8qiUF"
+	dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b="TXhN+AaW"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from nbd.name (nbd.name [46.4.11.11])
+Received: from sipsolutions.net (s3.sipsolutions.net [168.119.38.16])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B9DBE38C2CB
-	for <linux-wireless@vger.kernel.org>; Mon, 23 Mar 2026 10:19:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=46.4.11.11
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F187E36A023
+	for <linux-wireless@vger.kernel.org>; Mon, 23 Mar 2026 10:35:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=168.119.38.16
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774261200; cv=none; b=DvvQhuCWPZPbi6EQcRR3/sPX3RlnsyyXzHY1ftH9r/s8S788FdjoEXNgAVaZvaMh2+D9beeeHAH4l3+AUsccRuyg5F76YJBGUxtiCMiKAdfSNW3ZUv2xKMggNYQpXKKearrOzr1hqvimhzCEVIYPBbeyInoh8p0FsEen8BhL5As=
+	t=1774262130; cv=none; b=F3LL6I+2sPltCqGyUSoalU4sBkiPhrenJzNX97KAQZFaJD40xOTUlW5H6J3MqLCQ40NOoM1/jRV+yKv6pidVTMLvzSphrMUQgGt/yIx6ro9LdMWn5B6YyK2JhjS09I62CK2tZoBdYYWm8qandP8y4DOIM5saDX+o1yTOop1jvQU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774261200; c=relaxed/simple;
-	bh=dbaKmG2ANXhyHY7FCI7AhyzwFpCbQlZ6m1inmrnu2lU=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=mYHu0rG5apK5WobaU8IVLpAB8RpvJraVAUdMv3BsTpRtd9V5v7jiQUgySdWqmFaLileO418Qg3fvxbmwt80Ppz969rUct2EeMuU6n47vTajIUol8IX581fpXkTnbB47VW2qPLRU9MXWi1x5uhJiD9MQKWaqxIwe2zQLw00/i+uc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nbd.name; spf=pass smtp.mailfrom=nbd.name; dkim=pass (1024-bit key) header.d=nbd.name header.i=@nbd.name header.b=liU8qiUF; arc=none smtp.client-ip=46.4.11.11
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nbd.name
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nbd.name
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=nbd.name;
-	s=20160729; h=Content-Transfer-Encoding:MIME-Version:References:In-Reply-To:
-	Message-ID:Date:Subject:Cc:To:From:Sender:Reply-To:Content-Type:Content-ID:
-	Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
-	:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
-	List-Post:List-Owner:List-Archive;
-	bh=9ywU1c6L3nI8WNK+EgdGI248n9WSTmYSnLtiG60Hx2s=; b=liU8qiUFW527eifsyqyqNd8ba4
-	CxBL1zjnWCQf6Fh8NTqp/uuVyWCtNDC3ZzyIBBOb/PIwqaeE6emuf7+jMBC7ZNeLvonS1MTTmHAL7
-	FxlqJ5EbyEpFr4R+p7m/CjjTsjO3vYcHP4D0fTVso21CTD7MxW/M5iT3iH1Q/2mtejOQ=;
-Received: from p200300cadf30ee00000000000000085c.dip0.t-ipconnect.de ([2003:ca:df30:ee00::85c] helo=max)
-	by ds12 with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.96)
-	(envelope-from <nbd@nbd.name>)
-	id 1w4cO5-00ALUX-10;
-	Mon, 23 Mar 2026 11:19:57 +0100
-From: Felix Fietkau <nbd@nbd.name>
-To: linux-wireless@vger.kernel.org
-Cc: johannes@sipsolutions.net
-Subject: [PATCH 4/4] wifi: mac80211: add ieee80211_txq_aql_pending()
-Date: Mon, 23 Mar 2026 10:19:54 +0000
-Message-ID: <20260323101954.874299-4-nbd@nbd.name>
-X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20260323101954.874299-1-nbd@nbd.name>
+	s=arc-20240116; t=1774262130; c=relaxed/simple;
+	bh=qBwd8/hSrXhuKbRuU2js2LTmJD/TPMiNn/LQuB/GlCM=;
+	h=Message-ID:Subject:From:To:Date:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=Q4JO3a3CnHKUsgPOFQXLgbX5YAGvLvnzi0nuN2M5OIgLbj/xU6gHu6rTyMzoZyKbLqhqPAke0+b5AD8Zg+P+4H9LckTJkFsyb+ieZDiA+iyuYw2p+lQwwvnl23kOAIqKzGLHqexMaG/+ZjaLgAo5JIeSaHYXS+RoIDGoDNtcuN8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net; spf=pass smtp.mailfrom=sipsolutions.net; dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b=TXhN+AaW; arc=none smtp.client-ip=168.119.38.16
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sipsolutions.net
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=sipsolutions.net; s=mail; h=MIME-Version:Content-Transfer-Encoding:
+	Content-Type:References:In-Reply-To:Date:To:From:Subject:Message-ID:Sender:
+	Reply-To:Cc:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
+	Resent-Cc:Resent-Message-ID; bh=2Usu7qZEA9xWiOLCeP0sTIJPaf8p6BpULdkVNzEwTTk=;
+	t=1774262129; x=1775471729; b=TXhN+AaW24mZmgV0n2WvvUy0xlPOFZaGK0qsJz7v+dQPn99
+	EBXMgXj0sSQrB6gZFI3QosEVPobqNPr9egppCYAuEmoVLgozv03cyl/8T49KuxB/zPHbE7ykWQyAo
+	+F3u8jAK+XOJknHwNbg0t+EQUI/COkkl3BaMH0wfLyhsjiSmqqqVO1iANhEj9V8HQfeJW7fvxuyJP
+	Wi/+FxNWYuNAlSO6p7p/ntHpHcrWU0qI24f9ixVpEO3WHrrg078K87HBYzq8zUb3eC8ivfchHZfTc
+	gj1wPCJhTmjBhHOZS2e6RLbxroEiCcLECc1X4twftxRpdyg/3iHu1v0O/9yLZ0ow==;
+Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
+	(Exim 4.98.2)
+	(envelope-from <johannes@sipsolutions.net>)
+	id 1w4cd4-00000009hzA-2bvx;
+	Mon, 23 Mar 2026 11:35:26 +0100
+Message-ID: <bff61ac12183fe1382e2ed00afa2bb6b5a9d8187.camel@sipsolutions.net>
+Subject: Re: [PATCH 2/4] wifi: mac80211: estimate expected throughput if not
+ provided by driver/rc
+From: Johannes Berg <johannes@sipsolutions.net>
+To: Felix Fietkau <nbd@nbd.name>, linux-wireless@vger.kernel.org
+Date: Mon, 23 Mar 2026 11:35:25 +0100
+In-Reply-To: <20260323101954.874299-2-nbd@nbd.name>
 References: <20260323101954.874299-1-nbd@nbd.name>
+	 <20260323101954.874299-2-nbd@nbd.name>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.58.3 (3.58.3-1.fc43) 
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [1.14 / 15.00];
+X-malware-bazaar: not-scanned
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_DKIM_REJECT(1.00)[nbd.name:s=20160729];
-	MID_CONTAINS_FROM(1.00)[];
-	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+	DMARC_POLICY_ALLOW(-0.50)[sipsolutions.net,none];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_DKIM_ALLOW(-0.20)[sipsolutions.net:s=mail];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
-	DMARC_POLICY_SOFTFAIL(0.10)[nbd.name : SPF not aligned (relaxed),none];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-33703-lists,linux-wireless=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	TO_DN_NONE(0.00)[];
-	RCPT_COUNT_TWO(0.00)[2];
+	TAGGED_FROM(0.00)[bounces-33706-lists,linux-wireless=lfdr.de];
 	FROM_HAS_DN(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[nbd@nbd.name,linux-wireless@vger.kernel.org];
-	TAGGED_RCPT(0.00)[linux-wireless];
-	NEURAL_HAM(-0.00)[-0.806];
-	DKIM_TRACE(0.00)[nbd.name:-];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	RCPT_COUNT_TWO(0.00)[2];
 	MIME_TRACE(0.00)[0:+];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 91DFD2EFEA4
+	DKIM_TRACE(0.00)[sipsolutions.net:+];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	TO_DN_SOME(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[johannes@sipsolutions.net,linux-wireless@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	TAGGED_RCPT(0.00)[linux-wireless];
+	MID_RHS_MATCH_FROM(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,nbd.name:email]
+X-Rspamd-Queue-Id: 6A0D72F05D8
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-Add a function to allow drivers to query the pending AQL airtime
-for a given txq, for both unicast and broadcast.
-This will be used for mt76 to limit buffering in AP mode for power-save
-stations.
+On Mon, 2026-03-23 at 10:19 +0000, Felix Fietkau wrote:
+> Estimate the tx throughput based on the expected per-packet tx time.
+> This is useful for mesh implementations that rely on expected throughput,
+> e.g. 802.11s or batman-adv.
+>=20
+> Signed-off-by: Felix Fietkau <nbd@nbd.name>
+> ---
+>  net/mac80211/sta_info.c | 23 +++++++++++++++++++++++
+>  1 file changed, 23 insertions(+)
+>=20
+> diff --git a/net/mac80211/sta_info.c b/net/mac80211/sta_info.c
+> index 4259e9c13ed7..912f00d905b8 100644
+> --- a/net/mac80211/sta_info.c
+> +++ b/net/mac80211/sta_info.c
+> @@ -2978,6 +2978,27 @@ static void sta_set_link_sinfo(struct sta_info *st=
+a,
+>  	}
+>  }
+> =20
+> +static u32 sta_estimate_expected_throughput(struct sta_info *sta,
+> +					    struct station_info *sinfo)
+> +{
+> +	struct ieee80211_sub_if_data *sdata =3D sta->sdata;
+> +	struct ieee80211_local *local =3D sdata->local;
+> +	struct rate_info *ri =3D &sinfo->txrate;
+> +	struct ieee80211_hw *hw =3D &local->hw;
+> +	struct ieee80211_chanctx_conf *conf;
+> +	u32 duration;
+> +	u8 band =3D 0;
+> +
+> +	conf =3D rcu_dereference(sdata->vif.bss_conf.chanctx_conf);
+> +	if (conf)
+> +			band =3D conf->def.chan->band;
 
-Signed-off-by: Felix Fietkau <nbd@nbd.name>
----
- include/net/mac80211.h | 11 +++++++++++
- net/mac80211/tx.c      | 18 ++++++++++++++++++
- 2 files changed, 29 insertions(+)
+Double indentation, but 'u8 band =3D 0' is also really strange. Enum? And
+should have a justification for assuming =3D0?
 
-diff --git a/include/net/mac80211.h b/include/net/mac80211.h
-index 310546d4fca6..f260017cc858 100644
---- a/include/net/mac80211.h
-+++ b/include/net/mac80211.h
-@@ -6710,6 +6710,17 @@ void ieee80211_sta_register_airtime(struct ieee80211_sta *pubsta, u8 tid,
- bool
- ieee80211_txq_airtime_check(struct ieee80211_hw *hw, struct ieee80211_txq *txq);
- 
-+/**
-+ * ieee80211_txq_aql_pending - get pending AQL airtime for a txq
-+ *
-+ * @hw: pointer obtained from ieee80211_alloc_hw()
-+ * @txq: pointer obtained from station or virtual interface
-+ *
-+ * Return: pending airtime (in usec) for the given txq.
-+ */
-+u32 ieee80211_txq_aql_pending(struct ieee80211_hw *hw,
-+			      struct ieee80211_txq *txq);
-+
- /**
-  * ieee80211_iter_keys - iterate keys programmed into the device
-  * @hw: pointer obtained from ieee80211_alloc_hw()
-diff --git a/net/mac80211/tx.c b/net/mac80211/tx.c
-index 04a3ea9beae5..07a65e14d637 100644
---- a/net/mac80211/tx.c
-+++ b/net/mac80211/tx.c
-@@ -4185,6 +4185,24 @@ bool ieee80211_txq_airtime_check(struct ieee80211_hw *hw,
- }
- EXPORT_SYMBOL(ieee80211_txq_airtime_check);
- 
-+u32 ieee80211_txq_aql_pending(struct ieee80211_hw *hw,
-+			      struct ieee80211_txq *txq)
-+{
-+	struct ieee80211_local *local = hw_to_local(hw);
-+	struct sta_info *sta;
-+
-+	if (!txq->sta)
-+		return atomic_read(&local->aql_bc_pending_airtime);
-+
-+	sta = container_of(txq->sta, struct sta_info, sta);
-+
-+	if (unlikely(txq->tid == IEEE80211_NUM_TIDS))
-+		return 0;
-+
-+	return atomic_read(&sta->airtime[txq->ac].aql_tx_pending);
-+}
-+EXPORT_SYMBOL(ieee80211_txq_aql_pending);
-+
- static bool
- ieee80211_txq_schedule_airtime_check(struct ieee80211_local *local, u8 ac)
- {
--- 
-2.51.0
+> +	duration =3D ieee80211_rate_expected_tx_airtime(hw, NULL, ri, band, tru=
+e, 1024);
+> +	duration +=3D duration >> 4; /* add assumed packet error rate of ~6% */
+> +
+> +	return ((1024 * USEC_PER_SEC) / duration) * 8;
 
+this divides by zero.
+
+> @@ -3202,6 +3223,8 @@ void sta_set_sinfo(struct sta_info *sta, struct sta=
+tion_info *sinfo,
+>  		sinfo->sta_flags.set |=3D BIT(NL80211_STA_FLAG_TDLS_PEER);
+> =20
+>  	thr =3D sta_get_expected_throughput(sta);
+> +	if (!thr && (sinfo->filled & BIT_ULL(NL80211_STA_INFO_TX_BITRATE)))
+> +	    thr =3D sta_estimate_expected_throughput(sta, sinfo);
+
+Wrong indentation too ...
+
+johannes
 
