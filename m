@@ -1,170 +1,121 @@
-Return-Path: <linux-wireless+bounces-33710-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-33711-lists+linux-wireless=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id IFYINoQewWmTQwQAu9opvQ
-	(envelope-from <linux-wireless+bounces-33710-lists+linux-wireless=lfdr.de@vger.kernel.org>)
-	for <lists+linux-wireless@lfdr.de>; Mon, 23 Mar 2026 12:05:40 +0100
+	id UGcUG3kewWmTQwQAu9opvQ
+	(envelope-from <linux-wireless+bounces-33711-lists+linux-wireless=lfdr.de@vger.kernel.org>)
+	for <lists+linux-wireless@lfdr.de>; Mon, 23 Mar 2026 12:05:29 +0100
 X-Original-To: lists+linux-wireless@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3A6502F0CEF
-	for <lists+linux-wireless@lfdr.de>; Mon, 23 Mar 2026 12:05:40 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id C05C22F0CD6
+	for <lists+linux-wireless@lfdr.de>; Mon, 23 Mar 2026 12:05:27 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id E0C4F30440A4
-	for <lists+linux-wireless@lfdr.de>; Mon, 23 Mar 2026 10:53:47 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 2A55D30193A7
+	for <lists+linux-wireless@lfdr.de>; Mon, 23 Mar 2026 10:55:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 47F0A3859CD;
-	Mon, 23 Mar 2026 10:53:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A49B037E2E6;
+	Mon, 23 Mar 2026 10:55:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="I5XHFQqf"
+	dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b="G6kWTQ8q"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-wm1-f47.google.com (mail-wm1-f47.google.com [209.85.128.47])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from sipsolutions.net (s3.sipsolutions.net [168.119.38.16])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C661632D7C7
-	for <linux-wireless@vger.kernel.org>; Mon, 23 Mar 2026 10:53:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.47
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7226932D7C7
+	for <linux-wireless@vger.kernel.org>; Mon, 23 Mar 2026 10:55:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=168.119.38.16
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774263227; cv=none; b=AEktuwLD3IAEC1Ov2u24flxCo09ARB+zV/ghviTt788PjXQTXVVEhRCl/vExzo03/D83isxHH78GYHJya+AgSfi2JUyHB3aDR1M/b1dJ3vqn4OEY+lFUAvsBZEgQ9dyzxKQbqFrX/8RZ/M6cTrGNS5zRfTf8Kh1sLn+6y0UuvSo=
+	t=1774263313; cv=none; b=Q2UktsxndIhkSYOmxlDwViMkuQXy4f87kJu3+PTXFKGgLHQWGXFq2JV7YlXfzkB3L7DBcizXDDy6DFmBJ7oinWcMIpOxIzrH2X/tJWSORkjvPr+5mGgJ85Xh6JIXrOWY5i3adxj8FaYu1voLeflo1Yt2A1vIbD0kKhJTpdOHU80=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774263227; c=relaxed/simple;
-	bh=qif1PcSdEiN22JOb2hmbQ9m9c3bCcMaTWtYbFqXBtTY=;
-	h=Message-ID:Date:MIME-Version:Subject:To:References:From:
-	 In-Reply-To:Content-Type; b=DUAj1g4qzDhKTNE9LqwA/1pOMa6qSqQA4/ZF1T6PlkjUnE8ZC0sqQdOWAnz2Opla45fI1ftZ7rGfExyJRPeZZPXNkmdLdcKOWvJqmxeC81BUHWqSTUhj5ltJEtjAy6YDY89dgWuQXMon4o1eZPWqXyrq1ZbdTWmmAg8uKI+gWng=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=I5XHFQqf; arc=none smtp.client-ip=209.85.128.47
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-wm1-f47.google.com with SMTP id 5b1f17b1804b1-486fda2a389so21651375e9.1
-        for <linux-wireless@vger.kernel.org>; Mon, 23 Mar 2026 03:53:45 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1774263224; x=1774868024; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:to:subject:user-agent:mime-version:date:message-id:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=4NsPir38d8G3e0m5A6wQsAL7tMHUqCuvOTWNS0Pg1OE=;
-        b=I5XHFQqfevLbD3VvmX3XNu+vHbvoRyavLToju6v9cDhOekw1F+fupDtMxtwxijhsRq
-         6SRnJkPK9Hme6P/d099JJI7T+cMGtEcTc37+RtQYYjf64R7dr5xn595ac5xSrhRjooSy
-         XY+wfUUJXT+G1WwkaKPZdTYBZ8Nr+VwMaf3uxB+skuOKazbMUboj6YOfRd/UFUMrQwPf
-         i4+V45jgl/K2k4xxMbObCR8Y1Y14bXk848Pf+brAVGhZQq99ztvEgIykJhe4wkUq7RKf
-         3sKsIClGiNGhTuHKakTb+JUAjYpWIYf77FiV/03l7ViPVeBrLYu8XBX+Coc7PUD/SlbF
-         D0eA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1774263224; x=1774868024;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=4NsPir38d8G3e0m5A6wQsAL7tMHUqCuvOTWNS0Pg1OE=;
-        b=iySFi9GBoWcPyqAF4pEM/uBRomKW1cZvEBWJlVYXjEbJejpRMbJuEcXSlTjqC2k+Mq
-         wwmefvtpxuBvuz4xXIfmIuGsJKmvSW29SNmpQdxEWJOCruh4M+FYrH9+uQz45xxj6qdw
-         sdIHvEM14H0YEvyk0hdpmHTsBAX4Ldq49DRfdLNcWCNq5ypXMNcn/CFUOTAVYRqZyTAG
-         boZ7ysWI8ajPazoKiVODJ2EODxn2qOsNY3EeIohUTlJucj6fsuKNLQc4WHswcqBKv03n
-         clDkuJR/xj886VpLxP6ji5mTh+tTNp4mDkFLidFjzQdR46gKTOmVxr8WAGB3J6p/UCJt
-         GJnA==
-X-Forwarded-Encrypted: i=1; AJvYcCWJNCyQigUZi3w87AU58Cl2K+0w4Mlb0pb7cu2y9orGNxJK5hg8D6zzzVQ0jTULPmsgh4ZLcl78yJHLA08n5A==@vger.kernel.org
-X-Gm-Message-State: AOJu0YxsHh6SIKCfquM14unExALUbpMvdUcPQFkHgkqvTylLNzLD1NjV
-	XLcMDe0RhITlYVU/qHkh45TEDYW84nKYJN+fp/n8YBqqBJZ37CzkIiCA
-X-Gm-Gg: ATEYQzzJxNKhpsKaUhYmO9qiKbwloMZG8o+W7R9enIxTCYI1zM0NMXYX4D5l+gGoIUR
-	4YeQMz4G+x1FZDtB3An3qNBLqEK18dXdFXEIhthS8nZQ6UCQhWnQXMPFNNRS7beMw+u6kwrWNVS
-	26IbTqL8r5Sm2m8H1vYpC1eE1VeTA5t91sOHNuChYHZ4rbDc9ZLvW6jaivG/Z2UMRJuhnNgr6rm
-	yXWGTjS94QyWyRBZeQtgwZAzVkCI83rSUhJn5tJPFo8jQrnyaplB9kg/5djjGDX8IskEizhamAG
-	8WofDr/7GgVHL7wb5drvcMmT5L+UsqzKkOxEpuXudbK8yVKTqjwbckjoKK0lbZH0Ro85XV+22mi
-	VbCfthde325zLVZhNaFk4D/wN4yuFlAKtODnZgVWsTJIo4948gWxk3K9LE8uqTzhm0+hjpqPXod
-	CO5iTq1ITw7bnTT2oLsKmqJT1rKxagEg==
-X-Received: by 2002:a05:600c:34d2:b0:485:1878:7b8c with SMTP id 5b1f17b1804b1-486ff029163mr143534995e9.18.1774263223834;
-        Mon, 23 Mar 2026 03:53:43 -0700 (PDT)
-Received: from [192.168.1.50] ([81.196.40.93])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-486ff19d452sm79302145e9.19.2026.03.23.03.53.43
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 23 Mar 2026 03:53:43 -0700 (PDT)
-Message-ID: <897a086c-437b-44d7-8433-8c0feea814f3@gmail.com>
-Date: Mon, 23 Mar 2026 12:53:42 +0200
+	s=arc-20240116; t=1774263313; c=relaxed/simple;
+	bh=GnYxp243Yqqae4eYxesQG0t32Ur10J7RnTwruI0EB+o=;
+	h=Message-ID:Subject:From:To:Date:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=mcOXGlMhXmV0z4cOOxwwoyRPFYZN6wxylIdi14S0amwBtdG+cV8gk1bnbpMHfCOwE17My/FdNE0VlUO9Ffd8e52zhFbpK1GSXGlZeW2maQpwDQJKGXvYDQ9f9cg3Kb8JCcEOrK7sL9mlkU9V9uc23ZYtppdrEL+1mGtd8vqWnoI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net; spf=pass smtp.mailfrom=sipsolutions.net; dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b=G6kWTQ8q; arc=none smtp.client-ip=168.119.38.16
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sipsolutions.net
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=sipsolutions.net; s=mail; h=MIME-Version:Content-Transfer-Encoding:
+	Content-Type:References:In-Reply-To:Date:To:From:Subject:Message-ID:Sender:
+	Reply-To:Cc:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
+	Resent-Cc:Resent-Message-ID; bh=+rtJEMZzW+gcodCKGrHHsBvjctr2FqosgqoQqchbBjQ=;
+	t=1774263312; x=1775472912; b=G6kWTQ8q78p/xwX7pLZ808C2bhQR8acQRnOYl9FfIC9i96p
+	l+KPgqLqCffaZc61muB92nd0VHVsG8mLjX+0UuY9AO/LQhCzaGzWaBu6Cmc/okR1NrI0RRV2q0Q1F
+	9iMJ8I4zBfPJlsA5kuu7W00Rvw7PEra3WJog9r6tNBBRLgEI+pTF4Y8V1WuDHB/7FgDBtBbTnbUnh
+	w0uwtC8eQU9SsB6CFbI9c5QCJg7bhbvs2CHNwT+g4HSPsB/v/AjVkMrDFXSci/bV+vkg0lPoHm2TP
+	y5FkD3LpG9aHaGRNggt40NW2xOs8nEVHqaH9EDsOjAjwKudHDpjVjv4NwiBhAloQ==;
+Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
+	(Exim 4.98.2)
+	(envelope-from <johannes@sipsolutions.net>)
+	id 1w4cwA-00000009igj-1EfH;
+	Mon, 23 Mar 2026 11:55:10 +0100
+Message-ID: <cfbedb0dded5917d35e62936013a387285520645.camel@sipsolutions.net>
+Subject: Re: [PATCH 4/4] wifi: mac80211: add ieee80211_txq_aql_pending()
+From: Johannes Berg <johannes@sipsolutions.net>
+To: Felix Fietkau <nbd@nbd.name>, linux-wireless@vger.kernel.org
+Date: Mon, 23 Mar 2026 11:55:09 +0100
+In-Reply-To: <20260323101954.874299-4-nbd@nbd.name>
+References: <20260323101954.874299-1-nbd@nbd.name>
+	 <20260323101954.874299-4-nbd@nbd.name>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.58.3 (3.58.3-1.fc43) 
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH rtw-next 6/7] wifi: rtw89: 8922d: add set channel of BB
- part
-To: Ping-Ke Shih <pkshih@realtek.com>, linux-wireless@vger.kernel.org
-References: <20260323032556.19825-1-pkshih@realtek.com>
- <20260323032556.19825-7-pkshih@realtek.com>
-Content-Language: en-US
-From: Bitterblue Smith <rtl8821cerfe2@gmail.com>
-In-Reply-To: <20260323032556.19825-7-pkshih@realtek.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+X-malware-bazaar: not-scanned
 X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
-	R_DKIM_ALLOW(-0.20)[gmail.com:s=20230601];
+	DMARC_POLICY_ALLOW(-0.50)[sipsolutions.net,none];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
+	R_DKIM_ALLOW(-0.20)[sipsolutions.net:s=mail];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-33710-lists,linux-wireless=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	RCPT_COUNT_TWO(0.00)[2];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[gmail.com:+];
-	TO_DN_SOME(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-33711-lists,linux-wireless=lfdr.de];
 	FROM_HAS_DN(0.00)[];
-	FREEMAIL_FROM(0.00)[gmail.com];
-	RCVD_COUNT_FIVE(0.00)[5];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCPT_COUNT_TWO(0.00)[2];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[sipsolutions.net:+];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[rtl8821cerfe2@gmail.com,linux-wireless@vger.kernel.org];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	FROM_NEQ_ENVFROM(0.00)[johannes@sipsolutions.net,linux-wireless@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
 	TAGGED_RCPT(0.00)[linux-wireless];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,realtek.com:email]
-X-Rspamd-Queue-Id: 3A6502F0CEF
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: C05C22F0CD6
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-On 23/03/2026 05:25, Ping-Ke Shih wrote:
-> The set channel of BB part is the main part, which according to channel
-> and bandwidth to configure CCK SCO, RX gain of LNA and TIA programmed
-> in efuse for CCK and OFDM rate, and spur elimination of CSI and NBI tones.
-> 
-> Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
-> ---
->  drivers/net/wireless/realtek/rtw89/core.h     |   2 +
->  drivers/net/wireless/realtek/rtw89/reg.h      |  64 +-
->  drivers/net/wireless/realtek/rtw89/rtw8922d.c | 820 ++++++++++++++++++
->  3 files changed, 885 insertions(+), 1 deletion(-)
-> 
-
-[..]
-
+On Mon, 2026-03-23 at 10:19 +0000, Felix Fietkau wrote:
+>=20
+> +u32 ieee80211_txq_aql_pending(struct ieee80211_hw *hw,
+> +			      struct ieee80211_txq *txq)
+> +{
+> +	struct ieee80211_local *local =3D hw_to_local(hw);
+> +	struct sta_info *sta;
 > +
-> +static const struct rtw89_nbi_reg_def rtw8922d_nbi_reg_def[] = {
-> +	[RF_PATH_A] = {
-> +		.notch1_idx = {0x241A0, 0xFF},
-> +		.notch1_frac_idx = {0x241A0, 0xC00},
-> +		.notch1_en = {0x241A0, 0x1000},
-> +		.notch2_idx = {0x241AC, 0xFF},
-> +		.notch2_frac_idx = {0x241AC, 0xC00},
-> +		.notch2_en = {0x241AC, 0x1000},
-> +	},
-> +	[RF_PATH_B] = {
-> +		.notch1_idx = {0x245A0, 0xFF},
-> +		.notch1_frac_idx = {0x241A0, 0xC00},
-
-Is that supposed to be 0x245A0 ?
-
-> +		.notch1_en = {0x245A0, 0x1000},
-> +		.notch2_idx = {0x245AC, 0xFF},
-> +		.notch2_frac_idx = {0x245AC, 0xC00},
-> +		.notch2_en = {0x245AC, 0x1000},
-> +	},
-> +};
+> +	if (!txq->sta)
+> +		return atomic_read(&local->aql_bc_pending_airtime);
 > +
+> +	sta =3D container_of(txq->sta, struct sta_info, sta);
+> +
+> +	if (unlikely(txq->tid =3D=3D IEEE80211_NUM_TIDS))
+> +		return 0;
 
-[...]
+I think better to put that check before the !txq->sta check. I don't
+think it's there yet, but I think NAN is adding a per-interface mgmt
+queue or so. Better to just cover all the cases here now.
+
+johannes
 
