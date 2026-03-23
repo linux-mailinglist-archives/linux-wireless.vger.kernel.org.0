@@ -1,71 +1,71 @@
-Return-Path: <linux-wireless+bounces-33674-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-33675-lists+linux-wireless=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id sIrmAf2ywGm5KAQAu9opvQ
-	(envelope-from <linux-wireless+bounces-33674-lists+linux-wireless=lfdr.de@vger.kernel.org>)
-	for <lists+linux-wireless@lfdr.de>; Mon, 23 Mar 2026 04:26:53 +0100
+	id 0B4KFuyywGm5KAQAu9opvQ
+	(envelope-from <linux-wireless+bounces-33675-lists+linux-wireless=lfdr.de@vger.kernel.org>)
+	for <lists+linux-wireless@lfdr.de>; Mon, 23 Mar 2026 04:26:36 +0100
 X-Original-To: lists+linux-wireless@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7CA052EC329
-	for <lists+linux-wireless@lfdr.de>; Mon, 23 Mar 2026 04:26:52 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id CB6932EC31B
+	for <lists+linux-wireless@lfdr.de>; Mon, 23 Mar 2026 04:26:35 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 36AC23017C3F
-	for <lists+linux-wireless@lfdr.de>; Mon, 23 Mar 2026 03:26:29 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id A841A3005674
+	for <lists+linux-wireless@lfdr.de>; Mon, 23 Mar 2026 03:26:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A04C51514F8;
-	Mon, 23 Mar 2026 03:26:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EC82015539A;
+	Mon, 23 Mar 2026 03:26:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=realtek.com header.i=@realtek.com header.b="m56Xo3US"
+	dkim=pass (2048-bit key) header.d=realtek.com header.i=@realtek.com header.b="tZWRp2oH"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D6EF514A8B
-	for <linux-wireless@vger.kernel.org>; Mon, 23 Mar 2026 03:26:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2D3DA1514F8
+	for <linux-wireless@vger.kernel.org>; Mon, 23 Mar 2026 03:26:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=211.75.126.72
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774236388; cv=none; b=Qk+rgVay/p89myKS6ssKAnDbIsdPGp5u/1++vRWVBzPDnG8USPtBSGypwcVREVGt3T1v9teGpc9yrVHq8T3UnL7j/LLGZG6ciGaBQBam7M8+8KkhhTYYBjKrbg/cJdmYK79jFzIeNYYqv4hNglsISnxPKAmwx4ZYM+InF9zgMgg=
+	t=1774236393; cv=none; b=FbKdVdC5qwsVvSh5TV9ZediS3KeSQQgleQ7bM3fNWf0UEz1o0sTEe8D/SsbUJzibtVKHSQM7WF3om7sk6Fy+Y9RMhCpq7lLcUkNwog6NVp+/YcbdbCabFL7AS0G1qQv/Q9PW+rT27P9YBirrT6lIc/JUOTelQkgJKX90EaHcaV8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774236388; c=relaxed/simple;
-	bh=FNg09PpozNZRCjUSXhqIOyPKVE2nZcusQ/Um7AVuEII=;
+	s=arc-20240116; t=1774236393; c=relaxed/simple;
+	bh=BHehGmt2H5S4JXo/cXElWv1g9Kw4aNXUM+lUl6qIvtM=;
 	h=From:To:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=D+jwSguouUVex8QHv3NctTW4nocO94eqUDncmmlb0MvVCttuhvn/87f9/5N2yq6R000+YHsJeJ9VGDqsaNoj8dsz5d3wjcxMzfApaDXPMilQlT+Immyckmckd4qB4aUMP36xCZjK65nX91T0C0w+hlIN2RQbZTxzbj2XxwApmAE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com; spf=pass smtp.mailfrom=realtek.com; dkim=pass (2048-bit key) header.d=realtek.com header.i=@realtek.com header.b=m56Xo3US; arc=none smtp.client-ip=211.75.126.72
+	 MIME-Version:Content-Type; b=l3o3g6vW5xwerW9hPG8RbHqapctwxPHR2eFz76tOQGzFRtz/5hyE513qo1A+NDcvdw2lSN8we8ZsV3nw1L9UgCnN/nt8dPF9gmCWCRGBy1Tu8NRlGYqwqhO9P7wLJAdFtn7BY+hFBVid2LqEMbNiK0cZUtgbK4R4wKVkxIVJ+GI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com; spf=pass smtp.mailfrom=realtek.com; dkim=pass (2048-bit key) header.d=realtek.com header.i=@realtek.com header.b=tZWRp2oH; arc=none smtp.client-ip=211.75.126.72
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=realtek.com
-X-SpamFilter-By: ArmorX SpamTrap 5.80 with qID 62N3QO8a82375588, This message is accepted by code: ctloc85258
+X-SpamFilter-By: ArmorX SpamTrap 5.80 with qID 62N3QTx642375604, This message is accepted by code: ctloc85258
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=realtek.com; s=dkim;
-	t=1774236384; bh=zZOfhQPq/F6CMyQ8admE2m+y838WF8bTcBQIWyGboZw=;
+	t=1774236389; bh=RAyof8pDuu3tAexN7/4Ancn55Wx3LLYXhA2yIPVXC/8=;
 	h=From:To:Subject:Date:Message-ID:In-Reply-To:References:
 	 MIME-Version:Content-Transfer-Encoding:Content-Type;
-	b=m56Xo3UST7u8x5Y/BQHxZ9l2dPiugOJc0eRXXZ/1Eae7HFtdnmjSC35xRtO5z3qXZ
-	 KpUaSqcsKUDIq0pxBCV0bJpXYT4pd4wLNyOT4dZ8lD+o3s6kb7DzhZ0m421mbWhM8V
-	 MyZwzSbiIifXELq1X2tL3OkhaeM/jPtIbcu9ErIGq+6f8B8o8BFWCXokpetuMXhHzY
-	 JSuqBRQgzUBZ2ouG3Ok2phhqbbe7DsZX7k6iMPhJRLmJGa7PVwtTrGU9ru2CAbRcrN
-	 ZttgO/f4Yebux8+CojAx8RZbeHis233qMU9ExmfNjRevBdjvi3Tf6K1uGWsgW2h6iG
-	 NC5f5F2ZRGDYg==
-Received: from mail.realtek.com (rtkexhmbs03.realtek.com.tw[10.21.1.53])
-	by rtits2.realtek.com.tw (8.15.2/3.21/5.94) with ESMTPS id 62N3QO8a82375588
+	b=tZWRp2oHtBzSHdz8I/cEChTOYbGBDnX603W5Impgqs1rGqu9tCsnYweQPTb7kpCLx
+	 kSTAtQjVAyVuIwjX6fJ4L+8sKA1b5PRw8FV9DFHBI2xzrV/YxkF6dilCJ27ponpC3T
+	 SUmNia99mzeNUaK/Abx10eoq0FSyPmc6cCWeFQwW9zN+7noiOfjdYW2Vy/On8gzYtI
+	 H1z0YFxVfmAj0HeUEWcoAj62Sk0EmWTV0eAJKDZkAZbs93PDN9bBZzXp3c0ohQKCN5
+	 L6Qb2xOSM1cIkU9gR3r7tmb/MS+qEXWr2NfLHaG8CeUqm8xChVotnFQ81PUY5Ql124
+	 JlhvtNvivOIaA==
+Received: from mail.realtek.com (rtkexhmbs04.realtek.com.tw[10.21.1.54])
+	by rtits2.realtek.com.tw (8.15.2/3.21/5.94) with ESMTPS id 62N3QTx642375604
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK)
-	for <linux-wireless@vger.kernel.org>; Mon, 23 Mar 2026 11:26:24 +0800
+	for <linux-wireless@vger.kernel.org>; Mon, 23 Mar 2026 11:26:29 +0800
 Received: from RTKEXHMBS06.realtek.com.tw (10.21.1.56) by
- RTKEXHMBS03.realtek.com.tw (10.21.1.53) with Microsoft SMTP Server
+ RTKEXHMBS04.realtek.com.tw (10.21.1.54) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1748.10; Mon, 23 Mar 2026 11:26:25 +0800
+ 15.2.1748.10; Mon, 23 Mar 2026 11:26:30 +0800
 Received: from RTKEXHMBS06.realtek.com.tw (10.21.1.56) by
  RTKEXHMBS06.realtek.com.tw (10.21.1.56) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1748.10; Mon, 23 Mar 2026 11:26:24 +0800
+ 15.2.1748.10; Mon, 23 Mar 2026 11:26:30 +0800
 Received: from [127.0.1.1] (172.21.40.75) by RTKEXHMBS06.realtek.com.tw
  (10.21.1.56) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1748.10 via Frontend
- Transport; Mon, 23 Mar 2026 11:26:24 +0800
+ Transport; Mon, 23 Mar 2026 11:26:30 +0800
 From: Ping-Ke Shih <pkshih@realtek.com>
 To: <linux-wireless@vger.kernel.org>
-Subject: [PATCH rtw-next 2/7] wifi: rtw89: 8922d: add power on/off functions
-Date: Mon, 23 Mar 2026 11:25:51 +0800
-Message-ID: <20260323032556.19825-3-pkshih@realtek.com>
+Subject: [PATCH rtw-next 3/7] wifi: rtw89: 8922d: define efuse map and read necessary fields
+Date: Mon, 23 Mar 2026 11:25:52 +0800
+Message-ID: <20260323032556.19825-4-pkshih@realtek.com>
 X-Mailer: git-send-email 2.25.1
 In-Reply-To: <20260323032556.19825-1-pkshih@realtek.com>
 References: <20260323032556.19825-1-pkshih@realtek.com>
@@ -82,12 +82,12 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	MID_CONTAINS_FROM(1.00)[];
 	DMARC_POLICY_ALLOW(-0.50)[realtek.com,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	R_DKIM_ALLOW(-0.20)[realtek.com:s=dkim];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-33674-lists,linux-wireless=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-33675-lists,linux-wireless=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
 	TO_DN_NONE(0.00)[];
 	RCPT_COUNT_ONE(0.00)[1];
@@ -97,358 +97,308 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[realtek.com:dkim,realtek.com:email,realtek.com:mid];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,realtek.com:dkim,realtek.com:email,realtek.com:mid];
 	DKIM_TRACE(0.00)[realtek.com:+];
 	TAGGED_RCPT(0.00)[linux-wireless];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_COUNT_SEVEN(0.00)[7]
-X-Rspamd-Queue-Id: 7CA052EC329
+X-Rspamd-Queue-Id: CB6932EC31B
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-The power on function is the first entry to power on hardware including
-all MAC/BB/RF circuits, and then it becomes possible to do high level
-operations, such as WiFi scan, connection.
-
-If connection becomes unavailable, device stays into idle mode, calling
-power off function to cut power.
+Define specific efuse map for RTL8922D, including TSSI, RX gain, MAC
+address, RFE type and etc. The additional fields comparing to existing
+chips are BT setting (define BT switch GPIO, antenna number and etc) and
+gain offset2 (define more fields like existing RX gain offset).
 
 Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
 ---
- drivers/net/wireless/realtek/rtw89/reg.h      |  63 +++++
- drivers/net/wireless/realtek/rtw89/rtw8922d.c | 237 ++++++++++++++++++
- 2 files changed, 300 insertions(+)
+ drivers/net/wireless/realtek/rtw89/core.h     |   3 +
+ drivers/net/wireless/realtek/rtw89/rtw8922d.c | 162 ++++++++++++++++++
+ drivers/net/wireless/realtek/rtw89/rtw8922d.h |  70 ++++++++
+ 3 files changed, 235 insertions(+)
 
-diff --git a/drivers/net/wireless/realtek/rtw89/reg.h b/drivers/net/wireless/realtek/rtw89/reg.h
-index 2cb35458a822..b6fd7b434de9 100644
---- a/drivers/net/wireless/realtek/rtw89/reg.h
-+++ b/drivers/net/wireless/realtek/rtw89/reg.h
-@@ -4403,6 +4403,31 @@
- #define B_BE_FS_GPIO17_INT_EN BIT(1)
- #define B_BE_FS_GPIO16_INT_EN BIT(0)
- 
-+#define R_BE_FWS1ISR 0x019C
-+#define B_BE_FS_WL_HW_RADIO_OFF_INT BIT(28)
-+#define B_BE_SWRD_BOD_INT BIT(27)
-+#define B_BE_HCIDBG_INT BIT(25)
-+#define B_BE_FS_RPWM_INT_V1 BIT(24)
-+#define B_BE_PCIE_HOTRST BIT(22)
-+#define B_BE_PCIE_SER_TIMEOUT_INDIC BIT(21)
-+#define B_BE_PCIE_RXI300_SLVTOUT_INDIC BIT(20)
-+#define B_BE_AON_PCIE_FLR_INT BIT(19)
-+#define B_BE_PCIE_ERR_INDIC BIT(18)
-+#define B_BE_SDIO_ERR_INDIC BIT(17)
-+#define B_BE_USB_ERR_INDIC BIT(16)
-+#define B_BE_FS_GPIO27_INT BIT(11)
-+#define B_BE_FS_GPIO26_INT BIT(10)
-+#define B_BE_FS_GPIO25_INT BIT(9)
-+#define B_BE_FS_GPIO24_INT BIT(8)
-+#define B_BE_FS_GPIO23_INT BIT(7)
-+#define B_BE_FS_GPIO22_INT BIT(6)
-+#define B_BE_FS_GPIO21_INT BIT(5)
-+#define B_BE_FS_GPIO20_INT BIT(4)
-+#define B_BE_FS_GPIO19_INT BIT(3)
-+#define B_BE_FS_GPIO18_INT BIT(2)
-+#define B_BE_FS_GPIO17_INT BIT(1)
-+#define B_BE_FS_GPIO16_INT BIT(0)
-+
- #define R_BE_HIMR0 0x01A0
- #define B_BE_WDT_DATACPU_TIMEOUT_INT_EN BIT(25)
- #define B_BE_HALT_D2H_INT_EN BIT(24)
-@@ -4503,6 +4528,44 @@
- #define R_BE_UDM2 0x01F8
- #define B_BE_UDM2_EPC_RA_MASK GENMASK(31, 0)
- 
-+#define R_BE_SPS_DIG_ON_CTRL1 0x0204
-+#define B_BE_SN_N_L_MASK GENMASK(31, 28)
-+#define B_BE_SP_N_L_MASK GENMASK(27, 24)
-+#define B_BE_SN_P_L_MASK GENMASK(23, 20)
-+#define B_BE_SP_P_L_MASK GENMASK(19, 16)
-+#define B_BE_VO_DISCHG_PWM_H BIT(15)
-+#define B_BE_REG_MODE_PREDRIVER BIT(14)
-+#define B_BE_VREFOCP_MASK GENMASK(13, 10)
-+#define B_BE_POWOCP_L1 BIT(9)
-+#define B_BE_PWM_FORCE BIT(8)
-+#define B_BE_PFM_PD_RST BIT(7)
-+#define B_BE_VC_PFM_RSTB BIT(6)
-+#define B_BE_PFM_IN_SEL BIT(5)
-+#define B_BE_VC_RSTB BIT(4)
-+#define B_BE_FPWMDELAY BIT(3)
-+#define B_BE_ENFPWMDELAY_H BIT(2)
-+#define B_BE_REG_MOS_HALF_L BIT(1)
-+#define B_BE_CURRENT_SENSE_MOS BIT(0)
-+
-+#define R_BE_SPS_ANA_ON_CTRL1 0x0224
-+#define B_BE_SN_N_L_ANA_MASK GENMASK(31, 28)
-+#define B_BE_SP_N_L_ANA_MASK GENMASK(27, 24)
-+#define B_BE_SN_P_L_ANA_MASK GENMASK(23, 20)
-+#define B_BE_SP_P_L_ANA_MASK GENMASK(19, 16)
-+#define B_BE_VO_DISCHG_PWM_H_ANA BIT(15)
-+#define B_BE_REG_MODE_PREDRIVER_ANA BIT(14)
-+#define B_BE_VREFOCP_ANA_MASK GENMASK(13, 10)
-+#define B_BE_POWOCP_L1_ANA BIT(9)
-+#define B_BE_PWM_FORCE_ANA BIT(8)
-+#define B_BE_PFM_PD_RST_ANA BIT(7)
-+#define B_BE_VC_PFM_RSTB_ANA BIT(6)
-+#define B_BE_PFM_IN_SEL_ANA BIT(5)
-+#define B_BE_VC_RSTB_ANA BIT(4)
-+#define B_BE_FPWMDELAY_ANA BIT(3)
-+#define B_BE_ENFPWMDELAY_H_ANA BIT(2)
-+#define B_BE_REG_MOS_HALF_L_ANA BIT(1)
-+#define B_BE_CURRENT_SENSE_MOS_ANA BIT(0)
-+
- #define R_BE_AFE_ON_CTRL0 0x0240
- #define B_BE_REG_LPF_R3_3_0_MASK GENMASK(31, 29)
- #define B_BE_REG_LPF_R2_MASK GENMASK(28, 24)
-diff --git a/drivers/net/wireless/realtek/rtw89/rtw8922d.c b/drivers/net/wireless/realtek/rtw89/rtw8922d.c
-index 6a90ded1b33e..194e2901232b 100644
---- a/drivers/net/wireless/realtek/rtw89/rtw8922d.c
-+++ b/drivers/net/wireless/realtek/rtw89/rtw8922d.c
-@@ -231,6 +231,243 @@ static const struct rtw89_efuse_block_cfg rtw8922d_efuse_blocks[] = {
- 	[RTW89_EFUSE_BLOCK_ADIE]		= {.offset = 0x70000, .size = 0x10},
+diff --git a/drivers/net/wireless/realtek/rtw89/core.h b/drivers/net/wireless/realtek/rtw89/core.h
+index 94e4faf70e12..d0ae3e15253b 100644
+--- a/drivers/net/wireless/realtek/rtw89/core.h
++++ b/drivers/net/wireless/realtek/rtw89/core.h
+@@ -3562,6 +3562,8 @@ struct rtw89_efuse {
+ 	u8 rfe_type;
+ 	char country_code[2];
+ 	u8 adc_td;
++	u8 bt_setting_2;
++	u8 bt_setting_3;
  };
  
-+static int rtw8922d_pwr_on_func(struct rtw89_dev *rtwdev)
+ struct rtw89_phy_rate_pattern {
+@@ -5926,6 +5928,7 @@ struct rtw89_phy_efuse_gain {
+ 	bool offset_valid;
+ 	bool comp_valid;
+ 	s8 offset[RF_PATH_MAX][RTW89_GAIN_OFFSET_NR]; /* S(8, 0) */
++	s8 offset2[RF_PATH_MAX][RTW89_GAIN_OFFSET_NR]; /* S(8, 0) */
+ 	s8 offset_base[RTW89_PHY_NUM]; /* S(8, 4) */
+ 	s8 rssi_base[RTW89_PHY_NUM]; /* S(8, 4) */
+ 	s8 comp[RF_PATH_MAX][RTW89_SUBBAND_NR]; /* S(8, 0) */
+diff --git a/drivers/net/wireless/realtek/rtw89/rtw8922d.c b/drivers/net/wireless/realtek/rtw89/rtw8922d.c
+index 194e2901232b..0ae34a4f8d79 100644
+--- a/drivers/net/wireless/realtek/rtw89/rtw8922d.c
++++ b/drivers/net/wireless/realtek/rtw89/rtw8922d.c
+@@ -2,6 +2,7 @@
+ /* Copyright(c) 2026  Realtek Corporation
+  */
+ 
++#include "debug.h"
+ #include "efuse.h"
+ #include "mac.h"
+ #include "reg.h"
+@@ -468,6 +469,167 @@ static int rtw8922d_pwr_off_func(struct rtw89_dev *rtwdev)
+ 	return 0;
+ }
+ 
++static void rtw8922d_efuse_parsing_tssi(struct rtw89_dev *rtwdev,
++					struct rtw8922d_efuse *map)
 +{
-+	struct rtw89_hal *hal = &rtwdev->hal;
-+	u32 val32;
-+	int ret;
++	const struct rtw8922d_tssi_offset_6g * const ofst_6g[] = {
++		&map->path_a_tssi_6g,
++		&map->path_b_tssi_6g,
++	};
++	const struct rtw8922d_tssi_offset * const ofst[] = {
++		&map->path_a_tssi,
++		&map->path_b_tssi,
++	};
++	struct rtw89_tssi_info *tssi = &rtwdev->tssi;
++	u8 i, j;
 +
-+	if (hal->cid != RTL8922D_CID7025)
-+		goto begin;
++	tssi->thermal[RF_PATH_A] = map->path_a_therm;
++	tssi->thermal[RF_PATH_B] = map->path_b_therm;
 +
-+	switch (hal->cv) {
-+	case CHIP_CAV:
-+	case CHIP_CBV:
-+		rtw89_write32_set(rtwdev, R_BE_SPS_DIG_ON_CTRL1, B_BE_PWM_FORCE);
-+		rtw89_write32_set(rtwdev, R_BE_SPS_ANA_ON_CTRL1, B_BE_PWM_FORCE_ANA);
-+		break;
-+	default:
-+		break;
++	for (i = 0; i < RF_PATH_NUM_8922D; i++) {
++		memcpy(tssi->tssi_cck[i], ofst[i]->cck_tssi, TSSI_CCK_CH_GROUP_NUM);
++
++		for (j = 0; j < TSSI_CCK_CH_GROUP_NUM; j++)
++			rtw89_debug(rtwdev, RTW89_DBG_TSSI,
++				    "[TSSI][EFUSE] path=%d cck[%d]=0x%x\n",
++				    i, j, tssi->tssi_cck[i][j]);
++
++		memcpy(tssi->tssi_mcs[i], ofst[i]->bw40_tssi,
++		       TSSI_MCS_2G_CH_GROUP_NUM);
++		memcpy(tssi->tssi_mcs[i] + TSSI_MCS_2G_CH_GROUP_NUM,
++		       ofst[i]->bw40_1s_tssi_5g, TSSI_MCS_5G_CH_GROUP_NUM);
++		memcpy(tssi->tssi_6g_mcs[i], ofst_6g[i]->bw40_1s_tssi_6g,
++		       TSSI_MCS_6G_CH_GROUP_NUM);
++
++		for (j = 0; j < TSSI_MCS_CH_GROUP_NUM; j++)
++			rtw89_debug(rtwdev, RTW89_DBG_TSSI,
++				    "[TSSI][EFUSE] path=%d mcs[%d]=0x%x\n",
++				    i, j, tssi->tssi_mcs[i][j]);
++
++		for (j = 0; j < TSSI_MCS_6G_CH_GROUP_NUM; j++)
++			rtw89_debug(rtwdev, RTW89_DBG_TSSI,
++				    "[TSSI][EFUSE] path=%d mcs_6g[%d]=0x%x\n",
++				    i, j, tssi->tssi_6g_mcs[i][j]);
 +	}
++}
 +
-+begin:
-+	rtw89_write32_clr(rtwdev, R_BE_SYS_PW_CTRL, B_BE_AFSM_WLSUS_EN |
-+						    B_BE_AFSM_PCIE_SUS_EN);
-+	rtw89_write32_set(rtwdev, R_BE_SYS_PW_CTRL, B_BE_DIS_WLBT_PDNSUSEN_SOPC);
-+	rtw89_write32_set(rtwdev, R_BE_WLLPS_CTRL, B_BE_DIS_WLBT_LPSEN_LOPC);
-+	if (hal->cid != RTL8922D_CID7090)
-+		rtw89_write32_clr(rtwdev, R_BE_SYS_PW_CTRL, B_BE_APDM_HPDN);
-+	rtw89_write32_clr(rtwdev, R_BE_FWS1ISR, B_BE_FS_WL_HW_RADIO_OFF_INT);
-+	rtw89_write32_clr(rtwdev, R_BE_SYS_PW_CTRL, B_BE_APFM_SWLPS);
++static void
++__rtw8922d_efuse_parsing_gain_offset(struct rtw89_dev *rtwdev,
++				     s8 offset[RTW89_GAIN_OFFSET_NR],
++				     const s8 *offset_default,
++				     const struct rtw8922d_rx_gain *rx_gain,
++				     const struct rtw8922d_rx_gain_6g *rx_gain_6g)
++{
++	int i;
++	u8 t;
 +
-+	ret = read_poll_timeout(rtw89_read32, val32, val32 & B_BE_RDY_SYSPWR,
-+				1000, 3000000, false, rtwdev, R_BE_SYS_PW_CTRL);
-+	if (ret)
-+		return ret;
++	offset[RTW89_GAIN_OFFSET_2G_CCK] = rx_gain->_2g_cck;
++	offset[RTW89_GAIN_OFFSET_2G_OFDM] = rx_gain->_2g_ofdm;
++	offset[RTW89_GAIN_OFFSET_5G_LOW] = rx_gain->_5g_low;
++	offset[RTW89_GAIN_OFFSET_5G_MID] = rx_gain->_5g_mid;
++	offset[RTW89_GAIN_OFFSET_5G_HIGH] = rx_gain->_5g_high;
++	offset[RTW89_GAIN_OFFSET_6G_L0] = rx_gain_6g->_6g_l0;
++	offset[RTW89_GAIN_OFFSET_6G_L1] = rx_gain_6g->_6g_l1;
++	offset[RTW89_GAIN_OFFSET_6G_M0] = rx_gain_6g->_6g_m0;
++	offset[RTW89_GAIN_OFFSET_6G_M1] = rx_gain_6g->_6g_m1;
++	offset[RTW89_GAIN_OFFSET_6G_H0] = rx_gain_6g->_6g_h0;
++	offset[RTW89_GAIN_OFFSET_6G_H1] = rx_gain_6g->_6g_h1;
++	offset[RTW89_GAIN_OFFSET_6G_UH0] = rx_gain_6g->_6g_uh0;
++	offset[RTW89_GAIN_OFFSET_6G_UH1] = rx_gain_6g->_6g_uh1;
 +
-+	rtw89_write32_set(rtwdev, R_BE_SYS_PW_CTRL, B_BE_EN_WLON);
-+	rtw89_write32_set(rtwdev, R_BE_WLRESUME_CTRL, B_BE_LPSROP_CMAC0 |
-+						      B_BE_LPSROP_CMAC1);
-+	rtw89_write32_set(rtwdev, R_BE_SYS_PW_CTRL, B_BE_APFN_ONMAC);
++	for (i = 0; i < RTW89_GAIN_OFFSET_NR; i++) {
++		t = offset[i];
++		if (t == 0xff) {
++			if (offset_default) {
++				offset[i] = offset_default[i];
++				continue;
++			}
++			t = 0;
++		}
 +
-+	ret = read_poll_timeout(rtw89_read32, val32, !(val32 & B_BE_APFN_ONMAC),
-+				1000, 3000000, false, rtwdev, R_BE_SYS_PW_CTRL);
-+	if (ret)
-+		return ret;
++		/* transform: sign-bit + U(7,2) to S(8,2) */
++		if (t & 0x80)
++			offset[i] = (t ^ 0x7f) + 1;
++		else
++			offset[i] = t;
++	}
++}
 +
-+	rtw89_write8_set(rtwdev, R_BE_PLATFORM_ENABLE, B_BE_PLATFORM_EN);
-+	rtw89_write32_set(rtwdev, R_BE_HCI_OPT_CTRL, B_BE_HAXIDMA_IO_EN);
++static void rtw8922d_efuse_parsing_gain_offset(struct rtw89_dev *rtwdev,
++					       struct rtw8922d_efuse *map)
++{
++	struct rtw89_phy_efuse_gain *gain = &rtwdev->efuse_gain;
 +
-+	ret = read_poll_timeout(rtw89_read32, val32, val32 & B_BE_HAXIDMA_IO_ST,
-+				1000, 3000000, false, rtwdev, R_BE_HCI_OPT_CTRL);
-+	if (ret)
-+		return ret;
++	__rtw8922d_efuse_parsing_gain_offset(rtwdev, gain->offset[RF_PATH_A],
++					     NULL,
++					     &map->rx_gain_a, &map->rx_gain_6g_a);
++	__rtw8922d_efuse_parsing_gain_offset(rtwdev, gain->offset[RF_PATH_B],
++					     NULL,
++					     &map->rx_gain_b, &map->rx_gain_6g_b);
 +
-+	ret = read_poll_timeout(rtw89_read32, val32, !(val32 & B_BE_HAXIDMA_BACKUP_RESTORE_ST),
-+				1000, 3000000, false, rtwdev, R_BE_HCI_OPT_CTRL);
-+	if (ret)
-+		return ret;
++	__rtw8922d_efuse_parsing_gain_offset(rtwdev, gain->offset2[RF_PATH_A],
++					     gain->offset[RF_PATH_A],
++					     &map->rx_gain_a_2, &map->rx_gain_6g_a_2);
++	__rtw8922d_efuse_parsing_gain_offset(rtwdev, gain->offset2[RF_PATH_B],
++					     gain->offset[RF_PATH_B],
++					     &map->rx_gain_b_2, &map->rx_gain_6g_b_2);
 +
-+	rtw89_write32_set(rtwdev, R_BE_HCI_OPT_CTRL, B_BE_HCI_WLAN_IO_EN);
++	gain->offset_valid = true;
++}
 +
-+	ret = read_poll_timeout(rtw89_read32, val32, val32 & B_BE_HCI_WLAN_IO_ST,
-+				1000, 3000000, false, rtwdev, R_BE_HCI_OPT_CTRL);
-+	if (ret)
-+		return ret;
++static int rtw8922d_read_efuse_pci_sdio(struct rtw89_dev *rtwdev, u8 *log_map)
++{
++	struct rtw89_efuse *efuse = &rtwdev->efuse;
 +
-+	rtw89_write32_clr(rtwdev, R_BE_SYS_SDIO_CTRL, B_BE_PCIE_FORCE_IBX_EN);
-+
-+	ret = rtw89_mac_write_xtal_si(rtwdev, XTAL_SI_NORMAL_WRITE, 0x10, 0x10);
-+	if (ret)
-+		return ret;
-+
-+	rtw89_write32_set(rtwdev, R_BE_SYS_ADIE_PAD_PWR_CTRL, B_BE_SYM_PADPDN_WL_RFC1_1P3);
-+
-+	ret = rtw89_mac_write_xtal_si(rtwdev, XTAL_SI_ANAPAR_WL, 0x40, 0x40);
-+	if (ret)
-+		return ret;
-+
-+	rtw89_write32_set(rtwdev, R_BE_SYS_ADIE_PAD_PWR_CTRL, B_BE_SYM_PADPDN_WL_RFC0_1P3);
-+
-+	ret = rtw89_mac_write_xtal_si(rtwdev, XTAL_SI_ANAPAR_WL, 0x20, 0x20);
-+	if (ret)
-+		return ret;
-+	ret = rtw89_mac_write_xtal_si(rtwdev, XTAL_SI_ANAPAR_WL, 0x04, 0x04);
-+	if (ret)
-+		return ret;
-+	ret = rtw89_mac_write_xtal_si(rtwdev, XTAL_SI_ANAPAR_WL, 0x08, 0x08);
-+	if (ret)
-+		return ret;
-+	ret = rtw89_mac_write_xtal_si(rtwdev, XTAL_SI_ANAPAR_WL, 0, 0x10);
-+	if (ret)
-+		return ret;
-+	ret = rtw89_mac_write_xtal_si(rtwdev, XTAL_SI_WL_RFC_S0, 0xEB, 0xFF);
-+	if (ret)
-+		return ret;
-+	ret = rtw89_mac_write_xtal_si(rtwdev, XTAL_SI_WL_RFC_S1, 0xEB, 0xFF);
-+	if (ret)
-+		return ret;
-+	ret = rtw89_mac_write_xtal_si(rtwdev, XTAL_SI_ANAPAR_WL, 0x01, 0x01);
-+	if (ret)
-+		return ret;
-+	ret = rtw89_mac_write_xtal_si(rtwdev, XTAL_SI_ANAPAR_WL, 0x02, 0x02);
-+	if (ret)
-+		return ret;
-+	ret = rtw89_mac_write_xtal_si(rtwdev, XTAL_SI_ANAPAR_WL, 0, 0x80);
-+	if (ret)
-+		return ret;
-+	ret = rtw89_mac_write_xtal_si(rtwdev, XTAL_SI_XTAL_XMD_2, 0, 0x70);
-+	if (ret)
-+		return ret;
-+	ret = rtw89_mac_write_xtal_si(rtwdev, XTAL_SI_SRAM_CTRL, 0, 0x02);
-+	if (ret)
-+		return ret;
-+
-+	rtw89_write32_set(rtwdev, R_BE_PMC_DBG_CTRL2, B_BE_SYSON_DIS_PMCR_BE_WRMSK);
-+	rtw89_write32_set(rtwdev, R_BE_SYS_ISO_CTRL, B_BE_ISO_EB2CORE);
-+	rtw89_write32_clr(rtwdev, R_BE_SYS_ISO_CTRL, B_BE_PWC_EV2EF_B);
-+
-+	mdelay(1);
-+
-+	rtw89_write32_clr(rtwdev, R_BE_SYS_ISO_CTRL, B_BE_PWC_EV2EF_S);
-+	rtw89_write32_clr(rtwdev, R_BE_PMC_DBG_CTRL2, B_BE_SYSON_DIS_PMCR_BE_WRMSK);
-+
-+	rtw89_write32_set(rtwdev, R_BE_DMAC_FUNC_EN,
-+			  B_BE_MAC_FUNC_EN | B_BE_DMAC_FUNC_EN |
-+			  B_BE_MPDU_PROC_EN | B_BE_WD_RLS_EN |
-+			  B_BE_DLE_WDE_EN | B_BE_TXPKT_CTRL_EN |
-+			  B_BE_STA_SCH_EN | B_BE_DLE_PLE_EN |
-+			  B_BE_PKT_BUF_EN | B_BE_DMAC_TBL_EN |
-+			  B_BE_PKT_IN_EN | B_BE_DLE_CPUIO_EN |
-+			  B_BE_DISPATCHER_EN | B_BE_BBRPT_EN |
-+			  B_BE_MAC_SEC_EN | B_BE_H_AXIDMA_EN |
-+			  B_BE_DMAC_MLO_EN | B_BE_PLRLS_EN |
-+			  B_BE_P_AXIDMA_EN | B_BE_DLE_DATACPUIO_EN |
-+			  B_BE_LTR_CTL_EN);
-+
-+	set_bit(RTW89_FLAG_DMAC_FUNC, rtwdev->flags);
-+
-+	rtw89_write32_set(rtwdev, R_BE_CMAC_SHARE_FUNC_EN,
-+			  B_BE_CMAC_SHARE_EN | B_BE_RESPBA_EN |
-+			  B_BE_ADDRSRCH_EN | B_BE_BTCOEX_EN);
-+
-+	rtw89_write32_set(rtwdev, R_BE_CMAC_FUNC_EN,
-+			  B_BE_CMAC_EN | B_BE_CMAC_TXEN |
-+			  B_BE_CMAC_RXEN | B_BE_SIGB_EN |
-+			  B_BE_PHYINTF_EN | B_BE_CMAC_DMA_EN |
-+			  B_BE_PTCLTOP_EN | B_BE_SCHEDULER_EN |
-+			  B_BE_TMAC_EN | B_BE_RMAC_EN |
-+			  B_BE_TXTIME_EN | B_BE_RESP_PKTCTL_EN);
-+
-+	set_bit(RTW89_FLAG_CMAC0_FUNC, rtwdev->flags);
-+
-+	rtw89_write32_set(rtwdev, R_BE_FEN_RST_ENABLE,
-+			  B_BE_FEN_BB_IP_RSTN | B_BE_FEN_BBPLAT_RSTB);
++	if (rtwdev->hci.type == RTW89_HCI_TYPE_PCIE)
++		ether_addr_copy(efuse->addr, log_map + 0x4104);
++	else
++		ether_addr_copy(efuse->addr, log_map + 0x001A);
 +
 +	return 0;
 +}
 +
-+static int rtw8922d_pwr_off_func(struct rtw89_dev *rtwdev)
++static int rtw8922d_read_efuse_usb(struct rtw89_dev *rtwdev, u8 *log_map)
 +{
-+	u32 val32;
-+	int ret;
++	struct rtw89_efuse *efuse = &rtwdev->efuse;
 +
-+	ret = rtw89_mac_write_xtal_si(rtwdev, XTAL_SI_ANAPAR_WL, 0x10, 0x10);
-+	if (ret)
-+		return ret;
-+	ret = rtw89_mac_write_xtal_si(rtwdev, XTAL_SI_ANAPAR_WL, 0, 0x08);
-+	if (ret)
-+		return ret;
-+	ret = rtw89_mac_write_xtal_si(rtwdev, XTAL_SI_ANAPAR_WL, 0, 0x04);
-+	if (ret)
-+		return ret;
-+	ret = rtw89_mac_write_xtal_si(rtwdev, XTAL_SI_WL_RFC_S0, 0, 0x01);
-+	if (ret)
-+		return ret;
-+	ret = rtw89_mac_write_xtal_si(rtwdev, XTAL_SI_WL_RFC_S1, 0, 0x01);
-+	if (ret)
-+		return ret;
-+	ret = rtw89_mac_write_xtal_si(rtwdev, XTAL_SI_ANAPAR_WL, 0x80, 0x80);
-+	if (ret)
-+		return ret;
-+	ret = rtw89_mac_write_xtal_si(rtwdev, XTAL_SI_ANAPAR_WL, 0, 0x02);
-+	if (ret)
-+		return ret;
-+	ret = rtw89_mac_write_xtal_si(rtwdev, XTAL_SI_ANAPAR_WL, 0, 0x01);
-+	if (ret)
-+		return ret;
-+
-+	rtw89_write32_set(rtwdev, R_BE_SYS_PW_CTRL, B_BE_EN_WLON);
-+	rtw89_write8_clr(rtwdev, R_BE_FEN_RST_ENABLE, B_BE_FEN_BB_IP_RSTN |
-+						      B_BE_FEN_BBPLAT_RSTB);
-+	rtw89_write32_clr(rtwdev, R_BE_SYS_ADIE_PAD_PWR_CTRL,
-+			  B_BE_SYM_PADPDN_WL_RFC0_1P3);
-+
-+	ret = rtw89_mac_write_xtal_si(rtwdev, XTAL_SI_ANAPAR_WL, 0, 0x20);
-+	if (ret)
-+		return ret;
-+
-+	rtw89_write32_clr(rtwdev, R_BE_SYS_ADIE_PAD_PWR_CTRL,
-+			  B_BE_SYM_PADPDN_WL_RFC1_1P3);
-+
-+	ret = rtw89_mac_write_xtal_si(rtwdev, XTAL_SI_ANAPAR_WL, 0, 0x40);
-+	if (ret)
-+		return ret;
-+
-+	rtw89_write32_clr(rtwdev, R_BE_HCI_OPT_CTRL, B_BE_HAXIDMA_IO_EN);
-+
-+	ret = read_poll_timeout(rtw89_read32, val32, !(val32 & B_BE_HAXIDMA_IO_ST),
-+				1000, 3000000, false, rtwdev, R_BE_HCI_OPT_CTRL);
-+	if (ret)
-+		return ret;
-+	ret = read_poll_timeout(rtw89_read32, val32,
-+				!(val32 & B_BE_HAXIDMA_BACKUP_RESTORE_ST),
-+				1000, 3000000, false, rtwdev, R_BE_HCI_OPT_CTRL);
-+	if (ret)
-+		return ret;
-+
-+	rtw89_write32_clr(rtwdev, R_BE_HCI_OPT_CTRL, B_BE_HCI_WLAN_IO_EN);
-+
-+	ret = read_poll_timeout(rtw89_read32, val32, !(val32 & B_BE_HCI_WLAN_IO_ST),
-+				1000, 3000000, false, rtwdev, R_BE_HCI_OPT_CTRL);
-+	if (ret)
-+		return ret;
-+
-+	rtw89_write32_set(rtwdev, R_BE_SYS_PW_CTRL, B_BE_APFM_OFFMAC);
-+
-+	ret = read_poll_timeout(rtw89_read32, val32, !(val32 & B_BE_APFM_OFFMAC),
-+				1000, 3000000, false, rtwdev, R_BE_SYS_PW_CTRL);
-+	if (ret)
-+		return ret;
-+
-+	rtw89_write32(rtwdev, R_BE_WLLPS_CTRL, 0x00015002);
-+	rtw89_write32_clr(rtwdev, R_BE_SYS_PW_CTRL, B_BE_XTAL_OFF_A_DIE);
-+	rtw89_write32_set(rtwdev, R_BE_SYS_PW_CTRL, B_BE_APFM_SWLPS);
-+	rtw89_write32(rtwdev, R_BE_UDM1, 0);
++	ether_addr_copy(efuse->addr, log_map + 0x0078);
 +
 +	return 0;
++}
++
++static int rtw8922d_read_efuse_rf(struct rtw89_dev *rtwdev, u8 *log_map)
++{
++	struct rtw8922d_efuse *map = (struct rtw8922d_efuse *)log_map;
++	struct rtw89_efuse *efuse = &rtwdev->efuse;
++
++	efuse->rfe_type = map->rfe_type;
++	efuse->xtal_cap = map->xtal_k;
++	efuse->country_code[0] = map->country_code[0];
++	efuse->country_code[1] = map->country_code[1];
++	efuse->bt_setting_2 = map->bt_setting_2;
++	efuse->bt_setting_3 = map->bt_setting_3;
++	rtw8922d_efuse_parsing_tssi(rtwdev, map);
++	rtw8922d_efuse_parsing_gain_offset(rtwdev, map);
++
++	return 0;
++}
++
++static int rtw8922d_read_efuse(struct rtw89_dev *rtwdev, u8 *log_map,
++			       enum rtw89_efuse_block block)
++{
++	switch (block) {
++	case RTW89_EFUSE_BLOCK_HCI_DIG_PCIE_SDIO:
++		return rtw8922d_read_efuse_pci_sdio(rtwdev, log_map);
++	case RTW89_EFUSE_BLOCK_HCI_DIG_USB:
++		return rtw8922d_read_efuse_usb(rtwdev, log_map);
++	case RTW89_EFUSE_BLOCK_RF:
++		return rtw8922d_read_efuse_rf(rtwdev, log_map);
++	default:
++		return 0;
++	}
 +}
 +
  MODULE_FIRMWARE(RTW8922D_MODULE_FIRMWARE);
  MODULE_FIRMWARE(RTW8922DS_MODULE_FIRMWARE);
  MODULE_AUTHOR("Realtek Corporation");
+diff --git a/drivers/net/wireless/realtek/rtw89/rtw8922d.h b/drivers/net/wireless/realtek/rtw89/rtw8922d.h
+index 7ef3f263274e..a3b98ad6636c 100644
+--- a/drivers/net/wireless/realtek/rtw89/rtw8922d.h
++++ b/drivers/net/wireless/realtek/rtw89/rtw8922d.h
+@@ -7,4 +7,74 @@
+ 
+ #include "core.h"
+ 
++#define RF_PATH_NUM_8922D 2
++#define BB_PATH_NUM_8922D 2
++
++struct rtw8922d_tssi_offset {
++	u8 cck_tssi[TSSI_CCK_CH_GROUP_NUM];
++	u8 bw40_tssi[TSSI_MCS_2G_CH_GROUP_NUM];
++	u8 rsvd[7];
++	u8 bw40_1s_tssi_5g[TSSI_MCS_5G_CH_GROUP_NUM];
++	u8 bw_diff_5g[10];
++} __packed;
++
++struct rtw8922d_tssi_offset_6g {
++	u8 bw40_1s_tssi_6g[TSSI_MCS_6G_CH_GROUP_NUM];
++	u8 rsvd[0xa];
++} __packed;
++
++struct rtw8922d_rx_gain {
++	u8 _2g_ofdm;
++	u8 _2g_cck;
++	u8 _5g_low;
++	u8 _5g_mid;
++	u8 _5g_high;
++} __packed;
++
++struct rtw8922d_rx_gain_6g {
++	u8 _6g_l0;
++	u8 _6g_l1;
++	u8 _6g_m0;
++	u8 _6g_m1;
++	u8 _6g_h0;
++	u8 _6g_h1;
++	u8 _6g_uh0;
++	u8 _6g_uh1;
++} __packed;
++
++struct rtw8922d_efuse {
++	u8 country_code[2];
++	u8 rsvd[0xe];
++	struct rtw8922d_tssi_offset path_a_tssi;
++	struct rtw8922d_tssi_offset path_b_tssi;
++	u8 rsvd1[0x54];
++	u8 channel_plan;
++	u8 xtal_k;
++	u8 rsvd2[0x7];
++	u8 board_info;
++	u8 rsvd3[0x8];
++	u8 rfe_type;
++	u8 rsvd4[2];
++	u8 bt_setting_2;
++	u8 bt_setting_3;
++	u8 rsvd4_2;
++	u8 path_a_therm;
++	u8 path_b_therm;
++	u8 rsvd5[0x2];
++	struct rtw8922d_rx_gain rx_gain_a;
++	struct rtw8922d_rx_gain rx_gain_b;
++	u8 rsvd6[0x18];
++	struct rtw8922d_rx_gain rx_gain_a_2;
++	struct rtw8922d_rx_gain rx_gain_b_2;
++	struct rtw8922d_tssi_offset_6g path_a_tssi_6g;
++	struct rtw8922d_tssi_offset_6g path_b_tssi_6g;
++	struct rtw8922d_tssi_offset_6g path_c_tssi_6g;
++	struct rtw8922d_tssi_offset_6g path_d_tssi_6g;
++	struct rtw8922d_rx_gain_6g rx_gain_6g_a;
++	struct rtw8922d_rx_gain_6g rx_gain_6g_b;
++	u8 rsvd7[0x5a];
++	struct rtw8922d_rx_gain_6g rx_gain_6g_a_2;
++	struct rtw8922d_rx_gain_6g rx_gain_6g_b_2;
++} __packed;
++
+ #endif
 -- 
 2.25.1
 
