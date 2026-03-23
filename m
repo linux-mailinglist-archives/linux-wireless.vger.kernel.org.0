@@ -1,231 +1,241 @@
-Return-Path: <linux-wireless+bounces-33693-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-33704-lists+linux-wireless=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id GC6iMEoQwWk7QQQAu9opvQ
-	(envelope-from <linux-wireless+bounces-33693-lists+linux-wireless=lfdr.de@vger.kernel.org>)
-	for <lists+linux-wireless@lfdr.de>; Mon, 23 Mar 2026 11:04:58 +0100
+	id wOrjNDUUwWnkQQQAu9opvQ
+	(envelope-from <linux-wireless+bounces-33704-lists+linux-wireless=lfdr.de@vger.kernel.org>)
+	for <lists+linux-wireless@lfdr.de>; Mon, 23 Mar 2026 11:21:41 +0100
 X-Original-To: lists+linux-wireless@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2F56E2EFA26
-	for <lists+linux-wireless@lfdr.de>; Mon, 23 Mar 2026 11:04:58 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id C04E92EFEB2
+	for <lists+linux-wireless@lfdr.de>; Mon, 23 Mar 2026 11:21:41 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id CC00130479F0
-	for <lists+linux-wireless@lfdr.de>; Mon, 23 Mar 2026 09:58:32 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id E5C13301A7BF
+	for <lists+linux-wireless@lfdr.de>; Mon, 23 Mar 2026 10:21:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 98A0838839D;
-	Mon, 23 Mar 2026 09:58:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 11BD638B7A4;
+	Mon, 23 Mar 2026 10:20:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=aliel.fr header.i=@aliel.fr header.b="Bb5vBKKc"
+	dkim=fail reason="signature verification failed" (1024-bit key) header.d=nbd.name header.i=@nbd.name header.b="YKxCwqj9"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from courrier.aliel.fr (pouet.aliel.fr [65.21.61.41])
+Received: from nbd.name (nbd.name [46.4.11.11])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4D0411FE44A;
-	Mon, 23 Mar 2026 09:58:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=65.21.61.41
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7302938C2C7
+	for <linux-wireless@vger.kernel.org>; Mon, 23 Mar 2026 10:19:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=46.4.11.11
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774259909; cv=none; b=iMxPhxvNZpBTl3/15t5iI/Vhsl01e4hUp3B+KPXfPUDPbbdFWVt0Xwn4gGy2AvMXq+vTxgJs3sEWoOJ/A5tV+eCdfw8o/mpQx67JbAKH6/5HRtym4ON3L8KcCxFcp6edOges2Qwd/wprfAH4apgVSJlcJsmHfwuLL79B0KOPisI=
+	t=1774261201; cv=none; b=llzaH6e9X7AoenuVzXmXW9m4oYzkrNh3HOQi5xrRxntYCiHrIjEVyhczUVpGYHwRMfgJqsorQk+erLYNx9NSDIVYuQHlcR2EPUriow2iRNWM1QysziRcg1QMYuqFqhWmU7cxbROYGplBpf0w1Q+8qLB6aS3bhjl9+PIOj16tsUs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774259909; c=relaxed/simple;
-	bh=Ywdd79SLlnG+5FuD1iPwguAxNCDzzkCuTsJrgYS9eQA=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=RTZNfk77soAMYJIZuD0cgIdmcmeOWbbUBTasBkF56fVK4E0qB+KPMz/65lbrFGu89LF7NmdmNdhzszIEtLk2a/aMTiB5lVDugohyfDq7I4EVQkWpT+PK3PtX5KD4MVRHMmCa+hsxPxjMxo4gSWbB+sofpqS7cS1kNURl4/unek8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=aliel.fr; spf=pass smtp.mailfrom=aliel.fr; dkim=pass (1024-bit key) header.d=aliel.fr header.i=@aliel.fr header.b=Bb5vBKKc; arc=none smtp.client-ip=65.21.61.41
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=aliel.fr
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=aliel.fr
-From: Ronald Claveau <linux-kernel-dev@aliel.fr>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=aliel.fr;
-	s=courrier-s1; t=1774259905;
-	bh=Ywdd79SLlnG+5FuD1iPwguAxNCDzzkCuTsJrgYS9eQA=;
-	h=From:Date:Subject:References:In-Reply-To:To:Cc;
-	b=Bb5vBKKcHrQrCUXjhW2Cz4IuM0XNMePmeixn8P6uiZR8waRm6evd9CVlZrjJHRbyE
-	 0LbIbSka2GyYZZSOzRlmOnx/m+WdKAk3LQdNCrmS8Zv3itmdOZjYug0nU4B2ZupeGF
-	 n5mrsZDuQ6PZ6Kisc2yV091ZAQx9UnuqYgD0AJiI=
-Date: Mon, 23 Mar 2026 10:55:34 +0100
-Subject: [PATCH v3 9/9] arm64: dts: amlogic: t7: khadas-vim4: Add MMC nodes
+	s=arc-20240116; t=1774261201; c=relaxed/simple;
+	bh=7J/ZGoE9WalnOJXlcDFsF7bBKBjpV9X4lLisT3gkY7Y=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=leiLai/JPy0RepdfkGuQvig5tMJNymLz4ra+H3Y/fqQaF5iCSWNSSlqUpcEwZW4GsixMcuK7MBP9vSsLuJhVovU6+cKKRHqJKGFbyzWYzYT9OPMARf3ueep8WiL7SkcksMR/h+uSWvCQjxdF3bzBj0x7uIwSAG+w1XGsra1YSVk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nbd.name; spf=pass smtp.mailfrom=nbd.name; dkim=pass (1024-bit key) header.d=nbd.name header.i=@nbd.name header.b=YKxCwqj9; arc=none smtp.client-ip=46.4.11.11
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nbd.name
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nbd.name
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=nbd.name;
+	s=20160729; h=Content-Transfer-Encoding:MIME-Version:Message-ID:Date:Subject:
+	Cc:To:From:Sender:Reply-To:Content-Type:Content-ID:Content-Description:
+	Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:
+	In-Reply-To:References:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
+	List-Post:List-Owner:List-Archive;
+	bh=Qh3QWMjsVj42x7CjrtGVxV/fENELE1KjGrLxML2Apgs=; b=YKxCwqj9A4mGITqWbwOchBzqWD
+	oT6nBcSmh6lONCbTDUm7VLWbGWoS4ZiGkgN9hOKhR7SifKAsEVlHT56IWAHBOE9mice3M/1uC0DmC
+	g8L8RmL1GAUX0rPaylCMHEU7awpJLryxXMSuqJOJJbkG/iMVlZQ4jy4Ljwif+Xi3eC8I=;
+Received: from p200300cadf30ee00000000000000085c.dip0.t-ipconnect.de ([2003:ca:df30:ee00::85c] helo=max)
+	by ds12 with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.96)
+	(envelope-from <nbd@nbd.name>)
+	id 1w4cO4-00ALUX-2J;
+	Mon, 23 Mar 2026 11:19:56 +0100
+From: Felix Fietkau <nbd@nbd.name>
+To: linux-wireless@vger.kernel.org
+Cc: johannes@sipsolutions.net
+Subject: [PATCH 1/4] wifi: mac80211: factor out part of ieee80211_calc_expected_tx_airtime
+Date: Mon, 23 Mar 2026 10:19:51 +0000
+Message-ID: <20260323101954.874299-1-nbd@nbd.name>
+X-Mailer: git-send-email 2.51.0
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20260323-add-emmc-t7-vim4-v3-9-5159d90a984c@aliel.fr>
-References: <20260323-add-emmc-t7-vim4-v3-0-5159d90a984c@aliel.fr>
-In-Reply-To: <20260323-add-emmc-t7-vim4-v3-0-5159d90a984c@aliel.fr>
-To: Neil Armstrong <neil.armstrong@linaro.org>, 
- Kevin Hilman <khilman@baylibre.com>, Jerome Brunet <jbrunet@baylibre.com>, 
- Martin Blumenstingl <martin.blumenstingl@googlemail.com>, 
- Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, 
- Conor Dooley <conor+dt@kernel.org>, Ulf Hansson <ulf.hansson@linaro.org>, 
- Johannes Berg <johannes@sipsolutions.net>, van Spriel <arend@broadcom.com>
-Cc: linux-arm-kernel@lists.infradead.org, linux-amlogic@lists.infradead.org, 
- devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, 
- linux-mmc@vger.kernel.org, linux-wireless@vger.kernel.org, 
- Ronald Claveau <linux-kernel-dev@aliel.fr>
-X-Mailer: b4 0.14.3
-X-Developer-Signature: v=1; a=openssh-sha256; t=1774259896; l=2817;
- i=linux-kernel-dev@aliel.fr; s=id_ed25519; h=from:subject:message-id;
- bh=Ywdd79SLlnG+5FuD1iPwguAxNCDzzkCuTsJrgYS9eQA=;
- b=U1NIU0lHAAAAAQAAADMAAAALc3NoLWVkMjU1MTkAAAAgMGec55oxeeisqykQiUedekMYyOnR9
- BG9E/7rDWyqdNoAAAAGcGF0YXR0AAAAAAAAAAZzaGE1MTIAAABTAAAAC3NzaC1lZDI1NTE5AAAA
- QFYi+0Gd/+Zfbjizr+3GvRz83PiMYVaWwRvNHIFH0qMDvp4p00u17IJJSA3FSShpYkWVFarxAJD
- yjScxsu/shAU=
-X-Developer-Key: i=linux-kernel-dev@aliel.fr; a=openssh;
- fpr=SHA256:kch4osYZ6A1BrPps5AUs6KnfdE2wm4ocMtyTc8TmZMs
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+Content-Transfer-Encoding: 8bit
+X-Spamd-Result: default: False [1.14 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_DKIM_ALLOW(-0.20)[aliel.fr:s=courrier-s1];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_DKIM_REJECT(1.00)[nbd.name:s=20160729];
+	MID_CONTAINS_FROM(1.00)[];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
+	DMARC_POLICY_SOFTFAIL(0.10)[nbd.name : SPF not aligned (relaxed),none];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[3];
 	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-33704-lists,linux-wireless=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	TO_DN_NONE(0.00)[];
+	RCPT_COUNT_TWO(0.00)[2];
 	FROM_HAS_DN(0.00)[];
-	FREEMAIL_TO(0.00)[linaro.org,baylibre.com,googlemail.com,kernel.org,sipsolutions.net,broadcom.com];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	DMARC_NA(0.00)[aliel.fr];
-	RCPT_COUNT_TWELVE(0.00)[17];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-33693-lists,linux-wireless=lfdr.de];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[linux-kernel-dev@aliel.fr,linux-wireless@vger.kernel.org];
-	DKIM_TRACE(0.00)[aliel.fr:+];
-	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[linux-wireless,dt];
-	MID_RHS_MATCH_FROM(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[aliel.fr:dkim,aliel.fr:email,aliel.fr:mid,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,0.0.0.0:email,0.0.0.1:email]
-X-Rspamd-Queue-Id: 2F56E2EFA26
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[nbd@nbd.name,linux-wireless@vger.kernel.org];
+	TAGGED_RCPT(0.00)[linux-wireless];
+	NEURAL_HAM(-0.00)[-0.818];
+	DKIM_TRACE(0.00)[nbd.name:-];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	MIME_TRACE(0.00)[0:+];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: C04E92EFEB2
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-Enable and configure the three MMC controllers for the Khadas VIM4 board:
-- sd_emmc_a: SDIO interface for the BCM43752 Wi-Fi module
-- sd_emmc_b: SD card slot
-- sd_emmc_c: eMMC storage
+Create ieee80211_rate_expected_tx_airtime helper function, which returns
+the expected tx airtime for a given rate and packet length in units of
+1024 usec, for more accuracy.
 
-Signed-off-by: Ronald Claveau <linux-kernel-dev@aliel.fr>
+Signed-off-by: Felix Fietkau <nbd@nbd.name>
 ---
- .../dts/amlogic/amlogic-t7-a311d2-khadas-vim4.dts  | 90 +++++++++++++++++++++-
- 1 file changed, 89 insertions(+), 1 deletion(-)
+ net/mac80211/airtime.c     | 87 ++++++++++++++++++++++----------------
+ net/mac80211/ieee80211_i.h |  5 +++
+ 2 files changed, 56 insertions(+), 36 deletions(-)
 
-diff --git a/arch/arm64/boot/dts/amlogic/amlogic-t7-a311d2-khadas-vim4.dts b/arch/arm64/boot/dts/amlogic/amlogic-t7-a311d2-khadas-vim4.dts
-index 770f06b0b16c7..5a73ae081036c 100644
---- a/arch/arm64/boot/dts/amlogic/amlogic-t7-a311d2-khadas-vim4.dts
-+++ b/arch/arm64/boot/dts/amlogic/amlogic-t7-a311d2-khadas-vim4.dts
-@@ -14,7 +14,10 @@ / {
- 	compatible = "khadas,vim4", "amlogic,a311d2", "amlogic,t7";
+diff --git a/net/mac80211/airtime.c b/net/mac80211/airtime.c
+index c61df637232a..0c54cdbd753c 100644
+--- a/net/mac80211/airtime.c
++++ b/net/mac80211/airtime.c
+@@ -685,7 +685,7 @@ static int ieee80211_fill_rx_status(struct ieee80211_rx_status *stat,
+ 	if (ieee80211_fill_rate_info(hw, stat, band, ri))
+ 		return 0;
  
- 	aliases {
--		serial0 = &uart_a;
-+		serial0	= &uart_a;
-+		mmc0	= &sd_emmc_c;
-+		mmc1	= &sd_emmc_b;
-+		mmc2	= &sd_emmc_a;
- 	};
+-	if (!ieee80211_rate_valid(rate))
++	if (!rate || !ieee80211_rate_valid(rate))
+ 		return -1;
  
- 	memory@0 {
-@@ -159,6 +162,91 @@ &pwm_ab {
- 	pinctrl-names = "default";
- };
+ 	if (rate->flags & IEEE80211_TX_RC_160_MHZ_WIDTH)
+@@ -753,6 +753,53 @@ u32 ieee80211_calc_tx_airtime(struct ieee80211_hw *hw,
+ }
+ EXPORT_SYMBOL_GPL(ieee80211_calc_tx_airtime);
  
-+/* SDIO */
-+&sd_emmc_a {
-+	status = "okay";
-+	pinctrl-0 = <&sdio_pins>;
-+	pinctrl-1 = <&sdio_clk_gate_pins>;
-+	pinctrl-names = "default", "clk-gate";
-+	#address-cells = <1>;
-+	#size-cells = <0>;
++u32 ieee80211_rate_expected_tx_airtime(struct ieee80211_hw *hw,
++				       struct ieee80211_tx_rate *tx_rate,
++				       struct rate_info *ri,
++				       enum nl80211_band band,
++				       bool ampdu, int len)
++{
++	struct ieee80211_rx_status stat;
++	u32 duration, overhead;
++	u8 agg_shift;
 +
-+	bus-width = <4>;
-+	cap-sd-highspeed;
-+	sd-uhs-sdr12;
-+	sd-uhs-sdr25;
-+	sd-uhs-sdr50;
-+	sd-uhs-sdr104;
-+	cap-sdio-irq;
-+	max-frequency = <200000000>;
-+	non-removable;
-+	disable-wp;
-+	no-mmc;
-+	no-sd;
++	if (ieee80211_fill_rx_status(&stat, hw, tx_rate, ri, band, len))
++		return 0;
 +
-+	power-domains = <&pwrc PWRC_T7_SDIO_A_ID>;
++	if (stat.encoding == RX_ENC_LEGACY || !ampdu)
++		return ieee80211_calc_rx_airtime(hw, &stat, len) * 1024;
 +
-+	keep-power-in-suspend;
++	duration = ieee80211_get_rate_duration(hw, &stat, &overhead);
 +
-+	mmc-pwrseq = <&sdio_pwrseq>;
++	/*
++	 * Assume that HT/VHT transmission on any AC except VO will
++	 * use aggregation. Since we don't have reliable reporting
++	 * of aggregation length, assume an average size based on the
++	 * tx rate.
++	 * This will not be very accurate, but much better than simply
++	 * assuming un-aggregated tx in all cases.
++	 */
++	if (duration > 400 * 1024) /* <= VHT20 MCS2 1S */
++		agg_shift = 1;
++	else if (duration > 250 * 1024) /* <= VHT20 MCS3 1S or MCS1 2S */
++		agg_shift = 2;
++	else if (duration > 150 * 1024) /* <= VHT20 MCS5 1S or MCS2 2S */
++		agg_shift = 3;
++	else if (duration > 70 * 1024) /* <= VHT20 MCS5 2S */
++		agg_shift = 4;
++	else if (stat.encoding != RX_ENC_HE ||
++		 duration > 20 * 1024) /* <= HE40 MCS6 2S */
++		agg_shift = 5;
++	else
++		agg_shift = 6;
 +
-+	vmmc-supply = <&vddao_3v3>;
-+	vqmmc-supply = <&vddao_1v8>;
++	duration *= len;
++	duration /= AVG_PKT_SIZE;
++	duration += (overhead * 1024 >> agg_shift);
 +
-+	brcmf: wifi@1 {
-+		reg = <1>;
-+		compatible = "brcm,bcm43752-fmac", "brcm,bcm4329-fmac";
-+	};
-+};
++	return duration;
++}
 +
-+/* SD card */
-+&sd_emmc_b {
-+	status = "okay";
-+	pinctrl-0 = <&sdcard_pins>;
-+	pinctrl-1 = <&sdcard_clk_gate_pins>;
-+	pinctrl-names = "default", "clk-gate";
-+
-+	bus-width = <4>;
-+	cap-sd-highspeed;
-+	sd-uhs-sdr12;
-+	sd-uhs-sdr25;
-+	sd-uhs-sdr50;
-+	sd-uhs-sdr104;
-+	max-frequency = <200000000>;
-+	disable-wp;
-+	no-sdio;
-+	no-mmc;
-+
-+	power-domains = <&pwrc PWRC_T7_SDIO_B_ID>;
-+
-+	cd-gpios = <&gpio GPIOC_6 GPIO_ACTIVE_LOW>;
-+	vmmc-supply = <&sd_3v3>;
-+	vqmmc-supply = <&vddio_c>;
-+};
-+
-+/* eMMC */
-+&sd_emmc_c {
-+	status = "okay";
-+	pinctrl-0 = <&emmc_ctrl_pins>, <&emmc_data_8b_pins>, <&emmc_ds_pins>;
-+	pinctrl-1 = <&emmc_clk_gate_pins>;
-+	pinctrl-names = "default", "clk-gate";
-+
-+	bus-width = <8>;
-+	cap-mmc-highspeed;
-+	mmc-ddr-1_8v;
-+	mmc-hs200-1_8v;
-+	max-frequency = <200000000>;
-+	disable-wp;
-+	non-removable;
-+	no-sdio;
-+	no-sd;
-+
-+	power-domains = <&pwrc PWRC_T7_EMMC_ID>;
-+
-+	vmmc-supply = <&vddio_3v3>;
-+	vqmmc-supply = <&vddio_1v8>;
-+};
-+
- &uart_a {
- 	status = "okay";
- 	clocks = <&xtal>, <&xtal>, <&xtal>;
-
+ u32 ieee80211_calc_expected_tx_airtime(struct ieee80211_hw *hw,
+ 				       struct ieee80211_vif *vif,
+ 				       struct ieee80211_sta *pubsta,
+@@ -775,45 +822,13 @@ u32 ieee80211_calc_expected_tx_airtime(struct ieee80211_hw *hw,
+ 	if (pubsta) {
+ 		struct sta_info *sta = container_of(pubsta, struct sta_info,
+ 						    sta);
+-		struct ieee80211_rx_status stat;
+ 		struct ieee80211_tx_rate *tx_rate = &sta->deflink.tx_stats.last_rate;
+ 		struct rate_info *ri = &sta->deflink.tx_stats.last_rate_info;
+-		u32 duration, overhead;
+-		u8 agg_shift;
++		u32 duration;
+ 
+-		if (ieee80211_fill_rx_status(&stat, hw, tx_rate, ri, band, len))
+-			return 0;
+-
+-		if (stat.encoding == RX_ENC_LEGACY || !ampdu)
+-			return ieee80211_calc_rx_airtime(hw, &stat, len);
+-
+-		duration = ieee80211_get_rate_duration(hw, &stat, &overhead);
+-		/*
+-		 * Assume that HT/VHT transmission on any AC except VO will
+-		 * use aggregation. Since we don't have reliable reporting
+-		 * of aggregation length, assume an average size based on the
+-		 * tx rate.
+-		 * This will not be very accurate, but much better than simply
+-		 * assuming un-aggregated tx in all cases.
+-		 */
+-		if (duration > 400 * 1024) /* <= VHT20 MCS2 1S */
+-			agg_shift = 1;
+-		else if (duration > 250 * 1024) /* <= VHT20 MCS3 1S or MCS1 2S */
+-			agg_shift = 2;
+-		else if (duration > 150 * 1024) /* <= VHT20 MCS5 1S or MCS2 2S */
+-			agg_shift = 3;
+-		else if (duration > 70 * 1024) /* <= VHT20 MCS5 2S */
+-			agg_shift = 4;
+-		else if (stat.encoding != RX_ENC_HE ||
+-			 duration > 20 * 1024) /* <= HE40 MCS6 2S */
+-			agg_shift = 5;
+-		else
+-			agg_shift = 6;
+-
+-		duration *= len;
+-		duration /= AVG_PKT_SIZE;
++		duration = ieee80211_rate_expected_tx_airtime(hw, tx_rate, ri,
++							      band, true, len);
+ 		duration /= 1024;
+-		duration += (overhead >> agg_shift);
+ 
+ 		return max_t(u32, duration, 4);
+ 	}
+diff --git a/net/mac80211/ieee80211_i.h b/net/mac80211/ieee80211_i.h
+index d71e0c6d2165..b0dc93399e95 100644
+--- a/net/mac80211/ieee80211_i.h
++++ b/net/mac80211/ieee80211_i.h
+@@ -2834,6 +2834,11 @@ u8 *ieee80211_get_bssid(struct ieee80211_hdr *hdr, size_t len,
+ 
+ extern const struct ethtool_ops ieee80211_ethtool_ops;
+ 
++u32 ieee80211_rate_expected_tx_airtime(struct ieee80211_hw *hw,
++				       struct ieee80211_tx_rate *tx_rate,
++				       struct rate_info *ri,
++				       enum nl80211_band band,
++				       bool ampdu, int len);
+ u32 ieee80211_calc_expected_tx_airtime(struct ieee80211_hw *hw,
+ 				       struct ieee80211_vif *vif,
+ 				       struct ieee80211_sta *pubsta,
 -- 
-2.49.0
+2.51.0
 
 
