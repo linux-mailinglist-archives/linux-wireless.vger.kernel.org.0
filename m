@@ -1,148 +1,119 @@
-Return-Path: <linux-wireless+bounces-33686-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-33687-lists+linux-wireless=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 6MlPF8z2wGkwPAQAu9opvQ
-	(envelope-from <linux-wireless+bounces-33686-lists+linux-wireless=lfdr.de@vger.kernel.org>)
-	for <lists+linux-wireless@lfdr.de>; Mon, 23 Mar 2026 09:16:12 +0100
+	id 6PS3AYr4wGkwPAQAu9opvQ
+	(envelope-from <linux-wireless+bounces-33687-lists+linux-wireless=lfdr.de@vger.kernel.org>)
+	for <lists+linux-wireless@lfdr.de>; Mon, 23 Mar 2026 09:23:38 +0100
 X-Original-To: lists+linux-wireless@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id BFBA92EE2BB
-	for <lists+linux-wireless@lfdr.de>; Mon, 23 Mar 2026 09:16:11 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 61AEB2EE3B2
+	for <lists+linux-wireless@lfdr.de>; Mon, 23 Mar 2026 09:23:37 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id A960D3037E4F
-	for <lists+linux-wireless@lfdr.de>; Mon, 23 Mar 2026 08:09:11 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id AAC2D301494B
+	for <lists+linux-wireless@lfdr.de>; Mon, 23 Mar 2026 08:18:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0EEC4371D12;
-	Mon, 23 Mar 2026 08:08:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8AF38371870;
+	Mon, 23 Mar 2026 08:18:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b="n90NPObo"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from cstnet.cn (smtp81.cstnet.cn [159.226.251.81])
-	(using TLSv1.2 with cipher DHE-RSA-AES256-SHA (256/256 bits))
+Received: from sipsolutions.net (s3.sipsolutions.net [168.119.38.16])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 03543370D45;
-	Mon, 23 Mar 2026 08:08:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=159.226.251.81
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C783E36EAA8
+	for <linux-wireless@vger.kernel.org>; Mon, 23 Mar 2026 08:18:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=168.119.38.16
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774253338; cv=none; b=IZURIJuWgP8VI/XneAh3LbY0n2QsRhYQ4duPUMuDBcN6ORLl2S+M4XTEpVqrwQJdKsFlNwCjMlT4eW8vuWxXBukIrazq76oAC0xUA85bmX2tFEKY2ZuFjpjoicgt9ct3fy1hwy88+SQhNwnapIavY1mG4/GjlHCykdpbQoZCiu8=
+	t=1774253887; cv=none; b=ZMSB8wlnXuxThslQqoN81YnDlGMjyJ21yPRSsoEfjViZSV/EvKT5uX8PLzOiiMUHEUAxJpE+ovoaX4LsHZwSG1UaXkEORiZfrHVuhEPP2oz5NX1ZIeAbq3fg8/1YEof1umj0IFwxUYUKEQdXRkf7iWP+zeQ0E4+qGpGFCSitgVw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774253338; c=relaxed/simple;
-	bh=+YTarDJUwQe4e6etls5LScJVZBCBgqPTyPhafZJq7vE=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=N5IQ9adxnQrfnBLXJcH5Qzx0RibU8PYY5T/U1MxT4K75o5rxYdpBvGuzW6pbG9aZk+uCfRIbv/d0hML0PfAbAZ3q77Ew1dNEQ6M3NEo80IYAA4kJgCqAwjsaQJiF6R5rZGD7r7wmoy6PmP/4slfccbgswQvO2yY4xD5/zKv/ttE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn; spf=pass smtp.mailfrom=iscas.ac.cn; arc=none smtp.client-ip=159.226.251.81
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=iscas.ac.cn
-Received: from localhost.localdomain (unknown [111.196.245.197])
-	by APP-03 (Coremail) with SMTP id rQCowABng9oN9cBpOEeHCw--.33261S2;
-	Mon, 23 Mar 2026 16:08:46 +0800 (CST)
-From: Pengpeng Hou <pengpeng@iscas.ac.cn>
-To: Michael Nemanov <michael.nemanov@ti.com>,
-	Johannes Berg <johannes.berg@intel.com>,
-	linux-wireless@vger.kernel.org
-Cc: linux-kernel@vger.kernel.org,
-	Kees Cook <kees@kernel.org>,
-	Abdun Nihaal <abdun.nihaal@gmail.com>,
-	Pengpeng Hou <pengpeng@iscas.ac.cn>
-Subject: [PATCH v2] wifi: wl1251: validate packet IDs before indexing tx_frames
-Date: Mon, 23 Mar 2026 16:08:45 +0800
-Message-ID: <20260323080845.40033-1-pengpeng@iscas.ac.cn>
-X-Mailer: git-send-email 2.50.1
+	s=arc-20240116; t=1774253887; c=relaxed/simple;
+	bh=Td7+EKOiNHjXxN7wHmlTfOg1CFWPKcCO9svWUymt38Y=;
+	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=YoT5d/ylmvNtNmi72x1UxCcpw2ZPsCBZ8PwDUB7pXkki6/fVaunQjO2D+8YxC6VCwB0vCVGMuAu5dHdrrjH8xL4MrWhGukFJjinTtoPPSUx55Wse7+3lr1P6VUrp7CX6vrzK1t9GLzcNdNmNtcrBKmgZZ849rMunTn2VhrA70G4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net; spf=pass smtp.mailfrom=sipsolutions.net; dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b=n90NPObo; arc=none smtp.client-ip=168.119.38.16
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sipsolutions.net
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=sipsolutions.net; s=mail; h=MIME-Version:Content-Transfer-Encoding:
+	Content-Type:References:In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender
+	:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
+	Resent-Cc:Resent-Message-ID; bh=Td7+EKOiNHjXxN7wHmlTfOg1CFWPKcCO9svWUymt38Y=;
+	t=1774253884; x=1775463484; b=n90NPOboHxxi7hiHLZXlgR18qkO5UBEnVEMUTDwM3GDUmkL
+	KuSesbbNEpXepfL37/1UxiElt+Vv67T47RdLCA8M4rdfH43R3r/qvZMd6smqvmWArwzOlTyFp6yqM
+	Vfj7nL1t/L2Os13blVLg9M1DiXV3JACyYCZE6No3EnP25kIzEHBwm5kjOSzh7Jo5V8o9ZSH1Xor0Y
+	uzjlESx8cPDT5Osmo6wCrQoGcdv90oaQ8C9COWomj0WSEY46743FxlV+s1mJDuTuLwAviGrM3TYk3
+	AwFOMNP9iCqEik9qQ4pzxHPFSSQX4g3rb74k6E9RyXrTjd7RRdcHRO8aLKr9as6g==;
+Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
+	(Exim 4.98.2)
+	(envelope-from <johannes@sipsolutions.net>)
+	id 1w4aU0-00000009dHr-0P9r;
+	Mon, 23 Mar 2026 09:17:56 +0100
+Message-ID: <99567d484a37d7101ae51ea6f022f40ef469d81d.camel@sipsolutions.net>
+Subject: Re: [PATCH 11/12] carl9170: skip cross-band channel changes during
+ software scan
+From: Johannes Berg <johannes@sipsolutions.net>
+To: Christian Lamparter <chunkeey@gmail.com>, Masi Osmani <mas-i@hotmail.de>
+Cc: linux-wireless@vger.kernel.org
+Date: Mon, 23 Mar 2026 09:17:55 +0100
+In-Reply-To: <73153743-e0e8-4f2d-8774-066f53460511@gmail.com> (sfid-20260321_225837_658503_FA497F52)
+References: 
+	<AM7PPF5613FA0B68A6825857195D5EF51B59443A@AM7PPF5613FA0B6.EURP251.PROD.OUTLOOK.COM>
+	 <73153743-e0e8-4f2d-8774-066f53460511@gmail.com>
+	 (sfid-20260321_225837_658503_FA497F52)
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.58.3 (3.58.3-1.fc43) 
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:rQCowABng9oN9cBpOEeHCw--.33261S2
-X-Coremail-Antispam: 1UD129KBjvJXoW7Ary5Xr4fAFW7Zw1UWFWruFg_yoW8XryUpr
-	4rCa9FkF1kWFnIvr45JF40vFyrGan5JrW3WFWaka40vry3XFyFqw1agFyUur1jyFsaqayj
-	qF4Yqry7Jr1qva7anT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDU0xBIdaVrnRJUUUkC14x267AKxVW8JVW5JwAFc2x0x2IEx4CE42xK8VAvwI8IcIk0
-	rVWrJVCq3wAFIxvE14AKwVWUJVWUGwA2ocxC64kIII0Yj41l84x0c7CEw4AK67xGY2AK02
-	1l84ACjcxK6xIIjxv20xvE14v26ryj6F1UM28EF7xvwVC0I7IYx2IY6xkF7I0E14v26F4j
-	6r4UJwA2z4x0Y4vEx4A2jsIE14v26rxl6s0DM28EF7xvwVC2z280aVCY1x0267AKxVW0oV
-	Cq3wAS0I0E0xvYzxvE52x082IY62kv0487Mc02F40EFcxC0VAKzVAqx4xG6I80ewAv7VC0
-	I7IYx2IY67AKxVWUXVWUAwAv7VC2z280aVAFwI0_Gr0_Cr1lOx8S6xCaFVCjc4AY6r1j6r
-	4UM4x0Y48IcxkI7VAKI48JM4x0x7Aq67IIx4CEVc8vx2IErcIFxwCY1x0262kKe7AKxVWU
-	AVWUtwCF04k20xvY0x0EwIxGrwCFx2IqxVCFs4IE7xkEbVWUJVW8JwC20s026c02F40E14
-	v26r1j6r18MI8I3I0E7480Y4vE14v26r106r1rMI8E67AF67kF1VAFwI0_JF0_Jw1lIxkG
-	c2Ij64vIr41lIxAIcVC0I7IYx2IY67AKxVWUJVWUCwCI42IY6xIIjxv20xvEc7CjxVAFwI
-	0_Gr0_Cr1lIxAIcVCF04k26cxKx2IYs7xG6r1j6r1xMIIF0xvEx4A2jsIE14v26r4j6F4U
-	MIIF0xvEx4A2jsIEc7CjxVAFwI0_Gr1j6F4UJbIYCTnIWIevJa73UjIFyTuYvjfUeL05UU
-	UUU
-X-CM-SenderInfo: pshqw1xhqjqxpvfd2hldfou0/
-X-Spamd-Result: default: False [1.54 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-malware-bazaar: not-scanned
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MID_CONTAINS_FROM(1.00)[];
-	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	DMARC_POLICY_ALLOW(-0.50)[sipsolutions.net,none];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_DKIM_ALLOW(-0.20)[sipsolutions.net:s=mail];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-33686-lists,linux-wireless=lfdr.de];
-	DMARC_NA(0.00)[iscas.ac.cn];
+	TAGGED_FROM(0.00)[bounces-33687-lists,linux-wireless=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
+	FREEMAIL_TO(0.00)[gmail.com,hotmail.de];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	FROM_HAS_DN(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	FREEMAIL_CC(0.00)[vger.kernel.org,kernel.org,gmail.com,iscas.ac.cn];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	RCPT_COUNT_THREE(0.00)[3];
+	NEURAL_HAM(-0.00)[-1.000];
 	PRECEDENCE_BULK(0.00)[];
-	R_DKIM_NA(0.00)[];
-	NEURAL_HAM(-0.00)[-0.995];
-	FROM_NEQ_ENVFROM(0.00)[pengpeng@iscas.ac.cn,linux-wireless@vger.kernel.org];
-	RCPT_COUNT_SEVEN(0.00)[7];
-	TO_DN_SOME(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[johannes@sipsolutions.net,linux-wireless@vger.kernel.org];
+	DKIM_TRACE(0.00)[sipsolutions.net:+];
+	MID_RHS_MATCH_FROM(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[linux-wireless];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,iscas.ac.cn:email,iscas.ac.cn:mid]
-X-Rspamd-Queue-Id: BFBA92EE2BB
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,sipsolutions.net:dkim,sipsolutions.net:mid]
+X-Rspamd-Queue-Id: 61AEB2EE3B2
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-wl1251_tx_packet_cb() uses the firmware completion ID directly to index
-the fixed 16-entry wl->tx_frames[] array. The ID is a raw u8 from the
-completion block, and the callback does not currently verify that it
-fits the array before dereferencing it.
+On Sat, 2026-03-21 at 22:58 +0100, Christian Lamparter wrote:
+> >=20
+> > When the adapter is associated on a specific band, scanning channels
+> > on the other band produces no useful roaming candidates for the
+> > current BSS.
 
-Reject completion IDs that fall outside wl->tx_frames[] and keep the
-existing NULL check in the same guard. This keeps the fix local to the
-trust boundary and avoids touching the rest of the completion flow.
+This sentence is so clearly wrong, I don't really even know what to say.
 
-Signed-off-by: Pengpeng Hou <pengpeng@iscas.ac.cn>
----
-v2:
-- add commit message context and fix rationale
-- no code changes
+> @Johannes: Is this "stay within the band" something the driver should do,
+> or could this be moved up to mac80211/cfg80211?
 
- drivers/net/wireless/ti/wl1251/tx.c | 8 +++++---
- 1 file changed, 5 insertions(+), 3 deletions(-)
+It's something neither should do.
 
-diff --git a/drivers/net/wireless/ti/wl1251/tx.c b/drivers/net/wireless/ti/wl1251/tx.c
-index 2da8c0d5105b..4489aa77bb0f 100644
---- a/drivers/net/wireless/ti/wl1251/tx.c
-+++ b/drivers/net/wireless/ti/wl1251/tx.c
-@@ -402,12 +402,14 @@ static void wl1251_tx_packet_cb(struct wl1251 *wl,
- 	int hdrlen;
- 	u8 *frame;
- 
--	skb = wl->tx_frames[result->id];
--	if (skb == NULL) {
--		wl1251_error("SKB for packet %d is NULL", result->id);
-+	if (unlikely(result->id >= ARRAY_SIZE(wl->tx_frames) ||
-+		     wl->tx_frames[result->id] == NULL)) {
-+		wl1251_error("invalid packet id %u", result->id);
- 		return;
- 	}
- 
-+	skb = wl->tx_frames[result->id];
-+
- 	info = IEEE80211_SKB_CB(skb);
- 
- 	if (!(info->flags & IEEE80211_TX_CTL_NO_ACK) &&
--- 
-2.50.1 (Apple Git-155)
-
+johannes
 
