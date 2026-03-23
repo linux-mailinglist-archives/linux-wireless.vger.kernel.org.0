@@ -1,52 +1,52 @@
-Return-Path: <linux-wireless+bounces-33720-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-33721-lists+linux-wireless=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id aMyyHcM+wWk9RwQAu9opvQ
-	(envelope-from <linux-wireless+bounces-33720-lists+linux-wireless=lfdr.de@vger.kernel.org>)
-	for <lists+linux-wireless@lfdr.de>; Mon, 23 Mar 2026 14:23:15 +0100
+	id eNxyEP1AwWmqRwQAu9opvQ
+	(envelope-from <linux-wireless+bounces-33721-lists+linux-wireless=lfdr.de@vger.kernel.org>)
+	for <lists+linux-wireless@lfdr.de>; Mon, 23 Mar 2026 14:32:45 +0100
 X-Original-To: lists+linux-wireless@lfdr.de
 Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2A1FF2F2D46
-	for <lists+linux-wireless@lfdr.de>; Mon, 23 Mar 2026 14:23:15 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id A9DF72F2FB0
+	for <lists+linux-wireless@lfdr.de>; Mon, 23 Mar 2026 14:32:44 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id A7F52304947A
-	for <lists+linux-wireless@lfdr.de>; Mon, 23 Mar 2026 13:13:13 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 0438E304734F
+	for <lists+linux-wireless@lfdr.de>; Mon, 23 Mar 2026 13:23:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 833AF39DBF6;
-	Mon, 23 Mar 2026 13:13:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 038043AB27E;
+	Mon, 23 Mar 2026 13:22:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="lRYjEckq"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="k6gv3IeX"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 55DF738C2CB;
-	Mon, 23 Mar 2026 13:13:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D0C8837C90E;
+	Mon, 23 Mar 2026 13:22:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774271591; cv=none; b=XLke67aPrnDYp4rSKKCv9qA573/1qQb0KKE3srO7MFE6cm4ESZC83FvopF3Pup9bUQjcBXNX2e67A9/tI437dFUeR1KMY/Lzk1SgKYS2KXo0eVGIImYnq/zvfTZwcINvMZI3T7YhdeRTV3AlOTZ+Zbd+ybxZ6Rze0pIxQCCEOlQ=
+	t=1774272163; cv=none; b=hTGbRWI7/V6i1NblonUOlbobdp22n13Q/cMhxGwh36D74O0q1i4wBJ4LcUvfD6R5BOFW0aQrUtguLCIN44+6e+76FJEzItyWLK4X3NGN7Vobin/BkyhT3LQMSKkkQsyFtyoksNiR03JaYxoboYlUZ21JGSNY79nF4dZJ9pVuTtQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774271591; c=relaxed/simple;
-	bh=74qU1/t986C2nAZ4bavaRViUUE+Cf6yDDXac2agl2dM=;
+	s=arc-20240116; t=1774272163; c=relaxed/simple;
+	bh=Q/XBDBJYNBjvT4Fib6BMGQRPTrjoicozUK3Bve9QYsA=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=CHMvDlSb57iG7Ks+scI7MTWFbETBRWrK5xy+yEQvNfjBiIpnVW7VlsoYBQHSQFV5kRmg1/7nWf6DFS+R6t3Hc5l+WXpSS7dSVCYnnAKF0NUCQ3j2gI/c0SfS4b+wbXrrGf7TQYHOhK+bzEAYAeCiPQM5AttDsKmotKjPkYqXlbY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=lRYjEckq; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AE057C4CEF7;
-	Mon, 23 Mar 2026 13:12:55 +0000 (UTC)
+	 Content-Type:Content-Disposition:In-Reply-To; b=s0RBwfZDLBRhLswHAe7j0a30zBoHccNc0Uftobdbzn0ndbAvA+T3G2ARsBgJL1qgZxr6CCCZG+pOTkzG0iCBZAr7FEfZ+WBM71eREZ/a02yCBdeL6opzn54YrZSf4JJeJ9NVezGjdC/qkj1IIV5BMTVet8+kYOd72fevC4wk5JA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=k6gv3IeX; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E0A23C4CEF7;
+	Mon, 23 Mar 2026 13:22:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1774271591;
-	bh=74qU1/t986C2nAZ4bavaRViUUE+Cf6yDDXac2agl2dM=;
+	s=k20201202; t=1774272163;
+	bh=Q/XBDBJYNBjvT4Fib6BMGQRPTrjoicozUK3Bve9QYsA=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=lRYjEckqteg2OKaK6EkU3qHTed8L/Kuu8nYTDY12LVL7ijOi7qNUOsPD5UHqT54Vd
-	 tsznwZRHnAKrJhII5FqZ+AisA4ZWNApAx0Pk/9fTsh3zXc1WzfKrWVr/UCllmug7sg
-	 z1bdfdxrvM3rhSxNSQFvwtn2noOGHPItPmrj39sTCgHzr/TqSgg+KOov8ZOGK2Czhe
-	 GSelAor5vaAF5iKbd8nV8/Z7LVpo2CLj5uSDSK01vsXJNevwfD5YvOmqIgqwR/0256
-	 DxasYH1b85jyJCFi/cnmD4aK9ryRrVm3XpBckheqMJw6h+O2c17MKqqdPZ3cRw+ufV
-	 vUq6ZCOK/41uw==
-Date: Mon, 23 Mar 2026 18:42:52 +0530
+	b=k6gv3IeXrkpY2/ShKgiHHi9GyujozQPD0EN42/bEtKlPlZzrWFPCaffBKwM4FWmxH
+	 qtxjXKM8k5U6K7imqqn0Ghur2DdHhztguaPyYcKBwkpOj+gvOcYPi2RMidO2CRmhJY
+	 Q4zc2JkWhompIe+Udj2kIXlAn0URhbD/BLr2/+lOd7qzUPShGwBim7E6rbsejOdI4s
+	 gsPCKI4TofLJGQB3fUfsCXhftBsCQNrN9yuq3XGF7uMBL+QwQ9NZWU4+pYR48zoAEi
+	 kn2qru6xYghv8AMQSYaGvMCHekh6x8jPOIi+PXxOZP7nHy6LH8qeP1A3imkLYVN6ab
+	 qb6Uc0xhR2ZFg==
+Date: Mon, 23 Mar 2026 18:52:24 +0530
 From: Sumit Garg <sumit.garg@kernel.org>
-To: Harshal Dev <harshal.dev@oss.qualcomm.com>
+To: Krzysztof Kozlowski <krzk@kernel.org>
 Cc: linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org,
 	dri-devel@lists.freedesktop.org, freedreno@lists.freedesktop.org,
 	linux-media@vger.kernel.org, netdev@vger.kernel.org,
@@ -70,10 +70,10 @@ Cc: linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org,
 	skare@qti.qualcomm.com, linux-kernel@vger.kernel.org,
 	Sumit Garg <sumit.garg@oss.qualcomm.com>
 Subject: Re: [PATCH v2 02/15] firmware: qcom: Add a generic PAS service
-Message-ID: <acE8VF9c3BDNkazL@sumit-xelite>
+Message-ID: <acE-kAi2tkPh2qie@sumit-xelite>
 References: <20260312062756.694390-1-sumit.garg@kernel.org>
  <20260312062756.694390-3-sumit.garg@kernel.org>
- <124f5a78-a3be-4906-bea0-a82bb74b2f96@oss.qualcomm.com>
+ <28d63822-f191-400a-8005-5185dd480dbb@kernel.org>
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
@@ -82,7 +82,7 @@ List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <124f5a78-a3be-4906-bea0-a82bb74b2f96@oss.qualcomm.com>
+In-Reply-To: <28d63822-f191-400a-8005-5185dd480dbb@kernel.org>
 X-Spamd-Result: default: False [-0.16 / 15.00];
 	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
@@ -93,7 +93,7 @@ X-Spamd-Result: default: False [-0.16 / 15.00];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-33720-lists,linux-wireless=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-33721-lists,linux-wireless=lfdr.de];
 	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
@@ -112,14 +112,12 @@ X-Spamd-Result: default: False [-0.16 / 15.00];
 	TO_DN_SOME(0.00)[];
 	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
 	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,qualcomm.com:email]
-X-Rspamd-Queue-Id: 2A1FF2F2D46
+X-Rspamd-Queue-Id: A9DF72F2FB0
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-On Sun, Mar 15, 2026 at 10:03:16PM +0530, Harshal Dev wrote:
-> 
-> 
-> On 3/12/2026 11:57 AM, Sumit Garg wrote:
+On Mon, Mar 16, 2026 at 08:51:16AM +0100, Krzysztof Kozlowski wrote:
+> On 12/03/2026 07:27, Sumit Garg wrote:
 > > From: Sumit Garg <sumit.garg@oss.qualcomm.com>
 > > 
 > > Qcom platforms has the legacy of using non-standard SCM calls
@@ -202,210 +200,20 @@ On Sun, Mar 15, 2026 at 10:03:16PM +0530, Harshal Dev wrote:
 > > +#include "qcom_pas.h"
 > > +
 > > +struct qcom_pas_ops *ops_ptr;
-> > +
-> > +/**
-> > + * devm_qcom_pas_context_alloc() - Allocate peripheral authentication service
-> > + *				   context for a given peripheral
-> > + *
-> > + * PAS context is device-resource managed, so the caller does not need
-> > + * to worry about freeing the context memory.
-> > + *
-> > + * @dev:	  PAS firmware device
-> > + * @pas_id:	  peripheral authentication service id
-> > + * @mem_phys:	  Subsystem reserve memory start address
-> > + * @mem_size:	  Subsystem reserve memory size
-> > + *
-> > + * Return: The new PAS context, or ERR_PTR() on failure.
-> > + */
-> > +struct qcom_pas_context *devm_qcom_pas_context_alloc(struct device *dev,
-> > +						     u32 pas_id,
-> > +						     phys_addr_t mem_phys,
-> > +						     size_t mem_size)
-> > +{
-> > +	struct qcom_pas_context *ctx;
-> > +
-> > +	ctx = devm_kzalloc(dev, sizeof(*ctx), GFP_KERNEL);
-> > +	if (!ctx)
-> > +		return ERR_PTR(-ENOMEM);
-> > +
-> > +	ctx->dev = dev;
-> > +	ctx->pas_id = pas_id;
-> > +	ctx->mem_phys = mem_phys;
-> > +	ctx->mem_size = mem_size;
-> > +
-> > +	return ctx;
-> > +}
-> > +EXPORT_SYMBOL_GPL(devm_qcom_pas_context_alloc);
-> > +
-> > +/**
-> > + * qcom_pas_init_image() - Initialize peripheral authentication service state
-> > + *			   machine for a given peripheral, using the metadata
-> > + * @pas_id:	peripheral authentication service id
-> > + * @metadata:	pointer to memory containing ELF header, program header table
-> > + *		and optional blob of data used for authenticating the metadata
-> > + *		and the rest of the firmware
-> > + * @size:	size of the metadata
-> > + * @ctx:	optional pas context
-> > + *
-> > + * Return: 0 on success.
-> > + *
-> > + * Upon successful return, the PAS metadata context (@ctx) will be used to
-> > + * track the metadata allocation, this needs to be released by invoking
-> > + * qcom_pas_metadata_release() by the caller.
-> > + */
-> > +int qcom_pas_init_image(u32 pas_id, const void *metadata, size_t size,
-> > +			struct qcom_pas_context *ctx)
-> > +{
 > 
-> I think we should check for !ctx everywhere the way we are doing in qcom_pas_metadata_release().
-> !ctx->ptr may be checked conditionally based on whether the underlying implementation
-> uses it.
+> Same comment as before. Don't create singletons. And for sure not global
+> ones.
 
-The ctx for this API is optional, that means the backend should check
-apporpriately for it. I will add that check for TEE backend though.
+This pattern has been carried from the PAS API contract among kernel
+clients and the SCM PAS service earlier. The clients don't hold a
+reference to the PAS data like underlying platform or TEE device etc.
+Hence the need to have a global data pointer to hold reference to the
+ops data structure registered by drivers having different lifetime of
+devices. Also, the PAS APIs can be called from very different client
+driver contexts.
 
-> 
-> > +	if (ops_ptr)
-> > +		return ops_ptr->init_image(ops_ptr->dev, pas_id,
-> > +					   metadata, size, ctx);
-> > +
-> > +	return -ENODEV;
-> > +}
-> > +EXPORT_SYMBOL_GPL(qcom_pas_init_image);
-> > +
-> > +/**
-> > + * qcom_pas_metadata_release() - release metadata context
-> > + * @ctx:	pas context
-> > + */
-> > +void qcom_pas_metadata_release(struct qcom_pas_context *ctx)
-> > +{
-> > +	if (!ctx || !ctx->ptr)
-> > +		return;
-> > +
-> > +	if (ops_ptr)
-> > +		ops_ptr->metadata_release(ops_ptr->dev, ctx);
-> > +}
-> > +EXPORT_SYMBOL_GPL(qcom_pas_metadata_release);
-> > +
-> > +/**
-> > + * qcom_pas_mem_setup() - Prepare the memory related to a given peripheral
-> > + *			  for firmware loading
-> > + * @pas_id:	peripheral authentication service id
-> > + * @addr:	start address of memory area to prepare
-> > + * @size:	size of the memory area to prepare
-> > + *
-> > + * Return: 0 on success.
-> > + */
-> > +int qcom_pas_mem_setup(u32 pas_id, phys_addr_t addr, phys_addr_t size)
-> > +{
-> > +	if (ops_ptr)
-> > +		return ops_ptr->mem_setup(ops_ptr->dev, pas_id, addr, size);
-> > +
-> > +	return -ENODEV;
-> > +}
-> > +EXPORT_SYMBOL_GPL(qcom_pas_mem_setup);
-> > +
-> > +/**
-> > + * qcom_pas_get_rsc_table() - Retrieve the resource table in passed output buffer
-> > + *			      for a given peripheral.
-> > + *
-> > + * Qualcomm remote processor may rely on both static and dynamic resources for
-> > + * its functionality. Static resources typically refer to memory-mapped
-> > + * addresses required by the subsystem and are often embedded within the
-> > + * firmware binary and dynamic resources, such as shared memory in DDR etc.,
-> > + * are determined at runtime during the boot process.
-> > + *
-> > + * On Qualcomm Technologies devices, it's possible that static resources are
-> > + * not embedded in the firmware binary and instead are provided by TrustZone.
-> > + * However, dynamic resources are always expected to come from TrustZone. This
-> > + * indicates that for Qualcomm devices, all resources (static and dynamic) will
-> > + * be provided by TrustZone PAS service.
-> > + *
-> > + * If the remote processor firmware binary does contain static resources, they
-> > + * should be passed in input_rt. These will be forwarded to TrustZone for
-> > + * authentication. TrustZone will then append the dynamic resources and return
-> > + * the complete resource table in output_rt_tzm.
-> > + *
-> > + * If the remote processor firmware binary does not include a resource table,
-> > + * the caller of this function should set input_rt as NULL and input_rt_size
-> > + * as zero respectively.
-> > + *
-> > + * More about documentation on resource table data structures can be found in
-> > + * include/linux/remoteproc.h
-> > + *
-> > + * @ctx:	    PAS context
-> > + * @pas_id:	    peripheral authentication service id
-> > + * @input_rt:       resource table buffer which is present in firmware binary
-> > + * @input_rt_size:  size of the resource table present in firmware binary
-> > + * @output_rt_size: TrustZone expects caller should pass worst case size for
-> > + *		    the output_rt_tzm.
-> > + *
-> > + * Return:
-> > + *  On success, returns a pointer to the allocated buffer containing the final
-> > + *  resource table and output_rt_size will have actual resource table size from
-> > + *  TrustZone. The caller is responsible for freeing the buffer. On failure,
-> > + *  returns ERR_PTR(-errno).
-> > + */
-> > +struct resource_table *qcom_pas_get_rsc_table(struct qcom_pas_context *ctx,
-> > +					      void *input_rt,
-> > +					      size_t input_rt_size,
-> > +					      size_t *output_rt_size)
-> > +{
-> 
-> Check for !ctx here as well.
-
-Ack.
-
-> 
-> > +	if (ops_ptr)
-> > +		return ops_ptr->get_rsc_table(ops_ptr->dev, ctx, input_rt,
-> > +					      input_rt_size, output_rt_size);
-> > +
-> > +	return ERR_PTR(-ENODEV);
-> > +}
-> > +EXPORT_SYMBOL_GPL(qcom_pas_get_rsc_table);
-> > +
-> > +/**
-> > + * qcom_pas_auth_and_reset() - Authenticate the given peripheral firmware
-> > + *			       and reset the remote processor
-> > + * @pas_id:	peripheral authentication service id
-> > + *
-> > + * Return: 0 on success.
-> > + */
-> > +int qcom_pas_auth_and_reset(u32 pas_id)
-> > +{
-> > +	if (ops_ptr)
-> > +		return ops_ptr->auth_and_reset(ops_ptr->dev, pas_id);
-> > +
-> > +	return -ENODEV;
-> > +}
-> > +EXPORT_SYMBOL_GPL(qcom_pas_auth_and_reset);
-> > +
-> > +/**
-> > + * qcom_pas_prepare_and_auth_reset() - Prepare, authenticate, and reset the
-> > + *				       remote processor
-> > + *
-> > + * @ctx:	Context saved during call to qcom_scm_pas_context_init()
-> > + *
-> > + * This function performs the necessary steps to prepare a PAS subsystem,
-> > + * authenticate it using the provided metadata, and initiate a reset sequence.
-> > + *
-> > + * It should be used when Linux is in control setting up the IOMMU hardware
-> > + * for remote subsystem during secure firmware loading processes. The
-> > + * preparation step sets up a shmbridge over the firmware memory before
-> > + * TrustZone accesses the firmware memory region for authentication. The
-> > + * authentication step verifies the integrity and authenticity of the firmware
-> > + * or configuration using secure metadata. Finally, the reset step ensures the
-> > + * subsystem starts in a clean and sane state.
-> > + *
-> > + * Return: 0 on success, negative errno on failure.
-> > + */
-> > +int qcom_pas_prepare_and_auth_reset(struct qcom_pas_context *ctx)
-> > +{
-> 
-> Same here.
-
-Ack.
+Surely, avoiding global data is always better given a better alternative
+is there. Do you have any better alternative proposal here?
 
 -Sumit
 
