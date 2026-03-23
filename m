@@ -1,531 +1,773 @@
-Return-Path: <linux-wireless+bounces-33722-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-33723-lists+linux-wireless=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id oBA9HLRBwWmqRwQAu9opvQ
-	(envelope-from <linux-wireless+bounces-33722-lists+linux-wireless=lfdr.de@vger.kernel.org>)
-	for <lists+linux-wireless@lfdr.de>; Mon, 23 Mar 2026 14:35:48 +0100
+	id KImPDzBDwWnPRwQAu9opvQ
+	(envelope-from <linux-wireless+bounces-33723-lists+linux-wireless=lfdr.de@vger.kernel.org>)
+	for <lists+linux-wireless@lfdr.de>; Mon, 23 Mar 2026 14:42:08 +0100
 X-Original-To: lists+linux-wireless@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id C6FAA2F30A0
-	for <lists+linux-wireless@lfdr.de>; Mon, 23 Mar 2026 14:35:47 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id EBFE42F327E
+	for <lists+linux-wireless@lfdr.de>; Mon, 23 Mar 2026 14:42:07 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 4E4593073FBE
-	for <lists+linux-wireless@lfdr.de>; Mon, 23 Mar 2026 13:25:12 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 552F03054641
+	for <lists+linux-wireless@lfdr.de>; Mon, 23 Mar 2026 13:33:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 74D6C1E1C02;
-	Mon, 23 Mar 2026 13:25:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B7D7B3AB295;
+	Mon, 23 Mar 2026 13:33:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=infineon.com header.i=@infineon.com header.b="mmJ5Ybvo"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="UHnoUHqD"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from smtp9.infineon.com (smtp9.infineon.com [217.10.52.204])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 81B73399360
-	for <linux-wireless@vger.kernel.org>; Mon, 23 Mar 2026 13:24:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.10.52.204
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8CA683AA4F5;
+	Mon, 23 Mar 2026 13:33:51 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774272302; cv=none; b=JT+1rpL5T7PzNWonQMJNLllDwfkp9vc9zwGBhGwDWK8DCv8khsdw3MUri+UEplS8RRGLOtIqJYUysnXSkZua7+f3ySdXm8jz1jBP0RUdx4bSEadJJR6Ynq772+FDGemp2MUJkGwJlZBxEPVTsRrIej+aBaye+xjUGzHP9O864+E=
+	t=1774272831; cv=none; b=FiCFPwE673GOVWeSq1NasZCr7Echp6IUDAwBDhzsvWUE4xhZY5DRyRujQ+l9u78/fDjB1fCPKsS3iqnTXBDLuTNCSr1s56hcWlP6iVPWbL8oN5jj2W6xROJXAvj2FvycIHqe3yDFGBak+Ku4C/M4CnXcUxuFD1JnXi/pxrKES+Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774272302; c=relaxed/simple;
-	bh=oWB40kz6OKgHqX2x//mvIB5WL9T5CT2EYSoAvlDkSbo=;
-	h=Date:From:To:CC:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=UDY4jEa2fz07Qf1vua8uOJ5KMHCPvYrYCofWOI3UGSbI9DyKPr6bMfIa80sXGahLIdsnSp0OVRXUHs+H1rg+tpgNBzEjl2hT9nfiMJ/EYcUwA3Cwo82fNkcB6VGwuyeBN+aY0ZelEW/MyQR5C87I7gLeS53cx/CLgmQThwfisUQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infineon.com; spf=pass smtp.mailfrom=infineon.com; dkim=pass (1024-bit key) header.d=infineon.com header.i=@infineon.com header.b=mmJ5Ybvo; arc=none smtp.client-ip=217.10.52.204
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infineon.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=infineon.com
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple;
-  d=infineon.com; i=@infineon.com; q=dns/txt; s=IFXMAIL;
-  t=1774272300; x=1805808300;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=oWB40kz6OKgHqX2x//mvIB5WL9T5CT2EYSoAvlDkSbo=;
-  b=mmJ5YbvogdhvcssvhoyWhiCgrgt0V3G8/mkMRiHr0LuUx8qX6yo9QzRW
-   ZQsQlJpNnEs0WziZoTXnHA+GWOm2W1UESSMtroFlAnCqPOaWUBtp6STg8
-   M3AieQg8AeB1nm5PCnrQbkmXerCRzbN4oBJMiNRyiYdetVY6v3Fgijl3g
-   0=;
-X-CSE-ConnectionGUID: HxLHyZdSSomaLptJsn1Wjw==
-X-CSE-MsgGUID: RC6VwY2PRL21JMT0EbPwkg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11737"; a="86642699"
-X-IronPort-AV: E=Sophos;i="6.23,137,1770591600"; 
-   d="scan'208";a="86642699"
-X-Amp-Result: SKIPPED(no attachment in message)
-Received: from unknown (HELO MUCSE805.infineon.com) ([172.23.29.31])
-  by smtp9.infineon.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 Mar 2026 14:24:52 +0100
-Received: from MUCSE827.infineon.com (172.23.29.20) by MUCSE805.infineon.com
- (172.23.29.31) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.37; Mon, 23 Mar
- 2026 14:24:51 +0100
-Received: from ISCN5CG14747PP.infineon.com (10.161.6.196) by
- MUCSE827.infineon.com (172.23.29.20) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.37; Mon, 23 Mar 2026 14:24:50 +0100
-Date: Mon, 23 Mar 2026 18:54:41 +0530
-From: Gokul Sivakumar <gokulkumar.sivakumar@infineon.com>
-To: Marek Vasut <marex@nabladev.com>
-CC: <linux-wireless@vger.kernel.org>, Johannes Berg
-	<johannes@sipsolutions.net>, Arend van Spriel <arend.vanspriel@broadcom.com>,
-	<wlan-kernel-dev-list@infineon.com>
-Subject: Re: [PATCH wireless-next v2 00/34] wifi: inffmac: introducing a
- driver for Infineon's new generation chipsets
-Message-ID: <mc7qudonz6qwkpl5vgxj2jj7fcutb52rueirap7azpn6w2v74x@fyar3ltme7uo>
-References: <20260113203350.16734-1-gokulkumar.sivakumar@infineon.com>
- <43acfb38-9dbc-4544-b429-dfd43afbf2b6@nabladev.com>
- <aWdP6chPOS0PV-Nc@ISCN5CG14747PP.infineon.com>
- <66e4ddb8-47ac-4b2a-8c4b-6f407aa1d8eb@nabladev.com>
- <aWpoQs8rzqGUCsPO@ISCN5CG14747PP.infineon.com>
- <6612163e-b933-432c-995c-6daec9c7be29@nabladev.com>
- <aaGraKzdMcyb6QmW@ISCN5CG14747PP.infineon.com>
- <dc7ba2e6-ff7e-4581-b127-0c0a00e39051@nabladev.com>
+	s=arc-20240116; t=1774272831; c=relaxed/simple;
+	bh=rPD0+1aQ7TNVSbHfPL6/LKqnNZ1gKGZwBds/bqCrwCo=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=p+X0qnIzsz3J5V8gHumLVXXd+uxm4GzBNCXU+1KWyYSQ/cYdUt7RX+TsKL/M8V0Alv36GAuNAb/7TlYQVQ8sKkzMPLMNMUuaIAZ+yt2R4TRZaTWdtO61dgN+DofwLmbxyi+MVZk8AZx+x+2JzGYEXjggQ/5DliH4dK1MI4RYkHY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=UHnoUHqD; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0E29EC2BCB1;
+	Mon, 23 Mar 2026 13:33:35 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1774272831;
+	bh=rPD0+1aQ7TNVSbHfPL6/LKqnNZ1gKGZwBds/bqCrwCo=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=UHnoUHqDMC/1jREsCMmPY7qchdBGrmdKuT8SY52fxXw+fa6q3Ik1UW+g/tQKq4JiA
+	 XsrQ8C6yRtkmn3FNrCOBn/d2UOuO0G8yEjK3pbJlQm/ahOfwejugEv5VQohQrOIlNh
+	 NZH13uESiTAPafHddJ9Jwsxurpks5ikNlWyJ8/eFO6yN/+TjQFSzHa5r+MTaY9nysh
+	 E41BgR2f45o1Q9Jcf8O6YhjAKgct6vcEekqDGKZXcvCaZkDlj/LlnXcA2CcdCGSq00
+	 y8klQmmYLLOz5AF31W1EytLra2mCcs5JWor7nQfVVPj+jivRaKn/EN7dmgP5uYqlqH
+	 zZdUqj9hA+Zxw==
+Date: Mon, 23 Mar 2026 19:03:32 +0530
+From: Sumit Garg <sumit.garg@kernel.org>
+To: Mukesh Ojha <mukesh.ojha@oss.qualcomm.com>
+Cc: linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org,
+	dri-devel@lists.freedesktop.org, freedreno@lists.freedesktop.org,
+	linux-media@vger.kernel.org, netdev@vger.kernel.org,
+	linux-wireless@vger.kernel.org, ath12k@lists.infradead.org,
+	linux-remoteproc@vger.kernel.org, andersson@kernel.org,
+	konradybcio@kernel.org, robh@kernel.org, krzk+dt@kernel.org,
+	conor+dt@kernel.org, robin.clark@oss.qualcomm.com, sean@poorly.run,
+	akhilpo@oss.qualcomm.com, lumag@kernel.org, abhinav.kumar@linux.dev,
+	jesszhan0024@gmail.com, marijn.suijten@somainline.org,
+	airlied@gmail.com, simona@ffwll.ch, vikash.garodia@oss.qualcomm.com,
+	dikshita.agarwal@oss.qualcomm.com, bod@kernel.org,
+	mchehab@kernel.org, elder@kernel.org, andrew+netdev@lunn.ch,
+	davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
+	pabeni@redhat.com, jjohnson@kernel.org, mathieu.poirier@linaro.org,
+	trilokkumar.soni@oss.qualcomm.com, pavan.kondeti@oss.qualcomm.com,
+	jorge.ramirez@oss.qualcomm.com, tonyh@qti.qualcomm.com,
+	vignesh.viswanathan@oss.qualcomm.com,
+	srinivas.kandagatla@oss.qualcomm.com,
+	amirreza.zarrabi@oss.qualcomm.com, jens.wiklander@linaro.org,
+	op-tee@lists.trustedfirmware.org, apurupa@qti.qualcomm.com,
+	skare@qti.qualcomm.com, linux-kernel@vger.kernel.org,
+	Sumit Garg <sumit.garg@oss.qualcomm.com>
+Subject: Re: [PATCH v2 03/15] firmware: qcom_scm: Migrate to generic PAS
+ service
+Message-ID: <acFBLBz6qiz2n2vM@sumit-xelite>
+References: <20260312062756.694390-1-sumit.garg@kernel.org>
+ <20260312062756.694390-4-sumit.garg@kernel.org>
+ <20260313075607.2mw3dzaf274xxe2j@hu-mojha-hyd.qualcomm.com>
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <dc7ba2e6-ff7e-4581-b127-0c0a00e39051@nabladev.com>
-X-ClientProxiedBy: MUCSE810.infineon.com (172.23.29.36) To
- MUCSE827.infineon.com (172.23.29.20)
-X-Spamd-Result: default: False [-1.66 / 15.00];
+In-Reply-To: <20260313075607.2mw3dzaf274xxe2j@hu-mojha-hyd.qualcomm.com>
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	MID_RHS_NOT_FQDN(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[infineon.com,none];
-	R_DKIM_ALLOW(-0.20)[infineon.com:s=IFXMAIL];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	TAGGED_FROM(0.00)[bounces-33723-lists,linux-wireless=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-33722-lists,linux-wireless=lfdr.de];
 	FROM_HAS_DN(0.00)[];
-	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	DKIM_TRACE(0.00)[infineon.com:+];
-	MISSING_XM_UA(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[5];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gokulkumar.sivakumar@infineon.com,linux-wireless@vger.kernel.org];
+	RCVD_COUNT_THREE(0.00)[4];
+	RCPT_COUNT_TWELVE(0.00)[49];
+	MIME_TRACE(0.00)[0:+];
+	FREEMAIL_CC(0.00)[vger.kernel.org,lists.freedesktop.org,lists.infradead.org,kernel.org,oss.qualcomm.com,poorly.run,linux.dev,gmail.com,somainline.org,ffwll.ch,lunn.ch,davemloft.net,google.com,redhat.com,linaro.org,qti.qualcomm.com,lists.trustedfirmware.org];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[6];
-	TAGGED_RCPT(0.00)[linux-wireless];
+	TO_DN_SOME(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,infineon.com:dkim]
-X-Rspamd-Queue-Id: C6FAA2F30A0
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[sumit.garg@kernel.org,linux-wireless@vger.kernel.org];
+	DKIM_TRACE(0.00)[kernel.org:+];
+	TAGGED_RCPT(0.00)[linux-wireless,dt,netdev];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	MISSING_XM_UA(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[qcom_pas_ops_scm.dev:url,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,qualcomm.com:email]
+X-Rspamd-Queue-Id: EBFE42F327E
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-On 03/21, Marek Vasut wrote:
-> On 2/27/26 3:34 PM, Gokul Sivakumar wrote:
-> > On 02/27, Marek Vasut wrote:
-> > > On 1/16/26 5:33 PM, Gokul Sivakumar wrote:
-> > > > On 01/15, Marek Vasut wrote:
-> > > > > On 1/14/26 9:12 AM, Gokul Sivakumar wrote:
-> > > > > > On 01/14, Marek Vasut wrote:
-> > > > > > > On 1/13/26 9:33 PM, Gokul Sivakumar wrote:
-> > > > > > > > Infineon(Cypress) is introducing a new INFFMAC (WLAN FULLMAC) Linux driver
-> > > > > > > > specifically for its new-generation AIROC family of Wi-Fi Connectivity
-> > > > > > > > Processor (CP) chipsets (CYW5591x), Wi-Fi + Bluetooth combo chipsets
-> > > > > > > > (CYW5557x, CYW5551x, CYW5591x, CYW43022), and also for all future chipsets.
-> > > > > > > Support for the CYW55572 can be easily added into the existing brcmfmac
-> > > > > > > driver, I already posted a patch over a year ago [1], but it was blocked
-> > > > > > > by an off-list email.
-> > > > > > 
-> > > > > > > Frankly, I do not see any good reason why the brcmfmac driver shouldn't
-> > > > > > > be extended when it is clearly easily doable. Adding new fork of the
-> > > > > > > brcmfmac would only increase maintenance burden and prevent bugfixes
-> > > > > > > from reaching the brcmfmac.
-> > > > > > > 
-> > > > > > > [1] https://lore.kernel.org/all/20240909203133.74777-2-marex@denx.de/
-> > > > > > 
-> > > > > > There are multiple reasons behind Infineon's proposal for this new INFFMAC
-> > > > > > driver for its new-generation chips. Sharing a few here, and more info
-> > > > > > is available in the v1 cover-letter [1]. For Example, the CYW5591x family
-> > > > > > chipsets that is currently supported in this INFFMAC driver has a unique
-> > > > > > Connected-MCU / Connectivtiy Processor (CP) Architecture [2], primarly
-> > > > > > intended for IoT applications and it is completely different from any of
-> > > > > > the legacy Broadcom architecture chipsets of Infineon supported currently
-> > > > > > in upstream BRCMFMAC.
-> > > > > 
-> > > > > This does not prevent them from being integrated in brcmfmac like many
-> > > > > of the other already supported chips, there seems to be no technical
-> > > > > reason here.
-> > > > 
-> > > > I hope you would have got a chance to look into the elaborate info provided
-> > > > in v1 cover-letter about the challenges that we faced with that approach.
-> > > > In Infineon's new architecture CYW5591x family of chipsets coming with an
-> > > > onboard FLASH Memory, it does not follow the traditional Device firmware
-> > > > download sequence used by any of the legacy Broadcom chipsets and it would
-> > > > be appropriate to use a dedicated driver for Infineon's chipsets which were
-> > > > developed and intended mainly for IoT use-cases.
-> > > > 
-> > > > Here it requires a Boot firmware download, and a host handshake with the
-> > > > downloaded RAM boot firmware, followed by a CP Firmware image Download and
-> > > > validation. Sharing here the sequence for coldboot image download to FLASH.
-> > > > 
-> > > >         Host Driver                                       Device
-> > > >         ___________                                     ____________
-> > > >            |                                                 |
-> > > >            |                                 Power UP and execute CP Firmware
-> > > >            |                                  from FLASH if available
-> > > >    Attempt to enable SDIO F2                                 |
-> > > >    if fails, FLASH is empty,                                 |
-> > > >    Need to Download Firmware                                 |
-> > > >            |                                                 |
-> > > >           Wait for                                           |
-> > > > DFU_CP_D2H_MSG_BL_READY                                    |
-> > > >            |<<======== DFU_CP_D2H_MSG_BL_READY <<============|
-> > > >            |                                                 |
-> > > > Fetch Boot Firmware                                        |
-> > > > from Filesystem                                            |
-> > > >            |======>> DFU_CP_H2D_MSG_BOOT_FWLOAD_START =====>>|
-> > > >            |                                              |
-> > > >            |======>> Transfer Boot Firmware over SDIO =====>>|
-> > > >            |                in multiple chunks               |
-> > > >            |                                              |
-> > > >            |======>> DFU_CP_H2D_MSG_BOOT_FWLOAD_DONE ======>>|
-> > > >            |                                       Execute the downloaded
-> > > >            |                                           RAM Bootloader
-> > > >          Wait for                                            |
-> > > > DFU_CP_D2H_MSG_BOOTFW_READY                                |
-> > > >            |<<========= DFU_CP_D2H_MSG_BOOTFW_READY <<=======|
-> > > >            |                                                 |
-> > > > Fetch CP Firmware                                          |
-> > > > from Filesystem                                            |
-> > > >            |=======>> Transfer CP Firmware over SDIO ======>>|
-> > > >            |            in multiple chunks                   |
-> > > >         |                                       Download CP Firmware
-> > > >            |                                        to FLASH Memory
-> > > >            |                                                 |
-> > > >            |=======>> DFU_CP_H2D_MSG_BOOTFW_DATA_LOADED ====>|
-> > > >            |                                                 |
-> > > >            |=======>> DFU_CP_D2H_MSG_FW_VALIDAT_START ======>|
-> > > >            |                                                 |
-> > > >       Wait for                                    Validate the CP Firmware
-> > > > DFU_CP_D2H_MSG_FW_VALIDAT_DONE                             |
-> > > >            |<<======= DFU_CP_D2H_MSG_FW_VALIDAT_DONE <<======|
-> > > >                 |                                                 |
-> > > >            |                                      Execute the CP Firmware
-> > > >     Proceed with                                             |
-> > > > ctrl cmds to Device                                        |
-> > > >                 |                                                 |
-> > > > 
-> > > > Here there is no need to redownload the Device Firmware from the Host
-> > > > filesystem everyime the Host or Device goes through a power cycle. Also the
-> > > > device is capable of fully operating in an offloaded mode even when the
-> > > > host is in suspended state or even if fully powered off. This is critical
-> > > > to save power for extended durations in IoT use cases which are often
-> > > > battery operated.
-> > > 
-> > > This seems like a technical detail of the firmware loading, which can be
-> > > handled by the driver ?
+On Fri, Mar 13, 2026 at 01:26:07PM +0530, Mukesh Ojha wrote:
+> On Thu, Mar 12, 2026 at 11:57:44AM +0530, Sumit Garg wrote:
+> > From: Sumit Garg <sumit.garg@oss.qualcomm.com>
 > > 
-> > If this is the base of your argument, then theoritically any vendor driver can
-> > be added with the functionality to manage any other WLAN chip from another vendor.
-> > A single monolithic wireless driver could potentially manage every vendor's chips,
-> > without the need for any hardware specific abstraction. But, clearly this is not
-> > how it is currently in wireless subsystem, because of multiple compelling reasons.
+> > With the availability of generic PAS service, let's add SCM calls as
+> > a backend to keep supporting legacy QTEE interfaces. The exported
+> > qcom_scm* wrappers will get dropped once all the client drivers get
+> > migrated as part of future patches.
+> > 
+> > Signed-off-by: Sumit Garg <sumit.garg@oss.qualcomm.com>
+> > ---
+> >  drivers/firmware/qcom/Kconfig    |   1 +
+> >  drivers/firmware/qcom/qcom_scm.c | 336 ++++++++++++++-----------------
+> >  2 files changed, 156 insertions(+), 181 deletions(-)
+> > 
+> > diff --git a/drivers/firmware/qcom/Kconfig b/drivers/firmware/qcom/Kconfig
+> > index 8653639d06db..9a12ae2b639d 100644
+> > --- a/drivers/firmware/qcom/Kconfig
+> > +++ b/drivers/firmware/qcom/Kconfig
+> > @@ -15,6 +15,7 @@ config QCOM_PAS
+> >  	  TEE bus based PAS service implementation.
+> >  
+> >  config QCOM_SCM
+> > +	select QCOM_PAS
+> >  	select QCOM_TZMEM
+> >  	tristate
+> >  
+> > diff --git a/drivers/firmware/qcom/qcom_scm.c b/drivers/firmware/qcom/qcom_scm.c
+> > index 8fbc96693a55..2d7937ae7c8f 100644
+> > --- a/drivers/firmware/qcom/qcom_scm.c
+> > +++ b/drivers/firmware/qcom/qcom_scm.c
+> > @@ -13,6 +13,7 @@
+> >  #include <linux/dma-mapping.h>
+> >  #include <linux/err.h>
+> >  #include <linux/export.h>
+> > +#include <linux/firmware/qcom/qcom_pas.h>
+> >  #include <linux/firmware/qcom/qcom_scm.h>
+> >  #include <linux/firmware/qcom/qcom_tzmem.h>
+> >  #include <linux/init.h>
+> > @@ -33,6 +34,7 @@
+> >  
+> >  #include <dt-bindings/interrupt-controller/arm-gic.h>
+> >  
+> > +#include "qcom_pas.h"
+> >  #include "qcom_scm.h"
+> >  #include "qcom_tzmem.h"
+> >  
+> > @@ -480,25 +482,6 @@ void qcom_scm_cpu_power_down(u32 flags)
+> >  }
+> >  EXPORT_SYMBOL_GPL(qcom_scm_cpu_power_down);
+> >  
+> > -int qcom_scm_set_remote_state(u32 state, u32 id)
+> > -{
+> > -	struct qcom_scm_desc desc = {
+> > -		.svc = QCOM_SCM_SVC_BOOT,
+> > -		.cmd = QCOM_SCM_BOOT_SET_REMOTE_STATE,
+> > -		.arginfo = QCOM_SCM_ARGS(2),
+> > -		.args[0] = state,
+> > -		.args[1] = id,
+> > -		.owner = ARM_SMCCC_OWNER_SIP,
+> > -	};
+> > -	struct qcom_scm_res res;
+> > -	int ret;
+> > -
+> > -	ret = qcom_scm_call(__scm->dev, &desc, &res);
+> > -
+> > -	return ret ? : res.result[0];
+> > -}
+> > -EXPORT_SYMBOL_GPL(qcom_scm_set_remote_state);
+> > -
+> >  static int qcom_scm_disable_sdi(void)
+> >  {
+> >  	int ret;
+> > @@ -571,26 +554,12 @@ static void qcom_scm_set_download_mode(u32 dload_mode)
+> >  		dev_err(__scm->dev, "failed to set download mode: %d\n", ret);
+> >  }
+> >  
+> > -/**
+> > - * devm_qcom_scm_pas_context_alloc() - Allocate peripheral authentication service
+> > - *				       context for a given peripheral
+> > - *
+> > - * PAS context is device-resource managed, so the caller does not need
+> > - * to worry about freeing the context memory.
+> > - *
+> > - * @dev:	  PAS firmware device
+> > - * @pas_id:	  peripheral authentication service id
+> > - * @mem_phys:	  Subsystem reserve memory start address
+> > - * @mem_size:	  Subsystem reserve memory size
+> > - *
+> > - * Returns: The new PAS context, or ERR_PTR() on failure.
+> > - */
+> >  struct qcom_scm_pas_context *devm_qcom_scm_pas_context_alloc(struct device *dev,
+> >  							     u32 pas_id,
+> >  							     phys_addr_t mem_phys,
+> >  							     size_t mem_size)
+> >  {
+> > -	struct qcom_scm_pas_context *ctx;
+> > +	struct qcom_pas_context *ctx;
 > 
-> No, my argument is, that whatever firmware loading mechanism can be
-> easily separated from the operation of the driver.
+> Why this change..
 
-Well, the separation is not that straight forward. The firmware loading mechanism is
-different because the internal architecture of the chipset is different from any of the
-existing chipsets. And this changes the driver operation too, since the driver needs to
-communicate with different components of CYW5591x chipset (CP Core, FW Core, etc) for
-different operations it needs to perform.
+This is needed for migration to the generic PAS APIs as the internal
+wrappers switched over. However, this is just a temporary global wrapper
+until all the clients switch over..
 
-> > And given that Infineon's new architecture CYW5591x family of chipsets are completely
-> > new, tailor made inhouse for IoT use-cases, with a different chipset architecture,
-> > different bootflow, etc. it is not practical to add it into another vendor's driver
-> > source which has a different flow for managing its devices.
 > 
-> It seems all the development even for the new chips was done on top of
-> brcmfmac [1] , and this driver seems like a copy-and-rename of brcmfmac.
+> >  
+> >  	ctx = devm_kzalloc(dev, sizeof(*ctx), GFP_KERNEL);
+> >  	if (!ctx)
+> > @@ -601,11 +570,12 @@ struct qcom_scm_pas_context *devm_qcom_scm_pas_context_alloc(struct device *dev,
+> >  	ctx->mem_phys = mem_phys;
+> >  	ctx->mem_size = mem_size;
+> >  
+> > -	return ctx;
+> > +	return (struct qcom_scm_pas_context *)ctx;
 > 
-> [1] https://github.com/Infineon/ifx-wireless-drivers/
+> and this change as well ?
 
-No, "downstream Infineon Github release" was a very special case, given only on older
-stable kernel versions for selected subset of customers who had specific use cases.
-There Infineon customers don't expect downstream drivers to support any non-Infineon
-WLAN chipset, and so Infineon specific Driver-Device communication flow and other IoT
-specific features were integrated properly as intended, because of no functionality
-conflict with other vendors in the same downstream driver. And this support will not
-be continued for ever.
+..ditto as above to maintain API compatibility. This whole wrapper gets
+dropped in the last patch.
 
-> > > > > > The CYW5591x family chipsets has dedicated MCU Core
-> > > > > > in addition to the WLAN core and an onboard FLASH memory for the Firmware.
-> > > > > 
-> > > > > It seems all brcmfmac devices have a cortex-M core in them since a long
-> > > > > time.
-> > > > 
-> > > > We were intending to mention that CYW5591x Cortex-M33 core is dedicated to
-> > > > function as a Co-Processor to the Host CPU/MCU and offload multiple wifi
-> > > > and network operations if configured by the user before host goes to sleep.
-> > > > You can refer the chipset block diagram in CYW55913/2/1 Product Brief [1]
-> > > > The CYW5591x SoC Backplane interconnects are also different from any of the
-> > > > legacy Broadcom chipsets.
-> > > 
-> > > Maybe the driver can be forked when it turns out this functionality
-> > > cannot be easily added into the existing driver ?
-> > 
-> > Our response remains the same, as given for your exact same question few weeks
-> > back in this thread. We shared our explantion with the rationale behind our proposal.
 > 
-> Writing pages of text won't get you too far, preparing a patchset on top
-> of brcmfmac will be a good start, and it would show willingness to
-> cooperate with upstream.
-
-We strongly believe that sharing our detailed reasoning in our responses, will help the
-wider community to understand why we are proposing this and why we could not be tied to
-brcmfmac, for Infineon's in-house newer generation chipsets. We are definitely
-committed to co-operating with the community and welcoming all constructive feedback.
-
-> > > > > > And with respect to the support for the new-generation CYW5557x family of
-> > > > > > Secure chipsets, that requires a Secure boot handshake with the Bootloader.
-> > > > > 
-> > > > > It seems like the TRX firmware loading is trivial to add, and parts of
-> > > > > it are already in the Linux kernel for other brcm components. It seems
-> > > > > this TRX was used since old broadcom MIPS SoCs.
-> > > > 
-> > > > No, your understanding needs a correction. Infineon's TRXSE and TRXS Device
-> > > > Bootloader handshake and Firmware formats are quite different from the old
-> > > > Broadcom TRX formats that you are mentioning here. Being two individual
-> > > > WLAN vendors, the chipset internals, firmware formats, Device Bootloader
-> > > > handshake cannot be expected to be the same. Yet another reason why it is
-> > > > not practically feasible to use upstream BRCMFMAC for the new-generation
-> > > > chipsets and new firmware releases from Infineon.
-> > > 
-> > > Surely it is possible to do something like
-> > > 
-> > > if (wlan_id_needs_trxse)
-> > >    load_trxse();
-> > > else
-> > >    load_old_firmware_style();
-> > > 
-> > > ?
-> > > 
-> > > It seems this was already done in the two patches I submitted about a
-> > > year ago, so this is clearly doable.
-> > 
-> > Along with TRXSE and TRXS firmwares, Infineon also uses a TRX format firmware,
-> > which is also different with the TRX format of Broadcom's firmware. So still
-> > need to differentiate between TRX firmwares because the WLAN vendor is different.
-> > This is not a question about whether it is about doable, more than that, whether
-> > it is practical.
+> >  }
+> >  EXPORT_SYMBOL_GPL(devm_qcom_scm_pas_context_alloc);
+> >  
+> > -static int __qcom_scm_pas_init_image(u32 pas_id, dma_addr_t mdata_phys,
+> > +static int __qcom_scm_pas_init_image(struct device *dev, u32 pas_id,
+> > +				     dma_addr_t mdata_phys,
+> >  				     struct qcom_scm_res *res)
+> >  {
+> >  	struct qcom_scm_desc desc = {
+> > @@ -627,7 +597,7 @@ static int __qcom_scm_pas_init_image(u32 pas_id, dma_addr_t mdata_phys,
+> >  
+> >  	desc.args[1] = mdata_phys;
+> >  
+> > -	ret = qcom_scm_call(__scm->dev, &desc, res);
+> > +	ret = qcom_scm_call(dev, &desc, res);
+> >  	qcom_scm_bw_disable();
+> >  
+> >  disable_clk:
+> > @@ -636,7 +606,8 @@ static int __qcom_scm_pas_init_image(u32 pas_id, dma_addr_t mdata_phys,
+> >  	return ret;
+> >  }
+> >  
+> > -static int qcom_scm_pas_prep_and_init_image(struct qcom_scm_pas_context *ctx,
+> > +static int qcom_scm_pas_prep_and_init_image(struct device *dev,
+> > +					    struct qcom_pas_context *ctx,
+> >  					    const void *metadata, size_t size)
+> >  {
+> >  	struct qcom_scm_res res;
+> > @@ -651,7 +622,7 @@ static int qcom_scm_pas_prep_and_init_image(struct qcom_scm_pas_context *ctx,
+> >  	memcpy(mdata_buf, metadata, size);
+> >  	mdata_phys = qcom_tzmem_to_phys(mdata_buf);
+> >  
+> > -	ret = __qcom_scm_pas_init_image(ctx->pas_id, mdata_phys, &res);
+> > +	ret = __qcom_scm_pas_init_image(dev, ctx->pas_id, mdata_phys, &res);
+> >  	if (ret < 0)
+> >  		qcom_tzmem_free(mdata_buf);
+> >  	else
+> > @@ -660,25 +631,9 @@ static int qcom_scm_pas_prep_and_init_image(struct qcom_scm_pas_context *ctx,
+> >  	return ret ? : res.result[0];
+> >  }
+> >  
+> > -/**
+> > - * qcom_scm_pas_init_image() - Initialize peripheral authentication service
+> > - *			       state machine for a given peripheral, using the
+> > - *			       metadata
+> > - * @pas_id:	peripheral authentication service id
+> > - * @metadata:	pointer to memory containing ELF header, program header table
+> > - *		and optional blob of data used for authenticating the metadata
+> > - *		and the rest of the firmware
+> > - * @size:	size of the metadata
+> > - * @ctx:	optional pas context
+> > - *
+> > - * Return: 0 on success.
+> > - *
+> > - * Upon successful return, the PAS metadata context (@ctx) will be used to
+> > - * track the metadata allocation, this needs to be released by invoking
+> > - * qcom_scm_pas_metadata_release() by the caller.
+> > - */
+> > -int qcom_scm_pas_init_image(u32 pas_id, const void *metadata, size_t size,
+> > -			    struct qcom_scm_pas_context *ctx)
+> > +static int __qcom_scm_pas_init_image2(struct device *dev, u32 pas_id,
+> > +				      const void *metadata, size_t size,
+> > +				      struct qcom_pas_context *ctx)
 > 
-> It is a firmware loader, a piece of code that is well isolated.
+> Looks like alignment got wrong..
 
-What we are saying is, Infineon has a different variants of TRX, TRXS, TRXSE firmware
-binaries and Broadcom/other WLAN vendors have different variants of TRX firmwares.
-So it is not practical to extensively add multiple nested levels vendor specific checks
-(Vendor type check -> Vendor bin type check -> Vendor FW bin TRX* type check ->
-Vendor FW bin TRX* Version check, etc) in an upstream WLAN driver that is already
-convoluted with too many vendor specific checks (like FWVID) for sending cmds to Device.
+It isn't, try applying this patch-set and see if you still see any
+alignment issues.
 
-And those existing FWVID checks only help solve some minor problems. But cannot handle
-the scenario like, Firmware/Chipsets from two different WLAN vendors expect the driver
-to send the control cmds to Device in a different sequence. Given that the existing model
-is not scalable in the longer run, we believe this is an appropriate time to move away
-from further convoluting the same upstream driver shared by multiple vendors.
- 
-> > > > > > Even if the enumeration and firmware download support for the CYW55572 is
-> > > > > > somehow retro-fitted into the existing upstream BRCMFMAC driver, there are
-> > > > > > multiple other features and aspects of the Driver-Device communication that
-> > > > > > are unique to each WLAN vendor, which are not always practically feasible
-> > > > > > to support in the same upstream driver.
-> > > > > 
-> > > > > Why ?
-> > > > 
-> > > > As mentioned before, various aspects of the Driver-Device communication are
-> > > > unique to each WLAN vendor. And it is not practically feasible to confine
-> > > > them into a common upstream driver, also not sustainable to maintain it that
-> > > > way througout the lifetime of the hardware.
-> > > 
-> > > The patches I submitted showed this was feasible, so I am not buying
-> > > that argument. Can you give that a try instead ?
-> > 
-> > Our argument is on practical feasibility of doing so and its implications throughout
-> > the lifetime of this new-generation device, when later tring to add other features and
-> > when Infineon specific Driver-Device communiction flow evolve even more. This is quite
-> > different from feasbility of making brcmfmac just detect the chip and load the firmware.
-> > It is not sustainable to confine the support for a chips from multiple WLAN vendors
-> > into the same upstream Linux driver.
 > 
-> Apparently it is, and it was already done by infineon themselves, see
-> [1] above.
+> >  {
+> >  	struct qcom_scm_res res;
+> >  	dma_addr_t mdata_phys;
+> > @@ -686,7 +641,8 @@ int qcom_scm_pas_init_image(u32 pas_id, const void *metadata, size_t size,
+> >  	int ret;
+> >  
+> >  	if (ctx && ctx->use_tzmem)
+> > -		return qcom_scm_pas_prep_and_init_image(ctx, metadata, size);
+> > +		return qcom_scm_pas_prep_and_init_image(dev, ctx, metadata,
+> > +							size);
+>  
+> unwrap this..
 
-No, you are conflating two different things. My argument on "lack of practical feasibility"
-and "unsustainability" in adding/maintaining new-gen Infineon chipsets in a driver shared
-among WLAN vendors, is in the context of "upstream Linux driver" on latest development kernel.
-This may not apply for the "downstream Infineon Github release" created for special cases,
-which is expected to be always used by only one vendor who created it and its customers,
-where there no conflict among vendor implementations.
+Ack.
 
-> In fact, extending and maintaining existing driver is a much better way
-> to start with Linux kernel upstreaming than dumping a 50 kLoC duplicate
-> of existing driver onto the list.
-
-As we mentioned in our earlier emails, for legacy Infineon chipsets (from broadcom) that are
-already supported on upstream brcmfmac, we will surely extend it with new Infineon features.
-And also willing to help maintain upstream brcmfmac. But for new-generation Infineon chipsets
-developed in house, the same driver cannot be extended to avoid convoluting the current
-upstream brcmfmac driver codebase even more with any additional vendor specific checks and
-continue the risk of frequent regressions among different WLAN vendors.
-
-The critical aspects of the driver operation, functionality of managing the device, chipset
-architecture, Driver-Device Secure chip handshake. Runtime firmware update, control-path,
-data-path and other features are quite different. Only some commands/events IDs and few
-functions might look similar between the two drivers, that is primarily because some of the
-fundamental aspects of these Full MAC chipsets need change very rarely. This do not make the
-drivers an exact duplicate of each other. 
-
-> Even if the initial support is not complete, it can be extended over
-> time, that is normal. And it is much easier to upstream support by
-> gradually improving/extending the already upstream code than dump a
-> large chunk of code all at once and expect it to get applied.
-
-We took the similar feedback received on V1 very seriously, and already removed many of the
-functionality in v2 to reduce the driver size and make it easier for review. Will shrink it
-even further in upcoming revision, so that removed funcationality can be sent later as
-incremental patches.
-
-> > Yes, we are aware of the couple patches that you submitted for upstream review. Before
-> > that, initially those two patches were first released by Infineon downstream, only for
-> > specific end use-cases and not actually intended for upstream.
-> > 
-> > > > > > Because currently BRCMFMAC driver
-> > > > > > has a shared ownership with more than 3 WLAN vendor organizations and this
-> > > > > > approach has its limitations.
-> > > > > 
-> > > > > Yes, this means it is necessary to cooperate and coordinate with other
-> > > > > people, on the mailing list.
-> > > > 
-> > > > Infineon is committed to coordinate with other vendors in managing upstream
-> > > > BRCMFMAC driver and continuing the support for its legacy chipsets that
-> > > > still follows the legacy Broadcom architecture. Like for example, we have
-> > > > added support for CYW54591-PCIe in upstream BRCMFMAC few months back [2],
-> > > > because it has many things in common with other legacy Broadcom chips.
-> > > > But the same does not applies for all the new-generation Infineon chipsets.
-> > > > 
-> > > > > > For Example, the version of the PCIe and SDIO
-> > > > > > BUS specific shared info in Device Memory is expected same from chipsets
-> > > > > > from all vendors. There would be a complex need to maintain vendor specifc
-> > > > > > as well as BUS specific Shared info version, vendor specific BUS Protocol
-> > > > > > layers, vendor specific firmware event header OUIs (currently always expects
-> > > > > > BRCM OUI even from other vendor chips) and even more.
-> > > > > 
-> > > > > This sounds like code refactoring is necessary.
-> > > > > 
-> > > > > > Confining different architecture chips from different WLAN vendors into the
-> > > > > > same legacy BRCMFMAC driver codebase, may not be sustainable and could
-> > > > > > potentially increase the maintainence effort and codebase complexity.
-> > > > > > And not practically feasible to continue splitting this driver with more
-> > > > > > vendor specific checks in the longer run. Since being different vendors,
-> > > > > > each will only naturally diverge even more in the future with their chipset
-> > > > > > Architecture, Driver-Device communication flow, etc. Infineon will continue
-> > > > > > to support its legacy chipsets, already supported in the upstream BRCMFMAC.
-> > > > > Maybe all the extra functionality can be added later, and the driver can
-> > > > > be forked later, when it becomes clear that refactoring is not an option
-> > > > > and it is becoming too difficult to maintain ?
-> > > > 
-> > > > Refactoring the existing upstream BRCMFMAC driver for the new-architecture
-> > > > chipsets developed by Infineon is not a practical option now because these
-> > > > devices are fairly new. In the lifetime of these devices, the functionality
-> > > > of the Devices and Driver interaction are only going to evolve even more.
-> > > > Eventually, it would become more cumbersome to maintain as well as to avoid
-> > > > regressions for different architecture chips from different WLAN vendors
-> > > > if same upstream driver is used.
-> > > > 
-> > > > We strongly believe that this is an appropriate time for thinking about a
-> > > > proposal to proceed with a dedicated driver for the new-generation chips
-> > > > developed individually by Infineon.
-> > > > 
-> > > > > So far, it seems the current generation chips can be easily added to
-> > > > > brcmfmac, even if the feature set would be limited. Adding them would
-> > > > 
-> > > > We are not in the same page here. As mentioned earlier and as you might
-> > > > know, there is infact much more to it than adding enumeration support for a
-> > > > chip in a driver. Certainly not easy when eventually Infineon is required
-> > > > to enable the end users with the actual capabilities of the chipset, also
-> > > > Infineon has the responsibility to ensure driver compatibility with all the
-> > > > newly shipped Device firmwares.
-> > > > 
-> > > > > allow the maintainers to review such a smaller patchset and get at least
-> > > > > some hardware support in, step by step, instead of this mega-patchset.
-> > > > 
-> > > > We understood that review bandwidth is limited and have taken the feedback
-> > > > received on v1 very seriously, so multiple features were already stripped
-> > > > off in v2. Willing to skip even more functionality in the upcoming versions
-> > > > and also ready to provide more information as needed to make the INFFMAC
-> > > > driver review as much easy as possible.
-> > > 
-> > > So, can you try and implement minimal TRXSE firmware loading and support
-> > > for the CYW555xx for brcmfmac as an example, so it would be clear
-> > > whether or not it can be added into the brcmfmac driver ?
-> > 
-> > No, as we mentioned earlier, just adding the enumeration & FW loading support
-> > for the chipset in the brcmfmac driver and claiming that the device support is
-> > available in the upstream brcmfmac driver would never be enough.
 > 
-> Clearly it is, and the rest can be extended, cf. [1] above.
-
-No, it is incorrect to compare the limitations of an upstream driver (shared among
-multiple vendors) available on latest kernel, to a downstream driver (single vendor)
-released on some older stable kernel for that vendor's specific customers.
- 
-> >  Further, Infineon
-> > has the responsibility to eventually add the actual features and capabilities of
-> > this new-generation chip in the same upstream driver, so that the end users can
-> > utilize the chipset to its fullest capability. It would not be practical to do this
-> > later for the new generation Infineon chips, once the DEV ID is added into brcmfmac.
-> > Because chipsets from multiple WLAN vendors are currently being managed by the same
-> > driver, continuing to add more vendor specific checks for every driver functionality
-> > is not sustainable.
+> >  
+> >  	/*
+> >  	 * During the scm call memory protection will be enabled for the meta
+> > @@ -700,16 +656,15 @@ int qcom_scm_pas_init_image(u32 pas_id, const void *metadata, size_t size,
+> >  	 * If we pass a buffer that is already part of an SHM Bridge to this
+> >  	 * call, it will fail.
+> >  	 */
+> > -	mdata_buf = dma_alloc_coherent(__scm->dev, size, &mdata_phys,
+> > -				       GFP_KERNEL);
+> > +	mdata_buf = dma_alloc_coherent(dev, size, &mdata_phys, GFP_KERNEL);
+> >  	if (!mdata_buf)
+> >  		return -ENOMEM;
+> >  
+> >  	memcpy(mdata_buf, metadata, size);
+> >  
+> > -	ret = __qcom_scm_pas_init_image(pas_id, mdata_phys, &res);
+> > +	ret = __qcom_scm_pas_init_image(dev, pas_id, mdata_phys, &res);
+> >  	if (ret < 0 || !ctx) {
+> > -		dma_free_coherent(__scm->dev, size, mdata_buf, mdata_phys);
+> > +		dma_free_coherent(dev, size, mdata_buf, mdata_phys);
+> >  	} else if (ctx) {
+> >  		ctx->ptr = mdata_buf;
+> >  		ctx->phys = mdata_phys;
+> > @@ -718,36 +673,35 @@ int qcom_scm_pas_init_image(u32 pas_id, const void *metadata, size_t size,
+> >  
+> >  	return ret ? : res.result[0];
+> >  }
+> > -EXPORT_SYMBOL_GPL(qcom_scm_pas_init_image);
+> >  
+> > -/**
+> > - * qcom_scm_pas_metadata_release() - release metadata context
+> > - * @ctx:	pas context
+> > - */
+> > -void qcom_scm_pas_metadata_release(struct qcom_scm_pas_context *ctx)
+> > +int qcom_scm_pas_init_image(u32 pas_id, const void *metadata, size_t size,
+> > +			    struct qcom_scm_pas_context *ctx)
+> >  {
+> > -	if (!ctx->ptr)
+> > -		return;
+> > +	return __qcom_scm_pas_init_image2(__scm->dev, pas_id, metadata, size,
+> > +					  (struct qcom_pas_context *)ctx);
+> > +}
+> > +EXPORT_SYMBOL_GPL(qcom_scm_pas_init_image);
+> >  
+> > +static void __qcom_scm_pas_metadata_release(struct device *dev,
+> > +					    struct qcom_pas_context *ctx)
+> > +{
+> >  	if (ctx->use_tzmem)
+> >  		qcom_tzmem_free(ctx->ptr);
+> >  	else
+> > -		dma_free_coherent(__scm->dev, ctx->size, ctx->ptr, ctx->phys);
+> > +		dma_free_coherent(dev, ctx->size, ctx->ptr, ctx->phys);
+> >  
+> >  	ctx->ptr = NULL;
+> >  }
+> > +
+> > +void qcom_scm_pas_metadata_release(struct qcom_scm_pas_context *ctx)
+> > +{
+> > +	__qcom_scm_pas_metadata_release(__scm->dev,
+> > +					(struct qcom_pas_context *)ctx);
+> > +}
+> >  EXPORT_SYMBOL_GPL(qcom_scm_pas_metadata_release);
+> >  
+> > -/**
+> > - * qcom_scm_pas_mem_setup() - Prepare the memory related to a given peripheral
+> > - *			      for firmware loading
+> > - * @pas_id:	peripheral authentication service id
+> > - * @addr:	start address of memory area to prepare
+> > - * @size:	size of the memory area to prepare
+> > - *
+> > - * Returns 0 on success.
+> > - */
+> > -int qcom_scm_pas_mem_setup(u32 pas_id, phys_addr_t addr, phys_addr_t size)
+> > +static int __qcom_scm_pas_mem_setup(struct device *dev, u32 pas_id,
+> > +				    phys_addr_t addr, phys_addr_t size)
+> >  {
+> >  	int ret;
+> >  	struct qcom_scm_desc desc = {
+> > @@ -769,7 +723,7 @@ int qcom_scm_pas_mem_setup(u32 pas_id, phys_addr_t addr, phys_addr_t size)
+> >  	if (ret)
+> >  		goto disable_clk;
+> >  
+> > -	ret = qcom_scm_call(__scm->dev, &desc, &res);
+> > +	ret = qcom_scm_call(dev, &desc, &res);
+> >  	qcom_scm_bw_disable();
+> >  
+> >  disable_clk:
+> > @@ -777,9 +731,15 @@ int qcom_scm_pas_mem_setup(u32 pas_id, phys_addr_t addr, phys_addr_t size)
+> >  
+> >  	return ret ? : res.result[0];
+> >  }
+> > +
+> > +int qcom_scm_pas_mem_setup(u32 pas_id, phys_addr_t addr, phys_addr_t size)
+> > +{
+> > +	return __qcom_scm_pas_mem_setup(__scm->dev, pas_id, addr, size);
+> > +}
+> >  EXPORT_SYMBOL_GPL(qcom_scm_pas_mem_setup);
+> >  
+> > -static void *__qcom_scm_pas_get_rsc_table(u32 pas_id, void *input_rt_tzm,
+> > +static void *__qcom_scm_pas_get_rsc_table(struct device *dev, u32 pas_id,
+> > +					  void *input_rt_tzm,
+> >  					  size_t input_rt_size,
+> >  					  size_t *output_rt_size)
+> >  {
+> > @@ -814,7 +774,7 @@ static void *__qcom_scm_pas_get_rsc_table(u32 pas_id, void *input_rt_tzm,
+> >  	 * with output_rt_tzm buffer with res.result[2] size however, It should not
+> >  	 * be of unresonable size.
+> >  	 */
+> > -	ret = qcom_scm_call(__scm->dev, &desc, &res);
+> > +	ret = qcom_scm_call(dev, &desc, &res);
+> >  	if (!ret && res.result[2] > SZ_1G) {
+> >  		ret = -E2BIG;
+> >  		goto free_output_rt;
+> > @@ -831,51 +791,11 @@ static void *__qcom_scm_pas_get_rsc_table(u32 pas_id, void *input_rt_tzm,
+> >  	return ret ? ERR_PTR(ret) : output_rt_tzm;
+> >  }
+> >  
+> > -/**
+> > - * qcom_scm_pas_get_rsc_table() - Retrieve the resource table in passed output buffer
+> > - *				  for a given peripheral.
+> > - *
+> > - * Qualcomm remote processor may rely on both static and dynamic resources for
+> > - * its functionality. Static resources typically refer to memory-mapped addresses
+> > - * required by the subsystem and are often embedded within the firmware binary
+> > - * and dynamic resources, such as shared memory in DDR etc., are determined at
+> > - * runtime during the boot process.
+> > - *
+> > - * On Qualcomm Technologies devices, it's possible that static resources are not
+> > - * embedded in the firmware binary and instead are provided by TrustZone However,
+> > - * dynamic resources are always expected to come from TrustZone. This indicates
+> > - * that for Qualcomm devices, all resources (static and dynamic) will be provided
+> > - * by TrustZone via the SMC call.
+> > - *
+> > - * If the remote processor firmware binary does contain static resources, they
+> > - * should be passed in input_rt. These will be forwarded to TrustZone for
+> > - * authentication. TrustZone will then append the dynamic resources and return
+> > - * the complete resource table in output_rt_tzm.
+> > - *
+> > - * If the remote processor firmware binary does not include a resource table,
+> > - * the caller of this function should set input_rt as NULL and input_rt_size
+> > - * as zero respectively.
+> > - *
+> > - * More about documentation on resource table data structures can be found in
+> > - * include/linux/remoteproc.h
+> > - *
+> > - * @ctx:	    PAS context
+> > - * @pas_id:	    peripheral authentication service id
+> > - * @input_rt:       resource table buffer which is present in firmware binary
+> > - * @input_rt_size:  size of the resource table present in firmware binary
+> > - * @output_rt_size: TrustZone expects caller should pass worst case size for
+> > - *		    the output_rt_tzm.
+> > - *
+> > - * Return:
+> > - *  On success, returns a pointer to the allocated buffer containing the final
+> > - *  resource table and output_rt_size will have actual resource table size from
+> > - *  TrustZone. The caller is responsible for freeing the buffer. On failure,
+> > - *  returns ERR_PTR(-errno).
+> > - */
+> > -struct resource_table *qcom_scm_pas_get_rsc_table(struct qcom_scm_pas_context *ctx,
+> > -						  void *input_rt,
+> > -						  size_t input_rt_size,
+> > -						  size_t *output_rt_size)
+> > +static void *__qcom_scm_pas_get_rsc_table2(struct device *dev,
+> > +					   struct qcom_pas_context *ctx,
+> > +					   void *input_rt,
+> > +					   size_t input_rt_size,
+> > +					   size_t *output_rt_size)
+> >  {
+> >  	struct resource_table empty_rsc = {};
+> >  	size_t size = SZ_16K;
+> > @@ -910,11 +830,12 @@ struct resource_table *qcom_scm_pas_get_rsc_table(struct qcom_scm_pas_context *c
+> >  
+> >  	memcpy(input_rt_tzm, input_rt, input_rt_size);
+> >  
+> > -	output_rt_tzm = __qcom_scm_pas_get_rsc_table(ctx->pas_id, input_rt_tzm,
+> > +	output_rt_tzm = __qcom_scm_pas_get_rsc_table(dev, ctx->pas_id,
+> > +						     input_rt_tzm,
+> >  						     input_rt_size, &size);
+> >  	if (PTR_ERR(output_rt_tzm) == -EOVERFLOW)
+> >  		/* Try again with the size requested by the TZ */
+> > -		output_rt_tzm = __qcom_scm_pas_get_rsc_table(ctx->pas_id,
+> > +		output_rt_tzm = __qcom_scm_pas_get_rsc_table(dev, ctx->pas_id,
+> >  							     input_rt_tzm,
+> >  							     input_rt_size,
+> >  							     &size);
+> > @@ -945,16 +866,20 @@ struct resource_table *qcom_scm_pas_get_rsc_table(struct qcom_scm_pas_context *c
+> >  
+> >  	return ret ? ERR_PTR(ret) : tbl_ptr;
+> >  }
+> > +
+> > +struct resource_table *qcom_scm_pas_get_rsc_table(struct qcom_scm_pas_context *ctx,
+> > +						  void *input_rt,
+> > +						  size_t input_rt_size,
+> > +						  size_t *output_rt_size)
+> > +{
+> > +	return __qcom_scm_pas_get_rsc_table2(__scm->dev,
 > 
-> Again, gradually improving upstream code is the way to go.
+> Instead of using integar, we could use addition of more '_' to reflect
+> inner level functions.. 
 
-Definitely, this way is applicable for new functionality needed for an existing chipset
-supported by an upstream driver. Given that the nature of Infineon's new generation
-IoT WiFi Connectivity Processor chipsets like CYW5591x is completely different from any
-of the legacy Broadcom WLAN chipsets, it is not appropriate to introduce them into the
-legacy brcmfmac driver shared with different WLAN vendors, also whose target end product
-use cases are completely different.
+Let me rather drop the integer as part of last patch when I am already
+dropping wrappers.
 
-> > The dedicated vendor WLAN drivers existing below the common cfg80211 & mac80211 layers
-> > in the linux WLAN stack, helps to maintain the Device Hardware specific abstraction,
-> > by taking care of the unique Device specific operation, Driver-Device Communication flow.
-> > Confining multiple WLAN Vendor chipsets in same upstream driver, would only weaken the
-> > abstraction even more.
+> 
+> > +					     (struct qcom_pas_context *)ctx,
+> > +					     input_rt, input_rt_size,
+> > +					     output_rt_size);
+> > +}
+> >  EXPORT_SYMBOL_GPL(qcom_scm_pas_get_rsc_table);
+> >  
+> > -/**
+> > - * qcom_scm_pas_auth_and_reset() - Authenticate the given peripheral firmware
+> > - *				   and reset the remote processor
+> > - * @pas_id:	peripheral authentication service id
+> > - *
+> > - * Return 0 on success.
+> > - */
+> > -int qcom_scm_pas_auth_and_reset(u32 pas_id)
+> > +static int __qcom_scm_pas_auth_and_reset(struct device *dev, u32 pas_id)
+> >  {
+> >  	int ret;
+> >  	struct qcom_scm_desc desc = {
+> > @@ -974,7 +899,7 @@ int qcom_scm_pas_auth_and_reset(u32 pas_id)
+> >  	if (ret)
+> >  		goto disable_clk;
+> >  
+> > -	ret = qcom_scm_call(__scm->dev, &desc, &res);
+> > +	ret = qcom_scm_call(dev, &desc, &res);
+> >  	qcom_scm_bw_disable();
+> >  
+> >  disable_clk:
+> > @@ -982,28 +907,15 @@ int qcom_scm_pas_auth_and_reset(u32 pas_id)
+> >  
+> >  	return ret ? : res.result[0];
+> >  }
+> > +
+> > +int qcom_scm_pas_auth_and_reset(u32 pas_id)
+> > +{
+> > +	return __qcom_scm_pas_auth_and_reset(__scm->dev, pas_id);
+> > +}
+> >  EXPORT_SYMBOL_GPL(qcom_scm_pas_auth_and_reset);
+> >  
+> > -/**
+> > - * qcom_scm_pas_prepare_and_auth_reset() - Prepare, authenticate, and reset the
+> > - *					   remote processor
+> > - *
+> > - * @ctx:	Context saved during call to qcom_scm_pas_context_init()
+> > - *
+> > - * This function performs the necessary steps to prepare a PAS subsystem,
+> > - * authenticate it using the provided metadata, and initiate a reset sequence.
+> > - *
+> > - * It should be used when Linux is in control setting up the IOMMU hardware
+> > - * for remote subsystem during secure firmware loading processes. The preparation
+> > - * step sets up a shmbridge over the firmware memory before TrustZone accesses the
+> > - * firmware memory region for authentication. The authentication step verifies
+> > - * the integrity and authenticity of the firmware or configuration using secure
+> > - * metadata. Finally, the reset step ensures the subsystem starts in a clean and
+> > - * sane state.
+> > - *
+> > - * Return: 0 on success, negative errno on failure.
+> > - */
+> > -int qcom_scm_pas_prepare_and_auth_reset(struct qcom_scm_pas_context *ctx)
+> > +static int __qcom_scm_pas_prepare_and_auth_reset(struct device *dev,
+> > +						 struct qcom_pas_context *ctx)
+> >  {
+> >  	u64 handle;
+> >  	int ret;
+> > @@ -1014,7 +926,7 @@ int qcom_scm_pas_prepare_and_auth_reset(struct qcom_scm_pas_context *ctx)
+> >  	 * memory region and then invokes a call to TrustZone to authenticate.
+> >  	 */
+> >  	if (!ctx->use_tzmem)
+> > -		return qcom_scm_pas_auth_and_reset(ctx->pas_id);
+> > +		return __qcom_scm_pas_auth_and_reset(dev, ctx->pas_id);
+> >  
+> >  	/*
+> >  	 * When Linux runs @ EL2 Linux must create the shmbridge itself and then
+> > @@ -1024,20 +936,45 @@ int qcom_scm_pas_prepare_and_auth_reset(struct qcom_scm_pas_context *ctx)
+> >  	if (ret)
+> >  		return ret;
+> >  
+> > -	ret = qcom_scm_pas_auth_and_reset(ctx->pas_id);
+> > +	ret = __qcom_scm_pas_auth_and_reset(dev, ctx->pas_id);
+> >  	qcom_tzmem_shm_bridge_delete(handle);
+> >  
+> >  	return ret;
+> >  }
+> > +
+> > +int qcom_scm_pas_prepare_and_auth_reset(struct qcom_scm_pas_context *ctx)
+> > +{
+> > +	return __qcom_scm_pas_prepare_and_auth_reset(__scm->dev,
+> > +						     (struct qcom_pas_context *)ctx);
+> > +}
+> >  EXPORT_SYMBOL_GPL(qcom_scm_pas_prepare_and_auth_reset);
+> >  
+> > -/**
+> > - * qcom_scm_pas_shutdown() - Shut down the remote processor
+> > - * @pas_id:	peripheral authentication service id
+> > - *
+> > - * Returns 0 on success.
+> > - */
+> > -int qcom_scm_pas_shutdown(u32 pas_id)
+> > +static int __qcom_scm_pas_set_remote_state(struct device *dev, u32 state,
+> > +					   u32 pas_id)
+> > +{
+> > +	struct qcom_scm_desc desc = {
+> > +		.svc = QCOM_SCM_SVC_BOOT,
+> > +		.cmd = QCOM_SCM_BOOT_SET_REMOTE_STATE,
+> > +		.arginfo = QCOM_SCM_ARGS(2),
+> > +		.args[0] = state,
+> > +		.args[1] = pas_id,
+> > +		.owner = ARM_SMCCC_OWNER_SIP,
+> > +	};
+> > +	struct qcom_scm_res res;
+> > +	int ret;
+> > +
+> > +	ret = qcom_scm_call(dev, &desc, &res);
+> > +
+> > +	return ret ? : res.result[0];
+> > +}
+> > +
+> > +int qcom_scm_set_remote_state(u32 state, u32 id)
+> > +{
+> > +	return __qcom_scm_pas_set_remote_state(__scm->dev, state, id);
+> > +}
+> > +EXPORT_SYMBOL_GPL(qcom_scm_set_remote_state);
+> > +
+> > +static int __qcom_scm_pas_shutdown(struct device *dev, u32 pas_id)
+> >  {
+> >  	int ret;
+> >  	struct qcom_scm_desc desc = {
+> > @@ -1057,7 +994,7 @@ int qcom_scm_pas_shutdown(u32 pas_id)
+> >  	if (ret)
+> >  		goto disable_clk;
+> >  
+> > -	ret = qcom_scm_call(__scm->dev, &desc, &res);
+> > +	ret = qcom_scm_call(dev, &desc, &res);
+> >  	qcom_scm_bw_disable();
+> >  
+> >  disable_clk:
+> > @@ -1065,16 +1002,14 @@ int qcom_scm_pas_shutdown(u32 pas_id)
+> >  
+> >  	return ret ? : res.result[0];
+> >  }
+> > +
+> > +int qcom_scm_pas_shutdown(u32 pas_id)
+> > +{
+> > +	return __qcom_scm_pas_shutdown(__scm->dev, pas_id);
+> > +}
+> >  EXPORT_SYMBOL_GPL(qcom_scm_pas_shutdown);
+> >  
+> > -/**
+> > - * qcom_scm_pas_supported() - Check if the peripheral authentication service is
+> > - *			      available for the given peripherial
+> > - * @pas_id:	peripheral authentication service id
+> > - *
+> > - * Returns true if PAS is supported for this peripheral, otherwise false.
+> > - */
+> > -bool qcom_scm_pas_supported(u32 pas_id)
+> > +static bool __qcom_scm_pas_supported(struct device *dev, u32 pas_id)
+> >  {
+> >  	int ret;
+> >  	struct qcom_scm_desc desc = {
+> > @@ -1086,16 +1021,49 @@ bool qcom_scm_pas_supported(u32 pas_id)
+> >  	};
+> >  	struct qcom_scm_res res;
+> >  
+> > -	if (!__qcom_scm_is_call_available(__scm->dev, QCOM_SCM_SVC_PIL,
+> > +	if (!__qcom_scm_is_call_available(dev, QCOM_SCM_SVC_PIL,
+> >  					  QCOM_SCM_PIL_PAS_IS_SUPPORTED))
+> >  		return false;
+> >  
+> > -	ret = qcom_scm_call(__scm->dev, &desc, &res);
+> > +	ret = qcom_scm_call(dev, &desc, &res);
+> >  
+> >  	return ret ? false : !!res.result[0];
+> >  }
+> > +
+> > +bool qcom_scm_pas_supported(u32 pas_id)
+> > +{
+> > +	return __qcom_scm_pas_supported(__scm->dev, pas_id);
+> > +}
+> >  EXPORT_SYMBOL_GPL(qcom_scm_pas_supported);
+> >  
+> > +static struct qcom_pas_ops qcom_pas_ops_scm = {
+> > +	.drv_name		= "qcom_scm",
+> > +	.supported		= __qcom_scm_pas_supported,
+> > +	.init_image		= __qcom_scm_pas_init_image2,
+> > +	.mem_setup		= __qcom_scm_pas_mem_setup,
+> > +	.get_rsc_table		= __qcom_scm_pas_get_rsc_table2,
+> > +	.auth_and_reset		= __qcom_scm_pas_auth_and_reset,
+> > +	.prepare_and_auth_reset	= __qcom_scm_pas_prepare_and_auth_reset,
+> > +	.set_remote_state	= __qcom_scm_pas_set_remote_state,
+> > +	.shutdown		= __qcom_scm_pas_shutdown,
+> > +	.metadata_release	= __qcom_scm_pas_metadata_release,
+> > +};
+> > +
+> > +/**
+> > + * qcom_scm_is_pas_available() - Check if the peripheral authentication service
+> > + *				 is available via SCM or not
+> > + *
+> > + * Returns true if PAS is available, otherwise false.
+> > + */
+> > +static bool qcom_scm_is_pas_available(void)
+> > +{
+> > +	if (!__qcom_scm_is_call_available(__scm->dev, QCOM_SCM_SVC_PIL,
+> > +					  QCOM_SCM_PIL_PAS_AUTH_AND_RESET))
+> > +		return false;
+> > +
+> > +	return true;
+> > +}
+> > +
+> >  static int __qcom_scm_pas_mss_reset(struct device *dev, bool reset)
+> >  {
+> >  	struct qcom_scm_desc desc = {
+> > @@ -2782,6 +2750,11 @@ static int qcom_scm_probe(struct platform_device *pdev)
+> >  
+> >  	__get_convention();
+> >  
+> > +	if (qcom_scm_is_pas_available()) {
+> > +		qcom_pas_ops_scm.dev = scm->dev;
+> > +		qcom_pas_ops_register(&qcom_pas_ops_scm);
+> > +	}
+> > +
+> >  	/*
+> >  	 * If "download mode" is requested, from this point on warmboot
+> >  	 * will cause the boot stages to enter download mode, unless
+> > @@ -2818,6 +2791,7 @@ static void qcom_scm_shutdown(struct platform_device *pdev)
+> >  {
+> >  	/* Clean shutdown, disable download mode to allow normal restart */
+> >  	qcom_scm_set_download_mode(QCOM_DLOAD_NODUMP);
+> > +	qcom_pas_ops_unregister();
+> >  }
+> >  
+> >  static const struct of_device_id qcom_scm_dt_match[] = {
+> > -- 
+> > 2.51.0
 > > 
-> > We would like to emphasize that Infineon objective is not to be forever tied to the
-> > existing common BRCMFMAC driver for its new generation chipsets, only because the
-> > then Cypress (now Infineon) acquired few legacy chipsets (supported in brcmfmac) from
-> > Broadcom nearly a decade ago in 2016.
-> > 
-> > > Oh ... and I also noticed, that infineon recently fully rewrote the
-> > > history of the firmware repository [1], both the master branch history
-> > > and the tags now point to different commit SHAs.
-> > > 
-> > > [1] https://github.com/Infineon/ifx-linux-firmware
-> > 
-> > Ok, we will notify the respective folks internally.
-> It seems the problem is still not solved, the repository history was
-> rewritten and nobody seems to care. 
+> 
+> nit: please double check the alignment due to name and 'static' addition
+> to the function..
 
-I noticed that you have filed an issue on the Infineon Github Repository, the appropriate
-folks managing it, will respond in Github as soon as possible.
- 
-> I also tested this inffmac patchset with CYW55513 and not even scanning
-> seems to work.
+Alignment is fine, it doesn't show appropriately on the plain text
+emails.
 
-You must have used an incompatible firmware version. Infineon has different flavours
-of firmware binaries with different changes/features, for specific end use cases.
-For using specific Infineon chipsets with this new inffmac driver, you would need to
-contact us for the compatible firmware binary.
-
-Gokul
+-Sumit
 
