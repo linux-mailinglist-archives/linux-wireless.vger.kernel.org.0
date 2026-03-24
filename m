@@ -1,63 +1,67 @@
-Return-Path: <linux-wireless+bounces-33755-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-33756-lists+linux-wireless=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id GLK2KQ4rwml5ZwQAu9opvQ
-	(envelope-from <linux-wireless+bounces-33755-lists+linux-wireless=lfdr.de@vger.kernel.org>)
-	for <lists+linux-wireless@lfdr.de>; Tue, 24 Mar 2026 07:11:26 +0100
+	id YMCxN1Euwml5ZwQAu9opvQ
+	(envelope-from <linux-wireless+bounces-33756-lists+linux-wireless=lfdr.de@vger.kernel.org>)
+	for <lists+linux-wireless@lfdr.de>; Tue, 24 Mar 2026 07:25:21 +0100
 X-Original-To: lists+linux-wireless@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 13F7C302A2D
-	for <lists+linux-wireless@lfdr.de>; Tue, 24 Mar 2026 07:11:25 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id E985C302D71
+	for <lists+linux-wireless@lfdr.de>; Tue, 24 Mar 2026 07:25:20 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 0821D310BA28
-	for <lists+linux-wireless@lfdr.de>; Tue, 24 Mar 2026 06:05:20 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 6E32F30367B3
+	for <lists+linux-wireless@lfdr.de>; Tue, 24 Mar 2026 06:21:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CEC413AA51B;
-	Tue, 24 Mar 2026 06:04:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6D3ED2BD5B4;
+	Tue, 24 Mar 2026 06:21:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b="V1uJJN4w"
+	dkim=pass (2048-bit key) header.d=realtek.com header.i=@realtek.com header.b="DQGZdb5i"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from m16.mail.163.com (m16.mail.163.com [117.135.210.4])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1C71E3AA4F7;
-	Tue, 24 Mar 2026 06:04:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=117.135.210.4
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EC2B161FFE
+	for <linux-wireless@vger.kernel.org>; Tue, 24 Mar 2026 06:21:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=211.75.126.72
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774332273; cv=none; b=macCauwP7JFLUTNE0S/U1RzB+WDnuHdb5LvvKqxoRA9sjwiuazHpJ5lMNlg4Vie4kwdjAjXd0VzSpsClpJs0v8jesTKrPzukGcoNQHSuxUfcv33ySHmfyHq14IplQS1fIPypvgyvdWjmo5xb/nwf3lbp+klt967BRf6H1GVyvS8=
+	t=1774333271; cv=none; b=kxDv+CT28MTMTC4iUQMCw6ySnxw6uwz/ikYmTJB+HHYnKbtHJXYO1+i4aQv5UFYOQwB3hcfEqtPSu8FAV3tdmJ2TPyRZxUFAf6T67e9H+YYjIpPbLnHJ83C+PGIxsydGm0u4U1Bt6cBeO2QhXRzYOhUx1LAEiDKkFCMzHEuwrDk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774332273; c=relaxed/simple;
-	bh=46mKEmqJ7If9n6oOQLlB27h455jj6EdxRIvtHJgTEo0=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=hFytGNp7KuQsyj5+pXKJseNwmrDmkPRQvCAdaToZcNZ8kw0Y6EcaJEQIGxJizX7cQTwqvt+OjWvu0Q1G9XHTgXNXjc5CNR0T+HmTPg25LAfE9PBbYEzO9IWdNwmj2FwEzfKP99liSAKd5ZI8ib9NJtCEqANa6cx7F01HPUm0Yzs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com; spf=pass smtp.mailfrom=163.com; dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b=V1uJJN4w; arc=none smtp.client-ip=117.135.210.4
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=163.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
-	s=s110527; h=From:To:Subject:Date:Message-Id:MIME-Version; bh=IN
-	uffQ2bP82R6qrvw57oC8K0VZlNzr1HNS+Vrn9bxsA=; b=V1uJJN4wnePmsA8Q+f
-	XvG+Qb2PVZiaYk8Y+m4n3uufLbr4cxHsIhElapq8P61e9hebHfay5h8msFCkuSZt
-	12b+9wBcmFzIedwzphfLZ1nqxTWQm/MItVF634yRJlpcph/sJMhlzNLoI61zyXhR
-	7x5K0ldrVEpn23ljE8emv90SA=
-Received: from pek-lpg-core5.wrs.com (unknown [])
-	by gzga-smtp-mtada-g0-2 (Coremail) with SMTP id _____wD3f63sKMJpJvBTBA--.36472S2;
-	Tue, 24 Mar 2026 14:02:21 +0800 (CST)
-From: Robert Garcia <rob_garcia@163.com>
-To: stable@vger.kernel.org,
-	Johannes Berg <johannes.berg@intel.com>
-Cc: Miri Korenblit <miriam.rachel.korenblit@intel.com>,
-	Robert Garcia <rob_garcia@163.com>,
-	Luca Coelho <luciano.coelho@intel.com>,
-	Kalle Valo <kvalo@codeaurora.org>,
-	"David S . Miller" <davem@davemloft.net>,
-	Jakub Kicinski <kuba@kernel.org>,
-	linux-wireless@vger.kernel.org,
-	netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH 5.15.y] wifi: iwlwifi: read txq->read_ptr under lock
-Date: Tue, 24 Mar 2026 14:02:20 +0800
-Message-Id: <20260324060220.1192543-1-rob_garcia@163.com>
-X-Mailer: git-send-email 2.34.1
+	s=arc-20240116; t=1774333271; c=relaxed/simple;
+	bh=u114S0MnCiVi7q7lbF1zFXTxyhKmOE8XeCINYp7AdkQ=;
+	h=From:To:Subject:Date:Message-ID:MIME-Version:Content-Type; b=OJtmGHebE3BfpfnAl6b35wuChxxXDgQq/TY1tN/3PHVnJFhJiJDewWOMLlBMYu8KiKyhPnMoVyrFp82SyZCH7sbDgGv/QPkjncG8ib9rhhUlSDeKkJd6Xw8AOwAbyWcBsACc1KjgfEz7Kb+r1RGqOQ9/iqnDA6C1w+SdKe/Fhdw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com; spf=pass smtp.mailfrom=realtek.com; dkim=pass (2048-bit key) header.d=realtek.com header.i=@realtek.com header.b=DQGZdb5i; arc=none smtp.client-ip=211.75.126.72
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=realtek.com
+X-SpamFilter-By: ArmorX SpamTrap 5.80 with qID 62O6L7CZ0557160, This message is accepted by code: ctloc85258
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=realtek.com; s=dkim;
+	t=1774333267; bh=cDOeUlZtz8e0ZhbXgAxE060HOqd6I26F7SmXICc9QcI=;
+	h=From:To:Subject:Date:Message-ID:MIME-Version:
+	 Content-Transfer-Encoding:Content-Type;
+	b=DQGZdb5i8jRtaK4D9NzRla6kGQ5+fQQd7x1mtwcSfWvWQayNRbtoEQ5RhWnH5moH5
+	 9eVJVYzemW9SihffpmVd0qU/sFXRltkJBESf6Myu66Z6+bkznagy+PKYCB/bJ9umeb
+	 hniBh+d/EYUBa0CpTUoAoV8LfsvsFLybKjPXH6w3Qibmt10zoDPG7vGd7YPNyvr0kL
+	 6hKanaz/DfethBOjZjDreLA2cN30evT6iG9mcFdr5dO4mlOIXKAbo+DSY/VSX3y/RZ
+	 oherx8FPCCyxUtXA3TaJtdrIjks8gkGUq0gydMAoMvRyye6gNr4miSSsFur+kFxSz6
+	 H2XXPTOsXD+WA==
+Received: from mail.realtek.com (rtkexhmbs03.realtek.com.tw[10.21.1.53])
+	by rtits2.realtek.com.tw (8.15.2/3.21/5.94) with ESMTPS id 62O6L7CZ0557160
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK)
+	for <linux-wireless@vger.kernel.org>; Tue, 24 Mar 2026 14:21:07 +0800
+Received: from RTKEXHMBS06.realtek.com.tw (10.21.1.56) by
+ RTKEXHMBS03.realtek.com.tw (10.21.1.53) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1748.10; Tue, 24 Mar 2026 14:21:07 +0800
+Received: from [127.0.1.1] (172.21.40.75) by RTKEXHMBS06.realtek.com.tw
+ (10.21.1.56) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1748.10 via Frontend
+ Transport; Tue, 24 Mar 2026 14:21:07 +0800
+From: Ping-Ke Shih <pkshih@realtek.com>
+To: <linux-wireless@vger.kernel.org>
+Subject: [PATCH v2 rtw-next 0/7] wifi: rtw89: 8922d: add RTL8922D common routine part 1
+Date: Tue, 24 Mar 2026 14:20:42 +0800
+Message-ID: <20260324062049.52266-1-pkshih@realtek.com>
+X-Mailer: git-send-email 2.25.1
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
@@ -65,87 +69,72 @@ List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:_____wD3f63sKMJpJvBTBA--.36472S2
-X-Coremail-Antispam: 1Uf129KBjvJXoWxJry3WrW7Aw43CF1xWr1DGFg_yoW8ZF4Up3
-	sa9r4jgrs5XFsrC3y8XF4S9rnIqa1DGanIkFyF9wnIvr13Jr1S9rWF9ryUtFyUtr4SvrWY
-	vF1jyFs8GF1UZFJanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x0pRSD77UUUUU=
-X-CM-SenderInfo: 5uresw5dufxti6rwjhhfrp/xtbDAg5Qu2nCKO4DywAA3C
+Content-Type: text/plain
 X-Spamd-Result: default: False [-0.66 / 15.00];
-	MID_CONTAINS_FROM(1.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	MID_CONTAINS_FROM(1.00)[];
+	DMARC_POLICY_ALLOW(-0.50)[realtek.com,none];
 	R_MISSING_CHARSET(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[163.com,none];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
-	R_DKIM_ALLOW(-0.20)[163.com:s=s110527];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
+	R_DKIM_ALLOW(-0.20)[realtek.com:s=dkim];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-33755-lists,linux-wireless=lfdr.de];
-	FREEMAIL_CC(0.00)[intel.com,163.com,codeaurora.org,davemloft.net,kernel.org,vger.kernel.org];
-	TO_DN_SOME(0.00)[];
+	TAGGED_FROM(0.00)[bounces-33756-lists,linux-wireless=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
+	RCVD_COUNT_FIVE(0.00)[6];
+	RCPT_COUNT_ONE(0.00)[1];
 	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FREEMAIL_FROM(0.00)[163.com];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[rob_garcia@163.com,linux-wireless@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[163.com:+];
+	FROM_NEQ_ENVFROM(0.00)[pkshih@realtek.com,linux-wireless@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
+	TO_DN_NONE(0.00)[];
+	DKIM_TRACE(0.00)[realtek.com:+];
 	TAGGED_RCPT(0.00)[linux-wireless];
-	RCPT_COUNT_SEVEN(0.00)[11];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,intel.com:email,msgid.link:url]
-X-Rspamd-Queue-Id: 13F7C302A2D
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,realtek.com:dkim,realtek.com:mid]
+X-Rspamd-Queue-Id: E985C302D71
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-From: Johannes Berg <johannes.berg@intel.com>
+This patchset is to add RTL8922D common routines. As the code is not small,
+I split it into two parts, and this is the first part.
 
-[ Upstream commit c2ace6300600c634553657785dfe5ea0ed688ac2 ]
+At this first part, add memory arrangement called quota, power on/off
+functions, functions related to calibration data in efuse, and the
+main set channel function.
 
-If we read txq->read_ptr without lock, we can read the same
-value twice, then obtain the lock, and reclaim from there
-to two different places, but crucially reclaim the same
-entry twice, resulting in the WARN_ONCE() a little later.
-Fix that by reading txq->read_ptr under lock.
+v2:
+ - correct NBI register in patch 6/7
 
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
-Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
-Link: https://msgid.link/20240319100755.bf4c62196504.I978a7ca56c6bd6f1bf42c15aa923ba03366a840b@changeid
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
-[ Change read_ptr definition according to commit
-413be839bfca9("wifi: iwlwifi: add a validity check of queue_id in iwl_txq_reclaim"). ]
-Signed-off-by: Robert Garcia <rob_garcia@163.com>
----
- drivers/net/wireless/intel/iwlwifi/queue/tx.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+Ping-Ke Shih (7):
+  wifi: rtw89: 8922d: add definition of quota, registers and efuse block
+  wifi: rtw89: 8922d: add power on/off functions
+  wifi: rtw89: 8922d: define efuse map and read necessary fields
+  wifi: rtw89: 8922d: read and configure RF by calibration data from
+    efuse physical map
+  wifi: rtw89: 8922d: add set channel of MAC part
+  wifi: rtw89: 8922d: add set channel of BB part
+  wifi: rtw89: 8922d: add set channel of RF part
 
-diff --git a/drivers/net/wireless/intel/iwlwifi/queue/tx.c b/drivers/net/wireless/intel/iwlwifi/queue/tx.c
-index cd852b95d812..d8322a40409b 100644
---- a/drivers/net/wireless/intel/iwlwifi/queue/tx.c
-+++ b/drivers/net/wireless/intel/iwlwifi/queue/tx.c
-@@ -1524,7 +1524,7 @@ void iwl_txq_reclaim(struct iwl_trans *trans, int txq_id, int ssn,
- {
- 	struct iwl_txq *txq = trans->txqs.txq[txq_id];
- 	int tfd_num = iwl_txq_get_cmd_index(txq, ssn);
--	int read_ptr = iwl_txq_get_cmd_index(txq, txq->read_ptr);
-+	int read_ptr;
- 	int last_to_free;
- 
- 	/* This function is not meant to release cmd queue*/
-@@ -1532,6 +1532,7 @@ void iwl_txq_reclaim(struct iwl_trans *trans, int txq_id, int ssn,
- 		return;
- 
- 	spin_lock_bh(&txq->lock);
-+	read_ptr = iwl_txq_get_cmd_index(txq, txq->read_ptr);
- 
- 	if (!test_bit(txq_id, trans->txqs.queue_used)) {
- 		IWL_DEBUG_TX_QUEUES(trans, "Q %d inactive - ignoring idx %d\n",
+ drivers/net/wireless/realtek/rtw89/core.h     |    7 +
+ drivers/net/wireless/realtek/rtw89/reg.h      |  160 +-
+ drivers/net/wireless/realtek/rtw89/rtw8922d.c | 1755 +++++++++++++++++
+ drivers/net/wireless/realtek/rtw89/rtw8922d.h |   80 +
+ .../net/wireless/realtek/rtw89/rtw8922d_rfk.c |   33 +
+ .../net/wireless/realtek/rtw89/rtw8922d_rfk.h |   14 +
+ 6 files changed, 2048 insertions(+), 1 deletion(-)
+ create mode 100644 drivers/net/wireless/realtek/rtw89/rtw8922d.c
+ create mode 100644 drivers/net/wireless/realtek/rtw89/rtw8922d.h
+ create mode 100644 drivers/net/wireless/realtek/rtw89/rtw8922d_rfk.c
+ create mode 100644 drivers/net/wireless/realtek/rtw89/rtw8922d_rfk.h
+
+
+base-commit: eef6d4449e8a540fde792968a26d8aa514af8089
 -- 
-2.34.1
+2.25.1
 
 
