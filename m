@@ -1,156 +1,208 @@
-Return-Path: <linux-wireless+bounces-33743-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-33744-lists+linux-wireless=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id uBHxK+vZwWmJXQQAu9opvQ
-	(envelope-from <linux-wireless+bounces-33743-lists+linux-wireless=lfdr.de@vger.kernel.org>)
-	for <lists+linux-wireless@lfdr.de>; Tue, 24 Mar 2026 01:25:15 +0100
+	id cEfeLTXdwWnxXQQAu9opvQ
+	(envelope-from <linux-wireless+bounces-33744-lists+linux-wireless=lfdr.de@vger.kernel.org>)
+	for <lists+linux-wireless@lfdr.de>; Tue, 24 Mar 2026 01:39:17 +0100
 X-Original-To: lists+linux-wireless@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0B2B22FFA49
-	for <lists+linux-wireless@lfdr.de>; Tue, 24 Mar 2026 01:25:15 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 32FF02FFC9F
+	for <lists+linux-wireless@lfdr.de>; Tue, 24 Mar 2026 01:39:17 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 208BA3061752
-	for <lists+linux-wireless@lfdr.de>; Tue, 24 Mar 2026 00:17:50 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 5E012301AB8A
+	for <lists+linux-wireless@lfdr.de>; Tue, 24 Mar 2026 00:38:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7F47578F26;
-	Tue, 24 Mar 2026 00:17:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4DA5F2253A1;
+	Tue, 24 Mar 2026 00:38:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="smJxckB7"
+	dkim=pass (2048-bit key) header.d=realtek.com header.i=@realtek.com header.b="GtDVt45F"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-oa1-f53.google.com (mail-oa1-f53.google.com [209.85.160.53])
+Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 23C1E1A3164
-	for <linux-wireless@vger.kernel.org>; Tue, 24 Mar 2026 00:17:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.160.53
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774311469; cv=pass; b=YgeBtT3I62vW+iC6SOSgxlDIpkygDSWh75zpH8q0S2yqWLMqoXn6Fo6MAVns+teAzeauztjPo88dSbRjbyCD6/W4xX4qhr/yYoLeSwxy6/TWF8SkPbqC6BbZGrsQ43foiC18ptfavmmzRkVgjyt+DPx92mBDpUvFnGJkck+4sag=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774311469; c=relaxed/simple;
-	bh=9oCgadqEVU2zvb0k0XRfu/eES10DXnQlTYIGPtr8RWA=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=XPevp3GmrGVCwBfpuxbzMH3ITNYRl+mdUuYlwveTPdp4tcsGRHqSgo4JXxoQE7tjFh8mHY8liB8As3xOvyc2c6qn4pv0PTNhYILKLK6MvjR+F+WkklLrFIdpi26lnuQqbmE8799l01Rcx/tyuCKQHw9iBzwsadz2cEAcefDFYUU=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=smJxckB7; arc=pass smtp.client-ip=209.85.160.53
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-oa1-f53.google.com with SMTP id 586e51a60fabf-404254ffe8aso3043943fac.0
-        for <linux-wireless@vger.kernel.org>; Mon, 23 Mar 2026 17:17:47 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1774311467; cv=none;
-        d=google.com; s=arc-20240605;
-        b=CbbRvxAYAuFQ+HH1tj4vQulFHPw3kmxwOfzL08amk+9MUiiASuDQWNz50+mfJpNO4N
-         keztu5gcLEjjI2FcBRyFsTyMEr3qS8fV+FZvS7SzQajptxlCUUHqC6mhUsvLztRsL5ad
-         pUwyUjpGf9MEewjqD3fVOSLhW6eVTBw26LfUThiVIzX48zoZp6xXR1xjNdgyhZRxzFVa
-         RwWtpYdhz1txoLDIlBHmSTHB0oChT7Kqtj6Gu6QOcnRwy90EVjkpC6NOopL9OwMMDEBK
-         FwSXcfiNNxb0tQJ8AItbgWI8LHfkWOiMc3RKrtFN6nDi2JUepmf54oXv6V9C75oFuc+4
-         hdOA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:dkim-signature;
-        bh=ZtgfN82JuRRJLq+eK9RQAC5+e7XuzEZhzio9rgkzNNA=;
-        fh=E0TB4y4LMaoFv6/Nw7x0a0BXVcSkrLpEywfy4qTdIUc=;
-        b=YDQPOCjpGgCwO4FrJiu2wva99A74hKshakPu5pEmGUx7SmVIB/o8zxzpkcEYBEvcUA
-         m4mOIxqDLP6sWjmT/u7yj+hihZaNbhzu420AmKWh+xjB4wQeOq5dulEb25GXQINv4wSy
-         lUzEqGqMsI8PfWw6oLIEYtbs3f++xuOsQqEkY3MKPswsH71Afy/yN9Djz98ldSskX+r6
-         yQ6GQh7Cm74zibGMce3p0P1ZxiaJcZa1Emn94zu1l5ltiCoo+JEBtoONTUknKpyeLwuG
-         6X0Hn95HDlIE3rb6p5hHh4UkanhK8Ae/b0GmaIdO+j5itLN5nNMBE+rpSvYGD90DKfvY
-         rzcA==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1774311467; x=1774916267; darn=vger.kernel.org;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=ZtgfN82JuRRJLq+eK9RQAC5+e7XuzEZhzio9rgkzNNA=;
-        b=smJxckB7IYhGOBZAuw8EGF9d2Lv+x2b19MSk3PSElmR70a2VB54OPty57bMqX4x3GQ
-         juKnvODBnNAY8ZBdGsHZsby6TM40JHqnC770pdx0BacE2RgMvW1Dtkh95BASFp5F7D5A
-         lolj/nmiPHi/6gcV7h3CeYzz1kqYa6vKqxl2zzPCLL5/BKQbHGOlUu8OFe2VlzYCP9Fy
-         QQmK6EjAj0CQhkcrj1WOxtujlBrbPnNFROpn9iU6cs1JIgjzEU8gtMXDRTPV4CrIoN3N
-         7nh/Im3dgiyZVBggKG7BK6YNeZ2deF+fj2v6rWJFh/QvS1TpQJ46AOW21cSgRoonM9P3
-         ckHQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1774311467; x=1774916267;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=ZtgfN82JuRRJLq+eK9RQAC5+e7XuzEZhzio9rgkzNNA=;
-        b=PsGSYom6qtHyB+yU6OXj9nRZn2p8jsQAzw75yj6ksvKEhRjOX641UsUsXWukY79vxg
-         aSlxeffm1wPr9/J2hyCRbj0nRI5RbrPuMO8OX9IN1BNMAcBPXDQ5qwnoTkvL/ioCzAAX
-         ckS8TkvlkrTzwHaJJugJE8jigW10OjlvJxQVf4daPS8vocgM7HUtF4hG1DSkooyTz2Zh
-         xJikEC5ffeR58yIsCRpmL9x6fhYSM5ErXem1kqJdye70HN2ejeJFc2urdMdkXrZ6mDV3
-         ZB3w40CNmlmIKjMHD0j1P5lLuM38QQ1suzVk8W6oVqqx3PiMSsvDjDtGW66dIfEN+phS
-         bf7A==
-X-Gm-Message-State: AOJu0Yz4fsAQNrOgoE6n421EUFzwxQVgTy7f9oiR2FwlBZGN6Yj3Vlnq
-	o/avHQ1gVRB/YUMqunac0T2ugT9C1Ty8k2HjxNh7jtX+odkxQTvUYcpFbNhw+S34gvH9lgfFACE
-	/IlFQS34KD590enFOJ+MP51mljDqROhk=
-X-Gm-Gg: ATEYQzynvQMIU3xhrVRKE6yYK5tCqF0OErW9LkszLTyNMZZ5H9Ea9sXsXdFtKas5pzF
-	bRx69nOj7+re3Ci2aizqniDE7F20jX2kDAPby769lW+ckOc1m9Rq2ohqcU6lyM7UqTdJxXit3W8
-	WwZ7jTuarV8IW07qVX7xoBUwaD17nDxIG3HOp63UPHyAtrtWOPclHrClKZrEvh4etvmUMc3Zgxl
-	emXCf6TtHABQHdTwdh3hDgehs/Y0qDlg80h3ea+jpRC+FuRb3fA+h8i+EdlQmkzF0m/wtkt745j
-	aUBYWyWLL75WyuBooDs=
-X-Received: by 2002:a05:6871:4714:b0:414:9285:c243 with SMTP id
- 586e51a60fabf-41c877007d7mr1035050fac.21.1774311466662; Mon, 23 Mar 2026
- 17:17:46 -0700 (PDT)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6AC741A681A
+	for <linux-wireless@vger.kernel.org>; Tue, 24 Mar 2026 00:38:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=211.75.126.72
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1774312725; cv=none; b=VM9XsEqkciIC/VNt6ZkqXBX+buQX2GBYpzPMKGBhoFFinMU9z8FhH1dUXxzzBI81SXefn4nI2ZFI979KYTao+N8Se1VAKjGqDFEq7qjXkI3BAQpswrZ2gdpGAGkxZXipEsjehcVxRNM4w0fqNenG4ssRQoFcLQX7HlBcgFu5dSI=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1774312725; c=relaxed/simple;
+	bh=FbngYBT2yXHB1NOvK0n79Wwl+5reUtZHHwoyUrSdAmw=;
+	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
+	 Content-Type:MIME-Version; b=UqO720BS5sS3Y1AuENJPwjUUasccTHfBfwePTepFzqIPxLR/xCvMFjMurpRPXxItHsPYOgiC86xxBbeEXHwsPq37xA2+FN4p6KdfiM7ISjtTnTONyyIX+nDgwFh50ypW+JlC/ksY3i49M3SjmD0Z2qLQdzVRBUSrjGgYfncR44c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com; spf=pass smtp.mailfrom=realtek.com; dkim=pass (2048-bit key) header.d=realtek.com header.i=@realtek.com header.b=GtDVt45F; arc=none smtp.client-ip=211.75.126.72
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=realtek.com
+X-SpamFilter-By: ArmorX SpamTrap 5.80 with qID 62O0cC9E1047942, This message is accepted by code: ctloc85258
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=realtek.com; s=dkim;
+	t=1774312692; bh=ErZUr7AWmVwtNXzRqUft4tdlK3BYGuyAQLcdfESKEU0=;
+	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
+	 Content-Type:Content-Transfer-Encoding:MIME-Version;
+	b=GtDVt45FEja11ogEYvEB19R9a5QxnPI/e2nFuUv9IIwmareFyeM0DjkIsEfOTiK/Z
+	 endLUSJPKXCa7ihSqZ2bi66MWnbmg0m25ZLCoAGz2BTO7vuoa3DVH1SOU0w+2chkC8
+	 Rp1QSW6uzUBjN/YF85MNkRq8kOjPZVMU/zsJHw/FS5kET7dSon6zerSOJBPOHcGhm8
+	 vRWeTu/1MuBgKAe15WH9hO6e2wCiKeBQnDHJJiTiucSowr08ZvFeMiQuHzhkNNLSSy
+	 XddALvgb82/Hu65MxEJsZW1S8o12DThC0GcSduxmkxfKXUKS4jGXsfFHiE5qxRvvAM
+	 61bWN5U03KwRg==
+Received: from mail.realtek.com (rtkexhmbs04.realtek.com.tw[10.21.1.54])
+	by rtits2.realtek.com.tw (8.15.2/3.21/5.94) with ESMTPS id 62O0cC9E1047942
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Tue, 24 Mar 2026 08:38:12 +0800
+Received: from RTKEXHMBS06.realtek.com.tw (10.21.1.56) by
+ RTKEXHMBS04.realtek.com.tw (10.21.1.54) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1748.10; Tue, 24 Mar 2026 08:38:13 +0800
+Received: from RTKEXHMBS06.realtek.com.tw (10.21.1.56) by
+ RTKEXHMBS06.realtek.com.tw (10.21.1.56) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1748.10; Tue, 24 Mar 2026 08:38:13 +0800
+Received: from RTKEXHMBS06.realtek.com.tw ([fe80::4cbd:6c6c:b92b:3913]) by
+ RTKEXHMBS06.realtek.com.tw ([fe80::4cbd:6c6c:b92b:3913%10]) with mapi id
+ 15.02.1748.010; Tue, 24 Mar 2026 08:38:13 +0800
+From: Ping-Ke Shih <pkshih@realtek.com>
+To: Lucid Duck <lucid_duck@justthetip.ca>,
+        "linux-wireless@vger.kernel.org"
+	<linux-wireless@vger.kernel.org>
+CC: Bitterblue Smith <rtl8821cerfe2@gmail.com>
+Subject: RE: [PATCH v2] wifi: rtw89: usb: fix TX flow control by tracking
+ in-flight URBs
+Thread-Topic: [PATCH v2] wifi: rtw89: usb: fix TX flow control by tracking
+ in-flight URBs
+Thread-Index: AQHcuOQb90SZVl0Vy0mC7JoZ7Dgc1LW71zvAgABrzgCAAJY90A==
+Date: Tue, 24 Mar 2026 00:38:12 +0000
+Message-ID: <701291fc012b49979b1fb25b8d765d65@realtek.com>
+References: <f2fca9db9deb445c91b1973c6b7ca72a@realtek.com>
+ <20260323233334.158678-1-lucid_duck@justthetip.ca>
+In-Reply-To: <20260323233334.158678-1-lucid_duck@justthetip.ca>
+Accept-Language: en-US, zh-TW
+Content-Language: zh-TW
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260323015849.9424-1-pkshih@realtek.com>
-In-Reply-To: <20260323015849.9424-1-pkshih@realtek.com>
-From: LB F <goainwo@gmail.com>
-Date: Tue, 24 Mar 2026 02:17:10 +0200
-X-Gm-Features: AQROBzB7yF6ghhkHNrdDxcZ_6FZZ-AGRb0OshWWZSmP1JnOm998MQZeLXK-whqc
-Message-ID: <CALdGYqS_ROWrsYishahHxEthwYYfxurOxCCWJjOApgbnmekeWw@mail.gmail.com>
-Subject: Re: [PATCH rtw-next] wifi: rtw88: validate RX rate to prevent out-of-bound
-To: Ping-Ke Shih <pkshih@realtek.com>
-Cc: linux-wireless@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
 X-Spamd-Result: default: False [-2.16 / 15.00];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=2];
-	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
-	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	DMARC_POLICY_ALLOW(-0.50)[realtek.com,none];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_DKIM_ALLOW(-0.20)[realtek.com:s=dkim];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	FREEMAIL_CC(0.00)[gmail.com];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-33744-lists,linux-wireless=lfdr.de];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[justthetip.ca:email,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,realtek.com:dkim,realtek.com:mid];
+	TO_DN_EQ_ADDR_SOME(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	RCPT_COUNT_TWO(0.00)[2];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-33743-lists,linux-wireless=lfdr.de];
 	TO_DN_SOME(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	FROM_HAS_DN(0.00)[];
+	DKIM_TRACE(0.00)[realtek.com:+];
 	MISSING_XM_UA(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[goainwo@gmail.com,linux-wireless@vger.kernel.org];
-	DKIM_TRACE(0.00)[gmail.com:+];
-	MID_RHS_MATCH_FROMTLD(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	FROM_NEQ_ENVFROM(0.00)[pkshih@realtek.com,linux-wireless@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	RCPT_COUNT_THREE(0.00)[3];
+	NEURAL_HAM(-0.00)[-1.000];
 	TAGGED_RCPT(0.00)[linux-wireless];
-	FREEMAIL_FROM(0.00)[gmail.com];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,mail.gmail.com:mid,realtek.com:email]
-X-Rspamd-Queue-Id: 0B2B22FFA49
+	MID_RHS_MATCH_FROM(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	RCVD_COUNT_SEVEN(0.00)[7]
+X-Rspamd-Queue-Id: 32FF02FFC9F
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-Ping-Ke Shih <pkshih@realtek.com> wrote:
-> The reported RX rate might be unexpected, causing kernel warns:
->   Rate marked as a VHT rate but data is invalid: MCS: 0, NSS: 0
->   WARNING: net/mac80211/rx.c:5491 at ieee80211_rx_list+0x183/0x1020 [mac80211]
-> As the RX rate can be index of an array under certain conditions, validate
-> it to prevent accessing array out-of-bound potentially.
+Lucid Duck <lucid_duck@justthetip.ca> wrote:
+> Hi Ping-Ke,
+>=20
+> Thank you for the review. Answers to each point below.
+>=20
+> Mailer: I use a direct SMTP script -- git send-email had a hang
+> issue on Fedora 43 that has since been resolved. v3 is sent via
+> git send-email. The patch applies cleanly with git am.
+>=20
+> Uplink data (USB3 5GHz, 10 runs each, DWA-X1850 RTL8832AU,
+> kernel 6.19.8):
+>=20
+>                      Unpatched    Patched-32    Patched-64
+>   UL avg:            844 Mbps     763 Mbps      840 Mbps
+>   UL retransmits:    3            0             0
 
-Tested on HP Notebook P3S95EA#ACB (kernel 6.19.9-1-cachyos):
+If you have RTL8832CU, can you have additional test on 160 MHz bandwidth?
 
-  - No WARNING: net/mac80211/rx.c:5491 observed after patch.
-  - System remains fully stable through idle, load, Bluetooth A2DP
-    usage, and multiple suspend/resume cycles.
-  - Zero h2c or lps errors in dmesg.
+>=20
+> 32 URBs shows a ~10% upload regression on USB3 5GHz. 64 URBs
+> recovers to stock with zero retransmits.
+>=20
+> > Can increasing 32 get better performance? The stress test with
+> > small packets might yield low throughput?
+>=20
+> Yes. I tested 32, 64, and 128 URBs per channel. The difference
+> is most visible under parallel streams (USB3 5GHz upload):
+>=20
+>                      Stock    32 URBs    64 URBs    128 URBs
+>   4-stream:          858      556        837        849
+>   8-stream:          872      565        830        833
 
-Tested-by: Oleksandr Havrylov <goainwo@gmail.com>
+Not sure if people want 128 URBs to have a few better performance.
+For me, if there is no objection or restriction, I'd take 128
+because this driver can support RTL8832CU working on 160MHz
+bandwidth, which maximum throughput is twice of RTL8852AU.
+
+>=20
+> 32 URBs drops 35% under multi-stream load. 64 URBs recovers
+> fully. 128 URBs shows no further gain -- 64 is the sweet spot
+> for USB3.
+>=20
+> On USB2, URB count does not matter -- the bus is the bottleneck:
+>=20
+>                      Stock    32 URBs    64 URBs    128 URBs
+>   UL avg (USB2):     250      252        248        253
+>=20
+> Small packets (USB3 5GHz upload, 3 runs each avg Mbps):
+>=20
+>                      Stock    32 URBs    64 URBs
+>   64 bytes:          139      128        126
+>   256 bytes:         441      444        442
+>   1024 bytes:        845      786        846
+>=20
+> Small packets are CPU/USB-framing limited, not URB-count limited.
+> No throughput difference at 64 or 256 bytes. At 1024 bytes, 32
+> URBs constrains throughput; 64 recovers.
+>=20
+> > Out of curiosity. Is it possible inflight >
+> > RTW89_USB_MAX_TX_URBS_PER_CH?
+>=20
+> No. check_and_reclaim is called before tx_kick_off, and each call
+> submits at most one URB. The >=3D is defensive only.
+>=20
+> > I think the code self-explain this already.
+> > I'd not prefer this comment neither.
+>=20
+> Both comments removed in v3.
+
+Thanks. Can you additionally remove the comments of CH12, which
+looks like not preferred AI-like comments? I will note this in v3.
+
+>=20
+> v3 follows with MAX_TX_URBS_PER_CH increased from 32 to 64.
+>=20
+> Additional validation at 64 URBs: UDP flood (0% loss across 4M
+> datagrams at 930 Mbps), bidirectional (zero retransmits), and
+> 60-second soak (844 Mbps sustained, zero degradation).
+>=20
+> Full test data:
+> https://github.com/Lucid-Duck/tx-resources-flow-control/blob/main/test-re=
+sul
+> ts/2026-03-23-ping-ke-v2-review.md
+
+Thanks for your experiments in detail. :)
+
+Ping-Ke
+
 
