@@ -1,55 +1,104 @@
-Return-Path: <linux-wireless+bounces-33784-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-33785-lists+linux-wireless=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id AHKwHsq0wmkvlAQAu9opvQ
-	(envelope-from <linux-wireless+bounces-33784-lists+linux-wireless=lfdr.de@vger.kernel.org>)
-	for <lists+linux-wireless@lfdr.de>; Tue, 24 Mar 2026 16:59:06 +0100
+	id yFGEOerEwmmIlgQAu9opvQ
+	(envelope-from <linux-wireless+bounces-33785-lists+linux-wireless=lfdr.de@vger.kernel.org>)
+	for <lists+linux-wireless@lfdr.de>; Tue, 24 Mar 2026 18:07:54 +0100
 X-Original-To: lists+linux-wireless@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id D92723187C0
-	for <lists+linux-wireless@lfdr.de>; Tue, 24 Mar 2026 16:59:05 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id E9D4A319B85
+	for <lists+linux-wireless@lfdr.de>; Tue, 24 Mar 2026 18:07:53 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 65B7B302AD28
-	for <lists+linux-wireless@lfdr.de>; Tue, 24 Mar 2026 15:53:04 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 678A23007230
+	for <lists+linux-wireless@lfdr.de>; Tue, 24 Mar 2026 16:55:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 96F591684BE;
-	Tue, 24 Mar 2026 15:53:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 537703EB800;
+	Tue, 24 Mar 2026 16:55:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=fail reason="signature verification failed" (1024-bit key) header.d=nbd.name header.i=@nbd.name header.b="dmMoi8F8"
+	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="T1em4mfK";
+	dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b="ildasht6"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from nbd.name (nbd.name [46.4.11.11])
+Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 954FF37BE6B
-	for <linux-wireless@vger.kernel.org>; Tue, 24 Mar 2026 15:53:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=46.4.11.11
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1682B3DCDB0
+	for <linux-wireless@vger.kernel.org>; Tue, 24 Mar 2026 16:55:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774367583; cv=none; b=p2lpo1jcUrWn7Sqb38ngus2ybnMl1uK4wvba1TQzD59JvUfEKqFCxXKztxlF0bqx+dYVXpHS+GCzauQtFMCh6fVofWrSRAD+PVrD9/uZrtyvk6ZmRvsIXnjVd1fpB9XFMcNM6u9HqZ7zuKFLpV95BNw5Xhj3/cEptEblZGgbW7I=
+	t=1774371318; cv=none; b=YfjEg26ofXnV5QOUWPfAQXzPxGfG4pvMLvB4TgytL6yfU9F4GTmfXUFVBxOW5AegaKTf3V5A01bcho0OI7h5ocnL7qUlK72Ai1i6FlQ+es1hNxhSlPkrM2ZeBmgviTct6Eo1VnO6WVl7cNQRJFK+ucrAZ0m1+tl1fJMzRhZFkgA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774367583; c=relaxed/simple;
-	bh=mz6RlJOlo3NCE2g6675ImhLJme9dIhIR8XEm5A5dr4o=;
-	h=Message-ID:Date:MIME-Version:From:Subject:To:Cc:Content-Type; b=lnOtRG8q/pm3YTeSk8Aapl/GMvmwLEM2Oaqkzyqej5iNgPxEqjk8vHvbmIk/4ZSAT1UjJv1UtpDjAMYniV2FqzWZRlNg/vcbyaJcH/ZP0HdaWPFbi4eFqNpajkhuuYj1TcAKtkjCqCbZskWEmuNQ1O8Qs0dE4dRkYYP3J/pU8Jc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nbd.name; spf=pass smtp.mailfrom=nbd.name; dkim=pass (1024-bit key) header.d=nbd.name header.i=@nbd.name header.b=dmMoi8F8; arc=none smtp.client-ip=46.4.11.11
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nbd.name
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nbd.name
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=nbd.name;
-	s=20160729; h=Content-Transfer-Encoding:Content-Type:Cc:To:Subject:From:
-	MIME-Version:Date:Message-ID:Sender:Reply-To:Content-ID:Content-Description:
-	Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:
-	In-Reply-To:References:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
-	List-Post:List-Owner:List-Archive;
-	bh=BMpi/Fj/fSlTUWcz/i/u2kE09FbKp9O3XKOu4WEjlLI=; b=dmMoi8F89jrAlN3BeIe/fy902w
-	zhZuayRNlUsWlCbjmWn8wMSKGSEoQgyh9p/6lXkETvlAhPcQe6LtZ5klB3qRQ4U+6lPP+nBQllwse
-	2VIFy03okDiU4qdfguIiFNh0dZJcH3T10J2LGH43VgnzfA7XqUZfZwGZfnFDxtIPQ+4A=;
-Received: from p54a43014.dip0.t-ipconnect.de ([84.164.48.20] helo=nf.local)
-	by ds12 with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256
-	(Exim 4.96)
-	(envelope-from <nbd@nbd.name>)
-	id 1w543w-00Bfsr-0B;
-	Tue, 24 Mar 2026 16:53:00 +0100
-Message-ID: <60970f75-9a9c-4883-bb15-b203310641ca@nbd.name>
-Date: Tue, 24 Mar 2026 16:52:59 +0100
+	s=arc-20240116; t=1774371318; c=relaxed/simple;
+	bh=Fw1OXqXFTDLtwk5lemrafdpa72T08ToNu8WKn4ORd1M=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=jtjK+tkYMlHuqLI5tZsV1fbxyLep/La670i+NwGLyZHtDzTFoL3754thrIvQ5wSQFlrVQREbLROqrDKDB+RFn3i1OmfRc524bZWcQHGB0D5Ddp2B5P4drUAyEU9+QKprNl9aFLqEK11s+WO0JEUhXChY8BBX1i5aTS8wabJiG+8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=T1em4mfK; dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b=ildasht6; arc=none smtp.client-ip=205.220.180.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
+Received: from pps.filterd (m0279869.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 62OG2neY3039751
+	for <linux-wireless@vger.kernel.org>; Tue, 24 Mar 2026 16:55:16 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
+	cc:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
+	oH3p7oqw65C+TvouzT3PZ3SKKvj2KJZ564slVZs5r9c=; b=T1em4mfKhuE2Qi0b
+	FuglRXnjshCzV7wMo0wC/IR66y+JCgLdArrODwFpxlBmRUQd/qen+X+84FS09kP9
+	KgLvRCZJEv6fddGcXl/kxQphmhi9YoguY1xOOaZtzMbG9HTS1H26gWGSvkc9ec42
+	OaqieiLpepzw/Uj0sUjIyo1fM3w4IvMYWuOtu6wk7ar0vFspNAZss61ViaKQ/c1A
+	lhGkRiJnK4eu8tMW4HZfHACa4dZIU1TA2aQcR0cGLxYRIqrz9I0dk57Y7SlkZ2kp
+	D29fpnrm/wKiPRcVJxz9W09qNt2Uo8CS4f4SRbD84i8oHXulyYMPp1qblGCA5TkN
+	GiSysQ==
+Received: from mail-dl1-f72.google.com (mail-dl1-f72.google.com [74.125.82.72])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4d3rf0hkpt-1
+	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
+	for <linux-wireless@vger.kernel.org>; Tue, 24 Mar 2026 16:55:15 +0000 (GMT)
+Received: by mail-dl1-f72.google.com with SMTP id a92af1059eb24-1279caef718so1733023c88.1
+        for <linux-wireless@vger.kernel.org>; Tue, 24 Mar 2026 09:55:15 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=oss.qualcomm.com; s=google; t=1774371315; x=1774976115; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:content-language:from
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=oH3p7oqw65C+TvouzT3PZ3SKKvj2KJZ564slVZs5r9c=;
+        b=ildasht6jmwo9Yyu/B2ZAv0hL2sN6nENTcHm6X7Qe8Heye/sa6WEmxw0sYVnbmDwL8
+         /5L0Otfo0FftFxOxtNzmluj25oymuFsWBYhkF5eX1lbaD+9Ycv/fGuUfkS7XGG8dC7+J
+         ylwCYwdTdnig+IogqAFA0o483TqnUptcDKRJ7uKXXrEzdl5Sll/KoTJ5fxE6qoHysRxm
+         INw6IE8fA4RCD5nct/N2zVfAJ9GJpPY6u1Iq9eCHK6AL7CHGOmY7Nw4Bwe/9MmSMNsgS
+         OqcRyXiPQtEJAwNG2hQ+G39lhyQxUOsFTv9vs8BD7TPZUnirs8et47Wi2++9j7xXQLxI
+         3AOA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1774371315; x=1774976115;
+        h=content-transfer-encoding:in-reply-to:content-language:from
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=oH3p7oqw65C+TvouzT3PZ3SKKvj2KJZ564slVZs5r9c=;
+        b=Tl/z2FRl+D2dzZxuRniWOpv4e4mwIpLQ8U7e6fQaJryM520OXZ2dZuX+HpPHhV/MDC
+         Jb4tkx5xIFO6P8//FdFxWLFk9tRDiaqdA3ocpRMGP/422BR+0Y4a9PHqEsPweAlflb/V
+         Dr7147D5eCpu22DuImEQPOyGvI1tuEdfS8liE8U/CeOXqaRbWsNPeqj4xLAfUiIhrXvk
+         lYx2H/OGVI7FCdH8psSohFq9/glG6u4jqZU3zPtd+nqHURvdJXKWZ0JLl81udTbLHbDo
+         j2dN5z1/Qd4EBhM4/HAjZ54Rep7zjc4OUPTT6IXeCKjgc3T3D7urC3QCZsiJlbmxeCaz
+         GcHg==
+X-Gm-Message-State: AOJu0Yz19yrC+m08HvSVc5TxBxOrUsVgUY5XpKJF2uN2qTm1SEbLsscR
+	gVAjG04ZfZpVdgFM4FS0uxeFXfSkzkwwWx8djGuYAvZl2IcQXSbAdJ3l74pxiXzztWWcI+gXJKu
+	fEIKH07ye6M0XrAjIBKYq1fkw9kJWGP0jxgg7mZiWM+JnEVSnERcWiPTVIG/9W8MKd8x6RQ==
+X-Gm-Gg: ATEYQzyDcrj+al3iX6Zi96KC3oG6PBdmZRoLxplK7u45tXm+az1r9jwl4djrl1aBfZ5
+	v1TO0uIy+T8K7sUewohv4C00a7vp91eOG5Ma+2oInBQ0B9pMXa8HMEbhZbFJHkBvkv1pQoGryNw
+	R1sHcA2c40JinJjZ0d20sQzH6BG8SgVk/c9T3u5ISGCvttuHXwtKlGP/AQSaddM/FsMma81PtCw
+	E3CHItMur0zNIP5Qe608m2GVcH9k8rBd7pJDA8XLH2V4DJbeueHkpFAged2JjURV7e2JPt9G4O0
+	j7s2gO9GQROJ9vAq07yeMgRcv9+2SnATmI8ejHvyzBS1jF3W0PqAJ7PCJD1VJ48np/jYpkUzW9O
+	vGYbSHDjidqM7VOq3Kfjs4hAmk5hYDmio2Y0fyG5rCS1OyjVBYNrdaOT41p/Fli6xeiBB1BBMjY
+	yhYqBSgw==
+X-Received: by 2002:a05:7022:6ba0:b0:12a:6c4b:9cf0 with SMTP id a92af1059eb24-12a96e49128mr140452c88.3.1774371314748;
+        Tue, 24 Mar 2026 09:55:14 -0700 (PDT)
+X-Received: by 2002:a05:7022:6ba0:b0:12a:6c4b:9cf0 with SMTP id a92af1059eb24-12a96e49128mr140434c88.3.1774371314152;
+        Tue, 24 Mar 2026 09:55:14 -0700 (PDT)
+Received: from [10.227.110.203] (i-global254.qualcomm.com. [199.106.103.254])
+        by smtp.gmail.com with ESMTPSA id a92af1059eb24-12a733fe80esm14392212c88.7.2026.03.24.09.55.13
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 24 Mar 2026 09:55:13 -0700 (PDT)
+Message-ID: <edf86c6a-fb09-4524-9b47-3061c3d6e68f@oss.qualcomm.com>
+Date: Tue, 24 Mar 2026 09:55:12 -0700
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
@@ -57,340 +106,109 @@ List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-From: Felix Fietkau <nbd@nbd.name>
-Subject: pull request: mt76-next 2026-03-23 v2
-To: linux-wireless <linux-wireless@vger.kernel.org>
-Cc: Johannes Berg <johannes@sipsolutions.net>
+Subject: Re: [PATCH ath-next v4] wifi: ath12k: avoid dynamic alloc when
+ parsing wmi tb
+To: Rameshkumar Sundaram <rameshkumar.sundaram@oss.qualcomm.com>,
+        Nicolas Escande <nico.escande@gmail.com>, ath12k@lists.infradead.org
+Cc: linux-wireless@vger.kernel.org
+References: <20260317084740.3756880-1-nico.escande@gmail.com>
+ <36c1cae8-d6c0-4432-bc8e-57216c5ea3fd@oss.qualcomm.com>
+ <DH6U1JMUQXVM.287BFERLLK9KK@gmail.com>
+ <40756be1-6a9a-4821-8c90-34f37db01e8b@oss.qualcomm.com>
+ <ec266bec-c371-4ec8-a60f-21ebb810d38e@oss.qualcomm.com>
+From: Jeff Johnson <jeff.johnson@oss.qualcomm.com>
 Content-Language: en-US
-Autocrypt: addr=nbd@nbd.name; keydata=
- xsDiBEah5CcRBADIY7pu4LIv3jBlyQ/2u87iIZGe6f0f8pyB4UjzfJNXhJb8JylYYRzIOSxh
- ExKsdLCnJqsG1PY1mqTtoG8sONpwsHr2oJ4itjcGHfn5NJSUGTbtbbxLro13tHkGFCoCr4Z5
- Pv+XRgiANSpYlIigiMbOkide6wbggQK32tC20QxUIwCg4k6dtV/4kwEeiOUfErq00TVqIiEE
- AKcUi4taOuh/PQWx/Ujjl/P1LfJXqLKRPa8PwD4j2yjoc9l+7LptSxJThL9KSu6gtXQjcoR2
- vCK0OeYJhgO4kYMI78h1TSaxmtImEAnjFPYJYVsxrhay92jisYc7z5R/76AaELfF6RCjjGeP
- wdalulG+erWju710Bif7E1yjYVWeA/9Wd1lsOmx6uwwYgNqoFtcAunDaMKi9xVQW18FsUusM
- TdRvTZLBpoUAy+MajAL+R73TwLq3LnKpIcCwftyQXK5pEDKq57OhxJVv1Q8XkA9Dn1SBOjNB
- l25vJDFAT9ntp9THeDD2fv15yk4EKpWhu4H00/YX8KkhFsrtUs69+vZQwc0cRmVsaXggRmll
- dGthdSA8bmJkQG5iZC5uYW1lPsJgBBMRAgAgBQJGoeQnAhsjBgsJCAcDAgQVAggDBBYCAwEC
- HgECF4AACgkQ130UHQKnbvXsvgCgjsAIIOsY7xZ8VcSm7NABpi91yTMAniMMmH7FRenEAYMa
- VrwYTIThkTlQzsFNBEah5FQQCACMIep/hTzgPZ9HbCTKm9xN4bZX0JjrqjFem1Nxf3MBM5vN
- CYGBn8F4sGIzPmLhl4xFeq3k5irVg/YvxSDbQN6NJv8o+tP6zsMeWX2JjtV0P4aDIN1pK2/w
- VxcicArw0VYdv2ZCarccFBgH2a6GjswqlCqVM3gNIMI8ikzenKcso8YErGGiKYeMEZLwHaxE
- Y7mTPuOTrWL8uWWRL5mVjhZEVvDez6em/OYvzBwbkhImrryF29e3Po2cfY2n7EKjjr3/141K
- DHBBdgXlPNfDwROnA5ugjjEBjwkwBQqPpDA7AYPvpHh5vLbZnVGu5CwG7NAsrb2isRmjYoqk
- wu++3117AAMFB/9S0Sj7qFFQcD4laADVsabTpNNpaV4wAgVTRHKV/kC9luItzwDnUcsZUPdQ
- f3MueRJ3jIHU0UmRBG3uQftqbZJj3ikhnfvyLmkCNe+/hXhPu9sGvXyi2D4vszICvc1KL4RD
- aLSrOsROx22eZ26KqcW4ny7+va2FnvjsZgI8h4sDmaLzKczVRIiLITiMpLFEU/VoSv0m1F4B
- FtRgoiyjFzigWG0MsTdAN6FJzGh4mWWGIlE7o5JraNhnTd+yTUIPtw3ym6l8P+gbvfoZida0
- TspgwBWLnXQvP5EDvlZnNaKa/3oBes6z0QdaSOwZCRA3QSLHBwtgUsrT6RxRSweLrcabwkkE
- GBECAAkFAkah5FQCGwwACgkQ130UHQKnbvW2GgCeMncXpbbWNT2AtoAYICrKyX5R3iMAoMhw
- cL98efvrjdstUfTCP2pfetyN
-Content-Type: text/plain; charset=UTF-8; format=flowed
+In-Reply-To: <ec266bec-c371-4ec8-a60f-21ebb810d38e@oss.qualcomm.com>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-Spamd-Result: default: False [-0.36 / 15.00];
-	R_DKIM_REJECT(1.00)[nbd.name:s=20160729];
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwMzI0MDEzMSBTYWx0ZWRfX/Opo5jeG5R77
+ Q8zHIRgf1BKZoybp3WbJTHV1C3OHVBeaHHexMHJf0mtSzqQNEgXmuZPUoE1dlsUWO/bIGNn2zbh
+ fgUZgm+LWJQyJtg/322OH3bTKksIRKN5OR+UkUYt70P4eMN7y82QKepmmXb7R3amZ29dirUKA1+
+ RHYb8vJXXKEE9JKhlEFIw+Wybbt131+eT6d+qGmfm9Ix69lsKWudBYOpiRE1qjzPh5oMk1M6ppx
+ biP6p+fJq3cJd7JB6YqcKfTS+D6E1S8lvUET3FLjQAdWl/WwYPUrUEH+VjnJst3zKv2g47FAto3
+ Pacv21/b2pZAtPLhfQZGPeeT1XZ525NzeWXMBgf7+rnqPijIA97zTeY+Xq26yvxmIZSnGwTOfOS
+ 7CZQ1+nvfJfF4kVbuw+SJyJy7uX/wWWVkzh0MY6wDohilbVJU6XRXB97T9wU9KmJlMgtE8W4xw1
+ RPx8nB7aoWFoJk9u3rg==
+X-Authority-Analysis: v=2.4 cv=Ua9ciaSN c=1 sm=1 tr=0 ts=69c2c1f3 cx=c_pps
+ a=bS7HVuBVfinNPG3f6cIo3Q==:117 a=JYp8KDb2vCoCEuGobkYCKw==:17
+ a=IkcTkHD0fZMA:10 a=Yq5XynenixoA:10 a=s4-Qcg_JpJYA:10
+ a=VkNPw1HP01LnGYTKEx00:22 a=u7WPNUs3qKkmUXheDGA7:22 a=_glEPmIy2e8OvE2BGh3C:22
+ a=FbE22GNBz-Vxc7xXROQA:9 a=QEXdDO2ut3YA:10 a=vBUdepa8ALXHeOFLBtFW:22
+X-Proofpoint-ORIG-GUID: XC2PyPJDIRerxKxtygLcZ8qIv-o8D6Ob
+X-Proofpoint-GUID: XC2PyPJDIRerxKxtygLcZ8qIv-o8D6Ob
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.51,FMLib:17.12.100.49
+ definitions=2026-03-24_03,2026-03-24_01,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ priorityscore=1501 lowpriorityscore=0 malwarescore=0 phishscore=0 bulkscore=0
+ spamscore=0 suspectscore=0 clxscore=1015 impostorscore=0 adultscore=0
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.22.0-2603050001 definitions=main-2603240131
+X-Spamd-Result: default: False [-0.66 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	DMARC_POLICY_ALLOW(-0.50)[qualcomm.com,reject];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
+	R_DKIM_ALLOW(-0.20)[qualcomm.com:s=qcppdkim1,oss.qualcomm.com:s=google];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
-	DMARC_POLICY_SOFTFAIL(0.10)[nbd.name : SPF not aligned (relaxed),none];
 	HAS_LIST_UNSUB(-0.01)[];
-	TO_DN_ALL(0.00)[];
-	TAGGED_FROM(0.00)[bounces-33784-lists,linux-wireless=lfdr.de];
-	FROM_HAS_DN(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	RCVD_TLS_LAST(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	RCPT_COUNT_TWO(0.00)[2];
-	DKIM_TRACE(0.00)[nbd.name:-];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	MIME_TRACE(0.00)[0:+];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[nbd@nbd.name,linux-wireless@vger.kernel.org];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-0.972];
+	TAGGED_FROM(0.00)[bounces-33785-lists,linux-wireless=lfdr.de];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,qualcomm.com:dkim,oss.qualcomm.com:dkim,oss.qualcomm.com:mid];
+	FREEMAIL_TO(0.00)[oss.qualcomm.com,gmail.com,lists.infradead.org];
+	RCVD_TLS_LAST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[qualcomm.com:+,oss.qualcomm.com:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	TO_DN_SOME(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[jeff.johnson@oss.qualcomm.com,linux-wireless@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	RCPT_COUNT_THREE(0.00)[4];
+	NEURAL_HAM(-0.00)[-1.000];
 	TAGGED_RCPT(0.00)[linux-wireless];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,nbd.name:mid]
-X-Rspamd-Queue-Id: D92723187C0
+	RCVD_COUNT_SEVEN(0.00)[7]
+X-Rspamd-Queue-Id: E9D4A319B85
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-Hi,
+On 3/23/2026 5:40 AM, Rameshkumar Sundaram wrote:
+> On 3/19/2026 9:29 PM, Jeff Johnson wrote:
+>> On 3/19/2026 7:35 AM, Nicolas Escande wrote:
+>>> On Thu Mar 19, 2026 at 12:08 PM CET, Rameshkumar Sundaram wrote:
+>>>> Or may be have this allocated on first device probe and free it on last
+>>>> device deinit ?
+>>>
+>>> That seems even more involved. It would be easier to go back to the previous
+>>> version and simply, alloc it once per ath12k_base
+>>>
+>>> What do you guys think ?
+>>>
+>>
+>> Going back to that may be the better solution. It isn't nice that this current
+>> solution may allocate memory when the driver isn't actually used. But I'll let
+>> others on the team weigh in as well.
+>>
+> 
+> Yeah, allocating once per ath12k_base is definitely the simpler 
+> ownership model.
+> I was only wondering whether sharing it across devices might be worth a 
+> look, since this is per-CPU scratch space and the table itself is fairly 
+> large.
 
-Here's an updated version of my mt76 pull request for 7.1.
-It drops the dt-bindings patches that are missing an ACK from DT
-maintainers.
+The other alternative is to still have a single global allocation, but also
+keep a reference count that starts at 0. when each ar starts it calls a single
+api to alloc the memory and when it stops it calls another api to dealloc the
+memory
 
-- Felix
+when the first ar starts and calls the alloc api, the refcount will be 0 so it
+will allocate the memory and increment the refcount to 1. when any subsequent
+ars start and call the alloc api, it will just increment the ref count. on
+deinit each ar will call the dealloc api. this api will just decrement the
+refcount until it reaches 0 at which time the memory is freed.
 
-The following changes since commit 9ac76f3d0bb2940db3a9684d596b9c8f301ef315:
-
-   Merge tag 'wireless-next-2026-03-19' of https://git.kernel.org/pub/scm/linux/kernel/git/wireless/wireless-next (2026-03-19 15:30:20 +0100)
-
-are available in the Git repository at:
-
-   https://github.com/nbd168/wireless tags/mt76-next-2026-03-23
-
-for you to fetch changes up to e8c819df02436f2c2379766946735e1f06a7c923:
-
-   wifi: mt76: mt7996: Destroy active sta links in mt7996_mac_sta_remove() (2026-03-24 15:49:32 +0000)
-
-----------------------------------------------------------------
-mt76 patches for 7.1
-
-- fixes
-- mt7996/mt7925 MLO fixes/improvements
-- mt7996 NPU support
-- mt7996 external EEPROM support
-
-----------------------------------------------------------------
-Allen Ye (1):
-       wifi: mt76: fix backoff fields and max_power calculation
-
-Alok Tiwari (1):
-       wifi: mt76: mt7996: fix FCS error flag check in RX descriptor
-
-Chad Monroe (5):
-       wifi: mt76: fix deadlock in remain-on-channel
-       wifi: mt76: mt7996: reset device after MCU message timeout
-       wifi: mt76: mt7996: increase txq memory limit to 32 MiB
-       wifi: mt76: fix multi-radio on-channel scanning
-       wifi: mt76: support upgrading passive scans to active
-
-Christian Hewitt (1):
-       wifi: mt7601u: check multiple firmware paths
-
-Colin Ian King (1):
-       wifi: mt76: mt7996: Fix spelling mistake "retriving" -> "retrieving"
-
-David Bauer (2):
-       wifi: mt76: mt76x02: wake queues after reconfig
-       wifi: mt76: don't return TXQ when exceeding max non-AQL packets
-
-Duoming Zhou (2):
-       wifi: mt76: mt7915: fix use-after-free bugs in mt7915_mac_dump_work()
-       wifi: mt76: mt7996: fix use-after-free bugs in mt7996_mac_dump_work()
-
-Felix Fietkau (9):
-       wifi: mt76: add offchannel check to mt76_roc_complete
-       wifi: mt76: check chanctx before restoring channel after ROC
-       wifi: mt76: abort ROC on chanctx changes
-       wifi: mt76: optimize ROC for same-channel case
-       wifi: mt76: send nullfunc PS frames on offchannel transitions
-       wifi: mt76: flush pending TX before channel switch
-       wifi: mt76: route nullfunc frames to PSD/ALTX queue
-       wifi: mt76: wait for firmware TX completion of mgmt frames before channel switch
-       wifi: mt76: add per-link beacon monitoring for MLO
-
-Howard Hsu (1):
-       wifi: mt76: mt7996: support critical packet mode for MT7990 chipsets
-
-Leon Yen (5):
-       wifi: mt76: mt7925: introduce CSA support in non-MLO mode
-       wifi: mt76: mt7925: Fix incorrect MLO mode in firmware control
-       wifi: mt76: mt792x: Fix a potential deadlock in high-load situations
-       wifi: mt76: mt7921: fix a potential clc buffer length underflow
-       wifi: mt76: mt7925: fix tx power setting failure after chip reset
-
-Lorenzo Bianconi (30):
-       wifi: mt76: mt7996: Set mtxq->wcid just for primary link
-       wifi: mt76: mt7996: Reset mtxq->idx if primary link is removed in mt7996_vif_link_remove()
-       wifi: mt76: mt7996: Switch to the secondary link if the default one is removed
-       wifi: mt76: mt7996: Clear wcid pointer in mt7996_mac_sta_deinit_link()
-       wifi: mt76: mt7996: Reset ampdu_state state in case of failure in mt7996_tx_check_aggr()
-       wifi: mt76: Fix memory leak destroying device
-       wifi: mt76: mt7996: Fix NPU stop procedure
-       wifi: mt76: npu: Add missing rx_token_size initialization
-       wifi: mt76: always enable RRO queues for non-MT7992 chipset
-       wifi: mt76: mt7996: Fix BAND2 tx queues initialization when NPU is enabled
-       wifi: mt76: mt7996: Fix wdma_idx for MT7996 device if NPU is enabled
-       wifi: mt76: mt7996: Add mt7992_npu_txrx_offload_init routine
-       wifi: mt76: mt7996: Rename mt7996_npu_rxd_init() in mt7992_npu_rxd_init()
-       wifi: mt76: mt7996: Add NPU support for MT7990 chipset
-       wifi: mt76: mt7996: Integrate NPU in RRO session management
-       wifi: mt76: mt7996: Integrate MT7990 init configuration for NPU
-       wifi: mt76: mt7996: Integrate MT7990 dma configuration for NPU
-       wifi: mt76: mt7996: Add __mt7996_npu_hw_init routine
-       wifi: mt76: mt7996: Move RRO dma start in a dedicated routine
-       wifi: mt76: Do not reset idx for NPU tx queues during reset
-       wifi: mt76: mt7996: Do not schedule RRO and TxFree queues during reset for NPU
-       wifi: mt76: mt7996: Store DMA mapped buffer addresses in mt7996_npu_hw_init()
-       wifi: mt76: Enable NPU support for MT7996 devices
-       wifi: mt76: mt7996: Add missing CHANCTX_STA_CSA property
-       wifi: mt76: mt7996: Remove link pointer dependency in mt7996_mac_sta_remove_links()
-       wifi: mt76: mt7996: Remove unnecessary phy filed in mt7996_vif_link struct
-       wifi: mt76: mt7996: Decrement sta counter removing the link in mt7996_mac_reset_sta_iter()
-       wifi: mt76: mt7996: Rely on msta_link link_id in mt7996_vif_link_remove()
-       wifi: mt76: mt7996: Destroy vif active links in mt7996_remove_interface()
-       wifi: mt76: mt7996: Destroy active sta links in mt7996_mac_sta_remove()
-
-Madhur Kumar (1):
-       wifi: mt76: mt7921: Replace deprecated PCI function
-
-MeiChia Chiu (1):
-       wifi: mt76: mt7996: Add eMLSR support
-
-Michael Lo (2):
-       wifi: mt76: mt7925: Skip scan process during suspend.
-       wifi: mt76: mt7921: fix 6GHz regulatory update on connection
-
-Ming Yen Hsieh (3):
-       wifi: mt76: mt7925: fix incorrect length field in txpower command
-       wifi: mt76: mt7925: prevent NULL pointer dereference in mt7925_tx_check_aggr()
-       wifi: mt76: mt7925: prevent NULL vif dereference in mt7925_mac_write_txwi
-
-Peter Chiu (3):
-       wifi: mt76: mt7996: fix RRO EMU configuration
-       wifi: mt76: mt7996: update WFSYS reset flow for MT7990 chipsets
-       wifi: mt76: mt7996: fix frequency separation for station STR mode
-
-Quan Zhou (3):
-       wifi: mt76: mt7925: fix AMPDU state handling in mt7925_tx_check_aggr
-       wifi: mt76: mt7921: fix ROC abort flow interruption in mt7921_roc_work
-       wifi: mt76: mt7925: fix incorrect TLV length in CLC command
-
-Rex Lu (1):
-       wifi: mt76: mt7996: adjust timeout value for boot-up calibration commands
-
-Rory Little (1):
-       wifi: mt76: mt7921: Place upper limit on station AID
-
-Ryder Lee (4):
-       wifi: mt76: mt7615: fix use_cts_prot support
-       wifi: mt76: mt7915: fix use_cts_prot support
-       wifi: mt76: mt7996: add support for ERP CTS & HT protection
-       wifi: mt76: mt7996: Disable Rx hdr_trans in monitor mode
-
-Sean Wang (36):
-       wifi: mt76: mt7921: Reset ampdu_state state in case of failure in mt76_connac2_tx_check_aggr()
-       wifi: mt76: mt7925: drop puncturing handling from BSS change path
-       wifi: mt76: mt7925: fix potential deadlock in mt7925_roc_abort_sync
-       wifi: mt76: mt7921: fix potential deadlock in mt7921_roc_abort_sync
-       wifi: mt76: connac: use is_connac2() to replace is_mt7921() checks
-       wifi: mt76: mt7921: use mt76_for_each_q_rx() in reset path
-       wifi: mt76: mt7921: handle MT7902 irq_map quirk with mutable copy
-       wifi: mt76: mt7921: add MT7902e DMA layout support
-       wifi: mt76: connac: mark MT7902 as hw txp devices
-       wifi: mt76: mt792x: add PSE handling barrier for the large MCU cmd
-       wifi: mt76: mt792x: ensure MCU ready before ROM patch download
-       wifi: mt76: mt7921: add MT7902 MCU support
-       wifi: mt76: mt792x: add MT7902 WFDMA prefetch configuration
-       wifi: mt76: mt7921: add MT7902 PCIe device support
-       wifi: mt76: mt7921: add MT7902 SDIO device support
-       wifi: mt76: mt792x: describe USB WFSYS reset with a descriptor
-       wifi: mt76: mt792x: fix mt7925u USB WFSYS reset handling
-       wifi: mt76: mt7925: pass mlink to sta_amsdu_tlv()
-       wifi: mt76: mt7925: pass WCID indices to bss_basic_tlv()
-       wifi: mt76: mt7925: pass mlink and mconf to sta_mld_tlv()
-       wifi: mt76: mt7925: pass mlink to mcu_sta_update()
-       wifi: mt76: mt7925: resolve primary mlink via def_wcid
-       wifi: mt76: mt7925: pass mlink to mac_link_sta_remove()
-       wifi: mt76: mt7925: pass mlink to sta_hdr_trans_tlv()
-       wifi: mt76: mt7925: validate mlink in sta_hdr_trans_tlv()
-       wifi: mt76: mt7925: pass mlink to wtbl_update_hdr_trans()
-       wifi: mt76: mt7925: pass mlink to set_link_key()
-       wifi: mt76: mt7925: resolve link after acquiring mt76 mutex
-       wifi: mt76: mt7925: pass mconf and mlink to wtbl_update_hdr_trans()
-       wifi: mt76: mt7925: make WCID cleanup unconditional in sta_remove_links()
-       wifi: mt76: mt7925: unwind WCID setup on link STA add failure
-       wifi: mt76: mt7925: drop WCID reinit after publish
-       wifi: mt76: mt7925: move WCID teardown into link_sta_remove()
-       wifi: mt76: mt7925: switch link STA allocation to RCU lifetime
-       wifi: mt76: mt7925: publish msta->link after successful link add
-       wifi: mt76: mt7925: host-only unwind published links on add failure
-
-Shayne Chen (8):
-       wifi: mt76: mt7996: extend CSA and CCA support for MLO
-       wifi: mt76: mt7996: add duplicated WTBL command
-       wifi: mt76: mt7996: fix iface combination for different chipsets
-       wifi: mt76: mt7996: add variant for MT7992 chipsets
-       wifi: mt76: mt7996: fix wrong DMAD length when using MAC TXP
-       wifi: mt76: mt7996: Account active links in valid_links fields
-       wifi: mt76: mt7996: Move mlink deallocation in mt7996_vif_link_remove()
-       wifi: mt76: mt7996: Add mcu APIs to enable/disable vif links.
-
-StanleyYP Wang (10):
-       wifi: mt76: mt7996: fix the behavior of radar detection
-       wifi: mt76: mt7996: set specific BSSINFO and STAREC commands after channel switch
-       wifi: mt76: mt7996: abort CCA when CSA is starting
-       wifi: mt76: mt7996: offload radar threshold initialization
-       wifi: mt76: add external EEPROM support for mt799x chipsets
-       wifi: mt76: mt7996: apply calibration-free data from OTP
-       wifi: mt76: mt7996: fix struct mt7996_mcu_uni_event
-       wifi: mt76: avoid to set ACK for MCU command if wait_resp is not set
-       wifi: mt76: mt7996: fix queue pause after scan due to wrong channel switch reason
-       wifi: mt76: mt7996: fix issues with manually triggered radar detection
-
-Zac Bowling (1):
-       wifi: mt76: fix list corruption in mt76_wcid_cleanup
-
-Zilin Guan (1):
-       wifi: mt76: Fix memory leak after mt76_connac_mcu_alloc_sta_req()
-
-Ziyi Guo (1):
-       wifi: mt76: add missing lock protection in mt76_sta_state for sta_event callback
-
-  drivers/net/wireless/mediatek/mt76/channel.c         |  39 ++-
-  drivers/net/wireless/mediatek/mt76/dma.c             |  33 ++-
-  drivers/net/wireless/mediatek/mt76/dma.h             |   4 +-
-  drivers/net/wireless/mediatek/mt76/eeprom.c          | 154 +++++++----
-  drivers/net/wireless/mediatek/mt76/mac80211.c        | 230 ++++++++++++++++-
-  drivers/net/wireless/mediatek/mt76/mcu.c             |   2 +-
-  drivers/net/wireless/mediatek/mt76/mt76.h            |  47 +++-
-  drivers/net/wireless/mediatek/mt76/mt7615/mac.c      |  15 --
-  drivers/net/wireless/mediatek/mt76/mt7615/main.c     |   7 +-
-  drivers/net/wireless/mediatek/mt76/mt7615/mcu.c      |  47 ++++
-  drivers/net/wireless/mediatek/mt76/mt7615/mt7615.h   |   5 +-
-  drivers/net/wireless/mediatek/mt76/mt7615/regs.h     |   2 -
-  drivers/net/wireless/mediatek/mt76/mt76_connac.h     |  11 +-
-  drivers/net/wireless/mediatek/mt76/mt76_connac_mac.c |  28 +-
-  drivers/net/wireless/mediatek/mt76/mt76_connac_mcu.c |  46 ++--
-  drivers/net/wireless/mediatek/mt76/mt76_connac_mcu.h |  15 +-
-  drivers/net/wireless/mediatek/mt76/mt76x02_mmio.c    |   1 +
-  drivers/net/wireless/mediatek/mt76/mt7915/init.c     |   1 +
-  drivers/net/wireless/mediatek/mt76/mt7915/mac.c      |  13 -
-  drivers/net/wireless/mediatek/mt76/mt7915/main.c     |   9 +-
-  drivers/net/wireless/mediatek/mt76/mt7915/mcu.c      |  66 ++++-
-  drivers/net/wireless/mediatek/mt76/mt7915/mcu.h      |  11 +
-  drivers/net/wireless/mediatek/mt76/mt7915/mt7915.h   |   4 +
-  drivers/net/wireless/mediatek/mt76/mt7921/init.c     |   4 +-
-  drivers/net/wireless/mediatek/mt76/mt7921/main.c     |  29 ++-
-  drivers/net/wireless/mediatek/mt76/mt7921/mcu.c      |   3 +
-  drivers/net/wireless/mediatek/mt76/mt7921/mt7921.h   |  16 ++
-  drivers/net/wireless/mediatek/mt76/mt7921/pci.c      |  70 ++++-
-  drivers/net/wireless/mediatek/mt76/mt7921/pci_mac.c  |   6 +-
-  drivers/net/wireless/mediatek/mt76/mt7921/sdio.c     |   4 +
-  drivers/net/wireless/mediatek/mt76/mt7925/init.c     |   2 +
-  drivers/net/wireless/mediatek/mt76/mt7925/mac.c      |  18 +-
-  drivers/net/wireless/mediatek/mt76/mt7925/main.c     | 394 +++++++++++++++++++++++-----
-  drivers/net/wireless/mediatek/mt76/mt7925/mcu.c      | 194 +++++++-------
-  drivers/net/wireless/mediatek/mt76/mt7925/mcu.h      |   7 +
-  drivers/net/wireless/mediatek/mt76/mt7925/mt7925.h   |  13 +-
-  drivers/net/wireless/mediatek/mt76/mt7925/regd.c     |   3 +-
-  drivers/net/wireless/mediatek/mt76/mt792x.h          |   7 +
-  drivers/net/wireless/mediatek/mt76/mt792x_core.c     |  14 +-
-  drivers/net/wireless/mediatek/mt76/mt792x_dma.c      |  18 +-
-  drivers/net/wireless/mediatek/mt76/mt792x_mac.c      |   2 +-
-  drivers/net/wireless/mediatek/mt76/mt792x_regs.h     |   6 +
-  drivers/net/wireless/mediatek/mt76/mt792x_usb.c      |  51 +++-
-  drivers/net/wireless/mediatek/mt76/mt7996/debugfs.c  |  36 ++-
-  drivers/net/wireless/mediatek/mt76/mt7996/dma.c      | 208 +++++++++------
-  drivers/net/wireless/mediatek/mt76/mt7996/eeprom.c   |  64 +++--
-  drivers/net/wireless/mediatek/mt76/mt7996/init.c     | 110 ++++++--
-  drivers/net/wireless/mediatek/mt76/mt7996/mac.c      | 161 ++++--------
-  drivers/net/wireless/mediatek/mt76/mt7996/mac.h      |   5 -
-  drivers/net/wireless/mediatek/mt76/mt7996/main.c     | 439 +++++++++++++++++++++++--------
-  drivers/net/wireless/mediatek/mt76/mt7996/mcu.c      | 823 +++++++++++++++++++++++++++++++++++++++++++++++++----------
-  drivers/net/wireless/mediatek/mt76/mt7996/mcu.h      | 112 +++++++-
-  drivers/net/wireless/mediatek/mt76/mt7996/mt7996.h   |  70 ++++-
-  drivers/net/wireless/mediatek/mt76/mt7996/npu.c      | 469 +++++++++++++++++++++++++++-------
-  drivers/net/wireless/mediatek/mt76/mt7996/regs.h     |  11 +
-  drivers/net/wireless/mediatek/mt76/npu.c             |  37 ++-
-  drivers/net/wireless/mediatek/mt76/scan.c            |  70 ++++-
-  drivers/net/wireless/mediatek/mt76/tx.c              |  34 ++-
-  drivers/net/wireless/mediatek/mt7601u/mcu.c          |  15 +-
-  drivers/net/wireless/mediatek/mt7601u/usb.h          |   1 +
-  60 files changed, 3347 insertions(+), 969 deletions(-)
 
