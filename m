@@ -1,141 +1,181 @@
-Return-Path: <linux-wireless+bounces-33765-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-33766-lists+linux-wireless=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id MFoLM+9PwmnvbAQAu9opvQ
-	(envelope-from <linux-wireless+bounces-33765-lists+linux-wireless=lfdr.de@vger.kernel.org>)
-	for <lists+linux-wireless@lfdr.de>; Tue, 24 Mar 2026 09:48:47 +0100
+	id wAz+DLVPwmnvbAQAu9opvQ
+	(envelope-from <linux-wireless+bounces-33766-lists+linux-wireless=lfdr.de@vger.kernel.org>)
+	for <lists+linux-wireless@lfdr.de>; Tue, 24 Mar 2026 09:47:49 +0100
 X-Original-To: lists+linux-wireless@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4A201304FCF
-	for <lists+linux-wireless@lfdr.de>; Tue, 24 Mar 2026 09:48:47 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id CA0BF304F71
+	for <lists+linux-wireless@lfdr.de>; Tue, 24 Mar 2026 09:47:48 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 364F530B478B
-	for <lists+linux-wireless@lfdr.de>; Tue, 24 Mar 2026 08:31:30 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 970F4304EF31
+	for <lists+linux-wireless@lfdr.de>; Tue, 24 Mar 2026 08:44:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 10A623ACA73;
-	Tue, 24 Mar 2026 08:31:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1153B39184A;
+	Tue, 24 Mar 2026 08:44:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="lDdSxM5O"
+	dkim=pass (2048-bit key) header.d=realtek.com header.i=@realtek.com header.b="cL7o9rr8"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3F0533A5430;
-	Tue, 24 Mar 2026 08:31:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5280233BBCD;
+	Tue, 24 Mar 2026 08:43:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=211.75.126.72
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774341088; cv=none; b=m+acnRnHkq5uv9imr78xO4NCxQSgp4xSsd3gUXA5oprFWX5fD3i3MfB0BuiEbZt/gTMevUO404gD8pUg8xSnKjtAB6zwJ9G7U+qpnzgsLsyO4azBgTZyL60+qbnE2S8tvakYblRNE0eY2W//vaDjBCm23rFlvVrLMf9dHtarZUc=
+	t=1774341839; cv=none; b=goAiR/ClNM8ndpGzWnYR3hcuffTc54pF3iGc28nr06a9n1mGhgD55Pi+M2yB7cpbgB8YmxbKSXy/42Df+5oF7yMMYZn1JPV6vkSqlhFgSM2bX1mKnkRegMYviB6pa8QMQDnsNExMgDUh8Hcv1b8GtsyUUIN7bJsSiuUDPtt6MC4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774341088; c=relaxed/simple;
-	bh=xXumeJlB9aNv1E9GsfBcg21xWBKkLqmoeCmXIIHuIw0=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Z/6rHzvFfx02m+EvkdvrDhrexeiIUHAfWLnUmqBPvimC2CtcypsXrM49o2R0+GzC52D3MDOjQRxP+YGRtyKhtoRtk55pYIZp5fR9G98x007Ht2ZjhoDj9JkQA6KFJzU5tZbRzFGuoW6yqnqrvzrftR1JDq9A1k5dJS+CVGGl/Og=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=lDdSxM5O; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 91323C19424;
-	Tue, 24 Mar 2026 08:31:27 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1774341087;
-	bh=xXumeJlB9aNv1E9GsfBcg21xWBKkLqmoeCmXIIHuIw0=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=lDdSxM5OSQnej4bSSALyt54AZVwAT0TMI06ik+i3IMcklrrp5oNy1V6+NGGVUpXiP
-	 cZbkh2ahpwtggLX7STzF8QS0mjaps9PzhvXhtzLOtaekBNyTSJq0vGVi5R4+1T3LAj
-	 8cY6jSmB/hJJlW/cKruwqjjNzwQyN/VL7IAWIdkZrcmIo0gdZB7Z1ihUfvrImm5jug
-	 tSx7GL42MnQ63hg/DScOSd+2sOG4v/YBdVAD0kGPthDLodGeVr5Vuoeo6dn+8UT7/r
-	 /x7XtZJfFWmPGc/AadVNxBtcyA2REgEpheRWeh7Lz1ISbfl1ExcbHmP0ZhZJXTtM0y
-	 I/0gvkq2YFQ7Q==
-Received: from johan by xi.lan with local (Exim 4.98.2)
-	(envelope-from <johan@kernel.org>)
-	id 1w4xAb-00000003md2-0XCb;
-	Tue, 24 Mar 2026 09:31:25 +0100
-Date: Tue, 24 Mar 2026 09:31:25 +0100
-From: Johan Hovold <johan@kernel.org>
-To: linux-wireless@vger.kernel.org
-Cc: Jeff Johnson <jjohnson@kernel.org>,
-	Toke =?utf-8?Q?H=C3=B8iland-J=C3=B8rgensen?= <toke@toke.dk>,
-	Brian Norris <briannorris@chromium.org>,
-	Francesco Dolcini <francesco@dolcini.it>,
-	Felix Fietkau <nbd@nbd.name>, Lorenzo Bianconi <lorenzo@kernel.org>,
-	Ryder Lee <ryder.lee@mediatek.com>,
-	Shayne Chen <shayne.chen@mediatek.com>,
-	Sean Wang <sean.wang@mediatek.com>,
-	Jakub Kicinski <kuba@kernel.org>, Stanislaw Gruszka <stf_xl@wp.pl>,
-	Hin-Tak Leung <hintak.leung@gmail.com>,
-	Jes Sorensen <Jes.Sorensen@gmail.com>,
-	Ping-Ke Shih <pkshih@realtek.com>,
-	Nicolas Ferre <nicolas.ferre@microchip.com>,
-	Alexandre Belloni <alexandre.belloni@bootlin.com>,
-	Claudiu Beznea <claudiu.beznea@tuxon.dev>,
-	Matthias Brugger <matthias.bgg@gmail.com>,
-	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	libertas-dev@lists.infradead.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v2 00/18] wifi: drop redundant USB device references
-Message-ID: <acJL3c5J6sT59sjx@hovoldconsulting.com>
+	s=arc-20240116; t=1774341839; c=relaxed/simple;
+	bh=Rb5CZtCPjbDIshXMhjMYdSsThf3g6EytpWixHKrcR0o=;
+	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
+	 Content-Type:MIME-Version; b=JLUiGyn52eSUeK0BYHMNgAByKwtnJFk/RvuYsv79SJqLzlN8EgjjPf51LEviG6XWOGUvoVJ0u/CKTQILrpbTFsvjNQq5KW8YTMacZ/97aqYBCX14fNoIt8ckhI6BnxWIJTUZ4bINQRU+2OvtQx8RVpmfbvQzZq+vJwc2SDkqEkE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com; spf=pass smtp.mailfrom=realtek.com; dkim=pass (2048-bit key) header.d=realtek.com header.i=@realtek.com header.b=cL7o9rr8; arc=none smtp.client-ip=211.75.126.72
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=realtek.com
+X-SpamFilter-By: ArmorX SpamTrap 5.80 with qID 62O8eCIO1751213, This message is accepted by code: ctloc85258
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=realtek.com; s=dkim;
+	t=1774341612; bh=IezQCVaqZWlndew01lWE/wjEE9A1Gs8V3V56SwEGZtQ=;
+	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
+	 Content-Type:Content-Transfer-Encoding:MIME-Version;
+	b=cL7o9rr8Vg/ddkNBaCCFmJgnVbV/G3wulbcmvfE8n92Ppza9i9mhRBYnQMe3U/hZB
+	 To/7MF17VWcN28us9bSCtI7DCswBkGYQrZFLwLZ5X+/R7JNJco6jSd1q69Mua/Iuuk
+	 SlgI8KBqmQQysLL+b+58+kjRnRYGrnd37OgXU06ArSQa+IBSnht7uWWN1Z4Ou5/M/3
+	 xQo5GZbUHBW5xwwcVhOeWHyoojEhg9wGQG4cKuJ7n+duQGmeRYL9lHHfdp/RnDImJT
+	 ahQ5TeHTSzoeCRnsCI7WlNl8e1cgsAJHsZ5kcFekTLDnBjCDJnFqlkKj606cGFA16p
+	 6FQWVR1AM+8Uw==
+Received: from mail.realtek.com (rtkexhmbs04.realtek.com.tw[10.21.1.54])
+	by rtits2.realtek.com.tw (8.15.2/3.21/5.94) with ESMTPS id 62O8eCIO1751213
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Tue, 24 Mar 2026 16:40:12 +0800
+Received: from RTKEXHMBS05.realtek.com.tw (10.21.1.55) by
+ RTKEXHMBS04.realtek.com.tw (10.21.1.54) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1748.10; Tue, 24 Mar 2026 16:40:11 +0800
+Received: from RTKEXHMBS06.realtek.com.tw (10.21.1.56) by
+ RTKEXHMBS05.realtek.com.tw (10.21.1.55) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1748.10; Tue, 24 Mar 2026 16:40:10 +0800
+Received: from RTKEXHMBS06.realtek.com.tw ([fe80::4cbd:6c6c:b92b:3913]) by
+ RTKEXHMBS06.realtek.com.tw ([fe80::4cbd:6c6c:b92b:3913%10]) with mapi id
+ 15.02.1748.010; Tue, 24 Mar 2026 16:40:10 +0800
+From: Ping-Ke Shih <pkshih@realtek.com>
+To: Johan Hovold <johan@kernel.org>,
+        "linux-wireless@vger.kernel.org"
+	<linux-wireless@vger.kernel.org>
+CC: Jeff Johnson <jjohnson@kernel.org>,
+        =?iso-8859-1?Q?Toke_H=F8iland-J=F8rgensen?= <toke@toke.dk>,
+        Brian Norris
+	<briannorris@chromium.org>,
+        Francesco Dolcini <francesco@dolcini.it>,
+        "Felix
+ Fietkau" <nbd@nbd.name>, Lorenzo Bianconi <lorenzo@kernel.org>,
+        Ryder Lee
+	<ryder.lee@mediatek.com>,
+        Shayne Chen <shayne.chen@mediatek.com>,
+        Sean Wang
+	<sean.wang@mediatek.com>, Jakub Kicinski <kuba@kernel.org>,
+        Stanislaw Gruszka
+	<stf_xl@wp.pl>,
+        Hin-Tak Leung <hintak.leung@gmail.com>,
+        Jes Sorensen
+	<Jes.Sorensen@gmail.com>,
+        Nicolas Ferre <nicolas.ferre@microchip.com>,
+        Alexandre Belloni <alexandre.belloni@bootlin.com>,
+        Claudiu Beznea
+	<claudiu.beznea@tuxon.dev>,
+        Matthias Brugger <matthias.bgg@gmail.com>,
+        AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
+        "Greg
+ Kroah-Hartman" <gregkh@linuxfoundation.org>,
+        "libertas-dev@lists.infradead.org" <libertas-dev@lists.infradead.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
+Subject: RE: [PATCH v2 00/18] wifi: drop redundant USB device references
+Thread-Topic: [PATCH v2 00/18] wifi: drop redundant USB device references
+Thread-Index: AQHcrUaQqpIAa3otvkWvbF5YVc2cqrW88IqAgACH0lA=
+Date: Tue, 24 Mar 2026 08:40:10 +0000
+Message-ID: <923278a6deae44f4bec8bc2ede1022a1@realtek.com>
 References: <20260306085144.12064-1-johan@kernel.org>
+ <acJL3c5J6sT59sjx@hovoldconsulting.com>
+In-Reply-To: <acJL3c5J6sT59sjx@hovoldconsulting.com>
+Accept-Language: en-US, zh-TW
+Content-Language: zh-TW
+Content-Type: text/plain; charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260306085144.12064-1-johan@kernel.org>
 X-Spamd-Result: default: False [-0.66 / 15.00];
 	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	DMARC_POLICY_ALLOW(-0.50)[realtek.com,none];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	R_DKIM_ALLOW(-0.20)[realtek.com:s=dkim];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-33765-lists,linux-wireless=lfdr.de];
-	FREEMAIL_CC(0.00)[kernel.org,toke.dk,chromium.org,dolcini.it,nbd.name,mediatek.com,wp.pl,gmail.com,realtek.com,microchip.com,bootlin.com,tuxon.dev,collabora.com,linuxfoundation.org,lists.infradead.org,vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
+	FREEMAIL_CC(0.00)[kernel.org,toke.dk,chromium.org,dolcini.it,nbd.name,mediatek.com,wp.pl,gmail.com,microchip.com,bootlin.com,tuxon.dev,collabora.com,linuxfoundation.org,lists.infradead.org,vger.kernel.org];
+	TAGGED_FROM(0.00)[bounces-33766-lists,linux-wireless=lfdr.de];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,realtek.com:dkim,realtek.com:mid];
+	TO_DN_EQ_ADDR_SOME(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
 	RCPT_COUNT_TWELVE(0.00)[23];
 	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[kernel.org:+];
+	DKIM_TRACE(0.00)[realtek.com:+];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
 	MISSING_XM_UA(0.00)[];
-	TO_DN_SOME(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[johan@kernel.org,linux-wireless@vger.kernel.org];
+	FROM_NEQ_ENVFROM(0.00)[pkshih@realtek.com,linux-wireless@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MID_RHS_MATCH_FROM(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TO_DN_SOME(0.00)[];
 	TAGGED_RCPT(0.00)[linux-wireless];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 4A201304FCF
+	RCVD_COUNT_SEVEN(0.00)[7]
+X-Rspamd-Queue-Id: CA0BF304F71
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-On Fri, Mar 06, 2026 at 09:51:26AM +0100, Johan Hovold wrote:
-> Driver core holds a reference to the USB interface and its parent USB
-> device while the interface is bound to a driver and there is no need to
-> take additional references unless the structures are needed after
-> disconnect.
-> 
-> Drop redundant device references to reduce cargo culting, make it easier
-> to spot drivers where an extra reference is needed, and reduce the risk
-> of memory leaks when drivers fail to release them.
+Hi Johan,
 
-> Johan Hovold (18):
+Johan Hovold <johan@kernel.org> wrote:
+> On Fri, Mar 06, 2026 at 09:51:26AM +0100, Johan Hovold wrote:
+> > Driver core holds a reference to the USB interface and its parent USB
+> > device while the interface is bound to a driver and there is no need to
+> > take additional references unless the structures are needed after
+> > disconnect.
+> >
+> > Drop redundant device references to reduce cargo culting, make it easie=
+r
+> > to spot drivers where an extra reference is needed, and reduce the risk
+> > of memory leaks when drivers fail to release them.
+>=20
+> > Johan Hovold (18):
+>=20
+> >   wifi: mt76: drop redundant device reference
+> >   wifi: mt76x0u: drop redundant device reference
+> >   wifi: mt76x2u: drop redundant device reference
+> >   wifi: mt76: mt792xu: drop redundant device reference
+> >   wifi: mt7601u: drop redundant device reference
+>=20
+> All of these are now in linux-next except for the five Mediatek fixes.
+>=20
+> Could someone pick them up as well? Not sure which tree they'd usually
+> go through.
 
->   wifi: mt76: drop redundant device reference
->   wifi: mt76x0u: drop redundant device reference
->   wifi: mt76x2u: drop redundant device reference
->   wifi: mt76: mt792xu: drop redundant device reference
->   wifi: mt7601u: drop redundant device reference
+  wifi: rtl818x: drop redundant device reference
+  wifi: rtl8xxxu: drop redundant device reference
+  wifi: rtw88: fix device leak on probe failure
 
-All of these are now in linux-next except for the five Mediatek fixes.
+Realtek WiFi got merged into my tree (not in linux-next yet), and I plan to
+send pull-request to wireless tree before 7.1 merge window.=20
 
-Could someone pick them up as well? Not sure which tree they'd usually
-go through.
+Ping-Ke
 
-Johan
 
