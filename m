@@ -1,116 +1,141 @@
-Return-Path: <linux-wireless+bounces-33764-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-33765-lists+linux-wireless=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id CEUuEVc0wmmUaAQAu9opvQ
-	(envelope-from <linux-wireless+bounces-33764-lists+linux-wireless=lfdr.de@vger.kernel.org>)
-	for <lists+linux-wireless@lfdr.de>; Tue, 24 Mar 2026 07:51:03 +0100
+	id MFoLM+9PwmnvbAQAu9opvQ
+	(envelope-from <linux-wireless+bounces-33765-lists+linux-wireless=lfdr.de@vger.kernel.org>)
+	for <lists+linux-wireless@lfdr.de>; Tue, 24 Mar 2026 09:48:47 +0100
 X-Original-To: lists+linux-wireless@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id B7B4D303783
-	for <lists+linux-wireless@lfdr.de>; Tue, 24 Mar 2026 07:51:02 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4A201304FCF
+	for <lists+linux-wireless@lfdr.de>; Tue, 24 Mar 2026 09:48:47 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 06DCF310FEFF
-	for <lists+linux-wireless@lfdr.de>; Tue, 24 Mar 2026 06:36:36 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 364F530B478B
+	for <lists+linux-wireless@lfdr.de>; Tue, 24 Mar 2026 08:31:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7AB0A3BED3B;
-	Tue, 24 Mar 2026 06:36:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 10A623ACA73;
+	Tue, 24 Mar 2026 08:31:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b="JTNJpacX"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="lDdSxM5O"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from sipsolutions.net (s3.sipsolutions.net [168.119.38.16])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 06C3E3BED23
-	for <linux-wireless@vger.kernel.org>; Tue, 24 Mar 2026 06:36:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=168.119.38.16
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3F0533A5430;
+	Tue, 24 Mar 2026 08:31:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774334195; cv=none; b=lX6gHro36PLgJIRZkEcOxYnv2J8cZdVbSi/kLy0LE0ZCVH7Lo4/gBTS5USO6kqo5zfNXqGhwjUQ6kxxo5J2t7GtzCplndY2+6hd/0+9KvlAvKoIOQDXAafY+KHnGEBelXEQAN3KtOQfVAHJUC8lJ7s2lGoOUwbCQaKFtEZoQFdk=
+	t=1774341088; cv=none; b=m+acnRnHkq5uv9imr78xO4NCxQSgp4xSsd3gUXA5oprFWX5fD3i3MfB0BuiEbZt/gTMevUO404gD8pUg8xSnKjtAB6zwJ9G7U+qpnzgsLsyO4azBgTZyL60+qbnE2S8tvakYblRNE0eY2W//vaDjBCm23rFlvVrLMf9dHtarZUc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774334195; c=relaxed/simple;
-	bh=G0kTBOovsFDlftR+cujCPo4acel3b2girqOmsNnQiOE=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=diRfQT+KHPN4T63glLwu1+ZZLcLC1Wh3gJZ9x1wJ71U23liPF5TkHD0RwbCEF5WdJpZDAPa2MUf7FbW1+ybsoiLE1d3h9xFQ85VaBavVdM6qhTpPNdPhIqe3FrxPmBPf1FVd657qU7eGm3XvXbCVLIA1E+fnI9QZ2KwPXWUlx54=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net; spf=pass smtp.mailfrom=sipsolutions.net; dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b=JTNJpacX; arc=none smtp.client-ip=168.119.38.16
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sipsolutions.net
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=sipsolutions.net; s=mail; h=MIME-Version:Content-Transfer-Encoding:
-	Content-Type:References:In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender
-	:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
-	Resent-Cc:Resent-Message-ID; bh=G0kTBOovsFDlftR+cujCPo4acel3b2girqOmsNnQiOE=;
-	t=1774334194; x=1775543794; b=JTNJpacXLy50Le8qSrN/ZSYrUWx1ujX1uhfyJBOsK+rtN+x
-	HRVlvBfz2SwlnLer4CX4LwOcMT9ZuCBCAqsY6pEGsmAGw4ELZO56yEcywocNLWsjGo0QWVvhrP7Fi
-	AE16foJZv7ouUv5hTmeznxY3PV605CdMYVij+uw/XGBHBDyiJtvV02ata6jf461d+ST/YnAt6GvXP
-	EnP8j1TNVrdDGceB3zCLYQL945lCDY+utdS7QGBfH2rHkMYc0RVxEaNrdpnxw5y3cmCUr5NbELHgK
-	CTaVMrjOa+qXkMfhnsDjdbGvsf3ToeVTJ5M4wzyBOp3/PB88u3xYA/DXp0OkaoEg==;
-Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
-	(Exim 4.98.2)
-	(envelope-from <johannes@sipsolutions.net>)
-	id 1w4vNO-0000000AiVl-2vgK;
-	Tue, 24 Mar 2026 07:36:30 +0100
-Message-ID: <7fcbb9390fc715478559a30065e6835301fa9226.camel@sipsolutions.net>
-Subject: Re: [PATCH wireless-next] wifi: mac80211: fix AEAD functions not
- handling errors
-From: Johannes Berg <johannes@sipsolutions.net>
-To: Miri Korenblit <miriam.rachel.korenblit@intel.com>, 
-	linux-wireless@vger.kernel.org
-Cc: Emmanuel Grumbach <emmanuel.grumbach@intel.com>
-Date: Tue, 24 Mar 2026 07:36:30 +0100
-In-Reply-To: <20260323231539.aa9f1db285a8.Icf2051ed1acac174b85b99158cc2b0757310765a@changeid>
-References: 
-	<20260323231539.aa9f1db285a8.Icf2051ed1acac174b85b99158cc2b0757310765a@changeid>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.58.3 (3.58.3-1.fc43) 
+	s=arc-20240116; t=1774341088; c=relaxed/simple;
+	bh=xXumeJlB9aNv1E9GsfBcg21xWBKkLqmoeCmXIIHuIw0=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=Z/6rHzvFfx02m+EvkdvrDhrexeiIUHAfWLnUmqBPvimC2CtcypsXrM49o2R0+GzC52D3MDOjQRxP+YGRtyKhtoRtk55pYIZp5fR9G98x007Ht2ZjhoDj9JkQA6KFJzU5tZbRzFGuoW6yqnqrvzrftR1JDq9A1k5dJS+CVGGl/Og=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=lDdSxM5O; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 91323C19424;
+	Tue, 24 Mar 2026 08:31:27 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1774341087;
+	bh=xXumeJlB9aNv1E9GsfBcg21xWBKkLqmoeCmXIIHuIw0=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=lDdSxM5OSQnej4bSSALyt54AZVwAT0TMI06ik+i3IMcklrrp5oNy1V6+NGGVUpXiP
+	 cZbkh2ahpwtggLX7STzF8QS0mjaps9PzhvXhtzLOtaekBNyTSJq0vGVi5R4+1T3LAj
+	 8cY6jSmB/hJJlW/cKruwqjjNzwQyN/VL7IAWIdkZrcmIo0gdZB7Z1ihUfvrImm5jug
+	 tSx7GL42MnQ63hg/DScOSd+2sOG4v/YBdVAD0kGPthDLodGeVr5Vuoeo6dn+8UT7/r
+	 /x7XtZJfFWmPGc/AadVNxBtcyA2REgEpheRWeh7Lz1ISbfl1ExcbHmP0ZhZJXTtM0y
+	 I/0gvkq2YFQ7Q==
+Received: from johan by xi.lan with local (Exim 4.98.2)
+	(envelope-from <johan@kernel.org>)
+	id 1w4xAb-00000003md2-0XCb;
+	Tue, 24 Mar 2026 09:31:25 +0100
+Date: Tue, 24 Mar 2026 09:31:25 +0100
+From: Johan Hovold <johan@kernel.org>
+To: linux-wireless@vger.kernel.org
+Cc: Jeff Johnson <jjohnson@kernel.org>,
+	Toke =?utf-8?Q?H=C3=B8iland-J=C3=B8rgensen?= <toke@toke.dk>,
+	Brian Norris <briannorris@chromium.org>,
+	Francesco Dolcini <francesco@dolcini.it>,
+	Felix Fietkau <nbd@nbd.name>, Lorenzo Bianconi <lorenzo@kernel.org>,
+	Ryder Lee <ryder.lee@mediatek.com>,
+	Shayne Chen <shayne.chen@mediatek.com>,
+	Sean Wang <sean.wang@mediatek.com>,
+	Jakub Kicinski <kuba@kernel.org>, Stanislaw Gruszka <stf_xl@wp.pl>,
+	Hin-Tak Leung <hintak.leung@gmail.com>,
+	Jes Sorensen <Jes.Sorensen@gmail.com>,
+	Ping-Ke Shih <pkshih@realtek.com>,
+	Nicolas Ferre <nicolas.ferre@microchip.com>,
+	Alexandre Belloni <alexandre.belloni@bootlin.com>,
+	Claudiu Beznea <claudiu.beznea@tuxon.dev>,
+	Matthias Brugger <matthias.bgg@gmail.com>,
+	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	libertas-dev@lists.infradead.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v2 00/18] wifi: drop redundant USB device references
+Message-ID: <acJL3c5J6sT59sjx@hovoldconsulting.com>
+References: <20260306085144.12064-1-johan@kernel.org>
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-malware-bazaar: not-scanned
-X-Spamd-Result: default: False [-2.16 / 15.00];
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260306085144.12064-1-johan@kernel.org>
+X-Spamd-Result: default: False [-0.66 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[sipsolutions.net,none];
-	R_DKIM_ALLOW(-0.20)[sipsolutions.net:s=mail];
+	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
 	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-33764-lists,linux-wireless=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-33765-lists,linux-wireless=lfdr.de];
+	FREEMAIL_CC(0.00)[kernel.org,toke.dk,chromium.org,dolcini.it,nbd.name,mediatek.com,wp.pl,gmail.com,realtek.com,microchip.com,bootlin.com,tuxon.dev,collabora.com,linuxfoundation.org,lists.infradead.org,vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	DKIM_TRACE(0.00)[sipsolutions.net:+];
-	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	RCPT_COUNT_THREE(0.00)[3];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	RCVD_TLS_LAST(0.00)[];
+	RCPT_COUNT_TWELVE(0.00)[23];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[kernel.org:+];
+	MISSING_XM_UA(0.00)[];
 	TO_DN_SOME(0.00)[];
+	RCVD_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[johannes@sipsolutions.net,linux-wireless@vger.kernel.org];
+	FROM_NEQ_ENVFROM(0.00)[johan@kernel.org,linux-wireless@vger.kernel.org];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[linux-wireless];
-	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,sipsolutions.net:dkim,sipsolutions.net:mid]
-X-Rspamd-Queue-Id: B7B4D303783
+	TAGGED_RCPT(0.00)[linux-wireless];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 4A201304FCF
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-On Mon, 2026-03-23 at 23:15 +0200, Miri Korenblit wrote:
-> From: Emmanuel Grumbach <emmanuel.grumbach@intel.com>
->=20
-> This was done for CMAC but not for AEAD.
-> This was spotted by Coverity.
+On Fri, Mar 06, 2026 at 09:51:26AM +0100, Johan Hovold wrote:
+> Driver core holds a reference to the USB interface and its parent USB
+> device while the interface is bound to a driver and there is no need to
+> take additional references unless the structures are needed after
+> disconnect.
+> 
+> Drop redundant device references to reduce cargo culting, make it easier
+> to spot drivers where an extra reference is needed, and reduce the risk
+> of memory leaks when drivers fail to release them.
 
-I'm not going to apply this, given that this is all refactored (and the
-bug removed) in -next:
+> Johan Hovold (18):
 
-https://git.kernel.org/pub/scm/linux/kernel/git/ebiggers/linux.git/commit/?=
-h=3Dlibcrypto-next&id=3D5e07ce466356d9833757b2d6c0380b6ee7b11a77
+>   wifi: mt76: drop redundant device reference
+>   wifi: mt76x0u: drop redundant device reference
+>   wifi: mt76x2u: drop redundant device reference
+>   wifi: mt76: mt792xu: drop redundant device reference
+>   wifi: mt7601u: drop redundant device reference
 
-johannes
+All of these are now in linux-next except for the five Mediatek fixes.
+
+Could someone pick them up as well? Not sure which tree they'd usually
+go through.
+
+Johan
 
