@@ -1,147 +1,151 @@
-Return-Path: <linux-wireless+bounces-33754-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-33755-lists+linux-wireless=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id wBldI3oIwmlBZAQAu9opvQ
-	(envelope-from <linux-wireless+bounces-33754-lists+linux-wireless=lfdr.de@vger.kernel.org>)
-	for <lists+linux-wireless@lfdr.de>; Tue, 24 Mar 2026 04:43:54 +0100
+	id GLK2KQ4rwml5ZwQAu9opvQ
+	(envelope-from <linux-wireless+bounces-33755-lists+linux-wireless=lfdr.de@vger.kernel.org>)
+	for <lists+linux-wireless@lfdr.de>; Tue, 24 Mar 2026 07:11:26 +0100
 X-Original-To: lists+linux-wireless@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 36268301C95
-	for <lists+linux-wireless@lfdr.de>; Tue, 24 Mar 2026 04:43:54 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 13F7C302A2D
+	for <lists+linux-wireless@lfdr.de>; Tue, 24 Mar 2026 07:11:25 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id ADDA930C438C
-	for <lists+linux-wireless@lfdr.de>; Tue, 24 Mar 2026 03:42:16 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 0821D310BA28
+	for <lists+linux-wireless@lfdr.de>; Tue, 24 Mar 2026 06:05:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A5E3C39F192;
-	Tue, 24 Mar 2026 03:42:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CEC413AA51B;
+	Tue, 24 Mar 2026 06:04:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="R719frGO"
+	dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b="V1uJJN4w"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from m16.mail.163.com (m16.mail.163.com [117.135.210.4])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7AA4B366557;
-	Tue, 24 Mar 2026 03:42:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1C71E3AA4F7;
+	Tue, 24 Mar 2026 06:04:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=117.135.210.4
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774323735; cv=none; b=gueujRYNUfFk3gItwyv+XB3sM3iyYPmNsfUMTwBkJJ5EjaQzoCZtVBUjJDdxY+jH3S4cFmixElB/g6LLi3/k1fe8B2oYSK95JVEAYazinqvCs9e2E4nl1/ZuFGb5SAEt5WYNWTeeKJuy0bdrwxHl+kPdielhTfWFMo6S+Nsurfk=
+	t=1774332273; cv=none; b=macCauwP7JFLUTNE0S/U1RzB+WDnuHdb5LvvKqxoRA9sjwiuazHpJ5lMNlg4Vie4kwdjAjXd0VzSpsClpJs0v8jesTKrPzukGcoNQHSuxUfcv33ySHmfyHq14IplQS1fIPypvgyvdWjmo5xb/nwf3lbp+klt967BRf6H1GVyvS8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774323735; c=relaxed/simple;
-	bh=qpWNh+tTYj8MbrdcqgUMlZVZZhUWaYgGrvrVHLiKCBU=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=GfE3WWioYEGgsUTwcOL0a+TO4kjREcOEQBtJ3JSXFIgf4MV7YCLhJ9JQOgOZRXv58uIsLyxboqvk0P7DaSDteE+KmyP9dJ2RfUXHwNxDCIs/h+aXwJNAFqTWVHpk2GeIBhQvJtOX4CkIqS3viEpfoKfnaoXGfCv1I4nkwaeYWGE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=R719frGO; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 71660C19424;
-	Tue, 24 Mar 2026 03:42:13 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1774323735;
-	bh=qpWNh+tTYj8MbrdcqgUMlZVZZhUWaYgGrvrVHLiKCBU=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=R719frGOM/L0P7abqsQXEE2kqqXEtWJwQlWRwk1c6JSRqaOjfeYcyyOm4/lf51mLC
-	 Nv1kOwcRbCBtHThGpyOwpG0IlUfZa4kYuRSFZM1GeQjBXDL5gJJ60wgiln/9o3hAiv
-	 qGV2aOc5keMh/1LnL0lV0vPFRDnbgAhE4o0KX3+i3UQWBzuZqwy1qjRxXcULJC+P9Q
-	 /+HYAhJ4SFlqQ4BqcnW2S9x6r2MFkwLsFwM+hCAQmU4sLYkFfZzOV/Pq2IqtPM8KAf
-	 bjzY0XPVn/+ja3Em3n+8c0ghrb3PSd027BxIKGh6kcZZaqwS7RQiOoRti+dsrb2n8N
-	 mGiW3gQixOGhA==
-From: Bjorn Andersson <andersson@kernel.org>
-To: Liam Girdwood <lgirdwood@gmail.com>,
-	Mark Brown <broonie@kernel.org>,
-	Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Bartosz Golaszewski <brgl@kernel.org>,
-	Marcel Holtmann <marcel@holtmann.org>,
-	Luiz Augusto von Dentz <luiz.dentz@gmail.com>,
-	Jeff Johnson <jjohnson@kernel.org>,
-	Konrad Dybcio <konradybcio@kernel.org>,
-	Manivannan Sadhasivam <mani@kernel.org>,
-	Vinod Koul <vkoul@kernel.org>,
-	Balakrishna Godavarthi <quic_bgodavar@quicinc.com>,
-	Matthias Kaehlcke <mka@chromium.org>,
-	Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
-Cc: linux-arm-msm@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	devicetree@vger.kernel.org,
-	linux-bluetooth@vger.kernel.org,
+	s=arc-20240116; t=1774332273; c=relaxed/simple;
+	bh=46mKEmqJ7If9n6oOQLlB27h455jj6EdxRIvtHJgTEo0=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=hFytGNp7KuQsyj5+pXKJseNwmrDmkPRQvCAdaToZcNZ8kw0Y6EcaJEQIGxJizX7cQTwqvt+OjWvu0Q1G9XHTgXNXjc5CNR0T+HmTPg25LAfE9PBbYEzO9IWdNwmj2FwEzfKP99liSAKd5ZI8ib9NJtCEqANa6cx7F01HPUm0Yzs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com; spf=pass smtp.mailfrom=163.com; dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b=V1uJJN4w; arc=none smtp.client-ip=117.135.210.4
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=163.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
+	s=s110527; h=From:To:Subject:Date:Message-Id:MIME-Version; bh=IN
+	uffQ2bP82R6qrvw57oC8K0VZlNzr1HNS+Vrn9bxsA=; b=V1uJJN4wnePmsA8Q+f
+	XvG+Qb2PVZiaYk8Y+m4n3uufLbr4cxHsIhElapq8P61e9hebHfay5h8msFCkuSZt
+	12b+9wBcmFzIedwzphfLZ1nqxTWQm/MItVF634yRJlpcph/sJMhlzNLoI61zyXhR
+	7x5K0ldrVEpn23ljE8emv90SA=
+Received: from pek-lpg-core5.wrs.com (unknown [])
+	by gzga-smtp-mtada-g0-2 (Coremail) with SMTP id _____wD3f63sKMJpJvBTBA--.36472S2;
+	Tue, 24 Mar 2026 14:02:21 +0800 (CST)
+From: Robert Garcia <rob_garcia@163.com>
+To: stable@vger.kernel.org,
+	Johannes Berg <johannes.berg@intel.com>
+Cc: Miri Korenblit <miriam.rachel.korenblit@intel.com>,
+	Robert Garcia <rob_garcia@163.com>,
+	Luca Coelho <luciano.coelho@intel.com>,
+	Kalle Valo <kvalo@codeaurora.org>,
+	"David S . Miller" <davem@davemloft.net>,
+	Jakub Kicinski <kuba@kernel.org>,
 	linux-wireless@vger.kernel.org,
-	ath10k@lists.infradead.org,
-	linux-pm@vger.kernel.org,
-	Krzysztof Kozlowski <krzk@kernel.org>,
-	Bartosz Golaszewski <bartosz.golaszewski@oss.qualcomm.com>,
-	Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
-Subject: Re: (subset) [PATCH v2 00/14] power: sequencing: extend WCN driver to support WCN399x device
-Date: Mon, 23 Mar 2026 22:42:01 -0500
-Message-ID: <177432372677.35532.960283784585134331.b4-ty@kernel.org>
-X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260106-wcn3990-pwrctl-v2-0-0386204328be@oss.qualcomm.com>
-References: <20260106-wcn3990-pwrctl-v2-0-0386204328be@oss.qualcomm.com>
+	netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH 5.15.y] wifi: iwlwifi: read txq->read_ptr under lock
+Date: Tue, 24 Mar 2026 14:02:20 +0800
+Message-Id: <20260324060220.1192543-1-rob_garcia@163.com>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
+X-CM-TRANSID:_____wD3f63sKMJpJvBTBA--.36472S2
+X-Coremail-Antispam: 1Uf129KBjvJXoWxJry3WrW7Aw43CF1xWr1DGFg_yoW8ZF4Up3
+	sa9r4jgrs5XFsrC3y8XF4S9rnIqa1DGanIkFyF9wnIvr13Jr1S9rWF9ryUtFyUtr4SvrWY
+	vF1jyFs8GF1UZFJanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x0pRSD77UUUUU=
+X-CM-SenderInfo: 5uresw5dufxti6rwjhhfrp/xtbDAg5Qu2nCKO4DywAA3C
 X-Spamd-Result: default: False [-0.66 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+	MID_CONTAINS_FROM(1.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_MISSING_CHARSET(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[163.com,none];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_DKIM_ALLOW(-0.20)[163.com:s=s110527];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	TAGGED_FROM(0.00)[bounces-33755-lists,linux-wireless=lfdr.de];
+	FREEMAIL_CC(0.00)[intel.com,163.com,codeaurora.org,davemloft.net,kernel.org,vger.kernel.org];
+	TO_DN_SOME(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-33754-lists,linux-wireless=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FREEMAIL_TO(0.00)[gmail.com,kernel.org,holtmann.org,quicinc.com,chromium.org,oss.qualcomm.com];
 	MIME_TRACE(0.00)[0:+];
-	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	FREEMAIL_FROM(0.00)[163.com];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[andersson@kernel.org,linux-wireless@vger.kernel.org];
-	DKIM_TRACE(0.00)[kernel.org:+];
-	MID_RHS_MATCH_FROM(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[linux-wireless,dt];
-	RCPT_COUNT_TWELVE(0.00)[25];
-	TO_DN_SOME(0.00)[]
-X-Rspamd-Queue-Id: 36268301C95
+	FROM_NEQ_ENVFROM(0.00)[rob_garcia@163.com,linux-wireless@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	DKIM_TRACE(0.00)[163.com:+];
+	NEURAL_HAM(-0.00)[-1.000];
+	TAGGED_RCPT(0.00)[linux-wireless];
+	RCPT_COUNT_SEVEN(0.00)[11];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,intel.com:email,msgid.link:url]
+X-Rspamd-Queue-Id: 13F7C302A2D
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
+From: Johannes Berg <johannes.berg@intel.com>
 
-On Tue, 06 Jan 2026 03:01:10 +0200, Dmitry Baryshkov wrote:
-> Qualcomm WCN3950, WCN3988 and WCN399x families of WiFi/BT chips preceed
-> the later WCN / QCA devices, but they still incorporate a very simple
-> PMU on die. It controls internal on-chip power networks, but, most
-> importantly, it also requires a certain start-up procedure (first bring
-> up VDD_IO, then bring up other voltages). In order to further unify code
-> supporting different families of QCA / WCN chips and in order to
-> maintain the required power up sequence, properly represent these chips
-> in DTs and modify drivers to use power sequencing for these chips.
-> 
-> [...]
+[ Upstream commit c2ace6300600c634553657785dfe5ea0ed688ac2 ]
 
-Applied, thanks!
+If we read txq->read_ptr without lock, we can read the same
+value twice, then obtain the lock, and reclaim from there
+to two different places, but crucially reclaim the same
+entry twice, resulting in the WARN_ONCE() a little later.
+Fix that by reading txq->read_ptr under lock.
 
-[10/14] arm64: dts: qcom: qrb2210-rb1: describe WiFi/BT properly
-        commit: 2d0840e31c8a6ceebc701822889424bb1927d1a7
-[11/14] arm64: dts: qcom: qrb4210-rb2: describe WiFi/BT properly
-        commit: 1eea8321da0fa3b80eb19802ab830bf83d304519
-[12/14] arm64: dts: qcom: sda660-ifc6560: describe WiFi/BT properly
-        commit: 40a5da727ebc2a8d085feda501ab7bee4c5d9608
-[13/14] arm64: dts: qcom: sdm845-db845c: describe WiFi/BT properly
-        commit: 77648f3a7e9be4e7090bd326b2e4a4f9265b80f3
-[14/14] arm64: dts: qcom: sm8150-hdk: describe WiFi/BT properly
-        commit: d545fd1caf42a8f20531ba38c671f5bf10542720
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
+Link: https://msgid.link/20240319100755.bf4c62196504.I978a7ca56c6bd6f1bf42c15aa923ba03366a840b@changeid
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+[ Change read_ptr definition according to commit
+413be839bfca9("wifi: iwlwifi: add a validity check of queue_id in iwl_txq_reclaim"). ]
+Signed-off-by: Robert Garcia <rob_garcia@163.com>
+---
+ drivers/net/wireless/intel/iwlwifi/queue/tx.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-Best regards,
+diff --git a/drivers/net/wireless/intel/iwlwifi/queue/tx.c b/drivers/net/wireless/intel/iwlwifi/queue/tx.c
+index cd852b95d812..d8322a40409b 100644
+--- a/drivers/net/wireless/intel/iwlwifi/queue/tx.c
++++ b/drivers/net/wireless/intel/iwlwifi/queue/tx.c
+@@ -1524,7 +1524,7 @@ void iwl_txq_reclaim(struct iwl_trans *trans, int txq_id, int ssn,
+ {
+ 	struct iwl_txq *txq = trans->txqs.txq[txq_id];
+ 	int tfd_num = iwl_txq_get_cmd_index(txq, ssn);
+-	int read_ptr = iwl_txq_get_cmd_index(txq, txq->read_ptr);
++	int read_ptr;
+ 	int last_to_free;
+ 
+ 	/* This function is not meant to release cmd queue*/
+@@ -1532,6 +1532,7 @@ void iwl_txq_reclaim(struct iwl_trans *trans, int txq_id, int ssn,
+ 		return;
+ 
+ 	spin_lock_bh(&txq->lock);
++	read_ptr = iwl_txq_get_cmd_index(txq, txq->read_ptr);
+ 
+ 	if (!test_bit(txq_id, trans->txqs.queue_used)) {
+ 		IWL_DEBUG_TX_QUEUES(trans, "Q %d inactive - ignoring idx %d\n",
 -- 
-Bjorn Andersson <andersson@kernel.org>
+2.34.1
+
 
